@@ -12,6 +12,8 @@ else
 bin_SCRIPTS =
 endif
 
+BUILT_SOURCES = keymap_defs.h
+
 bin_PROGRAMS = mutt @DOTLOCK_TARGET@ @PGPAUX_TARGET@
 mutt_SOURCES =	addrbook.c alias.c attach.c browser.c buffy.c color.c \
 	commands.c complete.c compose.c copy.c curs_lib.c curs_main.c date.c \
@@ -21,7 +23,9 @@ mutt_SOURCES =	addrbook.c alias.c attach.c browser.c buffy.c color.c \
 	postpone.c query.c recvattach.c \
 	rfc822.c rfc1524.c rfc2047.c rfc2231.c \
 	score.c send.c sendlib.c signal.c sort.c \
-	status.c system.c thread.c charset.c history.c lib.c muttlib.c
+	status.c system.c thread.c charset.c history.c lib.c \
+	muttlib.c \
+	$(BUILT_SOURCES)
 
 mutt_LDADD = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(INTLLIBS) 
 mutt_DEPENDENCIES = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(INTLDEPS)
@@ -50,7 +54,6 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO configure acconfig.h attach.h \
 	README.SECURITY remailer.c remailer.h browser.h Muttrc.in \
 	lib.h extlib.c pgpewrap pgplib.h
 
-BUILT_SOURCES = mutt_dotlock.c keymap_defs.h
 
 mutt_dotlock_SOURCES = mutt_dotlock.c
 mutt_dotlock_LDADD = @LIBOBJS@
