@@ -58,7 +58,7 @@ static size_t convert_string (const char *f, size_t flen,
   cd = mutt_iconv_open (to, from);
   if (cd == (iconv_t)(-1))
     return (size_t)(-1);
-  obl = 4 * flen;
+  obl = 4 * flen + 1;
   ob = buf = safe_malloc (obl);
   n = iconv (cd, &f, &flen, &ob, &obl);
   if (n == (size_t)(-1) || iconv (cd, 0, 0, &ob, &obl) == (size_t)(-1))
@@ -69,18 +69,19 @@ static size_t convert_string (const char *f, size_t flen,
     errno = e;
     return (size_t)(-1);
   }
-  x = realloc (buf, ob - buf);
+  *ob = '\0';
+  x = realloc (buf, ob - buf + 1);
   *t = x ? x : buf;
   *tlen = ob - buf;
   iconv_close (cd);
   return n;
 }
 
-static char *choose_charset (const char *fromcode, const char *charsets,
-			     char *u, size_t ulen)
+char *mutt_choose_charset (const char *fromcode, const char *charsets,
+		      char *u, size_t ulen, char **d, size_t *dlen)
 {
-  char *tocode = 0;
-  size_t bestn = 0;
+  char *e = 0, *tocode = 0;
+  size_t elen = 0, bestn = 0;
   const char *p, *q;
 
   for (p = charsets; p; p = q ? q + 1 : 0)
@@ -103,15 +104,30 @@ static char *choose_charset (const char *fromcode, const char *charsets,
     n = convert_string (u, ulen, fromcode, t, &s, &slen);
     if (n == (size_t)(-1))
       continue;
-    free (s);
     if (!tocode || n < bestn)
     {
-      free (tocode), tocode = t, bestn = n;
+      bestn = n;
+      free (tocode), tocode = t;
+      if (d)
+	free (e), e = s;
+      else
+	free (s);
+      elen = slen;
       if (!bestn)
 	break;
     }
     else
+    {
       free (t);
+      free (s);
+    }
+  }
+  if (tocode)
+  {
+    if (d)
+      *d = e;
+    if (dlen)
+      *dlen = elen;
   }
   return tocode;
 }
@@ -371,7 +387,7 @@ static int rfc2047_encode (const char *d, size_t dlen, int col,
   tocode = fromcode;
   if (icode)
   {
-    if ((tocode1 = choose_charset (icode, charsets, u, ulen)))
+    if ((tocode1 = mutt_choose_charset (icode, charsets, u, ulen, 0, 0)))
       tocode = tocode1;
     else
       ret = 2, icode = 0;

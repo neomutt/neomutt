@@ -302,46 +302,56 @@ static void rfc2231_join_continuations (PARAMETER **head,
   }
 }
 
-int rfc2231_encode (char *dest, size_t l, unsigned char *src)
+int rfc2231_encode_string (char **pd)
 {
-  char *buff;
-  unsigned char *s;
-  char *t;
-  int encode = 0;
+  int ext = 0, encode = 0;
+  char *charset, *s, *t, *e, *d = 0;
+  size_t slen, dlen = 0;
 
-  size_t bufflen = 3 * strlen ((char *) src + 1);
-  buff = safe_malloc (bufflen);
+  if (!*pd)
+    return 0;
 
-  for (s = src; *s && !encode; s++)
+  if (!Charset || !SendCharset ||
+      !(charset = mutt_choose_charset (Charset, SendCharset,
+				  *pd, strlen (*pd), &d, &dlen)))
   {
-    if (*s & 0x80)
-      encode = 1;
+    charset = safe_strdup (Charset ? Charset : "unknown");
+    d = *pd, dlen = strlen (d);
   }
 
-  if (!encode)
-    strfcpy (dest, (char *) src, l);
-  else
+  if (strcasecmp (charset, "us-ascii"))
+    encode = 1;
+
+  for (s = d, slen = dlen; slen; s++, slen--)
+    if (*s < 0x20 || *s >= 0x7f)
+      encode = 1, ++ext;
+    else if (strchr (MimeSpecials, *s))
+      ++ext;
+
+  if (encode)
   {
-    for (s = src, t = buff; *s && (t - buff) < bufflen - 4; s++)
-    {
-      if ((*s & 0x80) || *s == '\'')
+    e = safe_malloc (dlen + 2*ext + strlen (charset) + 3);
+    sprintf (e, "%s''", charset);
+    t = e + strlen (e);
+    for (s = d, slen = dlen; slen; s++, slen--)
+      if (*s < 0x20 || *s >= 0x7f || strchr (MimeSpecials, *s))
       {
-	sprintf ((char *) t, "%%%02x", (unsigned int) *s);
+	sprintf (t, "%%%02X", (unsigned char)*s);
 	t += 3;
       }
       else
 	*t++ = *s;
-    }
     *t = '\0';
-    
-    if (Charset && SendCharset && mutt_strcasecmp (Charset, SendCharset))
-      mutt_convert_string (&buff, Charset, SendCharset);
 
-    snprintf (dest, l, "%s''%s", SendCharset ? SendCharset :
-	      (Charset ? Charset : "unknown-8bit"), buff);
+    if (d != *pd)
+      free (d);
+    free (*pd);
+    *pd = e;
   }
-
-  safe_free ((void **) &buff);
+  else if (d != *pd)
+  {
+    free (*pd);
+    *pd = d;
+  }
   return encode;
 }
-

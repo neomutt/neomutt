@@ -16,6 +16,9 @@
  *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
  */ 
 
+char *mutt_choose_charset (const char *fromcode, const char *charsets,
+		      char *u, size_t ulen, char **d, size_t *dlen);
+
 void rfc2047_encode_string (char **);
 void rfc2047_encode_adrlist (ADDRESS *);
 

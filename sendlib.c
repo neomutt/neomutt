@@ -121,7 +121,7 @@ sysexits_h[] =
 
 #define DISPOSITION(X) X==DISPATTACH?"attachment":"inline"
 
-const char MimeSpecials[] = "@.,;<>[]\\\"()?/= \t";
+const char MimeSpecials[] = "@.,;:<>[]\\\"()?/= \t";
 
 char B64Chars[64] = {
   'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
@@ -346,7 +346,6 @@ int mutt_write_mime_header (BODY *a, FILE *f)
 {
   PARAMETER *p;
   char buffer[STRING];
-  char tmp[STRING];
   char *t;
   char *fn;
   int len;
@@ -361,6 +360,7 @@ int mutt_write_mime_header (BODY *a, FILE *f)
 
     for(p = a->parameter; p; p = p->next)
     {
+      char *tmp;
       
       if(!p->value)
 	continue;
@@ -368,7 +368,8 @@ int mutt_write_mime_header (BODY *a, FILE *f)
       fputc (';', f);
 
       buffer[0] = 0;
-      encode = rfc2231_encode (tmp, sizeof (tmp), (unsigned char *) p->value);
+      tmp = safe_strdup (p->value);
+      encode = rfc2231_encode_string (&tmp);
       rfc822_cat (buffer, sizeof (buffer), tmp, MimeSpecials);
 
       /* Dirty hack to make messages readable by Outlook Express 
@@ -378,7 +379,9 @@ int mutt_write_mime_header (BODY *a, FILE *f)
 
       if (!strcasecmp (p->attribute, "boundary") && !strcmp (buffer, tmp))
 	snprintf (buffer, sizeof (buffer), "\"%s\"", tmp);
-      
+
+      safe_free ((void **)&tmp);
+
       tmplen = mutt_strlen (buffer) + mutt_strlen (p->attribute) + 1;
 
       if (len + tmplen + 2 > 76)
@@ -411,6 +414,8 @@ int mutt_write_mime_header (BODY *a, FILE *f)
     
     if (fn)
     {
+      char *tmp;
+
       /* Strip off the leading path... */
       if ((t = strrchr (fn, '/')))
 	t++;
@@ -418,8 +423,10 @@ int mutt_write_mime_header (BODY *a, FILE *f)
 	t = fn;
       
       buffer[0] = 0;
-      encode = rfc2231_encode (tmp, sizeof (tmp), (unsigned char *) t);
+      tmp = safe_strdup (t);
+      encode = rfc2231_encode_string (&tmp);
       rfc822_cat (buffer, sizeof (buffer), tmp, MimeSpecials);
+      safe_free ((void **)&tmp);
       fprintf (f, "; filename%s=%s", encode ? "*" : "", buffer);
     }
   }
@@ -1629,7 +1636,7 @@ static void encode_headers (LIST *h)
     {
       *p++ = 0;
       SKIPWS (p);
-      tmp = strdup (p);
+      tmp = safe_strdup (p);
       rfc2047_encode_string (&tmp);
       safe_realloc ((void **) &h->data, 
 		    strlen (h->data) + 2 + strlen (tmp) + 1);
