@@ -612,22 +612,27 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
       b->d_filename = safe_strdup (b->filename);
     }
     else
+    {
       /* avoid Content-Disposition: header with temporary filename */
       b->use_disp = 0;
-
-    if (b->type == TYPETEXT && 
-	!mutt_strcasecmp ("yes", mutt_get_parameter ("x-mutt-noconv", b->parameter)))
-    {
-      s.flags &= ~M_CHARCONV;
-      b->noconv = 1;
-    }
-    else
-    {
-      s.flags |= M_CHARCONV;
-      b->noconv = 0;
     }
 
-    mutt_delete_parameter ("x-mutt-noconv", &b->parameter);
+    /* set up state flags */
+
+    s.flags = 0;
+
+    if (b->type == TYPETEXT)
+    {
+      if (!mutt_strcasecmp ("yes", mutt_get_parameter ("x-mutt-noconv", b->parameter)))
+	b->noconv = 1;
+      else
+      {
+	s.flags |= M_CHARCONV;
+	b->noconv = 0;
+      }
+
+      mutt_delete_parameter ("x-mutt-noconv", &b->parameter);
+    }
 
     mutt_adv_mktemp (file, sizeof(file));
     if ((s.fpout = safe_fopen (file, "w")) == NULL)
