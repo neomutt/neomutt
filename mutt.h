@@ -201,6 +201,7 @@ enum
   M_FROM,
   M_DATE,
   M_DATE_RECEIVED,
+  M_DUPLICATED,
   M_ID,
   M_BODY,
   M_HEADER,

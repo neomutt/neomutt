@@ -1718,6 +1718,7 @@ messages:
 ~x EXPR         messages which contain EXPR in the `References' field
 ~y EXPR         messages which contain EXPR in the `X-Label' field
 ~z [MIN]-[MAX]  messages with a size in the range MIN to MAX *)
+~=		duplicated messages (see $duplicate_threads)
 </verb></tscreen>
 
 Where EXPR, USER, ID, and SUBJECT are 

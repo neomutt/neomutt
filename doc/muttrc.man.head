@@ -368,6 +368,7 @@ l l.
 ~v	message is part of a collapsed thread.
 ~x \fIEXPR\fP	messages which contain \fIEXPR\fP in the \(lqReferences\(rq field
 ~z \fIMIN\fP-\fIMAX\fP	messages with a size in the range \fIMIN\fP to \fIMAX\fP
+~=	duplicated messages (see $duplicate_threads)
 .TE
 .PP
 In the above, \fIEXPR\fP is a regular expression.

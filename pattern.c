@@ -90,6 +90,7 @@ Flags[] =
   { 'x', M_REFERENCE,		0,		eat_regexp },
   { 'y', M_XLABEL,		0,		eat_regexp },
   { 'z', M_SIZE,		0,		eat_range },
+  { '=', M_DUPLICATED,		0,		NULL },
   { 0 }
 };
 
@@ -1050,6 +1051,8 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
 #endif
     case M_XLABEL:
       return (pat->not ^ (h->env->x_label && regexec (pat->rx, h->env->x_label, 0, NULL, 0) == 0));
+    case M_DUPLICATED:
+      return (pat->not ^ (h->thread && h->thread->duplicate_thread));
   }
   mutt_error (_("error: unknown op %d (report this error)."), pat->op);
   return (-1);
