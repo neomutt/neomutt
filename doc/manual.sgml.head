@@ -402,12 +402,12 @@ function.
 With resend-message, mutt takes the current message as a template for a
 new message.  This function is best described as "recall from arbitrary
 folders".  It can conveniently be used to forward MIME messages while
-preservig the original mail structure. Note that the amount of headers
+preserving the original mail structure. Note that the amount of headers
 included here depends on the value of the <ref id="weed" name="&dollar;weed">
 variable.
 
 This function is also available from the attachment menu. You can use this
-to comfortably resend a message which was included with a bounce message
+to easily resend a message which was included with a bounce message
 as a message/rfc822 body part.
 
 <bf/shell-escape/<label id="shell-escape"> (default: !)<newline>
