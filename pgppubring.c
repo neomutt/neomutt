@@ -850,6 +850,9 @@ static void pgpring_dump_keyblock (pgp_key_t *p)
 	      sig->sigtype == 0x12 || sig->sigtype == 0x13)
 	    printf ("sig::::%08lX%08lX:::::::\n",
 		    sig->sid1, sig->sid2);
+	  else if (sig->sigtype == 0x20)
+	    printf ("rev::::%08lX%08lX:::::::\n",
+		    sig->sid1, sig->sid2);
 	    
 	}
       }
