@@ -506,7 +506,7 @@ void mutt_buffy (char *s, size_t slen)
   {
   case 0:
 
-    s = '\0';
+    *s = '\0';
     break;
 
   case 1:
@@ -515,7 +515,7 @@ void mutt_buffy (char *s, size_t slen)
       tmp = tmp->next;
     if (!tmp)
     {
-      s = '\0';
+      *s = '\0';
       mutt_buffy_check (1); /* buffy was wrong - resync things */
       break;
     }
@@ -541,7 +541,7 @@ void mutt_buffy (char *s, size_t slen)
     }
     if (count >= 3)
     {
-      s = '\0';
+      *s = '\0';
       mutt_buffy_check (1); /* buffy was wrong - resync things */
       break;
     }
