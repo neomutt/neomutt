@@ -439,7 +439,7 @@ int mutt_edit_message (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr)
     }
     newhdr->content = mutt_make_file_attach (file);
     
-    FREE (&newhddr->content->subtype);
+    FREE (&newhdr->content->subtype);
     FREE (&newhdr->content->xtype);
     
     newhdr->content->type = hdr->content->type;
