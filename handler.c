@@ -989,6 +989,11 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
   
   if ((flowed_max = FLOWED_MAX) > COLS - 3)
     flowed_max = COLS - 3;
+  if (flowed_max > COLS - WrapMargin)
+    flowed_max = COLS - WrapMargin;
+  if (flowed_max <= 0)
+    flowed_max = COLS;
+    
 
   while (bytes > 0 && fgets (line, sizeof (line), s->fpin))
   {
