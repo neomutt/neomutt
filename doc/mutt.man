@@ -145,7 +145,7 @@ GNU General Public License for more details.
 .PP
 .BR muttrc (5),
 .BR curses (3),
-.BR dotlock (1),
+.BR mutt_dotlock (1),
 .BR ncurses (3),
 .BR sendmail (1),
 .BR smail (1),
