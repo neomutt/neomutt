@@ -87,7 +87,8 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
   if (stat (tmp, &sb) == 0)
     mtime = sb.st_mtime;
 
-  mutt_edit_file (NONULL (Visual), tmp);
+  mutt_edit_file ((!Editor || mutt_strcmp ("builtin", Editor) == 0) ? 
+		  NONULL(Visual) : NONULL(Editor), tmp);
 
   if ((rc = stat (tmp, &sb)) == -1)
   {
