@@ -1,3 +1,7 @@
+2004-08-17 15:47:17  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* configure.in: Check for ssize_t.
+
 2004-08-17 15:25:31  Ronny Haryanto  <ronnylist@haryan.to>  (roessler)
 
 	* po/id.po: Corrected update.
