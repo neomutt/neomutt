@@ -91,6 +91,10 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   while ((msgend) >= idata->ctx->hdrmax)
     mx_alloc_memory (idata->ctx);
 
+  oldmsgcount = ctx->msgcount;
+  idata->reopen &= ~IMAP_NEWMAIL_PENDING;
+  idata->newMailCount = 0;
+
   for (msgno = msgbegin; msgno <= msgend ; msgno++)
   {
     if (ReadInc && (!msgno || ((msgno+1) % ReadInc == 0)))
@@ -119,8 +123,6 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
     rewind (fp);
     memset (&h, 0, sizeof (h));
     h.data = safe_calloc (1, sizeof (IMAP_HEADER_DATA));
-
-    oldmsgcount = ctx->msgcount;
 
     /* this DO loop does two things:
      * 1. handles untagged messages, so we can try again on the same msg
@@ -173,9 +175,6 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
     while ((rc != IMAP_CMD_OK) && ((mfhrc == -1) ||
       ((msgno + 1) >= fetchlast)));
 
-    if (ctx->msgcount > oldmsgcount)
-      mx_update_context (ctx, ctx->msgcount - oldmsgcount);
-
     if ((mfhrc < -1) || ((rc != IMAP_CMD_CONTINUE) && (rc != IMAP_CMD_OK)))
     {
       imap_free_header_data ((void**) &h.data);
@@ -184,19 +183,21 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       return -1;
     }
 	
-    /* h.data shouldn't be freed here, it is kept in ctx->headers */
-
     /* in case we get new mail while fetching the headers */
     if (idata->reopen & IMAP_NEWMAIL_PENDING)
     {
       msgend = idata->newMailCount - 1;
       while ((msgend) >= ctx->hdrmax)
 	mx_alloc_memory (ctx);
-      idata->status &= ~IMAP_NEWMAIL_PENDING;
+      idata->reopen &= ~IMAP_NEWMAIL_PENDING;
+      idata->newMailCount = 0;
     }
   }
 
   fclose(fp);
+
+  if (ctx->msgcount > oldmsgcount)
+    mx_update_context (ctx, ctx->msgcount - oldmsgcount);
 
   return msgend;
 }

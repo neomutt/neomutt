@@ -257,8 +257,7 @@ void imap_cmd_finish (IMAP_DATA* idata)
       /* check_status: curs_main uses imap_check_mailbox to detect
        *   whether the index needs updating */
       idata->check_status = IMAP_NEWMAIL_PENDING;
-      idata->reopen &= ~IMAP_NEWMAIL_PENDING;
-      count = imap_read_headers (idata, idata->ctx->msgcount, count-1)+1;
+      imap_read_headers (idata, idata->ctx->msgcount, count-1);
     }
     else if (idata->reopen & IMAP_EXPUNGE_PENDING)
     {
