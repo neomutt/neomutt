@@ -20,6 +20,10 @@
 	* mh.c, sort.c: Fix dangling pointer problems in threading code.
 	Noted and tracked down by q4xk3j002@sneakemail.com who also
 	provided the initial fix.
+	
+	CORRECTION: q4xk3j002 (whoever that is) reported the bug,
+	but thr problem was tracked down and fixed by YONETANI
+	Tomokazu <qhwt@myrealbox.com>
 
 2003-11-11 10:19:22  Ronny Haryanto  <ronnylist@haryan.to>  (roessler)
 
