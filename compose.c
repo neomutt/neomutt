@@ -264,13 +264,13 @@ static void draw_envelope (HEADER *msg, char *fcc)
 #ifdef _PGPPATH
   mvaddstr (HDR_PGP, 0,     "     PGP: ");
   if ((msg->pgp & (PGPENCRYPT | PGPSIGN)) == (PGPENCRYPT | PGPSIGN))
-    addstr _("Sign, Encrypt");
+    addstr (_("Sign, Encrypt"));
   else if (msg->pgp & PGPENCRYPT)
-    addstr _("Encrypt");
+    addstr (_("Encrypt"));
   else if (msg->pgp & PGPSIGN)
-    addstr _("Sign");
+    addstr (_("Sign"));
   else
-    addstr _("Clear");
+    addstr (_("Clear"));
   clrtoeol ();
 
   if (msg->pgp & PGPSIGN)

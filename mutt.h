@@ -36,13 +36,13 @@
 # include <libintl.h>
 # define _(a) (gettext (a))
 # ifdef gettext_noop
-#  define N_(a) (gettext_noop (a))
+#  define N_(a) gettext_noop (a)
 # else
 #  define N_(a) (a)
 # endif
 #else
 # define _(a) (a)
-# define N_(a) (a)
+# define N_(a) a
 #endif
 
 #ifdef SUBVERSION
