@@ -19,6 +19,8 @@
 
 use strict;
 
+umask 077;
+
 require "timelocal.pl";
 
 sub usage ();
@@ -101,6 +103,7 @@ elsif( @ARGV == 2 and $ARGV[0] eq "add_p12") {
     open(PEM_FILE, $pem_file) or die("Can't open $pem_file: $!");
     my @pem = <PEM_FILE>;
     close(PEM_FILE);
+    unlink $pem_file;
     handle_pem(@pem);
 }
 elsif(@ARGV == 4 and $ARGV[0] eq "add_chain") {
@@ -499,7 +502,7 @@ sub parse_pem (@) {
     $numBags == $cert_iter or 
         die("Not all contents were bagged. can't continue.");
 
-    @bag_attribs;
+    return @bag_attribs;
 }
 
 
@@ -564,8 +567,7 @@ sub handle_pem (@) {
     # what's left are intermediate certificates.
     $iter = 0;
 
-    $cmd = "rm -f tmp_issuer_cert";
-    system $cmd and die "'$cmd' returned $?";
+    unlink "tmp_issuer_cert";
 
     while($iter <= $#pem_contents>>2) {
         if ($iter == $key or $iter == $certificate or $iter == $root_cert) {
@@ -597,8 +599,8 @@ sub handle_pem (@) {
     $mailbox = &add_certificate("tmp_certificate", \$cert_hash, 1, $label, $issuer_hash); 
     add_key("tmp_key", $cert_hash, $mailbox, $label);
     
-    $cmd = "rm -f cert_tmp.* tmp_*";
-    system $cmd and die "'$cmd' returned $?";
+    unlink <cert_tmp.*>;
+    unlink <tmp_*>;
 }
 
 
@@ -670,8 +672,7 @@ sub remove_pair ($ ) {
   my $keyid = shift;
 
   if (-e "$certificates_path/$keyid") {
-    my $cmd = "rm -f $certificates_path/$keyid";
-    system $cmd and die "'$cmd' returned $?";
+    unlink "$certificates_path/$keyid";
     modify_entry('R', $keyid, 1);
     print "Removed certificate $keyid.\n";
   }
@@ -680,8 +681,7 @@ sub remove_pair ($ ) {
   }
 
   if (-e "$private_keys_path/$keyid") {
-    my $cmd = "rm -f $private_keys_path/$keyid";
-    system $cmd and die "'$cmd' returned $?";
+    unlink "$private_keys_path/$keyid";
     modify_entry('R', $keyid, 0);
     print "Removed private key $keyid.\n";
   }
