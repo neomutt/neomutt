@@ -516,7 +516,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   /* Null HEADER* means copy tagged messages */
   if (!h)
   {
-    rc = imap_make_msg_set (buf, sizeof (buf), ctx, M_TAG, 0);
+    rc = imap_make_msg_set (CTX_DATA, buf, sizeof (buf), M_TAG, 0);
     if (!rc)
     {
       dprint (1, (debugfile, "imap_copy_messages: No messages tagged\n"));
@@ -533,7 +533,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   /* let's get it on */
   strncpy (mbox, cmd, sizeof (mbox));
   imap_munge_mbox_name (mmbox, sizeof (mmbox), cmd);
-  snprintf (cmd, sizeof (cmd), "COPY %s %s", buf, mmbox);
+  snprintf (cmd, sizeof (cmd), "UID COPY %s %s", buf, mmbox);
   rc = imap_exec (buf, sizeof (buf), CTX_DATA, cmd, IMAP_CMD_FAIL_OK);
   if (rc == -2)
   {

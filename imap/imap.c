@@ -42,6 +42,8 @@ static int imap_get_delim (IMAP_DATA *idata);
 static char* imap_get_flags (LIST** hflags, char* s);
 static int imap_check_acl (IMAP_DATA *idata);
 static int imap_check_capabilities (IMAP_DATA *idata);
+static void imap_set_flag (IMAP_DATA* idata, int aclbit, int flag,
+  const char* str, char* flags);
 
 int imap_create_mailbox (CONTEXT* ctx, char* mailbox)
 {
@@ -916,23 +918,25 @@ int imap_close_connection (CONTEXT *ctx)
   return 0;
 }
 
-static void imap_set_flag (CONTEXT *ctx, int aclbit, int flag, const char *str, 
-  char *flags)
+/* imap_set_flag: append str to flags if we currently have permission
+ *   according to aclbit */
+static void imap_set_flag (IMAP_DATA* idata, int aclbit, int flag,
+  const char *str, char *flags)
 {
-  if (mutt_bit_isset (CTX_DATA->rights, aclbit))
+  if (mutt_bit_isset (idata->rights, aclbit))
     if (flag)
       strcat (flags, str);
 }
 
-/* imap_make_msg_set: make an IMAP4rev1 message set out of a set of headers,
- *   given a flag enum to filter on.
- * Params: buf: to write message set into
+/* imap_make_msg_set: make an IMAP4rev1 UID message set out of a set of
+ *   headers, given a flag enum to filter on.
+ * Params: idata: IMAP_DATA containing context containing header set
+ *         buf: to write message set into
  *         buflen: length of buffer
- *         ctx: CONTEXT containing header set
  *         flag: enum of flag type on which to filter
  *         changed: include only changed messages in message set
  * Returns: number of messages in message set (0 if no matches) */
-int imap_make_msg_set (char* buf, size_t buflen, CONTEXT* ctx, int flag,
+int imap_make_msg_set (IMAP_DATA* idata, char* buf, size_t buflen, int flag,
   int changed)
 {
   HEADER** hdrs;	/* sorted local copy */
@@ -950,59 +954,65 @@ int imap_make_msg_set (char* buf, size_t buflen, CONTEXT* ctx, int flag,
   *buf = '\0';
 
   /* make copy of header pointers to sort in natural order */
-  hdrs = safe_calloc (ctx->msgcount, sizeof (HEADER*));
-  memcpy (hdrs, ctx->hdrs, ctx->msgcount * sizeof (HEADER*));
+  hdrs = safe_calloc (idata->ctx->msgcount, sizeof (HEADER*));
+  memcpy (hdrs, idata->ctx->hdrs, idata->ctx->msgcount * sizeof (HEADER*));
 
-  oldsort = Sort;
-  Sort = SORT_ORDER;
-  qsort ((void*) hdrs, ctx->msgcount, sizeof (HEADER*),
-    mutt_get_sort_func (SORT_ORDER));
-  Sort = oldsort;
-
+  if (Sort != SORT_ORDER)
+  {
+    oldsort = Sort;
+    Sort = SORT_ORDER;
+    qsort ((void*) hdrs, idata->ctx->msgcount, sizeof (HEADER*),
+      mutt_get_sort_func (SORT_ORDER));
+    Sort = oldsort;
+  }
+  
   tmp = safe_malloc (buflen);
 
-  for (n = 0; n < ctx->msgcount; n++)
+  for (n = 0; n < idata->ctx->msgcount; n++)
   {
     match = 0;
-    switch (flag)
-    {
-      case M_DELETE:
-        if (hdrs[n]->deleted)
-          match = 1;
-        break;
-      case M_TAG:
-        if (hdrs[n]->tagged)
-          match = 1;
-        break;
-    }
+    /* don't include pending expunged messages */
+    if (hdrs[n]->active)
+      switch (flag)
+      {
+        case M_DELETE:
+	  if (hdrs[n]->deleted)
+	    match = 1;
+	  break;
+        case M_TAG:
+	  if (hdrs[n]->tagged)
+	    match = 1;
+	  break;
+      }
 
     if (match && (!changed || hdrs[n]->changed))
     {
       count++;
       if (setstart == 0)
       {
-        setstart = n+1;
+        setstart = HEADER_DATA (hdrs[n])->uid;
         if (!buf[0])
-          snprintf (buf, buflen, "%u", n+1);
+          snprintf (buf, buflen, "%u", HEADER_DATA (hdrs[n])->uid);
         else
         {
           strncpy (tmp, buf, buflen);
-          snprintf (buf, buflen, "%s,%u", tmp, n+1);
+          snprintf (buf, buflen, "%s,%u", tmp, HEADER_DATA (hdrs[n])->uid);
         }
       }
       /* tie up if the last message also matches */
-      else if (n == ctx->msgcount-1)
+      else if (n == idata->ctx->msgcount-1)
       {
         strncpy (tmp, buf, buflen);
-        snprintf (buf, buflen, "%s:%u", tmp, n+1);
+        snprintf (buf, buflen, "%s:%u", tmp, HEADER_DATA (hdrs[n])->uid);
       }
     }
-    else if (setstart)
+    /* this message is not expunged and doesn't match. End current set. */
+    else if (setstart && hdrs[n]->active)
     {
-      if (n > setstart)
+      if (HEADER_DATA (hdrs[n-1])->uid > setstart)
       {
         strncpy (tmp, buf, buflen);
-        snprintf (buf, buflen, "%s:%u", tmp, n);
+        snprintf (buf, buflen, "%s:%u", tmp, HEADER_DATA (hdrs[n-1])->uid);
       }
       setstart = 0;
     }
@@ -1056,13 +1066,14 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
   /* if we are expunging anyway, we can do deleted messages very quickly... */
   if (expunge && mutt_bit_isset (idata->rights, IMAP_ACL_DELETE))
   {
-    deleted = imap_make_msg_set (buf, sizeof (buf), ctx, M_DELETE, 1);
+    deleted = imap_make_msg_set (idata, buf, sizeof (buf), M_DELETE, 1);
 
     /* if we have a message set, then let's delete */
     if (deleted)
     {
       mutt_message (_("Marking %d messages deleted..."), deleted);
-      snprintf (tmp, sizeof (tmp), "STORE %s +FLAGS.SILENT (\\Deleted)", buf);
+      snprintf (tmp, sizeof (tmp), "UID STORE %s +FLAGS.SILENT (\\Deleted)",
+        buf);
       if (imap_exec (buf, sizeof (buf), idata, tmp, 0) != 0)
         /* continue, let regular store try before giving up */
         dprint(2, (debugfile, "imap_sync_mailbox: fast delete failed\n"));
@@ -1083,14 +1094,14 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
       
       flags[0] = '\0';
       
-      imap_set_flag (ctx, IMAP_ACL_SEEN, ctx->hdrs[n]->read, "\\Seen ",
+      imap_set_flag (idata, IMAP_ACL_SEEN, ctx->hdrs[n]->read, "\\Seen ",
         flags);
-      imap_set_flag (ctx, IMAP_ACL_WRITE, ctx->hdrs[n]->flagged, "\\Flagged ",
-        flags);
-      imap_set_flag (ctx, IMAP_ACL_WRITE, ctx->hdrs[n]->replied,
+      imap_set_flag (idata, IMAP_ACL_WRITE, ctx->hdrs[n]->flagged,
+        "\\Flagged ", flags);
+      imap_set_flag (idata, IMAP_ACL_WRITE, ctx->hdrs[n]->replied,
         "\\Answered ", flags);
-      imap_set_flag (ctx, IMAP_ACL_DELETE, ctx->hdrs[n]->deleted, "\\Deleted ",
-        flags);
+      imap_set_flag (idata, IMAP_ACL_DELETE, ctx->hdrs[n]->deleted,
+        "\\Deleted ", flags);
 
       /* now make sure we don't lose custom tags */
       if (mutt_bit_isset (idata->rights, IMAP_ACL_WRITE))
@@ -1102,10 +1113,10 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
        * explicitly revoke all system flags (if we have permission) */
       if (!*flags)
       {
-        imap_set_flag (ctx, IMAP_ACL_SEEN, 1, "\\Seen ", flags);
-        imap_set_flag (ctx, IMAP_ACL_WRITE, 1, "\\Flagged ", flags);
-        imap_set_flag (ctx, IMAP_ACL_WRITE, 1, "\\Answered ", flags);
-        imap_set_flag (ctx, IMAP_ACL_DELETE, 1, "\\Deleted ", flags);
+        imap_set_flag (idata, IMAP_ACL_SEEN, 1, "\\Seen ", flags);
+        imap_set_flag (idata, IMAP_ACL_WRITE, 1, "\\Flagged ", flags);
+        imap_set_flag (idata, IMAP_ACL_WRITE, 1, "\\Answered ", flags);
+        imap_set_flag (idata, IMAP_ACL_DELETE, 1, "\\Deleted ", flags);
 
         mutt_remove_trailing_ws (flags);
 
