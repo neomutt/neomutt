@@ -650,6 +650,8 @@ char *mutt_concat_path (char *d, const char *dir, const char *fname, size_t l)
 const char *mutt_basename (const char *f)
 {
   const char *p = strrchr (f, '/');
-  if (p) ++p;
-  return p;
+  if (p)
+    return p + 1;
+  else
+    return f;
 }
