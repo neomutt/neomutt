@@ -49,41 +49,155 @@
  * one in mutt_canonical_charset. 
  */
 
+/* 
+ * The following list has been created manually from the data under:
+ * http://www.isi.edu/in-notes/iana/assignments/character-sets
+ * Last update: 2000-09-07
+ *
+ * Note that it includes only the subset of character sets for which
+ * a preferred MIME name is given.
+ */
+
+static struct 
+{
+  char *key;
+  char *pref;
+}
+PreferredMIMENames[] = 
+{
+  { "ansi_x3.4-1968", 	"us-ascii"     	},
+  { "iso-ir-6",		"us-ascii" 	},
+  { "iso_646.irv:1991",	"us-ascii" 	},
+  { "ascii",		"us-ascii" 	},
+  { "iso646-us",	"us-ascii" 	},
+  { "us",		"us-ascii" 	},
+  { "ibm367",		"us-ascii" 	},
+  { "cp367",		"us-ascii" 	},
+  { "csASCII",		"us-ascii" 	},
+  
+  { "csISO2022KR",	"iso-2022-kr" 	},
+  { "csEUCKR",		"euc-kr"      	},
+  { "csISO2022JP",	"iso-2022-jp"	},
+  { "csISO2022JP2",	"iso-2022-jp-2" },
+
+  { "ISO_8859-1:1987",	"iso-8859-1"	},
+  { "iso-ir-100",	"iso-8859-1"	},
+  { "iso_8859-1",	"iso-8859-1"	},
+  { "latin1",		"iso-8859-1"	},
+  { "l1",		"iso-8859-1"	},
+  { "IBM819",		"iso-8859-1"	},
+  { "CP819",		"iso-8859-1"	},
+  { "csISOLatin1",	"iso-8859-1"	},
+  
+  { "ISO_8859-2:1987",	"iso-8859-2"	},
+  { "iso-ir-101",	"iso-8859-2"	},
+  { "iso_8859-2",	"iso-8859-2"	},
+  { "latin2",		"iso-8859-2"	},
+  { "l2",		"iso-8859-2"	},
+  { "csISOLatin2",	"iso-8859-2"	},
+  
+  { "ISO_8859-3:1988",	"iso-8859-3"	},
+  { "iso-ir-109",	"iso-8859-3"	},
+  { "ISO_8859-3",	"iso-8859-3"	},
+  { "latin3",		"iso-8859-3"	},
+  { "l3",		"iso-8859-3"	},
+  { "csISOLatin3",	"iso-8859-3"	},
+
+  { "ISO_8859-4:1988",	"iso-8859-4"	},
+  { "iso-ir-110",	"iso-8859-4"	},
+  { "ISO_8859-4",	"iso-8859-4"	},
+  { "latin4",		"iso-8859-4"	},
+  { "l4",		"iso-8859-4"	},
+  { "csISOLatin4",	"iso-8859-4"	},
+
+  { "ISO_8859-6:1987",	"iso-8859-6"	},
+  { "iso-ir-127",	"iso-8859-6"	},
+  { "iso_8859-6",	"iso-8859-6"	},
+  { "ECMA-114",		"iso-8859-6"	},
+  { "ASMO-708",		"iso-8859-6"	},
+  { "arabic",		"iso-8859-6"	},
+  { "csISOLatinArabic",	"iso-8859-6"	},
+  
+  { "ISO_8859-7:1987",	"iso-8859-7"	},
+  { "iso-ir-126",	"iso-8859-7"	},
+  { "ISO_8859-7",	"iso-8859-7"	},
+  { "ELOT_928",		"iso-8859-7"	},
+  { "ECMA-118",		"iso-8859-7"	},
+  { "greek",		"iso-8859-7"	},
+  { "greek8",		"iso-8859-7"	},
+  { "csISOLatinGreek",	"iso-8859-7"	},
+  
+  { "ISO_8859-8:1988",	"iso-8859-8"	},
+  { "iso-ir-138",	"iso-8859-8"	},
+  { "ISO_8859-8",	"iso-8859-8"	},
+  { "hebrew",		"iso-8859-8"	},
+  { "csISOLatinHebrew",	"iso-8859-8"	},
+
+  { "ISO_8859-5:1988",	"iso-8859-5"	},
+  { "iso-ir-144",	"iso-8859-5"	},
+  { "ISO_8859-5",	"iso-8859-5"	},
+  { "cyrillic",		"iso-8859-5"	},
+  { "csISOLatinCyrillic", "iso8859-5"	},
+
+  { "ISO_8859-9:1989",	"iso-8859-9"	},
+  { "iso-ir-148",	"iso-8859-9"	},
+  { "ISO_8859-9",	"iso-8859-9"	},
+  { "latin5",		"iso-8859-9"	}, /* this is not a bug */
+  { "l5",		"iso-8859-9"	},
+  { "csISOLatin5",	"iso-8859-9"	},
+  
+  { "ISO_8859-10:1992",	"iso-8859-10"	},
+  { "iso-ir-157",	"iso-8859-10"	},
+  { "latin6",		"iso-8859-10"	}, /* this is not a bug */
+  { "l6",		"iso-8859-10"	},
+  { "csISOLatin6"	"iso-8859-10"	}, 
+  
+  { "csKOI8r",		"koi8-r"	},
+  
+  { "MS_Kanji",		"Shift_JIS"	}, /* Note the underscore! */
+  { "csShiftJis",	"Shift_JIS"	},
+  
+  { "Extended_UNIX_Code_Packed_Format_for_Japanese",
+      			"EUC-JP"	},
+  { "csEUCPkdFmtJapanese", "EUC-JP"	},
+  
+  { "csGB2312",		"gb2312"	},
+  { "csbig5",		"big5"		},
+
+  /* 
+   * End of official brain damage.  What follows has been taken
+   * from glibc's localedata files. 
+   */
+
+  { "iso_8859-13",	"iso-8859-13"	},
+  { "iso-ir-179",	"iso-8859-13"	},
+  { "latin7",		"iso-8859-13"	}, /* this is not a bug */
+  { "l7",		"iso-8859-13"	},
+  
+  { "iso_8859-14",	"iso-8859-14"	},
+  { "latin8",		"iso-8859-14"	}, /* this is not a bug */
+  { "l8",		"iso-8859-14"	},
+
+  { "iso_8859-15",	"iso-8859-15"	},
+
+  /*
+   * If you happen to encounter system-specific brain-damage with
+   * respect to character set naming, please add it here, and
+   * submit a patch to <mutt-dev@mutt.org>. 
+   */
+
+  /* End of aliases.  Please keep this line last. */
+  
+  { NULL, 		NULL		}
+};
+
 void mutt_set_langinfo_charset (void)
 {
   char buff[LONG_STRING];
   char buff2[LONG_STRING];
-  char *s, *d, *cp;
   
   strfcpy (buff, nl_langinfo (CODESET), sizeof (buff));
-  strfcpy (buff2, buff, sizeof (buff2));
-  
-  /* compactify the character set name returned */
-  for (d = s = buff; *s; s++)
-  {
-    if (!strchr ("-_.", *s))
-      *d++ = *s;
-  }
-  *d = '\0';
-  
-  /* look for common prefixes which may have been done wrong */
-  if (!strncasecmp (buff, "iso8859", 7))
-  {
-    snprintf (buff2, sizeof (buff2), "iso-8859-%s", buff + 7);
-    if ((cp = strchr (buff2, ':')))	/* strip :yyyy suffixes */
-      *cp = '\0';
-  }
-  else if (!strncasecmp (buff, "koi8", 4))
-  {
-    snprintf (buff2, sizeof (buff2), "koi8-%s", buff + 4);
-  }
-  else if (!strncasecmp (buff, "windows", 7))
-  {
-    snprintf (buff2, sizeof (buff2), "windows-%s", buff + 7);
-  }
-
-  /* fix the spelling */
-  mutt_canonical_charset (buff, sizeof (buff), buff2);
+  mutt_canonical_charset (buff2, sizeof (buff2), buff);
   
   /* finally, set $charset */
   Charset = safe_strdup (buff);
@@ -94,21 +208,28 @@ void mutt_set_langinfo_charset (void)
 void mutt_canonical_charset (char *dest, size_t dlen, const char *name)
 {
   size_t i;
+  char *p;
+  char scratch[LONG_STRING];
 
-  if (!strncasecmp (name, "x-", 2))
-    name = name + 2;
+  /* catch some common iso-8859-something misspellings */
+  if (!strncasecmp (name, "iso8859", 7) && name[7] != '-')
+    snprintf (scratch, sizeof (scratch), "iso_8859-%s", name + 8);
+  else
+    strfcpy (scratch, name, sizeof (scratch));
 
-  for (i = 0; name[i] && i < dlen - 1; i++)
-  {
-    if (strchr ("_/. ", name[i]))
-      dest[i] = '-';
-    else if ('A' <= name[i] && name[i] <= 'Z')
-      dest[i] = name[i] - 'A' + 'a';
-    else
-      dest[i] = name[i];
-  }
+  for (i = 0; PreferredMIMENames[i].key; i++)
+    if (!strcasecmp (scratch, PreferredMIMENames[i].key))
+    {
+      strfcpy (dest, PreferredMIMENames[i].pref, sizeof (dest));
+      return;
+    }
 
-  dest[i] = '\0';
+  strfcpy (dest, scratch, sizeof (dest));
+
+  /* for cosmetics' sake, transform to lowercase. */
+  for (p = dest; *p; p++)
+    if ('A' <= *p && *p <= 'Z')
+      *p += 'a' - 'A';
 }
 
 int mutt_is_utf8 (const char *s)
