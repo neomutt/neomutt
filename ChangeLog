@@ -1,3 +1,8 @@
+2002-12-18 07:44:12  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* Makefile.am: cvs update ChangeLog before trying to update
+	it locally.
+
 2002-12-18 07:37:56  Roland Rosenfeld  <roland@spinnaker.de>
 
 	* po/de.po: update
