@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1\n"
 "POT-Creation-Date: 2000-09-21 11:36+0200\n"
-"PO-Revision-Date: 2000-08-03 21:23+01:00\n"
+"PO-Revision-Date: 2000-09-26 19:15+01:00\n"
 "Last-Translator: Edmund GRIMLEY EVANS <edmundo@rano.org>\n"
 "Language-Team: eo <eo@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -13,9 +13,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: account.c:144
-#, fuzzy, c-format
+#, c-format
 msgid "Username at %s: "
-msgstr "Renomi al: "
+msgstr "Uzantonomo æe %s: "
 
 #: account.c:172 pop.c:61
 #, c-format
@@ -175,9 +175,8 @@ msgid "No files match the file mask"
 msgstr "Neniu dosiero kongruas kun la dosieromasko"
 
 #: browser.c:828
-#, fuzzy
 msgid "Create is only supported for IMAP mailboxes"
-msgstr "Forviþado funkcias nur æe IMAP-poþtfakoj"
+msgstr "Kreado funkcias nur æe IMAP-poþtfakoj"
 
 #: browser.c:848
 msgid "Delete is only supported for IMAP mailboxes"
@@ -1098,24 +1097,20 @@ msgid "unhook: unknown hook type: %s"
 msgstr "unhook: nekonata speco de hook: %s"
 
 #: imap/auth_anon.c:39
-#, fuzzy
 msgid "Authenticating (anonymous)..."
-msgstr "Rajtiøas (GSSAPI) ..."
+msgstr "Rajtiøas (anonime) ..."
 
 #: imap/auth_anon.c:69
-#, fuzzy
 msgid "Anonymous authentication failed."
-msgstr "GSSAPI-rajtiøo malsukcesis."
+msgstr "Anonima rajtiøo malsukcesis."
 
 #: imap/auth_cram.c:44
-#, fuzzy
 msgid "Authenticating (CRAM-MD5)..."
-msgstr "Rajtiøas (GSSAPI) ..."
+msgstr "Rajtiøas (CRAM-MD5) ..."
 
 #: imap/auth_cram.c:119
-#, fuzzy
 msgid "CRAM-MD5 authentication failed."
-msgstr "GSSAPI-rajtiøo malsukcesis."
+msgstr "CRAM-MD5-rajtiøo malsukcesis."
 
 #. now begin login
 #: imap/auth_gss.c:87
@@ -1128,26 +1123,23 @@ msgstr "GSSAPI-rajtiøo malsukcesis."
 
 #: imap/auth_login.c:34
 msgid "LOGIN disabled on this server."
-msgstr ""
+msgstr "LOGIN estas malþaltita æe æi tiu servilo."
 
 #: imap/auth_login.c:43 pop.c:72
 msgid "Logging in..."
 msgstr "Salutas ..."
 
 #: imap/auth_login.c:66
-#, fuzzy
 msgid "Login failed."
-msgstr "Saluto malsukcesis: %s"
+msgstr "Saluto malsukcesis."
 
 #: imap/auth_sasl.c:91
-#, fuzzy
 msgid "Authenticating (SASL)..."
-msgstr "Rajtiøas (GSSAPI) ..."
+msgstr "Rajtiøas (SASL) ..."
 
 #: imap/auth_sasl.c:163
-#, fuzzy
 msgid "SASL authentication failed."
-msgstr "GSSAPI-rajtiøo malsukcesis."
+msgstr "SASL-rajtiøo malsukcesis."
 
 #: imap/browse.c:80
 msgid "Getting namespaces..."
@@ -1158,14 +1150,12 @@ msgid "Getting folder list..."
 msgstr "Prenas liston de poþtfakoj ..."
 
 #: imap/browse.c:265
-#, fuzzy
 msgid "Create mailbox: "
-msgstr "Malfermi poþtfakon"
+msgstr "Krei poþtfakon: "
 
 #: imap/browse.c:271
-#, fuzzy
 msgid "Mailbox created."
-msgstr "Poþtfako forviþita."
+msgstr "Poþtfako kreita."
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
@@ -2512,7 +2502,7 @@ msgstr "Æu aldoni mesaøojn al %s?"
 
 #: mutt_socket.c:199
 msgid "SSL is unavailable."
-msgstr ""
+msgstr "SSL ne estas disponata."
 
 #: mutt_socket.c:281
 #, c-format
@@ -3590,12 +3580,3 @@ msgstr "Patra mesaøo ne estas videbla en limigita rigardo"
 #: thread.c:717
 msgid "Parent message is not available."
 msgstr "Patra mesaøo ne estas havebla."
-
-#~ msgid "Creating mailboxes is not yet supported."
-#~ msgstr "Kreado de poþtfakoj ankoraý ne funkcias."
-
-#~ msgid "Reopening mailbox... %s"
-#~ msgstr "Remalfermas poþtfakon ... %s"
-
-#~ msgid "Closing mailbox..."
-#~ msgstr "Fermas poþtfakon ..."
