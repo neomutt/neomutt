@@ -85,7 +85,7 @@ void mutt_decode_xbit (STATE *s, BODY *b, int istext)
     char *charset = mutt_get_parameter("charset", b->parameter);
     int is_utf8;
 
-    if((is_utf8 = (mutt_is_utf8(charset) && !mutt_is_utf8(Charset)))
+    if((is_utf8 = (mutt_is_utf8(charset) && !mutt_is_utf8(Charset))))
       chs = mutt_get_charset(Charset);
     else
       map = mutt_get_translation(charset, Charset);
