@@ -2937,7 +2937,7 @@ msgstr "Signal %s... Abbruch.\n"
 #: signal.c:44
 #, c-format
 msgid "Caught signal %d...  Exiting.\n"
-msgstr "Signal %s... Abbruch.\n"
+msgstr "Signal %d... Abbruch.\n"
 
 #: sort.c:199
 msgid "Sorting mailbox..."
