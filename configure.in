@@ -11,6 +11,7 @@ mutt_cv_version=`cat $srcdir/VERSION`
 
 
 AM_INIT_AUTOMAKE(mutt, $mutt_cv_version)
+AC_GNU_SOURCE
 
 ifdef([AC_LIBOBJ], , [define([AC_LIBOBJ], [LIB[]OBJS="$LIBOBJS $1.o"])])
 
