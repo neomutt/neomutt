@@ -1,3 +1,8 @@
+2004-01-04 09:52:55  Michael Elkins  <me@sigpipe.org>  (roessler)
+
+	* hook.c, send.c: Fix #1724, cannot use ~h pattern match with
+	reply-hook.
+
 2004-01-04 09:49:23  Vsevolod Volkov  <vvv@mutt.org.ua>  (roessler)
 
 	* pop.h, pop_lib.c: Attached patch provides support of STLS
