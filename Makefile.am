@@ -54,7 +54,7 @@ EXTRA_mutt_SOURCES = pgp.c pgpinvoke.c pgpkey.c pgplib.c sha1dgst.c \
 	gnupgparse.c resize.c dotlock.c pop.c remailer.c remailer.h browser.h
 
 EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO configure acconfig.h attach.h \
-	buffy.h charset.h config.h copy.h dotlock.h functions.h gen_defs \
+	buffy.h charset.h copy.h dotlock.h functions.h gen_defs \
 	globals.h hash.h history.h init.h keymap.h \
 	mailbox.h mapping.h mime.h mutt.h mutt_curses.h mutt_menu.h  \
 	mutt_regex.h mx.h pager.h parse.h pgp.h protos.h  \
@@ -122,11 +122,10 @@ changelog:
 	rcs2log | cat - ChangeLog > ChangeLog.$$$$ && mv ChangeLog.$$$$ ChangeLog
 	$(VISUAL) ChangeLog
 
-# kluge aroud automake problems. *grrr*
+# kluge around automake problems.
 
 dist-hook:
 	-for file in $(BUILT_SOURCES) ; do rm -f $(distdir)/$$file ; done
-	-rm -f $(distdir)/config.h
 
 us-distdir: distdir dist-hook
 	mv $(distdir) $(distdir)-us
