@@ -360,6 +360,7 @@ enum
   OPTPGPSTRICTENC,
   OPTFORWDECRYPT,
   OPTPGPSHOWUNUSABLE,
+  OPTPGPSEARCHTEXT,
 #endif
 
   /* pseudo options */

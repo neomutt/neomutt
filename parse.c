@@ -1266,6 +1266,50 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
       dprint(1,(debugfile,"read_rfc822_header(): no date found, using received time from msg separator\n"));
       hdr->date_sent = hdr->received;
     }
+
+#ifdef _PGPPATH
+    if (option (OPTPGPSEARCHTEXT) && hdr->content->type == TYPETEXT &&
+	    !strcasecmp("plain",hdr->content->subtype))
+    {
+	char scratch[LONG_STRING];
+
+	/* continue reading until we hit the first line of text in the message.
+	   we check here to see if this might be an old-style PGP message
+	   which is not properly labeled */
+
+	/* save this location so we can return here */
+	loc = ftell (f);
+
+	while (fgets (scratch, sizeof (scratch), f) != NULL)
+	{
+	    p = scratch;
+	    SKIPWS (p);
+	    if (*p != '\n')
+	    {
+		/* we got a non-empty line, check it */
+		if (!strncmp ("-----BEGIN PGP", scratch, 14))
+		{
+		    /* yes, this looks like an old style pgp message, alter
+		       the apparent content-type so that we handle this
+		       corrrectly */
+		    hdr->content->type = TYPEAPPLICATION;
+		    FREE (&hdr->content->subtype);
+		    hdr->content->subtype = safe_strdup ("pgp");
+		    mutt_free_parameter (&hdr->content->parameter);
+		    mutt_set_parameter ("format", "text", &hdr->content->parameter);
+		    /* check to see what type of PGP message we have */
+		    mutt_set_parameter ("x-action",
+			    !strncmp (" SI", scratch + 14, 3) ? "sign" : "encrypt",
+			    &hdr->content->parameter);
+		}
+		break;
+	    }
+	}
+
+	/* return to where we ended before */
+	fseek (f, loc, SEEK_SET);
+    }
+#endif /* _PGPPATH */
   }
 
   return (e);
