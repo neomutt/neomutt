@@ -1038,6 +1038,7 @@ ci_send_message (int flags,		/* send mode */
   FILE *tempfp = NULL;
   BODY *pbody;
   int i, killfrom = 0;
+  int fcc_error = 0;
 
 #if defined(HAVE_PGP) || defined(HAVE_SMIME)
   BODY *save_content = NULL;
@@ -1353,6 +1354,7 @@ ci_send_message (int flags,		/* send mode */
   {
 main_loop:
 
+    fcc_error = 0; /* reset value since we may have failed before */
     mutt_pretty_mailbox (fcc);
     i = mutt_compose_menu (msg, fcc, sizeof (fcc), cur);
     if (i == -1)
@@ -1538,7 +1540,13 @@ full_fcc:
        * message was first postponed.
        */
       msg->received = time (NULL);
-      mutt_write_fcc (fcc, msg, NULL, 0, NULL);
+      if (mutt_write_fcc (fcc, msg, NULL, 0, NULL) == -1)
+      {
+	/*
+	 * Error writing FCC, we should abort sending.
+	 */
+	fcc_error = 1;
+      }
     }
 
     msg->content = tmpbody;
@@ -1568,7 +1576,12 @@ full_fcc:
   }
 
 
-  if ((i = send_message (msg)) == -1)
+  /*
+   * Don't attempt to send the message if the FCC failed.  Just pretend
+   * the send failed as well so we give the user a chance to fix the
+   * error.
+   */
+  if (fcc_error || (i = send_message (msg)) == -1)
   {
     if (!(flags & SENDBATCH))
     {
