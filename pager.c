@@ -51,9 +51,9 @@
 #define IsAttach(x) (x && (x)->bdy)
 #define IsHeader(x) (x && (x)->hdr)
 
-static const char Not_available_in_this_menu[] = N_("Not available in this menu.");
-static const char Mailbox_is_read_only[] = N_("Mailbox is read-only.");
-static const char Function_not_permitted_in_attach_message_mode[] = N_("Function not permitted in attach-message mode.");
+static const char *Not_available_in_this_menu = N_("Not available in this menu.");
+static const char *Mailbox_is_read_only = N_("Mailbox is read-only.");
+static const char *Function_not_permitted_in_attach_message_mode = N_("Function not permitted in attach-message mode.");
 
 #define CHECK_MODE(x)	if (!(x)) \
 			{ \

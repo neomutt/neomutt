@@ -47,10 +47,10 @@
 #include <sys/stat.h>
 #include <errno.h>
 
-static const char No_mailbox_is_open[] = N_("No mailbox is open.");
-static const char There_are_no_messages[] = N_("There are no messages.");
-static const char Mailbox_is_read_only[] = N_("Mailbox is read-only.");
-static const char Function_not_permitted_in_attach_message_mode[] = N_("Function not permitted in attach-message mode.");
+static const char *No_mailbox_is_open = N_("No mailbox is open.");
+static const char *There_are_no_messages = N_("There are no messages.");
+static const char *Mailbox_is_read_only = N_("Mailbox is read-only.");
+static const char *Function_not_permitted_in_attach_message_mode = N_("Function not permitted in attach-message mode.");
 
 #define CHECK_MSGCOUNT if (!Context) \
 	{ \

@@ -584,6 +584,8 @@ void km_init (void)
   km_bindkey ("8", MENU_GENERIC, OP_JUMP);
   km_bindkey ("9", MENU_GENERIC, OP_JUMP);
 
+  km_bindkey ("<enter>", MENU_GENERIC, OP_GENERIC_SELECT_ENTRY);
+
   /* Miscellaneous extra bindings */
   
   km_bindkey (" ", MENU_MAIN, OP_DISPLAY_MESSAGE);
@@ -592,6 +594,8 @@ void km_init (void)
   km_bindkey ("J", MENU_MAIN, OP_NEXT_ENTRY);
   km_bindkey ("K", MENU_MAIN, OP_PREV_ENTRY);
   km_bindkey ("x", MENU_MAIN, OP_EXIT);
+
+  km_bindkey ("<enter>", MENU_MAIN, OP_DISPLAY_MESSAGE);
 
   km_bindkey ("x", MENU_PAGER, OP_PAGER_EXIT);
   km_bindkey ("q", MENU_PAGER, OP_PAGER_EXIT);
@@ -614,7 +618,13 @@ void km_init (void)
   km_bindkey ("8", MENU_PAGER, OP_JUMP);
   km_bindkey ("9", MENU_PAGER, OP_JUMP);
 
+  km_bindkey ("<enter>", MENU_PAGER, OP_NEXT_LINE);
+  
   km_bindkey ("<return>", MENU_ALIAS, OP_TAG);
+  km_bindkey ("<enter>",  MENU_ALIAS, OP_TAG);
+
+  km_bindkey ("<enter>", MENU_ATTACH, OP_VIEW_ATTACH);
+  km_bindkey ("<enter>", MENU_COMPOSE, OP_VIEW_ATTACH);
 
   /* edit-to (default "t") hides generic tag-entry in Compose menu
      This will bind tag-entry to  "T" in the Compose menu */

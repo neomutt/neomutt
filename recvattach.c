@@ -44,7 +44,7 @@
 #include <string.h>
 #include <errno.h>
 
-static const char Mailbox_is_read_only[] = N_("Mailbox is read-only.");
+static const char *Mailbox_is_read_only = N_("Mailbox is read-only.");
 
 #define CHECK_READONLY if (Context->readonly) \
 {\
