@@ -306,6 +306,13 @@ void mutt_parse_content_type (char *s, BODY *ct)
       ct->subtype = safe_strdup ("x-unknown");
   }
 
+  /* Default character set for text types. */
+  if (ct->type == TYPETEXT)
+  {
+    if (!(pc = mutt_get_parameter ("charset", &ct->parameter)))
+      mutt_set_parameter ("charset", "us-ascii", &ct->parameter);
+  }
+
 }
 
 static void parse_content_disposition (char *s, BODY *ct)
