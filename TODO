@@ -11,12 +11,6 @@ Problems are listed in approximate order of priority.
 
 - re-add support for .mh_sequences files
 
-- Fix the "unexpected EXPUNGE" IMAP bug.
-
-- Ask IMAP servers for hierarchy separators. (-> Brandon's
-  note from Aug 18)
-
-  
 - In the "attachment" menu, assume this:
 
 	1 [text/plain, 7bit, 1.1K]           <no description>
