@@ -651,6 +651,16 @@ int mutt_send_menu (HEADER *msg,   /* structure for new message */
 	  this = Context; /* remember current folder */
 	  Context = ctx;
 	  close = mutt_index_menu (1);
+	  if (!Context)
+	  {
+	    /* go back to the folder we started from */
+	    Context = this;
+	    /* Restore old $sort and $sort_aux */
+	    Sort = oldSort;
+	    SortAux = oldSortAux;
+	    menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
+	    break;
+	  }
 	}
         {
 	  int numtag = 0;
@@ -681,9 +691,9 @@ int mutt_send_menu (HEADER *msg,   /* structure for new message */
 	else
 	{
 	  HEADER *h;
-	  for (i = 0; i < Context->vcount; i++)
+	  for (i = 0; i < Context->msgcount; i++)
 	  {
-	    h = Context->hdrs[Context->v2r[i]];
+	    h = Context->hdrs[i];
 	    if (h->tagged)
 	    {
 	      idx[idxlen] = (ATTACHPTR *) safe_calloc (1, sizeof (ATTACHPTR));
