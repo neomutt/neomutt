@@ -164,23 +164,6 @@ DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
 TAR = tar
 GZIP = --best
-DEP_FILES =  .deps/addrbook.P .deps/alias.P .deps/attach.P \
-.deps/browser.P .deps/buffy.P .deps/charset.P .deps/color.P \
-.deps/commands.P .deps/complete.P .deps/compose.P .deps/copy.P \
-.deps/curs_lib.P .deps/curs_main.P .deps/date.P .deps/dotlock.P \
-.deps/edit.P .deps/enter.P .deps/filter.P .deps/flags.P .deps/from.P \
-.deps/getdomain.P .deps/gnupgparse.P .deps/handler.P .deps/hash.P \
-.deps/hdrline.P .deps/headers.P .deps/help.P .deps/history.P \
-.deps/hook.P .deps/imap.P .deps/init.P .deps/keymap.P .deps/lib.P \
-.deps/main.P .deps/mbox.P .deps/menu.P .deps/mh.P .deps/mutt_dotlock \
-.deps/mutt_dotlock.P .deps/mx.P .deps/pager.P .deps/parse.P \
-.deps/pattern.P .deps/pgp.P .deps/pgpinvoke.P .deps/pgpkey.P \
-.deps/pgppubring.P .deps/pop.P .deps/postpone.P .deps/query.P \
-.deps/recvattach.P .deps/resize.P .deps/rfc1524.P .deps/rfc2047.P \
-.deps/rfc822.P .deps/score.P .deps/send.P .deps/sendlib.P \
-.deps/sha1dgst.P .deps/signal.P .deps/snprintf.P .deps/socket.P \
-.deps/sort.P .deps/status.P .deps/strcasecmp.P .deps/system.P \
-.deps/thread.P
 SOURCES = mutt_dotlock.c $(mutt_SOURCES) $(EXTRA_mutt_SOURCES)
 OBJECTS = mutt_dotlock.o $(mutt_OBJECTS)
 
@@ -189,9 +172,9 @@ all: all-recursive-am all-am
 .SUFFIXES:
 .SUFFIXES: .S .c .o .s
 $(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4)
-	cd $(top_srcdir) && $(AUTOMAKE) --foreign Makefile
+	cd $(top_srcdir) && $(AUTOMAKE) --foreign --include-deps Makefile
 
-Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) \
 	  && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
@@ -250,6 +233,9 @@ uninstall-binPROGRAMS:
 	list='$(bin_PROGRAMS)'; for p in $$list; do \
 	  rm -f $(DESTDIR)$(bindir)/`echo $$p|sed '$(transform)'`; \
 	done
+
+.c.o:
+	$(COMPILE) -c $<
 
 .s.o:
 	$(COMPILE) -c $<
@@ -376,11 +362,6 @@ distdir: $(DISTFILES)
 	-rm -rf $(distdir)
 	mkdir $(distdir)
 	-chmod 777 $(distdir)
-	here=`cd $(top_builddir) && pwd`; \
-	top_distdir=`cd $(distdir) && pwd`; \
-	distdir=`cd $(distdir) && pwd`; \
-	cd $(top_srcdir) \
-	  && $(AUTOMAKE) --include-deps --build-dir=$$here --srcdir-name=$(top_srcdir) --output-dir=$$top_distdir --foreign Makefile
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  test -f $(distdir)/$$file \
@@ -395,30 +376,6 @@ distdir: $(DISTFILES)
 	  (cd $$subdir && $(MAKE) top_distdir=../$(distdir) distdir=../$(distdir)/$$subdir distdir) \
 	    || exit 1; \
 	done
-
-DEPS_MAGIC := $(shell mkdir .deps > /dev/null 2>&1 || :)
-
--include $(DEP_FILES)
-
-mostlyclean-depend:
-
-clean-depend:
-
-distclean-depend:
-
-maintainer-clean-depend:
-	-rm -rf .deps
-
-%.o: %.c
-	@echo '$(COMPILE) -c $<'; \
-	$(COMPILE) -Wp,-MD,.deps/$(*F).P -c $<
-
-%.lo: %.c
-	@echo '$(LTCOMPILE) -c $<'; \
-	$(LTCOMPILE) -Wp,-MD,.deps/$(*F).p -c $<
-	@-sed -e 's/^\([^:]*\)\.o:/\1.lo \1.o:/' \
-	  < .deps/$(*F).p > .deps/$(*F).P
-	@-rm -f .deps/$(*F).p
 info: info-recursive
 dvi: dvi-recursive
 check: all-am
@@ -465,20 +422,18 @@ maintainer-clean-generic:
 	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
 	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 mostlyclean-am:  mostlyclean-hdr mostlyclean-binPROGRAMS \
-		mostlyclean-compile mostlyclean-tags mostlyclean-depend \
+		mostlyclean-compile mostlyclean-tags \
 		mostlyclean-generic
 
 clean-am:  clean-hdr clean-binPROGRAMS clean-compile clean-tags \
-		clean-depend clean-generic mostlyclean-am
+		clean-generic mostlyclean-am
 
 distclean-am:  distclean-hdr distclean-binPROGRAMS distclean-compile \
-		distclean-tags distclean-depend distclean-generic \
-		clean-am
+		distclean-tags distclean-generic clean-am
 
 maintainer-clean-am:  maintainer-clean-hdr maintainer-clean-binPROGRAMS \
 		maintainer-clean-compile maintainer-clean-tags \
-		maintainer-clean-depend maintainer-clean-generic \
-		distclean-am
+		maintainer-clean-generic distclean-am
 
 mostlyclean:  mostlyclean-recursive mostlyclean-am
 
@@ -502,13 +457,11 @@ uninstall-exec-recursive installdirs-recursive uninstalldirs-recursive \
 all-recursive check-recursive installcheck-recursive info-recursive \
 dvi-recursive mostlyclean-recursive distclean-recursive clean-recursive \
 maintainer-clean-recursive tags tags-recursive mostlyclean-tags \
-distclean-tags clean-tags maintainer-clean-tags distdir \
-mostlyclean-depend distclean-depend clean-depend \
-maintainer-clean-depend info dvi installcheck all-recursive-am all-am \
-install-exec-am uninstall-am install-exec install-data install \
-uninstall all installdirs mostlyclean-generic distclean-generic \
-clean-generic maintainer-clean-generic clean mostlyclean distclean \
-maintainer-clean
+distclean-tags clean-tags maintainer-clean-tags distdir info dvi \
+installcheck all-recursive-am all-am install-exec-am uninstall-am \
+install-exec install-data install uninstall all installdirs \
+mostlyclean-generic distclean-generic clean-generic \
+maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
 
 mutt_dotlock.c: dotlock.c
