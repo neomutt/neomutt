@@ -1,6 +1,7 @@
 
 /*
  * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2004 g10 Code GmbH
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -429,6 +430,8 @@ enum
   OPTWRITEBCC,		/* write out a bcc header? */
   OPTXMAILER,
 
+  OPTCRYPTUSEGPGME,
+
   /* PGP options */
   
   OPTCRYPTAUTOSIGN,
@@ -633,8 +636,20 @@ typedef struct body
   				/* send mode: don't adjust the character
 				 * set when in send-mode.
 				 */
+  unsigned int is_signed_data : 1; /* A lot of MUAs don't indicate
+                                      S/MIME signed-data correctly,
+                                      e.g. they use foo.p7m even for
+                                      the name of signed data.  This
+                                      flag is used to keep track of
+                                      the actual message type.  It
+                                      gets set during the verification
+                                      (which is done if the encryption
+                                      try failed) and check by the
+                                      function to figure the type of
+                                      the message. */
 
   unsigned int goodsig : 1;	/* good cryptographic signature */
+  unsigned int warnsig : 1;     /* maybe good signature */
   unsigned int badsig : 1;	/* bad cryptographic signature (needed to check encrypted s/mime-signatures) */
 
   unsigned int collapsed : 1;	/* used by recvattach */

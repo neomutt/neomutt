@@ -4,6 +4,7 @@
  * Copyright (C) 2001  Thomas Roessler <roessler@does-not-exist.org>
  *                     Oliver Ehli <elmy@acm.org>
  * Copyright (C) 2003  Werner Koch <wk@gnupg.org>
+ * Copyright (C) 2004 g10code GmbH
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -107,54 +108,19 @@ static void disable_coredumps (void)
 int crypt_valid_passphrase(int flags)
 {
   time_t now = time (NULL);
+  int ret = 0;
 
 # if defined(HAVE_SETRLIMIT) &&(!defined(DEBUG))
   disable_coredumps ();
 # endif
 
   if ((WithCrypto & APPLICATION_PGP) && (flags & APPLICATION_PGP))
-  {
-    extern char PgpPass[STRING];
-    extern time_t PgpExptime;
-
-    if (pgp_use_gpg_agent())
-    {
-      *PgpPass = 0;
-      return 1; /* handled by gpg-agent */
-    }
-
-    if (now < PgpExptime) return 1; /* just use the cached copy. */
-    crypt_pgp_void_passphrase ();
-      
-    if (mutt_get_password (_("Enter PGP passphrase:"),
-                           PgpPass, sizeof (PgpPass)) == 0)
-    {
-      PgpExptime = time (NULL) + PgpTimeout;
-      return (1);
-    }
-    else
-      PgpExptime = 0;
-    }
+    ret = crypt_pgp_valid_passphrase ();
 
   if ((WithCrypto & APPLICATION_SMIME) && (flags & APPLICATION_SMIME))
-  {
-    extern char SmimePass[STRING];
-    extern time_t SmimeExptime;
+    ret = crypt_smime_valid_passphrase ();
 
-    if (now < SmimeExptime) return (1);
-    crypt_smime_void_passphrase ();
-      
-    if (mutt_get_password (_("Enter SMIME passphrase:"), SmimePass,
-			   sizeof (SmimePass)) == 0)
-    {
-      SmimeExptime = time (NULL) + SmimeTimeout;
-      return (1);
-    }
-    else
-      SmimeExptime = 0;
-  }
-
-  return (0);
+  return ret;
 }
 
 
@@ -275,6 +241,7 @@ int mutt_protect (HEADER *msg, char *keylist)
 
       /* destroy temporary signature envelope when doing retainable 
        * signatures.
+
        */
       if (flags != msg->security)
       {

@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2001,2002 Oliver Ehli <elmy@acm.org>
+ * Copyright (C) 2004 g10 Code GmbH
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -25,9 +26,8 @@
 
 
 
-#define smime_valid_passphrase() crypt_valid_passphrase(APPLICATION_SMIME)
-
 void smime_void_passphrase (void);
+int smime_valid_passphrase (void);
 
 int   smime_decrypt_mime (FILE *, FILE **, BODY *, BODY **);
 
@@ -53,6 +53,8 @@ char* smime_ask_for_key (char *, char *, short);
 char *smime_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc);
 
 void  smime_invoke_import (char *, char *);
+
+int smime_send_menu (HEADER *msg, int *redraw);
 
 #endif
 

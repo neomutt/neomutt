@@ -40,7 +40,11 @@ struct mapping_t Menus[] = {
  { "postpone",	MENU_POST },
  { "pgp",	MENU_PGP },
  { "smime",	MENU_SMIME },
- 
+#ifdef HAVE_GPGME
+ { "key_select_pgp",	MENU_KEY_SELECT_PGP },
+ { "key_select_smime",	MENU_KEY_SELECT_SMIME },
+#endif
+
 #ifdef MIXMASTER
   { "mix", 	MENU_MIX },
 #endif
@@ -557,6 +561,11 @@ void km_init (void)
   if ((WithCrypto & APPLICATION_SMIME))
     create_bindings (OpSmime, MENU_SMIME);
 
+#ifdef CRYPT_BACKEND_GPGME
+  create_bindings (OpPgp, MENU_KEY_SELECT_PGP);
+  create_bindings (OpSmime, MENU_KEY_SELECT_SMIME);
+#endif
+
 #ifdef MIXMASTER
   create_bindings (OpMix, MENU_MIX);
   
@@ -780,6 +789,13 @@ struct binding_t *km_get_table (int menu)
 
     case MENU_PGP:
       return (WithCrypto & APPLICATION_PGP)? OpPgp:NULL;
+
+#ifdef CRYPT_BACKEND_GPGME
+    case MENU_KEY_SELECT_PGP:
+      return OpPgp;
+    case MENU_KEY_SELECT_SMIME:
+      return OpSmime;
+#endif
 
 #ifdef MIXMASTER
     case MENU_MIX:

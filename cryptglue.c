@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2003  Werner Koch <wk@gnupg.org>
+ * Copyright (C) 2004 g10 Code GmbH
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -17,117 +18,92 @@
  */
 
 /*
-   This file dispatches the generic crytpo functions to the implemented
-   backend or provides dummy stubs.  Note, that some generic functions are
-   handled in crypt.c.
+   This file dispatches the generic crypto functions to the
+   implemented backend or provides dummy stubs.  Note, that some
+   generic functions are handled in crypt.c.
 */
+
+/* Note: This file has been changed to make use of the new module
+   system.  Consequently there's a 1:1 mapping between the functions
+   contained in this file and the functions implemented by the crypto
+   modules.  */
 
 #include "mutt.h"
 #include "mutt_crypt.h"
 
-/* Make sure those macros are not defined. */
-#undef BFNC_PGP_VOID_PASSPHRASE     
-#undef BFNC_PGP_DECRYPT_MIME           
-#undef BFNC_PGP_APPLICATION_PGP_HANDLER
-#undef BFNC_PGP_ENCRYPTED_HANDLER
-#undef BFNC_PGP_INVOKE_GETKEYS
-#undef BFNC_PGP_ASK_FOR_KEY
-#undef BNFC_PGP_CHECK_TRADITIONAL
-#undef BFNC_PGP_TRADITIONAL_ENCRYPTSIGN  
-#undef BFNC_PGP_FREE_KEY
-#undef BFNC_PGP_MAKE_KEY_ATTACHMENT 
-#undef BFNC_PGP_FINDKEYS
-#undef BFNC_PGP_SIGN_MESSAGE
-#undef BFNC_PGP_ENCRYPT_MESSAGE
-#undef BFNC_PGP_INVOKE_IMPORT
-#undef BFNC_PGP_VERIFY_ONE
-#undef BFNC_PGP_KEYID
-#undef BFNC_PGP_EXTRACT_KEYS_FROM_ATTACHMENT_LIST
+#include "crypt-mod.h"
 
-#undef BFNC_SMIME_VOID_PASSPHRASE 
-#undef BFNC_SMIME_DECRYPT_MIME    
-#undef BFNC_SMIME_APPLICATION_SMIME_HANDLER 
-#undef BFNC_SMIME_GETKEYS  
-#undef BFNC_SMIME_VERIFY_SENDER
-#undef BFNC_SMIME_ASK_FOR_KEY
-#undef BFNC_SMIME_FINDKEYS
-#undef BFNC_SMIME_SIGN_MESSAGE
-#undef BFNC_SMIME_BUILD_SMIME_ENTITY
-#undef BFNC_SMIME_INVOKE_IMPORT
-#undef BFNC_SMIME_VERIFY_ONE
-
-
-/* The PGP backend */
-#if defined (CRYPT_BACKEND_CLASSIC_PGP)
-# include "pgp.h"
-# define BFNC_PGP_VOID_PASSPHRASE         pgp_void_passphrase
-# define BFNC_PGP_DECRYPT_MIME            pgp_decrypt_mime
-# define BFNC_PGP_APPLICATION_PGP_HANDLER pgp_application_pgp_handler
-# define BFNC_PGP_ENCRYPTED_HANDLER       pgp_encrypted_handler
-# define BFNC_PGP_INVOKE_GETKEYS          pgp_invoke_getkeys
-# define BFNC_PGP_ASK_FOR_KEY             pgp_ask_for_key
-# define BNFC_PGP_CHECK_TRADITIONAL       pgp_check_traditional
-# define BFNC_PGP_TRADITIONAL_ENCRYPTSIGN pgp_traditional_encryptsign 
-# define BFNC_PGP_FREE_KEY                pgp_free_key
-# define BFNC_PGP_MAKE_KEY_ATTACHMENT     pgp_make_key_attachment
-# define BFNC_PGP_FINDKEYS                pgp_findKeys
-# define BFNC_PGP_SIGN_MESSAGE            pgp_sign_message
-# define BFNC_PGP_ENCRYPT_MESSAGE         pgp_encrypt_message
-# define BFNC_PGP_INVOKE_IMPORT           pgp_invoke_import
-# define BFNC_PGP_VERIFY_ONE              pgp_verify_one
-# define BFNC_PGP_KEYID                   pgp_keyid
-# define BFNC_PGP_EXTRACT_KEYS_FROM_ATTACHMENT_LIST \
-                                       pgp_extract_keys_from_attachment_list
-
-
-#elif defined (CRYPT_BACKEND_GPGME)
-# include "crypt-gpgme.h"
-# define BFNC_PGP_VOID_PASSPHRASE NULL /* not required */
-# define BFNC_PGP_DECRYPT_MIME     gpg_pgp_decrypt_mime
-
-#endif /* PGP backend */
-
-
-/* The SMIME backend */
-#ifdef CRYPT_BACKEND_CLASSIC_SMIME
-# include "smime.h"
-# define BFNC_SMIME_VOID_PASSPHRASE           smime_void_passphrase
-# define BFNC_SMIME_DECRYPT_MIME              smime_decrypt_mime
-# define BFNC_SMIME_APPLICATION_SMIME_HANDLER smime_application_smime_handler
-# define BFNC_SMIME_GETKEYS                   smime_getkeys
-# define BFNC_SMIME_VERIFY_SENDER             smime_verify_sender
-# define BFNC_SMIME_ASK_FOR_KEY               smime_ask_for_key
-# define BFNC_SMIME_FINDKEYS                  smime_findKeys
-# define BFNC_SMIME_SIGN_MESSAGE              smime_sign_message
-# define BFNC_SMIME_BUILD_SMIME_ENTITY        smime_build_smime_entity
-# define BFNC_SMIME_INVOKE_IMPORT             smime_invoke_import
-# define BFNC_SMIME_VERIFY_ONE            smime_verify_one
-
-#elif defined (CRYPT_BACKEND_GPGME)
-  /* Already included above (gpgme supports both). */ 
-# define BFNC_SMIME_VOID_PASSPHRASE NULL /* not required */
-
-#endif /* SMIME backend */
-
-
 /*
     
     Generic
 
 */
 
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
+extern struct crypt_module_specs crypt_mod_pgp_classic;
+#endif
+
+#ifdef CRYPT_BACKEND_CLASSIC_SMIME
+extern struct crypt_module_specs crypt_mod_smime_classic;
+#endif
+
+#ifdef CRYPT_BACKEND_GPGME
+extern struct crypt_module_specs crypt_mod_pgp_gpgme;
+extern struct crypt_module_specs crypt_mod_smime_gpgme;
+#endif
+
+void crypt_init (void)
+{
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
+  if (
+#ifdef CRYPT_BACKEND_GPGME
+      (! option (OPTCRYPTUSEGPGME))
+#else
+       1
+#endif
+      )
+    crypto_module_register (&crypt_mod_pgp_classic);
+#endif
+
+#ifdef CRYPT_BACKEND_CLASSIC_SMIME
+  if (
+#ifdef CRYPT_BACKEND_GPGME
+      (! option (OPTCRYPTUSEGPGME))
+#else
+       1
+#endif
+      )
+    crypto_module_register (&crypt_mod_smime_classic);
+#endif
+
+  if (option (OPTCRYPTUSEGPGME))
+    {
+#ifdef CRYPT_BACKEND_GPGME
+      crypto_module_register (&crypt_mod_pgp_gpgme);
+      crypto_module_register (&crypt_mod_smime_gpgme);
+#else
+      mutt_message (_("\"crypt_use_gpgme\" set"
+                      " but not build with GPGME support."));
+#endif
+    }
+
+#if defined CRYPT_BACKEND_CLASSIG_PGP || defined CRYPT_BACKEND_CLASSIG_SMIME || defined CRYPT_BACKEND_GPGME
+  if (CRYPT_MOD_CALL_CHECK (PGP, init))
+    (CRYPT_MOD_CALL (PGP, init)) ();
+
+  if (CRYPT_MOD_CALL_CHECK (SMIME, init))
+    (CRYPT_MOD_CALL (SMIME, init)) ();
+#endif
+}
+
+
 /* Show a message that a backend will be invoked. */
 void crypt_invoke_message (int type)
 {
-#if defined (CRYPT_BACKEND_CLASSIC_PGP) || defined(CRYPT_BACKEND_CLASSIC_SMIME)
-  if ((type & APPLICATION_PGP))
+  if ((WithCrypto & APPLICATION_PGP) && (type & APPLICATION_PGP))
     mutt_message _("Invoking PGP...");
-  if ((type & APPLICATION_SMIME))
-    mutt_message _("Invoking OpenSSL...");
-#elif defined (CRYPT_BACKEND_GPGME)
-  if ((type & APPLICATION_PGP) || (type & APPLICATION_SMIME) )
-    mutt_message _("Invoking GnuPG...");
-#endif
+  else if ((WithCrypto & APPLICATION_SMIME) && (type & APPLICATION_SMIME))
+    mutt_message _("Invoking SMIME...");
 }
 
 
@@ -142,163 +118,136 @@ void crypt_invoke_message (int type)
 /* Reset a PGP passphrase */
 void crypt_pgp_void_passphrase (void)
 {
-#ifdef BFNC_PGP_VOID_PASSPHRASE
-  BFNC_PGP_VOID_PASSPHRASE ();
-#endif
+  if (CRYPT_MOD_CALL_CHECK (PGP, void_passphrase))
+    (CRYPT_MOD_CALL (PGP, void_passphrase)) ();
 }
+
+int crypt_pgp_valid_passphrase (void)
+{
+  if (CRYPT_MOD_CALL_CHECK (PGP, valid_passphrase))
+    return (CRYPT_MOD_CALL (PGP, valid_passphrase)) ();
+
+  return 0;
+}
+
 
 /* Decrypt a PGP/MIME message. */
 int crypt_pgp_decrypt_mime (FILE *a, FILE **b, BODY *c, BODY **d)
 {
-#ifdef BFNC_PGP_DECRYPT_MIME
-  return BFNC_PGP_DECRYPT_MIME (a, b, c, d);
-#else
-  return -1; /* error */
-#endif
+  if (CRYPT_MOD_CALL_CHECK (PGP, decrypt_mime))
+    return (CRYPT_MOD_CALL (PGP, decrypt_mime)) (a, b, c, d);
+
+  return -1;
 }
 
 /* MIME handler for the application/pgp content-type. */
 void crypt_pgp_application_pgp_handler (BODY *m, STATE *s)
 {
-#ifdef BFNC_PGP_APPLICATION_PGP_HANDLER
-  BFNC_PGP_APPLICATION_PGP_HANDLER (m, s);
-#endif
+  if (CRYPT_MOD_CALL_CHECK (PGP, application_handler))
+    (CRYPT_MOD_CALL (PGP, application_handler)) (m, s);
 }
 
 /* MIME handler for an PGP/MIME encrypted message. */
 void crypt_pgp_encrypted_handler (BODY *a, STATE *s)
 {
-#ifdef BFNC_PGP_ENCRYPTED_HANDLER
-  BFNC_PGP_ENCRYPTED_HANDLER (a, s);
-#endif
+  if (CRYPT_MOD_CALL_CHECK (PGP, encrypted_handler))
+    (CRYPT_MOD_CALL (PGP, encrypted_handler)) (a, s);
 }
 
 /* fixme: needs documentation. */
 void crypt_pgp_invoke_getkeys (ADDRESS *addr)
 {
-#ifdef BFNC_PGP_INVOKE_GETKEYS
-  BFNC_PGP_INVOKE_GETKEYS (addr);
-#endif
+  if (CRYPT_MOD_CALL_CHECK (PGP, pgp_invoke_getkeys))
+    (CRYPT_MOD_CALL (PGP, pgp_invoke_getkeys)) (addr);
 }
-
-/* Ask for a PGP key. */
-pgp_key_t crypt_pgp_ask_for_key (char *tag, char *whatfor,
-                                 short abilities, pgp_ring_t keyring)
-{
-#ifdef BFNC_PGP_ASK_FOR_KEY
-  return BFNC_PGP_ASK_FOR_KEY (tag, whatfor, abilities, keyring);
-#else
-  return NULL;
-#endif
-}
-
 
 /* Check for a traditional PGP message in body B. */
 int crypt_pgp_check_traditional (FILE *fp, BODY *b, int tagged_only)
 {
-#ifdef BNFC_PGP_CHECK_TRADITIONAL
-  return BNFC_PGP_CHECK_TRADITIONAL (fp, b, tagged_only);
-#else
-  return 0; /* no */
-#endif
+  if (CRYPT_MOD_CALL_CHECK (PGP, pgp_check_traditional))
+    return (CRYPT_MOD_CALL (PGP, pgp_check_traditional)) (fp, b, tagged_only);
+
+  return 0;
 }
 
 /* fixme: needs documentation. */
 BODY *crypt_pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
 {
-#ifdef BFNC_PGP_TRADITIONAL_ENCRYPTSIGN  
-  return BFNC_PGP_TRADITIONAL_ENCRYPTSIGN (a, flags, keylist);
-#else
+  if (CRYPT_MOD_CALL_CHECK (PGP, pgp_traditional_encryptsign))
+    return (CRYPT_MOD_CALL (PGP, pgp_traditional_encryptsign)) (a, flags, keylist);
+
   return NULL;
-#endif
 }
-
-/* Release pgp key KPP. */
-void crypt_pgp_free_key (pgp_key_t *kpp)
-{
-#ifdef BFNC_PGP_FREE_KEY
-  BFNC_PGP_FREE_KEY (kpp);
-#endif
-}
-
 
 /* Generate a PGP public key attachment. */
 BODY *crypt_pgp_make_key_attachment (char *tempf)
 {
-#ifdef BFNC_PGP_MAKE_KEY_ATTACHMENT 
-  return BFNC_PGP_MAKE_KEY_ATTACHMENT (tempf);
-#else
-  return NULL; /* error */ 
-#endif
+  if (CRYPT_MOD_CALL_CHECK (PGP, pgp_make_key_attachment))
+    return (CRYPT_MOD_CALL (PGP, pgp_make_key_attachment)) (tempf);
+
+  return NULL;
 }
 
 /* This routine attempts to find the keyids of the recipients of a
    message.  It returns NULL if any of the keys can not be found.  */
 char *crypt_pgp_findkeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
 {
-#ifdef BFNC_PGP_FINDKEYS
-  return BFNC_PGP_FINDKEYS (to, cc, bcc);
-#else
+  if (CRYPT_MOD_CALL_CHECK (PGP, findkeys))
+    return (CRYPT_MOD_CALL (PGP, findkeys)) (to, cc, bcc);
+
   return NULL;
-#endif
 }
 
 /* Create a new body with a PGP signed message from A. */
 BODY *crypt_pgp_sign_message (BODY *a)
 {
-#ifdef BFNC_PGP_SIGN_MESSAGE
-  return BFNC_PGP_SIGN_MESSAGE (a);
-#else
+  if (CRYPT_MOD_CALL_CHECK (PGP, sign_message))
+    return (CRYPT_MOD_CALL (PGP, sign_message)) (a);
+
   return NULL;
-#endif
 }
 
 /* Warning: A is no longer freed in this routine, you need to free it
    later.  This is necessary for $fcc_attach. */
 BODY *crypt_pgp_encrypt_message (BODY *a, char *keylist, int sign)
 {
-#ifdef BFNC_PGP_ENCRYPT_MESSAGE
-  return BFNC_PGP_ENCRYPT_MESSAGE (a, keylist, sign);
-#else
+  if (CRYPT_MOD_CALL_CHECK (PGP, pgp_encrypt_message))
+    return (CRYPT_MOD_CALL (PGP, pgp_encrypt_message)) (a, keylist, sign);
+
   return NULL;
-#endif
 }
 
 /* Invoke the PGP command to import a key. */
 void crypt_pgp_invoke_import (const char *fname)
 {
-#ifdef BFNC_PGP_INVOKE_IMPORT
-  BFNC_PGP_INVOKE_IMPORT (fname);
-#endif
+  if (CRYPT_MOD_CALL_CHECK (PGP, pgp_invoke_import))
+    (CRYPT_MOD_CALL (PGP, pgp_invoke_import)) (fname);
 }
 
 /* fixme: needs documentation */
 int crypt_pgp_verify_one (BODY *sigbdy, STATE *s, const char *tempf)
 {
-#ifdef BFNC_PGP_VERIFY_ONE
-  return BFNC_PGP_VERIFY_ONE (sigbdy, s, tempf);
-#else
+  if (CRYPT_MOD_CALL_CHECK (PGP, verify_one))
+    return (CRYPT_MOD_CALL (PGP, verify_one)) (sigbdy, s, tempf);
+
   return -1;
-#endif
 }
 
 
-/* Access the keyID in K. */
-char *crypt_pgp_keyid (pgp_key_t k)
+int crypt_pgp_send_menu (HEADER *msg, int *redraw)
 {
-#ifdef BFNC_PGP_KEYID
-  return pgp_keyid (k);
-#else
-  return "?";
-#endif
+  if (CRYPT_MOD_CALL_CHECK (PGP, send_menu))
+    return (CRYPT_MOD_CALL (PGP, send_menu)) (msg, redraw);
+
+  return 0;
 }
+
 
 /* fixme: needs documentation */
 void crypt_pgp_extract_keys_from_attachment_list (FILE *fp, int tag, BODY *top)
 {
-#ifdef BFNC_PGP_EXTRACT_KEYS_FROM_ATTACHMENT_LIST
-  BFNC_PGP_EXTRACT_KEYS_FROM_ATTACHMENT_LIST (fp, tag, top);
-#endif
+  if (CRYPT_MOD_CALL_CHECK (PGP, pgp_extract_keys_from_attachment_list))
+    (CRYPT_MOD_CALL (PGP, pgp_extract_keys_from_attachment_list)) (fp, tag, top);
 }
 
 
@@ -313,104 +262,105 @@ void crypt_pgp_extract_keys_from_attachment_list (FILE *fp, int tag, BODY *top)
 /* Reset an SMIME passphrase */
 void crypt_smime_void_passphrase (void)
 {
-#ifdef BFNC_SMIME_VOID_PASSPHRASE
-  BFNC_SMIME_VOID_PASSPHRASE ();
-#endif
+  if (CRYPT_MOD_CALL_CHECK (SMIME, void_passphrase))
+    (CRYPT_MOD_CALL (SMIME, void_passphrase)) ();
 }
 
+int crypt_smime_valid_passphrase (void)
+{
+  if (CRYPT_MOD_CALL_CHECK (SMIME, valid_passphrase))
+    return (CRYPT_MOD_CALL (SMIME, valid_passphrase)) ();
+
+  return 0;
+}
 
 /* Decrypt am S/MIME message. */
 int crypt_smime_decrypt_mime (FILE *a, FILE **b, BODY *c, BODY **d)
 {
-#ifdef BFNC_SMIME_DECRYPT_MIME
-  return BFNC_SMIME_DECRYPT_MIME (a, b, c, d);
-#else
-  return -1; /* error */
-#endif
+  if (CRYPT_MOD_CALL_CHECK (SMIME, decrypt_mime))
+    return (CRYPT_MOD_CALL (SMIME, decrypt_mime)) (a, b, c, d);
+
+  return -1;
 }
 
 /* MIME handler for the application/smime content-type. */
 void crypt_smime_application_smime_handler (BODY *m, STATE *s)
 {
-#ifdef BFNC_SMIME_APPLICATION_SMIME_HANDLER
-  BFNC_SMIME_APPLICATION_SMIME_HANDLER (m, s);
-#endif
+  if (CRYPT_MOD_CALL_CHECK (SMIME, application_handler))
+    (CRYPT_MOD_CALL (SMIME, application_handler)) (m, s);
+}
+
+/* MIME handler for an PGP/MIME encrypted message. */
+void crypt_smime_encrypted_handler (BODY *a, STATE *s)
+{
+  if (CRYPT_MOD_CALL_CHECK (SMIME, encrypted_handler))
+    (CRYPT_MOD_CALL (SMIME, encrypted_handler)) (a, s);
 }
 
 /* fixme: Needs documentation. */
 void crypt_smime_getkeys (ENVELOPE *env)
 {
-#ifdef BFNC_SMIME_GETKEYS  
-  BFNC_SMIME_GETKEYS (env);
-#endif
+  if (CRYPT_MOD_CALL_CHECK (SMIME, smime_getkeys))
+    (CRYPT_MOD_CALL (SMIME, smime_getkeys)) (env);
 }
 
 /* Check that the sender matches. */
 int crypt_smime_verify_sender(HEADER *h)
 {
-#ifdef BFNC_SMIME_VERIFY_SENDER
-  return BFNC_SMIME_VERIFY_SENDER (h);
-#else
-  return 1; /* yes */
-#endif
-}
+  if (CRYPT_MOD_CALL_CHECK (SMIME, smime_verify_sender))
+    return (CRYPT_MOD_CALL (SMIME, smime_verify_sender)) (h);
 
-/* Ask for an SMIME key. */
-char *crypt_smime_ask_for_key (char *prompt, char *mailbox, short public)
-{
-#ifdef BFNC_SMIME_ASK_FOR_KEY
-  return BFNC_SMIME_ASK_FOR_KEY (prompt, mailbox, public);
-#else
-  return NULL; /* error */
-#endif
+  return 1;
 }
-
 
 /* This routine attempts to find the keyids of the recipients of a
    message.  It returns NULL if any of the keys can not be found.  */
 char *crypt_smime_findkeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
 {
-#ifdef BFNC_SMIME_FINDKEYS
-  return BFNC_SMIME_FINDKEYS (to, cc, bcc);
-#else
+  if (CRYPT_MOD_CALL_CHECK (SMIME, findkeys))
+    return (CRYPT_MOD_CALL (SMIME, findkeys)) (to, cc, bcc);
+
   return NULL;
-#endif
 }
 
 /* fixme: Needs documentation. */
 BODY *crypt_smime_sign_message (BODY *a)
 {
-#ifdef BFNC_SMIME_SIGN_MESSAGE
-  return BFNC_SMIME_SIGN_MESSAGE (a);
-#else
+  if (CRYPT_MOD_CALL_CHECK (SMIME, sign_message))
+    return (CRYPT_MOD_CALL (SMIME, sign_message)) (a);
+
   return NULL;
-#endif
 }
 
 /* fixme: needs documentation. */
 BODY *crypt_smime_build_smime_entity (BODY *a, char *certlist)
 {
-#ifdef BFNC_SMIME_BUILD_SMIME_ENTITY
-  return BFNC_SMIME_BUILD_SMIME_ENTITY (a, certlist);
-#else
+  if (CRYPT_MOD_CALL_CHECK (SMIME, smime_build_smime_entity))
+    return (CRYPT_MOD_CALL (SMIME, smime_build_smime_entity)) (a, certlist);
+
   return NULL;
-#endif
 }
 
 /* Add a certificate and update index file (externally). */
 void crypt_smime_invoke_import (char *infile, char *mailbox)
 {
-#ifdef BFNC_SMIME_INVOKE_IMPORT
-  BFNC_SMIME_INVOKE_IMPORT (infile, mailbox);
-#endif
+  if (CRYPT_MOD_CALL_CHECK (SMIME, smime_invoke_import))
+    (CRYPT_MOD_CALL (SMIME, smime_invoke_import)) (infile, mailbox);
 }
 
 /* fixme: needs documentation */
 int crypt_smime_verify_one (BODY *sigbdy, STATE *s, const char *tempf)
 {
-#ifdef BFNC_SMIME_VERIFY_ONE
-  return BFNC_SMIME_VERIFY_ONE (sigbdy, s, tempf);
-#else
+  if (CRYPT_MOD_CALL_CHECK (SMIME, verify_one))
+    return (CRYPT_MOD_CALL (SMIME, verify_one)) (sigbdy, s, tempf);
+
   return -1;
-#endif
+}
+
+int crypt_smime_send_menu (HEADER *msg, int *redraw)
+{
+  if (CRYPT_MOD_CALL_CHECK (SMIME, send_menu))
+    return (CRYPT_MOD_CALL (SMIME, send_menu)) (msg, redraw);
+
+  return 0;
 }

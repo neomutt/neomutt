@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2001,2002 Oliver Ehli <elmy@acm.org>
  * Copyright (C) 2002 Mike Schiraldi <raldi@research.netsol.com>
+ * Copyright (C) 2004 g10 Code GmbH
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -48,7 +49,6 @@
 
 #include "mutt_crypt.h"
 
-
 struct smime_command_context {
   const char *key;		    /* %k */
   const char *cryptalg;		    /* %a */
@@ -94,9 +94,24 @@ void smime_void_passphrase (void)
   SmimeExptime = 0;
 }
 
+int smime_valid_passphrase (void)
+{
+  time_t now = time (NULL);
 
+  if (now < SmimeExptime)
+    /* Use cached copy.  */
+    return 1;
 
+  if (mutt_get_password (_("Enter SMIME passphrase:"), SmimePass, sizeof (SmimePass)) == 0)
+    {
+      SmimeExptime = time (NULL) + SmimeTimeout;
+      return (1);
+    }
+  else
+    SmimeExptime = 0;
 
+  return 0;
+}
 
 
 /*
@@ -1917,4 +1932,87 @@ void smime_application_smime_handler (BODY *m, STATE *s)
     smime_handle_entity (m, s, NULL);
 
 }
+
+int smime_send_menu (HEADER *msg, int *redraw)
+{
+  char *p;
+
+  if (!(WithCrypto & APPLICATION_SMIME))
+    return msg->security;
+
+  switch (mutt_multi_choice (_("S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (f)orget it? "),
+			     _("eswabf")))
+  {
+  case 1: /* (e)ncrypt */
+    msg->security |= ENCRYPT;
+    break;
+
+  case 3: /* encrypt (w)ith */
+    msg->security |= ENCRYPT;
+    switch (mutt_multi_choice (_("1: DES, 2: Triple-DES, 3: RC2-40,"
+				 " 4: RC2-64, 5: RC2-128, or (f)orget it? "),
+			       _("12345f"))) {
+    case 1:
+	mutt_str_replace (&SmimeCryptAlg, "des");
+	break;
+    case 2:
+	mutt_str_replace (&SmimeCryptAlg, "des3");
+	break;
+    case 3:
+	mutt_str_replace (&SmimeCryptAlg, "rc2-40");
+	break;
+    case 4:
+	mutt_str_replace (&SmimeCryptAlg, "rc2-64");
+	break;
+    case 5:
+	mutt_str_replace (&SmimeCryptAlg, "rc2-128");
+	break;
+    case 6: /* forget it */
+	break;
+    }
+    break;
+
+  case 2: /* (s)ign */
+      
+    if(!SmimeDefaultKey)
+	mutt_message("Can\'t sign: No key specified. use sign(as).");
+    else
+	msg->security |= SIGN;
+    break;
+
+  case 4: /* sign (a)s */
+
+    if ((p = smime_ask_for_key (_("Sign as: "), NULL, 0))) {
+      p[mutt_strlen (p)-1] = '\0';
+      mutt_str_replace (&SmimeDefaultKey, p);
+	
+      msg->security |= SIGN;
+
+      /* probably need a different passphrase */
+      crypt_smime_void_passphrase ();
+    }
+    else
+      msg->security &= ~SIGN;
+
+    *redraw = REDRAW_FULL;
+    break;
+
+  case 5: /* (b)oth */
+    msg->security = ENCRYPT | SIGN;
+    break;
+
+  case 6: /* (f)orget it */
+    msg->security = 0;
+    break;
+  }
+
+  if (msg->security && msg->security != APPLICATION_SMIME)
+    msg->security |= APPLICATION_SMIME;
+  else
+    msg->security = 0;
+
+  return (msg->security);
+}
+
+
 #endif /* CRYPT_BACKEND_CLASSIC_SMIME */

@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 1996,1997 Michael R. Elkins <me@mutt.org>
  * Copyright (c) 1998,1999 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2004 g10 Code GmbH
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -54,7 +55,7 @@
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
 
 #include "mutt_crypt.h"
-
+#include "mutt_menu.h"
 
 
 char PgpPass[STRING];
@@ -66,6 +67,24 @@ void pgp_void_passphrase (void)
   PgpExptime = 0;
 }
 
+int pgp_valid_passphrase (void)
+{
+  time_t now = time (NULL);
+
+  if (now < PgpExptime)
+    /* Use cached copy.  */
+    return 1;
+
+  if (mutt_get_password (_("Enter PGP passphrase:"), PgpPass, sizeof (PgpPass)) == 0)
+    {
+      PgpExptime = time (NULL) + PgpTimeout;
+      return (1);
+    }
+  else
+    PgpExptime = 0;
+
+  return 0;
+}
 
 void pgp_forget_passphrase (void)
 {
@@ -1023,7 +1042,7 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
   pgp_key_t k_info = NULL, key = NULL;
 
   const char *fqdn = mutt_fqdn (1);
-  
+
   for (i = 0; i < 3; i++) 
   {
     switch (i)
@@ -1424,5 +1443,77 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
   
   return b;
 }
+
+int pgp_send_menu (HEADER *msg, int *redraw)
+{
+  pgp_key_t p;
+  char input_signas[SHORT_STRING];
+
+  if (!(WithCrypto & APPLICATION_PGP))
+    return msg->security;
+
+  switch (mutt_multi_choice (_("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (i)nline, or (f)orget it? "),
+			     _("esabif")))
+  {
+  case 1: /* (e)ncrypt */
+    msg->security ^= ENCRYPT;
+    break;
+
+  case 2: /* (s)ign */
+    msg->security ^= SIGN;
+    break;
+
+  case 3: /* sign (a)s */
+    unset_option(OPTPGPCHECKTRUST);
+
+    if ((p = pgp_ask_for_key (_("Sign as: "), NULL, KEYFLAG_CANSIGN, PGP_PUBRING)))
+    {
+      snprintf (input_signas, sizeof (input_signas), "0x%s",
+                pgp_keyid (p));
+      mutt_str_replace (&PgpSignAs, input_signas);
+      pgp_free_key (&p);
+      
+      msg->security |= SIGN;
+	
+      crypt_pgp_void_passphrase ();  /* probably need a different passphrase */
+    }
+    else
+    {
+      msg->security &= ~SIGN;
+    }
+
+    *redraw = REDRAW_FULL;
+    break;
+
+  case 4: /* (b)oth */
+    if ((msg->security & (ENCRYPT | SIGN)) == (ENCRYPT | SIGN))
+      msg->security = 0;
+    else
+      msg->security |= (ENCRYPT | SIGN);
+    break;
+
+  case 5: /* (i)nline */
+    if ((msg->security & (ENCRYPT | SIGN)))
+      msg->security ^= INLINE;
+    else
+      msg->security &= ~INLINE;
+    break;
+
+  case 6: /* (f)orget it */
+    msg->security = 0;
+    break;
+  }
+
+  if (msg->security)
+  {
+    if (! (msg->security & (ENCRYPT | SIGN)))
+      msg->security = 0;
+    else
+      msg->security |= APPLICATION_PGP;
+  }
+
+  return (msg->security);
+}
+
 
 #endif /* CRYPT_BACKEND_CLASSIC_PGP */

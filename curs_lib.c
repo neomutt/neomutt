@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2004 g10 Code GmbH
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -55,6 +56,20 @@ void mutt_refresh (void)
 
   /* else */
   refresh ();
+}
+
+/* Make sure that the next refresh does a full refresh.  This could be
+   optmized by not doing it at all if DISPLAY is set as this might
+   indicate that a GUI based pinentry was used.  Having an option to
+   customize this is of course the Mutt way.  */
+void mutt_need_hard_redraw (void)
+{
+  if (!getenv ("DISPLAY"))
+  {
+    keypad (stdscr, TRUE);
+    clearok (stdscr, TRUE);
+    set_option (OPTNEEDREDRAW);
+  }
 }
 
 event_t mutt_getch (void)

@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2002 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2004 g10 Code GmbH
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -652,6 +653,9 @@ int main (int argc, char **argv)
   /* set defaults and read init files */
   mutt_init (flags & M_NOSYSRC, commands);
   mutt_free_list (&commands);
+
+  /* Initialize crypto backends.  */
+  crypt_init ();
 
   if (queries)
     return mutt_query_variables (queries);

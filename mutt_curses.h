@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2004 g10 Code GmbH
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -94,6 +95,7 @@ void mutt_flushinp (void);
 void mutt_refresh (void);
 void mutt_resize_screen (void);
 void mutt_ungetch (int, int);
+void mutt_need_hard_redraw (void);
 
 /* ----------------------------------------------------------------------------
  * Support for color

@@ -65,9 +65,13 @@ enum
 
   
   MENU_PGP,
-
   MENU_SMIME,
 
+#ifdef CRYPT_BACKEND_GPGME
+  MENU_KEY_SELECT_PGP,
+  MENU_KEY_SELECT_SMIME,
+#endif
+  
 #ifdef MIXMASTER
   MENU_MIX,
 #endif

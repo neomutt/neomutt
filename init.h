@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2004 g10 Code GmbH
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -359,6 +360,17 @@ struct option_t MuttVars[] = {
   ** will be saved for later references.  Also see ``$$record'',
   ** ``$$save_name'', ``$$force_name'' and ``$fcc-hook''.
   */
+  
+  { "crypt_use_gpgme",  DT_BOOL, R_NONE, OPTCRYPTUSEGPGME, 0 },
+  /*
+  ** .pp
+  ** This variable controls the use the GPGME enabled crypto backends.
+  ** If it is set and Mutt was build with gpgme support, the gpgme code for
+  ** S/MIME and PGP will be used instead of the classic code.  Note, that
+  ** you need to use this option in .muttrc as it won't have any effect when 
+  ** used interactively.
+  */
+  
   { "crypt_autopgp",	DT_BOOL, R_NONE, OPTCRYPTAUTOPGP, 1 },
   /*
   ** .pp

@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2004 g10 Code GmbH
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -159,167 +160,6 @@ static void redraw_crypt_lines (HEADER *msg)
 		NONULL(SmimeCryptAlg));
       off = 20;
   }
-}
-
-
-
-static int pgp_send_menu (HEADER *msg, int *redraw)
-{
-  pgp_key_t p;
-  char input_signas[SHORT_STRING];
-
-  if (!(WithCrypto & APPLICATION_PGP))
-    return msg->security;
-
-  switch (mutt_multi_choice (_("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (i)nline, or (f)orget it? "),
-			     _("esabif")))
-  {
-  case 1: /* (e)ncrypt */
-    msg->security ^= ENCRYPT;
-    break;
-
-  case 2: /* (s)ign */
-    msg->security ^= SIGN;
-    break;
-
-  case 3: /* sign (a)s */
-    unset_option(OPTPGPCHECKTRUST);
-
-    if ((p = crypt_pgp_ask_for_key (_("Sign as: "), NULL,
-                                    KEYFLAG_CANSIGN, PGP_PUBRING)))
-    {
-      snprintf (input_signas, sizeof (input_signas), "0x%s",
-                crypt_pgp_keyid (p));
-      mutt_str_replace (&PgpSignAs, input_signas);
-      crypt_pgp_free_key (&p);
-      
-      msg->security |= SIGN;
-	
-      crypt_pgp_void_passphrase ();  /* probably need a different passphrase */
-    }
-    else
-    {
-      msg->security &= ~SIGN;
-    }
-
-    *redraw = REDRAW_FULL;
-    break;
-
-  case 4: /* (b)oth */
-    if ((msg->security & (ENCRYPT | SIGN)) == (ENCRYPT | SIGN))
-      msg->security = 0;
-    else
-      msg->security |= (ENCRYPT | SIGN);
-    break;
-
-  case 5: /* (i)nline */
-    if ((msg->security & (ENCRYPT | SIGN)))
-      msg->security ^= INLINE;
-    else
-      msg->security &= ~INLINE;
-    break;
-
-  case 6: /* (f)orget it */
-    msg->security = 0;
-    break;
-  }
-
-  if (msg->security)
-  {
-    if (! (msg->security & (ENCRYPT | SIGN)))
-      msg->security = 0;
-    else
-      msg->security |= APPLICATION_PGP;
-  }
-
-  if(*redraw)
-      redraw_crypt_lines (msg);
-  return (msg->security);
-}
-
-
-
-static int smime_send_menu (HEADER *msg, int *redraw)
-{
-  char *p;
-
-  if (!(WithCrypto & APPLICATION_SMIME))
-    return msg->security;
-
-  switch (mutt_multi_choice (_("S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (f)orget it? "),
-			     _("eswabf")))
-  {
-  case 1: /* (e)ncrypt */
-    msg->security |= ENCRYPT;
-    break;
-
-  case 3: /* encrypt (w)ith */
-    msg->security |= ENCRYPT;
-    switch (mutt_multi_choice (_("1: DES, 2: Triple-DES, 3: RC2-40,"
-				 " 4: RC2-64, 5: RC2-128, or (f)orget it? "),
-			       _("12345f"))) {
-    case 1:
-	mutt_str_replace (&SmimeCryptAlg, "des");
-	break;
-    case 2:
-	mutt_str_replace (&SmimeCryptAlg, "des3");
-	break;
-    case 3:
-	mutt_str_replace (&SmimeCryptAlg, "rc2-40");
-	break;
-    case 4:
-	mutt_str_replace (&SmimeCryptAlg, "rc2-64");
-	break;
-    case 5:
-	mutt_str_replace (&SmimeCryptAlg, "rc2-128");
-	break;
-    case 6: /* forget it */
-	break;
-    }
-    break;
-
-  case 2: /* (s)ign */
-      
-    if(!SmimeDefaultKey)
-	mutt_message("Can\'t sign: No key specified. use sign(as).");
-    else
-	msg->security |= SIGN;
-    break;
-
-  case 4: /* sign (a)s */
-
-    if ((p = crypt_smime_ask_for_key (_("Sign as: "), NULL, 0))) {
-      p[mutt_strlen (p)-1] = '\0';
-      mutt_str_replace (&SmimeDefaultKey, p);
-	
-      msg->security |= SIGN;
-
-      /* probably need a different passphrase */
-      crypt_smime_void_passphrase ();
-    }
-    else
-      msg->security &= ~SIGN;
-
-    *redraw = REDRAW_FULL;
-    break;
-
-  case 5: /* (b)oth */
-    msg->security = ENCRYPT | SIGN;
-    break;
-
-  case 6: /* (f)orget it */
-    msg->security = 0;
-    break;
-  }
-
-  if (msg->security && msg->security != APPLICATION_SMIME)
-    msg->security |= APPLICATION_SMIME;
-  else
-    msg->security = 0;
-
-  if(*redraw)
-      redraw_crypt_lines (msg);
-  return (msg->security);
 }
 
 
@@ -1344,7 +1184,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  }
 	  msg->security = 0;
 	}
-	msg->security = pgp_send_menu (msg, &menu->redraw);
+	msg->security = crypt_pgp_send_menu (msg, &menu->redraw);
 	redraw_crypt_lines (msg);
 	break;
 
@@ -1369,7 +1209,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  }
 	  msg->security = 0;
 	}
-	msg->security = smime_send_menu(msg, &menu->redraw);
+	msg->security = crypt_smime_send_menu(msg, &menu->redraw);
 	redraw_crypt_lines (msg);
 	break;
 

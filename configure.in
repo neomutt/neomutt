@@ -105,7 +105,7 @@ else
                 AC_DEFINE(CRYPT_BACKEND_CLASSIC_PGP,1,
                     [ Define if you want classic PGP support. ])
                 PGPAUX_TARGET="pgpring pgpewrap"
-                MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pgp.o pgpinvoke.o pgpkey.o pgplib.o gnupgparse.o pgpmicalg.o pgppacket.o"
+                MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pgp.o pgpinvoke.o pgpkey.o pgplib.o gnupgparse.o pgpmicalg.o pgppacket.o crypt-mod-pgp-classic.o"
         fi
 
  	AC_ARG_ENABLE(smime, [  --disable-smime            Disable SMIME support],
@@ -117,7 +117,7 @@ else
  	if test x$have_smime != xno ; then
  		AC_DEFINE(CRYPT_BACKEND_CLASSIC_SMIME,1,
                   [ Define if you want clasic S/MIME support. ])
- 		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS smime.o "
+ 		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS smime.o crypt-mod-smime-classic.o"
 		SMIMEAUX_TARGET="smime_keys"
  	fi
   

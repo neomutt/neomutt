@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2003 Werner Koch <wk@gnupg.org>
+ * Copyright (C) 2004 g10code GmbH
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -63,14 +64,12 @@
    effectively as a conditional compile directive. It is set to false
    if no crypto backend is configures or to a bit vector denoting the
    configured backends. */
-#if defined(CRYPT_BACKEND_CLASSIC_PGP) && defined(CRYPT_BACKEND_CLASSIC_SMIME)
+#if (defined(CRYPT_BACKEND_CLASSIC_PGP) && defined(CRYPT_BACKEND_CLASSIC_SMIME)) || defined (CRYPT_BACKEND_GPGME)
 # define WithCrypto (APPLICATION_PGP | APPLICATION_SMIME)
 #elif defined(CRYPT_BACKEND_CLASSIC_PGP)
 # define WithCrypto  APPLICATION_PGP
 #elif defined(CRYPT_BACKEND_CLASSIC_SMIME)
 # define WithCrypto  APPLICATION_SMIME
-#elif defined(CRYPT_BACKEND_GPGME)
-# define WithCrypto  (APPLICATION_PGP | APPLICATION_SMIME)
 #else
 # define WithCrypto 0
 #endif
@@ -78,6 +77,7 @@
 
 #define KEYFLAG_CANSIGN 		(1 <<  0)
 #define KEYFLAG_CANENCRYPT 		(1 <<  1)
+#define KEYFLAG_ISX509                  (1 <<  2)
 #define KEYFLAG_SECRET			(1 <<  7)
 #define KEYFLAG_EXPIRED 		(1 <<  8)
 #define KEYFLAG_REVOKED 		(1 <<  9)
@@ -164,6 +164,9 @@ void crypt_invoke_message (int type);
 /* Silently forget about a passphrase. */
 void crypt_pgp_void_passphrase (void);
 
+int crypt_pgp_valid_passphrase (void);
+
+
 /* Decrypt a PGP/MIME message. */
 int crypt_pgp_decrypt_mime (FILE *a, FILE **b, BODY *c, BODY **d);
 
@@ -206,6 +209,8 @@ BODY *crypt_pgp_encrypt_message (BODY *a, char *keylist, int sign);
 /* Invoke the PGP command to import a key. */
 void crypt_pgp_invoke_import (const char *fname);
 
+int crypt_pgp_send_menu (HEADER *msg, int *redraw);
+
 /* fixme: needs documentation */
 int crypt_pgp_verify_one (BODY *sigbdy, STATE *s, const char *tempf);
 
@@ -221,6 +226,8 @@ void crypt_pgp_extract_keys_from_attachment_list (FILE *fp, int tag,BODY *top);
 
 /* Silently forget about a passphrase. */
 void crypt_smime_void_passphrase (void);
+
+int crypt_smime_valid_passphrase (void);
 
 /* Decrypt an S/MIME message. */
 int crypt_smime_decrypt_mime (FILE *a, FILE **b, BODY *c, BODY **d);
@@ -250,8 +257,11 @@ BODY *crypt_smime_build_smime_entity (BODY *a, char *certlist);
 /* Add a certificate and update index file (externally). */
 void crypt_smime_invoke_import (char *infile, char *mailbox);
 
+int crypt_smime_send_menu (HEADER *msg, int *redraw);
+
 /* fixme: needs documentation */
 int crypt_smime_verify_one (BODY *sigbdy, STATE *s, const char *tempf);
 
+void crypt_init (void);
 
 #endif /*MUTT_CRYPT_H*/
