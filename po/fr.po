@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.5\n"
-"POT-Creation-Date: 2000-03-01 01:21+0100\n"
+"POT-Creation-Date: 2000-03-04 13:51+0100\n"
 "PO-Revision-Date: 2000-02-27 13:32+0100\n"
 "Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
@@ -24,8 +24,8 @@ msgstr "Quitter"
 msgid "Select"
 msgstr "Sélectionner"
 
-#: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:269 imap/imap_ssl.c:256
-#: pager.c:1482 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
+#: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:376 imap/imap_ssl.c:255
+#: pager.c:1482 pgpkey.c:448 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Aide"
 
@@ -38,33 +38,33 @@ msgid "Aliases"
 msgstr "Alias"
 
 #. add a new alias
-#: alias.c:235
+#: alias.c:246
 msgid "Alias as: "
 msgstr "Créer l'alias : "
 
-#: alias.c:241
+#: alias.c:252
 msgid "You already have an alias defined with that name!"
 msgstr "Vous avez déjà défini un alias ayant ce nom !"
 
-#: alias.c:255
+#: alias.c:266
 msgid "Address: "
 msgstr "Adresse : "
 
-#: alias.c:271
+#: alias.c:282
 msgid "Personal name: "
 msgstr "Nom de la personne : "
 
 # , c-format
-#: alias.c:280
+#: alias.c:291
 #, c-format
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] Accepter ?"
 
-#: alias.c:297 recvattach.c:396 recvattach.c:453
+#: alias.c:308 recvattach.c:396 recvattach.c:453
 msgid "Save to file: "
 msgstr "Sauver dans le fichier : "
 
-#: alias.c:308
+#: alias.c:319
 msgid "Alias added."
 msgstr "Alias ajouté."
 
@@ -235,21 +235,21 @@ msgstr "Erreur en essayant de visualiser le fichier"
 msgid "New mail in %s."
 msgstr "Nouveau(x) message(s) dans %s."
 
-#: charset.c:1066
+#: charset.c:1065
 msgid "We can't currently handle utf-8 at this point."
 msgstr "Nous ne supportons pas actuellement l'utf-8 à cet endroit."
 
-#: charset.c:1072 charset.c:1079
+#: charset.c:1071 charset.c:1078
 #, c-format
 msgid "Can't open %s: %s."
 msgstr "Impossible d'ouvrir %s : %s."
 
-#: charset.c:1148
+#: charset.c:1147
 #, c-format
 msgid "Error while recoding %s. Leave it unchanged."
 msgstr "Erreur en recodant %s. Laisser inchangé."
 
-#: charset.c:1154
+#: charset.c:1153
 #, c-format
 msgid "Error while recoding %s. See %s for recovering your data."
 msgstr "Erreur en recodant %s. Voir %s pour récupérer vos données."
@@ -319,11 +319,11 @@ msgstr "La couleur default n'est pas disponible"
 msgid "Verify PGP signature?"
 msgstr "Vérifier la signature PGP ?"
 
-#: commands.c:106 pgp.c:1542 pgpkey.c:491 postpone.c:549
+#: commands.c:106 pgp.c:1542 pgpkey.c:490 postpone.c:549
 msgid "Invoking PGP..."
 msgstr "Appel de PGP..."
 
-#: commands.c:114 mbox.c:729
+#: commands.c:114 mbox.c:731
 msgid "Could not create temporary file!"
 msgstr "Impossible de créer le fichier temporaire !"
 
@@ -335,11 +335,11 @@ msgstr "Signature PGP vérifiée avec succès."
 msgid "Command: "
 msgstr "Commande : "
 
-#: commands.c:194 recvcmd.c:140
+#: commands.c:194 recvcmd.c:139
 msgid "Bounce message to: "
 msgstr "Renvoyer le message à : "
 
-#: commands.c:196 recvcmd.c:142
+#: commands.c:196 recvcmd.c:141
 msgid "Bounce tagged messages to: "
 msgstr "Renvoyer les messages marqués à : "
 
@@ -414,7 +414,7 @@ msgstr "Déchiffrer-sauver"
 msgid "Decrypt-copy"
 msgstr "Déchiffrer-copier"
 
-#: commands.c:558 curs_main.c:265 recvattach.c:58
+#: commands.c:558 curs_main.c:372 recvattach.c:58
 msgid "Save"
 msgstr "Sauver"
 
@@ -456,7 +456,7 @@ msgstr "Il n'y a pas d'attachements."
 msgid "Send"
 msgstr "Envoyer"
 
-#: compose.c:86 remailer.c:483
+#: compose.c:86 remailer.c:482
 msgid "Abort"
 msgstr "Abandonner"
 
@@ -622,7 +622,7 @@ msgid "Rename to: "
 msgstr "Renommer en : "
 
 # , c-format
-#: compose.c:960 editmsg.c:95
+#: compose.c:960 editmsg.c:94
 #, c-format
 msgid "Can't stat: %s"
 msgstr "Impossible d'obtenir le statut du fichier : %s"
@@ -694,7 +694,7 @@ msgstr "Appuyez sur une touche pour continuer..."
 msgid " ('?' for list): "
 msgstr " ('?' pour avoir la liste) : "
 
-#: curs_main.c:55 curs_main.c:555
+#: curs_main.c:55 curs_main.c:564
 msgid "No mailbox is open."
 msgstr "Aucune boîte aux lettres n'est ouverte."
 
@@ -702,7 +702,7 @@ msgstr "Aucune boîte aux lettres n'est ouverte."
 msgid "There are no messages."
 msgstr "Il n'y a pas de messages."
 
-#: curs_main.c:57 mx.c:1035 pager.c:61 recvattach.c:47
+#: curs_main.c:57 mx.c:1036 pager.c:61 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "La boîte aux lettres est en lecture seule."
 
@@ -724,157 +724,157 @@ msgstr "Les modifications du dossier seront enregistrées à sa sortie."
 msgid "Changes to folder will not be written."
 msgstr "Les modifications du dossier ne seront pas enregistrées."
 
-#: curs_main.c:262
+#: curs_main.c:369
 msgid "Quit"
 msgstr "Quitter"
 
-#: curs_main.c:263 pager.c:1392 postpone.c:38
+#: curs_main.c:370 pager.c:1392 postpone.c:38
 msgid "Del"
 msgstr "Effacer"
 
-#: curs_main.c:264 postpone.c:39
+#: curs_main.c:371 postpone.c:39
 msgid "Undel"
 msgstr "Récup"
 
-#: curs_main.c:266 query.c:44
+#: curs_main.c:373 query.c:44
 msgid "Mail"
 msgstr "Message"
 
-#: curs_main.c:267 pager.c:1393
+#: curs_main.c:374 pager.c:1393
 msgid "Reply"
 msgstr "Répondre"
 
-#: curs_main.c:268
+#: curs_main.c:375
 msgid "Group"
 msgstr "Groupe"
 
-#: curs_main.c:446
+#: curs_main.c:457
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr ""
 "Boîte aux lettres modifiée extérieurement. Les indicateurs peuvent être faux."
 
-#: curs_main.c:449
+#: curs_main.c:460
 msgid "New mail in this mailbox."
 msgstr "Nouveau(x) message(s) dans cette boîte aux lettres."
 
-#: curs_main.c:561
+#: curs_main.c:570
 msgid "No tagged messages."
 msgstr "Pas de messages marqués."
 
-#: curs_main.c:641
+#: curs_main.c:650
 msgid "Jump to message: "
 msgstr "Aller au message : "
 
-#: curs_main.c:647
+#: curs_main.c:656
 msgid "Argument must be a message number."
 msgstr "L'argument doit être un numéro de message."
 
-#: curs_main.c:680
+#: curs_main.c:689
 msgid "That message is not visible."
 msgstr "Ce message n'est pas visible."
 
-#: curs_main.c:683
+#: curs_main.c:692
 msgid "Invalid message number."
 msgstr "Numéro de message invalide."
 
-#: curs_main.c:696
+#: curs_main.c:705
 msgid "Delete messages matching: "
 msgstr "Effacer les messages correspondant à : "
 
-#: curs_main.c:718
+#: curs_main.c:727
 msgid "No limit pattern is in effect."
 msgstr "Aucun motif de limite n'est en vigueur."
 
 # , c-format
 #. i18n: ask for a limit to apply
-#: curs_main.c:723
+#: curs_main.c:732
 #, c-format
 msgid "Limit: %s"
 msgstr "Limite : %s"
 
-#: curs_main.c:732
+#: curs_main.c:741
 msgid "Limit to messages matching: "
 msgstr "Limiter aux messages correspondant à : "
 
-#: curs_main.c:762
+#: curs_main.c:771
 msgid "Quit Mutt?"
 msgstr "Quitter Mutt ?"
 
-#: curs_main.c:873
+#: curs_main.c:894
 msgid "Tag messages matching: "
 msgstr "Marquer les messages correspondant à : "
 
-#: curs_main.c:881
+#: curs_main.c:902
 msgid "Undelete messages matching: "
 msgstr "Récupérer les messages correspondant à : "
 
-#: curs_main.c:888
+#: curs_main.c:909
 msgid "Untag messages matching: "
 msgstr "Démarquer les messages correspondant à : "
 
-#: curs_main.c:906
+#: curs_main.c:927
 msgid "Open mailbox in read-only mode"
 msgstr "Ouvre la boîte aux lettres en lecture seule"
 
-#: curs_main.c:908
+#: curs_main.c:929
 msgid "Open mailbox"
 msgstr "Ouvre la boîte aux lettres"
 
 # , c-format
-#: curs_main.c:924 mx.c:454 mx.c:600
+#: curs_main.c:945 mx.c:454 mx.c:600
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s n'est pas une boîte aux lettres."
 
-#: curs_main.c:1002
+#: curs_main.c:1030
 msgid "Exit Mutt without saving?"
 msgstr "Quitter Mutt sans sauvegarder ?"
 
-#: curs_main.c:1038 curs_main.c:1062
+#: curs_main.c:1066 curs_main.c:1090
 msgid "You are on the last message."
 msgstr "Vous êtes sur le dernier message."
 
-#: curs_main.c:1045 curs_main.c:1087
+#: curs_main.c:1073 curs_main.c:1115
 msgid "No undeleted messages."
 msgstr "Aucun message récupéré."
 
-#: curs_main.c:1080 curs_main.c:1103
+#: curs_main.c:1108 curs_main.c:1131
 msgid "You are on the first message."
 msgstr "Vous êtes sur le premier message."
 
-#: curs_main.c:1175 pattern.c:1123
+#: curs_main.c:1203 pattern.c:1123
 msgid "Search wrapped to top."
 msgstr "La recherche est repartie du début."
 
-#: curs_main.c:1184 pattern.c:1134
+#: curs_main.c:1212 pattern.c:1134
 msgid "Search wrapped to bottom."
 msgstr "La recherche est repartie de la fin."
 
-#: curs_main.c:1217
+#: curs_main.c:1245
 msgid "No new messages"
 msgstr "Pas de nouveaux messages"
 
-#: curs_main.c:1217
+#: curs_main.c:1245
 msgid "No unread messages"
 msgstr "Pas de messages non lus"
 
-#: curs_main.c:1218
+#: curs_main.c:1246
 msgid " in this limited view"
 msgstr " dans cette vue limitée"
 
-#: curs_main.c:1342
+#: curs_main.c:1370
 msgid "No more threads."
 msgstr "Pas d'autres discussions."
 
-#: curs_main.c:1344
+#: curs_main.c:1372
 msgid "You are on the first thread."
 msgstr "Vous êtes sur la première discussion."
 
-#: curs_main.c:1414
+#: curs_main.c:1442
 msgid "Thread contains unread messages."
 msgstr "Cette discussion contient des messages non-lus."
 
-#: curs_main.c:1427 flags.c:228 thread.c:661 thread.c:712
+#: curs_main.c:1455 flags.c:228 thread.c:661 thread.c:712
 msgid "Threading is not enabled."
 msgstr "L'affichage des discussions n'est pas activé."
 
@@ -958,37 +958,37 @@ msgstr "Pas de lignes dans le message.\n"
 msgid "%s: unknown editor command (~? for help)\n"
 msgstr "%s : commande d'éditeur inconnue (~? pour l'aide)\n"
 
-#: editmsg.c:74
+#: editmsg.c:73
 #, c-format
 msgid "could not create temporary folder: %s"
 msgstr "impossible de créer le dossier temporaire : %s"
 
-#: editmsg.c:84
+#: editmsg.c:83
 #, c-format
 msgid "could not write temporary mail folder: %s"
 msgstr "impossible d'écrire dans le dossier temporaire : %s"
 
-#: editmsg.c:101
+#: editmsg.c:100
 msgid "Message file is empty!"
 msgstr "Le fichier contenant le message est vide !"
 
-#: editmsg.c:108
+#: editmsg.c:107
 msgid "Message not modified!"
 msgstr "Message non modifié !"
 
 # , c-format
-#: editmsg.c:116
+#: editmsg.c:115
 #, c-format
 msgid "Can't open message file: %s"
 msgstr "Impossible d'ouvrir le fichier : %s"
 
 # , c-format
-#: editmsg.c:123 editmsg.c:151
+#: editmsg.c:122 editmsg.c:150
 #, c-format
 msgid "Can't append to folder: %s"
 msgstr "Impossible d'ajouter au dossier : %s"
 
-#: editmsg.c:182
+#: editmsg.c:181
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Erreur. On préserve le fichier temporaire : %s"
@@ -1122,7 +1122,7 @@ msgid "(need 'view-attachments' bound to key!)"
 msgstr "(la fonction 'view-attachments' doit être affectée à une touche !)"
 
 # , c-format
-#: headers.c:164
+#: headers.c:159
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s : impossible d'attacher le fichier"
@@ -1261,7 +1261,7 @@ msgstr "Impossible d'ajouter aux boîtes aux lettres IMAP sur ce serveur"
 
 # , c-format
 #. command failed cause folder doesn't exist
-#: imap/imap.c:813 imap/message.c:577 muttlib.c:980
+#: imap/imap.c:813 imap/message.c:598 muttlib.c:980
 #, c-format
 msgid "Create %s?"
 msgstr "Créer %s ?"
@@ -1321,48 +1321,48 @@ msgstr "Inconnu"
 msgid "[unable to calculate]"
 msgstr "[impossible de calculer]"
 
-#: imap/imap_ssl.c:219
+#: imap/imap_ssl.c:218
 msgid "This certificate belongs to:"
 msgstr "Ce certificat appartient à :"
 
-#: imap/imap_ssl.c:228
+#: imap/imap_ssl.c:227
 msgid "This certificate was issued by:"
 msgstr "Ce certificat a été émis par :"
 
-#: imap/imap_ssl.c:239
+#: imap/imap_ssl.c:238
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "Empreinte: %s"
 
-#: imap/imap_ssl.c:241
+#: imap/imap_ssl.c:240
 msgid "SSL Certificate check"
 msgstr "Vérification du certificat SSL"
 
-#: imap/imap_ssl.c:244
+#: imap/imap_ssl.c:243
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)ejeter, accepter (u)ne fois, (a)ccepter toujours"
 
-#: imap/imap_ssl.c:245
+#: imap/imap_ssl.c:244
 msgid "roa"
 msgstr "rua"
 
-#: imap/imap_ssl.c:249
+#: imap/imap_ssl.c:248
 msgid "(r)eject, accept (o)nce"
 msgstr "(r)ejeter, accepter (u)ne fois"
 
-#: imap/imap_ssl.c:250
+#: imap/imap_ssl.c:249
 msgid "ro"
 msgstr "ru"
 
-#: imap/imap_ssl.c:254 pgpkey.c:442
+#: imap/imap_ssl.c:253 pgpkey.c:441
 msgid "Exit  "
 msgstr "Quitter  "
 
-#: imap/imap_ssl.c:280
+#: imap/imap_ssl.c:278
 msgid "Warning: Couldn't save certificate"
 msgstr "Attention : le certificat n'a pas pu être sauvé"
 
-#: imap/imap_ssl.c:282
+#: imap/imap_ssl.c:280
 msgid "Certificate saved"
 msgstr "Certificat sauvé"
 
@@ -1374,31 +1374,31 @@ msgstr ""
 "IMAP."
 
 # , c-format
-#: imap/message.c:92
+#: imap/message.c:94
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Récupération des en-têtes des messages... [%d/%d]"
 
-#: imap/message.c:260
+#: imap/message.c:276
 msgid "Fetching message..."
 msgstr "Récupération du message..."
 
-#: imap/message.c:431
+#: imap/message.c:453
 msgid "Sending APPEND command ..."
 msgstr "Envoi de la commande APPEND ..."
 
-#: imap/message.c:470
+#: imap/message.c:492
 msgid "Uploading message ..."
 msgstr "Chargement du message ..."
 
 # , c-format
-#: imap/message.c:556
+#: imap/message.c:577
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Copie de %d messages dans %s..."
 
 # , c-format
-#: imap/message.c:560
+#: imap/message.c:581
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Copie du message %d dans %s..."
@@ -2300,7 +2300,7 @@ msgid "send the message through a mixmaster remailer chain"
 msgstr ""
 "envoyer le message dans une chaîne de redistributeurs de courrier mixmaster"
 
-#: lib.c:59 lib.c:74 lib.c:105
+#: lib.c:58 lib.c:73 lib.c:104
 msgid "Out of memory!"
 msgstr "Plus de mémoire !"
 
@@ -2536,11 +2536,11 @@ msgstr "La boîte aux lettres est altérée !"
 msgid "Mailbox was corrupted!"
 msgstr "La boîte aux lettres a été altérée !"
 
-#: mbox.c:692 mbox.c:935
+#: mbox.c:693 mbox.c:937
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Erreur fatale ! La boîte aux lettres n'a pas pu être réouverte !"
 
-#: mbox.c:701
+#: mbox.c:702
 msgid "Unable to lock mailbox!"
 msgstr "Impossible de verrouiller la boîte aux lettres !"
 
@@ -2548,16 +2548,16 @@ msgstr "Impossible de verrouiller la boîte aux lettres !"
 #. * messages were found to be changed or deleted.  This should
 #. * never happen, is we presume it is a bug in mutt.
 #.
-#: mbox.c:745
+#: mbox.c:747
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr "sync : BAL modifiée, mais pas de message modifié ! (signalez ce bug)"
 
-#: mbox.c:774
+#: mbox.c:776
 msgid "Writing messages... %d (%d%%)"
 msgstr "Écriture des messages... %d (%d%%)"
 
 # , c-format
-#: mbox.c:920
+#: mbox.c:922
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Erreur d'écriture ! Boîte aux lettres partielle sauvée dans %s"
@@ -2737,67 +2737,67 @@ msgid "Could not synchronize mailbox %s!"
 msgstr "Impossible de synchroniser la boîte aux lettres %s !"
 
 # , c-format
-#: mx.c:805
+#: mx.c:806
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Déplacer les messages lus dans %s ?"
 
 # , c-format
-#: mx.c:814 mx.c:1050
+#: mx.c:815 mx.c:1051
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Effacer %d message(s) marqué(s) à effacer ?"
 
 # , c-format
-#: mx.c:814 mx.c:1050
+#: mx.c:815 mx.c:1051
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Effacer %d message(s) marqué(s) à effacer ?"
 
 # , c-format
-#: mx.c:835
+#: mx.c:836
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Déplacement des messages lus dans %s..."
 
-#: mx.c:886 mx.c:1041
+#: mx.c:887 mx.c:1042
 msgid "Mailbox is unchanged."
 msgstr "La boîte aux lettres est inchangée."
 
 # , c-format
-#: mx.c:916
+#: mx.c:917
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d gardé(s), %d déplacé(s), %d effacé(s)."
 
 # , c-format
-#: mx.c:919 mx.c:1083
+#: mx.c:920 mx.c:1084
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d gardé(s), %d effacé(s)."
 
 # , c-format
-#: mx.c:1026
+#: mx.c:1027
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Appuyez sur '%s' pour inverser l'écriture autorisée"
 
-#: mx.c:1028
+#: mx.c:1029
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Utilisez 'toggle-write' pour réautoriser l'écriture !"
 
 # , c-format
-#: mx.c:1030
+#: mx.c:1031
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "La boîte aux lettres est protégée contre l'écriture. %s"
 
-#: mx.c:1080
+#: mx.c:1081
 #, c-format
 msgid "%d kept."
 msgstr "%d gardés."
 
-#: mx.c:1362
+#: mx.c:1363
 msgid "Can't write message"
 msgstr "Impossible d'écrire le message"
 
@@ -3135,83 +3135,83 @@ msgstr "Impossible d'invoquer PGP"
 msgid "Create an application/pgp message?"
 msgstr "Créer un message application/pgp ?"
 
-#: pgpinvoke.c:298
+#: pgpinvoke.c:297
 msgid "Fetching PGP key..."
 msgstr "Récupération de la clé PGP..."
 
-#: pgpkey.c:444
+#: pgpkey.c:443
 msgid "Select  "
 msgstr "Sélectionner  "
 
-#: pgpkey.c:447
+#: pgpkey.c:446
 msgid "Check key  "
 msgstr "Vérifier clé  "
 
-#: pgpkey.c:460
+#: pgpkey.c:459
 #, c-format
 msgid "PGP keys matching <%s>."
 msgstr "Clés PGP correspondant à <%s>."
 
-#: pgpkey.c:462
+#: pgpkey.c:461
 #, c-format
 msgid "PGP keys matching \"%s\"."
 msgstr "Clés PGP correspondant à \"%s\"."
 
-#: pgpkey.c:481 pgpkey.c:675
+#: pgpkey.c:480 pgpkey.c:674
 msgid "Can't open /dev/null"
 msgstr "Impossible d'ouvrir /dev/null"
 
-#: pgpkey.c:487 pgpkey.c:669
+#: pgpkey.c:486 pgpkey.c:668
 msgid "Can't create temporary file"
 msgstr "Impossible de créer le fichier temporaire"
 
-#: pgpkey.c:498 pgpkey.c:689
+#: pgpkey.c:497 pgpkey.c:688
 msgid "Can't create filter"
 msgstr "Impossible de créer le filtre"
 
 # , c-format
-#: pgpkey.c:508
+#: pgpkey.c:507
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "ID clé : 0x%s"
 
-#: pgpkey.c:534
+#: pgpkey.c:533
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Cette clé ne peut pas être utilisée : expirée/désactivée/annulée."
 
-#: pgpkey.c:548
+#: pgpkey.c:547
 msgid "This ID's trust level is undefined."
 msgstr "Le niveau de confiance de cet ID est indéfini."
 
-#: pgpkey.c:551
+#: pgpkey.c:550
 msgid "This ID is not trusted."
 msgstr "Cet ID n'est pas digne de confiance."
 
-#: pgpkey.c:554
+#: pgpkey.c:553
 msgid "This ID is only marginally trusted."
 msgstr "Cet ID n'est que peu digne de confiance."
 
 # , c-format
-#: pgpkey.c:558
+#: pgpkey.c:557
 #, c-format
 msgid "%s Do you really want to use it?"
 msgstr "%s Voulez-vous vraiment l'utiliser ?"
 
-#: pgpkey.c:654
+#: pgpkey.c:653
 msgid "Please enter the key ID: "
 msgstr "Veuillez entrer l'ID clé : "
 
-#: pgpkey.c:682
+#: pgpkey.c:681
 msgid "Invoking pgp..."
 msgstr "Appel de pgp..."
 
 # , c-format
-#: pgpkey.c:707
+#: pgpkey.c:706
 #, c-format
 msgid "PGP Key %s."
 msgstr "Clé PGP %s."
 
-#: pgpkey.c:754 pgpkey.c:870
+#: pgpkey.c:753 pgpkey.c:869
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Recherche des clés correspondant à \"%s\"..."
@@ -3387,120 +3387,120 @@ msgstr "L'effacement d'attachements des messages PGP n'est pas supporté."
 msgid "Only deletion of multipart attachments is supported."
 msgstr "Seul l'effacement d'attachements multipart est supporté."
 
-#: recvcmd.c:43
+#: recvcmd.c:42
 msgid "You may only bounce message/rfc822 parts."
 msgstr "Vous ne pouvez renvoyer que des parties message/rfc822."
 
 # , c-format
-#: recvcmd.c:155
+#: recvcmd.c:154
 #, c-format
 msgid "Bounce message to %s...?"
 msgstr "Renvoyer le message à %s... ?"
 
 # , c-format
-#: recvcmd.c:155
+#: recvcmd.c:154
 #, c-format
 msgid "Bounce messages to %s...?"
 msgstr "Renvoyer les messages à %s... ?"
 
-#: recvcmd.c:372
+#: recvcmd.c:371
 #, c-format
 msgid "Can't open temporary file %s."
 msgstr "Impossible d'ouvrir le fichier temporaire %s."
 
-#: recvcmd.c:398 recvcmd.c:537 send.c:722
+#: recvcmd.c:397 recvcmd.c:536 send.c:722
 msgid "Forward MIME encapsulated?"
 msgstr "Faire suivre en MIME encapsulé ?"
 
-#: recvcmd.c:412
+#: recvcmd.c:411
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
 msgstr ""
 "Impossible de décoder tous les attachements marqués. Faire suivre les autres "
 "?"
 
 # , c-format
-#: recvcmd.c:545 recvcmd.c:797
+#: recvcmd.c:544 recvcmd.c:796
 #, c-format
 msgid "Can't create %s."
 msgstr "Impossible de créer %s."
 
-#: recvcmd.c:676
+#: recvcmd.c:675
 msgid "Can't find any tagged messages."
 msgstr "Aucun message marqué n'a pu être trouvé."
 
-#: recvcmd.c:697 send.c:647
+#: recvcmd.c:696 send.c:647
 msgid "No mailing lists found!"
 msgstr "Pas de liste de diffusion trouvée !"
 
-#: recvcmd.c:776
+#: recvcmd.c:775
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr ""
 "Impossible de décoder ts les attachements marqués. MIME-encapsuler les "
 "autres ?"
 
-#: remailer.c:480
+#: remailer.c:479
 msgid "Append"
 msgstr "Ajouter"
 
-#: remailer.c:481
+#: remailer.c:480
 msgid "Insert"
 msgstr "Insérer"
 
-#: remailer.c:482
+#: remailer.c:481
 msgid "Delete"
 msgstr "Retirer"
 
-#: remailer.c:484
+#: remailer.c:483
 msgid "OK"
 msgstr "OK"
 
-#: remailer.c:512
+#: remailer.c:511
 msgid "Can't get mixmaster's type2.list!"
 msgstr "Impossible d'obtenir le type2.list du mixmaster !"
 
-#: remailer.c:538
+#: remailer.c:537
 msgid "Select a remailer chain."
 msgstr "Sélectionner une chaîne de redistributeurs de courrier."
 
-#: remailer.c:592
+#: remailer.c:591
 #, c-format
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr "Erreur : %s ne peut pas être utilisé comme redistributeur final."
 
-#: remailer.c:625
+#: remailer.c:624
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."
 msgstr "Les chaînes mixmaster sont limitées à %d éléments."
 
-#: remailer.c:650
+#: remailer.c:649
 msgid "The remailer chain is already empty."
 msgstr "La chaîne de redistributeurs de courrier est déjà vide."
 
-#: remailer.c:660
+#: remailer.c:659
 msgid "You already have the first chain element selected."
 msgstr "Le premier élément de la chaîne est déjà sélectionné."
 
-#: remailer.c:670
+#: remailer.c:669
 msgid "You already have the last chain element selected."
 msgstr "Le dernier élément de la chaîne est déjà sélectionné."
 
-#: remailer.c:709
+#: remailer.c:708
 msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Le mixmaster n'accepte pas les en-têtes Cc et Bcc."
 
-#: remailer.c:733
+#: remailer.c:732
 msgid ""
 "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr ""
 "Donnez une valeur correcte à hostname quand vous utilisez le mixmaster !"
 
 # , c-format
-#: remailer.c:762
+#: remailer.c:761
 #, c-format
 msgid "Error sending message, child exited %d.\n"
 msgstr "Erreur en envoyant le message, fils terminé avec le code %d.\n"
 
-#: remailer.c:766
+#: remailer.c:765
 msgid "Error sending message."
 msgstr "Erreur en envoyant le message."
 
@@ -3579,7 +3579,7 @@ msgstr "Préparation du message à faire suivre..."
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:1025
+#: send.c:1027
 msgid "Recall postponed message?"
 msgstr "Rappeler un message ajourné ?"
 

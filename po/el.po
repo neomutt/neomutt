@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt-1.1.5i\n"
-"POT-Creation-Date: 2000-03-01 01:21+0100\n"
+"POT-Creation-Date: 2000-03-04 13:51+0100\n"
 "PO-Revision-Date: 2000-02-27 12:00+0200\n"
 "Last-Translator: Φάνης Δοκιανάκης <madf@hellug.gr>\n"
 "Language-Team: Greek <el@li.org>\n"
@@ -27,8 +27,8 @@ msgid "Select"
 msgstr "Επιλέξτε"
 
 #
-#: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:269 imap/imap_ssl.c:256
-#: pager.c:1482 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
+#: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:376 imap/imap_ssl.c:255
+#: pager.c:1482 pgpkey.c:448 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Βοήθεια"
 
@@ -44,38 +44,38 @@ msgstr "Ψευδώνυμα"
 
 #
 #. add a new alias
-#: alias.c:235
+#: alias.c:246
 msgid "Alias as: "
 msgstr "Ψευδώνυμο ως: "
 
 #
-#: alias.c:241
+#: alias.c:252
 msgid "You already have an alias defined with that name!"
 msgstr "Έχετε ήδη ένα ψευδώνυμο με αυτό το όνομα!"
 
 #
-#: alias.c:255
+#: alias.c:266
 msgid "Address: "
 msgstr "Διεύθυνση: "
 
 #
-#: alias.c:271
+#: alias.c:282
 msgid "Personal name: "
 msgstr "Προσωπικό Όνομα: "
 
 #
-#: alias.c:280
+#: alias.c:291
 #, c-format
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] Δέχεστε;"
 
 #
-#: alias.c:297 recvattach.c:396 recvattach.c:453
+#: alias.c:308 recvattach.c:396 recvattach.c:453
 msgid "Save to file: "
 msgstr "Αποθήκευση στο αρχείο: "
 
 #
-#: alias.c:308
+#: alias.c:319
 msgid "Alias added."
 msgstr "Το ψευδώνυμο προστέθηκε."
 
@@ -278,22 +278,22 @@ msgstr "Σφάλμα κατά την εμφάνιση αρχείου"
 msgid "New mail in %s."
 msgstr "Νέα αλληλογραφία στο %s."
 
-#: charset.c:1066
+#: charset.c:1065
 msgid "We can't currently handle utf-8 at this point."
 msgstr "Αδυναμία χειρισμού του utf-8 αυτή τη στιγμή."
 
 #
-#: charset.c:1072 charset.c:1079
+#: charset.c:1071 charset.c:1078
 #, c-format
 msgid "Can't open %s: %s."
 msgstr "Αδυναμία προσβαση του %s: %s"
 
-#: charset.c:1148
+#: charset.c:1147
 #, fuzzy, c-format
 msgid "Error while recoding %s. Leave it unchanged."
 msgstr "Σφάλμα κατά την επανακωδικοποιήση του %s. Δείτε το %s για επαναφορά."
 
-#: charset.c:1154
+#: charset.c:1153
 #, c-format
 msgid "Error while recoding %s. See %s for recovering your data."
 msgstr "Σφάλμα κατά την επανακωδικοποιήση του %s. Δείτε το %s για επαναφορά."
@@ -373,12 +373,12 @@ msgstr "Επιβεβαίωση της PGP ψηφιακής υπογραφής?"
 
 #
 # commands.c:87 commands.c:95 pgp.c:1373 pgpkey.c:220
-#: commands.c:106 pgp.c:1542 pgpkey.c:491 postpone.c:549
+#: commands.c:106 pgp.c:1542 pgpkey.c:490 postpone.c:549
 msgid "Invoking PGP..."
 msgstr "Κλήση του PGP..."
 
 #
-#: commands.c:114 mbox.c:729
+#: commands.c:114 mbox.c:731
 msgid "Could not create temporary file!"
 msgstr "Αδυναμία κατά τη δημιουργία προσωρινού αρχείου!"
 
@@ -392,12 +392,12 @@ msgid "Command: "
 msgstr "Εντολή: "
 
 #
-#: commands.c:194 recvcmd.c:140
+#: commands.c:194 recvcmd.c:139
 msgid "Bounce message to: "
 msgstr "Διαβίβαση μηνύματος στο: "
 
 #
-#: commands.c:196 recvcmd.c:142
+#: commands.c:196 recvcmd.c:141
 msgid "Bounce tagged messages to: "
 msgstr "Διαβίβαση σημειωμένων μηνυμάτων στο: "
 
@@ -484,7 +484,7 @@ msgid "Decrypt-copy"
 msgstr "Αποκρυπτογράφηση-αντιγραφή"
 
 #
-#: commands.c:558 curs_main.c:265 recvattach.c:58
+#: commands.c:558 curs_main.c:372 recvattach.c:58
 msgid "Save"
 msgstr "Αποθήκ"
 
@@ -535,7 +535,7 @@ msgid "Send"
 msgstr "Αποστολή"
 
 #
-#: compose.c:86 remailer.c:483
+#: compose.c:86 remailer.c:482
 msgid "Abort"
 msgstr "Ακύρωση"
 
@@ -731,7 +731,7 @@ msgid "Rename to: "
 msgstr "Μετονομασία σε: "
 
 #
-#: compose.c:960 editmsg.c:95
+#: compose.c:960 editmsg.c:94
 #, c-format
 msgid "Can't stat: %s"
 msgstr "Αδυναμία στη προσβαση: %s"
@@ -816,7 +816,7 @@ msgid " ('?' for list): "
 msgstr "('?' για λίστα): "
 
 #
-#: curs_main.c:55 curs_main.c:555
+#: curs_main.c:55 curs_main.c:564
 msgid "No mailbox is open."
 msgstr "Δεν υπάρχουν ανοιχτά γραμματοκιβώτια."
 
@@ -826,7 +826,7 @@ msgid "There are no messages."
 msgstr "Δεν υπάρχουν μηνύματα."
 
 #
-#: curs_main.c:57 mx.c:1035 pager.c:61 recvattach.c:47
+#: curs_main.c:57 mx.c:1036 pager.c:61 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "Το γραμματοκιβώτιο είναι για μόνο-ανάγνωση."
 
@@ -852,191 +852,191 @@ msgid "Changes to folder will not be written."
 msgstr "Οι αλλαγές στο φάκελο δεν θα γραφούν."
 
 #
-#: curs_main.c:262
+#: curs_main.c:369
 msgid "Quit"
 msgstr "Έξοδος"
 
 #
-#: curs_main.c:263 pager.c:1392 postpone.c:38
+#: curs_main.c:370 pager.c:1392 postpone.c:38
 msgid "Del"
 msgstr "Διαγραφή"
 
 #
-#: curs_main.c:264 postpone.c:39
+#: curs_main.c:371 postpone.c:39
 msgid "Undel"
 msgstr "Επαναφορά"
 
 #
-#: curs_main.c:266 query.c:44
+#: curs_main.c:373 query.c:44
 msgid "Mail"
 msgstr "Ταχυδρ"
 
 #
-#: curs_main.c:267 pager.c:1393
+#: curs_main.c:374 pager.c:1393
 msgid "Reply"
 msgstr "Απάντ"
 
 #
-#: curs_main.c:268
+#: curs_main.c:375
 msgid "Group"
 msgstr "Ομάδα"
 
 #
-#: curs_main.c:446
+#: curs_main.c:457
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr ""
 "Το γραμματοκιβώτιο τροποποιήθηκε εξωτερικά. Η σημαίες μπορεί να είναι λάθος"
 
 #
-#: curs_main.c:449
+#: curs_main.c:460
 msgid "New mail in this mailbox."
 msgstr "Νέα αλληλογραφία σε αυτό το γραμματοκιβώτιο."
 
 #
-#: curs_main.c:561
+#: curs_main.c:570
 msgid "No tagged messages."
 msgstr "Δεν υπάρχουν σημειωμένα μηνύματα."
 
 #
-#: curs_main.c:641
+#: curs_main.c:650
 msgid "Jump to message: "
 msgstr "Μετάβαση στο μήνυμα: "
 
 #
-#: curs_main.c:647
+#: curs_main.c:656
 msgid "Argument must be a message number."
 msgstr "Η παράμετρος πρέπει να είναι αριθμός μηνύματος."
 
 #
-#: curs_main.c:680
+#: curs_main.c:689
 msgid "That message is not visible."
 msgstr "Αυτό το μήνυμα δεν είναι ορατό."
 
 #
-#: curs_main.c:683
+#: curs_main.c:692
 msgid "Invalid message number."
 msgstr "Μη έγκυρος αριθμός μηνύματος."
 
 #
-#: curs_main.c:696
+#: curs_main.c:705
 msgid "Delete messages matching: "
 msgstr "Διαγραφή παρόμοιων μηνυμάτων: "
 
 #
-#: curs_main.c:718
+#: curs_main.c:727
 msgid "No limit pattern is in effect."
 msgstr "Κανένα υπόδειγμα ορίων σε λειτουργία."
 
 #
 #. i18n: ask for a limit to apply
-#: curs_main.c:723
+#: curs_main.c:732
 #, c-format
 msgid "Limit: %s"
 msgstr "Όριο: %s"
 
 #
-#: curs_main.c:732
+#: curs_main.c:741
 msgid "Limit to messages matching: "
 msgstr "Περιορισμός στα παρόμοια μηνύματα: "
 
 #
-#: curs_main.c:762
+#: curs_main.c:771
 msgid "Quit Mutt?"
 msgstr "Έξοδος από το Mutt;"
 
 #
-#: curs_main.c:873
+#: curs_main.c:894
 msgid "Tag messages matching: "
 msgstr "Σημείωστε τα παρόμοια μηνύματα με: "
 
 #
-#: curs_main.c:881
+#: curs_main.c:902
 msgid "Undelete messages matching: "
 msgstr "Επανέφερετε τα παρόμοια μηνύματα με: "
 
 #
-#: curs_main.c:888
+#: curs_main.c:909
 msgid "Untag messages matching: "
 msgstr "Ξεσημειώστετε τα παρόμοια μηνύματα με: "
 
 #
-#: curs_main.c:906
+#: curs_main.c:927
 msgid "Open mailbox in read-only mode"
 msgstr "Ανοίξτε το γραμματοκιβώτιο σε κατάσταση μόνο για εγγραφή"
 
 #
-#: curs_main.c:908
+#: curs_main.c:929
 msgid "Open mailbox"
 msgstr "Ανοίξτε το γραμματοκιβώτιο"
 
 #
-#: curs_main.c:924 mx.c:454 mx.c:600
+#: curs_main.c:945 mx.c:454 mx.c:600
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "Το %s δεν είναι γραμματοκιβώτιο."
 
 #
-#: curs_main.c:1002
+#: curs_main.c:1030
 msgid "Exit Mutt without saving?"
 msgstr "Έξοδος από το Mutt χωρίς αποθήκευση;"
 
 #
-#: curs_main.c:1038 curs_main.c:1062
+#: curs_main.c:1066 curs_main.c:1090
 msgid "You are on the last message."
 msgstr "Είστε στο τελευταίο μήνυμα."
 
 #
-#: curs_main.c:1045 curs_main.c:1087
+#: curs_main.c:1073 curs_main.c:1115
 msgid "No undeleted messages."
 msgstr "Δεν υπάρχουν απεκαταστημένα μηνύματα."
 
 #
-#: curs_main.c:1080 curs_main.c:1103
+#: curs_main.c:1108 curs_main.c:1131
 msgid "You are on the first message."
 msgstr "Είστε στο πρώτο μήνυμα."
 
 #
-#: curs_main.c:1175 pattern.c:1123
+#: curs_main.c:1203 pattern.c:1123
 msgid "Search wrapped to top."
 msgstr "Αναζήτηση συνεχίστηκε από την κορυφή."
 
 #
-#: curs_main.c:1184 pattern.c:1134
+#: curs_main.c:1212 pattern.c:1134
 msgid "Search wrapped to bottom."
 msgstr "Αναζήτηση συνεχίστηκε στη βάση."
 
 #
-#: curs_main.c:1217
+#: curs_main.c:1245
 msgid "No new messages"
 msgstr "Δεν υπάρχουν νέα μηνύματα"
 
 #
-#: curs_main.c:1217
+#: curs_main.c:1245
 msgid "No unread messages"
 msgstr "Δεν υπάρχουν μη αναγνωσμένα μηνύματα"
 
 #
-#: curs_main.c:1218
+#: curs_main.c:1246
 msgid " in this limited view"
 msgstr "σε αυτή την περιορισμένη όψη"
 
 #
-#: curs_main.c:1342
+#: curs_main.c:1370
 msgid "No more threads."
 msgstr "Δεν υπάρχουν άλλες συζητήσεις."
 
 #
-#: curs_main.c:1344
+#: curs_main.c:1372
 msgid "You are on the first thread."
 msgstr "Είστε στη πρώτη συζήτηση."
 
 #
-#: curs_main.c:1414
+#: curs_main.c:1442
 msgid "Thread contains unread messages."
 msgstr "Η συζήτηση περιέχει μη αναγνωσμένα μηνύματα."
 
 #
-#: curs_main.c:1427 flags.c:228 thread.c:661 thread.c:712
+#: curs_main.c:1455 flags.c:228 thread.c:661 thread.c:712
 msgid "Threading is not enabled."
 msgstr "Η χρήση συζητήσεων δεν έχει ενεργοποιηθεί."
 
@@ -1128,41 +1128,41 @@ msgid "%s: unknown editor command (~? for help)\n"
 msgstr "%s: άγνωστη εντολή κειμενογράφου (~? για βοήθεια)\n"
 
 #
-#: editmsg.c:74
+#: editmsg.c:73
 #, c-format
 msgid "could not create temporary folder: %s"
 msgstr "αδυναμία δημιουργίας προσωρινού φακέλου: %s"
 
 #
-#: editmsg.c:84
+#: editmsg.c:83
 #, c-format
 msgid "could not write temporary mail folder: %s"
 msgstr "αδυναμία εγγραφής προσωρινού φακέλου αλληλογραφίας: %s"
 
 #
-#: editmsg.c:101
+#: editmsg.c:100
 msgid "Message file is empty!"
 msgstr "Το αρχείο μηνυμάτων είναι άδειο!"
 
 #
-#: editmsg.c:108
+#: editmsg.c:107
 msgid "Message not modified!"
 msgstr "Το μήνυμα δεν τροποποιήθηκε!"
 
 #
-#: editmsg.c:116
+#: editmsg.c:115
 #, c-format
 msgid "Can't open message file: %s"
 msgstr "Αδυναμία πρόσβασης στο αρχείο μηνυμάτων: %s"
 
 #
-#: editmsg.c:123 editmsg.c:151
+#: editmsg.c:122 editmsg.c:150
 #, c-format
 msgid "Can't append to folder: %s"
 msgstr "Αδυναμία πρόσθεσης στο φάκελο: %s"
 
 #
-#: editmsg.c:182
+#: editmsg.c:181
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Σφάλμα. Διατήρηση προσωρινού αρχείου"
@@ -1304,7 +1304,7 @@ msgid "(need 'view-attachments' bound to key!)"
 msgstr "(απαιτήτε το 'view-attachments' να είναι συνδεδεμένο με πλήκτρο!"
 
 #
-#: headers.c:164
+#: headers.c:159
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: αδυναμία στη προσάρτηση του αρχείου"
@@ -1458,7 +1458,7 @@ msgstr "Αδυναμία στη πρόσθηκη στα γραμμ/τια IMAP σε αυτόν τον εξυπηρετητή"
 
 #
 #. command failed cause folder doesn't exist
-#: imap/imap.c:813 imap/message.c:577 muttlib.c:980
+#: imap/imap.c:813 imap/message.c:598 muttlib.c:980
 #, c-format
 msgid "Create %s?"
 msgstr "Δημιουργία του %s;"
@@ -1523,49 +1523,49 @@ msgstr "Άγνωστο"
 msgid "[unable to calculate]"
 msgstr "[αδυναμία υπολογισμού]"
 
-#: imap/imap_ssl.c:219
+#: imap/imap_ssl.c:218
 msgid "This certificate belongs to:"
 msgstr "Αυτό το πιστοποιητικό ανήκει στο:"
 
-#: imap/imap_ssl.c:228
+#: imap/imap_ssl.c:227
 msgid "This certificate was issued by:"
 msgstr "Αυτό το πιστοποιητικό εκδόθηκε από το:"
 
-#: imap/imap_ssl.c:239
+#: imap/imap_ssl.c:238
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "Αποτύπωμα: %s"
 
-#: imap/imap_ssl.c:241
+#: imap/imap_ssl.c:240
 msgid "SSL Certificate check"
 msgstr "Έλεγχος Πιστοποιητικού SSL"
 
-#: imap/imap_ssl.c:244
+#: imap/imap_ssl.c:243
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)απόρριψη, (o)αποδοχή μια φορά, (a)αποδοχή πάντα"
 
-#: imap/imap_ssl.c:245
+#: imap/imap_ssl.c:244
 msgid "roa"
 msgstr "roa"
 
-#: imap/imap_ssl.c:249
+#: imap/imap_ssl.c:248
 msgid "(r)eject, accept (o)nce"
 msgstr "(r)απόρριψη, (o)αποδοχή μια φορά"
 
-#: imap/imap_ssl.c:250
+#: imap/imap_ssl.c:249
 msgid "ro"
 msgstr "ro"
 
 #
-#: imap/imap_ssl.c:254 pgpkey.c:442
+#: imap/imap_ssl.c:253 pgpkey.c:441
 msgid "Exit  "
 msgstr "Έξοδος "
 
-#: imap/imap_ssl.c:280
+#: imap/imap_ssl.c:278
 msgid "Warning: Couldn't save certificate"
 msgstr "Προειδοποίηση: Αδυναμία αποθήκευσης πιστοποιητικού"
 
-#: imap/imap_ssl.c:282
+#: imap/imap_ssl.c:280
 msgid "Certificate saved"
 msgstr "Το πιστοποιητικό αποθηκεύτηκε"
 
@@ -1576,34 +1576,34 @@ msgid "Unable to fetch headers from this IMAP server version."
 msgstr "Αδυναμία λήψης επικεφαλίδων από αυτή την έκδοση του εξυπηρετητή IMAP."
 
 #
-#: imap/message.c:92
+#: imap/message.c:94
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Λήψη επικεφαλίδων από τα μηνύματα... [%d/%d]"
 
 #
-#: imap/message.c:260
+#: imap/message.c:276
 msgid "Fetching message..."
 msgstr "Λήψη μηνύματος..."
 
 #
-#: imap/message.c:431
+#: imap/message.c:453
 msgid "Sending APPEND command ..."
 msgstr "Αποστολή εντολής APPEND ..."
 
 #
-#: imap/message.c:470
+#: imap/message.c:492
 msgid "Uploading message ..."
 msgstr "Ανέβασμα μηνύματος ..."
 
 #
-#: imap/message.c:556
+#: imap/message.c:577
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Αντιγραφή %d μηνυμάτων στο %s..."
 
 #
-#: imap/message.c:560
+#: imap/message.c:581
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Αντιγραφή μηνύματος %d στο %s ..."
@@ -2692,7 +2692,7 @@ msgid "send the message through a mixmaster remailer chain"
 msgstr "αποστολή του μηνύματος μέσω μιας αλυσίδας απαναποστολέων Mixmaster"
 
 #
-#: lib.c:59 lib.c:74 lib.c:105
+#: lib.c:58 lib.c:73 lib.c:104
 msgid "Out of memory!"
 msgstr "Η μνήμη εξαντλήθηκε!"
 
@@ -2950,12 +2950,12 @@ msgid "Mailbox was corrupted!"
 msgstr "Το γραμματοκιβώτιο είχε αλλοιωθεί!"
 
 #
-#: mbox.c:692 mbox.c:935
+#: mbox.c:693 mbox.c:937
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Μοιραίο λάθος! Αδυναμία επαναπρόσβασης του γραμματοκιβωτίου!"
 
 #
-#: mbox.c:701
+#: mbox.c:702
 msgid "Unable to lock mailbox!"
 msgstr "Αδυναμία κλειδώματος του γραμματοκιβωτίου!"
 
@@ -2964,19 +2964,19 @@ msgstr "Αδυναμία κλειδώματος του γραμματοκιβωτίου!"
 #. * messages were found to be changed or deleted.  This should
 #. * never happen, is we presume it is a bug in mutt.
 #.
-#: mbox.c:745
+#: mbox.c:747
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr ""
 "sync: το mbox έχει τροποποιηθεί, δεν υπάρχουν τροποποιημένα μηνύματα!\n"
 "(αναφέρατε αυτό το σφάλμα)"
 
 #
-#: mbox.c:774
+#: mbox.c:776
 msgid "Writing messages... %d (%d%%)"
 msgstr "Εγγραφή μηνυμάτων... %d (%d%%)"
 
 #
-#: mbox.c:920
+#: mbox.c:922
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Η εγγραφή απέτυχε! Μέρος του γραμματοκιβωτίου αποθηκεύτηκε στο %s"
@@ -3180,70 +3180,70 @@ msgid "Could not synchronize mailbox %s!"
 msgstr "Αδυναμία συγχρονισμού του γραμματοκιβωτίου %s!"
 
 #
-#: mx.c:805
+#: mx.c:806
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Μετακίνηση αναγνωσμένων μηνυμάτων στο %s;"
 
 #
-#: mx.c:814 mx.c:1050
+#: mx.c:815 mx.c:1051
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Καθαρισμός %d διεγραμμένου μηνήματος;"
 
 #
-#: mx.c:814 mx.c:1050
+#: mx.c:815 mx.c:1051
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Καθαρισμός %d διεγραμμένων μηνυμάτων;"
 
 #
-#: mx.c:835
+#: mx.c:836
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Μετακίνηση αναγνωσμένων μηνυμάτων στο %s..."
 
 #
-#: mx.c:886 mx.c:1041
+#: mx.c:887 mx.c:1042
 msgid "Mailbox is unchanged."
 msgstr "Δεν έγινε αλλαγή στο γραμματοκιβώτιο "
 
 #
-#: mx.c:916
+#: mx.c:917
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d κρατήθηκαν, %d μετακινήθηκαν, %d διαγράφθηκαν."
 
 #
-#: mx.c:919 mx.c:1083
+#: mx.c:920 mx.c:1084
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d κρατήθηκαν, %d διαγράφθηκαν."
 
 #
-#: mx.c:1026
+#: mx.c:1027
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr "Πατήστε '%s' για να ενεργοποιήσετε την εγγραφή!"
 
 #
-#: mx.c:1028
+#: mx.c:1029
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Χρησιμοποιήστε το 'toggle-write' για να ενεργοποιήσετε την εγγραφή!"
 
 #
-#: mx.c:1030
+#: mx.c:1031
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Το γραμματοκιβώτιο είναι σημειωμένο μη εγγράψιμο. %s"
 
-#: mx.c:1080
+#: mx.c:1081
 #, c-format
 msgid "%d kept."
 msgstr "%d κρατήθηκαν."
 
 #
-#: mx.c:1362
+#: mx.c:1363
 msgid "Can't write message"
 msgstr "Αδυναμία εγγραφής του μηνύματος"
 
@@ -3650,105 +3650,105 @@ msgid "Create an application/pgp message?"
 msgstr "Δημιουργεί ένα application/pgp μήνυμα?"
 
 #
-#: pgpinvoke.c:298
+#: pgpinvoke.c:297
 msgid "Fetching PGP key..."
 msgstr "Λήψη κλειδιού PGP..."
 
 #
-#: pgpkey.c:444
+#: pgpkey.c:443
 msgid "Select  "
 msgstr "Διαλέξτε "
 
 #
 # pgpkey.c:178
-#: pgpkey.c:447
+#: pgpkey.c:446
 msgid "Check key  "
 msgstr "Έλέγξτε κλειδί "
 
 #
-#: pgpkey.c:460
+#: pgpkey.c:459
 #, c-format
 msgid "PGP keys matching <%s>."
 msgstr "Όμοια PGP κλειδιά <%s>."
 
 #
-#: pgpkey.c:462
+#: pgpkey.c:461
 #, c-format
 msgid "PGP keys matching \"%s\"."
 msgstr "Όμοια PGP κλειδιά \"%s\"."
 
 #
 # pgpkey.c:210 pgpkey.c:387
-#: pgpkey.c:481 pgpkey.c:675
+#: pgpkey.c:480 pgpkey.c:674
 msgid "Can't open /dev/null"
 msgstr "Αδυναμία ανοίγματος /dev/null"
 
 #
-#: pgpkey.c:487 pgpkey.c:669
+#: pgpkey.c:486 pgpkey.c:668
 msgid "Can't create temporary file"
 msgstr "Δεν μπορώ να δημιουργήσω προσωρινό αρχείο"
 
 #
-#: pgpkey.c:498 pgpkey.c:689
+#: pgpkey.c:497 pgpkey.c:688
 msgid "Can't create filter"
 msgstr "Δεν μπορώ να δημιουργήσω φίλτρο"
 
 #
 # pgpkey.c:236
-#: pgpkey.c:508
+#: pgpkey.c:507
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "ID κλειδιού: 0x%s"
 
-#: pgpkey.c:534
+#: pgpkey.c:533
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr ""
 "Αυτό το κλειδί δεν μπορεί να χρησιμοποιηθεί ληγμένο/αχρηστευμένο/άκυρο."
 
 #
 # pgpkey.c:257
-#: pgpkey.c:548
+#: pgpkey.c:547
 msgid "This ID's trust level is undefined."
 msgstr "Το επίπεδο εμπιστευτικότητας του ID αυτού είναι άγνωστο."
 
 #
-#: pgpkey.c:551
+#: pgpkey.c:550
 msgid "This ID is not trusted."
 msgstr "Αυτό το ID δεν τυγχάνει εμπιστοσύνη."
 
 #
 # pgpkey.c:259
-#: pgpkey.c:554
+#: pgpkey.c:553
 msgid "This ID is only marginally trusted."
 msgstr "Αυτό το ID τυγχάνει ελάχιστη εμπιστοσύνη."
 
 #
 # pgpkey.c:262
-#: pgpkey.c:558
+#: pgpkey.c:557
 #, c-format
 msgid "%s Do you really want to use it?"
 msgstr "%s Θέλετε σίγουρα να το χρησιμοποιήσετε;"
 
 #
 # pgpkey.c:369
-#: pgpkey.c:654
+#: pgpkey.c:653
 msgid "Please enter the key ID: "
 msgstr "Παρακαλώ γράψτε το ID του κλειδιού: "
 
 #
 # commands.c:87 commands.c:95 pgp.c:1373 pgpkey.c:220
-#: pgpkey.c:682
+#: pgpkey.c:681
 msgid "Invoking pgp..."
 msgstr "Κλήση του pgp..."
 
 #
 # pgpkey.c:416
-#: pgpkey.c:707
+#: pgpkey.c:706
 #, c-format
 msgid "PGP Key %s."
 msgstr "Κλειδί PGP %s."
 
-#: pgpkey.c:754 pgpkey.c:870
+#: pgpkey.c:753 pgpkey.c:869
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Εύρεση όμοιων κλειδιών \"%s\"..."
@@ -3955,117 +3955,117 @@ msgid "Only deletion of multipart attachments is supported."
 msgstr "Μόνο η διαγραφή πολυμερών προσαρτήσεων υποστηρίζεται."
 
 #
-#: recvcmd.c:43
+#: recvcmd.c:42
 msgid "You may only bounce message/rfc822 parts."
 msgstr "Μπορείτε να διαβιβάσετε μόνο μήνυμα/μέρη rfc822"
 
 #
-#: recvcmd.c:155
+#: recvcmd.c:154
 #, c-format
 msgid "Bounce message to %s...?"
 msgstr "Διαβίβαση μυνήματος στο %s...?"
 
 #
-#: recvcmd.c:155
+#: recvcmd.c:154
 #, c-format
 msgid "Bounce messages to %s...?"
 msgstr "Διαβίβαση μυνημάτων στο %s...?"
 
 #
-#: recvcmd.c:372
+#: recvcmd.c:371
 #, c-format
 msgid "Can't open temporary file %s."
 msgstr "Αδυναμία πρόσβασης στο προσωρινό αρχείο %s."
 
 #
-#: recvcmd.c:398 recvcmd.c:537 send.c:722
+#: recvcmd.c:397 recvcmd.c:536 send.c:722
 msgid "Forward MIME encapsulated?"
 msgstr "Προώθηση ενσωματωμένου MIME;"
 
-#: recvcmd.c:412
+#: recvcmd.c:411
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
 msgstr ""
 "Αδυναμία αποκωδικοποίησης όλων των σημειωμένων προσαρτήσεων. Προώθηση-MIME "
 "των άλλων;"
 
 #
-#: recvcmd.c:545 recvcmd.c:797
+#: recvcmd.c:544 recvcmd.c:796
 #, c-format
 msgid "Can't create %s."
 msgstr "Αδυναμία δημιουργίας του %s."
 
 #
-#: recvcmd.c:676
+#: recvcmd.c:675
 msgid "Can't find any tagged messages."
 msgstr "Αδυναμία εύρεσης σημειωμένων μηνυμάτων."
 
 #
-#: recvcmd.c:697 send.c:647
+#: recvcmd.c:696 send.c:647
 msgid "No mailing lists found!"
 msgstr "Δεν βρέθηκαν λίστες συζητήσεων!"
 
-#: recvcmd.c:776
+#: recvcmd.c:775
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr ""
 "Αδυναμία αποκωδικοποίησης όλων των σημειωμένων προσαρτήσεων. "
 "MIME-encapsulate τις άλλες;"
 
 #
-#: remailer.c:480
+#: remailer.c:479
 msgid "Append"
 msgstr "Πρόσθεση"
 
-#: remailer.c:481
+#: remailer.c:480
 msgid "Insert"
 msgstr "Είσοδος"
 
 #
-#: remailer.c:482
+#: remailer.c:481
 msgid "Delete"
 msgstr "Διαγραφή"
 
-#: remailer.c:484
+#: remailer.c:483
 msgid "OK"
 msgstr "OK"
 
-#: remailer.c:512
+#: remailer.c:511
 msgid "Can't get mixmaster's type2.list!"
 msgstr "Αδυναμία λήψης της type2.list του mixmaster!"
 
 #
-#: remailer.c:538
+#: remailer.c:537
 msgid "Select a remailer chain."
 msgstr "Επιλογή μιας αλυσίδας απαναποστολέα."
 
-#: remailer.c:592
+#: remailer.c:591
 #, c-format
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr ""
 "Σφάλμα: το %s δεν μπορεί να είναι ο τελικός επαναποστολέας της αλυσίδας."
 
-#: remailer.c:625
+#: remailer.c:624
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."
 msgstr "Οι αλυσίδες Mixmaster είναι περιορισμένες σε %d στοιχεία."
 
-#: remailer.c:650
+#: remailer.c:649
 msgid "The remailer chain is already empty."
 msgstr "Η αλυσίδα επαναποστολέων είναι ήδη άδεια."
 
 #
-#: remailer.c:660
+#: remailer.c:659
 msgid "You already have the first chain element selected."
 msgstr "Έχετε ήδη επιλέξει το πρώτο στοιχείο της αλυσίδας."
 
-#: remailer.c:670
+#: remailer.c:669
 msgid "You already have the last chain element selected."
 msgstr "Έχετε ήδη επιλέξει το τελευταίο στοιχείο της αλυσίδας."
 
-#: remailer.c:709
+#: remailer.c:708
 msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Ο Mixmaster δεν δέχετε Cc ή Bcc επικεφαλίδες."
 
-#: remailer.c:733
+#: remailer.c:732
 msgid ""
 "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr ""
@@ -4073,13 +4073,13 @@ msgstr ""
 "χρησιμοποιείτε το mixmaster!"
 
 #
-#: remailer.c:762
+#: remailer.c:761
 #, c-format
 msgid "Error sending message, child exited %d.\n"
 msgstr "Σφάλμα στην αποστολή μηνύματος, τερματισμός θυγατρικής με %d (%s).\n"
 
 #
-#: remailer.c:766
+#: remailer.c:765
 msgid "Error sending message."
 msgstr "Σφάλμα κατά την αποστολή του μηνύματος."
 
@@ -4169,7 +4169,7 @@ msgstr "Ετοιμασία προωθημένου μηνύματος ..."
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:1025
+#: send.c:1027
 msgid "Recall postponed message?"
 msgstr "Ανάκληση αναβεβλημένου μηνύματος;"
 
