@@ -38,9 +38,7 @@ In no particular order:
       imap_sync_mailbox, otherwise shouldn't be too bad. Not currently a
       major priority, though - noone's gotten bit by this.
 
-* Have a hard time when the home namespace isn't default "".
-
 * The mutt_pretty routines don't work well when the delimiter isn't '/'.
 
 Brendan Cully <brendan@kublai.com>
-Updated 20000304
+Updated 20000704

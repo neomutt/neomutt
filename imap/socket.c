@@ -99,10 +99,16 @@ int mutt_socket_read_line_d (char *buf, size_t buflen, CONNECTION *conn)
   return r;
 }
 
-static int imap_user_match (const IMAP_MBOX *m1, const IMAP_MBOX *m2)
+/* imap_account_match: compare account info (host/port/user) */
+static int imap_account_match (const IMAP_MBOX *m1, const IMAP_MBOX *m2)
 {
   const char *user = ImapUser ? ImapUser : NONULL (Username);
 
+  if (mutt_strcasecmp (m1->host, m2->host))
+    return 0;
+  if (m1->port != m2->port)
+    return 0;
+  
   if (m1->flags & m2->flags & M_IMAP_USER)
     return (!strcmp (m1->user, m2->user));
   if (m1->flags & M_IMAP_USER)
@@ -121,7 +127,7 @@ CONNECTION *mutt_socket_select_connection (const IMAP_MBOX *mx, int newconn)
     conn = Connections;
     while (conn)
     {
-      if (!mutt_strcasecmp (mx->host, conn->mx.host) && (mx->port == conn->mx.port) && imap_user_match (mx, &conn->mx))
+      if (imap_account_match (mx, &conn->mx))
 	return conn;
       conn = conn->next;
     }
@@ -254,8 +260,9 @@ int raw_socket_open (CONNECTION *conn)
   sin.sin_family = AF_INET;
   if ((he = gethostbyname (conn->mx.host)) == NULL)
   {
-    mutt_perror (conn->mx.host);
-    return (-1);
+    mutt_error (_("Could not find the host \"%s\""), conn->mx.host);
+	
+    return -1;
   }
   memcpy (&sin.sin_addr, he->h_addr_list[0], he->h_length);
 

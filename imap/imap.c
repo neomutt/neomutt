@@ -529,7 +529,7 @@ int imap_open_mailbox (CONTEXT *ctx)
   IMAP_DATA *idata;
   char buf[LONG_STRING];
   char bufout[LONG_STRING];
-  char seq[16];
+  char seq[SEQLEN+1];
   int count = 0;
   int n;
   IMAP_MBOX mx;
@@ -556,7 +556,7 @@ int imap_open_mailbox (CONTEXT *ctx)
       idata->conn = conn;
     }
     if (imap_open_connection (idata, conn))
-      return (-1);
+      return -1;
   }
   ctx->data = (void *) idata;
 

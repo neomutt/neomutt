@@ -374,7 +374,7 @@ int imap_authenticate (IMAP_DATA *idata, CONNECTION *conn)
     if (r == -1)
     {
       /* connection or protocol problem */
-      imap_error ("imap_open_connection()", buf);
+      imap_error ("imap_authenticate", buf);
       return (-1);
     }
     else if (r == -2)
