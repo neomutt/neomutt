@@ -1,3 +1,8 @@
+2003-01-31 00:12:02  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* pgp.c: Fix #1442 (thanks, Dale); properly initialize some
+	pointers which could otherwise lead to crashes.
+
 2003-01-30 23:54:30  David Shaw  <dshaw@jabberwocky.com>  (roessler)
 
 	* crypt.c, init.h, mutt.h, mutt_crypt.h, send.c: Introduce
