@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-01 12:10+0200\n"
+"POT-Creation-Date: 1998-10-01 16:53+0200\n"
 "PO-Revision-Date: 1998-10-01 10:20 MET DST\n"
 "Last-Translator: Thomas Roessler <roessler@guug.de>Language-Team: mutt-dev "
 "<mutt-dev@mutt.org>MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr "Keine Einträge im Adreßbuch!"
 
 #: addrbook.c:143
 msgid "Aliases"
-msgstr "Adressen"
+msgstr "Adreßbuch"
 
 #. add a new alias
 #: alias.c:192
@@ -59,7 +59,7 @@ msgstr "Namensmuster kann nicht erfüllt werden, fortfahren?"
 #. For now, editing requires a file, no piping
 #: attach.c:123
 msgid "Mailcap compose entry requires %%s"
-msgstr "\"compose\"-Eintrag in der Mailcap-Datei erfordert %%s"
+msgstr "\"compose\"-Eintrag in der Mailcap-Datei erfordert %%s."
 
 #: attach.c:137
 msgid "Failure to open file to parse headers."
@@ -78,7 +78,7 @@ msgstr ""
 #. For now, editing requires a file, no piping
 #: attach.c:246
 msgid "Mailcap Edit entry requires %%s"
-msgstr "\"Edit\"-Eintrag in Mailcap erfordert %%s"
+msgstr "\"Edit\"-Eintrag in Mailcap erfordert %%s."
 
 #: attach.c:264
 #, c-format
@@ -126,7 +126,7 @@ msgstr "Verzeichnis [%s], Dateimaske: %s"
 
 #: browser.c:536 browser.c:726 browser.c:816
 msgid "No files match the file mask"
-msgstr "Es gibt keine zur Maske passenden Dateien"
+msgstr "Es gibt keine zur Maske passenden Dateien."
 
 #: browser.c:643
 msgid "Chdir to: "
@@ -134,7 +134,7 @@ msgstr "Verzeichnis wechseln nach: "
 
 #: browser.c:662 browser.c:719
 msgid "Error scanning directory."
-msgstr "Fehler beim Einlesen des Verzeichnisses"
+msgstr "Fehler beim Einlesen des Verzeichnisses."
 
 #: browser.c:680
 msgid "File Mask: "
@@ -159,7 +159,7 @@ msgstr "Verzeichnisse können nicht angezeigt werden."
 
 #: browser.c:842
 msgid "Error trying to view file"
-msgstr "Fehler"
+msgstr "Fehler."
 
 #: buffy.c:357
 #, c-format
@@ -174,17 +174,17 @@ msgstr "%s: color wird nicht vom Terminal unterstützt."
 #: color.c:312
 #, c-format
 msgid "%s: no such color"
-msgstr "%s: Farbe unbekannt"
+msgstr "%s: Farbe unbekannt."
 
 #: color.c:358 color.c:541 color.c:552
 #, c-format
 msgid "%s: no such object"
-msgstr "%s: Objekt unbekannt"
+msgstr "%s: Objekt unbekannt."
 
 #: color.c:365
 #, c-format
 msgid "%s: command valid only for index object"
-msgstr "%s: Kommando ist nur für Index-Objekt gültig"
+msgstr "%s: Kommando ist nur für Index-Objekt gültig."
 
 #: color.c:373
 #, c-format
@@ -201,24 +201,24 @@ msgstr "color: Zu wenige Parameter."
 
 #: color.c:602
 msgid "mono: too few arguments"
-msgstr "mono: Zu wenige Parameter"
+msgstr "mono: Zu wenige Parameter."
 
 #: color.c:622
 #, c-format
 msgid "%s: no such attribute"
-msgstr "%s: Attribut unbekannt"
+msgstr "%s: Attribut unbekannt."
 
 #: color.c:662 hook.c:61 hook.c:69 keymap.c:557
 msgid "too few arguments"
-msgstr "Zu wenige Parameter"
+msgstr "Zu wenige Parameter."
 
 #: color.c:671 hook.c:75
 msgid "too many arguments"
-msgstr "Zu viele Parameter"
+msgstr "Zu viele Parameter."
 
 #: color.c:685
 msgid "default colors not supported"
-msgstr "Standard-Farben werden nicht unterstützt"
+msgstr "Standard-Farben werden nicht unterstützt."
 
 #: commands.c:122
 msgid "Display message using mailcap?"
@@ -406,7 +406,7 @@ msgstr "Der einzige Nachrichtenteil kann nicht gelöscht werden."
 
 #: compose.c:447
 msgid "Compose"
-msgstr "Erstelle"
+msgstr "Nachricht erstellen"
 
 #: compose.c:603
 msgid "Attach file"
@@ -414,7 +414,7 @@ msgstr "Datei anhängen"
 
 #: compose.c:608
 msgid "Open mailbox to attach message from"
-msgstr "Öffne Quell-Mailbox für Nachrichtenanhang"
+msgstr "Öffne Quell-Mailbox für Nachrichtenanhang."
 
 #: compose.c:647
 msgid "No messages in that folder."
@@ -492,22 +492,30 @@ msgstr "Interner Fehler."
 msgid "Deleting non-multipart messages not yet supported"
 msgstr "Nur Teile von multipart-Nachrichten können gelöscht werden."
 
+#: curs_lib.c:130
+msgid "yes"
+msgstr "ja"
+
+#: curs_lib.c:131
+msgid "no"
+msgstr "nein"
+
 #. restore blocking operation
-#: curs_lib.c:167
+#: curs_lib.c:170
 msgid "Exit Mutt?"
 msgstr "Mutt verlassen?"
 
-#: curs_lib.c:242
+#: curs_lib.c:245
 msgid "unknown error"
 msgstr "unbekannter Fehler"
 
-#: curs_lib.c:262
+#: curs_lib.c:265
 msgid "Press any key to continue..."
 msgstr "Bitte drücken Sie eine Taste."
 
-#: curs_lib.c:300
+#: curs_lib.c:303
 msgid " ('?' for list): "
-msgstr " ('?' für eine Liste eingeben): "
+msgstr " (für eine Liste '?' eingeben): "
 
 #: curs_main.c:208
 msgid "Cannot toggle write on a readonly mailbox!"
@@ -707,7 +715,8 @@ msgstr "%d: Ungültige Nachrichtennummer.\n"
 
 #: edit.c:312
 msgid "(End message with a . on a line by itself)\n"
-msgstr "(Nach Eingabe der Nachricht bitte einen einzelnen Punkt ('.') eingeben.)\n"
+msgstr ""
+"(Nach Eingabe der Nachricht bitte einen einzelnen Punkt ('.') eingeben.)\n"
 
 #: edit.c:370
 msgid "No mailbox.\n"
@@ -1676,7 +1685,9 @@ msgstr "Nachricht an %s anhängen?"
 
 #: main.c:35
 msgid "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
-msgstr "Um die Entwickler zu Kontaktieren, schicken Sie bitte\neine Nachricht an <mutt-dev@mutt.org>.\n"
+msgstr ""
+"Um die Entwickler zu Kontaktieren, schicken Sie bitte\n"
+"eine Nachricht an <mutt-dev@mutt.org>.\n"
 
 #: main.c:38
 msgid ""
@@ -1947,6 +1958,11 @@ msgstr "Verschiebe gelesene Nachrichten nach %s?"
 msgid "Purge %d deleted message?"
 msgstr "Entferne %d als gelöscht markierte Nachrichten?"
 
+#: mx.c:762 mx.c:939
+#, fuzzy, c-format
+msgid "Purge %d deleted messages?"
+msgstr "Entferne %d als gelöscht markierte Nachrichten?"
+
 #: mx.c:782
 #, c-format
 msgid "Moving read messages to %s..."
@@ -2167,8 +2183,7 @@ msgid ""
 "--]\n"
 "\n"
 msgstr ""
-"[-- Fehler: Diese Nachricht verstößt gegen die PGP/MIME-Spezifikation! "
-"--]\n"
+"[-- Fehler: Diese Nachricht verstößt gegen die PGP/MIME-Spezifikation! --]\n"
 
 #: pgp.c:801
 msgid "Internal error. Inform <roessler@guug.de>."
@@ -2209,7 +2224,6 @@ msgid ""
 msgstr ""
 "\n"
 "[-- Ende der PGP/MIME-verschlüsselten Daten --]\n"
-
 
 #: pgp.c:1080
 msgid "Can't open PGP subprocess!"
@@ -2661,4 +2675,3 @@ msgstr ""
 #: status.c:101
 msgid "(no mailbox)"
 msgstr "(keine Mailbox)"
-
