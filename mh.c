@@ -803,14 +803,14 @@ int mh_read_dir (CONTEXT * ctx, const char *subdir)
   struct maildir **last;
   int count;
 
-  md = NULL;
-  last = &md;
-  count = 0;
 
   memset (&mhs, 0, sizeof (mhs));
 
   maildir_update_mtime (ctx);
 
+  md = NULL;
+  last = &md;
+  count = 0;
   if (maildir_parse_dir (ctx, &last, subdir, &count) == -1)
     return -1;
 
@@ -1548,7 +1548,7 @@ int mh_check_mailbox (CONTEXT * ctx, int *index_hint)
   struct stat st, st_cur;
   short modified = 0, have_new = 0, occult = 0;
   struct maildir *md, *p;
-  struct maildir **last;
+  struct maildir **last = NULL;
   struct mh_sequences mhs;
   HASH *fnames;
   int i;
@@ -1589,7 +1589,9 @@ int mh_check_mailbox (CONTEXT * ctx, int *index_hint)
   ctx->mtime = st.st_mtime;
 
   memset (&mhs, 0, sizeof (mhs));
-
+  
+  md   = NULL;
+  last = &md;
   maildir_parse_dir (ctx, &last, NULL, NULL);
   mh_read_sequences (&mhs, ctx->path);
   mh_update_maildir (md, &mhs);
