@@ -375,7 +375,8 @@ int mutt_index_menu (void)
         }
 
 	/* save the list of new messages */
-	if (oldcount && check != M_REOPENED)
+	if (oldcount && check != M_REOPENED
+	    && (Sort & SORT_MASK == SORT_THREADS))
 	{
 	  save_new = (HEADER **) safe_malloc (sizeof (HEADER *) * (Context->msgcount - oldcount));
 	  for (j = oldcount; j < Context->msgcount; j++)

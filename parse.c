@@ -268,8 +268,10 @@ void mutt_parse_content_type (char *s, BODY *ct)
       pc++;
     ct->parameter = parse_parameters(pc);
 
-    /* Some pre-RFC1521 gateways still use the "name=filename" convention */
-    if ((pc = mutt_get_parameter("name", ct->parameter)) != 0)
+    /* Some pre-RFC1521 gateways still use the "name=filename" convention,
+     * but if a filename has already been set in the content-disposition,
+     * let that take precedence, and don't set it here */
+    if ((pc = mutt_get_parameter("name", ct->parameter)) != 0 && !ct->filename)
       ct->filename = safe_strdup(pc);
   }
   
