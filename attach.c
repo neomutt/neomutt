@@ -325,6 +325,41 @@ static int is_mmnoask (const char *buf)
   return (0);
 }
 
+void mutt_check_lookup_list (BODY *b, char *type, int len)
+{
+  LIST *t = MimeLookupList;
+  int i;
+
+  for (; t; t = t->next) {
+    i = mutt_strlen (t->data) - 1;
+    if ((i > 0 && t->data[i-1] == '/' && t->data[i] == '*' && 
+	 ascii_strncasecmp (type, t->data, i) == 0) ||
+	ascii_strcasecmp (type, t->data) == 0) {
+
+    BODY tmp = {0};
+    int n;
+    if ((n = mutt_lookup_mime_type (&tmp, b->filename)) != TYPEOTHER) {
+      snprintf (type, len, "%s/%s",
+                n == TYPEAUDIO ? "audio" :
+                n == TYPEAPPLICATION ? "application" :
+                n == TYPEIMAGE ? "image" :
+                n == TYPEMESSAGE ? "message" :
+                n == TYPEMODEL ? "model" :
+                n == TYPEMULTIPART ? "multipart" :
+                n == TYPETEXT ? "text" :
+                n == TYPEVIDEO ? "video" : "other",
+                tmp.subtype);
+      dprint(1, (debugfile, "mutt_check_lookup_list: \"%s\" -> %s\n", 
+        b->filename, type));
+    }
+    if (tmp.subtype) 
+      safe_free ((void **) &tmp.subtype);
+    if (tmp.xtype) 
+      safe_free ((void **) &tmp.xtype);
+    }
+  }
+}
+
 int mutt_is_autoview (BODY *b, const char *type)
 {
   LIST *t = AutoViewList;
@@ -332,10 +367,12 @@ int mutt_is_autoview (BODY *b, const char *type)
   int i;
 
   if (!type)
-  {
     snprintf (_type, sizeof (_type), "%s/%s", TYPE (b), b->subtype);
-    type = _type;
-  }
+  else
+    strncpy (_type, type, sizeof(_type));
+
+  mutt_check_lookup_list (b, _type, sizeof(_type));
+  type = _type;
 
   if (mutt_needs_mailcap (b))
   {
@@ -346,8 +383,7 @@ int mutt_is_autoview (BODY *b, const char *type)
       return 1;
   }
 
-  for (; t; t = t->next)
-  {
+  for (; t; t = t->next) {
     i = mutt_strlen (t->data) - 1;
     if ((i > 0 && t->data[i-1] == '/' && t->data[i] == '*' && 
 	 ascii_strncasecmp (type, t->data, i) == 0) ||

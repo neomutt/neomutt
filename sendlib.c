@@ -959,7 +959,7 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
  * exists.
  */
 
-static int lookup_mime_type (BODY *att, const char *path)
+int mutt_lookup_mime_type (BODY *att, const char *path)
 {
   FILE *f;
   char *p, *q, *ct;
@@ -994,7 +994,7 @@ static int lookup_mime_type (BODY *att, const char *path)
 	strfcpy (buf, PKGDATADIR"/mime.types", sizeof (buf));
 	break;
       default:
-	dprint (1, (debugfile, "lookup_mime_type: Internal error, count = %d.\n", count));
+        dprint (1, (debugfile, "mutt_lookup_mime_type: Internal error, count = %d.\n", count));
 	goto bye;	/* shouldn't happen */
     }
 
@@ -1376,7 +1376,7 @@ BODY *mutt_make_file_attach (const char *path)
 
 #if 0
   
-  if ((n = lookup_mime_type (buf, sizeof (buf), xbuf, sizeof (xbuf), path)) != TYPEOTHER 
+  if ((n = mutt_lookup_mime_type (buf, sizeof (buf), xbuf, sizeof (xbuf), path)) != TYPEOTHER 
       || *xbuf != '\0')
   {
     att->type = n;
@@ -1386,7 +1386,7 @@ BODY *mutt_make_file_attach (const char *path)
 
 #else
   
-  lookup_mime_type (att, path);
+  mutt_lookup_mime_type (att, path);
 
 #endif
   

@@ -2809,6 +2809,24 @@ Next, mutt will check if any of the types have a defined
 that, Mutt will look for any text type.  As a last attempt, mutt will
 look for any type it knows how to handle.
 
+<sect1>MIME Lookup<label id="mime_lookup">
+<p>
+Mutt's mime&lowbar;lookup list specifies a list of mime-types that should not
+be treated according to their mailcap entry.  This option is designed to
+deal with binary types such as application/octet-stream.  When an attachment's
+mime-type is listed in mime&lowbar;lookup, then the extension of the filename will
+be compared to the list of extensions in the mime.types file.  The mime-type
+associated with this extension will then be used to process the attachment
+according to the rules in the mailcap file and according to any other configuration
+options (such as auto&lowbar;view) specified.  Common usage would be:
+<tscreen><verb>
+mime-lookup application/octet-stream application/X-Lotus-Manuscript
+</verb></tscreen>
+
+In addition, the unmime&lowbar;lookup command may be used to disable this feature
+for any particular mime-type if it had been set, for example, in a global
+muttrc.
+
 <sect>Reference
 <sect1>Command line options<label id="commandline">
 <p>
@@ -2908,6 +2926,10 @@ The following are the commands understood by mutt.
 <tt><ref id="mbox-hook" name="mbox-hook"></tt> <em/pattern/ <em/mailbox/
 <item>
 <tt><ref id="message-hook" name="message-hook"></tt> <em/pattern/ <em/command/
+<item>
+<tt><ref id="mime_lookup" name="mime&lowbar;lookup"></tt> <em/mimetype/ &lsqb; <em/mimetype/ ... &rsqb;
+<item>
+<tt><ref id="mime_lookup" name="unmime&lowbar;lookup"></tt> <em/mimetype/ &lsqb; <em/mimetype/ ... &rsqb;
 <item>
 <tt><ref id="color" name="mono"></tt> <em/object attribute/ &lsqb; <em/regexp/ &rsqb;
 <item>

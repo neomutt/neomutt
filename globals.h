@@ -118,6 +118,7 @@ WHERE LIST *AutoViewList INITVAL(0);
 WHERE LIST *AlternativeOrderList INITVAL(0);
 WHERE LIST *HeaderOrderList INITVAL(0);
 WHERE LIST *Ignore INITVAL(0);
+WHERE LIST *MimeLookupList INITVAL(0);
 WHERE LIST *UnIgnore INITVAL(0);
 WHERE LIST *MailLists INITVAL(0);
 WHERE LIST *SubscribedLists INITVAL(0);

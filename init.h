@@ -2455,6 +2455,8 @@ struct command_t Commands[] = {
   { "mailboxes",	mutt_parse_mailboxes,	0 },
   { "message-hook",	mutt_parse_hook,	M_MESSAGEHOOK },
   { "mbox-hook",	mutt_parse_hook,	M_MBOXHOOK },
+  { "mime_lookup",	parse_list,	UL &MimeLookupList },
+  { "unmime_lookup",	parse_unlist,	UL &MimeLookupList },
   { "mono",		mutt_parse_mono,	0 },
   { "my_hdr",		parse_my_hdr,		0 },
 #ifdef HAVE_PGP
