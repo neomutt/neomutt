@@ -140,3 +140,6 @@
 
 /* Where's mixmaster located? */
 #undef MIXMASTER
+
+/* Where are the character set definitions located? */
+#undef CHARMAPS_DIR

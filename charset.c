@@ -36,11 +36,6 @@
 #include "mutt.h"
 #include "charset.h"
 
-/* Where are character set definition files located? */
-
-#define CHARMAPS_DIR "/usr/share/i18n/charmaps"
-
-
 /* Define this if you want any dprint () statements in this code */
 
 #undef CHARSET_DEBUG

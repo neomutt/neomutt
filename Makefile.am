@@ -54,7 +54,7 @@ ACLOCAL_AMFLAGS = -I m4
 
 LDADD = @LIBOBJS@ @INTLLIBS@
 
-SUBDIRS = doc intl m4 po contrib
+SUBDIRS = m4 po intl doc $(ADD_SUBDIRS)
 
 OPS=@OPS@
 
