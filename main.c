@@ -131,7 +131,7 @@ static void show_version (void)
   struct utsname uts;
 
   printf ("Mutt %s (%s)\n", MUTT_VERSION, ReleaseDate);
-  puts (Notice);
+  puts (_(Notice));
 
   uname (&uts);
 
@@ -149,7 +149,7 @@ static void show_version (void)
   printf (" [using slang %d]", SLANG_VERSION);
 #endif
 
-  puts ("\nCompile options:");
+  puts (_("\nCompile options:"));
 
 #ifdef DOMAIN
   printf ("DOMAIN=\"%s\"\n", DOMAIN);
@@ -284,7 +284,7 @@ static void show_version (void)
 #endif
 
 
-  puts(ReachingUs);
+  puts(_(ReachingUs));
 
   exit (0);
 }
@@ -473,11 +473,11 @@ int main (int argc, char **argv)
       break;
     default:
       printf ("Mutt %s (%s)\n", MUTT_VERSION, ReleaseDate);
-      puts (Copyright);
+      puts (_(Copyright));
 #ifdef _PGPPATH
-      puts(ShaCopyright);
+      puts(_(ShaCopyright));
 #endif
-      puts (ReachingUs);
+      puts (_(ReachingUs));
       exit (0);
   }
 

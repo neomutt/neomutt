@@ -461,7 +461,7 @@ void application_pgp_handler (BODY *m, STATE *s)
 	else if (pgp_keyblock)
 	  state_puts (_("[-- END PGP PUBLIC KEY BLOCK --]\n"), s);
 	else
-	  state_puts ("\n[-- END PGP SIGNED MESSAGE --]\n", s);
+	  state_puts (_("\n[-- END PGP SIGNED MESSAGE --]\n"), s);
       }
     }
     else
