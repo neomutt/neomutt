@@ -151,13 +151,22 @@ int mutt_yesorno (const char *msg, int def)
   char *no = _("no");
 
 #ifdef HAVE_LANGINFO_YESEXPR
+  char *expr;
   regex_t reyes;
   regex_t reno;
-  int reyes_ok = ! regcomp (& reyes, nl_langinfo (YESEXPR), REG_NOSUB);
-  int reno_ok = ! regcomp (& reno, nl_langinfo (NOEXPR), REG_NOSUB);
+  int reyes_ok = 0;
+  int reno_ok = 0;
   char answer[2];
 
   answer[1] = 0;
+  
+  if ((expr = nl_langinfo (YESEXPR)) && *expr &&
+      !regcomp (&reyes, expr, REG_NOSUB))
+    reyes_ok = 1;
+  
+  if ((expr = nl_langinfo (NOEXPR)) && *expr &&
+      !regcomp (&reno, expr, REG_NOSUB))
+    reno_ok = 1;
 #endif
 
   CLEARLINE(LINES-1);
