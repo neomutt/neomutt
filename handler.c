@@ -912,9 +912,18 @@ static void flowed_stuff (STATE *s, const char *cont, int level)
     state_putc (' ', s);
 }
 
+static char *flowed_skip_indent (char *prefix, char *cont)
+{
+  for (; *cont == ' ' || *cont == '\t'; cont++)
+    *prefix++ = *cont;
+  *prefix = '\0';
+  return cont;
+}
+
 static void text_plain_flowed_handler (BODY *a, STATE *s)
 {
   char line[LONG_STRING];
+  char indent[LONG_STRING];
   int  quoted = -1;
   int  col = 0;
 
@@ -933,6 +942,8 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
   char *tail = NULL;
   char *lc = NULL;
   char *t;
+
+  *indent = '\0';
   
   if (s->prefix)
     add = 1;
@@ -957,11 +968,16 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
     cont = line + quoted;
     if (*cont == ' ')
       cont++;
-    
+
+    /* If there is an indentation, record it. */
+    cont = flowed_skip_indent (indent, cont);
+
     do 
     {
       if (tail)
 	cont = tail;
+
+      SKIPWS (cont);
       
       tail = NULL;
       soft = 0;
@@ -1011,7 +1027,13 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
       if (!col)
       {
 	flowed_quote (s, quoted);
-	flowed_stuff (s, cont, quoted + add);
+	if (*indent)
+	{
+	  flowed_stuff (s, indent, quoted + add);
+	  state_puts (indent, s);
+	}
+	else 
+	  flowed_stuff (s, cont, quoted + add);
       }
       
       state_puts (cont, s);
