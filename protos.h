@@ -325,10 +325,13 @@ int mutt_utf8towc (unsigned int *pwc, const char *s, size_t n);
 #ifdef LOCALES_HACK
 #define IsPrint(c) (isprint((unsigned char)(c)) || \
 	((unsigned char)(c) >= 0xa0))
+#define IsWPrint(wc) (iswprint(wc) || wc >= 0xa0)
 #else
 #define IsPrint(c) (isprint((unsigned char)(c)) || \
 	(option (OPTLOCALES) ? 0 : \
 	((unsigned char)(c) >= 0xa0)))
+#define IsWPrint(wc) (iswprint(wc) || \
+	(option (OPTLOCALES) ? 0 : (wc >= 0xa0)))
 #endif
 
 #define new_pattern() safe_calloc(1, sizeof (pattern_t))

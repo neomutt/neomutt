@@ -1008,7 +1008,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
 
     /* Handle backspace */
     special = 0;
-    if (iswprint (wc))
+    if (IsWPrint (wc))
     {
       wchar_t wc1;
       mbstate_t mbstate1;
@@ -1019,7 +1019,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
 	      wc1 == '\b') &&
 	     (wc1 = 0,
 	      k2 = mbrtowc (&wc1, (char *)buf+ch+k1, cnt-ch-k1, &mbstate1),
-	      iswprint (wc1)))
+	      IsWPrint (wc1)))
       {
 	if (wc == wc1)
 	{
@@ -1047,7 +1047,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
 	 || pa->attr))
       resolve_color (*lineInfo, n, vch, flags, special, pa);
 
-    if (iswprint (wc))
+    if (IsWPrint (wc))
     {
       if (wc == ' ')
 	space = ch;
