@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt-1.1.9 \n"
 "POT-Creation-Date: 2000-03-13 19:41+0100\n"
-"PO-Revision-Date: 2000-03-14 22:39+01:00\n"
+"PO-Revision-Date: 2000-03-19 22:56+01:00\n"
 "Last-Translator: Morten Bo Johansen <mojo@image.dk>\n"
 "Language-Team: Danish <da@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -56,7 +56,7 @@ msgstr "Navn: "
 #: alias.c:291
 #, c-format
 msgid "[%s = %s] Accept?"
-msgstr "[%s = %s] Acceptér?"
+msgstr "[%s = %s] O.k.?"
 
 #: alias.c:308 recvattach.c:396 recvattach.c:453
 msgid "Save to file: "
@@ -981,7 +981,7 @@ msgstr "[-- Brevdel #%d"
 #: handler.c:1075
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- Typ: %s/%s, Indkodning: %s, Størrelse: %s --]\n"
+msgstr "[-- Type: %s/%s, indkodning: %s, størrelse: %s --]\n"
 
 #: handler.c:1134
 #, c-format
@@ -1273,19 +1273,19 @@ msgstr "Tjek af SSL-certifikat"
 
 #: imap/imap_ssl.c:243
 msgid "(r)eject, accept (o)nce, (a)ccept always"
-msgstr "a(f)vis, acceptér (e)n gang, (a)cceptér altid"
+msgstr "(a)fvis, (g)odkend denne gang, (v)arig godkendelse"
 
 #: imap/imap_ssl.c:244
 msgid "roa"
-msgstr "fea"
+msgstr "agv"
 
 #: imap/imap_ssl.c:248
 msgid "(r)eject, accept (o)nce"
-msgstr "(a)fvis, acceptér (e)n gang"
+msgstr "(a)fvis, (g)odkend denne gang"
 
 #: imap/imap_ssl.c:249
 msgid "ro"
-msgstr "ae"
+msgstr "ag"
 
 #: imap/imap_ssl.c:253 pgpkey.c:441
 msgid "Exit  "
@@ -2181,7 +2181,7 @@ msgstr "opret dekrypteret kopi"
 
 #: keymap_alldefs.h:177
 msgid "Accept the chain constructed"
-msgstr "Acceptér den konstruerede kæde"
+msgstr "Brug den opbyggede kæde"
 
 #: keymap_alldefs.h:178
 msgid "Append a remailer to the chain"
@@ -2205,7 +2205,7 @@ msgstr "Vælg kædens næste led"
 
 #: keymap_alldefs.h:183
 msgid "send the message through a mixmaster remailer chain"
-msgstr "send et brev gennem en mixmaster genposterkæde"
+msgstr "send brevet gennem en mixmaster-genposterkæde"
 
 #: lib.c:58 lib.c:73 lib.c:104
 msgid "Out of memory!"
@@ -3311,12 +3311,12 @@ msgstr "Vælg en genposterkæde"
 #: remailer.c:591
 #, c-format
 msgid "Error: %s can't be used as the final remailer of a chain."
-msgstr "Fejl: %s kan ikke bruges som en kædes sidste genposter."
+msgstr "Fejl: %s kan ikke være sidste led i kæden."
 
 #: remailer.c:624
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."
-msgstr "Mixmaster-kæder kan kun have %d led."
+msgstr "Kæden må højst have %d led."
 
 #: remailer.c:649
 msgid "The remailer chain is already empty."
@@ -3332,7 +3332,7 @@ msgstr "Du har allerede valgt kædens sidste led."
 
 #: remailer.c:708
 msgid "Mixmaster doesn't accept Cc or Bcc headers."
-msgstr "Mixmaster accepterer ikke Cc eller Bcc i brevhovedet."
+msgstr "Breve sendt med Mixmaster må ikke have Cc- eller Bcc-felter."
 
 #: remailer.c:732
 msgid ""
