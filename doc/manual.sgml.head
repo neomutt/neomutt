@@ -1076,13 +1076,15 @@ mailing list, you could add ``lists mutt-users'' to your
 initialization file.  To tell mutt that you are subscribed to it,
 add ``subscribe mutt-users'' to your initialization file.
 If you also happen to get mail from someone whose address is
-<em/mutt-users@example.com/. you could use ``lists mutt-users@mutt.org'' to
+<em/mutt-users@example.com/, you could use ``lists mutt-users@mutt.org'' to
 match only mail from the actual list.
 
 The ``unlists'' command is used to remove a token from the list of
-mailing-lists. Use ``unlists *'' to remove all tokens.  To mark a
-mailing list which is subscribed as known, but unsubscribed, use the
-``unsubscribe'' command.
+known and subscribed mailing-lists. Use ``unlists *'' to remove all
+tokens.
+
+To remove a mailing list from the list of subscribed mailing lists,
+but keep it on the list of known mailing lists, use ``unsubscribe''.
 
 
 <sect1>Using Multiple spool mailboxes<label id="mbox-hook">
