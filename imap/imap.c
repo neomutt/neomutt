@@ -426,7 +426,7 @@ int imap_open_connection (IMAP_DATA* idata)
 	  {
 	    mutt_error (_("Could not negotiate TLS connection"));
 	    mutt_sleep (1);
-	    goto bail;
+	    goto err_close_conn;
 	  }
 	  else
 	  {
@@ -456,6 +456,7 @@ int imap_open_connection (IMAP_DATA* idata)
 
  err_close_conn:
   mutt_socket_close (idata->conn);
+  idata->state = IMAP_DISCONNECTED;
  bail:
   FREE (&idata->capstr);
   return -1;
