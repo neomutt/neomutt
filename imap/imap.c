@@ -514,7 +514,10 @@ int imap_open_mailbox (CONTEXT *ctx)
   int port;
 
   if (imap_parse_path (ctx->path, host, sizeof (host), &port, &pc))
-    return (-1);
+  {
+    mutt_error ("%s is an invalid IMAP path", ctx->path);
+    return -1;
+  }
 
   conn = mutt_socket_select_connection (host, port, 0);
   idata = CONN_DATA;
@@ -959,7 +962,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
     /* if we have a message set, then let's delete */
     if (deleted)
     {
-      snprintf (tmp, sizeof (tmp), _("Marking %d messages for deletion..."),
+      snprintf (tmp, sizeof (tmp), _("Marking %d messages deleted..."),
         deleted);
       mutt_message (tmp);
       snprintf (tmp, sizeof (tmp), "STORE %s +FLAGS.SILENT (\\Deleted)", buf);
@@ -1166,7 +1169,7 @@ int imap_mailbox_check (char *path, int new)
     /* If passive is selected, then we don't open connections to check
      * for new mail */
     if (option (OPTIMAPPASSIVE))
-      return (-1);
+      return -1;
     if (!idata)
     {
       /* The current connection is a new connection */
@@ -1175,7 +1178,7 @@ int imap_mailbox_check (char *path, int new)
       idata->conn = conn;
     }
     if (imap_open_connection (idata, conn))
-      return (-1);
+      return -1;
   }
 
   imap_fix_path (idata, pc, buf, sizeof (buf));
@@ -1207,7 +1210,7 @@ int imap_mailbox_check (char *path, int new)
   {
     /* Server does not support STATUS, and this is not the current mailbox.
      * There is no lightweight way to check recent arrivals */
-      return (-1);
+      return -1;
   }
 
   mutt_socket_write (conn, buf);
@@ -1215,9 +1218,7 @@ int imap_mailbox_check (char *path, int new)
   do 
   {
     if (mutt_socket_read_line_d (buf, sizeof (buf), conn) < 0)
-    {
-      return (-1);
-    }
+      return -1;
 
     if (buf[0] == '*') 
     {
@@ -1243,12 +1244,15 @@ int imap_mailbox_check (char *path, int new)
       {
 	if (conn->data && 
 	    imap_handle_untagged (idata, buf) != 0)
-	  return (-1);
+	  return -1;
       }
     }
   }
   while ((mutt_strncmp (buf, seq, SEQLEN) != 0));
 
+  imap_cmd_finish (seq, idata);
+
+  /* what does this do? */
   conn->uses--;
 
   return msgcount;

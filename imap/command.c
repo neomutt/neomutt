@@ -37,6 +37,42 @@ static char *Capabilities[] = {"IMAP4", "IMAP4rev1", "STATUS", "ACL",
   "LOGIN-REFERRALS", "MAILBOX-REFERRALS", "QUOTA", "SCAN", "SORT", 
   "THREAD=ORDEREDSUBJECT", "UIDPLUS", "AUTH=ANONYMOUS", NULL};
 
+/* imap_cmd_finish: When the caller has finished reading command responses,
+ *   it must call this routine to perform cleanup (eg fetch new mail if
+ *   detected, do expunge) */
+void imap_cmd_finish (const char* seq, IMAP_DATA* idata)
+{
+  if ((idata->state == IMAP_SELECTED) && 
+      !idata->selected_ctx->closing && 
+      (idata->status == IMAP_NEW_MAIL || 
+       idata->status == IMAP_EXPUNGE))
+  {
+    int count = idata->newMailCount;
+
+    if (idata->status == IMAP_NEW_MAIL && count > idata->selected_ctx->msgcount)
+    {
+      /* read new mail messages */
+      dprint (1, (debugfile, "imap_cmd_finish: fetching new mail\n"));
+
+      while (count > idata->selected_ctx->hdrmax)
+	mx_alloc_memory (idata->selected_ctx);
+
+      count = imap_read_headers (idata->selected_ctx, 
+        idata->selected_ctx->msgcount, count - 1) + 1;
+      idata->check_status = IMAP_NEW_MAIL;
+    }
+    else
+    {
+      imap_reopen_mailbox (idata->selected_ctx, NULL);
+      idata->check_status = IMAP_REOPENED;
+    }
+
+    idata->status = 0;
+
+    mutt_clear_error ();
+  }
+}
+
 /* imap_code: returns 1 if the command result was OK, or 0 if NO or BAD */
 int imap_code (const char *s)
 {
@@ -57,7 +93,6 @@ int imap_exec (char* buf, size_t buflen, IMAP_DATA* idata, const char* cmd,
   char* out;
   int outlen;
   char seq[8];
-  int count;
 
   /* create sequence for command */
   imap_make_sequence (seq, sizeof (seq));
@@ -80,36 +115,7 @@ int imap_exec (char* buf, size_t buflen, IMAP_DATA* idata, const char* cmd,
   }
   while (mutt_strncmp (buf, seq, SEQLEN) != 0);
 
-  if ((idata->state == IMAP_SELECTED) && 
-      !idata->selected_ctx->closing && 
-      (idata->status == IMAP_NEW_MAIL || 
-       idata->status == IMAP_EXPUNGE))
-  {
-
-    count = idata->newMailCount;
-
-    if (idata->status == IMAP_NEW_MAIL && count > idata->selected_ctx->msgcount)
-    {
-      /* read new mail messages */
-      dprint (1, (debugfile, "imap_exec(): new mail detected\n"));
-
-      while (count > idata->selected_ctx->hdrmax)
-	mx_alloc_memory (idata->selected_ctx);
-
-      count = imap_read_headers (idata->selected_ctx, 
-	  idata->selected_ctx->msgcount, count - 1) + 1;
-      idata->check_status = IMAP_NEW_MAIL;
-    }
-    else
-    {
-      imap_reopen_mailbox (idata->selected_ctx, NULL);
-      idata->check_status = IMAP_REOPENED;
-    }
-
-    idata->status = 0;
-
-    mutt_clear_error ();
-  }
+  imap_cmd_finish (seq, idata);
 
   if (!imap_code (buf))
   {

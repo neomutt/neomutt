@@ -122,23 +122,34 @@ int imap_parse_path (char* path, char* host, size_t hlen, int* port,
   *port = IMAP_PORT;
   pc = path;
   if (*pc != '{')
-    return (-1);
+    return -1;
   pc++;
   n = 0;
   while (*pc && *pc != '}' && *pc != ':' && (n < hlen-1))
     host[n++] = *pc++;
   host[n] = 0;
+  /* catch NULL hosts */
+  if (!*host)
+  {
+    dprint (1, (debugfile, "imap_parse_path: NULL host in %s\n", path));
+    return -1;
+  }
   if (!*pc)
-    return (-1);
+    return -1;
   if (*pc == ':')
   {
     pc++;
     pt = pc;
     while (*pc && *pc != '}') pc++;
     if (!*pc)
-      return (-1);
+      return -1;
     *pc = '\0';
     *port = atoi (pt);
+    if (!port)
+    {
+      dprint (1, (debugfile, "imap_parse_path: bad port in %s\n", path));
+      return -1;
+    }
     *pc = '}';
   }
   pc++;

@@ -162,6 +162,7 @@ int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint);
 int imap_authenticate (IMAP_DATA *idata, CONNECTION *conn);
 
 /* command.c */
+void imap_cmd_finish (const char* seq, IMAP_DATA* idata);
 int imap_code (const char* s);
 int imap_exec (char* buf, size_t buflen, IMAP_DATA* idata, const char* cmd,
   int flags);

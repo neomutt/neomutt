@@ -61,7 +61,10 @@ int imap_init_browse (char *path, struct browser_state *state)
   int noinferiors;
 
   if (imap_parse_path (path, host, sizeof (host), &port, &ipath))
-    return (-1);
+  {
+    mutt_error ("%s is an invalid IMAP path", path);
+    return -1;
+  }
 
   strfcpy (list_cmd, option (OPTIMAPLSUB) ? "LSUB" : "LIST", sizeof (list_cmd));
 

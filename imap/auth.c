@@ -366,9 +366,8 @@ static int imap_auth_cram_md5 (IMAP_DATA* idata, const char* user,
    *   around them when the bug report comes in. Until then, we'll remain
    *   blissfully RFC-compliant.
    */
-   hmac_md5 (pass, obuf, hmac_response);
-   dprint (2, (debugfile, "CRAM response: %s,[%s]->", obuf, pass));
-   /* dubious optimisation I saw elsewhere: make the whole string in one call */
+  hmac_md5 (pass, obuf, hmac_response);
+  /* dubious optimisation I saw elsewhere: make the whole string in one call */
   snprintf (obuf, sizeof (obuf),
     "%s %02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
     user,
@@ -376,7 +375,7 @@ static int imap_auth_cram_md5 (IMAP_DATA* idata, const char* user,
     hmac_response[4], hmac_response[5], hmac_response[6], hmac_response[7],
     hmac_response[8], hmac_response[9], hmac_response[10], hmac_response[11],
     hmac_response[12], hmac_response[13], hmac_response[14], hmac_response[15]);
-  dprint(2, (debugfile, "%s\n", obuf));
+  dprint(2, (debugfile, "CRAM response: %s\n", obuf));
 
   mutt_to_base64 ((unsigned char*) ibuf, (unsigned char*) obuf, strlen (obuf));
   strcpy (ibuf + strlen (ibuf), "\r\n");
