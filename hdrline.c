@@ -404,7 +404,7 @@ hdr_format_str (char *dest,
 	  setlocale (LC_TIME, "C");
 
 	mutt_format_s (dest, destlen, prefix, buf2);
-	if (len > 0 && op != 'd')
+	if (len > 0 && op != 'd' && op != 'D') /* Skip ending op */
 	  src = cp + 1;
       }
       break;
