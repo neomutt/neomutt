@@ -1,3 +1,7 @@
+2002-12-13 15:53:36  David Shaw  <dshaw@jabberwocky.com>
+
+	* lib.c: Fixing Thomas' screw-up in mutt_concat_path.
+
 2002-12-13 11:00:44  René Clerc  <rene@clerc.nl>
 
 	* po/nl.po: update.
