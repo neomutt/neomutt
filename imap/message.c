@@ -163,22 +163,31 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
             }
             imap_read_bytes (fp, CTX_DATA->conn, bytes);
             if (mutt_socket_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
+	    {
+	      fclose (fp);
               return -1;
-
+	    }
+	    
             pc = buf;
           }
         }
         else if (imap_handle_untagged (CTX_DATA, buf) != 0)
+	{
+	  fclose (fp);
           return -1;
+	}
       }
     }
     while ((msgno + 1) >= fetchlast && mutt_strncmp (seq, buf, SEQLEN) != 0);
 
     h->content_length = -bytes;
     if (msg_parse_fetch (h, fetchbuf) == -1)
+    {
+      fclose (fp);
       return -1;
-
-    /* subtract the header length; the total message size will be
+    }
+    
+    /* FIXME?: subtract the header length; the total message size will be
        added to this */
 
     /* in case we get new mail while fetching the headers */
@@ -496,7 +505,6 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   if (len)
     flush_buffer(buf, &len, CTX_DATA->conn);
 
-    
   mutt_socket_write (CTX_DATA->conn, "\r\n");
   fclose (fp);
 
