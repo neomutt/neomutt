@@ -132,14 +132,13 @@ static void pgp_current_time (STATE *s)
   time_t t;
   char p[STRING];
 
-  state_puts (_("[-- PGP output follows (current time: "), s);
-
   t = time (NULL);
-  strfcpy (p, asctime (localtime (&t)), sizeof (p));
-  p[mutt_strlen (p) - 1] = 0; /* kill the newline */
+  setlocale (LC_TIME, "");
+  strftime (p, sizeof (p),
+	    _("[-- PGP output follows (current time: %c) --]\n"),
+	    localtime (&t));
+  setlocale (LC_TIME, "C");
   state_puts (p, s);
-
-  state_puts (") --]\n", s);
 }
 
 
