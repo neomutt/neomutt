@@ -6,9 +6,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.5.0i\n"
+"Project-Id-Version: 1.5.1i\n"
 "POT-Creation-Date: 2002-05-02 01:23+0200\n"
-"PO-Revision-Date: 2002-04-03 23:50+300\n"
+"PO-Revision-Date: 2002-05-02 19:15+300\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Im Eunjea <eunjea@kldp.org>\n"
 "MIME-Version: 1.0\n"
@@ -704,71 +704,69 @@ msgid "PGP already selected. Clear & continue ? "
 msgstr "PGP가 선택됨. 지우고 계속할까요? "
 
 #: crypt.c:70
-#, c-format
 msgid " (current time: %c)"
-msgstr ""
+msgstr " (현재 시간: %c)"
 
 #: crypt.c:76
-#, fuzzy, c-format
 msgid "[-- %s output follows%s --]\n"
-msgstr "[-- %s에 --]\n"
+msgstr "[-- %s 출력 결과 %s --]\n"
 
 #: crypt.c:93
-#, fuzzy
 msgid "Passphrase(s) forgotten."
-msgstr "PGP 암호 문구 잊음."
+msgstr "암호 문구 잊음."
 
 #: crypt.c:132
-#, fuzzy
 msgid "Enter PGP passphrase:"
-msgstr "PGP 암호 문구 잊음."
+msgstr "PGP 암호 문구 입력:"
 
 #: crypt.c:150
 msgid "Enter SMIME passphrase:"
-msgstr ""
+msgstr "SMIME 암호 문구 입력:"
 
 #: crypt.c:185
-#, fuzzy
 msgid "Create an inline PGP message?"
-msgstr "발신인의 별칭 만들기"
+msgstr "inline PGP 메세지를 만들까요?"
 
 #: crypt.c:512 crypt.c:554
 msgid "Trying to extract PGP keys...\n"
-msgstr ""
+msgstr "PGP 열쇠를 추출하는 중...\n"
 
 #: crypt.c:534 crypt.c:572
 msgid "Trying to extract S/MIME certificates...\n"
-msgstr ""
+msgstr "S/MIME 인증서 추출하는 중...\n"
 
 #: crypt.c:696
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
 "\n"
 msgstr ""
+"[-- 오류: 일치하지 않는 multipart/signed 구조! --]\n"
+"\n"
 
 #: crypt.c:722
-#, fuzzy, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
 "\n"
-msgstr "오류: multipart/signed는 프로토콜이 없음."
+msgstr ""
+"[-- 오류: 알 수 없는 multipart/signed 프로토콜 %s! --]\n"
+"\n"
 
 #: crypt.c:759
-#, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
 "\n"
 msgstr ""
+"[-- Warning: %s/%s 서명을 확인 할 수 없음 --]\n"
+"\n"
 
 #. XXX - WHAT!?!?!?
 #. Now display the signed body
 #: crypt.c:770
-#, fuzzy
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
 msgstr ""
-"[-- 아래의 자료는 S/MIME 서명 되었음 --]\n"
+"[-- 아래의 자료는 서명 되었음 --]\n"
 "\n"
 
 #: crypt.c:776
@@ -776,15 +774,16 @@ msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
 msgstr ""
+"[-- 경고: 서명을 찾을 수 없음. --]\n"
+"\n"
 
 #: crypt.c:782
-#, fuzzy
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
 msgstr ""
 "\n"
-"[-- S/MIME 서명 자료 끝 --]\n"
+"[-- 서명 자료의 끝 --]\n"
 
 #: curs_lib.c:153
 msgid "yes"
@@ -905,7 +904,6 @@ msgstr "제한 패턴이 없음."
 
 #. i18n: ask for a limit to apply
 #: curs_main.c:786
-#, c-format
 msgid "Limit: %s"
 msgstr "패턴: %s"
 
@@ -1047,9 +1045,8 @@ msgstr ""
 ".\t\t줄에 홀로 있을 경우 입력 종료\n"
 
 #: edit.c:181
-#, c-format
 msgid "%d: invalid message number.\n"
-msgstr "잘못된 메일 번호.\n"
+msgstr "%d: 잘못된 메일 번호.\n"
 
 #: edit.c:312
 msgid "(End message with a . on a line by itself)\n"
@@ -1201,7 +1198,7 @@ msgstr "[-- 지정된 access-type %s는 지원되지 않음 --]\n"
 
 #: handler.c:1835
 msgid "Error: multipart/signed has no protocol."
-msgstr "오류: multipart/signed는 프로토콜이 없음."
+msgstr "오류: multipart/signed 프로토콜이 없음."
 
 #: handler.c:1845
 msgid "Error: multipart/encrypted has no protocol parameter!"
@@ -1265,7 +1262,7 @@ msgstr "%s 도움말"
 
 #: hook.c:243
 msgid "unhook: Can't do unhook * from within a hook."
-msgstr "unhook: unhook * 할수 없음."
+msgstr "unhook: unhook * 할 수 없음."
 
 #: hook.c:255
 #, c-format
@@ -1912,9 +1909,8 @@ msgid "move the cursor to the end of the word"
 msgstr "단어의 끝으로 이동"
 
 #: keymap_alldefs.h:73
-#, fuzzy
 msgid "scroll down through the history list"
-msgstr "history 목록 위로 올리기"
+msgstr "history 목록 아래로 내리기"
 
 #: keymap_alldefs.h:74
 msgid "scroll up through the history list"
@@ -3526,9 +3522,8 @@ msgid "Print attachment?"
 msgstr "첨부물 출력?"
 
 #: recvattach.c:906
-#, fuzzy
 msgid "Can't decrypt encrypted message!"
-msgstr "표시된 메일이 없습니다."
+msgstr "암호화된 메일을 해독할 수 없음!"
 
 #: recvattach.c:920
 msgid "Attachments"
@@ -3987,21 +3982,3 @@ msgstr "제한된 보기로 부모 메일은 보이지 않는 상태임."
 #: thread.c:1085
 msgid "Parent message is not available."
 msgstr "부모 메일이 존재하지 않음."
-
-#~ msgid "This message seems to require key %s. (Any key to continue)"
-#~ msgstr "이 메세지는 %s 열쇠가 필요함. (아무 키나 계속)"
-
-#~ msgid "Alert: No mailbox specified in certificate.\n"
-#~ msgstr "주의: 인증서에 메일함이 설정되지 않음.\n"
-
-#~ msgid "Alert: Certificate does *NOT* belong to \"%s\".\n"
-#~ msgstr "주의: 인증서가 \"%s\"에 속하지 않음.\n"
-
-#~ msgid "Certificate \"%s\" exists for \"%s\"."
-#~ msgstr "\"%2$s\"의 인증서 \"%1$s\""
-
-#~ msgid "Successfully added certificate \"%s\" for \"%s\". "
-#~ msgstr "\"%2$s\"의 인증서 \"%1$s\"가 성공적으로 추가됨. "
-
-#~ msgid "Certificate *NOT* added."
-#~ msgstr "인증서가 추가되지 않음."
