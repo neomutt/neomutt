@@ -891,7 +891,7 @@ struct option_t MuttVars[] = {
   ** .dt %l .dd number of lines in the message (does not work with maildir,
   **            mh, and possibly IMAP folders)
   ** .dt %L .dd If an address in the To or CC header field matches an address
-  **            defined by the users ``lists'' command, this displays
+  **            defined by the users ``subscribe'' command, this displays
   **            "To <list-name>", otherwise the same as %F.
   ** .dt %m .dd total number of message in the mailbox
   ** .dt %M .dd number of hidden messages if the thread is collapsed.
