@@ -462,9 +462,8 @@ static int fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags)
 
     if ((flags & SENDGROUPREPLY) && !in->mail_followup_to)
     {
-      if(!mutt_addr_is_user(in->to))
-	rfc822_append (&out->cc, in->to);
-      
+      /* if(!mutt_addr_is_user(in->to)) */
+      rfc822_append (&out->cc, in->to);
       rfc822_append (&out->cc, in->cc);
     }
   }
