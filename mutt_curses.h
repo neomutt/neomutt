@@ -78,7 +78,11 @@ void mutt_curs_set (int);
 
 #define ctrl(c) ((c)-'@')
 
+#ifdef KEY_ENTER
 #define CI_is_return(c) ((c) == '\r' || (c) == '\n' || (c) == KEY_ENTER)
+#else
+#define CI_is_return(c) ((c) == '\r' || (c) == '\n')
+#endif
 
 event_t mutt_getch (void);
 
