@@ -652,10 +652,13 @@ int mutt_save_message (HEADER *h, int delete,
   *redraw = 0;
 
   
-  snprintf (prompt, sizeof (prompt), _("%s%s to mailbox"),
-	    decode ? (delete ? _("Decode-save") : _("Decode-copy")) :
-	    (decrypt ? (delete ? _("Decrypt-save") : _("Decrypt-copy")):
-	     (delete ? _("Save") : _("Copy"))), h ? "" : _(" tagged"));
+  snprintf (prompt, sizeof (prompt),
+	    decode  ? (delete ? _("Decode-save%s to mailbox") :
+		       _("Decode-copy%s to mailbox")) :
+	    (decrypt ? (delete ? _("Decrypt-save%s to mailbox") :
+			_("Decrypt-copy%s to mailbox")) :
+	     (delete ? _("Save%s to mailbox") : _("Copy%s to mailbox"))),
+	    h ? "" : _(" tagged"));
   
   if (h)
   {
