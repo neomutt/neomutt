@@ -498,27 +498,13 @@ int mutt_parse_pgp_hdr (char *p, int set_signas)
 }
 #endif /* _PGPPATH */
 
-static void free_body_list (BODY **bp)
-{
-  BODY *c;
-  
-  for (; *bp; *bp = c)
-  {
-    c = (*bp)->next;
-    mutt_free_body (bp);
-  }
-}
-
-
 int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 			       short weed)
 {
-  PARAMETER *par, **ppar;
   MESSAGE *msg = NULL;
   char file[_POSIX_PATH_MAX];
-  BODY *b;
   LIST *p, **q;
-
+  BODY *b;
   FILE *bfp;
 
   if (!fp && (msg = mx_open_message (ctx, hdr->msgno)) == NULL)
@@ -526,21 +512,20 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 
   if (!fp) fp = msg->fp;
 
-  /* parse the message header */
+  bfp = fp;
+
+  /* parse the message header and MIME structure */
+
   fseek (fp, hdr->offset, 0);
+  newhdr->offset = hdr->offset;
   newhdr->env = mutt_read_rfc822_header (fp, newhdr, 1, weed);
+  newhdr->content->length = hdr->content->length;
+  mutt_parse_part (fp, newhdr->content);
 
-  /* NOTE: We do have easy access to the entire MIME structure of
-   * the message to be recalled here.  We could use this to 
-   * considerably simplify the code below.
-   */
-
-  mutt_free_body (&newhdr->content);
-  
   /* weed user-agent, x-mailer - we don't want them here */
   p = newhdr->env->userhdrs; 
   q = &newhdr->env->userhdrs;
-  
+
   while (p)
   {
     if (!strncasecmp (p->data, "x-mailer:", 9) || !strncasecmp (p->data, "user-agent:", 11))
@@ -558,92 +543,67 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   safe_free ((void **) &newhdr->env->message_id);
   safe_free ((void **) &newhdr->env->mail_followup_to);
 
-  /* make sure we parse the message */
-  mutt_parse_part (fp, hdr->content);
-
 #ifdef _PGPPATH
   /* decrypt pgp/mime encoded messages */
-  if ((hdr->pgp | PGPENCRYPT) && mutt_is_multipart_encrypted (hdr->content))
+  if ((newhdr->pgp & PGPENCRYPT) && 
+      mutt_is_multipart_encrypted (newhdr->content))
   {
     newhdr->pgp |= PGPENCRYPT;
     if (!pgp_valid_passphrase())
       goto err;
 
     mutt_message _("Invoking PGP...");
-    if (pgp_decrypt_mime (fp, &bfp, hdr->content, &b) == -1)
+    if (pgp_decrypt_mime (fp, &bfp, newhdr->content, &b) == -1)
     {
  err:
       mx_close_message (&msg);
       mutt_free_envelope (&newhdr->env);
+      mutt_free_body (&newhdr->content);
       return -1;
     }
+
+    mutt_free_body (&newhdr->content);
+    newhdr->content = b;
+
     mutt_clear_error ();
   }
-  else
-#endif
-  {
-    /* copy the MIME structure */
-    b = mutt_new_body ();
-    memcpy (b, hdr->content, sizeof (BODY));
 
-    /* detach the temporary MIME structure from the message. */
-    b->xtype = safe_strdup (b->xtype);
-    b->subtype = safe_strdup (b->subtype);
-    b->form_name = safe_strdup (b->form_name);
-    b->filename = safe_strdup (b->filename);
-    b->d_filename = safe_strdup (b->d_filename);
-    
-    /* copy parameters */
-    for (par = b->parameter, ppar = &b->parameter; par; ppar = &(*ppar)->next, par = par->next)
-    {
-      *ppar = mutt_new_parameter ();
-      (*ppar)->attribute = safe_strdup (par->attribute);
-      (*ppar)->value = safe_strdup (par->value);
-    }
-
-    /* re-parse the original message - needed when we 
-     * resend an attached message/rfc822 body.
-     */
-    
-    hdr->content->parts = NULL;
-    mutt_parse_part (fp, hdr->content);
-    
-    bfp = fp;
-  }
-
-#ifdef _PGPPATH
   /* 
    * remove a potential multipart/signed layer - useful when
    * resending messages 
    */
   
-  if (mutt_is_multipart_signed (b))
+  if (mutt_is_multipart_signed (newhdr->content))
   {
     newhdr->pgp |= PGPSIGN;
     
     /* destroy the signature */
-    mutt_free_body (&b->parts->next);
-    b = mutt_remove_multipart (b);
+    mutt_free_body (&newhdr->content->parts->next);
+    newhdr->content = mutt_remove_multipart (newhdr->content);
   }
 #endif
-  
+
   /* 
    * We don't need no primary multipart.
    * Note: We _do_ preserve messages!
    * 
    * XXX - we don't handle multipart/alternative in any 
-   * smart way when sending messages.
+   * smart way when sending messages.  However, one may
+   * consider this a feature.
    * 
    */
-  
-  if (b->type == TYPEMULTIPART)
-    b = mutt_remove_multipart (b);
-  
-  newhdr->content = b;
-  
+
+  if (newhdr->content->type == TYPEMULTIPART)
+    newhdr->content = mutt_remove_multipart (newhdr->content);
+
   /* create temporary files for all attachments */
-  for (; b; b = b->next)
+  for (b = newhdr->content; b; b = b->next)
   {
+    
+    /* what follows is roughly a receive-mode variant of
+     * mutt_get_tmp_attachment () from muttlib.c
+     */
+
     file[0] = '\0';
     if (b->filename)
     {
@@ -658,7 +618,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
     if (mutt_save_attachment (bfp, b, file, 0, NULL) == -1)
     {
       mutt_free_envelope (&newhdr->env);
-      free_body_list (&newhdr->content);
+      mutt_free_body (&newhdr->content);
       if (bfp != fp) fclose (bfp);
       if (msg) mx_close_message (&msg);
       return -1;
