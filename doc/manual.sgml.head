@@ -575,7 +575,7 @@ anonymous remailer.  Mixmaster permits you to send your messages
 anonymously using a chain of remailers.
 
 To use it, you'll have to obey certain restrictions.  Most
-important, you cannot ues the <tt/Cc/ and <tt/Bcc/ headers.  To tell
+important, you cannot use the <tt/Cc/ and <tt/Bcc/ headers.  To tell
 Mutt to use mixmaster, you have to select a remailer chain, using
 the mix function on the compose menu.  
 
