@@ -123,7 +123,7 @@ clean-real:
 
 clean:
 	rm -f $(CLEANFILES)
-	(cd $(srcdir)/charsets && $(MAKE) $@
+	(cd $(srcdir)/charsets && $(MAKE) $@)
 
 veryclean:
 	rm -f $(VERYCLEANFILES)
