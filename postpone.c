@@ -357,7 +357,8 @@ int mutt_parse_pgp_hdr (char *p, int set_signas)
     PgpSignAs = safe_strdup(pgp_sign_as);
   }
 
-  if (set_signas || *pgp_sign_micalg)
+  /* the micalg field must not be empty */
+  if (set_signas && *pgp_sign_micalg)
   {
     safe_free((void **) &PgpSignMicalg);
     PgpSignMicalg = safe_strdup(pgp_sign_micalg);
