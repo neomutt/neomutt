@@ -79,7 +79,11 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
    * as they come in. */
   mutt_mktemp (tempfile);
   if (!(fp = safe_fopen (tempfile, "w+")))
+  {
+    mutt_error (_("Could not create temporary file %s"), tempfile);
+    mutt_sleep (2);
     return -1;
+  }
   unlink (tempfile);
 
   /* make sure context has room to hold the mailbox */
