@@ -48,7 +48,7 @@ INCLUDES=-I. -I$(includedir)
 
 non_us_sources = pgp.c pgpinvoke.c pgpkey.c pgplib.c sha1dgst.c \
 	gnupgparse.c sha.h sha_locl.h \
-	doc/language.txt doc/language50.txt OPS.PGP doc/PGP-Notes \
+	doc/language.txt doc/language50.txt OPS.PGP doc/PGP-Notes.txt \
 	OPS.MIX remailer.c remailer.h pgpewrap	\
 	contrib/pgp2.rc contrib/pgp5.rc contrib/gpg.rc
 
