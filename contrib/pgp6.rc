@@ -21,7 +21,7 @@ set pgp_sign_command="PGPPASSFD=0; export PGPPASSFD; cat - %f | pgp6 +compatible
 set pgp_encrypt_only_command="pgp6 +compatible   +verbose=0 +encrypttoself +batchmode -aeft %r < %f"
 
 # create a pgp/mime encrypted and signed attachment
-set pgp_encrypt_sign_command="PGPPASSFD=0; export PGPPASSFD; cat - %f | pgp6 +compatible   +verbose=0 +encrypttoself +batchmode +clearsig=off -aefts %?a?-u %a? %r"
+set pgp_encrypt_sign_command="PGPPASSFD=0; export PGPPASSFD; cat - %f | pgp6 +compatible   +verbose=0 +encrypttoself +batchmode +clearsig=off -aefts %?a? -u %a? %r"
 
 # import a key into the public key ring
 set pgp_import_command="pgp6 +compatible  -ka %f "
