@@ -61,6 +61,7 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *hdr, int flag);
 #define mutt_new_parameter() safe_calloc (1, sizeof (PARAMETER))
 #define mutt_new_header() safe_calloc (1, sizeof (HEADER))
 #define mutt_new_envelope() safe_calloc (1, sizeof (ENVELOPE))
+#define mutt_new_enter_state() safe_calloc (1, sizeof (ENTER_STATE))
 
 typedef const char * format_t (char *, size_t, char, const char *, const char *, const char *, const char *, unsigned long, format_flag);
 
@@ -171,6 +172,7 @@ void mutt_forward_trailer (FILE *fp);
 void mutt_free_alias (ALIAS **);
 void mutt_free_body (BODY **);
 void mutt_free_color (int fg, int bg);
+void mutt_free_enter_state (ENTER_STATE **);
 void mutt_free_envelope (ENVELOPE **);
 void mutt_free_header (HEADER **);
 void mutt_free_parameter (PARAMETER **);
@@ -255,8 +257,8 @@ int mutt_prepare_template(FILE*, CONTEXT *, HEADER *, HEADER *, short);
 int mutt_resend_message (FILE *, CONTEXT *, HEADER *);
 #define mutt_enter_fname(A,B,C,D,E) _mutt_enter_fname(A,B,C,D,E,0,NULL,NULL)
 int _mutt_enter_fname (const char *, char *, size_t, int *, int, int, char ***, int *);
-#define mutt_enter_string(A,B,C,D,E) _mutt_enter_string(A,B,C,D,E,0,NULL,NULL)
-int _mutt_enter_string (char *, size_t, int, int, int, int, char ***, int *);
+int  mutt_enter_string (char *buf, size_t buflen, int y, int x, int flags);
+int _mutt_enter_string (char *, size_t, int, int, int, int, char ***, int *, ENTER_STATE *);
 #define mutt_get_field(A,B,C,D) _mutt_get_field(A,B,C,D,0,NULL,NULL)
 int _mutt_get_field (char *, char *, size_t, int, int, char ***, int *);
 int mutt_get_hook_type (const char *);

@@ -718,6 +718,17 @@ typedef struct
   int flags;
 } STATE;
 
+/* used by enter.c */
+
+typedef struct
+{
+  wchar_t *wbuf;
+  size_t wbuflen;
+  size_t wbufn;
+  size_t curpos;
+  size_t begin;
+} ENTER_STATE;
+
 /* flags for the STATE struct */
 #define M_DISPLAY	(1<<0) /* output is displayed to the user */
 
