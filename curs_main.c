@@ -242,7 +242,7 @@ int mutt_index_menu (void)
 {
   char buf[LONG_STRING], helpstr[SHORT_STRING];
   int op = OP_NULL;
-  event_t event = {OP_NULL, 0};
+  event_t event = {-1, 0};
   int done = 0;                /* controls when to exit the "event" loop */
   int i = 0, j;
   int tag = 0;                 /* has the tag-prefix command been pressed? */
@@ -477,15 +477,27 @@ int mutt_index_menu (void)
       {
 	timeout (Timeout * 1000); /* milliseconds */      
 	event = mutt_getch ();
+	dprint(1, (debugfile, "mutt_index_menu[%d]: Got event (%d, %d)\n", __LINE__,
+		   event.ch, event.op));
 	timeout (-1); /* restore blocking operation */
 	if (event.ch != -1)
 	{
+	  dprint(1, (debugfile, "mutt_index_menu[%d]: Pushing event (%d, %d)\n", __LINE__,
+		     event.ch, event.op));
 	  mutt_ungetch (event.ch, event.op);
 	  op = km_dokey (MENU_MAIN);
+	  dprint(1, (debugfile, "mutt_index_menu[%d]: Got op %d\n", __LINE__,
+		     op));
 	}
+	else
+	  op = -1;
       }
       else
+      {
 	op = km_dokey (MENU_MAIN);
+	dprint(1, (debugfile, "mutt_index_menu[%d]: Got op %d\n", __LINE__,
+		   op));
+      }
 
       mutt_curs_set (1);
       

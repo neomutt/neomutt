@@ -790,41 +790,40 @@ int mutt_parse_macro (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 /* exec command-name */
 int mutt_parse_exec (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  int op = OP_NULL;
-  char *command = NULL; 
+  int ops[128]; 
+  int nops = 0;
   struct binding_t *bindings = NULL;
-
+  char *command;
+  
   if (!MoreArgs (s))
   {
     strfcpy (err->data, _("exec: too few arguments"), err->dsize);
     return (-1);
   }
 
-  mutt_extract_token (buf, s, 0);
-  command = safe_strdup (buf->data);
-
-  if (MoreArgs (s))
+  do
   {
-    strfcpy (err->data, _("too many arguments"), err->dsize);
-    return (-1);
+    mutt_extract_token (buf, s, 0);
+    command = buf->data;
+
+    if ((bindings = km_get_table (CurrentMenu)) == NULL)
+      bindings = OpGeneric;
+    
+    ops[nops] = get_op (bindings, command, strlen(command));
+    if (ops[nops] == OP_NULL)
+      ops[nops] = get_op (OpGeneric, command, strlen(command));
+    
+    if (ops[nops] == OP_NULL)
+    {
+      mutt_flushinp ();
+      mutt_error (_("%s: no such command"), command);
+      return (-1);
+    }
   }
-
-  if ((bindings = km_get_table (CurrentMenu)) == NULL)
-    bindings = OpGeneric;
-
-  op = get_op (bindings, command, strlen(command));
-  if (op == OP_NULL)
-    op = get_op (OpGeneric, command, strlen(command));
-
-  if (op == OP_NULL)
-  {
-    mutt_flushinp ();
-    mutt_error (_("%s: no such command"), command);
-    FREE (&command);
-    return (-1);
-  }
-
-  mutt_ungetch (0, op);
-  FREE (&command);
+  while(MoreArgs(s) && ++nops < sizeof(ops)/sizeof(ops[0]));
+  
+  while(nops)
+    mutt_ungetch(0, ops[--nops]);
+  
   return 0;
 }

@@ -48,7 +48,7 @@ void mutt_refresh (void)
 event_t mutt_getch (void)
 {
   int ch;
-  event_t err = {-1,0}, ret;
+  event_t err = {-1, OP_NULL }, ret;
 
   if (UngetCount)
     return (KeyEvent[--UngetCount]);
