@@ -540,7 +540,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** When set, this variable contains a default from address.  It
   ** can be overridden using my_hdr (including from send-hooks) and
-  ** 
+  ** ``$reverse_name''.
   */
   { "hdr_format",	DT_SYN,  R_NONE, UL "index_format", 0 },
   /*
