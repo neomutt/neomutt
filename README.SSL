@@ -29,6 +29,22 @@ For example:
 	set certificate_file=~/.mutt/certificates
 
 
+If after doing the above, you are unable to successfully connect, it
+is likely that your IMAP server does not support one of the SSL protocols.
+There exist three different protocols, TLSv1, SSLv2, and SSLv3.  To check
+each of these, you use the following:
+    openssl s_client -host <imap server> -port <port> -verify -debug -no_tls1
+    openssl s_client -host <imap server> -port <port> -verify -debug -no_ssl2
+    openssl s_client -host <imap server> -port <port> -verify -debug -no_ssl3
+
+You can also combine the options until you get a successfull connect.  Once
+you know which options do not work, you can set the variables for non-working
+protocols to know.  The variables for the protocols are ssl_use_tlsv1, 
+ssl_use_sslv2, and ssl_use_sslv3.
+
 -- 
 Tommi Komulainen
 Tommi.Komulainen@iki.fi
+
+Updated by Jeremy Katz
+katzj@linuxpower.org

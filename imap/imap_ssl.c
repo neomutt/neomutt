@@ -77,6 +77,21 @@ int ssl_socket_open (CONNECTION * conn)
   SSLeay_add_ssl_algorithms ();
   data->ctx = SSL_CTX_new (SSLv23_client_method ());
 
+  /* disable SSL protocols as needed */
+  if (!option(OPTTLSV1)) 
+  {
+    SSL_CTX_set_options(data->ctx, SSL_OP_NO_TLSv1);
+  }
+
+  if (!option(OPTSSLV2)) 
+  {
+    SSL_CTX_set_options(data->ctx, SSL_OP_NO_SSLv2);
+  }
+  if (!option(OPTSSLV3)) 
+  {
+    SSL_CTX_set_options(data->ctx, SSL_OP_NO_SSLv3);
+  }
+
   data->ssl = SSL_new (data->ctx);
   SSL_set_fd (data->ssl, conn->fd);
 

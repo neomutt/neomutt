@@ -660,7 +660,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Specifies the password for your IMAP account.  If unset, Mutt will
-  ** prompt you for your password when you invoke the fetch-mail function.
+  * prompt you for your password when you invoke the fetch-mail function.
   ** \fBWarning\fP: you should only use this option when you are on a
   ** fairly secure machine, because the superuser can read your muttrc even
   ** if you are the only one who can read the file.
@@ -1323,6 +1323,24 @@ struct option_t MuttVars[] = {
   ** if you accept it or not. If you accept it, the certificate can also 
   ** be saved in this file and further connections are automatically 
   ** accepted.
+  */
+  { "ssl_use_sslv2", DT_BOOL, R_NONE, OPTSSLV2, 1 },
+  /*
+  ** .pp
+  ** This variables specifies whether to attempt to use SSLv2 in the
+  ** SSL authentication process.
+  */
+  { "ssl_use_sslv3", DT_BOOL, R_NONE, OPTSSLV3, 1 },
+  /*
+  ** .pp
+  ** This variables specifies whether to attempt to use SSLv3 in the
+  ** SSL authentication process.
+  */
+  { "ssl_use_tlsv1", DT_BOOL, R_NONE, OPTTLSV1, 1 },
+  /*
+  ** .pp
+  ** This variables specifies whether to attempt to use TLSv1 in the
+  ** SSL authentication process.
   */
 #endif
 
