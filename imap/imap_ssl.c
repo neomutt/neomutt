@@ -29,6 +29,11 @@
 #include "mutt_curses.h"
 #include "imap_ssl.h"
 
+#if OPENSSL_VERSION_NUMBER >= 0x00904000L
+#define READ_X509_KEY(fp, key)	PEM_read_X509(fp, key, NULL, NULL)
+#else
+#define READ_X509_KEY(fp, key)	PEM_read_X509(fp, key, NULL)
+#endif
 
 char *SslCertFile = NULL;
 
@@ -176,7 +181,7 @@ static int ssl_check_certificate (sslsockdata * data)
     EVP_PKEY *peer = X509_get_pubkey (data->cert);
     X509 *savedkey = NULL;
     int pass = 0;
-    while ((savedkey = PEM_read_X509 (fp, &savedkey, NULL)))
+    while ((savedkey = READ_X509_KEY (fp, &savedkey)))
     {
       if (X509_verify (savedkey, peer))
       {
@@ -218,9 +223,17 @@ static int ssl_check_certificate (sslsockdata * data)
   snprintf (menu->dialog[14], SHORT_STRING, _("Fingerprint: %s"), buf);
 
   menu->title = _("SSL Certificate check");
-  menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always");
-  menu->keys = _("roa");
-
+  if (SslCertFile)
+  {
+    menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always");
+    menu->keys = _("roa");
+  }
+  else
+  {
+    menu->prompt = _("(r)eject, accept (o)nce");
+    menu->keys = _("ro");
+  }
+  
   helpstr[0] = '\0';
   mutt_make_help (buf, sizeof (buf), _("Exit  "), MENU_GENERIC, OP_EXIT);
   strncat (helpstr, buf, sizeof (helpstr));
