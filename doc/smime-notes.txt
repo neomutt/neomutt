@@ -3,6 +3,8 @@ How to add use mutt's S/MIME capabilities
 - Add the contents of contrib/smime.rc to your .muttrc. Don't worry about
   changing the smime_sign_as line at this point -- you'll change it later.
 
+- Run 'smime_keys init'.
+
 - Download and install OpenSSL.
 
 - Get yourself a certificate. (You can get one for free from www.thawte.com,
@@ -40,7 +42,7 @@ How to add use mutt's S/MIME capabilities
 
 - You probably want to import the trusted roots in
   contrib/ca-bundle.crt. This makes you trust anything that was ultimately
-  signed by one of them. You can use "smime_keys.pl add_root" to do so, or
+  signed by one of them. You can use "smime_keys add_root" to do so, or
   just copy ca-bundle.crt into the place you point mutt's smime_ca_location
   variable to.
 

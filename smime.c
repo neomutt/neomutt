@@ -103,7 +103,9 @@ int mutt_is_application_smime (BODY *m)
 
   if (m->type & TYPEAPPLICATION && m->subtype)
   {
-    if (!mutt_strcasecmp (m->subtype, "x-pkcs7-mime"))
+    /* S/MIME MIME types don't need x- anymore, see RFC2311 */
+    if (!mutt_strcasecmp (m->subtype, "x-pkcs7-mime") ||
+	!mutt_strcasecmp (m->subtype, "pkcs7-mime"))
     {
       if ((t = mutt_get_parameter ("smime-type", m->parameter)))
       {
@@ -113,6 +115,12 @@ int mutt_is_application_smime (BODY *m)
 	  return (SMIMESIGN|SMIMEOPAQUE);
 	else return 0;
       }
+      /* Netscape 4.7 uses 
+       * Content-Description: S/MIME Encrypted Message
+       * instead of Content-Type parameter
+       */
+      if (!mutt_strcasecmp (m->description, "S/MIME Encrypted Message"))
+	return SMIMEENCRYPT;
       complain = 1;
     }
     else if (mutt_strcasecmp (m->subtype, "octet-stream"))
@@ -374,9 +382,9 @@ static void smime_entry (char *s, size_t l, MUTTMENU * menu, int num)
       truststate = N_("Unknown   ");
   }
   if (this.public)
-    snprintf(s, l, "  0x%.8X%i %s %-35.35s %s", this.hash, this.suffix, truststate, this.email, this.nick);
+    snprintf(s, l, " 0x%.8X.%i %s %-35.35s %s", this.hash, this.suffix, truststate, this.email, this.nick);
   else
-    snprintf(s, l, "  0x%.8X%i %-35.35s %s", this.hash, this.suffix, this.email, this.nick);
+    snprintf(s, l, " 0x%.8X.%i %-35.35s %s", this.hash, this.suffix, this.email, this.nick);
 }
 
 
