@@ -179,7 +179,7 @@ size_t mbrtowc_iconv (wchar_t *pwc, const char *s, size_t n,
       /* we have a character */
       memset (ps, 0, sizeof (*ps));
       utf8rtowc (pwc, bufo, ob - bufo, &mbstate);
-      return *pwc ? (ib - (k ? bufi + k : s)) : 0;
+      return (pwc && *pwc) ? (ib - (k ? bufi + k : s)) : 0;
     }
     else if (!r || (r == (size_t)(-1) && errno == EINVAL))
     {
