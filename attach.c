@@ -745,12 +745,9 @@ int mutt_decode_save_attachment (FILE *fp, BODY *m, char *path,
     m->length = st.st_size;
     m->encoding = ENC8BIT;
     m->offset = 0;
-    if (mutt_is_message_type(m->type, m->subtype))
-    {
-      saved_parts = m->parts;
-      saved_hdr = m->hdr;
-      m->parts = mutt_parse_messageRFC822 (s.fpin, m);
-    }
+    saved_parts = m->parts;
+    saved_hdr = m->hdr;
+    mutt_parse_part (s.fpin, m);
   }
   else
     s.fpin = fp;

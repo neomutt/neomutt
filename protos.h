@@ -166,6 +166,7 @@ void mutt_mktemp (char *);
 void mutt_nocurses_error (const char *, ...);
 void mutt_normalize_time (struct tm *);
 void mutt_parse_mime_message (CONTEXT *ctx, HEADER *);
+void mutt_parse_part (FILE *, BODY *);
 void mutt_pipe_message_to_state (HEADER *, STATE *);
 void mutt_perror (const char *);
 void mutt_prepare_envelope (ENVELOPE *);

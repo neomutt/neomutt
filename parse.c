@@ -406,6 +406,30 @@ BODY *mutt_read_mime_header (FILE *fp, int digest)
   return (p);
 }
 
+void mutt_parse_part (FILE *fp, BODY *b)
+{
+  switch (b->type)
+  {
+    case TYPEMULTIPART:
+      fseek (fp, b->offset, SEEK_SET);
+      b->parts =  mutt_parse_multipart (fp, mutt_get_parameter ("boundary", b->parameter), 
+					b->offset + b->length,
+					mutt_strcasecmp ("digest", b->subtype) == 0);
+      break;
+
+    case TYPEMESSAGE:
+      if (b->subtype)
+      {
+	fseek (fp, b->offset, SEEK_SET);
+	if (mutt_is_message_type(b))
+	  b->parts = mutt_parse_messageRFC822 (fp, b);
+	else if (mutt_strcasecmp (b->subtype, "external-body") == 0)
+	  b->parts = mutt_read_mime_header (fp, 0);
+      }
+      break;
+  }
+}
+
 /* parse a MESSAGE/RFC822 body
  *
  * args:
@@ -544,29 +568,9 @@ BODY *mutt_parse_multipart (FILE *fp, const char *boundary, long end_off, int di
     last->length = end_off - last->offset;
 
   /* parse recursive MIME parts */
-  for (last = head; last; last = last->next)
-  {
-    switch (last->type)
-    {
-      case TYPEMULTIPART:
-	fseek (fp, last->offset, 0);
-	last->parts = mutt_parse_multipart (fp, mutt_get_parameter ("boundary", last->parameter), last->offset + last->length, mutt_strcasecmp ("digest", last->subtype) == 0);
-	break;
-
-      case TYPEMESSAGE:
-	if (last->subtype)
-	{
-	  fseek (fp, last->offset, SEEK_SET);
-	  if (mutt_strcasecmp (last->subtype, "rfc822") == 0 ||
-	      mutt_strcasecmp (last->subtype, "news") == 0)
-	    last->parts = mutt_parse_messageRFC822 (fp, last);
-	  else if (mutt_strcasecmp (last->subtype, "external-body") == 0)
-	    last->parts = mutt_read_mime_header (fp, 0);
-	}
-	break;
-    }
-  }
-
+  for(last = head; last; last = last->next)
+    mutt_parse_part(fp, last);
+  
   return (head);
 }
 
