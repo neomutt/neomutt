@@ -1,3 +1,12 @@
+2005-01-27 20:38:02  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
+
+	* commands.c: 0. In compose mode, press Ctrl-t to change
+	Content-Type.  1. Type "application/octet-stream" for example.
+	2. Press Ctrl-t again.	3. Type "text/plain; charset=us-ascii"
+	4. You will be asked "Convert to us-ascii upon sending?"
+	5. Press y or n.  6. You will see a strange message:
+	 "Content-Type changed to Convert to us-ascii upon sending?."
+
 2005-01-27 20:26:52  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* pgp.c: Return an error in pgp_decrypt_part when the PGP output
