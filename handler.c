@@ -1078,24 +1078,28 @@ void autoview_handler (BODY *a, STATE *s)
       mutt_message(_("Invoking autoview command: %s"),command);
     }
 
-    if (piped)
+    if ((fpin = safe_fopen (tempfile, "w+")) == NULL)
     {
-      thepid = mutt_create_filter (command, &fpin, &fpout, &fperr);
-      mutt_copy_bytes (s->fpin, fpin, a->length);
+      mutt_perror ("fopen");
+      rfc1524_free_entry (&entry);
+      return;
+    }
+    
+    mutt_copy_bytes (s->fpin, fpin, a->length);
+
+    if(!piped)
+    {
       fclose (fpin);
+      thepid = mutt_create_filter (command, NULL, &fpout, &fperr);
     }
     else
     {
-      if ((fpin = safe_fopen (tempfile, "w")) == NULL)
-      {
-        mutt_perror ("fopen");
-	rfc1524_free_entry (&entry);
-        return;
-      }
-
-      mutt_copy_bytes (s->fpin, fpin, a->length);
-      fclose (fpin);
-      thepid = mutt_create_filter (command, NULL, &fpout, &fperr);
+      unlink(tempfile);
+      fflush(fpin);
+      rewind(fpin);
+      thepid = mutt_create_filter_fd (command, NULL, &fpout, &fperr,
+				      dup(fileno(fpin)), -1, -1);
+      fclose(fpin);
     }
 
     if (s->prefix)
@@ -1147,7 +1151,9 @@ void autoview_handler (BODY *a, STATE *s)
     fclose (fpout);
     fclose (fperr);
     mutt_wait_filter (thepid);
-    mutt_unlink (tempfile);
+    if(!piped)
+      mutt_unlink (tempfile);
+
     if (s->flags & M_DISPLAY) 
       mutt_clear_error ();
   }
