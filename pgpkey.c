@@ -456,11 +456,12 @@ static pgp_key_t *pgp_select_key (pgp_key_t *keys,
   menu->help = helpstr;
   menu->data = KeyTable;
 
-  strfcpy (buf, _("PGP keys matching "), sizeof (buf));
   if (p)
-    strfcpy (buf, p->mailbox, sizeof (buf) - mutt_strlen (buf));
+    snprintf (buf, sizeof (buf), _("PGP keys matching <%s>."), p->mailbox);
   else
-    strcat (buf, s);
+    snprintf (buf, sizeof (buf), _("PGP keys matching \"%s\"."), s);
+    
+  
   menu->title = buf;
 
   kp = NULL;
