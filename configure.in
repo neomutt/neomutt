@@ -65,7 +65,7 @@ if test -f $srcdir/EXPORTABLE ; then
 else
         SUBVERSION="i"
 
-        AC_ARG_ENABLE(pgp, [  --disable-pgp             Disable PGP support],
+        AC_ARG_ENABLE(pgp, [  --disable-pgp              Disable PGP support],
         [       if test x$enableval = xno ; then
                         HAVE_PGP=no
                 fi
@@ -268,7 +268,7 @@ AC_CHECK_FUNCS(strftime, break, [AC_CHECK_LIB(intl, strftime)])
 dnl AIX may not have fchdir()
 AC_CHECK_FUNCS(fchdir, [AC_DEFINE(HAVE_FCHDIR)], [mutt_cv_fchdir=no])
 
-AC_ARG_WITH(regex, [  --with-regex              Use the GNU regex library ],
+AC_ARG_WITH(regex, [  --with-regex               Use the GNU regex library ],
         [mutt_cv_regex=yes],
         [AC_CHECK_FUNCS(regcomp, mutt_cv_regex=no, mutt_cv_regex=yes)])
 
@@ -302,7 +302,7 @@ if test x$with_homespool != x; then
         AC_DEFINE(USE_DOTLOCK)
         mutt_cv_setgid=no
 else
-        AC_ARG_WITH(mailpath, [ --with-mailpath=DIR     Directory where spool mailboxes are located],
+        AC_ARG_WITH(mailpath, [  --with-mailpath=DIR        Directory where spool mailboxes are located],
                 [mutt_cv_mailpath=$withval],
                 [ AC_CACHE_CHECK(where new mail is stored, mutt_cv_mailpath,
                         [mutt_cv_mailpath=no
@@ -374,7 +374,7 @@ AC_SUBST(DOTLOCK_TARGET)
 
 
 AC_MSG_CHECKING(where to put architecture-dependent files)
-AC_ARG_WITH(libdir, [  --with-libdir=PATH        Specify where to put arch dependent files],
+AC_ARG_WITH(libdir, [  --with-libdir=PATH         Specify where to put arch dependent files],
         [mutt_cv_libdir=$withval],
         [mutt_cv_libdir="${mutt_cv_prefix}/lib/mutt"])
 AC_MSG_RESULT($mutt_cv_libdir)
@@ -383,7 +383,7 @@ libdir=$mutt_cv_libdir
 AC_SUBST(libdir)
 
 AC_MSG_CHECKING(where to put architecture-independent data files)
-AC_ARG_WITH(sharedir, [ --with-sharedir=PATH    Specify where to put arch independent files],
+AC_ARG_WITH(sharedir, [  --with-sharedir=PATH       Specify where to put arch independent files],
         [mutt_cv_sharedir=$withval],
         [if test -d ${mutt_cv_prefix}/share; then
                 mutt_cv_sharedir="${mutt_cv_prefix}/share/mutt"
@@ -395,7 +395,7 @@ AC_MSG_RESULT($mutt_cv_sharedir)
 sharedir=$mutt_cv_sharedir
 AC_SUBST(sharedir)
 
-AC_ARG_WITH(iconv, [  --with-iconv=DIR          Where libiconv is installed ],
+AC_ARG_WITH(iconv, [  --with-iconv=DIR           Where libiconv is installed ],
        [mutt_cv_iconv=$withval
        if test "$mutt_cv_iconv" != yes -a \
                 "$mutt_cv_iconv" != no -a \
@@ -506,7 +506,7 @@ else # "$mutt_cv_iconv" != no
 fi
 
 AC_MSG_CHECKING(where to put the documentation)
-AC_ARG_WITH(docdir, [  --with-docdir=PATH        Specify where to put the documentation],
+AC_ARG_WITH(docdir, [  --with-docdir=PATH         Specify where to put the documentation],
         [mutt_cv_docdir=$withval],
         [mutt_cv_docdir="$mutt_cv_prefix/doc/mutt"])
 AC_MSG_RESULT($mutt_cv_docdir)
@@ -524,7 +524,7 @@ fi
 AC_SUBST(DOTLOCK_GROUP)
 AC_SUBST(DOTLOCK_PERMISSION)
 
-AC_ARG_WITH(domain, [  --with-domain=DOMAIN     Specify your DNS domain name ],
+AC_ARG_WITH(domain, [  --with-domain=DOMAIN       Specify your DNS domain name],
         [if test $withval != yes; then
                 AC_DEFINE_UNQUOTED(DOMAIN, "$withval")
         fi])
@@ -533,7 +533,7 @@ need_socket="no"
 
 dnl -- socket dependencies --
 
-AC_ARG_ENABLE(pop,  [  --enable-pop             Enable POP3 support],
+AC_ARG_ENABLE(pop,  [  --enable-pop               Enable POP3 support],
 [       if test x$enableval = xyes ; then
                 AC_DEFINE(USE_POP)
                 MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pop.o pop_lib.o pop_auth.o"
@@ -542,7 +542,7 @@ AC_ARG_ENABLE(pop,  [  --enable-pop             Enable POP3 support],
         fi
 ])
 
-AC_ARG_ENABLE(imap, [  --enable-imap            Enable IMAP support],
+AC_ARG_ENABLE(imap, [  --enable-imap              Enable IMAP support],
 [       if test x$enableval = xyes ; then
                 AC_DEFINE(USE_IMAP)
                 LIBIMAP="-Limap -limap"
@@ -571,7 +571,7 @@ fi
 
 dnl -- imap dependencies --
 
-AC_ARG_WITH(gss,    [   --with-gss[=DIR]         Compile in GSSAPI authentication for IMAP],
+AC_ARG_WITH(gss,    [    --with-gss[=DIR]         Compile in GSSAPI authentication for IMAP],
         [
         if test "$need_imap" != "yes"
         then
@@ -634,7 +634,7 @@ AC_ARG_WITH(gss,    [   --with-gss[=DIR]         Compile in GSSAPI authenticatio
 ])
 AM_CONDITIONAL(USE_GSS, test x$need_gss = xyes)
 
-AC_ARG_WITH(ssl, [  --with-ssl[=PFX]       Compile in SSL support for POP/IMAP],
+AC_ARG_WITH(ssl, [  --with-ssl[=PFX]           Compile in SSL support for POP/IMAP],
 [       if test "$with_ssl" != "no"
         then
           if test "$need_socket" != "yes"; then
@@ -668,7 +668,7 @@ AC_ARG_WITH(ssl, [  --with-ssl[=PFX]       Compile in SSL support for POP/IMAP],
 AM_CONDITIONAL(USE_SSL, test x$need_ssl = xyes)
 
 dnl SSL support via NSS
-AC_ARG_WITH(nss, [  --with-nss[=PFX]       Compile in SSL support for POP/IMAP via NSS],
+AC_ARG_WITH(nss, [  --with-nss[=PFX]           Compile in SSL support for POP/IMAP via NSS],
 [       if test "$with_nss" != no
         then
           if test "$need_socket" != "yes"; then
@@ -730,19 +730,19 @@ fi
 
 dnl -- end socket --
 
-AC_ARG_ENABLE(debug, [  --enable-debug          Enable debugging support],
+AC_ARG_ENABLE(debug, [  --enable-debug             Enable debugging support],
         [ if test x$enableval = xyes ; then
                 AC_DEFINE(DEBUG)
           fi
          ])
 
-AC_ARG_ENABLE(flock, [  --enable-flock          Use flock() to lock files],
+AC_ARG_ENABLE(flock, [  --enable-flock             Use flock() to lock files],
         [if test $enableval = yes; then
                 AC_DEFINE(USE_FLOCK)
         fi])
 
 mutt_cv_fcntl=yes
-AC_ARG_ENABLE(fcntl, [  --disable-fcntl         Do NOT use fcntl() to lock files ],
+AC_ARG_ENABLE(fcntl, [  --disable-fcntl            Do NOT use fcntl() to lock files ],
         [if test $enableval = no; then mutt_cv_fcntl=no; fi])
 
 if test $mutt_cv_fcntl = yes; then
@@ -750,7 +750,7 @@ if test $mutt_cv_fcntl = yes; then
 fi
 
 mutt_cv_warnings=yes
-AC_ARG_ENABLE(warnings, [  --disable-warnings    turn off compiler warnings (not recommended)],
+AC_ARG_ENABLE(warnings, [  --disable-warnings         Turn off compiler warnings (not recommended)],
 [if test $enableval = no; then
         mutt_cv_warnings=no
 fi])
@@ -759,7 +759,7 @@ if test x$GCC = xyes -a $mutt_cv_warnings = yes; then
         CFLAGS="-Wall -pedantic $CFLAGS"
 fi
 
-AC_ARG_ENABLE(nfs-fix, [  --enable-nfs-fix         Work around an NFS with broken attributes caching ],
+AC_ARG_ENABLE(nfs-fix, [  --enable-nfs-fix           Work around an NFS with broken attributes caching ],
         [if test x$enableval = xyes; then
                 AC_DEFINE(NFS_ATTRIBUTE_HACK)
         fi])
@@ -769,12 +769,12 @@ AC_ARG_ENABLE(buffy-size, [  --enable-buffy-size        Use file size attribute 
                 AC_DEFINE(BUFFY_SIZE)
         fi])
 
-AC_ARG_ENABLE(mailtool, [  --enable-mailtool      Enable Sun mailtool attachments support ],
+AC_ARG_ENABLE(mailtool, [  --enable-mailtool          Enable Sun mailtool attachments support ],
         [if test x$enableval = xyes; then
                 AC_DEFINE(SUN_ATTACHMENT)
         fi])
 
-AC_ARG_ENABLE(locales-fix, [  --enable-locales-fix      The result of isprint() is unreliable ],
+AC_ARG_ENABLE(locales-fix, [  --enable-locales-fix       The result of isprint() is unreliable ],
         [if test x$enableval = xyes; then
                 AC_DEFINE(LOCALES_HACK)
         fi])
@@ -784,7 +784,7 @@ AC_ARG_WITH(exec-shell, [  --with-exec-shell=SHELL    Specify alternate shell (O
                 AC_DEFINE_UNQUOTED(EXECSHELL, "$withval")
         fi])
 
-AC_ARG_ENABLE(exact-address, [  --enable-exact-address  Enable regeneration of email addresses],
+AC_ARG_ENABLE(exact-address, [  --enable-exact-address     Enable regeneration of email addresses],
         [if test $enableval = yes; then
                 AC_DEFINE(EXACT_ADDRESS)
         fi])
@@ -857,7 +857,7 @@ if test "$mutt_cv_mbstate_t" = no; then
 fi
 
 wc_funcs=maybe
-AC_ARG_WITH(wc-funcs, [ --without-wc-funcs       Do not use the system's wchar_t functions],
+AC_ARG_WITH(wc-funcs, [  --without-wc-funcs         Do not use the system's wchar_t functions],
         wc_funcs=$withval)
 
 if test "$wc_funcs" != yes -a "$wc_funcs" != no; then
