@@ -1,3 +1,7 @@
+2004-07-19 21:41:43  David Champion  <dgc@uchicago.edu>  (roessler)
+
+	* mbox.c, mh.c, pgp.c, sendlib.c: Fix some compiler warnings.
+
 2004-07-19 21:39:28  Adeodato Simó  <asp16@alu.ua.es>  (roessler)
 
 	* doc/manual.sgml.head: Fixing a missing newline.
