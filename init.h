@@ -338,6 +338,7 @@ struct command_t Commands[] = {
   { "auto_view",	parse_list,		UL &AutoViewList },
   { "alternative_order",	parse_list,	UL &AlternativeOrderList},
   { "bind",		mutt_parse_bind,	0 },
+  { "charset-hook",	mutt_parse_hook,	M_CHARSETHOOK },
 #ifdef HAVE_COLOR
   { "color",		mutt_parse_color,	0 },
   { "uncolor",		mutt_parse_uncolor,	0 },

@@ -84,7 +84,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     memset (&pattern, 0, sizeof (pattern));
     pattern.data = safe_strdup (path);
   }
-  else if (DefaultHook
+  else if (DefaultHook && !(data & M_CHARSETHOOK)
 #ifdef _PGPPATH
       && !(data & M_PGPHOOK)
 #endif /* _PGPPATH */
@@ -153,9 +153,9 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   {
     rx = safe_malloc (sizeof (regex_t));
 #ifdef M_PGPHOOK
-    if ((rc = REGCOMP (rx, pattern.data, ((data & M_PGPHOOK) ? REG_ICASE : 0))) != 0)
+    if ((rc = REGCOMP (rx, pattern.data, ((data & (M_PGPHOOK|M_CHARSETHOOK)) ? REG_ICASE : 0))) != 0)
 #else
-    if ((rc = REGCOMP (rx, pattern.data, 0)) != 0)
+      if ((rc = REGCOMP (rx, pattern.data, (data & M_CHARSETHOOK) ? REG_ICASE : 0)) != 0)
 #endif /* _PGPPATH */
     {
       regerror (rc, rx, err->data, err->dsize);
@@ -330,18 +330,27 @@ void mutt_select_fcc (char *path, size_t pathlen, HEADER *hdr)
   mutt_pretty_mailbox (path);
 }
 
-#ifdef _PGPPATH
-char *mutt_pgp_hook (ADDRESS *adr)
+static char *_mutt_string_hook (const char *match, int hook)
 {
   HOOK *tmp = Hooks;
 
   for (; tmp; tmp = tmp->next)
   {
-    if ((tmp->type & M_PGPHOOK) && ((adr->mailbox && 
-	 regexec (tmp->rx.rx, adr->mailbox, 0, NULL, 0) == 0) ^ tmp->rx.not))
+    if ((tmp->type & M_PGPHOOK) && ((match &&
+	 regexec (tmp->rx.rx, match, 0, NULL, 0) == 0) ^ tmp->rx.not))
       return (tmp->command);
   }
   return (NULL);
 }
-#endif /* _PGPPATH */
 
+char *mutt_charset_hook (const char *chs)
+{
+  return _mutt_string_hook (chs, M_CHARSETHOOK);
+}
+
+#ifdef _PGPPATH
+char *mutt_pgp_hook (ADDRESS *adr)
+{
+  return _mutt_string_hook (adr->mailbox, M_PGPHOOK);
+}
+#endif /* _PGPPATH */

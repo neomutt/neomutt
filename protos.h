@@ -109,6 +109,7 @@ const char *mutt_attach_fmt (
 	unsigned long data,
 	format_flag flags);
 
+char *mutt_charset_hook (const char *);
 char *mutt_expand_path (char *, size_t);
 char *mutt_find_hook (int, const char *);
 char *mutt_gen_msgid (void);
