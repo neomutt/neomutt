@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.3.19\n"
-"POT-Creation-Date: 2001-06-07 22:11+0200\n"
-"PO-Revision-Date: 2001-05-07 14:17+0900\n"
+"POT-Creation-Date: 2001-06-07 22:12+0200\n"
+"PO-Revision-Date: 2001-06-19 15:03+0900\n"
 "Last-Translator: oota toshiya <oota@ppd.fc.nec.co.jp>\n"
 "Language-Team: mutt-j <mutt-j@ns.ribbon.or.jp>\n"
 "MIME-Version: 1.0\n"
@@ -360,9 +360,8 @@ msgid "Messages bounced."
 msgstr "メッセージ再送完了"
 
 #: commands.c:329 commands.c:368 commands.c:385
-#, fuzzy
 msgid "Can't create filter process"
-msgstr "フィルタ作成できず"
+msgstr "フィルタプロセス作成できず"
 
 #: commands.c:414
 msgid "Pipe to command: "
@@ -465,9 +464,9 @@ msgid "Content-Type changed to %s."
 msgstr "Content-Typeを %s に変更"
 
 #: commands.c:846
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; %s."
-msgstr "Character set を %s に変更"
+msgstr "Character set を %s に変更; %s"
 
 #: commands.c:848
 msgid "not converting"
@@ -686,9 +685,8 @@ msgid "Function not permitted in attach-message mode."
 msgstr "添付メッセージモードでは機能は無効"
 
 #: curs_main.c:63
-#, fuzzy
 msgid "No visible messages."
-msgstr "新着メッセージはありません"
+msgstr "見ることの出来るメッセージはありません"
 
 #: curs_main.c:238
 msgid "Cannot toggle write on a readonly mailbox!"
@@ -735,9 +733,8 @@ msgid "New mail in this mailbox."
 msgstr "このメールボックスに新着メールがある"
 
 #: curs_main.c:477
-#, fuzzy
 msgid "Mailbox was externally modified."
-msgstr "メールボックスが外部から変更された。フラグが不正な可能性あり"
+msgstr "メールボックスが外部から変更された。"
 
 #: curs_main.c:589
 msgid "No tagged messages."
@@ -1007,9 +1004,9 @@ msgid "Invoking autoview command: %s"
 msgstr "自動表示コマンド %s 起動"
 
 #: handler.c:1520
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Can't run %s. --]\n"
-msgstr "[-- 上の %s --]\n"
+msgstr "[-- %s を実行できず --]\n"
 
 #: handler.c:1535 handler.c:1553
 #, c-format
@@ -1131,7 +1128,7 @@ msgstr "%s のヘルプ"
 
 #: hook.c:243
 msgid "unhook: Can't do unhook * from within a hook."
-msgstr "unhook: hook 中に unhook * を行なえず."
+msgstr "unhook: フック内から unhook * できず"
 
 #: hook.c:255
 #, c-format
@@ -1141,12 +1138,11 @@ msgstr "unhook: %s は不明なフックタイプ"
 #: hook.c:261
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s."
-msgstr "unhook: %2$s 中に %1$s を削除できず."
+msgstr "unhook: %2$s 内から %1$s を削除できず"
 
 #: imap/auth.c:104
-#, fuzzy
 msgid "No authenticators available"
-msgstr "SASL認証失敗。"
+msgstr "認証処理が無効"
 
 #: imap/auth_anon.c:39
 msgid "Authenticating (anonymous)..."
@@ -1206,18 +1202,16 @@ msgid "Create mailbox: "
 msgstr "メールボックスを作成: "
 
 #: imap/browse.c:276
-#, fuzzy
 msgid "Mailbox must have a name."
-msgstr "メールボックスは変更なし"
+msgstr "メールボックスには名前が必要"
 
 #: imap/browse.c:284
 msgid "Mailbox created."
 msgstr "メールボックス作成完了"
 
 #: imap/command.c:289
-#, fuzzy
 msgid "Mailbox closed"
-msgstr "メールボックス削除"
+msgstr "メールボックスを閉じた"
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
@@ -1241,7 +1235,7 @@ msgstr "TLSを使った安全な接続?"
 
 #: imap/imap.c:389
 msgid "Could not negotiate TLS connection"
-msgstr ""
+msgstr "TLS接続の接続確立出来ず"
 
 #: imap/imap.c:533
 #, c-format
@@ -1278,9 +1272,8 @@ msgid "Expunging messages from server..."
 msgstr "サーバからメッセージを削除中..."
 
 #: imap/imap.c:1043
-#, fuzzy
 msgid "CLOSE failed"
-msgstr "ログイン失敗。"
+msgstr "クローズ失敗。"
 
 #: imap/imap.c:1299
 #, c-format
@@ -2547,9 +2540,9 @@ msgid "Append messages to %s?"
 msgstr "%s にメッセージを追加するか?"
 
 #: mutt_socket.c:84 mutt_socket.c:140
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s closed"
-msgstr "%s への接続に失敗"
+msgstr "%s への接続をクローズした"
 
 #: mutt_socket.c:250
 msgid "SSL is unavailable."
@@ -2560,9 +2553,9 @@ msgid "Preconnect command failed."
 msgstr "事前接続コマンドが失敗。"
 
 #: mutt_socket.c:352 mutt_socket.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "サーバ %s への接続エラー。"
+msgstr "%s への交信エラー(%s)。"
 
 #: mutt_socket.c:400 mutt_socket.c:441
 #, c-format
@@ -3130,9 +3123,8 @@ msgid "Fetching PGP key..."
 msgstr "PGP鍵を取得中..."
 
 #: pgpkey.c:486
-#, fuzzy
 msgid "All matching keys are marked expired/revoked."
-msgstr "この鍵は 期限切れ/使用不可/廃棄済み の理由で使えない。"
+msgstr "一致した鍵の全ては 期限切れ/廃棄済み としてマークされている。"
 
 #. __STRCAT_CHECKED__
 #: pgpkey.c:512
@@ -3172,9 +3164,8 @@ msgid "This key can't be used: expired/disabled/revoked."
 msgstr "この鍵は 期限切れ/使用不可/廃棄済み の理由で使えない。"
 
 #: pgpkey.c:608
-#, fuzzy
 msgid "This ID is expired/disabled/revoked"
-msgstr "この鍵は 期限切れ/使用不可/廃棄済み の理由で使えない。"
+msgstr "このIDは 期限切れ/使用不可/廃棄済み である。"
 
 #: pgpkey.c:612
 msgid "This ID's trust level is undefined."
@@ -3189,9 +3180,9 @@ msgid "This ID is only marginally trusted."
 msgstr "このIDはかろうじて信用されている。"
 
 #: pgpkey.c:622
-#, fuzzy, c-format
+#, c-format
 msgid "%s Do you really want to use the key?"
-msgstr "%s を本当に使いたいか?"
+msgstr "%s の鍵を本当に使いたいか?"
 
 #: pgpkey.c:720
 msgid "Please enter the key ID: "
