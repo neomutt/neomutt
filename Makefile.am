@@ -132,6 +132,10 @@ install-data-local: Muttrc
 	-if [ ! -f $(DESTDIR)$(sysconfdir)/mime.types ]; then \
 		$(INSTALL) -m 644 $(srcdir)/mime.types $(DESTDIR)$(sysconfdir); \
 	fi
+	@echo
+	@echo "Please read the file README.UPGRADE if you haven't"
+	@echo "already done so!"
+	@echo
 
 
 # Don't make this one ChangeLog - it's intended to be
