@@ -2275,7 +2275,7 @@ msgid ""
 "\n"
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n"
+"    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 msgstr ""
 "Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
@@ -2295,8 +2295,7 @@ msgstr ""
 "    中將會獲得更多資料。\n"
 "\n"
 "    您應已連同應用程式收到一份 GNU 一般公共授權書；如果沒有，請寫信\n"
-"    至 Free Software Foundation, Inc., 675 Mass Ave, Cambridge,\n"
-"    MA 02139, USA.\n"
+"    至 Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 
 #: main.c:77
 #, fuzzy

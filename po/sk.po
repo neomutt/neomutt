@@ -2285,7 +2285,7 @@ msgid ""
 "\n"
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n"
+"    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 msgstr ""
 "Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1997-8 Thomas Roessler <roessler@guug.de>\n"
@@ -2307,7 +2307,7 @@ msgstr ""
 "\n"
 "    Mali by ste obdr¾a» kópiu GNU General Public License spolu s týmto\n"
 "    programom; ak nie, napí¹te do Free Software Foundation, Inc.,\n"
-"    675 Mass Ave, Cambridge, MA 02139, USA.\n"
+"    59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 
 #: main.c:77
 #, fuzzy
