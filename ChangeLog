@@ -1,3 +1,7 @@
+2003-11-03 10:30:58  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* attach.c: Fix a logic flaw in attachment saving.
+
 2003-10-08 19:55:39  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* pgpkey.c: KeyTable is pgp_uid_t **, not pgp_key_t *.	Fix some
