@@ -43,6 +43,9 @@ int mutt_idna_to_local (const char *in, char **out, int flags)
 {
   *out = NULL;
 
+  if (!in)
+    goto notrans;
+  
   /* Is this the right function?  Interesting effects with some bad identifiers! */
   if (idna_to_unicode_utf8_from_utf8 (in, out, 1, 0) != IDNA_SUCCESS)
     goto notrans;
@@ -90,6 +93,12 @@ int mutt_local_to_idna (const char *in, char **out)
   char *tmp = safe_strdup (in);
   *out = NULL;
 
+  if (!in)
+  {
+    *out = NULL;
+    return -1;
+  }
+  
   if (mutt_convert_string (&tmp, Charset, "utf-8", M_ICONV_HOOK_FROM) == -1)
     rv = -1;
   if (!rv && idna_to_ascii_from_utf8 (tmp, out, 1, 0) != IDNA_SUCCESS)
