@@ -190,9 +190,12 @@ int imap_init_browse (char *path, struct browser_state *state)
       if (showparents && add_list_result (conn, seq, buf, state, 1))
           return -1;
 #else
-      dprint (2, (debugfile, "imap_init_browse: adding parent %s\n", mbox));
-      imap_add_folder (idata->delim, mbox, 1, 0, state, 1);
-#endif      
+      if (showparents)
+      {
+	dprint (2, (debugfile, "imap_init_browse: adding parent %s\n", mbox));
+	imap_add_folder (idata->delim, mbox, 1, 0, state, 1);
+      }
+#endif
       /* if our target isn't a folder, we are in our superior */
       if (!state->folder)
       {
