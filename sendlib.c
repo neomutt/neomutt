@@ -1196,7 +1196,7 @@ static void mutt_set_encoding (BODY *b, CONTENT *info)
       b->encoding = ENC7BIT;
   }
   else if (info->lobin || info->hibin || info->binary || info->linemax > 990
-	   || info->cr || (option (OPTENCODEFROM) && info->from))
+	   || info->cr || (/* option (OPTENCODEFROM) && */ info->from))
   {
     /* Determine which encoding is smaller  */
     if (1.33 * (float)(info->lobin+info->hibin+info->ascii) < 
