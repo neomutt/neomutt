@@ -525,7 +525,7 @@ int mutt_index_menu (void)
 
     if (menu->menu == MENU_MAIN)
     {
-      if (Context && Context->hdrs)
+      if (Context && Context->hdrs && !(menu->current >= Context->vcount))
       {
 	menu_check_recenter (menu);
 
