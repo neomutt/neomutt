@@ -1340,7 +1340,7 @@ void mutt_decode_attachment (BODY *b, STATE *s)
   if (istext && s->flags & M_CHARCONV)
   {
     char *charset = mutt_get_parameter ("charset", b->parameter);
-    if (charset)
+    if (charset && Charset)
       cd = mutt_iconv_open (Charset, charset);
   }
 

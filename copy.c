@@ -294,7 +294,7 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
     fputs ("Mime-Version: 1.0\n", out);
     fputs ("Content-Transfer-Encoding: 8bit\n", out);
     fputs ("Content-Type: text/plain; charset=", out);
-    rfc822_cat(buffer, sizeof(buffer), Charset, MimeSpecials);
+    rfc822_cat(buffer, sizeof(buffer), Charset ? Charset : "", MimeSpecials);
     fputs(buffer, out);
     fputc('\n', out);
     

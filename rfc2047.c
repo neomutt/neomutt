@@ -454,9 +454,10 @@ void rfc2047_encode_string (char **pd)
   size_t elen;
   char *charsets;
 
+  if (!Charset)
+    return;
+
   charsets = SendCharset;
-  if (!charsets || !*charsets)
-    charsets = Charset;
   if (!charsets || !*charsets)
     charsets = "UTF-8";
 

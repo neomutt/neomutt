@@ -844,7 +844,8 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
   if (b != NULL && b->type == TYPETEXT && (!b->noconv))
   {
     char *chs = mutt_get_parameter ("charset", b->parameter);
-    if (convert_file_from_to (fp, Charset, chs ? chs : SendCharset,
+    if (Charset && (chs || SendCharset) &&
+	convert_file_from_to (fp, Charset, chs ? chs : SendCharset,
 			      &fromcode, &tocode, info) != (size_t)(-1))
     {
       if (!chs)
