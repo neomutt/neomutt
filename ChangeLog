@@ -1,3 +1,8 @@
+2003-09-04 14:59:57  Christoph Ludwig  <cludwig@cdc.informatik.tu-darmstadt.de>  (roessler)
+
+	* smime.c: Fix verification bug when messages are S/MIME signed
+	& encrypted.
+
 2003-09-03 17:22:09  Dan Born  <dan@danborn.net>  (roessler)
 
 	* postpone.c: I've attached a patch for bug number 1036, as
