@@ -2666,7 +2666,7 @@ is in US English).
 <sect2>default&lowbar;hook<label id="default_hook">
 <p>
 Type: string<newline>
-Default: "&tilde;f &percnt;s | (&tilde;P (&tilde;c &percnt;s | &tilde;t &percnt;s))"
+Default: "&tilde;f &percnt;s !&tilde;P | (&tilde;P &tilde;C &percnt;s)"
 
 This variable controls how send-hooks, save-hooks, and fcc-hooks will be
 interpreted if they are specified with only a simple regexp, instead of a
