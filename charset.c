@@ -172,27 +172,24 @@ PreferredMIMENames[] =
 
   { "iso_8859-15",	"iso-8859-15"	},
   { "latin9",		"iso-8859-15"	}, /* this is not a bug */
-  
-  
-  /*
-   * If you happen to encounter system-specific brain-damage with
-   * respect to character set naming, please add it here, and
-   * submit a patch to <mutt-dev@mutt.org>. 
-   */
 
-
+  /* Suggested by Ionel Mugurel Ciobica <tgakic@sg10.chem.tue.nl> */
+  { "latin0"            "iso-8859-15"   }, /* this is not a bug */
+  
+  { "iso_8859-16",      "iso-8859-16"   },
+  { "latin10",          "iso-8859-16"   }, /* this is not a bug */
   
   /* 
    * David Champion <dgc@uchicago.edu> has observed this with
    * nl_langinfo under SunOS 5.8. 
    */
-
+  
   { "646",		"us-ascii"	},
   
   /* 
    * http://www.sun.com/software/white-papers/wp-unicode/
    */
-  
+
   { "eucJP",		"euc-jp"	},
   { "PCK",		"Shift_JIS"	},
   { "ko_KR-euc",	"euc-kr"	},
@@ -202,6 +199,12 @@ PreferredMIMENames[] =
 
   { "sjis",		"Shift_JIS"	},
 
+
+  /*
+   * If you happen to encounter system-specific brain-damage with
+   * respect to character set naming, please add it above this
+   * comment, and submit a patch to <mutt-dev@mutt.org>. 
+   */
   
   /* End of aliases.  Please keep this line last. */
   
