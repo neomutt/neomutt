@@ -731,8 +731,8 @@ int mbox_sync_mailbox (CONTEXT *ctx)
     if (! ctx->hdrs[i]->deleted)
     {
       j++;
-      if (!ctx->quiet && WriteInc && ((j % WriteInc) == 0 || j == 1))
-	mutt_message ("Writing messages... %d (%d%%)", j,
+      if (!ctx->quiet && WriteInc && ((i % WriteInc) == 0 || j == 1))
+	mutt_message ("Writing messages... %d (%d%%)", i,
 		      ftell (ctx->fp) / (ctx->size / 100 + 1));
 
       if (ctx->magic == M_MMDF)
