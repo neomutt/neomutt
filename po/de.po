@@ -1,31 +1,25 @@
-# German messages for Mutt.
-# Copyright (C) 1998 Thomas Roessler <roessler@guug.de>
-# Thomas Roessler <roessler@guug.de>, 1998
-#
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-01 19:00+0200\n"
-"PO-Revision-Date: 1998-10-01 10:20 MET DST\n"
-"Last-Translator: Thomas Roessler <roessler@guug.de>\n"
-"Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
+"POT-Creation-Date: 1998-10-01 21:57+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: ENCODING\n"
 
-#: addrbook.c:31 browser.c:53 pager.c:1396 query.c:43 recvattach.c:47
-#, fuzzy
+#: addrbook.c:31 browser.c:53 pager.c:1358 postpone.c:32 query.c:43
+#: recvattach.c:47
 msgid "Exit"
-msgstr "Ende"
+msgstr "Verlassen"
 
 #: addrbook.c:32
-#, fuzzy
 msgid "Select"
 msgstr "Auswählen"
 
-#: addrbook.c:33 browser.c:56 compose.c:70 curs_main.c:234 pager.c:1451
-#: pgpkey.c:180 query.c:48 recvattach.c:51
+#: addrbook.c:33 browser.c:56 compose.c:70 curs_main.c:234 pager.c:1454
+#: pgpkey.c:180 postpone.c:35 query.c:48 recvattach.c:51
 msgid "Help"
 msgstr "Hilfe"
 
@@ -126,7 +120,6 @@ msgid "I don't know how to print that!"
 msgstr "Ich weiß nicht, wie man dies druckt."
 
 #: browser.c:54
-#, fuzzy
 msgid "Chdir"
 msgstr "Verzeichnis"
 
@@ -368,10 +361,9 @@ msgstr "Verschicken"
 msgid "Abort"
 msgstr "Verwerfen"
 
-#: compose.c:68 pager.c:1402
-#, fuzzy
-msgid "Attach"
-msgstr "Datei anh."
+#: compose.c:68 compose.c:603
+msgid "Attach file"
+msgstr "Datei anhängen"
 
 #: compose.c:69
 msgid "Descrip"
@@ -449,10 +441,6 @@ msgstr "Der einzige Nachrichtenteil kann nicht gelöscht werden."
 #: compose.c:447
 msgid "Compose"
 msgstr "Nachricht erstellen"
-
-#: compose.c:603
-msgid "Attach file"
-msgstr "Datei anhängen"
 
 #: compose.c:608
 msgid "Open mailbox to attach message from"
@@ -575,11 +563,11 @@ msgstr "Änderungen an dieser Mailbox werden nicht geschrieben."
 msgid "Quit"
 msgstr "Verlassen"
 
-#: curs_main.c:228 pager.c:1403
+#: curs_main.c:228 pager.c:1365 postpone.c:33
 msgid "Del"
 msgstr "Löschen"
 
-#: curs_main.c:229
+#: curs_main.c:229 postpone.c:34
 msgid "Undel"
 msgstr "nicht lösch."
 
@@ -587,7 +575,7 @@ msgstr "nicht lösch."
 msgid "Mail"
 msgstr "Neue Nachricht"
 
-#: curs_main.c:232 pager.c:1404
+#: curs_main.c:232 pager.c:1366
 msgid "Reply"
 msgstr "Antwort"
 
@@ -819,7 +807,6 @@ msgstr "Setze %s-Indikator"
 msgid "Clear %s flag"
 msgstr "Entferne %s-Indikator"
 
-#
 #: handler.c:127
 msgid "[-- Error: unexpected end of file! --]\n"
 msgstr "[-- Fehler: Unerwartetes Dateiende! --]\n"
@@ -841,7 +828,7 @@ msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Typ: %s/%s, Codierung: %s, Größe: %s --]\n"
 
 #: handler.c:1076
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[- Automatische Anzeige mittels %s --]\n"
 
@@ -863,7 +850,6 @@ msgstr "Fehler: multipart/signed ohne protocol-Parameter."
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Fehler: multiparT/encrypted ohne 'protocol'-Parameter!"
 
-#
 #: handler.c:1293
 msgid "Unable to open temporary file!"
 msgstr "Konnte Temporärdatei nicht öffnen!"
@@ -2027,7 +2013,7 @@ msgstr "Suche rückwärts nach: "
 msgid "No search pattern."
 msgstr "Kein Suchmuster."
 
-#: menu.c:626 pager.c:1765 pager.c:1781 pager.c:1868 pattern.c:1106
+#: menu.c:626 pager.c:1769 pager.c:1785 pager.c:1872 pattern.c:1106
 msgid "Not found."
 msgstr "Nicht gefunden."
 
@@ -2088,7 +2074,7 @@ msgid "Purge %d deleted message?"
 msgstr "Entferne %d als gelöscht markierte Nachrichten?"
 
 #: mx.c:762 mx.c:939
-#, fuzzy, c-format
+#, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Entferne %d als gelöscht markierte Nachrichten?"
 
@@ -2129,44 +2115,48 @@ msgstr "Mailbox ist als unschreibbar markiert. %s"
 msgid "Mailbox is read-only."
 msgstr "Mailbox kann nicht geschrieben werden."
 
-#: pager.c:1397
+#: pager.c:1359
 msgid "PrevPg"
 msgstr "Vorige Seite"
 
-#: pager.c:1398
+#: pager.c:1360
 msgid "NextPg"
 msgstr "Nächste Seite"
 
-#: pager.c:1405
+#: pager.c:1364
+msgid "View Attachm."
+msgstr "Anhänge betr."
+
+#: pager.c:1367
 msgid "Next"
 msgstr "Nächste Nachr."
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1677 pager.c:1708 pager.c:1737 pager.c:1956
+#: pager.c:1681 pager.c:1712 pager.c:1741 pager.c:1960
 msgid "Bottom of message is shown."
 msgstr "Das Ende der Nachricht wird angezeigt"
 
-#: pager.c:1693 pager.c:1715 pager.c:1726
+#: pager.c:1697 pager.c:1719 pager.c:1730
 msgid "Top of message is shown."
 msgstr "Der Beginn der Nachricht wird angezeigt"
 
-#: pager.c:1799
+#: pager.c:1803
 msgid "Reverse search: "
 msgstr "Suche rückwärts: "
 
-#: pager.c:1800
+#: pager.c:1804
 msgid "Search: "
 msgstr "Suche: "
 
-#: pager.c:1894
+#: pager.c:1898
 msgid "Help is currently being shown."
 msgstr "Hilfe wird bereits angezeigt."
 
-#: pager.c:1923
+#: pager.c:1927
 msgid "No more quoted text."
 msgstr "Kein weiterer zitierter Text."
 
-#: pager.c:1936
+#: pager.c:1940
 msgid "No more unquoted text after quoted text."
 msgstr "Kein weiterer eigener Text nach zitiertem Text"
 
@@ -2559,7 +2549,6 @@ msgid "Illegal PGP header"
 msgstr "Unzulässiger PGP-Header"
 
 #: query.c:45
-#, fuzzy
 msgid "New Query"
 msgstr "Neue Abfrage"
 
@@ -2568,7 +2557,6 @@ msgid "Make Alias"
 msgstr "Kurznamen erzeugen"
 
 #: query.c:47
-#, fuzzy
 msgid "Search"
 msgstr "Suchen"
 
@@ -2595,7 +2583,6 @@ msgid "Query '%s'"
 msgstr "Abfrage: '%s'"
 
 #: recvattach.c:49
-#, fuzzy
 msgid "Pipe"
 msgstr "Filtern"
 

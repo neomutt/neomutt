@@ -54,5 +54,7 @@ clean:
 clean-real:
 	rm -f manual.txt
 
+maintainer-clean: clean clean-real
+
 distclean: clean
 	rm -f Makefile

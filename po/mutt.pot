@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-01 19:00+0200\n"
+"POT-Creation-Date: 1998-10-01 21:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,7 +14,8 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: ENCODING\n"
 
-#: addrbook.c:31 browser.c:53 pager.c:1396 query.c:43 recvattach.c:47
+#: addrbook.c:31 browser.c:53 pager.c:1358 postpone.c:32 query.c:43
+#: recvattach.c:47
 msgid "Exit"
 msgstr ""
 
@@ -22,8 +23,8 @@ msgstr ""
 msgid "Select"
 msgstr ""
 
-#: addrbook.c:33 browser.c:56 compose.c:70 curs_main.c:234 pager.c:1451
-#: pgpkey.c:180 query.c:48 recvattach.c:51
+#: addrbook.c:33 browser.c:56 compose.c:70 curs_main.c:234 pager.c:1454
+#: pgpkey.c:180 postpone.c:35 query.c:48 recvattach.c:51
 msgid "Help"
 msgstr ""
 
@@ -362,8 +363,8 @@ msgstr ""
 msgid "Abort"
 msgstr ""
 
-#: compose.c:68 pager.c:1402
-msgid "Attach"
+#: compose.c:68 compose.c:603
+msgid "Attach file"
 msgstr ""
 
 #: compose.c:69
@@ -440,10 +441,6 @@ msgstr ""
 
 #: compose.c:447
 msgid "Compose"
-msgstr ""
-
-#: compose.c:603
-msgid "Attach file"
 msgstr ""
 
 #: compose.c:608
@@ -567,11 +564,11 @@ msgstr ""
 msgid "Quit"
 msgstr ""
 
-#: curs_main.c:228 pager.c:1403
+#: curs_main.c:228 pager.c:1365 postpone.c:33
 msgid "Del"
 msgstr ""
 
-#: curs_main.c:229
+#: curs_main.c:229 postpone.c:34
 msgid "Undel"
 msgstr ""
 
@@ -579,7 +576,7 @@ msgstr ""
 msgid "Mail"
 msgstr ""
 
-#: curs_main.c:232 pager.c:1404
+#: curs_main.c:232 pager.c:1366
 msgid "Reply"
 msgstr ""
 
@@ -1989,7 +1986,7 @@ msgstr ""
 msgid "No search pattern."
 msgstr ""
 
-#: menu.c:626 pager.c:1765 pager.c:1781 pager.c:1868 pattern.c:1106
+#: menu.c:626 pager.c:1769 pager.c:1785 pager.c:1872 pattern.c:1106
 msgid "Not found."
 msgstr ""
 
@@ -2091,44 +2088,48 @@ msgstr ""
 msgid "Mailbox is read-only."
 msgstr ""
 
-#: pager.c:1397
+#: pager.c:1359
 msgid "PrevPg"
 msgstr ""
 
-#: pager.c:1398
+#: pager.c:1360
 msgid "NextPg"
 msgstr ""
 
-#: pager.c:1405
+#: pager.c:1364
+msgid "View Attachm."
+msgstr ""
+
+#: pager.c:1367
 msgid "Next"
 msgstr ""
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1677 pager.c:1708 pager.c:1737 pager.c:1956
+#: pager.c:1681 pager.c:1712 pager.c:1741 pager.c:1960
 msgid "Bottom of message is shown."
 msgstr ""
 
-#: pager.c:1693 pager.c:1715 pager.c:1726
+#: pager.c:1697 pager.c:1719 pager.c:1730
 msgid "Top of message is shown."
 msgstr ""
 
-#: pager.c:1799
+#: pager.c:1803
 msgid "Reverse search: "
 msgstr ""
 
-#: pager.c:1800
+#: pager.c:1804
 msgid "Search: "
 msgstr ""
 
-#: pager.c:1894
+#: pager.c:1898
 msgid "Help is currently being shown."
 msgstr ""
 
-#: pager.c:1923
+#: pager.c:1927
 msgid "No more quoted text."
 msgstr ""
 
-#: pager.c:1936
+#: pager.c:1940
 msgid "No more unquoted text after quoted text."
 msgstr ""
 
