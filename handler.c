@@ -1249,6 +1249,9 @@ static void external_body_handler (BODY *b, STATE *s)
 
       if (expire != -1)
 	state_printf (s, _("[-- on %s --]\n"), expiration);
+      if (b->parts->filename)
+	state_printf (s, _("[-- name: %s --]\n"), b->parts->filename);
+
       mutt_copy_hdr (s->fpin, s->fpout, ftell (s->fpin), b->parts->offset,
 		     (option (OPTWEED) ? (CH_WEED | CH_REORDER) : 0) |
 		     CH_DECODE , NULL);
