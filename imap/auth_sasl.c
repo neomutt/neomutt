@@ -23,6 +23,9 @@
 #include "imap_private.h"
 #include "auth.h"
 
+#include <netinet/in.h>
+#include <netdb.h>
+
 #include <sasl.h>
 #include <saslutil.h>
 
@@ -51,6 +54,30 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
   {
     dprint (1, (debugfile, "imap_auth_sasl: Error allocating SASL connection.\n"));
     return IMAP_AUTH_FAILURE;
+  }
+
+  /*** set sasl IP properties, necessary for use with krb4 ***/
+  {
+    struct sockaddr_in local, remote;
+    int r, size;
+
+    size = sizeof(local);
+    r = getsockname(idata->conn->fd, &local, &size);
+    if (r!=0) return IMAP_AUTH_FAILURE;
+
+    size = sizeof(remote);
+    r = getpeername(idata->conn->fd, &remote, &size);
+    if (r!=0) return IMAP_AUTH_FAILURE;
+
+#ifdef SASL_IP_LOCAL
+    r = sasl_setprop(saslconn, SASL_IP_LOCAL, &local);
+    if (r!=0) return IMAP_AUTH_FAILURE;
+#endif
+
+#ifdef SASL_IP_REMOTE
+    r = sasl_setprop(saslconn, SASL_IP_REMOTE, &remote);
+    if (r!=0) return IMAP_AUTH_FAILURE;
+#endif
   }
 
   /* hack for SASL ANONYMOUS support:
