@@ -1,3 +1,8 @@
+2004-04-12 18:56:18  Neil Brown  <neilb@cse.unsw.edu.au>  (roessler)
+
+	* imap/auth_sasl.c: Fix Debian #206078, #214758; patch submitted
+	by Artur Czechowski as #1845.
+
 2004-03-21 16:02:10  Ivan Vilata i Balaguer  <ivan@selidor.net>  (roessler)
 
 	* po/ca.po: update
