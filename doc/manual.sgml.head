@@ -2310,10 +2310,15 @@ information, Mutt will assume that the file is plain text, and mark it
 as <tt>text/plain</tt>.  If the file contains binary information, then Mutt will
 mark it as <tt>application/octect-stream</tt>.  You can change the MIME
 type that Mutt assigns to an attachment by using the <tt/edit-type/
-command from the compose menu (default: ^T).  When typing in the MIME
-type, Mutt requires that major type be one of the 5 types: application,
-text, image, video, or audio.  If you attempt to use a different major
-type, Mutt will abort the change.
+command from the compose menu (default: ^T). The MIME type is actually a
+major mime type followed by the sub-type, separated by a '/'. 6 major
+types: application, text, image, video, audio, and model have been approved
+after various internet discussions. Mutt recognises all of these if the 
+appropriate entry is found in the mime.types file. It also recognises other
+major mime types, such as the chemical type that is widely used in the 
+molecular modelling community to pass molecular data in various forms to 
+various molecular viewers. Non-recognised mime types should only be used 
+if the recipient of the message is likely to be expecting such attachments.
 
 <sect1>MIME Viewer configuration with <tt/mailcap/
 <p>
