@@ -1,3 +1,11 @@
+2005-03-22 03:40:54  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (brendan)
+
+	* hcache.c, imap/imap.c, imap/imap_private.h, imap/message.c,
+        protos.h: Thomas graces us with this patch that resolves a
+	type-size inconsistency in the UIDVALIDITY parser.
+
+        Edited for correctness.
+
 2005-03-17 09:30:06  Pawel Dziekonski  <pawel.dziekonski@pwr.wroc.pl>  (roessler)
 
 	* po/pl.po: update
