@@ -326,7 +326,7 @@ int mutt_alias_complete (char *s, size_t buflen)
 {
   ALIAS *a = Aliases;
   ALIAS *a_list = NULL, *a_cur = NULL;
-  char bestname[STRING];
+  char bestname[HUGE_STRING];
   int i;
 
 #define min(a,b)        ((a<b)?a:b)
