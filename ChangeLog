@@ -1,3 +1,9 @@
+2004-08-16 21:37:43  Adeodato Simó  <asp16@alu.ua.es>  (roessler)
+
+	* headers.c: as of current cvs, setting "PGP: E" (or similar)
+	when header-editing a message does not work. the OP is set
+	(ENCRYPT, SIGN, whatever) but APPLICATION_PGP is missing.
+
 2004-08-16 21:36:38  Brendan Cully  <brendan@kublai.com>  (roessler)
 
 	* imap/imap.c: If STARTTLS fails to complete the SSL handshake,
