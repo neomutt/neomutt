@@ -76,7 +76,7 @@ mutt_compile_help (char *buf, size_t buflen, int menu, struct mapping_t *items)
       *pbuf++ = ' ';
       buflen -= 2;
     }
-    mutt_make_help (pbuf, buflen, items[i].name, menu, items[i].value);
+    mutt_make_help (pbuf, buflen, gettext(items[i].name), menu, items[i].value);
     len = strlen (pbuf);
     pbuf += len;
     buflen -= len;

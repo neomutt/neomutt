@@ -65,7 +65,7 @@ static struct mapping_t ComposeHelp[] = {
   { "To",      OP_COMPOSE_EDIT_TO },
   { "CC",      OP_COMPOSE_EDIT_CC },
   { "Subj",    OP_COMPOSE_EDIT_SUBJECT },
-  { N_("Attach"),  OP_COMPOSE_ATTACH_FILE },
+  { N_("Attach file"),  OP_COMPOSE_ATTACH_FILE },
   { N_("Descrip"), OP_COMPOSE_EDIT_DESCRIPTION },
   { N_("Help"),    OP_HELP },
   { NULL }

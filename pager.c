@@ -1354,6 +1354,22 @@ upNLines (int nlines, struct line_t *info, int cur, int hiding)
   return cur;
 }
 
+static struct mapping_t PagerHelp[] = {
+  { N_("Exit"),	OP_PAGER_EXIT },
+  { N_("PrevPg"),	OP_PREV_PAGE },
+  { N_("NextPg"), OP_NEXT_PAGE },
+  { NULL,	0 }
+};
+static struct mapping_t PagerHelpExtra[] = {
+  { N_("View Attachm."),	OP_VIEW_ATTACHMENTS },
+  { N_("Del"),	OP_DELETE },
+  { N_("Reply"),	OP_REPLY },
+  { N_("Next"),	OP_MAIN_NEXT_UNDELETED },
+  { NULL,	0 }
+};
+
+
+
 /* This pager is actually not so simple as it once was.  It now operates in
    two modes: one for viewing messages and the other for viewing help.  These
    can be distinguished by whether or not ``hdr'' is NULL.  The ``hdr'' arg
@@ -1391,20 +1407,6 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
   int indicator = indexlen / 3; 	/* the indicator line of the PI */
   int old_PagerIndexLines;		/* some people want to resize it
   					 * while inside the pager... */
-
-  static struct mapping_t PagerHelp[] = {
-    { N_("Exit"),	OP_PAGER_EXIT },
-    { N_("PrevPg"),	OP_PREV_PAGE },
-    { N_("NextPg"), OP_NEXT_PAGE },
-    { NULL,	0 }
-  };
-  static struct mapping_t PagerHelpExtra[] = {
-    { N_("Attach"),	OP_VIEW_ATTACHMENTS },
-    { N_("Del"),	OP_DELETE },
-    { N_("Reply"),	OP_REPLY },
-    { N_("Next"),	OP_MAIN_NEXT_UNDELETED },
-    { NULL,	0 }
-  };
 
   do_color = do_color ? M_SHOWCOLOR : M_SHOWFLAT;
 
@@ -1444,11 +1446,13 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
   if (IsHeader (extra))
   {
     mutt_compile_help (buffer, sizeof (buffer), MENU_PAGER, PagerHelpExtra);
+    strcat (helpstr, "  ");
     strcat (helpstr, buffer);
   }
   if (!InHelp)
   {
     mutt_make_help (buffer, sizeof (buffer), _("Help"), MENU_PAGER, OP_HELP);
+    strcat (helpstr, "  ");
     strcat (helpstr, buffer);
   }
 

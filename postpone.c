@@ -29,10 +29,10 @@
 #include <sys/stat.h>
 
 static struct mapping_t PostponeHelp[] = {
-  { "Exit",  OP_EXIT },
-  { "Del",   OP_DELETE },
-  { "Undel", OP_UNDELETE },
-  { "Help",  OP_HELP },
+  { N_("Exit"),  OP_EXIT },
+  { N_("Del"),   OP_DELETE },
+  { N_("Undel"), OP_UNDELETE },
+  { N_("Help"),  OP_HELP },
   { NULL }
 };
 

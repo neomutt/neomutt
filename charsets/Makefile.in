@@ -41,6 +41,8 @@ distclean: clean veryclean
 veryclean:
 	-rm -f `cat charsets.list` charsets.list charsets.alias
 
+maintainer-clean: distclean
+
 charmaps: parse_i18n
 	( cd $(srcdir) && ./gen_charsets )
 
