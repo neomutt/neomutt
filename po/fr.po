@@ -245,9 +245,9 @@ msgid "Can't open %s: %s."
 msgstr "Impossible d'ouvrir %s : %s."
 
 #: charset.c:1148
-#, fuzzy, c-format
+#, c-format
 msgid "Error while recoding %s. Leave it unchanged."
-msgstr "Erreur en recodant %s. Voir %s pour récupérer vos données."
+msgstr "Erreur en recodant %s. Laisser inchangé."
 
 #: charset.c:1154
 #, c-format
