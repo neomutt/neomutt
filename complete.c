@@ -51,9 +51,9 @@ int mutt_complete (char *s, size_t slen)
   if (*s == '=' || *s == '+' || *s == '!')
   {
     if (*s == '!')
-      p = Spoolfile;
+      p = NONULL (Spoolfile);
     else
-      p = Maildir;
+      p = NONULL (Maildir);
     if (s[1])
     {
       /* don't append '/' if Maildir/Spoolfile is {host} only */
