@@ -73,7 +73,7 @@ char SmimePass[STRING];
 time_t SmimeExptime = 0; /* when does the cached passphrase expire? */
 
 
-static char SmimeKeyToUse[_POSIX_PATH_MAX];
+static char SmimeKeyToUse[_POSIX_PATH_MAX] = { 0 };
 static char SmimeCertToUse[_POSIX_PATH_MAX];
 static char SmimeIntermediateToUse[_POSIX_PATH_MAX];
 
@@ -700,7 +700,6 @@ char *smime_get_field_from_db (char *mailbox, char *query, short public, short m
    the reuquired key is different from SmimeSignAs.
 */
 
-static int SmimeFirstTime = 1;  /* sucks... */
 void _smime_getkeys (char *mailbox)
 {
   char *k = smime_get_field_from_db (mailbox, NULL, 0, 0);	/* XXX - or sohuld we ask? */
@@ -718,15 +717,14 @@ void _smime_getkeys (char *mailbox)
     k[mutt_strlen (k)-1] = '\0';
     
     /* the key used last time. */
-    if (!SmimeFirstTime &&
-	!mutt_strcasecmp (k, SmimeKeyToUse + mutt_strlen (SmimeKeys)+1))
+    if (*SmimeKeyToUse && 
+        !mutt_strcasecmp (k, SmimeKeyToUse + mutt_strlen (SmimeKeys)+1))
     {
       safe_free ((void **) &k);
       return;
     }
     else smime_void_passphrase ();
 
-    SmimeFirstTime = 0;
     snprintf (SmimeKeyToUse, sizeof (SmimeKeyToUse), "%s/%s", 
 	      NONULL(SmimeKeys), k);
     
@@ -748,12 +746,15 @@ void _smime_getkeys (char *mailbox)
     return;
   }
 
-  if (!SmimeFirstTime && !mutt_strcasecmp (SmimeSignAs, SmimeKeyToUse +
-					   mutt_strlen (SmimeKeys)+1))
-    return;
-  else if (!SmimeFirstTime) smime_void_passphrase ();
-  else if (SmimeFirstTime) SmimeFirstTime = 0;
-    
+  if (*SmimeKeyToUse)
+  {
+    if (!mutt_strcasecmp (SmimeSignAs, 
+                          SmimeKeyToUse + mutt_strlen (SmimeKeys)+1))
+      return;
+
+    smime_void_passphrase ();
+  }
+
   snprintf (SmimeKeyToUse, sizeof (SmimeKeyToUse), "%s/%s", 
 	    NONULL (SmimeKeys), SmimeSignAs);
   
