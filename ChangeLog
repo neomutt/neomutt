@@ -1,3 +1,7 @@
+2004-12-21 09:46:24  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* pgp.c: Fix Debian #275188.
+
 2004-12-07 19:50:04  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* compose.c, hook.c, init.c, init.h, mutt.h, send.c: Add
