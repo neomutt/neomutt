@@ -103,9 +103,9 @@ static gid_t MailGid;
 #endif
 
 static int dotlock_deference_symlink (char *, size_t, const char *);
-static int dotlock_prepare (char *, size_t, const char *);
+static int dotlock_prepare (char *, size_t, const char *, int fd);
 static int dotlock_check_stats (struct stat *, struct stat *);
-static int dotlock_dispatch (const char *);
+static int dotlock_dispatch (const char *, int fd);
 
 #ifdef DL_STANDALONE
 static int dotlock_init_privs (void);
@@ -176,7 +176,7 @@ int main (int argc, char **argv)
   if (optind == argc || Retry < 0)
     usage (argv[0]);
 
-  return dotlock_dispatch (argv[optind]);
+  return dotlock_dispatch (argv[optind], -1);
 }
 
 
@@ -217,7 +217,7 @@ dotlock_init_privs (void)
  * mutt instead of mx.c's invoke_dotlock ().
  */
 
-int dotlock_invoke (const char *path, int flags, int retry)
+int dotlock_invoke (const char *path, int fd, int flags, int retry)
 {
   int currdir;
   int r;
@@ -232,7 +232,7 @@ int dotlock_invoke (const char *path, int flags, int retry)
   else
     Retry = 0;
   
-  r = dotlock_dispatch (path);
+  r = dotlock_dispatch (path, fd);
   
   fchdir (currdir);
   close (currdir);
@@ -243,7 +243,7 @@ int dotlock_invoke (const char *path, int flags, int retry)
 #endif  /* DL_STANDALONE */
 
 
-static int dotlock_dispatch (const char *f)
+static int dotlock_dispatch (const char *f, int fd)
 {
   char realpath[_POSIX_PATH_MAX];
 
@@ -258,7 +258,7 @@ static int dotlock_dispatch (const char *f)
    * lengthy comment below.
    */
 
-  if (dotlock_prepare (realpath, sizeof (realpath), f) != 0)
+  if (dotlock_prepare (realpath, sizeof (realpath), f, fd) != 0)
     return DL_EX_ERROR;
 
   /* Actually perform the locking operation. */
@@ -433,7 +433,7 @@ dotlock_check_stats (struct stat *fsb, struct stat *lsb)
 }
 
 static int
-dotlock_prepare (char *bn, size_t l, const char *f)
+dotlock_prepare (char *bn, size_t l, const char *f, int _fd)
 {
   struct stat fsb, lsb;
   char realpath[_POSIX_PATH_MAX];
@@ -464,12 +464,16 @@ dotlock_prepare (char *bn, size_t l, const char *f)
   
   if (chdir (dirname) == -1)
     return -1;
-  
-  if ((fd = open (basename, O_RDONLY)) == -1)
+
+  if (_fd != -1)
+    fd = _fd;
+  else if ((fd = open (basename, O_RDONLY)) == -1)
     return -1;
   
   r = fstat (fd, &fsb);
-  close (fd);
+  
+  if (_fd == -1)
+    close (fd);
   
   if (r == -1)
     return -1;

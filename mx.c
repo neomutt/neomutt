@@ -66,7 +66,7 @@
 
 #ifdef DL_STANDALONE
 
-static int invoke_dotlock (const char *path, int flags, int retry)
+static int invoke_dotlock (const char *path, int dummy, int flags, int retry)
 {
   char cmd[LONG_STRING + _POSIX_PATH_MAX];
   char f[SHORT_STRING + _POSIX_PATH_MAX];
@@ -97,7 +97,7 @@ static int invoke_dotlock (const char *path, int flags, int retry)
 
 #endif
 
-static int dotlock_file (const char *path, int retry)
+static int dotlock_file (const char *path, int fd, int retry)
 {
   int r;
   int flags = DL_FL_USEPRIV | DL_FL_RETRY;
@@ -105,7 +105,7 @@ static int dotlock_file (const char *path, int retry)
   if (retry) retry = 1;
 
 retry_lock:
-  if ((r = invoke_dotlock(path, flags, retry)) == DL_EX_EXIST)
+  if ((r = invoke_dotlock(path, fd, flags, retry)) == DL_EX_EXIST)
   {
     if (!option (OPTNOCURSES))
     {
@@ -129,9 +129,9 @@ retry_lock:
   return (r == DL_EX_OK ? 0 : -1);
 }
 
-static int undotlock_file (const char *path)
+static int undotlock_file (const char *path, int fd)
 {
-  return (invoke_dotlock(path, DL_FL_USEPRIV | DL_FL_UNLOCK, 0) == DL_EX_OK ? 
+  return (invoke_dotlock(path, fd, DL_FL_USEPRIV | DL_FL_UNLOCK, 0) == DL_EX_OK ? 
 	  0 : -1);
 }
 
@@ -229,7 +229,7 @@ int mx_lock_file (const char *path, int fd, int excl, int dot, int timeout)
 
 #ifdef USE_DOTLOCK
   if (r == 0 && dot)
-    r = dotlock_file (path,timeout);
+    r = dotlock_file (path, fd, timeout);
 #endif /* USE_DOTLOCK */
 
   if (r == -1)
@@ -268,7 +268,7 @@ int mx_unlock_file (const char *path, int fd, int dot)
 
 #ifdef USE_DOTLOCK
   if (dot)
-    undotlock_file (path);
+    undotlock_file (path, fd);
 #endif
   
   return 0;
@@ -308,7 +308,7 @@ void mx_unlink_empty (const char *path)
   }
 
 #ifdef USE_DOTLOCK
-  invoke_dotlock (path, DL_FL_UNLINK, 1);
+  invoke_dotlock (path, fd, DL_FL_UNLINK, 1);
 #else
   if (fstat (fd, &sb) == 0 && sb.st_size == 0)
     unlink (path);

@@ -40,7 +40,7 @@
 #define DL_FL_ACTIONS (DL_FL_TRY|DL_FL_UNLOCK|DL_FL_UNLINK)
 
 #ifndef DL_STANDALONE
-int dotlock_invoke (const char *, int, int);
+int dotlock_invoke (const char *, int, int, int);
 #endif
 
 #endif
