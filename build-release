@@ -74,6 +74,7 @@ done
 # upload the source
 
 pppd call provider
+sleep 60
 
 for f in $DISTFILES ; do
 	scp $f $f.asc sigtrap.guug.de:/home/ftp/pub/mutt/${devel}

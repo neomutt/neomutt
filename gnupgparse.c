@@ -85,7 +85,7 @@ static void fix_uid (char *uid)
   }
   *d = '\0';
   
-  mutt_decode_utf8_string (d, _chs);
+  mutt_decode_utf8_string (uid, _chs);
 }
 
 static pgp_key_t *parse_pub_line (char *buf, int *is_subkey, pgp_key_t *k)
