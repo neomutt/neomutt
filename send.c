@@ -1180,13 +1180,20 @@ main_loop:
   if (msg->content->next)
     msg->content = mutt_make_multipart (msg->content);
 
+  /* Ok, we need to do it this way instead of handling all fcc stuff in
+   * one place in order to avoid going to main_loop with encoded "env"
+   * in case of error.  Ugh.
+   */
 #ifdef _PGPPATH
   if (msg->pgp)
   {
+    if (pgp_get_keys (msg, &pgpkeylist) == -1)
+      goto main_loop;
+
     /* save the decrypted attachments */
     save_content = msg->content;
 
-    if (pgp_protect (msg, &pgpkeylist) == -1)
+    if (pgp_protect (msg, pgpkeylist) == -1)
     {
       if (msg->content->parts)
       {
@@ -1196,12 +1203,14 @@ main_loop:
 	pbody->parts = NULL;
 	mutt_free_body (&pbody);
       }
+      if (pgpkeylist)
+	FREE (&pgpkeylist);
       goto main_loop;
     }
   }
 #endif /* _PGPPATH */
 
-  if (!option (OPTNOCURSES) && ! (flags & SENDMAILX))
+  if (!option (OPTNOCURSES) && !(flags & SENDMAILX))
     mutt_message ("Sending message...");
 
   mutt_prepare_envelope (msg->env);
@@ -1226,27 +1235,37 @@ main_loop:
       {
 	if (save_content->type == TYPEMULTIPART)
 	{
-	  if (!isendwin())
-	    endwin ();
-	  if (msg->pgp & PGPENCRYPT)
-	  {
-	    /* encrypt the main part again */
-  	    msg->content = pgp_encrypt_message (save_content->parts, 
-		pgpkeylist, msg->pgp & PGPSIGN);
-	    /* not released in pgp_encrypt_message() */
-	    mutt_free_body (&save_content->parts);
-	    encode_descriptions (msg->content);
-	    save_content->parts = msg->content;
-	  }
-	  else
+	  if (!(msg->pgp & PGPENCRYPT) && (msg->pgp & PGPSIGN))
 	  {
 	    /* save initial signature and attachments */
 	    save_sig = msg->content->parts->next;
 	    save_parts = msg->content->parts->parts->next;
-	    /* sign the main part without attachments */
-	    msg->content = pgp_sign_message (save_content->parts);
-	    save_content = msg->content;
 	  }
+
+	  /* this means writing only the main part */
+	  msg->content = save_content->parts;
+
+	  if (pgp_protect (msg, pgpkeylist) == -1)
+	  {
+	    /* we can't do much about it at this point, so
+	     * fallback to saving the whole thing to fcc
+	     */
+	    msg->content = tmpbody;
+	    save_sig = NULL;
+	    goto full_fcc;
+	  }
+
+	  if (msg->pgp & PGPENCRYPT)
+	  {
+	    /* not released in pgp_encrypt_message() */
+	    mutt_free_body (&save_content->parts);
+	    /* make sure we release the right thing later */
+	    save_content->parts = msg->content;
+
+	    encode_descriptions (msg->content);
+	  }
+	  else
+	    save_content = msg->content;
 	}
       }
       else
@@ -1254,9 +1273,11 @@ main_loop:
 	msg->content = msg->content->parts;
     }
 
+full_fcc:
     if (msg->content)
       mutt_write_fcc (fcc, msg, NULL, 0);
     msg->content = tmpbody;
+
 #ifdef _PGPPATH
     if (save_sig)
     {
@@ -1264,6 +1285,7 @@ main_loop:
       mutt_free_body (&save_content->parts->next);
       save_content->parts = NULL;
       mutt_free_body (&save_content);
+
       /* restore old signature and attachments */
       msg->content->parts->next = save_sig;
       msg->content->parts->parts->next = save_parts;

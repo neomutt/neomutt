@@ -955,10 +955,9 @@ static void convert_to_7bit (BODY *a)
     if (a->type == TYPEMULTIPART)
     {
       if (a->encoding != ENC7BIT)
-      {
         a->encoding = ENC7BIT;
-        convert_to_7bit (a->parts);
-      }
+      if (option (OPTPGPSTRICTENC))
+	convert_to_7bit (a->parts);
     } 
     else if (a->type == TYPEMESSAGE
 	     && strcasecmp(a->subtype, "delivery-status"))
@@ -976,7 +975,7 @@ static void convert_to_7bit (BODY *a)
   }
 }
 
-BODY *pgp_sign_message (BODY *a)
+static BODY *pgp_sign_message (BODY *a)
 {
   PARAMETER *p;
   BODY *t;
@@ -1183,7 +1182,7 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
 
 /* Warning: "a" is no longer free()d in this routine, you need
  * to free() it later.  This is necessary for $fcc_attach. */
-BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
+static BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
 {
   char buf[LONG_STRING];
   char tempfile[_POSIX_PATH_MAX], pgperrfile[_POSIX_PATH_MAX];
@@ -1310,42 +1309,43 @@ BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
   return (t);
 }
 
-int pgp_protect (HEADER *msg, char **pgpkeylist)
+int pgp_get_keys (HEADER *msg, char **pgpkeylist)
 {
-  BODY *pbody = NULL;
-
   /* Do a quick check to make sure that we can find all of the encryption
    * keys if the user has requested this service.
    */
 
   set_option (OPTPGPCHECKTRUST);
 
+  *pgpkeylist = NULL;
   if (msg->pgp & PGPENCRYPT)
   {
-    if ((*pgpkeylist = pgp_findKeys (msg->env->to, msg->env->cc, msg->env->bcc)) == NULL)
+    if ((*pgpkeylist = pgp_findKeys (msg->env->to, msg->env->cc,
+				      msg->env->bcc)) == NULL)
       return (-1);
   }
+
+  return (0);
+}
+
+int pgp_protect (HEADER *msg, char *pgpkeylist)
+{
+  BODY *pbody = NULL;
 
   if ((msg->pgp & PGPSIGN) && !pgp_valid_passphrase ())
     return (-1);
 
-  endwin ();
+  if (!isendwin ())
+    endwin ();
   if (msg->pgp & PGPENCRYPT)
-  {
-    pbody = pgp_encrypt_message (msg->content, *pgpkeylist, msg->pgp & PGPSIGN);
-    if (!pbody)
-    {
-      FREE (pgpkeylist);
-      return (-1);
-    }
-  }
+    pbody = pgp_encrypt_message (msg->content, pgpkeylist, msg->pgp & PGPSIGN);
   else if (msg->pgp & PGPSIGN)
-  {
-    if ((pbody = pgp_sign_message (msg->content)) == NULL)
-      return (-1);
-  }
+    pbody = pgp_sign_message (msg->content);
+
+  if (!pbody)
+    return (-1);
   msg->content = pbody;
-  return 0;
+  return (0);
 }
 
 #endif /* _PGPPATH */

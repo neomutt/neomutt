@@ -153,14 +153,11 @@ WHERE short PgpTimeout;
 
 
 BODY *pgp_decrypt_part (BODY *, STATE *, FILE *);
-BODY *pgp_encrypt_message (BODY *, char *, int);
 BODY *pgp_make_key_attachment (char *);
-BODY *pgp_sign_message (BODY *);
 
 const char *pgp_pkalg_to_mic(const char *);
 
 char *pgp_ask_for_key (struct pgp_vinfo *, KEYINFO *, char *, char *, short, char **);
-
 char *pgp_keyid(KEYINFO *);
 char *_pgp_keyid(KEYINFO *);
 
@@ -169,7 +166,8 @@ struct pgp_vinfo *pgp_get_vinfo(enum pgp_ops);
 int mutt_check_pgp (HEADER *h);
 int mutt_parse_pgp_hdr (char *, int);
 
-int pgp_protect (HEADER *, char **);
+int pgp_get_keys (HEADER *, char **);
+int pgp_protect (HEADER *, char *);
 int pgp_query (BODY *);
 int pgp_valid_passphrase (void);
 
