@@ -850,11 +850,12 @@ void mutt_view_attachments (HEADER *hdr)
     return;
 
 
-  if (WithCrypto && (hdr->security & ENCRYPT))
+  if (WithCrypto && ((hdr->security & ENCRYPT) ||
+                     (mutt_is_application_smime(hdr->content) & SMIMEOPAQUE)))
   {
     need_secured  = 1;
-    
-    if (!crypt_valid_passphrase(hdr->security))
+
+    if ((hdr->security & ENCRYPT) && !crypt_valid_passphrase(hdr->security))
     {
       mx_close_message (&msg);
       return;
