@@ -270,7 +270,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur)
       safe_free ((void **) &PostContext);
       return (-1);
     }
-    hdr->content = mutt_make_file_attach (file);
+    hdr->content = mutt_make_attach (file);
     hdr->content->use_disp = 0;	/* no content-disposition */
     hdr->content->unlink = 1;	/* delete when we are done */
   }

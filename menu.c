@@ -574,21 +574,14 @@ void mutt_menuDestroy (MUTTMENU **p)
 static int menu_search (MUTTMENU *menu, int op)
 {
   int r;
-  int searchDir;
+  int searchDir = (menu->searchDir == M_SEARCH_UP) ? -1 : 1;
   regex_t re;
   char buf[SHORT_STRING];
-
-  /* Need to search the folder using the pattern matching language,
-   * not plain regexps. mutt_search_command() does just this */
-  if (menu->search == (int (*)(MUTTMENU *, regex_t *, int)) -1 )
-    return mutt_search_command (menu->data, menu->current, op);
 
   if (op != OP_SEARCH_NEXT && op != OP_SEARCH_OPPOSITE)
   {
     strfcpy (buf, menu->searchBuf ? menu->searchBuf : "", sizeof (buf));
-    if (mutt_get_field ((op == OP_SEARCH) ? "Search for: " : 
-                                            "Reverse search for: ",
-			 buf, sizeof (buf), M_CLEAR) != 0 || !buf[0])
+    if (mutt_get_field ("Search for: ", buf, sizeof (buf), M_CLEAR) != 0 || !buf[0])
       return (-1);
     safe_free ((void **) &menu->searchBuf);
     menu->searchBuf = safe_strdup (buf);
@@ -601,11 +594,10 @@ static int menu_search (MUTTMENU *menu, int op)
       mutt_error ("No search pattern.");
       return (-1);
     }
-  }
 
-  searchDir = (menu->searchDir == M_SEARCH_UP) ? -1 : 1;
-  if (op == OP_SEARCH_OPPOSITE)
-    searchDir = -searchDir;
+    if (op == OP_SEARCH_OPPOSITE)
+      searchDir = -searchDir;
+  }
 
   if ((r = REGCOMP (&re, menu->searchBuf, REG_NOSUB | mutt_which_case (menu->searchBuf))) != 0)
   {

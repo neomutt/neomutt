@@ -70,8 +70,7 @@ ADDRESS *mutt_expand_aliases (ADDRESS *);
 ADDRESS *mutt_parse_adrlist (ADDRESS *, const char *);
 
 BODY *mutt_dup_body (BODY *);
-BODY *mutt_make_file_attach (const char *);
-BODY *mutt_make_message_attach (CONTEXT *, HEADER *);
+BODY *mutt_make_attach (const char *);
 BODY *mutt_make_multipart (BODY *);
 BODY *mutt_new_body (void);
 BODY *mutt_parse_multipart (FILE *, const char *, long, int);
@@ -220,7 +219,7 @@ int mutt_print_attachment (FILE *, BODY *);
 int mutt_query_complete (char *, size_t);
 int mutt_save_attachment (FILE *, BODY *, char *, int);
 int mutt_save_message (HEADER *, int, int, int *);
-int mutt_search_command (CONTEXT *, int, int);
+int mutt_search_command (int, int);
 int mutt_send_menu (HEADER *, char *, size_t, HEADER *);
 int mutt_send_message (HEADER *, const char *);
 int mutt_strcmp (const char *, const char *);

@@ -655,7 +655,7 @@ void mutt_index_menu (void)
       case OP_SEARCH_OPPOSITE:
 
 	CHECK_MSGCOUNT;
-	if ((menu->current = mutt_search_command (Context, menu->current, op)) == -1)
+	if ((menu->current = mutt_search_command (menu->current, op)) == -1)
 	  menu->current = menu->oldcurrent;
 	else
 	  menu->redraw = REDRAW_MOTION;

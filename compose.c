@@ -23,7 +23,6 @@
 #include "mime.h"
 #include "attach.h"
 #include "mapping.h"
-#include "mailbox.h"
 
 #include <string.h>
 #include <sys/stat.h>
@@ -394,64 +393,6 @@ static int delete_attachment (MUTTMENU *menu, short *idxlen, int x)
   return (0);
 }
 
-static struct mapping_t AttachMsgHelp[] = {
-  { "Exit",  OP_EXIT },
-  { "Help",  OP_HELP },
-  { "Attach Message",	OP_GENERIC_SELECT_ENTRY },
-  { NULL }
-};
-
-
-static void attach_msg_make_entry (char *s, size_t l, MUTTMENU *menu, int num)
-{
-  CONTEXT *tmp = Context;
-
-  Context = (CONTEXT *) menu->data;
-  index_make_entry (s, l, menu, num);
-  Context = tmp;
-}
-
-static HEADER *select_msg (CONTEXT *ctx)
-{
-  MUTTMENU *menu;
-  int i, done=0, r=-1;
-  char helpstr[SHORT_STRING];
-  char title[SHORT_STRING], from_folder[SHORT_STRING];
-
-  strfcpy(from_folder, ctx->path, sizeof (from_folder));
-  mutt_pretty_mailbox (from_folder);
-  snprintf(title, sizeof (title), "Attach messages from folder: %s", 
-                                   from_folder);
-
-  menu = mutt_new_menu ();
-  menu->make_entry = attach_msg_make_entry;
-  menu->menu = MENU_GENERIC;
-  menu->max = ctx->msgcount;
-  menu->title = title;
-  menu->data = ctx;
-  menu->search = (int (*)(MUTTMENU *, regex_t *, int)) -1;
-  menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_GENERIC,
-				  AttachMsgHelp);
-
-  while (!done)
-  {
-    switch (i = mutt_menuLoop (menu))
-    {
-      case OP_GENERIC_SELECT_ENTRY:
-	r = menu->current;
-	done = 1;
-	break;
-
-      case OP_EXIT:
-	done = 1;
-	break;
-    }
-  }
-
-  mutt_menuDestroy (&menu);
-  return (r > -1 ? ctx->hdrs[ctx->v2r[r]] : NULL);
-}
-
 /* return values:
  *
  * 1	message should be postponed
@@ -475,8 +416,6 @@ int mutt_send_menu (HEADER *msg,   /* structure for new message */
   int op = 0;
   int loop = 1;
   int fccSet = 0;	/* has the user edited the Fcc: field ? */
-  CONTEXT *ctx = NULL;
-  HEADER *hdr = NULL;
 
   idx = mutt_gen_attach_list (msg->content, idx, &idxlen, &idxmax, 0, 1);
 
@@ -632,31 +571,10 @@ int mutt_send_menu (HEADER *msg,   /* structure for new message */
 
 
       case OP_COMPOSE_ATTACH_FILE:
-      case OP_COMPOSE_ATTACH_MESSAGE:
-
 	fname[0] = 0;
-	{
-	  char* prompt;
-	  int flag;
-
-	  if (op == OP_COMPOSE_ATTACH_FILE)
-	  {
-	    prompt = "Attach file";
-	    flag = 0;
-	  }
-	  else
-	  {
-	    prompt = "Open mailbox to attach message from";
-	    flag = 1;
-	  }
-
-	  if (mutt_enter_fname (prompt, fname, sizeof (fname), &menu->redraw,
-	  			flag) == -1)
-	  {
-	    break;
-	  }
-	}
-
+	if (mutt_enter_fname ("Attach file", fname, sizeof (fname),
+			      &menu->redraw, 0) == -1)
+	  break;
 	if (!fname[0])
 	  continue;
 	mutt_expand_path (fname, sizeof (fname));
@@ -668,34 +586,6 @@ int mutt_send_menu (HEADER *msg,   /* structure for new message */
 	  break;
 	}
 
-	if (op == OP_COMPOSE_ATTACH_MESSAGE)
-	{
-	  menu->redraw = REDRAW_FULL;
-
-	  ctx = mx_open_mailbox (fname, 0, NULL);
-	  if (ctx == NULL)
-	  {
-	    mutt_perror (fname);
-	    break;
-	  }
-
-	  if (!ctx->msgcount)
-	  {
-	    mx_close_mailbox (ctx);
-	    safe_free ((void **) &ctx);
-	    mutt_error ("No messages in that folder.");
-	    break;
-	  }
-	  
-	  hdr = select_msg (ctx);
-	  if (hdr == NULL)
-	  {
-	    mx_close_mailbox (ctx);
-	    safe_free ((void **) &ctx);
-	    break;
-	  }
-	}
-
 	if (idxlen == idxmax)
 	{
 	  safe_realloc ((void **) &idx, sizeof (ATTACHPTR *) * (idxmax += 5));
@@ -703,13 +593,7 @@ int mutt_send_menu (HEADER *msg,   /* structure for new message */
 	}
 
 	idx[idxlen] = (ATTACHPTR *) safe_calloc (1, sizeof (ATTACHPTR));
-
-	if (op == OP_COMPOSE_ATTACH_FILE)
-	  idx[idxlen]->content = mutt_make_file_attach (fname);
-	else
-	  idx[idxlen]->content = mutt_make_message_attach (ctx, hdr);
-
-	if (idx[idxlen]->content != NULL)
+	if ((idx[idxlen]->content = mutt_make_attach (fname)) != NULL)
 	{
 	  idx[idxlen]->level = (idxlen > 0) ? idx[idxlen-1]->level : 0;
 
@@ -719,12 +603,11 @@ int mutt_send_menu (HEADER *msg,   /* structure for new message */
 	  menu->current = idxlen++;
 	  mutt_update_tree (idx, idxlen);
 	  menu->max = idxlen;
-	  if (op == OP_COMPOSE_ATTACH_FILE)
-	    menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
+	  menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 	}
 	else
 	{
-	  mutt_error ("Unable to attach!");
+	  mutt_error ("Unable to attach file!");
 	  safe_free ((void **) &idx[idxlen]);
 	}
 	break;
@@ -892,7 +775,7 @@ int mutt_send_menu (HEADER *msg,   /* structure for new message */
 	  }
 	  fclose (fp);
 
-	  if ((idx[idxlen]->content = mutt_make_file_attach (fname)) == NULL)
+	  if ((idx[idxlen]->content = mutt_make_attach (fname)) == NULL)
 	  {
 	    mutt_error ("What we have here is a failure to make an attachment");
 	    continue;

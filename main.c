@@ -573,11 +573,11 @@ int main (int argc, char **argv)
       {
 	if (a)
 	{
-	  a->next = mutt_make_file_attach (t->data);
+	  a->next = mutt_make_attach (t->data);
 	  a = a->next;
 	}
 	else
-	  msg->content = a = mutt_make_file_attach (t->data);
+	  msg->content = a = mutt_make_attach (t->data);
 	if (!a)
 	{
 	  if (!option (OPTNOCURSES))
