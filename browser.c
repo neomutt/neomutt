@@ -749,23 +749,25 @@ void mutt_select_file (char *f, size_t flen, int buffy)
 	      break;
 
             case 1: /* (d)ate */
-	      BrowserSort = reverse | SORT_DATE;
+	      BrowserSort = SORT_DATE;
 	      break;
 
             case 2: /* (a)lpha */
-	      BrowserSort = reverse | SORT_SUBJECT;
+	      BrowserSort = SORT_SUBJECT;
 	      break;
 
             case 3: /* si(z)e */
-	      BrowserSort = reverse | SORT_SIZE;
+	      BrowserSort = SORT_SIZE;
 	      break;
 
             case 4: /* do(n)'t sort */
 	      BrowserSort = SORT_ORDER;
+	      resort = 0;
 	      break;
 	  }
 	  if (resort)
 	  {
+	    BrowserSort |= reverse ? SORT_REVERSE : 0;
 	    browser_sort (&state);
 	    menu->redraw = REDRAW_FULL;
 	  }
