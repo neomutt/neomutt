@@ -23,6 +23,7 @@
 #include "mutt_curses.h"
 #include "keymap.h"
 #include "mailbox.h"
+#include "url.h"
 #include "reldate.h"
 
 #include <string.h>
@@ -657,7 +658,8 @@ int main (int argc, char **argv)
     FILE *fin = NULL;
     char buf[LONG_STRING];
     char *tempfile = NULL, *infile = NULL;
-
+    char *bodytext = NULL;
+    
     if (!option (OPTNOCURSES))
       mutt_flushinp ();
 
@@ -672,7 +674,12 @@ int main (int argc, char **argv)
 	msg->env = mutt_new_envelope ();
 
       for (i = optind; i < argc; i++)
-	msg->env->to = rfc822_parse_adrlist (msg->env->to, argv[i]);
+      {
+	if (url_check_scheme (argv[i]) == U_MAILTO)
+	  url_parse_mailto (msg->env, &bodytext, argv[i]);
+	else
+	  msg->env->to = rfc822_parse_adrlist (msg->env->to, argv[i]);
+      }
 
       if (option (OPTAUTOEDIT) && !msg->env->to && !msg->env->cc)
       {
@@ -682,36 +689,45 @@ int main (int argc, char **argv)
 	exit (1);
       }
 
-      msg->env->subject = safe_strdup (subject);
-      
+      if (subject)
+	msg->env->subject = safe_strdup (subject);
+
       if (includeFile)
 	infile = includeFile;
     }
 
-    if (infile)
+    if (infile || bodytext)
     {
-      if (mutt_strcmp ("-", infile) == 0)
-	fin = stdin;
-      else
+      if (infile)
       {
-	char path[_POSIX_PATH_MAX];
-
-	strfcpy (path, infile, sizeof (path));
-	mutt_expand_path (path, sizeof (path));
-	if ((fin = fopen (path, "r")) == NULL)
+	if (mutt_strcmp ("-", infile) == 0)
+	  fin = stdin;
+	else 
 	{
-	  if (!option (OPTNOCURSES))
-	    mutt_endwin (NULL);
-	  perror (path);
-	  exit (1);
+	  char path[_POSIX_PATH_MAX];
+	  
+	  strfcpy (path, infile, sizeof (path));
+	  mutt_expand_path (path, sizeof (path));
+	  if ((fin = fopen (path, "r")) == NULL)
+	  {
+	    if (!option (OPTNOCURSES))
+	      mutt_endwin (NULL);
+	    perror (path);
+	    exit (1);
+	  }
 	}
       }
+      else
+	fin = NULL;
+
       mutt_mktemp (buf);
       tempfile = safe_strdup (buf);
 
       if (draftFile)
 	msg->env = mutt_read_rfc822_header (fin, NULL, 1, 0);
 
+      /* is the following if still needed? */
+      
       if (tempfile)
       {
 	FILE *fout;
@@ -725,14 +741,18 @@ int main (int argc, char **argv)
 	  FREE (&tempfile);
 	  exit (1);
 	}
-
-	mutt_copy_stream (fin, fout);
+	if (fin)
+	  mutt_copy_stream (fin, fout);
+	else if (bodytext)
+	  fputs (bodytext, fout);
 	fclose (fout);
-	if (fin != stdin)
+	if (fin && fin != stdin)
 	  fclose (fin);
       }
     }
 
+    safe_free ((void **) &bodytext);
+    
     if (attach)
     {
       LIST *t = attach;

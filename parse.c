@@ -908,6 +908,304 @@ void mutt_parse_mime_message (CONTEXT *ctx, HEADER *cur)
   }
 }
 
+int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short user_hdrs, short weed,
+			    short do_2047, LIST **lastp, char **in_reply_to)
+{
+  int matched = 0;
+  LIST *last = NULL;
+  
+  if (lastp)
+    last = *lastp;
+  
+  switch (tolower (line[0]))
+  {
+    case 'a':
+    if (mutt_strcasecmp (line+1, "pparently-to") == 0)
+    {
+      e->to = rfc822_parse_adrlist (e->to, p);
+      matched = 1;
+    }
+    else if (mutt_strcasecmp (line+1, "pparently-from") == 0)
+    {
+      e->from = rfc822_parse_adrlist (e->from, p);
+      matched = 1;
+    }
+    break;
+    
+    case 'b':
+    if (mutt_strcasecmp (line+1, "cc") == 0)
+    {
+      e->bcc = rfc822_parse_adrlist (e->bcc, p);
+      matched = 1;
+    }
+    break;
+    
+    case 'c':
+    if (mutt_strcasecmp (line+1, "c") == 0)
+    {
+      e->cc = rfc822_parse_adrlist (e->cc, p);
+      matched = 1;
+    }
+    else if (mutt_strncasecmp (line + 1, "ontent-", 7) == 0)
+    {
+      if (mutt_strcasecmp (line+8, "type") == 0)
+      {
+	if (hdr)
+	  mutt_parse_content_type (p, hdr->content);
+	matched = 1;
+      }
+      else if (mutt_strcasecmp (line+8, "transfer-encoding") == 0)
+      {
+	if (hdr)
+	  hdr->content->encoding = mutt_check_encoding (p);
+	matched = 1;
+      }
+      else if (mutt_strcasecmp (line+8, "length") == 0)
+      {
+	if (hdr)
+	{
+	  if ((hdr->content->length = atoi (p)) < 0)
+	    hdr->content->length = -1;
+	}
+	matched = 1;
+      }
+      else if (mutt_strcasecmp (line+8, "description") == 0)
+      {
+	if (hdr)
+	{
+	  mutt_str_replace (&hdr->content->description, p);
+	  rfc2047_decode (&hdr->content->description);
+	}
+	matched = 1;
+      }
+      else if (mutt_strcasecmp (line+8, "disposition") == 0)
+      {
+	if (hdr)
+	  parse_content_disposition (p, hdr->content);
+	matched = 1;
+      }
+    }
+    break;
+    
+    case 'd':
+    if (!mutt_strcasecmp ("ate", line + 1))
+    {
+      mutt_str_replace (&e->date, p);
+      if (hdr)
+	hdr->date_sent = mutt_parse_date (p, hdr);
+      matched = 1;
+    }
+    break;
+    
+    case 'e':
+    if (!mutt_strcasecmp ("xpires", line + 1) &&
+	hdr && mutt_parse_date (p, NULL) < time (NULL))
+      hdr->expired = 1;
+    break;
+    
+    case 'f':
+    if (!mutt_strcasecmp ("rom", line + 1))
+    {
+      e->from = rfc822_parse_adrlist (e->from, p);
+      matched = 1;
+    }
+    break;
+    
+    case 'i':
+    if (!mutt_strcasecmp (line+1, "n-reply-to"))
+    {
+      if (hdr && in_reply_to)
+      {
+	*in_reply_to = strdup (p);
+	if (do_2047)
+	  rfc2047_decode (in_reply_to);
+      }
+    }
+    break;
+    
+    case 'l':
+    if (!mutt_strcasecmp (line + 1, "ines"))
+    {
+      if (hdr)
+	hdr->lines = atoi (p);
+      matched = 1;
+    }
+    break;
+    
+    case 'm':
+    if (!mutt_strcasecmp (line + 1, "ime-version"))
+    {
+      if (hdr)
+	hdr->mime = 1;
+      matched = 1;
+    }
+    else if (!mutt_strcasecmp (line + 1, "essage-id"))
+    {
+      /* We add a new "Message-Id:" when building a message */
+      safe_free ((void **) &e->message_id);
+      e->message_id = extract_message_id (p);
+      matched = 1;
+    }
+    else if (!mutt_strncasecmp (line + 1, "ail-", 4))
+    {
+      if (!mutt_strcasecmp (line + 5, "reply-to"))
+      {
+	/* override the Reply-To: field */
+	rfc822_free_address (&e->reply_to);
+	e->reply_to = rfc822_parse_adrlist (e->reply_to, p);
+	matched = 1;
+      }
+      else if (!mutt_strcasecmp (line + 5, "followup-to"))
+      {
+	e->mail_followup_to = rfc822_parse_adrlist (e->mail_followup_to, p);
+	matched = 1;
+      }
+    }
+    break;
+    
+    case 'r':
+    if (!mutt_strcasecmp (line + 1, "eferences"))
+    {
+      mutt_free_list (&e->references);
+      e->references = mutt_parse_references (p);
+      matched = 1;
+    }
+    else if (!mutt_strcasecmp (line + 1, "eply-to"))
+    {
+      e->reply_to = rfc822_parse_adrlist (e->reply_to, p);
+      matched = 1;
+    }
+    else if (!mutt_strcasecmp (line + 1, "eturn-path"))
+    {
+      e->return_path = rfc822_parse_adrlist (e->return_path, p);
+      matched = 1;
+    }
+    else if (!mutt_strcasecmp (line + 1, "eceived"))
+    {
+      if (hdr && !hdr->received)
+      {
+	char *d = strchr (p, ';');
+	
+	if (d)
+	  hdr->received = mutt_parse_date (d + 1, NULL);
+      }
+    }
+    break;
+    
+    case 's':
+    if (!mutt_strcasecmp (line + 1, "ubject"))
+    {
+      if (!e->subject)
+	e->subject = safe_strdup (p);
+      matched = 1;
+    }
+    else if (!mutt_strcasecmp (line + 1, "ender"))
+    {
+      e->sender = rfc822_parse_adrlist (e->sender, p);
+      matched = 1;
+    }
+    else if (!mutt_strcasecmp (line + 1, "tatus"))
+    {
+      if (hdr)
+      {
+	while (*p)
+	{
+	  switch(*p)
+	  {
+	    case 'r':
+	    hdr->replied = 1;
+	    break;
+	    case 'O':
+	    if (option (OPTMARKOLD))
+	      hdr->old = 1;
+	    break;
+	    case 'R':
+	    hdr->read = 1;
+	    break;
+	  }
+	  p++;
+	}
+      }
+      matched = 1;
+    }
+    else if ((!mutt_strcasecmp ("upersedes", line + 1) ||
+	      !mutt_strcasecmp ("upercedes", line + 1)) && hdr)
+      e->supersedes = safe_strdup (p);
+    break;
+    
+    case 't':
+    if (mutt_strcasecmp (line+1, "o") == 0)
+    {
+      e->to = rfc822_parse_adrlist (e->to, p);
+      matched = 1;
+    }
+    break;
+    
+    case 'x':
+    if (mutt_strcasecmp (line+1, "-status") == 0)
+    {
+      if (hdr)
+      {
+	while (*p)
+	{
+	  switch (*p)
+	  {
+	    case 'A':
+	    hdr->replied = 1;
+	    break;
+	    case 'D':
+	    hdr->deleted = 1;
+	    break;
+	    case 'F':
+	    hdr->flagged = 1;
+	    break;
+	    default:
+	    break;
+	  }
+	  p++;
+	}
+      }
+      matched = 1;
+    }
+    else if (mutt_strcasecmp (line+1, "-label") == 0)
+    {
+      e->x_label = safe_strdup(p);
+      matched = 1;
+    }
+    
+    default:
+    break;
+  }
+  
+  /* Keep track of the user-defined headers */
+  if (!matched && user_hdrs)
+  {
+    /* restore the original line */
+    line[strlen (line)] = ':';
+    
+    if (weed && option (OPTWEED) && mutt_matches_ignore (line, Ignore)
+	&& !mutt_matches_ignore (line, UnIgnore))
+      goto done;
+
+    if (last)
+    {
+      last->next = mutt_new_list ();
+      last = last->next;
+    }
+    else
+      last = e->userhdrs = mutt_new_list ();
+    last->data = safe_strdup (line);
+    if (do_2047)
+      rfc2047_decode (&last->data);
+  }
+
+  done:
+  
+  *lastp = last;
+  return matched;
+}
+  
+  
 /* mutt_read_rfc822_header() -- parses a RFC822 header
  *
  * Args:
@@ -984,285 +1282,8 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
     if (!*p)
       continue; /* skip empty header fields */
 
-    switch (tolower (line[0]))
-    {
-      case 'a':
-	if (mutt_strcasecmp (line+1, "pparently-to") == 0)
-	{
-	  e->to = rfc822_parse_adrlist (e->to, p);
-	  matched = 1;
-	}
-	else if (mutt_strcasecmp (line+1, "pparently-from") == 0)
-	{
-	  e->from = rfc822_parse_adrlist (e->from, p);
-	  matched = 1;
-	}
-	break;
-
-      case 'b':
-	if (mutt_strcasecmp (line+1, "cc") == 0)
-	{
-	  e->bcc = rfc822_parse_adrlist (e->bcc, p);
-	  matched = 1;
-	}
-	break;
-
-      case 'c':
-	if (mutt_strcasecmp (line+1, "c") == 0)
-	{
-	  e->cc = rfc822_parse_adrlist (e->cc, p);
-	  matched = 1;
-	}
-	else if (mutt_strncasecmp (line + 1, "ontent-", 7) == 0)
-	{
-	  if (mutt_strcasecmp (line+8, "type") == 0)
-	  {
-	    if (hdr)
-	      mutt_parse_content_type (p, hdr->content);
-	    matched = 1;
-	  }
-	  else if (mutt_strcasecmp (line+8, "transfer-encoding") == 0)
-	  {
-	    if (hdr)
-	      hdr->content->encoding = mutt_check_encoding (p);
-	    matched = 1;
-	  }
-	  else if (mutt_strcasecmp (line+8, "length") == 0)
-	  {
-	    if (hdr)
-	    {
-	      if ((hdr->content->length = atoi (p)) < 0)
-		hdr->content->length = -1;
-	    }
-	    matched = 1;
-	  }
-	  else if (mutt_strcasecmp (line+8, "description") == 0)
-	  {
-	    if (hdr)
-	    {
-	      mutt_str_replace (&hdr->content->description, p);
-	      rfc2047_decode (&hdr->content->description);
-	    }
-	    matched = 1;
-	  }
-	  else if (mutt_strcasecmp (line+8, "disposition") == 0)
-	  {
-	    if (hdr)
-	      parse_content_disposition (p, hdr->content);
-	    matched = 1;
-	  }
-	}
-	break;
-
-      case 'd':
-	if (!mutt_strcasecmp ("ate", line + 1))
-	{
-	  mutt_str_replace (&e->date, p);
-	  if (hdr)
-	    hdr->date_sent = mutt_parse_date (p, hdr);
-	  matched = 1;
-	}
-	break;
-
-      case 'e':
-	if (!mutt_strcasecmp ("xpires", line + 1) &&
-	    hdr && mutt_parse_date (p, NULL) < time (NULL))
-	  hdr->expired = 1;
-	break;
-
-      case 'f':
-	if (!mutt_strcasecmp ("rom", line + 1))
-	{
-	  e->from = rfc822_parse_adrlist (e->from, p);
-	  matched = 1;
-	}
-	break;
-
-      case 'i':
-	if (!mutt_strcasecmp (line+1, "n-reply-to"))
-	{
-	  if (hdr)
-	  {
-	    in_reply_to = strdup (p);
-	    rfc2047_decode (&in_reply_to);
-	  }
-	}
-	break;
-
-      case 'l':
-	if (!mutt_strcasecmp (line + 1, "ines"))
-	{
-	  if (hdr)
-	    hdr->lines = atoi (p);
-	  matched = 1;
-	}
-	break;
-
-      case 'm':
-	if (!mutt_strcasecmp (line + 1, "ime-version"))
-	{
-	  if (hdr)
-	    hdr->mime = 1;
-	  matched = 1;
-	}
-	else if (!mutt_strcasecmp (line + 1, "essage-id"))
-	{
-	  /* We add a new "Message-Id:" when building a message */
-	  safe_free ((void **) &e->message_id);
-	  e->message_id = extract_message_id (p);
-	  matched = 1;
-	}
-	else if (!mutt_strncasecmp (line + 1, "ail-", 4))
-	{
-	  if (!mutt_strcasecmp (line + 5, "reply-to"))
-	  {
-	    /* override the Reply-To: field */
-	    rfc822_free_address (&e->reply_to);
-	    e->reply_to = rfc822_parse_adrlist (e->reply_to, p);
-	    matched = 1;
-	  }
-	  else if (!mutt_strcasecmp (line + 5, "followup-to"))
-	  {
-	    e->mail_followup_to = rfc822_parse_adrlist (e->mail_followup_to, p);
-	    matched = 1;
-	  }
-	}
-	break;
-
-      case 'r':
-	if (!mutt_strcasecmp (line + 1, "eferences"))
-	{
-	  mutt_free_list (&e->references);
-	  e->references = mutt_parse_references (p);
-	  matched = 1;
-	}
-	else if (!mutt_strcasecmp (line + 1, "eply-to"))
-	{
-	  e->reply_to = rfc822_parse_adrlist (e->reply_to, p);
-	  matched = 1;
-	}
-	else if (!mutt_strcasecmp (line + 1, "eturn-path"))
-	{
-	  e->return_path = rfc822_parse_adrlist (e->return_path, p);
-	  matched = 1;
-	}
-	else if (!mutt_strcasecmp (line + 1, "eceived"))
-	{
-	  if (hdr && !hdr->received)
-	  {
-	    char *d = strchr (p, ';');
-
-	    if (d)
-	      hdr->received = mutt_parse_date (d + 1, NULL);
-	  }
-	}
-	break;
-
-      case 's':
-	if (!mutt_strcasecmp (line + 1, "ubject"))
-	{
-	  if (!e->subject)
-	    e->subject = safe_strdup (p);
-	  matched = 1;
-	}
-	else if (!mutt_strcasecmp (line + 1, "ender"))
-	{
-	  e->sender = rfc822_parse_adrlist (e->sender, p);
-	  matched = 1;
-	}
-	else if (!mutt_strcasecmp (line + 1, "tatus"))
-	{
-	  if (hdr)
-	  {
-	    while (*p)
-	    {
-	      switch(*p)
-	      {
-		case 'r':
-		  hdr->replied = 1;
-		  break;
-		case 'O':
-		  if (option (OPTMARKOLD))
-		    hdr->old = 1;
-		  break;
-		case 'R':
-		  hdr->read = 1;
-		  break;
-	      }
-	      p++;
-	    }
-	  }
-	  matched = 1;
-	}
-	else if ((!mutt_strcasecmp ("upersedes", line + 1) ||
-	          !mutt_strcasecmp ("upercedes", line + 1)) && hdr)
-	  e->supersedes = safe_strdup (p);
-	break;
-
-      case 't':
-	if (mutt_strcasecmp (line+1, "o") == 0)
-	{
-	  e->to = rfc822_parse_adrlist (e->to, p);
-	  matched = 1;
-	}
-	break;
-
-      case 'x':
-	if (mutt_strcasecmp (line+1, "-status") == 0)
-	{
-	  if (hdr)
-	  {
-	    while (*p)
-	    {
-	      switch (*p)
-	      {
-		case 'A':
-		  hdr->replied = 1;
-		  break;
-		case 'D':
-		  hdr->deleted = 1;
-		  break;
-		case 'F':
-		  hdr->flagged = 1;
-		  break;
-		default:
-		  break;
-	      }
-	      p++;
-	    }
-	  }
-	  matched = 1;
-	}
-	else if (mutt_strcasecmp (line+1, "-label") == 0)
-	{
-	  e->x_label = safe_strdup(p);
-	  matched = 1;
-	}
-	    
-      default:
-	break;
-    }
-
-     /* Keep track of the user-defined headers */
-    if (!matched && user_hdrs)
-    {
-      /* restore the original line */
-      line[strlen (line)] = ':';
-
-      if (weed && option (OPTWEED) && mutt_matches_ignore (line, Ignore)
-	  && !mutt_matches_ignore (line, UnIgnore))
-	continue;
-
-      if (last)
-      {
-	last->next = mutt_new_list ();
-	last = last->next;
-      }
-      else
-	last = e->userhdrs = mutt_new_list ();
-      last->data = safe_strdup (line);
-      rfc2047_decode (&last->data);
-    }
+    matched = mutt_parse_rfc822_line (e, hdr, line, p, user_hdrs, weed, 1, &last, &in_reply_to);
+    
   }
 
   FREE (&line);

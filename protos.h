@@ -281,6 +281,8 @@ int mutt_parse_mono (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 int mutt_parse_unmono (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 int mutt_parse_push (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 int mutt_parse_rc_line (/* const */ char *, BUFFER *, BUFFER *);
+int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short user_hdrs, short weed,
+			    short do_2047, LIST **lastp, char **in_reply_to);
 int mutt_parse_score (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 int mutt_parse_unscore (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 int mutt_parse_unhook (BUFFER *, BUFFER *, unsigned long, BUFFER *);

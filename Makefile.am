@@ -30,7 +30,8 @@ mutt_SOURCES = $(BUILT_SOURCES) \
 	rfc822.c rfc1524.c rfc2047.c rfc2231.c \
 	score.c send.c sendlib.c signal.c sort.c \
 	status.c system.c thread.c charset.c history.c lib.c \
-	muttlib.c editmsg.c utf8.c mbyte.c wcwidth.c gettext.c
+	muttlib.c editmsg.c utf8.c mbyte.c wcwidth.c gettext.c \
+	url.c
 
 mutt_LDADD = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAP) $(MUTTLIBS) \
 	$(INTLLIBS) $(LIBICONV)
@@ -72,7 +73,7 @@ non_us_sources = pgp.c pgpinvoke.c pgpkey.c pgplib.c sha1dgst.c \
 
 EXTRA_mutt_SOURCES = account.c mutt_sasl.c mutt_socket.c pop.c pgp.c \
 	pgpinvoke.c pgpkey.c pgplib.c sha1dgst.c gnupgparse.c resize.c \
-	dotlock.c remailer.c browser.h mbyte.h remailer.h
+	dotlock.c remailer.c browser.h mbyte.h remailer.h url.h
 
 EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO configure acconfig.h account.h \
 	attach.h buffy.h charset.h copy.h dotlock.h functions.h gen_defs \
