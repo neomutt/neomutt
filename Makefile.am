@@ -53,7 +53,8 @@ makedoc_DEPENDENCIES =
 CPP=@CPP@
 
 DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
-	-DBINDIR=\"$(bindir)\" -DHAVE_CONFIG_H=1
+	-DBINDIR=\"$(bindir)\" -DMUTTLOCALEDIR=\"$(datadir)/locale\" \
+	-DHAVE_CONFIG_H=1
 
 INCLUDES=-I. -I$(top_srcdir) $(IMAP_INCLUDES) -Iintl
 

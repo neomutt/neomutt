@@ -742,10 +742,6 @@ fi
 
 dnl -- locales --
 
-MUTTLOCALEDIR='$datadir/locale'
-AC_SUBST(MUTTLOCALEDIR)
-AC_DEFINE_UNQUOTED(MUTTLOCALEDIR, "$MUTTLOCALEDIR")
-
 AC_CHECK_HEADERS(wchar.h)
 
 AC_CACHE_CHECK([for wchar_t], mutt_cv_wchar_t,

@@ -8,9 +8,6 @@
 /* The package name */
 #undef PACKAGE
 
-/* Where to put l10n data */
-#undef MUTTLOCALEDIR
-
 /* Enable debugging info */
 #define DEBUG
 
