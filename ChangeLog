@@ -1,3 +1,7 @@
+2003-11-11 10:19:22  Ronny Haryanto  <ronnylist@haryan.to>  (roessler)
+
+	* po/id.po: update
+
 2003-11-10 18:02:26  Rudy Taraschi  <rudy@cae.com>  (roessler)
 
 	* mutt_socket.c: Fix double-free problems related to IDN support.
