@@ -1303,7 +1303,7 @@ ci_send_message (int flags,		/* send mode */
       && !(flags & (SENDRESEND|SENDPOSTPONED)))
     msg->env->from->personal = safe_strdup (Realname);
 
-  if ((WithCrypto & APPLICATION_PGP) && !(flags & SENDKEY))
+  if (!((WithCrypto & APPLICATION_PGP) && (flags & SENDKEY)))
     safe_fclose (&tempfp);
 
   if (flags & SENDMAILX)
