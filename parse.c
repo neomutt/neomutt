@@ -145,8 +145,7 @@ static PARAMETER *parse_parameters (const char *s)
     if ((p = strpbrk (s, "=;")) == NULL)
     {
       dprint(1, (debugfile, "parse_parameters: malformed parameter: %s\n", s));
-      rfc2231_decode_parameters (&head);
-      return (head); /* just bail out now */
+      goto bail;
     }
 
     /* if we hit a ; now the parameter has no value, just skip it */
@@ -225,6 +224,8 @@ static PARAMETER *parse_parameters (const char *s)
     }
     while (*s == ';'); /* skip empty parameters */
   }    
+
+  bail:
 
   rfc2231_decode_parameters (&head);
   return (head);

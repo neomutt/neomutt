@@ -89,7 +89,10 @@ void rfc2231_decode_parameters (PARAMETER **headp)
 
   int encoded;
   int index;
-
+  short dirty = 0;	/* set to 1 when we may have created
+			 * empty parameters.
+			 */
+  
   if (!headp) return;
 
   purge_empty_parameters (headp);
@@ -121,10 +124,12 @@ void rfc2231_decode_parameters (PARAMETER **headp)
       
       s = rfc2231_get_charset (p->value, charset, sizeof (charset));
       rfc2231_decode_one (p->value, s, charset);
-
+      
       *last = p;
       last = &p->next;
       p->next = NULL;
+      
+      dirty = 1;
     }
     else
     {
@@ -147,16 +152,19 @@ void rfc2231_decode_parameters (PARAMETER **headp)
       safe_free ((void **) &p);
 
       rfc2231_list_insert (&conthead, conttmp);
-
     }
   }
 
   if (conthead)
+  {
     rfc2231_join_continuations (last, conthead);
+    dirty = 1;
+  }
   
   *headp = head;
   
-  purge_empty_parameters (headp);
+  if (dirty)
+    purge_empty_parameters (headp);
 }
   
 static struct rfc2231_parameter *rfc2231_new_parameter (void)
