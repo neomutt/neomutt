@@ -1289,7 +1289,7 @@ int imap_parse_list_response(IMAP_DATA* idata, char **name, int *noselect,
       return 0;
     s = imap_next_word (s); /* delim */
     /* Reset the delimiter, this can change */
-    if (ascii_strncmp (s, "NIL", 3))
+    if (ascii_strncasecmp (s, "NIL", 3))
     {
       if (s && s[0] == '\"' && s[1] && s[2] == '\"')
 	*delim = s[1];
