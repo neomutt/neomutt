@@ -698,7 +698,7 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
   safe_free ((void **) &ctx->pattern);
   if (ctx->limit_pattern) 
     mutt_pattern_free (&ctx->limit_pattern);
-  safe_fclose (ctx->fp);
+  safe_fclose (&ctx->fp);
   memset (ctx, 0, sizeof (CONTEXT));
 }
 
