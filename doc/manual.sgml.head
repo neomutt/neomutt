@@ -1161,7 +1161,7 @@ tools are another common reason for updated access times.
 the command is executed, so if these names contain <ref id="shortcuts"
 name="shortcut characters"> (such as ``='' and ``!''), any variable
 definition that affect these characters (like <ref id="folder"
-name="&dollar;folder"> and <ref id="spoolfile" name="&dollar;spool">)
+name="&dollar;folder"> and <ref id="spoolfile" name="&dollar;spoolfile">)
 should be executed before the <tt/mailboxes/ command.
 
 <sect1>User defined headers<label id="my_hdr">
@@ -1869,7 +1869,7 @@ These shortcuts can be used anywhere you are prompted for a file or mailbox
 path.
 
 <itemize>
-<item>! -- refers to your <ref id="spoolfile" name="&dollar;spool"> (incoming) mailbox
+<item>! -- refers to your <ref id="spoolfile" name="&dollar;spoolfile"> (incoming) mailbox
 <item>&gt; -- refers to your <ref id="mbox" name="&dollar;mbox"> file
 <item>&lt; -- refers to your <ref id="record" name="&dollar;record"> file
 <item>- or !! -- refers to the file you've last visited
