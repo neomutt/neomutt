@@ -1534,6 +1534,17 @@ struct option_t MuttVars[] = {
   ** \fBdeprecated\fP.
   ** (PGP only)
   */
+  { "pgp_auto_decode", DT_BOOL, R_NONE, OPTPGPAUTODEC, 0 },
+  /*
+  ** .pp
+  ** If set, mutt will automatically attempt to decrypt traditional PGP
+  ** messages whenever the user performs an operation which ordinarily would
+  ** result in the contents of the message being operated on.  For example,
+  ** if the user displays a pgp-traditional message which has not been manually
+  ** checked with the check-traditional-pgp function, mutt will automatically
+  ** check the message for traditional pgp.
+  */
+
 
   /* XXX Default values! */
   

@@ -966,6 +966,7 @@ static int _mutt_check_traditional_pgp (HEADER *h, int *redraw)
     rv = 1;
   }
   
+  h->security |= PGP_TRADITIONAL_CHECKED;
   mx_close_message (&msg);
   return rv;
 }
