@@ -286,6 +286,22 @@ int safe_rename (const char *src, const char *target)
 
   if (link (src, target) != 0)
   {
+
+    /*
+     * Coda does not allow cross-directory links, but tells
+     * us it's a cross-filesystem linking attempt.
+     * 
+     * However, the Coda rename call is allegedly safe to use.
+     * 
+     * With other file systems, rename should just fail when 
+     * the files reside on different file systems, so it's safe
+     * to try it here.
+     *
+     */
+
+    if (errno == EXDEV)
+      return rename (src, target);
+    
     return -1;
   }
 
