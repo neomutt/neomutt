@@ -310,7 +310,7 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 	continue;
       }
 
-      have_any_sigs = have_any_sigs || clearsign;
+      have_any_sigs = have_any_sigs || (clearsign && (s->flags & M_VERIFY));
       
       if(!clearsign || s->flags & M_VERIFY)
       {
