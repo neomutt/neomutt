@@ -527,7 +527,7 @@ hdr_format_str (char *dest,
 
     case 's':
       
-      if (flags & M_FORMAT_TREE)
+      if (flags & M_FORMAT_TREE && !hdr->collapsed)
       {
 	if (flags & M_FORMAT_FORCESUBJ)
 	{

@@ -128,7 +128,7 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
   char corner = (Sort & SORT_REVERSE) ? M_TREE_ULCORNER : M_TREE_LLCORNER;
   char vtee = (Sort & SORT_REVERSE) ? M_TREE_BTEE : M_TREE_TTEE;
   int depth = 0, start_depth = 0, max_depth = 0, max_width = 0;
-  int nextdisp = 0, visible, pseudo = 0;
+  int nextdisp = 0, visible, pseudo = 0, hidden = 0;
   THREAD *tree = ctx->tree;
   HEADER **array = ctx->hdrs + (Sort & SORT_REVERSE ? ctx->msgcount - 1 : 0);
   HEADER *hdr;
@@ -161,7 +161,7 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
       
       if (depth && start_depth == depth)
 	myarrow[0] = nextdisp ? M_TREE_LTEE : corner;
-      else if (tree->parent->message)
+      else if (hidden)
 	myarrow[0] = M_TREE_HIDDEN;
       else if (option (OPTHIDEMISSING))
 	myarrow[0] = nextdisp ? vtee : M_TREE_HLINE;
@@ -170,6 +170,7 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
       myarrow[1] = pseudo ?  M_TREE_STAR
 		    : (tree->duplicate_thread ? M_TREE_EQUALS : M_TREE_HLINE);
       pseudo = 0;
+      hidden = 0;
 
       if (visible)
       {
@@ -213,6 +214,8 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
 	  if (visible)
 	    start_depth = depth;
 	}
+	if (hdr)
+	  hidden = 1;
 
 	tree = tree->child;
 	if (tree->fake_thread)
@@ -246,6 +249,8 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
 	  break;
 	if (!nextdisp)
 	  nextdisp = is_next_displayed (ctx, tree);
+	if (tree->fake_thread)
+	  pseudo = 1;
 	hdr = tree->message;
       }
     }
