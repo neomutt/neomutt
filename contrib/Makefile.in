@@ -30,9 +30,9 @@ SAMPLES=Mush.rc Pine.rc gpg.rc pgp2.rc pgp5.rc
 all clean distclean:
 
 install:
-	$(top_srcdir)/mkinstalldirs @docdir@/samples
+	$(top_srcdir)/mkinstalldirs $(DESTDIR)@docdir@/samples
 	for f in $(SAMPLES) ; do \
-		$(INSTALL) -m 644 $(srcdir)/$$f @docdir@/samples ;	\
+		$(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)@docdir@/samples ;	\
 	done
 
 maintainer-clean:
