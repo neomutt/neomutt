@@ -1,4 +1,6 @@
-2003-01-23 22:03:12  Nathan Dushman  <nhd+mutt@andrew.cmu.edu>  (roessler)
+2003-01-23 22:05:02  Nathan Dushman  <nhd+mutt@andrew.cmu.edu>  (roessler)
+
+	* pop_auth.c: SASL2 support for popo_auth.c.
 
 	* curs_main.c, flags.c, imap/imap.c, pager.c: The attached
 	patch provides improved support for IMAP ACLs (on servers that
