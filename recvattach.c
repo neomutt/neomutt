@@ -842,6 +842,7 @@ void mutt_view_attachments (HEADER *hdr)
 
 #if defined(HAVE_PGP) || defined(HAVE_SMIME)
   int secured = 0;
+  int need_secured = 0;
 #endif
 
 
@@ -870,6 +871,8 @@ void mutt_view_attachments (HEADER *hdr)
 #if defined(HAVE_PGP) || defined(HAVE_SMIME)
   if (hdr->security & ENCRYPT)
   {
+    need_secured  = 1;
+    
     if (!crypt_valid_passphrase(hdr->security))
     {
       mx_close_message (&msg);
@@ -890,16 +893,20 @@ void mutt_view_attachments (HEADER *hdr)
     {
       if (mutt_is_multipart_encrypted(hdr->content))
 	secured = !pgp_decrypt_mime (msg->fp, &fp, hdr->content, &cur);
+      else
+	need_secured = 0;
     }
 #endif
 
-    if (!secured)
+    if (need_secured && !secured)
     {
       mx_close_message (&msg);
+      mutt_error _("Can't decrypt encrypted message!");
       return;
     }
   }
-  else
+  
+  if (!need_secured)
 #endif /* HAVE_SMIME || HAVVE_PGP */
   {
     fp = msg->fp;
@@ -1152,7 +1159,7 @@ void mutt_view_attachments (HEADER *hdr)
 
 
 #if defined(HAVE_PGP) || defined(HAVE_SMIME)
-        if (secured)
+        if (need_secured && secured)
 	{
 	  fclose (fp);
 	  mutt_free_body (&cur);
