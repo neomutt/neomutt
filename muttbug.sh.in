@@ -164,7 +164,7 @@ esac
 if test -f /etc/debian_version ; then
 	DEBIAN=yes
 	echo $n "Checking whether mutt has been installed as a package... $c"
-	DEBIANVERSION="`dpkg -l mutt | grep '^[ih] | awk '{print $3}'`" 2> /dev/null
+	DEBIANVERSION="`dpkg -l mutt | grep '^[ih]' | awk '{print $3}'`" 2> /dev/null
 	if test "$DEBIANVERSION" ; then
 		DPKG=yes
 	else
