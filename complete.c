@@ -33,7 +33,7 @@
  *
  * return 0 if ok, -1 if no matches
  */
-int mutt_complete (char *s)
+int mutt_complete (char *s, size_t slen)
 {
   char *p;
   DIR *dirp = NULL;
@@ -63,7 +63,7 @@ int mutt_complete (char *s)
 
   if (mx_is_imap (imap_path))
   {
-    return imap_complete (s, imap_path);
+    return imap_complete (s, slen, imap_path);
   }
 #endif
   

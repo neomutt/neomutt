@@ -33,6 +33,8 @@ int imap_buffy_check (char *path);
 int imap_mailbox_check (char *path, int new);
 int imap_subscribe (char *path, int subscribe);
 int imap_init_browse (char *path, struct browser_state *state);
-int imap_complete(char* dest, char* path);
+int imap_complete (char* dest, size_t dlen, char* path);
+void imap_qualify_path (char* dest, size_t len, const char* host, int port,
+  const char* path, const char* name);
 
 #endif

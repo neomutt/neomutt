@@ -51,6 +51,7 @@ Copyright (C) 1996-9 Michael R. Elkins <me@cs.hmc.edu>\n\
 Copyright (C) 1996-9 Brandon Long <blong@fiction.net>\n\
 Copyright (C) 1997-9 Thomas Roessler <roessler@guug.de>\n\
 Copyright (C) 1998-9 Werner Koch <wk@isil.d.shuttle.de>\n\
+Copyright (C) 1999   Brendan Cully <brendan@kublai.com>\n\
 \n\
 Lots of others not mentioned here contributed lots of code,\n\
 fixes, and suggestions.\n\

@@ -496,7 +496,7 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
       init_state (&state, NULL);
       state.imap_browse = 1;
       imap_init_browse (f, &state);
-      strfcpy (LastDir, f, sizeof (LastDir));
+      strfcpy (LastDir, state.folder, sizeof (LastDir));
     }
     else
     {
@@ -604,7 +604,7 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 #ifdef USE_IMAP
 	  else if (state.imap_browse)
 	  {
-	    strfcpy (buf, state.entry[menu->current].name, sizeof (buf));
+            strfcpy (buf, state.entry[menu->current].name, sizeof (buf));
 	  }
 #endif
 	  else
@@ -649,8 +649,8 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 #ifdef USE_IMAP
 	    else if (state.imap_browse)
 	    {
-	      strfcpy (LastDir, state.entry[menu->current].name, 
-		  sizeof (LastDir));
+              strfcpy (LastDir, state.entry[menu->current].name,
+                sizeof (LastDir));
 	    }
 #endif
 	    else
@@ -698,9 +698,7 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 	}
 #ifdef USE_IMAP
 	else if (state.imap_browse)
-	{
-	  strfcpy (f, state.entry[menu->current].name, flen);
-	}
+          strfcpy (f, state.entry[menu->current].name, flen);
 #endif
 	else
 	  snprintf (f, flen, "%s/%s", LastDir, state.entry[menu->current].name);
@@ -871,6 +869,17 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 	    Mask.not = not;
 
 	    destroy_state (&state);
+#ifdef USE_IMAP
+	    if (state.imap_browse)
+	    {
+	      init_state (&state, NULL);
+	      state.imap_browse = 1;
+	      imap_init_browse (LastDir, &state);
+	      menu->data = state.entry;
+	      init_menu (&state, menu, title, sizeof (title), buffy);
+	    }
+	    else
+#endif
 	    if (examine_directory (menu, &state, LastDir, NULL) == 0)
 	      init_menu (&state, menu, title, sizeof (title), buffy);
 	    else

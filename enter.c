@@ -326,7 +326,7 @@ int _mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 	      set_option (OPTNEEDREDRAW);
 	      return (1);
 	    }
-	    if (mutt_complete ((char *) buf + j + 1) == 0)
+	    if (mutt_complete ((char *) buf + j + 1, buflen - (j + 1)) == 0)
 	      strfcpy (tempbuf, (char *) buf + j + 1, sizeof (tempbuf));
 	    else
 	      BEEP ();
@@ -380,7 +380,7 @@ int _mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 	      return (-1);
 	    }
 
-	    if (mutt_complete ((char *) buf) == 0)
+	    if (mutt_complete ((char *) buf, buflen) == 0)
 	      strfcpy (tempbuf, (char *) buf, sizeof (tempbuf));
 	    else
 	      BEEP (); /* let the user know that nothing matched */

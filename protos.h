@@ -210,7 +210,7 @@ int mutt_check_month (const char *);
 int mutt_check_overwrite (const char *, const char *, char *, size_t, int *);
 int mutt_command_complete (char *, size_t, int, int);
 int mutt_var_value_complete (char *, size_t, int);
-int mutt_complete (char *);
+int mutt_complete (char *, size_t);
 int mutt_compose_attachment (BODY *a);
 int mutt_decode_save_attachment (FILE *, BODY *, char *, int, int);
 int mutt_display_message (HEADER *h);
