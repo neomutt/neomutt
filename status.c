@@ -199,14 +199,24 @@ status_format_str (char *buf, size_t buflen, char op, const char *src,
       break;
 
     case 'r':
-      if (Context && StChars)	/* XXX */
-        buf[0] = option(OPTATTACHMSG) ? StChars[3] : ((Context->readonly || Context->dontwrite) ? StChars[2] :
-	  (Context->changed || Context->deleted) ? StChars[1] : StChars[0]);
-      else
+    {
+      int i = 0;
+
+      if (Context)
+      {
+	i = option(OPTATTACHMSG) ? 3 : ((Context->readonly || Context->dontwrite) ? 2 :
+					(Context->changed || Context->deleted) ? 1 : 0);
+      }
+      
+      if(!StChars || i >= strlen(StChars))
 	buf[0] = StChars[0];
+      else
+	buf[0] = StChars[i];
+
       buf[1] = 0;
       break;
-
+    }
+      
     case 's':
       snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
       snprintf (buf, buflen, fmt,
