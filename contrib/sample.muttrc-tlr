@@ -102,11 +102,17 @@ bind	pager	y		print-message
 
 bind	query	i		exit
 
+# make it feel like emacs
+
 macro	generic	"\ex"		":exec "
 macro 	pager	"\ex"		":exec "
 macro	generic	"\eX"		"\ex"
 macro 	pager	"\eX"		"\ex"
 
+# for majordomo list owner and moderator jobs
+
+macro	index	"\ea"		":set nopipe_decode wait_key\n|approve -d\n:set nowait_key\n"
+macro 	pager 	"\ea"		":set nopipe_decode wait_key\n|approve -d\n:set nowait_key\n"
 
 # emulate the old URL-browser key bindings.
 
@@ -172,6 +178,7 @@ set   charset=iso-8859-1		# The local character set
 set   confirmcreate			# Ask me about creating new files
 unset confirmappend			# Don't ask me about appending to files
 set   delete=yes			# Don't ask me whether or not I meant to delete messages
+set   display_filter="tr '\240\223' ' \"'" # fix some funny characters
 set   edit_hdrs				# I want to edit the headers.
 set   editor="/usr/bin/jed %s -f 'mail_mode();'"	
  					# Invoke jed with mail_mode.  This may
