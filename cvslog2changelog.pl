@@ -21,6 +21,14 @@ while (<>) {
     } 
     elsif ($_ =~ /^(=======|------)/) {
 	if ($change->{revision}) {
+	    
+	    # Some beautifications: Date, author.
+	    if ($change->{author} =~ /^(.*?)\s?\<(.*)\>/) {
+		$change->{author} = "$1  <$2>";
+	    }
+	    $change->{date} =~ s!/!-!g;
+	    
+	    # Record the change.
 	    push @Changes, $change unless $change->{logmsg} =~ /^#/;
 	    $change = {};
 	    $change->{workfile} = $workfile;
@@ -49,7 +57,7 @@ $files = [];
 
 for my $k (sort {($b->{date} cmp $a->{date}) || ($b->{hour} cmp $a->{hour}) || ($a->{author} cmp $b->{author}) || ($a->{workfile} cmp $b->{workfile})} @Changes) {
     
-    if (not ($last_date eq $k->{date}) or not ($last_author eq $k->{author})) {
+    if (!($last_date eq $k->{date}) || !($last_author eq $k->{author})) {
 	if (@$files) {
 	    &print_entry ($files, $last_logmsg);
 	    $files = [];
@@ -57,7 +65,7 @@ for my $k (sort {($b->{date} cmp $a->{date}) || ($b->{hour} cmp $a->{hour}) || (
 	&print_header ($k->{author}, $k->{date}, $k->{hour});
     }
  
-    if (@$files and not ($last_logmsg eq $k->{logmsg})) {
+    if (@$files && !($last_logmsg eq $k->{logmsg})) {
 	&print_entry ($files, $last_logmsg);
 	$files = [];
     }
