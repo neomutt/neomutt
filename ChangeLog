@@ -1,3 +1,7 @@
+2003-09-07 10:11:49  Im Eunjea  <eunjea@koru.org>  (roessler)
+
+	* po/ko.po: update.
+
 2003-09-04 15:10:09  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* init.h: Fix some formatting glitches that lead to error messages
