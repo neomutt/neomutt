@@ -189,10 +189,10 @@ int mutt_protect (HEADER *msg, char *keylist)
     }
     if (traditional)
     {
-      mutt_message _("Invoking PGP...");
+      if (!isendwin ()) mutt_endwin _("Invoking PGP...");
       if (!(pbody = pgp_traditional_encryptsign (msg->content, flags, keylist)))
 	return -1;
-    
+
       msg->content = pbody;
       return 0;
     }
