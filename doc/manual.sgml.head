@@ -1378,10 +1378,12 @@ Usage: <tt/unscore/ <em/pattern/ &lsqb; <em/pattern/ ... &rsqb;
 
 The <tt/score/ commands adds <em/value/ to a message's score if <em/pattern/
 matches it.  <em/pattern/ is a string in the format described in the <ref
-id="patterns" name="patterns"> section.  <em/value/ is a positive or
-negative integer.  A message's final score is the sum total of all matching
-<tt/score/ entries.  However, you may optionally prefix <em/value/ with an
-equal sign (=) to cause evaluation to stop at a particular entry if there is
+id="patterns" name="patterns"> section (note: For efficiency reasons, patterns
+which scan information not available in the index, such as <tt>&tilde;b</tt>,
+<tt>&tilde;B</tt> or <tt>&tilde;h</tt>, may not be used).  <em/value/ is a
+positive or negative integer.  A message's final score is the sum total of all
+matching <tt/score/ entries.  However, you may optionally prefix <em/value/ with
+an equal sign (=) to cause evaluation to stop at a particular entry if there is
 a match.  Negative final scores are rounded up to 0.
 
 The <tt/unscore/ command removes score entries from the list.  You <bf/must/
