@@ -150,7 +150,8 @@ PreferredMIMENames[] =
   
   { "Extended_UNIX_Code_Packed_Format_for_Japanese",
       			"EUC-JP"	},
-  { "csEUCPkdFmtJapanese", "EUC-JP"	},
+  { "csEUCPkdFmtJapanese", 
+      			"EUC-JP"	},
   
   { "csGB2312",		"gb2312"	},
   { "csbig5",		"big5"		},
@@ -177,12 +178,27 @@ PreferredMIMENames[] =
    * submit a patch to <mutt-dev@mutt.org>. 
    */
 
+
+  
   /* 
    * David Champion <dgc@uchicago.edu> has observed this with
    * nl_langinfo under SunOS 5.8. 
    */
 
   { "646",		"us-ascii"	},
+  
+  /* 
+   * http://www.sun.com/software/white-papers/wp-unicode/
+   */
+  
+  { "eucJP",		"euc-jp"	},
+  { "PCK",		"Shift_JIS"	},
+  { "ko_KR-euc",	"euc-kr"	},
+  { "zh_TW-big5",	"big5"		},
+  
+  
+  
+  
   
   /* End of aliases.  Please keep this line last. */
   
