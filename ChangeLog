@@ -1,4 +1,8 @@
-2005-01-27 18:47:57  Bill Nottingham  <notting@redhat.com>  (roessler)
+2005-01-27 18:48:41  Bill Nottingham  <notting@redhat.com>  (roessler)
+
+	* mutt_sasl.c: With SASL, expect the server to prompt for
+	additional auth data if we have some to send (#129961, upstream
+	#1845)
 
 	* contrib/sample.muttrc: Changes the sample.muttrc highlight to
 	catch https URLs as well.
