@@ -315,8 +315,7 @@ static int include_forward (CONTEXT *ctx, HEADER *cur, FILE *out)
 {
   char buffer[STRING];
   int chflags = CH_DECODE, cmflags = 0;
-
-
+  
 
 #ifdef _PGPPATH
   if ((cur->pgp & PGPENCRYPT) && option (OPTFORWDECODE))
@@ -337,7 +336,10 @@ static int include_forward (CONTEXT *ctx, HEADER *cur, FILE *out)
   {
     cmflags |= M_CM_DECODE;
     if (option (OPTFORWWEEDHEADER))
+    {
       chflags |= CH_WEED;
+      cmflags |= M_CM_WEED;
+    }
   }
   if (option (OPTFORWQUOTE))
     cmflags |= M_CM_PREFIX;

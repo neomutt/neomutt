@@ -976,7 +976,7 @@ void message_handler (BODY *a, STATE *s)
   if (b->parts)
   {
     mutt_copy_hdr (s->fpin, s->fpout, off_start, b->parts->offset,
-	(((s->flags & M_DISPLAY) && option (OPTWEED)) ? (CH_WEED | CH_REORDER) : 0) |
+	(((s->flags & M_WEED) || ((s->flags & M_DISPLAY) && option (OPTWEED))) ? (CH_WEED | CH_REORDER) : 0) |
 	(s->prefix ? CH_PREFIX : 0) | CH_DECODE | CH_FROM, s->prefix);
 
     if (s->prefix)

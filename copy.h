@@ -22,7 +22,7 @@
 #define M_CM_DECODE	(1<<2)	/* decode the message body into text/plain */
 #define M_CM_DISPLAY	(1<<3)	/* output is displayed to the user */
 #define M_CM_UPDATE	(1<<4)  /* update structs on sync */
-
+#define M_CM_WEED	(1<<5)  /* weed message/rfc822 attachment headers */
 
 
 #ifdef _PGPPATH

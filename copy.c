@@ -496,6 +496,8 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
       s.prefix = prefix;
     if (flags & M_CM_DISPLAY)
       s.flags |= M_DISPLAY;
+    if (flags & M_CM_WEED)
+      s.flags |= M_WEED;
 
 #ifdef _PGPPATH
     if (flags & M_CM_VERIFY)

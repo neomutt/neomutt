@@ -669,6 +669,7 @@ typedef struct
 
 
 #define M_PENDINGPREFIX (1<<2) /* prefix to write, but character must follow */
+#define M_WEED          (1<<3) /* weed headers even when not in display mode */
 
 #define state_set_prefix(s) ((s)->flags |= M_PENDINGPREFIX)
 #define state_reset_prefix(s) ((s)->flags &= ~M_PENDINGPREFIX)
