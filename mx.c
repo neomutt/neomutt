@@ -1185,7 +1185,7 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
     
     if (ctx->msgcount == ctx->deleted &&
 	(ctx->magic == M_MBOX || ctx->magic == M_MMDF) &&
-	!mutt_is_spool(ctx->path) && !option (OPTSAVEEMPTY))
+	!mutt_is_spool (ctx->path) && !option (OPTSAVEEMPTY))
     {
       unlink (ctx->path);
       mx_fastclose_mailbox (ctx);
@@ -1193,7 +1193,13 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
     }
 
     /* if we haven't deleted any messages, we don't need to resort */
-    if (purge)
+    /* ... except for certain folder formats which need "unsorted" 
+     * sort order in order to synchronize folders.
+     * 
+     * MH and maildir are safe.  mbox-style seems to need re-sorting,
+     * at least with the new threading code.
+     */
+    if (purge || (ctx->magic != M_MAILDIR && ctx->magic != M_MH))
     {
 #ifdef USE_IMAP
       /* IMAP does this automatically after handling EXPUNGE */
