@@ -614,17 +614,22 @@ static char *maildir_canon_filename(char *dest, char *src, size_t l)
 }
 
 
-/* This function handles arrival of new mail and reopening of mh/maildir folders.
- * Things are getting rather complex because we don't have a
- * well-defined "mailbox order", so the tricks from mbox.c and mx.c
- * won't work here.
+/* 
+ * This function handles arrival of new mail and reopening of
+ * mh/maildir folders. Things are getting rather complex because we
+ * don't have a well-defined "mailbox order", so the tricks from
+ * mbox.c and mx.c won't work here.
+ *
+ * Don't change this code unless you _really_ understand what
+ * happens.
+ *
  */
 
 int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
 {
   char buf[_POSIX_PATH_MAX], b1[LONG_STRING], b2[LONG_STRING];
   struct stat st, st_cur;
-  short modified = 0, have_new = 0;
+  short modified = 0, have_new = 0, occult = 0;
   struct maildir *md, *p;
   struct maildir **last;
   HASH *fnames;
@@ -681,10 +686,10 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
 
   md = NULL;
   last = &md;
-  
+
   if(ctx->magic == M_MAILDIR)
   {
-    if(have_new || modified)
+    if(have_new)
       maildir_parse_dir(ctx, &last, "new", NULL);
     if(modified)
       maildir_parse_dir(ctx, &last, "cur", NULL);
@@ -764,8 +769,26 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
 
       mutt_free_header(&p->h);
     }
-    else
+    else if (ctx->magic == M_MAILDIR && !modified && !strncmp("cur/", ctx->hdrs[i]->path, 4))
     {
+      /* If the cur/ part wasn't externally modified for a maildir
+       * type folder, assume the message is still active. Actually,
+       * we simply don't know.
+       */
+
+      ctx->hdrs[i]->active = 1;
+    }
+    else if (modified || (ctx->magic == M_MAILDIR && !strncmp("new/", ctx->hdrs[i]->path, 4)))
+    {
+      
+      /* Mailbox was modified, or a new message vanished. */
+
+      /* Note: This code will _not_ apply for a new message which
+       * is just moved to cur/, as this would modify cur's time
+       * stamp and lead to modified == 1.  Thus, we'd have parsed
+       * the complete folder above, and the message would have
+       * been found in the look-up table.
+       */
       
       dprint(2, (debugfile, "%s:%d: Not found.  Flags were: %s%s%s%s%s\n", __FILE__, __LINE__,
 		 ctx->hdrs[i]->flagged ? "f" : "",
@@ -774,24 +797,28 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
 		 ctx->hdrs[i]->old     ? "O" : "",
 		 ctx->hdrs[i]->read    ? "R" : ""));
       
-      /* the message has disappeared by occult forces, correct
-       * the index hint. 
-       */
-      if(modified && index_hint && (i < *index_hint))
+      occult = 1;
+
+      if(index_hint && (i < *index_hint))
 	deleted++;
     }
 
-    if(modified && index_hint && i == *index_hint)
+    if(index_hint && (i == *index_hint))
       *index_hint -= deleted;
   }
 
+  /* dump the file name hash */
+
   hash_destroy(&fnames, NULL);
-    
-  if(modified)
+
+  /* If we didn't just get new mail, update the tables. */
+  
+  if(modified || occult)
     mx_update_tables(ctx, 0);
 
-  maildir_move_to_context(ctx, &md);
-  
-  return modified ? M_REOPENED : have_new ? M_NEW_MAIL : 0;
-}
+  /* Incorporate new messages */
 
+  maildir_move_to_context(ctx, &md);
+
+  return (modified || occult) ? M_REOPENED : have_new ? M_NEW_MAIL : 0;
+}
