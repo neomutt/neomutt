@@ -322,7 +322,7 @@ const char *mutt_attach_fmt (char *dest,
       break;
     case 'T':
       if(!optional)
-	mutt_format_s (dest, destlen, prefix, NONULL (aptr->tree));
+	mutt_format_s_tree (dest, destlen, prefix, NONULL (aptr->tree));
       else if (!aptr->tree)
         optional = 0;
       break;
