@@ -1671,12 +1671,13 @@ void mutt_prepare_envelope (ENVELOPE *env)
      * it by using an empty To: field.
      */
     env->to = rfc822_new_address ();
-    env->to->mailbox = safe_strdup ("undisclosed-recipients:;");
     env->to->group = 1;
     env->to->next = rfc822_new_address ();
- 
+
     buffer[0] = 0;
-    rfc822_cat (buffer, sizeof (buffer), env->to->mailbox, RFC822Specials);
+    rfc822_cat (buffer, sizeof (buffer), "undisclosed-recipients:;",
+		RFC822Specials);
+
     env->to->mailbox = safe_strdup (buffer);
   }
 
