@@ -37,6 +37,31 @@
 
 /* -- public functions -- */
 
+/* imap_expand_path: IMAP implementation of mutt_expand_path. Rewrite
+ *   an IMAP path in canonical and absolute form.
+ * Inputs: a buffer containing an IMAP path, and the number of bytes in
+ *   that buffer.
+ * Outputs: The buffer is rewritten in place with the canonical IMAP path.
+ * Returns 0 on success, or -1 if imap_parse_path chokes or url_ciss_tostring
+ *   fails, which it might if there isn't enough room in the buffer. */
+int imap_expand_path (char* path, size_t len)
+{
+  IMAP_MBOX mx;
+  ciss_url_t url;
+  int rc;
+
+  if (imap_parse_path (path, &mx) < 0)
+    return -1;
+
+  mutt_account_tourl (&mx.account, &url);
+  url.path = mx.mbox;
+
+  rc = url_ciss_tostring (&url, path, len);
+  FREE (&mx.mbox);
+
+  return rc;
+}
+
 /* imap_parse_path: given an IMAP mailbox name, return host, port
  *   and a path IMAP servers will recognise.
  * mx.mbox is malloc'd, caller must free it */

@@ -1,30 +1,31 @@
-Mutt's IMAP support is still experimental, in that it hasn't been tested on
-a wide variety of servers and machines. It may contain memory leaks, dangling
-pointers, and other nasty problems. IWFM. YMMV. Caveant emptor lectorque.
+IMAP in mutt should be considered beta quality. For the most part it
+works well, but it is still not quite as stable or as full-featured
+as some of the other drivers. I believe it is now acceptable for
+daily use (and that's how I use it now, currently against Cyrus 1.6.24 and
+previously against UW-IMAP 4.7 and 2000).
 
-Note in particular that mutt doesn't handle connection timeouts well at all,
-and may often crash in their presence. Please keep backups from within your
-editor of messages that take a long time to write - the longer you take,
-the more likely your connection is to time out, AND the more valuable your
-message probably is.
+You may still lose some work if you are suddenly disconnected from your
+server (but your mailboxes should be fine). Currently accessing the same
+IMAP folder with multiple clients is not supported - it may work, but
+no guarantees. There are still several non-critical known bugs, see
+http://bugs.guug.de/ for the current list.
+
+You may also be disappointed in mutt's handling of very large IMAP mailboxes.
+To build the message index mutt must fetch a subset of headers from every
+message in the mailbox, which costs time and network traffic linear to the
+number of messages in your mailbox.
+
+Nevertheless in general mutt is quite a fast and fully-featured IMAP client.
+It tries to be polite to IMAP servers as well, opening few connections and
+avoiding needless polls of the server, unlike certain other popular IMAP
+clients by certain large corporations :)
+
+Mutt supports almost all official authentication and security protocols for
+IMAP, including SSL/TLS, native CRAM-MD5 and GSSAPI routines, and a SASL
+plugin which can handle just about everything else.
 
 Please report bugs to mutt-dev@mutt.org and/or brendan@kublai.com. Version,
 options, stack-trace and .muttdebug files are a plus.
 
-New features vs. the stable distribution:
-
-* Tab-completion of IMAP folder names
-* Folder browsing
-* Go-fast stripes
-* Postponed-message support
-* Server-side copy
-* Fast sync
-* Secure login (GSSAPI and CRAM-MD5)
-* Attach messages from IMAP folders
-* Use an IMAP path as your Maildir (set folder={...})
-* Preserve message keywords
-* Preserve deleted messages if you don't choose to expunge them
-* Delete mailboxes (from the browser)
-* Multiple IMAP usernames
-* Read-only folder support (toggling read-only is buggy, though)
-* More and better segfaults
+Brendan Cully <brendan@kublai.com>
+20010506

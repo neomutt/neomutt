@@ -61,6 +61,7 @@ int imap_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno);
 void imap_logout_all (void);
 
 /* util.c */
+int imap_expand_path (char* path, size_t len);
 int imap_parse_path (const char* path, IMAP_MBOX* mx);
 void imap_pretty_mailbox (char* path);
 
