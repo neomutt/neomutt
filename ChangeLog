@@ -1,3 +1,8 @@
+2005-01-27 19:34:50  David Shaw  <dshaw@jabberwocky.com>  (roessler)
+
+	* pgp.c: Detect end of PGP armor header when a line is
+	whitespace-only.
+
 2005-01-27 19:18:15  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* smime.c: Void the S/MIME passphrase before prompting
