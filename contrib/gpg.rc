@@ -1,27 +1,51 @@
 # -*-muttrc-*-
 #
 # Command formats for gpg.
+# 
+# This version uses gpg-2comp from 
+#   http://muppet.faveve.uni-stuttgart.de/~gero/gpg-2comp.tar.gz
 #
 # $Id$
 #
+# %p    The empty string when no passphrase is needed,
+#       the string "PGPPASSFD=0" if one is needed.
+#
+#       This is mostly used in conditional % sequences.
+#
+# %f    Most PGP commands operate on a single file or a file
+#       containing a message.  %f expands to this file's name.
+#
+# %s    When verifying signatures, there is another temporary file
+#       containing the detached signature.  %s expands to this
+#       file's name.
+#
+# %a    In "signing" contexts, this expands to the value of the
+#       configuration variable $pgp_sign_as.  You probably need to
+#       use this within a conditional % sequence.
+#
+# %r    In many contexts, mutt passes key IDs to pgp.  %r expands to
+#       a list of key IDs.
 
 # decode application/pgp
-set pgp_decode_command="gpg %?p?--passphrase-fd 0? --no-verbose --batch -o - --decrypt %f"
+set pgp_decode_command="gpg %?p?--passphrase-fd 0? --no-verbose --batch -o - %f"
 
 # verify a pgp/mime signature
 set pgp_verify_command="gpg --no-verbose --batch -o - --verify %s %f"
 
 # decrypt a pgp/mime attachment
-set pgp_decrypt_command="gpg --passphrase-fd 0 --no-verbose --batch -o - --decrypt %f"
+set pgp_decrypt_command="gpg --passphrase-fd 0 --no-verbose --batch -o - %f"
 
 # create a pgp/mime signed attachment
-set pgp_sign_command="gpg --no-verbose --batch -o - --passphrase-fd 0 --armor --detach-sign --textmode %?a?-u %a? %f"
+set pgp_sign_command="gpg-2comp --no-verbose --batch -o - --passphrase-fd 0 --armor --detach-sign --textmode %?a?-u %a? %f"
+
+# create a application/pgp signed (old-style) message
+set pgp_clearsign_command="gpg-2comp --no-verbose --batch -o - --passphrase-fd 0 --armor --textmode --clearsign %?a?-u %a? %f"
 
 # create a pgp/mime encrypted attachment
-set pgp_encrypt_only_command="cat - %f | pgpewrap gpg --no-verbose -v --batch -o - --encrypt --armor --always-trust -- -r %r"
+set pgp_encrypt_only_command="pgpewrap gpg-2comp -v --batch -o - --encrypt --textmode --armor --always-trust -- -r %r -- %f"
 
 # create a pgp/mime encrypted and signed attachment
-set pgp_encrypt_sign_command="cat - %f | pgpewrap gpg --passphrase-fd 0 --no-verbose -v --batch -o - --encrypt --sign --textmode %?a?-u %a? --armor --always-trust -- -r %r"
+set pgp_encrypt_sign_command="pgpewrap gpg-2comp --passphrase-fd 0 -v --batch -o - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
 
 # import a key into the public key ring
 set pgp_import_command="gpg --no-verbose --import -v %f"
@@ -30,7 +54,7 @@ set pgp_import_command="gpg --no-verbose --import -v %f"
 set pgp_export_command="gpg --no-verbose --export --armor %r"
 
 # verify a key
-set pgp_verify_key_command="gpg --no-verbose --batch --fingerprint --check-sigs"
+set pgp_verify_key_command="gpg --no-verbose --batch --fingerprint --check-sigs %r"
 
 # read in the public key ring
 set pgp_list_pubring_command="gpg --no-verbose --batch --with-colons --list-keys %r" 
@@ -38,3 +62,6 @@ set pgp_list_pubring_command="gpg --no-verbose --batch --with-colons --list-keys
 # read in the secret key ring
 set pgp_list_secring_command="gpg --no-verbose --batch --with-colons --list-secret-keys %r" 
 
+# receive key from keyserver:
+#set pgp_getkeys_command="wrap.sh -g %r"
+set pgp_getkeys_command=""
