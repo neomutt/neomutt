@@ -176,13 +176,14 @@ int mutt_complete (char *s, size_t slen)
 	if (dirpart[0])
 	{
 	  strfcpy (buf, exp_dirpart, sizeof (buf));
-	  strcat (buf, "/");
+	  strfcpy (buf + strlen (buf), "/", sizeof (buf) - strlen (buf));
 	}
 	else
 	  buf[0] = 0;
-	strcat (buf, filepart);
+	strfcpy (buf + strlen (buf), filepart, sizeof (buf) - strlen (buf));
 	if (stat (buf, &st) != -1 && (st.st_mode & S_IFDIR))
-	  strcat (filepart, "/");
+	  strfcpy (filepart + strlen (filepart), "/",
+		   sizeof (filepart) - strlen (filepart));
 	init = 1;
       }
     }
@@ -191,13 +192,13 @@ int mutt_complete (char *s, size_t slen)
 
   if (dirpart[0])
   {
-    strcpy (s, dirpart);
+    strfcpy (s, dirpart, slen);
     if (mutt_strcmp ("/", dirpart) != 0 && dirpart[0] != '=' && dirpart[0] != '+')
-      strcat (s, "/");
-    strcat (s, filepart);
+      strfcpy (s + strlen (s), "/", slen - strlen (s));
+    strfcpy (s + strlen (s), filepart, slen - strlen (s));
   }
   else
-    strcpy (s, filepart);
+    strfcpy (s, filepart, slen);
 
   return (init ? 0 : -1);
 }
