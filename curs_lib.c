@@ -403,7 +403,7 @@ int mutt_multi_choice (char *prompt, char *letters)
   {
     mutt_refresh ();
     ch  = mutt_getch ();
-    if (ch.ch == -1)
+    if (ch.ch == -1 || CI_is_return (ch.ch))
     {
       choice = -1;
       break;
