@@ -775,9 +775,9 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  s  = b->filename;  par = b->parameter;
 	  b->filename  = NULL;  b->parameter = NULL;
 	  
-	  mutt_parse_content_type(buf, b);
+	  mutt_parse_content_type (buf, b);
 
-	  safe_free((void **) &b->filename);
+	  safe_free ((void **) &b->filename);
 	  b->filename = s;
 	  
 	  if ((s = mutt_get_parameter("charset", b->parameter)))
@@ -796,6 +796,15 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  mutt_free_parameter(&b->parameter);
 	  b->parameter = par;
 
+	  /* this may have been a "structured" message */
+	  if  (b->parts)
+	    mutt_free_body (&b->parts);
+	  if (b->hdr)
+	  {
+	    b->hdr->content = NULL;
+	    mutt_free_header (&b->hdr);
+	  }
+	  
 	  menu->redraw = REDRAW_CURRENT;
 	}
 	break;
