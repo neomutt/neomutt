@@ -84,7 +84,7 @@ Causes Mutt to bypass the system configuration file.
 .IP "-p"
 Resume a postponed message.
 .IP "-Q \fIquery\fP"
-Qeury a configuration variables value.  The query is executed after
+Query a configuration variables value.  The query is executed after
 all configuration files have been parsed, and any commands given on
 the command line have been executed.
 .IP "-R"

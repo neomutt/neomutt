@@ -2178,8 +2178,10 @@ struct option_t MuttVars[] = {
   ** move the messages to another machine, and reply to some the messages
   ** from there.  If this variable is set, the default \fIFrom:\fP line of
   ** the reply messages is built using the address where you received the
-  ** messages you are replying to.  If the variable is unset, the
-  ** \fIFrom:\fP line will use your address on the current machine.
+  ** messages you are replying to \fBif\fP that address matches your
+  ** alternates.  If the variable is unset, or the address that would be
+  ** used doesn't match your alternates, the \fIFrom:\fP line will use
+  ** your address on the current machine.
   */
   { "reverse_realname",	DT_BOOL, R_BOTH, OPTREVREAL, 1 },
   /*

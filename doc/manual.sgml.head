@@ -3173,6 +3173,8 @@ The following are the commands understood by mutt.
 <item>
 <tt><ref id="send-hook" name="send-hook"></tt> <em/regexp/ <em/command/
 <item>
+<tt><ref id="reply-hook" name="reply-hook"></tt> <em/regexp/ <em/command/
+<item>
 <tt><ref id="set" name="set"></tt> &lsqb;no|inv&rsqb;<em/variable/&lsqb;=<em/value/&rsqb; &lsqb; <em/variable/ ... &rsqb;
 <item>
 <tt><ref id="set" name="unset"></tt> <em/variable/ &lsqb;<em/variable/ ... &rsqb;
