@@ -1,3 +1,229 @@
+Mon Jul 26 10:13:38 1999  Thomas Roessler  <roessler@guug.de>
+
+	* commands.c:
+	Fix a missing #ifdef. From Matt Armstrong <matt@lickey.com>.
+
+	* doc/devel-notes.txt:
+	Add some notes.  From Matt Armstrong <matt@lickey.com>.
+
+Sat Jul 24 14:55:45 1999  Thomas Roessler  <roessler@guug.de>
+
+	* rfc2047.c: Add some sanity checks to the RFC 2047 decoder.
+	From "Alexander V. Lukyanov" <lav@yars.free.net>.
+
+Fri Jul 23 06:31:09 1999  Thomas Roessler  <roessler@guug.de>
+
+	* parse.c: There was some code missing about TYPEMODEL.
+	Noted by Brian Salter-Duke <b_duke@lacebark.ntu.edu.au>.
+
+Thu Jul 22 14:56:44 1999  Thomas Roessler  <roessler@guug.de>
+
+	* mutt.h: Fix content-type's widths.
+
+Wed Jul 21 13:02:12 1999  Thomas Roessler  <roessler@guug.de>
+
+	* recvattach.c: When forwarding or replying to attachments,
+	use the proper time stamp for From_ lines of Fccs.  Note:
+	This code may need some clean-up, it's horribly slow.
+
+	* buffy.c: Fix compilation problem for non-imap systems.
+
+	* compose.c: *grr* avoid a warning about /* in a comment.
+
+	* compose.c: call mutt_update_encoding() after changing an
+	attachment's content type.
+
+Tue Jul 20 20:09:13 1999  Thomas Roessler  <roessler@guug.de>
+
+	* send.c, sendlib.c, protos.h:
+	Use $from for resent-from headers when bouncing messages.
+
+	* imap.c: Fix from Gero Treuner.
+
+	* init.c:
+	Fix value completion for DT_ADDR variables.  While we are on it,
+	proper quoting is added.
+
+	* init.h, send.c, alias.c, globals.h, init.c:
+	As Aaron Schrab noted, patch-0.95.6.tlr.reverse_name.1 broke the use
+	of my_hdr from send-hooks.  This patch introduces a new variable
+	$from which can be used to use a default sender address; to make
+	this possible, a new variable class DT_ADDR is defined.
+
+	We now have the following algorithm for determining the from
+	address:
+
+	- $from is used as the default from address, if defined.  Otherwise,
+	  the local user name and (if the user wishes so) the local domain
+	  are used.
+	- This address can be overridden by $reverse_name, if set.
+	- Now, send-hooks are evaluated.
+	- Afterwards, user headers are evaluated.  In this step, the from
+	  header can be overridden using my_hdr From:.
+	- When there is no real name, $realname is used for it.  Note that,
+	  when the default from header is used and $from defines a real
+	  name, it takes precedence over $realname.
+
+	* buffy.c, complete.c, imap.c, imap.h: Bugs fixed
+	* Mutt sometimes forgets that IMAP folders with new mail have new
+	  mail.
+	* On some common IMAP servers, Mutt erroneously insists that the
+	  current folder has new mail.
+	* Mutt constantly polls the server for new messages,
+	  disregarding the imap_checkinterval option.
+
+	New features
+	* tab-completion of IMAP folders. Not yet namespace aware, though it
+	  will work within an alternate namespace (eg won't complete #ft ->
+	  #ftp, but will complete #ftp/pu -> #ftp/pub). Some tweaking of the
+	  browser was necessary to get it to cooperate with completion.
+	  Some remains to be done.
+
+	(From: From: Brendan Cully <brendan@kublai.com>)
+
+	* doc/manual.sgml.in, globals.h, init.h, send.c, Muttrc.in:
+	Remove the $in_reply_to configuration variable.
+
+	* doc/manual.sgml.in, globals.h, init.h, send.c, Muttrc.in:
+	Remove the $in_reply_to configuration variable and always use the
+	message-ID for that header.
+
+	* pgp.c: patch-0.95.6.pgperror.1
+
+	* po/de.po, curs_main.c, pager.c:
+	patch-0.95.6.gettext.1.gz, from Gero Treuner.
+
+	* pager.c: patch-0.95.6.search_in_help.1, from Gero Treuner.
+
+	* po/sk.po: New sk translation.
+
+	* alias.c, enter.c: patch-0.95.6.alias_compl.1.gz, from Gero Treuner
+
+Mon Jul 19 19:18:05 1999  Thomas Roessler  <roessler@guug.de>
+
+	* configure.in, pgppubring.c:
+	Fix compilation problems with SunOS 4.  From Lars Hecking.
+
+	* po/sk.po: new sk translation.
+
+	* buffy.c:
+	Consider empty folders to be non-existent for buffy's purposes.
+
+Tue Jul  6 22:57:08 1999  Thomas Roessler  <roessler@guug.de>
+
+	* send.c, sendlib.c, signal.c, system.c, curs_lib.c, curs_main.c, globals.h, menu.c, mutt.h, pager.c, pattern.c, protos.h, attach.c, commands.c, compose.c:
+	Applying Liviu Daia's signal handling patches.  They work fine with
+	unstable for months now, so we may wish to use them with stable.
+
+	* po/zh_TW.Big5.po, po/el.po, configure.in:
+	Greek and Chinese translations for unstable.
+
+	* po/zh_TW.Big5.po: Chinese translation for stable.
+
+	* po/zh_TW.Big5.po:
+	file zh_TW.Big5.po was initially added on branch mutt-1-0-stable.
+
+	* configure.in: Adding chinese (big5) translation.
+
+	* po/el.po: Adding greek translation from Fanis <madf@geocities.com>.
+
+	* po/el.po: file el.po was initially added on branch mutt-1-0-stable.
+
+	* configure.in:
+	Adding greek translation from Fanis <madf@geocities.com>.
+
+	* mx.c, mx.h, parse.c, pop.c, postpone.c, protos.h, recvattach.c, sendlib.c, attach.c, buffy.c, copy.c, lib.c, mailbox.h, mh.c:
+	New mh and maildir folder writing code.  Back-port from unstable.
+
+	* color.c: Fix color problem noted by Todd Larson.  From unstable.
+
+	* color.c: Fixing a string buffer problem noted by Todd Larason
+	<jtl@molehill.org>.
+
+	* imap.c: Try creating an IMAP folder before writing to it.  Hack from
+	"Neulinger, Nathan R." <nneul@umr.edu>.
+
+	* contrib/pgp5.rc, contrib/pgp2.rc: Fix various bugs.
+
+Thu Jul  1 11:22:22 1999  Thomas Roessler  <roessler@guug.de>
+
+	* contrib/gpg.rc: Fix gpg invocation.  Noted by Werner Koch.
+
+	* mx.c: Fix a small imap-related bug.
+
+	* recvattach.c, sendlib.c, buffy.c, copy.c, curs_lib.c, globals.h, gnupgparse.c, hdrline.c, init.c, init.h, lib.c, lib.h, mailbox.h, mh.c, mutt.h, mx.c, mx.h, parse.c, pattern.c, pgpkey.c, pgppubring.c, pop.c, postpone.c, protos.h, attach.c:
+	Various patches from last week, including:
+
+	- new mh/maildir access code.
+	- subscribe/unsubscribe
+	- various fixes.
+
+Mon Jun 14 21:20:42 1999  Thomas Roessler  <roessler@guug.de>
+
+	* mutt.h, parse.c, sendlib.c:
+	- Handle CRLF properly in non-text MIME parts.
+	- Correctly parse attachments with CRLF line endings, but without a
+	  trailing CRLF.
+
+	* alias.c, enter.c:
+	Completion fixes from Gero Treuner <gero@faveve.uni-stuttgart.de>.
+
+Thu Jun 10 09:30:39 1999  Thomas Roessler  <roessler@guug.de>
+
+	* alias.c, commands.c, curs_main.c, pager.c, protos.h:
+	Use the same address with take-alias and display-address.
+
+Wed Jun  9 17:17:53 1999  Thomas Roessler  <roessler@guug.de>
+
+	* recvattach.c: Fix the fix.  Most of it was wrong.
+
+	* recvattach.c: There was bogus bug-fixing in the last fix.
+
+	* recvattach.c: Fix attachment forwading.  Same problem as in unstable.
+
+	* recvattach.c:
+	Fix attachment forwarding.  The leading newline for certain MIME
+	boundaries was missing.  *grrrr*
+
+	* send.c: Give reverse_name precedence over my_hdr From:
+
+Tue Jun  8 18:30:42 1999  Thomas Roessler  <roessler@guug.de>
+
+	* acconfig.h, configure.in, pgppubring.c, protos.h:
+	Portability patches for SunOS 4.1.  From Lars Hecking.
+
+	* curs_main.c: Fix "Tab" behaviour when returning from the pager.
+
+	* mutt.h, pattern.c, send.c, sendlib.c, commands.c, copy.c, copy.h, handler.c, imap.c, attach.c:
+	Don't do charset conversions when they aren't necessary.
+
+	Back-port from unstable.
+
+	* pgp.c, pgpinvoke.c, pgpkey.c, pgplib.h, pgppubring.c, recvattach.c, Makefile.am, commands.c, compose.c, configure.in, hdrline.c, init.c, init.h, mutt.h:
+	- Add a $weed option.
+	- Add out-of-band reporting of signature status.
+
+Thu Jun  3 21:48:24 1999  Thomas Roessler  <roessler@guug.de>
+
+	* curs_main.c: Another header weeding change.  Experimental.
+
+	* commands.c, init.h, mutt.h, send.c:
+	Experimental: Use OPTWEED for _all_ header weeding throughout mutt.
+
+	* contrib/Makefile.in, Makefile.am, NEWS, VERSION, reldate.h, ChangeLog:
+	post-release commit 0.96.3.
+
+	* po/uk.po, po/sk.po, po/ru.po, po/pl.po, po/nl.po, po/ko.po, po/it.po, po/id.po, po/fr.po, po/es.po, po/de.po, po/cs.po, gnupgparse.c, reldate.h, NEWS, VERSION, ChangeLog:
+	release commit 0.95.6.
+
+	* po/pl.po, po/ko.po, po/fr.po, po/de.po, po/cs.po: Latest chagnes.
+
+	* doc/PGP-Notes.txt, contrib/pgp2.rc, contrib/pgp5.rc, pgppubring.c:
+	Hardwire some mechanisms for finding secret and public key-rings.
+	This way, we need to hard-wire less stuff in the various
+	configuration files, making the use of PGP with mutt a bit simpler
+	again.
+
 Thu Jun  3 20:13:22 1999  Thomas Roessler  <roessler@guug.de>
 
 	* po/pl.po, po/ko.po, po/fr.po, po/de.po, po/cs.po: Latest chagnes.
