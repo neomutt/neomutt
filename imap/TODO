@@ -1,5 +1,6 @@
 IMAP enhancements/fixes, by priority:
 
+[ -- socket -- ]
 * Smarter connection code. Mutt should handle dropped connections/routing
   problems gracefully. It should be able to transparently reconnect. This
   is facilitated by the next item.
@@ -12,19 +13,28 @@ IMAP enhancements/fixes, by priority:
 
   PRIORITY: [***]
 
-* Optimise message updating. Two flags stores per message should be
-  unnecessary. It could be brought to one easily. Better would be to use
-  message ranges to store common flags en masse. This is facilitated by the
-  next item.
+[ -- browsing -- ]
+* Investigate a new way of displaying folders with subfolders and messages.
+  Possibly we could use a tree-view in the browser, w/ expand, collapse.
+  For low-bandwidth lines we could defer getting subfolder lists until the
+  folder is expanded.
+
+[ -- new features -- ]
+* Implement server message COPY, instead of FETCH/APPEND.
 
   PRIORITY: [** ]
 
-* More complete mailbox caching. All the data for a message should be held
-  locally so that updates can be done without requerying the server.
+* Implement the received folder on IMAP. (Wait on COPY).
 
   PRIORITY: [** ]
 
-* Implement server message copy, instead of FETCH/APPEND.
+* Commands for creating/deleting folders on the server, since users may not
+  otherwise be able to do this on IMAP servers.
+
+  PRIORITY: [** ]
+
+* Implement READ-ONLY support, and the x (quit without saving changes)
+  command.
 
   PRIORITY: [** ]
 
@@ -45,4 +55,4 @@ IMAP enhancements/fixes, by priority:
   PRIORITY: [*  ]
 
 Brendan Cully <brendan@kublai.com>
-Updated: 19990826
+Updated: 19990904

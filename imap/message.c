@@ -25,6 +25,7 @@
 #include "mutt.h"
 #include "imap.h"
 #include "imap_private.h"
+#include "message.h"
 #include "mx.h"
 
 #ifdef _PGPPATH
@@ -32,7 +33,8 @@
 #endif
 
 static void flush_buffer(char *buf, size_t *len, CONNECTION *conn);
-static int parse_fetch (IMAP_HEADER_INFO *h, char *s);
+static int msg_parse_fetch (IMAP_HEADER_INFO *h, char *s);
+static char* msg_parse_flags (IMAP_FLAGS* flags, char* s);
 
 /* imap_read_headers:
  * Changed to read many headers instead of just one. It will return the
@@ -66,8 +68,8 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
     return (-1);
   }
 
-  h0=safe_malloc(sizeof(IMAP_HEADER_INFO));
-  h=h0;
+  h0 = (IMAP_HEADER_INFO*) safe_malloc(sizeof(IMAP_HEADER_INFO));
+  h = h0;
   for (msgno=msgbegin; msgno <= msgend ; msgno++)
   {
     snprintf (buf, sizeof (buf), _("Fetching message headers... [%d/%d]"), 
@@ -168,7 +170,7 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
     while ((msgno + 1) >= fetchlast && mutt_strncmp (seq, buf, SEQLEN) != 0);
 
     h->content_length = -bytes;
-    if (parse_fetch (h, fetchbuf) == -1)
+    if (msg_parse_fetch (h, fetchbuf) == -1)
       return (-1);
 
     /* subtract the header length; the total message size will be
@@ -202,20 +204,21 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
 
     ctx->hdrs[msgno]->env = mutt_read_rfc822_header (fp, ctx->hdrs[msgno], 0);
     ploc=ftell(fp);
-    ctx->hdrs[msgno]->read = h->read;
-    ctx->hdrs[msgno]->old = h->old;
-    ctx->hdrs[msgno]->deleted = h->deleted;
-    ctx->hdrs[msgno]->flagged = h->flagged;
-    ctx->hdrs[msgno]->replied = h->replied;
-    ctx->hdrs[msgno]->changed = h->changed;
+    ctx->hdrs[msgno]->read = h->flags.read;
+    ctx->hdrs[msgno]->old = h->flags.old;
+    ctx->hdrs[msgno]->deleted = h->flags.deleted;
+    ctx->hdrs[msgno]->flagged = h->flags.flagged;
+    ctx->hdrs[msgno]->replied = h->flags.replied;
+    ctx->hdrs[msgno]->changed = h->flags.changed;
+    ctx->hdrs[msgno]->server_flags = h->flags.server_flags;
     ctx->hdrs[msgno]->received = h->received;
     ctx->hdrs[msgno]->content->length = h->content_length;
 
-    mx_update_context(ctx); /* increments ->msgcount */
+    mx_update_context (ctx); /* increments ->msgcount */
 
     htemp=h;
     h=h->next;
-    safe_free((void **) &htemp);
+    safe_free ((void **) &htemp);
   }
   fclose(fp);
   unlink(tempfile);
@@ -314,6 +317,37 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	    }
 	    pc = buf;
 	  }
+          /* UW-IMAP will provide a FLAGS update here if the FETCH causes a
+           * change (eg from \Unseen to \Seen) */
+          else if (strncasecmp ("FLAGS", pc, 5) == 0)
+          {
+	    IMAP_FLAGS flags;
+            HEADER* h = ctx->hdrs[msgno];
+
+            flags.server_flags = NULL;
+
+            dprint (2, (debugfile, "imap_fetch_message: parsing FLAGS\n"));
+            if ((pc = msg_parse_flags (&flags, pc)) == NULL)
+              return -1;
+
+            /* update context sums */
+            ctx->new += ((flags.read | flags.old) ? 0 : 1) -
+              ((h->read | h->old) ? 0 : 1);
+            ctx->unread += h->read - flags.read;
+            ctx->deleted += h->deleted = flags.deleted;
+            ctx->flagged += h->flagged - flags.flagged;
+
+            /* now commit the new flags */
+            ctx->hdrs[msgno]->read = flags.read;
+            ctx->hdrs[msgno]->old = flags.old;
+            ctx->hdrs[msgno]->deleted = flags.deleted;
+            ctx->hdrs[msgno]->flagged = flags.flagged;
+            ctx->hdrs[msgno]->replied = flags.replied;
+            ctx->hdrs[msgno]->changed = flags.changed;
+
+            mutt_free_list (&(h->server_flags));
+            h->server_flags = flags.server_flags;
+          }
 	}
       }
       else if (imap_handle_untagged (CTX_DATA, buf) != 0)
@@ -471,127 +505,161 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   return 0;
 }
 
-/* parse_fetch: handle headers returned from header fetch */
-static int parse_fetch (IMAP_HEADER_INFO *h, char *s)
+/* msg_parse_fetch: handle headers returned from header fetch */
+static int msg_parse_fetch (IMAP_HEADER_INFO *h, char *s)
 {
   char tmp[SHORT_STRING];
   char *ptmp;
-  int state = 0;
-  int recent = 0;
 
   if (!s)
     return (-1);
-
-  h->old = 0;
 
   while (*s)
   {
     SKIPWS (s);
 
-    switch (state)
+    if (mutt_strncasecmp ("FLAGS", s, 5) == 0)
     {
-      case 0:
-	if (mutt_strncasecmp ("FLAGS", s, 5) == 0)
-	{
-	  s += 5;
-	  SKIPWS (s);
-	  if (*s != '(')
-	  {
-	    dprint (1, (debugfile, "parse_fetch(): bogus FLAGS entry: %s\n", s));
-	    return (-1); /* parse error */
-	  }
-	  /* we're about to get a new set of headers, so clear the old ones. */
-	  h->deleted = 0;
-          h->flagged = 0;
-	  h->replied = 0;
-          h->read = 0;
-          h->old = 0;
-	  h->changed = 0;
-          recent = 0;
-	  s++;
-	  state = 1;
-	}
-	else if (mutt_strncasecmp ("INTERNALDATE", s, 12) == 0)
-	{
-	  s += 12;
-	  SKIPWS (s);
-	  if (*s != '\"')
-	  {
-	    dprint (1, (debugfile, "parse_fetch(): bogus INTERNALDATE entry: %s\n", s));
-	    return (-1);
-	  }
-	  s++;
-	  ptmp = tmp;
-	  while (*s && *s != '\"')
-	    *ptmp++ = *s++;
-	  if (*s != '\"')
-	    return (-1);
-	  s++; /* skip past the trailing " */
-	  *ptmp = 0;
-	  h->received = imap_parse_date (tmp);
-	}
-	else if (mutt_strncasecmp ("RFC822.SIZE", s, 11) == 0)
-	{
-	  s += 11;
-	  SKIPWS (s);
-	  ptmp = tmp;
-	  while (isdigit (*s))
-	    *ptmp++ = *s++;
-	  *ptmp = 0;
-	  h->content_length += atoi (tmp);
-	}
-	else if (*s == ')')
-	  s++; /* end of request */
-	else if (*s)
-	{
-	  /* got something i don't understand */
-	  imap_error ("parse_fetch()", s);
-	  return (-1);
-	}
-	break;
-      case 1: /* flags */
-	if (*s == ')')
-	{
-	  s++;
-          /* if a message is neither seen nor recent, it is OLD. */
-          if (option (OPTMARKOLD) && !recent && !(h->read))
-            h->old = 1;
-	  state = 0;
-	}
-	else if (mutt_strncasecmp ("\\deleted", s, 8) == 0)
-	{
-	  s += 8;
-	  h->deleted = 1;
-	}
-	else if (mutt_strncasecmp ("\\flagged", s, 8) == 0)
-	{
-	  s += 8;
-	  h->flagged = 1;
-	}
-	else if (mutt_strncasecmp ("\\answered", s, 9) == 0)
-	{
-	  s += 9;
-	  h->replied = 1;
-	}
-	else if (mutt_strncasecmp ("\\seen", s, 5) == 0)
-	{
-	  s += 5;
-	  h->read = 1;
-	}
-	else if (mutt_strncasecmp ("\\recent", s, 5) == 0)
-	{
-	  s += 7;
-	  recent = 1;
-	}
-	else
-	{
-	  while (*s && !ISSPACE (*s) && *s != ')')
-	    s++;
-	}
-	break;
+      h->flags.server_flags = NULL;
+      if ((s = msg_parse_flags (&(h->flags), s)) == NULL)
+        return -1;
+    }
+    else if (mutt_strncasecmp ("INTERNALDATE", s, 12) == 0)
+    {
+      s += 12;
+      SKIPWS (s);
+      if (*s != '\"')
+      {
+        dprint (1, (debugfile, "msg_parse_fetch(): bogus INTERNALDATE entry: %s\n", s));
+        return -1;
+      }
+      s++;
+      ptmp = tmp;
+      while (*s && *s != '\"')
+        *ptmp++ = *s++;
+      if (*s != '\"')
+        return -1;
+      s++; /* skip past the trailing " */
+      *ptmp = 0;
+      h->received = imap_parse_date (tmp);
+    }
+    else if (mutt_strncasecmp ("RFC822.SIZE", s, 11) == 0)
+    {
+      s += 11;
+      SKIPWS (s);
+      ptmp = tmp;
+      while (isdigit (*s))
+        *ptmp++ = *s++;
+      *ptmp = 0;
+      h->content_length += atoi (tmp);
+    }
+    else if (*s == ')')
+      s++; /* end of request */
+    else if (*s)
+    {
+      /* got something i don't understand */
+      imap_error ("msg_parse_fetch", s);
+      return (-1);
     }
   }
+
   return 0;
+}
+
+/* msg_parse_flags: fill out the message header according to the flags from the
+ *   server. Expects a flags line of the form "FLAGS (flag flag ...)" */
+static char* msg_parse_flags (IMAP_FLAGS* flags, char* s)
+{
+  int recent = 0;
+
+  /* sanity-check string */
+  if (mutt_strncasecmp ("FLAGS", s, 5) != 0)
+  {
+    dprint (1, (debugfile, "msg_parse_flags: not a FLAGS response: %s\n",
+      s));
+    return NULL;
+  }
+  s += 5;
+  SKIPWS(s);
+  if (*s != '(')
+  {
+    dprint (1, (debugfile, "msg_parse_flags: bogus FLAGS response: %s\n",
+      s));
+    return NULL;
+  }
+  s++;
+
+  /* reset the current flags */
+  flags->deleted = 0;
+  flags->flagged = 0;
+  flags->replied = 0;
+  flags->read = 0;
+  flags->old = 0;
+  flags->changed = 0;
+
+  /* start parsing */
+  while (*s && *s != ')')
+  {
+    if (mutt_strncasecmp ("\\deleted", s, 8) == 0)
+    {
+      s += 8;
+      flags->deleted = 1;
+    }
+    else if (mutt_strncasecmp ("\\flagged", s, 8) == 0)
+    {
+      s += 8;
+      flags->flagged = 1;
+    }
+    else if (mutt_strncasecmp ("\\answered", s, 9) == 0)
+    {
+      s += 9;
+      flags->replied = 1;
+    }
+    else if (mutt_strncasecmp ("\\seen", s, 5) == 0)
+    {
+      s += 5;
+      flags->read = 1;
+    }
+    else if (mutt_strncasecmp ("\\recent", s, 5) == 0)
+    {
+      s += 7;
+      recent = 1;
+    }
+    else
+    {
+      /* store custom flags as well */
+      char ctmp;
+      char* flag_word = s;
+
+      if (!flags->server_flags)
+        flags->server_flags = mutt_new_list ();
+
+      while (*s && !ISSPACE (*s) && *s != ')')
+        s++;
+      ctmp = *s;
+      *s = '\0';
+      mutt_add_list (flags->server_flags, flag_word);
+      *s = ctmp;
+    }
+    SKIPWS(s);
+  }
+
+  /* wrap up, or note bad flags response */
+  if (*s == ')')
+  {
+    /* if a message is neither seen nor recent, it is OLD. */
+    if (option (OPTMARKOLD) && !recent && !(flags->read))
+      flags->old = 1;
+    s++;
+  }
+  else
+  {
+    dprint (1, (debugfile,
+      "msg_parse_flags: Unterminated FLAGS response: %s\n", s));
+    return NULL;
+  }
+
+  return s;
 }
 
 static void flush_buffer(char *buf, size_t *len, CONNECTION *conn)

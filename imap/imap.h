@@ -22,9 +22,7 @@
 #include "browser.h"
 #include "mailbox.h"
 
-int imap_append_message (CONTEXT *ctx, MESSAGE *msg);
 int imap_check_mailbox (CONTEXT *ctx, int *index_hint);
-int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno);
 int imap_open_mailbox (CONTEXT *ctx);
 int imap_open_mailbox_append (CONTEXT *ctx);
 int imap_parse_path (char *path, char *host, size_t hlen, int *port,
@@ -39,5 +37,9 @@ int imap_init_browse (char *path, struct browser_state *state);
 int imap_complete (char* dest, size_t dlen, char* path);
 void imap_qualify_path (char* dest, size_t len, const char* host, int port,
   const char* path, const char* name);
+
+/* message.c */
+int imap_append_message (CONTEXT *ctx, MESSAGE *msg);
+int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno);
 
 #endif

@@ -583,7 +583,10 @@ typedef struct header
 #ifdef MIXMASTER
   LIST *chain;
 #endif
-  
+
+#ifdef USE_IMAP
+  LIST *server_flags;	/* server custom flags, which should be preserved */
+#endif
 } HEADER;
 
 #include "mutt_regex.h"

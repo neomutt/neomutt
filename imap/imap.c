@@ -49,6 +49,8 @@ static int imap_wordcasecmp(const char *a, const char *b);
 static void imap_parse_capabilities (IMAP_DATA *idata, char *s);
 static int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint);
 static int imap_get_delim (IMAP_DATA *idata, CONNECTION *conn);
+static char* imap_get_flags (LIST** hflags, char* s);
+static int imap_has_flag (LIST* flag_list, const char* flag);
 static int imap_check_acl (IMAP_DATA *idata);
 static int imap_check_capabilities (IMAP_DATA *idata);
 static int imap_create_mailbox (IMAP_DATA *idata, char *mailbox);
@@ -869,6 +871,60 @@ int imap_open_connection (IMAP_DATA *idata, CONNECTION *conn)
   return 0;
 }
 
+/* imap_get_flags: Make a simple list out of a FLAGS response.
+ *   return stream following FLAGS response */
+static char* imap_get_flags (LIST** hflags, char* s)
+{
+  LIST* flags;
+  char* flag_word;
+  char ctmp;
+
+  /* sanity-check string */
+  if (mutt_strncasecmp ("FLAGS", s, 5) != 0)
+  {
+    dprint (1, (debugfile, "imap_get_flags: not a FLAGS response: %s\n",
+      s));
+    return NULL;
+  }
+  s += 5;
+  SKIPWS(s);
+  if (*s != '(')
+  {
+    dprint (1, (debugfile, "imap_get_flags: bogus FLAGS response: %s\n",
+      s));
+    return NULL;
+  }
+
+  /* create list, update caller's flags handle */
+  flags = mutt_new_list();
+  *hflags = flags;
+
+  while (*s && *s != ')')
+  {
+    s++;
+    SKIPWS(s);
+    flag_word = s;
+    while (*s && (*s != ')') && !ISSPACE (*s))
+      s++;
+    ctmp = *s;
+    *s = '\0';
+    mutt_add_list (flags, flag_word);
+    *s = ctmp;
+  }
+
+  /* note bad flags response */
+  if (*s != ')')
+  {
+    dprint (1, (debugfile,
+      "imap_get_flags: Unterminated FLAGS response: %s\n", s));
+    return NULL;
+  }
+
+  s++;
+
+  return s;
+}
+
 int imap_open_mailbox (CONTEXT *ctx)
 {
   CONNECTION *conn;
@@ -940,17 +996,62 @@ int imap_open_mailbox (CONTEXT *ctx)
 
 	while (*pc && isdigit (*pc))
 	  pc++;
-	*pc++ = 0;
+	*pc++ = '\0';
 	n = atoi (pn);
 	SKIPWS (pc);
 	if (mutt_strncasecmp ("EXISTS", pc, 6) == 0)
 	  count = n;
+      }
+      /* Obtain list of available flags here, may be overridden by a
+       * PERMANENTFLAGS tag in the OK response */
+      else if (mutt_strncasecmp ("FLAGS", pc, 5) == 0)
+      {
+        /* don't override PERMANENTFLAGS */
+        if (!idata->mailbox_flags)
+        {
+          dprint (2, (debugfile, "Getting mailbox FLAGS\n"));
+          if ((pc = imap_get_flags (&(idata->mailbox_flags), pc)) == NULL)
+            return -1;
+        }
+      }
+      /* PERMANENTFLAGS are massaged to look like FLAGS, then override FLAGS */
+      else if (mutt_strncasecmp ("OK [PERMANENTFLAGS", pc, 18) == 0)
+      {
+        dprint (2, (debugfile,
+          "Getting mailbox PERMANENTFLAGS\n"));
+        /* safe to call on NULL */
+        mutt_free_list (&(idata->mailbox_flags));
+	/* skip "OK [PERMANENT" so syntax is the same as FLAGS */
+        pc += 13;
+        if ((pc = imap_get_flags (&(idata->mailbox_flags), pc)) == NULL)
+          return -1;
       }
       else if (imap_handle_untagged (idata, buf) != 0)
 	return (-1);
     }
   }
   while (mutt_strncmp (seq, buf, mutt_strlen (seq)) != 0);
+
+  /* dump the mailbox flags we've found */
+  if (debuglevel > 2)
+  {
+    if (!idata->mailbox_flags)
+      dprint (3, (debugfile, "No folder flags found\n"));
+    else
+    {
+      LIST* t = idata->mailbox_flags;
+
+      dprint (3, (debugfile, "Mailbox flags: "));
+
+      t = t->next;
+      while (t)
+      {
+        dprint (3, (debugfile, "[%s] ", t->data));
+        t = t->next;
+      }
+      dprint (3, (debugfile, "\n"));
+    }
+  }
 
   if (!imap_code (buf))
   {
@@ -1160,16 +1261,50 @@ int imap_close_connection (CONTEXT *ctx)
   return 0;
 }
 
-static void _imap_set_flag (CONTEXT *ctx, int aclbit, int flag, const char *str, 
-		     char *sf, char *uf)
+/* imap_has_flag: do a caseless comparison of the flag against a flag list,
+ *   return 1 if found or flag list has '\*', 0 otherwise */
+static int imap_has_flag (LIST* flag_list, const char* flag)
+{
+  if (!flag_list)
+    return 0;
+
+  flag_list = flag_list->next;
+  while (flag_list)
+  {
+    if (!mutt_strncasecmp (flag_list->data, flag, strlen (flag_list->data)))
+      return 1;
+
+    flag_list = flag_list->next;
+  }
+
+  return 0;
+}
+
+/* imap_stringify_flaglist: concatenate custom IMAP tags to list, if they
+ *   appear in the folder flags list. Why wouldn't they? */
+static void imap_stringify_flaglist (LIST* flags, LIST* mailbox_flags, char *s)
+{
+  if (!mailbox_flags || !flags)
+    return;
+
+  flags = flags->next;
+  while (flags)
+  {
+    if (imap_has_flag (mailbox_flags, flags->data))
+    {
+      strcat (s, flags->data);
+      strcat (s, " ");
+    }
+    flags = flags->next;
+  }
+}
+
+static void imap_set_flag (CONTEXT *ctx, int aclbit, int flag, const char *str, 
+  char *flags)
 {
   if (mutt_bit_isset (CTX_DATA->rights, aclbit))
-  {
     if (flag)
-      strcat (sf, str);
-    else
-      strcat (uf, str);
-  }
+      strcat (flags, str);
 }
 
 /* update the IMAP server to reflect message changes done within mutt.
@@ -1180,8 +1315,7 @@ int imap_sync_mailbox (CONTEXT *ctx, int expunge)
 {
   char seq[8];
   char buf[LONG_STRING];
-  char set_flags[LONG_STRING];
-  char unset_flags[LONG_STRING];
+  char flags[LONG_STRING];
   int n;
 
   /* save status changes */
@@ -1193,39 +1327,30 @@ int imap_sync_mailbox (CONTEXT *ctx, int expunge)
 		n+1, ctx->msgcount);
       mutt_message (buf);
       
-      *set_flags = '\0';
-      *unset_flags = '\0';
+      flags[0] = '\0';
       
-      _imap_set_flag (ctx, IMAP_ACL_SEEN, ctx->hdrs[n]->read, "\\Seen ", set_flags, unset_flags);
-      _imap_set_flag (ctx, IMAP_ACL_WRITE, ctx->hdrs[n]->flagged, "\\Flagged ", set_flags, unset_flags);
-      _imap_set_flag (ctx, IMAP_ACL_WRITE, ctx->hdrs[n]->replied, "\\Answered ", set_flags, unset_flags);
-      _imap_set_flag (ctx, IMAP_ACL_DELETE, ctx->hdrs[n]->deleted, "\\Deleted", set_flags, unset_flags);
+      imap_set_flag (ctx, IMAP_ACL_SEEN, ctx->hdrs[n]->read, "\\Seen ",
+        flags);
+      imap_set_flag (ctx, IMAP_ACL_WRITE, ctx->hdrs[n]->flagged, "\\Flagged ",
+        flags);
+      imap_set_flag (ctx, IMAP_ACL_WRITE, ctx->hdrs[n]->replied,
+        "\\Answered ", flags);
+      imap_set_flag (ctx, IMAP_ACL_DELETE, ctx->hdrs[n]->deleted, "\\Deleted ",
+        flags);
+
+      /* now make sure we don't lose custom tags */
+      imap_stringify_flaglist (ctx->hdrs[n]->server_flags,
+        CTX_DATA->mailbox_flags, flags);
       
-      mutt_remove_trailing_ws (set_flags);
-      mutt_remove_trailing_ws (unset_flags);
+      mutt_remove_trailing_ws (flags);
       
-      if (*set_flags)
+      imap_make_sequence (seq, sizeof (seq));
+      snprintf (buf, sizeof (buf), "%s STORE %d FLAGS.SILENT (%s)\r\n", seq,
+        ctx->hdrs[n]->index + 1, NONULL(flags));
+      if (imap_exec (buf, sizeof (buf), CTX_DATA, seq, buf, 0) != 0)
       {
-	imap_make_sequence (seq, sizeof (seq));
-	snprintf (buf, sizeof (buf), "%s STORE %d +FLAGS.SILENT (%s)\r\n", seq,
-		  ctx->hdrs[n]->index + 1, set_flags);
-	if (imap_exec (buf, sizeof (buf), CTX_DATA, seq, buf, 0) != 0)
-	{
-	  imap_error ("imap_sync_mailbox()", buf);
-	  return (-1);
-	}
-      }
-      
-      if (*unset_flags)
-      {
-	imap_make_sequence (seq, sizeof (seq));
-	snprintf (buf, sizeof (buf), "%s STORE %d -FLAGS.SILENT (%s)\r\n", seq,
-		  ctx->hdrs[n]->index + 1, unset_flags);
-	if (imap_exec (buf, sizeof (buf), CTX_DATA, seq, buf, 0) != 0)
-	{
-	  imap_error ("imap_sync_mailbox()", buf);
-	  return (-1);
-	}
+        imap_error ("imap_sync_mailbox()", buf);
+        return (-1);
       }
     }
   }

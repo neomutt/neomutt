@@ -119,24 +119,6 @@ typedef struct
   int noinferiors;
 } IMAP_NAMESPACE_INFO;
 
-/* Linked list to hold header information while downloading message
- * headers
- */
-typedef struct imap_header_info
-{
-  unsigned int read : 1;
-  unsigned int old : 1;
-  unsigned int deleted : 1;
-  unsigned int flagged : 1;
-  unsigned int replied : 1;
-  unsigned int changed : 1;
-  unsigned int number;
-
-  time_t received;
-  long content_length;
-  struct imap_header_info *next;
-} IMAP_HEADER_INFO;
-
 typedef struct
 {
   /* This data is specific to a CONNECTION to an IMAP server */
@@ -153,6 +135,7 @@ typedef struct
   unsigned char rights[(RIGHTSMAX + 7)/8];
   unsigned int newMailCount;
   IMAP_CACHE cache[IMAP_CACHE_LEN];
+  LIST *mailbox_flags;
 } IMAP_DATA;
 
 /* -- macros -- */

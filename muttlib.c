@@ -159,6 +159,9 @@ void mutt_free_header (HEADER **h)
 #ifdef MIXMASTER
   mutt_free_list (&(*h)->chain);
 #endif
+#ifdef USE_IMAP
+  mutt_free_list (&(*h)->server_flags);
+#endif
   safe_free ((void **) h);
 }
 
