@@ -325,7 +325,7 @@ int rfc2231_encode_string (char **pd)
   for (s = d, slen = dlen; slen; s++, slen--)
     if (*s < 0x20 || *s >= 0x7f)
       encode = 1, ++ext;
-    else if (strchr (MimeSpecials, *s))
+    else if (strchr (MimeSpecials, *s) || strchr ("*'%", *s))
       ++ext;
 
   if (encode)
@@ -334,7 +334,8 @@ int rfc2231_encode_string (char **pd)
     sprintf (e, "%s''", charset);
     t = e + strlen (e);
     for (s = d, slen = dlen; slen; s++, slen--)
-      if (*s < 0x20 || *s >= 0x7f || strchr (MimeSpecials, *s))
+      if (*s < 0x20 || *s >= 0x7f ||
+	  strchr (MimeSpecials, *s) || strchr ("*'%", *s))
       {
 	sprintf (t, "%%%02X", (unsigned char)*s);
 	t += 3;
