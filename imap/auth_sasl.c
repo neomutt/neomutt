@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2000-1 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -170,6 +170,12 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
     {
       strfcpy (buf + olen, "\r\n", sizeof (buf) - olen);
       mutt_socket_write (idata->conn, buf);
+    }
+
+    /* If SASL has errored out, send an abort string to the server */
+    if (rc < 0)
+    {
+      mutt_socket_write (idata->conn, "*\r\n");
     }
   }
 
