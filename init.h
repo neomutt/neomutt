@@ -127,7 +127,7 @@ struct option_t MuttVars[] = {
   ** \fBNote:\fP Mutt will not automatically source this file; you must
   ** explicitly use the ``$source'' command for it to be executed.
   */
-  { "alias_format",	DT_STR,  R_NONE, UL &AliasFmt, UL "%4n %t %-10a   %r" },
+  { "alias_format",	DT_STR,  R_NONE, UL &AliasFmt, UL "%4n %2f %t %-10a   %r" },
   /*
   ** .pp
   ** Specifies the format of the data displayed for the `alias' menu.  The
@@ -135,6 +135,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** .dl
   ** .dt %a .dd alias name
+  ** .dt %f .dd flags - currently, a "d" for an alias marked for deletion
   ** .dt %n .dd index number
   ** .dt %r .dd address which alias expands to
   ** .dt %t .dd character which indicates if the alias is tagged for inclusion

@@ -62,7 +62,7 @@ typedef struct menu_t
   /* how to search the menu */
   int (*search) (struct menu_t *, regex_t *re, int n);
 
-  int (*tag) (struct menu_t *, int i);
+  int (*tag) (struct menu_t *, int i, int m);
 
   /* color pair to be used for the requested element 
    * (default function returns ColorDefs[MT_COLOR_NORMAL])

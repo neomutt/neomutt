@@ -526,7 +526,7 @@ void km_init (void)
   create_bindings (OpPager, MENU_PAGER);
   create_bindings (OpPost, MENU_POST);
   create_bindings (OpQuery, MENU_QUERY);
-
+  create_bindings (OpAlias, MENU_ALIAS);
 
 
 #ifdef HAVE_PGP

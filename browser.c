@@ -507,16 +507,20 @@ static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
   menu->redraw = REDRAW_FULL;
 }
 
-int file_tag (MUTTMENU *menu, int n)
+int file_tag (MUTTMENU *menu, int n, int m)
 {
   struct folder_file *ff = &(((struct folder_file *)menu->data)[n]);
+  int ot;
   if (S_ISDIR (ff->mode) || (S_ISLNK (ff->mode) && link_is_dir (LastDir, ff->name)))
   {
     mutt_error _("Can't attach a directory!");
     return 0;
   }
   
-  return ((ff->tagged = !ff->tagged) ? 1 : -1);
+  ot = ff->tagged;
+  ff->tagged = (m >= 0 ? m : !ff->tagged);
+  
+  return ff->tagged - ot;
 }
 
 void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *numfiles)

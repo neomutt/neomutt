@@ -354,9 +354,13 @@ void attach_entry (char *b, size_t blen, MUTTMENU *menu, int num)
   mutt_FormatString (b, blen, NONULL (AttachFormat), mutt_attach_fmt, (unsigned long) (((ATTACHPTR **)menu->data)[num]), M_FORMAT_ARROWCURSOR);
 }
 
-int mutt_tag_attach (MUTTMENU *menu, int n)
+int mutt_tag_attach (MUTTMENU *menu, int n, int m)
 {
-  return ((((ATTACHPTR **) menu->data)[n]->content->tagged = !((ATTACHPTR **) menu->data)[n]->content->tagged) ? 1 : -1);
+  BODY *cur = ((ATTACHPTR **) menu->data)[n]->content;
+  int ot = cur->tagged;
+  
+  cur->tagged = (m >= 0 ? m : !cur->tagged);
+  return cur->tagged - ot;
 }
 
 int mutt_is_message_type (int type, const char *subtype)

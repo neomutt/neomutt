@@ -966,9 +966,15 @@ int mutt_menuLoop (MUTTMENU *menu)
       case OP_TAG:
 	if (menu->tag && !menu->dialog)
 	{
-	  if (menu->max)
+	  if (menu->tagprefix && !option (OPTAUTOTAG))
 	  {
-	    int i = menu->tag (menu, menu->current);
+	    for (i = 0; i < menu->max; i++)
+	      menu->tagged += menu->tag (menu, i, 0);
+	    menu->redraw = REDRAW_INDEX;
+	  }
+	  else if (menu->max)
+	  {
+	    int i = menu->tag (menu, menu->current, -1);
 	    menu->tagged += i;
 	    if (i && option (OPTRESOLVE) && menu->current < menu->max - 1)
 	    {

@@ -328,6 +328,13 @@ struct binding_t OpPost[] = {
   { NULL,		0,		NULL }
 };
 
+struct binding_t OpAlias[] = {
+  { "delete-entry",	OP_DELETE,	"d" },
+  { "undelete-entry",	OP_UNDELETE,	"u" },
+  { NULL,		0,		NULL }
+};
+  
+
 /* The file browser */
 struct binding_t OpBrowser[] = {
   { "change-dir",	OP_CHANGE_DIRECTORY,	"c" },

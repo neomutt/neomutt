@@ -428,11 +428,17 @@ static int parse_unalias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *er
   {
     mutt_extract_token (buf, s, 0);
 
-    tmp = Aliases;
     for (tmp = Aliases; tmp; tmp = tmp->next)
     {
       if (mutt_strcasecmp (buf->data, tmp->name) == 0)
       {
+	if (option (OPTALIASMENU))
+	{
+	  tmp->del = 1;
+	  set_option (OPTFORCEREDRAWINDEX);
+	  break;
+	}
+
 	if (last)
 	  last->next = tmp->next;
 	else
@@ -483,6 +489,8 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   {
     /* override the previous value */
     rfc822_free_address (&tmp->addr);
+    if (option (OPTALIASMENU))
+      set_option (OPTFORCEREDRAWINDEX);
   }
   s->dptr = p;
 

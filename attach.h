@@ -18,7 +18,7 @@
 
 /* common protos for compose / attach menus */
 
-int mutt_tag_attach (MUTTMENU *menu, int n);
+int mutt_tag_attach (MUTTMENU *menu, int n, int m);
 int mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, HEADER *hdr,
 			      BODY *cur, ATTACHPTR ***idxp, short *idxlen, short *idxmax,
 			      int recv);

@@ -100,6 +100,7 @@ extern struct binding_t OpCompose[];
 extern struct binding_t OpBrowser[];
 extern struct binding_t OpEditor[];
 extern struct binding_t OpQuery[];
+extern struct binding_t OpAlias[];
 
 #ifdef HAVE_PGP
 extern struct binding_t OpPgp[];

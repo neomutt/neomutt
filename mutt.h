@@ -442,6 +442,7 @@ enum
 			 * 	    functions while we are executing an
 			 * 	    external program.
 			 */
+  OPTALIASMENU,		/* (pseudo) alias menu active */
 #ifdef HAVE_PGP
   OPTPGPCHECKTRUST,	/* (pseudo) used by pgp_select_key () */
   OPTDONTHANDLEPGPKEYS,	/* (pseudo) used to extract PGP keys */
@@ -489,6 +490,7 @@ typedef struct alias
   ADDRESS *addr;
   struct alias *next;
   short tagged;
+  short del;
   short num;
 } ALIAS;
 
