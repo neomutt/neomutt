@@ -45,6 +45,7 @@ tag-entry                  t   toggle the tag on the current entry
 tag-prefix                 ;   apply next command to tagged entries
 tag-prefix-cond    not bound   apply next function ONLY to tagged messages
 top-page                   H   move to the top of the page
+what-key           not bound   display the keycode for a key press
 </verb>
 <sect2>index
 <p>

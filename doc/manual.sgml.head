@@ -56,8 +56,8 @@ name="http://www.mutt.org/download.html">.
 <sect1>IRC
 <p>
 Visit channel <em/#mutt/ on <htmlurl
-url="http://www.openprojects.net" name="OpenProjects.Net
-(www.openprojects.net)"> to chat with other people interested in Mutt.
+url="http://www.freenode.net/" name="irc.freenode.net
+(www.freenode.net)"> to chat with other people interested in Mutt.
 
 <sect1>USENET
 <p>
@@ -411,7 +411,7 @@ you misspelled the passphrase.
 <p><bf/list-reply/<label id="list-reply"> (default: L)<newline>
 
 Reply to the current or tagged message(s) by extracting any addresses which
-match the addresses given by the <ref id="lists" name="lists or subscribe">
+match the regular expressions given by the <ref id="lists" name="lists or subscribe">
 commands, but also honor any <tt/Mail-Followup-To/ header(s) if the
 <ref id="honor_followup_to" name="&dollar;honor&lowbar;followup&lowbar;to">
 configuration variable is set.  Using this when replying to messages posted
@@ -1182,7 +1182,7 @@ someone else.  For instance, when replying to a message that you
 sent to a different party, mutt will automatically suggest to send
 the response to the original message's recipients -- responding to
 yourself won't make much sense in many cases.  (See <ref
-id="reply_to" name="&dollar;reply_to">.)
+id="reply_to" name="&dollar;reply&lowbar;to">.)
 
 Many users receive e-mail under a number of different addresses. To
 fully use mutt's features here, the program must be able to
@@ -1221,7 +1221,7 @@ the Mail-Followup-To header is a non-standard extension which is not
 supported by all mail user agents.  Adding it is not bullet-proof against
 receiving personal CCs of list messages.  Also note that the generation
 of the Mail-Followup-To header is controlled by the <ref id="followup_to"
-name="&dollar;followup_to"> configuration variable.
+name="&dollar;followup&lowbar;to"> configuration variable.
 
 More precisely, Mutt maintains lists of patterns for the addresses
 of known and subscribed mailing lists.  Every subscribed mailing
@@ -1241,8 +1241,8 @@ mailing list, you could add ``lists mutt-users'' to your
 initialization file.  To tell mutt that you are subscribed to it,
 add ``subscribe mutt-users'' to your initialization file instead.
 If you also happen to get mail from someone whose address is
-<em/mutt-users@example.com/, you could use ``lists mutt-users@mutt.org'' 
-or ``subscribe mutt-users@mutt.org'' to
+<em/mutt-users@example.com/, you could use ``lists mutt-users@mutt&bsol;&bsol;.org'' 
+or ``subscribe mutt-users@mutt&bsol;&bsol;.org'' to
 match only mail from the actual list.
 
 The ``unlists'' command is used to remove a token from the list of
@@ -1385,7 +1385,7 @@ to <ref id="record" name="&dollar;record"> mailbox.
 
 See <ref id="pattern_hook" name="Message Matching in Hooks"> for information on the exact format of <em/pattern/.
 
-Example: <tt/fcc-hook aol.com&dollar; +spammers/
+Example: <tt/fcc-hook &lsqb;@.&rsqb;aol&bsol;&bsol;.com&dollar; +spammers/
 
 The above will save a copy of all messages going to the aol.com domain to
 the `+spammers' mailbox by default.  Also see the <ref id="fcc-save-hook" 
@@ -2114,7 +2114,7 @@ my_hdr directive:
 
 <tscreen><verb>
 send-hook . 'unmy_hdr From:'
-send-hook ~Cb@b.b my_hdr from: c@c.c
+send-hook ~C'^b@b\.b$' my_hdr from: c@c.c
 </verb></tscreen>
 
 <sect2>Message Matching in Hooks<label id="pattern_hook">
@@ -2308,10 +2308,11 @@ than the author of the message.  This can create problems when trying
 to reply directly to the author in private, since most mail clients
 will automatically reply to the address given in the ``Reply-To''
 field.  Mutt uses the <ref id="reply_to" name="&dollar;reply&lowbar;to">
-variable to help decide which address to use.  If set, you will be
+variable to help decide which address to use.  If set to <em/ask-yes/ or
+<em/ask-no/, you will be
 prompted as to whether or not you would like to use the address given in
 the ``Reply-To'' field, or reply directly to the address given in the
-``From'' field.  When unset, the ``Reply-To'' field will be used when
+``From'' field.  When set to <em/yes/, the ``Reply-To'' field will be used when
 present.
 
 The ``X-Label:'' header field can be used to further identify mailing

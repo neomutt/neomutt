@@ -1192,7 +1192,7 @@ struct option_t MuttVars[] = {
   { "move",		DT_QUAD, R_NONE, OPT_MOVE, M_ASKNO },
   /*
   ** .pp
-  ** Controls whether you will be asked to confirm moving read messages
+  ** Controls whether or not Mutt will move read messages
   ** from your spool mailbox to your ``$$mbox'' mailbox, or as a result of
   ** a ``$mbox-hook'' command.
   */
@@ -2051,8 +2051,9 @@ struct option_t MuttVars[] = {
   { "print",		DT_QUAD, R_NONE, OPT_PRINT, M_ASKNO },
   /*
   ** .pp
-  ** Controls whether or not Mutt asks for confirmation before printing.
-  ** This is useful for people (like me) who accidentally hit ``p'' often.
+  ** Controls whether or not Mutt really prints messages.
+  ** This is set to \fIask-no\fP by default, because some people
+  ** accidentally hit ``p'' often (like me).
   */
   { "print_command",	DT_PATH, R_NONE, UL &PrintCmd, UL "lpr" },
   /*
@@ -2153,7 +2154,7 @@ struct option_t MuttVars[] = {
   { "recall",		DT_QUAD, R_NONE, OPT_RECALL, M_ASKYES },
   /*
   ** .pp
-  ** Controls whether or not you are prompted to recall postponed messages
+  ** Controls whether or not Mutt recalls postponed messages
   ** when composing a new message.  Also see ``$$postponed''.
   ** .pp
   ** Setting this variable to ``yes'' is not generally useful, and thus not
@@ -2187,8 +2188,8 @@ struct option_t MuttVars[] = {
   { "reply_to",		DT_QUAD, R_NONE, OPT_REPLYTO, M_ASKYES },
   /*
   ** .pp
-  ** If set, Mutt will ask you if you want to use the address listed in the
-  ** Reply-To: header field when replying to a message.  If you answer no,
+  ** If set, when replying to a message, Mutt will use the address listed
+  ** in the Reply-to: header as the recipient of the reply.  If unset,
   ** it will use the address in the From: header field instead.  This
   ** option is useful for reading a mailing list that sets the Reply-To:
   ** header field to the list address and you want to send a private
@@ -2553,7 +2554,7 @@ struct option_t MuttVars[] = {
   ** .dt %m  .dd the number of messages in the mailbox *
   ** .dt %M  .dd the number of messages shown (i.e., which match the current limit) *
   ** .dt %n  .dd number of new messages in the mailbox *
-  ** .dt %o  .dd number of old unread messages
+  ** .dt %o  .dd number of old unread messages *
   ** .dt %p  .dd number of postponed messages *
   ** .dt %P  .dd percentage of the way through the index
   ** .dt %r  .dd modified/read-only/won't-write/attach-message indicator,
@@ -2580,8 +2581,8 @@ struct option_t MuttVars[] = {
   ** .pp
   ** where \fIsequence_char\fP is a character from the table above, and
   ** \fIoptional_string\fP is the string you would like printed if
-  ** \fIstatus_char\fP is nonzero.  \fIoptional_string\fP \fBmay\fP contain
-  ** other sequence as well as normal text, but you may \fBnot\fP nest
+  ** \fIsequence_char\fP is nonzero.  \fIoptional_string\fP \fBmay\fP contain
+  ** other sequences as well as normal text, but you may \fBnot\fP nest
   ** optional strings.
   ** .pp
   ** Here is an example illustrating how to optionally print the number of
@@ -2773,7 +2774,7 @@ struct option_t MuttVars[] = {
   { "weed",		DT_BOOL, R_NONE, OPTWEED, 1 },
   /*
   ** .pp
-  ** When set, mutt will weed headers when when displaying, forwarding,
+  ** When set, mutt will weed headers when displaying, forwarding,
   ** printing, or replying to messages.
   */
   { "wrap_search",	DT_BOOL, R_NONE, OPTWRAPSEARCH, 1 },
@@ -2803,7 +2804,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Controls whether mutt writes out the Bcc header when preparing
-  ** messages to be sent.  Exim users may wish to use this.
+  ** messages to be sent.  Exim users may wish to unset this.
   */
   /*--*/
   { NULL }
