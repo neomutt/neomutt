@@ -865,6 +865,8 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
       case OP_COMPOSE_TOGGLE_UNLINK:
 	CHECK_COUNT;
 	idx[menu->current]->content->unlink = !idx[menu->current]->content->unlink;
+	if (option (OPTRESOLVE) && menu->current + 1 < menu->max)
+	  menu->current++;
 	menu->redraw = REDRAW_INDEX;
 	break;
 
