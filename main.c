@@ -672,17 +672,9 @@ int main (int argc, char **argv)
 
     if ((Context = mx_open_mailbox (folder, ((flags & M_RO) || option (OPTREADONLY)) ? M_READONLY : 0, NULL)) != NULL)
     {
-      int close = mutt_index_menu ();
-
+      mutt_index_menu ();
       if (Context)
-      {
-	if (close == OP_QUIT) 
-	  mx_close_mailbox (Context);
-	else
-	  mx_fastclose_mailbox (Context);
-      }
-
-      safe_free ((void **)&Context);
+	safe_free ((void **)&Context);
       mutt_endwin (NULL);
     }
     else

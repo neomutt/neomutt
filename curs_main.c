@@ -965,7 +965,11 @@ int mutt_index_menu (void)
 	if ((menu->menu == MENU_MAIN)
 	    && (query_quadoption (OPT_QUIT, 
 				  _("Exit Mutt without saving?")) == M_YES))
+	{
+	  mx_fastclose_mailbox (Context);
+	  safe_free ((void **) &Context);
 	  done = 1;
+	}
 	break;
 
       case OP_MAIN_NEXT_UNDELETED:
