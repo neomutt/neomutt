@@ -1,3 +1,8 @@
+2005-01-27 19:00:59  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
+
+	* curs_lib.c: Add terminal newline when it lacks after editing
+	a message.  Originally from TAKIZAWA Takashi.
+
 2005-01-27 18:58:14  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* Makefile.am: Include mutt_ssl_gnutls.c with the distribution.
