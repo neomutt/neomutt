@@ -776,6 +776,10 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
  * successful, set *fromcode and *tocode to dynamically allocated
  * strings, set CONTENT *info, and return the number of characters
  * converted inexactly. If no conversion was possible, return -1.
+ *
+ * Both fromcodes and tocodes may be colon-separated lists of charsets.
+ * However, if fromcode is zero then fromcodes is assumed to be the
+ * name of a single charset even if it contains a colon.
  */
 static size_t convert_file_from_to (FILE *file,
 				    const char *fromcodes, const char *tocodes,
@@ -810,25 +814,40 @@ static size_t convert_file_from_to (FILE *file,
     memcpy (tcode[i], c, n), tcode[i][n] = '\0';
   }
 
-  /* Try each fromcode in turn */
   ret = (size_t)(-1);
-  for (c = fromcodes; c; c = c1 ? c1 + 1 : 0)
+  if (fromcode)
   {
-    c1 = strchr (c, ':');
-    n = c1 ? c1 - c : strlen (c);
-    if (!n)
-      continue;
-    fcode = malloc (n+1);
-    memcpy (fcode, c, n), fcode[n] = '\0';
-    ret = convert_file_to (file, fcode, ncodes, (const char **)tcode,
+    /* Try each fromcode in turn */
+    for (c = fromcodes; c; c = c1 ? c1 + 1 : 0)
+    {
+      c1 = strchr (c, ':');
+      n = c1 ? c1 - c : strlen (c);
+      if (!n)
+	continue;
+      fcode = malloc (n+1);
+      memcpy (fcode, c, n), fcode[n] = '\0';
+      ret = convert_file_to (file, fcode, ncodes, (const char **)tcode,
+			     &cn, info);
+      if (ret != (size_t)(-1))
+      {
+	*fromcode = fcode;
+	*tocode = tcode[cn];
+	tcode[cn] = 0;
+	break;
+      }
+      free (fcode);
+    }
+  }
+  else
+  {
+    /* There is only one fromcode */
+    ret = convert_file_to (file, fromcodes, ncodes, (const char **)tcode,
 			   &cn, info);
-    if (ret != (size_t)(-1)) {
-      *fromcode = fcode;
+    if (ret != (size_t)(-1))
+    {
       *tocode = tcode[cn];
       tcode[cn] = 0;
-      break;
     }
-    free (fcode);
   }
 
   /* Free memory */
@@ -847,7 +866,7 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
   CONTENT *info;
   CONTENT_STATE state;
   FILE *fp = NULL;
-  char *fromcode, *tocode;
+  char *tocode;
   char buffer[100];
   size_t r;
 
@@ -868,11 +887,10 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
     char *chs = mutt_get_parameter ("charset", b->parameter);
     if (Charset && (chs || SendCharset) &&
 	convert_file_from_to (fp, Charset, chs ? chs : SendCharset,
-			      &fromcode, &tocode, info) != (size_t)(-1))
+			      0, &tocode, info) != (size_t)(-1))
     {
       if (!chs)
 	mutt_set_parameter ("charset", tocode, &b->parameter);
-      safe_free ((void **) &fromcode);
       safe_free ((void **) &tocode);
       safe_fclose (&fp);
       return info;
@@ -887,7 +905,8 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
   safe_fclose (&fp);
   
   if (b != NULL && b->type == TYPETEXT && (!b->noconv && !b->force_charset))
-    mutt_set_parameter ("charset", info->hibin ? "unknown-8bit" : "us-ascii",
+    mutt_set_parameter ("charset", (!info->hibin ? "us-ascii" :
+				    Charset ? Charset : "unknown-8bit"),
 			&b->parameter);
 
   return info;
