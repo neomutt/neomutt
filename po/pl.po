@@ -842,7 +842,7 @@ msgstr "[-- na %s --]\n"
 #: handler.c:1274
 #, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n[-- and the indicated external source has --]\n[-- expired. --]\n"
-msgstr "[-- Ten %s/%s za³±cznik nie jest podpiêty, --]\n[-- a podane ¼ród³o zewnêtrzne jest --]\n[-- nieaktualne. --]\n "
+msgstr "[-- Ten %s/%s za³±cznik nie jest podpiêty, --]\n[-- a podane ¼ród³o zewnêtrzne jest --]\n[-- nieaktualne. --]\n"
 
 #: handler.c:1288
 #, c-format
@@ -894,7 +894,7 @@ msgstr "\nStandardowe przypisania klawiszy:\n\n"
 
 #: help.c:332
 msgid "\nUnbound functions:\n\n"
-msgstr "\nNie przypisane klawiszom funkcje"
+msgstr "\nNie przypisane klawiszom funkcje:\n\n"
 
 #: help.c:340
 #, c-format
