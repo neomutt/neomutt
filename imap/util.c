@@ -161,8 +161,8 @@ void imap_qualify_path (char* dest, size_t len, const char* host, int port,
       NONULL (name));
 }
 
-/* imap_quote_string: quote string according to vague IMAP rules. Not
- *   currently very smart. */
+/* imap_quote_string: quote string according to IMAP rules:
+ *   surround string with quotes, escape " and \ with \ */
 void imap_quote_string (char *dest, size_t slen, const char *src)
 {
   char quote[] = "\"\\", *pt;

@@ -1,5 +1,24 @@
 In no particular order:
 
+* Mutt doesn't handle timeouts or dropped connections gracefully. You
+  may see occasional segfaults. Solving this cleanly requires some major
+  architectural updates. Until that happens, I recommend you keep
+  backup copies of messages you're composing from within your editor.
+
+* Sometimes hdr->env seems to be NULL, according to other users' core
+  files. I haven't been able to reproduce this, and am not sure how
+  to track it down. But it's very naughty indeed.
+
+* Rex Walters reports that STORE on folders with lr is attempting to
+  store null flags instead of skipping the STORE. Strange, there are
+  checks against exactly this in imap_sync_mailbox.
+
+* Mutt seems to sometimes handle new messages which arrive in the middle
+  of downloading old messages incorrectly. It counts too many.
+
+* Mutt marks your connection for logout as soon as you say quit, even if
+  you bail out with ^G later.
+
 * Mutt is uninterruptible during socket calls. We should handle SIGINT.
 
 * Not really an IMAP bug, but postponed-message checking is done too often,
@@ -7,8 +26,6 @@ In no particular order:
 
 * Server copy currently doesn't take into account uncommitted changes in
   messages about to be copied. Sync first.
-
-* Mutt doesn't handle timeouts or dropped connections gracefully.
 
 * Have a hard time when the home namespace isn't default "".
 
@@ -19,4 +36,4 @@ In no particular order:
 * The mutt_pretty routines don't work well when the delimiter isn't '/'.
 
 Brendan Cully <brendan@kublai.com>
-Updated 19990911
+Updated 19991001

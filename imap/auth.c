@@ -360,7 +360,10 @@ static int imap_auth_cram_md5 (IMAP_DATA* idata, const char* user,
    * key is a shared secret and the digested text is the timestamp (including
    * angle-brackets).
    * 
-   * (Note: it's unspecified whether the user name needs IMAP quoting.)
+   * Note: The user name shouldn't be quoted. Since the digest can't contain
+   *   spaces, there is no ambiguity. Some servers get this wrong, we'll work
+   *   around them when the bug report comes in. Until then, we'll remain
+   *   blissfully RFC-compliant.
    */
    hmac_md5 (pass, obuf, hmac_response);
    dprint (2, (debugfile, "CRAM response: %s,[%s]->", obuf, pass));

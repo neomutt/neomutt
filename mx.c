@@ -799,6 +799,9 @@ int mx_close_mailbox (CONTEXT *ctx)
     }
     mutt_expand_path (mbox, sizeof (mbox));
 
+#ifdef USE_IMAP
+    if (!mx_is_imap (ctx->path))
+#endif
     if (isSpool)
     {
       snprintf (buf, sizeof (buf), _("Move read messages to %s?"), mbox);

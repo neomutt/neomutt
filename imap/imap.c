@@ -606,6 +606,7 @@ static int imap_get_delim (IMAP_DATA *idata, CONNECTION *conn)
   return 0;
 }
 
+/* get rights for folder, let imap_handle_untagged do the rest */
 static int imap_check_acl (IMAP_DATA *idata)
 {
   char buf[LONG_STRING];
@@ -618,7 +619,7 @@ static int imap_check_acl (IMAP_DATA *idata)
     imap_error ("imap_check_acl", buf);
     return -1;
   }
-  return (0);
+  return 0;
 }
 
 static int imap_check_capabilities (IMAP_DATA *idata)
@@ -795,6 +796,9 @@ int imap_open_mailbox (CONTEXT *ctx)
   ctx->path = safe_strdup (buf);
 
   idata->selected_ctx = ctx;
+
+  /* clear ACL */
+  memset (idata->rights, 0, (RIGHTSMAX+7)/8);
 
   mutt_message (_("Selecting %s..."), idata->selected_mailbox);
   imap_quote_string (buf, sizeof(buf), idata->selected_mailbox);
@@ -1104,6 +1108,7 @@ int imap_make_msg_set (char* buf, size_t buflen, CONTEXT* ctx, int flag,
   int setstart = 0;	/* start of current message range */
   char* tmp;
   int n;
+  short oldsort;	/* we clobber reverse, must restore it */
 
   /* sanity-check */
   if (!buf || buflen < 2)
@@ -1114,8 +1119,12 @@ int imap_make_msg_set (char* buf, size_t buflen, CONTEXT* ctx, int flag,
   /* make copy of header pointers to sort in natural order */
   hdrs = safe_calloc (ctx->msgcount, sizeof (HEADER*));
   memcpy (hdrs, ctx->hdrs, ctx->msgcount * sizeof (HEADER*));
+
+  oldsort = Sort;
+  Sort = SORT_ORDER;
   qsort ((void*) hdrs, ctx->msgcount, sizeof (HEADER*),
     mutt_get_sort_func (SORT_ORDER));
+  Sort = oldsort;
 
   tmp = safe_malloc (buflen);
 
@@ -1261,10 +1270,6 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
        * have no ACL rights */
       if (*flags && imap_exec (buf, sizeof (buf), CTX_DATA, buf, 0) != 0)
       {
-        /* Rex Walters indicates that sometimes an empty flag set
-         * is still executed. How? */
-        dprint(2, (debugfile, "imap_sync_mailbox: flags[0]: [%c] flags: %s",
-          flags[0], flags));
         imap_error ("imap_sync_mailbox: STORE failed", buf);
         /* give up on this message if we pass here again */
         ctx->hdrs[n]->changed = 0;
