@@ -91,6 +91,9 @@ struct option_t
 # ifndef USE_POP
 #  define USE_POP
 # endif
+# ifndef USE_SSL
+#  define USE_SSL
+# endif
 #endif
 
 struct option_t MuttVars[] = {
