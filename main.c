@@ -356,7 +356,15 @@ static void show_version (void)
 #else
 	"-HAVE_LANGINFO_CODESET  "
 #endif
-	      
+
+	"\n"
+
+#if ICONV_NONTRANS
+	"+ICONV_NONTRANS  "
+#else
+	"-ICONV_NONTRANS  "
+#endif
+
 	);
 
 #ifdef ISPELL
