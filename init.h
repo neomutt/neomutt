@@ -1492,7 +1492,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Mutt allows you to indefinitely ``$postpone sending a message'' which
   ** you are editing.  When you choose to postpone a message, Mutt saves it
-  ** in the mail folder specified by this variable.  Also see the ``$$postpone''
+  ** in the mailbox specified by this variable.  Also see the ``$$postpone''
   ** variable.
   */
 #ifdef USE_SOCKET
@@ -2128,6 +2128,20 @@ struct option_t MuttVars[] = {
   ** by \fIyou\fP.  The sixth character is used to indicate when a mail
   ** was sent to a mailing-list you subscribe to (default: L).
   */
+#ifdef USE_SOCKET
+  { "tunnel",            DT_STR, R_NONE, UL &Tunnel, UL 0 },
+  /*
+  ** .pp
+  ** Setting this variable will cause mutt to open a pipe to a command
+  ** instead of a raw socket. You may be able to use this to set up
+  ** preauthenticated connections to your IMAP/POP3 server. Example:
+  ** .pp
+  ** tunnel="ssh -q mailhost.net /usr/local/libexec/imapd"
+  ** .pp
+  ** NOTE: For this example to work you must be able to log in to the remote
+  ** machine without having to enter a password.
+  */
+#endif
   { "use_8bitmime",	DT_BOOL, R_NONE, OPTUSE8BITMIME, 0 },
   /*
   ** .pp

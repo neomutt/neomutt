@@ -590,72 +590,37 @@ then
         AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(socket, setsockopt))
         AC_CHECK_FUNCS(getaddrinfo)
         AC_DEFINE(USE_SOCKET)
-        MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS account.o mutt_socket.o"
+        MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS account.o mutt_socket.o mutt_tunnel.o"
 fi
 
 dnl -- imap dependencies --
 
-AC_ARG_WITH(gss,    [    --with-gss[=DIR]         Compile in GSSAPI authentication for IMAP],
-        [
-        if test "$need_imap" != "yes"
-        then
-          AC_MSG_ERROR([GSS support is only for IMAP, but IMAP is not enabled])
-        fi
-
-        if test "$with_gss" != "no"
-        then
-          if test "$with_gss" != "yes"
-          then
-            CPPFLAGS="$CPPFLAGS -I$with_gss/include"
-            LDFLAGS="$LDFLAGS -L$with_gss/lib"
-          fi
-
-          saved_LIBS="$LIBS"
-          gss_type="none"
-
-          dnl New MIT kerberos V support
-          AC_CHECK_LIB(gssapi_krb5, gss_init_sec_context, [
-            gss_type="MIT",
-            MUTTLIBS="$MUTTLIBS -lgssapi_krb5 -lkrb5 -lk5crypto -lcom_err"
-            ],, -lkrb5 -lk5crypto -lcom_err)
-
-          dnl Heimdal kerberos V support
-          if test x$gss_type = xnone
-          then
-            AC_CHECK_LIB(gssapi, gss_init_sec_context, [
-              gss_type="Heimdal",
-              MUTTLIBS="$MUTTLIBS -lgssapi -lkrb5 -ldes -lasn1 -lroken"
-              MUTTLIBS="$MUTTLIBS -lcrypt -lcom_err"
-              AC_DEFINE(HAVE_HEIMDAL)
-              ],, -lkrb5 -ldes -lasn1 -lroken -lcrypt -lcom_err)
-          fi
-
-          dnl Old MIT Kerberos V
-          dnl Note: older krb5 distributions use -lcrypto instead of
-          dnl -lk5crypto, which collides with OpenSSL.  One way of dealing
-          dnl with that is to extract all objects from krb5's libcrypto
-          dnl and from openssl's libcrypto into the same directory, then
-          dnl to create a new libcrypto from these.
-          if test x$gss_type = xnone
-          then
-            AC_CHECK_LIB(gssapi_krb5, g_order_init, [
-              gss_type="OldMIT",
-              MUTTLIBS="$MUTTLIBS -lgssapi_krb5 -lkrb5 -lcrypto -lcom_err"
-              ],, -lkrb5 -lcrypto -lcom_err)
-          fi
-
-          if test x$gss_type = xnone
-          then
-            AC_CACHE_SAVE
-            AC_MSG_ERROR([GSSAPI support not found])
-          fi
-
-          LIBS="$saved_LIBS"
-          AC_DEFINE(USE_GSS)
-            need_gss="yes"
-        fi
-
-])
+AC_ARG_WITH(gss, [    --with-gss[=PFX]         Compile in GSSAPI authentication for IMAP], 
+    gss_prefix="$withval", gss_prefix="no")
+if test "$gss_prefix" != "no"
+then
+  if test "$need_imap" = "yes"
+  then
+    MUTT_AM_PATH_GSSAPI(gss_prefix)
+    AC_MSG_CHECKING(GSSAPI implementation)
+    AC_MSG_RESULT($GSSAPI_IMPL)
+    if test "$GSSAPI_IMPL" = "none"
+    then
+      AC_CACHE_SAVE
+      AC_MSG_RESULT([GSSAPI libraries not found])
+    fi
+    if test "$GSSAPI_IMPL" = "Heimdal"
+    then
+      AC_DEFINE(HAVE_HEIMDAL, 1, [ Define if your GSSAPI implementation is Heimdal ])
+    fi
+    CPPFLAGS="$CPPFLAGS $GSSAPI_CFLAGS"
+    MUTTLIBS="$MUTTLIBS $GSSAPI_LIBS"
+    AC_DEFINE(USE_GSS, 1, [ Define if you have GSSAPI libraries available ])
+    need_gss="yes"
+  else
+    AC_MSG_WARN([GSS was requested but IMAP is not enabled])
+  fi
+fi
 AM_CONDITIONAL(USE_GSS, test x$need_gss = xyes)
 
 AC_ARG_WITH(ssl, [  --with-ssl[=PFX]           Compile in SSL support for POP/IMAP],
@@ -717,7 +682,7 @@ AC_ARG_WITH(nss, [  --with-nss[=PFX]           Compile in SSL support for POP/IM
 
 dnl -- end imap dependencies --
 
-AC_ARG_WITH(sasl, [  --with-sasl[=DIR]          Use Cyrus SASL library for POP/IMAP authentication],
+AC_ARG_WITH(sasl, [  --with-sasl[=PFX]          Use Cyrus SASL library for POP/IMAP authentication],
         [
         if test "$need_socket" != "yes"
         then

@@ -110,6 +110,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
     }
 
     if (!client_start)
+    {
       do
       {
 	rc = sasl_client_step (saslconn, buf, len, &interaction, &pc, &olen);
@@ -117,6 +118,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
 	  mutt_sasl_interact (interaction);
       }
       while (rc == SASL_INTERACT);
+    }
     else
       client_start = 0;
 
@@ -144,6 +146,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
     if (rc < 0)
     {
       mutt_socket_write (idata->conn, "*\r\n");
+      dprint (1, (debugfile, "imap_auth_sasl: sasl_client_step error %d\n",rc));
     }
   }
 

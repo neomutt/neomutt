@@ -83,6 +83,23 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
     maj_stat = gss_release_buffer (&min_stat, &request_buf);
   }
 #endif
+  /* Acquire initial credentials - without a TGT GSSAPI is UNAVAIL */
+  sec_token = GSS_C_NO_BUFFER;
+  context = GSS_C_NO_CONTEXT;
+
+  /* build token */
+  maj_stat = gss_init_sec_context (&min_stat, GSS_C_NO_CREDENTIAL, &context,
+    target_name, GSS_C_NO_OID, GSS_C_MUTUAL_FLAG | GSS_C_SEQUENCE_FLAG, 0, 
+    GSS_C_NO_CHANNEL_BINDINGS, sec_token, NULL, &send_token,
+    (unsigned int*) &cflags, NULL);
+  if (maj_stat != GSS_S_COMPLETE && maj_stat != GSS_S_CONTINUE_NEEDED)
+  {
+    dprint (1, (debugfile, "Error acquiring credentials - no TGT?\n"));
+    gss_release_name (&min_stat, &target_name);
+
+    return IMAP_AUTH_UNAVAIL;
+  }
+
   /* now begin login */
   mutt_message _("Authenticating (GSSAPI)...");
 
@@ -102,62 +119,48 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
 
   /* now start the security context initialisation loop... */
   dprint (2, (debugfile, "Sending credentials\n"));
-  sec_token = GSS_C_NO_BUFFER;
-  context = GSS_C_NO_CONTEXT;
-  do
+  mutt_to_base64 ((unsigned char*) buf1, send_token.value, send_token.length,
+    sizeof (buf1) - 2);
+  gss_release_buffer (&min_stat, &send_token);
+  strncat (buf1, "\r\n", sizeof (buf1));
+  mutt_socket_write (idata->conn, buf1);
+
+  while (maj_stat == GSS_S_CONTINUE_NEEDED)
   {
-    /* build token */
-    maj_stat = gss_init_sec_context (&min_stat, 
-				     GSS_C_NO_CREDENTIAL, 
-				     &context,
-				     target_name, 
-				     GSS_C_NO_OID,
-				     GSS_C_MUTUAL_FLAG | GSS_C_SEQUENCE_FLAG,
-				     0, 
-				     GSS_C_NO_CHANNEL_BINDINGS, 
-				     sec_token, 
-				     NULL, 
-				     &send_token,
-				     (unsigned int*) &cflags, 
-				     NULL);
+    /* Read server data */
+    do
+      rc = imap_cmd_step (idata);
+    while (rc == IMAP_CMD_CONTINUE);
+
+    if (rc != IMAP_CMD_RESPOND)
+    {
+      dprint (1, (debugfile, "Error receiving server response.\n"));
+      gss_release_name (&min_stat, &target_name);
+      goto bail;
+    }
+
+    request_buf.length = mutt_from_base64 (buf2, idata->cmd.buf + 2);
+    request_buf.value = buf2;
+    sec_token = &request_buf;
+
+    /* Write client data */
+    maj_stat = gss_init_sec_context (&min_stat, GSS_C_NO_CREDENTIAL, &context,
+      target_name, GSS_C_NO_OID, GSS_C_MUTUAL_FLAG | GSS_C_SEQUENCE_FLAG, 0, 
+      GSS_C_NO_CHANNEL_BINDINGS, sec_token, NULL, &send_token,
+      (unsigned int*) &cflags, NULL);
     if (maj_stat != GSS_S_COMPLETE && maj_stat != GSS_S_CONTINUE_NEEDED)
     {
       dprint (1, (debugfile, "Error exchanging credentials\n"));
       gss_release_name (&min_stat, &target_name);
-      /* end authentication attempt */
-      mutt_socket_write (idata->conn, "*\r\n");
-      do
-	rc = imap_cmd_step (idata);
-      while (rc == IMAP_CMD_CONTINUE);
-      goto bail;
-    }
 
-    /* send token */
+      goto err_abort_cmd;
+    }
     mutt_to_base64 ((unsigned char*) buf1, send_token.value,
       send_token.length, sizeof (buf1) - 2);
     gss_release_buffer (&min_stat, &send_token);
     strncat (buf1, "\r\n", sizeof (buf1));
     mutt_socket_write (idata->conn, buf1);
-
-    if (maj_stat == GSS_S_CONTINUE_NEEDED)
-    {
-      do
-	rc = imap_cmd_step (idata);
-      while (rc == IMAP_CMD_CONTINUE);
-
-      if (rc != IMAP_CMD_RESPOND)
-      {
-        dprint (1, (debugfile, "Error receiving server response.\n"));
-        gss_release_name (&min_stat, &target_name);
-	goto bail;
-      }
-
-      request_buf.length = mutt_from_base64 (buf2, idata->cmd.buf + 2);
-      request_buf.value = buf2;
-      sec_token = &request_buf;
-    }
   }
-  while (maj_stat == GSS_S_CONTINUE_NEEDED);
 
   gss_release_name (&min_stat, &target_name);
 
@@ -180,8 +183,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
   {
     dprint (2, (debugfile, "Couldn't unwrap security level data\n"));
     gss_release_buffer (&min_stat, &send_token);
-    mutt_socket_write(idata->conn, "*\r\n");
-    goto bail;
+    goto err_abort_cmd;
   }
   dprint (2, (debugfile, "Credential exchange complete\n"));
 
@@ -189,10 +191,9 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
   server_conf_flags = ((char*) send_token.value)[0];
   if ( !(((char*) send_token.value)[0] & GSS_AUTH_P_NONE) )
   {
-    dprint (2, (debugfile, "Server requires integrity or privace\n"));
+    dprint (2, (debugfile, "Server requires integrity or privacy\n"));
     gss_release_buffer (&min_stat, &send_token);
-    mutt_socket_write(idata->conn, "*\r\n");
-    goto bail;
+    goto err_abort_cmd;
   }
 
   /* we don't care about buffer size if we don't wrap content. But here it is */
@@ -218,8 +219,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
   if (maj_stat != GSS_S_COMPLETE)
   {
     dprint (2, (debugfile, "Error creating login request\n"));
-    mutt_socket_write(idata->conn, "*\r\n");
-    goto bail;
+    goto err_abort_cmd;
   }
 
   mutt_to_base64 ((unsigned char*) buf1, send_token.value, send_token.length,
@@ -233,11 +233,10 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
   do
     rc = imap_cmd_step (idata);
   while (rc == IMAP_CMD_CONTINUE);
-  if (rc != IMAP_CMD_OK)
+  if (rc == IMAP_CMD_RESPOND)
   {
-    dprint (1, (debugfile, "Error receiving server response.\n"));
-    mutt_socket_write(idata->conn, "*\r\n");
-    goto bail;
+    dprint (1, (debugfile, "Unexpected server continuation request.\n"));
+    goto err_abort_cmd;
   }
   if (imap_code (idata->cmd.buf))
   {
@@ -245,10 +244,8 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
     dprint (2, (debugfile, "Releasing GSS credentials\n"));
     maj_stat = gss_delete_sec_context (&min_stat, &context, &send_token);
     if (maj_stat != GSS_S_COMPLETE)
-    {
       dprint (1, (debugfile, "Error releasing credentials\n"));
-      goto bail;
-    }
+
     /* send_token may contain a notification to the server to flush
      * credentials. RFC 1731 doesn't specify what to do, and since this
      * support is only for authentication, we'll assume the server knows
@@ -257,6 +254,14 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
 
     return IMAP_AUTH_SUCCESS;
   }
+  else
+    goto bail;
+
+ err_abort_cmd:
+  mutt_socket_write (idata->conn, "*\r\n");
+  do
+    rc = imap_cmd_step (idata);
+  while (rc == IMAP_CMD_CONTINUE);
 
  bail:
   mutt_error _("GSSAPI authentication failed.");

@@ -66,7 +66,6 @@ int imap_access (const char* path, int flags)
     FREE (&mx.mbox);
     return -1;
   }
-  
 
   imap_fix_path (idata, mx.mbox, mailbox, sizeof (mailbox));
   FREE (&mx.mbox);

@@ -21,6 +21,7 @@
 #include "mutt.h"
 #include "globals.h"
 #include "mutt_socket.h"
+#include "mutt_tunnel.h"
 #ifdef USE_SSL
 # include "mutt_ssl.h"
 #endif
@@ -201,7 +202,9 @@ CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account)
   conn->next = Connections;
   Connections = conn;
 
-  if (account->flags & M_ACCT_SSL) 
+  if (Tunnel && *Tunnel)
+    mutt_tunnel_socket_setup (conn);
+  else if (account->flags & M_ACCT_SSL) 
   {
 #ifdef USE_SSL
     ssl_socket_setup (conn);
@@ -226,15 +229,10 @@ CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account)
   return conn;
 }
 
-/* socket_connect: set up to connect to a socket fd. Preconnect goes here. */
-static int socket_connect (int fd, struct sockaddr* sa)
+int mutt_socket_preconnect (void)
 {
-  int sa_size;
   int rc;
   int save_errno;
-
-  /* old first_try_without_preconnect removed for now. unset $preconnect
-     first. */
 
   if (mutt_strlen (Preconnect))
   {
@@ -250,6 +248,19 @@ static int socket_connect (int fd, struct sockaddr* sa)
       return save_errno;
     }
   }
+
+  return 0;
+}
+
+/* socket_connect: set up to connect to a socket fd. */
+static int socket_connect (int fd, struct sockaddr* sa)
+{
+  int sa_size;
+  int rc;
+  int save_errno;
+
+  if ((rc = mutt_socket_preconnect ()))
+    return rc;
 
   if (sa->sa_family == AF_INET)
     sa_size = sizeof (struct sockaddr_in);
