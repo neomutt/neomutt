@@ -1806,7 +1806,7 @@ void mutt_prepare_envelope (ENVELOPE *env)
     env->message_id = mutt_gen_msgid ();
 }
   
-void mutt_bounce_message (HEADER *h, ADDRESS *to)
+static void _mutt_bounce_message (HEADER *h, ADDRESS *to, const char *resent_from)
 {
   int i;
   FILE *f;
@@ -1817,7 +1817,7 @@ void mutt_bounce_message (HEADER *h, ADDRESS *to)
   {
     for (i=0; i<Context->msgcount; i++)
       if (Context->hdrs[i]->tagged)
-	mutt_bounce_message (Context->hdrs[i], to);
+	_mutt_bounce_message (Context->hdrs[i], to, resent_from);
     return;
   }
 
@@ -1826,7 +1826,6 @@ void mutt_bounce_message (HEADER *h, ADDRESS *to)
     mutt_mktemp (tempfile);
     if ((f = safe_fopen (tempfile, "w")) != NULL)
     {
-      const char *fqdn;
       int ch_flags = CH_XMIT | CH_NONEWLINE;
       
       if (!option (OPTBOUNCEDELIVERED))
@@ -1834,9 +1833,7 @@ void mutt_bounce_message (HEADER *h, ADDRESS *to)
       
       fseek (msg->fp, h->offset, 0);
       mutt_copy_header (msg->fp, h, f, ch_flags, NULL);
-      fprintf (f, "Resent-From: %s", NONULL(Username));
-      if((fqdn = mutt_fqdn(1)))
-	fprintf (f, "@%s", fqdn);
+      fprintf (f, "Resent-From: %s", resent_from);
       fprintf (f, "\nResent-%s", mutt_make_date (date, sizeof(date)));
       fputs ("Resent-To: ", f);
       mutt_write_address_list (to, f, 11);
@@ -1849,6 +1846,27 @@ void mutt_bounce_message (HEADER *h, ADDRESS *to)
     mx_close_message (&msg);
   }
 }
+
+void mutt_bounce_message (HEADER *h, ADDRESS *to)
+{
+  ADDRESS *from;
+  const char *fqdn = mutt_fqdn (1);
+  char resent_from[STRING];
+
+  resent_from[0] = '\0';
+  from = mutt_default_from ();
+
+  if (fqdn)
+    rfc822_qualify (from, fqdn);
+
+  rfc2047_encode_adrlist (from);
+  
+  rfc822_write_address (resent_from, sizeof (resent_from), from);
+  rfc822_free_address (&from);
+  
+  _mutt_bounce_message (h, to, resent_from);
+}
+
 
 /* given a list of addresses, return a list of unique addresses */
 ADDRESS *mutt_remove_duplicates (ADDRESS *addr)

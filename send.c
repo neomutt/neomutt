@@ -783,7 +783,7 @@ static ADDRESS *set_reverse_name (ENVELOPE *env)
   return (tmp);
 }
 
-static ADDRESS *mutt_default_from (void)
+ADDRESS *mutt_default_from (void)
 {
   ADDRESS *adr;
   const char *fqdn = mutt_fqdn(1);

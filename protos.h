@@ -70,6 +70,7 @@ void set_quadoption (int, int);
 int query_quadoption (int, const char *);
 int quadoption (int);
 
+ADDRESS *mutt_default_from (void);
 ADDRESS *mutt_get_address (ENVELOPE *, char **);
 ADDRESS *mutt_lookup_alias (const char *s);
 ADDRESS *mutt_remove_duplicates (ADDRESS *);
