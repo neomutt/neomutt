@@ -10,9 +10,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt-1.3.15i\n"
+"Project-Id-Version: mutt-1.3.16i\n"
 "POT-Creation-Date: 2001-02-27 11:50+0100\n"
-"PO-Revision-Date: 2001-02-13 15:20+0200\n"
+"PO-Revision-Date: 2001-03-04 11:30+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=koi8-r\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1192,7 +1192,7 @@ msgstr "Не удалось установить соединение с %s."
 
 #: imap/imap.c:383
 msgid "Secure connection with TLS?"
-msgstr ""
+msgstr "Использовать безопасное TLS-соединение?"
 
 #: imap/imap.c:535
 #, c-format
@@ -2151,7 +2151,7 @@ msgstr "создать расшифрованную копию"
 
 #: keymap_alldefs.h:184
 msgid "check for classic pgp"
-msgstr ""
+msgstr "проверить PGP-сообщение в текстовом формате"
 
 #: keymap_alldefs.h:185
 msgid "Accept the chain constructed"
@@ -3683,56 +3683,3 @@ msgstr "Родительское сообщение не видимо при просмотре с ограничением"
 #: thread.c:719
 msgid "Parent message is not available."
 msgstr "Родительское сообщение недоступно."
-
-#~ msgid "MIC algorithm: "
-#~ msgstr "MIC-алгоритм: "
-
-#~ msgid "This doesn't make sense if you don't want to sign the message."
-#~ msgstr "Это бессмысленно, если вы не собираетесь подписывать сообщение."
-
-#~ msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
-#~ msgstr "Неизвестный MIC-алгоритм, допустимы: pgp-md5, pgp-sha1, pgp-rmd160"
-
-#~ msgid ""
-#~ "\n"
-#~ "SHA1 implementation Copyright (C) 1995-1997 Eric A. Young "
-#~ "<eay@cryptsoft.com>\n"
-#~ "\n"
-#~ "    Redistribution and use in source and binary forms, with or without\n"
-#~ "    modification, are permitted under certain conditions.\n"
-#~ "\n"
-#~ "    The SHA1 implementation comes AS IS, and ANY EXPRESS OR IMPLIED\n"
-#~ "    WARRANTIES, including, but not limited to, the implied warranties of\n"
-#~ "    merchantability and fitness for a particular purpose ARE DISCLAIMED.\n"
-#~ "\n"
-#~ "    You should have received a copy of the full distribution terms\n"
-#~ "    along with this program; if not, write to the program's developers.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Реализация SHA1-алгоритма Copyright (C) 1995-1997 Eric A. Young "
-#~ "<eay@cryptsoft.com>\n"
-#~ "\n"
-#~ "    Распространение и использование в исходной и двоичных формах, с или без\n"
-#~ "    изменениями, разрешены при определенных условиях.\n"
-#~ "\n"
-#~ "    Реализация SHA1-алгоритма предлагается КАК ЕСТЬ, и БЕЗ ЯВНЫХ ИЛИ\n"
-#~ "    ПОДРАЗУМЕВАЕМЫХ ГАРАНТИЙ, включая, неявные гарантии пригодности\n"
-#~ "    для какой-то определенной цели.\n"
-#~ "\n"
-#~ "    Вы должны были получить полную копию условий для распространения\n"
-#~ "    вместе с этой программой; если нет, напишите разработчикам программы.\n"
-
-#~ msgid "POP Username: "
-#~ msgstr "Имя пользователя для POP-ящика: "
-
-#~ msgid "Login failed: %s"
-#~ msgstr "Регистрация не удалась: %s"
-
-#~ msgid "Reading new message (%d bytes)..."
-#~ msgstr "Читается новое сообщение (байтов: %d)..."
-
-#~ msgid "Error reading message!"
-#~ msgstr "Ошибка чтения сообщения!"
-
-#~ msgid "%s [%d message read]"
-#~ msgstr "%s [сообщений прочитано: %d]"
