@@ -266,13 +266,7 @@ static void process_user_header (ENVELOPE *env)
 
   for (; uh; uh = uh->next)
   {
-    if (mutt_strncasecmp ("from:", uh->data, 5) == 0)
-    {
-      /* User has specified a default From: address.  Remove default address */
-      rfc822_free_address (&env->from);
-      env->from = rfc822_parse_adrlist (env->from, uh->data + 5);
-    }
-    else if (mutt_strncasecmp ("reply-to:", uh->data, 9) == 0)
+    if (mutt_strncasecmp ("reply-to:", uh->data, 9) == 0)
     {
       rfc822_free_address (&env->reply_to);
       env->reply_to = rfc822_parse_adrlist (env->reply_to, uh->data + 9);
@@ -280,7 +274,8 @@ static void process_user_header (ENVELOPE *env)
     else if (mutt_strncasecmp ("to:", uh->data, 3) != 0 &&
 	     mutt_strncasecmp ("cc:", uh->data, 3) != 0 &&
 	     mutt_strncasecmp ("bcc:", uh->data, 4) != 0 &&
-	     mutt_strncasecmp ("subject:", uh->data, 8) != 0)
+	     mutt_strncasecmp ("subject:", uh->data, 8) != 0 &&
+	     mutt_strncasecmp ("from:", uh->data, 5) != 0)
     {
       if (last)
       {
@@ -290,6 +285,21 @@ static void process_user_header (ENVELOPE *env)
       else
 	last = env->userhdrs = mutt_new_list ();
       last->data = safe_strdup (uh->data);
+    }
+  }
+}
+
+static void process_user_from (ENVELOPE *env)
+{
+  LIST *uh = UserHeader;
+  
+  for (; uh; uh = uh->next)
+  {
+    if (mutt_strncasecmp ("from:", uh->data, 5) == 0)
+    {
+      rfc822_free_address (&env->from);
+      env->from = rfc822_parse_adrlist (env->from, uh->data + 5);
+      break;
     }
   }
 }
@@ -981,6 +991,14 @@ ci_send_message (int flags,		/* send mode */
      * line option */
     msg->env->from = set_reverse_name (cur->env);
   }
+
+  /* 
+   * process a my_hdr From: at this point, and don't override
+   * reverse_name by it.
+   */
+
+  if (!msg->env->from && option (OPTHDRS) && !(flags & (SENDPOSTPONED | SENDEDITMSG)))
+    process_user_from (msg->env);
 
   if (!msg->env->from && option (OPTUSEFROM) && !(flags & (SENDEDITMSG|SENDPOSTPONED)))
     msg->env->from = mutt_default_from ();
