@@ -1,4 +1,7 @@
-2003-03-04 09:17:32  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+2003-03-04 09:27:21  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* copy.c: Fix another stupid error, and decode IDNs in the
+	CC header.
 
 	* init.h: Fix two typos in one line.  Noted by Thomas Glanzmann
 	and Steve Kennedy.
