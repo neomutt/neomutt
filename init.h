@@ -2336,9 +2336,9 @@ struct option_t MuttVars[] = {
   ** .dl
   ** .dt %b  .dd number of mailboxes with new mail *
   ** .dt %d  .dd number of deleted messages *
-  ** .dt %h  .dd local hostname
   ** .dt %f  .dd the full pathname of the current mailbox
   ** .dt %F  .dd number of flagged messages *
+  ** .dt %h  .dd local hostname
   ** .dt %l  .dd size (in bytes) of the current mailbox *
   ** .dt %L  .dd size (in bytes) of the messages shown 
   **             (i.e., which match the current limit) *
