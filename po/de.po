@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.21\n"
+"Project-Id-Version: 1.3.23\n"
 "POT-Creation-Date: 2001-10-09 10:45+0200\n"
-"PO-Revision-Date: 2001-06-09 11:12+02:00\n"
+"PO-Revision-Date: 2001-10-09 17:59+0200\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -3712,14 +3712,14 @@ msgid "%s no longer exists!"
 msgstr "%s existiert nicht mehr!"
 
 #: sendlib.c:901
-#, fuzzy, c-format
+#, c-format
 msgid "Can't stat %s."
-msgstr "Kann Verzeichniseintrag für Datei nicht lesen: %s"
+msgstr "Kann Verzeichniseintrag für Datei %s nicht lesen."
 
 #: sendlib.c:907
-#, fuzzy, c-format
+#, c-format
 msgid "%s isn't a regular file."
-msgstr "%s ist keine Mailbox."
+msgstr "%s ist keine normale Datei."
 
 #: sendlib.c:1076
 #, c-format
