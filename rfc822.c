@@ -320,6 +320,9 @@ add_addrspec (ADDRESS **top, ADDRESS **last, const char *phrase,
   *last = cur;
 }
 
+#define terminate_string(a, b) do { if (b < sizeof(a) - 1) a[b] = 0; else \
+	a[sizeof(a) - 1] = 0; } while (0)
+
 ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
 {
   const char *begin, *ps;
@@ -341,12 +344,12 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
     {
       if (phraselen)
       {
-	phrase[phraselen] = 0;
+	terminate_string (phrase, phraselen);
 	add_addrspec (&top, &last, phrase, comment, &commentlen, sizeof (comment) - 1);
       }
       else if (commentlen && last && !last->personal)
       {
-	comment[commentlen] = 0;
+	terminate_string (comment, commentlen);
 	last->personal = safe_strdup (comment);
       }
 
@@ -374,7 +377,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
     else if (*s == ':')
     {
       cur = rfc822_new_address ();
-      phrase[phraselen] = 0;
+      terminate_string (phrase, phraselen);
       cur->mailbox = safe_strdup (phrase);
       cur->group = 1;
 
@@ -398,12 +401,12 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
     {
       if (phraselen)
       {
-	phrase[phraselen] = 0;
+	terminate_string (phrase, phraselen);
 	add_addrspec (&top, &last, phrase, comment, &commentlen, sizeof (comment) - 1);
       }
       else if (commentlen && last && !last->personal)
       {
-	comment[commentlen] = 0;
+	terminate_string (phrase, phraselen);
 	last->personal = safe_strdup (comment);
       }
 #ifdef EXACT_ADDRESS
@@ -427,7 +430,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
     }
     else if (*s == '<')
     {
-      phrase[phraselen] = 0;
+      terminate_string (phrase, phraselen);
       cur = rfc822_new_address ();
       if (phraselen)
       {
@@ -470,13 +473,13 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
   
   if (phraselen)
   {
-    phrase[phraselen] = 0;
-    comment[commentlen] = 0;
+    terminate_string (phrase, phraselen);
+    terminate_string (comment, commentlen);
     add_addrspec (&top, &last, phrase, comment, &commentlen, sizeof (comment) - 1);
   }
   else if (commentlen && last && !last->personal)
   {
-    comment[commentlen] = 0;
+    terminate_string (comment, commentlen);
     last->personal = safe_strdup (comment);
   }
 #ifdef EXACT_ADDRESS
