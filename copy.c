@@ -349,6 +349,8 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
 
   if ((flags & CH_NONEWLINE) == 0)
   {
+    if (flags & CH_PREFIX)
+      fputs(prefix, out);
     if (fputc ('\n', out) == EOF) /* add header terminator */
       return (-1);
   }
