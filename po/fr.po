@@ -1,13 +1,13 @@
 # French messages for Mutt.
-# Copyright (C) 1998-2002 Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre <vincent@vinc17.org>
-# Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre <vincent@vinc17.org>, 1998-2002
+# Copyright (C) 1998-2003 Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre <vincent@vinc17.org>
+# Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre <vincent@vinc17.org>, 1998-2003
 #
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.3-20021221\n"
-"POT-Creation-Date: 2003-03-19 23:37+0100\n"
-"PO-Revision-Date: 2002-12-21 23:54+0100\n"
+"Project-Id-Version: Mutt 1.5.4\n"
+"POT-Creation-Date: 2003-03-20 03:12+0100\n"
+"PO-Revision-Date: 2003-03-20 03:13+0100\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -77,7 +77,7 @@ msgstr "Adresse : "
 #: alias.c:289 send.c:201
 #, c-format
 msgid "Error: '%s' is a bad IDN."
-msgstr ""
+msgstr "Erreur : '%s' est un mauvais IDN."
 
 #: alias.c:301
 msgid "Personal name: "
@@ -386,7 +386,7 @@ msgstr "Erreur de décodage de l'adresse !"
 #: commands.c:260 recvcmd.c:162
 #, c-format
 msgid "Bad IDN: '%s'"
-msgstr ""
+msgstr "Mauvais IDN : '%s'"
 
 # , c-format
 #: commands.c:271 recvcmd.c:176
@@ -401,14 +401,12 @@ msgid "Bounce messages to %s"
 msgstr "Renvoyer les messages à %s"
 
 #: commands.c:287 recvcmd.c:192
-#, fuzzy
 msgid "Message not bounced."
-msgstr "Message renvoyé."
+msgstr "Message non renvoyé."
 
 #: commands.c:287 recvcmd.c:192
-#, fuzzy
 msgid "Messages not bounced."
-msgstr "Messages renvoyés."
+msgstr "Messages non renvoyés."
 
 #: commands.c:297 recvcmd.c:211
 msgid "Message bounced."
@@ -646,7 +644,7 @@ msgstr "-- Attachements"
 #: compose.c:422
 #, c-format
 msgid "Warning: '%s' is a bad IDN."
-msgstr ""
+msgstr "Attention : '%s' est un mauvais IDN."
 
 #: compose.c:445
 msgid "You may not delete the only attachment."
@@ -655,7 +653,7 @@ msgstr "Vous ne pouvez pas effacer l'unique attachement."
 #: compose.c:711 send.c:1433
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
-msgstr ""
+msgstr "Mauvais IDN dans « %s » : '%s'"
 
 #: compose.c:799
 msgid "Attaching selected files..."
@@ -785,9 +783,8 @@ msgid "Enter SMIME passphrase:"
 msgstr "Entrez la phrase de passe SMIME :"
 
 #: crypt.c:192
-#, fuzzy
 msgid "Create a traditional (inline) PGP message?"
-msgstr "Créer un message PGP en ligne ?"
+msgstr "Créer un message PGP traditionnel (en ligne) ?"
 
 #: crypt.c:200 pgpkey.c:559 postpone.c:538
 msgid "Invoking PGP..."
@@ -1157,7 +1154,7 @@ msgstr "Pas de lignes dans le message.\n"
 #: edit.c:440
 #, c-format
 msgid "Bad IDN in %s: '%s'\n"
-msgstr ""
+msgstr "Mauvais IDN dans %s : '%s'\n"
 
 # , c-format
 #: edit.c:458
@@ -1622,7 +1619,7 @@ msgstr "alias : pas d'adresse"
 #: init.c:536
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr ""
+msgstr "Attention : mauvais IDN '%s' dans l'alias '%s'.\n"
 
 #: init.c:599
 msgid "invalid header field"
@@ -2968,7 +2965,7 @@ msgstr "Erreur en parlant à %s (%s)"
 #: mutt_socket.c:418 mutt_socket.c:475
 #, c-format
 msgid "Bad IDN \"%s\"."
-msgstr ""
+msgstr "Mauvais IDN « %s »."
 
 # , c-format
 #: mutt_socket.c:425 mutt_socket.c:482
@@ -3803,14 +3800,12 @@ msgid "You may only bounce message/rfc822 parts."
 msgstr "Vous ne pouvez renvoyer que des parties message/rfc822."
 
 #: recvcmd.c:213
-#, fuzzy
 msgid "Error bouncing message!"
-msgstr "Erreur en envoyant le message."
+msgstr "Erreur en renvoyant le message !"
 
 #: recvcmd.c:213
-#, fuzzy
 msgid "Error bouncing messages!"
-msgstr "Erreur en envoyant le message."
+msgstr "Erreur en renvoyant les messages !"
 
 #: recvcmd.c:413
 #, c-format
@@ -4088,7 +4083,7 @@ msgstr "Sortie du processus de livraison"
 #: sendlib.c:2264
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
-msgstr ""
+msgstr "Mauvais IDN %s lors de la préparation du resent-from."
 
 # , c-format
 #: signal.c:39
@@ -4260,9 +4255,6 @@ msgstr "Le message père n'est pas visible dans cette vue limitée."
 msgid "Parent message is not available."
 msgstr "Le message père n'est pas disponible."
 
-#~ msgid "Invoking OpenSSL..."
-#~ msgstr "Appel d'OpenSSL..."
-
 # , c-format
 #~ msgid "Bounce message to %s...?"
 #~ msgstr "Renvoyer le message à %s... ?"
@@ -4270,6 +4262,9 @@ msgstr "Le message père n'est pas disponible."
 # , c-format
 #~ msgid "Bounce messages to %s...?"
 #~ msgstr "Renvoyer les messages à %s... ?"
+
+#~ msgid "Invoking OpenSSL..."
+#~ msgstr "Appel d'OpenSSL..."
 
 #~ msgid "ewsabf"
 #~ msgstr "casedo"
