@@ -177,7 +177,7 @@ to ``configure'' to help it out, or change the default behavior:
 	and only specify one of the above shells as its argument.
 
 	(If you encounter this problem with your platform's native
-	Bourne shell, please send a short report to mutt-dev@cs.hmc.edu,
+	Bourne shell, please send a short report to mutt-dev@mutt.org,
 	so a short note on this topic can be added to the Platform notes
 	section below.)
 
