@@ -21,17 +21,20 @@
 
 #include <iconv.h>
 
-int mutt_convert_string (char **, const char *, const char *);
+int mutt_convert_string (char **, const char *, const char *, int);
 
-iconv_t mutt_iconv_open (const char *, const char *);
+iconv_t mutt_iconv_open (const char *, const char *, int);
 size_t mutt_iconv (iconv_t, const char **, size_t *, char **, size_t *, const char **, const char *);
 
 typedef void * FGETCONV;
 
-FGETCONV *fgetconv_open (FILE *, const char *, const char *);
+FGETCONV *fgetconv_open (FILE *, const char *, const char *, int);
 int fgetconv (FGETCONV *);
 void fgetconv_close (FGETCONV **);
 
 void mutt_set_langinfo_charset (void);
+
+#define M_ICONV_HOOK_FROM 1
+#define M_ICONV_HOOK_TO   2
 
 #endif /* _CHARSET_H */

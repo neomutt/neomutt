@@ -278,18 +278,18 @@ int iconv_close (iconv_t cd)
  * Like iconv_open, but canonicalises the charsets
  */
 
-iconv_t mutt_iconv_open (const char *tocode, const char *fromcode)
+iconv_t mutt_iconv_open (const char *tocode, const char *fromcode, int flags)
 {
   char tocode1[SHORT_STRING];
   char fromcode1[SHORT_STRING];
   char *tmp;
 
   mutt_canonical_charset (tocode1, sizeof (tocode1), tocode);
-  if ((tmp = mutt_charset_hook (tocode1)))
+  if ((flags & M_ICONV_HOOK_TO) && (tmp = mutt_charset_hook (tocode1)))
     mutt_canonical_charset (tocode1, sizeof (tocode1), tmp);
 
   mutt_canonical_charset (fromcode1, sizeof (fromcode1), fromcode);
-  if ((tmp = mutt_charset_hook (fromcode1)))
+  if ((flags & M_ICONV_HOOK_FROM) && (tmp = mutt_charset_hook (fromcode1)))
     mutt_canonical_charset (fromcode1, sizeof (fromcode1), tmp);
 
   return iconv_open (tocode1, fromcode1);
@@ -367,7 +367,7 @@ size_t mutt_iconv (iconv_t cd, const char **inbuf, size_t *inbytesleft,
  * Used in rfc2047.c and rfc2231.c
  */
 
-int mutt_convert_string (char **ps, const char *from, const char *to)
+int mutt_convert_string (char **ps, const char *from, const char *to, int flags)
 {
   iconv_t cd;
   const char *repls[] = { "\357\277\275", "?", 0 };
@@ -376,7 +376,7 @@ int mutt_convert_string (char **ps, const char *from, const char *to)
   if (!s || !*s)
     return 0;
 
-  if (to && from && (cd = mutt_iconv_open (to, from)) != (iconv_t)-1) 
+  if (to && from && (cd = mutt_iconv_open (to, from, flags)) != (iconv_t)-1)
   {
     int len;
     const char *ib;
@@ -437,14 +437,14 @@ struct fgetconv_not
   iconv_t cd;
 };
 
-FGETCONV *fgetconv_open (FILE *file, const char *from, const char *to)
+FGETCONV *fgetconv_open (FILE *file, const char *from, const char *to, int flags)
 {
   struct fgetconv_s *fc;
   iconv_t cd = (iconv_t)-1;
   static const char *repls[] = { "\357\277\275", "?", 0 };
 
   if (from && to)
-    cd = mutt_iconv_open (to, from);
+    cd = mutt_iconv_open (to, from, flags);
 
   if (cd != (iconv_t)-1)
   {

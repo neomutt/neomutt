@@ -1366,7 +1366,7 @@ void mutt_decode_attachment (BODY *b, STATE *s)
   {
     char *charset = mutt_get_parameter ("charset", b->parameter);
     if (charset && Charset)
-      cd = mutt_iconv_open (Charset, charset);
+      cd = mutt_iconv_open (Charset, charset, M_ICONV_HOOK_FROM);
   }
 
   fseek (s->fpin, b->offset, 0);

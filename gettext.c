@@ -131,7 +131,8 @@ char *mutt_gettext (const char *message)
   mp = safe_malloc (sizeof (struct msg));
   mp->key = safe_strdup (orig);
   mp->data = safe_strdup (orig);
-  mutt_convert_string (&mp->data, PoCharset ? PoCharset : "utf-8", MessageCharset);
+  mutt_convert_string (&mp->data, PoCharset ? PoCharset : "utf-8", 
+		       MessageCharset, 0);
 
 # ifdef DEBUG
   if (debugfile)

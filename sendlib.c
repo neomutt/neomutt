@@ -493,9 +493,11 @@ int mutt_write_mime_body (BODY *a, FILE *f)
   }
 
   if (a->type == TYPETEXT && (!a->noconv))
-    fc = fgetconv_open (fpin, Charset, mutt_get_body_charset (send_charset, sizeof (send_charset), a));
+    fc = fgetconv_open (fpin, Charset, 
+			mutt_get_body_charset (send_charset, sizeof (send_charset), a), 
+			M_ICONV_HOOK_TO);
   else
-    fc = fgetconv_open (fpin, 0, 0);
+    fc = fgetconv_open (fpin, 0, 0, 0);
 
   if (a->encoding == ENCQUOTEDPRINTABLE)
     encode_quoted (fc, f, mutt_is_text_type (a->type, a->subtype));
@@ -674,7 +676,7 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
   CONTENT_STATE *states;
   size_t *score;
 
-  cd1 = mutt_iconv_open ("UTF-8", fromcode);
+  cd1 = mutt_iconv_open ("UTF-8", fromcode, M_ICONV_HOOK_FROM);
   if (cd1 == (iconv_t)(-1))
     return -1;
 
@@ -688,7 +690,7 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
   memset (infos, 0, ncodes * sizeof (CONTENT));
   for (i = 0; i < ncodes; i++)
     if (strcasecmp (tocodes[i], "UTF-8"))
-      cd[i] = mutt_iconv_open (tocodes[i], "UTF-8");
+      cd[i] = mutt_iconv_open (tocodes[i], "UTF-8", 0);
     else
       /* Special case for conversion to UTF-8 */
       cd[i] = (iconv_t)(-1), score[i] = (size_t)(-1);

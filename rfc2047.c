@@ -59,7 +59,7 @@ static size_t convert_string (const char *f, size_t flen,
   size_t obl, n;
   int e;
 
-  cd = mutt_iconv_open (to, from);
+  cd = mutt_iconv_open (to, from, 0);
   if (cd == (iconv_t)(-1))
     return (size_t)(-1);
   obl = 4 * flen + 1;
@@ -236,7 +236,7 @@ static size_t try_block (const char *d, size_t dlen,
 
   if (fromcode)
   {
-    cd = mutt_iconv_open (tocode, fromcode);
+    cd = mutt_iconv_open (tocode, fromcode, 0);
     assert (cd != (iconv_t)(-1));
     ib = d, ibl = dlen, ob = buf1, obl = sizeof (buf1) - strlen (tocode);
     if (iconv (cd, &ib, &ibl, &ob, &obl) == (size_t)(-1) ||
@@ -307,7 +307,7 @@ static size_t encode_block (char *s, char *d, size_t dlen,
 
   if (fromcode)
   {
-    cd = mutt_iconv_open (tocode, fromcode);
+    cd = mutt_iconv_open (tocode, fromcode, 0);
     assert (cd != (iconv_t)(-1));
     ib = d, ibl = dlen, ob = buf1, obl = sizeof (buf1) - strlen (tocode);
     n1 = iconv (cd, &ib, &ibl, &ob, &obl);
@@ -671,7 +671,7 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
   }
   
   if (charset)
-    mutt_convert_string (&d0, charset, Charset);
+    mutt_convert_string (&d0, charset, Charset, M_ICONV_HOOK_FROM);
   strfcpy (d, d0, len);
   safe_free ((void **) &charset);
   safe_free ((void **) &d0);
