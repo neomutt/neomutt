@@ -918,6 +918,15 @@ static int grok_ansi(unsigned char *buf, int pos, ansi_attr *a)
   /* Character Attributes */
   if (a != NULL && buf[x] == 'm')
   {
+    if (pos == x)
+    {
+#ifdef HAVE_COLOR
+      if (a->pair != -1)
+	mutt_free_color (a->fg, a->bg);
+#endif
+      a->attr = ANSI_OFF;
+      a->pair = -1;
+    }
     while (pos < x)
     {
       if (buf[pos] == '1' && (pos+1 == x || buf[pos+1] == ';'))
