@@ -558,9 +558,9 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   imap_munge_mbox_name (mbox, sizeof (mbox), mailbox);
   snprintf (buf, sizeof (buf), "APPEND %s (%s%s%s%s%s) {%lu}", mbox,
 	    msg->flags.read    ? "\\Seen"      : "",
-	    msg->flags.read    ? " " : "",
+	    msg->flags.read && (msg->flags.replied || msg->flags.flagged) ? " " : "",
 	    msg->flags.replied ? "\\Answered" : "",
-	    msg->flags.replied ? " " : "",
+	    msg->flags.replied && msg->flags.flagged ? " " : "",
 	    msg->flags.flagged ? "\\Flagged"  : "",
 	    (unsigned long) len);
 
