@@ -192,6 +192,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 {
   IMAP_DATA* idata;
+  HEADER* h;
   char buf[LONG_STRING];
   char path[_POSIX_PATH_MAX];
   char *pc;
@@ -293,8 +294,9 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 		 !ctx->hdrs[msgno]->changed)
 	{
 	  IMAP_HEADER newh;
-	  HEADER* h = ctx->hdrs[msgno];
 	  unsigned char readonly;
+
+	  h = ctx->hdrs[msgno];
 
 	  memset (&newh, 0, sizeof (newh));
 	  newh.data = safe_calloc (1, sizeof (IMAP_HEADER_DATA));
@@ -348,23 +350,37 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   /* Update the header information.  Previously, we only downloaded a
    * portion of the headers, those required for the main display.
    */
+  h = ctx->hdrs[msgno];
   rewind (msg->fp);
-  mutt_free_envelope (&ctx->hdrs[msgno]->env);
-  ctx->hdrs[msgno]->env = mutt_read_rfc822_header (msg->fp, ctx->hdrs[msgno],0, 0);
-  ctx->hdrs[msgno]->lines = 0;
+  /* I hate do this here, since it's so low-level, but I'm not sure where
+   * I can abstract it. Problem: the id and subj hashes lose their keys when
+   * mutt_free_envelope gets called, but keep their spots in the hash. This
+   * confuses threading. Alternatively we could try to merge the new
+   * envelope into the old one. Also messy and lowlevel. */
+  if (h->env->message_id)
+    hash_delete (ctx->id_hash, h->env->message_id, h, NULL);
+  if (h->env->real_subj)
+    hash_delete (ctx->subj_hash, h->env->real_subj, h, NULL);
+  mutt_free_envelope (&h->env);
+  h->env = mutt_read_rfc822_header (msg->fp, h, 0, 0);
+  if (h->env->message_id)
+    hash_insert (ctx->id_hash, h->env->message_id, h, 0);
+  if (h->env->real_subj)
+    hash_insert (ctx->subj_hash, h->env->real_subj, h, 1);
+
+  h->lines = 0;
   fgets (buf, sizeof (buf), msg->fp);
   while (!feof (msg->fp))
   {
-    ctx->hdrs[msgno]->lines++;
+    h->lines++;
     fgets (buf, sizeof (buf), msg->fp);
   }
 
-  ctx->hdrs[msgno]->content->length = ftell (msg->fp) - 
-                                        ctx->hdrs[msgno]->content->offset;
+  h->content->length = ftell (msg->fp) - h->content->offset;
 
   /* This needs to be done in case this is a multipart message */
 #ifdef HAVE_PGP
-  ctx->hdrs[msgno]->pgp = pgp_query (ctx->hdrs[msgno]->content);
+  h->pgp = pgp_query (h->content);
 #endif /* HAVE_PGP */
 
   mutt_clear_error();
@@ -405,7 +421,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   if ((fp = fopen (msg->path, "r")) == NULL)
   {
     mutt_perror (msg->path);
-    return (-1);
+    goto fail;
   }
 
   for (last = EOF, len = 0; (c = fgetc(fp)) != EOF; last = c)
@@ -438,7 +454,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
     mutt_error ("%s", pc);
     sleep (1);
     fclose (fp);
-    return (-1);
+    goto fail;
   }
 
   mutt_message _("Uploading message ...");
@@ -474,10 +490,15 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
     pc = imap_next_word (pc);
     mutt_error ("%s", pc);
     sleep (1);
-    return (-1);
+    goto fail;
   }
 
+  FREE (&mx.mbox);
   return 0;
+
+ fail:
+  FREE (&mx.mbox);
+  return -1;
 }
 
 /* imap_copy_messages: use server COPY command to copy messages to another
@@ -510,7 +531,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   {
     dprint (3, (debugfile, "imap_copy_message: %s not same server as %s\n",
       dest, ctx->path));
-    return 1;
+    goto fail;
   }
 
   imap_fix_path (idata, mx.mbox, cmd, sizeof (cmd));
@@ -522,7 +543,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
     if (!rc)
     {
       dprint (1, (debugfile, "imap_copy_messages: No messages tagged\n"));
-      return -1;
+      goto fail;
     }
     mutt_message (_("Copying %d messages to %s..."), rc, cmd);
   }
@@ -543,17 +564,17 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
     if (strncmp (imap_get_qualifier (idata->buf), "[TRYCREATE]", 11))
     {
       imap_error ("imap_copy_messages", idata->buf);
-      return -1;
+      goto fail;
     }
     dprint (2, (debugfile, "imap_copy_messages: server suggests TRYCREATE\n"));
     snprintf (buf, sizeof (buf), _("Create %s?"), mbox);
     if (option (OPTCONFIRMCREATE) && mutt_yesorno (buf, 1) < 1)
     {
       mutt_clear_error ();
-      return -1;
+      goto fail;
     }
-    if (imap_create_mailbox (ctx, mbox) < 0)
-      return -1;
+    if (imap_create_mailbox (idata, mbox) < 0)
+      goto fail;
 
     /* try again */
     rc = imap_exec (idata, cmd, 0);
@@ -561,7 +582,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   if (rc != 0)
   {
     imap_error ("imap_copy_messages", idata->buf);
-    return -1;
+    goto fail;
   }
 
   /* cleanup */
@@ -585,7 +606,12 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
     }
   }
 
+  FREE (&mx.mbox);
   return 0;
+
+ fail:
+  FREE (&mx.mbox);
+  return -1;
 }
 
 /* imap_add_keywords: concatenate custom IMAP tags to list, if they

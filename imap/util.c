@@ -127,7 +127,8 @@ char *imap_next_word (char *s)
 }
 
 /* imap_parse_path: given an IMAP mailbox name, return host, port
- *   and a path IMAP servers will recognise. */
+ *   and a path IMAP servers will recognise.
+ * mx.mbox is malloc'd, caller must free it */
 int imap_parse_path (const char* path, IMAP_MBOX* mx)
 {
   char tmp[128];
@@ -144,7 +145,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
     return -1;
   else
     /* walk past closing '}' */
-    mx->mbox = strdup (c+1);
+    mx->mbox = safe_strdup (c+1);
   
   /* Defaults */
   mx->account.flags = 0;
@@ -161,6 +162,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
   if ((n = sscanf (tmp, "%128[^:/]%128s", mx->account.host, tmp)) < 1)
   {
     dprint (1, (debugfile, "imap_parse_path: NULL host in %s\n", path));
+    FREE (&mx->mbox);
     return -1;
   }
   
@@ -176,6 +178,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
 #endif
       {
 	dprint (1, (debugfile, "imap_parse_path: Unknown connection type in %s\n", path));
+	FREE (&mx->mbox);
 	return -1;
       }
     }
@@ -383,12 +386,14 @@ int imap_wait_keepalive (pid_t pid)
 
   sigaction (SIGALRM, &act, &oldalrm);
 
-  alarm (ImapCheckTimeout > 0 ? ImapCheckTimeout : 60);
+  /* RFC 2060 specifies a minimum of 30 minutes before disconnect when in
+   * the AUTHENTICATED state. We'll poll at half that. */
+  alarm (900);
   while (waitpid (pid, &rc, 0) < 0 && errno == EINTR)
   {
     alarm (0); /* cancel a possibly pending alarm */
     imap_keepalive ();
-    alarm (ImapCheckTimeout > 0 ? ImapCheckTimeout : 60);
+    alarm (900);
   }
 
   alarm (0);	/* cancel a possibly pending alarm */

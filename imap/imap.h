@@ -32,7 +32,6 @@ typedef struct
 
 /* imap.c */
 int imap_check_mailbox (CONTEXT *ctx, int *index_hint);
-int imap_create_mailbox (CONTEXT* idata, char* mailbox);
 int imap_close_connection (CONTEXT *ctx);
 int imap_delete_mailbox (CONTEXT* idata, char* mailbox);
 int imap_open_mailbox (CONTEXT *ctx);
@@ -49,6 +48,7 @@ void imap_disallow_reopen (CONTEXT *ctx);
 
 /* browse.c */
 int imap_browse (char* path, struct browser_state* state);
+int imap_mailbox_create (const char* folder);
 
 /* message.c */
 int imap_append_message (CONTEXT* ctx, MESSAGE* msg);

@@ -329,7 +329,7 @@ struct binding_t OpBrowser[] = {
   { "toggle-mailboxes", OP_TOGGLE_MAILBOXES, 	"\t" },
   { "view-file",	OP_BROWSER_VIEW_FILE,	" " },
 #ifdef USE_IMAP
-  { "new-mailbox",      OP_NEW_MAILBOX,         "n" },
+  { "create-mailbox",   OP_CREATE_MAILBOX,      "C" },
   { "delete-mailbox",   OP_DELETE_MAILBOX,      "d" },
   { "subscribe",	OP_BROWSER_SUBSCRIBE,	"s" },
   { "unsubscribe",	OP_BROWSER_UNSUBSCRIBE,	"u" },

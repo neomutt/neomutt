@@ -29,6 +29,8 @@ struct folder_file
 
   char *name;
   char *desc;
+
+  unsigned short new;
 #ifdef USE_IMAP
   char delim;
   
@@ -37,7 +39,6 @@ struct folder_file
   unsigned inferiors : 1;
 #endif
   unsigned tagged : 1;
-  unsigned is_new : 1;
 };
 
 struct browser_state

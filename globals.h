@@ -51,7 +51,6 @@ WHERE char *Hostname;
 #ifdef USE_IMAP
 WHERE char *ImapUser INITVAL (NULL);
 WHERE char *ImapPass INITVAL (NULL);
-WHERE short ImapCheckTimeout;
 WHERE char *ImapHomeNamespace INITVAL (NULL);
 #endif
 WHERE char *InReplyTo;

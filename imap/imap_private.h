@@ -44,7 +44,7 @@
 #define SEQLEN 5
 
 #define IMAP_REOPEN_ALLOW    (1<<0)
-#define IMAP_EXPUNGE_PENDING  (1<<1)
+#define IMAP_EXPUNGE_PENDING (1<<1)
 #define IMAP_NEWMAIL_PENDING (1<<2)
 
 /* imap_exec flags (see imap_exec) */
@@ -172,6 +172,7 @@ typedef struct
 
 /* -- private IMAP functions -- */
 /* imap.c */
+int imap_create_mailbox (IMAP_DATA* idata, char* mailbox);
 int imap_make_msg_set (IMAP_DATA* idata, char* buf, size_t buflen, int flag,
   int changed);
 int imap_open_connection (IMAP_DATA* idata);

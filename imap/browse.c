@@ -67,22 +67,22 @@ int imap_browse (char* path, struct browser_state* state)
   strfcpy (list_cmd, option (OPTIMAPLSUB) ? "LSUB" : "LIST", sizeof (list_cmd));
 
   if (!(idata = imap_conn_find (&(mx.account), 0)))
-    return -1;
+    goto fail;
 
-  if (mx.mbox[0] == '\0')
+  if (!mx.mbox)
   {
     home_namespace = 1;
     mbox[0] = '\0';		/* Do not replace "" with "INBOX" here */
-    mx.mbox = ImapHomeNamespace;
+    mx.mbox = safe_strdup(ImapHomeNamespace);
     nns = 0;
     if (mutt_bit_isset(idata->capabilities,NAMESPACE))
     {
       mutt_message _("Getting namespaces...");
       if (browse_get_namespace (idata, nsbuf, sizeof (nsbuf), 
 			 nsi, sizeof (nsi),  &nns) != 0)
-	return -1;
+	goto fail;
       if (browse_verify_namespace (idata, nsi, nns) != 0)
-	return -1;
+	goto fail;
     }
   }
 
@@ -110,7 +110,7 @@ int imap_browse (char* path, struct browser_state* state)
       {
         if (imap_parse_list_response (idata, &cur_folder, &noselect,
             &noinferiors, &idata->delim) != 0)
-          return -1;
+	  goto fail;
 
         if (cur_folder)
         {
@@ -200,14 +200,14 @@ int imap_browse (char* path, struct browser_state* state)
      * server to see if it has descendants. */
     dprint (4, (debugfile, "imap_init_browse: adding INBOX\n"));
     if (browse_add_list_result (idata, "LIST \"\" \"INBOX\"", state, 0))
-      return -1;
+      goto fail;
   }
 
   nsup = state->entrylen;
 
   snprintf (buf, sizeof (buf), "%s \"\" \"%s%%\"", list_cmd, mbox);
   if (browse_add_list_result (idata, buf, state, 0))
-    return -1;
+    goto fail;
 
   qsort(&(state->entry[nsup]),state->entrylen-nsup,sizeof(state->entry[0]),
 	(int (*)(const void*,const void*)) compare_names);
@@ -223,7 +223,60 @@ int imap_browse (char* path, struct browser_state* state)
   }
 
   mutt_clear_error ();
+  FREE (&mx.mbox);
   return 0;
+
+ fail:
+  FREE (&mx.mbox);
+  return -1;
+}
+
+/* imap_mailbox_create: Prompt for a new mailbox name, and try to create it */
+int imap_mailbox_create (const char* folder)
+{
+  IMAP_DATA* idata;
+  IMAP_MBOX mx;
+  char buf[LONG_STRING];
+  short n;
+
+  if (imap_parse_path (folder, &mx) < 0)
+  {
+    dprint (1, (debugfile, "imap_mailbox_create: Bad starting path %s\n",
+      folder));
+    return -1;
+  }
+
+  if (!(idata = imap_conn_find (&mx.account, M_IMAP_CONN_NONEW)))
+  {
+    dprint (1, (debugfile, "imap_mailbox_create: Couldn't find open connection to %s", mx.account.host));
+    goto fail;
+  }
+  
+  strfcpy (buf, NONULL (mx.mbox), sizeof (buf));
+
+  /* append a delimiter if necessary */
+  n = mutt_strlen (buf);
+  if (n && (n < sizeof (buf) - 1) && (buf[n-1] != idata->delim))
+  {
+    buf[n++] = idata->delim;
+    buf[n] = '\0';
+  }
+  
+  if (mutt_get_field (_("Create mailbox: "), buf, sizeof (buf), M_FILE) < 0)
+    goto fail;
+
+  if (imap_create_mailbox (idata, buf) < 0)
+    goto fail;
+
+  mutt_message _("Mailbox created.");
+  sleep (1);
+
+  FREE (&mx.mbox);
+  return 0;
+
+ fail:
+  FREE (&mx.mbox);
+  return -1;
 }
 
 static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
@@ -247,7 +300,10 @@ static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
   {
     if (imap_parse_list_response(idata, &name, &noselect, &noinferiors,
         &idata->delim) != 0)
+    {
+      FREE (&mx.mbox);
       return -1;
+    }
 
     if (name)
     {
@@ -262,6 +318,7 @@ static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
   }
   while ((mutt_strncmp (idata->buf, idata->seq, SEQLEN) != 0));
 
+  FREE (&mx.mbox);
   return 0;
 }
 
@@ -300,7 +357,10 @@ static void imap_add_folder (char delim, char *folder, int noselect,
    * than at scan, since it's so expensive to scan. But that's big changes
    * to browser.c */
   if (!((regexec (Mask.rx, relpath, 0, NULL, 0) == 0) ^ Mask.not))
+  {
+    FREE (&mx.mbox);
     return;
+  }
 
   imap_qualify_path (tmp, sizeof (tmp), &mx, folder, NULL);
   (state->entry)[state->entrylen].name = safe_strdup (tmp);
@@ -322,6 +382,8 @@ static void imap_add_folder (char delim, char *folder, int noselect,
   (state->entry)[state->entrylen].selectable = !noselect;
   (state->entry)[state->entrylen].inferiors = !noinferiors;
   (state->entrylen)++;
+
+  FREE (&mx.mbox);
 }
 
 static int compare_names(struct folder_file *a, struct folder_file *b) 

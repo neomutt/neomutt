@@ -45,18 +45,15 @@ static int imap_check_capabilities (IMAP_DATA* idata);
 static void imap_set_flag (IMAP_DATA* idata, int aclbit, int flag,
   const char* str, char* flags);
 
-int imap_create_mailbox (CONTEXT* ctx, char* mailbox)
+int imap_create_mailbox (IMAP_DATA* idata, char* mailbox)
 {
   char buf[LONG_STRING], mbox[LONG_STRING];
 
   imap_munge_mbox_name (mbox, sizeof (mbox), mailbox);
   snprintf (buf, sizeof (buf), "CREATE %s", mbox);
       
-  if (imap_exec ((IMAP_DATA*) ctx->data, buf, 0) != 0)
-  {
-    imap_error ("imap_create_mailbox", CTX_DATA->buf);
+  if (imap_exec (idata, buf, 0) != 0)
     return -1;
-  }
 
   return 0;
 }
@@ -65,14 +62,11 @@ int imap_delete_mailbox (CONTEXT* ctx, char* mailbox)
 {
   char buf[LONG_STRING], mbox[LONG_STRING];
   
-  imap_quote_string (mbox, sizeof (mbox), mailbox);
+  imap_munge_mbox_name (mbox, sizeof (mbox), mailbox);
   snprintf (buf, sizeof (buf), "DELETE %s", mbox);
 
   if (imap_exec ((IMAP_DATA*) ctx->data, buf, 0) != 0)
-  {
-    imap_error ("imap_delete_mailbox", CTX_DATA->buf);
     return -1;
-  }
 
   return 0;
 }
@@ -475,14 +469,14 @@ int imap_open_mailbox (CONTEXT* ctx)
 
   /* we require a connection which isn't currently in IMAP_SELECTED state */
   if (!(idata = imap_conn_find (&(mx.account), M_IMAP_CONN_NOSELECT)))
-    return -1;
+    goto fail;
   conn = idata->conn;
 
   /* once again the context is new */
   ctx->data = idata;
 
   if (idata->status == IMAP_FATAL)
-    return -1;
+    goto fail;
 
   /* Clean up path and replace the one in the ctx */
   imap_fix_path (idata, mx.mbox, buf, sizeof (buf));
@@ -537,7 +531,7 @@ int imap_open_mailbox (CONTEXT* ctx)
       {
 	dprint (2, (debugfile, "Getting mailbox FLAGS\n"));
 	if ((pc = imap_get_flags (&(idata->flags), pc)) == NULL)
-	  return -1;
+	  goto fail;
       }
     }
     /* PERMANENTFLAGS are massaged to look like FLAGS, then override FLAGS */
@@ -549,13 +543,13 @@ int imap_open_mailbox (CONTEXT* ctx)
       /* skip "OK [PERMANENT" so syntax is the same as FLAGS */
       pc += 13;
       if ((pc = imap_get_flags (&(idata->flags), pc)) == NULL)
-	return -1;
+	goto fail;
     }
   }
   while (rc == IMAP_CMD_CONTINUE);
 
   if (rc != IMAP_CMD_DONE)
-    return -1;
+    goto fail;
 
   /* check for READ-ONLY notification */
   if (!strncmp (imap_get_qualifier (idata->buf), "[READ-ONLY]", 11))
@@ -595,13 +589,13 @@ int imap_open_mailbox (CONTEXT* ctx)
     mutt_error ("%s", s);
     idata->state = IMAP_AUTHENTICATED;
     sleep (1);
-    return -1;
+    goto fail;
   }
 
   if (mutt_bit_isset (idata->capabilities, ACL))
   {
     if (imap_check_acl (idata))
-      return -1;
+      goto fail;
   }
   /* assume we have all rights if ACL is unavailable */
   else
@@ -623,7 +617,12 @@ int imap_open_mailbox (CONTEXT* ctx)
   count = imap_read_headers (idata, 0, count - 1) + 1;
 
   dprint (1, (debugfile, "imap_open_mailbox(): msgcount is %d\n", ctx->msgcount));
+  FREE (&mx.mbox);
   return 0;
+
+ fail:
+  FREE (&mx.mbox);
+  return -1;
 }
 
 int imap_open_mailbox_append (CONTEXT *ctx)
@@ -642,7 +641,7 @@ int imap_open_mailbox_append (CONTEXT *ctx)
    * ctx is brand new and mostly empty */
 
   if (!(idata = imap_conn_find (&(mx.account), 0)))
-    return -1;
+    goto fail;
   conn = idata->conn;
 
   ctx->magic = M_IMAP;
@@ -665,7 +664,7 @@ int imap_open_mailbox_append (CONTEXT *ctx)
     /* STATUS not supported */
     mutt_message _("Unable to append to IMAP mailboxes at this server");
 
-    return -1;
+    goto fail;
   }
 
   r = imap_exec (idata, buf, IMAP_CMD_FAIL_OK);
@@ -674,16 +673,21 @@ int imap_open_mailbox_append (CONTEXT *ctx)
     /* command failed cause folder doesn't exist */
     snprintf (buf, sizeof (buf), _("Create %s?"), mailbox);
     if (option (OPTCONFIRMCREATE) && mutt_yesorno (buf, 1) < 1)
-      return -1;
+      goto fail;
 
-    if (imap_create_mailbox (ctx, mailbox) < 0)
-      return -1;
+    if (imap_create_mailbox (idata, mailbox) < 0)
+      goto fail;
   }
   else if (r == -1)
     /* Hmm, some other failure */
-    return -1;
+    goto fail;
 
+  FREE (&mx.mbox);
   return 0;
+
+ fail:
+  FREE (&mx.mbox);
+  return -1;
 }
 
 /* imap_logout: Gracefully log out of server. */
@@ -915,12 +919,12 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
 
         mutt_remove_trailing_ws (flags);
 
-        snprintf (buf, sizeof (buf), "STORE %d -FLAGS.SILENT (%s)",
-          ctx->hdrs[n]->index + 1, flags);
+        snprintf (buf, sizeof (buf), "UID STORE %d -FLAGS.SILENT (%s)",
+          HEADER_DATA (ctx->hdrs[n])->uid, flags);
       }
       else
-        snprintf (buf, sizeof (buf), "STORE %d FLAGS.SILENT (%s)",
-          ctx->hdrs[n]->index + 1, flags);
+        snprintf (buf, sizeof (buf), "UID STORE %d FLAGS.SILENT (%s)",
+          HEADER_DATA (ctx->hdrs[n])->uid, flags);
 
       /* after all this it's still possible to have no flags, if you
        * have no ACL rights */
@@ -964,15 +968,14 @@ void imap_close_mailbox (CONTEXT* ctx)
   if (!idata)
     return;
 
-  idata->reopen &= IMAP_REOPEN_ALLOW;
-
   if ((idata->status != IMAP_FATAL) &&
       (idata->state == IMAP_SELECTED) &&
       (ctx == idata->ctx))
   {
     if (!(idata->noclose) && imap_exec (idata, "CLOSE", 0))
       imap_error ("CLOSE failed", idata->buf);
-    
+
+    idata->reopen &= IMAP_REOPEN_ALLOW;
     idata->state = IMAP_AUTHENTICATED;
     FREE (&(idata->mailbox));
   }
@@ -1001,45 +1004,33 @@ void imap_close_mailbox (CONTEXT* ctx)
  */
 int imap_check_mailbox (CONTEXT *ctx, int *index_hint)
 {
-  static time_t checktime=0;
+  /* overload keyboard timeout to avoid many mailbox checks in a row.
+   * Most users don't like having to wait exactly when they press a key. */
+  static time_t LastCheck = 0;
 
   IMAP_DATA* idata;
-  time_t t = 0;
+  time_t now;
 
   idata = (IMAP_DATA*) ctx->data;
 
-  /* 
-   * gcc thinks it has to warn about uninitialized use
-   * of t.  This is wrong.
-   */
-  
-  if (ImapCheckTimeout)
-  { 
-    t = time(NULL);
-    t -= checktime;
-  }
-
-  /* TODO: wtf?! */
-  if ((ImapCheckTimeout && t >= ImapCheckTimeout)
-      || ((idata->reopen & IMAP_REOPEN_ALLOW) && (idata->reopen & ~IMAP_REOPEN_ALLOW)))
-  {
-    if (ImapCheckTimeout) checktime += t;
+  now = time(NULL);
+  if (now > LastCheck + Timeout) {
+    LastCheck = now;
 
     if (imap_exec (idata, "NOOP", 0) != 0)
     {
       imap_error ("imap_check_mailbox", idata->buf);
       return -1;
     }
-    
-    if (idata->check_status & IMAP_NEWMAIL_PENDING)
-    {
-      idata->check_status &= ~IMAP_NEWMAIL_PENDING;
-      return M_NEW_MAIL;
-    }
-    
-    /* TODO: we should be able to detect external changes and return
-     *   M_REOPENED here. */
   }
+    
+  if (idata->check_status & IMAP_NEWMAIL_PENDING)
+  {
+    idata->check_status &= ~IMAP_NEWMAIL_PENDING;
+    return M_NEW_MAIL;
+  }
+  /* TODO: we should be able to detect external changes and return
+   *   M_REOPENED here. */
   
   return 0;
 }
@@ -1071,7 +1062,7 @@ int imap_mailbox_check (char* path, int new)
     connflags = M_IMAP_CONN_NONEW;
 
   if (!(idata = imap_conn_find (&(mx.account), connflags)))
-    return -1;
+    goto fail;
   conn = idata->conn;
 
   imap_fix_path (idata, mx.mbox, buf, sizeof (buf));
@@ -1099,11 +1090,9 @@ int imap_mailbox_check (char* path, int new)
       new ? "RECENT" : "MESSAGES");
   }
   else
-  {
     /* Server does not support STATUS, and this is not the current mailbox.
      * There is no lightweight way to check recent arrivals */
-      return -1;
-  }
+    goto fail;
 
   imap_cmd_start (idata, buf);
 
@@ -1128,8 +1117,8 @@ int imap_mailbox_check (char* path, int new)
 	{
 	  if (*s != '0')
 	  {
-	    dprint (1, (debugfile, "Mail in %s\n", path));
 	    msgcount = atoi(s);
+	    dprint (2, (debugfile, "%d new messages in %s\n", msgcount, path));
 	  }
 	}
       }
@@ -1139,7 +1128,12 @@ int imap_mailbox_check (char* path, int new)
   }
   while (rc == IMAP_CMD_CONTINUE);
 
+  FREE (&mx.mbox);
   return msgcount;
+
+ fail:
+  FREE (&mx.mbox);
+  return -1;
 }
 
 /* all this listing/browsing is a mess. I don't like that name is a pointer
@@ -1227,7 +1221,7 @@ int imap_subscribe (char *path, int subscribe)
     return -1;
 
   if (!(idata = imap_conn_find (&(mx.account), 0)))
-    return -1;
+    goto fail;
   
   conn = idata->conn;
 
@@ -1242,9 +1236,14 @@ int imap_subscribe (char *path, int subscribe)
     "UNSUBSCRIBE", mbox);
 
   if (imap_exec (idata, buf, 0) < 0)
-    return -1;
+    goto fail;
 
+  FREE (&mx.mbox);
   return 0;
+
+ fail:
+  FREE (&mx.mbox);
+  return -1;
 }
 
 /* imap_complete: given a partial IMAP folder path, return a string which
@@ -1272,7 +1271,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
 
   /* don't open a new socket just for completion */
   if (!(idata = imap_conn_find (&(mx.account), M_IMAP_CONN_NONEW)))
-    return -1;
+    goto fail;
   conn = idata->conn;
 
   /* reformat path for IMAP list, and append wildcard */
@@ -1336,8 +1335,11 @@ int imap_complete(char* dest, size_t dlen, char* path) {
     imap_qualify_path (dest, dlen, &mx, completion, NULL);
     mutt_pretty_mailbox (dest);
 
+    FREE (&mx.mbox);
     return 0;
   }
 
+ fail:
+  FREE (&mx.mbox);
   return -1;
 }

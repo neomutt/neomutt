@@ -2083,11 +2083,17 @@ at only the folders you are subscribed to, or all folders with the
 <em/toggle-subscribed/ command.  See also the 
 <ref id="imap&lowbar;list&lowbar;subscribed" name="&dollar;imap&lowbar;list&lowbar;subscribed"> variable.
 
-Polling for new mail is more expensive over IMAP than locally. For this reason
-the frequency at which Mutt will check for mail remotely can be controlled by
-the
-<ref id="imap&lowbar;checkinterval" name="&dollar;imap&lowbar;checkinterval">
-variable, which defaults to every 60 seconds.
+Polling for new mail on an IMAP server can cause noticeable delays. So, you'll
+want to carefully tune the
+<ref id="mail&lowbar;check" name="&dollar;mail&lowbar;check">
+and
+<ref id="timeout" name="&dollar;timeout">
+variables. Personally I use
+<tscreen><verb>
+set mail_check=90
+set timeout=15
+</verb></tscreen>
+with relatively good results over my slow modem line.
 
 Note that if you are using mbox as the mail store on UW servers prior to
 v12.250, the server has been reported to disconnect a client if another client

@@ -202,18 +202,20 @@ folder_format_str (char *dest, size_t destlen, char op, const char *src,
 	snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
 	snprintf (dest, destlen, tmp, permission);
       }
+#ifdef USE_IMAP
+      else if (folder->ff->imap)
+      {
+	/* mark folders with subfolders AND mail */
+	sprintf (permission, "IMAP %c",
+          (folder->ff->inferiors && folder->ff->selectable) ? '+' : ' ');
+	snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
+	snprintf (dest, destlen, tmp, permission);
+      }                                        
+#endif
       else
       {
-#ifdef USE_IMAP
-	if (folder->ff->imap)
-	{
-	  /* mark folders with subfolders AND mail */
-	  sprintf (permission, "IMAP %c",
-            (folder->ff->inferiors && folder->ff->selectable) ? '+' : ' ');
-          snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
-          snprintf (dest, destlen, tmp, permission);
-	}                                        
-#endif
+	snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
+	snprintf (dest, destlen, tmp, "");
       }
       break;
       
@@ -252,8 +254,16 @@ folder_format_str (char *dest, size_t destlen, char op, const char *src,
       break;
       
     case 'N':
+#ifdef USE_IMAP
+      if (mx_is_imap (folder->ff->desc))
+      {
+	snprintf (tmp, sizeof (tmp), "%%%sd", fmt);
+	snprintf (dest, destlen, tmp, folder->ff->new);
+	break;
+      }
+#endif
       snprintf (tmp, sizeof (tmp), "%%%sc", fmt);
-      snprintf (dest, destlen, tmp, folder->ff->is_new ? 'N' : ' ');
+      snprintf (dest, destlen, tmp, folder->ff->new ? 'N' : ' ');
       break;
       
     case 's':
@@ -327,7 +337,7 @@ static void add_folder (MUTTMENU *m, struct browser_state *state,
     memcpy ((state->entry)[state->entrylen].st, s, sizeof (struct stat));
   }
 
-  (state->entry)[state->entrylen].is_new = new;
+  (state->entry)[state->entrylen].new = new;
   (state->entry)[state->entrylen].name = safe_strdup (name);
   (state->entry)[state->entrylen].desc = safe_strdup (name);
 #ifdef USE_IMAP
@@ -815,8 +825,24 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 	mutt_ungetch (0, OP_CHECK_NEW);
 	break;
 
-      case OP_NEW_MAILBOX:
-	mutt_error (_("Creating mailboxes is not yet supported."));
+      case OP_CREATE_MAILBOX:
+	if (!state.imap_browse)
+	  mutt_error (_("Create is only supported for IMAP mailboxes"));
+	else
+	{
+	  imap_mailbox_create (LastDir);
+	  /* TODO: find a way to detect if the new folder would appear in
+	   *   this window, and insert it without starting over. */
+	  destroy_state (&state);
+	  init_state (&state, NULL);
+	  state.imap_browse = 1;
+	  imap_browse (LastDir, &state);
+	  menu->data = state.entry;
+	  menu->current = 0; 
+	  menu->top = 0; 
+	  init_menu (&state, menu, title, sizeof (title), buffy);
+	  MAYBE_REDRAW (menu->redraw);
+	}
 	break;
 
       case OP_DELETE_MAILBOX:
@@ -824,7 +850,7 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 	  mutt_error (_("Delete is only supported for IMAP mailboxes"));
 	else
         {
-	  char msg[LONG_STRING];
+	  char msg[SHORT_STRING];
 	  IMAP_MBOX mx;
 	  int nentry = menu->current;
 	  
@@ -850,6 +876,7 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 	  }
 	  else
 	    mutt_message _("Mailbox not deleted.");
+	  FREE (&mx.mbox);
         }
         break;
 #endif

@@ -657,12 +657,6 @@ struct option_t MuttVars[] = {
   ** list.
   */
 #ifdef USE_IMAP
-  { "imap_checkinterval", 	DT_NUM,	 R_NONE, UL &ImapCheckTimeout, 60 },
-  /*
-  ** .pp
-  ** This variable configures how often (in seconds) IMAP should look for
-  ** new mail.
-  */
 # ifdef USE_SSL
   { "imap_force_ssl",		DT_BOOL, R_NONE, OPTIMAPFORCESSL, 0 },
   /*
