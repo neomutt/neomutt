@@ -155,7 +155,7 @@ void ci_start_color (void)
 #ifdef USE_SLANG_CURSES
 static char *get_color_name (char *dest, size_t destlen, int val)
 {
-  static char * missing[3] = {"brown", "lightgray", ""};
+  static char * missing[3] = {"brown", "lightgray", "default"};
   int i;
 
   switch (val)

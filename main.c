@@ -451,6 +451,7 @@ static void start_curses (void)
 #ifdef USE_SLANG_CURSES
   SLtt_Ignore_Beep = 1; /* don't do that #*$@^! annoying visual beep! */
   SLsmg_Display_Eight_Bit = 128; /* characters above this are printable */
+  SLtt_set_color(0, NULL, "default", "default");
 #else
   /* should come before initscr() so that ncurses 4.2 doesn't try to install
      its own SIGWINCH handler */
