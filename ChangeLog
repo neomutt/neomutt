@@ -1,3 +1,7 @@
+2003-02-25 21:35:24  jesus.climent@hispalinux.es  (roessler)
+
+	* po/es.po: Fix a typo. (#1482)
+
 2003-02-25 21:33:16  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* doc/manual.sgml.head: Remove some ftp.guug.de URLs from the
