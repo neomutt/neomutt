@@ -208,7 +208,7 @@ void mutt_fetchPopMail (void)
   
   snprintf (msgbuf, sizeof (msgbuf),
 	    msgs > 1 ? _("Reading %d new message (%d bytes)...") :
-		    ("Reading %d new messages (%d bytes)..."), msgs - last, bytes);
+		    _("Reading %d new messages (%d bytes)..."), msgs - last, bytes);
   mutt_message (msgbuf);
 
   for (i = last + 1 ; i <= msgs ; i++)

@@ -26,21 +26,21 @@ msgstr "Hilfe"
 
 #: addrbook.c:132
 msgid "You have no aliases!"
-msgstr "Keine Einträge im Adreßbuch!"
+msgstr "Keine Einträge im Adressbuch!"
 
 #: addrbook.c:144
 msgid "Aliases"
-msgstr "Adreßbuch"
+msgstr "Adressbuch"
 
 #. add a new alias
 #: alias.c:193
 msgid "Alias as: "
-msgstr "Kurzname: "
+msgstr "Kurzname für Adressbuch: "
 
 #: alias.c:199
 msgid "You already have an alias defined with that name!"
 msgstr ""
-"Sie haben bereits einen Adreßbucheintrag mit diesem Kurznamen definiert."
+"Sie haben bereits einen Adressbucheintrag mit diesem Kurznamen definiert."
 
 #: alias.c:213
 msgid "Address: "
@@ -65,7 +65,7 @@ msgstr "Adresse eingetragen."
 
 #: attach.c:112 attach.c:235 attach.c:367 attach.c:809
 msgid "Can't match nametemplate, continue?"
-msgstr "Namensmuster kann nicht erfüllt werden, fortfahren?"
+msgstr "Namensschema kann nicht erfüllt werden, fortfahren?"
 
 #. For now, editing requires a file, no piping
 #: attach.c:124
@@ -304,21 +304,19 @@ msgstr "In Kommando einspeisen: "
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
-"Umg. sortieren "
-"(D)atum/(S)ender/E(m)pf.dat./(B)etr./(E)mpf./Disk.-(f)aden/(u)nsort./(G)röße/"
-"Be(w)ertg?: "
+"Umgekehrt "
+"(D)at/(A)bs/Ei(n)g/(B)etr/(E)mpf/(F)aden/(u)nsort/(G)röße/Be(w)ert?: "
 
 #: commands.c:402
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 "Sortieren "
-"(D)atum/(S)ender/E(m)pf.dat./(B)etr./(E)mpf./Diskussions(f)aden/(u)nsort./(G)"
-"röße/Be(w)ertg?: "
+"(D)at/(A)bs/Ei(n)g/(B)etr/(E)mpf/(F)aden/(u)nsort/(G)röße/Be(w)ert?: "
 
 #: commands.c:403
 msgid "dfrsotuzc"
-msgstr "dsmbefugw"
+msgstr "danbefugw"
 
 #: commands.c:456
 msgid "Shell command: "
@@ -380,7 +378,7 @@ msgstr "Nachrichten gedruckt"
 
 #: compose.c:77
 msgid "Send"
-msgstr "Verschicken"
+msgstr "Absenden"
 
 #: compose.c:78
 msgid "Abort"
@@ -465,9 +463,8 @@ msgid "%s [#%d] modified. Update encoding?"
 msgstr "%s [#%d] wurde modifiziert.  Codierung neu bestimmen?"
 
 #: compose.c:282
-#, fuzzy
 msgid "===== Attachments ====="
-msgstr "Anhänge"
+msgstr "===== Anhänge ====="
 
 #: compose.c:320
 msgid "You may not delete the only attachment."
@@ -479,7 +476,7 @@ msgstr "Nachricht erstellen"
 
 #: compose.c:543
 msgid "Open mailbox to attach message from"
-msgstr "Öffne Mailbox, um Nachricht von dort anzuhängen."
+msgstr "Öffne Mailbox, um Nachricht anzuhängen"
 
 #: compose.c:582
 msgid "No messages in that folder."
@@ -512,7 +509,7 @@ msgstr "Umbenennen in: "
 #: compose.c:830
 #, c-format
 msgid "Can't stat: %s"
-msgstr "Kann Datei nicht untersuchen: %s"
+msgstr "Kann Verzeichniseintrag für Datei nicht lesen: %s"
 
 #: compose.c:857
 msgid "New file: "
@@ -572,7 +569,7 @@ msgstr "nein"
 #. restore blocking operation
 #: curs_lib.c:175
 msgid "Exit Mutt?"
-msgstr "Mutt beenden?"
+msgstr "Mutt verlassen?"
 
 #: curs_lib.c:262
 msgid "unknown error"
@@ -588,7 +585,7 @@ msgstr " (für eine Liste '?' eingeben): "
 
 #: curs_main.c:209
 msgid "Cannot toggle write on a readonly mailbox!"
-msgstr "Kann Schreib-Modus für eine nur-Lesen-Mailbox nicht ändern!"
+msgstr "Kann Schreib-Modus für eine Nur-Lesen-Mailbox nicht ändern!"
 
 #: curs_main.c:216
 msgid "Changes to folder will be written on folder exit."
@@ -600,31 +597,31 @@ msgstr "Änderungen an dieser Mailbox werden nicht geschrieben."
 
 #: curs_main.c:228
 msgid "Quit"
-msgstr "Verlassen"
+msgstr "Ende"
 
 #: curs_main.c:229 pager.c:1372 postpone.c:34
 msgid "Del"
-msgstr "Löschen"
+msgstr "Lösch."
 
 #: curs_main.c:230 postpone.c:35
 msgid "Undel"
-msgstr "nicht lösch."
+msgstr "Behalten"
 
 #: curs_main.c:232 query.c:45
 msgid "Mail"
-msgstr "Neue Nachricht"
+msgstr "Senden"
 
 #: curs_main.c:233 pager.c:1373
 msgid "Reply"
-msgstr "Antwort"
+msgstr "Antw."
 
 #: curs_main.c:234
 msgid "Group"
-msgstr "Antwort alle"
+msgstr "Antw.alle"
 
 #: curs_main.c:399
 msgid "Mailbox was externally modified.  Flags may be wrong."
-msgstr "Mailbox wurde verändert."
+msgstr "Mailbox wurde verändert. Markierungen können veraltet sein."
 
 #: curs_main.c:402
 msgid "New mail in this mailbox."
@@ -644,7 +641,7 @@ msgstr "Springe zu Nachricht: "
 
 #: curs_main.c:594
 msgid "Argument must be a message number."
-msgstr "Argument muß eine Nachrichtennummer sein."
+msgstr "Argument muss eine Nachrichtennummer sein."
 
 #: curs_main.c:627
 msgid "That message is not visible."
@@ -735,7 +732,7 @@ msgstr "Keine ungelesenen Nachrichten"
 
 #: curs_main.c:1151
 msgid " in this limited view"
-msgstr " in dieser begrenzeten Ansicht."
+msgstr " in dieser begrenzten Ansicht."
 
 #: curs_main.c:1261
 msgid "No more threads."
@@ -925,7 +922,7 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"Generische Bindungen:\n"
+"Allgemeine Tastenbelegungen:\n"
 "\n"
 
 #: help.c:332
@@ -935,7 +932,7 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"Ungebundene Funktionen:\n"
+"Unbelegte Funktionen:\n"
 "\n"
 
 #: help.c:340
@@ -958,7 +955,7 @@ msgstr "Kritischer Fehler.  Nachrichtenzähler weicht ab!"
 #: imap.c:425
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
-msgstr "Hole Nachrichten-Header... [%d/%d]"
+msgstr "Hole Nachrichten-Köpfe... [%d/%d]"
 
 #: imap.c:623 mbox.c:954
 msgid "Reopening mailbox..."
@@ -976,7 +973,7 @@ msgstr "IMAP-Nutzername: "
 #: imap.c:902
 #, c-format
 msgid "Password for %s@%s: "
-msgstr "Paßwort für %s@%s: "
+msgstr "Passwort für %s@%s: "
 
 #: imap.c:915
 msgid "Logging in..."
@@ -1034,12 +1031,12 @@ msgstr "alias: Keine Adresse"
 
 #: init.c:527
 msgid "invalid header field"
-msgstr "Ungültiges Header-Feld"
+msgstr "my_hdr: Ungültiges Kopf-Feld"
 
 #: init.c:535
 #, c-format
 msgid "ignoring empty header field: %s"
-msgstr "Ignoriere leeres Header-Feld: %s"
+msgstr "my_hdr: Ignoriere leeres Kopf-Feld: %s"
 
 #: init.c:587
 #, c-format
@@ -1058,11 +1055,11 @@ msgstr "%s: Unbekannte Variable."
 
 #: init.c:729
 msgid "prefix is illegal with reset"
-msgstr "reset erlaubt kein Präfix"
+msgstr "reset: Präfix ist nicht erlaubt."
 
 #: init.c:735
 msgid "value is illegal with reset"
-msgstr "reset erlaubt diesen Wert nicht"
+msgstr "reset: Wertzuweisung ist nicht erlaubt."
 
 #: init.c:752
 #, c-format
@@ -1072,12 +1069,12 @@ msgstr "%s ist eine Boolsche Variable!"
 #: init.c:759
 #, c-format
 msgid "%s is set"
-msgstr "%s ist gesetzt"
+msgstr "%s ist gesetzt."
 
 #: init.c:759
 #, c-format
 msgid "%s is unset"
-msgstr "%s ist nicht gesetzt"
+msgstr "%s ist nicht gesetzt."
 
 #: init.c:930
 #, c-format
@@ -1108,7 +1105,7 @@ msgstr "source: Fehler in %s"
 #: init.c:1109
 #, c-format
 msgid "source: error at %s"
-msgstr "Source: Fehler bei %s"
+msgstr "source: Fehler bei %s"
 
 #: init.c:1114
 msgid "source: too many arguments"
@@ -1126,11 +1123,11 @@ msgstr "Fehler in Kommandozeile: %s\n"
 
 #: init.c:1513
 msgid "unable to determine home directory"
-msgstr "Kann Home-Verzeichnis nicht bestimmen"
+msgstr "Kann Home-Verzeichnis nicht bestimmen."
 
 #: init.c:1521
 msgid "unable to determine username"
-msgstr "Kann Nutzernamen nicht bestimmen"
+msgstr "Kann Nutzernamen nicht bestimmen."
 
 #: keymap.c:434
 msgid "Macro loop detected."
@@ -1139,12 +1136,12 @@ msgstr "Makro-Schleife!"
 #: keymap.c:620 keymap.c:628
 #, fuzzy
 msgid "Key is not bound."
-msgstr "Taste ist nicht gebunden.  Konsultieren Sie das Handbuch."
+msgstr "Taste ist nicht belegt.  Konsultieren Sie das Handbuch."
 
 #: keymap.c:632
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
-msgstr "Taste ist nicht gebunden.  Drücken Sie '%s' für Hilfe."
+msgstr "Taste ist nicht belegt.  Drücken Sie '%s' für Hilfe."
 
 #: keymap.c:643
 msgid "push: too many arguments"
@@ -1174,7 +1171,7 @@ msgstr "macro: Leere Tastenfolge"
 
 #: keymap.c:800
 msgid "macro: too many arguments"
-msgstr "macro: Zu viele Paramter"
+msgstr "macro: Zu viele Parameter"
 
 #: keymap.c:830
 msgid "exec: too few arguments"
@@ -1307,7 +1304,7 @@ msgstr "Stelle Nachricht zum späteren Versand zurück"
 
 #: keymap_defs.h:35
 msgid "rename/move an attached file"
-msgstr "benenne angehängte Datei um"
+msgstr "Benenne angehängte Datei um"
 
 #: keymap_defs.h:36
 msgid "send the message"
@@ -1331,7 +1328,7 @@ msgstr "Kopiere Nachricht in Datei/Mailbox"
 
 #: keymap_defs.h:41
 msgid "create an alias from a message sender"
-msgstr "Erzeuge Adreßbucheintrag für Absender"
+msgstr "Erzeuge Adressbucheintrag für Absender"
 
 #: keymap_defs.h:42
 msgid "move entry to bottom of screen"
@@ -1347,11 +1344,11 @@ msgstr "Bewege Eintrag zum Bildschirmanfang"
 
 #: keymap_defs.h:45
 msgid "make decoded (text/plain) copy"
-msgstr "erzeuge decodierte Kopie (text/plain)"
+msgstr "Erzeuge decodierte Kopie (text/plain)"
 
 #: keymap_defs.h:46
 msgid "make decoded copy (text/plain) and delete"
-msgstr "erzeuge decodierte Kopie (text/plain) und lösche"
+msgstr "Erzeuge decodierte Kopie (text/plain) und lösche"
 
 #: keymap_defs.h:47
 msgid "delete the current entry"
@@ -1359,11 +1356,11 @@ msgstr "Lösche"
 
 #: keymap_defs.h:48
 msgid "delete all messages in subthread"
-msgstr "Lösche alle Nachrichten in Diskussionsfadenteil"
+msgstr "Lösche alle Nachrichten im Diskussionsfadenteil"
 
 #: keymap_defs.h:49
 msgid "delete all messages in thread"
-msgstr "Lösche alle Nachrichten in Diskussionsfaden"
+msgstr "Lösche alle Nachrichten im Diskussionsfaden"
 
 #: keymap_defs.h:50
 msgid "display full address of sender"
@@ -1395,7 +1392,7 @@ msgstr "Springe zum Zeilenanfang"
 
 #: keymap_defs.h:57
 msgid "cycle among incoming mailboxes"
-msgstr "Rotiere zwischen Mailboxen"
+msgstr "Rotiere unter den Eingangs-Mailboxen"
 
 #: keymap_defs.h:58
 msgid "complete filename or alias"
@@ -1475,11 +1472,11 @@ msgstr "Antworte an alle Empfänger"
 
 #: keymap_defs.h:78
 msgid "scroll down 1/2 page"
-msgstr "gehe 1/2 Seite nach unten"
+msgstr "Gehe 1/2 Seite nach unten"
 
 #: keymap_defs.h:79
 msgid "scroll up 1/2 page"
-msgstr "gehe 1/2 Seite nach oben"
+msgstr "Gehe 1/2 Seite nach oben"
 
 #: keymap_defs.h:80
 msgid "this screen"
@@ -1511,7 +1508,7 @@ msgstr "Öffne eine andere Mailbox"
 
 #: keymap_defs.h:87
 msgid "open a different folder in read only mode"
-msgstr "Öffne eine andere Mailbox im nur-Lesen-Modus"
+msgstr "Öffne eine andere Mailbox im Nur-Lesen-Modus"
 
 #: keymap_defs.h:88
 msgid "clear a status flag from a message"
@@ -1535,7 +1532,7 @@ msgstr "Springe zu letzter Nachricht"
 
 #: keymap_defs.h:93
 msgid "show only messages matching a pattern"
-msgstr "Wähle angezeigte Nachrichten mit Muster aus"
+msgstr "Wähle anzuzeigende Nachrichten mit Muster aus"
 
 #: keymap_defs.h:94
 msgid "jump to the next new message"
@@ -1671,7 +1668,7 @@ msgstr "Hänge neue Abfrageergebnisse an"
 
 #: keymap_defs.h:127
 msgid "save changes to mailbox and quit"
-msgstr "Speichere Änderungen in Mailbox und verlasse das Programm"
+msgstr "Speichere Änderungen in Mailbox und beende das Programm"
 
 #: keymap_defs.h:128
 msgid "recall a postponed message"
@@ -1835,11 +1832,11 @@ msgstr "Kein Speicher!"
 
 #: lib.c:755
 msgid "File is a directory, save under it?"
-msgstr "Datei ist Verzeichnis, darunter abspeichern?"
+msgstr "Datei ist ein Verzeichnis, darin abspeichern?"
 
 #: lib.c:760
 msgid "File under directory: "
-msgstr "Datei unter Verzeichnis: "
+msgstr "Datei in diesem Verzeichnis: "
 
 #: lib.c:771
 msgid "File exists, overwrite?"
@@ -1858,7 +1855,7 @@ msgstr "Nachricht an %s anhängen?"
 #: main.c:40
 msgid "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 msgstr ""
-"Um die Entwickler zu Kontaktieren, schicken Sie bitte\n"
+"Um die Entwickler zu kontaktieren, schicken Sie bitte\n"
 "eine Nachricht an <mutt-dev@mutt.org>.\n"
 
 #: main.c:43
@@ -1962,7 +1959,7 @@ msgstr "%s: Kann Datei nicht anhängen.\n"
 
 #: main.c:632
 msgid "No mailbox with new mail."
-msgstr "Keine Mailboxen mit neuen Nachrichten."
+msgstr "Keine Mailbox mit neuen Nachrichten."
 
 #: main.c:666
 msgid "Mailbox is empty."
@@ -1986,7 +1983,7 @@ msgstr "Fataler Fehler, konnte Mailbox nicht erneut öffnen!"
 
 #: mbox.c:688
 msgid "Unable to lock mailbox!"
-msgstr "Kann Mailbox nicht für exklusiven Zugriff markieren!"
+msgstr "Kann Mailbox nicht für exklusiven Zugriff sperren!"
 
 #. this means ctx->changed or ctx->deleted was set, but no
 #. * messages were found to be changed or deleted.  This should
@@ -2170,11 +2167,11 @@ msgstr "Mailbox kann nicht geschrieben werden."
 
 #: pager.c:1366
 msgid "PrevPg"
-msgstr "Vorige Seite"
+msgstr "S.zurück"
 
 #: pager.c:1367
 msgid "NextPg"
-msgstr "Nächste Seite"
+msgstr "S.vor"
 
 #: pager.c:1371
 msgid "View Attachm."
@@ -2187,11 +2184,11 @@ msgstr "Nächste Nachr."
 #. emulate "less -q" and don't go on to the next message.
 #: pager.c:1737 pager.c:1768 pager.c:1797 pager.c:2016
 msgid "Bottom of message is shown."
-msgstr "Das Ende der Nachricht wird angezeigt"
+msgstr "Das Ende der Nachricht wird angezeigt."
 
 #: pager.c:1753 pager.c:1775 pager.c:1786
 msgid "Top of message is shown."
-msgstr "Der Beginn der Nachricht wird angezeigt"
+msgstr "Der Beginn der Nachricht wird angezeigt."
 
 #: pager.c:1859
 msgid "Reverse search: "
@@ -2258,7 +2255,7 @@ msgstr "Fehlender Parameter"
 #: pattern.c:666
 #, c-format
 msgid "mismatched parenthesis: %s"
-msgstr "Unpasende Klammern: %s"
+msgstr "Unpassende Klammern: %s"
 
 #: pattern.c:698
 msgid "empty pattern"
@@ -2312,7 +2309,7 @@ msgstr "[-- PGP-Ausgabe folgt (aktuelle Zeit: "
 
 #: pgp.c:321
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
-msgstr "[-- Fehler: Kann keinen PGP-Prozeß erzeugen! --]\n"
+msgstr "[-- Fehler: Kann keinen PGP-Prozess erzeugen! --]\n"
 
 #: pgp.c:348
 msgid ""
@@ -2359,7 +2356,7 @@ msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
 msgstr ""
-"[--Fehler: Konnte Anfang der PGP-Nachricht nicht finden! --]\n"
+"[-- Fehler: Konnte Anfang der PGP-Nachricht nicht finden! --]\n"
 "\n"
 
 #: pgp.c:670 pgp.c:895
@@ -2404,7 +2401,7 @@ msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
 msgstr ""
-"[-- Fehler: Konnte PGP-Subprozeß nicht erzeugen! --]\n"
+"[-- Fehler: Konnte PGP-Subprozess nicht erzeugen! --]\n"
 "\n"
 
 #: pgp.c:968
@@ -2437,7 +2434,7 @@ msgstr ""
 
 #: pgp.c:1081
 msgid "Can't open PGP subprocess!"
-msgstr "Kann PGP-Subprozeß nicht erzeugen!"
+msgstr "Kann PGP-Subprozess nicht erzeugen!"
 
 #: pgp.c:1215
 #, c-format
@@ -2578,7 +2575,7 @@ msgstr ""
 
 #: pop.c:67
 msgid "POP Password: "
-msgstr "POP-Paßwort:"
+msgstr "POP-Passwort:"
 
 #: pop.c:92
 msgid "POP host is not defined."
@@ -2609,7 +2606,12 @@ msgstr "Keine neuen Nachrichten auf dem POP-Server."
 #: pop.c:210
 #, c-format
 msgid "Reading %d new message (%d bytes)..."
-msgstr ""
+msgstr "Lese %d neue Nachricht (%d Bytes)..."
+
+#: pop.c:211
+#, c-format
+msgid "Reading %d new messages (%d bytes)..."
+msgstr "Lese %d neue Nachrichten (%d Bytes)..."
 
 #: pop.c:246
 msgid "Error reading message!"
@@ -2617,7 +2619,7 @@ msgstr "Kann Nachricht nicht lesen!"
 
 #: pop.c:282
 msgid "Error while writing mailbox!"
-msgstr "Fehler beim Versuch, die Mailbox zum schreiben!"
+msgstr "Fehler beim Versuch, die Mailbox zu schreiben!"
 
 #: pop.c:306
 #, c-format
@@ -2762,7 +2764,7 @@ msgstr "Kann keinen Mailcap-Eintrag für %s finden."
 
 #: score.c:72
 msgid "score: too few arguments"
-msgstr "Score: Zu wenige Parameter."
+msgstr "score: Zu wenige Parameter."
 
 #: score.c:81
 msgid "score: too many arguments"
@@ -2807,7 +2809,7 @@ msgstr "Konnte nicht alle gewünschten Nachrichten zitieren!"
 
 #: send.c:653
 msgid "Forward MIME encapsulated?"
-msgstr "Mit MIME-Kapselung weiterleiten?"
+msgstr "Zum Weiterleiten in MIME-Anhang einpacken?"
 
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
