@@ -1589,9 +1589,13 @@ struct option_t MuttVars[] = {
   { "rfc2047_parameters", DT_BOOL, R_NONE, OPTRFC2047PARAMS, 0 },
   /*
   ** .pp
-  ** When this variable is set, Mutt will decode RFC2047-encoded MIME 
-  ** parameters.  Note that this ues of RFC2047's encoding is illegal,
-  ** but actually in use.
+  ** When this variable is set, Mutt will decode RFC-2047-encoded MIME 
+  ** parameters.  Note that this use of RFC 2047's encoding is explicitly,
+  ** prohibited by the standard, but nevertheless encountered in the
+  ** wild.
+  ** Also note that setting this parameter will \fInot\fP have the effect 
+  ** that mutt \fIgenerates\fP this kind of encoding.  Instead, mutt will
+  ** unconditionally use the encoding specified in RFC 2231.
   */
   { "save_address",	DT_BOOL, R_NONE, OPTSAVEADDRESS, 0 },
   /*
