@@ -597,7 +597,10 @@ indicates complete validity.
 <p>
 You may also have configured mutt to co-operate with Mixmaster, an
 anonymous remailer.  Mixmaster permits you to send your messages
-anonymously using a chain of remailers.
+anonymously using a chain of remailers. Mixmaster support in mutt is for 
+mixmaster version 2.04 (beta 45 appears to be the latest) and 2.03. 
+It does not support earlier versions or the later so-called version 3 betas, 
+of which the latest appears to be called 2.9b23.
 
 To use it, you'll have to obey certain restrictions.  Most
 important, you cannot use the <tt/Cc/ and <tt/Bcc/ headers.  To tell
