@@ -181,7 +181,7 @@ int mutt_yesorno (const char *msg, int def)
    * ensure there is enough room for the answer and truncate the question
    * to fit.
    */
-  answer_string = malloc (COLS + 1);
+  answer_string = safe_malloc (COLS + 1);
   snprintf (answer_string, COLS + 1, " ([%s]/%s): ", def ? yes : no, def ? no : yes);
   answer_string_len = strlen (answer_string);
   printw ("%.*s%s", COLS - answer_string_len, msg, answer_string);
