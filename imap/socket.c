@@ -121,7 +121,7 @@ CONNECTION *mutt_socket_select_connection (const IMAP_MBOX *mx, int newconn)
     conn = Connections;
     while (conn)
     {
-      if (!mutt_strcmp (mx->host, conn->mx.host) && (mx->port == conn->mx.port) && imap_user_match (mx, &conn->mx))
+      if (!mutt_strcasecmp (mx->host, conn->mx.host) && (mx->port == conn->mx.port) && imap_user_match (mx, &conn->mx))
 	return conn;
       conn = conn->next;
     }
