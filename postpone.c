@@ -206,7 +206,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
   /* if we're in an IMAP folder and the postponed folder is also IMAP, we may
    * need to take steps to avoid opening an additional connection to the same
    * server. */
-  if ((ctx->magic == M_IMAP) && mx_is_imap (Postponed))
+  if ((ctx && ctx->magic == M_IMAP) && mx_is_imap (Postponed))
   { 
     strfcpy (curpath, ctx->path, sizeof (curpath));
     if (imap_select_mailbox (ctx, Postponed) < 0)
