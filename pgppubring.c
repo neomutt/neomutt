@@ -49,7 +49,7 @@
 extern char *optarg;
 extern int optind;
 
-#include "sha.h"
+#include "sha1.h"
 #include "lib.h"
 #include "pgplib.h"
 
@@ -448,7 +448,7 @@ static void pgp_make_pgp3_fingerprint (unsigned char *buff, size_t l,
 				       unsigned char *digest)
 {
   unsigned char dummy;
-  SHA_CTX context;
+  SHA1_CTX context;
 
   SHA1_Init (&context);
 

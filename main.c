@@ -74,23 +74,6 @@ fixes, and suggestions.\n\
     along with this program; if not, write to the Free Software\n\
     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n\
 ");
-#ifdef HAVE_PGP
-
-const char* ShaCopyright = N_("\n\
-SHA1 implementation Copyright (C) 1995-1997 Eric A. Young <eay@cryptsoft.com>\n\
-\n\
-    Redistribution and use in source and binary forms, with or without\n\
-    modification, are permitted under certain conditions.\n\
-\n\
-    The SHA1 implementation comes AS IS, and ANY EXPRESS OR IMPLIED\n\
-    WARRANTIES, including, but not limited to, the implied warranties of\n\
-    merchantability and fitness for a particular purpose ARE DISCLAIMED.\n\
-\n\
-    You should have received a copy of the full distribution terms\n\
-    along with this program; if not, write to the program's developers.\n\
-");
-#endif
-
 
 void mutt_exit (int code)
 {
@@ -595,9 +578,6 @@ int main (int argc, char **argv)
     default:
       printf ("Mutt %s (%s)\n", MUTT_VERSION, ReleaseDate);
       puts (_(Copyright));
-#ifdef HAVE_PGP
-      puts(_(ShaCopyright));
-#endif
       puts (_(ReachingUs));
       exit (0);
   }

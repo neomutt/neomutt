@@ -64,15 +64,15 @@ DEFS=-DSHAREDIR=\"$(sharedir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 INCLUDES=-I$(top_srcdir) -I. $(IMAP_INCLUDES) \
 	 -Iintl -I$(includedir)
 
-non_us_sources = pgp.c pgpinvoke.c pgpkey.c pgplib.c sha1dgst.c \
-	gnupgparse.c sha.h sha_locl.h \
+non_us_sources = pgp.c pgpinvoke.c pgpkey.c pgplib.c sha1.c \
+	gnupgparse.c sha1.h \
 	doc/language.txt doc/language50.txt OPS.PGP doc/PGP-Notes.txt \
 	OPS.MIX remailer.c remailer.h pgpewrap	\
 	contrib/pgp2.rc contrib/pgp5.rc contrib/gpg.rc \
 	mutt_ssl.c mutt_ssl.h README.SSL
 
 EXTRA_mutt_SOURCES = account.c md5c.c mutt_sasl.c mutt_socket.c mutt_ssl.c \
-	pop.c pgp.c pgpinvoke.c pgpkey.c pgplib.c sha1dgst.c gnupgparse.c \
+	pop.c pgp.c pgpinvoke.c pgpkey.c pgplib.c sha1.c gnupgparse.c \
 	resize.c dotlock.c remailer.c browser.h mbyte.h remailer.h url.h
 
 EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO configure acconfig.h account.h \
@@ -91,7 +91,7 @@ mutt_dotlock_SOURCES = mutt_dotlock.c
 mutt_dotlock_LDADD = @LIBOBJS@
 mutt_dotlock_DEPENDENCIES = @LIBOBJS@
 
-pgpring_SOURCES = pgppubring.c pgplib.c lib.c extlib.c sha1dgst.c
+pgpring_SOURCES = pgppubring.c pgplib.c lib.c extlib.c sha1.c
 pgpring_LDADD = @LIBOBJS@ $(INTLLIBS) 
 pgpring_DEPENDENCIES = @LIBOBJS@ $(INTLDEPS)
 
