@@ -464,8 +464,8 @@ char* smime_ask_for_key (char *prompt, char *mailbox, short public)
       }
     }
     if (hash) {
-      fname = safe_malloc(14); /* Hash + '.' + Suffix + \n + \0 */
-      sprintf(fname, "%.8x.%i\n", Table[cur].hash, Table[cur].suffix);
+      fname = safe_malloc(13); /* Hash + '.' + Suffix + \0 */
+      sprintf(fname, "%.8x.%i", Table[cur].hash, Table[cur].suffix);
     }
     else fname = NULL;
   
