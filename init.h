@@ -273,7 +273,7 @@ struct option_t MuttVars[] = {
   ** Controls whether you will be asked to confirm bouncing messages.
   ** If set to \fIyes\fP you don't get asked if you want to bounce a
   ** message. Setting this variable to \fIno\fP is not generally useful,
-  ** and thus not recommended, because your are unable to bounce message.
+  ** and thus not recommended, because you are unable to bounce messages.
   */
   { "bounce_delivered", DT_BOOL, R_NONE, OPTBOUNCEDELIVERED, 1 },
   /*
