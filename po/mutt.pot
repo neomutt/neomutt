@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-06 08:02+0200\n"
+"POT-Creation-Date: 1998-10-08 00:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -145,7 +145,7 @@ msgstr ""
 msgid "Directory [%s], File mask: %s"
 msgstr ""
 
-#: browser.c:537 browser.c:730 browser.c:825
+#: browser.c:537 browser.c:730 browser.c:830
 msgid "No files match the file mask"
 msgstr ""
 
@@ -169,15 +169,15 @@ msgstr ""
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr ""
 
-#: browser.c:811
+#: browser.c:816
 msgid "New file name: "
 msgstr ""
 
-#: browser.c:833
+#: browser.c:838
 msgid "Can't view a directory"
 msgstr ""
 
-#: browser.c:851
+#: browser.c:856
 msgid "Error trying to view file"
 msgstr ""
 
@@ -228,7 +228,7 @@ msgstr ""
 msgid "%s: no such attribute"
 msgstr ""
 
-#: color.c:662 hook.c:61 hook.c:69 keymap.c:655
+#: color.c:662 hook.c:61 hook.c:69 keymap.c:649
 msgid "too few arguments"
 msgstr ""
 
@@ -879,7 +879,7 @@ msgstr ""
 msgid "Help for %s"
 msgstr ""
 
-#: imap.c:100
+#: imap.c:102
 #, c-format
 msgid "imap_error(): unexpected response in %s: %s\n"
 msgstr ""
@@ -887,75 +887,75 @@ msgstr ""
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
 #.
-#: imap.c:353
+#: imap.c:354
 msgid "Fatal error.  Message count is out of sync!"
 msgstr ""
 
-#: imap.c:428
+#: imap.c:424
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr ""
 
-#: imap.c:662
+#: imap.c:622 mbox.c:925
+msgid "Reopening mailbox..."
+msgstr ""
+
+#: imap.c:857
 #, c-format
 msgid "Connecting to %s..."
 msgstr ""
 
-#: imap.c:681
+#: imap.c:876
 msgid "IMAP Username: "
 msgstr ""
 
-#: imap.c:694
+#: imap.c:889
 #, c-format
 msgid "Password for %s@%s: "
 msgstr ""
 
-#: imap.c:707
+#: imap.c:902
 msgid "Logging in..."
 msgstr ""
 
-#: imap.c:759
+#: imap.c:957
 #, c-format
 msgid "Selecting %s..."
 msgstr ""
 
-#: imap.c:854 lib.c:1164
+#: imap.c:1053 lib.c:1164
 #, c-format
 msgid "Create %s?"
 msgstr ""
 
-#: imap.c:898
+#: imap.c:1097
 msgid "Fetching message..."
 msgstr ""
 
-#: imap.c:1006
+#: imap.c:1205
 msgid "Sending APPEND command ..."
 msgstr ""
 
-#: imap.c:1044
+#: imap.c:1244
 msgid "Uploading message ..."
 msgstr ""
 
-#: imap.c:1099
+#: imap.c:1299
 msgid "Closing connection to IMAP server..."
 msgstr ""
 
-#: imap.c:1128
+#: imap.c:1329
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr ""
 
-#: imap.c:1154
+#: imap.c:1355
 msgid "Expunging messages from server..."
 msgstr ""
 
 #. tell the server to commit changes
-#: imap.c:1205
+#: imap.c:1406
 msgid "Closing mailbox..."
-msgstr ""
-
-#: imap.c:1306
-msgid "BUG! Untagged IMAP Response during BUFFY Check"
 msgstr ""
 
 #: init.c:432
@@ -1062,54 +1062,54 @@ msgstr ""
 msgid "unable to determine username"
 msgstr ""
 
-#: keymap.c:410
+#: keymap.c:413
 msgid "Macro loop detected."
 msgstr ""
 
-#: keymap.c:605
+#: keymap.c:599
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr ""
 
-#: keymap.c:607
+#: keymap.c:601
 msgid "Key is not bound.  See the manual."
 msgstr ""
 
-#: keymap.c:617
+#: keymap.c:611
 msgid "push: too many arguments"
 msgstr ""
 
-#: keymap.c:638
+#: keymap.c:632
 #, c-format
 msgid "%s: no such menu"
 msgstr ""
 
-#: keymap.c:647
+#: keymap.c:641
 msgid "null key sequence"
 msgstr ""
 
-#: keymap.c:725
+#: keymap.c:719
 msgid "bind: too many arguments"
 msgstr ""
 
-#: keymap.c:740
+#: keymap.c:734
 #, c-format
 msgid "%s: no such function in map"
 msgstr ""
 
-#: keymap.c:763
+#: keymap.c:757
 msgid "macro: empty key sequence"
 msgstr ""
 
-#: keymap.c:774
+#: keymap.c:768
 msgid "macro: too many arguments"
 msgstr ""
 
-#: keymap.c:804
+#: keymap.c:798
 msgid "exec: too few arguments"
 msgstr ""
 
-#: keymap.c:823
+#: keymap.c:818
 #, c-format
 msgid "%s: no such command"
 msgstr ""
@@ -1932,10 +1932,6 @@ msgstr ""
 msgid "Could not reopen mailbox!"
 msgstr ""
 
-#: mbox.c:925
-msgid "Reopening mailbox..."
-msgstr ""
-
 #: menu.c:297
 msgid "Jump to: "
 msgstr ""
@@ -2475,7 +2471,7 @@ msgstr ""
 msgid "Connecting to %s"
 msgstr ""
 
-#: pop.c:166 pop.c:317
+#: pop.c:166 pop.c:331
 msgid "Server closed connection!"
 msgstr ""
 
@@ -2483,20 +2479,20 @@ msgstr ""
 msgid "No new mail in POP mailbox."
 msgstr ""
 
-#: pop.c:195
+#: pop.c:209
 #, c-format
 msgid "Reading %d new message (%d bytes)..."
 msgstr ""
 
-#: pop.c:231
+#: pop.c:245
 msgid "Error reading message!"
 msgstr ""
 
-#: pop.c:267
+#: pop.c:281
 msgid "Error while writing mailbox!"
 msgstr ""
 
-#: pop.c:291
+#: pop.c:305
 #, c-format
 msgid "%s [%d messages read]"
 msgstr ""
