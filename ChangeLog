@@ -1,3 +1,7 @@
+2005-03-22 19:43:13  Vsevolod Volkov  <vvv@mutt.org.ua>  (roessler)
+
+	* po/ru.po: update
+
 2005-03-22 03:40:54  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (brendan)
 
 	* hcache.c, imap/imap.c, imap/imap_private.h, imap/message.c,
