@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3.11\n"
-"POT-Creation-Date: 2000-11-27 12:33+0100\n"
+"POT-Creation-Date: 2000-12-31 11:13+0100\n"
 "PO-Revision-Date: 2000-11-27 17:22+0100\n"
 "Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
@@ -88,8 +88,8 @@ msgstr "Ne correspond pas au nametemplate, continuer ?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "L'entrée compose du fichier mailcap nécessite %%s"
 
-#: attach.c:131 attach.c:256 commands.c:185 compose.c:1179 curs_lib.c:141
-#: curs_lib.c:370
+#: attach.c:131 attach.c:256 commands.c:185 compose.c:1179 curs_lib.c:145
+#: curs_lib.c:374
 #, c-format
 msgid "Error running \"%s\"!"
 msgstr "Erreur en exécutant \"%s\" !"
@@ -665,28 +665,28 @@ msgstr "Écriture du message dans %s ..."
 msgid "Message written."
 msgstr "Message écrit."
 
-#: curs_lib.c:149
+#: curs_lib.c:153
 msgid "yes"
 msgstr "oui"
 
-#: curs_lib.c:150
+#: curs_lib.c:154
 msgid "no"
 msgstr "non"
 
 #. restore blocking operation
-#: curs_lib.c:232
+#: curs_lib.c:236
 msgid "Exit Mutt?"
 msgstr "Quitter Mutt ?"
 
-#: curs_lib.c:322 mutt_socket.c:399
+#: curs_lib.c:326 mutt_socket.c:399
 msgid "unknown error"
 msgstr "erreur inconnue"
 
-#: curs_lib.c:342
+#: curs_lib.c:346
 msgid "Press any key to continue..."
 msgstr "Appuyez sur une touche pour continuer..."
 
-#: curs_lib.c:386
+#: curs_lib.c:390
 msgid " ('?' for list): "
 msgstr " ('?' pour avoir la liste) : "
 
@@ -703,7 +703,7 @@ msgid "Mailbox is read-only."
 msgstr "La boîte aux lettres est en lecture seule."
 
 # , c-format
-#: curs_main.c:62 pager.c:63 recvattach.c:746
+#: curs_main.c:62 pager.c:63 recvattach.c:767
 msgid "Function not permitted in attach-message mode."
 msgstr "Fonction non autorisée en mode attach-message."
 
@@ -866,7 +866,7 @@ msgstr "Pas d'autres discussions."
 msgid "You are on the first thread."
 msgstr "Vous êtes sur la première discussion."
 
-#: curs_main.c:1438 curs_main.c:1469 flags.c:228 thread.c:651 thread.c:702
+#: curs_main.c:1438 curs_main.c:1469 flags.c:250 thread.c:651 thread.c:702
 msgid "Threading is not enabled."
 msgstr "L'affichage des discussions n'est pas activé."
 
@@ -994,12 +994,12 @@ msgid "Error. Preserving temporary file: %s"
 msgstr "Erreur. On préserve le fichier temporaire : %s"
 
 # , c-format
-#: flags.c:266
+#: flags.c:288
 msgid "Set flag"
 msgstr "Positionner l'indicateur"
 
 # , c-format
-#: flags.c:266
+#: flags.c:288
 msgid "Clear flag"
 msgstr "Effacer l'indicateur"
 
@@ -1242,56 +1242,56 @@ msgstr "Erreur fatale. Le nombre de messages ne correspond pas !"
 msgid "Closing connection to %s..."
 msgstr "Fermeture de la connexion à %s..."
 
-#: imap/imap.c:296
+#: imap/imap.c:295
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "Ce serveur IMAP est trop ancien. Mutt ne marche pas avec."
 
 # , c-format
-#: imap/imap.c:498
+#: imap/imap.c:497
 #, c-format
 msgid "Selecting %s..."
 msgstr "Sélection de %s..."
 
 #. STATUS not supported
-#: imap/imap.c:668
+#: imap/imap.c:667
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Impossible d'ajouter aux boîtes aux lettres IMAP sur ce serveur"
 
 # , c-format
 #. command failed cause folder doesn't exist
-#: imap/imap.c:677 imap/message.c:573 muttlib.c:1144
+#: imap/imap.c:676 imap/message.c:577 muttlib.c:1144
 #, c-format
 msgid "Create %s?"
 msgstr "Créer %s ?"
 
-#: imap/imap.c:713
+#: imap/imap.c:712
 msgid "Closing connection to IMAP server..."
 msgstr "Fermeture de la connexion au serveur IMAP..."
 
 # , c-format
-#: imap/imap.c:876 pop.c:458
+#: imap/imap.c:875 pop.c:458
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Marquage de %d messages à effacer..."
 
 # , c-format
-#: imap/imap.c:895
+#: imap/imap.c:894
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Sauvegarde des indicateurs de statut du message... [%d/%d]"
 
-#: imap/imap.c:952
+#: imap/imap.c:951
 msgid "Expunging messages from server..."
 msgstr "Effacement des messages sur le serveur..."
 
 # , c-format
-#: imap/imap.c:1229
+#: imap/imap.c:1228
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Abonnement à %s..."
 
 # , c-format
-#: imap/imap.c:1231
+#: imap/imap.c:1230
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Désabonnement de %s..."
@@ -1313,23 +1313,23 @@ msgstr "Récupération des en-têtes des messages... [%d/%d]"
 msgid "Fetching message..."
 msgstr "Récupération du message..."
 
-#: imap/message.c:273 pop.c:373
+#: imap/message.c:276 pop.c:373
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr ""
 "L'index du message est incorrect. Essayez de rouvrir la boîte aux lettres."
 
-#: imap/message.c:463
+#: imap/message.c:467
 msgid "Uploading message ..."
 msgstr "Chargement du message ..."
 
 # , c-format
-#: imap/message.c:551
+#: imap/message.c:555
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Copie de %d messages dans %s..."
 
 # , c-format
-#: imap/message.c:555
+#: imap/message.c:559
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Copie du message %d dans %s..."
@@ -2563,7 +2563,7 @@ msgid "Tagging is not supported."
 msgstr "Le marquage n'est pas supporté."
 
 # , c-format
-#: mh.c:189
+#: mh.c:194
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Lecture de %s... %d"
@@ -3462,19 +3462,19 @@ msgstr "Imprimer l(es) attachement(s) marqué(s) ?"
 msgid "Print attachment?"
 msgstr "Imprimer l'attachement ?"
 
-#: recvattach.c:817
+#: recvattach.c:835
 msgid "Attachments"
 msgstr "Attachements"
 
-#: recvattach.c:882
+#: recvattach.c:904
 msgid "Can't delete attachment from POP server."
 msgstr "Impossible d'effacer l'attachement depuis le serveur POP."
 
-#: recvattach.c:893
+#: recvattach.c:915
 msgid "Deletion of attachments from PGP messages is unsupported."
 msgstr "L'effacement d'attachements des messages PGP n'est pas supporté."
 
-#: recvattach.c:913 recvattach.c:930
+#: recvattach.c:935 recvattach.c:952
 msgid "Only deletion of multipart attachments is supported."
 msgstr "Seul l'effacement d'attachements multipart est supporté."
 

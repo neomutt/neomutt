@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.2\n"
-"POT-Creation-Date: 2000-11-27 12:33+0100\n"
+"POT-Creation-Date: 2000-12-31 11:13+0100\n"
 "PO-Revision-Date: 1999-12-20 20:41+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -84,8 +84,8 @@ msgstr "无法匹配名称模板，继续？"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Mailcap 编辑项目需要 %%s"
 
-#: attach.c:131 attach.c:256 commands.c:185 compose.c:1179 curs_lib.c:141
-#: curs_lib.c:370
+#: attach.c:131 attach.c:256 commands.c:185 compose.c:1179 curs_lib.c:145
+#: curs_lib.c:374
 #, c-format
 msgid "Error running \"%s\"!"
 msgstr "执行 \"%s\" 时发生错误！"
@@ -645,29 +645,29 @@ msgid "Message written."
 msgstr "信件已写入。"
 
 # Don't translate this!!
-#: curs_lib.c:149
+#: curs_lib.c:153
 msgid "yes"
 msgstr ""
 
 # Don't translate this!!
-#: curs_lib.c:150
+#: curs_lib.c:154
 msgid "no"
 msgstr ""
 
 #. restore blocking operation
-#: curs_lib.c:232
+#: curs_lib.c:236
 msgid "Exit Mutt?"
 msgstr "离开 Mutt？"
 
-#: curs_lib.c:322 mutt_socket.c:399
+#: curs_lib.c:326 mutt_socket.c:399
 msgid "unknown error"
 msgstr "不明的错误"
 
-#: curs_lib.c:342
+#: curs_lib.c:346
 msgid "Press any key to continue..."
 msgstr "按下任何一个键继续…"
 
-#: curs_lib.c:386
+#: curs_lib.c:390
 msgid " ('?' for list): "
 msgstr " (用 '?' 显示列表)："
 
@@ -683,7 +683,7 @@ msgstr "没有信件。"
 msgid "Mailbox is read-only."
 msgstr "信箱是只读的。"
 
-#: curs_main.c:62 pager.c:63 recvattach.c:746
+#: curs_main.c:62 pager.c:63 recvattach.c:767
 msgid "Function not permitted in attach-message mode."
 msgstr "功能在 attach-message 模式下不被支持。"
 
@@ -842,7 +842,7 @@ msgstr "没有更多的序列"
 msgid "You are on the first thread."
 msgstr "您已经在第一个序列上。"
 
-#: curs_main.c:1438 curs_main.c:1469 flags.c:228 thread.c:651 thread.c:702
+#: curs_main.c:1438 curs_main.c:1469 flags.c:250 thread.c:651 thread.c:702
 msgid "Threading is not enabled."
 msgstr "序列功能尚未启动。"
 
@@ -968,11 +968,11 @@ msgstr "无法建立文件 %s"
 msgid "Error. Preserving temporary file: %s"
 msgstr "无法建立暂存档"
 
-#: flags.c:266
+#: flags.c:288
 msgid "Set flag"
 msgstr "设定旗标"
 
-#: flags.c:266
+#: flags.c:288
 msgid "Clear flag"
 msgstr "清除旗标"
 
@@ -1203,50 +1203,50 @@ msgstr "严重错误。信件数量不协调！"
 msgid "Closing connection to %s..."
 msgstr "正在关闭与 IMAP 伺服器的连线…"
 
-#: imap/imap.c:296
+#: imap/imap.c:295
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "这个 IMAP 伺服器已过时，Mutt 无法使用它。"
 
-#: imap/imap.c:498
+#: imap/imap.c:497
 #, c-format
 msgid "Selecting %s..."
 msgstr "选择 %s 中…"
 
 #. STATUS not supported
-#: imap/imap.c:668
+#: imap/imap.c:667
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "无法附加在这个伺服器上的 IMAP 信箱"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:677 imap/message.c:573 muttlib.c:1144
+#: imap/imap.c:676 imap/message.c:577 muttlib.c:1144
 #, c-format
 msgid "Create %s?"
 msgstr "建立 %s？"
 
-#: imap/imap.c:713
+#: imap/imap.c:712
 msgid "Closing connection to IMAP server..."
 msgstr "正在关闭与 IMAP 伺服器的连线…"
 
-#: imap/imap.c:876 pop.c:458
+#: imap/imap.c:875 pop.c:458
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "标签了的 %d 封信件删去了…"
 
-#: imap/imap.c:895
+#: imap/imap.c:894
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "正在储存信件状态旗标… [%d/%d]"
 
-#: imap/imap.c:952
+#: imap/imap.c:951
 msgid "Expunging messages from server..."
 msgstr "正在删除伺服器上的信件…"
 
-#: imap/imap.c:1229
+#: imap/imap.c:1228
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "订阅 %s…"
 
-#: imap/imap.c:1231
+#: imap/imap.c:1230
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "取消订阅 %s…"
@@ -1266,21 +1266,21 @@ msgstr "正在取回信件标头… [%d/%d]"
 msgid "Fetching message..."
 msgstr "寄出信件中…"
 
-#: imap/message.c:273 pop.c:373
+#: imap/message.c:276 pop.c:373
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr ""
 
-#: imap/message.c:463
+#: imap/message.c:467
 #, fuzzy
 msgid "Uploading message ..."
 msgstr "寄出信件中…"
 
-#: imap/message.c:551
+#: imap/message.c:555
 #, fuzzy, c-format
 msgid "Copying %d messages to %s..."
 msgstr "正在搬移已经读取的信件到 %s …"
 
-#: imap/message.c:555
+#: imap/message.c:559
 #, fuzzy, c-format
 msgid "Copying message %d to %s..."
 msgstr "写入信件到 %s …"
@@ -2500,7 +2500,7 @@ msgstr "对话模式中不支持跳跃功能。"
 msgid "Tagging is not supported."
 msgstr "不支持标记功能。"
 
-#: mh.c:189
+#: mh.c:194
 #, c-format
 msgid "Reading %s... %d"
 msgstr "读取 %s… %d"
@@ -3379,20 +3379,20 @@ msgstr "是否要打印标记起来的附件?"
 msgid "Print attachment?"
 msgstr "是否要打印附件?"
 
-#: recvattach.c:817
+#: recvattach.c:835
 msgid "Attachments"
 msgstr "附件"
 
-#: recvattach.c:882
+#: recvattach.c:904
 #, fuzzy
 msgid "Can't delete attachment from POP server."
 msgstr "取回 POP 伺服器上的信件"
 
-#: recvattach.c:893
+#: recvattach.c:915
 msgid "Deletion of attachments from PGP messages is unsupported."
 msgstr "未支持删除 PGP 信件所附带的附件。"
 
-#: recvattach.c:913 recvattach.c:930
+#: recvattach.c:935 recvattach.c:952
 msgid "Only deletion of multipart attachments is supported."
 msgstr "只支持删除多重附件"
 

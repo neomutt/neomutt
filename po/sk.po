@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.95.6i\n"
-"POT-Creation-Date: 2000-11-27 12:33+0100\n"
+"POT-Creation-Date: 2000-12-31 11:13+0100\n"
 "PO-Revision-Date: 1999-07-29 00:00+0100\n"
 "Last-Translator: Miroslav Vasko <vasko@ies.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -84,8 +84,8 @@ msgstr "Nena¹iel som ¹ablónu názvu, pokraèova»?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Zostavovacia polo¾ka mailcap-u vy¾aduje %%s"
 
-#: attach.c:131 attach.c:256 commands.c:185 compose.c:1179 curs_lib.c:141
-#: curs_lib.c:370
+#: attach.c:131 attach.c:256 commands.c:185 compose.c:1179 curs_lib.c:145
+#: curs_lib.c:374
 #, fuzzy, c-format
 msgid "Error running \"%s\"!"
 msgstr "Chyba pri analýze adresy!"
@@ -648,28 +648,28 @@ msgstr "Zapisujem správu do %s ..."
 msgid "Message written."
 msgstr "Správa bola zapísaná."
 
-#: curs_lib.c:149
+#: curs_lib.c:153
 msgid "yes"
 msgstr "y-áno"
 
-#: curs_lib.c:150
+#: curs_lib.c:154
 msgid "no"
 msgstr "nie"
 
 #. restore blocking operation
-#: curs_lib.c:232
+#: curs_lib.c:236
 msgid "Exit Mutt?"
 msgstr "Opusti» Mutt?"
 
-#: curs_lib.c:322 mutt_socket.c:399
+#: curs_lib.c:326 mutt_socket.c:399
 msgid "unknown error"
 msgstr "neznáma chyba"
 
-#: curs_lib.c:342
+#: curs_lib.c:346
 msgid "Press any key to continue..."
 msgstr "Stlaète kláves pre pokraèovanie..."
 
-#: curs_lib.c:386
+#: curs_lib.c:390
 msgid " ('?' for list): "
 msgstr " ('?' pre zoznam): "
 
@@ -686,7 +686,7 @@ msgstr "Vlákno obsahuje neèítané správy."
 msgid "Mailbox is read-only."
 msgstr "Schránka je iba na èítanie."
 
-#: curs_main.c:62 pager.c:63 recvattach.c:746
+#: curs_main.c:62 pager.c:63 recvattach.c:767
 #, fuzzy
 msgid "Function not permitted in attach-message mode."
 msgstr "%c: nepodporovaný v tomto móde"
@@ -846,7 +846,7 @@ msgstr "®iadne ïaµ¹ie vlákna."
 msgid "You are on the first thread."
 msgstr "Ste na prvom vlákne."
 
-#: curs_main.c:1438 curs_main.c:1469 flags.c:228 thread.c:651 thread.c:702
+#: curs_main.c:1438 curs_main.c:1469 flags.c:250 thread.c:651 thread.c:702
 msgid "Threading is not enabled."
 msgstr "Vláknenie nie je povolené."
 
@@ -972,11 +972,11 @@ msgstr "Nemo¾no vytvori» súbor %s"
 msgid "Error. Preserving temporary file: %s"
 msgstr "Nemo¾no vytvori» doèasný súbor"
 
-#: flags.c:266
+#: flags.c:288
 msgid "Set flag"
 msgstr "Nastavi» príznak"
 
-#: flags.c:266
+#: flags.c:288
 msgid "Clear flag"
 msgstr "Vymaza» príznak"
 
@@ -1204,50 +1204,50 @@ msgstr "Fatálna chyba. Poèet správ nie je zosynchronizovaný!"
 msgid "Closing connection to %s..."
 msgstr "Zatváram spojenie s IMAP serverom..."
 
-#: imap/imap.c:296
+#: imap/imap.c:295
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "Tento IMAP server je starý. Mutt s ním nevie pracova»."
 
-#: imap/imap.c:498
+#: imap/imap.c:497
 #, c-format
 msgid "Selecting %s..."
 msgstr "Vyberám %s..."
 
 #. STATUS not supported
-#: imap/imap.c:668
+#: imap/imap.c:667
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Nemo¾no pridáva» k IMAP schránkam na tomto serveri"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:677 imap/message.c:573 muttlib.c:1144
+#: imap/imap.c:676 imap/message.c:577 muttlib.c:1144
 #, c-format
 msgid "Create %s?"
 msgstr "Vytvori» %s?"
 
-#: imap/imap.c:713
+#: imap/imap.c:712
 msgid "Closing connection to IMAP server..."
 msgstr "Zatváram spojenie s IMAP serverom..."
 
-#: imap/imap.c:876 pop.c:458
+#: imap/imap.c:875 pop.c:458
 #, fuzzy, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Èítam %d nových správ (%d bytov)..."
 
-#: imap/imap.c:895
+#: imap/imap.c:894
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Ukladám stavové príznaky správy... [%d/%d]"
 
-#: imap/imap.c:952
+#: imap/imap.c:951
 msgid "Expunging messages from server..."
 msgstr "Vymazávam správy zo serveru..."
 
-#: imap/imap.c:1229
+#: imap/imap.c:1228
 #, fuzzy, c-format
 msgid "Subscribing to %s..."
 msgstr "Kopírujem do %s..."
 
-#: imap/imap.c:1231
+#: imap/imap.c:1230
 #, fuzzy, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Spájam sa s %s..."
@@ -1266,20 +1266,20 @@ msgstr "Vyvolávam hlavièky správ... [%d/%d]"
 msgid "Fetching message..."
 msgstr "Vyvolávam správu..."
 
-#: imap/message.c:273 pop.c:373
+#: imap/message.c:276 pop.c:373
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr ""
 
-#: imap/message.c:463
+#: imap/message.c:467
 msgid "Uploading message ..."
 msgstr "Odsúvam správu ..."
 
-#: imap/message.c:551
+#: imap/message.c:555
 #, fuzzy, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Presúvam preèítané správy do %s..."
 
-#: imap/message.c:555
+#: imap/message.c:559
 #, fuzzy, c-format
 msgid "Copying message %d to %s..."
 msgstr "Zapisujem správu do %s ..."
@@ -2508,7 +2508,7 @@ msgstr "Hµadanie nie je implementované pre toto menu."
 msgid "Tagging is not supported."
 msgstr "Oznaèovanie nie je podporované."
 
-#: mh.c:189
+#: mh.c:194
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Èítam %s... %d"
@@ -3382,20 +3382,20 @@ msgstr "Vytlaèi» oznaèené prílohy?"
 msgid "Print attachment?"
 msgstr "Vytlaèi» prílohu?"
 
-#: recvattach.c:817
+#: recvattach.c:835
 msgid "Attachments"
 msgstr "Prílohy"
 
-#: recvattach.c:882
+#: recvattach.c:904
 #, fuzzy
 msgid "Can't delete attachment from POP server."
 msgstr "vybra» po¹tu z POP serveru"
 
-#: recvattach.c:893
+#: recvattach.c:915
 msgid "Deletion of attachments from PGP messages is unsupported."
 msgstr "Mazanie príloh z PGP správ nie je podporované."
 
-#: recvattach.c:913 recvattach.c:930
+#: recvattach.c:935 recvattach.c:952
 msgid "Only deletion of multipart attachments is supported."
 msgstr "je podporované iba mazanie viaczlo¾kových príloh."
 

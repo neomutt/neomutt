@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt 1.3.12i\n"
-"POT-Creation-Date: 2000-11-29 21:23+0200\n"
+"POT-Creation-Date: 2000-12-31 11:13+0100\n"
 "PO-Revision-Date: 2000-11-29 21:22+0200\n"
 "Last-Translator: Gediminas Paulauskas <menesis@delfi.lt>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -86,8 +86,8 @@ msgstr "Negaliu rasti tinkanèio vardo, tæsti?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Mailcap kûrimo áraðui reikia %%s"
 
-#: attach.c:131 attach.c:256 commands.c:185 compose.c:1179 curs_lib.c:141
-#: curs_lib.c:370
+#: attach.c:131 attach.c:256 commands.c:185 compose.c:1179 curs_lib.c:145
+#: curs_lib.c:374
 #, c-format
 msgid "Error running \"%s\"!"
 msgstr "Klaida vykdant \"%s\"!"
@@ -637,28 +637,28 @@ msgstr "Raðau laiðkà á %s ..."
 msgid "Message written."
 msgstr "Laiðkas áraðytas."
 
-#: curs_lib.c:149
+#: curs_lib.c:153
 msgid "yes"
 msgstr "taip"
 
-#: curs_lib.c:150
+#: curs_lib.c:154
 msgid "no"
 msgstr "ne"
 
 #. restore blocking operation
-#: curs_lib.c:232
+#: curs_lib.c:236
 msgid "Exit Mutt?"
 msgstr "Iðeiti ið Mutt?"
 
-#: curs_lib.c:322 mutt_socket.c:399
+#: curs_lib.c:326 mutt_socket.c:399
 msgid "unknown error"
 msgstr "neþinoma klaida"
 
-#: curs_lib.c:342
+#: curs_lib.c:346
 msgid "Press any key to continue..."
 msgstr "Spausk bet koká klaviðà..."
 
-#: curs_lib.c:386
+#: curs_lib.c:390
 msgid " ('?' for list): "
 msgstr "('?' parodo sàraðà): "
 
@@ -833,7 +833,7 @@ msgstr "Daugiau gijø nëra."
 msgid "You are on the first thread."
 msgstr "Tu esi ties pirma gija."
 
-#: curs_main.c:1438 curs_main.c:1469 flags.c:228 thread.c:651 thread.c:702
+#: curs_main.c:1438 curs_main.c:1469 flags.c:250 thread.c:651 thread.c:702
 msgid "Threading is not enabled."
 msgstr "Skirstymas gijomis neleidþiamas."
 
@@ -956,11 +956,11 @@ msgstr "Negaliu pridurti laiðko prie aplanko: %s"
 msgid "Error. Preserving temporary file: %s"
 msgstr "Klaida. Iðsaugau laikinà bylà: %s"
 
-#: flags.c:266
+#: flags.c:288
 msgid "Set flag"
 msgstr "Uþdëti flagà"
 
-#: flags.c:266
+#: flags.c:288
 msgid "Clear flag"
 msgstr "Iðvalyti flagà"
 
@@ -1183,50 +1183,50 @@ msgstr "Mirtina klaida.  Nesutampa laiðkø skaièius!"
 msgid "Closing connection to %s..."
 msgstr "Uþdarau jungtá su %s..."
 
-#: imap/imap.c:296
+#: imap/imap.c:295
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "Ðis IMAP serveris yra senoviðkas. Mutt su juo neveikia."
 
-#: imap/imap.c:498
+#: imap/imap.c:497
 #, c-format
 msgid "Selecting %s..."
 msgstr "Parenku %s..."
 
 #. STATUS not supported
-#: imap/imap.c:668
+#: imap/imap.c:667
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Nepavyko pridurti prie IMAP dëþuèiø ðiame serveryje"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:677 imap/message.c:573 muttlib.c:1144
+#: imap/imap.c:676 imap/message.c:577 muttlib.c:1144
 #, c-format
 msgid "Create %s?"
 msgstr "Sukurti %s?"
 
-#: imap/imap.c:713
+#: imap/imap.c:712
 msgid "Closing connection to IMAP server..."
 msgstr "Uþdarau jungtá su IMAP serveriu..."
 
-#: imap/imap.c:876 pop.c:458
+#: imap/imap.c:875 pop.c:458
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Paþymiu %d laiðkus iðtrintais..."
 
-#: imap/imap.c:895
+#: imap/imap.c:894
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Iðsaugau laiðko bûsenos flagus... [%d/%d]"
 
-#: imap/imap.c:952
+#: imap/imap.c:951
 msgid "Expunging messages from server..."
 msgstr "Iðtuðtinu laiðkus ið serverio..."
 
-#: imap/imap.c:1229
+#: imap/imap.c:1228
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Uþsakau %s..."
 
-#: imap/imap.c:1231
+#: imap/imap.c:1230
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Atsisakau %s..."
@@ -1245,20 +1245,20 @@ msgstr "Paimu laiðkø antraðtes... [%d/%d]"
 msgid "Fetching message..."
 msgstr "Paimu laiðkà..."
 
-#: imap/message.c:273 pop.c:373
+#: imap/message.c:276 pop.c:373
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Laiðkø indeksas yra neteisingas. Bandyk ið naujo atidaryti dëþutæ."
 
-#: imap/message.c:463
+#: imap/message.c:467
 msgid "Uploading message ..."
 msgstr "Nusiunèiu laiðkà..."
 
-#: imap/message.c:551
+#: imap/message.c:555
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Kopijuoju %d laiðkus á %s..."
 
-#: imap/message.c:555
+#: imap/message.c:559
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Kopijuoju laiðkà %d á %s..."
@@ -2466,7 +2466,7 @@ msgstr "Ðokinëjimas dialoguose neágyvendintas."
 msgid "Tagging is not supported."
 msgstr "Þymëjimas nepalaikomas."
 
-#: mh.c:189
+#: mh.c:194
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Skaitau %s... %d"

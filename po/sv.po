@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3.12\n"
-"POT-Creation-Date: 2000-11-27 12:33+0100\n"
+"POT-Creation-Date: 2000-12-31 11:13+0100\n"
 "PO-Revision-Date: 2000-12-02 19:32+01:00\n"
 "Last-Translator: Jörgen Tegnér <teg@post.netlink.se>\n"
 "Language-Team: \n"
@@ -81,8 +81,8 @@ msgstr "Kan inte para ihop namnmall, fortsätt?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "'compose' i 'mailcap' kräver %%s"
 
-#: attach.c:131 attach.c:256 commands.c:185 compose.c:1179 curs_lib.c:141
-#: curs_lib.c:370
+#: attach.c:131 attach.c:256 commands.c:185 compose.c:1179 curs_lib.c:145
+#: curs_lib.c:374
 #, c-format
 msgid "Error running \"%s\"!"
 msgstr "Ett fel uppstod när \"%s\" kördes!"
@@ -633,28 +633,28 @@ msgstr "Skriver meddelandet till %s ..."
 msgid "Message written."
 msgstr "Meddelandet skrevs."
 
-#: curs_lib.c:149
+#: curs_lib.c:153
 msgid "yes"
 msgstr "ja"
 
-#: curs_lib.c:150
+#: curs_lib.c:154
 msgid "no"
 msgstr "nej"
 
 #. restore blocking operation
-#: curs_lib.c:232
+#: curs_lib.c:236
 msgid "Exit Mutt?"
 msgstr "Avsluta Mutt?"
 
-#: curs_lib.c:322 mutt_socket.c:399
+#: curs_lib.c:326 mutt_socket.c:399
 msgid "unknown error"
 msgstr "okänt fel"
 
-#: curs_lib.c:342
+#: curs_lib.c:346
 msgid "Press any key to continue..."
 msgstr "Tryck på valfri tangent för att fortsätta..."
 
-#: curs_lib.c:386
+#: curs_lib.c:390
 msgid " ('?' for list): "
 msgstr " ('?' för lista): "
 
@@ -670,7 +670,7 @@ msgstr "Inga meddelanden."
 msgid "Mailbox is read-only."
 msgstr "Brevlådan kan endast läsas."
 
-#: curs_main.c:62 pager.c:63 recvattach.c:746
+#: curs_main.c:62 pager.c:63 recvattach.c:767
 msgid "Function not permitted in attach-message mode."
 msgstr "Otillåten funktion i läget 'bifoga-meddelande'."
 
@@ -829,7 +829,7 @@ msgstr "Inga fler trådar."
 msgid "You are on the first thread."
 msgstr "Du ser den första tråden."
 
-#: curs_main.c:1438 curs_main.c:1469 flags.c:228 thread.c:651 thread.c:702
+#: curs_main.c:1438 curs_main.c:1469 flags.c:250 thread.c:651 thread.c:702
 msgid "Threading is not enabled."
 msgstr "Trådning är inte aktiverad."
 
@@ -952,11 +952,11 @@ msgstr "Kan inte lägga till brevlådan: %s"
 msgid "Error. Preserving temporary file: %s"
 msgstr "Fel. Sparar tillfällig fil: %s"
 
-#: flags.c:266
+#: flags.c:288
 msgid "Set flag"
 msgstr "Sätt flagga"
 
-#: flags.c:266
+#: flags.c:288
 msgid "Clear flag"
 msgstr "Ta bort flagga"
 
@@ -1180,52 +1180,52 @@ msgstr "Fatalt fel. Meddelanderäknaren är inte synkroniserad!"
 msgid "Closing connection to %s..."
 msgstr "Stänger förbindelse till %s..."
 
-#: imap/imap.c:296
+#: imap/imap.c:295
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr ""
 "Den här versionen av IMAP är uråldrig. Mutt fungerar inte tillsammans med "
 "den."
 
-#: imap/imap.c:498
+#: imap/imap.c:497
 #, c-format
 msgid "Selecting %s..."
 msgstr "Väljer %s..."
 
 #. STATUS not supported
-#: imap/imap.c:668
+#: imap/imap.c:667
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Kunde inte skriva till brevlådor i den här IMAP-servern"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:677 imap/message.c:573 muttlib.c:1144
+#: imap/imap.c:676 imap/message.c:577 muttlib.c:1144
 #, c-format
 msgid "Create %s?"
 msgstr "Skapa %s?"
 
-#: imap/imap.c:713
+#: imap/imap.c:712
 msgid "Closing connection to IMAP server..."
 msgstr "Stänger förbindelse till IMAP-server..."
 
-#: imap/imap.c:876 pop.c:458
+#: imap/imap.c:875 pop.c:458
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Märker %d meddelanden som slängda..."
 
-#: imap/imap.c:895
+#: imap/imap.c:894
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Sparar statusflagga för meddelanden... [%d/%d]"
 
-#: imap/imap.c:952
+#: imap/imap.c:951
 msgid "Expunging messages from server..."
 msgstr "Tar bort meddelanden från server..."
 
-#: imap/imap.c:1229
+#: imap/imap.c:1228
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Prenumerera på %s..."
 
-#: imap/imap.c:1231
+#: imap/imap.c:1230
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Avslutar prenumeration på %s..."
@@ -1244,20 +1244,20 @@ msgstr "Hämtar brevhuvuden för meddelanden... [%d/%d]"
 msgid "Fetching message..."
 msgstr "Hämtar meddelande..."
 
-#: imap/message.c:273 pop.c:373
+#: imap/message.c:276 pop.c:373
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Brevets index är fel. Försök att öppna brevlådan igen."
 
-#: imap/message.c:463
+#: imap/message.c:467
 msgid "Uploading message ..."
 msgstr "Skickar meddelande ..."
 
-#: imap/message.c:551
+#: imap/message.c:555
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Kopierar %d meddelanden till %s..."
 
-#: imap/message.c:555
+#: imap/message.c:559
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Kopierar meddelande %d till %s...<"
@@ -2473,7 +2473,7 @@ msgstr "Hopp stöds inte för dialoger."
 msgid "Tagging is not supported."
 msgstr "Märkning stöds inte."
 
-#: mh.c:189
+#: mh.c:194
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Läser %s... %d"
@@ -3328,19 +3328,19 @@ msgstr "Skriv ut märkta bilagor?"
 msgid "Print attachment?"
 msgstr "Skriv ut bilaga?"
 
-#: recvattach.c:817
+#: recvattach.c:835
 msgid "Attachments"
 msgstr "Bilagor"
 
-#: recvattach.c:882
+#: recvattach.c:904
 msgid "Can't delete attachment from POP server."
 msgstr "Kan inte ta bort meddelanden från POP-servern."
 
-#: recvattach.c:893
+#: recvattach.c:915
 msgid "Deletion of attachments from PGP messages is unsupported."
 msgstr "Stöd saknas att ta bort bilagor från PGP-meddelanden."
 
-#: recvattach.c:913 recvattach.c:930
+#: recvattach.c:935 recvattach.c:952
 msgid "Only deletion of multipart attachments is supported."
 msgstr "Endast multipart-bilagor kan tas bort."
 

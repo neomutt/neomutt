@@ -1,3 +1,100 @@
+Sat Dec 30 10:28:16 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/pl.po: update.
+
+Fri Dec 22 18:03:34 2000  Thomas Roessler  <roessler@guug.de>
+
+	* configure.in: autoconf consmetics.  From L.H.
+
+	* enter.c, mutt.h: Some more changes to the enter code.
+
+	* enter.c: Fix some ugly bugs in the completion code.  In particular,
+	replace_part() could lead to heap corruption.
+
+	* po/lt.po, configure.in:
+	Lithuanian translation.  From Gediminas Paulauskas <menesis@delfi.lt>.
+
+Thu Dec 21 09:19:41 2000  Thomas Roessler  <roessler@guug.de>
+
+	* flags.c, init.h, mh.c, mutt.h: patch.me.maildir_trash.1
+
+Sun Dec 17 19:54:58 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/sv.po: update.
+
+Thu Dec 14 15:40:30 2000  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.head: Improve hook documentation.  From Lars Hecking.
+
+	* enter.c: More file name completion fixes.
+
+	* enter.c: Fix "tab-tab" at the change-folder prompt.
+
+Sun Dec 10 21:01:35 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/message.c, init.h, mutt.h:
+	Avoid implicit flag updates with IMAP.  From Brendan Cully.
+
+	* configure.in, enter.c, mbyte.c, mbyte.h, mutt.h:
+	More enter.c updates.  From E.G.E..
+
+	* mbyte.h, mutt.h, configure.in, enter.c:
+	More changes to the utf-8 friendly line editor: Implement some
+	missing functions, include some more header files.
+
+Fri Dec  8 10:38:30 2000  Thomas Roessler  <roessler@guug.de>
+
+	* curs_lib.c: Remove an unnecessary ENTER_STATE allocation.
+
+	* curs_lib.c, enter.c, mutt.h, protos.h:
+	Make _mutt_enter_string() re-entrant.
+
+	* curs_lib.c, edit.c, enter.c, protos.h:
+	Make the line editor utf-8 friendly.  First take from Edmund Grimley
+	Evans.
+
+Wed Dec  6 20:31:46 2000  Thomas Roessler  <roessler@guug.de>
+
+	* gnupgparse.c: Fix pgp_ignore_subkeys.
+
+	* mutt_curses.h: Make the BEEP macro a bit safer.  From EGE.
+
+	* imap/imap.c: Fix a memory leak in imap_logout_all.
+
+Mon Dec  4 09:00:08 2000  Thomas Roessler  <roessler@guug.de>
+
+	* mbyte.c:
+	A little fix for the -HAVE_WC_FUNCS +LOCALES_HACK case.  From EGE.
+
+Sun Dec  3 09:34:41 2000  Thomas Roessler  <roessler@guug.de>
+
+	* doc/PGP-Notes.txt:
+	Document the fact that Courier MTA corrupts PGP/MIME signatures.
+
+Sat Dec  2 09:16:47 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/el.po, po/uk.po: update.
+
+Tue Nov 28 11:19:57 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/da.po, po/de.po, po/fr.po, po/id.po: updates
+
+Mon Nov 27 13:14:28 2000  Thomas Roessler  <roessler@guug.de>
+
+	* attach.h, commands.c, compose.c, curs_main.c, protos.h, recvattach.c:
+	Make sure edit-type works without a segmentation fault from the
+	receive-attach menu.
+
+	* po/uk.po, po/zh_CN.GB2312.po, po/zh_TW.Big5.po, po/ru.po, po/sk.po, po/sv.po, po/pl.po, po/pt_BR.po, po/nl.po, po/it.po, po/ko.po, po/fr.po, po/gl.po, po/id.po, po/eo.po, po/es.po, po/el.po, po/cs.po, po/da.po, po/de.po, reldate.h, VERSION, ChangeLog:
+	automatic post-release commit for mutt-1.3.12
+
+Thu Nov 23 10:30:49 2000  Thomas Roessler  <roessler@guug.de>
+
+	* contrib/sample.muttrc-tlr:
+	Use display_filter to fix some ugliness people are sending me.
+
+	* commands.c: Don't endwin() before invoking the display_filter.
+
 Thu Nov 23 10:30:49 2000  Thomas Roessler  <roessler@guug.de>
 
 	* contrib/sample.muttrc-tlr:
