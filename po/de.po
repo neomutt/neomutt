@@ -2405,6 +2405,7 @@ msgid ""
 "\n"
 "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr ""
+"\n"
 "[-- END PGP SIGNED MESSAGE --]\n"
 "\n"
 
