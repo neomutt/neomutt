@@ -10,6 +10,9 @@ AC_DEFUN(MUTT_AM_PATH_GSSAPI,
 [
   GSSAPI_PREFIX=[$]$1
   GSSAPI_IMPL="none"
+  saved_CPPFLAGS="$CPPFLAGS"
+  saved_LDFLAGS="$LDFLAGS"
+  saved_LIBS="$LIBS"
   dnl First try krb5-config
   if test "$GSSAPI_PREFIX" != "yes"
   then
@@ -22,12 +25,13 @@ AC_DEFUN(MUTT_AM_PATH_GSSAPI,
   then
     GSSAPI_CFLAGS="$CPPFLAGS `$KRB5CFGPATH --cflags gssapi`"
     GSSAPI_LIBS="$MUTTLIBS `$KRB5CFGPATH --libs gssapi`"
-    GSSAPI_IMPL="Heimdal"
+    case "`$KRB5CFGPATH --version`" in
+      "Kerberos 5 "*)	GSSAPI_IMPL="MIT";;
+      ?eimdal*)		GSSAPI_IMPL="Heimdal";;
+      *)		GSSAPI_IMPL="Unknown";;
+   esac
   else
     dnl No krb5-config, run the old code
-    saved_CPPFLAGS="$CPPFLAGS"
-    saved_LDFLAGS="$LDFLAGS"
-    saved_LIBS="$LIBS"
     if test "$GSSAPI_PREFIX" != "yes"
     then
       GSSAPI_CFLAGS="-I$GSSAPI_PREFIX/include"
