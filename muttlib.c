@@ -304,6 +304,7 @@ char *mutt_expand_path (char *s, size_t slen)
 {
   char p[_POSIX_PATH_MAX] = "";
   char *q = NULL;
+  char *next;
 
   if (*s == '~')
   {
@@ -359,12 +360,16 @@ char *mutt_expand_path (char *s, size_t slen)
   }
   else
   {
+    next = s + 1;
     if (*s == '>')
       q = Inbox;
     else if (*s == '<')
       q = Outbox;
     else if (!mutt_strcmp (s, "!!"))	/* elm compatibility */
+    {
       q = LastFolder;
+      next = s + 2;
+    }
     else if (*s == '!')
       q = Spoolfile;
     else if (*s == '-')
@@ -374,8 +379,9 @@ char *mutt_expand_path (char *s, size_t slen)
 
     if (!q)
       return s;
-    snprintf (p, sizeof (p), "%s%s", q, s + 1);
+    snprintf (p, sizeof (p), "%s%s", q, next);
   }
+
   if (*p)
     strfcpy (s, p, slen); /* replace the string with the expanded version. */
   return (s);
