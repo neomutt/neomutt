@@ -1,9 +1,9 @@
 # $Id$
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.1.2 (CVS 2000-01-30)\n"
-"POT-Creation-Date: 2000-02-01 08:36+0100\n"
-"PO-Revision-Date: 2000-01-30 17:00:00+0100\n"
+"Project-Id-Version: 1.1.2 (CVS 2000-02-03)\n"
+"POT-Creation-Date: 2000-02-03 12:04+0100\n"
+"PO-Revision-Date: 2000-02-03 12:00:00+0100\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -1390,51 +1390,51 @@ msgstr "%s ist nicht gesetzt."
 msgid "%s: invalid mailbox type"
 msgstr "%s: Ungültiger Mailbox-Typ"
 
-#: init.c:1094
+#: init.c:1060 init.c:1105
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: Ungültiger Wert"
 
-#: init.c:1149
+#: init.c:1160
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: Unbekannter Typ"
 
-#: init.c:1188
+#: init.c:1199
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Fehler in %s, Zeile %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1199
+#: init.c:1210
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: Fehler in %s"
 
-#: init.c:1209
+#: init.c:1220
 #, c-format
 msgid "source: error at %s"
 msgstr "source: Fehler bei %s"
 
-#: init.c:1214
+#: init.c:1225
 msgid "source: too many arguments"
 msgstr "source: Zu viele Argumente"
 
-#: init.c:1265
+#: init.c:1276
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: Unbekanntes Kommando"
 
-#: init.c:1622
+#: init.c:1633
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Fehler in Kommandozeile: %s\n"
 
-#: init.c:1665
+#: init.c:1676
 msgid "unable to determine home directory"
 msgstr "Kann Home-Verzeichnis nicht bestimmen."
 
-#: init.c:1673
+#: init.c:1684
 msgid "unable to determine username"
 msgstr "Kann Nutzernamen nicht bestimmen."
 
@@ -2211,12 +2211,15 @@ msgid "Out of memory!"
 msgstr "Kein Speicher verfügbar!"
 
 #: main.c:40
-msgid "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
+msgid ""
+"To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
+"To report a bug, please use the muttbug utility.\n"
 msgstr ""
 "Um die Entwickler zu kontaktieren, schicken Sie bitte\n"
 "eine Nachricht (in englisch) an <mutt-dev@mutt.org>.\n"
+"Um einen Bug zu melden, verwenden Sie bitte das Programm muttbug.\n"
 
-#: main.c:43
+#: main.c:44
 msgid ""
 "Copyright (C) 1996-2000 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
@@ -2228,7 +2231,7 @@ msgstr ""
 "Mutt ist freie Software und es ist zulässig, es unter bestimmten\n"
 "Bedingungen weiterzuverteilen; starten Sie `mutt -vv' für Details.\n"
 
-#: main.c:49
+#: main.c:50
 msgid ""
 "Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
@@ -2280,7 +2283,7 @@ msgstr ""
 "    diesem Programm erhalten haben; falls nicht, schreiben sie an Free\n"
 "    Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n"
 
-#: main.c:76
+#: main.c:77
 msgid ""
 "\n"
 "SHA1 implementation Copyright (C) 1995-1997 Eric A. Young "
@@ -2313,7 +2316,7 @@ msgstr ""
 "    Verbreitung zusammen mit diesem Programm erhalten haben; falls\n"
 "    nicht, schreiben Sie an die Entwickler des Programms.\n"
 
-#: main.c:102
+#: main.c:103
 msgid ""
 "usage: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
 "]\n"
@@ -2371,7 +2374,7 @@ msgstr ""
 "  -Z\t\tÖffne erste Mailbox mit neuen Nachrichten oder beenden\n"
 "  -h\t\tDiese Hilfe"
 
-#: main.c:154
+#: main.c:155
 msgid ""
 "\n"
 "Compile options:"
