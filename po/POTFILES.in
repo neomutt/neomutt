@@ -8,6 +8,7 @@ charset.c
 color.c
 commands.c
 compose.c
+crypt.c
 curs_lib.c
 curs_main.c
 edit.c
