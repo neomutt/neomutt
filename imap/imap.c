@@ -471,7 +471,7 @@ int imap_open_mailbox (CONTEXT* ctx)
 
   /* we require a connection which isn't currently in IMAP_SELECTED state */
   if (!(idata = imap_conn_find (&(mx.account), M_IMAP_CONN_NOSELECT)))
-    goto fail;
+    goto fail_noidata;
   conn = idata->conn;
 
   /* once again the context is new */
@@ -622,9 +622,8 @@ int imap_open_mailbox (CONTEXT* ctx)
   return 0;
 
  fail:
-  if(idata)
-    idata->state = IMAP_AUTHENTICATED;
-
+  idata->state = IMAP_AUTHENTICATED;
+ fail_noidata:
   FREE (&mx.mbox);
   return -1;
 }
