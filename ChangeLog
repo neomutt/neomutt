@@ -1,3 +1,11 @@
+2004-08-16 21:36:06  Brendan Cully  <brendan@kublai.com>  (roessler)
+
+	* imap/auth_sasl.c: The attached patch causes mutt to attempt
+	the next method in imap_authenticators if the previous method
+	failed, even if the server reported that the method was
+	available. Previously mutt would give up if any authentication
+	method failed.
+
 2004-08-16 21:34:22  Moritz Schulte   <moritz@g10code.com>  (roessler)
 
 	* compose.c: Only print "Encrypt with" field in case the used
