@@ -244,7 +244,7 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
     }
     else if (ch == '$' && (!qc || qc == '"') && (*tok->dptr == '{' || isalpha ((unsigned char) *tok->dptr)))
     {
-      char *env, *var;
+      char *env = NULL, *var = NULL;
 
       if (*tok->dptr == '{')
       {
@@ -262,7 +262,7 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
 	var = mutt_substrdup (tok->dptr, pc);
 	tok->dptr = pc;
       }
-      if ((env = getenv (var)))
+      if (var && (env = getenv (var)))
 	mutt_buffer_addstr (dest, env);
       FREE (&var);
     }
