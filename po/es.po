@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt\n"
-"POT-Creation-Date: 2000-02-23 14:25+0100\n"
+"POT-Creation-Date: 2000-02-24 22:31+0100\n"
 "PO-Revision-Date: 2000-01-31 17:27+01:00\n"
 "Last-Translator: Boris Wesslowski <Boris@Wesslowski.com>\n"
 "Language-Team: -\n"
@@ -2405,7 +2405,12 @@ msgstr "%s: imposible adjuntar archivo.\n"
 msgid "No mailbox with new mail."
 msgstr "Ningún buzón con correo nuevo."
 
-#: main.c:685
+#: main.c:660
+#, fuzzy
+msgid "No incoming mailboxes defined."
+msgstr "cambiar entre buzones de entrada"
+
+#: main.c:689
 msgid "Mailbox is empty."
 msgstr "El buzón esta vacío."
 

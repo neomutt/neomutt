@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1\n"
-"POT-Creation-Date: 2000-02-23 14:25+0100\n"
+"POT-Creation-Date: 2000-02-24 22:31+0100\n"
 "PO-Revision-Date: 2000-02-23 09:33+00:00\n"
 "Last-Translator: Edmund GRIMLEY EVANS <edmundo@rano.org>\n"
 "Language-Team: eo <eo@li.org>\n"
@@ -2404,7 +2404,12 @@ msgstr "%s: ne povas aldoni dosieron.\n"
 msgid "No mailbox with new mail."
 msgstr "Mankas poþtfako kun nova poþto."
 
-#: main.c:685
+#: main.c:660
+#, fuzzy
+msgid "No incoming mailboxes defined."
+msgstr "rondiri tra enir-poþtfakoj"
+
+#: main.c:689
 msgid "Mailbox is empty."
 msgstr "Poþtfako estas malplena."
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.2\n"
-"POT-Creation-Date: 2000-02-23 14:25+0100\n"
+"POT-Creation-Date: 2000-02-24 22:31+0100\n"
 "PO-Revision-Date: 1999-12-20 20:41+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -2419,7 +2419,12 @@ msgstr "%s：無法附帶檔案。\n"
 msgid "No mailbox with new mail."
 msgstr "沒有信箱有新信件。"
 
-#: main.c:685
+#: main.c:660
+#, fuzzy
+msgid "No incoming mailboxes defined."
+msgstr "圈選進入的郵筒"
+
+#: main.c:689
 msgid "Mailbox is empty."
 msgstr "信箱內空無一物。"
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.2\n"
-"POT-Creation-Date: 2000-02-23 14:25+0100\n"
+"POT-Creation-Date: 2000-02-24 22:31+0100\n"
 "PO-Revision-Date: 2000-02-18 10:47+0900\n"
 "Last-Translator: Byeong-Chan Kim <redhands@linux.sarag.net>\n"
 "Language-Team: Korean <ko@li.org>\n"
@@ -2393,7 +2393,12 @@ msgstr "%s: 파일을 첨부할 수 없음.\n"
 msgid "No mailbox with new mail."
 msgstr "새로운 편지가 도착한 편지함 없음."
 
-#: main.c:685
+#: main.c:660
+#, fuzzy
+msgid "No incoming mailboxes defined."
+msgstr "수신 편지함들 둘러보기"
+
+#: main.c:689
 msgid "Mailbox is empty."
 msgstr "편지함이 비었음"
 

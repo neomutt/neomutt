@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 2000-02-23 14:25+0100\n"
+"POT-Creation-Date: 2000-02-24 22:31+0100\n"
 "PO-Revision-Date: 1998-10-25 15:44+0200\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "Language-Team: Ukrainian <uk@ua.net>\n"
@@ -2380,7 +2380,12 @@ msgstr "%s: неможливо при╓днати файл.\n"
 msgid "No mailbox with new mail."
 msgstr "Нема╓ поштово╖ скриньки з новою поштою."
 
-#: main.c:685
+#: main.c:660
+#, fuzzy
+msgid "No incoming mailboxes defined."
+msgstr "перех╕д по вх╕дних поштових скриньках"
+
+#: main.c:689
 msgid "Mailbox is empty."
 msgstr "Поштова скринька порожня."
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.2i\n"
-"POT-Creation-Date: 2000-02-23 14:25+0100\n"
+"POT-Creation-Date: 2000-02-24 22:31+0100\n"
 "PO-Revision-Date: 2000-01-30 12:40-0600\n"
 "Last-Translator: Ronny Haryanto <ronny-muttpo@haryan.to>\n"
 "Language-Team: Indonesia <i18n@linux.or.id>\n"
@@ -2409,7 +2409,12 @@ msgstr "%s: tidak bisa melampirkan file.\n"
 msgid "No mailbox with new mail."
 msgstr "Tidak ada kotak surat dengan surat baru."
 
-#: main.c:685
+#: main.c:660
+#, fuzzy
+msgid "No incoming mailboxes defined."
+msgstr "cycle antara kotak surat yang menerima surat"
+
+#: main.c:689
 msgid "Mailbox is empty."
 msgstr "Kotak surat kosong."
 

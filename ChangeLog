@@ -1,3 +1,113 @@
+Thu Feb 24 21:25:49 2000  Thomas Roessler  <roessler@guug.de>
+
+	* main.c: Fix #52, from Mikko.Hanninen@iki.fi.
+
+Wed Feb 23 13:26:03 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/zh_TW.Big5.po, po/sk.po, po/sv.po, po/uk.po, po/pl.po,
+	po/pt_BR.po, po/ru.po, po/nl.po, po/id.po, po/it.po,
+	po/ko.po, po/el.po, po/eo.po, po/es.po, po/fr.po, po/gl.po,
+	po/cs.po, po/de.po: New German translation; make update-po.
+
+	* po/zh_TW.Big5.po, po/sk.po, po/sv.po, po/uk.po,
+	po/pt_BR.po, po/ru.po, po/ko.po, po/nl.po, po/pl.po,
+	po/fr.po, po/gl.po, po/id.po, po/it.po, po/eo.po, po/es.po,
+	po/Makefile.in.in, po/cs.po, po/de.po, po/el.po: Fix some
+	dependency, and do update-po again.  Also, Edmund Evans
+	submitted a new Esperanto translation.
+
+	* mx.c: safe_fclose() doesn't like FILE pointers.
+
+	* mx.h, mx.c: Don't core dump when locking a folder fails.
+
+Tue Feb 22 19:22:29 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/sv.po, po/uk.po, po/zh_TW.Big5.po, po/sk.po, po/ru.po,
+	po/pl.po, po/pt_BR.po, po/ko.po, po/nl.po, po/id.po,
+	po/it.po, po/fr.po, po/gl.po, po/el.po, po/eo.po, po/es.po,
+	po/de.po, po/cs.po: update-po.
+
+	* po/ko.po: New Korean translation from <redhands@linux.sarang.net>.
+
+	* muttbug.sh.in: Fix bug#42: A missing "'".
+
+	* main.c: Cosmetic fix from Marco d'Itri.
+
+	* imap/browse.c, browser.c, doc/manual.sgml.head:
+	Brendan Cully's latest IMAP browser fixes.
+
+Fri Feb 18 10:56:24 2000  Thomas Roessler  <roessler@guug.de>
+
+	* muttlib.c:
+	In mutt_copy_body(), we also need to strdup() the content-description.
+
+	* imap/command.c:
+	Reasonably handle suerfluous EXIST messages from IMAP servers.  From
+	Brendan Cully.
+
+Thu Feb 17 18:22:27 2000  Thomas Roessler  <roessler@guug.de>
+
+	* send.c:
+	Fix content-description encoding - it was done after signing, not
+	before signing.
+
+	* sendlib.c, attach.c, mx.c, pop.c:
+	Do more error checking when writing messages to folders.
+
+Wed Feb 16 17:29:33 2000  Thomas Roessler  <roessler@guug.de>
+
+	* send.c: Fix mail-followup-to generation.
+
+	* sendlib.c:
+	Don't output empty header fields.  This is made necessary by the
+	addition of possibly empty my_hdr commands.
+
+	* init.c: Permit empty my_hdrs.  Suggested by Edmund Grimley Evans.
+
+	* po/cs.po: update.
+
+	* pattern.c, protos.h, send.c:
+	Generate mail-followup-to headers which contain the user's mail
+	address when sending messages to _known_ mailing lists.
+
+	* po/de.po: update.
+
+Tue Feb 15 22:26:39 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/fr.po: update.
+
+	* po/eo.po: New translation from Edmund Grimley.
+
+	* OPS: Fix a typo.
+
+	* globals.h: Increase the size of ErrorBuf.
+
+	* po/sv.po, po/uk.po, po/zh_TW.Big5.po, po/pl.po, po/ru.po, po/sk.po, po/id.po, po/it.po, po/ko.po, po/nl.po, po/eo.po, po/es.po, po/fr.po, po/gl.po, po/cs.po, po/de.po, po/el.po, VERSION, reldate.h, ChangeLog:
+	automatic post-release commit for mutt-1.1.4
+
+	* doc/manual.sgml.head:
+	Add improved documentation for the "push" command, and macros.  From
+	Byrial Jensen, based on a patch by Mikko Hanninen.
+
+	* functions.h: Fix the <exit> function on the pager.
+
+	* doc/manual.sgml.head, doc/muttrc.man.head, hook.c, init.c, init.h, protos.h:
+	Byrial Jensen's unhook command patch.
+
+	* doc/Makefile.in:
+	Remove superfluous empty lines from the text version of the manual.
+
+	* OPS:
+	Change the documentation string for OP_MAIN_PREV_UNDELETED - it may
+	be confusing.
+
+	* functions.h, keymap.c: More OP_EXIT fixes.
+
+	* OPS, functions.h, keymap.c, pager.c:
+	Remove the OP_PAGER_EXIT opcode, and change it to OP_EXIT.
+
+	* doc/manual.sgml.head: Add more documentation for subscribe and lists.
+
 Tue Feb 15 08:59:41 2000  Thomas Roessler  <roessler@guug.de>
 
 	* doc/manual.sgml.head:

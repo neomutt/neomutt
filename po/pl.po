@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt-1.1.2i\n"
-"POT-Creation-Date: 2000-02-23 14:25+0100\n"
+"POT-Creation-Date: 2000-02-24 22:31+0100\n"
 "PO-Revision-Date: 2000-01-19 18:30+0200\n"
 "Last-Translator: Pawe³ Dziekoñski <pdziekonski@mml.ch.pwr.wroc.pl>\n"
 "Language-Team: POLISH <pl@li.org>\n"
@@ -2443,7 +2443,12 @@ msgstr "%s: nie mo¿na do³±czyæ pliku.\n"
 msgid "No mailbox with new mail."
 msgstr "Brak foldera z now± poczt±."
 
-#: main.c:685
+#: main.c:660
+#, fuzzy
+msgid "No incoming mailboxes defined."
+msgstr "kr±¿ pomiêdzy skrzynkami pocztowymi"
+
+#: main.c:689
 msgid "Mailbox is empty."
 msgstr "Folder poczty jest pusty."
 

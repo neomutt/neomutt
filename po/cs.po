@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.4i\n"
-"POT-Creation-Date: 2000-02-23 14:25+0100\n"
+"POT-Creation-Date: 2000-02-24 22:31+0100\n"
 "PO-Revision-Date: 2000-02-16 12:35+0100\n"
 "Last-Translator: Jiøí Pavlovský <pavlovsk@ff.cuni.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
@@ -2880,7 +2880,13 @@ msgid "No mailbox with new mail."
 msgstr "V ¾ádné schránce není nová po¹ta."
 
 #
-#: main.c:685
+#: main.c:660
+#, fuzzy
+msgid "No incoming mailboxes defined."
+msgstr "procházet schránkami, pøijímajícími novou po¹tu"
+
+#
+#: main.c:689
 msgid "Mailbox is empty."
 msgstr "Schránka je prázdná."
 

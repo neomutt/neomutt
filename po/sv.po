@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.2\n"
-"POT-Creation-Date: 2000-02-23 14:25+0100\n"
+"POT-Creation-Date: 2000-02-24 22:31+0100\n"
 "PO-Revision-Date: 2000-01-30 14:47+0100\n"
 "Last-Translator: Jörgen Tegnér <teg@post.netlink.se>\n"
 "Language-Team: \n"
@@ -2355,7 +2355,12 @@ msgstr "%s: kan inte bifoga fil.\n"
 msgid "No mailbox with new mail."
 msgstr "Ingen brevlåda har nya brev."
 
-#: main.c:685
+#: main.c:660
+#, fuzzy
+msgid "No incoming mailboxes defined."
+msgstr "rotera bland brevlådor"
+
+#: main.c:689
 msgid "Mailbox is empty."
 msgstr "Brevlådan är tom."
 
