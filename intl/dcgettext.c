@@ -1,4 +1,4 @@
-static char rcsid[]="$Id$";
+static const char rcsid[]="$Id$";
 /* Implementation of the dcgettext(3) function.
    Copyright (C) 1995, 1996, 1997, 1998 Free Software Foundation, Inc.
 

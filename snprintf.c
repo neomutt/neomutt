@@ -1,4 +1,4 @@
-static char rcsid[]="$Id$";
+static const char rcsid[]="$Id$";
 /**************************************************************
  * Original:
  * Patrick Powell Tue Apr 11 09:48:21 PDT 1995

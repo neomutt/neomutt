@@ -1,4 +1,4 @@
-static char rcsid[]="$Id$";
+static const char rcsid[]="$Id$";
 /*	Copyright (C) 1992, 1993, 1994, 1995 Free Software Foundation, Inc.
  * 
  * This program is free software; you can redistribute it and/or modify

@@ -1,4 +1,4 @@
-static char rcsid[]="$Id$";
+static const char rcsid[]="$Id$";
 /* Load needed message catalogs.
    Copyright (C) 1995, 1996, 1997, 1998 Free Software Foundation, Inc.
 

@@ -1,4 +1,4 @@
-static char rcsid[]="$Id$";
+static const char rcsid[]="$Id$";
 /* Implementation of the textdomain(3) function.
    Copyright (C) 1995, 1996, 1997, 1998 Free Software Foundation, Inc.
    Written by Ulrich Drepper <drepper@gnu.ai.mit.edu>, 1995.

@@ -1,4 +1,9 @@
-Thu Oct 15 19:45:50 1998  Thomas Roessler  <roessler@guug.de>
+Thu Oct 15 20:15:46 1998  Thomas Roessler  <roessler@guug.de>
+
+	* rx/Makefile.in, po/Attic/stamp-cat-id, po/ru.po,
+	po/Attic/mutt.pot, po/de.po, po/Attic/cat-id-tbl.c,
+	reldate.h, configure.in, configure, config.h.in,
+	Attic/Makefile.in, ChangeLog: Random pre-release clean-up.
 
 	* po/mutt.pot, doc/manual.sgml.in, pattern.c, mutt.h:
 	This patch introduces the ~k pattern for messages containing pgp key

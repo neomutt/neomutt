@@ -1,4 +1,4 @@
-static char rcsid[]="$Id$";
+static const char rcsid[]="$Id$";
 /*
  * Copyright (C) 1998 Werner Koch <werner.koch@guug.de>
  *
