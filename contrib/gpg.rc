@@ -37,15 +37,15 @@ set pgp_decode_command="/usr/bin/gpg  --charset utf-8   --status-fd=2 %?p?--pass
 set pgp_verify_command="/usr/bin/gpg   --status-fd=2 --no-verbose --quiet  --batch  --output - --verify %s %f"
 
 # decrypt a pgp/mime attachment
-set pgp_decrypt_command="/usr/bin/gpg   --status-fd=2 --passphrase-fd 0 --no-verbose --quiet  --batch  --output - %f"
+set pgp_decrypt_command="/usr/bin/gpg   --status-fd=2 %?p?--passphrase-fd 0? --no-verbose --quiet  --batch  --output - %f"
 
 # create a pgp/mime signed attachment
 # set pgp_sign_command="/usr/bin/gpg-2comp --comment '' --no-verbose --batch  --output - --passphrase-fd 0 --armor --detach-sign --textmode %?a?-u %a? %f"
-set pgp_sign_command="/usr/bin/gpg    --no-verbose --batch --quiet   --output - --passphrase-fd 0 --armor --detach-sign --textmode %?a?-u %a? %f"
+set pgp_sign_command="/usr/bin/gpg    --no-verbose --batch --quiet   --output - %?p?--passphrase-fd 0? --armor --detach-sign --textmode %?a?-u %a? %f"
 
 # create a application/pgp signed (old-style) message
 # set pgp_clearsign_command="/usr/bin/gpg-2comp --comment ''  --no-verbose --batch  --output - --passphrase-fd 0 --armor --textmode --clearsign %?a?-u %a? %f"
-set pgp_clearsign_command="/usr/bin/gpg   --charset utf-8 --no-verbose --batch --quiet   --output - --passphrase-fd 0 --armor --textmode --clearsign %?a?-u %a? %f"
+set pgp_clearsign_command="/usr/bin/gpg   --charset utf-8 --no-verbose --batch --quiet   --output - %?p?--passphrase-fd 0? --armor --textmode --clearsign %?a?-u %a? %f"
 
 # create a pgp/mime encrypted attachment
 # set pgp_encrypt_only_command="pgpewrap gpg-2comp  -v --batch  --output - --encrypt --textmode --armor --always-trust -- -r %r -- %f"
@@ -53,7 +53,7 @@ set pgp_encrypt_only_command="pgpewrap /usr/bin/gpg  --charset utf-8    --batch 
 
 # create a pgp/mime encrypted and signed attachment
 # set pgp_encrypt_sign_command="pgpewrap gpg-2comp  --passphrase-fd 0 -v --batch  --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
-set pgp_encrypt_sign_command="pgpewrap /usr/bin/gpg  --charset utf-8 --passphrase-fd 0  --batch --quiet  --no-verbose  --textmode --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
+set pgp_encrypt_sign_command="pgpewrap /usr/bin/gpg  --charset utf-8 %?p?--passphrase-fd 0?  --batch --quiet  --no-verbose  --textmode --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
 
 # import a key into the public key ring
 set pgp_import_command="/usr/bin/gpg  --no-verbose --import %f"

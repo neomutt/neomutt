@@ -123,7 +123,7 @@ const char *_mutt_fmt_pgp_command (char *dest,
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, cctx->need_passphrase ? "PGPPASSFD=0" : "");
       }
-      else if (!cctx->need_passphrase)
+      else if (!cctx->need_passphrase || pgp_use_gpg_agent())
 	optional = 0;
       break;
     }
