@@ -1,14 +1,13 @@
 # Ukrainian translation for Mutt.
 # Copyright (C) 1998 Free Software Foundation, Inc.
-# Andrej N. Gritsenko <andrej@lucky.net>, 1998-2000.
+# Andrej N. Gritsenko <andrej@lucky.net>, 1998-2001.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.12\n"
-"POT-Creation-Date: 2001-07-25 21:49+0200\n"
-"PO-Revision-Date: 2000-11-18 16:04+0200\n"
+"Project-Id-Version: 1.3.20\n"
+"POT-Creation-Date: 2001-07-24 23:29+0200\n"
+"PO-Revision-Date: 2001-08-09 12:00+0300\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
-"Language-Team: Ukrainian <uk@ua>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=koi8-u\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -82,7 +81,6 @@ msgstr "Нема╓ в╕дпов╕дного ╕мен╕, дал╕?"
 
 #. For now, editing requires a file, no piping
 #: attach.c:123
-#, c-format
 msgid "Mailcap compose entry requires %%s"
 msgstr "Компонування, вказане у mailcap, потребу╓ %%s"
 
@@ -107,7 +105,6 @@ msgstr "В mailcap не визначено компонування %s, створено порожн╕й файл."
 
 #. For now, editing requires a file, no piping
 #: attach.c:250
-#, c-format
 msgid "Mailcap Edit entry requires %%s"
 msgstr "Редагування, вказане у mailcap, потребу╓ %%s"
 
@@ -361,9 +358,8 @@ msgid "Messages bounced."
 msgstr "Коп╕╖ лист╕в переслано."
 
 #: commands.c:329 commands.c:368 commands.c:385
-#, fuzzy
 msgid "Can't create filter process"
-msgstr "Неможливо створити ф╕льтр"
+msgstr "Неможливо створити процес ф╕льтру"
 
 #: commands.c:414
 msgid "Pipe to command: "
@@ -456,7 +452,7 @@ msgstr "Коп╕ювання до %s..."
 #: commands.c:836
 #, c-format
 msgid "Convert to %s upon sending?"
-msgstr ""
+msgstr "Перетворити на %s при надсиланн╕?"
 
 #: commands.c:844
 #, c-format
@@ -464,17 +460,17 @@ msgid "Content-Type changed to %s."
 msgstr "Тип додатку зм╕нено на %s."
 
 #: commands.c:846
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; %s."
-msgstr "Кодування зм╕нено на %s."
+msgstr "Кодування зм╕нено на %s; %s."
 
 #: commands.c:848
 msgid "not converting"
-msgstr ""
+msgstr "не перетворено"
 
 #: commands.c:848
 msgid "converting"
-msgstr ""
+msgstr "перетворено"
 
 #: compose.c:40
 msgid "There are no attachments."
@@ -521,11 +517,8 @@ msgid "<default>"
 msgstr "<за змовчанням>"
 
 #: compose.c:132
-#, fuzzy
 msgid "(e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
-msgstr ""
-"шифр.(e), п╕дп.(s), п╕дп. як(a), усе(b), зм╕на (m)ic алгоритму чи в╕дм╕на"
-"(f)? "
+msgstr "шифр.(e), п╕дп.(s), п╕дп. як(a), усе(b) чи в╕дм╕на(f)? "
 
 #: compose.c:133
 msgid "esabf"
@@ -688,9 +681,8 @@ msgid "Function not permitted in attach-message mode."
 msgstr "Функц╕ю не дозволено в режим╕ додавання пов╕домлення."
 
 #: curs_main.c:63
-#, fuzzy
 msgid "No visible messages."
-msgstr "Нема╓ нових лист╕в"
+msgstr "Жодного пов╕домлення не видно."
 
 #: curs_main.c:238
 msgid "Cannot toggle write on a readonly mailbox!"
@@ -737,9 +729,8 @@ msgid "New mail in this mailbox."
 msgstr "Нова пошта у ц╕й поштов╕й скриньц╕."
 
 #: curs_main.c:477
-#, fuzzy
 msgid "Mailbox was externally modified."
-msgstr "Поштову скриньку зм╕нила зовн╕шня програма. Флаги можуть бути зм╕нен╕."
+msgstr "Поштову скриньку зм╕нила зовн╕шня програма."
 
 #: curs_main.c:589
 msgid "No tagged messages."
@@ -797,7 +788,7 @@ msgstr "Зняти вид╕лення з лист╕в за шаблоном: "
 
 #: curs_main.c:964
 msgid "Open mailbox in read-only mode"
-msgstr "В╕дкрити скриньку в режим╕ лише для читання"
+msgstr "В╕дкрити скриньку лише для читання"
 
 #: curs_main.c:966
 msgid "Open mailbox"
@@ -1010,9 +1001,9 @@ msgid "Invoking autoview command: %s"
 msgstr "Виклик команди автоматичного проглядання: %s"
 
 #: handler.c:1520
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Can't run %s. --]\n"
-msgstr "[-- %s --]\n"
+msgstr "[-- Неможливо виконати %s. --]\n"
 
 #: handler.c:1535 handler.c:1553
 #, c-format
@@ -1132,7 +1123,7 @@ msgstr "П╕дказка до %s"
 
 #: hook.c:240
 msgid "unhook: Can't do unhook * from within a hook."
-msgstr ""
+msgstr "unhook: Неможливо зробити unhook * з hook."
 
 #: hook.c:252
 #, c-format
@@ -1142,12 +1133,11 @@ msgstr "unhook: нев╕домий тип hook: %s"
 #: hook.c:258
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s."
-msgstr ""
+msgstr "unhook: Неможливо видалити %s з %s."
 
 #: imap/auth.c:104 pop_auth.c:393
-#, fuzzy
 msgid "No authenticators available"
-msgstr "Помилка аутентиф╕кац╕╖ SASL."
+msgstr "Аутентиф╕катор╕в нема╓."
 
 #: imap/auth_anon.c:39
 msgid "Authenticating (anonymous)..."
@@ -1207,18 +1197,16 @@ msgid "Create mailbox: "
 msgstr "Створити скриньку: "
 
 #: imap/browse.c:276
-#, fuzzy
 msgid "Mailbox must have a name."
-msgstr "Поштову скриньку не зм╕нено."
+msgstr "Поштова скринька мусить мати ╕м'я."
 
 #: imap/browse.c:284
 msgid "Mailbox created."
 msgstr "Поштову скриньку створено."
 
 #: imap/command.c:289
-#, fuzzy
 msgid "Mailbox closed"
-msgstr "Поштову скриньку видалено."
+msgstr "Поштову скриньку закрито"
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
@@ -1238,11 +1226,11 @@ msgstr "Цей сервер IMAP надто давн╕й. Mutt не може працювати з ним."
 
 #: imap/imap.c:380
 msgid "Secure connection with TLS?"
-msgstr ""
+msgstr "Кодоване з'╓днання з TLS?"
 
 #: imap/imap.c:389
 msgid "Could not negotiate TLS connection"
-msgstr ""
+msgstr "Не вийшло домовитись про TLS з'╓днання"
 
 #: imap/imap.c:534
 #, c-format
@@ -1250,9 +1238,8 @@ msgid "Selecting %s..."
 msgstr "Виб╕р %s..."
 
 #: imap/imap.c:656
-#, fuzzy
 msgid "Error opening mailbox"
-msgstr "Помилка п╕д час запису поштово╖ скриньки!"
+msgstr "Помилка в╕дкриття поштово╖ скриньки"
 
 #. STATUS not supported
 #: imap/imap.c:709
@@ -1275,9 +1262,8 @@ msgid "Marking %d messages deleted..."
 msgstr "Маркування %d нових пов╕домлень видаленими..."
 
 #: imap/imap.c:926
-#, fuzzy
 msgid "Expunge failed"
-msgstr "Помилка ре╓страц╕╖."
+msgstr "Помилка видалення"
 
 #: imap/imap.c:941
 #, c-format
@@ -1289,9 +1275,8 @@ msgid "Expunging messages from server..."
 msgstr "Видалення пов╕домлень з серверу..."
 
 #: imap/imap.c:1064
-#, fuzzy
 msgid "CLOSE failed"
-msgstr "Помилка ре╓страц╕╖."
+msgstr "Помилка CLOSE"
 
 #: imap/imap.c:1320
 #, c-format
@@ -1309,9 +1294,9 @@ msgid "Unable to fetch headers from this IMAP server version."
 msgstr "З серверу IMAP ц╕╓╖ верс╕╖ отримати заголовки неможливо."
 
 #: imap/message.c:83
-#, fuzzy, c-format
+#, c-format
 msgid "Could not create temporary file %s"
-msgstr "Не вийшло створити тимчасовий файл!"
+msgstr "Не вийшло створити тимчасовий файл %s"
 
 #: imap/message.c:96 pop.c:209
 #, c-format
@@ -1481,7 +1466,7 @@ msgstr "bind: дуже багато аргумент╕в"
 #: keymap.c:786
 #, c-format
 msgid "%s: no such function in map"
-msgstr "функц╕я '%s' не ╕сну╓"
+msgstr "функц╕я '%s' не ╕сну╓ в карт╕"
 
 #: keymap.c:809
 msgid "macro: empty key sequence"
@@ -1492,12 +1477,11 @@ msgid "macro: too many arguments"
 msgstr "macro: дуже багато аргумент╕в"
 
 #: keymap.c:850
-#, fuzzy
 msgid "exec: no arguments"
-msgstr "exec: дуже мало аргумент╕в"
+msgstr "exec: нема╓ аргумент╕в"
 
 #: keymap.c:870
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no such function"
 msgstr "функц╕я '%s' не ╕сну╓"
 
@@ -1514,9 +1498,8 @@ msgid "view attachment as text"
 msgstr "дивитись додаток як текст"
 
 #: keymap_alldefs.h:8
-#, fuzzy
 msgid "Toggle display of subparts"
-msgstr "вимк./вв╕мкн. в╕дображення цитованого тексту"
+msgstr "вимк./вв╕мкн. в╕дображення п╕дчастин"
 
 #: keymap_alldefs.h:9
 msgid "move to the bottom of the page"
@@ -1899,9 +1882,8 @@ msgid "delete messages matching a pattern"
 msgstr "видалити листи, що м╕стять вираз"
 
 #: keymap_alldefs.h:105
-#, fuzzy
 msgid "force retrieval of mail from IMAP server"
-msgstr "отримати пошту з сервера POP"
+msgstr "примусово отримати пошту з сервера IMAP"
 
 #: keymap_alldefs.h:106
 msgid "retrieve mail from POP server"
@@ -2217,7 +2199,7 @@ msgstr "зробити розшифровану коп╕ю"
 
 #: keymap_alldefs.h:184
 msgid "check for classic pgp"
-msgstr ""
+msgstr "перев╕рка на класичне pgp"
 
 #: keymap_alldefs.h:185
 msgid "Accept the chain constructed"
@@ -2297,10 +2279,10 @@ msgstr ""
 
 #: main.c:88
 msgid ""
-"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
-"<file> ]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
-"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
+"]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
+"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2327,8 +2309,8 @@ msgid ""
 msgstr ""
 "використання: mutt [ -nRyzZ ] [ -e <кмд> ] [ -F <файл> ] [ -m <тип> ] [ -f "
 "<файл> ]\n"
-"       mutt [ -nx ] [ -e <кмд> ] [ -a <файл> ] [ -F <файл> ] [ -H <файл> ] "
-"[ -i <файл> ] [ -s <тема> ] [ -b <адр> ] [ -c <адр> ] <адр> [ ... ]\n"
+"       mutt [ -nx ] [ -e <кмд> ] [ -a <файл> ] [ -F <файл> ] [ -H <файл> ] [ "
+"-i <файл> ] [ -s <тема> ] [ -b <адр> ] [ -c <адр> ] <адр> [ ... ]\n"
 "       mutt [ -n ] [ -e <кмд> ] [ -F <файл> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2406,7 +2388,6 @@ msgid "Mailbox is empty."
 msgstr "Поштова скринька порожня."
 
 #: mbox.c:129 mbox.c:286
-#, c-format
 msgid "Reading %s... %d (%d%%)"
 msgstr "Читання %s... %d (%d%%)"
 
@@ -2435,7 +2416,6 @@ msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr "sync: скриньку зм╕нено, але нема╓ зм╕нених лист╕в! (пов╕домьте про це)"
 
 #: mbox.c:792
-#, c-format
 msgid "Writing messages... %d (%d%%)"
 msgstr "Запис лист╕в... %d (%d%%)"
 
@@ -2443,9 +2423,8 @@ msgstr "Запис лист╕в... %d (%d%%)"
 #. * change/deleted message
 #.
 #: mbox.c:925
-#, fuzzy
 msgid "Committing changes..."
-msgstr "Комп╕ляц╕я виразу пошуку..."
+msgstr "Внесення зм╕н..."
 
 #: mbox.c:956
 #, c-format
@@ -2573,9 +2552,9 @@ msgid "Append messages to %s?"
 msgstr "Додати листи до %s?"
 
 #: mutt_socket.c:84 mutt_socket.c:140
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s closed"
-msgstr "З'╓днання з %s..."
+msgstr "З'╓днання з %s закрито"
 
 #: mutt_socket.c:258
 msgid "SSL is unavailable."
@@ -2583,12 +2562,12 @@ msgstr "SSL недосяжне."
 
 #: mutt_socket.c:289
 msgid "Preconnect command failed."
-msgstr "Попередн╓ з'╓днання не вдалося."
+msgstr "Помилка команди, попередньо╖ з'╓днанню."
 
 #: mutt_socket.c:360 mutt_socket.c:374
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Помилка з'╓днання з сервером: %s"
+msgstr "Помилка у з'╓днанн╕ з сервером %s (%s)"
 
 #: mutt_socket.c:408 mutt_socket.c:449
 #, c-format
@@ -2633,9 +2612,8 @@ msgid "Unable to get certificate from peer"
 msgstr "Неможливо отримати сертиф╕кат"
 
 #: mutt_ssl.c:343
-#, fuzzy, c-format
 msgid "SSL connection using %s (%s)"
-msgstr "З'╓днання SSL з використанням %s"
+msgstr "З'╓днання SSL з використанням %s (%s)"
 
 #: mutt_ssl.c:371
 msgid "Unknown"
@@ -2890,9 +2868,9 @@ msgstr "М╕сяць '%s' не ╕сну╓"
 
 #. getDate has its own error message, don't overwrite it here
 #: pattern.c:527
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid relative date: %s"
-msgstr "М╕сяць '%s' не ╕сну╓"
+msgstr "Неможлива в╕дносна дата: %s"
 
 #: pattern.c:541
 msgid "error in expression"
@@ -3157,9 +3135,8 @@ msgid "Fetching PGP key..."
 msgstr "Отримання ключа PGP..."
 
 #: pgpkey.c:486
-#, fuzzy
 msgid "All matching keys are marked expired/revoked."
-msgstr "Цей ключ неможливо використати: давн╕й/вимкнений/зам╕нений."
+msgstr "Вс╕ в╕дпов╕дн╕ ключ╕ давн╕/зам╕нен╕."
 
 #. __STRCAT_CHECKED__
 #: pgpkey.c:512
@@ -3199,9 +3176,8 @@ msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Цей ключ неможливо використати: давн╕й/вимкнений/зам╕нений."
 
 #: pgpkey.c:608
-#, fuzzy
 msgid "This ID is expired/disabled/revoked"
-msgstr "Цей ключ неможливо використати: давн╕й/вимкнений/зам╕нений."
+msgstr "Цей ID давн╕й/вимкнений/зам╕нений"
 
 #: pgpkey.c:612
 msgid "This ID's trust level is undefined."
@@ -3216,9 +3192,9 @@ msgid "This ID is only marginally trusted."
 msgstr "Цьому ID можно дов╕ряти лише частково."
 
 #: pgpkey.c:622
-#, fuzzy, c-format
+#, c-format
 msgid "%s Do you really want to use the key?"
-msgstr "%s Ви справд╕ бажа╓те його використовувати?"
+msgstr "%s Ви справд╕ бажа╓те використовувати ключ?"
 
 #: pgpkey.c:720
 msgid "Please enter the key ID: "
@@ -3418,9 +3394,8 @@ msgid "Attachments"
 msgstr "Додатки"
 
 #: recvattach.c:922
-#, fuzzy
 msgid "There are no subparts to show!"
-msgstr "Додатк╕в нема╓."
+msgstr "Нема╓ п╕дчастин для проглядання!"
 
 #: recvattach.c:983
 msgid "Can't delete attachment from POP server."
@@ -3454,9 +3429,8 @@ msgid "Can't open temporary file %s."
 msgstr "Неможливо в╕дкрити тимчасовий файл %s."
 
 #: recvcmd.c:405
-#, fuzzy
 msgid "Forward as attachments?"
-msgstr "показати додатки MIME"
+msgstr "Переслати як додатки?"
 
 #: recvcmd.c:419
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
@@ -3613,9 +3587,8 @@ msgid "Could not include all requested messages!"
 msgstr "Не вийшло додати вс╕ бажан╕ листи!"
 
 #: send.c:747
-#, fuzzy
 msgid "Forward as attachment?"
-msgstr "Друкувати додаток?"
+msgstr "Переслати як додаток?"
 
 #: send.c:751
 msgid "Preparing forwarded message..."
