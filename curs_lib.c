@@ -34,9 +34,9 @@
  * is impossible to unget function keys in SLang, so roll our own input
  * buffering routines.
  */
-static short UngetCount = 0;
-#define UngetBufLen 128
-static event_t KeyEvent[UngetBufLen] = { {0,0} };
+static size_t UngetCount = 0;
+static size_t UngetBufLen = 0;
+static event_t *KeyEvent;
 
 void mutt_refresh (void)
 {
@@ -372,9 +372,6 @@ int _mutt_enter_fname (const char *prompt, char *buf, size_t blen, int *redraw, 
   return 0;
 }
 
-/* FOO - this could be made more efficient by allocating/deallocating memory
- * instead of using a fixed array
- */
 void mutt_ungetch (int ch, int op)
 {
   event_t tmp;
@@ -382,8 +379,10 @@ void mutt_ungetch (int ch, int op)
   tmp.ch = ch;
   tmp.op = op;
 
-  if (UngetCount < UngetBufLen) /* make sure not to overflow */
-    KeyEvent[UngetCount++] = tmp;
+  if (UngetCount >= UngetBufLen)
+    safe_realloc ((void **) &KeyEvent, (UngetBufLen += 128) * sizeof(event_t));
+
+  KeyEvent[UngetCount++] = tmp;
 }
 
 void mutt_flushinp (void)
