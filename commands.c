@@ -220,12 +220,26 @@ void ci_bounce_message (HEADER *h, int *redraw)
 
 void mutt_pipe_message_to_state (HEADER *h, STATE *s)
 {
+  int cmflags = 0;
+  int chflags = CH_FROM;
+  
+  if (option (OPTPIPEDECODE))
+  {
+    cmflags |= M_CM_DECODE | M_CM_CHARCONV;
+    chflags |= CH_DECODE | CH_REORDER;
+    
+    if (option (OPTWEED))
+    {
+      chflags |= CH_WEED;
+      cmflags |= M_CM_WEED;
+    }
+  }
+  
   if (option (OPTPIPEDECODE))
     mutt_parse_mime_message (Context, h);
 
   mutt_copy_message (s->fpout, Context, h,
-		     option (OPTPIPEDECODE) ? M_CM_DECODE | M_CM_CHARCONV : 0,
-		     option (OPTPIPEDECODE) ? CH_FROM | CH_WEED | CH_DECODE | CH_REORDER : CH_FROM);
+		     cmflags, chflags);
 }
 
 int mutt_pipe_message (HEADER *h)
@@ -626,8 +640,14 @@ int mutt_save_message (HEADER *h, int delete, int decode, int decrypt, int *redr
 
 static void print_msg (FILE *fp, CONTEXT *ctx, HEADER *h)
 {
-  
+  int cmflags = M_CM_DECODE | M_CM_CHARCONV;
+  int chflags = CH_DECODE | CH_REORDER;
 
+  if (option (OPTWEED))
+  {
+    cmflags |= M_CM_WEED;
+    chflags |= CH_WEED;
+  }
 
 #ifdef _PGPPATH
   if (h->pgp & PGPENCRYPT)
@@ -638,10 +658,8 @@ static void print_msg (FILE *fp, CONTEXT *ctx, HEADER *h)
   }
 #endif
 
-
-
   mutt_parse_mime_message (ctx, h);
-  mutt_copy_message (fp, ctx, h, M_CM_DECODE | M_CM_CHARCONV, CH_WEED | CH_DECODE | CH_REORDER);
+  mutt_copy_message (fp, ctx, h, cmflags, chflags);
 }
 
 void mutt_print_message (HEADER *h)

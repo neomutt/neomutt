@@ -338,7 +338,7 @@ static int include_forward (CONTEXT *ctx, HEADER *cur, FILE *out)
   if (option (OPTFORWDECODE))
   {
     cmflags |= M_CM_DECODE | M_CM_CHARCONV;
-    if (option (OPTFORWWEEDHEADER))
+    if (option (OPTWEED))
     {
       chflags |= CH_WEED | CH_REORDER;
       cmflags |= M_CM_WEED;
@@ -355,9 +355,8 @@ static int include_forward (CONTEXT *ctx, HEADER *cur, FILE *out)
 static int include_reply (CONTEXT *ctx, HEADER *cur, FILE *out)
 {
   char buffer[STRING];
-  int flags = M_CM_PREFIX | M_CM_DECODE | M_CM_CHARCONV;
-
-
+  int cmflags = M_CM_PREFIX | M_CM_DECODE | M_CM_CHARCONV;
+  int chflags = CH_DECODE;
 
 #ifdef _PGPPATH
   if (cur->pgp)
@@ -370,8 +369,6 @@ static int include_reply (CONTEXT *ctx, HEADER *cur, FILE *out)
   }
 #endif /* _PGPPATH */
 
-
-
   if (Attribution)
   {
     mutt_make_string (buffer, sizeof (buffer), Attribution, ctx, cur);
@@ -379,9 +376,15 @@ static int include_reply (CONTEXT *ctx, HEADER *cur, FILE *out)
     fputc ('\n', out);
   }
   if (!option (OPTHEADER))
-    flags |= M_CM_NOHEADER;
+    cmflags |= M_CM_NOHEADER;
+  if (option (OPTWEED))
+  {
+    chflags |= CH_WEED;
+    cmflags |= M_CM_WEED;
+  }
+
   mutt_parse_mime_message (ctx, cur);
-  mutt_copy_message (out, ctx, cur, flags, CH_DECODE);
+  mutt_copy_message (out, ctx, cur, cmflags, chflags);
   if (PostIndentString)
   {
     mutt_make_string (buffer, sizeof (buffer), PostIndentString, ctx, cur);

@@ -117,8 +117,6 @@ struct option_t MuttVars[] = {
   { "forw_attachment",  DT_SYN, R_NONE, UL "forward_attachment", 0 },
   { "forward_decode",	DT_BOOL, R_NONE, OPTFORWDECODE, 1 },
   { "forw_decode",	DT_SYN,  R_NONE, UL "forward_decode", 0 },
-  { "forward_weed",	DT_BOOL, R_NONE, OPTFORWWEEDHEADER, 1 },
-  { "forw_weed",	DT_SYN,  R_NONE, UL "forward_weed", 0 }, 
   { "forward_format",	DT_STR,	 R_NONE, UL &ForwFmt, UL "[%a: %s]" },
   { "forw_format",	DT_SYN,  R_NONE, UL "forward_format", 0 },
   { "forward_quote",	DT_BOOL, R_NONE, OPTFORWQUOTE, 0 },
@@ -294,7 +292,7 @@ struct option_t MuttVars[] = {
   { "wrap_search",	DT_BOOL, R_NONE, OPTWRAPSEARCH, 1 },
   { "write_inc",	DT_NUM,	 R_NONE, UL &WriteInc, 10 },
   { "write_bcc",	DT_BOOL, R_NONE, OPTWRITEBCC, 1},
-    { NULL }
+  { NULL }
 };
 
 const struct mapping_t SortMethods[] = {
