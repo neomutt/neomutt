@@ -639,8 +639,11 @@ static int parse_spam_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *
       mutt_extract_token (&templ, s, 0);
 
       /* Add to the spam list. */
-      if (add_to_spam_list (&SpamList, buf->data, templ.data, err) != 0)
+      if (add_to_spam_list (&SpamList, buf->data, templ.data, err) != 0) {
+	  FREE(&templ.data);
           return -1;
+      }
+      FREE(&templ.data);
     }
 
     /* If not, try to remove from the nospam list. */
