@@ -1350,6 +1350,11 @@ main_loop:
     BODY *save_parts = NULL;
 #endif /* _PGPPATH */
 
+#ifdef _PGPPATH
+    if (msg->pgp && option (OPTFCCCLEAR))
+      msg->content = clear_content;
+#endif
+
     /* check to see if the user wants copies of all attachments */
     if (!option (OPTFCCATTACH) && msg->content->type == TYPEMULTIPART)
     {

@@ -431,6 +431,14 @@ struct option_t MuttVars[] = {
   ** This variable controls whether or not attachments on outgoing messages
   ** are saved along with the main body of your message.
   */
+#ifdef _PGPPATH
+  { "fcc_clear",	DT_BOOL, R_NONE, OPTFCCCLEAR, 0 },
+  /*
+  ** .pp
+  ** When this variable is \fIset\fP, FCCs will be stored unencrypted and
+  ** unsigned, even when the actual message is encrypted and/or signed.
+  */
+#endif
   { "folder",		DT_PATH, R_NONE, UL &Maildir, UL "~/Mail" },
   /*
   ** .pp
