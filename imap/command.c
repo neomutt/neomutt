@@ -85,7 +85,10 @@ int imap_cmd_resp (IMAP_DATA* idata)
     if ((c = mutt_socket_readln (idata->buf + len, idata->blen - len,
       idata->conn)) < 0)
     {
-      dprint (1, (debugfile, "imap_cmd_resp: Error while reading server response.\n"));
+      dprint (1, (debugfile, "imap_cmd_resp: Error while reading server response, closing connection.\n"));
+      mutt_socket_close (idata->conn);
+      idata->state = IMAP_DISCONNECTED;
+      idata->status = IMAP_FATAL;
       return IMAP_CMD_FAIL;
     }
 
@@ -136,12 +139,12 @@ void imap_cmd_finish (IMAP_DATA* idata)
   }
   
   if ((idata->status == IMAP_NEW_MAIL || 
-       (idata->reopen & (IMAP_REOPEN_PENDING|IMAP_NEWMAIL_PENDING)))
+       (idata->reopen & (IMAP_EXPUNGE_PENDING|IMAP_NEWMAIL_PENDING)))
       && (idata->reopen & IMAP_REOPEN_ALLOW))
   {
     int count = idata->newMailCount;
 
-    if (!(idata->reopen & IMAP_REOPEN_PENDING) &&
+    if (!(idata->reopen & IMAP_EXPUNGE_PENDING) &&
 	((idata->status == IMAP_NEW_MAIL) || (idata->reopen & IMAP_NEWMAIL_PENDING))  
 	&& count > idata->ctx->msgcount)
     {
@@ -156,7 +159,7 @@ void imap_cmd_finish (IMAP_DATA* idata)
     {
       imap_expunge_mailbox (idata);
       idata->check_status = IMAP_REOPENED;
-      idata->reopen &= ~(IMAP_REOPEN_PENDING|IMAP_NEWMAIL_PENDING);
+      idata->reopen &= ~(IMAP_EXPUNGE_PENDING|IMAP_NEWMAIL_PENDING);
     }
 
   }
@@ -252,7 +255,7 @@ int imap_handle_untagged (IMAP_DATA* idata, char* s)
       /* new mail arrived */
       count = atoi (pn);
 
-      if ( !(idata->reopen & IMAP_REOPEN_PENDING) &&
+      if ( !(idata->reopen & IMAP_EXPUNGE_PENDING) &&
 	   count < idata->ctx->msgcount)
       {
 	/* something is wrong because the server reported fewer messages
@@ -270,7 +273,7 @@ int imap_handle_untagged (IMAP_DATA* idata, char* s)
           "imap_handle_untagged: superfluous EXISTS message.\n"));
       else
       {
-	if (!(idata->reopen & IMAP_REOPEN_PENDING))
+	if (!(idata->reopen & IMAP_EXPUNGE_PENDING))
         {
           dprint (2, (debugfile,
             "imap_handle_untagged: New mail in %s - %d messages total.\n",
@@ -378,7 +381,7 @@ static void cmd_parse_expunge (IMAP_DATA* idata, char* s)
       HEADER_DATA (h)->sid--;
   }
 
-  idata->reopen |= IMAP_REOPEN_PENDING;
+  idata->reopen |= IMAP_EXPUNGE_PENDING;
 }
 
 /* cmd_parse_myrights: set rights bits according to MYRIGHTS response */

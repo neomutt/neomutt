@@ -196,8 +196,7 @@ int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes)
 
 /* imap_expunge_mailbox: Purge IMAP portion of expunged messages from the
  *   context. Must not be done while something has a handle on any headers
- *   (eg inside pager or editor). mx_update_tables and mutt_sort_headers
- *   must be called afterwards. */
+ *   (eg inside pager or editor). That is, check IMAP_REOPEN_ALLOW. */
 void imap_expunge_mailbox (IMAP_DATA* idata)
 {
   HEADER* h;
@@ -225,6 +224,11 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
       imap_free_header_data (&h->data);
     }
   }
+
+  /* We may be called on to expunge at any time. We can't rely on the caller
+   * to always know to rethread */
+  mx_update_tables (idata->ctx, 0);
+  mutt_sort_headers (idata->ctx, 1);
 }
 
 #if 0
@@ -1124,7 +1128,8 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
       if (*flags && (imap_exec (idata, buf, 0) != 0) &&
         (err_continue != M_YES))
       {
-        err_continue = imap_continue ("imap_sync_mailbox: STORE failed", buf);
+        err_continue = imap_continue ("imap_sync_mailbox: STORE failed",
+          idata->buf);
         if (err_continue != M_YES)
           return -1;
       }
@@ -1141,7 +1146,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
     mutt_message _("Expunging messages from server...");
     if (imap_exec (idata, "EXPUNGE", 0) != 0)
     {
-      imap_error ("imap_sync_mailbox: EXPUNGE failed", buf);
+      imap_error ("imap_sync_mailbox: EXPUNGE failed", idata->buf);
       return -1;
     }
   }
@@ -1164,12 +1169,8 @@ void imap_close_mailbox (CONTEXT* ctx)
 
   if ((idata->state == IMAP_SELECTED) && (ctx == idata->ctx))
   {
-    if (!(idata->noclose))
-    {
-      mutt_message _("Closing mailbox...");
-      if (imap_exec (idata, "CLOSE", 0) != 0)
-        imap_error ("CLOSE failed", idata->buf);
-    }
+    if (!(idata->noclose) && imap_exec (idata, "CLOSE", 0))
+      imap_error ("CLOSE failed", idata->buf);
     
     idata->state = IMAP_AUTHENTICATED;
     FREE (&(idata->mailbox));

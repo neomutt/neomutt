@@ -63,6 +63,12 @@ int mutt_socket_write_d (CONNECTION *conn, const char *buf, int dbg)
 
   dprint (dbg, (debugfile,"> %s", buf));
 
+  if (conn->fd < 0)
+  {
+    dprint (1, (debugfile, "mutt_socket_write: attempt to write to closed connection\n"));
+    return -1;
+  }
+
   if ((rc = conn->write (conn, buf, mutt_strlen (buf))) < 0)
   {
     dprint (1, (debugfile, "mutt_socket_write: error writing, closing socket\n"));
@@ -79,7 +85,13 @@ int mutt_socket_readchar (CONNECTION *conn, char *c)
 {
   if (conn->bufpos >= conn->available)
   {
-    conn->available = conn->read (conn);
+    if (conn->fd >= 0)
+      conn->available = conn->read (conn);
+    else
+    {
+      dprint (1, (debugfile, "mutt_socket_readchar: attempt to read closed from connection.\n"));
+      return -1;
+    }
     conn->bufpos = 0;
     if (conn->available <= 0)
       return conn->available; /* returns 0 for EOF or -1 for other error */
@@ -98,9 +110,7 @@ int mutt_socket_readln_d (char* buf, size_t buflen, CONNECTION* conn, int dbg)
   {
     if (mutt_socket_readchar (conn, &ch) != 1)
     {
-      dprint (1, (debugfile, "mutt_socket_readln_d: read error, closing socket"));
       buf[i] = '\0';
-      mutt_socket_close (conn);
       return -1;
     }
     if (ch == '\n')

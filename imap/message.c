@@ -199,6 +199,9 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   int uid;
   int cacheno;
   IMAP_CACHE *cache;
+  /* Sam's weird courier server returns an OK response even when FETCH
+   * fails. Thanks Sam. */
+  short fetched = 0;
   int rc;
 
   idata = (IMAP_DATA*) ctx->data;
@@ -245,11 +248,12 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   do
   {
     if ((rc = imap_cmd_resp (idata)) != IMAP_CMD_CONTINUE)
-      continue;
+      break;
 
     pc = idata->buf;
     pc = imap_next_word (pc);
     pc = imap_next_word (pc);
+
     if (!mutt_strncasecmp ("FETCH", pc, 5))
     {
       while (*pc)
@@ -278,6 +282,8 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	  if ((rc = imap_cmd_resp (idata)) != IMAP_CMD_CONTINUE)
 	    goto bail;
 	  pc = idata->buf;
+
+	  fetched = 1;
 	}
 	/* UW-IMAP will provide a FLAGS update here if the FETCH causes a
 	 * change (eg from \Unseen to \Seen).
@@ -336,7 +342,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   if (rc != IMAP_CMD_DONE)
     goto bail;
 
-  if (!imap_code (idata->buf))
+  if (!fetched || !imap_code (idata->buf))
     goto bail;
     
   /* Update the header information.  Previously, we only downloaded a

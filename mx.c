@@ -1118,15 +1118,13 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
     if (purge)
     {
 #ifdef USE_IMAP
-      /* IMAP uses the active flag, since deleted messages may remain after
-       * a sync */
-      if (ctx->magic == M_IMAP)
-	mx_update_tables (ctx, 0);
-      else
+      /* IMAP does this automatically after handling EXPUNGE */
+      if (ctx->magic != M_IMAP)
 #endif
+      {
 	mx_update_tables (ctx, 1);
-
-      mutt_sort_headers (ctx, 1); /* rethread from scratch */
+	mutt_sort_headers (ctx, 1); /* rethread from scratch */
+      }
     }
   }
 
