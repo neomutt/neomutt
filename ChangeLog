@@ -1,3 +1,330 @@
+Tue Jan 26 09:51:53 1999  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.in: Document $implicit_autoview.
+
+	* compose.c:
+	Fix a segfault when users change attachment content types, and let
+	toggle-unlink honor the $resolv variable.
+
+	* compose.c:
+	$resolve should be honored when doing toggle-unlink on the compose
+	menu.
+
+Mon Jan 25 22:16:46 1999  Thomas Roessler  <roessler@guug.de>
+
+	* compose.c:
+	This may fix a core dump under certain circumstances.  Can't check
+	this out since I don't get the segfault.
+
+	* pgpkey.c: Fix a redraw problem when the key menu is invoked.
+
+	* po/ru.po, po/cs.po, configure.in: Russian and czech translations.
+
+	* po/cs.po: Adding a czech translation, and fixing the russian.
+
+	* po/cs.po: file cs.po was initially added on branch mutt-1-0-stable.
+
+	* configure.in: Adding a czech translation, and fixing the russian.
+
+	* po/ru.po: ru.po was badly distorted.
+
+Sat Jan 23 17:00:43 1999  Thomas Roessler  <roessler@guug.de>
+
+	* prepare:
+	when f is .../Makefile.am, `basename $f .am` is Makefile.  So I
+	should just write that. :-)
+
+	* prepare: Add the default predicate.
+
+	* from.c: A slightly optimized version of DE's y2k patch.
+
+	* prepare: Apparently, automake doesn't like our AC_OUTPUT($output)
+	construction...
+
+	* gnupgparse.c, from.c:
+	DE's patch to work around other software's possible y2k bugs.
+
+	* from.c: Try to avoid other programs' possible y2k bugs.
+
+	* enter.c: Fix the attach-multi patch.
+
+Fri Jan 22 22:12:10 1999  Thomas Roessler  <roessler@guug.de>
+
+	* lib.c: Fix a memory leak, noted by Roland Rosenfeld.
+
+	* lib.c: Fix a memory leak.  Noted by Roland Rosenfeld.
+
+	* recvattach.c, query.c, protos.h, menu.c, enter.c, curs_lib.c, compose.c, browser.c, addrbook.c:
+	Enable tagging in the file browser.
+
+	* protos.h, pgppubring.c, pgpkey.c, pgp.h, pgp.c, lib.c, handler.c, gnupgparse.c, compose.c:
+	Heavy hacking on mutt's pgp support.  We no longer read the complete
+	key ring into memory.  For gpg, performance is heavily improved due
+	to the fact that we are passing a couple of key hints to the key
+	ring parsing back-end.
+
+Thu Jan 21 05:19:42 1999  Thomas Roessler  <roessler@guug.de>
+
+	* hook.c: Fix _mutt_string_hook.
+
+Wed Jan 20 13:52:59 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/pl.po: New polish translation.
+
+	* pgppubring.c, pgpkey.c, configure.in:
+	Add heavily improved debugging capabilities to the PGP code.
+	Anyway, the problem I observed wasn't a bug in mutt, but an expired
+	key. *sigh*
+
+	* rfc1524.c: Don't segfault when MailcapPath is unset.
+
+	* rfc1524.c:
+	Fix a segmentation fault when no MailcapPath has been defined.
+
+Tue Jan 19 23:38:26 1999  Thomas Roessler  <roessler@guug.de>
+
+	* protos.h, mutt.h, init.h, hook.c, charset.c, Makefile.am:
+	Add the charset-hook command.
+
+	* configure.in, charset.c, acconfig.h, Makefile.am, $output.in, INSTALL:
+	Properly handle character set definition file installation.
+
+	* mx.c: Remove a confusing error message.
+
+	* mx.c: Remove confusing error message.
+
+	* keymap.c, curs_lib.c: patch-0.95.1.vikas.macro_function.1
+
+	* m4/Makefile.am.in: HP/UX portability patch from Lars Hecking.
+
+Mon Jan 18 09:45:29 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/ru.po:
+	New Russian translation from Michael Sobolev <mss@transas.com>.
+
+	* po/ru.po:
+	New russian translation from Michael Sobolev <mss@transas.com>.
+
+Thu Jan 14 13:08:46 1999  Thomas Roessler  <roessler@guug.de>
+
+	* compose.c: Mixmaster user interface beautification.
+
+	* mx.c, curs_lib.c:
+	Fix a couple of segfaults related to using curses when it isn't there.
+
+	* mx.c: dotlocking plus curses...
+
+Wed Jan 13 23:56:39 1999  Thomas Roessler  <roessler@guug.de>
+
+	* send.c, mutt.h, mbox.c, handler.c, copy.h, copy.c:
+	patch-0.95.1i.tlr.weed.1, patch-0.95.1i.tlr.dotlock.1 - These have
+	been tested with unstable so far, seem to work fine.
+
+	* mx.c: Don't use curses when we don't have it.
+
+	* mx.c: Don't try to do mutt_yesorno if we don't have curses.
+
+	* remailer.h:
+	Mixmaster has 20 address slots, that makes _19_ remailers.
+
+	* remailer.c: Fix the "append" function.
+
+	* sendlib.c: Don't leak message dates when sending via mixmaster.
+
+	* remailer.c:
+	Add search code to the remailer chain selecting menu.  [This is
+	pretty generic - should we add that code to menu.c?]
+
+	* postpone.c: Fix postponing of PGP messages.
+
+	* send.c, remailer.c, compose.c:
+	Qualify addresses before passing them to mixmaster.
+
+	* send.c, remailer.h, protos.h, mutt.h:
+	Clean up dependencies: remailer.h is no longer included by mutt.h,
+	and the mix_* prototypes can once again go to remailer.h.
+
+	* sendlib.c, remailer.c, remailer.h, send.c, protos.h, postpone.c, mutt.h, lib.c, keymap.h, keymap.c, init.h, headers.c, globals.h, functions.h, configure.in, compose.c, OPS.MIX, acconfig.h, Makefile.am:
+	A first take at adding a mixmaster front-end to mutt.  Don't worry,
+	it's optional. ;-)
+
+Tue Jan 12 22:01:11 1999  Thomas Roessler  <roessler@guug.de>
+
+	* mbox.c: Open folders in read-only mode if mutt can't lock them.
+
+Mon Jan 11 18:12:49 1999  Thomas Roessler  <roessler@guug.de>
+
+	* send.c, mutt.h, handler.c, copy.h, copy.c:
+	When decode-forwarding messages with message/Rfc822 attachments,
+	mutt should weed the attachments' headers according to the setting
+	of $forward_weed.
+
+Sun Jan 10 09:11:36 1999  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.in, hdrline.c: Byrial's %D time format patch.
+
+Sat Jan  9 17:53:02 1999  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.in, recvattach.c, protos.h, lib.c:
+	Byrial's latest changes to stable.
+
+	* recvattach.c, protos.h, lib.c:
+	Ask the user whether to overwrite a file or append to it.  From
+	Byrial Jensen.
+
+	* doc/manual.sgml.in: Fix a documentation problem.
+
+Fri Jan  8 23:29:05 1999  Thomas Roessler  <roessler@guug.de>
+
+	* charset.c:
+	When doing a binary search, we may as well use bsearch (3).
+
+	* parse.c: Optimized time-zone parsing.
+
+	* parse.c: Optimize time zone parsing.  By Byrial Jensen.
+
+	* history.c:
+	Don't clear the history when the user issues a "set history=..."
+	command which doesn't change anything.
+
+	* history.c:
+	Don't clear the history when "set history=..." doesn't change the
+	buffer size.
+
+	* thread.c, curs_main.c: Threading fix from Daniel Eisenbud.
+
+Thu Jan  7 19:01:30 1999  Thomas Roessler  <roessler@guug.de>
+
+	* init.c: Vikas' set_boolean patch.
+
+	* protos.h, handler.c, attach.c:
+	Updated implicit autoview handling from stable.
+
+	* protos.h, handler.c, attach.c:
+	Only use "implicit" autoviews (implicit_autoview or MM_NOASK) when
+	mutt is unable to handle a content type internally.  This saves us
+	parsing the mailcap files for every attachment we handle.
+
+	* mx.c, mutt.h, init.h, hdrline.c, commands.c, attach.c:
+	Merge in the mailcap patch from stable.
+
+	* thread.c, system.c, strcasecmp.c, status.c, sort.h, sort.c, socket.c, snprintf.c, signal.c, sha_locl.h, sha1dgst.c, sha.h, sendlib.c, send.c, score.c, rfc822.h, rfc822.c, rfc2047.h, rfc2047.c, rfc1524.h, rfc1524.c, resize.c, recvattach.c, query.c, protos.h, postpone.c, pop.c, pgppubring.c, pgpkey.c, pgpinvoke.c, pgp.h, pgp.c, pattern.c, parse.h, parse.c, pager.h, pager.c, mx.h, mx.c, mutt_socket.h, mutt_regex.h, mutt_menu.h, mutt_curses.h, mutt.h, mime.h, mh.c, menu.c, mbox.c, mapping.h, main.c, mailbox.h, lib.c, keymap.h, keymap.c, init.h, init.c, imap.h, imap.c, hook.c, history.h, history.c, help.c, headers.c, hdrline.c, hash.h, hash.c, handler.c, gnupgparse.c, globals.h, getdomain.c, functions.h, from.c, flags.c, filter.c, enter.c, edit.c, dotlock.h, dotlock.c, date.c, curs_main.c, curs_lib.c, copy.h, copy.c, compose.c, complete.c, commands.c, color.c, charset.h, charset.c, buffy.h, buffy.c, browser.c, attach.h, attach.c, alias.c, addrbook.c, acconfig.h:
+	Get rid of RCS ids in source files.  They are getting in our way
+	when merging changes.
+
+	* mx.c, mutt.h, init.h, hdrline.c, commands.c, attach.c:
+	Remove the use_mailcap variable. Instead, we introduce
+	implicit_autoview which triggers autoview for every content type
+	it's applicable to.
+
+	* thread.c, system.c, strcasecmp.c, status.c, sort.h, sort.c, socket.c, snprintf.c, signal.c, sha_locl.h, sha1dgst.c, sha.h, sendlib.c, send.c, score.c, rfc822.h, rfc822.c, rfc2047.h, rfc2047.c, rfc1524.h, rfc1524.c, resize.c, recvattach.c, query.c, protos.h, postpone.c, pop.c, pgppubring.c, pgpkey.c, pgpinvoke.c, pgp.h, pgp.c, pattern.c, parse.h, parse.c, pager.h, pager.c, mx.h, mx.c, mutt_socket.h, mutt_regex.h, mutt_menu.h, mutt_curses.h, mutt.h, mime.h, mh.c, menu.c, mbox.c, mapping.h, main.c, mailbox.h, lib.c, keymap.h, keymap.c, init.h, init.c, imap.h, imap.c, hook.c, history.h, history.c, help.c, headers.c, hdrline.c, hash.h, hash.c, handler.c, gnupgparse.c, globals.h, getdomain.c, functions.h, from.c, flags.c, filter.c, enter.c, edit.c, dotlock.h, dotlock.c, date.c, curs_main.c, curs_lib.c, copy.h, copy.c, compose.c, complete.c, commands.c, color.c, charset.h, charset.c, buffy.h, buffy.c, browser.c, attach.h, attach.c, alias.c, addrbook.c, acconfig.h:
+	Get rid of the rcsid fields.  They are getting in the way whenever I
+	merge changes into unstable.
+
+	* po/nl.po, init.h, configure.in: Merging changes from stable.
+
+	* configure.in:
+	Don't add regex.c, but regex.o to the LIBOBJS variable when needed.
+
+	* init.h: Fix default settings for use_mailcap and mime_forward.
+
+Wed Jan  6 10:13:32 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/fr.po, po/de.po, sendlib.c, regex.c, protos.h, parse.c, mutt_regex.h, mbox.c, main.c, hdrline.c, from.c, date.c, configure.in, acconfig.h, _regex.h, Makefile.am, INSTALL:
+	[unstable] Merge changes from stable: rx -> regex, Byrial's timezone
+	patch, translation updates.
+
+	* sendlib.c, protos.h, parse.c, mbox.c, from.c, date.c:
+	Byrial's timezone patch, without the absurd optimizations.
+
+	* regex.c:
+	Use gnu regex instead of gnu rx.  This library is said to behave
+	better.  Additionally, it supports \<...\> patterns.  The files
+	_regex.h and regex.c included with this distribution correspond to
+	posix/regex.[ch] from the glibc 2.0.7t source tree.
+
+	* regex.c: file regex.c was initially added on branch mutt-1-0-stable.
+
+	* mutt_regex.h, main.c, configure.in, acconfig.h, _regex.h:
+	Use gnu regex instead of gnu rx.  This library is said to behave
+	better.  Additionally, it supports \<...\> patterns.  The files
+	_regex.h and regex.c included with this distribution correspond to
+	posix/regex.[ch] from the glibc 2.0.7t source tree.
+
+	* _regex.h:
+	file _regex.h was initially added on branch mutt-1-0-stable.
+
+	* Makefile.am, INSTALL:
+	Use gnu regex instead of gnu rx.  This library is said to behave
+	better.  Additionally, it supports \<...\> patterns.  The files
+	_regex.h and regex.c included with this distribution correspond to
+	posix/regex.[ch] from the glibc 2.0.7t source tree.
+
+	* po/nl.po, po/fr.po:
+	Various fixes to the NL translation; new French messages.
+
+Tue Jan  5 14:35:18 1999  Thomas Roessler  <roessler@guug.de>
+
+	* sendlib.c, mutt.h, main.c, configure.in, charset.h, charset.c, Makefile.am:
+	[unstable] Adding experimental new character set conversion code.
+
+	* po/de.po: Merging from stable.
+
+	* po/de.po: Fix a typo in de.po.
+
+	* po/de.po: [unstable] Merging changes from stable.
+
+	* po/nl.po, hdrline.c, curs_main.c, configure.in:
+	[unstable] merging changes from stable.
+
+	* hdrline.c: Conditionally display score and number of lines.
+
+	* po/nl.po:
+	[stable] Adding the NL translation; correcting some bugs in the DE
+	translation.
+
+	* po/nl.po: file nl.po was initially added on branch mutt-1-0-stable.
+
+	* po/de.po, configure.in:
+	[stable] Adding the NL translation; correcting some bugs in the DE
+	translation.
+
+Mon Jan  4 19:15:10 1999  Thomas Roessler  <roessler@guug.de>
+
+	* curs_main.c: [unstable] fix next-unread plus collapsing.
+
+	* curs_main.c: [stable] Fix next-unread when collapsing threads.
+
+	* curs_main.c: [unstable] merging changes from stable.
+
+	* curs_main.c: [stable] fix a bogus type cast.
+
+	* reldate.h, curs_main.c: [unstable] merging in changes from stable.
+
+	* curs_main.c:
+	[stable] Don't use the index elements of header structures when
+	new messages arrived on the index.
+
+	* reldate.h: 0.95.1 should have a proper release date.
+
+	* send.c, pgp.c, handler.c, configure.in:
+	Make the experimental branch the main trunk.
+
+	* po/uk.po, po/ru.po, po/pl.po, po/it.po, po/fr.po, po/es.po, po/de.po:
+	0.95.1 post-release commit.
+
+	* configure.in: [unstable] Create suitable version strings.
+
+	* VERSION, ChangeLog: [stable] Preparing 0.95.1.
+
+	* send.c: [unstable] commit changes from the stable tree.
+
+	* send.c:
+	[stable] When sending a message in batch mode failed, mutt would
+	dump core.  Patch from Byrial Jensen.
+
+	* pgp.c, handler.c: [unstable] Add multiple signature support.
+
 Mon Jan  4 12:57:55 1999  Thomas Roessler  <roessler@guug.de>
 
 	* send.c: When sending a message in batch mode failed, mutt

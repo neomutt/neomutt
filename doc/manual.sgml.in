@@ -2970,6 +2970,24 @@ Default: login name on local system
 
 Your login name on the IMAP server.
 
+<sect2>implicit&lowbar;autoview<label id="implicit_autoview">
+<p>
+Type: boolean<newline>
+Default: no
+
+If set to ``yes'', mutt will look for a a mailcap entry with the
+<tt/copiousoutput/ flag set for <em/every/ MIME attachment it
+doesn't have an internal viewer defined for.  If such an entry is
+found, mutt will use the viewer defined in that entry to convert the
+body part to text form.
+
+<bf/Note:/ For compatibility with <bf/metamail/, Mutt will also look
+at the environment variable <em/MM&lowbar;NOASK/.  Setting this to
+<bf/1/ is equivalent to setting <em/implicit&lowbar;autoview/ to
+``yes''.  Otherwise, the value of <em/MM_NOASK/ is interpreted as a
+comma-separated list of type names (without white space) for which
+the corresponding mailcap entries will be used to display MIME parts.
+
 <sect2>in&lowbar;reply&lowbar;to
 <p>
 Type: format string<newline>
@@ -4230,23 +4248,6 @@ When <em/set/, Mutt will generate the `From:' header field when sending
 messages.  If <em/unset/, no `From:' header field will be generated unless
 the user explicitly sets one using the <ref id="my_hdr"
 name="my&lowbar;hdr"> command.
-
-<sect2>use&lowbar;mailcap<label id="use_mailcap">
-<p>
-Type: quad-option<newline>
-Default: ask
-
-If set to ``yes'', always try to use a mailcap entry to display a MIME
-part that Mutt can't understand what to do with.  If ``ask'', prompt as
-to whether to display as text or to use a mailcap entry.  If ``no'',
-always view unsupported MIME types as text.
-
-<bf/Note:/ For compatibility with <bf/metamail/, Mutt will also look at the
-environment variable <em/MM&lowbar;NOASK/.  Setting this to <bf/1/ is
-equivalent to setting <em/use&lowbar;mailcap/ to ``yes''.  Otherwise, the
-value of <em/MM_NOASK/ is interpreted as a comma-separated list of type
-names (without white space) for which the corresponding mailcap entries will
-be used to display MIME parts without prompting the user for confirmation.
 
 <sect2>pgp_verify&lowbar;sig<label id="pgp_verify_sig">
 <p>
