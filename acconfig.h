@@ -2,12 +2,6 @@
 /* Is this the international version? */
 #undef SUBVERSION
 
-/* The "real" version string */
-#undef VERSION
-
-/* The package name */
-#undef PACKAGE
-
 /* Enable debugging info */
 #define DEBUG
 
@@ -50,12 +44,6 @@
  * (--with-sasl) */
 #undef USE_SASL
 
-/* Do you want support for IMAP GSSAPI authentication? (--with-gss) */
-#undef USE_GSS
-
-/* Do you have the Heimdal version of Kerberos V? (for gss support) */
-#undef HAVE_HEIMDAL
-
 /* Do you want support for SSL? (--with-ssl) */
 #undef USE_SSL
 
@@ -81,9 +69,6 @@
 
 /* Where new mail is spooled */
 #undef MAILPATH
-
-/* Does your system have the srand48() suite? */
-#undef HAVE_SRAND48
 
 /* Where to find sendmail on your system */
 #undef SENDMAIL
@@ -128,23 +113,11 @@
 /* Does your system have the fchdir() call? */
 #undef HAVE_FCHDIR
 
-/* Define if your locale.h file contains LC_MESSAGES.  */
-#undef HAVE_LC_MESSAGES
-
-/* Define to 1 if NLS is requested.  */
-#undef ENABLE_NLS
-
 /* Define as 1 if you have catgets and don't want to use GNU gettext.  */
 #undef HAVE_CATGETS
 
-/* Define as 1 if you have gettext and don't want to use GNU gettext.  */
-#undef HAVE_GETTEXT
-
 /* Does your gettext have bind_textdomain_codeset? */
 #undef HAVE_BIND_TEXTDOMAIN_CODESET
-
-/* Do we have stpcpy? */
-#undef HAVE_STPCPY
 
 /* Use the included regex.c? */
 #undef USE_GNU_REGEX
@@ -154,15 +127,6 @@
 
 /* Define to `int' if <signal.h> doesn't define.  */
 #undef sig_atomic_t
-
-/* define when your system has sys/time.h */
-#undef HAVE_SYS_TIME_H
-
-/* define when your system has sys/resource.h */
-#undef HAVE_SYS_RESOURCE_H
-
-/* define when your system has the setrlimit function */
-#undef HAVE_SETRLIMIT
 
 @BOTTOM@
 /* Define if you have start_color, as a function or macro.  */
@@ -208,9 +172,6 @@
 
 /* Define if you have <langinfo.h> and nl_langinfo(YESEXPR). */
 #undef HAVE_LANGINFO_YESEXPR
-
-/* Define if you have iconv(). */
-#undef HAVE_ICONV
 
 /* Define as 1 if iconv() only converts exactly and we should treat
  * all return values other than (size_t)(-1) as equivalent. */
