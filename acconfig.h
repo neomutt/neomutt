@@ -120,6 +120,9 @@
 /* Does your system have the fchdir() call? */
 #undef HAVE_FCHDIR
 
+/* getopt() is available, but not declared in any header */
+#undef HAVE_GETOPT_DECL
+
 /* Define if your locale.h file contains LC_MESSAGES.  */
 #undef HAVE_LC_MESSAGES
 
@@ -143,4 +146,7 @@
 
 /* Where are the character set definitions located? */
 #undef CHARMAPS_DIR
+
+/* Define to `int' if <signal.h> doesn't define.  */
+#undef sig_atomic_t
 

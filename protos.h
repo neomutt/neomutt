@@ -341,6 +341,10 @@ extern char *sys_errlist[];
 #define strerror(x) ((x) > 0 && (x) < sys_nerr) ? sys_errlist[(x)] : 0
 #endif /* !HAVE_STRERROR */
 
+#ifndef HAVE_MEMMOVE
+#define memmove(d,s,n) bcopy((s),(d),(n))
+#endif
+
 /* AIX doesn't define these in any headers (sigh) */
 int strcasecmp (const char *, const char *);
 int strncasecmp (const char *, const char *, size_t);

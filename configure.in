@@ -202,9 +202,14 @@ main ()
 
 AC_HEADER_STDC
 
-AC_CHECK_HEADERS(stdarg.h sys/ioctl.h sysexits.h getopt.h)
+AC_CHECK_HEADERS(stdarg.h sys/ioctl.h sysexits.h)
 
 AC_TYPE_SIGNAL
+
+AC_MSG_CHECKING(for sig_atomic_t in signal.h)
+AC_EGREP_HEADER(sig_atomic_t,signal.h,dnl
+  [ ac_cv_type_sig_atomic_t=yes; AC_MSG_RESULT(yes) ],dnl
+  AC_MSG_RESULT(no); AC_CHECK_TYPE(sig_atomic_t, int))
 
 AC_DECL_SYS_SIGLIST
 
@@ -213,9 +218,26 @@ AC_CHECK_SIZEOF(long)
 
 AC_TYPE_PID_T
 
-AC_CHECK_FUNCS(setegid srand48 strerror)
+AC_CHECK_FUNCS(fgetpos memmove setegid srand48 strerror)
 
 AC_REPLACE_FUNCS(strcasecmp)
+
+AC_CHECK_FUNC(getopt)
+if test $ac_cv_func_getopt = yes; then
+	AC_CHECK_HEADERS(getopt.h)
+	if test $ac_cv_header_getopt_h = no; then
+		AC_MSG_CHECKING(for getopt declaration in stdio.h)
+		AC_EGREP_HEADER(getopt,stdio.h,dnl
+			[ AC_DEFINE(HAVE_GETOPT_DECL)
+			  AC_MSG_RESULT(yes) ],dnl
+			AC_MSG_RESULT(no)
+			AC_MSG_CHECKING(for getopt declaration in stdlib.h)
+			AC_EGREP_HEADER(getopt,stdlib.h,dnl
+				[ AC_DEFINE(HAVE_GETOPT_DECL)
+				  AC_MSG_RESULT(yes) ],dnl
+				AC_MSG_RESULT(no)))
+	fi
+fi
 
 mutt_cv_snprintf=no
 SNPRINTFOBJS=""
