@@ -1,3 +1,8 @@
+2003-01-05 22:16:02  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* smime_keys.pl: Error checking for the creation of the temporary
+	directory; also, use file mode 0700.
+
 2003-01-05 22:08:25  Bjoern Jacke  <bjoern@j3e.de>  (roessler)
 
 	* smime_keys.pl: Improve temporary file handling.
