@@ -246,7 +246,7 @@ int pop_open_mailbox (CONTEXT *ctx)
 
   mutt_account_tourl (&acct, &url);
   url.path = NULL;
-  url_ciss_tostring (&url, buf, sizeof (buf));
+  url_ciss_tostring (&url, buf, sizeof (buf), 0);
 
   FREE (&ctx->path);
   ctx->path = safe_strdup (buf);

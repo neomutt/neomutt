@@ -58,7 +58,7 @@ int imap_expand_path (char* path, size_t len)
   mutt_account_tourl (&mx.account, &url);
   url.path = mx.mbox;
 
-  rc = url_ciss_tostring (&url, path, len);
+  rc = url_ciss_tostring (&url, path, len, U_DECODE_PASSWD);
   FREE (&mx.mbox);
 
   return rc;
@@ -223,7 +223,7 @@ void imap_pretty_mailbox (char* path)
     /* FIXME: That hard-coded constant is bogus. But we need the actual
      *   size of the buffer from mutt_pretty_mailbox. And these pretty
      *   operations usually shrink the result. Still... */
-    url_ciss_tostring (&url, path, 1024);
+    url_ciss_tostring (&url, path, 1024, 0);
   }
 
   FREE (&target.mbox);
@@ -426,7 +426,7 @@ void imap_qualify_path (char *dest, size_t len, IMAP_MBOX *mx, char* path)
   mutt_account_tourl (&mx->account, &url);
   url.path = path;
 
-  url_ciss_tostring (&url, dest, len);
+  url_ciss_tostring (&url, dest, len, 0);
 }
 
 
