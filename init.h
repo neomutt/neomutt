@@ -286,7 +286,6 @@ struct option_t MuttVars[] = {
   { "tmpdir",		DT_PATH, R_NONE, UL &Tempdir, 0 },
   { "to_chars",		DT_STR,	 R_BOTH, UL &Tochars, UL " +TCF" },
   { "use_8bitmime",	DT_BOOL, R_NONE, OPTUSE8BITMIME, 0 },
-  { "use_cdisp",	DT_BOOL, R_NONE, OPTUSECDISP, 0 },
   { "use_domain",	DT_BOOL, R_NONE, OPTUSEDOMAIN, 1 },
   { "use_from",		DT_BOOL, R_NONE, OPTUSEFROM, 1 },
   { "user_agent",	DT_BOOL, R_NONE, OPTXMAILER, 1},

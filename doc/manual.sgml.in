@@ -4378,15 +4378,6 @@ When <em/set/, Mutt will invoke <ref id="sendmail" name="&dollar;sendmail">
 with the <tt/-B8BITMIME/ flag when sending 8-bit messages to enable ESMTP
 negotiation.
 
-<sect2>use&lowbar;cdisp<label id="use_cdisp">
-<p>
-Type: boolean<newline>
-Default: unset
-
-When this option is set, mutt will restrict the auto_view feature to
-body parts which carry a content-disposition field with the value
-inline, or no such field.
-
 <sect2>use&lowbar;domain<label id="use_domain">
 <p>
 Type: boolean<newline>
