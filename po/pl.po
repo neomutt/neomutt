@@ -339,7 +339,7 @@ msgstr "Podpis S/MIME zosta³ pomy¶lnie zweryfikowany."
 
 #: commands.c:184
 msgid "S/MIME certificate owner does not match sender."
-msgstr "W³a¶ciciel certyfikaty nie odpowiada nadawcy."
+msgstr "W³a¶ciciel certyfikatu nie odpowiada nadawcy."
 
 #: commands.c:187
 msgid "S/MIME signature could NOT be verified."
