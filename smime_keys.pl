@@ -2,6 +2,7 @@
 
 # Copyright (C) 2001,2002 Oliver Ehli <elmy@acm.org>
 # Copyright (C) 2001 Mike Schiraldi <raldi@research.netsol.com>
+# Copyright (C) 2003 Bjoern Jacke <bjoern@j3e.de>
 #
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -25,6 +26,7 @@ umask 077;
 require "timelocal.pl";
 
 sub usage ();
+sub newfile ($;$$);
 sub mutt_Q ($ );
 sub mycopy ($$);
 
@@ -51,7 +53,10 @@ sub do_verify($$$ );
 
 my $mutt = $ENV{MUTT_CMDLINE} || 'mutt';
 my $opensslbin = "/usr/bin/openssl";
+my @tempfiles = ();
+my @cert_tmp_file = ();
 
+my $tmpdir;
 my $private_keys_path = mutt_Q 'smime_keys';
 my $certificates_path = mutt_Q 'smime_certificates';
 my $root_certs_path   = mutt_Q 'smime_ca_location';
@@ -300,15 +305,17 @@ sub list_certs () {
     my $issuer_in;
     my $date1_in;
     my $date2_in;
+    my $cert_tmp_list = newfile("cert_tmp.list","temp");
     
     while (1) {
-        open(TMP_FILE, ">cert_tmp.list")
-            or die "Couldn't open cert_tmp.list: $!";
+	
+        open(TMP_FILE, ">$cert_tmp_list")
+            or die "Couldn't open $cert_tmp_list: $!";
         print TMP_FILE $cert;
         close TMP_FILE;        
 
         my $format = -B $certfile ? 'DER' : 'PEM'; 
-        my $cmd = "$opensslbin x509 -subject -issuer -dates -noout -in cert_tmp.list -inform $format";
+        my $cmd = "$opensslbin x509 -subject -issuer -dates -noout -in $cert_tmp_list -inform $format";
         ($subject_in, $issuer_in, $date1_in, $date2_in) = `$cmd`;
         $? and die "'$cmd' returned $?";
 
@@ -355,7 +362,7 @@ sub list_certs () {
       print "$tab - Matching private key installed -\n";
 
     my $format = -B "$certificates_path/$fields[1]" ? 'DER' : 'PEM'; 
-    my $cmd = "$opensslbin x509 -purpose -noout -in cert_tmp.list -inform $format";
+    my $cmd = "$opensslbin x509 -purpose -noout -in $cert_tmp_list -inform $format";
     my $purpose_in = `$cmd`;
     $? and die "'$cmd' returned $?";
 
@@ -371,8 +378,6 @@ sub list_certs () {
     print "\n";
   }
   
-  unlink 'cert_tmp.list';
-
   close(INDEX);
 }
 
@@ -518,8 +523,10 @@ sub parse_pem (@) {
     my @bag_attribs;
     my $numBags = 0;
 
-    open(CERT_FILE, ">cert_tmp.$cert_iter") 
-        or die "Couldn't open cert_tmp.$cert_iter: $!";
+    $cert_tmp_file[$cert_iter] = newfile("cert_tmp.$cert_iter","temp");
+    my $cert_tmp_iter = $cert_tmp_file[$cert_iter];
+    open(CERT_FILE, ">$cert_tmp_iter") 
+        or die "Couldn't open $cert_tmp_iter: $!";
 
     while($_ = shift(@_)) {
         if(/^Bag Attributes/) {
@@ -560,8 +567,10 @@ sub parse_pem (@) {
                 print CERT_FILE;
                 close(CERT_FILE);
                 $cert_iter++;
-                open(CERT_FILE, ">cert_tmp.$cert_iter")
-                    or die "Couldn't open cert_tmp.$cert_iter: $!";
+	        $cert_tmp_file[$cert_iter] = newfile("cert_tmp.$cert_iter","temp");
+	        $cert_tmp_iter = $cert_tmp_file[$cert_iter];
+                open(CERT_FILE, ">$cert_tmp_iter")
+                    or die "Couldn't open $cert_tmp_iter: $!";
                 next;
             }
         }
@@ -614,8 +623,10 @@ sub handle_pem (@) {
     }
     ($iter > $#pem_contents / 4) and die("Couldn't find matching certificate!");
 
-    mycopy "cert_tmp.$key", "tmp_key";
-    mycopy "cert_tmp.$certificate", "tmp_certificate";
+    my $tmp_key = newfile("tmp_key","temp");
+    mycopy $cert_tmp_file[$key], $tmp_key;
+    my $tmp_certificate = newfile("tmp_certificate","temp");
+    mycopy $cert_tmp_file[$certificate], $tmp_certificate;
 
     # root certificate is self signed
     $iter = 0;
@@ -640,18 +651,18 @@ sub handle_pem (@) {
     # what's left are intermediate certificates.
     $iter = 0;
 
-    unlink "tmp_issuer_cert";
-
     # needs to be set, so we can check it later
     $intermediate = $root_cert;
+    my $tmp_issuer_cert = newfile("tmp_issuer_cert","temp");
     while($iter <= $#pem_contents / 4) {
         if ($iter == $key or $iter == $certificate or $iter == $root_cert) {
             $iter++; 
             next;
         }
 
-	open (IC, ">> tmp_issuer_cert") or die "can't open imp_issuer_cert: $?";
-	open (CERT, "< cert_tmp.$iter") or die "can't open cert_tmp.$iter: $?";
+	open (IC, ">> $tmp_issuer_cert") or die "can't open $tmp_issuer_cert: $?";
+	my $cert_tmp_iter = $cert_tmp_file[$iter];
+	open (CERT, "< $cert_tmp_iter") or die "can't open $cert_tmp_iter: $?";
 	print IC while (<CERT>);
 	close IC;
 	close CERT;
@@ -664,20 +675,21 @@ sub handle_pem (@) {
 
     # no intermediate certificates ? use root-cert instead (if that was found...)
     if($intermediate == $root_cert) {
-        $root_cert == -1 and
+        if ($root_cert == -1) {
 	  die("No root and no intermediate certificates. Can't continue.");
-        mycopy "cert_tmp.$root_cert", 'tmp_issuer_cert';
+	}
+        mycopy $cert_tmp_file[$root_cert], $tmp_issuer_cert;
     }
 
     my $label = query_label;
 
-    my $format = -B 'tmp_certificate' ? 'DER' : 'PEM'; 
-    my $cmd = "$opensslbin x509 -noout -hash -in tmp_certificate -inform $format";
+    my $format = -B $tmp_certificate ? 'DER' : 'PEM'; 
+    my $cmd = "$opensslbin x509 -noout -hash -in $tmp_certificate -inform $format";
     my $cert_hash = `$cmd`;
     $? and die "'$cmd' returned $?";
 
-    $format = -B 'tmp_issuer_cert' ? 'DER' : 'PEM'; 
-    $cmd = "$opensslbin x509 -noout -hash -in tmp_issuer_cert -inform $format";
+    $format = -B $tmp_issuer_cert ? 'DER' : 'PEM'; 
+    $cmd = "$opensslbin x509 -noout -hash -in $tmp_issuer_cert -inform $format";
     my $issuer_hash = `$cmd`;
     $? and die "'$cmd' returned $?";
 
@@ -685,15 +697,12 @@ sub handle_pem (@) {
 
     # Note: $cert_hash will be changed to reflect the correct filename
     #       within add_cert() ONLY, so these _have_ to get called first..
-    add_certificate("tmp_issuer_cert", \$issuer_hash, 0, $label);
-    @mailbox = &add_certificate("tmp_certificate", \$cert_hash, 1, $label, $issuer_hash); 
+    add_certificate($tmp_issuer_cert, \$issuer_hash, 0, $label);
+    @mailbox = &add_certificate("$tmp_certificate", \$cert_hash, 1, $label, $issuer_hash); 
     foreach $mailbox (@mailbox) {
       chomp($mailbox);
-      add_key("tmp_key", $cert_hash, $mailbox, $label);
+      add_key($tmp_key, $cert_hash, $mailbox, $label);
     }
-    
-    unlink <cert_tmp.*>;
-    unlink <tmp_*>;
 }
 
 
@@ -723,8 +732,9 @@ sub modify_entry ($$$;$ ) {
 
     open(INDEX, "<$path/.index") or  
       die "Couldn't open $path/.index: $!";
-    open(NEW_INDEX, ">$path/.index.tmp") or 
-      die "Couldn't create $path/.index.tmp: $!";
+    my $newindex = newfile("$path/.index.tmp");
+    open(NEW_INDEX, ">$newindex") or 
+      die "Couldn't create $newindex: $!";
 
     while(<INDEX>) {
         @fields = split;
@@ -752,8 +762,8 @@ sub modify_entry ($$$;$ ) {
     close(INDEX);
     close(NEW_INDEX);
 
-    rename "$path/.index.tmp", "$path/.index" 
-        or die "Couldn't rename $path/.index.tmp to $path/.index: $!\n";
+    rename $newindex, "$path/.index" 
+        or die "Couldn't rename $newindex to $path/.index: $!\n";
 
     print "\n";
 }
@@ -939,3 +949,34 @@ sub add_root_cert ($) {
   
 }
 
+sub newfile ($;$$) {
+	# returns a file name which does not exist for tmp file creation
+	my $filename = shift;
+	my $option = shift;
+	if (! $tmpdir and $option eq "temp") {
+		$tmpdir = mutt_Q 'tmpdir';
+		$tmpdir = newfile("$tmpdir/smime");
+		mkdir $tmpdir;
+	}
+	$filename = "$tmpdir/$filename" if ($option eq "temp");
+	my $newfilename = $filename;
+	my $count = 0;
+	while (-e $newfilename) {
+		$newfilename = "$filename.$count";
+		$count++;
+	}
+	unshift(@tempfiles,$newfilename);
+	return $newfilename;
+}
+
+
+END {
+	# remove all our temporary files in the end:
+	for (@tempfiles){
+		if (-f) {
+			unlink;
+		} elsif (-d) { 
+			rmdir;
+		}
+	}
+}
