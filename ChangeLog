@@ -1,3 +1,7 @@
+2004-04-12 19:42:10  Joël Riou  <joel.riou@normalesup.org>  (roessler)
+
+	* globals.h, init.c, init.h: Introduce config_charset.
+
 2004-04-12 19:37:59  Vsevolod Volkov  <vvv@mutt.org.ua>  (roessler)
 
 	* po/ru.po: update
