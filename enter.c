@@ -64,6 +64,7 @@ int mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
   int j;
   char tempbuf[_POSIX_PATH_MAX] = "";
   history_class_t hclass;
+  int tabs = 0; /* number of *consecutive* TABs */
   
   if (flags & (M_FILE | M_EFILE))
     hclass = HC_FILE;
@@ -124,6 +125,8 @@ int mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
     if (ch != 0)
     {
       first = 0; /* make sure not to clear the buffer */
+      if (ch != OP_EDITOR_COMPLETE)
+	tabs = 0;
       switch (ch)
       {
 	case OP_EDITOR_HISTORY_UP:
@@ -311,6 +314,7 @@ int mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 	  /* fall through to completion routine (M_FILE) */
 
 	case OP_EDITOR_COMPLETE:
+	  tabs++;
 	  if (flags & M_CMD)
 	  {
 	    buf[curpos] = 0;
@@ -350,12 +354,13 @@ int mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 	  {
 	    buf[curpos] = 0;
 	    if (buf[lastchar - 1] == '=' && 
-		mutt_string_var_complete ((char *) buf, buflen, curpos))
+		mutt_var_value_complete ((char *) buf, buflen, curpos))
 	    {
+	      tabs=0;
 	      redraw = M_REDRAW_INIT;
 	      continue;
 	    }
-	    else if (mutt_command_complete ((char *) buf, buflen, curpos))
+	    else if (mutt_command_complete ((char *) buf, buflen, curpos, tabs))
 	    {
 	      redraw = M_REDRAW_INIT;
 	      continue;
@@ -422,6 +427,7 @@ int mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 
 self_insert:
 
+      tabs = 0;
       /* use the raw keypress */
       ch = LastKey;
 
