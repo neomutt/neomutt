@@ -14,7 +14,7 @@
 
 set -e
 
-# devel="devel/"	# uncomment for the stable branch
+devel="devel/"	# uncomment for the stable branch
 
 # update the source
 
