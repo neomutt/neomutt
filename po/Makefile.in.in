@@ -77,6 +77,10 @@ all: all-@USE_NLS@
 all-yes: $(CATALOGS)
 all-no:
 
+.PHONY: ../keymap_alldefs.h
+../keymap_alldefs.h:
+	cd .. && $(MAKE) keymap_alldefs.h
+
 # Note: Target 'all' must not depend on target '$(srcdir)/$(PACKAGE).pot',
 # otherwise packages like GCC can not be built if only parts of the source
 # have been downloaded.

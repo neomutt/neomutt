@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt 1.4i\n"
-"POT-Creation-Date: 2001-11-29 10:43+0100\n"
+"POT-Creation-Date: 2002-01-01 21:18+0100\n"
 "PO-Revision-Date: 2001-06-12 12:47+0200\n"
 "Last-Translator: Fatih Demir <kabalak@gtranslator.org>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
@@ -23,12 +23,12 @@ msgstr "%s'deki kullanýcý adý: "
 msgid "Password for %s@%s: "
 msgstr "%s@%s için parola: "
 
-#: addrbook.c:31 browser.c:40 pager.c:1427 postpone.c:37 query.c:43
+#: addrbook.c:31 browser.c:40 pager.c:1430 postpone.c:37 query.c:43
 #: recvattach.c:57
 msgid "Exit"
 msgstr "Çýk"
 
-#: addrbook.c:32 curs_main.c:398 pager.c:1434 postpone.c:38
+#: addrbook.c:32 curs_main.c:398 pager.c:1437 postpone.c:38
 msgid "Del"
 msgstr "Sil"
 
@@ -42,7 +42,7 @@ msgstr "Seç"
 
 #. __STRCAT_CHECKED__
 #: addrbook.c:35 browser.c:43 compose.c:93 curs_main.c:404 mutt_ssl.c:628
-#: pager.c:1526 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
+#: pager.c:1529 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Yardým"
 
@@ -690,11 +690,11 @@ msgstr "Hiç bir eposta kutusu açýk deðil."
 msgid "There are no messages."
 msgstr "Ileti yok."
 
-#: curs_main.c:61 mx.c:1128 pager.c:64 recvattach.c:47
+#: curs_main.c:61 mx.c:1128 pager.c:65 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "eposta kutusu salt-okunur."
 
-#: curs_main.c:62 pager.c:65 recvattach.c:821
+#: curs_main.c:62 pager.c:66 recvattach.c:821
 msgid "Function not permitted in attach-message mode."
 msgstr "Iþlev ileti eklentie mödüsünde yasaktýr."
 
@@ -726,7 +726,7 @@ msgstr "Kaydet"
 msgid "Mail"
 msgstr "Gönder"
 
-#: curs_main.c:402 pager.c:1435
+#: curs_main.c:402 pager.c:1438
 msgid "Reply"
 msgstr "Cevap"
 
@@ -849,7 +849,7 @@ msgstr "Okunmamýþ ileti yok"
 msgid " in this limited view"
 msgstr " bu sýnýrlandýrýlmýþ bakýþta"
 
-#: curs_main.c:1331 pager.c:2288
+#: curs_main.c:1331 pager.c:2291
 #, fuzzy
 msgid "Can't change 'important' flag on POP server."
 msgstr "Ileti POP sunucusunda deðiþtirilenemedi."
@@ -862,8 +862,8 @@ msgstr "Daha fazla konum yok."
 msgid "You are on the first thread."
 msgstr "Ilk konumdasýnýz."
 
-#: curs_main.c:1509 curs_main.c:1541 flags.c:249 thread.c:901 thread.c:956
-#: thread.c:1011
+#: curs_main.c:1509 curs_main.c:1541 flags.c:249 thread.c:935 thread.c:990
+#: thread.c:1045
 msgid "Threading is not enabled."
 msgstr "Konumlaþtýrma kapalýdýr."
 
@@ -919,36 +919,36 @@ msgstr ""
 "~?\t\tbu ileti\n"
 ".\t\tsatýrda tek bir . iþlevi bitirir\n"
 
-#: edit.c:178
+#: edit.c:181
 #, c-format
 msgid "%d: invalid message number.\n"
 msgstr "%d : geçersiz ileti numarasý.\n"
 
-#: edit.c:309
+#: edit.c:312
 msgid "(End message with a . on a line by itself)\n"
 msgstr "(Iletiyi '.' içerikli bir satýrla bitir)\n"
 
-#: edit.c:367
+#: edit.c:370
 msgid "No mailbox.\n"
 msgstr "Eposta kutusu yok.\n"
 
-#: edit.c:371
+#: edit.c:374
 msgid "Message contains:\n"
 msgstr "Ileti içeriði:\n"
 
-#: edit.c:375 edit.c:426
+#: edit.c:378 edit.c:429
 msgid "(continue)\n"
 msgstr "(devam et)\n"
 
-#: edit.c:388
+#: edit.c:391
 msgid "missing filename.\n"
 msgstr "eksik dosya ismi.\n"
 
-#: edit.c:408
+#: edit.c:411
 msgid "No lines in message.\n"
 msgstr "Iletide satýr yok.\n"
 
-#: edit.c:437
+#: edit.c:440
 #, c-format
 msgid "%s: unknown editor command (~? for help)\n"
 msgstr "%s : bilinmeyen editör komutasý (~?'le yardým iste)\n"
@@ -1201,7 +1201,7 @@ msgstr "Doðrulanýyor (SASL)..."
 msgid "SASL authentication failed."
 msgstr "SASL doðrulamasý baþarasýz oldu."
 
-#: imap/browse.c:64 imap/imap.c:504
+#: imap/browse.c:64 imap/imap.c:516
 #, c-format
 msgid "%s is an invalid IMAP path"
 msgstr ""
@@ -1242,86 +1242,86 @@ msgstr "Eposta kutusu kapatýldý"
 msgid "Fatal error.  Message count is out of sync!"
 msgstr "Aðýr hata. Ileti sayýlarý karýþtý!"
 
-#: imap/imap.c:135
+#: imap/imap.c:147
 #, c-format
 msgid "Closing connection to %s..."
 msgstr "Baðlantý %s kapatýlýyor..."
 
-#: imap/imap.c:295
+#: imap/imap.c:307
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "Bu IMAP sunucusu çok eski. Mutt bu sunucuyla çalýþmaz."
 
-#: imap/imap.c:381
+#: imap/imap.c:393
 msgid "Secure connection with TLS?"
 msgstr "TLS ile güvenli baðlanýlsýn mý?"
 
-#: imap/imap.c:390
+#: imap/imap.c:402
 msgid "Could not negotiate TLS connection"
 msgstr "TLS baðlantýsý kurulamadý"
 
-#: imap/imap.c:535
+#: imap/imap.c:547
 #, c-format
 msgid "Selecting %s..."
 msgstr "%s seçiliyor..."
 
-#: imap/imap.c:657
+#: imap/imap.c:669
 #, fuzzy
 msgid "Error opening mailbox"
 msgstr "Eposta kutusunu yazarken hata oldu!"
 
 #. STATUS not supported
-#: imap/imap.c:710
+#: imap/imap.c:722
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Bu sunucudaki IMAP eposta kutularýna ileti eklenemiyor"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:719 imap/message.c:600 muttlib.c:1174
+#: imap/imap.c:731 imap/message.c:600 muttlib.c:1174
 #, c-format
 msgid "Create %s?"
 msgstr "%s yaratýlsýn mý?"
 
-#: imap/imap.c:755
+#: imap/imap.c:767
 msgid "Closing connection to IMAP server..."
 msgstr "IMAP sunucusuna varolan baðlantý kapatýlýyor..."
 
-#: imap/imap.c:918 pop.c:465
+#: imap/imap.c:930 pop.c:465
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "%d ileti silinmek için iþaretlenmiþ..."
 
-#: imap/imap.c:927
+#: imap/imap.c:939
 #, fuzzy
 msgid "Expunge failed"
 msgstr "CLOSE baþarýsýz oldu"
 
-#: imap/imap.c:942
+#: imap/imap.c:954
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Ileti durum iþaretleri kaydediliyor... [%d/%d]"
 
-#: imap/imap.c:1026
+#: imap/imap.c:1038
 msgid "Expunging messages from server..."
 msgstr "Iletileri sunucudan sil..."
 
-#: imap/imap.c:1031
+#: imap/imap.c:1043
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr ""
 
-#: imap/imap.c:1065
+#: imap/imap.c:1077
 msgid "CLOSE failed"
 msgstr "CLOSE baþarýsýz oldu"
 
-#: imap/imap.c:1313
+#: imap/imap.c:1325
 #, fuzzy
 msgid "Bad mailbox name"
 msgstr "Eposta kutusunu yarat:"
 
-#: imap/imap.c:1325
+#: imap/imap.c:1337
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "%s'e abone olunuyor..."
 
-#: imap/imap.c:1327
+#: imap/imap.c:1339
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "%s'deki abonelik feshediliyor..."
@@ -1367,102 +1367,102 @@ msgstr "%d ileti %s'e kopyalanýyor..."
 msgid "Continue?"
 msgstr "Devam edilsin mi?"
 
-#: init.c:479
+#: init.c:486
 msgid "alias: no address"
 msgstr "alias: adres yok"
 
-#: init.c:579
+#: init.c:586
 msgid "invalid header field"
 msgstr "geçersiz baþlýk birimi"
 
-#: init.c:632
+#: init.c:639
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: bilinmeyen sýralama tipi"
 
-#: init.c:744
+#: init.c:751
 #, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s): tabirde hata var: %s\n"
 
-#: init.c:807
+#: init.c:814
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: bilinmeyen veri"
 
-#: init.c:816
+#: init.c:823
 msgid "prefix is illegal with reset"
 msgstr ""
 
-#: init.c:822
+#: init.c:829
 msgid "value is illegal with reset"
 msgstr ""
 
-#: init.c:861
+#: init.c:868
 #, c-format
 msgid "%s is set"
 msgstr "%s oturtulmuþtur"
 
-#: init.c:861
+#: init.c:868
 #, c-format
 msgid "%s is unset"
 msgstr "%s oturtulamamýþtýr"
 
-#: init.c:1067
+#: init.c:1074
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: geçersiz eposta tipi"
 
-#: init.c:1092 init.c:1137
+#: init.c:1099 init.c:1144
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: geçersiz deðer"
 
-#: init.c:1195
+#: init.c:1202
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: bilinmeyen tip"
 
-#: init.c:1238
+#: init.c:1245
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "%s'de hata var, satýr %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1254
+#: init.c:1261
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: %s'de hatalar var"
 
-#: init.c:1255
+#: init.c:1262
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr "source: %s'de oluþan çok fazla hatadan dolayý okuma iptal edildi"
 
-#: init.c:1269
+#: init.c:1276
 #, c-format
 msgid "source: error at %s"
 msgstr "source: %s'de hata var"
 
-#: init.c:1274
+#: init.c:1281
 msgid "source: too many arguments"
 msgstr "source: çok fazla argüman"
 
-#: init.c:1325
+#: init.c:1332
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: bilinmeyen komuta"
 
-#: init.c:1681
+#: init.c:1688
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Komuta satrýnda hata: %s\n"
 
-#: init.c:1730
+#: init.c:1737
 msgid "unable to determine home directory"
 msgstr "baþlangýç dizini belirlenemedi"
 
-#: init.c:1738
+#: init.c:1745
 msgid "unable to determine username"
 msgstr "kullanýcý adý belirlenemedi"
 
@@ -2498,80 +2498,80 @@ msgstr "Eposta kutusu yeniden açýlanamadý!"
 msgid "Reopening mailbox..."
 msgstr "Eposta kutusu yeniden açýlýyor..."
 
-#: menu.c:401
+#: menu.c:417
 msgid "Jump to: "
 msgstr "Geç: "
 
-#: menu.c:410
+#: menu.c:426
 msgid "Invalid index number."
 msgstr "Geçersiz sýralama numarasý."
 
-#: menu.c:414 menu.c:432 menu.c:468 menu.c:509 menu.c:525 menu.c:536
-#: menu.c:547 menu.c:589 menu.c:600 menu.c:613 menu.c:626 menu.c:1001
+#: menu.c:430 menu.c:448 menu.c:484 menu.c:525 menu.c:541 menu.c:552
+#: menu.c:563 menu.c:605 menu.c:616 menu.c:629 menu.c:642 menu.c:1017
 msgid "No entries."
 msgstr "Birim yok."
 
-#: menu.c:429
+#: menu.c:445
 msgid "You cannot scroll down farther."
 msgstr "Daha alta geçmek mümkün deðildir."
 
-#: menu.c:445
+#: menu.c:461
 msgid "You cannot scroll up farther."
 msgstr "Daga yukarýya geçmek mümkün deðildir."
 
-#: menu.c:465
+#: menu.c:481
 msgid "You are on the last page."
 msgstr "Son sayfadasýnýz."
 
-#: menu.c:487
+#: menu.c:503
 msgid "You are on the first page."
 msgstr "Ilk sayfadasýnýz."
 
-#: menu.c:566
+#: menu.c:582
 msgid "First entry is shown."
 msgstr "Ilk birim gösteriliyor."
 
-#: menu.c:586
+#: menu.c:602
 msgid "Last entry is shown."
 msgstr "son birim gösteriliyor."
 
-#: menu.c:637
+#: menu.c:653
 msgid "You are on the last entry."
 msgstr "Son birimdesiniz."
 
-#: menu.c:648
+#: menu.c:664
 msgid "You are on the first entry."
 msgstr "Ilk birimdesiniz."
 
-#: menu.c:708 pattern.c:1233
+#: menu.c:724 pattern.c:1233
 msgid "Search for: "
 msgstr "Ara: "
 
-#: menu.c:709
+#: menu.c:725
 msgid "Reverse search for: "
 msgstr "Ters ara: "
 
-#: menu.c:719 pattern.c:1266
+#: menu.c:735 pattern.c:1266
 msgid "No search pattern."
 msgstr "Arama tabiri yok."
 
-#: menu.c:749 pager.c:1905 pager.c:1921 pager.c:2009 pattern.c:1331
+#: menu.c:765 pager.c:1908 pager.c:1924 pager.c:2012 pattern.c:1331
 msgid "Not found."
 msgstr "Bulunmadý."
 
-#: menu.c:865
+#: menu.c:881
 msgid "No tagged entries."
 msgstr "Iþaretlenmiþ birim yok."
 
-#: menu.c:958
+#: menu.c:974
 msgid "Search is not implemented for this menu."
 msgstr "Bu mönüde arama þimdilik mümkün deðildir."
 
-#: menu.c:963
+#: menu.c:979
 msgid "Jumping is not implemented for dialogs."
 msgstr "Diyaloklar için hýzlý geçiþ þimdilik mümkün deðildir."
 
-#: menu.c:1004
+#: menu.c:1020
 msgid "Tagging is not supported."
 msgstr "Iþaretleme desteklenmiyor."
 
@@ -2872,53 +2872,53 @@ msgstr "Eposta kutusu kontrol edildi."
 msgid "Can't write message"
 msgstr "Iletiyi yazamadým"
 
-#: pager.c:63
+#: pager.c:64
 msgid "Not available in this menu."
 msgstr "Bu mönüde yoktur."
 
-#: pager.c:1428
+#: pager.c:1431
 msgid "PrevPg"
 msgstr "Sa. Geri"
 
-#: pager.c:1429
+#: pager.c:1432
 msgid "NextPg"
 msgstr "Sa. Ileri"
 
-#: pager.c:1433
+#: pager.c:1436
 msgid "View Attachm."
 msgstr "Eklenti göster"
 
-#: pager.c:1436
+#: pager.c:1439
 msgid "Next"
 msgstr "Ileri"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1814 pager.c:1845 pager.c:1877 pager.c:2097
+#: pager.c:1817 pager.c:1848 pager.c:1880 pager.c:2100
 msgid "Bottom of message is shown."
 msgstr "Iletinin sonu gösteriliyor."
 
-#: pager.c:1830 pager.c:1852 pager.c:1859 pager.c:1866
+#: pager.c:1833 pager.c:1855 pager.c:1862 pager.c:1869
 msgid "Top of message is shown."
 msgstr "Iletinin baþý gösteriliyor."
 
-#: pager.c:1939
+#: pager.c:1942
 msgid "Reverse search: "
 msgstr "Geriye dönük ara: "
 
-#: pager.c:1940
+#: pager.c:1943
 msgid "Search: "
 msgstr "Ara: "
 
-#: pager.c:2035
+#: pager.c:2038
 msgid "Help is currently being shown."
 msgstr "Yardým þu an gösteriliyor."
 
-#: pager.c:2064
+#: pager.c:2067
 #, fuzzy
 msgid "No more quoted text."
 msgstr "Daha fazla konum yok."
 
-#: pager.c:2077
+#: pager.c:2080
 msgid "No more unquoted text after quoted text."
 msgstr ""
 
@@ -3408,11 +3408,11 @@ msgid "Query"
 msgstr "Sorgula"
 
 #. Prompt for Query
-#: query.c:290 query.c:318
+#: query.c:290 query.c:315
 msgid "Query: "
 msgstr "Sorgulama: "
 
-#: query.c:301 query.c:327
+#: query.c:298 query.c:324
 #, c-format
 msgid "Query '%s'"
 msgstr "Sorgulama '%s'"
@@ -3514,7 +3514,7 @@ msgstr ""
 msgid "Forward MIME encapsulated?"
 msgstr ""
 
-#: recvcmd.c:552 recvcmd.c:808
+#: recvcmd.c:552 recvcmd.c:802
 #, c-format
 msgid "Can't create %s."
 msgstr "%s yaratýlamadý."
@@ -3523,11 +3523,11 @@ msgstr "%s yaratýlamadý."
 msgid "Can't find any tagged messages."
 msgstr "Iþaretli hýc bir ileti yok."
 
-#: recvcmd.c:706 send.c:691
+#: recvcmd.c:706 send.c:698
 msgid "No mailing lists found!"
 msgstr "Eposta listesi bulunamadý!"
 
-#: recvcmd.c:787
+#: recvcmd.c:781
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr ""
 "Yekin iþaretlenmiþ eklentiler çözülemiyor. Geriye kalanlar MIME'yle "
@@ -3646,83 +3646,83 @@ msgstr "%s%s iye cevap verilsin mi?"
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
 #.
-#: send.c:666
+#: send.c:673
 msgid "No tagged messages are visible!"
 msgstr "Hiç bir iþaretlenmiþ ileti gözükmüyor ki!"
 
-#: send.c:718
+#: send.c:725
 msgid "Include message in reply?"
 msgstr "Ileti cevap da içerilsin mi?"
 
-#: send.c:723
+#: send.c:730
 msgid "Including quoted message..."
 msgstr "Esas metin cevap bazý olarak kullanýlýyor..."
 
-#: send.c:733
+#: send.c:740
 msgid "Could not include all requested messages!"
 msgstr "Istenilen her ileti içerilenemedi!"
 
-#: send.c:747
+#: send.c:754
 msgid "Forward as attachment?"
 msgstr "Eklenti olarak iletilsin mi?"
 
-#: send.c:751
+#: send.c:758
 msgid "Preparing forwarded message..."
 msgstr "Iletilmiþ ileti hazýrlanýyor..."
 
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:1086
+#: send.c:1093
 msgid "Recall postponed message?"
 msgstr "Kaydedilmiþ ileti açýlsýn mý?"
 
-#: send.c:1302
+#: send.c:1309
 msgid "Abort unmodified message?"
 msgstr "Deðiþtirilmemiþ ileti iptal edilsin mi?"
 
-#: send.c:1304
+#: send.c:1311
 msgid "Aborted unmodified message."
 msgstr "Deðiþtirilmemiþ ileti iptal edildi."
 
 #. abort
-#: send.c:1345
+#: send.c:1352
 msgid "Mail not sent."
 msgstr "eposta gönderilmedi."
 
-#: send.c:1371
+#: send.c:1378
 msgid "Message postponed."
 msgstr "Ileti kaydedildi."
 
-#: send.c:1380
+#: send.c:1387
 msgid "No recipients are specified!"
 msgstr "Alýcý belirlenmemiþ!"
 
-#: send.c:1385
+#: send.c:1392
 msgid "No recipients were specified."
 msgstr "Alýcýlar belirlenmemiþ."
 
-#: send.c:1391
+#: send.c:1398
 msgid "No subject, abort sending?"
 msgstr "Konu yok, gönderme iptal edilsin mi?"
 
-#: send.c:1395
+#: send.c:1402
 msgid "No subject specified."
 msgstr "Konu belirlenmemiþ."
 
-#: send.c:1442
+#: send.c:1449
 msgid "Sending message..."
 msgstr "Ileti gönderiliyor..."
 
-#: send.c:1572
+#: send.c:1579
 msgid "Could not send the message."
 msgstr "Ileti gönderilemedi."
 
-#: send.c:1577
+#: send.c:1584
 msgid "Mail sent."
 msgstr "eposta gönderildi."
 
-#: send.c:1577
+#: send.c:1584
 msgid "Sending in background."
 msgstr "Ardalanda gönderiliyor."
 
@@ -3769,11 +3769,11 @@ msgstr "%s yakalýnýyor... Çýkýlýyor.\n"
 msgid "Caught signal %d...  Exiting.\n"
 msgstr "Sinyal %d alýndý... Çýkýlýyor.\n"
 
-#: sort.c:201
+#: sort.c:202
 msgid "Sorting mailbox..."
 msgstr "Eposta kutusu sýralanýyor..."
 
-#: sort.c:238
+#: sort.c:239
 msgid "Could not find sorting function! [report this bug]"
 msgstr "Sýralama iþlevi bulunamadý! [hata raporu yaz]"
 
@@ -3781,12 +3781,12 @@ msgstr "Sýralama iþlevi bulunamadý! [hata raporu yaz]"
 msgid "(no mailbox)"
 msgstr "(eposta kutusu yok)"
 
-#: thread.c:968
+#: thread.c:1002
 #, fuzzy
 msgid "Parent message is not visible in this limited view."
 msgstr "Sýnýrlandýrýlmýþ bakýþta ana ileti görünemez."
 
-#: thread.c:974
+#: thread.c:1008
 msgid "Parent message is not available."
 msgstr "Kök iletisi yok."
 

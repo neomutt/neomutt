@@ -1,3 +1,117 @@
+Tue Jan  1 20:07:35 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* intl/COPYING.LIB-2.1, intl/COPYING.LIB-2:
+	ups, these were missing from the CVS.
+
+	* po/ca.po: update.
+
+	* po/Attic/zh_TW.Big5.po, po/uk.po, po/sk.po, po/sv.po, po/ru.po, po/pl.po, po/pt_BR.po, po/ko.po, po/nl.po, po/it.po, po/gl.po, po/id.po, po/es.po, po/fr.po, po/el.po, po/eo.po, po/de.po, po/cs.po, po/da.po, ChangeLog, rfc822.c, VERSION:
+	post-release commit for mutt-1.2.5.1.
+
+	* rfc822.c: Fix a security problem.
+
+Tue Jan  1 20:05:05 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/ca.po: update.
+
+	* po/Attic/zh_TW.Big5.po, po/uk.po, po/sk.po, po/sv.po, po/ru.po, po/pl.po, po/pt_BR.po, po/ko.po, po/nl.po, po/it.po, po/gl.po, po/id.po, po/es.po, po/fr.po, po/el.po, po/eo.po, po/de.po, po/cs.po, po/da.po, ChangeLog, rfc822.c, VERSION:
+	post-release commit for mutt-1.2.5.1.
+
+	* rfc822.c: Fix a security problem.
+
+Tue Jan  1 20:02:10 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/Attic/zh_TW.Big5.po, po/uk.po, po/sk.po, po/sv.po, po/ru.po, po/pl.po, po/pt_BR.po, po/ko.po, po/nl.po, po/it.po, po/gl.po, po/id.po, po/es.po, po/fr.po, po/el.po, po/eo.po, po/de.po, po/cs.po, po/da.po, ChangeLog, rfc822.c, VERSION:
+	post-release commit for mutt-1.2.5.1.
+
+	* rfc822.c: Fix a security problem.
+
+Fri Dec 28 17:19:00 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* protos.h, recvcmd.c, send.c:
+	Make sure References and In-Reply-To headers are generated properly
+	when the user replies to one or more message-type attachments.
+
+Wed Dec 26 19:24:46 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* imap/imap.c: Possible fix for #905.   From Daniel Eisenbud.
+
+Fri Dec 21 00:22:12 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* pager.c: Fix #929.
+
+Tue Dec 18 15:13:18 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* imap/imap.c, imap/imap.h, browser.c:
+	Fix from #918.  From <ntyni+mutt@mappi.helsinki.fi>.
+
+	* po/Makefile.in.in, m4/gettext.m4, m4/iconv.m4, m4/lcmessage.m4, m4/progtest.m4, ABOUT-NLS, intl/bindtextdom.c, intl/ChangeLog, intl/config.charset, intl/dcgettext.c, intl/dcigettext.c, intl/dcngettext.c, intl/dgettext.c, intl/dngettext.c, intl/explodename.c, intl/finddomain.c, intl/gettext.c, intl/gettext.h, intl/gettextP.h, intl/hash-string.h, intl/intl-compat.c, intl/l10nflist.c, intl/libgettext.h, intl/libgnuintl.h, intl/loadinfo.h, intl/loadmsgcat.c, intl/localcharset.c, intl/locale.alias, intl/localealias.c, intl/Makefile.in, intl/ngettext.c, intl/plural.c, intl/plural.y, intl/textdomain.c, intl/VERSION:
+	Updating to gettext-0.10.40.
+
+Mon Dec 17 10:08:18 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* edit.c: Fix a memory allocation bug.  #917.
+
+	* thread.c, hdrline.c: Another threading update.
+
+Thu Dec 13 12:10:59 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* menu.c, mutt.h, sort.c, thread.c:
+	Threading updates, from Daniel Eisenbud.
+
+	* pager.c: compile fix.
+
+Tue Dec 11 23:30:59 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* doc/muttrc.man.head: Typo, #911.
+
+	* po/it.po: update
+
+	* contrib/gpg.rc: Remove an unnecessary \-quoting.
+
+	* init.c, pager.c: Add a missing else.
+
+	* contrib/gpg.rc: Use gettext to determine the good signature pattern.
+
+	* init.c: Make "`...`" work as expected.
+
+	* po/it.po: update.
+
+Mon Dec 10 13:12:41 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* query.c: Fix #910.
+
+	* init.h: Change the default for $pgp_replyencrypt to "yes".
+
+	* po/ja.po, po/pl.po: updates.
+
+Sun Dec  9 09:12:08 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/ca.po, configure.in:
+	Add a Catalan translation.  From Ivan Vilata i Balaguer
+	<ivan@selidor.net>.
+
+Tue Dec  4 10:28:22 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/ru.po: update
+
+Mon Dec  3 18:36:09 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/da.po, po/de.po: update.
+
+	* mx.c:
+	Try to detect write() errors by calling fsync() after fflush().  May
+	fix #895.
+
+Thu Nov 29 09:43:41 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/zh_TW.po, po/zh_CN.po, po/sk.po, po/sv.po, po/tr.po, po/uk.po, po/nl.po, po/pl.po, po/pt_BR.po, po/ru.po, po/hu.po, po/id.po, po/it.po, po/ja.po, po/ko.po, po/lt.po, po/eo.po, po/es.po, po/et.po, po/fr.po, po/gl.po, ChangeLog, po/cs.po, po/da.po, po/de.po, po/el.po, reldate.h, VERSION:
+	automatic post-release commit for mutt-1.3.24
+
+Wed Nov 28 10:30:36 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/id.po: update
+
 Wed Nov 28 10:30:36 2001  Thomas Roessler  <roessler@does-not-exist.org>
 
 	* po/id.po: update
