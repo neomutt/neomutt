@@ -66,6 +66,7 @@
 #define CH_TXTPLAIN	(1<<11) /* generate text/plain MIME headers */
 #define CH_NOLEN	(1<<12) /* don't write Content-Length: and Lines: */
 #define CH_WEED_DELIVERED (1<<13) /* weed eventual Delivered-To headers */
+#define CH_FORCE_FROM	(1<<14)	/* give CH_FROM precedence over CH_WEED? */
 
 /* flags for mutt_enter_string() */
 #define  M_ALIAS   1      /* do alias "completion" by calling up the alias-menu */
