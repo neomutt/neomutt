@@ -71,6 +71,8 @@ int mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
     hclass = HC_CMD;
   else if(flags & M_ALIAS)
     hclass = HC_ALIAS;
+  else if(flags & M_COMMAND)
+    hclass = HC_COMMAND;
   else 
     hclass = HC_OTHER;
 
