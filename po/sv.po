@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.7\n"
 "POT-Creation-Date: 2000-03-04 13:51+0100\n"
-"PO-Revision-Date: 2000-03-03 19:22+0100\n"
+"PO-Revision-Date: 2000-03-11 14:46+01:00\n"
 "Last-Translator: Jörgen Tegnér <teg@post.netlink.se>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1161,7 +1161,7 @@ msgstr "Verifierar (GSSAPI)..."
 
 #: imap/browse.c:93
 msgid "Getting namespaces..."
-msgstr ""
+msgstr "Hämtar namnmängder..."
 
 #: imap/browse.c:120
 msgid "Getting folder list..."
@@ -1648,7 +1648,7 @@ msgstr "skicka meddelandet"
 
 #: keymap_alldefs.h:43
 msgid "toggle disposition between inline/attachment"
-msgstr ""
+msgstr "skifta status mellan integrerat och bifogat"
 
 #: keymap_alldefs.h:44
 msgid "toggle whether to delete file after sending it"
@@ -2204,7 +2204,7 @@ msgstr "Välj nästa brev i kedjan"
 
 #: keymap_alldefs.h:183
 msgid "send the message through a mixmaster remailer chain"
-msgstr "skicka meddelandet genom en 'mixmaster remailer chain'"
+msgstr "skicka meddelandet genom en återpostarkedja (mixmaster)"
 
 #: lib.c:58 lib.c:73 lib.c:104
 msgid "Out of memory!"
@@ -2375,11 +2375,11 @@ msgstr ""
 "  -v\t\tvisa version och definitioner för kompileringen\n"
 "  -x\t\tsimulera mailx's sändläge\n"
 "  -y\t\tvälj en från listan med brevlådor\n"
-"  -z\t\tavsluta ommedelebart om det inte finns några nya meddelanden i "
+"  -z\t\tavsluta omedelbart om det inte finns några nya meddelanden i "
 "brevlådan\n"
 "  -Z\t\töppna den första brevlådan med ett nytt meddelande, avsluta "
-"ommedelebart om inget nytt finns\n"
-"  -h\t\tden här hjälptexten"
+"omedelbart om inget nytt finns\n"
+"  -h\t\tvisa den här hjälptexten"
 
 #: main.c:155
 msgid ""
@@ -3300,7 +3300,7 @@ msgstr "Inga sändlistor hittades!"
 
 #: recvcmd.c:775
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
-msgstr ""
+msgstr "Kan inte avkoda alla märkta bilagor. 'MIME-encapsulate' de övriga?"
 
 #: remailer.c:479
 msgid "Append"
@@ -3320,42 +3320,42 @@ msgstr "OK"
 
 #: remailer.c:511
 msgid "Can't get mixmaster's type2.list!"
-msgstr ""
+msgstr "Kan inte hämta mixmasters type2.list!"
 
 #: remailer.c:537
 msgid "Select a remailer chain."
-msgstr ""
+msgstr "Välj en återpostarkedja"
 
 #: remailer.c:591
 #, c-format
 msgid "Error: %s can't be used as the final remailer of a chain."
-msgstr ""
+msgstr "Fel: %s kan inte användas som en kedjas sista återpostare."
 
 #: remailer.c:624
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."
-msgstr ""
+msgstr "Mixmaster-kedjor kan bara ha %d länkar."
 
 #: remailer.c:649
 msgid "The remailer chain is already empty."
-msgstr ""
+msgstr "Återpostarkedjan är redan tom."
 
 #: remailer.c:659
 msgid "You already have the first chain element selected."
-msgstr "Det har redan valt det första meddelandet i kedjan."
+msgstr "Det har redan valt den första länken i kedjan."
 
 #: remailer.c:669
 msgid "You already have the last chain element selected."
-msgstr ""
+msgstr "Det har redan valt den sista länken i kedjan."
 
 #: remailer.c:708
 msgid "Mixmaster doesn't accept Cc or Bcc headers."
-msgstr ""
+msgstr "Mixmaster accepterar inte Cc eller Bcc i brevhuvudet."
 
 #: remailer.c:732
 msgid ""
 "Please set the hostname variable to a proper value when using mixmaster!"
-msgstr ""
+msgstr "Sätt variabeln 'hostname' till ett passande värde vid användande av mixmaster!"
 
 #: remailer.c:761
 #, c-format

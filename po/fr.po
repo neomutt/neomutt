@@ -5,9 +5,9 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.1.5\n"
+"Project-Id-Version: Mutt 1.1.8\n"
 "POT-Creation-Date: 2000-03-04 13:51+0100\n"
-"PO-Revision-Date: 2000-02-27 13:32+0100\n"
+"PO-Revision-Date: 2000-03-10 17:13+0100\n"
 "Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
@@ -836,7 +836,7 @@ msgstr "Vous êtes sur le dernier message."
 
 #: curs_main.c:1073 curs_main.c:1115
 msgid "No undeleted messages."
-msgstr "Aucun message récupéré."
+msgstr "Pas de message non effacé."
 
 #: curs_main.c:1108 curs_main.c:1131
 msgid "You are on the first message."
