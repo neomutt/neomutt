@@ -1360,8 +1360,9 @@ int mx_check_mailbox (CONTEXT *ctx, int *index_hint, int lock)
 
 
       case M_MH:
-      case M_MAILDIR:
 	return (mh_check_mailbox (ctx, index_hint));
+      case M_MAILDIR:
+	return (maildir_check_mailbox (ctx, index_hint));
 
 #ifdef USE_IMAP
       case M_IMAP:

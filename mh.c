@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>
- * Copyright (C) 1999-2001 Thomas Roessler <roessler@guug.de>
+ * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1999-2002 Thomas Roessler <roessler@guug.de>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -1293,6 +1293,218 @@ static char *maildir_canon_filename (char *dest, const char *src, size_t l)
   return dest;
 }
 
+/* This function handles arrival of new mail and reopening of
+ * maildir folders.  The basic idea here is we check to see if either
+ * the new or cur subdirectories have changed, and if so, we scan them
+ * for the list of files.  We check for newly added messages, and
+ * then merge the flags messages we already knew about.  We don't treat
+ * either subdirectory differently, as mail could be copied directly into
+ * the cur directory from another agent.
+ */
+int maildir_check_mailbox (CONTEXT *ctx, int *index_hint)
+{
+    struct stat st_new;	/* status of the "new" subdirectory */
+    struct stat st_cur; /* status of the "cur" subdirectory */
+    char buf[_POSIX_PATH_MAX];
+    int changed = 0;	/* bitmask representing which subdirectories
+			   have changed.  0x1 = new, 0x2 = cur */
+    int occult = 0;	/* messages were removed from the mailbox */
+    int have_new = 0;	/* messages were added to the mailbox */
+    struct maildir *md;	/* list of messages in the mailbox */
+    struct maildir **last, *p;
+    int i, j;
+    HASH *fnames;	/* hash table for quickly looking up the base filename
+			   for a maildir message */
+
+    /* XXX seems like this check belongs in mx_check_mailbox()
+     * rather than here.
+     */
+    if (!option (OPTCHECKNEW))
+	return 0;
+
+    snprintf (buf, sizeof (buf), "%s/new", ctx->path);
+    if (stat (buf, &st_new) == -1)
+      return -1;
+    
+    snprintf (buf, sizeof (buf), "%s/cur", ctx->path);
+    if (stat (buf, &st_cur) == -1)
+	return -1;
+  
+    /* determine which subdirectories need to be scanned */
+    if (st_new.st_mtime > ctx->mtime)
+	changed = 1;
+    if (st_cur.st_mtime > ctx->mtime_cur)
+	changed |= 2;
+
+    if (!changed)
+	return 0; /* nothing to do */
+
+    /* update the modification times on the mailbox */
+    ctx->mtime_cur = st_cur.st_mtime;
+    ctx->mtime = st_new.st_mtime;
+
+    /* do a fast scan of just the filenames in
+     * the subdirectories that have changed.
+     */
+    md = NULL;
+    last = &md;
+    if (changed & 1)
+      maildir_parse_dir (ctx, &last, "new", NULL);
+    if (changed & 2)
+      maildir_parse_dir (ctx, &last, "cur", NULL);
+
+    /* we create a hash table keyed off the canonical (sans flags) filename
+     * of each message we scanned.  This is used in the loop over the
+     * existing messages below to do some correlation.
+     */
+    fnames = hash_create (1031);
+
+    for (p = md; p; p = p->next)
+    {
+	maildir_canon_filename (buf, p->h->path, sizeof (buf));
+	p->canon_fname = safe_strdup (buf);
+	hash_insert (fnames, p->canon_fname, p, 0);
+    }
+
+    /* check for modifications and adjust flags */
+    for (i = 0; i < ctx->msgcount; i++)
+    {
+	ctx->hdrs[i]->active = 0;
+	maildir_canon_filename (buf, ctx->hdrs[i]->path, sizeof (buf));
+	p = hash_find (fnames, buf);
+	if (p)
+	{
+	    /* message already exists, merge flags */
+	    ctx->hdrs[i]->active = 1;
+
+	    /* check to see if the message has moved to a different
+	     * subdirectory.  If so, update the associated filename.
+	     */
+	    if (mutt_strcmp (ctx->hdrs[i]->path, p->h->path))
+		mutt_str_replace (&ctx->hdrs[i]->path, p->h->path);
+
+	    /* if the user hasn't modified the flags on this message, update
+	     * the flags we just detected.
+	     */
+	    if (!ctx->hdrs[i]->changed)
+	    {
+		/* save the global state here so we can reset it at the
+		 * end of list block if required.
+		 */
+		int context_changed = ctx->changed;
+
+		/* user didn't modify this message.  alter the flags to
+		 * match the current state on disk.  This may not actually
+		 * do anything, but we can't tell right now.  mutt_set_flag()
+		 * will just ignore the call if the status bits are
+		 * already properly set.
+		 */
+		mutt_set_flag (ctx, ctx->hdrs[i], M_FLAG, p->h->flagged);
+		mutt_set_flag (ctx, ctx->hdrs[i], M_REPLIED, p->h->replied);
+		mutt_set_flag (ctx, ctx->hdrs[i], M_READ, p->h->read);
+		mutt_set_flag (ctx, ctx->hdrs[i], M_DELETE, p->h->deleted);
+		/* XXX in the old mh_check_mailbox(), this function always
+		 * was called on a message whenever the "cur" directory
+		 * was changed, but I don't understand why.  It seems like
+		 * you wouldn't want it to change if the user has already
+		 * modified its status.
+		 */
+		mutt_set_flag (ctx, ctx->hdrs[i], M_OLD, p->h->old);
+
+		/* mutt_set_flag() will set this, but we don't need to
+		 * sync the changes we made because we just updated the
+		 * context to match the current on-disk state of the
+		 * message.
+		 */
+		ctx->hdrs[i]->changed = 0;
+
+		/* if the mailbox was not modified before we made these
+		 * changes, unset the changed flag since nothing needs to
+		 * be synchronized.
+		 */
+		if (!context_changed)
+		    ctx->changed = 0;
+	    }
+
+	    /* this is a duplicate of an existing header, so remove it */
+	    mutt_free_header (&p->h);
+	}
+	/* This message was not in the list of messages we just scanned.
+	 * Check to see if we have enough information to know if the
+	 * message has disappeared out from underneath us.
+	 */
+	else if (((changed & 1) && (!strncmp (ctx->hdrs[i]->path, "new/", 4)))||
+		 ((changed & 2) && (!strncmp (ctx->hdrs[i]->path, "cur/", 4))))
+	{
+	    /* This message disappeared, so we need to simulate a "reopen"
+	     * event.  We know it disappeared because we just scanned the
+	     * subdirectory it used to reside in.
+	     */
+	    occult = 1;
+	}
+	else
+	{
+	    /* This message resides in a subdirectory which was not
+	     * modified, so we assume that it is still present and
+	     * unchanged.
+	     */
+	    ctx->hdrs[i]->active = 1;
+	}
+    }
+
+    /* destroy the file name hash */
+    hash_destroy (&fnames, NULL);
+
+    /* If we didn't just get new mail, update the tables. */
+    if (occult)
+    {
+	short old_sort;
+	int old_count;
+
+	if (Sort != SORT_ORDER)
+	{
+	    old_sort = Sort;
+	    Sort = SORT_ORDER;
+	    mutt_sort_headers (ctx, 1);
+	    Sort = old_sort;
+	}
+
+	old_count = ctx->msgcount;
+	for (i = 0, j = 0; i < old_count; i++)
+	{
+	    if (ctx->hdrs[i]->active && index_hint && *index_hint == i)
+		*index_hint = j;
+
+	    if (ctx->hdrs[i]->active)
+		ctx->hdrs[i]->index = j++;
+	}
+	mx_update_tables (ctx, 0);
+    }
+    else
+    {
+	/* Determine if any new mail was delivered, or whether
+	 * existing messages were modified.  Any message that
+	 * was previously accounted for will have ->h == NULL,
+	 * so we just check for the first non-NULL ->h
+	 */
+	for (p = md; p; p = p->next)
+	{
+	    if (p->h)
+	    {
+		have_new = 1;
+		break;
+	    }
+	}
+    }
+
+    /* do any delayed parsing we need to do. */
+    maildir_delayed_parsing (ctx, md);
+
+    /* Incorporate new messages */
+    maildir_move_to_context (ctx, &md);
+
+    return occult ? M_REOPENED : (have_new ? M_NEW_MAIL : 0);
+}
 
 /* 
  * This function handles arrival of new mail and reopening of
