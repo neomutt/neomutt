@@ -1,3 +1,7 @@
+2004-07-19 21:39:28  Adeodato Simó  <asp16@alu.ua.es>  (roessler)
+
+	* doc/manual.sgml.head: Fixing a missing newline.
+
 2004-07-19 21:36:46  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
 
 	* Makefile.am: Fix IMAP breakage.
