@@ -1,4 +1,6 @@
-2004-08-31 07:37:24  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+2004-08-31 15:41:03  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* configure.in: Add AC_GNU_SOURCE.
 
 	* recvattach.c: Remove *two* layers of S/MIME from messages
 	before building the attachment tree.  A generic solution would
