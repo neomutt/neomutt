@@ -20,7 +20,7 @@
 #ifndef _MUTT_SOCKET_H_
 #define _MUTT_SOCKET_H_ 1
 
-typedef struct
+typedef struct _connection
 {
   char *server;
   int port;
@@ -30,6 +30,7 @@ typedef struct
   int bufpos;
   int available;
   void *data;
+  struct _connection *next;
 } CONNECTION;
 
 int mutt_socket_readchar (CONNECTION *conn, char *c);

@@ -31,7 +31,6 @@ static const char rcsid[]="$Id$";
 /* support for multiple socket connections */
 
 static CONNECTION *Connections = NULL;
-static int NumConnections = 0;
 
 /* simple read buffering to speed things up. */
 int mutt_socket_readchar (CONNECTION *conn, char *c)
@@ -61,7 +60,10 @@ int mutt_socket_read_line (char *buf, size_t buflen, CONNECTION *conn)
       break;
     buf[i] = ch;
   }
-  buf[i-1] = 0;
+  if (i)
+    buf[i-1] = '\0';
+  else
+    buf[i] = '\0';
   return (i + 1);
 }
 
@@ -80,33 +82,27 @@ int mutt_socket_write (CONNECTION *conn, const char *buf)
 
 CONNECTION *mutt_socket_select_connection (char *host, int port, int flags)
 {
-  int x;
+  CONNECTION *conn;
 
   if (flags != M_NEW_SOCKET)
   {
-    for (x = 0; x < NumConnections; x++)
+    conn = Connections;
+    while (conn)
     {
-      if (!strcmp (host, Connections[x].server) && 
-	  (port == Connections[x].port))
-	return &Connections[x];
+      if (!strcmp (host, conn->server) && (port == conn->port))
+	return conn;
+      conn = conn->next;
     }
   }
-  if (NumConnections == 0)
-  {
-    NumConnections = 1;
-    Connections = (CONNECTION *) safe_malloc (sizeof (CONNECTION));
-  }
-  else
-  {
-    NumConnections++;
-    safe_realloc ((void *)&Connections, sizeof (CONNECTION) * NumConnections);
-  }
-  Connections[NumConnections - 1].bufpos = 0;
-  Connections[NumConnections - 1].available = 0;
-  Connections[NumConnections - 1].uses = 0;
-  Connections[NumConnections - 1].server = safe_strdup (host);
-  Connections[NumConnections - 1].port = port;
+  conn = (CONNECTION *) safe_calloc (1, sizeof (CONNECTION));
+  conn->bufpos = 0;
+  conn->available = 0;
+  conn->uses = 0;
+  conn->server = safe_strdup (host);
+  conn->port = port;
+  conn->next = Connections;
+  Connections = conn;
 
-  return &Connections[NumConnections - 1];
+  return conn;
 }
 
