@@ -313,6 +313,8 @@ static void add_folder (MUTTMENU *m, struct browser_state *state,
     /* need to allocate more space */
     safe_realloc ((void **) &state->entry,
 		  sizeof (struct folder_file) * (state->entrymax += 256));
+    memset (&state->entry[state->entrylen], 0,
+	    sizeof (struct folder_file) * 256);
     if (m)
       m->data = state->entry;
   }
@@ -340,8 +342,7 @@ static void init_state (struct browser_state *state, MUTTMENU *menu)
 {
   state->entrylen = 0;
   state->entrymax = 256;
-  state->entry = (struct folder_file *) safe_malloc (sizeof (struct folder_file) * state->entrymax);
-  memset (state->entry, 0, sizeof (struct folder_file) * state->entrymax);
+  state->entry = (struct folder_file *) safe_calloc (state->entrymax, sizeof (struct folder_file));
 #ifdef USE_IMAP
   state->imap_browse = 0;
 #endif
