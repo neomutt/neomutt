@@ -257,7 +257,6 @@ enum
 #define SENDBATCH	(1<<5)
 #define SENDMAILX	(1<<6)
 #define SENDKEY		(1<<7)
-#define SENDEDITMSG	(1<<8)
 
 /* boolean vars */
 enum
@@ -374,7 +373,6 @@ enum
   OPTFORCEREDRAWPAGER,	/* (pseudo) used to force a redraw in the pager */
   OPTSORTSUBTHREADS,	/* (pseudo) used when $sort_aux changes */
   OPTNEEDRESCORE,	/* (pseudo) set when the `score' command is used */
-  OPTUSEHEADERDATE,	/* (pseudo) used by edit-message */
   OPTATTACHMSG,		/* (pseudo) used by attach-message */
   
 #ifdef _PGPPATH

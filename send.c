@@ -932,18 +932,13 @@ ci_send_message (int flags,		/* send mode */
   {
     msg = mutt_new_header ();
 
-    if (flags == SENDEDITMSG)
-    {
-      if (mutt_prepare_edit_message(ctx, msg, cur) < 0)
-	goto cleanup;
-    }
-    else if (flags == SENDPOSTPONED)
+    if (flags == SENDPOSTPONED)
     {
       if ((flags = mutt_get_postponed (ctx, msg, &cur, fcc, sizeof (fcc))) < 0)
 	goto cleanup;
     }
 
-    if (flags & (SENDPOSTPONED | SENDEDITMSG))
+    if (flags & SENDPOSTPONED)
     {
       if ((tempfp = safe_fopen (msg->content->filename, "a+")) == NULL)
       {
@@ -956,7 +951,7 @@ ci_send_message (int flags,		/* send mode */
       msg->env = mutt_new_envelope ();
   }
 
-  if (! (flags & (SENDKEY | SENDPOSTPONED | SENDEDITMSG)))
+  if (! (flags & (SENDKEY | SENDPOSTPONED)))
   {
     pbody = mutt_new_body ();
     pbody->next = msg->content; /* don't kill command-line attachments */
@@ -988,7 +983,7 @@ ci_send_message (int flags,		/* send mode */
   }
 
   /* this is handled here so that the user can match ~f in send-hook */
-  if (cur && option (OPTREVNAME) && !(flags & (SENDPOSTPONED | SENDEDITMSG)))
+  if (cur && option (OPTREVNAME) && !(flags & (SENDPOSTPONED)))
   {
     /* we shouldn't have to worry about freeing `msg->env->from' before
      * setting it here since this code will only execute when doing some
@@ -997,7 +992,7 @@ ci_send_message (int flags,		/* send mode */
     msg->env->from = set_reverse_name (cur->env);
   }
 
-  if (!msg->env->from && option (OPTUSEFROM) && !(flags & (SENDEDITMSG|SENDPOSTPONED)))
+  if (!msg->env->from && option (OPTUSEFROM) && !(flags & (SENDPOSTPONED)))
     msg->env->from = mutt_default_from ();
 
   if (flags & SENDBATCH) 
@@ -1009,7 +1004,7 @@ ci_send_message (int flags,		/* send mode */
       process_user_header (msg->env);
     }
   }
-  else if (! (flags & (SENDPOSTPONED | SENDEDITMSG)))
+  else if (! (flags & (SENDPOSTPONED)))
   {
     if ((flags & (SENDREPLY | SENDFORWARD)) &&
 	envelope_defaults (msg->env, ctx, cur, flags) == -1)
@@ -1079,7 +1074,7 @@ ci_send_message (int flags,		/* send mode */
   }
   /* wait until now to set the real name portion of our return address so
      that $realname can be set in a send-hook */
-  if (msg->env->from && !msg->env->from->personal && !(flags & (SENDEDITMSG | SENDPOSTPONED)))
+  if (msg->env->from && !msg->env->from->personal && !(flags & ( SENDPOSTPONED)))
     msg->env->from->personal = safe_strdup (Realname);
 
 
@@ -1134,7 +1129,7 @@ ci_send_message (int flags,		/* send mode */
 	mutt_edit_file (Editor, msg->content->filename);
     }
 
-    if (! (flags & (SENDPOSTPONED | SENDEDITMSG | SENDFORWARD | SENDKEY)))
+    if (! (flags & (SENDPOSTPONED | SENDFORWARD | SENDKEY)))
     {
       if (stat (msg->content->filename, &st) == 0)
       {

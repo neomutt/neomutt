@@ -1534,11 +1534,10 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
 	CHECK_READONLY;
 	CHECK_ATTACH;
-        
-        set_option(OPTUSEHEADERDATE);
-	ci_send_message (SENDEDITMSG, NULL, NULL, Context, CURHDR);
-        unset_option(OPTUSEHEADERDATE);
+
+        mutt_edit_message (Context, tag ? NULL : CURHDR);
 	menu->redraw = REDRAW_FULL;
+
 	break;
 
       case OP_FORWARD_MESSAGE:

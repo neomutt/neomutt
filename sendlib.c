@@ -1273,17 +1273,8 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
   char buffer[LONG_STRING];
   LIST *tmp = env->userhdrs;
 
-  if (option(OPTUSEHEADERDATE) && !privacy)
-  {
-    if(env->date)
-      fprintf(fp, "Date: %s\n", env->date);
-    else
-      fputs (mutt_make_date(buffer, sizeof(buffer)), fp);
-  }
-  else if (mode == 0 && !privacy)
+  if (mode == 0 && !privacy)
     fputs (mutt_make_date (buffer, sizeof(buffer)), fp);
-
-
 
   /* OPTUSEFROM is not consulted here so that we can still write a From:
    * field if the user sets it with the `my_hdr' command

@@ -336,9 +336,10 @@ name="ignore"> commands.
 <p><bf/edit/<label id="edit-messaage"> (default: e)<newline>
 
 This command (available in the ``index'' and ``pager'') allows you to
-edit the current message. Once editing is complete, the <em/Compose/ menu
-is shown. You can now re-send the message or write the edited message
-to any folder using the ``write-fcc'' function.
+edit the raw current message as it's present in the mail folder.
+After you have finished editing, the changed message will be
+appended to the current folder, and the original message will be
+marked for deletion.
 
 <p><bf/enter-command/<label id="enter-command"> (default: ``:'')<newline>
 
