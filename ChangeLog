@@ -1,3 +1,16 @@
+2003-04-11 11:56:58  Lars Hecking  <lhecking@nmrc.ucc.ie>  (roessler)
+
+	* config.guess, config.sub, depcomp, install-sh, missing,
+	mkinstalldirs: updates.
+
+2003-04-11 11:56:22  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* send.c: Try to fix a PGP / S/MIME-related problem.  Found by
+	Matt Larson <mlarson@verisign.com>, tracekd down by René Clerc
+	<rene@clerc.nl>.
+
+	* thread.c: Fix a segmentation fault.
+
 2003-04-09 08:21:59  Zardoz@users.sourceforge.net  (roessler)
 
 	* recvcmd.c: Fix #1531.  (recvcmd.c duplicate of #1528)
