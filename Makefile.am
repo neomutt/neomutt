@@ -97,7 +97,7 @@ muttbug: muttbug.sh
 	cp muttbug.sh muttbug
 	chmod +x muttbug
 
-keymap.h: keymap_defs.h
+Makefile: $(BUILT_SOURCES)
 
 keymap_defs.h: $(OPS) $(srcdir)/gen_defs
 	$(srcdir)/gen_defs $(OPS) > keymap_defs.h

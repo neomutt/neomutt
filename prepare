@@ -1,7 +1,14 @@
 #!/bin/sh --
 
+if test x"$1" = x"-dev" ; then
+  include_deps=
+  shift
+else
+  include_deps="-i"
+fi
+
 if aclocal -I m4 && autoheader && (cd m4 && make -f Makefile.am.in ) \
-  && automake && autoconf && ./configure $@ && make keymap_defs.h
+  && automake $include_deps && autoconf && ./configure $@
 then
   echo
   echo "The mutt source code was successfully prepared."
