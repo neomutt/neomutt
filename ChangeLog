@@ -1,4 +1,7 @@
-2003-03-07 08:18:06  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+2003-03-07 08:23:27  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* crypt.c, pgp.h: Don't use functions without importing the
+	corresponding prototype.
 
 	* mutt_idna.c: It seems like libidn doesn't like to translate
 	NULL pointers.
