@@ -12,9 +12,9 @@ mutt_SOURCES =	addrbook.c alias.c attach.c browser.c buffy.c color.c \
 	postpone.c query.c recvattach.c rfc822.c \
 	rfc1524.c rfc2047.c score.c send.c sendlib.c signal.c sort.c \
 	status.c system.c thread.c charset.c history.c lib.c
-	
-mutt_LDADD = @MUTT_LIB_OBJECTS@
-mutt_DEPENDENCIES = @MUTT_LIB_OBJECTS@
+
+mutt_LDADD = @MUTT_LIB_OBJECTS@ $(INTLLIBS)
+mutt_DEPENDENCIES = @MUTT_LIB_OBJECTS@ $(INTLDEPS)
 
 EXTRA_mutt_SOURCES = pgp.c pgpinvoke.c pgpkey.c pgppubring.c sha1dgst.c \
 	gnupgparse.c resize.c snprintf.c dotlock.c pop.c imap.c socket.c
