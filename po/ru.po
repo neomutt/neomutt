@@ -29,7 +29,7 @@ msgstr "Выбрать"
 #: addrbook.c:33 browser.c:42 compose.c:92 curs_main.c:376 imap/imap_ssl.c:520
 #: pager.c:1459 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
-msgstr "Подск."
+msgstr "Помощь"
 
 #: addrbook.c:120
 msgid "You have no aliases!"
@@ -354,15 +354,12 @@ msgstr "Передать программе: "
 #: commands.c:398
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
-msgstr ""
-"Обр.пор.:(d)время/(f)от/(r)пол/(s)тема/(o)кому/(t)диск/(u)без/(z)разм/(c)конт"
-"?"
+msgstr "Обр.пор.:(d)дата/(f)от/(r)получ/(s)тема/(o)кому/(t)диск/(u)без/(z)разм/(c)конт?"
 
 #: commands.c:399
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
-msgstr ""
-"Порядок:(d)время/(f)от/(r)пол/(s)тема/(o)кому/(t)диск/(u)без/(z)разм/(c)конт?"
+msgstr "Порядок:(d)дата/(f)от/(r)получ/(s)тема/(o)кому/(t)диск/(u)без/(z)разм/(c)конт?"
 
 #: commands.c:400
 msgid "dfrsotuzc"
@@ -1092,6 +1089,22 @@ msgstr "Справка для %s"
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook: неизвестный тип события: %s"
 
+#: imap/auth_anon.c:39
+msgid "Authenticating (anonymous)..."
+msgstr "Аутентификация (анонимная)..."
+
+#: imap/auth_anon.c:69
+msgid "Anonymous authentication failed."
+msgstr "Ошибка анонимной аутентификации."
+
+#: imap/auth_cram.c:44
+msgid "Authenticating (CRAM-MD5)..."
+msgstr "Аутентификация (метод CRAM-MD5)..."
+
+#: imap/auth_cram.c:119
+msgid "CRAM-MD5 authentication failed."
+msgstr "Ошибка CRAM-MD5-аутентификации."
+
 #. now begin login
 #: imap/auth_gss.c:86
 msgid "Authenticating (GSSAPI)..."
@@ -1100,6 +1113,22 @@ msgstr "Аутентификация (метод GSSAPI)..."
 #: imap/auth_gss.c:250
 msgid "GSSAPI authentication failed."
 msgstr "Ошибка GSSAPI-аутентификации."
+
+#: imap/auth_login.c:37 pop.c:72
+msgid "Logging in..."
+msgstr "Регистрация..."
+
+#: imap/auth_login.c:60
+msgid "Login failed."
+msgstr "Регистрация не удалась."
+
+#: imap/auth_sasl.c:91
+msgid "Authenticating (SASL)..."
+msgstr "Аутентификация (метод SASL)..."
+
+#: imap/auth_sasl.c:163
+msgid "SASL authentication failed."
+msgstr "Ошибка SASL-аутентификации."
 
 #: imap/browse.c:80
 msgid "Getting namespaces..."
@@ -1167,10 +1196,6 @@ msgstr "Сохранение флагов состояния сообщений... [%d из %d]"
 msgid "Expunging messages from server..."
 msgstr "Удаление сообщений с сервера..."
 
-#: imap/imap.c:1174
-msgid "Closing mailbox..."
-msgstr "Закрытие почтового ящика..."
-
 #: imap/imap.c:1443
 #, c-format
 msgid "Subscribing to %s..."
@@ -1193,7 +1218,7 @@ msgstr "Накопление энтропии: %s...\n"
 #: imap/imap_ssl.c:130
 #, c-format
 msgid "%s has insecure permissions!"
-msgstr ""
+msgstr "%s имеет небезопасный режим доступа!"
 
 #: imap/imap_ssl.c:156
 msgid "SSL disabled due the lack of entropy"
@@ -1243,12 +1268,12 @@ msgstr "Данный сертификат действителен"
 #: imap/imap_ssl.c:495
 #, c-format
 msgid "   from %s"
-msgstr ""
+msgstr "   с %s"
 
 #: imap/imap_ssl.c:497
 #, c-format
 msgid "     to %s"
-msgstr ""
+msgstr "     по %s"
 
 #: imap/imap_ssl.c:503
 #, c-format
@@ -2612,7 +2637,7 @@ msgstr "Невозможно заблокировать файл, удалить файл блокировки для %s?"
 #: mx.c:126
 #, c-format
 msgid "Can't dotlock %s.\n"
-msgstr "Программе dotlock не удалось заблокировать %s.\n"
+msgstr "dotlock: не удалось заблокировать %s.\n"
 
 #: mx.c:184
 msgid "Timeout exceeded while attempting fcntl lock!"
@@ -3114,15 +3139,6 @@ msgstr "Поиск ключей, соответствующих \"%s\"..."
 #: pop.c:46
 msgid "POP Username: "
 msgstr "Имя пользователя для POP-ящика: "
-
-#: pop.c:61
-#, c-format
-msgid "Password for %s@%s: "
-msgstr "Пароль для %s@%s: "
-
-#: pop.c:72
-msgid "Logging in..."
-msgstr "Регистрация..."
 
 #: pop.c:109
 #, c-format
