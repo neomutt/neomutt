@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 1998-10-28 22:43+0100\n"
+"POT-Creation-Date: 1998-10-29 11:08+0100\n"
 "PO-Revision-Date: 1998-10-25 15:44+0200\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "Language-Team: Ukrainian <uk@ua.net>\n"
@@ -257,7 +257,7 @@ msgstr "Виклик PGP..."
 msgid "Verify PGP signature?"
 msgstr "Перев╕рити п╕дпис PGP?"
 
-#: commands.c:177 mbox.c:696
+#: commands.c:177 mbox.c:713
 msgid "Could not create temporary file!"
 msgstr "Не вийшло створити тимчасовий файл!"
 
@@ -949,65 +949,71 @@ msgstr "Фатальна помилка. Л╕чильник лист╕в неможливо с╕нхрон╕зувати!"
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Отримання заголовк╕в лист╕в... [%d/%d]"
 
-#: imap.c:623 mbox.c:926
+#: imap.c:623 mbox.c:954
 msgid "Reopening mailbox..."
 msgstr "Повторне в╕дкриття поштово╖ скриньки..."
 
-#: imap.c:859
+#: imap.c:866
 #, c-format
 msgid "Connecting to %s..."
 msgstr "З'╓днання з %s..."
 
-#: imap.c:878
+#: imap.c:889
 msgid "IMAP Username: "
 msgstr "╤м'я користувача IMAP: "
 
-#: imap.c:891
+#: imap.c:902
 #, c-format
 msgid "Password for %s@%s: "
 msgstr "Пароль для %s@%s: "
 
-#: imap.c:904
+#: imap.c:915
 msgid "Logging in..."
 msgstr "Ре╓страц╕я..."
 
-#: imap.c:959
+#. Login failed, try again
+#: imap.c:928
+#, fuzzy
+msgid "Login failed."
+msgstr "Ре╓страц╕я..."
+
+#: imap.c:985
 #, c-format
 msgid "Selecting %s..."
 msgstr "Виб╕р %s..."
 
-#: imap.c:1055 lib.c:1168
+#: imap.c:1084 lib.c:1168
 #, c-format
 msgid "Create %s?"
 msgstr "Створити %s?"
 
-#: imap.c:1099
+#: imap.c:1133
 msgid "Fetching message..."
 msgstr "Отримання листа..."
 
-#: imap.c:1207
+#: imap.c:1241
 msgid "Sending APPEND command ..."
 msgstr "Надсилання команди APPEND..."
 
-#: imap.c:1246
+#: imap.c:1280
 msgid "Uploading message ..."
 msgstr "Забирання листа..."
 
-#: imap.c:1301
+#: imap.c:1335
 msgid "Closing connection to IMAP server..."
 msgstr "Закриття з'╓днання з сервером IMAP..."
 
-#: imap.c:1331
+#: imap.c:1365
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Збереження флаг╕в статусу листа... [%d/%d]"
 
-#: imap.c:1357
+#: imap.c:1391
 msgid "Expunging messages from server..."
 msgstr ""
 
 #. tell the server to commit changes
-#: imap.c:1408
+#: imap.c:1442
 msgid "Closing mailbox..."
 msgstr "Закриття поштово╖ скриньки..."
 
@@ -1975,23 +1981,23 @@ msgstr "Нема╓ поштово╖ скриньки з новою поштою."
 msgid "Mailbox is empty."
 msgstr "Поштова скринька порожня."
 
-#: mbox.c:187
+#: mbox.c:138 mbox.c:195
 msgid "Mailbox is corrupt!"
 msgstr "Поштову скриньку з╕псовано!"
 
-#: mbox.c:262
+#: mbox.c:270
 msgid "Reading %s... %d (%d%%)"
 msgstr "Читання %s... %d (%d%%)"
 
-#: mbox.c:627
+#: mbox.c:642
 msgid "Mailbox was corrupted!"
 msgstr "Поштову скриньку було з╕псовано!"
 
-#: mbox.c:664 mbox.c:853
+#: mbox.c:679 mbox.c:877
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Фатальна помилка! Не вийшло в╕дкрити поштову скриньку знову!"
 
-#: mbox.c:673
+#: mbox.c:688
 msgid "Unable to lock mailbox!"
 msgstr "Поштова скринька не блоку╓ться!"
 
@@ -1999,20 +2005,20 @@ msgstr "Поштова скринька не блоку╓ться!"
 #. * messages were found to be changed or deleted.  This should
 #. * never happen, is we presume it is a bug in mutt.
 #.
-#: mbox.c:712
+#: mbox.c:729
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr ""
 
-#: mbox.c:736
+#: mbox.c:753
 msgid "Writing messages... %d (%d%%)"
 msgstr "Запис лист╕в... %d (%d%%)"
 
-#: mbox.c:838
+#: mbox.c:862
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Зб╕й запису! Часткову скриньку збережено у %s"
 
-#: mbox.c:886
+#: mbox.c:914
 msgid "Could not reopen mailbox!"
 msgstr "Не вийшло в╕дкрити поштову скриньку знову!"
 
@@ -2797,75 +2803,75 @@ msgstr "В╕дпов╕сти %s?"
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
 #.
-#: send.c:515
+#: send.c:514
 msgid "No tagged messages are visible!"
 msgstr "Не видно вид╕лених лист╕в!"
 
-#: send.c:540
+#: send.c:539
 msgid "No mailing lists found!"
 msgstr "Не знайдено списк╕в розсилки!"
 
-#: send.c:627
+#: send.c:626
 msgid "Include message in reply?"
 msgstr "Додати лист до в╕дпов╕д╕?"
 
-#: send.c:641
+#: send.c:640
 msgid "Could not include all requested messages!"
 msgstr "Не вийшло додати вс╕ бажан╕ листи!"
 
-#: send.c:654
+#: send.c:653
 msgid "Forward MIME encapsulated?"
 msgstr "Переслати енкапсульованим у в╕дпов╕дност╕ до MIME?"
 
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:865
+#: send.c:864
 msgid "Recall postponed message?"
 msgstr "Викликати залишений лист?"
 
-#: send.c:1097
+#: send.c:1096
 msgid "Abort unmodified message?"
 msgstr "В╕дм╕нити в╕дправку не зм╕неного листа?"
 
-#: send.c:1099
+#: send.c:1098
 msgid "Aborted unmodified message."
 msgstr "Лист не зм╕нено, тому в╕дправку в╕дм╕нено."
 
 #. abort
-#: send.c:1138
+#: send.c:1137
 msgid "Mail not sent."
 msgstr "Лист не в╕дправлено."
 
-#: send.c:1151
+#: send.c:1150
 msgid "Message postponed."
 msgstr "Лист залишено для подальшо╖ в╕дправки.."
 
-#: send.c:1160
+#: send.c:1159
 msgid "No recipients are specified!"
 msgstr "Отримувач╕в не вказано!"
 
-#: send.c:1165
+#: send.c:1164
 msgid "No recipients were specified."
 msgstr "Отримувач╕в не було вказано."
 
-#: send.c:1171
+#: send.c:1170
 msgid "No subject, abort sending?"
 msgstr "Теми нема╓, в╕дм╕нити в╕дправку?"
 
-#: send.c:1175
+#: send.c:1174
 msgid "No subject specified."
 msgstr "Теми не вказано."
 
-#: send.c:1214
+#: send.c:1213
 msgid "Message edited. Really send?"
 msgstr "Лист зм╕нено. Справд╕ в╕дсилати?"
 
-#: send.c:1220
+#: send.c:1219
 msgid "Sending message..."
 msgstr "Лист в╕дправля╓ться..."
 
-#: send.c:1320
+#: send.c:1319
 msgid "Mail sent."
 msgstr "Лист послано."
 
