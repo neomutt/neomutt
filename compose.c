@@ -746,8 +746,21 @@ int mutt_send_menu (HEADER *msg,   /* structure for new message */
 
       case OP_COMPOSE_UPDATE_ENCODING:
         CHECK_COUNT;
-        mutt_update_encoding(idx[menu->current]->content);
-        menu->redraw = REDRAW_CURRENT;
+        if(menu->tagprefix)
+        {
+	  BODY *top;
+	  for(top = msg->content; top; top = top->next)
+	  {
+	    if(top->tagged)
+	      mutt_update_encoding(top);
+	  }
+	  menu->redraw = REDRAW_FULL;
+	}
+        else
+        {
+          mutt_update_encoding(idx[menu->current]->content);
+	  menu->redraw = REDRAW_CURRENT;
+	}
         break;
       
       case OP_COMPOSE_EDIT_TYPE:
@@ -825,6 +838,23 @@ int mutt_send_menu (HEADER *msg,   /* structure for new message */
 	menu->redraw = REDRAW_INDEX;
 	break;
 
+      case OP_COMPOSE_GET_ATTACHMENT:
+        CHECK_COUNT;
+        if(menu->tagprefix)
+        {
+	  BODY *top;
+	  for(top = msg->content; top; top = top->next)
+	  {
+	    if(top->tagged)
+	      mutt_get_tmp_attachment(top);
+	  }
+	  menu->redraw = REDRAW_FULL;
+	}
+        else if (mutt_get_tmp_attachment(idx[menu->current]->content) == 0)
+	  menu->redraw = REDRAW_CURRENT;
+
+        break;
+      
       case OP_COMPOSE_RENAME_FILE:
 	CHECK_COUNT;
 	strfcpy (fname, idx[menu->current]->content->filename, sizeof (fname));

@@ -40,6 +40,40 @@
 #include <string.h>
 #include <errno.h>
 
+int mutt_get_tmp_attachment (BODY *a)
+{
+  char type[STRING];
+  char tempfile[_POSIX_PATH_MAX];
+  rfc1524_entry *entry = rfc1524_new_entry();
+  FILE *fpin = NULL, *fpout = NULL;
+  
+  if(a->unlink)
+    return 0;
+
+  snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
+  rfc1524_mailcap_lookup(a, type, entry, 0);
+  rfc1524_expand_filename(entry->nametemplate, a->filename, 
+			  tempfile, sizeof(tempfile));
+  
+  rfc1524_free_entry(&entry);
+  
+  if((fpin = fopen(a->filename, "r")) && (fpout = safe_fopen(tempfile, "w")))
+  {
+    mutt_copy_stream (fpin, fpout);
+    FREE(&a->filename);
+    a->filename = safe_strdup(tempfile);
+    a->unlink = 1;
+  }
+  else
+    mutt_perror(fpin ? tempfile : a->filename);
+  
+  if(fpin)  fclose(fpin);
+  if(fpout) fclose(fpout);
+  
+  return a->unlink ? 0 : -1;
+}
+
+
 /* return 1 if require full screen redraw, 0 otherwise */
 int mutt_compose_attachment (BODY *a)
 {

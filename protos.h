@@ -222,6 +222,7 @@ int mutt_enter_string (unsigned char *, size_t, int, int, int);
 int mutt_get_field (char *, char *, size_t, int);
 int mutt_get_password (char *, char *, size_t);
 int mutt_get_postponed (CONTEXT *, HEADER *, HEADER **);
+int mutt_get_tmp_attachment (BODY *);
 int mutt_index_menu (int);
 int mutt_invoke_sendmail (ADDRESS *, ADDRESS *, ADDRESS *, const char *, int);
 int mutt_is_autoview (char *);
