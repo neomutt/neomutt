@@ -10,9 +10,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt-1.4i\n"
+"Project-Id-Version: mutt-1.5.0i\n"
 "POT-Creation-Date: 2002-01-31 13:56+0100\n"
-"PO-Revision-Date: 2002-01-23 13:48+0200\n"
+"PO-Revision-Date: 2002-02-01 14:27+0200\n"
 "Last-Translator: mutt-ru@woe.spb.ru\n"
 "Language-Team: RUSSIAN <mutt-ru@woe.spb.ru>\n"
 "MIME-Version: 1.0\n"
@@ -322,9 +322,8 @@ msgid "Invoking PGP..."
 msgstr "Запускается программа PGP..."
 
 #: commands.c:123
-#, fuzzy
 msgid "Invoking OpenSSL..."
-msgstr "Запускается программа PGP..."
+msgstr "Запускается OpenSSL..."
 
 #: commands.c:132 mbox.c:740
 msgid "Could not create temporary file!"
@@ -339,18 +338,16 @@ msgid "Could not copy message"
 msgstr "Не удалось скопировать сообщение"
 
 #: commands.c:194
-#, fuzzy
 msgid "S/MIME signature successfully verified."
-msgstr "PGP-подпись проверена."
+msgstr "S/MIME-подпись проверена."
 
 #: commands.c:196
 msgid "S/MIME certificate owner does not match sender."
-msgstr ""
+msgstr "Отправитель сообщения не является владельцем S/MIME-сертификата."
 
 #: commands.c:199
-#, fuzzy
 msgid "S/MIME signature could NOT be verified."
-msgstr "PGP-подпись проверить НЕ удалось."
+msgstr "S/MIME-подпись проверить НЕ удалось."
 
 #: commands.c:206
 msgid "PGP signature successfully verified."
@@ -559,14 +556,12 @@ msgid "<default>"
 msgstr "<по умолчанию>"
 
 #: compose.c:159
-#, fuzzy
 msgid "Encrypt with: "
-msgstr "Зашифровать"
+msgstr "Зашифровать: "
 
 #: compose.c:175
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
-msgstr "(e)шифр, (s)подпись, (a)подпись как, (b)оба, (f)отказаться? "
+msgstr "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, (f)отказаться? "
 
 #: compose.c:176
 msgid "esabf"
@@ -578,24 +573,24 @@ msgid "Sign as: "
 msgstr "Подписать как: "
 
 #: compose.c:231
-#, fuzzy
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (f)orget it? "
-msgstr "(e)шифр, (s)подпись, (a)подпись как, (b)оба, (f)отказаться? "
+msgstr ""
+"S/MIME (e)шифр, (s)подпись, (w)шифр как, (a)подпись как, (b)оба, (f)отказ? "
 
 #: compose.c:232
-#, fuzzy
 msgid "ewsabf"
-msgstr "esabf"
+msgstr "ewsabf"
 
 #: compose.c:240
 msgid ""
 "1: DES, 2: Tripple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, or (f)orget it? "
 msgstr ""
+"1: DES, 2: Tripple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, (f)отказаться? "
 
 #: compose.c:242
 msgid "12345f"
-msgstr ""
+msgstr "12345f"
 
 #: compose.c:350
 #, c-format
@@ -710,11 +705,11 @@ msgstr "Сообщение записано."
 
 #: compose.c:1320
 msgid "S/MIME already selected. Clear & continue ? "
-msgstr ""
+msgstr "S/MIME уже используется. Очистить и продолжить? "
 
 #: compose.c:1350
 msgid "PGP already selected. Clear & continue ? "
-msgstr ""
+msgstr "PGP уже используется. Очистить и продолжить? "
 
 #: curs_lib.c:153
 msgid "yes"
@@ -2393,7 +2388,6 @@ msgstr ""
 "   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111, USA.\n"
 
 #: main.c:88
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -2428,6 +2422,8 @@ msgid ""
 msgstr ""
 "запуск: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
+"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] "
+"[...]\n"
 "       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
 "[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
@@ -2446,6 +2442,7 @@ msgstr ""
 "  -m <тип>\tуказать тип почтового ящика по умолчанию\n"
 "  -n\t\tзапретить чтение системного Muttrc\n"
 "  -p\t\tпродолжить отложенное сообщение\n"
+"  -Q <имя>\tвывести значение переменной конфигурации\n"
 "  -R\t\tоткрыть почтовый ящик в режиме \"только для чтения\"\n"
 "  -s <тема>\tуказать тему сообщения (должна быть в кавычках, если "
 "присутствуют пробелы)\n"
@@ -3370,9 +3367,8 @@ msgid "Illegal PGP header"
 msgstr "Неверный PGP-заголовок"
 
 #: postpone.c:485
-#, fuzzy
 msgid "Illegal S/MIME header"
-msgstr "Неверный PGP-заголовок"
+msgstr "Неверный S/MIME-заголовок"
 
 #: query.c:45
 msgid "New Query"
@@ -3463,9 +3459,8 @@ msgid "Can't delete attachment from POP server."
 msgstr "Удаление вложений не поддерживается POP-сервером."
 
 #: recvattach.c:1022
-#, fuzzy
 msgid "Deletion of attachments from encrypted messages is unsupported."
-msgstr "Удаление вложений из PGP-сообщений не поддерживается."
+msgstr "Удаление вложений из зашифрованных сообщений не поддерживается."
 
 #: recvattach.c:1042 recvattach.c:1059
 msgid "Only deletion of multipart attachments is supported."
@@ -3775,62 +3770,3 @@ msgstr "Родительское сообщение не видимо при просмотре с ограничением."
 #: thread.c:1035
 msgid "Parent message is not available."
 msgstr "Родительское сообщение недоступно."
-
-#~ msgid "extract PGP public keys"
-#~ msgstr "извлечь открытые PGP-ключи"
-
-#~ msgid "wipe PGP passphrase from memory"
-#~ msgstr "вычистить фразу-пароль PGP из памяти"
-
-#~ msgid "make decrypted copy and delete"
-#~ msgstr "создать расшифрованную копию и удалить"
-
-#~ msgid "make decrypted copy"
-#~ msgstr "создать расшифрованную копию"
-
-#~ msgid "Enter PGP passphrase:"
-#~ msgstr "Введите PGP фразу-пароль:"
-
-#~ msgid "[-- PGP output follows (current time: %c) --]\n"
-#~ msgstr "[-- Результат работы программы PGP (текущее время: %c) --]\n"
-
-#~ msgid ""
-#~ "[-- Error: Inconsistent multipart/signed structure! --]\n"
-#~ "\n"
-#~ msgstr ""
-#~ "[-- Ошибка: ошибка в структуре части типа multipart/signed! --]\n"
-#~ "\n"
-
-#~ msgid ""
-#~ "[-- Error: Unknown multipart/signed protocol %s! --]\n"
-#~ "\n"
-#~ msgstr ""
-#~ "[-- Ошибка: неизвестный протокол %s для части типа multipart/signed! --]\n"
-#~ "\n"
-
-#~ msgid ""
-#~ "[-- Warning: We can't verify %s/%s signatures. --]\n"
-#~ "\n"
-#~ msgstr ""
-#~ "[-- Предупреждение: проверка подписей типа %s/%s не реализована. --]\n"
-#~ "\n"
-
-#~ msgid ""
-#~ "[-- The following data is signed --]\n"
-#~ "\n"
-#~ msgstr ""
-#~ "[-- Начало подписанных данных --]\n"
-#~ "\n"
-
-#~ msgid ""
-#~ "[-- Warning: Can't find any signatures. --]\n"
-#~ "\n"
-#~ msgstr ""
-#~ "[-- Предупреждение: подпись не найдена. --]\n"
-#~ "\n"
-
-#~ msgid "[-- End of signed data --]\n"
-#~ msgstr "[-- Конец подписанных данных --]\n"
-
-#~ msgid "Create an application/pgp message?"
-#~ msgstr "Создать сообщение типа application/pgp?"

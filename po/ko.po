@@ -6,9 +6,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.27i\n"
+"Project-Id-Version: 1.5.0i\n"
 "POT-Creation-Date: 2002-01-31 13:56+0100\n"
-"PO-Revision-Date: 2002-01-23 17:24+300\n"
+"PO-Revision-Date: 2002-02-05 17:08+300\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Im Eunjea <eunjea@kldp.org>\n"
 "MIME-Version: 1.0\n"
@@ -317,9 +317,8 @@ msgid "Invoking PGP..."
 msgstr "PGP를 구동합니다..."
 
 #: commands.c:123
-#, fuzzy
 msgid "Invoking OpenSSL..."
-msgstr "PGP를 구동합니다..."
+msgstr "OpenSSL을 구동합니다..."
 
 #: commands.c:132 mbox.c:740
 msgid "Could not create temporary file!"
@@ -334,18 +333,16 @@ msgid "Could not copy message"
 msgstr "메일을 복사할 수 없음"
 
 #: commands.c:194
-#, fuzzy
 msgid "S/MIME signature successfully verified."
-msgstr "PGP 서명 확인에 성공함."
+msgstr "S/MIME 서명 확인에 성공함."
 
 #: commands.c:196
 msgid "S/MIME certificate owner does not match sender."
-msgstr ""
+msgstr "S/MIME 인증서 소유자와 보낸이가 일치하지 않음."
 
 #: commands.c:199
-#, fuzzy
 msgid "S/MIME signature could NOT be verified."
-msgstr "PGP 서명 검증에 실패함."
+msgstr "S/MIME 서명 검증에 실패함."
 
 #: commands.c:206
 msgid "PGP signature successfully verified."
@@ -550,14 +547,12 @@ msgid "<default>"
 msgstr "<기본값>"
 
 #: compose.c:159
-#, fuzzy
 msgid "Encrypt with: "
-msgstr "암호화"
+msgstr "암호화 방식: "
 
 #: compose.c:175
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
-msgstr "암호화(e), 서명(s), 사용 서명(a), 둘 다(b), 취소(f)? "
+msgstr "PGP 암호화(e), 서명(s), 사용 서명(a), 둘 다(b), 취소(f)? "
 
 #: compose.c:176
 msgid "esabf"
@@ -569,24 +564,24 @@ msgid "Sign as: "
 msgstr "사용 서명: "
 
 #: compose.c:231
-#, fuzzy
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (f)orget it? "
-msgstr "암호화(e), 서명(s), 사용 서명(a), 둘 다(b), 취소(f)? "
+msgstr ""
+"S/MIME 암호화(e), 서명(s), 방식(w), 사용 서명(a), 둘 다(b), 취소(f)? "
 
 #: compose.c:232
-#, fuzzy
 msgid "ewsabf"
-msgstr "esabf"
+msgstr "ewsabf"
 
 #: compose.c:240
 msgid ""
 "1: DES, 2: Tripple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, or (f)orget it? "
 msgstr ""
+"1: DES, 2: Tripple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, 취소(f)? "
 
 #: compose.c:242
 msgid "12345f"
-msgstr ""
+msgstr "12345f"
 
 #: compose.c:350
 #, c-format
@@ -2366,7 +2361,6 @@ msgstr ""
 "02111, USA.\n"
 
 #: main.c:88
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -2399,8 +2393,12 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"사용법 mutt [ -nRzZ ] [ -e <명령어> ] [ -F <파일> ] [ -m <종류> ] [ -f <파일> ]\n"
-"       mutt [ -nx ] [ -e <명령어> ] [ -a <파일> ] [ -F <파일> ] [ -H <파일> ] [-i <파일> ] [ -s <제목> ] [ -b <주소> ] [ -c <주소> ] <주소>  [ ... ]\n"
+"usage: mutt [ -nRyzZ ] [ -e <명령어> ] [ -F <파일> ] [ -m <종류> ] [ -f "
+"<파일> ]\n"
+"       mutt [ -nR ] [ -e <명령어> ] [ -F <파일> ] -Q <쿼리> [ -Q <쿼리> ] "
+"[...]\n"
+"       mutt [ -nx ] [ -e <명령어> ] [ -a <파일> ] [ -F <파일> ] [ -H <파일> ] "
+"[ -i <파일> ] [ -s <제목> ] [ -b <주소> ] [ -c <주소> ] <주소> [ ... ]\n"
 "       mutt [ -n ] [ -e <명령어> ] [ -F <파일> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2416,6 +2414,7 @@ msgstr ""
 "  -m <유형>\t기본 메일함 유형 지정\n"
 "  -n\t\tMutt 시스템 Muttrc 파일 읽지 않음\n"
 "  -p\t\t발송 연기된 메일 다시 열기\n"
+"  -Q <변수>\t설정 변수 쿼리\n"
 "  -R\t\t메일함 읽기 전용 방식으로 열기\n"
 "  -s <제목>\t제목 지정 (공백이 있을 경우 인용 부호 사용)\n"
 "  -v\t\t버젼, 컴파일 옵션 보기\n"
@@ -3338,9 +3337,8 @@ msgid "Illegal PGP header"
 msgstr "잘못된 PGP 헤더"
 
 #: postpone.c:485
-#, fuzzy
 msgid "Illegal S/MIME header"
-msgstr "잘못된 PGP 헤더"
+msgstr "잘못된 S/MIME 헤더"
 
 #: query.c:45
 msgid "New Query"
@@ -3431,9 +3429,8 @@ msgid "Can't delete attachment from POP server."
 msgstr "POP 서버에서 첨부물을 삭제 할수 없음."
 
 #: recvattach.c:1022
-#, fuzzy
 msgid "Deletion of attachments from encrypted messages is unsupported."
-msgstr "PGP 메일의 첨부물 삭제는 지원되지 않음."
+msgstr "암호화된 메일의 첨부물 삭제는 지원되지 않음."
 
 #: recvattach.c:1042 recvattach.c:1059
 msgid "Only deletion of multipart attachments is supported."
