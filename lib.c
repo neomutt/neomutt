@@ -354,6 +354,10 @@ FILE *safe_fopen (const char *path, const char *mode)
     int fd;
     int flags = O_CREAT | O_EXCL;
 
+#ifdef O_NOFOLLOW
+    flags |= O_NOFOLLOW;
+#endif
+
     if (mode[1] == '+')
       flags |= O_RDWR;
     else
