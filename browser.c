@@ -944,21 +944,21 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  {
 	    if (S_ISDIR (st.st_mode))
 	    {
-	      strfcpy (LastDir, buf, sizeof (LastDir));
 	      destroy_state (&state);
-	      if (examine_directory (menu, &state, LastDir, prefix) == 0)
-	      {
-		menu->current = 0; 
-		menu->top = 0; 
-		init_menu (&state, menu, title, sizeof (title), buffy);
-	      }
+	      if (examine_directory (menu, &state, buf, prefix) == 0)
+		strfcpy (LastDir, buf, sizeof (LastDir));
 	      else
 	      {
 		mutt_error _("Error scanning directory.");
-		destroy_state (&state);
-		mutt_menuDestroy (&menu);
-		goto bail;
+		if (examine_directory (menu, &state, LastDir, prefix) == -1)
+		{
+		  mutt_menuDestroy (&menu);
+		  goto bail;
+		}
 	      }
+	      menu->current = 0; 
+	      menu->top = 0; 
+	      init_menu (&state, menu, title, sizeof (title), buffy);
 	    }
 	    else
 	      mutt_error (_("%s is not a directory."), buf);
