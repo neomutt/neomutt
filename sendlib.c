@@ -1747,6 +1747,8 @@ void mutt_prepare_envelope (ENVELOPE *env)
   rfc2047_encode_adrlist (env->cc);
   rfc2047_encode_adrlist (env->from);
   rfc2047_encode_adrlist (env->mail_followup_to);
+  rfc2047_encode_adrlist (env->reply_to);
+
   if (env->subject)
   {
     rfc2047_encode_string (buffer, sizeof (buffer) - 1,
