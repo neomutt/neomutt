@@ -8,7 +8,7 @@ mutt_cv_version=`cat $srcdir/VERSION`
 
 AM_INIT_AUTOMAKE(mutt, $mutt_cv_version)
 
-ALL_LINGUAS="de ru it es uk fr pl nl cs id sk"
+ALL_LINGUAS="de ru it es uk fr pl nl cs id sk ko"
 
 AC_CANONICAL_HOST
 
