@@ -281,7 +281,23 @@ static pgp_key_t *parse_pub_line (char *buf, int *is_subkey, pgp_key_t *k)
       case 11:			/* signature class  */
         break;
       case 12:			/* key capabilities */
-        break;
+	dprint (2, (debugfile, "capabilities info: %s\n", p));
+	
+	while(*p)
+	  {
+	    if(*p=='D')
+	      {
+		flags |= KEYFLAG_DISABLED;
+		break;
+	      }
+
+	    p++;
+	  }
+
+        if (!is_uid && !(*is_subkey && option (OPTPGPIGNORESUB)))
+	  k->flags |= flags;
+
+	break;
       default:
         break;
     }
