@@ -1226,6 +1226,8 @@ static void write_references (LIST *r, FILE *f)
  * mode == -1 => write just the envelope info (used for postponing messages)
  * 
  * privacy != 0 => will omit any headers which may identify the user.
+ *               Output generated is suitable for being sent through
+ * 		 anonymous remailer chains.
  * 
  */
 
@@ -1242,7 +1244,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
     else
       fputs (mutt_make_date(buffer, sizeof(buffer)), fp);
   }
-  else if (mode == 0)
+  else if (mode == 0 && !privacy)
     fputs (mutt_make_date (buffer, sizeof(buffer)), fp);
 
 
