@@ -126,18 +126,24 @@ around while editing are very similar to those of Emacs.
 <tscreen><verb>
 ^A or <Home>    bol             move to the start of the line
 ^B or <Left>    backward-char   move back one char
+Esc B		backward-word	move back one word
 ^D or <Delete>  delete-char     delete the char under the cursor
 ^E or <End>     eol             move to the end of the line
 ^F or <Right>   forward-char    move forward one char
+Esc F		forward-word	move forward one word
 <Tab>           complete        complete filename or alias
-^K              kill-eol        delete to the end of the line
 ^T              complete-query  complete address with query
+^K              kill-eol        delete to the end of the line
+ESC d		kill-eow	delete to the end ot the word
+^W              kill-word       kill the word in front of the cursor
 ^U              kill-line       delete entire line
 ^V              quote-char      quote the next typed key
-^W              kill-word       kill the word in front of the cursor
 <Up>            history-up      recall previous string from history
 <Down>          history-down    recall next string from history
 <BackSpace>     backspace       kill the char in front of the cursor
+Esc u		upcase-word	convert word to upper case
+Esc l		downcase-word	convert word to lower case
+Esc c		capitalize-word capitalize the word
 ^G              n/a             abort
 <Return>        n/a             finish editing
 </verb></tscreen>
