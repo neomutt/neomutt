@@ -86,28 +86,58 @@ static struct keymap_t *allocKeys (int len, keycode_t *keys)
   return (p);
 }
 
-static int parsekeys (char *s, keycode_t *d, int max)
+static int parse_fkey(char *s)
+{
+  char *t;
+  int n = 0;
+
+  if(s[0] != '<' || tolower(s[1]) != 'f')
+    return -1;
+
+  for(t = s + 2; *t && isdigit((unsigned char) *t); t++)
+  {
+    n *= 10;
+    n += *t - '0';
+  }
+
+  if(*t != '>')
+    return -1;
+  else
+    return n;
+}
+
+static int parsekeys (char *str, keycode_t *d, int max)
 {
   int n, len = max;
+  char buff[SHORT_STRING];
+  char c;
+  char *s, *t;
 
+  strfcpy(buff, str, sizeof(buff));
+  s = buff;
+  
   while (*s && len)
   {
-    if ((n = mutt_getvaluebyname (s, KeyNames)) != -1)
+    *d = '\0';
+    if(*s == '<' && (t = strchr(s, '>')))
     {
-      s += strlen (s);
-      *d = n;
-    }
-    else if (tolower (*s) == 'f' && isdigit ((unsigned char) s[1]))
-    {
-      n = 0;
-      for (s++; isdigit ((unsigned char) *s) ; s++)
+      t++; c = *t; *t = '\0';
+      
+      if ((n = mutt_getvaluebyname (s, KeyNames)) != -1)
       {
-	n *= 10;
-	n += *s - '0';
+	s = t;
+	*d = n;
       }
-      *d = KEY_F(n);
+      else if ((n = parse_fkey(s)) > 0)
+      {
+	s = t;
+	*d = KEY_F (n);
+      }
+      
+      *t = c;
     }
-    else
+
+    if(!*d)
     {
       *d = *s;
       s++;
