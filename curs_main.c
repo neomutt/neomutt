@@ -800,7 +800,7 @@ int mutt_index_menu (void)
 	    menu->current = 0;
 	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 	  if ((Sort & SORT_MASK) == SORT_THREADS)
-	    mutt_linearize_tree (Context, 0);
+	    mutt_draw_tree (Context);
 	}
 	break;	  
 

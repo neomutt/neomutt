@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1996-2002 Michael R. Elkins <me@cs.hmc.edu>
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -80,7 +80,6 @@ static int need_display_subject (CONTEXT *ctx, HEADER *hdr)
 /* determines whether a later sibling or the child of a later 
  * sibling is displayed.  
  */
-
 static int is_next_displayed (CONTEXT *ctx, THREAD *tree)
 {
   int depth = 0;
@@ -114,6 +113,37 @@ static int is_next_displayed (CONTEXT *ctx, THREAD *tree)
   return (0);
 }
 
+static void linearize_tree (CONTEXT *ctx)
+{
+  THREAD *tree = ctx->tree;
+  HEADER **array = ctx->hdrs + (Sort & SORT_REVERSE ? ctx->msgcount - 1 : 0);
+
+  while (tree)
+  {
+    while (!tree->message)
+      tree = tree->child;
+
+    *array = tree->message;
+    array += Sort & SORT_REVERSE ? -1 : 1;
+
+    if (tree->child)
+      tree = tree->child;
+    else
+    {
+      while (tree)
+      {
+	if (tree->next)
+	{
+	  tree = tree->next;
+	  break;
+	}
+	else
+	  tree = tree->parent;
+      }
+    }
+  }
+}
+
 /* Since the graphics characters have a value >255, I have to resort to
  * using escape sequences to pass the information to print_enriched_string().
  * These are the macros M_TREE_* defined in mutt.h.
@@ -122,7 +152,7 @@ static int is_next_displayed (CONTEXT *ctx, THREAD *tree)
  * graphics chars on terminals which don't support them (see the man page
  * for curs_addch).
  */
-void mutt_linearize_tree (CONTEXT *ctx, int linearize)
+void mutt_draw_tree (CONTEXT *ctx)
 {
   char *pfx = NULL, *mypfx = NULL, *arrow = NULL, *myarrow = NULL;
   char corner = (Sort & SORT_REVERSE) ? M_TREE_ULCORNER : M_TREE_LLCORNER;
@@ -130,7 +160,6 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
   int depth = 0, start_depth = 0, max_depth = 0, max_width = 0;
   int nextdisp = 0, visible, pseudo = 0, hidden = 0;
   THREAD *tree = ctx->tree;
-  HEADER **array = ctx->hdrs + (Sort & SORT_REVERSE ? ctx->msgcount - 1 : 0);
   HEADER *hdr;
 
   while (tree)
@@ -149,6 +178,7 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
     {
       if ((visible = VISIBLE (hdr, ctx)) !=  0)
 	hdr->display_subject = need_display_subject (ctx, hdr);
+      else hidden = 1;
 
       safe_free ((void **) &hdr->tree);
     }
@@ -161,7 +191,7 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
       
       if (depth && start_depth == depth)
 	myarrow[0] = nextdisp ? M_TREE_LTEE : corner;
-      else if (hidden)
+      else if (tree->parent->message)
 	myarrow[0] = M_TREE_HIDDEN;
       else if (option (OPTHIDEMISSING))
 	myarrow[0] = nextdisp ? vtee : M_TREE_HLINE;
@@ -169,8 +199,6 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
 	myarrow[0] = M_TREE_MISSING;
       myarrow[1] = pseudo ?  M_TREE_STAR
 		    : (tree->duplicate_thread ? M_TREE_EQUALS : M_TREE_HLINE);
-      pseudo = 0;
-      hidden = 0;
 
       if (visible)
       {
@@ -189,12 +217,6 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
       }
     }
 
-    if (linearize && hdr)
-    {
-      *array = hdr;
-      array += Sort & SORT_REVERSE ? -1 : 1;
-    }
-
     if (tree->child && depth)
     {
       mypfx = pfx + (depth - 1) * 2;
@@ -203,6 +225,8 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
     }
 
     nextdisp = 0;
+    pseudo = 0;
+    hidden = 0;
 
     do
     {
@@ -213,14 +237,14 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
 	  depth++;
 	  if (visible)
 	    start_depth = depth;
+	  else
+	    hidden = 1;
 	}
-	if (hdr)
-	  hidden = 1;
 
 	tree = tree->child;
 	if (tree->fake_thread)
 	  pseudo = 1;
-	if (!nextdisp)
+	if (depth && !nextdisp)
 	  nextdisp = is_next_displayed (ctx, tree);
 	hdr = tree->message;
       }
@@ -247,10 +271,10 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
 	tree = tree->next;
 	if (!tree)
 	  break;
-	if (!nextdisp)
-	  nextdisp = is_next_displayed (ctx, tree);
 	if (tree->fake_thread)
 	  pseudo = 1;
+	if (depth && !nextdisp)
+	  nextdisp = is_next_displayed (ctx, tree);
 	hdr = tree->message;
       }
     }
@@ -880,7 +904,10 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
   Sort = oldsort;
 
   /* Put the list into an array. */
-  mutt_linearize_tree (ctx, 1);
+  linearize_tree (ctx);
+
+  /* Draw the thread tree. */
+  mutt_draw_tree (ctx);
 }
 
 static HEADER *find_virtual (THREAD *cur, int reverse)

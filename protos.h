@@ -189,7 +189,7 @@ void mutt_free_header (HEADER **);
 void mutt_free_parameter (PARAMETER **);
 void mutt_generate_header (char *, size_t, HEADER *, int);
 void mutt_help (int);
-void mutt_linearize_tree (CONTEXT *, int);
+void mutt_draw_tree (CONTEXT *);
 void mutt_make_attribution (CONTEXT *ctx, HEADER *cur, FILE *out);
 void mutt_make_forward_subject (ENVELOPE *env, CONTEXT *ctx, HEADER *cur);
 void mutt_make_help (char *, size_t, char *, int, int);
