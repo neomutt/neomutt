@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.2\n"
-"POT-Creation-Date: 2000-06-09 13:33+0200\n"
+"POT-Creation-Date: 2000-06-09 13:39+0200\n"
 "PO-Revision-Date: $Date$\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=koi8-r\n"

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt\n"
-"POT-Creation-Date: 2000-06-09 13:33+0200\n"
+"POT-Creation-Date: 2000-06-09 13:39+0200\n"
 "PO-Revision-Date: 2000-04-01 14:19+02:00\n"
 "Last-Translator: Boris Wesslowski <Boris@Wesslowski.com>\n"
 "Language-Team: -\n"
