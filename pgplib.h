@@ -17,30 +17,10 @@
  *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
  */
 
-#ifdef HAVE_PGP
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
 
-#define APPLICATION_PGP  (1 << 5)
+#include "mutt_crypt.h"
 
-#define PGPENCRYPT  (APPLICATION_PGP | ENCRYPT)
-#define PGPSIGN     (APPLICATION_PGP | SIGN)
-#define PGPGOODSIGN (APPLICATION_PGP | GOODSIGN)
-#define PGPKEY      (APPLICATION_PGP | (1 << 3))
-
-#define KEYFLAG_CANSIGN 		(1 <<  0)
-#define KEYFLAG_CANENCRYPT 		(1 <<  1)
-#define KEYFLAG_SECRET			(1 <<  7)
-#define KEYFLAG_EXPIRED 		(1 <<  8)
-#define KEYFLAG_REVOKED 		(1 <<  9)
-#define KEYFLAG_DISABLED 		(1 << 10)
-#define KEYFLAG_SUBKEY 			(1 << 11)
-#define KEYFLAG_CRITICAL 		(1 << 12)
-#define KEYFLAG_PREFER_ENCRYPTION 	(1 << 13)
-#define KEYFLAG_PREFER_SIGNING 		(1 << 14)
-
-#define KEYFLAG_CANTUSE (KEYFLAG_DISABLED|KEYFLAG_REVOKED|KEYFLAG_EXPIRED)
-#define KEYFLAG_RESTRICTIONS (KEYFLAG_CANTUSE|KEYFLAG_CRITICAL)
-
-#define KEYFLAG_ABILITIES (KEYFLAG_CANSIGN|KEYFLAG_CANENCRYPT|KEYFLAG_PREFER_ENCRYPTION|KEYFLAG_PREFER_SIGNING)
 
 typedef struct pgp_signature
 {
@@ -51,7 +31,7 @@ typedef struct pgp_signature
 }
 pgp_sig_t;
 
-typedef struct pgp_keyinfo
+struct pgp_keyinfo
 {
   char *keyid;
   struct pgp_uid *address;
@@ -70,8 +50,8 @@ typedef struct pgp_keyinfo
   unsigned char fingerprint[20];  /* large enough to hold SHA-1 and RIPEMD160
                                      hashes (20 bytes), MD5 hashes just use the
                                      first 16 bytes */
-}
-pgp_key_t;
+};
+/* Note, that pgp_key_t is now pointer and declared in crypt.h */
 
 typedef struct pgp_uid
 {
@@ -92,27 +72,19 @@ enum pgp_version
   PGP_UNKNOWN
 };
 
-enum pgp_ring
-{
-  PGP_PUBRING,
-  PGP_SECRING
-};
-
-typedef enum pgp_ring pgp_ring_t;
-
 /* prototypes */
 
 const char *pgp_pkalgbytype (unsigned char);
 
-pgp_key_t *pgp_remove_key (pgp_key_t **, pgp_key_t *);
-pgp_uid_t *pgp_copy_uids (pgp_uid_t *, pgp_key_t *);
+pgp_key_t pgp_remove_key (pgp_key_t *, pgp_key_t );
+pgp_uid_t *pgp_copy_uids (pgp_uid_t *, pgp_key_t );
 
 short pgp_canencrypt (unsigned char);
 short pgp_cansign (unsigned char);
 short pgp_get_abilities (unsigned char);
 
-void pgp_free_key (pgp_key_t **kpp);
+void pgp_free_key (pgp_key_t *kpp);
 
-#define pgp_new_keyinfo() safe_calloc (sizeof (pgp_key_t), 1)
+#define pgp_new_keyinfo() safe_calloc (sizeof *((pgp_key_t)0), 1)
 
-#endif /* HAVE_PGP */
+#endif /* CRYPT_BACKEND_CLASSIC_PGP */

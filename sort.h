@@ -46,9 +46,9 @@ WHERE short BrowserSort INITVAL (SORT_SUBJECT);
 WHERE short Sort INITVAL (SORT_DATE);
 WHERE short SortAux INITVAL (SORT_DATE); /* auxiallary sorting method */
 WHERE short SortAlias INITVAL (SORT_ALIAS);
-#ifdef HAVE_PGP
+
+/* FIXME: This one does not belong to here */
 WHERE short PgpSortKeys INITVAL (SORT_ADDRESS);
-#endif
 
 #include "mapping.h"
 extern const struct mapping_t SortMethods[];

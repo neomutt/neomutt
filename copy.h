@@ -27,30 +27,12 @@
 #define M_CM_PRINTING	(1<<7)	/* printing the message - display light */
 
 
-#ifdef HAVE_PGP
-#define M_CM_DECODE_PGP	(1<<8)	/* used for decoding PGP messages */
-#define M_CM_DECODE_CRYPT	(1<<8)
-#endif
-
-
-#ifdef HAVE_SMIME
-#ifdef M_CM_DECODE_CRYPT
-#undef M_CM_DECODE_CRYPT
-#endif
-#define M_CM_DECODE_SMIME	(1<<9)	/* used for decoding S/MIME messages */
-#ifdef HAVE_PGP
-#undef M_CM_DECODE_CRYPT
+#define M_CM_DECODE_PGP	  (1<<8) /* used for decoding PGP messages */
+#define M_CM_DECODE_SMIME (1<<9) /* used for decoding S/MIME messages */
 #define M_CM_DECODE_CRYPT  (M_CM_DECODE_PGP | M_CM_DECODE_SMIME)
-#else
-#define M_CM_DECODE_CRYPT	(1<<9)	/* used for decoding S/MIME messages */
-#endif
-#endif
 
 
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
 #define M_CM_VERIFY	(1<<10)	/* do signature verification */
-#endif
-
 
 
 

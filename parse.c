@@ -22,17 +22,7 @@
 #include "mime.h"
 #include "rfc2047.h"
 #include "rfc2231.h"
-
-
-#ifdef HAVE_PGP
-#include "pgp.h"
-#endif /* HAVE_PGP */
-
-#ifdef HAVE_SMIME
-#include "smime.h"
-#endif /* HAVE_SMIME */
-
-
+#include "mutt_crypt.h"
 
 #include <string.h>
 #include <ctype.h>
@@ -940,9 +930,8 @@ void mutt_parse_mime_message (CONTEXT *ctx, HEADER *cur)
   {
     mutt_parse_part (msg->fp, cur->content);
 
-#if defined(HAVE_PGP) ||  defined(HAVE_SMIME)
-    cur->security = crypt_query (cur->content);
-#endif
+    if (WithCrypto)
+      cur->security = crypt_query (cur->content);
 
     mx_close_message (&msg);
   }

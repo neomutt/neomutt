@@ -21,6 +21,7 @@
 #include "mutt_curses.h"
 #include "keymap.h"
 #include "mapping.h"
+#include "mutt_crypt.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -37,15 +38,8 @@ struct mapping_t Menus[] = {
  { "index",	MENU_MAIN },
  { "pager",	MENU_PAGER },
  { "postpone",	MENU_POST },
-
-
-#ifdef HAVE_PGP
  { "pgp",	MENU_PGP },
-#endif  
-  
-#ifdef HAVE_SMIME
  { "smime",	MENU_SMIME },
-#endif
  
 #ifdef MIXMASTER
   { "mix", 	MENU_MIX },
@@ -554,13 +548,11 @@ void km_init (void)
   create_bindings (OpAlias, MENU_ALIAS);
 
 
-#ifdef HAVE_PGP
-  create_bindings (OpPgp, MENU_PGP);
-#endif
+  if ((WithCrypto & APPLICATION_PGP))
+    create_bindings (OpPgp, MENU_PGP);
 
-#ifdef HAVE_SMIME
-  create_bindings (OpSmime, MENU_SMIME);
-#endif
+  if ((WithCrypto & APPLICATION_SMIME))
+    create_bindings (OpSmime, MENU_SMIME);
 
 #ifdef MIXMASTER
   create_bindings (OpMix, MENU_MIX);
@@ -768,13 +760,8 @@ struct binding_t *km_get_table (int menu)
     case MENU_QUERY:
       return OpQuery;
 
-
-
-#ifdef HAVE_PGP
     case MENU_PGP:
-      return OpPgp;
-#endif
-
+      return (WithCrypto & APPLICATION_PGP)? OpPgp:NULL;
 
 #ifdef MIXMASTER
     case MENU_MIX:

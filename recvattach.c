@@ -27,18 +27,7 @@
 #include "mapping.h"
 #include "mx.h"
 #include "copy.h"
-
-
-
-#ifdef HAVE_PGP
-#include "pgp.h"
-#endif
-
-#ifdef HAVE_SMIME
-#include "smime.h"
-#endif
-
-
+#include "mutt_crypt.h"
 
 #include <ctype.h>
 #include <stdlib.h>
@@ -128,9 +117,7 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
 
     if (m->type == TYPEMULTIPART && m->parts
 	&& (compose || (parent_type == -1 && ascii_strcasecmp ("alternative", m->subtype)))
-#ifdef HAVE_PGP
-	&& !mutt_is_multipart_encrypted(m)
-#endif
+        && (!(WithCrypto & APPLICATION_PGP) || !mutt_is_multipart_encrypted(m))
 	)
     {
       idx = mutt_gen_attach_list (m->parts, m->type, idx, idxlen, idxmax, level, compose);
@@ -148,9 +135,8 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
       /* We don't support multipart messages in the compose menu yet */
       if (!compose && !m->collapsed && 
 	  ((m->type == TYPEMULTIPART
-#ifdef HAVE_PGP
-	    && !mutt_is_multipart_encrypted (m)
-#endif
+            && (!(WithCrypto & APPLICATION_PGP)
+                || !mutt_is_multipart_encrypted (m))
 	    )
 	   || mutt_is_message_type(m->type, m->subtype)))
       {
@@ -776,10 +762,14 @@ mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, HEADER *hdr,
         op = OP_VIEW_ATTACH;
 	break;
       /* functions which are passed through from the pager */
-      case OP_ATTACH_COLLAPSE:
-#ifdef HAVE_PGP
       case OP_CHECK_TRADITIONAL:
-#endif
+        if (!(WithCrypto & APPLICATION_PGP))
+        {
+          op = OP_NULL;
+          break;
+        }
+        /* fall through */
+      case OP_ATTACH_COLLAPSE:
         if (recv)
           return op;
       default:
@@ -837,16 +827,8 @@ static const char *Function_not_permitted = N_("Function not permitted in attach
 
 void mutt_view_attachments (HEADER *hdr)
 {
-
-
-
-
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
   int secured = 0;
   int need_secured = 0;
-#endif
-
-
 
   char helpstr[SHORT_STRING];
   MUTTMENU *menu;
@@ -868,9 +850,7 @@ void mutt_view_attachments (HEADER *hdr)
     return;
 
 
-
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
-  if (hdr->security & ENCRYPT)
+  if (WithCrypto && (hdr->security & ENCRYPT))
   {
     need_secured  = 1;
     
@@ -879,27 +859,24 @@ void mutt_view_attachments (HEADER *hdr)
       mx_close_message (&msg);
       return;
     }
-#ifdef HAVE_SMIME
-    if (hdr->security & APPLICATION_SMIME)
+    if ((WithCrypto & APPLICATION_SMIME) && hdr->security & APPLICATION_SMIME)
     {
       if (hdr->env)
-	  smime_getkeys (hdr->env);
+	  crypt_smime_getkeys (hdr->env);
 
       if (mutt_is_application_smime(hdr->content))
-	secured = ! smime_decrypt_mime (msg->fp, &fp, hdr->content, &cur);
+	secured = ! crypt_smime_decrypt_mime (msg->fp, &fp,
+                                              hdr->content, &cur);
       else
 	need_secured = 0;
     }
-#endif  
-#ifdef HAVE_PGP
-    if (hdr->security & APPLICATION_PGP)
+    if ((WithCrypto & APPLICATION_PGP) && hdr->security & APPLICATION_PGP)
     {
       if (mutt_is_multipart_encrypted(hdr->content))
-	secured = !pgp_decrypt_mime (msg->fp, &fp, hdr->content, &cur);
+	secured = !crypt_pgp_decrypt_mime (msg->fp, &fp, hdr->content, &cur);
       else
 	need_secured = 0;
     }
-#endif
 
     if (need_secured && !secured)
     {
@@ -909,8 +886,7 @@ void mutt_view_attachments (HEADER *hdr)
     }
   }
   
-  if (!need_secured)
-#endif /* HAVE_SMIME || HAVVE_PGP */
+  if (!WithCrypto || !need_secured)
   {
     fp = msg->fp;
     cur = hdr->content;
@@ -964,32 +940,29 @@ void mutt_view_attachments (HEADER *hdr)
         mutt_update_attach_index (cur, &idx, &idxlen, &idxmax, menu);
         break;
       
-
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
       case OP_FORGET_PASSPHRASE:
         crypt_forget_passphrase ();
         break;
-#endif
-      
 
-#ifdef HAVE_PGP
       case OP_EXTRACT_KEYS:
-        pgp_extract_keys_from_attachment_list (fp, menu->tagprefix, 
-		  menu->tagprefix ? cur : idx[menu->current]->content);
-        menu->redraw = REDRAW_FULL;
+        if ((WithCrypto & APPLICATION_PGP))
+        {
+          crypt_pgp_extract_keys_from_attachment_list (fp, menu->tagprefix, 
+		    menu->tagprefix ? cur : idx[menu->current]->content);
+          menu->redraw = REDRAW_FULL;
+        }
         break;
       
       case OP_CHECK_TRADITIONAL:
-        if (pgp_check_traditional (fp, menu->tagprefix ? cur : idx[menu->current]->content,
-				   menu->tagprefix))
+        if ((WithCrypto & APPLICATION_PGP)
+            && crypt_pgp_check_traditional (fp, menu->tagprefix ? cur
+                                              : idx[menu->current]->content,
+                                      menu->tagprefix))
         {
 	  hdr->security = crypt_query (cur);
 	  menu->redraw = REDRAW_FULL;
 	}
         break;
-#endif
-      
-
 
       case OP_PRINT:
 	mutt_print_attachment_list (fp, menu->tagprefix, 
@@ -1023,16 +996,12 @@ void mutt_view_attachments (HEADER *hdr)
 	}
 #endif
 
-
-
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
-        if (hdr->security)
+        if (WithCrypto && hdr->security)
         {
 	  mutt_message _(
 	    "Deletion of attachments from encrypted messages is unsupported.");
 	}
         else
-#endif
         {
 	  if (!menu->tagprefix)
 	  {
@@ -1158,18 +1127,11 @@ void mutt_view_attachments (HEADER *hdr)
 	FREE (&idx);
 	idxmax = 0;
 
-
-
-
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
-        if (need_secured && secured)
+        if (WithCrypto && need_secured && secured)
 	{
 	  fclose (fp);
 	  mutt_free_body (&cur);
 	}
-#endif /* HAVE_PGP || HAVE_SMIME */
-
-
 
 	mutt_menuDestroy  (&menu);
 	return;

@@ -26,14 +26,6 @@
 #include "keymap.h"
 #include "url.h"
 
-#ifdef HAVE_PGP
-#include "pgp.h"
-#endif
-
-#ifdef HAVE_SMIME
-#include "smime.h"
-#endif
-
 #ifdef USE_IMAP
 #include "imap.h"
 #endif
@@ -49,6 +41,8 @@
 #ifdef USE_DOTLOCK
 #include "dotlock.h"
 #endif
+
+#include "mutt_crypt.h"
 
 #include <dirent.h>
 #include <fcntl.h>
@@ -1569,12 +1563,11 @@ void mx_update_context (CONTEXT *ctx, int new_messages)
   {
     h = ctx->hdrs[msgno];
 
-
-
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
-    /* NOTE: this _must_ be done before the check for mailcap! */
-    h->security = crypt_query (h->content);
-#endif /* HAVE_PGP || HAVE_SMIME */
+    if (WithCrypto)
+    {
+      /* NOTE: this _must_ be done before the check for mailcap! */
+      h->security = crypt_query (h->content);
+    }
 
     if (!ctx->pattern)
     {

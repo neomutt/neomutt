@@ -17,50 +17,26 @@
  *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
  */
 
-#ifdef HAVE_PGP
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
 
 #include "mutt_crypt.h"
 #include "pgplib.h"
 
-WHERE REGEXP PgpGoodSign;
-
-WHERE char *PgpSignAs;
-WHERE short PgpTimeout;
-WHERE char *PgpEntryFormat;
-
-
-/* The command formats */
-
-WHERE char *PgpClearSignCommand;
-WHERE char *PgpDecodeCommand;
-WHERE char *PgpVerifyCommand;
-WHERE char *PgpDecryptCommand;
-WHERE char *PgpSignCommand;
-WHERE char *PgpEncryptSignCommand;
-WHERE char *PgpEncryptOnlyCommand;
-WHERE char *PgpImportCommand;
-WHERE char *PgpExportCommand;
-WHERE char *PgpVerifyKeyCommand;
-WHERE char *PgpListSecringCommand;
-WHERE char *PgpListPubringCommand;
-WHERE char *PgpGetkeysCommand;
 
 /* prototypes */
+
+int pgp_use_gpg_agent();
 
 int pgp_check_traditional (FILE *, BODY *, int);
 BODY *pgp_decrypt_part (BODY *, STATE *, FILE *, BODY *);
 BODY *pgp_make_key_attachment (char *);
 const char *pgp_micalg (const char *fname);
 
-char *_pgp_keyid (pgp_key_t *);
-char *pgp_keyid (pgp_key_t *);
+char *_pgp_keyid (pgp_key_t);
+char *pgp_keyid (pgp_key_t);
 
 
 int mutt_check_pgp (HEADER * h);
-int mutt_is_application_pgp (BODY *);
-
-int pgp_is_multipart_encrypted (BODY *);
-
 
 int pgp_decrypt_mime (FILE *, FILE **, BODY *, BODY **);
 
@@ -68,11 +44,13 @@ int pgp_decrypt_mime (FILE *, FILE **, BODY *, BODY **);
 
 #define pgp_valid_passphrase() crypt_valid_passphrase(APPLICATION_PGP)
 
-/* pgp_key_t *gpg_get_candidates (struct pgp_vinfo *, pgp_ring_t, LIST *); */
-pgp_key_t *pgp_ask_for_key (char *, char *, short, pgp_ring_t);
-pgp_key_t *pgp_get_candidates (pgp_ring_t, LIST *);
-pgp_key_t *pgp_getkeybyaddr (ADDRESS *, short, pgp_ring_t);
-pgp_key_t *pgp_getkeybystr (char *, short, pgp_ring_t);
+/* pgp_key_t gpg_get_candidates (struct pgp_vinfo *, pgp_ring_t, LIST *); */
+pgp_key_t pgp_ask_for_key (char *, char *, short, pgp_ring_t);
+pgp_key_t pgp_get_candidates (pgp_ring_t, LIST *);
+pgp_key_t pgp_getkeybyaddr (ADDRESS *, short, pgp_ring_t);
+pgp_key_t pgp_getkeybystr (char *, short, pgp_ring_t);
+
+char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc);
 
 void pgp_forget_passphrase (void);
 void pgp_application_pgp_handler (BODY *, STATE *);
@@ -125,4 +103,4 @@ BODY *pgp_encrypt_message (BODY *, char *, int);
 BODY *pgp_sign_message (BODY *);
 
 
-#endif /* HAVE_PGP */
+#endif /* CRYPT_BACKEND_CLASSIC_PGP */

@@ -18,9 +18,7 @@
 
 #include "mutt.h"
 
-#ifdef HAVE_PGP
-#include "pgp.h"
-#endif
+#include "mutt_crypt.h"
 
 #include <sys/stat.h>
 #include <string.h>
@@ -178,15 +176,12 @@ void mutt_edit_headers (const char *editor,
     }
 
 
-
-#ifdef HAVE_PGP
-    else if (ascii_strncasecmp ("pgp:", cur->data, 4) == 0)
+    else if ((WithCrypto & APPLICATION_PGP)
+             &&ascii_strncasecmp ("pgp:", cur->data, 4) == 0)
     {
       msg->security = mutt_parse_crypt_hdr (cur->data + 4, 0);
       keep = 0;
     }
-#endif
-
 
     if (keep)
     {

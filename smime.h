@@ -17,53 +17,17 @@
  */
 
 
-#ifdef HAVE_SMIME
+#ifdef CRYPT_BACKEND_CLASSIC_SMIME
 
 #include "mutt_crypt.h"
 
-WHERE char *SmimeDefaultKey;
-WHERE char *SmimeCryptAlg;
-WHERE short SmimeTimeout;
-WHERE char *SmimeCertificates;
-WHERE char *SmimeKeys;
-WHERE char *SmimeCryptAlg;
-WHERE char *SmimeCALocation;
 
-/* The command formats */
-
-WHERE char *SmimeVerifyCommand;
-WHERE char *SmimeVerifyOpaqueCommand;
-WHERE char *SmimeDecryptCommand;
-
-WHERE char *SmimeSignCommand;
-WHERE char *SmimeSignOpaqueCommand;
-WHERE char *SmimeEncryptCommand;
-
-WHERE char *SmimeGetSignerCertCommand;
-WHERE char *SmimePk7outCommand;
-WHERE char *SmimeGetCertCommand;
-WHERE char *SmimeImportCertCommand;
-WHERE char *SmimeGetCertEmailCommand;
-
-
-#define APPLICATION_SMIME  (1 << 6)
-
-#define SIGNOPAQUE    (1 << 4)
-
-#define SMIMEENCRYPT  (APPLICATION_SMIME | ENCRYPT)
-#define SMIMESIGN     (APPLICATION_SMIME | SIGN)
-#define SMIMEGOODSIGN (APPLICATION_SMIME | GOODSIGN)
-#define SMIMEBADSIGN  (APPLICATION_SMIME | BADSIGN)
-#define SMIMEOPAQUE   (APPLICATION_SMIME | SIGNOPAQUE)
 
 
 
 #define smime_valid_passphrase() crypt_valid_passphrase(APPLICATION_SMIME)
 
 void smime_void_passphrase (void);
-
-int mutt_is_application_smime (BODY *);
-
 
 int   smime_decrypt_mime (FILE *, FILE **, BODY *, BODY **);
 
@@ -86,7 +50,10 @@ void  smime_getkeys (ENVELOPE *);
 
 char* smime_ask_for_key (char *, char *, short);
 
+char *smime_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc);
 
 void  smime_invoke_import (char *, char *);
 
 #endif
+
+

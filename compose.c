@@ -58,10 +58,8 @@ enum
   HDR_MIX,
 #endif
 
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
   HDR_CRYPT,
   HDR_CRYPTINFO,
-#endif
 
   HDR_ATTACH  = (HDR_FCC + 5) /* where to start printing the attachments */
 };
@@ -102,38 +100,27 @@ static void snd_entry (char *b, size_t blen, MUTTMENU *menu, int num)
 
 
 
-#ifdef HAVE_SMIME
-#include "smime.h"
-#endif
-
-#ifdef HAVE_PGP
-#include "pgp.h"
-#endif
-
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
+#include "mutt_crypt.h"
 
 static void redraw_crypt_lines (HEADER *msg)
 {
-#ifdef HAVE_SMIME
   int off = 0;
-#endif
 
-#if defined(HAVE_PGP) && defined(HAVE_SMIME)
-  if (!msg->security)
-    mvaddstr (HDR_CRYPT, 0,     "Security: ");
-  else if (msg->security & APPLICATION_SMIME)
+  if ((WithCrypto & APPLICATION_PGP) && (WithCrypto & APPLICATION_SMIME))
+  {     
+    if (!msg->security)
+      mvaddstr (HDR_CRYPT, 0,     "Security: ");
+    else if (msg->security & APPLICATION_SMIME)
+      mvaddstr (HDR_CRYPT, 0,     "  S/MIME: ");
+    else if (msg->security & APPLICATION_PGP)
+      mvaddstr (HDR_CRYPT, 0,     "     PGP: ");
+  }
+  else if ((WithCrypto & APPLICATION_SMIME))
     mvaddstr (HDR_CRYPT, 0,     "  S/MIME: ");
-  else if (msg->security & APPLICATION_PGP)
+  else if ((WithCrypto & APPLICATION_PGP))
     mvaddstr (HDR_CRYPT, 0,     "     PGP: ");
-#else
-#ifdef HAVE_SMIME
-  mvaddstr (HDR_CRYPT, 0,     "  S/MIME: ");
-#endif
-#ifdef HAVE_PGP
-  mvaddstr (HDR_CRYPT, 0,     "     PGP: ");
-#endif
-#endif
-
+  else
+    return;
 
   if ((msg->security & (ENCRYPT | SIGN)) == (ENCRYPT | SIGN))
     addstr (_("Sign, Encrypt"));
@@ -147,30 +134,32 @@ static void redraw_crypt_lines (HEADER *msg)
 
   move (HDR_CRYPTINFO, 0);
   clrtoeol ();
-#ifdef HAVE_PGP
-  if (msg->security & APPLICATION_PGP  && msg->security & SIGN)
+  if ((WithCrypto & APPLICATION_PGP)
+      && msg->security & APPLICATION_PGP  && msg->security & SIGN)
     printw ("%s%s", _(" sign as: "), PgpSignAs ? PgpSignAs : _("<default>"));
-#endif
-#ifdef HAVE_SMIME
-  if (msg->security & APPLICATION_SMIME  && msg->security & SIGN) {
+
+  if ((WithCrypto & APPLICATION_SMIME)
+      && msg->security & APPLICATION_SMIME  && msg->security & SIGN) {
       printw ("%s%s", _(" sign as: "), SmimeDefaultKey ? SmimeDefaultKey : _("<default>"));
   }
-  if (msg->security & APPLICATION_SMIME  && (msg->security & ENCRYPT)) {
+
+  if ((WithCrypto & APPLICATION_SMIME)
+       && msg->security & APPLICATION_SMIME  && (msg->security & ENCRYPT)) {
       mvprintw (HDR_CRYPTINFO, 40, "%s%s", _("Encrypt with: "),
 		NONULL(SmimeCryptAlg));
       off = 20;
   }
-#endif
 }
-#endif  /* defined(HAVE_PGP) || defined(HAVE_SMIME) */
 
 
 
-#ifdef HAVE_PGP
 static int pgp_send_menu (HEADER *msg, int *redraw)
 {
-  pgp_key_t *p;
+  pgp_key_t p;
   char input_signas[SHORT_STRING];
+
+  if (!(WithCrypto & APPLICATION_PGP))
+    return msg->security;
 
   switch (mutt_multi_choice (_("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "),
 			     _("esabf")))
@@ -184,18 +173,19 @@ static int pgp_send_menu (HEADER *msg, int *redraw)
     break;
 
   case 3: /* sign (a)s */
-
     unset_option(OPTPGPCHECKTRUST);
 
-    if ((p = pgp_ask_for_key (_("Sign as: "), NULL, KEYFLAG_CANSIGN, PGP_PUBRING)))
+    if ((p = crypt_pgp_ask_for_key (_("Sign as: "), NULL,
+                                    KEYFLAG_CANSIGN, PGP_PUBRING)))
     {
-      snprintf (input_signas, sizeof (input_signas), "0x%s", pgp_keyid (p));
+      snprintf (input_signas, sizeof (input_signas), "0x%s",
+                crypt_pgp_keyid (p));
       mutt_str_replace (&PgpSignAs, input_signas);
-      pgp_free_key (&p);
+      crypt_pgp_free_key (&p);
       
       msg->security |= PGPSIGN;
 	
-      pgp_void_passphrase ();	/* probably need a different passphrase */
+      crypt_pgp_void_passphrase ();  /* probably need a different passphrase */
     }
     else
     {
@@ -218,15 +208,15 @@ static int pgp_send_menu (HEADER *msg, int *redraw)
       redraw_crypt_lines (msg);
   return (msg->security);
 }
-#endif /* HAVE_PGP */
 
 
-
-#ifdef HAVE_SMIME
 
 static int smime_send_menu (HEADER *msg, int *redraw)
 {
-    char *p;
+  char *p;
+
+  if (!(WithCrypto & APPLICATION_SMIME))
+    return msg->security;
 
   switch (mutt_multi_choice (_("S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (f)orget it? "),
 			     _("eswabf")))
@@ -270,14 +260,14 @@ static int smime_send_menu (HEADER *msg, int *redraw)
 
   case 4: /* sign (a)s */
 
-    if ((p = smime_ask_for_key (_("Sign as: "), NULL, 0))) {
+    if ((p = crypt_smime_ask_for_key (_("Sign as: "), NULL, 0))) {
       p[mutt_strlen (p)-1] = '\0';
       mutt_str_replace (&SmimeDefaultKey, p);
 	
       msg->security |= SMIMESIGN;
 
       /* probably need a different passphrase */
-      smime_void_passphrase ();
+      crypt_smime_void_passphrase ();
     }
     else
       msg->security &= ~SMIMESIGN;
@@ -298,7 +288,7 @@ static int smime_send_menu (HEADER *msg, int *redraw)
       redraw_crypt_lines (msg);
   return (msg->security);
 }
-#endif /* HAVE_SMIME */
+
 
 #ifdef MIXMASTER
 
@@ -332,7 +322,7 @@ static void redraw_mix_line (LIST *chain)
     c += mutt_strlen (t) + 2;
   }
 }
-#endif
+#endif /* MIXMASTER */
 
 static int
 check_attachments(ATTACHPTR **idx, short idxlen)
@@ -390,12 +380,8 @@ static void draw_envelope (HEADER *msg, char *fcc)
   mvprintw (HDR_FCC, 0, TITLE_FMT, Prompts[HDR_FCC - 1]);
   mutt_paddstr (W, fcc);
 
-
-
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
-  redraw_crypt_lines (msg);
-#endif /* HAVE_PGP || HAVE_SMIE */
-
+  if (WithCrypto)
+    redraw_crypt_lines (msg);
 
 #ifdef MIXMASTER
   redraw_mix_line (msg->chain);
@@ -735,9 +721,9 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
 
 
-#ifdef HAVE_PGP
       case OP_COMPOSE_ATTACH_KEY:
-
+        if (!(WithCrypto & APPLICATION_PGP))
+          break;       
 	if (idxlen == idxmax)
         {
 	  safe_realloc ((void **) &idx, sizeof (ATTACHPTR *) * (idxmax += 5));
@@ -745,7 +731,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	}
 	
 	idx[idxlen] = (ATTACHPTR *) safe_calloc (1, sizeof (ATTACHPTR));
-	if ((idx[idxlen]->content = pgp_make_key_attachment(NULL)) != NULL)
+	if ((idx[idxlen]->content = crypt_pgp_make_key_attachment(NULL)) != NULL)
 	{
 	  idx[idxlen]->level = (idxlen > 0) ? idx[idxlen-1]->level : 0;
 
@@ -769,8 +755,6 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	}
 	
 	break;
-#endif
-
 
 
       case OP_COMPOSE_ATTACH_FILE:
@@ -1310,11 +1294,11 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
 
 
-#ifdef HAVE_PGP
       case OP_COMPOSE_PGP_MENU:
-
-#ifdef HAVE_SMIME
-	if (msg->security & APPLICATION_SMIME)
+        if (!(WithCrypto & APPLICATION_PGP))
+          break;
+	if ((WithCrypto & APPLICATION_SMIME)
+            && msg->security & APPLICATION_SMIME)
 	{
 	  if (mutt_yesorno (_("S/MIME already selected. Clear & continue ? "),
 			     M_YES) == M_NO)
@@ -1324,27 +1308,22 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  }
 	  msg->security = 0;
 	}
-#endif /* HAVE_SMIME */
 	msg->security = pgp_send_menu (msg, &menu->redraw);
 	redraw_crypt_lines (msg);
 	break;
-#endif /* HAVE_PGP */
 
 
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
       case OP_FORGET_PASSPHRASE:
-
 	crypt_forget_passphrase ();
 	break;
 
-#endif /* HAVE_(PGP||SMIME) */
 
-
-#ifdef HAVE_SMIME
       case OP_COMPOSE_SMIME_MENU:
+        if (!(WithCrypto & APPLICATION_SMIME))
+          break;
 
-#ifdef HAVE_PGP
-	if (msg->security & APPLICATION_PGP)
+	if ((WithCrypto & APPLICATION_PGP)
+            && msg->security & APPLICATION_PGP)
 	{
 	  if (mutt_yesorno (_("PGP already selected. Clear & continue ? "),
 			      M_YES) == M_NO)
@@ -1354,12 +1333,9 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  }
 	  msg->security = 0;
 	}
-#endif /* HAVE_pgp */
 	msg->security = smime_send_menu(msg, &menu->redraw);
 	redraw_crypt_lines (msg);
 	break;
-
-#endif /* HAVE_SMIME */
 
 
 #ifdef MIXMASTER
@@ -1398,3 +1374,4 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
   return (r);
 }
+

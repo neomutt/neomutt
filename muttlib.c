@@ -28,15 +28,9 @@
 
 #ifdef USE_IMAP
 #include "imap.h"
- #endif
-
-#ifdef HAVE_PGP
-#include "pgp.h"
 #endif
 
-#ifdef HAVE_SMIME
-#include "smime.h"
-#endif
+#include "mutt_crypt.h"
 
 #include <string.h>
 #include <ctype.h>
@@ -599,24 +593,15 @@ int mutt_needs_mailcap (BODY *m)
 	return 0;
       break;
 
-
-
-#ifdef HAVE_PGP
     case TYPEAPPLICATION:
-      if(mutt_is_application_pgp(m))
+      if((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(m))
 	return 0;
-#endif /* HAVE_PGP */
-
-#ifdef HAVE_SMIME
-      if(mutt_is_application_smime(m))
+      if((WithCrypto & APPLICATION_SMIME) && mutt_is_application_smime(m))
 	return 0;
       break;
-#endif /* HAVE_SMIME */
-
 
     case TYPEMULTIPART:
     case TYPEMESSAGE:
-
       return 0;
   }
 
@@ -628,11 +613,9 @@ int mutt_is_text_part (BODY *b)
   int t = b->type;
   char *s = b->subtype;
   
-  
-#ifdef HAVE_PGP
-  if (mutt_is_application_pgp (b))
+  if ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp (b))
     return 0;
-#endif
+
   if (t == TYPETEXT)
     return 1;
 
@@ -642,17 +625,11 @@ int mutt_is_text_part (BODY *b)
       return 1;
   }
 
-
-
-#ifdef HAVE_PGP
-  if (t == TYPEAPPLICATION)
+  if ((WithCrypto & APPLICATION_PGP) && t == TYPEAPPLICATION)
   {
     if (!ascii_strcasecmp ("pgp-keys", s))
       return 1;
   }
-#endif /* HAVE_PGP */
-
-
 
   return 0;
 }

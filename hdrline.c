@@ -20,17 +20,7 @@
 #include "mutt_curses.h"
 #include "sort.h"
 #include "charset.h"
-
-
-#ifdef HAVE_PGP
-#include "pgp.h"
-#endif
-
-#ifdef HAVE_SMIME
-#include "smime.h"
-#endif
-
-
+#include "mutt_crypt.h"
 
 #include <ctype.h>
 #include <stdlib.h>
@@ -633,18 +623,14 @@ hdr_format_str (char *dest,
     
       ch = ' ';
 
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
-      if (hdr->security & GOODSIGN)
+      if (WithCrypto && hdr->security & GOODSIGN)
         ch = 'S';
-      else if (hdr->security & ENCRYPT)
+      else if (WithCrypto && hdr->security & ENCRYPT)
       	ch = 'P';
-      else if (hdr->security & SIGN)
+      else if (WithCrypto && hdr->security & SIGN)
         ch = 's';
-#ifdef HAVE_PGP
-      else if (hdr->security & PGPKEY)
+      else if ((WithCrypto & APPLICATION_PGP) && hdr->security & PGPKEY)
         ch = 'K';
-#endif
-#endif
 
       snprintf (buf2, sizeof (buf2),
 		"%c%c%c", (THREAD_NEW ? 'n' : (THREAD_OLD ? 'o' : 

@@ -139,17 +139,12 @@ struct binding_t OpMain[] = {
   { "parent-message",		OP_MAIN_PARENT_MESSAGE,		"P" },
 
 
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
   { "extract-keys",		OP_EXTRACT_KEYS,		"\013" },
   { "forget-passphrase",	OP_FORGET_PASSPHRASE,		"\006" },
-#ifdef HAVE_PGP
   { "check-traditional-pgp",	OP_CHECK_TRADITIONAL,		"\033P" },
   { "mail-key",			OP_MAIL_KEY,			"\033k" },
-#endif
   { "decrypt-copy",		OP_DECRYPT_COPY,		NULL },
   { "decrypt-save",		OP_DECRYPT_SAVE,		NULL },
-#endif
-
 
 
   { NULL,			0,				NULL }
@@ -238,18 +233,12 @@ struct binding_t OpPager[] = {
 
 
 
-#ifdef HAVE_PGP
-  { "check-traditional-pgp",	OP_CHECK_TRADITIONAL,		"\033P"   },
+  { "check-traditional-pgp",	OP_CHECK_TRADITIONAL,	"\033P"   },
   { "mail-key",		OP_MAIL_KEY,			"\033k" },
-#endif
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
   { "extract-keys",	OP_EXTRACT_KEYS,		"\013" },
   { "forget-passphrase",OP_FORGET_PASSPHRASE,		"\006" },
-  { "decrypt-copy",		OP_DECRYPT_COPY,		NULL },
-  { "decrypt-save",		OP_DECRYPT_SAVE,		NULL },
-#endif
-
-
+  { "decrypt-copy",	OP_DECRYPT_COPY,		NULL },
+  { "decrypt-save",    	OP_DECRYPT_SAVE,		NULL },
 
 
   { NULL,		0,				NULL }
@@ -273,17 +262,10 @@ struct binding_t OpAttach[] = {
   { "delete-entry",	OP_DELETE,			"d" },
   { "undelete-entry",	OP_UNDELETE,			"u" },
   { "collapse-parts",	OP_ATTACH_COLLAPSE,		"v" },
-  
 
-#ifdef HAVE_PGP
   { "check-traditional-pgp",	OP_CHECK_TRADITIONAL,		"\033P"   },
-#endif
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
   { "extract-keys",		OP_EXTRACT_KEYS,		"\013" },
   { "forget-passphrase",	OP_FORGET_PASSPHRASE,		"\006" },
-#endif
-
-
 
   { NULL,		0,				NULL }
 };
@@ -324,18 +306,12 @@ struct binding_t OpCompose[] = {
   { "send-message",	OP_COMPOSE_SEND_MESSAGE,	"y" },
   { "pipe-entry",	OP_PIPE,			"|" },
 
-#ifdef HAVE_PGP
   { "attach-key",	OP_COMPOSE_ATTACH_KEY,		"\033k" },
   { "pgp-menu",		OP_COMPOSE_PGP_MENU,		"p" 	},
-#endif
 
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
   { "forget-passphrase",OP_FORGET_PASSPHRASE,		"\006"  },
-#endif
 
-#ifdef HAVE_SMIME
   { "smime-menu",	OP_COMPOSE_SMIME_MENU,		"S" 	},
-#endif
 
 #ifdef MIXMASTER
   { "mix",		OP_COMPOSE_MIX,			"M" },
@@ -416,20 +392,16 @@ struct binding_t OpEditor[] = {
 
 
 
-#ifdef HAVE_PGP
 struct binding_t OpPgp[] = {
   { "verify-key",	OP_VERIFY_KEY,		"c" },
   { "view-name",	OP_VIEW_ID,		"%" },
   { NULL,		0,				NULL }
 };
-#endif /* HAVE_PGP */
 
-#ifdef HAVE_SMIME
 /* Don't know an useful key binding yet. But. just in case, adding this already */
 struct binding_t OpSmime[] = {
   { NULL,	0,	NULL }
 };
-#endif
 
 #ifdef MIXMASTER
 struct binding_t OpMix[] = {

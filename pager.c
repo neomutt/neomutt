@@ -33,22 +33,7 @@
 #include "imap.h"
 #endif
 
-
-#ifdef HAVE_PGP
-#include "pgp.h"
-#endif
-
-#ifdef HAVE_SMIME
-#include "smime.h"
-#endif
-
-
-
-
-
-
-
-
+#include "mutt_crypt.h"
 
 #include <sys/stat.h>
 #include <ctype.h>
@@ -2419,9 +2404,13 @@ search_next:
 	redraw = REDRAW_FULL;
 	break;
 
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
       case OP_DECRYPT_SAVE:
-#endif
+        if (!WithCrypto)
+        {
+          ch = -1;
+          break;
+        }
+	/* fall through */
       case OP_SAVE:
 	if (IsAttach (extra))
 	{
@@ -2432,24 +2421,21 @@ search_next:
       case OP_COPY_MESSAGE:
       case OP_DECODE_SAVE:
       case OP_DECODE_COPY:
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
       case OP_DECRYPT_COPY:
-#endif
+        if (!WithCrypto && ch == OP_DECRYPT_COPY)
+        {
+          ch = -1;
+          break;
+        }
 	CHECK_MODE(IsHeader (extra));
 	if (mutt_save_message (extra->hdr,
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
 			       (ch == OP_DECRYPT_SAVE) ||
-#endif			       
 			       (ch == OP_SAVE) || (ch == OP_DECODE_SAVE),
 			       (ch == OP_DECODE_SAVE) || (ch == OP_DECODE_COPY),
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
 			       (ch == OP_DECRYPT_SAVE) || (ch == OP_DECRYPT_COPY) ||
-#endif
 			       0,
 			       &redraw) == 0 && (ch == OP_SAVE || ch == OP_DECODE_SAVE
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
 						 || ch == OP_DECRYPT_SAVE
-#endif
 						 ))
 	{
 	  if (option (OPTRESOLVE))
@@ -2555,30 +2541,33 @@ search_next:
 	break;
 
 
-
-#ifdef HAVE_PGP
       case OP_MAIL_KEY:
+        if (!(WithCrypto & APPLICATION_PGP))
+        {
+          ch = -1;
+          break;
+        }
 	CHECK_MODE(IsHeader(extra));
         CHECK_ATTACH;
 	ci_send_message (SENDKEY, NULL, NULL, extra->ctx, extra->hdr);
 	redraw = REDRAW_FULL;
 	break;
-#endif /* HAVE_PGP || HAVE_SMIME */
 
 
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
       case OP_FORGET_PASSPHRASE:
 	crypt_forget_passphrase ();
 	break;
 
       case OP_EXTRACT_KEYS:
+        if (!WithCrypto)
+        {
+          ch = -1;
+          break;
+        }
         CHECK_MODE(IsHeader(extra));
 	crypt_extract_keys_from_messages(extra->hdr);
         redraw = REDRAW_FULL;
         break;
-#endif /* HAVE_PGP || HAVE_SMIME */
-
-
 
       default:
 	ch = -1;

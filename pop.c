@@ -19,14 +19,7 @@
 #include "mutt.h"
 #include "mx.h"
 #include "pop.h"
-
-#ifdef HAVE_PGP
-#include "pgp.h"
-#endif
-
-#ifdef HAVE_SMIME
-#include "smime.h"
-#endif
+#include "mutt_crypt.h"
 
 #include <string.h>
 #include <unistd.h>
@@ -442,9 +435,8 @@ int pop_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno)
   h->content->length = ftell (msg->fp) - h->content->offset;
 
   /* This needs to be done in case this is a multipart message */
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
-  h->security = crypt_query (h->content);
-#endif
+  if (!WithCrypto)
+    h->security = crypt_query (h->content);
 
   mutt_clear_error();
   rewind (msg->fp);

@@ -27,14 +27,7 @@
 #include "mailbox.h"
 #include "copy.h"
 #include "mx.h"
-
-#ifdef HAVE_PGP
-#include "pgp.h"
-#endif
-
-#ifdef HAVE_SMIME
-#include "smime.h"
-#endif
+#include "mutt_crypt.h"
 
 #include <ctype.h>
 #include <stdlib.h>
@@ -416,11 +409,9 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
   int unlink_tempfile = 0;
   
   is_message = mutt_is_message_type(a->type, a->subtype);
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
-  if (is_message && a->hdr && (a->hdr->security & ENCRYPT) &&
+  if (WithCrypto && is_message && a->hdr && (a->hdr->security & ENCRYPT) &&
       !crypt_valid_passphrase(a->hdr->security))
     return (rc);
-#endif /* HAVE_PGP || HAVE_SMIME */
   use_mailcap = (flag == M_MAILCAP ||
 		(flag == M_REGULAR && mutt_needs_mailcap (a)));
   snprintf (type, sizeof (type), "%s/%s", TYPE (a), a->subtype);

@@ -16,6 +16,9 @@
  *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
  */ 
 
+#ifndef MUTT_H
+#define MUTT_H 
+
 #include "config.h"
 
 #include <stdio.h>
@@ -147,9 +150,7 @@ typedef enum
 #define M_CHARSETHOOK	(1<<5)
 #define M_ICONVHOOK 	(1<<6)
 #define M_MESSAGEHOOK	(1<<7)
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
 #define M_CRYPTHOOK	(1<<8)
-#endif
 #define M_ACCOUNTHOOK	(1<<9)
 #define M_REPLYHOOK	(1<<10)
 
@@ -225,14 +226,10 @@ enum
   M_PERSONAL_RECIP,
   M_PERSONAL_FROM,
   M_ADDRESS,
-#if defined (HAVE_PGP) || defined (HAVE_SMIME)
   M_CRYPT_SIGN,
   M_CRYPT_VERIFIED,
   M_CRYPT_ENCRYPT,
-#endif
-#ifdef HAVE_PGP
   M_PGP_KEY,
-#endif
   M_XLABEL,
   
   /* Options for Mailcap lookup */
@@ -265,12 +262,8 @@ enum
 enum
 {
 
-#if defined(HAVE_PGP)||  defined(HAVE_SMIME)
   OPT_VERIFYSIG,      /* verify PGP signatures */
-#ifdef HAVE_PGP
   OPT_PGPTRADITIONAL, /* create old-style PGP messages */
-#endif
-#endif
 
 #ifdef USE_SSL
   OPT_SSLSTARTTLS,
@@ -418,6 +411,7 @@ enum
   OPTUSE8BITMIME,
   OPTUSEDOMAIN,
   OPTUSEFROM,
+  OPTUSEGPGAGENT,
 #ifdef HAVE_GETADDRINFO
   OPTUSEIPV6,
 #endif
@@ -430,22 +424,17 @@ enum
 
   /* PGP options */
   
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
   OPTCRYPTAUTOSIGN,
   OPTCRYPTAUTOENCRYPT,
   OPTCRYPTREPLYENCRYPT,
   OPTCRYPTREPLYSIGN,
   OPTCRYPTREPLYSIGNENCRYPTED,
   OPTCRYPTTIMESTAMP,
-#ifdef HAVE_SMIME
   OPTSMIMEISDEFAULT,
   OPTASKCERTLABEL,
   OPTSDEFAULTDECRYPTKEY,
-#endif
-#ifdef HAVE_PGP
   OPTPGPIGNORESUB,
   OPTPGPLONGIDS,
-#endif
 #if 0
   OPTPGPENCRYPTSELF,
 #endif
@@ -453,7 +442,6 @@ enum
   OPTPGPSTRICTENC,
   OPTFORWDECRYPT,
   OPTPGPSHOWUNUSABLE,
-#endif
 
   /* pseudo options */
 
@@ -481,13 +469,8 @@ enum
 			 */
   OPTMENUCALLER,	/* (pseudo) tell menu to give caller a take */
   OPTREDRAWTREE,	/* (pseudo) redraw the thread tree */
-#ifdef HAVE_PGP
   OPTPGPCHECKTRUST,	/* (pseudo) used by pgp_select_key () */
   OPTDONTHANDLEPGPKEYS,	/* (pseudo) used to extract PGP keys */
-#endif
-
-
-
 
   OPTMAX
 };
@@ -628,10 +611,8 @@ typedef struct body
 				 * set when in send-mode.
 				 */
 
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
   unsigned int goodsig : 1;	/* good cryptographic signature */
   unsigned int badsig : 1;	/* bad cryptographic signature (needed to check encrypted s/mime-signatures */
-#endif
 
   unsigned int collapsed : 1;	/* used by recvattach */
 
@@ -639,10 +620,8 @@ typedef struct body
 
 typedef struct header
 {
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
   unsigned int security : 7;  /* bit 0-4: flags, bit 5,6: application.
 				 see: crypt.h pgplib.h, smime.h */
-#endif
 
   unsigned int mime : 1;    		/* has a Mime-Version header? */
   unsigned int flagged : 1; 		/* marked important? */
@@ -824,15 +803,7 @@ typedef struct
 
 /* flags for the STATE struct */
 #define M_DISPLAY	(1<<0) /* output is displayed to the user */
-
-
-
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
 #define M_VERIFY	(1<<1) /* perform signature verification */
-#endif
-
-
-
 #define M_PENDINGPREFIX (1<<2) /* prefix to write, but character must follow */
 #define M_WEED          (1<<3) /* weed headers even when not in display mode */
 #define M_CHARCONV	(1<<4) /* Do character set conversions */
@@ -852,3 +823,5 @@ int  state_printf(STATE *, const char *, ...);
 #include "protos.h"
 #include "lib.h"
 #include "globals.h"
+
+#endif /*MUTT_H*/

@@ -30,16 +30,7 @@
 #include "mime.h"
 #include "copy.h"
 #include "charset.h"
-
-
-
-#ifdef HAVE_PGP
-#include "pgp.h"
-#endif
-
-#ifdef HAVE_SMIME
-#include "smime.h"
-#endif
+#include "mutt_crypt.h"
 
 
 #define BUFI_SIZE 1000
@@ -1386,48 +1377,29 @@ int mutt_can_decode (BODY *a)
     return (1);
   else if (a->type == TYPEMULTIPART)
   {
+    BODY *p;
 
-
-
-#if defined(HAVE_PGP) ||  defined(HAVE_SMIME)
-    if (ascii_strcasecmp (a->subtype, "signed") == 0 ||
-	ascii_strcasecmp (a->subtype, "encrypted") == 0)
-      return (1);
-    else
-#endif
-
-
-
+    if (WithCrypto)
     {
-      BODY *p;
-
-      for (p = a->parts; p; p = p->next)
-      {
-	if (mutt_can_decode (p))
-	  return (1);
-      }
+      if (ascii_strcasecmp (a->subtype, "signed") == 0 ||
+	  ascii_strcasecmp (a->subtype, "encrypted") == 0)
+        return (1);
     }
+
+    for (p = a->parts; p; p = p->next)
+    {
+      if (mutt_can_decode (p))
+        return (1);
+    }
+    
   }
-
-
-
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
-  else if (a->type == TYPEAPPLICATION)
+  else if (WithCrypto && a->type == TYPEAPPLICATION)
   {
-#ifdef HAVE_PGP
-    if (mutt_is_application_pgp(a))
+    if ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(a))
       return (1);
-#ifdef HAVE_SMIME
-    if (mutt_is_application_smime(a))
+    if ((WithCrypto & APPLICATION_SMIME) && mutt_is_application_smime(a))
       return (1);
-#endif
-#endif
   }
-#endif
-
-
-
-
 
   return (0);
 }
@@ -1785,12 +1757,9 @@ void mutt_body_handler (BODY *b, STATE *s)
       /* avoid copying this part twice since removing the transfer-encoding is
        * the only operation needed.
        */
-#ifdef HAVE_PGP
-      if (mutt_is_application_pgp (b))
-	handler = pgp_application_pgp_handler;
-      else
-#endif	
-      if (ascii_strcasecmp ("flowed", mutt_get_parameter ("format", b->parameter)) == 0)
+      if ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp (b))
+	handler = crypt_pgp_application_pgp_handler;
+      else if (ascii_strcasecmp ("flowed", mutt_get_parameter ("format", b->parameter)) == 0)
 	handler = text_plain_flowed_handler;
       else
 	plaintext = 1;
@@ -1811,22 +1780,11 @@ void mutt_body_handler (BODY *b, STATE *s)
   }
   else if (b->type == TYPEMULTIPART)
   {
-
-
-
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
     char *p;
-#endif /* HAVE_(PGP||SMIME) */
-
-
 
     if (ascii_strcasecmp ("alternative", b->subtype) == 0)
       handler = alternative_handler;
-
-
-
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
-    else if (ascii_strcasecmp ("signed", b->subtype) == 0)
+    else if (WithCrypto && ascii_strcasecmp ("signed", b->subtype) == 0)
     {
       p = mutt_get_parameter ("protocol", b->parameter);
 
@@ -1835,41 +1793,27 @@ void mutt_body_handler (BODY *b, STATE *s)
       else if (s->flags & M_VERIFY)
 	handler = mutt_signed_handler;
     }
-#ifdef HAVE_PGP
-    else if (mutt_strcasecmp ("encrypted", b->subtype) == 0)
+    else if ((WithCrypto & APPLICATION_PGP)
+             && mutt_strcasecmp ("encrypted", b->subtype) == 0)
     {
       p = mutt_get_parameter ("protocol", b->parameter);
 
       if (!p)
         mutt_error _("Error: multipart/encrypted has no protocol parameter!");
       else if (ascii_strcasecmp ("application/pgp-encrypted", p) == 0)
-        handler = pgp_encrypted_handler;
+        handler = crypt_pgp_encrypted_handler;
     }
-#endif /* HAVE_PGP */
-#endif /* HAVE_(PGP||SMIME) */
-
 
     if (!handler)
       handler = multipart_handler;
   }
-
-
-
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
-  else if (b->type == TYPEAPPLICATION)
+  else if (WithCrypto && b->type == TYPEAPPLICATION)
   {
-#ifdef HAVE_PGP
-    if (mutt_is_application_pgp (b))
-      handler = pgp_application_pgp_handler;
-#endif /* HAVE_PGP */
-#ifdef HAVE_SMIME
-    if (mutt_is_application_smime(b))
-      handler = smime_application_smime_handler;
-#endif /* HAVE_SMIME */
+    if ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp (b))
+      handler = crypt_pgp_application_pgp_handler;
+    if ((WithCrypto & APPLICATION_SMIME) && mutt_is_application_smime(b))
+      handler = crypt_smime_application_smime_handler;
   }
-#endif /* HAVE_(PGP||SMIME) */
-
-
 
 
   if (plaintext || handler)

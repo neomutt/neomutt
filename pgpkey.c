@@ -37,7 +37,7 @@
 
 #include <locale.h>
 
-#ifdef HAVE_PGP
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
 
 struct pgp_cache
 {
@@ -87,7 +87,7 @@ static char pgp_flags (int flags)
     return ' ';
 }
 
-static pgp_key_t *pgp_principal_key (pgp_key_t *key)
+static pgp_key_t pgp_principal_key (pgp_key_t key)
 {
   if (key->flags & KEYFLAG_SUBKEY && key->parent)
     return key->parent;
@@ -128,7 +128,7 @@ static const char *pgp_entry_fmt (char *dest,
   char fmt[16];
   pgp_entry_t *entry;
   pgp_uid_t *uid;
-  pgp_key_t *key, *pkey;
+  pgp_key_t key, pkey;
   int kflags = 0;
   int optional = (flags & M_FORMAT_OPTIONAL);
 
@@ -378,9 +378,9 @@ static int pgp_compare_trust (const void *a, const void *b)
 				       : _pgp_compare_trust (a, b));
 }
 
-static int pgp_key_is_valid (pgp_key_t *k)
+static int pgp_key_is_valid (pgp_key_t k)
 {
-  pgp_key_t *pk = pgp_principal_key (k);
+  pgp_key_t pk = pgp_principal_key (k);
   if (k->flags & KEYFLAG_CANTUSE)
     return 0;
   if (pk->flags & KEYFLAG_CANTUSE)
@@ -435,8 +435,8 @@ static int pgp_id_matches_addr (ADDRESS *addr, ADDRESS *u_addr, pgp_uid_t *uid)
   return rv;
 }
 
-static pgp_key_t *pgp_select_key (pgp_key_t *keys,
-				  ADDRESS * p, const char *s)
+static pgp_key_t pgp_select_key (pgp_key_t keys,
+                                 ADDRESS * p, const char *s)
 {
   int keymax;
   pgp_uid_t **KeyTable;
@@ -446,7 +446,7 @@ static pgp_key_t *pgp_select_key (pgp_key_t *keys,
   char cmd[LONG_STRING], tempfile[_POSIX_PATH_MAX];
   FILE *fp, *devnull;
   pid_t thepid;
-  pgp_key_t *kp;
+  pgp_key_t kp;
   pgp_uid_t *a;
   int (*f) (const void *, const void *);
 
@@ -474,7 +474,7 @@ static pgp_key_t *pgp_select_key (pgp_key_t *keys,
       if (i == keymax)
       {
 	keymax += 5;
-	safe_realloc ((void **) &KeyTable, sizeof (pgp_key_t *) * keymax);
+	safe_realloc ((void **) &KeyTable, sizeof (pgp_key_t) * keymax);
       }
       
       KeyTable[i++] = a;
@@ -504,7 +504,7 @@ static pgp_key_t *pgp_select_key (pgp_key_t *keys,
       f = pgp_compare_trust;
       break;
   }
-  qsort (KeyTable, i, sizeof (pgp_key_t *), f);
+  qsort (KeyTable, i, sizeof (pgp_key_t), f);
 
   helpstr[0] = 0;
   mutt_make_help (buf, sizeof (buf), _("Exit  "), MENU_PGP, OP_EXIT);
@@ -653,10 +653,10 @@ static pgp_key_t *pgp_select_key (pgp_key_t *keys,
   return (kp);
 }
 
-pgp_key_t *pgp_ask_for_key (char *tag, char *whatfor,
-			    short abilities, pgp_ring_t keyring)
+pgp_key_t pgp_ask_for_key (char *tag, char *whatfor,
+                           short abilities, pgp_ring_t keyring)
 {
-  pgp_key_t *key;
+  pgp_key_t key;
   char resp[SHORT_STRING];
   struct pgp_cache *l = NULL;
 
@@ -714,7 +714,7 @@ BODY *pgp_make_key_attachment (char *tempf)
   FILE *devnull;
   struct stat sb;
   pid_t thepid;
-  pgp_key_t *key;
+  pgp_key_t key;
   unset_option (OPTPGPCHECKTRUST);
 
   key = pgp_ask_for_key (_("Please enter the key ID: "), NULL, 0, PGP_PUBRING);
@@ -799,7 +799,7 @@ static LIST *pgp_add_string_to_hints (LIST *hints, const char *str)
   return hints;
 }
 
-static pgp_key_t **pgp_get_lastp (pgp_key_t *p)
+static pgp_key_t *pgp_get_lastp (pgp_key_t p)
 {
   for (; p; p = p->next)
     if (!p->next)
@@ -808,7 +808,7 @@ static pgp_key_t **pgp_get_lastp (pgp_key_t *p)
   return NULL;
 }
 
-pgp_key_t *pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring)
+pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring)
 {
   ADDRESS *r, *p;
   LIST *hints = NULL;
@@ -821,10 +821,10 @@ pgp_key_t *pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring)
   int this_key_has_invalid;
   int match;
 
-  pgp_key_t *keys, *k, *kn;
-  pgp_key_t *the_valid_key = NULL;
-  pgp_key_t *matches = NULL;
-  pgp_key_t **last = &matches;
+  pgp_key_t keys, k, kn;
+  pgp_key_t the_valid_key = NULL;
+  pgp_key_t matches = NULL;
+  pgp_key_t *last = &matches;
   pgp_uid_t *q;
   
   if (a && a->mailbox)
@@ -938,13 +938,13 @@ pgp_key_t *pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring)
   return NULL;
 }
 
-pgp_key_t *pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
+pgp_key_t pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
 {
   LIST *hints = NULL;
-  pgp_key_t *keys;
-  pgp_key_t *matches = NULL;
-  pgp_key_t **last = &matches;
-  pgp_key_t *k, *kn;
+  pgp_key_t keys;
+  pgp_key_t matches = NULL;
+  pgp_key_t *last = &matches;
+  pgp_key_t k, kn;
   pgp_uid_t *a;
   short match;
 
@@ -1006,4 +1006,4 @@ pgp_key_t *pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
 
 
 
-#endif /* HAVE_PGP */
+#endif /* CRYPT_BACKEND_CLASSIC_PGP */

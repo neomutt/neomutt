@@ -112,7 +112,7 @@ static void fix_uid (char *uid)
   }
 }
 
-static pgp_key_t *parse_pub_line (char *buf, int *is_subkey, pgp_key_t *k)
+static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
 {
   pgp_uid_t *uid = NULL;
   int field = 0, is_uid = 0;
@@ -154,7 +154,7 @@ static pgp_key_t *parse_pub_line (char *buf, int *is_subkey, pgp_key_t *k)
 	  return NULL;
 	
 	if (!(is_uid || (*is_subkey && option (OPTPGPIGNORESUB))))
-	  k = safe_calloc (sizeof (pgp_key_t), 1);
+	  k = safe_calloc (sizeof *k, 1);
 
 	break;
       }
@@ -305,12 +305,12 @@ static pgp_key_t *parse_pub_line (char *buf, int *is_subkey, pgp_key_t *k)
   return k;
 }
 
-pgp_key_t *pgp_get_candidates (pgp_ring_t keyring, LIST * hints)
+pgp_key_t pgp_get_candidates (pgp_ring_t keyring, LIST * hints)
 {
   FILE *fp;
   pid_t thepid;
   char buf[LONG_STRING];
-  pgp_key_t *db = NULL, **kend, *k = NULL, *kk, *mainkey = NULL;
+  pgp_key_t db = NULL, *kend, k = NULL, kk, mainkey = NULL;
   int is_sub;
   int devnull;
 

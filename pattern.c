@@ -29,17 +29,7 @@
 #include <unistd.h>
 #include <stdarg.h>
 
-
-
-#ifdef HAVE_PGP
-#include "pgp.h"
-#endif
-
-#ifdef HAVE_SMIME
-#include "smime.h"
-#endif
-
-
+#include "mutt_crypt.h"
 
 static int eat_regexp (pattern_t *pat, BUFFER *, BUFFER *);
 static int eat_date (pattern_t *pat, BUFFER *, BUFFER *);
@@ -65,15 +55,11 @@ Flags[] =
   { 'E', M_EXPIRED,		0,		NULL },
   { 'f', M_FROM,		0,		eat_regexp },
   { 'F', M_FLAG,		0,		NULL },
-#if defined (HAVE_PGP) || defined (HAVE_SMIME)
   { 'g', M_CRYPT_SIGN, 		0, 		NULL },
   { 'G', M_CRYPT_ENCRYPT, 	0, 		NULL },
-#endif
   { 'h', M_HEADER,		M_FULL_MSG,	eat_regexp },
   { 'i', M_ID,			0,		eat_regexp },
-#ifdef HAVE_PGP
   { 'k', M_PGP_KEY, 		0, 		NULL },
-#endif
   { 'L', M_ADDRESS,		0,		eat_regexp },
   { 'l', M_LIST,		0,		NULL },
   { 'm', M_MESSAGE,		0,		eat_range },
@@ -91,9 +77,7 @@ Flags[] =
   { 't', M_TO,			0,		eat_regexp },
   { 'U', M_UNREAD,		0,		NULL },
   { 'v', M_COLLAPSED,		0,		NULL },
-#if defined (HAVE_PGP) || defined (HAVE_SMIME)
   { 'V', M_CRYPT_VERIFIED,      0,              NULL },
-#endif
   { 'x', M_REFERENCE,		0,		eat_regexp },
   { 'y', M_XLABEL,		0,		eat_regexp },
   { 'z', M_SIZE,		0,		eat_range },
@@ -178,10 +162,8 @@ msg_search (CONTEXT *ctx, regex_t *rx, char *buf, size_t blen, int op, int msgno
       {
 	mutt_parse_mime_message (ctx, h);
 
-
-
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
-	if (h->security & ENCRYPT && !crypt_valid_passphrase(h->security))
+	if (WithCrypto && (h->security & ENCRYPT)
+            && !crypt_valid_passphrase(h->security))
 	{
 	  mx_close_message (&msg);
 	  if (fp)
@@ -191,9 +173,6 @@ msg_search (CONTEXT *ctx, regex_t *rx, char *buf, size_t blen, int op, int msgno
 	  }
 	  return (0);
 	}
-#endif
-
-
 
 	fseek (msg->fp, h->offset, 0);
 	mutt_body_handler (h->content, &s);
@@ -1048,18 +1027,22 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
       return (pat->not ^ match_user (pat->alladdr, h->env->from, NULL));
     case M_COLLAPSED:
       return (pat->not ^ (h->collapsed && h->num_hidden > 1));
-#if defined (HAVE_PGP) || defined (HAVE_SMIME)
    case M_CRYPT_SIGN:
+     if (!WithCrypto)
+       break;
      return (pat->not ^ ((h->security & SIGN) ? 1 : 0));
    case M_CRYPT_VERIFIED:
+     if (!WithCrypto)
+       break;
      return (pat->not ^ ((h->security & GOODSIGN) ? 1 : 0));
    case M_CRYPT_ENCRYPT:
+     if (!WithCrypto)
+       break;
      return (pat->not ^ ((h->security & ENCRYPT) ? 1 : 0));
-#endif
-#ifdef HAVE_PGP
    case M_PGP_KEY:
+     if (!(WithCrypto & APPLICATION_PGP))
+       break;
      return (pat->not ^ ((h->security & APPLICATION_PGP) && (h->security & PGPKEY)));
-#endif
     case M_XLABEL:
       return (pat->not ^ (h->env->x_label && regexec (pat->rx, h->env->x_label, 0, NULL, 0) == 0));
     case M_DUPLICATED:

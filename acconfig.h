@@ -1,25 +1,6 @@
 
-/*
- * Define if you have problems with mutt not detecting new/old mailboxes
- * over NFS.  Some NFS implementations incorrectly cache the attributes
- * of small files.
- */
-#undef NFS_ATTRIBUTE_HACK
-
-/*
- * Is mail spooled to the user's home directory?  If defined, MAILPATH should
- * be set to the filename of the spool mailbox relative the the home
- * directory.
- * use: configure --with-homespool=FILE
- */
-#undef HOMESPOOL
-
 /* program to use for shell commands */
 #define EXECSHELL "/bin/sh"
-
-/* Enable exact regeneration of email addresses as parsed?  NOTE: this requires
-   significant more memory when defined. */
-#undef EXACT_ADDRESS
 
 /* Define to `int' if <signal.h> doesn't define.  */
 #undef sig_atomic_t

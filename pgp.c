@@ -51,7 +51,7 @@
 # include <sys/resource.h>
 #endif
 
-#ifdef HAVE_PGP
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
 
 #include "mutt_crypt.h"
 
@@ -73,8 +73,12 @@ void pgp_forget_passphrase (void)
   mutt_message _("PGP passphrase forgotten.");
 }
 
+int pgp_use_gpg_agent (void)
+{
+  return option (OPTUSEGPGAGENT) && getenv ("GPG_TTY") && getenv ("GPG_AGENT_INFO");
+}
 
-char *pgp_keyid(pgp_key_t *k)
+char *pgp_keyid(pgp_key_t k)
 {
   if((k->flags & KEYFLAG_SUBKEY) && k->parent)
     k = k->parent;
@@ -82,7 +86,7 @@ char *pgp_keyid(pgp_key_t *k)
   return _pgp_keyid(k);
 }
 
-char *_pgp_keyid(pgp_key_t *k)
+char *_pgp_keyid(pgp_key_t k)
 {
   if(option(OPTPGPLONGIDS))
     return k->keyid;
@@ -308,6 +312,8 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 	  if (needpass)
 	  {
 	    if (!pgp_valid_passphrase ()) pgp_void_passphrase();
+            if (pgp_use_gpg_agent())
+              *PgpPass = 0;
 	    fprintf (pgpin, "%s\n", PgpPass);
 	  }
 	  
@@ -492,60 +498,6 @@ int pgp_check_traditional (FILE *fp, BODY *b, int tagged_only)
 }
 
      
-int pgp_is_multipart_encrypted (BODY *b)
-{
-  char *p;
-  
-  if (!b || b->type != TYPEMULTIPART ||
-      !b->subtype || ascii_strcasecmp (b->subtype, "encrypted") ||
-      !(p = mutt_get_parameter ("protocol", b->parameter)) ||
-      ascii_strcasecmp (p, "application/pgp-encrypted"))
-    return 0;
-  
-  return PGPENCRYPT;
-}
-
-int mutt_is_application_pgp (BODY *m)
-{
-  int t = 0;
-  char *p;
-  
-  if (m->type == TYPEAPPLICATION)
-  {
-    if (!ascii_strcasecmp (m->subtype, "pgp") || !ascii_strcasecmp (m->subtype, "x-pgp-message"))
-    {
-      if ((p = mutt_get_parameter ("x-action", m->parameter))
-	  && (!ascii_strcasecmp (p, "sign") || !ascii_strcasecmp (p, "signclear")))
-	t |= PGPSIGN;
-
-      if ((p = mutt_get_parameter ("format", m->parameter)) && 
-	  !ascii_strcasecmp (p, "keys-only"))
-	t |= PGPKEY;
-
-      if(!t) t |= PGPENCRYPT;  /* not necessarily correct, but... */
-    }
-
-    if (!ascii_strcasecmp (m->subtype, "pgp-signed"))
-      t |= PGPSIGN;
-
-    if (!ascii_strcasecmp (m->subtype, "pgp-keys"))
-      t |= PGPKEY;
-  }
-  else if (m->type == TYPETEXT && ascii_strcasecmp ("plain", m->subtype) == 0)
-  {
-    if (((p = mutt_get_parameter ("x-mutt-action", m->parameter))
-	 || (p = mutt_get_parameter ("x-action", m->parameter)) 
-	 || (p = mutt_get_parameter ("action", m->parameter)))
-	 && !ascii_strncasecmp ("pgp-sign", p, 8))
-      t |= PGPSIGN;
-    else if (p && !ascii_strncasecmp ("pgp-encrypt", p, 11))
-      t |= PGPENCRYPT;
-    else if (p && !ascii_strncasecmp ("pgp-keys", p, 7))
-      t |= PGPKEY;
-  }
-  return t;
-}
-
 
 
 
@@ -774,8 +726,11 @@ BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout, BODY *p)
     return (NULL);
   }
 
-  /* send the PGP passphrase to the subprocess */
-  fputs (PgpPass, pgpin);
+  /* send the PGP passphrase to the subprocess.  Never do this if the
+     agent is active, because this might lead to a passphrase send as
+     the message. */
+  if (!pgp_use_gpg_agent())
+    fputs (PgpPass, pgpin);
   fputc ('\n', pgpin);
   fclose(pgpin);
   
@@ -965,7 +920,8 @@ BODY *pgp_sign_message (BODY *a)
     return NULL;
   }
   
-  fputs(PgpPass, pgpin);
+  if (!pgp_use_gpg_agent())
+     fputs(PgpPass, pgpin);
   fputc('\n', pgpin);
   fclose(pgpin);
   
@@ -1065,7 +1021,7 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
   ADDRESS **last = &tmp;
   ADDRESS *p, *q;
   int i;
-  pgp_key_t *k_info, *key;
+  pgp_key_t k_info, key;
 
   const char *fqdn = mutt_fqdn (1);
   
@@ -1224,7 +1180,8 @@ BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
 
   if (sign)
   {
-    fputs (PgpPass, pgpin);
+    if (!pgp_use_gpg_agent())
+       fputs (PgpPass, pgpin);
     fputc ('\n', pgpin);
   }
   fclose(pgpin);
@@ -1391,6 +1348,8 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
     return NULL;
   }
 
+  if (pgp_use_gpg_agent())
+    *PgpPass = 0;
   if (flags & SIGN)
     fprintf (pgpin, "%s\n", PgpPass);
   fclose (pgpin);
@@ -1462,7 +1421,4 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
   return b;
 }
 
-
-
-
-#endif /* HAVE_PGP */
+#endif /* CRYPT_BACKEND_CLASSIC_PGP */

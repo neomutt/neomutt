@@ -173,6 +173,47 @@ WHERE int CurrentMenu;
 WHERE ALIAS *Aliases INITVAL (0);
 WHERE LIST *UserHeader INITVAL (0);
 
+/*-- formerly in pgp.h --*/
+WHERE REGEXP PgpGoodSign;
+WHERE char *PgpSignAs;
+WHERE short PgpTimeout;
+WHERE char *PgpEntryFormat;
+WHERE char *PgpClearSignCommand;
+WHERE char *PgpDecodeCommand;
+WHERE char *PgpVerifyCommand;
+WHERE char *PgpDecryptCommand;
+WHERE char *PgpSignCommand;
+WHERE char *PgpEncryptSignCommand;
+WHERE char *PgpEncryptOnlyCommand;
+WHERE char *PgpImportCommand;
+WHERE char *PgpExportCommand;
+WHERE char *PgpVerifyKeyCommand;
+WHERE char *PgpListSecringCommand;
+WHERE char *PgpListPubringCommand;
+WHERE char *PgpGetkeysCommand;
+
+/*-- formerly in smime.h --*/
+WHERE char *SmimeDefaultKey;
+WHERE char *SmimeCryptAlg;
+WHERE short SmimeTimeout;
+WHERE char *SmimeCertificates;
+WHERE char *SmimeKeys;
+WHERE char *SmimeCryptAlg;
+WHERE char *SmimeCALocation;
+WHERE char *SmimeVerifyCommand;
+WHERE char *SmimeVerifyOpaqueCommand;
+WHERE char *SmimeDecryptCommand;
+WHERE char *SmimeSignCommand;
+WHERE char *SmimeSignOpaqueCommand;
+WHERE char *SmimeEncryptCommand;
+WHERE char *SmimeGetSignerCertCommand;
+WHERE char *SmimePk7outCommand;
+WHERE char *SmimeGetCertCommand;
+WHERE char *SmimeImportCertCommand;
+WHERE char *SmimeGetCertEmailCommand;
+
+
+
 #ifdef DEBUG
 WHERE FILE *debugfile INITVAL (0);
 WHERE int debuglevel INITVAL (0);
@@ -195,10 +236,5 @@ extern const char *Months[];
 #include "mutt_regex.h"
 #include "buffy.h"
 #include "sort.h"
-#ifdef HAVE_PGP
-#include "pgp.h"
-#endif
-#ifdef HAVE_SMIME
-#include "smime.h"
-#endif
+#include "crypt.h"
 #endif /* MAIN_C */

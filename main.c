@@ -24,6 +24,7 @@
 #include "keymap.h"
 #include "mailbox.h"
 #include "url.h"
+#include "mutt_crypt.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -299,23 +300,23 @@ static void show_version (void)
 #else
 	"-HAVE_RESIZETERM  "
 #endif
-	
-	
-	);
-  
+        );	
   
   puts (
-	
-#ifdef HAVE_PGP
-	"+HAVE_PGP  "
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
+        "+CRYPT_BACKEND_CLASSIC_PGP  "
 #else
-	"-HAVE_PGP  "
+        "-CRYPT_BACKEND_CLASSIC_PGP  "
 #endif
-
-#ifdef HAVE_SMIME
-	"+HAVE_SMIME  "
+#ifdef CRYPT_BACKEND_CLASSIC_SMIME
+        "+CRYPT_BACKEND_CLASSIC_SMIME  "
 #else
-	"-HAVE_SMIME  "
+        "-CRYPT_BACKEND_CLASSIC_SMIME  "
+#endif
+#ifdef CRYPT_BACKEND_GPGME
+        "+CRYPT_BACKEND_GPGME  "
+#else
+        "-CRYPT_BACKEND_GPGME  "
 #endif
 
 #ifdef BUFFY_SIZE

@@ -88,12 +88,6 @@ struct option_t
 # ifndef MIXMASTER
 #  define MIXMASTER "mixmaster"
 # endif
-# ifndef HAVE_PGP
-#  define HAVE_PGP
-# endif
-# ifndef HAVE_SMIME
-#  define HAVE_SMIME
-# endif
 # ifndef USE_POP
 #  define USE_POP
 # endif
@@ -513,14 +507,13 @@ struct option_t MuttVars[] = {
   ** This variable controls whether or not attachments on outgoing messages
   ** are saved along with the main body of your message.
   */
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
   { "fcc_clear",	DT_BOOL, R_NONE, OPTFCCCLEAR, 0 },
   /*
   ** .pp
   ** When this variable is \fIset\fP, FCCs will be stored unencrypted and
   ** unsigned, even when the actual message is encrypted and/or signed.
+  ** (PGP only)
   */
-#endif
   { "folder",		DT_PATH, R_NONE, UL &Maildir, UL "~/Mail" },
   /*
   ** .pp
@@ -1194,10 +1187,7 @@ struct option_t MuttVars[] = {
   */
   
 
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
-# ifdef HAVE_PGP
   { "pgp_autosign", 	DT_SYN,  R_NONE, UL "crypt_autosign", 0 },
-# endif  
   { "crypt_autosign",	DT_BOOL, R_NONE, OPTCRYPTAUTOSIGN, 0 },
   /*
   ** .pp
@@ -1207,10 +1197,9 @@ struct option_t MuttVars[] = {
   ** encryption is requested as well. IF ``$$smime_is_default'' is set,
   ** then OpenSSL is used instead to create S/MIME messages and settings can
   ** be overridden by use of the \fIsmime-menu\fP.
+  ** (Crypto only)
   */
-# ifdef HAVE_PGP
   { "pgp_autoencrypt",		DT_SYN,  R_NONE, UL "crypt_autoencrypt", 0 },
-# endif
   { "crypt_autoencrypt",	DT_BOOL, R_NONE, OPTCRYPTAUTOENCRYPT, 0 },
   /*
   ** .pp
@@ -1221,28 +1210,25 @@ struct option_t MuttVars[] = {
   ** requested as well.  IF ``$$smime_is_default'' is set, then
   ** OpenSSL is used instead to create S/MIME messages and settings can
   ** be overridden by use of the \fIsmime-menu\fP.
+  ** (Crypto only)
   */
-#ifdef HAVE_PGP
   { "pgp_ignore_subkeys", DT_BOOL, R_NONE, OPTPGPIGNORESUB, 1},
   /*
   ** .pp
   ** Setting this variable will cause Mutt to ignore OpenPGP subkeys. Instead,
   ** the principal key will inherit the subkeys' capabilities.  Unset this
   ** if you want to play interesting key selection games.
+  ** (PGP only)
   */
-#endif
-#ifdef HAVE_PGP
   { "pgp_replyencrypt",		DT_SYN,  R_NONE, UL "crypt_replyencrypt", 0 },
-#endif
   { "crypt_replyencrypt",	DT_BOOL, R_NONE, OPTCRYPTREPLYENCRYPT, 0 },
   /*
   ** .pp
   ** If set, automatically PGP or OpenSSL encrypt replies to messages which are
   ** encrypted.
+  ** (Crypto only)
   */
-#ifdef HAVE_PGP
   { "pgp_replysign",	DT_SYN, R_NONE, UL "crypt_replysign", 0 },
-#endif
   { "crypt_replysign",	DT_BOOL, R_NONE, OPTCRYPTREPLYSIGN, 0 },
   /*
   ** .pp
@@ -1251,10 +1237,9 @@ struct option_t MuttVars[] = {
   ** .pp
   ** \fBNote:\fP this does not work on messages that are encrypted
   ** \fBand\fP signed!
+  ** (Crypto only)
   */
-#ifdef HAVE_PGP
   { "pgp_replysignencrypted",   DT_SYN,  R_NONE, UL "crypt_replysignencrypted", 0},
-#endif
   { "crypt_replysignencrypted", DT_BOOL, R_NONE, OPTCRYPTREPLYSIGNENCRYPTED, 0 },
   /*
   ** .pp
@@ -1264,6 +1249,7 @@ struct option_t MuttVars[] = {
   ** which are automatically encrypted.  This works around the problem
   ** noted in ``$$crypt_replysign'', that mutt is not able to find out
   ** whether an encrypted message is also signed.
+  ** (Crypto only)
   */
   { "crypt_timestamp", DT_BOOL, R_NONE, OPTCRYPTTIMESTAMP, 1 },
   /*
@@ -1272,19 +1258,23 @@ struct option_t MuttVars[] = {
   ** PGP or S/MIME output, so spoofing such lines is more difficult.
   ** If you are using colors to mark these lines, and rely on these,
   ** you may unset this setting.
+  ** (Crypto only)
   */
-#ifdef HAVE_PGP
+  { "pgp_use_gpg_agent", DT_BOOL, R_NONE, OPTUSEGPGAGENT, 0},
+  /*
+  ** .pp
+  ** If set, mutt will use a possibly-running gpg-agent process.
+  ** (PGP only)
+  */
   { "pgp_verify_sig",   DT_SYN,  R_NONE, UL "crypt_verify_sig", 0},
-#endif
   { "crypt_verify_sig",	DT_QUAD, R_NONE, OPT_VERIFYSIG, M_YES },
   /*
   ** .pp
   ** If ``yes'', always attempt to verify PGP or S/MIME signatures.
   ** If ``ask'', ask whether or not to verify the signature. 
   ** If ``no'', never attempt to verify cryptographic signatures.
+  ** (Crypto only)
   */
-#endif /*  defined(HAVE_PGP) || defined(HAVE_SMIME) */
-#ifdef HAVE_SMIME
   { "smime_is_default", DT_BOOL,  R_NONE, OPTSMIMEISDEFAULT, 0},
   /*
   ** .pp
@@ -1293,12 +1283,14 @@ struct option_t MuttVars[] = {
   ** However, this has no effect while replying, since mutt will automatically 
   ** select the same application that was used to sign/encrypt the original
   ** message.
+  ** (S/MIME only)
   */
   { "smime_ask_cert_label",	DT_BOOL, R_NONE, OPTASKCERTLABEL, 1 },
   /*
   ** .pp
   ** This flag controls wether you want to be asked to enter a label for a certificate
   ** about to be added to the database or not. It is set by default.
+  ** (S/MIME only)
   */
   { "smime_decrypt_use_default_key",	DT_BOOL, R_NONE, OPTSDEFAULTDECRYPTKEY, 1 },
   /*
@@ -1306,9 +1298,8 @@ struct option_t MuttVars[] = {
   ** If set (default) this tells mutt to use the default key for decryption. Otherwise,
   ** if manage multiple certificate-key-pairs, mutt will try to use the mailbox-address
   ** to determine the key to use. It will ask you to supply a key, if it can't find one.
+  ** (S/MIME only)
   */
-#endif
-#ifdef HAVE_PGP
   { "pgp_entry_format", DT_STR,  R_NONE, UL &PgpEntryFormat, UL "%4n %t%f %4l/0x%k %-4a %2c %u" },
   /*
   ** .pp
@@ -1327,6 +1318,7 @@ struct option_t MuttVars[] = {
   ** .dt %t     .dd trust/validity of the key-uid association
   ** .dt %[<s>] .dd date of the key where <s> is an strftime(3) expression
   ** .de
+  ** (PGP only)
   */
   { "pgp_good_sign",	DT_RX,  R_NONE, UL &PgpGoodSign, 0 },
   /*
@@ -1335,11 +1327,13 @@ struct option_t MuttVars[] = {
   ** considered verified if the output from $$pgp_verify_command contains
   ** the text. Use this variable if the exit code from the command is 0
   ** even for bad signatures.
+  ** (PGP only)
   */ 
   { "pgp_long_ids",	DT_BOOL, R_NONE, OPTPGPLONGIDS, 0 },
   /*
   ** .pp
   ** If set, use 64 bit PGP key IDs. Unset uses the normal 32 bit Key IDs.
+  ** (PGP only)
   */
   { "pgp_retainable_sigs", DT_BOOL, R_NONE, OPTPGPRETAINABLESIG, 0 },
   /*
@@ -1350,6 +1344,7 @@ struct option_t MuttVars[] = {
   ** This is useful for applications like encrypted and signed mailing
   ** lists, where the outer layer (multipart/encrypted) can be easily
   ** removed, while the inner multipart/signed part is retained.
+  ** (PGP only)
   */
   { "pgp_show_unusable", DT_BOOL, R_NONE, OPTPGPSHOWUNUSABLE, 1 },
   /*
@@ -1357,6 +1352,7 @@ struct option_t MuttVars[] = {
   ** If set, mutt will display non-usable keys on the PGP key selection
   ** menu.  This includes keys which have been revoked, have expired, or
   ** have been marked as ``disabled'' by the user.
+  ** (PGP only)
   */
   { "pgp_sign_as",	DT_STR,	 R_NONE, UL &PgpSignAs, 0 },
   /*
@@ -1364,6 +1360,7 @@ struct option_t MuttVars[] = {
   ** If you have more than one key pair, this option allows you to specify
   ** which of your private keys to use.  It is recommended that you use the
   ** keyid form to specify your key (e.g., ``0x00112233'').
+  ** (PGP only)
   */
   { "pgp_strict_enc",	DT_BOOL, R_NONE, OPTPGPSTRICTENC, 1 },
   /*
@@ -1372,12 +1369,14 @@ struct option_t MuttVars[] = {
   ** \fIquoted-printable\fP.  Please note that unsetting this variable may
   ** lead to problems with non-verifyable PGP signatures, so only change
   ** this if you know what you are doing.
+  ** (PGP only)
   */
   { "pgp_timeout",	DT_NUM,	 R_NONE, UL &PgpTimeout, 300 },
   /*
   ** .pp
   ** The number of seconds after which a cached passphrase will expire if
   ** not used.
+  ** (PGP only)
   */
   { "pgp_sort_keys",	DT_SORT|DT_SORT_KEYS, R_NONE, UL &PgpSortKeys, SORT_ADDRESS },
   /*
@@ -1394,6 +1393,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** If you prefer reverse order of the above values, prefix it with
   ** `reverse-'.
+  ** (PGP only)
   */
   { "pgp_create_traditional", DT_QUAD, R_NONE, OPT_PGPTRADITIONAL, M_NO },
   /*
@@ -1407,6 +1407,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Also note that using the old-style PGP message format is \fBstrongly\fP
   ** \fBdeprecated\fP.
+  ** (PGP only)
   */
 
   /* XXX Default values! */
@@ -1433,62 +1434,73 @@ struct option_t MuttVars[] = {
   ** of PGP which are floating around, see the pgp*.rc and gpg.rc files in
   ** the samples/ subdirectory which has been installed on your system
   ** alongside the documentation.
+  ** (PGP only)
   */
   { "pgp_getkeys_command",	DT_STR, R_NONE, UL &PgpGetkeysCommand, 0},
   /*
   ** .pp
   ** This command is invoked whenever mutt will need public key information.
   ** %r is the only printf-like sequence used with this format.
+  ** (PGP only)
   */
   { "pgp_verify_command", 	DT_STR, R_NONE, UL &PgpVerifyCommand, 0},
   /*
   ** .pp
   ** This command is used to verify PGP/MIME signatures.
+  ** (PGP only)
   */
   { "pgp_decrypt_command", 	DT_STR, R_NONE, UL &PgpDecryptCommand, 0},
   /*
   ** .pp
   ** This command is used to decrypt a PGP/MIME encrypted message.
+  ** (PGP only)
   */  
   { "pgp_clearsign_command",	DT_STR,	R_NONE, UL &PgpClearSignCommand, 0 },
   /*
   ** .pp
   ** This format is used to create a "clearsigned" old-style PGP attachment.
   ** Note that the use of this format is \fBstrongly\fP \fBdeprecated\fP.
+  ** (PGP only)
   */
   { "pgp_sign_command",		DT_STR, R_NONE, UL &PgpSignCommand, 0},
   /*
   ** .pp
   ** This command is used to create the detached PGP signature for a 
   ** multipart/signed PGP/MIME body part.
+  ** (PGP only)
   */  
   { "pgp_encrypt_sign_command",	DT_STR, R_NONE, UL &PgpEncryptSignCommand, 0},
   /*
   ** .pp
   ** This command is used to combinedly sign/encrypt a body part.
+  ** (PGP only)
   */  
   { "pgp_encrypt_only_command", DT_STR, R_NONE, UL &PgpEncryptOnlyCommand, 0},
   /*
   ** .pp
   ** This command is used to encrypt a body part without signing it.
+  ** (PGP only)
   */  
   { "pgp_import_command",	DT_STR, R_NONE, UL &PgpImportCommand, 0},
   /*
   ** .pp
   ** This command is used to import a key from a message into 
   ** the user's public key ring.
+  ** (PGP only)
   */  
   { "pgp_export_command", 	DT_STR, R_NONE, UL &PgpExportCommand, 0},
   /*
   ** .pp
   ** This command is used to export a public key from the user's
   ** key ring.
+  ** (PGP only)
   */  
   { "pgp_verify_key_command",	DT_STR, R_NONE, UL &PgpVerifyKeyCommand, 0},
   /*
   ** .pp
   ** This command is used to verify key information from the key selection
   ** menu.
+  ** (PGP only)
   */  
   { "pgp_list_secring_command",	DT_STR, R_NONE, UL &PgpListSecringCommand, 0},
   /*
@@ -1499,6 +1511,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This format is also generated by the pgpring utility which comes 
   ** with mutt.
+  ** (PGP only)
   */  
   { "pgp_list_pubring_command", DT_STR, R_NONE, UL &PgpListPubringCommand, 0},
   /*
@@ -1509,6 +1522,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This format is also generated by the pgpring utility which comes 
   ** with mutt.
+  ** (PGP only)
   */  
   { "forward_decrypt",	DT_BOOL, R_NONE, OPTFORWDECRYPT, 1 },
   /*
@@ -1517,18 +1531,18 @@ struct option_t MuttVars[] = {
   ** When set, the outer layer of encryption is stripped off.  This
   ** variable is only used if ``$$mime_forward'' is \fIset\fP and
   ** ``$$mime_forward_decode'' is \fIunset\fP.
+  ** (PGP only)
   */
   { "forw_decrypt",	DT_SYN,  R_NONE, UL "forward_decrypt", 0 },
   /*
   */
-#endif /* HAVE_PGP */
   
-#ifdef HAVE_SMIME
   { "smime_timeout",		DT_NUM,	 R_NONE, UL &SmimeTimeout, 300 },
   /*
   ** .pp
   ** The number of seconds after which a cached passphrase will expire if
   ** not used.
+  ** (S/MIME only)
   */
   { "smime_encrypt_with",	DT_STR,	 R_NONE, UL &SmimeCryptAlg, 0 },
   /*
@@ -1536,6 +1550,7 @@ struct option_t MuttVars[] = {
   ** This sets the algorithm that should be used for encryption.
   ** Valid choices are "des", "des3", "rc2-40", "rc2-64", "rc2-128".
   ** If unset "3des" (TrippleDES) is used.
+  ** (S/MIME only)
   */
   { "smime_keys",		DT_PATH, R_NONE, UL &SmimeKeys, 0 },
   /*
@@ -1546,12 +1561,14 @@ struct option_t MuttVars[] = {
   ** named as the hash-value retrieved from OpenSSL. There is an index file
   ** which contains mailbox-address keyid pair, and which can be manually
   ** edited. This one points to the location of the private keys.
+  ** (S/MIME only)
   */
   { "smime_ca_location",	DT_PATH, R_NONE, UL &SmimeCALocation, 0 },
   /*
   ** .pp
   ** This variable contains the name of either a directory, or a file which
   ** contains trusted certificates for use with OpenSSL.
+  ** (S/MIME only)
   */
   { "smime_certificates",	DT_PATH, R_NONE, UL &SmimeCertificates, 0 },
   /*
@@ -1562,6 +1579,7 @@ struct option_t MuttVars[] = {
   ** named as the hash-value retrieved from OpenSSl. There is an index file
   ** which contains mailbox-address keyid pai, and which can be manually
   ** edited. This one points to the location of the certificates.
+  ** (S/MIME only)
   */
   { "smime_decrypt_command", 	DT_STR, R_NONE, UL &SmimeDecryptCommand, 0},
   /*
@@ -1587,23 +1605,27 @@ struct option_t MuttVars[] = {
   ** For examples on how to configure these formats, see the smime.rc in
   ** the samples/ subdirectory which has been installed on your system
   ** alongside the documentation.
+  ** (S/MIME only)
   */
   { "smime_verify_command", 	DT_STR, R_NONE, UL &SmimeVerifyCommand, 0},
   /*
   ** .pp
   ** This command is used to verify S/MIME signatures of type multipart/signed.
+  ** (S/MIME only)
   */
   { "smime_verify_opaque_command", 	DT_STR, R_NONE, UL &SmimeVerifyOpaqueCommand, 0},
   /*
   ** .pp
   ** This command is used to verify S/MIME signatures of type
   ** application/x-pkcs7-mime.
+  ** (S/MIME only)
   */
   { "smime_sign_command", 	DT_STR, R_NONE, UL &SmimeSignCommand, 0},
   /*
   ** .pp
   ** This command is used to created S/MIME signatures of type
   ** multipart/signed, which can be read by all mail clients.
+  ** (S/MIME only)
   */
   { "smime_sign_opaque_command", 	DT_STR, R_NONE, UL &SmimeSignOpaqueCommand, 0},
   /*
@@ -1611,22 +1633,26 @@ struct option_t MuttVars[] = {
   ** This command is used to created S/MIME signatures of type
   ** applicatipn/x-pkcs7-signature, which can only be handled by mail
   ** clients supporting the S/MIME extension
+  ** (S/MIME only)
   */
   { "smime_encrypt_command", 	DT_STR, R_NONE, UL &SmimeEncryptCommand, 0},
   /*
   ** .pp
   ** This command is used to create encrypted  S/MIME messages.
+  ** (S/MIME only)
   */
   { "smime_pk7out_command", 	DT_STR, R_NONE, UL &SmimePk7outCommand, 0},
   /*
   ** .pp
   ** This command is used to extract PKCS7 structures of S/MIME signatures,
   ** in order to extract the public X509 certificate(s).
+  ** (S/MIME only)
   */
   { "smime_get_cert_command", 	DT_STR, R_NONE, UL &SmimeGetCertCommand, 0},
   /*
   ** .pp
   ** This command is used to extract X509 certificates from a PKCS7 structure.
+  ** (S/MIME only)
   */
   { "smime_get_signer_cert_command", 	DT_STR, R_NONE, UL &SmimeGetSignerCertCommand, 0},
   /*
@@ -1634,11 +1660,13 @@ struct option_t MuttVars[] = {
   ** This command is used to extract only the signers X509 certificate from a S/MIME
   **  signature, so that the certificate's owner may get compared to the email's 
   ** 'From'-field.
+  ** (S/MIME only)
   */
   { "smime_import_cert_command", 	DT_STR, R_NONE, UL &SmimeImportCertCommand, 0},
   /*
   ** .pp
   ** This command is used to import a certificate via smime_keys.
+  ** (S/MIME only)
   */
   { "smime_get_cert_email_command", 	DT_STR, R_NONE, UL &SmimeGetCertEmailCommand, 0},
   /*
@@ -1646,6 +1674,7 @@ struct option_t MuttVars[] = {
   ** This command is used to extract the mail address(es) used for storing
   ** X509 certificates, and for verification purposes (to check, wether the
   ** certifacate was issued for the sender's mailbox).
+  ** (S/MIME only)
   */
   { "smime_sign_as",			DT_SYN,  R_NONE, UL "smime_default_key", 0 },
   { "smime_default_key",		DT_STR,	 R_NONE, UL &SmimeDefaultKey, 0 },
@@ -1653,8 +1682,8 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This is the default key-pair to use vor signing. This must be set to the
   ** keyid (the hash-value that OpenSSL generates) to work properly
+  ** (S/MIME only)
   */
-#endif /* HAVE_SMIME */
   
 #if defined(USE_SSL)||defined(USE_NSS)
 # ifndef USE_NSS  
@@ -2635,7 +2664,6 @@ const struct mapping_t SortAliasMethods[] = {
   { NULL }
 };
 
-#ifdef HAVE_PGP
 const struct mapping_t SortKeyMethods[] = {
   { "address",	SORT_ADDRESS },
   { "date",	SORT_DATE },
@@ -2643,7 +2671,6 @@ const struct mapping_t SortKeyMethods[] = {
   { "trust",	SORT_TRUST },
   { NULL }
 };
-#endif /* HAVE_PGP */
 
 
 /* functions used to parse commands in a rc file */
@@ -2700,12 +2727,8 @@ struct command_t Commands[] = {
   { "unmime_lookup",	parse_unlist,	UL &MimeLookupList },
   { "mono",		mutt_parse_mono,	0 },
   { "my_hdr",		parse_my_hdr,		0 },
-#ifdef HAVE_PGP
   { "pgp-hook",		mutt_parse_hook,	M_CRYPTHOOK },
-#endif
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
   { "crypt-hook",	mutt_parse_hook,	M_CRYPTHOOK },
-#endif /* HAVE_PGP */
   { "push",		mutt_parse_push,	0 },
   { "reply-hook",	mutt_parse_hook,	M_REPLYHOOK },
   { "reset",		parse_set,		M_SET_RESET },

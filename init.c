@@ -24,17 +24,7 @@
 #include "keymap.h"
 #include "mbyte.h"
 #include "charset.h"
-
-
-#ifdef HAVE_PGP
-#include "pgp.h"
-#endif
-
-
-#ifdef HAVE_SMIME
-#include "smime.h"
-#endif
-
+#include "mutt_crypt.h"
 
 #if defined(USE_SSL) || defined(USE_NSS)
 #include "mutt_ssl.h"
@@ -1185,11 +1175,10 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	case DT_SORT_BROWSER:
 	  map = SortBrowserMethods;
 	  break;
-#ifdef HAVE_PGP
 	case DT_SORT_KEYS:
-	  map = SortKeyMethods;
+          if ((WithCrypto & APPLICATION_PGP))
+            map = SortKeyMethods;
 	  break;
-#endif
 	case DT_SORT_AUX:
 	  map = SortAuxMethods;
 	  break;
@@ -1612,11 +1601,12 @@ int mutt_var_value_complete (char *buffer, size_t len, int pos)
 	  case DT_SORT_BROWSER:
 	    map = SortBrowserMethods;
 	    break;
-#ifdef HAVE_PGP
 	  case DT_SORT_KEYS:
-	    map = SortKeyMethods;
+            if ((WithCrypto & APPLICATION_PGP))
+              map = SortKeyMethods;
+            else
+              map = SortMethods;
 	    break;
-#endif
 	  default:
 	    map = SortMethods;
 	    break;

@@ -27,6 +27,7 @@
 #include "mx.h"
 #include "imap.h"
 #endif
+#include "mutt_crypt.h"
 
 #include <ctype.h>
 #include <unistd.h>
@@ -41,15 +42,6 @@ static struct mapping_t PostponeHelp[] = {
   { NULL }
 };
 
-
-
-#ifdef HAVE_PGP
-#include "pgp.h"
-#endif /* HAVE_PGP */
-
-#ifdef HAVE_SMIME
-#include "smime.h"
-#endif /* HAVE_SMIME */
 
 
 static short PostCount = 0;
@@ -329,14 +321,11 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
       mutt_free_list (&tmp);
       tmp = next;
     }
-
-
-
-#ifdef HAVE_PGP
-    else if (mutt_strncmp ("Pgp:", tmp->data, 4) == 0 /* this is generated
+    else if ((WithCrypto & APPLICATION_PGP)
+             && (mutt_strncmp ("Pgp:", tmp->data, 4) == 0 /* this is generated
 						       * by old mutt versions
 						       */
-	     || mutt_strncmp ("X-Mutt-PGP:", tmp->data, 11) == 0)
+                 || mutt_strncmp ("X-Mutt-PGP:", tmp->data, 11) == 0))
     {
       hdr->security = mutt_parse_crypt_hdr (strchr (tmp->data, ':') + 1, 1);
       hdr->security |= APPLICATION_PGP;
@@ -351,11 +340,8 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
       mutt_free_list (&tmp);
       tmp = next;
     }
-#endif /* HAVE_PGP */
-
-
-#ifdef HAVE_SMIME
-    else if (mutt_strncmp ("X-Mutt-SMIME:", tmp->data, 13) == 0)
+    else if ((WithCrypto & APPLICATION_SMIME)
+             && mutt_strncmp ("X-Mutt-SMIME:", tmp->data, 13) == 0)
     {
       hdr->security = mutt_parse_crypt_hdr (strchr (tmp->data, ':') + 1, 1);
       hdr->security |= APPLICATION_SMIME;
@@ -370,8 +356,6 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
       mutt_free_list (&tmp);
       tmp = next;
     }
-#endif /* HAVE_SMIME */
-
 
 #ifdef MIXMASTER
     else if (mutt_strncmp ("X-Mutt-Mix:", tmp->data, 11) == 0)
@@ -408,13 +392,14 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
 
 
 
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
-
 int mutt_parse_crypt_hdr (char *p, int set_signas)
 {
   int pgp = 0;
   char pgp_sign_as[LONG_STRING] = "\0", *q;
   char smime_cryptalg[LONG_STRING] = "\0";
+
+  if (!WithCrypto)
+    return 0;
    
   SKIPWS (p);
   for (; *p; p++)
@@ -498,19 +483,14 @@ int mutt_parse_crypt_hdr (char *p, int set_signas)
   }
  
   /* the cryptalg field must not be empty */
-#ifdef HAVE_SMIME
-  if (*smime_cryptalg)
+  if ((WithCrypto & APPLICATION_SMIME) && *smime_cryptalg)
     mutt_str_replace (&SmimeCryptAlg, smime_cryptalg);
-#endif /*  HAVE_SMIME */
 
-#ifdef HAVE_PGP
-  if (set_signas || *pgp_sign_as)
+  if ((WithCrypto & APPLICATION_PGP) && (set_signas || *pgp_sign_as))
     mutt_str_replace (&PgpSignAs, pgp_sign_as);
-#endif /* HAVE_PGP */
 
   return pgp;
 }
-#endif /* HAVE_PGP ||  HAVE_SMIME */
 
 
 
@@ -545,18 +525,18 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   FREE (&newhdr->env->message_id);
   FREE (&newhdr->env->mail_followup_to); /* really? */
 
-#ifdef HAVE_PGP
   /* decrypt pgp/mime encoded messages */
   /* XXX - what happens with S/MIME encrypted messages?!?!?  - tlr, 020909*/
-  if ((hdr->security & APPLICATION_PGP) && 
-      mutt_is_multipart_encrypted (newhdr->content))
+  if ((WithCrypto & APPLICATION_PGP)
+      && (hdr->security & APPLICATION_PGP) 
+      && mutt_is_multipart_encrypted (newhdr->content))
   {
     newhdr->security |= PGPENCRYPT;
-    if (!pgp_valid_passphrase())
+    if (!crypt_valid_passphrase(APPLICATION_PGP))
       goto err;
 
     mutt_message _("Invoking PGP...");
-    if (pgp_decrypt_mime (fp, &bfp, newhdr->content, &b) == -1 || b == NULL)
+    if (crypt_pgp_decrypt_mime (fp, &bfp, newhdr->content, &b) == -1 || b == NULL)
     {
  err:
       mx_close_message (&msg);
@@ -571,35 +551,25 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 
     mutt_clear_error ();
   }
-#endif
-
-#if defined(HAVE_PGP)|| defined(HAVE_SMIME)
 
   /* 
    * remove a potential multipart/signed layer - useful when
    * resending messages 
    */
   
-  if (mutt_is_multipart_signed (newhdr->content))
+  if (WithCrypto && mutt_is_multipart_signed (newhdr->content))
   {
     newhdr->security |= SIGN;
-#ifdef HAVE_PGP
-    if (ascii_strcasecmp (mutt_get_parameter ("protocol", newhdr->content->parameter),
-			  "application/pgp-signature") == 0)
+    if ((WithCrypto & APPLICATION_PGP)
+        && ascii_strcasecmp (mutt_get_parameter ("protocol", newhdr->content->parameter), "application/pgp-signature") == 0)
       newhdr->security |= APPLICATION_PGP;
-#endif
-#if defined (HAVE_PGP) && defined (HAVE_SMIME)
-    else
-#endif
-#ifdef HAVE_SMIME
+    else if ((WithCrypto & APPLICATION_SMIME))
       newhdr->security |= APPLICATION_SMIME;
-#endif
     
     /* destroy the signature */
     mutt_free_body (&newhdr->content->parts->next);
     newhdr->content = mutt_remove_multipart (newhdr->content);
   }
-#endif
 
   /* 
    * We don't need no primary multipart.

@@ -18,6 +18,7 @@
 
 #include "mutt.h"
 #include "mailbox.h"
+#include "mutt_crypt.h"
 
 #include <limits.h>
 #include <string.h>
@@ -88,9 +89,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     pattern.data = safe_strdup (path);
   }
   else if (DefaultHook && !(data & (M_CHARSETHOOK | M_ACCOUNTHOOK))
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
-      && !(data & M_CRYPTHOOK)
-#endif /* HAVE_PGP */
+           && (!WithCrypto || !(data & M_CRYPTHOOK))
       )
   {
     char tmp[HUGE_STRING];
@@ -444,12 +443,10 @@ char *mutt_iconv_hook (const char *chs)
   return _mutt_string_hook (chs, M_ICONVHOOK);
 }
 
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
 char *mutt_crypt_hook (ADDRESS *adr)
 {
   return _mutt_string_hook (adr->mailbox, M_CRYPTHOOK);
 }
-#endif /* HAVE_PGP */
 
 #ifdef USE_SOCKET
 void mutt_account_hook (const char* url)

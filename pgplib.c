@@ -27,6 +27,7 @@
 #include <unistd.h>
 #include <time.h>
 
+#include "mutt.h"
 #include "lib.h"
 #include "pgplib.h"
 
@@ -149,7 +150,7 @@ void pgp_free_uid (pgp_uid_t ** upp)
   *upp = NULL;
 }
 
-pgp_uid_t *pgp_copy_uids (pgp_uid_t *up, pgp_key_t *parent)
+pgp_uid_t *pgp_copy_uids (pgp_uid_t *up, pgp_key_t parent)
 {
   pgp_uid_t *l = NULL;
   pgp_uid_t **lp = &l;
@@ -167,9 +168,9 @@ pgp_uid_t *pgp_copy_uids (pgp_uid_t *up, pgp_key_t *parent)
   return l;
 }
 
-static void _pgp_free_key (pgp_key_t ** kpp)
+static void _pgp_free_key (pgp_key_t *kpp)
 {
-  pgp_key_t *kp;
+  pgp_key_t kp;
 
   if (!kpp || !*kpp)
     return;
@@ -181,10 +182,10 @@ static void _pgp_free_key (pgp_key_t ** kpp)
   FREE (kpp);
 }
 
-pgp_key_t *pgp_remove_key (pgp_key_t ** klist, pgp_key_t * key)
+pgp_key_t pgp_remove_key (pgp_key_t *klist, pgp_key_t key)
 {
-  pgp_key_t **last;
-  pgp_key_t *p, *q, *r;
+  pgp_key_t *last;
+  pgp_key_t p, q, r;
 
   if (!klist || !*klist || !key)
     return NULL;
@@ -209,9 +210,9 @@ pgp_key_t *pgp_remove_key (pgp_key_t ** klist, pgp_key_t * key)
   return q;
 }
 
-void pgp_free_key (pgp_key_t ** kpp)
+void pgp_free_key (pgp_key_t *kpp)
 {
-  pgp_key_t *p, *q, *r;
+  pgp_key_t p, q, r;
 
   if (!kpp || !*kpp)
     return;

@@ -56,6 +56,34 @@ fi
 
 AC_SUBST(DEBUGGER)
 
+# The following templates should be used with newer automakes
+# instead of acconfig.h
+#
+#AH_TEMPLATE([sig_atomic_t],
+#            [/* Define to `int' if <signal.h> doesn't define.])
+#AH_TEMPLATE([HAVE_START_COLOR],
+#            [Define if you have start_color, as a function or macro.])
+#AH_TEMPLATE([HAVE_TYPEAHEAD],
+#            [Define if you have typeahead, as a function or macro.])
+#AH_TEMPLATE([HAVE_BKGDSET],
+#            [Define if you have bkgdset, as a function or macro.])
+#AH_TEMPLATE([HAVE_CURS_SET],
+#            [Define if you have curs_set, as a function or macro.])
+#AH_TEMPLATE([HAVE_META],
+#            [Define if you have meta, as a function or macro.])
+#AH_TEMPLATE([HAVE_USE_DEFAULT_COLORS],
+#            [Define if you have use_default_colors, as a function or macro.])
+#AH_TEMPLATE([HAVE_RESIZETERM],
+#            [Define if you have resizeterm, as a function or macro.])
+#AH_TEMPLATE([SIG_ATOMIC_VOLATILE_T],
+#            [Some systems declare sig_atomic_t as volatile, some others -- no.
+#             This define will have value `sig_atomic_t' or
+#             `volatile sig_atomic_t' accordingly.])
+#AH_TEMPLATE([ICONV_NONTRANS],
+#            [Define as 1 if iconv() only converts exactly and we should treat
+#             all return values other than (size_t)(-1) as equivalent.])
+
+
 ac_aux_path_sendmail=/usr/sbin:/usr/lib
 AC_PATH_PROG(SENDMAIL, sendmail, /usr/sbin/sendmail, $PATH:$ac_aux_path_sendmail)
 AC_DEFINE_UNQUOTED(SENDMAIL,"$ac_cv_path_SENDMAIL",[ Where to find sendmail on your system. ])
@@ -73,10 +101,10 @@ else
         ])
 
         if test x$have_pgp != xno ; then
-                AC_DEFINE(HAVE_PGP,1,[ Define if you want PGP support. ])
+                AC_DEFINE(CRYPT_BACKEND_CLASSIC_PGP,1,
+                    [ Define if you want classic PGP support. ])
                 PGPAUX_TARGET="pgpring pgpewrap"
                 MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pgp.o pgpinvoke.o pgpkey.o pgplib.o gnupgparse.o pgpmicalg.o pgppacket.o"
-                OPS="$OPS \$(srcdir)/OPS.PGP"
         fi
 
  	AC_ARG_ENABLE(smime, [  --disable-smime            Disable SMIME support],
@@ -86,17 +114,12 @@ else
  	])
  
  	if test x$have_smime != xno ; then
- 		AC_DEFINE(HAVE_SMIME,1,[ Define if you want S/MIME support. ])
+ 		AC_DEFINE(CRYPT_BACKEND_CLASSIC_SMIME,1,
+                  [ Define if you want clasic S/MIME support. ])
  		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS smime.o "
- 		OPS="$OPS \$(srcdir)/OPS.SMIME"
 		SMIMEAUX_TARGET="smime_keys"
  	fi
   
- 	if test x$HAVE_SMIME != xno -o x$HAVE_PGP != xno ; then
- 		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS crypt.o "
- 		OPS="$OPS \$(srcdir)/OPS.CRYPT"
- 	fi
- 
         AC_ARG_WITH(mixmaster, [  --with-mixmaster[=PATH]    Include Mixmaster support],
                 [if test -x "$withval" ; then
                         MIXMASTER="$withval"
@@ -110,7 +133,10 @@ else
                 ])
 
 fi
+# We now require all OPS
+OPS="$OPS \$(srcdir)/OPS.PGP \$(srcdir)/OPS.SMIME \$(srcdir)/OPS.CRYPT "
 AC_SUBST(OPS)
+
 
 AC_SUBST(PGPAUX_TARGET)
 AC_SUBST(SMIMEAUX_TARGET)
@@ -220,7 +246,8 @@ main ()
 
         old_LIBS="$LIBS"
         LIBS="$LIBS $MUTTLIBS"
-        CF_CHECK_FUNCDECLS([#include <${cf_cv_ncurses_header-curses.h}>], start_color typeahead bkgdset curs_set meta use_default_colors resizeterm)
+        CF_CHECK_FUNCDECLS([#include <${cf_cv_ncurses_header-curses.h}>],
+                           [start_color typeahead bkgdset curs_set meta use_default_colors resizeterm])
         if test "$ac_cv_func_decl_start_color" = yes; then
                 AC_DEFINE(HAVE_COLOR,1,[ Define if your curses library supports color. ])
         fi
@@ -312,6 +339,7 @@ SNPRINTFOBJS=""
 AC_CHECK_FUNCS(snprintf, , [mutt_cv_snprintf=yes])
 AC_CHECK_FUNCS(vsnprintf, , [mutt_cv_snprintf=yes])
 if test $mutt_cv_snprintf = yes; then
+#        AC_LIBOBJ(snprintf)
         LIBOBJS="$LIBOBJS snprintf.o"
 fi
 
@@ -344,6 +372,7 @@ fi
 
 if test $mutt_cv_regex = yes; then
         AC_DEFINE(USE_GNU_REGEX,1,[ Define if you want to use the included regex.c. ])
+###     AC_LIBOBJ(regex)
         LIBOBJS="$LIBOBJS regex.o"
 fi
 
@@ -354,7 +383,11 @@ if test x$with_homespool != x; then
                 with_homespool=mailbox
         fi
         AC_DEFINE_UNQUOTED(MAILPATH,"$with_homespool",[ Where new mail is spooled. ])
-        AC_DEFINE(HOMESPOOL)
+        AC_DEFINE(HOMESPOOL,1,
+          [Is mail spooled to the user's home directory?  If defined,
+           MAILPATH should be set to the filename of the spool mailbox
+           relative the the home directory.
+           use: configure --with-homespool=FILE])
         AC_DEFINE(USE_DOTLOCK,1,[ Define to use dotlocking for mailboxes. ])
         mutt_cv_setgid=no
 else
@@ -682,7 +715,10 @@ fi
 
 AC_ARG_ENABLE(nfs-fix, [  --enable-nfs-fix           Work around an NFS with broken attributes caching ],
         [if test x$enableval = xyes; then
-                AC_DEFINE(NFS_ATTRIBUTE_HACK)
+                AC_DEFINE(NFS_ATTRIBUTE_HACK,1,
+                  [Define if you have problems with mutt not detecting
+                   new/old mailboxes over NFS.  Some NFS implementations
+                   incorrectly cache the attributes of small files.])
         fi])
 
 AC_ARG_ENABLE(buffy-size, [  --enable-buffy-size        Use file size attribute instead of access time ],
@@ -702,12 +738,19 @@ AC_ARG_ENABLE(locales-fix, [  --enable-locales-fix       The result of isprint()
 
 AC_ARG_WITH(exec-shell, [  --with-exec-shell=SHELL    Specify alternate shell (ONLY if /bin/sh is broken)],
         [if test $withval != yes; then
-                AC_DEFINE_UNQUOTED(EXECSHELL, "$withval")
-        fi])
+                AC_DEFINE_UNQUOTED(EXECSHELL, "$withval",
+                 [program to use for shell commands])
+         else
+                AC_DEFINE_UNQUOTED(EXECSHELL, "/bin/sh")
+        fi],
+        [AC_DEFINE_UNQUOTED(EXECSHELL, "/bin/sh")])
 
 AC_ARG_ENABLE(exact-address, [  --enable-exact-address     Enable regeneration of email addresses],
         [if test $enableval = yes; then
-                AC_DEFINE(EXACT_ADDRESS)
+                AC_DEFINE(EXACT_ADDRESS,1,
+                  [Enable exact regeneration of email addresses as parsed?
+                   NOTE: this requires significant more memory when defined.])
+
         fi])
 
 AC_SUBST(MUTTLIBS)
