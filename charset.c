@@ -876,12 +876,12 @@ DECODER *mutt_open_decoder (const char *src, const char *dest)
   d->in.size = DECODER_BUFFSIZE;
   d->out.size = DECODER_BUFFSIZE;
 
-  d->_in = &d->out;
+  d->_in = &d->in;
   
   if (!src || !dest || mutt_is_utf8 (dest))
   {
     d->just_take_id = 1;
-    d->_in = &d->in;
+    d->_in = &d->out;
     return d;
   }
   
@@ -890,7 +890,7 @@ DECODER *mutt_open_decoder (const char *src, const char *dest)
     if (!(d->chs = mutt_get_charset (dest)) || unicode_init () == -1)
     {
       d->just_take_id = 1;
-      d->_in = &d->in;
+      d->_in = &d->out;
       return d;
     }
     
@@ -901,7 +901,7 @@ DECODER *mutt_open_decoder (const char *src, const char *dest)
   if (!(d->chm = mutt_get_translation (src, dest)))
   {
     d->just_take_id = 1;
-    d->_in = &d->in;
+    d->_in = &d->out;
   }
 
   return d;
