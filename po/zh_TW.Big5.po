@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3.10\n"
-"POT-Creation-Date: 2001-06-07 19:54+0100\n"
+"POT-Creation-Date: 2001-06-07 22:11+0200\n"
 "PO-Revision-Date: 2000-10-15 08:22+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -82,7 +82,6 @@ msgstr "無法配合二個同樣名稱，繼續？"
 
 #. For now, editing requires a file, no piping
 #: attach.c:123
-#, c-format
 msgid "Mailcap compose entry requires %%s"
 msgstr "Mailcap 編輯項目需要 %%s"
 
@@ -107,7 +106,6 @@ msgstr "沒有 %s 的 mailcap 組成登錄，正在建立空的檔案。"
 
 #. For now, editing requires a file, no piping
 #: attach.c:250
-#, c-format
 msgid "Mailcap Edit entry requires %%s"
 msgstr "編輯 Mailcap 項目時需要 %%s"
 
@@ -404,15 +402,15 @@ msgstr "信件已印出"
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
-"反方向 1)日期 2)發信人 3)收信時間 4)標題 5)收信人 6)序列 7)不排 8)大小 9)分"
-"數:"
+"反方向 1)日期 2)發信人 3)收信時間 4)標題 5)收信人 6)序列 "
+"7)不排 8)大小 9)分數:"
 
 #: commands.c:456
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
-"排序 1)日期 2)發信人 3)收信時間 4)標題 5)收信人 6)序列 7)不排序 8)大小 9)分"
-"數:"
+"排序 1)日期 2)發信人 3)收信時間 4)標題 5)收信人 6)序列 "
+"7)不排序 8)大小 9)分數:"
 
 #: commands.c:457
 msgid "dfrsotuzc"
@@ -531,8 +529,8 @@ msgstr "<預設值>"
 #, fuzzy
 msgid "(e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
 msgstr ""
-"(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, (5)選擇 mic 演算法 或 (6)放"
-"棄？"
+"(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, (5)選擇 mic "
+"演算法 或 (6)放棄？"
 
 #: compose.c:133
 #, fuzzy
@@ -1031,7 +1029,8 @@ msgstr "[-- 自動顯示 %s 的 stderr 內容 --]\n"
 #: handler.c:1587
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr ""
-"[-- 錯誤：message/external-body 沒有存取類型 (access-type) 的參數 --]\n"
+"[-- 錯誤：message/external-body 沒有存取類型 (access-type) "
+"的參數 --]\n"
 
 #: handler.c:1604
 #, c-format
@@ -2263,8 +2262,10 @@ msgid ""
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
 "版權所有 (C) 1996-2000 Michael R. Elkins 及其他人仕。\n"
-"Mutt 不提供任何保證：需要更詳細的資料，請鍵入 `mutt -vv'。\n"
-"Mutt 是一個自由軟體, 歡迎您在某些特定的條件上，重新將它分發。\n"
+"Mutt 不提供任何保證：需要更詳細的資料，請鍵入 `mutt "
+"-vv'。\n"
+"Mutt 是一個自由軟體, "
+"歡迎您在某些特定的條件上，重新將它分發。\n"
 "若需要更詳細的資料, 請鍵入 `mutt -vv'\n"
 
 #: main.c:51
@@ -2354,10 +2355,11 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"用法: mutt [ -nRzZ ] [ -e <命令> ] [ -F <檔案> ] [ -m <類型> ] [ -f <檔案"
-"> ]\n"
-"        mutt [ -nx ] [ -e <命令> ] [ -a <檔案> ] [ -F <檔案> ] [ -H <檔案> ] "
-"[ -i <檔案> ] [ -s <主題> ] [ -b <地址> ] [ -c <地址> ] <地址> [ ... ]\n"
+"用法: mutt [ -nRzZ ] [ -e <命令> ] [ -F <檔案> ] [ -m <類型> ] [ -f "
+"<檔案> ]\n"
+"        mutt [ -nx ] [ -e <命令> ] [ -a <檔案> ] [ -F <檔案> ] [ -H "
+"<檔案> ] [ -i <檔案> ] [ -s <主題> ] [ -b <地址> ] [ -c <地址> ] "
+"<地址> [ ... ]\n"
 "        mutt [ -n ] [ -e <命令> ] [ -F <檔案> ] -p\n"
 "        mutt -v[v]\n"
 "\n"
@@ -2438,7 +2440,6 @@ msgid "Mailbox is empty."
 msgstr "信箱內空無一物。"
 
 #: mbox.c:129 mbox.c:286
-#, c-format
 msgid "Reading %s... %d (%d%%)"
 msgstr "讀取 %s 中… %d (%d%%)"
 
@@ -3492,7 +3493,8 @@ msgstr "顯示 MIME 附件"
 
 #: recvcmd.c:419
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
-msgstr "未能把所有已標簽的附件解碼。要用 MIME 轉寄其它的嗎？"
+msgstr ""
+"未能把所有已標簽的附件解碼。要用 MIME 轉寄其它的嗎？"
 
 #: recvcmd.c:544
 msgid "Forward MIME encapsulated?"
@@ -3513,7 +3515,8 @@ msgstr "沒有找到郵寄論壇！"
 
 #: recvcmd.c:787
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
-msgstr "未能把所有已標簽的附件解碼。要用 MIME 包封其它的嗎？"
+msgstr ""
+"未能把所有已標簽的附件解碼。要用 MIME 包封其它的嗎？"
 
 #: remailer.c:480
 msgid "Append"
@@ -3770,15 +3773,17 @@ msgstr "主信件不存在。"
 #~ msgstr "MIC 演算法："
 
 #~ msgid "This doesn't make sense if you don't want to sign the message."
-#~ msgstr "如果您不想把信件簽名，這樣做就沒有什麼意思啦。"
+#~ msgstr ""
+#~ "如果您不想把信件簽名，這樣做就沒有什麼意思啦。"
 
 #~ msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
-#~ msgstr "不明的 MIC 演算法。有效的如下: pgp-md5, pgp-sha1, pgp-rmd160"
+#~ msgstr ""
+#~ "不明的 MIC 演算法。有效的如下: pgp-md5, pgp-sha1, pgp-rmd160"
 
 #~ msgid ""
 #~ "\n"
-#~ "SHA1 implementation Copyright (C) 1995-1997 Eric A. Young <eay@cryptsoft."
-#~ "com>\n"
+#~ "SHA1 implementation Copyright (C) 1995-1997 Eric A. Young "
+#~ "<eay@cryptsoft.com>\n"
 #~ "\n"
 #~ "    Redistribution and use in source and binary forms, with or without\n"
 #~ "    modification, are permitted under certain conditions.\n"
@@ -3879,7 +3884,8 @@ msgstr "主信件不存在。"
 #~ msgstr "改變附件的字符集"
 
 #~ msgid "recode this attachment to/from the local charset"
-#~ msgstr "重新將附件編碼至本地字符集，或由本地字符集重新編碼"
+#~ msgstr ""
+#~ "重新將附件編碼至本地字符集，或由本地字符集重新編碼"
 
 #~ msgid "%d kept."
 #~ msgstr "%d 保留了。"

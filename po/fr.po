@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3.18\n"
-"POT-Creation-Date: 2001-06-07 11:00+0200\n"
+"POT-Creation-Date: 2001-06-07 22:11+0200\n"
 "PO-Revision-Date: 2001-05-31 20:41+0200\n"
 "Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"

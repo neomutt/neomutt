@@ -1,3 +1,302 @@
+Thu Jun  7 20:09:54 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* check_sec.sh: Don't check in intl/
+
+	* m4/codeset.m4, m4/glibc21.m4, m4/iconv.m4:
+	More from the gettext munster patch from E.G.E.
+
+	* po/zh_TW.Big5.po, m4/gettext.m4, m4/lcmessage.m4,
+	m4/progtest.m4: Gettext update. (From E.G.E., of course.)
+
+	* intl/bindtextdom.c, intl/cat-compat.c,
+	intl/config.charset, intl/dcgettext.c, intl/dcigettext.c,
+	intl/dcngettext.c, intl/dgettext.c, intl/dngettext.c,
+	intl/explodename.c, intl/finddomain.c, intl/gettext.c,
+	intl/gettext.h, intl/gettextP.h, intl/hash-string.h,
+	intl/intl-compat.c, intl/l10nflist.c, intl/libgettext.h,
+	intl/libgnuintl.h, intl/libintl.glibc, intl/linux-msg.sed,
+	intl/loadinfo.h, intl/loadmsgcat.c, intl/localcharset.c,
+	intl/locale.alias, intl/localealias.c, intl/Makefile.in,
+	intl/ngettext.c, intl/plural.c, intl/plural.y,
+	intl/po2tbl.sed.in, intl/ref-add.sin, intl/ref-del.sin,
+	intl/textdomain.c, intl/VERSION, intl/xopen-msg.sed,
+	intl/ChangeLog, intl/.cvsignore, acconfig.h, configure.in,
+	gettext.c, lib.h, Makefile.am, mbyte.c: Gettext update.
+
+	* po/ru.po: update.
+
+	* configure.in: ALL_LINGUAS.  I forgot to do this earlier today.
+
+	* NEWS: Documentation update from Brendan Cully.
+
+	* po/sv.po, po/tr.po, po/uk.po, po/zh_CN.GB2312.po, po/zh_TW.Big5.po, po/pt_BR.po, po/ru.po, po/sk.po, po/ko.po, po/lt.po, po/nl.po, po/pl.po, po/et.po, po/fr.po, po/gl.po, po/hu.po, po/id.po, po/it.po, po/ja.po, po/cs.po, po/da.po, po/de.po, po/el.po, po/eo.po, po/es.po:
+	Updating the gl translation, another update-po run.
+
+	* po/zh_TW.Big5.po:
+	Changed to utf-8 in order to avoid problems with recent gettext
+	versions.  Thanks to EGE!
+
+	(BTW, the file name is lying now.  Is this a problem?)
+
+	* po/tr.po, po/uk.po, po/zh_CN.GB2312.po, po/zh_TW.Big5.po, po/ru.po, po/sk.po, po/sv.po, po/pt_BR.po, po/pl.po, po/ja.po, po/ko.po, po/lt.po, po/nl.po, po/eo.po, po/es.po, po/et.po, po/fr.po, po/gl.po, po/hu.po, po/id.po, po/it.po, po/cs.po, po/da.po, po/de.po, po/el.po:
+	update-po; adding an Estonian translation.
+
+	* po/it.po: Fix a small bug.
+
+	* imap/message.c:
+	This patch ensures IMAP FLAGS aren't parsed twice when fetching the
+	full message body. It really only amounts to a cosmetic error, but
+	may cause spurious "Mailbox externally modified" messages.
+
+	From Brendan Cully.
+
+	* INSTALL, README.SSL, rfc2047.c:
+	Documentation updates and a little bug fix.  From Brendan Cully.
+
+	* init.c: Don't add empty strings to lists.  From Thomas Parmelan
+	<tom@proxad.net>.
+
+Tue Jun  5 15:43:41 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* handler.c: Leave slightly more margin with format=flowed.
+
+	* imap/command.c, mutt_socket.c, mutt_ssl.c, mutt_tunnel.c:
+	patch-bac.sockets-20010605.1
+
+	* imap/auth.c, init.h:
+	Change the delimiter for imap_authenticators to a colon.
+
+	* imap/auth_gss.c, imap/auth_login.c, imap/auth_sasl.c, imap/imap.c, imap/auth_anon.c, imap/auth.c, imap/auth_cram.c, imap/auth.h:
+	The attached patch should be the last feature I want to get in
+	before 1.4. It creates a new config variable $imap_authenticators,
+	which is a comma-separated list of authentication methods for mutt
+	to try to use to authenticate to an IMAP server. If it is
+	unspecified you get the old behaviour - any method is tried, the
+	first to succeed or fail ends the auth loop.
+
+	(From Brendan Cully.)
+
+	* globals.h, init.h:
+	The attached patch should be the last feature I want to get in
+	before 1.4. It creates a new config variable $imap_authenticators,
+	which is a comma-separated list of authentication methods for mutt
+	to try to use to authenticate to an IMAP server. If it is
+	unspecified you get the old behaviour - any method is tried, the
+	first to succeed or fail ends the auth loop.
+
+	* attach.c, commands.c, handler.c:
+	Check mutt_create_filter*'s return value  for errors.  This should
+	avoid a bunch of possible crashes.
+
+Mon Jun  4 18:29:33 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* doc/manual.sgml.head: Score documentation fix.
+
+	* po/pl.po: Update.
+
+	* doc/.cvsignore, .cvsignore:
+	Ignore some more generated files.  From Andrew Nosenko.
+
+	* Makefile.am:
+	-I$(includedir) is moved from INCLUDES variable to the end of
+	CPPFLAGS.  This allow build Mutt with Bruno's libiconv and
+	--prefix=/usr on glibc-2.1.2 systems.
+
+	From "Andrew W. Nosenko" <awn@bcs.zp.ua>.
+
+	* doc/instdoc.sh.in, doc/Makefile.in, contrib/Makefile.in, configure.in, init.c, INSTALL, main.c, Makefile.am, muttbug.sh.in, sendlib.c:
+	Clean up the sharedir mess.  From Lars Hecking.
+
+Fri Jun  1 08:53:23 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* imap/command.c, imap/imap.c, imap/imap_private.h, imap/message.c, curs_main.c, mailbox.h:
+	More concurrent IMAP modification handling from Brendan Cully.
+
+	* po/fr.po: Update.
+
+Thu May 31 18:04:24 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* mutt_tunnel.c: Tunnel fixes.
+
+	* configure.in: Fix some typos.
+
+	* mutt_curses.h, configure.in:
+	Utf-8 support with ncurses, by Sven Verdoolaege.  Thomas E. Dickey
+	says it looks reasonable, so I include it.
+
+Wed May 30 23:00:51 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* imap/command.c, imap/imap.c, enter.c, Makefile.am, mutt_sasl.c, mutt_sasl.h, mutt_socket.c, mutt_socket.h, mutt_ssl.c, mutt_ssl_nss.c, mutt_tunnel.c:
+	Socket API clean-up from Brendan Cully.
+
+	* send.c: If messages have no References header, fall back to using
+	In-Reply-To when constructing a reply's references header.  This may
+	not be strictly according to the book, but looks like a reasonable
+	suggestion (which came from Vincent Lefebvre).
+
+	* curs_main.c: Check whether any messages are visible.
+
+Tue May 29 20:26:23 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* m4/gssapi.m4, imap/auth.c, imap/auth_gss.c, imap/auth_sasl.c, imap/imap.c, configure.in, globals.h, init.h, Makefile.am, mutt_socket.c, mutt_socket.h, mutt_tunnel.c, mutt_tunnel.h, README:
+	GSSAPI fixes, tunnel driver.  From Brendan Cully.
+
+	* configure.in, md5.h, sha1.h:
+	More type-determination fixes from Lars Hecking.
+
+Mon May 28 19:14:47 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* imap/util.c:
+	Consult /etc/services for imaps port.  From Brendan Cully.
+
+	* imap/Makefile.am, Attic/checktypes.c, configure.in, Makefile.am, md5c.c, md5.h, sha1.c, sha1.h:
+	Improve checking for 32bit integers.  From Brendan Cully and Lars
+	Hecking.
+
+	* muttbug.sh.in: Cosmetics.  From Brendan Cully.
+
+	* imap/command.c, imap/imap.c, imap/imap_private.h:
+	Detect external modifications of IMAP folders.  From Brendan Cully.
+
+	* curs_main.c: Fix attaching messages via IMAP.  From Brendan Cully.
+
+Thu May 24 10:18:30 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/ja.po: update.
+
+	* browser.c: patch-bac.chdir-20010523.2
+
+Wed May 23 14:19:16 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* browser.c: patch-bac.chdir-20010523.1
+
+	* imap/browse.c: patch-bac.createnull-20010522.1
+
+Tue May 22 21:45:52 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* doc/manual.sgml.head: Documentation nit from Björn Jacke.
+
+	* configure.in:
+	Let configure --help look prettier.  From Brendan Cully.
+
+	* doc/manual.sgml.head, doc/manual.sgml.tail:
+	Documentation fixes from Brendan Cully.
+
+	* imap/imap.c: Attachment deletion on IMAP servers, take two.
+
+Mon May 21 08:42:07 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* imap/imap.c, imap/message.c, commands.c, mx.c, protos.h:
+	Attachment deletion for IMAP folders.  By Brendan Cully.
+
+Sun May 20 22:35:29 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* handler.c:
+	Fix character set conversion for non-plain text types with 8bit
+	content-transfer-encodings.  Noted by Björn Jacke.
+
+	* imap/message.c: \Seen for FCCs.  From Brendan Cully.
+
+Thu May 17 18:37:21 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* pager.c: patch-1.3.18.bj.segfault.1.
+
+	* handler.c: Fix multibyte encodings with quoted-printable.
+	(patch-1.3.18.tt.decode_quoted.1)
+	From TAKIZAWA Takashi <taki@luna.email.ne.jp>.
+
+Tue May 15 20:41:55 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* imap/browse.c, imap/util.c, mutt_socket.c: patch-bac.notes-20010515.1
+
+	* rfc1524.c:
+	Make tests on an attachment's file name possible.  Patch from Bob
+	Bell <bobbell@zk3.dec.com>.
+
+Sun May 13 15:43:48 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/de.po: Update.
+
+Sat May 12 05:49:31 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* handler.c: Undo one of yesterday's aesthetical changes.
+
+	* muttlib.c: IMAP path canonification hack from Brendan Cully.
+
+	* handler.c:
+	Adding a hack to use format=flowed's quoting information in the
+	pager, using ANSI color sequences to turn off quote coloring.
+
+Fri May 11 22:16:17 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* handler.c:
+	Don't cut off the final part of ttachments with overlong lines.
+
+	* handler.c: Correctly handle extremely long lines.
+
+	* handler.c:
+	Improve handling of indented text when wrapping text/plain;
+	format=flowed.  This is, in particular, important when replying to
+	messages with indented text.  I hope this code does The Right Thing
+	most of the time now.
+
+	(Further note that we still try to avoid wrapping at places where
+	the user didn't do so.)
+
+	* handler.c: Some more esthetical nits.
+
+	* handler.c: More fixes.
+
+	* recvcmd.c: Fix some nits with respect to text/plain; format=flowed.
+
+	* copy.c, handler.c, init.h, mutt.h, send.c:
+	Add experimental support for text/plain; format=flowed.
+
+	* send.c: Fix #590.
+
+	* headers.c: Some code simplifications.
+
+	* headers.c, muttlib.c:
+	Fix a memory leak in mutt_free_envelope(); avoid dangling pointers
+	in header editing.
+
+Thu May 10 13:15:45 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/ja.po: update.
+
+	* hdrline.c: Fix %D.  From Len Lattanzi <Len.Lattanzi@migration.com>.
+
+	* headers.c: Fix header editing and references headers.
+
+	* imap/auth_anon.c, imap/auth_cram.c, imap/auth_gss.c, imap/auth_login.c, imap/auth_sasl.c, imap/browse.c, imap/command.c, imap/imap.c, imap/message.c, imap/util.c, sort.c, copy.c, curs_main.c, globals.h, hook.c, init.h, mbox.c, menu.c, muttlib.c, mutt_socket.c, mutt_ssl.c, mx.c, pgpkey.c, pop_auth.c, pop.c, pop_lib.c, protos.h:
+	A slightly extended version of Dave Ewart's sleeptime patch.
+
+	* po/fr.po, po/id.po, po/sv.po, po/da.po: update.
+
+	* po/hu.po, configure.in:
+	Adding the Hungarian translation from Szabolcs Horvath
+	<horvaths@fi.inf.elte.hu>.
+
+Mon May  7 19:21:41 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* imap/imap.h, imap/README, imap/util.c, muttlib.c:
+	IMAP path canonicalization.  From Brendan Cully.
+
+Wed May  2 20:49:46 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* doc/manual.sgml.tail: Document some missing functions.
+
+	* po/tr.po, po/uk.po, po/zh_CN.GB2312.po, po/zh_TW.Big5.po, po/pt_BR.po, po/ru.po, po/sk.po, po/sv.po, po/id.po, po/it.po, po/ja.po, po/ko.po, po/lt.po, po/nl.po, po/pl.po, po/de.po, po/el.po, po/eo.po, po/es.po, po/fr.po, po/gl.po, po/cs.po, po/da.po:
+	make update-po.
+
+Tue May  1 21:32:50 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/zh_CN.GB2312.po, po/zh_TW.Big5.po, po/ru.po, po/sk.po, po/sv.po, po/tr.po, po/uk.po, po/pl.po, po/pt_BR.po, po/lt.po, po/nl.po, po/gl.po, po/id.po, po/it.po, po/ja.po, po/ko.po, po/da.po, po/de.po, po/el.po, po/eo.po, po/es.po, po/fr.po, po/cs.po, ChangeLog, reldate.h, VERSION:
+	automatic post-release commit for mutt-1.3.18
+
+	* pgp.c: #568:  Out-of-band reporting for traditional signed+encrypted
+	messages.
+
 Tue May  1 21:24:41 2001  Thomas Roessler  <roessler@guug.de>
 
 	* pgp.c: #568:  Out-of-band reporting for traditional signed+encrypted
