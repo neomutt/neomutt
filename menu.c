@@ -75,6 +75,17 @@ static void print_enriched_string (int attr, unsigned char *s, int do_color)
   }
 }
 
+static void menu_make_entry (char *s, int l, MUTTMENU *menu, int i) 
+{
+  if (menu->dialog) 
+  {
+    strncpy (s, menu->dialog[i], l);
+    menu->current = -1; /* hide menubar */
+  }
+  else
+    menu->make_entry (s, l, menu, i);
+}
+
 void menu_pad_string (char *s, size_t l)
 {
 #if !defined(HAVE_BKGDSET) && !defined (USE_SLANG_CURSES)
@@ -144,7 +155,7 @@ void menu_redraw_index (MUTTMENU *menu)
   {
     if (i < menu->max)
     {
-      menu->make_entry (buf, sizeof (buf), menu, i);
+      menu_make_entry (buf, sizeof (buf), menu, i);
       menu_pad_string (buf, sizeof (buf));
 
       if (option (OPTARROWCURSOR))
@@ -190,6 +201,12 @@ void menu_redraw_index (MUTTMENU *menu)
 void menu_redraw_motion (MUTTMENU *menu)
 {
   char buf[STRING];
+
+  if (menu->dialog) 
+  {
+    menu->redraw &= ~REDRAW_MOTION;
+    return;
+  }
   
   move (menu->oldcurrent + menu->offset - menu->top, 0);
   SETCOLOR (MT_COLOR_NORMAL);
@@ -204,7 +221,7 @@ void menu_redraw_motion (MUTTMENU *menu)
     if (menu->redraw & REDRAW_MOTION_RESYNCH)
     {
       clrtoeol ();
-      menu->make_entry (buf, sizeof (buf), menu, menu->oldcurrent);
+      menu_make_entry (buf, sizeof (buf), menu, menu->oldcurrent);
       menu_pad_string (buf, sizeof (buf));
       move (menu->oldcurrent + menu->offset - menu->top, 3);
       print_enriched_string (menu->color(menu->oldcurrent), (unsigned char *) buf, 1);
@@ -222,12 +239,12 @@ void menu_redraw_motion (MUTTMENU *menu)
     /* erase the current indicator */
     attrset (menu->color (menu->oldcurrent));
     clrtoeol ();
-    menu->make_entry (buf, sizeof (buf), menu, menu->oldcurrent);
+    menu_make_entry (buf, sizeof (buf), menu, menu->oldcurrent);
     menu_pad_string (buf, sizeof (buf));
     print_enriched_string (menu->color(menu->oldcurrent), (unsigned char *) buf, 1);
 
     /* now draw the new one to reflect the change */
-    menu->make_entry (buf, sizeof (buf), menu, menu->current);
+    menu_make_entry (buf, sizeof (buf), menu, menu->current);
     menu_pad_string (buf, sizeof (buf));
     SETCOLOR (MT_COLOR_INDICATOR);
     BKGDSET (MT_COLOR_INDICATOR);
@@ -244,7 +261,7 @@ void menu_redraw_current (MUTTMENU *menu)
   char buf[STRING];
   
   move (menu->current + menu->offset - menu->top, 0);
-  menu->make_entry (buf, sizeof (buf), menu, menu->current);
+  menu_make_entry (buf, sizeof (buf), menu, menu->current);
   menu_pad_string (buf, sizeof (buf));
 
   if (option (OPTARROWCURSOR))
@@ -331,7 +348,7 @@ void menu_next_line (MUTTMENU *menu)
 {
   if (menu->max)
   {
-    if (menu->top < menu->max - 1)
+    if (menu->top + 1 < menu->max)
     {
       menu->top++;
       if (menu->current < menu->top)
@@ -369,7 +386,7 @@ void menu_next_page (MUTTMENU *menu)
 	menu->current = menu->top;
       menu->redraw = REDRAW_INDEX;
     }
-    else if (menu->current != menu->max - 1)
+    else if (menu->current != menu->max - 1 && !menu->dialog)
     {
       menu->current = menu->max - 1;
       menu->redraw = REDRAW_MOTION;
@@ -391,7 +408,7 @@ void menu_prev_page (MUTTMENU *menu)
       menu->current = menu->top + menu->pagelen - 1;
     menu->redraw = REDRAW_INDEX;
   }
-  else if (menu->current)
+  else if (menu->current && !menu->dialog)
   {
     menu->current = 0;
     menu->redraw = REDRAW_MOTION;
@@ -470,7 +487,7 @@ void menu_half_up (MUTTMENU *menu)
       menu->current = menu->top + menu->pagelen - 1;
     menu->redraw = REDRAW_INDEX;
   }
-  else if (menu->current)
+  else if (menu->current && !menu->dialog)
   {
     menu->current = 0;
     menu->redraw = REDRAW_MOTION;
@@ -490,7 +507,7 @@ void menu_half_down (MUTTMENU *menu)
 	menu->current = menu->top;
       menu->redraw = REDRAW_INDEX;
     }
-    else if (menu->current != menu->max - 1)
+    else if (menu->current != menu->max - 1 && !menu->dialog)
     {
       menu->current = menu->max - 1;
       menu->redraw = REDRAW_INDEX;
@@ -570,7 +587,7 @@ static int menu_search_generic (MUTTMENU *m, regex_t *re, int n)
 {
   char buf[LONG_STRING];
 
-  m->make_entry (buf, sizeof (buf), m, n);
+  menu_make_entry (buf, sizeof (buf), m, n);
   return (regexec (re, buf, 0, NULL, 0));
 }
 
@@ -590,7 +607,15 @@ MUTTMENU *mutt_new_menu (void)
 
 void mutt_menuDestroy (MUTTMENU **p)
 {
+  int i;
+
   safe_free ((void **) &(*p)->searchBuf);
+  if ((*p)->dialog) 
+  {
+    for (i=0; i < (*p)->max; i++)
+      safe_free ((void **) &(*p)->dialog[i]);
+    safe_free ((void **) (*p)->dialog);
+  }
   safe_free ((void **) p);
 }
 
@@ -669,7 +694,8 @@ int mutt_menuLoop (MUTTMENU *menu)
       return (OP_REDRAW);
     }
 
-    menu_check_recenter (menu);
+    if (!menu->dialog)
+      menu_check_recenter (menu);
 
     if (menu->redraw & REDRAW_STATUS)
       menu_redraw_status (menu);
@@ -682,11 +708,39 @@ int mutt_menuLoop (MUTTMENU *menu)
 
     menu->oldcurrent = menu->current;
 
+    if (menu->dialog) 
+    {
+      if (option (OPTMSGERR)) sleep (1);
+      unset_option (OPTMSGERR);
+      mutt_flushinp ();
+      SETCOLOR (MT_COLOR_NORMAL);
+      mvaddstr (LINES - 1, 0, menu->prompt);
+      clrtoeol ();
+    }
+
     /* move the cursor out of the way */
     move (menu->current - menu->top + menu->offset,
 	  (option (OPTARROWCURSOR) ? 2 : COLS-1));
 
     mutt_refresh ();
+    
+    /* try to catch dialog keys before ops */
+    if (menu->dialog) 
+    {
+      event_t ch;
+      char *p;
+      
+      ch = mutt_getch ();
+
+      if (ch.ch == -1 || CI_is_return (ch.ch)) 
+	return -1;
+      
+      if (ch.ch && (p = strchr (menu->keys, ch.ch)))
+	return OP_MAX + (p - menu->keys + 1);
+      else
+	mutt_ungetch (ch.op ? 0 : ch.ch, ch.op ? ch.op : 0);
+    }
+		    
     i = km_dokey (menu->menu);
     if (i == OP_TAG_PREFIX)
     {
@@ -723,7 +777,33 @@ int mutt_menuLoop (MUTTMENU *menu)
     if (i == -1)
       continue;
 
-    mutt_clear_error ();
+    if (!menu->dialog)
+      mutt_clear_error ();
+
+    /* Convert menubar movement to scrolling */
+    if (menu->dialog) 
+    {
+      switch (i)
+      {
+	case OP_NEXT_ENTRY:	
+	  i = OP_NEXT_LINE;   
+	  break;
+	case OP_PREV_ENTRY:	
+	  i = OP_PREV_LINE;   
+	  break;
+	case OP_CURRENT_TOP:
+	case OP_FIRST_ENTRY:	
+	  i = OP_TOP_PAGE;    
+	  break;
+	case OP_CURRENT_BOTTOM:
+	case OP_LAST_ENTRY:	
+	  i = OP_BOTTOM_PAGE; 
+	  break;
+	case OP_CURRENT_MIDDLE: 
+	  i = OP_MIDDLE_PAGE; 
+	  break;
+      }
+    }
 
     switch (i)
     {
@@ -779,7 +859,7 @@ int mutt_menuLoop (MUTTMENU *menu)
       case OP_SEARCH_REVERSE:
       case OP_SEARCH_NEXT:
       case OP_SEARCH_OPPOSITE:
-	if (menu->search)
+	if (menu->search && !menu->dialog) /* Searching dialogs won't work */
 	{
 	  menu->oldcurrent = menu->current;
 	  if ((menu->current = menu_search (menu, i)) != -1)
@@ -792,7 +872,10 @@ int mutt_menuLoop (MUTTMENU *menu)
 	break;
 
       case OP_JUMP:
-	menu_jump (menu);
+	if (menu->dialog)
+	  mutt_error _("Jumping is not implemented for dialogs.");
+	else
+	  menu_jump (menu);
 	break;
 
       case OP_ENTER_COMMAND:
@@ -807,7 +890,7 @@ int mutt_menuLoop (MUTTMENU *menu)
 	break;
 
       case OP_TAG:
-	if (menu->tag)
+	if (menu->tag && !menu->dialog)
 	{
 	  if (menu->max)
 	  {

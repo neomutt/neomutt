@@ -46,6 +46,15 @@ typedef struct menu_t
   int offset;	/* which screen row to start the index */
   int pagelen;	/* number of entries per screen */
   int tagprefix;
+
+  /* Setting dialog != NULL overrides normal menu behaviour. 
+   * In dialog mode menubar is hidden and prompt keys are checked before
+   * normal menu movement keys. This can cause problems with scrolling, if 
+   * prompt keys override movement keys.
+   */
+  char **dialog;	/* dialog lines themselves */
+  char *prompt;		/* prompt for user, similar to mutt_multi_choice */
+  char *keys;		/* keys used in the prompt */
   
   /* callback to generate an index line for the requested element */
   void (*make_entry) (char *, size_t, struct menu_t *, int);
