@@ -24,7 +24,7 @@
 
 typedef struct
 {
-  char user[32];
+  char user[64];
   char pass[32];
   char host[128];
   int port;
