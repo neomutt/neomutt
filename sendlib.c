@@ -1155,7 +1155,7 @@ BODY *mutt_remove_multipart (BODY *b)
   return b;
 }
 
-static char *mutt_make_date (char *s, size_t len)
+char *mutt_make_date (char *s, size_t len)
 {
   time_t t = time (NULL);
   struct tm *l = gmtime(&t);

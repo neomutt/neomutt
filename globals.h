@@ -31,7 +31,6 @@ WHERE char *AttachFormat;
 WHERE char *Charset;
 WHERE char *DefaultHook;
 WHERE char *DateFmt;
-WHERE char *DeleteFmt;
 WHERE char *DsnNotify;
 WHERE char *DsnReturn;
 WHERE char *Editor;

@@ -61,7 +61,6 @@ macro pager   <f1> "!less @docdir@/manual.txt\n" "Show Mutt documentation"
 # set confirmcreate
 # set copy=yes
 # set date_format="!%a, %b %d, %Y at %I:%M:%S%p %Z"
-# set delete_format="[-- Attachment from %u deleted %<%b %d %T %Y> --]"
 # set default_hook="~f %s !~P | (~P ~C %s)"
 # set delete=ask-yes
 # set dsn_notify=""

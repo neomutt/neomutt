@@ -117,6 +117,7 @@ char *mutt_get_parameter (const char *, PARAMETER *);
 #ifdef _PGPPATH
 char *mutt_pgp_hook (ADDRESS *);
 #endif /* _PGPPATH */
+char *mutt_make_date (char *, size_t);
 char *mutt_quote_filename(const char *);
 char *mutt_read_line (char *, size_t *, FILE *, int *);
 char *mutt_strlower (char *);

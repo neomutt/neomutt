@@ -94,7 +94,6 @@ struct option_t MuttVars[] = {
   { "confirmcreate",	DT_BOOL, R_NONE, OPTCONFIRMCREATE, 1 },
   { "copy",		DT_QUAD, R_NONE, OPT_COPY, M_YES },
   { "date_format",	DT_STR,	 R_BOTH, UL &DateFmt, UL "!%a, %b %d, %Y at %I:%M:%S%p %Z" },
-  { "delete_format",	DT_STR,  R_NONE, UL &DeleteFmt, UL "[-- Attachment from %u deleted %<%b %d %T %Y> --]" },
   { "default_hook",	DT_STR,	 R_NONE, UL &DefaultHook, UL "~f %s !~P | (~P ~C %s)" },
   { "delete",		DT_QUAD, R_NONE, OPT_DELETE, M_ASKYES },
   { "dsn_notify",	DT_STR,	 R_NONE, UL &DsnNotify, UL "" },

@@ -2687,16 +2687,6 @@ synchronizing a mailbox.  If set to <em/yes/, messages marked for deleting
 will automatically be purged without prompting.  If set to <em/no/, messages
 marked for deletion will be kept in the mailbox.
 
-<sect2>delete&lowbar;format<label id="delete_format">
-<p>
-Type: string<newline>
-Default: "&lsqb;-- Attachment from &percnt;u deleted on &percnt;&lt;&percnt;D&gt; --&rsqb;"
-
-This variable controls the format of the message used to replace an
-attachment when the attachment is deleted.  It uses the same format
-sequences as the <ref id="index_format" name="&dollar;index&lowbar;format">
-variable.
-
 <sect2>dsn&lowbar;notify<label id="dsn_notify">
 <p>
 Type: string<newline>
