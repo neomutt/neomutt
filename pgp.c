@@ -71,6 +71,12 @@ int pgp_valid_passphrase (void)
 {
   time_t now = time (NULL);
 
+  if (pgp_use_gpg_agent())
+    {
+      *PgpPass = 0;
+      return 1; /* handled by gpg-agent */
+    }
+
   if (now < PgpExptime)
     /* Use cached copy.  */
     return 1;
