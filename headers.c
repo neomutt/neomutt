@@ -37,7 +37,6 @@ void mutt_edit_headers (const char *editor,
   char *p;
   FILE *ifp, *ofp;
   int i, keep;
-  int in_reply_to = 0;	/* did we see the in-reply-to field ? */
   ENVELOPE *n;
   time_t mtime;
   struct stat st;
@@ -128,9 +127,7 @@ void mutt_edit_headers (const char *editor,
      * not, remove the references: field later so that we can generate a new
      * message based upon this one.
      */
-    if (ascii_strncasecmp ("in-reply-to:", cur->data, 12) == 0)
-      in_reply_to = 1;
-    else if (fcc && ascii_strncasecmp ("fcc:", cur->data, 4) == 0)
+    if (fcc && ascii_strncasecmp ("fcc:", cur->data, 4) == 0)
     {
       p = cur->data + 4;
       SKIPWS (p);
@@ -203,6 +200,6 @@ void mutt_edit_headers (const char *editor,
     }
   }
 
-  if (!in_reply_to)
+  if (!msg->env->in_reply_to)
     mutt_free_list (&msg->env->references);
 }
