@@ -724,7 +724,7 @@ typedef struct
 {
   wchar_t *wbuf;
   size_t wbuflen;
-  size_t wbufn;
+  size_t lastchar;
   size_t curpos;
   size_t begin;
 } ENTER_STATE;

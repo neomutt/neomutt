@@ -832,6 +832,11 @@ if test "$mutt_cv_wint_t" = no; then
 	AC_DEFINE(wint_t, int)
 fi
 
+AC_CHECK_HEADERS(wctype.h)
+AC_CHECK_FUNCS(iswalnum iswalpha  iswcntrl iswdigit)
+AC_CHECK_FUNCS(iswgraph iswlower iswprint iswpunct iswspace iswupper)
+AC_CHECK_FUNCS(iswxdigit towupper towlower)
+
 AC_CACHE_CHECK([for mbstate_t], mutt_cv_mbstate_t,
 	AC_TRY_COMPILE([
 #include <stddef.h>
