@@ -753,7 +753,7 @@ int mutt_index_menu (void)
 	{ 
 #ifdef USE_IMAP
           /* logout gracefully from the IMAP server */
-          if (Context->magic == M_IMAP)
+          if (Context && Context->magic == M_IMAP)
             imap_set_logout (Context);
 #endif
 	  if (!Context || mx_close_mailbox (Context) == 0)

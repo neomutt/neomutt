@@ -177,6 +177,10 @@ int imap_init_browse (char *path, struct browser_state *state)
       /* if our target isn't a folder, we are in our superior */
       if (!state->folder)
       {
+        /* store folder with delimiter */
+        mbox[n++] = ctmp;
+        ctmp = mbox[n];
+        mbox[n] = '\0';
         imap_qualify_path (buf, sizeof (buf), host, port, mbox, NULL);
         state->folder = safe_strdup (buf);
       }
