@@ -101,6 +101,10 @@ WHERE char *Shell;
 WHERE char *Signature;
 WHERE char *SimpleSearch;
 WHERE char *Spoolfile;
+#if defined(USE_SSL) || defined(USE_NSS)
+WHERE char *SslCertFile INITVAL (NULL);
+WHERE char *SslEntropyFile INITVAL (NULL);
+#endif
 WHERE char *StChars;
 WHERE char *Status;
 WHERE char *Tempdir;

@@ -31,9 +31,6 @@
 
 static int MuttNssInitialized = 0;
 
-char *SslCertFile = 0;
-char *SslEntropyFile = 0;	/* unused, required to link */
-
 /* internal data struct we use with the CONNECTION.  this is where NSS-specific
  * data gets stuffed so that the main mutt_socket.h doesn't have to be
  * modified.

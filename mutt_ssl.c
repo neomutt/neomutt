@@ -57,9 +57,6 @@ static int entropy_byte_count = 0;
 #define HAVE_ENTROPY()	(!access(DEVRANDOM, R_OK) || entropy_byte_count >= 16)
 #endif
 
-char *SslCertFile = NULL;
-char *SslEntropyFile = NULL;
-
 typedef struct _sslsockdata
 {
   SSL_CTX *ctx;
