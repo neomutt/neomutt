@@ -10,7 +10,7 @@ ignore sender references return-path lines
 # imitate the old search-body function
 macro index \eb '/~b ' 'search in message bodies'
 
-# simluate the old url menu
+# simulate the old url menu
 macro index \cb |urlview\n 'call urlview to extract URLs out of a message'
 macro pager \cb |urlview\n 'call urlview to extract URLs out of a message'
 
