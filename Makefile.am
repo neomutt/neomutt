@@ -85,7 +85,8 @@ pgpring_DEPENDENCIES = @LIBOBJS@ $(INTLDEPS)
 mutt_dotlock.c: dotlock.c
 	cp $(srcdir)/dotlock.c mutt_dotlock.c
 
-CLEANFILES = mutt_dotlock.c stamp-doc-rc makedoc
+CLEANFILES = mutt_dotlock.c stamp-doc-rc makedoc \
+	keymap_alldefs.h keymap_defs.h
 
 ACLOCAL_AMFLAGS = -I m4
 
@@ -102,8 +103,8 @@ keymap.h: keymap_defs.h
 keymap_defs.h: $(OPS) $(srcdir)/gen_defs
 	$(srcdir)/gen_defs $(OPS) > keymap_defs.h
 
-keymap_alldefs.h: OPS OPS.PGP OPS.MIX $(srcdir)/gen_defs
-	$(srcdir)/gen_defs OPS OPS.PGP OPS.MIX > keymap_alldefs.h
+keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.PGP $(srcdir)/OPS.MIX $(srcdir)/gen_defs
+	$(srcdir)/gen_defs $(srcdir)/OPS $(srcdir)/OPS.PGP $(srcdir)/OPS.MIX > keymap_alldefs.h
 
 reldate:
 	echo 'const char *ReleaseDate = "'`date +%Y-%m-%d`'";' > $(srcdir)/reldate.h

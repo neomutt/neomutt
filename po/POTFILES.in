@@ -27,7 +27,6 @@ imap/socket.c
 imap/util.c
 init.c
 keymap.c
-keymap_alldefs.h
 lib.c
 lib.h
 main.c
