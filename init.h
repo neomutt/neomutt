@@ -828,7 +828,7 @@ struct option_t MuttVars[] = {
   { "indent_str",	DT_SYN,  R_NONE, UL "indent_string", 0 },
   /*
   */
-  { "index_format",	DT_STR,	 R_BOTH, UL &HdrFmt, UL "%4C %Z %{%b %d} %-15.15L (%4l) %s" },
+  { "index_format",	DT_STR,	 R_BOTH, UL &HdrFmt, UL "%4C %Z %{%b %d} %-15.15L (%?l?%4l&%4c?) %s" },
   /*
   ** .pp
   ** This variable allows you to customize the message index display to
@@ -853,7 +853,8 @@ struct option_t MuttVars[] = {
   ** .dt %f .dd entire From: line (address + real name)
   ** .dt %F .dd author name, or recipient name if the message is from you
   ** .dt %i .dd message-id of the current message
-  ** .dt %l .dd number of lines in the message
+  ** .dt %l .dd number of lines in the message (does not work with maildir,
+  **            mh, and possibly IMAP folders)
   ** .dt %L .dd If an address in the To or CC header field matches an address
   **            defined by the users ``lists'' command, this displays
   **            "To <list-name>", otherwise the same as %F.

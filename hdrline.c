@@ -449,11 +449,8 @@ hdr_format_str (char *dest,
 	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
 	snprintf (dest, destlen, fmt, (int) hdr->lines);
       }
-      else
-      {
-	if (hdr->lines > 0)
-	  optional = 0;
-      }
+      else if (hdr->lines <= 0)
+        optional = 0;
       break;
 
     case 'L':
@@ -491,7 +488,7 @@ hdr_format_str (char *dest,
       }
       else
       {
-	if (hdr->score > 0)
+	if (hdr->score == 0)
 	  optional = 0;
       }
       break;

@@ -1065,6 +1065,14 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     {
       if (hdr)
 	hdr->lines = atoi (p);
+
+      /* 
+       * HACK - mutt has, for a very short time, produced negative
+       * Lines header values.  Ignore them. 
+       */
+      if (hdr->lines < 0)
+	hdr->lines = 0;
+
       matched = 1;
     }
     break;
