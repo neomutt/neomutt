@@ -58,8 +58,16 @@ my @cert_tmp_file = ();
 
 my $tmpdir;
 my $private_keys_path = mutt_Q 'smime_keys';
+die "smime_keys is not set in mutt's configuration file"
+	if length $private_keys_path == 0;
+
 my $certificates_path = mutt_Q 'smime_certificates';
+die "smime_certificates is not set in mutt's configuration file"
+	if length $certificates_path == 0;
 my $root_certs_path   = mutt_Q 'smime_ca_location';
+die "smime_ca_location is not set in mutt's configuration file"
+	if length $root_certs_path == 0;
+
 my $root_certs_switch;
 if ( -d $root_certs_path) {
 	$root_certs_switch = -CApath;
