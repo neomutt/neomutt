@@ -240,7 +240,8 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
     }
   }
 
-  mutt_message _("Fetching message...");
+  if (!isendwin())
+    mutt_message _("Fetching message...");
 
   cache->uid = HEADER_DATA(h)->uid;
   mutt_mktemp (path);
