@@ -738,7 +738,7 @@ msgstr "Darstellung von Diskussionsfäden ist nicht eingeschaltet."
 
 #: date.c:49
 msgid "Please report this program error in the function mutt_mktime."
-msgstr ""
+msgstr "Bitte einen Fehler bezüglich der mutt_mktime Funktion melden."
 
 #.
 #. * SLcurses_waddnstr() can't take a "const char *", so this is only
@@ -865,6 +865,7 @@ msgstr "[-- Fehlerausgabe von %s --]\n"
 #: handler.c:1229
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr ""
+"[-- Fehler: message/external-body hat keinen access-type Parameter --]\n"
 
 #: handler.c:1246
 #, c-format
@@ -874,7 +875,7 @@ msgstr "[-- Dieser %s/%s-Anhang "
 #: handler.c:1253
 #, c-format
 msgid "(size %s bytes) "
-msgstr ""
+msgstr "(Größe %s Byte) "
 
 #: handler.c:1255
 msgid "has been deleted --]\n"
@@ -939,7 +940,7 @@ msgstr "%s: Kann Datei nicht anhängen."
 
 #: help.c:274
 msgid "ERROR: please report this bug"
-msgstr ""
+msgstr "ERROR: Bitte melden sie diesen Fehler"
 
 #: help.c:316
 msgid "<UNKNOWN>"
@@ -973,7 +974,7 @@ msgstr "Hilfe für %s"
 #: imap.c:103
 #, c-format
 msgid "imap_error(): unexpected response in %s: %s\n"
-msgstr ""
+msgstr "imap_error(): Unerwartete Reaktion in %s: %s\n"
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
@@ -1983,7 +1984,7 @@ msgstr ""
 
 #: main.c:406
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
-msgstr ""
+msgstr "DEBUG war beim Kompilieren nicht definiert.  Ignoriert.\n"
 
 #: main.c:544
 msgid "No recipients specified.\n"
@@ -2105,9 +2106,8 @@ msgid "Not found."
 msgstr "Nicht gefunden."
 
 #: menu.c:689
-#, fuzzy
 msgid "No tagged entries."
-msgstr "Keine Einträge"
+msgstr "Keine markierten Einträge."
 
 #: menu.c:777
 msgid "Search is not implemented for this menu."
@@ -2156,9 +2156,9 @@ msgid "Writing %s..."
 msgstr "Schreibe %s..."
 
 #: mx.c:704
-#, fuzzy, c-format
+#, c-format
 msgid "Could not synchronize mailbox %s!"
-msgstr "Konnte Mailbox nicht erneut öffnen!"
+msgstr "Kann Mailbox %s nicht synchronisieren!"
 
 #: mx.c:767
 #, c-format
@@ -2401,12 +2401,11 @@ msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- END PGP PUBLIC KEY BLOCK --]\n"
 
 #: pgp.c:464
-#, fuzzy
 msgid ""
 "\n"
 "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr ""
-"[-- BEGIN PGP SIGNED MESSAGE --]\n"
+"[-- END PGP SIGNED MESSAGE --]\n"
 "\n"
 
 #: pgp.c:477
@@ -2918,9 +2917,8 @@ msgid "Sending message..."
 msgstr "Verschicke Nachricht..."
 
 #: send.c:1324
-#, fuzzy
 msgid "Could not send the message."
-msgstr "Verschicke Nachricht"
+msgstr "Konnte Nachricht nicht verschicken."
 
 #: send.c:1330
 msgid "Mail sent."
