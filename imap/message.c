@@ -358,6 +358,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
           {
 	    IMAP_HEADER* newh;
             HEADER* h = ctx->hdrs[msgno];
+	    unsigned char readonly;
 
             newh = msg_new_header ();
 
@@ -371,6 +372,13 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	     * are taken account of the proper way.
 	     */
 
+	    /* YAUH (yet another ugly hack): temporarily set context to
+	     * read-write even if it's read-only, so *server* updates of
+	     * flags can be processed by mutt_set_flag. ctx->changed must
+	     * be restored afterwards */
+	    readonly = ctx->readonly;
+	    ctx->readonly = 0;
+	    
 	    mutt_set_flag (ctx, h, M_NEW, 
 		    !(newh->read || newh->old || h->read || h->old));
 	    mutt_set_flag (ctx, h, M_OLD, newh->old);
@@ -382,6 +390,8 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
             /* this message is now definitively *not* changed (mutt_set_flag
              * marks things changed as a side-effect) */
             h->changed = 0;
+	    ctx->changed &= ~readonly;
+	    ctx->readonly = readonly;
 
             mutt_free_list (&(HEADER_DATA(h)->keywords));
             HEADER_DATA(h)->keywords = newh->data->keywords;
