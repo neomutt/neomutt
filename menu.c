@@ -38,6 +38,7 @@ static void print_enriched_string (int attr, unsigned char *s, int do_color)
   size_t k;
   size_t n = mutt_strlen ((char *)s);
   mbstate_t mbstate;
+  short f1, f2, b1, b2;
 
   memset (&mbstate, 0, sizeof (mbstate));
   while (*s)
@@ -45,7 +46,12 @@ static void print_enriched_string (int attr, unsigned char *s, int do_color)
     if (*s < M_TREE_MAX)
     {
       if (do_color)
-	SETCOLOR (MT_COLOR_TREE);
+      {
+	pair_content(PAIR_NUMBER(ColorDefs[MT_COLOR_TREE]), &f1, &b1);
+	pair_content(PAIR_NUMBER(attr), &f2, &b2);
+	if (b1 == b2)
+	  SETCOLOR (MT_COLOR_TREE);
+      }
       while (*s && *s < M_TREE_MAX)
       {
 	switch (*s)
