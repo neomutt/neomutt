@@ -765,7 +765,7 @@ FILE *safe_fopen (const char *path, const char *mode)
 
 /* return 0 on success, -1 on error */
 int mutt_check_overwrite (const char *attname, const char *path,
-				char *fname, size_t flen, int flags) 
+				char *fname, size_t flen, int *append) 
 {
   char tmp[_POSIX_PATH_MAX];
   struct stat st;
@@ -790,12 +790,22 @@ int mutt_check_overwrite (const char *attname, const char *path,
     else
       snprintf (fname, flen, "%s/%s", path, attname);
   }
-
-  if (flags != M_SAVE_APPEND &&
-      access (fname, F_OK) == 0 && 
-      mutt_yesorno (_("File exists, overwrite?"), 0) != 1)
-    return (-1);
   
+  if (*append == 0 && access (fname, F_OK) == 0)
+  {
+    switch (mutt_multi_choice
+	    (_("File exists, (o)verwrite, (a)ppend, or (c)ancel?"), _("oac")))
+    {
+      case -1: /* abort */
+      case 3:  /* cancel */
+	return -1;
+
+      case 2: /* append */
+        *append = M_SAVE_APPEND;
+      case 1: /* overwrite */
+	;
+    }
+  }
   return 0;
 }
 

@@ -329,7 +329,8 @@ static int mutt_query_save_attachment (FILE *fp, BODY *body, HEADER *hdr)
 {
   char buf[_POSIX_PATH_MAX], tfile[_POSIX_PATH_MAX];
   int is_message;
-  
+  int append = 0;
+
   if (body->filename)
     strfcpy (buf, body->filename, sizeof (buf));
   else if(body->hdr &&
@@ -339,7 +340,7 @@ static int mutt_query_save_attachment (FILE *fp, BODY *body, HEADER *hdr)
     mutt_default_save(buf, sizeof(buf), body->hdr);
   else
     buf[0] = 0;
-  
+
   if (mutt_get_field (_("Save to file: "), buf, sizeof (buf), M_FILE | M_CLEAR) != 0
       || !buf[0])
     return -1;
@@ -364,18 +365,18 @@ static int mutt_query_save_attachment (FILE *fp, BODY *body, HEADER *hdr)
     }
     strfcpy(tfile, buf, sizeof(tfile));
   }
-  else if (mutt_check_overwrite (body->filename, buf, tfile, sizeof (tfile), 0))
-    return -1;
-  
+  else
+    if (mutt_check_overwrite (body->filename, buf, tfile, sizeof (tfile), &append))
+      return -1;
+
   mutt_message _("Saving...");
-  if (mutt_save_attachment (fp, body, tfile, 0, (hdr || !is_message) ? hdr : body->hdr) == 0)
+  if (mutt_save_attachment (fp, body, tfile, append, (hdr || !is_message) ? hdr : body->hdr) == 0)
   {
     mutt_message _("Attachment saved.");
     return 0;
   }
-  
-  return -1;
-  
+  else
+    return -1;
 }
 
 void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr)
@@ -394,14 +395,17 @@ void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr)
       {
 	if (!buf[0])
 	{
+	  int append = 0;
+
 	  strfcpy (buf, NONULL (top->filename), sizeof (buf));
 	  if (mutt_get_field (_("Save to file: "), buf, sizeof (buf),
 				    M_FILE | M_CLEAR) != 0 || !buf[0])
 	    return;
 	  mutt_expand_path (buf, sizeof (buf));
-	  if (mutt_check_overwrite (top->filename, buf, tfile, sizeof (tfile), 0))
+	  if (mutt_check_overwrite (top->filename, buf, tfile,
+				    sizeof (tfile), &append))
 	    return;
-	  rc = mutt_save_attachment (fp, top, tfile, 0, hdr);
+	  rc = mutt_save_attachment (fp, top, tfile, append, hdr);
 	  if (rc == 0 && AttachSep && (fpout = fopen (tfile,"a")) != NULL)
 	  {
 	    fprintf(fpout, "%s", AttachSep);

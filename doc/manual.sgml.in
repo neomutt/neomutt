@@ -3016,7 +3016,7 @@ following sequences are defined in Mutt:
 %c      number of characters (bytes) in the message
 %C      current message number
 %d      date and time of the message in the format specified by
-        ``date_format''
+        ``date_format'' converted to sender's time zone
 %f      entire From: line (address + real name)
 %F      author name, or recipient name if the message is from you
 %i      message-id of the current message

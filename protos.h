@@ -214,7 +214,7 @@ int mutt_check_key (const char *);
 int mutt_check_menu (const char *);
 int mutt_check_mime_type (const char *);
 int mutt_check_month (const char *);
-int mutt_check_overwrite (const char *, const char *, char *, size_t, int);
+int mutt_check_overwrite (const char *, const char *, char *, size_t, int *);
 int mutt_command_complete (char *, size_t, int, int);
 int mutt_var_value_complete (char *, size_t, int);
 int mutt_complete (char *);
