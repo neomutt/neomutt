@@ -614,7 +614,13 @@ self_insert:
       /* use the raw keypress */
       ch = LastKey;
 
-      /* this probably shouldn't happen */
+#ifdef KEY_ENTER
+      /* treat ENTER the same as RETURN */
+      if (ch == KEY_ENTER)
+	ch = '\r';
+#endif
+
+      /* quietly ignore all other function keys */
       if (ch & ~0xff)
 	continue;
 
