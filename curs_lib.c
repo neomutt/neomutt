@@ -131,8 +131,8 @@ void mutt_edit_file (const char *editor, const char *data)
 int mutt_yesorno (const char *msg, int def)
 {
   event_t ch;
-  const char *yes = _("yes");
-  const char *no = _("no");
+  char *yes = _("yes");
+  char *no = _("no");
   
   CLEARLINE(LINES-1);
   printw("%s ([%c]/%c): ", msg, def ? *yes : *no,
@@ -328,7 +328,7 @@ int mutt_enter_fname (const char *prompt, char *buf, size_t blen, int *redraw, i
     char *pc = safe_malloc (strlen (prompt) + 3);
 
     sprintf (pc, "%s: ", prompt);
-    mutt_ungetch (ch.ch, 0);
+    mutt_ungetch (ch.op ? 0 : ch.ch, ch.op ? ch.op : 0);
     if (mutt_get_field (pc, buf, blen, (buffy ? M_EFILE : M_FILE) | M_CLEAR)
 	!= 0)
       buf[0] = 0;

@@ -351,6 +351,10 @@ int km_dokey (int menu)
       bindings = km_get_table (CurrentMenu);
       if ((func = get_func (bindings, tmp.op)))
 	return tmp.op;
+
+      if (menu == MENU_EDITOR)
+	return tmp.op;
+
       if (CurrentMenu != MENU_PAGER)
       {
 	/* check generic menu */
