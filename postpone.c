@@ -500,7 +500,12 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   LIST *p, **q;
   BODY *b;
   FILE *bfp;
-
+  
+  int rv = -1;
+  STATE s;
+  
+  memset (&s, 0, sizeof (s));
+  
   if (!fp && (msg = mx_open_message (ctx, hdr->msgno)) == NULL)
     return (-1);
 
@@ -590,6 +595,9 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   if (newhdr->content->type == TYPEMULTIPART)
     newhdr->content = mutt_remove_multipart (newhdr->content);
 
+  s.fpin = bfp;
+  s.flags = M_CHARCONV;
+  
   /* create temporary files for all attachments */
   for (b = newhdr->content; b; b = b->next)
   {
@@ -609,30 +617,40 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
       b->use_disp = 0;
 
     mutt_adv_mktemp (file, sizeof(file));
-    if (mutt_save_attachment (bfp, b, file, 0, NULL) == -1)
-    {
-      mutt_free_envelope (&newhdr->env);
-      mutt_free_body (&newhdr->content);
-      if (bfp != fp) fclose (bfp);
-      if (msg) mx_close_message (&msg);
-      return -1;
-    }
     
+    if ((s.fpout = safe_fopen (file, "w")) == NULL)
+      goto bail;
+
+    mutt_decode_attachment (b, &s);
+    
+    if (safe_fclose (&s.fpout) != 0)
+      goto bail;
+
     mutt_str_replace (&b->filename, file);
     b->unlink = 1;
 
-    if (mutt_is_text_type (b->type, b->subtype))
-      b->noconv = 1;
-
+    if (b->type == TYPETEXT)
+      b->noconv = 0;
+    
     mutt_stamp_attachment (b);
 
     mutt_free_body (&b->parts);
     if (b->hdr) b->hdr->content = NULL; /* avoid dangling pointer */
   }
 
+  rv = 0;
+  
+  bail:
+  
   /* that's it. */
   if (bfp != fp) fclose (bfp);
   if (msg) mx_close_message (&msg);
-
-  return 0;
+  
+  if (rv == -1)
+  {
+    mutt_free_envelope (&newhdr->env);
+    mutt_free_body (&newhdr->content);
+  }
+  
+  return rv;
 }
