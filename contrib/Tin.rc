@@ -1,0 +1,22 @@
+# From: Tom Gilbert <gilbertt@tomgilbert.freeserve.co.uk>
+# To: mutt-users@mutt.org
+# Subject: Re: Lynx-like movements
+# Date: Sat, 4 Sep 1999 21:09:00 +0000
+
+
+#
+# These key bindings may be nice for notorious lynx or tin users.
+#
+
+bind  pager   <up>     previous-line
+bind  pager   <down>   next-line
+bind  pager   <left>   exit
+bind  pager   <right>  view-attachments
+bind  attach  <left>   exit
+bind  attach  <right>  view-attach
+bind  index   <right>  display-message
+macro index   <left>   "c?"
+bind  browser <right>  select-entry
+macro browser <left>   "qc!\r"
+
+
