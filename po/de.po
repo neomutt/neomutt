@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.5.8\n"
+"Project-Id-Version: 1.5.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-03-13 17:38+0100\n"
-"PO-Revision-Date: 2005-02-13 18:28+0100\n"
+"PO-Revision-Date: 2005-03-20 14:03+0100\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -204,9 +204,8 @@ msgid "Create is only supported for IMAP mailboxes"
 msgstr "Es können nur IMAP Mailboxen erzeugt werden"
 
 #: browser.c:880
-#, fuzzy
 msgid "Rename is only supported for IMAP mailboxes"
-msgstr "Es können nur IMAP Mailboxen erzeugt werden"
+msgstr "Es können nur IMAP Mailboxen umbenannt werden"
 
 #: browser.c:901
 msgid "Delete is only supported for IMAP mailboxes"
@@ -1400,19 +1399,18 @@ msgid "Mailbox created."
 msgstr "Mailbox erzeugt."
 
 #: imap/browse.c:325
-#, fuzzy, c-format
+#, c-format
 msgid "Rename mailbox %s to: "
-msgstr "Erzeuge Mailbox: "
+msgstr "Benenne Mailbox %s um in: "
 
 #: imap/browse.c:338
-#, fuzzy, c-format
+#, c-format
 msgid "Rename failed: %s"
-msgstr "SSL fehlgeschlagen: %s"
+msgstr "Umbenennung fehlgeschlagen: %s"
 
 #: imap/browse.c:343
-#, fuzzy
 msgid "Mailbox renamed."
-msgstr "Mailbox erzeugt."
+msgstr "Mailbox umbenannt."
 
 #: imap/command.c:294
 msgid "Mailbox closed"
@@ -2325,9 +2323,8 @@ msgid "{internal}"
 msgstr "{intern}"
 
 #: keymap_alldefs.h:151
-#, fuzzy
 msgid "rename the current mailbox (IMAP only)"
-msgstr "Lösche die aktuelle Mailbox (nur für IMAP)"
+msgstr "benenne die aktuelle Mailbox um (nur für IMAP)"
 
 #: keymap_alldefs.h:152
 msgid "reply to a message"
