@@ -128,7 +128,8 @@ ADDRESS *mutt_expand_aliases (ADDRESS *a)
   return (t);
 }
 
-/* if someone has an address like
+/* 
+ * if someone has an address like
  *	From: Michael `/bin/rm -f ~` Elkins <me@cs.hmc.edu>
  * and the user creates an alias for this, Mutt could wind up executing
  * the backtics because it writes aliases like
@@ -140,12 +141,20 @@ ADDRESS *mutt_expand_aliases (ADDRESS *a)
  * since that would get aliased as
  *	alias me Michael \\`/bin/rm -f ~\\` Elkins <me@cs.hmc.edu>
  * which still gets evaluated because the double backslash is not a quote.
+ * 
+ * Additionally, we need to quote ' and " characters - otherwise, mutt will
+ * interpret them on the wrong parsing step.
+ * 
+ * $ wants to be quoted since it may indicate the start of an environment
+ * variable.
  */
+
 static void write_safe_address (FILE *fp, char *s)
 {
   while (*s)
   {
-    if (*s == '\\' || *s == '`')
+    if (*s == '\\' || *s == '`' || *s == '\'' || *s == '"'
+	|| *s == '$')
       fputc ('\\', fp);
     fputc (*s, fp);
     s++;
