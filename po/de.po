@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.6\n"
+"Project-Id-Version: 1.3.8\n"
 "POT-Creation-Date: 2000-08-30 12:10+0200\n"
-"PO-Revision-Date: 2000-07-29 01:13+02:00\n"
+"PO-Revision-Date: 2000-08-30 14:22+02:00\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -10,9 +10,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: account.c:104
-#, fuzzy, c-format
+#, c-format
 msgid "Username at %s: "
-msgstr "Umbenennen in: "
+msgstr "Username bei %s: "
 
 #: account.c:132 pop.c:61
 #, c-format
@@ -172,9 +172,8 @@ msgid "No files match the file mask"
 msgstr "Es gibt keine zur Maske passenden Dateien"
 
 #: browser.c:814
-#, fuzzy
 msgid "Create is only supported for IMAP mailboxes"
-msgstr "Es können nur IMAP Mailboxen gelöscht werden"
+msgstr "Es können nur IMAP Mailboxen erzeugt werden"
 
 #: browser.c:834
 msgid "Delete is only supported for IMAP mailboxes"
@@ -1103,9 +1102,8 @@ msgid "Authenticating (anonymous)..."
 msgstr "Authentifiziere (anonymous)..."
 
 #: imap/auth_anon.c:69
-#, fuzzy
 msgid "Anonymous authentication failed."
-msgstr "Anonymous Authentifizierung nicht unterstützt."
+msgstr "Anonyme Authentifizierung fehlgeschlagen."
 
 #: imap/auth_cram.c:44
 msgid "Authenticating (CRAM-MD5)..."
@@ -1126,7 +1124,7 @@ msgstr "GSSAPI Authentifizierung fehlgeschlagen."
 
 #: imap/auth_login.c:34
 msgid "LOGIN disabled on this server."
-msgstr ""
+msgstr "LOGIN ist auf diesem Server abgeschaltet."
 
 #: imap/auth_login.c:43 pop.c:72
 msgid "Logging in..."
@@ -1137,14 +1135,12 @@ msgid "Login failed."
 msgstr "Anmeldung gescheitert..."
 
 #: imap/auth_sasl.c:91
-#, fuzzy
 msgid "Authenticating (SASL)..."
-msgstr "Authentifiziere (GSSAPI)..."
+msgstr "Authentifiziere (SASL)..."
 
 #: imap/auth_sasl.c:163
-#, fuzzy
 msgid "SASL authentication failed."
-msgstr "GSSAPI Authentifizierung fehlgeschlagen."
+msgstr "SASL Authentifizierung fehlgeschlagen."
 
 #: imap/browse.c:80
 msgid "Getting namespaces..."
@@ -1155,14 +1151,12 @@ msgid "Getting folder list..."
 msgstr "Hole Liste der Ordner..."
 
 #: imap/browse.c:265
-#, fuzzy
 msgid "Create mailbox: "
-msgstr "Öffne Mailbox"
+msgstr "Erzeuge Mailbox: "
 
 #: imap/browse.c:271
-#, fuzzy
 msgid "Mailbox created."
-msgstr "Mailbox gelöscht."
+msgstr "Mailbox erzeugt."
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
@@ -2517,7 +2511,7 @@ msgstr "Nachricht an %s anhängen?"
 
 #: mutt_socket.c:199
 msgid "SSL is unavailable."
-msgstr ""
+msgstr "SSL ist nicht verfügbar."
 
 #: mutt_socket.c:281
 #, c-format
