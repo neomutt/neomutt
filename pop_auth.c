@@ -106,13 +106,12 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
     if (rc != SASL_CONTINUE)
       break;
 
-    if (mutt_strncmp (inbuf, "+ ", 2))
-      goto bail;
-
 #ifdef USE_SASL2
-    if (sasl_decode64 (inbuf, strlen (inbuf), buf, LONG_STRING-1, &len) != SASL_OK)
+    if (!mutt_strncmp (inbuf, "+ ", 2)
+        && sasl_decode64 (inbuf, strlen (inbuf), buf, LONG_STRING-1, &len) != SASL_OK)
 #else
-    if (sasl_decode64 (inbuf, strlen (inbuf), buf, &len) != SASL_OK)
+    if (!mutt_strncmp (inbuf, "+ ", 2)
+        && sasl_decode64 (inbuf, strlen (inbuf), buf, &len) != SASL_OK)
 #endif
     {
       dprint (1, (debugfile, "pop_auth_sasl: error base64-decoding server response.\n"));
