@@ -994,7 +994,7 @@ msgstr "Starter autovisning kommando: %s"
 #: handler.c:1248 handler.c:1266
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
-msgstr "[-- Fejl fra autovisningfejl af %s --]\n"
+msgstr "[-- Fejl fra autovisning af %s --]\n"
 
 #: handler.c:1298
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
@@ -1439,9 +1439,8 @@ msgid "view attachment as text"
 msgstr "vis denne del som tekst"
 
 #: keymap_alldefs.h:8
-#, fuzzy
 msgid "Toggle display of subparts"
-msgstr "vælg om citeret tekst skal vises"
+msgstr "Slå visning af underdele fra eller til"
 
 #: keymap_alldefs.h:9
 msgid "move to the bottom of the page"
@@ -1824,13 +1823,12 @@ msgid "delete messages matching a pattern"
 msgstr "slet breve efter mønster"
 
 #: keymap_alldefs.h:105
-#, fuzzy
 msgid "force retrieval of mail from IMAP server"
-msgstr "hent breve fra POP-tjener"
+msgstr "hent post fra IMAP-tjener nu"
 
 #: keymap_alldefs.h:106
 msgid "retrieve mail from POP server"
-msgstr "hent breve fra POP-tjener"
+msgstr "hent post fra POP-tjener"
 
 #: keymap_alldefs.h:107
 msgid "move to the first message"
@@ -2562,9 +2560,9 @@ msgid "Unable to get certificate from peer"
 msgstr "Ude af stand til at hente certifikat fra tjener"
 
 #: mutt_ssl.c:245
-#, fuzzy, c-format
+#, c-format
 msgid "SSL connection using %s (%s)"
-msgstr "Bruger %s til en SSL-forbindelse"
+msgstr "SSL-forbindelse bruger %s (%s)"
 
 #: mutt_ssl.c:275
 msgid "Unknown"
@@ -3333,9 +3331,8 @@ msgid "Attachments"
 msgstr "Brevdele"
 
 #: recvattach.c:919
-#, fuzzy
 msgid "There are no subparts to show!"
-msgstr "Der er ingen bilag."
+msgstr "Der er ingen underdele at vise!"
 
 #: recvattach.c:967
 msgid "Can't delete attachment from POP server."
@@ -3369,9 +3366,8 @@ msgid "Can't open temporary file %s."
 msgstr "Kan ikke åbne midlertidig fil %s"
 
 #: recvcmd.c:398
-#, fuzzy
 msgid "Forward as attachments?"
-msgstr "vis MIME-dele"
+msgstr "Videresend som bilag?"
 
 #: recvcmd.c:412
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
@@ -3527,9 +3523,8 @@ msgid "Could not include all requested messages!"
 msgstr "Kunne ikke citere alle ønskede breve!"
 
 #: send.c:739
-#, fuzzy
 msgid "Forward as attachment?"
-msgstr "Udskriv brevdel?"
+msgstr "Videresend som bilag?"
 
 #: send.c:743
 msgid "Preparing forwarded message..."
