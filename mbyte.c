@@ -5,6 +5,8 @@
 
 #include <errno.h>
 
+#include <ctype.h>
+
 #ifndef EILSEQ
 #define EILSEQ EINVAL
 #endif

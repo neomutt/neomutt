@@ -13,6 +13,8 @@
 #include "mutt.h"
 #include "mbyte.h"
 
+#include <ctype.h>
+
 #ifndef HAVE_WC_FUNCS
 
 /* These functions define the column width of an ISO 10646 character
@@ -88,7 +90,7 @@ int wcwidth(wchar_t ucs)
   /* non-UCS case */
   if (!Charset_is_utf8) {
     if (0 <= ucs && ucs < 256)
-      return IsPrint(wc) ? 1 : -1;
+      return IsPrint(ucs) ? 1 : -1;
     else
       return -1;
   }
