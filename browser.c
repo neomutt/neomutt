@@ -170,7 +170,7 @@ folder_format_str (char *dest, size_t destlen, char op, const char *src,
     case 'f':
 #ifdef USE_IMAP
       if (mx_is_imap (folder->ff->name))
-        strfcpy (fn, folder->ff->desc, sizeof (fn));
+        strfcpy (fn, NONULL(folder->ff->desc), sizeof (fn));
       else
 #endif
       strfcpy (fn, folder->ff->name, sizeof(fn));
@@ -302,8 +302,6 @@ folder_format_str (char *dest, size_t destlen, char op, const char *src,
 static void add_folder (MUTTMENU *m, struct browser_state *state,
 			const char *name, const struct stat *s, int new)
 {
-  char buffer[_POSIX_PATH_MAX + SHORT_STRING];
-
   if (state->entrylen == state->entrymax)
   {
     /* need to allocate more space */
@@ -325,7 +323,7 @@ static void add_folder (MUTTMENU *m, struct browser_state *state,
 
   (state->entry)[state->entrylen].is_new = new;
   (state->entry)[state->entrylen].name = safe_strdup (name);
-  (state->entry)[state->entrylen].desc = safe_strdup (buffer);
+  (state->entry)[state->entrylen].desc = safe_strdup (name);
 #ifdef USE_IMAP
   (state->entry)[state->entrylen].notfolder = 0;
 #endif
