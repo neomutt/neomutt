@@ -1,19 +1,20 @@
 # Makefile for directory with message catalog handling in GNU NLS Utilities.
 # Copyright (C) 1995-1998, 2000, 2001 Free Software Foundation, Inc.
 #
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2, or (at your option)
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Library General Public License as published
+# by the Free Software Foundation; either version 2, or (at your option)
 # any later version.
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Library General Public License for more details.
 #
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+# You should have received a copy of the GNU Library General Public
+# License along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+# USA.
 
 PACKAGE = @PACKAGE@
 VERSION = @VERSION@
@@ -74,7 +75,7 @@ DISTFILES.common = Makefile.in \
 config.charset locale.alias ref-add.sin ref-del.sin $(HEADERS) $(SOURCES)
 DISTFILES.generated = plural.c
 DISTFILES.normal = VERSION
-DISTFILES.gettext = libintl.glibc
+DISTFILES.gettext = COPYING.LIB-2 COPYING.LIB-2.1 libintl.glibc
 DISTFILES.obsolete = xopen-msg.sed linux-msg.sed po2tbl.sed.in cat-compat.c
 
 # Libtool's library version information for libintl.
@@ -184,7 +185,7 @@ install-data: all
 	  $(mkinstalldirs) $(DESTDIR)$(gettextsrcdir); \
 	  $(INSTALL_DATA) VERSION $(DESTDIR)$(gettextsrcdir)/VERSION; \
 	  $(INSTALL_DATA) ChangeLog.inst $(DESTDIR)$(gettextsrcdir)/ChangeLog; \
-	  dists="$(DISTFILES.common)"; \
+	  dists="COPYING.LIB-2 COPYING.LIB-2.1 $(DISTFILES.common)"; \
 	  for file in $$dists; do \
 	    $(INSTALL_DATA) $(srcdir)/$$file \
 			    $(DESTDIR)$(gettextsrcdir)/$$file; \
@@ -243,7 +244,7 @@ uninstall:
 	  : ; \
 	fi
 	if test "$(PACKAGE)" = "gettext"; then \
-	  for file in VERSION ChangeLog $(DISTFILES.common) $(DISTFILES.generated); do \
+	  for file in VERSION ChangeLog COPYING.LIB-2 COPYING.LIB-2.1 $(DISTFILES.common) $(DISTFILES.generated); do \
 	    rm -f $(DESTDIR)$(gettextsrcdir)/$$file; \
 	  done; \
 	else \

@@ -4,14 +4,19 @@
 #
 # Slightly modified by Thomas Roessler <roessler@does-not-exist.org>
 # Updated to gettext-0.10.38 by Edmund Grimley Evans <edmundo@rano.org>
+# Updated to gettext-0.10.40 by Andrew W. Nosenko <awn@bcs.zp.ua>
 #
 
 # This file can be copied and used freely without restrictions.  It can
-# be used in projects which are not available under the GNU Public License
-# but which still want to provide support for the GNU gettext functionality.
-# Please note that the actual code is *not* freely available.
+# be used in projects which are not available under the GNU General Public
+# License or the GNU Library General Public License but which still want
+# to provide support for the GNU gettext functionality.
+# Please note that the actual code of the GNU gettext library is covered
+# by the GNU Library General Public License, and the rest of the GNU
+# gettext package package is covered by the GNU General Public License.
+# They are *not* in the public domain.
 
-# serial 109
+# serial 10
 
 dnl Usage: MUTT_AM_WITH_NLS([TOOLSYMBOL], [NEEDSYMBOL], [LIBDIR]).
 dnl If TOOLSYMBOL is specified and is 'use-libtool', then a libtool library
@@ -45,7 +50,7 @@ AC_DEFUN([MUTT_AM_WITH_NLS],
   [AC_MSG_CHECKING([whether NLS is requested])
     dnl Default is enabled NLS
     AC_ARG_ENABLE(nls,
-      [  --disable-nls              Do not use Native Language Support],
+      [  --disable-nls           do not use Native Language Support],
       USE_NLS=$enableval, USE_NLS=yes)
     AC_MSG_RESULT($USE_NLS)
     AC_SUBST(USE_NLS)
@@ -61,7 +66,7 @@ AC_DEFUN([MUTT_AM_WITH_NLS],
    is requested.])
       AC_MSG_CHECKING([whether included gettext is requested])
       AC_ARG_WITH(included-gettext,
-        [  --with-included-gettext    Use the GNU gettext library included here],
+        [  --with-included-gettext use the GNU gettext library included here],
         nls_cv_force_use_gnu_gettext=$withval,
         nls_cv_force_use_gnu_gettext=no)
       AC_MSG_RESULT($nls_cv_force_use_gnu_gettext)
@@ -122,14 +127,14 @@ return (int) gettext ("")]ifelse([$2], need-ngettext, [ + (int) ngettext ("", ""
 	     AC_CHECK_FUNCS(dcgettext)
 	     LIBS="$gt_save_LIBS"
 
+	     dnl Search for GNU msgfmt in the PATH.
 	     MUTT_AM_PATH_PROG_WITH_TEST(MSGFMT, msgfmt,
-	       [test -z "`$ac_dir/$ac_word -h 2>&1 | grep 'dv '`"], no)dnl
-	     if test "$MSGFMT" != "no"; then
-	       AC_PATH_PROG(GMSGFMT, gmsgfmt, $MSGFMT)
-	     fi
+	       [$ac_dir/$ac_word --statistics /dev/null >/dev/null 2>&1], :)
+	     AC_PATH_PROG(GMSGFMT, gmsgfmt, $MSGFMT)
 
+	     dnl Search for GNU xgettext in the PATH.
 	     MUTT_AM_PATH_PROG_WITH_TEST(XGETTEXT, xgettext,
-	       [test -z "`$ac_dir/$ac_word -h 2>&1 | grep '(HELP)'`"], :)
+	       [$ac_dir/$ac_word --omit-header /dev/null >/dev/null 2>&1], :)
 
 	     CATOBJEXT=.gmo
 	   fi
@@ -146,10 +151,10 @@ return (int) gettext ("")]ifelse([$2], need-ngettext, [ + (int) ngettext ("", ""
         dnl Mark actions used to generate GNU NLS library.
         INTLOBJS="\$(GETTOBJS)"
         MUTT_AM_PATH_PROG_WITH_TEST(MSGFMT, msgfmt,
-	  [test -z "`$ac_dir/$ac_word -h 2>&1 | grep 'dv '`"], msgfmt)
+	  [$ac_dir/$ac_word --statistics /dev/null >/dev/null 2>&1], :)
         AC_PATH_PROG(GMSGFMT, gmsgfmt, $MSGFMT)
         MUTT_AM_PATH_PROG_WITH_TEST(XGETTEXT, xgettext,
-	  [test -z "`$ac_dir/$ac_word -h 2>&1 | grep '(HELP)'`"], :)
+	  [$ac_dir/$ac_word --omit-header /dev/null >/dev/null 2>&1], :)
         AC_SUBST(MSGFMT)
 	BUILD_INCLUDED_LIBINTL=yes
 	USE_INCLUDED_LIBINTL=yes
@@ -158,11 +163,26 @@ return (int) gettext ("")]ifelse([$2], need-ngettext, [ + (int) ngettext ("", ""
 	LIBS=`echo " $LIBS " | sed -e 's/ -lintl / /' -e 's/^ //' -e 's/ $//'`
       fi
 
+      dnl This could go away some day; the MUTT_PATH_PROG_WITH_TEST already does it.
+      dnl Test whether we really found GNU msgfmt.
+      if test "$GMSGFMT" != ":"; then
+	dnl If it is no GNU msgfmt we define it as : so that the
+	dnl Makefiles still can work.
+	if $GMSGFMT --statistics /dev/null >/dev/null 2>&1; then
+	  : ;
+	else
+	  AC_MSG_RESULT(
+	    [found msgfmt program is not GNU msgfmt; ignore it])
+	  GMSGFMT=":"
+	fi
+      fi
+
+      dnl This could go away some day; the MUTT_PATH_PROG_WITH_TEST already does it.
       dnl Test whether we really found GNU xgettext.
       if test "$XGETTEXT" != ":"; then
 	dnl If it is no GNU xgettext we define it as : so that the
 	dnl Makefiles still can work.
-	if $XGETTEXT --omit-header /dev/null 2> /dev/null; then
+	if $XGETTEXT --omit-header /dev/null >/dev/null 2>&1; then
 	  : ;
 	else
 	  AC_MSG_RESULT(
@@ -186,6 +206,9 @@ return (int) gettext ("")]ifelse([$2], need-ngettext, [ + (int) ngettext ("", ""
           ac_dir=`echo "$ac_file"|sed 's%/[^/][^/]*$%%'`
           ac_dir_suffix="/`echo "$ac_dir"|sed 's%^\./%%'`"
           ac_dots=`echo "$ac_dir_suffix"|sed 's%/[^/]*%../%g'`
+          # In autoconf-2.13 it is called $ac_given_srcdir.
+          # In autoconf-2.50 it is called $srcdir.
+          test -n "$ac_given_srcdir" || ac_given_srcdir="$srcdir"
           case "$ac_given_srcdir" in
             .)  top_srcdir=`echo $ac_dots|sed 's%/$%%'` ;;
             /*) top_srcdir="$ac_given_srcdir" ;;
@@ -193,9 +216,9 @@ return (int) gettext ("")]ifelse([$2], need-ngettext, [ + (int) ngettext ("", ""
           esac
           if test -f "$ac_given_srcdir/$ac_dir/POTFILES.in"; then
             rm -f "$ac_dir/POTFILES"
-            echo creating "$ac_dir/POTFILES"
+            test -n "$as_me" && echo "$as_me: creating $ac_dir/POTFILES" || echo "creating $ac_dir/POTFILES"
             sed -e "/^#/d" -e "/^[ 	]*\$/d" -e "s,.*,     $top_srcdir/& \\\\," -e "\$s/\(.*\) \\\\/\1/" < "$ac_given_srcdir/$ac_dir/POTFILES.in" > "$ac_dir/POTFILES"
-            echo creating "$ac_dir/Makefile"
+            test -n "$as_me" && echo "$as_me: creating $ac_dir/Makefile" || echo "creating $ac_dir/Makefile"
             sed -e "/POTFILES =/r $ac_dir/POTFILES" "$ac_dir/Makefile.in" > "$ac_dir/Makefile"
           fi
           ;;
@@ -226,7 +249,7 @@ return (int) gettext ("")]ifelse([$2], need-ngettext, [ + (int) ngettext ("", ""
       dnl Found it, now check the version.
       AC_MSG_CHECKING([version of bison])
 changequote(<<,>>)dnl
-      ac_prog_version=`$INTLBISON --version 2>&1 | sed -n 's/^.*GNU Bison .* \([0-9]*\.[0-9.]*\).*$/\1/p'`
+      ac_prog_version=`$INTLBISON --version 2>&1 | sed -n 's/^.*GNU Bison.* \([0-9]*\.[0-9.]*\).*$/\1/p'`
       case $ac_prog_version in
         '') ac_prog_version="v. ?.??, bad"; ac_verc_fail=yes;;
         1.2[6-9]* | 1.[3-9][0-9]* | [2-9].*)
@@ -254,7 +277,6 @@ changequote([,])dnl
     AC_SUBST(CATALOGS)
     AC_SUBST(CATOBJEXT)
     AC_SUBST(GMOFILES)
-    AC_SUBST(INTLDEPS)
     AC_SUBST(INTLLIBS)
     AC_SUBST(INTLOBJS)
     AC_SUBST(POFILES)
