@@ -275,7 +275,6 @@ struct binding_t OpCompose[] = {
   { "get-attachment",	OP_COMPOSE_GET_ATTACHMENT,	"G" },
   { "ispell",		OP_COMPOSE_ISPELL,		"i" },
   { "print-entry",	OP_PRINT,			"l" },
-  { "redraw-screen",	OP_REDRAW,			"\014" },
   { "edit-mime",	OP_COMPOSE_EDIT_MIME,		"m" },
   { "new-mime",		OP_COMPOSE_NEW_MIME,		"n" },
   { "postpone-message",	OP_COMPOSE_POSTPONE_MESSAGE,	"P" },
@@ -323,9 +322,6 @@ struct binding_t OpBrowser[] = {
 /* External Query Menu */
 struct binding_t OpQuery[] = {
   { "create-alias",	OP_CREATE_ALIAS,	"a" },
-  { "search",		OP_SEARCH,		"/" },
-  { "search-reverse",	OP_SEARCH_REVERSE,	"\033/" },
-  { "search-opposite",	OP_SEARCH_OPPOSITE,	NULL },
   { "mail",		OP_MAIL,		"m" },
   { "query",		OP_QUERY,		"Q" },
   { "query-append",	OP_QUERY_APPEND,	"A" },
@@ -357,9 +353,6 @@ struct binding_t OpEditor[] = {
 struct binding_t OpPgp[] = {
   { "verify-key",	OP_VERIFY_KEY,		"c" },
   { "view-name",	OP_VIEW_ID,		"%" },
-  { "search-next",	OP_SEARCH_NEXT,		"n" },
-  { "search",		OP_SEARCH,		"/" },
-  { "search-reverse",	OP_SEARCH_REVERSE,	"\033/" },
   { NULL,		0,				NULL }
 };
 #endif /* _PGPPATH */
