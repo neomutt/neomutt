@@ -314,7 +314,10 @@ void mutt_endwin (const char *msg)
   }
   
   if (msg && *msg)
+  {
     puts (msg);
+    fflush (stdout);
+  }
 }
 
 void mutt_perror (const char *s)

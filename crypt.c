@@ -515,7 +515,7 @@ void crypt_extract_keys_from_messages (HEADER * h)
           mbox = tmp ? tmp->mailbox : NULL;
 	  if (mbox)
 	  {
-	    mutt_endwin (_("Trying to extract S/MIME certificates...\n"));
+	    mutt_message (_("Trying to extract S/MIME certificates...\n"));
 	    smime_invoke_import (tempfname, mbox);
 	    tmp = NULL;
 	  }
@@ -535,7 +535,7 @@ void crypt_extract_keys_from_messages (HEADER * h)
       {
 	mutt_copy_message (fpout, Context, h, M_CM_DECODE|M_CM_CHARCONV, 0);
 	fflush(fpout);
-	mutt_message (_("Trying to extract PGP keys...\n"));
+	mutt_endwin (_("Trying to extract PGP keys...\n"));
 	pgp_invoke_import (tempfname);
       }
 #endif  

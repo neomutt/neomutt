@@ -348,9 +348,9 @@ static void smime_entry (char *s, size_t l, MUTTMENU * menu, int num)
       truststate = N_("Unknown   ");
   }
   if (this.public)
-    snprintf(s, l, "0x%.8X%i %s %-35.35s %s", this.hash, this.suffix, _(truststate), this.email, this.nick);
+    snprintf(s, l, "  0x%.8X%i %s %-35.35s %s", this.hash, this.suffix, _(truststate), this.email, this.nick);
   else
-    snprintf(s, l, "0x%.8X%i %-35.35s %s", this.hash, this.suffix, this.email, this.nick);
+    snprintf(s, l, "  0x%.8X%i %-35.35s %s", this.hash, this.suffix, this.email, this.nick);
 }
 
 
@@ -669,7 +669,7 @@ void smime_getkeys (char *mailbox)
 
   if (!k)
   {
-    snprintf(buf, sizeof(buf), "Enter keyID for \'%s\':",
+    snprintf(buf, sizeof(buf), "Enter keyID for \'%s\': ",
 	     mailbox);
     k = smime_ask_for_key(buf, mailbox, 0);
   }
