@@ -17,6 +17,7 @@
  */ 
 
 WHERE void (*mutt_error) (const char *, ...);
+WHERE void (*mutt_message) (const char *, ...);
 
 WHERE CONTEXT *Context;
 

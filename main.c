@@ -472,6 +472,7 @@ int main (int argc, char **argv)
   setlocale (LC_CTYPE, "");
 
   mutt_error = mutt_nocurses_error;
+  mutt_message = mutt_nocurses_error;
   SRAND (time (NULL));
   umask (077);
 
@@ -610,6 +611,7 @@ int main (int argc, char **argv)
     SETCOLOR (MT_COLOR_NORMAL);
     clear ();
     mutt_error = mutt_curses_error;
+    mutt_message = mutt_curses_message;
   }
 
   /* Create the Maildir directory if it doesn't exist. */

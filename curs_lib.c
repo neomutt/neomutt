@@ -264,7 +264,7 @@ void mutt_curses_error (const char *fmt, ...)
   set_option (OPTMSGERR);
 }
 
-void mutt_message (const char *fmt, ...)
+void mutt_curses_message (const char *fmt, ...)
 {
   va_list ap;
 
