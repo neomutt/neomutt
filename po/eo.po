@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1\n"
-"POT-Creation-Date: 2000-06-19 18:36+0200\n"
-"PO-Revision-Date: 2000-03-30 10:30+01:00\n"
+"POT-Creation-Date: 2000-06-21 16:42+0100\n"
+"PO-Revision-Date: 2000-06-21 16:55+01:00\n"
 "Last-Translator: Edmund GRIMLEY EVANS <edmundo@rano.org>\n"
 "Language-Team: eo <eo@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -293,26 +293,23 @@ msgstr "Alvokas PGP ..."
 msgid "Could not create temporary file!"
 msgstr "Ne povis krei dumtempan dosieron!"
 
-#: commands.c:127
-#, fuzzy
+#: commands.c:125
 msgid "Cannot create display filter"
-msgstr "Ne povas krei filtrilon."
+msgstr "Ne povas krei vidig-filtrilon"
 
-#: commands.c:147
-#, fuzzy
+#: commands.c:145
 msgid "Could not copy message"
-msgstr "Ne povis sendi la mesaøon."
+msgstr "Ne povis kopii mesaøon"
 
-#: commands.c:169
+#: commands.c:167
 msgid "PGP signature successfully verified."
 msgstr "PGP-subskribo estis sukcese kontrolita."
 
-#: commands.c:170
-#, fuzzy
+#: commands.c:168
 msgid "PGP signature could NOT be verified."
-msgstr "PGP-subskribo estis sukcese kontrolita."
+msgstr "PGP-subskribo NE povis esti kontrolita."
 
-#: commands.c:193
+#: commands.c:191
 msgid "Command: "
 msgstr "Komando: "
 
@@ -426,15 +423,15 @@ msgstr "Mesaøo presita"
 msgid "Messages printed"
 msgstr "Mesaøoj presitaj"
 
-#: commands.c:834
-#, fuzzy, c-format
+#: commands.c:844
+#, c-format
 msgid "Content-Type changed to %s."
-msgstr "Konektiøas al %s ..."
+msgstr "Content-Type þanøita al %s."
 
-#: commands.c:836
-#, fuzzy, c-format
+#: commands.c:846
+#, c-format
 msgid "Character set changed to %s."
-msgstr "La signaro %s ne estas konata."
+msgstr "Signaro þanøita al %s."
 
 #: compose.c:40
 msgid "There are no attachments."
@@ -1000,9 +997,9 @@ msgid "[-- on %s --]\n"
 msgstr "[-- je %s --]\n"
 
 #: handler.c:1300
-#, fuzzy, c-format
+#, c-format
 msgid "[-- name: %s --]\n"
-msgstr "[-- je %s --]\n"
+msgstr "[-- nomo: %s --]\n"
 
 #: handler.c:1311
 #, c-format
@@ -1250,18 +1247,16 @@ msgid "[unable to calculate]"
 msgstr "[ne povas kalkuli]"
 
 #: imap/imap_ssl.c:292
-#, fuzzy
 msgid "[invalid date]"
-msgstr "%s: nevalida valoro"
+msgstr "[nevalida dato]"
 
 #: imap/imap_ssl.c:367
 msgid "Server certificate is not yet valid"
-msgstr ""
+msgstr "Atestilo de servilo ankoraý ne validas"
 
 #: imap/imap_ssl.c:374
-#, fuzzy
 msgid "Server certificate has expired"
-msgstr "Æi tiu atestilo estis eldonita de:"
+msgstr "Atestilo de servilo estas eksvalidiøinta"
 
 #: imap/imap_ssl.c:447
 msgid "This certificate belongs to:"
@@ -1272,19 +1267,18 @@ msgid "This certificate was issued by:"
 msgstr "Æi tiu atestilo estis eldonita de:"
 
 #: imap/imap_ssl.c:467
-#, fuzzy
 msgid "This certificate is valid"
-msgstr "Æi tiu atestilo estis eldonita de:"
+msgstr "Æi tiu atestilo estis valida"
 
 #: imap/imap_ssl.c:468
 #, c-format
 msgid "   from %s"
-msgstr ""
+msgstr "     de %s"
 
 #: imap/imap_ssl.c:470
 #, c-format
 msgid "     to %s"
-msgstr ""
+msgstr "     al %s"
 
 #: imap/imap_ssl.c:476
 #, c-format
@@ -1753,9 +1747,8 @@ msgid "move the cursor one character to the left"
 msgstr "movi la tajpmontrilon unu signon maldekstren"
 
 #: keymap_alldefs.h:62
-#, fuzzy
 msgid "move the cursor to the beginning of the word"
-msgstr "salti al la komenco de la linio"
+msgstr "movi la tajpmontrilon al la komenco de la vorto"
 
 #: keymap_alldefs.h:63
 msgid "jump to the beginning of the line"
@@ -1786,9 +1779,8 @@ msgid "move the cursor one character to the right"
 msgstr "movi la tajpmontrilon unu signon dekstren"
 
 #: keymap_alldefs.h:70
-#, fuzzy
 msgid "move the cursor to the end of the word"
-msgstr "movi la tajpmontrilon unu signon dekstren"
+msgstr "movi la tajpmontrilon al la fino de la vorto"
 
 #: keymap_alldefs.h:71 keymap_alldefs.h:72
 msgid "scroll up through the history list"
@@ -1799,9 +1791,8 @@ msgid "delete chars from cursor to end of line"
 msgstr "forviþi signojn de la tajpmontrilo øis linifino"
 
 #: keymap_alldefs.h:74
-#, fuzzy
 msgid "delete chars from the cursor to the end of the word"
-msgstr "forviþi signojn de la tajpmontrilo øis linifino"
+msgstr "forviþi signojn de la tajpmontrilo øis fino de la vorto"
 
 #: keymap_alldefs.h:75
 msgid "delete all chars on the line"
@@ -1817,7 +1808,7 @@ msgstr "citi la sekvontan klavopremon"
 
 #: keymap_alldefs.h:78
 msgid "transpose character under cursor with previous"
-msgstr ""
+msgstr "interþanøi la signon sub la tajpmontrilo kun la antaýa"
 
 #: keymap_alldefs.h:79
 msgid "enter a muttrc command"
@@ -2383,13 +2374,12 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"usage: mutt [ -nRzZ ] [ -e <kom> ] [ -F <dos> ] [ -m <speco> ] [ -f <dos> ]\n"
-"       mutt [ -nx ] [ -e <kom> ] [ -a <dos> ] [ -F <dos> ] [ -H <dos> ] [ -i "
-"<dos> ] [ -s <temo> ] [ -b <adr> ] [ -c <adr> ] <adr> [ ... ]\n"
+"uzado: mutt [ -nRzZ ] [ -e <kom> ] [ -F <dos> ] [ -m <speco> ] [ -f <dos> ]\n"
+"       mutt [ -nx ] [ -e <kom> ] [ -a <dos> ] [ -F <dos> ] [ -H <dos> ] [ -i <dos> ] [ -s <temo> ] [ -b <adr> ] [ -c <adr> ] <adr> [ ... ]\n"
 "       mutt [ -n ] [ -e <kom> ] [ -F <dos> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
-"elektoj:\n"
+"opcioj:\n"
 "  -a <dosiero>\taldoni dosieron al la mesaøo\n"
 "  -b <adreso>\tspecifi adreson por blinda kopio (BCC)\n"
 "  -c <adreso>\tspecifi adreson por kopio (CC)\n"
@@ -2401,14 +2391,14 @@ msgstr ""
 "  -m <type>\tspecifi implicitan specon de poþtfakoj\n"
 "  -n\t\tindikas al Mutt ne legi la sisteman dosieron Muttrc\n"
 "  -p\t\trevoki prokrastitan mesaøon\n"
-"  -R\t\tmalferi poþtfakon nurlege\n"
+"  -R\t\tmalfermi poþtfakon nurlege\n"
 "  -s <temo>\tspecifi temlinion (en citiloj, se øi enhavas spacetojn)\n"
 "  -v\t\tmontri version kaj parametrojn de la traduka¼o\n"
 "  -x\t\timiti la sendreøimon de mailx\n"
 "  -y\t\telekti poþtfakon specifitan en via listo 'mailboxes'\n"
 "  -z\t\teliri tuj, se ne estas mesaøoj en la poþtfako\n"
 "  -Z\t\tmalfermi la unuan poþtfakon kun nova mesaøo; eliri tuj, se mankas\n"
-"  -h\t\tdoni æi tiun mesaøon"
+"  -h\t\tdoni æi tiun helpmesaøon"
 
 #: main.c:155
 msgid ""
@@ -2859,9 +2849,9 @@ msgid "PGP passphrase forgotten."
 msgstr "PGP-pasfrazo forgesita."
 
 #: pgp.c:142
-#, fuzzy, c-format
+#, c-format
 msgid "[-- PGP output follows (current time: %c) --]\n"
-msgstr "[-- Eligo de PGP sekvas (nuna horo: "
+msgstr "[-- Eligo de PGP sekvas (nuna horo: %c) --]\n"
 
 #: pgp.c:246
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
@@ -3153,9 +3143,8 @@ msgid "No new mail in POP mailbox."
 msgstr "Mankas novaj mesaøoj en POP-poþtfako."
 
 #: pop.c:209
-#, fuzzy
 msgid "Delete messages from server?"
-msgstr "Forviþas mesaøojn de la servilo ..."
+msgstr "Æu forviþi mesaøojn de servilo?"
 
 #: pop.c:212
 #, c-format
@@ -3578,39 +3567,3 @@ msgstr "Patra mesaøo ne estas videbla en limigita rigardo"
 #: thread.c:717
 msgid "Parent message is not available."
 msgstr "Patra mesaøo ne estas havebla."
-
-#~ msgid "Can't open %s: %s."
-#~ msgstr "Ne povas malfermi %s: %s."
-
-#~ msgid "Error while recoding %s. Leave it unchanged."
-#~ msgstr "Eraro dum rekodado de %s. Lasas øin senþanøe."
-
-#~ msgid "Error while recoding %s. See %s for recovering your data."
-#~ msgstr "Eraro dum rekodado de %s. Vidu %s por savi la datenojn."
-
-#~ msgid "Can't change character set for non-text attachments!"
-#~ msgstr "Ne povas þanøi la signaron de ne-teksta parto!"
-
-#~ msgid "Enter character set: "
-#~ msgstr "Donu signaron: "
-
-#~ msgid "Recoding successful."
-#~ msgstr "Rekodado sukcesis."
-
-#~ msgid "change an attachment's character set"
-#~ msgstr "þanøi la signaron de mesaøoparto"
-
-#~ msgid "recode this attachment to/from the local charset"
-#~ msgstr "rekodi æi tiun parton en/el la loka signaro"
-
-#~ msgid "Compose"
-#~ msgstr "Verki"
-
-#~ msgid "We can't currently handle utf-8 at this point."
-#~ msgstr "Ni ankoraý ne povas trakti UTF-8 æi tie."
-
-#~ msgid "UTF-8 encoding attachments has not yet been implemented."
-#~ msgstr "UTF-8-kodado de partoj ankoraý ne estas realigita."
-
-#~ msgid "We currently can't encode to utf-8."
-#~ msgstr "Ni ankoraý ne povas kodi al UTF-8."
