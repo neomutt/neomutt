@@ -969,7 +969,7 @@ int imap_open_mailbox (CONTEXT *ctx)
   ctx->data = safe_malloc (sizeof (IMAP_DATA));
   memset (ctx->data, 0, sizeof (IMAP_DATA));
 
-  CTX_DATA->mailbox = safe_strdup (pc);
+  CTX_DATA->mailbox = safe_strdup (*pc?pc:"INBOX");
 
   conn = mutt_socket_select_connection (host, IMAP_PORT, M_NEW_SOCKET);
   CTX_DATA->conn = conn;
