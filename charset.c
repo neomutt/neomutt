@@ -379,18 +379,24 @@ size_t mutt_iconv (iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
 	if (*t)
 	  continue;
       }
-      if (outrepl)
+      /* Replace the output */
+      if (!outrepl)
+	outrepl = "?";
+      iconv (cd, 0, 0, &ob, &obl);
+      if (obl)
       {
-	/* Try replacing the output */
 	int n = strlen (outrepl);
-	if (n <= obl)
+	if (n > obl)
 	{
-	  memcpy (ob, outrepl, n);
-	  ++ib, --ibl;
-	  ob += n, obl -= n;
-	  ++ret;
-	  continue;
+	  outrepl = "?";
+	  n = 1;
 	}
+	memcpy (ob, outrepl, n);
+	++ib, --ibl;
+	ob += n, obl -= n;
+	++ret;
+	iconv (cd, 0, 0, 0, 0); /* for good measure */
+	continue;
       }
     }
     *inbuf = ib, *inbytesleft = ibl;
