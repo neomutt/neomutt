@@ -61,13 +61,13 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 
   if (mutt_bit_isset (idata->capabilities,IMAP4REV1))
   {
-    snprintf (hdrreq, sizeof (hdrreq), "BODY.PEEK[HEADER.FIELDS (%s %s)]", 
-      want_headers, ImapHeaders); 
+    snprintf (hdrreq, sizeof (hdrreq), "BODY.PEEK[HEADER.FIELDS (%s%s%s)]", 
+	      want_headers, ImapHeaders ? " " : "", ImapHeaders ? ImapHeaders : ""); 
   } 
   else if (mutt_bit_isset (idata->capabilities,IMAP4))
   {
-    snprintf (hdrreq, sizeof (hdrreq), "RFC822.HEADER.LINES (%s %s)", 
-      want_headers, ImapHeaders);
+    snprintf (hdrreq, sizeof (hdrreq), "RFC822.HEADER.LINES (%s%s%s)", 
+	      want_headers, ImapHeaders ? " " : "", ImapHeaders ? ImapHeaders : "");
   }
   else
   {	/* Unable to fetch headers for lower versions */
