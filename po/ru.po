@@ -26,7 +26,7 @@ msgstr "Выбрать"
 #: addrbook.c:33 browser.c:42 compose.c:93 curs_main.c:376 imap/imap_ssl.c:379
 #: pager.c:1459 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
-msgstr "Подсказка"
+msgstr "Подск."
 
 #: addrbook.c:120
 msgid "You have no aliases!"
@@ -398,7 +398,7 @@ msgstr "Расшифровать и копировать"
 
 #: commands.c:565 curs_main.c:372 recvattach.c:58
 msgid "Save"
-msgstr "Сохранить"
+msgstr "Сохр."
 
 #: commands.c:565
 msgid "Copy"
@@ -482,8 +482,7 @@ msgid ""
 "(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget "
 "it? "
 msgstr ""
-"(e)шифровать, (s)подписать, (a)подписать как, (b)то и другое, (m)выбрать "
-"MIC-алгоритм, (f)или отказаться? "
+"(e)шифр, (s)подпись, (a)подпись как, (b)оба, (m)ic-алгоритм, (f)отказаться? "
 
 #: compose.c:139
 msgid "esabmf"
@@ -692,7 +691,7 @@ msgstr "Удалить"
 
 #: curs_main.c:371 postpone.c:39
 msgid "Undel"
-msgstr "Восстановить"
+msgstr "Восст."
 
 #: curs_main.c:373 query.c:44
 msgid "Mail"
@@ -700,11 +699,11 @@ msgstr "Создать"
 
 #: curs_main.c:374 pager.c:1370
 msgid "Reply"
-msgstr "Ответить"
+msgstr "Отв."
 
 #: curs_main.c:375
 msgid "Group"
-msgstr "Ответить всем"
+msgstr "Отв. всем"
 
 #: curs_main.c:457
 msgid "Mailbox was externally modified.  Flags may be wrong."
