@@ -21,7 +21,6 @@
 /* general IMAP utility functions */
 
 #include "mutt.h"
-#include "imap.h"
 #include "imap_private.h"
 
 #include <stdlib.h>
@@ -225,4 +224,26 @@ void imap_unquote_string (char *s)
     }
   }
   *d = '\0';
+}
+
+/* imap_wordcasecmp: find word a in word list b */
+int imap_wordcasecmp(const char *a, const char *b)
+{
+  char tmp[SHORT_STRING];
+  char *s = (char *)b;
+  int i;
+
+  tmp[SHORT_STRING-1] = 0;
+  for(i=0;i < SHORT_STRING-2;i++,s++)
+  {
+    if (!*s || ISSPACE(*s))
+    {
+      tmp[i] = 0;
+      break;
+    }
+    tmp[i] = *s;
+  }
+  tmp[i+1] = 0;
+
+  return mutt_strcasecmp(a, tmp);
 }

@@ -662,6 +662,10 @@ struct option_t MuttVars[] = {
   */
   { "imap_home_namespace",	DT_STR, R_NONE, UL &ImapHomeNamespace, UL 0},
   /*
+  ** .pp
+  ** You normally want to see your personal folders alongside
+  ** your INBOX in the IMAP browser. If you see something else, you may set
+  ** this variable to the IMAP path to your folders.
   */
 #endif
   { "implicit_autoview", DT_BOOL,R_NONE, OPTIMPLICITAUTOVIEW, 0},

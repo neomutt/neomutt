@@ -20,6 +20,7 @@
 #ifndef _IMAP_PRIVATE_H
 #define _IMAP_PRIVATE_H 1
 
+#include "imap.h"
 #include "imap_socket.h"
 
 /* -- symbols -- */
@@ -147,11 +148,7 @@ typedef struct
 
 /* -- private IMAP functions -- */
 /* imap.c */
-int imap_code (const char* s);
 int imap_create_mailbox (IMAP_DATA* idata, char* mailbox);
-int imap_exec (char* buf, size_t buflen, IMAP_DATA* idata, const char* cmd,
-  int flags);
-int imap_handle_untagged (IMAP_DATA* idata, char* s);
 int imap_make_msg_set (char* buf, size_t buflen, CONTEXT* ctx, int flag,
   int changed);
 int imap_open_connection (IMAP_DATA* idata, CONNECTION* conn);
@@ -159,9 +156,16 @@ time_t imap_parse_date (char* s);
 int imap_parse_list_response(CONNECTION* conn, char* buf, int buflen,
   char** name, int* noselect, int* noinferiors, char* delim);
 int imap_read_bytes (FILE* fp, CONNECTION* conn, long bytes);
+int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint);
 
 /* auth.c */
 int imap_authenticate (IMAP_DATA *idata, CONNECTION *conn);
+
+/* command.c */
+int imap_code (const char* s);
+int imap_exec (char* buf, size_t buflen, IMAP_DATA* idata, const char* cmd,
+  int flags);
+int imap_handle_untagged (IMAP_DATA* idata, char* s);
 
 /* message.c */
 void imap_add_keywords (char* s, HEADER* keywords, LIST* mailbox_flags);
@@ -177,4 +181,5 @@ void imap_make_sequence (char *buf, size_t buflen);
 char* imap_next_word (char* s);
 void imap_quote_string (char* dest, size_t slen, const char* src);
 void imap_unquote_string (char* s);
+int imap_wordcasecmp(const char *a, const char *b);
 #endif

@@ -23,7 +23,6 @@
 #include <ctype.h>
 
 #include "mutt.h"
-#include "imap.h"
 #include "imap_private.h"
 #include "message.h"
 #include "mx.h"

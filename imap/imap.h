@@ -33,8 +33,10 @@ void imap_fastclose_mailbox (CONTEXT *ctx);
 int imap_buffy_check (char *path);
 int imap_mailbox_check (char *path, int new);
 int imap_subscribe (char *path, int subscribe);
-int imap_init_browse (char *path, struct browser_state *state);
 int imap_complete (char* dest, size_t dlen, char* path);
+
+/* browse.c */
+int imap_init_browse (char *path, struct browser_state *state);
 
 /* message.c */
 int imap_append_message (CONTEXT* ctx, MESSAGE* msg);

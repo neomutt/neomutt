@@ -2,12 +2,12 @@
 
 AUTOMAKE_OPTIONS = foreign
 
-EXTRA_DIST = BUGS TODO README
+EXTRA_DIST = BUGS README TODO
 
 AM_CPPFLAGS = -I../intl
 
 noinst_LIBRARIES = libimap.a
 noinst_HEADERS = imap_private.h imap_socket.h md5.h message.h
 
-libimap_a_SOURCES = auth.c browse.c imap.c imap.h md5c.c message.c socket.c \
-	util.c
+libimap_a_SOURCES = auth.c browse.c command.c imap.c imap.h md5c.c message.c \
+	socket.c util.c

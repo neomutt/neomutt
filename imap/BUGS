@@ -9,12 +9,9 @@ In no particular order:
   files. I haven't been able to reproduce this, and am not sure how
   to track it down. But it's very naughty indeed.
 
-* Rex Walters reports that STORE on folders with lr is attempting to
-  store null flags instead of skipping the STORE. Strange, there are
-  checks against exactly this in imap_sync_mailbox.
-
-* Mutt seems to sometimes handle new messages which arrive in the middle
-  of downloading old messages incorrectly. It counts too many.
+* Mutt sometimes doesn't notice new mail has arrived until you've opened
+  another folder, leading to the wrong number of messages being downloaded.
+  To make matters worse, imap_read_headers doesn't detect the * BAD response.
 
 * Mutt marks your connection for logout as soon as you say quit, even if
   you bail out with ^G later.
@@ -36,4 +33,4 @@ In no particular order:
 * The mutt_pretty routines don't work well when the delimiter isn't '/'.
 
 Brendan Cully <brendan@kublai.com>
-Updated 19991001
+Updated 19991013

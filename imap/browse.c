@@ -23,9 +23,7 @@
 #include <ctype.h>
 
 #include "mutt.h"
-#include "imap.h"
 #include "imap_private.h"
-#include "imap_socket.h"
 
 /* -- forward declarations -- */
 static int add_list_result (CONNECTION *conn, const char *seq, const char *cmd,
@@ -307,7 +305,12 @@ static void imap_add_folder (char delim, char *folder, int noselect,
   if (state->entrylen + 2 == state->entrymax)
   {
     safe_realloc ((void **) &state->entry,
-	sizeof (struct folder_file) * (state->entrymax += 256));
+      sizeof (struct folder_file) * (state->entrymax += 256));
+    /* apparently linux+glibc2.1 was zeroing this for me? Jon Hellan reports
+     * that the browser segfaults on more than 256 entries. I never had this
+     * problem */
+    memset (state->entry + state->entrylen, 0,
+      (sizeof (struct folder_file) * (state->entrymax - state->entrylen)));
   }
 
   /* render superiors as unix-standard ".." */
