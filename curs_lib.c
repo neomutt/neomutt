@@ -457,7 +457,10 @@ void mutt_curs_set (int cursor)
   else
     SavedCursor = cursor;
   
-  curs_set (cursor);
+  if (curs_set (cursor) == ERR) {
+    if (cursor == 1)	/* cnorm */
+      curs_set (2);	/* cvvis */
+  }
 }
 #endif
 
