@@ -2972,6 +2972,10 @@ The following are the commands understood by mutt.
 <item>
 <tt><ref id="alias" name="unalias"></tt> &lsqb; * | <em/key/ ... &rsqb;
 <item>
+<tt><ref id="alternates" name="alternates"></tt> <em/regexp/ &lsqb; <em/regexp/ ... &rsqb;
+<item>
+<tt><ref id="alternates" name="unalternates"></tt> &lsqb; * | <em/regexp/ ... &rsqb;
+<item>
 <tt><ref id="alternative_order" name="alternative&lowbar;order"></tt> <em/mimetype/ &lsqb; <em/mimetype/ ... &rsqb;
 <item>
 <tt><ref id="alternative_order" name="unalternative&lowbar;order"></tt> <em/mimetype/ &lsqb; <em/mimetype/ ... &rsqb;
