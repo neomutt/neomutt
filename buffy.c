@@ -118,9 +118,11 @@ int test_new_folder (const char *path)
   if (typ != M_MBOX && typ != M_MMDF && typ != M_KENDRA)
     return 0;
 
-  f = fopen (path, "rb");
-  rc = test_last_status_new (f);
-  fclose (f);
+  if ((f = fopen (path, "rb")))
+  {
+    rc = test_last_status_new (f);
+    fclose (f);
+  }
 
   return rc;
 }
