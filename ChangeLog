@@ -1,3 +1,7 @@
+2004-08-02 08:03:46  Nathan Dushman  <nhd+mutt@andrew.cmu.edu>  (roessler)
+
+	* imap/command.c: Fix the improvement to address #1655.
+
 2004-07-22 01:10:55  Brendan Cully  <brendan@kublai.com>  (roessler)
 
 	* imap/message.c: Quick fix for IMAP breakage.
