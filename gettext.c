@@ -9,6 +9,8 @@
 #include "lib.h"
 #include "charset.h"
 
+#ifdef ENABLE_NLS
+
 /*
  * One day, gettext will return strings in the appropriate
  * encoding. In the meantime, we use this code to handle
@@ -135,3 +137,5 @@ char *mutt_gettext (const char *message)
   
   return mp->data;
 }
+
+#endif /* ENABLE_NLS */
