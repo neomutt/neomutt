@@ -160,23 +160,23 @@ actual-dist:
 	## This part is maintainer-only and very specific to some
 	## local settings.
 	##
-	if test $$HOSTNAME = sobolev && test $$LOGNAME = roessler ; then
-		pgp -sb $(distdir)i.tar.gz && chmod 644 $(distdir)i.tar.gz.asc
-		pgp -sb $(distdir).tar.gz && chmod 644 $(distdir).tar.gz.asc
-		if ! ssh-add -l | grep -q roessler@guug.de ; then
-			ssh-add
-		fi
-		@echo "Please connect to the Net and press any key."
-		@read dummy
-		scp $(distdir){,i}.tar.gz{,asc}				\
-			sigtrap.guug.de:/home/ftp/pub/mutt/devel/ 	\
-			|| echo "UPLOAD FAILED.  Please upload manually!"
-		cvs commit -m "automatic post-release commit for $(distdir)"
-		cvs tag $(distdir)-rel
-		cvs update
-		$$HOME/bin/upload-mutt
-		mutt -s "[Announce] $(distdir) is out" mutt-dev@mutt.org
+	test $$HOSTNAME = sobolev && test $$LOGNAME = roessler
+	##
+	pgp -sb $(distdir)i.tar.gz && chmod 644 $(distdir)i.tar.gz.asc
+	pgp -sb $(distdir).tar.gz && chmod 644 $(distdir).tar.gz.asc
+	if ! ssh-add -l | grep -q roessler@guug.de ; then ; \
+		ssh-add ; \
 	fi
+	@echo "Please connect to the Net and press any key."
+	@read dummy
+	scp $(distdir){,i}.tar.gz{,asc}				\
+		sigtrap.guug.de:/home/ftp/pub/mutt/devel/ 	\
+		|| echo "UPLOAD FAILED.  Please upload manually!"
+	cvs commit -m "automatic post-release commit for $(distdir)"
+	cvs tag `echo $(distdir)-rel | tr . -`
+	cvs update
+	$$HOME/bin/upload-mutt
+	mutt -s "[Announce] $(distdir) is out" mutt-dev@mutt.org
 
 bump-version:
 	awk -F . '{printf("%d.%d.%d\n", $$1, $$2, $$3 + 1);}' VERSION > _VERSION.$$$$  \
