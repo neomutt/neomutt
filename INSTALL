@@ -175,14 +175,20 @@ Solaris 2.4
 	Use the --with-included-gettext configuration switch if you
 	experience this problem.
 
-	Color does not work right with Solaris curses.  You will have to
-	compile with either ncurses or slang to get working color support.
+	Color does not work right with Solaris curses.  You will
+	have to compile with either ncurses or slang to get working
+	color support.
 
 Solaris 2.6
 
 	There are reports that mutt behaves strangely when linked
 	with the system regexp library.  Please use the --with-rx
 	switch when configuring on this platform.
+
+ 	For the real fix, applying Sun patches # 105490-05 (linker
+	patch) and # 105210-17 (libc and malloc patch) from
+	sunsolve.sun.com has been reported to stop these problems
+	from occuring.
 
 Linux
 
@@ -205,16 +211,5 @@ Digital Unix (OSF/1)
 
 	Also, the system curses library is said to be badly broken.  Use
 	GNU ncurses or SLang instead.
-
-
-FreeBSD 3.0
-
-	/bin/sh is broken on this platform.  You need the
-	"--with-exec-shell" configuration switch here; ksh and bash
-	are reported to be fine.
-
-	This may also be an issue with earlier FreeBSD
-	versions and other BSD systems.
-
 
 $Id$
