@@ -534,15 +534,18 @@ See also the <ref id="postpone" name="&dollar;postpone"> quad-option.
 <sect>Configuration
 <p>
 
-While the default configuration (or ``preferences'') make Mutt usable right
-out of the box, it is often desirable to tailor Mutt to suit your own tastes.
-When Mutt is first invoked, it will attempt to read the ``system''
-configuration file (defaults set by your local system administrator), unless
-the ``-n'' <ref id="commandline" name="command line"> option is
-specified.  This file is typically
-<tt>/usr/local/share/Muttrc</tt> or <tt>/usr/local/lib/Muttrc</tt>.  Next,
-it looks for a file in your home directory named <tt/.muttrc/.  In this file
-is where you place <ref id="commands" name="commands"> to configure Mutt.
+While the default configuration (or ``preferences'') make Mutt
+usable right out of the box, it is often desirable to tailor Mutt to
+suit your own tastes. When Mutt is first invoked, it will attempt to
+read the ``system'' configuration file (defaults set by your local
+system administrator), unless the ``-n'' <ref id="commandline"
+name="command line"> option is specified.  This file is typically
+<tt>/usr/local/share/Muttrc</tt> or <tt>/usr/local/lib/Muttrc</tt>.
+If your home directory has a subdirectory named <tt/.mutt/, mutt
+will next look for a file named <tt>.mutt/muttrc</tt>. Otherwise, it
+looks for a file in your home directory named <tt/.muttrc/.  In this
+file is where you place <ref id="commands" name="commands"> to
+configure Mutt.
 
 In addition, mutt supports version specific configuration files that are
 parsed instead of the default files as explained above.  For instance, if
