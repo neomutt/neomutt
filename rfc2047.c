@@ -300,7 +300,7 @@ static size_t choose_block (char *d, size_t dlen, int col,
 }
 
 /*
- * Place the result of RFC-2048-encoding (d, dlen) into the dynamically
+ * Place the result of RFC-2047-encoding (d, dlen) into the dynamically
  * allocated buffer (e, elen). The input data is in charset fromcode
  * and is converted into a charset chosen from charsets.
  * Return 1 if the input data is invalid, 2 if no conversion is possible,
