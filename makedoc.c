@@ -101,7 +101,7 @@ static void pretty_default (char *, size_t, const char *, int);
 static int sgml_fputc (int, FILE *);
 static int sgml_fputs (const char *, FILE *);
 
-int main (int argc, const char *argv[])
+int main (int argc, char *argv[])
 {
   int c;
   FILE *f;
@@ -673,6 +673,9 @@ static void print_confline (const char *varname, int type, const char *val, FILE
 	fprintf (out, "\nDefault: %s\n", val);
       break;
     }
+    /* make gcc happy */
+    default:
+      break;
   }
 }
 
@@ -958,6 +961,9 @@ static int print_it (int special, char *str, FILE *out, int docstat)
       }
       break;
     }
+    /* make gcc happy (unreached) */
+    default:
+      break;
   }
 
   return docstat;
