@@ -238,7 +238,8 @@ void mutt_decode_quoted (STATE *s, long len, int istext, iconv_t cd)
   size_t l2;
   size_t l3;
 
-  state_set_prefix(s);
+  if (istext)
+    state_set_prefix(s);
 
   while (len > 0)
   {
@@ -279,7 +280,8 @@ void mutt_decode_base64 (STATE *s, long len, int istext, iconv_t cd)
 
   buf[4] = 0;
 
-  if (istext) state_set_prefix(s);
+  if (istext) 
+    state_set_prefix(s);
 
   while (len > 0)
   {
@@ -1789,7 +1791,12 @@ void mutt_body_handler (BODY *b, STATE *s)
 
     /* see if we need to decode this part before processing it */
     if (b->encoding == ENCBASE64 || b->encoding == ENCQUOTEDPRINTABLE ||
-	b->encoding == ENCUUENCODED || plaintext)
+	b->encoding == ENCUUENCODED || plaintext || 
+	mutt_is_text_type (b->type, b->subtype))	/* text subtypes may
+							 * require character
+							 * set conversion even
+							 * with 8bit encoding.
+							 */
     {
       int origType = b->type;
       char *savePrefix = NULL;
