@@ -363,8 +363,6 @@ int ssl_socket_close (CONNECTION * conn)
   return raw_socket_close (conn);
 }
 
-
-
 static char *x509_get_part (char *line, const char *ndx)
 {
   static char ret[SHORT_STRING];

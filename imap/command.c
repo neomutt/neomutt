@@ -235,6 +235,12 @@ int imap_cmd_running (IMAP_DATA* idata)
  *   the index is refreshed, for instance. */
 void imap_cmd_finish (IMAP_DATA* idata)
 {
+  if (idata->status == IMAP_FATAL)
+  {
+    cmd_handle_fatal (idata);
+    return;
+  }
+
   if (!(idata->state == IMAP_SELECTED) || idata->ctx->closing)
     return;
   
@@ -273,13 +279,17 @@ void imap_cmd_finish (IMAP_DATA* idata)
 /* cmd_handle_fatal: when IMAP_DATA is in fatal state, do what we can */
 static void cmd_handle_fatal (IMAP_DATA* idata)
 {
+  idata->status = IMAP_FATAL;
+
   if ((idata->state == IMAP_SELECTED) &&
       (idata->reopen & IMAP_REOPEN_ALLOW) &&
       !idata->ctx->closing)
   {
-    idata->status = 0;
-    idata->state = IMAP_DISCONNECTED;
     mx_fastclose_mailbox (idata->ctx);
+    mutt_error (_("Mailbox closed"));
+    mutt_sleep (1);
+    idata->state = IMAP_DISCONNECTED;
+    idata->status = 0;
   }
 }
 

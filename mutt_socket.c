@@ -155,7 +155,6 @@ int mutt_socket_readln_d (char* buf, size_t buflen, CONNECTION* conn, int dbg)
 {
   char ch;
   int i;
-  int rc;
 
   for (i = 0; i < buflen-1; i++)
   {
@@ -341,9 +340,7 @@ static CONNECTION* socket_new_conn ()
 
 int raw_socket_close (CONNECTION *conn)
 {
-  int ret = close (conn->fd);
-  if (ret == 0) conn->fd = -1;
-  return ret;
+  return close (conn->fd);
 }
 
 int raw_socket_read (CONNECTION* conn, char* buf, size_t len)

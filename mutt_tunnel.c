@@ -25,16 +25,22 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/wait.h>
+#include <fcntl.h>
+#include <errno.h>
 
 /* -- data types -- */
 typedef struct
 {
   pid_t pid;
+  int readfd;
+  int writefd;
 } TUNNEL_DATA;
 
 /* forward declarations */
 static int tunnel_socket_open (CONNECTION*);
 static int tunnel_socket_close (CONNECTION*);
+static int tunnel_socket_read (CONNECTION* conn, char* buf, size_t len);
+static int tunnel_socket_write (CONNECTION* conn, const char* buf, size_t len);
 
 /* -- public functions -- */
 int mutt_tunnel_socket_setup (CONNECTION *conn)
@@ -45,8 +51,8 @@ int mutt_tunnel_socket_setup (CONNECTION *conn)
   
   conn->open = tunnel_socket_open;
   conn->close = tunnel_socket_close;
-  conn->read = raw_socket_read;
-  conn->write = raw_socket_write;
+  conn->read = tunnel_socket_read;
+  conn->write = tunnel_socket_write;
 
   return 0;
 }
@@ -56,14 +62,18 @@ static int tunnel_socket_open (CONNECTION *conn)
   TUNNEL_DATA* tunnel = (TUNNEL_DATA*) conn->sockdata;
   int pid;
   int rc;
-  int sv[2];
+  int pin[2], pout[2];
 
   mutt_message (_("Connecting with \"%s\"..."), Tunnel);
 
-  rc = socketpair (PF_UNIX, SOCK_STREAM, IPPROTO_IP, sv);
-  if (rc == -1)
+  if ((rc = pipe (pin)) == -1)
   {
-    mutt_perror ("socketpair");
+    mutt_perror ("pipe");
+    return -1;
+  }
+  if ((rc = pipe (pout)) == -1)
+  {
+    mutt_perror ("pipe");
     return -1;
   }
 
@@ -71,12 +81,13 @@ static int tunnel_socket_open (CONNECTION *conn)
   if ((pid = fork ()) == 0)
   {
     mutt_unblock_signals_system (0);
-    if (close (sv[0]) < 0 ||
-	dup2 (sv[1], STDIN_FILENO) < 0 ||
-	dup2 (sv[1], STDOUT_FILENO) < 0 ||
-	close (STDERR_FILENO) ||
-	close (sv[1]) < 0)
+    if (dup2 (pout[0], STDIN_FILENO) < 0 || dup2 (pin[1], STDOUT_FILENO) < 0)
       _exit (127);
+    close (pin[0]);
+    close (pin[1]);
+    close (pout[0]);
+    close (pout[1]);
+    close (STDERR_FILENO);
 
     /* Don't let the subprocess think it can use the controlling tty */
     setsid ();
@@ -88,16 +99,24 @@ static int tunnel_socket_open (CONNECTION *conn)
 
   if (pid == -1)
   {
-    close (sv[0]);
-    close (sv[1]);
+    close (pin[0]);
+    close (pin[1]);
+    close (pout[0]);
+    close (pout[1]);
     mutt_perror ("fork");
     return -1;
   }
-  if (close(sv[1]) < 0)
+  if (close (pin[1]) < 0 || close (pout[0]) < 0)
     mutt_perror ("close");
 
-  conn->fd = sv[0];
+  fcntl (pin[0], F_SETFD, FD_CLOEXEC);
+  fcntl (pout[1], F_SETFD, FD_CLOEXEC);
+
+  tunnel->readfd = pin[0];
+  tunnel->writefd = pout[1];
   tunnel->pid = pid;
+
+  conn->fd = 42; /* stupid hack */
 
   return 0;
 }
@@ -105,11 +124,43 @@ static int tunnel_socket_open (CONNECTION *conn)
 static int tunnel_socket_close (CONNECTION* conn)
 {
   TUNNEL_DATA* tunnel = (TUNNEL_DATA*) conn->sockdata;
-  int rc;
 
-  rc = close (conn->fd);
+  close (tunnel->readfd);
+  close (tunnel->writefd);
   waitpid (tunnel->pid, NULL, 0);
   FREE (&conn->sockdata);
+
+  return 0;
+}
+
+static int tunnel_socket_read (CONNECTION* conn, char* buf, size_t len)
+{
+  TUNNEL_DATA* tunnel = (TUNNEL_DATA*) conn->sockdata;
+  int rc;
+
+  rc = read (tunnel->readfd, buf, len);
+  if (rc == -1)
+  {
+    mutt_error (_("Tunnel error talking to %s: %s"), conn->account.host,
+		strerror (errno));
+    mutt_sleep (1);
+  }
+
+  return rc;
+}
+
+static int tunnel_socket_write (CONNECTION* conn, const char* buf, size_t len)
+{
+  TUNNEL_DATA* tunnel = (TUNNEL_DATA*) conn->sockdata;
+  int rc;
+
+  rc = write (tunnel->writefd, buf, len);
+  if (rc == -1)
+  {
+    mutt_error (_("Tunnel error talking to %s: %s"), conn->account.host,
+		strerror (errno));
+    mutt_sleep (1);
+  }
 
   return rc;
 }
