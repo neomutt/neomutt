@@ -512,28 +512,27 @@ void mutt_display_address (ADDRESS *adr)
 static void set_copy_flags(HEADER *hdr, int decode, int decrypt, int *cmflags, int *chflags)
 {
   *cmflags = 0;
-  *chflags = decode ? CH_XMIT | CH_MIME : CH_UPDATE_LEN;
+  *chflags = CH_UPDATE_LEN;
   
 #ifdef _PGPPATH
   if(!decode && decrypt && (hdr->pgp & PGPENCRYPT))
   {
-    if(hdr->content->type == TYPEMULTIPART)
+    if(mutt_is_multipart_encrypted(hdr->content))
     {
-      *chflags |= CH_NONEWLINE;
+      *chflags = CH_NONEWLINE | CH_XMIT | CH_MIME;
       *cmflags = M_CM_DECODE_PGP;
     }
-    else if((hdr->content->type == TYPEAPPLICATION) && mutt_is_pgp_subtype(hdr->content->subtype))
+    else if(mutt_is_application_pgp(hdr->content) & PGPENCRYPT)
       decode = 1;
   }
 #endif
 
   if(decode)
   {
-    *chflags |= CH_TXTPLAIN;
-    *cmflags |= M_CM_DECODE;
+    *chflags = CH_MIME | CH_TXTPLAIN;
+    *cmflags = M_CM_DECODE;
   }
 
-  
 }
 
 static void _mutt_save_message (HEADER *h, CONTEXT *ctx, int delete, int decode, int decrypt)
@@ -541,9 +540,10 @@ static void _mutt_save_message (HEADER *h, CONTEXT *ctx, int delete, int decode,
   int cmflags, chflags;
   
   set_copy_flags(h, decode, decrypt, &cmflags, &chflags);
-  if (decode)
+
+  if (decode  || decrypt)
     mutt_parse_mime_message (Context, h);
-  
+
   if (mutt_append_message (ctx, Context, h, cmflags, chflags) == 0 && delete)
   {
     mutt_set_flag (Context, h, M_DELETE, 1);
@@ -597,10 +597,6 @@ int mutt_save_message (HEADER *h, int delete, int decode, int decrypt, int *redr
     }
   }
 
-  if((decrypt || decode) && need_passphrase && 
-     !pgp_valid_passphrase())
-    return -1;
-
   mutt_pretty_mailbox (buf);
   if (mutt_enter_fname (prompt, buf, sizeof (buf), redraw, 0) == -1)
     return (-1);
@@ -615,7 +611,7 @@ int mutt_save_message (HEADER *h, int delete, int decode, int decrypt, int *redr
 
   if (!buf[0])
     return (-1);
-  
+ 
   /* This is an undocumented feature of ELM pointed out to me by Felix von
    * Leitner <leitner@prz.fu-berlin.de>
    */
@@ -633,6 +629,9 @@ int mutt_save_message (HEADER *h, int delete, int decode, int decrypt, int *redr
     return (-1);
   }
 
+  if(need_passphrase && (decode || decrypt) && !pgp_valid_passphrase())
+    return -1;
+  
   mutt_message ("Copying to %s...", buf);
   
   if (mx_open_mailbox (buf, M_APPEND, &ctx) != NULL)

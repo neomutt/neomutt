@@ -479,24 +479,38 @@ void application_pgp_handler (BODY *m, STATE *s)
 
 }
 
-int mutt_is_pgp_subtype(const char *st)
-{
-  if(st)
-  {
-    if(!strcasecmp(st, "pgp"))      	      return 1;
-    if(!strcasecmp(st, "x-pgp-message"))      return 1;
-  }
-  
-  return 0;
-}
-  
-
-int pgp_query (BODY *m)
+int mutt_is_multipart_signed(BODY *b)
 {
   char *p;
-  int t = 0;
+  
+  if(!b || b->type != TYPEMULTIPART ||
+     !b->subtype || strcasecmp(b->subtype, "signed") ||
+     !(p = mutt_get_parameter("protocol", b->parameter)) ||
+     strcasecmp(p, "application/pgp-signature"))
+    return 0;
 
-  /* Check for old-style APPLICATION/PGP messages */
+  return PGPSIGN;
+}
+   
+     
+int mutt_is_multipart_encrypted(BODY *b)
+{
+  char *p;
+  
+  if(!b || b->type != TYPEMULTIPART ||
+     !b->subtype || strcasecmp(b->subtype, "encrypted") ||
+     !(p = mutt_get_parameter("protocol", b->parameter)) ||
+     strcasecmp(p, "application/pgp-encrypted")) 
+    return 0;
+  
+  return PGPENCRYPT;
+}
+
+int mutt_is_application_pgp(BODY *m)
+{
+  int t = 0;
+  char *p;
+  
   if (m->type == TYPEAPPLICATION)
   {
     if (!strcasecmp (m->subtype, "pgp") || !strcasecmp (m->subtype, "x-pgp-message"))
@@ -521,17 +535,21 @@ int pgp_query (BODY *m)
     if (!strcasecmp (m->subtype, "pgp-keys"))
       t |= PGPKEY;
   }
+  return t;
+}
 
+int pgp_query (BODY *m)
+{
+  int t = 0;
+
+  t |= mutt_is_application_pgp(m);
+  
   /* Check for PGP/MIME messages. */
   if (m->type == TYPEMULTIPART)
   {
-    if (strcasecmp (m->subtype, "signed") == 0 &&
-	(p = mutt_get_parameter("protocol", m->parameter)) &&
-	strcasecmp (p, "application/pgp-signature") == 0)
+    if(mutt_is_multipart_signed(m))
       t |= PGPSIGN;
-    else if ((strcasecmp (m->subtype, "encrypted") == 0) && 
-	     (p = mutt_get_parameter ("protocol", m->parameter)) &&
-	     strcasecmp (p, "application/pgp-encrypted") == 0)
+    else if (mutt_is_multipart_encrypted(m))
       t |= PGPENCRYPT;
   }
 
@@ -908,7 +926,10 @@ int pgp_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
 {
   char tempfile[_POSIX_PATH_MAX];
   STATE s;
-
+  
+  if(!mutt_is_multipart_encrypted(b))
+    return -1;
+  
   memset (&s, 0, sizeof (s));
   s.fpin = fpin;
   mutt_mktemp (tempfile);

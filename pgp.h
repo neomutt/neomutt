@@ -166,7 +166,9 @@ struct pgp_vinfo *pgp_get_vinfo(enum pgp_ops);
 int mutt_check_pgp (HEADER *h);
 int mutt_parse_pgp_hdr (char *, int);
 
-int mutt_is_pgp_subtype(const char *);
+int mutt_is_multipart_encrypted(BODY *);
+int mutt_is_multipart_signed(BODY *);
+int mutt_is_application_pgp(BODY *);
 
 int pgp_decrypt_mime (FILE *, FILE **, BODY *, BODY **);
 int pgp_get_keys (HEADER *, char **);

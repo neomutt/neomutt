@@ -22,6 +22,10 @@
 #include "mailbox.h"
 #include "mx.h"
 
+#ifdef _PGPPATH
+#include "pgp.h"
+#endif
+
 #include <string.h>
 #include <ctype.h>
 #include <unistd.h>
@@ -396,14 +400,10 @@ int mutt_needs_mailcap (BODY *m)
 
 #ifdef _PGPPATH
     case TYPEAPPLICATION:
-
-      if (!strcasecmp ("pgp", m->subtype) ||
-	  !strcasecmp ("pgp-signed", m->subtype) ||
-	  !strcasecmp ("x-pgp-message", m->subtype))
+      if(mutt_is_application_pgp(m))
 	return 0;
       break;
 #endif /* _PGPPATH */
-
 
 
     case TYPEMULTIPART:

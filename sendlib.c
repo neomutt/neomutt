@@ -954,14 +954,13 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
     if(option(OPTFORWDECRYPT)
        && (hdr->pgp & PGPENCRYPT))
   {
-    if(hdr->content->type == TYPEMULTIPART)
+    if(mutt_is_multipart_encrypted(hdr->content))
     {
       chflags |= CH_MIME | CH_NONEWLINE;
       cmflags = M_CM_DECODE_PGP;
       pgp &= ~PGPENCRYPT;
     }
-    else if((hdr->content->type == TYPEAPPLICATION) &&
-	    mutt_is_pgp_subtype(hdr->content->subtype))
+    else if(mutt_is_application_pgp(hdr->content) & PGPENCRYPT)
     {
       chflags |= CH_MIME | CH_TXTPLAIN;
       cmflags = M_CM_DECODE;
