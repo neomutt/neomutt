@@ -1,5 +1,6 @@
 Problems are listed in approximate order of priority.
 
+- re-add support for .mh_sequences files
 
 - Fix the "unexpected EXPUNGE" IMAP bug.
 
