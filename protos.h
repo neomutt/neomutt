@@ -59,7 +59,6 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *hdr, int flag);
 
 
 #define mutt_new_parameter() safe_calloc (1, sizeof (PARAMETER))
-#define mutt_new_header() safe_calloc (1, sizeof (HEADER))
 #define mutt_new_envelope() safe_calloc (1, sizeof (ENVELOPE))
 #define mutt_new_enter_state() safe_calloc (1, sizeof (ENTER_STATE))
 
@@ -84,6 +83,8 @@ ADDRESS *mutt_lookup_alias (const char *s);
 ADDRESS *mutt_remove_duplicates (ADDRESS *);
 ADDRESS *mutt_expand_aliases (ADDRESS *);
 ADDRESS *mutt_parse_adrlist (ADDRESS *, const char *);
+
+HEADER *mutt_new_header(void);
 
 BODY *mutt_make_file_attach (const char *);
 BODY *mutt_make_message_attach (CONTEXT *, HEADER *, int);

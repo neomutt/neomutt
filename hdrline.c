@@ -445,9 +445,21 @@ hdr_format_str (char *dest,
 
     case 'l':
       if (!optional)
-      {
-	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
-	snprintf (dest, destlen, fmt, (int) hdr->lines);
+      {        
+        if (hdr->lines >= 0) 
+        {
+          snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
+          snprintf (dest, destlen, fmt, (int) hdr->lines);
+        }
+        else
+        {
+          int i;
+          int len = atoi (prefix);
+          for (i = 0; i < len && i < destlen - 1; i++)
+            dest[i] = '?';
+
+          dest[i] = '\0';
+        }
       }
       else
       {
