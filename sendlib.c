@@ -2231,17 +2231,17 @@ static void _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *
   mutt_mktemp (tempfile);
   if ((f = safe_fopen (tempfile, "w")) != NULL)
   {
-    int ch_flags = CH_XMIT | CH_NONEWLINE;
+    int ch_flags = CH_XMIT | CH_NONEWLINE | CH_NOQFROM;
     
     if (!option (OPTBOUNCEDELIVERED))
       ch_flags |= CH_WEED_DELIVERED;
     
     fseek (fp, h->offset, 0);
-    mutt_copy_header (fp, h, f, ch_flags, NULL);
     fprintf (f, "Resent-From: %s", resent_from);
     fprintf (f, "\nResent-%s", mutt_make_date (date, sizeof(date)));
     fputs ("Resent-To: ", f);
     mutt_write_address_list (to, f, 11);
+    mutt_copy_header (fp, h, f, ch_flags, NULL);
     fputc ('\n', f);
     mutt_copy_bytes (fp, f, h->content->length);
     fclose (f);

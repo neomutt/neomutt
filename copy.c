@@ -84,6 +84,10 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
 	    continue;
 	  from = 1;
 	}
+	else if (flags & (CH_NOQFROM) &&
+			ascii_strncasecmp (">From ", buf, 6) == 0)
+		continue;
+
 	else if (buf[0] == '\n' || (buf[0] == '\r' && buf[1] == '\n'))
 	  break; /* end of header */
 
@@ -280,6 +284,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
  	CH_UPDATE_LEN	write new Content-Length: and Lines:
  	CH_XMIT		ignore Lines: and Content-Length:
  	CH_WEED		do header weeding
+	CH_NOQFROM      ignore ">From " line
 
    prefix
    	string to use if CH_PREFIX is set

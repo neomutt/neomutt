@@ -81,6 +81,7 @@
 #define CH_NOLEN	(1<<12) /* don't write Content-Length: and Lines: */
 #define CH_WEED_DELIVERED (1<<13) /* weed eventual Delivered-To headers */
 #define CH_FORCE_FROM	(1<<14)	/* give CH_FROM precedence over CH_WEED? */
+#define CH_NOQFROM	(1<<15)	/* give CH_FROM precedence over CH_WEED? */
 
 /* flags for mutt_enter_string() */
 #define  M_ALIAS   1      /* do alias "completion" by calling up the alias-menu */
