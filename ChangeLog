@@ -1,3 +1,8 @@
+2003-09-11 16:59:54  Brendan Cully  <brendan@kublai.com>  (roessler)
+
+	* mutt_sasl.c: This trivial patch closes #1516 (NI_WITHSCOPEID
+	undefined). Thanks to Mads for the initial patch.
+
 2003-09-11 07:27:23  Velko Hristov  <hristov@informatik.hu-berlin.de>  (roessler)
 
 	* po/bg.po: Bulgarian translation.  (Seems like I screwed up an
