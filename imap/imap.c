@@ -357,7 +357,6 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
 int imap_open_connection (IMAP_DATA* idata)
 {
   char buf[LONG_STRING];
-  int rc;
 
   if (mutt_socket_open (idata->conn) < 0)
     return -1;
@@ -376,6 +375,8 @@ int imap_open_connection (IMAP_DATA* idata)
     /* Attempt STARTTLS if available and desired. */
     if (mutt_bit_isset (idata->capabilities, STARTTLS) && !idata->conn->ssf)
     {
+      int rc;
+
       if ((rc = query_quadoption (OPT_SSLSTARTTLS,
         _("Secure connection with TLS?"))) == -1)
 	goto err_close_conn;
