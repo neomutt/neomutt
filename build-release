@@ -14,7 +14,7 @@
 
 set -e
 
-devel="devel/"	# uncomment for the stable branch
+# devel="devel/"	# uncomment for the stable branch
 
 # update the source
 
@@ -40,6 +40,8 @@ ${VISUAL} ChangeLog
 
 # now, prepare the distribution tar balls
 
+(cd m4 && make -f Makefile.am.in)
+automake
 touch configure.in
 make config.status
 ./config.status
