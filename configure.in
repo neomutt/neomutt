@@ -397,13 +397,6 @@ else
 	AC_MSG_RESULT(yes)
 fi
 
-if test \( "$mutt_cv_fake_charmaps" = "yes" \) -a \( ! -d $srcdir/charmaps \); then
-	echo "Creating fake charmaps subdirectory." >&AC_FD_MSG
-	mkdir $srcdir/charmaps
-	touch $srcdir/charmaps/Makefile.in
-fi
-
-
 AC_DEFINE_UNQUOTED(CHARMAPS_DIR, "$mutt_cv_charmaps")
 charmaps=$mutt_cv_charmaps
 AC_SUBST(charmaps)
