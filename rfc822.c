@@ -29,6 +29,7 @@
 #define FREE(x) safe_free(x)
 #define ISSPACE isspace
 #define strfcpy(a,b,c) {if (c) {strncpy(a,b,c);a[c-1]=0;}}
+#define STRING 128
 #include "rfc822.h"
 #endif
 
@@ -758,7 +759,11 @@ int main (int argc, char **argv)
 {
   ADDRESS *list;
   char buf[256];
+# if 0
   char *str = "michael, Michael Elkins <me@cs.hmc.edu>, testing a really complex address: this example <@contains.a.source.route@with.multiple.hosts:address@example.com>;, lothar@of.the.hillpeople (lothar)";
+# else
+  char *str = "a b c ";
+# endif
   
   list = rfc822_parse_adrlist (NULL, str);
   buf[0] = 0;
