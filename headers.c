@@ -101,14 +101,17 @@ void mutt_edit_headers (const char *editor,
   mutt_free_envelope (&msg->env);
   msg->env = n;
 
+  msg->env->from = mutt_expand_aliases (msg->env->from);
   msg->env->to = mutt_expand_aliases (msg->env->to);
   msg->env->cc = mutt_expand_aliases (msg->env->cc);
   msg->env->bcc = mutt_expand_aliases (msg->env->bcc);
   msg->env->reply_to = mutt_expand_aliases (msg->env->reply_to);
   msg->env->mail_followup_to = mutt_expand_aliases (msg->env->mail_followup_to);
 
-  /* search through the user defined headers added to see if either a * fcc:
-     or attach-file: field was specified.  */
+  /* search through the user defined headers added to see if either a 
+   * fcc: or attach-file: field was specified.  
+   */
+
   cur = msg->env->userhdrs;
   while (cur)
   {
