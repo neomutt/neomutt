@@ -25,7 +25,7 @@ subdir = doc
 
 
 DISTFILES = Makefile.in dotlock.man.in  \
-	manual.sgml mutt.man.in	        \
+	manual.sgml.in mutt.man.in	\
 	PGP-Notes.txt			\
 	applying-patches.txt		\
 	devel-notes.txt			\
@@ -85,7 +85,7 @@ manual.html: manual.sgml
 	sgml2html manual
 
 clean: 
-	rm -f *~ *.html *.orig *.rej *.man
+	rm -f *~ *.html *.orig *.rej *.man manual.sgml
 
 clean-real:
 	rm -f manual.txt
@@ -104,6 +104,10 @@ mutt.man: mutt.man.in ../config.status
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 dotlock.man: dotlock.man.in ../config.status
+	cd .. \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+manual.sgml: manual.sgml.in ../config.status
 	cd .. \
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 

@@ -10,9 +10,6 @@
 /* Where to put l10n data */
 #undef MUTTLOCALEDIR
 
-/* Where to put other shared data */
-#undef SHAREDIR
-
 /* Enable debugging info */
 #define DEBUG
 

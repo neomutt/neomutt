@@ -343,7 +343,6 @@ AC_ARG_WITH(sharedir, [  --with-sharedir=PATH       specify where to put arch in
 
 sharedir=$mutt_cv_sharedir
 AC_SUBST(sharedir)
-AC_DEFINE_UNQUOTED(SHAREDIR, "$mutt_cv_sharedir")
 
 AC_ARG_WITH(docdir, [  --with-docdir=PATH       specify where to put the documentation],
 	[mutt_cv_docdir=$withval],
@@ -359,7 +358,6 @@ AC_ARG_WITH(docdir, [  --with-docdir=PATH       specify where to put the documen
 
 docdir=$mutt_cv_docdir
 AC_SUBST(docdir)
-
 
 if test x$mutt_cv_setgid = xyes; then
 	DOTLOCK_GROUP='mail'
@@ -447,4 +445,4 @@ MUTTLOCALEDIR=$mutt_cv_prefix/$DATADIRNAME/locale
 AC_SUBST(MUTTLOCALEDIR)
 AC_DEFINE_UNQUOTED(MUTTLOCALEDIR, "$MUTTLOCALEDIR")
 
-AC_OUTPUT(Makefile intl/Makefile po/Makefile.in rx/Makefile Muttrc doc/Makefile doc/dotlock.man doc/mutt.man charsets/Makefile contrib/Makefile)
+AC_OUTPUT(Makefile intl/Makefile po/Makefile.in rx/Makefile Muttrc doc/Makefile doc/manual.sgml doc/dotlock.man doc/mutt.man charsets/Makefile contrib/Makefile)

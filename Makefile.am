@@ -16,6 +16,8 @@ mutt_SOURCES =	addrbook.c alias.c attach.c browser.c buffy.c color.c \
 mutt_LDADD = @MUTT_LIB_OBJECTS@ $(INTLLIBS)
 mutt_DEPENDENCIES = @MUTT_LIB_OBJECTS@ $(INTLDEPS)
 
+DEFS=-DSHAREDIR=\"$(sharedir)\" -DSYSCONFDIR=\"$(sysconfdir)\"
+
 EXTRA_mutt_SOURCES = pgp.c pgpinvoke.c pgpkey.c pgppubring.c sha1dgst.c \
 	gnupgparse.c resize.c snprintf.c dotlock.c pop.c imap.c socket.c
 
@@ -56,12 +58,17 @@ install-exec-local:
 	fi
 
 install-data-local:
-	-if [ ! -f $(sharedir)/Muttrc ]; then \
-		$(srcdir)/mkinstalldirs $(sharedir); \
-		$(INSTALL) -m 644 $(srcdir)/Muttrc $(sharedir); \
+	$(srcdir)/mkinstalldirs $(sharedir)
+	$(srcdir)/mkinstalldirs $(sysconfdir)
+	-if [ -f $(sharedir)/Muttrc ] ; then \
+		mv $(sharedir)/Muttrc $(sysconfdir) ; \
+	elif [ -f $(sharedir)/../Muttrc ] ; then \
+	 	mv $(sharedir)/../Muttrc $(sysconfdir) ; \
+	else \
+		$(INSTALL) -m 644 $(srcdir)/Muttrc $(sysconfdir) ; \
 	fi
-	-if [ ! -f $(sharedir)/mime.types ]; then \
-		$(INSTALL) -m 644 $(srcdir)/mime.types $(sharedir); \
+	-if [ ! -f $(sysconfdir)/mime.types ]; then \
+		$(INSTALL) -m 644 $(srcdir)/mime.types $(sysconfdir); \
 	fi
 
 

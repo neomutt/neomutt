@@ -540,12 +540,14 @@ suit your own tastes. When Mutt is first invoked, it will attempt to
 read the ``system'' configuration file (defaults set by your local
 system administrator), unless the ``-n'' <ref id="commandline"
 name="command line"> option is specified.  This file is typically
-<tt>/usr/local/share/Muttrc</tt> or <tt>/usr/local/lib/Muttrc</tt>.
-If your home directory has a subdirectory named <tt/.mutt/, mutt
-will next look for a file named <tt>.mutt/muttrc</tt>. Otherwise, it
-looks for a file in your home directory named <tt/.muttrc/.  In this
-file is where you place <ref id="commands" name="commands"> to
-configure Mutt.
+<tt>@sharedir@/Muttrc</tt> or <tt>@sysconfdir@/Muttrc</tt>. Mutt
+will next look for a file named <tt>.muttrc</tt> in your home
+directory.  If this file does not exist and your home directory has
+a subdirectory named <tt/.mutt/, mutt try to load a file named
+<tt>.mutt/muttrc</tt>. 
+
+<tt>.muttrc</tt> is the file where you will usually place your <ref
+ id="commands" name="commands"> to configure Mutt.
 
 In addition, mutt supports version specific configuration files that are
 parsed instead of the default files as explained above.  For instance, if
@@ -1871,9 +1873,8 @@ can be changed with the <tt/edit-description/ command (default: d).
 <p>
 When you add an attachment to your mail message, Mutt searches your
 personal mime.types file at <tt>&dollar;{HOME}/.mime.types</tt>, and then
-the system mime.types file at <tt>SHAREDIR/mime.types</tt>.
-<tt/SHAREDIR/ is defined at compilation time, and can be determined
-by typing <tt/mutt -v/ from the command line.
+the system mime.types file at <tt>@SHAREDIR@/mime.types</tt> or
+<tt>@SYSCONFDIR@/mime.types</tt>
 
 The mime.types file consist of lines containing a MIME type and a space
 separated list of extensions.  For example:
@@ -1910,10 +1911,9 @@ internally, Mutt parses a series of external configuration files to
 find an external handler.  The default search string for these files
 is a colon delimited list set to
 <tscreen><verb>
-${HOME}/.mailcap:SHAREDIR/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap
+${HOME}/.mailcap:@SHAREDIR@/mailcap:@SYSCONFDIR@/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap
 </verb></tscreen>
-where <tt/&dollar;HOME/ is your home directory and <tt/SHAREDIR/ is the
-shared directory defined at compile time (visible from <tt/mutt -v/).
+where <tt/&dollar;HOME/ is your home directory.
 
 In particular, the metamail distribution will install a mailcap file,
 usually as <tt>/usr/local/etc/mailcap</tt>, which contains some baseline

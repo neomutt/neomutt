@@ -589,7 +589,7 @@ static int lookup_mime_type (char *d, const char *s)
   cur_sze = 0;
   szf = strlen (s);
 
-  for (count = 0 ; count < 2 ; count++)
+  for (count = 0 ; count < 3 ; count++)
   {
     /*
      * can't use strtok() because we use it in an inner loop below, so use
@@ -601,6 +601,9 @@ static int lookup_mime_type (char *d, const char *s)
 	snprintf (buf, sizeof (buf), "%s/.mime.types", NONULL(Homedir));
 	break;
       case 1:
+        strfcpy (buf, SYSCONFDIR"/mime.types", sizeof(buf));
+        break;
+      case 2:
 	strfcpy (buf, SHAREDIR"/mime.types", sizeof (buf));
 	break;
       default:

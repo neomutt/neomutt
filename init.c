@@ -1569,7 +1569,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   else
   {
     /* Default search path from RFC1524 */
-    MailcapPath = safe_strdup ("~/.mailcap:" SHAREDIR "/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap");
+    MailcapPath = safe_strdup ("~/.mailcap:" SHAREDIR "/mailcap:" SYSCONFDIR "/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap");
   }
 
   Tempdir = safe_strdup ((p = getenv ("TMPDIR")) ? p : "/tmp");
@@ -1661,17 +1661,14 @@ void mutt_init (int skip_sys_rc, LIST *commands)
 
   if (!Muttrc)
   {
-    snprintf (buffer, sizeof (buffer), "%s/.mutt/muttrc-%s", NONULL(Homedir), MUTT_VERSION);
+    snprintf (buffer, sizeof(buffer), "%s/.muttrc-%s", NONULL(Homedir), MUTT_VERSION);
     if (access(buffer, F_OK) == -1)
-    {
-      snprintf (buffer, sizeof (buffer), "%s/.muttrc-%s", NONULL(Homedir), MUTT_VERSION);
-      if (access (buffer, F_OK) == -1)
-      {
-	snprintf (buffer, sizeof (buffer), "%s/.mutt/muttrc", NONULL(Homedir));
-	if (access (buffer, F_OK) == -1)
-	  snprintf (buffer, sizeof (buffer), "%s/.muttrc", NONULL(Homedir));
-      }
-    }
+      snprintf (buffer, sizeof(buffer), "%s/.muttrc", NONULL(Homedir));
+    if (access(buffer, F_OK) == -1)
+      snprintf (buffer, sizeof (buffer), "%s/.mutt/muttrc-%s", NONULL(Homedir), MUTT_VERSION);
+    if (access(buffer, F_OK) == -1)
+      snprintf (buffer, sizeof (buffer), "%s/.mutt/muttrc", NONULL(Homedir));
+    
     default_rc = 1;
     Muttrc = safe_strdup (buffer);
   }
@@ -1689,7 +1686,11 @@ void mutt_init (int skip_sys_rc, LIST *commands)
      requested not to via "-n".  */
   if (!skip_sys_rc)
   {
-    snprintf (buffer, sizeof (buffer), "%s/Muttrc-%s", SHAREDIR, MUTT_VERSION);
+    snprintf (buffer, sizeof(buffer), "%s/Muttrc-%s", SYSCONFDIR, MUTT_VERSION);
+    if (access (buffer, F_OK) == -1)
+      snprintf (buffer, sizeof(buffer), "%s/Muttrc", SYSCONFDIR);
+    if (access (buffer, F_OK) == -1)
+      snprintf (buffer, sizeof (buffer), "%s/Muttrc-%s", SHAREDIR, MUTT_VERSION);
     if (access (buffer, F_OK) == -1)
       snprintf (buffer, sizeof (buffer), "%s/Muttrc", SHAREDIR);
     if (access (buffer, F_OK) != -1)

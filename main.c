@@ -252,6 +252,7 @@ static void show_version (void)
   printf ("SENDMAIL=\"%s\"\n", SENDMAIL);
   printf ("MAILPATH=\"%s\"\n", MAILPATH);
   printf ("SHAREDIR=\"%s\"\n", SHAREDIR);
+  printf ("SYSCONFDIR=\"%s\"\n", SYSCONFDIR);
 
 #ifdef ISPELL
   printf ("ISPELL=\"%s\"\n", ISPELL);
