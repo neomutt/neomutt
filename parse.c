@@ -903,7 +903,7 @@ void mutt_parse_mime_message (CONTEXT *ctx, HEADER *cur)
 }
 
 int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short user_hdrs, short weed,
-			    short do_2047, LIST **lastp, char **in_reply_to)
+			    short do_2047, LIST **lastp)
 {
   int matched = 0;
   LIST *last = NULL;
@@ -1008,12 +1008,9 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     case 'i':
     if (!mutt_strcasecmp (line+1, "n-reply-to"))
     {
-      if (hdr && in_reply_to)
-      {
-	mutt_str_replace (in_reply_to, p);
-	if (do_2047)
-	  rfc2047_decode (in_reply_to);
-      }
+      mutt_free_list (&e->in_reply_to);
+      e->in_reply_to = mutt_parse_references (p);
+      matched = 1;
     }
     break;
     
@@ -1223,7 +1220,6 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
   LIST *last = NULL;
   char *line = safe_malloc (LONG_STRING);
   char *p;
-  char *in_reply_to = 0;
   long loc;
   int matched;
   size_t linelen = LONG_STRING;
@@ -1276,7 +1272,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
     if (!*p)
       continue; /* skip empty header fields */
 
-    matched = mutt_parse_rfc822_line (e, hdr, line, p, user_hdrs, weed, 1, &last, &in_reply_to);
+    matched = mutt_parse_rfc822_line (e, hdr, line, p, user_hdrs, weed, 1, &last);
     
   }
 
@@ -1286,24 +1282,6 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
   {
     hdr->content->hdr_offset = hdr->offset;
     hdr->content->offset = ftell (f);
-
-    /* if an in-reply-to was given, check to see if it is in the references
-     * list already.  if not, add it so we can do a better job of threading.
-     */
-    if (in_reply_to && (p = extract_message_id (in_reply_to)) != NULL)
-    {
-      if (!e->references ||
-	  (e->references && mutt_strcmp (e->references->data, p) != 0))
-      {
-	LIST *tmp = mutt_new_list ();
-
-	tmp->data = p;
-	tmp->next = e->references;
-	e->references = tmp;
-      }
-      else
-	safe_free ((void **) &p);
-    }
 
     /* do RFC2047 decoding */
     rfc2047_decode_adrlist (e->from);
@@ -1334,7 +1312,6 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
     }
   }
 
-  safe_free ((void *) &in_reply_to);
   return (e);
 }
 

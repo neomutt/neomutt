@@ -586,9 +586,6 @@ void mutt_make_forward_subject (ENVELOPE *env, CONTEXT *ctx, HEADER *cur)
 void mutt_make_misc_reply_headers (ENVELOPE *env, CONTEXT *ctx,
 				    HEADER *cur, ENVELOPE *curenv)
 {
-  LIST *tmp;
-  char buffer[STRING];
-
   if (curenv->real_subj)
   {
     env->subject = safe_malloc (mutt_strlen (curenv->real_subj) + 5);
@@ -597,22 +594,44 @@ void mutt_make_misc_reply_headers (ENVELOPE *env, CONTEXT *ctx,
   else
     env->subject = safe_strdup ("Re: your mail");
   
-  /* add the In-Reply-To field */
-  if (InReplyTo)
+}
+
+static void 
+mutt_make_reference_headers (ENVELOPE *curenv, ENVELOPE *env, CONTEXT *ctx)
+{
+  HEADER *h;
+  LIST **p, **q;
+  int i;
+  
+  if (!curenv)
   {
-    strfcpy (buffer, "In-Reply-To: ", sizeof (buffer));
-    mutt_make_string (buffer + 13, sizeof (buffer) - 13, InReplyTo, ctx, cur);
-    tmp = env->userhdrs;
-    while (tmp && tmp->next)
-      tmp = tmp->next;
-    if (tmp)
+    env->references = NULL;
+    env->in_reply_to = NULL;
+    p = &env->references;
+    q = &env->in_reply_to;
+    
+    for(i = 0; i < ctx->vcount; i++)
     {
-      tmp->next = mutt_new_list ();
-      tmp = tmp->next;
+      while(*p) p = &(*p)->next;
+      while (*q) q = &(*q)->next;
+      
+      h = ctx->hdrs[ctx->v2r[i]];
+      if(h->tagged)
+      {
+	*p = mutt_make_references(h->env);
+	if (h->env->message_id)
+	{
+	  *q = mutt_new_list ();
+	  (*q)->data = safe_strdup (h->env->message_id);
+	}
+      }
     }
-    else
-      tmp = env->userhdrs = mutt_new_list ();
-    tmp->data = safe_strdup (buffer);
+  }
+  else
+  {
+    env->references = mutt_make_references (curenv);
+    env->in_reply_to = mutt_new_list ();
+    env->in_reply_to->data = safe_strdup (curenv->message_id);
   }
 }
 
@@ -669,26 +688,7 @@ envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
 
     mutt_fix_reply_recipients (env);
     mutt_make_misc_reply_headers (env, ctx, cur, curenv);
-    
-    if(tag)
-    {
-      HEADER *h;
-      LIST **p;
-
-      env->references = NULL;
-      p = &env->references;
-
-      for(i = 0; i < ctx->vcount; i++)
-      {
-	while(*p) p = &(*p)->next;
-	h = ctx->hdrs[ctx->v2r[i]];
-	if(h->tagged)
-	  *p = mutt_make_references(h->env);
-      }
-    }
-    else
-      env->references = mutt_make_references(curenv);
-
+    mutt_make_reference_headers (tag ? NULL : curenv, env, ctx);
   }
   else if (flags & SENDFORWARD)
     mutt_make_forward_subject (env, ctx, cur);

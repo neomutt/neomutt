@@ -1,9 +1,4 @@
 /*
- * WORK IN PROGRESS ALERT: Daniel Eisenbud <daniel@math.berkeley.edu>
- * is currently working on this code.  Contact him before working on it!
- */
-
-/*
  * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
  *
  *     This program is free software; you can redistribute it and/or modify
@@ -41,9 +36,8 @@ static int is_descendant (HEADER *a, HEADER *b)
  * to find the most recent message to which "cur" refers itself.  
  */
 
-static HEADER *find_reference (HEADER *cur, CONTEXT *ctx)
+static HEADER *find_ref (LIST *refs, HEADER *cur, CONTEXT *ctx)
 {
-  LIST *refs = cur->env->references;
   HEADER *ptr;
 
   for (; refs; refs = refs->next)
@@ -51,7 +45,7 @@ static HEADER *find_reference (HEADER *cur, CONTEXT *ctx)
     /* ups, this message is in a reference loop. bad. */
     if (cur->env->message_id && !strcmp (cur->env->message_id, refs->data))
       continue;
-    
+
     if ((ptr = hash_find (ctx->id_hash, refs->data)))
     {
       if (is_descendant (ptr, cur))
@@ -60,6 +54,24 @@ static HEADER *find_reference (HEADER *cur, CONTEXT *ctx)
       return ptr;
     }
   }
+  
+  return NULL;
+}
+
+/*
+ * In-Reply-To contains the direct parents according to RFC 2822.
+ * References is second best, since it may contain indirect parents,
+ * too.
+ */
+
+static HEADER *find_reference (HEADER *cur, CONTEXT *ctx)
+{
+  HEADER *ptr;
+  
+  if ((ptr = find_ref (cur->env->in_reply_to, cur, ctx)))
+    return ptr;
+  if ((ptr = find_ref (cur->env->references, cur, ctx)))
+    return ptr;
   
   return NULL;
 }
@@ -465,15 +477,26 @@ static HEADER *sort_last (HEADER *top)
   return top;
 }
 
+static int matches_in_reply_to (HEADER *t, const char *p)
+{
+  LIST *irt;
+  
+  for (irt = t->env->in_reply_to; irt; irt = irt->next)
+    if (mutt_strcmp (irt->data, p) == 0)
+      return 1;
+  
+  return 0;
+}
+
 static void move_descendants (HEADER **tree, HEADER *cur, sort_t *usefunc)
 {
   HEADER *ptr, *tmp = *tree;
 
   while (tmp)
   {
-    /* only need to look at the last reference */
-    if (tmp->env->references &&
-	mutt_strcmp (tmp->env->references->data, cur->env->message_id) == 0)
+    /* Look at the entire in-reply-to header, and at the last (!) reference. */
+    if (matches_in_reply_to (tmp, cur->env->message_id) ||
+	(tmp->env->references && mutt_strcmp (tmp->env->references->data, cur->env->message_id) == 0))
     {
       /* remove message from current location */
       unlink_message (tree, tmp);

@@ -236,7 +236,7 @@ int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
       scratch[taglen] = '\0';
       value = &scratch[taglen+1];
       SKIPWS (value);
-      mutt_parse_rfc822_line (e, NULL, scratch, value, 1, 0, 0, &last, NULL);
+      mutt_parse_rfc822_line (e, NULL, scratch, value, 1, 0, 0, &last);
     }
   }
   

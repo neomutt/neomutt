@@ -501,6 +501,7 @@ typedef struct envelope
   char *date;
   char *x_label;
   LIST *references;		/* message references (in reverse order) */
+  LIST *in_reply_to;		/* in-reply-to header content */
   LIST *userhdrs;		/* user defined headers */
 } ENVELOPE;
 

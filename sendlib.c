@@ -1624,6 +1624,13 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
     mutt_write_mime_header (attach, fp);
   }
 
+  if (env->in_reply_to)
+  {
+    fputs ("In-Reply-To:", fp);
+    write_references (env->in_reply_to, fp);
+    fputc ('\n', fp);
+  }
+  
   if (mode == 0 && !privacy && option (OPTXMAILER))
   {
     /* Add a vanity header */

@@ -55,7 +55,6 @@ WHERE char *ImapHomeNamespace INITVAL (NULL);
 WHERE char *ImapPass INITVAL (NULL);
 WHERE char *ImapUser INITVAL (NULL);
 #endif
-WHERE char *InReplyTo;
 WHERE char *Inbox;
 WHERE char *Ispell;
 WHERE char *Locale;
