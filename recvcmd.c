@@ -719,7 +719,7 @@ attach_reply_envelope_defaults (ENVELOPE *env, ATTACHPTR **idx, short idxlen,
     for (i = 0; i < idxlen; i++)
     {
       if (idx[i]->content->tagged)
-	mutt_add_to_reference_headers (env, idx[i]->content, &p, &q);
+	mutt_add_to_reference_headers (env, idx[i]->content->hdr->env, &p, &q);
     }
   }
   
