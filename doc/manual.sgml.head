@@ -58,7 +58,8 @@ See the newsgroup <htmlurl url="news:comp.mail.mutt" name="comp.mail.mutt">.
 
 <sect1>Copyright
 <p>
-Mutt is Copyright (C) 1996-8 Michael R. Elkins &lt;me@cs.hmc.edu&gt;
+Mutt is Copyright (C) 1996-2000 Michael R. Elkins
+&lt;me@cs.hmc.edu&gt; and others
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
