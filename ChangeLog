@@ -1,3 +1,7 @@
+2004-01-04 10:25:13  Cameron Patrick  <cameron@patrick.wattle.id.au>  (roessler)
+
+	* menu.c: Fix #1697 (Debian  #219594.)
+
 2004-01-04 10:21:19  Roland Rosenfeld  <roland@spinnaker.de>  (roessler)
 
 	* po/de.po: update
