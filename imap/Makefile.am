@@ -1,5 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
+AR=@AR@
+
 AUTOMAKE_OPTIONS = foreign
 
 if USE_GSS

@@ -47,6 +47,13 @@ checktypes_LDADD =
 checktypes_DEPENDENCIES = 
 
 
+$(makedoc_OBJECTS): $(makedoc_SOURCES)
+	$(HOST_CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) -c $<
+
+makedoc: $(makedoc_OBJECTS) $(makedoc_DEPENDENCIES)
+	@rm -rf makedoc
+	$(HOST_CC) $(AM_CFLAGS) $(LDFLAGS) $(makedoc_LDFLAGS) $(makedoc_OBJECTS) $(makedoc_LDADD) -o makedoc
+
 CPP=@CPP@
 
 DEFS=-DSHAREDIR=\"$(sharedir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \

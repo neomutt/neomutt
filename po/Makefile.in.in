@@ -84,13 +84,13 @@ all: all-@USE_NLS@
 all-yes: cat-id-tbl.c $(CATALOGS)
 all-no:
 
-.PHONY: ../keymap_alldefs.h
-../keymap_alldefs.h:
+.PHONY: $(top_srcdir)/keymap_alldefs.h
+$(top_srcdir)/keymap_alldefs.h:
 	cd .. && $(MAKE) keymap_alldefs.h
 
 $(srcdir)/$(PACKAGE).pot: $(POTFILES)
 	$(XGETTEXT) --default-domain=$(PACKAGE) --directory=$(top_srcdir) \
-	  --add-comments --keyword=_ --keyword=N_ \
+	  --directory=.. --add-comments --keyword=_ --keyword=N_ \
 	  --files-from=$(srcdir)/POTFILES.in \
 	&& test ! -f $(PACKAGE).po \
 	   || ( rm -f $(srcdir)/$(PACKAGE).pot \

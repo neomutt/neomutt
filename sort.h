@@ -50,4 +50,5 @@ WHERE short SortAlias INITVAL (SORT_ALIAS);
 WHERE short PgpSortKeys INITVAL (SORT_ADDRESS);
 #endif
 
+#include "mapping.h"
 extern const struct mapping_t SortMethods[];

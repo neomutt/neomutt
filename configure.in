@@ -33,6 +33,7 @@ AC_PROG_CPP
 AC_PROG_MAKE_SET
 AC_PROG_INSTALL
 AC_PROG_RANLIB
+AC_CHECK_TOOL(AR, ar, ar)
 
 AC_C_INLINE
 AC_C_CONST
@@ -272,12 +273,13 @@ AC_ARG_WITH(regex, [  --with-regex               Use the GNU regex library ],
 	[AC_CHECK_FUNCS(regcomp, mutt_cv_regex=no, mutt_cv_regex=yes)])
 
 if test $mutt_cv_regex = no ; then
-	AC_MSG_CHECKING(whether your system's regexp library is completely broken)
+AC_CACHE_CHECK([whether your system's regexp library is completely broken], 
+	[mutt_cv_regex_broken],
 	AC_TRY_RUN([
 #include <unistd.h>
 #include <regex.h>
 main() { regex_t blah ; regmatch_t p; p.rm_eo = p.rm_eo; return regcomp(&blah, "foo.*bar", REG_NOSUB) || regexec (&blah, "foobar", 0, NULL, 0); }],
-	mutt_cv_regex_broken=no, mutt_cv_regex_broken=yes, mutt_cv_regex_broken=yes)
+	mutt_cv_regex_broken=no, mutt_cv_regex_broken=yes, mutt_cv_regex_broken=yes))
 	AC_MSG_RESULT([$mutt_cv_regex_broken])
 	if test $mutt_cv_regex_broken = yes ; then
 		echo "Using the included GNU regex instead." >&AC_FD_MSG
