@@ -675,6 +675,15 @@ struct option_t MuttVars[] = {
   ** user/password pairs on mutt invocation, or if opening the connection
   ** is slow.
   */
+  { "imap_servernoise",		DT_BOOL, R_NONE, OPTIMAPSERVERNOISE, 1 },
+  /*
+  ** .pp
+  ** When set, mutt will display warning messages from the IMAP
+  ** server as error messages. Since these messages are often
+  ** harmless, or generated due to configuration problems on the
+  ** server which are out of the users' hands, you may wish to suppress
+  ** them at some point.
+  */
   { "imap_home_namespace",	DT_STR, R_NONE, UL &ImapHomeNamespace, UL 0},
   /*
   ** .pp

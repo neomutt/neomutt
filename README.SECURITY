@@ -44,7 +44,7 @@ The most basic rule is this one:
 Don't quote them with single or double quotes.  Mutt does this for
 you, the right way, as should any other program which interprets
 mailcap.  Don't put them into backtick expansions - as you have seen
-above, this is a recipe for desaster.  Be highly careful with eval
+above, this is a recipe for disaster.  Be highly careful with eval
 statements, and avoid them if possible at all.
 
 If you have to use the %-expandos' values in context where you need

@@ -492,18 +492,22 @@ AC_ARG_WITH(ssl, [    --with-ssl[=PFX]         Compile in SSL socket support for
 	   AC_MSG_ERROR([SSL support is only for IMAP, but IMAP is not enabled])
 	fi
 	
-        if test "x$withval" != "x"; then
+	if test "$with_ssl" != "no"
+	then
+	  if test "$with_ssl" != "yes"
+	  then
 	   LDFLAGS="$LDFLAGS -L$withval/lib"
 	   CPPFLAGS="$CPPFLAGS -I$withval/include"
-	fi
-	saved_LIBS="$LIBS"
+	  fi	
+	  saved_LIBS="$LIBS"
 
-	AC_CHECK_LIB(crypto, X509_new,, AC_MSG_ERROR([Unable to find SSL library]))
-	AC_CHECK_LIB(ssl, SSL_new,, AC_MSG_ERROR([Unable to find SSL library]), -lcrypto)
-	AC_DEFINE(USE_SSL)
-	LIBS="$saved_LIBS"
-	MUTTLIBS="$MUTTLIBS -lssl -lcrypto"
-	need_ssl=yes
+	  AC_CHECK_LIB(crypto, X509_new,, AC_MSG_ERROR([Unable to find SSL library]))
+	  AC_CHECK_LIB(ssl, SSL_new,, AC_MSG_ERROR([Unable to find SSL library]), -lcrypto)
+	  AC_DEFINE(USE_SSL)
+	  LIBS="$saved_LIBS"
+	  MUTTLIBS="$MUTTLIBS -lssl -lcrypto"
+	  need_ssl=yes
+	fi
 ])
 AM_CONDITIONAL(USE_SSL, test x$need_ssl = xyes)
 
