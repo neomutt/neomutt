@@ -300,7 +300,10 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
 	  }
 
         if (!is_uid && 
-	    (!*is_subkey || !option (OPTPGPIGNORESUB) || !(flags & KEYFLAG_DISABLED)))
+	    (!*is_subkey || !option (OPTPGPIGNORESUB)
+	     || !((flags & KEYFLAG_DISABLED)
+		  || (flags & KEYFLAG_REVOKED)
+		  || (flags & KEYFLAG_EXPIRED))))
 	  k->flags |= flags;
 
 	break;
