@@ -590,22 +590,23 @@ int mutt_copy_stream (FILE *fin, FILE *fout)
   return 0;
 }
 
+void mutt_expand_file_fmt (char *dest, size_t destlen, const char *fmt, const char *src)
+{
+  char *_src = mutt_quote_filename(src);
+  
+  mutt_expand_fmt(dest, destlen, fmt, _src);
+  safe_free((void **) &_src);
+}
+
 void mutt_expand_fmt (char *dest, size_t destlen, const char *fmt, const char *src)
 {
   const char *p = fmt;
   const char *last = p;
   size_t len;
-  char *_src;
   size_t slen;
   int found = 0;
 
-  /* some rationale should be given here: mutt's quoting
-   * rules are similar enough to the shell's rules so we
-   * can use mutt_quote_filename() even for patterns.
-   */
-
-  _src = mutt_quote_filename(src);
-  slen = strlen (_src);
+  slen = strlen (src);
   
   while ((p = strchr (p, '%')) != NULL)
   {
@@ -630,7 +631,7 @@ void mutt_expand_fmt (char *dest, size_t destlen, const char *fmt, const char *s
 	}
       }
 
-      strfcpy (dest, _src, destlen);
+      strfcpy (dest, src, destlen);
       if (slen > destlen)
       {
 	/* no more room */
@@ -651,9 +652,8 @@ void mutt_expand_fmt (char *dest, size_t destlen, const char *fmt, const char *s
   if (found)
     strfcpy (dest, last, destlen);
   else
-    snprintf (dest, destlen, "%s %s", fmt, _src);
+    snprintf (dest, destlen, "%s %s", fmt, src);
   
-  FREE(&_src);
 }
 
 static int 

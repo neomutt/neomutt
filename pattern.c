@@ -824,6 +824,21 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
   return (-1);
 }
 
+static void quote_simple(char *tmp, size_t len, const char *p)
+{
+  int i = 0;
+  
+  tmp[i++] = '"';
+  while (*p && i < len - 2)
+  {
+    if (*p == '\\' || *p == '"')
+      tmp[i++] = '\\';
+    tmp[i++] = *p++;
+  }
+  tmp[i++] = '"';
+  tmp[i] = 0;
+}
+  
 /* convert a simple search into a real request */
 void mutt_check_simple (char *s, size_t len, const char *simple)
 {
@@ -853,18 +868,7 @@ void mutt_check_simple (char *s, size_t len, const char *simple)
       strfcpy (s, "~U", len);
     else
     {
-      const char *p = s;
-      int i = 0;
-
-      tmp[i++] = '"';
-      while (*p && i < sizeof (tmp) - 2)
-      {
-	if (*p == '\\' || *p == '"')
-	  tmp[i++] = '\\';
-	tmp[i++] = *p++;
-      }
-      tmp[i++] = '"';
-      tmp[i] = 0;
+      quote_simple (tmp, sizeof(tmp), s);
       mutt_expand_fmt (s, len, simple, tmp);
     }
   }

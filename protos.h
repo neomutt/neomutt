@@ -141,6 +141,7 @@ void mutt_edit_headers (const char *, const char *, HEADER *, char *, size_t);
 void mutt_curses_error (const char *, ...);
 void mutt_enter_command (void);
 void mutt_exit (int);
+void mutt_expand_file_fmt (char *, size_t, const char *, const char *);
 void mutt_expand_fmt (char *, size_t, const char *, const char *);
 void mutt_expand_link (char *, const char *, const char *);
 void mutt_fetchPopMail (void);

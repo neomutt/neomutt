@@ -115,7 +115,7 @@ void mutt_edit_file (const char *editor, const char *data)
   char cmd[LONG_STRING];
   
   endwin ();
-  mutt_expand_fmt (cmd, sizeof (cmd), editor, data);
+  mutt_expand_file_fmt (cmd, sizeof (cmd), editor, data);
   mutt_system (cmd);
   keypad (stdscr, TRUE);
   clearok (stdscr, TRUE);
@@ -279,7 +279,7 @@ int mutt_do_pager (const char *banner,
     char cmd[STRING];
     
     endwin ();
-    mutt_expand_fmt (cmd, sizeof(cmd), Pager, tempfile);
+    mutt_expand_file_fmt (cmd, sizeof(cmd), Pager, tempfile);
     mutt_system (cmd);
     mutt_unlink (tempfile);
     rc = 0;
