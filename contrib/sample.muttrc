@@ -145,7 +145,7 @@ color attachment brightmagenta default
 color search default green	# how to hilite search patterns in the pager
 
 color header brightred default ^(From|Subject):
-color body magenta default "(ftp|http)://[^ ]+"	# point out URLs
+color body magenta default "(ftp|http|https)://[^ ]+"	# point out URLs
 color body magenta default [-a-z_0-9.]+@[-a-z_0-9.]+	# e-mail addresses
 color underline brightgreen default
 
