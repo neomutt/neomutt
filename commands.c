@@ -827,8 +827,8 @@ void mutt_edit_content_type (HEADER *h, BODY *b)
   
   
   snprintf (tmp, sizeof (tmp), "%s/%s", TYPE (b), NONULL (b->subtype));
-  type_changed = mutt_strcmp (tmp, obuf);
-  charset_changed = mutt_strcmp (charset, mutt_get_parameter ("charset", b->parameter));
+  type_changed = mutt_strcasecmp (tmp, obuf);
+  charset_changed = mutt_strcasecmp (charset, mutt_get_parameter ("charset", b->parameter));
 				 
   if (type_changed)
     mutt_message (_("Content-Type changed to %s."), tmp);
