@@ -35,9 +35,20 @@ static void q_encode_string (char *d, size_t dlen, const unsigned char *s)
   char charset[SHORT_STRING];
   size_t cslen, wordlen;
   char *wptr = d;
+  const unsigned char *t;
+  int hibit = 0;
 
-  snprintf (charset, sizeof (charset), "=?%s?Q?",
-	    mutt_strcasecmp ("us-ascii", Charset) == 0 ? "unknown-8bit" : NONULL(Charset));
+  for(t = s; *t && !hibit; t++)
+    if(*t & 0x80) hibit = 1;
+
+  if(hibit)
+  {
+    snprintf (charset, sizeof (charset), "=?%s?Q?",
+	      mutt_strcasecmp ("us-ascii", Charset) == 0 ? "unknown-8bit" : NONULL(Charset));
+  }
+  else
+    strfcpy(charset, "=?us-ascii?Q?", sizeof(charset));
+
   cslen = mutt_strlen (charset);
 
   strcpy (wptr, charset);
