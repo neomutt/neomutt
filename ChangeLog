@@ -1,4 +1,6 @@
-2005-01-27 18:24:10  Marco d'Itri  <md@Linux.IT>  (roessler)
+2005-01-27 18:25:40  Marco d'Itri  <md@Linux.IT>  (roessler)
+
+	* pgpewrap.c: Don't segfault when invoked without any arguments.
 
 	* contrib/gpg.rc, pgp.c: Evaluate gpg's machine-parseable status
 	messages.
