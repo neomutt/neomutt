@@ -1,3 +1,11 @@
+2002-12-11 09:16:25  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* pager.c: Try to make search-next behave more closely to what
+	people are used to, again.  The behaviour introduced by this
+	patch will give you the previous search string as the default,
+	but will search-next when you just press enter without changing
+	the search string.
+
 2002-12-10 20:56:52  Thomas Roessler  <roessler@does-not-exist.org>
 
 	* imap/command.c, imap/imap.c, imap/message.c, imap/utf7.c,
