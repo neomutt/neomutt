@@ -39,7 +39,7 @@ parse_i18n: parse_i18n.o $(LIBOBJS)
 	$(CC) -o parse_i18n parse_i18n.o $(LIBOBJS)
 
 strcasecmp.o:
-	make -C .. strcasecmp.o
+	$(MAKE) -C .. strcasecmp.o
 	cp ../strcasecmp.o ./
 
 clean:
