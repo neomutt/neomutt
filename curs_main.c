@@ -60,6 +60,7 @@ static const char *No_mailbox_is_open = N_("No mailbox is open.");
 static const char *There_are_no_messages = N_("There are no messages.");
 static const char *Mailbox_is_read_only = N_("Mailbox is read-only.");
 static const char *Function_not_permitted_in_attach_message_mode = N_("Function not permitted in attach-message mode.");
+static const char *No_visible = N_("No visible messages.");
 
 #define CHECK_MSGCOUNT if (!Context) \
 	{ \
@@ -73,6 +74,14 @@ static const char *Function_not_permitted_in_attach_message_mode = N_("Function 
 		mutt_error _(There_are_no_messages); \
 		break; \
 	}
+
+#define CHECK_VISIBLE if (Context && menu->current >= Context->vcount) \
+  	{\
+	  	mutt_flushinp (); \
+	  	mutt_error _(No_visible); \
+	  	break; \
+	}
+    
 
 #define CHECK_READONLY if (Context->readonly) \
 			{ \
@@ -653,6 +662,7 @@ int mutt_index_menu (void)
       case OP_JUMP:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
         if (isdigit (LastKey)) mutt_ungetch (LastKey, 0);
 	buf[0] = 0;
 	if (mutt_get_field (_("Jump to message: "), buf, sizeof (buf), 0) != 0
@@ -708,6 +718,7 @@ int mutt_index_menu (void)
       case OP_MAIN_DELETE_PATTERN:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	CHECK_READONLY;
 	CHECK_ATTACH;
 	mutt_pattern_func (M_DELETE, _("Delete messages matching: "));
@@ -808,6 +819,7 @@ int mutt_index_menu (void)
       case OP_SEARCH_OPPOSITE:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	if ((menu->current = mutt_search_command (menu->current, op)) == -1)
 	  menu->current = menu->oldcurrent;
 	else
@@ -830,6 +842,7 @@ int mutt_index_menu (void)
       case OP_TAG:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	if (tag && !option (OPTAUTOTAG))
 	{
 	  for (j = 0; j < Context->vcount; j++)
@@ -853,6 +866,7 @@ int mutt_index_menu (void)
       case OP_MAIN_TAG_PATTERN:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	mutt_pattern_func (M_TAG, _("Tag messages matching: "));
 	menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 	break;
@@ -860,6 +874,7 @@ int mutt_index_menu (void)
       case OP_MAIN_UNDELETE_PATTERN:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	CHECK_READONLY;
 	if (mutt_pattern_func (M_UNDELETE, _("Undelete messages matching: ")) == 0)
 	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
@@ -868,6 +883,7 @@ int mutt_index_menu (void)
       case OP_MAIN_UNTAG_PATTERN:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	if (mutt_pattern_func (M_UNTAG, _("Untag messages matching: ")) == 0)
 	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 	break;
@@ -885,6 +901,7 @@ int mutt_index_menu (void)
       case OP_MAIN_SYNC_FOLDER:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	CHECK_READONLY;
 	{
 	  int oldvcount = Context->vcount;
@@ -1007,6 +1024,7 @@ int mutt_index_menu (void)
       case OP_DISPLAY_HEADERS: /* don't weed the headers */
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	/*
 	 * toggle the weeding of headers so that a user can press the key
 	 * again while reading the message.
@@ -1059,6 +1077,7 @@ int mutt_index_menu (void)
       case OP_EDIT_TYPE:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	CHECK_ATTACH;
 	mutt_edit_content_type (CURHDR, CURHDR->content, NULL);
 	/* if we were in the pager, redisplay the message */
@@ -1074,6 +1093,7 @@ int mutt_index_menu (void)
       case OP_MAIN_NEXT_UNDELETED:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	if (menu->current >= Context->vcount - 1)
 	{
 	  if (menu->menu == MENU_MAIN)
@@ -1098,6 +1118,7 @@ int mutt_index_menu (void)
       case OP_NEXT_ENTRY:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	if (menu->current >= Context->vcount - 1)
 	{
 	  if (menu->menu == MENU_MAIN)
@@ -1117,6 +1138,7 @@ int mutt_index_menu (void)
       case OP_MAIN_PREV_UNDELETED:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	if (menu->current < 1)
 	{
 	  mutt_error _("You are on the first message.");
@@ -1140,6 +1162,7 @@ int mutt_index_menu (void)
       case OP_PREV_ENTRY:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	if (menu->current < 1)
 	{
 	  if (menu->menu == MENU_MAIN) mutt_error _("You are on the first message.");
@@ -1164,6 +1187,7 @@ int mutt_index_menu (void)
       case OP_DECRYPT_SAVE:
 #endif
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
         if (mutt_save_message (tag ? NULL : CURHDR,
 #ifdef HAVE_PGP
 			       (op == OP_DECRYPT_SAVE) ||
@@ -1204,6 +1228,7 @@ int mutt_index_menu (void)
       case OP_MAIN_PREV_UNREAD:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	i = menu->current;
 	menu->current = -1;
 	for (j = 0; j != Context->vcount; j++)
@@ -1271,6 +1296,7 @@ int mutt_index_menu (void)
       case OP_FLAG_MESSAGE:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	CHECK_READONLY;
 
         if (tag)
@@ -1306,6 +1332,7 @@ int mutt_index_menu (void)
       case OP_TOGGLE_NEW:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	CHECK_READONLY;
 	if (tag)
 	{
@@ -1358,6 +1385,7 @@ int mutt_index_menu (void)
       case OP_MAIN_PREV_SUBTHREAD:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	switch (op)
 	{
 	  case OP_MAIN_NEXT_THREAD:
@@ -1397,6 +1425,7 @@ int mutt_index_menu (void)
       case OP_MAIN_PARENT_MESSAGE:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 
 	if ((menu->current = mutt_parent_message (Context, CURHDR)) < 0)
 	{
@@ -1415,6 +1444,7 @@ int mutt_index_menu (void)
       case OP_MAIN_CLEAR_FLAG:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	CHECK_READONLY;
 	if (mutt_change_flag (tag ? NULL : CURHDR, (op == OP_MAIN_SET_FLAG)) == 0)
 	{
@@ -1438,6 +1468,7 @@ int mutt_index_menu (void)
 
       case OP_MAIN_COLLAPSE_THREAD:
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 
         if ((Sort & SORT_MASK) != SORT_THREADS)
         {
@@ -1469,6 +1500,7 @@ int mutt_index_menu (void)
 
       case OP_MAIN_COLLAPSE_ALL:
         CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 
         if ((Sort & SORT_MASK) != SORT_THREADS)
         {
@@ -1525,6 +1557,7 @@ int mutt_index_menu (void)
 
 	CHECK_ATTACH;
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	ci_bounce_message (tag ? NULL : CURHDR, &menu->redraw);
 	break;
 
@@ -1543,6 +1576,7 @@ int mutt_index_menu (void)
       case OP_DELETE:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	CHECK_READONLY;
 	if (tag)
 	{
@@ -1581,6 +1615,7 @@ int mutt_index_menu (void)
       case OP_DELETE_SUBTHREAD:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	CHECK_READONLY;
 
 	rc = mutt_thread_set_flag (CURHDR, M_DELETE, 1,
@@ -1601,6 +1636,7 @@ int mutt_index_menu (void)
       case OP_DISPLAY_ADDRESS:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	mutt_display_address (CURHDR->env);
 	break;
 
@@ -1618,6 +1654,7 @@ int mutt_index_menu (void)
       case OP_EDIT_MESSAGE:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	CHECK_READONLY;
 	CHECK_ATTACH;
 
@@ -1638,6 +1675,7 @@ int mutt_index_menu (void)
       case OP_FORWARD_MESSAGE:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	CHECK_ATTACH;
 	ci_send_message (SENDFORWARD, NULL, NULL, Context, tag ? NULL : CURHDR);
 	menu->redraw = REDRAW_FULL;
@@ -1657,6 +1695,7 @@ int mutt_index_menu (void)
       case OP_GROUP_REPLY:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	CHECK_ATTACH;
 	ci_send_message (SENDREPLY|SENDGROUPREPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
 	menu->redraw = REDRAW_FULL;
@@ -1666,6 +1705,7 @@ int mutt_index_menu (void)
 
 	CHECK_ATTACH;
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	ci_send_message (SENDREPLY|SENDLISTREPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
 	menu->redraw = REDRAW_FULL;
 	break;
@@ -1694,13 +1734,15 @@ int mutt_index_menu (void)
       case OP_EXTRACT_KEYS:
       
         CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
         pgp_extract_keys_from_messages(tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
         break;
 
       case OP_CHECK_TRADITIONAL:
       
-        CHECK_MSGCOUNT;
+        CHECK_MSGCOUNT; 
+        CHECK_VISIBLE;
         mutt_check_traditional_pgp (tag ? NULL : CURHDR, &menu->redraw);
         if (menu->menu == MENU_PAGER)
         {
@@ -1720,6 +1762,7 @@ int mutt_index_menu (void)
       case OP_PIPE:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	mutt_pipe_message (tag ? NULL : CURHDR);
 	MAYBE_REDRAW (menu->redraw);
 	break;
@@ -1727,6 +1770,7 @@ int mutt_index_menu (void)
       case OP_PRINT:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	mutt_print_message (tag ? NULL : CURHDR);
 	break;
 
@@ -1734,6 +1778,7 @@ int mutt_index_menu (void)
       case OP_MAIN_READ_SUBTHREAD:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	CHECK_READONLY;
 
 	rc = mutt_thread_set_flag (CURHDR, M_READ, 1,
@@ -1761,6 +1806,7 @@ int mutt_index_menu (void)
       
         CHECK_ATTACH;
         CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
       
         if (tag)
         {
@@ -1780,6 +1826,7 @@ int mutt_index_menu (void)
 
 	CHECK_ATTACH;
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	ci_send_message (SENDREPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
 	menu->redraw = REDRAW_FULL;
 	break;
@@ -1794,6 +1841,7 @@ int mutt_index_menu (void)
       case OP_TAG_SUBTHREAD:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	rc = mutt_thread_set_flag (CURHDR, M_TAG, !CURHDR->tagged,
 				   op == OP_TAG_THREAD ? 0 : 1);
 	
@@ -1813,6 +1861,7 @@ int mutt_index_menu (void)
       case OP_UNDELETE:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	CHECK_READONLY;
 	if (tag)
 	{
@@ -1837,6 +1886,7 @@ int mutt_index_menu (void)
       case OP_UNDELETE_SUBTHREAD:
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	CHECK_READONLY;
 
 	rc = mutt_thread_set_flag (CURHDR, M_DELETE, 0,
@@ -1864,6 +1914,7 @@ int mutt_index_menu (void)
 
       case OP_VIEW_ATTACHMENTS:
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	mutt_view_attachments (CURHDR);
 	if (CURHDR->attach_del)
 	  Context->changed = 1;
