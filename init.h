@@ -270,6 +270,7 @@ struct option_t MuttVars[] = {
   */
   { "bounce",	DT_QUAD, R_NONE, OPT_BOUNCE, M_ASKYES },
   /*
+  ** .pp
   ** Controls whether you will be asked to confirm bouncing messages.
   ** If set to \fIyes\fP you don't get asked if you want to bounce a
   ** message. Setting this variable to \fIno\fP is not generally useful,
@@ -1340,6 +1341,7 @@ struct option_t MuttVars[] = {
   ** .dt %t     .dd trust/validity of the key-uid association
   ** .dt %[<s>] .dd date of the key where <s> is an strftime(3) expression
   ** .de
+  ** .pp
   ** (PGP only)
   */
   { "pgp_good_sign",	DT_RX,  R_NONE, UL &PgpGoodSign, 0 },
@@ -1647,8 +1649,8 @@ struct option_t MuttVars[] = {
   ** .dt %c .dd One or more certificate IDs.
   ** .dt %a .dd The algorithm used for encryption.
   ** .dt %C .dd CA location:  Depending on whether $$smime_ca_location
-  ** .		points to a directory or file, this expands to 
-  ** . 		"-CApath $$smime_ca_location" or "-CAfile $$smime_ca_location".
+  ** .          points to a directory or file, this expands to 
+  ** .          "-CApath $$smime_ca_location" or "-CAfile $$smime_ca_location".
   ** .de
   ** .pp
   ** For examples on how to configure these formats, see the smime.rc in
