@@ -1,3 +1,8 @@
+2005-01-27 20:26:52  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* pgp.c: Return an error in pgp_decrypt_part when the PGP output
+	file is empty.
+
 2005-01-27 20:17:46  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
 
 	* curs_main.c: this patch doesn't raise an error if you try
