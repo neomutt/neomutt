@@ -182,7 +182,7 @@ int mutt_yesorno (const char *msg, int def)
    * to fit.
    */
   answer_string = safe_malloc (COLS + 1);
-  snprintf (answer_string, COLS + 1, " ([%s]/%s): ", def == M_YES ? yes : no, def == M_NO ? no : yes);
+  snprintf (answer_string, COLS + 1, " ([%s]/%s): ", def == M_YES ? yes : no, def == M_YES ? no : yes);
   answer_string_len = strlen (answer_string);
   printw ("%.*s%s", COLS - answer_string_len, msg, answer_string);
   FREE (&answer_string);
