@@ -60,10 +60,6 @@ struct mh_sequences
 #define MH_SEQ_REPLIED (1 << 1)
 #define MH_SEQ_FLAGGED (1 << 2)
 
-#define MH_SEQNAME_UNSEEN 	"unseen"
-#define MH_SEQNAME_FLAGGED 	"flagged"
-#define MH_SEQNAME_REPLIED	"replied"
-
 static void mhs_alloc (struct mh_sequences *mhs, int i)
 {
   int j;
@@ -142,11 +138,11 @@ static void mh_read_sequences (struct mh_sequences *mhs, const char *path)
     if (!(t = strtok (buff, " \t:")))
       continue;
     
-    if (!strcmp (t, MH_SEQNAME_UNSEEN))
+    if (!mutt_strcmp (t, MhUnseen))
       f = MH_SEQ_UNSEEN;
-    else if (!strcmp (t, MH_SEQNAME_FLAGGED))
+    else if (!mutt_strcmp (t, MhFlagged))
       f = MH_SEQ_FLAGGED;
-    else if (!strcmp (t, MH_SEQNAME_REPLIED))
+    else if (!mutt_strcmp (t, MhReplied))
       f = MH_SEQ_REPLIED;
     else	/* unknown sequence */
       continue;
@@ -271,9 +267,18 @@ void mh_update_sequences (CONTEXT *ctx)
   int unseen = 0; 
   int flagged = 0;
   int replied = 0;
+
+  char seq_unseen[STRING];
+  char seq_replied[STRING];
+  char seq_flagged[STRING];
+
   
   struct mh_sequences mhs;
   memset (&mhs, 0, sizeof (mhs));
+  
+  snprintf (seq_unseen, sizeof (seq_unseen), "%s:", MhUnseen);
+  snprintf (seq_replied, sizeof (seq_replied), "%s:", MhReplied);
+  snprintf (seq_flagged, sizeof (seq_flagged), "%s:", MhFlagged);
   
   if (mh_mkstemp (ctx, &nfp, &tmpfname) != 0)
   {
@@ -289,11 +294,11 @@ void mh_update_sequences (CONTEXT *ctx)
   {
     while ((buff = mutt_read_line (buff, &s, ofp, &l)))
     {
-      if (!strncmp (buff, MH_SEQNAME_UNSEEN ":", 7))
+      if (!mutt_strncmp (buff, seq_unseen, mutt_strlen (seq_unseen)))
 	continue;
-      if (!strncmp (buff, MH_SEQNAME_FLAGGED ":", 8))
+      if (!mutt_strncmp (buff, seq_flagged, mutt_strlen (seq_flagged)))
 	continue;
-      if (!strncmp (buff, MH_SEQNAME_REPLIED ":", 8))
+      if (!mutt_strncmp (buff, seq_replied, mutt_strlen (seq_replied)))
 	continue;
 	
       fprintf (nfp, "%s\n", buff);
@@ -332,9 +337,9 @@ void mh_update_sequences (CONTEXT *ctx)
   }
 
   /* write out the new sequences */
-  if (unseen)  mhs_write_one_sequence (nfp, &mhs, MH_SEQ_UNSEEN, MH_SEQNAME_UNSEEN);
-  if (flagged) mhs_write_one_sequence (nfp, &mhs, MH_SEQ_FLAGGED, MH_SEQNAME_FLAGGED);
-  if (replied) mhs_write_one_sequence (nfp, &mhs, MH_SEQ_REPLIED, MH_SEQNAME_REPLIED);
+  if (unseen)  mhs_write_one_sequence (nfp, &mhs, MH_SEQ_UNSEEN, MhUnseen);
+  if (flagged) mhs_write_one_sequence (nfp, &mhs, MH_SEQ_FLAGGED, MhFlagged);
+  if (replied) mhs_write_one_sequence (nfp, &mhs, MH_SEQ_REPLIED, MhReplied);
 
   mhs_free_sequences (&mhs);
 
@@ -362,6 +367,10 @@ static void mh_sequences_add_one (CONTEXT *ctx, int n, short unseen, short flagg
  
   char *tmpfname;
   char sequences[_POSIX_PATH_MAX];
+
+  char seq_unseen[STRING];
+  char seq_replied[STRING];
+  char seq_flagged[STRING];
   
   char *buff = NULL;
   int line;
@@ -369,23 +378,27 @@ static void mh_sequences_add_one (CONTEXT *ctx, int n, short unseen, short flagg
   
   if (mh_mkstemp (ctx, &nfp, &tmpfname) == -1)
     return;
+
+  snprintf (seq_unseen, sizeof (seq_unseen), "%s:", MhUnseen);
+  snprintf (seq_replied, sizeof (seq_replied), "%s:", MhReplied);
+  snprintf (seq_flagged, sizeof (seq_flagged), "%s:", MhFlagged);
   
   snprintf (sequences, sizeof (sequences), "%s/.mh_sequences", ctx->path);
   if ((ofp = fopen (sequences, "r")))
   {
     while ((buff = mutt_read_line (buff, &sz, ofp, &line)))
     {
-      if (unseen && !strncmp (buff, MH_SEQNAME_UNSEEN ":", 7))
+      if (unseen && !strncmp (buff, seq_unseen, mutt_strlen (seq_unseen)))
       {
 	fprintf (nfp, "%s %d\n", buff, n);
 	unseen_done = 1;
       }
-      else if (flagged && !strncmp (buff, MH_SEQNAME_FLAGGED ":", 8))
+      else if (flagged && !strncmp (buff, seq_flagged, mutt_strlen (seq_flagged)))
       {
 	fprintf (nfp, "%s %d\n", buff, n);
 	flagged_done = 1;
       }
-      else if (replied && !strncmp (buff, MH_SEQNAME_REPLIED ":", 8))
+      else if (replied && !strncmp (buff, seq_replied, mutt_strlen (seq_replied)))
       {
 	fprintf (nfp, "%s %d\n", buff, n);
 	replied_done = 1;
@@ -397,9 +410,9 @@ static void mh_sequences_add_one (CONTEXT *ctx, int n, short unseen, short flagg
   safe_fclose (&ofp);
   safe_free ((void **) &buff);
   
-  if (!unseen_done  && unseen)   fprintf (nfp, "%s: %d\n", MH_SEQNAME_UNSEEN, n);
-  if (!flagged_done && flagged)  fprintf (nfp, "%s: %d\n", MH_SEQNAME_FLAGGED, n);
-  if (!replied_done && replied)  fprintf (nfp, "%s: %d\n", MH_SEQNAME_REPLIED, n);
+  if (!unseen_done  && unseen)   fprintf (nfp, "%s: %d\n", MhUnseen, n);
+  if (!flagged_done && flagged)  fprintf (nfp, "%s: %d\n", MhFlagged, n);
+  if (!replied_done && replied)  fprintf (nfp, "%s: %d\n", MhReplied, n);
   
   safe_fclose (&nfp);
   

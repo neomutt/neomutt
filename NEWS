@@ -7,8 +7,10 @@ Folder formats and folder access
 
 - Better mh support: Mutt now supports .mh_sequences files.
   Currently, the "unseen", "flagged", and "replied" sequences are
-  used to store mutt flags. As a side effect, messages in MH folders
-  are no longer rewritten upon status changes.
+  used to store mutt flags (the names are configurable using the
+  $mh_seq_unseen, $mh_seq_flagged, and $mh_seq_replied configuration
+  variables). As a side effect, messages in MH folders are no longer
+  rewritten upon status changes.
 
 - The "trashed" flag is supported for maildir folders.  See
   $maildir_trash.

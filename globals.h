@@ -61,6 +61,9 @@ WHERE char *Ispell;
 WHERE char *Locale;
 WHERE char *MailcapPath;
 WHERE char *Maildir;
+WHERE char *MhFlagged;
+WHERE char *MhReplied;
+WHERE char *MhUnseen;
 WHERE char *MsgFmt;
 
 #ifdef USE_SOCKET

@@ -965,6 +965,21 @@ struct option_t MuttVars[] = {
   ** them.  If the variable is set, the message files will simply be
   ** deleted.
   */
+  { "mh_seq_flagged",	DT_STR, R_NONE, UL &MhUnseen, "flagged" },
+  /*
+  ** .pp
+  ** The name of the MH sequence used for flagged messages.
+  */
+  { "mh_seq_replied",	DT_STR, R_NONE, UL &MhUnseen, "replied" },
+  /*
+  ** .pp
+  ** The name of the MH sequence used to tag replied messages.
+  */
+  { "mh_seq_unseen",	DT_STR, R_NONE, UL &MhUnseen, "unseen" },
+  /*
+  ** .pp
+  ** The name of the MH sequence used for unseen messages.
+  */
   { "mime_forward",	DT_QUAD, R_NONE, OPT_MIMEFWD, M_NO },
   /*
   ** .pp
