@@ -21,8 +21,8 @@
    all defined in crypt.c and cryptglue.c
 */
 
-#ifndef CRYPT_H
-#define CRYPT_H
+#ifndef MUTT_CRYPT_H
+#define MUTT_CRYPT_H
 
 #include "mutt.h"        /* Need this to declarer BODY, ADDTESS. STATE etc. */
 /* FIXME: They should be pointer to anonymous structures for better
@@ -248,4 +248,4 @@ void crypt_smime_invoke_import (char *infile, char *mailbox);
 int crypt_smime_verify_one (BODY *sigbdy, STATE *s, const char *tempf);
 
 
-#endif /*CRYPT_H*/
+#endif /*MUTT_CRYPT_H*/
