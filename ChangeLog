@@ -1,4 +1,12 @@
-2003-07-15 11:39:31  Brendan Cully  <brendan@kublai.com>  (roessler)
+2003-07-15 11:41:32  Brendan Cully  <brendan@kublai.com>  (roessler)
+
+	* curs_main.c, globals.h, imap/command.c, imap/imap.c,
+	imap/imap.h, imap/imap_private.h, imap/util.c, mx.c: The attached
+	patch should keep all opened IMAP connections alive, no matter
+	what mailbox you are currently in. With the patch that got
+	committed yesterday, this should close bug 1523.
+
+	(There was a typo in that patch. This one supersedes it.)
 
 	* configure.in, .cvsignore: autoconf 2.5 compatibility.
 
