@@ -1917,8 +1917,9 @@ CHECK_IMAP_ACL(IMAP_ACL_SEEN);
 	{
 	  if (option (OPTRESOLVE))
 	  {
-	    if ((menu->oldcurrent = ci_next_undeleted (menu->current)) == -1)
-	      menu->oldcurrent = menu->current;
+	    if ((menu->current = (op == OP_MAIN_READ_THREAD ? 
+				  mutt_next_thread (CURHDR) : mutt_next_subthread (CURHDR))) == -1)
+	      menu->current = menu->oldcurrent;
 	  }
 	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 	}
