@@ -33,7 +33,9 @@ static sort_t *AuxSort = NULL;
   set_option(OPTAUXSORT); \
   code = AuxSort(a,b); \
   unset_option(OPTAUXSORT); \
-}
+} \
+if (!code) \
+  code = (*((HEADER **)a))->index - (*((HEADER **)b))->index;
 
 int compare_score (const void *a, const void *b)
 {
