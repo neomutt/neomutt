@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -563,6 +563,8 @@ LIST *mutt_make_references(ENVELOPE *e)
 
 void mutt_fix_reply_recipients (ENVELOPE *env)
 {
+  mutt_expand_aliases_env (env);
+
   if (! option (OPTMETOO))
   {
     /* the order is important here.  do the CC: first so that if the
@@ -700,7 +702,6 @@ envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
       return (-1);
     }
 
-    mutt_fix_reply_recipients (env);
     mutt_make_misc_reply_headers (env, ctx, cur, curenv);
     mutt_make_reference_headers (tag ? NULL : curenv, env, ctx);
   }
@@ -1067,11 +1068,12 @@ ci_send_message (int flags,		/* send mode */
     signas = safe_strdup(PgpSignAs);
 #endif /* HAVE_PGP */
 
-  if (msg)
-  {
-    mutt_expand_aliases_env (msg->env);
-  }
-  else
+  /* Delay expansion of aliases until absolutely necessary--shouldn't
+   * be necessary unless we are prompting the user or about to execute a
+   * send-hook.
+   */
+
+  if (!msg)
   {
     msg = mutt_new_header ();
 
@@ -1134,7 +1136,15 @@ ci_send_message (int flags,		/* send mode */
     /* we shouldn't have to worry about freeing `msg->env->from' before
      * setting it here since this code will only execute when doing some
      * sort of reply.  the pointer will only be set when using the -H command
-     * line option */
+     * line option.
+     *
+     * We shouldn't have to worry about alias expansion here since we are
+     * either replying to a real or postponed message, therefore no aliases
+     * should exist since the user has not had the opportunity to add
+     * addresses to the list.  We just have to ensure the postponed messages
+     * have their aliases expanded.
+     */
+
     msg->env->from = set_reverse_name (cur->env);
   }
 
@@ -1149,6 +1159,7 @@ ci_send_message (int flags,		/* send mode */
       process_user_recips (msg->env);
       process_user_header (msg->env);
     }
+    mutt_expand_aliases_env (msg->env);
   }
   else if (! (flags & (SENDPOSTPONED|SENDRESEND)))
   {
@@ -1158,6 +1169,9 @@ ci_send_message (int flags,		/* send mode */
 
     if (option (OPTHDRS))
       process_user_recips (msg->env);
+
+    /* Expand aliases and remove duplicates/crossrefs */
+    mutt_fix_reply_recipients (msg->env);
 
     if (! (flags & SENDMAILX) &&
 	! (option (OPTAUTOEDIT) && option (OPTEDITHDRS)) &&
@@ -1619,3 +1633,5 @@ cleanup:
   return rv;
 
 }
+
+/* vim: set sw=2: */

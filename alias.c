@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -124,7 +124,7 @@ ADDRESS *mutt_expand_aliases (ADDRESS *a)
 
   t = mutt_expand_aliases_r (a, &expn);
   mutt_free_list (&expn);
-  return (t);
+  return (mutt_remove_duplicates (t));
 }
 
 void mutt_expand_aliases_env (ENVELOPE *env)
