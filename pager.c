@@ -257,14 +257,14 @@ resolve_color (struct line_t *lineInfo, int n, int cnt, int flags, int special,
   /* handle "special" bold & underlined characters */
   if (special || a->attr)
   {
-    if (special == A_BOLD || (a->attr & ANSI_BOLD))
+    if ((special & A_BOLD) || (a->attr & ANSI_BOLD))
     {
       if (ColorDefs[MT_COLOR_BOLD] && !search)
 	color = ColorDefs[MT_COLOR_BOLD];
       else
 	color ^= A_BOLD;
     }
-    else if (special == A_UNDERLINE || (a->attr & ANSI_UNDERLINE))
+    if ((special & A_UNDERLINE) || (a->attr & ANSI_UNDERLINE))
     {
       if (ColorDefs[MT_COLOR_UNDERLINE] && !search)
 	color = ColorDefs[MT_COLOR_UNDERLINE];
@@ -1023,17 +1023,17 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
       {
 	if (wc == wc1)
 	{
-	  special = (wc == '_' && special == A_UNDERLINE)
+	  special |= (wc == '_' && special & A_UNDERLINE)
 	    ? A_UNDERLINE : A_BOLD;
 	}
 	else if (wc == '_' || wc1 == '_')
 	{
-	  special = A_UNDERLINE;
+	  special |= A_UNDERLINE;
 	  wc = (wc1 == '_') ? wc : wc1;
 	}
 	else
 	{
-	  special = 0; /* overstrike: nothing to do! */
+	  /* special = 0; / * overstrike: nothing to do! */
 	  wc = wc1;
 	}
 	ch += k1;
