@@ -1,3 +1,8 @@
+2004-06-17 20:39:20  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* smime.c: Change S/MIME send menu behavior to xor instead of or,
+	so it behaves the same way as the PGP send menu.
+
 2004-06-17 20:36:13  Moritz Schulte  <moritz@g10code.com>  (roessler)
 
 	* Makefile.am, compose.c, configure.in, crypt-mod-pgp-classic.c,
