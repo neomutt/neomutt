@@ -194,3 +194,8 @@ stamp-doc-rc: $(srcdir)/init.h makedoc Muttrc.head
 		$(srcdir)/init.h | ./makedoc -c | cat Muttrc.head - > Muttrc
 	touch stamp-doc-rc
 
+
+jtags:	TAGS mkjtags
+	( ./mkjtags TAGS > tags.$$$$ && mv tags.$$$$ tags )
+
+.PHONY: jtags
