@@ -265,7 +265,7 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
   char buf[HUGE_STRING];
   char outfile[_POSIX_PATH_MAX];
   char tmpfname[_POSIX_PATH_MAX];
-  FILE *pgpout = NULL, *pgpin, *pgperr;
+  FILE *pgpout = NULL, *pgpin = NULL, *pgperr = NULL;
   FILE *tmpfp;
   pid_t thepid;
 
@@ -296,7 +296,7 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 	clearsign = 1;
         needpass = 0;
       }
-      else if (!option(OPTDONTHANDLEPGPKEYS) &&
+      else if (!option (OPTDONTHANDLEPGPKEYS) &&
 	       mutt_strcmp ("PUBLIC KEY BLOCK-----\n", buf + 15) == 0) 
       {
         needpass = 0;
@@ -355,44 +355,50 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 					  -1, tmpfname, 
 					  needpass)) == -1)
 	{
-	  fclose (pgpout); pgpout = NULL;
-	  mutt_unlink(tmpfname);
-	  state_puts (_("[-- Error: unable to create PGP subprocess! --]\n"), s);
-	  state_puts (buf, s);
-	  continue;
-	}
-	
-	if (needpass)
-	{
-	if (!pgp_valid_passphrase ())
-	    pgp_void_passphrase ();
-	  fputs (PgpPass, pgpin);
-	  fputc ('\n', pgpin);
-	}
+	  safe_fclose (&pgpout);
+	  mutt_unlink (tmpfname);
 
-	safe_fclose (&pgpin);
-	
-	if (s->flags & M_DISPLAY)
-	  pgp_current_time (s);
-	
-	rv = mutt_wait_filter (thepid);
+	  maybe_goodsig = 0;
 
-	mutt_unlink (tmpfname);
-	
-	if (s->flags & M_DISPLAY)
-	{
-	  rc = pgp_copy_checksig (pgperr, s->fpout);
+	  pgpin = NULL;
+	  pgperr = NULL;
 	  
-	  if (rc == 0)
-	    have_any_sigs = 1;
-	  if (rc || rv)
-	    maybe_goodsig = 0;
+	  state_puts (_("[-- Error: unable to create PGP subprocess! --]\n"), s);
 	}
-
-	safe_fclose (&pgperr);
-
-	if (s->flags & M_DISPLAY)
-	  state_puts (_("\n[-- End of PGP output --]\n\n"), s);
+	else
+	{
+	  if (needpass)
+	  {
+	    if (!pgp_valid_passphrase ())
+	      pgp_void_passphrase ();
+	    fputs (PgpPass, pgpin);
+	    fputc ('\n', pgpin);
+	  }
+	  
+	  safe_fclose (&pgpin);
+	  
+	  if (s->flags & M_DISPLAY)
+	    pgp_current_time (s);
+	  
+	  rv = mutt_wait_filter (thepid);
+	  
+	  mutt_unlink (tmpfname);
+	
+	  if (s->flags & M_DISPLAY)
+	  {
+	    rc = pgp_copy_checksig (pgperr, s->fpout);
+	    
+	    if (rc == 0)
+	      have_any_sigs = 1;
+	    if (rc || rv)
+	      maybe_goodsig = 0;
+	  }
+	  
+	  safe_fclose (&pgperr);
+	  
+	  if (s->flags & M_DISPLAY)
+	    state_puts (_("\n[-- End of PGP output --]\n\n"), s);
+	}
       }
     
       if(s->flags & M_DISPLAY)
@@ -407,7 +413,7 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 
       /* Use PGP's output if there was no clearsig signature. */
       
-      if(!clearsign)
+      if(!clearsign && pgpout)
       {
 	fflush (pgpout);
 	rewind (pgpout);
@@ -432,9 +438,9 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 
       /* decode clearsign stuff */
       
-      if(clearsign)
+      if (clearsign)
       {
-	fseek(s->fpin, start_pos, SEEK_SET);
+	fseek (s->fpin, start_pos, SEEK_SET);
 	bytes   += (last_pos - start_pos);
 	bytes    = pgp_copy_clearsigned (s, bytes);
 	last_pos = ftell (s->fpin);
