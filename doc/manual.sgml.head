@@ -351,7 +351,7 @@ id="source" name="source"> the file.
 Toggles the weeding of message header fields specified by <ref id="ignore"
 name="ignore"> commands.
 
-<p><bf/edit/<label id="edit-messaage"> (default: e)<newline>
+<p><bf/edit-message/<label id="edit-message"> (default: e)<newline>
 
 This command (available in the ``index'' and ``pager'') allows you to
 edit the raw current message as it's present in the mail folder.
@@ -396,6 +396,19 @@ name="&dollar;pipe&lowbar;split">, <ref id="pipe_sep"
 name="&dollar;pipe&lowbar;sep"> and <ref id="wait_key"
 name="&dollar;wait&lowbar;key"> control the exact behaviour of this
 function.
+
+<bf/resend-message/<label id="resend-message"> (default: ESC e)<newline>
+
+With resend-message, mutt takes the current message as a template for a
+new message.  This function is best described as "recall from arbitrary
+folders".  It can conveniently be used to forward MIME messages while
+preservig the original mail structure. Note that the amount of headers
+included here depends on the value of the <ref id="weed" name="&dollar;weed">
+variable.
+
+This function is also available from the attachment menu. You can use this
+to comfortably resend a message which was included with a bounce message
+as a message/rfc822 body part.
 
 <bf/shell-escape/<label id="shell-escape"> (default: !)<newline>
 

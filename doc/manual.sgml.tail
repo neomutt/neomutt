@@ -63,7 +63,7 @@ delete-thread             ^D   delete all messages in thread
 display-address            @   display full address of sender
 display-toggle-weed        h   display message and toggle header weeding
 display-message          RET   display a message
-edit                       e   edit the current message
+edit-message               e   edit the current message
 exit                       x   exit without saving changes
 extract-keys              ^K   extract PGP public keys
 fetch-mail                 G   retrieve mail from POP server
@@ -95,6 +95,7 @@ read-subthread         ESC r   mark the current subthread as read
 read-thread               ^R   mark the current thread as read
 recall-message             R   recall a postponed message
 reply                      r   reply to a message
+resend-message         ESC e   resend message and preserve MIME structure
 save-message               s   save message/attachment to a file
 set-flag                   w   set a status flag on a message
 show-version               V   show the Mutt version number and date
@@ -220,6 +221,7 @@ list-reply                 L   reply to specified mailing list
 pipe-entry                 |   pipe message/attachment to a shell command
 print-entry                p   print the current entry
 reply                      r   reply to a message
+resend-message         ESC e   resend message and preserve MIME structure
 save-entry                 s   save message/attachment to a file
 undelete-entry             u   undelete the current entry
 view-attach              RET   view attachment using mailcap entry if necessary
