@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.15i\n"
+"Project-Id-Version: 1.3.16i\n"
 "POT-Creation-Date: 2001-02-27 11:50+0100\n"
-"PO-Revision-Date: 2001-02-13 15:45-0600\n"
+"PO-Revision-Date: 2001-02-27 19:30-0600\n"
 "Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
 "Language-Team: Indonesia <i18n@linux.or.id>\n"
 "MIME-Version: 1.0\n"
@@ -1186,7 +1186,7 @@ msgstr "Hubungan ke %s gagal."
 
 #: imap/imap.c:383
 msgid "Secure connection with TLS?"
-msgstr ""
+msgstr "Gunakan hubungan aman dg TLS?"
 
 #: imap/imap.c:535
 #, c-format
@@ -2138,7 +2138,7 @@ msgstr "buat salinan yang sudah di-decrypt"
 
 #: keymap_alldefs.h:184
 msgid "check for classic pgp"
-msgstr ""
+msgstr "periksa pgp klasik"
 
 #: keymap_alldefs.h:185
 msgid "Accept the chain constructed"

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.3.15\n"
 "POT-Creation-Date: 2001-02-27 11:50+0100\n"
-"PO-Revision-Date: 2001-02-22 14:51+01:00\n"
+"PO-Revision-Date: 2001-02-27 19:27+01:00\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -1182,7 +1182,7 @@ msgstr "Verbindung zu %s fehlgeschlagen."
 
 #: imap/imap.c:383
 msgid "Secure connection with TLS?"
-msgstr ""
+msgstr "Sichere Verbindung mittels TLS?"
 
 #: imap/imap.c:535
 #, c-format
@@ -2136,7 +2136,7 @@ msgstr "Erzeuge dechiffrierte Kopie"
 
 #: keymap_alldefs.h:184
 msgid "check for classic pgp"
-msgstr ""
+msgstr "Suche nach klassischem PGP"
 
 #: keymap_alldefs.h:185
 msgid "Accept the chain constructed"
