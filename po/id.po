@@ -1,13 +1,13 @@
-# Ronny Haryanto <ronny@haryan.to>, 1999.
+# Ronny Haryanto <ronny-mutt-po-file@haryan.to>, 1999-2000.
 #
 # http://i18n.linux.or.id
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.1.5i\n"
+"Project-Id-Version: 1.3.4i\n"
 "POT-Creation-Date: 2000-06-19 18:36+0200\n"
-"PO-Revision-Date: 2000-02-27 09:00-0600\n"
-"Last-Translator: Ronny Haryanto <ronny@haryan.to>\n"
+"PO-Revision-Date: 2000-07-02 23:40-0600\n"
+"Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
 "Language-Team: Indonesia <i18n@linux.or.id>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
@@ -295,23 +295,20 @@ msgid "Could not create temporary file!"
 msgstr "Tidak bisa membuat file sementara!"
 
 #: commands.c:127
-#, fuzzy
 msgid "Cannot create display filter"
-msgstr "Tidak bisa membuat filter"
+msgstr "Tidak bisa membuat tampilan filter"
 
 #: commands.c:147
-#, fuzzy
 msgid "Could not copy message"
-msgstr "Tidak bisa mengirim surat."
+msgstr "Tidak bisa menyalin surat"
 
 #: commands.c:169
 msgid "PGP signature successfully verified."
 msgstr "Tanda tangan PGP berhasil diverifikasi."
 
 #: commands.c:170
-#, fuzzy
 msgid "PGP signature could NOT be verified."
-msgstr "Tanda tangan PGP berhasil diverifikasi."
+msgstr "Tanda tangan PGP TIDAK berhasil diverifikasi."
 
 #: commands.c:193
 msgid "Command: "
@@ -409,7 +406,7 @@ msgstr " telah ditandai"
 #: commands.c:657
 #, c-format
 msgid "Copying to %s..."
-msgstr "Sedang meng-copy ke %s..."
+msgstr "Sedang menyalin ke %s..."
 
 #: commands.c:750
 msgid "Print message?"
@@ -428,14 +425,12 @@ msgid "Messages printed"
 msgstr "Surat-surat telah dicetak"
 
 #: commands.c:834
-#, fuzzy, c-format
 msgid "Content-Type changed to %s."
-msgstr "Menghubungi %s..."
+msgstr "Content-Type diubah ke %s."
 
 #: commands.c:836
-#, fuzzy, c-format
 msgid "Character set changed to %s."
-msgstr "Character set %s tidak dikenali."
+msgstr "Character set diubah ke %s."
 
 #: compose.c:40
 msgid "There are no attachments."
@@ -1005,9 +1000,8 @@ msgid "[-- on %s --]\n"
 msgstr "[-- pada %s --]\n"
 
 #: handler.c:1300
-#, fuzzy, c-format
 msgid "[-- name: %s --]\n"
-msgstr "[-- pada %s --]\n"
+msgstr "[-- nama: %s --]\n"
 
 #: handler.c:1311
 #, c-format
@@ -1255,18 +1249,16 @@ msgid "[unable to calculate]"
 msgstr "%s: tidak bisa melampirkan file"
 
 #: imap/imap_ssl.c:292
-#, fuzzy
 msgid "[invalid date]"
-msgstr "%s: nilai tidak betul"
+msgstr "[tanggal tidak betul]"
 
 #: imap/imap_ssl.c:367
 msgid "Server certificate is not yet valid"
-msgstr ""
+msgstr "Sertifikat server belum sah"
 
 #: imap/imap_ssl.c:374
-#, fuzzy
 msgid "Server certificate has expired"
-msgstr "Sertifikat ini dikeluarkan oleh:"
+msgstr "Sertifikat server sudah kadaluwarsa"
 
 #: imap/imap_ssl.c:447
 msgid "This certificate belongs to:"
@@ -1277,19 +1269,18 @@ msgid "This certificate was issued by:"
 msgstr "Sertifikat ini dikeluarkan oleh:"
 
 #: imap/imap_ssl.c:467
-#, fuzzy
 msgid "This certificate is valid"
-msgstr "Sertifikat ini dikeluarkan oleh:"
+msgstr "Sertifikat ini sah"
 
 #: imap/imap_ssl.c:468
 #, c-format
 msgid "   from %s"
-msgstr ""
+msgstr "   dari %s"
 
 #: imap/imap_ssl.c:470
 #, c-format
 msgid "     to %s"
-msgstr ""
+msgstr "     ke %s"
 
 #: imap/imap_ssl.c:476
 #, c-format
@@ -1758,9 +1749,8 @@ msgid "move the cursor one character to the left"
 msgstr "pindahkan kursor satu karakter ke kanan"
 
 #: keymap_alldefs.h:62
-#, fuzzy
 msgid "move the cursor to the beginning of the word"
-msgstr "ke awal baris"
+msgstr "ke awal kata"
 
 #: keymap_alldefs.h:63
 msgid "jump to the beginning of the line"
@@ -1791,9 +1781,8 @@ msgid "move the cursor one character to the right"
 msgstr "pindahkan kursor satu karakter ke kanan"
 
 #: keymap_alldefs.h:70
-#, fuzzy
 msgid "move the cursor to the end of the word"
-msgstr "pindahkan kursor satu karakter ke kanan"
+msgstr "pindahkan kursor ke akhir kata"
 
 #: keymap_alldefs.h:71 keymap_alldefs.h:72
 msgid "scroll up through the history list"
@@ -1804,9 +1793,8 @@ msgid "delete chars from cursor to end of line"
 msgstr "hapus dari kursor sampai akhir baris"
 
 #: keymap_alldefs.h:74
-#, fuzzy
 msgid "delete chars from the cursor to the end of the word"
-msgstr "hapus dari kursor sampai akhir baris"
+msgstr "hapus dari kursor sampai akhir kata"
 
 #: keymap_alldefs.h:75
 msgid "delete all chars on the line"
@@ -1822,7 +1810,7 @@ msgstr "kutip tombol yang akan ditekan berikut"
 
 #: keymap_alldefs.h:78
 msgid "transpose character under cursor with previous"
-msgstr ""
+msgstr "tukar karakter di bawah kursor dg yg sebelumnya"
 
 #: keymap_alldefs.h:79
 msgid "enter a muttrc command"
@@ -2346,7 +2334,6 @@ msgid ""
 msgstr ""
 
 #: main.c:103
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
 "]\n"
@@ -2483,7 +2470,7 @@ msgstr "Tidak bisa mengunci kotak surat!"
 #: mbox.c:752
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr ""
-"sync: mbox dirubah, tapi tidak ada surat yang berubah! (laporkan bug ini)"
+"sync: mbox diubah, tapi tidak ada surat yang berubah! (laporkan bug ini)"
 
 #: mbox.c:782
 msgid "Writing messages... %d (%d%%)"
@@ -2853,9 +2840,8 @@ msgid "PGP passphrase forgotten."
 msgstr "Passphrase PGP sudah dilupakan."
 
 #: pgp.c:142
-#, fuzzy, c-format
 msgid "[-- PGP output follows (current time: %c) --]\n"
-msgstr "[-- Keluaran dari PGP (waktu: "
+msgstr "[-- Keluaran dari PGP (waktu skrg: %c) --]\n"
 
 #: pgp.c:246
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
@@ -3149,9 +3135,8 @@ msgid "No new mail in POP mailbox."
 msgstr "Tidak ada surat baru di kotak surat POP."
 
 #: pop.c:209
-#, fuzzy
 msgid "Delete messages from server?"
-msgstr "Menghapus surat-surat di server..."
+msgstr "Hapus surat-surat dari server?"
 
 #: pop.c:212
 #, c-format
@@ -3578,52 +3563,3 @@ msgstr "Surat induk tidak bisa dilihat di tampilan terbatas."
 #: thread.c:717
 msgid "Parent message is not available."
 msgstr "Surat induk tidak ada."
-
-#~ msgid "Can't open %s: %s."
-#~ msgstr "Tidak bisa membuka: %s"
-
-#~ msgid "Error while recoding %s. Leave it unchanged."
-#~ msgstr "Error meng-coding ulang %s. Biarkan saja, jangan diubah."
-
-#~ msgid "Error while recoding %s. See %s for recovering your data."
-#~ msgstr ""
-#~ "Error saat meng-coding ulang %s. Lihat %s untuk menyelamatkan data anda."
-
-#~ msgid "Can't change character set for non-text attachments!"
-#~ msgstr "Tidak bisa mengganti character set untuk lampiran yang bukan teks!"
-
-#~ msgid "Enter character set: "
-#~ msgstr "Masukkan character set: "
-
-#~ msgid "Recoding successful."
-#~ msgstr "Peng-coding-an ulang berhasil."
-
-#~ msgid "change an attachment's character set"
-#~ msgstr "ubah character set dari lampiran"
-
-#~ msgid "recode this attachment to/from the local charset"
-#~ msgstr "peng-coding-an ulang ke/dari charset lokal"
-
-#~ msgid "Compose"
-#~ msgstr "Tulis surat"
-
-#~ msgid "We can't currently handle utf-8 at this point."
-#~ msgstr "Kami belum bisa menangani UTF-8 pada saat ini."
-
-#~ msgid "UTF-8 encoding attachments has not yet been implemented."
-#~ msgstr "Lampiran dengan encoding UTF-8 belum diimplementasikan."
-
-#~ msgid "We currently can't encode to utf-8."
-#~ msgstr "Kami belum bisa meng-encode ke UTF-8 pada saat ini."
-
-#~ msgid "move to the last undelete message"
-#~ msgstr "ke surat terakhir yang tidak dihapus"
-
-#~ msgid "return to the main-menu"
-#~ msgstr "kembali ke menu utama"
-
-#~ msgid "ignoring empty header field: %s"
-#~ msgstr "mengacuhkan kolom header kosong: %s"
-
-#~ msgid "Recoding only affetcs text attachments."
-#~ msgstr "Peng-coding-an ulang hanya berpengaruh terhadap lampiran teks."
