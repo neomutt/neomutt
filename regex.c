@@ -30,6 +30,8 @@
  * Use _regex.h instead of regex.h.  tlr, 1999-01-06
  * Make REGEX_MALLOC depend on HAVE_ALLOCA &c.
  * 				     tlr, 1999-02-14
+ * Don't switch on regex debugging when debugging mutt.
+ * 	                             tlr, 1999-02-25
  */
 
 /* The following doesn't mix too well with autoconfiguring
@@ -39,9 +41,9 @@
 #if 0
 
 /* AIX requires this to be the first thing in the file. */
-#if defined (_AIX) && !defined (REGEX_MALLOC)
-  #pragma alloca
-#endif
+# if defined (_AIX) && !defined (REGEX_MALLOC)
+#  pragma alloca
+# endif
 
 #endif
 
@@ -49,8 +51,10 @@
 #define _GNU_SOURCE
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+# include <config.h>
 #endif
+
+#undef DEBUG
 
 #if (defined(HAVE_ALLOCA_H) && !defined(_AIX))
 # include <alloca.h>

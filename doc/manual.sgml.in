@@ -3454,6 +3454,19 @@ If set, automatically PGP sign replies to messages which are signed.
 <bf/Note:/ this does not work on messages, that are encrypted <bf/and/
 signed!
 
+<sect2>pgp&lowbar;replysignencrypted<label id="pgp_replysignencrypted">
+<p>
+Type: boolean<newline>
+Default: unset
+
+If set, automatically PGP sign replies to messages which are
+encrypted. This makes sense in combination with <ref
+id="pgp_replyencrypt" name="&dollar;pgp&lowbar;replyencrypt">, because 
+it allows you to sign all messages which are automatically encrypted.
+This works around the problem noted in <ref
+id="pgp_replysign" name="&dollar;pgp&lowbar;replysign">, that mutt is
+not able to find out whether an encrypted message is also signed.
+
 <sect2>pgp&lowbar;send&lowbar;version<label id="pgp_send_version">
 <p>
 Type: string<newline>

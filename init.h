@@ -186,6 +186,7 @@ struct option_t MuttVars[] = {
   { "pgp_long_ids",	DT_BOOL, R_NONE, OPTPGPLONGIDS, 0 },
   { "pgp_replyencrypt",	DT_BOOL, R_NONE, OPTPGPREPLYENCRYPT, 0 },
   { "pgp_replysign",	DT_BOOL, R_NONE, OPTPGPREPLYSIGN, 0 },
+  { "pgp_replysignencrypted", DT_BOOL, R_NONE, OPTPGPREPLYSIGNENCRYPTED, 0 },
   { "pgp_retainable_sigs", DT_BOOL, R_NONE, OPTPGPRETAINABLESIG, 0 },
   { "pgp_show_unusable", DT_BOOL, R_NONE, OPTPGPSHOWUNUSABLE, 1 },
   { "pgp_sign_as",	DT_STR,	 R_NONE, UL &PgpSignAs, 0 },

@@ -1044,6 +1044,8 @@ ci_send_message (int flags,		/* send mode */
 	msg->pgp |= PGPENCRYPT;
       if (option (OPTPGPREPLYSIGN) && cur && cur->pgp & PGPSIGN)
 	msg->pgp |= PGPSIGN;
+      if (option (OPTPGPREPLYSIGNENCRYPTED) && cur && cur->pgp & PGPENCRYPT)
+	msg->pgp |= PGPSIGN;
     }
 #endif /* _PGPPATH */
 
