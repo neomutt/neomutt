@@ -1,3 +1,10 @@
+2005-01-27 19:18:15  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* smime.c: Void the S/MIME passphrase before prompting
+	the user to re-enter it.  Noted by TAKAHASHI Tamotsu
+	<ttakah@lapis.plala.or.jp>, but with memset replaced by
+	smime_void_passphrase().
+
 2005-01-27 19:00:59  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
 
 	* curs_lib.c: Add terminal newline when it lacks after editing
