@@ -1,3 +1,7 @@
+2005-03-01 15:52:33  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
+
+	* init.h: This is a spelling fix supplied by Cameron Simpson.
+
 2005-02-28 18:33:45  Mads Martin Joergensen  <mmj@suse.de>  (roessler)
 
 	* curs_main.c: Fix a crash.
