@@ -314,6 +314,7 @@ int mutt_pattern_func (int, char *);
 int mutt_pipe_attachment (FILE *, BODY *, const char *, char *); 
 int mutt_print_attachment (FILE *, BODY *);
 int mutt_query_complete (char *, size_t);
+int mutt_query_variables (LIST *queries);
 int mutt_save_attachment (FILE *, BODY *, char *, int, HEADER *);
 void _mutt_save_message (HEADER *, CONTEXT *, int, int, int);
 int mutt_save_message (HEADER *, int, int, int, int *);
