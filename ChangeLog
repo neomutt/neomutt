@@ -1,3 +1,110 @@
+Tue Aug 24 15:10:48 1999  Thomas Roessler  <roessler@guug.de>
+
+	* doc/Makefile.in, doc/manual.sgml, doc/muttrc.man:
+	Various experimental changes to automate the distribution-building
+	process; documentation update.
+
+	* Makefile.am:
+	Various experimental changes to automate the distribution-building
+	process.
+
+Mon Aug 23 22:12:09 1999  Thomas Roessler  <roessler@guug.de>
+
+	* charmaps/Makefile.am, configure.in:
+	Fix charmaps part of the build process.
+
+	* copy.c: Fix an off-by-one error which lead to a segmentation fault.
+
+	* charset.c:
+	Don't delete symbol -> character code mappings.  Character sets may
+	define multiple symbols. :-(
+
+	* imap/auth.c, imap/browse.c, imap/imap.c, imap/imap.h, imap/imap_private.h, browser.c, configure.in, Makefile.am, acconfig.h:
+	Inclue GSS authentization for IMAP.
+
+	* dotlock.c, mx.c:
+	Remove a couple of NFS-related hacks which seem to be unnecessary.
+
+	* main.c: Fix a small typo affecting mutt -v's output.
+
+Fri Aug 20 08:24:13 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/fr.po: Fixed french translation.
+
+	* imap/Makefile.am, imap/auth.c, imap/browse.c, imap/imap.c, imap/imap.h, imap/imap_private.h, imap/imap_socket.h, imap/md5.h, imap/md5c.c, imap/socket.c, Attic/socket.c, Attic/imap.c, Attic/imap.h, Attic/mutt_socket.h, globals.h, init.h, lib.h, mime.h, prepare, protos.h, rfc2047.c, sendlib.c, Makefile.am, base64.c, configure.in, copy.c:
+	Brendan Cully's latest IMAP clean-up.
+
+	* doc/Attic/manual.sgml.in, NEWS, copy.c, init.h, mutt.h, sendlib.c:
+	Back-port $bounce_delivered from unstable.
+
+	* po/fr.po: [stable] Small fixes.
+
+Thu Aug 19 10:04:28 1999  Thomas Roessler  <roessler@guug.de>
+
+	* sendlib.c: [stable] Fix a back-porting bug.
+
+	* configure.in:
+	[stable] Albert Chin-A-Young <china@thewrittenword.com> suggests a
+	different check for -lnsl and -lsocket.
+
+	* configure.in:
+	Albert Chin-A-Young suggests a slightly different check for
+	libsocket and libnsl.
+
+	* doc/Attic/manual.sgml.in: [stable] fix the urlview url.
+
+	* doc/manual.sgml.head: fix the urlview url.
+
+	* main.c: copyright message cosmetics.
+
+	* Makefile.am, configure.in, prepare:
+	Remove the $output.in hack, and create a fake charmaps directory
+	instead.
+
+	* acconfig.h, configure.in:
+	[stable] check signal.h for sig_atomic_t.  This should help to build
+	this version of mutt on systems such as SunOS 4.1.
+
+	* sendlib.c:
+	[stable] Force quotes around the boundary parameter's value.
+
+	* sendlib.c:
+	Force quotes around the boundary parameter.  Another courtesy
+	towards Outlook.
+
+	* pgp.c:
+	[stable] Make sure the boundary MIME parameter is the last one on
+	multipart/signed.  Otherwise, Outlook will fail.  Pointed out by Ian
+	Bell, Turnpike.
+
+	* muttlib.c, pgp.c:
+	Ian Bell (turnpike) reports that Outlook Express expects the
+	boundary parameter to be the _last_ MIME parameter on a multipart/*
+	body part, and otherwise displays messages as empty.
+
+Wed Aug 18 06:54:13 1999  Thomas Roessler  <roessler@guug.de>
+
+	* doc/muttrc.man, doc/muttrc.man.head, doc/manual.sgml, NEWS:
+	documentation fixes.
+
+	* commands.c:
+	Fetch senders' keys also when decrypting a message.  There may be a
+	signature.
+
+	* main.c: Don't try to create $maildir if it's an IMAP folder.
+
+Tue Aug 17 20:04:07 1999  Thomas Roessler  <roessler@guug.de>
+
+	* reldate.h: :-(
+
+	* reldate.h: *grmbls*
+
+	* po/de.po, ChangeLog, VERSION: post-release commit for 0.96.4.
+
+	* po/de.po, VERSION, ChangeLog: post-release commit for 0.95.7.
+
+	* doc/manual.sgml, doc/muttrc.man, Muttrc: ispell's default path.
+
 Tue Aug 17 17:53:40 1999  Thomas Roessler  <roessler@guug.de>
 
 	* doc/manual.sgml, doc/muttrc.man, Muttrc: ispell's default path.

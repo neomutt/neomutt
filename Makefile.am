@@ -155,11 +155,11 @@ actual-dist: dist us-dist
 	pgp -sb $(distdir)i.tar.gz && chmod 644 $(distdir)i.tar.gz.asc
 	pgp -sb $(distdir).tar.gz && chmod 644 $(distdir).tar.gz.asc
 
-mutt-dist-prep: reldate update-doc changelog
+bump-version:
 	awk -F . '{printf("%d.%d.%d\n", $$1, $$2, $$3 + 1);}' VERSION > _VERSION.$$$$  \
 		&& mv _VERSION.$$$$ VERSION
 
-mutt-dist: mutt-dist-prep
+mutt-dist: bump-version reldate update-doc changelog
 	touch $(srcdir)/configure.in
 	$(MAKE) actual-dist
 
