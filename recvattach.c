@@ -140,16 +140,18 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
   return (idx);
 }
 
-/* %D = deleted flag
-   %d = description
-   %e = MIME content-transfer-encoding
-   %f = filename
-   %t = tagged flag
-   %m = major MIME type
-   %M = MIME subtype
-   %n = attachment number
-   %s = size
-   %u = unlink */
+/* %C = character set
+ * %D = deleted flag
+ * %d = description
+ * %e = MIME content-transfer-encoding
+ * %f = filename
+ * %t = tagged flag
+ * %m = major MIME type
+ * %M = MIME subtype
+ * %n = attachment number
+ * %s = size
+ * %u = unlink 
+ */
 const char *mutt_attach_fmt (char *dest,
     size_t destlen,
     char op,
@@ -161,90 +163,161 @@ const char *mutt_attach_fmt (char *dest,
     format_flag flags)
 {
   char fmt[16];
+  char tmp[SHORT_STRING];
   ATTACHPTR *aptr = (ATTACHPTR *) data;
-
+  char charset[SHORT_STRING];
+  int optional = (flags & M_FORMAT_OPTIONAL);
+  size_t l;
+  
   switch (op)
   {
-    case 'd':
-      snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
-      if (aptr->content->description)
+    case 'C':
+      if(!optional)
       {
-	snprintf (dest, destlen, fmt, aptr->content->description);
-	break;
-      }
-      if (mutt_is_message_type(aptr->content->type, aptr->content->subtype) &&
-	  MsgFmt && aptr->content->hdr)
-      {
-	char s[SHORT_STRING];
-	_mutt_make_string (s, sizeof (s), MsgFmt, NULL, aptr->content->hdr,
-	    M_FORMAT_FORCESUBJ | M_FORMAT_MAKEPRINT | M_FORMAT_ARROWCURSOR);
-	if (*s)
+	if(aptr->content->type == TYPETEXT && mutt_get_send_charset(charset, sizeof(charset), aptr->content))
 	{
-	  snprintf (dest, destlen, fmt, s);
+	  snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
+	  snprintf(dest, destlen, fmt, charset);
+	}
+      }
+      else if(aptr->content->type != TYPETEXT || !mutt_get_send_charset(charset, sizeof(charset), aptr->content))
+        optional = 0;
+      break;
+    case 'd':
+      if(!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+	if (aptr->content->description)
+	{
+	  snprintf (dest, destlen, fmt, aptr->content->description);
+	  break;
+	}
+	if (mutt_is_message_type(aptr->content->type, aptr->content->subtype) &&
+	    MsgFmt && aptr->content->hdr)
+	{
+	  char s[SHORT_STRING];
+	  _mutt_make_string (s, sizeof (s), MsgFmt, NULL, aptr->content->hdr,
+			     M_FORMAT_FORCESUBJ | M_FORMAT_MAKEPRINT | M_FORMAT_ARROWCURSOR);
+	  if (*s)
+	  {
+	    snprintf (dest, destlen, fmt, s);
+	    break;
+	  }
+	}
+	if (!aptr->content->filename)
+	{
+	  snprintf (dest, destlen, fmt, "<no description>");
 	  break;
 	}
       }
-      if (!aptr->content->filename)
-      {
-	snprintf (dest, destlen, fmt, "<no description>");
-	break;
-      }
-      /* FALLS THROUGH TO 'f' */
+      else if(aptr->content->description || 
+	      (mutt_is_message_type (aptr->content->type, aptr->content->subtype)
+	      && MsgFmt && aptr->content->hdr))
+        break;
+    /* FALLS THROUGH TO 'f' */
     case 'f':
-      snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
-      if (aptr->content->filename && *aptr->content->filename == '/')
+      if(!optional)
       {
+	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+	if (aptr->content->filename && *aptr->content->filename == '/')
+	{
 	  char path[_POSIX_PATH_MAX];
 	  
 	  strfcpy (path, aptr->content->filename, sizeof (path));
 	  mutt_pretty_mailbox (path);
 	  snprintf (dest, destlen, fmt, path);
-      }
-      else
+	}
+	else
 	  snprintf (dest, destlen, fmt, NONULL (aptr->content->filename));
+      }
+      else if(!aptr->content->filename)
+        optional = 0;
       break;
     case 'D':
-      snprintf (dest, destlen, "%c", aptr->content->deleted ? 'D' : ' ');
+      if(!optional)
+	snprintf (dest, destlen, "%c", aptr->content->deleted ? 'D' : ' ');
+      else if(!aptr->content->deleted)
+        optional = 0;
       break;
     case 'e':
-      snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
-      snprintf (dest, destlen, fmt, ENCODING (aptr->content->encoding));
+      if(!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+	snprintf (dest, destlen, fmt, ENCODING (aptr->content->encoding));
+      }
       break;
     case 'm':
-      snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
-      snprintf (dest, destlen, fmt, TYPE (aptr->content));
+      if(!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+	snprintf (dest, destlen, fmt, TYPE (aptr->content));
+      }
       break;
     case 'M':
-      snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
-      snprintf (dest, destlen, fmt, aptr->content->subtype);
+      if(!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+	snprintf (dest, destlen, fmt, aptr->content->subtype);
+      } 
+      else if(!aptr->content->subtype)
+        optional = 0;
       break;
     case 'n':
-      snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
-      snprintf (dest, destlen, fmt, aptr->num + 1);
+      if(!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
+	snprintf (dest, destlen, fmt, aptr->num + 1);
+      }
       break;
     case 's':
       if (flags & M_FORMAT_STAT_FILE)
       {
-	  struct stat st;
-
-	  stat (aptr->content->filename, &st);
-	  mutt_pretty_size (dest, destlen, st.st_size);
+	struct stat st;
+	stat (aptr->content->filename, &st);
+	l = st.st_size;
       }
       else
-	  mutt_pretty_size (dest, destlen, aptr->content->length);
+        l = aptr->content->length;
+      
+      if(!optional)
+      {
+	mutt_pretty_size (tmp, sizeof(tmp), l);
+	snprintf (fmt, sizeof(fmt), "%%%ss", prefix);
+	snprintf (dest, destlen, fmt, tmp);
+      }
+      else if (l == 0)
+        optional = 0;
+
       break;
     case 't':
-      snprintf (dest, destlen, "%c", aptr->content->tagged ? '*' : ' ');
+      if(!optional)
+        snprintf (dest, destlen, "%c", aptr->content->tagged ? '*' : ' ');
+      else if(!aptr->content->tagged)
+        optional = 0;
       break;
     case 'T':
-      snprintf (dest, destlen, "%s", NONULL (aptr->tree));
+      if(!optional)
+      {
+	snprintf (fmt, sizeof(fmt), "%%%ss", prefix);
+        snprintf (dest, destlen, fmt, NONULL (aptr->tree));
+      } 
+      else if (!aptr->tree)
+        optional = 0;
       break;
     case 'u':
-      snprintf (dest, destlen, "%c", aptr->content->unlink ? '-' : ' ');
+      if(!optional)
+        snprintf (dest, destlen, "%c", aptr->content->unlink ? '-' : ' ');
+      else if (!aptr->content->unlink)
+        optional = 0;
       break;
     default:
       *dest = 0;
   }
+  
+  if (optional)
+    mutt_FormatString (dest, destlen, ifstring, mutt_attach_fmt, data, 0);
+  else if (flags & M_FORMAT_OPTIONAL)
+    mutt_FormatString (dest, destlen, elsestring, mutt_attach_fmt, data, 0);
   return (src);
 }
 
