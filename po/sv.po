@@ -1,9 +1,9 @@
 # $Id$
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.1.9\n"
+"Project-Id-Version: Mutt 1.1.11\n"
 "POT-Creation-Date: 2000-03-30 17:28+0200\n"
-"PO-Revision-Date: 2000-03-14 14:46+01:00\n"
+"PO-Revision-Date: 2000-04-07 08:46+01:00\n"
 "Last-Translator: Jörgen Tegnér <teg@post.netlink.se>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -35,7 +35,7 @@ msgstr "Alias"
 #. add a new alias
 #: alias.c:246
 msgid "Alias as: "
-msgstr "Alias:"
+msgstr "Alias: "
 
 #: alias.c:252
 msgid "You already have an alias defined with that name!"
@@ -69,7 +69,7 @@ msgstr "Kan inte para ihop namnmall, fortsätt?"
 #. For now, editing requires a file, no piping
 #: attach.c:123
 msgid "Mailcap compose entry requires %%s"
-msgstr "'compose' i 'mailcap' kräver %%s."
+msgstr "'compose' i 'mailcap' kräver %%s"
 
 #: attach.c:131 attach.c:256 commands.c:169 compose.c:1126 curs_lib.c:135
 #: curs_lib.c:331
@@ -88,17 +88,17 @@ msgstr "Kunde inte öppna fil för att ta bort brevhuvuden."
 #: attach.c:190
 #, c-format
 msgid "No mailcap compose entry for %s, creating empty file."
-msgstr "Saknar 'compose' i mailcap för %s, skapar en tom fil"
+msgstr "Saknar 'compose' i mailcap för %s, skapar en tom fil."
 
 #. For now, editing requires a file, no piping
 #: attach.c:250
 msgid "Mailcap Edit entry requires %%s"
-msgstr "'edit' i 'mailcap' kräver %%s."
+msgstr "'edit' i 'mailcap' kräver %%s"
 
 #: attach.c:269
 #, c-format
 msgid "No mailcap edit entry for %s"
-msgstr "'mailcap' saknar 'edit' för %s."
+msgstr "'mailcap' saknar 'edit' för %s"
 
 #: attach.c:397
 msgid "No matching mailcap entry found.  Viewing as text."
@@ -110,7 +110,7 @@ msgstr "MIME-typ är inte definierad. Kan inte visa bilaga."
 
 #: attach.c:500
 msgid "Cannot create filter"
-msgstr "Kan inte skapa filter."
+msgstr "Kan inte skapa filter"
 
 #: attach.c:707 recvattach.c:427
 msgid "Attachment saved."
@@ -158,7 +158,7 @@ msgstr "Kan inte bifoga en katalog!"
 
 #: browser.c:620 browser.c:979 browser.c:1072
 msgid "No files match the file mask"
-msgstr "Ingen fil passar med filmasken."
+msgstr "Ingen fil passar med filmasken"
 
 #: browser.c:820
 msgid "Creating mailboxes is not yet supported."
@@ -166,7 +166,7 @@ msgstr "Skapande av brevlådor stöds inte än."
 
 #: browser.c:825
 msgid "Delete is only supported for IMAP mailboxes"
-msgstr "Endast brevlådor av IMAP-typ kan tas bort."
+msgstr "Endast brevlådor av IMAP-typ kan tas bort"
 
 #: browser.c:833
 #, c-format
@@ -272,11 +272,11 @@ msgstr "Saknar argument."
 
 #: color.c:596 color.c:607
 msgid "color: too few arguments"
-msgstr "color: för få argument."
+msgstr "color: för få argument"
 
 #: color.c:630
 msgid "mono: too few arguments"
-msgstr "mono: för få argument."
+msgstr "mono: för få argument"
 
 #: color.c:650
 #, c-format
@@ -596,7 +596,7 @@ msgstr "Byt namn till: "
 #: compose.c:960 editmsg.c:95
 #, c-format
 msgid "Can't stat: %s"
-msgstr "Kan inte ta status på filen %s."
+msgstr "Kan inte ta status på filen %s"
 
 #: compose.c:986
 msgid "New file: "
@@ -604,7 +604,7 @@ msgstr "Ny fil: "
 
 #: compose.c:999
 msgid "Content-Type is of the form base/sub"
-msgstr "'Content-Type' har formen bas/undertyp."
+msgstr "'Content-Type' har formen bas/undertyp"
 
 #: compose.c:1005
 #, c-format
@@ -626,7 +626,7 @@ msgstr "Skjut upp meddelandet?"
 
 #: compose.c:1141
 msgid "Write message to mailbox"
-msgstr "Skriv meddelandet till brevlåda?"
+msgstr "Skriv meddelandet till brevlåda"
 
 #: compose.c:1144
 #, c-format
@@ -1025,7 +1025,7 @@ msgid ""
 "[-- expired. --]\n"
 msgstr ""
 "[-- Den här %s/%s bilagan är inte inkluderad, --]\n"
-"[-- och den angivna externa källan har är --]\n"
+"[-- och den angivna externa källan är --]\n"
 "[-- utgången. --]\n"
 
 #: handler.c:1275
@@ -1237,15 +1237,15 @@ msgstr "Avslutar prenumeration på %s..."
 
 #: imap/imap_ssl.c:85
 msgid "Filling entropy pool"
-msgstr ""
+msgstr "Fyller på i slumptalsreserven"
 
 #: imap/imap_ssl.c:117
 msgid "Failed to find enough entropy on your system"
-msgstr ""
+msgstr "Kunde inte hitta tillräckligt bra slumptal"
 
 #: imap/imap_ssl.c:124
 msgid "SSL disabled due the lack of entropy"
-msgstr ""
+msgstr "SSL avstängd på grund av brist på bra slumptal"
 
 #: imap/imap_ssl.c:204
 msgid "Unable to get certificate from peer"
@@ -1275,7 +1275,7 @@ msgstr "Certifikated utfärdat av:"
 #: imap/imap_ssl.c:335
 #, c-format
 msgid "Fingerprint: %s"
-msgstr "Fingeravtryck:"
+msgstr "Fingeravtryck: %s"
 
 #: imap/imap_ssl.c:337
 msgid "SSL Certificate check"
@@ -1283,23 +1283,23 @@ msgstr "Kontroll av SSL-certifikat"
 
 #: imap/imap_ssl.c:340
 msgid "(r)eject, accept (o)nce, (a)ccept always"
-msgstr "(f)örkasta, acceptera (e)n gång, acceptera (v)arje gång"
+msgstr "(f)örkasta, (g)odkänn den här gången, godkänn (v)arje gång"
 
 #: imap/imap_ssl.c:341
 msgid "roa"
-msgstr "fev"
+msgstr "fgv"
 
 #: imap/imap_ssl.c:345
 msgid "(r)eject, accept (o)nce"
-msgstr "(f)örkasta, acceptera (e)n gång"
+msgstr "(f)örkasta, (g)odkänn den här gången"
 
 #: imap/imap_ssl.c:346
 msgid "ro"
-msgstr "fe"
+msgstr "fg"
 
 #: imap/imap_ssl.c:350 pgpkey.c:441
 msgid "Exit  "
-msgstr "Avslut "
+msgstr "Avsluta "
 
 #: imap/imap_ssl.c:375
 msgid "Warning: Couldn't save certificate"
@@ -1429,7 +1429,7 @@ msgstr "source: fel i %s"
 #: init.c:1211
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
-msgstr ""
+msgstr "source: läsningen avbruten pga för många fel i %s"
 
 #: init.c:1225
 #, c-format
@@ -2196,7 +2196,7 @@ msgstr "skapa avkrypterad kopia"
 
 #: keymap_alldefs.h:177
 msgid "Accept the chain constructed"
-msgstr "Acceptera den konstruerade kedjan"
+msgstr "Godkänn den konstruerade kedjan"
 
 #: keymap_alldefs.h:178
 msgid "Append a remailer to the chain"
@@ -2443,7 +2443,7 @@ msgstr "Ingen brevlåda har nya brev."
 
 #: main.c:660
 msgid "No incoming mailboxes defined."
-msgstr "Inga brevlådor för inkommande post är definierade"
+msgstr "Inga brevlådor för inkommande post är definierade."
 
 #: main.c:689
 msgid "Mailbox is empty."
@@ -2635,7 +2635,7 @@ msgstr "Väntar på låsningsförsök (flock)... %d"
 #: mx.c:537
 #, c-format
 msgid "Couldn't lock %s\n"
-msgstr "Kunde inte låsa %s.\n"
+msgstr "Kunde inte låsa %s\n"
 
 #: mx.c:625
 #, c-format
@@ -2703,7 +2703,7 @@ msgstr "Brevlådan är märkt som ej skrivbar. %s"
 #: mx.c:1081
 #, c-format
 msgid "%d kept."
-msgstr "%d behölls"
+msgstr "%d behölls."
 
 #: mx.c:1363
 msgid "Can't write message"
@@ -2760,7 +2760,7 @@ msgstr "Ingen mer ociterad text efter citerad text."
 
 #: parse.c:517
 msgid "multipart message has no boundary parameter!"
-msgstr "Avgränsande parameter saknas för flerpartsmeddelande."
+msgstr "Avgränsande parameter saknas för flerpartsmeddelande!"
 
 #: pattern.c:239
 #, c-format
@@ -2779,7 +2779,7 @@ msgstr "Ogiltig månad: %s"
 
 #: pattern.c:404
 msgid "error in expression"
-msgstr "Fel i uttryck"
+msgstr "fel i uttryck"
 
 #: pattern.c:589 pattern.c:697
 #, c-format
@@ -2812,7 +2812,7 @@ msgstr "tomt mönster"
 #: pattern.c:894
 #, c-format
 msgid "error: unknown op %d (report this error)."
-msgstr "fel: okänd operation %d (var vänlig rappportera felet)"
+msgstr "fel: okänd operation %d (var vänlig rappportera felet)."
 
 #: pattern.c:959 pattern.c:1088
 msgid "Compiling search pattern..."
@@ -2868,41 +2868,33 @@ msgstr ""
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
-msgstr ""
-"[-- BEGIN PGP MESSAGE --]\n"
-"\n"
+msgstr "[-- MEDDELANDE KRYPTERAT MED PGP BÖRJAR --]\n\n"
 
 #: pgp.c:278
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
-msgstr "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
+msgstr "[-- BLOCK MED PGP-NYCKEL BÖRJAR --]\n"
 
 #: pgp.c:280
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
-msgstr ""
-"[-- BEGIN PGP SIGNED MESSAGE --]\n"
-"\n"
+msgstr "[-- MEDDELANDE SIGNERAT MED PGP BÖRJAR --]\n\n"
 
 #: pgp.c:382
 msgid ""
 "\n"
 "[-- END PGP MESSAGE --]\n"
-msgstr ""
-"\n"
-"[-- END PGP MESSAGE --]\n"
+msgstr "\n[-- SLUT PÅ MEDDELANDE KRYPTERAT MED PGP --]\n"
 
 #: pgp.c:384
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
-msgstr "[-- END PGP PUBLIC KEY BLOCK --]\n"
+msgstr "[-- SLUT PÅ BLOCK MED PGP-NYCKEL --]\n"
 
 #: pgp.c:386
 msgid ""
 "\n"
 "[-- END PGP SIGNED MESSAGE --]\n"
-msgstr ""
-"\n"
-"[-- END PGP SIGNED MESSAGE --]\n"
+msgstr "\n[-- SLUT PÅ MEDDELANDE SIGNERAT MED PGP --]\n"
 
 #: pgp.c:399
 msgid ""
@@ -3023,7 +3015,7 @@ msgstr "Använd nyckel med ID = \"%s\" för %s?"
 #: pgp.c:1222
 #, c-format
 msgid "Enter keyID for %s: "
-msgstr "Ange nyckel-ID för %s?"
+msgstr "Ange nyckel-ID för %s: "
 
 #: pgp.c:1432
 msgid "Can't invoke PGP"
@@ -3099,7 +3091,7 @@ msgstr "Ange nyckelID: "
 
 #: pgpkey.c:681
 msgid "Invoking pgp..."
-msgstr "Startar PGP ..."
+msgstr "Startar PGP..."
 
 #: pgpkey.c:706
 #, c-format
@@ -3113,7 +3105,7 @@ msgstr "Letar efter nycklar som passar \"%s\"..."
 
 #: pop.c:66
 msgid "POP Password: "
-msgstr "Lösenord för POP:"
+msgstr "Lösenord för POP: "
 
 #: pop.c:91
 msgid "POP host is not defined."
@@ -3131,7 +3123,7 @@ msgstr "Kunde inte hitta adress till servern %s."
 #: pop.c:122
 #, c-format
 msgid "Connecting to %s"
-msgstr "Ansluter till %s."
+msgstr "Ansluter till %s"
 
 #: pop.c:166 pop.c:341
 msgid "Server closed connection!"
@@ -3171,7 +3163,7 @@ msgstr "%s [%d meddelanden lästa]"
 
 #: postpone.c:159
 msgid "Postponed Messages"
-msgstr "Uppskjutna Meddelanden"
+msgstr "Uppskjutna meddelanden"
 
 #: postpone.c:250 postpone.c:264
 msgid "No postponed messages."
@@ -3191,7 +3183,7 @@ msgstr "Skapa alias"
 
 #: query.c:47
 msgid "Search"
-msgstr "Sök: "
+msgstr "Sök"
 
 #: query.c:91
 msgid "Waiting for response..."
@@ -3208,12 +3200,12 @@ msgstr "Sökning"
 #. Prompt for Query
 #: query.c:257 query.c:285
 msgid "Query: "
-msgstr "Sökning:"
+msgstr "Sökning: "
 
 #: query.c:268 query.c:294
 #, c-format
 msgid "Query '%s'"
-msgstr "Sökning: '%s'"
+msgstr "Sökning '%s'"
 
 #: recvattach.c:59
 msgid "Pipe"
@@ -3229,7 +3221,7 @@ msgstr "Sparar..."
 
 #: recvattach.c:487
 msgid "Attachment saved"
-msgstr "Bilaga sparad."
+msgstr "Bilaga sparad"
 
 #: recvattach.c:499
 #, c-format
@@ -3251,7 +3243,7 @@ msgstr "Skicka genom rör till: "
 #: recvattach.c:619
 #, c-format
 msgid "I dont know how to print %s attachments!"
-msgstr "Vet inte hur bilaga av typ %s ska skrivas ut!"
+msgstr "Vet inte hur en bilaga av typ %s ska skrivas ut!"
 
 #: recvattach.c:684
 msgid "Print tagged attachment(s)?"
@@ -3340,7 +3332,7 @@ msgstr "Kan inte hämta mixmasters type2.list!"
 
 #: remailer.c:537
 msgid "Select a remailer chain."
-msgstr "Välj en återpostarkedja"
+msgstr "Välj en återpostarkedja."
 
 #: remailer.c:599
 #, c-format
@@ -3382,12 +3374,12 @@ msgstr "Fel vid sändning av meddelande, delprocess returnerade %d.\n"
 
 #: remailer.c:773
 msgid "Error sending message."
-msgstr "Fel när meddelande sändes"
+msgstr "Fel när meddelande sändes."
 
 #: rfc1524.c:159
 #, c-format
 msgid "Improperly formated entry for type %s in \"%s\" line %d"
-msgstr "Felaktigt formatterad del för type %s i \"%s\", rad %d."
+msgstr "Felaktigt formatterad del för type %s i \"%s\", rad %d"
 
 #: rfc1524.c:391
 msgid "No mailcap path specified"
@@ -3396,7 +3388,7 @@ msgstr "Ingen 'mailcap' angiven"
 #: rfc1524.c:417
 #, c-format
 msgid "mailcap entry for type %s not found"
-msgstr "Hittade ingen beskrivning av %s i 'mailcap'."
+msgstr "Hittade ingen beskrivning av %s i 'mailcap'"
 
 #: score.c:71
 msgid "score: too few arguments"
@@ -3465,7 +3457,7 @@ msgstr "Meddelandet har inte ändrats. Avbryt?"
 
 #: send.c:1258
 msgid "Aborted unmodified message."
-msgstr "Meddelandet har inte ändrats. Avbröt"
+msgstr "Meddelandet har inte ändrats. Avbröt."
 
 #. abort
 #: send.c:1299
@@ -3525,7 +3517,7 @@ msgstr "Kunde inte öppna %s"
 #: sendlib.c:1712
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
-msgstr "Fel vid sändning av meddelande, delprocess returnerade : %d (%s)."
+msgstr "Fel vid sändning av meddelande, delprocess returnerade %d (%s)."
 
 #: sendlib.c:1718
 msgid "Output of the delivery process"
