@@ -170,6 +170,8 @@ enum packet_tags
  *
  */
 
+#if 0
+
 const char *pgp_packet_name[] =
 {
   "reserved",
@@ -190,6 +192,8 @@ const char *pgp_packet_name[] =
   "Reserved",
   "Comment Packet"
 };
+
+#endif
 
 static int read_material (size_t material, size_t * used, FILE * fp)
 {
