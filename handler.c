@@ -226,17 +226,14 @@ void mutt_decode_base64 (STATE *s, BODY *b, int istext, DECODER *dec)
     ch = (c1 << 2) | (c2 >> 4);
 
     if (cr && ch != '\n') 
-    {
       mutt_decoder_push_one (dec, '\r');
-    }
+
     cr = 0;
       
     if (istext && ch == '\r')
       cr = 1;
     else
-    {
       mutt_decoder_push_one (dec, ch);
-    }
 
     if (buf[2] == '=')
       break;
@@ -244,35 +241,27 @@ void mutt_decode_base64 (STATE *s, BODY *b, int istext, DECODER *dec)
     ch = ((c2 & 0xf) << 4) | (c3 >> 2);
 
     if (cr && ch != '\n')
-    {
-      mutt_decoder_push_one (dec, ch);
-    }
+      mutt_decoder_push_one (dec, '\r');
 
     cr = 0;
 
     if (istext && ch == '\r')
       cr = 1;
     else
-    {
       mutt_decoder_push_one (dec, ch);
-    }
 
     if (buf[3] == '=') break;
     c4 = base64val (buf[3]);
     ch = ((c3 & 0x3) << 6) | c4;
 
     if (cr && ch != '\n')
-    {
-      mutt_decoder_push_one (dec, ch);
-    }
+      mutt_decoder_push_one (dec, '\r');
     cr = 0;
 
     if (istext && ch == '\r')
       cr = 1;
     else
-    {
       mutt_decoder_push_one (dec, ch);
-    }
     
     if ((l += 3) >= 1024)
     {
@@ -281,6 +270,8 @@ void mutt_decode_base64 (STATE *s, BODY *b, int istext, DECODER *dec)
     }
   }
 
+  if (cr) mutt_decoder_push_one (dec, '\r');
+  
   mutt_decoder_push (dec, NULL, 0, NULL);
   mutt_decoder_pop_to_state (dec, s);
 
