@@ -103,7 +103,13 @@ static int alias_SortAddress (const void *a, const void *b)
   ADDRESS *pb = (*(ALIAS **) b)->addr;
   int r;
 
-  if (pa->personal)
+  if (pa == pb)
+    r = 0;
+  else if (pa == NULL)
+    r = -1;
+  else if (pb == NULL)
+    r = 1;
+  else if (pa->personal)
   { 
     if (pb->personal)
       r = mutt_strcasecmp (pa->personal, pb->personal);
