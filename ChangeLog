@@ -1,3 +1,7 @@
+2004-01-04 10:30:52  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* po/ru.po: Argh, I shouldn't replace files by patches.
+
 2004-01-04 10:25:13  Cameron Patrick  <cameron@patrick.wattle.id.au>  (roessler)
 
 	* menu.c: Fix #1697 (Debian  #219594.)
