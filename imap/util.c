@@ -23,6 +23,7 @@
 #include "mutt.h"
 #include "mx.h"	/* for M_IMAP */
 #include "imap_private.h"
+#include "imap_ssl.h"
 
 #include <stdlib.h>
 #include <ctype.h>
@@ -179,11 +180,12 @@ int imap_parse_path (const char *path, IMAP_MBOX *mx)
 	return (-1);
       }
     }
-#ifdef USE_SSL
-    else if (option (OPTIMAPFORCESSL))
-      imap_set_ssl (mx);
-#endif
   }
+
+#ifdef USE_SSL
+  if (option (OPTIMAPFORCESSL))
+    imap_set_ssl (mx);
+#endif
 
   return 0;
 }
