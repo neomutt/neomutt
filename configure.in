@@ -761,33 +761,16 @@ AC_ARG_WITH(wc-funcs, [  --without-wc-funcs         Do not use the system's wcha
 	wc_funcs=$withval)
 
 if test "$wc_funcs" != yes -a "$wc_funcs" != no; then
-	AC_CACHE_CHECK([for working wchar_t functions], mutt_cv_wc_funcs,
-		AC_TRY_RUN([
+	AC_CACHE_CHECK([for wchar_t functions], mutt_cv_wc_funcs,
+		mutt_cv_wc_funcs=no
+		AC_TRY_LINK([
+#define _XOPEN_SOURCE 1
 #include <stddef.h>
 #include <stdlib.h>
 #ifdef HAVE_WCHAR_H
 #include <wchar.h>
-#endif
-#include <locale.h>
-int main()
-{
-  wchar_t wc = 123;
-  mbstate_t state;
-  const char *s = "\304\211";
-  int tb;
-  char *t = (char *)&tb;
-  setlocale(LC_ALL, "eo.UTF-8");
-  memset(&state, 0, sizeof(mbstate_t));
-  *(t+2) = 'x';
-  exit(!(mbrtowc(0, 0, 0, &state) == 0 &&
-         mbrtowc(&wc, s, 1, &state) == -2 && wc == 123 &&
-         mbrtowc(&wc, s+1, 2, &state) == 1 &&
-         wctomb(t, wc) == 2 && !memcmp(s, t, 2) && *(t+2) == 'x' &&
-	 wcwidth(0) == 0 && wcwidth(wc) == 1 && wcwidth(127) == -1));
-}
-			],
-			mutt_cv_wc_funcs=yes,
-			mutt_cv_wc_funcs=no,
+#endif],
+			[mbrtowc(0, 0, 0, 0); wctomb(0, 0); wcwidth(0);],
 			mutt_cv_wc_funcs=yes))
 	wc_funcs=$mutt_cv_wc_funcs
 fi
