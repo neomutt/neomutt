@@ -162,13 +162,20 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
               return -1;
             }
             imap_read_bytes (fp, CTX_DATA->conn, bytes);
+#if 0
 	    /* make sure headers are followed by ONE blank line (separator
 	     * for mutt_read_rfc822_header) */
+
+	    /* 
+	     * XXX - this is supposed to fix things, but seems to
+	     * break them.
+	     */
+
 	    do
 	      fseek (fp, -2, SEEK_CUR);
 	    while (fgetc (fp) == '\n');
 	    fputs ("\n\n", fp);
-	    
+#endif	    
 	    /* we may have other fields of the FETCH _after_ the literal
 	     * (eg Domino puts FLAGS here). Nothing wrong with that, either.
 	     * This all has to go - we should accept literals and nonliterals
