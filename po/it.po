@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutt-1.3.23\n"
 "POT-Creation-Date: 2002-01-18 12:44+0100\n"
-"PO-Revision-Date: 2001-12-11 01:50+0100\n"
+"PO-Revision-Date: 2002-01-19 21:09+0100\n"
 "Last-Translator: Marco d'Itri <md@linux.it>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
@@ -3217,23 +3217,20 @@ msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Questa chiave non può essere usata: è scaduta/disabilitata/revocata."
 
 #: pgpkey.c:608
-#, fuzzy
 msgid "ID is expired/disabled/revoked."
-msgstr "Questo ID è scaduto/disabilitato/revocato"
+msgstr "L'ID è scaduto/disabilitato/revocato."
 
 #: pgpkey.c:612
 msgid "ID has undefined validity."
-msgstr ""
+msgstr "L'ID ha validità indefinita."
 
 #: pgpkey.c:615
-#, fuzzy
 msgid "ID is not valid."
-msgstr "Questo ID non è valido."
+msgstr "L'ID non è valido."
 
 #: pgpkey.c:618
-#, fuzzy
 msgid "ID is only marginally valid."
-msgstr "Questo ID è solo marginalmente valido."
+msgstr "L'ID è solo marginalmente valido."
 
 #: pgpkey.c:622
 #, c-format
@@ -3763,6 +3760,3 @@ msgstr "Il messaggio padre non è visibil in questa visualizzazione limitata."
 #: thread.c:1035
 msgid "Parent message is not available."
 msgstr "Il messaggio padre non è disponibile."
-
-#~ msgid "This ID's validity level is undefined."
-#~ msgstr "Il livello di validità di questo ID non è definito."
