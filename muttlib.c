@@ -48,14 +48,6 @@ BODY *mutt_new_body (void)
   return (p);
 }
 
-BODY *mutt_dup_body (BODY *b)
-{
-  BODY *bn;
-
-  bn = mutt_new_body();
-  memcpy(bn, b, sizeof (BODY));
-  return bn;
-}
 
 /* Modified by blong to accept a "suggestion" for file name.  If
  * that file exists, then construct one with unique name but 
