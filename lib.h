@@ -75,10 +75,17 @@
 # define MUTT_FORMAT(a)		_MUTT_FORMAT_1(a, "s")
 # define MUTT_FORMAT2(a,b)	_MUTT_FORMAT_1(a, b)
 
+
 # define FREE(x) safe_free((void **)x)
 # define NONULL(x) x?x:""
 # define ISSPACE(c) isspace((unsigned char)c)
 # define strfcpy(A,B,C) strncpy(A,B,C), *(A+(C)-1)=0
+
+# undef MAX
+# undef MIN
+# define MAX(a,b) ((a) < (b) ? (b) : (a))
+# define MIN(a,b) ((a) < (b) ? (a) : (b))
+
 
 #define FOREVER while (1)
 

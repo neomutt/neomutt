@@ -25,11 +25,6 @@
 #define dprint(N,X) 
 #endif
 
-#undef MAX
-#undef MIN
-#define MAX(a,b) ((a) < (b) ? (b) : (a))
-#define MIN(a,b) ((a) < (b) ? (a) : (b))
-
 #define MoreArgs(p) (*p->dptr && *p->dptr != ';' && *p->dptr != '#')
 
 #define mutt_make_string(A,B,C,D,E) _mutt_make_string(A,B,C,D,E,0)
