@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.5.6i\n"
 "POT-Creation-Date: 2004-02-01 19:24+0100\n"
-"PO-Revision-Date: 2004-02-02 23:25+300\n"
+"PO-Revision-Date: 2004-03-03 10:25+900\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Im Eunjea <eunjea@kldp.org>\n"
 "MIME-Version: 1.0\n"
@@ -2408,7 +2408,7 @@ msgstr "MIME 첨부물 보기"
 
 #: keymap_alldefs.h:177
 msgid "display the keycode for a key press"
-msgstr ""
+msgstr "눌려진 키 값 표시하기"
 
 #: keymap_alldefs.h:178
 msgid "show currently active limit pattern"
@@ -2496,7 +2496,7 @@ msgstr "S/MIME 옵션 보기"
 
 #: lib.c:60
 msgid "Integer overflow -- can't allocate memory!"
-msgstr ""
+msgstr "Integer overflow -- 메모리 할당 불가!"
 
 #: lib.c:67 lib.c:82 lib.c:114
 msgid "Out of memory!"
