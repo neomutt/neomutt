@@ -737,6 +737,15 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  
 	  if ((s = mutt_get_parameter("charset", b->parameter)))
 	    mutt_set_parameter("charset", s, &par);
+	  
+	  /* These are needed for "traditional" PGP.
+	   * Should we switch to a "negative list" instead?
+	   */
+
+	  if ((s = mutt_get_parameter("x-action", b->parameter)))
+	    mutt_set_parameter("x-action", s, &par);
+	  if ((s = mutt_get_parameter("format", b->parameter)))
+	    mutt_set_parameter("format", s, &par);
 
 	  /* ignore the other parameters for now */
 	  mutt_free_parameter(&b->parameter);
