@@ -1160,7 +1160,7 @@ int smime_verify_sender(HEADER *h)
   if(h->security & ENCRYPT)
     mutt_copy_message (fpout, Context, h,
 		       M_CM_DECODE_CRYPT & M_CM_DECODE_SMIME,
-		       CH_WEED|CH_NONEWLINE);
+		       CH_MIME|CH_WEED|CH_NONEWLINE);
   else
     mutt_copy_message (fpout, Context, h, 0, 0);
 
@@ -1323,7 +1323,7 @@ BODY *smime_build_smime_entity (BODY *a, char *certlist)
   rewind (fpout);
   empty = (fgetc (fpout) == EOF);
   fclose (fpout);
-
+ 
   fflush (smimeerr);
   rewind (smimeerr);
   while (fgets (buf, sizeof (buf) - 1, smimeerr) != NULL)
