@@ -1345,7 +1345,7 @@ information on the exact format of <em/pattern/.
 
 Example:
 <tscreen><verb>
-message-hook ~a 'set pager=builtin'
+message-hook ~A 'set pager=builtin'
 message-hook '~f freshmeat-news' 'set pager="less \"+/^  subject: .*\""'
 </verb></tscreen>
 
