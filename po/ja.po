@@ -2287,10 +2287,10 @@ msgstr ""
 
 #: main.c:88
 msgid ""
-"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
-"<file> ]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
-"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
+"]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
+"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -3664,7 +3664,7 @@ msgstr "バックグラウンドで送信。"
 
 #: sendlib.c:457
 msgid "No boundary parameter found! [report this error]"
-msgstr "境界パラメータがみつからない![このエラーを報告して]"
+msgstr "boundaryパラメータがみつからない![このエラーを報告して]"
 
 #: sendlib.c:491
 #, c-format
@@ -3672,14 +3672,14 @@ msgid "%s no longer exists!"
 msgstr "%s はもはや存在しない!"
 
 #: sendlib.c:901
-#, fuzzy, c-format
+#, c-format
 msgid "Can't stat %s."
 msgstr "%s の属性調査できず"
 
 #: sendlib.c:907
-#, fuzzy, c-format
+#, c-format
 msgid "%s isn't a regular file."
-msgstr "%s はメールボックスではない"
+msgstr "%s は通常ファイルではない"
 
 #: sendlib.c:1076
 #, c-format
