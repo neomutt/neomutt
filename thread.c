@@ -1272,7 +1272,7 @@ int mutt_messages_in_thread (CONTEXT *ctx, HEADER *hdr, int flag)
   THREAD *threads[2];
   int i, rc;
 
-  if ((Sort & SORT_MASK) != SORT_THREADS)
+  if ((Sort & SORT_MASK) != SORT_THREADS || !hdr->thread)
     return (1);
 
   threads[0] = hdr->thread;
