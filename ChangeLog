@@ -1,3 +1,14 @@
+2004-01-04 10:55:20  René Clerc  <rene@clerc.nl>  (roessler)
+
+	* init.h: Fix hide_missing / hide_limited documentation.
+
+2004-01-04 10:51:49  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* hdrline.c: Permit list patterns that match the domain name of
+	an address; these patterns begin with '@'.  Example:  subscribe
+	@bugs.guug.de matches all messages sent to the bug tracking
+	system.
+
 2004-01-04 10:30:52  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* po/ru.po: Argh, I shouldn't replace files by patches.
