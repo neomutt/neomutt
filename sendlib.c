@@ -148,23 +148,6 @@ static void encode_quoted (FGETCONV * fc, FILE *fout, int istext)
 
   while ((c = fgetconv (fc)) != EOF)
   {
-    /* Escape lines that begin with/only contain "the message separator". */
-    if (linelen == 4 && !mutt_strncmp ("From", line, 4))
-    {
-      strfcpy (line, "=46rom", sizeof (line));
-      linelen = 6;
-    }
-    else if (linelen == 4 && !mutt_strncmp ("from", line, 4))
-    {
-      strfcpy (line, "=66rom", sizeof (line));
-      linelen = 6;
-    }
-    else if (linelen == 1 && line[0] == '.')
-    {
-      strfcpy (line, "=2E", sizeof (line));
-      linelen = 3;
-    }
-
     /* Wrap the line if needed. */
     if (linelen == 76 && ((istext && c != '\n') || !istext))
     {
@@ -194,6 +177,24 @@ static void encode_quoted (FGETCONV * fc, FILE *fout, int istext)
         linelen = 1;
       }
     }
+
+    /* Escape lines that begin with/only contain "the message separator". */
+    if (linelen == 4 && !mutt_strncmp ("From", line, 4))
+    {
+      strfcpy (line, "=46rom", sizeof (line));
+      linelen = 6;
+    }
+    else if (linelen == 4 && !mutt_strncmp ("from", line, 4))
+    {
+      strfcpy (line, "=66rom", sizeof (line));
+      linelen = 6;
+    }
+    else if (linelen == 1 && line[0] == '.')
+    {
+      strfcpy (line, "=2E", sizeof (line));
+      linelen = 3;
+    }
+
 
     if (c == '\n' && istext)
     {
