@@ -326,7 +326,7 @@ int rfc2231_encode_string (char **pd)
       !(charset = mutt_choose_charset (Charset, SendCharset,
 				  *pd, strlen (*pd), &d, &dlen)))
   {
-    charset = safe_strdup (Charset ? Charset : "unknown");
+    charset = safe_strdup (Charset ? Charset : "unknown-8bit");
     d = *pd, dlen = strlen (d);
   }
 
