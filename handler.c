@@ -1198,6 +1198,24 @@ static void alternative_handler (BODY *a, STATE *s)
   LIST *t;
   char buf[STRING];
   int type = 0;
+  int mustfree = 0;
+
+  if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE ||
+      a->encoding == ENCUUENCODED)
+  {
+    struct stat st;
+    mustfree = 1;
+    fstat (fileno (s->fpin), &st);
+    b = mutt_new_body ();
+    b->length = (long) st.st_size;
+    b->parts = mutt_parse_multipart (s->fpin,
+		  mutt_get_parameter ("boundary", a->parameter),
+		  (long) st.st_size, ascii_strcasecmp ("digest", a->subtype) == 0);
+  }
+  else
+    b = a;
+
+  a = b;
 
   /* First, search list of prefered types */
   t = AlternativeOrderList;
@@ -1324,6 +1342,9 @@ static void alternative_handler (BODY *a, STATE *s)
     state_mark_attach (s);
     state_puts(_("[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"), s);
   }
+
+  if (mustfree)
+    mutt_free_body(&a);
 }
 
 /* handles message/rfc822 body parts */
