@@ -258,6 +258,37 @@ static int imap_parse_fetch (IMAP_HEADER_INFO *h, char *s)
   return 0;
 }
 
+static void imap_quote_string (char *str, size_t slen)
+{
+  char quote[] = "\"\\", *d = malloc (slen), *pt, *s = str;
+  size_t len = slen;
+
+  pt = d;
+  *pt++ = '"';
+  /* save room for trailing quote-char */
+  len -= 2;
+  
+  for (; *s && len; s++)
+  {
+    if (strchr (quote, *s))
+    {
+      len -= 2;
+      if (!len)
+	break;
+      *pt++ = '\\';
+      *pt++ = *s;
+    }
+    else
+    {
+      *pt++ = *s;
+      len--;
+    }
+  }
+  *pt++ = '"';
+  *pt = 0;
+  strncpy (str, d, slen);
+}
+
 static int imap_read_bytes (FILE *fp, CONNECTION *conn, long bytes)
 {
   long pos;
@@ -668,6 +699,8 @@ static int imap_open_connection (CONTEXT *ctx, CONNECTION *conn)
     else
       strfcpy (pass, ImapPass, sizeof (pass));
 
+    imap_quote_string (user, sizeof (user));
+    imap_quote_string (pass, sizeof (pass));
     mutt_message ("Logging in...");
     imap_make_sequence (seq, sizeof (seq));
     snprintf (buf, sizeof (buf), "%s LOGIN %s %s\r\n", seq, user, pass);
@@ -721,8 +754,10 @@ int imap_open_mailbox (CONTEXT *ctx)
   conn->uses++;
 
   mutt_message ("Selecting %s...", CTX_DATA->mailbox);
+  strncpy (buf, CTX_DATA->mailbox, sizeof (buf));
+  imap_quote_string (buf, sizeof (buf));
   imap_make_sequence (seq, sizeof (seq));
-  snprintf (bufout, sizeof (bufout), "%s SELECT %s\r\n", seq, CTX_DATA->mailbox);
+  snprintf (bufout, sizeof (bufout), "%s SELECT %s\r\n", seq, buf);
   mutt_socket_write (CTX_DATA->conn, bufout);
 
   do
@@ -764,10 +799,12 @@ int imap_open_mailbox (CONTEXT *ctx)
 static int imap_create_mailbox (CONTEXT *ctx)
 {
   char seq[8];
-  char buf[LONG_STRING];
+  char buf[LONG_STRING], mbox[LONG_STRING];
 
   imap_make_sequence (seq, sizeof (seq));
-  snprintf (buf, sizeof (buf), "%s CREATE %s\r\n", seq, CTX_DATA->mailbox);
+  strncpy (mbox, CTX_DATA->mailbox, sizeof (mbox));
+  imap_quote_string (mbox, sizeof (mbox));
+  snprintf (buf, sizeof (buf), "%s CREATE %s\r\n", seq, mbox);
       
   if (imap_exec (buf, sizeof (buf), ctx, seq, buf, 0) != 0)
   {
@@ -781,7 +818,7 @@ int imap_open_mailbox_append (CONTEXT *ctx)
 {
   CONNECTION *conn;
   char host[SHORT_STRING];
-  char buf[LONG_STRING];
+  char buf[LONG_STRING], mbox[LONG_STRING];
   char seq[16];
   char *pc;
 
@@ -805,9 +842,10 @@ int imap_open_mailbox_append (CONTEXT *ctx)
 
   /* check mailbox existance */
 
+  strncpy (mbox, CTX_DATA->mailbox, sizeof (mbox));
+  imap_quote_string (mbox, sizeof (mbox));
   imap_make_sequence (seq, sizeof (seq));
-  snprintf (buf, sizeof (buf), "%s STATUS %s (UIDVALIDITY)\r\n", seq, 
-      CTX_DATA->mailbox);
+  snprintf (buf, sizeof (buf), "%s STATUS %s (UIDVALIDITY)\r\n", seq, mbox);
       
   if (imap_exec (buf, sizeof (buf), ctx, seq, buf, IMAP_OK_FAIL) != 0)
   {
