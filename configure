@@ -817,7 +817,7 @@ fi
 
 
 
-ALL_LINGUAS="de ru it"
+ALL_LINGUAS="de ru it es"
 
 
 # Make sure we can run config.sub.

@@ -351,11 +351,11 @@ void application_pgp_handler (BODY *m, STATE *s)
       if(s->flags & M_DISPLAY)
       {
 	if (needpass)
-	  state_puts ("[-- BEGIN PGP MESSAGE --]\n\n", s);
+	  state_puts (_("[-- BEGIN PGP MESSAGE --]\n\n"), s);
 	else if (pgp_keyblock)
-	  state_puts ("[-- BEGIN PGP PUBLIC KEY BLOCK --]\n", s);
+	  state_puts (_("[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"), s);
 	else
-	  state_puts ("[-- BEGIN PGP SIGNED MESSAGE --]\n\n", s);
+	  state_puts (_("[-- BEGIN PGP SIGNED MESSAGE --]\n\n"), s);
       }
 
       /* Use PGP's output if there was no clearsig signature. */
@@ -457,9 +457,9 @@ void application_pgp_handler (BODY *m, STATE *s)
       if (s->flags & M_DISPLAY)
       {
 	if (needpass)
-	  state_puts ("\n[-- END PGP MESSAGE --]\n", s);
+	  state_puts (_("\n[-- END PGP MESSAGE --]\n"), s);
 	else if (pgp_keyblock)
-	  state_puts ("[-- END PGP PUBLIC KEY BLOCK --]\n", s);
+	  state_puts (_("[-- END PGP PUBLIC KEY BLOCK --]\n"), s);
 	else
 	  state_puts ("\n[-- END PGP SIGNED MESSAGE --]\n", s);
       }
