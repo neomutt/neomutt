@@ -271,6 +271,13 @@ int imap_mailbox_create (const char* folder)
   if (mutt_get_field (_("Create mailbox: "), buf, sizeof (buf), M_FILE) < 0)
     goto fail;
 
+  if (!mutt_strlen (buf))
+  {
+    mutt_error (_("Mailbox must have a name."));
+    mutt_sleep(1);
+    goto fail;
+  }
+  
   if (imap_create_mailbox (idata, buf) < 0)
     goto fail;
 
