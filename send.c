@@ -1209,6 +1209,14 @@ ci_send_message (int flags,		/* send mode */
     
     mutt_message_hook (NULL, msg, M_SENDHOOK);
 
+    /*
+     * Unset the replied flag from the message we are composing since it is
+     * no longer required.  This is done here because the FCC'd copy of
+     * this message was erroneously get the 'R'eplied flag when stored in
+     * a maildir-style mailbox.
+     */
+    msg->replied = 0;
+
     if (killfrom)
     {
       rfc822_free_address (&msg->env->from);
