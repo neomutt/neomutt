@@ -18,7 +18,8 @@ static const char rcsid[]="$Id$";
  */ 
 
 /*
- * This file contains routines specific to MH and ``maildir'' style mailboxes
+ * This file contains routines specific to MH and ``maildir'' style
+ * mailboxes.
  */
 
 #include "mutt.h"
@@ -782,11 +783,11 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
       if(index_hint && (i < *index_hint))
 	deleted++;
     }
-
-    if(index_hint && (i == *index_hint))
-      *index_hint -= deleted;
   }
 
+  if (index_hint && occult)
+    *index_hint -= deleted;
+  
   /* dump the file name hash */
 
   hash_destroy(&fnames, NULL);
