@@ -149,6 +149,9 @@ us-dist: us-distdir
 	GZIP=$(GZIP) $(TAR) chozf $(distdir)-us.tar.gz $(distdir)-us
 	-rm -rf $(distdir)-us
 
+test-tlr:
+	test $$HOSTNAME = sobolev && test $$LOGNAME = roessler
+
 actual-dist:
 	# Note: We can't put these into the dependencies line, since
 	# make will over-optimize some of the distdir targets.
@@ -156,20 +159,20 @@ actual-dist:
 	$(MAKE) dist
 	mv $(distdir).tar.gz $(distdir)i.tar.gz
 	mv $(distdir)-us.tar.gz $(distdir).tar.gz
-	##
-	## This part is maintainer-only and very specific to some
-	## local settings.
-	##
-	test $$HOSTNAME = sobolev && test $$LOGNAME = roessler
-	##
+	$(MAKE) do-sign
+	$(MAKE) do-upload
+
+do-sign: test-tlr
 	pgp -sb $(distdir)i.tar.gz && chmod 644 $(distdir)i.tar.gz.asc
 	pgp -sb $(distdir).tar.gz && chmod 644 $(distdir).tar.gz.asc
-	if ! ssh-add -l | grep -q roessler@guug.de ; then ; \
+
+do-upload: test-tlr
+	if ! ssh-add -l | grep -q roessler@ ; then  \
 		ssh-add ; \
 	fi
 	@echo "Please connect to the Net and press any key."
 	@read dummy
-	scp $(distdir){,i}.tar.gz{,asc}				\
+	scp $(distdir){,i}.tar.gz{,.asc}			\
 		sigtrap.guug.de:/home/ftp/pub/mutt/devel/ 	\
 		|| echo "UPLOAD FAILED.  Please upload manually!"
 	cvs commit -m "automatic post-release commit for $(distdir)"

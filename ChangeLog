@@ -1,3 +1,75 @@
+Tue Aug 24 16:20:55 1999  Thomas Roessler  <roessler@guug.de>
+
+	* Makefile.am: Still more bugs in the release-building process.
+
+	* Makefile.am: *grrrr*  typos.
+
+	* po/sk.po, po/uk.po, po/zh_TW.Big5.po, po/ru.po, po/nl.po, po/pl.po, po/fr.po, po/id.po, po/it.po, po/ko.po, po/cs.po, po/de.po, po/el.po, po/es.po, ChangeLog:
+	translation update.
+
+	* Makefile.am: Some of the targets were broken.
+
+	* Makefile.am: Another tidbit.
+
+	* Makefile.am:
+	Still more build-process stuff. Let's see whether this automatically
+	builds 0.96.5.
+
+	* doc/Attic/manual.sgml, doc/Attic/muttrc.man, Attic/Muttrc:
+	Remove some auto-built files from the repository.
+
+	* Makefile.am: Further distribution process fixes.
+
+	* po/POTFILES.in:
+	Make translations fit together with actual source tree.
+
+	* doc/Makefile.in, Attic/Muttrc, ChangeLog, Makefile.am:
+	More fixes to the distribution-building process; check-point commit
+	for documentation and ChangeLog.
+
+	* doc/Attic/manual.sgml, doc/Attic/muttrc.man, doc/Makefile.in:
+	Various experimental changes to automate the distribution-building
+	process; documentation update.
+
+	* Makefile.am:
+	Various experimental changes to automate the distribution-building
+	process.
+
+Tue Aug 24 16:12:23 1999  Thomas Roessler  <roessler@guug.de>
+
+	* Makefile.am: *grrrr*  typos.
+
+	* po/sk.po, po/uk.po, po/zh_TW.Big5.po, po/ru.po, po/nl.po, po/pl.po, po/fr.po, po/id.po, po/it.po, po/ko.po, po/cs.po, po/de.po, po/el.po, po/es.po, ChangeLog:
+	translation update.
+
+	* Makefile.am: Some of the targets were broken.
+
+	* Makefile.am: Another tidbit.
+
+	* Makefile.am:
+	Still more build-process stuff. Let's see whether this automatically
+	builds 0.96.5.
+
+	* doc/Attic/manual.sgml, doc/Attic/muttrc.man, Attic/Muttrc:
+	Remove some auto-built files from the repository.
+
+	* Makefile.am: Further distribution process fixes.
+
+	* po/POTFILES.in:
+	Make translations fit together with actual source tree.
+
+	* doc/Makefile.in, Attic/Muttrc, ChangeLog, Makefile.am:
+	More fixes to the distribution-building process; check-point commit
+	for documentation and ChangeLog.
+
+	* doc/Attic/manual.sgml, doc/Attic/muttrc.man, doc/Makefile.in:
+	Various experimental changes to automate the distribution-building
+	process; documentation update.
+
+	* Makefile.am:
+	Various experimental changes to automate the distribution-building
+	process.
+
 Tue Aug 24 15:51:56 1999  Thomas Roessler  <roessler@guug.de>
 
 	* Makefile.am: Some of the targets were broken.
