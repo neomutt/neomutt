@@ -144,7 +144,7 @@ static int pgp_send_menu (int bits, int *redraw)
 
     unset_option(OPTPGPCHECKTRUST);
 
-    if ((p = pgp_ask_for_key (_("Sign as: "), NULL, KEYFLAG_CANSIGN, PGP_PUBRING)))
+    if ((p = pgp_ask_for_key (_("Sign as: "), NULL, KEYFLAG_CANSIGN, PGP_SECRING)))
     {
       snprintf (input_signas, sizeof (input_signas), "0x%s", pgp_keyid (p));
       mutt_str_replace (&PgpSignAs, input_signas);
