@@ -1,3 +1,7 @@
+2004-02-01 17:40:29  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* doc/manual.sgml.head: Improve documentation of alterantes.
+
 2004-02-01 17:10:43  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* alias.c, doc/manual.sgml.head, doc/muttrc.man.head, globals.h,
