@@ -1,3 +1,10 @@
+2003-03-06 21:23:53  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* send.c: Fixing a segmentation fault.	Here's how to
+	reproduce it: Start mutt.  Compose a new message, with an
+	attachment. Turn on PGP signing.  Press C-G on the pass
+	phrase prompt. Turn off PGP signing.  Send the message.
+
 2003-03-05 21:18:24  Andrew W. Nosenko  <awn@bcs.zp.ua>  (roessler)
 
 	* protos.h, sort.c: Fix a warning.
