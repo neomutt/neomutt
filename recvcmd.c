@@ -789,7 +789,7 @@ void mutt_attach_reply (FILE * fp, HEADER * hdr,
   tmphdr->env = mutt_new_envelope ();
 
   if (attach_reply_envelope_defaults (tmphdr->env, idx, idxlen, 
-				      parent ? parent : cur->hdr, flags) == -1)
+				      parent ? parent : (cur ? cur->hdr : NULL), flags) == -1)
   {
     mutt_free_header (&tmphdr);
     return;
