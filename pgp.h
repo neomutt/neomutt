@@ -34,6 +34,9 @@
 #define KEYFLAG_PREFER_SIGNING (1 << 14)
 
 #define KEYFLAG_CANTUSE (KEYFLAG_DISABLED|KEYFLAG_REVOKED|KEYFLAG_EXPIRED)
+#define KEYFLAG_RESTRICTIONS (KEYFLAG_CANTUSE|KEYFLAG_CRITICAL)
+
+#define KEYFLAG_ABILITIES (KEYFLAG_CANSIGN|KEYFLAG_CANENCRYPT|KEYFLAG_PREFER_ENCRYPTION|KEYFLAG_PREFER_SIGNING)
 
 typedef struct pgp_keyinfo
 {
@@ -163,6 +166,8 @@ WHERE char *PgpSignAs;
 WHERE char *PgpSignMicalg;
 
 WHERE short PgpTimeout;
+
+WHERE char *PgpEntryFormat;
 
 BODY *pgp_decrypt_part (BODY *, STATE *, FILE *);
 BODY *pgp_make_key_attachment (char *);

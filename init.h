@@ -173,6 +173,7 @@ struct option_t MuttVars[] = {
   { "pgp_autosign",	DT_BOOL, R_NONE, OPTPGPAUTOSIGN, 0 },
   { "pgp_autoencrypt",	DT_BOOL, R_NONE, OPTPGPAUTOENCRYPT, 0 },
   { "pgp_encryptself",	DT_BOOL, R_NONE, OPTPGPENCRYPTSELF, 1 },
+  { "pgp_entry_format", DT_STR,  R_NONE, UL &PgpEntryFormat, UL "%4n %t%f %4l/0x%k %-4a %2c %u" },
   { "pgp_long_ids",	DT_BOOL, R_NONE, OPTPGPLONGIDS, 0 },
   { "pgp_replyencrypt",	DT_BOOL, R_NONE, OPTPGPREPLYENCRYPT, 0 },
   { "pgp_replysign",	DT_BOOL, R_NONE, OPTPGPREPLYSIGN, 0 },

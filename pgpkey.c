@@ -89,25 +89,144 @@ static pgp_key_t *pgp_principal_key (pgp_key_t *key)
     return key;
 }
 
+/*
+ * Format an entry on the PGP key selection menu.
+ * 
+ * %n	number
+ * %k	key id		%K 	key id of the principal key
+ * %u	uiser id
+ * %a	algorithm	%A      algorithm of the princ. key
+ * %l	length		%L	length of the princ. key
+ * %f	flags		%F 	flags of the princ. key
+ * %c	capabilities	%C	capabilities of the princ. key
+ * %t	trust/validity of the key-uid association
+ */
+
+typedef struct pgp_entry
+{
+  size_t num;
+  pgp_uid_t *uid;
+} pgp_entry_t;
+
+static const char *pgp_entry_fmt (char *dest,
+				  size_t destlen,
+				  char op,
+				  const char *src,
+				  const char *prefix,
+				  const char *ifstring,
+				  const char *elsestring,
+				  unsigned long data,
+				  format_flag flags)
+{
+  char fmt[16];
+  pgp_entry_t *entry;
+  pgp_uid_t *uid;
+  pgp_key_t *key, *pkey;
+  int kflags;
+  int optional = (flags & M_FORMAT_OPTIONAL);
+
+  entry = (pgp_entry_t *) data;
+  uid   = entry->uid;
+  key   = uid->parent;
+  pkey  = pgp_principal_key (key);
+
+  if (isupper (op))
+  {
+    key = pkey;
+    kflags = pkey->flags;
+  }
+  else
+    /* a subkey inherits the principal key's usage restrictions. */
+    kflags = key->flags | (pkey->flags & KEYFLAG_RESTRICTIONS);
+  
+  switch (tolower (op))
+  {
+    case 'n':
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
+	snprintf (dest, destlen, fmt, entry->num);
+      }
+      break;
+    case 'k':
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+	snprintf (dest, destlen, fmt, _pgp_keyid (key));
+      }
+      break;
+    case 'u':
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+	snprintf (dest, destlen, fmt, uid->addr);
+      }
+      break;
+    case 'a':
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+	snprintf (dest, destlen, fmt, key->algorithm);
+      }
+      break;
+    case 'l':
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
+	snprintf (dest, destlen, fmt, key->keylen);
+      }
+      break;
+    case 'f':
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
+	snprintf (dest, destlen, fmt, pgp_flags (kflags));
+      }
+      else if (!(kflags & (KEYFLAG_RESTRICTIONS)))
+        optional = 0;
+      break;
+    case 'c':
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+	snprintf (dest, destlen, fmt, pgp_key_abilities (kflags));
+      }
+      else if (!(kflags & (KEYFLAG_ABILITIES)))
+        optional = 0;
+      break;
+    case 't':
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
+	snprintf (dest, destlen, fmt, trust_flags[uid->trust & 0x03]);
+      }
+      else if (!(uid->trust & 0x03))
+        /* undefined trust */
+        optional = 0;
+      break;
+    default:
+      *dest = '\0';
+  }
+
+  if (optional)
+    mutt_FormatString (dest, destlen, ifstring, mutt_attach_fmt, data, 0);
+  else if (flags & M_FORMAT_OPTIONAL)
+    mutt_FormatString (dest, destlen, elsestring, mutt_attach_fmt, data, 0);
+  return (src);
+}
+      
 static void pgp_entry (char *s, size_t l, MUTTMENU * menu, int num)
 {
   pgp_uid_t **KeyTable = (pgp_uid_t **) menu->data;
-  pgp_uid_t *entry;
-  pgp_key_t *key;
+  pgp_entry_t entry;
   
-  entry = KeyTable[num];
-  key = pgp_principal_key (entry->parent);
-  
-  snprintf (s, l, "%4d %c%c %4d/0x%s %-4s %2s  %s",
-	    num + 1, trust_flags[entry->trust & 0x03],
-	    pgp_flags (key->flags),
-	    entry->parent->keylen,
-	    _pgp_keyid (key),
-	    key->algorithm,
-	    pgp_key_abilities (key->flags),
-	    entry->addr);
-}
+  entry.uid = KeyTable[num];
+  entry.num = num + 1;
 
+  mutt_FormatString (s, l, NONULL (PgpEntryFormat), pgp_entry_fmt, 
+		     (unsigned long) &entry, M_FORMAT_ARROWCURSOR);
+}
+  
 static int pgp_search (MUTTMENU * m, regex_t * re, int n)
 {
   char buf[LONG_STRING];
@@ -489,7 +608,7 @@ pgp_key_t *pgp_getkeybyaddr (struct pgp_vinfo * pgp,
   if (a && a->personal)
     hints = pgp_add_string_to_hints (hints, a->personal);
 
-  mutt_message _("Looking for keys...");
+  mutt_message (_("Looking for keys matching \"%s\"..."), a->mailbox);
   keys = pgp->get_candidates (pgp, keyring, hints);
 
   mutt_free_list (&hints);
@@ -596,7 +715,7 @@ pgp_key_t *pgp_getkeybystr (struct pgp_vinfo * pgp,
   pgp_uid_t *a;
   short match;
 
-  mutt_message _("Looking for keys...");
+  mutt_message (_("Looking for keys matching \"%s\"..."), p);
   
   hints = pgp_add_string_to_hints (hints, p);
   keys = pgp->get_candidates (pgp, keyring, hints);
