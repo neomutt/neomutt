@@ -45,9 +45,15 @@ lists.
 <sect1>Software Distribution Sites
 <p>
 <itemize>
-<item><htmlurl url="ftp://ftp.guug.de/pub/mutt/"
+<item><htmlurl url="ftp://ftp.mutt.org/pub/mutt/"
+name="ftp://ftp.mutt.org/pub/mutt/">
+<item><htmlurl url="ftp://ftp.guug.de/pub/mutt/" 
 name="ftp://ftp.guug.de/pub/mutt/">
 </itemize>
+<p>
+For a list of mirror sites, please refer to <htmlurl
+url="http://www.mutt.org/download.html"
+name="http://www.mutt.org/download.html">.
 
 <sect1>IRC
 <p>
