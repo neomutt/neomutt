@@ -72,7 +72,7 @@ const char *pgp_packet_name[] = {
   "Comment Packet"
 };
 
-static const char *pkalgbytype(unsigned char type)
+const char *pgp_pkalgbytype(unsigned char type)
 {
   switch(type)
   {
@@ -133,7 +133,7 @@ static const char *hashalgbytype(unsigned char type)
 
 #endif
 
-static short canencrypt(unsigned char type)
+short pgp_canencrypt(unsigned char type)
 {
   switch(type)
   {
@@ -147,12 +147,13 @@ static short canencrypt(unsigned char type)
   }
 }
 
-static short cansign(unsigned char type)
+short pgp_cansign(unsigned char type)
 {
   switch(type)
   {
     case 1:
     case 3:
+    case 16:
     case 17:
     case 20:
     	return 1;
@@ -168,9 +169,9 @@ static short cansign(unsigned char type)
  * 3 = both
  */
 
-static short get_abilities(unsigned char type)
+short pgp_get_abilities(unsigned char type)
 {
-  return (canencrypt(type) << 1) | cansign(type);
+  return (pgp_canencrypt(type) << 1) | pgp_cansign(type);
 }
 
 static int read_material(size_t material, size_t *used, FILE *fp)
@@ -392,8 +393,8 @@ static KEYINFO *pgp_parse_pgp2_key(unsigned char *buff, size_t l)
   
   alg = buff[j++];
 	  
-  p->algorithm = pkalgbytype(alg);
-  p->flags |= get_abilities(alg);
+  p->algorithm = pgp_pkalgbytype(alg);
+  p->flags |= pgp_get_abilities(alg);
   
   expl = 0;
   for(i = 0; i < 2; i++)
@@ -488,8 +489,8 @@ static KEYINFO *pgp_parse_pgp3_key(unsigned char *buff, size_t l)
   
   alg = buff[j++];
   
-  p->algorithm = pkalgbytype(alg);
-  p->flags |= get_abilities(alg);
+  p->algorithm = pgp_pkalgbytype(alg);
+  p->flags |= pgp_get_abilities(alg);
 
   if (alg == 17)
     skip_bignum(buff, l, j, &j, 3);

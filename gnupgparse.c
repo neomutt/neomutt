@@ -26,60 +26,6 @@
 #include "mutt.h"
 #include "pgp.h"
 
-static const char *
-pkalgbytype(unsigned char type)
-{
-  switch(type)
-  {
-    case 1:
-    case 2:
-    case 3: return "RSA";
-    case 16: /* encrypt only */
-    case 20: return "ElG";
-    case 17: return "DSA";
-    default: return "unk";
-  }
-}
-
-static short canencrypt(unsigned char type)
-{
-  switch(type)
-  {
-    case 1:
-    case 2:
-    case 16:
-    case 20:
-	return 1;
-    default:
-	return 0;
-  }
-}
-
-static short cansign(unsigned char type)
-{
-  switch(type)
-  {
-    case 1:
-    case 3:
-    case 16: /* hmmm: this one can only sign if used in a v3 packet */
-    case 17:
-    case 20:
-	return 1;
-    default:
-	return 0;
-  }
-}
-/* return values:
- *
- * 1 = sign only
- * 2 = encrypt only
- * 3 = both
- */
-
-static short get_abilities(unsigned char type)
-{
-  return (canencrypt(type) << 1) | cansign(type);
-}
 
 /****************
  * Read the GNUPG keys.  For now we read the complete keyring by
@@ -98,8 +44,7 @@ static short get_abilities(unsigned char type)
  *   - signature class
  */
 
-static KEYINFO *
-parse_pub_line( char *buf, int *is_subkey )
+static KEYINFO *parse_pub_line( char *buf, int *is_subkey )
 {
     KEYINFO *k=NULL;
     PGPUID *uid = NULL;
@@ -146,8 +91,8 @@ parse_pub_line( char *buf, int *is_subkey )
 	    k->keylen = atoi(p); /* fixme: add validation checks */
 	    break;
 	  case 4: /* pubkey algo */
-	    k->algorithm = pkalgbytype(atoi(p));
-	    k->flags |= get_abilities(atoi(p));
+	    k->algorithm = pgp_pkalgbytype(atoi(p));
+	    k->flags |= pgp_get_abilities(atoi(p));
 	    break;
 	  case 5: /* 16 hex digits with the long keyid. */
 	    /* We really should do a check here */
@@ -206,8 +151,7 @@ static pid_t gpg_invoke_list_keys(struct pgp_vinfo *pgp,
 			       pgpinfd, pgpoutfd, pgperrfd);
 }
 
-static KEYINFO *
-read_ring(struct pgp_vinfo *pgp, int secret )
+static KEYINFO *read_ring(struct pgp_vinfo *pgp, int secret )
 {
     FILE *fp;
     pid_t thepid;

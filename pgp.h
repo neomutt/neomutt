@@ -187,6 +187,11 @@ void pgp_extract_keys_from_messages(HEADER *hdr);
 void pgp_signed_handler (BODY *, STATE *);
 void pgp_void_passphrase (void);
 
+short pgp_canencrypt(unsigned char);
+short pgp_cansign(unsigned char);
+short pgp_get_abilities(unsigned char);
+const char *pgp_pkalgbytype(unsigned char);
+
 #define pgp_secring(a) pgp_getring(a, 0)
 #define pgp_pubring(a) pgp_getring(a, 1)
 
