@@ -1,3 +1,45 @@
+Fri Dec 11 20:32:25 1998  Thomas Roessler  <roessler@guug.de>
+
+	* Makefile.am: The distdir target creates hard links for the
+	source files.  This has the consequence that the us-dist
+	hook will demolish files in the main source tree.  We have
+	to un-link the various instances of the source code.
+
+	* INSTALL: Warn about regexp-related problems under Solaris 2.6.
+
+	* po/uk.po, po/ru.po, po/it.po, po/fr.po, po/es.po, po/de.po:
+	Various last-minute changes and automatic updates.
+
+	* main.c: Go into no-mailbox mode if the initial folder was
+	given explicitly (-f) and can't be opened.
+
+	* mh.c: Undoing the mh_speed patch.
+
+	* po/it.po, po/fr.po: l10n fixes.
+
+	* curs_main.c: Start a new reply and postpone it. Then type
+	m (mail), and recall and send the postponed reply. The
+	replied message is _not_ flagged replied.
+
+	(From Byrial Jensen.)
+
+	* po/fr.po: Bug-fixed french l10n.
+
+	* parse.c: Multipart parser fixes from Byrial.  Finally.
+
+	* po/it.po: Small fix.
+
+Thu Dec 10 22:48:56 1998  Thomas Roessler  <roessler@guug.de>
+
+	* po/fr.po, configure.in: Add the french l10n.
+
+	* po/uk.po, po/ru.po, po/it.po, po/es.po, po/de.po, reldate.h:
+	post-release commit 0.94.99.
+
+	* VERSION, README, ChangeLog: Pre-release commit for 0.94.99.
+
+	* menu.c: Fix tag-prefix.
+
 Thu Dec 10 11:06:25 1998  Thomas Roessler  <roessler@guug.de>
 
 	* menu.c: Fix tag-prefix.
