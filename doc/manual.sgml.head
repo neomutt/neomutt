@@ -1738,7 +1738,12 @@ messages:
 </verb></tscreen>
 
 Where EXPR, USER, ID, and SUBJECT are 
-<ref id="regexp" name="regular expressions">.
+<ref id="regexp" name="regular expressions">.  Special attention has to be
+made when using regular expressions inside of patterns.  Specifically,
+Mutt's parser for these patterns will strip one level of backslash (\),
+which is normally used for quoting.  If it is your intention to use a
+backslash in the regular expression, you will need to use two backslashes
+instead (\\).
 
 *) The forms <tt/&lt;&lsqb;MAX&rsqb;/, <tt/&gt;&lsqb;MIN&rsqb;/,
 <tt/&lsqb;MIN&rsqb;-/ and <tt/-&lsqb;MAX&rsqb;/
