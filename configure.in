@@ -38,6 +38,22 @@ esac
 AC_C_INLINE
 AC_C_CONST
 
+AC_PATH_PROG(DBX, dbx, no)
+AC_PATH_PROG(GDB, gdb, no)
+AC_PATH_PROG(SDB, sdb, no)
+
+if test $GDB != no ; then
+	DEBUGGER=$GDB
+elif test $DBX != no ; then
+	DEBUGGER=$DBX 
+elif test $SDB != no ; then
+	DEBUGGER=$SDB
+else
+	DEBUGGER=no
+fi
+
+AC_SUBST(DEBUGGER)
+
 ac_aux_path_sendmail=/usr/sbin:/usr/lib   
 AC_PATH_PROG(SENDMAIL, sendmail, no, $PATH:$ac_aux_path_sendmail)
 

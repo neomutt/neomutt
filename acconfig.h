@@ -164,3 +164,6 @@
 
 /* define when your system has the setrlimit function */
 #undef HAVE_SETRLIMIT
+
+/* where can we find a debugger */
+#undef DEBUGGER

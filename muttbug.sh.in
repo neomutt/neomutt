@@ -40,6 +40,36 @@ include_file ()
 	echo
 }
 
+debug_gdb ()
+{
+	cat << EOF > $SCRATCH/gdb.rc
+bt
+list
+quit
+EOF
+	@DEBUGGER@ -n -x $SCRATCH/gdb.rc -c $CORE mutt
+}
+
+debug_dbx ()
+{
+	cat << EOF > $SCRATCH/dbx.rc
+where
+list
+quit
+EOF
+	@DEBUGGER@ -s $SCRATCH/dbx.rc mutt $CORE
+}
+
+debug_sdb ()
+{
+	cat << EOF > $SCRATCH/sdb.rc
+t
+w
+q
+EOF
+	@DEBUGGER@ mutt $CORE < $SCRATCH/sdb.rc
+}
+
 case `echo -n` in
 "") n=-n; c=   ;;
  *) n=; c='\c' ;;
@@ -98,16 +128,22 @@ case "$severity" in
        *)   severity=normal    ;;
 esac
 
+if test -x @DEBUGGER@ ; then
+	test -f core && CORE=core
+	echo "Do you want to include information gathered from a core file?"
+	echo -n "If yes, please enter the path - otherwise just say no: [$CORE] $c"
+	read _CORE
+	test "$_CORE" && CORE="$_CORE"
+fi
 
-
-echo $n "Do you want to include your personal mutt configuration files? [Y|n]$c"
+echo $n "Do you want to include your personal mutt configuration files? [Y|n] $c"
 read personal
 case "$personal" in
 [nN]*)  personal=no  ;;
     *)  personal=yes ;;
 esac
 
-echo $n "Do you want to include your system's global mutt configuration file? [Y|n]$c"
+echo $n "Do you want to include your system's global mutt configuration file? [Y|n] $c"
 read global
 case "$global" in
 [nN]*)  global=no  ;;
@@ -125,7 +161,7 @@ if test -f /etc/debian_version ; then
 	fi
 	echo "$DPKG"
 	if test "$DPKG" = "no" ; then
-		echo $n "File this bug with Debian? [Y|n]$c"
+		echo $n "File this bug with Debian? [Y|n] $c"
 		read $DPKG
 		case "$DPKG" in
 		[nN])	DPKG=no ;;
@@ -172,6 +208,20 @@ echo "-- Mutt Version Information"
 echo
 mutt -v
 
+if test "$CORE" && test -f "$CORE" ; then
+	echo 
+	echo "-- Core Dump Analysis Output"
+	echo
+
+	case "@DEBUGGER@" in
+		*sdb) debug_sdb $CORE ;;
+		*dbx) debug_dbx $CORE ;;
+		*gdb) debug_gdb $CORE ;;
+	esac
+	
+	echo
+fi
+
 if test "$personal" = "yes" ; then
 	CANDIDATES=".muttrc-${MUTTVERSION} .muttrc .mutt/muttrc-${MUTTVERSION} .mutt/muttrc"
 	MATCHED="none"
@@ -188,6 +238,7 @@ if test "$personal" = "yes" ; then
 		include_file $MATCHED
 	fi
 fi
+
 
 if test "$global" = "yes" ; then
 	CANDIDATES="Muttrc-${MUTTVERSION} Muttrc"
@@ -225,7 +276,7 @@ while : ; do
 		fi
 	fi
 	
-	echo $n "Submit, Edit, View, Quit? [S|e|v|q]$c"
+	echo $n "Submit, Edit, View, Quit? [S|e|v|q] $c"
 	read _input
 	input="`echo $_input | tr EVSQ evsq`"
 	case $input in
