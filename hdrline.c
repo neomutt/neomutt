@@ -191,7 +191,8 @@ int mutt_user_is_recipient (HEADER *h)
  * %B = the list to which the letter was sent
  * %c = size of message in bytes
  * %C = current message number
- * %d = date and time of message (using strftime)
+ * %d = date and time of message using $date_format and sender's timezone
+ * %D = date and time of message using $date_format and local timezone
  * %f = entire from line
  * %F = like %n, unless from self
  * %i = message-id
@@ -294,6 +295,7 @@ hdr_format_str (char *dest,
       break;
 
     case 'd':
+    case 'D':
     case '{':
     case '[':
     case '(':
@@ -307,7 +309,7 @@ hdr_format_str (char *dest,
 
 	p = dest;
 
-	cp = (op == 'd') ? (NONULL (DateFmt)) : src;
+	cp = (op == 'd' || op == 'D') ? (NONULL (DateFmt)) : src;
 	if (*cp == '!')
 	{
 	  do_locales = 0;
@@ -317,7 +319,7 @@ hdr_format_str (char *dest,
 	  do_locales = 1;
 
 	len = destlen - 1;
-	while (len > 0 && ((op == 'd' && *cp) ||
+	while (len > 0 && (((op == 'd' || op == 'D') && *cp) ||
 			   (op == '{' && *cp != '}') || 
 			   (op == '[' && *cp != ']') ||
 			   (op == '(' && *cp != ')') ||
@@ -362,7 +364,7 @@ hdr_format_str (char *dest,
 	if (do_locales && Locale)
 	  setlocale (LC_TIME, Locale);
 
-	if (op == '[')
+	if (op == '[' || op == 'D')
 	  tm = localtime (&hdr->date_sent);
 	else if (op == '(')
 	  tm = localtime (&hdr->received);
