@@ -362,7 +362,7 @@ void menu_check_recenter (MUTTMENU *menu)
   }
   else if (menu->current >= menu->top + menu->pagelen)
   {
-    if (option (OPTMENUSCROLL))
+    if (option (OPTMENUSCROLL) || (menu->pagelen <= 0))
       menu->top = menu->current - menu->pagelen + 1;
     else
       menu->top += menu->pagelen * ((menu->current - menu->top) / menu->pagelen);
@@ -370,7 +370,7 @@ void menu_check_recenter (MUTTMENU *menu)
   }
   else if (menu->current < menu->top)
   {
-    if (option (OPTMENUSCROLL))
+    if (option (OPTMENUSCROLL) || (menu->pagelen <= 0))
       menu->top = menu->current;
     else
     {
