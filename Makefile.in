@@ -47,7 +47,7 @@ OBJS=	addrbook.o alias.o attach.o browser.o buffy.o color.o \
 
 CLEANFILES=mutt *.o core
 VERYCLEANFILES=$(CLEANFILES) Makefile config.cache config.log \
-	config.status config.h
+	config.status config.h Muttrc
 DISTCLEANFILES=$(VERYCLEANFILES) tags keymap_defs.h *.rej *.orig *~ Makefile.bak
 
 # kill these files when making new export distributions
