@@ -281,10 +281,12 @@ When composing a message matching \fIpattern\fP, \fIcommand\fP is
 executed.  When multiple \fBsend-hook\fPs match, they are executed
 in the order in which they occur in the configuration file.
 .TP
-\fBpgp-hook\fP \fIpattern\fP \fIkey-id\fP
-The pgp-hook command provides a method by which you can
+\fBcrypt-hook\fP \fIpattern\fP \fIkey-id\fP
+The crypt-hook command provides a method by which you can
 specify the ID of the public key to be used when encrypting messages
-to a certain recipient.
+to a certain recipient.  The meaning of "key ID" is to be taken
+broadly: This can be a different e-mail address, a numerical key ID,
+or even just an arbitrary search string.
 .TP
 \fBpush\fP \fIstring\fP
 This command adds the named \fIstring\fP to the keyboard buffer.

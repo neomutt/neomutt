@@ -1425,6 +1425,10 @@ normally use.  The crypt-hook command provides a method by which you can
 specify the ID of the public key to be used when encrypting messages to
 a certain recipient.
 
+The meaning of "key id" is to be taken broadly in this context:  You
+can either put a numerical key ID here, an e-mail address, or even
+just a real name.
+
 <sect1>Adding key sequences to the keyboard buffer<label id="push">
 <p>
 Usage: <tt/push/ <em/string/
