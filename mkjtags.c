@@ -4,7 +4,7 @@
  * Convert multi-file etags files to something
  * which can be used by jed.
  * 
- * Thomas Roessler <roessler@guug.de>
+ * Thomas Roessler <roessler@does-not-exist.org>
  * 
  */
 

@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 1996,1997 Michael R. Elkins <me@cs.hmc.edu>
- * Copyright (c) 1998,1999 Thomas Roessler <roessler@guug.de>
+ * Copyright (C) 1996,1997 Michael R. Elkins <me@mutt.org>
+ * Copyright (c) 1998,1999 Thomas Roessler <roessler@does-not-exist.org>
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -700,7 +700,7 @@ void pgp_extract_keys_from_attachment_list (FILE *fp, int tag, BODY *top)
 {
   if(!fp)
   {
-    mutt_error _("Internal error. Inform <roessler@guug.de>.");
+    mutt_error _("Internal error. Inform <roessler@does-not-exist.org>.");
     return;
   }
 

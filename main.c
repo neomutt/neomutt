@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 1999-2002 Thomas Roessler <roessler@guug.de>
+ * Copyright (C) 1999-2002 Thomas Roessler <roessler@does-not-exist.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ under certain conditions; type `mutt -vv' for details.\n");
 static const char *Copyright = N_("\
 Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>\n\
 Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n\
-Copyright (C) 1997-2002 Thomas Roessler <roessler@guug.de>\n\
+Copyright (C) 1997-2002 Thomas Roessler <roessler@does-not-exist.org>\n\
 Copyright (C) 1998-2002 Werner Koch <wk@isil.d.shuttle.de>\n\
 Copyright (C) 1999-2002 Brendan Cully <brendan@kublai.com>\n\
 Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n\

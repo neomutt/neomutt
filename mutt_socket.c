@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1998 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1998 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>
  * Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>
  * 

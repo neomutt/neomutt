@@ -29,11 +29,11 @@
  *           gcc -DTEST_SNPRINTF -o snprintf snprintf.c -lm
  *    and run snprintf for results.
  * 
- *  Thomas Roessler <roessler@guug.de> 01/27/98 for mutt 0.89i
+ *  Thomas Roessler <roessler@does-not-exist.org> 01/27/98 for mutt 0.89i
  *    The PGP code was using unsigned hexadecimal formats. 
  *    Unfortunately, unsigned formats simply didn't work.
  *
- *  Michael Elkins <me@cs.hmc.edu> 03/05/98 for mutt 0.90.8
+ *  Michael Elkins <me@mutt.org> 03/05/98 for mutt 0.90.8
  *    The original code assumed that both snprintf() and vsnprintf() were
  *    missing.  Some systems only have snprintf() but not vsnprintf(), so
  *    the code is now broken down under HAVE_SNPRINTF and HAVE_VSNPRINTF.

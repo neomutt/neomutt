@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 1996,1997 Michael R. Elkins <me@cs.hmc.edu>
- * Copyright (C) 1999-2000 Thomas Roessler <roessler@guug.de>
- * Copyright (C) 2001  Thomas Roessler <roessler@guug.de>
+ * Copyright (C) 1996,1997 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1999-2000 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2001  Thomas Roessler <roessler@does-not-exist.org>
  *                     Oliver Ehli <elmy@acm.org>
  *
  *     This program is free software; you can redistribute it and/or modify
