@@ -1,4 +1,6 @@
-2004-08-30 19:52:03  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
+2004-08-30 20:03:35  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
+
+	* init.c: Fix a memory leak in the generic spam detection code.
 
 	* muttlib.c, protos.h: This wipes duplicated code, which I
 	introduced a while ago.
