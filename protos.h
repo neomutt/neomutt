@@ -175,7 +175,8 @@ void mutt_select_fcc (char *, size_t, HEADER *);
 #define mutt_select_file(A,B,C) _mutt_select_file(A,B,C,0,NULL,NULL)
 void _mutt_select_file (char *, size_t, int, int, char ***, int *);
 void mutt_send_hook (HEADER *);
-void mutt_set_flag (CONTEXT *, HEADER *, int, int);
+void _mutt_set_flag (CONTEXT *, HEADER *, int, int, int);
+#define mutt_set_flag(a,b,c,d) _mutt_set_flag(a,b,c,d,1)
 void mutt_set_followup_to (ENVELOPE *);
 void mutt_set_body_charset (BODY *, const char *);
 void mutt_shell_escape (void);

@@ -827,7 +827,11 @@ static void reply_attachment_list (int op, int tag, HEADER *hdr, BODY *body)
   if (!tag && body->hdr)
   {
     hn = body->hdr;
-    hn->msgno = hdr->msgno; /* required for MH/maildir */
+    hn->msgno   = hdr->msgno; /* required for MH/maildir */
+    hn->replied = hdr->replied;
+    hn->read    = hdr->read;
+    hn->old	= hdr->old;
+    hn->changed = hdr->changed;
     ctx = Context;
   }
   else
@@ -868,8 +872,13 @@ static void reply_attachment_list (int op, int tag, HEADER *hdr, BODY *body)
   else
     ci_send_message (op, NULL, NULL, ctx, hn);
 
-  if (hn->replied && !hdr->replied)
-    mutt_set_flag (Context, hdr, M_REPLIED, 1);
+  if (hn->replied)
+  {
+    if (Context != ctx)
+      mutt_set_flag (Context, hdr, M_REPLIED, 1);
+    else
+      _mutt_set_flag (Context, hdr, M_REPLIED, 1, 0);
+  }
 
 cleanup:
 
