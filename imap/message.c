@@ -263,7 +263,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
    * command handler */
   h->active = 0;
   
-  snprintf (buf, sizeof (buf), "UID FETCH %d %s", HEADER_DATA(h)->uid,
+  snprintf (buf, sizeof (buf), "UID FETCH %u %s", HEADER_DATA(h)->uid,
 	    (mutt_bit_isset (idata->capabilities, IMAP4REV1) ?
 	     (option (OPTIMAPPEEK) ? "BODY.PEEK[]" : "BODY[]") :
 	     "RFC822"));
