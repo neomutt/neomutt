@@ -329,11 +329,15 @@ char *_mutt_expand_path (char *s, size_t slen, int rx)
 	  struct passwd *pw;
 	  if ((t = strchr (s + 1, '/'))) 
 	    *t = 0;
+
 	  if ((pw = getpwnam (s + 1)))
 	  {
 	    strfcpy (p, pw->pw_dir, sizeof (p));
 	    if (t)
-	      tail = t + 1;
+	    {
+	      *t = '/';
+	      tail = t;
+	    }
 	    else
 	      tail = "";
 	  }
