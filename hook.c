@@ -186,6 +186,68 @@ error:
   return (-1);
 }
 
+static void delete_hook (HOOK *h)
+{
+  FREE (&h->command);
+  FREE (&h->rx.pattern);
+  if (h->rx.rx)
+  {
+    regfree (h->rx.rx);
+  }
+  mutt_pattern_free (&h->pattern);
+  FREE (&h);
+}
+
+/* Deletes all hooks of type ``type'', or all defined hooks if ``type'' is 0 */
+static void delete_hooks (int type)
+{
+  HOOK *h;
+  HOOK *prev;
+
+  while (h = Hooks, h && (type == 0 || type == h->type))
+  {
+    Hooks = h->next;
+    delete_hook (h);
+  }
+
+  prev = h; /* Unused assignment to avoid compiler warnings */
+
+  while (h)
+  {
+    if (type == h->type)
+    {
+      prev->next = h->next;
+      delete_hook (h);
+    }
+    else
+      prev = h;
+    h = prev->next;
+  }
+}
+
+int mutt_parse_unhook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  while (MoreArgs (s))
+  {
+    mutt_extract_token (buf, s, 0);
+    if (mutt_strcmp ("*", buf->data) == 0)
+      delete_hooks (0);
+    else
+    {
+      int type = mutt_get_hook_type (buf->data);
+      if (type)
+	delete_hooks (type);
+      else
+      {
+	snprintf (err->data, err->dsize,
+		 _("unhook: unknown hook type: %s"), buf->data);
+	return (-1);
+      }
+    }
+  }
+  return 0;
+}
+
 void mutt_folder_hook (char *path)
 {
   HOOK *tmp = Hooks;

@@ -1381,6 +1381,15 @@ If the filename ends with a vertical bar (|), then <em/filename/ is
 considered to be an executable program from which to read input (eg.
 <tt/source ~/bin/myscript|/).
 
+<sect1>Removing hooks<label id="unhook">
+<p>
+Usage: <tt/unhook/ [ * | <em/hook-type/ ]
+
+This command permits you to flush hooks you have previously defined.
+You can either remove all hooks by giving the ``*'' character as an
+argument, or you can remove all hooks of a specific type by saying
+something like <tt/unhook send-hook/.
+
 <sect>Advanced Usage
 
 <sect1>Regular Expressions<label id="regexp">

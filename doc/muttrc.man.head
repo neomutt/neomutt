@@ -271,6 +271,11 @@ variables will reset to their system defaults.
 .TP
 \fBsource\fP \fIfilename\fP
 The given file will be evaluated as a configuration file.
+.TP
+\fBunhook\fP [\fB * \fP | \fIhook-type\fP ]
+This command will remove all hooks of a given type, or all hooks
+when \(lq\fB*\fP\(rq is used as an argument.  \fIhook-type\fP
+can be any of the \fB-hook\fP commands documented above.
 .SH PATTERNS
 .PP
 In various places with mutt, including some of the abovementioned

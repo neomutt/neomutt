@@ -240,6 +240,7 @@ int _mutt_enter_fname (const char *, char *, size_t, int *, int, int, char ***, 
 int _mutt_enter_string (unsigned char *, size_t, int, int, int, int, char ***, int *);
 #define mutt_get_field(A,B,C,D) _mutt_get_field(A,B,C,D,0,NULL,NULL)
 int _mutt_get_field (char *, char *, size_t, int, int, char ***, int *);
+int mutt_get_hook_type (const char *);
 int mutt_get_password (char *, char *, size_t);
 int mutt_get_postponed (CONTEXT *, HEADER *, HEADER **, char *, size_t);
 int mutt_get_tmp_attachment (BODY *);
@@ -268,6 +269,7 @@ int mutt_parse_push (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 int mutt_parse_rc_line (/* const */ char *, BUFFER *, BUFFER *);
 int mutt_parse_score (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 int mutt_parse_unscore (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+int mutt_parse_unhook (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 int mutt_pattern_func (int, char *);
 int mutt_pipe_attachment (FILE *, BODY *, const char *, char *); 
 int mutt_pipe_message (HEADER *);

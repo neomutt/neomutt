@@ -1873,3 +1873,13 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   set_option (OPTWEED); /* turn weeding on by default */
 #endif
 }
+
+int mutt_get_hook_type (const char *name)
+{
+  struct command_t *c;
+
+  for (c = Commands ; c->name ; c++)
+    if (c->func == mutt_parse_hook && mutt_strcasecmp (c->name, name) == 0)
+      return c->data;
+  return 0;
+}

@@ -2164,6 +2164,7 @@ struct command_t Commands[] = {
   { "toggle",		parse_set,		M_SET_INV },
   { "unalias",		parse_unalias,		0 },
   { "unhdr_order",	parse_unlist,		UL &HeaderOrderList },
+  { "unhook",		mutt_parse_unhook,	0 },
   { "unignore",		parse_unignore,		0 },
   { "unlists",		parse_unlists,		0 },
   { "unmono",		mutt_parse_unmono,	0 },
