@@ -940,7 +940,8 @@ static void flowed_stuff (STATE *s, char *cont, int level)
     if (*cont && !level && !mutt_strcmp (Pager, "builtin") && flowed_maybe_quoted (cont))
       state_puts ("\033[0m",s);
   }
-  else if ((*cont == ' ') || (*cont == '>') || (!level && !mutt_strncmp (cont, "From ", 5)))
+  else if ((!(s->flags & M_PRINTING)) && 
+	   ((*cont == ' ') || (*cont == '>') || (!level && !mutt_strncmp (cont, "From ", 5))))
     state_putc (' ', s);
 }
 
