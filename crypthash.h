@@ -14,12 +14,4 @@
 /* POINTER defines a generic pointer type */
 typedef unsigned char *POINTER;
 
-# ifndef HAVE_UINT32_T
-#  if SIZEOF_INT == 4
-typedef unsigned int uint32_t;
-#  elif SIZEOF_LONG == 4
-typedef unsigned long uint32_t;
-#  endif
-# endif
-
 #endif
