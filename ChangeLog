@@ -1,3 +1,120 @@
+Wed Aug  4 19:49:28 1999  Thomas Roessler  <roessler@guug.de>
+
+	* NEWS, protos.h, send.c: Various fixes; documentation.
+
+	* doc/dotlock.man.in: Document the -d option.
+
+	* dotlock.h, mbox.c, mx.c, mx.h, dotlock.c: Fix $save_empty.
+
+Thu Jul 29 09:17:29 1999  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.in:
+	Remove references to the old PGP configuration interface.  Noted by
+	Hanno Wagner <wagner@fitug.de>.
+
+	* browser.c, complete.c, enter.c, imap.c, imap.h, main.c, protos.h:
+	Brendan Cully's latest IMAP patches.
+
+Wed Jul 28 20:40:49 1999  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.in:
+	Fix "lists" documentation.  From Jeremy Blosser <jblosser@firinn.org>.
+
+	* doc/manual.sgml.in:
+	Fix the description of the lists command.  Patch provided by Jeremy
+	Blosser <jblosser@firinn.org>.
+
+	* doc/PGP-Notes.txt, pgp.h, pgpinvoke.c, init.c, init.h, pgp.c:
+	PGP 6 support.
+
+	* charsets/Attic/Makefile.in:
+	Portability patch for MiNT, from Guido Flohr
+	<gufl0000@stud.uni-sb.de>.
+
+	* doc/manual.sgml.in, doc/mutt.man.in:
+	Documentation fixes from Jeremy Blosser.
+
+	* mh.c: Replarse mh message' headers when updating them.
+
+	* mh.c:
+	Re-parse mh messages when committing them to disk.  The structure
+	may have changed.
+
+	* rfc822.h, commands.c, init.h, pgp.c, pgp.h, pgpinvoke.c:
+	Add a hook which enables us to fetch PGP keys from servers on
+	demand.  Look out for pkspxy. :-)
+
+	* hdrline.c: Enable the use of %F in conditionals.  From Aaron Schrab
+	<aaron+mutt@schrab.com>.
+
+Mon Jul 26 21:04:53 1999  Thomas Roessler  <roessler@guug.de>
+
+	* dotlock.c: impose a hard limit on the number of locking attempts.
+
+	* dotlock.c: Impose a hard limit on dotlock attempts.
+
+	* recvattach.c, gnupgparse.c, pgpinvoke.c:
+	Fix an error message.  Also, close Debian bug #37394 for stable.
+
+	* acconfig.h, configure.in: Check for gpgm.
+
+	* recvattach.c:
+	Make an error message ready for translation.  From Gero Treuner.
+
+	* Makefile.am:
+	Add missing dependencies for pgpring.  Fix from David Ellement
+	<ellement@sdd.hp.com>
+
+	* Makefile.am:
+	Create keymap_defs.h when it isn't present.  Fix from Lars Hecking
+	<lhecking@nmrc.ucc.ie>.
+
+	* Makefile.am:
+	Generate keymap_defs.h when it isn't present.  Fix proposed by Lars
+	Hecking <lhecking@nmrc.ucc.ie>.
+
+	* doc/manual.sgml.in, handler.c, init.h, mutt.h, parse.c:
+	Undo the content-disposition changes.  They don't merge well with
+	operations such as printing, and need some more thought.
+
+	* doc/manual.sgml.in, init.h, mutt.h, parse.c, handler.c:
+	When an attachment's content-disposition is different from "inline",
+	and if the user sets the use_cdisp option, don't auto_view this
+	part.
+
+	* ChangeLog: checkpointing.
+
+	* flags.c, protos.h, recvattach.c:
+	When replying to message/rfc822 type attachments, Context statistics
+	would go out of order.  Problem noted by Johan van Selst
+	<johans@stack.nl>.
+
+	* flags.c, protos.h, recvattach.c:
+	When replying to a message/rfc822 attachment, the Context statistics
+	would get out of order.  Problem noted by Johan van Selst
+	<johans@stack.nl>.
+
+	* curs_lib.c:
+	Dynamically allocate the unget buffer.  Fixes Debian bug #41042.
+	From Gero Treuner.
+
+	* curs_lib.c:
+	Dynamically allocate the unget buffer.  Fixes Debian bug #41042.
+	From Gero Treuner <gero@faveve.uni-stuttgart.de>.
+
+	* curs_main.c: Fix read_only in folder-hooks.
+
+	* curs_main.c, ChangeLog: The following:
+
+		folder-hook !asdf unset read_only
+		folder-hook asdf set read_only
+
+	wouldn't work.  Fix from Gero Treuner <gero@faveve.uni-stuttgart.de>.
+
+	* browser.h, imap.c, imap.h, mx.c, postpone.c, browser.c:
+	Assorted IMAP fixes.  From Brendan Cully <brendan@kublai.com>,
+	message <19990725150346.A19750@xanadu.kublai.com>.
+
 Mon Jul 26 14:53:01 1999  Thomas Roessler  <roessler@guug.de>
 
 	* flags.c, protos.h, recvattach.c:
