@@ -1,3 +1,8 @@
+2005-01-26 12:37:38  Ralf Wildenhues  <wildenhues@ins.uni-bonn.de> (roessler)
+
+	* addrbook.c, browser.c, commands.c, compose.c, imap/utf7.c:
+	Make some functions static.
+
 2005-01-26 12:36:36  Ralf Wildenhues  <wildenhues@ins.uni-bonn.de>  (roessler)
 
 	* imap/command.c, imap/message.c: Fix some printf arguments.
