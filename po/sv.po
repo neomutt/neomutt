@@ -1,9 +1,9 @@
 # $Id$
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.1.11\n"
-"POT-Creation-Date: 2000-05-23 19:16+0200\n"
-"PO-Revision-Date: 2000-04-07 08:46+01:00\n"
+"Project-Id-Version: Mutt 1.3.2\n"
+"POT-Creation-Date: 2000-06-06 20:54+0200\n"
+"PO-Revision-Date: 2000-06-06 21:14+02:00\n"
 "Last-Translator: Jörgen Tegnér <teg@post.netlink.se>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -298,7 +298,7 @@ msgstr "Verifiera PGP-signatur?"
 
 #: commands.c:98 pgp.c:1542 pgpkey.c:491 postpone.c:549
 msgid "Invoking PGP..."
-msgstr "Startar PGP ..."
+msgstr "Startar PGP..."
 
 #: commands.c:106 mbox.c:731
 msgid "Could not create temporary file!"
@@ -509,7 +509,7 @@ msgstr "-- Bilagor"
 
 #: compose.c:352
 msgid "You may not delete the only attachment."
-msgstr "Du kan inte ta bort den sista bilagan!"
+msgstr "Du kan inte ta bort den sista bilagan."
 
 #: compose.c:396
 msgid "Can't change character set for non-text attachments!"
@@ -640,7 +640,7 @@ msgstr "okänt fel"
 
 #: curs_lib.c:308
 msgid "Press any key to continue..."
-msgstr "Tryck på valfri tangent för att fortsätta ..."
+msgstr "Tryck på valfri tangent för att fortsätta..."
 
 #: curs_lib.c:352
 msgid " ('?' for list): "
@@ -1002,9 +1002,9 @@ msgid "[-- on %s --]\n"
 msgstr "[-- på %s --]\n"
 
 #: handler.c:1253
-#, fuzzy, c-format
+#, c-format
 msgid "[-- name: %s --]\n"
-msgstr "[-- på %s --]\n"
+msgstr "[-- namn: %s --]\n"
 
 #: handler.c:1264
 #, c-format
@@ -1140,7 +1140,7 @@ msgstr "Ansluter..."
 #. Login failed, try again
 #: imap/auth.c:383
 msgid "Login failed."
-msgstr "Anslutning misslyckades..."
+msgstr "Anslutning misslyckades."
 
 #. now begin login
 #: imap/auth_gss.c:82
@@ -1318,7 +1318,7 @@ msgstr "Skickar kommandot APPEND ..."
 
 #: imap/message.c:534
 msgid "Uploading message ..."
-msgstr "Skickar meddelande..."
+msgstr "Skickar meddelande ..."
 
 #: imap/message.c:619
 #, c-format
@@ -1328,7 +1328,7 @@ msgstr "Kopierar %d meddelanden till %s..."
 #: imap/message.c:623
 #, c-format
 msgid "Copying message %d to %s..."
-msgstr "Kopierar meddelande %d till %s ..."
+msgstr "Kopierar meddelande %d till %s...<"
 
 #: imap/socket.c:215
 #, c-format
@@ -1736,9 +1736,8 @@ msgid "move the cursor one character to the left"
 msgstr "flytta markören ett tecken till vänster"
 
 #: keymap_alldefs.h:64
-#, fuzzy
 msgid "move the cursor to the beginning of the word"
-msgstr "gå till början av raden"
+msgstr "flytta markören till början av ordet"
 
 #: keymap_alldefs.h:65
 msgid "jump to the beginning of the line"
@@ -1769,9 +1768,8 @@ msgid "move the cursor one character to the right"
 msgstr "flytta markören ett tecken åt höger"
 
 #: keymap_alldefs.h:72
-#, fuzzy
 msgid "move the cursor to the end of the word"
-msgstr "flytta markören ett tecken åt höger"
+msgstr "flytta markören till slutet av ordet"
 
 #: keymap_alldefs.h:73 keymap_alldefs.h:74
 msgid "scroll up through the history list"
@@ -1782,9 +1780,8 @@ msgid "delete chars from cursor to end of line"
 msgstr "ta bort tecknen mellan markören och radens slut"
 
 #: keymap_alldefs.h:76
-#, fuzzy
 msgid "delete chars from the cursor to the end of the word"
-msgstr "ta bort tecknen mellan markören och radens slut"
+msgstr "ta bort tecknen mellan markören och ordets slut"
 
 #: keymap_alldefs.h:77
 msgid "delete all chars on the line"
@@ -1800,7 +1797,7 @@ msgstr "skriv efterföljande tangentkombination i klartext"
 
 #: keymap_alldefs.h:80
 msgid "transpose character under cursor with previous"
-msgstr ""
+msgstr "byt tecken under markören mot föregående tecken"
 
 #: keymap_alldefs.h:81
 msgid "enter a muttrc command"
@@ -2343,7 +2340,6 @@ msgstr ""
 "    tillsammans med programmet; om inte, skriv till programmets utvecklare.\n"
 
 #: main.c:103
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
 "]\n"
@@ -2373,14 +2369,14 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"Använding: mutt [ -nRzZ ] [ -e <kommando> ] [ -F <fil> ] [ -m <typ> ] [ -f "
+"användning: mutt [ -nRyzZ ] [ -e <kommando> ] [ -F <fil> ] [ -m <typ> ] [ -f "
 "<fil> ]\n"
-"      mutt [ -nx ] [ -e <kommando> ] [ -a <fil> ] [ -F <fil> ] [ -H <fil> ] "
-"[ \n"
+"            mutt [ -nx ] [ -e <kommando> ] [ -a <fil> ] [ -F <fil> ] [ -H "
+"<fil> ] [ \n"
 "             -i <fil> ] [ -s <ärende> ] [ -b <adress> ] [ -c <adress> ] "
 "<adress> [ ... ]\n"
-"       mutt [ -n ] [ -e <kommando> ] [ -F <fil> ] -p\n"
-"       mutt -v[v]\n"
+"            mutt [ -n ] [ -e <kommando> ] [ -F <fil> ] -p\n"
+"            mutt -v[v]\n"
 "\n"
 "options:\n"
 "  -a <fil>\tbifoga en fil till meddelandet\n"
@@ -2490,7 +2486,7 @@ msgstr ""
 
 #: mbox.c:776
 msgid "Writing messages... %d (%d%%)"
-msgstr "Skriver meddelanden ... %d (%d%%)"
+msgstr "Skriver meddelanden... %d (%d%%)"
 
 #: mbox.c:922
 #, c-format
@@ -3151,9 +3147,8 @@ msgid "No new mail in POP mailbox."
 msgstr "Inga nya brev i brevlådan på POP-servern."
 
 #: pop.c:209
-#, fuzzy
 msgid "Delete messages from server?"
-msgstr "Tar bort meddelanden från server..."
+msgstr "Ta bort meddelanden från server?"
 
 #: pop.c:212
 #, c-format
