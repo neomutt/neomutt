@@ -556,6 +556,7 @@ if test "$need_socket" = "yes"
 then
 	AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(socket, setsockopt))
 	AC_CHECK_FUNC(gethostent, , AC_CHECK_LIB(nsl, gethostent))
+	AC_CHECK_FUNCS(getaddrinfo)
 	AC_DEFINE(USE_SOCKET)
 	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS account.o mutt_socket.o"
 fi

@@ -32,13 +32,13 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <string.h>
+#include <errno.h>
 
 /* support for multiple socket connections */
 static CONNECTION *Connections = NULL;
 
 /* forward declarations */
-static int socket_connect (CONNECTION* conn, struct sockaddr_in sin,
-  int verbose);
+static int socket_connect (int fd, struct sockaddr* sa);
 static CONNECTION* socket_new_conn ();
 
 /* Wrappers */
@@ -214,30 +214,45 @@ CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account)
   return conn;
 }
 
-/* socket_connect: attempt to bind a socket and connect to it */
-static int socket_connect (CONNECTION* conn, struct sockaddr_in sin,
-  int verbose)
+/* socket_connect: set up to connect to a socket fd. Preconnect goes here. */
+static int socket_connect (int fd, struct sockaddr* sa)
 {
-  if ((conn->fd = socket (AF_INET, SOCK_STREAM, IPPROTO_IP)) < 0)
-  {
-    if (verbose) 
-      mutt_perror ("socket");
+  int sa_size;
+  int rc;
+  /* old first_try_without_preconnect removed for now. unset $preconnect
+     first. */
 
-    return -1;
-  }
-
-  if (connect (conn->fd, (struct sockaddr *) &sin, sizeof (sin)) < 0)
+  if (mutt_strlen (Preconnect))
   {
-    raw_socket_close (conn);
-    if (verbose) 
+    dprint (1, (debugfile, "Executing preconnect: %s\n", Preconnect));
+    rc = mutt_system (Preconnect);
+    dprint (1, (debugfile, "Preconnect result: %d\n", rc));
+    if (rc)
     {
-      mutt_perror ("connect");
+      mutt_perror (_("Preconnect command failed."));
       sleep (1);
-    }
 
-    return -1;
+      return -1;
+    }
   }
 
+  if (sa->sa_family == AF_INET)
+    sa_size = sizeof (struct sockaddr_in);
+  else if (sa->sa_family == AF_INET6)
+    sa_size = sizeof (struct sockaddr_in6);
+  else
+  {
+    dprint (1, (debugfile, "Unknown address family!\n"));
+    return -1;
+  }
+  
+  if (connect (fd, sa, sa_size) < 0)
+  {
+    dprint (2, (debugfile, "Connection failed. errno: %d...\n", errno));
+
+    return errno;
+  }
+  
   return 0;
 }
 
@@ -271,54 +286,106 @@ int raw_socket_write (CONNECTION* conn, const char* buf, size_t count)
 
 int raw_socket_open (CONNECTION* conn)
 {
-  struct sockaddr_in sin;
-  struct hostent *he;
-  int    verbose;
-  int  do_preconnect = mutt_strlen (Preconnect) > 0;
-  /* This might be a config variable */
-  int first_try_without_preconnect = TRUE; 
+  int rc;
+  int fd;
 
-  mutt_message (_("Looking up %s..."), conn->account.host);
+#ifdef HAVE_GETADDRINFO
+/* --- IPv4/6 --- */
+
+  /* "65536\0" */
+  char port[6];
+  struct addrinfo hints;
+  struct addrinfo* res;
+  struct addrinfo* cur;
+
+  /* we accept v4 or v6 STREAM sockets */
+  memset (&hints, 0, sizeof (hints));
+  hints.ai_family = AF_UNSPEC;
+  hints.ai_socktype = SOCK_STREAM;
+
+  snprintf (port, sizeof (port), "%d", conn->account.port);
   
+  mutt_message (_("Looking up %s..."), conn->account.host);
+
+  rc = getaddrinfo (conn->account.host, port, &hints, &res);
+  if (rc)
+  {
+    mutt_error (_("Could not find the host \"%s\""), conn->account.host);
+    return -1;
+  }
+
+  mutt_message (_("Connecting to %s..."), conn->account.host); 
+
+  rc = -1;
+  for (cur = res; cur != NULL; cur = cur->ai_next)
+  {
+    fd = socket (cur->ai_family, cur->ai_socktype, cur->ai_protocol);
+    if (fd >= 0)
+    {
+      if (socket_connect (fd, res->ai_addr) == 0)
+      {
+	conn->fd = fd;
+	rc = 0;
+	break;
+      }
+      else
+	close (fd);
+    }
+  }
+
+  freeaddrinfo (res);
+
+#else
+  /* --- IPv4 only --- */
+
+  struct sockaddr_in sin;
+  struct hostent* he;
+  int i;
+
   memset (&sin, 0, sizeof (sin));
   sin.sin_port = htons (conn->account.port);
   sin.sin_family = AF_INET;
+
+  mutt_message (_("Looking up %s..."), conn->account.host);
+
   if ((he = gethostbyname (conn->account.host)) == NULL)
   {
     mutt_error (_("Could not find the host \"%s\""), conn->account.host);
 	
     return -1;
   }
-  memcpy (&sin.sin_addr, he->h_addr_list[0], he->h_length);
 
   mutt_message (_("Connecting to %s..."), conn->account.host); 
 
-  if (do_preconnect && first_try_without_preconnect)
+  rc = -1;
+  for (i = 0; he->h_addr_list[i] != NULL; i++)
   {
-    verbose = FALSE;
-    if (socket_connect (conn, sin, verbose) == 0)
-      return 0;
-  }
-  
-  if (do_preconnect)
-  {
-    int ret;
+    memcpy (&sin.sin_addr, he->h_addr_list[i], he->h_length);
+    fd = socket (PF_INET, SOCK_STREAM, IPPROTO_IP);
 
-    dprint (1, (debugfile, "Preconnect to server %s:\n", conn->account.host));
-    dprint (1, (debugfile, "\t%s\n", Preconnect));
-    /* Execute preconnect command */
-    ret = mutt_system (Preconnect) < 0;
-    dprint (1, (debugfile, "\t%s: %d\n", "Exit status", ret));
-    if (ret < 0)
+    if (fd > 0)
     {
-      mutt_perror (_("Preconnect command failed."));
-      sleep (1);
-
-      return ret;
+      if (socket_connect (fd, (struct sockaddr*) &sin) == 0)
+      {
+	conn->fd = fd;
+	rc = 0;
+	break;
+      }
+      else
+	close (fd);
     }
   }
-  
-  verbose = TRUE;
 
-  return socket_connect (conn, sin, verbose);
+#endif
+  if (rc)
+  {
+    mutt_error (_("Could not connect to %s (%s)."), conn->account.host,
+		rc == ETIMEDOUT ? "timed out" :
+		rc == ECONNREFUSED ? "connection refused" :
+		rc == ENETUNREACH ? "host unreachable" :
+		"unknown error");
+    sleep (2);
+  }
+  
+  return rc;
 }
