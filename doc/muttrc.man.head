@@ -18,7 +18,7 @@
 .\"     along with this program; if not, write to the Free Software
 .\"     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
 .\"
-.TH muttrc 5 "February 2001" Unix "User Manuals"
+.TH muttrc 5 "September 2002" Unix "User Manuals"
 .SH NAME
 .PP
 muttrc \- Configuration file for the Mutt Mail User Agent
@@ -238,11 +238,18 @@ When mutt changes to a mail folder which matches \fIpattern\fP,
 messages will be moved to that folder when the mail folder is left.
 .IP
 The first matchig \fBmbox-hook\fP applies.
-.TP
+.PP
+.nf
 \fBmailboxes\fP \fIfilename\fP [ \fIfilename\fP ... ]
-This command specifies folders which can receive mail and which will
+\fBunmailboxes\fP [ \fB*\fP | \fIfilename\fP ... ]
+.fi
+.IP
+The \fBmailboxes\fP specifies folders which can receive mail and which will
 be checked for new messages.  When changing folders, pressing space
-will cycle through folders with new mail. 
+will cycle through folders with new mail.  The \fBunmailboxes\fP
+command is used to remove a file name from the list of folders which
+can receive mail.  If "\fB*\fP" is specified as the file name, the
+list is emptied.
 .PP
 .nf
 \fBmy_hdr\fP \fIstring\fP

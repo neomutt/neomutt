@@ -162,7 +162,7 @@ void mutt_update_mailbox (BUFFY * b)
 
 int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  BUFFY **tmp;
+  BUFFY **tmp,*tmp1;
   char buf[_POSIX_PATH_MAX];
 #ifdef BUFFY_SIZE
   struct stat sb;
@@ -172,6 +172,19 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
   {
     mutt_extract_token (path, s, 0);
     strfcpy (buf, path->data, sizeof (buf));
+
+    if(data == M_UNMAILBOXES && mutt_strcmp(buf,"*") == 0)
+    {
+      for (tmp = &Incoming; *tmp;)
+      {
+        safe_free((void **)&((*tmp)->path));
+        tmp1=(*tmp)->next;
+        safe_free((void **)tmp);
+        *tmp=tmp1;
+      }
+      return 0;
+    }
+
     mutt_expand_path (buf, sizeof (buf));
 
     /* Skip empty tokens. */
@@ -182,6 +195,18 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
     {
       if (mutt_strcmp (buf, (*tmp)->path) == 0)
 	break;
+    }
+
+    if(data == M_UNMAILBOXES)
+    {
+      if(*tmp)
+      {
+        safe_free((void **)&((*tmp)->path));
+        tmp1=(*tmp)->next;
+        safe_free((void **)tmp);
+        *tmp=tmp1;
+      }
+      continue;
     }
 
     if (!*tmp)

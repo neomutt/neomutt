@@ -1207,7 +1207,7 @@ mailbox).
 
 <sect1>Defining mailboxes which receive mail<label id="mailboxes">
 <p>
-Usage: <tt/mailboxes/ &lsqb;!&rsqb;<em/filename/ &lsqb; <em/filename/ ... &rsqb;
+Usage: <tt/&lsqb;un&rsqb;mailboxes/ &lsqb;!&rsqb;<em/filename/ &lsqb; <em/filename/ ... &rsqb;
 
 This command specifies folders which can receive mail and
 which will be checked for new messages.  By default, the
@@ -1221,6 +1221,11 @@ Pressing TAB in the directory browser will bring up a menu showing the files
 specified by the <tt/mailboxes/ command, and indicate which contain new
 messages.  Mutt will automatically enter this mode when invoked from the
 command line with the <tt/-y/ option.
+
+The ``unmailboxes'' command is used to remove a token from the list
+of folders which receive mail. Use ``unmailboxes *'' to remove all
+tokens.
+
 <p>
 <bf/Note:/ new mail is detected by comparing the last modification time to
 the last access time.  Utilities like <tt/biff/ or <tt/frm/ or any other

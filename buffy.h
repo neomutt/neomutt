@@ -16,6 +16,10 @@
  *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
  */
 
+/*parameter to mutt_parse_mailboxes*/
+#define M_MAILBOXES   1
+#define M_UNMAILBOXES 2 
+
 typedef struct buffy_t
 {
   char *path;
