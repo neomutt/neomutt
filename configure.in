@@ -212,8 +212,6 @@ AC_CHECK_FUNCS(strftime, break, [AC_CHECK_LIB(intl, strftime)])
 dnl AIX may not have fchdir()
 AC_CHECK_FUNCS(fchdir, [AC_DEFINE(HAVE_FCHDIR)], [mutt_cv_fchdir=no])
 
-
-dnl what about this macro? AM_WITH_REGEX
 mutt_cv_regex=yes
 AC_ARG_WITH(rx, [  --with-rx[=DIR]            Use GNU rx ],
 	[if test $withval != yes; then
@@ -230,6 +228,20 @@ AC_ARG_WITH(rx, [  --with-rx[=DIR]            Use GNU rx ],
 	[AC_CHECK_FUNCS(regcomp, mutt_cv_regex=no)])
 
 RX_TARGET=no
+
+if test $mutt_cv_regex = no ; then
+	AC_MSG_CHECKING(whether your system's regexp library is completely broken)
+	AC_TRY_RUN([
+#include <unistd.h>
+#include <regex.h>
+main() { regex_t blah ; return regcomp(&blah, "foo.*bar", REG_NOSUB) || regexec (&blah, "foobar", 0, NULL, 0); }],
+	mutt_cv_regex_broken=no, mutt_cv_regex_broken=yes)
+	AC_MSG_RESULT([$mutt_cv_regex_broken])
+	if test $mutt_cv_regex_broken = yes ; then
+		echo "Using the included GNU rx instead." >&AC_FD_MSG
+		mutt_cv_regex=yes
+	fi
+fi
 
 if test $mutt_cv_regex = yes; then
 	if test -d ../rx-1.5; then

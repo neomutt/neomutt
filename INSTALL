@@ -165,10 +165,15 @@ All platforms
 
 Solaris 2.4
 
-	The system regcomp() and regexec() routines are very badly broken.
-	So much so that using them will cause Mutt to be totally unusable.
-	The --with-rx option to `configure' should always be used.  (Note:
-	the problems have apparently been fixed in Solaris 2.5)
+	The system regcomp() and regexec() routines are very badly
+	broken.  This should be automatically detected by the
+	configure script.  If not, use the --with-rx switch when
+	configuring mutt.
+
+	We are also hearing reports that Solaris 2.4's NLS libraries
+	dump core with mutt when using a locale different from "C".
+	Use the --with-included-gettext configuration switch if you
+	experience this problem.
 
 	Color does not work right with Solaris curses.  You will have to
 	compile with either ncurses or slang to get working color support.
@@ -204,7 +209,7 @@ FreeBSD 3.0
 	are reported to be fine.
 
 	This may also be an issue with earlier FreeBSD
-	versions.
+	versions and other BSD systems.
 
 
 $Id$
