@@ -44,7 +44,6 @@
 #include "mutt.h"
 #include "pgp.h"
 #include "charset.h"
-#include "iconv.h"
 
 /* for hexval */
 #include "mime.h"
