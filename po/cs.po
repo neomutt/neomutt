@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.1.4i\n"
-"POT-Creation-Date: 2000-03-13 19:41+0100\n"
-"PO-Revision-Date: 2000-02-16 12:35+0100\n"
+"Project-Id-Version: 1.1.9i\n"
+"POT-Creation-Date: 2000-03-14 20:29+0100\n"
+"PO-Revision-Date: 2000-03-14 20:29+0100\n"
 "Last-Translator: Jiøí Pavlovský <pavlovsk@ff.cuni.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -280,9 +280,9 @@ msgid "Can't open %s: %s."
 msgstr "%s nelze otevøít: %s"
 
 #: charset.c:1147
-#, fuzzy, c-format
+#, c-format
 msgid "Error while recoding %s. Leave it unchanged."
-msgstr "Chyba pøi automatickém ukládání %s. Va¹e data mù¾ete obnovit z %s."
+msgstr "Chyba pøi automatickém ukládání %s. Soubor nebyl zmìnìn."
 
 #: charset.c:1153
 #, c-format
@@ -1391,14 +1391,12 @@ msgstr "Ovìøuji (GSSAPI)..."
 
 #
 #: imap/browse.c:93
-#, fuzzy
 msgid "Getting namespaces..."
-msgstr "Stahuji zprávu..."
+msgstr "Stahuji jmenný prostor..."
 
 #: imap/browse.c:120
-#, fuzzy
 msgid "Getting folder list..."
-msgstr "Spojení se serverem navázáno: stahuji seznam schránek..."
+msgstr "Stahuji seznam schránek..."
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
@@ -2296,7 +2294,6 @@ msgstr "pøeskoèit na pøedchozí podvlákno"
 
 #
 #: keymap_alldefs.h:110
-#, fuzzy
 msgid "move to the previous undeleted message"
 msgstr "pøeskoèit na pøedchozí obnovenou zprávu"
 
@@ -2891,9 +2888,8 @@ msgstr "V ¾ádné schránce není nová po¹ta."
 
 #
 #: main.c:660
-#, fuzzy
 msgid "No incoming mailboxes defined."
-msgstr "procházet schránkami, pøijímajícími novou po¹tu"
+msgstr "Není definována ¾ádná schránka pøijímající novou po¹tu."
 
 #
 #: main.c:689
@@ -3209,9 +3205,8 @@ msgstr "poèet ponechaných zpráv: %d"
 
 #
 #: mx.c:1363
-#, fuzzy
 msgid "Can't write message"
-msgstr "editovat zprávu"
+msgstr "Zprávu nelze ulo¾it"
 
 #
 #: pager.c:60
@@ -4229,14 +4224,9 @@ msgid "Parent message is not available."
 msgstr "Rodièovská zpráva není dostupná."
 
 #
-#, fuzzy
-#~ msgid "move to the last undelete message"
-#~ msgstr "pøeskoèit na následující obnovenou zprávu"
+#~ msgid "ignoring empty header field: %s"
+#~ msgstr "ignoruji prázdnou hlavièku: %s"
 
 #
 #~ msgid "return to the main-menu"
 #~ msgstr "návrat do hlavního menu"
-
-#
-#~ msgid "ignoring empty header field: %s"
-#~ msgstr "ignoruji prázdnou hlavièku: %s"
