@@ -1599,6 +1599,14 @@ struct option_t MuttVars[] = {
   ** messages you are replying to.  If the variable is unset, the
   ** \fIFrom:\fP line will use your address on the current machine.
   */
+  { "reverse_realname",	DT_BOOL, R_BOTH, OPTREVREAL, 1 },
+  /*
+  ** .pp
+  ** This variable fine-tunes the behaviour of the $reverse_name feature.
+  ** When it is set, mutt will use the address from incoming messages as-is,
+  ** possibly including eventual real names.  When it is unset, mutt will
+  ** override any such realnames with the setting of the $realname variable.
+  */
   { "rfc2047_parameters", DT_BOOL, R_NONE, OPTRFC2047PARAMS, 0 },
   /*
   ** .pp
