@@ -353,7 +353,7 @@ retry_name:
 static int check_alias_name_char (char c)
 {
   return (c == '-' || c == '_' || c == '+' || c == '=' || c == '.' ||
-	  isalnum (c));
+	  isalnum ((unsigned char) c));
 }
 
 int mutt_check_alias_name (const char *s, char *d)

@@ -135,7 +135,7 @@ void rfc2231_decode_parameters (PARAMETER **headp)
     else
     {
       *s = '\0'; s++; /* let s point to the first character of index. */
-      for (t = s; *t && isdigit (*t); t++)
+      for (t = s; *t && isdigit ((unsigned char) *t); t++)
 	;
       encoded = (*t == '*');
       *t = '\0';
@@ -208,7 +208,9 @@ static void rfc2231_decode_one (char *dest, char *src)
 
   for (d = dest; *src; src++)
   {
-    if (*src == '%' && isxdigit (*(src + 1)) && isxdigit (*(src + 2)))
+    if (*src == '%' &&
+        isxdigit ((unsigned char) *(src + 1)) &&
+        isxdigit ((unsigned char) *(src + 2)))
     {
       *d++ = (hexval (*(src + 1)) << 4) | (hexval (*(src + 2)));
       src += 2;

@@ -308,7 +308,7 @@ static int cmd_handle_untagged (IMAP_DATA* idata)
 
   s = imap_next_word (idata->cmd.buf);
 
-  if ((idata->state == IMAP_SELECTED) && isdigit (*s))
+  if ((idata->state == IMAP_SELECTED) && isdigit ((unsigned char) *s))
   {
     pn = s;
     s = imap_next_word (s);
@@ -525,7 +525,7 @@ static void cmd_parse_myrights (IMAP_DATA* idata, char* s)
   /* zero out current rights set */
   memset (idata->rights, 0, sizeof (idata->rights));
 
-  while (*s && !isspace(*s))
+  while (*s && !isspace((unsigned char) *s))
   {
     switch (*s) 
     {

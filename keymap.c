@@ -120,7 +120,10 @@ static int parse_fkey(char *s)
  */
 static int parse_keycode (const char *s)
 {
-  if (isdigit (s[1]) && isdigit (s[2]) && isdigit (s[3]) && s[4] == '>')
+  if (isdigit ((unsigned char) s[1]) &&
+      isdigit ((unsigned char) s[2]) &&
+      isdigit ((unsigned char) s[3]) &&
+      s[4] == '>')
   {
     return (s[3] - '0') + (s[2] - '0') * 8 + (s[1] - '0') * 64;
   }

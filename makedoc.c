@@ -218,7 +218,7 @@ static void makedoc (FILE *in, FILE *out)
 
 static char *skip_ws (char *s)
 {
-  while (*s && isspace (*s))
+  while (*s && isspace ((unsigned char) *s))
     s++;
 
   return s;
@@ -300,7 +300,7 @@ static char *get_token (char *d, size_t l, char *s)
     }
     else if (!is_quoted && strchr (single_char_tokens, *t))
       break;
-    else if (!is_quoted && isspace (*t))
+    else if (!is_quoted && isspace ((unsigned char) *t))
       break;
     else
       *d++ = *t;
@@ -486,14 +486,14 @@ static void pretty_default (char *t, size_t l, const char *s, int type)
     {
       /* heuristic! */
       strncpy (t, s + 5, l);
-      for (; *t; t++) *t = tolower (*t);
+      for (; *t; t++) *t = tolower ((unsigned char) *t);
       break;
     }
     case DT_MAGIC:
     {
       /* heuristic! */
       strncpy (t, s + 2, l);
-      for (; *t; t++) *t = tolower (*t);
+      for (; *t; t++) *t = tolower ((unsigned char) *t);
       break;
     }
     case DT_STR:
@@ -1188,7 +1188,7 @@ static int handle_docline (char *l, FILE *out, int docstat)
       else
       {
 	ref = s;
-	while (isalnum (*s) || *s == '-' || *s == '_')
+	while (isalnum ((unsigned char) *s) || *s == '-' || *s == '_')
 	  ++s;
 
 	docstat = commit_buff (buff, &d, out, docstat);

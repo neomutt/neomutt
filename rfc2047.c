@@ -606,9 +606,9 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
 	charset[t-pp] = '\0';
 	break;
       case 3:
-	if (toupper (*pp) == 'Q')
+	if (toupper ((unsigned char) *pp) == 'Q')
 	  enc = ENCQUOTEDPRINTABLE;
-	else if (toupper (*pp) == 'B')
+	else if (toupper ((unsigned char) *pp) == 'B')
 	  enc = ENCBASE64;
 	else
 	{

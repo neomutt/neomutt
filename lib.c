@@ -170,7 +170,7 @@ char *mutt_strlower (char *s)
 
   while (*p)
   {
-    *p = tolower (*p);
+    *p = tolower ((unsigned char) *p);
     p++;
   }
 
@@ -608,7 +608,10 @@ const char *mutt_stristr (const char *haystack, const char *needle)
 
   while (*(p = haystack))
   {
-    for (q = needle; *p && *q && tolower (*p) == tolower (*q); p++, q++)
+    for (q = needle;
+         *p && *q &&
+           tolower ((unsigned char) *p) == tolower ((unsigned char) *q);
+         p++, q++)
       ;
     if (!*q)
       return (haystack);

@@ -844,7 +844,7 @@ static int address_header_decode (char **h)
 
   ADDRESS *a = NULL;
 
-  switch (tolower (*s))
+  switch (tolower ((unsigned char) *s))
   {
     case 'r': 
     {

@@ -154,7 +154,9 @@ static int qp_decode_triple (char *s, char *d)
     return 1;
   
   /* quoted-printable triple */
-  if (*s == '=' && isxdigit (*(s+1)) && isxdigit (*(s+2)))
+  if (*s == '=' &&
+      isxdigit ((unsigned char) *(s+1)) &&
+      isxdigit ((unsigned char) *(s+2)))
   {
     *d = (hexval (*(s+1)) << 4) | hexval (*(s+2));
     return 0;

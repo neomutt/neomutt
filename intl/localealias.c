@@ -244,21 +244,21 @@ read_alias_file (fname, fname_len)
 
       cp = buf;
       /* Ignore leading white space.  */
-      while (isspace (cp[0]))
+      while (isspace ((unsigned char) cp[0]))
 	++cp;
 
       /* A leading '#' signals a comment line.  */
       if (cp[0] != '\0' && cp[0] != '#')
 	{
 	  alias = cp++;
-	  while (cp[0] != '\0' && !isspace (cp[0]))
+	  while (cp[0] != '\0' && !isspace ((unsigned char) cp[0]))
 	    ++cp;
 	  /* Terminate alias name.  */
 	  if (cp[0] != '\0')
 	    *cp++ = '\0';
 
 	  /* Now look for the beginning of the value.  */
-	  while (isspace (cp[0]))
+	  while (isspace ((unsigned char) cp[0]))
 	    ++cp;
 
 	  if (cp[0] != '\0')
@@ -267,7 +267,7 @@ read_alias_file (fname, fname_len)
 	      size_t value_len;
 
 	      value = cp++;
-	      while (cp[0] != '\0' && !isspace (cp[0]))
+	      while (cp[0] != '\0' && !isspace ((unsigned char) cp[0]))
 		++cp;
 	      /* Terminate value.  */
 	      if (cp[0] == '\n')

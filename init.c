@@ -139,7 +139,8 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
 	case 'C':
 	    if (!*tok->dptr)
 		return -1; /* premature end of token */
-	  mutt_buffer_addch (dest, (toupper (*tok->dptr) - '@') & 0x7f);
+	  mutt_buffer_addch (dest, (toupper ((unsigned char) *tok->dptr)
+                                    - '@') & 0x7f);
 	  tok->dptr++;
 	  break;
 	case 'r':
@@ -180,7 +181,7 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
       else if (ch == '[')
 	mutt_buffer_addch (dest, '\033');
       else if (isalpha ((unsigned char) ch))
-	mutt_buffer_addch (dest, toupper (ch) - '@');
+	mutt_buffer_addch (dest, toupper ((unsigned char) ch) - '@');
       else
       {
 	mutt_buffer_addch (dest, '^');

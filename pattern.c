@@ -278,12 +278,12 @@ int eat_range (pattern_t *pat, BUFFER *s, BUFFER *err)
     }
     else
       pat->min = strtol (s->dptr, &tmp, 0);
-    if (toupper (*tmp) == 'K') /* is there a prefix? */
+    if (toupper ((unsigned char) *tmp) == 'K') /* is there a prefix? */
     {
       pat->min *= 1024;
       tmp++;
     }
-    else if (toupper (*tmp) == 'M')
+    else if (toupper ((unsigned char) *tmp) == 'M')
     {
       pat->min *= 1048576;
       tmp++;
@@ -312,12 +312,12 @@ int eat_range (pattern_t *pat, BUFFER *s, BUFFER *err)
   {
     /* range maximum */
     pat->max = strtol (tmp, &tmp, 0);
-    if (toupper (*tmp) == 'K')
+    if (toupper ((unsigned char) *tmp) == 'K')
     {
       pat->max *= 1024;
       tmp++;
     }
-    else if (toupper (*tmp) == 'M')
+    else if (toupper ((unsigned char) *tmp) == 'M')
     {
       pat->max *= 1048576;
       tmp++;

@@ -9,8 +9,8 @@ int strncasecmp (char *s1, char *s2, size_t n)
   
   while (*s1 && *s2 && l < n)
   {
-    c1 = tolower (*s1);
-    c2 = tolower (*s2);
+    c1 = tolower ((unsigned char) *s1);
+    c2 = tolower ((unsigned char) *s2);
     if (c1 != c2)
       return (c1 - c2);
     s1++;
@@ -29,8 +29,8 @@ int strcasecmp (char *s1, char *s2)
   
   while (*s1 && *s2)
   {
-    c1 = tolower (*s1);
-    c2 = tolower (*s2);
+    c1 = tolower ((unsigned char) *s1);
+    c2 = tolower ((unsigned char) *s2);
     if (c1 != c2)
       return (c1 - c2);
     s1++;

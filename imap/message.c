@@ -852,7 +852,7 @@ static int msg_parse_fetch (IMAP_HEADER *h, char *s)
       s += 11;
       SKIPWS (s);
       ptmp = tmp;
-      while (isdigit (*s))
+      while (isdigit ((unsigned char) *s))
         *ptmp++ = *s++;
       *ptmp = 0;
       h->content_length = atoi (tmp);

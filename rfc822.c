@@ -174,7 +174,7 @@ next_token (const char *s, char *token, size_t *tokenlen, size_t tokenmax)
   }
   while (*s)
   {
-    if (ISSPACE (*s) || is_special (*s))
+    if (ISSPACE ((unsigned char) *s) || is_special (*s))
       break;
     if (*tokenlen < tokenmax)
       token[(*tokenlen)++] = *s;
@@ -345,7 +345,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
   while (last && last->next)
     last = last->next;
 
-  ws_pending = isspace (*s);
+  ws_pending = isspace ((unsigned char) *s);
   
   SKIPWS (s);
   begin = s;
@@ -479,7 +479,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
       }
       s = ps;
     }
-    ws_pending = isspace (*s);
+    ws_pending = isspace ((unsigned char) *s);
     SKIPWS (s);
   }
   

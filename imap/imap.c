@@ -1234,7 +1234,7 @@ int imap_mailbox_check (char* path, int new)
       {
 	s = imap_next_word (s);
 	s = imap_next_word (s);
-	if (isdigit (*s))
+	if (isdigit ((unsigned char) *s))
 	{
 	  if (*s != '0')
 	  {
