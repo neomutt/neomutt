@@ -29,6 +29,7 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <stdlib.h>
+#include <fcntl.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <string.h>
@@ -343,6 +344,7 @@ int raw_socket_open (CONNECTION* conn)
   for (cur = res; cur != NULL; cur = cur->ai_next)
   {
     fd = socket (cur->ai_family, cur->ai_socktype, cur->ai_protocol);
+    fcntl(fd,F_SETFD,FD_CLOEXEC);
     if (fd >= 0)
     {
       if ((rc = socket_connect (fd, cur->ai_addr)) == 0)
