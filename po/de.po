@@ -1,9 +1,9 @@
 # $Id$
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.1.7\n"
+"Project-Id-Version: 1.1.8\n"
 "POT-Creation-Date: 2000-03-04 13:51+0100\n"
-"PO-Revision-Date: 2000-03-01 02:09+01:00\n"
+"PO-Revision-Date: 2000-03-05 20:29+01:00\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -551,7 +551,7 @@ msgstr "Kann %s nicht anhängen!"
 
 #: compose.c:639
 msgid "Open mailbox to attach message from"
-msgstr "Öffne Mailbox, aus der Nachricht angehänt werden sollen"
+msgstr "Mailbox, aus der angehängt werden soll"
 
 #: compose.c:674
 msgid "No messages in that folder."
