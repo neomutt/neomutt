@@ -63,7 +63,8 @@ void mutt_set_charset (char *charset)
   if (!strcmp(buffer, "utf-8"))
     Charset_is_utf8 = 1;
 #ifndef HAVE_WC_FUNCS
-  else if (!strcmp(buffer, "euc-jp") || !strcmp(buffer, "shift_jis"))
+  else if (!strcmp(buffer, "euc-jp") || !strcmp(buffer, "shift_jis")
+  	|| !strcmp(buffer, "cp932"))
   {
     charset_is_ja = 1;
     charset_to_utf8 = iconv_open ("UTF-8", charset);
