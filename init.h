@@ -257,9 +257,6 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Character set your terminal uses to display and enter textual data.
-  ** This information is required to properly label outgoing messages which
-  ** contain 8-bit characters so that receiving parties can display your
-  ** messages in the correct character set.
   */
   { "check_new",	DT_BOOL, R_NONE, OPTCHECKNEW, 1 },
   /*
