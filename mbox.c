@@ -53,13 +53,14 @@ int mbox_lock_mailbox (CONTEXT *ctx, int excl, int retry)
 {
   int r;
 
-  /* XXX - Currently, we force dotlocking.
-   * Use dotlock -t here.
-   */
-
   if ((r = mx_lock_file (ctx->path, fileno (ctx->fp), excl, 1, retry)) == 0)
     ctx->locked = 1;
-
+  else if (retry && !excl)
+  {
+    ctx->readonly = 1;
+    return 0;
+  }
+  
   return (r);
 }
 
@@ -575,7 +576,7 @@ int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
 	  /* we couldn't lock the mailbox, but nothing serious happened:
 	   * probably the new mail arrived: no reason to wait till we can
 	   * parse it: we'll get it on the next pass
-	   *  */
+	   */
 	  return (M_LOCKED);
 	}
 	unlock = 1;
