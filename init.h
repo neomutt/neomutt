@@ -1813,6 +1813,14 @@ struct option_t MuttVars[] = {
   */
   
 #if defined(USE_SSL)||defined(USE_NSS)||defined(USE_GNUTLS)
+#ifdef USE_SSL
+  { "ssl_client_cert", DT_PATH, R_NONE, UL &SslClientCert, 0 },
+  /*
+  ** .pp
+  ** The file containing a client certificate and its associated private
+  ** key.
+  */
+#endif
 # if defined(USE_SSL)||defined(USE_GNUTLS)
   { "ssl_starttls", DT_QUAD, R_NONE, OPT_SSLSTARTTLS, M_YES },
   /*
@@ -1869,12 +1877,6 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This variables specifies whether to attempt to use TLSv1 in the
   ** SSL authentication process.
-  */
-  { "ssl_client_cert", DT_PATH, R_NONE, UL &SslClientCert, 0 },
-  /*
-  ** .pp
-  ** The file containing a client certificate and its associated private
-  ** key.
   */
 #ifdef USE_GNUTLS
   { "ssl_min_dh_prime_bits", DT_NUM, R_NONE, UL &SslDHPrimeBits, 0 },

@@ -112,9 +112,11 @@ WHERE char *SpamSep;
 #if defined(USE_SSL) || defined(USE_NSS) || defined(USE_GNUTLS)
 WHERE char *SslCertFile INITVAL (NULL);
 #endif
+#ifdef USE_SSL
+WHERE char *SslClientCert INITVAL (NULL);
+#endif
 #if defined(USE_SSL) || defined(USE_NSS)
 WHERE char *SslEntropyFile INITVAL (NULL);
-WHERE char *SslClientCert INITVAL (NULL);
 #endif
 #ifdef USE_GNUTLS
 WHERE short SslDHPrimeBits;
