@@ -497,6 +497,15 @@ typedef struct content
   unsigned int from : 1;   /* has a line beginning with "From "? */
   unsigned int dot : 1;    /* has a line consisting of a single dot? */
   unsigned int cr : 1;     /* has CR, even when in a CRLF pair */
+
+  struct
+  {
+    int from;
+    int whitespace;
+    int dot;
+    int linelen;
+    int was_cr;
+  } state;
 } CONTENT;
 
 typedef struct body

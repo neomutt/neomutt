@@ -1733,11 +1733,16 @@ struct option_t MuttVars[] = {
   ** mutt scores are always greater than or equal to zero, the default setting
   ** of this variable will never mark a message read.
   */
-  { "send_charset",	DT_STR,  R_NONE, UL &SendCharset, UL "" },
+  { "send_charset",	DT_STR,  R_NONE, UL &SendCharset, UL "us-ascii:iso-8859-1:utf-8" },
   /*
   ** .pp
-  ** The character set that mutt will use for outgoing messages.
-  ** If this variable is not set, mutt will fall back to ``$$charset''.
+  ** A list of character sets for outgoing messages. Mutt will use the
+  ** first character set into which the text can be converted exactly.
+  ** If your ``$$charset'' is not iso-8859-1 and recipients may not
+  ** understand UTF-8, it is advisable to include in the list an
+  ** appropriate widely used standard character set (such as
+  ** iso-8859-2, koi8-r or iso-2022-jp) either instead of or after
+  ** "iso-8859-1".
   */
   { "sendmail",		DT_PATH, R_NONE, UL &Sendmail, UL SENDMAIL " -oem -oi" },
   /*

@@ -45,6 +45,15 @@
 #define EX_OK 0
 #endif
 
+/* If you are debugging this file, comment out the following line. */
+/*#define NDEBUG*/
+
+#ifdef NDEBUG
+#define assert(x)
+#else
+#include <assert.h>
+#endif
+
 extern char RFC822Specials[];
 
 static struct sysexits
@@ -511,32 +520,44 @@ void mutt_generate_boundary (PARAMETER **parm)
   mutt_set_parameter ("boundary", rs, parm);
 }
 
-/* analyze the contents of a file to determine which MIME encoding to use */
-CONTENT *mutt_get_content_info (const char *fname, BODY *b)
+void update_content_info(CONTENT *info, char *d, size_t dlen)
 {
-  char send_charset[SHORT_STRING];
-  CONTENT *info;
-  FILE *fp;
-  FGETCONV *fc;
-  int ch, from=0, whitespace=0, dot=0, linelen=0;
+  int from = info->state.from;
+  int whitespace = info->state.whitespace;
+  int dot = info->state.dot;
+  int linelen = info->state.linelen;
+  int was_cr = info->state.was_cr;
 
-  if(b && !fname) fname = b->filename;
-  
-  if ((fp = fopen (fname, "r")) == NULL)
+  if (!d) /* This signals EOF */
   {
-    dprint (1, (debugfile, "mutt_get_content_info: %s: %s (errno %d).\n",
-		fname, strerror (errno), errno));
-    return (NULL);
+    if (was_cr)
+      info->binary = 1;
+    return;
   }
 
-  if (b != NULL && b->type == TYPETEXT && (!b->noconv))
-    fc = fgetconv_open (fp, Charset, mutt_get_send_charset (send_charset, sizeof (send_charset), b, 1));
-  else
-    fc = fgetconv_open (fp, 0, 0);
-
-  info = safe_calloc (1, sizeof (CONTENT));
-  while ((ch = fgetconv (fc)) != EOF)
+  for (; dlen; d++, dlen--)
   {
+    char ch = *d;
+
+    if (was_cr)
+    {
+      was_cr = 0;
+      if (ch != '\n')
+      {
+        info->binary = 1;
+      }
+      else
+      {
+        if (whitespace) info->space = 1;
+	if (dot) info->dot = 1;
+        if (linelen > info->linemax) info->linemax = linelen;
+        whitespace = 0;
+	dot = 0;
+        linelen = 0;
+	continue;
+      }
+    }
+
     linelen++;
     if (ch == '\n')
     {
@@ -552,26 +573,8 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
     {
       info->crlf++;
       info->cr = 1;
-      if ((ch = fgetc (fp)) == EOF)
-      {
-        info->binary = 1;
-        break;
-      }
-      else if (ch != '\n')
-      {
-        info->binary = 1;
-	ungetc (ch, fp);
-	continue;
-      }
-      else
-      {
-        if (whitespace) info->space = 1;
-	if (dot) info->dot = 1;
-        if (linelen > info->linemax) info->linemax = linelen;
-        whitespace = 0;
-	dot = 0;
-        linelen = 0;
-      }
+      was_cr = 1;
+      continue;
     }
     else if (ch & 0x80)
       info->hibin++;
@@ -612,9 +615,262 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
     if (linelen > 1) dot = 0;
     if (ch != ' ' && ch != '\t') whitespace = 0;
   }
-  fgetconv_close (fc);
-  fclose (fp);
-  return (info);
+
+  info->state.from = from;
+  info->state.whitespace = whitespace;
+  info->state.dot = dot;
+  info->state.linelen = linelen;
+  info->state.was_cr = was_cr;
+}
+
+/* Define as 1 if iconv sometimes returns -1(EILSEQ) instead of transcribing. */
+#define BUGGY_ICONV 1
+
+/*
+ * Find the best charset conversion of the file from fromcode into one
+ * of the tocodes. If successful, set *tocode and CONTENT *info and
+ * return the number of characters converted inexactly. If no
+ * conversion was possible, return -1.
+ *
+ * We convert via UTF-8 in order to avoid the condition -1(EINVAL),
+ * which would otherwise prevent us from knowing the number of inexact
+ * conversions.
+ *
+ * We assume that the output from iconv is never more than 4 times as
+ * long as the input for any pair of charsets we might be interested
+ * in.
+ */
+static size_t convert_file_to (FILE *file, const char *fromcode,
+			       int ncodes, const char **tocodes,
+			       int *tocode, CONTENT *info)
+{
+  iconv_t cd1, *cd;
+  char bufi[256], bufu[512], bufo[4 * sizeof (bufi)];
+  const char *ib, *ub;
+  char *ob;
+  size_t ibl, obl, ubl, ubl1, n, ret;
+  int i;
+  CONTENT *infos;
+  size_t *score;
+
+  cd1 = iconv_open ("UTF-8", fromcode);
+  if (cd1 == (iconv_t)(-1))
+    return -1;
+
+  cd = safe_malloc (ncodes * sizeof (iconv_t));
+  infos = safe_malloc (ncodes * sizeof (CONTENT));
+  score = safe_malloc (ncodes * sizeof (size_t));
+  for (i = 0; i < ncodes; i++)
+    cd[i] = iconv_open (tocodes[i], "UTF-8");
+  memset (infos, 0, ncodes * sizeof (CONTENT));
+  memset (score, 0, ncodes * sizeof (size_t));
+
+  rewind (file);
+  ibl = 0;
+  for (;;)
+  {
+
+    /* Try to fill input buffer */
+    n = fread (bufi + ibl, 1, sizeof (bufi) - ibl, file);
+    ibl += n;
+
+    /* Convert to UTF-8 */
+    ib = bufi;
+    ob = bufu, obl = sizeof (bufu);
+    n = iconv (cd1, ibl ? &ib : 0, &ibl, &ob, &obl);
+    assert (n == (size_t)(-1) || !n || ICONV_NONTRANS);
+    if (n == (size_t)(-1) &&
+	((errno != EINVAL && errno != E2BIG) || ib == bufi))
+    {
+      assert (errno == EILSEQ ||
+	      (errno == EINVAL && ib == bufi && ibl < sizeof (bufi)));
+      ret = (size_t)(-1);
+      break;
+    }
+    ubl1 = ob - bufu;
+
+    /* Convert from UTF-8 */
+    for (i = 0; i < ncodes; i++)
+      if (cd[i] != (iconv_t)(-1) && score[i] != (size_t)(-1))
+      {
+	ub = bufu, ubl = ubl1;
+	ob = bufo, obl = sizeof (bufo);
+	n = iconv (cd[i], (ibl || ubl) ? &ub : 0, &ubl, &ob, &obl);
+	if (n == (size_t)(-1))
+	{
+	  assert (errno = E2BIG || (BUGGY_ICONV && errno== EINVAL));
+	  score[i] = -1;
+	}
+	else
+	{
+	  score[i] += n;
+	  update_content_info (&infos[i], bufo, ob - bufo);
+	}
+      }
+
+    if (ibl)
+      /* Save unused input */
+      memmove (bufi, ib, ibl);
+    else if (!ubl1 && ib < bufi + sizeof (bufi))
+    {
+      ret = 0;
+      break;
+    }
+  }
+
+  if (!ret)
+  {
+    /* Find best score */
+    ret = (size_t)(-1);
+    for (i = 0; i < ncodes; i++)
+    {
+      if (score[i] == (size_t)(-1))
+	continue;
+      if (ret == (size_t)(-1) || score[i] < ret)
+      {
+	*tocode = i;
+	ret = score[i];
+	if (!ret)
+	  break;
+      }
+    }
+    if (ret != (size_t)(-1))
+    {
+      memcpy (info, &infos[*tocode], sizeof(CONTENT));
+      update_content_info (info, 0, 0); /* EOF */
+    }
+  }
+
+  for (i = 0; i < ncodes; i++)
+    if (cd[i] != (iconv_t)(-1))
+      iconv_close (cd[i]);
+  iconv_close (cd1);
+  free (cd);
+  free (infos);
+  free (score);
+
+  return ret;
+}
+
+/*
+ * Find the first of the fromcodes that gives a valid conversion and
+ * the best charset conversion of the file into one of the tocodes. If
+ * successful, set *fromcode and *tocode to dynamically allocated
+ * strings, set CONTENT *info, and return the number of characters
+ * converted inexactly. If no conversion was possible, return -1.
+ */
+static size_t convert_file_from_to (FILE *file,
+				    const char *fromcodes, const char *tocodes,
+				    char **fromcode, char **tocode, CONTENT *info)
+{
+  char *fcode;
+  char **tcode;
+  const char *c, *c1;
+  size_t n;
+  int ncodes, i, ret, cn;
+
+  /* Count the tocodes */
+  ncodes = 0;
+  for (c = tocodes; c; c = c1 ? c1 + 1 : 0)
+  {
+    c1 = strchr (c, ':');
+    n = c1 ? c1 - c : strlen (c);
+    if (!n)
+      continue;
+    ++ncodes;
+  }
+
+  /* Copy them */
+  tcode = safe_malloc (ncodes * sizeof (char *));
+  for (c = tocodes, i = 0; c; c = c1 ? c1 + 1 : 0, i++)
+  {
+    c1 = strchr (c, ':');
+    n = c1 ? c1 - c : strlen (c);
+    if (!n)
+      continue;
+    tcode[i] = malloc (n+1);
+    memcpy (tcode[i], c, n), tcode[i][n] = '\0';
+  }
+
+  /* Try each fromcode in turn */
+  ret = -1;
+  cn = -1;
+  for (c = fromcodes; c; c = c1 ? c1 + 1 : 0)
+  {
+    c1 = strchr (c, ':');
+    n = c1 ? c1 - c : strlen (c);
+    if (!n)
+      continue;
+    fcode = malloc (n+1);
+    memcpy (fcode, c, n), fcode[n] = '\0';
+    ret = convert_file_to (file, fcode, ncodes, (const char **)tcode,
+			   &cn, info);
+    if (ret != (size_t)(-1)) {
+      *fromcode = fcode;
+      *tocode = tcode[cn];
+      tcode[cn] = 0;
+      break;
+    }
+    free (fcode);
+  }
+
+  /* Free memory */
+  for (i = 0; i < ncodes; i++)
+    free (tcode[i]);
+
+  return ret;
+}
+
+/* Analyze the contents of a file to determine which MIME encoding to use.
+ * Also set the body charset, sometimes, or not.
+ */
+CONTENT *mutt_get_content_info (const char *fname, BODY *b)
+{
+  CONTENT *info;
+  FILE *fp;
+  char *fromcode, *tocode;
+
+  if(b && !fname) fname = b->filename;
+  
+  if ((fp = fopen (fname, "r")) == NULL)
+  {
+    dprint (1, (debugfile, "mutt_get_content_info: %s: %s (errno %d).\n",
+		fname, strerror (errno), errno));
+    return (NULL);
+  }
+
+  info = safe_calloc (1, sizeof (CONTENT));
+
+  if (b != NULL && b->type == TYPETEXT && (!b->noconv))
+  {
+    char *chs = mutt_get_parameter ("charset", b->parameter);
+    if (convert_file_from_to (fp, Charset, chs ? chs : SendCharset,
+			      &fromcode, &tocode, info) != (size_t)(-1))
+    {
+      if (!chs)
+	mutt_set_parameter ("charset", tocode, &b->parameter);
+      free (fromcode);
+      free (tocode);
+      return info;
+    }
+  }
+
+  {
+    char buffer[100];
+    size_t r;
+
+    rewind (fp);
+    while ((r = fread (buffer, 1, sizeof(buffer), fp)))
+      update_content_info (info, buffer, r);
+    update_content_info (info, 0, 0);
+  }
+
+  if (b != NULL && b->type == TYPETEXT && (!b->noconv))
+    mutt_set_parameter ("charset",
+			info->hibin ? "unknown-8bit" : "us-ascii",
+			&b->parameter);
+
+  return info;
 }
 
 /* Given a file with path ``s'', see if there is a registered MIME type.
@@ -958,16 +1214,15 @@ void mutt_set_body_charset(BODY *b, const char *chs)
 void mutt_update_encoding (BODY *a)
 {
   CONTENT *info;
-  char chsbuf[SHORT_STRING];
-  
+
+  /* Previous value is usually wrong, apparently. */
+  mutt_set_parameter ("charset", 0, &a->parameter);
+
   if ((info = mutt_get_content_info (a->filename, a)) == NULL)
     return;
 
   mutt_set_encoding (a, info);
   mutt_stamp_attachment(a);
-  
-  if (a->type == TYPETEXT)
-    mutt_set_body_charset(a, get_text_charset(chsbuf, sizeof (chsbuf), a, info));
 
   safe_free ((void **) &a->content);
   a->content = info;
