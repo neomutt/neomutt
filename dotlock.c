@@ -29,10 +29,6 @@ static const char rcsid[]="$Id$";
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef HAVE_GETOPT_H
-#include <getopt.h>
-#endif
-
 #include <unistd.h>
 #include <dirent.h>
 #include <sys/file.h>
@@ -49,6 +45,10 @@ static const char rcsid[]="$Id$";
 
 #include "dotlock.h"
 #include "config.h"
+
+#ifdef HAVE_GETOPT_H
+#include <getopt.h>
+#endif
 
 #ifdef DL_STANDALONE
 #include "reldate.h"
