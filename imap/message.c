@@ -541,7 +541,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   {
     dprint (3, (debugfile, "imap_copy_message: %s not same server as %s\n",
       dest, ctx->path));
-    goto fail;
+    return 1;
   }
 
   imap_fix_path (idata, mx.mbox, cmd, sizeof (cmd));
