@@ -175,7 +175,16 @@ static char * get_color_name (int val)
     if (Colors[i].value == val)
       return (Colors[i].name);
   }
-  return (Colors[0].name);
+
+  /* Sigh. If we got this far, the color is of the form 'colorN'
+   * Slang can handle this itself, so just return 'colorN'
+   */
+  {
+    static char color [SHORT_STRING];
+
+    snprintf (color, sizeof (color), "color%d", val);
+    return color;
+  }
 }
 #endif
 
