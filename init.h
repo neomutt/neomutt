@@ -140,6 +140,7 @@ struct option_t MuttVars[] = {
   { "locale",		DT_STR,  R_BOTH, UL &Locale, UL "C" },
   { "mail_check",	DT_NUM,  R_NONE, UL &BuffyTimeout, 5 },
   { "mailcap_path",	DT_STR,	 R_NONE, UL &MailcapPath, 0 },
+  { "mailcap_sanitize",	DT_BOOL, R_NONE, OPTMAILCAPSANITIZE, 1 },
   { "mark_old",		DT_BOOL, R_BOTH, OPTMARKOLD, 1 },
   { "markers",		DT_BOOL, R_PAGER, OPTMARKERS, 1 },
   { "mask",		DT_RX,	 R_NONE, UL &Mask, UL "!^\\.[^.]" },

@@ -1243,11 +1243,11 @@ size_t mutt_quote_filename(char *d, size_t l, const char *f)
   
   for(i = 0; j < l && f[i]; i++)
   {
-    if(f[i] == '\'')
+    if(f[i] == '\'' || f[i] == '`')
     {
       d[j++] = '\'';
       d[j++] = '\\';
-      d[j++] = '\'';
+      d[j++] = f[i];
       d[j++] = '\'';
     }
     else

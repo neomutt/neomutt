@@ -309,6 +309,7 @@ enum
   OPTIMAPPASSIVE,
 #endif
   OPTIMPLICITAUTOVIEW,
+  OPTMAILCAPSANITIZE,
   OPTMARKERS,
   OPTMARKOLD,
   OPTMENUSCROLL,	/* scroll menu instead of implicit next-page */
