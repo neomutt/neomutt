@@ -111,7 +111,7 @@ static QUERY *run_query (char *s, int quiet)
 	cur = cur->next;
       }
 
-      l = mutt_strlen (p);
+      l = mutt_strwidth (p);
       if (l > SecondColumn)
 	SecondColumn = l;
 	
