@@ -21,7 +21,10 @@ subdir=contrib
 DISTFILES=Mush.rc Pine.rc Makefile.in language.txt language50.txt \
 	patch.slang-1.2.2.keypad.1 sample.muttrc  sample.mailcap
 
-install all clean distclean maintainer-clean:
+install all clean distclean:
+
+maintainer-clean:
+	-rm -f Makefile
 
 Makefile: ../config.status Makefile.in
 	cd .. \

@@ -90,7 +90,7 @@ clean:
 clean-real:
 	rm -f manual.txt
 
-maintainer-clean: clean clean-real
+maintainer-clean: clean clean-real distclean
 
 distclean: clean
 	rm -f Makefile
