@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.95.6i\n"
-"POT-Creation-Date: 2000-02-15 09:44+0100\n"
+"POT-Creation-Date: 2000-02-22 18:03+0100\n"
 "PO-Revision-Date: 1999-07-29 00:00+0100\n"
 "Last-Translator: Miroslav Vasko <vasko@ies.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -65,7 +65,7 @@ msgstr "Ulo¾i» do súboru: "
 msgid "Alias added."
 msgstr "Pridal som zástupcu."
 
-#: attach.c:111 attach.c:238 attach.c:431 attach.c:887
+#: attach.c:111 attach.c:238 attach.c:431 attach.c:889
 msgid "Can't match nametemplate, continue?"
 msgstr "Nena¹iel som ¹ablónu názvu, pokraèova»?"
 
@@ -115,15 +115,15 @@ msgstr "MIME typ nie je definovaný. Nemo¾no zobrazi» pripojené dáta."
 msgid "Cannot create filter"
 msgstr "Nemo¾no vytvori» filter."
 
-#: attach.c:706 recvattach.c:427
+#: attach.c:707 recvattach.c:427
 msgid "Attachment saved."
 msgstr "Pripojené dáta boli ulo¾ené."
 
-#: attach.c:762
+#: attach.c:764
 msgid "Write fault!"
 msgstr "Chyba zápisu!"
 
-#: attach.c:971
+#: attach.c:973
 msgid "I don't know how to print that!"
 msgstr "Neviem, ako vytlaèi» dáta!"
 
@@ -135,7 +135,7 @@ msgstr "Zmena adresára"
 msgid "Mask"
 msgstr "Maska"
 
-#: browser.c:369 browser.c:908
+#: browser.c:369 browser.c:912
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s nie je adresár."
@@ -160,68 +160,68 @@ msgstr "Adresár [%s], maska súboru: %s"
 msgid "Can't attach a directory!"
 msgstr "Nemo¾no prezera» adresár"
 
-#: browser.c:620 browser.c:975 browser.c:1068
+#: browser.c:620 browser.c:979 browser.c:1072
 msgid "No files match the file mask"
 msgstr "Maske nevyhovujú ¾iadne súbory"
 
-#: browser.c:816
+#: browser.c:820
 #, fuzzy
 msgid "Creating mailboxes is not yet supported."
 msgstr "Oznaèovanie nie je podporované."
 
-#: browser.c:821
+#: browser.c:825
 #, fuzzy
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Táto operácia nie je podporovaná pre PGP správy."
 
-#: browser.c:829
+#: browser.c:833
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr ""
 
-#: browser.c:843
+#: browser.c:847
 #, fuzzy
 msgid "Mailbox deleted."
 msgstr "Bola zistená sluèka v makre."
 
-#: browser.c:849
+#: browser.c:853
 #, fuzzy
 msgid "Mailbox not deleted."
 msgstr "Po¹ta nebola odoslaná."
 
-#: browser.c:867
+#: browser.c:871
 msgid "Chdir to: "
 msgstr "Zmeò adresár na: "
 
-#: browser.c:901 browser.c:968
+#: browser.c:905 browser.c:972
 msgid "Error scanning directory."
 msgstr "Chyba pri èítaní adresára."
 
-#: browser.c:919
+#: browser.c:923
 msgid "File Mask: "
 msgstr "Maska súborov: "
 
-#: browser.c:991
+#: browser.c:995
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Spätné triedenie podµa (d)átumu, zn(a)kov, (z)-veµkosti, (n)etriedi»? "
 
-#: browser.c:992
+#: browser.c:996
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Triedenie podµa (d)átumu, zn(a)kov, (z)-veµkosti, alebo (n)etriedi»? "
 
-#: browser.c:993
+#: browser.c:997
 msgid "dazn"
 msgstr "dazn"
 
-#: browser.c:1055
+#: browser.c:1059
 msgid "New file name: "
 msgstr "Nové meno súboru: "
 
-#: browser.c:1086
+#: browser.c:1090
 msgid "Can't view a directory"
 msgstr "Nemo¾no prezera» adresár"
 
-#: browser.c:1104
+#: browser.c:1108
 msgid "Error trying to view file"
 msgstr "Chyba pri prezeraní súboru"
 
@@ -812,11 +812,11 @@ msgstr "®iadne odmazané správy."
 msgid "You are on the first message."
 msgstr "Ste na prvej správe."
 
-#: curs_main.c:1166 pattern.c:1112
+#: curs_main.c:1166 pattern.c:1123
 msgid "Search wrapped to top."
 msgstr "Vyhµadávanie pokraèuje z vrchu."
 
-#: curs_main.c:1175 pattern.c:1123
+#: curs_main.c:1175 pattern.c:1134
 msgid "Search wrapped to bottom."
 msgstr "Vyhµadávanie pokraèuje zo spodu."
 
@@ -1163,8 +1163,13 @@ msgstr "Prihlasujem sa..."
 msgid "Login failed."
 msgstr "Prihlasovanie zlyhalo."
 
-#: imap/browse.c:112
-msgid "Contacted server, getting folder list..."
+#: imap/browse.c:93
+#, fuzzy
+msgid "Getting namespaces..."
+msgstr "Vyvolávam správu..."
+
+#: imap/browse.c:120
+msgid "Getting folder list..."
 msgstr ""
 
 #. something is wrong because the server reported fewer messages
@@ -1197,7 +1202,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Nemo¾no pridáva» k IMAP schránkam na tomto serveri"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:813 imap/message.c:577 muttlib.c:985
+#: imap/imap.c:813 imap/message.c:577 muttlib.c:980
 #, c-format
 msgid "Create %s?"
 msgstr "Vytvori» %s?"
@@ -1359,94 +1364,89 @@ msgstr "zástupca: ¾iadna adresa"
 msgid "invalid header field"
 msgstr "neplatná polo¾ka hlavièky"
 
-#: init.c:589
-#, c-format
-msgid "ignoring empty header field: %s"
-msgstr "ignorujem prázdnu polo¾ku hlavièky: %s"
-
-#: init.c:641
+#: init.c:634
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: neznáma metóda triedenia"
 
-#: init.c:717
+#: init.c:710
 #, c-format
 msgid "mutt_restore_default: error in regexp: %s\n"
 msgstr "mutt_restore_default: chyba v regvýr: %s\n"
 
-#: init.c:777
+#: init.c:770
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: neznáma premenná"
 
-#: init.c:786
+#: init.c:779
 msgid "prefix is illegal with reset"
 msgstr "prefix je neplatný s vynulovaním"
 
-#: init.c:792
+#: init.c:785
 msgid "value is illegal with reset"
 msgstr "hodnota je neplatná s vynulovaním"
 
-#: init.c:831
+#: init.c:824
 #, c-format
 msgid "%s is set"
 msgstr "%s je nastavené"
 
-#: init.c:831
+#: init.c:824
 #, c-format
 msgid "%s is unset"
 msgstr "%s je nenastavené"
 
-#: init.c:1035
+#: init.c:1028
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: neplatný typ schránky"
 
-#: init.c:1060 init.c:1105
+#: init.c:1053 init.c:1098
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: neplatná hodnota"
 
-#: init.c:1160
+#: init.c:1153
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: neznáma hodnota"
 
-#: init.c:1199
+#: init.c:1192
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Chyba v %s, riadok %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1210
+#: init.c:1203
 #, c-format
 msgid "source: errors in %s"
 msgstr "zdroj: chyby v %s"
 
-#: init.c:1220
+#: init.c:1213
 #, c-format
 msgid "source: error at %s"
 msgstr "zdroj: chyba na %s"
 
-#: init.c:1225
+#: init.c:1218
 msgid "source: too many arguments"
 msgstr "zdroj: príli¹ veµa argumentov"
 
-#: init.c:1276
+#: init.c:1269
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: neznámy príkaz"
 
-#: init.c:1633
+#: init.c:1626
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Chyba v príkazovom riadku: %s\n"
 
-#: init.c:1676
+#: init.c:1669
 msgid "unable to determine home directory"
 msgstr "nemo¾no urèi» domáci adresár"
 
-#: init.c:1684
+#: init.c:1677
 msgid "unable to determine username"
 msgstr "nemo¾no urèi» meno pou¾ívateµa"
 
@@ -2400,43 +2400,43 @@ msgstr ""
 "\n"
 "Nastavenia kompilácie:"
 
-#: main.c:297
+#: main.c:295
 msgid "Error initializing terminal."
 msgstr "Chyba pri inicializácii terminálu."
 
-#: main.c:396
+#: main.c:394
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Ladenie na úrovni %d.\n"
 
-#: main.c:398
+#: main.c:396
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG nebol definovaný pri kompilácii. Ignorované.\n"
 
-#: main.c:517
+#: main.c:515
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr ""
 
-#: main.c:521
+#: main.c:519
 #, fuzzy, c-format
 msgid "Can't create %s: %s."
 msgstr "Nemo¾no vytvori» súbor %s"
 
-#: main.c:560
+#: main.c:558
 msgid "No recipients specified.\n"
 msgstr "Neboli uvedení ¾iadni príjemcovia.\n"
 
-#: main.c:633
+#: main.c:631
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: neschopný pripoji» súbor.\n"
 
-#: main.c:653
+#: main.c:651
 msgid "No mailbox with new mail."
 msgstr "®iadna schránka s novými správami."
 
-#: main.c:687
+#: main.c:685
 msgid "Mailbox is empty."
 msgstr "Schránka je prázdna."
 
@@ -2531,7 +2531,7 @@ msgstr "Ste na poslednej polo¾ke."
 msgid "You are on the first entry."
 msgstr "Ste na prvej polo¾ke."
 
-#: menu.c:657 pattern.c:1058
+#: menu.c:657 pattern.c:1069
 msgid "Search for: "
 msgstr "Hµada»: "
 
@@ -2539,11 +2539,11 @@ msgstr "Hµada»: "
 msgid "Reverse search for: "
 msgstr "Hµada» spätne: "
 
-#: menu.c:668 pattern.c:1091
+#: menu.c:668 pattern.c:1102
 msgid "No search pattern."
 msgstr "®iadny vzor pre hµadanie."
 
-#: menu.c:698 pager.c:1868 pager.c:1884 pager.c:1972 pattern.c:1156
+#: menu.c:698 pager.c:1868 pager.c:1884 pager.c:1972 pattern.c:1167
 msgid "Not found."
 msgstr "Nenájdené."
 
@@ -2569,28 +2569,28 @@ msgstr "Oznaèovanie nie je podporované."
 msgid "Reading %s... %d"
 msgstr "Èítam %s... %d"
 
-#: muttlib.c:658
+#: muttlib.c:653
 msgid "File is a directory, save under it?"
 msgstr "Súbor je adresár, ulo¾i» v òom?"
 
-#: muttlib.c:663
+#: muttlib.c:658
 msgid "File under directory: "
 msgstr "Súbor v adresári: "
 
-#: muttlib.c:675
+#: muttlib.c:670
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Súbor existuje, (o)-prepísa», prid(a)» alebo (c)-zru¹i»?"
 
-#: muttlib.c:675
+#: muttlib.c:670
 msgid "oac"
 msgstr "oac"
 
-#: muttlib.c:961
+#: muttlib.c:956
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s nie je schránka!"
 
-#: muttlib.c:967
+#: muttlib.c:962
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Prida» správy do %s?"
@@ -2696,6 +2696,11 @@ msgstr "Schránka je oznaèená len na èítanie. %s"
 msgid "%d kept."
 msgstr ""
 
+#: mx.c:1380
+#, fuzzy
+msgid "Can't write message"
+msgstr "upravi» správu"
+
 #: pager.c:57
 #, fuzzy
 msgid "Not available in this menu."
@@ -2797,32 +2802,32 @@ msgstr "nespárované zátvorky: %s"
 msgid "empty pattern"
 msgstr "prázdny vzor"
 
-#: pattern.c:883
+#: pattern.c:894
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "chyba: neznámy operand %d (oznámte túto chybu)."
 
-#: pattern.c:948 pattern.c:1077
+#: pattern.c:959 pattern.c:1088
 msgid "Compiling search pattern..."
 msgstr "Kompilujem vyhµadávací vzor..."
 
-#: pattern.c:962
+#: pattern.c:973
 msgid "Executing command on matching messages..."
 msgstr "Vykonávam príkaz na nájdených správach..."
 
-#: pattern.c:1025
+#: pattern.c:1036
 msgid "No messages matched criteria."
 msgstr "®iadne správy nesplnili kritérium."
 
-#: pattern.c:1115
+#: pattern.c:1126
 msgid "Search hit bottom without finding match"
 msgstr "Hµadanie narazilo na spodok bez nájdenia zhody"
 
-#: pattern.c:1126
+#: pattern.c:1137
 msgid "Search hit top without finding match"
 msgstr "Hµadanie narazilo na vrchol bez nájdenia zhody"
 
-#: pattern.c:1148
+#: pattern.c:1159
 msgid "Search interrupted."
 msgstr "Hµadanie bolo preru¹ené."
 
@@ -3119,7 +3124,7 @@ msgstr "Nemo¾no nájs» adresu pre hostiteµa %s."
 msgid "Connecting to %s"
 msgstr "Pripájam sa na %s"
 
-#: pop.c:166 pop.c:340
+#: pop.c:166 pop.c:341
 msgid "Server closed connection!"
 msgstr "Server uzavrel spojenie!"
 
@@ -3445,56 +3450,56 @@ msgstr "Odsúvam správu ..."
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:973
+#: send.c:1025
 msgid "Recall postponed message?"
 msgstr "Vyvola» odlo¾enú správu?"
 
-#: send.c:1217
+#: send.c:1269
 msgid "Abort unmodified message?"
 msgstr "Zru¹i» nezmenenú správu?"
 
-#: send.c:1219
+#: send.c:1271
 msgid "Aborted unmodified message."
 msgstr "Nezmenená správa bola zru¹ená."
 
 #. abort
-#: send.c:1260
+#: send.c:1312
 msgid "Mail not sent."
 msgstr "Po¹ta nebola odoslaná."
 
-#: send.c:1281
+#: send.c:1333
 msgid "Message postponed."
 msgstr "Správa bola odlo¾ená."
 
-#: send.c:1290
+#: send.c:1342
 msgid "No recipients are specified!"
 msgstr "Nie sú uvedení ¾iadni príjemcovia!"
 
-#: send.c:1295
+#: send.c:1347
 msgid "No recipients were specified."
 msgstr "Neboli uvedení ¾iadni príjemcovia!"
 
-#: send.c:1301
+#: send.c:1353
 msgid "No subject, abort sending?"
 msgstr "®iadny predmet, zru¹i» posielanie?"
 
-#: send.c:1305
+#: send.c:1357
 msgid "No subject specified."
 msgstr "Nebol uvedený predmet."
 
-#: send.c:1347
+#: send.c:1404
 msgid "Sending message..."
 msgstr "Posielam správu..."
 
-#: send.c:1473
+#: send.c:1529
 msgid "Could not send the message."
 msgstr "Nemo¾no posla» správu."
 
-#: send.c:1478
+#: send.c:1534
 msgid "Mail sent."
 msgstr "Správa bola odoslaná."
 
-#: send.c:1478
+#: send.c:1534
 msgid "Sending in background."
 msgstr ""
 
@@ -3512,12 +3517,12 @@ msgstr "%s u¾ viac neexistuje!"
 msgid "Could not open %s"
 msgstr "Nemo¾no otvori» %s"
 
-#: sendlib.c:1702
+#: sendlib.c:1709
 #, fuzzy, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Chyba pri posielaní správy, dcérsky proces vrátil %d (%s).\n"
 
-#: sendlib.c:1708
+#: sendlib.c:1715
 msgid "Output of the delivery process"
 msgstr ""
 
@@ -3557,6 +3562,9 @@ msgstr "Táto správa nie je viditeµná."
 #, fuzzy
 msgid "Parent message is not available."
 msgstr "Táto správa nie je viditeµná."
+
+#~ msgid "ignoring empty header field: %s"
+#~ msgstr "ignorujem prázdnu polo¾ku hlavièky: %s"
 
 #~ msgid "imap_error(): unexpected response in %s: %s\n"
 #~ msgstr "Imap_error(): neoèakávaná odpoveï v %s: %s\n"

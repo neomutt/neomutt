@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1\n"
-"POT-Creation-Date: 2000-02-15 09:44+0100\n"
+"POT-Creation-Date: 2000-02-22 18:03+0100\n"
 "PO-Revision-Date: 2000-02-15 13:40+00:00\n"
 "Last-Translator: Edmund GRIMLEY EVANS <edmundo@rano.org>\n"
 "Language-Team: eo <eo@li.org>\n"
@@ -64,7 +64,7 @@ msgstr "Skribi al dosiero: "
 msgid "Alias added."
 msgstr "Adreso aldonita."
 
-#: attach.c:111 attach.c:238 attach.c:431 attach.c:887
+#: attach.c:111 attach.c:238 attach.c:431 attach.c:889
 msgid "Can't match nametemplate, continue?"
 msgstr "Nomþamblono ne estas plenumebla. Æu daýrigi?"
 
@@ -116,15 +116,15 @@ msgstr "MIME-speco ne difinita. Ne povas vidigi parton."
 msgid "Cannot create filter"
 msgstr "Ne povas krei filtrilon."
 
-#: attach.c:706 recvattach.c:427
+#: attach.c:707 recvattach.c:427
 msgid "Attachment saved."
 msgstr "Parto skribita."
 
-#: attach.c:762
+#: attach.c:764
 msgid "Write fault!"
 msgstr "Skriberaro!"
 
-#: attach.c:971
+#: attach.c:973
 msgid "I don't know how to print that!"
 msgstr "Mi ne scias presi tion!"
 
@@ -136,7 +136,7 @@ msgstr "Listo"
 msgid "Mask"
 msgstr "Masko"
 
-#: browser.c:369 browser.c:908
+#: browser.c:369 browser.c:912
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s ne estas dosierujo."
@@ -160,64 +160,64 @@ msgstr "Dosierujo [%s], Dosieromasko: %s"
 msgid "Can't attach a directory!"
 msgstr "Ne povas aldoni dosierujon!"
 
-#: browser.c:620 browser.c:975 browser.c:1068
+#: browser.c:620 browser.c:979 browser.c:1072
 msgid "No files match the file mask"
 msgstr "Neniu dosiero kongruas kun la dosieromasko"
 
-#: browser.c:816
+#: browser.c:820
 msgid "Creating mailboxes is not yet supported."
 msgstr "Kreado de poþtfakoj ankoraý ne funkcias."
 
-#: browser.c:821
+#: browser.c:825
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Forviþado funkcias nur æe IMAP-poþtfakoj"
 
-#: browser.c:829
+#: browser.c:833
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Æu vere forviþi la poþtfakon \"%s\"?"
 
-#: browser.c:843
+#: browser.c:847
 msgid "Mailbox deleted."
 msgstr "Poþtfako forviþita."
 
-#: browser.c:849
+#: browser.c:853
 msgid "Mailbox not deleted."
 msgstr "Poþtfako ne forviþita."
 
-#: browser.c:867
+#: browser.c:871
 msgid "Chdir to: "
 msgstr "Iri al la dosierujo: "
 
-#: browser.c:901 browser.c:968
+#: browser.c:905 browser.c:972
 msgid "Error scanning directory."
 msgstr "Eraro dum legado de dosierujo."
 
-#: browser.c:919
+#: browser.c:923
 msgid "File Mask: "
 msgstr "Dosieromasko: "
 
-#: browser.c:991
+#: browser.c:995
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Inversa ordigo laý (d)ato, (a)lfabete, (g)rando, aý (n)e ordigu? "
 
-#: browser.c:992
+#: browser.c:996
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Ordigo laý (d)ato, (a)lfabete, (g)rando, aý (n)e ordigu? "
 
-#: browser.c:993
+#: browser.c:997
 msgid "dazn"
 msgstr "dagn"
 
-#: browser.c:1055
+#: browser.c:1059
 msgid "New file name: "
 msgstr "Nova dosieronomo: "
 
-#: browser.c:1086
+#: browser.c:1090
 msgid "Can't view a directory"
 msgstr "Ne povas rigardi dosierujon"
 
-#: browser.c:1104
+#: browser.c:1108
 msgid "Error trying to view file"
 msgstr "Eraro dum vidigo de dosiero"
 
@@ -805,11 +805,11 @@ msgstr "Mankas neforviþitaj mesaøoj."
 msgid "You are on the first message."
 msgstr "Vi estas æe la unua mesaøo."
 
-#: curs_main.c:1166 pattern.c:1112
+#: curs_main.c:1166 pattern.c:1123
 msgid "Search wrapped to top."
 msgstr "Seræo rekomencis æe la komenco."
 
-#: curs_main.c:1175 pattern.c:1123
+#: curs_main.c:1175 pattern.c:1134
 msgid "Search wrapped to bottom."
 msgstr "Seræo rekomencis æe la fino."
 
@@ -1153,8 +1153,14 @@ msgstr "Salutas ..."
 msgid "Login failed."
 msgstr "Saluto malsukcesis."
 
-#: imap/browse.c:112
-msgid "Contacted server, getting folder list..."
+#: imap/browse.c:93
+#, fuzzy
+msgid "Getting namespaces..."
+msgstr "Prenas mesaøon ..."
+
+#: imap/browse.c:120
+#, fuzzy
+msgid "Getting folder list..."
 msgstr "Kontaktis servilon; prenas liston de poþtfakoj ..."
 
 #. something is wrong because the server reported fewer messages
@@ -1187,7 +1193,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Ne povas aldoni al IMAP-poþtfako æe æi tiu servilo"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:813 imap/message.c:577 muttlib.c:985
+#: imap/imap.c:813 imap/message.c:577 muttlib.c:980
 #, c-format
 msgid "Create %s?"
 msgstr "Æu krei %s?"
@@ -1344,94 +1350,89 @@ msgstr "adresaro: mankas adreso"
 msgid "invalid header field"
 msgstr "nevalida æaplinio"
 
-#: init.c:589
-#, c-format
-msgid "ignoring empty header field: %s"
-msgstr "ignoras malplenan æaplinion: %s"
-
-#: init.c:641
+#: init.c:634
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: nekonata ordigmaniero"
 
-#: init.c:717
+#: init.c:710
 #, c-format
 msgid "mutt_restore_default: error in regexp: %s\n"
 msgstr "mutt_restore_default: eraro en regula esprimo: %s\n"
 
-#: init.c:777
+#: init.c:770
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: nekonata variablo"
 
-#: init.c:786
+#: init.c:779
 msgid "prefix is illegal with reset"
 msgstr "reset: prefikso ne permesata"
 
-#: init.c:792
+#: init.c:785
 msgid "value is illegal with reset"
 msgstr "reset: valoro ne permesata"
 
-#: init.c:831
+#: init.c:824
 #, c-format
 msgid "%s is set"
 msgstr "%s estas þaltita"
 
-#: init.c:831
+#: init.c:824
 #, c-format
 msgid "%s is unset"
 msgstr "%s estas malþaltita"
 
-#: init.c:1035
+#: init.c:1028
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: nevalida poþtfakospeco"
 
-#: init.c:1060 init.c:1105
+#: init.c:1053 init.c:1098
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: nevalida valoro"
 
-#: init.c:1160
+#: init.c:1153
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: nekonata speco"
 
-#: init.c:1199
+#: init.c:1192
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Eraro en %s, linio %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1210
+#: init.c:1203
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: eraroj en %s"
 
-#: init.c:1220
+#: init.c:1213
 #, c-format
 msgid "source: error at %s"
 msgstr "source: eraro æe %s"
 
-#: init.c:1225
+#: init.c:1218
 msgid "source: too many arguments"
 msgstr "source: tro da argumentoj"
 
-#: init.c:1276
+#: init.c:1269
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: nekonata komando"
 
-#: init.c:1633
+#: init.c:1626
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Eraro en komandlinio: %s\n"
 
-#: init.c:1676
+#: init.c:1669
 msgid "unable to determine home directory"
 msgstr "ne povas eltrovi la hejmdosierujon"
 
-#: init.c:1684
+#: init.c:1677
 msgid "unable to determine username"
 msgstr "ne povas eltrovi la uzantonomo"
 
@@ -2374,43 +2375,43 @@ msgstr ""
 "\n"
 "Parametroj de la traduka¼o:"
 
-#: main.c:297
+#: main.c:295
 msgid "Error initializing terminal."
 msgstr "Eraro dum startigo de la terminalo."
 
-#: main.c:396
+#: main.c:394
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Sencimigo æe la nivelo %d.\n"
 
-#: main.c:398
+#: main.c:396
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG ne estis difinita por la tradukado. Ignoras.\n"
 
-#: main.c:517
+#: main.c:515
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s ne ekzistas. Æu krei øin?"
 
-#: main.c:521
+#: main.c:519
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Ne povas krei %s: %s."
 
-#: main.c:560
+#: main.c:558
 msgid "No recipients specified.\n"
 msgstr "Nenia ricevonto specifita.\n"
 
-#: main.c:633
+#: main.c:631
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: ne povas aldoni dosieron.\n"
 
-#: main.c:653
+#: main.c:651
 msgid "No mailbox with new mail."
 msgstr "Mankas poþtfako kun nova poþto."
 
-#: main.c:687
+#: main.c:685
 msgid "Mailbox is empty."
 msgstr "Poþtfako estas malplena."
 
@@ -2505,7 +2506,7 @@ msgstr "Vi estas æe la lasta registro."
 msgid "You are on the first entry."
 msgstr "Vi estas æe la lasta registro."
 
-#: menu.c:657 pattern.c:1058
+#: menu.c:657 pattern.c:1069
 msgid "Search for: "
 msgstr "Seræi pri: "
 
@@ -2513,11 +2514,11 @@ msgstr "Seræi pri: "
 msgid "Reverse search for: "
 msgstr "Inversa seræo pri: "
 
-#: menu.c:668 pattern.c:1091
+#: menu.c:668 pattern.c:1102
 msgid "No search pattern."
 msgstr "Mankas seræþablono."
 
-#: menu.c:698 pager.c:1868 pager.c:1884 pager.c:1972 pattern.c:1156
+#: menu.c:698 pager.c:1868 pager.c:1884 pager.c:1972 pattern.c:1167
 msgid "Not found."
 msgstr "Ne trovita."
 
@@ -2542,28 +2543,28 @@ msgstr "Markado ne funkcias."
 msgid "Reading %s... %d"
 msgstr "Legas %s ... %d"
 
-#: muttlib.c:658
+#: muttlib.c:653
 msgid "File is a directory, save under it?"
 msgstr "Tio estas dosierujo; æu skribi dosieron en øi?"
 
-#: muttlib.c:663
+#: muttlib.c:658
 msgid "File under directory: "
 msgstr "Dosiero en dosierujo: "
 
-#: muttlib.c:675
+#: muttlib.c:670
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Dosiero ekzistas; æu (s)urskribi, (a)ldoni, aý (n)uligi?"
 
-#: muttlib.c:675
+#: muttlib.c:670
 msgid "oac"
 msgstr "san"
 
-#: muttlib.c:961
+#: muttlib.c:956
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s ne estas poþtfako!"
 
-#: muttlib.c:967
+#: muttlib.c:962
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Æu aldoni mesaøojn al %s?"
@@ -2669,6 +2670,11 @@ msgstr "Poþtfako estas markita kiel neskribebla. %s"
 msgid "%d kept."
 msgstr "%d retenite."
 
+#: mx.c:1380
+#, fuzzy
+msgid "Can't write message"
+msgstr "redakti la mesaøon"
+
 #: pager.c:57
 msgid "Not available in this menu."
 msgstr "Ne disponata en æi tiu menuo."
@@ -2769,32 +2775,32 @@ msgstr "krampoj ne kongruas: %s"
 msgid "empty pattern"
 msgstr "malplena þablono"
 
-#: pattern.c:883
+#: pattern.c:894
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "eraro: nekonata funkcio %d (raportu æi tiun cimon)"
 
-#: pattern.c:948 pattern.c:1077
+#: pattern.c:959 pattern.c:1088
 msgid "Compiling search pattern..."
 msgstr "Tradukas seræþablonon ..."
 
-#: pattern.c:962
+#: pattern.c:973
 msgid "Executing command on matching messages..."
 msgstr "Ruligas komandon pri trafataj mesaøoj ..."
 
-#: pattern.c:1025
+#: pattern.c:1036
 msgid "No messages matched criteria."
 msgstr "Mankas mesaøoj, kiuj plenumas la kondiæojn"
 
-#: pattern.c:1115
+#: pattern.c:1126
 msgid "Search hit bottom without finding match"
 msgstr "Seræo atingis la finon sen trovi trafon"
 
-#: pattern.c:1126
+#: pattern.c:1137
 msgid "Search hit top without finding match"
 msgstr "Seræo atingis la komencon sen trovi trafon"
 
-#: pattern.c:1148
+#: pattern.c:1159
 msgid "Search interrupted."
 msgstr "Seræo interrompita."
 
@@ -3091,7 +3097,7 @@ msgstr "Ne povis trovi adreson por servilo %s."
 msgid "Connecting to %s"
 msgstr "Konektiøas al %s"
 
-#: pop.c:166 pop.c:340
+#: pop.c:166 pop.c:341
 msgid "Server closed connection!"
 msgstr "Servilo fermis la konekton!"
 
@@ -3410,56 +3416,56 @@ msgstr "Pretigas plusenditan mesaøon ..."
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:973
+#: send.c:1025
 msgid "Recall postponed message?"
 msgstr "Æu revoki prokrastitan mesaøon?"
 
-#: send.c:1217
+#: send.c:1269
 msgid "Abort unmodified message?"
 msgstr "Æu nuligi nemodifitan mesaøon?"
 
-#: send.c:1219
+#: send.c:1271
 msgid "Aborted unmodified message."
 msgstr "Nemodifita mesaøon nuligita"
 
 #. abort
-#: send.c:1260
+#: send.c:1312
 msgid "Mail not sent."
 msgstr "Mesaøo ne sendita."
 
-#: send.c:1281
+#: send.c:1333
 msgid "Message postponed."
 msgstr "Mesaøo prokrastita."
 
-#: send.c:1290
+#: send.c:1342
 msgid "No recipients are specified!"
 msgstr "Neniu ricevanto estas specifita!"
 
-#: send.c:1295
+#: send.c:1347
 msgid "No recipients were specified."
 msgstr "Neniuj ricevantoj estis specifitaj."
 
-#: send.c:1301
+#: send.c:1353
 msgid "No subject, abort sending?"
 msgstr "Mankas temlinio; æu haltigi sendon?"
 
-#: send.c:1305
+#: send.c:1357
 msgid "No subject specified."
 msgstr "Temlinio ne specifita."
 
-#: send.c:1347
+#: send.c:1404
 msgid "Sending message..."
 msgstr "Sendas mesaøon ..."
 
-#: send.c:1473
+#: send.c:1529
 msgid "Could not send the message."
 msgstr "Ne povis sendi la mesaøon."
 
-#: send.c:1478
+#: send.c:1534
 msgid "Mail sent."
 msgstr "Mesaøo sendita."
 
-#: send.c:1478
+#: send.c:1534
 msgid "Sending in background."
 msgstr "Sendas en fono."
 
@@ -3477,12 +3483,12 @@ msgstr "%s ne plu ekzistas!"
 msgid "Could not open %s"
 msgstr "Ne povas malfermi %s"
 
-#: sendlib.c:1702
+#: sendlib.c:1709
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Eraro dum sendado de mesaøo; ido finis per %d (%s)."
 
-#: sendlib.c:1708
+#: sendlib.c:1715
 msgid "Output of the delivery process"
 msgstr "Eligo de la liverprocezo"
 
@@ -3520,6 +3526,9 @@ msgstr "Patra mesaøo ne estas videbla en limigita rigardo"
 #: thread.c:727
 msgid "Parent message is not available."
 msgstr "Patra mesaøo ne estas havebla."
+
+#~ msgid "ignoring empty header field: %s"
+#~ msgstr "ignoras malplenan æaplinion: %s"
 
 #~ msgid "move to the previous undelete message"
 #~ msgstr "salti al la antaýa neforviþita mesaøo"

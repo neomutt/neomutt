@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 2000-02-15 09:44+0100\n"
+"POT-Creation-Date: 2000-02-22 18:03+0100\n"
 "PO-Revision-Date: 1998-10-25 15:44+0200\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "Language-Team: Ukrainian <uk@ua.net>\n"
@@ -66,7 +66,7 @@ msgstr "Внести до файлу: "
 msgid "Alias added."
 msgstr "Ал╕ас додано."
 
-#: attach.c:111 attach.c:238 attach.c:431 attach.c:887
+#: attach.c:111 attach.c:238 attach.c:431 attach.c:889
 msgid "Can't match nametemplate, continue?"
 msgstr "Нема╓ в╕дпов╕дного ╕м'я, дал╕?"
 
@@ -116,15 +116,15 @@ msgstr "Тип MIME не визначено. Неможливо побачити додаток."
 msgid "Cannot create filter"
 msgstr "Неможливо створити ф╕льтр"
 
-#: attach.c:706 recvattach.c:427
+#: attach.c:707 recvattach.c:427
 msgid "Attachment saved."
 msgstr "Додаток записано."
 
-#: attach.c:762
+#: attach.c:764
 msgid "Write fault!"
 msgstr "Зб╕й запису!"
 
-#: attach.c:971
+#: attach.c:973
 msgid "I don't know how to print that!"
 msgstr "Не знаю, як це друкувати!"
 
@@ -136,7 +136,7 @@ msgstr "Каталог"
 msgid "Mask"
 msgstr "Маска"
 
-#: browser.c:369 browser.c:908
+#: browser.c:369 browser.c:912
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s не ╓ каталогом."
@@ -161,68 +161,68 @@ msgstr "Каталог [%s] з маскою: %s"
 msgid "Can't attach a directory!"
 msgstr "Неможливо побачити каталог"
 
-#: browser.c:620 browser.c:975 browser.c:1068
+#: browser.c:620 browser.c:979 browser.c:1072
 msgid "No files match the file mask"
 msgstr "Нема╓ в╕дпов╕дних до маски файл╕в"
 
-#: browser.c:816
+#: browser.c:820
 #, fuzzy
 msgid "Creating mailboxes is not yet supported."
 msgstr "Вид╕лення не п╕дтриму╓ться."
 
-#: browser.c:821
+#: browser.c:825
 #, fuzzy
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Ця операц╕я не п╕дтриму╓ться для лист╕в з PGP."
 
-#: browser.c:829
+#: browser.c:833
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr ""
 
-#: browser.c:843
+#: browser.c:847
 #, fuzzy
 msgid "Mailbox deleted."
 msgstr "Знайдено зациклення макросу."
 
-#: browser.c:849
+#: browser.c:853
 #, fuzzy
 msgid "Mailbox not deleted."
 msgstr "Лист не в╕дправлено."
 
-#: browser.c:867
+#: browser.c:871
 msgid "Chdir to: "
 msgstr "Перейти до: "
 
-#: browser.c:901 browser.c:968
+#: browser.c:905 browser.c:972
 msgid "Error scanning directory."
 msgstr "Каталог не скану╓ться."
 
-#: browser.c:919
+#: browser.c:923
 msgid "File Mask: "
 msgstr "Маска: "
 
-#: browser.c:991
+#: browser.c:995
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Зворотньо сортувати за датою(d), л╕терою(a), розм╕ром(s), чи н╕(n)?"
 
-#: browser.c:992
+#: browser.c:996
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Сортувати за датою(d), л╕терою(a), розм╕ром(s), чи н╕(n)?"
 
-#: browser.c:993
+#: browser.c:997
 msgid "dazn"
 msgstr ""
 
-#: browser.c:1055
+#: browser.c:1059
 msgid "New file name: "
 msgstr "╤м'я нового файлу: "
 
-#: browser.c:1086
+#: browser.c:1090
 msgid "Can't view a directory"
 msgstr "Неможливо побачити каталог"
 
-#: browser.c:1104
+#: browser.c:1108
 msgid "Error trying to view file"
 msgstr "Неможливо розглянути файл"
 
@@ -810,11 +810,11 @@ msgstr "Вс╕ листи видалено."
 msgid "You are on the first message."
 msgstr "Це перший лист."
 
-#: curs_main.c:1166 pattern.c:1112
+#: curs_main.c:1166 pattern.c:1123
 msgid "Search wrapped to top."
 msgstr "Пошук з початку."
 
-#: curs_main.c:1175 pattern.c:1123
+#: curs_main.c:1175 pattern.c:1134
 msgid "Search wrapped to bottom."
 msgstr "Пошук в╕д к╕нця."
 
@@ -1154,8 +1154,13 @@ msgstr "Ре╓страц╕я..."
 msgid "Login failed."
 msgstr "Ре╓страц╕я..."
 
-#: imap/browse.c:112
-msgid "Contacted server, getting folder list..."
+#: imap/browse.c:93
+#, fuzzy
+msgid "Getting namespaces..."
+msgstr "Отримання листа..."
+
+#: imap/browse.c:120
+msgid "Getting folder list..."
 msgstr ""
 
 #. something is wrong because the server reported fewer messages
@@ -1188,7 +1193,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr ""
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:813 imap/message.c:577 muttlib.c:985
+#: imap/imap.c:813 imap/message.c:577 muttlib.c:980
 #, c-format
 msgid "Create %s?"
 msgstr "Створити %s?"
@@ -1349,94 +1354,89 @@ msgstr "alias: без адреси"
 msgid "invalid header field"
 msgstr "нев╕рне поле заголовку"
 
-#: init.c:589
-#, c-format
-msgid "ignoring empty header field: %s"
-msgstr "порожн╓ поле заголовку '%s' ╕гноровано"
-
-#: init.c:641
+#: init.c:634
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: нев╕домий метод сортування"
 
-#: init.c:717
+#: init.c:710
 #, c-format
 msgid "mutt_restore_default: error in regexp: %s\n"
 msgstr ""
 
-#: init.c:777
+#: init.c:770
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: нев╕дома зм╕нна"
 
-#: init.c:786
+#: init.c:779
 msgid "prefix is illegal with reset"
 msgstr "преф╕кс неприпустимий для скидання"
 
-#: init.c:792
+#: init.c:785
 msgid "value is illegal with reset"
 msgstr "значення неприпустиме для скидання"
 
-#: init.c:831
+#: init.c:824
 #, c-format
 msgid "%s is set"
 msgstr "%s встановлено"
 
-#: init.c:831
+#: init.c:824
 #, c-format
 msgid "%s is unset"
 msgstr "%s не встановлено"
 
-#: init.c:1035
+#: init.c:1028
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: нев╕рний тип скриньки"
 
-#: init.c:1060 init.c:1105
+#: init.c:1053 init.c:1098
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: нев╕рне значення"
 
-#: init.c:1160
+#: init.c:1153
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: нев╕домий тип"
 
-#: init.c:1199
+#: init.c:1192
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Помилка в %s, рядок %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1210
+#: init.c:1203
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: помилки в %s"
 
-#: init.c:1220
+#: init.c:1213
 #, c-format
 msgid "source: error at %s"
 msgstr "source: помилка в %s"
 
-#: init.c:1225
+#: init.c:1218
 msgid "source: too many arguments"
 msgstr "source: дуже багато аргумент╕в"
 
-#: init.c:1276
+#: init.c:1269
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: нев╕дома команда"
 
-#: init.c:1633
+#: init.c:1626
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Помилка командного рядку: %s\n"
 
-#: init.c:1676
+#: init.c:1669
 msgid "unable to determine home directory"
 msgstr "неможливо з'ясувати домашн╕й каталог"
 
-#: init.c:1684
+#: init.c:1677
 msgid "unable to determine username"
 msgstr "неможливо з'ясувати ╕м'я користувача"
 
@@ -2347,43 +2347,43 @@ msgid ""
 "Compile options:"
 msgstr ""
 
-#: main.c:297
+#: main.c:295
 msgid "Error initializing terminal."
 msgstr "Помилка ╕н╕ц╕ал╕зац╖╖ терм╕налу."
 
-#: main.c:396
+#: main.c:394
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr ""
 
-#: main.c:398
+#: main.c:396
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG не вказано п╕д час комп╕ляц╖╖. ╤гнору╓ться.\n"
 
-#: main.c:517
+#: main.c:515
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr ""
 
-#: main.c:521
+#: main.c:519
 #, fuzzy, c-format
 msgid "Can't create %s: %s."
 msgstr "Неможливо створити файл %s"
 
-#: main.c:560
+#: main.c:558
 msgid "No recipients specified.\n"
 msgstr "Отримувач╕в не вказано.\n"
 
-#: main.c:633
+#: main.c:631
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: неможливо при╓днати файл.\n"
 
-#: main.c:653
+#: main.c:651
 msgid "No mailbox with new mail."
 msgstr "Нема╓ поштово╖ скриньки з новою поштою."
 
-#: main.c:687
+#: main.c:685
 msgid "Mailbox is empty."
 msgstr "Поштова скринька порожня."
 
@@ -2477,7 +2477,7 @@ msgstr "Це остання позиц╕я."
 msgid "You are on the first entry."
 msgstr "Це перша позиц╕я."
 
-#: menu.c:657 pattern.c:1058
+#: menu.c:657 pattern.c:1069
 msgid "Search for: "
 msgstr "Шукати вираз:"
 
@@ -2485,11 +2485,11 @@ msgstr "Шукати вираз:"
 msgid "Reverse search for: "
 msgstr "Зворотн╕й пошук виразу: "
 
-#: menu.c:668 pattern.c:1091
+#: menu.c:668 pattern.c:1102
 msgid "No search pattern."
 msgstr "Нема╓ виразу пошуку."
 
-#: menu.c:698 pager.c:1868 pager.c:1884 pager.c:1972 pattern.c:1156
+#: menu.c:698 pager.c:1868 pager.c:1884 pager.c:1972 pattern.c:1167
 msgid "Not found."
 msgstr "Не знайдено."
 
@@ -2516,29 +2516,29 @@ msgstr "Вид╕лення не п╕дтриму╓ться."
 msgid "Reading %s... %d"
 msgstr "Читання %s... %d"
 
-#: muttlib.c:658
+#: muttlib.c:653
 msgid "File is a directory, save under it?"
 msgstr "Файл ╓ каталогом, зберегти у ньому?"
 
-#: muttlib.c:663
+#: muttlib.c:658
 msgid "File under directory: "
 msgstr "Файл у каталоз╕: "
 
-#: muttlib.c:675
+#: muttlib.c:670
 #, fuzzy
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Файл ╕сну╓, знищити й записати цей?"
 
-#: muttlib.c:675
+#: muttlib.c:670
 msgid "oac"
 msgstr ""
 
-#: muttlib.c:961
+#: muttlib.c:956
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s не ╓ поштовою скринькою!"
 
-#: muttlib.c:967
+#: muttlib.c:962
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Додати листи до %s?"
@@ -2644,6 +2644,11 @@ msgstr "Скриньку пом╕чено незм╕нюваною. %s"
 msgid "%d kept."
 msgstr ""
 
+#: mx.c:1380
+#, fuzzy
+msgid "Can't write message"
+msgstr "редагувати лист"
+
 #: pager.c:57
 #, fuzzy
 msgid "Not available in this menu."
@@ -2745,32 +2750,32 @@ msgstr "в╕дсутня дужка: %s"
 msgid "empty pattern"
 msgstr "порожн╕й вираз"
 
-#: pattern.c:883
+#: pattern.c:894
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr ""
 
-#: pattern.c:948 pattern.c:1077
+#: pattern.c:959 pattern.c:1088
 msgid "Compiling search pattern..."
 msgstr "Комп╕ляц╕я виразу пошуку..."
 
-#: pattern.c:962
+#: pattern.c:973
 msgid "Executing command on matching messages..."
 msgstr "Виконання команди до в╕дпов╕дних лист╕в..."
 
-#: pattern.c:1025
+#: pattern.c:1036
 msgid "No messages matched criteria."
 msgstr "Лист╕в, що в╕дпов╕дають критер╕ю, не знайдено."
 
-#: pattern.c:1115
+#: pattern.c:1126
 msgid "Search hit bottom without finding match"
 msgstr "Пошук д╕йшов до к╕нця, але не знайдено н╕чого"
 
-#: pattern.c:1126
+#: pattern.c:1137
 msgid "Search hit top without finding match"
 msgstr "Пошук д╕йшов до початку, але не знайдено н╕чого"
 
-#: pattern.c:1148
+#: pattern.c:1159
 msgid "Search interrupted."
 msgstr "Пошук перервано."
 
@@ -3067,7 +3072,7 @@ msgstr "Не вийнло знайти адресу для %s."
 msgid "Connecting to %s"
 msgstr "З'╓днання з %s"
 
-#: pop.c:166 pop.c:340
+#: pop.c:166 pop.c:341
 msgid "Server closed connection!"
 msgstr "Сервер закрив з'╓днання!"
 
@@ -3393,57 +3398,57 @@ msgstr "Забирання листа..."
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:973
+#: send.c:1025
 msgid "Recall postponed message?"
 msgstr "Викликати залишений лист?"
 
-#: send.c:1217
+#: send.c:1269
 msgid "Abort unmodified message?"
 msgstr "В╕дм╕нити в╕дправку не зм╕неного листа?"
 
-#: send.c:1219
+#: send.c:1271
 msgid "Aborted unmodified message."
 msgstr "Лист не зм╕нено, тому в╕дправку в╕дм╕нено."
 
 #. abort
-#: send.c:1260
+#: send.c:1312
 msgid "Mail not sent."
 msgstr "Лист не в╕дправлено."
 
-#: send.c:1281
+#: send.c:1333
 msgid "Message postponed."
 msgstr "Лист залишено для подальшо╖ в╕дправки.."
 
-#: send.c:1290
+#: send.c:1342
 msgid "No recipients are specified!"
 msgstr "Отримувач╕в не вказано!"
 
-#: send.c:1295
+#: send.c:1347
 msgid "No recipients were specified."
 msgstr "Отримувач╕в не було вказано."
 
-#: send.c:1301
+#: send.c:1353
 msgid "No subject, abort sending?"
 msgstr "Теми нема╓, в╕дм╕нити в╕дправку?"
 
-#: send.c:1305
+#: send.c:1357
 msgid "No subject specified."
 msgstr "Теми не вказано."
 
-#: send.c:1347
+#: send.c:1404
 msgid "Sending message..."
 msgstr "Лист в╕дправля╓ться..."
 
-#: send.c:1473
+#: send.c:1529
 #, fuzzy
 msgid "Could not send the message."
 msgstr "в╕д╕слати лист"
 
-#: send.c:1478
+#: send.c:1534
 msgid "Mail sent."
 msgstr "Лист послано."
 
-#: send.c:1478
+#: send.c:1534
 msgid "Sending in background."
 msgstr ""
 
@@ -3461,12 +3466,12 @@ msgstr "%s б╕льше не ╕сну╓!"
 msgid "Could not open %s"
 msgstr "Не вийшло в╕дкрити %s"
 
-#: sendlib.c:1702
+#: sendlib.c:1709
 #, fuzzy, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Помилка в╕дправки, код повернення %d (%s).\n"
 
-#: sendlib.c:1708
+#: sendlib.c:1715
 msgid "Output of the delivery process"
 msgstr ""
 
@@ -3506,6 +3511,9 @@ msgstr "Цей лист не можна побачити."
 #, fuzzy
 msgid "Parent message is not available."
 msgstr "Цей лист не можна побачити."
+
+#~ msgid "ignoring empty header field: %s"
+#~ msgstr "порожн╓ поле заголовку '%s' ╕гноровано"
 
 #~ msgid "imap_error(): unexpected response in %s: %s\n"
 #~ msgstr "imap_error(): неждана в╕дпов╕дь в %s: %s\n"

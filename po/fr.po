@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.4\n"
-"POT-Creation-Date: 2000-02-15 09:44+0100\n"
+"POT-Creation-Date: 2000-02-22 18:03+0100\n"
 "PO-Revision-Date: 2000-02-15 22:50+0100\n"
 "Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
@@ -68,7 +68,7 @@ msgstr "Sauver dans le fichier : "
 msgid "Alias added."
 msgstr "Alias ajouté."
 
-#: attach.c:111 attach.c:238 attach.c:431 attach.c:887
+#: attach.c:111 attach.c:238 attach.c:431 attach.c:889
 msgid "Can't match nametemplate, continue?"
 msgstr "Ne correspond pas au nametemplate, continuer ?"
 
@@ -120,15 +120,15 @@ msgstr "Type MIME non défini. Impossible de visualiser l'attachement."
 msgid "Cannot create filter"
 msgstr "Impossible de créer le filtre"
 
-#: attach.c:706 recvattach.c:427
+#: attach.c:707 recvattach.c:427
 msgid "Attachment saved."
 msgstr "Attachement sauvé."
 
-#: attach.c:762
+#: attach.c:764
 msgid "Write fault!"
 msgstr "Erreur d'écriture !"
 
-#: attach.c:971
+#: attach.c:973
 msgid "I don't know how to print that!"
 msgstr "Je ne sais pas comment imprimer ceci !"
 
@@ -141,7 +141,7 @@ msgid "Mask"
 msgstr "Masque"
 
 # , c-format
-#: browser.c:369 browser.c:908
+#: browser.c:369 browser.c:912
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s n'est pas un répertoire."
@@ -168,64 +168,64 @@ msgstr "Répertoire [%s], masque de fichier : %s"
 msgid "Can't attach a directory!"
 msgstr "Impossible d'attacher un répertoire !"
 
-#: browser.c:620 browser.c:975 browser.c:1068
+#: browser.c:620 browser.c:979 browser.c:1072
 msgid "No files match the file mask"
 msgstr "Aucun fichier ne correspond au masque"
 
-#: browser.c:816
+#: browser.c:820
 msgid "Creating mailboxes is not yet supported."
 msgstr "La création de boîtes aux lettres n'est pas encore supportée."
 
-#: browser.c:821
+#: browser.c:825
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "La suppression n'est supportée que pour les boîtes aux lettres IMAP."
 
-#: browser.c:829
+#: browser.c:833
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Voulez-vous vraiment supprimer la boîte aux lettres \"%s\" ?"
 
-#: browser.c:843
+#: browser.c:847
 msgid "Mailbox deleted."
 msgstr "Boîte aux lettres supprimée."
 
-#: browser.c:849
+#: browser.c:853
 msgid "Mailbox not deleted."
 msgstr "Boîte aux lettres non supprimée."
 
-#: browser.c:867
+#: browser.c:871
 msgid "Chdir to: "
 msgstr "Changement de répertoire vers : "
 
-#: browser.c:901 browser.c:968
+#: browser.c:905 browser.c:972
 msgid "Error scanning directory."
 msgstr "Erreur de lecture du répertoire."
 
-#: browser.c:919
+#: browser.c:923
 msgid "File Mask: "
 msgstr "Masque de fichier : "
 
-#: browser.c:991
+#: browser.c:995
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Tri inverse par (d)ate, (a)lphabétique, (t)aille ou (n)e pas trier ? "
 
-#: browser.c:992
+#: browser.c:996
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Tri par (d)ate, (a)lphabétique, (t)aille ou (n)e pas trier ? "
 
-#: browser.c:993
+#: browser.c:997
 msgid "dazn"
 msgstr "datn"
 
-#: browser.c:1055
+#: browser.c:1059
 msgid "New file name: "
 msgstr "Nouveau nom de fichier : "
 
-#: browser.c:1086
+#: browser.c:1090
 msgid "Can't view a directory"
 msgstr "Impossible de visualiser un répertoire"
 
-#: browser.c:1104
+#: browser.c:1108
 msgid "Error trying to view file"
 msgstr "Erreur en essayant de visualiser le fichier"
 
@@ -837,11 +837,11 @@ msgstr "Aucun message récupéré."
 msgid "You are on the first message."
 msgstr "Vous êtes sur le premier message."
 
-#: curs_main.c:1166 pattern.c:1112
+#: curs_main.c:1166 pattern.c:1123
 msgid "Search wrapped to top."
 msgstr "La recherche est repartie du début."
 
-#: curs_main.c:1175 pattern.c:1123
+#: curs_main.c:1175 pattern.c:1134
 msgid "Search wrapped to bottom."
 msgstr "La recherche est repartie de la fin."
 
@@ -1211,8 +1211,14 @@ msgstr "Connexion..."
 msgid "Login failed."
 msgstr "La connexion a échoué."
 
-#: imap/browse.c:112
-msgid "Contacted server, getting folder list..."
+#: imap/browse.c:93
+#, fuzzy
+msgid "Getting namespaces..."
+msgstr "Récupération du message..."
+
+#: imap/browse.c:120
+#, fuzzy
+msgid "Getting folder list..."
 msgstr "Serveur contacté, récupération de la liste des dossiers..."
 
 #. something is wrong because the server reported fewer messages
@@ -1247,7 +1253,7 @@ msgstr "Impossible d'ajouter aux boîtes aux lettres IMAP sur ce serveur"
 
 # , c-format
 #. command failed cause folder doesn't exist
-#: imap/imap.c:813 imap/message.c:577 muttlib.c:985
+#: imap/imap.c:813 imap/message.c:577 muttlib.c:980
 #, c-format
 msgid "Create %s?"
 msgstr "Créer %s ?"
@@ -1417,107 +1423,101 @@ msgid "invalid header field"
 msgstr "en-tête invalide"
 
 # , c-format
-#: init.c:589
-#, c-format
-msgid "ignoring empty header field: %s"
-msgstr "En-tête vide ignoré : %s"
-
-# , c-format
-#: init.c:641
+#: init.c:634
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s : méthode de tri inconnue"
 
 # , c-format
-#: init.c:717
+#: init.c:710
 #, c-format
 msgid "mutt_restore_default: error in regexp: %s\n"
 msgstr "mutt_restore_default : erreur dans l'expression rationnelle : %s\n"
 
 # , c-format
-#: init.c:777
+#: init.c:770
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s : variable inconnue"
 
-#: init.c:786
+#: init.c:779
 msgid "prefix is illegal with reset"
 msgstr "ce préfixe est illégal avec reset"
 
-#: init.c:792
+#: init.c:785
 msgid "value is illegal with reset"
 msgstr "cette valeur est illégale avec reset"
 
 # , c-format
-#: init.c:831
+#: init.c:824
 #, c-format
 msgid "%s is set"
 msgstr "%s est positionné"
 
 # , c-format
-#: init.c:831
+#: init.c:824
 #, c-format
 msgid "%s is unset"
 msgstr "%s n'est pas positionné"
 
 # , c-format
-#: init.c:1035
+#: init.c:1028
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s : type de boîte aux lettres invalide"
 
 # , c-format
-#: init.c:1060 init.c:1105
+#: init.c:1053 init.c:1098
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s : valeur invalide"
 
 # , c-format
-#: init.c:1160
+#: init.c:1153
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s : type inconnu"
 
 # , c-format
-#: init.c:1199
+#: init.c:1192
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Erreur dans %s, ligne %d : %s"
 
 # , c-format
 #. the muttrc source keyword
-#: init.c:1210
+#: init.c:1203
 #, c-format
 msgid "source: errors in %s"
 msgstr "source : erreurs dans %s"
 
 # , c-format
-#: init.c:1220
+#: init.c:1213
 #, c-format
 msgid "source: error at %s"
 msgstr "source : erreur dans %s"
 
-#: init.c:1225
+#: init.c:1218
 msgid "source: too many arguments"
 msgstr "source : trop d'arguments"
 
 # , c-format
-#: init.c:1276
+#: init.c:1269
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s : commande inconnue"
 
 # , c-format
-#: init.c:1633
+#: init.c:1626
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Erreur dans la ligne de commande : %s\n"
 
-#: init.c:1676
+#: init.c:1669
 msgid "unable to determine home directory"
 msgstr "impossible de déterminer le répertoire personnel"
 
-#: init.c:1684
+#: init.c:1677
 msgid "unable to determine username"
 msgstr "impossible de déterminer le nom d'utilisateur"
 
@@ -2473,46 +2473,46 @@ msgstr ""
 "\n"
 "Options de compilation :"
 
-#: main.c:297
+#: main.c:295
 msgid "Error initializing terminal."
 msgstr "Erreur d'initialisation du terminal."
 
 # , c-format
-#: main.c:396
+#: main.c:394
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Débuggage au niveau %d.\n"
 
-#: main.c:398
+#: main.c:396
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG n'a pas été défini à la compilation. Ignoré.\n"
 
-#: main.c:517
+#: main.c:515
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s n'existe pas. Le créer ?"
 
 # , c-format
-#: main.c:521
+#: main.c:519
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Impossible de créer %s : %s."
 
-#: main.c:560
+#: main.c:558
 msgid "No recipients specified.\n"
 msgstr "Pas de destinataire spécifié.\n"
 
 # , c-format
-#: main.c:633
+#: main.c:631
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s : impossible d'attacher le fichier.\n"
 
-#: main.c:653
+#: main.c:651
 msgid "No mailbox with new mail."
 msgstr "Pas de boîte aux lettres avec des nouveaux messages."
 
-#: main.c:687
+#: main.c:685
 msgid "Mailbox is empty."
 msgstr "La boîte aux lettres est vide."
 
@@ -2607,7 +2607,7 @@ msgstr "Vous êtes sur la dernière entrée."
 msgid "You are on the first entry."
 msgstr "Vous êtes sur la première entrée."
 
-#: menu.c:657 pattern.c:1058
+#: menu.c:657 pattern.c:1069
 msgid "Search for: "
 msgstr "Rechercher : "
 
@@ -2615,11 +2615,11 @@ msgstr "Rechercher : "
 msgid "Reverse search for: "
 msgstr "Rechercher en arrière : "
 
-#: menu.c:668 pattern.c:1091
+#: menu.c:668 pattern.c:1102
 msgid "No search pattern."
 msgstr "Pas de motif de recherche."
 
-#: menu.c:698 pager.c:1868 pager.c:1884 pager.c:1972 pattern.c:1156
+#: menu.c:698 pager.c:1868 pager.c:1884 pager.c:1972 pattern.c:1167
 msgid "Not found."
 msgstr "Non trouvé."
 
@@ -2645,30 +2645,30 @@ msgstr "Le marquage n'est pas supporté."
 msgid "Reading %s... %d"
 msgstr "Lecture de %s... %d"
 
-#: muttlib.c:658
+#: muttlib.c:653
 msgid "File is a directory, save under it?"
 msgstr "Le fichier est un répertoire, sauver dans celui-ci ?"
 
-#: muttlib.c:663
+#: muttlib.c:658
 msgid "File under directory: "
 msgstr "Fichier dans le répertoire : "
 
-#: muttlib.c:675
+#: muttlib.c:670
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Le fichier existe, écras(e)r, (c)oncaténer ou (a)nnuler ?"
 
-#: muttlib.c:675
+#: muttlib.c:670
 msgid "oac"
 msgstr "eca"
 
 # , c-format
-#: muttlib.c:961
+#: muttlib.c:956
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s n'est pas une boîte aux lettres !"
 
 # , c-format
-#: muttlib.c:967
+#: muttlib.c:962
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Ajouter les messages à %s ?"
@@ -2789,6 +2789,11 @@ msgstr "La boîte aux lettres est protégée contre l'écriture. %s"
 msgid "%d kept."
 msgstr "%d gardés."
 
+#: mx.c:1380
+#, fuzzy
+msgid "Can't write message"
+msgstr "éditer le message"
+
 #: pager.c:57
 msgid "Not available in this menu."
 msgstr "Non disponible dans ce menu."
@@ -2897,32 +2902,32 @@ msgid "empty pattern"
 msgstr "motif vide"
 
 # , c-format
-#: pattern.c:883
+#: pattern.c:894
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "erreur : opération inconnue %d (signalez cette erreur)."
 
-#: pattern.c:948 pattern.c:1077
+#: pattern.c:959 pattern.c:1088
 msgid "Compiling search pattern..."
 msgstr "Compilation du motif de recherche..."
 
-#: pattern.c:962
+#: pattern.c:973
 msgid "Executing command on matching messages..."
 msgstr "Exécution de la commande sur les messages correspondants..."
 
-#: pattern.c:1025
+#: pattern.c:1036
 msgid "No messages matched criteria."
 msgstr "Aucun message ne correspond au critère."
 
-#: pattern.c:1115
+#: pattern.c:1126
 msgid "Search hit bottom without finding match"
 msgstr "Fin atteinte sans rien avoir trouvé"
 
-#: pattern.c:1126
+#: pattern.c:1137
 msgid "Search hit top without finding match"
 msgstr "Début atteint sans rien avoir trouvé"
 
-#: pattern.c:1148
+#: pattern.c:1159
 msgid "Search interrupted."
 msgstr "Recherche interrompue."
 
@@ -3228,7 +3233,7 @@ msgstr "Impossible de trouver l'adresse de la machine %s."
 msgid "Connecting to %s"
 msgstr "Connexion à %s"
 
-#: pop.c:166 pop.c:340
+#: pop.c:166 pop.c:341
 msgid "Server closed connection!"
 msgstr "Le serveur a fermé la connexion !"
 
@@ -3567,56 +3572,56 @@ msgstr "Préparation du message à faire suivre..."
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:973
+#: send.c:1025
 msgid "Recall postponed message?"
 msgstr "Rappeler un message ajourné ?"
 
-#: send.c:1217
+#: send.c:1269
 msgid "Abort unmodified message?"
 msgstr "Message non modifié. Abandonner ?"
 
-#: send.c:1219
+#: send.c:1271
 msgid "Aborted unmodified message."
 msgstr "Message non modifié. Abandon."
 
 #. abort
-#: send.c:1260
+#: send.c:1312
 msgid "Mail not sent."
 msgstr "Message non envoyé."
 
-#: send.c:1281
+#: send.c:1333
 msgid "Message postponed."
 msgstr "Message ajourné."
 
-#: send.c:1290
+#: send.c:1342
 msgid "No recipients are specified!"
 msgstr "Aucun destinataire spécifié !"
 
-#: send.c:1295
+#: send.c:1347
 msgid "No recipients were specified."
 msgstr "Aucun destinataire spécifié."
 
-#: send.c:1301
+#: send.c:1353
 msgid "No subject, abort sending?"
 msgstr "Pas d'objet, abandonner l'envoi ?"
 
-#: send.c:1305
+#: send.c:1357
 msgid "No subject specified."
 msgstr "Pas d'objet spécifié."
 
-#: send.c:1347
+#: send.c:1404
 msgid "Sending message..."
 msgstr "Envoi du message..."
 
-#: send.c:1473
+#: send.c:1529
 msgid "Could not send the message."
 msgstr "Impossible d'envoyer le message."
 
-#: send.c:1478
+#: send.c:1534
 msgid "Mail sent."
 msgstr "Message envoyé."
 
-#: send.c:1478
+#: send.c:1534
 msgid "Sending in background."
 msgstr "Envoi en tâche de fond."
 
@@ -3637,12 +3642,12 @@ msgid "Could not open %s"
 msgstr "Impossible d'ouvrir %s"
 
 # , c-format
-#: sendlib.c:1702
+#: sendlib.c:1709
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Erreur en envoyant le message, fils terminé avec le code %d (%s)."
 
-#: sendlib.c:1708
+#: sendlib.c:1715
 msgid "Output of the delivery process"
 msgstr "Sortie du processus de livraison"
 
@@ -3683,6 +3688,10 @@ msgstr "Le message père n'est pas visible en vue limitée"
 #: thread.c:727
 msgid "Parent message is not available."
 msgstr "Le message père n'est pas disponible."
+
+# , c-format
+#~ msgid "ignoring empty header field: %s"
+#~ msgstr "En-tête vide ignoré : %s"
 
 #~ msgid "Authenticating (GSSAPI)..."
 #~ msgstr "Authentification (GSSAPI)..."

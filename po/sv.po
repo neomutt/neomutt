@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.2\n"
-"POT-Creation-Date: 2000-02-15 09:44+0100\n"
+"POT-Creation-Date: 2000-02-22 18:03+0100\n"
 "PO-Revision-Date: 2000-01-30 14:47+0100\n"
 "Last-Translator: Jörgen Tegnér <teg@post.netlink.se>\n"
 "Language-Team: \n"
@@ -62,7 +62,7 @@ msgstr "Spar i fil: "
 msgid "Alias added."
 msgstr "Lade till alias."
 
-#: attach.c:111 attach.c:238 attach.c:431 attach.c:887
+#: attach.c:111 attach.c:238 attach.c:431 attach.c:889
 msgid "Can't match nametemplate, continue?"
 msgstr "Kan inte para ihop namnmall, fortsätt?"
 
@@ -112,15 +112,15 @@ msgstr "MIME-typ är inte definierad. Kan inte visa bifogad fil."
 msgid "Cannot create filter"
 msgstr "Kan inte skapa filter."
 
-#: attach.c:706 recvattach.c:427
+#: attach.c:707 recvattach.c:427
 msgid "Attachment saved."
 msgstr "Bifogad fil sparad."
 
-#: attach.c:762
+#: attach.c:764
 msgid "Write fault!"
 msgstr "Ett fel uppstod vid skrivning!"
 
-#: attach.c:971
+#: attach.c:973
 msgid "I don't know how to print that!"
 msgstr "Jag vet inte hur det här ska skrivas ut!"
 
@@ -132,7 +132,7 @@ msgstr "Ändra bibliotek"
 msgid "Mask"
 msgstr "Mask"
 
-#: browser.c:369 browser.c:908
+#: browser.c:369 browser.c:912
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s är inte ett bibiliotek."
@@ -156,65 +156,65 @@ msgstr "Bibliotek [%s], filmask: %s"
 msgid "Can't attach a directory!"
 msgstr "Kan inte bifoga ett bibliotek!"
 
-#: browser.c:620 browser.c:975 browser.c:1068
+#: browser.c:620 browser.c:979 browser.c:1072
 msgid "No files match the file mask"
 msgstr "Ingen fil passar med filmasken."
 
-#: browser.c:816
+#: browser.c:820
 msgid "Creating mailboxes is not yet supported."
 msgstr "Skapande av brevlådor stöds inte än."
 
-#: browser.c:821
+#: browser.c:825
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Endast brevlådor av IMAP-typ kan tas bort."
 
-#: browser.c:829
+#: browser.c:833
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Ta bort brevlådan '%s'?"
 
-#: browser.c:843
+#: browser.c:847
 msgid "Mailbox deleted."
 msgstr "Brevlådan har tagits bort."
 
-#: browser.c:849
+#: browser.c:853
 msgid "Mailbox not deleted."
 msgstr "Brevlådan togs inte bort."
 
-#: browser.c:867
+#: browser.c:871
 msgid "Chdir to: "
 msgstr "Ändra bibliotek till: "
 
-#: browser.c:901 browser.c:968
+#: browser.c:905 browser.c:972
 msgid "Error scanning directory."
 msgstr "Ett fel uppstod när biblioteket skulle läsas."
 
-#: browser.c:919
+#: browser.c:923
 msgid "File Mask: "
 msgstr "Filmask: "
 
-#: browser.c:991
+#: browser.c:995
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr ""
 "Omvänd sortering efter (d)atum, (a)lpha), (s)torlek eller i(n)te alls? "
 
-#: browser.c:992
+#: browser.c:996
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Sortering efter (d)atum, (a)lpha), (s)torlek eller i(n)te alls? "
 
-#: browser.c:993
+#: browser.c:997
 msgid "dazn"
 msgstr "dasn"
 
-#: browser.c:1055
+#: browser.c:1059
 msgid "New file name: "
 msgstr "Nytt filnamn: "
 
-#: browser.c:1086
+#: browser.c:1090
 msgid "Can't view a directory"
 msgstr "Kan inte läsa bibliotek"
 
-#: browser.c:1104
+#: browser.c:1108
 msgid "Error trying to view file"
 msgstr "Ett fel uppstod när filen skulle visas"
 
@@ -804,11 +804,11 @@ msgstr "Inga återställda brev."
 msgid "You are on the first message."
 msgstr "Det här är första brevet i listan."
 
-#: curs_main.c:1166 pattern.c:1112
+#: curs_main.c:1166 pattern.c:1123
 msgid "Search wrapped to top."
 msgstr "Sökning fortsatte i början."
 
-#: curs_main.c:1175 pattern.c:1123
+#: curs_main.c:1175 pattern.c:1134
 msgid "Search wrapped to bottom."
 msgstr "Sökning fortsatte i slutet."
 
@@ -1154,8 +1154,14 @@ msgstr "Ansluter..."
 msgid "Login failed."
 msgstr "Anslutning misslyckades..."
 
-#: imap/browse.c:112
-msgid "Contacted server, getting folder list..."
+#: imap/browse.c:93
+#, fuzzy
+msgid "Getting namespaces..."
+msgstr "Skickar brevet..."
+
+#: imap/browse.c:120
+#, fuzzy
+msgid "Getting folder list..."
 msgstr "Kontaktar server, läser lista med brevlådor..."
 
 #. something is wrong because the server reported fewer messages
@@ -1190,7 +1196,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Kunde inte skriva till brevlådor i den här IMAP-servern"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:813 imap/message.c:577 muttlib.c:985
+#: imap/imap.c:813 imap/message.c:577 muttlib.c:980
 #, c-format
 msgid "Create %s?"
 msgstr "Skapa %s?"
@@ -1353,94 +1359,89 @@ msgstr "alias: ingen adress"
 msgid "invalid header field"
 msgstr "ogiltigt rubrik för variabel"
 
-#: init.c:589
-#, c-format
-msgid "ignoring empty header field: %s"
-msgstr "ignorerar tomt rubrikfält: %s."
-
-#: init.c:641
+#: init.c:634
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: okänd metod för sortering"
 
-#: init.c:717
+#: init.c:710
 #, c-format
 msgid "mutt_restore_default: error in regexp: %s\n"
 msgstr "mutt_restore_default: fel i mönster: %s\n"
 
-#: init.c:777
+#: init.c:770
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: okänd variabel"
 
-#: init.c:786
+#: init.c:779
 msgid "prefix is illegal with reset"
 msgstr "prefix är inte tillåten med 'reset'"
 
-#: init.c:792
+#: init.c:785
 msgid "value is illegal with reset"
 msgstr "värde är inte tillåten med 'reset'"
 
-#: init.c:831
+#: init.c:824
 #, c-format
 msgid "%s is set"
 msgstr "%s är satt"
 
-#: init.c:831
+#: init.c:824
 #, c-format
 msgid "%s is unset"
 msgstr "%s är inte satt"
 
-#: init.c:1035
+#: init.c:1028
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: ogiltig typ av brevlåda"
 
-#: init.c:1060 init.c:1105
+#: init.c:1053 init.c:1098
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: ogiltigt värde"
 
-#: init.c:1160
+#: init.c:1153
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: okänd typ"
 
-#: init.c:1199
+#: init.c:1192
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Fel i %s, rad %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1210
+#: init.c:1203
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: fel i %s"
 
-#: init.c:1220
+#: init.c:1213
 #, c-format
 msgid "source: error at %s"
 msgstr "source: fel vid %s"
 
-#: init.c:1225
+#: init.c:1218
 msgid "source: too many arguments"
 msgstr "source: för många parametrar"
 
-#: init.c:1276
+#: init.c:1269
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: okänt kommando"
 
-#: init.c:1633
+#: init.c:1626
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Fel i kommandorad: %s\n"
 
-#: init.c:1676
+#: init.c:1669
 msgid "unable to determine home directory"
 msgstr "kan inte avgöra var hembibilioteket är"
 
-#: init.c:1684
+#: init.c:1677
 msgid "unable to determine username"
 msgstr "kan inte avgöra användarnamn"
 
@@ -2321,43 +2322,43 @@ msgstr ""
 "\n"
 "Inkompilerade val:"
 
-#: main.c:297
+#: main.c:295
 msgid "Error initializing terminal."
 msgstr "Fel vid initiering av terminalen."
 
-#: main.c:396
+#: main.c:394
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Avlusningsnivån är %d.\n"
 
-#: main.c:398
+#: main.c:396
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG var inte valt vid kompilering.  Ignoreras.\n"
 
-#: main.c:517
+#: main.c:515
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s finns inte. Vill du skapa den?"
 
-#: main.c:521
+#: main.c:519
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Kan inte skapa %s: %s."
 
-#: main.c:560
+#: main.c:558
 msgid "No recipients specified.\n"
 msgstr "Inga mottagare angivna.\n"
 
-#: main.c:633
+#: main.c:631
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: kan inte bifoga fil.\n"
 
-#: main.c:653
+#: main.c:651
 msgid "No mailbox with new mail."
 msgstr "Ingen brevlåda har nya brev."
 
-#: main.c:687
+#: main.c:685
 msgid "Mailbox is empty."
 msgstr "Brevlådan är tom."
 
@@ -2453,7 +2454,7 @@ msgstr "Du är på sista elementet."
 msgid "You are on the first entry."
 msgstr "Du är på första elementet."
 
-#: menu.c:657 pattern.c:1058
+#: menu.c:657 pattern.c:1069
 msgid "Search for: "
 msgstr "Leta efter: "
 
@@ -2461,11 +2462,11 @@ msgstr "Leta efter: "
 msgid "Reverse search for: "
 msgstr "Leta efter i omvänd ordning: "
 
-#: menu.c:668 pattern.c:1091
+#: menu.c:668 pattern.c:1102
 msgid "No search pattern."
 msgstr "Inget mönster för sökning."
 
-#: menu.c:698 pager.c:1868 pager.c:1884 pager.c:1972 pattern.c:1156
+#: menu.c:698 pager.c:1868 pager.c:1884 pager.c:1972 pattern.c:1167
 msgid "Not found."
 msgstr "Hittades inte."
 
@@ -2490,28 +2491,28 @@ msgstr "Markering stöds inte."
 msgid "Reading %s... %d"
 msgstr "Läser %s... %d"
 
-#: muttlib.c:658
+#: muttlib.c:653
 msgid "File is a directory, save under it?"
 msgstr ""
 
-#: muttlib.c:663
+#: muttlib.c:658
 msgid "File under directory: "
 msgstr ""
 
-#: muttlib.c:675
+#: muttlib.c:670
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr ""
 
-#: muttlib.c:675
+#: muttlib.c:670
 msgid "oac"
 msgstr ""
 
-#: muttlib.c:961
+#: muttlib.c:956
 #, fuzzy, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s är inte en brevlåda."
 
-#: muttlib.c:967
+#: muttlib.c:962
 #, fuzzy, c-format
 msgid "Append messages to %s?"
 msgstr "Flytta lästa brev till %s?"
@@ -2617,6 +2618,11 @@ msgstr "Brevlådan är markerad som ej skrivbar. %s"
 msgid "%d kept."
 msgstr "%d sparade"
 
+#: mx.c:1380
+#, fuzzy
+msgid "Can't write message"
+msgstr "ändra brevet"
+
 #: pager.c:57
 msgid "Not available in this menu."
 msgstr "Finns inte i den här menyn."
@@ -2717,32 +2723,32 @@ msgstr "parentes kan inte paras ihop: %s"
 msgid "empty pattern"
 msgstr "tomt mönster"
 
-#: pattern.c:883
+#: pattern.c:894
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "fel: okänd operation %d (var vänlig rappportera felet)"
 
-#: pattern.c:948 pattern.c:1077
+#: pattern.c:959 pattern.c:1088
 msgid "Compiling search pattern..."
 msgstr "Kompilerar sökmönster..."
 
-#: pattern.c:962
+#: pattern.c:973
 msgid "Executing command on matching messages..."
 msgstr "Kör kommando på passande brev..."
 
-#: pattern.c:1025
+#: pattern.c:1036
 msgid "No messages matched criteria."
 msgstr "Inga brev passade kriteriet."
 
-#: pattern.c:1115
+#: pattern.c:1126
 msgid "Search hit bottom without finding match"
 msgstr "Sökningen nådded slutet utan att hitta något"
 
-#: pattern.c:1126
+#: pattern.c:1137
 msgid "Search hit top without finding match"
 msgstr "Sökningen nådded början utan att hitta något"
 
-#: pattern.c:1148
+#: pattern.c:1159
 msgid "Search interrupted."
 msgstr "Sökningen avbröts."
 
@@ -3042,7 +3048,7 @@ msgstr "Kunde inte hitta adress till servern %s."
 msgid "Connecting to %s"
 msgstr "Ansluter till %s."
 
-#: pop.c:166 pop.c:340
+#: pop.c:166 pop.c:341
 msgid "Server closed connection!"
 msgstr "Servern stängde förbindelsen!"
 
@@ -3366,56 +3372,56 @@ msgstr "Förbereder vidarebordrat brev ..."
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:973
+#: send.c:1025
 msgid "Recall postponed message?"
 msgstr "Återkalla uppskjutet brev?"
 
-#: send.c:1217
+#: send.c:1269
 msgid "Abort unmodified message?"
 msgstr "Brevet har inte ändrats. Avbryt?"
 
-#: send.c:1219
+#: send.c:1271
 msgid "Aborted unmodified message."
 msgstr "Brevet har inte ändrats. Avbröt"
 
 #. abort
-#: send.c:1260
+#: send.c:1312
 msgid "Mail not sent."
 msgstr "Brevet skickades inte."
 
-#: send.c:1281
+#: send.c:1333
 msgid "Message postponed."
 msgstr "Brev uppskjutet."
 
-#: send.c:1290
+#: send.c:1342
 msgid "No recipients are specified!"
 msgstr "Inga mottagare angivna!"
 
-#: send.c:1295
+#: send.c:1347
 msgid "No recipients were specified."
 msgstr "Inga mottagare angavs."
 
-#: send.c:1301
+#: send.c:1353
 msgid "No subject, abort sending?"
 msgstr "Ärende saknas, avbryt sändning?"
 
-#: send.c:1305
+#: send.c:1357
 msgid "No subject specified."
 msgstr "Ärende saknas."
 
-#: send.c:1347
+#: send.c:1404
 msgid "Sending message..."
 msgstr "Skickar brevet..."
 
-#: send.c:1473
+#: send.c:1529
 msgid "Could not send the message."
 msgstr "Kunde inte skicka brevet."
 
-#: send.c:1478
+#: send.c:1534
 msgid "Mail sent."
 msgstr "Brevet har skickats."
 
-#: send.c:1478
+#: send.c:1534
 msgid "Sending in background."
 msgstr "Skickar i bakgrunden."
 
@@ -3433,12 +3439,12 @@ msgstr "%s finns inte längre!"
 msgid "Could not open %s"
 msgstr "Kunde inte öppna %s"
 
-#: sendlib.c:1702
+#: sendlib.c:1709
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Fel vid sändning av brev, delprocess returnerade : %d (%s)."
 
-#: sendlib.c:1708
+#: sendlib.c:1715
 msgid "Output of the delivery process"
 msgstr "Utdata från sändprogrammet"
 
@@ -3477,3 +3483,6 @@ msgstr "Första brevet är inte synligt med begränsad vy"
 #: thread.c:727
 msgid "Parent message is not available."
 msgstr "Första brevet är inte tillgängligt."
+
+#~ msgid "ignoring empty header field: %s"
+#~ msgstr "ignorerar tomt rubrikfält: %s."
