@@ -308,6 +308,7 @@ enum
   OPTPGPREPLYSIGN,
   OPTPGPENCRYPTSELF,
   OPTPGPSTRICTENC,
+  OPTFORWDECRYPT,
 #endif
 
   /* pseudo options */

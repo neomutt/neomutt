@@ -2053,6 +2053,9 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra,
 	redraw = REDRAW_FULL;
 	break;
 
+#ifdef _PGPPATH      
+      case OP_DECRYPT_SAVE:
+#endif
       case OP_SAVE:
 	if (IsAttach (extra))
 	{
@@ -2063,11 +2066,26 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra,
       case OP_COPY_MESSAGE:
       case OP_DECODE_SAVE:
       case OP_DECODE_COPY:
+#ifdef _PGPPATH
+      case OP_DECRYPT_COPY:
+#endif
 	CHECK_MODE(IsHeader (extra));
 	if (mutt_save_message (extra->hdr,
-			       (ch == OP_SAVE || ch == OP_DECODE_SAVE),
-			       (ch == OP_DECODE_SAVE || ch == OP_DECODE_COPY),
-			       &redraw) == 0 && (ch == OP_SAVE || ch == OP_DECODE_SAVE))
+#ifdef _PGPPATH
+			       (ch == OP_DECRYPT_SAVE) ||
+#endif			       
+			       (ch == OP_SAVE) || (ch == OP_DECODE_SAVE),
+			       (ch == OP_DECODE_SAVE) || (ch == OP_DECODE_COPY),
+#ifdef _PGPPATH
+			       (ch == OP_DECRYPT_SAVE) || (ch == OP_DECRYPT_COPY),
+#else
+			       0,
+#endif
+			       &redraw) == 0 && (ch == OP_SAVE || ch == OP_DECODE_SAVE
+#ifdef _PGPPATH
+						 || ch == OP_DECRYPT_SAVE
+#endif
+						 ))
 	{
 	  if (option (OPTRESOLVE))
 	  {

@@ -479,6 +479,18 @@ void application_pgp_handler (BODY *m, STATE *s)
 
 }
 
+int mutt_is_pgp_subtype(const char *st)
+{
+  if(st)
+  {
+    if(!strcasecmp(st, "pgp"))      	      return 1;
+    if(!strcasecmp(st, "x-pgp-message"))      return 1;
+  }
+  
+  return 0;
+}
+  
+
 int pgp_query (BODY *m)
 {
   char *p;
@@ -890,6 +902,27 @@ BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout)
   }
 
   return (tattach);
+}
+
+int pgp_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
+{
+  char tempfile[_POSIX_PATH_MAX];
+  STATE s;
+
+  memset (&s, 0, sizeof (s));
+  s.fpin = fpin;
+  mutt_mktemp (tempfile);
+  if ((*fpout = safe_fopen (tempfile, "w+")) == NULL)
+  {
+    mutt_perror (tempfile);
+    return (-1);
+  }
+  unlink (tempfile);
+
+  *cur = pgp_decrypt_part (b, &s, *fpout);
+
+  rewind (*fpout);
+  return (0);
 }
 
 void pgp_encrypted_handler (BODY *a, STATE *s)

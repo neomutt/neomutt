@@ -918,6 +918,14 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
   char buffer[LONG_STRING];
   BODY *body;
   FILE *fp;
+  int cmflags, chflags;
+  int pgp = hdr->pgp;
+  
+#ifdef _PGPPATH
+  if ((option(OPTMIMEFORWDECODE) || option(OPTFORWDECRYPT)) &&
+      (hdr->pgp & PGPENCRYPT) && !pgp_valid_passphrase())
+    return (NULL);
+#endif /* _PGPPATH */
 
   mutt_mktemp (buffer);
   if ((fp = safe_fopen (buffer, "w+")) == NULL)
@@ -930,19 +938,40 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
   body->unlink = 1;
   body->use_disp = 0;
 
-#if 0
-  /* this MUST come after setting ->filename because we reuse buffer[] */
-  strfcpy (buffer, "Forwarded message from ", sizeof (buffer));
-  rfc822_write_address (buffer + 23, sizeof (buffer) - 23, hdr->env->from);
-  body->description = safe_strdup (buffer);
-#endif
-
   mutt_parse_mime_message (ctx, hdr);
 
+  chflags = CH_XMIT;
+  cmflags = 0;
+
+  if (!attach_msg && option (OPTMIMEFORWDECODE))
+  {
+    chflags |= CH_MIME | CH_TXTPLAIN;
+    cmflags = M_CM_DECODE;
+    pgp &= ~PGPENCRYPT;
+  }
+  else
+#ifdef _PGPPATH
+    if(option(OPTFORWDECRYPT)
+       && (hdr->pgp & PGPENCRYPT))
+  {
+    if(hdr->content->type == TYPEMULTIPART)
+    {
+      chflags |= CH_MIME | CH_NONEWLINE;
+      cmflags = M_CM_DECODE_PGP;
+      pgp &= ~PGPENCRYPT;
+    }
+    else if((hdr->content->type == TYPEAPPLICATION) &&
+	    mutt_is_pgp_subtype(hdr->content->subtype))
+    {
+      chflags |= CH_MIME | CH_TXTPLAIN;
+      cmflags = M_CM_DECODE;
+      pgp &= ~PGPENCRYPT;
+    }
+  }
+#endif
+
   /* If we are attaching a message, ignore OPTMIMEFORWDECODE */
-  mutt_copy_message (fp, ctx, hdr, 
-		     (!attach_msg && option (OPTMIMEFORWDECODE)) ? M_CM_DECODE : 0, 
-		     CH_XMIT | ((!attach_msg && option (OPTMIMEFORWDECODE)) ? (CH_MIME | CH_TXTPLAIN ) : 0));
+  mutt_copy_message (fp, ctx, hdr, cmflags, chflags);
   
   fflush(fp);
   rewind(fp);
@@ -951,8 +980,8 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
   body->hdr->offset = 0;
   body->hdr->env = mutt_read_rfc822_header(fp, body->hdr);
 #ifdef _PGPPATH
-  body->hdr->pgp = hdr->pgp;
-#endif
+  body->hdr->pgp = pgp;
+#endif /* _PGPPATH */
   mutt_update_encoding (body);
   body->parts = body->hdr->content;
 

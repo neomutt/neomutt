@@ -22,6 +22,12 @@
 #include "copy.h"
 #include "rfc2047.h"
 #include "parse.h"
+#include "mime.h"
+
+#ifdef _PGPPATH
+#include "pgp.h"
+#endif
+
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -356,6 +362,7 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
  	M_CM_DECODE	decode message body to text/plain
  	M_CM_DISPLAY	displaying output to the user
 	M_CM_UPDATE	update structures in memory after syncing
+	M_CM_DECODE_PGP	used for decoding PGP messages
    chflags	flags to mutt_copy_header()
  */
 
@@ -399,17 +406,37 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
     if (flags & M_CM_DISPLAY)
       s.flags |= M_DISPLAY;
 
-
-
 #ifdef _PGPPATH
     if (flags & M_CM_VERIFY)
       s.flags |= M_VERIFY;
 #endif
 
-
-
     mutt_body_handler (body, &s);
   }
+#ifdef _PGPPATH
+  else if ((flags & M_CM_DECODE_PGP) && (hdr->pgp & PGPENCRYPT) &&
+      hdr->content->type == TYPEMULTIPART)
+  {
+    BODY *cur;
+    FILE *fp;
+
+    if (pgp_decrypt_mime (fpin, &fp, hdr->content->parts->next, &cur))
+      return (-1);
+    fputs ("Mime-Version: 1.0\n", fpout);
+    mutt_write_mime_header (cur, fpout);
+    fputc ('\n', fpout);
+
+    fseek (fp, cur->offset, 0);
+    if (mutt_copy_bytes (fp, fpout, cur->length) == -1)
+    {
+      fclose (fp);
+      mutt_free_body (&cur);
+      return (-1);
+    }
+    mutt_free_body (&cur);
+    fclose (fp);
+  }
+#endif
   else
   {
     fseek (fpin, body->offset, 0);

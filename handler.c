@@ -934,8 +934,7 @@ int mutt_can_decode (BODY *a)
 #ifdef _PGPPATH
   else if (a->type == TYPEAPPLICATION)
   {
-    if (strcasecmp (a->subtype, "pgp") == 0 ||
-	strcasecmp (a->subtype, "x-pgp-message") == 0 ||
+    if (mutt_is_pgp_subtype(a->subtype) || 
 	strcasecmp (a->subtype, "pgp-signed") == 0 ||
 	strcasecmp (a->subtype, "pgp-keys") == 0)
       return (1);
@@ -1242,8 +1241,7 @@ void mutt_body_handler (BODY *b, STATE *s)
 #ifdef _PGPPATH
   else if (b->type == TYPEAPPLICATION)
   {
-    if (strcasecmp ("pgp", b->subtype) == 0 ||
-	strcasecmp ("x-pgp-message", b->subtype) == 0 ||
+    if (mutt_is_pgp_subtype(b->subtype) || 
 	strcasecmp ("pgp-signed", b->subtype) == 0 ||
 	strcasecmp ("pgp-keys", b->subtype) == 0)
       

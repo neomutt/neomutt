@@ -1065,13 +1065,28 @@ int mutt_index_menu (int attach_msg /* invoked while attaching a message */)
       case OP_SAVE:
       case OP_DECODE_COPY:
       case OP_DECODE_SAVE:
-
+#ifdef _PGPPATH
+      case OP_DECRYPT_COPY:
+      case OP_DECRYPT_SAVE:
+#endif
 	CHECK_MSGCOUNT;
-	if (mutt_save_message (tag ? NULL : CURHDR,
-			       (op == OP_SAVE || op == OP_DECODE_SAVE),
-			       (op == OP_DECODE_SAVE || op == OP_DECODE_COPY),
+        if (mutt_save_message (tag ? NULL : CURHDR,
+#ifdef _PGPPATH
+			       (op == OP_DECRYPT_SAVE) ||
+#endif
+			       (op == OP_SAVE) || (op == OP_DECODE_SAVE),
+			       (op == OP_DECODE_SAVE) || (op == OP_DECODE_COPY),
+#ifdef _PGPPATH
+			       (op == OP_DECRYPT_SAVE) || (op == OP_DECRYPT_COPY),
+#else
+			       0,
+#endif
 			       &menu->redraw) == 0 &&
-	    (op == OP_SAVE || op == OP_DECODE_SAVE))
+	    (op == OP_SAVE || op == OP_DECODE_SAVE
+#ifdef _PGPPATH
+	     || op == OP_DECRYPT_SAVE
+#endif
+	     ))
 	{
 	  if (tag)
 	    menu->redraw |= REDRAW_INDEX;

@@ -198,10 +198,10 @@ struct option_t MuttVars[] = {
   { "pgp_receive_version", 	DT_STR,	R_NONE, UL &PgpReceiveVersion, UL "default" },
   { "pgp_send_version",		DT_STR,	R_NONE, UL &PgpSendVersion, UL "default" },
   { "pgp_key_version",		DT_STR, R_NONE, UL &PgpKeyVersion, UL "default" },
-  
+
+  { "forward_decrypt",	DT_BOOL, R_NONE, OPTFORWDECRYPT, 1 },
+  { "forw_decrypt",	DT_SYN,  R_NONE, UL "forward_decrypt", 0 },
 #endif /* _PGPPATH */
-  
-  
   
   { "pipe_split",	DT_BOOL, R_NONE, OPTPIPESPLIT, 0 },
   { "pipe_decode",	DT_BOOL, R_NONE, OPTPIPEDECODE, 0 },

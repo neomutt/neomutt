@@ -780,7 +780,6 @@ void mutt_view_attachments (HEADER *hdr)
 
 
 #ifdef _PGPPATH
-  char tempfile[_POSIX_PATH_MAX];
   int pgp = 0;
 #endif
 
@@ -806,7 +805,6 @@ void mutt_view_attachments (HEADER *hdr)
 
 
 #ifdef _PGPPATH
-  
   if((hdr->pgp & PGPENCRYPT) && !pgp_valid_passphrase())
   {
     mx_close_message(&msg);
@@ -815,37 +813,15 @@ void mutt_view_attachments (HEADER *hdr)
   
   if ((hdr->pgp & PGPENCRYPT) && hdr->content->type == TYPEMULTIPART)
   {
-    STATE s;
-
-    memset (&s, 0, sizeof (s));
-    s.fpin = msg->fp;
-    mutt_mktemp (tempfile);
-    if ((fp = safe_fopen (tempfile, "w+")) == NULL)
+    if (pgp_decrypt_mime (msg->fp, &fp, hdr->content->parts->next, &cur))
     {
-      mutt_perror (tempfile);
       mx_close_message (&msg);
       return;
     }
-    cur = pgp_decrypt_part (hdr->content->parts->next, &s, fp);
-    rewind (fp);
-
     pgp = 1;
   }
   else
 #endif /* _PGPPATH */
-
-
-
-
-
-
-
-
-
-
-
-
-
   {
     fp = msg->fp;
     cur = hdr->content;
@@ -1046,7 +1022,6 @@ void mutt_view_attachments (HEADER *hdr)
 	{
 	  fclose (fp);
 	  mutt_free_body (&cur);
-	  unlink (tempfile);
 	}
 #endif /* _PGPPATH */
 

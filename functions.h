@@ -133,6 +133,8 @@ struct binding_t OpMain[] = {
   { "extract-keys",		OP_EXTRACT_KEYS,		"\013" },
   { "forget-passphrase",	OP_FORGET_PASSPHRASE,		"\006" },
   { "mail-key",			OP_MAIL_KEY,			"\033k" },
+  { "decrypt-copy",		OP_DECRYPT_COPY,		NULL },
+  { "decrypt-save",		OP_DECRYPT_SAVE,		NULL },
 #endif
 
 
@@ -211,68 +213,13 @@ struct binding_t OpPager[] = {
 
 
 
-
-
-
-
-
-
-
 #ifdef _PGPPATH
   { "extract-keys",	OP_EXTRACT_KEYS,		"\013" },
   { "forget-passphrase",OP_FORGET_PASSPHRASE,		"\006" },
   { "mail-key",		OP_MAIL_KEY,			"\033k" },
+  { "decrypt-copy",		OP_DECRYPT_COPY,		NULL },
+  { "decrypt-save",		OP_DECRYPT_SAVE,		NULL },
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
