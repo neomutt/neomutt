@@ -894,7 +894,7 @@ char *mutt_get_send_charset (char *d, size_t dlen, BODY *b, short f)
     else if (Charset)
       p = Charset;
   }
-  
+
   if (p)
   {
     strfcpy (d, NONULL(p), dlen);

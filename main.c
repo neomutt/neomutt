@@ -361,9 +361,10 @@ int main (int argc, char **argv)
   textdomain (PACKAGE);
 #endif
 
+  setlocale (LC_CTYPE, "");
+
   mutt_error = mutt_nocurses_error;
   SRAND (time (NULL));
-  setlocale (LC_CTYPE, "");
   umask (077);
 
   memset (Options, 0, sizeof (Options));

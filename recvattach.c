@@ -175,13 +175,13 @@ const char *mutt_attach_fmt (char *dest,
       if (!optional)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
-	if (aptr->content->type == TYPETEXT && 
+	if (mutt_is_text_type (aptr->content->type, aptr->content->subtype) &&
 	    mutt_get_send_charset (charset, sizeof (charset), aptr->content, 0))
 	  snprintf (dest, destlen, fmt, charset);
 	else
 	  snprintf (dest, destlen, fmt, "");
       }
-      else if (aptr->content->type != TYPETEXT || 
+      else if (!mutt_is_text_type (aptr->content->type, aptr->content->subtype) ||
 	       !mutt_get_send_charset (charset, sizeof (charset), aptr->content, 0))
         optional = 0;
       break;
@@ -189,7 +189,7 @@ const char *mutt_attach_fmt (char *dest,
       /* XXX */
       if (!optional)
       {
-	snprintf (fmt, sizeof (fmt), "%%sc", prefix);
+	snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
 	snprintf (dest, destlen, fmt, aptr->content->type != TYPETEXT ||
 		  aptr->content->noconv ? 'n' : 'c');
       }

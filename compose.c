@@ -390,7 +390,7 @@ static int change_attachment_charset (BODY *b)
 {
   char buff[SHORT_STRING];
 
-  if (b->type != TYPETEXT)
+  if (!mutt_is_text_type (b->type, b->subtype))
   {
     mutt_error _("Can't change character set for non-text attachments!");
     return 0;
@@ -403,11 +403,13 @@ static int change_attachment_charset (BODY *b)
     
   if (mutt_is_utf8(buff))
   {
-    mutt_error (_("UTF-8 encoding attachments has not yet been implemented."));
-    return 0;
+    if (!b->noconv)
+    {
+      mutt_error (_("UTF-8 encoding attachments has not yet been implemented."));
+      return 0;
+    }
   }
-  
-  if (mutt_get_charset (buff) == NULL)
+  else if (mutt_get_charset (buff) == NULL)
   {
     mutt_error (_("Character set %s is unknown."), buff);
     return 0;
@@ -761,21 +763,63 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
         menu->redraw = change_attachment_charset(idx[menu->current]->content);
         break;
 
-      case OP_COMPOSE_NORECODE:
+#define CURRENT idx[menu->current]->content
+      
+      case OP_COMPOSE_TOGGLE_RECODE:
+      {      
         CHECK_COUNT;
-        if (idx[menu->current]->content->type != TYPETEXT)
+        if (!mutt_is_text_type (CURRENT->type, CURRENT->subtype))
         {
-	  mutt_error (_("Recoding only affects text/plain attachments."));
+	  mutt_error (_("Recoding only affects text attachments."));
 	  break;
 	}
-        idx[menu->current]->content->noconv = !idx[menu->current]->content->noconv;
-        if (idx[menu->current]->content->noconv)
+	if (mutt_is_utf8 (mutt_get_parameter ("charset", CURRENT->parameter)))
+	{
+	  mutt_error (_("We currently can't encode to utf-8."));
+	  break;
+	}
+        CURRENT->noconv = !CURRENT->noconv;
+        if (CURRENT->noconv)
 	  mutt_message (_("The current attachment won't be converted."));
         else
 	  mutt_message (_("The current attachment will be converted."));
 	menu->redraw = REDRAW_CURRENT;
         break;
-      
+      }
+
+      case OP_COMPOSE_RECODE:
+      {
+	const char *chs;
+	int rv;
+
+        CHECK_COUNT;
+        if (!mutt_is_text_type (CURRENT->type, CURRENT->subtype))
+        {
+	  mutt_error (_("Recoding only affetcs text attachments."));
+	  break;
+	}
+
+	if (!(chs = mutt_get_parameter ("charset", CURRENT->parameter)))
+	  chs = SendCharset;
+
+        if (CURRENT->noconv)
+	  rv = mutt_recode_file (CURRENT->filename, chs, Charset);
+	else
+	  rv = mutt_recode_file (CURRENT->filename, Charset, chs);
+
+	mutt_update_encoding (CURRENT);
+	
+	if (rv == 0)
+	{
+	  mutt_message (_("Recoding successful."));
+	  CURRENT->noconv = !CURRENT->noconv;
+	}
+
+	menu->redraw = REDRAW_CURRENT;
+	break;
+      }
+#undef CURRENT
+
       case OP_COMPOSE_EDIT_DESCRIPTION:
 	CHECK_COUNT;
 	strfcpy (buf,

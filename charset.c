@@ -32,6 +32,7 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <unistd.h>
+#include <errno.h>
 
 #include "mutt.h"
 #include "charset.h"
@@ -77,7 +78,7 @@ static void fix_symbol (char *symbol, CHARMAP * m);
 
 static void canonical_charset (char *dest, size_t dlen, const char *name)
 {
-  int i;
+  size_t i;
 
   if (!strncasecmp (name, "x-", 2))
     name = name + 2;
@@ -96,7 +97,7 @@ static void canonical_charset (char *dest, size_t dlen, const char *name)
 static CHARSET *charset_new (size_t hash_size)
 {
   CHARSET *cp = safe_malloc (sizeof (CHARSET));
-  short i;
+  size_t i;
 
   cp->n_symb = 256;
   cp->u_symb = 0;
@@ -244,10 +245,10 @@ static void fix_symbol (char *symbol, CHARMAP * m)
 
   for (s = symbol, d = symbol; *s; *d++ = *s++)
   {
-    if (*s == m->escape_char)
-      s++;
+    if (*s == m->escape_char && !*++s)
+      break;
   }
-
+  
   *d = *s;
 }
 
@@ -420,17 +421,21 @@ static int load_charset (const char *filename, CHARSET ** csp, short multbyte)
       break;
     else if (i == CL_DESCR)
     {
-      dprint (5, (debugfile, "load_charset: Got character description: < %s > -> %x\n",
+      dprint (5, (debugfile, "load_charset: Got character description: <%s> -> %x\n",
 		  cd->symbol, cd->repr));
-      hash_delete (cs->symb_to_repr, cd->symbol, NULL, NULL);
-      hash_insert (cs->symb_to_repr, cd->symbol, cd, 0);
 
       if (!multbyte)
       {
 	if (0 <= cd->repr && cd->repr < 256)
 	{
+	  hash_delete (cs->symb_to_repr, cd->symbol, NULL, NULL);
+	  hash_insert (cs->symb_to_repr, cd->symbol, cd, 0);
+
 	  if (cs->description[cd->repr])
+	  {
+	    hash_delete (cs->symb_to_repr, cs->description[cd->repr]->symbol, cs->description[cd->repr], NULL);
 	    chardesc_free (&cs->description[cd->repr]);
+	  }
 	  else
 	    cs->u_symb++;
 
@@ -450,12 +455,17 @@ static int load_charset (const char *filename, CHARSET ** csp, short multbyte)
 	    cs->description[i] = NULL;
 	  cs->n_symb = new_size;
 	}
-
+	hash_delete (cs->symb_to_repr, cd->symbol, NULL, NULL);
+	hash_insert (cs->symb_to_repr, cd->symbol, cd, 0);
 	cs->description[cs->u_symb++] = cd;
 	cd = NULL;
       }
     }
-
+    if (cd)
+    {
+      dprint (5, (debugfile, "load_charset: character description still present: <%s>->%x\n",
+		  cd->symbol, cd->repr));
+    }
     chardesc_free (&cd);
   }
 
@@ -476,8 +486,9 @@ bail:
 
 static CHARDESC *repr2descr (int repr, CHARSET * cs)
 {
-  CHARDESC key;
-
+  CHARDESC *key;
+  CHARDESC **r;
+  
   if (!cs || repr < 0)
     return NULL;
 
@@ -489,9 +500,21 @@ static CHARDESC *repr2descr (int repr, CHARSET * cs)
       return NULL;
   }
 
-  key.repr = repr;
-  return bsearch (&key, cs->description, cs->u_symb,
-		  sizeof (CHARDESC *), _cd_compar);
+  key = safe_malloc (sizeof(CHARDESC));
+  key->repr = repr;
+  key->symbol = "<unknown>"; /* otherwise, the
+			     * debug code may 
+			     * segfault. ouch.
+			     */
+
+  r = bsearch (&key, cs->description, cs->u_symb,
+	       sizeof (CHARDESC *), _cd_compar);
+
+  safe_free ((void **) &key);
+
+  if (r) return *r;
+  
+  return NULL;
 }
 
 /* Build a translation table.  If a character cannot be
@@ -832,7 +855,7 @@ struct utf8_state
 
 static struct utf8_state *new_utf8_state (void)
 {
-  return safe_calloc (sizeof (struct utf8_state), 1);
+  return safe_calloc (1, sizeof (struct utf8_state));
 }
 
 static void free_utf8_state (struct utf8_state **sp)
@@ -878,7 +901,7 @@ static void state_fput_utf8(STATE *st, char u, CHARSET *chs, struct utf8_state *
     if(sfu->bp + 1 >= sfu->blen)
     {
       sfu->blen = (sfu->blen + 80) * 2;
-      safe_realloc((void **) &sfu->buffer, sfu->blen);
+      safe_realloc((void **) &sfu->buffer, sfu->blen + 1);
     }
     sfu->buffer[sfu->bp++] = u;
   }
@@ -888,7 +911,7 @@ static void state_fput_utf8(STATE *st, char u, CHARSET *chs, struct utf8_state *
 
 DECODER *mutt_open_decoder (STATE *s, BODY *b, int istext)
 {
-  DECODER *dp = safe_calloc (sizeof (DECODER), 1);
+  DECODER *dp = safe_calloc (1, sizeof (DECODER));
   
   dp->s = s;
   
@@ -929,4 +952,68 @@ void mutt_decoder_putc (DECODER *dp, char c)
     state_fput_utf8 (dp->s, c, dp->chs, dp->sfu);
   else
     state_prefix_putc (mutt_display_char ((unsigned char) c, dp->map), dp->s);
+}
+
+/* FIXME: utf-8 support */
+
+int mutt_recode_file (const char *fname, const char *src, const char *dest)
+{
+  FILE *fp, *tmpfp;
+  char tempfile[_POSIX_PATH_MAX];
+  int c;
+  int rv = -1;
+  
+  CHARSET_MAP *map;
+
+  if (mutt_is_utf8 (dest) ^ mutt_is_utf8(src))
+  {
+    mutt_error (_("We can't currently handle utf-8 at this point."));
+    return -1;
+  }
+
+  if ((fp = fopen (fname, "r+")) == NULL)
+  {
+    mutt_error (_("Can't open %s: %s."), fname, strerror (errno));
+    return -1;
+  }
+  
+  mutt_mktemp (tempfile);
+  if ((tmpfp = safe_fopen (tempfile, "w+")) == NULL)
+  {
+    mutt_error (_("Can't open %s: %s."), tempfile, strerror (errno));
+    fclose (fp);
+    return -1;
+  }
+
+  map = mutt_get_translation (src, dest);
+  
+  while ((c = fgetc (fp)) != EOF)
+    if (fputc (mutt_display_char ((unsigned char) c, map), tmpfp) == EOF)
+      goto bail;
+
+  fclose (fp); fp = NULL;
+  rewind (tmpfp);
+
+  /* don't use safe_fopen here - we're just going
+   * to overwrite the old file.
+   */
+
+  if ((fp = fopen (fname, "w")) == NULL)
+    goto bail;
+  
+  while ((c = fgetc (tmpfp)) != EOF)
+    if (fputc (c, fp) == EOF)
+      goto bail;
+
+  rv = 0;
+  unlink (tempfile);
+  
+bail:
+  if (rv == -1)
+    mutt_error (_("Error while recoding %s. See %s for recovering your data."),
+		fname, tempfile);
+
+  if (fp) fclose (fp);
+  if (tmpfp) fclose (tmpfp);
+  return rv;
 }

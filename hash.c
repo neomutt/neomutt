@@ -50,9 +50,10 @@ HASH *hash_create (int nelem)
 }
 
 /* table        hash table to update
-   key          key to hash on
-   data         data to associate with `key'
-   allow_dup    if nonzero, duplicate keys are allowed in the table */
+ * key          key to hash on
+ * data         data to associate with `key'
+ * allow_dup    if nonzero, duplicate keys are allowed in the table 
+ */
 int hash_insert (HASH * table, const char *key, void *data, int allow_dup)
 {
   struct hash_elem *ptr;
@@ -108,20 +109,18 @@ void hash_delete_hash (HASH * table, int hash, const char *key, const void *data
 		       void (*destroy) (void *))
 {
   struct hash_elem *ptr = table->table[hash];
-  struct hash_elem *last = NULL;
-  for (; ptr; last = ptr, ptr = ptr->next)
+  struct hash_elem **last = &table->table[hash];
+
+  for (; ptr; last = &ptr->next, ptr = ptr->next)
   {
     /* if `data' is given, look for a matching ->data member.  this is
-       required for the case where we have multiple entries with the same
-       key */
-    if (data == ptr->data || (!data && mutt_strcmp (ptr->key, key) == 0))
+     * required for the case where we have multiple entries with the same
+     * key
+     */
+    if ((data == ptr->data) || (!data && mutt_strcmp (ptr->key, key) == 0))
     {
-      if (last)
-	last->next = ptr->next;
-      else
-	table->table[hash] = ptr->next;
-      if (destroy)
-	destroy (ptr->data);
+      *last = ptr->next;
+      if (destroy) destroy (ptr->data);
       FREE (&ptr);
       return;
     }
@@ -129,7 +128,8 @@ void hash_delete_hash (HASH * table, int hash, const char *key, const void *data
 }
 
 /* ptr		pointer to the hash table to be freed
-   destroy()	function to call to free the ->data member (optional) */
+ * destroy()	function to call to free the ->data member (optional) 
+ */
 void hash_destroy (HASH **ptr, void (*destroy) (void *))
 {
   int i;

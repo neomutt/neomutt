@@ -67,19 +67,16 @@ typedef struct decoder
 }
 DECODER;    
 
+
 CHARSET *mutt_get_charset(const char *);
 CHARSET_MAP *mutt_get_translation(const char *, const char *);
-
-unsigned char mutt_display_char(unsigned char, CHARSET_MAP *);
-
+DECODER *mutt_open_decoder (STATE *, BODY *, int);
 int mutt_display_string(char *, CHARSET_MAP *);
 int mutt_is_utf8(const char *);
-
-void mutt_decode_utf8_string(char *, CHARSET *);
-
-DECODER *mutt_open_decoder (STATE *, BODY *, int);
+int mutt_recode_file (const char *, const char *, const char *);
+unsigned char mutt_display_char(unsigned char, CHARSET_MAP *);
 void mutt_close_decoder (DECODER **);
-
+void mutt_decode_utf8_string(char *, CHARSET *);
 void mutt_decoder_putc (DECODER *, char);
 
 #endif

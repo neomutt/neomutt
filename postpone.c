@@ -416,6 +416,7 @@ int mutt_parse_pgp_hdr (char *p, int set_signas)
 
 int mutt_prepare_edit_message (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr)
 {
+  PARAMETER *par;
   MESSAGE *msg = mx_open_message (ctx, hdr->msgno);
   char file[_POSIX_PATH_MAX];
 
@@ -435,8 +436,7 @@ int mutt_prepare_edit_message (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr)
      * message.
      */
     newhdr->content = hdr->content->parts;
-    b = hdr->content->parts;
-    while (b != NULL)
+    for (b = hdr->content->parts; b; b = b->next)
     {
       file[0] = '\0';
       if (b->filename)
@@ -455,11 +455,16 @@ int mutt_prepare_edit_message (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr)
       safe_free ((void *) &b->filename);
       b->filename = safe_strdup (file);
       b->unlink = 1;
+
+      if (mutt_is_text_type (b->type, b->subtype))
+	b->noconv = 1;
+      
       mutt_stamp_attachment (b);
       mutt_free_body (&b->parts);
-      b = b->next;
     }
     hdr->content->parts = NULL;
+    if (hdr->content->type == TYPEMESSAGE && hdr->content->hdr)
+      hdr->content->hdr->content = NULL;
   }
   else
   {
@@ -478,6 +483,12 @@ int mutt_prepare_edit_message (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr)
     newhdr->content->type = hdr->content->type;
     newhdr->content->xtype = safe_strdup (hdr->content->xtype);
     newhdr->content->subtype = safe_strdup (hdr->content->subtype);
+
+    for (par = hdr->content->parameter; par; par = par->next)
+      mutt_set_parameter (par->attribute, par->value, &newhdr->content->parameter);
+
+    if (mutt_is_text_type (newhdr->content->type, newhdr->content->subtype))
+      newhdr->content->noconv = 1;
     
     newhdr->content->use_disp = 0;	/* no content-disposition */
     newhdr->content->unlink = 1;	/* delete when we are done */
