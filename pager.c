@@ -1051,9 +1051,14 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
 	   check_attachment_marker ((char *) buf+ch) == 0)
     {
       while (buf[ch++] != '\a')
-	;
+	if (ch >= cnt)
+	  break;
     }
 
+    /* is anything left to do? */
+    if (ch >= cnt)
+      break;
+    
     k = mbrtowc (&wc, (char *)buf+ch, cnt-ch, &mbstate);
     if (k == -2 || k == -1)
     {
