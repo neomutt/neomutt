@@ -42,6 +42,7 @@ while (<>) {
 	$change->{date} = $1;
 	$change->{hour} = $2;
 	$change->{author} = $Authors{$3} ? $Authors{$3} : $3;
+	$change->{committed} = $3;
     } elsif ($_ =~ /^From: (.*)$/) {
 	$change->{author} = $1;
     } elsif ($change->{revision}) {
@@ -53,17 +54,18 @@ while (<>) {
 
 # print Dumper @Changes;
 
-undef $last_logmsg; undef $last_author; undef $last_date; undef $last_hour;
+undef $last_logmsg; undef $last_author; undef $last_date; undef $last_hour; undef $last_comm;
 $files = [];
 
 for my $k (sort {($b->{date} cmp $a->{date}) || ($b->{hour} cmp $a->{hour}) || ($a->{author} cmp $b->{author}) || ($a->{workfile} cmp $b->{workfile})} @Changes) {
     
-    if (!($last_date eq $k->{date}) || !($last_author eq $k->{author})) {
+    if (!($last_date eq $k->{date}) || !($last_author eq $k->{author}) ||
+	!($last_comm eq $k->{committed})) {
 	if (@$files) {
 	    &print_entry ($files, $last_logmsg);
 	    $files = [];
 	}
-	&print_header ($k->{author}, $k->{date}, $k->{hour});
+	&print_header ($k->{author}, $k->{committed}, $k->{date}, $k->{hour});
     }
  
     if (@$files && !($last_logmsg eq $k->{logmsg})) {
@@ -72,6 +74,7 @@ for my $k (sort {($b->{date} cmp $a->{date}) || ($b->{hour} cmp $a->{hour}) || (
     }
       
     
+    $last_comm   = $k->{committed};
     $last_logmsg = $k->{logmsg};
     $last_author = $k->{author};
     $last_date   = $k->{date};
@@ -86,10 +89,11 @@ if (@$files) {
 
 sub print_header {
     my $author = shift;
+    my $committed = shift;
     my $date = shift;
     my $hour = shift;
     
-    print $date, " ", $hour, "  ", $author, "\n\n";
+    print $date, " ", $hour, "  ", $author, "  (", $committed, ")\n\n";
 }
 
 sub print_entry  {
