@@ -843,7 +843,14 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	     DTYPE (MuttVars[idx].type) == DT_PATH ||
 	     DTYPE (MuttVars[idx].type) == DT_ADDR)
     {
-      if (query || *s->dptr != '=')
+      if (unset)
+      {
+	if (DTYPE (MuttVars[idx].type) == DT_ADDR)
+	  rfc822_free_address ((ADDRESS **) MuttVars[idx].data);
+	else
+	  safe_free ((void **) MuttVars[idx].data);
+      }
+      else if (query || *s->dptr != '=')
       {
 	char _tmp[STRING];
 	char *val = NULL;
@@ -862,29 +869,31 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 		  NONULL (val));
 	break;
       }
-
-      s->dptr++;
-
-      /* copy the value of the string */
-      if (DTYPE (MuttVars[idx].type) == DT_ADDR)
-	rfc822_free_address ((ADDRESS **) MuttVars[idx].data);
-      else
-	FREE (MuttVars[idx].data);
-
-      mutt_extract_token (tmp, s, 0);
-      if (DTYPE (MuttVars[idx].type) == DT_PATH)
-      {
-	strfcpy (scratch, tmp->data, sizeof (scratch));
-	mutt_expand_path (scratch, sizeof (scratch));
-	*((char **) MuttVars[idx].data) = safe_strdup (scratch);
-      }
-      else if (DTYPE (MuttVars[idx].type) == DT_STR)
-      {
-	*((char **) MuttVars[idx].data) = safe_strdup (tmp->data);
-      }
       else
       {
-	*((ADDRESS **) MuttVars[idx].data) = rfc822_parse_adrlist (NULL, tmp->data);
+        s->dptr++;
+
+        /* copy the value of the string */
+        if (DTYPE (MuttVars[idx].type) == DT_ADDR)
+	  rfc822_free_address ((ADDRESS **) MuttVars[idx].data);
+        else
+	  FREE (MuttVars[idx].data);
+
+        mutt_extract_token (tmp, s, 0);
+        if (DTYPE (MuttVars[idx].type) == DT_PATH)
+        {
+	  strfcpy (scratch, tmp->data, sizeof (scratch));
+	  mutt_expand_path (scratch, sizeof (scratch));
+	  *((char **) MuttVars[idx].data) = safe_strdup (scratch);
+        }
+        else if (DTYPE (MuttVars[idx].type) == DT_STR)
+        {
+	  *((char **) MuttVars[idx].data) = safe_strdup (tmp->data);
+        }
+        else
+        {
+	  *((ADDRESS **) MuttVars[idx].data) = rfc822_parse_adrlist (NULL, tmp->data);
+        }
       }
     }
     else if (DTYPE(MuttVars[idx].type) == DT_RX)
