@@ -55,19 +55,19 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   IMAP_HEADER h;
   int rc, mfhrc, oldmsgcount;
   int fetchlast = 0;
-  const char *want_headers = "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE IN-REPLY-TO REPLY-TO LINES X-LABEL";
+  const char *want_headers = "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE CONTENT-DESCRIPTION IN-REPLY-TO REPLY-TO LINES X-LABEL";
 
   ctx = idata->ctx;
 
   if (mutt_bit_isset (idata->capabilities,IMAP4REV1))
   {
-    snprintf (hdrreq, sizeof (hdrreq), "BODY.PEEK[HEADER.FIELDS (%s)]", 
-      want_headers); 
+    snprintf (hdrreq, sizeof (hdrreq), "BODY.PEEK[HEADER.FIELDS (%s %s)]", 
+      want_headers, ImapHeaders); 
   } 
   else if (mutt_bit_isset (idata->capabilities,IMAP4))
   {
-    snprintf (hdrreq, sizeof (hdrreq), "RFC822.HEADER.LINES (%s)", 
-      want_headers);
+    snprintf (hdrreq, sizeof (hdrreq), "RFC822.HEADER.LINES (%s %s)", 
+      want_headers, ImapHeaders);
   }
   else
   {	/* Unable to fetch headers for lower versions */

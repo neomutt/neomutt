@@ -808,6 +808,15 @@ struct option_t MuttVars[] = {
   ** connecting to IMAP servers.
   */
 # endif
+  { "imap_headers",	DT_STR, R_INDEX, UL &ImapHeaders, UL 0},
+  /*
+  ** .pp
+  ** Mutt requests these header fields in addition to the default headers
+  ** ("DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE
+  ** CONTENT-DESCRIPTION IN-REPLY-TO REPLY-TO LINES X-LABEL") from IMAP
+  ** servers before displaying the index menu. You may want to add more
+  ** headers for spam detection. \fBNote:\fP This is a space separated list.
+  */
   { "imap_home_namespace",	DT_STR, R_NONE, UL &ImapHomeNamespace, UL 0},
   /*
   ** .pp

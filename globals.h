@@ -55,6 +55,7 @@ WHERE char *Hostname;
 #ifdef USE_IMAP
 WHERE char *ImapAuthenticators INITVAL (NULL);
 WHERE char *ImapDelimChars INITVAL (NULL);
+WHERE char *ImapHeaders;
 WHERE char *ImapHomeNamespace INITVAL (NULL);
 WHERE char *ImapPass INITVAL (NULL);
 WHERE char *ImapUser INITVAL (NULL);
