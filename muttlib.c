@@ -1227,7 +1227,9 @@ void state_attach_puts (const char *t, STATE *s)
   while (*t)
   {
     state_putc (*t, s);
-    if (*t++ == '\n' && *t)
+    if (*t++ == '\n' && *t && IsPrint (*t)) /* Is the IsPrint() here really
+					     * the right way to fix this?
+					     */
       state_mark_attach (s);
   }
 }
