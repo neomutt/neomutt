@@ -1168,6 +1168,9 @@ static void transform_to_7bit (BODY *a, FILE *fpin)
     }
     else 
     {
+      a->noconv = 1;
+      a->force_charset = 1;
+      
       mutt_mktemp (buff);
       if ((s.fpout = safe_fopen (buff, "w")) == NULL) 
       {
