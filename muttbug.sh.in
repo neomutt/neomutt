@@ -30,6 +30,10 @@
 SUBMIT="submit@bugs.guug.de"
 DEBIAN_SUBMIT="submit@bugs.debian.org"
 
+DEBUGGER=@DEBUGGER@
+SENDMAIL=@SENDMAIL@
+sysconfdir=@sysconfdir@
+sharedir=@sharedir@
 
 include_file ()
 {
@@ -47,7 +51,7 @@ bt
 list
 quit
 EOF
-	@DEBUGGER@ -n -x $SCRATCH/gdb.rc -c $CORE mutt
+	$DEBUGGER -n -x $SCRATCH/gdb.rc -c $CORE mutt
 }
 
 debug_dbx ()
@@ -57,7 +61,7 @@ where
 list
 quit
 EOF
-	@DEBUGGER@ -s $SCRATCH/dbx.rc mutt $CORE
+	$DEBUGGER -s $SCRATCH/dbx.rc mutt $CORE
 }
 
 debug_sdb ()
@@ -67,7 +71,7 @@ t
 w
 q
 EOF
-	@DEBUGGER@ mutt $CORE < $SCRATCH/sdb.rc
+	$DEBUGGER mutt $CORE < $SCRATCH/sdb.rc
 }
 
 case `echo -n` in
@@ -128,7 +132,7 @@ case "$severity" in
        *)   severity=normal    ;;
 esac
 
-if test -x @DEBUGGER@ ; then
+if test -x $DEBUGGER ; then
 	test -f core && CORE=core
 	echo "Do you want to include information gathered from a core file?"
 	echo -n "If yes, please enter the path - otherwise just say no: [$CORE] $c"
@@ -162,7 +166,7 @@ if test -f /etc/debian_version ; then
 	echo "$DPKG"
 	if test "$DPKG" = "no" ; then
 		echo $n "File this bug with Debian? [Y|n] $c"
-		read $DPKG
+		read DPKG
 		case "$DPKG" in
 		[nN])	DPKG=no ;;
 		*)	DPKG=yes ;;
@@ -185,7 +189,7 @@ test "$ORGANIZATION" && echo "Organization: $ORGANIZATION"
 
 echo "Subject: mutt-$MUTTVERSION: $SUBJECT"
 echo "To: $SUBMIT"
-echo "Cc: ${EMAIL-$LOGNAME}"
+echo "Bcc: ${EMAIL-$LOGNAME}"
 echo
 echo "Package: mutt"
 echo "Version: $MUTTVERSION"
@@ -213,7 +217,7 @@ if test "$CORE" && test -f "$CORE" ; then
 	echo "-- Core Dump Analysis Output"
 	echo
 
-	case "@DEBUGGER@" in
+	case "$DEBUGGER" in
 		*sdb) debug_sdb $CORE ;;
 		*dbx) debug_dbx $CORE ;;
 		*gdb) debug_gdb $CORE ;;
@@ -242,7 +246,7 @@ fi
 
 if test "$global" = "yes" ; then
 	CANDIDATES="Muttrc-${MUTTVERSION} Muttrc"
-	DIRECTORIES="@sysconfdir@ @sharedir@"
+	DIRECTORIES="$sysconfdir $sharedir"
 	MATCHED="none"
 	for d in $DIRECTORIES ; do
 		for f in $CANDIDATES; do
@@ -282,7 +286,7 @@ while : ; do
 	case $input in
 	e*)	;;
 	v*)	${PAGER-more} $SCRATCH/mutt-bug.txt ;;
-	s*|"")	@SENDMAIL@ $EMAIL -t < $SCRATCH/mutt-bug.txt ; exit ;;
+	s*|"")	$SENDMAIL $EMAIL -t < $SCRATCH/mutt-bug.txt ; exit ;;
 	q*)	exit
 	esac
 done
