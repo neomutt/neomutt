@@ -280,7 +280,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
   else
     strncat (prompt, "?", sizeof (prompt));
 
-  if (query_quadoption (OPT_BOUNCE, prompt) == M_NO)
+  if (query_quadoption (OPT_BOUNCE, prompt) != M_YES)
   {
     rfc822_free_address (&adr);
     CLEARLINE (LINES - 1);
