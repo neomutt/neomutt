@@ -300,7 +300,7 @@ int mutt_enter_fname (const char *prompt, char *buf, size_t blen, int *redraw, i
   int i;
 
   mvaddstr (LINES-1, 0, (char *) prompt);
-  addstr _(" ('?' for list): ");
+  addstr (_(" ('?' for list): "));
   if (buf[0])
     addstr (buf);
   clrtoeol ();

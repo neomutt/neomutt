@@ -741,9 +741,9 @@ void mutt_select_file (char *f, size_t flen, int buffy)
 	  if (i == OP_SORT_REVERSE)
 	  {
 	    reverse = SORT_REVERSE;
-	    addstr _("Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? ");
+	    addstr (_("Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "));
 	  } else {
-	    addstr _("Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? ");
+	    addstr (_("Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "));
 	  }
 	  clrtoeol ();
 
