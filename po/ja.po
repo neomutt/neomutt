@@ -1,14 +1,14 @@
 # Japanese messages for Mutt.
-# Copyright (C) 2002 mutt-j ML members.
+# Copyright (C) 2002-2004 mutt-j ML members.
 # FIRST AUTHOR Kikutani Makoto <kikutani@Galaxy.net>, 1999.
 # 2nd AUTHOR OOTA,Toshiya <oota@mspd.mt.nec.co.jp>, 2002.
-#  (temporarily with Tamotsu TAKAHASHI <tamo@momonga-linux.org> for 1.5.x)
+#  (with TAKAHASHI Tamotsu <tamo@momonga-linux.org>, 2003, 2004)
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.5.5.1\n"
+"Project-Id-Version: 1.5.6\n"
 "POT-Creation-Date: 2004-02-01 19:24+0100\n"
-"PO-Revision-Date: 2003-11-17 17:10+0900\n"
+"PO-Revision-Date: 2004-02-07 19:00+0900\n"
 "Last-Translator: Tamotsu TAKAHASHI <tamo@momonga-linux.org>\n"
 "Language-Team: mutt-j <mutt-j@ribbon.or.jp>\n"
 "MIME-Version: 1.0\n"
@@ -340,7 +340,7 @@ msgstr "S/MIME 証明書所有者が送信者に一致しない。"
 
 #: commands.c:187 commands.c:198
 msgid "Warning: Part of this message has not been signed."
-msgstr ""
+msgstr "警告: メッセージの一部は署名されていない。"
 
 #: commands.c:189
 msgid "S/MIME signature could NOT be verified."
@@ -675,6 +675,7 @@ msgstr "このメッセージのコピーを保存?"
 msgid "Rename to: "
 msgstr "リネーム (移動) 先: "
 
+# system call の stat() を「属性調査」と訳している
 #: compose.c:1115 editmsg.c:110 sendlib.c:910
 #, c-format
 msgid "Can't stat %s: %s"
@@ -1621,16 +1622,17 @@ msgstr "%s は不明なタイプ"
 msgid "%s: unknown type"
 msgstr "%s は不明なタイプ"
 
+# stat() が -1 を返したときの strerror(errno)
 #: init.c:1375
-#, fuzzy, c-format
+#, c-format
 msgid "%s: stat: %s"
-msgstr "%s を属性調査できない: %s"
+msgstr "%s の属性調査エラー: %s"
 
 # regular file って「通常ファイル」ですか？
 #: init.c:1380
-#, fuzzy, c-format
+#, c-format
 msgid "%s: not a regular file"
-msgstr "%s は標準ファイルではない。"
+msgstr "%s は標準ファイルではない"
 
 #: init.c:1395
 #, c-format
