@@ -29,9 +29,12 @@
 #define SORT_ADDRESS	11
 #define SORT_KEYID	12
 #define SORT_TRUST	13
-#define SORT_MASK	0xf
-#define SORT_REVERSE	(1<<4)
-#define SORT_LAST	(1<<5)
+#define SORT_SPAM	14
+/* dgc: Sort & SortAux are shorts, so I'm bumping these bitflags up from
+ * bits 4 & 5 to bits 8 & 9 to make room for more sort keys in the future. */
+#define SORT_MASK	0xff
+#define SORT_REVERSE	(1<<8)
+#define SORT_LAST	(1<<9)
 
 typedef int sort_t (const void *, const void *);
 sort_t *mutt_get_sort_func (int);

@@ -58,6 +58,7 @@ Flags[] =
   { 'g', M_CRYPT_SIGN, 		0, 		NULL },
   { 'G', M_CRYPT_ENCRYPT, 	0, 		NULL },
   { 'h', M_HEADER,		M_FULL_MSG,	eat_regexp },
+  { 'H', M_HORMEL,		0,		eat_regexp },
   { 'i', M_ID,			0,		eat_regexp },
   { 'k', M_PGP_KEY, 		0, 		NULL },
   { 'L', M_ADDRESS,		0,		eat_regexp },
@@ -1046,6 +1047,8 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
      return (pat->not ^ ((h->security & APPLICATION_PGP) && (h->security & PGPKEY)));
     case M_XLABEL:
       return (pat->not ^ (h->env->x_label && regexec (pat->rx, h->env->x_label, 0, NULL, 0) == 0));
+    case M_HORMEL:
+      return (pat->not ^ (h->env->spam && h->env->spam->data && regexec (pat->rx, h->env->spam->data, 0, NULL, 0) == 0));
     case M_DUPLICATED:
       return (pat->not ^ (h->thread && h->thread->duplicate_thread));
     case M_UNREFERENCED:

@@ -586,6 +586,8 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
       s.flags |= M_WEED;
     if (flags & M_CM_CHARCONV)
       s.flags |= M_CHARCONV;
+    if (flags & M_CM_REPLYING)
+      s.flags |= M_REPLYING;
     
     if (WithCrypto && flags & M_CM_VERIFY)
       s.flags |= M_VERIFY;

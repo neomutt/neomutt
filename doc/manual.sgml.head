@@ -1499,6 +1499,97 @@ specify the same pattern specified in the <tt/score/ command for it to be
 removed.  The pattern ``*'' is a special token which means to clear the list
 of all score entries.
 
+<sect1>Spam detection<label id="spam">
+<p>
+Usage: <tt/spam/ <em/pattern/ <em/format/
+Usage: <tt/nospam/ <em/pattern/
+
+Mutt has generalized support for external spam-scoring filters.
+By defining your spam patterns with the <tt/spam/ and <tt/nospam/
+commands, you can <em/limit/, <em/search/, and <em/sort/ your
+mail based on its spam attributes, as determined by the external
+filter. You also can display the spam attributes in your index
+display using the <tt/%H/ selector in the <ref id="index_format"
+name="&dollar;index&lowbar;format"> variable. (Tip: try <tt/%?H?[%H] ?/
+to display spam tags only when they are defined for a given message.)
+
+Your first step is to define your external filter's spam patterns using
+the <tt/spam/ command. <em/pattern/ should be a regular expression
+that matches a header in a mail message. If any message in the mailbox
+matches this regular expression, it will receive a ``spam tag'' or
+``spam attribute'' (unless it also matches a <tt/nospam/ pattern -- see
+below.) The appearance of this attribute is entirely up to you, and is
+governed by the <em/format/ parameter. <em/format/ can be any static
+text, but it also can include back-references from the <em/pattern/
+expression. (A regular expression ``back-reference'' refers to a
+sub-expression contained within parentheses.) <tt/%1/ is replaced with
+the first back-reference in the regex, <tt/%2/ with the second, etc.
+
+If you're using multiple spam filters, a message can have more than
+one spam-related header. You can define <tt/spam/ patterns for each
+filter you use. If a message matches two or more of these patterns, and
+the &dollar;spam&lowbar;separator variable is set to a string, then the
+message's spam tag will consist of all the <em/format/ strings joined
+together, with the value of &dollar;spam&lowbar;separator separating
+them.
+
+For example, suppose I use DCC, SpamAssassin, and PureMessage. I might
+define these spam settings:
+<tscreen><verb>
+spam "X-DCC-.*-Metrics:.*(....)=many"         "90+/DCC-%1"
+spam "X-Spam-Status: Yes"                     "90+/SA"
+spam "X-PerlMX-Spam: .*Probability=([0-9]+)%" "%1/PM"
+set spam_separator=", "
+</verb></tscreen>
+
+If I then received a message that DCC registered with ``many'' hits
+under the ``Fuz2'' checksum, and that PureMessage registered with a
+97% probability of being spam, that message's spam tag would read
+<tt>90+/DCC-Fuz2, 97/PM</tt>. (The four characters before ``=many'' in a
+DCC report indicate the checksum used -- in this case, ``Fuz2''.)
+
+If the &dollar;spam&lowbar;separator variable is unset, then each
+spam pattern match supercedes the previous one. Instead of getting
+joined <em/format/ strings, you'll get only the last one to match.
+
+The spam tag is what will be displayed in the index when you use
+<tt/%H/ in the <tt/&dollar;index&lowbar;format/ variable. It's also the
+string that the <tt/~H/ pattern-matching expression matches against for
+<em/search/ and <em/limit/ functions. And it's what sorting by spam
+attribute will use as a sort key.
+
+That's a pretty complicated example, and most people's actual
+environments will have only one spam filter. The simpler your
+configuration, the more effective mutt can be, especially when it comes
+to sorting.
+
+Generally, when you sort by spam tag, mutt will sort <em/lexically/ --
+that is, by ordering strings alphnumerically. However, if a spam tag
+begins with a number, mutt will sort numerically first, and lexically
+only when two numbers are equal in value. (This is like UNIX's
+<tt/sort -n/.) A message with no spam attributes at all -- that is, one
+that didn't match <em/any/ of your <tt/spam/ patterns -- is sorted at
+lowest priority. Numbers are sorted next, beginning with 0 and ranging
+upward. Finally, non-numeric strings are sorted, with ``a'' taking lower
+priority than ``z''. Clearly, in general, sorting by spam tags is most
+effective when you can coerce your filter to give you a raw number. But
+in case you can't, mutt can still do something useful.
+
+Finally, the <tt/nospam/ command can be used to write exceptions to
+<tt/spam/ patterns. If a header pattern matches something in a <tt/spam/
+command, but you nonetheless do not want it to receive a spam tag,
+you can list a more precise pattern under a <tt/nospam/ command.
+
+You can have as many <tt/spam/ or <tt/nospam/ commands as you like.
+You can even do your own primitive spam detection within mutt -- for
+example, if you consider all mail from MAILER-DAEMON to be spam, you can
+use a <tt/spam/ command like this:
+
+<tscreen><verb>
+spam "^From: .*MAILER-DAEMON"       "999"
+</verb></tscreen>
+
+
 <sect1>Setting variables<label id="set">
 <p>
 Usage: <tt/set/ &lsqb;no|inv&rsqb;<em/variable/&lsqb;=<em/value/&rsqb; &lsqb; <em/variable/ ... &rsqb;<newline>
@@ -1766,6 +1857,7 @@ messages:
 ~f USER         messages originating from USER
 ~g              cryptographically signed messages
 ~G              cryptographically encrypted messages
+~H EXPR         messages with a spam attribute matching EXPR
 ~h EXPR         messages which contain EXPR in the message header
 ~k		message contains PGP key material
 ~i ID           message which match ID in the ``Message-ID'' field
@@ -2399,7 +2491,7 @@ account-hook imap://host2/ 'set tunnel="ssh host2 /usr/libexec/imapd"'
 
 <sect1>Start a WWW Browser on URLs (EXTERNAL)<label id="urlview">
 <p>
-If a message contains URLs (<em/unified ressource locator/ = address in the
+If a message contains URLs (<em/unified resource locator/ = address in the
 WWW space like <em>http://www.mutt.org/</em>), it is efficient to get
 a menu with all the URLs and start a WWW browser on one of them.  This
 functionality is provided by the external urlview program which can be
@@ -3062,6 +3154,10 @@ The following are the commands understood by mutt.
 <tt><ref id="set" name="unset"></tt> <em/variable/ &lsqb;<em/variable/ ... &rsqb;
 <item>
 <tt><ref id="source" name="source"></tt> <em/filename/
+<item>
+<tt><ref id="spam" name="spam"></tt> <em/pattern/ <em/format/
+<item>
+<tt><ref id="spam" name="nospam"></tt> <em/pattern/
 <item>
 <tt><ref id="lists" name="subscribe"></tt> <em/regexp/ &lsqb; <em/regexp/ ... &rsqb; 
 <item>

@@ -1269,6 +1269,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
   long loc;
   int matched;
   size_t linelen = LONG_STRING;
+  char buf[LONG_STRING+1];
 
   if (hdr)
   {
@@ -1310,6 +1311,49 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
 
       fseek (f, loc, 0);
       break; /* end of header */
+    }
+
+    *buf = '\0';
+
+    if (mutt_match_spam_list(line, SpamList, buf, sizeof(buf)))
+    {
+      if (!mutt_match_rx_list(line, NoSpamList))
+      {
+
+	/* if spam tag already exists, figure out how to amend it */
+	if (e->spam && *buf)
+	{
+	  /* If SpamSep defined, append with separator */
+	  if (SpamSep)
+	  {
+	    mutt_buffer_addstr(e->spam, SpamSep);
+	    mutt_buffer_addstr(e->spam, buf);
+	  }
+
+	  /* else overwrite */
+	  else
+	  {
+	    e->spam->dptr = e->spam->data;
+	    *e->spam->dptr = '\0';
+	    mutt_buffer_addstr(e->spam, buf);
+	  }
+	}
+
+	/* spam tag is new, and match expr is non-empty; copy */
+	else if (!e->spam && *buf)
+	{
+	  e->spam = mutt_buffer_from(NULL, buf);
+	}
+
+	/* match expr is empty; plug in null string if no existing tag */
+	else if (!e->spam)
+	{
+	  e->spam = mutt_buffer_from(NULL, "");
+	}
+
+	if (e->spam && e->spam->data)
+          dprint(5, (debugfile, "p822: spam = %s\n", e->spam->data));
+      }
     }
 
     *p = 0;

@@ -433,6 +433,18 @@ hdr_format_str (char *dest,
         optional = 0;
       break;
 
+    case 'H':
+      /* (Hormel) spam score */
+      if (optional)
+	optional = hdr->env->spam ? 1 : 0;
+
+       if (hdr->env->spam)
+         mutt_format_s (dest, destlen, prefix, NONULL (hdr->env->spam->data));
+       else
+         mutt_format_s (dest, destlen, prefix, "");
+
+      break;
+
     case 'i':
       mutt_format_s (dest, destlen, prefix, hdr->env->message_id ? hdr->env->message_id : "<no.id>");
       break;

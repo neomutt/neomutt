@@ -366,6 +366,73 @@ static int add_to_rx_list (RX_LIST **list, const char *s, int flags, BUFFER *err
 }
 
 
+static int add_to_spam_list (SPAM_LIST **list, const char *pat, const char *templ, BUFFER *err)
+{
+  SPAM_LIST *t, *last = NULL;
+  REGEXP *rx;
+  int n;
+  const char *p;
+
+  if (!pat || !*pat || !templ)
+    return 0;
+
+  if (!(rx = mutt_compile_regexp (pat, REG_ICASE)))
+  {
+    snprintf (err->data, err->dsize, _("Bad regexp: %s"), pat);
+    return -1;
+  }
+
+  /* check to make sure the item is not already on this list */
+  for (last = *list; last; last = last->next)
+  {
+    if (ascii_strcasecmp (rx->pattern, last->rx->pattern) == 0)
+    {
+      /* already on the list, so just ignore it */
+      last = NULL;
+      break;
+    }
+    if (!last->next)
+      break;
+  }
+
+  if (!*list || last)
+  {
+    t = mutt_new_spam_list();
+    t->rx = rx;
+    t->template = safe_strdup(templ);
+
+    /* find highest match number in template string */
+    t->nmatch = 0;
+    for (p = templ; *p;)
+    {
+      if (*p == '%')
+      {
+	n = atoi(++p);
+	if (n > t->nmatch)
+	  t->nmatch = n;
+	while (*p && isdigit(*p))
+	  ++p;
+      }
+      else
+	++p;
+    }
+    t->nmatch++;		/* match 0 is always the whole expr */
+
+    if (last)
+    {
+      last->next = t;
+      last = last->next;
+    }
+    else
+      *list = last = t;
+  }
+  else /* duplicate */
+    mutt_free_regexp (&rx);
+
+  return 0;
+}
+
+
 static void remove_from_list (LIST **l, const char *str)
 {
   LIST *p, *last = NULL;
@@ -500,6 +567,35 @@ static int parse_rx_unlist (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *
     remove_from_rx_list ((RX_LIST **) data, buf->data);
   }
   while (MoreArgs (s));
+  
+  return 0;
+}
+
+static int parse_spam_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  BUFFER templ;
+
+  memset(&templ, 0, sizeof(templ));
+
+  if (!MoreArgs(s))
+  {
+    strfcpy(err->data, _("spam: no matching pattern"), err->dsize);
+    return -1;
+  }
+  mutt_extract_token (buf, s, 0);
+
+  if (MoreArgs(s))
+  {
+    mutt_extract_token (&templ, s, 0);
+  }
+  else
+  {
+    templ.data = NULL;
+    templ.dsize = 0;
+  }
+
+  if (add_to_spam_list ((SPAM_LIST **) data, buf->data, templ.data, err) != 0)
+      return -1;
   
   return 0;
 }

@@ -338,6 +338,15 @@ variables will reset to their system defaults.
 \fBsource\fP \fIfilename\fP
 The given file will be evaluated as a configuration file.
 .TP
+.nf
+\fBspam\fP \fIpattern\fP \fIformat\fP
+\fBnospam\fP \fIpattern\fP
+.fi
+These commands define spam-detection patterns from external spam
+filters, so that mutt can sort, limit, and search on
+``spam tags'' or ``spam attributes'', or display them
+in the index. See the Mutt manual for details.
+.TP
 \fBunhook\fP [\fB * \fP | \fIhook-type\fP ]
 This command will remove all hooks of a given type, or all hooks
 when \(lq\fB*\fP\(rq is used as an argument.  \fIhook-type\fP
@@ -386,6 +395,7 @@ l l.
 ~f \fIEXPR\fP	messages originating from \fIEXPR\fP
 ~g	PGP signed messages
 ~G	PGP encrypted messages
+~H \fIEXPR\fP	messages with spam tags matching \fIEXPR\fP
 ~h \fIEXPR\fP	messages which contain \fIEXPR\fP in the message header
 ~k	message contains PGP key material
 ~i \fIEXPR\fP	message which match \fIEXPR\fP in the \(lqMessage-ID\(rq field

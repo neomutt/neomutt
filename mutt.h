@@ -223,6 +223,7 @@ enum
   M_ID,
   M_BODY,
   M_HEADER,
+  M_HORMEL,
   M_WHOLE_MSG,
   M_SENDER,
   M_MESSAGE,
@@ -373,6 +374,7 @@ enum
   OPTSSLSYSTEMCERTS,
 #endif
   OPTIMPLICITAUTOVIEW,
+  OPTINCLUDEONLYFIRST,
   OPTKEEPFLAGGED,
   OPTMAILCAPSANITIZE,
   OPTMAILDIRTRASH,
@@ -408,6 +410,7 @@ enum
   OPTSIGDASHES,
   OPTSIGONTOP,
   OPTSORTRE,
+  OPTSPAMSEP,
   OPTSTATUSONTOP,
   OPTSTRICTTHREADS,
   OPTSUSPEND,
@@ -518,10 +521,20 @@ typedef struct rx_list_t
   struct rx_list_t *next;
 } RX_LIST;
 
+typedef struct spam_list_t
+{
+  REGEXP *rx;
+  int     nmatch;
+  char   *template;
+  struct spam_list_t *next;
+} SPAM_LIST;
+
 #define mutt_new_list() safe_calloc (1, sizeof (LIST))
 #define mutt_new_rx_list() safe_calloc (1, sizeof (RX_LIST))
+#define mutt_new_spam_list() safe_calloc (1, sizeof (SPAM_LIST))
 void mutt_free_list (LIST **);
 void mutt_free_rx_list (RX_LIST **);
+void mutt_free_spam_list (SPAM_LIST **);
 int mutt_matches_ignore (const char *, LIST *);
 
 /* add an element to a list */
@@ -556,6 +569,7 @@ typedef struct envelope
   char *supersedes;
   char *date;
   char *x_label;
+  BUFFER *spam;
   LIST *references;		/* message references (in reverse order) */
   LIST *in_reply_to;		/* in-reply-to header content */
   LIST *userhdrs;		/* user defined headers */
@@ -845,6 +859,8 @@ typedef struct
 #define M_WEED          (1<<3) /* weed headers even when not in display mode */
 #define M_CHARCONV	(1<<4) /* Do character set conversions */
 #define M_PRINTING	(1<<5) /* are we printing? - M_DISPLAY "light" */
+#define M_REPLYING	(1<<6) /* are we replying? */
+#define M_FIRSTDONE	(1<<7) /* the first attachment has been done */
 
 #define state_set_prefix(s) ((s)->flags |= M_PENDINGPREFIX)
 #define state_reset_prefix(s) ((s)->flags &= ~M_PENDINGPREFIX)

@@ -884,6 +884,12 @@ struct option_t MuttVars[] = {
   ** Controls whether or not a copy of the message(s) you are replying to
   ** is included in your reply.
   */
+  { "include_onlyfirst",	DT_BOOL, R_NONE, OPTINCLUDEONLYFIRST, 0},
+  /*
+  ** .pp
+  ** Controls whether or not Mutt includes only the first attachment
+  ** of the message you are replying.
+  */
   { "indent_string",	DT_STR,	 R_NONE, UL &Prefix, UL "> " },
   /*
   ** .pp
@@ -919,6 +925,7 @@ struct option_t MuttVars[] = {
   ** .dt %E .dd number of messages in current thread
   ** .dt %f .dd entire From: line (address + real name)
   ** .dt %F .dd author name, or recipient name if the message is from you
+  ** .dt %H .dd spam attribute(s) of this message
   ** .dt %i .dd message-id of the current message
   ** .dt %l .dd number of lines in the message (does not work with maildir,
   **            mh, and possibly IMAP folders)
@@ -2354,6 +2361,7 @@ struct option_t MuttVars[] = {
   ** .  mailbox-order (unsorted)
   ** .  score
   ** .  size
+  ** .  spam
   ** .  subject
   ** .  threads
   ** .  to
@@ -2418,6 +2426,15 @@ struct option_t MuttVars[] = {
   ** setting of ``$$reply_regexp''.  With sort_re unset, mutt will attach
   ** the message whether or not this is the case, as long as the
   ** non-``$$reply_regexp'' parts of both messages are identical.
+  */
+  { "spam_separator",   DT_STR, R_NONE, UL &SpamSep, UL 0 },
+  /*
+  ** .pp
+  ** ``$spam_separator'' controls what happens when multiple spam headers
+  ** are matched: if unset, each successive header will overwrite any
+  ** previous matches value for the spam label. If set, each successive
+  ** match will append to the previous, using ``$spam_separator'' as a
+  ** separator.
   */
   { "spoolfile",	DT_PATH, R_NONE, UL &Spoolfile, 0 },
   /*
@@ -2718,6 +2735,7 @@ const struct mapping_t SortMethods[] = {
   { "threads",		SORT_THREADS },
   { "to",		SORT_TO },
   { "score",		SORT_SCORE },
+  { "spam",		SORT_SPAM },
   { NULL,		0 }
 };
 
@@ -2736,6 +2754,7 @@ const struct mapping_t SortAuxMethods[] = {
 					 */
   { "to",		SORT_TO },
   { "score",		SORT_SCORE },
+  { "spam",		SORT_SPAM },
   { NULL,		0 }
 };
   
@@ -2768,6 +2787,7 @@ const struct mapping_t SortKeyMethods[] = {
 
 static int parse_list (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_rx_list (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+static int parse_spam_list (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unlist (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_rx_unlist (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 
@@ -2833,6 +2853,8 @@ struct command_t Commands[] = {
   { "send-hook",	mutt_parse_hook,	M_SENDHOOK },
   { "set",		parse_set,		0 },
   { "source",		parse_source,		0 },
+  { "spam",		parse_spam_list,	UL &SpamList },
+  { "nospam",		parse_rx_list,		UL &NoSpamList },
   { "subscribe",	parse_subscribe,	0 },
   { "toggle",		parse_set,		M_SET_INV },
   { "unalias",		parse_unalias,		0 },

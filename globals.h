@@ -103,6 +103,7 @@ WHERE char *Shell;
 WHERE char *Signature;
 WHERE char *SimpleSearch;
 WHERE char *Spoolfile;
+WHERE char *SpamSep;
 #if defined(USE_SSL) || defined(USE_NSS)
 WHERE char *SslCertFile INITVAL (NULL);
 WHERE char *SslEntropyFile INITVAL (NULL);
@@ -126,6 +127,8 @@ WHERE LIST *UnIgnore INITVAL(0);
 WHERE RX_LIST *Alternates INITVAL(0);
 WHERE RX_LIST *MailLists INITVAL(0);
 WHERE RX_LIST *SubscribedLists INITVAL(0);
+WHERE SPAM_LIST *SpamList INITVAL(0);
+WHERE RX_LIST *NoSpamList INITVAL(0);
 
 /* bit vector for boolean variables */
 #ifdef MAIN_C

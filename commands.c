@@ -501,9 +501,9 @@ int mutt_select_sort (int reverse)
   int method = Sort; /* save the current method in case of abort */
 
   switch (mutt_multi_choice (reverse ?
-			     _("Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: ") :
-			     _("Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "),
-			     _("dfrsotuzc")))
+			     _("Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am?: ") :
+			     _("Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am?: "),
+			     _("dfrsotuzcp")))
   {
   case -1: /* abort - don't resort */
     return -1;
@@ -542,6 +542,10 @@ int mutt_select_sort (int reverse)
   
   case 9: /* s(c)ore */ 
     Sort = SORT_SCORE;
+    break;
+
+  case 10: /* s(p)am */
+    Sort = SORT_SPAM;
     break;
   }
   if (reverse)
