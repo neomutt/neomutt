@@ -94,7 +94,7 @@ int mutt_display_message (HEADER *cur)
     }
   }
   
-  if (cmflags & M_CM_VERIFY)
+  if ((cmflags & M_CM_VERIFY) || (cur->pgp & PGPENCRYPT))
   {
     if (cur->env->from)
       pgp_invoke_getkeys (cur->env->from);
