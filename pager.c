@@ -976,7 +976,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
 {
   int space = -1; /* index of the last space or TAB */
   int col = option (OPTMARKERS) ? (*lineInfo)[n].continuation : 0;
-  int ch, vch, k, special = 0, t;
+  int ch, vch, k, last_special = -1, special = 0, t;
   wchar_t wc;
   mbstate_t mbstate;
 
@@ -1043,9 +1043,12 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
     }
 
     if (pa &&
-	((flags & (M_SHOWCOLOR | M_SEARCH | M_PAGER_MARKER)) || special
-	 || pa->attr))
+	((flags & (M_SHOWCOLOR | M_SEARCH | M_PAGER_MARKER)) ||
+	 special || last_special || pa->attr))
+    {
       resolve_color (*lineInfo, n, vch, flags, special, pa);
+      last_special = special;
+    }
 
     if (IsWPrint (wc))
     {
