@@ -454,6 +454,13 @@ char *_mutt_expand_path (char *s, size_t slen, int rx)
   return (s);
 }
 
+/* Extract the real name from /etc/passwd's GECOS field.
+ * When set, honor the regular expression in GecosMask,
+ * otherwise assume that the GECOS field is a 
+ * comma-separated list.
+ * Replace "&" by a capitalized version of the user's login
+ * name.
+ */
 
 char *mutt_gecos_name (char *dest, size_t destlen, struct passwd *pw)
 {
