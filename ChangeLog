@@ -1,4 +1,7 @@
-2005-02-12 20:08:19  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+2005-02-12 20:20:42  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* configure.in: Give people more time to profile the inode
+	sorting code; disabled by default for now.
 
 	* globals.h, init.h, menu.c: Christoph Berg's menu_context,
 	and a version of menu_move_off where that's not optional,
