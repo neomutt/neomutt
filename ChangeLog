@@ -1,3 +1,11 @@
+2003-01-23 22:03:12  Nathan Dushman  <nhd+mutt@andrew.cmu.edu>  (roessler)
+
+	* curs_main.c, flags.c, imap/imap.c, pager.c: The attached
+	patch provides improved support for IMAP ACLs (on servers that
+	support them).	This means that mutt will now write the Seen
+	flag in mailboxes that allow it, even if the mailbox doesn't
+	allow other changes.
+
 2003-01-23 22:01:03  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* handler.c: Automatically use the text/plain handler for text/*
