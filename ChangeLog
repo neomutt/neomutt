@@ -1,3 +1,8 @@
+2004-10-30 20:45:34  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* smime.c: Fix bad code in smime_get_field_from_db.  Problem noted
+	by Ulf Härnhammar <Ulf.Harnhammar.9485@student.uu.se>.
+
 2004-09-29 11:27:33  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* lib.c: Fix mutt_unlink race condition for systems without
