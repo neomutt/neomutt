@@ -1042,9 +1042,7 @@ ci_send_message (int flags,		/* send mode */
 
   if (msg)
   {
-    msg->env->to = mutt_expand_aliases (msg->env->to);
-    msg->env->cc = mutt_expand_aliases (msg->env->cc);
-    msg->env->bcc = mutt_expand_aliases (msg->env->bcc);
+    mutt_expand_aliases_env (msg->env);
   }
   else
   {
