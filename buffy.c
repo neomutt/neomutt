@@ -240,11 +240,12 @@ int mutt_buffy_check (int force)
     else
       last_imap_check = now;
   }
-#endif
 
-  /* update postponed count on force */
-  if (force && Postponed)
-    mutt_num_postponed ();
+  /* update postponed count as well, on force */
+  if (force)
+    mutt_update_num_postponed ();
+
+#endif
 
   /* fastest return if there are no mailboxes */
   if (!Incoming)

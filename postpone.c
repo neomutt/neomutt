@@ -48,35 +48,59 @@ static struct mapping_t PostponeHelp[] = {
 #endif /* _PGPPATH */
 
 
-
-static time_t LastModify = 0;
+static short PostCount = 0;
 static CONTEXT *PostContext = NULL;
+static short UpdateNumPostponed = 0;
 
-int mutt_num_postponed (void)
+/* Return the number of postponed messages.
+ * if force is 0, use a cached value if it is costly to get a fresh
+ * count (IMAP) - else check.
+ */
+int mutt_num_postponed (int force)
 {
   struct stat st;
   CONTEXT ctx;
 
+  static time_t LastModify = 0;
+  static char *OldPostponed = NULL;
+
+  if (UpdateNumPostponed)
+  {
+    UpdateNumPostponed = 0;
+    force = 1;
+  }
+
+  if (Postponed != OldPostponed)
+  {
+    OldPostponed = Postponed;
+    LastModify = 0;
+    force = 1;
+  }
+
+  if (!Postponed)
+    return 0;
+
 #ifdef USE_IMAP
   /* LastModify is useless for IMAP */
-  if (Postponed && mx_is_imap (Postponed))
+  if (mx_is_imap (Postponed))
   {
-    PostCount = imap_mailbox_check (Postponed, 0);
-    PostCount = (PostCount < 0) ? 0 : PostCount;
-    dprint(2, (debugfile,
-      "mutt_num_postponed: %d postponed IMAP messages found.\n", PostCount));
-
+    if (force)
+    {
+      PostCount = imap_mailbox_check (Postponed, 0);
+      PostCount = (PostCount < 0) ? 0 : PostCount;
+      dprint(2, (debugfile,
+        "mutt_num_postponed: %d postponed IMAP messages found.\n", PostCount));
+    }
     return PostCount;
   }
 #endif
 
-  if (!Postponed || stat (Postponed, &st) == -1)
+  if (stat (Postponed, &st) == -1)
   {
      PostCount = 0;
      LastModify = 0;
      return (0);
-  } 
-
+  }
 
   if (S_ISDIR (st.st_mode))
   {
@@ -107,6 +131,11 @@ int mutt_num_postponed (void)
   }
 
   return (PostCount);
+}
+
+void mutt_update_num_postponed (void)
+{
+  UpdateNumPostponed = 1;
 }
 
 static void post_entry (char *s, size_t slen, MUTTMENU *menu, int entry)

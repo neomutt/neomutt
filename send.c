@@ -903,7 +903,8 @@ ci_send_message (int flags,		/* send mode */
   char *signmic = NULL;
 #endif
 
-  if (!flags && !msg && quadoption (OPT_RECALL) != M_NO && mutt_num_postponed ())
+  if (!flags && !msg && quadoption (OPT_RECALL) != M_NO &&
+      mutt_num_postponed (1))
   {
     /* If the user is composing a new message, check to see if there
      * are any postponed messages first.
@@ -1204,9 +1205,8 @@ main_loop:
 	msg->content = mutt_remove_multipart (msg->content);
 	goto main_loop;
       }
+      mutt_update_num_postponed ();
       mutt_message _("Message postponed.");
-      PostCount++;
-      mutt_num_postponed ();
       goto cleanup;
     }
   }

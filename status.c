@@ -176,7 +176,7 @@ status_format_str (char *buf, size_t buflen, char op, const char *src,
       break;
 
     case 'p':
-      count = PostCount;
+      count = mutt_num_postponed (0);
       if (!optional)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);

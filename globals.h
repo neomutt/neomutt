@@ -126,7 +126,6 @@ WHERE short HistSize;
 WHERE short PagerContext;
 WHERE short PagerIndexLines;
 WHERE short PopPort;
-WHERE short PostCount INITVAL(0);
 WHERE short ReadInc;
 WHERE short SendmailWait;
 WHERE short Timeout;
