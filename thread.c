@@ -17,18 +17,7 @@
  */ 
 
 #include "mutt.h"
-#include "mutt_curses.h"
-#include "mutt_menu.h"
 #include "sort.h"
-#include "mailbox.h"
-#include "copy.h"
-#include "mx.h"
-#include <sys/stat.h>
-#include <utime.h>
-
-#ifdef BUFFY_SIZE
-#include "buffy.h"
-#endif
 
 #include <string.h>
 #include <ctype.h>
