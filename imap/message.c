@@ -517,7 +517,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
  *       1: non-fatal error - try fetch/append */
 int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
 {
-  char buf[LONG_STRING];
+  char buf[HUGE_STRING];
   char cmd[LONG_STRING];
   char mbox[LONG_STRING];
   char host[SHORT_STRING];
@@ -565,12 +565,21 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   rc = imap_exec (buf, sizeof (buf), CTX_DATA, cmd, IMAP_OK_FAIL);
   if (rc == -2)
   {
-    /* command failed because folder doesn't exist */
+    /* bail out if command failed for reasons other than nonexistent target */
+    if (strncmp (imap_get_qualifier (buf), "[TRYCREATE]", 11))
+    {
+      imap_error ("imap_copy_messages", buf);
+      return -1;
+    }
+    dprint (2, (debugfile, "imap_copy_messages: server suggests TRYCREATE\n"));
     if (option (OPTCONFIRMCREATE))
     {
       snprintf (buf, sizeof (buf), _("Create %s?"), mbox);
       if (mutt_yesorno (buf, 1) < 1)
+      {
+        mutt_clear_error ();
 	return -1;
+      }
       if (imap_create_mailbox (CTX_DATA, mbox) < 0)
 	return -1;
     }
@@ -587,7 +596,6 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   if (delete)
   {
     if (!h)
-    {
       for (n = 0; n < ctx->msgcount; n++)
       {
         if (ctx->hdrs[n]->tagged)
@@ -597,7 +605,6 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
             mutt_set_flag (ctx, ctx->hdrs[n], M_TAG, 0);
         }
       }
-    }
     else
     {
       mutt_set_flag (ctx, h, M_DELETE, 1);

@@ -242,6 +242,10 @@ int mutt_buffy_check (int force)
   }
 #endif
 
+  /* update postponed count on force */
+  if (force && Postponed)
+    mutt_num_postponed ();
+
   /* fastest return if there are no mailboxes */
   if (!Incoming)
     return 0;
@@ -379,10 +383,6 @@ int mutt_buffy_check (int force)
     else if (!tmp->notified)
       BuffyNotify++;
   }
-
-  /* update postponed count as well, on force */
-  if (force && Postponed)
-    mutt_num_postponed ();
 
   BuffyDoneTime = BuffyTime;
   return (BuffyCount);

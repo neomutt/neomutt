@@ -167,6 +167,7 @@ int imap_code (const char* s);
 int imap_exec (char* buf, size_t buflen, IMAP_DATA* idata, const char* cmd,
   int flags);
 int imap_handle_untagged (IMAP_DATA* idata, char* s);
+void imap_make_sequence (char *buf, size_t buflen);
 
 /* message.c */
 void imap_add_keywords (char* s, HEADER* keywords, LIST* mailbox_flags);
@@ -174,11 +175,12 @@ void imap_free_header_data (void** data);
 int imap_read_headers (CONTEXT* ctx, int msgbegin, int msgend);
 
 /* util.c */
-int imap_error (const char* where, const char* msg);
+int imap_continue (const char* msg, const char* resp);
+void imap_error (const char* where, const char* msg);
 char* imap_fix_path (IMAP_DATA* idata, char* mailbox, char* path, 
   size_t plen);
 int imap_get_literal_count (const char* buf, long* bytes);
-void imap_make_sequence (char *buf, size_t buflen);
+char* imap_get_qualifier (char* buf);
 char* imap_next_word (char* s);
 void imap_quote_string (char* dest, size_t slen, const char* src);
 void imap_unquote_string (char* s);

@@ -26,13 +26,19 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-/* imap_error: handle IMAP errors. Should be expanded to display the error
- *   to the user and ask whether to continue, return result code to caller */
-int imap_error (const char *where, const char *msg)
+/* imap_continue: display a message and ask the user if she wants to
+ *   go on. */
+int imap_continue (const char* msg, const char* resp)
+{
+  imap_error (msg, resp);
+  return mutt_yesorno (_("Continue?"), 0);
+}
+
+/* imap_error: show an error and abort */
+void imap_error (const char *where, const char *msg)
 {
   mutt_error (_("%s [%s]\n"), where, msg);
   sleep (2);
-  return mutt_yesorno (_("Continue?"), 0);
 }
 
 /*
@@ -89,15 +95,18 @@ int imap_get_literal_count(const char *buf, long *bytes)
   return (0);
 }
 
-/* imap_make_sequence: make a tag suitable for starting an IMAP command */
-void imap_make_sequence (char *buf, size_t buflen)
+/* imap_get_qualifier: in a tagged response, skip tag and status for
+ *   the qualifier message. Used by imap_copy_message for TRYCREATE */
+char* imap_get_qualifier (char* buf)
 {
-  static int sequence = 0;
-  
-  snprintf (buf, buflen, "a%04d", sequence++);
+  char *s = buf;
 
-  if (sequence > 9999)
-    sequence = 0;
+  /* skip tag */
+  s = imap_next_word (s);
+  /* skip OK/NO/BAD response */
+  s = imap_next_word (s);
+
+  return s;
 }
 
 /* imap_next_word: return index into string where next IMAP word begins */

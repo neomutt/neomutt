@@ -551,7 +551,8 @@ int imap_open_mailbox (CONTEXT *ctx)
 
   idata->selected_ctx = ctx;
 
-  /* clear ACL */
+  /* clear status, ACL */
+  idata->status = 0;
   memset (idata->rights, 0, (RIGHTSMAX+7)/8);
 
   mutt_message (_("Selecting %s..."), idata->selected_mailbox);
@@ -1026,7 +1027,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
       if (*flags && (imap_exec (buf, sizeof (buf), CTX_DATA, buf, 0) != 0) &&
         (err_continue != M_YES))
       {
-        err_continue = imap_error ("imap_sync_mailbox: STORE failed", buf);
+        err_continue = imap_continue ("imap_sync_mailbox: STORE failed", buf);
         if (err_continue != M_YES)
           return -1;
       }

@@ -244,6 +244,17 @@ int imap_handle_untagged (IMAP_DATA *idata, char *s)
   return 0;
 }
 
+/* imap_make_sequence: make a tag suitable for starting an IMAP command */
+void imap_make_sequence (char *buf, size_t buflen)
+{
+  static int sequence = 0;
+  
+  snprintf (buf, buflen, "a%04d", sequence++);
+
+  if (sequence > 9999)
+    sequence = 0;
+}
+
 /* cmd_parse_capabilities: set capability bits according to CAPABILITY
  *   response */
 static void cmd_parse_capabilities (IMAP_DATA *idata, char *s)
