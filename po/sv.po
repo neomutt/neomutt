@@ -3405,7 +3405,7 @@ msgstr "(i)nfogat"
 
 #: pgp.c:1471
 msgid "esabifc"
-msgstr "ksobr"
+msgstr "ksobir"
 
 #. sign (a)s
 #: pgp.c:1486 smime.c:1989

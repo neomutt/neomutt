@@ -594,7 +594,7 @@ msgstr "En clar"
 
 #: compose.c:140
 msgid " (inline)"
-msgstr "(en línia)"
+msgstr " (en línia)"
 
 #: compose.c:142
 msgid " (PGP/MIME)"
