@@ -336,19 +336,14 @@ int _mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 	  {
 	    /* invoke the alias-menu to get more addresses */
 	    buf[curpos] = 0;
-	    if (curpos)
+	    for (j = curpos - 1 ; j >= 0 && buf[j] != ',' ; j--);
+	    for (++j; buf[j] == ' '; j++)
+	      ;
+	    if (mutt_alias_complete ((char *) buf + j, buflen - j))
 	    {
-	      for (j = curpos - 1 ; j >= 0 && buf[j] != ',' ; j--);
-	      for (++j; buf[j] == ' '; j++)
-		;
-	      if (mutt_alias_complete ((char *) buf + j, buflen - j))
-	      {
-		redraw = M_REDRAW_INIT;
-		continue;
-	      }
+	      redraw = M_REDRAW_INIT;
+	      continue;
 	    }
-	    else
-	      mutt_alias_menu ((char *) buf, buflen, Aliases);
 	    return (1);
 	  }
 	  else if (flags & M_COMMAND)

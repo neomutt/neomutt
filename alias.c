@@ -319,7 +319,8 @@ ADDRESS *alias_reverse_lookup (ADDRESS *a)
 /* alias_complete() -- alias completion routine
  *
  * given a partial alias, this routine attempts to fill in the alias
- * from the alias list as much as possible
+ * from the alias list as much as possible. if given empty search string
+ * or found nothing, present all aliases
  */
 int mutt_alias_complete (char *s, size_t buflen)
 {
@@ -328,36 +329,38 @@ int mutt_alias_complete (char *s, size_t buflen)
   char bestname[STRING];
   int i;
 
-  memset (bestname, 0, sizeof (bestname));
-
 #define min(a,b)        ((a<b)?a:b)
 
-  while (a)
+  if (s[0] != 0) /* avoid empty string as strstr argument */
   {
-    if (a->name && strstr (a->name, s) == a->name)
-    {
-      if (!bestname[0]) /* init */
-	strfcpy (bestname, a->name, min (mutt_strlen (a->name) + 1, sizeof (bestname)));
-      else
-      {
-	for (i = 0 ; a->name[i] && a->name[i] == bestname[i] ; i++)
-	  ;
-	bestname[i] = 0;
-      }
-    }
-    a = a->next;
-  }
+    memset (bestname, 0, sizeof (bestname));
 
-  if ((bestname[0] == 0) || /* if we didn't find anything */
-      (s[0] == 0))          /* or we weren't given anything */
-  {
-    mutt_alias_menu (s, buflen, Aliases);
-    return 0;
-  }
-  else
-  {
-    if (mutt_strcmp (bestname, s) == 0) /* add anything to the completion? */
+    while (a)
     {
+      if (a->name && strstr (a->name, s) == a->name)
+      {
+	if (!bestname[0]) /* init */
+	  strfcpy (bestname, a->name,
+		   min (mutt_strlen (a->name) + 1, sizeof (bestname)));
+	else
+	{
+	  for (i = 0 ; a->name[i] && a->name[i] == bestname[i] ; i++)
+	    ;
+	  bestname[i] = 0;
+	}
+      }
+      a = a->next;
+    }
+
+    if (bestname[0] != 0)
+    {
+      if (mutt_strcmp (bestname, s) != 0)
+      {
+	/* we are adding something to the completion */
+	strfcpy (s, bestname, mutt_strlen (bestname) + 1);
+	return 1;
+      }
+
       /* build alias list and show it */
       a = Aliases;
       while (a)
@@ -376,25 +379,23 @@ int mutt_alias_complete (char *s, size_t buflen)
 	}
 	a = a->next;
       }
-
-      s[0] = 0; /* reset string before passing to alias_menu */
-      mutt_alias_menu (s, buflen, a_list);
-
-      /* free the alias list */
-      while (a_list)
-      {
-	a_cur = a_list;
-	a_list = a_list->next;
-	safe_free ((void **) &a_cur);
-      }
-
-      return 0;
     }
-    else /* we are adding something to the completion */
-      strfcpy (s, bestname, mutt_strlen (bestname) + 1);
   }
 
-  return 1;
+  bestname[0] = 0;
+  mutt_alias_menu (bestname, sizeof(bestname), a_list ? a_list : Aliases);
+  if (bestname[0] != 0)
+    strfcpy (s, bestname, buflen);
+
+  /* free the alias list */
+  while (a_list)
+  {
+    a_cur = a_list;
+    a_list = a_list->next;
+    safe_free ((void **) &a_cur);
+  }
+
+  return 0;
 }
 
 static int string_is_address(const char *str, const char *u, const char *d)
