@@ -1188,7 +1188,7 @@ int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
   {
     for (i = 0, j = 0; i < ctx->msgcount; i++)
     {
-      if (!ctx->hdrs[i]->deleted)
+      if (!ctx->hdrs[i]->deleted || (ctx->magic == M_MAILDIR && option (OPTMAILDIRTRASH)))
 	ctx->hdrs[i]->index = j++;
     }
   }
@@ -1230,7 +1230,7 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
   struct maildir *md, *p;
   struct maildir **last;
   HASH *fnames;
-  int i, j, deleted;
+  int i, j;
   
   if(!option (OPTCHECKNEW))
     return 0;
@@ -1341,7 +1341,6 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
     hash_insert(fnames, p->canon_fname, p, 0);
   }
 
-  deleted = 0;
   
   for(i = 0; i < ctx->msgcount; i++)
   {
