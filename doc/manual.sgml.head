@@ -260,7 +260,6 @@ T               toggle display of quoted text
 ESC /           search backwards for a regular expression
 \               toggle search pattern coloring
 ^               jump to the top of the message
-$               jump to the bottom of the message
 </verb></tscreen>
 
 In addition, many of the functions from the <em/index/ are available in
