@@ -736,7 +736,7 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
   }
   else if (flags & SENDFORWARD)
   {
-    if ((i = query_quadoption (OPT_MIMEFWD, _("Forward MIME encapsulated?"))) == M_YES)
+    if ((i = query_quadoption (OPT_MIMEFWD, _("Forward as attachment?"))) == M_YES)
     {
       BODY *last = msg->content;
 

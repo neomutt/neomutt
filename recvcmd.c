@@ -395,7 +395,7 @@ static void attach_forward_bodies (FILE * fp, HEADER * hdr,
 
   if ((!cur || mutt_can_decode (cur)) &&
       (rc = query_quadoption (OPT_MIMEFWD, 
-			      _("Forward MIME encapsulated?"))) == M_YES)
+			      _("Forward as attachments?"))) == M_YES)
     mime_fwd_all = 1;
   else if (rc == -1)
     goto bail;
