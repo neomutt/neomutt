@@ -242,7 +242,7 @@ pid_t pgp_invoke_traditional (FILE **pgpin, FILE **pgpout, FILE **pgperr,
 			      int pgpinfd, int pgpoutfd, int pgperrfd,
 			      const char *fname, const char *uids, int flags)
 {
-  if (flags & PGPENCRYPT)
+  if (flags & ENCRYPT)
     return pgp_invoke (pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
 		       flags & PGPSIGN ? 1 : 0, fname, NULL, PgpSignAs, uids, 
 		       flags & PGPSIGN ? PgpEncryptSignCommand : PgpEncryptOnlyCommand);
