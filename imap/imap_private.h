@@ -203,6 +203,8 @@ int imap_parse_list_response(IMAP_DATA* idata, char** name, int* noselect,
 int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes);
 void imap_expunge_mailbox (IMAP_DATA* idata);
 void imap_logout (IMAP_DATA* idata);
+int imap_sync_message (IMAP_DATA *idata, HEADER *hdr, BUFFER *cmd,
+  int *err_continue);
 
 /* auth.c */
 int imap_authenticate (IMAP_DATA* idata);

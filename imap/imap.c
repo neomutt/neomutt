@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 1996-8 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2003 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2005 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -921,6 +921,76 @@ int imap_make_msg_set (IMAP_DATA* idata, BUFFER* buf, int flag, int changed)
   return count;
 }
 
+/* Update the IMAP server to reflect the flags a single message.  */
+
+int imap_sync_message (IMAP_DATA *idata, HEADER *hdr, BUFFER *cmd,
+		       int *err_continue)
+{
+  char flags[LONG_STRING];
+  char uid[11];
+
+  hdr->changed = 0;
+
+  snprintf (uid, sizeof (uid), "%u", HEADER_DATA(hdr)->uid);
+  cmd->dptr = cmd->data;
+  mutt_buffer_addstr (cmd, "UID STORE ");
+  mutt_buffer_addstr (cmd, uid);
+
+  flags[0] = '\0';
+      
+  imap_set_flag (idata, IMAP_ACL_SEEN, hdr->read, "\\Seen ",
+		 flags, sizeof (flags));
+  imap_set_flag (idata, IMAP_ACL_WRITE, hdr->flagged,
+		 "\\Flagged ", flags, sizeof (flags));
+  imap_set_flag (idata, IMAP_ACL_WRITE, hdr->replied,
+		 "\\Answered ", flags, sizeof (flags));
+  imap_set_flag (idata, IMAP_ACL_DELETE, hdr->deleted,
+		 "\\Deleted ", flags, sizeof (flags));
+
+  /* now make sure we don't lose custom tags */
+  if (mutt_bit_isset (idata->rights, IMAP_ACL_WRITE))
+    imap_add_keywords (flags, hdr, idata->flags, sizeof (flags));
+
+  mutt_remove_trailing_ws (flags);
+
+  /* UW-IMAP is OK with null flags, Cyrus isn't. The only solution is to
+   * explicitly revoke all system flags (if we have permission) */
+  if (!*flags)
+  {
+    imap_set_flag (idata, IMAP_ACL_SEEN, 1, "\\Seen ", flags, sizeof (flags));
+    imap_set_flag (idata, IMAP_ACL_WRITE, 1, "\\Flagged ", flags, sizeof (flags));
+    imap_set_flag (idata, IMAP_ACL_WRITE, 1, "\\Answered ", flags, sizeof (flags));
+    imap_set_flag (idata, IMAP_ACL_DELETE, 1, "\\Deleted ", flags, sizeof (flags));
+
+    mutt_remove_trailing_ws (flags);
+
+    mutt_buffer_addstr (cmd, " -FLAGS.SILENT (");
+  } else
+    mutt_buffer_addstr (cmd, " FLAGS.SILENT (");
+
+  mutt_buffer_addstr (cmd, flags);
+  mutt_buffer_addstr (cmd, ")");
+
+  /* dumb hack for bad UW-IMAP 4.7 servers spurious FLAGS updates */
+  hdr->active = 0;
+
+  /* after all this it's still possible to have no flags, if you
+   * have no ACL rights */
+  if (*flags && (imap_exec (idata, cmd->data, 0) != 0) &&
+      err_continue && (*err_continue != M_YES))
+  {
+    *err_continue = imap_continue ("imap_sync_message: STORE failed",
+				   idata->cmd.buf);
+    if (*err_continue != M_YES)
+      return -1;
+  }
+
+  hdr->active = 1;
+  idata->ctx->changed--;
+
+  return 0;
+}
+
 /* update the IMAP server to reflect message changes done within mutt.
  * Arguments
  *   ctx: the current context
@@ -932,12 +1002,10 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
   IMAP_DATA* idata;
   CONTEXT* appendctx = NULL;
   BUFFER cmd;
-  char flags[LONG_STRING];
-  char uid[11];
   int deleted;
   int n;
-  int err_continue = M_NO;	/* continue on error? */
   int rc;
+  int err_continue = M_NO;	/* continue on error? */
 
   idata = (IMAP_DATA*) ctx->data;
 
@@ -994,15 +1062,8 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
   {
     if (ctx->hdrs[n]->active && ctx->hdrs[n]->changed)
     {
-      ctx->hdrs[n]->changed = 0;
-
       mutt_message (_("Saving message status flags... [%d/%d]"), n+1,
         ctx->msgcount);
-
-      snprintf (uid, sizeof (uid), "%u", HEADER_DATA(ctx->hdrs[n])->uid);
-      cmd.dptr = cmd.data;
-      mutt_buffer_addstr (&cmd, "UID STORE ");
-      mutt_buffer_addstr (&cmd, uid);
 
       /* if attachments have been deleted we delete the message and reupload
        * it. This works better if we're expunging, of course. */
@@ -1018,60 +1079,12 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
 	else
 	  _mutt_save_message (ctx->hdrs[n], appendctx, 1, 0, 0);
       }
-      flags[0] = '\0';
-      
-      imap_set_flag (idata, IMAP_ACL_SEEN, ctx->hdrs[n]->read, "\\Seen ",
-        flags, sizeof (flags));
-      imap_set_flag (idata, IMAP_ACL_WRITE, ctx->hdrs[n]->flagged,
-        "\\Flagged ", flags, sizeof (flags));
-      imap_set_flag (idata, IMAP_ACL_WRITE, ctx->hdrs[n]->replied,
-        "\\Answered ", flags, sizeof (flags));
-      imap_set_flag (idata, IMAP_ACL_DELETE, ctx->hdrs[n]->deleted,
-        "\\Deleted ", flags, sizeof (flags));
 
-      /* now make sure we don't lose custom tags */
-      if (mutt_bit_isset (idata->rights, IMAP_ACL_WRITE))
-        imap_add_keywords (flags, ctx->hdrs[n], idata->flags, sizeof (flags));
-      
-      mutt_remove_trailing_ws (flags);
-      
-      /* UW-IMAP is OK with null flags, Cyrus isn't. The only solution is to
-       * explicitly revoke all system flags (if we have permission) */
-      if (!*flags)
+      if (imap_sync_message (idata, ctx->hdrs[n], &cmd, &err_continue) < 0)
       {
-        imap_set_flag (idata, IMAP_ACL_SEEN, 1, "\\Seen ", flags, sizeof (flags));
-        imap_set_flag (idata, IMAP_ACL_WRITE, 1, "\\Flagged ", flags, sizeof (flags));
-        imap_set_flag (idata, IMAP_ACL_WRITE, 1, "\\Answered ", flags, sizeof (flags));
-        imap_set_flag (idata, IMAP_ACL_DELETE, 1, "\\Deleted ", flags, sizeof (flags));
-
-        mutt_remove_trailing_ws (flags);
-
-	mutt_buffer_addstr (&cmd, " -FLAGS.SILENT (");
+	rc = -1;
+	goto out;
       }
-      else
-	mutt_buffer_addstr (&cmd, " FLAGS.SILENT (");
-      
-      mutt_buffer_addstr (&cmd, flags);
-      mutt_buffer_addstr (&cmd, ")");
-
-      /* dumb hack for bad UW-IMAP 4.7 servers spurious FLAGS updates */
-      ctx->hdrs[n]->active = 0;
-
-      /* after all this it's still possible to have no flags, if you
-       * have no ACL rights */
-      if (*flags && (imap_exec (idata, cmd.data, 0) != 0) &&
-        (err_continue != M_YES))
-      {
-        err_continue = imap_continue ("imap_sync_mailbox: STORE failed",
-          idata->cmd.buf);
-        if (err_continue != M_YES)
-	{
-	  rc = -1;
-	  goto out;
-	}
-      }
-
-      ctx->hdrs[n]->active = 1;
     }
   }
   ctx->changed = 0;
