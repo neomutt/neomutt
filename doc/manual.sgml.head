@@ -2260,6 +2260,24 @@ There are a few variables which control authentication:
   listed above).
 </itemize>
 
+<sect1>Managing multiple IMAP/POP accounts (OPTIONAL)<label id="account-hook">
+<p>
+
+If you happen to have accounts on multiple IMAP and/or POP servers,
+you may find managing all the authentication settings inconvenient and
+error-prone.  The account-hook command may help. This hook works like
+folder-hook but is invoked whenever you access a remote mailbox
+(including inside the folder browser), not just when you open the
+mailbox.
+<p>
+Some examples:
+
+<tscreen><verb>
+account-hook . 'unset imap_user; unset imap_pass; unset tunnel'
+account-hook imap://host1/ 'set imap_user=me1 imap_pass=foo'
+account-hook imap://host2/ 'set tunnel="ssh host2 /usr/libexec/imapd"'
+</verb></tscreen>
+
 <sect1>Start a WWW Browser on URLs (EXTERNAL)<label id="urlview">
 <p>
 If a message contains URLs (<em/unified ressource locator/ = address in the
@@ -2808,6 +2826,8 @@ of the file ``&tilde;/run2.dat''.
 The following are the commands understood by mutt.
 
 <itemize>
+<item>
+<tt><ref id="account-hook" name="account-hook"></tt> <em/pattern/ <em/command/
 <item>
 <tt><ref id="alias" name="alias"></tt> <em/key/ <em/address/ &lsqb; , <em/address/, ... &rsqb;
 <item>
