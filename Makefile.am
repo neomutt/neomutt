@@ -30,7 +30,7 @@ mutt_SOURCES = $(BUILT_SOURCES) \
 	rfc822.c rfc1524.c rfc2047.c rfc2231.c \
 	score.c send.c sendlib.c signal.c sort.c \
 	status.c system.c thread.c charset.c history.c lib.c \
-	muttlib.c editmsg.c utf8.c mbyte.c wcwidth.c gettext.c \
+	muttlib.c editmsg.c utf8.c mbyte.c wcwidth.c \
 	url.c ascii.c
 
 mutt_LDADD = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAP) $(MUTTLIBS) \

@@ -70,6 +70,10 @@ void mutt_set_charset (char *charset)
     charset_from_utf8 = iconv_open (charset, "UTF-8");
   }
 #endif
+
+#ifdef HAVE_BIND_TEXTDOMAIN_CODESET
+  bind_textdomain_codeset(PACKAGE, buffer);
+#endif
 }
 
 #ifndef HAVE_WC_FUNCS

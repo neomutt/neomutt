@@ -45,8 +45,7 @@
 
 # ifdef ENABLE_NLS
 #  include <libintl.h>
-char *mutt_gettext (const char *); /* gettext.c */
-# define _(a) (mutt_gettext (a))
+# define _(a) (gettext (a))
 #  ifdef gettext_noop
 #   define N_(a) gettext_noop (a)
 #  else

@@ -143,6 +143,9 @@
 /* Define as 1 if you have gettext and don't want to use GNU gettext.  */
 #undef HAVE_GETTEXT
 
+/* Does your gettext have bind_textdomain_codeset? */
+#undef HAVE_BIND_TEXTDOMAIN_CODESET
+
 /* Do we have stpcpy? */
 #undef HAVE_STPCPY
 
