@@ -1134,6 +1134,8 @@ void mutt_FormatString (char *dest,		/* output buffer */
 FILE *mutt_open_read (const char *path, pid_t *thepid)
 {
   FILE *f;
+  struct stat s;
+
   int len = mutt_strlen (path);
 
   if (path[len - 1] == '|')
@@ -1149,6 +1151,16 @@ FILE *mutt_open_read (const char *path, pid_t *thepid)
   }
   else
   {
+    if (stat (path, &s) < 0)
+    {
+      mutt_error (_("%s: stat: %s"), path, strerror (errno));
+      return (NULL);
+    }
+    if (!S_ISREG (s.st_mode))
+    {
+      mutt_error (_("%s: not a regular file"), path);
+      return (NULL);
+    }
     f = fopen (path, "r");
     *thepid = -1;
   }
