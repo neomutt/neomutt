@@ -282,7 +282,7 @@ char *mutt_get_parameter (const char *s, PARAMETER *p)
 void mutt_set_parameter (const char *attribute, const char *value, PARAMETER **p)
 {
   PARAMETER *q;
-  for(q = *p; q; q =  q->next)
+  for(q = *p; q; q = q->next)
   {
     if (mutt_strcasecmp (attribute, q->attribute) == 0)
     {
