@@ -67,12 +67,14 @@ event_t mutt_getch (void)
 
   SigInt = 0;
 
+  mutt_allow_interrupt (1);
 #ifdef KEY_RESIZE
   /* ncurses 4.2 sends this when the screen is resized */
   ch = KEY_RESIZE;
   while (ch == KEY_RESIZE)
 #endif /* KEY_RESIZE */
     ch = getch ();
+  mutt_allow_interrupt (0);
 
   if (SigInt)
     mutt_query_exit ();
