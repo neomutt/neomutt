@@ -1,3 +1,10 @@
+2004-07-14 04:34:07  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* copy.c, copy.h, handler.c, init.h, mutt.h, send.c: Fix a cvs
+	commit SNAFU: This commit undoes the include_onlyfirst patch,
+	but leaves the generic spam detection by David Champion in place
+	(which, erroneously, hadn't been committed automatically).
+
 2004-07-14 04:16:58  ttakah@lapis.plala.or.jp  (roessler)
 
 	* commands.c, copy.c, copy.h, doc/manual.sgml.head,
