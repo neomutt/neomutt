@@ -92,21 +92,21 @@ static QUERY *run_query (char *s, int quiet)
   fgets (msg, sizeof (msg) - 1, fp);
   while (fgets(buf, sizeof (buf) - 1, fp))
   {
-    if (first == NULL)
+    if ((p = strtok(buf, "\t\n")))
     {
-      FirstColumn = 0;
-      SecondColumn = 0;
-      first = (QUERY *) safe_calloc (1, sizeof (QUERY));
-      cur = first;
-    }
-    else
-    {
-      cur->next = (QUERY *) safe_calloc (1, sizeof (QUERY));
-      cur = cur->next;
-    }
-    p = strtok(buf, "\t\n");
-    if (p)
-    {
+      if (first == NULL)
+      {
+	FirstColumn = 0;
+	SecondColumn = 0;
+	first = (QUERY *) safe_calloc (1, sizeof (QUERY));
+	cur = first;
+      }
+      else
+      {
+	cur->next = (QUERY *) safe_calloc (1, sizeof (QUERY));
+	cur = cur->next;
+      }
+
       l = mutt_strlen (p);
       if (l > SecondColumn)
 	SecondColumn = l;
