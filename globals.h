@@ -165,6 +165,7 @@ WHERE unsigned short Counter INITVAL (0);
 
 WHERE short ConnectTimeout;
 WHERE short HistSize;
+WHERE short MenuContext;
 WHERE short PagerContext;
 WHERE short PagerIndexLines;
 WHERE short ReadInc;

@@ -371,32 +371,37 @@ void menu_redraw_prompt (MUTTMENU *menu)
 
 void menu_check_recenter (MUTTMENU *menu)
 {
-  if (menu->max <= menu->pagelen && menu->top != 0)
+  int c = MIN (MenuContext, menu->pagelen / 2);
+  int old_top = menu->top;
+
+  if (menu->max <= menu->pagelen) /* less entries than lines */
   {
-    menu->top = 0;
-    set_option (OPTNEEDREDRAW);
-    menu->redraw |= REDRAW_INDEX;
-  }
-  else if (menu->current >= menu->top + menu->pagelen)
-  {
-    if (option (OPTMENUSCROLL) || (menu->pagelen <= 0))
-      menu->top = menu->current - menu->pagelen + 1;
-    else
-      menu->top += menu->pagelen * ((menu->current - menu->top) / menu->pagelen);
-    menu->redraw |= REDRAW_INDEX;
-  }
-  else if (menu->current < menu->top)
-  {
-    if (option (OPTMENUSCROLL) || (menu->pagelen <= 0))
-      menu->top = menu->current;
-    else
-    {
-      menu->top -= menu->pagelen * ((menu->top + menu->pagelen - 1 - menu->current) / menu->pagelen);
-      if (menu->top < 0)
-	menu->top = 0;
+    if (menu->top != 0) {
+      menu->top = 0;
+      set_option (OPTNEEDREDRAW);
     }
-    menu->redraw |= REDRAW_INDEX;
   }
+  else if (menu->current >= menu->top + menu->pagelen - c) /* indicator below bottom threshold */
+  {
+    if (option (OPTMENUSCROLL) || (menu->pagelen <= 0))
+      menu->top = menu->current - menu->pagelen + c + 1;
+    else
+      menu->top += (menu->pagelen - c) * ((menu->current - menu->top) / (menu->pagelen - c)) - c;
+  }
+  else if (menu->current < menu->top + c) /* indicator above top threshold */
+  {
+    if (option (OPTMENUSCROLL) || (menu->pagelen <= 0))
+      menu->top = menu->current - c;
+    else
+      menu->top -= (menu->pagelen - c) * ((menu->top + menu->pagelen - 1 - menu->current) / (menu->pagelen - c)) - c;
+  }
+
+  /* make entries stick to bottom */
+  menu->top = MIN (menu->top, menu->max - menu->pagelen);
+  menu->top = MAX (menu->top, 0);
+
+  if (menu->top != old_top)
+    menu->redraw |= REDRAW_INDEX;
 }
 
 void menu_jump (MUTTMENU *menu)
@@ -480,7 +485,9 @@ void menu_next_page (MUTTMENU *menu)
 
 void menu_prev_page (MUTTMENU *menu)
 {
-  if (menu->top > 0)
+  int c = MIN (MenuContext, menu->pagelen / 2);
+
+  if (menu->top > c)
   {
     if ((menu->top -= menu->pagelen) < 0)
       menu->top = 0;

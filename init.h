@@ -1090,6 +1090,12 @@ struct option_t MuttVars[] = {
   ** If unset, Mutt will remove your address (see the ``alternates''
   ** command) from the list of recipients when replying to a message.
   */
+  { "menu_context",	DT_NUM,  R_NONE, UL &MenuContext, 0 },
+  /*
+  ** .pp
+  ** This variable controls the number of lines of context that are given
+  ** when scrolling through menus. (Similar to ``$$pager_context''.)
+  */
   { "menu_scroll",	DT_BOOL, R_NONE, OPTMENUSCROLL, 0 },
   /*
   ** .pp
