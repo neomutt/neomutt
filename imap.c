@@ -1844,11 +1844,24 @@ int imap_close_connection (CONTEXT *ctx)
   return 0;
 }
 
+static void _imap_set_flag (CONTEXT *ctx, int aclbit, int flag, const char *str, 
+		     char *sf, char *uf)
+{
+  if (mutt_bit_isset (CTX_DATA->rights, aclbit))
+  {
+    if (flag)
+      strcat (sf, str);
+    else
+      strcat (uf, str);
+  }
+}
+
 int imap_sync_mailbox (CONTEXT *ctx)
 {
   char seq[8];
   char buf[LONG_STRING];
-  char tmp[LONG_STRING];
+  char set_flags[LONG_STRING];
+  char unset_flags[LONG_STRING];
   int n;
 
   /* save status changes */
@@ -1856,32 +1869,43 @@ int imap_sync_mailbox (CONTEXT *ctx)
   {
     if (ctx->hdrs[n]->deleted || ctx->hdrs[n]->changed)
     {
-      snprintf (tmp, sizeof (tmp), _("Saving message status flags... [%d/%d]"),
-	n+1, ctx->msgcount);
-      mutt_message (tmp);
-      *tmp = 0;
-      if (ctx->hdrs[n]->read && mutt_bit_isset(CTX_DATA->rights, IMAP_ACL_SEEN))
-	strcat (tmp, "\\Seen ");
-      if (mutt_bit_isset(CTX_DATA->rights, IMAP_ACL_WRITE))
+      snprintf (buf, sizeof (buf), _("Saving message status flags... [%d/%d]"),
+		n+1, ctx->msgcount);
+      mutt_message (buf);
+      
+      *set_flags = '\0';
+      *unset_flags = '\0';
+      
+      _imap_set_flag (ctx, IMAP_ACL_SEEN, ctx->hdrs[n]->read, "\\Seen ", set_flags, unset_flags);
+      _imap_set_flag (ctx, IMAP_ACL_WRITE, ctx->hdrs[n]->flagged, "\\Flagged ", set_flags, unset_flags);
+      _imap_set_flag (ctx, IMAP_ACL_WRITE, ctx->hdrs[n]->replied, "\\Answered ", set_flags, unset_flags);
+      _imap_set_flag (ctx, IMAP_ACL_DELETE, ctx->hdrs[n]->deleted, "\\Deleted", set_flags, unset_flags);
+      
+      mutt_remove_trailing_ws (set_flags);
+      mutt_remove_trailing_ws (unset_flags);
+      
+      if (*set_flags)
       {
-	if (ctx->hdrs[n]->flagged)
-	  strcat (tmp, "\\Flagged ");
-	if (ctx->hdrs[n]->replied)
-	  strcat (tmp, "\\Answered ");
+	imap_make_sequence (seq, sizeof (seq));
+	snprintf (buf, sizeof (buf), "%s STORE %d +FLAGS.SILENT (%s)\r\n", seq,
+		  ctx->hdrs[n]->index + 1, set_flags);
+	if (imap_exec (buf, sizeof (buf), CTX_DATA, seq, buf, 0) != 0)
+	{
+	  imap_error ("imap_sync_mailbox()", buf);
+	  return (-1);
+	}
       }
-      if (ctx->hdrs[n]->deleted && 
-	  mutt_bit_isset(CTX_DATA->rights, IMAP_ACL_DELETE))
-        strcat (tmp, "\\Deleted");
-      mutt_remove_trailing_ws (tmp);
-
-      if (!*tmp) continue; /* imapd doesn't like empty flags. */
-      imap_make_sequence (seq, sizeof (seq));
-      snprintf (buf, sizeof (buf), "%s STORE %d FLAGS.SILENT (%s)\r\n", seq, 
-      	ctx->hdrs[n]->index + 1, tmp);
-      if (imap_exec (buf, sizeof (buf), CTX_DATA, seq, buf, 0) != 0)
+      
+      if (*unset_flags)
       {
-	imap_error ("imap_sync_mailbox()", buf);
-	return (-1);
+	imap_make_sequence (seq, sizeof (seq));
+	snprintf (buf, sizeof (buf), "%s STORE %d -FLAGS.SILENT (%s)\r\n", seq,
+		  ctx->hdrs[n]->index + 1, unset_flags);
+	if (imap_exec (buf, sizeof (buf), CTX_DATA, seq, buf, 0) != 0)
+	{
+	  imap_error ("imap_sync_mailbox()", buf);
+	  return (-1);
+	}
       }
     }
   }
