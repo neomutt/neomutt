@@ -1402,6 +1402,7 @@ messages:
 ~g              PGP signed messages
 ~G              PGP encrypted messages
 ~h EXPR         messages which contain EXPR in the message header
+~k		message contains PGP key material
 ~i ID           message which match ID in the ``Message-ID'' field
 ~L EXPR         message is either originated or received by EXPR
 ~l              message is addressed to a known mailing list

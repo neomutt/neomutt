@@ -208,6 +208,7 @@ enum
 #ifdef _PGPPATH
   M_PGP_SIGN,
   M_PGP_ENCRYPT,
+  M_PGP_KEY,
 #endif
   
   /* Options for Mailcap lookup */

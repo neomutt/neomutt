@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-15 18:17+0200\n"
+"POT-Creation-Date: 1998-10-15 21:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2152,50 +2152,50 @@ msgstr ""
 msgid "multipart message has no boundary parameter!"
 msgstr ""
 
-#: pattern.c:231
+#: pattern.c:234
 #, c-format
 msgid "Error in expression: %s"
 msgstr ""
 
-#: pattern.c:327
+#: pattern.c:330
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr ""
 
-#: pattern.c:341
+#: pattern.c:344
 #, c-format
 msgid "Invalid month: %s"
 msgstr ""
 
-#: pattern.c:395
+#: pattern.c:398
 msgid "error in expression"
 msgstr ""
 
-#: pattern.c:580 pattern.c:688
+#: pattern.c:583 pattern.c:691
 #, c-format
 msgid "error in pattern at: %s"
 msgstr ""
 
-#: pattern.c:628
+#: pattern.c:631
 #, c-format
 msgid "%c: invalid command"
 msgstr ""
 
-#: pattern.c:634
+#: pattern.c:637
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr ""
 
-#: pattern.c:647
+#: pattern.c:650
 msgid "missing parameter"
 msgstr ""
 
-#: pattern.c:663
+#: pattern.c:666
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr ""
 
-#: pattern.c:695
+#: pattern.c:698
 msgid "empty pattern"
 msgstr ""
 
@@ -2746,31 +2746,31 @@ msgstr ""
 msgid "Mail sent."
 msgstr ""
 
-#: sendlib.c:473
+#: sendlib.c:475
 msgid "No boundary parameter found! [report this error]"
 msgstr ""
 
-#: sendlib.c:507
+#: sendlib.c:509
 #, c-format
 msgid "%s no longer exists!"
 msgstr ""
 
-#: sendlib.c:773
+#: sendlib.c:775
 #, c-format
 msgid "Could not open %s"
 msgstr ""
 
-#: sendlib.c:1701
+#: sendlib.c:1703
 #, c-format
 msgid "Error sending message, child exited %d (%s).\n"
 msgstr ""
 
-#: sendlib.c:1703
+#: sendlib.c:1705
 #, c-format
 msgid "Saved output of child process to %s.\n"
 msgstr ""
 
-#: sendlib.c:1707
+#: sendlib.c:1709
 msgid "Error sending message."
 msgstr ""
 

@@ -62,11 +62,14 @@ Flags[] =
   { 'f', M_FROM,		0,		eat_regexp },
   { 'F', M_FLAG,		0,		NULL },
 #ifdef _PGPPATH
-  { 'g', M_PGP_SIGN, 0, NULL },
-  { 'G', M_PGP_ENCRYPT, 0, NULL },
+  { 'g', M_PGP_SIGN, 		0, 		NULL },
+  { 'G', M_PGP_ENCRYPT, 	0, 		NULL },
 #endif
   { 'h', M_HEADER,		M_FULL_MSG,	eat_regexp },
   { 'i', M_ID,			0,		eat_regexp },
+#ifdef _PGPPATH
+  { 'k', M_PGP_KEY, 		0, 		NULL },
+#endif
   { 'L', M_ADDRESS,		0,		eat_regexp },
   { 'l', M_LIST,		0,		NULL },
   { 'm', M_MESSAGE,		0,		eat_range },
@@ -826,23 +829,20 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
     case M_RECIPIENT:
       return (pat->not ^ (match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS, h->env->to,pat->alladdr) ||
 			  match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS, h->env->cc,pat->alladdr)));
-      break;
     case M_LIST:
       return (pat->not ^ (mutt_is_list_recipient (h->env->to) ||
 			  mutt_is_list_recipient (h->env->cc)));
     case M_PERSONAL_RECIP:
       return (pat->not ^ (match_user (h->env->to) || match_user (h->env->cc)));
-      break;
     case M_PERSONAL_FROM:
       return (pat->not ^ (match_user (h->env->from)));
-      break;
 #ifdef _PGPPATH
-  case M_PGP_SIGN:
+   case M_PGP_SIGN:
      return (pat->not ^ (h->pgp & PGPSIGN));
-     break;
-  case M_PGP_ENCRYPT:
+   case M_PGP_ENCRYPT:
      return (pat->not ^ (h->pgp & PGPENCRYPT));
-     break;
+   case M_PGP_KEY:
+     return (pat->not ^ (h->pgp & PGPKEY));
 #endif
   }
   mutt_error (_("error: unknown op %d (report this error)."), pat->op);
