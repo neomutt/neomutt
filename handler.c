@@ -215,7 +215,11 @@ void mutt_decode_base64 (STATE *s, BODY *b, int istext, DECODER *dec)
 	buf[i++] = ch;
     }
     if (i != 4)
-      return; /* didn't get a multiple of four chars! */
+    {
+      dprint (2, (debugfile, "%s:%d [mutt_decode_base64()]: "
+		  "didn't get a multiple of 4 chars.\n", __FILE__, __LINE__));
+      break;
+    }
 
     c1 = base64val (buf[0]);
     c2 = base64val (buf[1]);
@@ -276,6 +280,7 @@ void mutt_decode_base64 (STATE *s, BODY *b, int istext, DECODER *dec)
       l = 0;
     }
   }
+
   mutt_decoder_push (dec, NULL, 0, NULL);
   mutt_decoder_pop_to_state (dec, s);
 
