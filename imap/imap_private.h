@@ -38,6 +38,10 @@
 #define M_IMAP_PASS (1<<3)
 #define M_IMAP_CRAM (1<<4)
 
+#define IMAP_REOPEN_ALLOW    (1<<0)
+#define IMAP_REOPEN_PENDING  (1<<1)
+#define IMAP_NEWMAIL_PENDING (1<<2)
+
 enum
 {
   IMAP_FATAL = 1,
@@ -145,6 +149,8 @@ typedef struct
   unsigned char rights[(RIGHTSMAX + 7)/8];
   unsigned int newMailCount;
   IMAP_CACHE cache[IMAP_CACHE_LEN];
+  short reopen;
+  
   /* all folder flags - system flags AND keywords */
   LIST *flags;
 } IMAP_DATA;

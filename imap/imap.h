@@ -51,6 +51,9 @@ int imap_mailbox_check (char *path, int new);
 int imap_subscribe (char *path, int subscribe);
 int imap_complete (char* dest, size_t dlen, char* path);
 
+void imap_allow_reopen (CONTEXT *ctx);
+void imap_disallow_reopen (CONTEXT *ctx);
+
 /* browse.c */
 int imap_init_browse (char *path, struct browser_state *state);
 

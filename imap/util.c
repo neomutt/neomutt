@@ -21,6 +21,7 @@
 /* general IMAP utility functions */
 
 #include "mutt.h"
+#include "mx.h"	/* for M_IMAP */
 #include "imap_private.h"
 
 #include <stdlib.h>
@@ -359,3 +360,16 @@ int imap_wait_keepalive (pid_t pid)
   return rc;
 }
 
+/* Allow/disallow re-opening a folder upon expunge. */
+
+void imap_allow_reopen (CONTEXT *ctx)
+{
+  if (ctx->magic == M_IMAP)
+    CTX_DATA->reopen |= IMAP_REOPEN_ALLOW;
+}
+
+void imap_disallow_reopen (CONTEXT *ctx)
+{
+  if (ctx->magic == M_IMAP)
+    CTX_DATA->reopen &= ~IMAP_REOPEN_ALLOW;
+}

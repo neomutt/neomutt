@@ -42,14 +42,23 @@ static char *Capabilities[] = {"IMAP4", "IMAP4rev1", "STATUS", "ACL",
  *   detected, do expunge) */
 void imap_cmd_finish (const char* seq, IMAP_DATA* idata)
 {
-  if ((idata->state == IMAP_SELECTED) && 
-      !idata->selected_ctx->closing && 
-      (idata->status == IMAP_NEW_MAIL || 
-       idata->status == IMAP_EXPUNGE))
+  if (!(idata->state == IMAP_SELECTED) || idata->selected_ctx->closing)
+  {
+    idata->status = 0;
+    mutt_clear_error ();
+    return;
+  }
+  
+  if ((idata->status == IMAP_NEW_MAIL || 
+       idata->status == IMAP_EXPUNGE ||
+       (idata->reopen & (IMAP_REOPEN_PENDING|IMAP_NEWMAIL_PENDING)))
+      && (idata->reopen & IMAP_REOPEN_ALLOW))
   {
     int count = idata->newMailCount;
 
-    if (idata->status == IMAP_NEW_MAIL && count > idata->selected_ctx->msgcount)
+    if (!(idata->reopen & IMAP_REOPEN_PENDING) &&
+	((idata->status == IMAP_NEW_MAIL) || (idata->reopen & IMAP_NEWMAIL_PENDING))  
+	&& count > idata->selected_ctx->msgcount)
     {
       /* read new mail messages */
       dprint (1, (debugfile, "imap_cmd_finish: fetching new mail\n"));
@@ -60,17 +69,27 @@ void imap_cmd_finish (const char* seq, IMAP_DATA* idata)
       count = imap_read_headers (idata->selected_ctx, 
         idata->selected_ctx->msgcount, count - 1) + 1;
       idata->check_status = IMAP_NEW_MAIL;
+      idata->reopen &= ~IMAP_NEWMAIL_PENDING;
     }
     else
     {
       imap_reopen_mailbox (idata->selected_ctx, NULL);
       idata->check_status = IMAP_REOPENED;
+      idata->reopen &= ~(IMAP_REOPEN_PENDING|IMAP_NEWMAIL_PENDING);
     }
 
-    idata->status = 0;
-
-    mutt_clear_error ();
   }
+  else if (!(idata->reopen & IMAP_REOPEN_ALLOW))
+  {
+    if (idata->status == IMAP_NEW_MAIL)
+      idata->reopen |= IMAP_NEWMAIL_PENDING;
+    
+    if (idata->status == IMAP_EXPUNGE)
+      idata->reopen |= IMAP_REOPEN_PENDING;
+  }
+
+  idata->status = 0;
+  mutt_clear_error ();
 }
 
 /* imap_code: returns 1 if the command result was OK, or 0 if NO or BAD */

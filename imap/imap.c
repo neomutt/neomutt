@@ -1087,6 +1087,9 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
     }
   }
 
+  /* clear IMAP_REOPEN_PENDING, which may have been set during exec */
+  CTX_DATA->reopen &= ~IMAP_REOPEN_PENDING;
+
   return 0;
 }
 
@@ -1162,6 +1165,7 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint)
     return M_NEW_MAIL;
   if (CTX_DATA->check_status == IMAP_REOPENED)
     return M_REOPENED;
+
   return 0;
 }
 
