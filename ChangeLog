@@ -1,3 +1,7 @@
+2003-10-06 09:58:35  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* query.c: Fiy memory corruption. (# 1659)
+
 2003-10-04 22:12:10  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* lib.c: mutt_basename() was garbage.
