@@ -377,10 +377,12 @@ static void _state_utf8_flush(STATE *s, CHARSET *chs)
   mutt_decode_utf8_string(sfu_buffer, chs);
   for(t = sfu_buffer; *t; t++)
   {
-    /* this is text mode, so throw out raw CRs. */
-    if(*t == '\r')
-      t++;
-    
+    /* This may lead to funny-looking output if 
+     * there are embedded CRs, NLs or similar things
+     * - but these would constitute illegal 
+     * UTF8 encoding anyways, so we don't care.
+     */
+
     state_prefix_putc(*t, s);
   }
   sfu_bp = 0;
@@ -393,8 +395,7 @@ void state_fput_utf8(STATE *st, char u, CHARSET *chs)
      
   if((u & 0x80) == 0)
   {
-    if(u && u != '\r')
-      state_prefix_putc(u, st);
+    if(u) state_prefix_putc(u, st);
   }
   else
   {
