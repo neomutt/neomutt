@@ -190,8 +190,7 @@ typedef struct
 /* -- private IMAP functions -- */
 /* imap.c */
 int imap_create_mailbox (IMAP_DATA* idata, char* mailbox);
-int imap_make_msg_set (IMAP_DATA* idata, char* buf, size_t buflen, int flag,
-  int changed);
+int imap_make_msg_set (IMAP_DATA* idata, BUFFER* buf, int flag, int changed);
 int imap_open_connection (IMAP_DATA* idata);
 IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags);
 int imap_parse_list_response(IMAP_DATA* idata, char** name, int* noselect,

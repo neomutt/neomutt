@@ -1226,3 +1226,24 @@ void mutt_sleep (short s)
   else if (s)
     sleep (s);
 }
+
+/* dynamically grows a BUFFER to accomodate s, in increments of 128 bytes.
+ * Always one byte bigger than necessary for the null terminator, and
+ * the buffer is always null-terminated */
+void mutt_buffer_addstr (BUFFER* buf, const char* s)
+{
+  size_t len, offset;
+
+  len = mutt_strlen (s);
+
+  if (buf->dptr + len + 1 > buf->data + buf->dsize)
+  {
+    offset = buf->dptr - buf->data;
+    buf->dsize += len < 128 ? 128 : len + 1;
+    safe_realloc ((void**) &buf->data, buf->dsize);
+    buf->dptr = buf->data + offset;
+  }
+  memcpy (buf->dptr, s, len);
+  buf->dptr += len;
+  *(buf->dptr) = '\0';
+}

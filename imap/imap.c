@@ -778,22 +778,17 @@ static void imap_set_flag (IMAP_DATA* idata, int aclbit, int flag,
  *         flag: enum of flag type on which to filter
  *         changed: include only changed messages in message set
  * Returns: number of messages in message set (0 if no matches) */
-int imap_make_msg_set (IMAP_DATA* idata, char* buf, size_t buflen, int flag,
-  int changed)
+int imap_make_msg_set (IMAP_DATA* idata, BUFFER* buf, int flag, int changed)
 {
   HEADER** hdrs;	/* sorted local copy */
   int count = 0;	/* number of messages in message set */
   int match = 0;	/* whether current message matches flag condition */
-  int setstart = 0;	/* start of current message range */
-  char* tmp;
+  unsigned int setstart = 0;	/* start of current message range */
   int n;
   short oldsort;	/* we clobber reverse, must restore it */
-
-  /* sanity-check */
-  if (!buf || buflen < 2)
-    return 0;
-
-  *buf = '\0';
+  /* assuming 32-bit UIDs */
+  char uid[12];
+  int started = 0;
 
   /* make copy of header pointers to sort in natural order */
   hdrs = safe_calloc (idata->ctx->msgcount, sizeof (HEADER*));
@@ -808,8 +803,6 @@ int imap_make_msg_set (IMAP_DATA* idata, char* buf, size_t buflen, int flag,
     Sort = oldsort;
   }
   
-  tmp = safe_malloc (buflen);
-
   for (n = 0; n < idata->ctx->msgcount; n++)
   {
     match = 0;
@@ -833,19 +826,23 @@ int imap_make_msg_set (IMAP_DATA* idata, char* buf, size_t buflen, int flag,
       if (setstart == 0)
       {
         setstart = HEADER_DATA (hdrs[n])->uid;
-        if (!buf[0])
-          snprintf (buf, buflen, "%u", HEADER_DATA (hdrs[n])->uid);
+        if (started == 0)
+	{
+	  snprintf (uid, sizeof (uid), "%u", HEADER_DATA (hdrs[n])->uid);
+	  mutt_buffer_addstr (buf, uid);
+	  started = 1;
+	}
         else
         {
-          strncpy (tmp, buf, buflen);
-          snprintf (buf, buflen, "%s,%u", tmp, HEADER_DATA (hdrs[n])->uid);
+	  snprintf (uid, sizeof (uid), ",%u", HEADER_DATA (hdrs[n])->uid);
+	  mutt_buffer_addstr (buf, uid);
         }
       }
       /* tie up if the last message also matches */
       else if (n == idata->ctx->msgcount-1)
       {
-        strncpy (tmp, buf, buflen);
-        snprintf (buf, buflen, "%s:%u", tmp, HEADER_DATA (hdrs[n])->uid);
+	snprintf (uid, sizeof (uid), ":%u", HEADER_DATA (hdrs[n])->uid);
+	mutt_buffer_addstr (buf, uid);
       }
     }
     /* this message is not expunged and doesn't match. End current set. */
@@ -853,14 +850,13 @@ int imap_make_msg_set (IMAP_DATA* idata, char* buf, size_t buflen, int flag,
     {
       if (HEADER_DATA (hdrs[n-1])->uid > setstart)
       {
-        strncpy (tmp, buf, buflen);
-        snprintf (buf, buflen, "%s:%u", tmp, HEADER_DATA (hdrs[n-1])->uid);
+	snprintf (uid, sizeof (uid), ":%u", HEADER_DATA (hdrs[n])->uid);
+	mutt_buffer_addstr (buf, uid);
       }
       setstart = 0;
     }
   }
 
-  safe_free ((void**) &tmp);
   safe_free ((void**) &hdrs);
 
   return count;
@@ -876,9 +872,9 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
 {
   IMAP_DATA* idata;
   CONTEXT* appendctx = NULL;
-  char buf[HUGE_STRING];
+  BUFFER cmd;
   char flags[LONG_STRING];
-  char tmp[LONG_STRING];
+  char uid[11];
   int deleted;
   int n;
   int err_continue = M_NO;	/* continue on error? */
@@ -901,28 +897,30 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
 
   /* This function is only called when the calling code	expects the context
    * to be changed. */
-  imap_allow_reopen (ctx);	
+  imap_allow_reopen (ctx);
 
   if ((rc = imap_check_mailbox (ctx, index_hint)) != 0)
     return rc;
 
+  memset (&cmd, 0, sizeof (cmd));
+
   /* if we are expunging anyway, we can do deleted messages very quickly... */
   if (expunge && mutt_bit_isset (idata->rights, IMAP_ACL_DELETE))
   {
-    deleted = imap_make_msg_set (idata, buf, sizeof (buf), M_DELETE, 1);
+    mutt_buffer_addstr (&cmd, "UID STORE ");
+    deleted = imap_make_msg_set (idata, &cmd, M_DELETE, 1);
 
     /* if we have a message set, then let's delete */
     if (deleted)
     {
       mutt_message (_("Marking %d messages deleted..."), deleted);
-      snprintf (tmp, sizeof (tmp), "UID STORE %s +FLAGS.SILENT (\\Deleted)",
-        buf);
+      mutt_buffer_addstr (&cmd, " +FLAGS.SILENT (\\Deleted)");
       /* mark these messages as unchanged so second pass ignores them. Done
        * here so BOGUS UW-IMAP 4.7 SILENT FLAGS updates are ignored. */
       for (n = 0; n < ctx->msgcount; n++)
 	if (ctx->hdrs[n]->deleted && ctx->hdrs[n]->changed)
 	  ctx->hdrs[n]->active = 0;
-      if (imap_exec (idata, tmp, 0) != 0)
+      if (imap_exec (idata, cmd.data, 0) != 0)
       {
 	mutt_error (_("Expunge failed"));
 	mutt_sleep (1);
@@ -941,6 +939,11 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
 
       mutt_message (_("Saving message status flags... [%d/%d]"), n+1,
         ctx->msgcount);
+
+      snprintf (uid, sizeof (uid), "%u", HEADER_DATA(ctx->hdrs[n])->uid);
+      cmd.dptr = cmd.data;
+      mutt_buffer_addstr (&cmd, "UID STORE ");
+      mutt_buffer_addstr (&cmd, uid);
 
       /* if attachments have been deleted we delete the message and reupload
        * it. This works better if we're expunging, of course. */
@@ -984,19 +987,20 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
 
         mutt_remove_trailing_ws (flags);
 
-        snprintf (buf, sizeof (buf), "UID STORE %d -FLAGS.SILENT (%s)",
-          HEADER_DATA (ctx->hdrs[n])->uid, flags);
+	mutt_buffer_addstr (&cmd, " -FLAGS.SILENT (");
       }
       else
-        snprintf (buf, sizeof (buf), "UID STORE %d FLAGS.SILENT (%s)",
-          HEADER_DATA (ctx->hdrs[n])->uid, flags);
+	mutt_buffer_addstr (&cmd, " FLAGS.SILENT (");
+      
+      mutt_buffer_addstr (&cmd, flags);
+      mutt_buffer_addstr (&cmd, ")");
 
       /* dumb hack for bad UW-IMAP 4.7 servers spurious FLAGS updates */
       ctx->hdrs[n]->active = 0;
 
       /* after all this it's still possible to have no flags, if you
        * have no ACL rights */
-      if (*flags && (imap_exec (idata, buf, 0) != 0) &&
+      if (*flags && (imap_exec (idata, cmd.data, 0) != 0) &&
         (err_continue != M_YES))
       {
         err_continue = imap_continue ("imap_sync_mailbox: STORE failed",
@@ -1030,6 +1034,8 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
 
   rc = 0;
  out:
+  if (cmd.data)
+    FREE (&cmd.data);
   if (appendctx)
   {
     mx_fastclose_mailbox (appendctx);
