@@ -115,9 +115,8 @@ static void convert_to_state(iconv_t cd, char *bufi, size_t *l, STATE *s)
   *l = ibl;
 }
 
-void mutt_decode_xbit (STATE *s, BODY *b, int istext, iconv_t cd)
+void mutt_decode_xbit (STATE *s, long len, int istext, iconv_t cd)
 {
-  long len = b->length;
   int c, ch;
   char bufi[BUFI_SIZE];
   size_t l = 0;
@@ -231,9 +230,8 @@ static void qp_decode_line (char *dest, char *src, size_t *l)
  * 
  */
 
-void mutt_decode_quoted (STATE *s, BODY *b, int istext, iconv_t cd)
+void mutt_decode_quoted (STATE *s, long len, int istext, iconv_t cd)
 {
-  long len = b->length;
   char line[STRING];
   char decline[2*STRING];
   size_t l = 0;
@@ -270,9 +268,8 @@ void mutt_decode_quoted (STATE *s, BODY *b, int istext, iconv_t cd)
   state_reset_prefix(s);
 }
 
-void mutt_decode_base64 (STATE *s, BODY *b, int istext, iconv_t cd)
+void mutt_decode_base64 (STATE *s, long len, int istext, iconv_t cd)
 {
-  long len = b->length;
   char buf[5];
   int c1, c2, c3, c4, ch, cr = 0, i;
   char bufi[BUFI_SIZE];
@@ -359,12 +356,11 @@ unsigned char decode_byte (char ch)
   return ch - 32;
 }
 
-void mutt_decode_uuencoded (STATE *s, BODY *b, int istext, iconv_t cd)
+void mutt_decode_uuencoded (STATE *s, long len, int istext, iconv_t cd)
 {
   char tmps[SHORT_STRING];
   char linelen, c, l, out;
   char *pt;
-  long len = b->length;
   char bufi[BUFI_SIZE];
   size_t k = 0;
 
@@ -1377,16 +1373,16 @@ void mutt_decode_attachment (BODY *b, STATE *s)
   switch (b->encoding)
   {
     case ENCQUOTEDPRINTABLE:
-      mutt_decode_quoted (s, b, istext, cd);
+      mutt_decode_quoted (s, b->length, istext, cd);
       break;
     case ENCBASE64:
-      mutt_decode_base64 (s, b, istext, cd);
+      mutt_decode_base64 (s, b->length, istext, cd);
       break;
     case ENCUUENCODED:
-      mutt_decode_uuencoded (s, b, istext, cd);
+      mutt_decode_uuencoded (s, b->length, istext, cd);
       break;
     default:
-      mutt_decode_xbit (s, b, istext, cd);
+      mutt_decode_xbit (s, b->length, istext, cd);
       break;
   }
 
