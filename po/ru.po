@@ -295,14 +295,12 @@ msgid "Could not create temporary file!"
 msgstr "Не удалось создать временный файл!"
 
 #: commands.c:127
-#, fuzzy
 msgid "Cannot create display filter"
 msgstr "Не удалось создать фильтр"
 
 #: commands.c:147
-#, fuzzy
 msgid "Could not copy message"
-msgstr "Сообщение отправить не удалось."
+msgstr "Не удалось скопировать сообщение"
 
 #: commands.c:169
 msgid "PGP signature successfully verified."
@@ -426,14 +424,14 @@ msgid "Messages printed"
 msgstr "Сообщения напечатаны"
 
 #: commands.c:834
-#, fuzzy, c-format
+#, c-format
 msgid "Content-Type changed to %s."
-msgstr "Устанавливается соединение с %s..."
+msgstr "Значение Content-Type изменено: %s."
 
 #: commands.c:836
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s."
-msgstr "Кодировка %s неизвестна."
+msgstr "Установлена новая кодировка: %s."
 
 #: compose.c:40
 msgid "There are no attachments."
@@ -1235,7 +1233,7 @@ msgstr "Не достаточно энтропии"
 
 #: imap/imap_ssl.c:133
 msgid "SSL disabled due the lack of entropy"
-msgstr "SSL запрещён из-за недостатка энтропии"
+msgstr "SSL запрещен из-за недостатка энтропии"
 
 #: imap/imap_ssl.c:213
 msgid "Unable to get certificate from peer"
@@ -3595,39 +3593,3 @@ msgstr "Родительское сообщение не видимо при просмотре с ограничением"
 #: thread.c:717
 msgid "Parent message is not available."
 msgstr "Родительское сообщение недоступно."
-
-#~ msgid "Can't open %s: %s."
-#~ msgstr "Не удалось открыть %s: %s."
-
-#~ msgid "Error while recoding %s. Leave it unchanged."
-#~ msgstr "Ошибка перекодирования %s. Файл не изменен."
-
-#~ msgid "Error while recoding %s. See %s for recovering your data."
-#~ msgstr "Ошибка перекодирования %s. См. %s для восстановлении данных."
-
-#~ msgid "Can't change character set for non-text attachments!"
-#~ msgstr "Для нетекстовых вложений изменение кодировки невозможно!"
-
-#~ msgid "Enter character set: "
-#~ msgstr "Введите название кодировки: "
-
-#~ msgid "Recoding successful."
-#~ msgstr "Перекодирование успешно завершено."
-
-#~ msgid "change an attachment's character set"
-#~ msgstr "изменить кодировку вложения"
-
-#~ msgid "recode this attachment to/from the local charset"
-#~ msgstr "перекодировать вложение в/из локальную кодировку"
-
-#~ msgid "Compose"
-#~ msgstr "Создать"
-
-#~ msgid "We can't currently handle utf-8 at this point."
-#~ msgstr "Кодировка utf-8 пока не поддерживается."
-
-#~ msgid "UTF-8 encoding attachments has not yet been implemented."
-#~ msgstr "Поддержка вложений в кодировке UTF-8 не реализована."
-
-#~ msgid "We currently can't encode to utf-8."
-#~ msgstr "Перекодирование в utf-8 не поддерживается."
