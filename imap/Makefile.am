@@ -7,7 +7,7 @@ SSLSOURCES = imap_ssl.c
 SSLHEADERS = imap_ssl.h
 endif
 
-EXTRA_DIST = BUGS README TODO
+EXTRA_DIST = BUGS README TODO imap_ssl.c imap_ssl.h
 
 INCLUDES = -I$(top_srcdir)
 
