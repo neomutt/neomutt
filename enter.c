@@ -278,7 +278,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 
 	case OP_EDITOR_HISTORY_DOWN:
 	  state->curpos = state->lastchar;
-	  replace_part (state, 0, mutt_history_prev (hclass));
+	  replace_part (state, 0, mutt_history_next (hclass));
 	  redraw = M_REDRAW_INIT;
 	  break;
 
