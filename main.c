@@ -371,6 +371,12 @@ static void show_version (void)
 	"-ICONV_NONTRANS  "
 #endif
 
+#if HAVE_GETSID
+	"+HAVE_GETSID"
+#else
+	"-HAVE_GETSID"
+#endif
+	
 	);
 
 #ifdef ISPELL

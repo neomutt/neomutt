@@ -1836,10 +1836,12 @@ void mutt_init (int skip_sys_rc, LIST *commands)
     set_option (OPTLOCALES);
 #endif
 
+#ifdef HAVE_GETSID
   /* Unset suspend by default if we're the session leader */
   if (getsid(0) == getpid())
     unset_option (OPTSUSPEND);
-  
+#endif
+
   mutt_init_history ();
 
   
