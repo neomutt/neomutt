@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.5.2\n"
 "POT-Creation-Date: 2002-12-09 14:26+0100\n"
-"PO-Revision-Date: 2002-12-07 02:30+0100\n"
+"PO-Revision-Date: 2002-12-11 14:54+0100\n"
 "Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
@@ -598,13 +598,11 @@ msgstr "Signer en tant que : "
 #: compose.c:231
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (f)orget it? "
-msgstr ""
-"(c)hiffrer S/MIME, (a)vec, (s)igner, (e)n tant que, les (d)eux, (o)ublier ? "
+msgstr "(c)hiffr S/MIME, (s)ign, ch. (a)vec, s. (e)n tant que, les (d)eux, (o)ublier ? "
 
 #: compose.c:232
-#, fuzzy
 msgid "eswabf"
-msgstr "csedo"
+msgstr "csaedo"
 
 #: compose.c:240
 msgid ""
