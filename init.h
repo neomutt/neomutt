@@ -322,6 +322,12 @@ struct option_t MuttVars[] = {
   ** See the text describing the ``$$status_format'' option for more 
   ** information on how to set ``$$compose_format''.
   */
+  { "config_charset",	DT_STR,  R_NONE, UL &ConfigCharset, UL 0 },
+  /*
+  ** .pp
+  ** When defined, Mutt will recode commands in rc files from this
+  ** encoding.
+  */
   { "confirmappend",	DT_BOOL, R_NONE, OPTCONFIRMAPPEND, 1 },
   /*
   ** .pp

@@ -37,6 +37,7 @@ WHERE char *Attribution;
 WHERE char *AttachFormat;
 WHERE char *Charset;
 WHERE char *ComposeFormat;
+WHERE char *ConfigCharset;
 WHERE char *ContentType;
 WHERE char *DefaultHook;
 WHERE char *DateFmt;
