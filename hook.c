@@ -87,7 +87,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     memset (&pattern, 0, sizeof (pattern));
     pattern.data = safe_strdup (path);
   }
-  else if (DefaultHook && !(data & M_CHARSETHOOK)
+  else if (DefaultHook && !(data & (M_CHARSETHOOK | M_ACCOUNTHOOK))
 #if defined(HAVE_PGP) || defined(HAVE_SMIME)
       && !(data & M_CRYPTHOOK)
 #endif /* HAVE_PGP */

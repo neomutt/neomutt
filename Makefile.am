@@ -99,8 +99,8 @@ flea:	muttbug.sh
 	cp muttbug.sh flea
 	chmod +x flea
 
-smime_keys: smime_keys.pl
-	cp smime_keys.pl smime_keys
+smime_keys: $(srcdir)/smime_keys.pl
+	cp $(srcdir)/smime_keys.pl smime_keys
 	chmod +x smime_keys
 
 Makefile: $(BUILT_SOURCES)
