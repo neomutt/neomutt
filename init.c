@@ -1786,11 +1786,6 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   }
 
   Tempdir = safe_strdup ((p = getenv ("TMPDIR")) ? p : "/tmp");
-
-#ifdef USE_POP
-  PopUser = safe_strdup (Username);
-#endif
-
   Editor = safe_strdup ((p = getenv ("EDITOR")) ? p : "vi");
   Visual = safe_strdup ((p = getenv ("VISUAL")) ? p : Editor);
 

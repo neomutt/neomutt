@@ -61,6 +61,9 @@ int mx_check_mailbox (CONTEXT *, int *, int);
 #ifdef USE_IMAP
 int mx_is_imap (const char *);
 #endif
+#ifdef USE_POP
+int mx_is_pop (const char *);
+#endif
 
 
 #endif

@@ -740,6 +740,9 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 #ifdef USE_IMAP
           if (!mx_is_imap (fname))
 #endif
+#ifdef USE_POP
+          if (!mx_is_pop (fname))
+#endif
 	  /* check to make sure the file exists and is readable */
 	  if (access (fname, R_OK) == -1)
 	  {

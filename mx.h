@@ -38,6 +38,9 @@ enum
 #ifdef USE_IMAP
   , M_IMAP
 #endif
+#ifdef USE_POP
+  , M_POP
+#endif
 };
 
 WHERE short DefaultMagic INITVAL (M_MBOX);

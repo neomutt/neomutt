@@ -76,9 +76,10 @@ WHERE char *Pager;
 WHERE char *PagerFmt;
 WHERE char *PipeSep;
 #ifdef USE_POP
+WHERE short PopCheckTimeout;
 WHERE char *PopHost;
-WHERE char *PopPass;
-WHERE char *PopUser;
+WHERE char *PopPass INITVAL (NULL);
+WHERE char *PopUser INITVAL (NULL);
 #endif
 WHERE char *PostIndentString;
 WHERE char *Postponed;
@@ -129,7 +130,6 @@ WHERE short ConnectTimeout;
 WHERE short HistSize;
 WHERE short PagerContext;
 WHERE short PagerIndexLines;
-WHERE short PopPort;
 WHERE short ReadInc;
 WHERE short SendmailWait;
 WHERE short Timeout;

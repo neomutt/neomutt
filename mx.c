@@ -34,6 +34,10 @@
 #include "imap.h"
 #endif
 
+#ifdef USE_POP
+#include "pop.h"
+#endif
+
 #ifdef BUFFY_SIZE
 #include "buffy.h"
 #endif
@@ -330,6 +334,22 @@ int mx_is_imap(const char *p)
 
 #endif
 
+#ifdef USE_POP
+int mx_is_pop (const char *p)
+{
+  url_scheme_t scheme;
+
+  if (!p)
+    return 0;
+
+  scheme = url_check_scheme (p);
+  if (scheme == U_POP || scheme == U_POPS)
+    return 1;
+
+  return 0;
+}
+#endif
+
 int mx_get_magic (const char *path)
 {
   struct stat st;
@@ -341,6 +361,11 @@ int mx_get_magic (const char *path)
   if(mx_is_imap(path))
     return M_IMAP;
 #endif /* USE_IMAP */
+
+#ifdef USE_POP
+  if (mx_is_pop (path))
+    return M_POP;
+#endif /* USE_POP */
 
   if (stat (path, &st) == -1)
   {
@@ -657,6 +682,12 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
       break;
 #endif /* USE_IMAP */
 
+#ifdef USE_POP
+    case M_POP:
+      rc = pop_open_mailbox (ctx);
+      break;
+#endif /* USE_POP */
+
     default:
       rc = -1;
       break;
@@ -698,6 +729,10 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
   if (ctx->magic == M_IMAP)
     imap_close_mailbox (ctx);
 #endif /* USE_IMAP */
+#ifdef USE_POP
+  if (ctx->magic == M_POP)
+    pop_close_mailbox (ctx);
+#endif /* USE_POP */
   if (ctx->subj_hash)
     hash_destroy (&ctx->subj_hash, NULL);
   if (ctx->id_hash)
@@ -746,6 +781,12 @@ static int sync_mailbox (CONTEXT *ctx, int *index_hint)
       rc = imap_sync_mailbox (ctx, 1, index_hint);
       break;
 #endif /* USE_IMAP */
+
+#ifdef USE_POP
+    case M_POP:
+      rc = pop_sync_mailbox (ctx, index_hint);
+      break;
+#endif /* USE_POP */
   }
 
 #if 0
@@ -1286,6 +1327,11 @@ int mx_check_mailbox (CONTEXT *ctx, int *index_hint, int lock)
       case M_IMAP:
 	return (imap_check_mailbox (ctx, index_hint));
 #endif /* USE_IMAP */
+
+#ifdef USE_POP
+      case M_POP:
+	return (pop_check_mailbox (ctx, index_hint));
+#endif /* USE_POP */
     }
   }
 
@@ -1331,6 +1377,15 @@ MESSAGE *mx_open_message (CONTEXT *ctx, int msgno)
       break;
     }
 #endif /* USE_IMAP */
+
+#ifdef USE_POP
+    case M_POP:
+    {
+      if (pop_fetch_message (msg, ctx, msgno) != 0)
+	FREE (&msg);
+      break;
+    }
+#endif /* USE_POP */
 
     default:
       dprint (1, (debugfile, "mx_open_message(): function not implemented for mailbox type %d.\n", ctx->magic));
@@ -1416,6 +1471,9 @@ int mx_close_message (MESSAGE **msg)
   if ((*msg)->magic == M_MH || (*msg)->magic == M_MAILDIR
 #ifdef USE_IMAP
       || (*msg)->magic == M_IMAP
+#endif
+#ifdef USE_POP
+      || (*msg)->magic == M_POP
 #endif
       )
   {

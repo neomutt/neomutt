@@ -251,6 +251,9 @@ int mutt_buffy_check (int force)
 #ifdef USE_IMAP
   if (!Context || Context->magic != M_IMAP)
 #endif
+#ifdef USE_POP
+  if (!Context || Context->magic != M_POP)
+#endif
   /* check device ID and serial number instead of comparing paths */
   if (!Context || !Context->path || stat (Context->path, &contex_sb) != 0)
   {
@@ -265,6 +268,11 @@ int mutt_buffy_check (int force)
 #ifdef USE_IMAP
     if ((tmp->magic == M_IMAP) || mx_is_imap (tmp->path))
       tmp->magic = M_IMAP;
+    else
+#endif
+#ifdef USE_POP
+    if ((tmp->magic == M_POP) || mx_is_pop (tmp->path))
+      tmp->magic = M_POP;
     else
 #endif
     if (stat (tmp->path, &sb) != 0 || sb.st_size == 0 ||
@@ -282,15 +290,21 @@ int mutt_buffy_check (int force)
 
     /* check to see if the folder is the currently selected folder
      * before polling */
-    if (!Context || !Context->path || 
+    if (!Context || !Context->path ||
+#if defined USE_IMAP || defined USE_POP
+	((
 #ifdef USE_IMAP
-	(tmp->magic == M_IMAP && mutt_strcmp (tmp->path, Context->path)) ||
-	(tmp->magic != M_IMAP && (
+	tmp->magic == M_IMAP
 #endif
-	sb.st_dev != contex_sb.st_dev || sb.st_ino != contex_sb.st_ino)
+#ifdef USE_POP
 #ifdef USE_IMAP
-	  ))
+	||
 #endif
+	tmp->magic == M_POP
+#endif
+	) ? mutt_strcmp (tmp->path, Context->path) :
+#endif
+	(sb.st_dev != contex_sb.st_dev || sb.st_ino != contex_sb.st_ino)))
     {
       switch (tmp->magic)
       {
@@ -348,6 +362,11 @@ int mutt_buffy_check (int force)
 	else
 	  tmp->new = 0;
 
+	break;
+#endif
+
+#ifdef USE_POP
+      case M_POP:
 	break;
 #endif
       }

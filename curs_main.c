@@ -25,6 +25,10 @@
 #include "buffy.h"
 #include "mx.h"
 
+#ifdef USE_POP
+#include "pop.h"
+#endif
+
 #ifdef USE_IMAP
 #include "imap.h"
 #endif
@@ -714,7 +718,7 @@ int mutt_index_menu (void)
       case OP_MAIN_FETCH_MAIL:
 
 	CHECK_ATTACH;
-	mutt_fetchPopMail ();
+	pop_fetch_mail ();
 	menu->redraw = REDRAW_FULL;
 	break;
 #endif /* USE_POP */
@@ -1602,6 +1606,15 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
 	CHECK_READONLY;
 	CHECK_ATTACH;
+
+#ifdef USE_POP
+	if (Context->magic == M_POP)
+	{
+	  mutt_flushinp ();
+	  mutt_error _("Can't edit message on POP server.");
+	  break;
+	}
+#endif
 
         mutt_edit_message (Context, tag ? NULL : CURHDR);
 	menu->redraw = REDRAW_FULL;

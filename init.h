@@ -1400,6 +1400,12 @@ struct option_t MuttVars[] = {
   ** messages to an external Unix command.
   */
 #ifdef USE_POP
+  { "pop_checkinterval", DT_NUM, R_NONE, UL &PopCheckTimeout, 60 },
+  /*
+  ** .pp
+  ** This variable configures how often (in seconds) POP should look for
+  ** new mail.
+  */
   { "pop_delete",	DT_QUAD, R_NONE, OPT_POPDELETE, M_ASKNO },
   /*
   ** .pp
@@ -1410,34 +1416,39 @@ struct option_t MuttVars[] = {
   { "pop_host",		DT_STR,	 R_NONE, UL &PopHost, UL "" },
   /*
   ** .pp
-  ** The name or address of your POP3 server.
-  */
-  { "pop_port",		DT_NUM,	 R_NONE, UL &PopPort, -1 },
-  /*
+  ** The name of your POP server for the fetch-mail function.  You
+  ** can also specify an alternative port, username and password, ie:
   ** .pp
-  ** This variable specifies which port your POP server is listening on.
-  ** If you specify a value less than zero, Mutt will auto-select the port
-  ** based upon whether your are doing normal pop3 (110) or pop3s (995).
-  ** If your POP3 server listens on a non-standard port, you will have to
-  ** set this to the correct value for your environment.
+  ** [pop[s]://][username[:password]@]popserver[:port]
   */
   { "pop_last",		DT_BOOL, R_NONE, OPTPOPLAST, 0 },
   /*
   ** .pp
   ** If this variable is set, mutt will try to use the "LAST" POP command
-  ** for retrieving only unread messages from the POP server.
+  ** for retrieving only unread messages from the POP server when using
+  ** the fetch-mail function.
+  */
+  { "pop_reconnect",	DT_QUAD, R_NONE, OPT_POPRECONNECT, M_ASKYES },
+  /*
+  ** .pp
+  ** Controls whether or not Mutt will try to reconnect to POP server when
+  ** connection lost.
   */
   { "pop_user",		DT_STR,	 R_NONE, UL &PopUser, 0 },
   /*
   ** .pp
-  ** Your login name on the POP3 server.
+  ** Your login name on the POP server.
   ** .pp
-  ** Defaults to your login name on the local system.
+  ** This variable defaults to your user name on the local machine.
   */
   { "pop_pass",		DT_STR,	 R_NONE, UL &PopPass, UL "" },
   /*
   ** .pp
-  ** Your password on the POP3 server.
+  ** Specifies the password for your POP account.  If unset, Mutt will
+  ** prompt you for your password when you open POP mailbox.
+  ** \fBWarning\fP: you should only use this option when you are on a
+  ** fairly secure machine, because the superuser can read your muttrc
+  ** even if you are the only one who can read the file.
   */
 #endif /* USE_POP */
   { "post_indent_string",DT_STR, R_NONE, UL &PostIndentString, UL "" },

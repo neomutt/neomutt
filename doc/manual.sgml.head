@@ -2047,21 +2047,40 @@ message).  Refer to the man page on sendmail for more details on DSN.
 <p>
 
 If Mutt was compiled with POP3 support (by running the <em/configure/
-script with the <em/--enable-pop/ flag), it has the ability to fetch
-your mail from a remote server for local browsing.  When you invoke the
-<em/fetch-mail/ function (default: G), Mutt attempts to connect to <ref
-id="pop_host" name="pop&lowbar;host"> and authenticate by logging in
-as <ref id="pop_user" name="pop&lowbar;user">.  After the connection
-is established, you will be prompted for your password on the remote
-system.
+script with the <em/--enable-pop/ flag), it has the ability to work
+with mailboxes located on a remote POP3 server and fetch mail for local
+browsing.
 
-Once you have been authenticated, Mutt will fetch all your new mail and
-place it in the local <ref id="spoolfile" name="spoolfile">.  After this 
+You can access the remote POP3 mailbox by selecting the folder
+<tt>pop://popserver/</tt>.
+
+You can select an alternative port by specifying it with the server, ie:
+<tt>pop://popserver:port/</tt>.
+
+You can also specify different username for each folder, ie:
+<tt>pop://username@popserver[:port]/</tt>.
+
+Polling for new mail is more expensive over POP3 than locally. For this
+reason the frequency at which Mutt will check for mail remotely can be
+controlled by the
+<ref id="pop&lowbar;checkinterval" name="&dollar;pop&lowbar;checkinterval">
+variable, which defaults to every 60 seconds.
+
+If Mutt was compiled with SSL support (by running the <em/configure/
+script with the <em/--with-ssl/ flag), connections to POP3 servers
+can be encrypted. This naturally requires that the server supports
+SSL encrypted connections. To access a folder with POP3/SSL, you should
+use pops: prefix, ie:
+<tt>pops://[username@]popserver[:port]/</tt>.
+
+Another way to access your POP3 mail is the <em/fetch-mail/ function
+(default: G).  It allows to connect to <ref id="pop_host"
+name="pop&lowbar;host">, fetch all your new mail and place it in the
+local <ref id="spoolfile" name="spoolfile">.  After this
 point, Mutt runs exactly as if the mail had always been local.
 
-<bf/Note:/ The POP3 support is there only for convenience,
-and it's rather limited.  If you need more functionality you
-should consider using a specialized program, such as <htmlurl
+<bf/Note:/ If you only need to fetch all messages to local mailbox
+you should consider using a specialized program, such as <htmlurl
 url="http://www.ccil.org/~esr/fetchmail" name="fetchmail">
 
 <sect1>IMAP Support (OPTIONAL)

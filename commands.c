@@ -648,10 +648,7 @@ int mutt_save_message (HEADER *h, int delete,
 
   /* check to make sure that this file is really the one the user wants */
   if (!mutt_save_confirm (buf, &st))
-  {
-    CLEARLINE (LINES-1);
-    return (-1);
-  }
+    return -1;
 
 #ifdef HAVE_PGP
   if(need_passphrase && (decode || decrypt) && !pgp_valid_passphrase())

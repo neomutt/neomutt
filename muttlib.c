@@ -261,7 +261,7 @@ void mutt_free_header (HEADER **h)
 #ifdef MIXMASTER
   mutt_free_list (&(*h)->chain);
 #endif
-#ifdef USE_IMAP
+#if defined USE_POP || defined USE_IMAP
   safe_free ((void**) &(*h)->data);
 #endif
   safe_free ((void **) h);
@@ -1104,6 +1104,14 @@ int mutt_save_confirm (const char *s, struct stat *st)
   int magic = 0;
 
   magic = mx_get_magic (s);
+
+#ifdef USE_POP
+  if (magic == M_POP)
+  {
+    mutt_error _("Can't save message to POP mailbox.");
+    return 0;
+  }
+#endif
 
   if (stat (s, st) != -1)
   {

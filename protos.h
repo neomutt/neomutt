@@ -160,7 +160,6 @@ void mutt_expand_aliases_env (ENVELOPE *);
 void mutt_expand_file_fmt (char *, size_t, const char *, const char *);
 void mutt_expand_fmt (char *, size_t, const char *, const char *);
 void mutt_expand_link (char *, const char *, const char *);
-void mutt_fetchPopMail (void);
 void mutt_fix_reply_recipients (ENVELOPE *env);
 void mutt_folder_hook (char *);
 void mutt_format_string (char *, size_t, int, int, int, char, const char *, size_t);

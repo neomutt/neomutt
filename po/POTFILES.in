@@ -47,6 +47,8 @@ pgp.c
 pgpinvoke.c
 pgpkey.c
 pop.c
+pop_auth.c
+pop_lib.c
 postpone.c
 query.c
 recvattach.c

@@ -396,10 +396,7 @@ static int mutt_query_save_attachment (FILE *fp, BODY *body, HEADER *hdr)
     
     /* check to make sure that this file is really the one the user wants */
     if (!mutt_save_confirm (buf, &st))
-    {
-      CLEARLINE (LINES-1);
       return -1;
-    }
     strfcpy(tfile, buf, sizeof(tfile));
   }
   else
@@ -877,6 +874,15 @@ void mutt_view_attachments (HEADER *hdr)
 
       case OP_DELETE:
 	CHECK_READONLY;
+
+#ifdef USE_POP
+	if (Context->magic == M_POP)
+	{
+	  mutt_flushinp ();
+	  mutt_error _("Can't delete attachment from POP server.");
+	  break;
+	}
+#endif
 
 
 

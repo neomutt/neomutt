@@ -255,6 +255,7 @@ enum
   OPT_MOVE,
   OPT_COPY,
   OPT_POPDELETE,
+  OPT_POPRECONNECT,
   OPT_POSTPONE,
   OPT_QUIT,
   OPT_REPLYTO,
@@ -627,8 +628,12 @@ typedef struct header
   LIST *chain;
 #endif
 
-#ifdef USE_IMAP
-  void *data;            /* driver-specific data (only used by IMAP) */
+#ifdef USE_POP
+  int refno;		/* message number on server */
+#endif
+
+#if defined USE_POP || defined USE_IMAP
+  void *data;            /* driver-specific data */
 #endif
 } HEADER;
 
@@ -677,7 +682,7 @@ typedef struct
   int deleted;			/* how many deleted messages */
   int flagged;			/* how many flagged messages */
   int msgnotreadyet;		/* which msg "new" in pager, -1 if none */
-#ifdef USE_IMAP
+#if defined USE_POP || defined USE_IMAP
   void *data;			/* driver specific data */
 #endif /* USE_IMAP */
 

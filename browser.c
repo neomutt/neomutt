@@ -434,6 +434,13 @@ static int examine_mailboxes (MUTTMENU *menu, struct browser_state *state)
       continue;
     }
 #endif
+#ifdef USE_POP
+    if (mx_is_pop (tmp->path))
+    {
+      add_folder (menu, state, tmp->path, NULL, tmp->new);
+      continue;
+    }
+#endif
     if (lstat (tmp->path, &s) == -1)
       continue;
 
