@@ -373,13 +373,14 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
       if (idata->conn->ssf)
 	dprint (2, (debugfile, "Communication encrypted at %d bits\n",
 		    idata->conn->ssf));
-      imap_get_delim (idata);
     }
     else
       mutt_account_unsetpass (&idata->conn->account);
     
     FREE (&idata->capstr);
   }
+  if (idata->state == IMAP_AUTHENTICATED)
+    imap_get_delim (idata);
   
   return idata;
 }
