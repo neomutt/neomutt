@@ -1255,11 +1255,21 @@ main_loop:
   mutt_expand_path (fcc, sizeof (fcc));
   if (*fcc && mutt_strcmp ("/dev/null", fcc) != 0)
   {
+    struct stat st;
     BODY *tmpbody = msg->content;
 #ifdef _PGPPATH
     BODY *save_sig = NULL;
     BODY *save_parts = NULL;
 #endif /* _PGPPATH */
+
+    /* honor $confirmcreate and $confirmappend  in interactive mode */
+    if (!option (OPTNOCURSES) && !(flags & SENDMAILX) && 
+	!mutt_save_confirm (fcc, &st))
+    {
+      mutt_pretty_mailbox (fcc);
+      mutt_clear_error();
+      goto main_loop;
+    }
 
     /* check to see if the user wants copies of all attachments */
     if (!option (OPTFCCATTACH) && msg->content->type == TYPEMULTIPART)

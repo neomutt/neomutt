@@ -1208,7 +1208,7 @@ static void external_body_handler (BODY *b, STATE *s)
 		     CH_DECODE , NULL);
     }
   }
-  else if(expire < time(NULL))
+  else if(expiration && expire < time(NULL))
   {
     if (s->flags & M_DISPLAY)
     {
