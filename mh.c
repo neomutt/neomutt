@@ -704,7 +704,7 @@ static int maildir_parse_dir (CONTEXT * ctx, struct maildir ***last,
   if (subdir)
   {
     snprintf (buf, sizeof (buf), "%s/%s", ctx->path, subdir);
-    is_old = (mutt_strcmp ("cur", subdir) == 0) && option (OPTMARKOLD);
+    is_old = (mutt_strcmp ("cur", subdir) == 0);
   }
   else
     strfcpy (buf, ctx->path, sizeof (buf));

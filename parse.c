@@ -1161,7 +1161,6 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
 	    hdr->replied = 1;
 	    break;
 	    case 'O':
-	    if (option (OPTMARKOLD))
 	      hdr->old = 1;
 	    break;
 	    case 'R':
