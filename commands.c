@@ -173,9 +173,12 @@ int mutt_display_message (HEADER *cur)
     mutt_any_key_to_continue (NULL);
 
 #if defined(HAVE_PGP) || defined(HAVE_SMIME)
-  /* update PGP information for this message */
+  /* update crypto information for this message */
   cur->security |= crypt_query (cur->content);
-
+  
+  /* Remove color cache for this message, in case there
+     are color patterns for both ~g and ~V */
+  cur->pair = 0;
 #endif
 
   if (builtin)

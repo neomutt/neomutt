@@ -145,6 +145,7 @@ void ci_init_color (void);
 void ci_start_color (void);
 
 #define SETCOLOR(X) attrset(ColorDefs[X])
+#define ADDCOLOR(X) attron(ColorDefs[X])
 
 #define MAYBE_REDRAW(x) if (option (OPTNEEDREDRAW)) { unset_option (OPTNEEDREDRAW); x = REDRAW_FULL; }
 

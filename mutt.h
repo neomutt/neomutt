@@ -216,9 +216,12 @@ enum
   M_PERSONAL_RECIP,
   M_PERSONAL_FROM,
   M_ADDRESS,
+#if defined (HAVE_PGP) || defined (HAVE_SMIME)
+  M_CRYPT_SIGN,
+  M_CRYPT_VERIFIED,
+  M_CRYPT_ENCRYPT,
+#endif
 #ifdef HAVE_PGP
-  M_PGP_SIGN,
-  M_PGP_ENCRYPT,
   M_PGP_KEY,
 #endif
   M_XLABEL,
