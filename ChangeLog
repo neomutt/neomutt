@@ -1,3 +1,8 @@
+2004-01-04 10:03:46  Michael Elkins  <me@sigpipe.org>  (roessler)
+
+	* send.c: Fix #1488 (Debian#1882526): Honor Reply-To while
+	generating Mail-Followup-To headers.
+
 2004-01-04 09:59:42  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* init.h: Fix #1738; documentation issue re $from, $use_from.
