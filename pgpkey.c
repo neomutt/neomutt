@@ -609,13 +609,13 @@ static pgp_key_t *pgp_select_key (pgp_key_t *keys,
 	else switch (KeyTable[menu->current]->trust & 0x03)
 	{
 	  case 0:
-	    s = N_("This ID's trust level is undefined.");
+	    s = N_("This ID's validity level is undefined.");
 	    break;
 	  case 1:
-	    s = N_("This ID is not trusted.");
+	    s = N_("This ID is not valid.");
 	    break;
 	  case 2:
-	    s = N_("This ID is only marginally trusted.");
+	    s = N_("This ID is only marginally valid.");
 	    break;
 	}
 
