@@ -22,3 +22,6 @@ stamp-doc-rc
 stamp-h
 muttbug.sh
 muttbug
+patchlist.c
+pgpewrap
+smime_keys
