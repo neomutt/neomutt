@@ -11,6 +11,9 @@ set pgp_decode_command="%?p?PGPPASSFD=0; export PGPPASSFD;? cat %?p?-? %f | pgpv
 # verify a pgp/mime signature
 set pgp_verify_command="pgpv +language=mutt +verbose=0 +batchmode --OutputInformationFD=1 %f %s"
 
+# string that the verify command outputs if the signature is good
+set pgp_good_sign = "Good signature"
+
 # decrypt a pgp/mime attachment
 set pgp_decrypt_command="PGPPASSFD=0; export PGPPASSFD; cat - %f | pgpv +language=mutt +verbose=0 +batchmode --OutputInformationFD=2 -f"
 

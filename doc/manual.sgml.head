@@ -199,18 +199,19 @@ the disposition of each message is printed beside the message number.
 Zero or more of the following ``flags'' may appear, which mean:
 
 <p>
-<tscreen><verb>
-D       message is deleted
-K       contains a PGP public key
-M       requires mailcap to view
-N       message is new
-O       message is old
-P       message is PGP encrypted
-r       message has been replied to
-S       message is PGP signed
-!       message is flagged
-*       message is tagged
-</verb></tscreen>
+<descrip>
+<tag/D/ message is deleted (is marked for deletion)
+<tag/d/ message have attachments marked for deletion
+<tag/K/ contains a PGP public key
+<tag/N/ message is new
+<tag/O/ message is old
+<tag/P/ message is PGP encrypted
+<tag/r/ message has been replied to
+<tag/S/ message is PGP signed, and the signature is succesfully verified
+<tag/s/ message is PGP signed
+<tag/!/ message is flagged
+<tag/*/ message is tagged
+</descrip>
 
 Some of the status flags can be turned on or off using
 <itemize>

@@ -1102,6 +1102,14 @@ struct option_t MuttVars[] = {
   ** .dt %[<s>] .dd date of the key where <s> is an strftime(3) expression
   ** .de
   */
+  { "pgp_good_sign",	DT_RX,  R_NONE, UL &PgpGoodSign, UL "" },
+  /*
+  ** .pp
+  ** If you assign a text to this variable, then a PGP signature is only
+  ** considered verified if the output from $$pgp_verify_command contains
+  ** the text. Use this variable if the exit code from the command is 0
+  ** even for bad signatures.
+  */ 
   { "pgp_long_ids",	DT_BOOL, R_NONE, OPTPGPLONGIDS, 0 },
   /*
   ** .pp

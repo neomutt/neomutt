@@ -550,8 +550,8 @@ static int pgp_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
   char sigfile[_POSIX_PATH_MAX], pgperrfile[_POSIX_PATH_MAX];
   FILE *fp, *pgpout, *pgperr;
   pid_t thepid;
-  int rv = -1;
-  
+  int badsig = -1;
+
   snprintf (sigfile, sizeof (sigfile), "%s.asc", tempfile);
   
   if(!(fp = safe_fopen (sigfile, "w")))
@@ -578,14 +578,36 @@ static int pgp_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
 				   -1, -1, fileno(pgperr),
 				   tempfile, sigfile)) != -1)
   {
-    mutt_copy_stream(pgpout, s->fpout);
+    if (PgpGoodSign.pattern)
+    {
+      char *line = NULL;
+      int lineno = 0;
+      size_t linelen;
+
+      while ((line = mutt_read_line (line, &linelen, pgpout, &lineno)) != NULL)
+      {
+	if (regexec (PgpGoodSign.rx, line, 0, NULL, 0) == 0)
+	  badsig = 0;
+
+	fputs (line, s->fpout);
+	fputc ('\n', s->fpout);
+      }
+      safe_free ((void **) &line);
+    }
+    else
+    {
+      mutt_copy_stream(pgpout, s->fpout);
+      badsig = 0;
+    }
+
     fclose (pgpout);
     fflush(pgperr);
     rewind(pgperr);
     mutt_copy_stream(pgperr, s->fpout);
     fclose(pgperr);
     
-    rv = mutt_wait_filter (thepid);
+    if (mutt_wait_filter (thepid))
+      badsig = -1;
   }
   
   state_puts (_("[-- End of PGP output --]\n\n"), s);
@@ -593,7 +615,7 @@ static int pgp_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
   mutt_unlink (sigfile);
   mutt_unlink (pgperrfile);
 
-  return rv;
+  return badsig;
 }
 
 /*

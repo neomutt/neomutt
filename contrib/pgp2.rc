@@ -44,3 +44,5 @@ set pgp_list_pubring_command="pgpring -2 %r"
 # read in the secret key ring
 set pgp_list_secring_command="pgpring -s -2 %r"
 
+# pattern for good signature
+set pgp_good_sign="Good signature"

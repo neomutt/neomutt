@@ -21,6 +21,8 @@
 
 #include "pgplib.h"
 
+WHERE REGEXP PgpGoodSign;
+
 WHERE char *PgpSignAs;
 WHERE char *PgpSignMicalg;
 WHERE short PgpTimeout;

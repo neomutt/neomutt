@@ -143,8 +143,9 @@ int mutt_display_message (HEADER *cur)
     pager_t info;
 
 #ifdef HAVE_PGP
-    if (cur->pgp & PGPGOODSIGN)
-      mutt_message _("PGP signature successfully verified.");
+    mutt_message ((cur->pgp & PGPGOODSIGN) ?
+		  _("PGP signature successfully verified.") :
+		  _("PGP signature could NOT be verified."));
 #endif
 
     /* Invoke the builtin pager */
