@@ -42,18 +42,21 @@
 #define READ_X509_KEY(fp, key)	PEM_read_X509(fp, key, NULL)
 #endif
 
+/* Just in case OpenSSL doesn't define DEVRANDOM */
+#ifndef DEVRANDOM
+#define DEVRANDOM "/dev/urandom"
+#endif
+
 /* This is ugly, but as RAND_status came in on OpenSSL version 0.9.5
  * and the code has to support older versions too, this is seemed to
  * be cleaner way compared to having even uglier #ifdefs all around.
  */
 #ifdef HAVE_RAND_STATUS
 #define HAVE_ENTROPY()	(RAND_status() == 1)
-#define GOT_ENTROPY()	return 0;
 #else
-static int needentropy = 1;
+static int entropy_byte_count = 0;
 /* OpenSSL fills the entropy pool from /dev/urandom if it exists */
-#define HAVE_ENTROPY()	(!access("/dev/urandom", R_OK) || !needentropy)
-#define GOT_ENTROPY()	do { needentropy = 0; return 0; } while (0)
+#define HAVE_ENTROPY()	(!access(DEVRANDOM, R_OK) || entropy_byte_count >= 16)
 #endif
 
 char *SslCertFile = NULL;
@@ -67,6 +70,7 @@ typedef struct _sslsockdata
 }
 sslsockdata;
 
+static int add_entropy (const char *file);
 /* 
  * OpenSSL library needs to be fed with sufficient entropy. On systems
  * with /dev/urandom, this is done transparently by the library itself,
@@ -79,45 +83,65 @@ sslsockdata;
  */
 int ssl_init (void)
 {
-  char path[_POSIX_PATH_MAX], *file;
+  char path[_POSIX_PATH_MAX];
 
   if (HAVE_ENTROPY()) return 0;
   
-  mutt_message (_("Filling entropy pool"));
+ /* load entropy from files */
+  add_entropy (SslEntropyFile);
+  add_entropy (RAND_file_name (path, sizeof (path)));
   
-  /* try egd */
+   /* load entropy from egd sockets */
 #ifdef HAVE_RAND_EGD
-  file = SslEntropyFile;
-  if (file && RAND_egd(file) != -1)
-    GOT_ENTROPY();
-  file = getenv("EGDSOCKET");
-  if (file && RAND_egd(file) != -1)
-    GOT_ENTROPY();
+  add_entropy (getenv ("EGDSOCKET"));
   snprintf (path, sizeof(path), "%s/.entropy", NONULL(Homedir));
-  if (RAND_egd(path) != -1)
-    GOT_ENTROPY();
-  if (RAND_egd("/tmp/entropy") != -1)
-    GOT_ENTROPY();
+  add_entropy (path);
+  add_entropy ("/tmp/entropy");
 #endif
 
-  /* try some files */
-  file = SslEntropyFile;
-  if (!file || access(file, R_OK) == -1)
-    file = getenv("RANDFILE");
-  if (!file || access(file, R_OK) == -1) {
-    snprintf (path, sizeof(path), "%s/.rnd", NONULL(Homedir));
-    file = path;
-  }
-  if (access(file, R_OK) == 0) {
-    if (RAND_load_file(file, 10240) >= 16)
-      GOT_ENTROPY();
-  }
-
+  /* shuffle $RANDFILE (or ~/.rnd if unset) */
+  RAND_write_file (RAND_file_name (path, sizeof (path)));
+  mutt_clear_error ();
   if (HAVE_ENTROPY()) return 0;
 
   mutt_error (_("Failed to find enough entropy on your system"));
   sleep (2);
   return -1;
+}
+
+static int add_entropy (const char *file)
+{
+  struct stat st;
+  int n = -1;
+
+  if (!file) return 0;
+
+  if (stat (file, &st) == -1)
+    return errno == ENOENT ? 0 : -1;
+
+  mutt_message (_("Filling entropy pool: %s...\n"),
+		file);
+  
+  /* check that the file permissions are secure */
+  if (st.st_uid != getuid () || 
+      ((st.st_mode & (S_IWGRP | S_IRGRP)) != 0) ||
+      ((st.st_mode & (S_IWOTH | S_IROTH)) != 0))
+  {
+    mutt_error (_("%s has insecure permissions!"), file);
+    sleep (2);
+    return -1;
+  }
+
+#ifdef HAVE_RAND_EGD
+  n = RAND_egd (file);
+#endif
+  if (n <= 0)
+    n = RAND_load_file (file, -1);
+
+#ifndef HAVE_RAND_STATUS
+  if (n > 0) entropy_byte_count += n;
+#endif
+  return n;
 }
 
 void imap_set_ssl (IMAP_MBOX *mx)
@@ -144,7 +168,8 @@ static int ssl_socket_close (CONNECTION * conn);
 
 int ssl_socket_setup (CONNECTION * conn)
 {
-  if (ssl_init() < 0) {
+  if (ssl_init() < 0)
+  {
     conn->open = ssl_socket_open_err;
     return -1;
   }
@@ -230,7 +255,8 @@ int ssl_socket_open (CONNECTION * conn)
 int ssl_socket_close (CONNECTION * conn)
 {
   sslsockdata *data = conn->sockdata;
-  if (data) {
+  if (data)
+  {
     SSL_shutdown (data->ssl);
 
     X509_free (data->cert);
