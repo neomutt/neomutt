@@ -313,7 +313,7 @@ void attach_entry (char *b, size_t blen, MUTTMENU *menu, int num)
 
 int mutt_tag_attach (MUTTMENU *menu, int n)
 {
-  return (((ATTACHPTR **) menu->data)[n]->content->tagged = !((ATTACHPTR **) menu->data)[n]->content->tagged);
+  return ((((ATTACHPTR **) menu->data)[n]->content->tagged = !((ATTACHPTR **) menu->data)[n]->content->tagged) ? 1 : -1);
 }
 
 int mutt_is_message_type (int type, const char *subtype)

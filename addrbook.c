@@ -85,7 +85,7 @@ void alias_entry (char *s, size_t slen, MUTTMENU *m, int num)
 
 int alias_tag (MUTTMENU *menu, int n)
 {
-  return (((ALIAS **) menu->data)[n]->tagged = !((ALIAS **) menu->data)[n]->tagged);
+  return ((((ALIAS **) menu->data)[n]->tagged = !((ALIAS **) menu->data)[n]->tagged) ? 1 : -1);
 }
 
 static int alias_SortAlias (const void *a, const void *b)

@@ -184,7 +184,8 @@ void mutt_sanitize_filename (char *);
 void mutt_save_path (char *s, size_t l, ADDRESS *a);
 void mutt_score_message (HEADER *);
 void mutt_select_fcc (char *, size_t, HEADER *);
-void mutt_select_file (char *, size_t, int);
+#define mutt_select_file(A,B,C) _mutt_select_file(A,B,C,0,NULL,NULL)
+void _mutt_select_file (char *, size_t, int, int, char ***, int *);
 void mutt_send_hook (HEADER *);
 void mutt_set_flag (CONTEXT *, HEADER *, int, int);
 void mutt_set_followup_to (ENVELOPE *);
@@ -228,9 +229,12 @@ int mutt_decode_save_attachment (FILE *, BODY *, char *, int, int);
 int mutt_display_message (HEADER *h);
 int mutt_edit_attachment(BODY *);
 int mutt_prepare_edit_message(CONTEXT *, HEADER *, HEADER *);
-int mutt_enter_fname (const char *, char *, size_t, int *, int);
-int mutt_enter_string (unsigned char *, size_t, int, int, int);
-int mutt_get_field (char *, char *, size_t, int);
+#define mutt_enter_fname(A,B,C,D,E) _mutt_enter_fname(A,B,C,D,E,0,NULL,NULL)
+int _mutt_enter_fname (const char *, char *, size_t, int *, int, int, char ***, int *);
+#define mutt_enter_string(A,B,C,D,E) _mutt_enter_string(A,B,C,D,E,0,NULL,NULL)
+int _mutt_enter_string (unsigned char *, size_t, int, int, int, int, char ***, int *);
+#define mutt_get_field(A,B,C,D) _mutt_get_field(A,B,C,D,0,NULL,NULL)
+int _mutt_get_field (char *, char *, size_t, int, int, char ***, int *);
 int mutt_get_password (char *, char *, size_t);
 int mutt_get_postponed (CONTEXT *, HEADER *, HEADER **, char *, size_t);
 int mutt_get_tmp_attachment (BODY *);

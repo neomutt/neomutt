@@ -40,6 +40,7 @@ struct folder_file
   off_t size;
   char *name;
   char *desc;
+  short tagged;
 };
 
 struct browser_state
@@ -320,6 +321,7 @@ static void init_state (struct browser_state *state, MUTTMENU *menu)
   state->entrylen = 0;
   state->entrymax = 256;
   state->entry = (struct folder_file *) safe_malloc (sizeof (struct folder_file) * state->entrymax);
+  memset (state->entry, 0, sizeof (struct folder_file) * state->entrymax);
   if (menu)
     menu->data = state->entry;
 }
@@ -428,7 +430,10 @@ int select_file_search (MUTTMENU *menu, regex_t *re, int n)
 
 void folder_entry (char *s, size_t slen, MUTTMENU *menu, int num)
 {
-  snprintf (s, slen, "%2d %s", num + 1, ((struct folder_file *) menu->data)[num].desc);
+  snprintf (s, slen, "%2d %c %s", 
+	    num + 1, 
+	    ((struct folder_file *) menu->data)[num].tagged ? '*' : ' ',
+	    ((struct folder_file *) menu->data)[num].desc);
 }
 
 static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
@@ -457,7 +462,20 @@ static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
   menu->redraw = REDRAW_FULL;
 }
 
-void mutt_select_file (char *f, size_t flen, int buffy)
+int file_tag (MUTTMENU *menu, int n)
+{
+  struct folder_file *ff = &(((struct folder_file *)menu->data)[n]);
+  if (S_ISDIR (ff->mode) || (S_ISLNK (ff->mode) && link_is_dir (ff->name)))
+  {
+    mutt_error _("Can't attach a directory!");
+    return 0;
+  }
+  
+  return ((ff->tagged = !ff->tagged) ? 1 : -1);
+}
+
+void _mutt_select_file (char *f, size_t flen, int buffy,
+		       int multiple, char ***files, int *numfiles)
 {
   char buf[_POSIX_PATH_MAX];
   char prefix[_POSIX_PATH_MAX] = "";
@@ -522,6 +540,8 @@ void mutt_select_file (char *f, size_t flen, int buffy)
   menu->search = select_file_search;
   menu->title = title;
   menu->data = state.entry;
+  if (multiple)
+    menu->tag = file_tag;
 
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_FOLDER, FolderHelp);
 
@@ -623,6 +643,38 @@ void mutt_select_file (char *f, size_t flen, int buffy)
 	/* Fall through to OP_EXIT */
 
       case OP_EXIT:
+
+	if (multiple)
+	{
+	  char **tfiles;
+	  int i, j;
+
+	  if (menu->tagged)
+	  {
+	    *numfiles = menu->tagged;
+	    tfiles = safe_malloc (*numfiles * sizeof (char *));
+	    for (i = 0, j = 0; i < state.entrylen; i++)
+	    {
+	      struct folder_file ff = state.entry[i];
+	      char full[_POSIX_PATH_MAX];
+	      if (ff.tagged)
+	      {
+		snprintf (full, sizeof (full), "%s/%s", LastDir, ff.name);
+		mutt_expand_path (full, sizeof (full));
+		tfiles[j++] = safe_strdup (full);
+	      }
+	    }
+	    *files = tfiles;
+	  }
+	  else if (f[0]) /* no tagged entries. return selected entry */
+	  {
+	    *numfiles = 1;
+	    tfiles = safe_malloc (*numfiles * sizeof (char *));
+	    mutt_expand_path (f, flen);
+	    tfiles[0] = safe_strdup (f);
+	    *files = tfiles;
+	  }
+	}
 
 	destroy_state (&state);
 	mutt_menuDestroy (&menu);

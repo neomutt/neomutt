@@ -180,7 +180,7 @@ static void query_entry (char *s, size_t slen, MUTTMENU *m, int num)
 
 static int query_tag (MUTTMENU *menu, int n)
 {
-  return (((ENTRY *) menu->data)[n].tagged = !((ENTRY *) menu->data)[n].tagged);
+  return ((((ENTRY *) menu->data)[n].tagged = !((ENTRY *) menu->data)[n].tagged) ? 1 : -1);
 }
 
 int mutt_query_complete (char *buf, size_t buflen)
