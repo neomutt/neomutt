@@ -1,3 +1,9 @@
+2004-08-31 07:37:24  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* recvattach.c: Remove *two* layers of S/MIME from messages
+	before building the attachment tree.  A generic solution would
+	remove intransparent encodings all the way down the tree.
+
 2004-08-30 20:10:10  Moritz Schulte  <mo@g10code.com>  (roessler)
 
 	* compose.c: Only print additional information related to PGP
