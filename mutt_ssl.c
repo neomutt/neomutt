@@ -303,7 +303,7 @@ int ssl_negotiate (sslsockdata* ssldata)
   int err;
   const char* errmsg;
 
-#if OPENSSL_VERSION_NUMBER >= 0x0090600
+#if OPENSSL_VERSION_NUMBER >= 0x00906000L
   /* This only exists in 0.9.6 and above. Without it we may get interrupted
    *   reads or writes. Bummer. */
   SSL_set_mode (ssldata->ssl, SSL_MODE_AUTO_RETRY);
