@@ -392,6 +392,7 @@ if test ! -f $mutt_cv_charmaps/ISO_10646 ; then
 		mutt_cv_add_subdirs=""
 		echo "If you want character set support, read INSTALL". >& AC_FD_MSG
         fi
+	need_charmaps=yes
 else
 	AC_MSG_RESULT(yes)
 fi
@@ -406,7 +407,7 @@ fi
 AC_DEFINE_UNQUOTED(CHARMAPS_DIR, "$mutt_cv_charmaps")
 charmaps=$mutt_cv_charmaps
 AC_SUBST(charmaps)
-		       
+AM_CONDITIONAL(BUILD_CHARMAPS, test x$need_charmaps = xyes)
 
 AC_ARG_WITH(docdir, [  --with-docdir=PATH       specify where to put the documentation],
 	[mutt_cv_docdir=$withval],
@@ -447,10 +448,14 @@ AC_ARG_ENABLE(pop, [  --enable-pop               Enable POP3 support],
   
 AC_ARG_ENABLE(imap, [  --enable-imap              Enable IMAP support],
 [	AC_DEFINE(USE_IMAP)
+	AC_PROG_RANLIB
  	AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(socket, setsockopt))
  	AC_CHECK_FUNC(gethostent, , AC_CHECK_LIB(nsl, gethostent))
-  	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS imap.o socket.o"
+	LIBIMAP="-Limap -limap"
+	CPPFLAGS="$CPPFLAGS -I\$(srcdir)/imap"
+	need_imap="yes"
 ])
+AM_CONDITIONAL(BUILD_IMAP, test x$need_imap = xyes)
 
 AC_ARG_ENABLE(debug, [  --enable-debug		Enable debugging support],
 	[ AC_DEFINE(DEBUG) ])
@@ -504,9 +509,7 @@ AC_ARG_ENABLE(exact-address, [  --enable-exact-address     enable regeneration o
 	fi])
 
 AC_SUBST(MUTT_LIB_OBJECTS)
-
-ADD_SUBDIRS="$mutt_cv_add_subdirs"
-AC_SUBST(ADD_SUBDIRS)
+AC_SUBST(LIBIMAP)
 
 MUTT_AM_GNU_GETTEXT
 CPPFLAGS="$CPPFLAGS -I\$(srcdir)/intl"
@@ -515,5 +518,6 @@ MUTTLOCALEDIR=$mutt_cv_prefix/$DATADIRNAME/locale
 AC_SUBST(MUTTLOCALEDIR)
 AC_DEFINE_UNQUOTED(MUTTLOCALEDIR, "$MUTTLOCALEDIR")
 
-AC_OUTPUT(Makefile intl/Makefile m4/Makefile po/Makefile.in doc/Makefile contrib/Makefile charmaps/Makefile)
-
+AC_OUTPUT(Makefile intl/Makefile m4/Makefile dnl
+	po/Makefile.in doc/Makefile contrib/Makefile dnl
+	charmaps/Makefile imap/Makefile)

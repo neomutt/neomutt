@@ -6,6 +6,16 @@
 AUTOMAKE_OPTIONS = foreign
 EXTRA_PROGRAMS = mutt_dotlock pgpring
 
+if BUILD_CHARMAPS
+CHARMAP_SUBDIR = charmaps
+endif
+
+if BUILD_IMAP
+IMAP_SUBDIR = imap
+endif
+
+SUBDIRS = m4 po intl doc contrib $(CHARMAP_SUBDIR) $(IMAP_SUBDIR)
+
 if NEEDS_PGPEWRAP
 bin_SCRIPTS = pgpewrap
 else
@@ -16,7 +26,7 @@ BUILT_SOURCES = keymap_defs.h
 
 bin_PROGRAMS = mutt @DOTLOCK_TARGET@ @PGPAUX_TARGET@
 mutt_SOURCES = $(BUILT_SOURCES) \
-	addrbook.c alias.c attach.c browser.c buffy.c color.c \
+	addrbook.c alias.c attach.c base64.c browser.c buffy.c color.c \
 	commands.c complete.c compose.c copy.c curs_lib.c curs_main.c date.c \
 	edit.c enter.c flags.c init.c filter.c from.c getdomain.c \
 	handler.c hash.c hdrline.c headers.c help.c hook.c keymap.c \
@@ -27,7 +37,7 @@ mutt_SOURCES = $(BUILT_SOURCES) \
 	status.c system.c thread.c charset.c history.c lib.c \
 	muttlib.c
 
-mutt_LDADD = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(INTLLIBS) 
+mutt_LDADD = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAP) $(INTLLIBS) 
 mutt_DEPENDENCIES = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(INTLDEPS)
 
 DEFS=-DSHAREDIR=\"$(sharedir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
@@ -41,14 +51,13 @@ non_us_sources = pgp.c pgpinvoke.c pgpkey.c pgplib.c sha1dgst.c \
 	contrib/pgp2.rc contrib/pgp5.rc contrib/gpg.rc
 
 EXTRA_mutt_SOURCES = pgp.c pgpinvoke.c pgpkey.c pgplib.c sha1dgst.c \
-	gnupgparse.c resize.c dotlock.c pop.c imap.c socket.c
-	remailer.c remailer.h browser.h
+	gnupgparse.c resize.c dotlock.c pop.c remailer.c remailer.h browser.h
 
 EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO configure acconfig.h attach.h \
 	buffy.h charset.h config.h copy.h dotlock.h functions.h gen_defs \
-	globals.h hash.h history.h imap.h init.h keymap.h \
+	globals.h hash.h history.h init.h keymap.h \
 	mailbox.h mapping.h mime.h mutt.h mutt_curses.h mutt_menu.h  \
-	mutt_regex.h mutt_socket.h mx.h pager.h parse.h pgp.h protos.h  \
+	mutt_regex.h mx.h pager.h parse.h pgp.h protos.h  \
 	reldate.h rfc1524.h rfc2047.h rfc2231.h rfc822.h sha.h sha_locl.h \
 	sort.h mime.types VERSION prepare _regex.h OPS.MIX	\
 	README.SECURITY remailer.c remailer.h browser.h \
@@ -72,8 +81,6 @@ CLEANFILES = mutt_dotlock.c stamp-doc-rc
 ACLOCAL_AMFLAGS = -I m4
 
 LDADD = @LIBOBJS@ @INTLLIBS@
-
-SUBDIRS = m4 po intl doc contrib $(ADD_SUBDIRS)
 
 OPS=@OPS@
 

@@ -25,24 +25,21 @@
 #include "mx.h"
 #include "mailbox.h"
 #include "globals.h"
-#include "mutt_socket.h"
 #include "sort.h"
 #include "browser.h"
 #include "imap.h"
+#include "imap_private.h"
+#include "imap_socket.h"
 
 #include <unistd.h>
+#include <ctype.h>
 #include <netinet/in.h>
 #include <netdb.h>
 #include <string.h>
-#include <ctype.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
-
-
-
-
 
 
 #ifdef _PGPPATH
@@ -50,186 +47,29 @@
 #endif
 
 
-
-
-
-
-#define IMAP_PORT 143
-
-#define SEQLEN 5
-
-/* number of entries in the hash table */
-#define IMAP_CACHE_LEN 10
-
-enum
-{
-  IMAP_FATAL = 1,
-  IMAP_NEW_MAIL,
-  IMAP_EXPUNGE,
-  IMAP_BYE,
-  IMAP_OK_FAIL,
-  IMAP_REOPENED
-};
-
-/* Capabilities */
-enum
-{
-  IMAP4 = 0,
-  IMAP4REV1,
-  STATUS,
-  ACL,				/* RFC 2086: IMAP4 ACL extension */
-  NAMESPACE,                   	/* RFC 2342: IMAP4 Namespace */
-  /* From here down, we don't care */
-  ACRAM_MD5,			/* AUTH=CRAM-MD5 */
-  AKERBEROS_V4,			/* AUTH=KERBEROS_V4 */
-  AGSSAPI,			/* AUTH=GSSAPI */
-  ALOGIN,			/* AUTH=LOGIN */
-  AUTH_LOGIN,			/* AUTH-LOGIN */
-  APLAIN,			/* AUTH=PLAIN */
-  ASKEY,			/* AUTH=SKEY */
-  IDLE,				/* RFC 2177: IMAP4 IDLE command */
-  LOGIN_REFERRALS,		/* LOGIN-REFERRALS */
-  MAILBOX_REFERRALS,		/* MAILBOX-REFERRALS */
-  SCAN,
-  SORT,
-  TORDEREDSUBJECT,		/* THREAD=ORDEREDSUBJECT */
-  UIDPLUS,			/* RFC 2859: IMAP4 UIDPLUS extension */
-  
-  CAPMAX
-};
-
 static char *Capabilities[] = {"IMAP4", "IMAP4rev1", "STATUS", "ACL", 
   "NAMESPACE", "AUTH=CRAM-MD5", "AUTH=KERBEROS_V4", "AUTH=GSSAPI", 
   "AUTH=LOGIN", "AUTH-LOGIN", "AUTH=PLAIN", "AUTH=SKEY", "IDLE", 
   "LOGIN-REFERRALS", "MAILBOX-REFERRALS", "QUOTA", "SCAN", "SORT", 
   "THREAD=ORDEREDSUBJECT", "UIDPLUS", NULL};
 
-/* ACL Rights */
-enum
-{
-  IMAP_ACL_LOOKUP = 0,
-  IMAP_ACL_READ,
-  IMAP_ACL_SEEN,
-  IMAP_ACL_WRITE,
-  IMAP_ACL_INSERT,
-  IMAP_ACL_POST,
-  IMAP_ACL_CREATE,
-  IMAP_ACL_DELETE,
-  IMAP_ACL_ADMIN,
-
-  RIGHTSMAX
-};
-
-enum
-{
-  /* States */
-  IMAP_DISCONNECTED = 0,
-  IMAP_CONNECTED,
-  IMAP_AUTHENTICATED,
-  IMAP_SELECTED
-};
-
-typedef struct
-{
-  unsigned int index;
-  char *path;
-} IMAP_CACHE;
-
-typedef struct
-{
-  /* This data is specific to a CONNECTION to an IMAP server */
-  short status;
-  short state;
-  short check_status;
-  char delim;
-  unsigned char capabilities[(CAPMAX + 7)/8];
-  CONNECTION *conn;
-
-  /* The following data is all specific to the currently SELECTED mbox */
-  CONTEXT *selected_ctx;
-  char *selected_mailbox;
-  unsigned char rights[(RIGHTSMAX + 7)/8];
-  unsigned int newMailCount;
-  IMAP_CACHE cache[IMAP_CACHE_LEN];
-} IMAP_DATA;
-
-#define CTX_DATA ((IMAP_DATA *) ctx->data)
-#define CONN_DATA ((IMAP_DATA *) conn->data)
-
-/* Linked list to hold header information while downloading message
- * headers
- */
-typedef struct imap_header_info
-{
-  unsigned int read : 1;
-  unsigned int old : 1;
-  unsigned int deleted : 1;
-  unsigned int flagged : 1;
-  unsigned int replied : 1;
-  unsigned int changed : 1;
-  unsigned int number;
-
-  time_t received;
-  long content_length;
-  struct imap_header_info *next;
-} IMAP_HEADER_INFO;
-
-enum
-{
-  /* Namespace types */
-  IMAP_NS_PERSONAL = 0,
-  IMAP_NS_OTHER,
-  IMAP_NS_SHARED
-};
-
-typedef struct 
-{
-  int type;
-  int listable;
-  char *prefix;
-  char delim;
-  int home_namespace;
-  /* We get these when we check if namespace exists - cache them */
-  int noselect;			
-  int noinferiors;
-} IMAP_NAMESPACE_INFO;
-
 /* imap forward declarations */
-static void imap_make_sequence (char *buf, size_t buflen);
-static void imap_error (const char *where, const char *msg);
 static time_t imap_parse_date (char *s);
 static int imap_parse_fetch (IMAP_HEADER_INFO *h, char *s);
-static void imap_quote_string (char *dest, size_t slen, const char *src);
-static void imap_unquote_string (char *s);
 static int imap_read_bytes (FILE *fp, CONNECTION *conn, long bytes);
-static int imap_code (const char *s);
-static char *imap_next_word (char *s);
 static int imap_wordcasecmp(const char *a, const char *b);
 static void imap_parse_capabilities (IMAP_DATA *idata, char *s);
-static int imap_handle_untagged (IMAP_DATA *idata, char *s);
 static int get_literal_count(const char *buf, long *bytes);
 static int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend);
 static int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint);
-static int imap_exec (char *buf, size_t buflen, IMAP_DATA *idata,
-  const char *seq, const char *cmd, int flags);
 static int imap_get_delim (IMAP_DATA *idata, CONNECTION *conn);
-static int imap_parse_path (char *path, char *host, size_t hlen, int *port, 
-  char **mbox);
-static char *imap_fix_path (IMAP_DATA *idata, char *mailbox, char *path, 
-  size_t plen);
 static int imap_check_acl (IMAP_DATA *idata);
 static int imap_check_capabilities (IMAP_DATA *idata);
-static int imap_authenticate (IMAP_DATA *idata, CONNECTION *conn);
-static int imap_open_connection (IMAP_DATA *idata, CONNECTION *conn);
-int imap_open_mailbox (CONTEXT *ctx);
-int imap_select_mailbox (CONTEXT* ctx, const char* path);
 static int imap_create_mailbox (IMAP_DATA *idata, char *mailbox);
-int imap_open_mailbox_append (CONTEXT *ctx);
-int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno);
 
 /* everything above should be moved into a separate imap header file */
 
-static void imap_make_sequence (char *buf, size_t buflen)
+void imap_make_sequence (char *buf, size_t buflen)
 {
   static int sequence = 0;
   
@@ -239,7 +79,7 @@ static void imap_make_sequence (char *buf, size_t buflen)
     sequence = 0;
 }
 
-static void imap_error (const char *where, const char *msg)
+void imap_error (const char *where, const char *msg)
 {
   mutt_error (_("imap_error(): unexpected response in %s: %s\n"), where, msg);
 }
@@ -414,7 +254,7 @@ static int imap_parse_fetch (IMAP_HEADER_INFO *h, char *s)
   return 0;
 }
 
-static void imap_quote_string (char *dest, size_t slen, const char *src)
+void imap_quote_string (char *dest, size_t slen, const char *src)
 {
   char quote[] = "\"\\", *pt;
   const char *s;
@@ -447,7 +287,7 @@ static void imap_quote_string (char *dest, size_t slen, const char *src)
   *pt = 0;
 }
 
-static void imap_unquote_string (char *s)
+void imap_unquote_string (char *s)
 {
   char *d = s;
 
@@ -497,14 +337,14 @@ static int imap_read_bytes (FILE *fp, CONNECTION *conn, long bytes)
 }
 
 /* returns 1 if the command result was OK, or 0 if NO or BAD */
-static int imap_code (const char *s)
+int imap_code (const char *s)
 {
   s += SEQLEN;
   SKIPWS (s);
   return (mutt_strncasecmp ("OK", s, 2) == 0);
 }
 
-static char *imap_next_word (char *s)
+char *imap_next_word (char *s)
 {
   while (*s && !ISSPACE (*s))
     s++;
@@ -550,7 +390,7 @@ static void imap_parse_capabilities (IMAP_DATA *idata, char *s)
   }   
 }
 
-static int imap_handle_untagged (IMAP_DATA *idata, char *s)
+int imap_handle_untagged (IMAP_DATA *idata, char *s)
 {
   char *pn;
   int count;
@@ -1064,7 +904,7 @@ static int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint)
  * failing, this is used for checking for a mailbox on append and login
  * Return 0 on success, -1 on Failure, -2 on OK Failure
  */
-static int imap_exec (char *buf, size_t buflen, IMAP_DATA *idata,
+int imap_exec (char *buf, size_t buflen, IMAP_DATA *idata,
 		      const char *seq, const char *cmd, int flags)
 {
   int count;
@@ -1176,8 +1016,8 @@ static int imap_get_delim (IMAP_DATA *idata, CONNECTION *conn)
   return 0;
 }
 
-static int imap_parse_path (char *path, char *host, size_t hlen, int *port, 
-    char **mbox)
+int imap_parse_path (char *path, char *host, size_t hlen, int *port, 
+  char **mbox)
 {
   int n;
   char *pc;
@@ -1219,7 +1059,7 @@ static int imap_parse_path (char *path, char *host, size_t hlen, int *port,
  * delimiters into a single one, ie "///" is equal to "/".  IMAP servers
  * are not required to do this.
  */
-static char *imap_fix_path (IMAP_DATA *idata, char *mailbox, char *path, 
+char *imap_fix_path (IMAP_DATA *idata, char *mailbox, char *path, 
     size_t plen)
 {
   int x = 0;
@@ -1300,78 +1140,7 @@ static int imap_check_capabilities (IMAP_DATA *idata)
   return (0);
 }
 
-static int imap_authenticate (IMAP_DATA *idata, CONNECTION *conn)
-{
-  char buf[LONG_STRING];
-  char user[SHORT_STRING], q_user[SHORT_STRING];
-  char pass[SHORT_STRING], q_pass[SHORT_STRING];
-  char seq[16];
-
-  int r = 1;
-
-  while (r != 0)
-  {
-    if (!ImapUser)
-    {
-      strfcpy (user, NONULL(Username), sizeof (user));
-      if (mutt_get_field (_("IMAP Username: "), user, sizeof (user), 0) != 0 ||
-	  !user[0])
-      {
-	user[0] = 0;
-	return (-1);
-      }
-    }
-    else
-      strfcpy (user, ImapUser, sizeof (user));
-
-    if (!ImapPass)
-    {
-      pass[0]=0;
-      snprintf (buf, sizeof (buf), _("Password for %s@%s: "), user, conn->server);
-      if (mutt_get_field (buf, pass, sizeof (pass), M_PASS) != 0 ||
-	  !pass[0])
-      {
-	return (-1);
-      }
-    }
-    else
-      strfcpy (pass, ImapPass, sizeof (pass));
-
-    imap_quote_string (q_user, sizeof (q_user), user);
-    imap_quote_string (q_pass, sizeof (q_pass), pass);
-
-    mutt_message _("Logging in...");
-    imap_make_sequence (seq, sizeof (seq));
-    snprintf (buf, sizeof (buf), "%s LOGIN %s %s\r\n", seq, q_user, q_pass);
-    r = imap_exec (buf, sizeof (buf), idata, seq, buf, IMAP_OK_FAIL);
-    if (r == -1)
-    {
-      /* connection or protocol problem */
-      imap_error ("imap_open_connection()", buf);
-      return (-1);
-    }
-    else if (r == -2)
-    {
-      /* Login failed, try again */
-      mutt_error _("Login failed.");
-      sleep (1);
-      FREE (&ImapUser);
-      FREE (&ImapPass);
-    }
-    else
-    {
-      /* If they have a successful login, we may as well cache the 
-       * user/password. */
-      if (!ImapUser)
-	ImapUser = safe_strdup (user);
-      if (!ImapPass)
-	ImapPass = safe_strdup (pass);
-    }
-  }
-  return 0;
-}
-
-static int imap_open_connection (IMAP_DATA *idata, CONNECTION *conn)
+int imap_open_connection (IMAP_DATA *idata, CONNECTION *conn)
 {
   char buf[LONG_STRING];
 
@@ -2280,80 +2049,8 @@ int imap_buffy_check (char *path)
   return (retcode > 0) ? TRUE : retcode;
 }
 
-/* imap_add_folder: add a folder name to the browser list, formatting it as
- *   necessary. NOTE: check for duplicate folders removed, believed to be
- *   useless. Tell me if otherwise (brendan@kublai.com) */
-static void imap_add_folder (char delim, char *folder, int noselect,
-  int noinferiors, struct browser_state *state, short isparent)
-{
-  char tmp[LONG_STRING];
-  char relpath[LONG_STRING];
-  char host[SHORT_STRING];
-  int port;
-  char *curfolder;
-  int flen = strlen (folder);
-
-  if (imap_parse_path (state->folder, host, sizeof (host), &port, &curfolder))
-    return;
-
-  imap_unquote_string (folder);
-
-  /* plus 2: folder may be selectable AND have inferiors */
-  if (state->entrylen + 2 == state->entrymax)
-  {
-    safe_realloc ((void **) &state->entry,
-	sizeof (struct folder_file) * (state->entrymax += 256));
-  }
-
-  /* render superiors as unix-standard ".." */
-  if (isparent)
-    strfcpy (relpath, "../", sizeof (relpath));
-  /* strip current folder from target, to render a relative path */
-  else if (!strncmp (curfolder, folder, strlen (curfolder)))
-    strfcpy (relpath, folder + strlen (curfolder), sizeof (relpath));
-  else
-    strfcpy (relpath, folder, sizeof (relpath));
-
-  /* apply filemask filter. This should really be done at menu setup rather
-   * than at scan, since it's so expensive to scan. But that's big changes
-   * to browser.c */
-  if (!((regexec (Mask.rx, relpath, 0, NULL, 0) == 0) ^ Mask.not))
-    return;
-
-  if (!noselect)
-  {
-    imap_qualify_path (tmp, sizeof (tmp), host, port, folder, NULL);
-    (state->entry)[state->entrylen].name = safe_strdup (tmp);
-
-    snprintf (tmp, sizeof (tmp), "IMAP %-25s %-25s", host, relpath);
-    (state->entry)[state->entrylen].desc = safe_strdup (tmp);
-
-    (state->entry)[state->entrylen].notfolder = 0;
-    (state->entrylen)++;
-  }
-  if (!noinferiors)
-  {
-    char trailing_delim[2];
-
-    /* create trailing delimiter if necessary */
-    trailing_delim[1] = '\0';
-    trailing_delim[0] = (flen && folder[flen - 1] != delim) ? delim : '\0';
-
-    imap_qualify_path (tmp, sizeof (tmp), host, port, folder, trailing_delim);
-    (state->entry)[state->entrylen].name = safe_strdup (tmp);
-
-    if (strlen (relpath) < sizeof (relpath) - 2)
-      strcat (relpath, trailing_delim);
-    snprintf (tmp, sizeof (tmp), "IMAP %-25s %-25s", host, relpath);
-    (state->entry)[state->entrylen].desc = safe_strdup (tmp);
-
-    (state->entry)[state->entrylen].notfolder = 1;
-    (state->entrylen)++;
-  }
-}
-
-static int imap_parse_list_response(CONNECTION *conn, char *buf, int buflen,
-    char **name, int *noselect, int *noinferiors, char *delim)
+int imap_parse_list_response(CONNECTION *conn, char *buf, int buflen,
+  char **name, int *noselect, int *noinferiors, char *delim)
 {
   IMAP_DATA *idata = CONN_DATA;
   char *s;
@@ -2425,380 +2122,6 @@ static int imap_parse_list_response(CONNECTION *conn, char *buf, int buflen,
     }
   }
   return (0);
-}
-
-static int add_list_result (CONNECTION *conn, const char *seq, const char *cmd,
-			    struct browser_state *state, short isparent)
-{
-  IMAP_DATA *idata = CONN_DATA;
-  char buf[LONG_STRING];
-  char host[SHORT_STRING];
-  int port;
-  char *curfolder;
-  char *name;
-  int noselect;
-  int noinferiors;
-
-  if (imap_parse_path (state->folder, host, sizeof (host), &port, &curfolder))
-  {
-    dprint (2, (debugfile,
-      "add_list_result: current folder %s makes no sense\n", state->folder));
-    return -1;
-  }
-
-  mutt_socket_write (conn, cmd);
-
-  do 
-  {
-    if (imap_parse_list_response(conn, buf, sizeof(buf), &name,
-        &noselect, &noinferiors, &(idata->delim)) != 0)
-      return -1;
-
-    if (name)
-    {
-      imap_unquote_string (name);
-      /* prune current folder from output */
-      if (isparent || strncmp (name, curfolder, strlen (name)))
-        imap_add_folder (idata->delim, name, noselect, noinferiors, state,
-          isparent);
-    }
-  }
-  while ((mutt_strncmp (buf, seq, SEQLEN) != 0));
-  return (0);
-}
-
-static int get_namespace (IMAP_DATA *idata, char *nsbuf, int nsblen, 
-			  IMAP_NAMESPACE_INFO *nsi, int nsilen, int *nns)
-{
-  char buf[LONG_STRING];
-  char seq[16];
-  char *s;
-  int n;
-  char ns[LONG_STRING];
-  char delim = '/';
-  int type;
-  int nsbused = 0;
-
-  *nns = 0;
-  nsbuf[nsblen-1] = '\0';
-
-  imap_make_sequence (seq, sizeof (seq));
-  snprintf (buf, sizeof (buf), "%s NAMESPACE\r\n", seq);
-
-  mutt_socket_write (idata->conn, buf);
-  do 
-  {
-    if (mutt_socket_read_line_d (buf, sizeof (buf), idata->conn) < 0)
-    {
-      return (-1);
-    }
-
-    if (buf[0] == '*') 
-    {
-      s = imap_next_word (buf);
-      if (mutt_strncasecmp ("NAMESPACE", s, 9) == 0)
-      {
-	/* There are three sections to the response, User, Other, Shared,
-	 * and maybe more by extension */
-	for (type = IMAP_NS_PERSONAL; *s; type++)
-	{
-	  s = imap_next_word (s);
-	  if (*s && strncmp (s, "NIL", 3))
-	  {
-	    s++;
-	    while (*s && *s != ')')
-	    {
-	      s++; /* skip ( */
-	      /* copy namespace */
-	      n = 0;
-	      if (*s == '\"')
-	      {
-		s++;
-		while (*s && *s != '\"') 
-		{
-		  if (*s == '\\')
-		    s++;
-		  ns[n++] = *s;
-		  s++;
-		}
-	      }
-	      else
-		while (*s && !ISSPACE (*s)) 
-		{
-		  ns[n++] = *s;
-		  s++;
-		}
-	      ns[n] = '\0';
-	      /* delim? */
-	      s = imap_next_word (s);
-	      if (*s && *s == '\"')
-              {
-		if (s[1] && s[2] == '\"')
-		  delim = s[1];
-		else if (s[1] && s[1] == '\\' && s[2] && s[3] == '\"')
-		  delim = s[2];
-              }
-	      /* Save result (if space) */
-	      if ((nsbused < nsblen) && (*nns < nsilen))
-	      {
-		nsi->type = type;
-		strncpy(nsbuf+nsbused,ns,nsblen-nsbused-1);
-		nsi->prefix = nsbuf+nsbused;
-		nsbused += n+1;
-		nsi->delim = delim;
-		nsi++;
-		(*nns)++;
-	      }
-	      while (*s && *s != ')') s++;
-	      s++;
-	    }
-	  }
-	}
-      }
-      else
-      {
-	if (imap_handle_untagged (idata, buf) != 0)
-	  return (-1);
-      }
-    }
-  }
-  while ((mutt_strncmp (buf, seq, SEQLEN) != 0));
-  return 0;
-}
-
-/* Check which namespaces actually exist */
-static int verify_namespace (CONNECTION *conn, IMAP_NAMESPACE_INFO *nsi, 
-			     int nns)
-{
-  char buf[LONG_STRING];
-  char seq[16];
-  int i = 0;
-  char *name;
-  char delim;
-
-  for (i = 0; i < nns; i++, nsi++)
-  {
-    imap_make_sequence (seq, sizeof (seq));
-    snprintf (buf, sizeof (buf), "%s %s \"\" \"%s\"\r\n", seq, 
-	      option (OPTIMAPLSUB) ? "LSUB" : "LIST", nsi->prefix);
-    mutt_socket_write (conn, buf);
-
-    nsi->listable = 0;
-    nsi->home_namespace = 0;
-    do 
-    {
-      if (imap_parse_list_response(conn, buf, sizeof(buf), &name,
-				   &(nsi->noselect), &(nsi->noinferiors), 
-				   &delim) != 0)
-	return (-1);
-      nsi->listable |= (name != NULL);
-    }
-    while ((mutt_strncmp (buf, seq, SEQLEN) != 0));
-  }
-  return (0);
-}
-
-static int compare_names(struct folder_file *a, struct folder_file *b) 
-{
-  return mutt_strcmp(a->name, b->name);
-}
-
-int imap_init_browse (char *path, struct browser_state *state)
-{
-  CONNECTION *conn;
-  IMAP_DATA *idata;
-  char buf[LONG_STRING];
-  char nsbuf[LONG_STRING];
-  char mbox[LONG_STRING];
-  char host[SHORT_STRING];
-  int port;
-  char list_cmd[5];
-  char seq[16];
-  char *ipath = NULL;
-  IMAP_NAMESPACE_INFO nsi[16];
-  int home_namespace = 0;
-  int n;
-  int i;
-  int nsup;
-  char ctmp;
-  int nns;
-  char *cur_folder;
-  short showparents = 0;
-  int noselect;
-  int noinferiors;
-
-  if (imap_parse_path (path, host, sizeof (host), &port, &ipath))
-    return (-1);
-
-  strfcpy (list_cmd, option (OPTIMAPLSUB) ? "LSUB" : "LIST", sizeof (list_cmd));
-
-  conn = mutt_socket_select_connection (host, port, 0);
-  idata = CONN_DATA;
-
-  if (!idata || (idata->state == IMAP_DISCONNECTED))
-  {
-    if (!idata)
-    {
-      /* The current connection is a new connection */
-      idata = safe_calloc (1, sizeof (IMAP_DATA));
-      conn->data = idata;
-      idata->conn = conn;
-    }
-    if (imap_open_connection (idata, conn))
-      return (-1);
-  }
-
-  if (ipath[0] == '\0')
-  {
-    home_namespace = 1;
-    mbox[0] = 0;		/* Do not replace "" with "INBOX" here */
-    ipath = ImapHomeNamespace;
-    nns = 0;
-    if (mutt_bit_isset(idata->capabilities,NAMESPACE))
-    {
-      if (get_namespace (idata, nsbuf, sizeof (nsbuf), 
-			 nsi, sizeof (nsi),  &nns) != 0)
-	return (-1);
-      if (verify_namespace (conn, nsi, nns) != 0)
-	return (-1);
-    }
-    if (!ipath)		/* Any explicitly set imap_home_namespace wins */
-    { 
-      for (i = 0; i < nns; i++)
-	if (nsi[i].listable &&
-	    (nsi[i].type == IMAP_NS_PERSONAL || nsi[i].type == IMAP_NS_SHARED))
-	{
-	  ipath = nsi->prefix;
-	  nsi->home_namespace = 1;
-	  break;
-	}
-    }
-  }
-
-  mutt_message _("Contacted server, getting folder list...");
-
-  if (ipath && ipath[0] != '\0')
-  {
-    imap_fix_path (idata, ipath, mbox, sizeof (mbox));
-    n = mutt_strlen (mbox);
-
-    dprint (3, (debugfile, "imap_init_browse: mbox: %s\n", mbox));
-
-    /* if our target exists, has inferiors and isn't selectable, enter it if we
-     * aren't already going to */
-    if (mbox[n-1] != idata->delim)
-    {
-      imap_make_sequence (seq, sizeof (seq));
-      snprintf (buf, sizeof (buf), "%s %s \"\" \"%s\"\r\n", seq, list_cmd,
-        mbox);
-      mutt_socket_write (conn, buf);
-      do 
-      {
-        if (imap_parse_list_response(conn, buf, sizeof(buf), &cur_folder,
-    	    &noselect, &noinferiors, &(idata->delim)) != 0)
-          return -1;
-
-        if (cur_folder)
-        {
-          imap_unquote_string (cur_folder);
-
-          if (noselect && !noinferiors && cur_folder[0] &&
-            (n = strlen (mbox)) < LONG_STRING-1)
-          {
-            mbox[n++] = idata->delim;
-            mbox[n] = '\0';
-          }
-        }
-      }
-      while ((mutt_strncmp (buf, seq, SEQLEN) != 0));
-    }
-
-    /* if we're descending a folder, mark it as current in browser_state */
-    if (mbox[n-1] == idata->delim)
-    {
-      showparents = 1;
-      imap_qualify_path (buf, sizeof (buf), host, port, mbox, NULL);
-      state->folder = safe_strdup (buf);
-      n--;
-    }
-
-    /* Find superiors to list */
-    for (n--; n >= 0 && mbox[n] != idata->delim ; n--);
-    if (n > 0)			/* "aaaa/bbbb/" -> "aaaa/" */
-    {
-      n++;
-      ctmp = mbox[n];
-      mbox[n] = '\0';
-      /* List it to see if it can be selected */
-      dprint (2, (debugfile, "imap_init_browse: listing %s\n", mbox));
-      imap_make_sequence (seq, sizeof (seq));
-      snprintf (buf, sizeof (buf), "%s %s \"\" \"%s\"\r\n", seq, 
-        list_cmd, mbox);
-      /* add this entry as a superior, if we aren't tab-completing */
-      if (showparents && add_list_result (conn, seq, buf, state, 1))
-          return -1;
-      /* if our target isn't a folder, we are in our superior */
-      if (!state->folder)
-      {
-        imap_qualify_path (buf, sizeof (buf), host, port, mbox, NULL);
-        state->folder = safe_strdup (buf);
-      }
-      mbox[n] = ctmp;
-    } 
-    /* "/bbbb/" -> add  "/", "aaaa/" -> add "" */
-    else
-    {
-      char relpath[2];
-      /* folder may be "/" */
-      snprintf (relpath, sizeof (relpath), "%c" , n < 0 ? '\0' : idata->delim);
-      if (showparents)
-        imap_add_folder (idata->delim, relpath, 1, 0, state, 1); 
-      if (!state->folder)
-      {
-        imap_qualify_path (buf, sizeof (buf), host, port, relpath, NULL);
-        state->folder = safe_strdup (buf);
-      }
-    }
-  }
-
-  /* no namespace, no folder: set folder to host only */
-  if (!state->folder)
-  {
-    imap_qualify_path (buf, sizeof (buf), host, port, NULL, NULL);
-    state->folder = safe_strdup (buf);
-  }
-
-  if (home_namespace && mbox[0] != '\0')
-  {
-    /* Listing the home namespace, so INBOX should be included. Home 
-     * namespace is not "", so we have to list it explicitly. We ask the 
-     * server to see if it has descendants. */
-    imap_make_sequence (seq, sizeof (seq));
-    snprintf (buf, sizeof (buf), "%s LIST \"\" \"INBOX\"\r\n", seq);
-    if (add_list_result (conn, seq, buf, state, 0))
-      return -1;
-  }
-
-  nsup = state->entrylen;
-
-  imap_make_sequence (seq, sizeof (seq));
-  snprintf (buf, sizeof (buf), "%s %s \"\" \"%s%%\"\r\n", seq, 
-    list_cmd, mbox);
-  if (add_list_result (conn, seq, buf, state, 0))
-    return -1;
-
-  qsort(&(state->entry[nsup]),state->entrylen-nsup,sizeof(state->entry[0]),
-	(int (*)(const void*,const void*)) compare_names);
-  if (home_namespace)
-  {				/* List additional namespaces */
-    for (i = 0; i < nns; i++)
-      if (nsi[i].listable && !nsi[i].home_namespace)
-	imap_add_folder(nsi[i].delim, nsi[i].prefix, nsi[i].noselect,
-          nsi[i].noinferiors, state, 0);
-  }
-
-  mutt_clear_error ();
-  return 0;
 }
 
 int imap_subscribe (char *path, int subscribe)

@@ -33,8 +33,6 @@
 #include <ctype.h>
 #include <unistd.h> /* needed for SEEK_SET under SunOS 4.1.4 */
 
-extern char MimeSpecials[];
-
 static int copy_delete_attach (BODY *b, FILE *fpin, FILE *fpout, char *date);
 
 /* Ok, the only reason for not merging this with mutt_copy_header()

@@ -16,6 +16,8 @@
  *     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */ 
 
+#define _SENDLIB_C 1
+
 #include "mutt.h"
 #include "mutt_curses.h"
 #include "rfc2047.h"

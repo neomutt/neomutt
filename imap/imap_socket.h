@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 1998 Brandon Long <blong@fiction.net>
+ * Copyright (C) 1999 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -16,8 +17,8 @@
  *     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */ 
 
-#ifndef _MUTT_SOCKET_H_
-#define _MUTT_SOCKET_H_ 1
+#ifndef _IMAP_SOCKET_H_
+#define _IMAP_SOCKET_H_ 1
 
 typedef struct _connection
 {
@@ -40,4 +41,4 @@ CONNECTION *mutt_socket_select_connection (char *host, int port, int flags);
 int mutt_socket_open_connection (CONNECTION *conn);
 
 
-#endif /* _MUTT_SOCKET_H_ */
+#endif /* _IMAP_SOCKET_H_ */

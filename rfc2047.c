@@ -26,8 +26,6 @@
 
 typedef void encode_t (char *, size_t, const unsigned char *, const char *);
 
-extern char MimeSpecials[];
-extern char B64Chars[];
 
 static void q_encode_string (char *d, 
 			     size_t dlen, 

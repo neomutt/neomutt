@@ -18,7 +18,7 @@
 
 #include "mutt.h"
 #include "globals.h"
-#include "mutt_socket.h"
+#include "imap_socket.h"
 
 #include <unistd.h>
 #include <netinet/in.h>

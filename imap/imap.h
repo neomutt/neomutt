@@ -20,6 +20,7 @@
 #define _IMAP_H 1
 
 #include "browser.h"
+#include "mailbox.h"
 
 int imap_append_message (CONTEXT *ctx, MESSAGE *msg);
 int imap_check_mailbox (CONTEXT *ctx, int *index_hint);

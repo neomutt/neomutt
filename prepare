@@ -1,15 +1,7 @@
 #!/bin/sh --
 
-am()
-{
-  find . -name Makefile.am -print | while read f ; do
-    automake --foreign `dirname $f`/Makefile || return 1
-  done
-  return 0
-}
-
 if aclocal -I m4 && autoheader && (cd m4 && make -f Makefile.am.in ) \
-  && am && autoconf && ./configure $@ && make keymap_defs.h
+  && automake && autoconf && ./configure $@ && make keymap_defs.h
 then
   echo
   echo "The mutt source code was successfully prepared."

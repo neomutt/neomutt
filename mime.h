@@ -51,9 +51,12 @@ enum
 };
 
 /* MIME encoding/decoding global vars */
+
+#ifndef _SENDLIB_C
 extern int Index_hex[];
 extern int Index_64[];
-extern char Base64_chars[];
+extern char B64Chars[];
+#endif
 
 #define hexval(c) Index_hex[(unsigned int)(c)]
 #define base64val(c) Index_64[(unsigned int)(c)]
@@ -68,3 +71,8 @@ extern const char *BodyEncodings[];
 
 #define TYPE(X) ((X->type == TYPEOTHER) && (X->xtype != NULL) ? X->xtype : BodyTypes[(X->type)])
 #define ENCODING(X) BodyEncodings[(X)]
+
+/* other MIME-related global variables */
+#ifndef _SENDLIB_C
+extern char MimeSpecials[];
+#endif
