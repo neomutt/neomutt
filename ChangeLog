@@ -1,3 +1,8 @@
+2003-09-04 15:10:09  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* init.h: Fix some formatting glitches that lead to error messages
+	when viewing the muttrc(5) manual page.
+
 2003-09-04 14:59:57  Christoph Ludwig  <cludwig@cdc.informatik.tu-darmstadt.de>  (roessler)
 
 	* smime.c: Fix verification bug when messages are S/MIME signed
