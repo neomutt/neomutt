@@ -308,6 +308,8 @@ static pgp_key_t *pgp_select_key (struct pgp_vinfo *pgp,
 
   kp = NULL;
 
+  mutt_clear_error ();
+  
   while (!done)
   {
     switch (mutt_menuLoop (menu))
