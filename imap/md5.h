@@ -26,14 +26,21 @@ documentation and/or software.
 #ifndef MD5_H
 #define MD5_H 1
 
+
 /* POINTER defines a generic pointer type */
 typedef unsigned char *POINTER;
+
+#include "types.h"
+
+#if 0
 
 /* UINT2 defines a two byte word */
 typedef unsigned short int UINT2;
 
 /* UINT4 defines a four byte word */
 typedef unsigned long int UINT4;
+
+#endif
 
 /* MD5 context. */
 typedef struct {
