@@ -109,17 +109,21 @@ char *mutt_gettext (const char *message)
 
   orig = gettext (message);
 
+# ifdef DEBUG
   if (debugfile)
     dprint (3, (debugfile, "mutt_gettext (`%s'): original gettext returned `%s'\n",
 		message, orig));
-
+# endif
+  
   if (!Messages)
     return orig;
   
   if ((mp = hash_find (Messages, orig)))
   {
+# ifdef DEBUG
     if (debugfile)
       dprint (3, (debugfile, "mutt_gettext: cache hit - key = `%s', data = `%s'\n", orig, mp->data));
+# endif
     return mp->data;
   }
 
@@ -129,9 +133,11 @@ char *mutt_gettext (const char *message)
   mp->data = safe_strdup (orig);
   mutt_convert_string (&mp->data, PoCharset ? PoCharset : "utf-8", MessageCharset);
 
+# ifdef DEBUG
   if (debugfile)
     dprint (3, (debugfile, "mutt_gettext: conversion done - src = `%s', res = `%s'\n", 
 		mp->key, mp->data));
+# endif
   
   hash_insert (Messages, mp->key, mp, 0);
   
