@@ -739,6 +739,13 @@ static int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint)
   return 0;
 }
 
+/*
+ * Execute a command, and wait for the response from the server.
+ * Also, handle untagged responses
+ * If flags == IMAP_OK_FAIL, then the calling procedure can handle a response 
+ * failing, this is used for checking for a mailbox on append and login
+ * Return 0 on success, -1 on Failure, -2 on OK Failure
+ */
 static int imap_exec (char *buf, size_t buflen,
 		      CONTEXT *ctx, const char *seq, const char *cmd, int flags)
 {
@@ -787,7 +794,7 @@ static int imap_exec (char *buf, size_t buflen,
     char *pc;
 
     if (flags == IMAP_OK_FAIL)
-      return (-1);
+      return (-2);
     dprint (1, (debugfile, "imap_exec(): command failed: %s\n", buf));
     pc = buf + SEQLEN;
     SKIPWS (pc);
@@ -872,48 +879,67 @@ static int imap_open_connection (CONTEXT *ctx, CONNECTION *conn)
 
   if (strncmp ("* OK", buf, 4) == 0)
   {
-    if (!ImapUser)
+    int r = 1;
+
+    while (r != 0)
     {
-      strfcpy (user, NONULL(Username), sizeof (user));
-      if (mutt_get_field (_("IMAP Username: "), user, sizeof (user), 0) != 0 ||
-	  !user[0])
+      if (!ImapUser)
       {
-	user[0] = 0;
+	strfcpy (user, NONULL(Username), sizeof (user));
+	if (mutt_get_field (_("IMAP Username: "), user, sizeof (user), 0) != 0 ||
+	    !user[0])
+	{
+	  user[0] = 0;
+	  return (-1);
+	}
+      }
+      else
+	strfcpy (user, ImapUser, sizeof (user));
+
+      if (!ImapPass)
+      {
+	pass[0]=0;
+	snprintf (buf, sizeof (buf), _("Password for %s@%s: "), user, conn->server);
+	if (mutt_get_field (buf, pass, sizeof (pass), M_PASS) != 0 ||
+	    !pass[0])
+	{
+	  return (-1);
+	}
+      }
+      else
+	strfcpy (pass, ImapPass, sizeof (pass));
+
+      imap_quote_string (q_user, sizeof (q_user), user);
+      imap_quote_string (q_pass, sizeof (q_pass), pass);
+
+      mutt_message _("Logging in...");
+      imap_make_sequence (seq, sizeof (seq));
+      snprintf (buf, sizeof (buf), "%s LOGIN %s %s\r\n", seq, q_user, q_pass);
+      r = imap_exec (buf, sizeof (buf), ctx, seq, buf, IMAP_OK_FAIL);
+      if (r == -1)
+      {
+	/* connection or protocol problem */
+	imap_error ("imap_open_connection()", buf);
 	return (-1);
       }
-    }
-    else
-      strfcpy (user, ImapUser, sizeof (user));
-
-    if (!ImapPass)
-    {
-      pass[0]=0;
-      snprintf (buf, sizeof (buf), _("Password for %s@%s: "), user, conn->server);
-      if (mutt_get_field (buf, pass, sizeof (pass), M_PASS) != 0 ||
-	  !pass[0])
+      else if (r == -2)
       {
-	return (-1);
+	/* Login failed, try again */
+	mutt_error _("Login failed.");
+	sleep (1);
+	FREE (&ImapUser);
+	FREE (&ImapPass);
+      }
+      else
+      {
+	/* If they have a successful login, we may as well cache the 
+	 * user/password. */
+	if (!ImapUser)
+	  ImapUser = safe_strdup (user);
+	if (!ImapPass)
+	  ImapPass = safe_strdup (pass);
       }
     }
-    else
-      strfcpy (pass, ImapPass, sizeof (pass));
-
-    imap_quote_string (q_user, sizeof (q_user), user);
-    imap_quote_string (q_pass, sizeof (q_pass), pass);
-
-    mutt_message _("Logging in...");
-    imap_make_sequence (seq, sizeof (seq));
-    snprintf (buf, sizeof (buf), "%s LOGIN %s %s\r\n", seq, q_user, q_pass);
-    if (imap_exec (buf, sizeof (buf), ctx, seq, buf, 0) != 0)
-    {
-      imap_error ("imap_open_connection()", buf);
-      return (-1);
-    }
-    /* If they have a successful login, we may as well cache the user/password. */
-    if (!ImapUser)
-      ImapUser = safe_strdup (user);
-    if (!ImapPass)
-      ImapPass = safe_strdup (pass);
   }
   else if (strncmp ("* PREAUTH", buf, 9) != 0)
   {
@@ -1023,6 +1049,7 @@ int imap_open_mailbox_append (CONTEXT *ctx)
   char buf[LONG_STRING], mbox[LONG_STRING];
   char seq[16];
   char *pc;
+  int r;
 
   if (imap_parse_path (ctx->path, host, sizeof (host), &pc))
     return (-1);
@@ -1048,8 +1075,10 @@ int imap_open_mailbox_append (CONTEXT *ctx)
   imap_make_sequence (seq, sizeof (seq));
   snprintf (buf, sizeof (buf), "%s STATUS %s (UIDVALIDITY)\r\n", seq, mbox);
       
-  if (imap_exec (buf, sizeof (buf), ctx, seq, buf, IMAP_OK_FAIL) != 0)
+  r = imap_exec (buf, sizeof (buf), ctx, seq, buf, IMAP_OK_FAIL);
+  if (r == -2)
   {
+    /* command failed cause folder doesn't exist */
     if (option (OPTCONFIRMCREATE))
     {
       snprintf (buf, sizeof (buf), _("Create %s?"), CTX_DATA->mailbox);
@@ -1058,6 +1087,11 @@ int imap_open_mailbox_append (CONTEXT *ctx)
       if (imap_create_mailbox (ctx) < 0)
 	return (-1);
     }
+  }
+  else if (r == -1)
+  {
+    /* Hmm, some other failure */
+    return (-1);
   }
   return 0;
 }
