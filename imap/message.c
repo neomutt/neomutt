@@ -127,7 +127,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       if (rc != IMAP_CMD_CONTINUE)
 	break;
 
-      if ((mfhrc = msg_fetch_header (idata->ctx, &h, idata->buf, fp)) == -1)
+      if ((mfhrc = msg_fetch_header (idata->ctx, &h, idata->cmd.buf, fp)) == -1)
 	continue;
       else if (mfhrc < 0)
 	break;
@@ -164,10 +164,10 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 
       mx_update_context (ctx); /* increments ->msgcount */
     }
-    while ((rc != IMAP_CMD_DONE) && ((mfhrc == -1) ||
+    while ((rc != IMAP_CMD_OK) && ((mfhrc == -1) ||
       ((msgno + 1) >= fetchlast)));
 
-    if ((mfhrc < -1) || ((rc != IMAP_CMD_CONTINUE) && (rc != IMAP_CMD_DONE)))
+    if ((mfhrc < -1) || ((rc != IMAP_CMD_CONTINUE) && (rc != IMAP_CMD_OK)))
     {
       imap_free_header_data ((void**) &h.data);
       fclose (fp);
@@ -257,7 +257,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
     if ((rc = imap_cmd_step (idata)) != IMAP_CMD_CONTINUE)
       break;
 
-    pc = idata->buf;
+    pc = idata->cmd.buf;
     pc = imap_next_word (pc);
     pc = imap_next_word (pc);
 
@@ -289,7 +289,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	  /* pick up trailing line */
 	  if ((rc = imap_cmd_step (idata)) != IMAP_CMD_CONTINUE)
 	    goto bail;
-	  pc = idata->buf;
+	  pc = idata->cmd.buf;
 
 	  fetched = 1;
 	}
@@ -348,10 +348,10 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   }
   while (rc == IMAP_CMD_CONTINUE);
 
-  if (rc != IMAP_CMD_DONE)
+  if (rc != IMAP_CMD_OK)
     goto bail;
 
-  if (!fetched || !imap_code (idata->buf))
+  if (!fetched || !imap_code (idata->cmd.buf))
     goto bail;
     
   /* Update the header information.  Previously, we only downloaded a
@@ -453,9 +453,10 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   {
     char *pc;
 
-    dprint (1, (debugfile, "imap_append_message(): command failed: %s\n", idata->buf));
+    dprint (1, (debugfile, "imap_append_message(): command failed: %s\n",
+		idata->cmd.buf));
 
-    pc = idata->buf + SEQLEN;
+    pc = idata->cmd.buf + SEQLEN;
     SKIPWS (pc);
     pc = imap_next_word (pc);
     mutt_error ("%s", pc);
@@ -487,12 +488,13 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
     rc = imap_cmd_step (idata);
   while (rc == IMAP_CMD_CONTINUE);
 
-  if (!imap_code (idata->buf))
+  if (!imap_code (idata->cmd.buf))
   {
     char *pc;
 
-    dprint (1, (debugfile, "imap_append_message(): command failed: %s\n", idata->buf));
-    pc = idata->buf + SEQLEN;
+    dprint (1, (debugfile, "imap_append_message(): command failed: %s\n",
+		idata->cmd.buf));
+    pc = idata->cmd.buf + SEQLEN;
     SKIPWS (pc);
     pc = imap_next_word (pc);
     mutt_error ("%s", pc);
@@ -568,9 +570,9 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   if (rc == -2)
   {
     /* bail out if command failed for reasons other than nonexistent target */
-    if (strncmp (imap_get_qualifier (idata->buf), "[TRYCREATE]", 11))
+    if (strncmp (imap_get_qualifier (idata->cmd.buf), "[TRYCREATE]", 11))
     {
-      imap_error ("imap_copy_messages", idata->buf);
+      imap_error ("imap_copy_messages", idata->cmd.buf);
       goto fail;
     }
     dprint (2, (debugfile, "imap_copy_messages: server suggests TRYCREATE\n"));
@@ -588,7 +590,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   }
   if (rc != 0)
   {
-    imap_error ("imap_copy_messages", idata->buf);
+    imap_error ("imap_copy_messages", idata->cmd.buf);
     goto fail;
   }
 
@@ -699,7 +701,7 @@ static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf, FILE* fp)
   if (imap_cmd_step (idata) != IMAP_CMD_CONTINUE)
     return -2;
   
-  if (msg_parse_fetch (h, idata->buf) == -1)
+  if (msg_parse_fetch (h, idata->cmd.buf) == -1)
     return rc;
 
   rc = 0; /* success */

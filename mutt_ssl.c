@@ -68,6 +68,18 @@ typedef struct _sslsockdata
 }
 sslsockdata;
 
+/* mutt_ssl_get_ssf: Return bit strength of connection encryption. SASL
+ *   uses this to determine how much additional protection to provide,
+ *   if necessary. */
+int mutt_ssl_get_ssf (CONNECTION* conn)
+{
+  sslsockdata* ssldata = (sslsockdata*) conn->sockdata;
+  int maxbits;
+
+  return SSL_CIPHER_get_bits (SSL_get_current_cipher (ssldata->ssl), &maxbits);
+}
+
+
 static int add_entropy (const char *file);
 /* 
  * OpenSSL library needs to be fed with sufficient entropy. On systems

@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -95,54 +95,6 @@ void imap_logout_all (void)
 
     conn = tmp;
   }
-}
-
-/* imap_parse_date: date is of the form: DD-MMM-YYYY HH:MM:SS +ZZzz */
-time_t imap_parse_date (char *s)
-{
-  struct tm t;
-  time_t tz;
-
-  t.tm_mday = (s[0] == ' '? s[1] - '0' : (s[0] - '0') * 10 + (s[1] - '0'));  
-  s += 2;
-  if (*s != '-')
-    return 0;
-  s++;
-  t.tm_mon = mutt_check_month (s);
-  s += 3;
-  if (*s != '-')
-    return 0;
-  s++;
-  t.tm_year = (s[0] - '0') * 1000 + (s[1] - '0') * 100 + (s[2] - '0') * 10 + (s[3] - '0') - 1900;
-  s += 4;
-  if (*s != ' ')
-    return 0;
-  s++;
-
-  /* time */
-  t.tm_hour = (s[0] - '0') * 10 + (s[1] - '0');
-  s += 2;
-  if (*s != ':')
-    return 0;
-  s++;
-  t.tm_min = (s[0] - '0') * 10 + (s[1] - '0');
-  s += 2;
-  if (*s != ':')
-    return 0;
-  s++;
-  t.tm_sec = (s[0] - '0') * 10 + (s[1] - '0');
-  s += 2;
-  if (*s != ' ')
-    return 0;
-  s++;
-
-  /* timezone */
-  tz = ((s[1] - '0') * 10 + (s[2] - '0')) * 3600 +
-    ((s[3] - '0') * 10 + (s[4] - '0')) * 60;
-  if (s[0] == '+')
-    tz = -tz;
-
-  return (mutt_mktime (&t, 0) + tz);
 }
 
 /* imap_read_literal: read bytes bytes from server into file. Not explicitly
@@ -240,7 +192,7 @@ static int imap_get_delim (IMAP_DATA *idata)
     if ((rc = imap_cmd_step (idata)) != IMAP_CMD_CONTINUE)
       break;
 
-    s = imap_next_word (idata->buf);
+    s = imap_next_word (idata->cmd.buf);
     if (mutt_strncasecmp ("LIST", s, 4) == 0)
     {
       s = imap_next_word (s);
@@ -253,7 +205,7 @@ static int imap_get_delim (IMAP_DATA *idata)
   }
   while (rc == IMAP_CMD_CONTINUE);
 
-  if (rc != IMAP_CMD_DONE)
+  if (rc != IMAP_CMD_OK)
   {
     dprint (1, (debugfile, "imap_get_delim: failed.\n"));
     return -1;
@@ -285,7 +237,7 @@ static int imap_check_capabilities (IMAP_DATA* idata)
 {
   if (imap_exec (idata, "CAPABILITY", 0) != 0)
   {
-    imap_error ("imap_check_capabilities", idata->buf);
+    imap_error ("imap_check_capabilities", idata->cmd.buf);
     return -1;
   }
 
@@ -329,29 +281,29 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
   /* don't open a new connection if one isn't wanted */
   if (flags & M_IMAP_CONN_NONEW)
     if (!idata || idata->state == IMAP_DISCONNECTED)
-    {
-      mutt_socket_free (conn);
-
-      return NULL;
-    }
+      goto err_conn;
   
   if (!idata)
   {
     /* The current connection is a new connection */
-    idata = safe_calloc (1, sizeof (IMAP_DATA));
+    if (! (idata = imap_new_idata ()))
+      goto err_conn;
+
     conn->data = idata;
     idata->conn = conn;
   }
   if (idata->state == IMAP_DISCONNECTED)
     if (imap_open_connection (idata) != 0)
-    {
-      FREE (&idata);
-      mutt_socket_free (conn);
-
-      return NULL;
-    }
+      goto err_idata;
   
   return idata;
+
+ err_idata:
+  imap_free_idata (&idata);
+ err_conn:
+  mutt_socket_free (conn);
+
+  return NULL;
 }
 
 int imap_open_connection (IMAP_DATA* idata)
@@ -359,19 +311,23 @@ int imap_open_connection (IMAP_DATA* idata)
   char buf[LONG_STRING];
 
   if (mutt_socket_open (idata->conn) < 0)
+  {
+    mutt_error (_("Connection to %s failed."), idata->conn->account.host);
+    sleep (1);
     return -1;
+  }
 
   idata->state = IMAP_CONNECTED;
 
   if (imap_cmd_step (idata) != IMAP_CMD_CONTINUE)
     goto bail;
 
-  if (mutt_strncmp ("* OK", idata->buf, 4) == 0)
+  if (mutt_strncmp ("* OK", idata->cmd.buf, 4) == 0)
   {
     if (imap_check_capabilities (idata) || imap_authenticate (idata))
       goto bail;
   }
-  else if (mutt_strncmp ("* PREAUTH", idata->buf, 9) == 0)
+  else if (mutt_strncmp ("* PREAUTH", idata->cmd.buf, 9) == 0)
   {
     if (imap_check_capabilities (idata) != 0)
       goto bail;
@@ -510,7 +466,7 @@ int imap_open_mailbox (CONTEXT* ctx)
     if ((rc = imap_cmd_step (idata)) != IMAP_CMD_CONTINUE)
       break;
 
-    pc = idata->buf + 2;
+    pc = idata->cmd.buf + 2;
     pc = imap_next_word (pc);
     if (!mutt_strncasecmp ("EXISTS", pc, 6))
     {
@@ -521,7 +477,7 @@ int imap_open_mailbox (CONTEXT* ctx)
       idata->newMailCount = 0;
     }
 
-    pc = idata->buf + 2;
+    pc = idata->cmd.buf + 2;
 
     /* Obtain list of available flags here, may be overridden by a
      * PERMANENTFLAGS tag in the OK response */
@@ -552,18 +508,18 @@ int imap_open_mailbox (CONTEXT* ctx)
   if (rc == IMAP_CMD_NO)
   {
     char *s;
-    s = imap_next_word (idata->buf); /* skip seq */
+    s = imap_next_word (idata->cmd.buf); /* skip seq */
     s = imap_next_word (s); /* Skip response */
     mutt_error ("%s", s);
     sleep (2);
     goto fail;
   }
 
-  if (rc != IMAP_CMD_DONE)
+  if (rc != IMAP_CMD_OK)
     goto fail;
 
   /* check for READ-ONLY notification */
-  if (!strncmp (imap_get_qualifier (idata->buf), "[READ-ONLY]", 11))
+  if (!strncmp (imap_get_qualifier (idata->cmd.buf), "[READ-ONLY]", 11))
   {
     dprint (2, (debugfile, "Mailbox is read-only.\n"));
     ctx->readonly = 1;
@@ -934,7 +890,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
         (err_continue != M_YES))
       {
         err_continue = imap_continue ("imap_sync_mailbox: STORE failed",
-          idata->buf);
+          idata->cmd.buf);
         if (err_continue != M_YES)
           return -1;
       }
@@ -951,7 +907,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
     mutt_message _("Expunging messages from server...");
     if (imap_exec (idata, "EXPUNGE", 0) != 0)
     {
-      imap_error ("imap_sync_mailbox: EXPUNGE failed", idata->buf);
+      imap_error ("imap_sync_mailbox: EXPUNGE failed", idata->cmd.buf);
       return -1;
     }
   }
@@ -975,7 +931,7 @@ void imap_close_mailbox (CONTEXT* ctx)
       (ctx == idata->ctx))
   {
     if (!(idata->noclose) && imap_exec (idata, "CLOSE", 0))
-      imap_error ("CLOSE failed", idata->buf);
+      imap_error ("CLOSE failed", idata->cmd.buf);
 
     idata->reopen &= IMAP_REOPEN_ALLOW;
     idata->state = IMAP_AUTHENTICATED;
@@ -1020,7 +976,7 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint)
 
     if (imap_exec (idata, "NOOP", 0) != 0)
     {
-      imap_error ("imap_check_mailbox", idata->buf);
+      imap_error ("imap_check_mailbox", idata->cmd.buf);
       return -1;
     }
   }
@@ -1103,7 +1059,7 @@ int imap_mailbox_check (char* path, int new)
     if ((rc = imap_cmd_step (idata)) != IMAP_CMD_CONTINUE)
       break;
 
-    s = imap_next_word (idata->buf);
+    s = imap_next_word (idata->cmd.buf);
     if (mutt_strncasecmp ("STATUS", s, 6) == 0)
     {
       s = imap_next_word (s);
@@ -1148,12 +1104,12 @@ int imap_parse_list_response(IMAP_DATA* idata, char **name, int *noselect,
   *name = NULL;
 
   rc = imap_cmd_step (idata);
-  if (rc == IMAP_CMD_DONE)
+  if (rc == IMAP_CMD_OK)
     return 0;
   if (rc != IMAP_CMD_CONTINUE)
     return -1;
 
-  s = imap_next_word (idata->buf);
+  s = imap_next_word (idata->cmd.buf);
   if ((mutt_strncasecmp ("LIST", s, 4) == 0) ||
       (mutt_strncasecmp ("LSUB", s, 4) == 0))
   {
@@ -1193,11 +1149,11 @@ int imap_parse_list_response(IMAP_DATA* idata, char **name, int *noselect,
     s = imap_next_word (s); /* name */
     if (s && *s == '{')	/* Literal */
     { 
-      if (imap_get_literal_count(idata->buf, &bytes) < 0)
+      if (imap_get_literal_count(idata->cmd.buf, &bytes) < 0)
 	return -1;
       if (imap_cmd_step (idata) != IMAP_CMD_CONTINUE)
 	return -1;
-      *name = idata->buf;
+      *name = idata->cmd.buf;
     }
     else
       *name = s;
@@ -1324,7 +1280,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
       completions++;
     }
   }
-  while (mutt_strncmp(idata->seq, idata->buf, SEQLEN));
+  while (mutt_strncmp(idata->cmd.seq, idata->cmd.buf, SEQLEN));
 
   if (completions)
   {

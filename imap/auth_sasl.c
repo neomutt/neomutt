@@ -23,9 +23,6 @@
 #include "imap_private.h"
 #include "auth.h"
 
-#include <netinet/in.h>
-#include <netdb.h>
-
 #include <sasl.h>
 #include <saslutil.h>
 
@@ -44,40 +41,11 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
   if (mutt_sasl_start () != SASL_OK)
     return IMAP_AUTH_FAILURE;
 
-  /* TODO: set fourth option to SASL_SECURITY_LAYER once we have a wrapper
-   *  (ie more than auth code) for SASL. */
-  rc = sasl_client_new ("imap", idata->conn->account.host,
-    mutt_sasl_get_callbacks (&idata->conn->account), SASL_SECURITY_LAYER,
-    &saslconn);
-
-  if (rc != SASL_OK)
+  if (mutt_sasl_client_new (idata->conn, &saslconn) < 0)
   {
-    dprint (1, (debugfile, "imap_auth_sasl: Error allocating SASL connection.\n"));
+    dprint (1, (debugfile,
+      "imap_auth_sasl: Error allocating SASL connection.\n"));
     return IMAP_AUTH_FAILURE;
-  }
-
-  /*** set sasl IP properties, necessary for use with krb4 ***/
-  {
-    struct sockaddr_in local, remote;
-    int r, size;
-
-    size = sizeof(local);
-    r = getsockname(idata->conn->fd, &local, &size);
-    if (r!=0) return IMAP_AUTH_FAILURE;
-
-    size = sizeof(remote);
-    r = getpeername(idata->conn->fd, &remote, &size);
-    if (r!=0) return IMAP_AUTH_FAILURE;
-
-#ifdef SASL_IP_LOCAL
-    r = sasl_setprop(saslconn, SASL_IP_LOCAL, &local);
-    if (r!=0) return IMAP_AUTH_FAILURE;
-#endif
-
-#ifdef SASL_IP_REMOTE
-    r = sasl_setprop(saslconn, SASL_IP_REMOTE, &remote);
-    if (r!=0) return IMAP_AUTH_FAILURE;
-#endif
   }
 
   /* hack for SASL ANONYMOUS support:
@@ -128,13 +96,13 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
       irc = imap_cmd_step (idata);
     while (irc == IMAP_CMD_CONTINUE);
 
-    if (irc == IMAP_CMD_FAIL || irc == IMAP_CMD_NO)
+    if (irc == IMAP_CMD_BAD || irc == IMAP_CMD_NO)
       goto bail;
 
     if (irc == IMAP_CMD_RESPOND)
     {
-      if (sasl_decode64 (idata->buf+2, strlen (idata->buf+2), buf, &len) !=
-	  SASL_OK)
+      if (sasl_decode64 (idata->cmd.buf+2, strlen (idata->cmd.buf+2), buf,
+			 &len) != SASL_OK)
       {
 	dprint (1, (debugfile, "imap_auth_sasl: error base64-decoding server response.\n"));
 	goto bail;
@@ -163,7 +131,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
 
       /* sasl_client_st(art|ep) allocate pc with malloc, expect me to 
        * free it */
-      safe_free (&pc);
+      FREE (&pc);
     }
     
     if (olen || rc == SASL_CONTINUE)
@@ -179,14 +147,14 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
     }
   }
 
-  while (irc != IMAP_CMD_DONE)
+  while (irc != IMAP_CMD_OK)
     if ((irc = imap_cmd_step (idata)) != IMAP_CMD_CONTINUE)
       break;
 
   if (rc != SASL_OK)
     goto bail;
 
-  if (imap_code (idata->buf))
+  if (imap_code (idata->cmd.buf))
   {
     mutt_sasl_setup_conn (idata->conn, saslconn);
     return IMAP_AUTH_SUCCESS;

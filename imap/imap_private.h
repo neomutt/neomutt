@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -32,11 +32,16 @@
 #define IMAP_LOG_LTRL 4
 #define IMAP_LOG_PASS 5
 
-/* IMAP command responses */
-#define IMAP_CMD_DONE     (0)
-#define IMAP_CMD_FAIL     (-1)
+/* IMAP command responses. Used in IMAP_COMMAND.state too */
+/* <tag> OK ... */
+#define IMAP_CMD_OK       (0)
+/* <tag> BAD ... */
+#define IMAP_CMD_BAD      (-1)
+/* <tag> NO ... */
 #define IMAP_CMD_NO       (-2)
+/* * ... */
 #define IMAP_CMD_CONTINUE (1)
+/* + */
 #define IMAP_CMD_RESPOND  (2)
 
 /* number of entries in the hash table */
@@ -132,17 +137,21 @@ typedef struct
   int noinferiors;
 } IMAP_NAMESPACE_INFO;
 
+/* IMAP command structure */
+typedef struct
+{
+  char seq[SEQLEN+1];
+  char* buf;
+  unsigned int blen;
+  int state;
+} IMAP_COMMAND;
+
 typedef struct
 {
   /* This data is specific to a CONNECTION to an IMAP server */
   CONNECTION *conn;
   unsigned char state;
   unsigned char status;
-  unsigned char capabilities[(CAPMAX + 7)/8];
-  char seq[SEQLEN+1];
-  /* command input buffer */
-  char* buf;
-  unsigned int blen;
   /* let me explain capstr: SASL needs the capability string (not bits).
    * we have 3 options:
    *   1. rerun CAPABILITY inside SASL function.
@@ -152,6 +161,10 @@ typedef struct
    * tracking all possible capabilities. bah. (1) I don't like because
    * it's just no fun to get the same information twice */
   char* capstr;
+  unsigned char capabilities[(CAPMAX + 7)/8];
+  unsigned int seqno;
+  /* who knows, one day we may run multiple commands in parallel */
+  IMAP_COMMAND cmd;
 
   /* The following data is all specific to the currently SELECTED mbox */
   char delim;
@@ -167,6 +180,7 @@ typedef struct
   /* all folder flags - system flags AND keywords */
   LIST *flags;
 } IMAP_DATA;
+/* I wish that were called IMAP_CONTEXT :( */
 
 /* -- macros -- */
 #define CTX_DATA ((IMAP_DATA *) ctx->data)
@@ -178,7 +192,6 @@ int imap_make_msg_set (IMAP_DATA* idata, char* buf, size_t buflen, int flag,
   int changed);
 int imap_open_connection (IMAP_DATA* idata);
 IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags);
-time_t imap_parse_date (char* s);
 int imap_parse_list_response(IMAP_DATA* idata, char** name, int* noselect,
   int* noinferiors, char* delim);
 int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes);
@@ -202,11 +215,14 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend);
 /* util.c */
 int imap_continue (const char* msg, const char* resp);
 void imap_error (const char* where, const char* msg);
+IMAP_DATA* imap_new_idata (void);
+void imap_free_idata (IMAP_DATA** idata);
 char* imap_fix_path (IMAP_DATA* idata, char* mailbox, char* path, 
   size_t plen);
 int imap_get_literal_count (const char* buf, long* bytes);
 char* imap_get_qualifier (char* buf);
 char* imap_next_word (char* s);
+time_t imap_parse_date (char* s);
 void imap_qualify_path (char *dest, size_t len, IMAP_MBOX *mx, char* path);
 void imap_quote_string (char* dest, size_t slen, const char* src);
 void imap_unquote_string (char* s);

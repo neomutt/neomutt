@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -48,6 +48,35 @@ void imap_error (const char *where, const char *msg)
 {
   mutt_error (_("%s [%s]\n"), where, msg);
   sleep (2);
+}
+
+/* imap_new_idata: Allocate and initialise a new IMAP_DATA structure.
+ *   Returns NULL on failure (no mem) */
+IMAP_DATA* imap_new_idata (void) {
+  IMAP_DATA* idata;
+
+  idata = safe_calloc (1, sizeof (IMAP_DATA));
+  if (!idata)
+    return NULL;
+
+  idata->conn = NULL;
+  idata->state = IMAP_DISCONNECTED;
+  idata->seqno = 0;
+
+  idata->cmd.buf = NULL;
+  idata->cmd.blen = 0;
+  idata->cmd.state = IMAP_CMD_OK;
+
+  return idata;
+}
+
+/* imap_free_idata: Release and clear storage in an IMAP_DATA structure. */
+void imap_free_idata (IMAP_DATA** idata) {
+  if (!idata)
+    return;
+
+  FREE (&((*idata)->cmd.buf));
+  FREE (idata);
 }
 
 /*
@@ -125,6 +154,54 @@ char *imap_next_word (char *s)
     s++;
   SKIPWS (s);
   return s;
+}
+
+/* imap_parse_date: date is of the form: DD-MMM-YYYY HH:MM:SS +ZZzz */
+time_t imap_parse_date (char *s)
+{
+  struct tm t;
+  time_t tz;
+
+  t.tm_mday = (s[0] == ' '? s[1] - '0' : (s[0] - '0') * 10 + (s[1] - '0'));  
+  s += 2;
+  if (*s != '-')
+    return 0;
+  s++;
+  t.tm_mon = mutt_check_month (s);
+  s += 3;
+  if (*s != '-')
+    return 0;
+  s++;
+  t.tm_year = (s[0] - '0') * 1000 + (s[1] - '0') * 100 + (s[2] - '0') * 10 + (s[3] - '0') - 1900;
+  s += 4;
+  if (*s != ' ')
+    return 0;
+  s++;
+
+  /* time */
+  t.tm_hour = (s[0] - '0') * 10 + (s[1] - '0');
+  s += 2;
+  if (*s != ':')
+    return 0;
+  s++;
+  t.tm_min = (s[0] - '0') * 10 + (s[1] - '0');
+  s += 2;
+  if (*s != ':')
+    return 0;
+  s++;
+  t.tm_sec = (s[0] - '0') * 10 + (s[1] - '0');
+  s += 2;
+  if (*s != ' ')
+    return 0;
+  s++;
+
+  /* timezone */
+  tz = ((s[1] - '0') * 10 + (s[2] - '0')) * 3600 +
+    ((s[3] - '0') * 10 + (s[4] - '0')) * 60;
+  if (s[0] == '+')
+    tz = -tz;
+
+  return (mutt_mktime (&t, 0) + tz);
 }
 
 /* imap_parse_path: given an IMAP mailbox name, return host, port
