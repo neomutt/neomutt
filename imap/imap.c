@@ -680,7 +680,8 @@ int imap_open_mailbox (CONTEXT* ctx)
   return 0;
 
  fail:
-  idata->state = IMAP_AUTHENTICATED;
+  if (idata->state == IMAP_SELECTED)
+    idata->state = IMAP_AUTHENTICATED;
  fail_noidata:
   FREE (&mx.mbox);
   return -1;
@@ -706,7 +707,7 @@ int imap_open_mailbox_append (CONTEXT *ctx)
   conn = idata->conn;
 
   ctx->magic = M_IMAP;
-  ctx->data = (void *) idata;
+  ctx->data = idata;
 
   /* check mailbox existance */
 

@@ -288,6 +288,11 @@ static void cmd_handle_fatal (IMAP_DATA* idata)
     mutt_error (_("Mailbox closed"));
     mutt_sleep (1);
     idata->state = IMAP_DISCONNECTED;
+  }
+
+  if (idata->state != IMAP_SELECTED)
+  {
+    idata->state = IMAP_DISCONNECTED;
     idata->status = 0;
   }
 }
