@@ -889,7 +889,10 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    b->hdr->content = NULL;
 	    mutt_free_header (&b->hdr);
 	  }
-	  
+
+	  /* this may have been a change from something to text/* */
+	  mutt_update_encoding (b);
+
 	  menu->redraw = REDRAW_CURRENT;
 	}
 	break;
