@@ -5,9 +5,10 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.4\n"
-"POT-Creation-Date: 2003-11-05 21:05+0100\n"
-"PO-Revision-Date: 2003-03-20 03:13+0100\n"
+"Project-Id-Version: Mutt 1.5.5.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-11-09 13:42+0100\n"
+"PO-Revision-Date: 2003-11-09 13:44+0100\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -574,7 +575,7 @@ msgstr "Signer"
 
 #: compose.c:133
 msgid "Clear"
-msgstr "Effacer"
+msgstr "Clair"
 
 #: compose.c:140 compose.c:144
 msgid " sign as: "
@@ -950,9 +951,8 @@ msgstr "Pas de messages marqués."
 
 # , c-format
 #: curs_main.c:653 menu.c:890
-#, fuzzy
 msgid "Nothing to do."
-msgstr "Connexion à %s..."
+msgstr "Rien à faire."
 
 #: curs_main.c:739
 msgid "Jump to message: "
@@ -1433,9 +1433,9 @@ msgid "Login failed."
 msgstr "La connexion a échoué."
 
 #: imap/auth_sasl.c:112
-#, fuzzy, c-format
+#, c-format
 msgid "Authenticating (%s)..."
-msgstr "Authentification (APOP)..."
+msgstr "Authentification (%s)..."
 
 #: imap/auth_sasl.c:199 pop_auth.c:172
 msgid "SASL authentication failed."
@@ -1494,7 +1494,7 @@ msgstr "Ce serveur IMAP est trop ancien. Mutt ne marche pas avec."
 #: imap/imap.c:397
 #, c-format
 msgid "Unexpected response received from server: %s"
-msgstr ""
+msgstr "Réponse inattendue reçue du serveur : %s"
 
 #: imap/imap.c:417
 msgid "Secure connection with TLS?"
@@ -1686,9 +1686,9 @@ msgstr "%s : valeur invalide"
 
 # , c-format
 #: init.c:1198
-#, fuzzy, c-format
+#, c-format
 msgid "%s: Unknown type."
-msgstr "%s : type inconnu"
+msgstr "%s : type inconnu."
 
 # , c-format
 #: init.c:1224
@@ -1816,7 +1816,7 @@ msgstr "opération nulle"
 
 #: keymap_alldefs.h:6
 msgid "end of conditional execution (noop)"
-msgstr ""
+msgstr "fin d'exécution conditionnelle (noop)"
 
 #: keymap_alldefs.h:7
 msgid "force viewing of attachment using mailcap"
@@ -2449,9 +2449,8 @@ msgid "apply next function to tagged messages"
 msgstr "appliquer la prochaine fonction aux messages marqués"
 
 #: keymap_alldefs.h:164
-#, fuzzy
 msgid "apply next function ONLY to tagged messages"
-msgstr "appliquer la prochaine fonction aux messages marqués"
+msgstr "appliquer la prochaine fonction SEULEMENT aux messages marqués"
 
 #: keymap_alldefs.h:165
 msgid "tag the current subthread"
@@ -2593,6 +2592,7 @@ msgstr "afficher les options S/MIME"
 #: lib.c:60
 msgid "Integer overflow -- can't allocate memory!"
 msgstr ""
+"Dépassement de capacité sur entier -- impossible d'allouer la mémoire !"
 
 #: lib.c:67 lib.c:82 lib.c:114
 msgid "Out of memory!"
@@ -2939,13 +2939,12 @@ msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message() : impossible de fixer l'heure du fichier"
 
 #: muttlib.c:835
-#, fuzzy
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
-msgstr "Le fichier est un répertoire, sauver dans celui-ci ?"
+msgstr "Le fichier est un répertoire, sauver dans celui-ci ? [(o)ui, (n)on, (t)ous]"
 
 #: muttlib.c:835
 msgid "yna"
-msgstr ""
+msgstr "ont"
 
 #: muttlib.c:851
 msgid "File is a directory, save under it?"
@@ -3271,7 +3270,7 @@ msgstr "Impossible d'écrire le message"
 
 #: mx.c:1535
 msgid "Integer overflow -- can't allocate memory."
-msgstr ""
+msgstr "Dépassement de capacité sur entier -- impossible d'allouer la mémoire."
 
 #: pager.c:53
 msgid "Not available in this menu."
