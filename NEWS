@@ -7,8 +7,12 @@ Major changes since 1.1
 - Tommi Komulainen <Tommi.Komulainen@iki.fi> has contributed SSL
   support for mutt's IMAP client code.
 
-Major changes since 0.96.3
---------------------------
+Major changes since 1.0
+-----------------------
+
+- The semantics of the "lists" command has changed.  Basically, it
+  only affects the list-reply function now.  To get the same mailing
+  list behaviour as with 1.0, use "subscribe" instead.
 
 - There is a new option $delete_untag.  Former mutt versions used to
   untag messages when you save them, but leave them tagged when you
@@ -59,18 +63,12 @@ Major changes since 0.96.3
 
 - A new variable $from is added.  See the manual for details.
 
-- There is a new model for mailing list handling.  See the manual
-  for details.
-
 - The various weeding options are gone.  You have one global option,
   $weed, now which can be influenced using configuration commands,
   or using the display-headers or display-message functions.  This
   option is applied when forwarding, replying, or printing messages.
   Essentially, this means that you have some "WYSIWIG-like"
   behaviour with respect to message header weeding.
-
-Major changes since 0.96.2
---------------------------
 
 - The PGP configuration interface was completely redone.  Please
   read doc/PGP-Notes.txt before installing this version on any
