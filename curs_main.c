@@ -82,8 +82,8 @@ extern const char *ReleaseDate;
 
 void index_make_entry (char *s, size_t l, MUTTMENU *menu, int num)
 {
-  format_flag flag = M_FORMAT_MAKEPRINT | M_FORMAT_ARROWCURSOR;
-  int reverse = Sort & SORT_REVERSE, edgemsgno;
+  format_flag flag = M_FORMAT_MAKEPRINT | M_FORMAT_ARROWCURSOR | M_FORMAT_INDEX;
+  int edgemsgno, reverse = Sort & SORT_REVERSE;
   HEADER *tmp, *h = Context->hdrs[Context->v2r[num]];
 
   if ((Sort & SORT_MASK) == SORT_THREADS && h->tree)
@@ -96,18 +96,19 @@ void index_make_entry (char *s, size_t l, MUTTMENU *menu, int num)
     {
       if (reverse)
       {
-       if (menu->top + menu->pagelen > menu->max)
-         edgemsgno = Context->v2r[menu->max - 1];
-       else
-         edgemsgno = Context->v2r[menu->top + menu->pagelen - 1];
+	if (menu->top + menu->pagelen > menu->max)
+	  edgemsgno = Context->v2r[menu->max - 1];
+	else
+	  edgemsgno = Context->v2r[menu->top + menu->pagelen - 1];
       }
       else
-       edgemsgno = Context->v2r[menu->top];
+	edgemsgno = Context->v2r[menu->top];
 
       for (tmp = h->parent; tmp; tmp = tmp->parent)
       {
-	if ((reverse && tmp->msgno > edgemsgno)
-	    || (!reverse && tmp->msgno < edgemsgno))
+	/* if no ancestor is visible on current screen, provisionally force
+	 * subject... */
+	if (reverse ? tmp->msgno > edgemsgno : tmp->msgno < edgemsgno)
 	{
 	  flag |= M_FORMAT_FORCESUBJ;
 	  break;
@@ -119,8 +120,8 @@ void index_make_entry (char *s, size_t l, MUTTMENU *menu, int num)
       {
 	for (tmp = h->prev; tmp; tmp = tmp->prev)
 	{
-	  if ((reverse && tmp->msgno > edgemsgno)
-	      || (!reverse && tmp->msgno < edgemsgno))
+	  /* ...but if a previous sibling is available, don't force it */
+	  if (reverse ? tmp->msgno > edgemsgno : tmp->msgno < edgemsgno)
 	    break;
 	  else if (tmp->virtual >= 0)
 	  {
@@ -132,7 +133,7 @@ void index_make_entry (char *s, size_t l, MUTTMENU *menu, int num)
     }
   }
 
-  _mutt_make_string (s, l, NONULL (HdrFmt), Context, h, flag | M_FORMAT_INDEX);
+  _mutt_make_string (s, l, NONULL (HdrFmt), Context, h, flag);
 }
 
 int index_color (int index_no)

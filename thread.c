@@ -48,18 +48,25 @@ static int need_display_subject (CONTEXT *ctx, HEADER *tree)
 {
   HEADER *tmp;
 
+  /* if our subject is different from our parent's, display it */
   if (tree->subject_changed)
     return (1);
+
+  /* if our subject is different from that of our closest previously displayed
+   * sibling, display the subject */
   for (tmp = tree->prev; tmp; tmp = tmp->prev)
   {
     if (tmp->virtual >= 0 || (tmp->collapsed && (!ctx->pattern || tmp->limited)))
     {
-      if (!tmp->subject_changed)
-	return (0);
+      if (tmp->subject_changed)
+	return (1);
       else
 	break;
     }
   }
+  
+  /* if there is a parent-to-child subject change anywhere between us and our
+   * closest displayed ancestor, display the subject */
   for (tmp = tree->parent; tmp; tmp = tmp->parent)
   {
     if (tmp->virtual >= 0 || (tmp->collapsed && (!ctx->pattern || tmp->limited)))
@@ -67,7 +74,9 @@ static int need_display_subject (CONTEXT *ctx, HEADER *tree)
     else if (tmp->subject_changed)
       return (1);
   }
-  return (0);
+  
+  /* if we have no visible parent or previous sibling, display the subject */
+  return (1);
 }
 
 /* determines whether a later sibling or the child of a later 
