@@ -1,3 +1,7 @@
+2005-02-13 17:37:31  Roland Rosenfeld  <roland@spinnaker.de>  (roessler)
+
+	* po/de.po: update
+
 2005-02-13 09:53:07  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* Makefile.am: Include crypt-gpgme.h with the distribution.
