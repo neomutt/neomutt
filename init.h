@@ -1578,7 +1578,7 @@ struct option_t MuttVars[] = {
   ** Messages which have been assigned a score equal to or lower than the value
   ** of this variable are automatically marked as read by mutt.  Since
   ** mutt scores are always greater than or equal to zero, the default setting
-  ** of this variable will never mark a message for deletion.
+  ** of this variable will never mark a message read.
   */
   { "send_charset",	DT_STR,  R_NONE, UL &SendCharset, UL "" },
   /*
