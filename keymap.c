@@ -730,6 +730,8 @@ struct binding_t *km_get_table (int menu)
       return OpPost;
     case MENU_FOLDER:
       return OpBrowser;
+    case MENU_ALIAS:
+      return OpAlias;
     case MENU_ATTACH:
       return OpAttach;
     case MENU_EDITOR:

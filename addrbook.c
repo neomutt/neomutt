@@ -29,6 +29,8 @@
 
 static struct mapping_t AliasHelp[] = {
   { N_("Exit"),   OP_EXIT },
+  { N_("Del"),    OP_DELETE },
+  { N_("Undel"),  OP_UNDELETE },
   { N_("Select"), OP_GENERIC_SELECT_ENTRY },
   { N_("Help"),   OP_HELP },
   { NULL }
@@ -199,7 +201,7 @@ new_aliases:
 	  if (option (OPTRESOLVE) && menu->current < menu->max - 1)
 	  {
 	    menu->current++;
-	    menu->redraw |= REDRAW_MOTION;
+	    menu->redraw |= REDRAW_INDEX;
 	  }
 	}
         break;
