@@ -162,8 +162,13 @@ static void show_version (void)
 	"-USE_FLOCK"
 #endif
 	);
-
   puts (
+#ifdef USE_IMAP
+        "+USE_IMAP  "
+#else
+        "-USE_IMAP  "
+#endif
+
 #ifdef USE_POP
 	"+USE_POP  "
 #else
@@ -202,11 +207,12 @@ static void show_version (void)
 
 
 #ifdef BUFFY_SIZE
-	"+BUFFY_SIZE  "
+	"+BUFFY_SIZE"
 #else
-	"-BUFFY_SIZE  "
+	"-BUFFY_SIZE"
 #endif
-
+	);
+  puts (
 #ifdef EXACT_ADDRESS
 	"+"
 #else
@@ -561,11 +567,11 @@ int main (int argc, char **argv)
       {
 	if (a)
 	{
-	  a->next = mutt_make_attach (t->data);
+	  a->next = mutt_make_file_attach (t->data);
 	  a = a->next;
 	}
 	else
-	  msg->content = a = mutt_make_attach (t->data);
+	  msg->content = a = mutt_make_file_attach (t->data);
 	if (!a)
 	{
 	  if (!option (OPTNOCURSES))

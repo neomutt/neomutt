@@ -40,6 +40,11 @@ WHERE char *Fqdn;
 WHERE char *HdrFmt;
 WHERE char *Homedir;
 WHERE char *Hostname;
+#ifdef USE_IMAP
+WHERE char *ImapUser INITVAL (NULL);
+WHERE char *ImapPass INITVAL (NULL);
+WHERE short ImapCheckTime;
+#endif
 WHERE char *InReplyTo;
 WHERE char *Inbox;
 WHERE char *Ispell;

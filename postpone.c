@@ -94,7 +94,7 @@ static void post_entry (char *s, size_t slen, MUTTMENU *menu, int entry)
 {
   CONTEXT *ctx = (CONTEXT *) menu->data;
 
-  mutt_make_string (s, slen, NONULL (HdrFmt), ctx->hdrs[entry]);
+  mutt_make_string (s, slen, NONULL (HdrFmt), ctx, ctx->hdrs[entry]);
 }
 
 static HEADER *select_msg (void)
@@ -270,7 +270,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur)
       safe_free ((void **) &PostContext);
       return (-1);
     }
-    hdr->content = mutt_make_attach (file);
+    hdr->content = mutt_make_file_attach (file);
     hdr->content->use_disp = 0;	/* no content-disposition */
     hdr->content->unlink = 1;	/* delete when we are done */
   }

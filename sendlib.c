@@ -849,7 +849,39 @@ void mutt_update_encoding (BODY *a)
   safe_free ((void **) &info);
 }
 
-BODY *mutt_make_attach (const char *path)
+BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr)
+{
+  char buffer[LONG_STRING];
+  BODY *body;
+  FILE *fpout;
+
+  mutt_mktemp (buffer);
+  if ((fpout = safe_fopen (buffer, "w")) == NULL)
+    return NULL;
+
+  body = mutt_new_body ();
+  body->type = TYPEMESSAGE;
+  body->subtype = safe_strdup ("rfc822");
+  body->filename = safe_strdup (buffer);
+  body->unlink = 1;
+  body->use_disp = 0;
+
+  /* this MUST come after setting ->filename because we reuse buffer[] */
+  strfcpy (buffer, "Forwarded message from ", sizeof (buffer));
+  rfc822_write_address (buffer + 23, sizeof (buffer) - 23, hdr->env->from);
+  body->description = safe_strdup (buffer);
+
+  mutt_parse_mime_message (ctx, hdr);
+  mutt_copy_message (fpout, ctx, hdr,
+		     option (OPTMIMEFORWDECODE) ? M_CM_DECODE : 0,
+		     CH_XMIT | (option (OPTMIMEFORWDECODE) ? (CH_MIME | CH_TXTPLAIN ) : 0));
+  
+  fclose (fpout);
+  mutt_update_encoding (body);
+  return (body);
+}
+
+BODY *mutt_make_file_attach (const char *path)
 {
   BODY *att;
   CONTENT *info;

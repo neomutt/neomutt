@@ -152,6 +152,12 @@ static int user_is_recipient (ENVELOPE *hdr)
  * %u = user (login) name of author
  * %Z = status flags	*/
 
+struct hdr_format_info
+{
+  CONTEXT *ctx;
+  HEADER *hdr;
+};
+
 static const char *
 hdr_format_str (char *dest,
 		size_t destlen,
@@ -163,18 +169,27 @@ hdr_format_str (char *dest,
 		unsigned long data,
 		format_flag flags)
 {
-  HEADER *hdr = (HEADER *) data;
+  struct hdr_format_info *hfi = (struct hdr_format_info *) data;
+  HEADER *hdr;
+  CONTEXT *ctx;
   char fmt[SHORT_STRING], buf2[SHORT_STRING], ch, *p;
   int do_locales, i;
   int optional = (flags & M_FORMAT_OPTIONAL);
   size_t len;
 
+  hdr = hfi->hdr;
+  ctx = hfi->ctx;
+
   dest[0] = 0;
   switch (op)
   {
     case 'a':
-      snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
-      snprintf (dest, destlen, fmt, hdr->env->from->mailbox);
+      if(hdr->env->from && hdr->env->from->mailbox)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+	snprintf (dest, destlen, fmt, hdr->env->from->mailbox);
+      }
+      dest[0] = '\0';
       break;
 
     case 'B':
@@ -184,11 +199,16 @@ hdr_format_str (char *dest,
       break;
 
     case 'b':
-      if ((p = strrchr (Context->path, '/')))
-        strncpy (dest, p + 1, destlen);
-      else
-        strncpy (dest, Context->path, destlen);
-      break;
+      if(ctx)
+      {
+	if ((p = strrchr (ctx->path, '/')))
+	  strfcpy (dest, p + 1, destlen);
+	else
+	  strfcpy (dest, ctx->path, destlen);
+	break;
+      }
+      else 
+	strfcpy(dest, "(null)", destlen);
 
     case 'c':
       mutt_pretty_size (buf2, sizeof (buf2), (long) hdr->content->length);
@@ -340,8 +360,13 @@ hdr_format_str (char *dest,
       break;
 
     case 'm':
-      snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
-      snprintf (dest, destlen, fmt, Context->msgcount);
+      if(ctx)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
+	snprintf (dest, destlen, fmt, ctx->msgcount);
+      }
+      else
+	strfcpy(dest, "(null)", destlen);
       break;
 
     case 'n':
@@ -384,7 +409,7 @@ hdr_format_str (char *dest,
 	ch = '!';
       else if (hdr->replied)
 	ch = 'r';
-      else if (hdr->read && (Context->msgnotreadyet != hdr->msgno))
+      else if (hdr->read && (ctx && ctx->msgnotreadyet != hdr->msgno))
 	ch = '-';
       else if (hdr->old)
 	ch = 'O';
@@ -452,7 +477,7 @@ hdr_format_str (char *dest,
       snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
       snprintf (buf2, sizeof (buf2),
 		"%c%c%c",
-		(hdr->read && (Context->msgnotreadyet != hdr->msgno))
+		(hdr->read && (ctx && ctx->msgnotreadyet != hdr->msgno))
 		? (hdr->replied ? 'r' : ' ') : (hdr->old ? 'O' : 'N'),
 		hdr->deleted ? 'D' : (hdr->attach_del ? 'd' : ch),
 		hdr->tagged ? '*' :
@@ -475,7 +500,12 @@ hdr_format_str (char *dest,
 }
 
 void
-_mutt_make_string (char *dest, size_t destlen, const char *s, HEADER *hdr, format_flag flags)
+_mutt_make_string (char *dest, size_t destlen, const char *s, CONTEXT *ctx, HEADER *hdr, format_flag flags)
 {
-  mutt_FormatString (dest, destlen, s, hdr_format_str, (unsigned long) hdr, flags);
+  struct hdr_format_info hfi;
+
+  hfi.hdr = hdr;
+  hfi.ctx = ctx;
+
+  mutt_FormatString (dest, destlen, s, hdr_format_str, (unsigned long) &hfi, flags);
 }

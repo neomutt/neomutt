@@ -19,6 +19,7 @@
 #include "mutt.h"
 #include "mutt_curses.h"
 #include "sort.h"
+#include "mx.h"
 
 void mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf)
 {
@@ -44,6 +45,12 @@ void mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf)
       {
 	h->deleted = 0;
 	ctx->deleted--;
+/* if you undelete a message, the imap server will probably need to know. */
+	if(ctx->magic==M_IMAP) 
+	{
+	  h->changed = 1;
+	  ctx->changed = 1;
+	}
       }
       break;
 

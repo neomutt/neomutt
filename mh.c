@@ -643,20 +643,23 @@ int mh_sync_mailbox (CONTEXT * ctx)
     }
   }
 
-  snprintf (path, sizeof (path), "%s/%s", ctx->path, ".mh_sequences");
-  mh_sequences = fopen (path, "w");
-  if (mh_sequences == NULL)
+  if(ctx->magic == M_MH)
   {
-    mutt_message ("fopen %s failed", path);
-  }
-  else
-  {
-    fprintf (mh_sequences, "unseen: ");
-    for (i = 0; i < ctx->msgcount; i++)
-      if ((ctx->hdrs[i]->read == 0) && !(ctx->hdrs[i]->deleted))
-	fprintf (mh_sequences, "%s ", ctx->hdrs[i]->path);
-    fprintf (mh_sequences, "\n");
-    fclose (mh_sequences);
+    snprintf (path, sizeof (path), "%s/%s", ctx->path, ".mh_sequences");
+    mh_sequences = fopen (path, "w");
+    if (mh_sequences == NULL)
+    {
+      mutt_message ("fopen %s failed", path);
+    }
+    else
+    {
+      fprintf (mh_sequences, "unseen: ");
+      for (i = 0; i < ctx->msgcount; i++)
+	if ((ctx->hdrs[i]->read == 0) && !(ctx->hdrs[i]->deleted))
+	  fprintf (mh_sequences, "%s ", ctx->hdrs[i]->path);
+      fprintf (mh_sequences, "\n");
+      fclose (mh_sequences);
+    }
   }
 
   return (rc);

@@ -81,6 +81,7 @@ static const char *pkalgbytype(unsigned char type)
     case 3: return "RSA";
     case 16: return "ElG";
     case 17: return "DSA";
+    case 20: return "ElG";
     default: return "unk";
   }
 }
@@ -139,6 +140,7 @@ static short canencrypt(unsigned char type)
     case 1:
     case 2:
     case 16:
+    case 20:
     	return 1;
     default:
         return 0;
@@ -152,6 +154,7 @@ static short cansign(unsigned char type)
     case 1:
     case 3:
     case 17:
+    case 20:
     	return 1;
     default:
     	return 0;
@@ -256,11 +259,27 @@ static unsigned char *pgp_read_packet(FILE *fp, size_t *len)
 	partial = 0;
 	material -= 2;
       }
-      else
+      else if(b < 255)
       {
 	material = 1 << (b & 0x1f);
 	partial = 1;
 	material -= 1;
+      }
+      else /* b == 255 */
+      {
+	unsigned char buf[4];
+	if( fread( buf, 4, 1, fp ) < 1)
+	{
+	   mutt_perror("fread");
+	   goto bail;
+	}
+	/*assert( sizeof(material) >= 4 );*/
+	material  = buf[0] << 24;
+	material |= buf[1] << 16;
+	material |= buf[2] << 8;
+	material |= buf[3];
+	partial = 0;
+	material -= 5;
       }
     
       if(read_material(material, &used, fp) == -1)
@@ -474,7 +493,7 @@ static KEYINFO *pgp_parse_pgp3_key(unsigned char *buff, size_t l)
 
   if (alg == 17)
     skip_bignum(buff, l, j, &j, 3);
-  else if(alg == 16)
+  else if(alg == 16 || alg == 20 )
     skip_bignum(buff, l, j, &j, 2);
   
   len = (buff[j] << 8) + buff[j+1];

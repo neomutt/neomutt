@@ -412,6 +412,15 @@ int mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 	      mutt_alias_menu ((char *) buf, buflen, Aliases);
 	    return (1);
 	  }
+	  else if (flags & M_COMMAND)
+	  {
+	    buf[curpos] = 0;
+	    if (mutt_command_complete ((char *) buf, buflen, curpos))
+	    {
+	      redraw = M_REDRAW_INIT;
+	      continue;
+	    }
+	  }
 	  else if (flags & (M_FILE | M_EFILE))
 	  {
 	    buf[curpos] = 0;

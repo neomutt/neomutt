@@ -180,7 +180,7 @@ int mutt_display_message (HEADER *cur)
     builtin = 1;
   else
   {
-    mutt_make_string (buf, sizeof (buf), PagerFmt, cur);
+    mutt_make_string (buf, sizeof (buf), PagerFmt, Context, cur);
     fputs (buf, fpout);
     fputs ("\n\n", fpout);
   }
@@ -475,7 +475,7 @@ void mutt_enter_command (void)
   int old_sortre	= option (OPTSORTRE);
 
   buffer[0] = 0;
-  if (mutt_get_field (":", buffer, sizeof (buffer), 0) != 0 || !buffer[0])
+  if (mutt_get_field (":", buffer, sizeof (buffer), M_COMMAND) != 0 || !buffer[0])
     return;
   err.data = errbuf;
   err.dsize = sizeof (errbuf);

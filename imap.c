@@ -20,6 +20,7 @@
 #include "mutt_curses.h"
 #include "mx.h"
 #include "mailbox.h"
+#include "globals.h"
 
 #include <unistd.h>
 #include <netinet/in.h>
@@ -27,6 +28,8 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 
 /* Minimal support for IMAP 4rev1 */
 
@@ -41,6 +44,7 @@ enum
 {
   IMAP_FATAL = 1,
   IMAP_NEW_MAIL,
+  IMAP_EXPUNGE,
   IMAP_BYE
 };
 
@@ -59,8 +63,23 @@ typedef struct
   IMAP_CACHE cache[IMAP_CACHE_LEN];
 } IMAP_DATA;
 
-static char ImapUser[SHORT_STRING] = { 0 };
-static char ImapPass[SHORT_STRING] = { 0 };
+/* simple read buffering to speed things up. */
+static int imap_readchar (int fd, char *c)
+{
+  static char inbuf[LONG_STRING];
+  static int bufpos=0, available=0;
+  
+  if (bufpos>=available)
+  {
+    available = read (fd, inbuf, sizeof(inbuf));
+    bufpos = 0;
+    if (available <= 0)
+      return available; /* returns 0 for EOF or -1 for other error */
+  }
+  *c = inbuf[bufpos];
+  bufpos++;
+  return 1;
+}
 
 static int imap_read_line (char *buf, size_t buflen, int fd)
 {
@@ -69,7 +88,7 @@ static int imap_read_line (char *buf, size_t buflen, int fd)
 
   for (i = 0; i < buflen; i++)
   {
-    if (read (fd, &ch, 1) != 1)
+    if (imap_readchar (fd, &ch) != 1)
       return (-1);
     if (ch == '\n')
       break;
@@ -178,6 +197,9 @@ static int imap_parse_fetch (HEADER *h, char *s)
 	    dprint (1, (debugfile, "imap_parse_fetch(): bogus FLAGS entry: %s\n", s));
 	    return (-1); /* parse error */
 	  }
+	  /* we're about to get a new set of headers, so clear the old ones. */
+	  h->deleted=0; h->flagged=0;
+	  h->replied=0; h->read=0;
 	  s++;
 	  state = 1;
 	}
@@ -208,6 +230,7 @@ static int imap_parse_fetch (HEADER *h, char *s)
 	  while (isdigit (*s))
 	    *ptmp++ = *s++;
 	  *ptmp = 0;
+	  h->content->length = atoi (tmp);
 	}
 	else if (*s == ')')
 	  s++; /* end of request */
@@ -294,6 +317,7 @@ static int imap_handle_untagged (CONTEXT *ctx, char *s)
 {
   char *pn;
   int count;
+  int n, ind;
 
   s = imap_next_word (s);
 
@@ -307,21 +331,33 @@ static int imap_handle_untagged (CONTEXT *ctx, char *s)
       /* new mail arrived */
       count = atoi (pn);
 
-      if (count <= ctx->msgcount)
-      {
-	/* something is wrong because the server reported fewer messages
-	 * than we previously saw
-	 */
-	mutt_error ("Fatal error.  Message count is out of sync!");
-	((IMAP_DATA *) ctx->data)->status = IMAP_FATAL;
-	mx_fastclose_mailbox (ctx);
-	return (-1);
-      }
-      else
-      {
-	((IMAP_DATA *) ctx->data)->status = IMAP_NEW_MAIL;
-	((IMAP_DATA *) ctx->data)->newMailCount = count;
-      }
+      if (((IMAP_DATA *) ctx->data)->status != IMAP_EXPUNGE) { 
+      	if (count <= ctx->msgcount)
+        {
+	  /* something is wrong because the server reported fewer messages
+	   * than we previously saw
+	   */
+	  mutt_error ("Fatal error.  Message count is out of sync!");
+	  ((IMAP_DATA *) ctx->data)->status = IMAP_FATAL;
+	  mx_fastclose_mailbox (ctx);
+	  return (-1);
+        }
+        else
+        {
+	  ((IMAP_DATA *) ctx->data)->status = IMAP_NEW_MAIL;
+	  ((IMAP_DATA *) ctx->data)->newMailCount = count;
+        }
+      }      
+    }
+    else if (strncasecmp ("EXPUNGE", s, 7) == 0)
+    {
+      /* a message was removed; reindex remaining messages 	*/
+      /* (which amounts to decrementing indices of messages 	*/
+      /* with an index greater than the deleted one. 		*/
+      ind = atoi (pn) - 1;
+      for (n = 0; n < ctx->msgcount; n++)
+        if (ctx->hdrs[n]->index > ind)
+          ctx->hdrs[n]->index--;
     }
   }
   else if (strncasecmp ("BYE", s, 3) == 0)
@@ -512,41 +548,50 @@ int imap_open_mailbox (CONTEXT *ctx)
   char buf[LONG_STRING];
   char bufout[LONG_STRING];
   char host[SHORT_STRING];
+  char user[SHORT_STRING];
+  char pass[SHORT_STRING];
   char mailbox[_POSIX_PATH_MAX];
   char seq[16];
   int count = 0;
   int n;
   char *pc;
 
-  pc = ctx->path;
-  if (*pc != '{')
+  if (ctx->path[0] != '{')
     return (-1);
-  pc++;
-  n = 0;
-  while (*pc && *pc != '}')
+  for(n = 0, pc = ctx->path + 1; *pc && *pc != '}' && n < sizeof(host) - 1; 
+      n++, pc++)
     host[n++] = *pc++;
+  if(*pc != '}')
+    return -1;
   host[n] = 0;
-  if (!*pc)
-    return (-1);
   pc++;
   strfcpy (mailbox, pc, sizeof (mailbox));
 
-  if (!ImapUser[0])
-    strfcpy (ImapUser, Username, sizeof (ImapUser));
-  if (mutt_get_field ("IMAP Username: ", ImapUser, sizeof (ImapUser), 0) != 0 ||
-      !ImapUser[0])
+  if (!ImapUser)
   {
-    ImapUser[0] = 0;
-    return (-1);
+    strfcpy (user, Username, sizeof (user));
+    if (mutt_get_field ("IMAP Username: ", user, sizeof (user), 0) != 0 ||
+        !user[0])
+    {
+      user[0] = 0;
+      return (-1);
+    }
   }
+  else
+    strfcpy (user, ImapUser, sizeof (user));
 
-  snprintf (buf, sizeof (buf), "Password for %s@%s: ", ImapUser, host);
-  ImapPass[0] = 0;
-  if (mutt_get_field (buf, ImapPass, sizeof (ImapPass), M_PASS) != 0 ||
-      !ImapPass[0])
+  if (!ImapPass)
   {
-    return (-1);
+    pass[0]=0;
+    snprintf (buf, sizeof (buf), "Password for %s@%s: ", user, host);
+    if (mutt_get_field (buf, pass, sizeof (pass), M_PASS) != 0 ||
+        !pass[0])
+    {
+      return (-1);
+    }
   }
+  else
+    strfcpy (pass, ImapPass, sizeof (pass));
 
   memset (&sin, 0, sizeof (sin));
   sin.sin_port = htons (IMAP_PORT);
@@ -591,12 +636,20 @@ int imap_open_mailbox (CONTEXT *ctx)
 
   mutt_message ("Logging in...");
   imap_make_sequence (seq, sizeof (seq), ctx);
-  snprintf (buf, sizeof (buf), "%s LOGIN %s %s\r\n", seq, ImapUser, ImapPass);
+  snprintf (buf, sizeof (buf), "%s LOGIN %s %s\r\n", seq, user, pass);
   if (imap_exec (buf, sizeof (buf), ctx, seq, buf) != 0)
   {
+    /* Most likely an invalid login; clear username and password for re-entry. */
+    FREE (&ImapUser);
+    FREE (&ImapPass);
     imap_error ("imap_open_mailbox()", buf);
     return (-1);
   }
+  /* If they have a successful login, we may as well cache the user/password. */
+  if (!ImapUser)
+    ImapUser = safe_strdup (user);
+  if (!ImapPass)
+    ImapPass = safe_strdup (pass);
 
   mutt_message ("Selecting %s...", mailbox);
   imap_make_sequence (seq, sizeof (seq), ctx);
@@ -630,12 +683,14 @@ int imap_open_mailbox (CONTEXT *ctx)
   }
   while (strncmp (seq, buf, strlen (seq)) != 0);
 
-  mutt_message ("Fetching message headers...");
   ctx->hdrmax = count;
   ctx->hdrs = safe_malloc (count * sizeof (HEADER *));
   ctx->v2r = safe_malloc (count * sizeof (int));
   for (ctx->msgcount = 0; ctx->msgcount < count; )
   {
+    snprintf (buf, sizeof (buf), "Fetching message headers... [%d/%d]", 
+      ctx->msgcount + 1, count);
+    mutt_message (buf);
     ctx->hdrs[ctx->msgcount] = mutt_new_header ();
 
     /* `count' can get modified if new mail arrives while fetching the
@@ -775,52 +830,6 @@ int imap_close_connection (CONTEXT *ctx)
   return 0;
 }
 
-static int make_delete_list (char *list, size_t listlen, CONTEXT *ctx)
-{
-  int first = -1, last = -1;
-  int n;
-  char tmp[LONG_STRING];
-
-  *list = 0;
-  for (n=0; n<ctx->msgcount; n++)
-  {
-    if (ctx->hdrs[n]->deleted)
-    {
-      if (first < 0)
-      {
-	first = n;
-	last = n;
-      }
-      else if (last != n - 1)
-      {
-	if (first != last)
-	  snprintf (tmp, sizeof (tmp), "%d:%d", first + 1, last + 1);
-	else
-	  snprintf (tmp, sizeof (tmp), "%d", first + 1);
-	if (list[0])
-	  strcat (list, ",");
-	strcat (list, tmp);
-	first = last = n;
-      }
-      else
-	last = n;
-    }
-  }
-
-  if (first >= 0)
-  {
-    if (first != last)
-      snprintf (tmp, sizeof (tmp), "%d:%d", first + 1, last + 1);
-    else
-      snprintf (tmp, sizeof (tmp), "%d", first + 1);
-    if (list[0])
-      strcat (list, ",");
-    strcat (list, tmp);
-  }
-
-  return 0;
-}
-
 int imap_sync_mailbox (CONTEXT *ctx)
 {
   char seq[8];
@@ -829,21 +838,28 @@ int imap_sync_mailbox (CONTEXT *ctx)
   int n;
 
   /* save status changes */
-  mutt_message ("Saving message status flags...");
   for (n = 0; n < ctx->msgcount; n++)
   {
-    if (!ctx->hdrs[n]->deleted && ctx->hdrs[n]->changed)
+    snprintf (tmp, sizeof (tmp), "Saving message status flags... [%d/%d]", n+1, 
+      ctx->msgcount);
+    mutt_message (tmp);
+    if (ctx->hdrs[n]->deleted || ctx->hdrs[n]->changed)
     {
+      *tmp = 0;
       if (ctx->hdrs[n]->read)
 	strcat (tmp, "\\Seen ");
       if (ctx->hdrs[n]->flagged)
 	strcat (tmp, "\\Flagged ");
       if (ctx->hdrs[n]->replied)
-	strcat (tmp, "\\Answered");
+	strcat (tmp, "\\Answered ");
+      if (ctx->hdrs[n]->deleted)
+        strcat (tmp, "\\Deleted");
       mutt_remove_trailing_ws (tmp);
 
+      if (!*tmp) continue; /* imapd doesn't like empty flags. */
       imap_make_sequence (seq, sizeof (seq), ctx);
-      snprintf (buf, sizeof (buf), "%s STORE %d FLAGS.SILENT (%s)\r\n", seq, tmp);
+      snprintf (buf, sizeof (buf), "%s STORE %d FLAGS.SILENT (%s)\r\n", seq, 
+      	ctx->hdrs[n]->index + 1, tmp);
       if (imap_exec (buf, sizeof (buf), ctx, seq, buf) != 0)
       {
 	imap_error ("imap_sync_mailbox()", buf);
@@ -852,16 +868,18 @@ int imap_sync_mailbox (CONTEXT *ctx)
     }
   }
 
-  mutt_message ("Marking messages as deleted...");
-  make_delete_list (tmp, sizeof (tmp), ctx);
+  mutt_message ("Expunging messages from server...");
+  ((IMAP_DATA *) ctx->data)->status = IMAP_EXPUNGE;
   imap_make_sequence (seq, sizeof (seq), ctx);
-  snprintf (buf, sizeof (buf), "%s STORE %s +FLAGS.SILENT (\\Deleted)\r\n", seq, tmp);
+  snprintf (buf, sizeof (buf), "%s EXPUNGE\r\n", seq);
   if (imap_exec (buf, sizeof (buf), ctx, seq, buf) != 0)
   {
     imap_error ("imap_sync_mailbox()", buf);
     return (-1);
   }
-
+  ((IMAP_DATA *) ctx->data)->status = 0;
+  /* WARNING: Messages need to be reindexed at this point after the expunge, or */
+  /* mutt will become -very- confused unless it's quitting. */
   return 0;
 }
 
@@ -904,7 +922,15 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint)
 {
   char seq[8];
   char buf[LONG_STRING];
+  static time_t checktime=0;
   int msgcount = ctx->msgcount;
+
+  if (ImapCheckTime)
+  {
+    time_t k=time(NULL);
+    if (checktime && (k-checktime < ImapCheckTime)) return 0;
+    checktime=k;
+  }
 
   imap_make_sequence (seq, sizeof (seq), ctx);
   snprintf (buf, sizeof (buf), "%s NOOP\r\n", seq);

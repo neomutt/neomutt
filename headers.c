@@ -189,7 +189,7 @@ void mutt_edit_headers (const char *editor,
 	else
 	  strfcpy (path, p, sizeof (path));
 	mutt_expand_path (path, sizeof (path));
-	if ((body = mutt_make_attach (path)))
+	if ((body = mutt_make_file_attach (path)))
 	{
 	  body->description = safe_strdup (q);
 	  for (parts = msg->content; parts->next; parts = parts->next) ;

@@ -116,6 +116,11 @@ struct option_t MuttVars[] = {
   { "help",		DT_BOOL, R_BOTH, OPTHELP, 1 },
   { "history",		DT_NUM,	 R_NONE, UL &HistSize, 10 },
   { "hostname",		DT_STR,	 R_NONE, UL &Fqdn, 0 },
+#ifdef USE_IMAP
+  { "imap_user",	DT_STR,  R_NONE, UL &ImapUser, UL 0 },
+  { "imap_pass", 	DT_STR,  R_NONE, UL &ImapPass, UL 0 },
+  { "imap_checkinterval", 	DT_NUM,	 R_NONE, UL &ImapCheckTime, 0 },
+#endif
   { "in_reply_to",	DT_STR,	 R_NONE, UL &InReplyTo, UL "%i; from %n on %{!%a, %b %d, %Y at %I:%M:%S%p %Z}" },
   { "include",		DT_QUAD, R_NONE, OPT_INCLUDE, M_ASKYES },
   { "indent_string",	DT_STR,	 R_NONE, UL &Prefix, UL "> " },

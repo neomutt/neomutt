@@ -367,7 +367,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
   STATE s;
 
   if (flags & M_CM_PREFIX)
-    _mutt_make_string (prefix, sizeof (prefix), NONULL (Prefix), hdr, 0);
+    _mutt_make_string (prefix, sizeof (prefix), NONULL (Prefix), Context, hdr, 0);
 
   if ((flags & M_CM_NOHEADER) == 0)
   {
@@ -579,7 +579,8 @@ static int copy_delete_attach(HEADER *h, HEADER *p, BODY *m, FILE *fpin,
       {
 
 	if (h) h->lines = 0;
-	mutt_make_string (buf, sizeof (buf), NONULL (DeleteFmt), (p) ? p : h);
+	mutt_make_string (buf, sizeof (buf), NONULL (DeleteFmt), NULL,
+			  (p) ? p : h);
 
 	/* Go through deleted attachment headers, weed Content-Length,
 	 * Content-Type and Content-Transfer-Encoding 

@@ -1464,7 +1464,7 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
       {
 	_mutt_make_string (buffer,
 			   COLS-9 < sizeof (buffer) ? COLS-9 : sizeof (buffer),
-			   NONULL (PagerFmt), extra->hdr, M_FORMAT_MAKEPRINT);
+			   NONULL (PagerFmt), Context, extra->hdr, M_FORMAT_MAKEPRINT);
       }
       printw ("%-*.*s -- (", COLS-10, COLS-10, IsHeader (extra) ? buffer : banner);
       if (last_pos < sb.st_size - 1)

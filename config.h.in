@@ -46,6 +46,9 @@
 /* Do you want support for the POP3 protocol? (--enable-pop) */
 #undef USE_POP
 
+/* Do you want support for the IMAP protocol? (--enable-imap) */
+#undef USE_IMAP
+
 /*
  * Is mail spooled to the user's home directory?  If defined, MAILPATH should
  * be set to the filename of the spool mailbox relative the the home

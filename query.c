@@ -142,7 +142,7 @@ static QUERY *run_query (char *s, int quiet)
   return first;
 }
 
-int query_search (MUTTMENU *m, regex_t *re, int n)
+static int query_search (MUTTMENU *m, regex_t *re, int n)
 {
   ENTRY *table = (ENTRY *) m->data;
 
@@ -152,7 +152,7 @@ int query_search (MUTTMENU *m, regex_t *re, int n)
 /* This is the callback routine from mutt_menuLoop() which is used to generate
  * a menu entry for the requested item number.
  */
-void query_entry (char *s, size_t slen, MUTTMENU *m, int num)
+static void query_entry (char *s, size_t slen, MUTTMENU *m, int num)
 {
   ENTRY *table = (ENTRY *) m->data;
   char buf[SHORT_STRING] = "";
@@ -177,7 +177,7 @@ void query_entry (char *s, size_t slen, MUTTMENU *m, int num)
 	    table[num].data->other);
 }
 
-int query_tag (MUTTMENU *menu, int n)
+static int query_tag (MUTTMENU *menu, int n)
 {
   return (((ENTRY *) menu->data)[n].tagged = !((ENTRY *) menu->data)[n].tagged);
 }
@@ -185,6 +185,12 @@ int query_tag (MUTTMENU *menu, int n)
 int mutt_query_complete (char *buf, size_t buflen)
 {
   QUERY *results = NULL;
+
+  if (!QueryCmd)
+  {
+    mutt_error ("Query command not defined.");
+    return 0;
+  }
 
   results = run_query (buf, 1);
   if (results)
@@ -205,6 +211,12 @@ int mutt_query_complete (char *buf, size_t buflen)
 
 void mutt_query_menu (char *buf, size_t buflen)
 {
+  if (!QueryCmd)
+  {
+    mutt_error ("Query command not defined.");
+    return;
+  }
+
   if (buf == NULL)
   {
     char buffer[STRING] = "";
@@ -238,11 +250,6 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 
   if (results == NULL)
   {
-    if (!QueryCmd)
-      {
-        mutt_error ("Query command not defined.");
-        return;
-      }
     /* Prompt for Query */
     if (mutt_get_field ("Query: ", buf, buflen, 0) == 0 && buf[0])
     {

@@ -299,9 +299,9 @@ char *pgp_ask_for_key (const char *ringfile, KEYINFO *udb, char *tag, char *what
   {
 
     for (l = id_defaults; l; l = l->next)
-      if (!strcasecmp (whatfor, l->what)) 
+      if (!strcasecmp (whatfor, NONULL(l->what)))
       {
-	strcpy (resp, l->dflt);
+	strcpy (resp, NONULL(l->dflt));
 	break;
       }
   }

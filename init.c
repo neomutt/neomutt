@@ -1120,6 +1120,79 @@ finish:
   return (r);
 }
 
+/* helper function for completion.  Changes the dest buffer if
+   necessary/possible to aid completion.
+	dest == completion result gets here.
+	src == candidate for completion.
+	try == user entered data for completion.
+	len == length of dest buffer.
+*/
+static void candidate (char *dest, char *try, char *src, int len)
+{
+  int l;
+
+  if (strstr (src, try) == src)
+  {
+    if (dest[0] == 0)
+    {
+      strncpy (dest, src, len);
+      strncat (dest, " ", len);
+    }
+    else
+    {
+      for (l = 0; src[l] && src[l] == dest[l]; l++);
+	dest[l] = 0;
+    }
+  }
+}
+
+int mutt_command_complete (char *buffer, size_t len, int pos)
+{
+  char cmd[STRING];
+  char completed[STRING] = { 0 };
+  char *pt;
+  int num;
+  
+  if (buffer[0] == 0)
+    return 0;
+  strncpy (cmd, buffer, pos);
+  pt = cmd;
+  pt[pos] = 0;
+  while (!isspace (*pt))
+    pt++;
+  *pt = 0;
+
+  pt = buffer + pos;
+  while ((pt > buffer) && !isspace (*pt))
+    pt--;
+  if (pt == buffer) /* complete cmd */
+  {
+    for (num = 0; Commands[num].name; num++)
+      candidate (completed, cmd, Commands[num].name, sizeof (completed));
+
+    if (completed[0] == 0)
+      return 0;
+    strncpy (buffer, completed, len);
+  }
+  else if (!strncasecmp (cmd, "set", 3)
+	   || !strncasecmp (cmd, "unset", 5)
+	   || !strncasecmp (cmd, "toggle", 6))
+  { 		/* complete variables */
+    pt++;
+    if (*pt == 0)
+      return 0;
+    strncpy (cmd, pt, sizeof (cmd));
+    for (num = 0; MuttVars[num].option; num++)
+      candidate (completed, cmd, MuttVars[num].option, sizeof (completed));
+    if (completed[0] == 0)
+      return 0;
+    strncpy (pt, completed, buffer + len - pt);
+  }
+  else
+    return 0;
+  return 1;
+}
+
 char *mutt_getnamebyvalue (int val, const struct mapping_t *map)
 {
   int i;

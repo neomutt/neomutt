@@ -149,7 +149,10 @@ void mutt_alias_menu (char *buf, size_t buflen, ALIAS *aliases)
 
   /* count the number of aliases */
   for (aliasp = aliases; aliasp; aliasp = aliasp->next)
+  {
+    aliasp->tagged = 0;
     menu->max++;
+  }
 
   menu->data = AliasTable = (ALIAS **) safe_calloc (menu->max, sizeof (ALIAS *));
 

@@ -151,7 +151,7 @@ be_include_messages (char *msg, char **buf, int *bufmax, int *buflen,
       /* add the attribution */
       if (Attribution)
       {
-	mutt_make_string (tmp, sizeof (tmp) - 1, Attribution, Context->hdrs[n]);
+	mutt_make_string (tmp, sizeof (tmp) - 1, Attribution, Context, Context->hdrs[n]);
 	strcat (tmp, "\n");
       }
 

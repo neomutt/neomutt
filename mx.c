@@ -29,8 +29,9 @@
 #include "pgp.h"
 #endif
 
-
-
+#ifdef USE_IMAP
+#include "imap.h"
+#endif
 
 #ifdef BUFFY_SIZE
 #include "buffy.h"

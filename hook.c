@@ -142,7 +142,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 
   if (data & (M_SENDHOOK | M_SAVEHOOK | M_FCCHOOK))
   {
-    if ((pat = mutt_pattern_comp (pattern.data, (data & M_SENDHOOK) ? M_FULL_MSG : 0, err)) == NULL)
+    if ((pat = mutt_pattern_comp (pattern.data, (data & M_SAVEHOOK) ? M_FULL_MSG : 0, err)) == NULL)
       goto error;
   }
   else
@@ -249,7 +249,7 @@ mutt_addr_hook (char *path, size_t pathlen, int type, CONTEXT *ctx, HEADER *hdr)
     if (hook->type & type)
       if ((mutt_pattern_exec (hook->pattern, 0, ctx, hdr) > 0) ^ hook->rx.not)
       {
-	mutt_make_string (path, pathlen, hook->command, hdr);
+	mutt_make_string (path, pathlen, hook->command, ctx, hdr);
 	return 0;
       }
 

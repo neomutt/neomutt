@@ -28,8 +28,9 @@
 
 #define MoreArgs(p) (*p->dptr && *p->dptr != ';' && *p->dptr != '#')
 
-#define mutt_make_string(A,B,C,D) _mutt_make_string(A,B,C,D,0)
-void _mutt_make_string (char *, size_t, const char *, HEADER *, format_flag);
+#define mutt_make_string(A,B,C,D,E) _mutt_make_string(A,B,C,D,E,0)
+void _mutt_make_string (char *, size_t, const char *, CONTEXT *,
+	HEADER *, format_flag);
 
 int mutt_extract_token (BUFFER *, BUFFER *, int);
 
@@ -68,7 +69,8 @@ ADDRESS *mutt_expand_aliases (ADDRESS *);
 ADDRESS *mutt_parse_adrlist (ADDRESS *, const char *);
 
 BODY *mutt_dup_body (BODY *);
-BODY *mutt_make_attach (const char *);
+BODY *mutt_make_file_attach (const char *);
+BODY *mutt_make_message_attach (CONTEXT *, HEADER *);
 BODY *mutt_make_multipart (BODY *);
 BODY *mutt_new_body (void);
 BODY *mutt_parse_multipart (FILE *, const char *, long, int);
@@ -179,6 +181,7 @@ int mutt_check_menu (const char *);
 int mutt_check_mime_type (const char *);
 int mutt_check_month (const char *);
 int mutt_check_overwrite (const char *, const char *, char *, size_t, int);
+int mutt_command_complete (char *, size_t, int);
 int mutt_complete (char *);
 int mutt_compose_attachment (BODY *a);
 int mutt_copy_bytes (FILE *, FILE *, size_t);

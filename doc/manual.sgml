@@ -537,7 +537,7 @@ name="commands">.  Each line of the file may contain one or more commands.
 When multiple commands are used, they must be separated by a semicolon (;).
 <tscreen><verb>
 	set realname='Mutt user' ; ignore x-
-</verb><tscreen>
+</verb></tscreen>
 The hash mark, or pound sign
 (``&num;''), is used as a ``comment'' character. You can use it to
 annotate your initialization file. All text after the comment character

@@ -1,38 +1,52 @@
-Changes since 0.92.7
+Changes since 0.92.8
 --------------------
 
-- [patch-0.92.7.handler.empty_cc_bcc.1] fixed bug in edit_envelope() which
-  caused the message to be aborted if the cc or bcc field was empty
+- [patch-0.90.12i.jmydaes.command-complete.1] Command completion
 
-- buffer used to store the error message in mutt_pattern_comp() called
-  sizeof() on the wrong variable
+- [patch-0.92.8.mtsirkin.attach-viewer.1] When viewing
+  attachments, fall back to the attachment's file name if
+  no description is available.
 
-- renamed $header_format to $index_format ($hdr_format is still accepted)
+- [patch-0.92.8i.ds.attachmsg.1] Attach messages from the compose menu.
 
-- [patch-0.92.7.vikas.postpone.1] fixed typo for binding the `postpone'
-  menu, and changes the menu to use $index_format for display of postponed
-  messages
+- [patch-0.92.8i.tlr.make_string_context.1] Fix a
+  segmentation fault when invoking mutt -p from the
+  command line.
 
-- mutt_error() is now a function pointer which either has the value of
-  mutt_curses_error() or mutt_nocurses_error() which simplifies the muttrc
-  parsing code
+- [patch-0.92.8i.tlr.mh_sequences.1] Don't generate
+  .mh_sequences files for maildir folders.
 
-- "source '~/bin/myscript|'" was fixed so that it works correctly
+- fix a NULL pointer deference in hdrline.c
 
-- [patch-0.92.7.me.mh_sync.1] fixed bug where syncing mh mailboxes silently
-  failed
+- [patch-0.92.8i.jmy.hook-bugfix.1] Fix a segmentation
+  fault in the send-hook code.
 
-- [patch-0.92.7.me.pattern.1] fixes bug with mismatched backtics in the
-  pattern language
+- [patch-0.92.8i.tlr.addrbook.1] Untag all aliases before
+  entering the address-book menu.
 
-- mutt_default_from() no longer sets the "real name" portion of the return
-  address so that it can be delayed until after execution of send-hook
-  commands
+- Enforce a non-NULL QueryCmd in the beginning of
+  mutt_query_complete() and mutt_query_menu().
 
+- Make all query.c functions except mutt_query_complete()
+  and mutt_query_menu() static.
 
-PGP-related changes since 0.92.6i
+- The latest IMAP patch from Andy Sloane has been added.
+
+PGP related Changes since 0.92.8i
 ---------------------------------
 
-- [patch-0.92.6i.tlr.pgp_longids.1] Correct the
-  calculation of 64 bit "v4" key IDs.
+- [patch-0.92.8i.maj.MIC_alg.1] Properly initializes a
+  variable in the PGP part of the Compose menu.
+
+- [patch-0.92.8i.tlr.pgpkey_dflt.1] Avoid possible
+  segmentation faults when determining the default value
+  of the PGP key selection prompt.
+
+- [patch-0.92.8i.wk.opgp_5bytelength.1] Recognize
+  OpenPGP's public key algorithm #20 (i.e., ElGamal for
+  Signing and Encrypting).
+
+- Moved doc/pgp-Notes.txt to doc/PGP-Notes.txt, and
+  updated that part of the documentation.
+
 

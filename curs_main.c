@@ -114,7 +114,7 @@ void index_make_entry (char *s, size_t l, MUTTMENU *menu, int num)
     }
   }
 
-  _mutt_make_string (s, l, NONULL (HdrFmt), h, flag);
+  _mutt_make_string (s, l, NONULL (HdrFmt), Context, h, flag);
 }
 
 int index_color (int index_no)

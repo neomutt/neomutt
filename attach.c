@@ -420,6 +420,9 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag)
     
     if (a->description)
       strfcpy (descrip, a->description, sizeof (descrip));
+    else if (a->filename)
+      snprintf (descrip, sizeof (descrip), "---Attachment: %s : %s",
+	  a->filename, type);
     else
       snprintf (descrip, sizeof (descrip), "---Attachment: %s", type);
   }

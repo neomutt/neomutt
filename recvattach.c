@@ -145,7 +145,7 @@ void attach_entry (char *b, size_t blen, MUTTMENU *menu, int num)
   s[0] = 0;
   if (m->type == TYPEMESSAGE && (!strcasecmp ("rfc822", m->subtype) ||
       !strcasecmp ("news", m->subtype)) && MsgFmt[0])
-    _mutt_make_string (s, sizeof (s), MsgFmt, m->hdr,
+    _mutt_make_string (s, sizeof (s), MsgFmt, NULL, m->hdr,
 		       M_FORMAT_FORCESUBJ | M_FORMAT_MAKEPRINT);
 
   mutt_pretty_size (size, sizeof (size), m->length);

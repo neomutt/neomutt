@@ -1707,3 +1707,41 @@ Changes since 0.92.6
   	alias group bob joe
   with no commas (mailx compatibility)
 
+Changes since 0.92.7
+--------------------
+
+- [patch-0.92.7.handler.empty_cc_bcc.1] fixed bug in edit_envelope() which
+  caused the message to be aborted if the cc or bcc field was empty
+
+- buffer used to store the error message in mutt_pattern_comp() called
+  sizeof() on the wrong variable
+
+- renamed $header_format to $index_format ($hdr_format is still accepted)
+
+- [patch-0.92.7.vikas.postpone.1] fixed typo for binding the `postpone'
+  menu, and changes the menu to use $index_format for display of postponed
+  messages
+
+- mutt_error() is now a function pointer which either has the value of
+  mutt_curses_error() or mutt_nocurses_error() which simplifies the muttrc
+  parsing code
+
+- "source '~/bin/myscript|'" was fixed so that it works correctly
+
+- [patch-0.92.7.me.mh_sync.1] fixed bug where syncing mh mailboxes silently
+  failed
+
+- [patch-0.92.7.me.pattern.1] fixes bug with mismatched backtics in the
+  pattern language
+
+- mutt_default_from() no longer sets the "real name" portion of the return
+  address so that it can be delayed until after execution of send-hook
+  commands
+
+
+PGP-related changes since 0.92.6i
+---------------------------------
+
+- [patch-0.92.6i.tlr.pgp_longids.1] Correct the
+  calculation of 64 bit "v4" key IDs.
+
