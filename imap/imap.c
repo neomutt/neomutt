@@ -938,8 +938,14 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
       if (ctx->hdrs[n]->attach_del)
       {
 	dprint (3, (debugfile, "imap_sync_mailbox: Attachments to be deleted, falling back to _mutt_save_message\n"));
-	appendctx = mx_open_mailbox (ctx->path, M_APPEND | M_QUIET, NULL);
-	_mutt_save_message (ctx->hdrs[n], appendctx, 1, 0, 0);
+	if (!appendctx)
+	  appendctx = mx_open_mailbox (ctx->path, M_APPEND | M_QUIET, NULL);
+	if (!appendctx)
+	{
+	  dprint (1, (debugfile, "imap_sync_mailbox: Error opening mailbox in append mode\n"));
+	}
+	else
+	  _mutt_save_message (ctx->hdrs[n], appendctx, 1, 0, 0);
       }
       flags[0] = '\0';
       
