@@ -350,6 +350,7 @@ struct binding_t OpBrowser[] = {
 #ifdef USE_IMAP
   { "create-mailbox",   OP_CREATE_MAILBOX,      "C" },
   { "delete-mailbox",   OP_DELETE_MAILBOX,      "d" },
+  { "rename-mailbox",   OP_RENAME_MAILBOX,      "r" },
   { "subscribe",	OP_BROWSER_SUBSCRIBE,	"s" },
   { "unsubscribe",	OP_BROWSER_UNSUBSCRIBE,	"u" },
   { "toggle-subscribed", OP_BROWSER_TOGGLE_LSUB, "T" },

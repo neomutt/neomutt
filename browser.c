@@ -875,7 +875,28 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	}
 	break;
 
-      case OP_DELETE_MAILBOX:
+      case OP_RENAME_MAILBOX:
+	if (!state.entry[menu->current].imap)
+	  mutt_error (_("Rename is only supported for IMAP mailboxes"));
+	else
+	{
+	  int nentry = menu->current;
+
+	  if (imap_mailbox_rename (state.entry[nentry].name) >= 0) {
+	    destroy_state (&state);
+	    init_state (&state, NULL);
+	    state.imap_browse = 1;
+	    imap_browse (LastDir, &state);
+	    menu->data = state.entry;
+	    menu->current = 0;
+	    menu->top = 0;
+	    init_menu (&state, menu, title, sizeof (title), buffy);
+	    MAYBE_REDRAW (menu->redraw);
+	  }
+	}
+	break;
+
+    case OP_DELETE_MAILBOX:
 	if (!state.entry[menu->current].imap)
 	  mutt_error (_("Delete is only supported for IMAP mailboxes"));
 	else

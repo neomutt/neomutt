@@ -2461,8 +2461,10 @@ following differences:
   will choose to descend into the subfolder view. If you wish to view
   the messages in that folder, you must use <tt>view-file</tt> instead
   (bound to <tt>space</tt> by default).
-<item>You can delete mailboxes with the <tt>delete-mailbox</tt>
-  command (bound to <tt>d</tt> by default. You may also
+<item>You can create, delete and rename mailboxes with the
+  <tt>create-mailbox</tt>, <tt>delete-mailbox</tt>, and
+  <tt>rename-mailbox</tt> commands (default bindings: <tt>C</tt>,
+  <tt>d</tt> and <tt>r</tt>, respectively). You may also
   <tt>subscribe</tt> and <tt>unsubscribe</tt> to mailboxes (normally
   these are bound to <tt>s</tt> and <tt>u</tt>, respectively).
 </itemize>

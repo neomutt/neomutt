@@ -302,6 +302,55 @@ int imap_mailbox_create (const char* folder)
   return -1;
 }
 
+int imap_mailbox_rename(const char* mailbox)
+{
+  IMAP_DATA* idata;
+  IMAP_MBOX mx;
+  char buf[LONG_STRING];
+  char newname[SHORT_STRING];
+
+  if (imap_parse_path (mailbox, &mx) < 0)
+  {
+    dprint (1, (debugfile, "imap_mailbox_rename: Bad source mailbox %s\n",
+      mailbox));
+    return -1;
+  }
+
+  if (!(idata = imap_conn_find (&mx.account, M_IMAP_CONN_NONEW)))
+  {
+    dprint (1, (debugfile, "imap_mailbox_rename: Couldn't find open connection to %s", mx.account.host));
+    goto fail;
+  }
+
+  snprintf(buf, sizeof (buf), _("Rename mailbox %s to: "), mx.mbox);
+  
+ if (mutt_get_field (buf, newname, sizeof (newname), M_FILE) < 0)
+    goto fail;
+
+  if (!mutt_strlen (newname))
+  {
+    mutt_error (_("Mailbox must have a name."));
+    mutt_sleep (1);
+    goto fail;
+  }
+
+  if (imap_rename_mailbox (idata, &mx, newname) < 0) {
+    mutt_error (_("Rename failed: %s"), imap_get_qualifier (idata->cmd.buf));
+    mutt_sleep (1);
+    goto fail;
+  }
+
+  mutt_message (_("Mailbox renamed."));
+  mutt_sleep (0);
+
+  FREE (&mx.mbox);
+  return 0;
+
+ fail:
+  FREE (&mx.mbox);
+  return -1;
+}
+
 static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
   struct browser_state* state, short isparent)
 {
