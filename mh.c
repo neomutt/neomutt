@@ -530,7 +530,7 @@ static int maildir_sync_message (CONTEXT *ctx, int msgno)
 int mh_sync_mailbox (CONTEXT * ctx)
 {
   char path[_POSIX_PATH_MAX], tmp[_POSIX_PATH_MAX];
-  int i, rc = 0;
+  int i, j, rc = 0;
   
   i = mh_check_mailbox(ctx, NULL);
 
@@ -569,12 +569,27 @@ int mh_sync_mailbox (CONTEXT * ctx)
 	maildir_sync_message (ctx, i);
       else
       {
-	/* FOO - seems ok to ignore errors, but might want to warn... */
+	/* XXX - seems ok to ignore errors, but might want to warn... */
 	mh_sync_message (ctx, i);
       }
     }
   }
+
+  /* XXX race condition? */
+
   maildir_update_mtime(ctx);
+
+  /* adjust indices */
+
+  if (ctx->deleted)
+  {
+    for (i = 0, j = 0; i < ctx->msgcount; i++)
+    {
+      if (!ctx->hdrs[i]->deleted)
+	ctx->hdrs[i]->index = j++;
+    }
+  }
+
   return (rc);
 }
 
@@ -612,7 +627,7 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
   struct maildir *md, *p;
   struct maildir **last;
   HASH *fnames;
-  int i, deleted;
+  int i, j, deleted;
   
   if(!option (OPTCHECKNEW))
     return 0;
@@ -777,22 +792,39 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
       
       occult = 1;
 
-      if(index_hint && (i < *index_hint))
-	deleted++;
     }
   }
 
-  if (index_hint && occult)
-    *index_hint -= deleted;
-  
-  /* dump the file name hash */
+  /* destroy the file name hash */
 
   hash_destroy(&fnames, NULL);
 
   /* If we didn't just get new mail, update the tables. */
   
   if(modified || occult)
+  {
+    short old_sort;
+    int old_count;
+
+    if (Sort != SORT_ORDER)
+    {
+      old_sort = Sort;
+      Sort = SORT_ORDER;
+      mutt_sort_headers (ctx, 1);
+      Sort = old_sort;
+    }
+  
+    old_count = ctx->msgcount;
+    for (i = 0, j = 0; i < old_count; i++)
+    {
+      if (ctx->hdrs[i]->active && index_hint && *index_hint == i)
+	*index_hint = j;
+
+      if (ctx->hdrs[i]->active)
+	ctx->hdrs[i]->index = j++;
+    }
     mx_update_tables(ctx, 0);
+  }
 
   /* Incorporate new messages */
 

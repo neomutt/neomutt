@@ -47,7 +47,7 @@ void mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf)
 	ctx->deleted--;
 #ifdef USE_IMAP
 /* if you undelete a message, the imap server will probably need to know. */
-	if(ctx->magic==M_IMAP) 
+	if (ctx->magic == M_IMAP) 
 	{
 	  h->changed = 1;
 	  ctx->changed = 1;
