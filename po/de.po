@@ -1058,7 +1058,8 @@ msgstr "Hole Nachrichten-Köpfe... [%d/%d]"
 #. Unable to fetch headers for lower versions
 #: imap.c:688
 msgid "Unable to fetch headers from this IMAP server version."
-msgstr "Kann keine Nachrichten-Köpfe von dieser Version des IMAP-Servers holen."
+msgstr ""
+"Kann keine Nachrichten-Köpfe von dieser Version des IMAP-Servers holen."
 
 #: imap.c:880
 #, c-format
