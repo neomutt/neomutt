@@ -1,9 +1,9 @@
 # $Id$
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.3.21\n"
+"Project-Id-Version: Mutt 1.3.25\n"
 "POT-Creation-Date: 2002-01-01 21:18+0100\n"
-"PO-Revision-Date: 2001-08-23 00:42+02:00\n"
+"PO-Revision-Date: 2002-01-03 19:06+01:00\n"
 "Last-Translator: Jörgen Tegnér <teg@post.netlink.se>\n"
 "Language-Team: Swedish <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -422,34 +422,34 @@ msgid "Shell command: "
 msgstr "Skalkommando: "
 
 #: commands.c:647
-#, fuzzy, c-format
+#, c-format
 msgid "Decode-save%s to mailbox"
-msgstr "%s%s i brevlåda"
+msgstr "Avkoda-spara%s i brevlåda"
 
 #: commands.c:648
-#, fuzzy, c-format
+#, c-format
 msgid "Decode-copy%s to mailbox"
-msgstr "%s%s i brevlåda"
+msgstr "Avkoda-kopiera%s till brevlåda"
 
 #: commands.c:649
-#, fuzzy, c-format
+#, c-format
 msgid "Decrypt-save%s to mailbox"
-msgstr "%s%s i brevlåda"
+msgstr "Dekryptera-spara%s i brevlåda"
 
 #: commands.c:650
-#, fuzzy, c-format
+#, c-format
 msgid "Decrypt-copy%s to mailbox"
-msgstr "%s%s i brevlåda"
+msgstr "Dekryptera-kopiera%s till brevlåda"
 
 #: commands.c:651
-#, fuzzy, c-format
+#, c-format
 msgid "Save%s to mailbox"
-msgstr "%s%s i brevlåda"
+msgstr "Spara%s i brevlåda"
 
 #: commands.c:651
-#, fuzzy, c-format
+#, c-format
 msgid "Copy%s to mailbox"
-msgstr "%s%s i brevlåda"
+msgstr "Kopiera%s till brevlåda"
 
 #: commands.c:652
 msgid " tagged"
@@ -607,9 +607,9 @@ msgid "Rename to: "
 msgstr "Byt namn till: "
 
 #: compose.c:987 editmsg.c:96 sendlib.c:902
-#, fuzzy, c-format
+#, c-format
 msgid "Can't stat %s: %s"
-msgstr "Kan inte ta status på filen %s"
+msgstr "Kan inte ta status på %s: %s"
 
 #: compose.c:1013
 msgid "New file: "
@@ -843,9 +843,8 @@ msgid " in this limited view"
 msgstr " i den här begränsade vyn"
 
 #: curs_main.c:1331 pager.c:2291
-#, fuzzy
 msgid "Can't change 'important' flag on POP server."
-msgstr "Kan inte ändra meddelande på POP-servern."
+msgstr "Kan inte ändra flaggan 'viktigt' på POP-servern."
 
 #: curs_main.c:1446
 msgid "No more threads."
@@ -1050,26 +1049,22 @@ msgid "[-- name: %s --]\n"
 msgstr "[-- namn: %s --]\n"
 
 #: handler.c:1675 handler.c:1691
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
-msgstr "[-- Den här %s/%s bilagan "
+msgstr "[-- Den här %s/%s bilagan är inte inkluderad, --]\n"
 
 #: handler.c:1677
-#, fuzzy
 msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
 msgstr ""
-"[-- Den här %s/%s bilagan är inte inkluderad, --]\n"
 "[-- och den angivna externa källan är --]\n"
 "[-- utgången. --]\n"
 
 #: handler.c:1695
-#, fuzzy, c-format
+#, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
-msgstr ""
-"[-- Den här %s/%s bilagan är inte inkluderad, --]\n"
-"[-- och den angivna åtkomsttypen %s stöds inte --]\n"
+msgstr "[-- och den angivna åtkomsttypen %s stöds inte --]\n"
 
 #: handler.c:1812
 msgid "Error: multipart/signed has no protocol."
@@ -1201,7 +1196,7 @@ msgstr "Verifiering med SASL misslyckades."
 #: imap/browse.c:64 imap/imap.c:516
 #, c-format
 msgid "%s is an invalid IMAP path"
-msgstr ""
+msgstr "%s är en ogiltig IMAP-sökväg"
 
 #: imap/browse.c:81
 msgid "Getting namespaces..."
@@ -1212,9 +1207,8 @@ msgid "Getting folder list..."
 msgstr "Hämtar lista med brevlådor..."
 
 #: imap/browse.c:219
-#, fuzzy
 msgid "No such folder"
-msgstr "%s: färgen saknas"
+msgstr "Foldern saknas"
 
 #: imap/browse.c:277
 msgid "Create mailbox: "
@@ -1302,16 +1296,15 @@ msgstr "Tar bort meddelanden från server..."
 
 #: imap/imap.c:1043
 msgid "imap_sync_mailbox: EXPUNGE failed"
-msgstr ""
+msgstr "imap_sync_mailbox: EXPUNGE misslyckades"
 
 #: imap/imap.c:1077
 msgid "CLOSE failed"
 msgstr "CLOSE misslyckades."
 
 #: imap/imap.c:1325
-#, fuzzy
 msgid "Bad mailbox name"
-msgstr "Skapa brevlåda: "
+msgstr "Ogiltigt namn på brevlådan"
 
 #: imap/imap.c:1337
 #, c-format
@@ -2680,16 +2673,16 @@ msgstr "SSL avstängd på grund av brist på bra slumptal"
 
 #: mutt_ssl.c:318
 msgid "I/O error"
-msgstr ""
+msgstr "I/O-fel"
 
 #: mutt_ssl.c:321
 msgid "unspecified protocol error"
-msgstr ""
+msgstr "ospecificerat protokollfel"
 
 #: mutt_ssl.c:327
-#, fuzzy, c-format
+#, c-format
 msgid "SSL failed: %s"
-msgstr "Anslutning misslyckades: %s"
+msgstr "SSL misslyckades: %s"
 
 #: mutt_ssl.c:336
 msgid "Unable to get certificate from peer"
@@ -3064,22 +3057,16 @@ msgstr ""
 "\n"
 
 #: pgp.c:456
-#, fuzzy
 msgid "[-- END PGP MESSAGE --]\n"
-msgstr ""
-"\n"
-"[-- SLUT PÅ MEDDELANDE KRYPTERAT MED PGP --]\n"
+msgstr "[-- SLUT PÅ MEDDELANDE KRYPTERAT MED PGP --]\n"
 
 #: pgp.c:458
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- SLUT PÅ BLOCK MED PGP-NYCKEL --]\n"
 
 #: pgp.c:460
-#, fuzzy
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
-msgstr ""
-"\n"
-"[-- SLUT PÅ MEDDELANDE SIGNERAT MED PGP --]\n"
+msgstr "[-- SLUT PÅ MEDDELANDE SIGNERAT MED PGP --]\n"
 
 #: pgp.c:475
 msgid ""
@@ -3133,11 +3120,8 @@ msgstr ""
 "\n"
 
 #: pgp.c:861
-#, fuzzy
 msgid "[-- End of signed data --]\n"
-msgstr ""
-"\n"
-"[-- Slut på signerat data --]\n"
+msgstr "[-- Slut på signerat data --]\n"
 
 #: pgp.c:962
 msgid "Internal error. Inform <roessler@guug.de>."
@@ -3172,11 +3156,8 @@ msgstr ""
 "\n"
 
 #: pgp.c:1160
-#, fuzzy
 msgid "[-- End of PGP/MIME encrypted data --]\n"
-msgstr ""
-"\n"
-"[-- Slut på data krypterad enligt PGP/MIME --]\n"
+msgstr "[-- Slut på data krypterad enligt PGP/MIME --]\n"
 
 #: pgp.c:1241
 msgid "Can't open PGP subprocess!"
@@ -3299,7 +3280,7 @@ msgstr "Kommandot UIDL stöds inte av servern."
 #: pop.c:246 pop.c:562
 #, c-format
 msgid "%s is an invalid POP path"
-msgstr ""
+msgstr "%s är en ogilitig POP-sökväg"
 
 #: pop.c:277
 msgid "Fetching list of messages..."
@@ -3737,9 +3718,9 @@ msgid "%s no longer exists!"
 msgstr "%s finns inte längre!"
 
 #: sendlib.c:908
-#, fuzzy, c-format
+#, c-format
 msgid "%s isn't a regular file."
-msgstr "%s är inte en brevlåda."
+msgstr "%s är inte en normal fil."
 
 #: sendlib.c:1077
 #, c-format
@@ -3784,7 +3765,6 @@ msgid "(no mailbox)"
 msgstr "(ingen brevlåda)"
 
 #: thread.c:1002
-#, fuzzy
 msgid "Parent message is not visible in this limited view."
 msgstr "Första meddelandet är inte synligt med begränsad vy"
 

@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt 1.3.23.2\n"
+"Project-Id-Version: mutt 1.3.25\n"
 "POT-Creation-Date: 2002-01-01 21:18+0100\n"
-"PO-Revision-Date: 2001-11-16 15:14+0200\n"
+"PO-Revision-Date: 2002-01-02 11:10+0200\n"
 "Last-Translator: Toomas Soome <tsoome@ut.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -224,8 +224,7 @@ msgstr "Failimask: "
 
 #: browser.c:1046
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
-msgstr ""
-"Järjestan tagurpidi (k)uup., (t)ähest., (s)uuruse järgi või (e)i järjesta? "
+msgstr "Järjestan tagurpidi (k)uup., (t)ähest., (s)uuruse järgi või (e)i järjesta? "
 
 #: browser.c:1047
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
@@ -1058,11 +1057,10 @@ msgid "[-- This %s/%s attachment is not included, --]\n"
 msgstr "[-- Seda %s/%s lisa ei ole kaasatud, --]\n"
 
 #: handler.c:1677
-#, fuzzy
 msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
-msgstr "[-- ja näidatud väline allikas on --]\n"
+msgstr "[-- ja näidatud väline allikas on aegunud --]\n"
 
 #: handler.c:1695
 #, c-format
@@ -2360,8 +2358,7 @@ msgid ""
 msgstr ""
 "kasutage: mutt [ -nRyzZ ] [ -e <käsk> ] [ -F <fail> ] [ -m <tüüp> ]\n"
 "               [ -f <fail> ]\n"
-"          mutt [ -nx ] [ -e <käsk> ] [ -a <fail> ] [ -F <fail> ] [ -H "
-"<fail> ]\n"
+"          mutt [ -nx ] [ -e <käsk> ] [ -a <fail> ] [ -F <fail> ] [ -H <fail> ]\n"
 "               [ -i <fail> ] [ -s <teema> ] [ -b <aadr> ] [ -c <aadr> ]\n"
 "               <aadr> [ ... ]\n"
 "          mutt [ -n ] [ -e <käsk> ] [ -F <fail> ] -p\n"
@@ -3482,8 +3479,7 @@ msgstr "Edasta lisadena?"
 
 #: recvcmd.c:419
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
-msgstr ""
-"Kõiki märgitud lisasid ei saa dekodeerida. Edastan ülejäänud MIME formaadis?"
+msgstr "Kõiki märgitud lisasid ei saa dekodeerida. Edastan ülejäänud MIME formaadis?"
 
 #: recvcmd.c:544
 msgid "Forward MIME encapsulated?"
@@ -3504,8 +3500,7 @@ msgstr "Postiloendeid pole!"
 
 #: recvcmd.c:781
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
-msgstr ""
-"Kõiki märgitud lisasid ei saa dekodeerida. Kapseldan ülejäänud MIME formaati?"
+msgstr "Kõiki märgitud lisasid ei saa dekodeerida. Kapseldan ülejäänud MIME formaati?"
 
 #: remailer.c:480
 msgid "Append"
@@ -3560,8 +3555,7 @@ msgstr "Mixmaster ei toeta Cc või Bcc päiseid."
 #: remailer.c:734
 msgid ""
 "Please set the hostname variable to a proper value when using mixmaster!"
-msgstr ""
-"Mixmaster kasutamisel omistage palun hostname muutujale korrektne väärtus!"
+msgstr "Mixmaster kasutamisel omistage palun hostname muutujale korrektne väärtus!"
 
 #: remailer.c:768
 #, c-format
@@ -3763,5 +3757,3 @@ msgstr "Vanem teade ei ole selles piiratud vaates nähtav."
 msgid "Parent message is not available."
 msgstr "Vanem teade ei ole kättesaadav."
 
-#~ msgid "[-- expired. --]\n"
-#~ msgstr "[-- aegunud. --]\n"
