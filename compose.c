@@ -1090,7 +1090,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
 	 oldhdrdate = option(OPTUSEHEADERDATE);
 	 set_option(OPTUSEHEADERDATE);
-         if (mutt_write_fcc (NONULL (fname), msg, NULL, 1) < 0)
+         if (mutt_write_fcc (NONULL (fname), msg, NULL, 1, NULL) < 0)
            msg->content = mutt_remove_multipart (msg->content);
          else
            mutt_message _("Message written.");

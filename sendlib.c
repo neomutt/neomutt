@@ -1893,7 +1893,7 @@ ADDRESS *mutt_remove_duplicates (ADDRESS *addr)
   return (top);
 }
 
-int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post)
+int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, char *fcc)
 {
   CONTEXT f;
   MESSAGE *msg;
@@ -1942,6 +1942,12 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post)
    */
   if (post && msgid)
     fprintf (msg->fp, "X-Mutt-References: %s\n", msgid);
+  
+  /* (postponment) save the Fcc: using a special X-Mutt- header so that
+   * it can be picked up when the message is recalled 
+   */
+  if (post && fcc)
+    fprintf (msg->fp, "X-Mutt-Fcc: %s\n", fcc);
   fprintf (msg->fp, "Status: RO\n");
 
 

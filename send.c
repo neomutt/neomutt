@@ -888,7 +888,7 @@ ci_send_message (int flags,		/* send mode */
     }
     else if (flags == SENDPOSTPONED)
     {
-      if ((flags = mutt_get_postponed (ctx, msg, &cur)) < 0)
+      if ((flags = mutt_get_postponed (ctx, msg, &cur, fcc, sizeof (fcc))) < 0)
 	goto cleanup;
     }
 
@@ -1136,7 +1136,7 @@ main_loop:
       /* postpone the message until later. */
       if (msg->content->next)
 	msg->content = mutt_make_multipart (msg->content);
-      if (!Postponed || mutt_write_fcc (NONULL (Postponed), msg, (cur && (flags & SENDREPLY)) ? cur->env->message_id : NULL, 1) < 0)
+      if (!Postponed || mutt_write_fcc (NONULL (Postponed), msg, (cur && (flags & SENDREPLY)) ? cur->env->message_id : NULL, 1, fcc) < 0)
       {
 	msg->content = mutt_remove_multipart (msg->content);
 	goto main_loop;
@@ -1276,7 +1276,7 @@ main_loop:
 full_fcc:
 #endif /* _PGPPATH */
     if (msg->content)
-      mutt_write_fcc (fcc, msg, NULL, 0);
+      mutt_write_fcc (fcc, msg, NULL, 0, NULL);
     msg->content = tmpbody;
 
 #ifdef _PGPPATH
