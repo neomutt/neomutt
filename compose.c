@@ -59,6 +59,19 @@ enum
 };
 
 #define HDR_XOFFSET 10
+#define TITLE_FMT "%10s"
+#define W (COLS - HDR_XOFFSET)
+
+static char *Prompts[] =
+{
+  "From: ",
+  "To: ",
+  "Cc: ",
+  "Bcc: ",
+  "Subject: ",
+  "Reply-To: ",
+  "Fcc: "
+};
 
 static struct mapping_t ComposeHelp[] = {
   { N_("Send"),    OP_COMPOSE_SEND_MESSAGE },
@@ -72,7 +85,7 @@ static struct mapping_t ComposeHelp[] = {
   { NULL }
 };
 
-void snd_entry (char *b, size_t blen, MUTTMENU *menu, int num)
+static void snd_entry (char *b, size_t blen, MUTTMENU *menu, int num)
 {
     mutt_FormatString (b, blen, NONULL (AttachFormat), mutt_attach_fmt,
 	    (unsigned long)(((ATTACHPTR **) menu->data)[num]),
@@ -84,7 +97,30 @@ void snd_entry (char *b, size_t blen, MUTTMENU *menu, int num)
 #ifdef _PGPPATH
 #include "pgp.h"
 
-static int pgp_send_menu (int bits)
+static void redraw_pgp_lines (int pgp)
+{
+  mvaddstr (HDR_PGP, 0,     "     PGP: ");
+  if ((pgp & (PGPENCRYPT | PGPSIGN)) == (PGPENCRYPT | PGPSIGN))
+    addstr (_("Sign, Encrypt"));
+  else if (pgp & PGPENCRYPT)
+    addstr (_("Encrypt"));
+  else if (pgp & PGPSIGN)
+    addstr (_("Sign"));
+  else
+    addstr (_("Clear"));
+  clrtoeol ();
+
+  move (HDR_PGPSIGINFO, 0);
+  clrtoeol ();
+  if (pgp & PGPSIGN)
+  {
+    printw ("%s%s", _(" sign as: "), PgpSignAs ? PgpSignAs : _("<default>"));
+    mvprintw (HDR_PGPSIGINFO, 40, "%s%s", _("MIC algorithm: "),
+	      NONULL(PgpSignMicalg));
+  }
+}
+
+static int pgp_send_menu (int bits, int *redraw)
 {
   char *p;
   char *micalg = NULL;
@@ -131,6 +167,7 @@ static int pgp_send_menu (int bits)
 	}
 
 	pgp_close_keydb(&secring);
+	*redraw = REDRAW_FULL;
       }
     }
     else
@@ -172,9 +209,13 @@ static int pgp_send_menu (int bits)
     bits = 0;
     break;
   }
+  if (!*redraw)
+    redraw_pgp_lines (bits);
   return (bits);
 }
 #endif /* _PGPPATH */
+
+
 
 static int
 check_attachments(ATTACHPTR **idx, short idxlen)
@@ -210,137 +251,49 @@ check_attachments(ATTACHPTR **idx, short idxlen)
   return 0;
 }
 
-static void draw_envelope (HEADER *msg, char *fcc)
+static void draw_envelope_addr (int line, ADDRESS *addr)
 {
   char buf[STRING];
-  int w = COLS - HDR_XOFFSET;
 
-  mvaddstr (HDR_FROM, 0,    "    From: ");
   buf[0] = 0;
-  rfc822_write_address (buf, sizeof (buf), msg->env->from);
-  printw ("%-*.*s", w, w, buf);
+  rfc822_write_address (buf, sizeof (buf), addr);
+  mvprintw (line, 0, TITLE_FMT "%-*.*s", Prompts[line - 1], W, W, buf);
+}
 
-  mvaddstr (HDR_TO, 0,      "      To: ");
-  buf[0] = 0;
-  rfc822_write_address (buf, sizeof (buf), msg->env->to);
-  printw ("%-*.*s", w, w, buf);
-
-  mvaddstr (HDR_CC, 0,      "      Cc: ");
-  buf[0] = 0;
-  rfc822_write_address (buf, sizeof (buf), msg->env->cc);
-  printw ("%-*.*s", w, w, buf);
-
-  mvaddstr (HDR_BCC, 0,     "     Bcc: ");
-  buf[0] = 0;
-  rfc822_write_address (buf, sizeof (buf), msg->env->bcc);
-  printw ("%-*.*s", w, w, buf);
-
-  mvaddstr (HDR_SUBJECT, 0, " Subject: ");
-  if (msg->env->subject)
-    printw ("%-*.*s", w, w, msg->env->subject);
-  else
-    clrtoeol ();
-
-  mvaddstr (HDR_REPLYTO, 0, "Reply-To: ");
-  if (msg->env->reply_to)
-  {
-    buf[0] = 0;
-    rfc822_write_address (buf, sizeof (buf), msg->env->reply_to);
-    printw ("%-*.*s", w, w, buf);
-  }
-  else
-    clrtoeol ();
-
-  mvaddstr (HDR_FCC, 0,     "     Fcc: ");
-  addstr (fcc);
+static void draw_envelope (HEADER *msg, char *fcc)
+{
+  draw_envelope_addr (HDR_FROM, msg->env->from);
+  draw_envelope_addr (HDR_TO, msg->env->to);
+  draw_envelope_addr (HDR_CC, msg->env->cc);
+  draw_envelope_addr (HDR_BCC, msg->env->bcc);
+  mvprintw (HDR_SUBJECT, 0, TITLE_FMT "%-*.*s", Prompts[HDR_SUBJECT - 1], W, W,
+	    NONULL(msg->env->subject));
+  draw_envelope_addr (HDR_REPLYTO, msg->env->reply_to);
+  mvprintw (HDR_FCC, 0, TITLE_FMT "%-*.*s", Prompts[HDR_FCC - 1], W, W, fcc);
 
 
 
 #ifdef _PGPPATH
-  mvaddstr (HDR_PGP, 0,     "     PGP: ");
-  if ((msg->pgp & (PGPENCRYPT | PGPSIGN)) == (PGPENCRYPT | PGPSIGN))
-    addstr (_("Sign, Encrypt"));
-  else if (msg->pgp & PGPENCRYPT)
-    addstr (_("Encrypt"));
-  else if (msg->pgp & PGPSIGN)
-    addstr (_("Sign"));
-  else
-    addstr (_("Clear"));
-  clrtoeol ();
-
-  if (msg->pgp & PGPSIGN)
-  {
-    mvaddstr (HDR_PGPSIGINFO, 0, _(" sign as: "));
-    if (PgpSignAs)
-      printw ("%s", PgpSignAs);
-    else
-      printw ("%s", _("<default>"));
-    clrtoeol ();
-    mvaddstr (HDR_PGPSIGINFO, 40, _("MIC algorithm: "));
-    printw ("%s", NONULL(PgpSignMicalg));
-    clrtoeol ();
-  }
-  else
-  {
-    mvaddstr(HDR_PGPSIGINFO, 0, "");
-    clrtoeol();
-  }
-  
+  redraw_pgp_lines (msg->pgp);
 #endif /* _PGPPATH */
 
 
 
-
-
-
-
-
-
-
-
-  mvaddstr (HDR_ATTACH - 1, 0, "===== Attachments =====");
+  mvaddstr (HDR_ATTACH - 1, 0, _("===== Attachments ====="));
 }
 
-static int edit_address_list (int line, ENVELOPE *env)
+static int edit_address_list (int line, ADDRESS **addr)
 {
   char buf[HUGE_STRING] = ""; /* needs to be large for alias expansion */
-  ADDRESS **addr;
-  char *prompt;
-
-  switch (line)
-  {
-    case HDR_FROM:
-      prompt = "From: ";
-      addr = &env->from;
-      break;
-    case HDR_TO:
-      prompt = "To: ";
-      addr = &env->to;
-      break;
-    case HDR_CC:
-      prompt = "Cc: ";
-      addr = &env->cc;
-      break;
-    case HDR_BCC:
-      prompt = "Bcc: ";
-      addr = &env->bcc;
-      break;
-    case HDR_REPLYTO:
-      prompt = "Reply-To: ";
-      addr = &env->reply_to;
-      break;
-    default:
-      return 0;
-  }
 
   rfc822_write_address (buf, sizeof (buf), *addr);
-  if (mutt_get_field (prompt, buf, sizeof (buf), M_ALIAS) == 0)
+  if (mutt_get_field (Prompts[line - 1], buf, sizeof (buf), M_ALIAS) == 0)
   {
     rfc822_free_address (addr);
     *addr = mutt_parse_adrlist (*addr, buf);
     *addr = mutt_expand_aliases (*addr);
   }
-  
+
   if (option (OPTNEEDREDRAW))
   {
     unset_option (OPTNEEDREDRAW);
@@ -350,8 +303,7 @@ static int edit_address_list (int line, ENVELOPE *env)
   /* redraw the expanded list so the user can see the result */
   buf[0] = 0;
   rfc822_write_address (buf, sizeof (buf), *addr);
-  move (line, HDR_XOFFSET);
-  printw ("%-*.*s", COLS - HDR_XOFFSET, COLS - HDR_XOFFSET, buf);
+  mvprintw (line, HDR_XOFFSET, "%-*.*s", W, W, buf);
 
   return 0;
 }
@@ -453,16 +405,16 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	menu->pagelen = LINES - HDR_ATTACH - 2;
 	break;
       case OP_COMPOSE_EDIT_FROM:
-	menu->redraw = edit_address_list (HDR_FROM, msg->env);
+	menu->redraw = edit_address_list (HDR_FROM, &msg->env->from);
 	break;
       case OP_COMPOSE_EDIT_TO:
-	menu->redraw = edit_address_list (HDR_TO, msg->env);
+	menu->redraw = edit_address_list (HDR_TO, &msg->env->to);
 	break;
       case OP_COMPOSE_EDIT_BCC:
-	menu->redraw = edit_address_list (HDR_BCC, msg->env);
+	menu->redraw = edit_address_list (HDR_BCC, &msg->env->bcc);
 	break;
       case OP_COMPOSE_EDIT_CC:
-	menu->redraw = edit_address_list (HDR_CC, msg->env);
+	menu->redraw = edit_address_list (HDR_CC, &msg->env->cc);
 	break;
       case OP_COMPOSE_EDIT_SUBJECT:
 	if (msg->env->subject)
@@ -476,12 +428,11 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  move (HDR_SUBJECT, HDR_XOFFSET);
 	  clrtoeol ();
 	  if (msg->env->subject)
-	    printw ("%-*.*s", COLS-HDR_XOFFSET, COLS-HDR_XOFFSET,
-		    msg->env->subject);
+	    printw ("%-*.*s", W, W, msg->env->subject);
 	}
 	break;
       case OP_COMPOSE_EDIT_REPLY_TO:
-	menu->redraw = edit_address_list (HDR_REPLYTO, msg->env);
+	menu->redraw = edit_address_list (HDR_REPLYTO, &msg->env->reply_to);
 	break;
       case OP_COMPOSE_EDIT_FCC:
 	strfcpy (buf, fcc, sizeof (buf));
@@ -489,8 +440,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	{
 	  strfcpy (fcc, buf, _POSIX_PATH_MAX);
 	  mutt_pretty_mailbox (fcc);
-	  mvprintw (HDR_FCC, HDR_XOFFSET, "%-*.*s",
-		    COLS - HDR_XOFFSET, COLS - HDR_XOFFSET, fcc);
+	  mvprintw (HDR_FCC, HDR_XOFFSET, "%-*.*s", W, W, fcc);
 	  fccSet = 1;
 	}
 	MAYBE_REDRAW (menu->redraw);
@@ -572,16 +522,6 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	
 	break;
 #endif
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -980,11 +920,6 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	}
 	break;
 
-
-
-
-
-
       case OP_COMPOSE_EDIT_MIME:
 	CHECK_COUNT;
 	if (mutt_edit_attachment (idx[menu->current]->content))
@@ -1019,11 +954,6 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	if (op == OP_FILTER) /* cte might have changed */
 	  menu->redraw = menu->tagprefix ? REDRAW_FULL : REDRAW_CURRENT; 
 	break;
-
-
-
-
-
 
       case OP_EXIT:
 	if ((i = query_quadoption (OPT_POSTPONE, _("Postpone this message?"))) == M_NO)
@@ -1098,11 +1028,12 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
        }
        break;
 
+
+
 #ifdef _PGPPATH
       case OP_COMPOSE_PGP_MENU:
 
-	msg->pgp = pgp_send_menu (msg->pgp);
-	menu->redraw = REDRAW_FULL;
+	msg->pgp = pgp_send_menu (msg->pgp, &menu->redraw);
 	break;
 
       case OP_FORGET_PASSPHRASE:
