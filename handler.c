@@ -1506,18 +1506,26 @@ void autoview_handler (BODY *a, STATE *s)
 
     if(!piped)
     {
-      fclose (fpin);
+      safe_fclose (&fpin);
       thepid = mutt_create_filter (command, NULL, &fpout, &fperr);
     }
     else
     {
-      unlink(tempfile);
-      fflush(fpin);
-      rewind(fpin);
+      unlink (tempfile);
+      fflush (fpin);
+      rewind (fpin);
       thepid = mutt_create_filter_fd (command, NULL, &fpout, &fperr,
 				      fileno(fpin), -1, -1);
     }
 
+    if (thepid < 0)
+    {
+      mutt_perror _("Can't create filter");
+      if (s->flags & M_DISPLAY)
+	state_printf (s, _("[-- Can't run %s. --]\n"), command);
+      goto bail;
+    }
+    
     if (s->prefix)
     {
       while (fgets (buffer, sizeof(buffer), fpout) != NULL)
@@ -1555,11 +1563,13 @@ void autoview_handler (BODY *a, STATE *s)
       }
     }
 
-    fclose (fpout);
-    fclose (fperr);
+  bail:
+    safe_fclose (&fpout);
+    safe_fclose (&fperr);
+
     mutt_wait_filter (thepid);
-    if(piped)
-      fclose(fpin);
+    if (piped)
+      safe_fclose (&fpin);
     else
       mutt_unlink (tempfile);
 

@@ -600,7 +600,8 @@ int mutt_pipe_attachment (FILE *fp, BODY *b, const char *path, char *outfile)
 {
   pid_t thepid;
   int out = -1;
-
+  int rv = 0;
+  
   if (outfile && *outfile)
     if ((out = safe_open (outfile, O_CREAT | O_EXCL | O_WRONLY)) < 0)
     {
@@ -623,9 +624,15 @@ int mutt_pipe_attachment (FILE *fp, BODY *b, const char *path, char *outfile)
     else
       thepid = mutt_create_filter (path, &s.fpout, NULL, NULL);
 
+    if (thepid < 0)
+    {
+      mutt_perror _("Can't create filter");
+      goto bail;
+    }
+    
     s.fpin = fp;
     mutt_decode_attachment (b, &s);
-    fclose (s.fpout);
+    safe_fclose (&s.fpout);
   }
   else
   {
@@ -649,17 +656,28 @@ int mutt_pipe_attachment (FILE *fp, BODY *b, const char *path, char *outfile)
     else
       thepid = mutt_create_filter (path, &ofp, NULL, NULL);
 
+    if (thepid < 0)
+    {
+      mutt_perror _("Can't create filter");
+      safe_fclose (&ifp);
+      goto bail;
+    }
+    
     mutt_copy_stream (ifp, ofp);
-    fclose (ofp);
-    fclose (ifp);
+    safe_fclose (&ofp);
+    safe_fclose (&ifp);
   }
 
+  rv = 1;
+  
+bail:
+  
   if (outfile && *outfile)
     close (out);
 
-  if (mutt_wait_filter (thepid) != 0 || option (OPTWAITKEY))
+  if (rv == 0 || mutt_wait_filter (thepid) != 0 || option (OPTWAITKEY))
     mutt_any_key_to_continue (NULL);
-  return 1;
+  return rv;
 }
 
 /* returns 0 on success, -1 on error */
@@ -918,10 +936,16 @@ int mutt_print_attachment (FILE *fp, BODY *a)
 	return (0);
       }
 
-      thepid = mutt_create_filter (command, &fpout, NULL, NULL);
+      if ((thepid = mutt_create_filter (command, &fpout, NULL, NULL)) < 0)
+      {
+	mutt_perror _("Can't create filter");
+	rfc1524_free_entry (&entry);
+	safe_fclose (&ifp);
+	return 0;
+      }
       mutt_copy_stream (ifp, fpout);
-      fclose (fpout);
-      fclose (ifp);
+      safe_fclose (&fpout);
+      safe_fclose (&ifp);
       if (mutt_wait_filter (thepid) || option (OPTWAITKEY))
 	mutt_any_key_to_continue (NULL);
     }
@@ -950,22 +974,34 @@ int mutt_print_attachment (FILE *fp, BODY *a)
     /* decode and print */
 
     int rc = 0;
-
+    
+    ifp = NULL;
+    fpout = NULL;
+    
     mutt_mktemp (newfile);
     if (mutt_decode_save_attachment (fp, a, newfile, 0, 0) == 0)
     {
-      if ((ifp = fopen (newfile, "r")) != NULL)
+      if ((ifp = fopen (newfile, "r")) == NULL)
       {
-	mutt_endwin (NULL);
-	thepid = mutt_create_filter (NONULL(PrintCmd), &fpout, NULL, NULL);
-	mutt_copy_stream (ifp, fpout);
-	fclose (ifp);
-	fclose (fpout);
-	if (mutt_wait_filter (thepid) != 0 || option (OPTWAITKEY))
-	  mutt_any_key_to_continue (NULL);
-	rc = 1;
+	mutt_perror ("fopen");
+	goto bail0;
       }
+      
+      mutt_endwin (NULL);
+      if ((thepid = mutt_create_filter (NONULL(PrintCmd), &fpout, NULL, NULL)) < 0)
+      {
+	mutt_perror _("Can't create filter");
+	goto bail0;
+      }
+
+      mutt_copy_stream (ifp, fpout);
+      if (mutt_wait_filter (thepid) != 0 || option (OPTWAITKEY))
+	mutt_any_key_to_continue (NULL);
+      rc = 1;
     }
+  bail0:
+    safe_fclose (&ifp);
+    safe_fclose (&fpout);
     mutt_unlink (newfile);
     return rc;
   }

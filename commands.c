@@ -124,7 +124,7 @@ int mutt_display_message (HEADER *cur)
     if (filterpid < 0)
     {
       mutt_error (_("Cannot create display filter"));
-      fclose (fpfilterout);
+      safe_fclose (&fpfilterout);
       unlink (tempfile);
       return 0;
     }
@@ -324,9 +324,14 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
     mutt_endwin (NULL);
 #endif
 
-    thepid = mutt_create_filter (cmd, &fpout, NULL, NULL);
+    if ((thepid = mutt_create_filter (cmd, &fpout, NULL, NULL)) < 0)
+    {
+      mutt_perror _("Can't create filter process");
+      return 1;
+    }
+      
     pipe_msg (h, fpout, decode);
-    fclose (fpout);
+    safe_fclose (&fpout);
     rc = mutt_wait_filter (thepid);
   }
   else
@@ -358,11 +363,15 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
         {
 	  mutt_message_hook (Context, Context->hdrs[Context->v2r[i]], M_MESSAGEHOOK);
 	  mutt_endwin (NULL);
-	  thepid = mutt_create_filter (cmd, &fpout, NULL, NULL);
+	  if ((thepid = mutt_create_filter (cmd, &fpout, NULL, NULL)) < 0)
+	  {
+	    mutt_perror _("Can't create filter process");
+	    return 1;
+	  }
           pipe_msg (Context->hdrs[Context->v2r[i]], fpout, decode);
           /* add the message separator */
           if (sep)  fputs (sep, fpout);
-	  fclose (fpout);
+	  safe_fclose (&fpout);
 	  if (mutt_wait_filter (thepid) != 0)
 	    rc = 1;
         }
@@ -371,7 +380,11 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
     else
     {
       mutt_endwin (NULL);
-      thepid = mutt_create_filter (cmd, &fpout, NULL, NULL);
+      if ((thepid = mutt_create_filter (cmd, &fpout, NULL, NULL)) < 0)
+      {
+	mutt_perror _("Can't create filter process");
+	return 1;
+      }
       for (i = 0; i < Context->vcount; i++)
       {
         if (Context->hdrs[Context->v2r[i]]->tagged)
@@ -382,7 +395,7 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
           if (sep) fputs (sep, fpout);
         }
       }
-      fclose (fpout);
+      safe_fclose (&fpout);
       if (mutt_wait_filter (thepid) != 0)
 	rc = 1;
     }
