@@ -258,12 +258,15 @@ static int imap_parse_fetch (IMAP_HEADER_INFO *h, char *s)
   return 0;
 }
 
-static void imap_quote_string (char *str, size_t slen)
+static void imap_quote_string (char *dest, size_t slen, const char *src)
 {
-  char quote[] = "\"\\", *d = malloc (slen), *pt, *s = str;
+  char quote[] = "\"\\", *pt;
+  const char *s;
   size_t len = slen;
 
-  pt = d;
+  pt = dest;
+  s  = src;
+
   *pt++ = '"';
   /* save room for trailing quote-char */
   len -= 2;
@@ -286,7 +289,6 @@ static void imap_quote_string (char *str, size_t slen)
   }
   *pt++ = '"';
   *pt = 0;
-  strncpy (str, d, slen);
 }
 
 static int imap_read_bytes (FILE *fp, CONNECTION *conn, long bytes)
@@ -632,8 +634,8 @@ static int imap_open_connection (CONTEXT *ctx, CONNECTION *conn)
   struct sockaddr_in sin;
   struct hostent *he;
   char buf[LONG_STRING];
-  char user[SHORT_STRING];
-  char pass[SHORT_STRING];
+  char user[SHORT_STRING], q_user[SHORT_STRING];
+  char pass[SHORT_STRING], q_pass[SHORT_STRING];
   char seq[16];
 
   memset (&sin, 0, sizeof (sin));
@@ -699,16 +701,17 @@ static int imap_open_connection (CONTEXT *ctx, CONNECTION *conn)
     else
       strfcpy (pass, ImapPass, sizeof (pass));
 
-    imap_quote_string (user, sizeof (user));
-    imap_quote_string (pass, sizeof (pass));
+    imap_quote_string (q_user, sizeof (q_user), user);
+    imap_quote_string (q_pass, sizeof (q_pass), pass);
+
     mutt_message ("Logging in...");
     imap_make_sequence (seq, sizeof (seq));
-    snprintf (buf, sizeof (buf), "%s LOGIN %s %s\r\n", seq, user, pass);
+    snprintf (buf, sizeof (buf), "%s LOGIN %s %s\r\n", seq, q_user, q_pass);
     if (imap_exec (buf, sizeof (buf), ctx, seq, buf, 0) != 0)
-      {
-	imap_error ("imap_open_connection()", buf);
-	return (-1);
-      }
+    {
+      imap_error ("imap_open_connection()", buf);
+      return (-1);
+    }
     /* If they have a successful login, we may as well cache the user/password. */
     if (!ImapUser)
       ImapUser = safe_strdup (user);
