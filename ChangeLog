@@ -1,3 +1,7 @@
+2005-01-26 12:36:36  Ralf Wildenhues  <wildenhues@ins.uni-bonn.de>  (roessler)
+
+	* imap/command.c, imap/message.c: Fix some printf arguments.
+
 2005-01-26 12:21:46  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* status.c: Really fix it.  Thanks to Ralf for noting the
