@@ -301,7 +301,7 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 	  maybe_goodsig = 0;
 	  pgpin = NULL;
 	  pgperr = NULL;
-	  state_attach_puts (_("[-- Error: unable to create PGP subprocess! --]}n"), s);
+	  state_attach_puts (_("[-- Error: unable to create PGP subprocess! --]\n"), s);
 	}
 	else /* PGP started successfully */
 	{
