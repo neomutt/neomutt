@@ -1,3 +1,7 @@
+2004-08-16 21:33:35  Pawel Dziekonski  <dzieko@pwr.wroc.pl>  (roessler)
+
+	* po/pl.po: update
+
 2004-08-11 12:31:21  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
 
 	* imap/imap.c: Fix two IMAP memory leaks.
