@@ -39,7 +39,7 @@ Major changes since 0.93
 
 - You can now edit messages in your mail folders. 
 
-  The function edit-message (default 'e') will make a copy of the
+  The function 'edit' (default 'e') will make a copy of the
   current message and you can edit the message. After editing is
   complete, you are taken to the Compose menu. You can further
   modify the message here or re-send it. Note that the message is

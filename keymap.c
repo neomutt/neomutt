@@ -231,7 +231,8 @@ static int get_op (struct binding_t *bindings, const char *start, size_t len)
 
   for (i = 0; bindings[i].name; i++)
   {
-    if (!strncasecmp (start, bindings[i].name, len))
+    if (!strncasecmp (start, bindings[i].name, len) &&   
+	strlen (bindings[i].name) == len)
       return bindings[i].op;
   }
 
