@@ -1,3 +1,10 @@
+2004-02-01 17:10:43  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* alias.c, doc/manual.sgml.head, doc/muttrc.man.head, globals.h,
+	hdrline.c, init.c, init.h, mutt.h, mutt_regex.h, muttlib.c,
+	protos.h: Turn alternates, lists, and subscribe into regular
+	expression lists.
+
 2004-01-12 22:56:58  Christoph Ludwig  <cludwig@cdc.informatik.tu-darmstadt.de>  (roessler)
 
 	* smime_keys.pl: Avoid a Perl warning.
