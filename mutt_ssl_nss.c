@@ -66,20 +66,20 @@ static int
 mutt_nss_init (void)
 {
   if (!MuttNssInitialized)
-    {
-      PK11_SetPasswordFunc (mutt_nss_password_func);
-      if (NSS_Init (SslCertFile) == SECFailure)
-	return mutt_nss_error ("NSS_Init");
-
-      /* always use strong crypto. */
-      if (NSS_SetDomesticPolicy () == SECFailure)
-	return mutt_nss_error ("NSS_SetDomesticPolicy");
-
-      /* intialize the session cache */
-      SSL_ClearSessionCache ();
-
-      MuttNssInitialized = 1;
-    }
+  {
+    PK11_SetPasswordFunc (mutt_nss_password_func);
+    if (NSS_Init (SslCertFile) == SECFailure)
+      return mutt_nss_error ("NSS_Init");
+    
+    /* always use strong crypto. */
+    if (NSS_SetDomesticPolicy () == SECFailure)
+      return mutt_nss_error ("NSS_SetDomesticPolicy");
+    
+    /* intialize the session cache */
+    SSL_ClearSessionCache ();
+    
+    MuttNssInitialized = 1;
+  }
   return 0;
 }
 
@@ -90,9 +90,9 @@ mutt_nss_pretty_time (int64 usecs)
   struct tm t;
   PRExplodedTime ex;
   char timebuf[128];
-
+  
   PR_ExplodeTime (usecs, PR_LocalTimeParameters, &ex);
-
+  
   t.tm_sec = ex.tm_sec;
   t.tm_min = ex.tm_min;
   t.tm_hour = ex.tm_hour;
@@ -101,10 +101,10 @@ mutt_nss_pretty_time (int64 usecs)
   t.tm_year = ex.tm_year - 1900;	/* PRExplodedTime uses the absolute year */
   t.tm_wday = ex.tm_wday;
   t.tm_yday = ex.tm_yday;
-
+  
   strfcpy (timebuf, asctime (&t), sizeof (timebuf));
   timebuf[strlen (timebuf) - 1] = 0;
-
+  
   addstr (timebuf);
 }
 
@@ -160,12 +160,12 @@ mutt_nss_bad_cert (void *arg, PRFileDesc * fd)
   /* calculate the MD5 hash of the raw certificate */
   HASH_HashBuf (HASH_AlgMD5, hash, cert->derCert.data, cert->derCert.len);
   for (i = 0; i < 16; i++)
-    {
-      printw ("%0x", hash[i]);
-      if (i != 15)
-	addch (':');
-    }
-
+  {
+    printw ("%0x", hash[i]);
+    if (i != 15)
+      addch (':');
+  }
+  
   mvaddstr (LINES - 3, 0, "Signature:   ");
   clrtoeol ();
 
@@ -194,46 +194,46 @@ mutt_nss_bad_cert (void *arg, PRFileDesc * fd)
   SETCOLOR (MT_COLOR_NORMAL);
 
   for (;;)
+  {
+    mvaddstr (LINES - 1, 0, "(r)eject, accept (o)nce, (a)lways accept?");
+    clrtoeol ();
+    ch = mutt_getch ();
+    if (ch.ch == -1)
     {
-      mvaddstr (LINES - 1, 0, "(r)eject, accept (o)nce, (a)lways accept?");
-      clrtoeol ();
-      ch = mutt_getch ();
-      if (ch.ch == -1)
-	{
-	  i = SECFailure;
-	  break;
-	}
-      else if (tolower (ch.ch) == 'r')
-	{
-	  i = SECFailure;
-	  break;
-	}
-      else if (tolower (ch.ch) == 'o')
-	{
-	  i = SECSuccess;
-	  break;
-	}
-      else if (tolower (ch.ch) == 'a')
-	{
-	  /* push this certificate onto the user's certificate store so it
-	   * automatically becomes valid next time we see it
-	   */
-
-	  /* set this certificate as a valid peer for SSL-auth ONLY. */
-	  CERT_DecodeTrustString (&trust, "P,,");
-
-	  CERT_AddTempCertToPerm (cert, NULL, &trust);
-	  i = SECSuccess;
-	  break;
-	}
-      BEEP ();
+      i = SECFailure;
+      break;
     }
-
+    else if (tolower (ch.ch) == 'r')
+    {
+      i = SECFailure;
+      break;
+    }
+    else if (tolower (ch.ch) == 'o')
+    {
+      i = SECSuccess;
+      break;
+    }
+    else if (tolower (ch.ch) == 'a')
+    {
+      /* push this certificate onto the user's certificate store so it
+       * automatically becomes valid next time we see it
+       */
+      
+      /* set this certificate as a valid peer for SSL-auth ONLY. */
+      CERT_DecodeTrustString (&trust, "P,,");
+      
+      CERT_AddTempCertToPerm (cert, NULL, &trust);
+      i = SECSuccess;
+      break;
+    }
+    BEEP ();
+  }
+  
   /* SSL_PeerCertificate() returns a copy with an updated ref count, so
    * we have to destroy our copy here.
    */
   CERT_DestroyCertificate (cert);
-
+  
   return i;
 }
 
@@ -252,98 +252,94 @@ mutt_nss_socket_open (CONNECTION * con)
   addr.inet.port = PR_htons (con->account.port);
   he = gethostbyname (con->account.host);
   if (!he)
-    {
-      mutt_error (_("Unable to find ip for host %s"), con->account.host);
-      return -1;
-    }
+  {
+    mutt_error (_("Unable to find ip for host %s"), con->account.host);
+    return -1;
+  }
   addr.inet.ip = *((int *) he->h_addr_list[0]);
 
   sockdata = safe_calloc (1, sizeof (mutt_nss_t));
 
   do
+  {
+    sockdata->fd = PR_NewTCPSocket ();
+    if (sockdata->fd == NULL)
     {
-      sockdata->fd = PR_NewTCPSocket ();
-      if (sockdata->fd == NULL)
-	{
-	  mutt_error (_("PR_NewTCPSocket failed."));
-	  break;
-	}
-      /* make this a SSL socket */
-      sockdata->fd = SSL_ImportFD (NULL, sockdata->fd);
-
-      /* set SSL version options based upon user's preferences */
-      if (!option (OPTTLSV1))
-	{
-	  SSL_OptionSet (sockdata->fd, SSL_ENABLE_TLS, PR_FALSE);
-	}
-      if (!option (OPTSSLV2))
-	{
-	  SSL_OptionSet (sockdata->fd, SSL_ENABLE_SSL2, PR_FALSE);
-	}
-      if (!option (OPTSSLV3))
-	{
-	  SSL_OptionSet (sockdata->fd, SSL_ENABLE_SSL3, PR_FALSE);
-	}
-
-      /* set the host we were attempting to connect to in order to verify
-       * the name in the certificate we get back.
-       */
-      if (SSL_SetURL (sockdata->fd, con->account.host))
-	{
-	  mutt_nss_error ("SSL_SetURL");
-	  break;
-	}
-
-      /* we don't need no stinking pin.  we don't authenticate ourself
-       * via SSL.
-       */
-      SSL_SetPKCS11PinArg (sockdata->fd, 0);
-
-      sockdata->db = CERT_GetDefaultCertDB ();
-
-      /* use the default supplied hook.  it takes an argument to our
-       * certificate database.  the manual lies, you can't really specify
-       * NULL for the callback to get the default!
-       */
-      SSL_AuthCertificateHook (sockdata->fd, SSL_AuthCertificate,
-			       sockdata->db);
-      /* set the callback to be used when SSL_AuthCertificate() fails.  this
-       * allows us to override and insert the cert back into the db
-       */
-      SSL_BadCertHook (sockdata->fd, mutt_nss_bad_cert, sockdata->db);
-
-      if (PR_Connect (sockdata->fd, &addr, PR_INTERVAL_NO_TIMEOUT) ==
-	  PR_FAILURE)
-	{
-	  mutt_error (_("Unable to connect to host %s"), con->account.host);
-	  break;
-	}
-
-      /* store the extra info in the CONNECTION struct for later use. */
-      con->sockdata = sockdata;
-
-      /* HACK.  some of the higher level calls in mutt_socket.c depend on this
-       * being >0 when we are in the connected state.  we just set this to
-       * an arbitrary value to avoid hitting that bug, since we neve have the
-       * real fd.
-       */
-      con->fd = 42;
-
-      /* success */
-      return 0;
+      mutt_error (_("PR_NewTCPSocket failed."));
+      break;
     }
-  while (0);
+    /* make this a SSL socket */
+    sockdata->fd = SSL_ImportFD (NULL, sockdata->fd);
+    
+    /* set SSL version options based upon user's preferences */
+    if (!option (OPTTLSV1))
+      SSL_OptionSet (sockdata->fd, SSL_ENABLE_TLS, PR_FALSE);
+    
+    if (!option (OPTSSLV2))
+      SSL_OptionSet (sockdata->fd, SSL_ENABLE_SSL2, PR_FALSE);
 
+    if (!option (OPTSSLV3))
+      SSL_OptionSet (sockdata->fd, SSL_ENABLE_SSL3, PR_FALSE);
+    
+    /* set the host we were attempting to connect to in order to verify
+     * the name in the certificate we get back.
+     */
+    if (SSL_SetURL (sockdata->fd, con->account.host))
+    {
+      mutt_nss_error ("SSL_SetURL");
+      break;
+    }
+
+    /* we don't need no stinking pin.  we don't authenticate ourself
+     * via SSL.
+     */
+    SSL_SetPKCS11PinArg (sockdata->fd, 0);
+    
+    sockdata->db = CERT_GetDefaultCertDB ();
+    
+    /* use the default supplied hook.  it takes an argument to our
+     * certificate database.  the manual lies, you can't really specify
+     * NULL for the callback to get the default!
+     */
+    SSL_AuthCertificateHook (sockdata->fd, SSL_AuthCertificate,
+			     sockdata->db);
+    /* set the callback to be used when SSL_AuthCertificate() fails.  this
+     * allows us to override and insert the cert back into the db
+     */
+    SSL_BadCertHook (sockdata->fd, mutt_nss_bad_cert, sockdata->db);
+    
+    if (PR_Connect (sockdata->fd, &addr, PR_INTERVAL_NO_TIMEOUT) ==
+	PR_FAILURE)
+    {
+      mutt_error (_("Unable to connect to host %s"), con->account.host);
+      break;
+    }
+    
+    /* store the extra info in the CONNECTION struct for later use. */
+    con->sockdata = sockdata;
+    
+    /* HACK.  some of the higher level calls in mutt_socket.c depend on this
+     * being >0 when we are in the connected state.  we just set this to
+     * an arbitrary value to avoid hitting that bug, since we neve have the
+     * real fd.
+     */
+    con->fd = 42;
+    
+    /* success */
+    return 0;
+  }
+  while (0);
+  
   /* we get here when we had an oops.  clean up the mess. */
 
   if (sockdata)
-    {
-      if (sockdata->fd)
-	PR_Close (sockdata->fd);
-      if (sockdata->db)
-	CERT_ClosePermCertDB (sockdata->db);
-      safe_free ((void **) &sockdata);
-    }
+  {
+    if (sockdata->fd)
+      PR_Close (sockdata->fd);
+    if (sockdata->db)
+      CERT_ClosePermCertDB (sockdata->db);
+    safe_free ((void **) &sockdata);
+  }
   return -1;
 }
 
@@ -353,9 +349,8 @@ mutt_nss_socket_close (CONNECTION * con)
   mutt_nss_t *sockdata = (mutt_nss_t *) con->sockdata;
 
   if (PR_Close (sockdata->fd) == PR_FAILURE)
-    {
-      return -1;
-    }
+    return -1;
+
   if (sockdata->db)
     CERT_ClosePermCertDB (sockdata->db);
   /* free up the memory we used for this connection specific to NSS. */
