@@ -1,3 +1,16 @@
+2003-01-09 17:24:41  David Shaw  <dshaw@jabberwocky.com>  (roessler)
+
+	* gnupgparse.c, pgppubring.c: The latest GnuPG has new abilities
+	to work with disabled keys.  Part of this change will eventually
+	involve moving the 'd' that indicates a disabled key to a
+	different part of the key listing.
+
+	To smooth this transition, as of version 1.2.2, GnuPG will
+	start giving the 'd' in both places (and will do this for a good
+	long time).
+
+	Here is a patch so mutt will accept either the old or new syntax.
+
 2003-01-09 17:23:23  David Shaw  <dshaw@jabberwocky.com>  (roessler)
 
 	* curs_lib.c: A recent change causes all mutt_yesorno prompts
