@@ -1,3 +1,8 @@
+2002/12/09 18:38:28  Thomas Roessler <roessler@does-not-exist.org>
+
+	* send.c: Try to fix another obscure error in S/MIME auto-signing
+	upon reply.
+
 2002/12/09 18:26:26  Thomas Roessler <roessler@does-not-exist.org>
 
 	* rfc822.c: Experimental patch to fix #1318.
