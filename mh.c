@@ -739,6 +739,12 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
 		 ctx->hdrs[i]->old     ? "O" : "",
 		 ctx->hdrs[i]->read    ? "R" : ""));
 
+      if(mutt_strcmp(ctx->hdrs[i]->path, p->h->path))
+      {
+	safe_free((void **) &ctx->hdrs[i]->path);
+	ctx->hdrs[i]->path = safe_strdup(p->h->path);
+      }
+
       if(modified)
       {
 	if(!ctx->hdrs[i]->changed)
@@ -748,14 +754,7 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
 	  mutt_set_flag (ctx, ctx->hdrs[i], M_READ, p->h->read);
 	}
 
-	/* 
-	 * This flag relates to file positions for maildir folders,
-	 * so we _must_ use the modified folder's value here.
-	 * Otherwise, the mail folder will appear to be corrupted.
-	 */
-
 	mutt_set_flag(ctx, ctx->hdrs[i], M_OLD, p->h->old);
-
       }
 
       ctx->hdrs[i]->active = 1;
