@@ -351,13 +351,13 @@ int km_dokey (int menu)
 
   FOREVER
   {
-/* ncurses doesn't return on resized screen when timeout is set to zero */
-    if (menu == MENU_MAIN || menu == MENU_PAGER)
+    /* ncurses doesn't return on resized screen when timeout is set to zero */
+    if (menu != MENU_EDITOR)
       timeout ((Timeout > 0 ? Timeout : 60) * 1000);
 
     tmp = mutt_getch();
 
-    if (menu == MENU_MAIN || menu == MENU_PAGER)
+    if (menu != MENU_EDITOR)
       timeout (-1); /* restore blocking operation */
 
     LastKey = tmp.ch;
