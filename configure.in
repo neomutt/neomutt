@@ -176,13 +176,21 @@ main ()
                         CPPFLAGS="$CPPFLAGS -I${mutt_cv_curses}/include"
                 fi])
 
-        AC_CHECK_LIB(ncurses, initscr,
-
-                [MUTTLIBS="$MUTTLIBS -lncurses"
+	for cf_ncurses in ncurses ncursesw unknown
+	do
+		AC_CHECK_LIB($cf_ncurses,waddnwstr,[break])
+	done
+	if test "$cf_ncurses" = unknow; then cf_curses=ncurses; fi
+        AC_CHECK_LIB($cf_ncurses, initscr,
+                [MUTTLIBS="$MUTTLIBS -l$cf_ncurses"
                 if test x$mutt_cv_curses = x/usr -a -d /usr/include/ncurses; then
                         CPPFLAGS="$CPPFLAGS -I/usr/include/ncurses"
                 fi
-                AC_CHECK_HEADERS(ncurses.h)],
+                if test "$cf_ncurses" = ncursesw; then
+			AC_CHECK_HEADERS(ncursesw/ncurses.h)
+		else
+			AC_CHECK_HEADERS(ncurses.h)
+		fi],
 
                 [CF_CURSES_LIBS])
 
