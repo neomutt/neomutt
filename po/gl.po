@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3\n"
-"POT-Creation-Date: 2001-07-25 21:49+0200\n"
+"POT-Creation-Date: 2001-08-21 23:53+0200\n"
 "PO-Revision-Date: 2001-04-22 22:05+0200\n"
 "Last-Translator: Roberto Suarez Soto <ask4it@bigfoot.com>\n"
 "Language-Team: Galician <trasno@ceu.fi.udc.es>\n"
@@ -242,7 +242,7 @@ msgstr "Non é posible ver un directorio"
 msgid "Error trying to view file"
 msgstr "Erro intentando ver ficheiro"
 
-#: buffy.c:407
+#: buffy.c:408
 #, c-format
 msgid "New mail in %s."
 msgstr "Novo correo en %s."
@@ -683,7 +683,7 @@ msgstr "Non hai buzóns abertos."
 msgid "There are no messages."
 msgstr "Non hai mensaxes."
 
-#: curs_main.c:61 mx.c:1125 pager.c:62 recvattach.c:47
+#: curs_main.c:61 mx.c:1129 pager.c:62 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "O buzón é de só lectura."
 
@@ -808,7 +808,7 @@ msgstr "Abrir buzón en modo de só lectura"
 msgid "Open mailbox"
 msgstr "Abrir buzón"
 
-#: curs_main.c:982 mx.c:504 mx.c:650
+#: curs_main.c:982 mx.c:508 mx.c:654
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s non é un buzón."
@@ -857,7 +857,7 @@ msgstr "Non hai máis fíos"
 msgid "You are on the first thread."
 msgstr "Está no primeiro fío"
 
-#: curs_main.c:1477 curs_main.c:1509 flags.c:250 thread.c:676 thread.c:727
+#: curs_main.c:1477 curs_main.c:1509 flags.c:250 thread.c:701 thread.c:752
 msgid "Threading is not enabled."
 msgstr "Enfiamento non habilitado."
 
@@ -1266,7 +1266,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Non é posible engadir ós buzóns IMAP deste servidor"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:718 imap/message.c:593 muttlib.c:1169
+#: imap/imap.c:718 imap/message.c:593 muttlib.c:1162
 #, c-format
 msgid "Create %s?"
 msgstr "¿Crear %s?"
@@ -1368,89 +1368,89 @@ msgstr "campo de cabeceira inválido"
 msgid "%s: unknown sorting method"
 msgstr "%s: método de ordeación descoñecido"
 
-#: init.c:718
+#: init.c:719
 #, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s): erro en regexp: %s\n"
 
-#: init.c:779
+#: init.c:780
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: variable descoñecida"
 
-#: init.c:788
+#: init.c:789
 msgid "prefix is illegal with reset"
 msgstr "prefixo ilegal con reset"
 
-#: init.c:794
+#: init.c:795
 msgid "value is illegal with reset"
 msgstr "valor ilegal con reset"
 
-#: init.c:833
+#: init.c:834
 #, c-format
 msgid "%s is set"
 msgstr "%s está activada"
 
-#: init.c:833
+#: init.c:834
 #, c-format
 msgid "%s is unset"
 msgstr "%s non está activada"
 
-#: init.c:1039
+#: init.c:1040
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: tipo de buzón inválido"
 
-#: init.c:1064 init.c:1109
+#: init.c:1065 init.c:1110
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: valor inválido"
 
-#: init.c:1167
+#: init.c:1168
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: tipo descoñecido"
 
-#: init.c:1208
+#: init.c:1209
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Erro en %s, liña %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1224
+#: init.c:1225
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: erros en %s"
 
-#: init.c:1225
+#: init.c:1226
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr "source: a lectura foi abortada por haber demasiados erros in %s"
 
-#: init.c:1239
+#: init.c:1240
 #, c-format
 msgid "source: error at %s"
 msgstr "source: erro en %s"
 
-#: init.c:1244
+#: init.c:1245
 msgid "source: too many arguments"
 msgstr "source: demasiados parámetros"
 
-#: init.c:1295
+#: init.c:1296
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: comando descoñecido"
 
-#: init.c:1651
+#: init.c:1652
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Erro na liña de comando: %s\n"
 
-#: init.c:1694
+#: init.c:1695
 msgid "unable to determine home directory"
 msgstr "non foi posible determina-lo directorio \"home\""
 
-#: init.c:1702
+#: init.c:1703
 msgid "unable to determine username"
 msgstr "non foi posible determina-lo nome de usuario"
 
@@ -2576,37 +2576,37 @@ msgstr "O salto non está implementado nos diálogos."
 msgid "Tagging is not supported."
 msgstr "O marcado non está soportado."
 
-#: mh.c:194
+#: mh.c:584
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Lendo %s... %d"
 
-#: muttlib.c:832
+#: muttlib.c:825
 msgid "File is a directory, save under it?"
 msgstr "O ficheiro é un directorio, ¿gardar nel?"
 
-#: muttlib.c:837
+#: muttlib.c:830
 msgid "File under directory: "
 msgstr "Ficheiro no directorio: "
 
-#: muttlib.c:849
+#: muttlib.c:842
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "O ficheiro existe, ¿(s)obreescribir, (e)ngadir ou (c)ancelar?"
 
-#: muttlib.c:849
+#: muttlib.c:842
 msgid "oac"
 msgstr "sec"
 
-#: muttlib.c:1136
+#: muttlib.c:1129
 msgid "Can't save message to POP mailbox."
 msgstr "Non foi posible garda-la mensaxe no buzón POP."
 
-#: muttlib.c:1145
+#: muttlib.c:1138
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "¡%s non é un buzón!"
 
-#: muttlib.c:1151
+#: muttlib.c:1144
 #, c-format
 msgid "Append messages to %s?"
 msgstr "¿engadir mensaxes a %s?"
@@ -2783,79 +2783,79 @@ msgstr "¡Tempo de espera excedido cando se tentaba face-lo bloqueo flock!"
 msgid "Waiting for flock attempt... %d"
 msgstr "Agardando polo intento de flock... %d"
 
-#: mx.c:587
+#: mx.c:591
 #, c-format
 msgid "Couldn't lock %s\n"
 msgstr "Non foi posible bloquear %s.\n"
 
-#: mx.c:675
+#: mx.c:679
 #, c-format
 msgid "Reading %s..."
 msgstr "Lendo %s..."
 
-#: mx.c:774
+#: mx.c:778
 #, c-format
 msgid "Writing %s..."
 msgstr "Escribindo %s..."
 
-#: mx.c:807
+#: mx.c:811
 #, c-format
 msgid "Could not synchronize mailbox %s!"
 msgstr "¡Non foi posible sincroniza-lo buzón %s!"
 
-#: mx.c:873
+#: mx.c:877
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "¿Mover mensaxes lidas a %s?"
 
-#: mx.c:885 mx.c:1140
+#: mx.c:889 mx.c:1144
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "¿Purgar %d mensaxe marcada como borrada?"
 
-#: mx.c:885 mx.c:1140
+#: mx.c:889 mx.c:1144
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "¿Purgar %d mensaxes marcadas como borradas?"
 
-#: mx.c:909
+#: mx.c:913
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Movendo mensaxes lidas a %s..."
 
-#: mx.c:969 mx.c:1131
+#: mx.c:973 mx.c:1135
 msgid "Mailbox is unchanged."
 msgstr "O buzón non cambiou."
 
-#: mx.c:1005
+#: mx.c:1009
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d conservados, %d movidos, %d borrados."
 
-#: mx.c:1008 mx.c:1178
+#: mx.c:1012 mx.c:1182
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d conservados, %d borrados."
 
-#: mx.c:1116
+#: mx.c:1120
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Pulse '%s' para cambiar a modo escritura"
 
-#: mx.c:1118
+#: mx.c:1122
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "¡Use 'toggle-write' para restablece-lo modo escritura!"
 
-#: mx.c:1120
+#: mx.c:1124
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "O buzón está marcado como non escribible. %s"
 
-#: mx.c:1175
+#: mx.c:1179
 msgid "Mailbox checkpointed."
 msgstr "Buzón marcado para comprobación."
 
-#: mx.c:1475
+#: mx.c:1486
 msgid "Can't write message"
 msgstr "Non foi posible escribi-la mensaxe"
 
@@ -3235,15 +3235,18 @@ msgid "This ID is expired/disabled/revoked"
 msgstr "Este ID expirou/foi deshabilitado/foi revocado"
 
 #: pgpkey.c:612
-msgid "This ID's trust level is undefined."
+#, fuzzy
+msgid "This ID's validity level is undefined."
 msgstr "O nivel de confianza deste ID está sen definir."
 
 #: pgpkey.c:615
-msgid "This ID is not trusted."
+#, fuzzy
+msgid "This ID is not valid."
 msgstr "Este ID non é de confianza."
 
 #: pgpkey.c:618
-msgid "This ID is only marginally trusted."
+#, fuzzy
+msgid "This ID is only marginally valid."
 msgstr "Este ID é de confianza marxinal."
 
 #: pgpkey.c:622
@@ -3720,17 +3723,17 @@ msgstr "¡Non se atopout parámetro \"boundary\"! [informe deste erro]"
 msgid "%s no longer exists!"
 msgstr "¡Xa non existe %s!"
 
-#: sendlib.c:1057
+#: sendlib.c:1061
 #, c-format
 msgid "Could not open %s"
 msgstr "Non foi posible abrir %s"
 
-#: sendlib.c:1994
+#: sendlib.c:1998
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Erro enviando mensaxe, o proceso fillo saíu con %d (%s)."
 
-#: sendlib.c:2000
+#: sendlib.c:2004
 msgid "Output of the delivery process"
 msgstr "Saída do proceso de distribución"
 
@@ -3761,11 +3764,11 @@ msgstr "¡Non foi atopada unha función de ordeación! [informe deste fallo]"
 msgid "(no mailbox)"
 msgstr "(non hai buzón)"
 
-#: thread.c:737
+#: thread.c:762
 msgid "Parent message is not visible in limited view"
 msgstr "A mensaxe pai non é visible na vista limitada."
 
-#: thread.c:742
+#: thread.c:767
 msgid "Parent message is not available."
 msgstr "A mensaxe pai non é accesible."
 

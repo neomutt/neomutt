@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt-1.3.19\n"
-"POT-Creation-Date: 2001-07-25 21:49+0200\n"
+"POT-Creation-Date: 2001-08-21 23:53+0200\n"
 "PO-Revision-Date: 2001-06-10 22:19+02:00\n"
 "Last-Translator: Byrial Jensen <byrial@image.dk>, Morten Bo Johansen "
 "<mojo@image.dk> \n"
@@ -240,7 +240,7 @@ msgstr "Filkataloger kan ikke vises."
 msgid "Error trying to view file"
 msgstr "Fejl ved visning af fil."
 
-#: buffy.c:407
+#: buffy.c:408
 #, c-format
 msgid "New mail in %s."
 msgstr "Ny post i %s."
@@ -680,7 +680,7 @@ msgstr "Ingen brevbakke er åben."
 msgid "There are no messages."
 msgstr "Der er ingen breve."
 
-#: curs_main.c:61 mx.c:1125 pager.c:62 recvattach.c:47
+#: curs_main.c:61 mx.c:1129 pager.c:62 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "Brevbakken er skrivebeskyttet."
 
@@ -802,7 +802,7 @@ msgstr "Åbn brevbakke i skrivebeskyttet tilstand"
 msgid "Open mailbox"
 msgstr "Åbn brevbakke"
 
-#: curs_main.c:982 mx.c:504 mx.c:650
+#: curs_main.c:982 mx.c:508 mx.c:654
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s er ikke en brevbakke."
@@ -851,7 +851,7 @@ msgstr "Ikke flere tråde."
 msgid "You are on the first thread."
 msgstr "Du er ved den første tråd."
 
-#: curs_main.c:1477 curs_main.c:1509 flags.c:250 thread.c:676 thread.c:727
+#: curs_main.c:1477 curs_main.c:1509 flags.c:250 thread.c:701 thread.c:752
 msgid "Threading is not enabled."
 msgstr "Trådning er ikke i brug."
 
@@ -1257,7 +1257,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Kunne ikke føje til IMAP-brevbakker på denne server."
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:718 imap/message.c:593 muttlib.c:1169
+#: imap/imap.c:718 imap/message.c:593 muttlib.c:1162
 #, c-format
 msgid "Create %s?"
 msgstr "Opret %s?"
@@ -1358,89 +1358,89 @@ msgstr "ugyldig linje i brevhoved"
 msgid "%s: unknown sorting method"
 msgstr "%s: ukendt sorteringsmetode"
 
-#: init.c:718
+#: init.c:719
 #, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s): Fejl i regulært udtryk: %s\n"
 
-#: init.c:779
+#: init.c:780
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: ukendt variabel."
 
-#: init.c:788
+#: init.c:789
 msgid "prefix is illegal with reset"
 msgstr "præfiks er ikke tilladt med reset"
 
-#: init.c:794
+#: init.c:795
 msgid "value is illegal with reset"
 msgstr "værdi er ikke tilladt med reset"
 
-#: init.c:833
+#: init.c:834
 #, c-format
 msgid "%s is set"
 msgstr "%s er sat."
 
-#: init.c:833
+#: init.c:834
 #, c-format
 msgid "%s is unset"
 msgstr "%s er ikke sat."
 
-#: init.c:1039
+#: init.c:1040
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: ugyldig type brevbakke"
 
-#: init.c:1064 init.c:1109
+#: init.c:1065 init.c:1110
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: Ugyldig værdi"
 
-#: init.c:1167
+#: init.c:1168
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: ukendt type"
 
-#: init.c:1208
+#: init.c:1209
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Fejl i %s, linje %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1224
+#: init.c:1225
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: Fejl i %s"
 
-#: init.c:1225
+#: init.c:1226
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr "source: læsning afbrudt pga. for mange fejl i %s"
 
-#: init.c:1239
+#: init.c:1240
 #, c-format
 msgid "source: error at %s"
 msgstr "source: Fejl ved %s"
 
-#: init.c:1244
+#: init.c:1245
 msgid "source: too many arguments"
 msgstr "source: For mange parametre"
 
-#: init.c:1295
+#: init.c:1296
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: Ukendt kommando"
 
-#: init.c:1651
+#: init.c:1652
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Fejl i kommandolinje: %s\n"
 
-#: init.c:1694
+#: init.c:1695
 msgid "unable to determine home directory"
 msgstr "Kan ikke bestemme hjemmekatalog."
 
-#: init.c:1702
+#: init.c:1703
 msgid "unable to determine username"
 msgstr "kan ikke bestemme brugernavn."
 
@@ -2559,37 +2559,37 @@ msgstr "Man kan ikke springe rundt i dialogerne"
 msgid "Tagging is not supported."
 msgstr "Udvælgelse er ikke understøttet."
 
-#: mh.c:194
+#: mh.c:584
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Læser %s ... %d"
 
-#: muttlib.c:832
+#: muttlib.c:825
 msgid "File is a directory, save under it?"
 msgstr "Filen er et filkatalog, gem i det?"
 
-#: muttlib.c:837
+#: muttlib.c:830
 msgid "File under directory: "
 msgstr "Fil i dette filkatalog: "
 
-#: muttlib.c:849
+#: muttlib.c:842
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Filen eksisterer , (o)verskriv, (t)ilføj, (a)nnulér?"
 
-#: muttlib.c:849
+#: muttlib.c:842
 msgid "oac"
 msgstr "ota"
 
-#: muttlib.c:1136
+#: muttlib.c:1129
 msgid "Can't save message to POP mailbox."
 msgstr "Kan ikke gemme brev i POP-brevbakke."
 
-#: muttlib.c:1145
+#: muttlib.c:1138
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s er ingen brevbakke"
 
-#: muttlib.c:1151
+#: muttlib.c:1144
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Føj breve til %s?"
@@ -2766,79 +2766,79 @@ msgstr "Timeout overskredet ved forsøg på brug af flock-lås!"
 msgid "Waiting for flock attempt... %d"
 msgstr "Venter på flock-lås ... %d"
 
-#: mx.c:587
+#: mx.c:591
 #, c-format
 msgid "Couldn't lock %s\n"
 msgstr "Kunne ikke låse %s.\n"
 
-#: mx.c:675
+#: mx.c:679
 #, c-format
 msgid "Reading %s..."
 msgstr "Læser %s ..."
 
-#: mx.c:774
+#: mx.c:778
 #, c-format
 msgid "Writing %s..."
 msgstr "Skriver %s ..."
 
-#: mx.c:807
+#: mx.c:811
 #, c-format
 msgid "Could not synchronize mailbox %s!"
 msgstr "Kan ikke synkronisere brevbakke %s!"
 
-#: mx.c:873
+#: mx.c:877
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Flyt læste breve til %s?"
 
-#: mx.c:885 mx.c:1140
+#: mx.c:889 mx.c:1144
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Fjern %d slettet brev?"
 
-#: mx.c:885 mx.c:1140
+#: mx.c:889 mx.c:1144
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Fjern %d slettede breve?"
 
-#: mx.c:909
+#: mx.c:913
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Flytter læste breve til %s..."
 
-#: mx.c:969 mx.c:1131
+#: mx.c:973 mx.c:1135
 msgid "Mailbox is unchanged."
 msgstr "Brevbakken er uændret."
 
-#: mx.c:1005
+#: mx.c:1009
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d beholdt, %d flyttet, %d slettet."
 
-#: mx.c:1008 mx.c:1178
+#: mx.c:1012 mx.c:1182
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d beholdt, %d slettet."
 
-#: mx.c:1116
+#: mx.c:1120
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr "Tast '%s' for at skifte til/fra skrivebeskyttet tilstand"
 
-#: mx.c:1118
+#: mx.c:1122
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Brug 'toggle-write' for at muliggøre skrivning"
 
-#: mx.c:1120
+#: mx.c:1124
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Brevbakken er skrivebeskyttet. %s"
 
-#: mx.c:1175
+#: mx.c:1179
 msgid "Mailbox checkpointed."
 msgstr "Brevbakke opdateret."
 
-#: mx.c:1475
+#: mx.c:1486
 msgid "Can't write message"
 msgstr "Kan ikke skrive brev"
 
@@ -3218,15 +3218,18 @@ msgid "This ID is expired/disabled/revoked"
 msgstr "Denne ID er udløbet/sat ud af kraft/tilbagekaldt"
 
 #: pgpkey.c:612
-msgid "This ID's trust level is undefined."
+#, fuzzy
+msgid "This ID's validity level is undefined."
 msgstr "Troværdigheds-niveauet for denne id er ikke bestemt."
 
 #: pgpkey.c:615
-msgid "This ID is not trusted."
+#, fuzzy
+msgid "This ID is not valid."
 msgstr "Denne id er ikke troværdig."
 
 #: pgpkey.c:618
-msgid "This ID is only marginally trusted."
+#, fuzzy
+msgid "This ID is only marginally valid."
 msgstr "Denne id er kun marginalt troværdig."
 
 #: pgpkey.c:622
@@ -3696,17 +3699,17 @@ msgstr "Fandt ingen \"boundary\"-parameter! [rapportér denne fejl]"
 msgid "%s no longer exists!"
 msgstr "%s eksisterer ikke mere!"
 
-#: sendlib.c:1057
+#: sendlib.c:1061
 #, c-format
 msgid "Could not open %s"
 msgstr "Kunne ikke åbne %s."
 
-#: sendlib.c:1994
+#: sendlib.c:1998
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Fejl %d under afsendelse af brev (%s)."
 
-#: sendlib.c:2000
+#: sendlib.c:2004
 msgid "Output of the delivery process"
 msgstr "Uddata fra leveringsprocessen"
 
@@ -3737,11 +3740,11 @@ msgstr "Kunne ikke finde sorteringsfunktion! [rapportér denne fejl]"
 msgid "(no mailbox)"
 msgstr "(ingen brevbakke)"
 
-#: thread.c:737
+#: thread.c:762
 msgid "Parent message is not visible in limited view"
 msgstr "Forrige brev i tråden er ikke synligt i afgrænset visning"
 
-#: thread.c:742
+#: thread.c:767
 msgid "Parent message is not available."
 msgstr "Forrige brev i tråden er ikke tilgængeligt."
 

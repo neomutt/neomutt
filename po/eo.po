@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3.20\n"
-"POT-Creation-Date: 2001-07-25 21:49+0200\n"
+"POT-Creation-Date: 2001-08-21 23:53+0200\n"
 "PO-Revision-Date: 2001-08-01 19:56+0100\n"
 "Last-Translator: Edmund GRIMLEY EVANS <edmundo@rano.org>\n"
 "Language-Team: eo <eo@li.org>\n"
@@ -239,7 +239,7 @@ msgstr "Ne povas rigardi dosierujon"
 msgid "Error trying to view file"
 msgstr "Eraro dum vidigo de dosiero"
 
-#: buffy.c:407
+#: buffy.c:408
 #, c-format
 msgid "New mail in %s."
 msgstr "Nova mesaøo en %s."
@@ -680,7 +680,7 @@ msgstr "Neniu poþtfako estas malfermita."
 msgid "There are no messages."
 msgstr "Ne estas mesaøoj."
 
-#: curs_main.c:61 mx.c:1125 pager.c:62 recvattach.c:47
+#: curs_main.c:61 mx.c:1129 pager.c:62 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "Poþtfako estas nurlega."
 
@@ -802,7 +802,7 @@ msgstr "Malfermi poþtfakon nurlege"
 msgid "Open mailbox"
 msgstr "Malfermi poþtfakon"
 
-#: curs_main.c:982 mx.c:504 mx.c:650
+#: curs_main.c:982 mx.c:508 mx.c:654
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s ne estas poþtfako."
@@ -851,7 +851,7 @@ msgstr "Ne restas fadenoj."
 msgid "You are on the first thread."
 msgstr "Vi estas æe la unua fadeno."
 
-#: curs_main.c:1477 curs_main.c:1509 flags.c:250 thread.c:676 thread.c:727
+#: curs_main.c:1477 curs_main.c:1509 flags.c:250 thread.c:701 thread.c:752
 msgid "Threading is not enabled."
 msgstr "Fadenoj ne estas þaltitaj."
 
@@ -1255,7 +1255,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Ne povas aldoni al IMAP-poþtfako æe æi tiu servilo"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:718 imap/message.c:593 muttlib.c:1169
+#: imap/imap.c:718 imap/message.c:593 muttlib.c:1162
 #, c-format
 msgid "Create %s?"
 msgstr "Æu krei %s?"
@@ -1355,89 +1355,89 @@ msgstr "nevalida æaplinio"
 msgid "%s: unknown sorting method"
 msgstr "%s: nekonata ordigmaniero"
 
-#: init.c:718
+#: init.c:719
 #, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s): eraro en regula esprimo: %s\n"
 
-#: init.c:779
+#: init.c:780
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: nekonata variablo"
 
-#: init.c:788
+#: init.c:789
 msgid "prefix is illegal with reset"
 msgstr "reset: prefikso ne permesata"
 
-#: init.c:794
+#: init.c:795
 msgid "value is illegal with reset"
 msgstr "reset: valoro ne permesata"
 
-#: init.c:833
+#: init.c:834
 #, c-format
 msgid "%s is set"
 msgstr "%s estas þaltita"
 
-#: init.c:833
+#: init.c:834
 #, c-format
 msgid "%s is unset"
 msgstr "%s estas malþaltita"
 
-#: init.c:1039
+#: init.c:1040
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: nevalida poþtfakospeco"
 
-#: init.c:1064 init.c:1109
+#: init.c:1065 init.c:1110
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: nevalida valoro"
 
-#: init.c:1167
+#: init.c:1168
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: nekonata speco"
 
-#: init.c:1208
+#: init.c:1209
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Eraro en %s, linio %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1224
+#: init.c:1225
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: eraroj en %s"
 
-#: init.c:1225
+#: init.c:1226
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr "source: legado æesis pro tro da eraroj en %s"
 
-#: init.c:1239
+#: init.c:1240
 #, c-format
 msgid "source: error at %s"
 msgstr "source: eraro æe %s"
 
-#: init.c:1244
+#: init.c:1245
 msgid "source: too many arguments"
 msgstr "source: tro da argumentoj"
 
-#: init.c:1295
+#: init.c:1296
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: nekonata komando"
 
-#: init.c:1651
+#: init.c:1652
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Eraro en komandlinio: %s\n"
 
-#: init.c:1694
+#: init.c:1695
 msgid "unable to determine home directory"
 msgstr "ne povas eltrovi la hejmdosierujon"
 
-#: init.c:1702
+#: init.c:1703
 msgid "unable to determine username"
 msgstr "ne povas eltrovi la uzantonomo"
 
@@ -2555,37 +2555,37 @@ msgstr "Saltado ne funkcias æe dialogoj."
 msgid "Tagging is not supported."
 msgstr "Markado ne funkcias."
 
-#: mh.c:194
+#: mh.c:584
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Legas %s ... %d"
 
-#: muttlib.c:832
+#: muttlib.c:825
 msgid "File is a directory, save under it?"
 msgstr "Tio estas dosierujo; æu skribi dosieron en øi?"
 
-#: muttlib.c:837
+#: muttlib.c:830
 msgid "File under directory: "
 msgstr "Dosiero en dosierujo: "
 
-#: muttlib.c:849
+#: muttlib.c:842
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Dosiero ekzistas; æu (s)urskribi, (a)ldoni, aý (n)uligi?"
 
-#: muttlib.c:849
+#: muttlib.c:842
 msgid "oac"
 msgstr "san"
 
-#: muttlib.c:1136
+#: muttlib.c:1129
 msgid "Can't save message to POP mailbox."
 msgstr "Ne eblas skribi mesaøon al POP-poþtfako."
 
-#: muttlib.c:1145
+#: muttlib.c:1138
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s ne estas poþtfako!"
 
-#: muttlib.c:1151
+#: muttlib.c:1144
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Æu aldoni mesaøojn al %s?"
@@ -2762,79 +2762,79 @@ msgstr "Tro da tempo pasis dum provado akiri flock-þloson!"
 msgid "Waiting for flock attempt... %d"
 msgstr "Atendas flock-þloson ... %d"
 
-#: mx.c:587
+#: mx.c:591
 #, c-format
 msgid "Couldn't lock %s\n"
 msgstr "Ne povis þlosi %s\n"
 
-#: mx.c:675
+#: mx.c:679
 #, c-format
 msgid "Reading %s..."
 msgstr "Legas %s ..."
 
-#: mx.c:774
+#: mx.c:778
 #, c-format
 msgid "Writing %s..."
 msgstr "Skribas %s ..."
 
-#: mx.c:807
+#: mx.c:811
 #, c-format
 msgid "Could not synchronize mailbox %s!"
 msgstr "Ne povis aktualigi la poþtfakon %s!"
 
-#: mx.c:873
+#: mx.c:877
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Æu movi legitajn mesaøojn al %s?"
 
-#: mx.c:885 mx.c:1140
+#: mx.c:889 mx.c:1144
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Æu forpurigi %d forviþitan mesaøon?"
 
-#: mx.c:885 mx.c:1140
+#: mx.c:889 mx.c:1144
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Æu forpurigi %d forviþitajn mesaøojn?"
 
-#: mx.c:909
+#: mx.c:913
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Movas legitajn mesaøojn al %s ..."
 
-#: mx.c:969 mx.c:1131
+#: mx.c:973 mx.c:1135
 msgid "Mailbox is unchanged."
 msgstr "Poþtfako estas neþanøita."
 
-#: mx.c:1005
+#: mx.c:1009
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d retenite, %d movite, %d forviþite."
 
-#: mx.c:1008 mx.c:1178
+#: mx.c:1012 mx.c:1182
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d retenite, %d forviþite."
 
-#: mx.c:1116
+#: mx.c:1120
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Premu '%s' por (mal)þalti skribon"
 
-#: mx.c:1118
+#: mx.c:1122
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Uzu 'toggle-write' por reebligi skribon!"
 
-#: mx.c:1120
+#: mx.c:1124
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Poþtfako estas markita kiel neskribebla. %s"
 
-#: mx.c:1175
+#: mx.c:1179
 msgid "Mailbox checkpointed."
 msgstr "Poþtfako sinkronigita."
 
-#: mx.c:1475
+#: mx.c:1486
 msgid "Can't write message"
 msgstr "Ne povas skribi mesaøon"
 
@@ -3217,15 +3217,18 @@ msgid "This ID is expired/disabled/revoked"
 msgstr "Æi tiu identigilo estas eksvalidiøinta/malþaltita/revokita"
 
 #: pgpkey.c:612
-msgid "This ID's trust level is undefined."
+#, fuzzy
+msgid "This ID's validity level is undefined."
 msgstr "La fidonivelo de æi tiu ID ne estas difinita."
 
 #: pgpkey.c:615
-msgid "This ID is not trusted."
+#, fuzzy
+msgid "This ID is not valid."
 msgstr "Æi tiu ID ne estas fidinda."
 
 #: pgpkey.c:618
-msgid "This ID is only marginally trusted."
+#, fuzzy
+msgid "This ID is only marginally valid."
 msgstr "Æi tiu ID estas nur iomete fidinda."
 
 #: pgpkey.c:622
@@ -3695,17 +3698,17 @@ msgstr "Nenia limparametro trovita! (Raportu æi tiun cimon.)"
 msgid "%s no longer exists!"
 msgstr "%s ne plu ekzistas!"
 
-#: sendlib.c:1057
+#: sendlib.c:1061
 #, c-format
 msgid "Could not open %s"
 msgstr "Ne povas malfermi %s"
 
-#: sendlib.c:1994
+#: sendlib.c:1998
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Eraro dum sendado de mesaøo; ido finis per %d (%s)."
 
-#: sendlib.c:2000
+#: sendlib.c:2004
 msgid "Output of the delivery process"
 msgstr "Eligo de la liverprocezo"
 
@@ -3736,11 +3739,11 @@ msgstr "Ne povis trovi ordigfunkcion! (Raportu æi tiun cimon.)"
 msgid "(no mailbox)"
 msgstr "(mankas poþtfako)"
 
-#: thread.c:737
+#: thread.c:762
 msgid "Parent message is not visible in limited view"
 msgstr "Patra mesaøo ne estas videbla en limigita rigardo"
 
-#: thread.c:742
+#: thread.c:767
 msgid "Parent message is not available."
 msgstr "Patra mesaøo ne estas havebla."
 

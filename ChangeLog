@@ -1,3 +1,132 @@
+Mon Aug 20 12:11:28 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* mx.c: Check for .mew-cache in MH folders.
+
+Thu Aug 16 12:42:30 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* sendlib.c:
+	Mutt's detection of overly long lines would fail with text files
+	when the long line is the last one, and is not finished by a newline
+	character.  This can, for instance, happen when you send out
+	macintosh-generated HTML files.
+
+	(And, apparently, we hit some boundary somewhere in the PGP code
+	with that - I had some truncated attachments today.)
+
+Mon Aug 13 16:12:08 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* pop.c: fix content-length headers.
+
+	* mh.c:
+	Fix treatment of maildir folders.  We partially used mh routines for
+	these, introducing absurdities such as .mh_sequences files.
+
+Sun Aug 12 10:15:15 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* init.c, init.h:
+	Fix the "strange e-mail header" bug.  It was an uninitialized
+	buffer.  Thanks to Brendan Cully for figuring it out.
+
+Sat Aug 11 17:39:13 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* muttlib.c:
+	Undo an earlier change to _mutt_expand_path, which seems to have
+	caused problems.  From Brendan Cully.
+
+	* config.guess, config.sub: Update.  Thanks, Brendan!
+
+Thu Aug  9 11:28:09 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/uk.po, po/ja.po: update
+
+Wed Aug  8 19:27:50 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* doc/manual.sgml.tail: Adding someone I forgot.
+
+Tue Aug  7 12:45:51 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* doc/manual.sgml.tail:
+	Update credits.  I'm sure I forgot some people.  If you feel you're
+	one of them, please drop me a line!
+
+Mon Aug  6 17:49:06 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* curs_lib.c:
+	Here's a fix to allow (n)curses versions to work with some terminfo
+	entries where (for whatever reason), someone specified cvvis but not
+	cnorm. From a report/discussion with Mario Vanoni
+	<vanonim@dial.eunet.ch>. (From Thomas Dickey.)
+
+	* buffy.c: Another little MH buffy bug.  From Len Lattanzi
+	<Len.Lattanzi@Migration.com>.
+
+Fri Aug  3 16:55:41 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* mh.c: fix an mh_buffy segfault.
+
+	* configure.in:
+	Don't default to "no" when we can't find sendmail.  #713; Brendan
+	Cully.
+
+	* buffy.c, mh.c, mx.h: MH buffy.
+
+Thu Aug  2 22:59:16 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* contrib/gpg.rc: Don't emit a comment armor header at all.
+
+	* mh.c:
+	Update mh_sequences when messages are deleted.  Note: Currently, we
+	only clean up our own sequences, and leave others' sequences alone.
+	Should possibly be fixed.
+
+	* mh.c: Fix #720.
+
+	* imap/browse.c:
+	Namespace fix.  From Pawel Slawek (or Peter Bloomfield?); forwarded
+	by Brendan Cully.
+
+Wed Aug  1 22:40:29 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/eo.po: update
+
+	* po/fr.po, po/ru.po, po/de.po: updates.
+
+	* gnupgparse.c, pgpkey.c:
+	Signed fixes.  Noted by Vincent Lefevre's compiler.
+
+Tue Jul 31 12:28:19 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* mh.c: More MH fixes.
+
+	* mh.c: fix a small typo
+
+	* mailbox.h, mh.c, mx.c: Add mh_sequences support.  I hope this works.
+
+Sun Jul 29 09:48:04 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* contrib/gpg.rc:
+	Fix the comment header, and generally be less verbose.
+
+Thu Jul 26 17:42:48 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* imap/util.c: patch-bac.imapnextword-1. From Brendan Cully.
+
+	* pgpkey.c: Don't confuse validity and trust when it comes to PGP keys.
+
+	* thread.c: O(n log (n)) sorting from Jan Kratochvil <short@ucw.cz>.
+
+Wed Jul 25 19:51:58 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/lt.po, po/nl.po, po/pl.po, po/pt_BR.po, po/ru.po, po/sk.po, po/sv.po, po/tr.po, po/uk.po, po/zh_CN.po, po/da.po, po/de.po, po/el.po, po/eo.po, po/es.po, po/et.po, po/fr.po, po/gl.po, po/hu.po, po/id.po, po/it.po, po/ja.po, po/ko.po, po/cs.po:
+	update-po after gettext update.
+
+Tue Jul 24 21:29:47 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/zh_CN.po, po/zh_TW.po, po/sk.po, po/sv.po, po/tr.po, po/uk.po, po/ru.po, po/pl.po, po/pt_BR.po, po/ja.po, po/ko.po, po/lt.po, po/nl.po, po/gl.po, po/hu.po, po/id.po, po/it.po, ChangeLog, po/cs.po, po/da.po, po/de.po, po/el.po, po/eo.po, po/es.po, po/et.po, po/fr.po, reldate.h, VERSION:
+	automatic post-release commit for mutt-1.3.20
+
+	* imap/imap.c: Avoid mail loss with IMAP.  From Brendan Cully.
+
 Tue Jul 24 21:26:03 2001  Thomas Roessler  <roessler@does-not-exist.org>
 
 	* imap/imap.c: Avoid mail loss with IMAP.  From Brendan Cully.

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.2\n"
-"POT-Creation-Date: 2001-07-25 21:49+0200\n"
+"POT-Creation-Date: 2001-08-21 23:53+0200\n"
 "PO-Revision-Date: 1999-12-20 20:41+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -239,7 +239,7 @@ msgstr "无法显示目录"
 msgid "Error trying to view file"
 msgstr "无法试著显示文件"
 
-#: buffy.c:407
+#: buffy.c:408
 #, c-format
 msgid "New mail in %s."
 msgstr "在 %s 有新信件。"
@@ -692,7 +692,7 @@ msgstr "没有已打开信箱。"
 msgid "There are no messages."
 msgstr "没有信件。"
 
-#: curs_main.c:61 mx.c:1125 pager.c:62 recvattach.c:47
+#: curs_main.c:61 mx.c:1129 pager.c:62 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "信箱是只读的。"
 
@@ -816,7 +816,7 @@ msgstr "用只读模式打开信箱"
 msgid "Open mailbox"
 msgstr "打开信箱"
 
-#: curs_main.c:982 mx.c:504 mx.c:650
+#: curs_main.c:982 mx.c:508 mx.c:654
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s 不是信箱。"
@@ -865,7 +865,7 @@ msgstr "没有更多的序列"
 msgid "You are on the first thread."
 msgstr "您已经在第一个序列上。"
 
-#: curs_main.c:1477 curs_main.c:1509 flags.c:250 thread.c:676 thread.c:727
+#: curs_main.c:1477 curs_main.c:1509 flags.c:250 thread.c:701 thread.c:752
 msgid "Threading is not enabled."
 msgstr "序列功能尚未启动。"
 
@@ -1283,7 +1283,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "无法附加在这个伺服器上的 IMAP 信箱"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:718 imap/message.c:593 muttlib.c:1169
+#: imap/imap.c:718 imap/message.c:593 muttlib.c:1162
 #, c-format
 msgid "Create %s?"
 msgstr "建立 %s？"
@@ -1388,89 +1388,89 @@ msgstr "无效的标头栏位"
 msgid "%s: unknown sorting method"
 msgstr "%s：不明的排序方式"
 
-#: init.c:718
+#: init.c:719
 #, fuzzy, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_defualt：错误的正规表示式：%s\n"
 
-#: init.c:779
+#: init.c:780
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s：不明的变量"
 
-#: init.c:788
+#: init.c:789
 msgid "prefix is illegal with reset"
 msgstr "重新设置后字首仍不合规定"
 
-#: init.c:794
+#: init.c:795
 msgid "value is illegal with reset"
 msgstr "重新设置后值仍不合规定"
 
-#: init.c:833
+#: init.c:834
 #, c-format
 msgid "%s is set"
 msgstr "%s 已被设定"
 
-#: init.c:833
+#: init.c:834
 #, c-format
 msgid "%s is unset"
 msgstr "%s 没有被设定"
 
-#: init.c:1039
+#: init.c:1040
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s：无效的信箱种类"
 
-#: init.c:1064 init.c:1109
+#: init.c:1065 init.c:1110
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s：无效的值"
 
-#: init.c:1167
+#: init.c:1168
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s：不明的种类"
 
-#: init.c:1208
+#: init.c:1209
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "%s 发生错误，行号 %d：%s"
 
 #. the muttrc source keyword
-#: init.c:1224
+#: init.c:1225
 #, c-format
 msgid "source: errors in %s"
 msgstr "source：错误发生在 %s"
 
-#: init.c:1225
+#: init.c:1226
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr ""
 
-#: init.c:1239
+#: init.c:1240
 #, c-format
 msgid "source: error at %s"
 msgstr "source：错误发生在 %s"
 
-#: init.c:1244
+#: init.c:1245
 msgid "source: too many arguments"
 msgstr "source：太多参数"
 
-#: init.c:1295
+#: init.c:1296
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s：不明的指令"
 
-#: init.c:1651
+#: init.c:1652
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "指令行有错：%s\n"
 
-#: init.c:1694
+#: init.c:1695
 msgid "unable to determine home directory"
 msgstr "无法决定 home 目录"
 
-#: init.c:1702
+#: init.c:1703
 msgid "unable to determine username"
 msgstr "无法决定使用者名称"
 
@@ -2605,38 +2605,38 @@ msgstr "对话模式中不支持跳跃功能。"
 msgid "Tagging is not supported."
 msgstr "不支持标记功能。"
 
-#: mh.c:194
+#: mh.c:584
 #, c-format
 msgid "Reading %s... %d"
 msgstr "读取 %s… %d"
 
-#: muttlib.c:832
+#: muttlib.c:825
 msgid "File is a directory, save under it?"
 msgstr "文件是一个目录, 储存在它下面 ?"
 
-#: muttlib.c:837
+#: muttlib.c:830
 msgid "File under directory: "
 msgstr "在目录底下的文件："
 
-#: muttlib.c:849
+#: muttlib.c:842
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "文件已经存在, (o)覆盖, (a)附加, 或是 (c)取消 ?"
 
-#: muttlib.c:849
+#: muttlib.c:842
 msgid "oac"
 msgstr ""
 
-#: muttlib.c:1136
+#: muttlib.c:1129
 #, fuzzy
 msgid "Can't save message to POP mailbox."
 msgstr "将信件写入到信箱"
 
-#: muttlib.c:1145
+#: muttlib.c:1138
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s 不是信箱！"
 
-#: muttlib.c:1151
+#: muttlib.c:1144
 #, c-format
 msgid "Append messages to %s?"
 msgstr "附加信件到 %s ?"
@@ -2818,80 +2818,80 @@ msgstr "尝试 flock 时超过时间！"
 msgid "Waiting for flock attempt... %d"
 msgstr "正在等待 flock 执行成功… %d"
 
-#: mx.c:587
+#: mx.c:591
 #, c-format
 msgid "Couldn't lock %s\n"
 msgstr "无法锁住 %s。\n"
 
-#: mx.c:675
+#: mx.c:679
 #, c-format
 msgid "Reading %s..."
 msgstr "读取 %s 中…"
 
-#: mx.c:774
+#: mx.c:778
 #, c-format
 msgid "Writing %s..."
 msgstr "写入 %s 中…"
 
-#: mx.c:807
+#: mx.c:811
 #, c-format
 msgid "Could not synchronize mailbox %s!"
 msgstr "无法与 %s 信箱同步！"
 
-#: mx.c:873
+#: mx.c:877
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "搬移已读取的信件到 %s？"
 
-#: mx.c:885 mx.c:1140
+#: mx.c:889 mx.c:1144
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "清除 %d 封已经被删除的信件？"
 
-#: mx.c:885 mx.c:1140
+#: mx.c:889 mx.c:1144
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "清除 %d 封已被删除的信件？"
 
-#: mx.c:909
+#: mx.c:913
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "正在搬移已经读取的信件到 %s …"
 
-#: mx.c:969 mx.c:1131
+#: mx.c:973 mx.c:1135
 msgid "Mailbox is unchanged."
 msgstr "信箱没有改变。"
 
-#: mx.c:1005
+#: mx.c:1009
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d 封信件被保留, %d 封信件被搬移, %d 封信件被删除。"
 
-#: mx.c:1008 mx.c:1178
+#: mx.c:1012 mx.c:1182
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d 封信件被保留, %d 封信件被删除。"
 
-#: mx.c:1116
+#: mx.c:1120
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " 请按下 '%s' 来切换写入模式"
 
-#: mx.c:1118
+#: mx.c:1122
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "请使用 'toggle-write' 来重新启动写入功能!"
 
-#: mx.c:1120
+#: mx.c:1124
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "信箱被标记成为无法写入的. %s"
 
-#: mx.c:1175
+#: mx.c:1179
 #, fuzzy
 msgid "Mailbox checkpointed."
 msgstr "邮箱已删除。"
 
-#: mx.c:1475
+#: mx.c:1486
 #, fuzzy
 msgid "Can't write message"
 msgstr "编辑信件内容"
@@ -3280,15 +3280,18 @@ msgid "This ID is expired/disabled/revoked"
 msgstr "这个钥匙不能使用：过期/无效/已取消。"
 
 #: pgpkey.c:612
-msgid "This ID's trust level is undefined."
+#, fuzzy
+msgid "This ID's validity level is undefined."
 msgstr "这个 ID 的信任阶层没有定义。"
 
 #: pgpkey.c:615
-msgid "This ID is not trusted."
+#, fuzzy
+msgid "This ID is not valid."
 msgstr "这个 ID 不被信任。"
 
 #: pgpkey.c:618
-msgid "This ID is only marginally trusted."
+#, fuzzy
+msgid "This ID is only marginally valid."
 msgstr "此 ID 只是勉强被信任。"
 
 #: pgpkey.c:622
@@ -3781,17 +3784,17 @@ msgstr "没有发现分界变量！[回报错误]"
 msgid "%s no longer exists!"
 msgstr "%s 已经不存在！"
 
-#: sendlib.c:1057
+#: sendlib.c:1061
 #, c-format
 msgid "Could not open %s"
 msgstr "无法打开 %s"
 
-#: sendlib.c:1994
+#: sendlib.c:1998
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "寄送讯息出现错误，子程序已结束 %d (%s)。"
 
-#: sendlib.c:2000
+#: sendlib.c:2004
 msgid "Output of the delivery process"
 msgstr "Delivery process 的输出"
 
@@ -3822,12 +3825,12 @@ msgstr "找不到排序的函数！[请回报这个问题]"
 msgid "(no mailbox)"
 msgstr "（没有信箱）"
 
-#: thread.c:737
+#: thread.c:762
 #, fuzzy
 msgid "Parent message is not visible in limited view"
 msgstr "在限制阅览模式下无法显示主信件。"
 
-#: thread.c:742
+#: thread.c:767
 msgid "Parent message is not available."
 msgstr "主信件不存在。"
 

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.3.20\n"
-"POT-Creation-Date: 2001-07-24 23:29+0200\n"
+"POT-Creation-Date: 2001-08-21 23:53+0200\n"
 "PO-Revision-Date: 2001-08-02 22:28+0900\n"
 "Last-Translator: oota toshiya <oota@mspd.mt.nec.co.jp>\n"
 "Language-Team: mutt-j <mutt-j@ns.ribbon.or.jp>\n"
@@ -83,6 +83,7 @@ msgstr "名前のテンプレートに不一致,続行?"
 
 #. For now, editing requires a file, no piping
 #: attach.c:123
+#, c-format
 msgid "Mailcap compose entry requires %%s"
 msgstr "Mailcap 編集エントリに %%s が必要"
 
@@ -107,6 +108,7 @@ msgstr "%sのための mailcap 編集エントリが無いので空ファイル作成"
 
 #. For now, editing requires a file, no piping
 #: attach.c:250
+#, c-format
 msgid "Mailcap Edit entry requires %%s"
 msgstr "Mailcap 編集エントリには %%s が必要"
 
@@ -237,7 +239,7 @@ msgstr "ディレクトリ参照できず"
 msgid "Error trying to view file"
 msgstr "ファイル閲覧時のエラー"
 
-#: buffy.c:407
+#: buffy.c:408
 #, c-format
 msgid "New mail in %s."
 msgstr "%s に新着メール"
@@ -676,7 +678,7 @@ msgstr "1つもメールボックスが開いていない"
 msgid "There are no messages."
 msgstr "1通もメッセージが無い"
 
-#: curs_main.c:61 mx.c:1125 pager.c:62 recvattach.c:47
+#: curs_main.c:61 mx.c:1129 pager.c:62 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "メールボックスは読み出し専用"
 
@@ -798,7 +800,7 @@ msgstr "読み出し専用モードでメールボックスをオープン"
 msgid "Open mailbox"
 msgstr "メールボックスをオープン"
 
-#: curs_main.c:982 mx.c:504 mx.c:650
+#: curs_main.c:982 mx.c:508 mx.c:654
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s はメールボックスではない"
@@ -847,7 +849,7 @@ msgstr "もうスレッドはありません"
 msgid "You are on the first thread."
 msgstr "すでに最初のスレッドです"
 
-#: curs_main.c:1477 curs_main.c:1509 flags.c:250 thread.c:676 thread.c:727
+#: curs_main.c:1477 curs_main.c:1509 flags.c:250 thread.c:701 thread.c:752
 msgid "Threading is not enabled."
 msgstr "スレッド表示は無効"
 
@@ -1253,7 +1255,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "このサーバにIMAPメールボックスを追加できず"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:718 imap/message.c:593 muttlib.c:1169
+#: imap/imap.c:718 imap/message.c:593 muttlib.c:1162
 #, c-format
 msgid "Create %s?"
 msgstr "%s を作成するか?"
@@ -1354,89 +1356,89 @@ msgstr "不正なへッダフィールド"
 msgid "%s: unknown sorting method"
 msgstr "%s: は未定義の整列方法"
 
-#: init.c:718
+#: init.c:719
 #, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s): のregexp中でエラー: %s\n"
 
-#: init.c:779
+#: init.c:780
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: は未定義の変数"
 
-#: init.c:788
+#: init.c:789
 msgid "prefix is illegal with reset"
 msgstr "reset と共に使う 接頭辞 が不正"
 
-#: init.c:794
+#: init.c:795
 msgid "value is illegal with reset"
 msgstr "reset と共に使う値が不正"
 
-#: init.c:833
+#: init.c:834
 #, c-format
 msgid "%s is set"
 msgstr "%s を設定"
 
-#: init.c:833
+#: init.c:834
 #, c-format
 msgid "%s is unset"
 msgstr "%s を解除"
 
-#: init.c:1039
+#: init.c:1040
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: は不正なメールボックス形式"
 
-#: init.c:1064 init.c:1109
+#: init.c:1065 init.c:1110
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: は不正な値"
 
-#: init.c:1167
+#: init.c:1168
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: は不明なタイプ"
 
-#: init.c:1208
+#: init.c:1209
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "%s中の %d行目でエラー: %s"
 
 #. the muttrc source keyword
-#: init.c:1224
+#: init.c:1225
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: %s 中でエラー"
 
-#: init.c:1225
+#: init.c:1226
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr "source: %s 中にエラーが多すぎるので読み出し中止"
 
-#: init.c:1239
+#: init.c:1240
 #, c-format
 msgid "source: error at %s"
 msgstr "source: 場所 %s でエラー"
 
-#: init.c:1244
+#: init.c:1245
 msgid "source: too many arguments"
 msgstr "source: 引数が多すぎる"
 
-#: init.c:1295
+#: init.c:1296
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: 不明なコマンド"
 
-#: init.c:1651
+#: init.c:1652
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "コマンド行 %s 中でエラー\n"
 
-#: init.c:1694
+#: init.c:1695
 msgid "unable to determine home directory"
 msgstr "ホームディレクトリを決定できない"
 
-#: init.c:1702
+#: init.c:1703
 msgid "unable to determine username"
 msgstr "ユーザ名を決定できない"
 
@@ -2288,10 +2290,10 @@ msgstr ""
 
 #: main.c:88
 msgid ""
-"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
-"]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
-"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
+"<file> ]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
+"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2398,6 +2400,7 @@ msgid "Mailbox is empty."
 msgstr "メールボックスが空。"
 
 #: mbox.c:129 mbox.c:286
+#, c-format
 msgid "Reading %s... %d (%d%%)"
 msgstr "読み出し中 %s... %d (%d%%)"
 
@@ -2427,6 +2430,7 @@ msgstr ""
 "sync: メールボックスが変更されたが、変更メッセージが無い(このバグを報告して)!"
 
 #: mbox.c:792
+#, c-format
 msgid "Writing messages... %d (%d%%)"
 msgstr "メッセージ書き込み中... %d (%d%%)"
 
@@ -2528,37 +2532,37 @@ msgstr "ジャンプ機能はこのダイアログでは未提供。"
 msgid "Tagging is not supported."
 msgstr "タグ付与機能は未提供。"
 
-#: mh.c:194
+#: mh.c:584
 #, c-format
 msgid "Reading %s... %d"
 msgstr "%s から読み出し中... %d"
 
-#: muttlib.c:832
+#: muttlib.c:825
 msgid "File is a directory, save under it?"
 msgstr "ファイルはディレクトリである。その配下に保存?"
 
-#: muttlib.c:837
+#: muttlib.c:830
 msgid "File under directory: "
 msgstr "ディレクトリ配下のファイル: "
 
-#: muttlib.c:849
+#: muttlib.c:842
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "ファイルが存在, (o)上書き,(a)追加 又は (c)中止?"
 
-#: muttlib.c:849
+#: muttlib.c:842
 msgid "oac"
 msgstr ""
 
-#: muttlib.c:1136
+#: muttlib.c:1129
 msgid "Can't save message to POP mailbox."
 msgstr "POPメールボックスにはメッセージ保存できない"
 
-#: muttlib.c:1145
+#: muttlib.c:1138
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s はメールボックスではない!"
 
-#: muttlib.c:1151
+#: muttlib.c:1144
 #, c-format
 msgid "Append messages to %s?"
 msgstr "%s にメッセージを追加するか?"
@@ -2735,79 +2739,79 @@ msgstr "flockロック中にタイムアウト発生!"
 msgid "Waiting for flock attempt... %d"
 msgstr "flockロック待ち... %d"
 
-#: mx.c:587
+#: mx.c:591
 #, c-format
 msgid "Couldn't lock %s\n"
 msgstr "%s をロックできない\n"
 
-#: mx.c:675
+#: mx.c:679
 #, c-format
 msgid "Reading %s..."
 msgstr "%s 読み出し中..."
 
-#: mx.c:774
+#: mx.c:778
 #, c-format
 msgid "Writing %s..."
 msgstr "%s 書き込み中..."
 
-#: mx.c:807
+#: mx.c:811
 #, c-format
 msgid "Could not synchronize mailbox %s!"
 msgstr "%s メールボックスの同期がとれない!"
 
-#: mx.c:873
+#: mx.c:877
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "%s に既読メッセージを移動するか?"
 
-#: mx.c:885 mx.c:1140
+#: mx.c:889 mx.c:1144
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "削除された %d メッセージを廃棄?"
 
-#: mx.c:885 mx.c:1140
+#: mx.c:889 mx.c:1144
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "削除された %d メッセージを廃棄?"
 
-#: mx.c:909
+#: mx.c:913
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "%s に既読メッセージを移動中..."
 
-#: mx.c:969 mx.c:1131
+#: mx.c:973 mx.c:1135
 msgid "Mailbox is unchanged."
 msgstr "メールボックスは変更なし"
 
-#: mx.c:1005
+#: mx.c:1009
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d 保持, %d 移動, %d 廃棄"
 
-#: mx.c:1008 mx.c:1178
+#: mx.c:1012 mx.c:1182
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d 保持, %d 廃棄"
 
-#: mx.c:1116
+#: mx.c:1120
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " '%s' を押すと書き込み状態反転"
 
-#: mx.c:1118
+#: mx.c:1122
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "'toggle-write' を使って書き込み状態を有効にせよ!"
 
-#: mx.c:1120
+#: mx.c:1124
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "メールボックスは書き込み不能にマーク。 %s"
 
-#: mx.c:1175
+#: mx.c:1179
 msgid "Mailbox checkpointed."
 msgstr "メールボックスのチェックポイント採取。"
 
-#: mx.c:1475
+#: mx.c:1486
 msgid "Can't write message"
 msgstr "メッセージ書き込み不能"
 
@@ -3192,15 +3196,18 @@ msgid "This ID is expired/disabled/revoked"
 msgstr "このIDは 期限切れ/使用不可/廃棄済み である。"
 
 #: pgpkey.c:612
-msgid "This ID's trust level is undefined."
+#, fuzzy
+msgid "This ID's validity level is undefined."
 msgstr "このIDの信用度は未定義である。"
 
 #: pgpkey.c:615
-msgid "This ID is not trusted."
+#, fuzzy
+msgid "This ID is not valid."
 msgstr "このIDは信用されていない。"
 
 #: pgpkey.c:618
-msgid "This ID is only marginally trusted."
+#, fuzzy
+msgid "This ID is only marginally valid."
 msgstr "このIDはかろうじて信用されている。"
 
 #: pgpkey.c:622
@@ -3671,17 +3678,17 @@ msgstr "境界パラメータがみつからない![このエラーを報告して]"
 msgid "%s no longer exists!"
 msgstr "%s はもはや存在しない!"
 
-#: sendlib.c:1057
+#: sendlib.c:1061
 #, c-format
 msgid "Could not open %s"
 msgstr "%s をオープンできない"
 
-#: sendlib.c:1994
+#: sendlib.c:1998
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "メッセージ送信中のエラー。子プロセスが %d (%s) で終了。"
 
-#: sendlib.c:2000
+#: sendlib.c:2004
 msgid "Output of the delivery process"
 msgstr "配信プロセスの出力"
 
@@ -3712,10 +3719,10 @@ msgstr "整列機能が見つからず![このバグを報告して]"
 msgid "(no mailbox)"
 msgstr "(メールボックスなし)"
 
-#: thread.c:737
+#: thread.c:762
 msgid "Parent message is not visible in limited view"
 msgstr "親メッセージは制限表示モードでは表示不能。"
 
-#: thread.c:742
+#: thread.c:767
 msgid "Parent message is not available."
 msgstr "親メッセージが無効。"

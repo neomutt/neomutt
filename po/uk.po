@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.3.20\n"
-"POT-Creation-Date: 2001-07-24 23:29+0200\n"
+"POT-Creation-Date: 2001-08-21 23:53+0200\n"
 "PO-Revision-Date: 2001-08-09 12:00+0300\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "MIME-Version: 1.0\n"
@@ -81,6 +81,7 @@ msgstr "Нема╓ в╕дпов╕дного ╕мен╕, дал╕?"
 
 #. For now, editing requires a file, no piping
 #: attach.c:123
+#, c-format
 msgid "Mailcap compose entry requires %%s"
 msgstr "Компонування, вказане у mailcap, потребу╓ %%s"
 
@@ -105,6 +106,7 @@ msgstr "В mailcap не визначено компонування %s, створено порожн╕й файл."
 
 #. For now, editing requires a file, no piping
 #: attach.c:250
+#, c-format
 msgid "Mailcap Edit entry requires %%s"
 msgstr "Редагування, вказане у mailcap, потребу╓ %%s"
 
@@ -235,7 +237,7 @@ msgstr "Неможливо побачити каталог"
 msgid "Error trying to view file"
 msgstr "Неможливо побачити файл"
 
-#: buffy.c:407
+#: buffy.c:408
 #, c-format
 msgid "New mail in %s."
 msgstr "Нова пошта в %s."
@@ -672,7 +674,7 @@ msgstr "Нема╓ в╕дкрито╖ поштово╖ скриньки."
 msgid "There are no messages."
 msgstr "Жодного пов╕домлення нема╓."
 
-#: curs_main.c:61 mx.c:1125 pager.c:62 recvattach.c:47
+#: curs_main.c:61 mx.c:1129 pager.c:62 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "Поштова скринька в╕дкрита т╕льки для читання"
 
@@ -794,7 +796,7 @@ msgstr "В╕дкрити скриньку лише для читання"
 msgid "Open mailbox"
 msgstr "В╕дкрити скриньку"
 
-#: curs_main.c:982 mx.c:504 mx.c:650
+#: curs_main.c:982 mx.c:508 mx.c:654
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s не ╓ поштовою скринькою."
@@ -843,7 +845,7 @@ msgstr "Бес╕д б╕льш нема."
 msgid "You are on the first thread."
 msgstr "Це перша бес╕да."
 
-#: curs_main.c:1477 curs_main.c:1509 flags.c:250 thread.c:676 thread.c:727
+#: curs_main.c:1477 curs_main.c:1509 flags.c:250 thread.c:701 thread.c:752
 msgid "Threading is not enabled."
 msgstr "Сшивання недоступне."
 
@@ -1247,7 +1249,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Неможливо додавати до скриньок IMAP на цьому сервер╕"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:718 imap/message.c:593 muttlib.c:1169
+#: imap/imap.c:718 imap/message.c:593 muttlib.c:1162
 #, c-format
 msgid "Create %s?"
 msgstr "Створити %s?"
@@ -1347,89 +1349,89 @@ msgstr "нев╕рне поле заголовку"
 msgid "%s: unknown sorting method"
 msgstr "%s: нев╕домий метод сортування"
 
-#: init.c:718
+#: init.c:719
 #, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s): помилка виразу: %s\n"
 
-#: init.c:779
+#: init.c:780
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: нев╕дома зм╕нна"
 
-#: init.c:788
+#: init.c:789
 msgid "prefix is illegal with reset"
 msgstr "преф╕кс неприпустимий для скидання"
 
-#: init.c:794
+#: init.c:795
 msgid "value is illegal with reset"
 msgstr "значення неприпустиме для скидання"
 
-#: init.c:833
+#: init.c:834
 #, c-format
 msgid "%s is set"
 msgstr "%s встановлено"
 
-#: init.c:833
+#: init.c:834
 #, c-format
 msgid "%s is unset"
 msgstr "%s не встановлено"
 
-#: init.c:1039
+#: init.c:1040
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: нев╕рний тип скриньки"
 
-#: init.c:1064 init.c:1109
+#: init.c:1065 init.c:1110
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: нев╕рне значення"
 
-#: init.c:1167
+#: init.c:1168
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: нев╕домий тип"
 
-#: init.c:1208
+#: init.c:1209
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Помилка в %s, рядок %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1224
+#: init.c:1225
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: помилки в %s"
 
-#: init.c:1225
+#: init.c:1226
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr "source: читання завершено, дуже багато помилок у %s"
 
-#: init.c:1239
+#: init.c:1240
 #, c-format
 msgid "source: error at %s"
 msgstr "source: помилка в %s"
 
-#: init.c:1244
+#: init.c:1245
 msgid "source: too many arguments"
 msgstr "source: дуже багато аргумент╕в"
 
-#: init.c:1295
+#: init.c:1296
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: нев╕дома команда"
 
-#: init.c:1651
+#: init.c:1652
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Помилка командного рядку: %s\n"
 
-#: init.c:1694
+#: init.c:1695
 msgid "unable to determine home directory"
 msgstr "неможливо з'ясувати домашн╕й каталог"
 
-#: init.c:1702
+#: init.c:1703
 msgid "unable to determine username"
 msgstr "неможливо з'ясувати ╕м'я користувача"
 
@@ -2279,10 +2281,10 @@ msgstr ""
 
 #: main.c:88
 msgid ""
-"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
-"]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
-"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
+"<file> ]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
+"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2309,8 +2311,8 @@ msgid ""
 msgstr ""
 "використання: mutt [ -nRyzZ ] [ -e <кмд> ] [ -F <файл> ] [ -m <тип> ] [ -f "
 "<файл> ]\n"
-"       mutt [ -nx ] [ -e <кмд> ] [ -a <файл> ] [ -F <файл> ] [ -H <файл> ] [ "
-"-i <файл> ] [ -s <тема> ] [ -b <адр> ] [ -c <адр> ] <адр> [ ... ]\n"
+"       mutt [ -nx ] [ -e <кмд> ] [ -a <файл> ] [ -F <файл> ] [ -H <файл> ] "
+"[ -i <файл> ] [ -s <тема> ] [ -b <адр> ] [ -c <адр> ] <адр> [ ... ]\n"
 "       mutt [ -n ] [ -e <кмд> ] [ -F <файл> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2388,6 +2390,7 @@ msgid "Mailbox is empty."
 msgstr "Поштова скринька порожня."
 
 #: mbox.c:129 mbox.c:286
+#, c-format
 msgid "Reading %s... %d (%d%%)"
 msgstr "Читання %s... %d (%d%%)"
 
@@ -2416,6 +2419,7 @@ msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr "sync: скриньку зм╕нено, але нема╓ зм╕нених лист╕в! (пов╕домьте про це)"
 
 #: mbox.c:792
+#, c-format
 msgid "Writing messages... %d (%d%%)"
 msgstr "Запис лист╕в... %d (%d%%)"
 
@@ -2516,37 +2520,37 @@ msgstr "Перех╕д у цьому д╕алоз╕ не п╕дриму╓ться."
 msgid "Tagging is not supported."
 msgstr "Вид╕лення не п╕дтриму╓ться."
 
-#: mh.c:194
+#: mh.c:584
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Читання %s... %d"
 
-#: muttlib.c:832
+#: muttlib.c:825
 msgid "File is a directory, save under it?"
 msgstr "Файл ╓ каталогом, зберегти у ньому?"
 
-#: muttlib.c:837
+#: muttlib.c:830
 msgid "File under directory: "
 msgstr "Файл у каталоз╕: "
 
-#: muttlib.c:849
+#: muttlib.c:842
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Файл ╕сну╓, (o)переписати, (a)додати до нього чи (c)в╕дмовити?"
 
-#: muttlib.c:849
+#: muttlib.c:842
 msgid "oac"
 msgstr ""
 
-#: muttlib.c:1136
+#: muttlib.c:1129
 msgid "Can't save message to POP mailbox."
 msgstr "Неможливо записати лист до скриньки POP."
 
-#: muttlib.c:1145
+#: muttlib.c:1138
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s не ╓ поштовою скринькою!"
 
-#: muttlib.c:1151
+#: muttlib.c:1144
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Додати листи до %s?"
@@ -2612,6 +2616,7 @@ msgid "Unable to get certificate from peer"
 msgstr "Неможливо отримати сертиф╕кат"
 
 #: mutt_ssl.c:343
+#, c-format
 msgid "SSL connection using %s (%s)"
 msgstr "З'╓днання SSL з використанням %s (%s)"
 
@@ -2722,79 +2727,79 @@ msgstr "Вичерпано час спроби блокування через flock"
 msgid "Waiting for flock attempt... %d"
 msgstr "Чекання блокування через flock... %d"
 
-#: mx.c:587
+#: mx.c:591
 #, c-format
 msgid "Couldn't lock %s\n"
 msgstr "Не вийшло заблокувати %s\n"
 
-#: mx.c:675
+#: mx.c:679
 #, c-format
 msgid "Reading %s..."
 msgstr "Читання %s..."
 
-#: mx.c:774
+#: mx.c:778
 #, c-format
 msgid "Writing %s..."
 msgstr "Запис %s..."
 
-#: mx.c:807
+#: mx.c:811
 #, c-format
 msgid "Could not synchronize mailbox %s!"
 msgstr "Не вийшло с╕нхрон╕зувати поштову скриньку %s!"
 
-#: mx.c:873
+#: mx.c:877
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Перенести читан╕ листи до %s?"
 
-#: mx.c:885 mx.c:1140
+#: mx.c:889 mx.c:1144
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Знищити %d видалений лист?"
 
-#: mx.c:885 mx.c:1140
+#: mx.c:889 mx.c:1144
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Знищити %d видалених лист╕в?"
 
-#: mx.c:909
+#: mx.c:913
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Перенос читаних лист╕в до %s..."
 
-#: mx.c:969 mx.c:1131
+#: mx.c:973 mx.c:1135
 msgid "Mailbox is unchanged."
 msgstr "Поштову скриньку не зм╕нено."
 
-#: mx.c:1005
+#: mx.c:1009
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d збережено, %d перенесено, %d знищено."
 
-#: mx.c:1008 mx.c:1178
+#: mx.c:1012 mx.c:1182
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d збережено, %d знищено."
 
-#: mx.c:1116
+#: mx.c:1120
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr "Натисн╕ть '%s' для зм╕ни можливост╕ запису"
 
-#: mx.c:1118
+#: mx.c:1122
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Зроб╕ть 'toggle-write' для вв╕мкнення запису!"
 
-#: mx.c:1120
+#: mx.c:1124
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Скриньку пом╕чено незм╕нюваною. %s"
 
-#: mx.c:1175
+#: mx.c:1179
 msgid "Mailbox checkpointed."
 msgstr "Поштову скриньку перев╕рено."
 
-#: mx.c:1475
+#: mx.c:1486
 msgid "Can't write message"
 msgstr "Неможливо записати лист"
 
@@ -3180,15 +3185,18 @@ msgid "This ID is expired/disabled/revoked"
 msgstr "Цей ID давн╕й/вимкнений/зам╕нений"
 
 #: pgpkey.c:612
-msgid "This ID's trust level is undefined."
+#, fuzzy
+msgid "This ID's validity level is undefined."
 msgstr "Р╕вень дов╕ри ID не визначено."
 
 #: pgpkey.c:615
-msgid "This ID is not trusted."
+#, fuzzy
+msgid "This ID is not valid."
 msgstr "Дов╕ри цьому ID нема╓."
 
 #: pgpkey.c:618
-msgid "This ID is only marginally trusted."
+#, fuzzy
+msgid "This ID is only marginally valid."
 msgstr "Цьому ID можно дов╕ряти лише частково."
 
 #: pgpkey.c:622
@@ -3659,17 +3667,17 @@ msgstr "Нема╓ параметру меж╕! [спов╕ст╕ть про цю помилку]"
 msgid "%s no longer exists!"
 msgstr "%s б╕льше не ╕сну╓!"
 
-#: sendlib.c:1057
+#: sendlib.c:1061
 #, c-format
 msgid "Could not open %s"
 msgstr "Не вийшло в╕дкрити %s"
 
-#: sendlib.c:1994
+#: sendlib.c:1998
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Помилка в╕дправки, код повернення %d (%s)."
 
-#: sendlib.c:2000
+#: sendlib.c:2004
 msgid "Output of the delivery process"
 msgstr "Вих╕д процесу доставки"
 
@@ -3700,11 +3708,11 @@ msgstr "Не знайдено функц╕ю сортування! [спов╕стить про це]"
 msgid "(no mailbox)"
 msgstr "(скриньки нема╓)"
 
-#: thread.c:737
+#: thread.c:762
 msgid "Parent message is not visible in limited view"
 msgstr "\"Батьк╕вський\" лист не можна побачити при цьому обмеженн╕"
 
-#: thread.c:742
+#: thread.c:767
 msgid "Parent message is not available."
 msgstr "\"Батьк╕вський\" лист не можна побачити."
 

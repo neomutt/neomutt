@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt 1.4i\n"
-"POT-Creation-Date: 2001-07-25 21:49+0200\n"
+"POT-Creation-Date: 2001-08-21 23:53+0200\n"
 "PO-Revision-Date: 2001-06-12 12:47+0200\n"
 "Last-Translator: Fatih Demir <kabalak@gtranslator.org>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
@@ -238,7 +238,7 @@ msgstr "Bir dizini gösterilmiyor"
 msgid "Error trying to view file"
 msgstr "Dosyayý göstermeye uðraþýrken hata oldu"
 
-#: buffy.c:407
+#: buffy.c:408
 #, c-format
 msgid "New mail in %s."
 msgstr "%s'de yeni eposta var."
@@ -681,7 +681,7 @@ msgstr "Hiç bir eposta kutusu açýk deðil."
 msgid "There are no messages."
 msgstr "Ileti yok."
 
-#: curs_main.c:61 mx.c:1125 pager.c:62 recvattach.c:47
+#: curs_main.c:61 mx.c:1129 pager.c:62 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "eposta kutusu salt-okunur."
 
@@ -803,7 +803,7 @@ msgstr "Eposta kutusunu salt-okunur aç"
 msgid "Open mailbox"
 msgstr "eposta kutusunu aç"
 
-#: curs_main.c:982 mx.c:504 mx.c:650
+#: curs_main.c:982 mx.c:508 mx.c:654
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s bir eposta kutusu deðildir!"
@@ -852,7 +852,7 @@ msgstr "Daha fazla konum yok."
 msgid "You are on the first thread."
 msgstr "Ilk konumdasýnýz."
 
-#: curs_main.c:1477 curs_main.c:1509 flags.c:250 thread.c:676 thread.c:727
+#: curs_main.c:1477 curs_main.c:1509 flags.c:250 thread.c:701 thread.c:752
 msgid "Threading is not enabled."
 msgstr "Konumlaþtýrma kapalýdýr."
 
@@ -1253,7 +1253,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Bu sunucudaki IMAP eposta kutularýna ileti eklenemiyor"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:718 imap/message.c:593 muttlib.c:1169
+#: imap/imap.c:718 imap/message.c:593 muttlib.c:1162
 #, c-format
 msgid "Create %s?"
 msgstr "%s yaratýlsýn mý?"
@@ -1354,89 +1354,89 @@ msgstr "geçersiz baþlýk birimi"
 msgid "%s: unknown sorting method"
 msgstr "%s: bilinmeyen sýralama tipi"
 
-#: init.c:718
+#: init.c:719
 #, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s): tabirde hata var: %s\n"
 
-#: init.c:779
+#: init.c:780
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: bilinmeyen veri"
 
-#: init.c:788
+#: init.c:789
 msgid "prefix is illegal with reset"
 msgstr ""
 
-#: init.c:794
+#: init.c:795
 msgid "value is illegal with reset"
 msgstr ""
 
-#: init.c:833
+#: init.c:834
 #, c-format
 msgid "%s is set"
 msgstr "%s oturtulmuþtur"
 
-#: init.c:833
+#: init.c:834
 #, c-format
 msgid "%s is unset"
 msgstr "%s oturtulamamýþtýr"
 
-#: init.c:1039
+#: init.c:1040
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: geçersiz eposta tipi"
 
-#: init.c:1064 init.c:1109
+#: init.c:1065 init.c:1110
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: geçersiz deðer"
 
-#: init.c:1167
+#: init.c:1168
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: bilinmeyen tip"
 
-#: init.c:1208
+#: init.c:1209
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "%s'de hata var, satýr %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1224
+#: init.c:1225
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: %s'de hatalar var"
 
-#: init.c:1225
+#: init.c:1226
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr "source: %s'de oluþan çok fazla hatadan dolayý okuma iptal edildi"
 
-#: init.c:1239
+#: init.c:1240
 #, c-format
 msgid "source: error at %s"
 msgstr "source: %s'de hata var"
 
-#: init.c:1244
+#: init.c:1245
 msgid "source: too many arguments"
 msgstr "source: çok fazla argüman"
 
-#: init.c:1295
+#: init.c:1296
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: bilinmeyen komuta"
 
-#: init.c:1651
+#: init.c:1652
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Komuta satrýnda hata: %s\n"
 
-#: init.c:1694
+#: init.c:1695
 msgid "unable to determine home directory"
 msgstr "baþlangýç dizini belirlenemedi"
 
-#: init.c:1702
+#: init.c:1703
 msgid "unable to determine username"
 msgstr "kullanýcý adý belirlenemedi"
 
@@ -2549,37 +2549,37 @@ msgstr "Diyaloklar için hýzlý geçiþ þimdilik mümkün deðildir."
 msgid "Tagging is not supported."
 msgstr "Iþaretleme desteklenmiyor."
 
-#: mh.c:194
+#: mh.c:584
 #, c-format
 msgid "Reading %s... %d"
 msgstr "%s okunuyor... %d"
 
-#: muttlib.c:832
+#: muttlib.c:825
 msgid "File is a directory, save under it?"
 msgstr "Dosya bir dizin, dizin altýnda kaydedilsin mi?"
 
-#: muttlib.c:837
+#: muttlib.c:830
 msgid "File under directory: "
 msgstr "Dosyayý dizin altýnda kaydet: "
 
-#: muttlib.c:849
+#: muttlib.c:842
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Dosya zaten var, ü(s)tüne yaz, (e)kle yoksa i(p)tal mý?"
 
-#: muttlib.c:849
+#: muttlib.c:842
 msgid "oac"
 msgstr "sep"
 
-#: muttlib.c:1136
+#: muttlib.c:1129
 msgid "Can't save message to POP mailbox."
 msgstr "Ileti POP eposta kutusuna kaydedilmiyor."
 
-#: muttlib.c:1145
+#: muttlib.c:1138
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s bir eposta kutusu deðil!"
 
-#: muttlib.c:1151
+#: muttlib.c:1144
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Iletiler %s'e eklensin mi?"
@@ -2757,79 +2757,79 @@ msgstr ""
 msgid "Waiting for flock attempt... %d"
 msgstr "Cevap bekleniyor..."
 
-#: mx.c:587
+#: mx.c:591
 #, c-format
 msgid "Couldn't lock %s\n"
 msgstr "%s kilitlenemedi\n"
 
-#: mx.c:675
+#: mx.c:679
 #, c-format
 msgid "Reading %s..."
 msgstr "%s okunuyor..."
 
-#: mx.c:774
+#: mx.c:778
 #, c-format
 msgid "Writing %s..."
 msgstr "%s yazýlýyor..."
 
-#: mx.c:807
+#: mx.c:811
 #, c-format
 msgid "Could not synchronize mailbox %s!"
 msgstr "Eposta kutusu %s'yi eþitlenemedi!"
 
-#: mx.c:873
+#: mx.c:877
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Okunan iletiler %s'e taþýnsýn mý?"
 
-#: mx.c:885 mx.c:1140
+#: mx.c:889 mx.c:1144
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Silmek için iþaretlenmiþ %d ileti silinsin mi?"
 
-#: mx.c:885 mx.c:1140
+#: mx.c:889 mx.c:1144
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Silmek için iþaretlenmiþ %d ileti silinsin mi?"
 
-#: mx.c:909
+#: mx.c:913
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Okunan iletiler %s'e taþýnýyor..."
 
-#: mx.c:969 mx.c:1131
+#: mx.c:973 mx.c:1135
 msgid "Mailbox is unchanged."
 msgstr "eposta kutusu deðiþtirilmedi."
 
-#: mx.c:1005
+#: mx.c:1009
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d kaldý, %d taþýndý, %d silindi."
 
-#: mx.c:1008 mx.c:1178
+#: mx.c:1012 mx.c:1182
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d kaldý, %d silindi."
 
-#: mx.c:1116
+#: mx.c:1120
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Yazabilir yapmak icýn '%s'e basýlýr"
 
-#: mx.c:1118
+#: mx.c:1122
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "'toggle-write' ile yeniden yazýlabilir yapabilinir!"
 
-#: mx.c:1120
+#: mx.c:1124
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "eposta kutusu yazýlamayabilir yapýldý. %s"
 
-#: mx.c:1175
+#: mx.c:1179
 msgid "Mailbox checkpointed."
 msgstr "Eposta kutusu kontrol edildi."
 
-#: mx.c:1475
+#: mx.c:1486
 msgid "Can't write message"
 msgstr "Iletiyi yazamadým"
 
@@ -3217,15 +3217,18 @@ msgid "This ID is expired/disabled/revoked"
 msgstr "Bu anahtarýn süresi bitti/kapalý/geriye alýndý."
 
 #: pgpkey.c:612
-msgid "This ID's trust level is undefined."
+#, fuzzy
+msgid "This ID's validity level is undefined."
 msgstr "Bu anahtar numarasýna olan güven belirlenmemiþ."
 
 #: pgpkey.c:615
-msgid "This ID is not trusted."
+#, fuzzy
+msgid "This ID is not valid."
 msgstr "Bu anahtar numarasýna güvenilmiyor."
 
 #: pgpkey.c:618
-msgid "This ID is only marginally trusted."
+#, fuzzy
+msgid "This ID is only marginally valid."
 msgstr "Bu anahtar numarasýna çok az güveniliyor."
 
 #: pgpkey.c:622
@@ -3702,17 +3705,17 @@ msgstr "Sýnýrlandýrma verisi bulunamadý! [bu hata rapor edilmesi gerek]"
 msgid "%s no longer exists!"
 msgstr "%s daha yok!"
 
-#: sendlib.c:1057
+#: sendlib.c:1061
 #, c-format
 msgid "Could not open %s"
 msgstr "%s açýlanamadý"
 
-#: sendlib.c:1994
+#: sendlib.c:1998
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Ileti gönderilirken hata oldu, altiþlem %d ile iptal bitirildi (%s)."
 
-#: sendlib.c:2000
+#: sendlib.c:2004
 msgid "Output of the delivery process"
 msgstr "Gönderme iþleminin geri verisi"
 
@@ -3743,11 +3746,11 @@ msgstr "Sýralama iþlevi bulunamadý! [hata raporu yaz]"
 msgid "(no mailbox)"
 msgstr "(eposta kutusu yok)"
 
-#: thread.c:737
+#: thread.c:762
 msgid "Parent message is not visible in limited view"
 msgstr "Sýnýrlandýrýlmýþ bakýþta ana ileti görünemez."
 
-#: thread.c:742
+#: thread.c:767
 msgid "Parent message is not available."
 msgstr "Kök iletisi yok."
 
