@@ -64,6 +64,17 @@
 # define STRING          256
 # define SHORT_STRING    128
 
+/*
+ * Create a format string to be used with scanf.
+ * To use it, write, for instance, MUTT_FORMAT(HUGE_STRING).
+ * 
+ * See K&R 2nd ed, p. 231 for an explanation.
+ */
+# define _MUTT_FORMAT_2(a,b)	"%" ## a ## b
+# define _MUTT_FORMAT_1(a, b)	_MUTT_FORMAT_2(#a, b)
+# define MUTT_FORMAT(a)		_MUTT_FORMAT_1(a, "s")
+# define MUTT_FORMAT2(a,b)	_MUTT_FORMAT_1(a, b)
+
 # define FREE(x) safe_free((void **)x)
 # define NONULL(x) x?x:""
 # define ISSPACE(c) isspace((unsigned char)c)

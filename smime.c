@@ -437,10 +437,10 @@ char* smime_ask_for_key (char *prompt, char *mailbox, short public)
     cur = 0;
     Table = safe_malloc(sizeof (smime_id) * cert_num);
     while (!feof(index)) {
-        numFields = fscanf (index, "%s %x.%i %s", fields[0], &hash,
+        numFields = fscanf (index, MUTT_FORMAT(STRING) " %x.%i " MUTT_FORMAT(STRING), fields[0], &hash,
           &hash_suffix, fields[2]);
         if (public)
-          fscanf (index, "%s %s\n", fields[3], fields[4]);
+          fscanf (index, MUTT_FORMAT(STRING) " " MUTT_FORMAT(STRING) "\n", fields[3], fields[4]);
   
       /* 0=email 1=name 2=nick 3=intermediate 4=trust */
       if (numFields < 2) continue;
@@ -514,7 +514,6 @@ char* smime_ask_for_key (char *prompt, char *mailbox, short public)
 
 
 
-
 char *smime_get_field_from_db (char *mailbox, char *query, short public, short may_ask)
 {
   int addr_len, query_len, found = 0, ask = 0, choice = 0;
@@ -555,8 +554,13 @@ char *smime_get_field_from_db (char *mailbox, char *query, short public, short m
     while (fgets (buf, sizeof (buf) - 1, fp) != NULL)
       if (mailbox && !(mutt_strncasecmp (mailbox, buf, addr_len)))
       {
-	numFields = sscanf (buf, "%s %s %s %s %s\n", fields[0], fields[1],
-			   fields[2], fields[3], fields[4]);
+	numFields = sscanf (buf, 
+			    MUTT_FORMAT(STRING) " " MUTT_FORMAT(STRING) " " 
+			    MUTT_FORMAT(STRING) " " MUTT_FORMAT(STRING) " " 
+			    MUTT_FORMAT(STRING) "\n", 
+			    fields[0], fields[1],
+			   fields[2], fields[3], 
+			    fields[4]);
 	if (numFields < 2)
 	    continue;
 	if (mailbox && public && 
