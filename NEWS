@@ -1,3 +1,61 @@
+Major changes since 0.96.3
+--------------------------
+
+- The $in_reply_to configuration variable is gone.  The In-Reply-To
+  header currently only contains the message-id of the message to
+  which the reply refers.  This is to make sure that this header is
+  correctly formatted.
+
+- There is a new variable named $pgp_getkeys_command.  It's invoked
+  before mutt invokes PGP in a way which may require public keys.
+  The %r format string expands to an e-mail address corresponding to
+  that key.  The command given in $pgp_getkeys_command could, for
+  instance, query a key server and add public keys to your key ring.
+
+  See also http://home.pages.de/~roessler/pkspxy-0.1.tar.gz for a
+  possible application of this with the traditional PGP versions.
+
+- RFC 2231 is (at least partially) implemented.  Additionally, there
+  is an option named $rfc2047_parameters.  When it's set, mutt will
+  decode RFC2047-encoded MIME parameters.
+
+- Various IMAP-related fixes and patches.  This includes the ability
+  to use IMAP folders for postponed messages, improved IMAP folder
+  browsing, tab completion for IMAP folders, etc.
+
+- A new variable $from is added.
+
+  * $from is used as the default from address, if defined.
+    Otherwise, the local user nanme and (if the user wishes so) the
+    local domain are used.
+  * This address can be overridden by $reverse_name, if set.
+  * Now, send-hooks are evaluated.
+  * Afterwards, user headers are evaluated.  In this step, the from
+    header can be overridden using my_hdr From:.
+  * When there is no real name, $realname is used for it.  Note
+    that, when the default from header is used and $from defines a
+    real name, it takes precedence over $realname.
+
+- There is a new model for mailing list handling: We distinguish
+  between subscribed and unsubscribed lists.  With the configuration
+  command "lists", you add a list to the list of known mailing
+  lists.  With "subscribe", you add a list to the lists of known
+  _and_ subscribed lists.  With "unsubscribe", you remove a list
+  from the list of subscribed lists.  With "unlists", you remove a
+  list from the lists of subscribed and known mailing lists.
+
+  The list of known mailing lists is used for the list-reply command
+  and the $ignore_list_reply_to configuration optio.  The list of
+  subscribed mailig lists is used for header display, and the
+  construction of Mail-Followup-To headers.
+
+- The various weeding options are gone.  You have a global option
+  $weed now which can be influenced using confugration commands, or
+  using the display-headers or display-message functions.  This
+  option is applied when forwarding, replying, or printing messages.
+  Essentially, this means that you have some "WYSIWIG-like"
+  behaviour with respect to message header weeding.
+
 Major changes since 0.96.2
 --------------------------
 

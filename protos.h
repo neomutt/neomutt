@@ -18,7 +18,7 @@
 
 
 #ifdef DEBUG
-#define dprint(N,X) if(debuglevel>=N) fprintf X
+#define dprint(N,X) do { if(debuglevel>=N) fprintf X; } while (0)
 #else
 #define dprint(N,X) 
 #endif

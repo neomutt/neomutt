@@ -643,6 +643,7 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
 
     if (i == M_YES)
     {
+      mutt_message _("Including quoted message...");
       if (!cur)
       {
 	for (i = 0; i < ctx->vcount; i++)
@@ -661,14 +662,17 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
       }
       else
 	include_reply (ctx, cur, tempfp);
+
     }
   }
   else if (flags & SENDFORWARD)
   {
-    if (query_quadoption (OPT_MIMEFWD, _("Forward MIME encapsulated?")))
+    if ((i = query_quadoption (OPT_MIMEFWD, _("Forward MIME encapsulated?"))) == M_YES)
     {
       BODY *last = msg->content;
 
+      mutt_message _("Preparing forwarded message...");
+      
       while (last && last->next)
 	last = last->next;
 
@@ -698,7 +702,7 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
 	}
       }
     }
-    else
+    else if (i != -1)
     {
       if (cur)
 	include_forward (ctx, cur, tempfp);
@@ -707,6 +711,8 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
 	  if (ctx->hdrs[ctx->v2r[i]]->tagged)
 	    include_forward (ctx, ctx->hdrs[ctx->v2r[i]], tempfp);
     }
+    else if (i == -1)
+      return -1;
   }
 
 
@@ -723,7 +729,7 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
   }
 #endif
 
-
+  mutt_clear_error ();
 
   return (0);
 }
