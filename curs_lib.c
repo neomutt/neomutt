@@ -247,7 +247,7 @@ void mutt_endwin (const char *msg)
 {
   if (!option (OPTNOCURSES))
   {
-#ifdef SLANG_CURSES
+#ifdef USE_SLANG_CURSES
     CLEARLINE (LINES - 1);
     move (LINES - 1, 0)
 #else
@@ -258,7 +258,7 @@ void mutt_endwin (const char *msg)
     attrset (A_NORMAL);
     mutt_refresh ();
     endwin ();
-#ifndef SLANG_CURSES
+#ifndef USE_SLANG_CURSES
     fputc ('\n', stdout);
 #endif
   }

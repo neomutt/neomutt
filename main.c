@@ -717,10 +717,8 @@ int main (int argc, char **argv)
       mutt_index_menu ();
       if (Context)
 	safe_free ((void **)&Context);
-      mutt_endwin (NULL);
     }
-    else
-      mutt_endwin (Errorbuf);
+    mutt_endwin (Errorbuf);
   }
 
   exit (0);
