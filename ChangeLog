@@ -1,4 +1,7 @@
-2003-01-31 00:12:02  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+2003-01-31 00:15:03  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* init.h: Change the default for crypt_replyencrypt back to "yes".
+	Noted by Thomas Poindessous in Debian bug #178899; also #1448.
 
 	* pgp.c: Fix #1442 (thanks, Dale); properly initialize some
 	pointers which could otherwise lead to crashes.
