@@ -217,8 +217,8 @@ Zero or more of the following ``flags'' may appear, which mean:
 <tag/O/ message is old
 <tag/P/ message is PGP encrypted
 <tag/r/ message has been replied to
-<tag/S/ message is PGP signed, and the signature is succesfully verified
-<tag/s/ message is PGP signed
+<tag/S/ message is signed, and the signature is succesfully verified
+<tag/s/ message is signed
 <tag/!/ message is flagged
 <tag/*/ message is tagged
 </descrip>
@@ -408,7 +408,7 @@ message(s) and adds them to your PGP public key ring.
 <p><bf/forget-passphrase/<label id="forget-passphrase"> (default:
 ^F)<newline> 
 
-This command wipes the PGP passphrase from memory. It is useful, if
+This command wipes the passphrase(s) from memory. It is useful, if
 you misspelled the passphrase.
 
 <p><bf/list-reply/<label id="list-reply"> (default: L)<newline>
@@ -526,13 +526,14 @@ c       edit-cc                 edit the Cc field
 b       edit-bcc                edit the Bcc field
 y       send-message            send the message
 s       edit-subject            edit the Subject
+S       smime-menu              select S/MIME options
 f       edit-fcc                specify an ``Fcc'' mailbox
 p       pgp-menu                select PGP options (``i'' version only)
 P       postpone-message        postpone this message until later
 q       quit                    quit (abort) sending the message
 w	write-fcc		write the message to a folder
 i       ispell                  check spelling (if available on your system)
-^F      forget-passphrase       whipe PGP passphrase from memory
+^F      forget-passphrase       wipe passphrase(s) from memory
 </verb></tscreen>
 
 <bf/Note:/ The attach-message function will prompt you for a folder to
@@ -939,7 +940,7 @@ space (`` '').
 
 <em/function/ specifies which action to take when <em/key/ is pressed.
 For a complete list of functions, see the <ref id="functions"
-name="reference">.  The special function <tt/noop/ unbinds the specify key
+name="reference">.  The special function <tt/noop/ unbinds the specified key
 sequence.
 
 <sect1>Defining aliases for character sets <label id="charset-hook">
@@ -963,7 +964,7 @@ Usage: <tt/folder-hook/ &lsqb;!&rsqb;<em/regexp/ <em/command/
 
 It is often desirable to change settings based on which mailbox you are
 reading.  The folder-hook command provides a method by which you can execute
-any configuration command.  <em/pattern/ is a regular expression specifying
+any configuration command.  <em/regexp/ is a regular expression specifying
 in which mailboxes to execute <em/command/ before loading.  If a mailbox
 matches multiple folder-hook's, they are executed in the order given in the
 muttrc.
@@ -1164,7 +1165,7 @@ the Mail-Followup-To header is a non-standard extension which is not
 supported by all mail user agents.  Adding it is not bullet-proof against
 receiving personal CCs of list messages.  Also note that the generation
 of the Mail-Followup-To header is controlled by the <ref id="followup_to"
-name="followup_to"> configuration variable.
+name="&dollar;followup_to"> configuration variable.
 
 More precisely, Mutt maintains lists of known and subscribed mailing
 lists.  Every subscribed mailing list is known.  To mark
@@ -1378,15 +1379,15 @@ message-hook ~A 'set pager=builtin'
 message-hook '~f freshmeat-news' 'set pager="less \"+/^  subject: .*\""'
 </verb></tscreen>
 
-<sect1>Choosing the PGP key of the recipient<label id="pgp-hook">
+<sect1>Choosing the cryptographic key of the recipient<label id="pgp-hook">
 <p>
-Usage: <tt/pgp-hook/ <em/pattern/ <em/keyid/
+Usage: <tt/crypt-hook/ <em/pattern/ <em/keyid/
 
-When encrypting messages with PGP, you may want to associate a certain
-PGP key with a given e-mail address automatically, either because the
+When encrypting messages with PGP or OpenSSL, you may want to associate a certain
+key with a given e-mail address automatically, either because the
 recipient's public key can't be deduced from the destination address,
 or because, for some reasons, you need to override the key Mutt would
-normally use.  The pgp-hook command provides a method by which you can
+normally use.  The crypt-hook command provides a method by which you can
 specify the ID of the public key to be used when encrypting messages to
 a certain recipient.
 
@@ -1693,8 +1694,8 @@ messages:
 ~e EXPR         message which contains EXPR in the ``Sender'' field
 ~F              flagged messages
 ~f USER         messages originating from USER
-~g              PGP signed messages
-~G              PGP encrypted messages
+~g              cryptographically signed messages
+~G              cryptographically encrypted messages
 ~h EXPR         messages which contain EXPR in the message header
 ~k		message contains PGP key material
 ~i ID           message which match ID in the ``Message-ID'' field
@@ -1715,6 +1716,7 @@ messages:
 ~t USER         messages addressed to USER
 ~U              unread messages
 ~v		message is part of a collapsed thread.
+~V		cryptographically verified messages
 ~x EXPR         messages which contain EXPR in the `References' field
 ~y EXPR         messages which contain EXPR in the `X-Label' field
 ~z [MIN]-[MAX]  messages with a size in the range MIN to MAX *)
@@ -2959,7 +2961,7 @@ The following are the commands understood by mutt.
 <item>
 <tt><ref id="my_hdr" name="unmy&lowbar;hdr"></tt> <em/field/ &lsqb; <em/field/ ... &rsqb;
 <item>
-<tt><ref id="pgp-hook" name="pgp-hook"></tt> <em/pattern/ <em/key-id/
+<tt><ref id="crypt-hook" name="crypt-hook"></tt> <em/pattern/ <em/key-id/
 <item>
 <tt><ref id="push" name="push"></tt> <em/string/
 <item>
