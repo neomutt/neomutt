@@ -278,7 +278,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
 						       */
 	     || mutt_strncmp ("X-Mutt-PGP:", tmp->data, 11) == 0)
     {
-      hdr->pgp = mutt_parse_pgp_hdr (tmp->data+4, 1);
+      hdr->pgp = mutt_parse_pgp_hdr (strchr (tmp->data, ':') + 1, 1);
        
       /* remove the pgp field */
       next = tmp->next;
