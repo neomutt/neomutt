@@ -209,7 +209,7 @@ AC_CHECK_FUNCS(setrlimit getsid)
 AC_TYPE_SIGNAL
 
 AC_MSG_CHECKING(for sig_atomic_t in signal.h)
-AC_EGREP_HEADER(sig_atomic_t,signal.h,dnl
+AC_EGREP_HEADER(sig_atomic_t,signal.h,
   [
     ac_cv_type_sig_atomic_t=yes;
     AC_EGREP_HEADER(volatile.*sig_atomic_t,
@@ -901,9 +901,9 @@ if test $mutt_cv_langinfo_yesexpr = yes; then
   AC_DEFINE(HAVE_LANGINFO_YESEXPR)
 fi
 
-AC_OUTPUT(Makefile intl/Makefile m4/Makefile dnl
-	po/Makefile.in doc/Makefile contrib/Makefile dnl
-	muttbug.sh dnl
-	imap/Makefile dnl
-	Muttrc.head dnl
+AC_OUTPUT(Makefile intl/Makefile m4/Makefile
+	po/Makefile.in doc/Makefile contrib/Makefile
+	muttbug.sh
+	imap/Makefile
+	Muttrc.head
 	doc/instdoc.sh)
