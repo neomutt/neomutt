@@ -1355,7 +1355,7 @@ msgstr "Kopiowanie %d listów do %s..."
 #: imap/message.c:623
 #, c-format
 msgid "Copying message %d to %s..."
-msgstr "Kopiowanie listu do %s..."
+msgstr "Kopiowanie listu %d do %s..."
 
 #: imap/socket.c:215
 #, c-format
