@@ -744,14 +744,14 @@ copy_tagged_attachments (FILE *fpout, FILE *fpin, const char *boundary, BODY *bd
 {
   for (; bdy; bdy = bdy->next)
   {
-    if (bdy->tagged)
+    if (bdy->parts)
+      copy_tagged_attachments (fpout, fpin, boundary, bdy->parts);
+    else if (bdy->tagged)
     {
-      fprintf (fpout, "--%s\n", boundary);
+      fprintf (fpout, "\n--%s\n", boundary);
       fseek (fpin, bdy->hdr_offset, 0);
       mutt_copy_bytes (fpin, fpout, bdy->length + bdy->offset - bdy->hdr_offset);
     }
-    else if (bdy->parts)
-      copy_tagged_attachments (fpout, fpin, boundary, bdy->parts);
   }
 }
 
