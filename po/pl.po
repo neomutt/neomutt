@@ -494,7 +494,7 @@ msgstr "Przekonwertowaæ do %s przy wysy³aniu?"
 #: commands.c:905
 #, c-format
 msgid "Content-Type changed to %s."
-msgstr "Typ \"Content-Type\" zmioniono na %s."
+msgstr "Typ \"Content-Type\" zmieniono na %s."
 
 #: commands.c:907
 #, c-format
@@ -922,7 +922,7 @@ msgstr "W±tkowanie nie zosta³o w³±czone."
 
 #: curs_main.c:1531
 msgid "Thread contains unread messages."
-msgstr "Watek zawiera nieprzeczytane listy."
+msgstr "W±tek zawiera nieprzeczytane listy."
 
 #: curs_main.c:1709
 msgid "Can't edit message on POP server."
@@ -957,10 +957,10 @@ msgstr ""
 "~b u¿ytkownicy\tdodaj u¿ytkowników do pola BCC:\n"
 "~c u¿ytkownicy\tdodaj u¿ytkowników do pola Cc:\n"
 "~f listy\tdo³±cz listy\n"
-"~F listy\tto samo co ~f ale do³±cz te¿ nag³owki\n"
+"~F listy\tto samo co ~f ale do³±cz te¿ nag³ówki\n"
 "~h\t\tedytuj nag³ówki\n"
-"~m listy\tdoddaj i komentuj listy\n"
-"~M listy\tto samo co ~m ale do³±cz te¿ nag³owki\n"
+"~m listy\tdodaj i komentuj listy\n"
+"~M listy\tto samo co ~m ale do³±cz te¿ nag³ówki\n"
 "~p\t\tdrukuj list\n"
 "~q\t\tzapisz plik i wyjd¼ z edytora\n"
 "~r plik\t\twczytaj plik do edytora\n"
@@ -1677,7 +1677,7 @@ msgstr "edytuj za³±cznik u¿ywaj±c pliku 'mailcap'"
 
 #: keymap_alldefs.h:31
 msgid "edit the Reply-To field"
-msgstr "podaj tre¶c pola Reply-To:"
+msgstr "podaj tre¶æ pola Reply-To:"
 
 #: keymap_alldefs.h:32
 msgid "edit the subject of this message"
@@ -1961,7 +1961,7 @@ msgstr "otwórz inn± skrzynkê w trybie tylko do odczytu"
 
 #: keymap_alldefs.h:103
 msgid "clear a status flag from a message"
-msgstr "usuñ flagê ze statusem wiadmo¶ci"
+msgstr "usuñ flagê ze statusem wiadomo¶ci"
 
 #: keymap_alldefs.h:104
 msgid "delete messages matching a pattern"
@@ -2392,7 +2392,7 @@ msgstr ""
 "   lub wy¿szej.\n"
 "\n"
 "   Program ten jest rozprowadzany w nadziei, ¿e bêdzie przydatny,\n"
-"   ale BEZ ¯ADNYCH GWARANCJI, wyra¿onych wprost lub domy¶lnie nawet,\n"
+"   ale BEZ ¯ADNYCH GWARANCJI, wyra¿onych wprost lub nawet domy¶lnych,\n"
 "   w tym gwarancji mo¿liwo¶ci SPRZEDA¯Y i PRZYDATNO¦CI DO KONKRETNYCH "
 "CELÓW.\n"
 "   Szczegó³y znajdziesz w Powszechnej Licencji Publicznej GNU.\n"
@@ -3528,7 +3528,7 @@ msgstr "Nie znaleziono list pocztowych!"
 #: recvcmd.c:781
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr ""
-"Nie mo¿na zdekodowaæ wszystkich zaznaczonych za³. MIME-encapsulate pozosta³e?"
+"Nie mo¿na zdekodowaæ wszystkich zaznaczonych za³.; MIME-za³±czyæ pozosta³e?"
 
 #: remailer.c:480
 msgid "Append"
@@ -3588,7 +3588,7 @@ msgstr "Ustaw poprawn± warto¶æ hostname je¶li chcesz u¿ywaæ mixmastera!"
 #: remailer.c:768
 #, c-format
 msgid "Error sending message, child exited %d.\n"
-msgstr "B³±d podczas wysy³ania listu, proces potomny opu¶ci³ %d.\n"
+msgstr "B³±d podczas wysy³ania listu, proces potomny zwróci³ %d.\n"
 
 #: remailer.c:772
 msgid "Error sending message."
@@ -3675,7 +3675,7 @@ msgstr "Wywo³aæ od³o¿ony list?"
 
 #: send.c:1292
 msgid "Abort unmodified message?"
-msgstr "List nie zosta³ 1mieniony. Zaniechaæ wys³ania?"
+msgstr "List nie zosta³ zmieniony. Zaniechaæ wys³ania?"
 
 #: send.c:1294
 msgid "Aborted unmodified message."
@@ -3744,7 +3744,7 @@ msgstr "Nie mo¿na otworzyæ %s"
 #: sendlib.c:2052
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
-msgstr "B³±d podczas wysy³ania listu, proces potomny opu¶ci³ %d (%s)."
+msgstr "B³±d podczas wysy³ania listu, proces potomny zwróci³ %d (%s)."
 
 #: sendlib.c:2058
 msgid "Output of the delivery process"
