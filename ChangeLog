@@ -1,3 +1,10 @@
+2005-02-12 19:12:40  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
+
+	* alias.c, doc/manual.sgml.head, globals.h, hdrline.c, init.c,
+	init.h: unalternates now also adds to a list of exceptions;
+	same behavior for unlists, and unsubscribe.  With some changes
+	from tlr.
+
 2005-02-11 04:12:03  Brendan Cully  <brendan@kublai.com>  (brendan)
                                  
 	* configure.in, mutt_ssl_gnutls.c: autoconf support for gnutls
