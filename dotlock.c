@@ -709,37 +709,15 @@ dotlock_unlock (const char *realpath)
 static int
 dotlock_unlink (const char *realpath)
 {
-  struct stat fsb, lsb;
-  int fd = -1;
+  struct stat lsb;
   int i = -1;
-  char dummy;
 
   if (dotlock_lock (realpath) != DL_EX_OK)
     return DL_EX_ERROR;
-  
-  if ((fd = open (realpath, O_RDONLY)) == -1)
-    goto bail;
-  
-  if ((i = fstat (fd, &fsb)) == -1)
-    goto bail;
-  
-  if ((i = lstat (realpath, &lsb)) == -1)
-    goto bail;
-  
-  if ((i = dotlock_check_stats (&fsb, &lsb)) == -1)
-    goto bail;
-  
-  /* 
-   * don't _really_ trust stat here, but actually try to read one
-   * character from the supposedly empty file. 
-   */
 
-  if ((fsb.st_size == 0) && (read (fd, &dummy, 1) != 1))
+  if ((i = lstat (realpath, &lsb)) == 0 && lsb.st_size == 0)
     unlink (realpath);
-  
-  bail:
 
-  if (fd != -1) close (fd);
   dotlock_unlock (realpath);
 
   return (i == 0) ?  DL_EX_OK : DL_EX_ERROR;
