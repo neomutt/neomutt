@@ -1,4 +1,10 @@
-2004-10-30 20:45:34  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+2004-10-30 21:59:00  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* browser.c, buffy.c, check_sec.sh, commands.c, edit.c,
+	imap/auth_cram.c, imap/auth_gss.c, imap/imap.c, imap/message.c,
+	lib.c, lib.h, mutt_ssl.c, muttlib.c, recvcmd.c, url.c:
+	safe_strcat, safe_strncat.  Thanks to Ulf H. for noting the
+	wrong use of strncat in part of the mutt code base.
 
 	* smime.c: Fix bad code in smime_get_field_from_db.  Problem noted
 	by Ulf Härnhammar <Ulf.Harnhammar.9485@student.uu.se>.
