@@ -106,7 +106,8 @@ static int dotlock_file (const char *path, int retry)
 
 retry_lock:
   mutt_clear_error();
-  if((r = invoke_dotlock(path, flags, retry)) == DL_EX_EXIST)
+  if((r = invoke_dotlock(path, flags, retry)) == DL_EX_EXIST
+     && !option (OPTNOCURSES))
   {
     char msg[LONG_STRING];
 
@@ -118,6 +119,10 @@ retry_lock:
       retry--;
       goto retry_lock;
     }
+  } 
+  else if (option (OPTNOCURSES))
+  {
+    mutt_error ( _("Can't dotlock %s.\n"), path);
   }
   return (r == DL_EX_OK ? 0 : -1);
 }
