@@ -153,91 +153,82 @@ void mutt_decode_xbit (STATE *s, BODY *b, int istext, iconv_t cd)
     mutt_copy_bytes (s->fpin, s->fpout, len);
 }
 
-static int handler_state_fgetc(STATE *s)
+static int qp_decode_triple (char *s, char *d)
 {
-  int ch;
+  /* soft line break */
+  if (*s == '=' && !(*(s+1)))
+    return 1;
   
-  if((ch = fgetc(s->fpin)) == EOF)
+  /* quoted-printable triple */
+  if (*s == '=' && isxdigit (*(s+1)) && isxdigit (*(s+2)))
   {
-    dprint(1, (debugfile, "handler_state_fgetc: unexpected EOF.\n"));
-    state_puts (_("[-- Error: unexpected end of file! --]\n"), s);
+    *d = (hexval (*(s+1)) << 4) | hexval (*(s+2));
+    return 0;
   }
-  return ch;
+  
+  /* something else */
+  return -1;
+}
+
+static void qp_decode_line (char *dest, char *src, size_t *l)
+{
+  char *d, *s;
+  char c;
+
+  int kind;
+  int soft = 0;
+
+  /* chop trailing whitespace */
+
+  if (*src)
+  {
+    s = src + strlen(src) - 1;
+    while (s != src && ISSPACE(*s))
+      s--;
+    *(++s) = '\0';
+  }
+
+  /* decode the line */
+  
+  for (d = dest, s = src; *s;)
+  {
+    switch ((kind = qp_decode_triple (s, &c)))
+    {
+      case  0: *d++ = c; s += 3; break;	/* qp triple */
+      case -1: *d++ = *s++;      break; /* single character */
+      case  1: soft = 1; s++;	 break; /* soft line break */
+    }
+  }
+
+  if (!soft)
+    *d++ = '\n';
+  
+  *d = '\0';
+  *l = d - dest;
 }
 
 void mutt_decode_quoted (STATE *s, BODY *b, int istext, iconv_t cd)
 {
   long len = b->length;
-  int ch;
-  char bufi[BUFI_SIZE];
+  char line[STRING];
+  char decline[STRING+3];
   size_t l = 0;
 
   state_set_prefix(s);
 
   while (len > 0)
   {
-    if ((ch = handler_state_fgetc(s)) == EOF)
+    if (fgets (line, sizeof (line), s->fpin) == NULL)
       break;
 
-    len--;
+    len -= strlen (line);
     
-    if (ch == '=')
-    {
-      int ch1, ch2;
-      
-      if(!len || (ch1 = handler_state_fgetc(s)) == EOF)
-	break;
-
-      len--;
-      
-      if (ch1 == '\n' || ch1 == '\r' || ch1 == ' ' || ch1 == '\t')
-      {
-	/* Skip whitespace at the end of the line since MIME does not
-	 * allow for it
-	 */
-	if(ch1 != '\n')
-	{
-	  while(len && (ch1 = handler_state_fgetc(s)) != EOF)
-	  {
-	    len--;
-	    if(ch1 == '\n')
-	      break;
-	  }
-	}
-
-	if(ch1 == EOF)
-	  break;
-
-	ch = EOF;
-
-      }
-      else
-      {
-	if(!len || (ch2 = handler_state_fgetc(s)) == EOF)
-	  break;
-
-	len--;
-	
-        ch = hexval (ch1) << 4;
-        ch |= hexval (ch2);
-      }
-    } /* ch == '=' */
-    else if (istext && ch == '\r')
-    {
-      continue;
-    }
-
-    if(ch != EOF)
-    {
-      bufi[l++] = ch;
-      if (l == sizeof (bufi))
-	convert_to_state (cd, bufi, &l, s);
-    }
+    qp_decode_line (decline, line, &l);
+    
+    convert_to_state (cd, decline, &l, s);
   }
 
-  convert_to_state (cd, bufi, &l, s);
   convert_to_state (cd, 0, 0, s);
-  
   state_reset_prefix(s);
 }
 
