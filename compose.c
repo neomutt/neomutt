@@ -383,7 +383,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
   int oldSort = Sort, oldSortAux = SortAux;
   struct stat st;
 
-  idx = mutt_gen_attach_list (msg->content, idx, &idxlen, &idxmax, 0, 1);
+  idx = mutt_gen_attach_list (msg->content, -1, idx, &idxlen, &idxmax, 0, 1);
 
   menu = mutt_new_menu ();
   menu->menu = MENU_COMPOSE;
@@ -477,7 +477,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  for (i = 0; i < idxlen; i++)
 	    safe_free ((void **) &idx[i]);
 	  idxlen = 0;
-	  idx = mutt_gen_attach_list (msg->content, idx, &idxlen, &idxmax, 0, 1);
+	  idx = mutt_gen_attach_list (msg->content, -1, idx, &idxlen, &idxmax, 0, 1);
 	  menu->data = idx;
 	  menu->max = idxlen;
 	}

@@ -90,7 +90,7 @@ BODY *mutt_read_mime_header (FILE *, int);
 ENVELOPE *mutt_read_rfc822_header (FILE *, HEADER *, short);
 HEADER *mutt_dup_header (HEADER *);
 
-ATTACHPTR **mutt_gen_attach_list (BODY *, ATTACHPTR **, short *, short *, int, int);
+ATTACHPTR **mutt_gen_attach_list (BODY *, int, ATTACHPTR **, short *, short *, int, int);
 
 time_t mutt_local_tz (void);
 time_t mutt_mktime (struct tm *, int);

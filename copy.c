@@ -36,7 +36,7 @@ static const char rcsid[]="$Id$";
 
 extern char MimeSpecials[];
 
-static int copy_delete_attach (BODY *b, FILE *fpin, FILE *fpout);
+static int copy_delete_attach (BODY *b, FILE *fpin, FILE *fpout, char *date);
 
 /* Ok, the only reason for not merging this with mutt_copy_header()
  * below is to avoid creating a HEADER structure in message_handler().
@@ -360,8 +360,8 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
   return (0);
 }
 
-/* Count the number of lines to be deleted in this body*/
-static int count_delete_lines (FILE *fp, BODY *b)
+/* Count the number of lines and bytes to be deleted in this body*/
+static int count_delete_lines (FILE *fp, BODY *b, long *length, size_t datelen)
 {
   int dellines = 0;
   long l;
@@ -378,13 +378,16 @@ static int count_delete_lines (FILE *fp, BODY *b)
       if (ch == '\n')
 	dellines ++;
     }
-    /* Add lines to a new message/external-body part */
     dellines -= 3;
+    *length -= b->length - (84 + datelen);
+    /* Count the number of digits exceeding the first one to write the size */
+    for (l = 10 ; b->length >= l ; l *= 10)
+      (*length) ++;
   }
   else
   {
     for (b = b->parts ; b ; b = b->next)
-      dellines += count_delete_lines (fp, b);
+      dellines += count_delete_lines (fp, b, length, datelen);
   }
   return dellines;
 }
@@ -424,29 +427,47 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
     {
       int new_lines;
       long new_offset;
+      long new_length = body->length;
+      char date[SHORT_STRING];
 
-      /* Count the number of lines to be deleted */
+      mutt_make_date (date, sizeof (date));
+      date[5] = date[mutt_strlen (date) - 1] = '\"';
+
+      /* Count the number of lines and bytes to be deleted */
       fseek (fpin, body->offset, SEEK_SET);
-      new_lines = hdr->lines - count_delete_lines (fpin, body);
-      if (new_lines < 0)
-	new_lines = 0;
+      new_lines = hdr->lines -
+	count_delete_lines (fpin, body, &new_length, mutt_strlen (date));
 
       /* Copy the headers */
       if (mutt_copy_header (fpin, hdr, fpout,
 			    chflags | CH_NOLEN | CH_NONEWLINE, NULL))
 	return -1;
-      if (new_lines)
-      {
+      fprintf (fpout, "Content-Length: %ld\n", new_length);
+      if (new_lines <= 0)
+	new_lines = 0;
+      else
 	fprintf (fpout, "Lines: %d\n\n", new_lines);
-	if (ferror (fpout))
-	  return -1;
-      }
+      if (ferror (fpout))
+	return -1;
       new_offset = ftell (fpout);
 
       /* Copy the body */
       fseek (fpin, body->offset, SEEK_SET);
-      if (copy_delete_attach (body, fpin, fpout))
+      if (copy_delete_attach (body, fpin, fpout, date))
 	return -1;
+
+#ifdef DEBUG
+      {
+	long fail = ((ftell (fpout) - new_offset) - new_length);
+
+	if (fail)
+	{
+	  mutt_error ("The length calculation was wrong by %ld bytes", fail);
+	  new_length += fail;
+	  sleep (5);
+	}
+      }
+#endif
 
       /* Update original message if we are sync'ing a mailfolder */ 
       if (flags & M_CM_UPDATE)
@@ -454,7 +475,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
 	hdr->attach_del = 0;
 	hdr->lines = new_lines;
 	body->offset = new_offset;
-	body->length = ftell (fpout) - new_offset;
+	body->length = new_length;
 	mutt_free_body (&body->parts);
       }
 
@@ -596,13 +617,9 @@ mutt_append_message (CONTEXT *dest, CONTEXT *src, HEADER *hdr, int cmflags,
  *
  * The function will return 0 on success and -1 on failure.
  */
-static int copy_delete_attach (BODY *b, FILE *fpin, FILE *fpout)
+static int copy_delete_attach (BODY *b, FILE *fpin, FILE *fpout, char *date)
 {
   BODY *part;
-  char date[SHORT_STRING];
-
-  mutt_make_date (date, sizeof (date));
-  date[5] = date[mutt_strlen (date) - 1] = '\"';
 
   for (part = b->parts ; part ; part = part->next)
   {
@@ -628,32 +645,9 @@ static int copy_delete_attach (BODY *b, FILE *fpin, FILE *fpout)
 	/* Skip the deleted body */
 	fseek (fpin, part->offset + part->length, SEEK_SET);
       }
-      else if (part->hdr && part->parts->deleted)
-      {
-	/* Here we have a message which only part is deleted. */
-	/* First copy it's mime headers */
-	if (mutt_copy_bytes (fpin, fpout, part->offset - ftell (fpin)))
-	  return -1;
-
-	/* Then change the only parts Content-Type. */
-	if (mutt_copy_header (fpin, part->hdr, fpout,
-			      CH_MIME | CH_NOLEN | CH_NONEWLINE, NULL))
-	  return -1;
-	fprintf (fpout,
-		 "Mime-Version: 1.0\n"
-		 "Content-Type: message/external-body; access-type=x-mutt-deleted;\n"
-		 "\texpiration=%s; length=%ld\n"
-		 "\n", date + 5, part->parts->length);
-
-	/* And output the mime headers of the deleted part */
-	mutt_write_mime_header (part->parts, fpout);
-
-	/* Skip the deleted body */
-	fseek (fpin, part->offset + part->length, SEEK_SET);
-      }
       else
       {
-	if (copy_delete_attach (part, fpin, fpout))
+	if (copy_delete_attach (part, fpin, fpout, date))
 	  return -1;
       }
     }

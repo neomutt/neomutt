@@ -640,6 +640,7 @@ typedef struct
 typedef struct attachptr
 {
   BODY *content;
+  int parent_type;
   char *tree;
   int level;
   int num;

@@ -97,6 +97,7 @@ void mutt_update_tree (ATTACHPTR **idx, short idxlen)
 }
 
 ATTACHPTR **mutt_gen_attach_list (BODY *m,
+				  int parent_type,
 				  ATTACHPTR **idx,
 				  short *idxlen,
 				  short *idxmax,
@@ -116,18 +117,19 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
 #endif
 	)
     {
-      idx = mutt_gen_attach_list (m->parts, idx, idxlen, idxmax, level, compose);
+      idx = mutt_gen_attach_list (m->parts, m->type, idx, idxlen, idxmax, level, compose);
     }
     else
     {
       new = idx[(*idxlen)++] = (ATTACHPTR *) safe_calloc (1, sizeof (ATTACHPTR));
       new->content = m;
+      new->parent_type = parent_type;
       new->level = level;
 
       /* We don't support multipart messages in the compose menu yet */
       if (!compose && mutt_is_message_type(m->type, m->subtype))
       {
-	idx = mutt_gen_attach_list (m->parts, idx, idxlen, idxmax, level + 1, compose);
+	idx = mutt_gen_attach_list (m->parts, m->type, idx, idxlen, idxmax, level + 1, compose);
       }
     }
   }
@@ -845,7 +847,7 @@ void mutt_view_attachments (HEADER *hdr)
     cur = hdr->content;
   }
 
-  idx = mutt_gen_attach_list (cur, idx, &idxlen, &idxmax, 0, 0);
+  idx = mutt_gen_attach_list (cur, -1, idx, &idxlen, &idxmax, 0, 0);
 
   menu = mutt_new_menu ();
   menu->max = idxlen;
@@ -905,48 +907,53 @@ void mutt_view_attachments (HEADER *hdr)
 
       case OP_DELETE:
 
-       if (menu->max == 1)
-       {
-         mutt_message _("Only deletion of multipart attachments is supported.");
-       }
-       else
-       {
 #ifdef _PGPPATH
-         if (hdr->pgp)
-         {
-           mutt_message _(
-             "Deletion of attachments from PGP messages is unsupported.");
-         }
-         else
+        if (hdr->pgp)
+        {
+	  mutt_message _(
+	    "Deletion of attachments from PGP messages is unsupported.");
+	}
+        else
 #endif
-         {
-	   if (!menu->tagprefix)
-	   {
-	     idx[menu->current]->content->deleted = 1;
-	     if (option (OPTRESOLVE) && menu->current < menu->max - 1)
-	     {
-	       menu->current++;
-	       menu->redraw = REDRAW_MOTION_RESYNCH;
-	     }
-	     else
-	       menu->redraw = REDRAW_CURRENT;
-	   }
-	   else
-	   {
-	     int x;
+        {
+	  if (!menu->tagprefix)
+	  {
+	    if (idx[menu->current]->parent_type == TYPEMULTIPART)
+	    {
+	      idx[menu->current]->content->deleted = 1;
+	      if (option (OPTRESOLVE) && menu->current < menu->max - 1)
+	      {
+		menu->current++;
+		menu->redraw = REDRAW_MOTION_RESYNCH;
+	      }
+	      else
+		menu->redraw = REDRAW_CURRENT;
+	    }
+	    else
+	      mutt_message _(
+	        "Only deletion of multipart attachments is supported.");
+	  }
+	  else
+	  {
+	    int x;
 
-	     for (x = 0; x < menu->max; x++)
-	     {
-	       if (idx[x]->content->tagged)
-	       {
-		 idx[x]->content->deleted = 1;
-		 menu->redraw = REDRAW_INDEX;
-	       }
-	     }
-	   }
-         }
-       }
-       break;
+	    for (x = 0; x < menu->max; x++)
+	    {
+	      if (idx[x]->content->tagged)
+	      {
+		if (idx[x]->parent_type == TYPEMULTIPART)
+		{
+		  idx[x]->content->deleted = 1;
+		  menu->redraw = REDRAW_INDEX;
+		}
+		else
+		  mutt_message _(
+		    "Only deletion of multipart attachments is supported.");
+	      }
+	    }
+	  }
+	}
+        break;
 
       case OP_UNDELETE:
        if (!menu->tagprefix)
