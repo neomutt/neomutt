@@ -290,9 +290,11 @@ static void include_header (int quote, FILE * ifp,
   {
     if (_prefix)
       strfcpy (prefix, _prefix, sizeof (prefix));
-    else
+    else if (!option (OPTTEXTFLOWED))
       _mutt_make_string (prefix, sizeof (prefix), NONULL (Prefix), 
 			 Context, hdr, 0);
+    else
+      strfcpy (prefix, ">", sizeof (prefix));
 
     chflags |= CH_PREFIX;
   }
@@ -378,9 +380,14 @@ static void attach_forward_bodies (FILE * fp, HEADER * hdr,
   /* prepare the prefix here since we'll need it later. */
 
   if (option (OPTFORWQUOTE))
-    _mutt_make_string (prefix, sizeof (prefix), NONULL (Prefix), Context,
-		       parent, 0);
-
+  {
+    if (!option (OPTTEXTFLOWED))
+      _mutt_make_string (prefix, sizeof (prefix), NONULL (Prefix), Context,
+			 parent, 0);
+    else
+      strfcpy (prefix, ">", sizeof (prefix));
+  }
+    
   include_header (option (OPTFORWQUOTE), fp, parent,
 		  tmpfp, prefix);
 
@@ -824,8 +831,11 @@ void mutt_attach_reply (FILE * fp, HEADER * hdr,
     st.fpin = fp;
     st.fpout = tmpfp;
 
-    _mutt_make_string (prefix, sizeof (prefix), NONULL (Prefix), 
-		       Context, parent, 0);
+    if (!option (OPTTEXTFLOWED))
+      _mutt_make_string (prefix, sizeof (prefix), NONULL (Prefix), 
+			 Context, parent, 0);
+    else
+      strfcpy (prefix, ">", sizeof (prefix));
 
     st.prefix = prefix;
     st.flags  = M_CHARCONV;
