@@ -162,29 +162,26 @@ esac
 if test -f /etc/debian_version ; then
 	DEBIAN=yes
 	echo $n "Checking whether mutt has been installed as a package... $c"
-	MUTTVERSION="`dpkg -l mutt | grep ^i | awk '{print $3}'`" 2> /dev/null
-	if test "$MUTTVERSION" ; then
+	DEBIANVERSION="`dpkg -l mutt | grep '^[ih] | awk '{print $3}'`" 2> /dev/null
+	if test "$DEBIANVERSION" ; then
 		DPKG=yes
 	else
 		DPKG=no
 	fi
 	echo "$DPKG"
-	if test "$DPKG" = "no" ; then
-		echo $n "File this bug with Debian? [Y|n] $c"
-		read DPKG
-		case "$DPKG" in
-		[nN])	DPKG=no ;;
-		*)	DPKG=yes ;;
-		esac
-	fi
+	echo $n "File this bug with Debian? [Y|n] $c"
+	read DPKG
+	case "$DPKG" in
+	[nN])	DPKG=no ;;
+	*)	DPKG=yes ;;
+	esac
 else
 	DEBIAN=no
 	DPKG=no
 fi
 
-test "$MUTTVERSION"  || MUTTVERSION="`mutt -v | head -1 | awk '{print $2}' | tr -d i`"
+MUTTVERSION="`mutt -v | head -1 | awk '{print $2}'`"
 test "$DPKG" = "yes" && SUBMIT="$SUBMIT, $DEBIAN_SUBMIT"
-
 
 exec > ${TEMPLATE}
 
@@ -197,7 +194,7 @@ echo "To: $SUBMIT"
 echo "Bcc: ${EMAIL-$LOGNAME}"
 echo
 echo "Package: mutt"
-echo "Version: $MUTTVERSION"
+echo "Version: ${DEBIANVERSION-$MUTTVERSION}"
 echo "Severity: $severity"
 echo 
 echo "-- Please type your report below this line"
