@@ -2464,7 +2464,9 @@ msgstr ""
 msgid ""
 "\n"
 "[-- End of PGP/MIME signed data --]\n"
-msgstr "[-- Fin des données signées avec PGP/MIME --]\n"
+msgstr ""
+"\n"
+"[-- Fin des données signées avec PGP/MIME --]\n"
 
 #: pgp.c:688
 msgid ""
@@ -2510,7 +2512,9 @@ msgstr ""
 msgid ""
 "\n"
 "[-- End of PGP/MIME encrypted data --]\n"
-msgstr "[-- Fin des données chiffrées avec PGP/MIME --]\n"
+msgstr ""
+"\n"
+"[-- Fin des données chiffrées avec PGP/MIME --]\n"
 
 #: pgp.c:1071
 msgid "Can't open PGP subprocess!"

@@ -2133,9 +2133,8 @@ msgid "Not found."
 msgstr "Non trovato."
 
 #: menu.c:689
-#, fuzzy
 msgid "No tagged entries."
-msgstr "Nessuna voce."
+msgstr "Nessuna voce segnata."
 
 #: menu.c:777
 msgid "Search is not implemented for this menu."
