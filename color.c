@@ -392,13 +392,19 @@ _mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err,
 
   if(
 #ifdef HAVE_COLOR
-     (parse_uncolor && !option(OPTNOCURSES) && !has_colors())
+     /* we're running without curses */
+     option (OPTNOCURSES) 
+     || /* we're parsing an uncolor command, and have no colors */
+     (parse_uncolor && !has_colors())
+     /* we're parsing an unmono command, and have colors */
      || (!parse_uncolor && has_colors())
 #else
+     /* We don't even have colors compiled in */
      parse_uncolor
 #endif
      )
   {
+    /* just eat the command, but don't do anything real about it */
     do
       mutt_extract_token (buf, s, 0);
     while (MoreArgs (s));
@@ -707,7 +713,7 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
   
 #ifdef HAVE_COLOR
 # ifdef HAVE_USE_DEFAULT_COLORS
-  if (has_colors()
+  if (!option (OPTNOCURSES) && has_colors()
     /* delay use_default_colors() until needed, since it initializes things */
     && (fg == COLOR_DEFAULT || bg == COLOR_DEFAULT)
     && use_default_colors () != OK)
@@ -756,7 +762,7 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
 
 #ifdef HAVE_COLOR
 # ifdef HAVE_BKGDSET
-  if (object == MT_COLOR_NORMAL && has_colors())
+  if (object == MT_COLOR_NORMAL && !option (OPTNOCURSES) && has_colors())
     BKGDSET (MT_COLOR_NORMAL);
 # endif
 #endif
