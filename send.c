@@ -856,7 +856,7 @@ ci_send_message (int flags,		/* send mode */
      * are any postponed messages first.
      */
     if ((i = query_quadoption (OPT_RECALL, _("Recall postponed message?"))) == -1)
-      goto cleanup;
+      return;
 
     if(i == M_YES)
       flags |= SENDPOSTPONED;
