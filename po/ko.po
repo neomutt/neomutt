@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.2\n"
-"POT-Creation-Date: 2000-03-04 13:51+0100\n"
-"PO-Revision-Date: 2000-02-18 10:47+0900\n"
+"POT-Creation-Date: 2000-03-09 07:23+0900\n"
+"PO-Revision-Date: 2000-03-09 07:40+0900\n"
 "Last-Translator: Byeong-Chan Kim <redhands@linux.sarag.net>\n"
 "Language-Team: Korean <ko@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -235,9 +235,9 @@ msgid "Can't open %s: %s."
 msgstr "%s를 열 수 없음: %s"
 
 #: charset.c:1147
-#, fuzzy, c-format
+#, c-format
 msgid "Error while recoding %s. Leave it unchanged."
-msgstr "%s 기록 중 오류. 자료를 복구하려면 %s를 보세요."
+msgstr "%s 기록 중 오류. 변경하지 않고 그만둠."
 
 #: charset.c:1153
 #, c-format
@@ -254,7 +254,7 @@ msgstr "%s: 터미널에서 지원되지 않는 색상."
 msgid "%s: no such color"
 msgstr "%s: 색상 없음."
 
-#: color.c:374 color.c:565 color.c:576
+#: color.c:374 color.c:569 color.c:580
 #, c-format
 msgid "%s: no such object"
 msgstr "%s: 객체 없음"
@@ -269,32 +269,32 @@ msgstr "%s: 색인 객체에서만 사용 가능한 명령어."
 msgid "%s: too few arguments"
 msgstr "%s: 인수가 부족함"
 
-#: color.c:553
+#: color.c:557
 msgid "Missing arguments."
 msgstr "인수가 빠졌음."
 
-#: color.c:592 color.c:603
+#: color.c:596 color.c:607
 msgid "color: too few arguments"
 msgstr "color: 인수가 부족함"
 
-#: color.c:626
+#: color.c:630
 msgid "mono: too few arguments"
 msgstr "mono: 인수가 부족함"
 
-#: color.c:646
+#: color.c:650
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s: 속성 없음."
 
-#: color.c:686 hook.c:61 hook.c:69 keymap.c:697
+#: color.c:690 hook.c:61 hook.c:69 keymap.c:697
 msgid "too few arguments"
 msgstr "인수가 부족함"
 
-#: color.c:695 hook.c:75
+#: color.c:699 hook.c:75
 msgid "too many arguments"
 msgstr "인수가 너무 많음"
 
-#: color.c:711
+#: color.c:715
 msgid "default colors not supported"
 msgstr "기본 색상들이 지원되지 않음"
 
@@ -1156,19 +1156,16 @@ msgstr "접속 실패."
 
 #. now begin login
 #: imap/auth_gss.c:74
-#, fuzzy
 msgid "Authenticating (GSSAPI)..."
-msgstr "인증 중 (CRAM-MD5)..."
+msgstr "인증 중 (GSSAPI)..."
 
 #: imap/browse.c:93
-#, fuzzy
 msgid "Getting namespaces..."
-msgstr "메세지 가져오는 중..."
+msgstr "네임스페이스 받는 중..."
 
 #: imap/browse.c:120
-#, fuzzy
 msgid "Getting folder list..."
-msgstr "서버에 연결 됨, 폴더 목록 받는 중..."
+msgstr "폴더 목록 받는 중..."
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
@@ -1913,9 +1910,8 @@ msgid "jump to previous subthread"
 msgstr "이전 부속 글타래로 이동"
 
 #: keymap_alldefs.h:110
-#, fuzzy
 msgid "move to the previous undeleted message"
-msgstr "삭제되지 않은 다음 메세지로 이동"
+msgstr "삭제되지 않은 이전 메세지로 이동"
 
 #: keymap_alldefs.h:111
 msgid "jump to the previous new message"
@@ -2406,9 +2402,8 @@ msgid "No mailbox with new mail."
 msgstr "새로운 편지가 도착한 편지함 없음."
 
 #: main.c:660
-#, fuzzy
 msgid "No incoming mailboxes defined."
-msgstr "수신 편지함들 둘러보기"
+msgstr "인커밍 편지함이 정의되지 않음."
 
 #: main.c:689
 msgid "Mailbox is empty."
@@ -3347,7 +3342,7 @@ msgstr "메세지 보내는 중 오류."
 #: rfc1524.c:159
 #, c-format
 msgid "Improperly formated entry for type %s in \"%s\" line %d"
-msgstr ""
+msgstr "\"%2$s\" %d 번째 줄의 %1$s 유형의 항목은 잘못된 형식임"
 
 #: rfc1524.c:391
 msgid "No mailcap path specified"
@@ -3432,39 +3427,39 @@ msgstr "변경되지 않은 메시지 취소함."
 msgid "Mail not sent."
 msgstr "보내지 않음."
 
-#: send.c:1333
+#: send.c:1338
 msgid "Message postponed."
 msgstr "발신 연기되었음."
 
-#: send.c:1342
+#: send.c:1347
 msgid "No recipients are specified!"
 msgstr "발신인이 지정되지 않음!"
 
-#: send.c:1347
+#: send.c:1352
 msgid "No recipients were specified."
 msgstr "발신인이 지정되지 않음."
 
-#: send.c:1353
+#: send.c:1358
 msgid "No subject, abort sending?"
 msgstr "제목 없음, 발신을 취소할까요?"
 
-#: send.c:1357
+#: send.c:1362
 msgid "No subject specified."
 msgstr "제목이 지정되지 않음."
 
-#: send.c:1404
+#: send.c:1409
 msgid "Sending message..."
 msgstr "메세지 보내는 중..."
 
-#: send.c:1529
+#: send.c:1536
 msgid "Could not send the message."
 msgstr "메세지를 보낼 수 없음."
 
-#: send.c:1534
+#: send.c:1541
 msgid "Mail sent."
 msgstr "편지 보냄."
 
-#: send.c:1534
+#: send.c:1541
 msgid "Sending in background."
 msgstr "백그라운드로 보냄."
 
@@ -3489,7 +3484,7 @@ msgstr "메세지를 보내는 중 오류, 자식 종료 %d (%s)."
 
 #: sendlib.c:1715
 msgid "Output of the delivery process"
-msgstr ""
+msgstr "배달 프로세스의 출력"
 
 #: signal.c:39
 #, c-format
@@ -3525,9 +3520,3 @@ msgstr "부모 메세지는 볼 수 없는 상태임."
 #: thread.c:727
 msgid "Parent message is not available."
 msgstr "부모 메세지가 존재하지 않음."
-
-#~ msgid "move to the last undelete message"
-#~ msgstr "삭제되지 않은 마지막 메시지로 이동"
-
-#~ msgid "return to the main-menu"
-#~ msgstr "주 메뉴로 돌아감"
