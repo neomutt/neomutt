@@ -43,6 +43,7 @@ select-entry             RET   select the current entry
 shell-escape               !   run a program in a subshell
 tag-entry                  t   toggle the tag on the current entry
 tag-prefix                 ;   apply next command to tagged entries
+tag-prefix-cond    not bound   apply next function ONLY to tagged messages
 top-page                   H   move to the top of the page
 </verb>
 <sect2>index

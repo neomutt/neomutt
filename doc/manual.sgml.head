@@ -2061,6 +2061,13 @@ manner.  If the <ref id="auto_tag" name="&dollar;auto&lowbar;tag">
 variable is set, the next operation applies to the tagged messages
 automatically, without requiring the ``tag-prefix''.
 
+In <ref id="macro" name="macros"> or <ref id="push" name="push"> commands,
+you can use the ``tag-prefix-cond'' operator.  If there are no tagged
+messages, mutt will "eat" the rest of the macro to abort it's execution.
+Mutt will stop "eating" the macro when it encounters the ``end-cond''
+operator;  after this operator the rest of the macro will be executed as
+normal.
+
 <sect1>Using Hooks<label id="hooks">
 <p>
 A <em/hook/ is a concept borrowed from the EMACS editor which allows you to
