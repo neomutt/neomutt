@@ -1,3 +1,15 @@
+2004-02-01 18:00:16  Mike Schiraldi  <1074468571@schiraldi.org>  (roessler)
+
+	* init.c: As you all know, running "mutt -F foo.rc" will have
+	mutt read foo.rc as its config file. However, there is a bug --
+	if you specify a directory (like accidentally typing "mutt -F
+	/etc/mutt") mutt will silently ignore the flag and leave you
+	wondering why it isn't working.
+
+	Emil Sit posted a patch for this in March of 2002, but it seems
+	to have slipped through the cracks. Here's the patch again;
+	please consider it for inclusion.
+
 2004-02-01 17:50:43  Luke Mewburn  <luke@mewburn.net>  (roessler)
 
 	* buffy.c: Put a zero byte into the string, not into the pointer.
