@@ -154,6 +154,19 @@ void mutt_clear_error (void)
     CLEARLINE (LINES-1);
 }
 
+static void fix_end_of_file (const char *data)
+{
+  FILE *fp;
+  int c;
+  
+  if ((fp = safe_fopen (data, "a+")) == NULL)
+    return;
+  fseek (fp,-1,SEEK_END);
+  if ((c = fgetc(fp)) != '\n')
+    fputc ('\n', fp);
+  safe_fclose (&fp);
+}
+
 void mutt_edit_file (const char *editor, const char *data)
 {
   char cmd[LONG_STRING];
@@ -162,6 +175,7 @@ void mutt_edit_file (const char *editor, const char *data)
   mutt_expand_file_fmt (cmd, sizeof (cmd), editor, data);
   if (mutt_system (cmd) == -1)
     mutt_error (_("Error running \"%s\"!"), cmd);
+  fix_end_of_file (data);
   keypad (stdscr, TRUE);
   clearok (stdscr, TRUE);
 }
