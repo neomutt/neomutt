@@ -1,3 +1,14 @@
+2002/12/09 13:30:02  Thomas Roessler <roessler@does-not-exist.org>
+
+	* po/pt_BR.po, po/ru.po, po/sk.po, po/sv.po, po/tr.po,
+	po/uk.po, po/zh_CN.po, po/zh_TW.po, po/gl.po, po/hu.po,
+	po/id.po, po/it.po, po/ja.po, po/ko.po, po/lt.po, po/nl.po,
+	po/pl.po, po/eo.po, po/es.po, po/et.po, po/fr.po, po/ca.po,
+	po/cs.po, po/da.po, po/de.po, po/el.po, compose.c: Try to
+	fix a localization issue identified by Pawel Dzienkonski
+	(#1410).  Side effect: All translations will need an update
+	of the S/MIME key translations.
+
 2002/12/09 11:20:14  Pawel Dziekonski <dzieko@pwr.wroc.pl>
 
 	* po/pl.po: update.
