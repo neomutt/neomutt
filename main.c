@@ -538,7 +538,7 @@ int main (int argc, char **argv)
       for (i = optind; i < argc; i++)
 	msg->env->to = rfc822_parse_adrlist (msg->env->to, argv[i]);
 
-      if (!msg->env->to && !msg->env->cc)
+      if (option (OPTAUTOEDIT) && !msg->env->to && !msg->env->cc)
       {
 	if (!option (OPTNOCURSES))
 	  mutt_endwin (NULL);
