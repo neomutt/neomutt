@@ -1,3 +1,20 @@
+Mon Jan  4 12:57:55 1999  Thomas Roessler  <roessler@guug.de>
+
+	* send.c: When sending a message in batch mode failed, mutt
+	would dump core.  Patch from Byrial Jensen.
+
+Sat Jan  2 17:23:24 1999  Thomas Roessler  <roessler@guug.de>
+
+	* sendlib.c, ChangeLog: I shouldn't accept patches on New
+	Year's day.  Not even new-year related patches.
+
+	* po/it.po: Fixing a typo.
+
+	* protos.h, parse.c, handler.c: mutt_parse_date () shouldn't
+	modify its argument.  Problem noted by Byrial Jensen.
+
+	* lib.c: Fix safe_symlink to correctly handle relative paths.
+
 Sat Jan  2 09:35:09 1999  Thomas Roessler  <roessler@guug.de>
 
 	* protos.h, parse.c, handler.c: mutt_parse_date () shouldn't
