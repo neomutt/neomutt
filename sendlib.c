@@ -2009,6 +2009,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
       dprint (1, (debugfile, "mutt_write_fcc(): %s: write failed.\n", tempfile));
       fclose (tempfp);
       unlink (tempfile);
+      mx_commit_message (msg, &f);	/* XXX - really? */
       mx_close_message (&msg);
       mx_close_mailbox (&f);
       return -1;
@@ -2036,6 +2037,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
     r = mutt_write_mime_body (hdr->content, msg->fp);
   }
 
+  mx_commit_message (msg, &f);
   mx_close_message (&msg);
   mx_close_mailbox (&f);
 

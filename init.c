@@ -286,112 +286,144 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
   return 0;
 }
 
-void mutt_add_to_list (LIST **list, BUFFER *inp)
+static void add_to_list (LIST **list, const char *str)
 {
   LIST *t, *last = NULL;
-  BUFFER buf;
 
-  memset (&buf, 0, sizeof (buf));
-  do
+  /* check to make sure the item is not already on this list */
+  for (last = *list; last; last = last->next)
   {
-    mutt_extract_token (&buf, inp, 0);
-
-    /* check to make sure the item is not already on this list */
-    for (last = *list; last; last = last->next)
+    if (mutt_strcasecmp (str, last->data) == 0)
     {
-      if (mutt_strcasecmp (buf.data, last->data) == 0)
-      {
-	/* already on the list, so just ignore it */
-	last = NULL;
-	break;
-      }
-      if (!last->next)
-	break;
+      /* already on the list, so just ignore it */
+      last = NULL;
+      break;
     }
-
-    if (!*list || last)
-    {
-      t = (LIST *) safe_calloc (1, sizeof (LIST));
-      t->data = buf.data;
-      memset (&buf, 0, sizeof (buf));
-      if (last)
-      {
-	last->next = t;
-	last = last->next;
-      }
-      else
-	*list = last = t;
-    }
+    if (!last->next)
+      break;
   }
-  while (MoreArgs (inp));
-  FREE (&buf.data);
+
+  if (!*list || last)
+  {
+    t = (LIST *) safe_calloc (1, sizeof (LIST));
+    t->data = safe_strdup (str);
+    if (last)
+    {
+      last->next = t;
+      last = last->next;
+    }
+    else
+      *list = last = t;
+  }
 }
 
-static void remove_from_list (LIST **l, BUFFER *inp)
+static void remove_from_list (LIST **l, const char *str)
 {
   LIST *p, *last = NULL;
-  BUFFER buf;
 
-  memset (&buf, 0, sizeof (buf));
-  do
+  if (mutt_strcmp ("*", str) == 0)
+    mutt_free_list (l);    /* ``unCMD *'' means delete all current entries */
+  else
   {
-    mutt_extract_token (&buf, inp, 0);
-
-    if (mutt_strcmp ("*", buf.data) == 0)
-      mutt_free_list (l);    /* ``unCMD *'' means delete all current entries */
-    else
+    p = *l;
+    last = NULL;
+    while (p)
     {
-      p = *l;
-      last = NULL;
-      while (p)
+      if (mutt_strcasecmp (str, p->data) == 0)
       {
-	if (mutt_strcasecmp (buf.data, p->data) == 0)
-	{
-	  safe_free ((void **) &p->data);
-	  if (last)
-	    last->next = p->next;
-	  else
-	    (*l) = p->next;
-	  safe_free ((void **) &p);
-	}
+	safe_free ((void **) &p->data);
+	if (last)
+	  last->next = p->next;
 	else
-	{
-	  last = p;
-	  p = p->next;
-	}
+	  (*l) = p->next;
+	safe_free ((void **) &p);
+      }
+      else
+      {
+	last = p;
+	p = p->next;
       }
     }
   }
-  while (MoreArgs (inp));
-  FREE (&buf.data);
 }
 
 static int parse_unignore (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  mutt_add_to_list (&UnIgnore, s);
-  remove_from_list (&Ignore, s);
+  do
+  {
+    mutt_extract_token (buf, s, 0);
+    add_to_list (&UnIgnore, buf->data);
+    remove_from_list (&Ignore, buf->data);
+  }
+  while (MoreArgs (s));
+
   return 0;
 }
 
 static int parse_ignore (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  mutt_add_to_list (&Ignore, s);
-  remove_from_list (&UnIgnore, s);
+  do
+  {
+    mutt_extract_token (buf, s, 0);
+    remove_from_list (&UnIgnore, buf->data);
+    add_to_list (&Ignore, buf->data);
+  }
+  while (MoreArgs (s));
+
   return 0;
 }
 
 static int parse_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  mutt_add_to_list ((LIST **) data, s);
+  do
+  {
+    mutt_extract_token (buf, s, 0);
+    add_to_list ((LIST **) data, buf->data);
+  }
+  while (MoreArgs (s));
+
   return 0;
 }
 
 static int parse_unlist (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  remove_from_list ((LIST **) data, s);
+  do
+  {
+    mutt_extract_token (buf, s, 0);
+    remove_from_list ((LIST **) data, buf->data);
+  }
+  while (MoreArgs (s));
+
   return 0;
 }
 
+
+static int parse_unlists (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  do
+  {
+    mutt_extract_token (buf, s, 0);
+    remove_from_list (&MailLists, buf->data);
+    remove_from_list (&SubscribedLists, buf->data);
+  }
+  while (MoreArgs (s));
+
+  return 0;
+}
+
+static int parse_subscribe (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  do
+  {
+    mutt_extract_token (buf, s, 0);
+    add_to_list (&MailLists, buf->data);
+    add_to_list (&SubscribedLists, buf->data);
+  }
+  while (MoreArgs (s));
+
+  return 0;
+}
+  
 static int parse_unalias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
   ALIAS *tmp, *last = NULL;

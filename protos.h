@@ -229,6 +229,7 @@ int mutt_is_autoview (BODY *, const char *);
 int mutt_is_mail_list (ADDRESS *);
 int mutt_is_message_type(int, const char *);
 int mutt_is_list_recipient (int, ADDRESS *, ADDRESS *);
+int mutt_is_subscribed_list (ADDRESS *);
 int mutt_is_text_type (int, char *);
 int mutt_is_valid_mailbox (const char *);
 int mutt_multi_choice (char *prompt, char *letters);

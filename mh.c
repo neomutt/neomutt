@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1999 Thomas Roessler <roessler@guug.de>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -22,8 +23,8 @@
  */
 
 #include "mutt.h"
-#include "mx.h"
 #include "mailbox.h"
+#include "mx.h"
 #include "copy.h"
 #include "buffy.h"
 #include "sort.h"
@@ -32,9 +33,15 @@
 #include <dirent.h>
 #include <limits.h>
 #include <unistd.h>
+#include <fcntl.h>
+
+#include <stdio.h>
+#include <stdlib.h>
 #include <ctype.h>
 #include <errno.h>
 #include <string.h>
+
+
 
 struct maildir
 {
@@ -327,30 +334,77 @@ int maildir_read_dir (CONTEXT * ctx)
   return 0;
 }
 
-/* Open a new (unique) message in a maildir mailbox.  In order to avoid the
- * need for locks, the filename is generated in such a way that it is unique,
- * even over NFS: <time>.<pid>_<count>.<hostname>.  The _<count> part is
- * optional, but required for programs like Mutt which do not change PID for
- * each message that is created in the mailbox (otherwise you could end up
- * creating only a single file per second).
+/*
+ * Open a new (temporary) message in an MH folder.
  */
-void maildir_create_filename (const char *path, HEADER *hdr, char *msg, char *full)
+
+int mh_open_new_message (MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
 {
-  char subdir[_POSIX_PATH_MAX];
-  char suffix[16];
-  struct stat sb;
+  int fd;
+  char path[_POSIX_PATH_MAX];
 
-  /* the maildir format stores the status flags in the filename */
-  suffix[0] = 0;
+  FOREVER 
+  {
+    snprintf (path, _POSIX_PATH_MAX, "%s/.mutt-%s-%d-%d",
+	      dest->path, NONULL (Hostname), (int) getpid (), Counter++);
+    if ((fd = open (path, O_WRONLY | O_EXCL | O_CREAT, 0600)) == -1)
+    {
+      if (errno != EEXIST)
+      {
+	mutt_perror (path);
+	return -1;
+      }
+    }
+    else
+    {
+      msg->path = safe_strdup (path);
+      break;
+    }
+  }
 
+  if ((msg->fp = fdopen (fd, "w")) == NULL)
+  {
+    FREE (&msg->path);
+    close (fd);
+    unlink (path);
+    return (-1);
+  }
+
+  return 0;
+}
+
+static void maildir_flags (char *dest, size_t destlen, HEADER *hdr)
+{
+  *dest = '\0';
+  
   if (hdr && (hdr->flagged || hdr->replied || hdr->read))
   {
-    sprintf (suffix, ":2,%s%s%s",
+    snprintf (dest, destlen, 
+	      ":2,%s%s%s",
 	     hdr->flagged ? "F" : "",
 	     hdr->replied ? "R" : "",
 	     hdr->read ? "S" : "");
   }
+}
+    
+  
+/*
+ * Open a new (temporary) message in a maildir folder.
+ * 
+ * Note that this uses _almost_ the maildir file name format, but
+ * with a {cur,new} prefix.
+ *
+ */
 
+int maildir_open_new_message (MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
+{
+  int fd;
+  char path[_POSIX_PATH_MAX];
+  char suffix[16];
+  char subdir[16];
+
+  maildir_flags (suffix, sizeof (suffix), hdr);
+		 
   if (hdr && (hdr->read || hdr->old))
     strfcpy (subdir, "cur", sizeof (subdir));
   else
@@ -358,172 +412,308 @@ void maildir_create_filename (const char *path, HEADER *hdr, char *msg, char *fu
 
   FOREVER
   {
-    snprintf (msg, _POSIX_PATH_MAX, "%s/%ld.%d_%d.%s%s",
-	      subdir, time (NULL), getpid (), Counter++, NONULL(Hostname), suffix);
-    snprintf (full, _POSIX_PATH_MAX, "%s/%s", path, msg);
-    if (stat (full, &sb) == -1 && errno == ENOENT) return;
-  }
-}
+    snprintf (path, _POSIX_PATH_MAX, "%s/tmp/%s.%ld.%d_%d.%s%s",
+	     dest->path, subdir, time (NULL), getpid (), Counter++,
+	     NONULL (Hostname), suffix);
 
-/* save changes to a message to disk */
-static int mh_sync_message (CONTEXT *ctx, int msgno)
-{
-  HEADER *h = ctx->hdrs[msgno];
-  FILE *f;
-  FILE *d;
-  int rc = -1;
-  char oldpath[_POSIX_PATH_MAX];
-  char newpath[_POSIX_PATH_MAX];
-  
-  snprintf (oldpath, sizeof (oldpath), "%s/%s", ctx->path, h->path);
-  
-  mutt_mktemp (newpath);
-  if ((f = safe_fopen (newpath, "w")) == NULL)
-  {
-    dprint (1, (debugfile, "mh_sync_message: %s: %s (errno %d).\n",
-		newpath, strerror (errno), errno));
-    return (-1);
-  }
+    dprint (2, (debugfile, "maildir_open_new_message (): Trying %s.\n",
+		path));
 
-  rc = mutt_copy_message (f, ctx, h, M_CM_UPDATE, CH_UPDATE | CH_UPDATE_LEN);
-
-  if (rc == 0)
-  {
-    /* replace the original version of the message with the new one */
-    if ((f = freopen (newpath, "r", f)) != NULL)
+    if ((fd = open (path, O_WRONLY | O_EXCL | O_CREAT, 0600)) == -1)
     {
-      unlink (newpath);
-      unlink (oldpath);
-      if ((d = mx_open_file_lock (oldpath, "w")) != NULL)
+      if (errno != EEXIST)
       {
-	mutt_copy_stream (f, d);
-	mx_unlock_file (oldpath, fileno (d));
-	fclose (d);
+	mutt_perror (path);
+	return -1;
       }
-      else
-      {
-	/* mutt_copy_message() will have changed
-	 * some of the internal state of the message,
-	 * but we can't commit it here.
-	 * 
-	 * Reparse later.
-	 *
-	 */
-
-	mutt_free_body (&h->content->parts);
-
-	fclose (f);
-	return (-1);
-      }
-      fclose (f);
     }
     else
     {
-      mutt_perror (newpath);
-      return (-1);
+      dprint (2, (debugfile, "maildir_open_new_message (): Success.\n"));
+      msg->path = safe_strdup (path);
+      break;
     }
-
-    /*
-     * if the status of this message changed, the offsets for the body parts
-     * will be wrong, so free up the memory.  This is ok since it will get
-     * parsed again the next time the user tries to view it.
-     */
-    mutt_free_body (&h->content->parts);
   }
-  else
+
+  if ((msg->fp = fdopen (fd, "w")) == NULL)
   {
-    fclose (f);
-    unlink (newpath);
+    FREE (&msg->path);
+    close (fd);
+    unlink (path);
+    return (-1);
   }
 
-  return (rc);
+  return 0;
+}
+
+
+
+/*
+ * Commit a message to a maildir folder.
+ * 
+ * msg->path contains the file name of a file in tmp/. We take the
+ * flags from this file's name. 
+ *
+ * ctx is the mail folder we commit to.
+ * 
+ * hdr is a header structure to which we write the message's new
+ * file name.  This is used in the mh and maildir folder synch
+ * routines.  When this routine is invoked from mx_commit_message,
+ * hdr is NULL. 
+ *
+ * msg->path looks like this:
+ * 
+ *    tmp/{cur,new}.mutt-HOSTNAME-PID-COUNTER:flags
+ * 
+ * See also maildir_open_new_message().
+ * 
+ */
+
+int maildir_commit_message (CONTEXT *ctx, MESSAGE *msg, HEADER *hdr)
+{
+  char subdir[4];
+  char suffix[16];
+  char path[_POSIX_PATH_MAX];
+  char full[_POSIX_PATH_MAX];
+  char *s;
+
+  /* extract the subdir */
+  s = strrchr (msg->path, '/') + 1;
+  strfcpy (subdir, s, 4);
+
+  /* extract the flags */  
+  if ((s = strchr (s, ':')))
+    strfcpy (suffix, s, sizeof (suffix));
+  else
+    suffix[0] = '\0';
+
+  /* construct a new file name. */
+  FOREVER
+  {
+    snprintf (path, _POSIX_PATH_MAX, "%s/%ld.%d_%d.%s%s", subdir,
+	      time (NULL), getpid(), Counter++, NONULL (Hostname), suffix);
+    snprintf (full, _POSIX_PATH_MAX, "%s/%s", ctx->path, path);
+
+    dprint (2, (debugfile, "maildir_commit_message (): renaming %s to %s.\n",
+		msg->path, full));
+
+    if (safe_rename (msg->path, full) == 0)
+    {
+      if (hdr) 
+      {
+	FREE (&hdr->path);
+	hdr->path = safe_strdup (path);
+      }
+      FREE (&msg->path);
+      return 0;
+    }
+    else if (errno != EEXIST)
+    {
+      mutt_perror (ctx->path);
+      return -1;
+    }
+  }
+}
+
+/* 
+ * commit a message to an MH folder.
+ * 
+ * Essentially the same as the maildir case, but we don't have
+ * to care about flags.
+ *
+ */
+
+int mh_commit_message (CONTEXT *ctx, MESSAGE *msg, HEADER *hdr)
+{
+  DIR *dirp;
+  struct dirent *de;
+  char *cp, *dep;
+  int n, hi = 0;
+  char path[_POSIX_PATH_MAX];
+  char tmp[16];
+
+  if ((dirp = opendir (ctx->path)) == NULL)
+  {
+    mutt_perror (ctx->path);
+    return (-1);
+  }
+  
+  /* figure out what the next message number is */
+  while ((de = readdir (dirp)) != NULL)
+  {
+    dep = de->d_name;
+    if (*dep == ',')
+      dep++;
+    cp = dep;
+    while (*cp)
+    {
+      if (!isdigit ((unsigned char) *cp))
+	break;
+      cp++;
+    }
+    if (!*cp)
+    {
+      n = atoi (dep);
+      if (n > hi)
+	hi = n;
+    }
+  }
+  closedir (dirp);
+
+  /* 
+   * Now try to rename the file to the proper name.
+   * 
+   * Note: We may have to try multiple times, until we find a free
+   * slot.
+   */
+
+  FOREVER
+  {
+    hi++;
+    snprintf (tmp, sizeof (tmp), "%d", hi);
+    snprintf (path, sizeof (path), "%s/%s", ctx->path, tmp);
+    if (safe_rename (msg->path, path) == 0)
+    {
+      if (hdr)
+      {
+	FREE (&hdr->path);
+	hdr->path = safe_strdup (tmp);
+      }
+      FREE (&msg->path);
+      return 0;
+    }
+    else if (errno != EEXIST)
+    {
+      mutt_perror (ctx->path);
+      return -1;
+    }
+  }
+}
+
+/* Sync a message in an MH folder.
+ * 
+ * This code is also used for attachment deletion in maildir
+ * folders.
+ */
+
+static int mh_sync_message (CONTEXT *ctx, int msgno)
+{
+  HEADER *h = ctx->hdrs[msgno];
+  MESSAGE *dest;
+
+  int rc;
+  char oldpath[_POSIX_PATH_MAX];
+  char newpath[_POSIX_PATH_MAX];
+  char partpath[_POSIX_PATH_MAX];
+
+  if ((dest = mx_open_new_message (ctx, h, 0)) == NULL)
+    return -1;
+
+  if ((rc = mutt_copy_message (dest->fp, ctx, h, M_CM_UPDATE, CH_UPDATE | CH_UPDATE_LEN)) == 0)
+  {
+    snprintf (oldpath, _POSIX_PATH_MAX, "%s/%s", ctx->path, h->path);
+    strfcpy  (partpath, h->path, _POSIX_PATH_MAX);
+
+    if (ctx->magic == M_MAILDIR)
+      rc = maildir_commit_message (ctx, dest, h);
+    else
+      rc = mh_commit_message (ctx, dest, h);
+    if (rc == 0)
+      unlink (oldpath);
+
+    /* 
+     * Try to move the new message to the old place.
+     * (MH only.)
+     *
+     * This is important when we are just updating flags.
+     *
+     * Note that there is a race condition against programs which
+     * use the first free slot instead of the maximum message
+     * number.  Mutt does _not_ behave like this.
+     * 
+     * Anyway, if this fails, the message is in the folder, so
+     * all what happens is that a concurrently runnung mutt will
+     * lose flag modifications.
+     */
+
+    if (ctx->magic == M_MH && rc == 0)
+    {
+      snprintf (newpath, _POSIX_PATH_MAX, "%s/%s", ctx->path, h->path);
+      if (safe_rename (newpath, oldpath) == 0)
+      {
+	FREE (&h->path);
+	h->path = safe_strdup (partpath);
+      }
+    }
+  }
+
+  mx_close_message (&dest);
+
+  /* 
+   * The message structure and offsets may have changed, so free it
+   * here.  The message will be reparsed later. 
+   */
+
+  mutt_free_body (&h->content->parts);
+
+  return rc;
 }
 
 static int maildir_sync_message (CONTEXT *ctx, int msgno)
 {
   HEADER *h = ctx->hdrs[msgno];
-  char newpath[_POSIX_PATH_MAX];
-  char partpath[_POSIX_PATH_MAX];
-  char fullpath[_POSIX_PATH_MAX];
-  char oldpath[_POSIX_PATH_MAX];
-  char *p;
 
-  if ((p = strrchr (h->path, '/')) == NULL)
-  {
-    dprint (1, (debugfile, "maildir_sync_message: %s: unable to find subdir!\n",
-		h->path));
-    return (-1);
-  }
-  p++;
-  strfcpy (newpath, p, sizeof (newpath));
-
-  /* kill the previous flags */
-  if ((p = strchr (newpath, ':')) != NULL) *p = 0;
-
-  if (h->replied || h->read || h->flagged)
-  {
-    strcat (newpath, ":2,");
-    if (h->flagged) strcat (newpath, "F");
-    if (h->replied) strcat (newpath, "R");
-    if (h->read) strcat (newpath, "S");
-  }
-
-  /* decide which subdir this message belongs in */
-  strfcpy (partpath, (h->read || h->old) ? "cur" : "new", sizeof (partpath));
-  strcat (partpath, "/"); 
-  strcat (partpath, newpath); 
-  snprintf (fullpath, sizeof (fullpath), "%s/%s", ctx->path, partpath);
-  snprintf (oldpath, sizeof (oldpath), "%s/%s", ctx->path, h->path);
-
-  if (mutt_strcmp (fullpath, oldpath) == 0 && !h->attach_del)
-  {
-    /* message hasn't really changed */
-    return 0;
-  }
-
-  /*
-   * At this point, this should work to actually delete the attachment
-   * without breaking anything else (mh_sync_message doesn't appear to
-   * make any mailbox assumptions except the one file per message, which
-   * is compatible with maildir
-   */
   if (h->attach_del)
   {
-    char tmppath[_POSIX_PATH_MAX];
-    char ftpath[_POSIX_PATH_MAX];
-
-    strfcpy (tmppath, "tmp/", sizeof (tmppath));
-    strcat (tmppath, newpath);
-
-    snprintf (ftpath, sizeof (ftpath), "%s/%s", ctx->path, tmppath);
-    dprint (1, (debugfile, "maildir_sync_message: deleting attachment!\n"));
-
-    if (rename (oldpath, ftpath) != 0)
-    {
-      mutt_perror ("rename");
+    /* when doing attachment deletion, fall back to the MH case. */
+    if (mh_sync_message (ctx, msgno) != 0)
       return (-1);
-    }
-    safe_free ((void **)&h->path);
-    h->path = safe_strdup (tmppath);
-    dprint (1, (debugfile, "maildir_sync_message: deleting attachment2!\n"));
-    mh_sync_message (ctx, msgno);
-    dprint (1, (debugfile, "maildir_sync_message: deleting attachment3!\n"));
-    if (rename (ftpath, fullpath) != 0)
-    {
-      mutt_perror ("rename");
-      return (-1);
-    }
   }
   else
   {
+    /* we just have to rename the file. */
+
+    char newpath[_POSIX_PATH_MAX];
+    char partpath[_POSIX_PATH_MAX];
+    char fullpath[_POSIX_PATH_MAX];
+    char oldpath[_POSIX_PATH_MAX];
+    char suffix[16];
+    char *p;
+    
+    if ((p = strrchr (h->path, '/')) == NULL)
+    {
+      dprint (1, (debugfile, "maildir_sync_message: %s: unable to find subdir!\n",
+		  h->path));
+      return (-1);
+    }
+    p++;
+    strfcpy (newpath, p, sizeof (newpath));
+    
+    /* kill the previous flags */
+    if ((p = strchr (newpath, ':')) != NULL) *p = 0;
+    
+    maildir_flags (suffix, sizeof (suffix), h);
+    
+    snprintf (partpath, sizeof (partpath), "%s/%s%s",
+	      (h->read || h->old) ? "cur" : "new",
+	      newpath, suffix);
+    snprintf (fullpath, sizeof (fullpath), "%s/%s", ctx->path, partpath);
+    snprintf (oldpath, sizeof (oldpath), "%s/%s", ctx->path, h->path);
+    
+    if (mutt_strcmp (fullpath, oldpath) == 0)
+    {
+      /* message hasn't really changed */
+      return 0;
+    }
+    
     if (rename (oldpath, fullpath) != 0)
     {
       mutt_perror ("rename");
       return (-1);
     }
+    safe_free ((void **) &h->path);
+    h->path = safe_strdup (partpath);
   }
-  safe_free ((void **) &h->path);
-  h->path = safe_strdup (partpath);
   return (0);
 }
 
@@ -531,15 +721,8 @@ int mh_sync_mailbox (CONTEXT * ctx)
 {
   char path[_POSIX_PATH_MAX], tmp[_POSIX_PATH_MAX];
   int i, j, rc = 0;
-  
-  i = mh_check_mailbox(ctx, NULL);
 
-#if 0
-  if(i == M_REOPENED || i == M_NEW_MAIL)
-  {
-    mutt_sort_headers(ctx, (i == M_REOPENED));
-  }
-#endif
+  i = mh_check_mailbox(ctx, NULL);
 
   if(i == M_REOPENED || i == M_NEW_MAIL || i < 0)
     return i;
@@ -566,11 +749,14 @@ int mh_sync_mailbox (CONTEXT * ctx)
     else if (ctx->hdrs[i]->changed || ctx->hdrs[i]->attach_del)
     {
       if (ctx->magic == M_MAILDIR)
-	maildir_sync_message (ctx, i);
+      {
+	if (maildir_sync_message (ctx, i) == -1)
+	  return -1;
+      }
       else
       {
-	/* XXX - seems ok to ignore errors, but might want to warn... */
-	mh_sync_message (ctx, i);
+	if (mh_sync_message (ctx, i) == -1)
+	  return -1;
       }
     }
   }

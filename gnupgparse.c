@@ -146,6 +146,9 @@ static pgp_key_t *parse_pub_line (char *buf, int *is_subkey, pgp_key_t *k)
 	  case 'r':
 	    k->flags |= KEYFLAG_REVOKED;
 	    break;
+	  case 'd':
+	    k->flags |= KEYFLAG_DISABLED;
+	    break;
 	  case 'n':
 	    trust = 1;
 	    break;

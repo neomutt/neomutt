@@ -18,8 +18,9 @@
 
 #include "mutt.h"
 #include "buffy.h"
-#include "mx.h"
 #include "mailbox.h"
+#include "mx.h"
+
 #ifdef USE_IMAP
 #include "imap.h"
 #endif

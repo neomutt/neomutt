@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>
- * 
+ * Copyright (C) 1999 Thomas Roessler <roessler@guug.de>
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
@@ -20,6 +21,11 @@
  * This header file contains prototypes for internal functions used by the
  * generic mailbox api.  None of these functions should be called directly.
  */
+
+#ifndef _MX_H
+#define _MX_H
+
+#include "mailbox.h"
 
 /* supported mailbox formats */
 enum
@@ -54,7 +60,12 @@ int mh_check_mailbox (CONTEXT *, int *);
 int mh_parse_sequences (CONTEXT *, const char *);
 
 int maildir_read_dir (CONTEXT *);
-void maildir_create_filename (const char *, HEADER *, char *, char *);
+
+int maildir_commit_message (CONTEXT *, MESSAGE *, HEADER *);
+int mh_commit_message (CONTEXT *, MESSAGE *, HEADER *);
+
+int maildir_open_new_message (MESSAGE *, CONTEXT *, HEADER *);
+int mh_open_new_message (MESSAGE *, CONTEXT *, HEADER *);
 
 int mbox_strict_cmp_headers (const HEADER *, const HEADER *);
 int mutt_reopen_mailbox (CONTEXT *, int *);
@@ -65,5 +76,9 @@ void mx_update_tables (CONTEXT *, int);
 
 FILE *mx_open_file_lock (const char *, const char *);
 
+
 int mx_lock_file (const char *, int, int, int, int);
 int mx_unlock_file (const char *path, int fd);
+
+
+#endif

@@ -100,6 +100,7 @@ WHERE LIST *HeaderOrderList INITVAL(0);
 WHERE LIST *Ignore INITVAL(0);
 WHERE LIST *UnIgnore INITVAL(0);
 WHERE LIST *MailLists INITVAL(0);
+WHERE LIST *SubscribedLists INITVAL(0);
 
 /* bit vector for boolean variables */
 #ifdef MAIN_C

@@ -724,7 +724,8 @@ static LIST *pgp_add_string_to_hints (LIST *hints, const char *str)
   t = strtok (scratch, " ,.:\"()<>\n");
   while (t)
   {
-    hints = mutt_add_list (hints, t);
+    if (strlen (t) > 3)
+      hints = mutt_add_list (hints, t);
     t = strtok (NULL, " ,.:\"()<>\n");
   }
 

@@ -119,6 +119,17 @@ void safe_free (void **p)
   }
 }
 
+int safe_fclose (FILE **f)
+{
+  int r = 0;
+  
+  if (*f)
+    r = fclose (*f);
+      
+  *f = NULL;
+  return r;
+}
+
 char *safe_strdup (const char *s)
 {
   char *p;
@@ -251,6 +262,59 @@ int safe_symlink(const char *oldpath, const char *newpath)
     return -1;
   }
   
+  return 0;
+}
+
+/* 
+ * This function is supposed to do nfs-safe renaming of files.
+ * 
+ * Warning: We don't check whether src and target are equal.
+ */
+
+int safe_rename (const char *src, const char *target)
+{
+  struct stat ssb, tsb;
+
+  if (!src || !target)
+    return -1;
+
+  if (link (src, target) != 0)
+  {
+    return -1;
+  }
+
+  /*
+   * Stat both links and check if they are equal.
+   */
+  
+  if (stat (src, &ssb) == -1)
+  {
+    return -1;
+  }
+  
+  if (stat (target, &tsb) == -1)
+  {
+    return -1;
+  }
+
+  /* 
+   * pretend that the link failed because the target file
+   * did already exist.
+   */
+
+  if (compare_stat (&ssb, &tsb) == -1)
+  {
+    errno = EEXIST;
+    return -1;
+  }
+
+  /*
+   * Unlink the original link.  Should we really ignore the return
+   * value here? XXX
+   */
+
+  unlink (src);
+
   return 0;
 }
 

@@ -340,6 +340,7 @@ const struct mapping_t SortKeyMethods[] = {
 
 static int parse_list (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unlist (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+static int parse_unlists (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_alias (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unalias (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_ignore (BUFFER *, BUFFER *, unsigned long, BUFFER *);
@@ -348,6 +349,7 @@ static int parse_source (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_set (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_my_hdr (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unmy_hdr (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+static int parse_subscribe (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 
 struct command_t
 {
@@ -388,14 +390,16 @@ struct command_t Commands[] = {
   { "send-hook",	mutt_parse_hook,	M_SENDHOOK },
   { "set",		parse_set,		0 },
   { "source",		parse_source,		0 },
+  { "subscribe",	parse_subscribe,	0 },
   { "toggle",		parse_set,		M_SET_INV },
   { "unalias",		parse_unalias,		0 },
   { "unhdr_order",	parse_unlist,		UL &HeaderOrderList },
   { "unignore",		parse_unignore,		0 },
-  { "unlists",		parse_unlist,		UL &MailLists },
+  { "unlists",		parse_unlists,		0 },
   { "unmono",		mutt_parse_unmono,	0 },
   { "unmy_hdr",		parse_unmy_hdr,		0 },
   { "unscore",		mutt_parse_unscore,	0 },
   { "unset",		parse_set,		M_SET_UNSET },
+  { "unsubscribe",	parse_unlist,		UL &SubscribedLists },
   { NULL }
 };

@@ -300,6 +300,7 @@ int mutt_any_key_to_continue (const char *s)
   tcsetattr (f, TCSADRAIN, &old);
   close (f);
   fputs ("\r\n", stdout);
+  mutt_clear_error ();
   return (ch);
 }
 

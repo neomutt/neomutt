@@ -405,7 +405,6 @@ typedef struct list_t
 } LIST;
 
 #define mutt_new_list() safe_calloc (1, sizeof (LIST))
-void mutt_add_to_list (LIST **, BUFFER *);
 void mutt_free_list (LIST **);
 int mutt_matches_ignore (const char *, LIST *);
 
@@ -498,7 +497,7 @@ typedef struct body
 				 * encoding update.
 				 */
   
-  unsigned int type : 3;        /* content-type primary type */
+  unsigned int type : 4;        /* content-type primary type */
   unsigned int encoding : 3;    /* content-transfer-encoding */
   unsigned int disposition : 2; /* content-disposition */
   unsigned int use_disp : 1;    /* Content-Disposition field printed? */
