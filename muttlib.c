@@ -369,8 +369,10 @@ char *_mutt_expand_path (char *s, size_t slen, int rx)
       case '+':    
       {
 #ifdef USE_IMAP
-	/* special case: folder = {host}: don't append slash */
-	if (mx_is_imap (NONULL (Maildir)) && Maildir[strlen (Maildir) - 1] == '}')
+	/* if folder = {host} or imap[s]://host/: don't append slash */
+	if (mx_is_imap (NONULL (Maildir)) &&
+	    (Maildir[strlen (Maildir) - 1] == '}' ||
+	     Maildir[strlen (Maildir) - 1] == '/'))
 	  strfcpy (p, NONULL (Maildir), sizeof (p));
 	else
 #endif
