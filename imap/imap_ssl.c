@@ -365,7 +365,7 @@ static int ssl_check_certificate (sslsockdata * data)
         break;
       case OP_MAX + 3:		/* accept always */
         done = 0;
-        if ((fp = fopen (SslCertFile, "w+t")))
+        if ((fp = fopen (SslCertFile, "a+t")))
 	{
 	  if (PEM_write_X509 (fp, data->cert))
 	    done = 1;
