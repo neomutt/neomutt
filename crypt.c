@@ -22,7 +22,7 @@
 
 #include "mutt.h"
 #include "mutt_curses.h"
-#include "crypt.h"
+#include "mutt_crypt.h"
 #include "mime.h"
 #include "copy.h"
 

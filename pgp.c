@@ -53,7 +53,7 @@
 
 #ifdef HAVE_PGP
 
-#include "crypt.h"
+#include "mutt_crypt.h"
 
 
 

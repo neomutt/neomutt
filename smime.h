@@ -19,7 +19,7 @@
 
 #ifdef HAVE_SMIME
 
-#include "crypt.h"
+#include "mutt_crypt.h"
 
 WHERE char *SmimeDefaultKey;
 WHERE char *SmimeCryptAlg;
