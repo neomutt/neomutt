@@ -1,9 +1,9 @@
 # $Id$
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.3.25\n"
+"Project-Id-Version: Mutt 1.5.1\n"
 "POT-Creation-Date: 2002-05-02 01:23+0200\n"
-"PO-Revision-Date: 2002-01-19 14:33+01:00\n"
+"PO-Revision-Date: 2002-05-02 21:18+02:00\n"
 "Last-Translator: Jörgen Tegnér <jorgen.tegner@telia.se>\n"
 "Language-Team: Swedish <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -313,9 +313,8 @@ msgid "Invoking PGP..."
 msgstr "Startar PGP..."
 
 #: commands.c:123
-#, fuzzy
 msgid "Invoking OpenSSL..."
-msgstr "Startar PGP..."
+msgstr "Startar OpenSSL..."
 
 #: commands.c:132 mbox.c:740
 msgid "Could not create temporary file!"
@@ -330,18 +329,16 @@ msgid "Could not copy message"
 msgstr "Kunde inte kopiera meddelandet"
 
 #: commands.c:200
-#, fuzzy
 msgid "S/MIME signature successfully verified."
-msgstr "PGP-signaturen verifierades framgångsrikt."
+msgstr "Signaturen för S/MIME verifierades framgångsrikt."
 
 #: commands.c:202
 msgid "S/MIME certificate owner does not match sender."
-msgstr ""
+msgstr "Ägarens certifikat (S/MIME) matchar inte avsändarens."
 
 #: commands.c:205
-#, fuzzy
 msgid "S/MIME signature could NOT be verified."
-msgstr "PGP-signaturen kunde INTE verifieras."
+msgstr "Signaturen för S/MIME kunde INTE verifieras."
 
 #: commands.c:212
 msgid "PGP signature successfully verified."
@@ -548,14 +545,12 @@ msgid "<default>"
 msgstr "<standard>"
 
 #: compose.c:159
-#, fuzzy
 msgid "Encrypt with: "
-msgstr "Kryptera"
+msgstr "Kryptera med: "
 
 #: compose.c:175
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
-msgstr "(k)ryptera, (s)ignera, signera s(o)m, (b)åda, eller sk(i)ppa det?"
+msgstr "PGP: (k)ryptera, (s)ignera, signera s(o)m, (b)åda, eller sk(i)ppa det?"
 
 #: compose.c:176
 msgid "esabf"
@@ -567,24 +562,22 @@ msgid "Sign as: "
 msgstr "Signera som: "
 
 #: compose.c:231
-#, fuzzy
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (f)orget it? "
-msgstr "(k)ryptera, (s)ignera, signera s(o)m, (b)åda, eller sk(i)ppa det?"
+msgstr "S/MIME: (k)ryptera, (s)ignera, signera s(o)m, (b)åda, eller sk(i)ppa det?"
 
 #: compose.c:232
-#, fuzzy
 msgid "ewsabf"
 msgstr "ksobi"
 
 #: compose.c:240
 msgid ""
 "1: DES, 2: Tripple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, or (f)orget it? "
-msgstr ""
+msgstr "1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128 eller (g)löm det?"
 
 #: compose.c:242
 msgid "12345f"
-msgstr ""
+msgstr "12345g"
 
 #: compose.c:350
 #, c-format
@@ -699,48 +692,45 @@ msgstr "Meddelandet skrevs."
 
 #: compose.c:1320
 msgid "S/MIME already selected. Clear & continue ? "
-msgstr ""
+msgstr "S/MIME har redan valts. Rensa och fortsätt?"
 
 #: compose.c:1350
 msgid "PGP already selected. Clear & continue ? "
-msgstr ""
+msgstr "PGP har redan valts. Rensa och fortsätt?"
 
 #: crypt.c:70
 #, c-format
 msgid " (current time: %c)"
-msgstr ""
+msgstr " (aktuell tid: %c)"
 
 #: crypt.c:76
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s output follows%s --]\n"
-msgstr "[-- Utdata från PGP följer (aktuell tid: %c) --]\n"
+msgstr "[-- %s utdata följer%s --]\n"
 
 #: crypt.c:93
-#, fuzzy
 msgid "Passphrase(s) forgotten."
-msgstr "Har glömt lösenfras för PGP."
+msgstr "Lösenfrasen är glömd."
 
 #: crypt.c:132
 msgid "Enter PGP passphrase:"
 msgstr "Mata in lösenfras för PGP:"
 
 #: crypt.c:150
-#, fuzzy
 msgid "Enter SMIME passphrase:"
-msgstr "Mata in lösenfras för PGP:"
+msgstr "Mata in lösenfras för S/MIME:"
 
 #: crypt.c:185
-#, fuzzy
 msgid "Create an inline PGP message?"
-msgstr "Skapa ett meddelande av typ 'application/pgp'?"
+msgstr "Skapa ett infogat PGP-meddelande?"
 
 #: crypt.c:512 crypt.c:554
 msgid "Trying to extract PGP keys...\n"
-msgstr ""
+msgstr "Försöker extrahera PGP-nycklar...\n"
 
 #: crypt.c:534 crypt.c:572
 msgid "Trying to extract S/MIME certificates...\n"
-msgstr ""
+msgstr "Försöker extrahera S/MIME-certifikat...\n"
 
 #: crypt.c:696
 msgid ""
@@ -771,7 +761,6 @@ msgstr ""
 #. XXX - WHAT!?!?!?
 #. Now display the signed body
 #: crypt.c:770
-#, fuzzy
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -788,11 +777,10 @@ msgstr ""
 "\n"
 
 #: crypt.c:782
-#, fuzzy
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
-msgstr "[-- Slut på signerat data --]\n"
+msgstr "\n[-- Slut på signerat data --]\n"
 
 #: curs_lib.c:153
 msgid "yes"
@@ -1925,9 +1913,8 @@ msgid "move the cursor to the end of the word"
 msgstr "flytta markören till slutet av ordet"
 
 #: keymap_alldefs.h:73
-#, fuzzy
 msgid "scroll down through the history list"
-msgstr "rulla upp genom historielistan"
+msgstr "rulla ner genom historielistan"
 
 #: keymap_alldefs.h:74
 msgid "scroll up through the history list"
@@ -2394,19 +2381,16 @@ msgid "make decrypted copy"
 msgstr "skapa avkrypterad kopia"
 
 #: keymap_alldefs.h:190
-#, fuzzy
 msgid "wipe passphrase(s) from memory"
-msgstr "rensa lösenfras (PGP) från minnet."
+msgstr "rensa lösenfrasen från minnet."
 
 #: keymap_alldefs.h:191
-#, fuzzy
 msgid "extract supported public keys"
-msgstr "extrahera öppna nycklar (PGP)"
+msgstr "extrahera stödda öppna nycklar"
 
 #: keymap_alldefs.h:192
-#, fuzzy
 msgid "show S/MIME options"
-msgstr "visa val för PGP"
+msgstr "visa val för S/MIME"
 
 #: lib.c:59 lib.c:74 lib.c:105
 msgid "Out of memory!"
@@ -2489,7 +2473,6 @@ msgstr ""
 "USA.\n"
 
 #: main.c:88
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -2522,12 +2505,10 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"användning: mutt [ -nRyzZ ] [ -e <kommando> ] [ -F <fil> ] [ -m <typ> ] [ -f "
-"<fil> ]\n"
-"            mutt [ -nx ] [ -e <kommando> ] [ -a <fil> ] [ -F <fil> ] [ -H "
-"<fil> ] [ \n"
-"             -i <fil> ] [ -s <ärende> ] [ -b <adress> ] [ -c <adress> ] "
-"<adress> [ ... ]\n"
+"användning: mutt [ -nRyzZ ] [ -e <kommando> ] [ -F <fil> ] [ -m <typ> ] [ -f <fil> ]\n"
+"            mutt [ -nR ] [ -e <kommando> ] [ -F <fil> ] -Q <variabel> [ -Q <variabel> ]\n"
+"            mutt [ -nx ] [ -e <kommando> ] [ -a <fil> ] [ -F <fil> ] [ -H <fil> ] [\n"
+"             -i <fil> ] [ -s <ärende> ] [ -b <adress> ] [ -c <adress> ] <adress> [ ... ]\n"
 "            mutt [ -n ] [ -e <kommando> ] [ -F <fil> ] -p\n"
 "            mutt -v[v]\n"
 "\n"
@@ -2543,16 +2524,14 @@ msgstr ""
 "  -m <typ>\tange typen för den normala brevlådan\n"
 "  -n\t\thindrar Mutt att läsa systemets Muttrc\n"
 "  -p\t\tåterkalla ett uppskjutet meddelande\n"
+"  -Q <variabel>\tbegär värdet av en konfigurationsvariabel\n"
 "  -R\t\töppna brevlåda med endast läsmöjligheter\n"
-"  -s <ärende>\tange ett ärende (måste ha citationstecken om det innehåller "
-"blanksteg)\n"
+"  -s <ärende>\tange ett ärende (måste ha citationstecken om det innehåller blanksteg)\n"
 "  -v\t\tvisa version och definitioner för kompileringen\n"
 "  -x\t\tsimulera mailx's sändläge\n"
 "  -y\t\tvälj en från listan med brevlådor\n"
-"  -z\t\tavsluta omedelbart om det inte finns några nya meddelanden i "
-"brevlådan\n"
-"  -Z\t\töppna den första brevlådan med ett nytt meddelande, avsluta "
-"omedelbart om inget nytt finns\n"
+"  -z\t\tavsluta omedelbart om det inte finns några nya meddelanden i brevlådan\n"
+"  -Z\t\töppna den första brevlådan med ett nytt meddelande, avsluta omedelbart om inget nytt finns\n"
 "  -h\t\tvisa den här hjälptexten"
 
 #: main.c:149
@@ -3467,12 +3446,11 @@ msgstr "Inga uppskjutna meddelanden."
 
 #: postpone.c:444 postpone.c:465 postpone.c:494
 msgid "Illegal PGP header"
-msgstr "Otillåtet brevhuvud i PGP"
+msgstr "Otillåtet brevhuvud för PGP"
 
 #: postpone.c:485
-#, fuzzy
 msgid "Illegal S/MIME header"
-msgstr "Otillåtet brevhuvud i PGP"
+msgstr "Otillåtet brevhuvud för S/MIME"
 
 #: query.c:45
 msgid "New Query"
@@ -3551,9 +3529,8 @@ msgid "Print attachment?"
 msgstr "Skriv ut bilaga?"
 
 #: recvattach.c:906
-#, fuzzy
 msgid "Can't decrypt encrypted message!"
-msgstr "Kan inte hitta några märkta meddelanden."
+msgstr "Kan inte avkryptera de krypterade meddelandena."
 
 #: recvattach.c:920
 msgid "Attachments"
@@ -3568,9 +3545,8 @@ msgid "Can't delete attachment from POP server."
 msgstr "Kan inte ta bort meddelanden från POP-servern."
 
 #: recvattach.c:1031
-#, fuzzy
 msgid "Deletion of attachments from encrypted messages is unsupported."
-msgstr "Stöd saknas att ta bort bilagor från PGP-meddelanden."
+msgstr "Stöd saknas att ta bort bilagor från krypterade meddelanden."
 
 #: recvattach.c:1051 recvattach.c:1068
 msgid "Only deletion of multipart attachments is supported."
@@ -3864,149 +3840,128 @@ msgstr "Fångade signal %d...  Avslutar.\n"
 
 #: smime.c:136
 msgid "S/MIME messages with no hints on content are unsupported."
-msgstr ""
+msgstr "S/MIME-meddelanden utan ledtrådar på sammanhanget stöds inte."
 
 #: smime.c:365
 msgid "Trusted   "
-msgstr ""
+msgstr "Betrodd   "
 
 #: smime.c:368
 msgid "Verified  "
-msgstr ""
+msgstr "Verifierad   "
 
 #: smime.c:371
 msgid "Unverified"
-msgstr ""
+msgstr "Overifierad   "
 
 #: smime.c:374
-#, fuzzy
 msgid "Expired   "
-msgstr "Avsluta "
+msgstr "Utgången   "
 
 #: smime.c:377
 msgid "Revoked   "
-msgstr ""
+msgstr "Återkallad   "
 
 #: smime.c:380
-#, fuzzy
 msgid "Invalid   "
-msgstr "Ogiltig månad: %s"
+msgstr "Ogiltig   "
 
 #: smime.c:383
-#, fuzzy
 msgid "Unknown   "
-msgstr "Okänd"
+msgstr "Okänd   "
 
 #: smime.c:412
-#, fuzzy
 msgid "Enter keyID: "
-msgstr "Ange nyckel-ID för %s: "
+msgstr "Ange nyckel-ID: "
 
 #: smime.c:435
-#, fuzzy, c-format
+#, c-format
 msgid "S/MIME certificates matching \"%s\"."
-msgstr "PGP-nycklar som passar \"%s\"."
+msgstr "S/MIME-nycklar som passar \"%s\"."
 
 #: smime.c:584 smime.c:653 smime.c:674
 #, c-format
 msgid "ID %s is unverified. Do you want to use it for %s ?"
-msgstr ""
+msgstr "ID %s är overifierad. Vill du använda det till %s?"
 
 #: smime.c:588 smime.c:657
-#, fuzzy, c-format
+#, c-format
 msgid "Use (untrusted!) ID %s for %s ?"
-msgstr "Använd nyckel med ID = \"%s\" för %s?"
+msgstr "Använd ID (som vi inte litar på) %s till %s?"
 
 #: smime.c:591 smime.c:660
-#, fuzzy, c-format
+#, c-format
 msgid "Use ID %s for %s ?"
-msgstr "Använd nyckel med ID = \"%s\" för %s?"
+msgstr "Använd ID %s till %s?"
 
 #: smime.c:686
 #, c-format
 msgid "Warning: You have not yet decided to trust ID %s. (any key to continue)"
-msgstr ""
+msgstr "Varning: du har ännu inte valt att lita på ID %s. (forstätt med valfri tangent)"
 
 #: smime.c:852
 #, c-format
 msgid "No (valid) certificate found for %s."
-msgstr ""
+msgstr "Inga (giltiga) certifikat hittades för %s."
 
 #: smime.c:907 smime.c:935 smime.c:1000 smime.c:1044 smime.c:1109 smime.c:1184
-#, fuzzy
 msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "[-- Fel: kunde inte starta PGP-process! --]\n"
+msgstr "Fel: kunde inte skapa S/MIME-process!"
 
 #: smime.c:1262
-#, fuzzy
 msgid "no certfile"
-msgstr "Kan inte skapa filter"
+msgstr "ingen certifikatfil"
 
 #: smime.c:1265
-#, fuzzy
 msgid "no mbox"
-msgstr "(ingen brevlåda)"
+msgstr "ingen mbox"
 
 #. fatal error while trying to encrypt message
 #: smime.c:1408
 msgid "No output from OpenSSL.."
-msgstr ""
+msgstr "Inget resultat från OpenSSL..."
 
 #: smime.c:1446
-#, fuzzy
 msgid "Warning: Intermediate certificate not found."
-msgstr "Varning: kunde inte spara certifikat"
+msgstr "Varning: temporärt certifikat kunde inte hittas."
 
 #: smime.c:1491
-#, fuzzy
 msgid "Can't open OpenSSL subprocess!"
-msgstr "Kan inte starta PGP-process!"
+msgstr "Kan inte starta S/MIME-process!"
 
 #: smime.c:1529
 msgid "No output from OpenSSL..."
-msgstr ""
+msgstr "Inget resultat från OpenSSL..."
 
 #: smime.c:1694 smime.c:1816
-#, fuzzy
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
-msgstr ""
-"[-- Slut på utdata från PGP --]\n"
-"\n"
+msgstr "[-- Slut på utdata från S/MIME --]\n\n"
 
 #: smime.c:1777 smime.c:1787
-#, fuzzy
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- Fel: kunde inte starta PGP-process! --]\n"
+msgstr "[-- Fel: kunde inte starta S/MIME-process! --]\n"
 
 #: smime.c:1820
-#, fuzzy
 msgid "[-- The following data is S/MIME encrypted --]\n"
-msgstr ""
-"[-- Följande data är krypterad enligt PGP/MIME --]\n"
-"\n"
+msgstr "[-- Följande data är krypterad enligt S/MIME --]\n\n"
 
 #: smime.c:1823
-#, fuzzy
 msgid "[-- The following data is S/MIME signed --]\n"
-msgstr ""
-"[-- Följande data är signerat --]\n"
-"\n"
+msgstr "[-- Följande data är signerat enlift S/MIME --]\n\n"
 
 #: smime.c:1887
-#, fuzzy
 msgid ""
 "\n"
 "[-- End of S/MIME encrypted data. --]\n"
-msgstr "[-- Slut på data krypterad enligt PGP/MIME --]\n"
+msgstr "\n[-- Slut på data krypterad enligt S/MIME --]\n"
 
 #: smime.c:1889
-#, fuzzy
 msgid ""
 "\n"
 "[-- End of S/MIME signed data. --]\n"
-msgstr "[-- Slut på signerat data --]\n"
+msgstr "\n[-- Slut på signerat data enligt S/MIME --]\n"
 
 #: sort.c:201
 msgid "Sorting mailbox..."
