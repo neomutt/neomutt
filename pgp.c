@@ -1029,6 +1029,20 @@ BODY *pgp_sign_message (BODY *a)
   return (a);
 }
 
+static short is_numerical_keyid (const char *s)
+{
+  /* or should we require the "0x"? */
+  if (strncmp (s, "0x", 2) == 0)
+    s += 2;
+  if (strlen (s) % 8)
+    return 0;
+  while (*s)
+    if (strchr ("0123456789ABCDEFabcdef", *s++) == NULL)
+      return 0;
+  
+  return 1;
+}
+
 /* This routine attempts to find the keyids of the recipients of a message.
  * It returns NULL if any of the keys can not be found.
  */
@@ -1078,6 +1092,13 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
       snprintf (buf, sizeof (buf), _("Use keyID = \"%s\" for %s?"), keyID, p->mailbox);
       if ((r = mutt_yesorno (buf, M_YES)) == M_YES)
       {
+	if (is_numerical_keyid (keyID))
+	{
+	  if (strncmp (keyID, "0x", 2) == 0)
+	    keyID += 2;
+	  goto bypass_selection;		/* you don't see this. */
+	}
+	
 	/* check for e-mail address */
 	if ((t = strchr (keyID, '@')) && 
 	    (addr = rfc822_parse_adrlist (NULL, keyID)))
@@ -1118,6 +1139,7 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
 
     keyID = pgp_keyid (key);
     
+  bypass_selection:
     keylist_size += mutt_strlen (keyID) + 4;
     safe_realloc ((void **)&keylist, keylist_size);
     sprintf (keylist + keylist_used, "%s0x%s", keylist_used ? " " : "",	/* __SPRINTF_CHECKED__ */
