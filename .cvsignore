@@ -2,6 +2,7 @@
 Makefile
 Makefile.in
 Muttrc
+Muttrc.head
 aclocal.m4
 config.h
 config.h.in
@@ -9,6 +10,7 @@ configure
 config.cache
 config.log
 config.status
+flea
 keymap_alldefs.h
 keymap_defs.h
 makedoc
