@@ -111,12 +111,19 @@ void mutt_signal_init (void)
   /* we want to avoid race conditions */
   sigaddset (&act.sa_mask, SIGTSTP);
 
+  act.sa_handler = sighandler;
+
+  /* we want SIGALRM to abort the current syscall, so we do this before
+   * setting the SA_RESTART flag below.  currently this is only used to
+   * timeout on a connect() call in a reasonable amout of time.
+   */
+  sigaction (SIGALRM, &act, NULL);
+
   /* we also don't want to mess with interrupted system calls */
 #ifdef SA_RESTART
   act.sa_flags = SA_RESTART;
 #endif
 
-  act.sa_handler = sighandler;
   sigaction (SIGCONT, &act, NULL);
   sigaction (SIGTSTP, &act, NULL);
   sigaction (SIGINT, &act, NULL);
@@ -217,4 +224,17 @@ void mutt_unblock_signals_system (int catch)
 
     unset_option (OPTSYSSIGNALSBLOCKED);
   }
+}
+
+void mutt_allow_interrupt (int disposition)
+{
+  struct sigaction sa;
+  
+  memset (&sa, 0, sizeof sa);
+  sa.sa_handler = sighandler;
+#ifdef SA_RESTART
+  if (disposition == 0)
+    sa.sa_flags |= SA_RESTART;
+#endif
+  sigaction (SIGINT, &sa, NULL);
 }

@@ -125,6 +125,7 @@ extern unsigned char QuadOptions[];
 
 WHERE unsigned short Counter INITVAL (0);
 
+WHERE short ConnectTimeout;
 WHERE short HistSize;
 WHERE short PagerContext;
 WHERE short PagerIndexLines;

@@ -319,6 +319,13 @@ struct option_t MuttVars[] = {
   ** When set, Mutt will prompt for confirmation when saving messages to a
   ** mailbox which does not yet exist before creating it.
   */
+  { "connect_timeout",	DT_NUM,	R_NONE, UL &ConnectTimeout, 30 },
+  /*
+  ** .pp
+  ** Causes Mutt to timeout a network connection (for IMAP or POP) after this
+  ** many seconds if the connection is not able to be established.  A negative
+  ** value causes Mutt to wait indefinitely for the connection to succeed.
+  */
   { "copy",		DT_QUAD, R_NONE, OPT_COPY, M_YES },
   /*
   ** .pp

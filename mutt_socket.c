@@ -219,6 +219,8 @@ static int socket_connect (int fd, struct sockaddr* sa)
 {
   int sa_size;
   int rc;
+  int save_errno;
+
   /* old first_try_without_preconnect removed for now. unset $preconnect
      first. */
 
@@ -229,10 +231,11 @@ static int socket_connect (int fd, struct sockaddr* sa)
     dprint (1, (debugfile, "Preconnect result: %d\n", rc));
     if (rc)
     {
-      mutt_perror (_("Preconnect command failed."));
-      sleep (1);
+	save_errno = errno;
+	mutt_perror (_("Preconnect command failed."));
+	sleep (1);
 
-      return -1;
+      return save_errno;
     }
   }
 
@@ -246,14 +249,25 @@ static int socket_connect (int fd, struct sockaddr* sa)
     return -1;
   }
   
+  if (ConnectTimeout > 0)
+      alarm (ConnectTimeout);
+
+  mutt_allow_interrupt (1);
+
+  save_errno = 0;
+
   if (connect (fd, sa, sa_size) < 0)
   {
-    dprint (2, (debugfile, "Connection failed. errno: %d...\n", errno));
-
-    return errno;
+      save_errno = errno;
+      dprint (2, (debugfile, "Connection failed. errno: %d...\n", errno));
+      SigInt = 0;	/* reset in case we caugh SIGINTR while in connect() */
   }
-  
-  return 0;
+
+  if (ConnectTimeout > 0)
+      alarm (0);
+  mutt_allow_interrupt (0);
+
+  return save_errno;
 }
 
 /* socket_new_conn: allocate and initialise a new connection. */
@@ -322,10 +336,9 @@ int raw_socket_open (CONNECTION* conn)
     fd = socket (cur->ai_family, cur->ai_socktype, cur->ai_protocol);
     if (fd >= 0)
     {
-      if (socket_connect (fd, res->ai_addr) == 0)
+      if ((rc = socket_connect (fd, res->ai_addr)) == 0)
       {
 	conn->fd = fd;
-	rc = 0;
 	break;
       }
       else
@@ -365,10 +378,9 @@ int raw_socket_open (CONNECTION* conn)
 
     if (fd > 0)
     {
-      if (socket_connect (fd, (struct sockaddr*) &sin) == 0)
+      if ((rc = socket_connect (fd, (struct sockaddr*) &sin) == 0))
       {
 	conn->fd = fd;
-	rc = 0;
 	break;
       }
       else
@@ -380,10 +392,7 @@ int raw_socket_open (CONNECTION* conn)
   if (rc)
   {
     mutt_error (_("Could not connect to %s (%s)."), conn->account.host,
-		rc == ETIMEDOUT ? "timed out" :
-		rc == ECONNREFUSED ? "connection refused" :
-		rc == ENETUNREACH ? "host unreachable" :
-		"unknown error");
+	    (rc > 0) ? strerror (rc) : _("unknown error"));
     sleep (2);
   }
   
