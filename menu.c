@@ -811,7 +811,7 @@ int mutt_menuLoop (MUTTMENU *menu)
 	{
 	  if (menu->max)
 	  {
-	    short i = menu->tag (menu, menu->current);
+	    int i = menu->tag (menu, menu->current);
 	    menu->tagged += i;
 	    if (i && option (OPTRESOLVE) && menu->current < menu->max - 1)
 	    {
