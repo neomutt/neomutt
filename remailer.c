@@ -686,7 +686,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
       if ((j = chain->ch[i]))
 	t = type2_list[j]->shortname;
       else
-	t = "0";
+	t = "*";
       
       *chainp = mutt_add_list (*chainp, t);
     }
@@ -748,15 +748,18 @@ int mix_send_message (LIST *chain, const char *tempfile)
 {
   char cmd[HUGE_STRING];
   char tmp[HUGE_STRING];
+  char cd_quoted[STRING];
   int i;
 
-  snprintf (cmd, sizeof (cmd), "cat %s | %s -m -l", tempfile, Mixmaster);
-  for (; chain; chain = chain->next)
+  snprintf (cmd, sizeof (cmd), "cat %s | %s -m ", tempfile, Mixmaster);
+  
+  for (i = 0; chain; chain = chain->next, i = 1)
   {
     strfcpy (tmp, cmd, sizeof (tmp));
-    snprintf (cmd, sizeof (cmd), "%s %s", tmp, (char *) chain->data);
+    mutt_quote_filename (cd_quoted, sizeof (cd_quoted), (char *) chain->data);
+    snprintf (cmd, sizeof (cmd), "%s%s%s", tmp, i ? "," : " -l ", cd_quoted);
   }
-  
+
   if (!option (OPTNOCURSES))
     mutt_endwin (NULL);
   
