@@ -1,3 +1,8 @@
+2003-08-02 11:01:09  Horvath Szabolcs  <horvaths@fi.inf.elte.hu>
+(roessler)
+
+	* po/hu.po: update
+
 2003-07-29 10:11:05  Edmund GRIMLEY EVANS  <edmundo@rano.org>  (roessler)
 
 	* pager.c: It seems that Solaris has an incorrect implementation
