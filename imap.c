@@ -1337,7 +1337,16 @@ static int imap_open_connection (IMAP_DATA *idata, CONNECTION *conn)
       return (-1);
     }
   }
-  else if (mutt_strncmp ("* PREAUTH", buf, 9) != 0)
+  else if (mutt_strncmp ("* PREAUTH", buf, 9) == 0)
+  {
+    if (imap_check_capabilities(idata) != 0)
+    {
+      close (conn->fd);
+      idata->state = IMAP_DISCONNECTED;
+      return (-1);
+    }
+  } 
+  else
   {
     imap_error ("imap_open_connection()", buf);
     close (conn->fd);
