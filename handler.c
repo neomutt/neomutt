@@ -908,8 +908,6 @@ static void flowed_quote (STATE *s, int level)
   
   for (i = 0; i < level; i++)
     state_putc ('>', s);
-  if ((s->flags & M_DISPLAY) && level)
-    state_putc (' ', s);
 }
 
 static int flowed_maybe_quoted (char *cont)
