@@ -1889,7 +1889,8 @@ int mutt_index_menu (void)
 
 #ifdef USE_IMAP
   /* Close all open IMAP connections */
-  imap_logout_all ();
+  if (!attach_msg)
+    imap_logout_all ();
 #endif
 
   mutt_menuDestroy (&menu);
