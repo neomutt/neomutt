@@ -114,7 +114,7 @@ static int fetch_auth (char *line, void *data)
   }
   else
   {
-    safe_realloc ((void **) &pop_data->auth_list,
+    safe_realloc (&pop_data->auth_list,
 	    strlen (pop_data->auth_list) + strlen (line) + 2);
     strcat (pop_data->auth_list, " ");	/* __STRCAT_CHECKED__ */
   }
@@ -410,7 +410,7 @@ int pop_fetch_data (POP_DATA *pop_data, char *query, char *msg,
       lenbuf = 0;
     }
 
-    safe_realloc ((void **) &inbuf, lenbuf + sizeof (buf));
+    safe_realloc (&inbuf, lenbuf + sizeof (buf));
   }
 
   FREE (&inbuf);

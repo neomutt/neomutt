@@ -1555,7 +1555,7 @@ static void write_references (LIST *r, FILE *f)
   for ( ; (TrimRef == 0 || refcnt < TrimRef) && r ; r = r->next)
   {
     if (refcnt == refmax)
-      safe_realloc ((void **) &ref, (refmax += REF_INC) * sizeof (LIST *));
+      safe_realloc (&ref, (refmax += REF_INC) * sizeof (LIST *));
     ref[refcnt++] = r;
   }
 
@@ -1725,8 +1725,7 @@ static void encode_headers (LIST *h)
       continue;
     
     rfc2047_encode_string (&tmp);
-    safe_realloc ((void **) &h->data, 
-		  mutt_strlen (h->data) + 2 + mutt_strlen (tmp) + 1);
+    safe_realloc (&h->data, mutt_strlen (h->data) + 2 + mutt_strlen (tmp) + 1);
 
     sprintf (h->data + i, ": %s", NONULL (tmp));  /* __SPRINTF_CHECKED__ */
     
@@ -1951,7 +1950,7 @@ add_args (char **args, size_t *argslen, size_t *argsmax, ADDRESS *addr)
     if (addr->mailbox && !addr->group)
     {
       if (*argslen == *argsmax)
-	safe_realloc ((void **) &args, (*argsmax += 5) * sizeof (char *));
+	safe_realloc (&args, (*argsmax += 5) * sizeof (char *));
       args[(*argslen)++] = addr->mailbox;
     }
   }
@@ -1962,7 +1961,7 @@ static char **
 add_option (char **args, size_t *argslen, size_t *argsmax, char *s)
 {
   if (*argslen == *argsmax)
-    safe_realloc ((void **) &args, (*argsmax += 5) * sizeof (char *));
+    safe_realloc (&args, (*argsmax += 5) * sizeof (char *));
   args[(*argslen)++] = s;
   return (args);
 }
@@ -1998,7 +1997,7 @@ mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
   while ((ps = strtok (ps, " ")))
   {
     if (argslen == argsmax)
-      safe_realloc ((void **) &args, sizeof (char *) * (argsmax += 5));
+      safe_realloc (&args, sizeof (char *) * (argsmax += 5));
 
     if (i)
       args[argslen++] = ps;
@@ -2040,7 +2039,7 @@ mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
   args = add_args (args, &argslen, &argsmax, bcc);
 
   if (argslen == argsmax)
-    safe_realloc ((void **) &args, sizeof (char *) * (++argsmax));
+    safe_realloc (&args, sizeof (char *) * (++argsmax));
   
   args[argslen++] = NULL;
 
@@ -2083,7 +2082,7 @@ mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
 char *mutt_append_string (char *a, const char *b)
 {
   size_t la = mutt_strlen (a);
-  safe_realloc ((void **) &a, la + mutt_strlen (b) + 1);
+  safe_realloc (&a, la + mutt_strlen (b) + 1);
   strcpy (a + la, b);	/* __STRCPY_CHECKED__ */
   return (a);
 }
@@ -2120,7 +2119,7 @@ char *mutt_quote_string (const char *s)
     if (INVALID_CHAR (*s))
     {
       size_t o = pr - r;
-      safe_realloc ((void **) &r, ++rlen);
+      safe_realloc (&r, ++rlen);
       pr = r + o;
       *pr++ = '\\';
     }

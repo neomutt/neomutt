@@ -1539,8 +1539,8 @@ void mx_alloc_memory (CONTEXT *ctx)
   
   if (ctx->hdrs)
   {
-    safe_realloc ((void **) &ctx->hdrs, sizeof (HEADER *) * (ctx->hdrmax += 25));
-    safe_realloc ((void **) &ctx->v2r, sizeof (int) * ctx->hdrmax);
+    safe_realloc (&ctx->hdrs, sizeof (HEADER *) * (ctx->hdrmax += 25));
+    safe_realloc (&ctx->v2r, sizeof (int) * ctx->hdrmax);
   }
   else
   {

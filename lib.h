@@ -76,7 +76,7 @@
 # define MUTT_FORMAT2(a,b)	_MUTT_FORMAT_1(a, b)
 
 
-# define FREE(x) safe_free((void **)x)
+# define FREE(x) safe_free(x)
 # define NONULL(x) x?x:""
 # define ISSPACE(c) isspace((unsigned char)c)
 # define strfcpy(A,B,C) strncpy(A,B,C), *(A+(C)-1)=0
@@ -143,7 +143,7 @@ void mutt_sanitize_filename (char *, short);
 void mutt_str_replace (char **p, const char *s);
 void mutt_str_adjust (char **p);
 void mutt_unlink (const char *);
-void safe_free (void **);
-void safe_realloc (void **, size_t);
+void safe_free (void *);
+void safe_realloc (void *, size_t);
 
 #endif

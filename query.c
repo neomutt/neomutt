@@ -383,7 +383,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 		int clear = 0;
 
 		/* append */
-		safe_realloc ((void **)&QueryTable, menu->max * sizeof (ENTRY));
+		safe_realloc (&QueryTable, menu->max * sizeof (ENTRY));
 
 		menu->data = QueryTable;
 

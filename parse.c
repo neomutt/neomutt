@@ -77,7 +77,7 @@ static char *read_rfc822_line (FILE *f, char *line, size_t *linelen)
     {
       /* grow the buffer */
       *linelen += STRING;
-      safe_realloc ((void **) &line, *linelen);
+      safe_realloc (&line, *linelen);
       buf = line + offset;
     }
   }

@@ -110,7 +110,7 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
   {
     if (*idxlen == *idxmax)
     {
-      safe_realloc ((void **) &idx, sizeof (ATTACHPTR *) * ((*idxmax) += 5));
+      safe_realloc (&idx, sizeof (ATTACHPTR *) * ((*idxmax) += 5));
       for (i = *idxlen; i < *idxmax; i++)
 	idx[i] = NULL;
     }

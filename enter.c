@@ -132,7 +132,7 @@ size_t my_mbstowcs (wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf)
     if (i >= wbuflen)
     {
       wbuflen = i + 20;
-      safe_realloc ((void **) &wbuf, wbuflen * sizeof (*wbuf));
+      safe_realloc (&wbuf, wbuflen * sizeof (*wbuf));
     }
     wbuf[i++] = wc;
   }
@@ -158,7 +158,7 @@ static void replace_part (ENTER_STATE *state, size_t from, char *buf)
   if (state->curpos + savelen > state->wbuflen)
   {
     state->wbuflen = state->curpos + savelen;
-    safe_realloc ((void **) &state->wbuf, state->wbuflen * sizeof (wchar_t));
+    safe_realloc (&state->wbuf, state->wbuflen * sizeof (wchar_t));
   }
 
   /* Restore suffix */
@@ -473,7 +473,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	    if (!mutt_complete (buf, buflen))
 	    {
 	      templen = state->lastchar - i;
-	      safe_realloc ((void **) &tempbuf, templen * sizeof (wchar_t));
+	      safe_realloc (&tempbuf, templen * sizeof (wchar_t));
 	    }
 	    else
 	      BEEP ();
@@ -538,7 +538,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	    if (!mutt_complete (buf, buflen))
 	    {
 	      templen = state->lastchar;
-	      safe_realloc ((void **) &tempbuf, templen * sizeof (wchar_t));
+	      safe_realloc (&tempbuf, templen * sizeof (wchar_t));
 	      memcpy (tempbuf, state->wbuf, templen * sizeof (wchar_t));
 	    }
 	    else
@@ -671,7 +671,7 @@ self_insert:
 	if (state->lastchar >= state->wbuflen)
 	{
 	  state->wbuflen = state->lastchar + 20;
-	  safe_realloc ((void **) &state->wbuf, state->wbuflen * sizeof (wchar_t));
+	  safe_realloc (&state->wbuf, state->wbuflen * sizeof (wchar_t));
 	}
 	memmove (state->wbuf + state->curpos + 1, state->wbuf + state->curpos, (state->lastchar - state->curpos) * sizeof (wchar_t));
 	state->wbuf[state->curpos++] = wc;

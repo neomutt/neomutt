@@ -86,9 +86,10 @@ void *safe_malloc (size_t siz)
   return (p);
 }
 
-void safe_realloc (void **p, size_t siz)
+void safe_realloc (void *ptr, size_t siz)
 {
   void *r;
+  void **p = (void **)ptr;
 
   if (siz == 0)
   {
@@ -118,8 +119,9 @@ void safe_realloc (void **p, size_t siz)
   *p = r;
 }
 
-void safe_free (void **p)
+void safe_free (void *ptr)
 {
+  void **p = (void **)ptr;
   if (*p)
   {
     free (*p);				/* __MEM_CHECKED__ */
@@ -160,7 +162,7 @@ void mutt_str_replace (char **p, const char *s)
 void mutt_str_adjust (char **p)
 {
   if (!p || !*p) return;
-  safe_realloc ((void **) p, strlen (*p) + 1);
+  safe_realloc (p, strlen (*p) + 1);
 }
 
 /* convert all characters in the string to lowercase */
@@ -492,7 +494,7 @@ char *mutt_read_line (char *s, size_t *size, FILE *fp, int *line)
         /* There wasn't room for the line -- increase ``s'' */
         offset = *size - 1; /* overwrite the terminating 0 */
         *size += STRING;
-        safe_realloc ((void **) &s, *size);
+        safe_realloc (&s, *size);
       }
     }
   }

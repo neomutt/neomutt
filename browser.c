@@ -307,7 +307,7 @@ static void add_folder (MUTTMENU *m, struct browser_state *state,
   if (state->entrylen == state->entrymax)
   {
     /* need to allocate more space */
-    safe_realloc ((void **) &state->entry,
+    safe_realloc (&state->entry,
 		  sizeof (struct folder_file) * (state->entrymax += 256));
     memset (&state->entry[state->entrylen], 0,
 	    sizeof (struct folder_file) * 256);

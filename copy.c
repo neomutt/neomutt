@@ -150,7 +150,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
 	  headers[x] = this_one;
 	else 
 	{
-	  safe_realloc ((void **) &headers[x], mutt_strlen (headers[x]) + 
+	  safe_realloc (&headers[x], mutt_strlen (headers[x]) + 
 			mutt_strlen (this_one) + sizeof (char));
 	  strcat (headers[x], this_one); /* __STRCAT_CHECKED__ */
 	  FREE (&this_one);
@@ -217,7 +217,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
 	this_one = safe_strdup (buf);
       else
       {
-	safe_realloc ((void **) &this_one, 
+	safe_realloc (&this_one,
 		      mutt_strlen (this_one) + mutt_strlen (buf) + sizeof (char));
 	strcat (this_one, buf); /* __STRCAT_CHECKED__ */
       }
@@ -237,7 +237,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
       headers[x] = this_one;
     else 
     {
-      safe_realloc ((void **) &headers[x], mutt_strlen (headers[x]) + 
+      safe_realloc (&headers[x], mutt_strlen (headers[x]) + 
 		    mutt_strlen (this_one) + sizeof (char));
       strcat (headers[x], this_one); /* __STRCAT_CHECKED__ */
       FREE (&this_one);
@@ -795,7 +795,7 @@ static void format_address_header (char **h, ADDRESS *a)
   buflen  = linelen + 3;
   
   
-  safe_realloc ((void **) h, buflen);
+  safe_realloc (h, buflen);
   for (count = 0; a; a = a->next, count++)
   {
     ADDRESS *tmp = a->next;
@@ -827,7 +827,7 @@ static void format_address_header (char **h, ADDRESS *a)
     }
     
     buflen += l + mutt_strlen (cbuf) + mutt_strlen (c2buf);
-    safe_realloc ((void **) h, buflen);
+    safe_realloc (h, buflen);
     strcat (*h, cbuf);		/* __STRCAT_CHECKED__ */
     strcat (*h, buf);		/* __STRCAT_CHECKED__ */
     strcat (*h, c2buf);		/* __STRCAT_CHECKED__ */

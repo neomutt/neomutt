@@ -792,7 +792,7 @@ char *smime_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
     }
     
     keylist_size += mutt_strlen (keyID) + 1;
-    safe_realloc ((void **)&keylist, keylist_size);
+    safe_realloc (&keylist, keylist_size);
     sprintf (keylist + keylist_used, "%s", keyID);	/* __SPRINTF_CHECKED__ */
     keylist_used = mutt_strlen (keylist);
 

@@ -292,7 +292,7 @@ static int rfc1524_mailcap_parse (BODY *a,
 	      && test_command)
 	  {
 	    len = mutt_strlen (test_command) + STRING;
-	    safe_realloc ((void **) &test_command, len);
+	    safe_realloc (&test_command, len);
 	    rfc1524_expand_command (a, a->filename, type, test_command, len);
 	    if (mutt_system (test_command))
 	    {

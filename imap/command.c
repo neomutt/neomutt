@@ -105,7 +105,7 @@ int imap_cmd_step (IMAP_DATA* idata)
   {
     if (len == cmd->blen)
     {
-      safe_realloc ((void**) &cmd->buf, cmd->blen + IMAP_CMD_BUFSIZE);
+      safe_realloc (&cmd->buf, cmd->blen + IMAP_CMD_BUFSIZE);
       cmd->blen = cmd->blen + IMAP_CMD_BUFSIZE;
       dprint (3, (debugfile, "imap_cmd_step: grew buffer to %u bytes\n",
 		  cmd->blen));
@@ -129,7 +129,7 @@ int imap_cmd_step (IMAP_DATA* idata)
   /* don't let one large string make cmd->buf hog memory forever */
   if ((cmd->blen > IMAP_CMD_BUFSIZE) && (len <= IMAP_CMD_BUFSIZE))
   {
-    safe_realloc ((void**) &cmd->buf, IMAP_CMD_BUFSIZE);
+    safe_realloc (&cmd->buf, IMAP_CMD_BUFSIZE);
     cmd->blen = IMAP_CMD_BUFSIZE;
     dprint (3, (debugfile, "imap_cmd_step: shrank buffer to %u bytes\n", cmd->blen));
   }

@@ -630,8 +630,7 @@ THREAD *mutt_sort_subthreads (THREAD *thread, int init)
 	for (i = 0; thread; i++, thread = thread->prev)
 	{
 	  if (i >= array_size)
-	    safe_realloc ((void **) &array,
-			  (array_size *= 2) * sizeof (THREAD *));
+	    safe_realloc (&array, (array_size *= 2) * sizeof (THREAD *));
 
 	  array[i] = thread;
 	}

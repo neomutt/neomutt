@@ -766,7 +766,7 @@ static void crypt_fetch_signatures (BODY ***signatures, BODY *a, int *n)
     else
     {
       if((*n % 5) == 0)
-	safe_realloc ((void **) signatures, (*n + 6) * sizeof (BODY **));
+	safe_realloc (signatures, (*n + 6) * sizeof (BODY **));
 
       (*signatures)[(*n)++] = a;
     }

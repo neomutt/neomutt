@@ -164,7 +164,7 @@ new_aliases:
     menu->max++;
   }
 
-  safe_realloc ((void **) &AliasTable, menu->max * sizeof (ALIAS *));
+  safe_realloc (&AliasTable, menu->max * sizeof (ALIAS *));
   menu->data = AliasTable;
 
   for (i = omax, aliasp = aliases; aliasp; aliasp = aliasp->next, i++)

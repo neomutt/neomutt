@@ -452,7 +452,7 @@ void mutt_ungetch (int ch, int op)
   tmp.op = op;
 
   if (UngetCount >= UngetBufLen)
-    safe_realloc ((void **) &KeyEvent, (UngetBufLen += 128) * sizeof(event_t));
+    safe_realloc (&KeyEvent, (UngetBufLen += 128) * sizeof(event_t));
 
   KeyEvent[UngetCount++] = tmp;
 }

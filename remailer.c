@@ -104,7 +104,7 @@ static void mix_add_entry (REMAILER ***type2_list, REMAILER *entry,
   if (*used == *slots)
   {
     *slots += 5;
-    safe_realloc ((void **) type2_list, sizeof (REMAILER *) * (*slots));
+    safe_realloc (type2_list, sizeof (REMAILER *) * (*slots));
   }
   
   (*type2_list)[(*used)++] = entry;
@@ -232,7 +232,7 @@ static void mix_screen_coordinates (REMAILER **type2_list,
   if (!chain->cl)
     return;
   
-  safe_realloc ((void **) coordsp, sizeof (struct coord) * chain->cl);
+  safe_realloc (coordsp, sizeof (struct coord) * chain->cl);
   
   coords = *coordsp;
   

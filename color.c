@@ -737,7 +737,7 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
   {
     if (q_level >= ColorQuoteSize)
     {
-      safe_realloc ((void **) &ColorQuote, (ColorQuoteSize += 2) * sizeof (int));
+      safe_realloc (&ColorQuote, (ColorQuoteSize += 2) * sizeof (int));
       ColorQuote[ColorQuoteSize-2] = ColorDefs[MT_COLOR_QUOTED];
       ColorQuote[ColorQuoteSize-1] = ColorDefs[MT_COLOR_QUOTED];
     }

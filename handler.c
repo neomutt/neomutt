@@ -587,7 +587,7 @@ static void enriched_flush (struct enriched_state *stte, int wrap)
     if (stte->line_used > stte->line_max)
     {
       stte->line_max = stte->line_used;
-      safe_realloc ((void **) &stte->line, stte->line_max + 1);
+      safe_realloc (&stte->line, stte->line_max + 1);
     }
     strcat (stte->line, stte->buffer);	/* __STRCAT_CHECKED__ */
     stte->line_len += stte->word_len;
@@ -606,7 +606,7 @@ static void enriched_putc (int c, struct enriched_state *stte)
     if (stte->tag_level[RICH_COLOR]) 
     {
       if (stte->param_used + 1 >= stte->param_len)
-	safe_realloc ((void **) &stte->param, (stte->param_len += STRING));
+	safe_realloc (&stte->param, (stte->param_len += STRING));
 
       stte->param[stte->param_used++] = c;
     }
@@ -617,7 +617,7 @@ static void enriched_putc (int c, struct enriched_state *stte)
   if (stte->buff_len < stte->buff_used + 3)
   {
     stte->buff_len += LONG_STRING;
-    safe_realloc ((void **) &stte->buffer, stte->buff_len + 1);
+    safe_realloc (&stte->buffer, stte->buff_len + 1);
   }
 
   if ((!stte->tag_level[RICH_NOFILL] && ISSPACE (c)) || c == '\0' )
@@ -673,7 +673,7 @@ static void enriched_puts (char *s, struct enriched_state *stte)
   if (stte->buff_len < stte->buff_used + mutt_strlen(s))
   {
     stte->buff_len += LONG_STRING;
-    safe_realloc ((void **) &stte->buffer, stte->buff_len + 1);
+    safe_realloc (&stte->buffer, stte->buff_len + 1);
   }
   c = s;
   while (*c)

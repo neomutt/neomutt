@@ -474,7 +474,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
       if (i == keymax)
       {
 	keymax += 5;
-	safe_realloc ((void **) &KeyTable, sizeof (pgp_key_t) * keymax);
+	safe_realloc (&KeyTable, sizeof (pgp_key_t) * keymax);
       }
       
       KeyTable[i++] = a;

@@ -357,7 +357,7 @@ static void imap_add_folder (char delim, char *folder, int noselect,
 
   if (state->entrylen + 1 == state->entrymax)
   {
-    safe_realloc ((void **) &state->entry,
+    safe_realloc (&state->entry,
       sizeof (struct folder_file) * (state->entrymax += 256));
     memset (state->entry + state->entrylen, 0,
       (sizeof (struct folder_file) * (state->entrymax - state->entrylen)));

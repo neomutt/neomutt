@@ -76,7 +76,7 @@ static size_t convert_string (ICONV_CONST char *f, size_t flen,
   
   *tlen = ob - buf;
 
-  safe_realloc ((void **) &buf, ob - buf + 1);
+  safe_realloc (&buf, ob - buf + 1);
   *t = buf;
   iconv_close (cd);
 
@@ -511,7 +511,7 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
     if (bufpos + wlen + strlen (LINEBREAK) > buflen)
     {
       buflen = bufpos + wlen + strlen (LINEBREAK);
-      safe_realloc ((void **) &buf, buflen);
+      safe_realloc (&buf, buflen);
     }
     r = encode_block (buf + bufpos, t, n, icode, tocode, encoder);
     assert (r == wlen);
@@ -527,7 +527,7 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
 
   /* Add last encoded word and us-ascii suffix to buffer. */
   buflen = bufpos + wlen + (u + ulen - t1);
-  safe_realloc ((void **) &buf, buflen + 1);
+  safe_realloc (&buf, buflen + 1);
   r = encode_block (buf + bufpos, t, t1 - t, icode, tocode, encoder);
   assert (r == wlen);
   bufpos += wlen;

@@ -758,7 +758,7 @@ resolve_types (char *buf, char *raw, struct line_t *lineInfo, int n, int last,
 	if (lineInfo[i].chunks)
 	{
 	  lineInfo[i].chunks = 0;
-	  safe_realloc ((void **) &(lineInfo[n].syntax), 
+	  safe_realloc (&(lineInfo[n].syntax), 
 			sizeof (struct syntax_t));
 	}
 	lineInfo[i++].type = MT_COLOR_SIGNATURE;
@@ -833,7 +833,7 @@ resolve_types (char *buf, char *raw, struct line_t *lineInfo, int n, int last,
 	    if (!found)
 	    {
 	      if (++(lineInfo[n].chunks) > 1)
-		safe_realloc ((void **)&(lineInfo[n].syntax), 
+		safe_realloc (&(lineInfo[n].syntax), 
 			      (lineInfo[n].chunks) * sizeof (struct syntax_t));
 	    }
 	    i = lineInfo[n].chunks - 1;
@@ -1217,7 +1217,7 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
 
   if (*last == *max)
   {
-    safe_realloc ((void **)lineInfo, sizeof (struct line_t) * (*max += LINES));
+    safe_realloc (lineInfo, sizeof (struct line_t) * (*max += LINES));
     for (ch = *last; ch < *max ; ch++)
     {
       memset (&((*lineInfo)[ch]), 0, sizeof (struct line_t));
@@ -1290,7 +1290,7 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
     while (regexec (SearchRE, (char *) fmt + offset, 1, pmatch, (offset ? REG_NOTBOL : 0)) == 0)
     {
       if (++((*lineInfo)[n].search_cnt) > 1)
-	safe_realloc ((void **) &((*lineInfo)[n].search),
+	safe_realloc (&((*lineInfo)[n].search),
 		      ((*lineInfo)[n].search_cnt) * sizeof (struct syntax_t));
       else
 	(*lineInfo)[n].search = safe_malloc (sizeof (struct syntax_t));
@@ -1789,7 +1789,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	  lineInfo[i].search_cnt = -1;
 	  lineInfo[i].quote = NULL;
 
-	  safe_realloc ((void **)&(lineInfo[i].syntax),
+	  safe_realloc (&(lineInfo[i].syntax),
 			sizeof (struct syntax_t));
 	  if (SearchCompiled && lineInfo[i].search)
 	      FREE (&(lineInfo[i].search));
@@ -2290,7 +2290,7 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 	    lineInfo[i].search_cnt = -1;
 	    lineInfo[i].quote = NULL;
 
-	    safe_realloc ((void **)&(lineInfo[i].syntax), sizeof (struct syntax_t));
+	    safe_realloc (&(lineInfo[i].syntax), sizeof (struct syntax_t));
 	    if (SearchCompiled && lineInfo[i].search)
 		FREE (&(lineInfo[i].search));
 	  }
