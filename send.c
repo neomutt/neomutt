@@ -1131,6 +1131,8 @@ ci_send_message (int flags,		/* send mode */
     msg->content->unlink = 1;
     msg->content->use_disp = 0;
     msg->content->disposition = DISPINLINE;
+    if (option (OPTTEXTFLOWED))
+      mutt_set_parameter ("format", "flowed", &msg->content->parameter);
     
     if (!tempfile)
     {

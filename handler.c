@@ -882,6 +882,155 @@ void text_enriched_handler (BODY *a, STATE *s)
   FREE (&(stte.param));
 }                                                                              
 
+#define FLOWED_MAX 78
+
+static void flowed_quote (STATE *s, int level)
+{
+  int i;
+  
+  if (s->prefix)
+  {
+    if (option (OPTTEXTFLOWED))
+      level++;
+    else
+      state_puts (s->prefix, s);
+  }
+  
+  for (i = 0; i < level; i++)
+    state_putc ('>', s);
+}
+
+static void flowed_stuff (STATE *s, const char *cont, int level)
+{
+  if (s->flags & M_DISPLAY)
+    return;
+  if (!option (OPTTEXTFLOWED))
+    return;
+  if ((*cont == ' ') || (*cont == '>') || (!level && !mutt_strncmp (cont, "From ", 5)))
+    state_putc (' ', s);
+}
+
+static void text_plain_flowed_handler (BODY *a, STATE *s)
+{
+  char line[LONG_STRING];
+  int  quoted = -1;
+  int  col = 0;
+
+  int  add = 0;
+  int  soft = 0;
+  int  max;
+  int  l;
+  
+  int  flowed_max;
+  
+  int bytes = a->length;
+  
+  char *cont = NULL;
+  char *tail = NULL;
+  char *lc = NULL;
+  char *t;
+  
+  if (s->prefix)
+    add = 1;
+
+  if ((flowed_max = FLOWED_MAX) > COLS)
+    flowed_max = COLS - 2;
+  
+  while (bytes > 0 && fgets (line, sizeof (line), s->fpin))
+  {
+    bytes -= strlen (line);
+    tail = NULL;
+    
+    if ((t = strrchr (line, '\r')) || (t = strrchr (line, '\n')))
+      *t = '\0';
+    
+    for (quoted = 0; line[quoted] == '>'; quoted++)
+      ;
+
+    dprint (2, (debugfile, "line: `%s', quoted = %d\n", line, quoted));
+    
+    cont = line + quoted;
+    if (*cont == ' ')
+      cont++;
+    
+    do 
+    {
+      if (tail)
+	cont = tail;
+      
+      tail = NULL;
+      soft = 0;
+      
+      /* try to find a point for word wrapping */
+
+    retry_wrap:
+      l = mutt_strlen (cont);
+      if (quoted + add + col + l > flowed_max)
+      {
+	if ((max = flowed_max - quoted - add - col)
+	    > l)
+	  max = l;
+
+	for (t = cont + max; t > cont; t--)
+	{
+	  if (*t == ' ' || *t == '\t')
+	  {
+	    tail = t;
+	    break;
+	  }
+	}
+
+	if (tail)
+	{
+	  *tail++ = '\0';
+	  soft = 2;
+	}
+      }
+
+      /* We might be desperate.  Just wrap. */
+      if (!tail && (quoted + add + col + mutt_strlen (cont) > flowed_max) && col)
+      {
+	state_putc ('\n', s);
+	col = 0;
+	goto retry_wrap;
+      }
+      
+      if (!soft && ascii_strcmp (cont, "-- "))
+      {
+	lc = strrchr (cont, ' ');
+	if (lc && lc[1] == '\0')
+	  soft = 1;
+      }
+
+      if (!col)
+      {
+	flowed_quote (s, quoted);
+	flowed_stuff (s, cont, quoted + add);
+      }
+      
+      state_puts (cont, s);
+      col += strlen (cont);
+      
+      if (soft == 2)
+      {
+	state_putc (' ', s);
+	col++;
+      }
+      
+      if (!soft)
+      {
+	state_putc ('\n', s);
+	col = 0;
+      }
+    }
+    while (tail);
+  }
+
+  if (col)
+    state_putc ('\n', s);
+  
+}
+
 #define TXTHTML     1
 #define TXTPLAIN    2
 #define TXTENRICHED 3
@@ -1419,7 +1568,10 @@ void mutt_body_handler (BODY *b, STATE *s)
       /* avoid copying this part twice since removing the transfer-encoding is
        * the only operation needed.
        */
-      plaintext = 1;
+      if (ascii_strcasecmp ("flowed", mutt_get_parameter ("format", b->parameter)) == 0)
+	handler = text_plain_flowed_handler;
+      else
+	plaintext = 1;
     }
     else if (ascii_strcasecmp ("enriched", b->subtype) == 0)
       handler = text_enriched_handler;

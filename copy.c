@@ -432,7 +432,12 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
   long new_offset = -1;
 
   if (flags & M_CM_PREFIX)
-    _mutt_make_string (prefix, sizeof (prefix), NONULL (Prefix), Context, hdr, 0);
+  {
+    if (option (OPTTEXTFLOWED))
+      strfcpy (prefix, ">", sizeof (prefix));
+    else
+      _mutt_make_string (prefix, sizeof (prefix), NONULL (Prefix), Context, hdr, 0);
+  }
 
   if ((flags & M_CM_NOHEADER) == 0)
   {

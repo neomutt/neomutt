@@ -2076,6 +2076,16 @@ struct option_t MuttVars[] = {
   ** \fIsusp\fP key, usually ``control-Z''. This is useful if you run mutt
   ** inside an xterm using a command like xterm -e mutt.
   */
+  { "text_flowed", 	DT_BOOL, R_NONE, OPTTEXTFLOWED,  0 },
+  /*
+  ** .pp
+  ** When set, mutt will generate text/plain; format=flowed attachments.
+  ** This format is easier to handle for some mailing software, and generally
+  ** just looks like ordinary text.  To actually make use of this format's 
+  ** features, you'll need support in your editor.
+  ** .pp
+  ** Note that $$indent_string is ignored when this option is set.
+  */
   { "thorough_search",	DT_BOOL, R_NONE, OPTTHOROUGHSRC, 0 },
   /*
   ** .pp
