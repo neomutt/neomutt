@@ -421,7 +421,7 @@ Bouncing a message sends the message as is to the recipient you
 specify.  Forwarding a message allows you to add comments or
 modify the message you are forwarding.  These items are discussed
 in greater detail in the next chapter <ref id="forwarding_mail"
-name="``Forwarding Mail''">.
+name="``Forwarding and Bouncing Mail''">.
 
 Mutt will then enter the <em/compose/ menu and prompt you for the
 recipients to place on the ``To:'' header field.  Next, it will ask
@@ -508,38 +508,38 @@ Also see <ref id="edit_headers" name="edit&lowbar;headers">.
 <sect1>Forwarding and Bouncing Mail<label id="forwarding_mail">
 <p>
 
-Forwarding and bouncing let you send a message to more recipients
-you specify.  Bouncing a message uses the <ref id="sendmail"
-name="sendmail"> command to send a copy of a message to recipients
-as if they were original recipients of the message.  Forwarding a message
-on the other hand allows you to add comments or modify the message
-before it is resend.
+Bouncing and forwarding let you send an existing message to recipients
+that you specify.  Bouncing a message uses the <ref id="sendmail"
+name="sendmail"> command to send a copy to alternative addresses as if
+they were the message's original recipients.  Forwarding a message, on
+the other hand, allows you to modify the message before it is resent
+(for example, by adding your own comments).
 
-Following keys are bound by default:
+The following keys are bound by default:
 
 <tscreen><verb>
 f       forward         forward message
 b       bounce          bounce (remail) message
 </verb></tscreen>
 
-Forwarding can be done by including the message in the new message's body
-(surrounded by indicating lines) or including it as MIME attachment,
-which is controlled by the <ref id="mime_forward"
-name="&dollar;mime&lowbar;forward"> variable, and with or without decoding
-attachments like in the pager, controlled by the <ref id="forward_decode"
-name="&dollar;forward&lowbar;decode"> resp. <ref id="mime_forward_decode"
-name="&dollar;mime&lowbar;forward&lowbar;decode"> variables.
-The desired forwarding format may depend on the content, therefore
-<em/&dollar;mime&lowbar;forward/ is a quad option and can be set to
-``ask-no'' for example.
+Forwarding can be done by including the original message in the new
+message's body (surrounded by indicating lines) or including it as a MIME
+attachment, depending on the value of the <ref id="mime_forward"
+name="&dollar;mime&lowbar;forward"> variable.  Decoding of attachments,
+like in the pager, can be controlled by the <ref id="forward_decode"
+name="&dollar;forward&lowbar;decode"> and <ref id="mime_forward_decode"
+name="&dollar;mime&lowbar;forward&lowbar;decode"> variables,
+respectively.  The desired forwarding format may depend on the content,
+therefore <em/&dollar;mime&lowbar;forward/ is a quadoption which, for
+example, can be set to ``ask-no''.
 
 Messages are always forwarded with full headers, except when
 &dollar;mime&lowbar;forward=no, &dollar;forward&lowbar;decode=yes and
-<ref id="forward_weed" name="&dollar;forward&lowbar;weed">=yes
-(which is the default).
+<ref id="forward_weed" name="&dollar;forward&lowbar;weed">=yes (which
+is the default).
 
-Editing the message to forward is the same procedure as in sending or
-replying to a message.
+Editing the message to forward follows the same procedure as sending or
+replying to a message does.
 
 <sect1>Postponing Mail<label id="postponing_mail">
 <p>
