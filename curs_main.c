@@ -1666,6 +1666,26 @@ int mutt_index_menu (void)
 	menu->redraw = REDRAW_FULL;
 	break;
 
+      case OP_RESEND:
+      
+        CHECK_ATTACH;
+        CHECK_MSGCOUNT;
+      
+        if (tag)
+        {
+	  for (j = 0; j < Context->vcount; j++)
+	  {
+	    if (Context->hdrs[Context->v2r[j]]->tagged)
+	      ci_send_message (SENDRESEND, NULL, NULL, Context,
+			       Context->hdrs[Context->v2r[j]]);
+	  }
+	}
+        else
+	  ci_send_message (SENDRESEND, NULL, NULL, Context, CURHDR);
+      
+        menu->redraw = REDRAW_FULL;
+        break;
+      
       case OP_REPLY:
 
 	CHECK_ATTACH;

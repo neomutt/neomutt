@@ -851,7 +851,7 @@ static void reply_attachment_list (int op, int tag, HEADER *hdr, BODY *body)
     char buffer [LONG_STRING];
 
     mutt_message ("Preparing to forward...");
-    if (mutt_prepare_edit_message (ctx, newhdr, hn) < 0)
+    if (mutt_prepare_template (ctx, newhdr, hn, 0) < 0)
     {
       mutt_clear_error();
       mutt_free_header (&newhdr);

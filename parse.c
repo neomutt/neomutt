@@ -476,7 +476,7 @@ BODY *mutt_parse_messageRFC822 (FILE *fp, BODY *parent)
 
   parent->hdr = mutt_new_header ();
   parent->hdr->offset = ftell (fp);
-  parent->hdr->env = mutt_read_rfc822_header (fp, parent->hdr, 0);
+  parent->hdr->env = mutt_read_rfc822_header (fp, parent->hdr, 0, 0);
   msg = parent->hdr->content;
 
   /* ignore the length given in the content-length since it could be wrong
@@ -858,11 +858,16 @@ void mutt_parse_mime_message (CONTEXT *ctx, HEADER *cur)
  *
  * hdr		header structure of current message (optional).
  * 
- * user_hdrs	If set, store user headers.  Used for edit-message and 
+ * user_hdrs	If set, store user headers.  Used for recall-message and
  * 		postpone modes.
  * 
+ * weed		If this parameter is set and the user has activated the
+ * 		$weed option, honor the header weed list for user headers.
+ * 	        Used for recall-message.
+ * 
  */
-ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs)
+ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
+				   short weed)
 {
   ENVELOPE *e = mutt_new_envelope();
   LIST *last = NULL;
@@ -1183,6 +1188,13 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs)
      /* Keep track of the user-defined headers */
     if (!matched && user_hdrs)
     {
+      /* restore the original line */
+      line[strlen (line)] = ':';
+
+      if (weed && option (OPTWEED) && mutt_matches_ignore (line, Ignore)
+	  && !mutt_matches_ignore (line, UnIgnore))
+	continue;
+
       if (last)
       {
 	last->next = mutt_new_list ();
@@ -1190,7 +1202,6 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs)
       }
       else
 	last = e->userhdrs = mutt_new_list ();
-      line[strlen (line)] = ':';
       last->data = safe_strdup (line);
     }
 

@@ -257,6 +257,7 @@ enum
 #define SENDBATCH	(1<<5)
 #define SENDMAILX	(1<<6)
 #define SENDKEY		(1<<7)
+#define SENDRESEND	(1<<8)
 
 /* boolean vars */
 enum

@@ -609,7 +609,7 @@ int main (int argc, char **argv)
       tempfile = safe_strdup (buf);
 
       if (draftFile)
-	msg->env = mutt_read_rfc822_header (fin, NULL, 1);
+	msg->env = mutt_read_rfc822_header (fin, NULL, 1, 0);
 
       if (tempfile)
       {

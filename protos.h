@@ -87,7 +87,7 @@ BODY *mutt_parse_multipart (FILE *, const char *, long, int);
 BODY *mutt_parse_messageRFC822 (FILE *, BODY *);
 BODY *mutt_read_mime_header (FILE *, int);
 
-ENVELOPE *mutt_read_rfc822_header (FILE *, HEADER *, short);
+ENVELOPE *mutt_read_rfc822_header (FILE *, HEADER *, short, short);
 HEADER *mutt_dup_header (HEADER *);
 
 ATTACHPTR **mutt_gen_attach_list (BODY *, int, ATTACHPTR **, short *, short *, int, int);
@@ -217,7 +217,7 @@ int mutt_display_message (HEADER *h);
 int mutt_edit_attachment(BODY *);
 int mutt_edit_message (CONTEXT *, HEADER *);
 int mutt_parent_message (CONTEXT *, HEADER *);
-int mutt_prepare_edit_message(CONTEXT *, HEADER *, HEADER *);
+int mutt_prepare_template(CONTEXT *, HEADER *, HEADER *, short);
 #define mutt_enter_fname(A,B,C,D,E) _mutt_enter_fname(A,B,C,D,E,0,NULL,NULL)
 int _mutt_enter_fname (const char *, char *, size_t, int *, int, int, char ***, int *);
 #define mutt_enter_string(A,B,C,D,E) _mutt_enter_string(A,B,C,D,E,0,NULL,NULL)

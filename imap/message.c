@@ -200,7 +200,7 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
     ctx->hdrs[ctx->msgcount] = mutt_new_header ();
     ctx->hdrs[ctx->msgcount]->index = ctx->msgcount;
 
-    ctx->hdrs[msgno]->env = mutt_read_rfc822_header (fp, ctx->hdrs[msgno], 0);
+    ctx->hdrs[msgno]->env = mutt_read_rfc822_header (fp, ctx->hdrs[msgno], 0, 0);
     ploc=ftell(fp);
     ctx->hdrs[msgno]->read = h->read;
     ctx->hdrs[msgno]->old = h->old;
@@ -367,7 +367,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
    */
   rewind (msg->fp);
   mutt_free_envelope (&ctx->hdrs[msgno]->env);
-  ctx->hdrs[msgno]->env = mutt_read_rfc822_header (msg->fp, ctx->hdrs[msgno],0);
+  ctx->hdrs[msgno]->env = mutt_read_rfc822_header (msg->fp, ctx->hdrs[msgno],0, 0);
   fgets (buf, sizeof (buf), msg->fp);
   while (!feof (msg->fp))
   {

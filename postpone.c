@@ -254,7 +254,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
     return (-1);
   }
 
-  if (mutt_prepare_edit_message (PostContext, hdr, h) < 0)
+  if (mutt_prepare_template (PostContext, hdr, h, 0) < 0)
   {
     mx_fastclose_mailbox (PostContext);
 #ifdef USE_IMAP
@@ -471,93 +471,145 @@ int mutt_parse_pgp_hdr (char *p, int set_signas)
 #endif /* _PGPPATH */
 
 
+/* make sure a body tree is detached from the corresponding header */
 
-int mutt_prepare_edit_message (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr)
+static void forget_header_pointers (BODY *b)
 {
-  PARAMETER *par;
-  MESSAGE *msg = mx_open_message (ctx, hdr->msgno);
-  char file[_POSIX_PATH_MAX];
+  for (; b; b = b->next)
+  {
+    if (b->type == TYPEMESSAGE && b->hdr)
+      b->hdr = NULL;
 
-  if (msg == NULL)
+    forget_header_pointers (b->parts);
+  }
+}
+
+int mutt_prepare_template (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
+			       short weed)
+{
+  PARAMETER *par, **ppar;
+  MESSAGE *msg;
+  char file[_POSIX_PATH_MAX];
+  BODY *b;
+  LIST *p, **q;
+
+  if ((msg = mx_open_message (ctx, hdr->msgno)) == NULL)
     return (-1);
 
+  /* parse the message header */
   fseek (msg->fp, hdr->offset, 0);
-  newhdr->env = mutt_read_rfc822_header (msg->fp, newhdr, 1);
+  newhdr->env = mutt_read_rfc822_header (msg->fp, newhdr, 1, weed);
 
-  if (hdr->content->type == TYPEMESSAGE || hdr->content->type == TYPEMULTIPART)
+  /* weed user-agent, x-mailer - we don't want them here */
+  p = newhdr->env->userhdrs; 
+  q = &newhdr->env->userhdrs;
+  
+  while (p)
   {
-    BODY *b;
-
-    mutt_parse_part (msg->fp, hdr->content);
-
-    /* Now that we know what was in the other message, convert to the new
-     * message.
-     */
-    newhdr->content = hdr->content->parts;
-    for (b = hdr->content->parts; b; b = b->next)
+    if (!strncasecmp (p->data, "x-mailer:", 9) || !strncasecmp (p->data, "user-agent:", 11))
     {
-      file[0] = '\0';
-      if (b->filename)
-	strfcpy (file, b->filename, sizeof (file));
-      else
-	/* avoid Content-Disposition: header with temporary filename */
-	b->use_disp = 0;
-      mutt_adv_mktemp (file, sizeof(file));
-      if (mutt_save_attachment (msg->fp, b, file, 0, NULL) == -1)
-      {
-	mutt_free_envelope (&newhdr->env);
-	mutt_free_body (&newhdr->content);
-	mx_close_message (&msg);
-	return (-1);
-      }
-      safe_free ((void *) &b->filename);
-      b->filename = safe_strdup (file);
-      b->unlink = 1;
-
-      if (mutt_is_text_type (b->type, b->subtype))
-	b->noconv = 1;
-      
-      mutt_stamp_attachment (b);
-      mutt_free_body (&b->parts);
+      *q = p->next;
+      p->next = NULL;
+      mutt_free_list (&p);
     }
-    hdr->content->parts = NULL;
-    if (hdr->content->type == TYPEMESSAGE && hdr->content->hdr)
-      hdr->content->hdr->content = NULL;
+    else
+      q = &p->next;
+
+    p = *q;
   }
-  else
+
+  safe_free ((void **) &newhdr->env->message_id);
+
+  /* make sure we parse the message */
+  mutt_parse_part (msg->fp, hdr->content);
+
+  /* copy the MIME structure */
+  b = mutt_new_body ();
+  memcpy (b, hdr->content, sizeof (BODY));
+  hdr->content->parts = NULL;
+
+  /* detach the temporary MIME structure from the message. */
+  b->xtype = safe_strdup (b->xtype);
+  b->subtype = safe_strdup (b->subtype);
+  b->form_name = safe_strdup (b->form_name);
+  b->filename = safe_strdup (b->filename);
+  b->d_filename = safe_strdup (b->d_filename);
+
+  forget_header_pointers (b);
+
+  /* copy parameters */
+  for (par = b->parameter, ppar = &b->parameter; par; ppar = &(*ppar)->next, par = par->next)
   {
-    BODY *b = hdr->content;
-    file[0] = 0;
+    *ppar = mutt_new_parameter ();
+    (*ppar)->attribute = safe_strdup (par->attribute);
+    (*ppar)->value = safe_strdup (par->value);
+  }
+
+#ifdef _PGPPATH
+  
+  /* 
+   * remove a potential multipart/signed layer - useful when
+   * resending messages 
+   */
+  
+  if (mutt_is_multipart_signed (b))
+  {
+    newhdr->pgp |= PGPSIGN;
+    
+    /* destroy the signature */
+    mutt_free_body (&b->parts->next);
+    b = mutt_remove_multipart (b);
+  }
+#endif
+  
+  /* 
+   * We don't need no primary multipart.
+   * Note: We _do_ preserve messages!
+   * 
+   * XXX - we don't handle multipart/alternative in any 
+   * smart way when sending messages.
+   * 
+   */
+  
+  if (b->type == TYPEMULTIPART)
+    b = mutt_remove_multipart (b);
+  
+  newhdr->content = b;
+  
+  /* create temporary files for all attachments */
+  for (; b; b = b->next)
+  {
+    file[0] = '\0';
     if (b->filename)
       strfcpy (file, b->filename, sizeof (file));
+    else
+      /* avoid Content-Disposition: header with temporary filename */
+      b->use_disp = 0;
+
     mutt_adv_mktemp (file, sizeof(file));
-    if (mutt_save_attachment (msg->fp, hdr->content, file, 0, NULL) == -1)
+    if (mutt_save_attachment (msg->fp, b, file, 0, NULL) == -1)
     {
       mutt_free_envelope (&newhdr->env);
+      /* XXX hack around problem with mutt_free_body */ 
+      newhdr->content = mutt_make_multipart (newhdr->content); 
+      mutt_free_body (&newhdr->content);
       mx_close_message (&msg);
-      return (-1);
+      return -1;
     }
-    newhdr->content = mutt_make_file_attach (file);
     
-    FREE (&newhdr->content->subtype);
-    FREE (&newhdr->content->xtype);
-    FREE (&newhdr->content->description);
-    
-    newhdr->content->type = hdr->content->type;
-    newhdr->content->xtype = safe_strdup (hdr->content->xtype);
-    newhdr->content->subtype = safe_strdup (hdr->content->subtype);
-    newhdr->content->description = safe_strdup (hdr->content->description);
+    safe_free ((void *) &b->filename);
+    b->filename = safe_strdup (file);
+    b->unlink = 1;
 
-    for (par = hdr->content->parameter; par; par = par->next)
-      mutt_set_parameter (par->attribute, par->value, &newhdr->content->parameter);
-
-    if (mutt_is_text_type (newhdr->content->type, newhdr->content->subtype))
-      newhdr->content->noconv = 1;
-    
-    newhdr->content->use_disp = 0;	/* no content-disposition */
-    newhdr->content->unlink = 1;	/* delete when we are done */
+    if (mutt_is_text_type (b->type, b->subtype))
+      b->noconv = 1;
+      
+    mutt_stamp_attachment (b);
+    mutt_free_body (&b->parts);
   }
 
+  /* that's it. */
   mx_close_message (&msg);
+
   return 0;
 }

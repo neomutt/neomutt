@@ -1042,7 +1042,7 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
   body->hdr = mutt_new_header();
   body->hdr->offset = 0;
   /* we don't need the user headers here */
-  body->hdr->env = mutt_read_rfc822_header(fp, body->hdr, 0);
+  body->hdr->env = mutt_read_rfc822_header(fp, body->hdr, 0, 0);
 #ifdef _PGPPATH
   body->hdr->pgp = pgp;
 #endif /* _PGPPATH */
@@ -1272,7 +1272,6 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
 {
   char buffer[LONG_STRING];
   LIST *tmp = env->userhdrs;
-  short want_xmailer = (mode == 0 && !privacy && option (OPTXMAILER));
   
   if (mode == 0 && !privacy)
     fputs (mutt_make_date (buffer, sizeof(buffer)), fp);
@@ -1351,20 +1350,17 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
     mutt_write_mime_header (attach, fp);
   }
 
+  if (mode == 0 && !privacy && option (OPTXMAILER))
+  {
+    /* Add a vanity header */
+    fprintf (fp, "User-Agent: Mutt/%s\n", MUTT_VERSION);
+  }
+
   /* Add any user defined headers */
   for (; tmp; tmp = tmp->next)
   {
     fputs (tmp->data, fp);
     fputc ('\n', fp);
-    if (want_xmailer && (!strncasecmp (tmp->data, "x-mailer:", 9) ||
-			 !strncasecmp (tmp->data, "user-agent:", 11)))
-      want_xmailer = 0;
-  }
-
-  if (want_xmailer)
-  {
-    /* Add a vanity header */
-    fprintf (fp, "User-Agent: Mutt/%s\n", MUTT_VERSION);
   }
 
   return (ferror (fp) == 0 ? 0 : -1);

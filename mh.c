@@ -139,7 +139,7 @@ static HEADER *maildir_parse_message(int magic, const char *fname, int is_old)
   if ((f = fopen (fname, "r")) != NULL)
   {
     h = mutt_new_header();
-    h->env = mutt_read_rfc822_header (f, h, 0);
+    h->env = mutt_read_rfc822_header (f, h, 0, 0);
 
     fstat (fileno (f), &st);
     fclose (f);

@@ -88,7 +88,7 @@ void mutt_edit_headers (const char *editor,
   /* Read the temp file back in */
   ifp = fopen (path, "r");
   ofp = safe_fopen (body, "w");
-  n = mutt_read_rfc822_header (ifp, NULL, 1);
+  n = mutt_read_rfc822_header (ifp, NULL, 1, 0);
   while ((i = fread (buffer, 1, sizeof (buffer), ifp)) > 0)
     fwrite (buffer, 1, i, ofp);
   fclose (ofp);
