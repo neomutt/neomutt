@@ -1,3 +1,7 @@
+2004-07-14 05:45:18  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
+
+	* browser.c: Fix Debian#237426.  (Experimental.)
+
 2004-07-14 05:39:23  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* compose.c: Don't invoke "builtin" as an external editor.  Note:
