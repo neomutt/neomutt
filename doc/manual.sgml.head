@@ -1781,6 +1781,18 @@ or ``Ed +SomeoneElse'':
  '~s "^Junk +From +Me$" ~f ("Jim +Somebody"|"Ed +SomeoneElse")'
 </verb></tscreen>
 
+Note that if a regular expression contains parenthesis, or a veritical bar
+("|"), you <bf/must/ enclose the expression in double or single quotes since
+those characters are also used to separate different parts of Mutt's
+pattern language.  For example,
+
+<tscreen><verb>
+~f "me@(mutt\.org|cs\.hmc\.edu)"
+</verb></tscreen>
+
+Without the quotes, the parenthesis would truncate the regular expression
+to simply <em/me@/, which is probably not what you want.
+
 <sect2>Searching by Date
 <p>
 Mutt supports two types of dates, <em/absolute/ and <em/relative/.
