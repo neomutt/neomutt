@@ -1440,6 +1440,27 @@ struct option_t MuttVars[] = {
   ** messages to an external Unix command.
   */
 #ifdef USE_POP
+  { "pop_authenticators", DT_STR, R_NONE, UL &PopAuthenticators, UL 0 },
+  /*
+  ** .pp
+  ** This is a colon-delimited list of authentication methods mutt may
+  ** attempt to use to log in to an POP server, in the order mutt should
+  ** try them.  Authentication methods are either 'user', 'apop' or any
+  ** SASL mechanism, eg 'digest-md5', 'gssapi' or 'cram-md5'.
+  ** This parameter is case-insensitive. If this parameter is unset
+  ** (the default) mutt will try all available methods, in order from
+  ** most-secure to least-secure.
+  ** .pp
+  ** Example: set pop_authenticators="digest-md5:apop:user"
+  */
+  { "pop_auth_try_all",	DT_BOOL, R_NONE, OPTPOPAUTHTRYALL, 1 },
+  /*
+  ** .pp
+  ** If set, Mutt will try all available methods. When unset, Mutt will
+  ** only fall back to other authentication methods if the previous
+  ** methods are unavailable. If a method is available but authentication
+  ** fails, Mutt will not connect to the POP server.
+  */
   { "pop_checkinterval", DT_NUM, R_NONE, UL &PopCheckTimeout, 60 },
   /*
   ** .pp

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000 Vsevolod Volkov <vvv@mutt.org.ua>
+ * Copyright (C) 2000-2001 Vsevolod Volkov <vvv@mutt.org.ua>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -45,7 +45,6 @@ typedef enum
   POP_A_SUCCESS = 0,
   POP_A_SOCKET,
   POP_A_FAILURE,
-  POP_A_SKIP,
   POP_A_UNAVAIL
 } pop_auth_res_t;
 
@@ -67,7 +66,6 @@ typedef struct
   unsigned int resp_codes : 1;	/* server supports extended response codes */
   unsigned int expire : 1;	/* expire is greater than 0 */
   unsigned int clear_cache : 1;
-  unsigned int authenticator;
   size_t size;
   time_t check_time;
   time_t login_delay;		/* minimal login delay  capability */
@@ -77,7 +75,14 @@ typedef struct
   POP_CACHE cache[POP_CACHE_LEN];
 } POP_DATA;
 
-typedef pop_auth_res_t (*pop_auth_t)(POP_DATA *);
+typedef struct
+{
+  /* do authentication, using named method or any available if method is NULL */
+  pop_auth_res_t (*authenticate) (POP_DATA *, const char *);
+  /* name of authentication method supported, NULL means variable. If this
+   * is not null, authenticate may ignore the second parameter. */
+  const char* method;
+} pop_auth_t;
 
 /* pop_auth.c */
 int pop_authenticate (POP_DATA *);

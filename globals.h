@@ -79,6 +79,7 @@ WHERE char *Pager;
 WHERE char *PagerFmt;
 WHERE char *PipeSep;
 #ifdef USE_POP
+WHERE char *PopAuthenticators INITVAL (NULL);
 WHERE short PopCheckTimeout;
 WHERE char *PopHost;
 WHERE char *PopPass INITVAL (NULL);

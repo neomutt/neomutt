@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000 Vsevolod Volkov <vvv@mutt.org.ua>
+ * Copyright (C) 2000-2001 Vsevolod Volkov <vvv@mutt.org.ua>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -151,10 +151,7 @@ bail:
   mutt_error _("SASL authentication failed.");
   mutt_sleep (2);
 
-  if (rc == SASL_OK)
-    return POP_A_FAILURE;
-
-  return POP_A_SKIP;
+  return POP_A_FAILURE;
 }
 #endif
 
@@ -211,7 +208,7 @@ static pop_auth_res_t pop_auth_apop (POP_DATA *pop_data)
   mutt_error _("APOP authentication failed.");
   mutt_sleep (2);
 
-  return POP_A_SKIP;
+  return POP_A_FAILURE;
 }
 
 /* USER authenticator */
@@ -274,11 +271,11 @@ static pop_auth_res_t pop_auth_user (POP_DATA *pop_data)
 
 static pop_auth_t pop_authenticators[] = {
 #ifdef USE_SASL
-  pop_auth_sasl,
+  { pop_auth_sasl, NULL },
 #endif
-  pop_auth_apop,
-  pop_auth_user,
-  NULL
+  { pop_auth_apop, "apop" },
+  { pop_auth_user, "user" },
+  { NULL }
 };
 
 /*
@@ -292,53 +289,96 @@ int pop_authenticate (POP_DATA* pop_data)
 {
   ACCOUNT *acct = &pop_data->conn->account;
   pop_auth_t* authenticator;
-  int attempt = 0;
-  int auth = 0;
+  char* methods;
+  char* comma;
+  char* method;
+  int attempts = 0;
   int ret = POP_A_UNAVAIL;
 
   if (mutt_account_getuser (acct) || !acct->user[0] ||
       mutt_account_getpass (acct) || !acct->pass[0])
     return -3;
 
-  if (pop_data->authenticator)
+  if (PopAuthenticators && *PopAuthenticators)
   {
-    authenticator = &pop_authenticators[pop_data->authenticator - 1];
-    ret = (*authenticator)(pop_data);
-    attempt = 1;
+    /* Try user-specified list of authentication methods */
+    methods = safe_strdup (PopAuthenticators);
+    method = methods;
+
+    while (method)
+    {
+      comma = strchr (method, ':');
+      if (comma)
+	*comma++ = '\0';
+      dprint (2, (debugfile, "pop_authenticate: Trying method %s\n", method));
+      authenticator = pop_authenticators;
+
+      while (authenticator->authenticate)
+      {
+	if (!authenticator->method ||
+	    !ascii_strcasecmp (authenticator->method, method))
+	{
+	  ret = authenticator->authenticate (pop_data, method);
+	  if (ret == POP_A_SOCKET)
+	    switch (pop_connect (pop_data))
+	    {
+	      case 0:
+	      {
+		ret = authenticator->authenticate (pop_data, method);
+		break;
+	      }
+	      case -2:
+		ret = POP_A_FAILURE;
+	    }
+
+	  if (ret != POP_A_UNAVAIL)
+	    attempts++;
+	  if (ret == POP_A_SUCCESS || ret == POP_A_SOCKET ||
+	      (ret == POP_A_FAILURE && !option (OPTPOPAUTHTRYALL)))
+	  {
+	    comma = NULL;
+	    break;
+	  }
+	}
+	authenticator++;
+      }
+
+      method = comma;
+    }
+
+    FREE (&methods);
   }
   else
   {
+    /* Fall back to default: any authenticator */
+    dprint (2, (debugfile, "pop_authenticate: Using any available method.\n"));
     authenticator = pop_authenticators;
 
-    while (authenticator)
+    while (authenticator->authenticate)
     {
-      auth++;
-
-      ret = (*authenticator)(pop_data);
+      ret = authenticator->authenticate (pop_data, method);
       if (ret == POP_A_SOCKET)
 	switch (pop_connect (pop_data))
 	{
 	  case 0:
 	  {
-	    ret = (*authenticator)(pop_data);
+	    ret = authenticator->authenticate (pop_data, method);
 	    break;
 	  }
 	  case -2:
 	    ret = POP_A_FAILURE;
 	}
 
-      if (ret == POP_A_SKIP)
-	attempt = 1;
-      else if (ret != POP_A_UNAVAIL)
+      if (ret != POP_A_UNAVAIL)
+	attempts++;
+      if (ret == POP_A_SUCCESS || ret == POP_A_SOCKET ||
+	  (ret == POP_A_FAILURE && !option (OPTPOPAUTHTRYALL)))
+      {
+	comma = NULL;
 	break;
+      }
 
       authenticator++;
-    }
-
-    if (ret == POP_A_SUCCESS)
-    {
-      pop_data->authenticator = auth;
-      dprint (1, (debugfile, "pop_authenticate: Authenticator #%d.\n", auth));
     }
   }
 
@@ -349,8 +389,8 @@ int pop_authenticate (POP_DATA* pop_data)
     case POP_A_SOCKET:
       return -1;
     case POP_A_UNAVAIL:
-      if (!attempt)
-	mutt_error _("Authentication method is unknown.");
+      if (!attempts)
+	mutt_error (_("No authenticators available"));
   }
 
   return -2;
