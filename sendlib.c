@@ -462,7 +462,9 @@ int mutt_write_mime_body (BODY *a, FILE *f)
   char *p, boundary[SHORT_STRING];
   FILE *fpin;
   BODY *t;
+#ifdef PERMIT_DEPRECATED_UUENCODED_MESSAGES
   char *r;
+#endif
 
   if (a->type == TYPEMULTIPART)
   {
