@@ -44,10 +44,12 @@
 #include <string.h>
 #include <errno.h>
 
+static const char Mailbox_is_read_only[] = N_("Mailbox is read-only.");
+
 #define CHECK_READONLY if (Context->readonly) \
 {\
     mutt_flushinp (); \
-    mutt_error _("Mailbox is read-only."); \
+    mutt_error _(Mailbox_is_read_only); \
     break; \
 }
 
