@@ -1,3 +1,9 @@
+2002-12-22 11:17:24  Martin Michlmayr  <tbm@cyrius.com>  (roessler)
+
+	* hdrline.c, init.h: Add %A to the format strings, which expands
+	to the reply-to address (if present) or to the author's address
+	when there's no Reply-To header.
+
 2002-12-21 20:32:13  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* curs_main.c: OK, Michael is right: Gotos suck. ;-)
