@@ -698,6 +698,8 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
   return class;
 }
 
+static int check_attachment_marker (char *);
+
 static void
 resolve_types (char *buf, char *raw, struct line_t *lineInfo, int n, int last,
 		struct q_class_t **QuoteList, int *q_level, int *force_redraw,
@@ -734,8 +736,13 @@ resolve_types (char *buf, char *raw, struct line_t *lineInfo, int n, int last,
   }
   else if (mutt_strncmp ("\033[0m", raw, 4) == 0)	/* a little hack... */
     lineInfo[n].type = MT_COLOR_NORMAL;
+#if 0
   else if (mutt_strncmp ("[-- ", buf, 4) == 0)
     lineInfo[n].type = MT_COLOR_ATTACHMENT;
+#else
+  else if (check_attachment_marker ((char *) raw) == 0)
+    lineInfo[n].type = MT_COLOR_ATTACHMENT;
+#endif
   else if (mutt_strcmp ("-- \n", buf) == 0 || mutt_strcmp ("-- \r\n", buf) == 0)
   {
     i = n + 1;
@@ -859,11 +866,19 @@ resolve_types (char *buf, char *raw, struct line_t *lineInfo, int n, int last,
 
 static int is_ansi (unsigned char *buf)
 {
-  while (buf && (isdigit(*buf) || *buf == ';'))
+  while (*buf && (isdigit(*buf) || *buf == ';'))
     buf++;
   return (*buf == 'm');
 }
 
+static int check_attachment_marker (char *p)
+{
+  char *q = AttachmentMarker;
+  
+  for (;*p == *q && *q && *p && *q != '\a' && *p != '\a'; p++, q++)
+    ;
+  return (int) (*p - *q);
+}
 
 static int grok_ansi(unsigned char *buf, int pos, ansi_attr *a)
 {
@@ -986,9 +1001,17 @@ fill_buffer (FILE *f, long *last_pos, long offset, unsigned char *buf,
 	else			/* ^H */
 	  *fmt++ = *p++;
       }
-      else if (*p == '\033' && *(p+1) == '[' && is_ansi (p + 2))	/* skip ANSI sequence */
-	while (*p++ != 'm')
+      else if (*p == '\033' && *(p+1) == '[' && is_ansi (p + 2))
+      {
+	while (*p++ != 'm')	/* skip ANSI sequence */
 	  ;
+      }
+      else if (*p == '\033' && *(p+1) == ']' && check_attachment_marker ((char *) p) == 0)
+      {
+	dprint (2, (debugfile, "fill_buffer: Seen attachment marker.\n"));
+	while (*p++ != '\a')	/* skip pseudo-ANSI sequence */
+	  ;
+      }
       else
 	*fmt++ = *p++;
     }
@@ -1017,7 +1040,14 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
     while (cnt-ch >= 2 && buf[ch] == '\033' && buf[ch+1] == '[' &&
 	   is_ansi (buf+ch+2))
       ch = grok_ansi (buf, ch+2, pa) + 1;
-    
+
+    while (cnt-ch >= 2 && buf[ch] == '\033' && buf[ch+1] == ']' &&
+	   check_attachment_marker ((char *) buf+ch) == 0)
+    {
+      while (buf[ch++] != '\a')
+	;
+    }
+
     k = mbrtowc (&wc, (char *)buf+ch, cnt-ch, &mbstate);
     if (k == -2 || k == -1)
     {

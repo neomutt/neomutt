@@ -142,7 +142,7 @@ static void pgp_current_time (STATE *s)
 	    _("[-- PGP output follows (current time: %c) --]\n"),
 	    localtime (&t));
   setlocale (LC_TIME, "C");
-  state_puts (p, s);
+  state_attach_puts (p, s);
 }
 
 
@@ -363,7 +363,7 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 	  pgpin = NULL;
 	  pgperr = NULL;
 	  
-	  state_puts (_("[-- Error: unable to create PGP subprocess! --]\n"), s);
+	  state_attach_puts (_("[-- Error: unable to create PGP subprocess! --]\n"), s);
 	}
 	else
 	{
@@ -397,18 +397,18 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 	  safe_fclose (&pgperr);
 	  
 	  if (s->flags & M_DISPLAY)
-	    state_puts (_("\n[-- End of PGP output --]\n\n"), s);
+	    state_attach_puts (_("\n[-- End of PGP output --]\n\n"), s);
 	}
       }
     
       if(s->flags & M_DISPLAY)
       {
 	if (needpass)
-	  state_puts (_("[-- BEGIN PGP MESSAGE --]\n\n"), s);
+	  state_attach_puts (_("[-- BEGIN PGP MESSAGE --]\n\n"), s);
 	else if (pgp_keyblock)
-	  state_puts (_("[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"), s);
+	  state_attach_puts (_("[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"), s);
 	else
-	  state_puts (_("[-- BEGIN PGP SIGNED MESSAGE --]\n\n"), s);
+	  state_attach_puts (_("[-- BEGIN PGP SIGNED MESSAGE --]\n\n"), s);
       }
 
       /* Use PGP's output if there was no clearsig signature. */
@@ -449,11 +449,11 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
       if (s->flags & M_DISPLAY)
       {
 	if (needpass)
-	  state_puts (_("\n[-- END PGP MESSAGE --]\n"), s);
+	  state_attach_puts (_("\n[-- END PGP MESSAGE --]\n"), s);
 	else if (pgp_keyblock)
-	  state_puts (_("[-- END PGP PUBLIC KEY BLOCK --]\n"), s);
+	  state_attach_puts (_("[-- END PGP PUBLIC KEY BLOCK --]\n"), s);
 	else
-	  state_puts (_("\n[-- END PGP SIGNED MESSAGE --]\n"), s);
+	  state_attach_puts (_("\n[-- END PGP SIGNED MESSAGE --]\n"), s);
       }
     }
     else
@@ -468,7 +468,7 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 
   if (needpass == -1)
   {
-    state_puts (_("[-- Error: could not find beginning of PGP message! --]\n\n"), s);
+    state_attach_puts (_("[-- Error: could not find beginning of PGP message! --]\n\n"), s);
     return;
   }
 }
@@ -742,7 +742,7 @@ static int pgp_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
      dprint (1, (debugfile, "pgp_verify_one: mutt_wait_filter returned %d.\n", rv));
   }
   
-  state_puts (_("[-- End of PGP output --]\n\n"), s);
+  state_attach_puts (_("[-- End of PGP output --]\n\n"), s);
   
   mutt_unlink (sigfile);
   mutt_unlink (pgperrfile);
@@ -792,7 +792,7 @@ void pgp_signed_handler (BODY *a, STATE *s)
   if (!(a && a->next && a->next->type == protocol_major && 
       !ascii_strcasecmp(a->next->subtype, protocol_minor)))
   {
-    state_puts(_("[-- Error: Inconsistent multipart/signed structure! --]\n\n"), s);
+    state_attach_puts(_("[-- Error: Inconsistent multipart/signed structure! --]\n\n"), s);
     mutt_body_handler (a, s);
     return;
   }
@@ -800,6 +800,7 @@ void pgp_signed_handler (BODY *a, STATE *s)
   if(!(protocol_major == TYPEAPPLICATION && !ascii_strcasecmp(protocol_minor, "pgp-signature"))
      && !(protocol_major == TYPEMULTIPART && !ascii_strcasecmp(protocol_minor, "mixed")))
   {
+    state_mark_attach (s);
     state_printf(s, _("[-- Error: Unknown multipart/signed protocol %s! --]\n\n"), protocol);
     mutt_body_handler (a, s);
     return;
@@ -824,8 +825,11 @@ void pgp_signed_handler (BODY *a, STATE *s)
 	      goodsig = 0;
 	  }
 	  else
+	  {
+	    state_mark_attach (s);
 	    state_printf (s, _("[-- Warning: We can't verify %s/%s signatures. --]\n\n"),
 			  TYPE(signatures[i]), signatures[i]->subtype);
+	  }
 	}
       }
       
@@ -836,19 +840,19 @@ void pgp_signed_handler (BODY *a, STATE *s)
       dprint (2, (debugfile, "pgp_signed_handler: goodsig = %d\n", goodsig));
       
       /* Now display the signed body */
-      state_puts (_("[-- The following data is signed --]\n\n"), s);
+      state_attach_puts (_("[-- The following data is signed --]\n\n"), s);
 
 
       safe_free((void **) &signatures);
     }
     else
-      state_puts (_("[-- Warning: Can't find any signatures. --]\n\n"), s);
+      state_attach_puts (_("[-- Warning: Can't find any signatures. --]\n\n"), s);
   }
   
   mutt_body_handler (a, s);
   
   if (s->flags & M_DISPLAY && sigcnt)
-    state_puts (_("\n[-- End of signed data --]\n"), s);
+    state_attach_puts (_("\n[-- End of signed data --]\n"), s);
 }
 
 /* Extract pgp public keys from messages or attachments */
@@ -1008,7 +1012,7 @@ BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout, BODY *p)
     fclose (pgperr);
     unlink (pgptmpfile);
     if (s->flags & M_DISPLAY)
-      state_puts (_("[-- Error: could not create a PGP subprocess! --]\n\n"), s);
+      state_attach_puts (_("[-- Error: could not create a PGP subprocess! --]\n\n"), s);
     return (NULL);
   }
 
@@ -1038,7 +1042,7 @@ BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout, BODY *p)
     rewind (pgperr);
     if (pgp_copy_checksig (pgperr, s->fpout) == 0 && p)
       p->goodsig = 1;
-    state_puts (_("[-- End of PGP output --]\n\n"), s);
+    state_attach_puts (_("[-- End of PGP output --]\n\n"), s);
   }
   fclose (pgperr);
 
@@ -1104,7 +1108,7 @@ void pgp_encrypted_handler (BODY *a, STATE *s)
       ascii_strcasecmp ("octet-stream", a->next->subtype) != 0)
   {
     if (s->flags & M_DISPLAY)
-      state_puts (_("[-- Error: malformed PGP/MIME message! --]\n\n"), s);
+      state_attach_puts (_("[-- Error: malformed PGP/MIME message! --]\n\n"), s);
     return;
   }
 
@@ -1117,7 +1121,7 @@ void pgp_encrypted_handler (BODY *a, STATE *s)
   if ((fpout = safe_fopen (tempfile, "w+")) == NULL)
   {
     if (s->flags & M_DISPLAY)
-      state_puts (_("[-- Error: could not create temporary file! --]\n"), s);
+      state_attach_puts (_("[-- Error: could not create temporary file! --]\n"), s);
     return;
   }
 
@@ -1126,7 +1130,7 @@ void pgp_encrypted_handler (BODY *a, STATE *s)
   if ((tattach = pgp_decrypt_part (a, s, fpout, p)) != NULL)
   {
     if (s->flags & M_DISPLAY)
-      state_puts (_("[-- The following data is PGP/MIME encrypted --]\n\n"), s);
+      state_attach_puts (_("[-- The following data is PGP/MIME encrypted --]\n\n"), s);
 
     fpin = s->fpin;
     s->fpin = fpout;
@@ -1144,7 +1148,7 @@ void pgp_encrypted_handler (BODY *a, STATE *s)
       p->goodsig |= tattach->goodsig;
     
     if (s->flags & M_DISPLAY)
-      state_puts (_("\n[-- End of PGP/MIME encrypted data --]\n"), s);
+      state_attach_puts (_("\n[-- End of PGP/MIME encrypted data --]\n"), s);
 
     mutt_free_body (&tattach);
   }

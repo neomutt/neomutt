@@ -799,7 +799,9 @@ typedef struct
 #define state_puts(x,y) fputs(x,(y)->fpout)
 #define state_putc(x,y) fputc(x,(y)->fpout)
 
-void state_prefix_putc(char, STATE *);
+void state_mark_attach (STATE *);
+void state_attach_puts (const char *, STATE *);
+void state_prefix_putc (char, STATE *);
 int  state_printf(STATE *, const char *, ...);
 
 #include "ascii.h"

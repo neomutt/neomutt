@@ -22,6 +22,7 @@ WHERE void (*mutt_message) (const char *, ...);
 WHERE CONTEXT *Context;
 
 WHERE char Errorbuf[STRING];
+WHERE char AttachmentMarker[STRING];
 
 #if defined(DL_STANDALONE) && defined(USE_DOTLOCK)
 WHERE char *MuttDotlock;

@@ -1699,6 +1699,12 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   err.data = error;
   err.dsize = sizeof (error);
 
+  /* 
+   * XXX - use something even more difficult to predict?
+   */
+  snprintf (AttachmentMarker, sizeof (AttachmentMarker),
+	    "\033]9;%ld\a", (long) time (NULL));
+  
   /* on one of the systems I use, getcwd() does not return the same prefix
      as is listed in the passwd file */
   if ((p = getenv ("HOME")))

@@ -1316,6 +1316,7 @@ static void alternative_handler (BODY *a, STATE *s)
   else if (s->flags & M_DISPLAY)
   {
     /* didn't find anything that we could display! */
+    state_mark_attach (s);
     state_puts(_("[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"), s);
   }
 }
@@ -1433,6 +1434,7 @@ void multipart_handler (BODY *a, STATE *s)
   {
     if (s->flags & M_DISPLAY)
     {
+      state_mark_attach (s);
       state_printf (s, _("[-- Attachment #%d"), count);
       if (p->description || p->filename || p->form_name)
       {
@@ -1444,6 +1446,7 @@ void multipart_handler (BODY *a, STATE *s)
 
       mutt_pretty_size (length, sizeof (length), p->length);
       
+      state_mark_attach (s);
       state_printf (s, _("[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"),
 		    TYPE (p), p->subtype, ENCODING (p->encoding), length);
       if (!option (OPTWEED))
@@ -1503,6 +1506,7 @@ void autoview_handler (BODY *a, STATE *s)
 
     if (s->flags & M_DISPLAY)
     {
+      state_mark_attach (s);
       state_printf (s, _("[-- Autoview using %s --]\n"), command);
       mutt_message(_("Invoking autoview command: %s"),command);
     }
@@ -1534,7 +1538,10 @@ void autoview_handler (BODY *a, STATE *s)
     {
       mutt_perror _("Can't create filter");
       if (s->flags & M_DISPLAY)
+      {
+	state_mark_attach (s);
 	state_printf (s, _("[-- Can't run %s. --]\n"), command);
+      }
       goto bail;
     }
     
@@ -1548,8 +1555,11 @@ void autoview_handler (BODY *a, STATE *s)
       /* check for data on stderr */
       if (fgets (buffer, sizeof(buffer), fperr)) 
       {
-	if (s->flags & M_DISPLAY) 
+	if (s->flags & M_DISPLAY)
+	{
+	  state_mark_attach (s);
 	  state_printf (s, _("[-- Autoview stderr of %s --]\n"), command);
+	}
 
 	state_puts (s->prefix, s);
 	state_puts (buffer, s);
@@ -1567,8 +1577,11 @@ void autoview_handler (BODY *a, STATE *s)
       if (fgets (buffer, sizeof(buffer), fperr))
       {
 	if (s->flags & M_DISPLAY)
+	{
+	  state_mark_attach (s);
 	  state_printf (s, _("[-- Autoview stderr of %s --]\n"), 
 			command);
+	}
 	
 	state_puts (buffer, s);
 	mutt_copy_stream (fperr, s->fpout);
@@ -1601,7 +1614,10 @@ static void external_body_handler (BODY *b, STATE *s)
   if (!access_type)
   {
     if (s->flags & M_DISPLAY)
+    {
+      state_mark_attach (s);
       state_puts (_("[-- Error: message/external-body has no access-type parameter --]\n"), s);
+    }
     return;
   }
 
@@ -1617,7 +1633,8 @@ static void external_body_handler (BODY *b, STATE *s)
     {
       char *length;
       char pretty_size[10];
-
+      
+      state_mark_attach (s);
       state_printf (s, _("[-- This %s/%s attachment "),
 	       TYPE(b->parts), b->parts->subtype);
       length = mutt_get_parameter ("length", b->parameter);
@@ -1630,9 +1647,15 @@ static void external_body_handler (BODY *b, STATE *s)
       state_puts (_("has been deleted --]\n"), s);
 
       if (expire != -1)
+      {
+	state_mark_attach (s);
 	state_printf (s, _("[-- on %s --]\n"), expiration);
+      }
       if (b->parts->filename)
+      {
+	state_mark_attach (s);
 	state_printf (s, _("[-- name: %s --]\n"), b->parts->filename);
+      }
 
       mutt_copy_hdr (s->fpin, s->fpout, ftell (s->fpin), b->parts->offset,
 		     (option (OPTWEED) ? (CH_WEED | CH_REORDER) : 0) |
@@ -1643,10 +1666,12 @@ static void external_body_handler (BODY *b, STATE *s)
   {
     if (s->flags & M_DISPLAY)
     {
-      state_printf (s, _("[-- This %s/%s attachment is not included, --]\n"
-			 "[-- and the indicated external source has --]\n"
-			 "[-- expired. --]\n"),
+      state_mark_attach (s);
+      state_printf (s, _("[-- This %s/%s attachment is not included, --]\n"),
 		    TYPE(b->parts), b->parts->subtype);
+      state_attach_puts (_("[-- and the indicated external source has --]\n"), s);
+      state_attach_puts (_("[-- expired. --]\n"), s);
+
       mutt_copy_hdr(s->fpin, s->fpout, ftell (s->fpin), b->parts->offset,
 		    (option (OPTWEED) ? (CH_WEED | CH_REORDER) : 0) |
 		    CH_DECODE, NULL);
@@ -1656,10 +1681,14 @@ static void external_body_handler (BODY *b, STATE *s)
   {
     if (s->flags & M_DISPLAY)
     {
+      state_mark_attach (s);
       state_printf (s,
-	       _("[-- This %s/%s attachment is not included, --]\n"
-		 "[-- and the indicated access-type %s is unsupported --]\n"),
-	       TYPE(b->parts), b->parts->subtype, access_type);
+		    _("[-- This %s/%s attachment is not included, --]\n"),
+		    TYPE (b->parts), b->parts->subtype);
+      state_mark_attach (s);
+      state_printf (s, 
+		    _("[-- and the indicated access-type %s is unsupported --]\n"),
+		    access_type);
       mutt_copy_hdr (s->fpin, s->fpout, ftell (s->fpin), b->parts->offset,
 		     (option (OPTWEED) ? (CH_WEED | CH_REORDER) : 0) |
 		     CH_DECODE , NULL);
@@ -1894,6 +1923,7 @@ void mutt_body_handler (BODY *b, STATE *s)
   }
   else if (s->flags & M_DISPLAY)
   {
+    state_mark_attach (s);
     state_printf (s, _("[-- %s/%s is unsupported "), TYPE (b), b->subtype);
     if (!option (OPTVIEWATTACH))
     {
