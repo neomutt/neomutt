@@ -1324,7 +1324,7 @@ void mutt_body_handler (BODY *b, STATE *s)
   /* first determine which handler to use to process this part */
 
   snprintf (type, sizeof (type), "%s/%s", TYPE (b), b->subtype);
-  if (mutt_is_autoview (b, type))
+  if (mutt_is_autoview (b, type) && (b->disposition == DISPINLINE || !option (OPTUSECDISP)))
   {
     rfc1524_entry *entry = rfc1524_new_entry ();
 

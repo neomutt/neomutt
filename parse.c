@@ -327,12 +327,12 @@ static void parse_content_disposition (char *s, BODY *ct)
 {
   PARAMETER *parms;
 
-  if (!mutt_strncasecmp ("inline", s, 6))
-    ct->disposition = DISPINLINE;
+  if (!mutt_strncasecmp ("attach", s, 6))
+    ct->disposition = DISPATTACH;
   else if (!mutt_strncasecmp ("form-data", s, 9))
     ct->disposition = DISPFORMDATA;
   else
-    ct->disposition = DISPATTACH;
+    ct->disposition = DISPINLINE;
 
   /* Check to see if a default filename was given */
   if ((s = strchr (s, ';')) != NULL)
