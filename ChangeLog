@@ -1,3 +1,53 @@
+Mon Aug  9 19:01:42 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/sk.po, po/uk.po, po/zh_TW.Big5.po, po/ko.po, po/nl.po, po/pl.po, po/ru.po, po/de.po, po/el.po, po/es.po, po/fr.po, po/id.po, po/it.po, po/cs.po:
+	update-po.
+
+	* po/zh_TW.Big5.po:
+	[stable] Fixing a small typo in the Chinese translation.
+
+	* po/zh_TW.Big5.po, po/uk.po, po/sk.po, po/ru.po, po/pl.po, po/nl.po, po/ko.po, po/it.po, po/id.po, po/fr.po, po/el.po, po/es.po, po/de.po, po/cs.po:
+	[stable] Adding the new polish translation; general "make update-po".
+
+	* Muttrc, doc/muttrc.man, doc/muttrc.man.head, main.c, po/zh_TW.Big5.po:
+	Various fixes.  Additionally, mutt will now create the $folder
+	directory when started in curses mode and if it doesn't exist.
+
+Sun Aug  8 14:57:13 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/zh_TW.Big5.po: new chinese translation.
+
+	* po/zh_TW.Big5.po: New chinese translation.
+
+	* Makefile.am: Fix order of some dependencies.
+
+	* Makefile.am: Fix keymap_defs.h dependency.
+
+	* po/it.po: Fix a translation string in it.po.
+
+	* po/it.po: Fixing a message.  From Marco.
+
+	* doc/muttrc.man, init.h:
+	Include complete documentation regardless of actual features.
+
+	* doc/Attic/manual.sgml.in, doc/Attic/mutt.man.in, doc/manual.sgml.tail, doc/mutt.man, doc/muttrc.man, doc/muttrc.man.head, doc/muttrc.man.tail, contrib/Makefile.in, contrib/gpg.rc, doc/Attic/dotlock.man.in, doc/Makefile.in, doc/devel-notes.txt, doc/dotlock.man, doc/manual.sgml, doc/manual.sgml.head, Attic/Muttrc.in, Makefile.am, Muttrc.head, NEWS, configure.in, init.h, makedoc.c:
+	Documentation updates; autogeneration of documentation from init.h.
+
+Wed Aug  4 19:58:13 1999  Thomas Roessler  <roessler@guug.de>
+
+	* NEWS: documentation to prepare the next release.
+
+	* doc/Attic/dotlock.man.in, dotlock.c, dotlock.h, mbox.c, mx.c, mx.h:
+	[stable] Fix $save_empty.
+
+	* ChangeLog: ChangeLog.
+
+	* NEWS, protos.h, send.c: Various fixes; documentation.
+
+	* doc/Attic/dotlock.man.in: Document the -d option.
+
+	* dotlock.h, mbox.c, mx.c, mx.h, dotlock.c: Fix $save_empty.
+
 Wed Aug  4 19:49:28 1999  Thomas Roessler  <roessler@guug.de>
 
 	* NEWS, protos.h, send.c: Various fixes; documentation.
