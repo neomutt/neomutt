@@ -37,6 +37,9 @@ macro pager \cb |urlview\n 'call urlview to extract URLs out of a message'
 # unset ascii_chars
 # unset askbcc
 # unset askcc
+# set attach_format=""%u%D%t%2n %T%.40d%> [%.7m/%.10M, %.6e, %s] "
+# set attach_split
+# set attach_sep="\n"
 # set attribution="On %d, %n wrote:"
 # unset autoedit
 # unset auto_tag
@@ -44,6 +47,7 @@ macro pager \cb |urlview\n 'call urlview to extract URLs out of a message'
 # set beep_new
 # set charset="iso-8859-1"
 # set check_new
+# set collapse_unread
 # set confirmappend
 # set confirmcreate
 # set copy=yes
@@ -63,11 +67,13 @@ macro pager \cb |urlview\n 'call urlview to extract URLs out of a message'
 # set followup_to
 # unset force_name
 # set forward_decode
+# unset forward_decrypt
 # set forward_format="[%a: %s]"
 # unset forward_quote
 # set hdrs
 # unset header
 # set help
+# unset hidden_host
 # set history=10
 # set hostname=""
 # set in_reply_to="%i; from %n on %{!%a, %b %d, %Y at %I:%M:%S%p %Z}"
@@ -81,12 +87,13 @@ macro pager \cb |urlview\n 'call urlview to extract URLs out of a message'
 # set mailcap_path=""
 # set mark_old
 # set markers
-# set mask="^(\\.\\.$|[^.])"
+# set mask="!^\\.[^.]"
 # set mbox="~/mbox"
 # set mbox_type="mbox"
 # unset metoo
 # unset menu_scroll
 # unset meta_key
+# unset mh_purge
 # unset mime_forward
 # unset mime_forward_decode
 # set move=ask-no
@@ -128,13 +135,14 @@ macro pager \cb |urlview\n 'call urlview to extract URLs out of a message'
 # set signature="~/.signature"
 # set simple_search="~f %s | ~s %s"
 # set smart_wrap
+# set smileys="(>From )|(:[-^]?[][)(><}{|/DP])"
 # set sort=date-sent
 # set sort_alias=alias
 # set sort_aux=date-sent
 # set sort_browser=subject
 # set sort_re
 # set spoolfile=""
-# set status_chars="-*%"
+# set status_chars="-*%A"
 # set status_format="-%r-Mutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---"
 # unset status_on_top
 # unset strict_threads
@@ -144,6 +152,7 @@ macro pager \cb |urlview\n 'call urlview to extract URLs out of a message'
 # set timeout=600
 # set tmpdir=""
 # set to_chars="+TCF"
+# set nouncollapse_jump
 # unset use_8bitmime
 # set use_domain
 # set use_from
@@ -151,6 +160,7 @@ macro pager \cb |urlview\n 'call urlview to extract URLs out of a message'
 # set visual=""
 # set wait_key
 # set wrap_search
+# set write_bcc
 # set write_inc=10
 
 ## The following options are only vaild if you have
