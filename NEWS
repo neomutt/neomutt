@@ -52,7 +52,7 @@ Major changes since 1.0
 
 - The $weed option applies to the decode-save and decode-copy
   functions.  Think of these functions as something along the lines
-  of "save to file".
+  of "print to file".
 
 - The master source of the configuration option reference has been
   moved from the SGML document into special comments in init.h.
@@ -96,10 +96,11 @@ Major changes since 1.0
 
 - The various weeding options are gone.  You have one global option,
   $weed, now which can be influenced using configuration commands,
-  or using the display-headers or display-message functions.  This
-  option is applied when forwarding, replying, or printing messages.
-  Essentially, this means that you have some "WYSIWIG-like"
-  behaviour with respect to message header weeding.
+  or using the display-toggle-weed function (this used to be
+  display-headers!).  This option is applied when forwarding,
+  replying, or printing messages. Essentially, this means that you
+  have some "WYSIWIG-like" behaviour with respect to message header
+  weeding.
 
 - The PGP configuration interface was completely redone.  Please
   read doc/PGP-Notes.txt before installing this version on any
