@@ -325,7 +325,7 @@ AC_CHECK_SIZEOF(int)
 AC_CHECK_SIZEOF(long)
 
 AC_TYPE_PID_T
-AC_CHECK_TYPE(ssize_t)
+AC_CHECK_TYPE(ssize_t, int)
 
 AC_CHECK_FUNCS(fgetpos memmove setegid srand48 strerror)
 
