@@ -79,6 +79,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
 {
   char buf[HUGE_STRING];
   char return_path[LONG_STRING];
+  int count = 0;
   int lines;
   time_t t, tz;
   long loc, tmploc;
@@ -119,6 +120,12 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
     if (mutt_strcmp (buf, ctx->magic == M_MMDF ? MMDF_SEP : KENDRA_SEP) == 0)
     {
       loc = ftell (ctx->fp);
+      
+      count++;
+      if (!ctx->quiet && ReadInc && ((count % ReadInc == 0) || count == 1))
+	mutt_message (_("Reading %s... %d (%d%%)"), ctx->path, count,
+		      loc / (ctx->size / 100 + 1));
+
 
       if (ctx->msgcount == ctx->hdrmax)
 	mx_alloc_memory (ctx);
