@@ -405,11 +405,6 @@ enum
 #define toggle_option(x) mutt_bit_toggle(Options,x)
 #define option(x) mutt_bit_isset(Options,x)
 
-/* Bit fields for ``Signals'' */
-#define S_INTERRUPT (1<<0)
-#define S_SIGWINCH  (1<<1)
-#define S_ALARM     (1<<2)
-
 /* Exit values used in send_msg() */
 #define S_ERR 127
 #define S_BKG 126

@@ -117,9 +117,10 @@ WHERE short SendmailWait;
 WHERE short Timeout;
 WHERE short WriteInc;
 
-/* vector to store received signals */
-/* hopefully it's an integer type... */
-WHERE volatile sig_atomic_t Signals INITVAL (0);
+/* flags for received signals */
+WHERE volatile sig_atomic_t SigAlrm INITVAL (0);
+WHERE volatile sig_atomic_t SigInt INITVAL (0);
+WHERE volatile sig_atomic_t SigWinch INITVAL (0);
 
 WHERE int CurrentMenu;
 

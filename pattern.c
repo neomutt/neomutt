@@ -1140,10 +1140,10 @@ int mutt_search_command (int cur, int op)
 	return i;
     }
 
-    if (Signals & S_INTERRUPT)
+    if (SigInt)
     {
       mutt_error _("Search interrupted.");
-      Signals &= ~S_INTERRUPT;
+      SigInt;
       return (-1);
     }
 

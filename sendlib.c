@@ -50,31 +50,31 @@ static struct sysexits
 sysexits_h[] = 
 {
 #ifdef EX_USAGE
-  { 0xff & EX_USAGE, "The command was used incorrectly." },
+  { 0xff & EX_USAGE, "Bad usage." },
 #endif
 #ifdef EX_DATAERR
-  { 0xff & EX_DATAERR, "The input data was incorrect." },
+  { 0xff & EX_DATAERR, "Data format error." },
 #endif
 #ifdef EX_NOINPUT
-  { 0xff & EX_NOINPUT, "No input." },
+  { 0xff & EX_NOINPUT, "Cannot open input." },
 #endif
 #ifdef EX_NOUSER
-  { 0xff & EX_NOUSER, "No such user." },
+  { 0xff & EX_NOUSER, "User unknown." },
 #endif
 #ifdef EX_NOHOST
-  { 0xff & EX_NOHOST, "Host not found." },
+  { 0xff & EX_NOHOST, "Host unknown." },
 #endif
 #ifdef EX_UNAVAILABLE
   { 0xff & EX_UNAVAILABLE, "Service unavailable." },
 #endif
 #ifdef EX_SOFTWARE
-  { 0xff & EX_SOFTWARE, "Software error." },
+  { 0xff & EX_SOFTWARE, "Internal error." },
 #endif
 #ifdef EX_OSERR
   { 0xff & EX_OSERR, "Operating system error." },
 #endif
 #ifdef EX_OSFILE
-  { 0xff & EX_OSFILE, "System file is missing." },
+  { 0xff & EX_OSFILE, "System file missing." },
 #endif
 #ifdef EX_CANTCREAT
   { 0xff & EX_CANTCREAT, "Can't create output." },
@@ -83,13 +83,16 @@ sysexits_h[] =
   { 0xff & EX_IOERR, "I/O error." },
 #endif
 #ifdef EX_TEMPFAIL
-  { 0xff & EX_TEMPFAIL, "Temporary failure." },
+  { 0xff & EX_TEMPFAIL, "Deferred." },
 #endif
 #ifdef EX_PROTOCOL
-  { 0xff & EX_PROTOCOL, "Protocol error." },
+  { 0xff & EX_PROTOCOL, "Remote protocol error." },
 #endif
 #ifdef EX_NOPERM
-  { 0xff & EX_NOPERM, "Permission denied." },
+  { 0xff & EX_NOPERM, "Insufficient permission." },
+#endif
+#ifdef EX_CONFIG
+  { 0xff & EX_NOPERM, "Local configuration error." },
 #endif
   { S_ERR, "Exec error." },
   { -1, NULL}
@@ -1418,7 +1421,7 @@ char *mutt_gen_msgid (void)
 
 static RETSIGTYPE alarm_handler (int sig)
 {
-  Signals |= S_ALARM;
+  SigAlrm = 1;
 }
 
 /* invoke sendmail in a subshell
@@ -1433,7 +1436,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
 {
   sigset_t set;
   int fd, st;
-  pid_t pid;
+  pid_t pid, ppid;
 
   mutt_block_signals_system ();
 
@@ -1453,6 +1456,9 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
   if ((pid = fork ()) == 0)
   {
     struct sigaction act, oldalrm;
+
+    /* save parent's ID before setsid() */
+    ppid = getppid ();
 
     /* we want the delivery to continue even after the main process dies,
      * so we put ourselves into another session right away
@@ -1487,10 +1493,10 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
       {
 	/* *tempfile will be opened as stdout */
 	if (open (*tempfile, O_WRONLY | O_APPEND | O_CREAT | O_EXCL, 0600) < 0)
-	  _exit (errno);
+	  _exit (S_ERR);
 	/* redirect stderr to *tempfile too */
 	if (dup (1) < 0)
-	  _exit (errno);
+	  _exit (S_ERR);
       }
 
       execv (path, args);
@@ -1509,7 +1515,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
      */
     if (SendmailWait > 0)
     {
-      Signals &= ~S_ALARM;
+      SigAlrm = 0;
       act.sa_handler = alarm_handler;
 #ifdef SA_INTERRUPT
       /* need to make sure waitpid() is interrupted on SIGALRM */
@@ -1518,11 +1524,6 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
       act.sa_flags = 0;
 #endif
       sigemptyset (&act.sa_mask);
-      sigaddset (&act.sa_mask, SIGTSTP);
-      sigaddset (&act.sa_mask, SIGINT);
-#if defined (USE_SLANG_CURSES) || defined (HAVE_RESIZETERM)
-      sigaddset (&act.sa_mask, SIGWINCH);
-#endif
       sigaction (SIGALRM, &act, &oldalrm);
       alarm (SendmailWait);
     }
@@ -1540,7 +1541,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
     }
     else
     {
-      st = (SendmailWait > 0 && errno == EINTR && (Signals & S_ALARM)) ?
+      st = (SendmailWait > 0 && errno == EINTR && SigAlrm) ?
 	      S_BKG : S_ERR;
       if (SendmailWait > 0)
       {
@@ -1552,7 +1553,14 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
     /* reset alarm; not really needed, but... */
     alarm (0);
     sigaction (SIGALRM, &oldalrm, NULL);
-    
+
+    if (kill (ppid, 0) == -1 && errno == ESRCH)
+    {
+      /* the parent is already dead */
+      unlink (*tempfile);
+      safe_free ((void **) tempfile);
+    }
+
     _exit (st);
   }
 
@@ -1664,9 +1672,7 @@ mutt_invoke_sendmail (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc, /* recips */
 
   if ((i = send_msg (path, args, msg, &childout)) != (EX_OK & 0xff))
   {
-    if (i == S_BKG)
-      mutt_message (_("Delivery continued in background."));
-    else
+    if (i != S_BKG)
     {
       const char *e = strsysexit (i);
 

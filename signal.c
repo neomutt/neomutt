@@ -26,6 +26,8 @@
 
 static sigset_t Sigset;
 static sigset_t SigsetSys;
+static struct sigaction SysOldInt;
+static struct sigaction SysOldQuit;
 static int IsEndwin = 0;
 
 /* Attempt to catch "ordinary" signals and shut down gracefully. */
@@ -73,12 +75,12 @@ RETSIGTYPE sighandler (int sig)
 
 #if defined (USE_SLANG_CURSES) || defined (HAVE_RESIZETERM)
     case SIGWINCH:
-      Signals |= S_SIGWINCH;
+      SigWinch = 1;
       break;
 #endif
 
     case SIGINT:
-      Signals |= S_INTERRUPT;
+      SigInt = 1;
       break;
 
   }
@@ -108,10 +110,6 @@ void mutt_signal_init (void)
 
   /* we want to avoid race conditions */
   sigaddset (&act.sa_mask, SIGTSTP);
-  sigaddset (&act.sa_mask, SIGINT);
-#if defined (USE_SLANG_CURSES) || defined (HAVE_RESIZETERM)
-  sigaddset (&act.sa_mask, SIGWINCH);
-#endif
 
   /* we also don't want to mess with interrupted system calls */
 #ifdef SA_RESTART
@@ -185,50 +183,38 @@ void mutt_block_signals_system (void)
     /* POSIX: ignore SIGINT and SIGQUIT & block SIGCHLD  before exec */
     sa.sa_handler = SIG_IGN;
     sa.sa_flags = 0;
-    sigaction (SIGINT, &sa, NULL);
-    sigaction (SIGQUIT, &sa, NULL);
+    sigemptyset (&sa.sa_mask);
+    sigaction (SIGINT, &sa, &SysOldInt);
+    sigaction (SIGQUIT, &sa, &SysOldQuit);
 
     sigemptyset (&SigsetSys);
     sigaddset (&SigsetSys, SIGCHLD);
     sigprocmask (SIG_BLOCK, &SigsetSys, 0);
-    set_option (OPTSIGNALSBLOCKED);
+    set_option (OPTSYSSIGNALSBLOCKED);
   }
 }
 
 void mutt_unblock_signals_system (int catch)
 {
-  struct sigaction sa;
-
   if (option (OPTSYSSIGNALSBLOCKED))
   {
     sigprocmask (SIG_UNBLOCK, &SigsetSys, NULL);
-    sigemptyset (&sa.sa_mask);
-    sa.sa_flags = 0;
     if (catch)
     {
-      sa.sa_handler = exit_handler;
-      sigaction (SIGQUIT, &sa, NULL);
-
-      /* we want to avoid race conditions */
-      sigaddset (&sa.sa_mask, SIGTSTP);
-      sigaddset (&sa.sa_mask, SIGINT);
-#if defined (USE_SLANG_CURSES) || defined (HAVE_RESIZETERM)
-      sigaddset (&sa.sa_mask, SIGWINCH);
-#endif
-      /* we also don't want to mess with interrupted system calls */
-#ifdef SA_RESTART
-      sa.sa_flags = SA_RESTART;
-#endif
-      sa.sa_handler = sighandler;
-      sigaction (SIGINT, &sa, NULL);
+      sigaction (SIGQUIT, &SysOldQuit, NULL);
+      sigaction (SIGINT, &SysOldInt, NULL);
     }
     else
     {
+      struct sigaction sa;
+
       sa.sa_handler = SIG_DFL;
+      sigemptyset (&sa.sa_mask);
+      sa.sa_flags = 0;
       sigaction (SIGQUIT, &sa, NULL);
       sigaction (SIGINT, &sa, NULL);
     }
 
-    unset_option (OPTSIGNALSBLOCKED);
+    unset_option (OPTSYSSIGNALSBLOCKED);
   }
 }

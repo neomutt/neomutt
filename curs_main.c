@@ -502,13 +502,13 @@ int mutt_index_menu (void)
       mutt_curs_set (1);
       
 #if defined (USE_SLANG_CURSES) || defined (HAVE_RESIZETERM)
-      if (Signals & S_SIGWINCH)
+      if (SigWinch)
       {
 	mutt_flushinp ();
 	mutt_resize_screen ();
 	menu->redraw = REDRAW_FULL;
 	menu->menu = MENU_MAIN;
-	Signals &= ~S_SIGWINCH;
+	SigWinch = 0;
 	menu->top = 0; /* so we scroll the right amount */
 	continue;
       }

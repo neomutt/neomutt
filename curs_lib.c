@@ -53,7 +53,7 @@ event_t mutt_getch (void)
   if (UngetCount)
     return (KeyEvent[--UngetCount]);
 
-  Signals &= ~S_INTERRUPT;
+  SigInt = 0;
 
 #ifdef KEY_RESIZE
   /* ncurses 4.2 sends this when the screen is resized */
@@ -62,7 +62,7 @@ event_t mutt_getch (void)
 #endif /* KEY_RESIZE */
     ch = getch ();
 
-  if (Signals & S_INTERRUPT)
+  if (SigInt)
     mutt_query_exit ();
 
   if(ch == ERR)
@@ -180,7 +180,7 @@ void mutt_query_exit (void)
   }
   mutt_clear_error();
   mutt_curs_set (-1);
-  Signals &= ~S_INTERRUPT;
+  SigInt = 0;
 }
 
 static void clean_error_buf(void)
