@@ -60,6 +60,7 @@ struct binding_t OpGeneric[] = {
   { "current-top",      OP_CURRENT_TOP,		NULL },
   { "current-middle",   OP_CURRENT_MIDDLE,	NULL },
   { "current-bottom",   OP_CURRENT_BOTTOM,	NULL },
+  { "what-key",		OP_WHAT_KEY,		NULL },
   { NULL,		0,			NULL }
 };
 

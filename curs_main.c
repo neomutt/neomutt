@@ -1987,6 +1987,10 @@ int mutt_index_menu (void)
 	menu->redraw = REDRAW_FULL;
 	break;
 
+      case OP_WHAT_KEY:
+	mutt_what_key();
+	break;
+
       default:
 	if (menu->menu == MENU_MAIN)
 	  km_error_key (MENU_MAIN);

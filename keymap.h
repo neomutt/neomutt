@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1996-2000,2 Michael R. Elkins <me@cs.hmc.edu>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -46,6 +46,7 @@ int km_expand_key (char *, size_t, struct keymap_t *);
 struct keymap_t *km_find_func (int, int);
 void km_init (void);
 void km_error_key (int);
+void mutt_what_key (void);
 
 enum
 {

@@ -120,6 +120,19 @@ static int parse_fkey(char *s)
     return n;
 }
 
+/*
+ * This function parses the string <NNN> and uses the octal value as the key
+ * to bind.
+ */
+static int parse_keycode (const char *s)
+{
+  if (isdigit (s[1]) && isdigit (s[2]) && isdigit (s[3]) && s[4] == '>')
+  {
+    return (s[3] - '0') + (s[2] - '0') * 8 + (s[1] - '0') * 64;
+  }
+  return -1;
+}
+
 static int parsekeys (char *str, keycode_t *d, int max)
 {
   int n, len = max;
@@ -146,6 +159,11 @@ static int parsekeys (char *str, keycode_t *d, int max)
       {
 	s = t;
 	*d = KEY_F (n);
+      }
+      else if ((n = parse_keycode(s)) > 0)
+      {
+	s = t;
+	*d = n;
       }
       
       *t = c;
@@ -891,4 +909,26 @@ int mutt_parse_exec (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     mutt_ungetch(0, ops[--nops]);
 
   return 0;
+}
+
+/*
+ * prompts the user to enter a keystroke, and displays the octal value back
+ * to the user.
+ */
+void mutt_what_key (void)
+{
+  int ch;
+
+  mvprintw(LINES-1,0,"Enter keys (^G to abort): ");
+  do {
+    ch = getch();
+    if (ch != ERR && ch != ctrl ('G'))
+    {
+      mutt_message("Char = %s, Octal = %o, Decimal = %d",
+	       km_keyname(ch), ch, ch);
+    }
+  }
+  while (ch != ERR && ch != ctrl ('G'));
+
+  mutt_flushinp();
 }
