@@ -25,6 +25,7 @@
 #define M_CM_WEED	(1<<5)  /* weed message/rfc822 attachment headers */
 #define M_CM_CHARCONV	(1<<6)  /* perform character set conversions */
 #define M_CM_PRINTING	(1<<7)	/* printing the message - display light */
+#define M_CM_REPLYING	(1<<8)	/* replying the message */
 
 
 #define M_CM_DECODE_PGP	  (1<<8) /* used for decoding PGP messages */

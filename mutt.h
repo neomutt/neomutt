@@ -374,6 +374,7 @@ enum
   OPTSSLSYSTEMCERTS,
 #endif
   OPTIMPLICITAUTOVIEW,
+  OPTINCLUDEONLYFIRST,
   OPTKEEPFLAGGED,
   OPTMAILCAPSANITIZE,
   OPTMAILDIRTRASH,
@@ -858,6 +859,8 @@ typedef struct
 #define M_WEED          (1<<3) /* weed headers even when not in display mode */
 #define M_CHARCONV	(1<<4) /* Do character set conversions */
 #define M_PRINTING	(1<<5) /* are we printing? - M_DISPLAY "light" */
+#define M_REPLYING	(1<<6) /* are we replying? */
+#define M_FIRSTDONE	(1<<7) /* the first attachment has been done */
 
 #define state_set_prefix(s) ((s)->flags |= M_PENDINGPREFIX)
 #define state_reset_prefix(s) ((s)->flags &= ~M_PENDINGPREFIX)
