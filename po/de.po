@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.5.4\n"
+"Project-Id-Version: 1.5.5.1\n"
 "POT-Creation-Date: 2003-11-05 21:05+0100\n"
-"PO-Revision-Date: 2003-03-20 19:13+0100\n"
+"PO-Revision-Date: 2003-11-15 14:12+0100\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -913,9 +913,8 @@ msgid "No tagged messages."
 msgstr "Keine markierten Nachrichten."
 
 #: curs_main.c:653 menu.c:890
-#, fuzzy
 msgid "Nothing to do."
-msgstr "Verbinde zu %s..."
+msgstr "Nichts zu erledigen."
 
 #: curs_main.c:739
 msgid "Jump to message: "
@@ -1373,9 +1372,9 @@ msgid "Login failed."
 msgstr "Anmeldung gescheitert..."
 
 #: imap/auth_sasl.c:112
-#, fuzzy, c-format
+#, c-format
 msgid "Authenticating (%s)..."
-msgstr "Authentifiziere (APOP)..."
+msgstr "Authentifiziere (%s)..."
 
 #: imap/auth_sasl.c:199 pop_auth.c:172
 msgid "SASL authentication failed."
@@ -1433,7 +1432,7 @@ msgstr "Dieser IMAP-Server ist veraltet und wird nicht von Mutt unterstützt."
 #: imap/imap.c:397
 #, c-format
 msgid "Unexpected response received from server: %s"
-msgstr ""
+msgstr "Unerwartete Antwort vom Server empfangen: %s"
 
 #: imap/imap.c:417
 msgid "Secure connection with TLS?"
@@ -1607,9 +1606,9 @@ msgid "%s: invalid value"
 msgstr "%s: Ungültiger Wert"
 
 #: init.c:1198
-#, fuzzy, c-format
+#, c-format
 msgid "%s: Unknown type."
-msgstr "%s: Unbekannter Typ"
+msgstr "%s: Unbekannter Typ."
 
 #: init.c:1224
 #, c-format
@@ -1726,7 +1725,7 @@ msgstr "Leere Funktion"
 
 #: keymap_alldefs.h:6
 msgid "end of conditional execution (noop)"
-msgstr ""
+msgstr "Ende der beedingten Ausführung (noop)"
 
 #: keymap_alldefs.h:7
 msgid "force viewing of attachment using mailcap"
@@ -2357,9 +2356,8 @@ msgid "apply next function to tagged messages"
 msgstr "Wende nächste Funktion auf markierte Nachrichten an"
 
 #: keymap_alldefs.h:164
-#, fuzzy
 msgid "apply next function ONLY to tagged messages"
-msgstr "Wende nächste Funktion auf markierte Nachrichten an"
+msgstr "Wende nächste Funktion NUR auf markierte Nachrichten an"
 
 #: keymap_alldefs.h:165
 msgid "tag the current subthread"
@@ -2499,7 +2497,7 @@ msgstr "Zeige S/MIME Optionen"
 
 #: lib.c:60
 msgid "Integer overflow -- can't allocate memory!"
-msgstr ""
+msgstr "Integer Überlauf -- Kann keinen Speicher belegen!"
 
 #: lib.c:67 lib.c:82 lib.c:114
 msgid "Out of memory!"
@@ -2846,13 +2844,12 @@ msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): kann Zeitstempel der Datei nicht setzen"
 
 #: muttlib.c:835
-#, fuzzy
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
-msgstr "Datei ist ein Verzeichnis, darin abspeichern?"
+msgstr "Datei ist ein Verzeichnis, darin abspeichern? [(j)a, (n)ein, (a)lle]"
 
 #: muttlib.c:835
 msgid "yna"
-msgstr ""
+msgstr "jna"
 
 #: muttlib.c:851
 msgid "File is a directory, save under it?"
@@ -3152,7 +3149,7 @@ msgstr "Kann Nachricht nicht schreiben"
 
 #: mx.c:1535
 msgid "Integer overflow -- can't allocate memory."
-msgstr ""
+msgstr "Integer Überlauf -- kann keinen Speicher belegen."
 
 #: pager.c:53
 msgid "Not available in this menu."
