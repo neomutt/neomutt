@@ -1,3 +1,39 @@
+Mon Jul 26 14:53:01 1999  Thomas Roessler  <roessler@guug.de>
+
+	* flags.c, protos.h, recvattach.c:
+	When replying to message/rfc822 type attachments, Context statistics
+	would go out of order.  Problem noted by Johan van Selst
+	<johans@stack.nl>.
+
+	* flags.c, protos.h, recvattach.c:
+	When replying to a message/rfc822 attachment, the Context statistics
+	would get out of order.  Problem noted by Johan van Selst
+	<johans@stack.nl>.
+
+	* curs_lib.c:
+	Dynamically allocate the unget buffer.  Fixes Debian bug #41042.
+	From Gero Treuner.
+
+	* curs_lib.c:
+	Dynamically allocate the unget buffer.  Fixes Debian bug #41042.
+	From Gero Treuner <gero@faveve.uni-stuttgart.de>.
+
+	* curs_main.c: Fix read_only in folder-hooks.
+
+	* curs_main.c, ChangeLog: The following:
+
+		folder-hook !asdf unset read_only
+		folder-hook asdf set read_only
+
+	wouldn't work.  Fix from Gero Treuner <gero@faveve.uni-stuttgart.de>.
+
+	* browser.h, imap.c, imap.h, mx.c, postpone.c, browser.c:
+	Assorted IMAP fixes.  From Brendan Cully <brendan@kublai.com>,
+	message <19990725150346.A19750@xanadu.kublai.com>.
+
+	* parse.c, rfc2047.c, rfc2231.c, rfc2231.h, sendlib.c, Makefile.am, TODO, copy.c, init.h, mutt.h:
+	Implement RFC 2231.
+
 Mon Jul 26 13:57:58 1999  Thomas Roessler  <roessler@guug.de>
 
 	* browser.h, imap.c, imap.h, mx.c, postpone.c, browser.c:
