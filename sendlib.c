@@ -1734,7 +1734,7 @@ void mutt_prepare_envelope (ENVELOPE *env)
     env->to->next = rfc822_new_address ();
 
     buffer[0] = 0;
-    rfc822_cat (buffer, sizeof (buffer), "undisclosed-recipients:;",
+    rfc822_cat (buffer, sizeof (buffer), "undisclosed-recipients",
 		RFC822Specials);
 
     env->to->mailbox = safe_strdup (buffer);
