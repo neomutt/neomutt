@@ -211,7 +211,9 @@ int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
   if (!(t = strchr (src, ':')))
     return -1;
   
-  tmp = safe_strdup (t + 1);
+  if ((tmp = safe_strdup (t + 1)) == NULL)
+    return -1;
+
   if ((headers = strchr (tmp, '?')))
     *headers++ = '\0';
 
