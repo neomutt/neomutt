@@ -1,3 +1,12 @@
+2003-03-07 14:55:53  Brendan Cully  <brendan@kublai.com>  (roessler)
+
+	* mutt_sasl.c: The global callbacks set up in sasl_client_init
+	are not copied by the SASL library, so they can't be allocated
+	on the stack. This is the case with both versions of the SASL
+	library, and I frankly don't understand why it hasn't caused
+	problems before. Since it segfaults reliably on OS X for me now,
+	I thought a patch would be in order.
+
 2003-03-07 08:23:27  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* crypt.c, pgp.h: Don't use functions without importing the
