@@ -155,9 +155,9 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   {
     rx = safe_malloc (sizeof (regex_t));
 #ifdef M_PGPHOOK
-    if ((rc = REGCOMP (rx, pattern.data, ((data & (M_PGPHOOK|M_CHARSETHOOK)) ? REG_ICASE : 0))) != 0)
+    if ((rc = REGCOMP (rx, NONULL(pattern.data), ((data & (M_PGPHOOK|M_CHARSETHOOK)) ? REG_ICASE : 0))) != 0)
 #else
-      if ((rc = REGCOMP (rx, pattern.data, (data & M_CHARSETHOOK) ? REG_ICASE : 0)) != 0)
+    if ((rc = REGCOMP (rx, NONULL(pattern.data), (data & M_CHARSETHOOK) ? REG_ICASE : 0)) != 0)
 #endif /* HAVE_PGP */
     {
       regerror (rc, rx, err->data, err->dsize);
