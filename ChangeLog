@@ -1,3 +1,10 @@
+2005-01-28 13:17:22  Werner Koch  <wk@gnupg.org>  (roessler)
+
+	* Makefile.am, configure.in, crypt-gpgme.c, crypt-gpgme.h,
+	crypt-mod-pgp-gpgme.c, crypt-mod-smime-gpgme.c, cryptglue.c,
+	functions.h: gpgme integration.  See documentation for
+	$crypt_use_gpgme, and http://www.gnupg.org/aegypten2/.
+
 2005-01-28 13:00:36  Adeodato Simó  <asp16@alu.ua.es>  (roessler)
 
 	* mutt_ssl_gnutls.c: The attached mini-patch from David Mosberger
