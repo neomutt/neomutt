@@ -178,8 +178,14 @@ do-upload: test-tlr
 	scp $(distdir){,i}.tar.gz{,.asc}			\
 		sigtrap.guug.de:/home/ftp/pub/mutt/devel/ 	\
 		|| echo "UPLOAD FAILED.  Please upload manually!"
-	cvs commit -m "automatic post-release commit for $(distdir)"
+	( cd $(srcdir) && cvs commit -m "automatic post-release commit for $(distdir)" )
 	cvs tag `echo $(distdir)-rel | tr . -`
+	cvs rdiff -u -r `cat $(srcdir)/LAST_TAG`  \
+			-r `echo $(distdir)-rel | tr . -` \
+			> $(srcdir)/diff-`cat $(srcdir)/OVERSION`-`cat $(srcdir)/VERSION`
+	gzip -9 $(srcdir)/diff-`cat $(srcdir)/OVERSION`-`cat $(srcdir)/VERSION`
+	echo $(distdir)-rel | tr . - > $(srcdir)/LAST_TAG
+	( cd $(srcdir) && cvs commit -m "automatically committing updated build information" LAST_TAG )
 	cvs update
 	$$HOME/bin/upload-mutt
 	mutt -s "[Announce] $(distdir) is out" mutt-dev@mutt.org
@@ -187,6 +193,8 @@ do-upload: test-tlr
 bump-version: test-tlr
 	-rm -f $(srcdir)/VERSION
 	( cd $(srcdir) && cvs update VERSION )
+	( cd $(srcdir) && cp VERSION OVERSION && \
+	   cvs commit -m "automatically committing updated build information" OVERSION )
 	awk -F . '{printf("%d.%d.%d\n", $$1, $$2, $$3 + 1);}' $(srcdir)/VERSION > _VERSION.$$$$  \
 		&& mv _VERSION.$$$$ $(srcdir)/VERSION
 	$(VISUAL) $(srcdir)/VERSION
