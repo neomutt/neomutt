@@ -29,6 +29,7 @@
 #define DT_RX		7 /* regular expressions */
 #define DT_MAGIC	8 /* mailbox type */
 #define DT_SYN		9 /* synonym for another variable */
+#define DT_ADDR	       10 /* e-mail address */
 
 #define DTYPE(x) ((x) & DT_MASK)
 
@@ -121,6 +122,7 @@ struct option_t MuttVars[] = {
   { "forw_format",	DT_SYN,  R_NONE, UL "forward_format", 0 },
   { "forward_quote",	DT_BOOL, R_NONE, OPTFORWQUOTE, 0 },
   { "forw_quote",	DT_SYN,  R_NONE, UL "forward_quote", 0 },
+  { "from",		DT_ADDR, R_NONE, UL &From, UL "" },
   { "hdr_format",	DT_SYN,  R_NONE, UL "index_format", 0 },
   { "hdrs",		DT_BOOL, R_NONE, OPTHDRS, 1 },
   { "header",		DT_BOOL, R_NONE, OPTHEADER, 0 },

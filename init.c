@@ -646,6 +646,13 @@ static void mutt_restore_default (struct option_t *p)
 	*((char **) p->data) = safe_strdup (path);
       }
       break;
+    case DT_ADDR:
+      if (p->init)
+      {
+	rfc822_free_address ((ADDRESS **) p->data);
+	*((ADDRESS **) p->data) = rfc822_parse_adrlist (NULL, (char *) p->init);
+      }
+      break;
     case DT_BOOL:
       if (p->init)
 	set_option (p->data);
@@ -814,7 +821,8 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	set_option (MuttVars[idx].data);
     }
     else if (DTYPE (MuttVars[idx].type) == DT_STR ||
-	     DTYPE (MuttVars[idx].type) == DT_PATH)
+	     DTYPE (MuttVars[idx].type) == DT_PATH ||
+	     DTYPE (MuttVars[idx].type) == DT_ADDR)
     {
       if (query || *s->dptr != '=')
       {
@@ -827,17 +835,25 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       s->dptr++;
 
       /* copy the value of the string */
-      FREE (MuttVars[idx].data);
+      if (DTYPE (MuttVars[idx].type) == DT_ADDR)
+	rfc822_free_address ((ADDRESS **) MuttVars[idx].data);
+      else
+	FREE (MuttVars[idx].data);
+
       mutt_extract_token (tmp, s, 0);
-      if (MuttVars[idx].type == DT_PATH)
+      if (DTYPE (MuttVars[idx].type) == DT_PATH)
       {
 	strfcpy (scratch, tmp->data, sizeof (scratch));
 	mutt_expand_path (scratch, sizeof (scratch));
 	*((char **) MuttVars[idx].data) = safe_strdup (scratch);
       }
-      else
+      else if (DTYPE (MuttVars[idx].type) == DT_STR)
       {
 	*((char **) MuttVars[idx].data) = safe_strdup (tmp->data);
+      }
+      else
+      {
+	*((ADDRESS **) MuttVars[idx].data) = rfc822_parse_adrlist (NULL, tmp->data);
       }
     }
     else if (DTYPE(MuttVars[idx].type) == DT_RX)
@@ -1442,6 +1458,11 @@ int mutt_var_value_complete (char *buffer, size_t len, int pos)
 	  (DTYPE(MuttVars[idx].type) == DT_RX))
 	snprintf(pt, dlen, "%s\"%s\"", tmp, 
 		  NONULL (*((char **) MuttVars[idx].data)));
+      else if (DTYPE (MuttVars[idx].type) == DT_ADDR)
+      {
+	*pt = '\0';
+	rfc822_write_address (pt, dlen, *((ADDRESS **) MuttVars[idx].data));
+      }
       else if (DTYPE (MuttVars[idx].type) == DT_QUAD)
 	snprintf(pt, dlen, "%s%s", tmp,  vals[quadoption (MuttVars[idx].data)]);
       else if (DTYPE (MuttVars[idx].type) == DT_NUM)

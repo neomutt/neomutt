@@ -26,6 +26,8 @@ WHERE char Errorbuf[SHORT_STRING];
 WHERE char *MuttDotlock;
 #endif
 
+WHERE ADDRESS *From;
+
 WHERE char *AliasFile;
 WHERE char *AliasFmt;
 WHERE char *AttachSep;
