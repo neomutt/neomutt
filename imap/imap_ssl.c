@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1999 Tommi Komulainen <Tommi.Komulainen@iki.fi>
+ * Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 #include <openssl/ssl.h>
 #include <openssl/x509.h>
 #include <openssl/err.h>
+#include <openssl/rand.h>
 
 #undef _
 
@@ -36,7 +37,22 @@
 #define READ_X509_KEY(fp, key)	PEM_read_X509(fp, key, NULL)
 #endif
 
+/* This is ugly, but as RAND_status came in on OpenSSL version 0.9.5
+ * and the code has to support older versions too, this is seemed to
+ * be cleaner way compared to having even uglier #ifdefs all around.
+ */
+#ifdef HAVE_RAND_STATUS
+#define HAVE_ENTROPY()	(RAND_status() == 1)
+#define GOT_ENTROPY()	return 0;
+#else
+static int needentropy = 1;
+/* OpenSSL fills the entropy pool from /dev/urandom if it exists */
+#define HAVE_ENTROPY()	(!access("/dev/urandom", R_OK) || !needentropy)
+#define GOT_ENTROPY()	do { needentropy = 1; return 0; } while (0)
+#endif
+
 char *SslCertFile = NULL;
+char *SslEntropyFile = NULL;
 
 typedef struct _sslsockdata
 {
@@ -46,9 +62,87 @@ typedef struct _sslsockdata
 }
 sslsockdata;
 
+/* 
+ * OpenSSL library needs to be fed with sufficient entropy. On systems
+ * with /dev/urandom, this is done transparently by the library itself,
+ * on other systems we need to fill the entropy pool ourselves.
+ *
+ * Even though only OpenSSL 0.9.5 and later will complain about the
+ * lack of entropy, we try to our best and fill the pool with older
+ * versions also. (That's the reason for the ugly #ifdefs and macros,
+ * otherwise I could have simply #ifdef'd the whole ssl_init funcion)
+ */
+int ssl_init (void)
+{
+  char path[_POSIX_PATH_MAX], *file;
+
+  if (HAVE_ENTROPY()) return 0;
+  
+  mutt_message (_("Filling entropy pool"));
+  
+  /* try egd */
+#ifdef HAVE_RAND_EGD
+  file = SslEntropyFile;
+  if (file && RAND_egd(file) != -1)
+    GOT_ENTROPY;
+  file = getenv("EGDSOCKET");
+  if (file && RAND_egd(file) != -1)
+    GOT_ENTROPY();
+  snprintf (path, sizeof(path), "%s/.entropy", NONULL(Homedir));
+  if (RAND_egd(path) != -1)
+    GOT_ENTROPY();
+  if (RAND_egd("/tmp/entropy") != -1)
+    GOT_ENTROPY();
+#endif
+
+  /* try some files */
+  file = SslEntropyFile;
+  if (!file || access(file, R_OK) == -1)
+    file = getenv("RANDFILE");
+  if (!file || access(file, R_OK) == -1) {
+    snprintf (path, sizeof(path), "%s/.rnd", NONULL(Homedir));
+    file = path;
+  }
+  if (access(file, R_OK) == 0) {
+    if (RAND_load_file(file, 10240) >= 16)
+      GOT_ENTROPY();
+  }
+
+  if (HAVE_ENTROPY()) return 0;
+
+  mutt_error (_("Failed to find enough entropy on your system"));
+  sleep (2);
+  return -1;
+}
+
+static int ssl_socket_open_err (CONNECTION *conn)
+{
+  mutt_error (_("SSL disabled due the lack of entropy"));
+  sleep (2);
+  return -1;
+}
 
 static int ssl_check_certificate (sslsockdata * data);
 
+static int ssl_socket_read (CONNECTION * conn);
+static int ssl_socket_write (CONNECTION * conn, const char *buf);
+static int ssl_socket_open (CONNECTION * conn);
+static int ssl_socket_close (CONNECTION * conn);
+
+int ssl_socket_setup (CONNECTION * conn)
+{
+  if (ssl_init() < 0) {
+    conn->open = ssl_socket_open_err;
+    return -1;
+  }
+
+  conn->open	= ssl_socket_open;
+  conn->read	= ssl_socket_read;
+  conn->write	= ssl_socket_write;
+  conn->close	= ssl_socket_close;
+
+  return 0;
+}
 
 int ssl_socket_read (CONNECTION * conn)
 {
@@ -74,7 +168,7 @@ int ssl_socket_open (CONNECTION * conn)
   data = (sslsockdata *) safe_calloc (1, sizeof (sslsockdata));
   conn->sockdata = data;
 
-  SSLeay_add_ssl_algorithms ();
+  SSL_library_init();
   data->ctx = SSL_CTX_new (SSLv23_client_method ());
 
   /* disable SSL protocols as needed */
@@ -82,7 +176,6 @@ int ssl_socket_open (CONNECTION * conn)
   {
     SSL_CTX_set_options(data->ctx, SSL_OP_NO_TLSv1);
   }
-
   if (!option(OPTSSLV2)) 
   {
     SSL_CTX_set_options(data->ctx, SSL_OP_NO_SSLv2);

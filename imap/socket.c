@@ -139,10 +139,7 @@ CONNECTION *mutt_socket_select_connection (const IMAP_MBOX *mx, int newconn)
 #ifdef USE_SSL
   if (mx->socktype == M_NEW_SSL_SOCKET) 
   {
-      conn->read = ssl_socket_read;
-      conn->write = ssl_socket_write;
-      conn->open = ssl_socket_open;
-      conn->close = ssl_socket_close;
+    ssl_socket_setup (conn);
   }
   else
 #endif

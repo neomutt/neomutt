@@ -1334,6 +1334,11 @@ struct option_t MuttVars[] = {
   ** be saved in this file and further connections are automatically 
   ** accepted.
   */
+  { "entropy_file",	DT_PATH, R_NONE, UL &SslEntropyFile, 0 },
+  /* .pp
+  ** The file which includes random data that is used to initalize SSL
+  ** library functions.
+   */
   { "ssl_use_sslv2", DT_BOOL, R_NONE, OPTSSLV2, 1 },
   /*
   ** .pp

@@ -26,6 +26,21 @@ For example:
 	mailboxes {localhost:994/ssl}inbox
 
 
+If you get errors about lack of entropy, it means that Mutt was unable
+to find a source of random data to initialize SSL library with. Should
+this happen, you need to generate the data yourself and save it in a
+file somewhere Mutt will find it. Mutt tries to use files
+$SslEntropyFile, $RANDFILE (if this environment variable is set) and
+~/.rnd in that order as source for random data.
+
+If your OpenSSL is version 0.9.5 or later, you should try EGD, Entropy
+Gathering Daemon, from http://www.lothar.com/tech/crypto/ . Mutt will
+try to find EGD sockets in the following places, $SslEntropyFile,
+$EGDSOCKET (if this environment variable is set), ~/.entropy and
+/tmp/entropy. If no socket is found, static files will be tried as
+described above.
+
+
 Each time a server is contacted, its certificate is checked against
 known valid certificates. When an unknown certificate is encountered,
 you are asked to verify it. If you reject the certificate, the

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1999 Tommi Komulainen <Tommi.Komulainen@iki.fi>
+ * Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -20,10 +20,8 @@
 #define _MUTT_SSL_H_ 1
 
 extern char *SslCertFile;
+extern char *SslEntropyFile;
 
-extern int ssl_socket_read (CONNECTION *conn);
-extern int ssl_socket_write (CONNECTION *conn, const char *buf);
-extern int ssl_socket_open (CONNECTION *conn);
-extern int ssl_socket_close (CONNECTION *conn);
+extern int ssl_socket_setup (CONNECTION *conn);
 
 #endif
