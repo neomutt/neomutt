@@ -1,3 +1,7 @@
+2004-08-17 13:42:01  Johan Svedberg  <johan@svedberg.pp.se>  (roessler)
+
+	* po/sv.po: update
+
 2004-08-16 21:37:43  Adeodato Simó  <asp16@alu.ua.es>  (roessler)
 
 	* headers.c: as of current cvs, setting "PGP: E" (or similar)
