@@ -76,7 +76,8 @@ static size_t convert_string (const char *f, size_t flen,
   return n;
 }
 
-static char *choose_charset (const char *charsets, char *u, size_t ulen)
+static char *choose_charset (const char *fromcode, const char *charsets,
+			     char *u, size_t ulen)
 {
   char *tocode = 0;
   size_t bestn = 0;
@@ -99,7 +100,7 @@ static char *choose_charset (const char *charsets, char *u, size_t ulen)
 
     t = safe_malloc (n + 1);
     memcpy (t, p, n), t[n] = '\0';
-    n = convert_string (u, ulen, "UTF-8", t, &s, &slen);
+    n = convert_string (u, ulen, fromcode, t, &s, &slen);
     if (n == (size_t)(-1))
       continue;
     free (s);
@@ -188,8 +189,12 @@ static size_t q_encoder (char *s, const char *d, size_t dlen,
  * be converted to an encoded word of length *wlen using *encoder.
  * Otherwise return an upper bound on the maximum length of the data
  * which could be converted.
+ * The data is converted from fromcode (which must be stateless) to
+ * tocode, unless fromcode is 0, in which case the data is assumed to
+ * be already in tocode, which should be 8-bit and stateless.
  */
-static size_t try_block (const char *d, size_t dlen, const char *tocode,
+static size_t try_block (const char *d, size_t dlen,
+			 const char *fromcode, const char *tocode,
 			 encoder_t *encoder, size_t *wlen)
 {
   char buf1[ENCWORD_LEN_MAX - ENCWORD_LEN_MIN + 1];
@@ -199,18 +204,28 @@ static size_t try_block (const char *d, size_t dlen, const char *tocode,
   size_t ibl, obl;
   int count, len, len_b, len_q;
 
-  cd = mutt_iconv_open (tocode, "UTF-8");
-  assert (cd != (iconv_t)(-1));
-  ib = d, ibl = dlen, ob = buf1, obl = sizeof (buf1) - strlen (tocode);
-  if (iconv (cd, &ib, &ibl, &ob, &obl) == (size_t)(-1) ||
-      iconv (cd, 0, 0, &ob, &obl) == (size_t)(-1))
+  if (fromcode)
   {
-    assert (errno == E2BIG);
+    cd = mutt_iconv_open (tocode, fromcode);
+    assert (cd != (iconv_t)(-1));
+    ib = d, ibl = dlen, ob = buf1, obl = sizeof (buf1) - strlen (tocode);
+    if (iconv (cd, &ib, &ibl, &ob, &obl) == (size_t)(-1) ||
+	iconv (cd, 0, 0, &ob, &obl) == (size_t)(-1))
+    {
+      assert (errno == E2BIG);
+      iconv_close (cd);
+      assert (ib > d);
+      return (ib - d == dlen) ? dlen : ib - d + 1;
+    }
     iconv_close (cd);
-    assert (ib > d);
-    return (ib - d == dlen) ? dlen : ib - d + 1;
   }
-  iconv_close (cd);
+  else
+  {
+    if (dlen > sizeof (buf1) - strlen (tocode))
+      return sizeof (buf1) - strlen (tocode) + 1;
+    memcpy (buf1, d, dlen);
+    ob = buf1 + dlen;
+  }
 
   count = 0;
   for (p = buf1; p < ob; p++)
@@ -251,7 +266,8 @@ static size_t try_block (const char *d, size_t dlen, const char *tocode,
  * Return the length of the encoded word.
  */
 static size_t encode_block (char *s, char *d, size_t dlen,
-			    const char *tocode, encoder_t encoder)
+			    const char *fromcode, const char *tocode,
+			    encoder_t encoder)
 {
   char buf1[ENCWORD_LEN_MAX - ENCWORD_LEN_MIN + 1];
   iconv_t cd;
@@ -259,14 +275,19 @@ static size_t encode_block (char *s, char *d, size_t dlen,
   char *ob;
   size_t ibl, obl, n1, n2;
 
-  cd = mutt_iconv_open (tocode, "UTF-8");
-  assert (cd != (iconv_t)(-1));
-  ib = d, ibl = dlen, ob = buf1, obl = sizeof (buf1) - strlen (tocode);
-  n1 = iconv (cd, &ib, &ibl, &ob, &obl);
-  n2 = iconv (cd, 0, 0, &ob, &obl);
-  assert (n1 != (size_t)(-1) && n2 != (size_t)(-1));
-  iconv_close (cd);
-  return (*encoder) (s, buf1, ob - buf1, tocode);
+  if (fromcode)
+  {
+    cd = mutt_iconv_open (tocode, fromcode);
+    assert (cd != (iconv_t)(-1));
+    ib = d, ibl = dlen, ob = buf1, obl = sizeof (buf1) - strlen (tocode);
+    n1 = iconv (cd, &ib, &ibl, &ob, &obl);
+    n2 = iconv (cd, 0, 0, &ob, &obl);
+    assert (n1 != (size_t)(-1) && n2 != (size_t)(-1));
+    iconv_close (cd);
+    return (*encoder) (s, buf1, ob - buf1, tocode);
+  }
+  else
+    return (*encoder) (s, d, dlen, tocode);
 }
 
 /*
@@ -276,7 +297,7 @@ static size_t encode_block (char *s, char *d, size_t dlen,
  * We start in column col, which limits the length of the word.
  */
 static size_t choose_block (char *d, size_t dlen, int col,
-			    const char *tocode,
+			    const char *fromcode, const char *tocode,
 			    encoder_t *encoder, size_t *wlen)
 {
   size_t n, nn;
@@ -285,7 +306,7 @@ static size_t choose_block (char *d, size_t dlen, int col,
   for (;;)
   {
     assert (d + n > d);
-    nn = try_block (d, n, tocode, encoder, wlen);
+    nn = try_block (d, n, fromcode, tocode, encoder, wlen);
     if (!nn && col + *wlen <= ENCWORD_LEN_MAX + 1)
       break;
     nn = (nn ? nn : n) - 1;
@@ -303,8 +324,9 @@ static size_t choose_block (char *d, size_t dlen, int col,
  * Place the result of RFC-2047-encoding (d, dlen) into the dynamically
  * allocated buffer (e, elen). The input data is in charset fromcode
  * and is converted into a charset chosen from charsets.
- * Return 1 if the input data is invalid, 2 if no conversion is possible,
- * otherwise 0 on success.
+ * Return 1 if the conversion to UTF-8 failed, 2 if conversion from UTF-8
+ * failed, otherwise 0. If conversion failed, fromcode is assumed to be
+ * compatible with us-ascii and the original data is used.
  * The input data is assumed to be a single line starting at column col;
  * if col is non-zero, the preceding character was a space.
  */
@@ -312,16 +334,22 @@ static int rfc2047_encode (const char *d, size_t dlen, int col,
 			   const char *fromcode, const char *charsets,
 			   char **e, size_t *elen)
 {
+  int ret = 0;
   char *buf;
   size_t bufpos, buflen;
   char *u, *t0, *t1, *t;
   size_t ulen, r, n, wlen;
   encoder_t encoder;
-  char *tocode;
+  char *tocode1 = 0;
+  const char *tocode;
+  char *icode = "UTF-8";
 
-  /* Convert to UTF-8. */
-  if (convert_string (d, dlen, fromcode, "UTF-8", &u, &ulen))
-    return 1;
+  /* Try to convert to UTF-8. */
+  if (convert_string (d, dlen, fromcode, icode, &u, &ulen))
+  {
+    ret = 1, icode = 0;
+    u = safe_malloc (ulen = dlen), memcpy (u, d, dlen);
+  }
 
   /* Find earliest and latest things we must encode. */
   t0 = t1 = 0;
@@ -336,15 +364,17 @@ static int rfc2047_encode (const char *d, size_t dlen, int col,
   {
     /* No encoding is required. */
     *e = u, *elen = ulen;
-    return 0;
+    return ret;
   }
 
   /* Choose target charset. */
-  tocode = choose_charset (charsets, u, ulen);
-  if (!tocode)
+  tocode = fromcode;
+  if (icode)
   {
-    free (u);
-    return 2;
+    if ((tocode1 = choose_charset (icode, charsets, u, ulen)))
+      tocode = tocode1;
+    else
+      ret = 2, icode = 0;
   }
 
   /* Adjust t0 for maximum length of line. */
@@ -359,7 +389,7 @@ static int rfc2047_encode (const char *d, size_t dlen, int col,
       continue;
     for (t = t0 + 1; t < u + ulen && (*t & 0xc0) == 0x80; t++)
       ;
-    if (!try_block (t0, t - t0, tocode, &encoder, &wlen) &&
+    if (!try_block (t0, t - t0, icode, tocode, &encoder, &wlen) &&
 	col + (t0 - u) + wlen <= ENCWORD_LEN_MAX + 1)
       break;
   }
@@ -371,7 +401,7 @@ static int rfc2047_encode (const char *d, size_t dlen, int col,
       continue;
     for (t = t1 - 1; (*t & 0xc0) == 0x80; t--)
       ;
-    if (!try_block (t, t1 - t, tocode, &encoder, &wlen) &&
+    if (!try_block (t, t1 - t, icode, tocode, &encoder, &wlen) &&
 	1 + wlen + (u + ulen - t1) <= ENCWORD_LEN_MAX + 1)
       break;
   }
@@ -390,7 +420,7 @@ static int rfc2047_encode (const char *d, size_t dlen, int col,
   for (;;)
   {
     /* Find how much we can encode. */
-    n = choose_block (t, t1 - t, col, tocode, &encoder, &wlen);
+    n = choose_block (t, t1 - t, col, icode, tocode, &encoder, &wlen);
     if (n == t1 - t)
     {
       /* See if we can fit the us-ascii suffix, too. */
@@ -411,7 +441,7 @@ static int rfc2047_encode (const char *d, size_t dlen, int col,
 	  ;
 	continue;
       }
-      n = choose_block (t, n, col, tocode, &encoder, &wlen);
+      n = choose_block (t, n, col, icode, tocode, &encoder, &wlen);
     }
 
     /* Add to output buffer. */
@@ -421,7 +451,7 @@ static int rfc2047_encode (const char *d, size_t dlen, int col,
       buflen = bufpos + wlen + strlen (LINEBREAK);
       safe_realloc ((void **) &buf, buflen);
     }
-    r = encode_block (buf + bufpos, t, n, tocode, encoder);
+    r = encode_block (buf + bufpos, t, n, icode, tocode, encoder);
     assert (r == wlen);
     bufpos += wlen;
     memcpy (buf + bufpos, LINEBREAK, strlen (LINEBREAK));
@@ -436,16 +466,16 @@ static int rfc2047_encode (const char *d, size_t dlen, int col,
   /* Add last encoded word and us-ascii suffix to buffer. */
   buflen = bufpos + wlen + (u + ulen - t1);
   safe_realloc ((void **) &buf, buflen);
-  r = encode_block (buf + bufpos, t, t1 - t, tocode, encoder);
+  r = encode_block (buf + bufpos, t, t1 - t, icode, tocode, encoder);
   assert (r == wlen);
   bufpos += wlen;
   memcpy (buf + bufpos, t1, u + ulen - t1);
 
-  free (tocode);
+  free (tocode1);
   free (u);
   *e = buf;
   *elen = buflen;
-  return 0;
+  return ret;
 }
 
 void rfc2047_encode_string (char **pd)
@@ -463,14 +493,13 @@ void rfc2047_encode_string (char **pd)
 
   /* Pretend that we are starting in column 32, thus allowing for a
      field-name with up to 30 characters. */
-  if (!rfc2047_encode (*pd, strlen (*pd), 32,
-		       Charset, charsets, &e, &elen))
-  {
-    safe_realloc ((void **) &e, elen + 1);
-    e[elen] = '\0';
-    free (*pd);
-    *pd = e;
-  }
+  rfc2047_encode (*pd, strlen (*pd), 32,
+		  Charset, charsets, &e, &elen);
+
+  safe_realloc ((void **) &e, elen + 1);
+  e[elen] = '\0';
+  free (*pd);
+  *pd = e;
 }
 
 void rfc2047_encode_adrlist (ADDRESS *addr)
