@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>
- * Copyright (C) 1998-9 Thomas Roessler <roessler@guug.de>
+ * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1998-2000 Thomas Roessler <roessler@guug.de>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
