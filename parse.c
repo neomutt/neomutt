@@ -770,7 +770,7 @@ time_t mutt_parse_date (const char *s, HEADER *h)
 
       case 2: /* year */
 	tm.tm_year = atoi (t);
-        if (tm.tm_year < 70)
+        if (tm.tm_year < 50)
 	  tm.tm_year += 100;
         else if (tm.tm_year >= 1900)
 	  tm.tm_year -= 1900;
