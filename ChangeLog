@@ -1,3 +1,9 @@
+2005-01-26 13:36:44  Thomas Glanzmann <sithglan@stud.uni-erlangen.de>  (roessler)
+
+	* Makefile.am, configure.in, globals.h, hcache.c, imap/imap.c,
+	imap/imap_private.h, imap/message.c, init.h, main.c, protos.h:
+	IMAP header cache.
+
 2005-01-26 12:37:38  Ralf Wildenhues  <wildenhues@ins.uni-bonn.de> (roessler)
 
 	* addrbook.c, browser.c, commands.c, compose.c, imap/utf7.c:
