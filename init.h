@@ -210,6 +210,7 @@ struct option_t MuttVars[] = {
 #ifdef USE_POP
   { "pop_delete",	DT_BOOL, R_NONE, OPTPOPDELETE, 0 },
   { "pop_host",		DT_STR,	 R_NONE, UL &PopHost, UL "" },
+  { "pop_last",		DT_BOOL, R_NONE, OPTPOPLAST, 0 },
   { "pop_port",		DT_NUM,	 R_NONE, UL &PopPort, 110 },
   { "pop_pass",		DT_STR,	 R_NONE, UL &PopPass, UL "" },
   { "pop_user",		DT_STR,	 R_NONE, UL &PopUser, UL "" },

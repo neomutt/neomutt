@@ -3496,6 +3496,14 @@ Default: none
 
 The name or address of your POP3 server.
 
+<sect2>pop&lowbar;last<label id="pop_last">
+<p>
+Type: boolean<newline>
+Default: unset
+
+If this variable is set, mutt will try to use the "LAST" POP command
+for retrieving only unread messages from the POP server.
+
 <sect2>pop&lowbar;pass<label id="pop_pass">
 <p>
 Type: string<newline>

@@ -82,7 +82,7 @@ void mutt_fetchPopMail (void)
   struct hostent *he;
   char buffer[2048];
   char msgbuf[SHORT_STRING];
-  int s, i, msgs, bytes, err = 0;
+  int s, i, last = 0, msgs, bytes, err = 0;
   CONTEXT ctx;
   MESSAGE *msg = NULL;
 
@@ -191,12 +191,26 @@ void mutt_fetchPopMail (void)
   if (mx_open_mailbox (NONULL(Spoolfile), M_APPEND, &ctx) == NULL)
     goto finish;
 
+  /* only get unread messages */
+  if(option(OPTPOPLAST))
+  {
+    write (s, "last\r\n", 6);
+    if (getLine (s, buffer, sizeof (buffer)) == -1)
+      goto fail;
+    
+    if (strncmp (buffer, "+OK", 3) == 0)
+      sscanf (buffer, "+OK %d", &last);
+    else
+      /* ignore an error here and assume all messages are new */
+      last = 0;
+  }
+  
   snprintf (msgbuf, sizeof (msgbuf),
 	    msgs > 1 ? _("Reading %d new message (%d bytes)...") :
-		    ("Reading %d new messages (%d bytes)..."), msgs, bytes);
+		    ("Reading %d new messages (%d bytes)..."), msgs - last, bytes);
   mutt_message (msgbuf);
 
-  for (i = 1 ; i <= msgs ; i++)
+  for (i = last + 1 ; i <= msgs ; i++)
   {
     snprintf (buffer, sizeof(buffer), "retr %d\r\n", i);
     write (s, buffer, strlen (buffer));

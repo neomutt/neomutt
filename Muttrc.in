@@ -212,4 +212,4 @@ macro pager \cb |urlview\n 'call urlview to extract URLs out of a message'
 # set pop_port=110
 # set pop_pass=""
 # set pop_user=""
-
+# unset pop_last
