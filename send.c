@@ -1175,14 +1175,15 @@ ci_send_message (int flags,		/* send mode */
       process_user_header (msg->env);
 
 
-
+    if (option (OPTSIGONTOP) && (! (flags & (SENDMAILX | SENDKEY)) && Editor && mutt_strcmp (Editor, "builtin") != 0))
+      append_signature (tempfp);
 
     /* include replies/forwarded messages, unless we are given a template */
     if (!tempfile && (ctx || !(flags & (SENDREPLY|SENDFORWARD)))
 	&& generate_body (tempfp, msg, flags, ctx, cur) == -1)
       goto cleanup;
 
-    if (! (flags & (SENDMAILX | SENDKEY)) && Editor && mutt_strcmp (Editor, "builtin") != 0)
+    if (!option (OPTSIGONTOP) && (! (flags & (SENDMAILX | SENDKEY)) && Editor && mutt_strcmp (Editor, "builtin") != 0))
       append_signature (tempfp);
 
     /* 

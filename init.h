@@ -1802,6 +1802,14 @@ struct option_t MuttVars[] = {
   ** detect your signature.  For example, Mutt has the ability to highlight
   ** the signature in a different color in the builtin pager.
   */
+  { "sig_on_top",	DT_BOOL, R_NONE, OPTSIGONTOP, 0},
+  /*
+  ** .pp
+  ** If set, the signature will be included before any quoted or forwarded
+  ** text.  It is \fBstrongly\fP recommended that you do not set this variable
+  ** unless you really know what you are doing, and are prepared to take
+  ** some heat from netiquette guardians.
+  */
   { "signature",	DT_PATH, R_NONE, UL &Signature, UL "~/.signature" },
   /*
   ** .pp
