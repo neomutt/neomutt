@@ -28,8 +28,10 @@ enum
   M_MBOX = 1,
   M_MMDF,
   M_MH,
-  M_MAILDIR,
-  M_IMAP
+  M_MAILDIR
+#ifdef USE_IMAP
+  , M_IMAP
+#endif
 };
 
 WHERE short DefaultMagic INITVAL (M_MBOX);

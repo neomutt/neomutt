@@ -1104,8 +1104,8 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
     if (dest->magic == M_MMDF)
       fputs (MMDF_SEP, msg->fp);
 
-    if ((msg->magic != M_MAILDIR) && ((msg->magic != M_MH) && msg->magic != M_IMAP) && 
-	(flags & M_ADD_FROM))
+    if ((msg->magic == M_MBOX || msg->magic ==  M_MMDF) &&
+	flags & M_ADD_FROM)
     {
       if (hdr)
       {
