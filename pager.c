@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -1900,6 +1900,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       case OP_SEARCH_OPPOSITE:
 	if (SearchCompiled)
 	{
+search_next:
 	  if ((!SearchBack && ch==OP_SEARCH_NEXT) ||
 	      (SearchBack &&ch==OP_SEARCH_OPPOSITE))
 	  {
@@ -1942,16 +1943,38 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 
       case OP_SEARCH:
       case OP_SEARCH_REVERSE:
+	buffer[0] = 0;
+	if (mutt_get_field ((SearchBack ? _("Reverse search: ") :
+			  _("Search: ")), buffer, sizeof (buffer),
+			  M_CLEAR) != 0)
+	  break;
+
+	if (!buffer[0])
+	{
+	  if (SearchCompiled)
+	  {
+	    /* do an implicit search-next */
+	    if (ch == OP_SEARCH)
+	      ch = OP_SEARCH_NEXT;
+	    else
+	      ch = OP_SEARCH_OPPOSITE;
+
+	    goto search_next;
+	  }
+	  /*
+	   * preserve old behavior of doing nothing if there is no last
+	   * used pattern.
+	   */
+	  break;
+	}
+
+	strfcpy (searchbuf, buffer, sizeof (searchbuf));
+
 	/* leave SearchBack alone if ch == OP_SEARCH_NEXT */
 	if (ch == OP_SEARCH)
 	  SearchBack = 0;
 	else if (ch == OP_SEARCH_REVERSE)
 	  SearchBack = 1;
-
-	if (mutt_get_field ((SearchBack ? _("Reverse search: ") :
-			  _("Search: ")), searchbuf, sizeof (searchbuf),
-			  M_CLEAR) != 0 || !searchbuf[0])
-	  break;
 
 	if (SearchCompiled)
 	{
