@@ -393,6 +393,7 @@ static int mh_sync_message (CONTEXT *ctx, int msgno)
     if ((f = freopen (newpath, "r", f)) != NULL)
     {
       unlink (newpath);
+      unlink (oldpath);
       if ((d = mx_open_file_lock (oldpath, "w")) != NULL)
       {
 	mutt_copy_stream (f, d);
