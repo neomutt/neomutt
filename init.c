@@ -1173,7 +1173,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     }
     else if (DTYPE (MuttVars[idx].type) == DT_SORT)
     {
-      const struct mapping_t *map;
+      const struct mapping_t *map = NULL;
 
       switch (MuttVars[idx].type & DT_SUBTYPE_MASK)
       {
@@ -1195,6 +1195,13 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	  break;
       }
 
+      if (!map)
+      {
+	snprintf (err->data, err->dsize, _("%s: Unknown type."), MuttVars[idx].option);
+	r = -1;
+	break;
+      }
+      
       if (query || *s->dptr != '=')
       {
 	p = mutt_getnamebyvalue (*((short *) MuttVars[idx].data) & SORT_MASK, map);
