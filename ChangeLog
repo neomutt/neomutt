@@ -1,3 +1,201 @@
+Thu Jul  6 22:34:55 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/sv.po, po/uk.po, po/zh_TW.Big5.po, po/pt_BR.po, po/ru.po, po/sk.po, po/ko.po, po/nl.po, po/pl.po, po/fr.po, po/gl.po, po/id.po, po/it.po, po/el.po, po/eo.po, po/es.po, po/cs.po, po/da.po, po/de.po, reldate.h, ChangeLog, VERSION:
+	automatic post-release commit for mutt-1.2.3
+
+	* po/fr.po: update.
+
+	* imap/auth.c, imap/auth_gss.c, imap/browse.c, imap/command.c, imap/imap.c, imap/imap_private.h, imap/imap_socket.h, imap/message.c, imap/socket.c:
+	More IMAP clean-up.
+
+	* imap/imap_private.h, imap/imap_socket.h, imap/message.c, imap/socket.c, imap/util.c, imap/browse.c, imap/command.c, imap/imap.c:
+	More IMAP fixes from Brendan Cully.
+
+Wed Jul  5 14:39:14 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/socket.c: Fix the Fix.  From TK.
+
+	* imap/imap_ssl.c, imap/socket.c:
+	From: Tommi Komulainen <Tommi.Komulainen@iki.fi>
+
+	- imap_logout_all assumed every connection with descriptor value !=
+	  0 to be ready for reading/writing. Unfortunately when the
+	  descriptor was closed, conn->fd remained untouched. This is why
+	  mutt segfaulted if IMAP login was aborted with ^G.
+
+	- ssl_socket_close was called without calling ssl_socket_open first.
+	  This caused a segfault because conn->sockdata was NULL. Apparently
+	  there was also a memory leak, because conn->sockdata was never
+	  free'd :-]
+
+	* imap/auth.c, imap/BUGS, imap/imap.c, imap/socket.c, imap/TODO:
+	IMAP cosmetics from Brendan Cully.
+
+Tue Jul  4 17:59:10 2000  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.head:
+	slight documentation imrpovement from Will Fiveash.
+
+Mon Jul  3 15:26:22 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/de.po: update
+
+	* imap/BUGS, imap/command.c, imap/imap.c, imap/imap.h, imap/imap_socket.h, imap/socket.c, imap/util.c, curs_main.c:
+	IMAP logout patch from Brendan Cully.
+
+	* po/id.po: update
+
+	* po/id.po: update.
+
+	* rfc2047.c: "Where have all the headers gone" fix from EGE.
+
+	* sendlib.c: utf8 -> utf8 fix (From EGE).
+
+	* rfc2047.c: RFC 2047 patch from EGE.
+
+Fri Jun 30 08:28:56 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/pl.po: fix a format.
+
+	* sendlib.c: Character set fix from EGE.
+
+Tue Jun 27 22:28:01 2000  Thomas Roessler  <roessler@guug.de>
+
+	* sendlib.c: minor change from EGE.
+
+	* main.c, rfc2047.c:
+	Cosmetics.  No, I didn't touch the word-wrap code. ;-)
+
+Mon Jun 26 23:10:26 2000  Thomas Roessler  <roessler@guug.de>
+
+	* muttlib.c:
+	Fix a possible segfault in mutt_expand_folder. Noted by AMK; [stable].
+
+	* muttlib.c:
+	Fix a possible segmentation fault in mutt_expand_path.  Noted by
+	Andreas M. Kirchwitz.
+
+	* doc/Makefile.in, contrib/Makefile.in: "make check" cosmetics.
+
+	* contrib/sample.muttrc-tlr: update.
+
+	* configure.in: Iconv detection patch.  From Lars Hecking.
+
+	* color.c: Fix #173.  From Roland Rosenfeld.
+
+Thu Jun 22 23:18:36 2000  Thomas Roessler  <roessler@guug.de>
+
+	* muttlib.c:
+	Avoid crashing when forwarding message/rfc822-type attachments.
+
+	* Makefile.am, prepare: Lars Hecking's build process patch for stable.
+
+	* rfc822.c: Fix stack corruption in the RFC822 parser.  Noted by Ari
+	Gordon-Schlosberg <ari@heavyware.com>.
+
+	* rfc822.c:
+	Fix stack corruption in the RFC822 parser.  Problem noted by Ari
+	Gordon-Schlosberg <ari@heavyware.com>.
+
+	* recvattach.c:
+	Merge two almost-identical string constants.  From Byrial.
+
+Wed Jun 21 19:23:23 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/auth_gss.c: More debug code which needs #ifdefs.
+
+	* imap/auth_gss.c: More debugging code which needs #ifdefs.
+
+	* po/eo.po: update.
+
+	* Makefile.am, prepare:
+	Work-around for keymap_defs and other dependency problems.  From
+	Lars Hecking.
+
+	* muttlib.c: Fix ~logname expansion for stable.
+
+	* muttlib.c: Fix ~logname expansion.
+
+	* README: Remove explicit list of mirrors, and refer to download.html.
+
+	* mbox.c: Fix another mbox synch problem.
+
+	* mbox.c: Fix another bug in mbox synching.
+
+	* postpone.c: Some more character set cleanup,.
+
+	* commands.c, compose.c, muttlib.c, pgpkey.c, postpone.c, protos.h, recvattach.c, send.c, sendlib.c:
+	More character set clean-up.
+
+	* postpone.c:
+	Improve character set handling when postponing messages.  This patch
+	may lead to information loss under very special circumstances.
+
+	* muttlib.c, protos.h: Remove unused mutt_dup_body () function.
+
+	* compose.c, pgpkey.c, protos.h, recvattach.c, send.c, sendlib.c:
+	Fix character set selection.  Postponing and recalling messages
+	should work again, now.
+
+	* postpone.c, sendlib.c: Fix a file descriptor leak in sendlib.c.
+
+	* main.c:
+	patch-1.3.2.tbm.lastfolder, from Martin Michlmayr <tbm@cyrius.com>.
+
+	* commands.c, hook.c, protos.h, recvattach.c, recvcmd.c, send.c:
+	Apply message-hook to more commands, and make it more useful by
+	permitting the "~h" and "~b" pattern specifiers.  Bad enough, this
+	removes message-hook abilities from the receive-attachment menu.
+
+Tue Jun 20 22:23:37 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/sv.po, po/uk.po, po/zh_TW.Big5.po, po/pl.po, po/pt_BR.po, po/ru.po, po/sk.po, po/it.po, po/ko.po, po/nl.po, po/es.po, po/fr.po, po/gl.po, po/id.po, po/el.po, po/eo.po, po/cs.po, po/da.po, po/de.po, ChangeLog, reldate.h, VERSION:
+	automatic post-release commit for mutt-1.2.2
+
+	* build-release:
+	Add a "make" call, so build-release will also work from a source
+	tree which hasn't been built recently.
+
+	* commands.c: Do some comparisons case-insensitive.
+
+	* po/ru.po: update.
+
+	* doc/muttrc.man.head: s/display-hook/message-hook/
+
+	* po/de.po:
+	Fix a misleading fuzzy translation about PGP signature validity.
+	From Roland Rosenfeld.
+
+	* imap/imap.c: Don't use debuglevel unless DEBUG is defined.  Noted by
+	china@thewrittenword.com.
+
+	* imap/imap.c:
+	Only use debuglevel if DEBUG is defined.  Noted by Albert Chin
+	<china@thewrittenword.com>,
+
+	* po/fr.po: update.
+
+Mon Jun 19 21:13:19 2000  Thomas Roessler  <roessler@guug.de>
+
+	* doc/devel-notes.txt, doc/manual.sgml.head, init.h, makedoc.c:
+	patch-1.3.3.bj.docref.1
+
+	* build-release: Make sure m4/Makefile is _really_ rebuilt.
+
+	* po/zh_TW.Big5.po, po/ru.po, po/sk.po, po/sv.po, po/uk.po, po/ko.po, po/nl.po, po/pl.po, po/pt_BR.po, po/es.po, po/fr.po, po/gl.po, po/id.po, po/it.po, po/da.po, po/de.po, po/el.po, po/eo.po, po/cs.po, ChangeLog, reldate.h, VERSION:
+	automatic post-release commit for mutt-1.2.1
+
+	* doc/manual.sgml.head: Fix some more mentions of display-hook.
+
+	* po/ru.po, po/sk.po, po/sv.po, po/uk.po, po/zh_TW.Big5.po, po/fr.po, po/gl.po, po/id.po, po/it.po, po/ko.po, po/nl.po, po/pl.po, po/pt_BR.po, ChangeLog, po/cs.po, po/da.po, po/de.po, po/el.po, po/eo.po, po/es.po, reldate.h, VERSION:
+	automatic post-release commit for mutt-1.3.4
+
+	* compose.c: No need to include iconv.h.
+
+	* po/da.po: update.
+
+	* po/ru.po: update
+
 Mon Jun 19 08:56:57 2000  Thomas Roessler  <roessler@guug.de>
 
 	* compose.c: No need to include iconv.h.

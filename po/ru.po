@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.2\n"
-"POT-Creation-Date: 2000-06-19 18:36+0200\n"
+"POT-Creation-Date: 2000-07-07 00:40+0200\n"
 "PO-Revision-Date: $Date$\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=koi8-r\n"
@@ -23,7 +23,7 @@ msgstr "Выход"
 msgid "Select"
 msgstr "Выбрать"
 
-#: addrbook.c:33 browser.c:42 compose.c:92 curs_main.c:376 imap/imap_ssl.c:493
+#: addrbook.c:33 browser.c:42 compose.c:92 curs_main.c:376 imap/imap_ssl.c:496
 #: pager.c:1459 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Подск."
@@ -75,7 +75,7 @@ msgstr "Не удалось разобрать имя. Продолжить?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Указанный в mailcap способ создания требует наличия параметра %%s"
 
-#: attach.c:131 attach.c:256 commands.c:186 compose.c:1176 curs_lib.c:137
+#: attach.c:131 attach.c:256 commands.c:184 compose.c:1176 curs_lib.c:137
 #: curs_lib.c:336
 #, c-format
 msgid "Error running \"%s\"!"
@@ -117,7 +117,7 @@ msgstr "MIME-тип не определен.  Невозможно просмотреть вложение."
 msgid "Cannot create filter"
 msgstr "Не удалось создать фильтр"
 
-#: attach.c:707 recvattach.c:427
+#: attach.c:707 recvattach.c:427 recvattach.c:487
 msgid "Attachment saved."
 msgstr "Вложение сохранено."
 
@@ -286,7 +286,7 @@ msgstr "цвета по умолчанию не поддерживаются"
 msgid "Verify PGP signature?"
 msgstr "Проверить PGP-подпись?"
 
-#: commands.c:104 pgp.c:1567 pgpkey.c:491 postpone.c:549
+#: commands.c:104 pgp.c:1567 pgpkey.c:491 postpone.c:554
 msgid "Invoking PGP..."
 msgstr "Запускается программа PGP..."
 
@@ -294,141 +294,141 @@ msgstr "Запускается программа PGP..."
 msgid "Could not create temporary file!"
 msgstr "Не удалось создать временный файл!"
 
-#: commands.c:127
+#: commands.c:125
 msgid "Cannot create display filter"
 msgstr "Не удалось создать фильтр"
 
-#: commands.c:147
+#: commands.c:145
 msgid "Could not copy message"
 msgstr "Не удалось скопировать сообщение"
 
-#: commands.c:169
+#: commands.c:167
 msgid "PGP signature successfully verified."
 msgstr "PGP-подпись проверена."
 
-#: commands.c:170
+#: commands.c:168
 msgid "PGP signature could NOT be verified."
 msgstr "PGP-подпись НЕ может быть проверена."
 
-#: commands.c:193
+#: commands.c:191
 msgid "Command: "
 msgstr "Команда: "
 
-#: commands.c:211 recvcmd.c:140
+#: commands.c:209 recvcmd.c:140
 msgid "Bounce message to: "
 msgstr "Перенаправить сообщение: "
 
-#: commands.c:213 recvcmd.c:142
+#: commands.c:211 recvcmd.c:142
 msgid "Bounce tagged messages to: "
 msgstr "Перенаправить сообщения: "
 
-#: commands.c:228
+#: commands.c:226
 msgid "Error parsing address!"
 msgstr "Ошибка разбора адреса!"
 
-#: commands.c:243
+#: commands.c:241
 #, c-format
 msgid "Bounce message to %s"
 msgstr "Перенаправить сообщение %s"
 
-#: commands.c:243
+#: commands.c:241
 #, c-format
 msgid "Bounce messages to %s"
 msgstr "Перенаправить сообщения %s"
 
-#: commands.c:257
+#: commands.c:255
 msgid "Message bounced."
 msgstr "Сообщение перенаправлено."
 
-#: commands.c:257
+#: commands.c:255
 msgid "Messages bounced."
 msgstr "Сообщения перенаправлены."
 
-#: commands.c:297
+#: commands.c:295
 msgid "Pipe to command: "
 msgstr "Передать программе: "
 
-#: commands.c:397
+#: commands.c:398
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 "Обр.пор.:(d)время/(f)от/(r)пол/(s)тема/(o)кому/(t)диск/(u)без/(z)разм/(c)конт"
 "?"
 
-#: commands.c:398
+#: commands.c:399
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 "Порядок:(d)время/(f)от/(r)пол/(s)тема/(o)кому/(t)диск/(u)без/(z)разм/(c)конт?"
 
-#: commands.c:399
+#: commands.c:400
 msgid "dfrsotuzc"
 msgstr "dfrsotuzc"
 
-#: commands.c:452
+#: commands.c:453
 msgid "Shell command: "
 msgstr "Программа: "
 
-#: commands.c:585
+#: commands.c:587
 #, c-format
 msgid "%s%s to mailbox"
 msgstr "%s%s в почтовый ящик"
 
-#: commands.c:586
+#: commands.c:588
 msgid "Decode-save"
 msgstr "Декодировать и сохранить"
 
-#: commands.c:586
+#: commands.c:588
 msgid "Decode-copy"
 msgstr "Декодировать и копировать"
 
-#: commands.c:587
+#: commands.c:589
 msgid "Decrypt-save"
 msgstr "Расшифровать и сохранить"
 
-#: commands.c:587
+#: commands.c:589
 msgid "Decrypt-copy"
 msgstr "Расшифровать и копировать"
 
-#: commands.c:588 curs_main.c:372 recvattach.c:58
+#: commands.c:590 curs_main.c:372 recvattach.c:58
 msgid "Save"
 msgstr "Сохр."
 
-#: commands.c:588
+#: commands.c:590
 msgid "Copy"
 msgstr "Копировать"
 
-#: commands.c:588
+#: commands.c:590
 msgid " tagged"
 msgstr " помеченное"
 
-#: commands.c:657
+#: commands.c:661
 #, c-format
 msgid "Copying to %s..."
 msgstr "Копируется в %s..."
 
-#: commands.c:750
+#: commands.c:758
 msgid "Print message?"
 msgstr "Напечатать сообщение?"
 
-#: commands.c:750
+#: commands.c:758
 msgid "Print tagged messages?"
 msgstr "Напечатать отмеченные сообщения?"
 
-#: commands.c:777
+#: commands.c:787
 msgid "Message printed"
 msgstr "Сообщение напечатано"
 
-#: commands.c:777
+#: commands.c:787
 msgid "Messages printed"
 msgstr "Сообщения напечатаны"
 
-#: commands.c:834
+#: commands.c:844
 #, c-format
 msgid "Content-Type changed to %s."
 msgstr "Значение Content-Type изменено: %s."
 
-#: commands.c:836
+#: commands.c:846
 #, c-format
 msgid "Character set changed to %s."
 msgstr "Установлена новая кодировка: %s."
@@ -1131,17 +1131,17 @@ msgstr "Аутентификация (метод CRAM-MD5) пропущена."
 msgid "Password for %s@%s: "
 msgstr "Пароль для %s@%s: "
 
-#: imap/auth.c:371
+#: imap/auth.c:370
 msgid "Logging in..."
 msgstr "Регистрация..."
 
 #. Login failed, try again
-#: imap/auth.c:383
+#: imap/auth.c:392
 msgid "Login failed."
 msgstr "Регистрация не удалась."
 
 #. now begin login
-#: imap/auth_gss.c:82
+#: imap/auth_gss.c:83
 msgid "Authenticating (GSSAPI)..."
 msgstr "Аутентификация (метод GSSAPI)..."
 
@@ -1156,69 +1156,66 @@ msgstr "Получение списка почтовых ящиков..."
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
 #.
-#: imap/command.c:184
+#: imap/command.c:189
 msgid "Fatal error.  Message count is out of sync!"
 msgstr "Критическая ошибка.  Сбой синхронизации счетчика сообщений!"
 
-#: imap/imap.c:213
+#: imap/imap.c:208
 #, c-format
 msgid "Reopening mailbox... %s"
 msgstr "Повторное открытие почтового ящика... %s"
 
 # "mutt не поддерживает версию протокола, используемый на этом сервере"
-#: imap/imap.c:419
+#: imap/imap.c:414
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr ""
 "Этот IMAP-сервер использует устаревший протокол. Mutt не сможет работать с "
 "ним."
 
-#: imap/imap.c:585
+#: imap/imap.c:581
 #, c-format
 msgid "Selecting %s..."
 msgstr "Выбирается %s..."
 
 #. STATUS not supported
-#. * The thing to do seems to be:
-#. *  - Open a *new* IMAP session, select, and then close it. Report the
-#. * error if the mailbox did not exist.
-#: imap/imap.c:801
+#: imap/imap.c:796
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Не удалось добавить сообщение в IMAP-ящик на этом сервере!"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:809 imap/message.c:640 muttlib.c:1100
+#: imap/imap.c:805 imap/message.c:640 muttlib.c:1123
 #, c-format
 msgid "Create %s?"
 msgstr "Создать %s?"
 
-#: imap/imap.c:833
+#: imap/imap.c:828
 msgid "Closing connection to IMAP server..."
 msgstr "Закрытие соединения с сервером IMAP..."
 
-#: imap/imap.c:987
+#: imap/imap.c:981
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "%d сообщений помечаются как удаленные..."
 
-#: imap/imap.c:1007
+#: imap/imap.c:1001
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Сохранение флагов состояния сообщений... [%d из %d]"
 
-#: imap/imap.c:1066
+#: imap/imap.c:1060
 msgid "Closing mailbox..."
 msgstr "Закрытие почтового ящика..."
 
-#: imap/imap.c:1076
+#: imap/imap.c:1070
 msgid "Expunging messages from server..."
 msgstr "Удаление сообщений с сервера..."
 
-#: imap/imap.c:1406
+#: imap/imap.c:1397
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Подключение к %s..."
 
-#: imap/imap.c:1408
+#: imap/imap.c:1399
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Отключение от %s..."
@@ -1244,96 +1241,96 @@ msgstr "Не удалось получить сертификат сервера"
 msgid "SSL connection using %s"
 msgstr "SSL-соединение установлено; алгоритм шифрования %s"
 
-#: imap/imap_ssl.c:249
+#: imap/imap_ssl.c:252
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: imap/imap_ssl.c:274
+#: imap/imap_ssl.c:277
 msgid "[unable to calculate]"
 msgstr "[ошибка вычислений]"
 
-#: imap/imap_ssl.c:292
+#: imap/imap_ssl.c:295
 msgid "[invalid date]"
 msgstr "[недопустимая дата]"
 
-#: imap/imap_ssl.c:367
+#: imap/imap_ssl.c:370
 msgid "Server certificate is not yet valid"
 msgstr "Сертификат все еще недействителен"
 
-#: imap/imap_ssl.c:374
+#: imap/imap_ssl.c:377
 msgid "Server certificate has expired"
 msgstr "Сертификат устарел"
 
-#: imap/imap_ssl.c:447
+#: imap/imap_ssl.c:450
 msgid "This certificate belongs to:"
 msgstr "Данный сертификат принадлежит:"
 
-#: imap/imap_ssl.c:457
+#: imap/imap_ssl.c:460
 msgid "This certificate was issued by:"
 msgstr "Данный сертификат был выдан:"
 
-#: imap/imap_ssl.c:467
+#: imap/imap_ssl.c:470
 msgid "This certificate is valid"
 msgstr "Данный сертификат действителен"
 
-#: imap/imap_ssl.c:468
+#: imap/imap_ssl.c:471
 #, c-format
 msgid "   from %s"
 msgstr ""
 
-#: imap/imap_ssl.c:470
+#: imap/imap_ssl.c:473
 #, c-format
 msgid "     to %s"
 msgstr ""
 
-#: imap/imap_ssl.c:476
+#: imap/imap_ssl.c:479
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "Отпечаток пальца: %s"
 
-#: imap/imap_ssl.c:478
+#: imap/imap_ssl.c:481
 msgid "SSL Certificate check"
 msgstr "Проверка SSL-сертификата"
 
-#: imap/imap_ssl.c:481
+#: imap/imap_ssl.c:484
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)отвергнуть, (o)принять, (a)принять и сохранить"
 
-#: imap/imap_ssl.c:482
+#: imap/imap_ssl.c:485
 msgid "roa"
 msgstr ""
 
-#: imap/imap_ssl.c:486
+#: imap/imap_ssl.c:489
 msgid "(r)eject, accept (o)nce"
 msgstr "(r)отвергнуть, (o)принять"
 
-#: imap/imap_ssl.c:487
+#: imap/imap_ssl.c:490
 msgid "ro"
 msgstr ""
 
-#: imap/imap_ssl.c:491 pgpkey.c:442
+#: imap/imap_ssl.c:494 pgpkey.c:442
 msgid "Exit  "
 msgstr "Выход "
 
-#: imap/imap_ssl.c:516
+#: imap/imap_ssl.c:519
 msgid "Warning: Couldn't save certificate"
 msgstr "Предупреждение: не удалось сохранить сертификат"
 
-#: imap/imap_ssl.c:518
+#: imap/imap_ssl.c:521
 msgid "Certificate saved"
 msgstr "Сертификат сохранен"
 
 #. Unable to fetch headers for lower versions
-#: imap/message.c:77
+#: imap/message.c:76
 msgid "Unable to fetch headers from this IMAP server version."
 msgstr "Получение списка заголовков не поддерживается этим IMAP-сервером."
 
-#: imap/message.c:96
+#: imap/message.c:95
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Получение заголовков сообщений... [%d/%d]"
 
-#: imap/message.c:308
+#: imap/message.c:305
 msgid "Fetching message..."
 msgstr "Получение сообщения..."
 
@@ -1356,20 +1353,31 @@ msgstr "%d сообщений копируются в %s..."
 msgid "Copying message %d to %s..."
 msgstr "Сообщение %d копируется в %s..."
 
-#: imap/socket.c:215
+#: imap/socket.c:163
+#, fuzzy, c-format
+msgid "Closing connection to %s..."
+msgstr "Закрытие соединения с сервером IMAP..."
+
+#: imap/socket.c:265
+#, fuzzy, c-format
+msgid "Could not find the host \"%s\""
+msgstr "Не удалось найти адрес для сервера %s."
+
+#: imap/socket.c:271
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Устанавливается соединение с %s..."
 
-#: imap/socket.c:235
-msgid "preconnect command failed"
+#: imap/socket.c:291
+#, fuzzy
+msgid "IMAP Preconnect command failed"
 msgstr "предварительное соединение не установлено"
 
-#: imap/util.c:42
+#: imap/util.c:62
 msgid "Continue?"
 msgstr "Продолжить?"
 
-#: imap/util.c:48
+#: imap/util.c:68
 #, c-format
 msgid "%s [%s]\n"
 msgstr ""
@@ -2278,6 +2286,7 @@ msgstr ""
 "более подробной информации введите `mutt -vv'.\n"
 
 #: main.c:50
+#, fuzzy
 msgid ""
 "Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
@@ -2285,6 +2294,7 @@ msgid ""
 "Copyright (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
 "Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 2000      Edmnud Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "Lots of others not mentioned here contributed lots of code,\n"
 "fixes, and suggestions.\n"
@@ -2332,7 +2342,7 @@ msgstr ""
 "Foundation, Inc.,\n"
 "   59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 
-#: main.c:77
+#: main.c:78
 msgid ""
 "\n"
 "SHA1 implementation Copyright (C) 1995-1997 Eric A. Young "
@@ -2362,7 +2372,7 @@ msgstr ""
 "    Вы должны были получить полную копию условий для распространения\n"
 "    вместе с этой программой; если нет, напишите разработчикам программы.\n"
 
-#: main.c:103
+#: main.c:104
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
 "]\n"
@@ -2423,7 +2433,7 @@ msgstr ""
 "таковая отсутствует\n"
 "  -h\t\tтекст этой подсказки"
 
-#: main.c:155
+#: main.c:156
 msgid ""
 "\n"
 "Compile options:"
@@ -2431,47 +2441,47 @@ msgstr ""
 "\n"
 "Параметры компиляции:"
 
-#: main.c:406
+#: main.c:407
 msgid "Error initializing terminal."
 msgstr "Ошибка инициализации терминала."
 
-#: main.c:505
+#: main.c:506
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Отладка на уровне %d.\n"
 
-#: main.c:507
+#: main.c:508
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "Символ DEBUG не был определен при компиляции.  Игнорируется.\n"
 
-#: main.c:626
+#: main.c:627
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "Каталог %s не существует.  Создать?"
 
-#: main.c:630
+#: main.c:631
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Не удалось создать %s: %s"
 
-#: main.c:669
+#: main.c:670
 msgid "No recipients specified.\n"
 msgstr "Адресаты не указаны.\n"
 
-#: main.c:742
+#: main.c:743
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: не удалось вложить файл.\n"
 
-#: main.c:762
+#: main.c:763
 msgid "No mailbox with new mail."
 msgstr "Нет почтовых ящиков с новой почтой."
 
-#: main.c:771
+#: main.c:772
 msgid "No incoming mailboxes defined."
 msgstr "Не определено ни одного почтового ящика со входящими письмами."
 
-#: main.c:800
+#: main.c:803
 msgid "Mailbox is empty."
 msgstr "Почтовый ящик пуст."
 
@@ -2503,7 +2513,7 @@ msgstr "Не удалось заблокировать почтовый ящик!"
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr "sync: почтовый ящик изменен, но измененные сообщения отсутствуют!"
 
-#: mbox.c:782
+#: mbox.c:793
 msgid "Writing messages... %d (%d%%)"
 msgstr "Запись... %d (%d%%)"
 
@@ -2602,28 +2612,28 @@ msgstr "Возможность пометки не поддерживается."
 msgid "Reading %s... %d"
 msgstr "Читается %s... %d"
 
-#: muttlib.c:771
+#: muttlib.c:794
 msgid "File is a directory, save under it?"
 msgstr "Указанный файл -- это каталог. Сохранить в нем?"
 
-#: muttlib.c:776
+#: muttlib.c:799
 msgid "File under directory: "
 msgstr "Имя файла в каталоге: "
 
-#: muttlib.c:788
+#: muttlib.c:811
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Файл существует, (o)переписать, (a)добавить, (с)отказ?"
 
-#: muttlib.c:788
+#: muttlib.c:811
 msgid "oac"
 msgstr "oac"
 
-#: muttlib.c:1076
+#: muttlib.c:1099
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s не является почтовым ящиком!"
 
-#: muttlib.c:1082
+#: muttlib.c:1105
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Добавить сообщения к %s?"
@@ -3256,10 +3266,6 @@ msgstr "Напечатать"
 msgid "Saving..."
 msgstr "Сохраняется..."
 
-#: recvattach.c:487
-msgid "Attachment saved"
-msgstr "Вложение сохранено"
-
 #: recvattach.c:499
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
@@ -3290,15 +3296,15 @@ msgstr "Напечатать отмеченные вложения?"
 msgid "Print attachment?"
 msgstr "Напечатать вложение?"
 
-#: recvattach.c:833
+#: recvattach.c:835
 msgid "Attachments"
 msgstr "Вложения"
 
-#: recvattach.c:900
+#: recvattach.c:902
 msgid "Deletion of attachments from PGP messages is unsupported."
 msgstr "Удаление вложений из PGP-сообщений не поддерживается."
 
-#: recvattach.c:920 recvattach.c:937
+#: recvattach.c:922 recvattach.c:939
 msgid "Only deletion of multipart attachments is supported."
 msgstr "Для составных вложений поддерживается только удаление."
 
@@ -3321,7 +3327,7 @@ msgstr "Перенаправить сообщения %s...?"
 msgid "Can't open temporary file %s."
 msgstr "Не удалось открыть временный файл %s."
 
-#: recvcmd.c:398 recvcmd.c:537 send.c:728
+#: recvcmd.c:398 recvcmd.c:537 send.c:729
 msgid "Forward MIME encapsulated?"
 msgstr "Переслать инкапсулированным в MIME?"
 
@@ -3339,7 +3345,7 @@ msgstr "Не удалось создать %s."
 msgid "Can't find any tagged messages."
 msgstr "Помеченные сообщения отсутствуют."
 
-#: recvcmd.c:699 send.c:653
+#: recvcmd.c:699 send.c:654
 msgid "No mailing lists found!"
 msgstr "Списков рассылки не найдено!"
 
@@ -3442,7 +3448,7 @@ msgstr "Нет темы письма, отказаться?"
 msgid "No subject, aborting."
 msgstr "Нет темы письма, отказ."
 
-#: send.c:434
+#: send.c:435
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "Отвечать по %s%s?"
@@ -3452,7 +3458,7 @@ msgstr "Отвечать по %s%s?"
 #. * to send a message to only the sender of the message.  This
 #. * provides a way to do that.
 #.
-#: send.c:483
+#: send.c:484
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "Отвечать по %s%s?"
@@ -3460,79 +3466,79 @@ msgstr "Отвечать по %s%s?"
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
 #.
-#: send.c:628
+#: send.c:629
 msgid "No tagged messages are visible!"
 msgstr "Ни одно из помеченных сообщений не является видимым!"
 
-#: send.c:699
+#: send.c:700
 msgid "Include message in reply?"
 msgstr "Вставить сообщение в ответ?"
 
-#: send.c:704
+#: send.c:705
 msgid "Including quoted message..."
 msgstr "Включается цитируемое сообщение..."
 
-#: send.c:714
+#: send.c:715
 msgid "Could not include all requested messages!"
 msgstr "Не удалось вставить все затребованные сообщения!"
 
-#: send.c:732
+#: send.c:733
 msgid "Preparing forwarded message..."
 msgstr "Подготовка пересылаемого сообщения..."
 
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:1028
+#: send.c:1029
 msgid "Recall postponed message?"
 msgstr "Продолжить отложенное сообщение?"
 
-#: send.c:1268
+#: send.c:1276
 msgid "Abort unmodified message?"
 msgstr "Отказаться от неизмененного сообщения?"
 
-#: send.c:1270
+#: send.c:1278
 msgid "Aborted unmodified message."
 msgstr "Сообщение не изменилось, отказ."
 
 #. abort
-#: send.c:1311
+#: send.c:1319
 msgid "Mail not sent."
 msgstr "Письмо не отправлено."
 
-#: send.c:1337
+#: send.c:1345
 msgid "Message postponed."
 msgstr "Сообщение отложено."
 
-#: send.c:1346
+#: send.c:1354
 msgid "No recipients are specified!"
 msgstr "Не указано ни одного адресата!"
 
-#: send.c:1351
+#: send.c:1359
 msgid "No recipients were specified."
 msgstr "Не было указано ни одного адресата."
 
-#: send.c:1357
+#: send.c:1365
 msgid "No subject, abort sending?"
 msgstr "Нет темы сообщения, прервать отправку?"
 
-#: send.c:1361
+#: send.c:1369
 msgid "No subject specified."
 msgstr "Тема сообщения не указана."
 
-#: send.c:1408
+#: send.c:1416
 msgid "Sending message..."
 msgstr "Сообщение отправляется..."
 
-#: send.c:1535
+#: send.c:1543
 msgid "Could not send the message."
 msgstr "Сообщение отправить не удалось."
 
-#: send.c:1540
+#: send.c:1548
 msgid "Mail sent."
 msgstr "Сообщение отправлено."
 
-#: send.c:1540
+#: send.c:1548
 msgid "Sending in background."
 msgstr "Сообщение отправляется в фоновом режиме."
 
@@ -3545,17 +3551,17 @@ msgstr "Параметр boundary не найден! (Сообщите об этой ошибке)"
 msgid "%s no longer exists!"
 msgstr "%s больше не существует!"
 
-#: sendlib.c:1005
+#: sendlib.c:1037
 #, c-format
 msgid "Could not open %s"
 msgstr "Не удалось открыть %s"
 
-#: sendlib.c:1980
+#: sendlib.c:1953
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Сообщение отправить не удалось, процесс-потомок вернул %d (%s)."
 
-#: sendlib.c:1986
+#: sendlib.c:1959
 msgid "Output of the delivery process"
 msgstr "Результат работы программы доставки почты"
 
@@ -3593,3 +3599,6 @@ msgstr "Родительское сообщение не видимо при просмотре с ограничением"
 #: thread.c:717
 msgid "Parent message is not available."
 msgstr "Родительское сообщение недоступно."
+
+#~ msgid "Attachment saved"
+#~ msgstr "Вложение сохранено"
