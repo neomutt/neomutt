@@ -30,6 +30,9 @@
 
 #include <errno.h>
 #include <fcntl.h>
+#if HAVE_SYS_TIME_H
+#include <sys/time.h>
+#endif
 #include "mutt.h"
 #ifdef USE_IMAP
 #include "message.h"

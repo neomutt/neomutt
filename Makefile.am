@@ -2,7 +2,7 @@
 ## Use aclocal -I m4; automake --foreign
 
 AUTOMAKE_OPTIONS = 1.6 foreign
-EXTRA_PROGRAMS = mutt_dotlock pgpring makedoc
+EXTRA_PROGRAMS = mutt_dotlock pgpring pgpewrap makedoc
 
 if BUILD_IMAP
 IMAP_SUBDIR = imap
