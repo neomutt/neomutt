@@ -309,7 +309,8 @@ int rfc2231_encode (char *dest, size_t l, unsigned char *src)
   char *t;
   int encode = 0;
 
-  buff = safe_malloc (3 * strlen ((char *) src) + 1);
+  size_t bufflen = 3 * strlen ((char *) src + 1);
+  buff = safe_malloc (bufflen);
 
   for (s = src; *s && !encode; s++)
   {
@@ -321,7 +322,7 @@ int rfc2231_encode (char *dest, size_t l, unsigned char *src)
     strfcpy (dest, (char *) src, l);
   else
   {
-    for (s = src, t = buff; *s && (t - buff) < sizeof (buff) - 4; s++)
+    for (s = src, t = buff; *s && (t - buff) < bufflen - 4; s++)
     {
       if ((*s & 0x80) || *s == '\'')
       {
