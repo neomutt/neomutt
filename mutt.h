@@ -233,6 +233,7 @@ enum
 #define SENDBATCH	(1<<5)
 #define SENDMAILX	(1<<6)
 #define SENDKEY		(1<<7)
+#define SENDEDITMSG	(1<<8)
 
 /* boolean vars */
 enum
@@ -397,6 +398,7 @@ typedef struct envelope
   char *real_subj;		/* offset of the real subject */
   char *message_id;
   char *supersedes;
+  char *date;
   LIST *references;		/* message references (in reverse order) */
   LIST *userhdrs;		/* user defined headers */
 } ENVELOPE;

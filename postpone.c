@@ -166,12 +166,10 @@ static HEADER *select_msg (void)
 int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur)
 {
   HEADER *h;
-  MESSAGE *msg;
   int code = SENDPOSTPONED;
   LIST *tmp;
   LIST *last = NULL;
   LIST *next;
-  char file[_POSIX_PATH_MAX];
   char *p;
   int opt_delete;
 
@@ -206,82 +204,12 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur)
     return (-1);
   }
 
-  if ((msg = mx_open_message (PostContext, h->msgno)) == NULL)
+  if (mutt_edit_message (PostContext, hdr, h) < 0)
   {
-    mx_close_mailbox (PostContext);
-    safe_free ((void **) &PostContext);
-    return (-1);
-  }
-
-  fseek (msg->fp, h->offset, 0);
-  hdr->env = mutt_read_rfc822_header (msg->fp, NULL);
-
-  if (h->content->type == TYPEMESSAGE || h->content->type == TYPEMULTIPART)
-  {
-    BODY *b;
-
-    fseek (msg->fp, h->content->offset, 0);
-
-    if (h->content->type == TYPEMULTIPART)
-    {
-      h->content->parts = mutt_parse_multipart (msg->fp, 
-	       mutt_get_parameter ("boundary", h->content->parameter),
-	       h->content->offset + h->content->length,
-	       strcasecmp ("digest", h->content->subtype) == 0);
-    }
-    else
-      h->content->parts = mutt_parse_messageRFC822 (msg->fp, h->content);
-
-    /* Now that we know what was in the other message, convert to the new
-     * message.
-     */
-    hdr->content = h->content->parts;
-    b = h->content->parts;
-    while (b != NULL)
-    {
-      file[0] = '\0';
-      if (b->filename)
-	strfcpy (file, b->filename, sizeof (file));
-      else
-	/* avoid Content-Disposition: header with temporary filename */
-	b->use_disp = 0;
-
-      mutt_adv_mktemp (file, sizeof(file));
-      if (mutt_save_attachment (msg->fp, b, file, 0, NULL) == -1)
-      {
-	mutt_free_envelope (&hdr->env);
-	mutt_free_body (&hdr->content);
-	mx_close_message (&msg);
-	mx_fastclose_mailbox (PostContext);
-	safe_free ((void **) &PostContext);
-	return (-1);
-      }
-      safe_free ((void *) &b->filename);
-      b->filename = safe_strdup (file);
-      b->unlink = 1;
-      mutt_free_body (&b->parts);
-      mutt_stamp_attachment(b);
-      b = b->next;
-    }
-    h->content->parts = NULL;
-  }
-  else
-  {
-    mutt_mktemp (file);
-    if (mutt_save_attachment (msg->fp, h->content, file, 0, NULL) == -1)
-    {
-      mutt_free_envelope (&hdr->env);
-      mx_close_message (&msg);
       mx_fastclose_mailbox (PostContext);
       safe_free ((void **) &PostContext);
       return (-1);
-    }
-    hdr->content = mutt_make_file_attach (file);
-    hdr->content->use_disp = 0;	/* no content-disposition */
-    hdr->content->unlink = 1;	/* delete when we are done */
   }
-
-  mx_close_message (&msg);
 
   /* finished with this message, so delete it. */
   mutt_set_flag (PostContext, h, M_DELETE, 1);
@@ -438,3 +366,79 @@ int mutt_parse_pgp_hdr (char *p, int set_signas)
   return pgp;
 }
 #endif /* _PGPPATH */
+
+
+
+int mutt_edit_message (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr)
+{
+  MESSAGE *msg = mx_open_message (ctx, hdr->msgno);
+  char file[_POSIX_PATH_MAX];
+
+  if (msg == NULL)
+    return (-1);
+
+  fseek (msg->fp, hdr->offset, 0);
+  newhdr->env = mutt_read_rfc822_header (msg->fp, newhdr);
+
+  if (hdr->content->type == TYPEMESSAGE || hdr->content->type == TYPEMULTIPART)
+  {
+    BODY *b;
+
+    fseek (msg->fp, hdr->content->offset, 0);
+
+    if (hdr->content->type == TYPEMULTIPART)
+    {
+      hdr->content->parts = mutt_parse_multipart (msg->fp, 
+	       mutt_get_parameter ("boundary", hdr->content->parameter),
+	       hdr->content->offset + hdr->content->length,
+	       strcasecmp ("digest", hdr->content->subtype) == 0);
+    }
+    else
+      hdr->content->parts = mutt_parse_messageRFC822 (msg->fp, hdr->content);
+
+    /* Now that we know what was in the other message, convert to the new
+     * message.
+     */
+    newhdr->content = hdr->content->parts;
+    b = hdr->content->parts;
+    while (b != NULL)
+    {
+      file[0] = '\0';
+      if (b->filename)
+	strfcpy (file, b->filename, sizeof (file));
+      else
+	/* avoid Content-Disposition: header with temporary filename */
+	b->use_disp = 0;
+      mutt_adv_mktemp (file, sizeof(file));
+      if (mutt_save_attachment (msg->fp, b, file, 0, NULL) == -1)
+      {
+	mutt_free_envelope (&newhdr->env);
+	mutt_free_body (&newhdr->content);
+	mx_close_message (&msg);
+	return (-1);
+      }
+      safe_free ((void *) &b->filename);
+      b->filename = safe_strdup (file);
+      b->unlink = 1;
+      mutt_free_body (&b->parts);
+      b = b->next;
+    }
+    hdr->content->parts = NULL;
+  }
+  else
+  {
+    mutt_mktemp (file);
+    if (mutt_save_attachment (msg->fp, hdr->content, file, 0, NULL) == -1)
+    {
+      mutt_free_envelope (&newhdr->env);
+      mx_close_message (&msg);
+      return (-1);
+    }
+    newhdr->content = mutt_make_file_attach (file);
+    newhdr->content->use_disp = 0;	/* no content-disposition */
+    newhdr->content->unlink = 1;	/* delete when we are done */
+  }
+
+  mx_close_message (&msg);
+  return 0;
+}

@@ -1084,7 +1084,22 @@ BODY *mutt_make_multipart (BODY *b)
   return new;
 }
 
-static char *mutt_make_date (char *s)
+/* remove the multipart body if it exists */
+BODY *mutt_remove_multipart (BODY *b)
+{
+  BODY *t;
+
+  if (b->parts)
+  {
+    t = b;
+    b = b->parts;
+    t->parts = NULL;
+    mutt_free_body (&t);
+  }
+  return b;
+}
+
+static char *mutt_make_date (char *s, size_t len)
 {
   time_t t = time (NULL);
   struct tm *l = gmtime(&t);
@@ -1098,7 +1113,7 @@ static char *mutt_make_date (char *s)
   if (yday != 0)
     tz += yday * 24 * 60; /* GMT is next or previous day! */
 
-  sprintf (s, "Date: %s, %d %s %d %02d:%02d:%02d %+03d%02d\n",
+  snprintf (s, len,  "Date: %s, %d %s %d %02d:%02d:%02d %+03d%02d\n",
 	   Weekdays[l->tm_wday], l->tm_mday, Months[l->tm_mon], l->tm_year+1900,
 	   l->tm_hour, l->tm_min, l->tm_sec, tz/60, abs(tz) % 60);
   return (s);
@@ -1186,6 +1201,7 @@ static void write_references (LIST *r, FILE *f)
  * mode == 1  => "lite" mode (used for edit_hdrs)
  * mode == 0  => normal mode.  write full header + MIME headers
  * mode == -1 => write just the envelope info (used for postponing messages)
+ * mode == -2 => just like -1, but write the Date: from the message (used for edit-message support)
  */
 
 int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach, int mode)
@@ -1194,7 +1210,15 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach, int mode)
   LIST *tmp = env->userhdrs;
 
   if (mode == 0)
-    fputs (mutt_make_date (buffer), fp);
+    fputs (mutt_make_date (buffer, sizeof(buffer)), fp);
+  else if (mode == 2)
+  {
+    if(env->date)
+      fprintf(fp, "Date: %s\n", env->date);
+    else
+      fputs (mutt_make_date(buffer, sizeof(buffer)), fp);
+  }
+
 
   /* OPTUSEFROM is not consulted here so that we can still write a From:
    * field if the user sets it with the `my_hdr' command
@@ -1758,7 +1782,7 @@ void mutt_bounce_message (HEADER *h, ADDRESS *to)
       fprintf (f, "Resent-From: %s", NONULL(Username));
       if((fqdn = mutt_fqdn(1)))
 	fprintf (f, "@%s", fqdn);
-      fprintf (f, "\nResent-%s", mutt_make_date (date));
+      fprintf (f, "\nResent-%s", mutt_make_date (date, sizeof(date)));
       fputs ("Resent-To: ", f);
       mutt_write_address_list (to, f, 11);
       fputc ('\n', f);
@@ -1847,7 +1871,12 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post)
     return (-1);
   }
 
-  mutt_write_rfc822_header (msg->fp, hdr->env, hdr->content, (post ? -1 : 0));
+  /* post == 1 => postpone message. Set mode = -1 in mutt_write_rfc822_header()
+   * post == 2 => Editing this message.
+   *              Set mode = -2 in mutt_write_rfc822_header()
+   * post == 0 => Normal mode. Set mode = 0 in mutt_write_rfc822_header() 
+   * */
+  mutt_write_rfc822_header (msg->fp, hdr->env, hdr->content, post ? -post : 0);
 
   /* (postponment) if this was a reply of some sort, <msgid> contians the
    * Message-ID: of message replied to.  Save it using a special X-Mutt-

@@ -731,20 +731,6 @@ void mutt_set_followup_to (ENVELOPE *e)
   }
 }
 
-/* remove the multipart body if it exists */
-static BODY *remove_multipart (BODY *b)
-{
-  BODY *t;
-
-  if (b->parts)
-  {
-    t = b;
-    b = b->parts;
-    t->parts = NULL;
-    mutt_free_body (&t);
-  }
-  return b;
-}
 
 /* look through the recipients of the message we are replying to, and if
    we find an address that matches $alternates, we use that as the default
@@ -884,7 +870,12 @@ ci_send_message (int flags,		/* send mode */
   {
     msg = mutt_new_header ();
 
-    if (flags == SENDPOSTPONED)
+    if (flags == SENDEDITMSG)
+    {
+      if (mutt_edit_message(ctx, msg, cur) < 0)
+	goto cleanup;
+    }
+    else if (flags == SENDPOSTPONED)
     {
       if ((flags = mutt_get_postponed (ctx, msg, &cur)) < 0)
 	goto cleanup;
@@ -904,7 +895,7 @@ ci_send_message (int flags,		/* send mode */
       }
     }
 
-    if (flags & SENDPOSTPONED)
+    if (flags & (SENDPOSTPONED | SENDEDITMSG))
     {
       if ((tempfp = safe_fopen (msg->content->filename, "a+")) == NULL)
       {
@@ -917,7 +908,7 @@ ci_send_message (int flags,		/* send mode */
       msg->env = mutt_new_envelope ();
   }
 
-  if (! (flags & (SENDKEY | SENDPOSTPONED)))
+  if (! (flags & (SENDKEY | SENDPOSTPONED | SENDEDITMSG)))
   {
     pbody = mutt_new_body ();
     pbody->next = msg->content; /* don't kill command-line attachments */
@@ -949,7 +940,7 @@ ci_send_message (int flags,		/* send mode */
   }
 
   /* this is handled here so that the user can match ~f in send-hook */
-  if (cur && option (OPTREVNAME))
+  if (cur && option (OPTREVNAME) && !(flags & (SENDPOSTPONED | SENDEDITMSG)))
   {
     /* we shouldn't have to worry about freeing `msg->env->from' before
        setting it here since this code will only execute when doing some
@@ -958,7 +949,7 @@ ci_send_message (int flags,		/* send mode */
     msg->env->from = set_reverse_name (cur->env);
   }
 
-  if (!msg->env->from && option (OPTUSEFROM))
+  if (!msg->env->from && option (OPTUSEFROM) && !(flags & SENDEDITMSG))
     msg->env->from = mutt_default_from ();
 
   if (flags & SENDBATCH) 
@@ -970,7 +961,7 @@ ci_send_message (int flags,		/* send mode */
       process_user_header (msg->env);
     }
   }
-  else if (! (flags & SENDPOSTPONED))
+  else if (! (flags & (SENDPOSTPONED | SENDEDITMSG)))
   {
     if ((flags & (SENDREPLY | SENDFORWARD)) &&
 	envelope_defaults (msg->env, ctx, cur, flags) == -1)
@@ -1036,7 +1027,7 @@ ci_send_message (int flags,		/* send mode */
   }
   /* wait until now to set the real name portion of our return address so
      that $realname can be set in a send-hook */
-  if (msg->env->from && !msg->env->from->personal)
+  if (msg->env->from && !msg->env->from->personal && !(flags & (SENDEDITMSG | SENDPOSTPONED)))
     msg->env->from->personal = safe_strdup (Realname);
 
 
@@ -1091,7 +1082,7 @@ ci_send_message (int flags,		/* send mode */
 	mutt_edit_file (Editor, msg->content->filename);
     }
 
-    if (! (flags & (SENDPOSTPONED | SENDFORWARD | SENDKEY)))
+    if (! (flags & (SENDPOSTPONED | SENDEDITMSG | SENDFORWARD | SENDKEY)))
     {
       if (stat (msg->content->filename, &st) == 0)
       {
@@ -1133,7 +1124,8 @@ ci_send_message (int flags,		/* send mode */
   {
 main_loop:
 
-    if ((i = mutt_send_menu (msg, fcc, sizeof (fcc), cur)) == -1)
+    i = mutt_compose_menu (msg, fcc, sizeof (fcc), cur);
+    if (i == -1)
     {
       /* abort */
       mutt_message ("Mail not sent.");
@@ -1144,9 +1136,9 @@ main_loop:
       /* postpone the message until later. */
       if (msg->content->next)
 	msg->content = mutt_make_multipart (msg->content);
-      if (!Postponed || mutt_write_fcc (Postponed, msg, (cur && (flags & SENDREPLY)) ? cur->env->message_id : NULL, 1) < 0)
+      if (!Postponed || mutt_write_fcc (NONULL (Postponed), msg, (cur && (flags & SENDREPLY)) ? cur->env->message_id : NULL, 1) < 0)
       {
-	msg->content = remove_multipart (msg->content);
+	msg->content = mutt_remove_multipart (msg->content);
 	goto main_loop;
       }
       mutt_message ("Message postponed.");
@@ -1209,6 +1201,13 @@ main_loop:
     }
   }
 #endif /* _PGPPATH */
+
+  if (flags & SENDEDITMSG)
+  {
+   int really_send = mutt_yesorno ("Message edited. Really send?", 1);
+   if (really_send != M_YES)
+     goto main_loop;
+  }
 
   if (!option (OPTNOCURSES) && !(flags & SENDMAILX))
     mutt_message ("Sending message...");
@@ -1273,7 +1272,9 @@ main_loop:
 	msg->content = msg->content->parts;
     }
 
+#ifdef _PGPPATH
 full_fcc:
+#endif /* _PGPPATH */
     if (msg->content)
       mutt_write_fcc (fcc, msg, NULL, 0);
     msg->content = tmpbody;
@@ -1304,15 +1305,12 @@ full_fcc:
 
   if (send_message (msg) == -1)
   {
-    msg->content = remove_multipart (msg->content);
+    msg->content = mutt_remove_multipart (msg->content);
     goto main_loop;
   }
 
   if (!option (OPTNOCURSES) && ! (flags & SENDMAILX))
     mutt_message ("Mail sent.");
-
-  /* now free up the memory used to generate this message. */
-  mutt_free_header (&msg);
 
   if (flags & SENDREPLY)
   {
@@ -1325,23 +1323,6 @@ full_fcc:
 	  mutt_set_flag (ctx, ctx->hdrs[ctx->v2r[i]], M_REPLIED, 1);
     }
   }
-
-
-
-#ifdef _PGPPATH
-  if (flags == SENDPOSTPONED)
-  {
-    safe_free((void **) &PgpSignAs);
-    safe_free((void **) &PgpSignMicalg);
-
-    PgpSignAs = signas;
-    PgpSignMicalg = signmic;
-  }
-#endif /* _PGPPATH */
-   
-
-
-  return; /* all done */
 
 cleanup:
 

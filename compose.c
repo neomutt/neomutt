@@ -414,7 +414,7 @@ static void update_idx (MUTTMENU *menu, ATTACHPTR **idx, short idxlen)
  * 0	normal exit
  * -1	abort message
  */
-int mutt_send_menu (HEADER *msg,   /* structure for new message */
+int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 		    char *fcc,     /* where to save a copy of the message */
 		    size_t fcclen,
 		    HEADER *cur)   /* current message */
@@ -1055,7 +1055,26 @@ int mutt_send_menu (HEADER *msg,   /* structure for new message */
         mutt_update_encoding(msg->content);
 	break;
 
+      case OP_COMPOSE_WRITE_MESSAGE:
 
+       fname[0] = '\0';
+       if (idxlen)
+         msg->content = idx[0]->content;
+       if (mutt_enter_fname ("Write message to mailbox", fname, sizeof (fname),
+                             &menu->redraw, 1) != -1 && fname[0])
+       {
+         mutt_message ("Writing message to %s ...", fname);
+         mutt_expand_path (fname, sizeof (fname));
+
+         if (msg->content->next)
+           msg->content = mutt_make_multipart (msg->content);
+
+         if (mutt_write_fcc (NONULL (fname), msg, NULL, 2) < 0)
+           msg->content = mutt_remove_multipart (msg->content);
+         else
+           mutt_message ("Message written.");
+       }
+       break;
 
 #ifdef _PGPPATH
       case OP_COMPOSE_PGP_MENU:

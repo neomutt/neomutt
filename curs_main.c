@@ -1481,6 +1481,15 @@ int mutt_index_menu (int attach_msg /* invoked while attaching a message */)
 	unset_option (OPTFORCEREDRAWPAGER);
 	break;
 
+      case OP_EDIT_MESSAGE:
+
+	CHECK_MSGCOUNT;
+	CHECK_READONLY;
+
+	ci_send_message (SENDEDITMSG, NULL, NULL, Context, CURHDR);
+	menu->redraw = REDRAW_FULL;
+	break;
+
       case OP_FORWARD_MESSAGE:
 
 	CHECK_MSGCOUNT;
