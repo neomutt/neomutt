@@ -420,11 +420,11 @@ int raw_socket_open (CONNECTION* conn)
   for (cur = res; cur != NULL; cur = cur->ai_next)
   {
     fd = socket (cur->ai_family, cur->ai_socktype, cur->ai_protocol);
-    fcntl(fd,F_SETFD,FD_CLOEXEC);
     if (fd >= 0)
     {
       if ((rc = socket_connect (fd, cur->ai_addr)) == 0)
       {
+	fcntl (fd, F_SETFD, FD_CLOEXEC);
 	conn->fd = fd;
 	break;
       }
