@@ -460,6 +460,7 @@ typedef struct content
   unsigned int binary : 1; /* long lines, or CR not in CRLF pair */
   unsigned int from : 1;   /* has a line beginning with "From "? */
   unsigned int dot : 1;    /* has a line consisting of a single dot? */
+  unsigned int cr : 1;     /* has CR, even when in a CRLF pair */
 } CONTENT;
 
 typedef struct body
