@@ -1418,9 +1418,8 @@ msgid "display a message"
 msgstr "Zeige Nachricht an"
 
 #: keymap_defs.h:59
-#, fuzzy
 msgid "edit the raw message"
-msgstr "Editiere Nachricht"
+msgstr "Editiere rohe Nachricht"
 
 #: keymap_defs.h:60
 msgid "delete the char in front of the cursor"
@@ -1599,9 +1598,8 @@ msgid "jump to the next unread message"
 msgstr "Springe zur nächsten ungelesenen Nachricht"
 
 #: keymap_defs.h:105
-#, fuzzy
 msgid "jump to parent message in thread"
-msgstr "Entferne Löschmarkierung von allen Nachrichten im Diskussionsfaden"
+msgstr "Springe zur Bezugsnachricht im Diskussionsfaden"
 
 #: keymap_defs.h:106
 msgid "jump to previous thread"
@@ -3041,14 +3039,12 @@ msgid "(no mailbox)"
 msgstr "(keine Mailbox)"
 
 #: thread.c:722
-#, fuzzy
 msgid "Parent message is not visible in limited view"
-msgstr "Diese Nachricht ist nicht sichtbar."
+msgstr "Bezugsnachricht ist in der begenzten Sicht nicht verfügbar."
 
 #: thread.c:727
-#, fuzzy
 msgid "Parent message is not available."
-msgstr "Diese Nachricht ist nicht sichtbar."
+msgstr "Bezugsnachricht ist nicht verfügbar."
 
 #. now begin login
 #: imap/auth.c:143
