@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt-1.3.10i\n"
-"POT-Creation-Date: 2000-10-11 12:45+0200\n"
+"POT-Creation-Date: 2000-11-01 14:13+0100\n"
 "PO-Revision-Date: 2000-10-15 12:00+0200\n"
 "Last-Translator: Φάνης Δοκιανάκης <madf@hellug.gr>\n"
 "Language-Team: Greek <el@li.org>\n"
@@ -2080,536 +2080,550 @@ msgstr "παράθεση του επόμενου πλήκτρου"
 msgid "transpose character under cursor with previous"
 msgstr "μετατόπιση του χαρακτήρα κάτω από τον δρομέα με τον προηγούμενο"
 
-#
 #: keymap_alldefs.h:80
+msgid "capitalize the word"
+msgstr ""
+
+#
+#: keymap_alldefs.h:81
+#, fuzzy
+msgid "convert the word to lower case"
+msgstr "μετακίνηση στη βάση της σελίδας"
+
+#: keymap_alldefs.h:82
+msgid "convert the word to upper case"
+msgstr ""
+
+#
+#: keymap_alldefs.h:83
 msgid "enter a muttrc command"
 msgstr "καταχώρηση μιας εντολής muttrc"
 
 #
-#: keymap_alldefs.h:81
+#: keymap_alldefs.h:84
 msgid "enter a file mask"
 msgstr "καταχώρηση μιας μάσκας αρχείων"
 
 #
-#: keymap_alldefs.h:82
+#: keymap_alldefs.h:85
 msgid "exit this menu"
 msgstr "έξοδος από αυτό το μενού"
 
 #
-#: keymap_alldefs.h:83
+#: keymap_alldefs.h:86
 msgid "filter attachment through a shell command"
 msgstr "φιλτράρισμα της προσάρτησης μέσω μιας εντολής φλοιού"
 
 #
-#: keymap_alldefs.h:84
+#: keymap_alldefs.h:87
 msgid "move to the first entry"
 msgstr "μετακίνηση στην πρώτη καταχώρηση"
 
 #
-#: keymap_alldefs.h:85
+#: keymap_alldefs.h:88
 msgid "toggle a message's 'important' flag"
 msgstr "αλλαγή της σημαίας 'σημαντικό' του μηνύματος"
 
 #
-#: keymap_alldefs.h:86
+#: keymap_alldefs.h:89
 msgid "forward a message with comments"
 msgstr "προώθηση ενός μηνύματος με σχόλια"
 
 #
-#: keymap_alldefs.h:87
+#: keymap_alldefs.h:90
 msgid "select the current entry"
 msgstr "επιλογή της τρέχουσας καταχώρησης"
 
 #
-#: keymap_alldefs.h:88
+#: keymap_alldefs.h:91
 msgid "reply to all recipients"
 msgstr "απάντηση σε όλους τους παραλήπτες"
 
 #
-#: keymap_alldefs.h:89
+#: keymap_alldefs.h:92
 msgid "scroll down 1/2 page"
 msgstr "μετακίνηση 1/2 σελίδας προς τα κάτω"
 
 #
-#: keymap_alldefs.h:90
+#: keymap_alldefs.h:93
 msgid "scroll up 1/2 page"
 msgstr "μετακίνηση 1/2 σελίδας προς τα πάνω"
 
 #
-#: keymap_alldefs.h:91
+#: keymap_alldefs.h:94
 msgid "this screen"
 msgstr "αυτή η οθόνη"
 
 #
-#: keymap_alldefs.h:92
+#: keymap_alldefs.h:95
 msgid "jump to an index number"
 msgstr "μετάβαση σε έναν αριθμό δείκτη "
 
 #
-#: keymap_alldefs.h:93
+#: keymap_alldefs.h:96
 msgid "move to the last entry"
 msgstr "μετακίνηση στην τελευταία καταχώρηση"
 
 #
-#: keymap_alldefs.h:94
+#: keymap_alldefs.h:97
 msgid "reply to specified mailing list"
 msgstr "απάντηση στην καθορισμένη λίστα αλληλογραφίας"
 
 #
-#: keymap_alldefs.h:95
+#: keymap_alldefs.h:98
 msgid "execute a macro"
 msgstr "εκτέλεση μιας μακροεντολής"
 
 #
-#: keymap_alldefs.h:96
+#: keymap_alldefs.h:99
 msgid "compose a new mail message"
 msgstr "σύνθεση ενός νέου μηνύματος"
 
 #
-#: keymap_alldefs.h:97
+#: keymap_alldefs.h:100
 msgid "open a different folder"
 msgstr "άνοιγμα ενός διαφορετικού φακέλου"
 
 #
-#: keymap_alldefs.h:98
+#: keymap_alldefs.h:101
 msgid "open a different folder in read only mode"
 msgstr "άνοιγμα ενός διαφορετικού φακέλου σε κατάσταση μόνο-ανάγνωσης"
 
 #
-#: keymap_alldefs.h:99
+#: keymap_alldefs.h:102
 msgid "clear a status flag from a message"
 msgstr "καθαρισμος της σημαίας κατάστασης από το μήνυμα"
 
 #
-#: keymap_alldefs.h:100
+#: keymap_alldefs.h:103
 msgid "delete messages matching a pattern"
 msgstr "διαγραφή των μηνυματων που ταιριάζουν σε ένα μοντέλο/μορφή"
 
 #
-#: keymap_alldefs.h:101
+#: keymap_alldefs.h:104
 msgid "retrieve mail from POP server"
 msgstr "παραλαβή αλληλογραφίας από το εξυπηρετητή POP"
 
 #
-#: keymap_alldefs.h:102
+#: keymap_alldefs.h:105
 msgid "move to the first message"
 msgstr "μετακίνηση στο πρώτο μήνυμα"
 
 #
-#: keymap_alldefs.h:103
+#: keymap_alldefs.h:106
 msgid "move to the last message"
 msgstr "μετακίνηση στο τελευταίο μήνυμα"
 
 #
-#: keymap_alldefs.h:104
+#: keymap_alldefs.h:107
 msgid "show only messages matching a pattern"
 msgstr "εμφανίση μόνο των μηνυμάτων που ταιριάζουν σε ένα μοντέλο/μορφή"
 
 #
-#: keymap_alldefs.h:105
+#: keymap_alldefs.h:108
 msgid "jump to the next new message"
 msgstr "μετάβαση στο επόμενο νέο μήνυμα"
 
 #
-#: keymap_alldefs.h:106
+#: keymap_alldefs.h:109
 msgid "jump to the next subthread"
 msgstr "μετάβαση στο επόμενο θέμα της δευτερεύουσας συζήτησης"
 
 #
-#: keymap_alldefs.h:107
+#: keymap_alldefs.h:110
 msgid "jump to the next thread"
 msgstr "μετάβαση στην επόμενη συζήτηση"
 
 #
-#: keymap_alldefs.h:108
+#: keymap_alldefs.h:111
 msgid "move to the next undeleted message"
 msgstr "μετακίνηση στο επόμενο αποκαταστημένο μήνυμα"
 
 #
-#: keymap_alldefs.h:109
+#: keymap_alldefs.h:112
 msgid "jump to the next unread message"
 msgstr "μετάβαση στο επόμενο μη αναγνωσμένο μήνυμα"
 
 #
-#: keymap_alldefs.h:110
+#: keymap_alldefs.h:113
 msgid "jump to parent message in thread"
 msgstr "μετάβαση στο τρέχων μήνυμα της συζήτησης"
 
 #
-#: keymap_alldefs.h:111
+#: keymap_alldefs.h:114
 msgid "jump to previous thread"
 msgstr "μετάβαση στη προηγούμενη συζήτηση"
 
 #
-#: keymap_alldefs.h:112
+#: keymap_alldefs.h:115
 msgid "jump to previous subthread"
 msgstr "μετάβαση στη προηγούμενη δευτερεύουσα συζήτηση"
 
 #
-#: keymap_alldefs.h:113
+#: keymap_alldefs.h:116
 msgid "move to the previous undeleted message"
 msgstr "μετακίνηση στο προηγούμενο αποκαταστημένο μήνυμα"
 
 #
-#: keymap_alldefs.h:114
+#: keymap_alldefs.h:117
 msgid "jump to the previous new message"
 msgstr "μετάβαση στο προηγούμενο νέο μήνυμα"
 
 #
-#: keymap_alldefs.h:115
+#: keymap_alldefs.h:118
 msgid "jump to the previous unread message"
 msgstr "μετάβαση στο προηγούμενο μη αναγνωσμένο μήνυμα"
 
 #
-#: keymap_alldefs.h:116
+#: keymap_alldefs.h:119
 msgid "mark the current thread as read"
 msgstr "σημείωση της τρέχουσας συζήτησης ως αναγνωσμένη"
 
 #
-#: keymap_alldefs.h:117
+#: keymap_alldefs.h:120
 msgid "mark the current subthread as read"
 msgstr "σημείωση τηςτρέχουσας υποσυζήτησης ως αναγνωσμένη"
 
 #
-#: keymap_alldefs.h:118
+#: keymap_alldefs.h:121
 msgid "set a status flag on a message"
 msgstr "ορισμός της σημαίας κατάστασης σε ένα μήνυμα"
 
 #
-#: keymap_alldefs.h:119
+#: keymap_alldefs.h:122
 msgid "save changes to mailbox"
 msgstr "αποθήκευση των αλλαγών στο γραμματοκιβώτιο"
 
 #
-#: keymap_alldefs.h:120
+#: keymap_alldefs.h:123
 msgid "tag messages matching a pattern"
 msgstr "σημείωση των μηνυμάτων που ταιριάζουν με μια μορφή/μοντέλο"
 
 #
-#: keymap_alldefs.h:121
+#: keymap_alldefs.h:124
 msgid "undelete messages matching a pattern"
 msgstr ""
 "αποκατάσταση (undelete) των μηνυμάτων που ταιριάζουν με μία μορφή/μοντέλο"
 
 #
-#: keymap_alldefs.h:122
+#: keymap_alldefs.h:125
 msgid "untag messages matching a pattern"
 msgstr ""
 "αφαίρεση της σημείωσης από τα μηνύματα που ταιριάζουν με μία μορφή/μοντέλο"
 
 #
-#: keymap_alldefs.h:123
+#: keymap_alldefs.h:126
 msgid "move to the middle of the page"
 msgstr "μετακίνηση στο μέσο της σελίδας"
 
 #
-#: keymap_alldefs.h:124
+#: keymap_alldefs.h:127
 msgid "move to the next entry"
 msgstr "μετακίνηση στην επόμενη καταχώρηση"
 
 #
-#: keymap_alldefs.h:125
+#: keymap_alldefs.h:128
 msgid "scroll down one line"
 msgstr "μετακίνηση μια γραμμή προς τα κάτω"
 
 #
-#: keymap_alldefs.h:126
+#: keymap_alldefs.h:129
 msgid "move to the next page"
 msgstr "μετακίνηση στην επόμενη σελίδα"
 
 #
-#: keymap_alldefs.h:127
+#: keymap_alldefs.h:130
 msgid "jump to the bottom of the message"
 msgstr "μετάβαση στη βάση του μηνύματος"
 
 #
-#: keymap_alldefs.h:128
+#: keymap_alldefs.h:131
 msgid "toggle display of quoted text"
 msgstr "επιλογή της εμφάνισης του quoted κειμένου"
 
 #
-#: keymap_alldefs.h:129
+#: keymap_alldefs.h:132
 msgid "skip beyond quoted text"
 msgstr "προσπέραση πέρα από το quoted κείμενο"
 
 #
-#: keymap_alldefs.h:130
+#: keymap_alldefs.h:133
 msgid "jump to the top of the message"
 msgstr "μετάβαση στην αρχή του μηνύματος"
 
 #
-#: keymap_alldefs.h:131
+#: keymap_alldefs.h:134
 msgid "pipe message/attachment to a shell command"
 msgstr "διοχέτευση του μηνύματος/προσάρτησης σε μια εντολή φλοιού"
 
 #
-#: keymap_alldefs.h:132
+#: keymap_alldefs.h:135
 msgid "move to the previous entry"
 msgstr "μετακίνηση στην προηγούμενη καταχώριση"
 
 #
-#: keymap_alldefs.h:133
+#: keymap_alldefs.h:136
 msgid "scroll up one line"
 msgstr "μετακίνηση μια γραμμή προς τα πάνω"
 
 #
-#: keymap_alldefs.h:134
+#: keymap_alldefs.h:137
 msgid "move to the previous page"
 msgstr "μετακίνηση στην προηγούμενη σελίδα"
 
 #
-#: keymap_alldefs.h:135
+#: keymap_alldefs.h:138
 msgid "print the current entry"
 msgstr "εκτύπωση της τρέχουσας καταχώρησης"
 
 #
-#: keymap_alldefs.h:136
+#: keymap_alldefs.h:139
 msgid "query external program for addresses"
 msgstr "ερώτηση ενός εξωτερικού προγράμματος για διευθύνσεις"
 
 #
-#: keymap_alldefs.h:137
+#: keymap_alldefs.h:140
 msgid "append new query results to current results"
 msgstr "πρόσθεση των νέων αποτελεσμάτων της ερώτησης στα τρέχωντα"
 
 #
-#: keymap_alldefs.h:138
+#: keymap_alldefs.h:141
 msgid "save changes to mailbox and quit"
 msgstr "αποθήκευση των αλλαγών στο γραμματοκιβώτιο και εγκατάλειψη"
 
 #
-#: keymap_alldefs.h:139
+#: keymap_alldefs.h:142
 msgid "recall a postponed message"
 msgstr "επανάκληση ενός αναβεβλημένου μηνύματος"
 
 #
-#: keymap_alldefs.h:140
+#: keymap_alldefs.h:143
 msgid "clear and redraw the screen"
 msgstr "καθαρισμός και ανανέωση της οθόνης"
 
 #
-#: keymap_alldefs.h:141
+#: keymap_alldefs.h:144
 msgid "{internal}"
 msgstr "{εσωτερικό}"
 
 #
-#: keymap_alldefs.h:142
+#: keymap_alldefs.h:145
 msgid "reply to a message"
 msgstr "απάντηση σε ένα μήνυμα"
 
-#: keymap_alldefs.h:143
+#: keymap_alldefs.h:146
 msgid "use the current message as a template for a new one"
 msgstr "χρησιμοποίηση του τρέχοντος μηνύματος ως σχεδίου για ένα νέο"
 
 #
-#: keymap_alldefs.h:144
+#: keymap_alldefs.h:147
 msgid "save message/attachment to a file"
 msgstr "αποθήκευση μηνύματος/προσάρτησης σε ένα αρχείο"
 
 #
-#: keymap_alldefs.h:145
+#: keymap_alldefs.h:148
 msgid "search for a regular expression"
 msgstr "αναζήτηση μιας κανονικής έκφρασης"
 
 #
-#: keymap_alldefs.h:146
+#: keymap_alldefs.h:149
 msgid "search backwards for a regular expression"
 msgstr "αναζήτηση μιας κανονικής έκφρασης προς τα πίσω"
 
 #
-#: keymap_alldefs.h:147
+#: keymap_alldefs.h:150
 msgid "search for next match"
 msgstr "αναζήτηση για επόμενο ταίριασμα"
 
 #
-#: keymap_alldefs.h:148
+#: keymap_alldefs.h:151
 msgid "search for next match in opposite direction"
 msgstr "αναζήτηση του επόμενου ταιριάσματος προς την αντίθετη κατεύθυνση"
 
 #
-#: keymap_alldefs.h:149
+#: keymap_alldefs.h:152
 msgid "toggle search pattern coloring"
 msgstr "επιλογή του χρωματισμού των αποτελεσμάτων αναζήτησης"
 
 #
-#: keymap_alldefs.h:150
+#: keymap_alldefs.h:153
 msgid "invoke a command in a subshell"
 msgstr "κλήση μιας εντολής σε ένα δευτερεύων φλοιό"
 
 #
-#: keymap_alldefs.h:151
+#: keymap_alldefs.h:154
 msgid "sort messages"
 msgstr "ταξινόμηση των μηνυμάτων"
 
 #
-#: keymap_alldefs.h:152
+#: keymap_alldefs.h:155
 msgid "sort messages in reverse order"
 msgstr "ταξινόμηση των μηνυμάτων σε ανάστροφη σείρα"
 
 #
-#: keymap_alldefs.h:153
+#: keymap_alldefs.h:156
 msgid "tag the current entry"
 msgstr "σημείωση της τρέχουσας καταχώρησης"
 
 #
-#: keymap_alldefs.h:154
+#: keymap_alldefs.h:157
 msgid "apply next function to tagged messages"
 msgstr "εφαρμογή της επόμενης λειτουργίας στα σημειωμένα μηνύματα"
 
 #
-#: keymap_alldefs.h:155
+#: keymap_alldefs.h:158
 msgid "tag the current subthread"
 msgstr "σημείωση της τρέχουσας δευτερεύουσας συζήτησης"
 
 #
-#: keymap_alldefs.h:156
+#: keymap_alldefs.h:159
 msgid "tag the current thread"
 msgstr "σημείωση της τρέχουσας συζήτησης"
 
 #
-#: keymap_alldefs.h:157
+#: keymap_alldefs.h:160
 msgid "toggle a message's 'new' flag"
 msgstr "επιλογή της 'νέας' σημαίας μηνύματος"
 
 #
-#: keymap_alldefs.h:158
+#: keymap_alldefs.h:161
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "επιλογή εάν το γραμματοκιβώτιο θα ξαναγραφτεί"
 
 #
-#: keymap_alldefs.h:159
+#: keymap_alldefs.h:162
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "επιλογή για περιήγηση στα γραμματοκιβώτια ή σε όλα τα αρχεία"
 
 #
-#: keymap_alldefs.h:160
+#: keymap_alldefs.h:163
 msgid "move to the top of the page"
 msgstr "μετακίνηση στην αρχή της σελίδας"
 
 #
-#: keymap_alldefs.h:161
+#: keymap_alldefs.h:164
 msgid "undelete the current entry"
 msgstr "αποκατάσταση της τρέχουσας καταχώρησης"
 
 #
-#: keymap_alldefs.h:162
+#: keymap_alldefs.h:165
 msgid "undelete all messages in thread"
 msgstr "αποκατάσταση όλων των μηνυμάτων στη συζήτηση"
 
 #
-#: keymap_alldefs.h:163
+#: keymap_alldefs.h:166
 msgid "undelete all messages in subthread"
 msgstr "αποκατάσταση όλων των μηνυμάτων στη δευτερέυουσα συζήτηση"
 
 #
-#: keymap_alldefs.h:164
+#: keymap_alldefs.h:167
 msgid "show the Mutt version number and date"
 msgstr "εμφάνιση του αριθμού έκδοσης του Mutt και την ημερομηνία"
 
 #
-#: keymap_alldefs.h:165
+#: keymap_alldefs.h:168
 msgid "view attachment using mailcap entry if necessary"
 msgstr ""
 "εμφάνιση προσάρτησης χρησιμοποιώντας εάν χρειάζεται την καταχώρηση mailcap"
 
 #
-#: keymap_alldefs.h:166
+#: keymap_alldefs.h:169
 msgid "show MIME attachments"
 msgstr "εμφάνιση των προσαρτήσεων MIME"
 
 #
-#: keymap_alldefs.h:167
+#: keymap_alldefs.h:170
 msgid "show currently active limit pattern"
 msgstr "εμφάνιση της ενεργής μορφής των ορίων"
 
 #
-#: keymap_alldefs.h:168
+#: keymap_alldefs.h:171
 msgid "collapse/uncollapse current thread"
 msgstr "μάζεμα/άπλωμα της τρέχουσας συζήτησης"
 
 #
-#: keymap_alldefs.h:169
+#: keymap_alldefs.h:172
 msgid "collapse/uncollapse all threads"
 msgstr "μάζεμα/άπλωμα όλων των συζητήσεων"
 
 #
 # keymap_defs.h:158
-#: keymap_alldefs.h:170
+#: keymap_alldefs.h:173
 msgid "attach a PGP public key"
 msgstr "προσάρτηση του δημόσιου κλειδιού PGP"
 
 #
 # keymap_defs.h:159
-#: keymap_alldefs.h:171
+#: keymap_alldefs.h:174
 msgid "show PGP options"
 msgstr "εμφάνιση των επιλογών PGP"
 
 #
 # keymap_defs.h:160
-#: keymap_alldefs.h:172
+#: keymap_alldefs.h:175
 msgid "extract PGP public keys"
 msgstr "εξαγωγή των δημόσιων κλειδιών PGP"
 
 #
 # keymap_defs.h:161
-#: keymap_alldefs.h:173
+#: keymap_alldefs.h:176
 msgid "wipe PGP passphrase from memory"
 msgstr "εξαφάνιση της φράσης κλειδί PGP από τη μνήμη"
 
 #
 # keymap_defs.h:162
-#: keymap_alldefs.h:174
+#: keymap_alldefs.h:177
 msgid "mail a PGP public key"
 msgstr "ταχυδρόμηση δημόσιου κλειδιού PGP"
 
 #
 # keymap_defs.h:163
-#: keymap_alldefs.h:175
+#: keymap_alldefs.h:178
 msgid "verify a PGP public key"
 msgstr "επιβεβαίωση ενός δημόσιου κλειδιού PGP"
 
 #
 # keymap_defs.h:164
-#: keymap_alldefs.h:176
+#: keymap_alldefs.h:179
 msgid "view the key's user id"
 msgstr "εμφάνιση του ιδιοκτήτη του κλειδιού"
 
 #
-#: keymap_alldefs.h:177
+#: keymap_alldefs.h:180
 msgid "make decrypted copy and delete"
 msgstr "δημιουργία αποκρυπτογραφημένου αντιγράφου και διαγραφή"
 
 #
-#: keymap_alldefs.h:178
+#: keymap_alldefs.h:181
 msgid "make decrypted copy"
 msgstr "δημιουργία αποκρυπτογραφημένου αντιγράφου"
 
-#: keymap_alldefs.h:179
+#: keymap_alldefs.h:182
 msgid "Accept the chain constructed"
 msgstr "Αποδοχή της κατασκευασμένης αλυσίδας"
 
-#: keymap_alldefs.h:180
+#: keymap_alldefs.h:183
 msgid "Append a remailer to the chain"
 msgstr "Προσάρτηση ενός επαναποστολέα στην αλυσίδα"
 
-#: keymap_alldefs.h:181
+#: keymap_alldefs.h:184
 msgid "Insert a remailer into the chain"
 msgstr "Προσθήκη ενός επαναποστολέα στην αλυσίδα"
 
 #
-#: keymap_alldefs.h:182
+#: keymap_alldefs.h:185
 msgid "Delete a remailer from the chain"
 msgstr "Διαγραφή ενός επαναποστολέα από την αλυσίδα"
 
-#: keymap_alldefs.h:183
+#: keymap_alldefs.h:186
 msgid "Select the previous element of the chain"
 msgstr "Επιλογή του προηγούμενου στοιχείου της αλυσίδας"
 
-#: keymap_alldefs.h:184
+#: keymap_alldefs.h:187
 msgid "Select the next element of the chain"
 msgstr "Επιλογή του επόμενου στοιχείου της αλυσίδας"
 
-#: keymap_alldefs.h:185
+#: keymap_alldefs.h:188
 msgid "send the message through a mixmaster remailer chain"
 msgstr "αποστολή του μηνύματος μέσω μιας αλυσίδας απαναποστολέων Mixmaster"
 
@@ -4325,19 +4339,19 @@ msgid "%s no longer exists!"
 msgstr "Το %s δεν υπάρχει πια!"
 
 #
-#: sendlib.c:1048
+#: sendlib.c:1054
 #, c-format
 msgid "Could not open %s"
 msgstr "Αδυναμία ανοίγματος του %s"
 
 #
-#: sendlib.c:1964
+#: sendlib.c:1972
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Σφάλμα κατά την αποστολή μηνύματος, τερματισμός θυγατρικής με %d (%s)."
 
 #
-#: sendlib.c:1970
+#: sendlib.c:1978
 msgid "Output of the delivery process"
 msgstr "Έξοδος της διεργασίας αποστολής"
 

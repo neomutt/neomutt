@@ -1,3 +1,70 @@
+Fri Oct 27 10:51:01 2000  Thomas Roessler  <roessler@guug.de>
+
+	* enter.c: A nicer version of {capitalize,...}-word functions.
+
+	* doc/manual.sgml.head:
+	Document the recent additions to the line editor.
+
+	* enter.c, functions.h, OPS:
+	Add capitalize-word, upcase-word, downcase-word functions to the
+	editor.  Bindings follow the Emacs conventions (i.e., M-c, M-u, M-d).
+
+Wed Oct 25 18:56:20 2000  Thomas Roessler  <roessler@guug.de>
+
+	* rfc822.c: Fix parsing of route-addrs.
+
+Tue Oct 24 08:59:21 2000  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.tail: Document edit-type.  From Mikko Hänninen.
+
+	* po/el.po: update
+
+Mon Oct 23 16:39:10 2000  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.head: Typo.  From Daniel Roesen <dr@bofh.de>.
+
+	* doc/manual.sgml.head:
+	Fix documentation of uznknown MIME type handling.  From Brian
+	Salter-Duke <b_duke@lacebark.ntu.edu.au>
+
+Wed Oct 18 09:01:56 2000  Thomas Roessler  <roessler@guug.de>
+
+	* recvattach.c: Fix tree formatting in the recvattach menu.
+
+Tue Oct 17 15:10:51 2000  Thomas Roessler  <roessler@guug.de>
+
+	* commands.c, curs_lib.c, hdrline.c, menu.c, protos.h:
+	Fix pager and index display when non-printable space characters are
+	encountered.  From EGE.
+
+	* sendlib.c: Teach mutt to attach files of arbitrary type.
+
+Mon Oct 16 17:29:55 2000  Thomas Roessler  <roessler@guug.de>
+
+	* curs_lib.c:
+	nl_langinfo({YES,NO}EXPR) may return an _extended_ regular
+	expression.  Close #312.
+
+	* po/zh_TW.Big5.po, po/id.po, po/sv.po: update
+
+	* mutt_socket.c:
+	Fix the strange "Can't connect" error messages.  From Brendan Cully.
+
+Thu Oct 12 14:49:58 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/da.po: update
+
+Wed Oct 11 14:17:17 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/de.po: update.
+
+	* po/fr.po: update
+
+	* po/uk.po, po/zh_CN.GB2312.po, po/zh_TW.Big5.po, po/pt_BR.po, po/ru.po, po/sk.po, po/sv.po, po/nl.po, po/pl.po, po/ko.po, po/es.po, po/fr.po, po/gl.po, po/id.po, po/it.po, po/cs.po, po/da.po, po/de.po, po/el.po, po/eo.po, ChangeLog, Makefile.am, reldate.h, VERSION:
+	automatic post-release commit for mutt-1.3.10
+
+	* buffy.c: Compilation fix from Emil Sit <sit@cisco.com>.
+
 Wed Oct 11 10:21:57 2000  Thomas Roessler  <roessler@guug.de>
 
 	* buffy.c: Compilation fix from Emil Sit <sit@cisco.com>.

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3.10\n"
-"POT-Creation-Date: 2000-10-11 12:45+0200\n"
+"POT-Creation-Date: 2000-11-01 14:13+0100\n"
 "PO-Revision-Date: 2000-10-14 13:01+02:00\n"
 "Last-Translator: Jörgen Tegnér <teg@post.netlink.se>\n"
 "Language-Team: \n"
@@ -1707,426 +1707,439 @@ msgid "transpose character under cursor with previous"
 msgstr "byt tecken under markören mot föregående tecken"
 
 #: keymap_alldefs.h:80
+msgid "capitalize the word"
+msgstr ""
+
+#: keymap_alldefs.h:81
+#, fuzzy
+msgid "convert the word to lower case"
+msgstr "flytta till slutet av sidan"
+
+#: keymap_alldefs.h:82
+msgid "convert the word to upper case"
+msgstr ""
+
+#: keymap_alldefs.h:83
 msgid "enter a muttrc command"
 msgstr "ge ett kommando med syntax som i muttrc"
 
-#: keymap_alldefs.h:81
+#: keymap_alldefs.h:84
 msgid "enter a file mask"
 msgstr "ge en mask för filnamn"
 
-#: keymap_alldefs.h:82
+#: keymap_alldefs.h:85
 msgid "exit this menu"
 msgstr "avsluta menyn"
 
-#: keymap_alldefs.h:83
+#: keymap_alldefs.h:86
 msgid "filter attachment through a shell command"
 msgstr "filtrera bilagan genom ett skalkommando"
 
-#: keymap_alldefs.h:84
+#: keymap_alldefs.h:87
 msgid "move to the first entry"
 msgstr "gå till första meddelandet"
 
-#: keymap_alldefs.h:85
+#: keymap_alldefs.h:88
 msgid "toggle a message's 'important' flag"
 msgstr "toggla ett meddelandes flagga för betydelse"
 
-#: keymap_alldefs.h:86
+#: keymap_alldefs.h:89
 msgid "forward a message with comments"
 msgstr "vidarebordra ett meddelande med kommentarer"
 
-#: keymap_alldefs.h:87
+#: keymap_alldefs.h:90
 msgid "select the current entry"
 msgstr "välj det aktiva meddelandet"
 
-#: keymap_alldefs.h:88
+#: keymap_alldefs.h:91
 msgid "reply to all recipients"
 msgstr "svara till alla mottagare"
 
-#: keymap_alldefs.h:89
+#: keymap_alldefs.h:92
 msgid "scroll down 1/2 page"
 msgstr "rulla ner en halv sida"
 
-#: keymap_alldefs.h:90
+#: keymap_alldefs.h:93
 msgid "scroll up 1/2 page"
 msgstr "rulla upp en halv sida"
 
-#: keymap_alldefs.h:91
+#: keymap_alldefs.h:94
 msgid "this screen"
 msgstr "den här skärmen"
 
-#: keymap_alldefs.h:92
+#: keymap_alldefs.h:95
 msgid "jump to an index number"
 msgstr "gå till index"
 
-#: keymap_alldefs.h:93
+#: keymap_alldefs.h:96
 msgid "move to the last entry"
 msgstr "gå till sista meddelandet"
 
-#: keymap_alldefs.h:94
+#: keymap_alldefs.h:97
 msgid "reply to specified mailing list"
 msgstr "svara till angiven sändlista"
 
-#: keymap_alldefs.h:95
+#: keymap_alldefs.h:98
 msgid "execute a macro"
 msgstr "kör ett makro"
 
-#: keymap_alldefs.h:96
+#: keymap_alldefs.h:99
 msgid "compose a new mail message"
 msgstr "skapa ett nytt brev"
 
-#: keymap_alldefs.h:97
+#: keymap_alldefs.h:100
 msgid "open a different folder"
 msgstr "öppna en annan brevlåda"
 
-#: keymap_alldefs.h:98
+#: keymap_alldefs.h:101
 msgid "open a different folder in read only mode"
 msgstr "öppna en annan brevlåda utan skrivåtkomst"
 
-#: keymap_alldefs.h:99
+#: keymap_alldefs.h:102
 msgid "clear a status flag from a message"
 msgstr "rensa en statusflagga från ett meddelande"
 
-#: keymap_alldefs.h:100
+#: keymap_alldefs.h:103
 msgid "delete messages matching a pattern"
 msgstr "släng bort meddelanden som passar ett mönster"
 
-#: keymap_alldefs.h:101
+#: keymap_alldefs.h:104
 msgid "retrieve mail from POP server"
 msgstr "hämta brev från en POP-server"
 
-#: keymap_alldefs.h:102
+#: keymap_alldefs.h:105
 msgid "move to the first message"
 msgstr "flytta till första meddelandet"
 
-#: keymap_alldefs.h:103
+#: keymap_alldefs.h:106
 msgid "move to the last message"
 msgstr "flytta till sista meddelandet"
 
-#: keymap_alldefs.h:104
+#: keymap_alldefs.h:107
 msgid "show only messages matching a pattern"
 msgstr "visa endast meddelanden som passar ett mönster"
 
-#: keymap_alldefs.h:105
+#: keymap_alldefs.h:108
 msgid "jump to the next new message"
 msgstr "hoppa till nästa nya meddelande"
 
-#: keymap_alldefs.h:106
+#: keymap_alldefs.h:109
 msgid "jump to the next subthread"
 msgstr "hoppa till nästa undertråd"
 
-#: keymap_alldefs.h:107
+#: keymap_alldefs.h:110
 msgid "jump to the next thread"
 msgstr "hoppa till nästa tråd"
 
-#: keymap_alldefs.h:108
+#: keymap_alldefs.h:111
 msgid "move to the next undeleted message"
 msgstr "hoppa till nästa icke slängda meddelande"
 
-#: keymap_alldefs.h:109
+#: keymap_alldefs.h:112
 msgid "jump to the next unread message"
 msgstr "hoppa till nästa olästa meddelande"
 
-#: keymap_alldefs.h:110
+#: keymap_alldefs.h:113
 msgid "jump to parent message in thread"
 msgstr "gå till första meddelande i tråden"
 
-#: keymap_alldefs.h:111
+#: keymap_alldefs.h:114
 msgid "jump to previous thread"
 msgstr "hoppa till föregående tråd"
 
-#: keymap_alldefs.h:112
+#: keymap_alldefs.h:115
 msgid "jump to previous subthread"
 msgstr "hoppa till föregående undertråd"
 
-#: keymap_alldefs.h:113
+#: keymap_alldefs.h:116
 msgid "move to the previous undeleted message"
 msgstr "hoppa till föregående icke borttagna meddelande"
 
-#: keymap_alldefs.h:114
+#: keymap_alldefs.h:117
 msgid "jump to the previous new message"
 msgstr "hoppa till föregående nya meddelande"
 
-#: keymap_alldefs.h:115
+#: keymap_alldefs.h:118
 msgid "jump to the previous unread message"
 msgstr "hoppa till föregående olästa meddelande"
 
-#: keymap_alldefs.h:116
+#: keymap_alldefs.h:119
 msgid "mark the current thread as read"
 msgstr "märk aktiv tråd som läst"
 
-#: keymap_alldefs.h:117
+#: keymap_alldefs.h:120
 msgid "mark the current subthread as read"
 msgstr "märk aktiv undertråd som läst"
 
-#: keymap_alldefs.h:118
+#: keymap_alldefs.h:121
 msgid "set a status flag on a message"
 msgstr "sätt en statusflagga för ett meddelande"
 
-#: keymap_alldefs.h:119
+#: keymap_alldefs.h:122
 msgid "save changes to mailbox"
 msgstr "spara ändringar i brevlåda"
 
-#: keymap_alldefs.h:120
+#: keymap_alldefs.h:123
 msgid "tag messages matching a pattern"
 msgstr "märk meddelanden som passar ett mönster"
 
-#: keymap_alldefs.h:121
+#: keymap_alldefs.h:124
 msgid "undelete messages matching a pattern"
 msgstr "återställ meddelanden som passar ett mönster"
 
-#: keymap_alldefs.h:122
+#: keymap_alldefs.h:125
 msgid "untag messages matching a pattern"
 msgstr "avmarkera meddelanden som passar ett mönster"
 
-#: keymap_alldefs.h:123
+#: keymap_alldefs.h:126
 msgid "move to the middle of the page"
 msgstr "gå till mitten av sidan"
 
-#: keymap_alldefs.h:124
+#: keymap_alldefs.h:127
 msgid "move to the next entry"
 msgstr "gå till nästa brev"
 
-#: keymap_alldefs.h:125
+#: keymap_alldefs.h:128
 msgid "scroll down one line"
 msgstr "rulla ner en rad"
 
-#: keymap_alldefs.h:126
+#: keymap_alldefs.h:129
 msgid "move to the next page"
 msgstr "gå till nästa sida"
 
-#: keymap_alldefs.h:127
+#: keymap_alldefs.h:130
 msgid "jump to the bottom of the message"
 msgstr "hoppa till slutet av meddelandet"
 
-#: keymap_alldefs.h:128
+#: keymap_alldefs.h:131
 msgid "toggle display of quoted text"
 msgstr "toggla huruvida citerad text ska visas"
 
-#: keymap_alldefs.h:129
+#: keymap_alldefs.h:132
 msgid "skip beyond quoted text"
 msgstr "hoppa över citerad text"
 
-#: keymap_alldefs.h:130
+#: keymap_alldefs.h:133
 msgid "jump to the top of the message"
 msgstr "hoppa till början av meddelandet"
 
-#: keymap_alldefs.h:131
+#: keymap_alldefs.h:134
 msgid "pipe message/attachment to a shell command"
 msgstr "skicka meddelandet/bilagan till ett skalkommando"
 
-#: keymap_alldefs.h:132
+#: keymap_alldefs.h:135
 msgid "move to the previous entry"
 msgstr "gå till föregående brev"
 
-#: keymap_alldefs.h:133
+#: keymap_alldefs.h:136
 msgid "scroll up one line"
 msgstr "rulla upp en rad"
 
-#: keymap_alldefs.h:134
+#: keymap_alldefs.h:137
 msgid "move to the previous page"
 msgstr "gå till föregående sida"
 
-#: keymap_alldefs.h:135
+#: keymap_alldefs.h:138
 msgid "print the current entry"
 msgstr "skriv ut aktivt meddelande"
 
-#: keymap_alldefs.h:136
+#: keymap_alldefs.h:139
 msgid "query external program for addresses"
 msgstr "fråga ett externt program efter adresser"
 
-#: keymap_alldefs.h:137
+#: keymap_alldefs.h:140
 msgid "append new query results to current results"
 msgstr "lägg till resultat av ny fråga till aktivt resultat"
 
-#: keymap_alldefs.h:138
+#: keymap_alldefs.h:141
 msgid "save changes to mailbox and quit"
 msgstr "spara ändringar till brevlåda och avsluta"
 
-#: keymap_alldefs.h:139
+#: keymap_alldefs.h:142
 msgid "recall a postponed message"
 msgstr "återkalla ett uppskjutet meddelande"
 
-#: keymap_alldefs.h:140
+#: keymap_alldefs.h:143
 msgid "clear and redraw the screen"
 msgstr "rensa och rita om skärmen"
 
-#: keymap_alldefs.h:141
+#: keymap_alldefs.h:144
 msgid "{internal}"
 msgstr "{internt}"
 
-#: keymap_alldefs.h:142
+#: keymap_alldefs.h:145
 msgid "reply to a message"
 msgstr "svara på ett meddelande"
 
-#: keymap_alldefs.h:143
+#: keymap_alldefs.h:146
 msgid "use the current message as a template for a new one"
 msgstr "använd aktivt meddelande som mall för ett nytt"
 
-#: keymap_alldefs.h:144
+#: keymap_alldefs.h:147
 msgid "save message/attachment to a file"
 msgstr "spara meddelande/bilaga till fil"
 
-#: keymap_alldefs.h:145
+#: keymap_alldefs.h:148
 msgid "search for a regular expression"
 msgstr "leta efter ett reguljärt uttryck"
 
-#: keymap_alldefs.h:146
+#: keymap_alldefs.h:149
 msgid "search backwards for a regular expression"
 msgstr "leta bakåt efter ett reguljärt uttryck"
 
-#: keymap_alldefs.h:147
+#: keymap_alldefs.h:150
 msgid "search for next match"
 msgstr "leta efter nästa passning"
 
-#: keymap_alldefs.h:148
+#: keymap_alldefs.h:151
 msgid "search for next match in opposite direction"
 msgstr "leta efter nästa passning i omvänd ordning"
 
-#: keymap_alldefs.h:149
+#: keymap_alldefs.h:152
 msgid "toggle search pattern coloring"
 msgstr "toggla färg på sökmönster"
 
-#: keymap_alldefs.h:150
+#: keymap_alldefs.h:153
 msgid "invoke a command in a subshell"
 msgstr "starta ett kommando i ett underskal"
 
-#: keymap_alldefs.h:151
+#: keymap_alldefs.h:154
 msgid "sort messages"
 msgstr "sortera meddelanden"
 
-#: keymap_alldefs.h:152
+#: keymap_alldefs.h:155
 msgid "sort messages in reverse order"
 msgstr "sortera meddelanden i omvänd ordning"
 
-#: keymap_alldefs.h:153
+#: keymap_alldefs.h:156
 msgid "tag the current entry"
 msgstr "märk aktivt meddelande"
 
-#: keymap_alldefs.h:154
+#: keymap_alldefs.h:157
 msgid "apply next function to tagged messages"
 msgstr "använd nästa funktion på ett märkta meddelanden"
 
-#: keymap_alldefs.h:155
+#: keymap_alldefs.h:158
 msgid "tag the current subthread"
 msgstr "märk aktiv undertråd"
 
-#: keymap_alldefs.h:156
+#: keymap_alldefs.h:159
 msgid "tag the current thread"
 msgstr "märk aktiv tråd"
 
-#: keymap_alldefs.h:157
+#: keymap_alldefs.h:160
 msgid "toggle a message's 'new' flag"
 msgstr "toggla 'ny' för ett meddelande"
 
-#: keymap_alldefs.h:158
+#: keymap_alldefs.h:161
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "toggla huruvida en brevlåda ska skrivas om"
 
-#: keymap_alldefs.h:159
+#: keymap_alldefs.h:162
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "välj om alla filer skall visas eller bara brevlådor"
 
-#: keymap_alldefs.h:160
+#: keymap_alldefs.h:163
 msgid "move to the top of the page"
 msgstr "gå till början av sidan"
 
-#: keymap_alldefs.h:161
+#: keymap_alldefs.h:164
 msgid "undelete the current entry"
 msgstr "ta inte bort det aktuella meddelandet"
 
-#: keymap_alldefs.h:162
+#: keymap_alldefs.h:165
 msgid "undelete all messages in thread"
 msgstr "återställ all meddelanden i en tråd"
 
-#: keymap_alldefs.h:163
+#: keymap_alldefs.h:166
 msgid "undelete all messages in subthread"
 msgstr "återställ alla meddelanden i en undertråd"
 
-#: keymap_alldefs.h:164
+#: keymap_alldefs.h:167
 msgid "show the Mutt version number and date"
 msgstr "visa Mutts versionsnummer och datum"
 
-#: keymap_alldefs.h:165
+#: keymap_alldefs.h:168
 msgid "view attachment using mailcap entry if necessary"
 msgstr "visa bilaga med hjälp av informationen i 'mailcap' om nödvändigt"
 
-#: keymap_alldefs.h:166
+#: keymap_alldefs.h:169
 msgid "show MIME attachments"
 msgstr "visa MIME-bilagor"
 
-#: keymap_alldefs.h:167
+#: keymap_alldefs.h:170
 msgid "show currently active limit pattern"
 msgstr "visa aktivt begränsande mönster"
 
-#: keymap_alldefs.h:168
+#: keymap_alldefs.h:171
 msgid "collapse/uncollapse current thread"
 msgstr "komprimera/expandera aktiv tråd"
 
-#: keymap_alldefs.h:169
+#: keymap_alldefs.h:172
 msgid "collapse/uncollapse all threads"
 msgstr "komprimera/expandera alla trådar"
 
-#: keymap_alldefs.h:170
+#: keymap_alldefs.h:173
 msgid "attach a PGP public key"
 msgstr "bifoga an öppen nyckel (PGP)"
 
-#: keymap_alldefs.h:171
+#: keymap_alldefs.h:174
 msgid "show PGP options"
 msgstr "visa val för PGP"
 
-#: keymap_alldefs.h:172
+#: keymap_alldefs.h:175
 msgid "extract PGP public keys"
 msgstr "extrahera öppna nycklar (PGP)"
 
-#: keymap_alldefs.h:173
+#: keymap_alldefs.h:176
 msgid "wipe PGP passphrase from memory"
 msgstr "rensa lösenfras (PGP) från minnet."
 
-#: keymap_alldefs.h:174
+#: keymap_alldefs.h:177
 msgid "mail a PGP public key"
 msgstr "skicka en öppen nyckel (PGP)"
 
-#: keymap_alldefs.h:175
+#: keymap_alldefs.h:178
 msgid "verify a PGP public key"
 msgstr "verifiera en öppen nyckel (PGP)"
 
-#: keymap_alldefs.h:176
+#: keymap_alldefs.h:179
 msgid "view the key's user id"
 msgstr "visa nyckelns användaridentitet"
 
-#: keymap_alldefs.h:177
+#: keymap_alldefs.h:180
 msgid "make decrypted copy and delete"
 msgstr "skapa avkodad kopia och ta bort"
 
-#: keymap_alldefs.h:178
+#: keymap_alldefs.h:181
 msgid "make decrypted copy"
 msgstr "skapa avkrypterad kopia"
 
-#: keymap_alldefs.h:179
+#: keymap_alldefs.h:182
 msgid "Accept the chain constructed"
 msgstr "Godkänn den konstruerade kedjan"
 
-#: keymap_alldefs.h:180
+#: keymap_alldefs.h:183
 msgid "Append a remailer to the chain"
 msgstr "Lägg till en 'remailer' till kedjan"
 
-#: keymap_alldefs.h:181
+#: keymap_alldefs.h:184
 msgid "Insert a remailer into the chain"
 msgstr "Lägg in en 'remailer' i kedjan"
 
-#: keymap_alldefs.h:182
+#: keymap_alldefs.h:185
 msgid "Delete a remailer from the chain"
 msgstr "Ta bort en 'remailer' från kedjan"
 
-#: keymap_alldefs.h:183
+#: keymap_alldefs.h:186
 msgid "Select the previous element of the chain"
 msgstr "Välj föregående brev i kedjan"
 
-#: keymap_alldefs.h:184
+#: keymap_alldefs.h:187
 msgid "Select the next element of the chain"
 msgstr "Välj nästa brev i kedjan"
 
-#: keymap_alldefs.h:185
+#: keymap_alldefs.h:188
 msgid "send the message through a mixmaster remailer chain"
 msgstr "skicka meddelandet genom en återpostarkedja (mixmaster)"
 
@@ -3564,17 +3577,17 @@ msgstr "Ingen begränsningsparameter funnen! [Rapportera det här felet]"
 msgid "%s no longer exists!"
 msgstr "%s finns inte längre!"
 
-#: sendlib.c:1048
+#: sendlib.c:1054
 #, c-format
 msgid "Could not open %s"
 msgstr "Kunde inte öppna %s"
 
-#: sendlib.c:1964
+#: sendlib.c:1972
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Fel vid sändning av meddelande, delprocess returnerade %d (%s)."
 
-#: sendlib.c:1970
+#: sendlib.c:1978
 msgid "Output of the delivery process"
 msgstr "Utdata från sändprogrammet"
 

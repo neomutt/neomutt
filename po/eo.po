@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1\n"
-"POT-Creation-Date: 2000-10-11 12:45+0200\n"
+"POT-Creation-Date: 2000-11-01 14:13+0100\n"
 "PO-Revision-Date: 2000-09-26 19:15+01:00\n"
 "Last-Translator: Edmund GRIMLEY EVANS <edmundo@rano.org>\n"
 "Language-Team: eo <eo@li.org>\n"
@@ -1711,426 +1711,439 @@ msgid "transpose character under cursor with previous"
 msgstr "interþanøi la signon sub la tajpmontrilo kun la antaýa"
 
 #: keymap_alldefs.h:80
+msgid "capitalize the word"
+msgstr ""
+
+#: keymap_alldefs.h:81
+#, fuzzy
+msgid "convert the word to lower case"
+msgstr "iri al fino de paøo"
+
+#: keymap_alldefs.h:82
+msgid "convert the word to upper case"
+msgstr ""
+
+#: keymap_alldefs.h:83
 msgid "enter a muttrc command"
 msgstr "enigi muttrc-komandon"
 
-#: keymap_alldefs.h:81
+#: keymap_alldefs.h:84
 msgid "enter a file mask"
 msgstr "enigi dosierþablonon"
 
-#: keymap_alldefs.h:82
+#: keymap_alldefs.h:85
 msgid "exit this menu"
 msgstr "eliri el æi tiu menuo"
 
-#: keymap_alldefs.h:83
+#: keymap_alldefs.h:86
 msgid "filter attachment through a shell command"
 msgstr "filtri parton tra þelkomando"
 
-#: keymap_alldefs.h:84
+#: keymap_alldefs.h:87
 msgid "move to the first entry"
 msgstr "iri al la unua registro"
 
-#: keymap_alldefs.h:85
+#: keymap_alldefs.h:88
 msgid "toggle a message's 'important' flag"
 msgstr "þanøi la flagon 'grava' de mesaøo"
 
-#: keymap_alldefs.h:86
+#: keymap_alldefs.h:89
 msgid "forward a message with comments"
 msgstr "plusendi mesaøon kun komentoj"
 
-#: keymap_alldefs.h:87
+#: keymap_alldefs.h:90
 msgid "select the current entry"
 msgstr "elekti la aktualan registron"
 
-#: keymap_alldefs.h:88
+#: keymap_alldefs.h:91
 msgid "reply to all recipients"
 msgstr "respondi al æiuj ricevintoj"
 
-#: keymap_alldefs.h:89
+#: keymap_alldefs.h:92
 msgid "scroll down 1/2 page"
 msgstr "rulumi malsupren duonon de paøo"
 
-#: keymap_alldefs.h:90
+#: keymap_alldefs.h:93
 msgid "scroll up 1/2 page"
 msgstr "rulumi supren duonon de paøo"
 
-#: keymap_alldefs.h:91
+#: keymap_alldefs.h:94
 msgid "this screen"
 msgstr "æi tiu ekrano"
 
-#: keymap_alldefs.h:92
+#: keymap_alldefs.h:95
 msgid "jump to an index number"
 msgstr "salti al indeksnumero"
 
-#: keymap_alldefs.h:93
+#: keymap_alldefs.h:96
 msgid "move to the last entry"
 msgstr "iri al la lasta registro"
 
-#: keymap_alldefs.h:94
+#: keymap_alldefs.h:97
 msgid "reply to specified mailing list"
 msgstr "respondi al specifita dissendolisto"
 
-#: keymap_alldefs.h:95
+#: keymap_alldefs.h:98
 msgid "execute a macro"
 msgstr "ruligi makroon"
 
-#: keymap_alldefs.h:96
+#: keymap_alldefs.h:99
 msgid "compose a new mail message"
 msgstr "verki novan mesaøon"
 
-#: keymap_alldefs.h:97
+#: keymap_alldefs.h:100
 msgid "open a different folder"
 msgstr "malfermi alian poþtfakon"
 
-#: keymap_alldefs.h:98
+#: keymap_alldefs.h:101
 msgid "open a different folder in read only mode"
 msgstr "malfermi alian poþtfakon nurlege"
 
-#: keymap_alldefs.h:99
+#: keymap_alldefs.h:102
 msgid "clear a status flag from a message"
 msgstr "malþalti flagon æe mesaøo"
 
-#: keymap_alldefs.h:100
+#: keymap_alldefs.h:103
 msgid "delete messages matching a pattern"
 msgstr "forviþi mesaøojn laý þablono"
 
-#: keymap_alldefs.h:101
+#: keymap_alldefs.h:104
 msgid "retrieve mail from POP server"
 msgstr "elþuti mesaøojn de POP-servilo"
 
-#: keymap_alldefs.h:102
+#: keymap_alldefs.h:105
 msgid "move to the first message"
 msgstr "iri al la unua mesaøo"
 
-#: keymap_alldefs.h:103
+#: keymap_alldefs.h:106
 msgid "move to the last message"
 msgstr "iri al la lasta mesaøo"
 
-#: keymap_alldefs.h:104
+#: keymap_alldefs.h:107
 msgid "show only messages matching a pattern"
 msgstr "montri nur la mesaøojn, kiuj kongruas kun þablono"
 
-#: keymap_alldefs.h:105
+#: keymap_alldefs.h:108
 msgid "jump to the next new message"
 msgstr "salti al la unua nova mesaøo"
 
-#: keymap_alldefs.h:106
+#: keymap_alldefs.h:109
 msgid "jump to the next subthread"
 msgstr "salti al la sekva subfadeno"
 
-#: keymap_alldefs.h:107
+#: keymap_alldefs.h:110
 msgid "jump to the next thread"
 msgstr "salti al la sekva fadeno"
 
-#: keymap_alldefs.h:108
+#: keymap_alldefs.h:111
 msgid "move to the next undeleted message"
 msgstr "salti al la sekva neforviþita mesaøo"
 
-#: keymap_alldefs.h:109
+#: keymap_alldefs.h:112
 msgid "jump to the next unread message"
 msgstr "salti al la sekva nelegita mesaøo"
 
-#: keymap_alldefs.h:110
+#: keymap_alldefs.h:113
 msgid "jump to parent message in thread"
 msgstr "salti al patra mesaøo en fadeno"
 
-#: keymap_alldefs.h:111
+#: keymap_alldefs.h:114
 msgid "jump to previous thread"
 msgstr "salti al la antaýa fadeno"
 
-#: keymap_alldefs.h:112
+#: keymap_alldefs.h:115
 msgid "jump to previous subthread"
 msgstr "salti al la antaýa subfadeno"
 
-#: keymap_alldefs.h:113
+#: keymap_alldefs.h:116
 msgid "move to the previous undeleted message"
 msgstr "salti al la antaýa neforviþita mesaøo"
 
-#: keymap_alldefs.h:114
+#: keymap_alldefs.h:117
 msgid "jump to the previous new message"
 msgstr "salti al la antaýa nova mesaøo"
 
-#: keymap_alldefs.h:115
+#: keymap_alldefs.h:118
 msgid "jump to the previous unread message"
 msgstr "salti al la antaýa nelegita mesaøo"
 
-#: keymap_alldefs.h:116
+#: keymap_alldefs.h:119
 msgid "mark the current thread as read"
 msgstr "marki la aktualan fadenon kiel legitan"
 
-#: keymap_alldefs.h:117
+#: keymap_alldefs.h:120
 msgid "mark the current subthread as read"
 msgstr "marki la aktualan subfadenon kiel legitan"
 
-#: keymap_alldefs.h:118
+#: keymap_alldefs.h:121
 msgid "set a status flag on a message"
 msgstr "þalti flagon æe mesaøo"
 
-#: keymap_alldefs.h:119
+#: keymap_alldefs.h:122
 msgid "save changes to mailbox"
 msgstr "skribi þanøojn al poþtfako"
 
-#: keymap_alldefs.h:120
+#: keymap_alldefs.h:123
 msgid "tag messages matching a pattern"
 msgstr "marki mesaøojn laý þablono"
 
-#: keymap_alldefs.h:121
+#: keymap_alldefs.h:124
 msgid "undelete messages matching a pattern"
 msgstr "malforviþi mesaøojn laý þablono"
 
-#: keymap_alldefs.h:122
+#: keymap_alldefs.h:125
 msgid "untag messages matching a pattern"
 msgstr "malmarki mesaøojn laý þablono"
 
-#: keymap_alldefs.h:123
+#: keymap_alldefs.h:126
 msgid "move to the middle of the page"
 msgstr "iri al la mezo de la paøo"
 
-#: keymap_alldefs.h:124
+#: keymap_alldefs.h:127
 msgid "move to the next entry"
 msgstr "iri al la sekva registro"
 
-#: keymap_alldefs.h:125
+#: keymap_alldefs.h:128
 msgid "scroll down one line"
 msgstr "rulumi malsupren unu linion"
 
-#: keymap_alldefs.h:126
+#: keymap_alldefs.h:129
 msgid "move to the next page"
 msgstr "iri al la sekva paøo"
 
-#: keymap_alldefs.h:127
+#: keymap_alldefs.h:130
 msgid "jump to the bottom of the message"
 msgstr "salti al la fino de la mesaøo"
 
-#: keymap_alldefs.h:128
+#: keymap_alldefs.h:131
 msgid "toggle display of quoted text"
 msgstr "þalti aý malþalti montradon de citita teksto"
 
-#: keymap_alldefs.h:129
+#: keymap_alldefs.h:132
 msgid "skip beyond quoted text"
 msgstr "supersalti cititan tekston"
 
-#: keymap_alldefs.h:130
+#: keymap_alldefs.h:133
 msgid "jump to the top of the message"
 msgstr "salti al la komenco de mesaøo"
 
-#: keymap_alldefs.h:131
+#: keymap_alldefs.h:134
 msgid "pipe message/attachment to a shell command"
 msgstr "trakti mesaøon/parton per þelkomando"
 
-#: keymap_alldefs.h:132
+#: keymap_alldefs.h:135
 msgid "move to the previous entry"
 msgstr "iri al la antaýa registro"
 
-#: keymap_alldefs.h:133
+#: keymap_alldefs.h:136
 msgid "scroll up one line"
 msgstr "rulumi supren unu linion"
 
-#: keymap_alldefs.h:134
+#: keymap_alldefs.h:137
 msgid "move to the previous page"
 msgstr "iri al la antaýa paøo"
 
-#: keymap_alldefs.h:135
+#: keymap_alldefs.h:138
 msgid "print the current entry"
 msgstr "presi la aktualan registron"
 
-#: keymap_alldefs.h:136
+#: keymap_alldefs.h:139
 msgid "query external program for addresses"
 msgstr "demandi eksteran programon pri adresoj"
 
-#: keymap_alldefs.h:137
+#: keymap_alldefs.h:140
 msgid "append new query results to current results"
 msgstr "aldoni novajn demandrezultojn al jamaj rezultoj"
 
-#: keymap_alldefs.h:138
+#: keymap_alldefs.h:141
 msgid "save changes to mailbox and quit"
 msgstr "skribi þanøojn al poþtfako kaj eliri"
 
-#: keymap_alldefs.h:139
+#: keymap_alldefs.h:142
 msgid "recall a postponed message"
 msgstr "revoki prokrastitan mesaøon"
 
-#: keymap_alldefs.h:140
+#: keymap_alldefs.h:143
 msgid "clear and redraw the screen"
 msgstr "rekrei la enhavon de la ekrano"
 
-#: keymap_alldefs.h:141
+#: keymap_alldefs.h:144
 msgid "{internal}"
 msgstr "{interna}"
 
-#: keymap_alldefs.h:142
+#: keymap_alldefs.h:145
 msgid "reply to a message"
 msgstr "respondi al mesaøo"
 
-#: keymap_alldefs.h:143
+#: keymap_alldefs.h:146
 msgid "use the current message as a template for a new one"
 msgstr "uzi æi tiun mesaøon kiel modelon por nova mesaøo"
 
-#: keymap_alldefs.h:144
+#: keymap_alldefs.h:147
 msgid "save message/attachment to a file"
 msgstr "skribi mesaøon/parton al dosiero"
 
-#: keymap_alldefs.h:145
+#: keymap_alldefs.h:148
 msgid "search for a regular expression"
 msgstr "seræi pri regula esprimo"
 
-#: keymap_alldefs.h:146
+#: keymap_alldefs.h:149
 msgid "search backwards for a regular expression"
 msgstr "seræi malantaýen per regula esprimo"
 
-#: keymap_alldefs.h:147
+#: keymap_alldefs.h:150
 msgid "search for next match"
 msgstr "seræi pri la sekva trafo"
 
-#: keymap_alldefs.h:148
+#: keymap_alldefs.h:151
 msgid "search for next match in opposite direction"
 msgstr "seræi pri la sekva trafo en la mala direkto"
 
-#: keymap_alldefs.h:149
+#: keymap_alldefs.h:152
 msgid "toggle search pattern coloring"
 msgstr "þalti aý malþalti alikolorigon de seræþablono"
 
-#: keymap_alldefs.h:150
+#: keymap_alldefs.h:153
 msgid "invoke a command in a subshell"
 msgstr "alvoki komandon en subþelo"
 
-#: keymap_alldefs.h:151
+#: keymap_alldefs.h:154
 msgid "sort messages"
 msgstr "ordigi mesaøojn"
 
-#: keymap_alldefs.h:152
+#: keymap_alldefs.h:155
 msgid "sort messages in reverse order"
 msgstr "ordigi mesaøojn en inversa ordo"
 
-#: keymap_alldefs.h:153
+#: keymap_alldefs.h:156
 msgid "tag the current entry"
 msgstr "marki la aktualan registron"
 
-#: keymap_alldefs.h:154
+#: keymap_alldefs.h:157
 msgid "apply next function to tagged messages"
 msgstr "apliki la sekvan komandon al æiuj markitaj mesaøoj"
 
-#: keymap_alldefs.h:155
+#: keymap_alldefs.h:158
 msgid "tag the current subthread"
 msgstr "marki la aktualan subfadenon"
 
-#: keymap_alldefs.h:156
+#: keymap_alldefs.h:159
 msgid "tag the current thread"
 msgstr "marki la aktualan fadenon"
 
-#: keymap_alldefs.h:157
+#: keymap_alldefs.h:160
 msgid "toggle a message's 'new' flag"
 msgstr "þanøi la flagon 'nova' de mesaøo"
 
-#: keymap_alldefs.h:158
+#: keymap_alldefs.h:161
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "(mal)þalti, æu la poþtfako estos reskribita"
 
-#: keymap_alldefs.h:159
+#: keymap_alldefs.h:162
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "(mal)þali, æu vidi poþtfakojn aý æiujn dosierojn"
 
-#: keymap_alldefs.h:160
+#: keymap_alldefs.h:163
 msgid "move to the top of the page"
 msgstr "iri al la supro de la paøo"
 
-#: keymap_alldefs.h:161
+#: keymap_alldefs.h:164
 msgid "undelete the current entry"
 msgstr "malforviþi la aktualan registron"
 
-#: keymap_alldefs.h:162
+#: keymap_alldefs.h:165
 msgid "undelete all messages in thread"
 msgstr "malforviþi æiujn mesaøojn en fadeno"
 
-#: keymap_alldefs.h:163
+#: keymap_alldefs.h:166
 msgid "undelete all messages in subthread"
 msgstr "malforviþi æiujn mesaøojn en subfadeno"
 
-#: keymap_alldefs.h:164
+#: keymap_alldefs.h:167
 msgid "show the Mutt version number and date"
 msgstr "montri la version kaj daton de Mutt"
 
-#: keymap_alldefs.h:165
+#: keymap_alldefs.h:168
 msgid "view attachment using mailcap entry if necessary"
 msgstr "vidigi parton, per mailcap, se necese"
 
-#: keymap_alldefs.h:166
+#: keymap_alldefs.h:169
 msgid "show MIME attachments"
 msgstr "montri MIME-partojn"
 
-#: keymap_alldefs.h:167
+#: keymap_alldefs.h:170
 msgid "show currently active limit pattern"
 msgstr "montri la aktivan limigþablonon"
 
-#: keymap_alldefs.h:168
+#: keymap_alldefs.h:171
 msgid "collapse/uncollapse current thread"
 msgstr "(mal)kolapsigi la aktualan fadenon"
 
-#: keymap_alldefs.h:169
+#: keymap_alldefs.h:172
 msgid "collapse/uncollapse all threads"
 msgstr "(mal)kolapsigi æiujn fadenojn"
 
-#: keymap_alldefs.h:170
+#: keymap_alldefs.h:173
 msgid "attach a PGP public key"
 msgstr "aldoni publikan PGP-þlosilon"
 
-#: keymap_alldefs.h:171
+#: keymap_alldefs.h:174
 msgid "show PGP options"
 msgstr "montri PGP-funkciojn"
 
-#: keymap_alldefs.h:172
+#: keymap_alldefs.h:175
 msgid "extract PGP public keys"
 msgstr "eltiri publikajn PGP-þlosilojn"
 
-#: keymap_alldefs.h:173
+#: keymap_alldefs.h:176
 msgid "wipe PGP passphrase from memory"
 msgstr "forviþi PGP-pasfrazon el memoro"
 
-#: keymap_alldefs.h:174
+#: keymap_alldefs.h:177
 msgid "mail a PGP public key"
 msgstr "sendi publikan PGP-þlosilon"
 
-#: keymap_alldefs.h:175
+#: keymap_alldefs.h:178
 msgid "verify a PGP public key"
 msgstr "kontroli publikan PGP-þlosilon"
 
-#: keymap_alldefs.h:176
+#: keymap_alldefs.h:179
 msgid "view the key's user id"
 msgstr "vidi la uzant-identigilon de la þlosilo"
 
-#: keymap_alldefs.h:177
+#: keymap_alldefs.h:180
 msgid "make decrypted copy and delete"
 msgstr "fari malæifritan kopion kaj forviþi"
 
-#: keymap_alldefs.h:178
+#: keymap_alldefs.h:181
 msgid "make decrypted copy"
 msgstr "fari malæifritan kopion"
 
-#: keymap_alldefs.h:179
+#: keymap_alldefs.h:182
 msgid "Accept the chain constructed"
 msgstr "Akcepti la konstruitan æenon"
 
-#: keymap_alldefs.h:180
+#: keymap_alldefs.h:183
 msgid "Append a remailer to the chain"
 msgstr "Aldoni plusendilon al la æeno"
 
-#: keymap_alldefs.h:181
+#: keymap_alldefs.h:184
 msgid "Insert a remailer into the chain"
 msgstr "Enþovi plusendilon en la æenon"
 
-#: keymap_alldefs.h:182
+#: keymap_alldefs.h:185
 msgid "Delete a remailer from the chain"
 msgstr "Forviþi plusendilon el la æeno"
 
-#: keymap_alldefs.h:183
+#: keymap_alldefs.h:186
 msgid "Select the previous element of the chain"
 msgstr "Elekti la antaýan elementon de la æeno"
 
-#: keymap_alldefs.h:184
+#: keymap_alldefs.h:187
 msgid "Select the next element of the chain"
 msgstr "Elekti la sekvan elementon de la æeno"
 
-#: keymap_alldefs.h:185
+#: keymap_alldefs.h:188
 msgid "send the message through a mixmaster remailer chain"
 msgstr "Sendi la mesaøon tra mixmaster-plusendiloæeno"
 
@@ -3568,17 +3581,17 @@ msgstr "Nenia limparametro trovita! (Raportu æi tiun cimon.)"
 msgid "%s no longer exists!"
 msgstr "%s ne plu ekzistas!"
 
-#: sendlib.c:1048
+#: sendlib.c:1054
 #, c-format
 msgid "Could not open %s"
 msgstr "Ne povas malfermi %s"
 
-#: sendlib.c:1964
+#: sendlib.c:1972
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Eraro dum sendado de mesaøo; ido finis per %d (%s)."
 
-#: sendlib.c:1970
+#: sendlib.c:1978
 msgid "Output of the delivery process"
 msgstr "Eligo de la liverprocezo"
 
