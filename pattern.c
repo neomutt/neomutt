@@ -1245,7 +1245,7 @@ int mutt_search_command (int cur, int op)
   {
     strfcpy (buf, LastSearch, sizeof (buf));
     if (mutt_get_field ((op == OP_SEARCH) ? _("Search for: ") :
-		      "Reverse search for: ", buf, sizeof (buf),
+		      _("Reverse search for: "), buf, sizeof (buf),
 		      M_CLEAR | M_PATTERN) != 0 || !buf[0])
       return (-1);
 

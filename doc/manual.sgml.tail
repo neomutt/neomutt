@@ -215,8 +215,7 @@ search-reverse         ESC /   search backwards for a regular expression
 <p>
 <verb>
 bounce-message             b   remail a message to another user
-decode-copy            ESC C   decode a message and copy it to a file/mailbox
-decode-save            ESC s   decode a message and save it to a file/mailbox
+collapse-parts             v   toggle display of subparts
 delete-entry               d   delete the current entry
 display-toggle-weed        h   display message and toggle header weeding
 edit-type                 ^E   edit the current entry's Content-Type
@@ -246,7 +245,7 @@ display-toggle-weed        h   display message and toggle header weeding
 edit-bcc                   b   edit the BCC list
 edit-cc                    c   edit the CC list
 edit-description           d   edit attachment description
-edit-encoding             ^E   edit attachment trasfer-encoding
+edit-encoding             ^E   edit attachment transfer-encoding
 edit-fcc                   f   enter a file to save a copy of this message in
 edit-from              ESC f   edit the from: field
 edit-file               ^X e   edit the file to be attached
@@ -317,7 +316,7 @@ downcase-word          ESC l   lowercase all characters in current word
 eol                       ^E   jump to the end of the line
 forward-char              ^F   move the cursor one character to the right
 forward-word           ESC f   move the cursor to the next word
-history-down       not bound   scroll up through the history list
+history-down       not bound   scroll down through the history list
 history-up         not bound   scroll up through the history list
 kill-eol                  ^K   delete chars from cursor to end of line
 kill-eow               ESC d   delete chars from cursor to end of word

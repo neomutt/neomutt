@@ -238,8 +238,8 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** This is the string that will precede a message which has been included
-  ** in a reply.  For a full listing of defined escape sequences see the
-  ** section on ``$$index_format''.
+  ** in a reply.  For a full listing of defined printf()-like sequences see
+  ** the section on ``$$index_format''.
   */
   { "autoedit",		DT_BOOL, R_NONE, OPTAUTOEDIT, 0 },
   /*
