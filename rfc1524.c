@@ -75,11 +75,12 @@ int rfc1524_expand_command (BODY *a, char *filename, char *type,
 	  param[z++] = command[x++];
 	param[z] = '\0';
 	dprint(2,(debugfile,"Parameter: %s  Returns: %s\n",param,ret));
-	ret = mutt_get_parameter(param,a->parameter);
+	ret = mutt_quote_filename(mutt_get_parameter(param,a->parameter));
 	dprint(2,(debugfile,"Parameter: %s  Returns: %s\n",param,ret));
 	z = 0;
 	while (ret && ret[z] && y<sizeof(buf))
 	  buf[y++] = ret[z++];
+	FREE(&ret);
       }
       else if (command[x] == 's' && filename != NULL)
       {
