@@ -1,3 +1,339 @@
+Sat Jan  8 09:40:02 2000  Thomas Roessler  <roessler@guug.de>
+
+	* keymap.c:
+	Fix a macro-related segmentation fault in stable.   From Byrial
+	Jensen.
+
+	* keymap.c:
+	Fix a macro-related segmentation fault.  From Byrial Jensen.
+
+	* OPS, commands.c, compose.c, curs_main.c, functions.h, protos.h, recvattach.c:
+	Unified edit-type function for the index, compose, and
+	receive-attachment menus.  Mostly by Michael Elkins.
+
+	* curs_lib.c: patch-1.1.1.me.endwin.1, from Michael Elkins.
+
+	* mutt.h, parse.c, init.h: Undo Michaels "pgpsearchext" patch.
+
+Thu Jan  6 12:00:50 2000  Thomas Roessler  <roessler@guug.de>
+
+	* rfc2231.c, rfc2231.h, rfc822.c, rfc822.h, score.c, send.c,
+	sendlib.c, signal.c, sort.c, sort.h, status.c, system.c,
+	thread.c, pgplib.c, pgplib.h, pgppubring.c, pop.c,
+	postpone.c, protos.h, query.c, recvattach.c, recvcmd.c,
+	remailer.c, remailer.h, resize.c, rfc1524.c, rfc1524.h,
+	rfc2047.c, rfc2047.h, mh.c, mime.h, mutt.h, mutt_curses.h,
+	mutt_menu.h, mutt_regex.h, muttlib.c, mx.c, mx.h, pager.c,
+	pager.h, parse.c, pattern.c, pgp.h, pgpinvoke.c, keymap.c,
+	keymap.h, lib.c, lib.h, mailbox.h, main.c, makedoc.c,
+	mapping.h, mbox.c, menu.c, init.h, hash.h, hdrline.c,
+	headers.c, help.c, history.c, history.h, hook.c, init.c,
+	copy.h, curs_lib.c, curs_main.c, date.c, dotlock.c,
+	dotlock.h, edit.c, editmsg.c, enter.c, extlib.c, filter.c,
+	flags.c, from.c, functions.h, globals.h, gnupgparse.c,
+	handler.c, hash.c, attach.c, attach.h, browser.c, browser.h,
+	buffy.c, buffy.h, charset.c, charset.h, color.c, commands.c,
+	complete.c, compose.c, copy.c, addrbook.c, alias.c: Update
+	copyright notices for unstable.
+
+	* Attic/socket.c, signal.c, sort.c, sort.h, status.c,
+	system.c, thread.c, query.c, recvattach.c, resize.c,
+	rfc1524.c, rfc1524.h, rfc2047.c, rfc2047.h, rfc822.c,
+	rfc822.h, score.c, send.c, sendlib.c, pattern.c, pgp.c,
+	pgpinvoke.c, pgpkey.c, pgppubring.c, pop.c, postpone.c,
+	protos.h, pager.h, parse.c, Attic/mutt_socket.h, menu.c,
+	mh.c, mime.h, mutt.h, mutt_curses.h, mutt_menu.h,
+	mutt_regex.h, mx.c, mx.h, pager.c, Attic/imap.h, init.c,
+	init.h, keymap.c, keymap.h, lib.c, mailbox.h, main.c,
+	mapping.h, mbox.c, Attic/imap.c, hash.c, hash.h, hdrline.c,
+	headers.c, help.c, history.c, history.h, hook.c,
+	curs_main.c, date.c, dotlock.c, dotlock.h, edit.c, enter.c,
+	filter.c, flags.c, from.c, functions.h, globals.h,
+	gnupgparse.c, handler.c, buffy.c, buffy.h, charset.c,
+	charset.h, color.c, commands.c, complete.c, compose.c,
+	copy.c, copy.h, curs_lib.c, addrbook.c, alias.c, attach.c,
+	attach.h, browser.c: Updat copyright notices in stable.
+
+Wed Jan  5 09:40:52 2000  Thomas Roessler  <roessler@guug.de>
+
+	* init.h, mutt.h, parse.c:
+	patch-1.1.1.me.pgpsearchtext.1.  From Michael Elkins.
+
+Mon Jan  3 10:15:54 2000  Thomas Roessler  <roessler@guug.de>
+
+	* strcasecmp.c: New str*casecmp replacements for stable.
+
+	* strcasecmp.c:
+	Fix strncasecmp and strcasecmp replacement functions.  Problem noted
+	by Stu Heiss <stu@jpusa1.chi.il.us>.
+
+Sat Jan  1 17:59:51 2000  Thomas Roessler  <roessler@guug.de>
+
+	* parse.c: y2k fix for 1.0.
+
+	* parse.c: A y2k fix for those who still use two-digit year numbers as
+	originally specified in RFC 822.
+
+Wed Dec 29 18:38:07 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/zh_TW.Big5.po:
+	New Chinese translation; from Anthnoy Wong <ypwong@debian.org>; Dec
+	21 1999.
+
+	* sort.c: Fix a minor threading bug.  From Edmund GRIMLEY EVANS
+	<edmundo@rano.demon.co.uk>, Dec 14 1999.
+
+	* browser.c:
+	Fix the use of link_is_dir() in the file browser.  This should fix
+	the bug reported by John Yates <yates@flatiron.com> on Dec 07 1999.
+	(Details noted by Byrial Jensen <byrial@image.dk> on Dec 09 1999.)
+
+	* send.c:
+	Don't use IMAP folders for FCCs when sending messages in batch mode.
+	This is _not_ Brendan's patch, which may be included later.
+
+Tue Dec 14 10:29:25 1999  Thomas Roessler  <roessler@guug.de>
+
+	* INSTALL:
+	Add a short note that EXACT_ADDRESS is broken.  In order to fix it,
+	we'd need a RFC 2047 implementation which knows about RFC 822
+	syntax.  (This would also help with In-Reply-To headers, BTW, but
+	would be considerably more complex.)
+
+Mon Dec 13 11:36:01 1999  Thomas Roessler  <roessler@guug.de>
+
+	* init.h, mutt.h, protos.h, send.c, sendlib.c:
+	Adding the envelope_from option.
+
+Thu Dec  9 11:17:35 1999  Thomas Roessler  <roessler@guug.de>
+
+	* imap/README, imap/auth.c, imap/browse.c, imap/imap.c,
+	imap/imap.h, imap/imap_private.h, imap/imap_socket.h,
+	imap/imap_ssl.c, imap/message.c, imap/socket.c, imap/util.c,
+	doc/manual.sgml.head, init.c, browser.c: Tommi Komulainen's
+	multiple IMAP usernames patch.
+
+Mon Dec  6 09:59:28 1999  Thomas Roessler  <roessler@guug.de>
+
+	* mbox.c:
+	Cosmetic improvement for reading mmdf folders.  From John Hawkinson
+	<jhawk@bbnplanet.com>.
+
+Sat Dec  4 15:42:07 1999  Thomas Roessler  <roessler@guug.de>
+
+	* mx.c: Check for the presence of .overview files when testing whether
+	some directory is an MH folder.  This way, you can at least read
+	Usenet news from the spool using Mutt. ;-)
+
+	* alias.c, init.h, mutt_regex.h: William Feavish's GECOS regexp patch.
+
+Fri Dec  3 16:54:03 1999  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.head:
+	Fix the documentation on how to join the mutt lists.  Noted by
+	Marius Gedminas <mgedmin@takas.lt>.
+
+	* init.h: Fix a small bug in the documentation for $hidden_host.
+
+	* configure.in: Fix the handling of --disable configure switches.
+
+	* configure.in:
+	patch-1.0.rr.autoconf-disable.1: --disable-pop shouldn't enable pop.
+
+	* rfc2047.c:
+	Properly tag quoted-printable encoded RFC 2047 strings with
+	$send_charset, not with $charset.
+
+	* Makefile.am, README, README.UPGRADE:
+	Adding one more readme file.  This one is intended to serve as some
+	kind of "howto" for the most notable incompatible configuration
+	changes.
+
+Thu Dec  2 16:29:26 1999  Thomas Roessler  <roessler@guug.de>
+
+	* pgpkey.c: Fix the PGP key selection menu's title.
+
+	* imap/imap_ssl.c: SSL fixes from Tommi Kommulainen.
+
+	* NEWS: Announce edit-message and resend-message, and the changes in
+	recvcmd.c.
+
+	* doc/manual.sgml.head:
+	Clarify the documentation of lists/unlists/subscribe/unsubscribe a
+	bit.
+
+Wed Dec  1 12:06:31 1999  Thomas Roessler  <roessler@guug.de>
+
+	* imap/util.c: Now, I should have got the signal handling right.
+
+	* imap/util.c:
+	another alarm (0) was missing.  (However, this one didn't crash mutt.)
+
+	* imap/util.c:
+	imap_keepalive: cancel pending alarms.  Otherwise, mutt will die
+	frequently.
+
+	* imap/util.c:
+	Re-set the list of blocked signals after the imap_keepalive stuff.
+
+	* imap/imap.h, imap/util.c, curs_lib.c, mutt.h, system.c:
+	A modified version of Tommi Kommulainen's imap keepalive patch.
+
+Fri Nov 26 09:19:03 1999  Thomas Roessler  <roessler@guug.de>
+
+	* imap/message.c: Fix the lines header.
+
+Thu Nov 25 15:18:02 1999  Thomas Roessler  <roessler@guug.de>
+
+	* imap/imap.h, imap/util.c, curs_lib.c, mutt.h, system.c:
+	Undo the IMAP keepalive patch.  It has just bitten me while mutt was
+	trying to dotlock a folder.  Seems that there needs some more work
+	to be done.
+
+	* imap/imap.h, imap/util.c, mutt.h, system.c, curs_lib.c:
+	A modified version of Tommi Komulainen's imap keepalive patch.
+
+Wed Nov 24 16:29:58 1999  Thomas Roessler  <roessler@guug.de>
+
+	* NEWS:
+	Change some headlines: Instead of "major changes since <unstable
+	version>", it's "major changes since 1.0" now.  In addition, I
+	changed the note concerning the lists/subscribe change to be more
+	explicit than the old one.
+
+	* imap/message.c: IMAP line count fix from Tommi.Komulainen@iki.fi.
+
+Tue Nov 23 23:43:51 1999  Thomas Roessler  <roessler@guug.de>
+
+	* postpone.c:
+	mutt_prepare_template() didn't work with PGP-encrypted messages due
+	to an - errm - interesting typo.
+
+	* doc/manual.sgml.head:
+	Document the fact that users can enter a mail-followup-to header in
+	the editor.  There seems to have been some confusion about this.
+
+	* doc/PGP-Notes.txt, acconfig.h, configure.in, pgp.c:
+	Disable core dumps before we ask the user for a pass phrase.
+	Suggested by <Stefan.Alfredsson@kau.se>.
+
+	* doc/PGP-Notes.txt: Include the maildrop recipe Mark Weinem
+	<mark.weinem@unidui.uni-duisburg.de> sent me some weeks ago.
+
+	* muttlib.c: Permit !! for the last folder.  Elm compatibility.
+
+	* NEWS: Tell our users that fcc_clear exists.
+
+	* init.h, mutt.h, send.c:
+	Adding an fcc_clear option for unencrypted and unsigned FCCs.
+
+	* imap/Makefile.am: Include the SSL-related code with "make dist".
+
+Mon Nov 22 16:01:42 1999  Thomas Roessler  <roessler@guug.de>
+
+	* imap/imap.c, imap/imap.h, imap/imap_private.h, imap/message.c, imap/util.c, imap/BUGS, imap/README, imap/TODO, OPS, browser.c, functions.h, pgppubring.c:
+	IMAP folder creation and deletion.  From Brendan Cully.
+
+	* po/de.po:
+	Der Versuch, "Diskussionsfaden" durch etwas Verständlicheres zu
+	ersetzen. ;-)
+
+Thu Nov 18 16:19:35 1999  Thomas Roessler  <roessler@guug.de>
+
+	* init.h: Include SSL documentation in the manual.
+
+	* dotlock.c: indentation noise.
+
+	* imap/socket.c: Small code clean-up.
+
+	* mx.c:
+	Detect .mew_cache files in MH folders.  Suggested by Kawaguti Ginga
+	<ginga@amalthea.phys.s.u-tokyo.ac.jp>.
+
+	* doc/manual.sgml.head: Documentation nit from Byrial Jensen.
+
+	* lib.c:
+	patch-1.0.bj.lastline.1: Handle last lines in configuration files
+	nicely, even when they are not terminated by a \n character.
+
+	* parse.c, rfc2231.c: Some rather cosmetic changes.
+
+Wed Nov 17 22:47:59 1999  Thomas Roessler  <roessler@guug.de>
+
+	* menu.c: some reorganizations of the dialog menu code.
+
+	* alias.c:
+	Fix the address sanitizer.  You should now be able to auto-create an
+	alias for someone like "Jon K. Hellan" <hellan@acm.org>.
+
+	* imap/Makefile.am, imap/browse.c, imap/imap.c, imap/imap.h, imap/imap_private.h, imap/imap_socket.h, imap/imap_ssl.c, imap/imap_ssl.h, imap/message.c, imap/socket.c, imap/util.c, doc/manual.sgml.head, Makefile.am, NEWS, README.SSL, acconfig.h, configure.in, init.c, init.h, main.c, mutt.h:
+	Tommi Komulainen's IMAP/SSL support patches.
+
+	* menu.c, mutt_menu.h: Tommi Komulainen's menu/dialog patch.
+
+Mon Nov 15 17:44:15 1999  Thomas Roessler  <roessler@guug.de>
+
+	* pgp.c: Fix the pgp-hook logic.
+
+	* color.c: Small color fix from T. E. Dickey.
+
+	* color.c: A small patch from TE Dickey.
+
+Thu Nov 11 18:30:25 1999  Thomas Roessler  <roessler@guug.de>
+
+	* rfc822.c: ups, the previous patch included a small buffer overflow.
+
+	* po/Attic/gl.po:
+	Roberto Suarez Soto <robe@ceu.fi.udc.es> sent us a new translation.
+
+	* rfc822.c: Fix a header quoting bug.
+
+	* doc/Makefile.in: Another build process patch from Brendan Cully.
+
+Wed Nov 10 21:35:33 1999  Thomas Roessler  <roessler@guug.de>
+
+	* rfc2231.c: Ignore empty MIME parameters.
+
+Tue Nov  9 12:40:14 1999  Thomas Roessler  <roessler@guug.de>
+
+	* mbox.c, parse.c: Add some more sanity checks about content-length.
+
+	* curs_lib.c:
+	Fix an SLang-related compilation problem.  Originally from Jon Kåre
+	Hellan.
+
+	* postpone.c:
+	Simplify mutt_prepare_template ().  Instead of copying around all
+	kinds of data, we re-parse the postponed message's structure.
+
+	* postpone.c:
+	Make sure mutt doesn't forget MIME structure when the user resends a
+	message/rfc822 body from the recvattach menu.  Note, however, that
+	this is more of a temporary solution - I think there is some more
+	space for improvements in mutt_prepare_template().
+
+	* imap/Makefile.am, doc/Makefile.in, contrib/Makefile.in, configure.in, Makefile.am:
+	Build process fixes from Brendan Cully.
+
+	* pager.c: Add a missing redraw after resend-message.
+
+Mon Nov  8 22:10:49 1999  Thomas Roessler  <roessler@guug.de>
+
+	* VERSION:
+	Undo changes which are due to release-building tests.  After all, we
+	want the _right_ diff next time.
+
+	* build-release: Finalize the new build-release script.
+
+	* ChangeLog, VERSION, build-release:
+	automatic post-release commit for mutt-1.1.1.2
+
+	* Attic/LAST_TAG, Attic/OVERSION, Makefile.am, VERSION, build-release, ChangeLog:
+	automatic post-release commit for mutt-1.1.1.1
+
+	* Attic/LAST_TAG, Attic/OVERSION, Makefile.am:
+	Preparing some improvements to the build process.
+
 Mon Nov  8 21:56:29 1999  Thomas Roessler  <roessler@guug.de>
 
 	* Attic/LAST_TAG, Attic/OVERSION, Makefile.am, VERSION,
