@@ -1141,7 +1141,14 @@ int mutt_index_menu (void)
 
 	  if (CUR->collapsed)
 	  {
-	    if (op == OP_MAIN_NEXT_UNREAD || op == OP_MAIN_PREV_UNREAD || UNREAD(CUR) == 1)
+	    if ((op == OP_MAIN_NEXT_UNREAD || op == OP_MAIN_PREV_UNREAD) &&
+		UNREAD (CUR))
+	    {
+	      menu->current = i;
+	      break;
+	    }
+	    if ((op == OP_MAIN_NEXT_NEW || op == OP_MAIN_PREV_NEW) &&
+		UNREAD (CUR) == 1)
 	    {
 	      menu->current = i;
 	      break;
