@@ -871,7 +871,8 @@ void mutt_signed_handler (BODY *a, STATE *s)
 
 	  if ((WithCrypto & APPLICATION_SMIME)
               && signatures[i]->type == TYPEAPPLICATION 
-	      && !mutt_strcasecmp(signatures[i]->subtype, "x-pkcs7-signature"))
+	      && (!mutt_strcasecmp(signatures[i]->subtype, "x-pkcs7-signature")
+		  || !mutt_strcasecmp(signatures[i]->subtype, "pkcs7-signature")))
 	  {
 	    if (crypt_smime_verify_one (signatures[i], s, tempfile) != 0)
 	      goodsig = 0;
