@@ -73,7 +73,9 @@ static QUERY *run_query (char *s, int quiet)
   QUERY *first = NULL;
   QUERY *cur = NULL;
   char cmd[_POSIX_PATH_MAX];
-  char buf[STRING];
+  char *buf = NULL;
+  size_t buflen;
+  int dummy = 0;
   char msg[STRING];
   char *p;
   pid_t thepid;
@@ -90,7 +92,7 @@ static QUERY *run_query (char *s, int quiet)
   if (!quiet)
     mutt_message _("Waiting for response...");
   fgets (msg, sizeof (msg) - 1, fp);
-  while (fgets(buf, sizeof (buf) - 1, fp))
+  while ((buf = mutt_read_line (buf, &buflen, fp, &dummy)) != NULL)
   {
     if ((p = strtok(buf, "\t\n")))
     {
@@ -127,6 +129,7 @@ static QUERY *run_query (char *s, int quiet)
       }
     }
   }
+  safe_free ((void **) &buf);
   fclose (fp);
   if (mutt_wait_filter (thepid))
   {
@@ -171,15 +174,21 @@ static int query_search (MUTTMENU *m, regex_t *re, int n)
 /* This is the callback routine from mutt_menuLoop() which is used to generate
  * a menu entry for the requested item number.
  */
+#define QUERY_MIN_COLUMN_LENGHT 20 /* Must be < 70/2 */
 static void query_entry (char *s, size_t slen, MUTTMENU *m, int num)
 {
   ENTRY *table = (ENTRY *) m->data;
   char buf[SHORT_STRING] = "";
-  
+
+  /* need a query format ... hard coded constants are not good */
   while (FirstColumn + SecondColumn > 70)
   {
     FirstColumn = FirstColumn * 3 / 4;
     SecondColumn = SecondColumn * 3 / 4;
+    if (FirstColumn < QUERY_MIN_COLUMN_LENGHT)
+      FirstColumn = QUERY_MIN_COLUMN_LENGHT;
+    if (SecondColumn < QUERY_MIN_COLUMN_LENGHT)
+      SecondColumn = QUERY_MIN_COLUMN_LENGHT;
   }
 
   rfc822_write_address (buf, sizeof (buf), table[num].data->addr);
