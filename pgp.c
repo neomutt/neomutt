@@ -544,8 +544,10 @@ int mutt_is_application_pgp (BODY *m)
   }
   else if (m->type == TYPETEXT && ascii_strcasecmp ("plain", m->subtype) == 0)
   {
-    if ((p = mutt_get_parameter ("x-mutt-action", m->parameter)) &&
-	!ascii_strcasecmp ("pgp-sign", p))
+    if (((p = mutt_get_parameter ("x-mutt-action", m->parameter))
+	 || (p = mutt_get_parameter ("x-action", m->parameter)) 
+	 || (p = mutt_get_parameter ("action", m->parameter)))
+	 && !ascii_strcasecmp ("pgp-sign", p))
       t |= PGPSIGN;
     else if (p && !ascii_strcasecmp ("pgp-encrypt", p))
       t |= PGPENCRYPT;
