@@ -1,3 +1,8 @@
+2005-01-17 02:24:49  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* cvslog2changelog.pl: cvs log emits a timezone after the
+	hour, at least here. Adjust date regexp to handle that case.
+                                 
 2005-01-15 09:52:44  Adeodato Simó  <asp16@alu.ua.es>  (brendan)
 
 	* po/cs.po: Major translation updates forgotten in mutt-po.
