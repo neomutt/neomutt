@@ -391,25 +391,24 @@ void imap_qualify_path (char *dest, size_t len, IMAP_MBOX *mx, char* path)
 
 /* imap_quote_string: quote string according to IMAP rules:
  *   surround string with quotes, escape " and \ with \ */
-void imap_quote_string (char *dest, size_t slen, const char *src)
+void imap_quote_string (char *dest, size_t dlen, const char *src)
 {
   char quote[] = "\"\\", *pt;
   const char *s;
-  size_t len = slen;
 
   pt = dest;
   s  = src;
 
   *pt++ = '"';
   /* save room for trailing quote-char */
-  len -= 2;
+  dlen -= 2;
   
-  for (; *s && len; s++)
+  for (; *s && dlen; s++)
   {
     if (strchr (quote, *s))
     {
-      len -= 2;
-      if (!len)
+      dlen -= 2;
+      if (!dlen)
 	break;
       *pt++ = '\\';
       *pt++ = *s;
@@ -417,7 +416,7 @@ void imap_quote_string (char *dest, size_t slen, const char *src)
     else
     {
       *pt++ = *s;
-      len--;
+      dlen--;
     }
   }
   *pt++ = '"';
