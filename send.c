@@ -988,10 +988,6 @@ ci_send_message (int flags,		/* send mode */
 
     /* change settings based upon recipients */
     
-    /* this needs to be executed even for postponed messages - the user may
-     * be chosing editor settings based upon a message's recipients.
-     */
-    
     mutt_send_hook (msg);
 
     if (killfrom)
@@ -1000,12 +996,7 @@ ci_send_message (int flags,		/* send mode */
       killfrom = 0;
     }
 
-    /* don't handle user headers when editing or recalling
-     * postponed messages: _this_ part of the hooks should
-     * not be executed.
-     */
-
-    if (option (OPTHDRS) && !(flags &(SENDPOSTPONED|SENDEDITMSG)))
+    if (option (OPTHDRS))
       process_user_header (msg->env);
 
 
