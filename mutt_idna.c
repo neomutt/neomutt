@@ -120,16 +120,16 @@ int mutt_local_to_idna (const char *in, char **out)
 
 static int mbox_to_udomain (const char *mbx, char **user, char **domain)
 {
-  char *scratch = safe_strdup (mbx);
+  char *p;
   *user = NULL;
   *domain = NULL;
   
-  if ((*domain = strchr (scratch, '@')) == NULL)
+  p = strchr (mbx, '@');
+  if (!p)
     return -1;
-  
-  **domain = '\0';
-  *domain = safe_strdup (*domain + 1);
-  *user = scratch;
+  *user = safe_malloc((p - mbx + 1) * sizeof(mbx[0]));
+  strfcpy (*user, mbx, (p - mbx + 1));
+  *domain = safe_strdup(p + 1);
   return 0;
 }
 
@@ -203,7 +203,10 @@ const char *mutt_addr_for_display (ADDRESS *a)
 {
   static char *buff = NULL;
   char *tmp = NULL;
-  char *domain, *user;
+  /* user and domain will be either allocated or reseted to the NULL in
+   * the mbox_to_udomain(), but for safety... */
+  char *domain = NULL;
+  char *user = NULL;
   
   FREE (&buff);
   
@@ -211,6 +214,8 @@ const char *mutt_addr_for_display (ADDRESS *a)
     return a->mailbox;
   if (mutt_idna_to_local (domain, &tmp, MI_MAY_BE_IRREVERSIBLE) != 0)
   {
+    FREE (&user);
+    FREE (&domain);
     FREE (&tmp);
     return a->mailbox;
   }
@@ -218,6 +223,8 @@ const char *mutt_addr_for_display (ADDRESS *a)
   safe_realloc ((void **) &buff, mutt_strlen (tmp) + mutt_strlen (user) + 2);
   sprintf (buff, "%s@%s", NONULL(user), NONULL(tmp)); /* __SPRINTF_CHECKED__ */
   FREE (&tmp);
+  FREE (&user);
+  FREE (&domain);
   return buff;
 }
 
