@@ -1,4 +1,13 @@
-2002-12-11 11:19:42  Thomas Roessler  <roessler@does-not-exist.org>
+2002-12-11 15:20:21  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* browser.c, complete.c, hook.c, init.c, lib.c, lib.h: Herbert
+	Martin Dietze <herbert@the-little-red-haired-girl.org> notes that
+	mutt may currently build IMAP URLs like imap://exchange//herbert
+	for FCCs.  The fix in this patch is to include a function named
+	mutt_concat_path which concatenates path elements, but avoids
+	the creation of double slashes.  (These don't create problems
+	when you're just accessing the file system, but apparently they
+	do cause problems with IMAP.)
 
 	* imap/auth.c, imap/command.c, imap/imap.c, imap/imap.h,
 	imap/util.c, date.c, dotlock.c, dotlock.h, edit.c, editmsg.c,
@@ -17,8 +26,6 @@
 	charset.h, commands.c, complete.c, compose.c, copy.h, crypt.c,
 	crypt.h, curs_main.c: Fix Mike's and my e-mail addresses in
 	copyright lines.
-
-2002-12-11 10:31:29  Thomas Roessler  <roessler@does-not-exist.org>
 
 	* muttbug.sh.in: Ask for the user's e-mail address.
 
