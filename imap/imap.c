@@ -728,7 +728,8 @@ static char* imap_get_flags (LIST** hflags, char* s)
       s++;
     ctmp = *s;
     *s = '\0';
-    mutt_add_list (flags, flag_word);
+    if (*flag_word)
+      mutt_add_list (flags, flag_word);
     *s = ctmp;
   }
 
@@ -737,6 +738,8 @@ static char* imap_get_flags (LIST** hflags, char* s)
   {
     dprint (1, (debugfile,
       "imap_get_flags: Unterminated FLAGS response: %s\n", s));
+    mutt_free_list (hflags);
+
     return NULL;
   }
 
@@ -881,16 +884,15 @@ int imap_open_mailbox (CONTEXT *ctx)
     mutt_error (s);
     idata->state = IMAP_AUTHENTICATED;
     sleep (1);
-    return (-1);
+    return -1;
   }
 
   if (mutt_bit_isset (idata->capabilities, ACL))
   {
     if (imap_check_acl (idata))
-    {
-      return (-1);
-    }
+      return -1;
   }
+  /* assume we have all rights if ACL is unavailable */
   else
   {
     mutt_bit_set (idata->rights, IMAP_ACL_LOOKUP);
@@ -1232,7 +1234,8 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
         flags);
 
       /* now make sure we don't lose custom tags */
-      imap_add_keywords (flags, ctx->hdrs[n], CTX_DATA->flags);
+      if (mutt_bit_isset (CTX_DATA->rights, IMAP_ACL_WRITE))
+        imap_add_keywords (flags, ctx->hdrs[n], CTX_DATA->flags);
       
       mutt_remove_trailing_ws (flags);
       
@@ -1253,10 +1256,17 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
       else
         snprintf (buf, sizeof (buf), "STORE %d FLAGS.SILENT (%s)",
           ctx->hdrs[n]->index + 1, flags);
-      if (imap_exec (buf, sizeof (buf), CTX_DATA, buf, 0) != 0)
+
+      /* after all this it's still possible to have no flags, if you
+       * have no ACL rights */
+      if (*flags && imap_exec (buf, sizeof (buf), CTX_DATA, buf, 0) != 0)
       {
-        imap_error ("imap_sync_mailbox()", buf);
-        /* Give up on this message if we pass here again */
+        /* Rex Walters indicates that sometimes an empty flag set
+         * is still executed. How? */
+        dprint(2, (debugfile, "imap_sync_mailbox: flags[0]: [%c] flags: %s",
+          flags[0], flags));
+        imap_error ("imap_sync_mailbox: STORE failed", buf);
+        /* give up on this message if we pass here again */
         ctx->hdrs[n]->changed = 0;
         return -1;
       }
@@ -1274,7 +1284,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
       mutt_message _("Closing mailbox...");
       if (imap_exec (buf, sizeof (buf), CTX_DATA, "CLOSE", 0) != 0)
       {
-        imap_error ("imap_sync_mailbox()", buf);
+        imap_error ("imap_sync_mailbox: CLOSE failed", buf);
         return -1;
       }
       CTX_DATA->state = IMAP_AUTHENTICATED;
@@ -1285,7 +1295,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
       CTX_DATA->status = IMAP_EXPUNGE;
       if (imap_exec (buf, sizeof (buf), CTX_DATA, "EXPUNGE", 0) != 0)
       {
-        imap_error ("imap_sync_mailbox()", buf);
+        imap_error ("imap_sync_mailbox: EXPUNGE failed", buf);
         return -1;
       }
       CTX_DATA->status = 0;

@@ -29,9 +29,11 @@
 
 /* imap_error: handle IMAP errors. Should be expanded to display the error
  *   to the user and ask whether to continue, return result code to caller */
-void imap_error (const char *where, const char *msg)
+int imap_error (const char *where, const char *msg)
 {
-  mutt_error (_("imap_error(): unexpected response in %s: %s\n"), where, msg);
+  mutt_error (_("%s [%s]\n"), where, msg);
+  sleep (2);
+  return mutt_yesorno (_("Continue?"), 0);
 }
 
 /*

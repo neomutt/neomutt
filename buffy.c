@@ -351,8 +351,8 @@ int mutt_buffy_check (int force)
         /* poll on do_imap_check, else return cached value.
          * If the check is forced (eg on mailbox open), check only current
          * folder */
-	if (do_imap_check || (force && !mutt_strcmp (Context->path,
-          tmp->path)))
+        if (do_imap_check || (force && Context && Context->path &&
+          !mutt_strcmp (Context->path, tmp->path)))
         {
           tmp->new = 0;
           if (imap_mailbox_check (tmp->path, 1) > 0)
@@ -362,10 +362,8 @@ int mutt_buffy_check (int force)
           }
         }
         else
-        {
           if (tmp->new)
             BuffyCount++;
-        }
 
 	break;
 #endif

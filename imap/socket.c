@@ -70,13 +70,13 @@ int mutt_socket_read_line (char *buf, size_t buflen, CONNECTION *conn)
 int mutt_socket_read_line_d (char *buf, size_t buflen, CONNECTION *conn)
 {
   int r = mutt_socket_read_line (buf, buflen, conn);
-  dprint (1,(debugfile,"mutt_socket_read_line_d():%s\n", buf));
+  dprint (1,(debugfile,"< %s\n", buf));
   return r;
 }
 
 int mutt_socket_write (CONNECTION *conn, const char *buf)
 {
-  dprint (1,(debugfile,"mutt_socket_write():%s", buf));
+  dprint (1,(debugfile,"> %s", buf));
   return (write (conn->fd, buf, mutt_strlen (buf)));
 }
 

@@ -1,12 +1,9 @@
 In no particular order:
 
+* Mutt is uninterruptible during socket calls. We should handle SIGINT.
+
 * Not really an IMAP bug, but postponed-message checking is done too often,
   incurring needless network overhead.
-
-* Server copy won't be able to implement decode/decrypt options to
-  message saving. If people want this we'll have to add a new variable
-  which, when set, causes mutt to fetch, transform and append instead of
-  using server copy.
 
 * Server copy currently doesn't take into account uncommitted changes in
   messages about to be copied. Sync first.
