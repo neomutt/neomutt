@@ -469,7 +469,7 @@ int rfc1524_expand_filename (char *nametemplate,
   }
   else if (!oldfile)
   {
-    snprintf (newfile, nflen, nametemplate, "mutt");
+    mutt_expand_fmt (newfile, nflen, nametemplate, "mutt");
   }
   else /* oldfile && nametemplate */
   {
