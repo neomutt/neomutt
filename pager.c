@@ -1056,6 +1056,8 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
     k = mbrtowc (&wc, (char *)buf+ch, cnt-ch, &mbstate);
     if (k == -2 || k == -1)
     {
+      dprint (1, (debugfile, "%s:%d: mbrtowc returned %d; errno = %d.\n",
+		  __FILE__, __LINE__, k, errno));
       if (col + 4 > wrap_cols)
 	break;
       col += 4;

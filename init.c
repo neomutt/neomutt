@@ -233,7 +233,7 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
 	mutt_buffer_addstr (dest, expn.data);
 	FREE (&expn.data);
       }
-      if (expn.data)
+      else if (expn.data)
       {
 	expnlen = mutt_strlen (expn.data);
 	tok->dsize = expnlen + mutt_strlen (tok->dptr) + 1;
