@@ -189,7 +189,8 @@ hdr_format_str (char *dest,
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, hdr->env->from->mailbox);
       }
-      dest[0] = '\0';
+      else
+        dest[0] = '\0';
       break;
 
     case 'B':
