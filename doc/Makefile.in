@@ -92,6 +92,8 @@ uninstall:
 	-rm -f $(DESTDIR)$(mandir)/man5/muttrc.5
 	-rm -rf $(DESTDIR)$(docdir)
 
+check:
+
 manual.txt: manual.sgml
 	if sgml2txt -c latin manual ; then \
 		uniq < manual.txt | expand > _manual.txt ; \

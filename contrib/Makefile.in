@@ -33,6 +33,8 @@ all clean:
 distclean:
 	-rm -f Makefile
 
+check:
+
 install:
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(docdir)/samples
 	for f in $(SAMPLES) ; do \
