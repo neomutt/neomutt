@@ -31,8 +31,8 @@ bind pager c mail
 bind pager w search
 bind pager y print-message
 bind pager \n noop	# PINE prints "No default action for this menu."
-bind pager up previous-line
-bind pager down next-line
+bind pager <up> previous-line
+bind pager <down> next-line
 
 bind compose \cx send-message
 
