@@ -10,9 +10,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt-1.5.5.1i\n"
+"Project-Id-Version: mutt-1.5.6i\n"
 "POT-Creation-Date: 2004-02-01 19:24+0100\n"
-"PO-Revision-Date: 2003-11-06 12:34+0200\n"
+"PO-Revision-Date: 2004-02-03 16:20+0200\n"
 "Last-Translator: mutt-ru@woe.spb.ru\n"
 "Language-Team: RUSSIAN <mutt-ru@woe.spb.ru>\n"
 "MIME-Version: 1.0\n"
@@ -345,7 +345,7 @@ msgstr "Отправитель сообщения не является владельцем S/MIME-сертификата."
 
 #: commands.c:187 commands.c:198
 msgid "Warning: Part of this message has not been signed."
-msgstr ""
+msgstr "Предупреждение: часть этого сообщения не подписана."
 
 #: commands.c:189
 msgid "S/MIME signature could NOT be verified."
@@ -1630,14 +1630,14 @@ msgid "%s: unknown type"
 msgstr "%s: неизвестный тип"
 
 #: init.c:1375
-#, fuzzy, c-format
+#, c-format
 msgid "%s: stat: %s"
-msgstr "Не удалось получить информацию о %s: %s"
+msgstr "%s: не удалось получить информацию: %s"
 
 #: init.c:1380
-#, fuzzy, c-format
+#, c-format
 msgid "%s: not a regular file"
-msgstr "%s не является файлом."
+msgstr "%s: не является файлом"
 
 #: init.c:1395
 #, c-format
