@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1996-2000,2002 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -346,7 +346,7 @@ hdr_format_str (char *dest,
 	  if (*cp == '%')
 	  {
 	    cp++;
-	    if (*cp == 'Z' && (op == 'd' || op == '{'))
+	    if ((*cp == 'Z' || *cp == 'z') && (op == 'd' || op == '{'))
 	    {
 	      if (len >= 5)
 	      {
