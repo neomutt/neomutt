@@ -650,11 +650,11 @@ static void mutt_set_default (struct option_t *p)
   switch (p->type & DT_MASK)
   {
     case DT_STR:
-      if (*((char **) p->data))
+      if (!p->init && *((char **) p->data))
         p->init = (unsigned long) safe_strdup (* ((char **) p->data));
       break;
     case DT_PATH:
-      if (*((char **) p->data))
+      if (!p->init && *((char **) p->data))
       {
 	char *cp = safe_strdup (*((char **) p->data));
 	mutt_pretty_mailbox (cp);
@@ -662,7 +662,7 @@ static void mutt_set_default (struct option_t *p)
       }
       break;
     case DT_ADDR:
-      if (*((ADDRESS **) p->data))
+      if (!p->init && *((ADDRESS **) p->data))
       {
 	char tmp[HUGE_STRING];
 	rfc822_write_address (tmp, sizeof (tmp), *((ADDRESS **) p->data));
@@ -672,7 +672,7 @@ static void mutt_set_default (struct option_t *p)
     case DT_RX:
     {
       REGEXP *pp = (REGEXP *) p->data;
-      if (pp->pattern)
+      if (!p->init && pp->pattern)
 	p->init = (unsigned long) safe_strdup (pp->pattern);
       break;
     }
