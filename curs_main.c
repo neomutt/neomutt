@@ -1569,6 +1569,9 @@ int mutt_index_menu (void)
 
 	if (rc != -1)
 	{
+	  if (option (OPTDELETEUNTAG))
+	    mutt_thread_set_flag (CURHDR, M_TAG, 0, 
+				  op == OP_DELETE_THREAD ? 0 : 1);
 	  if (option (OPTRESOLVE))
 	    if ((menu->current = ci_next_undeleted (menu->current)) == -1)
 	      menu->current = menu->oldcurrent;

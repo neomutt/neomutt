@@ -2099,6 +2099,8 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
 	mutt_set_flag (Context, extra->hdr, M_DELETE, 1);
+        if (option (OPTDELETEUNTAG))
+	  mutt_set_flag (Context, extra->hdr, M_TAG, 0);
 	redraw = REDRAW_STATUS | REDRAW_INDEX;
 	if (option (OPTRESOLVE))
 	{
@@ -2117,10 +2119,12 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 
 	if (r != -1)
 	{
+	  if (option (OPTDELETEUNTAG))
+	    mutt_thread_set_flag (extra->hdr, M_TAG, 0,
+				  ch == OP_DELETE_THREAD ? 0 : 1);
 	  if (option (OPTRESOLVE))
 	  {
-	    rc = (ch == OP_DELETE_THREAD) ?
-				  OP_MAIN_NEXT_THREAD : OP_MAIN_NEXT_SUBTHREAD;
+	    rc = OP_MAIN_NEXT_UNDELETED;
 	    ch = -1;
 	  }
 
