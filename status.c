@@ -208,7 +208,9 @@ status_format_str (char *buf, size_t buflen, char op, const char *src,
 					(Context->changed || Context->deleted) ? 1 : 0);
       }
       
-      if(!StChars || i >= strlen(StChars))
+      if (!StChars)
+	buf[0] = 0;
+      else if (i >= strlen(StChars))
 	buf[0] = StChars[0];
       else
 	buf[0] = StChars[i];
