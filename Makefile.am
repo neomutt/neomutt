@@ -44,7 +44,7 @@ mutt_dotlock_LDADD = @LIBOBJS@
 mutt_dotlock_DEPENDENCIES = @LIBOBJS@
 
 mutt_dotlock.c: dotlock.c
-	cp dotlock.c mutt_dotlock.c
+	cp $(srcdir)/dotlock.c mutt_dotlock.c
 
 CLEANFILES = mutt_dotlock.c
 
