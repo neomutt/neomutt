@@ -152,7 +152,7 @@
   example, to make the _D_e_l_e_t_e key delete the character in front of the
   cursor rather than under, you could use
 
-  bind editor  backspace
+  bind editor <delete> backspace
 
 
   22..33..  RReeaaddiinngg MMaaiill -- TThhee IInnddeexx aanndd PPaaggeerr
