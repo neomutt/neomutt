@@ -57,6 +57,14 @@ You'll need several GNU development utilities for working on mutt:
 - GNU make may be needed for the dependency tricks
 
 
+Getting started from CVS
+------------------------
+
+Once you've checked out a copy of the source from CVS, you'll need to
+run the script called 'prepare' that is in the root directory.  The
+script does all the automake/autoconf magic that needs to be done with
+a fresh checkout.
+
 
 A word about warnings
 ---------------------
@@ -65,16 +73,10 @@ Mutt's default build process sets some pretty restrictive compiler
 flags which may lead to lots of warnings.  Generally, warnings are
 something which should be eliminated.
 
-Nevertheless, there are two kinds of warnings about which you
-shouldn't complain to us: _Every_ module in the mutt source code
-will generate an "xxx.c:1: warning: `rcsid' defined but not used"
-warning.  This is ok, as we define rcsid for reference purposes
-only.
-
-Second, the code in intl/ is said to generate some warnings with the
-compiler settings we usually rely upon.  This code is not maintained
-by the mutt developpers, so please redirect any comments to the GNU
-gettext library's developpers.
+Nevertheless, the code in intl/ is said to generate some warnings with
+the compiler settings we usually rely upon.  This code is not
+maintained by the mutt developpers, so please redirect any comments to
+the GNU gettext library's developpers.
 
 
 Style Guide
