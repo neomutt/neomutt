@@ -144,6 +144,7 @@ struct option_t MuttVars[] = {
   { "metoo",		DT_BOOL, R_NONE, OPTMETOO, 0 },
   { "menu_scroll",	DT_BOOL, R_NONE, OPTMENUSCROLL, 0 },
   { "meta_key",		DT_BOOL, R_NONE, OPTMETAKEY, 0 },
+  { "mh_purge",		DT_BOOL, R_NONE, OPTMHPURGE, 0 },
   { "mime_forward",	DT_QUAD, R_NONE, OPT_MIMEFWD, 0 },
   { "mime_forward_decode", DT_BOOL, R_NONE, OPTMIMEFORWDECODE, 0 },
   { "mime_fwd",		DT_SYN,  R_NONE, UL "mime_forward", 0 },

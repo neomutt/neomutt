@@ -270,6 +270,7 @@ enum
   OPTMENUSCROLL,	/* scroll menu instead of implicit next-page */
   OPTMETAKEY,		/* interpret ALT-x as ESC-x */
   OPTMETOO,
+  OPTMHPURGE,
   OPTMIMEFORWDECODE,
   OPTPAGERSTOP,
   OPTPIPEDECODE,
