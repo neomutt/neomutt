@@ -444,10 +444,8 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
   int fccSet = 0;	/* has the user edited the Fcc: field ? */
   CONTEXT *ctx = NULL, *this = NULL;
   /* Sort, SortAux could be changed in mutt_index_menu() */
-  int oldSort = Sort, oldSortAux = SortAux;
+  int oldSort, oldSortAux;
   struct stat st;
-  char **files;
-  int numfiles;
 
   idx = mutt_gen_attach_list (msg->content, -1, idx, &idxlen, &idxmax, 0, 1);
 
@@ -593,45 +591,74 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
 
       case OP_COMPOSE_ATTACH_FILE:
-      case OP_COMPOSE_ATTACH_MESSAGE:
-
-	fname[0] = 0;
 	{
-	  char* prompt;
-	  int flag;
+	  char *prompt, **files;
+	  int error, numfiles;
 
-	  if (op == OP_COMPOSE_ATTACH_FILE)
+	  fname[0] = 0;
+	  prompt = _("Attach file");
+	  numfiles = 0;
+	  files = NULL;
+
+	  if (_mutt_enter_fname (prompt, fname, sizeof (fname), &menu->redraw, 0, 1, &files, &numfiles) == -1)
+	    break;
+
+	  if (idxlen + numfiles >= idxmax)
 	  {
-	    prompt = _("Attach file");
-	    flag = 0;
-	    numfiles = 0;
-	    files = NULL;
-	    if (_mutt_enter_fname (prompt, fname, sizeof (fname), &menu->redraw, flag, 1, &files, &numfiles) == -1)
-	      break;
+	    safe_realloc ((void **) &idx, sizeof (ATTACHPTR *) * (idxmax += 5 + numfiles));
+	    menu->data = idx;
 	  }
-	  else
+
+	  error = 0;
+	  if (numfiles > 1)
+	    mutt_message _("Attaching selected files...");
+	  for (i = 0; i < numfiles; i++)
 	  {
-	    prompt = _("Open mailbox to attach message from");
-	    if (Context)
+	    char *att = files[i];
+	    idx[idxlen] = (ATTACHPTR *) safe_calloc (1, sizeof (ATTACHPTR));
+	    idx[idxlen]->content = mutt_make_file_attach (att);
+	    if (idx[idxlen]->content != NULL)
+	      update_idx (menu, idx, idxlen++);
+	    else
 	    {
-	      strfcpy (fname, NONULL (Context->path), sizeof (fname));
-	      mutt_pretty_mailbox (fname);
-	    }
-	    flag = 1;
-	    if (mutt_enter_fname (prompt, fname, sizeof (fname), &menu->redraw, flag) == -1 || !fname[0])
-	      break;
-	    mutt_expand_path (fname, sizeof (fname));
-	    /* check to make sure the file exists and is readable */
-	    if (access (fname, R_OK) == -1)
-	    {
-	      mutt_perror (fname);
-	      break;
+	      error = 1;
+	      mutt_error (_("Unable to attach %s!"), att);
+	      safe_free ((void **) &idx[idxlen]);
 	    }
 	  }
+	  
+	  FREE (&files);
+	  if (!error) mutt_clear_error ();
+
+	  menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 	}
+	break;
 
-	if (op == OP_COMPOSE_ATTACH_MESSAGE)
+      case OP_COMPOSE_ATTACH_MESSAGE:
 	{
+	  char *prompt;
+	  HEADER *h;
+
+	  fname[0] = 0;
+	  prompt = _("Open mailbox to attach message from");
+
+	  if (Context)
+	  {
+	    strfcpy (fname, NONULL (Context->path), sizeof (fname));
+	    mutt_pretty_mailbox (fname);
+	  }
+
+	  if (mutt_enter_fname (prompt, fname, sizeof (fname), &menu->redraw, 1) == -1 || !fname[0])
+	    break;
+
+	  mutt_expand_path (fname, sizeof (fname));
+	  /* check to make sure the file exists and is readable */
+	  if (access (fname, R_OK) == -1)
+	  {
+	    mutt_perror (fname);
+	    break;
+	  }
+
 	  menu->redraw = REDRAW_FULL;
 
 	  ctx = mx_open_mailbox (fname, M_READONLY, NULL);
@@ -648,8 +675,10 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    mutt_error _("No messages in that folder.");
 	    break;
 	  }
+
+	  this = Context; /* remember current folder and sort methods*/
+	  oldSort = Sort; oldSortAux = SortAux;
 	  
-	  this = Context; /* remember current folder */
 	  Context = ctx;
 	  set_option(OPTATTACHMSG);
 	  mutt_message _("Tag the messages you want to attach!");
@@ -666,49 +695,13 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 	    break;
 	  }
-	}
 
-        {
-	  int numtag = 0;
-
-	  if (op == OP_COMPOSE_ATTACH_MESSAGE)
-	    numtag = Context->tagged;
-	  else
-	    numtag = numfiles;
-	  if (idxlen + numtag >= idxmax)
+	  if (idxlen + Context->tagged >= idxmax)
 	  {
-	    safe_realloc ((void **) &idx, sizeof (ATTACHPTR *) * (idxmax += 5 + numtag));
+	    safe_realloc ((void **) &idx, sizeof (ATTACHPTR *) * (idxmax += 5 + Context->tagged));
 	    menu->data = idx;
 	  }
-	}
 
-	if (op == OP_COMPOSE_ATTACH_FILE)
-	{
-	  int error = 0;
-	  mutt_message _("Attaching selected files...");
-	  for (i = 0; i < numfiles; i++)
-	  {
-	    char *att = files[i];
-	    idx[idxlen] = (ATTACHPTR *) safe_calloc (1, sizeof (ATTACHPTR));
-	    idx[idxlen]->content = mutt_make_file_attach (att);
-	    if (idx[idxlen]->content != NULL)
-	      update_idx (menu, idx, idxlen++);
-	    else
-	    {
-	      error = 1;
-	      mutt_error (_("Unable to attach %s!"), att);
-	      safe_free ((void **) &idx[idxlen]);
-	    }
-	    FREE (&this);
-	  }
-	  FREE (&files);
-	  if (!error)
-	    mutt_clear_error ();
-	  menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
-        }
-	else
-	{
-	  HEADER *h;
 	  for (i = 0; i < Context->msgcount; i++)
 	  {
 	    h = Context->hdrs[i];
@@ -739,7 +732,6 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  Sort = oldSort;
 	  SortAux = oldSortAux;
 	}
-
 	break;
 
       case OP_DELETE:
