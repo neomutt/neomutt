@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.26\n"
+"Project-Id-Version: 1.5.2\n"
 "POT-Creation-Date: 2002-12-06 12:10+0100\n"
-"PO-Revision-Date: 2002-01-19 17:52+0100\n"
+"PO-Revision-Date: 2002-12-08 14:50+0100\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -63,7 +63,7 @@ msgstr ""
 
 #: alias.c:252
 msgid "Warning: This alias name may not work.  Fix it?"
-msgstr ""
+msgstr "Warnung: Dieser Alias-Name könnte Probleme bereiten. Korrigieren?"
 
 #: alias.c:273
 msgid "Address: "
@@ -251,9 +251,8 @@ msgid "Error trying to view file"
 msgstr "Fehler bei der Anzeige einer Datei"
 
 #: buffy.c:440
-#, fuzzy
 msgid "New mail in "
-msgstr "Neue Nachrichten in %s."
+msgstr "Neue Nachrichten in "
 
 #: color.c:322
 #, c-format
@@ -319,9 +318,8 @@ msgid "Invoking PGP..."
 msgstr "Rufe PGP auf..."
 
 #: commands.c:123
-#, fuzzy
 msgid "Invoking OpenSSL..."
-msgstr "Rufe PGP auf..."
+msgstr "Rufe OpenSSL auf..."
 
 #: commands.c:132 mbox.c:740
 msgid "Could not create temporary file!"
@@ -336,18 +334,16 @@ msgid "Could not copy message"
 msgstr "Konnte Nachricht nicht kopieren."
 
 #: commands.c:200
-#, fuzzy
 msgid "S/MIME signature successfully verified."
-msgstr "PGP Unterschrift erfolgreich überprüft."
+msgstr "S/MIME Unterschrift erfolgreich überprüft."
 
 #: commands.c:202
 msgid "S/MIME certificate owner does not match sender."
-msgstr ""
+msgstr "S/MIME Zertifikat-Inhaber stimmt nicht mit Absender überein."
 
 #: commands.c:205
-#, fuzzy
 msgid "S/MIME signature could NOT be verified."
-msgstr "PGP Unterschrift konnte NICHT überprüft werden."
+msgstr "S/MIME Unterschrift konnte NICHT überprüft werden."
 
 #: commands.c:212
 msgid "PGP signature successfully verified."
@@ -556,14 +552,12 @@ msgid "<default>"
 msgstr "<Voreinstellung>"
 
 #: compose.c:159
-#, fuzzy
 msgid "Encrypt with: "
-msgstr "Verschlüsseln"
+msgstr "Verschlüsseln mit: "
 
 #: compose.c:175
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
-msgstr "(v)erschl., (s)ign., sign. (a)ls, (b)eides, (k)ein PGP"
+msgstr "PGP (v)erschl., (s)ign., sign. (a)ls, (b)eides, (k)ein PGP? "
 
 #: compose.c:176
 msgid "esabf"
@@ -575,24 +569,22 @@ msgid "Sign as: "
 msgstr "Signiere als: "
 
 #: compose.c:231
-#, fuzzy
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (f)orget it? "
-msgstr "(v)erschl., (s)ign., sign. (a)ls, (b)eides, (k)ein PGP"
+msgstr "S/MIME (v)erschl., (s)ign., verschl. (m)it, sign. (a)ls, (b)eides, (k)eins? "
 
 #: compose.c:232
-#, fuzzy
 msgid "ewsabf"
-msgstr "vsabk"
+msgstr "emsabk"
 
 #: compose.c:240
 msgid ""
 "1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, or (f)orget it? "
-msgstr ""
+msgstr "1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, oder (k)ein S/MIME? "
 
 #: compose.c:242
 msgid "12345f"
-msgstr ""
+msgstr "12345k"
 
 #: compose.c:350
 #, c-format
@@ -707,48 +699,45 @@ msgstr "Nachricht geschrieben."
 
 #: compose.c:1319
 msgid "S/MIME already selected. Clear & continue ? "
-msgstr ""
+msgstr "S/MIME bereits ausgewählt. Löschen und weiter?"
 
 #: compose.c:1349
 msgid "PGP already selected. Clear & continue ? "
-msgstr ""
+msgstr "PGP bereits ausgewählt. Löschen und weiter?"
 
 #: crypt.c:70
 #, c-format
 msgid " (current time: %c)"
-msgstr ""
+msgstr " (aktuelle Zeit: %c)"
 
 #: crypt.c:76
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s output follows%s --]\n"
-msgstr "[-- PGP-Ausgabe folgt (aktuelle Zeit: %c) --]\n"
+msgstr "[-- %s Ausgabe folgt%s --]\n"
 
 #: crypt.c:93
-#, fuzzy
 msgid "Passphrase(s) forgotten."
-msgstr "PGP-Mantra vergessen."
+msgstr "Mantra(s) vergessen."
 
 #: crypt.c:132
 msgid "Enter PGP passphrase:"
 msgstr "PGP-Mantra eingeben:"
 
 #: crypt.c:150
-#, fuzzy
 msgid "Enter SMIME passphrase:"
-msgstr "PGP-Mantra eingeben:"
+msgstr "S/MIME-Mantra eingeben:"
 
 #: crypt.c:185
-#, fuzzy
 msgid "Create an inline PGP message?"
 msgstr "Erzeuge application/pgp Nachricht (statt RFC 2015)?"
 
 #: crypt.c:512 crypt.c:554
 msgid "Trying to extract PGP keys...\n"
-msgstr ""
+msgstr "Versuche PGP Keys zu extrahieren...\n"
 
 #: crypt.c:534 crypt.c:572
 msgid "Trying to extract S/MIME certificates...\n"
-msgstr ""
+msgstr "Versuche S/MIME Zertifikate zu extrahieren...\n"
 
 #: crypt.c:696
 msgid ""
@@ -779,7 +768,6 @@ msgstr ""
 #. XXX - WHAT!?!?!?
 #. Now display the signed body
 #: crypt.c:770
-#, fuzzy
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -796,11 +784,10 @@ msgstr ""
 "\n"
 
 #: crypt.c:782
-#, fuzzy
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
-msgstr "[-- Ende der signierten Daten --]\n"
+msgstr "\n[-- Ende der signierten Daten --]\n"
 
 #: curs_lib.c:155
 msgid "yes"
@@ -1109,9 +1096,9 @@ msgid "could not write temporary mail folder: %s"
 msgstr "Konnte nicht in temporäre Mailbox schreiben: %s"
 
 #: editmsg.c:101
-#, fuzzy, c-format
+#, c-format
 msgid "could not truncate temporary mail folder: %s"
-msgstr "Konnte nicht in temporäre Mailbox schreiben: %s"
+msgstr "Konnte temporäre Mailbox nicht sutzen: %s"
 
 #: editmsg.c:116
 msgid "Message file is empty!"
@@ -1717,9 +1704,8 @@ msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "Umschalter: Ansicht aller/der abonnierten Mailboxen (nur für IMAP)"
 
 #: keymap_alldefs.h:17
-#, fuzzy
 msgid "list mailboxes with new mail"
-msgstr "Keine Mailbox mit neuen Nachrichten."
+msgstr "Liste Mailboxen mit neuen Nachrichten"
 
 #: keymap_alldefs.h:18
 msgid "change directories"
@@ -1946,9 +1932,8 @@ msgid "move the cursor to the end of the word"
 msgstr "Springe zum Ende des Wortes"
 
 #: keymap_alldefs.h:74
-#, fuzzy
 msgid "scroll down through the history list"
-msgstr "Gehe in der Liste früherer Eingaben nach oben"
+msgstr "Gehe in der Liste früherer Eingaben nach unten"
 
 #: keymap_alldefs.h:75
 msgid "scroll up through the history list"
@@ -2415,19 +2400,16 @@ msgid "make decrypted copy"
 msgstr "Erzeuge dechiffrierte Kopie"
 
 #: keymap_alldefs.h:191
-#, fuzzy
 msgid "wipe passphrase(s) from memory"
-msgstr "Entferne PGP-Mantra aus Speicher"
+msgstr "Entferne Mantra(s) aus Speicher"
 
 #: keymap_alldefs.h:192
-#, fuzzy
 msgid "extract supported public keys"
-msgstr "Extrahiere öffentliche PGP-Schlüssel"
+msgstr "Extrahiere unterstützte öffentliche Schlüssel"
 
 #: keymap_alldefs.h:193
-#, fuzzy
 msgid "show S/MIME options"
-msgstr "Zeige PGP-Optionen"
+msgstr "Zeige S/MIME Optionen"
 
 #: lib.c:59 lib.c:74 lib.c:105
 msgid "Out of memory!"
@@ -2443,21 +2425,19 @@ msgstr ""
 "Um einen Bug zu melden, verwenden Sie bitte das Programm flea(1).\n"
 
 #: main.c:44
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2002 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2001 Michael R. Elkins und andere.\n"
+"Copyright (C) 1996-2002 Michael R. Elkins und andere.\n"
 "Mutt übernimmt KEINERLEI GEWÄHRLEISTUNG. Starten Sie `mutt -vv', um\n"
 "weitere Details darüber zu erfahren. Mutt ist freie Software. \n"
 "Sie können es unter bestimmten Bedingungen weitergeben; starten Sie\n"
 "`mutt -vv' für weitere Details.\n"
 
 #: main.c:50
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -2484,12 +2464,12 @@ msgid ""
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 msgstr ""
-"Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
-"Copyright (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2001 Thomas Roessler <roessler@guug.de>\n"
-"Copyright (C) 1998-2001 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>\n"
-"Copyright (C) 1999-2001 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>\n"
+"Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
+"Copyright (C) 1997-2002 Thomas Roessler <roessler@guug.de>\n"
+"Copyright (C) 1998-2002 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1999-2002 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
 "Copyright (C) 2000-2001 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "Viele andere, die hier nicht erwähnt sind, haben viel Code, viele\n"
@@ -2509,11 +2489,9 @@ msgstr ""
 "\n"
 "    Sie sollten eine Kopie der GNU General Public License zusammen mit\n"
 "    diesem Programm erhalten haben; falls nicht, schreiben sie an Free\n"
-"    Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  "
-"02111, USA.\n"
+"    Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 
 #: main.c:88
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -2549,14 +2527,15 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
-"<file> ]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
-"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> ]\n"
+"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] [...]\n"
+"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] [...]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
 "options:\n"
+"  -A <alias>\tExpandiere den angegebenen Alias\n"
 "  -a <file>\tHängt Datei an die Message an\n"
 "  -b <address>\tEmpfänger einer unsichtbaren Kopie (Bcc:)\n"
 "  -c <address>\tEmpfänger einer Kopie (Cc:)\n"
@@ -2568,6 +2547,7 @@ msgstr ""
 "  -m <type>\tDefault-Mailbox Typ\n"
 "  -n\t\tDas Muttrc des Systems ignorieren\n"
 "  -p\t\tEine zurückgestellte Nachricht zurückholen\n"
+"  -Q <variable>\tFrage die Variable aus der Konfiguration ab\n"
 "  -R\t\tMailbox nur zum Lesen öffnen\n"
 "  -s <subj>\tSubject der Mail (Leerzeichen in Anführungsstrichen)\n"
 "  -v\t\tVersion und Einstellungen beim Compilieren anzeigen\n"
@@ -2768,7 +2748,7 @@ msgstr "Lese %s... %d"
 
 #: mh.c:1019
 msgid "maildir_commit_message(): unable to set time on file"
-msgstr ""
+msgstr "maildir_commit_message(): kann Zeitstempel der Datei nicht setzen"
 
 #: muttlib.c:854
 msgid "File is a directory, save under it?"
@@ -3496,14 +3476,12 @@ msgid "Illegal PGP header"
 msgstr "Unzulässiger PGP-Header"
 
 #: postpone.c:485
-#, fuzzy
 msgid "Illegal S/MIME header"
-msgstr "Unzulässiger PGP-Header"
+msgstr "Unzulässiger S/MIME Header"
 
 #: postpone.c:565
-#, fuzzy
 msgid "Decryption failed."
-msgstr "Anmeldung gescheitert..."
+msgstr "Entschlüsselung gescheitert."
 
 #: query.c:45
 msgid "New Query"
@@ -3582,9 +3560,8 @@ msgid "Print attachment?"
 msgstr "Drucke Anhang?"
 
 #: recvattach.c:907
-#, fuzzy
 msgid "Can't decrypt encrypted message!"
-msgstr "Es sind keine Nachrichten markiert."
+msgstr "Kann verschlüsselte Nachricht nicht entschlüsseln!"
 
 #: recvattach.c:921
 msgid "Attachments"
@@ -3599,9 +3576,8 @@ msgid "Can't delete attachment from POP server."
 msgstr "Kann Dateianhang nicht vom POP-Server löschen."
 
 #: recvattach.c:1032
-#, fuzzy
 msgid "Deletion of attachments from encrypted messages is unsupported."
-msgstr "Kann keine Anhänge aus PGP-Nachrichten löschen."
+msgstr "Kann Anhänge aus verschlüsselten Nachrichten nicht löschen."
 
 #: recvattach.c:1052 recvattach.c:1069
 msgid "Only deletion of multipart attachments is supported."
@@ -3803,9 +3779,8 @@ msgid "Recall postponed message?"
 msgstr "Zurückgestellte Nachricht weiterbearbeiten?"
 
 #: send.c:1338
-#, fuzzy
 msgid "Edit forwarded message?"
-msgstr "Bereite Nachricht zum Weiterleiten vor..."
+msgstr "Weitergeleitete Nachricht editieren?"
 
 #: send.c:1357
 msgid "Abort unmodified message?"
@@ -3901,149 +3876,128 @@ msgstr "Signal %d... Abbruch.\n"
 
 #: smime.c:136
 msgid "S/MIME messages with no hints on content are unsupported."
-msgstr ""
+msgstr "S/MIME Nachrichten ohne Hinweis auf den Inhalt werden nicht unterstützt."
 
 #: smime.c:365
 msgid "Trusted   "
-msgstr ""
+msgstr "Vertr.würd"
 
 #: smime.c:368
 msgid "Verified  "
-msgstr ""
+msgstr "Geprüft   "
 
 #: smime.c:371
 msgid "Unverified"
-msgstr ""
+msgstr "Ungeprüft "
 
 #: smime.c:374
-#, fuzzy
 msgid "Expired   "
-msgstr "Ende  "
+msgstr "Veraltet  "
 
 #: smime.c:377
 msgid "Revoked   "
-msgstr ""
+msgstr "Zurückgez."
 
 #: smime.c:380
-#, fuzzy
 msgid "Invalid   "
-msgstr "Ungültiger Monat: %s"
+msgstr "Ungültig  "
 
 #: smime.c:383
-#, fuzzy
 msgid "Unknown   "
-msgstr "unbekannt"
+msgstr "Unbekannt "
 
 #: smime.c:412
-#, fuzzy
 msgid "Enter keyID: "
-msgstr "KeyID für %s: "
+msgstr "KeyID eingeben: "
 
 #: smime.c:435
-#, fuzzy, c-format
+#, c-format
 msgid "S/MIME certificates matching \"%s\"."
-msgstr "PGP-Schlüssel, die zu \"%s\" passen."
+msgstr "S/MIME Zertifikate, die zu \"%s\" passen."
 
 #: smime.c:584 smime.c:653 smime.c:674
 #, c-format
 msgid "ID %s is unverified. Do you want to use it for %s ?"
-msgstr ""
+msgstr "ID %s ist ungeprüft. Möchten Sie sie für %s verwenden?"
 
 #: smime.c:588 smime.c:657
-#, fuzzy, c-format
+#, c-format
 msgid "Use (untrusted!) ID %s for %s ?"
-msgstr "Benutze KeyID = \"%s\" für %s?"
+msgstr "Benutze (nicht vertrauenswürdige!) ID %s für %s?"
 
 #: smime.c:591 smime.c:660
-#, fuzzy, c-format
+#, c-format
 msgid "Use ID %s for %s ?"
-msgstr "Benutze KeyID = \"%s\" für %s?"
+msgstr "Benutze ID = %s für %s?"
 
 #: smime.c:686
 #, c-format
 msgid "Warning: You have not yet decided to trust ID %s. (any key to continue)"
-msgstr ""
+msgstr "Warnung: Sie vertrauen ID %s noch nicht. (Taste drücken für weiter)"
 
 #: smime.c:852
 #, c-format
 msgid "No (valid) certificate found for %s."
-msgstr ""
+msgstr "Kein (gültiges) Zertifikat für %s gefunden."
 
 #: smime.c:907 smime.c:935 smime.c:1000 smime.c:1044 smime.c:1109 smime.c:1184
-#, fuzzy
 msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "[-- Fehler: Kann keinen PGP-Prozeß erzeugen! --]\n"
+msgstr "Fehler: Kann keinen OpenSSL Prozeß erzeugen!"
 
 #: smime.c:1262
-#, fuzzy
 msgid "no certfile"
-msgstr "Kann Filter nicht erzeugen."
+msgstr "keine Zertifikat-Datei"
 
 #: smime.c:1265
-#, fuzzy
 msgid "no mbox"
-msgstr "(keine Mailbox)"
+msgstr "keine Mailbox"
 
 #. fatal error while trying to encrypt message
 #: smime.c:1408
 msgid "No output from OpenSSL.."
-msgstr ""
+msgstr "Keine Ausgabe von OpenSSL.."
 
 #: smime.c:1446
-#, fuzzy
 msgid "Warning: Intermediate certificate not found."
-msgstr "Warnung: Konnte Zertifikat nicht speichern"
+msgstr "Warnung: Zwischenzertifikat nicht gefunden."
 
 #: smime.c:1491
-#, fuzzy
 msgid "Can't open OpenSSL subprocess!"
-msgstr "Kann PGP-Subprozeß nicht erzeugen!"
+msgstr "Kann OpenSSL-Unterprozeß nicht erzeugen!"
 
 #: smime.c:1529
 msgid "No output from OpenSSL..."
-msgstr ""
+msgstr "Keine Ausgabe von OpenSSL..."
 
 #: smime.c:1694 smime.c:1816
-#, fuzzy
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
-msgstr ""
-"[-- Ende der PGP-Ausgabe --]\n"
-"\n"
+msgstr "[-- Ende der OpenSSL-Ausgabe --]\n\n"
 
 #: smime.c:1777 smime.c:1787
-#, fuzzy
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- Fehler: Kann keinen PGP-Prozeß erzeugen! --]\n"
+msgstr "[-- Fehler: Kann keinen OpenSSL-Unterprozeß erzeugen! --]\n"
 
 #: smime.c:1820
-#, fuzzy
 msgid "[-- The following data is S/MIME encrypted --]\n"
-msgstr ""
-"[-- Die folgenden Daten sind PGP/MIME-verschlüsselt --]\n"
-"\n"
+msgstr "[-- Die folgenden Daten sind S/MIME-verschlüsselt --]\n"
 
 #: smime.c:1823
-#, fuzzy
 msgid "[-- The following data is S/MIME signed --]\n"
-msgstr ""
-"[-- Die folgenden Daten sind signiert --]\n"
-"\n"
+msgstr "[-- Die folgenden Daten sind S/MIME signiert --]\n"
 
 #: smime.c:1887
-#, fuzzy
 msgid ""
 "\n"
 "[-- End of S/MIME encrypted data. --]\n"
-msgstr "[-- Ende der PGP/MIME-verschlüsselten Daten --]\n"
+msgstr "\n[-- Ende der S/MIME-verschlüsselten Daten --]\n"
 
 #: smime.c:1889
-#, fuzzy
 msgid ""
 "\n"
 "[-- End of S/MIME signed data. --]\n"
-msgstr "[-- Ende der signierten Daten --]\n"
+msgstr "\n[-- Ende der S/MIME signierten Daten --]\n"
 
 #: sort.c:201
 msgid "Sorting mailbox..."
@@ -4064,10 +4018,6 @@ msgstr "Bezugsnachricht ist in dieser begrenzten Sicht nicht sichtbar."
 #: thread.c:1085
 msgid "Parent message is not available."
 msgstr "Bezugsnachricht ist nicht verfügbar."
-
-#, fuzzy
-#~ msgid "Certificate *NOT* added."
-#~ msgstr "Zertifikat gespeichert"
 
 #~ msgid "This ID's validity level is undefined."
 #~ msgstr "Die Gültigkeit dieser ID ist undefiniert."
