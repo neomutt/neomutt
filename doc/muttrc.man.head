@@ -18,7 +18,7 @@
 .\"     along with this program; if not, write to the Free Software
 .\"     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
 .\"
-.TH muttrc 5 "February 2000" Unix "User Manuals"
+.TH muttrc 5 "May 2000" Unix "User Manuals"
 .SH NAME
 .PP
 muttrc \- Configuration file for the Mutt Mail User Agent
@@ -110,6 +110,13 @@ Manual.
 This command defines an alias for a character set.  This is useful
 to properly display messages which are tagged with a character set
 name not known to mutt.
+.TP
+\fBdisplay-hook\fP [\fB!\fP]\Ipattern\fP \fIcommand\fP
+Before mutt displays a message which matches the given \fIpattern\fP
+(or, when it is preceded by an exclamation mark, does not match the
+\fIpattern\fP), the given \fIcommand\fP is executed.  When multiple
+\fBdisplay-hook\fPs match, they are  executed  in  the order in
+which they occur in the configuration file.
 .TP
 \fBfolder-hook\fP [\fB!\fP]\fIregexp\fP \fIcommand\fP
 When mutt enters a folder which matches \fIregexp\fP (or, when
