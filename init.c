@@ -1040,6 +1040,8 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     else if (DTYPE(MuttVars[idx].type) == DT_NUM)
     {
       short *ptr = (short *) MuttVars[idx].data;
+      int val;
+      char *t;
 
       if (query || *s->dptr != '=')
       {
@@ -1051,7 +1053,16 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       s->dptr++;
 
       mutt_extract_token (tmp, s, 0);
-      *ptr = (short) atoi (tmp->data);
+      val = strtol (tmp->data, &t, 0);
+
+      if (!*tmp->data || *t || (short) val != val)
+      {
+	snprintf (err->data, err->dsize, _("%s: invalid value"), tmp->data);
+	r = -1;
+	break;
+      }
+      else
+	*ptr = (short) val;
 
       /* these ones need a sanity check */
       if (mutt_strcmp (MuttVars[idx].option, "history") == 0)
