@@ -44,6 +44,7 @@ DISTFILES = Makefile.in dotlock.man  	\
 	muttrc.man.tail			\
 	muttrc.man			\
 	mbox.man			\
+	mmdf.man			\
 	manual.sgml.head		\
 	manual.sgml.tail		\
 	manual.sgml			\
@@ -80,6 +81,7 @@ install: all instdoc
 		$(DESTDIR)$(mandir)/man1/mutt_dotlock.1
 	./instdoc muttrc.man $(DESTDIR)$(mandir)/man5/muttrc.5
 	./instdoc $(srcdir)/mbox.man $(DESTDIR)$(mandir)/man5/mbox.5
+	./instdoc $(srcdir)/mmdf.man $(DESTDIR)$(mandir)/man5/mmdf.5
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(docdir)
 	for f in $(srcdir_DOCFILES) ; do \
 		$(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir) ; \
