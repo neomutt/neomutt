@@ -244,7 +244,9 @@ static PARAMETER *parse_parameters (const char *s)
 
       new->value = safe_strdup (buffer);
 
-      dprint (2, (debugfile, "parse_parameter: `%s' = `%s'\n", new->attribute, new->value));
+      dprint (2, (debugfile, "parse_parameter: `%s' = `%s'\n",
+		  new->attribute ? new->attribute : "",
+		  new->value ? new->value : ""));
       
       /* Add this parameter to the list */
       if (head)
