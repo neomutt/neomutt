@@ -83,20 +83,20 @@ static int fetch_capa (char *line, void *data)
   POP_DATA *pop_data = (POP_DATA *)data;
   char *c;
 
-  if (!mutt_strncmp (line, "SASL", 4))
+  if (!ascii_strncasecmp (line, "SASL", 4))
   {
     c = line + 4;
     SKIPWS (c);
     pop_data->auth_list = safe_strdup (c);
   }
 
-  else if (!mutt_strncmp (line, "USER", 4))
+  else if (!ascii_strncasecmp (line, "USER", 4))
     pop_data->cmd_user = 1;
 
-  else if (!mutt_strncmp (line, "UIDL", 4))
+  else if (!ascii_strncasecmp (line, "UIDL", 4))
     pop_data->cmd_uidl = 1;
 
-  else if (!mutt_strncmp (line, "TOP", 3))
+  else if (!ascii_strncasecmp (line, "TOP", 3))
     pop_data->cmd_top = 1;
 
   return 0;
