@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt\n"
-"POT-Creation-Date: 2000-04-22 20:34+0200\n"
+"POT-Creation-Date: 2000-05-03 08:43+0200\n"
 "PO-Revision-Date: 2000-04-01 14:19+02:00\n"
 "Last-Translator: Boris Wesslowski <Boris@Wesslowski.com>\n"
 "Language-Team: -\n"
@@ -18,7 +18,7 @@ msgstr "Salir"
 msgid "Select"
 msgstr "Seleccionar"
 
-#: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:376 imap/imap_ssl.c:352
+#: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:376 imap/imap_ssl.c:361
 #: pager.c:1482 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Ayuda"
@@ -1181,11 +1181,11 @@ msgstr "¡Error fatal!  La cuenta de mensajes no está sincronizada."
 msgid "Reopening mailbox... %s"
 msgstr "Reabriendo buzón... %s"
 
-#: imap/imap.c:423
+#: imap/imap.c:419
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "Este servidor IMAP es ancestral. Mutt no puede trabajar con el."
 
-#: imap/imap.c:589
+#: imap/imap.c:585
 #, c-format
 msgid "Selecting %s..."
 msgstr "Seleccionando %s..."
@@ -1194,151 +1194,151 @@ msgstr "Seleccionando %s..."
 #. * The thing to do seems to be:
 #. *  - Open a *new* IMAP session, select, and then close it. Report the
 #. * error if the mailbox did not exist.
-#: imap/imap.c:805
+#: imap/imap.c:801
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "No es posible agregar a buzones IMAP en este servidor."
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:813 imap/message.c:625 muttlib.c:984
+#: imap/imap.c:809 imap/message.c:640 muttlib.c:984
 #, c-format
 msgid "Create %s?"
 msgstr "¿Crear %s?"
 
-#: imap/imap.c:837
+#: imap/imap.c:833
 msgid "Closing connection to IMAP server..."
 msgstr "Cerrando conexión al servidor IMAP..."
 
-#: imap/imap.c:991
+#: imap/imap.c:987
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Marcando %d mensajes como suprimidos..."
 
-#: imap/imap.c:1011
+#: imap/imap.c:1007
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Guardando indicadores de estado de mensajes... [%d/%d]"
 
-#: imap/imap.c:1070
+#: imap/imap.c:1066
 msgid "Closing mailbox..."
 msgstr "Cerrando buzón..."
 
-#: imap/imap.c:1080
+#: imap/imap.c:1076
 msgid "Expunging messages from server..."
 msgstr "Eliminando mensajes del servidor..."
 
-#: imap/imap.c:1410
+#: imap/imap.c:1406
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Suscribiendo a %s..."
 
-#: imap/imap.c:1412
+#: imap/imap.c:1408
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Desuscribiendo de %s..."
 
-#: imap/imap_ssl.c:85
+#: imap/imap_ssl.c:86
 msgid "Filling entropy pool"
 msgstr "Llenando repositorio de entropía"
 
-#: imap/imap_ssl.c:117
+#: imap/imap_ssl.c:118
 msgid "Failed to find enough entropy on your system"
 msgstr "No se pudo encontrar suficiente entropía en su sistema"
 
-#: imap/imap_ssl.c:124
+#: imap/imap_ssl.c:133
 msgid "SSL disabled due the lack of entropy"
 msgstr "SSL fue desactivado por la falta de entropía"
 
-#: imap/imap_ssl.c:204
+#: imap/imap_ssl.c:213
 msgid "Unable to get certificate from peer"
 msgstr "Imposible recoger el certificado de la contraparte"
 
-#: imap/imap_ssl.c:215
+#: imap/imap_ssl.c:224
 #, c-format
 msgid "SSL connection using %s"
 msgstr "Conectando por SSL con %s"
 
-#: imap/imap_ssl.c:240
+#: imap/imap_ssl.c:249
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: imap/imap_ssl.c:265
+#: imap/imap_ssl.c:274
 msgid "[unable to calculate]"
 msgstr "[imposible calcular]"
 
-#: imap/imap_ssl.c:315
+#: imap/imap_ssl.c:324
 msgid "This certificate belongs to:"
 msgstr "Este certificado pertenece a:"
 
-#: imap/imap_ssl.c:324
+#: imap/imap_ssl.c:333
 msgid "This certificate was issued by:"
 msgstr "Este certificado fue producido por:"
 
-#: imap/imap_ssl.c:335
+#: imap/imap_ssl.c:344
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "Huella: %s"
 
-#: imap/imap_ssl.c:337
+#: imap/imap_ssl.c:346
 msgid "SSL Certificate check"
 msgstr "Prueba del certificado SSL"
 
-#: imap/imap_ssl.c:340
+#: imap/imap_ssl.c:349
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)echazar, aceptar (u)na vez, (a)ceptar siempre"
 
-#: imap/imap_ssl.c:341
+#: imap/imap_ssl.c:350
 msgid "roa"
 msgstr "rua"
 
-#: imap/imap_ssl.c:345
+#: imap/imap_ssl.c:354
 msgid "(r)eject, accept (o)nce"
 msgstr "(r)echazar, aceptar (u)na vez"
 
-#: imap/imap_ssl.c:346
+#: imap/imap_ssl.c:355
 msgid "ro"
 msgstr "ru"
 
-#: imap/imap_ssl.c:350 pgpkey.c:442
+#: imap/imap_ssl.c:359 pgpkey.c:442
 msgid "Exit  "
 msgstr "Salir  "
 
-#: imap/imap_ssl.c:375
+#: imap/imap_ssl.c:384
 msgid "Warning: Couldn't save certificate"
 msgstr "Advertencia: no se pudo guardar el certificado"
 
-#: imap/imap_ssl.c:377
+#: imap/imap_ssl.c:386
 msgid "Certificate saved"
 msgstr "El certificado fue guardado"
 
 #. Unable to fetch headers for lower versions
-#: imap/message.c:75
+#: imap/message.c:77
 msgid "Unable to fetch headers from this IMAP server version."
 msgstr ""
 "No se pueden recoger cabeceras de mensajes de esta versión de servidor IMAP."
 
-#: imap/message.c:94
+#: imap/message.c:96
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Consiguiendo cabeceras de mensajes... [%d/%d]"
 
-#: imap/message.c:293
+#: imap/message.c:308
 msgid "Fetching message..."
 msgstr "Consiguiendo mensaje..."
 
-#: imap/message.c:480
+#: imap/message.c:495
 msgid "Sending APPEND command ..."
 msgstr "Mandando comando APPEND..."
 
-#: imap/message.c:519
+#: imap/message.c:534
 msgid "Uploading message ..."
 msgstr "Subiendo mensaje ..."
 
-#: imap/message.c:604
+#: imap/message.c:619
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Copiando %d mensajes a %s..."
 
-#: imap/message.c:608
+#: imap/message.c:623
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Copiando mensaje %d a %s..."
@@ -1352,11 +1352,11 @@ msgstr "Conectando a %s..."
 msgid "preconnect command failed"
 msgstr "la órden antrerior a la conección falló"
 
-#: imap/util.c:41
+#: imap/util.c:42
 msgid "Continue?"
 msgstr "¿Continuar?"
 
-#: imap/util.c:47
+#: imap/util.c:48
 #, c-format
 msgid "%s [%s]\n"
 msgstr "%s [%s]\n"

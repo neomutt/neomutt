@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt-1.1.11i\n"
-"POT-Creation-Date: 2000-04-22 20:34+0200\n"
+"POT-Creation-Date: 2000-05-03 08:43+0200\n"
 "PO-Revision-Date: 2000-04-01 12:00+0200\n"
 "Last-Translator: Φάνης Δοκιανάκης <madf@hellug.gr>\n"
 "Language-Team: Greek <el@li.org>\n"
@@ -27,7 +27,7 @@ msgid "Select"
 msgstr "Επιλέξτε"
 
 #
-#: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:376 imap/imap_ssl.c:352
+#: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:376 imap/imap_ssl.c:361
 #: pager.c:1482 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Βοήθεια"
@@ -1435,13 +1435,13 @@ msgid "Reopening mailbox... %s"
 msgstr "Ξανά άνοιγμα του γραμματοκιβωτίου... %s"
 
 #
-#: imap/imap.c:423
+#: imap/imap.c:419
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr ""
 "Αυτός ο εξυπηρετητής IMAP είναι αρχαίος. Το Mutt δεν είναι συμβατό με αυτόν."
 
 #
-#: imap/imap.c:589
+#: imap/imap.c:585
 #, c-format
 msgid "Selecting %s..."
 msgstr "Επιλογή %s..."
@@ -1451,170 +1451,170 @@ msgstr "Επιλογή %s..."
 #. * The thing to do seems to be:
 #. *  - Open a *new* IMAP session, select, and then close it. Report the
 #. * error if the mailbox did not exist.
-#: imap/imap.c:805
+#: imap/imap.c:801
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Αδυναμία στη πρόσθηκη στα γραμμ/τια IMAP σε αυτόν τον εξυπηρετητή"
 
 #
 #. command failed cause folder doesn't exist
-#: imap/imap.c:813 imap/message.c:625 muttlib.c:984
+#: imap/imap.c:809 imap/message.c:640 muttlib.c:984
 #, c-format
 msgid "Create %s?"
 msgstr "Δημιουργία του %s;"
 
 #
-#: imap/imap.c:837
+#: imap/imap.c:833
 msgid "Closing connection to IMAP server..."
 msgstr "Κλείσιμο σύνδεσης στον εξυπηρετητή IMAP..."
 
 #
-#: imap/imap.c:991
+#: imap/imap.c:987
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Σημείωση %d διαγραφθέντων μηνυμάτων..."
 
 #
-#: imap/imap.c:1011
+#: imap/imap.c:1007
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Αποθήκευση σημαιών κατάστασης μηνύματος... [%d/%d]"
 
 #
-#: imap/imap.c:1070
+#: imap/imap.c:1066
 msgid "Closing mailbox..."
 msgstr "Κλείσιμο γραμματοκιβωτίου..."
 
 #
-#: imap/imap.c:1080
+#: imap/imap.c:1076
 msgid "Expunging messages from server..."
 msgstr "Διαγραφή μηνυμάτων από τον εξυπηρετητή..."
 
 #
-#: imap/imap.c:1410
+#: imap/imap.c:1406
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Εγγραφή στο %s..."
 
 #
-#: imap/imap.c:1412
+#: imap/imap.c:1408
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Διαγραφή στο %s..."
 
-#: imap/imap_ssl.c:85
+#: imap/imap_ssl.c:86
 msgid "Filling entropy pool"
 msgstr "Αποθήκευση εντροπίας"
 
-#: imap/imap_ssl.c:117
+#: imap/imap_ssl.c:118
 msgid "Failed to find enough entropy on your system"
 msgstr "Αποτυχία στην εύρεση αρκετής εντροπίας στο σύστημα σας"
 
-#: imap/imap_ssl.c:124
+#: imap/imap_ssl.c:133
 msgid "SSL disabled due the lack of entropy"
 msgstr "Το SSL απενεργοποιήθηκε λόγω λήψης εντροπίας"
 
 #
-#: imap/imap_ssl.c:204
+#: imap/imap_ssl.c:213
 msgid "Unable to get certificate from peer"
 msgstr "Αδυναμια στη λήψη πιστοποιητικού από το ταίρι"
 
 #
-#: imap/imap_ssl.c:215
+#: imap/imap_ssl.c:224
 #, c-format
 msgid "SSL connection using %s"
 msgstr "Σύνδεση SSL χρησιμοποιόντας το %s"
 
 #
-#: imap/imap_ssl.c:240
+#: imap/imap_ssl.c:249
 msgid "Unknown"
 msgstr "¶γνωστο"
 
 #
-#: imap/imap_ssl.c:265
+#: imap/imap_ssl.c:274
 msgid "[unable to calculate]"
 msgstr "[αδυναμία υπολογισμού]"
 
-#: imap/imap_ssl.c:315
+#: imap/imap_ssl.c:324
 msgid "This certificate belongs to:"
 msgstr "Αυτό το πιστοποιητικό ανήκει στο:"
 
-#: imap/imap_ssl.c:324
+#: imap/imap_ssl.c:333
 msgid "This certificate was issued by:"
 msgstr "Αυτό το πιστοποιητικό εκδόθηκε από το:"
 
-#: imap/imap_ssl.c:335
+#: imap/imap_ssl.c:344
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "Αποτύπωμα: %s"
 
-#: imap/imap_ssl.c:337
+#: imap/imap_ssl.c:346
 msgid "SSL Certificate check"
 msgstr "Έλεγχος Πιστοποιητικού SSL"
 
-#: imap/imap_ssl.c:340
+#: imap/imap_ssl.c:349
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)απόρριψη, (o)αποδοχή μια φορά, (a)αποδοχή πάντα"
 
-#: imap/imap_ssl.c:341
+#: imap/imap_ssl.c:350
 msgid "roa"
 msgstr "roa"
 
-#: imap/imap_ssl.c:345
+#: imap/imap_ssl.c:354
 msgid "(r)eject, accept (o)nce"
 msgstr "(r)απόρριψη, (o)αποδοχή μια φορά"
 
-#: imap/imap_ssl.c:346
+#: imap/imap_ssl.c:355
 msgid "ro"
 msgstr "ro"
 
 #
-#: imap/imap_ssl.c:350 pgpkey.c:442
+#: imap/imap_ssl.c:359 pgpkey.c:442
 msgid "Exit  "
 msgstr "Έξοδος "
 
-#: imap/imap_ssl.c:375
+#: imap/imap_ssl.c:384
 msgid "Warning: Couldn't save certificate"
 msgstr "Προειδοποίηση: Αδυναμία αποθήκευσης πιστοποιητικού"
 
-#: imap/imap_ssl.c:377
+#: imap/imap_ssl.c:386
 msgid "Certificate saved"
 msgstr "Το πιστοποιητικό αποθηκεύτηκε"
 
 #
 #. Unable to fetch headers for lower versions
-#: imap/message.c:75
+#: imap/message.c:77
 msgid "Unable to fetch headers from this IMAP server version."
 msgstr "Αδυναμία λήψης επικεφαλίδων από αυτή την έκδοση του εξυπηρετητή IMAP."
 
 #
-#: imap/message.c:94
+#: imap/message.c:96
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Λήψη επικεφαλίδων από τα μηνύματα... [%d/%d]"
 
 #
-#: imap/message.c:293
+#: imap/message.c:308
 msgid "Fetching message..."
 msgstr "Λήψη μηνύματος..."
 
 #
-#: imap/message.c:480
+#: imap/message.c:495
 msgid "Sending APPEND command ..."
 msgstr "Αποστολή εντολής APPEND ..."
 
 #
-#: imap/message.c:519
+#: imap/message.c:534
 msgid "Uploading message ..."
 msgstr "Ανέβασμα μηνύματος ..."
 
 #
-#: imap/message.c:604
+#: imap/message.c:619
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Αντιγραφή %d μηνυμάτων στο %s..."
 
 #
-#: imap/message.c:608
+#: imap/message.c:623
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Αντιγραφή μηνύματος %d στο %s ..."
@@ -1630,11 +1630,11 @@ msgid "preconnect command failed"
 msgstr "αποτυχία εντολής προσύνδεσης"
 
 #
-#: imap/util.c:41
+#: imap/util.c:42
 msgid "Continue?"
 msgstr "Συνέχεια;"
 
-#: imap/util.c:47
+#: imap/util.c:48
 #, c-format
 msgid "%s [%s]\n"
 msgstr "%s [%s]\n"

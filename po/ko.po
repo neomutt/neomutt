@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.2\n"
-"POT-Creation-Date: 2000-04-22 20:34+0200\n"
+"POT-Creation-Date: 2000-05-03 08:43+0200\n"
 "PO-Revision-Date: 2000-03-09 07:40+0900\n"
 "Last-Translator: Byeong-Chan Kim <redhands@linux.sarag.net>\n"
 "Language-Team: Korean <ko@li.org>\n"
@@ -22,7 +22,7 @@ msgstr "종료"
 msgid "Select"
 msgstr "선택"
 
-#: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:376 imap/imap_ssl.c:352
+#: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:376 imap/imap_ssl.c:361
 #: pager.c:1482 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "도움말"
@@ -1179,11 +1179,11 @@ msgstr "치명적 오류. 메시지 숫자가 동기되지 않음!"
 msgid "Reopening mailbox... %s"
 msgstr "편지함을 다시 엽니다... %s"
 
-#: imap/imap.c:423
+#: imap/imap.c:419
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "IMAP 서버가 구버젼입니다. Mutt은 이 것에서는 작동치 않음."
 
-#: imap/imap.c:589
+#: imap/imap.c:585
 #, c-format
 msgid "Selecting %s..."
 msgstr "%s 선택 중..."
@@ -1192,150 +1192,150 @@ msgstr "%s 선택 중..."
 #. * The thing to do seems to be:
 #. *  - Open a *new* IMAP session, select, and then close it. Report the
 #. * error if the mailbox did not exist.
-#: imap/imap.c:805
+#: imap/imap.c:801
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "서버의 IMAP 편지함에 추가할 수 없음"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:813 imap/message.c:625 muttlib.c:984
+#: imap/imap.c:809 imap/message.c:640 muttlib.c:984
 #, c-format
 msgid "Create %s?"
 msgstr "%s를 만들까요?"
 
-#: imap/imap.c:837
+#: imap/imap.c:833
 msgid "Closing connection to IMAP server..."
 msgstr "IMAP 서버 접속 닫는 중..."
 
-#: imap/imap.c:991
+#: imap/imap.c:987
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "표시된 %d개의 메세지를 삭제함..."
 
-#: imap/imap.c:1011
+#: imap/imap.c:1007
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "메세지 상태 플래그 저장... [%d/%d]"
 
-#: imap/imap.c:1070
+#: imap/imap.c:1066
 msgid "Closing mailbox..."
 msgstr "편지함 닫는 중..."
 
-#: imap/imap.c:1080
+#: imap/imap.c:1076
 msgid "Expunging messages from server..."
 msgstr "서버의 메세지 삭제 중..."
 
-#: imap/imap.c:1410
+#: imap/imap.c:1406
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "%s에 구독 중..."
 
-#: imap/imap.c:1412
+#: imap/imap.c:1408
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "%s에 구독 해제 중..."
 
-#: imap/imap_ssl.c:85
+#: imap/imap_ssl.c:86
 msgid "Filling entropy pool"
 msgstr ""
 
-#: imap/imap_ssl.c:117
+#: imap/imap_ssl.c:118
 msgid "Failed to find enough entropy on your system"
 msgstr ""
 
-#: imap/imap_ssl.c:124
+#: imap/imap_ssl.c:133
 msgid "SSL disabled due the lack of entropy"
 msgstr ""
 
-#: imap/imap_ssl.c:204
+#: imap/imap_ssl.c:213
 msgid "Unable to get certificate from peer"
 msgstr "지정한 곳에서 인증서를 가져올 수 없음"
 
-#: imap/imap_ssl.c:215
+#: imap/imap_ssl.c:224
 #, c-format
 msgid "SSL connection using %s"
 msgstr "%s를 사용해 SSL 연결"
 
-#: imap/imap_ssl.c:240
+#: imap/imap_ssl.c:249
 msgid "Unknown"
 msgstr "알 수 없음"
 
-#: imap/imap_ssl.c:265
+#: imap/imap_ssl.c:274
 msgid "[unable to calculate]"
 msgstr "[계산할 수 없음]"
 
-#: imap/imap_ssl.c:315
+#: imap/imap_ssl.c:324
 msgid "This certificate belongs to:"
 msgstr "이 인증서는 다음에 속함:"
 
-#: imap/imap_ssl.c:324
+#: imap/imap_ssl.c:333
 msgid "This certificate was issued by:"
 msgstr "이 인증서는 다음에서 발행됨:"
 
-#: imap/imap_ssl.c:335
+#: imap/imap_ssl.c:344
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "지문: %s"
 
-#: imap/imap_ssl.c:337
+#: imap/imap_ssl.c:346
 msgid "SSL Certificate check"
 msgstr "SSL 증명서 검사"
 
-#: imap/imap_ssl.c:340
+#: imap/imap_ssl.c:349
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "거부(r), 이번만 허가(o), 언제나 허가(a)"
 
-#: imap/imap_ssl.c:341
+#: imap/imap_ssl.c:350
 msgid "roa"
 msgstr "roa"
 
-#: imap/imap_ssl.c:345
+#: imap/imap_ssl.c:354
 msgid "(r)eject, accept (o)nce"
 msgstr "거부(r), 이번만 허가(o)"
 
-#: imap/imap_ssl.c:346
+#: imap/imap_ssl.c:355
 msgid "ro"
 msgstr "ro"
 
-#: imap/imap_ssl.c:350 pgpkey.c:442
+#: imap/imap_ssl.c:359 pgpkey.c:442
 msgid "Exit  "
 msgstr "끝내기  "
 
-#: imap/imap_ssl.c:375
+#: imap/imap_ssl.c:384
 msgid "Warning: Couldn't save certificate"
 msgstr "경고: 증명서를 저장하지 못함"
 
-#: imap/imap_ssl.c:377
+#: imap/imap_ssl.c:386
 msgid "Certificate saved"
 msgstr "증명서 저장됨"
 
 #. Unable to fetch headers for lower versions
-#: imap/message.c:75
+#: imap/message.c:77
 msgid "Unable to fetch headers from this IMAP server version."
 msgstr "현재 버젼의 IAMP 서버에서 헤더를 가져올 수 없습니다."
 
-#: imap/message.c:94
+#: imap/message.c:96
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "메세지 헤더 가져오는 중... [%d/%d]"
 
-#: imap/message.c:293
+#: imap/message.c:308
 msgid "Fetching message..."
 msgstr "메세지 가져오는 중..."
 
-#: imap/message.c:480
+#: imap/message.c:495
 msgid "Sending APPEND command ..."
 msgstr "APPEND 명령 보내는 중..."
 
-#: imap/message.c:519
+#: imap/message.c:534
 msgid "Uploading message ..."
 msgstr "메세지 올리는 중..."
 
-#: imap/message.c:604
+#: imap/message.c:619
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "%d개의 메시지를 %s로 복사 중..."
 
-#: imap/message.c:608
+#: imap/message.c:623
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "메시지 %d를 %s로 복사 중..."
@@ -1349,11 +1349,11 @@ msgstr "%s로 연결 중..."
 msgid "preconnect command failed"
 msgstr "preconnect 명령 실패"
 
-#: imap/util.c:41
+#: imap/util.c:42
 msgid "Continue?"
 msgstr "계속할까요?"
 
-#: imap/util.c:47
+#: imap/util.c:48
 #, c-format
 msgid "%s [%s]\n"
 msgstr "%s [%s]\n"

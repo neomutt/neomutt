@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.2\n"
-"POT-Creation-Date: 2000-04-22 20:34+0200\n"
+"POT-Creation-Date: 2000-05-03 08:43+0200\n"
 "PO-Revision-Date: 1999-12-20 20:41+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -22,7 +22,7 @@ msgstr "離開"
 msgid "Select"
 msgstr "選擇"
 
-#: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:376 imap/imap_ssl.c:352
+#: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:376 imap/imap_ssl.c:361
 #: pager.c:1482 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "求助"
@@ -1188,11 +1188,11 @@ msgstr "嚴重錯誤。信件數量不協調！"
 msgid "Reopening mailbox... %s"
 msgstr "重新開啟信箱中… %s"
 
-#: imap/imap.c:423
+#: imap/imap.c:419
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "這個 IMAP 伺服器已過時，Mutt 無法使用它。"
 
-#: imap/imap.c:589
+#: imap/imap.c:585
 #, c-format
 msgid "Selecting %s..."
 msgstr "選擇 %s 中…"
@@ -1201,155 +1201,155 @@ msgstr "選擇 %s 中…"
 #. * The thing to do seems to be:
 #. *  - Open a *new* IMAP session, select, and then close it. Report the
 #. * error if the mailbox did not exist.
-#: imap/imap.c:805
+#: imap/imap.c:801
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "無法附加在這個伺服器上的 IMAP 信箱"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:813 imap/message.c:625 muttlib.c:984
+#: imap/imap.c:809 imap/message.c:640 muttlib.c:984
 #, c-format
 msgid "Create %s?"
 msgstr "建立 %s？"
 
-#: imap/imap.c:837
+#: imap/imap.c:833
 msgid "Closing connection to IMAP server..."
 msgstr "正在關閉與 IMAP 伺服器的連線…"
 
-#: imap/imap.c:991
+#: imap/imap.c:987
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "標簽了的 %d 封信件刪去了…"
 
-#: imap/imap.c:1011
+#: imap/imap.c:1007
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "正在儲存信件狀態旗標… [%d/%d]"
 
-#: imap/imap.c:1070
+#: imap/imap.c:1066
 msgid "Closing mailbox..."
 msgstr "關閉信箱中…"
 
-#: imap/imap.c:1080
+#: imap/imap.c:1076
 msgid "Expunging messages from server..."
 msgstr "正在刪除伺服器上的信件…"
 
-#: imap/imap.c:1410
+#: imap/imap.c:1406
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "訂閱\ %s…"
 
-#: imap/imap.c:1412
+#: imap/imap.c:1408
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "取消訂閱\ %s…"
 
-#: imap/imap_ssl.c:85
+#: imap/imap_ssl.c:86
 msgid "Filling entropy pool"
 msgstr ""
 
-#: imap/imap_ssl.c:117
+#: imap/imap_ssl.c:118
 msgid "Failed to find enough entropy on your system"
 msgstr ""
 
-#: imap/imap_ssl.c:124
+#: imap/imap_ssl.c:133
 msgid "SSL disabled due the lack of entropy"
 msgstr ""
 
-#: imap/imap_ssl.c:204
+#: imap/imap_ssl.c:213
 #, fuzzy
 msgid "Unable to get certificate from peer"
 msgstr "無法決定 home 目錄"
 
-#: imap/imap_ssl.c:215
+#: imap/imap_ssl.c:224
 #, fuzzy, c-format
 msgid "SSL connection using %s"
 msgstr "正連線到 %s"
 
-#: imap/imap_ssl.c:240
+#: imap/imap_ssl.c:249
 #, fuzzy
 msgid "Unknown"
 msgstr "不明的錯誤"
 
-#: imap/imap_ssl.c:265
+#: imap/imap_ssl.c:274
 #, fuzzy
 msgid "[unable to calculate]"
 msgstr "%s：無法附帶檔案"
 
-#: imap/imap_ssl.c:315
+#: imap/imap_ssl.c:324
 msgid "This certificate belongs to:"
 msgstr ""
 
-#: imap/imap_ssl.c:324
+#: imap/imap_ssl.c:333
 msgid "This certificate was issued by:"
 msgstr ""
 
-#: imap/imap_ssl.c:335
+#: imap/imap_ssl.c:344
 #, c-format
 msgid "Fingerprint: %s"
 msgstr ""
 
-#: imap/imap_ssl.c:337
+#: imap/imap_ssl.c:346
 msgid "SSL Certificate check"
 msgstr ""
 
-#: imap/imap_ssl.c:340
+#: imap/imap_ssl.c:349
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr ""
 
-#: imap/imap_ssl.c:341
+#: imap/imap_ssl.c:350
 msgid "roa"
 msgstr ""
 
-#: imap/imap_ssl.c:345
+#: imap/imap_ssl.c:354
 msgid "(r)eject, accept (o)nce"
 msgstr ""
 
-#: imap/imap_ssl.c:346
+#: imap/imap_ssl.c:355
 msgid "ro"
 msgstr ""
 
-#: imap/imap_ssl.c:350 pgpkey.c:442
+#: imap/imap_ssl.c:359 pgpkey.c:442
 msgid "Exit  "
 msgstr "離開  "
 
-#: imap/imap_ssl.c:375
+#: imap/imap_ssl.c:384
 msgid "Warning: Couldn't save certificate"
 msgstr ""
 
-#: imap/imap_ssl.c:377
+#: imap/imap_ssl.c:386
 msgid "Certificate saved"
 msgstr ""
 
 #. Unable to fetch headers for lower versions
-#: imap/message.c:75
+#: imap/message.c:77
 msgid "Unable to fetch headers from this IMAP server version."
 msgstr "無法取回使用這個 IMAP 伺服器版本的郵件的標頭。"
 
-#: imap/message.c:94
+#: imap/message.c:96
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "正在取回信件標頭… [%d/%d]"
 
-#: imap/message.c:293
+#: imap/message.c:308
 #, fuzzy
 msgid "Fetching message..."
 msgstr "寄出信件中…"
 
-#: imap/message.c:480
+#: imap/message.c:495
 msgid "Sending APPEND command ..."
 msgstr "正在送出 APPEND 命令…"
 
-#: imap/message.c:519
+#: imap/message.c:534
 #, fuzzy
 msgid "Uploading message ..."
 msgstr "寄出信件中…"
 
-#: imap/message.c:604
+#: imap/message.c:619
 #, fuzzy, c-format
 msgid "Copying %d messages to %s..."
 msgstr "正在搬移已經讀取的信件到 %s …"
 
-#: imap/message.c:608
+#: imap/message.c:623
 #, fuzzy, c-format
 msgid "Copying message %d to %s..."
 msgstr "寫入信件到 %s …"
@@ -1363,12 +1363,12 @@ msgstr "正連接到 %s…"
 msgid "preconnect command failed"
 msgstr "預先連接指令失敗"
 
-#: imap/util.c:41
+#: imap/util.c:42
 #, fuzzy
 msgid "Continue?"
 msgstr "（繼續）\n"
 
-#: imap/util.c:47
+#: imap/util.c:48
 #, c-format
 msgid "%s [%s]\n"
 msgstr ""

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.95.6i\n"
-"POT-Creation-Date: 2000-04-22 20:34+0200\n"
+"POT-Creation-Date: 2000-05-03 08:43+0200\n"
 "PO-Revision-Date: 1999-07-29 00:00+0100\n"
 "Last-Translator: Miroslav Vasko <vasko@ies.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -22,7 +22,7 @@ msgstr "Koniec"
 msgid "Select"
 msgstr "Oznaèi»"
 
-#: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:376 imap/imap_ssl.c:352
+#: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:376 imap/imap_ssl.c:361
 #: pager.c:1482 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Pomoc"
@@ -1194,11 +1194,11 @@ msgstr "Fatálna chyba. Poèet správ nie je zosynchronizovaný!"
 msgid "Reopening mailbox... %s"
 msgstr "Znovuotváram schránku... %s"
 
-#: imap/imap.c:423
+#: imap/imap.c:419
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "Tento IMAP server je starý. Mutt s ním nevie pracova»."
 
-#: imap/imap.c:589
+#: imap/imap.c:585
 #, c-format
 msgid "Selecting %s..."
 msgstr "Vyberám %s..."
@@ -1207,154 +1207,154 @@ msgstr "Vyberám %s..."
 #. * The thing to do seems to be:
 #. *  - Open a *new* IMAP session, select, and then close it. Report the
 #. * error if the mailbox did not exist.
-#: imap/imap.c:805
+#: imap/imap.c:801
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Nemo¾no pridáva» k IMAP schránkam na tomto serveri"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:813 imap/message.c:625 muttlib.c:984
+#: imap/imap.c:809 imap/message.c:640 muttlib.c:984
 #, c-format
 msgid "Create %s?"
 msgstr "Vytvori» %s?"
 
-#: imap/imap.c:837
+#: imap/imap.c:833
 msgid "Closing connection to IMAP server..."
 msgstr "Zatváram spojenie s IMAP serverom..."
 
-#: imap/imap.c:991
+#: imap/imap.c:987
 #, fuzzy, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Èítam %d nových správ (%d bytov)..."
 
-#: imap/imap.c:1011
+#: imap/imap.c:1007
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Ukladám stavové príznaky správy... [%d/%d]"
 
-#: imap/imap.c:1070
+#: imap/imap.c:1066
 msgid "Closing mailbox..."
 msgstr "Zatváram schránku..."
 
-#: imap/imap.c:1080
+#: imap/imap.c:1076
 msgid "Expunging messages from server..."
 msgstr "Vymazávam správy zo serveru..."
 
-#: imap/imap.c:1410
+#: imap/imap.c:1406
 #, fuzzy, c-format
 msgid "Subscribing to %s..."
 msgstr "Kopírujem do %s..."
 
-#: imap/imap.c:1412
+#: imap/imap.c:1408
 #, fuzzy, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Spájam sa s %s..."
 
-#: imap/imap_ssl.c:85
+#: imap/imap_ssl.c:86
 msgid "Filling entropy pool"
 msgstr ""
 
-#: imap/imap_ssl.c:117
+#: imap/imap_ssl.c:118
 msgid "Failed to find enough entropy on your system"
 msgstr ""
 
-#: imap/imap_ssl.c:124
+#: imap/imap_ssl.c:133
 msgid "SSL disabled due the lack of entropy"
 msgstr ""
 
-#: imap/imap_ssl.c:204
+#: imap/imap_ssl.c:213
 #, fuzzy
 msgid "Unable to get certificate from peer"
 msgstr "nemo¾no urèi» domáci adresár"
 
-#: imap/imap_ssl.c:215
+#: imap/imap_ssl.c:224
 #, fuzzy, c-format
 msgid "SSL connection using %s"
 msgstr "Pripájam sa na %s"
 
-#: imap/imap_ssl.c:240
+#: imap/imap_ssl.c:249
 #, fuzzy
 msgid "Unknown"
 msgstr "neznáma chyba"
 
-#: imap/imap_ssl.c:265
+#: imap/imap_ssl.c:274
 #, fuzzy
 msgid "[unable to calculate]"
 msgstr "%s: súbor nemo¾no pripoji»"
 
-#: imap/imap_ssl.c:315
+#: imap/imap_ssl.c:324
 msgid "This certificate belongs to:"
 msgstr ""
 
-#: imap/imap_ssl.c:324
+#: imap/imap_ssl.c:333
 msgid "This certificate was issued by:"
 msgstr ""
 
-#: imap/imap_ssl.c:335
+#: imap/imap_ssl.c:344
 #, c-format
 msgid "Fingerprint: %s"
 msgstr ""
 
-#: imap/imap_ssl.c:337
+#: imap/imap_ssl.c:346
 msgid "SSL Certificate check"
 msgstr ""
 
-#: imap/imap_ssl.c:340
+#: imap/imap_ssl.c:349
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr ""
 
-#: imap/imap_ssl.c:341
+#: imap/imap_ssl.c:350
 #, fuzzy
 msgid "roa"
 msgstr "oac"
 
-#: imap/imap_ssl.c:345
+#: imap/imap_ssl.c:354
 msgid "(r)eject, accept (o)nce"
 msgstr ""
 
-#: imap/imap_ssl.c:346
+#: imap/imap_ssl.c:355
 msgid "ro"
 msgstr ""
 
-#: imap/imap_ssl.c:350 pgpkey.c:442
+#: imap/imap_ssl.c:359 pgpkey.c:442
 msgid "Exit  "
 msgstr "Koniec  "
 
-#: imap/imap_ssl.c:375
+#: imap/imap_ssl.c:384
 msgid "Warning: Couldn't save certificate"
 msgstr ""
 
-#: imap/imap_ssl.c:377
+#: imap/imap_ssl.c:386
 msgid "Certificate saved"
 msgstr ""
 
 #. Unable to fetch headers for lower versions
-#: imap/message.c:75
+#: imap/message.c:77
 msgid "Unable to fetch headers from this IMAP server version."
 msgstr "Nemo¾no získa» hlavièky z tejto verzie IMAP serveru."
 
-#: imap/message.c:94
+#: imap/message.c:96
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Vyvolávam hlavièky správ... [%d/%d]"
 
-#: imap/message.c:293
+#: imap/message.c:308
 msgid "Fetching message..."
 msgstr "Vyvolávam správu..."
 
-#: imap/message.c:480
+#: imap/message.c:495
 msgid "Sending APPEND command ..."
 msgstr "Posielam príkaz APPEND..."
 
-#: imap/message.c:519
+#: imap/message.c:534
 msgid "Uploading message ..."
 msgstr "Odsúvam správu ..."
 
-#: imap/message.c:604
+#: imap/message.c:619
 #, fuzzy, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Presúvam preèítané správy do %s..."
 
-#: imap/message.c:608
+#: imap/message.c:623
 #, fuzzy, c-format
 msgid "Copying message %d to %s..."
 msgstr "Zapisujem správu do %s ..."
@@ -1368,12 +1368,12 @@ msgstr "Spájam sa s %s..."
 msgid "preconnect command failed"
 msgstr ""
 
-#: imap/util.c:41
+#: imap/util.c:42
 #, fuzzy
 msgid "Continue?"
 msgstr "(pokraèova»)\n"
 
-#: imap/util.c:47
+#: imap/util.c:48
 #, c-format
 msgid "%s [%s]\n"
 msgstr ""

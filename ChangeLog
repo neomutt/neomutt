@@ -1,3 +1,92 @@
+Sun Apr 30 06:58:21 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/message.c:
+	Catch the case that an IMAP server sends "\n\n" after a mail header.
+	Diagnosed by Brendan.
+
+Sat Apr 29 13:38:05 2000  Thomas Roessler  <roessler@guug.de>
+
+	* query.c:
+	Fix a possible segmentation fault with the external query feature.
+
+	* imap/imap.c:
+	Fix the "empty screen after sync" bug observed with certain versions
+	of the Courier IMAP server.  From Brendan Cully.
+
+Wed Apr 26 17:43:00 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/util.c: Fix the imap_force_ssl option.
+
+	* po/da.po: update.
+
+	* contrib/pgp6.rc:
+	Fix a little typo.  Noted by Steve Brewer <limako@mediaone.net>.
+
+	* imap/imap_ssl.c, imap/imap_ssl.h, imap/util.c, init.h, mutt.h:
+	Add a new option named imap_force_ssl.
+
+Tue Apr 25 18:39:01 2000  Thomas Roessler  <roessler@guug.de>
+
+	* acconfig.h, configure.in: Revised version of Lars' patch.
+
+	* m4/funcdecl.m4:
+	New macros CF_CHECK_FUNCDECL, CF_CHECK_FUNCDECLS, CF_UPPER. These
+	are slightly modified versions of T. E. Dickey's macros from the
+	lynx distribution. (From Lars Hecking.)
+
+	* configure.in:
+	Use new CF_CHECK_FUNCDECLS macro for curses functions. This should
+	catch function declarations and macros alike. Due to a misfeature in
+	autoheader, we have to explicitly AC_DEFINE the curses functions.
+	(From Lars Hecking.)
+
+	* acconfig.h:
+	acconfig.h: Remove duplicate VERSION and unused HAVE_GETOPT_DECL.
+	Remove DEBUGGER (it's AC_SUBST'ed, not AC_DEFINE'd). Add defines for
+	curses functions. (From Lars Hecking.)
+
+	* po/it.po: update.
+
+Mon Apr 24 13:10:11 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/util.c:
+	Fix a segmentation fault with folder completion.  From Brendan.
+
+	* imap/message.c:
+	Fall back to INTERNALDATE when Date header isn't present.  From
+	Brendan.
+
+Sat Apr 22 18:34:29 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/ko.po, po/nl.po, po/pl.po, po/pt_BR.po, po/ru.po, po/sk.po, po/sv.po, po/uk.po, po/zh_TW.Big5.po, ChangeLog, VERSION, po/cs.po, po/da.po, po/de.po, po/el.po, po/eo.po, po/es.po, po/fr.po, po/gl.po, po/id.po, po/it.po, reldate.h:
+	automatic post-release commit for mutt-1.1.12
+
+	* doc/manual.sgml.head:
+	Add a link to http://www.mutt.org/download.html.
+
+	* init.c, init.h, thread.c:
+	Handle sort_aux="threads" somewhat different, and probably more
+	safely.  Problem and principle of fix noted by Gero Treuner and
+	Michael Tatge <Michael.Tatge@studserv.uni-stuttgart.de>.
+
+	* lib.c: Coda compatibility.  From Jan Harkes <jaharkes@cs.cmu.edu>.
+
+	* parse.c:
+	Fix message parsing.  This fixes the "Reply-To in body" bug.  From
+	Edmund GRIMLEY EVANS.
+
+	* doc/manual.sgml.tail: Fix the sgmltools URL.  From Martin Michlmayr.
+
+	* charset.c, editmsg.c, extlib.c, gnupgparse.c, lib.c, lib.h, pgpinvoke.c, pgpkey.c, pgplib.c, pgppubring.c, recvcmd.c, remailer.c, rfc2231.c, rfc2231.h:
+	Comment cosmetics.  From Martin Michlmayer.
+
+	* doc/manual.sgml.head:
+	Document the elmish "!!" shortcut for the last folder.  From Martin
+	Michlmayr <tbm@cyrius.com>.
+
+	* curs_main.c, pager.c:
+	Fix various inconsistencies with respect to thread deletion.
+
 Sat Apr 22 09:33:46 2000  Thomas Roessler  <roessler@guug.de>
 
 	* doc/manual.sgml.head:
