@@ -211,8 +211,8 @@ void imap_munge_mbox_name (char *dest, size_t dlen, const char *src);
 void imap_unmunge_mbox_name (char *s);
 int imap_wordcasecmp(const char *a, const char *b);
 
-/* utf8.c */
-void mutt_utf7_encode (char **s);
-void mutt_utf7_decode (char **s);
+/* utf7.c */
+void imap_utf7_encode (char **s);
+void imap_utf7_decode (char **s);
 
 #endif

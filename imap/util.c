@@ -318,7 +318,7 @@ void imap_munge_mbox_name (char *dest, size_t dlen, const char *src)
   char *buf;
 
   buf = safe_strdup (src);
-  mutt_utf7_encode (&buf);
+  imap_utf7_encode (&buf);
 
   imap_quote_string (dest, dlen, buf);
 
@@ -334,7 +334,7 @@ void imap_unmunge_mbox_name (char *s)
   buf = safe_strdup (s);
   if (buf)
   {
-    mutt_utf7_decode (&buf);
+    imap_utf7_decode (&buf);
     strncpy (s, buf, strlen (s));
   }
   
