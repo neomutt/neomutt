@@ -56,6 +56,8 @@ int mutt_account_match (const ACCOUNT* a1, const ACCOUNT* a2)
 /* mutt_account_getuser: retrieve username into ACCOUNT, if neccessary */
 int mutt_account_getuser (ACCOUNT* account)
 {
+  char prompt[SHORT_STRING];
+
   /* already set */
   if (account->flags & M_ACCT_USER)
     return 0;
@@ -70,9 +72,9 @@ int mutt_account_getuser (ACCOUNT* account)
   /* prompt (defaults to unix username), copy into account->user */
   else
   {
+    snprintf (prompt, sizeof (prompt), _("Username at %s: "), account->host);
     strfcpy (account->user, NONULL (Username), sizeof (account->user));
-    if (mutt_get_field (_("Username: "), account->user,
-        sizeof (account->user), 0))
+    if (mutt_get_field (prompt, account->user, sizeof (account->user), 0))
       return -1;
   }
 
@@ -84,6 +86,8 @@ int mutt_account_getuser (ACCOUNT* account)
 /* mutt_account_getpass: fetch password into ACCOUNT, if neccessary */
 int mutt_account_getpass (ACCOUNT* account)
 {
+  char prompt[SHORT_STRING];
+
   if (account->flags & M_ACCT_PASS)
     return 0;
 #ifdef USE_IMAP
@@ -96,9 +100,10 @@ int mutt_account_getpass (ACCOUNT* account)
 #endif
   else
   {
+    snprintf (prompt, sizeof (prompt), _("Password for %s@%s: "),
+      account->user, account->host);
     account->pass[0] = '\0';
-    if (mutt_get_field (_("Password: "), account->pass,
-        sizeof (account->pass), M_PASS))
+    if (mutt_get_field (prompt, account->pass, sizeof (account->pass), M_PASS))
       return -1;
   }
 

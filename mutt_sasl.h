@@ -21,11 +21,33 @@
 #ifndef _MUTT_SASL_H_
 #define _MUTT_SASL_H_ 1
 
-#include "mutt_socket.h"
-
 #include <sasl.h>
+
+#include "mutt_socket.h"
 
 int mutt_sasl_start (void);
 sasl_callback_t* mutt_sasl_get_callbacks (ACCOUNT* account);
+int mutt_sasl_interact (sasl_interact_t* interaction);
+void mutt_sasl_setup_conn (CONNECTION* conn, sasl_conn_t* saslconn);
+
+typedef struct 
+{
+  sasl_conn_t* saslconn;
+  const sasl_ssf_t* ssf;
+  const unsigned int* pbufsize;
+
+  /* read buffer */
+  char* buf;
+  unsigned int blen;
+  unsigned int bpos;
+
+  /* underlying socket data */
+  void* sockdata;
+  int (*open) (CONNECTION* conn);
+  int (*close) (CONNECTION* conn);
+  int (*read) (CONNECTION* conn);
+  int (*write) (CONNECTION* conn, const char* buf, size_t count);
+}
+SASL_DATA;
 
 #endif /* _MUTT_SASL_H_ */

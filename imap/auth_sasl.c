@@ -30,6 +30,7 @@
 imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
 {
   sasl_conn_t* saslconn;
+  sasl_interact_t* interaction = NULL;
   int rc;
   char buf[LONG_STRING];
   const char* mech;
@@ -43,7 +44,8 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
   /* TODO: set fourth option to SASL_SECURITY_LAYER once we have a wrapper
    *  (ie more than auth code) for SASL. */
   rc = sasl_client_new ("imap", idata->conn->account.host,
-    mutt_sasl_get_callbacks (&idata->conn->account), 0, &saslconn);
+    mutt_sasl_get_callbacks (&idata->conn->account), SASL_SECURITY_LAYER,
+    &saslconn);
 
   if (rc != SASL_OK)
   {
@@ -67,8 +69,14 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
       &mech);
 
   if (rc != SASL_OK && rc != SASL_CONTINUE)
-    rc = sasl_client_start (saslconn, idata->capstr, NULL, NULL, &pc, &olen,
-      &mech);
+    do
+    {
+      rc = sasl_client_start (saslconn, idata->capstr, NULL, &interaction,
+        &pc, &olen, &mech);
+      if (rc == SASL_INTERACT)
+	mutt_sasl_interact (interaction);
+    }
+    while (rc == SASL_INTERACT);
 
   client_start = (olen > 0);
 
@@ -107,17 +115,30 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
     }
 
     if (!client_start)
-      rc = sasl_client_step (saslconn, buf, len, NULL, &pc, &olen);
+      do
+      {
+	rc = sasl_client_step (saslconn, buf, len, &interaction, &pc, &olen);
+	if (rc == SASL_INTERACT)
+	  mutt_sasl_interact (interaction);
+      }
+      while (rc == SASL_INTERACT);
     else
       client_start = 0;
 
     /* send out response, or line break if none needed */
-    if (olen && sasl_encode64 (pc, olen, buf, sizeof (buf), &olen) != SASL_OK)
+    if (pc)
     {
-      dprint (1, (debugfile, "imap_auth_sasl: error base64-encoding client response.\n"));
-      goto bail;
-    }
+      if (sasl_encode64 (pc, olen, buf, sizeof (buf), &olen) != SASL_OK)
+      {
+	dprint (1, (debugfile, "imap_auth_sasl: error base64-encoding client response.\n"));
+	goto bail;
+      }
 
+      /* sasl_client_st(art|ep) allocate pc with malloc, expect me to 
+       * free it */
+      free (pc);
+    }
+    
     if (olen || rc == SASL_CONTINUE)
     {
       strfcpy (buf + olen, "\r\n", sizeof (buf) - olen);
@@ -134,9 +155,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
 
   if (imap_code (buf))
   {
-    /* later we'll want to keep saslconn, when we support a protection layer.
-     * For now it shouldn't hurt to dispose of it at this point. */
-    sasl_dispose (&saslconn);
+    mutt_sasl_setup_conn (idata->conn, saslconn);
     return IMAP_AUTH_SUCCESS;
   }
 

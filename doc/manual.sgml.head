@@ -2049,8 +2049,7 @@ You can access the remote inbox by selecting the folder
 server and <tt/inbox/ is the special name for your spool mailbox on
 the IMAP server. If you want to access another mail folder at the IMAP
 server, you should use <tt>{imapserver}path/to/folder</tt> where
-<tt>path/to/folder</tt> is the path of the folder you want to access
-(relative to your home directory if you aren't using Cyrus).
+<tt>path/to/folder</tt> is the path of the folder you want to access.
 
 You can select an alternative port by specifying it with the server, ie:
 <tt/{imapserver:port}inbox/.
@@ -2059,7 +2058,7 @@ You can also specify different username for each folder, ie:
 <tt/{username@imapserver[:port]}inbox/.
 
 If Mutt was compiled with SSL support (by running the <em/configure/
-script with the <em/--enable-ssl/ flag), connections to IMAP servers
+script with the <em/--with-ssl/ flag), connections to IMAP servers
 can be encrypted. This naturally requires that the server supports
 SSL encrypted connections. To access a folder with IMAP/SSL, you should
 use <tt>{[username@]imapserver[:port]/ssl}path/to/folder</tt> as your 
@@ -2079,11 +2078,6 @@ the frequency at which Mutt will check for mail remotely can be controlled by
 the
 <ref id="imap&lowbar;checkinterval" name="&dollar;imap&lowbar;checkinterval">
 variable, which defaults to every 60 seconds.
-
-Mutt is designed to work with IMAP4rev1 servers, and was originally tested
-with both the UWash IMAP server v11.241 and the Cyrus IMAP server v1.5.14.
-Nowadays it is primarily developed against UW-IMAP 12.250. It appears
-to work more-or-less correctly against Cyrus 1.6.11 as well.
 
 Note that if you are using mbox as the mail store on UW servers prior to
 v12.250, the server has been reported to disconnect a client if another client
@@ -2115,33 +2109,36 @@ following differences:
 <sect2>Authentication
 <p>
 
-Mutt supports three authentication methods with IMAP servers: GSSAPI, CRAM-MD5,
-and LOGIN (there is a patch by Grant Edwards to add NTLM authentication for you
-poor exchange users out there, but it has yet to be integrated into the main
-tree). Mutt will try whichever methods are available on the server, in order from
-most secure to least. That is, mutt will first try GSSAPI authentication (ie
-Kerberos V), then CRAM-MD5, and finally LOGIN (the worst possible choice - your
-password travels across the net in the clear).
+Mutt supports four authentication methods with IMAP servers: SASL,
+GSSAPI, CRAM-MD5, and LOGIN (there is a patch by Grant Edwards to add
+NTLM authentication for you poor exchange users out there, but it has
+yet to be integrated into the main tree). There is also support for
+the pseudo-protocol ANONYMOUS, which allows you to log in to a public
+IMAP server without having an account. To use ANONYMOUS, simply make
+your username blank or "anonymous".
+<p>
+SASL is a special super-authenticator, which selects among several protocols
+(including GSSAPI, CRAM-MD5, ANONYMOUS, and DIGEST-MD5) the most secure
+method available on your host and the server. Using some of these methods
+(including DIGEST-MD5 and possibly GSSAPI), your entire session will be
+encrypted and invisible to those teeming network snoops. It is the best
+option if you have it. To use it, you must have the Cyrus SASL library
+installed on your system and compile mutt with the <em/--with-sasl/ flag.
+<p>
+Mutt will try whichever methods are compiled in and available on the server,
+in the following order: SASL, ANONYMOUS, GSSAPI, CRAM-MD5, LOGIN.
 
 There are a few variables which control authentication: 
 <itemize>
-<item><ref id="imap&lowbar;user" name="&dollar;imap&lowbar;user"> - controls the
-  username under which you request authentication on the IMAP server, for all
-  authenticators.
-<item><ref id="imap&lowbar;pass" name="&dollar;imap&lowbar;pass"> - the password
-  to use to authenticate you using the LOGIN method. If this is set, and other
-  methods fail, Mutt will use this without asking you. So if you use GSSAPI
-  or CRAM-MD5, don't set this variable.
-<item><ref id="imap&lowbar;cramkey" name="&dollar;imap&lowbar;cramkey"> - the
-  secret used in CRAM-MD5 authentication (ie your CRAM password). If this is
-  not set and your server supports CRAM-MD5, Mutt will prompt you for it.
+<item><ref id="imap&lowbar;user" name="&dollar;imap&lowbar;user"> - controls
+  the username under which you request authentication on the IMAP server,
+  for all authenticators. This is overridden by an explicit username in
+  the mailbox path (ie by using a mailbox name of the form
+  <tt/{user@host}/).
+<item><ref id="imap&lowbar;pass" name="&dollar;imap&lowbar;pass"> - a
+  password which you may preset, used by all authentication methods where
+  a password is needed.
 </itemize>
-
-<bf/Note:/ The IMAP support has had very limited testing due to a lack
-of developers using it.  It should work with the reference servers
-mentioned above, but if you need a more stable way to access your
-IMAP folder, consider using a specialized program, such as <htmlurl
-url="http://www.ccil.org/~esr/fetchmail" name="fetchmail">.
 
 <sect1>Start a WWW Browser on URLs (EXTERNAL)<label id="urlview">
 <p>

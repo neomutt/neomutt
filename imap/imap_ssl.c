@@ -161,7 +161,7 @@ static int ssl_socket_open_err (CONNECTION *conn)
 static int ssl_check_certificate (sslsockdata * data);
 
 static int ssl_socket_read (CONNECTION * conn);
-static int ssl_socket_write (CONNECTION * conn, const char *buf);
+static int ssl_socket_write (CONNECTION* conn, const char* buf, size_t len);
 static int ssl_socket_open (CONNECTION * conn);
 static int ssl_socket_close (CONNECTION * conn);
 
@@ -187,10 +187,10 @@ int ssl_socket_read (CONNECTION * conn)
   return SSL_read (data->ssl, conn->inbuf, LONG_STRING);
 }
 
-int ssl_socket_write (CONNECTION * conn, const char *buf)
+int ssl_socket_write (CONNECTION* conn, const char* buf, size_t len)
 {
   sslsockdata *data = conn->sockdata;
-  return SSL_write (data->ssl, buf, mutt_strlen (buf));
+  return SSL_write (data->ssl, buf, len);
 }
 
 int ssl_socket_open (CONNECTION * conn)

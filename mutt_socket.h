@@ -42,7 +42,7 @@ typedef struct _connection
 
   void *sockdata;
   int (*read) (struct _connection *conn);
-  int (*write) (struct _connection *conn, const char *buf);
+  int (*write) (struct _connection *conn, const char *buf, size_t count);
   int (*open) (struct _connection *conn);
   int (*close) (struct _connection *conn);
 } CONNECTION;
@@ -61,7 +61,7 @@ void mutt_socket_free (CONNECTION* conn);
 CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account);
 
 int raw_socket_read (CONNECTION *conn);
-int raw_socket_write (CONNECTION *conn, const char *buf);
+int raw_socket_write (CONNECTION* conn, const char* buf, size_t count);
 int raw_socket_open (CONNECTION *conn);
 int raw_socket_close (CONNECTION *conn);
 

@@ -59,9 +59,19 @@ int mutt_socket_close (CONNECTION* conn)
 
 int mutt_socket_write_d (CONNECTION *conn, const char *buf, int dbg)
 {
+  int rc;
+
   dprint (dbg, (debugfile,"> %s", buf));
 
-  return conn->write (conn, buf);
+  if ((rc = conn->write (conn, buf, mutt_strlen (buf))) < 0)
+  {
+    dprint (1, (debugfile, "mutt_socket_write: error writing, closing socket\n"));
+    mutt_socket_close (conn);
+
+    return -1;
+  }
+
+  return rc;
 }
 
 /* simple read buffering to speed things up. */
@@ -88,8 +98,9 @@ int mutt_socket_readln_d (char* buf, size_t buflen, CONNECTION* conn, int dbg)
   {
     if (mutt_socket_readchar (conn, &ch) != 1)
     {
-      dprint (1, (debugfile, "mutt_socket_readln_d: read error"));
+      dprint (1, (debugfile, "mutt_socket_readln_d: read error, closing socket"));
       buf[i] = '\0';
+      mutt_socket_close (conn);
       return -1;
     }
     if (ch == '\n')
@@ -230,9 +241,9 @@ int raw_socket_read (CONNECTION *conn)
   return read (conn->fd, conn->inbuf, LONG_STRING);
 }
 
-int raw_socket_write (CONNECTION *conn, const char *buf)
+int raw_socket_write (CONNECTION* conn, const char* buf, size_t count)
 {
-  return write (conn->fd, buf, mutt_strlen (buf));
+  return write (conn->fd, buf, count);
 }
 
 int raw_socket_open (CONNECTION* conn)
