@@ -1568,12 +1568,6 @@ struct option_t MuttVars[] = {
   ** messages you are replying to.  If the variable is unset, the
   ** \fIFrom:\fP line will use your address on the current machine.
   */
-  { "rewrite_uucp",     DT_BOOL, R_INDEX, OPTREWRITEUUCP, 0 },
-  /*
-  ** .pp
-  ** When this option is set, mutt rewrites uucp-style "bang paths" to
-  ** internet addresses.
-  */
   { "rfc2047_parameters", DT_BOOL, R_NONE, OPTRFC2047PARAMS, 0 },
   /*
   ** .pp
