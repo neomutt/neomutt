@@ -1296,7 +1296,7 @@ msgstr "(pro zobrazení této èásti pou¾ijte '%s')"
 #
 #: handler.c:1585
 msgid "(need 'view-attachments' bound to key!)"
-msgstr "(je tøeba svázat funkci 'view-attachments' s nìjakou klávesou!)"
+msgstr "(je tøeba urèit pro funkci 'view-attachments' nìjakou klávesu!)"
 
 #
 #: headers.c:171
@@ -1333,7 +1333,7 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"Nesvázané funkce:\n"
+"Funkce bez definované klávesové zkratky:\n"
 "\n"
 
 #
@@ -1664,13 +1664,13 @@ msgstr "Detekována smyèka v makru."
 #
 #: keymap.c:636 keymap.c:644
 msgid "Key is not bound."
-msgstr "Klávesa není svázána s ¾ádnou funkcí."
+msgstr "Význam této klávesy není definován."
 
 #
 #: keymap.c:648
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
-msgstr "Klávesa není svázána. Stisknìte '%s' pro nápovìdu."
+msgstr "Význam této klávesy není definován. Stisknìte '%s' pro nápovìdu."
 
 #
 #: keymap.c:659
