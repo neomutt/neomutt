@@ -1,17 +1,5 @@
 # $Id$
 
-#
-# A simplified Makefile for use with Mutt.
-
-# Michael Elkins <me@cs.hmc.edu>
-# 1/23/97
-
-#
-# No longer _that_ simple.
-#
-# tlr, 98-10-03
-#
-
 PACKAGE=@PACKAGE@
 VERSION=@VERSION@
 
@@ -28,6 +16,8 @@ DISTFILES = COPYING.LIB Makefile.in _rx.h hashrexp.c inst-rxposix.h rx.c\
 
 
 VPATH=@srcdir@
+CC=@CC@
+
 @SET_MAKE@
 
 srcdir=@srcdir@

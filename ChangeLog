@@ -1,4 +1,21 @@
-Thu Oct 15 16:11:47 1998  Thomas Roessler  <roessler@guug.de>
+Thu Oct 15 19:45:50 1998  Thomas Roessler  <roessler@guug.de>
+
+	* po/mutt.pot, doc/manual.sgml.in, pattern.c, mutt.h:
+	This patch introduces the ~k pattern for messages containing pgp key
+	material.
+
+	* doc/manual.sgml.in: Add some missing key definitions.
+
+	* mutt_curses.h:
+	There seem to be systems which don't know about KEY_ENTER.
+
+	* po/mutt.pot, po/cat-id-tbl.c: Check-point commit, again.
+
+	* sendlib.c:
+	Put #ifdefs around a variable which is only used for generating
+	uuencoded messages.
+
+	* ChangeLog: Update.
 
 	* po/ru.po, po/mutt.pot, po/cat-id-tbl.c, sendlib.c,
 	compose.c: Don't ever permit the user to generate uuencoded

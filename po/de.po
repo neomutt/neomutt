@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-15 00:54+0200\n"
+"POT-Creation-Date: 1998-10-15 21:49+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -227,7 +227,7 @@ msgstr "mono: Zu wenige Parameter."
 msgid "%s: no such attribute"
 msgstr "%s: Attribut unbekannt."
 
-#: color.c:663 hook.c:62 hook.c:70 keymap.c:650
+#: color.c:663 hook.c:62 hook.c:70 keymap.c:663
 msgid "too few arguments"
 msgstr "Zu wenige Parameter."
 
@@ -469,63 +469,63 @@ msgstr "Bitte markieren Sie die Nachrichten, die Sie anhängen wollen!"
 msgid "Unable to attach!"
 msgstr "Kann nicht anhängen!"
 
-#: compose.c:818
-msgid "This encoding is deprecated.  Really use it?"
-msgstr "Diese Codierung sollte nicht genutzt werden.  Trotzdem setzen?"
-
-#: compose.c:826
+#: compose.c:820 compose.c:834
 msgid "Invalid encoding."
 msgstr "Ungültige Codierung."
 
-#: compose.c:841
+#: compose.c:825
+msgid "This encoding is deprecated.  Really use it?"
+msgstr "Diese Codierung sollte nicht genutzt werden.  Trotzdem setzen?"
+
+#: compose.c:849
 msgid "Save a copy of this message?"
 msgstr "Soll eine Kopie dieser Nachricht gespeichert werden?"
 
-#: compose.c:886
+#: compose.c:894
 msgid "Rename to: "
 msgstr "Umbenennen in: "
 
-#: compose.c:891
+#: compose.c:899
 #, c-format
 msgid "Can't stat: %s"
 msgstr "Kann Datei nicht prüfen: %s"
 
-#: compose.c:918
+#: compose.c:926
 msgid "New file: "
 msgstr "Neue Datei: "
 
-#: compose.c:931
+#: compose.c:939
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type ist von der Form Basis/Untertyp"
 
-#: compose.c:937
+#: compose.c:945
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Unbekannter Content-Type %s"
 
-#: compose.c:950
+#: compose.c:958
 #, c-format
 msgid "Can't create file %s"
 msgstr "Kann Datei %s nicht anlegen"
 
-#: compose.c:958
+#: compose.c:966
 msgid "What we have here is a failure to make an attachment"
 msgstr "Anhang kann nicht erzeugt werden"
 
-#: compose.c:1030
+#: compose.c:1038
 msgid "Postpone this message?"
 msgstr "Nachricht zurückstellen?"
 
-#: compose.c:1077
+#: compose.c:1085
 msgid "Write message to mailbox"
 msgstr "Schreibe Nachricht in Mailbox"
 
-#: compose.c:1081
+#: compose.c:1089
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Schreibe Nachricht nach %s ..."
 
-#: compose.c:1092
+#: compose.c:1100
 msgid "Message written."
 msgstr "Nachricht geschrieben."
 
@@ -1102,54 +1102,55 @@ msgstr "Kann Home-Verzeichnis nicht bestimmen"
 msgid "unable to determine username"
 msgstr "Kann Nutzernamen nicht bestimmen"
 
-#: keymap.c:414
+#: keymap.c:416
 msgid "Macro loop detected."
 msgstr "Makro-Schleife!"
 
-#: keymap.c:600
+#: keymap.c:602 keymap.c:610
+#, fuzzy
+msgid "Key is not bound."
+msgstr "Taste ist nicht gebunden.  Konsultieren Sie das Handbuch."
+
+#: keymap.c:614
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Taste ist nicht gebunden.  Drücken Sie '%s' für Hilfe."
 
-#: keymap.c:602
-msgid "Key is not bound.  See the manual."
-msgstr "Taste ist nicht gebunden.  Konsultieren Sie das Handbuch."
-
-#: keymap.c:612
+#: keymap.c:625
 msgid "push: too many arguments"
 msgstr "push: Zu viele Argumente"
 
-#: keymap.c:633
+#: keymap.c:646
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: Menü unbekannt."
 
-#: keymap.c:642
+#: keymap.c:655
 msgid "null key sequence"
 msgstr "Leere Tastenfolge"
 
-#: keymap.c:720
+#: keymap.c:733
 msgid "bind: too many arguments"
 msgstr "bind: Zu viele Argumente"
 
-#: keymap.c:735
+#: keymap.c:748
 #, c-format
 msgid "%s: no such function in map"
 msgstr "%s: Funktion unbekannt"
 
-#: keymap.c:758
+#: keymap.c:771
 msgid "macro: empty key sequence"
 msgstr "macro: Leere Tastenfolge"
 
-#: keymap.c:769
+#: keymap.c:782
 msgid "macro: too many arguments"
 msgstr "macro: Zu viele Paramter"
 
-#: keymap.c:799
+#: keymap.c:812
 msgid "exec: too few arguments"
 msgstr "%s: Zu wenige Parameter."
 
-#: keymap.c:819
+#: keymap.c:832
 #, c-format
 msgid "%s: no such command"
 msgstr "%s: Menü unbekannt."
@@ -2182,50 +2183,50 @@ msgstr "Kein weiterer eigener Text nach zitiertem Text"
 msgid "multipart message has no boundary parameter!"
 msgstr "Mehrteilige Nachricht hat keinen 'boundary'-Parameter!"
 
-#: pattern.c:231
+#: pattern.c:234
 #, c-format
 msgid "Error in expression: %s"
 msgstr "Fehler in Ausdruck: %s"
 
-#: pattern.c:327
+#: pattern.c:330
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "Ungültiger Tag: %s"
 
-#: pattern.c:341
+#: pattern.c:344
 #, c-format
 msgid "Invalid month: %s"
 msgstr "Ungültiger Monat: %s"
 
-#: pattern.c:395
+#: pattern.c:398
 msgid "error in expression"
 msgstr "Fehler in Ausdruck."
 
-#: pattern.c:580 pattern.c:688
+#: pattern.c:583 pattern.c:691
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "Fehler in Muster bei: %s"
 
-#: pattern.c:628
+#: pattern.c:631
 #, c-format
 msgid "%c: invalid command"
 msgstr "%c: Ungültiges Kommando"
 
-#: pattern.c:634
+#: pattern.c:637
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: Wird in diesem Modus nicht unterstützt."
 
-#: pattern.c:647
+#: pattern.c:650
 msgid "missing parameter"
 msgstr "Fehlender Parameter"
 
-#: pattern.c:663
+#: pattern.c:666
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "Unpasende Klammern: %s"
 
-#: pattern.c:695
+#: pattern.c:698
 msgid "empty pattern"
 msgstr "Leeres Muster"
 
@@ -2796,31 +2797,31 @@ msgstr "Verschicke Nachricht..."
 msgid "Mail sent."
 msgstr "Nachricht verschickt."
 
-#: sendlib.c:469
+#: sendlib.c:475
 msgid "No boundary parameter found! [report this error]"
 msgstr ""
 
-#: sendlib.c:503
+#: sendlib.c:509
 #, c-format
 msgid "%s no longer exists!"
 msgstr "%s existiert nicht mehr!"
 
-#: sendlib.c:767
+#: sendlib.c:775
 #, c-format
 msgid "Could not open %s"
 msgstr "Konnte %s nicht öffnen."
 
-#: sendlib.c:1694
+#: sendlib.c:1703
 #, c-format
 msgid "Error sending message, child exited %d (%s).\n"
 msgstr "Fehler beim Versand der Nachricht, %s (%d).\n"
 
-#: sendlib.c:1696
+#: sendlib.c:1705
 #, c-format
 msgid "Saved output of child process to %s.\n"
 msgstr "Ausgabe des Unterprozesses in %s abgespeichert.\n"
 
-#: sendlib.c:1700
+#: sendlib.c:1709
 msgid "Error sending message."
 msgstr "Fehler beim Versand der Nachricht."
 

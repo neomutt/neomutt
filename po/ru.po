@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 1998-10-15 00:54+0200\n"
+"POT-Creation-Date: 1998-10-15 21:49+0200\n"
 "PO-Revision-Date: 1998-10-15 07:51+0300\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "Language-Team: Mutt-dev <mutt-dev@mutt.org>\n"
@@ -227,7 +227,7 @@ msgstr "mono: слишком мало аргументов"
 msgid "%s: no such attribute"
 msgstr "Атрибут '%s' не существует"
 
-#: color.c:663 hook.c:62 hook.c:70 keymap.c:650
+#: color.c:663 hook.c:62 hook.c:70 keymap.c:663
 msgid "too few arguments"
 msgstr "слишком мало аргументов"
 
@@ -468,63 +468,63 @@ msgstr "Отметьте сообщения для присоединения!"
 msgid "Unable to attach!"
 msgstr "Нельзя присоединить!"
 
-#: compose.c:818
-msgid "This encoding is deprecated.  Really use it?"
-msgstr "Эта кодировка устарела. Использовать её?"
-
-#: compose.c:826
+#: compose.c:820 compose.c:834
 msgid "Invalid encoding."
 msgstr "Непонятная кодировка."
 
-#: compose.c:841
+#: compose.c:825
+msgid "This encoding is deprecated.  Really use it?"
+msgstr "Эта кодировка устарела. Использовать её?"
+
+#: compose.c:849
 msgid "Save a copy of this message?"
 msgstr "Сохранить копию этого сообщения?"
 
-#: compose.c:886
+#: compose.c:894
 msgid "Rename to: "
 msgstr "Переименовать в: "
 
-#: compose.c:891
+#: compose.c:899
 #, c-format
 msgid "Can't stat: %s"
 msgstr "Нет статистики: %s"
 
-#: compose.c:918
+#: compose.c:926
 msgid "New file: "
 msgstr "Новый файл: "
 
-#: compose.c:931
+#: compose.c:939
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type по форме: base/sub"
 
-#: compose.c:937
+#: compose.c:945
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Неизвестный Content-Type %s"
 
-#: compose.c:950
+#: compose.c:958
 #, c-format
 msgid "Can't create file %s"
 msgstr "Не удаётся создать файл %s"
 
-#: compose.c:958
+#: compose.c:966
 msgid "What we have here is a failure to make an attachment"
 msgstr "Здесь происходит сбой попытки присоединения"
 
-#: compose.c:1030
+#: compose.c:1038
 msgid "Postpone this message?"
 msgstr "Отложить это сообщение?"
 
-#: compose.c:1077
+#: compose.c:1085
 msgid "Write message to mailbox"
 msgstr "Записать сообщение в почтовый ящик"
 
-#: compose.c:1081
+#: compose.c:1089
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Запись сообщения в %s ..."
 
-#: compose.c:1092
+#: compose.c:1100
 msgid "Message written."
 msgstr "Сообщение записано."
 
@@ -1100,54 +1100,55 @@ msgstr "нельзя определить домашний каталог"
 msgid "unable to determine username"
 msgstr "нельзя определить имя пользователя"
 
-#: keymap.c:414
+#: keymap.c:416
 msgid "Macro loop detected."
 msgstr "Обнаружен циклический макрос."
 
-#: keymap.c:600
+#: keymap.c:602 keymap.c:610
+#, fuzzy
+msgid "Key is not bound."
+msgstr "Клавиша не назначена. Смотрите руководство."
+
+#: keymap.c:614
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Клавиша не назначена. Нажмите '%s' для подсказки."
 
-#: keymap.c:602
-msgid "Key is not bound.  See the manual."
-msgstr "Клавиша не назначена. Смотрите руководство."
-
-#: keymap.c:612
+#: keymap.c:625
 msgid "push: too many arguments"
 msgstr "push: слишком много аргументов"
 
-#: keymap.c:633
+#: keymap.c:646
 #, c-format
 msgid "%s: no such menu"
 msgstr "меню '%s' отсутствует"
 
-#: keymap.c:642
+#: keymap.c:655
 msgid "null key sequence"
 msgstr "пустая последовательность"
 
-#: keymap.c:720
+#: keymap.c:733
 msgid "bind: too many arguments"
 msgstr "bind: слишком много аргументов"
 
-#: keymap.c:735
+#: keymap.c:748
 #, c-format
 msgid "%s: no such function in map"
 msgstr "функции '%s' нет в карте"
 
-#: keymap.c:758
+#: keymap.c:771
 msgid "macro: empty key sequence"
 msgstr "macro: пустая последовательность"
 
-#: keymap.c:769
+#: keymap.c:782
 msgid "macro: too many arguments"
 msgstr "macro: слишком много аргументов"
 
-#: keymap.c:799
+#: keymap.c:812
 msgid "exec: too few arguments"
 msgstr "exec: слишком мало аргументов"
 
-#: keymap.c:819
+#: keymap.c:832
 #, c-format
 msgid "%s: no such command"
 msgstr "команда '%s' отсутствует"
@@ -1818,11 +1819,11 @@ msgstr "%s - это не почтовый ящик!"
 msgid "Append messages to %s?"
 msgstr "Добавить сообщения к %s?"
 
-#: main.c:36
+#: main.c:40
 msgid "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 msgstr "Для общения с разработчиками пишите на адрес <mutt-dev@mutt.org>.\n"
 
-#: main.c:39
+#: main.c:43
 msgid ""
 "Copyright (C) 1996-8 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
@@ -1830,7 +1831,7 @@ msgid ""
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
 
-#: main.c:45
+#: main.c:49
 msgid ""
 "Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1997-8 Thomas Roessler <roessler@guug.de>\n"
@@ -1852,7 +1853,7 @@ msgid ""
 "    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n"
 msgstr ""
 
-#: main.c:67
+#: main.c:71
 msgid ""
 "\n"
 "SHA1 implementation Copyright (C) 1995-7 Eric A. Young <eay@cryptsoft.com>\n"
@@ -1868,7 +1869,7 @@ msgid ""
 "    along with this program; if not, write to the program's developers.\n"
 msgstr ""
 
-#: main.c:93
+#: main.c:97
 msgid ""
 "usage: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
 "]\n"
@@ -1926,33 +1927,33 @@ msgstr ""
 "  -Z\t\tоткрыть первую папку с новым сообщением, иначе сразу выйти\n"
 "  -h\t\tэта подсказка"
 
-#: main.c:299
+#: main.c:303
 msgid "Error initializing terminal."
 msgstr "Ошибка инициализации терминала."
 
-#: main.c:395
+#: main.c:399
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Отладка с уровнем %d.\n"
 
-#: main.c:397
+#: main.c:401
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG не определён при компиляции, игнорируется.\n"
 
-#: main.c:535
+#: main.c:539
 msgid "No recipients specified.\n"
 msgstr "Не указано получателей.\n"
 
-#: main.c:608
+#: main.c:612
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: файл нельзя присоединить.\n"
 
-#: main.c:628
+#: main.c:632
 msgid "No mailbox with new mail."
 msgstr "Нет почтовых ящиков с новой почтой."
 
-#: main.c:662
+#: main.c:666
 msgid "Mailbox is empty."
 msgstr "Почтовый ящик совершенно пуст."
 
@@ -2205,50 +2206,50 @@ msgstr "После цитируемого текста нет ничего."
 msgid "multipart message has no boundary parameter!"
 msgstr "Многочастное сообщение не имеет параметра разделителя!"
 
-#: pattern.c:231
+#: pattern.c:234
 #, c-format
 msgid "Error in expression: %s"
 msgstr "Ошибка в выражении: %s"
 
-#: pattern.c:327
+#: pattern.c:330
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "В месяце нет числа '%s'"
 
-#: pattern.c:341
+#: pattern.c:344
 #, c-format
 msgid "Invalid month: %s"
 msgstr "Нет месяца '%s'"
 
-#: pattern.c:395
+#: pattern.c:398
 msgid "error in expression"
 msgstr "ошибка в выражении"
 
-#: pattern.c:580 pattern.c:688
+#: pattern.c:583 pattern.c:691
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "ошибка в выражении в: %s"
 
-#: pattern.c:628
+#: pattern.c:631
 #, c-format
 msgid "%c: invalid command"
 msgstr "%c: неправильная команда"
 
-#: pattern.c:634
+#: pattern.c:637
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: в этом режиме не поддерживается"
 
-#: pattern.c:647
+#: pattern.c:650
 msgid "missing parameter"
 msgstr "параметр пропущен"
 
-#: pattern.c:663
+#: pattern.c:666
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "отсутствующие скобки: %s"
 
-#: pattern.c:695
+#: pattern.c:698
 msgid "empty pattern"
 msgstr ""
 
@@ -2820,31 +2821,31 @@ msgstr "Отправка сообщения..."
 msgid "Mail sent."
 msgstr "Письмо отправлено."
 
-#: sendlib.c:469
+#: sendlib.c:475
 msgid "No boundary parameter found! [report this error]"
 msgstr ""
 
-#: sendlib.c:503
+#: sendlib.c:509
 #, c-format
 msgid "%s no longer exists!"
 msgstr "%s больше не существует!"
 
-#: sendlib.c:767
+#: sendlib.c:775
 #, c-format
 msgid "Could not open %s"
 msgstr "Не удалось открыть %s"
 
-#: sendlib.c:1694
+#: sendlib.c:1703
 #, c-format
 msgid "Error sending message, child exited %d (%s).\n"
 msgstr "Ошибка отправки, порождение вернуло %d (%s).\n"
 
-#: sendlib.c:1696
+#: sendlib.c:1705
 #, c-format
 msgid "Saved output of child process to %s.\n"
 msgstr "Выход порождения сохранён в %s.\n"
 
-#: sendlib.c:1700
+#: sendlib.c:1709
 msgid "Error sending message."
 msgstr "Ошибка отправки сообщения."
 
