@@ -34,6 +34,26 @@
 
 #include <errno.h>
 
+/* imap_account_match: compare account info (host/port/user) */
+int imap_account_match (const IMAP_MBOX* m1, const IMAP_MBOX* m2)
+{
+  const char* user = ImapUser ? ImapUser : NONULL (Username);
+
+  if (mutt_strcasecmp (m1->host, m2->host))
+    return 0;
+  if (m1->port != m2->port)
+    return 0;
+  
+  if (m1->flags & m2->flags & M_IMAP_USER)
+    return (!strcmp (m1->user, m2->user));
+  if (m1->flags & M_IMAP_USER)
+    return (!strcmp (m1->user, user));
+  if (m2->flags & M_IMAP_USER)
+    return (!strcmp (m2->user, user));
+
+  return 1;
+}
+
 /* imap_continue: display a message and ask the user if she wants to
  *   go on. */
 int imap_continue (const char* msg, const char* resp)

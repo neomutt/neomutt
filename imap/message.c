@@ -56,7 +56,6 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
   IMAP_HEADER *h, *h0;
   const char *want_headers = "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE IN-REPLY-TO REPLY-TO LINES X-LABEL";
   int using_body_peek = 0;
-  int c;
   
   fetchlast = 0;
 
@@ -164,6 +163,13 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
               return -1;
             }
             imap_read_bytes (fp, CTX_DATA->conn, bytes);
+	    /* make sure headers are followed by ONE blank line (separator
+	     * for mutt_read_rfc822_header) */
+	    do
+	      fseek (fp, -2, SEEK_CUR);
+	    while (fgetc (fp) == '\n');
+	    fputs ("\n\n", fp);
+	    
 	    /* we may have other fields of the FETCH _after_ the literal
 	     * (eg Domino puts FLAGS here). Nothing wrong with that, either.
 	     * This all has to go - we should accept literals and nonliterals
@@ -257,15 +263,6 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
     h = h->next;
     /* hdata is freed later */
     safe_free ((void **) &h0);
-
-    /* 
-     * skip over additional \n characters - Courier IMAP seems to
-     * put them here.
-     */
-    
-    while ((c = fgetc (fp)) == '\n')
-      ;
-    ungetc (c, fp);
   }
   
   fclose(fp);
@@ -597,8 +594,8 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
     return -1;
   }
 
-  /* check that the save-to folder is on the same server */
-  if (mutt_socket_select_connection (&mx, 0) != CTX_DATA->conn)
+  /* check that the save-to folder is in the same account */
+  if (!imap_account_match (&(CTX_DATA->conn->mx), &mx))
   {
     dprint (3, (debugfile, "imap_copy_message: %s not same server as %s\n",
       dest, ctx->path));

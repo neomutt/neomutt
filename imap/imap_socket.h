@@ -36,16 +36,19 @@ typedef struct _connection
   int (*write) (struct _connection *conn, const char *buf);
   int (*open) (struct _connection *conn);
   int (*close) (struct _connection *conn);
+
+  /* status bits */
+  int up : 1;
 } CONNECTION;
 
-
+int mutt_socket_open (CONNECTION* conn);
+int mutt_socket_close (CONNECTION* conn);
 int mutt_socket_readchar (CONNECTION *conn, char *c);
 int mutt_socket_read_line (char *buf, size_t buflen, CONNECTION *conn);
 int mutt_socket_read_line_d (char *buf, size_t buflen, CONNECTION *conn);
 int mutt_socket_write (CONNECTION *conn, const char *buf);
-CONNECTION *mutt_socket_select_connection (const IMAP_MBOX *mx, int newconn);
-int mutt_socket_open_connection (CONNECTION *conn);
-int mutt_socket_close_connection (CONNECTION *conn);
+
+CONNECTION* mutt_socket_find (const IMAP_MBOX* mx, int newconn);
 
 int raw_socket_read (CONNECTION *conn);
 int raw_socket_write (CONNECTION *conn, const char *buf);

@@ -257,9 +257,10 @@ int imap_handle_untagged (IMAP_DATA *idata, char *s)
     idata->status = IMAP_BYE;
     if (idata->state == IMAP_SELECTED)
       mx_fastclose_mailbox (idata->selected_ctx);
-    mutt_socket_close_connection (idata->conn);
+    mutt_socket_close (idata->conn);
     idata->state = IMAP_DISCONNECTED;
-    return (-1);
+
+    return -1;
   }
   else if (option (OPTIMAPSERVERNOISE) && (mutt_strncasecmp ("NO", s, 2) == 0))
   {

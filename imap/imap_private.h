@@ -187,6 +187,7 @@ void imap_free_header_data (void** data);
 int imap_read_headers (CONTEXT* ctx, int msgbegin, int msgend);
 
 /* util.c */
+int imap_account_match (const IMAP_MBOX* m1, const IMAP_MBOX* m2);
 int imap_continue (const char* msg, const char* resp);
 void imap_error (const char* where, const char* msg);
 char* imap_fix_path (IMAP_DATA* idata, char* mailbox, char* path, 

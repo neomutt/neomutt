@@ -1,5 +1,7 @@
 /*
  * Copyright (C) 1998 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -34,18 +36,29 @@
 #include <string.h>
 
 /* support for multiple socket connections */
-
 static CONNECTION *Connections = NULL;
 
+/* forward declarations */
+static int socket_connect (CONNECTION* conn, struct sockaddr_in sin,
+  int verbose);
+static CONNECTION* socket_new_conn ();
 
 /* Wrappers */
-int mutt_socket_open_connection (CONNECTION *conn) 
+int mutt_socket_open (CONNECTION* conn) 
 {
-  return conn->open (conn);
+  int rc;
+  
+  rc = conn->open (conn);
+  if (!rc)
+    conn->up = 1;
+
+  return rc;
 }
 
-int mutt_socket_close_connection (CONNECTION *conn)
+int mutt_socket_close (CONNECTION* conn)
 {
+  conn->up = 0;
+
   return conn->close (conn);
 }
 
@@ -54,8 +67,6 @@ int mutt_socket_write (CONNECTION *conn, const char *buf)
   dprint (1,(debugfile,"> %s", buf));
   return conn->write (conn, buf);
 }
-
-
 
 /* simple read buffering to speed things up. */
 int mutt_socket_readchar (CONNECTION *conn, char *c)
@@ -99,28 +110,9 @@ int mutt_socket_read_line_d (char *buf, size_t buflen, CONNECTION *conn)
   return r;
 }
 
-/* imap_account_match: compare account info (host/port/user) */
-static int imap_account_match (const IMAP_MBOX *m1, const IMAP_MBOX *m2)
+CONNECTION* mutt_socket_find (const IMAP_MBOX* mx, int newconn)
 {
-  const char *user = ImapUser ? ImapUser : NONULL (Username);
-
-  if (mutt_strcasecmp (m1->host, m2->host))
-    return 0;
-  if (m1->port != m2->port)
-    return 0;
-  
-  if (m1->flags & m2->flags & M_IMAP_USER)
-    return (!strcmp (m1->user, m2->user));
-  if (m1->flags & M_IMAP_USER)
-    return (!strcmp (m1->user, user));
-  if (m2->flags & M_IMAP_USER)
-    return (!strcmp (m2->user, user));
-  return 1;
-}
-
-CONNECTION *mutt_socket_select_connection (const IMAP_MBOX *mx, int newconn)
-{
-  CONNECTION *conn;
+  CONNECTION* conn;
 
   if (! newconn)
   {
@@ -132,11 +124,11 @@ CONNECTION *mutt_socket_select_connection (const IMAP_MBOX *mx, int newconn)
       conn = conn->next;
     }
   }
-  conn = (CONNECTION *) safe_calloc (1, sizeof (CONNECTION));
-  conn->fd = -1;
+
+  conn = socket_new_conn ();
   memcpy (&conn->mx, mx, sizeof (conn->mx));
   conn->mx.mbox = 0;
-  conn->preconnect = safe_strdup (ImapPreconnect); 
+
   conn->next = Connections;
   Connections = conn;
 
@@ -161,16 +153,15 @@ CONNECTION *mutt_socket_select_connection (const IMAP_MBOX *mx, int newconn)
  *   make sure we've got all the context we need. */
 void imap_logout_all (void) 
 {
-  CONNECTION* conn, *tmp;
-  char buf[LONG_STRING];
+  CONNECTION* conn;
+  char buf[SHORT_STRING];
   char seq[SEQLEN+1];
   
   conn = Connections;
 
   while (conn)
   {
-    /* what's up here? the last connection doesn't seem to be used */
-    if (conn->fd >= 0)
+    if (conn->up)
     {
       snprintf (buf, sizeof (buf), _("Closing connection to %s..."),
         conn->mx.host);
@@ -188,31 +179,33 @@ void imap_logout_all (void)
       }
       while (mutt_strncmp (buf, seq, SEQLEN) != 0);
       mutt_clear_error ();
+
+      mutt_socket_close (conn);
     }
     
-    tmp = conn;
-    conn = conn->next;
+    Connections = conn->next;
 
-    mutt_socket_close_connection (tmp);
-
-    if (tmp->data) {
+    if (conn->data) {
       dprint (2, (debugfile,
         "imap_logout_all: Connection still has valid CONTEXT?!\n"));
     }
 
-    free (tmp);
+    free (conn);
+
+    conn = Connections;
   }
 }
 
-
-static int try_socket_and_connect (CONNECTION *conn, struct sockaddr_in sin,
-			    int verbose)
+/* socket_connect: attempt to bind a socket and connect to it */
+static int socket_connect (CONNECTION* conn, struct sockaddr_in sin,
+  int verbose)
 {
   if ((conn->fd = socket (AF_INET, SOCK_STREAM, IPPROTO_IP)) < 0)
   {
     if (verbose) 
       mutt_perror ("socket");
-    return (-1);
+
+    return -1;
   }
 
   if (connect (conn->fd, (struct sockaddr *) &sin, sizeof (sin)) < 0)
@@ -223,10 +216,23 @@ static int try_socket_and_connect (CONNECTION *conn, struct sockaddr_in sin,
       mutt_perror ("connect");
       sleep (1);
     }
-    return (-1);
+
+    return -1;
   }
 
   return 0;
+}
+
+/* socket_new_conn: allocate and initialise a new connection. */
+static CONNECTION* socket_new_conn ()
+{
+  CONNECTION* conn;
+
+  conn = (CONNECTION *) safe_calloc (1, sizeof (CONNECTION));
+  conn->preconnect = safe_strdup (ImapPreconnect);
+  conn->fd = -1;
+
+  return conn;
 }
 
 int raw_socket_close (CONNECTION *conn)
@@ -272,7 +278,7 @@ int raw_socket_open (CONNECTION *conn)
   if (do_preconnect && first_try_without_preconnect)
   {
     verbose = FALSE;
-    if (try_socket_and_connect (conn, sin, verbose) == 0)
+    if (socket_connect (conn, sin, verbose) == 0)
       return 0;
   }
   
@@ -294,5 +300,6 @@ int raw_socket_open (CONNECTION *conn)
   }
   
   verbose = TRUE;
-  return try_socket_and_connect (conn, sin, verbose);
+
+  return socket_connect (conn, sin, verbose);
 }

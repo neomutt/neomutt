@@ -421,15 +421,16 @@ int imap_open_connection (IMAP_DATA *idata, CONNECTION *conn)
 {
   char buf[LONG_STRING];
 
-  if (mutt_socket_open_connection (conn) < 0)
+  if (mutt_socket_open (conn) < 0)
     return -1;
 
   idata->state = IMAP_CONNECTED;
 
   if (mutt_socket_read_line_d (buf, sizeof (buf), conn) < 0)
   {
-    mutt_socket_close_connection (conn);
+    mutt_socket_close (conn);
     idata->state = IMAP_DISCONNECTED;
+
     return -1;
   }
 
@@ -438,7 +439,7 @@ int imap_open_connection (IMAP_DATA *idata, CONNECTION *conn)
     if (imap_check_capabilities(idata) != 0 
 	|| imap_authenticate (idata, conn) != 0)
     {
-      mutt_socket_close_connection (conn);
+      mutt_socket_close (conn);
       idata->state = IMAP_DISCONNECTED;
       return -1;
     }
@@ -447,7 +448,7 @@ int imap_open_connection (IMAP_DATA *idata, CONNECTION *conn)
   {
     if (imap_check_capabilities(idata) != 0)
     {
-      mutt_socket_close_connection (conn);
+      mutt_socket_close (conn);
       idata->state = IMAP_DISCONNECTED;
       return -1;
     }
@@ -455,7 +456,7 @@ int imap_open_connection (IMAP_DATA *idata, CONNECTION *conn)
   else
   {
     imap_error ("imap_open_connection()", buf);
-    mutt_socket_close_connection (conn);
+    mutt_socket_close (conn);
     idata->state = IMAP_DISCONNECTED;
     return -1;
   }
@@ -540,7 +541,7 @@ int imap_open_mailbox (CONTEXT *ctx)
     return -1;
   }
 
-  conn = mutt_socket_select_connection (&mx, 0);
+  conn = mutt_socket_find (&mx, 0);
   idata = CONN_DATA;
 
   if (!idata || (idata->state != IMAP_AUTHENTICATED))
@@ -551,7 +552,7 @@ int imap_open_mailbox (CONTEXT *ctx)
       /* We need to create a new connection, the current one isn't useful */
       idata = safe_calloc (1, sizeof (IMAP_DATA));
 
-      conn = mutt_socket_select_connection (&mx, 1);
+      conn = mutt_socket_find (&mx, 1);
       conn->data = idata;
       idata->conn = conn;
     }
@@ -721,7 +722,7 @@ int imap_select_mailbox (CONTEXT* ctx, const char* path)
     return -1;
 
   /* and that it's on the same server as the current folder */
-  conn = mutt_socket_select_connection (&mx, 0);
+  conn = mutt_socket_find (&mx, 0);
   if (!CTX_DATA || !CONN_DATA || (CTX_DATA->conn != CONN_DATA->conn))
   {
     dprint(2, (debugfile,
@@ -755,7 +756,7 @@ int imap_open_mailbox_append (CONTEXT *ctx)
 
   ctx->magic = M_IMAP;
 
-  conn = mutt_socket_select_connection (&mx, 0);
+  conn = mutt_socket_find (&mx, 0);
   idata = CONN_DATA;
 
   if (!idata || (idata->state == IMAP_DISCONNECTED))
@@ -838,7 +839,7 @@ int imap_close_connection (CONTEXT *ctx)
     while (mutt_strncmp (seq, buf, SEQLEN) != 0);
     mutt_clear_error ();
   }
-  mutt_socket_close_connection (CTX_DATA->conn);
+  mutt_socket_close (CTX_DATA->conn);
   CTX_DATA->state = IMAP_DISCONNECTED;
   CTX_DATA->conn->data = NULL;
   return 0;
@@ -1197,7 +1198,7 @@ int imap_mailbox_check (char *path, int new)
   if (imap_parse_path (path, &mx))
     return -1;
 
-  conn = mutt_socket_select_connection (&mx, 0);
+  conn = mutt_socket_find (&mx, 0);
   idata = CONN_DATA;
 
   if (!idata || (idata->state == IMAP_DISCONNECTED))
@@ -1377,7 +1378,7 @@ int imap_subscribe (char *path, int subscribe)
   if (imap_parse_path (path, &mx))
     return (-1);
 
-  conn = mutt_socket_select_connection (&mx, 0);
+  conn = mutt_socket_find (&mx, 0);
   idata = CONN_DATA;
 
   if (!idata || (idata->state == IMAP_DISCONNECTED))
@@ -1433,7 +1434,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
     return -1;
   }
 
-  conn = mutt_socket_select_connection (&mx, 0);
+  conn = mutt_socket_find (&mx, 0);
   idata = CONN_DATA;
 
   /* don't open a new socket just for completion */

@@ -66,7 +66,7 @@ int imap_init_browse (char *path, struct browser_state *state)
 
   strfcpy (list_cmd, option (OPTIMAPLSUB) ? "LSUB" : "LIST", sizeof (list_cmd));
 
-  conn = mutt_socket_select_connection (&mx, 0);
+  conn = mutt_socket_find (&mx, 0);
   idata = CONN_DATA;
 
   if (!idata || (idata->state == IMAP_DISCONNECTED))
