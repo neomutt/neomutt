@@ -348,8 +348,10 @@ int wcwidth (wchar_t wc)
     if (!charset_is_ja)
     {
       /* 8-bit case */
-      if (0 <= wc && wc < 256)
-	return IsPrint (wc) ? 1 : -1;
+      if (!wc)
+	return 0;
+      else if ((0 <= wc && wc < 256) && IsPrint (wc))
+	return 1;
       else
 	return -1;
     }

@@ -45,6 +45,9 @@ static int my_wcwidth (wchar_t wc)
   return 10;
 }
 
+/* combining mark / non-spacing character */
+#define COMB_CHAR(wc) (IsWPrint (wc) && !wcwidth (wc))
+
 static int my_wcswidth (const wchar_t *s, size_t n)
 {
   int w = 0;
@@ -283,7 +286,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	  else
 	  {
 	    i = state->curpos;
-	    while (i && !wcwidth (state->wbuf[i - 1]))
+	    while (i && COMB_CHAR (state->wbuf[i - 1]))
 	      --i;
 	    if (i)
 	      --i;
@@ -314,7 +317,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	    BEEP ();
 	  else
 	  {
-	    while (state->curpos && !wcwidth (state->wbuf[state->curpos - 1]))
+	    while (state->curpos && COMB_CHAR (state->wbuf[state->curpos - 1]))
 	      state->curpos--;
 	    if (state->curpos)
 	      state->curpos--;
@@ -327,7 +330,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	  else
 	  {
 	    ++state->curpos;
-	    while (state->curpos < state->lastchar && !wcwidth (state->wbuf[state->curpos]))
+	    while (state->curpos < state->lastchar && COMB_CHAR (state->wbuf[state->curpos]))
 	      ++state->curpos;
 	  }
 	  break;
@@ -388,11 +391,11 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	  else
 	  {
 	    i = state->curpos;
-	    while (i < state->lastchar && !wcwidth (state->wbuf[i]))
+	    while (i < state->lastchar && COMB_CHAR (state->wbuf[i]))
 	      ++i;
 	    if (i < state->lastchar)
 	      ++i;
-	    while (i < state->lastchar && !wcwidth (state->wbuf[i]))
+	    while (i < state->lastchar && COMB_CHAR (state->wbuf[i]))
 	      ++i;
 	    memmove (state->wbuf + state->curpos, state->wbuf + i, (state->lastchar - i) * sizeof (wchar_t));
 	    state->lastchar -= i - state->curpos;
