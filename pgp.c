@@ -419,6 +419,7 @@ static int pgp_check_traditional_one_body (FILE *fp, BODY *b, int tagged_only)
   
   short sgn = 0;
   short enc = 0;
+  short key = 0;
   
   if (b->type != TYPETEXT)
     return 0;
@@ -447,18 +448,25 @@ static int pgp_check_traditional_one_body (FILE *fp, BODY *b, int tagged_only)
 	enc = 1;
       else if (mutt_strcmp ("SIGNED MESSAGE-----\n", buf + 15) == 0)
 	sgn = 1;
+      else if (mutt_strcmp ("PUBLIC KEY BLOCK-----\n", buf + 15) == 0)
+	key = 1;
     }
   }
   safe_fclose (&tfp);
   unlink (tempfile);
 
-  if (!enc && !sgn)
+  if (!enc && !sgn && !key)
     return 0;
 
   /* fix the content type */
   
   mutt_set_parameter ("format", "fixed", &b->parameter);
-  mutt_set_parameter ("x-action", enc ? "pgp-encrypted" : "pgp-signed", &b->parameter);
+  if (enc)
+    mutt_set_parameter ("x-action", "pgp-encrypted", &b->parameter);
+  else if (sgn)
+    mutt_set_parameter ("x-action", "pgp-signed", &b->parameter);
+  else if (key)
+    mutt_set_parameter ("x-action", "pgp-keys", &b->parameter);
   
   return 1;
 }
@@ -532,6 +540,8 @@ int mutt_is_application_pgp (BODY *m)
       t |= PGPSIGN;
     else if (p && !ascii_strncasecmp ("pgp-encrypt", p, 11))
       t |= PGPENCRYPT;
+    else if (p && !ascii_strncasecmp ("pgp-keys", p, 7))
+      t |= PGPKEY;
   }
   return t;
 }
