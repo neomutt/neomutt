@@ -1,3 +1,8 @@
+2003-04-15 13:17:05  René Clerc  <rene@clerc.nl>  (roessler)
+
+	* compose.c: Fix two more cases in which ctrl-G is interpreted
+	as M_YES.
+
 2003-04-15 09:52:06  Dale Woolridge  <dale-flea-mutt-bug@woolridge.org>  (roessler)
 
 	* compose.c: The "sign (a)s" code strips the pgp application
