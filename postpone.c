@@ -540,17 +540,19 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   FREE (&newhdr->env->mail_followup_to); /* really? */
 
   /* decrypt pgp/mime encoded messages */
-  /* XXX - what happens with S/MIME encrypted messages?!?!?  - tlr, 020909*/
-  if ((WithCrypto & APPLICATION_PGP)
-      && (hdr->security & APPLICATION_PGP) 
+
+  if ((WithCrypto & (APPLICATION_PGP|APPLICATION_SMIME) & hdr->security)
       && mutt_is_multipart_encrypted (newhdr->content))
   {
-    newhdr->security |= PGPENCRYPT;
-    if (!crypt_valid_passphrase(APPLICATION_PGP))
+    int ccap = WithCrypto & (APPLICATION_PGP|APPLICATION_SMIME) & hdr->security;
+    newhdr->security |= ENCRYPT | ccap;
+    if (!crypt_valid_passphrase (ccap))
       goto err;
 
-    mutt_message _("Invoking PGP...");
-    if (crypt_pgp_decrypt_mime (fp, &bfp, newhdr->content, &b) == -1 || b == NULL)
+    mutt_message _("Decrypting message...");
+    if (((ccap & APPLICATION_PGP) && crypt_pgp_decrypt_mime (fp, &bfp, newhdr->content, &b) == -1) 
+	|| ((ccap & APPLICATION_SMIME) && crypt_smime_decrypt_mime (fp, &bfp, newhdr->content, &b) == -1) 
+	|| b == NULL)
     {
  err:
       mx_close_message (&msg);
@@ -584,6 +586,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
     mutt_free_body (&newhdr->content->parts->next);
     newhdr->content = mutt_remove_multipart (newhdr->content);
   }
+
 
   /* 
    * We don't need no primary multipart.
@@ -642,7 +645,20 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
       goto bail;
 
     
-    mutt_decode_attachment (b, &s);
+    if ((WithCrypto & APPLICATION_PGP) 
+	&& (mutt_is_application_pgp (b) & (ENCRYPT|SIGN)))
+    {
+      
+      mutt_body_handler (b, &s);
+
+      newhdr->security |= mutt_is_application_pgp (newhdr->content);
+
+      b->type = TYPETEXT;
+      mutt_str_replace (&b->subtype, "plain");
+      mutt_delete_parameter ("x-action", &b->parameter);
+    }
+    else
+      mutt_decode_attachment (b, &s);
 
     if (safe_fclose (&s.fpout) != 0)
       goto bail;
@@ -654,6 +670,24 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 
     mutt_free_body (&b->parts);
     if (b->hdr) b->hdr->content = NULL; /* avoid dangling pointer */
+  }
+
+  /* Fix encryption flags. */
+  
+  /* No inline if multipart. */
+  if (WithCrypto && (newhdr->security & INLINE) && newhdr->content->next)
+    newhdr->security &= ~INLINE;
+  
+  /* Do we even support multiple mechanisms? */
+  newhdr->security &= WithCrypto | ~(APPLICATION_PGP|APPLICATION_SMIME);
+  
+  /* Theoretically, both could be set. Take the one the user wants to set by default. */
+  if ((newhdr->security & APPLICATION_PGP) && (newhdr->security & APPLICATION_SMIME))
+  {
+    if (option (OPTSMIMEISDEFAULT))
+      newhdr->security &= ~APPLICATION_PGP;
+    else
+      newhdr->security &= ~APPLICATION_SMIME;
   }
 
   rv = 0;
