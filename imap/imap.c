@@ -54,6 +54,17 @@ static int imap_check_acl (IMAP_DATA *idata);
 static int imap_check_capabilities (IMAP_DATA *idata);
 static int imap_create_mailbox (IMAP_DATA *idata, char *mailbox);
 
+void imap_error (const char *where, const char *msg)
+{
+  mutt_error (_("imap_error(): unexpected response in %s: %s\n"), where, msg);
+}
+
+void imap_set_logout (CONTEXT *ctx)
+{
+  if (CTX_DATA)
+    CTX_DATA->status = IMAP_LOGOUT;
+}
+
 void imap_make_sequence (char *buf, size_t buflen)
 {
   static int sequence = 0;
@@ -62,11 +73,6 @@ void imap_make_sequence (char *buf, size_t buflen)
 
   if (sequence > 9999)
     sequence = 0;
-}
-
-void imap_error (const char *where, const char *msg)
-{
-  mutt_error (_("imap_error(): unexpected response in %s: %s\n"), where, msg);
 }
 
 /* imap_parse_date: date is of the form: DD-MMM-YYYY HH:MM:SS +ZZzz */
@@ -354,7 +360,7 @@ int imap_handle_untagged (IMAP_DATA *idata, char *s)
   }
   else
   {
-    dprint (1, (debugfile, "imap_unhandle_untagged(): unhandled request: %s\n",
+    dprint (1, (debugfile, "imap_handle_untagged(): unhandled request: %s\n",
 		s));
   }
 
@@ -1277,7 +1283,64 @@ int imap_sync_mailbox (CONTEXT *ctx, int expunge)
   char seq[8];
   char buf[LONG_STRING];
   char flags[LONG_STRING];
+  char tmp[LONG_STRING];
   int n;
+  int setstart = 0;
+
+  if (CTX_DATA->state != IMAP_SELECTED)
+  {
+    dprint (2, (debugfile, "imap_sync_mailbox: no mailbox selected\n"));
+    return -1;
+  }
+  
+  /* if we are expunging anyway, we can do deleted messages very quickly... */
+  if (expunge && mutt_bit_isset (CTX_DATA->rights, IMAP_ACL_DELETE))
+  {
+    buf[0] = '\0';
+    for (n = 0; n < ctx->msgcount; n++)
+    {
+      if (ctx->hdrs[n]->changed && ctx->hdrs[n]->deleted)
+      {
+        if (setstart == 0)
+        {
+          setstart = n+1;
+          if (!buf[0])
+            snprintf (buf, sizeof (buf), "%u", n+1);
+          else
+          {
+            strncpy (tmp, buf, sizeof (tmp));
+            snprintf (buf, sizeof (buf), "%s,%u", tmp, n+1);
+          }
+        }
+        /* tie up if the last message is also deleted */
+        else if (n == ctx->msgcount-1)
+        {
+          strncpy (tmp, buf, sizeof (tmp));
+          snprintf (buf, sizeof (buf), "%s:%u", tmp, n+1);
+        }
+        /* the normal flag update can skip this message */
+        ctx->hdrs[n]->changed = 0;
+      }
+      else if (setstart && (n > setstart))
+      {
+        setstart = 0;
+        strncpy (tmp, buf, sizeof (tmp));
+        snprintf (buf, sizeof (buf), "%s:%u", tmp, n);
+      }
+    }
+    /* if we have a message set, then let's delete */
+    if (buf[0])
+    {
+      snprintf (tmp, sizeof (tmp), _("Marking %d messages for deletion..."), ctx->deleted);
+      mutt_message (tmp);
+      imap_make_sequence (seq, sizeof (seq));
+      snprintf (tmp, sizeof (tmp), "%s STORE %s +FLAGS.SILENT (\\Deleted)\r\n",
+        seq, buf);
+      if (imap_exec (buf, sizeof (buf), CTX_DATA, seq, tmp, 0) != 0)
+        /* continue, let regular store try before giving up */
+        dprint(2, (debugfile, "imap_sync_mailbox: fast delete failed\n"));
+    }
+  }
 
   /* save status changes */
   for (n = 0; n < ctx->msgcount; n++)
@@ -1337,7 +1400,20 @@ int imap_sync_mailbox (CONTEXT *ctx, int expunge)
 
   if (expunge == 1)
   {
-    if (mutt_bit_isset(CTX_DATA->rights, IMAP_ACL_DELETE))
+    /* expunge is implicit if closing */
+    if (ctx->closing)
+    {
+      mutt_message _("Closing mailbox...");
+      imap_make_sequence (seq, sizeof (seq));
+      snprintf (buf, sizeof (buf), "%s CLOSE\r\n", seq);
+      if (imap_exec (buf, sizeof (buf), CTX_DATA, seq, buf, 0) != 0)
+      {
+        imap_error ("imap_sync_mailbox()", buf);
+        return -1;
+      }
+      CTX_DATA->state = IMAP_AUTHENTICATED;
+    }
+    else if (mutt_bit_isset(CTX_DATA->rights, IMAP_ACL_DELETE))
     {
       mutt_message _("Expunging messages from server...");
       CTX_DATA->status = IMAP_EXPUNGE;
@@ -1346,7 +1422,7 @@ int imap_sync_mailbox (CONTEXT *ctx, int expunge)
       if (imap_exec (buf, sizeof (buf), CTX_DATA, seq, buf, 0) != 0)
       {
         imap_error ("imap_sync_mailbox()", buf);
-        return (-1);
+        return -1;
       }
       CTX_DATA->status = 0;
     }
@@ -1387,7 +1463,8 @@ void imap_fastclose_mailbox (CONTEXT *ctx)
       safe_free ((void **) &CTX_DATA->cache[i].path);
     }
   }
-  if (CTX_DATA->status == IMAP_BYE || CTX_DATA->status == IMAP_FATAL)
+  if (CTX_DATA->status == IMAP_BYE || CTX_DATA->status == IMAP_FATAL ||
+    CTX_DATA->status == IMAP_LOGOUT)
   {
     imap_close_connection (ctx);
     CTX_DATA->conn->data = NULL;

@@ -24,6 +24,11 @@
 #include "sort.h"
 #include "buffy.h"
 
+#ifdef USE_IMAP
+#include "mx.h"
+#include "imap.h"
+#endif
+
 
 
 #ifdef _PGPPATH
@@ -746,6 +751,11 @@ int mutt_index_menu (void)
 
 	if (query_quadoption (OPT_QUIT, _("Quit Mutt?")) == M_YES)
 	{ 
+#ifdef USE_IMAP
+          /* logout gracefully from the IMAP server */
+          if (Context->magic == M_IMAP)
+            imap_set_logout (Context);
+#endif
 	  if (!Context || mx_close_mailbox (Context) == 0)
 	    done = 1;
 	  else
@@ -987,6 +997,10 @@ int mutt_index_menu (void)
 	{
 	  if (Context)
 	  {
+#ifdef USE_IMAP
+            if (Context->magic == M_IMAP)
+              imap_set_logout (Context);
+#endif
 	    mx_fastclose_mailbox (Context);
 	    safe_free ((void **) &Context);
 	  }

@@ -23,11 +23,13 @@
 #include "mailbox.h"
 
 int imap_check_mailbox (CONTEXT *ctx, int *index_hint);
+int imap_close_connection (CONTEXT *ctx);
 int imap_open_mailbox (CONTEXT *ctx);
 int imap_open_mailbox_append (CONTEXT *ctx);
 int imap_parse_path (char *path, char *host, size_t hlen, int *port,
   char **mbox);
 int imap_select_mailbox (CONTEXT *ctx, const char* path);
+void imap_set_logout (CONTEXT *ctx);
 int imap_sync_mailbox (CONTEXT *ctx, int expunge);
 void imap_fastclose_mailbox (CONTEXT *ctx);
 int imap_buffy_check (char *path);
