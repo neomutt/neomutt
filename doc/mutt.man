@@ -122,7 +122,7 @@ Default Reply-To address.
 Editor to invoke when the ~v command is given in the builtin editor.
 .SH FILES
 .PP
-.IP "~/.muttrc"
+.IP "~/.muttrc or ~/.mutt/muttrc"
 User configuration file.
 .IP "/etc/Muttrc"
 System-wide configuration file.
