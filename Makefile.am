@@ -195,7 +195,7 @@ mutt-dist: bump-version reldate changelog
 	$(MAKE) actual-dist
 
 update-doc: stamp-doc-rc
-	(cd doc && make update-doc)
+	(cd doc && $(MAKE) update-doc)
 
 Muttrc: stamp-doc-rc
 

@@ -124,7 +124,7 @@ dist distdir: Makefile $(DISTFILES)
 	done
 
 ../makedoc: $(top_srcdir)/makedoc.c
-	(cd .. && make makedoc)
+	(cd .. && $(MAKE) makedoc)
 
 # hack around autoconf mixing up patterns.
 at=@
