@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.5.8i\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-03-13 15:04+0100\n"
+"POT-Creation-Date: 2005-03-13 17:38+0100\n"
 "PO-Revision-Date: 2005-03-13 17:22+0100\n"
 "Last-Translator: Morten Bo Johansen <mojo@mbjnet.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
@@ -448,7 +448,8 @@ msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s"
 "(p)am?: "
 msgstr ""
-"Omv-sort. (d)ato/(f)ra/(a)nk./(e)mne/t(i)l/(t)råd/(u)sort/(s)tr./s(c)ore/s(p)am?: "
+"Omv-sort. (d)ato/(f)ra/(a)nk./(e)mne/t(i)l/(t)råd/(u)sort/(s)tr./s(c)ore/s(p)"
+"am?: "
 
 #: commands.c:509
 msgid ""
@@ -3418,8 +3419,8 @@ msgstr "PGP/M(i)ME"
 msgid "(i)nline"
 msgstr "in(t)egreret"
 
-#: pgp.c:1499
 # TJEK
+#: pgp.c:1499
 msgid "esabifc"
 msgstr "kusbitg"
 

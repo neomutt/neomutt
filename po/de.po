@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.5.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-12 21:58+0100\n"
+"POT-Creation-Date: 2005-03-13 17:38+0100\n"
 "PO-Revision-Date: 2005-02-13 18:28+0100\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
@@ -171,7 +171,7 @@ msgstr "Verzeichnis"
 msgid "Mask"
 msgstr "Maske"
 
-#: browser.c:381 browser.c:968
+#: browser.c:381 browser.c:989
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s ist kein Verzeichnis."
@@ -195,7 +195,7 @@ msgstr "Verzeichnis [%s], Dateimaske: %s"
 msgid "Can't attach a directory!"
 msgstr "Verzeichnisse können nicht angehängt werden!"
 
-#: browser.c:655 browser.c:1035 browser.c:1132
+#: browser.c:655 browser.c:1056 browser.c:1153
 msgid "No files match the file mask"
 msgstr "Es gibt keine zur Maske passenden Dateien"
 
@@ -204,56 +204,61 @@ msgid "Create is only supported for IMAP mailboxes"
 msgstr "Es können nur IMAP Mailboxen erzeugt werden"
 
 #: browser.c:880
+#, fuzzy
+msgid "Rename is only supported for IMAP mailboxes"
+msgstr "Es können nur IMAP Mailboxen erzeugt werden"
+
+#: browser.c:901
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Es können nur IMAP Mailboxen gelöscht werden"
 
-#: browser.c:888
+#: browser.c:909
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Mailbox \"%s\" wirklich löschen?"
 
-#: browser.c:902
+#: browser.c:923
 msgid "Mailbox deleted."
 msgstr "Mailbox gelöscht."
 
-#: browser.c:908
+#: browser.c:929
 msgid "Mailbox not deleted."
 msgstr "Mailbox nicht gelöscht."
 
-#: browser.c:927
+#: browser.c:948
 msgid "Chdir to: "
 msgstr "Verzeichnis wechseln nach: "
 
-#: browser.c:956 browser.c:1028
+#: browser.c:977 browser.c:1049
 msgid "Error scanning directory."
 msgstr "Fehler beim Einlesen des Verzeichnisses."
 
-#: browser.c:979
+#: browser.c:1000
 msgid "File Mask: "
 msgstr "Dateimaske: "
 
-#: browser.c:1051
+#: browser.c:1072
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr ""
 "Sortiere umgekehrt nach (D)atum, (a)lphabetisch, (G)röße, oder (n)icht? "
 
-#: browser.c:1052
+#: browser.c:1073
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Sortiere nach (D)atum, (a)lphabetisch, (G)röße oder (n)icht?"
 
-#: browser.c:1053
+#: browser.c:1074
 msgid "dazn"
 msgstr "dagn"
 
-#: browser.c:1119
+#: browser.c:1140
 msgid "New file name: "
 msgstr "Neuer Dateiname: "
 
-#: browser.c:1150
+#: browser.c:1171
 msgid "Can't view a directory"
 msgstr "Verzeichnisse können nicht angezeigt werden."
 
-#: browser.c:1167
+#: browser.c:1188
 msgid "Error trying to view file"
 msgstr "Fehler bei der Anzeige einer Datei"
 
@@ -739,20 +744,20 @@ msgstr "Nachricht kann nicht inline verschickt werden. PGP/MIME verwenden?"
 msgid "Mail not sent."
 msgstr "Nachricht nicht verschickt."
 
-#: crypt.c:395
+#: crypt.c:398
 msgid "S/MIME messages with no hints on content are unsupported."
 msgstr ""
 "S/MIME Nachrichten ohne Hinweis auf den Inhalt werden nicht unterstützt."
 
-#: crypt.c:614 crypt.c:658
+#: crypt.c:617 crypt.c:661
 msgid "Trying to extract PGP keys...\n"
 msgstr "Versuche PGP Keys zu extrahieren...\n"
 
-#: crypt.c:638 crypt.c:678
+#: crypt.c:641 crypt.c:681
 msgid "Trying to extract S/MIME certificates...\n"
 msgstr "Versuche S/MIME Zertifikate zu extrahieren...\n"
 
-#: crypt.c:799
+#: crypt.c:802
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
 "\n"
@@ -760,7 +765,7 @@ msgstr ""
 "[-- Fehler: Inkonsistente multipart/signed Struktur! --]\n"
 "\n"
 
-#: crypt.c:821
+#: crypt.c:824
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -769,7 +774,7 @@ msgstr ""
 "[-- Fehler: Unbekanntes multipart/signed Protokoll %s! --]\n"
 "\n"
 
-#: crypt.c:861
+#: crypt.c:864
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -779,7 +784,7 @@ msgstr ""
 "\n"
 
 #. Now display the signed body
-#: crypt.c:873
+#: crypt.c:876
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -787,7 +792,7 @@ msgstr ""
 "[-- Die folgenden Daten sind signiert --]\n"
 "\n"
 
-#: crypt.c:879
+#: crypt.c:882
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -795,7 +800,7 @@ msgstr ""
 "[-- Warnung: Kann keine Unterschriften finden. --]\n"
 "\n"
 
-#: crypt.c:885
+#: crypt.c:888
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -896,7 +901,7 @@ msgstr "Mailbox wurde von außen verändert."
 msgid "No tagged messages."
 msgstr "Keine markierten Nachrichten."
 
-#: curs_main.c:657 menu.c:901
+#: curs_main.c:657 menu.c:906
 msgid "Nothing to do."
 msgstr "Nichts zu erledigen."
 
@@ -1365,7 +1370,7 @@ msgstr "Authentifiziere (%s)..."
 msgid "SASL authentication failed."
 msgstr "SASL Authentifizierung fehlgeschlagen."
 
-#: imap/browse.c:68 imap/imap.c:542
+#: imap/browse.c:68 imap/imap.c:559
 #, c-format
 msgid "%s is an invalid IMAP path"
 msgstr "%s ist ein ungültiger IMAP Pfad"
@@ -1386,12 +1391,27 @@ msgstr "Ordner existiert nicht"
 msgid "Create mailbox: "
 msgstr "Erzeuge Mailbox: "
 
-#: imap/browse.c:286
+#: imap/browse.c:286 imap/browse.c:332
 msgid "Mailbox must have a name."
 msgstr "Mailbox muß einen Namen haben."
 
 #: imap/browse.c:294
 msgid "Mailbox created."
+msgstr "Mailbox erzeugt."
+
+#: imap/browse.c:325
+#, fuzzy, c-format
+msgid "Rename mailbox %s to: "
+msgstr "Erzeuge Mailbox: "
+
+#: imap/browse.c:338
+#, fuzzy, c-format
+msgid "Rename failed: %s"
+msgstr "SSL fehlgeschlagen: %s"
+
+#: imap/browse.c:343
+#, fuzzy
+msgid "Mailbox renamed."
 msgstr "Mailbox erzeugt."
 
 #: imap/command.c:294
@@ -1405,84 +1425,84 @@ msgstr "Mailbox geschlossen"
 msgid "Fatal error.  Message count is out of sync!"
 msgstr "Kritischer Fehler.  Nachrichtenzähler weicht ab!"
 
-#: imap/imap.c:151
+#: imap/imap.c:168
 #, c-format
 msgid "Closing connection to %s..."
 msgstr "Beende Verbindung zu %s..."
 
-#: imap/imap.c:311
+#: imap/imap.c:328
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "Dieser IMAP-Server ist veraltet und wird nicht von Mutt unterstützt."
 
-#: imap/imap.c:402
+#: imap/imap.c:419
 #, c-format
 msgid "Unexpected response received from server: %s"
 msgstr "Unerwartete Antwort vom Server empfangen: %s"
 
-#: imap/imap.c:422 pop_lib.c:284
+#: imap/imap.c:439 pop_lib.c:284
 msgid "Secure connection with TLS?"
 msgstr "Sichere Verbindung mittels TLS?"
 
-#: imap/imap.c:435 pop_lib.c:308
+#: imap/imap.c:452 pop_lib.c:308
 msgid "Could not negotiate TLS connection"
 msgstr "Konnte keine TLS-Verbindung realisieren"
 
-#: imap/imap.c:573
+#: imap/imap.c:590
 #, c-format
 msgid "Selecting %s..."
 msgstr "Wähle %s aus..."
 
-#: imap/imap.c:709
+#: imap/imap.c:726
 msgid "Error opening mailbox"
 msgstr "Fehler beim Öffnen der Mailbox"
 
 #. STATUS not supported
-#: imap/imap.c:763
+#: imap/imap.c:780
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Kann auf diesem IMAP-Server zu Mailboxen nichts hinzufügen."
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:772 imap/message.c:720 muttlib.c:1234
+#: imap/imap.c:789 imap/message.c:723 muttlib.c:1234
 #, c-format
 msgid "Create %s?"
 msgstr "%s erstellen?"
 
-#: imap/imap.c:958 pop.c:465
+#: imap/imap.c:975 pop.c:465
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Markiere %d Nachrichten zum Löschen..."
 
-#: imap/imap.c:967
+#: imap/imap.c:984
 msgid "Expunge failed"
 msgstr "Löschen fehlgeschlagen"
 
-#: imap/imap.c:982
+#: imap/imap.c:999
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Speichere Nachrichten-Status-Indikatoren... [%d/%d]"
 
-#: imap/imap.c:1066
+#: imap/imap.c:1083
 msgid "Expunging messages from server..."
 msgstr "Lösche Nachrichten auf dem Server..."
 
-#: imap/imap.c:1071
+#: imap/imap.c:1088
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE fehlgeschlagen"
 
-#: imap/imap.c:1105
+#: imap/imap.c:1122
 msgid "CLOSE failed"
 msgstr "CLOSE fehlgeschlagen"
 
-#: imap/imap.c:1348
+#: imap/imap.c:1365
 msgid "Bad mailbox name"
 msgstr "Unzulässiger Mailbox Name"
 
-#: imap/imap.c:1360
+#: imap/imap.c:1377
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Abonniere %s..."
 
-#: imap/imap.c:1362
+#: imap/imap.c:1379
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Beende Abonnement von %s..."
@@ -1517,16 +1537,16 @@ msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr ""
 "Der Nachrichtenindex ist fehlerhaft. Versuche die Mailbox neu zu öffnen."
 
-#: imap/message.c:586
+#: imap/message.c:589
 msgid "Uploading message ..."
 msgstr "Lade Nachrichten auf den Server..."
 
-#: imap/message.c:696
+#: imap/message.c:699
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Kopiere %d Nachrichten nach %s..."
 
-#: imap/message.c:700
+#: imap/message.c:703
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Kopiere Nachricht %d nach %s..."
@@ -2305,194 +2325,199 @@ msgid "{internal}"
 msgstr "{intern}"
 
 #: keymap_alldefs.h:151
+#, fuzzy
+msgid "rename the current mailbox (IMAP only)"
+msgstr "Lösche die aktuelle Mailbox (nur für IMAP)"
+
+#: keymap_alldefs.h:152
 msgid "reply to a message"
 msgstr "Beantworte Nachricht"
 
-#: keymap_alldefs.h:152
+#: keymap_alldefs.h:153
 msgid "use the current message as a template for a new one"
 msgstr "Verwende aktuelle Nachricht als Vorlage für neue Nachricht"
 
-#: keymap_alldefs.h:153
+#: keymap_alldefs.h:154
 msgid "save message/attachment to a file"
 msgstr "Speichere Nachricht/Anhang in Datei"
 
-#: keymap_alldefs.h:154
+#: keymap_alldefs.h:155
 msgid "search for a regular expression"
 msgstr "Suche nach regulärem Ausdruck"
 
-#: keymap_alldefs.h:155
+#: keymap_alldefs.h:156
 msgid "search backwards for a regular expression"
 msgstr "Suche rückwärts nach regulärem Ausdruck"
 
-#: keymap_alldefs.h:156
+#: keymap_alldefs.h:157
 msgid "search for next match"
 msgstr "Suche nächsten Treffer"
 
-#: keymap_alldefs.h:157
+#: keymap_alldefs.h:158
 msgid "search for next match in opposite direction"
 msgstr "Suche nächsten Treffer in umgekehrter Richtung"
 
-#: keymap_alldefs.h:158
+#: keymap_alldefs.h:159
 msgid "toggle search pattern coloring"
 msgstr "Schalte Suchtreffer-Hervorhebung ein/aus"
 
-#: keymap_alldefs.h:159
+#: keymap_alldefs.h:160
 msgid "invoke a command in a subshell"
 msgstr "Rufe Kommando in Shell auf"
 
-#: keymap_alldefs.h:160
+#: keymap_alldefs.h:161
 msgid "sort messages"
 msgstr "Sortiere Nachrichten"
 
-#: keymap_alldefs.h:161
+#: keymap_alldefs.h:162
 msgid "sort messages in reverse order"
 msgstr "Sortiere Nachrichten in umgekehrter Reihenfolge"
 
-#: keymap_alldefs.h:162
+#: keymap_alldefs.h:163
 msgid "tag the current entry"
 msgstr "Markiere aktuellen Eintrag"
 
-#: keymap_alldefs.h:163
+#: keymap_alldefs.h:164
 msgid "apply next function to tagged messages"
 msgstr "Wende nächste Funktion auf markierte Nachrichten an"
 
-#: keymap_alldefs.h:164
+#: keymap_alldefs.h:165
 msgid "apply next function ONLY to tagged messages"
 msgstr "Wende nächste Funktion NUR auf markierte Nachrichten an"
 
-#: keymap_alldefs.h:165
+#: keymap_alldefs.h:166
 msgid "tag the current subthread"
 msgstr "Markiere aktuellen Diskussionsfadenteil"
 
-#: keymap_alldefs.h:166
+#: keymap_alldefs.h:167
 msgid "tag the current thread"
 msgstr "Markiere aktuellen Diskussionsfaden"
 
-#: keymap_alldefs.h:167
+#: keymap_alldefs.h:168
 msgid "toggle a message's 'new' flag"
 msgstr "Setze/entferne den \"neu\"-Indikator einer Nachricht"
 
-#: keymap_alldefs.h:168
+#: keymap_alldefs.h:169
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "Schalte Sichern von Änderungen ein/aus"
 
-#: keymap_alldefs.h:169
+#: keymap_alldefs.h:170
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "Schalte zwischen Mailboxen und allen Dateien um"
 
-#: keymap_alldefs.h:170
+#: keymap_alldefs.h:171
 msgid "move to the top of the page"
 msgstr "Springe zum Anfang der Seite"
 
-#: keymap_alldefs.h:171
+#: keymap_alldefs.h:172
 msgid "undelete the current entry"
 msgstr "Entferne Löschmarkierung vom aktuellen Eintrag"
 
-#: keymap_alldefs.h:172
+#: keymap_alldefs.h:173
 msgid "undelete all messages in thread"
 msgstr "Entferne Löschmarkierung von allen Nachrichten im Diskussionsfaden"
 
-#: keymap_alldefs.h:173
+#: keymap_alldefs.h:174
 msgid "undelete all messages in subthread"
 msgstr "Entferne Löschmarkierung von allen Nachrichten im Diskussionsfadenteil"
 
-#: keymap_alldefs.h:174
+#: keymap_alldefs.h:175
 msgid "show the Mutt version number and date"
 msgstr "Zeige Versionsnummer an"
 
-#: keymap_alldefs.h:175
+#: keymap_alldefs.h:176
 msgid "view attachment using mailcap entry if necessary"
 msgstr "Zeige Anhang, wenn nötig via Mailcap"
 
-#: keymap_alldefs.h:176
+#: keymap_alldefs.h:177
 msgid "show MIME attachments"
 msgstr "Zeige MIME-Anhänge"
 
-#: keymap_alldefs.h:177
+#: keymap_alldefs.h:178
 msgid "display the keycode for a key press"
 msgstr "Zeige Tastatur-Code einer Taste"
 
-#: keymap_alldefs.h:178
+#: keymap_alldefs.h:179
 msgid "show currently active limit pattern"
 msgstr "Zeige derzeit aktives Begrenzungsmuster"
 
-#: keymap_alldefs.h:179
+#: keymap_alldefs.h:180
 msgid "collapse/uncollapse current thread"
 msgstr "Kollabiere/expandiere aktuellen Diskussionsfaden"
 
-#: keymap_alldefs.h:180
+#: keymap_alldefs.h:181
 msgid "collapse/uncollapse all threads"
 msgstr "Kollabiere/expandiere alle Diskussionsfäden"
 
-#: keymap_alldefs.h:181
+#: keymap_alldefs.h:182
 msgid "attach a PGP public key"
 msgstr "Hänge öffentlichen PGP-Schlüssel an"
 
-#: keymap_alldefs.h:182
+#: keymap_alldefs.h:183
 msgid "show PGP options"
 msgstr "Zeige PGP-Optionen"
 
-#: keymap_alldefs.h:183
+#: keymap_alldefs.h:184
 msgid "mail a PGP public key"
 msgstr "Verschicke öffentlichen PGP-Schlüssel"
 
-#: keymap_alldefs.h:184
+#: keymap_alldefs.h:185
 msgid "verify a PGP public key"
 msgstr "Prüfe öffentlichen PGP-Schlüssel"
 
-#: keymap_alldefs.h:185
+#: keymap_alldefs.h:186
 msgid "view the key's user id"
 msgstr "Zeige Nutzer-ID zu Schlüssel an"
 
-#: keymap_alldefs.h:186
+#: keymap_alldefs.h:187
 msgid "check for classic pgp"
 msgstr "Suche nach klassischem PGP"
 
-#: keymap_alldefs.h:187
+#: keymap_alldefs.h:188
 msgid "Accept the chain constructed"
 msgstr "Akzeptiere die erstellte Kette"
 
-#: keymap_alldefs.h:188
+#: keymap_alldefs.h:189
 msgid "Append a remailer to the chain"
 msgstr "Hänge einen Remailer an die Kette an"
 
-#: keymap_alldefs.h:189
+#: keymap_alldefs.h:190
 msgid "Insert a remailer into the chain"
 msgstr "Füge einen Remailer in die Kette ein"
 
-#: keymap_alldefs.h:190
+#: keymap_alldefs.h:191
 msgid "Delete a remailer from the chain"
 msgstr "Lösche einen Remailer aus der Kette"
 
-#: keymap_alldefs.h:191
+#: keymap_alldefs.h:192
 msgid "Select the previous element of the chain"
 msgstr "Wähle das vorhergehende Element der Kette aus"
 
-#: keymap_alldefs.h:192
+#: keymap_alldefs.h:193
 msgid "Select the next element of the chain"
 msgstr "Wähle das nächste Element der Kette aus"
 
-#: keymap_alldefs.h:193
+#: keymap_alldefs.h:194
 msgid "send the message through a mixmaster remailer chain"
 msgstr "Verschicke die Nachricht über eine Mixmaster Remailer Kette"
 
-#: keymap_alldefs.h:194
+#: keymap_alldefs.h:195
 msgid "make decrypted copy and delete"
 msgstr "Erzeuge dechiffrierte Kopie und lösche"
 
-#: keymap_alldefs.h:195
+#: keymap_alldefs.h:196
 msgid "make decrypted copy"
 msgstr "Erzeuge dechiffrierte Kopie"
 
-#: keymap_alldefs.h:196
+#: keymap_alldefs.h:197
 msgid "wipe passphrase(s) from memory"
 msgstr "Entferne Mantra(s) aus Speicher"
 
-#: keymap_alldefs.h:197
+#: keymap_alldefs.h:198
 msgid "extract supported public keys"
 msgstr "Extrahiere unterstützte öffentliche Schlüssel"
 
-#: keymap_alldefs.h:198
+#: keymap_alldefs.h:199
 msgid "show S/MIME options"
 msgstr "Zeige S/MIME Optionen"
 
@@ -2617,10 +2642,14 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> ]\n"
-"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] [...]\n"
-"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] [...]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
+"<file> ]\n"
+"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] "
+"[...]\n"
+"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] "
+"[...]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
+"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2762,72 +2791,72 @@ msgstr "Springe zu: "
 msgid "Invalid index number."
 msgstr "Ungültige Indexnummer."
 
-#: menu.c:429 menu.c:447 menu.c:483 menu.c:526 menu.c:542 menu.c:553
-#: menu.c:564 menu.c:606 menu.c:617 menu.c:630 menu.c:643 menu.c:1038
+#: menu.c:429 menu.c:450 menu.c:488 menu.c:531 menu.c:547 menu.c:558
+#: menu.c:569 menu.c:611 menu.c:622 menu.c:635 menu.c:648 menu.c:1043
 msgid "No entries."
 msgstr "Keine Einträge"
 
-#: menu.c:444
+#: menu.c:447
 msgid "You cannot scroll down farther."
 msgstr "Sie können nicht weiter nach unten gehen."
 
-#: menu.c:460
+#: menu.c:465
 msgid "You cannot scroll up farther."
 msgstr "Sie können nicht weiter nach oben gehen."
 
-#: menu.c:480
+#: menu.c:485
 msgid "You are on the last page."
 msgstr "Sie sind auf der letzten Seite."
 
-#: menu.c:504
+#: menu.c:509
 msgid "You are on the first page."
 msgstr "Sie sind auf der ersten Seite."
 
-#: menu.c:583
+#: menu.c:588
 msgid "First entry is shown."
 msgstr "Der erste Eintrag wird angezeigt."
 
-#: menu.c:603
+#: menu.c:608
 msgid "Last entry is shown."
 msgstr "Der letzte Eintrag wird angezeigt."
 
-#: menu.c:654
+#: menu.c:659
 msgid "You are on the last entry."
 msgstr "Sie sind auf dem letzten Eintrag."
 
-#: menu.c:665
+#: menu.c:670
 msgid "You are on the first entry."
 msgstr "Sie sind auf dem ersten Eintrag"
 
-#: menu.c:725 pattern.c:1242
+#: menu.c:730 pattern.c:1242
 msgid "Search for: "
 msgstr "Suche nach: "
 
-#: menu.c:726 pattern.c:1243
+#: menu.c:731 pattern.c:1243
 msgid "Reverse search for: "
 msgstr "Suche rückwärts nach: "
 
-#: menu.c:736 pattern.c:1275
+#: menu.c:741 pattern.c:1275
 msgid "No search pattern."
 msgstr "Kein Suchmuster."
 
-#: menu.c:766 pager.c:1931 pager.c:1947 pager.c:2055 pattern.c:1340
+#: menu.c:771 pager.c:1931 pager.c:1947 pager.c:2055 pattern.c:1340
 msgid "Not found."
 msgstr "Nicht gefunden."
 
-#: menu.c:890
+#: menu.c:895
 msgid "No tagged entries."
 msgstr "Keine markierten Einträge."
 
-#: menu.c:995
+#: menu.c:1000
 msgid "Search is not implemented for this menu."
 msgstr "In diesem Menü kann nicht gesucht werden."
 
-#: menu.c:1000
+#: menu.c:1005
 msgid "Jumping is not implemented for dialogs."
 msgstr "Springen in Dialogen ist nicht möglich."
 
-#: menu.c:1041
+#: menu.c:1046
 msgid "Tagging is not supported."
 msgstr "Markieren wird nicht unterstützt."
 
@@ -3396,25 +3425,25 @@ msgstr "KeyID für %s: "
 msgid "Can't invoke PGP"
 msgstr "Kann PGP nicht aufrufen"
 
-#: pgp.c:1491
+#: pgp.c:1496
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s, or (c)lear? "
 msgstr "PGP (v)erschl., (s)ign., sign. (a)ls, (b)eides, %s, (k)ein PGP? "
 
-#: pgp.c:1492
+#: pgp.c:1497
 msgid "PGP/M(i)ME"
 msgstr "PGP/M(i)ME"
 
-#: pgp.c:1492
+#: pgp.c:1497
 msgid "(i)nline"
 msgstr "(i)nline"
 
-#: pgp.c:1494
+#: pgp.c:1499
 msgid "esabifc"
 msgstr "vsabikc"
 
 #. sign (a)s
-#: pgp.c:1509 smime.c:1981
+#: pgp.c:1514 smime.c:1981
 msgid "Sign as: "
 msgstr "Signiere als: "
 
@@ -3992,16 +4021,16 @@ msgstr "%s ist keine normale Datei."
 msgid "Could not open %s"
 msgstr "Konnte %s nicht öffnen."
 
-#: sendlib.c:2057
+#: sendlib.c:2060
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Fehler %d beim Versand der Nachricht (%s)."
 
-#: sendlib.c:2063
+#: sendlib.c:2066
 msgid "Output of the delivery process"
 msgstr "Ausgabe des Auslieferungs-Prozesses"
 
-#: sendlib.c:2267
+#: sendlib.c:2272
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
 msgstr "Ungültige IDN %s bei der Vorbereitung von Resent-From."

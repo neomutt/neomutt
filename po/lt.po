@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutt 1.3.12i\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-12 21:58+0100\n"
+"POT-Creation-Date: 2005-03-13 17:38+0100\n"
 "PO-Revision-Date: 2000-11-29 21:22+0200\n"
 "Last-Translator: Gediminas Paulauskas <menesis@delfi.lt>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -176,7 +176,7 @@ msgstr "Pereiti"
 msgid "Mask"
 msgstr "Kaukë"
 
-#: browser.c:381 browser.c:968
+#: browser.c:381 browser.c:989
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s nëra katalogas."
@@ -200,7 +200,7 @@ msgstr "Katalogas [%s], Bylø kaukë: %s"
 msgid "Can't attach a directory!"
 msgstr "Negaliu prisegti katalogo!"
 
-#: browser.c:655 browser.c:1035 browser.c:1132
+#: browser.c:655 browser.c:1056 browser.c:1153
 msgid "No files match the file mask"
 msgstr "Në viena byla netinka bylø kaukei"
 
@@ -209,55 +209,60 @@ msgid "Create is only supported for IMAP mailboxes"
 msgstr "Kol kas sukurti gali tik IMAP paðto dëþutes"
 
 #: browser.c:880
+#, fuzzy
+msgid "Rename is only supported for IMAP mailboxes"
+msgstr "Kol kas sukurti gali tik IMAP paðto dëþutes"
+
+#: browser.c:901
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Kol kas iðtrinti gali tik IMAP paðto dëþutes"
 
-#: browser.c:888
+#: browser.c:909
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Tikrai iðtrinti paðto dëþutæ \"%s\"?"
 
-#: browser.c:902
+#: browser.c:923
 msgid "Mailbox deleted."
 msgstr "Paðto dëþutë iðtrinta."
 
-#: browser.c:908
+#: browser.c:929
 msgid "Mailbox not deleted."
 msgstr "Paðto dëþutë neiðtrinta."
 
-#: browser.c:927
+#: browser.c:948
 msgid "Chdir to: "
 msgstr "Pereiti á katalogà: "
 
-#: browser.c:956 browser.c:1028
+#: browser.c:977 browser.c:1049
 msgid "Error scanning directory."
 msgstr "Klaida skaitant katalogà."
 
-#: browser.c:979
+#: browser.c:1000
 msgid "File Mask: "
 msgstr "Bylø kaukë:"
 
-#: browser.c:1051
+#: browser.c:1072
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Atvirkðèiai rikiuoti pagal (d)atà, (v)ardà, d(y)dá ar (n)erikiuoti?"
 
-#: browser.c:1052
+#: browser.c:1073
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Rikiuoti pagal (d)atà, (v)ardà, d(y)dá ar (n)erikiuoti? "
 
-#: browser.c:1053
+#: browser.c:1074
 msgid "dazn"
 msgstr "dvyn"
 
-#: browser.c:1119
+#: browser.c:1140
 msgid "New file name: "
 msgstr "Naujos bylos vardas: "
 
-#: browser.c:1150
+#: browser.c:1171
 msgid "Can't view a directory"
 msgstr "Negaliu þiûrëti katalogo"
 
-#: browser.c:1167
+#: browser.c:1188
 msgid "Error trying to view file"
 msgstr "Klaida bandant þiûrëti bylà"
 
@@ -753,19 +758,19 @@ msgstr ""
 msgid "Mail not sent."
 msgstr "Laiðkas neiðsiøstas."
 
-#: crypt.c:395
+#: crypt.c:398
 msgid "S/MIME messages with no hints on content are unsupported."
 msgstr ""
 
-#: crypt.c:614 crypt.c:658
+#: crypt.c:617 crypt.c:661
 msgid "Trying to extract PGP keys...\n"
 msgstr ""
 
-#: crypt.c:638 crypt.c:678
+#: crypt.c:641 crypt.c:681
 msgid "Trying to extract S/MIME certificates...\n"
 msgstr ""
 
-#: crypt.c:799
+#: crypt.c:802
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
 "\n"
@@ -773,7 +778,7 @@ msgstr ""
 "[-- Klaida: Neteisinga multipart/signed struktûra! --]\n"
 "\n"
 
-#: crypt.c:821
+#: crypt.c:824
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -782,7 +787,7 @@ msgstr ""
 "[-- Klaida: Neþinomas multipart/signed protokolas %s! --]\n"
 "\n"
 
-#: crypt.c:861
+#: crypt.c:864
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -792,7 +797,7 @@ msgstr ""
 "\n"
 
 #. Now display the signed body
-#: crypt.c:873
+#: crypt.c:876
 #, fuzzy
 msgid ""
 "[-- The following data is signed --]\n"
@@ -801,7 +806,7 @@ msgstr ""
 "[-- Toliau einantys duomenys yra pasiraðyti --]\n"
 "\n"
 
-#: crypt.c:879
+#: crypt.c:882
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -809,7 +814,7 @@ msgstr ""
 "[-- Dëmesio: Negaliu rasti jokiø paraðø --]\n"
 "\n"
 
-#: crypt.c:885
+#: crypt.c:888
 #, fuzzy
 msgid ""
 "\n"
@@ -913,7 +918,7 @@ msgstr "Dëþutë buvo iðoriðkai pakeista.  Flagai gali bûti neteisingi."
 msgid "No tagged messages."
 msgstr "Nëra paþymëtø laiðkø."
 
-#: curs_main.c:657 menu.c:901
+#: curs_main.c:657 menu.c:906
 #, fuzzy
 msgid "Nothing to do."
 msgstr "Jungiuosi prie %s..."
@@ -1385,7 +1390,7 @@ msgstr "Autentikuojuosi (APOP)..."
 msgid "SASL authentication failed."
 msgstr "SASL autentikacija nepavyko."
 
-#: imap/browse.c:68 imap/imap.c:542
+#: imap/browse.c:68 imap/imap.c:559
 #, c-format
 msgid "%s is an invalid IMAP path"
 msgstr ""
@@ -1407,13 +1412,28 @@ msgstr "%s: nëra tokios spalvos"
 msgid "Create mailbox: "
 msgstr "Sukurti dëþutæ: "
 
-#: imap/browse.c:286
+#: imap/browse.c:286 imap/browse.c:332
 #, fuzzy
 msgid "Mailbox must have a name."
 msgstr "Dëþutë yra nepakeista."
 
 #: imap/browse.c:294
 msgid "Mailbox created."
+msgstr "Dëþutë sukurta."
+
+#: imap/browse.c:325
+#, fuzzy, c-format
+msgid "Rename mailbox %s to: "
+msgstr "Sukurti dëþutæ: "
+
+#: imap/browse.c:338
+#, fuzzy, c-format
+msgid "Rename failed: %s"
+msgstr "Nepavyko pasisveikinti."
+
+#: imap/browse.c:343
+#, fuzzy
+msgid "Mailbox renamed."
 msgstr "Dëþutë sukurta."
 
 #: imap/command.c:294
@@ -1428,88 +1448,88 @@ msgstr "Paðto dëþutë iðtrinta."
 msgid "Fatal error.  Message count is out of sync!"
 msgstr "Mirtina klaida.  Nesutampa laiðkø skaièius!"
 
-#: imap/imap.c:151
+#: imap/imap.c:168
 #, c-format
 msgid "Closing connection to %s..."
 msgstr "Uþdarau jungtá su %s..."
 
-#: imap/imap.c:311
+#: imap/imap.c:328
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "Ðis IMAP serveris yra senoviðkas. Mutt su juo neveikia."
 
-#: imap/imap.c:402
+#: imap/imap.c:419
 #, c-format
 msgid "Unexpected response received from server: %s"
 msgstr ""
 
-#: imap/imap.c:422 pop_lib.c:284
+#: imap/imap.c:439 pop_lib.c:284
 msgid "Secure connection with TLS?"
 msgstr ""
 
-#: imap/imap.c:435 pop_lib.c:308
+#: imap/imap.c:452 pop_lib.c:308
 msgid "Could not negotiate TLS connection"
 msgstr ""
 
-#: imap/imap.c:573
+#: imap/imap.c:590
 #, c-format
 msgid "Selecting %s..."
 msgstr "Parenku %s..."
 
-#: imap/imap.c:709
+#: imap/imap.c:726
 #, fuzzy
 msgid "Error opening mailbox"
 msgstr "Klaida raðant á paðto dëþutæ!"
 
 #. STATUS not supported
-#: imap/imap.c:763
+#: imap/imap.c:780
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Nepavyko pridurti prie IMAP dëþuèiø ðiame serveryje"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:772 imap/message.c:720 muttlib.c:1234
+#: imap/imap.c:789 imap/message.c:723 muttlib.c:1234
 #, c-format
 msgid "Create %s?"
 msgstr "Sukurti %s?"
 
-#: imap/imap.c:958 pop.c:465
+#: imap/imap.c:975 pop.c:465
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Paþymiu %d laiðkus iðtrintais..."
 
-#: imap/imap.c:967
+#: imap/imap.c:984
 #, fuzzy
 msgid "Expunge failed"
 msgstr "Nepavyko pasisveikinti."
 
-#: imap/imap.c:982
+#: imap/imap.c:999
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Iðsaugau laiðko bûsenos flagus... [%d/%d]"
 
-#: imap/imap.c:1066
+#: imap/imap.c:1083
 msgid "Expunging messages from server..."
 msgstr "Iðtuðtinu laiðkus ið serverio..."
 
-#: imap/imap.c:1071
+#: imap/imap.c:1088
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr ""
 
-#: imap/imap.c:1105
+#: imap/imap.c:1122
 #, fuzzy
 msgid "CLOSE failed"
 msgstr "Nepavyko pasisveikinti."
 
-#: imap/imap.c:1348
+#: imap/imap.c:1365
 #, fuzzy
 msgid "Bad mailbox name"
 msgstr "Sukurti dëþutæ: "
 
-#: imap/imap.c:1360
+#: imap/imap.c:1377
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Uþsakau %s..."
 
-#: imap/imap.c:1362
+#: imap/imap.c:1379
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Atsisakau %s..."
@@ -1542,16 +1562,16 @@ msgstr "Paimu laiðkà..."
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Laiðkø indeksas yra neteisingas. Bandyk ið naujo atidaryti dëþutæ."
 
-#: imap/message.c:586
+#: imap/message.c:589
 msgid "Uploading message ..."
 msgstr "Nusiunèiu laiðkà..."
 
-#: imap/message.c:696
+#: imap/message.c:699
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Kopijuoju %d laiðkus á %s..."
 
-#: imap/message.c:700
+#: imap/message.c:703
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Kopijuoju laiðkà %d á %s..."
@@ -2340,197 +2360,202 @@ msgid "{internal}"
 msgstr "{vidinë}"
 
 #: keymap_alldefs.h:151
+#, fuzzy
+msgid "rename the current mailbox (IMAP only)"
+msgstr "iðtrinti esamà dëþutæ (tik IMAP)"
+
+#: keymap_alldefs.h:152
 msgid "reply to a message"
 msgstr "atsakyti á laiðkà"
 
-#: keymap_alldefs.h:152
+#: keymap_alldefs.h:153
 msgid "use the current message as a template for a new one"
 msgstr "naudoti esamà laiðkà kaip ðablonà naujam"
 
-#: keymap_alldefs.h:153
+#: keymap_alldefs.h:154
 msgid "save message/attachment to a file"
 msgstr "iðsaugoti laiðkà/priedà á bylà"
 
-#: keymap_alldefs.h:154
+#: keymap_alldefs.h:155
 msgid "search for a regular expression"
 msgstr "ieðkoti reguliarios iðraiðkos"
 
-#: keymap_alldefs.h:155
+#: keymap_alldefs.h:156
 msgid "search backwards for a regular expression"
 msgstr "ieðkoti reguliarios iðraiðkos atgal"
 
-#: keymap_alldefs.h:156
+#: keymap_alldefs.h:157
 msgid "search for next match"
 msgstr "ieðkoti kito tinkamo"
 
-#: keymap_alldefs.h:157
+#: keymap_alldefs.h:158
 msgid "search for next match in opposite direction"
 msgstr "ieðkoti kito tinkamo prieðinga kryptimi"
 
-#: keymap_alldefs.h:158
+#: keymap_alldefs.h:159
 msgid "toggle search pattern coloring"
 msgstr "perjungti paieðkos pattern'o spalvojimà"
 
-#: keymap_alldefs.h:159
+#: keymap_alldefs.h:160
 msgid "invoke a command in a subshell"
 msgstr "kviesti komandà subshell'e"
 
-#: keymap_alldefs.h:160
+#: keymap_alldefs.h:161
 msgid "sort messages"
 msgstr "rikiuoti laiðkus"
 
-#: keymap_alldefs.h:161
+#: keymap_alldefs.h:162
 msgid "sort messages in reverse order"
 msgstr "rikiuoti laiðkus atvirkðèia tvarka"
 
-#: keymap_alldefs.h:162
+#: keymap_alldefs.h:163
 msgid "tag the current entry"
 msgstr "paþymëti esamà áraðà"
 
-#: keymap_alldefs.h:163
+#: keymap_alldefs.h:164
 msgid "apply next function to tagged messages"
 msgstr "pritaikyti kità funkcijà paþymëtiems laiðkams"
 
-#: keymap_alldefs.h:164
+#: keymap_alldefs.h:165
 #, fuzzy
 msgid "apply next function ONLY to tagged messages"
 msgstr "pritaikyti kità funkcijà paþymëtiems laiðkams"
 
-#: keymap_alldefs.h:165
+#: keymap_alldefs.h:166
 msgid "tag the current subthread"
 msgstr "paþymëti esamà subgijà"
 
-#: keymap_alldefs.h:166
+#: keymap_alldefs.h:167
 msgid "tag the current thread"
 msgstr "paþymëti esamà gijà"
 
-#: keymap_alldefs.h:167
+#: keymap_alldefs.h:168
 msgid "toggle a message's 'new' flag"
 msgstr "perjungti laiðko 'naujumo' flagà"
 
-#: keymap_alldefs.h:168
+#: keymap_alldefs.h:169
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "perjungti, ar dëþutë bus perraðoma"
 
-#: keymap_alldefs.h:169
+#: keymap_alldefs.h:170
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "perjungti, ar narðyti paðto dëþutes, ar visas bylas"
 
-#: keymap_alldefs.h:170
+#: keymap_alldefs.h:171
 msgid "move to the top of the page"
 msgstr "eiti á puslapio virðø"
 
-#: keymap_alldefs.h:171
+#: keymap_alldefs.h:172
 msgid "undelete the current entry"
 msgstr "sugràþinti esamà áraðà"
 
-#: keymap_alldefs.h:172
+#: keymap_alldefs.h:173
 msgid "undelete all messages in thread"
 msgstr "sugràþinti visus laiðkus gijoje"
 
-#: keymap_alldefs.h:173
+#: keymap_alldefs.h:174
 msgid "undelete all messages in subthread"
 msgstr "sugràþinti visus laiðkus subgijoje"
 
-#: keymap_alldefs.h:174
+#: keymap_alldefs.h:175
 msgid "show the Mutt version number and date"
 msgstr "parodyti Mutt versijos numerá ir datà"
 
-#: keymap_alldefs.h:175
+#: keymap_alldefs.h:176
 msgid "view attachment using mailcap entry if necessary"
 msgstr "rodyti priedà naudojant mailcap áraðà, jei reikia"
 
-#: keymap_alldefs.h:176
+#: keymap_alldefs.h:177
 msgid "show MIME attachments"
 msgstr "rodyti MIME priedus"
 
-#: keymap_alldefs.h:177
+#: keymap_alldefs.h:178
 msgid "display the keycode for a key press"
 msgstr ""
 
-#: keymap_alldefs.h:178
+#: keymap_alldefs.h:179
 msgid "show currently active limit pattern"
 msgstr "parodyti dabar aktyvø ribojimo pattern'à"
 
-#: keymap_alldefs.h:179
+#: keymap_alldefs.h:180
 msgid "collapse/uncollapse current thread"
 msgstr "sutraukti/iðskleisti esamà gijà"
 
-#: keymap_alldefs.h:180
+#: keymap_alldefs.h:181
 msgid "collapse/uncollapse all threads"
 msgstr "sutraukti/iðskleisti visas gijas"
 
-#: keymap_alldefs.h:181
+#: keymap_alldefs.h:182
 msgid "attach a PGP public key"
 msgstr "prisegti PGP vieðà raktà"
 
-#: keymap_alldefs.h:182
+#: keymap_alldefs.h:183
 msgid "show PGP options"
 msgstr "rodyti PGP parinktis"
 
-#: keymap_alldefs.h:183
+#: keymap_alldefs.h:184
 msgid "mail a PGP public key"
 msgstr "siøsti PGP vieðà raktà"
 
-#: keymap_alldefs.h:184
+#: keymap_alldefs.h:185
 msgid "verify a PGP public key"
 msgstr "patikrinti PGP vieðà raktà"
 
-#: keymap_alldefs.h:185
+#: keymap_alldefs.h:186
 msgid "view the key's user id"
 msgstr "þiûrëti rakto vartotojo id"
 
-#: keymap_alldefs.h:186
+#: keymap_alldefs.h:187
 msgid "check for classic pgp"
 msgstr ""
 
-#: keymap_alldefs.h:187
+#: keymap_alldefs.h:188
 msgid "Accept the chain constructed"
 msgstr "Priimti sukonstruotà grandinæ"
 
-#: keymap_alldefs.h:188
+#: keymap_alldefs.h:189
 msgid "Append a remailer to the chain"
 msgstr "Pridëti persiuntëjà á grandinæ"
 
-#: keymap_alldefs.h:189
+#: keymap_alldefs.h:190
 msgid "Insert a remailer into the chain"
 msgstr "Áterpti persiuntëjà á grandinæ"
 
-#: keymap_alldefs.h:190
+#: keymap_alldefs.h:191
 msgid "Delete a remailer from the chain"
 msgstr "Paðalinti persiuntëjà ið grandinës"
 
-#: keymap_alldefs.h:191
+#: keymap_alldefs.h:192
 msgid "Select the previous element of the chain"
 msgstr "Pasirinkti ankstesná elementà grandinëje"
 
-#: keymap_alldefs.h:192
+#: keymap_alldefs.h:193
 msgid "Select the next element of the chain"
 msgstr "Pasirinkti tolesná elementà grandinëje"
 
-#: keymap_alldefs.h:193
+#: keymap_alldefs.h:194
 msgid "send the message through a mixmaster remailer chain"
 msgstr "pasiøsti praneðimà per mixmaster persiuntëjø grandinæ"
 
-#: keymap_alldefs.h:194
+#: keymap_alldefs.h:195
 msgid "make decrypted copy and delete"
 msgstr "padaryti iððifruotà kopijà ir iðtrinti"
 
-#: keymap_alldefs.h:195
+#: keymap_alldefs.h:196
 msgid "make decrypted copy"
 msgstr "padaryti iððifruotà kopijà"
 
-#: keymap_alldefs.h:196
+#: keymap_alldefs.h:197
 #, fuzzy
 msgid "wipe passphrase(s) from memory"
 msgstr "uþmirðti PGP slaptà frazæ"
 
-#: keymap_alldefs.h:197
+#: keymap_alldefs.h:198
 #, fuzzy
 msgid "extract supported public keys"
 msgstr "iðtraukti PGP vieðus raktus"
 
-#: keymap_alldefs.h:198
+#: keymap_alldefs.h:199
 #, fuzzy
 msgid "show S/MIME options"
 msgstr "rodyti PGP parinktis"
@@ -2800,72 +2825,72 @@ msgstr "Ðokti á: "
 msgid "Invalid index number."
 msgstr "Blogas indekso numeris."
 
-#: menu.c:429 menu.c:447 menu.c:483 menu.c:526 menu.c:542 menu.c:553
-#: menu.c:564 menu.c:606 menu.c:617 menu.c:630 menu.c:643 menu.c:1038
+#: menu.c:429 menu.c:450 menu.c:488 menu.c:531 menu.c:547 menu.c:558
+#: menu.c:569 menu.c:611 menu.c:622 menu.c:635 menu.c:648 menu.c:1043
 msgid "No entries."
 msgstr "Nëra áraðø."
 
-#: menu.c:444
+#: menu.c:447
 msgid "You cannot scroll down farther."
 msgstr "Tu negali slinkti þemyn daugiau."
 
-#: menu.c:460
+#: menu.c:465
 msgid "You cannot scroll up farther."
 msgstr "Tu negali slinkti aukðtyn daugiau."
 
-#: menu.c:480
+#: menu.c:485
 msgid "You are on the last page."
 msgstr "Tu esi paskutiniame puslapyje."
 
-#: menu.c:504
+#: menu.c:509
 msgid "You are on the first page."
 msgstr "Tu esi pirmame puslapyje."
 
-#: menu.c:583
+#: menu.c:588
 msgid "First entry is shown."
 msgstr "Rodomas pirmas áraðas."
 
-#: menu.c:603
+#: menu.c:608
 msgid "Last entry is shown."
 msgstr "Rodomas paskutinis áraðas."
 
-#: menu.c:654
+#: menu.c:659
 msgid "You are on the last entry."
 msgstr "Tu esi ties paskutiniu áraðu."
 
-#: menu.c:665
+#: menu.c:670
 msgid "You are on the first entry."
 msgstr "Tu esi ties pirmu áraðu."
 
-#: menu.c:725 pattern.c:1242
+#: menu.c:730 pattern.c:1242
 msgid "Search for: "
 msgstr "Ieðkoti ko: "
 
-#: menu.c:726 pattern.c:1243
+#: menu.c:731 pattern.c:1243
 msgid "Reverse search for: "
 msgstr "Atgal ieðkoti ko: "
 
-#: menu.c:736 pattern.c:1275
+#: menu.c:741 pattern.c:1275
 msgid "No search pattern."
 msgstr "Jokio paieðkos pattern'o."
 
-#: menu.c:766 pager.c:1931 pager.c:1947 pager.c:2055 pattern.c:1340
+#: menu.c:771 pager.c:1931 pager.c:1947 pager.c:2055 pattern.c:1340
 msgid "Not found."
 msgstr "Nerasta."
 
-#: menu.c:890
+#: menu.c:895
 msgid "No tagged entries."
 msgstr "Nëra paþymëtø áraðø."
 
-#: menu.c:995
+#: menu.c:1000
 msgid "Search is not implemented for this menu."
 msgstr "Paieðka ðiam meniu neágyvendinta."
 
-#: menu.c:1000
+#: menu.c:1005
 msgid "Jumping is not implemented for dialogs."
 msgstr "Ðokinëjimas dialoguose neágyvendintas."
 
-#: menu.c:1041
+#: menu.c:1046
 msgid "Tagging is not supported."
 msgstr "Þymëjimas nepalaikomas."
 
@@ -3445,27 +3470,27 @@ msgstr "Ávesk rakto ID, skirtà %s: "
 msgid "Can't invoke PGP"
 msgstr "Negaliu kviesti PGP"
 
-#: pgp.c:1491
+#: pgp.c:1496
 #, fuzzy, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s, or (c)lear? "
 msgstr ""
 "(u)þðifruot, pa(s)iraðyt, pasiraðyt k(a)ip, a(b)u, (l)aiðke, ar (p)amirðti?"
 
-#: pgp.c:1492
+#: pgp.c:1497
 msgid "PGP/M(i)ME"
 msgstr ""
 
-#: pgp.c:1492
+#: pgp.c:1497
 msgid "(i)nline"
 msgstr ""
 
-#: pgp.c:1494
+#: pgp.c:1499
 #, fuzzy
 msgid "esabifc"
 msgstr "usablp"
 
 #. sign (a)s
-#: pgp.c:1509 smime.c:1981
+#: pgp.c:1514 smime.c:1981
 msgid "Sign as: "
 msgstr "Pasiraðyti kaip: "
 
@@ -4054,16 +4079,16 @@ msgstr "%s nëra paðto dëþutë."
 msgid "Could not open %s"
 msgstr "Negalëjau atidaryti %s"
 
-#: sendlib.c:2057
+#: sendlib.c:2060
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Klaida siunèiant laiðkà, klaidos kodas %d (%s)."
 
-#: sendlib.c:2063
+#: sendlib.c:2066
 msgid "Output of the delivery process"
 msgstr "Pristatymo proceso iðvestis"
 
-#: sendlib.c:2267
+#: sendlib.c:2272
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
 msgstr ""

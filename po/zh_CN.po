@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-12 21:58+0100\n"
+"POT-Creation-Date: 2005-03-13 17:38+0100\n"
 "PO-Revision-Date: 1999-12-20 20:41+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -174,7 +174,7 @@ msgstr "改变目录"
 msgid "Mask"
 msgstr "遮罩"
 
-#: browser.c:381 browser.c:968
+#: browser.c:381 browser.c:989
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s 不是一个目录"
@@ -198,7 +198,7 @@ msgstr "目录 [%s], 文件遮罩: %s"
 msgid "Can't attach a directory!"
 msgstr "无法附带目录！"
 
-#: browser.c:655 browser.c:1035 browser.c:1132
+#: browser.c:655 browser.c:1056 browser.c:1153
 msgid "No files match the file mask"
 msgstr "没有文件与文件遮罩相符"
 
@@ -208,55 +208,60 @@ msgid "Create is only supported for IMAP mailboxes"
 msgstr "只有 IMAP 邮箱才支持删除"
 
 #: browser.c:880
+#, fuzzy
+msgid "Rename is only supported for IMAP mailboxes"
+msgstr "只有 IMAP 邮箱才支持删除"
+
+#: browser.c:901
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "只有 IMAP 邮箱才支持删除"
 
-#: browser.c:888
+#: browser.c:909
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "真的要删除 \"%s\" 邮箱？"
 
-#: browser.c:902
+#: browser.c:923
 msgid "Mailbox deleted."
 msgstr "邮箱已删除。"
 
-#: browser.c:908
+#: browser.c:929
 msgid "Mailbox not deleted."
 msgstr "邮箱未被删除。"
 
-#: browser.c:927
+#: browser.c:948
 msgid "Chdir to: "
 msgstr "改变目录到："
 
-#: browser.c:956 browser.c:1028
+#: browser.c:977 browser.c:1049
 msgid "Error scanning directory."
 msgstr "无法扫描目录。"
 
-#: browser.c:979
+#: browser.c:1000
 msgid "File Mask: "
 msgstr "文件遮罩："
 
-#: browser.c:1051
+#: browser.c:1072
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "反向排序 (d)日期, (a)字元, (z)大小 或 (n)不排序 ? "
 
-#: browser.c:1052
+#: browser.c:1073
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "依照 (d)日期 (a)字元 (z)大小 来排序，或(n)不排序 ? "
 
-#: browser.c:1053
+#: browser.c:1074
 msgid "dazn"
 msgstr ""
 
-#: browser.c:1119
+#: browser.c:1140
 msgid "New file name: "
 msgstr "新档名："
 
-#: browser.c:1150
+#: browser.c:1171
 msgid "Can't view a directory"
 msgstr "无法显示目录"
 
-#: browser.c:1167
+#: browser.c:1188
 msgid "Error trying to view file"
 msgstr "无法试著显示文件"
 
@@ -759,19 +764,19 @@ msgstr ""
 msgid "Mail not sent."
 msgstr "信件没有寄出。"
 
-#: crypt.c:395
+#: crypt.c:398
 msgid "S/MIME messages with no hints on content are unsupported."
 msgstr ""
 
-#: crypt.c:614 crypt.c:658
+#: crypt.c:617 crypt.c:661
 msgid "Trying to extract PGP keys...\n"
 msgstr ""
 
-#: crypt.c:638 crypt.c:678
+#: crypt.c:641 crypt.c:681
 msgid "Trying to extract S/MIME certificates...\n"
 msgstr ""
 
-#: crypt.c:799
+#: crypt.c:802
 #, fuzzy
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
@@ -780,7 +785,7 @@ msgstr ""
 "[-- 错误：不一致的 multipart/signed 结构！ --]\n"
 "\n"
 
-#: crypt.c:821
+#: crypt.c:824
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -789,7 +794,7 @@ msgstr ""
 "[-- 错误：不明的 multipart/signed 协定 %s！ --]\n"
 "\n"
 
-#: crypt.c:861
+#: crypt.c:864
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -799,7 +804,7 @@ msgstr ""
 "\n"
 
 #. Now display the signed body
-#: crypt.c:873
+#: crypt.c:876
 #, fuzzy
 msgid ""
 "[-- The following data is signed --]\n"
@@ -808,7 +813,7 @@ msgstr ""
 "[-- 以下的资料已被签署 --]\n"
 "\n"
 
-#: crypt.c:879
+#: crypt.c:882
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -816,7 +821,7 @@ msgstr ""
 "[-- 警告：找不到任何的签名。 --]\n"
 "\n"
 
-#: crypt.c:885
+#: crypt.c:888
 #, fuzzy
 msgid ""
 "\n"
@@ -922,7 +927,7 @@ msgstr "信箱已被其他途径改变过。旗标可能有错误。"
 msgid "No tagged messages."
 msgstr "没有标记了的信件。"
 
-#: curs_main.c:657 menu.c:901
+#: curs_main.c:657 menu.c:906
 #, fuzzy
 msgid "Nothing to do."
 msgstr "正连接到 %s…"
@@ -1400,7 +1405,7 @@ msgstr "验证中 (GSSAPI)…"
 msgid "SASL authentication failed."
 msgstr "GSSAPI 验证失败。"
 
-#: imap/browse.c:68 imap/imap.c:542
+#: imap/browse.c:68 imap/imap.c:559
 #, c-format
 msgid "%s is an invalid IMAP path"
 msgstr ""
@@ -1425,7 +1430,7 @@ msgstr "%s：没有这种颜色"
 msgid "Create mailbox: "
 msgstr "打开信箱"
 
-#: imap/browse.c:286
+#: imap/browse.c:286 imap/browse.c:332
 #, fuzzy
 msgid "Mailbox must have a name."
 msgstr "信箱没有改变。"
@@ -1433,6 +1438,21 @@ msgstr "信箱没有改变。"
 #: imap/browse.c:294
 #, fuzzy
 msgid "Mailbox created."
+msgstr "邮箱已删除。"
+
+#: imap/browse.c:325
+#, fuzzy, c-format
+msgid "Rename mailbox %s to: "
+msgstr "打开信箱"
+
+#: imap/browse.c:338
+#, fuzzy, c-format
+msgid "Rename failed: %s"
+msgstr "登入失败。"
+
+#: imap/browse.c:343
+#, fuzzy
+msgid "Mailbox renamed."
 msgstr "邮箱已删除。"
 
 #: imap/command.c:294
@@ -1447,88 +1467,88 @@ msgstr "邮箱已删除。"
 msgid "Fatal error.  Message count is out of sync!"
 msgstr "严重错误。信件数量不协调！"
 
-#: imap/imap.c:151
+#: imap/imap.c:168
 #, fuzzy, c-format
 msgid "Closing connection to %s..."
 msgstr "正在关闭与 IMAP 伺服器的连线…"
 
-#: imap/imap.c:311
+#: imap/imap.c:328
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "这个 IMAP 伺服器已过时，Mutt 无法使用它。"
 
-#: imap/imap.c:402
+#: imap/imap.c:419
 #, c-format
 msgid "Unexpected response received from server: %s"
 msgstr ""
 
-#: imap/imap.c:422 pop_lib.c:284
+#: imap/imap.c:439 pop_lib.c:284
 msgid "Secure connection with TLS?"
 msgstr ""
 
-#: imap/imap.c:435 pop_lib.c:308
+#: imap/imap.c:452 pop_lib.c:308
 msgid "Could not negotiate TLS connection"
 msgstr ""
 
-#: imap/imap.c:573
+#: imap/imap.c:590
 #, c-format
 msgid "Selecting %s..."
 msgstr "选择 %s 中…"
 
-#: imap/imap.c:709
+#: imap/imap.c:726
 #, fuzzy
 msgid "Error opening mailbox"
 msgstr "写入信箱时发生错误！"
 
 #. STATUS not supported
-#: imap/imap.c:763
+#: imap/imap.c:780
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "无法附加在这个伺服器上的 IMAP 信箱"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:772 imap/message.c:720 muttlib.c:1234
+#: imap/imap.c:789 imap/message.c:723 muttlib.c:1234
 #, c-format
 msgid "Create %s?"
 msgstr "建立 %s？"
 
-#: imap/imap.c:958 pop.c:465
+#: imap/imap.c:975 pop.c:465
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "标签了的 %d 封信件删去了…"
 
-#: imap/imap.c:967
+#: imap/imap.c:984
 #, fuzzy
 msgid "Expunge failed"
 msgstr "登入失败。"
 
-#: imap/imap.c:982
+#: imap/imap.c:999
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "正在储存信件状态旗标… [%d/%d]"
 
-#: imap/imap.c:1066
+#: imap/imap.c:1083
 msgid "Expunging messages from server..."
 msgstr "正在删除伺服器上的信件…"
 
-#: imap/imap.c:1071
+#: imap/imap.c:1088
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr ""
 
-#: imap/imap.c:1105
+#: imap/imap.c:1122
 #, fuzzy
 msgid "CLOSE failed"
 msgstr "登入失败。"
 
-#: imap/imap.c:1348
+#: imap/imap.c:1365
 #, fuzzy
 msgid "Bad mailbox name"
 msgstr "打开信箱"
 
-#: imap/imap.c:1360
+#: imap/imap.c:1377
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "订阅 %s…"
 
-#: imap/imap.c:1362
+#: imap/imap.c:1379
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "取消订阅 %s…"
@@ -1562,17 +1582,17 @@ msgstr "寄出信件中…"
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr ""
 
-#: imap/message.c:586
+#: imap/message.c:589
 #, fuzzy
 msgid "Uploading message ..."
 msgstr "寄出信件中…"
 
-#: imap/message.c:696
+#: imap/message.c:699
 #, fuzzy, c-format
 msgid "Copying %d messages to %s..."
 msgstr "正在搬移已经读取的信件到 %s …"
 
-#: imap/message.c:700
+#: imap/message.c:703
 #, fuzzy, c-format
 msgid "Copying message %d to %s..."
 msgstr "写入信件到 %s …"
@@ -2372,202 +2392,207 @@ msgid "{internal}"
 msgstr "{内部的}"
 
 #: keymap_alldefs.h:151
+#, fuzzy
+msgid "rename the current mailbox (IMAP only)"
+msgstr "删除这个邮箱 (只适用于 IMAP)"
+
+#: keymap_alldefs.h:152
 msgid "reply to a message"
 msgstr "回覆一封信件"
 
-#: keymap_alldefs.h:152
+#: keymap_alldefs.h:153
 msgid "use the current message as a template for a new one"
 msgstr "用这封信件作为新信件的模板"
 
-#: keymap_alldefs.h:153
+#: keymap_alldefs.h:154
 msgid "save message/attachment to a file"
 msgstr "储存信件/附件到某个文件"
 
-#: keymap_alldefs.h:154
+#: keymap_alldefs.h:155
 msgid "search for a regular expression"
 msgstr "用正规表示式寻找"
 
-#: keymap_alldefs.h:155
+#: keymap_alldefs.h:156
 msgid "search backwards for a regular expression"
 msgstr "向后搜寻一个正规表示式"
 
-#: keymap_alldefs.h:156
+#: keymap_alldefs.h:157
 msgid "search for next match"
 msgstr "寻找下一个符合的资料"
 
-#: keymap_alldefs.h:157
+#: keymap_alldefs.h:158
 msgid "search for next match in opposite direction"
 msgstr "返方向搜寻下一个符合的资料"
 
-#: keymap_alldefs.h:158
+#: keymap_alldefs.h:159
 msgid "toggle search pattern coloring"
 msgstr "切换搜寻格式的颜色"
 
-#: keymap_alldefs.h:159
+#: keymap_alldefs.h:160
 msgid "invoke a command in a subshell"
 msgstr "在子 shell 执行指令"
 
-#: keymap_alldefs.h:160
+#: keymap_alldefs.h:161
 msgid "sort messages"
 msgstr "信件排序"
 
-#: keymap_alldefs.h:161
+#: keymap_alldefs.h:162
 msgid "sort messages in reverse order"
 msgstr "以相反的次序来做讯息排序"
 
-#: keymap_alldefs.h:162
+#: keymap_alldefs.h:163
 msgid "tag the current entry"
 msgstr "标记现在的记录"
 
-#: keymap_alldefs.h:163
+#: keymap_alldefs.h:164
 msgid "apply next function to tagged messages"
 msgstr "应用下一个功能到已标记的讯息"
 
-#: keymap_alldefs.h:164
+#: keymap_alldefs.h:165
 #, fuzzy
 msgid "apply next function ONLY to tagged messages"
 msgstr "应用下一个功能到已标记的讯息"
 
-#: keymap_alldefs.h:165
+#: keymap_alldefs.h:166
 msgid "tag the current subthread"
 msgstr "标记目前的子序列"
 
-#: keymap_alldefs.h:166
+#: keymap_alldefs.h:167
 msgid "tag the current thread"
 msgstr "标记目前的序列"
 
-#: keymap_alldefs.h:167
+#: keymap_alldefs.h:168
 msgid "toggle a message's 'new' flag"
 msgstr "切换将讯息切换为 'new' 旗标"
 
-#: keymap_alldefs.h:168
+#: keymap_alldefs.h:169
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "切换是否重新写入邮筒中"
 
-#: keymap_alldefs.h:169
+#: keymap_alldefs.h:170
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "切换是否浏览邮筒或所有的文件"
 
-#: keymap_alldefs.h:170
+#: keymap_alldefs.h:171
 msgid "move to the top of the page"
 msgstr "移到页首"
 
-#: keymap_alldefs.h:171
+#: keymap_alldefs.h:172
 msgid "undelete the current entry"
 msgstr "反删除现在的记录"
 
-#: keymap_alldefs.h:172
+#: keymap_alldefs.h:173
 msgid "undelete all messages in thread"
 msgstr "反删除这个序列中的所有信件"
 
-#: keymap_alldefs.h:173
+#: keymap_alldefs.h:174
 msgid "undelete all messages in subthread"
 msgstr "反删除这个子序列中的所有信件"
 
-#: keymap_alldefs.h:174
+#: keymap_alldefs.h:175
 msgid "show the Mutt version number and date"
 msgstr "显示 Mutt 的版本号码与日期"
 
-#: keymap_alldefs.h:175
+#: keymap_alldefs.h:176
 msgid "view attachment using mailcap entry if necessary"
 msgstr "如果需要的话使用 mailcap 浏览附件"
 
-#: keymap_alldefs.h:176
+#: keymap_alldefs.h:177
 msgid "show MIME attachments"
 msgstr "显示 MIME 附件"
 
-#: keymap_alldefs.h:177
+#: keymap_alldefs.h:178
 msgid "display the keycode for a key press"
 msgstr ""
 
-#: keymap_alldefs.h:178
+#: keymap_alldefs.h:179
 msgid "show currently active limit pattern"
 msgstr "显示目前有作用的限制样式"
 
-#: keymap_alldefs.h:179
+#: keymap_alldefs.h:180
 msgid "collapse/uncollapse current thread"
 msgstr "打开/关闭 目前的序列"
 
-#: keymap_alldefs.h:180
+#: keymap_alldefs.h:181
 msgid "collapse/uncollapse all threads"
 msgstr "打开/关闭 所有的序列"
 
-#: keymap_alldefs.h:181
+#: keymap_alldefs.h:182
 msgid "attach a PGP public key"
 msgstr "附带一把 PGP 公共钥匙"
 
-#: keymap_alldefs.h:182
+#: keymap_alldefs.h:183
 msgid "show PGP options"
 msgstr "显示 PGP 选项"
 
-#: keymap_alldefs.h:183
+#: keymap_alldefs.h:184
 msgid "mail a PGP public key"
 msgstr "寄出 PGP 公共钥匙"
 
-#: keymap_alldefs.h:184
+#: keymap_alldefs.h:185
 msgid "verify a PGP public key"
 msgstr "检验 PGP 公共钥匙"
 
-#: keymap_alldefs.h:185
+#: keymap_alldefs.h:186
 msgid "view the key's user id"
 msgstr "检阅这把钥匙的使用者 id"
 
-#: keymap_alldefs.h:186
+#: keymap_alldefs.h:187
 msgid "check for classic pgp"
 msgstr ""
 
-#: keymap_alldefs.h:187
+#: keymap_alldefs.h:188
 msgid "Accept the chain constructed"
 msgstr ""
 
-#: keymap_alldefs.h:188
+#: keymap_alldefs.h:189
 #, fuzzy
 msgid "Append a remailer to the chain"
 msgstr "删除某行上所有的字母"
 
-#: keymap_alldefs.h:189
+#: keymap_alldefs.h:190
 #, fuzzy
 msgid "Insert a remailer into the chain"
 msgstr "删除某行上所有的字母"
 
-#: keymap_alldefs.h:190
+#: keymap_alldefs.h:191
 #, fuzzy
 msgid "Delete a remailer from the chain"
 msgstr "删除某行上所有的字母"
 
-#: keymap_alldefs.h:191
+#: keymap_alldefs.h:192
 #, fuzzy
 msgid "Select the previous element of the chain"
 msgstr "删除某行上所有的字母"
 
-#: keymap_alldefs.h:192
+#: keymap_alldefs.h:193
 #, fuzzy
 msgid "Select the next element of the chain"
 msgstr "删除某行上所有的字母"
 
-#: keymap_alldefs.h:193
+#: keymap_alldefs.h:194
 msgid "send the message through a mixmaster remailer chain"
 msgstr ""
 
-#: keymap_alldefs.h:194
+#: keymap_alldefs.h:195
 msgid "make decrypted copy and delete"
 msgstr "制作解密的拷贝并且删除之"
 
-#: keymap_alldefs.h:195
+#: keymap_alldefs.h:196
 msgid "make decrypted copy"
 msgstr "制作一份解密的拷贝"
 
-#: keymap_alldefs.h:196
+#: keymap_alldefs.h:197
 #, fuzzy
 msgid "wipe passphrase(s) from memory"
 msgstr "清除记忆体中的 PGP 通行密码"
 
-#: keymap_alldefs.h:197
+#: keymap_alldefs.h:198
 #, fuzzy
 msgid "extract supported public keys"
 msgstr "撷取 PGP 公共钥匙"
 
-#: keymap_alldefs.h:198
+#: keymap_alldefs.h:199
 #, fuzzy
 msgid "show S/MIME options"
 msgstr "显示 PGP 选项"
@@ -2830,72 +2855,72 @@ msgstr "跳到："
 msgid "Invalid index number."
 msgstr "无效的索引编号。"
 
-#: menu.c:429 menu.c:447 menu.c:483 menu.c:526 menu.c:542 menu.c:553
-#: menu.c:564 menu.c:606 menu.c:617 menu.c:630 menu.c:643 menu.c:1038
+#: menu.c:429 menu.c:450 menu.c:488 menu.c:531 menu.c:547 menu.c:558
+#: menu.c:569 menu.c:611 menu.c:622 menu.c:635 menu.c:648 menu.c:1043
 msgid "No entries."
 msgstr "没有资料。"
 
-#: menu.c:444
+#: menu.c:447
 msgid "You cannot scroll down farther."
 msgstr "您无法再向下卷动了。"
 
-#: menu.c:460
+#: menu.c:465
 msgid "You cannot scroll up farther."
 msgstr "您无法再向上卷动了。"
 
-#: menu.c:480
+#: menu.c:485
 msgid "You are on the last page."
 msgstr "您现在在最后一页。"
 
-#: menu.c:504
+#: menu.c:509
 msgid "You are on the first page."
 msgstr "您现在在第一页。"
 
-#: menu.c:583
+#: menu.c:588
 msgid "First entry is shown."
 msgstr "正在显示第一项。"
 
-#: menu.c:603
+#: menu.c:608
 msgid "Last entry is shown."
 msgstr "正在显示最后一项。"
 
-#: menu.c:654
+#: menu.c:659
 msgid "You are on the last entry."
 msgstr "您现在在最后一项。"
 
-#: menu.c:665
+#: menu.c:670
 msgid "You are on the first entry."
 msgstr "您现在在第一项。"
 
-#: menu.c:725 pattern.c:1242
+#: menu.c:730 pattern.c:1242
 msgid "Search for: "
 msgstr "搜寻："
 
-#: menu.c:726 pattern.c:1243
+#: menu.c:731 pattern.c:1243
 msgid "Reverse search for: "
 msgstr "返向搜寻："
 
-#: menu.c:736 pattern.c:1275
+#: menu.c:741 pattern.c:1275
 msgid "No search pattern."
 msgstr "没有搜寻格式。"
 
-#: menu.c:766 pager.c:1931 pager.c:1947 pager.c:2055 pattern.c:1340
+#: menu.c:771 pager.c:1931 pager.c:1947 pager.c:2055 pattern.c:1340
 msgid "Not found."
 msgstr "没有找到。"
 
-#: menu.c:890
+#: menu.c:895
 msgid "No tagged entries."
 msgstr "没有已标记的记录。"
 
-#: menu.c:995
+#: menu.c:1000
 msgid "Search is not implemented for this menu."
 msgstr "这个选单中没有搜寻功能。"
 
-#: menu.c:1000
+#: menu.c:1005
 msgid "Jumping is not implemented for dialogs."
 msgstr "对话模式中不支持跳跃功能。"
 
-#: menu.c:1041
+#: menu.c:1046
 msgid "Tagging is not supported."
 msgstr "不支持标记功能。"
 
@@ -3482,26 +3507,26 @@ msgstr "请输入 %s 的钥匙 ID："
 msgid "Can't invoke PGP"
 msgstr "不能执行 PGP"
 
-#: pgp.c:1491
+#: pgp.c:1496
 #, fuzzy, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s, or (c)lear? "
 msgstr "(e)加密, (s)签名, (a)用别的身份签, (b)两者皆要, (i)nline, 或 (f)放弃？"
 
-#: pgp.c:1492
+#: pgp.c:1497
 msgid "PGP/M(i)ME"
 msgstr ""
 
-#: pgp.c:1492
+#: pgp.c:1497
 msgid "(i)nline"
 msgstr ""
 
-#: pgp.c:1494
+#: pgp.c:1499
 #, fuzzy
 msgid "esabifc"
 msgstr "esabif"
 
 #. sign (a)s
-#: pgp.c:1509 smime.c:1981
+#: pgp.c:1514 smime.c:1981
 msgid "Sign as: "
 msgstr "签名的身份是："
 
@@ -4106,16 +4131,16 @@ msgstr "%s 不是信箱。"
 msgid "Could not open %s"
 msgstr "无法打开 %s"
 
-#: sendlib.c:2057
+#: sendlib.c:2060
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "寄送讯息出现错误，子程序已结束 %d (%s)。"
 
-#: sendlib.c:2063
+#: sendlib.c:2066
 msgid "Output of the delivery process"
 msgstr "Delivery process 的输出"
 
-#: sendlib.c:2267
+#: sendlib.c:2272
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
 msgstr ""
