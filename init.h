@@ -1672,7 +1672,7 @@ struct option_t MuttVars[] = {
   ** prefix'' operator.  If this variable is unset, when piping a list of
   ** tagged messages Mutt will concatenate the messages and will pipe them
   ** as a single folder.  When set, Mutt will pipe the messages one by one.
-  ** In both cases the the messages are piped in the current sorted order,
+  ** In both cases the messages are piped in the current sorted order,
   ** and the ``$$pipe_sep'' separator is added after each message.
   */
   { "pipe_decode",	DT_BOOL, R_NONE, OPTPIPEDECODE, 0 },
