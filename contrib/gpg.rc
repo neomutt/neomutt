@@ -49,7 +49,7 @@ set pgp_encrypt_only_command="pgpewrap gpg -v --batch --output - --encrypt --tex
 
 # create a pgp/mime encrypted and signed attachment
 # set pgp_encrypt_sign_command="pgpewrap gpg-2comp --passphrase-fd 0 -v --batch --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
-set pgp_encrypt_sign_command="pgpewrap gpg --passphrase-fd 0 -v --batch --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
+set pgp_encrypt_sign_command="pgpewrap gpg --passphrase-fd 0 -v --batch --textmode --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
 
 # import a key into the public key ring
 set pgp_import_command="gpg --no-verbose --import -v %f"
