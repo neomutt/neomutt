@@ -780,7 +780,7 @@ int mutt_index_menu (void)
 	  /* calculate the number of messages _above_ the cursor,
 	   * so we can keep the cursor on the current message
 	   */ 
-	  for (j = 0; j < menu->current; j++)
+	  for (j = 0; j <= menu->current; j++)
 	  {
 	    if (Context->hdrs[Context->v2r[j]]->deleted)
 	      dcount++;

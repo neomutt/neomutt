@@ -277,7 +277,7 @@ static int parse_charmap_line (char *line, CHARMAP * m, CHARDESC ** descrp)
     return CL_END;
   }
 
-  for (t = line; *t && isspace (*t); t++)
+  for (t = line; *t && isspace ((unsigned char) *t); t++)
     ;
 
   if (*t++ != '<')
@@ -302,10 +302,10 @@ static int parse_charmap_line (char *line, CHARMAP * m, CHARDESC ** descrp)
   descr->symbol = safe_strdup (t);
   fix_symbol (descr->symbol, m);
 
-  for (t = u; *t && isspace (*t); t++)
+  for (t = u; *t && isspace ((unsigned char) *t); t++)
     ;
 
-  for (u = t; *u && !isspace (*u); u++)
+  for (u = t; *u && !isspace ((unsigned char) *u); u++)
     ;
 
   *u++ = 0;
