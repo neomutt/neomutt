@@ -1944,7 +1944,7 @@ int smime_send_menu (HEADER *msg, int *redraw)
 			     _("eswabf")))
   {
   case 1: /* (e)ncrypt */
-    msg->security |= ENCRYPT;
+    msg->security ^= ENCRYPT;
     break;
 
   case 3: /* encrypt (w)ith */
@@ -1977,7 +1977,7 @@ int smime_send_menu (HEADER *msg, int *redraw)
     if(!SmimeDefaultKey)
 	mutt_message("Can\'t sign: No key specified. use sign(as).");
     else
-	msg->security |= SIGN;
+	msg->security ^= SIGN;
     break;
 
   case 4: /* sign (a)s */
@@ -1998,7 +1998,7 @@ int smime_send_menu (HEADER *msg, int *redraw)
     break;
 
   case 5: /* (b)oth */
-    msg->security = ENCRYPT | SIGN;
+    msg->security |= (ENCRYPT | SIGN);
     break;
 
   case 6: /* (f)orget it */
