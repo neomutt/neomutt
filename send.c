@@ -428,18 +428,21 @@ static int include_reply (CONTEXT *ctx, HEADER *cur, FILE *out)
 static int default_to (ADDRESS **to, ENVELOPE *env, int flags)
 {
   char prompt[STRING];
-  int i = 0;
 
   if (flags && env->mail_followup_to)
   {
     snprintf (prompt, sizeof (prompt), _("Follow-up to %s%s?"),
 	      env->mail_followup_to->mailbox,
-	      env->mail_followup_to->next ? "..." : "");
+	      env->mail_followup_to->next ? ",..." : "");
 
-    if (query_quadoption (OPT_MFUPTO, prompt) == M_YES)
+    switch (query_quadoption (OPT_MFUPTO, prompt))
     {
+    case M_YES:
       rfc822_append (to, env->mail_followup_to);
       return 0;
+
+    case -1:
+      return -1; /* abort */
     }
   }
 
@@ -484,12 +487,19 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int flags)
       snprintf (prompt, sizeof (prompt), _("Reply to %s%s?"),
 		env->reply_to->mailbox, 
 		env->reply_to->next?",...":"");
-      if ((i = query_quadoption (OPT_REPLYTO, prompt)) == M_YES)
+      switch (query_quadoption (OPT_REPLYTO, prompt))
+      {
+      case M_YES:
 	rfc822_append (to, env->reply_to);
-      else if (i == M_NO)
+	break;
+
+      case M_NO:
 	rfc822_append (to, env->from);
-      else
+	break;
+
+      default:
 	return (-1); /* abort */
+      }
     }
     else
       rfc822_append (to, env->reply_to);
