@@ -38,11 +38,11 @@ while (<>) {
 	}
     } elsif ($_ =~ /^revision ([0-9.]*)/) {
 	$change->{revision} = $1;
-    } elsif ($_ =~ /^date: ([^; ]*) ([^; ]*);  author: ([^;]*);/) {
+    } elsif ($_ =~ /^date: ([^; ]*) ([^; ]*)( \+[0-9]+)?;  author: ([^;]*);/) {
 	$change->{date} = $1;
 	$change->{hour} = $2;
-	$change->{author} = $Authors{$3} ? $Authors{$3} : $3;
-	$change->{committed} = $3;
+	$change->{author} = $Authors{$3} ? $Authors{$3} : $4;
+	$change->{committed} = $4;
     } elsif ($_ =~ /^From: (.*)$/) {
 	$change->{author} = $1;
     } elsif ($change->{revision}) {
