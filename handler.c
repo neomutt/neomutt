@@ -1246,21 +1246,46 @@ static void external_body_handler (BODY *b, STATE *s)
   {
     if (s->flags & M_DISPLAY)
     {
-      fprintf (s->fpout, _("[-- This %s/%s attachment is deleted --]\n"),
+      char *length;
+      char pretty_size[10];
+
+      state_printf (s, _("[-- This %s/%s attachment "),
 	       TYPE(b->parts), b->parts->subtype);
+      length = mutt_get_parameter ("length", b->parameter);
+      if (length)
+      {
+	mutt_pretty_size (pretty_size, sizeof (pretty_size),
+			  strtol (length, NULL, 10));
+	state_printf (s, _("(size %s bytes) "), pretty_size);
+      }
+      state_puts (_("has been deleted --]\n"), s);
+
       if (expire != -1)
-	fprintf (s->fpout, _("[-- on %s --]\n"), expiration);
+	state_printf (s, _("[-- on %s --]\n"), expiration);
       mutt_copy_hdr (s->fpin, s->fpout, ftell (s->fpin), b->parts->offset,
 		     (option (OPTWEED) ? (CH_WEED | CH_REORDER) : 0) |
 		     CH_DECODE , NULL);
+    }
+  }
+  else if(expire < time(NULL))
+  {
+    if (s->flags & M_DISPLAY)
+    {
+      state_printf (s, _("[-- This %s/%s attachment is not included, --]\n"
+			 "[-- and the indicated external source has --]\n"
+			 "[-- expired. --]\n"),
+		    TYPE(b->parts), b->parts->subtype);
+      mutt_copy_hdr(s->fpin, s->fpout, ftell (s->fpin), b->parts->offset,
+		    (option (OPTWEED) ? (CH_WEED | CH_REORDER) : 0) |
+		    CH_DECODE, NULL);
     }
   }
   else
   {
     if (s->flags & M_DISPLAY)
     {
-      fprintf (s->fpout,
-	       _("[-- This %s/%s attachment is not included --]\n"
+      state_printf (s,
+	       _("[-- This %s/%s attachment is not included, --]\n"
 		 "[-- and the indicated access-type %s is unsupported --]\n"),
 	       TYPE(b->parts), b->parts->subtype, access_type);
       mutt_copy_hdr (s->fpin, s->fpout, ftell (s->fpin), b->parts->offset,

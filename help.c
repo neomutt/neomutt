@@ -131,7 +131,7 @@ static int print_macro (FILE *f, int maxchar, const char **macro)
     {
       --n;
       fputc(c, f);
-      c = *++*macro;
+      c = (unsigned char) *++*macro;
     }
     else
       c = 0;
