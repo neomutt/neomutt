@@ -122,6 +122,13 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
       irc = imap_cmd_step (idata);
     while (irc == IMAP_CMD_CONTINUE);
 
+    if (method && irc == IMAP_CMD_NO)
+    {
+      dprint (2, (debugfile, "imap_auth_sasl: %s failed\n", method));
+      sasl_dispose (&saslconn);
+      return IMAP_AUTH_UNAVAIL;
+    }
+
     if (irc == IMAP_CMD_BAD || irc == IMAP_CMD_NO)
       goto bail;
 
