@@ -819,7 +819,7 @@ void mutt_set_followup_to (ENVELOPE *e)
      * but makes sure list-reply has the desired effect.
      */
 
-    if (e->mail_followup_to && mutt_is_list_recipient (0, e->to, e->cc))
+    if (e->mail_followup_to && !mutt_is_list_recipient (0, e->to, e->cc))
     {
       if (e->from)
 	from = rfc822_cpy_adr (e->from);
