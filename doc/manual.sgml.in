@@ -1427,6 +1427,19 @@ Where EXPR, USER, ID, and SUBJECT are
 <tt/&lsqb;MIN&rsqb;-/ and <tt/-&lsqb;MAX&rsqb;/
 are allowed, too.
 
+<sect2>Pattern Modifier
+<p>
+
+Note that patterns matching 'lists' of addresses (notably c,C,p,P and t)
+match if there is at least one match in the whole list. If you want to
+make sure that all elements of that list match, you need to prefix your
+pattern with ^.
+This example matches all mails which only has recipients from Germany.
+
+<tscreen><verb>
+^~C \.de$
+</verb></tscreen>
+
 <sect2>Complex Patterns
 <p>
 
