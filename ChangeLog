@@ -1,3 +1,8 @@
+2003-07-04 17:03:51  Bruno Postle  <bruno@postle.net>  (roessler)
+
+	* curs_main.c, pattern.c: Display an empty index when no messages
+	match search criteria.
+
 2003-07-04 16:57:56  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* init.h, muttlib.c: Add a ':' flag to % expandos.  This will
