@@ -1398,16 +1398,6 @@ void mx_update_context (CONTEXT *ctx)
   h->pgp = pgp_query (h->content);
 #endif /* _PGPPATH */
 
-  if (h->flagged)
-    ctx->flagged++;
-  if (h->deleted)
-    ctx->deleted++;
-  if (!h->read)
-  {
-    ctx->unread++;
-    if (!h->old)
-      ctx->new++;
-  }
   if (!ctx->pattern)
   {
     ctx->v2r[ctx->vcount] = ctx->msgcount;
@@ -1426,7 +1416,8 @@ void mx_update_context (CONTEXT *ctx)
     if (h2)
     {
       h2->superseded = 1;
-      mutt_score_message (h2);
+      if (option (OPTSCORE)) 
+	mutt_score_message (ctx, h2, 1);
     }
   }
 
@@ -1436,5 +1427,19 @@ void mx_update_context (CONTEXT *ctx)
   if (h->env->real_subj)
     hash_insert (ctx->subj_hash, h->env->real_subj, h, 1);
 
-  mutt_score_message (h);
+  if (option (OPTSCORE)) 
+    mutt_score_message (ctx, h, 0);
+  
+  if (h->changed)
+    ctx->changed = 1;
+  if (h->flagged)
+    ctx->flagged++;
+  if (h->deleted)
+    ctx->deleted++;
+  if (!h->read)
+  {
+    ctx->unread++;
+    if (!h->old)
+      ctx->new++;
+  }
 }

@@ -129,6 +129,9 @@ WHERE short ReadInc;
 WHERE short SendmailWait;
 WHERE short Timeout;
 WHERE short WriteInc;
+WHERE short ScoreThresholdDelete;
+WHERE short ScoreThresholdRead;
+WHERE short ScoreThresholdFlag;
 
 /* flags for received signals */
 WHERE volatile sig_atomic_t SigAlrm INITVAL (0);

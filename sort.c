@@ -201,12 +201,13 @@ void mutt_sort_headers (CONTEXT *ctx, int init)
   if (init)
     mutt_clear_threads (ctx);
 
-  if (option (OPTNEEDRESCORE))
+  if (option (OPTNEEDRESCORE) && option (OPTSCORE))
   {
     for (i = 0; i < ctx->msgcount; i++)
-      mutt_score_message (ctx->hdrs[i]);
-    unset_option (OPTNEEDRESCORE);
+      mutt_score_message (ctx, ctx->hdrs[i], 1);
   }
+  unset_option (OPTNEEDRESCORE);
+
 
   if ((Sort & SORT_MASK) == SORT_THREADS)
   {

@@ -1550,6 +1550,36 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Also see the ``$$force_name'' variable.
   */
+  { "score", 		DT_BOOL, R_NONE, OPTSCORE, 1 },
+  /*
+  ** .pp
+  ** When this variable is \fIunset\fP, scoring is turned off.  This can
+  ** be useful to selectively disable scoring for certain folders when the
+  ** $score_threshold_delete variable and friends are used.
+  **
+  */
+  { "score_threshold_delete", DT_NUM, R_NONE, UL &ScoreThresholdDelete, -1 },
+  /*
+  ** .pp
+  ** Messages which have been assigned a score equal to or lower than the value
+  ** of this variable are automatically marked for deletion by mutt.  Since
+  ** mutt scores are always greater than or equal to zero, the default setting
+  ** of this variable will never mark a message for deletion.
+  */
+  { "score_threshold_flag", DT_NUM, R_NONE, UL &ScoreThresholdFlag, 9999 },
+  /* 
+  ** .pp
+  ** Messages wich have been assigned a score greater than or equal to this 
+  ** variable's value are automatically marked "flagged".
+  */
+  { "score_threshold_read", DT_NUM, R_NONE, UL &ScoreThresholdRead, -1 },
+  /*
+  ** .pp
+  ** Messages which have been assigned a score equal to or lower than the value
+  ** of this variable are automatically marked as read by mutt.  Since
+  ** mutt scores are always greater than or equal to zero, the default setting
+  ** of this variable will never mark a message for deletion.
+  */
   { "send_charset",	DT_STR,  R_NONE, UL &SendCharset, UL "" },
   /*
   ** .pp

@@ -170,7 +170,7 @@ void mutt_query_exit (void);
 void mutt_query_menu (char *, size_t);
 void mutt_safe_path (char *s, size_t l, ADDRESS *a);
 void mutt_save_path (char *s, size_t l, ADDRESS *a);
-void mutt_score_message (HEADER *);
+void mutt_score_message (CONTEXT *, HEADER *, int);
 void mutt_select_fcc (char *, size_t, HEADER *);
 #define mutt_select_file(A,B,C) _mutt_select_file(A,B,C,0,NULL,NULL)
 void _mutt_select_file (char *, size_t, int, int, char ***, int *);

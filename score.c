@@ -36,7 +36,7 @@ void mutt_check_rescore (CONTEXT *ctx)
 {
   int i;
 
-  if (option (OPTNEEDRESCORE))
+  if (option (OPTNEEDRESCORE) && option (OPTSCORE))
   {
     if ((Sort & SORT_MASK) == SORT_SCORE ||
 	(SortAux & SORT_MASK) == SORT_SCORE)
@@ -50,15 +50,13 @@ void mutt_check_rescore (CONTEXT *ctx)
     set_option (OPTFORCEREDRAWINDEX);
     set_option (OPTFORCEREDRAWPAGER);
 
-    for (i = 0; i < ctx->msgcount; i++)
-      mutt_score_message (ctx->hdrs[i]);
-
-    /* force re-caching of index colors */
     for (i = 0; ctx && i < ctx->msgcount; i++)
+    {
+      mutt_score_message (ctx, ctx->hdrs[i], 1);
       ctx->hdrs[i]->pair = 0;
-
-    unset_option (OPTNEEDRESCORE);
+    }
   }
+  unset_option (OPTNEEDRESCORE);
 }
 
 int mutt_parse_score (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
@@ -114,7 +112,7 @@ int mutt_parse_score (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   return 0;
 }
 
-void mutt_score_message (HEADER *hdr)
+void mutt_score_message (CONTEXT *ctx, HEADER *hdr, int upd_ctx)
 {
   SCORE *tmp;
 
@@ -133,6 +131,13 @@ void mutt_score_message (HEADER *hdr)
   }
   if (hdr->score < 0)
     hdr->score = 0;
+  
+  if (hdr->score <= ScoreThresholdDelete)
+    _mutt_set_flag (ctx, hdr, M_DELETE, 1, upd_ctx);
+  if (hdr->score <= ScoreThresholdRead)
+    _mutt_set_flag (ctx, hdr, M_READ, 1, upd_ctx);
+  if (hdr->score >= ScoreThresholdFlag)
+    _mutt_set_flag (ctx, hdr, M_FLAG, 1, upd_ctx);
 }
 
 int mutt_parse_unscore (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
