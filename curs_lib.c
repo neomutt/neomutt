@@ -182,6 +182,16 @@ void mutt_query_exit (void)
   Signals &= ~S_INTERRUPT;
 }
 
+static void clean_error_buf(void)
+{
+  char *s;
+  for(s = Errorbuf; *s; s++)
+  {
+    if(!IsPrint(*s))
+      *s = '.';
+  }
+}
+
 void mutt_curses_error (const char *fmt, ...)
 {
   va_list ap;
@@ -192,6 +202,7 @@ void mutt_curses_error (const char *fmt, ...)
   
   dprint (1, (debugfile, "%s\n", Errorbuf));
   Errorbuf[ (COLS < sizeof (Errorbuf) ? COLS : sizeof (Errorbuf)) - 2 ] = 0;
+  clean_error_buf();
 
   BEEP ();
   SETCOLOR (MT_COLOR_ERROR);
@@ -212,6 +223,7 @@ void mutt_message (const char *fmt, ...)
   va_end (ap);
 
   Errorbuf[ (COLS < sizeof (Errorbuf) ? COLS : sizeof (Errorbuf)) - 2 ] = 0;
+  clean_error_buf();
 
   SETCOLOR (MT_COLOR_MESSAGE);
   mvaddstr (LINES - 1, 0, Errorbuf);
