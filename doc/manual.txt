@@ -24,11 +24,11 @@
   with the word _s_u_b_s_c_r_i_b_e in the subject to list-name_-_r_e_q_u_e_s_t@mutt.org.
 
 
-  +o  mutt-announce@mutt.org -- low traffic list for announcements
+  ·  mutt-announce@mutt.org -- low traffic list for announcements
 
-  +o  mutt-users@mutt.org -- help, bug reports and feature requests
+  ·  mutt-users@mutt.org -- help, bug reports and feature requests
 
-  +o  mutt-dev@mutt.org -- development mailing list
+  ·  mutt-dev@mutt.org -- development mailing list
 
   NNoottee:: all messages posted to _m_u_t_t_-_a_n_n_o_u_n_c_e are automatically forwarded
   to _m_u_t_t_-_u_s_e_r_s, so you do not need to be subscribed to both lists.
@@ -37,7 +37,7 @@
   11..33..  SSooffttwwaarree DDiissttrriibbuuttiioonn SSiitteess
 
 
-  +o  ftp://ftp.guug.de/pub/mutt/
+  ·  ftp://ftp.guug.de/pub/mutt/
 
 
   11..44..  IIRRCC
@@ -256,9 +256,9 @@
 
   Some of the status flags can be turned on or off using
 
-  +o  sseett--ffllaagg (default: w)
+  ·  sseett--ffllaagg (default: w)
 
-  +o  cclleeaarr--ffllaagg (default: W)
+  ·  cclleeaarr--ffllaagg (default: W)
 
 
 
@@ -617,7 +617,7 @@
 
 
 
-  The hash mark, or pound sign (``#''), is used as a ``comment'' charac-
+  The hash mark, or pound sign (``#''), is used as a ``comment'' charac­
   ter. You can use it to annotate your initialization file. All text
   after the comment character to the end of the line is ignored. For
   example,
@@ -763,23 +763,23 @@
   defined maps are:
 
 
-  +o  generic
+  ·  generic
 
-  +o  alias
+  ·  alias
 
-  +o  attach
+  ·  attach
 
-  +o  browser
+  ·  browser
 
-  +o  editor
+  ·  editor
 
-  +o  index
+  ·  index
 
-  +o  compose
+  ·  compose
 
-  +o  pager
+  ·  pager
 
-  +o  pgp
+  ·  pgp
 
   _k_e_y is the key (or key sequence) you wish to bind.  To specify a
   control character, use the sequence _\_C_x, where _x is the letter of the
@@ -899,70 +899,70 @@
   _o_b_j_e_c_t can be one of:
 
 
-  +o  attachment
+  ·  attachment
 
-  +o  body (match _r_e_g_e_x_p in the body of messages)
+  ·  body (match _r_e_g_e_x_p in the body of messages)
 
-  +o  bold (hiliting bold patterns in the body of messages)
+  ·  bold (hiliting bold patterns in the body of messages)
 
-  +o  error (error messages printed by Mutt)
+  ·  error (error messages printed by Mutt)
 
-  +o  header (match _r_e_g_e_x_p in the message header)
+  ·  header (match _r_e_g_e_x_p in the message header)
 
-  +o  hdrdefault (default color of the message header in the pager)
+  ·  hdrdefault (default color of the message header in the pager)
 
-  +o  index (match _p_a_t_t_e_r_n in the message index)
+  ·  index (match _p_a_t_t_e_r_n in the message index)
 
-  +o  indicator (arrow or bar used to indicate the current item in a
+  ·  indicator (arrow or bar used to indicate the current item in a
      menu)
 
-  +o  markers (the ``+'' markers at the beginning of wrapped lines in the
+  ·  markers (the ``+'' markers at the beginning of wrapped lines in the
      pager)
 
-  +o  message (informational messages)
+  ·  message (informational messages)
 
 
-  +o  normal
+  ·  normal
 
-  +o  quoted (text matching ``$quote_regexp'' in the body of a message)
+  ·  quoted (text matching ``$quote_regexp'' in the body of a message)
 
-  +o  quoted1, quoted2, ..., quotedNN (higher levels of quoting)
+  ·  quoted1, quoted2, ..., quotedNN (higher levels of quoting)
 
-  +o  search (hiliting of words in the pager)
+  ·  search (hiliting of words in the pager)
 
-  +o  signature
+  ·  signature
 
-  +o  status (mode lines used to display info about the mailbox or
+  ·  status (mode lines used to display info about the mailbox or
      message)
 
-  +o  tilde (the ``~'' used to pad blank lines in the pager)
+  ·  tilde (the ``~'' used to pad blank lines in the pager)
 
-  +o  tree (thread tree drawn in the message index and attachment menu)
+  ·  tree (thread tree drawn in the message index and attachment menu)
 
-  +o  underline (hiliting underlined patterns in the body of messages)
+  ·  underline (hiliting underlined patterns in the body of messages)
 
   _f_o_r_e_g_r_o_u_n_d and _b_a_c_k_g_r_o_u_n_d can be one of the following:
 
 
-  +o  white
+  ·  white
 
-  +o  black
+  ·  black
 
-  +o  green
+  ·  green
 
-  +o  magenta
+  ·  magenta
 
-  +o  blue
+  ·  blue
 
-  +o  cyan
+  ·  cyan
 
-  +o  yellow
+  ·  yellow
 
-  +o  red
+  ·  red
 
-  +o  default
+  ·  default
 
-  +o  color_x
+  ·  color_x
 
   _f_o_r_e_g_r_o_u_n_d can optionally be prefixed with the keyword bright to make
   the foreground color boldfaced (e.g., brightred).
@@ -1004,15 +1004,15 @@
   where _a_t_t_r_i_b_u_t_e is one of the following:
 
 
-  +o  none
+  ·  none
 
-  +o  bold
+  ·  bold
 
-  +o  underline
+  ·  underline
 
-  +o  reverse
+  ·  reverse
 
-  +o  standout
+  ·  standout
 
 
   33..77..  IIggnnoorriinngg ((wweeeeddiinngg)) uunnwwaanntteedd mmeessssaaggee hheeaaddeerrss
@@ -1470,8 +1470,8 @@
         An equivalence class is a locale-specific name for a list of
         characters that are equivalent. The name is enclosed in ``[=''
         and ``=]''.  For example, the name ``e'' might be used to
-        represent all of ``e'' ``e'' and ``e''.  In this case, [[[[==ee==]]]]
-        is a regexp that matches any of ``e'', ``e'' and ``e''.
+        represent all of ``è'' ``é'' and ``e''.  In this case, [[[[==ee==]]]]
+        is a regexp that matches any of ``è'', ``é'' and ``e''.
 
   A regular expression matching a single character may be followed by
   one of several repetition operators:
@@ -1606,11 +1606,11 @@
   search patterns:
 
 
-  +o  ! -- logical NOT operator
+  ·  ! -- logical NOT operator
 
-  +o  | -- logical OR operator
+  ·  | -- logical OR operator
 
-  +o  () -- logical grouping operator
+  ·  () -- logical grouping operator
 
   Here is an example illustrating a complex search pattern.  This
   pattern will select all messages which do not contain ``mutt'' in the
@@ -1648,11 +1648,11 @@
   RReellaattiivvee.  This type of date is relative to the current date, and may
   be specified as:
 
-  +o  >_o_f_f_s_e_t (messages older than _o_f_f_s_e_t units)
+  ·  >_o_f_f_s_e_t (messages older than _o_f_f_s_e_t units)
 
-  +o  <_o_f_f_s_e_t (messages newer than _o_f_f_s_e_t units)
+  ·  <_o_f_f_s_e_t (messages newer than _o_f_f_s_e_t units)
 
-  +o  =_o_f_f_s_e_t (messages exactly _o_f_f_s_e_t units old)
+  ·  =_o_f_f_s_e_t (messages exactly _o_f_f_s_e_t units old)
 
   _o_f_f_s_e_t is specified as a positive number with one of the following
   units:
@@ -1708,17 +1708,17 @@
   world, a _h_o_o_k consists of a ``regular expression'' or ``pattern''
   along with a configuration option/command.  See
 
-  +o  ``folder-hook''
+  ·  ``folder-hook''
 
-  +o  ``send-hook''
+  ·  ``send-hook''
 
-  +o  ``save-hook''
+  ·  ``save-hook''
 
-  +o  ``mbox-hook''
+  ·  ``mbox-hook''
 
-  +o  ``fcc-hook''
+  ·  ``fcc-hook''
 
-  +o  ``fcc-save-hook''
+  ·  ``fcc-save-hook''
 
      for specific details on each type of _h_o_o_k available.
 
@@ -1859,19 +1859,19 @@
   a file or mailbox path.
 
 
-  +o  ! -- refers to your ``$spool'' (incoming) mailbox
+  ·  ! -- refers to your ``$spool'' (incoming) mailbox
 
-  +o  > -- refers to your ``$mbox'' file
+  ·  > -- refers to your ``$mbox'' file
 
-  +o  < -- refers to your ``$record'' file
+  ·  < -- refers to your ``$record'' file
 
-  +o  - -- refers to the file you've last visited
+  ·  - -- refers to the file you've last visited
 
-  +o  ~ -- refers to your home directory
+  ·  ~ -- refers to your home directory
 
-  +o  = or + -- refers to your ``$folder'' directory
+  ·  = or + -- refers to your ``$folder'' directory
 
-  +o  @_a_l_i_a_s -- refers to the ``default save folder'' as determined by
+  ·  @_a_l_i_a_s -- refers to the ``default save folder'' as determined by
      the address of the alias
 
 
@@ -2034,7 +2034,7 @@
 
 
   Where the Description is the description or filename given for the
-  attachment, and the Encoding is one of 7bit/8bit/quoted-print-
+  attachment, and the Encoding is one of 7bit/8bit/quoted-print­
   able/base64/binary.
 
   If Mutt cannot deal with a MIME type, it will display a message like:
@@ -2142,7 +2142,7 @@
 
 
 
-  where $HOME is your home directory and SHAREDIR is the shared direc-
+  where $HOME is your home directory and SHAREDIR is the shared direc­
   tory defined at compile time (visible from mutt -v).
 
   In particular, the metamail distribution will install a mailcap file,
@@ -2332,7 +2332,7 @@
 
      In this example, Mutt will run the program RunningX which will
      return 0 if the X Window manager is running, and non-zero if it
-     isn't.  If RunningX returns 0, then Mutt will call netscape to dis-
+     isn't.  If RunningX returns 0, then Mutt will call netscape to dis­
      play the text/html object.  If RunningX doesn't return 0, then Mutt
      will go on to the next entry and use lynx to display the text/html
      object.
@@ -2374,7 +2374,7 @@
   For ``Autoview'', Mutt will choose the third entry because of the
   copiousoutput tag.  For interactive viewing, Mutt will run the program
   RunningX to determine if it should use the first entry.  If the
-  program returns non-zero, Mutt will use the second entry for interac-
+  program returns non-zero, Mutt will use the second entry for interac­
   tive viewing.
 
 
@@ -2407,14 +2407,14 @@
 
 
 
-     then Mutt will expand %{charset} to iso-8859-1.  The default meta-
+     then Mutt will expand %{charset} to iso-8859-1.  The default meta­
      mail mailcap file uses this feature to test the charset to spawn an
      xterm using the right charset to view the message.
 
         This will be replaced by a %
 
   Mutt does not currently support the %F and %n keywords specified in
-  RFC 1524.  The main purpose of these parameters is for multipart mes-
+  RFC 1524.  The main purpose of these parameters is for multipart mes­
   sages, which is handled internally by Mutt.
 
 
@@ -2596,57 +2596,57 @@
   The following are the commands understood by mutt.
 
 
-  +o  ``alias'' _k_e_y _a_d_d_r_e_s_s [ , _a_d_d_r_e_s_s, ... ]
+  ·  ``alias'' _k_e_y _a_d_d_r_e_s_s [ , _a_d_d_r_e_s_s, ... ]
 
-  +o  ``unalias'' _k_e_y _a_d_d_r_e_s_s [ , _a_d_d_r_e_s_s, ... ]
+  ·  ``unalias'' _k_e_y _a_d_d_r_e_s_s [ , _a_d_d_r_e_s_s, ... ]
 
-  +o  ``alternative_order'' _m_i_m_e_t_y_p_e [ _m_i_m_e_t_y_p_e ... ]
+  ·  ``alternative_order'' _m_i_m_e_t_y_p_e [ _m_i_m_e_t_y_p_e ... ]
 
-  +o  ``auto_view'' _m_i_m_e_t_y_p_e [ _m_i_m_e_t_y_p_e ... ]
+  ·  ``auto_view'' _m_i_m_e_t_y_p_e [ _m_i_m_e_t_y_p_e ... ]
 
-  +o  ``bind'' _m_a_p _k_e_y _f_u_n_c_t_i_o_n
+  ·  ``bind'' _m_a_p _k_e_y _f_u_n_c_t_i_o_n
 
-  +o  ``color'' _o_b_j_e_c_t _f_o_r_e_g_r_o_u_n_d _b_a_c_k_g_r_o_u_n_d [ _r_e_g_e_x_p ]
+  ·  ``color'' _o_b_j_e_c_t _f_o_r_e_g_r_o_u_n_d _b_a_c_k_g_r_o_u_n_d [ _r_e_g_e_x_p ]
 
-  +o  ``folder-hook'' _p_a_t_t_e_r_n _c_o_m_m_a_n_d
+  ·  ``folder-hook'' _p_a_t_t_e_r_n _c_o_m_m_a_n_d
 
-  +o  ``ignore'' _p_a_t_t_e_r_n [ _p_a_t_t_e_r_n ... ]
+  ·  ``ignore'' _p_a_t_t_e_r_n [ _p_a_t_t_e_r_n ... ]
 
-  +o  ``unignore'' _p_a_t_t_e_r_n [ _p_a_t_t_e_r_n ... ]
+  ·  ``unignore'' _p_a_t_t_e_r_n [ _p_a_t_t_e_r_n ... ]
 
-  +o  ``hdr_order'' _h_e_a_d_e_r [ _h_e_a_d_e_r ... ]
+  ·  ``hdr_order'' _h_e_a_d_e_r [ _h_e_a_d_e_r ... ]
 
-  +o  ``unhdr_order'' _h_e_a_d_e_r [ _h_e_a_d_e_r ... ]
+  ·  ``unhdr_order'' _h_e_a_d_e_r [ _h_e_a_d_e_r ... ]
 
-  +o  ``lists'' _a_d_d_r_e_s_s [ _a_d_d_r_e_s_s ... ]
+  ·  ``lists'' _a_d_d_r_e_s_s [ _a_d_d_r_e_s_s ... ]
 
-  +o  ``unlists'' _a_d_d_r_e_s_s [ _a_d_d_r_e_s_s ... ]
+  ·  ``unlists'' _a_d_d_r_e_s_s [ _a_d_d_r_e_s_s ... ]
 
-  +o  ``macro'' _m_e_n_u _k_e_y _s_e_q_u_e_n_c_e
+  ·  ``macro'' _m_e_n_u _k_e_y _s_e_q_u_e_n_c_e
 
-  +o  ``mailboxes'' _f_i_l_e_n_a_m_e [ _f_i_l_e_n_a_m_e ... ]
+  ·  ``mailboxes'' _f_i_l_e_n_a_m_e [ _f_i_l_e_n_a_m_e ... ]
 
-  +o  ``mono'' _o_b_j_e_c_t _a_t_t_r_i_b_u_t_e [ _r_e_g_e_x_p ]
+  ·  ``mono'' _o_b_j_e_c_t _a_t_t_r_i_b_u_t_e [ _r_e_g_e_x_p ]
 
-  +o  ``mbox-hook'' _p_a_t_t_e_r_n _m_a_i_l_b_o_x
+  ·  ``mbox-hook'' _p_a_t_t_e_r_n _m_a_i_l_b_o_x
 
-  +o  ``my_hdr'' _s_t_r_i_n_g
+  ·  ``my_hdr'' _s_t_r_i_n_g
 
-  +o  ``unmy_hdr'' _f_i_e_l_d [ _f_i_e_l_d ... ]
+  ·  ``unmy_hdr'' _f_i_e_l_d [ _f_i_e_l_d ... ]
 
-  +o  ``push'' _s_t_r_i_n_g
+  ·  ``push'' _s_t_r_i_n_g
 
-  +o  ``save-hook'' _r_e_g_e_x_p _f_i_l_e_n_a_m_e
+  ·  ``save-hook'' _r_e_g_e_x_p _f_i_l_e_n_a_m_e
 
-  +o  ``send-hook'' _r_e_g_e_x_p _c_o_m_m_a_n_d
+  ·  ``send-hook'' _r_e_g_e_x_p _c_o_m_m_a_n_d
 
-  +o  ``set'' [no|inv]_v_a_r_i_a_b_l_e[=_v_a_l_u_e] [ _v_a_r_i_a_b_l_e ... ]
+  ·  ``set'' [no|inv]_v_a_r_i_a_b_l_e[=_v_a_l_u_e] [ _v_a_r_i_a_b_l_e ... ]
 
-  +o  ``toggle'' _v_a_r_i_a_b_l_e [_v_a_r_i_a_b_l_e ... ]
+  ·  ``toggle'' _v_a_r_i_a_b_l_e [_v_a_r_i_a_b_l_e ... ]
 
-  +o  ``unset'' _v_a_r_i_a_b_l_e [_v_a_r_i_a_b_l_e ... ]
+  ·  ``unset'' _v_a_r_i_a_b_l_e [_v_a_r_i_a_b_l_e ... ]
 
-  +o  ``source'' _f_i_l_e_n_a_m_e
+  ·  ``source'' _f_i_l_e_n_a_m_e
 
 
   66..33..  CCoonnffiigguurraattiioonn vvaarriiaabblleess
@@ -4257,21 +4257,21 @@
   Specifies how to sort messages in the _i_n_d_e_x menu.  Valid values are
 
 
-  +o  date-sent
+  ·  date-sent
 
-  +o  date-received
+  ·  date-received
 
-  +o  from
+  ·  from
 
-  +o  mailbox-order (unsorted)
+  ·  mailbox-order (unsorted)
 
-  +o  score
+  ·  score
 
-  +o  subject
+  ·  subject
 
-  +o  threads
+  ·  threads
 
-  +o  to
+  ·  to
 
   You may optionally use the reverse- prefix to specify reverse sorting
   order (example: set sort=reverse-date-sent).
@@ -4321,9 +4321,9 @@
   entries are sorted alphabetically.  Valid values:
 
 
-  +o  date
+  ·  date
 
-  +o  alpha (alphabetically)
+  ·  alpha (alphabetically)
 
   You may optionally use the reverse- prefix to specify reverse sorting
   order (example: set sort_browser=reverse-date).
@@ -5114,6 +5114,7 @@
   The following people have been very helpful to the development of
   Mutt:
 
+  Vikas Agnihotri <VikasA@att.com>,
   Francois Berjon <Francois.Berjon@aar.alcatel-alsthom.fr>,
   Aric Blumer <aric@fore.com>,
   John Capo <jc@irbs.com>,
@@ -5124,10 +5125,12 @@
   Sven Guckes <guckes@math.fu-berlin.de>,
   Mark Holloman <holloman@nando.net>,
   Andreas Holzmann <holzmann@fmi.uni-passau.de>,
+  Byrial Jensen <byrial@post3.tele.dk>,
   David Jeske <jeske@igcom.net>,
   Christophe Kalt <kalt@hugo.int-evry.fr>,
   Felix von Leitner (a.k.a ``Fefe'') <leitner@math.fu-berlin.de>,
   Brandon Long <blong@fiction.net>,
+  Jimmy Mäkelä <jmy@flashback.net>,
   Lars Marowsky-Bree <lmb@pointer.in-minden.de>,
   Thomas ``Mike'' Michlmayr <mike@cosy.sbg.ac.at>,
   David O'Brien <obrien@Nuxi.cs.ucdavis.edu>,
@@ -5135,21 +5138,18 @@
   Park Myeong Seok <pms@romance.kaist.ac.kr>,
   Thomas Parmelan <tom@ankh.fr.eu.org>,
   Ollivier Robert <roberto@keltia.freenix.fr>,
-  Thomas Roessler <roessler@guug.de>,
+  Roland Rosenfeld <roland@spinnaker.rhein.de>,
   Allain Thivillon <Allain.Thivillon@alma.fr>,
+  Gero Treuner <gero@faveve.uni-stuttgart.de>,
   Ken Weinert <kenw@ihs.com>
+
+
 
 
   77..22..  AAbboouutt tthhiiss ddooccuummeenntt
 
   This document was written in SGML, and then rendered using the sgml-
   tools package.
-
-
-
-
-
-
 
 
 

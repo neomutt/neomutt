@@ -40,7 +40,7 @@ uninstall:
 		$(docdir)/PGP-Notes.txt
 
 manual.txt: manual.sgml
-	sgml2txt manual
+	sgml2txt -c latin manual
 
 manual.html: manual.sgml
 	sgml2html manual
