@@ -160,6 +160,14 @@ static void show_version (void)
   puts ("-DOMAIN");
 #endif
 
+#ifdef DEBUG
+  puts ("+DEBUG");
+#else
+  puts ("-DEBUG");
+#endif
+  
+
+  
   puts (
 
 #ifdef HOMESPOOL
