@@ -1255,8 +1255,8 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
     if (buf[0] == '*' && ctx->data && 
 	imap_handle_untagged (((CONTEXT *)(CTX_DATA->conn))->data, buf) != 0)
     {
-      return (-1);
       fclose (fp);
+      return (-1);
     }
   }
   while ((mutt_strncmp (buf, seq, SEQLEN) != 0) && (buf[0] != '+'));
