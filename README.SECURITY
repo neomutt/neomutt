@@ -56,10 +56,5 @@ For example, a safe version of the mailcap statement above could
 look like this:
 
 > text/test-mailcap-bug; cat %s; copiousoutput; test=charset=%{charset} \
->         && test "`echo $charset | tr '[A-Z]' '[a-z]'`" != iso-8859-1
+>         && test "`echo \"$charset\" | tr '[A-Z]' '[a-z]'`" != iso-8859-1
 
-The "charset=%{charset}" assignment is risk-free since mutt performs
-the necessary quoting steps here.  Using it inside the backtick
-expansion is safe, too, since the variable's value is not itself
-subject to any further expansion (but note that it _is_ subject to
-word splitting). 

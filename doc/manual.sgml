@@ -2910,10 +2910,21 @@ deleting will automatically be purged without prompting.  If set to
 <em>no</em>, messages marked for deletion will be kept in the mailbox.
 
 
+<sect2>delete&lowbar;untag<label id="delete_untag">
+<p>
+Type: boolean<newline>
+Default: yes
+
+<p>
+If this option is <em>set</em>, mutt will untag messages when marking them
+for deletion.  This applies when you either explicitly delete a message,
+or when you save it to another folder.
+
+
 <sect2>dotlock&lowbar;program<label id="dotlock_program">
 <p>
 Type: path<newline>
-Default: &dquot;BINDIR/mutt&lowbar;dotlock&dquot;
+Default: &dquot;/usr/local/bin/mutt&lowbar;dotlock&dquot;
 
 <p>
 Contains the path of the mutt&lowbar;dotlock (8) binary to be used by
@@ -3038,7 +3049,7 @@ during the `set' command.
 <sect2>folder&lowbar;format<label id="folder_format">
 <p>
 Type: string<newline>
-Default: &dquot;&percnt;N &percnt;F &percnt;2l &percnt;-8.8u &percnt;-8.8g &percnt;8s &percnt;d &percnt;f&dquot;
+Default: &dquot;&percnt;2C &percnt;t &percnt;N &percnt;F &percnt;2l &percnt;-8.8u &percnt;-8.8g &percnt;8s &percnt;d &percnt;f&dquot;
 
 <p>
 This variable allows you to customize the file browser display to your
@@ -3047,6 +3058,7 @@ its own set of printf()-like sequences:
 <p>
 
 <tscreen><verb>
+%C      current file number
 %d      date/time folder was last modified
 %f      filename
 %F      file permissions
@@ -3054,6 +3066,7 @@ its own set of printf()-like sequences:
 %l      number of hard links
 %N      N if folder has new mail, blank otherwise
 %s      size in bytes
+%t      * if the file is tagged, blank otherwise
 %u      owner name (or numeric uid, if missing)
 %>X     right justify the rest of the string and pad 
         with character "X"
@@ -3255,6 +3268,69 @@ mailing list when this option is set, use the <em>list-reply</em>
 function; <em>group-reply</em> will reply to both the sender and the
 list.
 
+
+<sect2>imap&lowbar;checkinterval<label id="imap_checkinterval">
+<p>
+Type: number<newline>
+Default: 0
+
+<p>
+This variable configures how often (in seconds) IMAP should look for
+new mail.
+
+
+<sect2>imap&lowbar;list&lowbar;subscribed<label id="imap_list_subscribed">
+<p>
+Type: boolean<newline>
+Default: no
+
+<p>
+This variable configures whether IMAP folder browsing will look for
+only subscribed folders or all folders.  This can be toggled in the
+IMAP browser with the <em>toggle-subscribed</em> command.
+
+
+<sect2>imap&lowbar;user<label id="imap_user">
+<p>
+Type: string<newline>
+Default: &dquot;&dquot;
+
+<p>
+Your login name on the IMAP server.
+<p>
+This variable defaults to your user name on the local machine.
+
+
+<sect2>imap&lowbar;pass<label id="imap_pass">
+<p>
+Type: string<newline>
+Default: &dquot;&dquot;
+
+<p>
+Specifies the password for your IMAP account.  If unset, Mutt will
+prompt you for your password when you invoke the fetch-mail function.
+<bf>Warning</bf>: you should only use this option when you are on a
+fairly secure machine, because the superuser can read your muttrc even
+if you are the only one who can read the file.
+
+
+<sect2>imap&lowbar;passive<label id="imap_passive">
+<p>
+Type: boolean<newline>
+Default: yes
+
+<p>
+When set, mutt will not open new IMAP connections to check for new
+mail.  Mutt will only check for new mail over existing IMAP
+connections.  This is useful if you don't want to be prompted to
+user/password pairs on mutt invocation, or if opening the connection
+is slow.
+
+
+<sect2>imap&lowbar;home&lowbar;namespace<label id="imap_home_namespace">
+<p>
+Type: string<newline>
+Default: &dquot;&dquot;
 
 <sect2>implicit&lowbar;autoview<label id="implicit_autoview">
 <p>
@@ -3883,6 +3959,23 @@ If you prefer reverse order of the above values, prefix it with
 `reverse-'.
 
 
+<sect2>pgp&lowbar;create&lowbar;traditional<label id="pgp_create_traditional">
+<p>
+Type: quadoption<newline>
+Default: no
+
+<p>
+This option controls whether Mutt generates old-style PGP encrypted
+or signed messages under certain circumstances.
+<p>
+Note that PGP/MIME will be used automatically for messages which have
+a character set different from us-ascii, or which consist of more than
+a single MIME part.
+<p>
+Also note that using the old-style PGP message format is <bf>strongly</bf>
+<bf>deprecated</bf>.
+
+
 <sect2>pgp&lowbar;decode&lowbar;command<label id="pgp_decode_command">
 <p>
 Type: string<newline>
@@ -3940,6 +4033,16 @@ Default: &dquot;&dquot;
 
 <p>
 This command is used to decrypt a PGP/MIME encrypted message.
+
+
+<sect2>pgp&lowbar;clearsign&lowbar;command<label id="pgp_clearsign_command">
+<p>
+Type: string<newline>
+Default: &dquot;&dquot;
+
+<p>
+This format is used to create a &dquot;clearsigned&dquot; old-style PGP attachment.
+Note that the use of this format is <bf>strongly</bf> <bf>deprecated</bf>.
 
 
 <sect2>pgp&lowbar;sign&lowbar;command<label id="pgp_sign_command">
@@ -4074,6 +4177,65 @@ Default: &dquot;&bsol;n&dquot;
 <p>
 The separator to add between messages when piping a list of tagged
 messages to an external Unix command.
+
+
+<sect2>pop&lowbar;delete<label id="pop_delete">
+<p>
+Type: boolean<newline>
+Default: no
+
+<p>
+If set, Mutt will delete successfully downloaded messages from the POP
+server when using the fetch-mail function.  When unset, Mutt will
+download messages but also leave them on the POP server.
+
+
+<sect2>pop&lowbar;host<label id="pop_host">
+<p>
+Type: string<newline>
+Default: &dquot;&dquot;
+
+<p>
+The name or address of your POP3 server.
+
+
+<sect2>pop&lowbar;port<label id="pop_port">
+<p>
+Type: number<newline>
+Default: 110
+
+<p>
+This variable specifies which port your POP server is listening on.
+
+
+<sect2>pop&lowbar;last<label id="pop_last">
+<p>
+Type: boolean<newline>
+Default: no
+
+<p>
+If this variable is set, mutt will try to use the &dquot;LAST&dquot; POP command
+for retrieving only unread messages from the POP server.
+
+
+<sect2>pop&lowbar;user<label id="pop_user">
+<p>
+Type: string<newline>
+Default: &dquot;&dquot;
+
+<p>
+Your login name on the POP3 server.
+<p>
+Defaults to your login name on the local system.
+
+
+<sect2>pop&lowbar;pass<label id="pop_pass">
+<p>
+Type: string<newline>
+Default: &dquot;&dquot;
+
+<p>
+Your password on the POP3 server.
 
 
 <sect2>post&lowbar;indent&lowbar;string<label id="post_indent_string">

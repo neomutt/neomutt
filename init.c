@@ -43,17 +43,29 @@
 #include <errno.h>
 #include <sys/wait.h>
 
-#define toggle_quadoption(opt) QuadOptions ^= (1 << (2 * opt))
+void toggle_quadoption (int opt)
+{
+  int n = opt/4;
+  int b = (opt % 4) * 2;
+
+  QuadOptions[n] ^= (1 << b);
+}
 
 void set_quadoption (int opt, int flag)
 {
-  QuadOptions &= ~(0x3 << (2 * opt)); /* first clear the bits */
-  QuadOptions |= (flag & 0x3) << (2 * opt); /* now set them */
+  int n = opt/4;
+  int b = (opt % 4) * 2;
+
+  QuadOptions[n] &= ~(0x3 << b);
+  QuadOptions[n] |= (flag & 0x3) << b;
 }
 
 int quadoption (int opt)
 {
-  return ((QuadOptions >> (opt * 2)) & 0x3);
+  int n = opt/4;
+  int b = (opt % 4) * 2;
+
+  return (QuadOptions[n] >> b) & 0x3;
 }
 
 int query_quadoption (int opt, const char *prompt)

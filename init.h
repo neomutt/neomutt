@@ -341,6 +341,13 @@ struct option_t MuttVars[] = {
   ** deleting will automatically be purged without prompting.  If set to
   ** \fIno\fP, messages marked for deletion will be kept in the mailbox.
   */
+  { "delete_untag",	DT_BOOL, R_NONE, OPTDELETEUNTAG, 1 },
+  /*
+  ** .pp
+  ** If this option is \fIset\fP, mutt will untag messages when marking them
+  ** for deletion.  This applies when you either explicitly delete a message,
+  ** or when you save it to another folder.
+  */
 #if defined(DL_STANDALONE) && defined(USE_DOTLOCK)
   { "dotlock_program",  DT_PATH, R_NONE, UL &MuttDotlock, UL BINDIR "/mutt_dotlock" },
   /*
@@ -431,7 +438,7 @@ struct option_t MuttVars[] = {
   ** you use `+' or `=' for any other variables since expansion takes place
   ** during the `set' command.
   */
-  { "folder_format",	DT_STR,	 R_NONE, UL &FolderFormat, UL "%N %F %2l %-8.8u %-8.8g %8s %d %f" },
+  { "folder_format",	DT_STR,	 R_INDEX, UL &FolderFormat, UL "%2C %t %N %F %2l %-8.8u %-8.8g %8s %d %f" },
   /*
   ** .pp
   ** This variable allows you to customize the file browser display to your
@@ -439,6 +446,7 @@ struct option_t MuttVars[] = {
   ** its own set of printf()-like sequences:
   ** .pp
   ** .ts
+  ** %C      current file number
   ** %d      date/time folder was last modified
   ** %f      filename
   ** %F      file permissions
@@ -446,6 +454,7 @@ struct option_t MuttVars[] = {
   ** %l      number of hard links
   ** %N      N if folder has new mail, blank otherwise
   ** %s      size in bytes
+  ** %t      * if the file is tagged, blank otherwise
   ** %u      owner name (or numeric uid, if missing)
   ** %>X     right justify the rest of the string and pad 
   ** .       with character "X"
@@ -1111,6 +1120,19 @@ struct option_t MuttVars[] = {
   ** If you prefer reverse order of the above values, prefix it with
   ** `reverse-'.
   */
+  { "pgp_create_traditional", DT_QUAD, R_NONE, OPT_PGPTRADITIONAL, M_NO },
+  /*
+  ** .pp
+  ** This option controls whether Mutt generates old-style PGP encrypted
+  ** or signed messages under certain circumstances.
+  ** .pp
+  ** Note that PGP/MIME will be used automatically for messages which have
+  ** a character set different from us-ascii, or which consist of more than
+  ** a single MIME part.
+  ** .pp
+  ** Also note that using the old-style PGP message format is \fBstrongly\fP
+  ** \fBdeprecated\fP.
+  */
 
   /* XXX Default values! */
   
@@ -1156,6 +1178,12 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This command is used to decrypt a PGP/MIME encrypted message.
   */  
+  { "pgp_clearsign_command",	DT_STR,	R_NONE, UL &PgpClearSignCommand, 0 },
+  /*
+  ** .pp
+  ** This format is used to create a "clearsigned" old-style PGP attachment.
+  ** Note that the use of this format is \fBstrongly\fP \fBdeprecated\fP.
+  */
   { "pgp_sign_command",		DT_STR, R_NONE, UL &PgpSignCommand, 0},
   /*
   ** .pp

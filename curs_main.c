@@ -1440,11 +1440,15 @@ int mutt_index_menu (void)
 	if (tag)
 	{
 	  mutt_tag_set_flag (M_DELETE, 1);
+	  if (option (OPTDELETEUNTAG))
+	    mutt_tag_set_flag (M_TAG, 0);
 	  menu->redraw = REDRAW_INDEX;
 	}
 	else
 	{
 	  mutt_set_flag (Context, CURHDR, M_DELETE, 1);
+	  if (option (OPTDELETEUNTAG))
+	    mutt_set_flag (Context, CURHDR, M_TAG, 0);
 	  if (option (OPTRESOLVE))
 	  {
 	    if ((menu->current = ci_next_undeleted (menu->current)) == -1)

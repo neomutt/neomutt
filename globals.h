@@ -111,7 +111,11 @@ extern unsigned char Options[];
 #endif
 
 /* bit vector for the yes/no/ask variable type */
-WHERE unsigned long QuadOptions INITVAL (0);
+#ifdef MAIN_C
+unsigned char QuadOptions[(OPT_MAX*2 + 7) / 8];
+#else
+extern unsigned char QuadOptions[];
+#endif
 
 WHERE unsigned short Counter INITVAL (0);
 

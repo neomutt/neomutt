@@ -23,14 +23,17 @@
 struct folder_file
 {
   mode_t mode;
-  time_t mtime;
   off_t size;
+  time_t mtime;
+  struct stat *st;
+
   char *name;
   char *desc;
 #ifdef USE_IMAP
   short notfolder;
 #endif
   unsigned tagged : 1;
+  unsigned is_new : 1;
 };
 
 struct browser_state

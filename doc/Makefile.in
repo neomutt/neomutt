@@ -13,6 +13,7 @@ mandir=@mandir@
 sharedir=@sharedir@
 srcdir=@srcdir@
 docdir=@docdir@
+includedir = @includedir@
 top_srcdir=@top_srcdir@
 top_builddir=..
 VPATH=@srcdir@
@@ -25,6 +26,13 @@ CFLAGS=@CFLAGS@ -DSHAREDIR=\"$(sharedir)\" $(XCPPFLAGS)
 LDFLAGS=@LDFLAGS@
 subdir = doc
 
+CPPFLAGS = @CPPFLAGS@
+
+DEFS=-DSHAREDIR=\"$(sharedir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
+	-DBINDIR=\"$(bindir)\" -DHAVE_CONFIG_H=1
+INCLUDES=-I. -I$(includedir) -I$(top_srcdir)
+
+MAKEDOC_CPP=cpp $(INCLUDES) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C -include ../config.h
 
 DISTFILES = Makefile.in dotlock.man  	\
 	mutt.man			\
@@ -127,16 +135,14 @@ at=@
 update-doc:  ../makedoc stamp-doc-sgml stamp-doc-man
 
 stamp-doc-man: ../makedoc $(top_srcdir)/init.h muttrc.man.head muttrc.man.tail
-	cpp -D_MAKEDOC -C -I.. -I $(top_srcdir) -include ../config.h	\
-		$(top_srcdir)/init.h | ../makedoc -m | 			\
+	$(MAKEDOC_CPP) $(top_srcdir)/init.h | ../makedoc -m | 	    \
 		cat $(srcdir)/muttrc.man.head - $(srcdir)/muttrc.man.tail\
 		> muttrc.man
 	touch stamp-doc-man
 
 stamp-doc-sgml: ../makedoc $(top_srcdir)/init.h manual.sgml.head manual.sgml.tail
 	( sed -e "s/$(at)VERSION$(at)/`cat $(top_srcdir)/VERSION`/" manual.sgml.head ;\
-	  cpp -D_MAKEDOC -C -I.. -I $(top_srcdir) -include ../config.h	\
-		$(top_srcdir)/init.h | ../makedoc -s ) |			\
+	  $(MAKEDOC_CPP) $(top_srcdir)/init.h | ../makedoc -s ) |      \
 		cat - $(srcdir)/manual.sgml.tail > manual.sgml
 	touch stamp-doc-sgml
 

@@ -370,7 +370,8 @@ int main (int argc, char **argv)
   umask (077);
 
   memset (Options, 0, sizeof (Options));
-
+  memset (QuadOptions, 0, sizeof (QuadOptions));
+  
   while ((i = getopt (argc, argv, "a:b:F:f:c:d:e:H:s:i:hm:npRvxyzZ")) != EOF)
     switch (i)
     {

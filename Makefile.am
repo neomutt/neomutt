@@ -150,8 +150,8 @@ update-doc: stamp-doc-rc
 	(cd doc && make update-doc)
 
 stamp-doc-rc: $(srcdir)/init.h makedoc Muttrc.head
-	cpp -D_MAKEDOC -C -I. -I $(srcdir) -include config.h	\
-		$(srcdir)/init.h | ./makedoc -c | cat Muttrc.head - \
+	cpp $(INCLUDES) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C \
+		-include config.h $(srcdir)/init.h | ./makedoc -c | cat Muttrc.head - \
 		> Muttrc
 	touch stamp-doc-rc
 

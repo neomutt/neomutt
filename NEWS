@@ -1,6 +1,15 @@
 Major changes since 0.96.3
 --------------------------
 
+- There is a new option $delete_untag.  Former mutt versions used to
+  untag messages when you save them, but leave them tagged whe you
+  mark them for deletion.  $delete_untag controls _both_ cases,
+  leading to more uniform behaviour.
+
+- The $weed option applies to the decode-save and decode-copy
+  functions.  Think of these functions as something along the lines
+  of "save to file".
+
 - The master source of the configuration option reference has been
   moved from the SGML document into special comments in init.h.
   "makedoc" is used to extract this information into a new,

@@ -425,11 +425,23 @@ macro pager   <f1> "!less /usr/local/doc/mutt/manual.txt\n" "Show Mutt documenta
 # no, messages marked for deletion will be kept in the mailbox.
 # 
 # 
-# set dotlock_program="BINDIR/mutt_dotlock"
+# set delete_untag=yes
+#
+# Name: delete_untag
+# Type: boolean
+# Default: yes
+# 
+# 
+# If this option is set, mutt will untag messages when marking them
+# for deletion.  This applies when you either explicitly delete a message,
+# or when you save it to another folder.
+# 
+# 
+# set dotlock_program="/usr/local/bin/mutt_dotlock"
 #
 # Name: dotlock_program
 # Type: path
-# Default: "BINDIR/mutt_dotlock"
+# Default: "/usr/local/bin/mutt_dotlock"
 # 
 # 
 # Contains the path of the mutt_dotlock (8) binary to be used by
@@ -560,17 +572,18 @@ macro pager   <f1> "!less /usr/local/doc/mutt/manual.txt\n" "Show Mutt documenta
 # during the `set' command.
 # 
 # 
-# set folder_format="%N %F %2l %-8.8u %-8.8g %8s %d %f"
+# set folder_format="%2C %t %N %F %2l %-8.8u %-8.8g %8s %d %f"
 #
 # Name: folder_format
 # Type: string
-# Default: "%N %F %2l %-8.8u %-8.8g %8s %d %f"
+# Default: "%2C %t %N %F %2l %-8.8u %-8.8g %8s %d %f"
 # 
 # 
 # This variable allows you to customize the file browser display to your
 # personal taste.  This string is similar to ``index_format'', but has
 # its own set of printf()-like sequences:
 # 
+# %C      current file number
 # %d      date/time folder was last modified
 # %f      filename
 # %F      file permissions
@@ -578,6 +591,7 @@ macro pager   <f1> "!less /usr/local/doc/mutt/manual.txt\n" "Show Mutt documenta
 # %l      number of hard links
 # %N      N if folder has new mail, blank otherwise
 # %s      size in bytes
+# %t      * if the file is tagged, blank otherwise
 # %u      owner name (or numeric uid, if missing)
 # %>X     right justify the rest of the string and pad 
 #         with character "X"
@@ -794,6 +808,75 @@ macro pager   <f1> "!less /usr/local/doc/mutt/manual.txt\n" "Show Mutt documenta
 # function; group-reply will reply to both the sender and the
 # list.
 # 
+# 
+# set imap_checkinterval=0
+#
+# Name: imap_checkinterval
+# Type: number
+# Default: 0
+# 
+# 
+# This variable configures how often (in seconds) IMAP should look for
+# new mail.
+# 
+# 
+# set imap_list_subscribed=no
+#
+# Name: imap_list_subscribed
+# Type: boolean
+# Default: no
+# 
+# 
+# This variable configures whether IMAP folder browsing will look for
+# only subscribed folders or all folders.  This can be toggled in the
+# IMAP browser with the toggle-subscribed command.
+# 
+# 
+# set imap_user=""
+#
+# Name: imap_user
+# Type: string
+# Default: ""
+# 
+# 
+# Your login name on the IMAP server.
+# 
+# This variable defaults to your user name on the local machine.
+# 
+# 
+# set imap_pass=""
+#
+# Name: imap_pass
+# Type: string
+# Default: ""
+# 
+# 
+# Specifies the password for your IMAP account.  If unset, Mutt will
+# prompt you for your password when you invoke the fetch-mail function.
+# Warning: you should only use this option when you are on a
+# fairly secure machine, because the superuser can read your muttrc even
+# if you are the only one who can read the file.
+# 
+# 
+# set imap_passive=yes
+#
+# Name: imap_passive
+# Type: boolean
+# Default: yes
+# 
+# 
+# When set, mutt will not open new IMAP connections to check for new
+# mail.  Mutt will only check for new mail over existing IMAP
+# connections.  This is useful if you don't want to be prompted to
+# user/password pairs on mutt invocation, or if opening the connection
+# is slow.
+# 
+# 
+# set imap_home_namespace=""
+#
+# Name: imap_home_namespace
+# Type: string
+# Default: ""
 # 
 # set implicit_autoview=no
 #
@@ -1460,6 +1543,24 @@ macro pager   <f1> "!less /usr/local/doc/mutt/manual.txt\n" "Show Mutt documenta
 # `reverse-'.
 # 
 # 
+# set pgp_create_traditional=no
+#
+# Name: pgp_create_traditional
+# Type: quadoption
+# Default: no
+# 
+# 
+# This option controls whether Mutt generates old-style PGP encrypted
+# or signed messages under certain circumstances.
+# 
+# Note that PGP/MIME will be used automatically for messages which have
+# a character set different from us-ascii, or which consist of more than
+# a single MIME part.
+# 
+# Also note that using the old-style PGP message format is strongly
+# deprecated.
+# 
+# 
 # set pgp_decode_command=""
 #
 # Name: pgp_decode_command
@@ -1520,6 +1621,17 @@ macro pager   <f1> "!less /usr/local/doc/mutt/manual.txt\n" "Show Mutt documenta
 # 
 # 
 # This command is used to decrypt a PGP/MIME encrypted message.
+# 
+# 
+# set pgp_clearsign_command=""
+#
+# Name: pgp_clearsign_command
+# Type: string
+# Default: ""
+# 
+# 
+# This format is used to create a "clearsigned" old-style PGP attachment.
+# Note that the use of this format is strongly deprecated.
 # 
 # 
 # set pgp_sign_command=""
@@ -1666,6 +1778,71 @@ macro pager   <f1> "!less /usr/local/doc/mutt/manual.txt\n" "Show Mutt documenta
 # 
 # The separator to add between messages when piping a list of tagged
 # messages to an external Unix command.
+# 
+# 
+# set pop_delete=no
+#
+# Name: pop_delete
+# Type: boolean
+# Default: no
+# 
+# 
+# If set, Mutt will delete successfully downloaded messages from the POP
+# server when using the fetch-mail function.  When unset, Mutt will
+# download messages but also leave them on the POP server.
+# 
+# 
+# set pop_host=""
+#
+# Name: pop_host
+# Type: string
+# Default: ""
+# 
+# 
+# The name or address of your POP3 server.
+# 
+# 
+# set pop_port=110
+#
+# Name: pop_port
+# Type: number
+# Default: 110
+# 
+# 
+# This variable specifies which port your POP server is listening on.
+# 
+# 
+# set pop_last=no
+#
+# Name: pop_last
+# Type: boolean
+# Default: no
+# 
+# 
+# If this variable is set, mutt will try to use the "LAST" POP command
+# for retrieving only unread messages from the POP server.
+# 
+# 
+# set pop_user=""
+#
+# Name: pop_user
+# Type: string
+# Default: ""
+# 
+# 
+# Your login name on the POP3 server.
+# 
+# Defaults to your login name on the local system.
+# 
+# 
+# set pop_pass=""
+#
+# Name: pop_pass
+# Type: string
+# Default: ""
+# 
+# 
+# Your password on the POP3 server.
 # 
 # 
 # set post_indent_string=""

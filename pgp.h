@@ -29,6 +29,7 @@ WHERE char *PgpEntryFormat;
 
 /* The command formats */
 
+WHERE char *PgpClearSignCommand;
 WHERE char *PgpDecodeCommand;
 WHERE char *PgpVerifyCommand;
 WHERE char *PgpDecryptCommand;
@@ -105,6 +106,9 @@ pid_t pgp_invoke_verify_key (FILE **pgpin, FILE **pgpout, FILE **pgperr,
 pid_t pgp_invoke_list_keys (FILE **pgpin, FILE **pgpout, FILE **pgperr,
 			    int pgpinfd, int pgpoutfd, int pgperrfd, 
 			    pgp_ring_t keyring, LIST *hints);
+pid_t pgp_invoke_traditional (FILE **pgpin, FILE **pgpout, FILE **pgperr,
+			  int pgpinfd, int pgpoutfd, int pgperrfd,
+			  const char *fname, const char *uids, int flags);
 
 
 void pgp_invoke_import (const char *fname);

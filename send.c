@@ -894,6 +894,7 @@ ci_send_message (int flags,		/* send mode */
 
 #ifdef _PGPPATH
   BODY *save_content = NULL;
+  BODY *clear_content = NULL;
   char *pgpkeylist = NULL;
   /* save current value of "pgp_sign_as" */
   char *signas = NULL;
@@ -1229,41 +1230,35 @@ main_loop:
    * one place in order to avoid going to main_loop with encoded "env"
    * in case of error.  Ugh.
    */
+
 #ifdef _PGPPATH
   if (msg->pgp)
   {
     /* save the decrypted attachments */
-    save_content = msg->content;
+    clear_content = msg->content;
 
     if ((pgp_get_keys (msg, &pgpkeylist) == -1) ||
 	(pgp_protect (msg, pgpkeylist) == -1))
     {
-      if (msg->content->parts)
-      {
-	/* remove the toplevel multipart structure */
-	pbody = msg->content;
-	msg->content = msg->content->parts;
-	pbody->parts = NULL;
-	mutt_free_body (&pbody);
-      }
+      msg->content = mutt_remove_multipart (msg->content);
+      
       if (pgpkeylist)
 	FREE (&pgpkeylist);
+
       goto main_loop;
     }
   }
+
+  /* 
+   * at this point, msg->content is one of the following three things:
+   * - multipart/signed.  In this case, clear_content is a child.
+   * - multipart/encrypted.  In this case, clear_content exists
+   *   independently
+   * - application/pgp.  In this case, clear_content exists independently.
+   * - something else.  In this case, it's the same as clear_content.
+   */
+
 #endif /* _PGPPATH */
-
-  /* the following check may _badly_ interact with the PGP code above. */
-  
-#if 0
-  if (flags & SENDEDITMSG)
-  {
-   int really_send = mutt_yesorno (_("Message edited. Really send?"), 1);
-   if (really_send != M_YES)
-     goto main_loop;
-  }
-#endif
-
 
   if (!option (OPTNOCURSES) && !(flags & SENDMAILX))
     mutt_message _("Sending message...");
@@ -1289,17 +1284,17 @@ main_loop:
       if (mutt_strcmp (msg->content->subtype, "encrypted") == 0 ||
 	  mutt_strcmp (msg->content->subtype, "signed") == 0)
       {
-	if (save_content->type == TYPEMULTIPART)
+	if (clear_content->type == TYPEMULTIPART)
 	{
 	  if (!(msg->pgp & PGPENCRYPT) && (msg->pgp & PGPSIGN))
 	  {
 	    /* save initial signature and attachments */
 	    save_sig = msg->content->parts->next;
-	    save_parts = msg->content->parts->parts->next;
+	    save_parts = clear_content->parts->next;
 	  }
 
 	  /* this means writing only the main part */
-	  msg->content = save_content->parts;
+	  msg->content = clear_content->parts;
 
 	  if (pgp_protect (msg, pgpkeylist) == -1)
 	  {
@@ -1311,17 +1306,7 @@ main_loop:
 	    goto full_fcc;
 	  }
 
-	  if (msg->pgp & PGPENCRYPT)
-	  {
-	    /* not released in pgp_encrypt_message() */
-	    mutt_free_body (&save_content->parts);
-	    /* make sure we release the right thing later */
-	    save_content->parts = msg->content;
-
-	    encode_descriptions (msg->content);
-	  }
-	  else
-	    save_content = msg->content;
+	  save_content = msg->content;
 	}
       }
       else
@@ -1334,6 +1319,7 @@ full_fcc:
 #endif /* _PGPPATH */
     if (msg->content)
       mutt_write_fcc (fcc, msg, NULL, 0, NULL);
+
     msg->content = tmpbody;
 
 #ifdef _PGPPATH
@@ -1348,22 +1334,33 @@ full_fcc:
       msg->content->parts->next = save_sig;
       msg->content->parts->parts->next = save_parts;
     }
+    else if (save_content)
+    {
+      /* destroy the new encrypted body. */
+      mutt_free_body (&save_content);
+    }
+      
 #endif /* _PGPPATH */
   }
 
-#ifdef _PGPPATH
-  if (msg->pgp & PGPENCRYPT)
-  {
-    /* cleanup structures from the first encryption */
-    mutt_free_body (&save_content);
-    FREE (&pgpkeylist);
-  }
-#endif /* _PGPPATH */
 
   if ((i = send_message (msg)) == -1)
   {
     if (!(flags & SENDBATCH))
     {
+#ifdef _PGPPATH
+      if ((msg->pgp & PGPENCRYPT) || 
+	  ((msg->pgp & PGPSIGN) && msg->content->type == TYPEAPPLICATION))
+      {
+	mutt_free_body (&msg->content); /* destroy PGP data */
+	msg->content = clear_content;	/* restore clear text. */
+      }
+      else if ((msg->pgp & PGPSIGN) && msg->content->type == TYPEMULTIPART)
+      {
+	mutt_free_body (&msg->content->parts->next);		/* destroy sig */
+	msg->content = mutt_remove_multipart (msg->content);	/* remove multipart */
+      }
+#endif
       msg->content = mutt_remove_multipart (msg->content);
       goto main_loop;
     }
@@ -1375,6 +1372,15 @@ full_fcc:
   }
   else if (!option (OPTNOCURSES) && ! (flags & SENDMAILX))
     mutt_message (i == 0 ? _("Mail sent.") : _("Sending in background."));
+
+#ifdef _PGPPATH
+  if (msg->pgp & PGPENCRYPT)
+  {
+    /* cleanup structures from the first encryption */
+    mutt_free_body (&clear_content);
+    FREE (&pgpkeylist);
+  }
+#endif /* _PGPPATH */
 
   if (flags & SENDREPLY)
   {

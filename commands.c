@@ -477,7 +477,7 @@ void mutt_display_address (ENVELOPE *env)
   mutt_message ("%s: %s", pfx, buf);
 }
 
-static void set_copy_flags(HEADER *hdr, int decode, int decrypt, int *cmflags, int *chflags)
+static void set_copy_flags (HEADER *hdr, int decode, int decrypt, int *cmflags, int *chflags)
 {
   *cmflags = 0;
   *chflags = CH_UPDATE_LEN;
@@ -495,27 +495,37 @@ static void set_copy_flags(HEADER *hdr, int decode, int decrypt, int *cmflags, i
   }
 #endif
 
-  if(decode)
+  if (decode)
   {
     *chflags = CH_XMIT | CH_MIME | CH_TXTPLAIN;
     *cmflags = M_CM_DECODE | M_CM_CHARCONV;
   }
 
+  /* respect $weed only if decode doesn't kick in
+   * for decrypt.
+   */
+
+  if (decode && !decrypt && option (OPTWEED))
+  {
+    *chflags |= CH_WEED;
+    *cmflags |= M_CM_WEED;
+  }
 }
 
 static void _mutt_save_message (HEADER *h, CONTEXT *ctx, int delete, int decode, int decrypt)
 {
   int cmflags, chflags;
   
-  set_copy_flags(h, decode, decrypt, &cmflags, &chflags);
+  set_copy_flags (h, decode, decrypt, &cmflags, &chflags);
 
-  if (decode  || decrypt)
+  if (decode || decrypt)
     mutt_parse_mime_message (Context, h);
 
   if (mutt_append_message (ctx, Context, h, cmflags, chflags) == 0 && delete)
   {
     mutt_set_flag (Context, h, M_DELETE, 1);
-    mutt_set_flag (Context, h, M_TAG, 0);
+    if (option (OPTDELETEUNTAG))
+      mutt_set_flag (Context, h, M_TAG, 0);
   }
 }
 

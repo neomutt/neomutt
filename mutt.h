@@ -228,7 +228,8 @@ enum
 {
 
 #ifdef _PGPPATH
-  OPT_VERIFYSIG, /* verify PGP signatures */
+  OPT_VERIFYSIG,      /* verify PGP signatures */
+  OPT_PGPTRADITIONAL, /* create old-style PGP messages */
 #endif
 
   OPT_PRINT,
@@ -243,7 +244,8 @@ enum
   OPT_REPLYTO,
   OPT_ABORT,
   OPT_RECALL,
-  OPT_SUBJECT
+  OPT_SUBJECT,
+  OPT_MAX
 };
 
 /* flags to ci_send_message() */
@@ -275,6 +277,7 @@ enum
   OPTCOLLAPSEUNREAD,
   OPTCONFIRMAPPEND,
   OPTCONFIRMCREATE,
+  OPTDELETEUNTAG,
   OPTEDITHDRS,
   OPTENCODEFROM,
   OPTFASTREPLY,

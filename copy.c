@@ -45,6 +45,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
 	       const char *prefix)
 {
   int from = 0;
+  int this_is_from;
   int ignore = 0;
   char buf[STRING]; /* should be long enough to get most fields in one pass */
   char *nl;
@@ -136,16 +137,19 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
     if (nl && buf[0] != ' ' && buf[0] != '\t')
     {
       ignore = 1;
+      this_is_from = 0;
       if (!from && mutt_strncmp ("From ", buf, 5) == 0)
       {
 	if ((flags & CH_FROM) == 0)
 	  continue;
-	from = 1;
+	this_is_from = from = 1;
       }
       else if (buf[0] == '\n' || (buf[0] == '\r' && buf[1] == '\n'))
 	break; /* end of header */
 
-      if ((flags & CH_WEED) && 
+      /* note: CH_FROM takes precedence over header weeding. */
+      if (!((flags & CH_FROM) && (flags & CH_FORCE_FROM) && this_is_from) &&
+	  (flags & CH_WEED) &&
 	  mutt_matches_ignore (buf, Ignore) &&
 	  !mutt_matches_ignore (buf, UnIgnore))
 	continue;
@@ -262,6 +266,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
 /* flags
  	CH_DECODE	RFC2047 header decoding
  	CH_FROM		retain the "From " message separator
+        CH_FORCE_FROM	give CH_FROM precedence over CH_WEED
  	CH_MIME		ignore MIME fields
 	CH_NOLEN	don't write Content-Length: and Lines:
  	CH_NONEWLINE	don't output a newline after the header
@@ -606,7 +611,7 @@ _mutt_append_message (CONTEXT *dest, FILE *fpin, CONTEXT *src, HEADER *hdr,
   if ((msg = mx_open_new_message (dest, hdr, (src->magic == M_MBOX || src->magic == M_MMDF || src->magic == M_KENDRA) ? 0 : M_ADD_FROM)) == NULL)
     return -1;
   if (dest->magic == M_MBOX || dest->magic == M_MMDF || dest->magic == M_KENDRA)
-    chflags |= CH_FROM;
+    chflags |= CH_FROM | CH_FORCE_FROM;
   chflags |= (dest->magic == M_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
   r = _mutt_copy_message (msg->fp, fpin, hdr, body, flags, chflags);
   if (mx_commit_message (msg, dest) != 0)

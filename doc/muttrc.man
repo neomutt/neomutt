@@ -809,10 +809,22 @@ deleting will automatically be purged without prompting.  If set to
 
 
 .TP
+.B delete_untag
+.nf
+Type: boolean
+Default: yes
+.fi
+.IP
+If this option is \fIset\fP, mutt will untag messages when marking them
+for deletion.  This applies when you either explicitly delete a message,
+or when you save it to another folder.
+
+
+.TP
 .B dotlock_program
 .nf
 Type: path
-Default: \(lqBINDIR/mutt_dotlock\(rq
+Default: \(lq/usr/local/bin/mutt_dotlock\(rq
 .fi
 .IP
 Contains the path of the mutt_dotlock (8) binary to be used by
@@ -947,7 +959,7 @@ during the `set' command.
 .B folder_format
 .nf
 Type: string
-Default: \(lq%N %F %2l %-8.8u %-8.8g %8s %d %f\(rq
+Default: \(lq%2C %t %N %F %2l %-8.8u %-8.8g %8s %d %f\(rq
 .fi
 .IP
 This variable allows you to customize the file browser display to your
@@ -960,6 +972,7 @@ its own set of printf()-like sequences:
 .sp
 .ft RR
 .nf
+%C      current file number
 %d      date/time folder was last modified
 %f      filename
 %F      file permissions
@@ -967,6 +980,7 @@ its own set of printf()-like sequences:
 %l      number of hard links
 %N      N if folder has new mail, blank otherwise
 %s      size in bytes
+%t      * if the file is tagged, blank otherwise
 %u      owner name (or numeric uid, if missing)
 %>X     right justify the rest of the string and pad 
         with character \(rqX\(rq
@@ -1387,7 +1401,7 @@ See also: \(lqto_chars\(rq.
 .B ispell
 .nf
 Type: path
-Default: \(lq/usr/bin/ispell\(rq
+Default: \(lqispell\(rq
 .fi
 .IP
 How to invoke ispell (GNU's spell-checking software).
@@ -1961,6 +1975,24 @@ If you prefer reverse order of the above values, prefix it with
 
 
 .TP
+.B pgp_create_traditional
+.nf
+Type: quadoption
+Default: no
+.fi
+.IP
+This option controls whether Mutt generates old-style PGP encrypted
+or signed messages under certain circumstances.
+.IP
+Note that PGP/MIME will be used automatically for messages which have
+a character set different from us-ascii, or which consist of more than
+a single MIME part.
+.IP
+Also note that using the old-style PGP message format is \fBstrongly\fP
+\fBdeprecated\fP.
+
+
+.TP
 .B pgp_decode_command
 .nf
 Type: string
@@ -2029,6 +2061,17 @@ Default: \(lq\(rq
 .fi
 .IP
 This command is used to decrypt a PGP/MIME encrypted message.
+
+
+.TP
+.B pgp_clearsign_command
+.nf
+Type: string
+Default: \(lq\(rq
+.fi
+.IP
+This format is used to create a \(rqclearsigned\(rq old-style PGP attachment.
+Note that the use of this format is \fBstrongly\fP \fBdeprecated\fP.
 
 
 .TP
