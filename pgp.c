@@ -637,7 +637,7 @@ void pgp_signed_handler (BODY *a, STATE *s)
   if (!(a && a->next && a->next->type == protocol_major && 
       !mutt_strcasecmp(a->next->subtype, protocol_minor)))
   {
-    state_puts(_("[-- Error: Inconsistant multipart/signed structure! --]\n\n"), s);
+    state_puts(_("[-- Error: Inconsistent multipart/signed structure! --]\n\n"), s);
     mutt_body_handler (a, s);
     return;
   }
