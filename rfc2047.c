@@ -41,7 +41,9 @@
 #define ENCWORD_LEN_MAX 75
 #define ENCWORD_LEN_MIN 9 /* strlen ("=?.?.?.?=") */
 
-#define HSPACE(x) ((x) == ' ' || (x) == '\t')
+#define HSPACE(x) ((x) == '\0' || (x) == ' ' || (x) == '\t')
+
+extern char RFC822Specials[];
 
 typedef size_t (*encoder_t) (char *, const char *, size_t,
 			     const char *);
@@ -348,12 +350,13 @@ static size_t choose_block (char *d, size_t dlen, int col,
  */
 static int rfc2047_encode (const char *d, size_t dlen, int col,
 			   const char *fromcode, const char *charsets,
-			   char **e, size_t *elen)
+			   char **e, size_t *elen, char *specials)
 {
   int ret = 0;
   char *buf;
   size_t bufpos, buflen;
   char *u, *t0, *t1, *t;
+  char *s0, *s1;
   size_t ulen, r, n, wlen;
   encoder_t encoder;
   char *tocode1 = 0;
@@ -363,23 +366,41 @@ static int rfc2047_encode (const char *d, size_t dlen, int col,
   /* Try to convert to UTF-8. */
   if (convert_string (d, dlen, fromcode, icode, &u, &ulen))
   {
-    ret = 1, icode = 0;
-    u = safe_malloc (ulen = dlen), memcpy (u, d, dlen);
+    ret = 1; 
+    icode = 0;
+    u = safe_malloc ((ulen = dlen) + 1);
+    memcpy (u, d, dlen);
+    u[ulen] = 0;
   }
 
   /* Find earliest and latest things we must encode. */
-  t0 = t1 = 0;
-  for (t = u; t < u + ulen - 1; t++)
-    if ((*t & 0x80) ||
+  s0 = s1 = t0 = t1 = 0;
+  for (t = u; t < u + ulen; t++)
+  {
+    if ((*t & 0x80) || 
 	(*t == '=' && t[1] == '?' && (t == u || HSPACE(*(t-1)))))
-      t0 = t0 ? t0 : t, t1 = t;
-  if (t == u + ulen - 1 && (*t & 0x80))
-    t0 = t0 ? t0 : t, t1 = t;
+    {
+      if (!t0) t0 = t;
+      t1 = t;
+    }
+    else if (specials && strchr (specials, *t))
+    {
+      if (!s0) s0 = t;
+      s1 = t;
+    }
+  }
+
+  /* If we have something to encode, include RFC822 specials */
+  if (t0 && s0 && s0 < t0)
+    t0 = s0;
+  if (t1 && s1 && s1 > t1)
+    t1 = s1;
 
   if (!t0)
   {
     /* No encoding is required. */
-    *e = u, *elen = ulen;
+    *e = u;
+    *elen = ulen;
     return ret;
   }
 
@@ -399,8 +420,9 @@ static int rfc2047_encode (const char *d, size_t dlen, int col,
   
   /* Adjust t0 for maximum length of line. */
   t = u + (ENCWORD_LEN_MAX + 1) - col - ENCWORD_LEN_MIN;
-  t = t > u ? t : u;
-  t0 = t < t0 ? t : t0;
+  if (t < u)  t = u;
+  if (t < t0) t0 = t;
+  
 
   /* Adjust t0 until we can encode a character after a space. */
   for (; t0 > u; t0--)
@@ -498,7 +520,7 @@ static int rfc2047_encode (const char *d, size_t dlen, int col,
   return ret;
 }
 
-void rfc2047_encode_string (char **pd)
+void _rfc2047_encode_string (char **pd, int encode_specials, int col)
 {
   char *e;
   size_t elen;
@@ -511,10 +533,9 @@ void rfc2047_encode_string (char **pd)
   if (!charsets || !*charsets)
     charsets = "UTF-8";
 
-  /* Pretend that we are starting in column 32, thus allowing for a
-     field-name with up to 30 characters. */
-  rfc2047_encode (*pd, strlen (*pd), 32,
-		  Charset, charsets, &e, &elen);
+  rfc2047_encode (*pd, strlen (*pd), col,
+		  Charset, charsets, &e, &elen,
+		  encode_specials ? RFC822Specials : NULL);
 
   safe_realloc ((void **) &e, elen + 1);
   e[elen] = '\0';
@@ -522,17 +543,18 @@ void rfc2047_encode_string (char **pd)
   *pd = e;
 }
 
-void rfc2047_encode_adrlist (ADDRESS *addr)
+void rfc2047_encode_adrlist (ADDRESS *addr, const char *tag)
 {
   ADDRESS *ptr = addr;
-
+  int col = tag ? strlen (tag) + 2 : 32;
+  
   while (ptr)
   {
     if (ptr->personal)
-      rfc2047_encode_string (&ptr->personal);
+      _rfc2047_encode_string (&ptr->personal, 1, col);
 #ifdef EXACT_ADDRESS
     if (ptr->val)
-      rfc2047_encode_string (&ptr->val);
+      _rfc2047_encode_string (&ptr->val, 1, col);
 #endif
     ptr = ptr->next;
   }

@@ -2072,11 +2072,11 @@ void mutt_prepare_envelope (ENVELOPE *env, int final)
   }
 
   /* Take care of 8-bit => 7-bit conversion. */
-  rfc2047_encode_adrlist (env->to);
-  rfc2047_encode_adrlist (env->cc);
-  rfc2047_encode_adrlist (env->from);
-  rfc2047_encode_adrlist (env->mail_followup_to);
-  rfc2047_encode_adrlist (env->reply_to);
+  rfc2047_encode_adrlist (env->to, "To");
+  rfc2047_encode_adrlist (env->cc, "Cc");
+  rfc2047_encode_adrlist (env->from, "From");
+  rfc2047_encode_adrlist (env->mail_followup_to, "Mail-Followup-To");
+  rfc2047_encode_adrlist (env->reply_to, "Reply-To");
 
   if (env->subject)
   {
@@ -2161,7 +2161,7 @@ void mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to)
   if (fqdn)
     rfc822_qualify (from, fqdn);
 
-  rfc2047_encode_adrlist (from);
+  rfc2047_encode_adrlist (from, "Resent-From");
   
   rfc822_write_address (resent_from, sizeof (resent_from), from);
 

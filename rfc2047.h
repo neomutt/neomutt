@@ -19,8 +19,10 @@
 char *mutt_choose_charset (const char *fromcode, const char *charsets,
 		      char *u, size_t ulen, char **d, size_t *dlen);
 
-void rfc2047_encode_string (char **);
-void rfc2047_encode_adrlist (ADDRESS *);
+void _rfc2047_encode_string (char **, int, int);
+void rfc2047_encode_adrlist (ADDRESS *, const char *);
+
+#define rfc2047_encode_string(a) _rfc2047_encode_string (a, 0, 32);
 
 void rfc2047_decode (char **);
 void rfc2047_decode_adrlist (ADDRESS *);
