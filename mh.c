@@ -718,12 +718,10 @@ static int maildir_sync_message (CONTEXT *ctx, int msgno)
 int mh_sync_mailbox (CONTEXT * ctx)
 {
   char path[_POSIX_PATH_MAX], tmp[_POSIX_PATH_MAX];
-  int i, j, rc = 0;
+  int i, j;
 
-  i = mh_check_mailbox(ctx, NULL);
-
-  if(i == M_REOPENED || i == M_NEW_MAIL || i < 0)
-    return i;
+  if (mh_check_mailbox(ctx, NULL) != 0)
+    return -1;
 
   for (i = 0; i < ctx->msgcount; i++)
   {
@@ -774,7 +772,7 @@ int mh_sync_mailbox (CONTEXT * ctx)
     }
   }
 
-  return (rc);
+  return 0;
 }
 
 static char *maildir_canon_filename(char *dest, char *src, size_t l)

@@ -907,7 +907,7 @@ int mx_close_mailbox (CONTEXT *ctx)
 
     if (ctx->changed || ctx->deleted)
     {
-      if (sync_mailbox (ctx) == -1)
+      if (sync_mailbox (ctx) != 0)
         return -1;
     }
   }
