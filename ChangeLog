@@ -1,3 +1,8 @@
+2005-01-28 14:50:31  Paul Walker  <paul@black-sun.demon.co.uk>  (roessler)
+
+	* signal.c: Trigger window resizing code when waking up from
+	suspension.
+
 2005-01-28 14:09:08  René Clerc  <rene@clerc.nl>  (roessler)
 
 	* po/nl.po: update
