@@ -1,4 +1,6 @@
-2005-01-27 18:27:36  Marco d'Itri  <md@Linux.IT>  (roessler)
+2005-01-27 18:28:42  Marco d'Itri  <md@Linux.IT>  (roessler)
+
+	* pgp.c: Improved good signature check.
 
 	* contrib/gpg.rc, pgpinvoke.c: Make the default Muttrc work
 	out the box for people using gnupg-agent.  Wrote and applied a
