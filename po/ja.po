@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.23.2\n"
+"Project-Id-Version: 1.3.24\n"
 "POT-Creation-Date: 2001-11-29 10:43+0100\n"
-"PO-Revision-Date: 2001-11-13 14:15+0900\n"
+"PO-Revision-Date: 2001-12-03 10:47+0900\n"
 "Last-Translator: oota toshiya <oota@mspd.mt.nec.co.jp>\n"
 "Language-Team: mutt-j <mutt-j@ns.ribbon.or.jp>\n"
 "MIME-Version: 1.0\n"
@@ -426,32 +426,26 @@ msgid "Shell command: "
 msgstr "シェルコマンド: "
 
 #: commands.c:647
-#, c-format
 msgid "Decode-save%s to mailbox"
 msgstr "%sメールボックスにデコードしてセーブ"
 
 #: commands.c:648
-#, c-format
 msgid "Decode-copy%s to mailbox"
 msgstr "%sメールボックスにデコードしてコピー"
 
 #: commands.c:649
-#, c-format
 msgid "Decrypt-save%s to mailbox"
 msgstr "%sメールボックスに復号化してセーブ"
 
 #: commands.c:650
-#, c-format
 msgid "Decrypt-copy%s to mailbox"
 msgstr "%sメールボックスに復号化してコピー"
 
 #: commands.c:651
-#, c-format
 msgid "Save%s to mailbox"
 msgstr "%sメールボックスにセーブ"
 
 #: commands.c:651
-#, c-format
 msgid "Copy%s to mailbox"
 msgstr "%sメールボックスにコピー"
 
@@ -1054,21 +1048,21 @@ msgid "[-- name: %s --]\n"
 msgstr "[-- 名前: %s --]\n"
 
 #: handler.c:1675 handler.c:1691
-#, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
-msgstr "[-- この %s/%s 添付ファイルは含まれない --]\n"
+msgstr "[-- この %s/%s 添付ファイル は含まれない。 --]\n"
 
 #: handler.c:1677
-#, fuzzy
 msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
-msgstr "[-- かつ、指定された access-type %s はサポートされない。--]\n"
+msgstr ""
+"[-- かつ、指定された外部のソースは期限が --]\n"
+"[-- 満了している --]\n"
 
 #: handler.c:1695
-#, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
-msgstr "[-- かつ、指定された access-type %s はサポートされない。--]\n"
+msgstr ""
+"[-- かつ、指定された access-type %s はサポートされない。--]\n"
 
 #: handler.c:1812
 msgid "Error: multipart/signed has no protocol."
@@ -1305,6 +1299,7 @@ msgid "CLOSE failed"
 msgstr "クローズ失敗。"
 
 #: imap/imap.c:1313
+#, fuzzy
 msgid "Bad mailbox name"
 msgstr "不正なメールボックス名"
 
@@ -2305,10 +2300,10 @@ msgstr ""
 
 #: main.c:88
 msgid ""
-"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
-"<file> ]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
-"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
+"]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
+"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2646,9 +2641,8 @@ msgid "unspecified protocol error"
 msgstr ""
 
 #: mutt_ssl.c:327
-#, c-format
 msgid "SSL failed: %s"
-msgstr "SSLが %s で失敗"
+msgstr "SSL は %s で失敗。"
 
 #: mutt_ssl.c:336
 msgid "Unable to get certificate from peer"
@@ -3729,7 +3723,7 @@ msgstr "(メールボックスなし)"
 
 #: thread.c:968
 msgid "Parent message is not visible in this limited view."
-msgstr "親メッセージはこの制限された表示状態では見えない。"
+msgstr "親メッセージはこの制限された表示範囲では不可視。"
 
 #: thread.c:974
 msgid "Parent message is not available."
