@@ -549,6 +549,11 @@ static int mx_open_mailbox_append (CONTEXT *ctx)
       {
 	if (!ctx->fp)
 	  mutt_perror (ctx->path);
+	else
+	{
+	  mutt_error (_("Couldn't lock %s\n"), ctx->path);
+	  fclose (ctx->fp);
+	}
 	return (-1);
       }
       fseek (ctx->fp, 0, 2);
