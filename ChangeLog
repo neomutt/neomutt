@@ -1,3 +1,7 @@
+2003-03-04 07:45:45  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* addrbook.c, alias.c, send.c: Fixing more IDN bugs.
+
 2003-03-03 14:25:14  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* copy.c, sort.c: Fixing some nits.
