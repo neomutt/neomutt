@@ -815,8 +815,8 @@ void mutt_expand_fmt (char *dest, size_t destlen, const char *fmt, const char *s
   
   if (!found && destlen > 0)
   {
-    strncat (dest, " ", destlen);
-    strncat (dest, src, destlen-1);
+    safe_strcat (dest, destlen, " ");
+    safe_strcat (dest, destlen, src);
   }
   
 }
@@ -1332,8 +1332,6 @@ BUFFER * mutt_buffer_init(BUFFER *b)
  */
 BUFFER * mutt_buffer_from(BUFFER *b, char *seed)
 {
-  int n;
-
   if (!seed)
     return NULL;
 
@@ -1497,7 +1495,7 @@ int mutt_match_spam_list (const char *s, SPAM_LIST *l, char *text, int x)
     /* If this pattern needs more matches, expand pmatch. */
     if (l->nmatch > nmatch)
     {
-      safe_realloc ((void**) &pmatch, l->nmatch * sizeof(regmatch_t));
+      safe_realloc (&pmatch, l->nmatch * sizeof(regmatch_t));
       nmatch = l->nmatch;
     }
 

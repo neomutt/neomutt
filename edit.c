@@ -463,7 +463,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
       done = 1;
     else
     {
-      strncat (tmp, "\n", sizeof(tmp)); tmp[sizeof(tmp) - 1] = '\0';
+      safe_strcat (tmp, sizeof (tmp), "\n");
       if (buflen == bufmax)
 	safe_realloc (&buf, sizeof (char *) * (bufmax += 25));
       buf[buflen++] = safe_strdup (tmp[1] == '~' ? tmp + 1 : tmp);

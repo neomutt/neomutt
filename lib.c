@@ -153,6 +153,45 @@ char *safe_strdup (const char *s)
   return (p);
 }
 
+char *safe_strcat (char *d, size_t l, const char *s)
+{
+  char *p = d;
+
+  if (!l) 
+    return d;
+
+  l--; /* Space for the trailing '\0'. */
+  
+  for (; *d && l; l--)
+    d++;
+  for (; *s && l; l--)
+    *d++ = *s++;
+
+  *d = '\0';
+  
+  return p;
+}
+
+char *safe_strncat (char *d, size_t l, const char *s, size_t sl)
+{
+  char *p = d;
+
+  if (!l)
+    return d;
+  
+  l--; /* Space for the trailing '\0'. */
+  
+  for (; *d && l; l--)
+    d++;
+  for (; *s && l && sl; l--, sl--)
+    *d++ = *s++;
+
+  *d = '\0';
+  
+  return p;
+}
+
+
 void mutt_str_replace (char **p, const char *s)
 {
   FREE (p);

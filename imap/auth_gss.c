@@ -122,7 +122,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata, const char* method)
   mutt_to_base64 ((unsigned char*) buf1, send_token.value, send_token.length,
     sizeof (buf1) - 2);
   gss_release_buffer (&min_stat, &send_token);
-  strncat (buf1, "\r\n", sizeof (buf1));
+  safe_strcat (buf1, sizeof (buf1), "\r\n");
   mutt_socket_write (idata->conn, buf1);
 
   while (maj_stat == GSS_S_CONTINUE_NEEDED)
@@ -158,7 +158,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata, const char* method)
     mutt_to_base64 ((unsigned char*) buf1, send_token.value,
       send_token.length, sizeof (buf1) - 2);
     gss_release_buffer (&min_stat, &send_token);
-    strncat (buf1, "\r\n", sizeof (buf1));
+    safe_strcat (buf1, sizeof (buf1), "\r\n");
     mutt_socket_write (idata->conn, buf1);
   }
 
@@ -226,7 +226,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata, const char* method)
 		  sizeof (buf1) - 2);
   dprint (2, (debugfile, "Requesting authorisation as %s\n",
     idata->conn->account.user));
-  strncat (buf1, "\r\n", sizeof (buf1));
+  safe_strcat (buf1, sizeof (buf1), "\r\n");
   mutt_socket_write (idata->conn, buf1);
 
   /* Joy of victory or agony of defeat? */

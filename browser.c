@@ -574,8 +574,8 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
       else
       {
 	getcwd (LastDir, sizeof (LastDir));
-	strcat (LastDir, "/");	/* __STRCAT_CHECKED__ */
-	strncat (LastDir, f, i);
+	safe_strcat (LastDir, sizeof (LastDir), "/");
+	safe_strncat (LastDir, sizeof (LastDir), f, i);
       }
     }
     else

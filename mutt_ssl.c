@@ -417,7 +417,7 @@ static void x509_fingerprint (char *s, int l, X509 * cert)
     {
       char ch[8];
       snprintf (ch, 8, "%02X%s", md[j], (j % 2 ? " " : ""));
-      strncat (s, ch, l);
+      safe_strcat (s, l, ch);
     }
   }
 }
@@ -629,9 +629,9 @@ static int ssl_check_certificate (sslsockdata * data)
   
   helpstr[0] = '\0';
   mutt_make_help (buf, sizeof (buf), _("Exit  "), MENU_GENERIC, OP_EXIT);
-  strncat (helpstr, buf, sizeof (helpstr));
+  safe_strcat (helpstr, sizeof (helpstr), buf);
   mutt_make_help (buf, sizeof (buf), _("Help"), MENU_GENERIC, OP_HELP);
-  strncat (helpstr, buf, sizeof (helpstr));
+  safe_strcat (helpstr, sizeof (helpstr), buf);
   menu->help = helpstr;
 
   done = 0;

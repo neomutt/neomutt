@@ -115,6 +115,8 @@ char *mutt_skip_whitespace (char *);
 char *mutt_strlower (char *);
 char *mutt_substrcpy (char *, const char *, const char *, size_t);
 char *mutt_substrdup (const char *, const char *);
+char *safe_strcat (char *, size_t, const char *);
+char *safe_strncat (char *, size_t, const char *, size_t);
 char *safe_strdup (const char *);
 
 const char *mutt_stristr (const char *, const char *);

@@ -663,8 +663,8 @@ void imap_add_keywords (char* s, HEADER* h, LIST* mailbox_flags, size_t slen)
   {
     if (msg_has_flag (mailbox_flags, keywords->data))
     {
-      strncat (s, keywords->data, slen);
-      strncat (s, " ", slen);
+      safe_strcat (s, slen, keywords->data);
+      safe_strcat (s, slen, " ");
     }
     keywords = keywords->next;
   }

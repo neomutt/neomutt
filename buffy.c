@@ -439,7 +439,7 @@ int mutt_buffy_list (void)
   pos = 0;
   first = 1;
   buffylist[0] = 0;
-  pos += strlen (strncat (buffylist, _("New mail in "), sizeof (buffylist) - 1 - pos));
+  pos += strlen (strncat (buffylist, _("New mail in "), sizeof (buffylist) - 1 - pos)); /* __STRNCAT_CHECKED__ */
   for (tmp = Incoming; tmp; tmp = tmp->next)
   {
     /* Is there new mail in this mailbox? */
@@ -453,21 +453,21 @@ int mutt_buffy_list (void)
       break;
     
     if (!first)
-      pos += strlen (strncat(buffylist + pos, ", ", sizeof(buffylist)-1-pos));
+      pos += strlen (strncat(buffylist + pos, ", ", sizeof(buffylist)-1-pos)); /* __STRNCAT_CHECKED__ */
 
     /* Prepend an asterisk to mailboxes not already notified */
     if (!tmp->notified)
     {
-      /* pos += strlen (strncat(buffylist + pos, "*", sizeof(buffylist)-1-pos)); */
+      /* pos += strlen (strncat(buffylist + pos, "*", sizeof(buffylist)-1-pos));  __STRNCAT_CHECKED__ */
       tmp->notified = 1;
       BuffyNotify--;
     }
-    pos += strlen (strncat(buffylist + pos, path, sizeof(buffylist)-1-pos));
+    pos += strlen (strncat(buffylist + pos, path, sizeof(buffylist)-1-pos)); /* __STRNCAT_CHECKED__ */
     first = 0;
   }
   if (!first && tmp)
   {
-    strncat (buffylist + pos, ", ...", sizeof (buffylist) - 1 - pos);
+    strncat (buffylist + pos, ", ...", sizeof (buffylist) - 1 - pos); /* __STRNCAT_CHECKED__ */
   }
   if (!first)
   {

@@ -180,10 +180,10 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
     mutt_format_string (prompt, sizeof (prompt) - 4,
 			0, COLS-extra_space, 0, 0,
 			prompt, sizeof (prompt), 0);
-    strncat (prompt, "...?", sizeof (prompt));
+    safe_strcat (prompt, sizeof (prompt), "...?");
   }
   else
-    strncat (prompt, "?", sizeof (prompt));
+    safe_strcat (prompt, sizeof (prompt), "?");
 
   if (query_quadoption (OPT_BOUNCE, prompt) != M_YES)
   {

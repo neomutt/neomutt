@@ -791,7 +791,7 @@ static void imap_set_flag (IMAP_DATA* idata, int aclbit, int flag,
 {
   if (mutt_bit_isset (idata->rights, aclbit))
     if (flag)
-      strncat (flags, str, flsize);
+      safe_strcat (flags, flsize, str);
 }
 
 /* imap_make_msg_set: make an IMAP4rev1 UID message set out of a set of

@@ -34,6 +34,7 @@ do_check '\<fopen.*'\"'.*w' __FOPEN_CHECKED__ "Alert: Unchecked fopen calls."
 do_check '\<(mutt_)?strcpy' __STRCPY_CHECKED__ "Alert: Unchecked strcpy calls."
 do_check '\<strcat' __STRCAT_CHECKED__ "Alert: Unchecked strcat calls."
 do_check '\<sprintf.*%s' __SPRINTF_CHECKED__ "Alert: Unchecked sprintf calls."
+do_check '\<strncat' __STRNCAT_CHECKED__ "You probably meant safe_strcat here."
 
 # don't do this check on others' code.
 do_check_files '\<(malloc|realloc|free|strdup)[ 	]*\(' __MEM_CHECKED__ "Alert: Use of traditional memory management calls." \
