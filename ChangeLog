@@ -1,4 +1,22 @@
-2003-10-04 16:41:04  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+2003-10-04 20:35:00  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* recvattach.c, attach.h, commands.c, compose.c, keymap.h, lib.c,
+	lib.h, menu.c, mutt.h, mutt_menu.h, muttlib.c, pager.c, protos.h:
+	This patch fixes various aspects of the attachment-saving user
+	interface.  Changes include:
+
+	- When tagging and saving multiple attachments, you can now use
+	  the same target directory for multiple attachments.
+
+	- When you can't save an attachment, you get an opportunity to
+	  enter a new file name.
+
+	- The menu cursor will highlight the attachment that you are
+	  currently discussing with mutt.
+
+	- Various bug fixes.
+
+	This does, in particular, address #1619 (Debian#208430).
 
 	* menu.c: Fix #1656.
 
