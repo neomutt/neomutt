@@ -136,6 +136,13 @@ int mutt_copy_body (FILE *fp, BODY **tgt, BODY *src)
   b->filename = safe_strdup (b->filename);
   b->d_filename = safe_strdup (b->d_filename);
   b->description = safe_strdup (b->description);
+
+  /* 
+   * we don't seem to need the HEADER structure currently.
+   * XXX - this may change in the future
+   */
+
+  if (b->hdr) b->hdr = NULL;
   
   /* copy parameters */
   for (par = b->parameter, ppar = &b->parameter; par; ppar = &(*ppar)->next, par = par->next)
