@@ -29,7 +29,7 @@ mutt_SOURCES = $(BUILT_SOURCES) \
 	edit.c enter.c flags.c init.c filter.c from.c getdomain.c \
 	handler.c hash.c hdrline.c headers.c help.c hook.c keymap.c \
 	main.c mbox.c menu.c mh.c mx.c pager.c parse.c pattern.c \
-	postpone.c query.c recvattach.c \
+	postpone.c query.c recvattach.c recvcmd.c \
 	rfc822.c rfc1524.c rfc2047.c rfc2231.c \
 	score.c send.c sendlib.c signal.c sort.c \
 	status.c system.c thread.c charset.c history.c lib.c \

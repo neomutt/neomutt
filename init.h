@@ -483,28 +483,6 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Also see the ``$$record'' variable.
   */
-  { "forward_attachment", DT_BOOL, R_NONE, OPTFORWATTACH, 0 },
-  /*
-  ** .pp
-  ** When set, and you (tag-)forward attachments from the Attachment menu,
-  ** Mutt creates a new message with the specified attachments \fIonly\fP.
-  ** ``$$forward_format'' is used to set the default subject.
-  ** .pp
-  ** When unset, Mutt creates a pseudo-message comprising the tagged
-  ** attachments and forwards that. See the section on Forwarding a message
-  ** for details.
-  ** .pp
-  ** For example: if you have a message containing a image/gif,
-  ** application/octet-stream, or whatever attachment, you can go to the
-  ** Attachment menu and forward ONLY that attachment to someone else.
-  ** .pp
-  ** Basically, setting this variable produces the same effect as
-  ** explicitly saving the attachment(s), composing a new message and then
-  ** attaching the saved file(s).
-  */
-  { "forw_attachment",  DT_SYN, R_NONE, UL "forward_attachment", 0 },
-  /*
-  */
   { "forward_decode",	DT_BOOL, R_NONE, OPTFORWDECODE, 1 },
   /*
   ** .pp
@@ -920,6 +898,14 @@ struct option_t MuttVars[] = {
   */
   { "mime_fwd",		DT_SYN,  R_NONE, UL "mime_forward", 0 },
   /*
+  */
+
+  { "mime_forward_rest", DT_QUAD, R_NONE, OPT_MIMEFWDREST, M_YES },
+  /*
+  ** .pp
+  ** When forwarding multiple attachments of a MIME message from the recvattach
+  ** menu, attachments which cannot be decoded in a reasonable manner will
+  ** be attached to the newly composed message if this option is set.
   */
 
 #ifdef MIXMASTER

@@ -1102,7 +1102,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
       case OP_VIEW_ATTACH:
       case OP_DISPLAY_HEADERS:
 	CHECK_COUNT;
-	mutt_attach_display_loop (menu, op, NULL, idx);
+	mutt_attach_display_loop (menu, op, NULL, NULL, idx, idxlen);
 	menu->redraw = REDRAW_FULL;
 	mutt_clear_error ();
 	break;

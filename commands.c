@@ -227,7 +227,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
     return;
   }
 
-  mutt_bounce_message (h, adr);
+  mutt_bounce_message (NULL, h, adr);
   rfc822_free_address (&adr);
   mutt_message (h ? _("Message bounced.") : _("Messages bounced."));
 }

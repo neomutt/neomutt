@@ -239,6 +239,7 @@ struct binding_t OpAttach[] = {
   { "pipe-entry",	OP_PIPE,			"|" },
   { "view-mailcap",	OP_ATTACH_VIEW_MAILCAP,		"m" },
   { "reply",		OP_REPLY,			"r" },
+  { "resend-message",	OP_RESEND,			"\033e" },
   { "group-reply",	OP_GROUP_REPLY,			"g" },
   { "list-reply",	OP_LIST_REPLY,			"L" },
   { "forward-message",	OP_FORWARD_MESSAGE,		"f" },

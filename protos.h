@@ -87,6 +87,8 @@ BODY *mutt_parse_multipart (FILE *, const char *, long, int);
 BODY *mutt_parse_messageRFC822 (FILE *, BODY *);
 BODY *mutt_read_mime_header (FILE *, int);
 
+LIST *mutt_make_references(ENVELOPE *e);
+
 ENVELOPE *mutt_read_rfc822_header (FILE *, HEADER *, short, short);
 HEADER *mutt_dup_header (HEADER *);
 
@@ -123,11 +125,12 @@ char *mutt_make_date (char *, size_t);
 
 const char *mutt_fqdn(short);
 
+void mutt_adv_mktemp (char *, size_t);
 void mutt_alias_menu (char *, size_t, ALIAS *);
 void mutt_block_signals (void);
 void mutt_block_signals_system (void);
 void mutt_body_handler (BODY *, STATE *);
-void mutt_bounce_message (HEADER *, ADDRESS *);
+void mutt_bounce_message (FILE *fp, HEADER *, ADDRESS *);
 void mutt_buffy (char *);
 void mutt_check_rescore (CONTEXT *);
 void mutt_clear_error (void);
@@ -143,7 +146,10 @@ void mutt_expand_file_fmt (char *, size_t, const char *, const char *);
 void mutt_expand_fmt (char *, size_t, const char *, const char *);
 void mutt_expand_link (char *, const char *, const char *);
 void mutt_fetchPopMail (void);
+void mutt_fix_reply_recipients (ENVELOPE *env);
 void mutt_folder_hook (char *);
+void mutt_forward_intro (FILE *fp, HEADER *cur);
+void mutt_forward_trailer (FILE *fp);
 void mutt_free_alias (ALIAS **);
 void mutt_free_body (BODY **);
 void mutt_free_color (int fg, int bg);
@@ -153,7 +159,11 @@ void mutt_free_parameter (PARAMETER **);
 void mutt_generate_header (char *, size_t, HEADER *, int);
 void mutt_help (int);
 void mutt_linearize_tree (CONTEXT *, int);
+void mutt_make_attribution (CONTEXT *ctx, HEADER *cur, FILE *out);
+void mutt_make_forward_subject (ENVELOPE *env, CONTEXT *ctx, HEADER *cur);
 void mutt_make_help (char *, size_t, char *, int, int);
+void mutt_make_misc_reply_headers (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, ENVELOPE *curenv);
+void mutt_make_post_indent (CONTEXT *ctx, HEADER *cur, FILE *out);
 void mutt_message (const char *, ...);
 void mutt_message_to_7bit (BODY *, FILE *);
 void mutt_mktemp (char *);
@@ -212,12 +222,15 @@ int mutt_command_complete (char *, size_t, int, int);
 int mutt_var_value_complete (char *, size_t, int);
 int mutt_complete (char *, size_t);
 int mutt_compose_attachment (BODY *a);
+int mutt_copy_body (FILE *, BODY **, BODY *);
 int mutt_decode_save_attachment (FILE *, BODY *, char *, int, int);
 int mutt_display_message (HEADER *h);
 int mutt_edit_attachment(BODY *);
 int mutt_edit_message (CONTEXT *, HEADER *);
+int mutt_fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags);
 int mutt_parent_message (CONTEXT *, HEADER *);
-int mutt_prepare_template(CONTEXT *, HEADER *, HEADER *, short);
+int mutt_prepare_template(FILE*, CONTEXT *, HEADER *, HEADER *, short);
+int mutt_resend_message (FILE *, CONTEXT *, HEADER *);
 #define mutt_enter_fname(A,B,C,D,E) _mutt_enter_fname(A,B,C,D,E,0,NULL,NULL)
 int _mutt_enter_fname (const char *, char *, size_t, int *, int, int, char ***, int *);
 #define mutt_enter_string(A,B,C,D,E) _mutt_enter_string(A,B,C,D,E,0,NULL,NULL)
@@ -264,7 +277,7 @@ int mutt_compose_menu (HEADER *, char *, size_t, HEADER *);
 int mutt_thread_set_flag (HEADER *, int, int, int);
 int mutt_user_is_recipient (HEADER *);
 void mutt_update_num_postponed (void);
-int mutt_view_attachment (FILE*, BODY *, int);
+int mutt_view_attachment (FILE*, BODY *, int, HEADER *, ATTACHPTR **, short);
 int mutt_wait_filter (pid_t);
 int mutt_which_case (const char *);
 int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int, char *);
@@ -414,6 +427,6 @@ int ioctl (int, int, ...);
 
 /* unsorted */
 void ci_bounce_message (HEADER *, int *);
-void ci_send_message (int, HEADER *, char *, CONTEXT *, HEADER *);
+int ci_send_message (int, HEADER *, char *, CONTEXT *, HEADER *);
 
 

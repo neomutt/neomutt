@@ -314,9 +314,25 @@ LIST *mutt_copy_list (LIST *p)
   return (l);
 }
 
-static int include_forward (CONTEXT *ctx, HEADER *cur, FILE *out)
+void mutt_forward_intro (FILE *fp, HEADER *cur)
 {
   char buffer[STRING];
+  
+  fputs ("----- Forwarded message from ", fp);
+  buffer[0] = 0;
+  rfc822_write_address (buffer, sizeof (buffer), cur->env->from);
+  fputs (buffer, fp);
+  fputs (" -----\n\n", fp);
+}
+
+void mutt_forward_trailer (FILE *fp)
+{
+  fputs ("\n----- End forwarded message -----\n", fp);
+}
+
+
+static int include_forward (CONTEXT *ctx, HEADER *cur, FILE *out)
+{
   int chflags = CH_DECODE, cmflags = 0;
   
 
@@ -328,13 +344,8 @@ static int include_forward (CONTEXT *ctx, HEADER *cur, FILE *out)
   }
 #endif /* _PGPPATH */
 
+  mutt_forward_intro (out, cur);
 
-
-  fputs ("----- Forwarded message from ", out);
-  buffer[0] = 0;
-  rfc822_write_address (buffer, sizeof (buffer), cur->env->from);
-  fputs (buffer, out);
-  fputs (" -----\n\n", out);
   if (option (OPTFORWDECODE))
   {
     cmflags |= M_CM_DECODE | M_CM_CHARCONV;
@@ -348,13 +359,34 @@ static int include_forward (CONTEXT *ctx, HEADER *cur, FILE *out)
     cmflags |= M_CM_PREFIX;
   mutt_parse_mime_message (ctx, cur);
   mutt_copy_message (out, ctx, cur, cmflags, chflags);
-  fputs ("\n----- End forwarded message -----\n", out);
+  mutt_forward_trailer (out);
   return 0;
+}
+
+void mutt_make_attribution (CONTEXT *ctx, HEADER *cur, FILE *out)
+{
+  char buffer[STRING];
+  if (Attribution)
+  {
+    mutt_make_string (buffer, sizeof (buffer), Attribution, ctx, cur);
+    fputs (buffer, out);
+    fputc ('\n', out);
+  }
+}
+
+void mutt_make_post_indent (CONTEXT *ctx, HEADER *cur, FILE *out)
+{
+  char buffer[STRING];
+  if (PostIndentString)
+  {
+    mutt_make_string (buffer, sizeof (buffer), PostIndentString, ctx, cur);
+    fputs (buffer, out);
+    fputc ('\n', out);
+  }
 }
 
 static int include_reply (CONTEXT *ctx, HEADER *cur, FILE *out)
 {
-  char buffer[STRING];
   int cmflags = M_CM_PREFIX | M_CM_DECODE | M_CM_CHARCONV;
   int chflags = CH_DECODE;
 
@@ -369,12 +401,8 @@ static int include_reply (CONTEXT *ctx, HEADER *cur, FILE *out)
   }
 #endif /* _PGPPATH */
 
-  if (Attribution)
-  {
-    mutt_make_string (buffer, sizeof (buffer), Attribution, ctx, cur);
-    fputs (buffer, out);
-    fputc ('\n', out);
-  }
+  mutt_make_attribution (ctx, cur, out);
+  
   if (!option (OPTHEADER))
     cmflags |= M_CM_NOHEADER;
   if (option (OPTWEED))
@@ -385,12 +413,9 @@ static int include_reply (CONTEXT *ctx, HEADER *cur, FILE *out)
 
   mutt_parse_mime_message (ctx, cur);
   mutt_copy_message (out, ctx, cur, cmflags, chflags);
-  if (PostIndentString)
-  {
-    mutt_make_string (buffer, sizeof (buffer), PostIndentString, ctx, cur);
-    fputs (buffer, out);
-    fputc ('\n', out);
-  }
+  
+  mutt_make_post_indent (ctx, cur, out);
+  
   return 0;
 }
 
@@ -463,7 +488,7 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int group)
   return (0);
 }
 
-static int fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags)
+int mutt_fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags)
 {
   ADDRESS *tmp;
   if (flags & SENDLISTREPLY)
@@ -487,7 +512,7 @@ static int fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags)
   return 0;
 }
 
-static LIST *make_references(ENVELOPE *e)
+LIST *mutt_make_references(ENVELOPE *e)
 {
   LIST *t, *l;
   
@@ -504,12 +529,69 @@ static LIST *make_references(ENVELOPE *e)
   return l;
 }
 
+void mutt_fix_reply_recipients (ENVELOPE *env)
+{
+  if (! option (OPTMETOO))
+  {
+    /* the order is important here.  do the CC: first so that if the
+     * the user is the only recipient, it ends up on the TO: field
+     */
+    env->cc = remove_user (env->cc, (env->to == NULL));
+    env->to = remove_user (env->to, (env->cc == NULL));
+  }
+  
+  /* the CC field can get cluttered, especially with lists */
+  env->to = mutt_remove_duplicates (env->to);
+  env->cc = mutt_remove_duplicates (env->cc);
+  env->cc = mutt_remove_xrefs (env->to, env->cc);
+}
+
+void mutt_make_forward_subject (ENVELOPE *env, CONTEXT *ctx, HEADER *cur)
+{
+  char buffer[STRING];
+
+  /* set the default subject for the message. */
+  mutt_make_string (buffer, sizeof (buffer), NONULL(ForwFmt), ctx, cur);
+  env->subject = safe_strdup (buffer);
+}
+
+void mutt_make_misc_reply_headers (ENVELOPE *env, CONTEXT *ctx,
+				    HEADER *cur, ENVELOPE *curenv)
+{
+  LIST *tmp;
+  char buffer[STRING];
+
+  if (curenv->real_subj)
+  {
+    env->subject = safe_malloc (mutt_strlen (curenv->real_subj) + 5);
+    sprintf (env->subject, "Re: %s", curenv->real_subj);
+  }
+  else
+    env->subject = safe_strdup ("Re: your mail");
+  
+  /* add the In-Reply-To field */
+  if (InReplyTo)
+  {
+    strfcpy (buffer, "In-Reply-To: ", sizeof (buffer));
+    mutt_make_string (buffer + 13, sizeof (buffer) - 13, InReplyTo, ctx, cur);
+    tmp = env->userhdrs;
+    while (tmp && tmp->next)
+      tmp = tmp->next;
+    if (tmp)
+    {
+      tmp->next = mutt_new_list ();
+      tmp = tmp->next;
+    }
+    else
+      tmp = env->userhdrs = mutt_new_list ();
+    tmp->data = safe_strdup (buffer);
+  }
+}
+
 static int
 envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
 {
   ENVELOPE *curenv = NULL;
-  LIST *tmp;
-  char buffer[STRING];
   int i = 0, tag = 0;
 
   if (!cur)
@@ -544,11 +626,11 @@ envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
       for (i = 0; i < ctx->vcount; i++)
       {
 	h = ctx->hdrs[ctx->v2r[i]];
-	if (h->tagged && fetch_recips (env, h->env, flags) == -1)
+	if (h->tagged && mutt_fetch_recips (env, h->env, flags) == -1)
 	  return -1;
       }
     }
-    else if (fetch_recips (env, curenv, flags) == -1)
+    else if (mutt_fetch_recips (env, curenv, flags) == -1)
       return -1;
 
     if ((flags & SENDLISTREPLY) && !env->to)
@@ -557,46 +639,9 @@ envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
       return (-1);
     }
 
-    if (! option (OPTMETOO))
-    {
-      /* the order is important here.  do the CC: first so that if the
-       * the user is the only recipient, it ends up on the TO: field
-       */
-      env->cc = remove_user (env->cc, (env->to == NULL));
-      env->to = remove_user (env->to, (env->cc == NULL));
-    }
-
-    /* the CC field can get cluttered, especially with lists */
-    env->to = mutt_remove_duplicates (env->to);
-    env->cc = mutt_remove_duplicates (env->cc);
-    env->cc = mutt_remove_xrefs (env->to, env->cc);
-
-    if (curenv->real_subj)
-    {
-      env->subject = safe_malloc (mutt_strlen (curenv->real_subj) + 5);
-      sprintf (env->subject, "Re: %s", curenv->real_subj);
-    }
-    else
-      env->subject = safe_strdup ("Re: your mail");
-
-    /* add the In-Reply-To field */
-    if (InReplyTo)
-    {
-      strfcpy (buffer, "In-Reply-To: ", sizeof (buffer));
-      mutt_make_string (buffer + 13, sizeof (buffer) - 13, InReplyTo, ctx, cur);
-      tmp = env->userhdrs;
-      while (tmp && tmp->next)
-	tmp = tmp->next;
-      if (tmp)
-      {
-	tmp->next = mutt_new_list ();
-	tmp = tmp->next;
-      }
-      else
-	tmp = env->userhdrs = mutt_new_list ();
-      tmp->data = safe_strdup (buffer);
-    }
-
+    mutt_fix_reply_recipients (env);
+    mutt_make_misc_reply_headers (env, ctx, cur, curenv);
+    
     if(tag)
     {
       HEADER *h;
@@ -604,25 +649,21 @@ envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
 
       env->references = NULL;
       p = &env->references;
-      
+
       for(i = 0; i < ctx->vcount; i++)
       {
 	while(*p) p = &(*p)->next;
 	h = ctx->hdrs[ctx->v2r[i]];
 	if(h->tagged)
-	  *p = make_references(h->env);
+	  *p = mutt_make_references(h->env);
       }
     }
     else
-      env->references = make_references(curenv);
+      env->references = mutt_make_references(curenv);
 
   }
   else if (flags & SENDFORWARD)
-  {
-    /* set the default subject for the message. */
-    mutt_make_string (buffer, sizeof (buffer), NONULL(ForwFmt), ctx, cur);
-    env->subject = safe_strdup (buffer);
-  }
+    mutt_make_forward_subject (env, ctx, cur);
 
   return (0);
 }
@@ -881,7 +922,17 @@ static void encode_descriptions (BODY *b)
   }
 }
 
-void
+int mutt_resend_message (FILE *fp, CONTEXT *ctx, HEADER *cur)
+{
+  HEADER *msg = mutt_new_header ();
+  
+  if (mutt_prepare_template (fp, ctx, msg, cur, 1) < 0)
+    return -1;
+  
+  return ci_send_message (SENDRESEND, msg, NULL, ctx, cur);
+}
+
+int
 ci_send_message (int flags,		/* send mode */
 		 HEADER *msg,		/* template to use for new message */
 		 char *tempfile,	/* file specified by -i or -H */
@@ -903,6 +954,8 @@ ci_send_message (int flags,		/* send mode */
   char *signmic = NULL;
 #endif
 
+  int rv = -1;
+  
   if (!flags && !msg && quadoption (OPT_RECALL) != M_NO &&
       mutt_num_postponed (1))
   {
@@ -910,7 +963,7 @@ ci_send_message (int flags,		/* send mode */
      * are any postponed messages first.
      */
     if ((i = query_quadoption (OPT_RECALL, _("Recall postponed message?"))) == -1)
-      return;
+      return rv;
 
     if(i == M_YES)
       flags |= SENDPOSTPONED;
@@ -935,12 +988,20 @@ ci_send_message (int flags,		/* send mode */
   {
     msg = mutt_new_header ();
 
+#if 0
+    
+    /* this is no longer used. */
+    
     if (flags == SENDRESEND)
     {
-      if (mutt_prepare_template (ctx, msg, cur, 1) < 0)
+      if (mutt_prepare_template (fp, ctx, msg, cur, 1) < 0)
 	goto cleanup;
     }
-    else if (flags == SENDPOSTPONED)
+    else
+
+#endif
+
+    if (flags == SENDPOSTPONED)
     {
       if ((flags = mutt_get_postponed (ctx, msg, &cur, fcc, sizeof (fcc))) < 0)
 	goto cleanup;
@@ -1014,7 +1075,7 @@ ci_send_message (int flags,		/* send mode */
   }
   else if (! (flags & (SENDPOSTPONED|SENDRESEND)))
   {
-    if ((flags & (SENDREPLY | SENDFORWARD)) &&
+    if ((flags & (SENDREPLY | SENDFORWARD)) && ctx &&
 	envelope_defaults (msg->env, ctx, cur, flags) == -1)
       goto cleanup;
 
@@ -1073,8 +1134,9 @@ ci_send_message (int flags,		/* send mode */
 
 
 
-    /* include replies/forwarded messages */
-    if (generate_body (tempfp, msg, flags, ctx, cur) == -1)
+    /* include replies/forwarded messages, unless we are given a template */
+    if (!tempfile && (ctx || !(flags & (SENDREPLY|SENDFORWARD)))
+	&& generate_body (tempfp, msg, flags, ctx, cur) == -1)
       goto cleanup;
 
     if (! (flags & (SENDMAILX | SENDKEY)) && Editor && mutt_strcmp (Editor, "builtin") != 0)
@@ -1089,7 +1151,7 @@ ci_send_message (int flags,		/* send mode */
 
 #ifdef _PGPPATH
   
-  if (! (flags & SENDKEY))
+  if (! (flags & SENDKEY) && tempfp)
   {
 
 #endif
@@ -1395,7 +1457,7 @@ full_fcc:
 
   if (flags & SENDREPLY)
   {
-    if (cur)
+    if (cur && ctx)
       mutt_set_flag (ctx, cur, M_REPLIED, 1);
     else if (!(flags & SENDPOSTPONED) && ctx && ctx->tagged)
     {
@@ -1405,6 +1467,9 @@ full_fcc:
     }
   }
 
+
+  rv = 0;
+  
 cleanup:
 
 
@@ -1430,5 +1495,7 @@ cleanup:
   if (tempfp)
     fclose (tempfp);
   mutt_free_header (&msg);
+  
+  return rv;
 
 }

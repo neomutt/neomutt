@@ -55,6 +55,113 @@ BODY *mutt_dup_body (BODY *b)
   return bn;
 }
 
+/* Modified by blong to accept a "suggestion" for file name.  If
+ * that file exists, then construct one with unique name but 
+ * keep any extension.  This might fail, I guess.
+ * Renamed to mutt_adv_mktemp so I only have to change where it's
+ * called, and not all possible cases.
+ */
+void mutt_adv_mktemp (char *s, size_t l)
+{
+  char buf[_POSIX_PATH_MAX];
+  char tmp[_POSIX_PATH_MAX];
+  char *period;
+  size_t sl;
+  struct stat sb;
+  
+  strfcpy (buf, NONULL (Tempdir), sizeof (buf));
+  mutt_expand_path (buf, sizeof (buf));
+  if (s[0] == '\0')
+  {
+    snprintf (s, l, "%s/muttXXXXXX", buf);
+    mktemp (s);
+  }
+  else
+  {
+    strfcpy (tmp, s, sizeof (tmp));
+    snprintf (s, l, "%s/%s", buf, tmp);
+    if (lstat (s, &sb) == -1 && errno == ENOENT)
+      return;
+    if ((period = strrchr (tmp, '.')) != NULL)
+      *period = 0;
+    snprintf (s, l, "%s/%s.XXXXXX", buf, tmp);
+    mktemp (s);
+    if (period != NULL)
+    {
+      *period = '.';
+      sl = mutt_strlen(s);
+      strfcpy(s + sl, period, l - sl);
+    }
+  }
+}
+
+/* create a send-mode duplicate from a receive-mode body */
+
+int mutt_copy_body (FILE *fp, BODY **tgt, BODY *src)
+{
+  char tmp[_POSIX_PATH_MAX];
+  BODY *b;
+
+  PARAMETER *par, **ppar;
+  
+  short use_disp;
+
+  if (src->filename)
+  {
+    use_disp = 1;
+    strfcpy (tmp, src->filename, sizeof (tmp));
+  }
+  else
+  {
+    use_disp = 0;
+    tmp[0] = '\0';
+  }
+
+  mutt_adv_mktemp (tmp, sizeof (tmp));
+  if (mutt_save_attachment (fp, src, tmp, 0, NULL) == -1)
+    return -1;
+      
+  *tgt = mutt_new_body ();
+  b = *tgt;
+
+  memcpy (b, src, sizeof (BODY));
+  b->parts = NULL;
+  b->next  = NULL;
+
+  b->filename = safe_strdup (tmp);
+  b->use_disp = use_disp;
+  b->unlink = 1;
+
+  if (mutt_is_text_type (b->type, b->subtype))
+    b->noconv = 1;
+
+  /* the following code is borrowed from mutt_prepare_template ().
+   * Does someone have a nice function name for it, so we can re-unite
+   * it?
+   */
+
+  b->xtype = safe_strdup (b->xtype);
+  b->subtype = safe_strdup (b->subtype);
+  b->form_name = safe_strdup (b->form_name);
+  b->filename = safe_strdup (b->filename);
+  b->d_filename = safe_strdup (b->d_filename);
+  
+  /* copy parameters */
+  for (par = b->parameter, ppar = &b->parameter; par; ppar = &(*ppar)->next, par = par->next)
+  {
+    *ppar = mutt_new_parameter ();
+    (*ppar)->attribute = safe_strdup (par->attribute);
+    (*ppar)->value = safe_strdup (par->value);
+  }
+
+  mutt_stamp_attachment (b);
+  
+  return 0;
+  
+}
+
+
+
 void mutt_free_body (BODY **p)
 {
   BODY *a = *p, *b;

@@ -1676,12 +1676,11 @@ int mutt_index_menu (void)
 	  for (j = 0; j < Context->vcount; j++)
 	  {
 	    if (Context->hdrs[Context->v2r[j]]->tagged)
-	      ci_send_message (SENDRESEND, NULL, NULL, Context,
-			       Context->hdrs[Context->v2r[j]]);
+	      mutt_resend_message (NULL, Context, Context->hdrs[Context->v2r[j]]);
 	  }
 	}
         else
-	  ci_send_message (SENDRESEND, NULL, NULL, Context, CURHDR);
+	  mutt_resend_message (NULL, Context, CURHDR);
       
         menu->redraw = REDRAW_FULL;
         break;

@@ -49,7 +49,10 @@
 #define ISHEADER(x) ((x) == MT_COLOR_HEADER || (x) == MT_COLOR_HDEFAULT)
 
 #define IsAttach(x) (x && (x)->bdy)
-#define IsHeader(x) (x && (x)->hdr)
+#define IsRecvAttach(x) (x && (x)->bdy && (x)->fp)
+#define IsSendAttach(x) (x && (x)->bdy && !(x)->fp)
+#define IsMsgAttach(x) (x && (x)->fp && (x)->bdy && (x)->bdy->hdr)
+#define IsHeader(x) (x && (x)->hdr && !(x)->bdy)
 
 static const char *Not_available_in_this_menu = N_("Not available in this menu.");
 static const char *Mailbox_is_read_only = N_("Mailbox is read-only.");
@@ -1638,7 +1641,14 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 			   COLS-9 < sizeof (buffer) ? COLS-9 : sizeof (buffer),
 			   NONULL (PagerFmt), Context, extra->hdr, M_FORMAT_MAKEPRINT);
       }
-      printw ("%-*.*s -- (", COLS-10, COLS-10, IsHeader (extra) ? buffer : banner);
+      else if (IsMsgAttach (extra))
+      {
+	_mutt_make_string (buffer,
+			   COLS - 9 < sizeof (buffer) ? COLS - 9: sizeof (buffer),
+			   NONULL (PagerFmt), Context, extra->bdy->hdr, M_FORMAT_MAKEPRINT);
+      }
+      printw ("%-*.*s -- (", COLS-10, COLS-10, 
+	      IsHeader (extra) || IsMsgAttach (extra) ? buffer : banner);
       if (last_pos < sb.st_size - 1)
 	printw ("%d%%)", (int) (100 * last_offset / sb.st_size));
       else
@@ -2046,14 +2056,33 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	 */
 
       case OP_BOUNCE_MESSAGE:
-	CHECK_MODE(IsHeader (extra));
+	CHECK_MODE(IsHeader (extra) || IsMsgAttach (extra))
         CHECK_ATTACH;
-        ci_bounce_message (extra->hdr, &redraw);
+        if (IsMsgAttach (extra))
+	  mutt_attach_bounce (extra->fp, extra->hdr,
+			      extra->idx, extra->idxlen,
+			      extra->bdy);
+        else
+          ci_bounce_message (extra->hdr, &redraw);
 	break;
 
+      case OP_RESEND:
+        CHECK_MODE(IsHeader (extra) || IsMsgAttach (extra))
+        CHECK_ATTACH;
+        if (IsMsgAttach (extra))
+	  mutt_attach_resend (extra->fp, extra->hdr,
+			      extra->idx, extra->idxlen,
+			      extra->bdy);
+        else
+	  mutt_resend_message (NULL, extra->ctx, extra->hdr);
+        break;
+      
       case OP_CREATE_ALIAS:
-	CHECK_MODE(IsHeader (extra));
-	mutt_create_alias (extra->hdr->env, NULL);
+	CHECK_MODE(IsHeader (extra) || IsMsgAttach (extra));
+        if (IsMsgAttach (extra))
+	  mutt_create_alias (extra->bdy->hdr->env, NULL);
+        else
+	  mutt_create_alias (extra->hdr->env, NULL);
 	MAYBE_REDRAW (redraw);
 	break;
 
@@ -2094,8 +2123,11 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	break;
 
       case OP_DISPLAY_ADDRESS:
-	CHECK_MODE(IsHeader (extra));
-	mutt_display_address (extra->hdr->env);
+	CHECK_MODE(IsHeader (extra) || IsMsgAttach (extra));
+        if (IsMsgAttach (extra))
+	  mutt_display_address (extra->bdy->hdr->env);
+        else
+	  mutt_display_address (extra->hdr->env);
 	break;
 
       case OP_ENTER_COMMAND:
@@ -2206,21 +2238,29 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	break;
 
       case OP_PRINT:
-	CHECK_MODE(IsHeader (extra));
-	mutt_print_message (extra->hdr);
+	CHECK_MODE(IsHeader (extra) || IsAttach (extra));
+        if (IsAttach (extra))
+	  mutt_print_attachment_list (extra->fp, 0, extra->bdy);
+        else
+	  mutt_print_message (extra->hdr);
 	break;
 
       case OP_MAIL:
-	CHECK_MODE(IsHeader (extra));
+	CHECK_MODE(IsHeader (extra) && !IsAttach (extra));
         CHECK_ATTACH;      
 	ci_send_message (0, NULL, NULL, NULL, NULL);
 	redraw = REDRAW_FULL;
 	break;
 
       case OP_REPLY:
-	CHECK_MODE(IsHeader (extra));
+	CHECK_MODE(IsHeader (extra) || IsMsgAttach (extra));
         CHECK_ATTACH;      
-	ci_send_message (SENDREPLY, NULL, NULL, extra->ctx, extra->hdr);
+        if (IsMsgAttach (extra)) 
+	  mutt_attach_reply (extra->fp, extra->hdr, extra->idx,
+			     extra->idxlen, extra->bdy,
+			     SENDREPLY);
+	else
+	  ci_send_message (SENDREPLY, NULL, NULL, extra->ctx, extra->hdr);
 	redraw = REDRAW_FULL;
 	break;
 
@@ -2232,23 +2272,35 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	break;
 
       case OP_GROUP_REPLY:
-	CHECK_MODE(IsHeader (extra));
+	CHECK_MODE(IsHeader (extra) || IsMsgAttach (extra));
         CHECK_ATTACH;
-	ci_send_message (SENDREPLY | SENDGROUPREPLY, NULL, NULL, extra->ctx, extra->hdr);
+        if (IsMsgAttach (extra))
+	  mutt_attach_reply (extra->fp, extra->hdr, extra->idx,
+			     extra->idxlen, extra->bdy, SENDREPLY|SENDGROUPREPLY);
+        else
+	  ci_send_message (SENDREPLY | SENDGROUPREPLY, NULL, NULL, extra->ctx, extra->hdr);
 	redraw = REDRAW_FULL;
 	break;
 
       case OP_LIST_REPLY:
-	CHECK_MODE(IsHeader (extra));
-        CHECK_ATTACH;
-	ci_send_message (SENDREPLY | SENDLISTREPLY, NULL, NULL, extra->ctx, extra->hdr);
+	CHECK_MODE(IsHeader (extra) || IsMsgAttach (extra));
+        CHECK_ATTACH;        
+        if (IsMsgAttach (extra))
+	  mutt_attach_reply (extra->fp, extra->hdr, extra->idx,
+			     extra->idxlen, extra->bdy, SENDREPLY|SENDLISTREPLY);
+        else
+	  ci_send_message (SENDREPLY | SENDLISTREPLY, NULL, NULL, extra->ctx, extra->hdr);
 	redraw = REDRAW_FULL;
 	break;
 
       case OP_FORWARD_MESSAGE:
-	CHECK_MODE(IsHeader (extra));
+	CHECK_MODE(IsHeader (extra) && !IsMsgAttach (extra));
         CHECK_ATTACH;
-	ci_send_message (SENDFORWARD, NULL, NULL, extra->ctx, extra->hdr);
+        if (IsMsgAttach (extra))
+	  mutt_attach_forward (extra->fp, extra->hdr, extra->idx,
+			       extra->idxlen, extra->bdy);
+        else
+	  ci_send_message (SENDFORWARD, NULL, NULL, extra->ctx, extra->hdr);
 	redraw = REDRAW_FULL;
 	break;
 

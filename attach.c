@@ -360,7 +360,8 @@ int mutt_is_autoview (BODY *b, const char *type)
 }
 
 /* returns -1 on error, 0 or the return code from mutt_do_pager() on success */
-int mutt_view_attachment (FILE *fp, BODY *a, int flag)
+int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
+			  ATTACHPTR **idx, short idxlen)
 {
   char tempfile[_POSIX_PATH_MAX] = "";
   char pagerfile[_POSIX_PATH_MAX] = "";
@@ -570,6 +571,10 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag)
     info.fp = fp;
     info.bdy = a;
     info.ctx = Context;
+    info.idx = idx;
+    info.idxlen = idxlen;
+    info.hdr = hdr;
+
     rc = mutt_do_pager (descrip, pagerfile,
 			is_message ? M_PAGER_MESSAGE : 0, &info);
   }

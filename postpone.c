@@ -282,7 +282,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
     return (-1);
   }
 
-  if (mutt_prepare_template (PostContext, hdr, h, 0) < 0)
+  if (mutt_prepare_template (NULL, PostContext, hdr, h, 0) < 0)
   {
     mx_fastclose_mailbox (PostContext);
 #ifdef USE_IMAP
@@ -510,23 +510,31 @@ static void free_body_list (BODY **bp)
 }
 
 
-int mutt_prepare_template (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
+int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 			       short weed)
 {
   PARAMETER *par, **ppar;
-  MESSAGE *msg;
+  MESSAGE *msg = NULL;
   char file[_POSIX_PATH_MAX];
   BODY *b;
   LIST *p, **q;
 
   FILE *bfp;
-  
-  if ((msg = mx_open_message (ctx, hdr->msgno)) == NULL)
+
+  if (!fp && (msg = mx_open_message (ctx, hdr->msgno)) == NULL)
     return (-1);
 
+  if (!fp) fp = msg->fp;
+
   /* parse the message header */
-  fseek (msg->fp, hdr->offset, 0);
-  newhdr->env = mutt_read_rfc822_header (msg->fp, newhdr, 1, weed);
+  fseek (fp, hdr->offset, 0);
+  newhdr->env = mutt_read_rfc822_header (fp, newhdr, 1, weed);
+
+  /* NOTE: We do have easy access to the entire MIME structure of
+   * the message to be recalled here.  We could use this to 
+   * considerably simplify the code below.
+   */
+
   mutt_free_body (&newhdr->content);
   
   /* weed user-agent, x-mailer - we don't want them here */
@@ -551,7 +559,7 @@ int mutt_prepare_template (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   safe_free ((void **) &newhdr->env->mail_followup_to);
 
   /* make sure we parse the message */
-  mutt_parse_part (msg->fp, hdr->content);
+  mutt_parse_part (fp, hdr->content);
 
 #ifdef _PGPPATH
   /* decrypt pgp/mime encoded messages */
@@ -562,7 +570,7 @@ int mutt_prepare_template (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
       goto err;
 
     mutt_message _("Invoking PGP...");
-    if (pgp_decrypt_mime (msg->fp, &bfp, hdr->content, &b) == -1)
+    if (pgp_decrypt_mime (fp, &bfp, hdr->content, &b) == -1)
     {
  err:
       mx_close_message (&msg);
@@ -594,7 +602,7 @@ int mutt_prepare_template (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
       (*ppar)->value = safe_strdup (par->value);
     }
     
-    bfp = msg->fp;
+    bfp = fp;
   }
 
 #ifdef _PGPPATH
@@ -645,8 +653,8 @@ int mutt_prepare_template (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
     {
       mutt_free_envelope (&newhdr->env);
       free_body_list (&newhdr->content);
-      if (bfp != msg->fp) fclose (bfp);
-      mx_close_message (&msg);
+      if (bfp != fp) fclose (bfp);
+      if (msg) mx_close_message (&msg);
       return -1;
     }
     
@@ -664,8 +672,8 @@ int mutt_prepare_template (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   }
 
   /* that's it. */
-  if (bfp != msg->fp) fclose (bfp);
-  mx_close_message (&msg);
+  if (bfp != fp) fclose (bfp);
+  if (msg) mx_close_message (&msg);
 
   return 0;
 }

@@ -38,6 +38,8 @@ typedef struct
   HEADER *hdr;	/* current message */
   BODY *bdy;	/* current attachment */
   FILE *fp;	/* source stream */
+  ATTACHPTR **idx;	/* attachment information */
+  short idxlen;
 } pager_t;
 
 int mutt_do_pager (const char *, const char *, int, pager_t *);

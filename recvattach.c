@@ -519,17 +519,16 @@ mutt_query_pipe_attachment (char *command, FILE *fp, BODY *body, int filter)
   }
 }
 
-static STATE state;
-static void pipe_attachment (FILE *fp, BODY *b)
+static void pipe_attachment (FILE *fp, BODY *b, STATE *state)
 {
   FILE *ifp;
 
   if (fp)
   {
-    state.fpin = fp;
-    mutt_decode_attachment (b, &state);
+    state->fpin = fp;
+    mutt_decode_attachment (b, state);
     if (AttachSep)
-      state_puts (AttachSep, &state);
+      state_puts (AttachSep, state);
   }
   else
   {
@@ -538,27 +537,28 @@ static void pipe_attachment (FILE *fp, BODY *b)
       mutt_perror ("fopen");
       return;
     }
-    mutt_copy_stream (ifp, state.fpout);
+    mutt_copy_stream (ifp, state->fpout);
     fclose (ifp);
     if (AttachSep)
-      state_puts (AttachSep, &state);
+      state_puts (AttachSep, state);
   }
 }
 
 static void
-pipe_attachment_list (char *command, FILE *fp, int tag, BODY *top, int filter)
+pipe_attachment_list (char *command, FILE *fp, int tag, BODY *top, int filter,
+		      STATE *state)
 {
   for (; top; top = top->next)
   {
     if (!tag || top->tagged)
     {
       if (!filter && !option (OPTATTACHSPLIT))
-	pipe_attachment (fp, top);
+	pipe_attachment (fp, top, state);
       else
 	mutt_query_pipe_attachment (command, fp, top, filter);
     }
     else if (top->parts)
-      pipe_attachment_list (command, fp, tag, top->parts, filter);
+      pipe_attachment_list (command, fp, tag, top->parts, filter, state);
     if (!tag)
       break;
   }
@@ -566,6 +566,7 @@ pipe_attachment_list (char *command, FILE *fp, int tag, BODY *top, int filter)
 
 void mutt_pipe_attachment_list (FILE *fp, int tag, BODY *top, int filter)
 {
+  STATE state;
   char buf[SHORT_STRING];
   pid_t thepid;
 
@@ -585,13 +586,13 @@ void mutt_pipe_attachment_list (FILE *fp, int tag, BODY *top, int filter)
   {
     endwin ();
     thepid = mutt_create_filter (buf, &state.fpout, NULL, NULL);
-    pipe_attachment_list (buf, fp, tag, top, filter);
+    pipe_attachment_list (buf, fp, tag, top, filter, &state);
     fclose (state.fpout);
     if (mutt_wait_filter (thepid) != 0 || option (OPTWAITKEY))
       mutt_any_key_to_continue (NULL);
   }
   else
-    pipe_attachment_list (buf, fp, tag, top, filter);
+    pipe_attachment_list (buf, fp, tag, top, filter, &state);
 }
 
 static int can_print (BODY *top, int tag)
@@ -624,7 +625,7 @@ static int can_print (BODY *top, int tag)
   return (1);
 }
 
-static void print_attachment_list (FILE *fp, int tag, BODY *top)
+static void print_attachment_list (FILE *fp, int tag, BODY *top, STATE *state)
 {
   char type [STRING];
 
@@ -638,7 +639,7 @@ static void print_attachment_list (FILE *fp, int tag, BODY *top)
       {
 	if (!mutt_strcasecmp ("text/plain", top->subtype) ||
 	    !mutt_strcasecmp ("application/postscript", top->subtype))
-	  pipe_attachment (fp, top);
+	  pipe_attachment (fp, top, state);
 	else if (mutt_can_decode (top))
 	{
 	  /* decode and print */
@@ -651,10 +652,10 @@ static void print_attachment_list (FILE *fp, int tag, BODY *top)
 	  {
 	    if ((ifp = fopen (newfile, "r")) != NULL)
 	    {
-	      mutt_copy_stream (ifp, state.fpout);
+	      mutt_copy_stream (ifp, state->fpout);
 	      fclose (ifp);
 	      if (AttachSep)
-		state_puts (AttachSep, &state);
+		state_puts (AttachSep, state);
 	    }
 	  }
 	  mutt_unlink (newfile);
@@ -664,7 +665,7 @@ static void print_attachment_list (FILE *fp, int tag, BODY *top)
 	mutt_print_attachment (fp, top);
     }
     else if (top->parts)
-      print_attachment_list (fp, tag, top->parts);
+      print_attachment_list (fp, tag, top->parts, state);
     if (!tag)
       return;
   }
@@ -672,6 +673,8 @@ static void print_attachment_list (FILE *fp, int tag, BODY *top)
 
 void mutt_print_attachment_list (FILE *fp, int tag, BODY *top)
 {
+  STATE state;
+  
   pid_t thepid;
   if (query_quadoption (OPT_PRINT, tag ? _("Print tagged attachment(s)?") : _("Print attachment?")) != M_YES)
     return;
@@ -683,255 +686,18 @@ void mutt_print_attachment_list (FILE *fp, int tag, BODY *top)
     endwin ();
     memset (&state, 0, sizeof (STATE));
     thepid = mutt_create_filter (NONULL (PrintCmd), &state.fpout, NULL, NULL);
-    print_attachment_list (fp, tag, top);
+    print_attachment_list (fp, tag, top, &state);
     fclose (state.fpout);
     if (mutt_wait_filter (thepid) != 0 || option (OPTWAITKEY))
       mutt_any_key_to_continue (NULL);
   }
   else
-    print_attachment_list (fp, tag, top);
-}
-
-static void
-bounce_attachment_list (ADDRESS *adr, int tag, BODY *body, HEADER *hdr)
-{
-  for (; body; body = body->next)
-  {
-    if (!tag || body->tagged)
-    {
-      if (!mutt_is_message_type (body->type, body->subtype))
-      {
-	mutt_error _("You may only bounce message/rfc822 parts.");
-	continue;
-      }
-      body->hdr->msgno = hdr->msgno;
-      mutt_bounce_message (body->hdr, adr);
-    }
-    else if (body->parts)
-      bounce_attachment_list (adr, tag, body->parts, hdr);
-    if (!tag)
-      break;
-  }
-}
-
-static void query_bounce_attachment (int tag, BODY *top, HEADER *hdr)
-{
-  char prompt[SHORT_STRING];
-  char buf[HUGE_STRING];
-  ADDRESS *adr = NULL;
-  int rc;
-
-  buf[0] = 0;
-
-  if(!tag)
-    strfcpy(prompt, _("Bounce message to: "), sizeof(prompt));
-  else
-    strfcpy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
-
-  rc = mutt_get_field (prompt, buf, sizeof (buf), M_ALIAS);
-
-  if (rc || !buf[0])
-    return;
-
-  adr = rfc822_parse_adrlist (adr, buf);
-  adr = mutt_expand_aliases (adr);
-  buf[0] = 0;
-  rfc822_write_address (buf, sizeof (buf), adr);
-  snprintf (prompt, sizeof (prompt), tag ? _("Bounce messages to %s...?")
-	    : _("Bounce message to %s...?"), buf);
-  if (mutt_yesorno (prompt, 1) != 1)
-  {
-    rfc822_free_address (&adr);
-    CLEARLINE (LINES-1);
-    return;
-  }
-  bounce_attachment_list (adr, tag, top, hdr);
-  rfc822_free_address (&adr);
-}
-
-static void
-copy_tagged_attachments (FILE *fpout, FILE *fpin, const char *boundary, BODY *bdy)
-{
-  for (; bdy; bdy = bdy->next)
-  {
-    if (bdy->tagged)
-    {
-      fprintf (fpout, "\n--%s\n", boundary);
-      fseek (fpin, bdy->hdr_offset, 0);
-      mutt_copy_bytes (fpin, fpout, bdy->length + bdy->offset - bdy->hdr_offset);
-    }
-    else if (bdy->parts)
-      copy_tagged_attachments (fpout, fpin, boundary, bdy->parts);
-  }
-}
-
-static int
-create_tagged_message (const char *tempfile,
-		       int tag,
-		       CONTEXT *ctx,
-		       HEADER *cur,
-		       BODY *body)
-{
-  char *boundary;
-  MESSAGE *msg, *src;
-  CONTEXT tmpctx;
-  int magic;
-
-  magic = DefaultMagic;
-  DefaultMagic = M_MBOX;
-  mx_open_mailbox (tempfile, M_APPEND, &tmpctx);
-  msg = mx_open_new_message (&tmpctx, cur, M_ADD_FROM);
-  src = mx_open_message (ctx, cur->msgno);
-
-  if (tag)
-  {
-    mutt_copy_header (src->fp, cur, msg->fp, CH_XMIT, NULL);
-    boundary = mutt_get_parameter ("boundary", cur->content->parameter);
-    copy_tagged_attachments (msg->fp, src->fp, boundary, cur->content->parts);
-    fprintf (msg->fp, "--%s--\n", boundary);
-  }
-  else
-  {
-    /* single attachment */
-    mutt_copy_header (src->fp, cur, msg->fp, CH_XMIT | CH_MIME | CH_NONEWLINE, NULL);
-    fputs ("Mime-Version: 1.0\n", msg->fp);
-    mutt_write_mime_header (body, msg->fp);
-    fputc ('\n', msg->fp);
-    fseek (src->fp, body->offset, 0);
-    mutt_copy_bytes (src->fp, msg->fp, body->length);
-  }
-
-  mx_commit_message (msg, &tmpctx);
-  mx_close_message (&msg);
-  mx_close_message (&src);
-  mx_close_mailbox (&tmpctx);
-  DefaultMagic = magic;
-  return 0;
-}
-
-/* op		flag to ci_send_message()
- * tag		operate on tagged attachments?
- * hdr		current message
- * body		current attachment 
- */
-
-/* 
- * XXX - this code looks way too complicated, and rather ineffective.
- * Analyze and fix this.
- */
-
-/*
- * Idea:
- * 
- * 1. Forwarding
- * 
- * Variant 1: mime_forward is set (or activated by the user).  In this case, generate 
- * a new message whose main body contains the forwarded message's header, and 
- * attach all tagged attachments.
- * 
- * Variant 2: mime_forward is not set (or activated).  In this case, generate a new
- * message whose main body contains the forwarded message's header, and formatted
- * versions of all attachments we can handle in-line (i.e., hard-coded handlers + auto_view).
- * 
- * When there are any tagged attachments we can't handle this way, ask the user
- * whether he wants to ignore or whether he wants to attach them to the new message.
- * Make this a quad-option.
- * 
- * 2. Replying
- * 
- * Always fall back to the behaviour from forwarding, variant 2.
- * 
- * 3. Special handling for message/rfc822 attachments
- * 
- * resend-message and bounce should be possible.  forward and reply should have
- * special semantics when they are applied ONLY to message/rfc822 body parts.
- * 
- * Note: Some of this behaviour is implemented by the current code.  However, DO NOT
- * use it - it's horribly slow even on fast machines.  We have sufficient information
- * at hand to create the message structures needed by ci_send_message from scratch, and
- * without any temporary folders.
- *
- * 
- * (Thanks to Roland Rosenfeld with whom I discussed this stuff.) 
- * 
- * tlr, Wed,  3 Nov 1999 21:29:19 +0100
- * 
- */
-
-static void reply_attachment_list (int op, int tag, HEADER *hdr, BODY *body)
-{
-  HEADER *hn;
-  char tempfile[_POSIX_PATH_MAX];
-  CONTEXT *ctx;
-
-  if (!tag && body->hdr)
-  {
-    hn = body->hdr;
-    hn->msgno   = hdr->msgno; /* required for MH/maildir */
-    hn->replied = hdr->replied;
-    hn->read    = hdr->read;
-    hn->old	= hdr->old;
-    hn->changed = hdr->changed;
-    ctx = Context;
-  }
-  else
-  {
-    /* build a fake message which consists of only the tagged attachments */
-    mutt_mktemp (tempfile);
-    create_tagged_message (tempfile, tag, Context, hdr, body);
-    ctx = mx_open_mailbox (tempfile, M_QUIET, NULL);
-    hn = ctx->hdrs[0];
-  }
-  
-  if (op == SENDFORWARD && option (OPTFORWATTACH))
-  {
-    HEADER *newhdr = mutt_new_header();
-    char buffer [LONG_STRING];
-
-    mutt_message ("Preparing to forward...");
-    if (mutt_prepare_template (ctx, newhdr, hn, 0) < 0)
-    {
-      mutt_clear_error();
-      mutt_free_header (&newhdr);
-      goto cleanup;
-    }
-
-    mutt_free_envelope (&newhdr->env);
-    newhdr->env = mutt_new_envelope();
-    newhdr->received = 0;
-    newhdr->date_sent = 0;
-
-    /* set the default subject for the message. */
-    buffer[0] = 0;
-    mutt_make_string (buffer, sizeof (buffer), NONULL(ForwFmt), ctx, hn);
-    newhdr->env->subject = safe_strdup (buffer);
-
-    mutt_clear_error();
-    ci_send_message (0, newhdr, NULL, ctx, NULL);
-  }
-  else
-    ci_send_message (op, NULL, NULL, ctx, hn);
-
-  if (hn->replied)
-  {
-    if (Context != ctx)
-      mutt_set_flag (Context, hdr, M_REPLIED, 1);
-    else
-      _mutt_set_flag (Context, hdr, M_REPLIED, 1, 0);
-  }
-
-cleanup:
-
-  if (ctx != Context)
-  {
-    mx_fastclose_mailbox (ctx);
-    safe_free ((void **) &ctx);
-    unlink (tempfile);
-  }
+    print_attachment_list (fp, tag, top, &state);
 }
 
 void
-mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, ATTACHPTR **idx)
+mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, HEADER *hdr, 
+			  ATTACHPTR **idx, short idxlen)
 {
 #if 0
   int old_optweed = option (OPTWEED);
@@ -947,7 +713,8 @@ mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, ATTACHPTR **idx)
 	/* fall through */
 
       case OP_VIEW_ATTACH:
-	op = mutt_view_attachment (fp, idx[menu->current]->content, M_REGULAR);
+	op = mutt_view_attachment (fp, idx[menu->current]->content, M_REGULAR,
+				   hdr, idx, idxlen);
 	break;
 
       case OP_NEXT_ENTRY:
@@ -1062,17 +829,19 @@ void mutt_view_attachments (HEADER *hdr)
     {
       case OP_DISPLAY_HEADERS:
       case OP_VIEW_ATTACH:
-	mutt_attach_display_loop (menu, op, fp, idx);
+	mutt_attach_display_loop (menu, op, fp, hdr, idx, idxlen);
 	menu->redraw = REDRAW_FULL;
 	break;
 
       case OP_ATTACH_VIEW_MAILCAP:
-	mutt_view_attachment (fp, idx[menu->current]->content, M_MAILCAP);
+	mutt_view_attachment (fp, idx[menu->current]->content, M_MAILCAP,
+			      hdr, idx, idxlen);
 	menu->redraw = REDRAW_FULL;
 	break;
 
       case OP_ATTACH_VIEW_TEXT:
-	mutt_view_attachment (fp, idx[menu->current]->content, M_AS_TEXT);
+	mutt_view_attachment (fp, idx[menu->current]->content, M_AS_TEXT,
+			      hdr, idx, idxlen);
 	menu->redraw = REDRAW_FULL;
 	break;
 
@@ -1080,7 +849,8 @@ void mutt_view_attachments (HEADER *hdr)
 
 #ifdef _PGPPATH
       case OP_EXTRACT_KEYS:
-        pgp_extract_keys_from_attachment_list (fp, menu->tagprefix, menu->tagprefix ? cur : idx[menu->current]->content);
+        pgp_extract_keys_from_attachment_list (fp, menu->tagprefix, 
+		  menu->tagprefix ? cur : idx[menu->current]->content);
         menu->redraw = REDRAW_FULL;
         break;
 #endif
@@ -1088,16 +858,20 @@ void mutt_view_attachments (HEADER *hdr)
 
 
       case OP_PRINT:
-	mutt_print_attachment_list (fp, menu->tagprefix, menu->tagprefix ? cur : idx[menu->current]->content);
+	mutt_print_attachment_list (fp, menu->tagprefix, 
+		  menu->tagprefix ? cur : idx[menu->current]->content);
 	break;
 
       case OP_PIPE:
-	mutt_pipe_attachment_list (fp, menu->tagprefix, menu->tagprefix ? cur : idx[menu->current]->content, 0);
+	mutt_pipe_attachment_list (fp, menu->tagprefix, 
+		  menu->tagprefix ? cur : idx[menu->current]->content, 0);
 	break;
 
       case OP_SAVE:
-	mutt_save_attachment_list (fp, menu->tagprefix, menu->tagprefix ?  cur : idx[menu->current]->content, hdr);
-	if (option (OPTRESOLVE) && menu->current < menu->max - 1)
+	mutt_save_attachment_list (fp, menu->tagprefix, 
+		  menu->tagprefix ?  cur : idx[menu->current]->content, hdr);
+
+        if (option (OPTRESOLVE) && menu->current < menu->max - 1)
 	  menu->current++;
       
         menu->redraw = REDRAW_MOTION_RESYNCH | REDRAW_FULL;
@@ -1184,39 +958,38 @@ void mutt_view_attachments (HEADER *hdr)
        }
        break;
 
+      case OP_RESEND:
+        CHECK_ATTACH;
+        mutt_attach_resend (fp, hdr, idx, idxlen,
+			     menu->tagprefix ? NULL : idx[menu->current]->content);
+        menu->redraw = REDRAW_FULL;
+      	break;
+      
       case OP_BOUNCE_MESSAGE:
         CHECK_ATTACH;
-	query_bounce_attachment (menu->tagprefix, menu->tagprefix ? cur : idx[menu->current]->content, hdr);
-	break;
+        mutt_attach_bounce (fp, hdr, idx, idxlen,
+			     menu->tagprefix ? NULL : idx[menu->current]->content);
+        menu->redraw = REDRAW_FULL;
+      	break;
 
+      case OP_FORWARD_MESSAGE:
+        CHECK_ATTACH;
+        mutt_attach_forward (fp, hdr, idx, idxlen,
+			     menu->tagprefix ? NULL : idx[menu->current]->content);
+        menu->redraw = REDRAW_FULL;
+        break;
+      
       case OP_REPLY:
       case OP_GROUP_REPLY:
       case OP_LIST_REPLY:
-      case OP_FORWARD_MESSAGE:
 
         CHECK_ATTACH;
-
-#ifdef _PGPPATH
-	if ((hdr->pgp & PGPENCRYPT) && hdr->content->type == TYPEMULTIPART)
-	{
-	  mutt_error _(
-	    "This operation is not currently supported for PGP messages.");
-	  break;
-	}
-#endif
-
-
-
-	if (op == OP_FORWARD_MESSAGE)
-	  flags = SENDFORWARD;
-	else
-	  flags = SENDREPLY | 
-		  (op == OP_GROUP_REPLY ? SENDGROUPREPLY : 0) |
-		  (op == OP_LIST_REPLY ? SENDLISTREPLY : 0);
-	reply_attachment_list (flags,
-			       menu->tagprefix,
-			       hdr,
-			       menu->tagprefix ? cur : idx[menu->current]->content);
+      
+        flags = SENDREPLY | 
+	  (op == OP_GROUP_REPLY ? SENDGROUPREPLY : 0) |
+	  (op == OP_LIST_REPLY ? SENDLISTREPLY : 0);
+        mutt_attach_reply (fp, hdr, idx, idxlen, 
+			   menu->tagprefix ? NULL : idx[menu->current]->content, flags);
 	menu->redraw = REDRAW_FULL;
 	break;
 
