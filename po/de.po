@@ -1,9 +1,8 @@
-# $Id$
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.4\n"
+"Project-Id-Version: 1.3.5\n"
 "POT-Creation-Date: 2000-07-07 00:40+0200\n"
-"PO-Revision-Date: 2000-06-20 10:21+02:00\n"
+"PO-Revision-Date: 2000-07-09 17:22+02:00\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -1350,14 +1349,14 @@ msgid "Copying message %d to %s..."
 msgstr "Kopiere Nachricht %d nach %s..."
 
 #: imap/socket.c:163
-#, fuzzy, c-format
+#, c-format
 msgid "Closing connection to %s..."
-msgstr "Beende Verbindung zum IMAP-Server..."
+msgstr "Beende Verbindung zu %s..."
 
 #: imap/socket.c:265
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "Kann Host %s keine Adresse zuordnen."
+msgstr "Kann Host \"%s\" nicht finden"
 
 #: imap/socket.c:271
 #, c-format
@@ -1365,9 +1364,8 @@ msgid "Connecting to %s..."
 msgstr "Verbinde zu %s..."
 
 #: imap/socket.c:291
-#, fuzzy
 msgid "IMAP Preconnect command failed"
-msgstr "\"preconnect\" Kommando fehlgeschlagen"
+msgstr "IMAP \"preconnect\" Kommando fehlgeschlagen"
 
 #: imap/util.c:62
 msgid "Continue?"
@@ -2276,7 +2274,6 @@ msgstr ""
 "`mutt -vv' für weitere Details.\n"
 
 #: main.c:50
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
@@ -2309,6 +2306,7 @@ msgstr ""
 "Copyright (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
 "Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 2000      Edmnud Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "Viele andere, die hier nicht erwähnt sind, haben viel Code, viele\n"
 "Bugfixes und viele Ideen beigesteuert.\n"
@@ -2327,8 +2325,7 @@ msgstr ""
 "\n"
 "    Sie sollten eine Kopie der GNU General Public License zusammen mit\n"
 "    diesem Programm erhalten haben; falls nicht, schreiben sie an Free\n"
-"    Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  "
-"02111, USA.\n"
+"    Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 
 #: main.c:78
 msgid ""
