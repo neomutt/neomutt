@@ -135,16 +135,12 @@ int mutt_copy_body (FILE *fp, BODY **tgt, BODY *src)
   if (mutt_is_text_type (b->type, b->subtype))
     b->noconv = 1;
 
-  /* the following code is borrowed from mutt_prepare_template ().
-   * Does someone have a nice function name for it, so we can re-unite
-   * it?
-   */
-
   b->xtype = safe_strdup (b->xtype);
   b->subtype = safe_strdup (b->subtype);
   b->form_name = safe_strdup (b->form_name);
   b->filename = safe_strdup (b->filename);
   b->d_filename = safe_strdup (b->d_filename);
+  b->description = safe_strdup (b->description);
   
   /* copy parameters */
   for (par = b->parameter, ppar = &b->parameter; par; ppar = &(*ppar)->next, par = par->next)
@@ -157,7 +153,6 @@ int mutt_copy_body (FILE *fp, BODY **tgt, BODY *src)
   mutt_stamp_attachment (b);
   
   return 0;
-  
 }
 
 
