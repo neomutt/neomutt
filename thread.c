@@ -1,4 +1,3 @@
-
 /*
  * WORK IN PROGRESS ALERT: Daniel Eisenbud <daniel@math.berkeley.edu>
  * is currently working on this code.  Contact him before working on it!
@@ -29,17 +28,26 @@
 #include <ctype.h>
 
 /* This function makes use of the fact that Mutt stores message references in
-   reverse order (i.e., last to first).  This is optiminal since we would like
-   to find the most recent message to which "cur" refers itself.  */
+ * reverse order (i.e., last to first).  This is optiminal since we would like
+ * to find the most recent message to which "cur" refers itself.  
+ */
+
 static HEADER *find_reference (HEADER *cur, CONTEXT *ctx)
 {
   LIST *refs = cur->env->references;
-  void *ptr;
+  HEADER *ptr;
 
   for (; refs; refs = refs->next)
+  {
+    /* ups, this message is in a reference loop. bad. */
+
+    if (cur->env->message_id && !strcmp (cur->env->message_id, refs->data))
+      continue;
+
     if ((ptr = hash_find (ctx->id_hash, refs->data)))
       return ptr;
-
+  }
+  
   return NULL;
 }
 
