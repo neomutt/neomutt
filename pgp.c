@@ -1400,11 +1400,12 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
    */
 
   b->d_filename = safe_strdup ("msg.pgp");
+  b->use_disp = 1;
+
 #endif
 
   b->disposition = DISPINLINE;
   b->unlink   = 1;
-  b->use_disp = 1;
 
   b->noconv = 1;
   
