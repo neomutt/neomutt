@@ -1,3 +1,7 @@
+2002-12-20 09:37:59  David Shaw  <dshaw@jabberwocky.com>  (roessler)
+
+	* pgpkey.c: Minor tweak to an error message.
+
 2002-12-20 09:29:12  Pawel Dziekonski  <dzieko@pwr.wroc.pl>  (roessler)
 
 	* po/pl.po: update
