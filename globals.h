@@ -109,10 +109,16 @@ WHERE char *Signature;
 WHERE char *SimpleSearch;
 WHERE char *Spoolfile;
 WHERE char *SpamSep;
-#if defined(USE_SSL) || defined(USE_NSS)
+#if defined(USE_SSL) || defined(USE_NSS) || defined(USE_GNUTLS)
 WHERE char *SslCertFile INITVAL (NULL);
+#endif
+#if defined(USE_SSL) || defined(USE_NSS)
 WHERE char *SslEntropyFile INITVAL (NULL);
 WHERE char *SslClientCert INITVAL (NULL);
+#endif
+#ifdef USE_GNUTLS
+WHERE short SslDHPrimeBits;
+WHERE char *SslCACertFile INITVAL (NULL);
 #endif
 WHERE char *StChars;
 WHERE char *Status;

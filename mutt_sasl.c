@@ -294,7 +294,7 @@ dprint(1,(debugfile, "local ip: %s, remote ip:%s\n", iplocalport, ipremoteport))
    * If someone does it'd probably be trivial to write mutt_nss_get_ssf().
    * I have a feeling more SSL code could be shared between those two files,
    * but I haven't looked into it yet, since I still don't know the APIs. */
-#if defined(USE_SSL)
+#if defined(USE_SSL) || defined(USE_GNUTLS)
   if (conn->ssf)
   {
 #ifdef USE_SASL2 /* I'm not sure this actually has an effect, at least with SASLv2 */
