@@ -1,4 +1,7 @@
-2003-02-25 21:28:42  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+2003-02-25 21:33:16  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* doc/manual.sgml.head: Remove some ftp.guug.de URLs from the
+	manual. (#1485)
 
 	* crypt.c: Fix #1486; noted by Jeroen Coekaerts
 	<jeroen@coekaerts.be>.
