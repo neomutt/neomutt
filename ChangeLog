@@ -1,3 +1,27 @@
+Sun Oct  4 09:26:36 1998  Thomas Roessler  <roessler@guug.de>
+
+	* rx/Makefile.in: subdir=rx was missing here.
+
+	* po/mutt.pot, po/de.po: Noise.
+
+	* configure.in, configure, Makefile.am:
+	More fixes to the build process.  This version was tested to build
+	cleanly under SuSE Linux and IRIX.
+
+Sat Oct  3 22:08:09 1998  Thomas Roessler  <roessler@guug.de>
+
+	* doc/Attic/manual.txt:
+	manual.txt can be rebuilt when making the dist - no need to keep
+	this in the repository.
+
+	* ChangeLog: Preparing ChangeLog for 0.94.10.
+
+	* contrib/Makefile.in: Ups.
+
+	* rx/Makefile.in, po/mutt.pot, po/de.po, po/cat-id-tbl.c, po/Makefile.in.in, doc/Attic/language50.txt, doc/Attic/language.txt, contrib/patch.slang-1.2.2.keypad.1, contrib/sample.mailcap, contrib/sample.muttrc, doc/Makefile.in, contrib/Mush.rc, contrib/Pine.rc, contrib/language.txt, contrib/language50.txt, charsets/gen_charsets, charsets/Makefile.in, Attic/sample.muttrc, Attic/sample.mailcap, Attic/reap.pl, pop.c, Attic/patch.slang-1.2.2.keypad.1, Attic/depend.awk, configure.in, configure, Attic/Pine.rc, Attic/Mush.rc, Makefile.in, Makefile.am, ChangeLog:
+	Source tree and make process changes.  make dist and make
+	maintainer-clean should now work as they are supposed to.
+
 Sat Oct  3 22:06:19 1998  Thomas Roessler  <roessler@guug.de>
 
 	* contrib/Makefile.in: Ups.  This one was missing from the
