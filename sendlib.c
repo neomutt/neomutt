@@ -729,7 +729,8 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
 	n = iconv (cd[i], (ibl || ubl) ? &ub : 0, &ubl, &ob, &obl);
 	if (n == (size_t)(-1))
 	{
-	  assert (errno == E2BIG || (BUGGY_ICONV && errno == EILSEQ));
+	  assert (errno == E2BIG ||
+		  (BUGGY_ICONV && (errno == EILSEQ || errno == ENOENT)));
 	  score[i] = (size_t)(-1);
 	}
 	else
