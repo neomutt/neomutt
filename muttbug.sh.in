@@ -27,7 +27,7 @@
 #     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #
 
-SUBMIT="bugs@guug.de"
+SUBMIT="submit@bugs.guug.de"
 
 
 include_file ()
@@ -161,3 +161,6 @@ while : ; do
 	esac
 done
 
+echo
+( echo "For more information on the bug tracking system, please refer" ;
+  echo "to http://bugs.guug.de/." ) | fmt
