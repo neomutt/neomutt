@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2001 Oliver Ehli <elmy@acm.org>
+ * Copyright (C) 2002 Mike Schiraldi <raldi@research.netsol.com>
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -819,15 +820,11 @@ char *smime_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
 
 
 
-
-
-
-static int smime_check_cert_email (char *certificate, char *mailbox)
+/* Check one single certificate for an email address */
+static int smime_check_cert_email (char *certificate, char *email)
 {
   FILE *fpout = NULL, *fperr = NULL;
   char tmpfname[_POSIX_PATH_MAX];
-  char email[STRING];
-  int ret = 0;
   pid_t thepid;
 
   mutt_mktemp (tmpfname);
@@ -847,7 +844,7 @@ static int smime_check_cert_email (char *certificate, char *mailbox)
   }
   mutt_unlink (tmpfname);
 
-  if ((thepid =  smime_invoke (NULL, NULL, NULL,
+  if ((thepid = smime_invoke (NULL, NULL, NULL,
 			       -1, fileno (fpout), fileno (fperr),
 			       certificate, NULL, NULL, NULL, NULL, NULL,
 			       SmimeGetCertEmailCommand))== -1)
@@ -865,29 +862,95 @@ static int smime_check_cert_email (char *certificate, char *mailbox)
   rewind (fperr);
   fflush (fperr);
 
-
-  if (!(fgets (email, sizeof (email), fpout)))
+  if (!(fgets (email, STRING, fpout)))
   {
     mutt_copy_stream (fperr, stdout);
     fclose (fpout);
     fclose (fperr);
     mutt_endwin(NULL);
-    printf ("Alert: No mailbox specified in certificate.\n");
-    return 1;
+    return 2;
   }
   *(email+mutt_strlen(email)-1) = '\0';
 
+  return 0;
+}
 
-  if(mutt_strncasecmp (email, mailbox, mutt_strlen (mailbox)))
+/* Loop through the list of certs, trying to find an email address.
+ * Stop as soon as one is found 
+ */
+static int smime_check_certs_email (char *certificates, char *mailbox)
+{
+  FILE *fpcerts = NULL;
+  char email[STRING];
+  int ret = 0;
+  
+  if ((fpcerts = fopen(certificates, "r")) == NULL)
+  {
+    mutt_perror (certificates);
+    return 1;
+  }
+  
+  /* For each certificate, copy it into a temp file and call 
+   * smime_check_cert_email() on it */
+  do 
+  {
+    char *line = NULL;
+    int lineno = 0;
+    size_t linelen;
+
+    FILE *fptmp = NULL;
+    char tmpfname[_POSIX_PATH_MAX];
+    
+    if (feof (fpcerts))
+    {
+      mutt_error (_("Error: Unable to extract email address from certificate"));
+      return 1;
+    }
+    
+    mutt_mktemp (tmpfname);
+    if ((fptmp = safe_fopen (tmpfname, "w+")) == NULL)
+    {
+      mutt_perror (tmpfname);
+      return 1;
+    }
+    
+    /* Copy up until the next blank line */
+    while(1) 
+    {
+      line = mutt_read_line (line, &linelen, fpcerts, &lineno);
+
+      /* EOF */
+      if (line == NULL)
+        break;
+      
+      /* Blank line */
+      if (line[0] == 0)
+        {
+          safe_free ((void **) &line);
+          break;
+        }
+      
+      fprintf (fptmp, "%s\n", line);  
+      safe_free ((void **) &line);
+    }
+    
+    fclose (fptmp);
+    
+    ret = smime_check_cert_email (tmpfname, email);
+    
+    mutt_unlink (tmpfname);
+    
+    if (ret == 1)
+      return 1;
+  } while (ret != 0);
+  
+  if (mutt_strncasecmp (email, mailbox, mutt_strlen (mailbox)))
   {
     mutt_endwin(NULL);
-    printf ("Alert: Certificate belongs to \"%s\".\n"
-	    "       But sender was \"%s\".\n", email, mailbox);
+    mutt_error (_("Alert: Certificate belongs to \"%s\".\n"
+                  "       But sender was \"%s\".\n"), email, mailbox);
     ret = 1;
   }
-
-  fclose (fpout);
-  fclose (fperr);
 
   return ret;
 }
@@ -905,7 +968,7 @@ static void smime_add_certificate (char *certificate, char *mailbox, short publi
   pid_t thepid;
 
 
-  if (smime_check_cert_email (certificate, mailbox))
+  if (smime_check_certs_email (certificate, mailbox))
   {
     mutt_message _("Certificate *NOT* added.");
     return;
@@ -1283,7 +1346,7 @@ int smime_verify_sender(HEADER *h)
     if ((certfile = smime_extract_signer_certificate(tempfname,TRUE)))
     {
       mutt_unlink(tempfname);
-      if (smime_check_cert_email (certfile, mbox))
+      if (smime_check_certs_email (certfile, mbox))
 	mutt_any_key_to_continue(NULL);
       else
 	retval = 0;
