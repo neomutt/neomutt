@@ -9,7 +9,7 @@
 set pgp_decode_command="%?p?PGPPASSFD=0; export PGPPASSFD;? cat %?p?-? %f | pgp +language=mutt +verbose=0 +batchmode -f"
 
 # verify a pgp/mime signature
-set pgp_verify_command="pgp +language=mutt +verbose=0 +batchmode %f %s"
+set pgp_verify_command="pgp +language=mutt +verbose=0 +batchmode -t %s %f"
 
 # decrypt a pgp/mime attachment
 set pgp_decrypt_command="PGPPASSFD=0; export PGPPASSFD; cat - %f | pgp +language=mutt +verbose=0 +batchmode -f"
