@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.5.2\n"
 "POT-Creation-Date: 2002-12-18 11:26+0100\n"
-"PO-Revision-Date: 2002-12-12\n"
+"PO-Revision-Date: 2002-12-18\n"
 "Last-Translator: René Clerc <rene@clerc.nl>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -426,15 +426,19 @@ msgstr "Berichten konden niet worden afgedrukt"
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
+"Omgekeerd (d)atum/(v)an/o(n)tv/(o)nd/(a)an/(t)hread/(u)nsort/(g)rootte/(s)"
+"core?: "
 
 #: commands.c:513
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
+"Sorteren (d)atum/(v)an/o(n)tv/(o)nd/(a)an/(t)hread/(u)nsort/(g)rootte/(s)"
+"core?: "
 
 #: commands.c:514
 msgid "dfrsotuzc"
-msgstr "dfrsotuzc"
+msgstr "dvnoatugs"
 
 #: commands.c:567
 msgid "Shell command: "
@@ -1652,14 +1656,13 @@ msgid "%s: no such function"
 msgstr "%s: onbekende functie"
 
 #: keymap.c:922
-#, fuzzy
 msgid "Enter keys (^G to abort): "
-msgstr "KeyID voor %s: "
+msgstr "Geef toetsen in (^G om af te breken): "
 
 #: keymap.c:927
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr ""
+msgstr "Karakter = %s, Octaal = %o, Decimaal = %d"
 
 #: keymap_alldefs.h:5
 msgid "null operation"
@@ -2090,9 +2093,8 @@ msgid "jump to the next new message"
 msgstr "spring naar het volgende nieuwe bericht"
 
 #: keymap_alldefs.h:112
-#, fuzzy
 msgid "jump to the next new or unread message"
-msgstr "spring naar het volgende ongelezen bericht"
+msgstr "spring naar het volgende nieuwe of ongelezen bericht"
 
 #: keymap_alldefs.h:113
 msgid "jump to the next subthread"
@@ -2131,9 +2133,8 @@ msgid "jump to the previous new message"
 msgstr "spring naar het vorige nieuwe bericht"
 
 #: keymap_alldefs.h:122
-#, fuzzy
 msgid "jump to the previous new or unread message"
-msgstr "spring naar het vorige ongelezen bericht"
+msgstr "spring naar het vorige nieuwe of ongelezen bericht"
 
 #: keymap_alldefs.h:123
 msgid "jump to the previous unread message"
@@ -2345,7 +2346,7 @@ msgstr "geef MIME-bijlagen weer"
 
 #: keymap_alldefs.h:175
 msgid "display the keycode for a key press"
-msgstr ""
+msgstr "toon de code voor een toets"
 
 #: keymap_alldefs.h:176
 msgid "show currently active limit pattern"
@@ -2456,7 +2457,6 @@ msgstr ""
 "onder bepaalde voorwaarden;  type `mutt -vv' voor meer informatie.\n"
 
 #: main.c:50
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -2485,7 +2485,7 @@ msgid ""
 msgstr ""
 "Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2002 Thomas Roessler <roessler@guug.de>\n"
+"Copyright (C) 1997-2002 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Copyright (C) 1998-2002 Werner Koch <wk@isil.d.shuttle.de>\n"
 "Copyright (C) 1999-2002 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
@@ -3256,9 +3256,8 @@ msgstr ""
 "\n"
 
 #: pgp.c:703
-#, fuzzy
 msgid "Internal error. Inform <roessler@does-not-exist.org>."
-msgstr "Interne fout.  Informeer <roessler@guug.de>."
+msgstr "Interne fout.  Informeer <roessler@does-not-exist.org>."
 
 #: pgp.c:763
 msgid ""
