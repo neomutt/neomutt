@@ -1766,7 +1766,7 @@ void mutt_body_handler (BODY *b, STATE *s)
     }
     else if (ascii_strcasecmp ("enriched", b->subtype) == 0)
       handler = text_enriched_handler;
-    else if (ascii_strcasecmp ("rfc822-headers", b->subtype) == 0)
+    else /* text body type without a handler */
       plaintext = 1;
   }
   else if (b->type == TYPEMESSAGE)
