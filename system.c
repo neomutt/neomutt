@@ -17,6 +17,9 @@
  */ 
 
 #include "mutt.h"
+#ifdef USE_IMAP
+# include "imap.h"
+#endif
 
 #include <stdlib.h>
 #include <signal.h>
@@ -111,8 +114,13 @@ int _mutt_system (const char *cmd, int flags)
   }
   else if (thepid != -1)
   {
+#ifndef USE_IMAP
     /* wait for the (first) child process to finish */
     waitpid (thepid, &rc, 0);
+#else
+    while (waitpid (thepid, &rc, WNOHANG) == 0)
+      imap_keepalive ();
+#endif
   }
 
   sigaction (SIGCONT, &oldcont, NULL);

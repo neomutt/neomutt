@@ -26,6 +26,8 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+#include <signal.h>
+
 /* imap_continue: display a message and ask the user if she wants to
  *   go on. */
 int imap_continue (const char* msg, const char* resp)
@@ -299,3 +301,30 @@ int imap_wordcasecmp(const char *a, const char *b)
 
   return mutt_strcasecmp(a, tmp);
 }
+
+/* imap_keepalive: use buffy to poll a remote imap folder
+ * while waiting for an external process
+ */
+
+void imap_keepalive (void)
+{
+  sigset_t sigset;
+  sigset_t osigset;
+
+  if (option (OPTMSGERR))
+    return;
+  
+  sigemptyset (&sigset);
+  sigaddset (&sigset, SIGCHLD);
+  sigprocmask (SIG_UNBLOCK, &sigset, &osigset);
+  
+  set_option (OPTKEEPQUIET);
+  
+  mutt_buffy_check (0);
+  sleep (ImapCheckTimeout > 0 ? ImapCheckTimeout : 60);
+  
+  unset_option (OPTKEEPQUIET);
+  sigprocmask (SIG_BLOCK, &osigset, NULL);
+}
+
+
