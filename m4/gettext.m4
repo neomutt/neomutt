@@ -13,7 +13,7 @@
 
 # serial 109
 
-dnl Usage: AM_WITH_NLS([TOOLSYMBOL], [NEEDSYMBOL], [LIBDIR]).
+dnl Usage: MUTT_AM_WITH_NLS([TOOLSYMBOL], [NEEDSYMBOL], [LIBDIR]).
 dnl If TOOLSYMBOL is specified and is 'use-libtool', then a libtool library
 dnl    $(top_builddir)/intl/libintl.la will be created (shared and/or static,
 dnl    depending on --{enable,disable}-{shared,static} and on the presence of
@@ -277,7 +277,7 @@ changequote([,])dnl
     AC_SUBST(GENCAT)
   ])
 
-dnl Usage: Just like AM_WITH_NLS, which see.
+dnl Usage: Just like MUTT_AM_WITH_NLS, which see.
 AC_DEFUN([MUTT_AM_GNU_GETTEXT],
   [AC_REQUIRE([AC_PROG_MAKE_SET])dnl
    AC_REQUIRE([AC_PROG_CC])dnl

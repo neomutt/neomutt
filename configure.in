@@ -777,7 +777,7 @@ else
   AC_CHECK_FUNCS(bind_textdomain_codeset)
 fi
 
-MUTTLOCALEDIR=$mutt_cv_prefix/$DATADIRNAME/locale
+MUTTLOCALEDIR='$datadir/locale'
 AC_SUBST(MUTTLOCALEDIR)
 AC_DEFINE_UNQUOTED(MUTTLOCALEDIR, "$MUTTLOCALEDIR")
 
