@@ -395,9 +395,12 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 	  }
 	  
 	  safe_fclose (&pgperr);
-	  
+
 	  if (s->flags & M_DISPLAY)
-	    state_attach_puts (_("\n[-- End of PGP output --]\n\n"), s);
+	  {
+	    state_putc ('\n', s);
+	    state_attach_puts (_("[-- End of PGP output --]\n\n"), s);
+	  }
 	}
       }
     
@@ -448,12 +451,13 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 
       if (s->flags & M_DISPLAY)
       {
+	state_putc ('\n', s);
 	if (needpass)
-	  state_attach_puts (_("\n[-- END PGP MESSAGE --]\n"), s);
+	  state_attach_puts (_("[-- END PGP MESSAGE --]\n"), s);
 	else if (pgp_keyblock)
 	  state_attach_puts (_("[-- END PGP PUBLIC KEY BLOCK --]\n"), s);
 	else
-	  state_attach_puts (_("\n[-- END PGP SIGNED MESSAGE --]\n"), s);
+	  state_attach_puts (_("[-- END PGP SIGNED MESSAGE --]\n"), s);
       }
     }
     else
@@ -852,7 +856,10 @@ void pgp_signed_handler (BODY *a, STATE *s)
   mutt_body_handler (a, s);
   
   if (s->flags & M_DISPLAY && sigcnt)
-    state_attach_puts (_("\n[-- End of signed data --]\n"), s);
+  {
+    state_putc ('\n', s);
+    state_attach_puts (_("[-- End of signed data --]\n"), s);
+  }
 }
 
 /* Extract pgp public keys from messages or attachments */
@@ -1148,7 +1155,10 @@ void pgp_encrypted_handler (BODY *a, STATE *s)
       p->goodsig |= tattach->goodsig;
     
     if (s->flags & M_DISPLAY)
-      state_attach_puts (_("\n[-- End of PGP/MIME encrypted data --]\n"), s);
+    {
+      state_puts ("\n", s);
+      state_attach_puts (_("[-- End of PGP/MIME encrypted data --]\n"), s);
+    }
 
     mutt_free_body (&tattach);
   }
