@@ -1,3 +1,7 @@
+2003-03-19 21:31:59  Edmund GRIMLEY EVANS  <edmundo@rano.org>  (roessler)
+
+	* imap/utf7.c: Fix a buffer overflow in utf8_to_utf7.
+
 2003-03-18 14:51:52  Andrew W. Nosenko  <awn@bcs.zp.ua>  (roessler)
 
 	* buffy.c (test_last_status_new): Fix memory leak.  Envelope
