@@ -1,12 +1,12 @@
-# Ronny Haryanto <ronny-mutt-po-file@haryan.to>, 1999-2000.
+# Ronny Haryanto <ronny-mutt-po-file@haryan.to>, 1999, 2000, 2001.
 #
 # http://i18n.linux.or.id
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.12i\n"
+"Project-Id-Version: 1.3.14i\n"
 "POT-Creation-Date: 2001-01-27 14:49+0100\n"
-"PO-Revision-Date: 2000-11-27 10:59-0600\n"
+"PO-Revision-Date: 2001-01-28 14:27-0600\n"
 "Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
 "Language-Team: Indonesia <i18n@linux.or.id>\n"
 "MIME-Version: 1.0\n"
@@ -1444,9 +1444,8 @@ msgid "view attachment as text"
 msgstr "tampilkan lampiran sebagai teks"
 
 #: keymap_alldefs.h:8
-#, fuzzy
 msgid "Toggle display of subparts"
-msgstr "tampilkan atau tidak teks yang dikutip"
+msgstr "Tampilkan atau tidak sub-bagian"
 
 #: keymap_alldefs.h:9
 msgid "move to the bottom of the page"
@@ -1829,9 +1828,8 @@ msgid "delete messages matching a pattern"
 msgstr "hapus surat yang cocok dengan suatu kriteria"
 
 #: keymap_alldefs.h:105
-#, fuzzy
 msgid "force retrieval of mail from IMAP server"
-msgstr "mengambil surat dari server POP"
+msgstr "paksa mengambil surat dari server IMAP"
 
 #: keymap_alldefs.h:106
 msgid "retrieve mail from POP server"
@@ -2570,9 +2568,9 @@ msgid "Unable to get certificate from peer"
 msgstr "Tidak bisa mengambil sertifikat"
 
 #: mutt_ssl.c:245
-#, fuzzy, c-format
+#, c-format
 msgid "SSL connection using %s (%s)"
-msgstr "Hubungan SSL menggunakan %s"
+msgstr "Hubungan SSL menggunakan %s (%s)"
 
 #: mutt_ssl.c:275
 msgid "Unknown"
@@ -3346,9 +3344,8 @@ msgid "Attachments"
 msgstr "Lampiran"
 
 #: recvattach.c:919
-#, fuzzy
 msgid "There are no subparts to show!"
-msgstr "Tidak ada lampiran."
+msgstr "Tidak ada sub-bagian yg bisa ditampilkan!"
 
 #: recvattach.c:967
 msgid "Can't delete attachment from POP server."
@@ -3382,9 +3379,8 @@ msgid "Can't open temporary file %s."
 msgstr "Tidak bisa membuka file sementara %s."
 
 #: recvcmd.c:398
-#, fuzzy
 msgid "Forward as attachments?"
-msgstr "tampilkan lampiran MIME"
+msgstr "Forward sebagai lampiran?"
 
 #: recvcmd.c:412
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
@@ -3544,9 +3540,8 @@ msgid "Could not include all requested messages!"
 msgstr "Tidak bisa menyertakan semua surat yang diminta!"
 
 #: send.c:739
-#, fuzzy
 msgid "Forward as attachment?"
-msgstr "Cetak lampiran?"
+msgstr "Forward sebagai lampiran?"
 
 #: send.c:743
 msgid "Preparing forwarded message..."

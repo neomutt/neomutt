@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.12\n"
+"Project-Id-Version: 1.3.14\n"
 "POT-Creation-Date: 2001-01-27 14:49+0100\n"
-"PO-Revision-Date: 2000-11-27 17:45+01:00\n"
+"PO-Revision-Date: 2001-01-28 10:45+01:00\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -1442,9 +1442,8 @@ msgid "view attachment as text"
 msgstr "Zeige Anhang als Text an"
 
 #: keymap_alldefs.h:8
-#, fuzzy
 msgid "Toggle display of subparts"
-msgstr "Schalte Anzeige von zitiertem Text ein/aus"
+msgstr "Schalte Anzeige von Teilen ein/aus"
 
 #: keymap_alldefs.h:9
 msgid "move to the bottom of the page"
@@ -1827,13 +1826,12 @@ msgid "delete messages matching a pattern"
 msgstr "Lösche Nachrichten nach Muster"
 
 #: keymap_alldefs.h:105
-#, fuzzy
 msgid "force retrieval of mail from IMAP server"
-msgstr "Hole Nachrichten von POP-Server"
+msgstr "Hole Nachrichten vom IMAP-Server"
 
 #: keymap_alldefs.h:106
 msgid "retrieve mail from POP server"
-msgstr "Hole Nachrichten von POP-Server"
+msgstr "Hole Nachrichten vom POP-Server"
 
 #: keymap_alldefs.h:107
 msgid "move to the first message"
@@ -2571,9 +2569,9 @@ msgid "Unable to get certificate from peer"
 msgstr "Kann kein Zertifikat vom Server erhalten"
 
 #: mutt_ssl.c:245
-#, fuzzy, c-format
+#, c-format
 msgid "SSL connection using %s (%s)"
-msgstr "SSL Verbindung unter Verwendung von %s"
+msgstr "SSL Verbindung unter Verwendung von %s (%s)"
 
 #: mutt_ssl.c:275
 msgid "Unknown"
@@ -3349,9 +3347,8 @@ msgid "Attachments"
 msgstr "Anhänge"
 
 #: recvattach.c:919
-#, fuzzy
 msgid "There are no subparts to show!"
-msgstr "Es sind keine Anhänge vorhanden."
+msgstr "Es sind keine Teile zur Anzeige vorhanden!"
 
 #: recvattach.c:967
 msgid "Can't delete attachment from POP server."
@@ -3385,9 +3382,8 @@ msgid "Can't open temporary file %s."
 msgstr "Kann temporäre Datei %s nicht öffnen."
 
 #: recvcmd.c:398
-#, fuzzy
 msgid "Forward as attachments?"
-msgstr "Zeige MIME-Anhänge"
+msgstr "Als Anhänge weiterleiten?"
 
 #: recvcmd.c:412
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
@@ -3547,9 +3543,8 @@ msgid "Could not include all requested messages!"
 msgstr "Konnte nicht alle gewünschten Nachrichten zitieren!"
 
 #: send.c:739
-#, fuzzy
 msgid "Forward as attachment?"
-msgstr "Drucke Anhang?"
+msgstr "Als Anhang weiterleiten?"
 
 #: send.c:743
 msgid "Preparing forwarded message..."
