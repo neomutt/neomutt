@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1\n"
 "POT-Creation-Date: 2000-02-15 09:44+0100\n"
-"PO-Revision-Date: 2000-02-07 22:44+00:00\n"
+"PO-Revision-Date: 2000-02-15 13:40+00:00\n"
 "Last-Translator: Edmund GRIMLEY EVANS <edmundo@rano.org>\n"
 "Language-Team: eo <eo@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1102,9 +1102,9 @@ msgid "Help for %s"
 msgstr "Helpo por %s"
 
 #: hook.c:243
-#, fuzzy, c-format
+#, c-format
 msgid "unhook: unknown hook type: %s"
-msgstr "%s: nekonata speco"
+msgstr "unhook: nekonata speco de hook: %s"
 
 #: imap/auth.c:104
 msgid "Authenticating (CRAM-MD5)..."
@@ -1904,8 +1904,9 @@ msgid "jump to previous subthread"
 msgstr "salti al la antaýa subfadeno"
 
 #: keymap_alldefs.h:110
+#, fuzzy
 msgid "move to the last undelete message"
-msgstr "iri al la lasta neforviþita mesaøo"
+msgstr "salti al la sekva neforviþita mesaøo"
 
 #: keymap_alldefs.h:111
 msgid "jump to the previous new message"
@@ -1969,7 +1970,7 @@ msgstr "salti al la fino de la mesaøo"
 
 #: keymap_alldefs.h:126
 msgid "return to the main-menu"
-msgstr "reiri al la æefmenuo"
+msgstr ""
 
 #: keymap_alldefs.h:127
 msgid "toggle display of quoted text"
@@ -3520,5 +3521,5 @@ msgstr "Patra mesaøo ne estas videbla en limigita rigardo"
 msgid "Parent message is not available."
 msgstr "Patra mesaøo ne estas havebla."
 
-#~ msgid "Authenticating (GSSAPI)..."
-#~ msgstr "Rajtiøas (GSSAPI) ..."
+#~ msgid "move to the previous undelete message"
+#~ msgstr "salti al la antaýa neforviþita mesaøo"
