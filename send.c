@@ -1218,24 +1218,9 @@ ci_send_message (int flags,		/* send mode */
 
 
 #ifdef HAVE_PGP
-  
-  if (! (flags & SENDKEY) && tempfp)
-  {
-
+  if (! (flags & SENDKEY))
 #endif
-    
-
-
-    fclose (tempfp);
-    tempfp = NULL;
-    
-
-
-#ifdef HAVE_PGP
-    
-  }
-
-#endif
+    safe_fclose (&tempfp);
 
 
 
@@ -1604,8 +1589,7 @@ cleanup:
   }
 #endif /* HAVE_PGP */
    
-  if (tempfp)
-    fclose (tempfp);
+  safe_fclose (&tempfp);
   mutt_free_header (&msg);
   
   return rv;
