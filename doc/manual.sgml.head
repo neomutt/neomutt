@@ -363,10 +363,12 @@ you misspelled the passphrase.
 <p><bf/list-reply/<label id="list-reply"> (default: L)<newline>
 
 Reply to the current or tagged message(s) by extracting any addresses which
-match the addresses given by the <ref id="lists" name="lists"> command.
-Using this when replying to messages posted to mailing lists help avoid
-duplicate copies being sent to the author of the message you are replying
-to.
+match the addresses given by the <ref id="lists" name="lists"> command, but
+also honor any <tt/Mail-Followup-To/ header(s) if the
+<ref id="honor_followup_to" name="&dollar;honor&lowbar;followup&lowbar;to">
+configuration variable is set.  Using this when replying to messages posted
+to mailing lists helps avoid duplicate copies being sent to the author of
+the message you are replying to.
 
 <bf/pipe-message/<label id="pipe-message"> (default: |)<newline>
 
@@ -1862,24 +1864,27 @@ author of the message they are reply to from the list, resulting in
 two or more copies being sent to that person.  The ``list-reply''
 function, which by default is bound to ``L'' in the <em/index/ menu
 and <em/pager/, helps reduce the clutter by only replying to the
-known mailing list addresses instead of all recipients.
+known mailing list addresses instead of all recipients (except as
+specified by <tt/Mail-Followup-To/, see below).
 
-As an alternative, mutt supports the <tt/Mail-Followup-To/ header.
-When you send a message to a list of recipients which includes one
-or several subscribed mailing lists, and if the <ref
-id="followup_to" name="&dollar;followup&lowbar;to"> option is set,
-mutt will generate a Mail-Followup-To header which contains all the
-recipients to whom you send this message, but not your address. This
-indicates that group-replies to this message should only be sent to
-the original recipients of the message, and not separately to you -
-you'll receive your copy through one of the mailing lists you are
-subscribed to.
+Mutt also supports the <tt/Mail-Followup-To/ header.  When you send
+a message to a list of recipients which includes one or several
+subscribed mailing lists, and if the <ref id="followup_to"
+name="&dollar;followup&lowbar;to"> option is set, mutt will generate
+a Mail-Followup-To header which contains all the recipients to whom
+you send this message, but not your address. This indicates that
+group-replies or list-replies (also known as ``followups'') to this
+message should only be sent to the original recipients of the
+message, and not separately to you - you'll receive your copy through
+one of the mailing lists you are subscribed to.
 
-Conversely, when group-replying to a message which has a
-<tt/Mail-Followup-To/ header, mutt will respect this header if the
-<ref id="honor_followup_to"
+Conversely, when group-replying or list-replying to a message which
+has a <tt/Mail-Followup-To/ header, mutt will respect this header if
+the <ref id="honor_followup_to"
 name="&dollar;honor&lowbar;followup&lowbar;to"> configuration
-variable is set.
+variable is set.  Using list-reply will in this case also make sure
+that the reply goes to the mailing list, even if it's not specified
+in the list of recipients in the <tt/Mail-Followup-To/.
 
 Note that, when header editing is enabled, you can create a
 <tt/Mail-Followup-To/ header manually.  Mutt will only auto-generate
