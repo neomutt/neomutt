@@ -1,14 +1,14 @@
 # French messages for Mutt.
-# Copyright (C) 1998-2004 Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre <vincent@vinc17.org>
-# Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre <vincent@vinc17.org>, 1998-2004
+# Copyright (C) 1998-2005 Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre <vincent@vinc17.org>
+# Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre <vincent@vinc17.org>, 1998-2005
 #
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.6\n"
+"Project-Id-Version: Mutt 1.5.7\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-01-28 11:04+0100\n"
-"PO-Revision-Date: 2004-08-09 11:35+0200\n"
+"PO-Revision-Date: 2005-02-02 12:13+0100\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -1568,9 +1568,9 @@ msgstr "Impossible de créer le fichier temporaire %s"
 
 # , c-format
 #: imap/message.c:130
-#, fuzzy, c-format
+#, c-format
 msgid "Evaluating cache... [%d/%d]"
-msgstr "Récupération des en-têtes des messages... [%d/%d]"
+msgstr "Évaluation du cache... [%d/%d]"
 
 # , c-format
 #: imap/message.c:198 pop.c:206
@@ -4361,20 +4361,3 @@ msgstr "Le message père n'est pas visible dans cette vue limitée."
 #: thread.c:1091
 msgid "Parent message is not available."
 msgstr "Le message père n'est pas disponible."
-
-#~ msgid "unspecified protocol error"
-#~ msgstr "erreur de protocole non spécifiée"
-
-#~ msgid "Closing connection to IMAP server..."
-#~ msgstr "Fermeture de la connexion au serveur IMAP..."
-
-#~ msgid "Create a traditional (inline) PGP message?"
-#~ msgstr "Créer un message PGP traditionnel (en ligne) ?"
-
-# , c-format
-#~ msgid "%s: stat: %s"
-#~ msgstr "%s : stat: %s"
-
-# , c-format
-#~ msgid "%s: not a regular file"
-#~ msgstr "%s : pas un fichier ordinaire"
