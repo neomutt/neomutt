@@ -38,7 +38,9 @@ mutt_SOURCES = $(BUILT_SOURCES) \
 
 muttbug_SOURCES = muttbug.sh.in
 
-mutt_LDADD = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAP) $(GSSLIBS) $(INTLLIBS) 
+mutt_LDADD = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAP) $(MUTTLIBS) \
+	$(INTLLIBS) 
+
 mutt_DEPENDENCIES = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAPDEPS) $(INTLDEPS)
 
 makedoc_SOURCES = makedoc.c
@@ -47,7 +49,9 @@ CPP=@CPP@
 
 DEFS=-DSHAREDIR=\"$(sharedir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 	-DBINDIR=\"$(bindir)\" -DHAVE_CONFIG_H=1
-INCLUDES=-I. $(IMAP_INCLUDES) -I$(includedir)
+
+# top_srcdir is for building outside of the source tree
+INCLUDES=-I$(top_srcdir) -I. $(IMAP_INCLUDES) -I$(includedir)
 
 non_us_sources = pgp.c pgpinvoke.c pgpkey.c pgplib.c sha1dgst.c \
 	gnupgparse.c sha.h sha_locl.h \

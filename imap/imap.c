@@ -1113,6 +1113,13 @@ void imap_fastclose_mailbox (CONTEXT *ctx)
       safe_free ((void **) &CTX_DATA->cache[i].path);
     }
   }
+
+#if 0
+  /* This is not the right place to logout, actually. There are two dangers:
+   * 1. status is set to IMAP_LOGOUT as soon as the user says q, even if she
+   *    cancels a bit later.
+   * 2. We may get here when closing the $received folder, but before we sync
+   *    the spool. So the sync will currently cause an abort. */
   if (CTX_DATA->status == IMAP_BYE || CTX_DATA->status == IMAP_FATAL ||
     CTX_DATA->status == IMAP_LOGOUT)
   {
@@ -1120,6 +1127,7 @@ void imap_fastclose_mailbox (CONTEXT *ctx)
     CTX_DATA->conn->data = NULL;
     safe_free ((void **) &ctx->data);
   }
+#endif
 }
 
 /* use the NOOP command to poll for new mail

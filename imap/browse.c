@@ -283,14 +283,12 @@ static int add_list_result (CONNECTION *conn, const char *seq, const char *cmd,
 }
 
 /* imap_add_folder: add a folder name to the browser list, formatting it as
- *   necessary. NOTE: check for duplicate folders removed, believed to be
- *   useless. Tell me if otherwise (brendan@kublai.com) */
+ *   necessary. */
 static void imap_add_folder (char delim, char *folder, int noselect,
   int noinferiors, struct browser_state *state, short isparent)
 {
   char tmp[LONG_STRING];
   char relpath[LONG_STRING];
-  int flen = strlen (folder);
   IMAP_MBOX mx;
 
   if (imap_parse_path (state->folder, &mx))
@@ -298,14 +296,10 @@ static void imap_add_folder (char delim, char *folder, int noselect,
 
   imap_unquote_string (folder);
 
-  /* plus 2: folder may be selectable AND have inferiors */
-  if (state->entrylen + 2 == state->entrymax)
+  if (state->entrylen + 1 == state->entrymax)
   {
     safe_realloc ((void **) &state->entry,
       sizeof (struct folder_file) * (state->entrymax += 256));
-    /* apparently linux+glibc2.1 was zeroing this for me? Jon Hellan reports
-     * that the browser segfaults on more than 256 entries. I never had this
-     * problem */
     memset (state->entry + state->entrylen, 0,
       (sizeof (struct folder_file) * (state->entrymax - state->entrylen)));
   }
@@ -325,34 +319,19 @@ static void imap_add_folder (char delim, char *folder, int noselect,
   if (!((regexec (Mask.rx, relpath, 0, NULL, 0) == 0) ^ Mask.not))
     return;
 
-  if (!noselect)
-  {
-    imap_qualify_path (tmp, sizeof (tmp), &mx, folder, NULL);
-    (state->entry)[state->entrylen].name = safe_strdup (tmp);
+  imap_qualify_path (tmp, sizeof (tmp), &mx, folder, NULL);
+  (state->entry)[state->entrylen].name = safe_strdup (tmp);
 
-    (state->entry)[state->entrylen].desc = safe_strdup (relpath);
+  (state->entry)[state->entrylen].desc = safe_strdup (relpath);
 
-    (state->entry)[state->entrylen].notfolder = 0;
-    (state->entrylen)++;
-  }
-  if (!noinferiors)
-  {
-    char trailing_delim[2];
-
-    /* create trailing delimiter if necessary */
-    trailing_delim[1] = '\0';
-    trailing_delim[0] = (flen && folder[flen - 1] != delim) ? delim : '\0';
-
-    imap_qualify_path (tmp, sizeof (tmp), &mx, folder, trailing_delim);
-    (state->entry)[state->entrylen].name = safe_strdup (tmp);
-
-    if (!isparent && (strlen (relpath) < sizeof (relpath) - 2))
-      strcat (relpath, trailing_delim);
-    (state->entry)[state->entrylen].desc = safe_strdup (relpath);
-
-    (state->entry)[state->entrylen].notfolder = 1;
-    (state->entrylen)++;
-  }
+  (state->entry)[state->entrylen].imap = 1;
+  /* delimiter at the root is useless. */
+  if (folder[0] == '\0')
+    delim = '\0';
+  (state->entry)[state->entrylen].delim = delim;
+  (state->entry)[state->entrylen].selectable = !noselect;
+  (state->entry)[state->entrylen].inferiors = !noinferiors;
+  (state->entrylen)++;
 }
 
 static int compare_names(struct folder_file *a, struct folder_file *b) 
@@ -382,9 +361,7 @@ static int get_namespace (IMAP_DATA *idata, char *nsbuf, int nsblen,
   do 
   {
     if (mutt_socket_read_line_d (buf, sizeof (buf), idata->conn) < 0)
-    {
-      return (-1);
-    }
+      return -1;
 
     if (buf[0] == '*') 
     {
@@ -459,7 +436,7 @@ static int get_namespace (IMAP_DATA *idata, char *nsbuf, int nsblen,
   return 0;
 }
 
-/* Check which namespaces actually exist */
+/* Check which namespaces have contents */
 static int verify_namespace (CONNECTION *conn, IMAP_NAMESPACE_INFO *nsi, 
   int nns)
 {
@@ -472,8 +449,11 @@ static int verify_namespace (CONNECTION *conn, IMAP_NAMESPACE_INFO *nsi,
   for (i = 0; i < nns; i++, nsi++)
   {
     imap_make_sequence (seq, sizeof (seq));
-    snprintf (buf, sizeof (buf), "%s %s \"\" \"%s\"\r\n", seq, 
-	      option (OPTIMAPLSUB) ? "LSUB" : "LIST", nsi->prefix);
+    /* Cyrus gives back nothing if the % isn't added. This may return lots
+     * of data in some cases, I guess, but I currently feel that's better
+     * than invisible namespaces */
+    snprintf (buf, sizeof (buf), "%s %s \"\" \"%s%c%%\"\r\n", seq, 
+	      option (OPTIMAPLSUB) ? "LSUB" : "LIST", nsi->prefix, nsi->delim);
     mutt_socket_write (conn, buf);
 
     nsi->listable = 0;
@@ -481,9 +461,8 @@ static int verify_namespace (CONNECTION *conn, IMAP_NAMESPACE_INFO *nsi,
     do 
     {
       if (imap_parse_list_response(conn, buf, sizeof(buf), &name,
-				   &(nsi->noselect), &(nsi->noinferiors), 
-				   &delim) != 0)
-	return (-1);
+          &(nsi->noselect), &(nsi->noinferiors), &delim) != 0)
+	return -1;
       nsi->listable |= (name != NULL);
     }
     while ((mutt_strncmp (buf, seq, SEQLEN) != 0));

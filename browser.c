@@ -172,7 +172,7 @@ folder_format_str (char *dest, size_t destlen, char op, const char *src,
       
     case 'f':
 #ifdef USE_IMAP
-      if (mx_is_imap (folder->ff->name))
+      if (folder->ff->imap)
         strfcpy (fn, NONULL(folder->ff->desc), sizeof (fn));
       else
 #endif
@@ -207,10 +207,13 @@ folder_format_str (char *dest, size_t destlen, char op, const char *src,
       else
       {
 #ifdef USE_IMAP
-	if (mx_is_imap (folder->ff->name))
+	if (folder->ff->imap)
 	{
+	  sprintf (permission, "IMAP %c%c",
+		   folder->ff->inferiors ? '+' : ' ',
+		   folder->ff->selectable ? 'S' : ' ');
           snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
-          snprintf (dest, destlen, tmp, "IMAP");
+          snprintf (dest, destlen, tmp, permission);
 	}                                        
 #endif
       }
@@ -328,9 +331,8 @@ static void add_folder (MUTTMENU *m, struct browser_state *state,
   (state->entry)[state->entrylen].name = safe_strdup (name);
   (state->entry)[state->entrylen].desc = safe_strdup (name);
 #ifdef USE_IMAP
-  (state->entry)[state->entrylen].notfolder = 0;
+  (state->entry)[state->entrylen].imap = 0;
 #endif
-
   (state->entrylen)++;
 }
 
@@ -421,7 +423,7 @@ static int examine_mailboxes (MUTTMENU *menu, struct browser_state *state)
   do
   {
 #ifdef USE_IMAP
-    if (tmp->path[0] == '{')
+    if (mx_is_imap (tmp->path))
     {
       add_folder (menu, state, tmp->path, NULL, tmp->new);
       continue;
@@ -623,7 +625,7 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 	    (S_ISLNK (state.entry[menu->current].mode) &&
 	    link_is_dir (LastDir, state.entry[menu->current].name)) 
 #ifdef USE_IMAP
-	    || state.entry[menu->current].notfolder
+	    || state.entry[menu->current].inferiors
 #endif
 	    )
 	{
@@ -645,7 +647,7 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 
 	  if ((mx_get_magic (buf) <= 0)
 #ifdef USE_IMAP
-	    || state.entry[menu->current].notfolder
+	    || state.entry[menu->current].inferiors
 #endif
 	    )
 	  {
@@ -681,8 +683,17 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 #ifdef USE_IMAP
 	    else if (state.imap_browse)
 	    {
+	      int n;
+	      
               strfcpy (LastDir, state.entry[menu->current].name,
                 sizeof (LastDir));
+	      /* tack on delimiter here */
+	      if ((state.entry[menu->current].delim != '\0') &&
+		  (n = strlen (LastDir)+1) < sizeof (LastDir))
+	      {
+		LastDir[n] = '\0';
+		LastDir[n-1] = state.entry[menu->current].delim;
+	      }
 	    }
 #endif
 	    else
@@ -806,7 +817,7 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 	break;
 
       case OP_DELETE_MAILBOX:
-	if (!mx_is_imap (state.entry[menu->current].name))
+	if (!state.entry[menu->current].imap)
 	  mutt_error (_("Delete is only supported for IMAP mailboxes"));
 	else
         {
@@ -1058,6 +1069,16 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 	  break;
 	}
 
+#ifdef USE_IMAP
+	if (state.entry[menu->current].selectable)
+	{
+	  strfcpy (f, state.entry[menu->current].name, flen);
+	  destroy_state (&state);
+	  mutt_menuDestroy (&menu);
+	  return;
+	}
+	else
+#endif
         if (S_ISDIR (state.entry[menu->current].mode) ||
 	    (S_ISLNK (state.entry[menu->current].mode) &&
 	    link_is_dir (LastDir, state.entry[menu->current].name)))

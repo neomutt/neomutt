@@ -30,7 +30,11 @@ struct folder_file
   char *name;
   char *desc;
 #ifdef USE_IMAP
-  short notfolder;
+  char delim;
+  
+  unsigned imap : 1;
+  unsigned selectable : 1;
+  unsigned inferiors : 1;
 #endif
   unsigned tagged : 1;
   unsigned is_new : 1;

@@ -1994,13 +1994,37 @@ variable, which defaults to every 60 seconds.
 
 Mutt is designed to work with IMAP4rev1 servers, and was originally tested
 with both the UWash IMAP server v11.241 and the Cyrus IMAP server v1.5.14.
-Nowadays it is primarily developed against UW-IMAP 12.250. It works
-more-or-less correctly against Cyrus 1.6.11, though there are a few minor
-quirks in the folder browser.
+Nowadays it is primarily developed against UW-IMAP 12.250. It appears
+to work more-or-less correctly against Cyrus 1.6.11 as well.
 
 Note that if you are using mbox as the mail store on UW servers prior to
 v12.250, the server has been reported to disconnect a client if another client
 selects the same folder.
+
+<sect2>The Folder Browser
+<p>
+
+As of version 1.2, mutt supports browsing mailboxes on an IMAP
+server. This is mostly the same as the local file browser, with the
+following differences:
+<itemize>
+<item>In lieu of file permissions, mutt displays the string "IMAP",
+  possibly followed by the symbol "S", indicating that the entry is
+  selectable (contains messages), and/or the symbol "+", indicating
+  that the entry may contain subfolders. If your server is like the
+  UW-IMAP server, you won't see both symbols, but if you are using a
+  Cyrus-like server folders will often contain both messages and
+  subfolders. 
+<item>For the case where an entry can contain both messages and
+  subfolders, the selection key (bound to <tt>enter</tt> by default)
+  will choose to descend into the subfolder view. If you wish to view
+  the messages in that folder, you must use <tt>view-file</tt> instead
+  (bound to <tt>space</tt> by default).
+<item>You can delete mailboxes with the <tt>delete-mailbox</tt>
+  command (bound to <tt>d</tt> by default. You may also
+  <tt>subscribe</tt> and <tt>unsubscribe</tt> to mailboxes (normally
+  these are bound to <tt>s</tt> and <tt>u</tt>, respectively).
+</itemize>
 
 <sect2>Authentication
 <p>

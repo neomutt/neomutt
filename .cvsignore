@@ -9,6 +9,7 @@ configure
 config.cache
 config.log
 config.status
+keymap_alldefs.h
 keymap_defs.h
 makedoc
 mutt_dotlock

@@ -818,9 +818,6 @@ int mx_close_mailbox (CONTEXT *ctx)
     }
     mutt_expand_path (mbox, sizeof (mbox));
 
-#ifdef USE_IMAP
-    if (!mx_is_imap (ctx->path))
-#endif
     if (isSpool)
     {
       snprintf (buf, sizeof (buf), _("Move read messages to %s?"), mbox);
@@ -853,29 +850,54 @@ int mx_close_mailbox (CONTEXT *ctx)
 
   if (move_messages)
   {
-    if (mx_open_mailbox (mbox, M_APPEND, &f) == NULL)
-      return (-1);
-
     mutt_message (_("Moving read messages to %s..."), mbox);
 
-    for (i = 0; i < ctx->msgcount; i++)
+#ifdef USE_IMAP
+    /* try to use server-side copy first */
+    i = 1;
+    
+    if (ctx->magic == M_IMAP && mx_is_imap (mbox))
     {
-      if (ctx->hdrs[i]->read && !ctx->hdrs[i]->deleted)
-      {
-	if (mutt_append_message (&f, ctx, ctx->hdrs[i], 0, CH_UPDATE_LEN) == 0)
-	{
-	  ctx->hdrs[i]->deleted = 1;
-	  ctx->deleted++;
-	}
+      /* tag messages for moving, and clear old tags, if any */
+      for (i = 0; i < ctx->msgcount; i++)
+	if (ctx->hdrs[i]->read && !ctx->hdrs[i]->deleted)
+	  ctx->hdrs[i]->tagged = 1;
 	else
-	{
-	  mx_close_mailbox (&f);
-	  return -1;
+	  ctx->hdrs[i]->tagged = 0;
+      
+      i = imap_copy_messages (ctx, NULL, mbox, 1);
+    }
+    
+    if (i == 0) /* success */
+      mutt_clear_error ();
+    else if (i == -1) /* horrible error, bail */
+      return -1;
+    else /* use regular append-copy mode */
+#endif
+    {
+      if (mx_open_mailbox (mbox, M_APPEND, &f) == NULL)
+	return -1;
+
+      for (i = 0; i < ctx->msgcount; i++)
+      {
+	if (ctx->hdrs[i]->read && !ctx->hdrs[i]->deleted)
+        {
+	  if (mutt_append_message (&f, ctx, ctx->hdrs[i], 0, CH_UPDATE_LEN) == 0)
+	  {
+	    ctx->hdrs[i]->deleted = 1;
+	    ctx->deleted++;
+	  }
+	  else
+	  {
+	    mx_close_mailbox (&f);
+	    return -1;
+	  }
 	}
       }
+    
+      mx_close_mailbox (&f);
     }
-
-    mx_close_mailbox (&f);
+    
   }
   else if (!ctx->changed && ctx->deleted == 0)
   {
@@ -890,8 +912,6 @@ int mx_close_mailbox (CONTEXT *ctx)
   {
     if (imap_sync_mailbox (ctx, purge) == -1)
       return -1;
-    if (ctx->magic == M_IMAP && !purge)
-      mutt_message (_("%d kept."), ctx->msgcount);
   }
   else
 #endif
@@ -908,19 +928,19 @@ int mx_close_mailbox (CONTEXT *ctx)
       if (sync_mailbox (ctx) == -1)
         return -1;
     }
-
-    if (move_messages)
-      mutt_message (_("%d kept, %d moved, %d deleted."),
-        ctx->msgcount - ctx->deleted, read_msgs, ctx->deleted);
-    else
-      mutt_message (_("%d kept, %d deleted."),
-        ctx->msgcount - ctx->deleted, ctx->deleted);
-
-    if (ctx->msgcount == ctx->deleted &&
-        (ctx->magic == M_MMDF || ctx->magic == M_MBOX) &&
-        !mutt_is_spool(ctx->path) && !option (OPTSAVEEMPTY))
-      mx_unlink_empty (ctx->path);
   }
+
+  if (move_messages)
+     mutt_message (_("%d kept, %d moved, %d deleted."),
+       ctx->msgcount - ctx->deleted, read_msgs, ctx->deleted);
+  else
+    mutt_message (_("%d kept, %d deleted."),
+      ctx->msgcount - ctx->deleted, ctx->deleted);
+
+  if (ctx->msgcount == ctx->deleted &&
+      (ctx->magic == M_MMDF || ctx->magic == M_MBOX) &&
+      !mutt_is_spool(ctx->path) && !option (OPTSAVEEMPTY))
+    mx_unlink_empty (ctx->path);
 
   mx_fastclose_mailbox (ctx);
 
