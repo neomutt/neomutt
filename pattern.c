@@ -687,8 +687,8 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	else
 	  curlist = tmp;
 	last = tmp;
-	tmp->not = not;
-	tmp->alladdr = alladdr;
+	tmp->not ^= not;
+	tmp->alladdr |= alladdr;
 	not = 0;
 	alladdr = 0;
 	ps.dptr = p + 1; /* restore location */
