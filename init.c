@@ -585,42 +585,6 @@ static int parse_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   return 0;
 }
 
-static int _parse_rx_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err, int flags)
-{
-  do 
-  {
-    mutt_extract_token (buf, s, 0);
-    if (add_to_rx_list ((RX_LIST **) data, buf->data, flags, err) != 0)
-      return -1;
-	
-  }
-  while (MoreArgs (s));
-  
-  return 0;
-}
-
-static int parse_rx_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
-{
-  return _parse_rx_list (buf, s, data, err, REG_ICASE);
-}
-
-static int parse_rx_unlist (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
-{
-  do
-  {
-    mutt_extract_token (buf, s, 0);
-    if (mutt_strcmp (buf->data, "*") == 0)
-    {
-      mutt_free_rx_list ((RX_LIST **) data);
-      break;
-    }
-    remove_from_rx_list ((RX_LIST **) data, buf->data);
-  }
-  while (MoreArgs (s));
-  
-  return 0;
-}
-
 static void _alternates_clean (void)
 {
   int i;
