@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3.23.1\n"
 "POT-Creation-Date: 2001-11-08 23:41+0100\n"
-"PO-Revision-Date: 2001-11-03 13:51+0000\n"
+"PO-Revision-Date: 2001-11-09 20:51+0000\n"
 "Last-Translator: Edmund GRIMLEY EVANS <edmundo@rano.org>\n"
 "Language-Team: eo <eo@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -428,34 +428,34 @@ msgid "Shell command: "
 msgstr "Þelkomando: "
 
 #: commands.c:647
-#, fuzzy, c-format
+#, c-format
 msgid "Decode-save%s to mailbox"
-msgstr "%s%s mesaøojn al poþtfako"
+msgstr "Malkodita skribi%s al poþtfako"
 
 #: commands.c:648
-#, fuzzy, c-format
+#, c-format
 msgid "Decode-copy%s to mailbox"
-msgstr "%s%s mesaøojn al poþtfako"
+msgstr "Malkodita kopii%s al poþtfako"
 
 #: commands.c:649
-#, fuzzy, c-format
+#, c-format
 msgid "Decrypt-save%s to mailbox"
-msgstr "%s%s mesaøojn al poþtfako"
+msgstr "Malæifrita skribi%s al poþtfako"
 
 #: commands.c:650
-#, fuzzy, c-format
+#, c-format
 msgid "Decrypt-copy%s to mailbox"
-msgstr "%s%s mesaøojn al poþtfako"
+msgstr "Malæifrita kopii%s al poþtfako"
 
 #: commands.c:651
-#, fuzzy, c-format
+#, c-format
 msgid "Save%s to mailbox"
-msgstr "%s%s mesaøojn al poþtfako"
+msgstr "Skribi%s al poþtfako"
 
 #: commands.c:651
-#, fuzzy, c-format
+#, c-format
 msgid "Copy%s to mailbox"
-msgstr "%s%s mesaøojn al poþtfako"
+msgstr "Kopii%s al poþtfako"
 
 #: commands.c:652
 msgid " tagged"
@@ -1055,24 +1055,22 @@ msgid "[-- name: %s --]\n"
 msgstr "[-- nomo: %s --]\n"
 
 #: handler.c:1670 handler.c:1686
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
-msgstr "[-- Æi tiu %s/%s-parto "
+msgstr "[-- Æi tiu %s/%s-parto ne estas inkluzivita, --]\n"
 
 #: handler.c:1672
 msgid "[-- and the indicated external source has --]\n"
-msgstr ""
+msgstr "[-- kaj la indikita ekstera fonto --]\n"
 
 #: handler.c:1673
 msgid "[-- expired. --]\n"
-msgstr ""
+msgstr "[-- eksvalidiøis. --]\n"
 
 #: handler.c:1690
-#, fuzzy, c-format
+#, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
-msgstr ""
-"[-- Æi tiu %s/%s-parto ne estas inkluzivita, --]\n"
-"[-- kaj Mutt ne kapablas je la indikita alirmaniero %s. --]\n"
+msgstr "[-- kaj Mutt ne kapablas je la indikita alirmaniero %s. --]\n"
 
 #: handler.c:1807
 msgid "Error: multipart/signed has no protocol."
@@ -1204,7 +1202,7 @@ msgstr "SASL-rajtiøo malsukcesis."
 #: imap/browse.c:64 imap/imap.c:504
 #, c-format
 msgid "%s is an invalid IMAP path"
-msgstr ""
+msgstr "%s ne estas valida IMAP-vojo"
 
 #: imap/browse.c:81
 msgid "Getting namespaces..."
@@ -1302,16 +1300,15 @@ msgstr "Forviþas mesaøojn de la servilo ..."
 
 #: imap/imap.c:1031
 msgid "imap_sync_mailbox: EXPUNGE failed"
-msgstr ""
+msgstr "imap_sync_mailbox: EXPUNGE malsukcesis"
 
 #: imap/imap.c:1065
 msgid "CLOSE failed"
 msgstr "CLOSE malsukcesis"
 
 #: imap/imap.c:1313
-#, fuzzy
 msgid "Bad mailbox name"
-msgstr "Krei poþtfakon: "
+msgstr "Malbona nomo por poþtfako"
 
 #: imap/imap.c:1325
 #, c-format
@@ -2670,16 +2667,16 @@ msgstr "SSL malþaltita pro manko de entropio"
 
 #: mutt_ssl.c:318
 msgid "I/O error"
-msgstr ""
+msgstr "eraro æe legado aý skribado"
 
 #: mutt_ssl.c:321
 msgid "unspecified protocol error"
-msgstr ""
+msgstr "nespecifita protokoleraro"
 
 #: mutt_ssl.c:327
-#, fuzzy, c-format
+#, c-format
 msgid "SSL failed: %s"
-msgstr "CLOSE malsukcesis"
+msgstr "SSL malsukcesis: %s"
 
 #: mutt_ssl.c:336
 msgid "Unable to get certificate from peer"
@@ -3052,22 +3049,16 @@ msgstr ""
 "\n"
 
 #: pgp.c:456
-#, fuzzy
 msgid "[-- END PGP MESSAGE --]\n"
-msgstr ""
-"\n"
-"[-- FINO DE PGP-MESAØO --]\n"
+msgstr "[-- FINO DE PGP-MESAØO --]\n"
 
 #: pgp.c:458
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- FINO DE PUBLIKA PGP-ÞLOSILO --]\n"
 
 #: pgp.c:460
-#, fuzzy
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
-msgstr ""
-"\n"
-"[-- FINO DE PGP-SUBSKRIBA MESAØO --]\n"
+msgstr "[-- FINO DE PGP-SUBSKRIBITA MESAØO --]\n"
 
 #: pgp.c:475
 msgid ""
@@ -3121,11 +3112,8 @@ msgstr ""
 "\n"
 
 #: pgp.c:861
-#, fuzzy
 msgid "[-- End of signed data --]\n"
-msgstr ""
-"\n"
-"[-- Fino de subskribitaj datenoj --]\n"
+msgstr "[-- Fino de subskribitaj datenoj --]\n"
 
 #: pgp.c:962
 msgid "Internal error. Inform <roessler@guug.de>."
@@ -3160,11 +3148,8 @@ msgstr ""
 "\n"
 
 #: pgp.c:1160
-#, fuzzy
 msgid "[-- End of PGP/MIME encrypted data --]\n"
-msgstr ""
-"\n"
-"[-- Fino de PGP/MIME-æifritaj datenoj --]\n"
+msgstr "[-- Fino de PGP/MIME-æifritaj datenoj --]\n"
 
 #: pgp.c:1241
 msgid "Can't open PGP subprocess!"
@@ -3287,7 +3272,7 @@ msgstr "Servilo ne havas la komandon UIDL."
 #: pop.c:246 pop.c:562
 #, c-format
 msgid "%s is an invalid POP path"
-msgstr ""
+msgstr "%s ne estas valida POP-vojo"
 
 #: pop.c:277
 msgid "Fetching list of messages..."
@@ -3768,9 +3753,8 @@ msgid "(no mailbox)"
 msgstr "(mankas poþtfako)"
 
 #: thread.c:971
-#, fuzzy
 msgid "Parent message is not visible in this limited view."
-msgstr "Patra mesaøo ne estas videbla en limigita rigardo"
+msgstr "Patra mesaøo ne estas videbla en æi tiu limigita rigardo."
 
 #: thread.c:977
 msgid "Parent message is not available."
