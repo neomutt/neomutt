@@ -6,9 +6,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt-1.3.3i\n"
+"Project-Id-Version: Mutt-1.3.8i\n"
 "POT-Creation-Date: 2000-08-30 12:10+0200\n"
-"PO-Revision-Date: 2000-06-10 12:00+0200\n"
+"PO-Revision-Date: 2000-09-04 12:00+0200\n"
 "Last-Translator: Φάνης Δοκιανάκης <madf@hellug.gr>\n"
 "Language-Team: Greek <el@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,9 +17,9 @@ msgstr ""
 
 #
 #: account.c:104
-#, fuzzy, c-format
+#, c-format
 msgid "Username at %s: "
-msgstr "Μετονομασία σε: "
+msgstr "Όνομα χρήστη στο %s: "
 
 #
 #: account.c:132 pop.c:61
@@ -214,9 +214,8 @@ msgstr "Κανένα αρχείο δε ταιριάζει με τη μάσκα αρχείου"
 #
 # recvattach.c:1065
 #: browser.c:814
-#, fuzzy
 msgid "Create is only supported for IMAP mailboxes"
-msgstr "Η διαγραφή υποστηρίζεται μόνο για τα γραμματοκιβώτια IMAP"
+msgstr "Η δημιουργία υποστηρίζεται μόνο για τα γραμματοκιβώτια IMAP"
 
 #
 # recvattach.c:1065
@@ -378,15 +377,13 @@ msgstr "Αδυναμία κατά τη δημιουργία προσωρινού αρχείου!"
 
 #
 #: commands.c:125
-#, fuzzy
 msgid "Cannot create display filter"
-msgstr "Αδυναμία δημιουργίας φίλτρου"
+msgstr "Αδυναμία δημιουργίας φίλτρου απεικόνισης"
 
 #
 #: commands.c:145
-#, fuzzy
 msgid "Could not copy message"
-msgstr "Αδυναμία αποστολής του μηνύματος."
+msgstr "Αδυναμία αντιγραφής του μηνύματος."
 
 #: commands.c:167
 msgid "PGP signature successfully verified."
@@ -536,14 +533,14 @@ msgstr "Τα μηνύματα εκτυπώθηκαν"
 
 #
 #: commands.c:844
-#, fuzzy, c-format
+#, c-format
 msgid "Content-Type changed to %s."
-msgstr "Σύνδεση στο %s..."
+msgstr "Το Content-Type άλλαξε σε %s."
 
 #: commands.c:846
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s."
-msgstr "Άγνωστο σετ χαρακτήρων %s."
+msgstr "Το σετ χαρακτήρων άλλαξε σε %s."
 
 #
 #: compose.c:40
@@ -1156,7 +1153,7 @@ msgstr "Αδυναμία πρόσθεσης στο φάκελο: %s"
 #: editmsg.c:183
 #, c-format
 msgid "Error. Preserving temporary file: %s"
-msgstr "Σφάλμα. Διατήρηση προσωρινού αρχείου"
+msgstr "Σφάλμα. Διατήρηση προσωρινού αρχείου: %s"
 
 #
 #: flags.c:266
@@ -1350,9 +1347,8 @@ msgid "Authenticating (anonymous)..."
 msgstr "Αυθεντικοποίηση (ανώνυμη)..."
 
 #: imap/auth_anon.c:69
-#, fuzzy
 msgid "Anonymous authentication failed."
-msgstr "Η ανώνυμη αυθεντικοποίηση δεν υποστηρίζεται."
+msgstr "Η ανώνυμη αυθεντικοποίηση απέτυχε."
 
 #: imap/auth_cram.c:44
 msgid "Authenticating (CRAM-MD5)..."
@@ -1373,7 +1369,7 @@ msgstr "Αυθεντικοποίηση GSSAPI απέτυχε."
 
 #: imap/auth_login.c:34
 msgid "LOGIN disabled on this server."
-msgstr ""
+msgstr "Το LOGIN απενεργοποιήθηκε σε αυτόν τον διακομιστή."
 
 #
 #: imap/auth_login.c:43 pop.c:72
@@ -1386,14 +1382,12 @@ msgid "Login failed."
 msgstr "Απέτυχε η είσοδος στο σύστημα."
 
 #: imap/auth_sasl.c:91
-#, fuzzy
 msgid "Authenticating (SASL)..."
-msgstr "Αυθεντικοποίηση (GSSAPI)..."
+msgstr "Αυθεντικοποίηση (SASL)..."
 
 #: imap/auth_sasl.c:163
-#, fuzzy
 msgid "SASL authentication failed."
-msgstr "Αυθεντικοποίηση GSSAPI απέτυχε."
+msgstr "Αυθεντικοποίηση SASL απέτυχε."
 
 #
 #: imap/browse.c:80
@@ -1406,15 +1400,13 @@ msgstr "Λήψη λίστας φακέλων..."
 
 #
 #: imap/browse.c:265
-#, fuzzy
 msgid "Create mailbox: "
-msgstr "Ανοίξτε το γραμματοκιβώτιο"
+msgstr "Δημιουργία γραμματοκιβωτίου: "
 
 #
 #: imap/browse.c:271
-#, fuzzy
 msgid "Mailbox created."
-msgstr "Το γραμματοκιβώτιου διαγράφτηκε."
+msgstr "Το γραμματοκιβώτιο δημιουργήθηκε."
 
 #
 #. something is wrong because the server reported fewer messages
@@ -1426,9 +1418,9 @@ msgstr "Μοιραίο σφάλμα. Ο αριθμός των μηνυμάτων δεν είναι σε συμφωνία!"
 
 #
 #: imap/imap.c:89
-#, fuzzy, c-format
+#, c-format
 msgid "Closing connection to %s..."
-msgstr "Κλείσιμο σύνδεσης στον εξυπηρετητή IMAP..."
+msgstr "Κλείσιμο σύνδεσης στο στο %s..."
 
 #
 #: imap/imap.c:296
@@ -1508,7 +1500,7 @@ msgstr "Λήψη μηνύματος..."
 
 #: imap/message.c:273
 msgid "The message index is incorrect. Try reopening the mailbox."
-msgstr ""
+msgstr "Ο δείκτης του μηνύματος είναι άκυρος. Ξανανοίξτε το γραμματοκιβώτιο."
 
 #
 #: imap/message.c:463
@@ -2622,14 +2614,13 @@ msgstr "Η μνήμη εξαντλήθηκε!"
 
 #
 #: main.c:41
-#, fuzzy
 msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please use the flea(1) utility.\n"
 msgstr ""
 "Για να επικοινωνήσετε με τους developers, στείλτε mail στο "
 "<mutt-dev@mutt.org>.\n"
-"Για να αναφέρετε ένα πρόβλημα χρησιμοποιήσετε το εργαλείο muttbug.\n"
+"Για να αναφέρετε ένα πρόβλημα χρησιμοποιήσετε το εργαλείο flea(1).\n"
 
 #
 #: main.c:45
@@ -2648,7 +2639,6 @@ msgstr ""
 
 #
 #: main.c:51
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
@@ -2681,6 +2671,7 @@ msgstr ""
 "Copyright (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
 "Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 2000      Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "Πολλοί άλλοι που δεν αναφέρονται εδώ έχουν συνεισφέρει κώδικα,\n"
 "διορθώσεις, και προτάσεις.\n"
@@ -3050,19 +3041,19 @@ msgstr "Πρόσθεση μηνυμάτων στο %s;"
 
 #: mutt_socket.c:199
 msgid "SSL is unavailable."
-msgstr ""
+msgstr "Το SSL δεν είναι διαθεσιμο."
 
 #
 #: mutt_socket.c:281
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "Αντιγραφή στο %s..."
+msgstr "Αναζήτηση του %s..."
 
 #
 #: mutt_socket.c:288
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "Αδυναμία εύρεσης της διεύθυνσης για το σύστημα %s."
+msgstr "Αδυναμία εύρεσης του διακομιστή \"%s\""
 
 #
 #: mutt_socket.c:294
@@ -3071,23 +3062,22 @@ msgid "Connecting to %s..."
 msgstr "Σύνδεση στο %s..."
 
 #: mutt_socket.c:314
-#, fuzzy
 msgid "Preconnect command failed."
-msgstr "αποτυχία εντολής προσύνδεσης"
+msgstr "Αποτυχία εντολής προσύνδεσης"
 
 #: mutt_ssl.c:105
 msgid "Failed to find enough entropy on your system"
 msgstr "Αποτυχία στην εύρεση αρκετής εντροπίας στο σύστημα σας"
 
 #: mutt_ssl.c:120
-#, fuzzy, c-format
+#, c-format
 msgid "Filling entropy pool: %s...\n"
-msgstr "Αποθήκευση εντροπίας"
+msgstr "Αποθήκευση εντροπίας: %s...\n"
 
 #: mutt_ssl.c:128
 #, c-format
 msgid "%s has insecure permissions!"
-msgstr ""
+msgstr "Το %s έχει ανασφαλή δικαιώματα!"
 
 #: mutt_ssl.c:147
 msgid "SSL disabled due the lack of entropy"
@@ -3305,9 +3295,8 @@ msgstr "Το γραμματοκιβώτιο είναι σημειωμένο μη εγγράψιμο. %s"
 
 #
 #: mx.c:1118
-#, fuzzy
 msgid "Mailbox checkpointed."
-msgstr "Το γραμματοκιβώτιου διαγράφτηκε."
+msgstr "Το γραμματοκιβώτιου σημειώθηκε."
 
 #
 #: mx.c:1404
@@ -3823,15 +3812,14 @@ msgstr "Εύρεση όμοιων κλειδιών \"%s\"..."
 
 #
 #: pop.c:46
-#, fuzzy
 msgid "POP Username: "
-msgstr "Όνομα χρήστη IMAP: "
+msgstr "Όνομα χρήστη POP: "
 
 #
 #: pop.c:109
-#, fuzzy, c-format
+#, c-format
 msgid "Login failed: %s"
-msgstr "Απέτυχε η είσοδος στο σύστημα."
+msgstr "Απέτυχε η είσοδος στο σύστημα: %s"
 
 #
 #: pop.c:132
@@ -3840,9 +3828,8 @@ msgstr "Ο POP host δεν καθορίστηκε."
 
 #
 #: pop.c:165
-#, fuzzy
 msgid "Checking for new messages..."
-msgstr "Ετοιμασία προωθημένου μηνύματος ..."
+msgstr "Έλεγχος για νέα μηνύματα..."
 
 #
 #: pop.c:184
@@ -4140,7 +4127,7 @@ msgstr ""
 #: remailer.c:763
 #, c-format
 msgid "Error sending message, child exited %d.\n"
-msgstr "Σφάλμα στην αποστολή μηνύματος, τερματισμός θυγατρικής με %d (%s).\n"
+msgstr "Σφάλμα στην αποστολή μηνύματος, τερματισμός θυγατρικής με %d.\n"
 
 #
 #: remailer.c:767
@@ -4370,84 +4357,3 @@ msgstr "Το τρέχων μήνυμα δεν είναι ορατό στην περιορισμένη όψη"
 msgid "Parent message is not available."
 msgstr "Το τρέχων μήνυμα δεν είναι διαθέσιμο."
 
-#
-#~ msgid "Creating mailboxes is not yet supported."
-#~ msgstr "Η δημιουργία γραμματοκιβωτίων δεν υποστηρίζεται ακόμα."
-
-#
-#~ msgid "Reopening mailbox... %s"
-#~ msgstr "Ξανά άνοιγμα του γραμματοκιβωτίου... %s"
-
-#
-#~ msgid "Closing mailbox..."
-#~ msgstr "Κλείσιμο γραμματοκιβωτίου..."
-
-#
-#~ msgid "IMAP Username: "
-#~ msgstr "Όνομα χρήστη IMAP: "
-
-#
-# pgp.c:1200
-#~ msgid "CRAM key for %s@%s: "
-#~ msgstr "Κλειδί CRAM για το %s@%s: "
-
-#~ msgid "Skipping CRAM-MD5 authentication."
-#~ msgstr "Παράλειψη αυθεντικοποίησης CRAM-MD5."
-
-#
-#~ msgid "[-- Error: unexpected end of file! --]\n"
-#~ msgstr "[-- Λάθος: απρόσμενο τέλος αρχείου! --]\n"
-
-#
-#~ msgid "Sending APPEND command ..."
-#~ msgstr "Αποστολή εντολής APPEND ..."
-
-#~ msgid "%d kept."
-#~ msgstr "%d κρατήθηκαν."
-
-#
-#~ msgid "POP Password: "
-#~ msgstr "Συνθηματικό POP: "
-
-#
-#~ msgid "No POP username is defined."
-#~ msgstr "Δεν καθορίστηκε όνομα χρήστη POP."
-
-#
-#~ msgid "Could not find address for host %s."
-#~ msgstr "Αδυναμία εύρεσης της διεύθυνσης για το σύστημα %s."
-
-#
-#~ msgid "Connecting to %s"
-#~ msgstr "Σύνδεση στο %s"
-
-#
-#~ msgid "Attachment saved"
-#~ msgstr "Η προσάρτηση αποθηκεύθηκε"
-
-#
-#~ msgid "Can't open %s: %s."
-#~ msgstr "Αδυναμία προσβαση του %s: %s"
-
-#~ msgid "Error while recoding %s. Leave it unchanged."
-#~ msgstr "Σφάλμα κατά την επανακωδικοποιήση του %s. Να μην αλλαχθεί."
-
-#~ msgid "Error while recoding %s. See %s for recovering your data."
-#~ msgstr ""
-#~ "Σφάλμα κατά την επανακωδικοποιήση του %s. Δείτε το %s για επαναφορά."
-
-#~ msgid "Can't change character set for non-text attachments!"
-#~ msgstr "Αδυναμία αλλαγής σετ χαρακτήρων για οχι-κείμενο προσαρτήσεις!"
-
-#~ msgid "Enter character set: "
-#~ msgstr "Εισάγετε σετ χαρακτήρων: "
-
-#~ msgid "Recoding successful."
-#~ msgstr "Επιτυχής επανακωδικοποίηση."
-
-#~ msgid "change an attachment's character set"
-#~ msgstr "αλλαγή του σετ χαρακτήρων μιας προσάρτησης"
-
-#~ msgid "recode this attachment to/from the local charset"
-#~ msgstr ""
-#~ "επανακωδικοποίηση αυτής της προσάρτησης σε/από αυτό το τοπικό σετ χαρακτ."
