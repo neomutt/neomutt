@@ -22,11 +22,13 @@ void mutt_set_charset (char *charset)
 
 int wctomb (char *s, wchar_t wc)
 {
+  if (!s)
+    return 0;
   if (Charset_is_utf8)
     return mutt_wctoutf8 (s, wc);
   else if (wc < 0x100)
   {
-    if (s) *s = wc;
+    *s = wc;
     return 1;
   }
   else

@@ -492,6 +492,7 @@ void mutt_format_string (char *dest, size_t destlen,
   char *p;
   wchar_t wc;
   int w, k;
+  char scratch[MB_LEN_MAX];
 
   --destlen;
   p = dest;
@@ -506,11 +507,12 @@ void mutt_format_string (char *dest, size_t destlen,
     w = wc < M_TREE_MAX ? 1 : wcwidth (wc); /* hack */
     if (w >= 0)
     {
-      if (w > max_width || wctomb (0, wc) > destlen)
+      if (w > max_width || (k = wctomb (scratch, wc)) > destlen)
 	break;
       min_width -= w;
       max_width -= w;
-      p += (k = wctomb (p, wc));
+      strncpy (p, scratch, k);
+      p += k;            
       destlen -= k;
     }
   }
