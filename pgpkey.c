@@ -434,7 +434,7 @@ static pgp_key_t *pgp_select_key (pgp_key_t *keys,
   pgp_uid_t *a;
   int (*f) (const void *, const void *);
 
-  int unsuable = 0;
+  int unusable = 0;
 
   keymax = 0;
   KeyTable = NULL;
@@ -468,6 +468,7 @@ static pgp_key_t *pgp_select_key (pgp_key_t *keys,
   if (!i && unusable)
   {
     mutt_error _("All matching keys are marked expired/revoked.");
+    sleep (1);
     return NULL;
   }
 
@@ -649,6 +650,8 @@ pgp_key_t *pgp_ask_for_key (char *tag, char *whatfor,
   char resp[SHORT_STRING];
   struct pgp_cache *l = NULL;
 
+  mutt_clear_error ();
+  
   resp[0] = 0;
   if (whatfor)
   {
