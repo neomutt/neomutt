@@ -528,7 +528,7 @@ y       send-message            send the message
 s       edit-subject            edit the Subject
 S       smime-menu              select S/MIME options
 f       edit-fcc                specify an ``Fcc'' mailbox
-p       pgp-menu                select PGP options (``i'' version only)
+p       pgp-menu                select PGP options
 P       postpone-message        postpone this message until later
 q       quit                    quit (abort) sending the message
 w	write-fcc		write the message to a folder

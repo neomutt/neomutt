@@ -778,7 +778,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This variable configures whether IMAP folder browsing will look for
   ** only subscribed folders or all folders.  This can be toggled in the
-  ** IMAP browser with the \fItoggle-subscribed\fP command.
+  ** IMAP browser with the \fItoggle-subscribed\fP function.
   */
   { "imap_pass", 	DT_STR,  R_NONE, UL &ImapPass, UL 0 },
   /*
@@ -804,7 +804,7 @@ struct option_t MuttVars[] = {
   ** If set, mutt will avoid implicitly marking your mail as read whenever
   ** you fetch a message from the server. This is generally a good thing,
   ** but can make closing an IMAP folder somewhat slower. This option
-  ** exists to appease spead freaks.
+  ** exists to appease speed freaks.
   */
   { "imap_servernoise",		DT_BOOL, R_NONE, OPTIMAPSERVERNOISE, 1 },
   /*
@@ -1000,8 +1000,8 @@ struct option_t MuttVars[] = {
   { "metoo",		DT_BOOL, R_NONE, OPTMETOO, 0 },
   /*
   ** .pp
-  ** If unset, Mutt will remove your address from the list of recipients
-  ** when replying to a message.
+  ** If unset, Mutt will remove your address (see the ``$$alternates''
+  ** variable) from the list of recipients when replying to a message.
   */
   { "menu_scroll",	DT_BOOL, R_NONE, OPTMENUSCROLL, 0 },
   /*
@@ -1114,7 +1114,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This is the string displayed in the ``attachment'' menu for
   ** attachments of type message/rfc822.  For a full listing of defined
-  ** escape sequences see the section on ``$$index_format''.
+  ** printf()-like sequences see the section on ``$$index_format''.
   */
   { "msg_format",	DT_SYN,  R_NONE, UL "message_format", 0 },
   /*

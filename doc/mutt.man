@@ -138,7 +138,7 @@ Temporary files created by Mutt.
 .IP "~/.mailcap"
 User definition for handling non-text MIME types.
 .IP "/etc/mailcap"
-System definition for handing non-text MIME types.
+System definition for handling non-text MIME types.
 .IP "~/.mime.types"
 User's personal mapping between MIME types and file extensions.
 .IP "/etc/mime.types"
