@@ -277,6 +277,60 @@ int _mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 	    }
 	  }
 	  break;
+	case OP_EDITOR_BACKWARD_WORD:
+	  if (curpos == 0)
+	  {
+	    BEEP ();
+	  }
+	  else
+	  {
+	    if (curpos > 0 && !ISSPACE (buf[curpos]) && ISSPACE (buf[curpos - 1]))
+	      curpos--;
+	    while (curpos > 0 && ISSPACE (buf[curpos]))
+	      curpos--;
+	    while (curpos > 0 && !ISSPACE (buf[curpos]))
+	      curpos--;
+	    if (ISSPACE (buf[curpos]) && !ISSPACE (buf[curpos + 1]))
+	      curpos++;
+
+	    if (!pass)
+	    {
+	      if (curpos < begin)
+	      {
+		begin = curpos - width/2;
+		redraw = M_REDRAW_LINE;
+	      }
+	      else
+		move (y, x + curpos - begin);
+	    }
+	  }
+	  break;
+
+	case OP_EDITOR_FORWARD_WORD:
+	  if (curpos == lastchar)
+	  {
+	    BEEP ();
+	  }
+	  else
+	  {
+	    while (curpos < lastchar && ISSPACE (buf[curpos]))
+	      curpos++;
+	    while (curpos < lastchar && !ISSPACE (buf[curpos]))
+	      curpos++;
+
+	    if (!pass)
+	    {
+	      if (curpos >= begin + width)
+	      {
+		begin = curpos - width / 2;
+		redraw = M_REDRAW_LINE;
+	      }
+	      else
+		move (y, x + curpos - begin);
+	    }
+	  }
+	  break;
+
 	case OP_EDITOR_DELETE_CHAR:
 	  if (curpos != lastchar)
 	  {

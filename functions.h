@@ -352,22 +352,24 @@ struct binding_t OpQuery[] = {
 struct binding_t OpEditor[] = {
   { "bol",		OP_EDITOR_BOL,			"\001" },
   { "backward-char",	OP_EDITOR_BACKWARD_CHAR,	"\002" },
+  { "backward-word",	OP_EDITOR_BACKWARD_WORD,	"\033b"},
   { "delete-char",	OP_EDITOR_DELETE_CHAR,		"\004" },
   { "eol",		OP_EDITOR_EOL,			"\005" },
   { "forward-char",	OP_EDITOR_FORWARD_CHAR,		"\006" },
+  { "forward-word",	OP_EDITOR_FORWARD_WORD,		"\033f"},
   { "backspace",	OP_EDITOR_BACKSPACE,		"\010" },
   { "kill-eol",		OP_EDITOR_KILL_EOL,		"\013" },
-  { "kill-eow",		OP_EDITOR_KILL_EOW,		"\033d" },
+  { "kill-eow",		OP_EDITOR_KILL_EOW,		"\033d"},
   { "kill-line",	OP_EDITOR_KILL_LINE,		"\025" },
   { "quote-char",	OP_EDITOR_QUOTE_CHAR,		"\026" },
   { "kill-word",	OP_EDITOR_KILL_WORD,		"\027" },
-  { "complete",		OP_EDITOR_COMPLETE,		"\t" },
+  { "complete",		OP_EDITOR_COMPLETE,		"\t"   },
   { "complete-query",	OP_EDITOR_COMPLETE_QUERY,	"\024" },
-  { "buffy-cycle",	OP_EDITOR_BUFFY_CYCLE,		" " },
-  { "history-up",	OP_EDITOR_HISTORY_UP,		NULL },
-  { "history-down",	OP_EDITOR_HISTORY_DOWN,		NULL },
-  { "transpose-chars",	OP_EDITOR_TRANSPOSE_CHARS,	NULL },
-  { NULL,		0,				NULL }
+  { "buffy-cycle",	OP_EDITOR_BUFFY_CYCLE,		" "    },
+  { "history-up",	OP_EDITOR_HISTORY_UP,		NULL   },
+  { "history-down",	OP_EDITOR_HISTORY_DOWN,		NULL   },
+  { "transpose-chars",	OP_EDITOR_TRANSPOSE_CHARS,	NULL   },
+  { NULL,		0,				NULL   }
 };
 
 
