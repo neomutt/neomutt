@@ -651,7 +651,7 @@ static void mutt_set_default (struct option_t *p)
       if (!p->init && *((char **) p->data))
       {
 	char *cp = safe_strdup (*((char **) p->data));
-	mutt_pretty_mailbox (cp);
+	/* mutt_pretty_mailbox (cp); */
         p->init = (unsigned long) cp;
       }
       break;
