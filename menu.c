@@ -883,6 +883,7 @@ int mutt_menuLoop (MUTTMENU *menu)
       mutt_resize_screen ();
       menu->redraw = REDRAW_FULL;
       SigWinch = 0;
+      clearok(stdscr,TRUE);/*force complete redraw*/
     }
 #endif
 

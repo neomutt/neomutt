@@ -1807,6 +1807,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       }
 
       SigWinch = 0;
+      clearok(stdscr,TRUE);/*force complete redraw*/
       continue;
     }
 #endif

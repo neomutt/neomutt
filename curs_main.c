@@ -592,6 +592,11 @@ int mutt_index_menu (void)
 	menu->menu = MENU_MAIN;
 	SigWinch = 0;
 	menu->top = 0; /* so we scroll the right amount */
+	/*
+	 * force a real complete redraw.  clrtobot() doesn't seem to be able
+	 * to handle every case without this.
+	 */
+	clearok(stdscr,TRUE);
 	continue;
       }
 #endif
