@@ -82,7 +82,7 @@ void imap_logout_all (void)
 
   while (conn)
   {
-    tmp = conn;
+    tmp = conn->next;
 
     if (conn->account.type == M_ACCT_TYPE_IMAP && conn->fd >= 0)
     {
@@ -90,11 +90,10 @@ void imap_logout_all (void)
       imap_logout ((IMAP_DATA*) conn->data);
       mutt_clear_error ();
       mutt_socket_close (conn);
-
-      mutt_socket_free (tmp);
+      mutt_socket_free (conn);
     }
 
-    conn = conn->next;
+    conn = tmp;
   }
 }
 
