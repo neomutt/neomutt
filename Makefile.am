@@ -163,6 +163,7 @@ update-doc: stamp-doc-rc
 Muttrc: stamp-doc-rc
 
 stamp-doc-rc: $(srcdir)/init.h makedoc Muttrc.head
+	-rm -f Muttrc stamp-doc-rc
 	$(CPP) $(INCLUDES) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C \
 		$(srcdir)/init.h | ./makedoc -c | cat $(srcdir)/Muttrc.head - \
 		> Muttrc
