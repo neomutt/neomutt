@@ -374,7 +374,7 @@ char* smime_ask_for_key (char *prompt, char *mailbox, short public)
   char qry[256];
   char title[256];
 
-  if (!prompt) prompt = _("Enter keyID:");
+  if (!prompt) prompt = _("Enter keyID: ");
   snprintf(index_file, sizeof (index_file), "%s/.index",
     public ? NONULL(SmimeCertificates) : NONULL(SmimeKeys));
   
@@ -770,7 +770,7 @@ char *smime_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
     if ((keyID = smime_get_field_from_db (q->mailbox, NULL, 1, 1)) == NULL)
     {
       snprintf(buf, sizeof(buf),
-	       _("Enter keyID for \'%s\':"),
+	       _("Enter keyID for \'%s\': "),
 	       q->mailbox);
       keyID = smime_ask_for_key(buf, q->mailbox, 1);
     }

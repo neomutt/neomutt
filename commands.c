@@ -88,8 +88,28 @@ int mutt_display_message (HEADER *cur)
     if (cur->security & ENCRYPT)
     {
 #ifdef HAVE_SMIME
-      if (cur->env->to && cur->security & APPLICATION_SMIME)
-	  smime_getkeys (cur->env->to->mailbox);
+      if (cur->security & APPLICATION_SMIME)
+      {
+	ADDRESS *t;
+	int found = 0;
+	for (t = cur->env->to; !found && t; t = t->next)
+	  if (mutt_addr_is_user (t))
+	  {
+	    found = 1;
+	    smime_getkeys (t->mailbox);
+	  }
+	for (t = cur->env->cc; !found && t; t = t->next)
+	  if (mutt_addr_is_user (t))
+	  {
+	    found = 1;
+	    smime_getkeys (t->mailbox);
+	  }
+	if (!found && (t = mutt_default_from()))
+	{
+	  smime_getkeys (t->mailbox);
+	  rfc822_free_address (&t);
+	}
+      }
 #endif
       if(!crypt_valid_passphrase(cur->security))
 	return 0;
