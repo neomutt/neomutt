@@ -913,18 +913,33 @@ void mutt_view_attachments (HEADER *hdr)
       mx_close_message (&msg);
       return;
     }
-    if ((WithCrypto & APPLICATION_SMIME) && hdr->security & APPLICATION_SMIME)
+    if ((WithCrypto & APPLICATION_SMIME) && (hdr->security & APPLICATION_SMIME))
     {
       if (hdr->env)
 	  crypt_smime_getkeys (hdr->env);
 
       if (mutt_is_application_smime(hdr->content))
+      {
 	secured = ! crypt_smime_decrypt_mime (msg->fp, &fp,
                                               hdr->content, &cur);
+	
+	/* S/MIME nesting */
+	if ((mutt_is_application_smime (cur) & SMIMEOPAQUE))
+	{
+	  BODY *_cur = cur;
+	  FILE *_fp = fp;
+	  
+	  fp = NULL; cur = NULL;
+	  secured = !crypt_smime_decrypt_mime (_fp, &fp, _cur, &cur);
+	  
+	  mutt_free_body (&_cur);
+	  safe_fclose (&_fp);
+	}
+      }
       else
 	need_secured = 0;
     }
-    if ((WithCrypto & APPLICATION_PGP) && hdr->security & APPLICATION_PGP)
+    if ((WithCrypto & APPLICATION_PGP) && (hdr->security & APPLICATION_PGP))
     {
       if (mutt_is_multipart_encrypted(hdr->content))
 	secured = !crypt_pgp_decrypt_mime (msg->fp, &fp, hdr->content, &cur);
