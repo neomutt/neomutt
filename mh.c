@@ -581,7 +581,7 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
   struct maildir *md, *p;
   struct maildir **last;
   HASH *fnames;
-  int i, j;
+  int i, idx;
   
   if(!option (OPTCHECKNEW))
     return 0;
@@ -659,23 +659,23 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
     
     hash_insert(fnames, p->canon_fname, p, 0);
   }
+
+  if(index_hint) idx = *index_hint;
   
   for(i = 0; i < ctx->msgcount; i++)
   {
     ctx->hdrs[i]->active = 0;
+
     if(ctx->magic == M_MAILDIR)
       maildir_canon_filename(b1, ctx->hdrs[i]->path, sizeof(b1));
     else
       strfcpy(b1, ctx->hdrs[i]->path, sizeof(b1));
 
-    if((p = hash_find(fnames, b1)))
+    if((p = hash_find(fnames, b1)) && p->h && 
+       mbox_strict_cmp_headers(ctx->hdrs[i], p->h))
     {
-      if(!p->h)
-	continue;
-
-      if(!mbox_strict_cmp_headers(ctx->hdrs[i], p->h))
-	continue;
-
+      /* found the right message */
+      
       if(modified)
       {
 	if(!ctx->hdrs[i]->changed)
@@ -690,6 +690,15 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
       ctx->hdrs[i]->active = 1;
       mutt_free_header(&p->h);
     }
+    else
+    {
+      /* the message has disappeared by occult forces, correct
+       * the index hint. 
+       */
+      
+      if(index_hint && (i <= *index_hint))
+	idx--;
+    }
   }
     
   hash_destroy(&fnames, NULL);
@@ -698,6 +707,10 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
     mx_update_tables(ctx, 0);
 
   maildir_move_to_context(ctx, &md);
+  
+  if(index_hint)
+    *index_hint = idx;
+  
   return modified ? M_REOPENED : have_new ? M_NEW_MAIL : 0;
 }
 
