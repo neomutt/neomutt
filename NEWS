@@ -160,7 +160,7 @@ Major changes since 0.93
 
   macro attach s "<Home>~/<End>" "Pre-pend ~/ when saving attachments"
 
-- You can now specify optional description for your macros.
+- You can now specify an optional description for your macros.
 
   Usage: macro menu key sequence [ description ]
 
@@ -225,5 +225,10 @@ Major changes since 0.93
   messages to ,<old file name> in mh folders instead of really
   deleting them.  If the variable is set, the message files will
   simply be deleted.
+
+- new variable $forward_weed (boolean, default set)
+
+  When set, this decode-forwarding a message will weed the message's
+  header.  (That's the current behaviour.)
 
 $Id$

@@ -4,7 +4,7 @@
 
 <title>The Mutt E-Mail Client
 <author>by Michael Elkins <htmlurl url="mailto:me@cs.hmc.edu" name="&lt;me@cs.hmc.edu&gt;">
-<date>v0.94.2, 31 July 1998
+<date>version @VERSION@
 <abstract>
 ``All mail clients suck.  This one just sucks less.'' -me, circa 1995
 </abstract>
@@ -1890,8 +1890,8 @@ can be changed with the <tt/edit-description/ command (default: d).
 <p>
 When you add an attachment to your mail message, Mutt searches your
 personal mime.types file at <tt>&dollar;{HOME}/.mime.types</tt>, and then
-the system mime.types file at <tt>@SHAREDIR@/mime.types</tt> or
-<tt>@SYSCONFDIR@/mime.types</tt>
+the system mime.types file at <tt>@sharedir@/mime.types</tt> or
+<tt>@sysconfdir@/mime.types</tt>
 
 The mime.types file consist of lines containing a MIME type and a space
 separated list of extensions.  For example:
@@ -1928,7 +1928,7 @@ internally, Mutt parses a series of external configuration files to
 find an external handler.  The default search string for these files
 is a colon delimited list set to
 <tscreen><verb>
-${HOME}/.mailcap:@SHAREDIR@/mailcap:@SYSCONFDIR@/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap
+${HOME}/.mailcap:@sharedir@/mailcap:@sysconfdir@/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap
 </verb></tscreen>
 where <tt/&dollar;HOME/ is your home directory.
 

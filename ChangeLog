@@ -1,3 +1,147 @@
+Wed Oct 28 21:43:27 1998  Thomas Roessler  <roessler@guug.de>
+
+	* curs_lib.c:
+	Add an IsPrint check to mutt_message() and mutt_curses_error(). This
+	will prevent _some_ advert effects from l10ns which don't fit
+	together with the terminal's abilities.  There are still quite a few
+	raw printw() etc. - we may wish to introduce our own, locale-safe
+	versions of these.
+
+	* po/POTFILES.in: reldate contais really _no_ i18n-related data.
+
+	* send.c:
+	Don't try to recall a postponed message when we are given a template.
+
+	* copy.c:
+	Fix a possible segmentation fault when deleting nested attachments.
+
+	* doc/manual.sgml.in, send.c, mutt.h, init.h:
+	Add a $forward_weed option which controls header weeding when
+	decode-forwarding messages.
+
+	* po/ru.po, po/it.po, po/es.po, po/de.po:
+	German translation fixes from Gero plus checkpoint commit.
+
+	* doc/manual.sgml.in, pager.h, pager.c, mutt_menu.h, keymap.c, help.c, curs_main.c, commands.c, attach.c, OPS:
+	Gero Treuner's help-wrap patch.
+
+	* po/ru.po, po/it.po, po/es.po, po/de.po:
+	Adding a current spanish translation.
+
+	* send.c:
+	if reply-to points to the address on the from header, use the from
+	header's value for composing a reply's recipient list, not the
+	reply-to header.
+
+	* configure.in: add the ukrainian l10n.
+
+Tue Oct 27 19:02:45 1998  Thomas Roessler  <roessler@guug.de>
+
+	* Attic/configure:
+	Configure is generated automatically and should thus _not_ be part
+	of the CVS repository.
+
+	* configure.in, Attic/configure, README, INSTALL:
+	Try to detect Solaris 2.4's broken regcomp().
+
+	* send.c: Move some code around.
+
+	* doc/manual.sgml.in: Some documentation nits.
+
+	* dotlock.c:
+	include config.h _before_ checking for HAVE_GETOPT.  Noted by Scott
+	Perlman <perlman@linguist.dartmouth.edu>.
+
+	* Muttrc.in: Add a macro for viewing the manual.
+
+	* pgp.c, configure.in, Attic/configure: i18n fixes.
+
+	* po/ru.po, po/es.po, po/it.po, po/de.po:
+	A couple of i18n fixes, plus a partial spanish translation from
+	Boris Wesslowski <Boris.Wesslowski@StudBox.Uni-Stuttgart.DE>.
+
+	* configure.in, Attic/configure:
+	Handle systems which have neither pgp2 nor pgp5, but gpg correctly.
+
+	* compose.c: - snd_entry() is marked static
+	- You will only get a full redraw of the screen after invoking
+	  pgp_send_menu if you selected "sign as".
+	- draw_envelope() and edit_address_list() use the same array of
+	  strings for titles/prompts. This saves both string data and code
+	  in both functions which have been a lot smaller.
+
+	* sendlib.c, send.c, protos.h, postpone.c, compose.c:
+	Preserve FCC headers when postponing.  From Vikas.
+
+	* mx.c, mutt.h, imap.c:
+	Prevent mutt from re-reading IMAP folders before quitting.
+
+Thu Oct 22 13:53:47 1998  Thomas Roessler  <roessler@guug.de>
+
+	* send.c: Undo some superfluous changes.  Pointed out by V.A.
+
+	* send.c, protos.h, postpone.c:
+	- Preserve certain headers' values when recallling a postponed
+	  message.  TBD:  Fcc.
+
+	- Rename mutt_edit_message() to mutt_prepare_edit_message() since
+	  that's what that function actually does.
+
+	* mx.h, mx.c, lib.c, flags.c:
+	Make _all_ IMAP-related code conditionally defined.  From Byrial
+	Jensen.
+
+Wed Oct 21 22:46:16 1998  Thomas Roessler  <roessler@guug.de>
+
+	* protos.h, pattern.c, hdrline.c:
+	Fix match-all for the ~p, ~P modifiers.
+
+	* compose.c: Vikas' write_fcc patch.
+
+	* doc/manual.sgml.in: Documentation nits from Byrial.
+
+	* curs_lib.c:
+	Also accept numbers as input in mutt_multi_choice().  From Byrial.
+
+	* prepare: Fix the documentation reference in prepare.
+
+	* doc/devel-notes.txt:
+	Add a gettext automake macro patch which is needed for proper
+	building of mutt.
+
+	* prepare, Attic/config.h.in, Attic/aclocal.m4, README, INSTALL:
+	Remove some automatically generated files from the CVS repository,
+	and add a script which generates them.
+
+	* Makefile.am: Don't overwrite $(sysconfdir)/Muttrc if present.
+
+	* po/ru.po, po/it.po, po/de.po, protos.h, curs_lib.c, compose.c, commands.c, browser.c:
+	Byrial Jensen's mutt_multi_choice() patch plus some German
+	translations.
+
+	* pgpinvoke.c, gnupgparse.c:
+	Make gpg's output look a little bit cleaner.
+
+	* po/ru.po, po/it.po, po/de.po, reldate.h: Release commit.
+
+	* VERSION, ChangeLog: Preparing 0.94.14.
+
+Tue Oct 20 22:02:58 1998  Thomas Roessler  <roessler@guug.de>
+
+	* po/ru.po, po/it.po, po/de.po: Checkpoint commit.
+
+	* Attic/config.h.in, Makefile.am:
+	Include VERSION with the distribution.
+
+	* configure.in, Attic/configure, Attic/config.h.in, VERSION:
+	Don't hard-wire the program's version in configure.in, but use the
+	VERSION file instead.  Stolen from gnupg.
+
+	* ChangeLog: Checkpoint commit.
+
+	* doc/manual.sgml.in, keymap.c, functions.h, NEWS:
+	Another macro-function fix from Vikas.
+
 Tue Oct 20 22:02:58 1998  Thomas Roessler  <roessler@guug.de>
 
 	* po/ru.po, po/it.po, po/de.po: Checkpoint commit.
