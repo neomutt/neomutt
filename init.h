@@ -224,13 +224,12 @@ struct option_t MuttVars[] = {
   { "autoedit",		DT_BOOL, R_NONE, OPTAUTOEDIT, 0 },
   /*
   ** .pp
-  ** When set, Mutt will skip the initial send-menu and allow you to
-  ** immediately begin editing the body of your message when replying to
-  ** another message.  The send-menu may still be accessed once you have
-  ** finished editing the body of your message.
+  ** When set along with ``$$edit_headers'', Mutt will skip the initial
+  ** send-menu and allow you to immediately begin editing the body of your
+  ** message.  The send-menu may still be accessed once you have finished
+  ** editing the body of your message.
   ** .pp
-  ** If the ``$$edit_headers'' variable is also set, the initial prompts in
-  ** the send-menu are always skipped, even when composing a new message.
+  ** Also see ``$$fast_reply''.
   */
   { "auto_tag",		DT_BOOL, R_NONE, OPTAUTOTAG, 0 },
   /*
