@@ -732,13 +732,13 @@ void smime_getkeys (ENVELOPE *env)
     if (mutt_addr_is_user (t))
     {
       found = 1;
-      smime_getkeys (t->mailbox);
-	  }
+      _smime_getkeys (t->mailbox);
+    }
   for (t = env->cc; !found && t; t = t->next)
     if (mutt_addr_is_user (t))
     {
       found = 1;
-      smime_getkeys (t->mailbox);
+      _smime_getkeys (t->mailbox);
     }
   if (!found && (t = mutt_default_from()))
   {
