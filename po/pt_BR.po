@@ -2900,7 +2900,7 @@ msgstr "%d mantidas, %d movidas, %d apagadas."
 #: mx.c:1013 mx.c:1185
 #, c-format
 msgid "%d kept, %d deleted."
-msgstr "%d movidas, %d movidas."
+msgstr "%d mantidas, %d apagadas."
 
 #: mx.c:1123
 #, c-format
