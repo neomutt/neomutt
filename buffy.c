@@ -286,10 +286,7 @@ int mutt_buffy_check (int force)
 #endif
 	continue;
       }
-
-#ifdef USE_IMAP
     }
-#endif
 
     /* check to see if the folder is the currently selected folder
      * before polling */
