@@ -163,6 +163,7 @@ commit-changelog:
 commit: pclean check-security commit-real changelog commit-changelog
 
 changelog:
+	cvs update ChangeLog
 	sh ./mkchangelog.sh | fmt -c | cat  - ChangeLog > ChangeLog.$$$$ && mv ChangeLog.$$$$ ChangeLog
 	$(VISUAL) ChangeLog
 
