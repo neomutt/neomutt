@@ -854,7 +854,9 @@ struct option_t MuttVars[] = {
   ** .dt %F .dd author name, or recipient name if the message is from you
   ** .dt %i .dd message-id of the current message
   ** .dt %l .dd number of lines in the message
-  ** .dt %L .dd list-from function
+  ** .dt %L .dd If an address in the To or CC header field matches an address
+  **            defined by the users ``lists'' command, this displays
+  **            "To <list-name>", otherwise the same as %F.
   ** .dt %m .dd total number of message in the mailbox
   ** .dt %M .dd number of hidden messages if the thread is collapsed.
   ** .dt %N .dd message score
