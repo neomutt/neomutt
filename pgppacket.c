@@ -108,7 +108,7 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
       {
 	material = b;
 	partial = 0;
-	material -= 1;
+	/* material -= 1; */
       }
       else if (192 <= b && b <= 223)
       {
@@ -120,13 +120,13 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
 	}
 	material += b + 192;
 	partial = 0;
-	material -= 2;
+	/* material -= 2; */
       }
       else if (b < 255)
       {
 	material = 1 << (b & 0x1f);
 	partial = 1;
-	material -= 1;
+	/* material -= 1; */
       }
       else
 	/* b == 255 */
@@ -143,7 +143,7 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
 	material |= buf[2] << 8;
 	material |= buf[3];
 	partial = 0;
-	material -= 5;
+	/* material -= 5; */
       }
 
       if (read_material (material, &used, fp) == -1)
