@@ -1,3 +1,8 @@
+2003-02-25 21:28:42  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* crypt.c: Fix #1486; noted by Jeroen Coekaerts
+	<jeroen@coekaerts.be>.
+
 2003-02-19 21:33:43  David Shaw  <dshaw@jabberwocky.com>  (roessler)
 
 	* pgpmicalg.c: 3156 defined several micalg values (pgp-md5,
