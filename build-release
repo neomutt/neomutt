@@ -47,10 +47,10 @@ make update-doc
 
 # build them
 
-make us-dist
+# make us-dist
 make dist
 mv mutt-${VERSION}.tar.gz mutt-${VERSION}i.tar.gz
-mv mutt-${VERSION}-us.tar.gz mutt-${VERSION}.tar.gz
+# mv mutt-${VERSION}-us.tar.gz mutt-${VERSION}.tar.gz
 
 # commit and tag the release
 
@@ -64,7 +64,8 @@ cvs rdiff -u -r ${OTAG} -r ${TAG} mutt | gzip -9 \
 
 # sign the various files
 
-DISTFILES="mutt-${VERSION}.tar.gz mutt-${VERSION}i.tar.gz diff-${OVERSION}i-${VERSION}i.gz"
+# DISTFILES="mutt-${VERSION}.tar.gz mutt-${VERSION}i.tar.gz diff-${OVERSION}i-${VERSION}i.gz"
+DISTFILES="mutt-${VERSION}i.tar.gz diff-${OVERSION}i-${VERSION}i.gz"
 
 for f in $DISTFILES; do
 	pgp -sb $f
