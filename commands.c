@@ -118,7 +118,7 @@ int mutt_display_message (HEADER *cur)
   {
     fpfilterout = fpout;
     fpout = NULL;
-    endwin ();
+    /* endwin (); */
     filterpid = mutt_create_filter_fd (DisplayFilter, &fpout, NULL, NULL,
 				       -1, fileno(fpfilterout), -1);
     if (filterpid < 0)
