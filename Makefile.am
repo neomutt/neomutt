@@ -4,10 +4,6 @@
 AUTOMAKE_OPTIONS = foreign
 EXTRA_PROGRAMS = mutt_dotlock pgpring makedoc
 
-if BUILD_CHARMAPS
-CHARMAP_SUBDIR = charmaps
-endif
-
 if BUILD_IMAP
 IMAP_SUBDIR = imap
 IMAP_INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/imap
@@ -16,6 +12,10 @@ endif
 if BUILD_ICONV
 ICONV_SUBDIR = iconv
 ICONV_INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/iconv
+if BUILD_CHARMAPS
+CHARMAP_SUBDIR = charmaps
+endif
+
 endif
 
 SUBDIRS = m4 po intl doc contrib $(CHARMAP_SUBDIR) $(IMAP_SUBDIR) $(ICONV_SUBDIR)
