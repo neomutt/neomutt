@@ -1842,10 +1842,11 @@ needed for matching since for different purposes you want to match
 different criteria.
 
 Mutt allows the use of the <ref id="patterns" name="search pattern">
-language for matching messages in hook commands.  This works in exactly the
-same way as it would when <em/limiting/ or <em/searching/ the mailbox,
-except that you are restricted to those operators which match information
-from the envelope of the message (i.e.  from, to, cc, date, subject, etc.).
+language for matching messages in hook commands.  This works in
+exactly the same way as it would when <em/limiting/ or
+<em/searching/ the mailbox, except that you are restricted to those
+operators which match information mutt extracts from the header of
+the message (i.e.  from, to, cc, date, subject, etc.).
 
 For example, if you wanted to set your return address based upon sending
 mail to a specific address, you could do something like:
