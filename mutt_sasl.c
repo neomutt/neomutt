@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000-1 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2000-3 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -85,23 +85,20 @@ int mutt_sasl_start (void)
 {
   static unsigned char sasl_init = 0;
 
-  sasl_callback_t* callback, callbacks[2];
+  static sasl_callback_t callbacks[2];
   int rc;
 
   if (sasl_init)
     return SASL_OK;
 
   /* set up default logging callback */
-  callback = callbacks;
+  callbacks[0].id = SASL_CB_LOG;
+  callbacks[0].proc = mutt_sasl_cb_log;
+  callbacks[0].context = NULL;
 
-  callback->id = SASL_CB_LOG;
-  callback->proc = mutt_sasl_cb_log;
-  callback->context = NULL;
-  callback++;
-
-  callback->id = SASL_CB_LIST_END;
-  callback->proc = NULL;
-  callback->context = NULL;
+  callbacks[1].id = SASL_CB_LIST_END;
+  callbacks[1].proc = NULL;
+  callbacks[1].context = NULL;
 
   rc = sasl_client_init (callbacks);
 
