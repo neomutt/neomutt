@@ -1133,11 +1133,9 @@ int mutt_index_menu (int attach_msg /* invoked while attaching a message */)
 #undef CUR
 	if (menu->current == -1)
 	{
-	  char *tmp = "";
 	  menu->current = menu->oldcurrent;
-	  if (Context->pattern)
-	    tmp = " in this limited view";
-	  mutt_error ("%s%s.", (op == OP_MAIN_NEXT_NEW || op == OP_MAIN_PREV_NEW) ? "No new messages" : "No unread messages", NONULL (tmp));
+	  mutt_error ("%s%s.", (op == OP_MAIN_NEXT_NEW || op == OP_MAIN_PREV_NEW) ? "No new messages" : "No unread messages",
+		      Context->pattern ? " in this limited view" : "");
 	}
 	else if (menu->menu == MENU_PAGER)
 	{
@@ -1311,58 +1309,58 @@ int mutt_index_menu (int attach_msg /* invoked while attaching a message */)
        break;
 
       case OP_MAIN_COLLAPSE_ALL:
-       CHECK_MSGCOUNT;
+        CHECK_MSGCOUNT;
 
-       if ((Sort & SORT_MASK) != SORT_THREADS)
-       {
-         mutt_error ("Threading is not enabled.");
-         break;
-       }
+        if ((Sort & SORT_MASK) != SORT_THREADS)
+        {
+	  mutt_error ("Threading is not enabled.");
+	  break;
+	}
 
-       {
-	 HEADER *h, *base;
-	 int final;
-
-	 if (CURHDR->collapsed)
-	   final = mutt_uncollapse_thread (Context, CURHDR);
-	 else if (option (OPTCOLLAPSENEW) || !UNREAD (CURHDR))
-	   final = mutt_collapse_thread (Context, CURHDR);
-	 else
-	   final = CURHDR->virtual;
-
-	 base = Context->hdrs[Context->v2r[final]];
-	
-	 h = Context->tree;
-	 Context->collapsed = !Context->collapsed;
-	 while (h)
-	 {
-	   if (h->collapsed != Context->collapsed)
-	   {
-	     if (h->collapsed)
-	       mutt_uncollapse_thread (Context, h);
-	     else if (option (OPTCOLLAPSENEW) || !UNREAD (h))
-	       mutt_collapse_thread (Context, h);
-	   }
-	   h = h->next;
-	 }
-
-	 mutt_set_virtual (Context);
-	 for (j = 0; j < Context->vcount; j++)
-	 {
-	   if (Context->hdrs[Context->v2r[j]]->index == base->index)
-	   {
-	     menu->current = j;
-	     break;
-	   }
-	 }
-
-	 menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
-	 break;
-       }
-
-	/* --------------------------------------------------------------------
-	 * These functions are invoked directly from the internal-pager
-	 */
+        {
+	  HEADER *h, *base;
+	  int final;
+	  
+	  if (CURHDR->collapsed)
+	    final = mutt_uncollapse_thread (Context, CURHDR);
+	  else if (option (OPTCOLLAPSENEW) || !UNREAD (CURHDR))
+	    final = mutt_collapse_thread (Context, CURHDR);
+	  else
+	    final = CURHDR->virtual;
+	  
+	  base = Context->hdrs[Context->v2r[final]];
+	  
+	  h = Context->tree;
+	  Context->collapsed = !Context->collapsed;
+	  while (h)
+	  {
+	    if (h->collapsed != Context->collapsed)
+	    {
+	      if (h->collapsed)
+		mutt_uncollapse_thread (Context, h);
+	      else if (option (OPTCOLLAPSENEW) || !UNREAD (h))
+		mutt_collapse_thread (Context, h);
+	    }
+	    h = h->next;
+	  }
+	  
+	  mutt_set_virtual (Context);
+	  for (j = 0; j < Context->vcount; j++)
+	  {
+	    if (Context->hdrs[Context->v2r[j]]->index == base->index)
+	    {
+	      menu->current = j;
+	      break;
+	    }
+	  }
+	  
+	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
+	  break;
+	}
+      
+      /* --------------------------------------------------------------------
+       * These functions are invoked directly from the internal-pager
+       */
 
       case OP_BOUNCE_MESSAGE:
 
