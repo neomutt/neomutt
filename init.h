@@ -2206,7 +2206,7 @@ struct option_t MuttVars[] = {
   { "smart_wrap",	DT_BOOL, R_PAGER, OPTWRAP, 1 },
   /*
   ** .pp
-  ** Controls the display of lines longer then the screen width in the
+  ** Controls the display of lines longer than the screen width in the
   ** internal pager. If set, long lines are wrapped at a word boundary.  If
   ** unset, lines are simply wrapped at the screen edge. Also see the
   ** ``$$markers'' variable.
