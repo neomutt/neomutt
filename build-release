@@ -40,7 +40,7 @@ ${VISUAL} ChangeLog
 
 # now, prepare the distribution tar balls
 
-(cd m4 && make -f Makefile.am.in)
+(cd m4 && rm -f Makefile Makefile.in Makefile.am && make -f Makefile.am.in)
 automake
 touch configure.in
 make config.status
