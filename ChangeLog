@@ -1,3 +1,8 @@
+2003-05-12 16:21:26  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* enter.c: Fix alias completion when the alias is entered as
+	part of a group.  (E.g., The Tea Party: alias1, alias2, alias3;)
+
 2003-05-03 20:07:40  Dan Nelson  <dnelson@allantgroup.com>  (roessler)
 
 	* mutt.h, muttlib.c: Fix #1558.  (mutt_expand_fmt rewrite;
