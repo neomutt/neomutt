@@ -115,18 +115,23 @@ static void linearize_tree (CONTEXT *ctx)
  * skip parts of the tree in mutt_draw_tree() if we've decided here that we
  * don't care about them any more.
  */
-static void calculate_visibility (CONTEXT *ctx)
+static void calculate_visibility (CONTEXT *ctx, int *max_depth)
 {
   THREAD *tmp, *tree = ctx->tree;
   int hide_top_missing = option (OPTHIDETOPMISSING) && !option (OPTHIDEMISSING);
   int hide_top_limited = option (OPTHIDETOPLIMITED) && !option (OPTHIDELIMITED);
+  int depth = 0;
 
   /* we walk each level backwards to make it easier to compute next_subtree_visible */
   while (tree->next)
     tree = tree->next;
+  *max_depth = 0;
 
   FOREVER
   {
+    if (depth > *max_depth)
+      *max_depth = depth;
+
     tree->subtree_visible = 0;
     if (tree->message)
     {
@@ -163,6 +168,7 @@ static void calculate_visibility (CONTEXT *ctx)
 						|| tree->next->subtree_visible);
     if (tree->child)
     {
+      depth++;
       tree = tree->child;
       while (tree->next)
 	tree = tree->next;
@@ -172,7 +178,10 @@ static void calculate_visibility (CONTEXT *ctx)
     else
     {
       while (tree && !tree->prev)
+      {
+	depth--;
 	tree = tree->parent;
+      }
       if (!tree)
 	break;
       else
@@ -216,29 +225,23 @@ static void calculate_visibility (CONTEXT *ctx)
  */
 void mutt_draw_tree (CONTEXT *ctx)
 {
-  char *pfx = NULL, *mypfx = NULL, *arrow = NULL, *myarrow = NULL;
+  char *pfx = NULL, *mypfx = NULL, *arrow = NULL, *myarrow = NULL, *new_tree;
   char corner = (Sort & SORT_REVERSE) ? M_TREE_ULCORNER : M_TREE_LLCORNER;
   char vtee = (Sort & SORT_REVERSE) ? M_TREE_BTEE : M_TREE_TTEE;
-  int depth = 0, start_depth = 0, max_depth = 0, max_width = 0;
+  int depth = 0, start_depth = 0, max_depth = 0, width = option (OPTNARROWTREE) ? 1 : 2;
   THREAD *nextdisp = NULL, *pseudo = NULL, *parent = NULL, *tree = ctx->tree;
-  HEADER *hdr;
 
   /* Do the visibility calculations and free the old thread chars.
    * From now on we can simply ignore invisible subtrees
    */
-  calculate_visibility (ctx);
+  calculate_visibility (ctx, &max_depth);
+  pfx = safe_malloc (width * max_depth + 2);
+  arrow = safe_malloc (width * max_depth + 2);
   while (tree)
   {
-    if (depth >= max_depth)
-      safe_realloc ((void **) &pfx,
-		    (max_depth += 32) * 2 * sizeof (char));
-    if (depth - start_depth >= max_width)
-      safe_realloc ((void **) &arrow,
-		    (max_width += 16) * 2 * sizeof (char));
-    hdr = tree->message;
     if (depth)
     {
-      myarrow = arrow + (depth - start_depth - (start_depth ? 0 : 1)) * 2;
+      myarrow = arrow + (depth - start_depth - (start_depth ? 0 : 1)) * width;
       if (depth && start_depth == depth)
 	myarrow[0] = nextdisp ? M_TREE_LTEE : corner;
       else if (parent->message && !option (OPTHIDELIMITED))
@@ -247,28 +250,31 @@ void mutt_draw_tree (CONTEXT *ctx)
 	myarrow[0] = M_TREE_MISSING;
       else
 	myarrow[0] = vtee;
-      myarrow[1] = pseudo ?  M_TREE_STAR
-		    : (tree->duplicate_thread ? M_TREE_EQUALS : M_TREE_HLINE);
+      if (width == 2)
+	myarrow[1] = pseudo ?  M_TREE_STAR
+	                     : (tree->duplicate_thread ? M_TREE_EQUALS : M_TREE_HLINE);
       if (tree->visible)
       {
-	myarrow[2] = M_TREE_RARROW;
-	myarrow[3] = 0;
-	hdr->tree = safe_malloc ((2 + depth * 2) * sizeof (char));
+	myarrow[width] = M_TREE_RARROW;
+	myarrow[width + 1] = 0;
+	new_tree = safe_malloc ((2 + depth * width));
 	if (start_depth > 1)
 	{
-	  strncpy (hdr->tree, pfx, (start_depth - 1) * 2);
-	  strfcpy (hdr->tree + (start_depth - 1) * 2,
-		   arrow, (2 + depth - start_depth) * 2);
+	  strncpy (new_tree, pfx, (start_depth - 1) * width);
+	  strfcpy (new_tree + (start_depth - 1) * width,
+		   arrow, (1 + depth - start_depth) * width + 2);
 	}
 	else
-	  strfcpy (hdr->tree, arrow, 2 + depth * 2);
+	  strfcpy (new_tree, arrow, 2 + depth * width);
+	tree->message->tree = new_tree;
       }
     }
     if (tree->child && depth)
     {
-      mypfx = pfx + (depth - 1) * 2;
+      mypfx = pfx + (depth - 1) * width;
       mypfx[0] = nextdisp ? M_TREE_VLINE : M_TREE_SPACE;
-      mypfx[1] = M_TREE_SPACE;
+      if (width == 2)
+	mypfx[1] = M_TREE_SPACE;
     }
     parent = tree;
     nextdisp = NULL;
@@ -317,7 +323,6 @@ void mutt_draw_tree (CONTEXT *ctx)
 	if (!tree)
 	  break;
       }
-      hdr = tree->message;
       if (!pseudo && tree->fake_thread)
 	pseudo = tree;
       if (!nextdisp && tree->next_subtree_visible)

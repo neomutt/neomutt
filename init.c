@@ -780,6 +780,8 @@ static void mutt_restore_default (struct option_t *p)
     set_option (OPTNEEDRESORT);
   if (p->flags & R_RESORT_INIT)
     set_option (OPTRESORTINIT);
+  if (p->flags & R_TREE)
+    set_option (OPTREDRAWTREE);
 }
 
 static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
@@ -1228,6 +1230,8 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       set_option (OPTNEEDRESORT);
     if (MuttVars[idx].flags & R_RESORT_INIT)
       set_option (OPTRESORTINIT);
+    if (MuttVars[idx].flags & R_TREE)
+      set_option (OPTREDRAWTREE);
   }
   return (r);
 }

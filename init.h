@@ -58,6 +58,7 @@
 #define R_RESORT	(1<<2)	/* resort the mailbox */
 #define R_RESORT_SUB	(1<<3)	/* resort subthreads */
 #define R_RESORT_INIT	(1<<4)  /* resort from scratch */
+#define R_TREE		(1<<5)  /* redraw the thread tree */
 #define R_BOTH		(R_INDEX | R_PAGER)
 #define R_RESORT_BOTH	(R_RESORT | R_RESORT_SUB)
 
@@ -663,26 +664,26 @@ struct option_t MuttVars[] = {
   ** affect the generation of Message-IDs, and it will not lead to the 
   ** cut-off of first-level domains.
   */
-  { "hide_limited",	DT_BOOL, R_RESORT|R_INDEX, OPTHIDELIMITED, 0 },
+  { "hide_limited",	DT_BOOL, R_TREE|R_INDEX, OPTHIDELIMITED, 0 },
   /*
   ** .pp
   ** When set, mutt will not show the presence of missing messages in the
   ** thread tree.
   */
-  { "hide_missing",	DT_BOOL, R_RESORT|R_INDEX, OPTHIDEMISSING, 1 },
+  { "hide_missing",	DT_BOOL, R_TREE|R_INDEX, OPTHIDEMISSING, 1 },
   /*
   ** .pp
   ** When set, mutt will not show the presence of messages that are hidden
   ** by limiting, in the thread tree.
   */
-  { "hide_top_limited",	DT_BOOL, R_RESORT|R_INDEX, OPTHIDETOPLIMITED, 0 },
+  { "hide_top_limited",	DT_BOOL, R_TREE|R_INDEX, OPTHIDETOPLIMITED, 0 },
   /*
   ** .pp
   ** When set, mutt will not show the presence of missing messages at the
   ** top of threads in the thread tree.  Note that when $$hide_limited is
   ** set, this option will have no effect.
   */
-  { "hide_top_missing",	DT_BOOL, R_RESORT|R_INDEX, OPTHIDETOPMISSING, 1 },
+  { "hide_top_missing",	DT_BOOL, R_TREE|R_INDEX, OPTHIDETOPMISSING, 1 },
   /*
   ** .pp
   ** When set, mutt will not show the presence of messages that are hidden
@@ -1117,6 +1118,12 @@ struct option_t MuttVars[] = {
   */
   { "msg_format",	DT_SYN,  R_NONE, UL "message_format", 0 },
   /*
+  */
+  { "narrow_tree",	DT_BOOL, R_TREE|R_INDEX, OPTNARROWTREE, 0 },
+  /*
+  ** .pp
+  ** This variable, when set, makes the thread tree narrower, allowing
+  ** deeper threads to fit on the screen.
   */
   { "pager",		DT_PATH, R_NONE, UL &Pager, UL "builtin" },
   /*

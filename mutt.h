@@ -372,6 +372,7 @@ enum
   OPTMETOO,
   OPTMHPURGE,
   OPTMIMEFORWDECODE,
+  OPTNARROWTREE,
   OPTPAGERSTOP,
   OPTPIPEDECODE,
   OPTPIPESPLIT,
@@ -467,6 +468,7 @@ enum
 			 * 	    external program.
 			 */
   OPTMENUCALLER,	/* (pseudo) tell menu to give caller a take */
+  OPTREDRAWTREE,	/* (pseudo) redraw the thread tree */
 #ifdef HAVE_PGP
   OPTPGPCHECKTRUST,	/* (pseudo) used by pgp_select_key () */
   OPTDONTHANDLEPGPKEYS,	/* (pseudo) used to extract PGP keys */

@@ -454,6 +454,13 @@ int mutt_index_menu (void)
      */
     if (option (OPTNEEDRESORT) && Context && Context->msgcount)
       resort_index (menu);
+    
+    if (option (OPTREDRAWTREE) && Context && Context->msgcount && (Sort & SORT_MASK) == SORT_THREADS)
+    {
+      mutt_draw_tree (Context);
+      menu->redraw |= REDRAW_STATUS;
+      unset_option (OPTREDRAWTREE);
+    }
 
     if (Context && !attach_msg)
     {
