@@ -1,3 +1,7 @@
+2003-01-21 12:39:45  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* mutt_crypt.h: Fix an #ifdef.
+
 2003-01-21 12:33:41  Werner Koch  <wk@gnupg.org>  (roessler)
 
 	* Makefile.am, acconfig.h, attach.c, commands.c, compose.c,
