@@ -198,10 +198,10 @@ int imap_exec (IMAP_DATA* idata, const char* cmd, int flags)
     rc = imap_cmd_step (idata);
   while (rc == IMAP_CMD_CONTINUE);
 
-  if (rc != IMAP_CMD_DONE)
-    return -1;
+  if (rc == IMAP_CMD_NO && (flags & IMAP_CMD_FAIL_OK))
+    return -2;
 
-  if (!imap_code (idata->buf))
+  if (rc != IMAP_CMD_DONE)
   {
     char *pc;
 

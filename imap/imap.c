@@ -500,9 +500,9 @@ int imap_open_mailbox (CONTEXT* ctx)
   snprintf (bufout, sizeof (bufout), "%s %s",
     ctx->readonly ? "EXAMINE" : "SELECT", buf);
 
-  imap_cmd_start (idata, bufout);
-
   idata->state = IMAP_SELECTED;
+
+  imap_cmd_start (idata, bufout);
 
   do
   {
@@ -550,6 +550,16 @@ int imap_open_mailbox (CONTEXT* ctx)
   }
   while (rc == IMAP_CMD_CONTINUE);
 
+  if (rc == IMAP_CMD_NO)
+  {
+    char *s;
+    s = imap_next_word (idata->buf); /* skip seq */
+    s = imap_next_word (s); /* Skip response */
+    mutt_error ("%s", s);
+    sleep (2);
+    goto fail;
+  }
+
   if (rc != IMAP_CMD_DONE)
     goto fail;
 
@@ -583,17 +593,6 @@ int imap_open_mailbox (CONTEXT* ctx)
   }
 #endif
 
-  if (!imap_code (idata->buf))
-  {
-    char *s;
-    s = imap_next_word (idata->buf); /* skip seq */
-    s = imap_next_word (s); /* Skip response */
-    mutt_error ("%s", s);
-    idata->state = IMAP_AUTHENTICATED;
-    sleep (1);
-    goto fail;
-  }
-
   if (mutt_bit_isset (idata->capabilities, ACL))
   {
     if (imap_check_acl (idata))
@@ -623,6 +622,7 @@ int imap_open_mailbox (CONTEXT* ctx)
   return 0;
 
  fail:
+  idata->state = IMAP_AUTHENTICATED;
   FREE (&mx.mbox);
   return -1;
 }
