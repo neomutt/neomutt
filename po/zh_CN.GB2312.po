@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.2\n"
-"POT-Creation-Date: 2001-01-31 09:00+0100\n"
+"POT-Creation-Date: 2001-02-12 18:52+0100\n"
 "PO-Revision-Date: 1999-12-20 20:41+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -23,7 +23,7 @@ msgstr "更改名称为："
 msgid "Password for %s@%s: "
 msgstr "%s@%s 的密码："
 
-#: addrbook.c:31 browser.c:40 pager.c:1365 postpone.c:37 query.c:43
+#: addrbook.c:31 browser.c:40 pager.c:1363 postpone.c:37 query.c:43
 #: recvattach.c:57
 msgid "Exit"
 msgstr "离开"
@@ -33,8 +33,8 @@ msgid "Select"
 msgstr "选择"
 
 #. __STRCAT_CHECKED__
-#: addrbook.c:33 browser.c:43 compose.c:92 curs_main.c:380 mutt_ssl.c:519
-#: pager.c:1462 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
+#: addrbook.c:33 browser.c:43 compose.c:92 curs_main.c:380 mutt_ssl.c:531
+#: pager.c:1460 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "帮助"
 
@@ -85,7 +85,7 @@ msgstr "无法匹配名称模板，继续？"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Mailcap 编辑项目需要 %%s"
 
-#: attach.c:131 attach.c:256 commands.c:185 compose.c:1180 curs_lib.c:145
+#: attach.c:131 attach.c:256 commands.c:185 compose.c:1153 curs_lib.c:145
 #: curs_lib.c:374
 #, c-format
 msgid "Error running \"%s\"!"
@@ -296,7 +296,7 @@ msgstr "不支持预设的色彩"
 msgid "Verify PGP signature?"
 msgstr "检查 PGP 签名?"
 
-#: commands.c:105 pgp.c:1566 pgpkey.c:491 postpone.c:522
+#: commands.c:105 pgp.c:1566 pgpkey.c:491 postpone.c:517
 msgid "Invoking PGP..."
 msgstr "启动 PGP…"
 
@@ -474,7 +474,7 @@ msgstr "寄出"
 msgid "Abort"
 msgstr "中断"
 
-#: compose.c:90 compose.c:684
+#: compose.c:90 compose.c:657
 msgid "Attach file"
 msgstr "附加文件"
 
@@ -498,150 +498,137 @@ msgstr "签名"
 msgid "Clear"
 msgstr "清除"
 
-#: compose.c:125
+#: compose.c:124
 msgid " sign as: "
 msgstr " 签名的身份是： "
 
-#: compose.c:125
+#: compose.c:124
 msgid "<default>"
 msgstr "<预设值>"
 
-#: compose.c:126 compose.c:183
-msgid "MIC algorithm: "
-msgstr "MIC 演算法："
-
-#: compose.c:137
-msgid ""
-"(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget "
-"it? "
+#: compose.c:132
+#, fuzzy
+msgid "(e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
 msgstr ""
 "(e)加密, (s)签名, (a)用别的身份签, (b)两者皆要, 选择 (m)ic 演算法 或 "
 "(f)放弃？"
 
-#: compose.c:138
-msgid "esabmf"
+#: compose.c:133
+msgid "esabf"
 msgstr ""
 
-#: compose.c:152
+#: compose.c:147
 msgid "Sign as: "
 msgstr "签名的身份是："
 
-#: compose.c:177
-msgid "This doesn't make sense if you don't want to sign the message."
-msgstr "如果您不想把信件签名，这样做就没有什么意思啦。"
-
-#: compose.c:188
-msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
-msgstr "不明的 MIC 演算法。有效的如下: pgp-md5, pgp-sha1, pgp-rmd160"
-
-#: compose.c:253
+#: compose.c:226
 #, c-format
 msgid "%s [#%d] no longer exists!"
 msgstr "%s [#%d] 已不存在!"
 
-#: compose.c:261
+#: compose.c:234
 #, c-format
 msgid "%s [#%d] modified. Update encoding?"
 msgstr "%s [#%d] 已修改。更新编码？"
 
-#: compose.c:307
+#: compose.c:280
 msgid "-- Attachments"
 msgstr "-- 附件"
 
-#: compose.c:351
+#: compose.c:324
 msgid "You may not delete the only attachment."
 msgstr "您不可以删除唯一的附件。"
 
-#: compose.c:700
+#: compose.c:673
 msgid "Attaching selected files..."
 msgstr "正在附加选取了的文件…"
 
-#: compose.c:711
+#: compose.c:684
 #, c-format
 msgid "Unable to attach %s!"
 msgstr "无法附加 %s！"
 
-#: compose.c:729
+#: compose.c:702
 msgid "Open mailbox to attach message from"
 msgstr "打开信箱并从它选择附加的信件"
 
-#: compose.c:767
+#: compose.c:740
 msgid "No messages in that folder."
 msgstr "文件夹中没有信件。"
 
-#: compose.c:776
+#: compose.c:749
 msgid "Tag the messages you want to attach!"
 msgstr "请标记您要附加的信件！"
 
-#: compose.c:808
+#: compose.c:781
 msgid "Unable to attach!"
 msgstr "无法附加！"
 
-#: compose.c:855
+#: compose.c:828
 msgid "Recoding only affects text attachments."
 msgstr "只重新编码受影响的文字附件"
 
-#: compose.c:860
+#: compose.c:833
 msgid "The current attachment won't be converted."
 msgstr "这个附件不会被转换。"
 
-#: compose.c:862
+#: compose.c:835
 msgid "The current attachment will be converted."
 msgstr "这个附件会被转换。"
 
-#: compose.c:933
+#: compose.c:906
 msgid "Invalid encoding."
 msgstr "无效的编码。"
 
-#: compose.c:954
+#: compose.c:927
 msgid "Save a copy of this message?"
 msgstr "储存这封信件的拷贝吗？"
 
-#: compose.c:1008
+#: compose.c:981
 msgid "Rename to: "
 msgstr "更改名称为："
 
-#: compose.c:1013 editmsg.c:96
+#: compose.c:986 editmsg.c:96
 #, c-format
 msgid "Can't stat: %s"
 msgstr "无法读取：%s"
 
-#: compose.c:1039
+#: compose.c:1012
 msgid "New file: "
 msgstr "建立新档："
 
-#: compose.c:1052
+#: compose.c:1025
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type 的格式是 base/sub"
 
-#: compose.c:1058
+#: compose.c:1031
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "不明的 Content-Type %s"
 
-#: compose.c:1071
+#: compose.c:1044
 #, c-format
 msgid "Can't create file %s"
 msgstr "无法建立文件 %s"
 
-#: compose.c:1079
+#: compose.c:1052
 msgid "What we have here is a failure to make an attachment"
 msgstr "我们无法加上附件"
 
-#: compose.c:1141
+#: compose.c:1114
 msgid "Postpone this message?"
 msgstr "延迟寄出这封信件？"
 
-#: compose.c:1198
+#: compose.c:1171
 msgid "Write message to mailbox"
 msgstr "将信件写入到信箱"
 
-#: compose.c:1201
+#: compose.c:1174
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "写入信件到 %s …"
 
-#: compose.c:1210
+#: compose.c:1183
 msgid "Message written."
 msgstr "信件已写入。"
 
@@ -704,7 +691,7 @@ msgstr "将不会把改变写入资料夹。"
 msgid "Quit"
 msgstr "离开"
 
-#: curs_main.c:374 pager.c:1372 postpone.c:38
+#: curs_main.c:374 pager.c:1370 postpone.c:38
 msgid "Del"
 msgstr "删除"
 
@@ -716,7 +703,7 @@ msgstr "反删除"
 msgid "Mail"
 msgstr "信件"
 
-#: curs_main.c:378 pager.c:1373
+#: curs_main.c:378 pager.c:1371
 msgid "Reply"
 msgstr "回覆"
 
@@ -815,11 +802,11 @@ msgstr "没有要反删除的信件。"
 msgid "You are on the first message."
 msgstr "您已经在第一封信了。"
 
-#: curs_main.c:1217 pattern.c:1139
+#: curs_main.c:1217 pattern.c:1283
 msgid "Search wrapped to top."
 msgstr "搜寻至开头。"
 
-#: curs_main.c:1226 pattern.c:1150
+#: curs_main.c:1226 pattern.c:1294
 msgid "Search wrapped to bottom."
 msgstr "搜寻至结尾。"
 
@@ -978,64 +965,64 @@ msgid "Clear flag"
 msgstr "清除旗标"
 
 #. didn't find anything that we could display!
-#: handler.c:1023
+#: handler.c:1019
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr "[-- 错误： 无法显示 Multipart/Alternative！ --]\n"
 
-#: handler.c:1140
+#: handler.c:1136
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- 附件 #%d"
 
-#: handler.c:1151
+#: handler.c:1147
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- 形态:  %s%s, 编码: %s, 大小: %s --]\n"
 
-#: handler.c:1210
+#: handler.c:1206
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- 使用 %s 自动显示 --]\n"
 
-#: handler.c:1211
+#: handler.c:1207
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "执行自动显示指令：%s"
 
-#: handler.c:1248 handler.c:1266
+#: handler.c:1244 handler.c:1262
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- 自动显示的 %s 的 stderr 内容 --]\n"
 
-#: handler.c:1298
+#: handler.c:1294
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr "[-- 错误: message/external-body 没有存取类型的参数 --]\n"
 
-#: handler.c:1315
+#: handler.c:1311
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- %s/%s 附件 "
 
-#: handler.c:1322
+#: handler.c:1318
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(%s 位元组) "
 
-#: handler.c:1324
+#: handler.c:1320
 msgid "has been deleted --]\n"
 msgstr "已经被删除了 --]\n"
 
-#: handler.c:1327
+#: handler.c:1323
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- 在 %s --]\n"
 
-#: handler.c:1329
+#: handler.c:1325
 #, fuzzy, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- 在 %s --]\n"
 
-#: handler.c:1340
+#: handler.c:1336
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -1046,7 +1033,7 @@ msgstr ""
 "[-- 并且被指示的外部原始档已 --]\n"
 "[-- 过期。 --]\n"
 
-#: handler.c:1354
+#: handler.c:1350
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -1055,29 +1042,29 @@ msgstr ""
 "[-- %s/%s 附件无法被附上, --]\n"
 "[-- 并且被指示的存取类型 %s 不被支持 --]\n"
 
-#: handler.c:1464
+#: handler.c:1460
 msgid "Error: multipart/signed has no protocol."
 msgstr "错误：multipart/signed 没有通讯协定。"
 
-#: handler.c:1477
+#: handler.c:1473
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "错误：multipart/encrypted 没有任何通讯协定参数！"
 
-#: handler.c:1519
+#: handler.c:1515
 msgid "Unable to open temporary file!"
 msgstr "无法打开暂存档！"
 
-#: handler.c:1578
+#: handler.c:1574
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s 尚未支持 "
 
-#: handler.c:1583
+#: handler.c:1579
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "（使用 '%s' 来显示这部份）"
 
-#: handler.c:1585
+#: handler.c:1581
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "（需要定义一个键给 'view-attachments' l浏览附件)！)"
 
@@ -1158,16 +1145,16 @@ msgstr ""
 msgid "Logging in..."
 msgstr "登入中…"
 
-#: imap/auth_login.c:66 pop_auth.c:275
+#: imap/auth_login.c:63 pop_auth.c:275
 msgid "Login failed."
 msgstr "登入失败。"
 
-#: imap/auth_sasl.c:118 pop_auth.c:79
+#: imap/auth_sasl.c:86 pop_auth.c:79
 #, fuzzy
 msgid "Authenticating (SASL)..."
 msgstr "验证中 (GSSAPI)…"
 
-#: imap/auth_sasl.c:196 pop_auth.c:157
+#: imap/auth_sasl.c:164 pop_auth.c:157
 #, fuzzy
 msgid "SASL authentication failed."
 msgstr "GSSAPI 验证失败。"
@@ -1182,12 +1169,12 @@ msgstr "寄出信件中…"
 msgid "Getting folder list..."
 msgstr "已接触伺服器，正拿取目录表…"
 
-#: imap/browse.c:265
+#: imap/browse.c:264
 #, fuzzy
 msgid "Create mailbox: "
 msgstr "打开信箱"
 
-#: imap/browse.c:271
+#: imap/browse.c:270
 #, fuzzy
 msgid "Mailbox created."
 msgstr "邮箱已删除。"
@@ -1195,7 +1182,7 @@ msgstr "邮箱已删除。"
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
 #.
-#: imap/command.c:301
+#: imap/command.c:312
 msgid "Fatal error.  Message count is out of sync!"
 msgstr "严重错误。信件数量不协调！"
 
@@ -1204,50 +1191,55 @@ msgstr "严重错误。信件数量不协调！"
 msgid "Closing connection to %s..."
 msgstr "正在关闭与 IMAP 伺服器的连线…"
 
-#: imap/imap.c:295
+#: imap/imap.c:247
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "这个 IMAP 伺服器已过时，Mutt 无法使用它。"
 
-#: imap/imap.c:497
+#: imap/imap.c:315
+#, fuzzy, c-format
+msgid "Connection to %s failed."
+msgstr "正连接到 %s…"
+
+#: imap/imap.c:453
 #, c-format
 msgid "Selecting %s..."
 msgstr "选择 %s 中…"
 
 #. STATUS not supported
-#: imap/imap.c:667
+#: imap/imap.c:623
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "无法附加在这个伺服器上的 IMAP 信箱"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:676 imap/message.c:577 muttlib.c:1144
+#: imap/imap.c:632 imap/message.c:579 muttlib.c:1144
 #, c-format
 msgid "Create %s?"
 msgstr "建立 %s？"
 
-#: imap/imap.c:712
+#: imap/imap.c:668
 msgid "Closing connection to IMAP server..."
 msgstr "正在关闭与 IMAP 伺服器的连线…"
 
-#: imap/imap.c:875 pop.c:458
+#: imap/imap.c:831 pop.c:458
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "标签了的 %d 封信件删去了…"
 
-#: imap/imap.c:894
+#: imap/imap.c:850
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "正在储存信件状态旗标… [%d/%d]"
 
-#: imap/imap.c:951
+#: imap/imap.c:907
 msgid "Expunging messages from server..."
 msgstr "正在删除伺服器上的信件…"
 
-#: imap/imap.c:1227
+#: imap/imap.c:1183
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "订阅 %s…"
 
-#: imap/imap.c:1229
+#: imap/imap.c:1185
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "取消订阅 %s…"
@@ -1271,17 +1263,17 @@ msgstr "寄出信件中…"
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr ""
 
-#: imap/message.c:467
+#: imap/message.c:468
 #, fuzzy
 msgid "Uploading message ..."
 msgstr "寄出信件中…"
 
-#: imap/message.c:555
+#: imap/message.c:557
 #, fuzzy, c-format
 msgid "Copying %d messages to %s..."
 msgstr "正在搬移已经读取的信件到 %s …"
 
-#: imap/message.c:559
+#: imap/message.c:561
 #, fuzzy, c-format
 msgid "Copying message %d to %s..."
 msgstr "写入信件到 %s …"
@@ -2479,7 +2471,7 @@ msgstr "您现在在最后一项。"
 msgid "You are on the first entry."
 msgstr "您现在在第一项。"
 
-#: menu.c:702 pattern.c:1085
+#: menu.c:702 pattern.c:1229
 msgid "Search for: "
 msgstr "搜寻："
 
@@ -2487,11 +2479,11 @@ msgstr "搜寻："
 msgid "Reverse search for: "
 msgstr "返向搜寻："
 
-#: menu.c:713 pattern.c:1118
+#: menu.c:713 pattern.c:1262
 msgid "No search pattern."
 msgstr "没有搜寻格式。"
 
-#: menu.c:743 pager.c:1839 pager.c:1855 pager.c:1943 pattern.c:1183
+#: menu.c:743 pager.c:1837 pager.c:1853 pager.c:1941 pattern.c:1327
 msgid "Not found."
 msgstr "没有找到。"
 
@@ -2576,113 +2568,113 @@ msgstr "正连接到 %s…"
 msgid "Could not connect to %s (%s)."
 msgstr "无法打开 %s"
 
-#: mutt_ssl.c:105
+#: mutt_ssl.c:117
 msgid "Failed to find enough entropy on your system"
 msgstr ""
 
-#: mutt_ssl.c:120
+#: mutt_ssl.c:132
 #, c-format
 msgid "Filling entropy pool: %s...\n"
 msgstr ""
 
-#: mutt_ssl.c:128
+#: mutt_ssl.c:140
 #, c-format
 msgid "%s has insecure permissions!"
 msgstr ""
 
-#: mutt_ssl.c:147
+#: mutt_ssl.c:159
 msgid "SSL disabled due the lack of entropy"
 msgstr ""
 
-#: mutt_ssl.c:234
+#: mutt_ssl.c:246
 #, fuzzy
 msgid "Unable to get certificate from peer"
 msgstr "无法决定 home 目录"
 
-#: mutt_ssl.c:245
+#: mutt_ssl.c:257
 #, fuzzy, c-format
 msgid "SSL connection using %s (%s)"
 msgstr "正连线到 %s"
 
-#: mutt_ssl.c:275
+#: mutt_ssl.c:287
 #, fuzzy
 msgid "Unknown"
 msgstr "不明的错误"
 
-#: mutt_ssl.c:300
+#: mutt_ssl.c:312
 #, fuzzy
 msgid "[unable to calculate]"
 msgstr "%s：无法附带文件"
 
-#: mutt_ssl.c:318
+#: mutt_ssl.c:330
 #, fuzzy
 msgid "[invalid date]"
 msgstr "%s：无效的值"
 
-#: mutt_ssl.c:393
+#: mutt_ssl.c:405
 msgid "Server certificate is not yet valid"
 msgstr ""
 
-#: mutt_ssl.c:400
+#: mutt_ssl.c:412
 msgid "Server certificate has expired"
 msgstr ""
 
-#: mutt_ssl.c:473
+#: mutt_ssl.c:485
 msgid "This certificate belongs to:"
 msgstr ""
 
-#: mutt_ssl.c:483
+#: mutt_ssl.c:495
 msgid "This certificate was issued by:"
 msgstr ""
 
-#: mutt_ssl.c:493
+#: mutt_ssl.c:505
 msgid "This certificate is valid"
 msgstr ""
 
-#: mutt_ssl.c:494
+#: mutt_ssl.c:506
 #, c-format
 msgid "   from %s"
 msgstr ""
 
-#: mutt_ssl.c:496
+#: mutt_ssl.c:508
 #, c-format
 msgid "     to %s"
 msgstr ""
 
-#: mutt_ssl.c:502
+#: mutt_ssl.c:514
 #, c-format
 msgid "Fingerprint: %s"
 msgstr ""
 
-#: mutt_ssl.c:504
+#: mutt_ssl.c:516
 msgid "SSL Certificate check"
 msgstr ""
 
-#: mutt_ssl.c:507
+#: mutt_ssl.c:519
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr ""
 
-#: mutt_ssl.c:508
+#: mutt_ssl.c:520
 msgid "roa"
 msgstr ""
 
-#: mutt_ssl.c:512
+#: mutt_ssl.c:524
 msgid "(r)eject, accept (o)nce"
 msgstr ""
 
-#: mutt_ssl.c:513
+#: mutt_ssl.c:525
 msgid "ro"
 msgstr ""
 
-#: mutt_ssl.c:517 pgpkey.c:442
+#: mutt_ssl.c:529 pgpkey.c:442
 msgid "Exit  "
 msgstr "离开  "
 
-#: mutt_ssl.c:542
+#: mutt_ssl.c:554
 msgid "Warning: Couldn't save certificate"
 msgstr ""
 
-#: mutt_ssl.c:544
+#: mutt_ssl.c:556
 msgid "Certificate saved"
 msgstr ""
 
@@ -2796,48 +2788,48 @@ msgstr "编辑信件内容"
 msgid "Not available in this menu."
 msgstr "在这个菜单中没有这个功能。"
 
-#: pager.c:1366
+#: pager.c:1364
 msgid "PrevPg"
 msgstr "上一页"
 
-#: pager.c:1367
+#: pager.c:1365
 msgid "NextPg"
 msgstr "下一页"
 
-#: pager.c:1371
+#: pager.c:1369
 msgid "View Attachm."
 msgstr "显示附件。"
 
-#: pager.c:1374
+#: pager.c:1372
 msgid "Next"
 msgstr "下一个"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1751 pager.c:1782 pager.c:1811 pager.c:2031
+#: pager.c:1749 pager.c:1780 pager.c:1809 pager.c:2029
 msgid "Bottom of message is shown."
 msgstr "现正显示最下面的信件。"
 
-#: pager.c:1767 pager.c:1789 pager.c:1800
+#: pager.c:1765 pager.c:1787 pager.c:1798
 msgid "Top of message is shown."
 msgstr "现正显示最上面的信件。"
 
-#: pager.c:1873
+#: pager.c:1871
 msgid "Reverse search: "
 msgstr "反向搜寻："
 
-#: pager.c:1874
+#: pager.c:1872
 msgid "Search: "
 msgstr "搜寻："
 
-#: pager.c:1969
+#: pager.c:1967
 msgid "Help is currently being shown."
 msgstr "现正显示说明文件。"
 
-#: pager.c:1998
+#: pager.c:1996
 msgid "No more quoted text."
 msgstr "不能有再多的引言。"
 
-#: pager.c:2011
+#: pager.c:2009
 msgid "No more unquoted text after quoted text."
 msgstr "在引言后有过多的非引言文字。"
 
@@ -2845,79 +2837,85 @@ msgstr "在引言后有过多的非引言文字。"
 msgid "multipart message has no boundary parameter!"
 msgstr "多部份邮件没有分隔的参数!"
 
-#: pattern.c:240
+#: pattern.c:251
 #, c-format
 msgid "Error in expression: %s"
 msgstr "表达式有错误：%s"
 
-#: pattern.c:350
+#: pattern.c:361
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "无效的日子：%s"
 
-#: pattern.c:364
+#: pattern.c:375
 #, c-format
 msgid "Invalid month: %s"
 msgstr "无效的月份：%s"
 
-#: pattern.c:418
+#. getDate has its own error message, don't overwrite it here
+#: pattern.c:527
+#, fuzzy, c-format
+msgid "Invalid relative date: %s"
+msgstr "无效的月份：%s"
+
+#: pattern.c:541
 msgid "error in expression"
 msgstr "表达式有错误"
 
-#: pattern.c:603 pattern.c:711
+#: pattern.c:747 pattern.c:855
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "在样式上有错误：%s"
 
-#: pattern.c:651
+#: pattern.c:795
 #, c-format
 msgid "%c: invalid command"
 msgstr "%c：无效的指令"
 
-#: pattern.c:657
+#: pattern.c:801
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c：在这个模式不支持"
 
-#: pattern.c:670
+#: pattern.c:814
 msgid "missing parameter"
 msgstr "错失参数"
 
-#: pattern.c:686
+#: pattern.c:830
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "不对称的括弧：%s"
 
-#: pattern.c:718
+#: pattern.c:862
 msgid "empty pattern"
 msgstr "空的格式"
 
-#: pattern.c:910
+#: pattern.c:1054
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "错误：不明的 op %d (请回报这个错误)。"
 
-#: pattern.c:975 pattern.c:1104
+#: pattern.c:1119 pattern.c:1248
 msgid "Compiling search pattern..."
 msgstr "编译搜寻样式中…"
 
-#: pattern.c:989
+#: pattern.c:1133
 msgid "Executing command on matching messages..."
 msgstr "正在对符合的邮件执行命令…"
 
-#: pattern.c:1052
+#: pattern.c:1196
 msgid "No messages matched criteria."
 msgstr "没有邮件符合要求。"
 
-#: pattern.c:1142
+#: pattern.c:1286
 msgid "Search hit bottom without finding match"
 msgstr "已搜寻至结尾，并没有发现任何符合"
 
-#: pattern.c:1153
+#: pattern.c:1297
 msgid "Search hit top without finding match"
 msgstr "已搜寻至开头，并没有发现任何符合"
 
-#: pattern.c:1175
+#: pattern.c:1319
 msgid "Search interrupted."
 msgstr "搜寻已被中断。"
 
@@ -3312,7 +3310,7 @@ msgstr "信件已经被延迟寄出"
 msgid "No postponed messages."
 msgstr "没有被延迟寄出的信件。"
 
-#: postpone.c:417 postpone.c:437 postpone.c:446
+#: postpone.c:416 postpone.c:437 postpone.c:445
 msgid "Illegal PGP header"
 msgstr "不合规定的 PGP 标头"
 
@@ -3608,56 +3606,56 @@ msgstr "准备转寄信件…"
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:1039
+#: send.c:1038
 msgid "Recall postponed message?"
 msgstr "要叫出被延迟的信件?"
 
-#: send.c:1272
+#: send.c:1268
 msgid "Abort unmodified message?"
 msgstr "是否要中断未修改过的信件?"
 
-#: send.c:1274
+#: send.c:1270
 msgid "Aborted unmodified message."
 msgstr "中断没有修改过的信件"
 
 #. abort
-#: send.c:1315
+#: send.c:1311
 msgid "Mail not sent."
 msgstr "信件没有寄出。"
 
-#: send.c:1341
+#: send.c:1337
 msgid "Message postponed."
 msgstr "信件被延迟寄出。"
 
-#: send.c:1350
+#: send.c:1346
 msgid "No recipients are specified!"
 msgstr "没有指定接受者！"
 
-#: send.c:1355
+#: send.c:1351
 msgid "No recipients were specified."
 msgstr "没有指定接受者。"
 
-#: send.c:1361
+#: send.c:1357
 msgid "No subject, abort sending?"
 msgstr "没有信件标题，要中断寄信的工作?"
 
-#: send.c:1365
+#: send.c:1361
 msgid "No subject specified."
 msgstr "没有指定标题。"
 
-#: send.c:1412
+#: send.c:1408
 msgid "Sending message..."
 msgstr "寄出信件中…"
 
-#: send.c:1539
+#: send.c:1535
 msgid "Could not send the message."
 msgstr "无法寄出信件。"
 
-#: send.c:1544
+#: send.c:1540
 msgid "Mail sent."
 msgstr "信件已经寄出。"
 
-#: send.c:1544
+#: send.c:1540
 msgid "Sending in background."
 msgstr "正在后台传送。"
 
@@ -3719,6 +3717,15 @@ msgstr "在限制阅览模式下无法显示主信件。"
 #: thread.c:719
 msgid "Parent message is not available."
 msgstr "主信件不存在。"
+
+#~ msgid "MIC algorithm: "
+#~ msgstr "MIC 演算法："
+
+#~ msgid "This doesn't make sense if you don't want to sign the message."
+#~ msgstr "如果您不想把信件签名，这样做就没有什么意思啦。"
+
+#~ msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
+#~ msgstr "不明的 MIC 演算法。有效的如下: pgp-md5, pgp-sha1, pgp-rmd160"
 
 #, fuzzy
 #~ msgid ""

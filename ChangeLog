@@ -1,3 +1,114 @@
+Mon Feb 12 17:48:25 2001  Thomas Roessler  <roessler@guug.de>
+
+	* NEWS: Tell users about some of the new features.
+
+	* pgppacket.c: Don't free(NULL).
+
+	* mutt.h, pgp.c, pgp.h, pgplib.c, pgplib.h, pgpmicalg.c,
+	pgppacket.c, pgppacket.h, pgppubring.c, postpone.c,
+	protos.h, send.c, sendlib.c, compose.c, configure.in,
+	gnupgparse.c, init.h, Makefile.am: Auto-detect the micalg
+	used with PGP/MIME signatures.
+
+	* handler.c:
+	Make mutt_decode_* usable without passing a BODY structure.
+
+	* imap/auth_anon.c, imap/auth_cram.c, imap/auth_gss.c:
+	Fixes so mutt at least compiles with Brendan's new SASL patch.
+
+	* lib.c: Fix mutt_read_line's behaviour when encountering an
+	EOF.  From Aaron Lehmann <aaronl@vitelus.com>.
+
+	* pager.c: Avoid an infinite loop in the pager.  From Edmund
+	Grimley Evans.
+
+	* imap/auth_login.c, imap/auth_sasl.c, imap/browse.c,
+	imap/command.c, imap/imap.c, imap/imap_private.h,
+	imap/message.c, imap/util.c, mutt_sasl.c, mutt_sasl.h,
+	mutt_ssl.c, mutt_ssl.h: Brendan Cully's SASL patch.
+
+Thu Feb  8 15:50:51 2001  Thomas Roessler  <roessler@guug.de>
+
+	* attach.c, commands.c, curs_lib.c, muttlib.c, pgp.c,
+	recvattach.c, remailer.c: Replace various instances of
+	endwin() by mutt_endwin().  This should help to avoid
+	chaotic screen output on the "second" screen.
+
+	* po/da.po: update.
+
+	* doc/manual.sgml.head: Fix a typo.
+
+Tue Feb  6 22:14:01 2001  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.head, doc/muttrc.man.head: Document fuzzy
+	dates.
+
+	* date.c, pattern.c: Fuzzy date matching.  From Eike Rathke
+	<er@erack.de>.
+
+Fri Feb  2 12:36:19 2001  Thomas Roessler  <roessler@guug.de>
+
+	* pgpinvoke.c: Apply more conservative quoting to some PGP
+	invocation.
+
+	* po/sv.po: Update from Jörgen Tegnér.
+
+Thu Feb  1 17:03:44 2001  Thomas Roessler  <roessler@guug.de>
+
+	* po/tr.po: update
+
+Wed Jan 31 18:31:27 2001  Thomas Roessler  <roessler@guug.de>
+
+	* send.c:
+	Don't use group mailboxes with list-reply.  E.g., when you have
+	"ietf" as a list pattern, and a message goes to
+
+		IETF-Announce:;, ietf-openpgp@somewhere.org,
+
+	list-reply will now yield ietf-openpgp and _not_:
+
+		IETF-Announce: ietf-openpgp@...
+
+	* po/pt_BR.po, po/ru.po, po/sk.po, po/sv.po, po/tr.po,
+	po/uk.po, po/zh_CN.GB2312.po, po/zh_TW.Big5.po, po/fr.po,
+	po/gl.po, po/id.po, po/it.po, po/ko.po, po/lt.po, po/nl.po,
+	po/pl.po, po/cs.po, po/da.po, po/de.po, po/el.po, po/eo.po,
+	po/es.po: Including the turkish translation from Fatih Demir
+	<kabalak@gmx.net>; make update-po.
+
+	* configure.in: Including the turkish translation from Fatih
+	Demir <kabalak@gmx.net>.
+
+Tue Jan 30 10:24:36 2001  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.head:
+	Stan Ryckman <stanr@sunspot.tiac.net> noted that we are abusing
+	"envelope" where it should be "header".
+
+	* thread.c: Fix sort_aux=received.  From <benno@sesgroup.net>.
+
+	* pager.c:
+	Eric Fischer <eric@eazel.com> sent us this patch as part of bug#441.
+	I'm not entirely sure that it works, but let's try it.
+
+	* po/de.po, po/id.po: update
+
+	* po/fr.po: update.
+
+	* pop_auth.c:
+	Fixing a stupid typo.  bug#445, from Larry Rosenman <ler@lerctr.org>.
+
+Sat Jan 27 13:50:26 2001  Thomas Roessler  <roessler@guug.de>
+
+	* po/zh_CN.GB2312.po, po/zh_TW.Big5.po, po/sk.po, po/sv.po, po/uk.po, po/pt_BR.po, po/ru.po, po/pl.po, po/ko.po, po/lt.po, po/nl.po, po/gl.po, po/id.po, po/it.po, po/es.po, po/fr.po, po/eo.po, po/el.po, po/de.po, po/da.po, po/cs.po, reldate.h, VERSION, ChangeLog:
+	automatic post-release commit for mutt-1.3.14
+
+	* recvattach.c: More improvements to the recvattach collapsing.
+
+	* mutt.h, pager.c, pager.h, protos.h, recvattach.c, attach.c, attach.h, compose.c, functions.h, init.h, OPS:
+	Add collapsing to the receive-attach menu, and improve digest
+	handling that way.
+
 Sat Jan 27 13:41:11 2001  Thomas Roessler  <roessler@guug.de>
 
 	* recvattach.c: More improvements to the recvattach collapsing.

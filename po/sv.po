@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3.12\n"
-"POT-Creation-Date: 2001-01-31 09:00+0100\n"
+"POT-Creation-Date: 2001-02-12 18:52+0100\n"
 "PO-Revision-Date: 2000-12-02 19:32+01:00\n"
 "Last-Translator: Jörgen Tegnér <teg@post.netlink.se>\n"
 "Language-Team: \n"
@@ -20,7 +20,7 @@ msgstr "Användarnamn på %s: "
 msgid "Password for %s@%s: "
 msgstr "Lösenord för %s@%s: "
 
-#: addrbook.c:31 browser.c:40 pager.c:1365 postpone.c:37 query.c:43
+#: addrbook.c:31 browser.c:40 pager.c:1363 postpone.c:37 query.c:43
 #: recvattach.c:57
 msgid "Exit"
 msgstr "Avsluta"
@@ -30,8 +30,8 @@ msgid "Select"
 msgstr "Välj"
 
 #. __STRCAT_CHECKED__
-#: addrbook.c:33 browser.c:43 compose.c:92 curs_main.c:380 mutt_ssl.c:519
-#: pager.c:1462 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
+#: addrbook.c:33 browser.c:43 compose.c:92 curs_main.c:380 mutt_ssl.c:531
+#: pager.c:1460 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Hjälp"
 
@@ -82,7 +82,7 @@ msgstr "Kan inte para ihop namnmall, fortsätt?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "'compose' i 'mailcap' kräver %%s"
 
-#: attach.c:131 attach.c:256 commands.c:185 compose.c:1180 curs_lib.c:145
+#: attach.c:131 attach.c:256 commands.c:185 compose.c:1153 curs_lib.c:145
 #: curs_lib.c:374
 #, c-format
 msgid "Error running \"%s\"!"
@@ -292,7 +292,7 @@ msgstr "standardfärgerna stöds inte"
 msgid "Verify PGP signature?"
 msgstr "Verifiera PGP-signatur?"
 
-#: commands.c:105 pgp.c:1566 pgpkey.c:491 postpone.c:522
+#: commands.c:105 pgp.c:1566 pgpkey.c:491 postpone.c:517
 msgid "Invoking PGP..."
 msgstr "Startar PGP..."
 
@@ -462,7 +462,7 @@ msgstr "Skicka"
 msgid "Abort"
 msgstr "Avbryt"
 
-#: compose.c:90 compose.c:684
+#: compose.c:90 compose.c:657
 msgid "Attach file"
 msgstr "Bifoga fil"
 
@@ -486,151 +486,138 @@ msgstr "Signera"
 msgid "Clear"
 msgstr "Klartext"
 
-#: compose.c:125
+#: compose.c:124
 msgid " sign as: "
 msgstr " signera som: "
 
-#: compose.c:125
+#: compose.c:124
 msgid "<default>"
 msgstr "<standard>"
 
-#: compose.c:126 compose.c:183
-msgid "MIC algorithm: "
-msgstr "MIC-algoritm: "
-
-#: compose.c:137
-msgid ""
-"(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget "
-"it? "
+#: compose.c:132
+#, fuzzy
+msgid "(e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
 msgstr ""
 "(k)ryptera, (s)ignera, signera s(o)m, (b)åda, välj algoritmen (m)ic, "
 "sk(i)ppa det"
 
-#: compose.c:138
-msgid "esabmf"
+#: compose.c:133
+#, fuzzy
+msgid "esabf"
 msgstr "ksobmi"
 
-#: compose.c:152
+#: compose.c:147
 msgid "Sign as: "
 msgstr "Signera som: "
 
-#: compose.c:177
-msgid "This doesn't make sense if you don't want to sign the message."
-msgstr "Det här saknar relevans om du inte vill signera meddelandet."
-
-#: compose.c:188
-msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
-msgstr ""
-"Okänd MIC-algoritm, följande är kända: pgp-md5, pgp-sha1 och pgp-rmd160"
-
-#: compose.c:253
+#: compose.c:226
 #, c-format
 msgid "%s [#%d] no longer exists!"
 msgstr "%s [#%d] finns inte mer!"
 
-#: compose.c:261
+#: compose.c:234
 #, c-format
 msgid "%s [#%d] modified. Update encoding?"
 msgstr "%s [#%d] har modifierats. Uppdatera kodning?"
 
-#: compose.c:307
+#: compose.c:280
 msgid "-- Attachments"
 msgstr "-- Bilagor"
 
-#: compose.c:351
+#: compose.c:324
 msgid "You may not delete the only attachment."
 msgstr "Du kan inte ta bort den sista bilagan."
 
-#: compose.c:700
+#: compose.c:673
 msgid "Attaching selected files..."
 msgstr "Bifogar valda filer..."
 
-#: compose.c:711
+#: compose.c:684
 #, c-format
 msgid "Unable to attach %s!"
 msgstr "Kunde inte bifoga %s!"
 
-#: compose.c:729
+#: compose.c:702
 msgid "Open mailbox to attach message from"
 msgstr "Öppna brevlåda att bifoga meddelande från"
 
-#: compose.c:767
+#: compose.c:740
 msgid "No messages in that folder."
 msgstr "Inga meddelanden i den foldern."
 
-#: compose.c:776
+#: compose.c:749
 msgid "Tag the messages you want to attach!"
 msgstr "Märk de meddelanden som du vill bifoga!"
 
-#: compose.c:808
+#: compose.c:781
 msgid "Unable to attach!"
 msgstr "Kunde inte bifoga!"
 
-#: compose.c:855
+#: compose.c:828
 msgid "Recoding only affects text attachments."
 msgstr "Kodar endast om berörda textbilagor."
 
-#: compose.c:860
+#: compose.c:833
 msgid "The current attachment won't be converted."
 msgstr "Den aktiva bilagan kommer inte att bli konverterad."
 
-#: compose.c:862
+#: compose.c:835
 msgid "The current attachment will be converted."
 msgstr "Den aktiva bilagan kommer att bli konverterad."
 
-#: compose.c:933
+#: compose.c:906
 msgid "Invalid encoding."
 msgstr "Ogiltig kodning."
 
-#: compose.c:954
+#: compose.c:927
 msgid "Save a copy of this message?"
 msgstr "Spara en kopia av meddelandet?"
 
-#: compose.c:1008
+#: compose.c:981
 msgid "Rename to: "
 msgstr "Byt namn till: "
 
-#: compose.c:1013 editmsg.c:96
+#: compose.c:986 editmsg.c:96
 #, c-format
 msgid "Can't stat: %s"
 msgstr "Kan inte ta status på filen %s"
 
-#: compose.c:1039
+#: compose.c:1012
 msgid "New file: "
 msgstr "Ny fil: "
 
-#: compose.c:1052
+#: compose.c:1025
 msgid "Content-Type is of the form base/sub"
 msgstr "'Content-Type' har formen bas/undertyp"
 
-#: compose.c:1058
+#: compose.c:1031
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Okänd 'Content-Type' %s"
 
-#: compose.c:1071
+#: compose.c:1044
 #, c-format
 msgid "Can't create file %s"
 msgstr "Kan inte skapa filen %s"
 
-#: compose.c:1079
+#: compose.c:1052
 msgid "What we have here is a failure to make an attachment"
 msgstr "Vad vi har här är en oförmåga att skapa en bilaga"
 
-#: compose.c:1141
+#: compose.c:1114
 msgid "Postpone this message?"
 msgstr "Skjut upp meddelandet?"
 
-#: compose.c:1198
+#: compose.c:1171
 msgid "Write message to mailbox"
 msgstr "Skriv meddelandet till brevlåda"
 
-#: compose.c:1201
+#: compose.c:1174
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Skriver meddelandet till %s ..."
 
-#: compose.c:1210
+#: compose.c:1183
 msgid "Message written."
 msgstr "Meddelandet skrevs."
 
@@ -691,7 +678,7 @@ msgstr "Ändringar i brevlådan kommer inte att skrivas."
 msgid "Quit"
 msgstr "Avsluta"
 
-#: curs_main.c:374 pager.c:1372 postpone.c:38
+#: curs_main.c:374 pager.c:1370 postpone.c:38
 msgid "Del"
 msgstr "Ta bort"
 
@@ -703,7 +690,7 @@ msgstr "Återställ"
 msgid "Mail"
 msgstr "Brev"
 
-#: curs_main.c:378 pager.c:1373
+#: curs_main.c:378 pager.c:1371
 msgid "Reply"
 msgstr "Svara"
 
@@ -802,11 +789,11 @@ msgstr "Inga återställda meddelanden."
 msgid "You are on the first message."
 msgstr "Det här är första meddelandet i listan."
 
-#: curs_main.c:1217 pattern.c:1139
+#: curs_main.c:1217 pattern.c:1283
 msgid "Search wrapped to top."
 msgstr "Sökning fortsatte i början."
 
-#: curs_main.c:1226 pattern.c:1150
+#: curs_main.c:1226 pattern.c:1294
 msgid "Search wrapped to bottom."
 msgstr "Sökning fortsatte i slutet."
 
@@ -962,64 +949,64 @@ msgid "Clear flag"
 msgstr "Ta bort flagga"
 
 #. didn't find anything that we could display!
-#: handler.c:1023
+#: handler.c:1019
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr "[-- Fel : Kan inte visa någon del av 'Multipart/Alternative'! --]\n"
 
-#: handler.c:1140
+#: handler.c:1136
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- Bilaga #%d"
 
-#: handler.c:1151
+#: handler.c:1147
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Typ: %s/%s, Kodning: %s, Storlek: %s --]\n"
 
-#: handler.c:1210
+#: handler.c:1206
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Automatisk visning med %s --]\n"
 
-#: handler.c:1211
+#: handler.c:1207
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Startar kommando för automatisk visning: %s"
 
-#: handler.c:1248 handler.c:1266
+#: handler.c:1244 handler.c:1262
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Automatisk visning av standard fel gällande %s --]\n"
 
-#: handler.c:1298
+#: handler.c:1294
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr "[-- Fel: 'message/external-body' har ingen parameter för åtkomst --]\n"
 
-#: handler.c:1315
+#: handler.c:1311
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- Den här %s/%s bilagan "
 
-#: handler.c:1322
+#: handler.c:1318
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(storlek %s byte)"
 
-#: handler.c:1324
+#: handler.c:1320
 msgid "has been deleted --]\n"
 msgstr "har raderats --]\n"
 
-#: handler.c:1327
+#: handler.c:1323
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- på %s --]\n"
 
-#: handler.c:1329
+#: handler.c:1325
 #, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- namn: %s --]\n"
 
-#: handler.c:1340
+#: handler.c:1336
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -1030,7 +1017,7 @@ msgstr ""
 "[-- och den angivna externa källan är --]\n"
 "[-- utgången. --]\n"
 
-#: handler.c:1354
+#: handler.c:1350
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -1039,29 +1026,29 @@ msgstr ""
 "[-- Den här %s/%s bilagan är inte inkluderad, --]\n"
 "[-- och den angivna åtkomsttypen %s stöds inte --]\n"
 
-#: handler.c:1464
+#: handler.c:1460
 msgid "Error: multipart/signed has no protocol."
 msgstr "Fel: 'multipart/signed' saknar protokoll."
 
-#: handler.c:1477
+#: handler.c:1473
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Fel: 'multipart/encrypted' saknar parameter för protokoll!"
 
-#: handler.c:1519
+#: handler.c:1515
 msgid "Unable to open temporary file!"
 msgstr "Kunde inte öppna tillfällig fil!"
 
-#: handler.c:1578
+#: handler.c:1574
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s stöds inte "
 
-#: handler.c:1583
+#: handler.c:1579
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(använd '%s' för att visa den här delen)"
 
-#: handler.c:1585
+#: handler.c:1581
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "('view-attachments' måste knytas till tangent!)"
 
@@ -1141,15 +1128,15 @@ msgstr "LOGIN är inte aktiverad på den här servern."
 msgid "Logging in..."
 msgstr "Ansluter..."
 
-#: imap/auth_login.c:66 pop_auth.c:275
+#: imap/auth_login.c:63 pop_auth.c:275
 msgid "Login failed."
 msgstr "Anslutning misslyckades."
 
-#: imap/auth_sasl.c:118 pop_auth.c:79
+#: imap/auth_sasl.c:86 pop_auth.c:79
 msgid "Authenticating (SASL)..."
 msgstr "Verifierar (SASL)..."
 
-#: imap/auth_sasl.c:196 pop_auth.c:157
+#: imap/auth_sasl.c:164 pop_auth.c:157
 msgid "SASL authentication failed."
 msgstr "Verifiering med SASL misslyckades."
 
@@ -1161,18 +1148,18 @@ msgstr "Hämtar namnmängder..."
 msgid "Getting folder list..."
 msgstr "Hämtar lista med brevlådor..."
 
-#: imap/browse.c:265
+#: imap/browse.c:264
 msgid "Create mailbox: "
 msgstr "Skapa brevlåda: "
 
-#: imap/browse.c:271
+#: imap/browse.c:270
 msgid "Mailbox created."
 msgstr "Brevlådan har skapats."
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
 #.
-#: imap/command.c:301
+#: imap/command.c:312
 msgid "Fatal error.  Message count is out of sync!"
 msgstr "Fatalt fel. Meddelanderäknaren är inte synkroniserad!"
 
@@ -1181,52 +1168,57 @@ msgstr "Fatalt fel. Meddelanderäknaren är inte synkroniserad!"
 msgid "Closing connection to %s..."
 msgstr "Stänger förbindelse till %s..."
 
-#: imap/imap.c:295
+#: imap/imap.c:247
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr ""
 "Den här versionen av IMAP är uråldrig. Mutt fungerar inte tillsammans med "
 "den."
 
-#: imap/imap.c:497
+#: imap/imap.c:315
+#, fuzzy, c-format
+msgid "Connection to %s failed."
+msgstr "Ansluter till %s..."
+
+#: imap/imap.c:453
 #, c-format
 msgid "Selecting %s..."
 msgstr "Väljer %s..."
 
 #. STATUS not supported
-#: imap/imap.c:667
+#: imap/imap.c:623
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Kunde inte skriva till brevlådor i den här IMAP-servern"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:676 imap/message.c:577 muttlib.c:1144
+#: imap/imap.c:632 imap/message.c:579 muttlib.c:1144
 #, c-format
 msgid "Create %s?"
 msgstr "Skapa %s?"
 
-#: imap/imap.c:712
+#: imap/imap.c:668
 msgid "Closing connection to IMAP server..."
 msgstr "Stänger förbindelse till IMAP-server..."
 
-#: imap/imap.c:875 pop.c:458
+#: imap/imap.c:831 pop.c:458
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Märker %d meddelanden som slängda..."
 
-#: imap/imap.c:894
+#: imap/imap.c:850
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Sparar statusflagga för meddelanden... [%d/%d]"
 
-#: imap/imap.c:951
+#: imap/imap.c:907
 msgid "Expunging messages from server..."
 msgstr "Tar bort meddelanden från server..."
 
-#: imap/imap.c:1227
+#: imap/imap.c:1183
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Prenumerera på %s..."
 
-#: imap/imap.c:1229
+#: imap/imap.c:1185
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Avslutar prenumeration på %s..."
@@ -1249,16 +1241,16 @@ msgstr "Hämtar meddelande..."
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Brevets index är fel. Försök att öppna brevlådan igen."
 
-#: imap/message.c:467
+#: imap/message.c:468
 msgid "Uploading message ..."
 msgstr "Skickar meddelande ..."
 
-#: imap/message.c:555
+#: imap/message.c:557
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Kopierar %d meddelanden till %s..."
 
-#: imap/message.c:559
+#: imap/message.c:561
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Kopierar meddelande %d till %s...<"
@@ -2450,7 +2442,7 @@ msgstr "Du är på sista meddelandet."
 msgid "You are on the first entry."
 msgstr "Du är på första meddelandet."
 
-#: menu.c:702 pattern.c:1085
+#: menu.c:702 pattern.c:1229
 msgid "Search for: "
 msgstr "Leta efter: "
 
@@ -2458,11 +2450,11 @@ msgstr "Leta efter: "
 msgid "Reverse search for: "
 msgstr "Leta efter i omvänd ordning: "
 
-#: menu.c:713 pattern.c:1118
+#: menu.c:713 pattern.c:1262
 msgid "No search pattern."
 msgstr "Inget mönster för sökning."
 
-#: menu.c:743 pager.c:1839 pager.c:1855 pager.c:1943 pattern.c:1183
+#: menu.c:743 pager.c:1837 pager.c:1853 pager.c:1941 pattern.c:1327
 msgid "Not found."
 msgstr "Hittades inte."
 
@@ -2545,109 +2537,109 @@ msgstr "Ansluter till %s..."
 msgid "Could not connect to %s (%s)."
 msgstr "Kunde inte öppna förbindelse med %s (%s)."
 
-#: mutt_ssl.c:105
+#: mutt_ssl.c:117
 msgid "Failed to find enough entropy on your system"
 msgstr "Kunde inte hitta tillräckligt bra slumptal"
 
-#: mutt_ssl.c:120
+#: mutt_ssl.c:132
 #, c-format
 msgid "Filling entropy pool: %s...\n"
 msgstr "Fyller på i slumptalsreserven: %s...\n"
 
-#: mutt_ssl.c:128
+#: mutt_ssl.c:140
 #, c-format
 msgid "%s has insecure permissions!"
 msgstr "Rättigheterna för %s är inte säkra!"
 
-#: mutt_ssl.c:147
+#: mutt_ssl.c:159
 msgid "SSL disabled due the lack of entropy"
 msgstr "SSL avstängd på grund av brist på bra slumptal"
 
-#: mutt_ssl.c:234
+#: mutt_ssl.c:246
 msgid "Unable to get certificate from peer"
 msgstr "Kan inte hämta certifikat från 'peer'"
 
-#: mutt_ssl.c:245
+#: mutt_ssl.c:257
 #, c-format
 msgid "SSL connection using %s (%s)"
 msgstr "Ansluter (SSL) med hjälp av %s (%s)"
 
-#: mutt_ssl.c:275
+#: mutt_ssl.c:287
 msgid "Unknown"
 msgstr "Okänd"
 
-#: mutt_ssl.c:300
+#: mutt_ssl.c:312
 msgid "[unable to calculate]"
 msgstr "[kan inte beräkna]"
 
-#: mutt_ssl.c:318
+#: mutt_ssl.c:330
 msgid "[invalid date]"
 msgstr "[ogiltigt datum]"
 
-#: mutt_ssl.c:393
+#: mutt_ssl.c:405
 msgid "Server certificate is not yet valid"
 msgstr "Certifikatet är inte giltigt än"
 
-#: mutt_ssl.c:400
+#: mutt_ssl.c:412
 msgid "Server certificate has expired"
 msgstr "Certifikatet är inte längre giltigt"
 
-#: mutt_ssl.c:473
+#: mutt_ssl.c:485
 msgid "This certificate belongs to:"
 msgstr "Certifikatet tillhör:"
 
-#: mutt_ssl.c:483
+#: mutt_ssl.c:495
 msgid "This certificate was issued by:"
 msgstr "Certifikatet utfärdat av:"
 
-#: mutt_ssl.c:493
+#: mutt_ssl.c:505
 msgid "This certificate is valid"
 msgstr "Certifikatet är giltigt"
 
-#: mutt_ssl.c:494
+#: mutt_ssl.c:506
 #, c-format
 msgid "   from %s"
 msgstr "   från %s"
 
-#: mutt_ssl.c:496
+#: mutt_ssl.c:508
 #, c-format
 msgid "     to %s"
 msgstr "     till %s"
 
-#: mutt_ssl.c:502
+#: mutt_ssl.c:514
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "Fingeravtryck: %s"
 
-#: mutt_ssl.c:504
+#: mutt_ssl.c:516
 msgid "SSL Certificate check"
 msgstr "Kontroll av SSL-certifikat"
 
-#: mutt_ssl.c:507
+#: mutt_ssl.c:519
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(f)örkasta, (g)odkänn den här gången, godkänn (v)arje gång"
 
-#: mutt_ssl.c:508
+#: mutt_ssl.c:520
 msgid "roa"
 msgstr "fgv"
 
-#: mutt_ssl.c:512
+#: mutt_ssl.c:524
 msgid "(r)eject, accept (o)nce"
 msgstr "(f)örkasta, (g)odkänn den här gången"
 
-#: mutt_ssl.c:513
+#: mutt_ssl.c:525
 msgid "ro"
 msgstr "fg"
 
-#: mutt_ssl.c:517 pgpkey.c:442
+#: mutt_ssl.c:529 pgpkey.c:442
 msgid "Exit  "
 msgstr "Avsluta "
 
-#: mutt_ssl.c:542
+#: mutt_ssl.c:554
 msgid "Warning: Couldn't save certificate"
 msgstr "Varning: kunde inte spara certifikat"
 
-#: mutt_ssl.c:544
+#: mutt_ssl.c:556
 msgid "Certificate saved"
 msgstr "Certifikat sparat"
 
@@ -2759,48 +2751,48 @@ msgstr "Kan inte skriva meddelandet"
 msgid "Not available in this menu."
 msgstr "Finns inte i den här menyn."
 
-#: pager.c:1366
+#: pager.c:1364
 msgid "PrevPg"
 msgstr "Föreg. sida"
 
-#: pager.c:1367
+#: pager.c:1365
 msgid "NextPg"
 msgstr "Nästa sida"
 
-#: pager.c:1371
+#: pager.c:1369
 msgid "View Attachm."
 msgstr "Visa bilaga"
 
-#: pager.c:1374
+#: pager.c:1372
 msgid "Next"
 msgstr "Nästa"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1751 pager.c:1782 pager.c:1811 pager.c:2031
+#: pager.c:1749 pager.c:1780 pager.c:1809 pager.c:2029
 msgid "Bottom of message is shown."
 msgstr "Slutet av meddelande visas."
 
-#: pager.c:1767 pager.c:1789 pager.c:1800
+#: pager.c:1765 pager.c:1787 pager.c:1798
 msgid "Top of message is shown."
 msgstr "Början av meddelande visas."
 
-#: pager.c:1873
+#: pager.c:1871
 msgid "Reverse search: "
 msgstr "Sök i omvänd ordning: "
 
-#: pager.c:1874
+#: pager.c:1872
 msgid "Search: "
 msgstr "Sök: "
 
-#: pager.c:1969
+#: pager.c:1967
 msgid "Help is currently being shown."
 msgstr "Hjälp visas just nu."
 
-#: pager.c:1998
+#: pager.c:1996
 msgid "No more quoted text."
 msgstr "ingen mer citerad text."
 
-#: pager.c:2011
+#: pager.c:2009
 msgid "No more unquoted text after quoted text."
 msgstr "Ingen mer ociterad text efter citerad text."
 
@@ -2808,79 +2800,85 @@ msgstr "Ingen mer ociterad text efter citerad text."
 msgid "multipart message has no boundary parameter!"
 msgstr "Avgränsande parameter saknas för flerpartsmeddelande!"
 
-#: pattern.c:240
+#: pattern.c:251
 #, c-format
 msgid "Error in expression: %s"
 msgstr "Fel i uttryck: %s"
 
-#: pattern.c:350
+#: pattern.c:361
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "Ogiltig dag i månaden: %s"
 
-#: pattern.c:364
+#: pattern.c:375
 #, c-format
 msgid "Invalid month: %s"
 msgstr "Ogiltig månad: %s"
 
-#: pattern.c:418
+#. getDate has its own error message, don't overwrite it here
+#: pattern.c:527
+#, fuzzy, c-format
+msgid "Invalid relative date: %s"
+msgstr "Ogiltig månad: %s"
+
+#: pattern.c:541
 msgid "error in expression"
 msgstr "fel i uttryck"
 
-#: pattern.c:603 pattern.c:711
+#: pattern.c:747 pattern.c:855
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "fel i mönster vid: %s"
 
-#: pattern.c:651
+#: pattern.c:795
 #, c-format
 msgid "%c: invalid command"
 msgstr "%c: ogiltigt kommando"
 
-#: pattern.c:657
+#: pattern.c:801
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: stöds inte i det här läget"
 
-#: pattern.c:670
+#: pattern.c:814
 msgid "missing parameter"
 msgstr "parameter saknas"
 
-#: pattern.c:686
+#: pattern.c:830
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "parentes kan inte paras ihop: %s"
 
-#: pattern.c:718
+#: pattern.c:862
 msgid "empty pattern"
 msgstr "tomt mönster"
 
-#: pattern.c:910
+#: pattern.c:1054
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "fel: okänd operation %d (var vänlig rappportera felet)."
 
-#: pattern.c:975 pattern.c:1104
+#: pattern.c:1119 pattern.c:1248
 msgid "Compiling search pattern..."
 msgstr "Kompilerar sökmönster..."
 
-#: pattern.c:989
+#: pattern.c:1133
 msgid "Executing command on matching messages..."
 msgstr "Kör kommando på passande meddelanden..."
 
-#: pattern.c:1052
+#: pattern.c:1196
 msgid "No messages matched criteria."
 msgstr "Inga meddelanden passade kriteriet."
 
-#: pattern.c:1142
+#: pattern.c:1286
 msgid "Search hit bottom without finding match"
 msgstr "Sökningen nådde slutet utan att hitta något"
 
-#: pattern.c:1153
+#: pattern.c:1297
 msgid "Search hit top without finding match"
 msgstr "Sökningen nådde början utan att hitta något"
 
-#: pattern.c:1175
+#: pattern.c:1319
 msgid "Search interrupted."
 msgstr "Sökningen avbröts."
 
@@ -3259,7 +3257,7 @@ msgstr "Uppskjutna meddelanden"
 msgid "No postponed messages."
 msgstr "Inga uppskjutna meddelanden."
 
-#: postpone.c:417 postpone.c:437 postpone.c:446
+#: postpone.c:416 postpone.c:437 postpone.c:445
 msgid "Illegal PGP header"
 msgstr "Otillåtet brevhuvud i PGP"
 
@@ -3549,56 +3547,56 @@ msgstr "Förbereder vidarebefordrat meddelande..."
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:1039
+#: send.c:1038
 msgid "Recall postponed message?"
 msgstr "Återkalla uppskjutet meddelande?"
 
-#: send.c:1272
+#: send.c:1268
 msgid "Abort unmodified message?"
 msgstr "Meddelandet har inte ändrats. Avbryt?"
 
-#: send.c:1274
+#: send.c:1270
 msgid "Aborted unmodified message."
 msgstr "Meddelandet har inte ändrats. Avbröt."
 
 #. abort
-#: send.c:1315
+#: send.c:1311
 msgid "Mail not sent."
 msgstr "Brevet skickades inte."
 
-#: send.c:1341
+#: send.c:1337
 msgid "Message postponed."
 msgstr "Meddelande uppskjutet."
 
-#: send.c:1350
+#: send.c:1346
 msgid "No recipients are specified!"
 msgstr "Inga mottagare angivna!"
 
-#: send.c:1355
+#: send.c:1351
 msgid "No recipients were specified."
 msgstr "Inga mottagare angavs."
 
-#: send.c:1361
+#: send.c:1357
 msgid "No subject, abort sending?"
 msgstr "Ärende saknas, avbryt sändning?"
 
-#: send.c:1365
+#: send.c:1361
 msgid "No subject specified."
 msgstr "Ärende saknas."
 
-#: send.c:1412
+#: send.c:1408
 msgid "Sending message..."
 msgstr "Skickar meddelande..."
 
-#: send.c:1539
+#: send.c:1535
 msgid "Could not send the message."
 msgstr "Kunde inte skicka meddelandet."
 
-#: send.c:1544
+#: send.c:1540
 msgid "Mail sent."
 msgstr "Brevet har skickats."
 
-#: send.c:1544
+#: send.c:1540
 msgid "Sending in background."
 msgstr "Skickar i bakgrunden."
 
@@ -3660,6 +3658,16 @@ msgstr "Första meddelandet är inte synligt med begränsad vy"
 #: thread.c:719
 msgid "Parent message is not available."
 msgstr "Första meddelandet är inte tillgängligt."
+
+#~ msgid "MIC algorithm: "
+#~ msgstr "MIC-algoritm: "
+
+#~ msgid "This doesn't make sense if you don't want to sign the message."
+#~ msgstr "Det här saknar relevans om du inte vill signera meddelandet."
+
+#~ msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
+#~ msgstr ""
+#~ "Okänd MIC-algoritm, följande är kända: pgp-md5, pgp-sha1 och pgp-rmd160"
 
 #~ msgid ""
 #~ "\n"
