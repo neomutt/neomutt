@@ -1,4 +1,4 @@
-IMAP enhancements/fixes, by priority:
+IMAP enhancements, by priority:
 
 [ -- socket -- ]
 * Smarter connection code. Mutt should handle dropped connections/routing
@@ -18,23 +18,17 @@ IMAP enhancements/fixes, by priority:
   Possibly we could use a tree-view in the browser, w/ expand, collapse.
   For low-bandwidth lines we could defer getting subfolder lists until the
   folder is expanded.
+  Current thought is that <ENTER> will select a mailbox if it doesn't have
+  subfolders or enter the folder if it does. If it has messages and subfolders,
+  we'll use a new key to select it as a mailbox.
+  We should maybe add a new imap_format string for IMAP browsing, without all
+  the stat variables but with tags like how many messages are in the folders,
+  how many subfolders, that weird \Marked tag, etc.
+ 
+  PRIORITY: [** ]
 
-[ -- new features -- ]
+[ -- speed -- ]
 * Implement server message COPY, instead of FETCH/APPEND.
-
-  PRIORITY: [** ]
-
-* Implement the received folder on IMAP. (Wait on COPY).
-
-  PRIORITY: [** ]
-
-* Commands for creating/deleting folders on the server, since users may not
-  otherwise be able to do this on IMAP servers.
-
-  PRIORITY: [** ]
-
-* Implement READ-ONLY support, and the x (quit without saving changes)
-  command.
 
   PRIORITY: [** ]
 
@@ -54,5 +48,20 @@ IMAP enhancements/fixes, by priority:
 
   PRIORITY: [*  ]
 
+[ -- new features -- ]
+* Implement the received folder on IMAP. (Wait on COPY).
+
+  PRIORITY: [** ]
+
+* Commands for creating/deleting folders on the server, since users may not
+  otherwise be able to do this on IMAP servers.
+
+  PRIORITY: [** ]
+
+* Implement READ-ONLY support, and the x (quit without saving changes)
+  command.
+
+  PRIORITY: [** ]
+
 Brendan Cully <brendan@kublai.com>
-Updated: 19990904
+Updated: 19990906

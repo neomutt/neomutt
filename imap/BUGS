@@ -1,8 +1,6 @@
-* Mutt doesn't handle timeouts or dropped connections gracefully.
+In no particular order:
 
-* Mutt appends a '/' to $folder even when it is just '{server}', causing some
-  servers to look for folders off the root of the server instead of in the
-  home namespace.
+* Mutt doesn't handle timeouts or dropped connections gracefully.
 
 * Have a hard time when the home namespace isn't default "".
 
@@ -13,4 +11,4 @@
 * The mutt_pretty routines don't work well when the delimiter isn't '/'.
 
 Brendan Cully <brendan@kublai.com>
-Updated 19990903
+Updated 19990906

@@ -21,6 +21,7 @@
 #include "mutt_curses.h"
 #include "sort.h"
 #include "mapping.h"
+#include "mx.h"
 
 #include <string.h>
 #include <ctype.h>
@@ -204,8 +205,13 @@ status_format_str (char *buf, size_t buflen, char op, const char *src,
 
       if (Context)
       {
-	i = option(OPTATTACHMSG) ? 3 : ((Context->readonly || Context->dontwrite) ? 2 :
-					(Context->changed || Context->deleted) ? 1 : 0);
+	i = option(OPTATTACHMSG) ? 3 : ((Context->readonly ||
+          Context->dontwrite) ? 2 : (Context->changed || (
+#ifdef USE_IMAP
+        /* deleted doesn't necessarily mean changed in IMAP */
+          Context->magic != M_IMAP &&
+#endif
+          Context->deleted)) ? 1 : 0);
       }
       
       if (!StChars)

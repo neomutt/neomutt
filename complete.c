@@ -51,20 +51,22 @@ int mutt_complete (char *s, size_t slen)
   if (*s == '=' || *s == '+')
   {
     if (s[1])
-      snprintf (imap_path, sizeof(imap_path), "%s/%s", NONULL(Maildir),
-                s+1);
+    {
+      /* don't append '/' if Maildir is {host} only */
+      if (mx_is_imap (NONULL (Maildir)) && Maildir[strlen (Maildir)-1] == '}')
+        snprintf (imap_path, sizeof (imap_path), "%s%s", Maildir, s+1);
+      else
+        snprintf (imap_path, sizeof (imap_path), "%s/%s", NONULL (Maildir),
+          s+1);
+    }
     else
       strfcpy (imap_path, NONULL(Maildir), sizeof(imap_path));
   }
   else
-  {
     strfcpy (imap_path, s, sizeof(imap_path));
-  }
 
   if (mx_is_imap (imap_path))
-  {
     return imap_complete (s, slen, imap_path);
-  }
 #endif
   
   if (*s == '=' || *s == '+')

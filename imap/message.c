@@ -32,9 +32,11 @@
 #include "pgp.h"
 #endif
 
-static void flush_buffer(char *buf, size_t *len, CONNECTION *conn);
-static int msg_parse_fetch (IMAP_HEADER_INFO *h, char *s);
-static char* msg_parse_flags (IMAP_FLAGS* flags, char* s);
+static void flush_buffer(char* buf, size_t* len, CONNECTION* conn);
+static int msg_has_flag (LIST* flag_list, const char* flag);
+static IMAP_HEADER* msg_new_header (void);
+static int msg_parse_fetch (IMAP_HEADER* h, char* s);
+static char* msg_parse_flags (IMAP_HEADER* h, char* s);
 
 /* imap_read_headers:
  * Changed to read many headers instead of just one. It will return the
@@ -52,11 +54,29 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
   long ploc;
   long bytes = 0;
   int msgno,fetchlast;
-  IMAP_HEADER_INFO *h0,*h,*htemp;
-#define WANT_HEADERS  "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE IN-REPLY-TO REPLY-TO" 
-  const char *want_headers = WANT_HEADERS;
+  IMAP_HEADER *h, *h0;
+  const char *want_headers = "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE IN-REPLY-TO REPLY-TO";
   int using_body_peek = 0;
   fetchlast = 0;
+
+  /* define search string */
+  if (mutt_bit_isset(CTX_DATA->capabilities,IMAP4REV1))
+  {
+    snprintf(hdrreq, sizeof (hdrreq), "BODY.PEEK[HEADER.FIELDS (%s)]", 
+      want_headers); 
+    using_body_peek = 1;
+  } 
+  else if (mutt_bit_isset(CTX_DATA->capabilities,IMAP4))
+  {
+    snprintf(hdrreq, sizeof (hdrreq), "RFC822.HEADER.LINES (%s)", 
+      want_headers);
+  }
+  else
+  {	/* Unable to fetch headers for lower versions */
+    mutt_error _("Unable to fetch headers from this IMAP server version.");
+    sleep (1);	/* pause a moment to let the user see the error */
+    return -1;
+  }
 
   /*
    * We now download all of the headers into one file. This should be
@@ -64,13 +84,11 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
    */
   mutt_mktemp (tempfile);
   if (!(fp = safe_fopen (tempfile, "w+")))
-  {
-    return (-1);
-  }
+    return -1;
 
-  h0 = (IMAP_HEADER_INFO*) safe_malloc(sizeof(IMAP_HEADER_INFO));
-  h = h0;
-  for (msgno=msgbegin; msgno <= msgend ; msgno++)
+  h = msg_new_header ();
+  h0 = h;
+  for (msgno = msgbegin; msgno <= msgend ; msgno++)
   {
     snprintf (buf, sizeof (buf), _("Fetching message headers... [%d/%d]"), 
       msgno + 1, msgend + 1);
@@ -86,26 +104,9 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
        * If we get more messages while doing this, we make another
        * request for all the new messages.
        */
-      if (mutt_bit_isset(CTX_DATA->capabilities,IMAP4REV1))
-      {
-	snprintf(hdrreq, sizeof (hdrreq), "BODY.PEEK[HEADER.FIELDS (%s)]", 
-		want_headers); 
-	using_body_peek = 1;
-      } 
-      else if (mutt_bit_isset(CTX_DATA->capabilities,IMAP4))
-      {
-	snprintf(hdrreq, sizeof (hdrreq), "RFC822.HEADER.LINES (%s)", 
-		want_headers);
-      }
-      else
-      {	/* Unable to fetch headers for lower versions */
-	mutt_error _("Unable to fetch headers from this IMAP server version.");
-	sleep (1);	/* pause a moment to let the user see the error */
-	return (-1);
-      }
       snprintf (buf, sizeof (buf), 
-		"%s FETCH %d:%d (FLAGS INTERNALDATE RFC822.SIZE %s)\r\n", 
-		seq, msgno + 1, msgend + 1, hdrreq);
+	"%s FETCH %d:%d (UID FLAGS INTERNALDATE RFC822.SIZE %s)\r\n", 
+	seq, msgno + 1, msgend + 1, hdrreq);
 
       mutt_socket_write (CTX_DATA->conn, buf);
       fetchlast = msgend + 1;
@@ -114,9 +115,7 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
     do
     {
       if (mutt_socket_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
-      {
-        return (-1);
-      }
+        return -1;
 
       if (buf[0] == '*')
       {
@@ -143,7 +142,7 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
 	    if (!hdr)
             {
               imap_error ("imap_read_headers()", buf);
-              return (-1);
+              return -1;
             }
             strncpy(fpc,pc,hdr-pc);
             fpc += hdr-pc;
@@ -153,25 +152,24 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
 	    if (imap_get_literal_count(buf, &bytes) < 0)
             {
               imap_error ("imap_read_headers()", buf);
-              return (-1);
+              return -1;
             }
             imap_read_bytes (fp, CTX_DATA->conn, bytes);
             if (mutt_socket_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
-            {
-              return (-1);
-            }
+              return -1;
+
             pc = buf;
           }
         }
         else if (imap_handle_untagged (CTX_DATA, buf) != 0)
-          return (-1);
+          return -1;
       }
     }
     while ((msgno + 1) >= fetchlast && mutt_strncmp (seq, buf, SEQLEN) != 0);
 
     h->content_length = -bytes;
     if (msg_parse_fetch (h, fetchbuf) == -1)
-      return (-1);
+      return -1;
 
     /* subtract the header length; the total message size will be
        added to this */
@@ -185,12 +183,12 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
       ((IMAP_DATA *) ctx->data)->status = 0;
     }
 
-    h->next=safe_malloc(sizeof(IMAP_HEADER_INFO));
-    h=h->next;
+    h->next = msg_new_header ();
+    h = h->next;
   }
 
   rewind(fp);
-  h=h0;
+  h = h0;
 
   /*
    * Now that we have all the header information, we can tell mutt about
@@ -204,21 +202,22 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
 
     ctx->hdrs[msgno]->env = mutt_read_rfc822_header (fp, ctx->hdrs[msgno], 0);
     ploc=ftell(fp);
-    ctx->hdrs[msgno]->read = h->flags.read;
-    ctx->hdrs[msgno]->old = h->flags.old;
-    ctx->hdrs[msgno]->deleted = h->flags.deleted;
-    ctx->hdrs[msgno]->flagged = h->flags.flagged;
-    ctx->hdrs[msgno]->replied = h->flags.replied;
-    ctx->hdrs[msgno]->changed = h->flags.changed;
-    ctx->hdrs[msgno]->server_flags = h->flags.server_flags;
+    ctx->hdrs[msgno]->read = h->read;
+    ctx->hdrs[msgno]->old = h->old;
+    ctx->hdrs[msgno]->deleted = h->deleted;
+    ctx->hdrs[msgno]->flagged = h->flagged;
+    ctx->hdrs[msgno]->replied = h->replied;
+    ctx->hdrs[msgno]->changed = h->changed;
     ctx->hdrs[msgno]->received = h->received;
     ctx->hdrs[msgno]->content->length = h->content_length;
+    ctx->hdrs[msgno]->data = (void *) (h->data);
 
     mx_update_context (ctx); /* increments ->msgcount */
 
-    htemp=h;
-    h=h->next;
-    safe_free ((void **) &htemp);
+    h0 = h;
+    h = h->next;
+    /* hdata is freed later */
+    safe_free ((void **) &h0);
   }
   fclose(fp);
   unlink(tempfile);
@@ -318,35 +317,38 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	    pc = buf;
 	  }
           /* UW-IMAP will provide a FLAGS update here if the FETCH causes a
-           * change (eg from \Unseen to \Seen) */
-          else if (strncasecmp ("FLAGS", pc, 5) == 0)
+           * change (eg from \Unseen to \Seen).
+           * Uncommitted changes in mutt take precedence. If we decide to
+           * incrementally update flags later, this won't stop us syncing */
+          else if ((strncasecmp ("FLAGS", pc, 5) == 0) &&
+            !ctx->hdrs[msgno]->changed)
           {
-	    IMAP_FLAGS flags;
+	    IMAP_HEADER* newh;
             HEADER* h = ctx->hdrs[msgno];
 
-            flags.server_flags = NULL;
+            newh = msg_new_header ();
 
             dprint (2, (debugfile, "imap_fetch_message: parsing FLAGS\n"));
-            if ((pc = msg_parse_flags (&flags, pc)) == NULL)
+            if ((pc = msg_parse_flags (newh, pc)) == NULL)
               return -1;
 
             /* update context sums */
-            ctx->new += ((flags.read | flags.old) ? 0 : 1) -
+            ctx->new += ((newh->read | newh->old) ? 0 : 1) -
               ((h->read | h->old) ? 0 : 1);
-            ctx->unread += h->read - flags.read;
-            ctx->deleted += h->deleted = flags.deleted;
-            ctx->flagged += h->flagged - flags.flagged;
+            ctx->unread += h->read - newh->read;
+            ctx->deleted += h->deleted = newh->deleted;
+            ctx->flagged += h->flagged - newh->flagged;
 
             /* now commit the new flags */
-            ctx->hdrs[msgno]->read = flags.read;
-            ctx->hdrs[msgno]->old = flags.old;
-            ctx->hdrs[msgno]->deleted = flags.deleted;
-            ctx->hdrs[msgno]->flagged = flags.flagged;
-            ctx->hdrs[msgno]->replied = flags.replied;
-            ctx->hdrs[msgno]->changed = flags.changed;
+            ctx->hdrs[msgno]->read = newh->read;
+            ctx->hdrs[msgno]->old = newh->old;
+            ctx->hdrs[msgno]->deleted = newh->deleted;
+            ctx->hdrs[msgno]->flagged = newh->flagged;
+            ctx->hdrs[msgno]->replied = newh->replied;
 
-            mutt_free_list (&(h->server_flags));
-            h->server_flags = flags.server_flags;
+            mutt_free_list (&(HEADER_DATA(h)->keywords));
+            HEADER_DATA(h)->keywords = newh->data->keywords;
+            safe_free ((void**) &newh);
           }
 	}
       }
@@ -505,8 +507,79 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   return 0;
 }
 
+/* imap_add_keywords: concatenate custom IMAP tags to list, if they
+ *   appear in the folder flags list. Why wouldn't they? */
+void imap_add_keywords (char* s, HEADER* h, LIST* mailbox_flags)
+{
+  LIST *keywords;
+
+  if (!mailbox_flags || !HEADER_DATA(h) || !HEADER_DATA(h)->keywords)
+    return;
+
+  keywords = HEADER_DATA(h)->keywords->next;
+
+  while (keywords)
+  {
+    if (msg_has_flag (mailbox_flags, keywords->data))
+    {
+      strcat (s, keywords->data);
+      strcat (s, " ");
+    }
+    keywords = keywords->next;
+  }
+}
+
+/* imap_free_header_data: free IMAP_HEADER structure */
+void imap_free_header_data (void** data)
+{
+  /* this should be safe even if the list wasn't used */
+  mutt_free_list (&(((IMAP_HEADER_DATA*) *data)->keywords));
+
+  safe_free (data);
+}
+
+/* msg_new_header: allocate and initialise a new IMAP_HEADER structure */
+static IMAP_HEADER* msg_new_header (void)
+{
+  IMAP_HEADER* h;
+
+  h = (IMAP_HEADER*) safe_malloc (sizeof (IMAP_HEADER));
+  h->data = (IMAP_HEADER_DATA*) safe_malloc (sizeof (IMAP_HEADER_DATA));
+
+  /* lists aren't allocated unless they're used */
+  h->data->keywords = NULL;
+
+  h->deleted = 0;
+  h->flagged = 0;
+  h->replied = 0;
+  h->read = 0;
+  h->old = 0;
+  h->changed = 0;
+
+  return h;
+}
+
+/* msg_has_flag: do a caseless comparison of the flag against a flag list,
+ *   return 1 if found or flag list has '\*', 0 otherwise */
+static int msg_has_flag (LIST* flag_list, const char* flag)
+{
+  if (!flag_list)
+    return 0;
+
+  flag_list = flag_list->next;
+  while (flag_list)
+  {
+    if (!mutt_strncasecmp (flag_list->data, flag, strlen (flag_list->data)))
+      return 1;
+
+    flag_list = flag_list->next;
+  }
+
+  return 0;
+}
+
 /* msg_parse_fetch: handle headers returned from header fetch */
-static int msg_parse_fetch (IMAP_HEADER_INFO *h, char *s)
+static int msg_parse_fetch (IMAP_HEADER *h, char *s)
 {
   char tmp[SHORT_STRING];
   char *ptmp;
@@ -520,9 +593,16 @@ static int msg_parse_fetch (IMAP_HEADER_INFO *h, char *s)
 
     if (mutt_strncasecmp ("FLAGS", s, 5) == 0)
     {
-      h->flags.server_flags = NULL;
-      if ((s = msg_parse_flags (&(h->flags), s)) == NULL)
+      if ((s = msg_parse_flags (h, s)) == NULL)
         return -1;
+    }
+    else if (mutt_strncasecmp ("UID", s, 3) == 0)
+    {
+      s += 3;
+      SKIPWS (s);
+      h->data->uid = (unsigned int) atoi (s);
+
+      s = imap_next_word (s);
     }
     else if (mutt_strncasecmp ("INTERNALDATE", s, 12) == 0)
     {
@@ -568,7 +648,7 @@ static int msg_parse_fetch (IMAP_HEADER_INFO *h, char *s)
 
 /* msg_parse_flags: fill out the message header according to the flags from the
  *   server. Expects a flags line of the form "FLAGS (flag flag ...)" */
-static char* msg_parse_flags (IMAP_FLAGS* flags, char* s)
+static char* msg_parse_flags (IMAP_HEADER* h, char* s)
 {
   int recent = 0;
 
@@ -589,36 +669,28 @@ static char* msg_parse_flags (IMAP_FLAGS* flags, char* s)
   }
   s++;
 
-  /* reset the current flags */
-  flags->deleted = 0;
-  flags->flagged = 0;
-  flags->replied = 0;
-  flags->read = 0;
-  flags->old = 0;
-  flags->changed = 0;
-
   /* start parsing */
   while (*s && *s != ')')
   {
     if (mutt_strncasecmp ("\\deleted", s, 8) == 0)
     {
       s += 8;
-      flags->deleted = 1;
+      h->deleted = 1;
     }
     else if (mutt_strncasecmp ("\\flagged", s, 8) == 0)
     {
       s += 8;
-      flags->flagged = 1;
+      h->flagged = 1;
     }
     else if (mutt_strncasecmp ("\\answered", s, 9) == 0)
     {
       s += 9;
-      flags->replied = 1;
+      h->replied = 1;
     }
     else if (mutt_strncasecmp ("\\seen", s, 5) == 0)
     {
       s += 5;
-      flags->read = 1;
+      h->read = 1;
     }
     else if (mutt_strncasecmp ("\\recent", s, 5) == 0)
     {
@@ -631,14 +703,14 @@ static char* msg_parse_flags (IMAP_FLAGS* flags, char* s)
       char ctmp;
       char* flag_word = s;
 
-      if (!flags->server_flags)
-        flags->server_flags = mutt_new_list ();
+      if (!h->data->keywords)
+        h->data->keywords = mutt_new_list ();
 
       while (*s && !ISSPACE (*s) && *s != ')')
         s++;
       ctmp = *s;
       *s = '\0';
-      mutt_add_list (flags->server_flags, flag_word);
+      mutt_add_list (h->data->keywords, flag_word);
       *s = ctmp;
     }
     SKIPWS(s);
@@ -648,8 +720,8 @@ static char* msg_parse_flags (IMAP_FLAGS* flags, char* s)
   if (*s == ')')
   {
     /* if a message is neither seen nor recent, it is OLD. */
-    if (option (OPTMARKOLD) && !recent && !(flags->read))
-      flags->old = 1;
+    if (option (OPTMARKOLD) && !recent && !(h->read))
+      h->old = 1;
     s++;
   }
   else

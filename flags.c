@@ -39,6 +39,15 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 	{
 	  h->deleted = 1;
 	  if (upd_ctx) ctx->deleted++;
+#ifdef USE_IMAP
+          /* deleted messages aren't treated as changed elsewhere so that the
+           * purge-on-sync option works correctly. This isn't applicable here */
+          if (ctx->magic == M_IMAP)
+          {
+            h->changed = 1;
+	    if (upd_ctx) ctx->changed = 1;
+          }
+#endif
 	}
       }
       else if (h->deleted)
@@ -46,7 +55,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 	h->deleted = 0;
 	if (upd_ctx) ctx->deleted--;
 #ifdef USE_IMAP
-/* if you undelete a message, the imap server will probably need to know. */
+        /* see my comment above */
 	if (ctx->magic == M_IMAP) 
 	{
 	  h->changed = 1;

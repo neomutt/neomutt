@@ -135,7 +135,8 @@ typedef struct
   unsigned char rights[(RIGHTSMAX + 7)/8];
   unsigned int newMailCount;
   IMAP_CACHE cache[IMAP_CACHE_LEN];
-  LIST *mailbox_flags;
+  /* all folder flags - system flags AND keywords */
+  LIST *flags;
 } IMAP_DATA;
 
 /* -- macros -- */
@@ -166,6 +167,8 @@ void imap_unquote_string (char *s);
 int imap_authenticate (IMAP_DATA *idata, CONNECTION *conn);
 
 /* message.c */
+void imap_add_keywords (char* s, HEADER* keywords, LIST* mailbox_flags);
+void imap_free_header_data (void** data);
 int imap_read_headers (CONTEXT* ctx, int msgbegin, int msgend);
 
 #endif

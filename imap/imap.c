@@ -50,7 +50,6 @@ static void imap_parse_capabilities (IMAP_DATA *idata, char *s);
 static int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint);
 static int imap_get_delim (IMAP_DATA *idata, CONNECTION *conn);
 static char* imap_get_flags (LIST** hflags, char* s);
-static int imap_has_flag (LIST* flag_list, const char* flag);
 static int imap_check_acl (IMAP_DATA *idata);
 static int imap_check_capabilities (IMAP_DATA *idata);
 static int imap_create_mailbox (IMAP_DATA *idata, char *mailbox);
@@ -1007,10 +1006,10 @@ int imap_open_mailbox (CONTEXT *ctx)
       else if (mutt_strncasecmp ("FLAGS", pc, 5) == 0)
       {
         /* don't override PERMANENTFLAGS */
-        if (!idata->mailbox_flags)
+        if (!idata->flags)
         {
           dprint (2, (debugfile, "Getting mailbox FLAGS\n"));
-          if ((pc = imap_get_flags (&(idata->mailbox_flags), pc)) == NULL)
+          if ((pc = imap_get_flags (&(idata->flags), pc)) == NULL)
             return -1;
         }
       }
@@ -1020,10 +1019,10 @@ int imap_open_mailbox (CONTEXT *ctx)
         dprint (2, (debugfile,
           "Getting mailbox PERMANENTFLAGS\n"));
         /* safe to call on NULL */
-        mutt_free_list (&(idata->mailbox_flags));
+        mutt_free_list (&(idata->flags));
 	/* skip "OK [PERMANENT" so syntax is the same as FLAGS */
         pc += 13;
-        if ((pc = imap_get_flags (&(idata->mailbox_flags), pc)) == NULL)
+        if ((pc = imap_get_flags (&(idata->flags), pc)) == NULL)
           return -1;
       }
       else if (imap_handle_untagged (idata, buf) != 0)
@@ -1035,11 +1034,11 @@ int imap_open_mailbox (CONTEXT *ctx)
   /* dump the mailbox flags we've found */
   if (debuglevel > 2)
   {
-    if (!idata->mailbox_flags)
+    if (!idata->flags)
       dprint (3, (debugfile, "No folder flags found\n"));
     else
     {
-      LIST* t = idata->mailbox_flags;
+      LIST* t = idata->flags;
 
       dprint (3, (debugfile, "Mailbox flags: "));
 
@@ -1118,7 +1117,7 @@ int imap_select_mailbox (CONTEXT* ctx, const char* path)
     return -1;
   }
 
-  if (imap_sync_mailbox (ctx, M_NO) < 0)
+  if (imap_sync_mailbox (ctx, 0) < 0)
     return -1;
 
   idata = CTX_DATA;
@@ -1261,44 +1260,6 @@ int imap_close_connection (CONTEXT *ctx)
   return 0;
 }
 
-/* imap_has_flag: do a caseless comparison of the flag against a flag list,
- *   return 1 if found or flag list has '\*', 0 otherwise */
-static int imap_has_flag (LIST* flag_list, const char* flag)
-{
-  if (!flag_list)
-    return 0;
-
-  flag_list = flag_list->next;
-  while (flag_list)
-  {
-    if (!mutt_strncasecmp (flag_list->data, flag, strlen (flag_list->data)))
-      return 1;
-
-    flag_list = flag_list->next;
-  }
-
-  return 0;
-}
-
-/* imap_stringify_flaglist: concatenate custom IMAP tags to list, if they
- *   appear in the folder flags list. Why wouldn't they? */
-static void imap_stringify_flaglist (LIST* flags, LIST* mailbox_flags, char *s)
-{
-  if (!mailbox_flags || !flags)
-    return;
-
-  flags = flags->next;
-  while (flags)
-  {
-    if (imap_has_flag (mailbox_flags, flags->data))
-    {
-      strcat (s, flags->data);
-      strcat (s, " ");
-    }
-    flags = flags->next;
-  }
-}
-
 static void imap_set_flag (CONTEXT *ctx, int aclbit, int flag, const char *str, 
   char *flags)
 {
@@ -1310,7 +1271,7 @@ static void imap_set_flag (CONTEXT *ctx, int aclbit, int flag, const char *str,
 /* update the IMAP server to reflect message changes done within mutt.
  * Arguments
  *   ctx: the current context
- *   expunge: M_YES or M_NO - do expunge? */
+ *   expunge: 0 or 1 - do expunge? */
 int imap_sync_mailbox (CONTEXT *ctx, int expunge)
 {
   char seq[8];
@@ -1321,7 +1282,7 @@ int imap_sync_mailbox (CONTEXT *ctx, int expunge)
   /* save status changes */
   for (n = 0; n < ctx->msgcount; n++)
   {
-    if (ctx->hdrs[n]->deleted || ctx->hdrs[n]->changed)
+    if (ctx->hdrs[n]->changed)
     {
       snprintf (buf, sizeof (buf), _("Saving message status flags... [%d/%d]"),
 		n+1, ctx->msgcount);
@@ -1339,23 +1300,42 @@ int imap_sync_mailbox (CONTEXT *ctx, int expunge)
         flags);
 
       /* now make sure we don't lose custom tags */
-      imap_stringify_flaglist (ctx->hdrs[n]->server_flags,
-        CTX_DATA->mailbox_flags, flags);
+      imap_add_keywords (flags, ctx->hdrs[n], CTX_DATA->flags);
       
       mutt_remove_trailing_ws (flags);
       
       imap_make_sequence (seq, sizeof (seq));
-      snprintf (buf, sizeof (buf), "%s STORE %d FLAGS.SILENT (%s)\r\n", seq,
-        ctx->hdrs[n]->index + 1, NONULL(flags));
+      /* UW-IMAP is OK with null flags, Cyrus isn't. The only solution is to
+       * explicitly revoke all system flags (if we have permission) */
+      if (!*flags)
+      {
+        imap_set_flag (ctx, IMAP_ACL_SEEN, 1, "\\Seen ", flags);
+        imap_set_flag (ctx, IMAP_ACL_WRITE, 1, "\\Flagged ", flags);
+        imap_set_flag (ctx, IMAP_ACL_WRITE, 1, "\\Answered ", flags);
+        imap_set_flag (ctx, IMAP_ACL_DELETE, 1, "\\Deleted ", flags);
+
+        mutt_remove_trailing_ws (flags);
+
+        snprintf (buf, sizeof (buf), "%s STORE %d -FLAGS.SILENT (%s)\r\n", seq,
+          ctx->hdrs[n]->index + 1, flags);
+      }
+      else
+        snprintf (buf, sizeof (buf), "%s STORE %d FLAGS.SILENT (%s)\r\n", seq,
+          ctx->hdrs[n]->index + 1, flags);
       if (imap_exec (buf, sizeof (buf), CTX_DATA, seq, buf, 0) != 0)
       {
         imap_error ("imap_sync_mailbox()", buf);
-        return (-1);
+        /* Give up on this message if we pass here again */
+        ctx->hdrs[n]->changed = 0;
+        return -1;
       }
+
+      ctx->hdrs[n]->changed = 0;
     }
   }
+  ctx->changed = 0;
 
-  if (expunge == M_YES)
+  if (expunge == 1)
   {
     if (mutt_bit_isset(CTX_DATA->rights, IMAP_ACL_DELETE))
     {
@@ -1384,27 +1364,6 @@ int imap_sync_mailbox (CONTEXT *ctx, int expunge)
   return 0;
 }
 
-/* commit changes and terminate connection */
-static int imap_close_mailbox (IMAP_DATA *idata)
-{
-  char seq[8];
-  char buf[LONG_STRING];
-
-  /* tell the server to commit changes */
-  mutt_message _("Closing mailbox...");
-  imap_make_sequence (seq, sizeof (seq));
-  snprintf (buf, sizeof (buf), "%s CLOSE\r\n", seq);
-  if (imap_exec (buf, sizeof (buf), idata, seq, buf, 0) != 0)
-  {
-    imap_error ("imap_close_mailbox()", buf);
-    idata->status = IMAP_FATAL;
-    return (-1);
-  }
-  idata->state = IMAP_AUTHENTICATED;
-  return 0;
-}
-
-
 void imap_fastclose_mailbox (CONTEXT *ctx)
 {
   int i;
@@ -1414,8 +1373,11 @@ void imap_fastclose_mailbox (CONTEXT *ctx)
     return;
 
   if ((CTX_DATA->state == IMAP_SELECTED) && (ctx == CTX_DATA->selected_ctx))
-    if (imap_close_mailbox (CTX_DATA) != 0)
-      return;
+    CTX_DATA->state = IMAP_AUTHENTICATED;
+
+  /* free IMAP part of headers */
+  for (i = 0; i < ctx->msgcount; i++)
+    imap_free_header_data (&(ctx->hdrs[i]->data));
 
   for (i = 0; i < IMAP_CACHE_LEN; i++)
   {

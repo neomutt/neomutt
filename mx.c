@@ -730,7 +730,7 @@ static int sync_mailbox (CONTEXT *ctx)
 #ifdef USE_IMAP
     case M_IMAP:
       /* extra argument means EXPUNGE */
-      rc = imap_sync_mailbox (ctx, M_YES);
+      rc = imap_sync_mailbox (ctx, 1);
       break;
 #endif /* USE_IMAP */
   }
@@ -862,6 +862,14 @@ int mx_close_mailbox (CONTEXT *ctx)
     return 0;
   }
   
+#ifdef USE_IMAP
+  /* allow IMAP to preserve the deleted flag across sessions */
+  if (ctx->magic == M_IMAP)
+  {
+    if (imap_sync_mailbox (ctx, purge) == -1)
+      return -1;
+  }
+#endif
   if (!purge)
   {
     for (i = 0; i < ctx->msgcount; i++)
@@ -875,6 +883,11 @@ int mx_close_mailbox (CONTEXT *ctx)
       return (-1);
   }
 
+#ifdef USE_IMAP
+  if (ctx->magic == M_IMAP && !purge)
+    mutt_message (_("%d kept."), ctx->msgcount);
+  else
+#endif
   if (move_messages)
     mutt_message (_("%d kept, %d moved, %d deleted."),
 		  ctx->msgcount - ctx->deleted, read_msgs, ctx->deleted);
@@ -979,6 +992,7 @@ void mx_update_tables(CONTEXT *ctx, int committing)
 int mx_sync_mailbox (CONTEXT *ctx)
 {
   int rc, i;
+  int purge = 1;
 
   if (ctx->dontwrite)
   {
@@ -1011,22 +1025,40 @@ int mx_sync_mailbox (CONTEXT *ctx)
     snprintf (buf, sizeof (buf), ctx->deleted == 1
 	     ? _("Purge %d deleted message?") : _("Purge %d deleted messages?"),
 	      ctx->deleted);
-    if ((rc = query_quadoption (OPT_DELETE, buf)) < 0)
+    if ((purge = query_quadoption (OPT_DELETE, buf)) < 0)
       return (-1);
-    else if (rc == M_NO)
+    else if (purge == M_NO)
     {
       if (!ctx->changed)
 	return 0; /* nothing to do! */
-      for (i = 0 ; i < ctx->msgcount ; i++)
-	ctx->hdrs[i]->deleted = 0;
-      ctx->deleted = 0;
+#ifdef USE_IMAP
+      /* let IMAP servers hold on to D flags */
+      if (ctx->magic != M_IMAP)
+#endif
+      {
+        for (i = 0 ; i < ctx->msgcount ; i++)
+          ctx->hdrs[i]->deleted = 0;
+        ctx->deleted = 0;
+      }
     }
   }
 
-  if ((rc = sync_mailbox (ctx)) == 0)
+#ifdef USE_IMAP
+  if (ctx->magic == M_IMAP)
+    rc = imap_sync_mailbox (ctx, purge);
+  else
+#endif
+  rc = sync_mailbox (ctx);
+  if (rc == 0)
   {
+#ifdef USE_IMAP
+    if (ctx->magic == M_IMAP && !purge)
+      mutt_message (_("%d kept."), ctx->msgcount);
+    else
+#endif
     mutt_message (_("%d kept, %d deleted."), ctx->msgcount - ctx->deleted,
-		  ctx->deleted);
+      ctx->deleted);
+
     sleep (1); /* allow the user time to read the message */
 
     if (ctx->msgcount == ctx->deleted &&
@@ -1038,8 +1070,12 @@ int mx_sync_mailbox (CONTEXT *ctx)
       return 0;
     }
 
-    mx_update_tables(ctx, 1);
-    mutt_sort_headers (ctx, 1); /* rethread from scratch */
+    /* if we haven't deleted any messages, we don't need to resort */
+    if (purge)
+    {
+      mx_update_tables(ctx, 1);
+      mutt_sort_headers (ctx, 1); /* rethread from scratch */
+    }
   }
 
   return (rc);

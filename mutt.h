@@ -585,7 +585,7 @@ typedef struct header
 #endif
 
 #ifdef USE_IMAP
-  LIST *server_flags;	/* server custom flags, which should be preserved */
+  void *data;            /* driver-specific data (only used by IMAP */
 #endif
 } HEADER;
 

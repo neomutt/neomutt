@@ -7,5 +7,4 @@ EXTRA_DIST = BUGS TODO
 noinst_LIBRARIES = libimap.a
 noinst_HEADERS = imap_private.h imap_socket.h md5.h message.h
 
-libimap_a_SOURCES = imap.c imap.h auth.c browse.c md5c.c socket.c \
-	message.c
+libimap_a_SOURCES = auth.c browse.c imap.c imap.h md5c.c message.c socket.c

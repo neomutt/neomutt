@@ -22,8 +22,17 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H 1
 
-/* Data from the FLAGS response */
-typedef struct imap_flags
+/* -- data structures -- */
+/* IMAP-specific header data, stored as HEADER->data */
+typedef struct imap_header_data
+{
+  unsigned int uid;	/* 32-bit Message UID */
+  LIST *keywords;
+} IMAP_HEADER_DATA;
+
+/* Linked list to hold header information while downloading message
+ * headers */
+typedef struct imap_header
 {
   unsigned int read : 1;
   unsigned int old : 1;
@@ -32,19 +41,14 @@ typedef struct imap_flags
   unsigned int replied : 1;
   unsigned int changed : 1;
 
-  LIST* server_flags;	/* flags mutt doesn't use, but the server does */
-} IMAP_FLAGS;
-
-/* Linked list to hold header information while downloading message
- * headers */
-typedef struct imap_header_info
-{
-  IMAP_FLAGS flags;
+  IMAP_HEADER_DATA* data;
   unsigned int number;
 
   time_t received;
   long content_length;
-  struct imap_header_info *next;
-} IMAP_HEADER_INFO;
+  struct imap_header *next;
+} IMAP_HEADER;
 
+/* -- macros -- */
+#define HEADER_DATA(ph) ((IMAP_HEADER_DATA*) ((ph)->data))
 #endif

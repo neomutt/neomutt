@@ -159,9 +159,6 @@ void mutt_free_header (HEADER **h)
 #ifdef MIXMASTER
   mutt_free_list (&(*h)->chain);
 #endif
-#ifdef USE_IMAP
-  mutt_free_list (&(*h)->server_flags);
-#endif
   safe_free ((void **) h);
 }
 
@@ -229,7 +226,15 @@ char *mutt_expand_path (char *s, size_t slen)
     }
   }
   else if (*s == '=' || *s == '+')
+  {
+#ifdef USE_IMAP
+  /* special case: folder = {host}: don't append slash */
+  if (mx_is_imap (NONULL (Maildir)) && Maildir[strlen (Maildir) - 1] == '}')
+    snprintf (p, sizeof (p), "%s%s", NONULL (Maildir), s + 1);
+  else
+#endif
     snprintf (p, sizeof (p), "%s/%s", NONULL (Maildir), s + 1);
+  }
   else if (*s == '@')
   {
     /* elm compatibility, @ expands alias to user name */
@@ -912,4 +917,3 @@ int state_printf(STATE *s, const char *fmt, ...)
   
   return rv;
 }
-
