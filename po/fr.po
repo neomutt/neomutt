@@ -5,11 +5,10 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.2\n"
+"Project-Id-Version: Mutt 1.5.3\n"
 "POT-Creation-Date: 2002-12-17 11:35+0100\n"
-"PO-Revision-Date: 2002-12-11 14:54+0100\n"
-"Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre "
-"<vincent@vinc17.org>\n"
+"PO-Revision-Date: 2002-12-17 14:13+0100\n"
+"Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
@@ -2178,9 +2177,8 @@ msgid "jump to the next new message"
 msgstr "aller au nouveau message suivant"
 
 #: keymap_alldefs.h:112
-#, fuzzy
 msgid "jump to the next new or unread message"
-msgstr "aller au message non lu suivant"
+msgstr "aller au message nouveau ou non lu suivant"
 
 #: keymap_alldefs.h:113
 msgid "jump to the next subthread"
@@ -2219,9 +2217,8 @@ msgid "jump to the previous new message"
 msgstr "aller au nouveau message précédent"
 
 #: keymap_alldefs.h:122
-#, fuzzy
 msgid "jump to the previous new or unread message"
-msgstr "aller au message non lu précédent"
+msgstr "aller au message nouveau ou non lu précédent"
 
 #: keymap_alldefs.h:123
 msgid "jump to the previous unread message"
@@ -2433,7 +2430,7 @@ msgstr "afficher les attachements MIME"
 
 #: keymap_alldefs.h:175
 msgid "display the keycode for a key press"
-msgstr ""
+msgstr "afficher le code d'une touche enfoncée"
 
 #: keymap_alldefs.h:176
 msgid "show currently active limit pattern"
@@ -2546,7 +2543,6 @@ msgstr ""
 "sous certaines conditions ; tapez `mutt -vv' pour les détails.\n"
 
 #: main.c:50
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -2573,9 +2569,9 @@ msgid ""
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 msgstr ""
-"Copyright (C) 1996-2002 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2002 Thomas Roessler <roessler@guug.de>\n"
+"Copyright (C) 1997-2002 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Copyright (C) 1998-2002 Werner Koch <wk@isil.d.shuttle.de>\n"
 "Copyright (C) 1999-2002 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
@@ -3383,9 +3379,8 @@ msgstr ""
 "\n"
 
 #: pgp.c:703
-#, fuzzy
 msgid "Internal error. Inform <roessler@does-not-exist.org>."
-msgstr "Erreur interne. Veuillez avertir <roessler@guug.de>."
+msgstr "Erreur interne. Veuillez avertir <roessler@does-not-exist.org>."
 
 #: pgp.c:763
 msgid ""
