@@ -1031,6 +1031,11 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
   wchar_t wc;
   mbstate_t mbstate;
 
+  int wrap_cols = COLS - WrapMargin;
+  
+  if (wrap_cols <= 0)
+    wrap_cols = COLS;
+  
   /* FIXME: this should come from lineInfo */
   memset(&mbstate, 0, sizeof(mbstate));
 
@@ -1051,7 +1056,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
     k = mbrtowc (&wc, (char *)buf+ch, cnt-ch, &mbstate);
     if (k == -2 || k == -1)
     {
-      if (col + 4 > COLS)
+      if (col + 4 > wrap_cols)
 	break;
       col += 4;
       if (pa)
@@ -1111,7 +1116,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
       if (wc == ' ')
 	space = ch;
       t = wcwidth (wc);
-      if (col + t > COLS)
+      if (col + t > wrap_cols)
 	break;
       col += t;
       if (pa)
@@ -1123,7 +1128,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
     {
       space = ch;
       t = (col & ~7) + 8;
-      if (t > COLS)
+      if (t > wrap_cols)
 	break;
       if (pa)
 	for (; col < t; col++)
@@ -1133,7 +1138,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
     }
     else if (wc < 0x20 || wc == 0x7f)
     {
-      if (col + 2 > COLS)
+      if (col + 2 > wrap_cols)
 	break;
       col += 2;
       if (pa)
@@ -1141,7 +1146,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
     }
     else if (wc < 0x100)
     {
-      if (col + 4 > COLS)
+      if (col + 4 > wrap_cols)
 	break;
       col += 4;
       if (pa)
@@ -1149,7 +1154,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
     }
     else
     {
-      if (col + 1 > COLS)
+      if (col + 1 > wrap_cols)
 	break;
       ++col;
       if (pa)

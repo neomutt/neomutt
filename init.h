@@ -2324,6 +2324,12 @@ struct option_t MuttVars[] = {
   ** When set, searches will wrap around the first (or last) message. When
   ** unset, searches will not wrap.
   */
+  { "wrapmargin",	DT_NUM,	 R_PAGER, UL &WrapMargin, 0 },
+  /*
+  ** .pp
+  ** Controls the margin left at the right side of the terminal when mutt's
+  ** pager does smart wrapping.
+  */
   { "write_inc",	DT_NUM,	 R_NONE, UL &WriteInc, 10 },
   /*
   ** .pp

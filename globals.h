@@ -146,10 +146,13 @@ WHERE short ReadInc;
 WHERE short SendmailWait;
 WHERE short SleepTime INITVAL (1);
 WHERE short Timeout;
+WHERE short WrapMargin;
 WHERE short WriteInc;
+
 WHERE short ScoreThresholdDelete;
 WHERE short ScoreThresholdRead;
 WHERE short ScoreThresholdFlag;
+
 #ifdef USE_IMAP
 WHERE short ImapKeepalive;
 #endif
