@@ -1,3 +1,9 @@
+2004-01-12 20:24:09  Matt Kraai  <kraai@ftbfs.org>  (roessler)
+
+	* doc/manual.sgml.head: A newline was missing from the
+	documentation; #1754.  (The actual commit message for this
+	change is garbage; wrong window.)
+
 2004-01-12 19:59:38  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* crypt.c: Retainable PGP signatures were broken badly.  #1757.
