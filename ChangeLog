@@ -1,4 +1,17 @@
-2002-12-18 07:55:52  Thomas Roessler  <roessler@does-not-exist.org>
+2002-12-18 10:26:35  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/ja.po, po/ko.po, po/lt.po, po/nl.po, po/pl.po, po/pt_BR.po,
+	po/ru.po, po/sk.po, po/sv.po, po/tr.po, po/uk.po, po/zh_CN.po,
+	po/zh_TW.po, po/ca.po, po/cs.po, po/da.po, po/de.po, po/el.po,
+	po/eo.po, po/es.po, po/et.po, po/fr.po, po/gl.po, po/hu.po,
+	po/id.po, po/it.po: make update-po
+
+	* mkchangelog.sh: Turn on compression when getting log messages
+	from the CVS server.  (Now that I don't have the server locally,
+	bandwidth is expensive...  ;-)
+
+	* keymap.c: Make the messages from the what-key function
+	internationalizable.
 
 	* crypt.c, crypt.h, mutt_crypt.h, pgp.c, pgp.h, smime.c,
 	smime.h: Rename crypt.h to mutt_crypt.h.
@@ -37,7 +50,7 @@
 	* OPS, curs_main.c, functions.h: Experimental: Introduce
 	{next,previous}-new-then-unread.  These functions behave
 	like {next,previous}-new as long as new messages are
-	visible. When no new messages are visibuel any more, there's
+	visible. When no new messages are visible any more, there's
 	a fall-back to {next,prev}-unread.
 
 	Memo to self: Impose a weekly quota on the use of goto
