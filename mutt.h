@@ -388,6 +388,7 @@ enum
   OPTMARKERS,
   OPTMARKOLD,
   OPTMENUSCROLL,	/* scroll menu instead of implicit next-page */
+  OPTMENUMOVEOFF,	/* allow menu to scroll past last entry */
   OPTMETAKEY,		/* interpret ALT-x as ESC-x */
   OPTMETOO,
   OPTMHPURGE,

@@ -1096,6 +1096,13 @@ struct option_t MuttVars[] = {
   ** This variable controls the number of lines of context that are given
   ** when scrolling through menus. (Similar to ``$$pager_context''.)
   */
+  { "menu_move_off",	DT_BOOL, R_NONE, OPTMENUMOVEOFF, 0 },
+  /*
+  ** .pp
+  ** When \fIunset\fP, the bottom entry of menus will never scroll up past
+  ** the bottom of the screen, unless there are less entries than lines.
+  ** When \fIset\fP, the bottom entry may move off the bottom.
+  */
   { "menu_scroll",	DT_BOOL, R_NONE, OPTMENUSCROLL, 0 },
   /*
   ** .pp

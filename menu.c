@@ -374,7 +374,7 @@ void menu_check_recenter (MUTTMENU *menu)
   int c = MIN (MenuContext, menu->pagelen / 2);
   int old_top = menu->top;
 
-  if (menu->max <= menu->pagelen) /* less entries than lines */
+  if (!option (OPTMENUMOVEOFF) && menu->max <= menu->pagelen) /* less entries than lines */
   {
     if (menu->top != 0) {
       menu->top = 0;
@@ -396,8 +396,8 @@ void menu_check_recenter (MUTTMENU *menu)
       menu->top -= (menu->pagelen - c) * ((menu->top + menu->pagelen - 1 - menu->current) / (menu->pagelen - c)) - c;
   }
 
-  /* make entries stick to bottom */
-  menu->top = MIN (menu->top, menu->max - menu->pagelen);
+  if (!option (OPTMENUMOVEOFF)) /* make entries stick to bottom */
+    menu->top = MIN (menu->top, menu->max - menu->pagelen);
   menu->top = MAX (menu->top, 0);
 
   if (menu->top != old_top)
@@ -433,10 +433,13 @@ void menu_next_line (MUTTMENU *menu)
 {
   if (menu->max)
   {
-    if (menu->top + 1 < menu->max)
+    int c = MIN (MenuContext, menu->pagelen / 2);
+
+    if (menu->top + 1 < menu->max - c
+      && (option(OPTMENUMOVEOFF) || (menu->max > menu->pagelen && menu->top < menu->max - menu->pagelen)))
     {
       menu->top++;
-      if (menu->current < menu->top)
+      if (menu->current < menu->top + c && menu->current < menu->max - 1)
 	menu->current++;
       menu->redraw = REDRAW_INDEX;
     }
@@ -451,8 +454,10 @@ void menu_prev_line (MUTTMENU *menu)
 {
   if (menu->top > 0)
   {
+    int c = MIN (MenuContext, menu->pagelen / 2);
+
     menu->top--;
-    if (menu->current >= menu->top + menu->pagelen)
+    if (menu->current >= menu->top + menu->pagelen - c && menu->current > 1)
       menu->current--;
     menu->redraw = REDRAW_INDEX;
   }
