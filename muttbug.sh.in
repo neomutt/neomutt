@@ -102,13 +102,13 @@ echo $n "> $c"
 read SUBJECT
 
 cat <<EOF  
-Which should be the severity for this bug report?
+What should the severity for this bug report be?
 
        0) Feature request, or maybe a bug which is very difficult to
        fix due to major design considerations.
 
-       1) The package fails to perform correctly on some conditions,
-       or in some systems, or fails to comply current policy
+       1) The package fails to perform correctly in some conditions,
+       or on some systems, or fails to comply with current policy
        documents. Most bugs are in this category.
 
        2) This bug makes this version of the package unsuitable for
@@ -137,7 +137,7 @@ esac
 
 if test -x $DEBUGGER ; then
 	test -f core && CORE=core
-	echo "If mutt has crashed, it may have saved some  program state in"
+	echo "If mutt has crashed, it may have saved some program state in"
 	echo "a file named core.  We can include this information with the bug"
 	echo "report if you wish so."
 	echo "Do you want to include information gathered from a core file?"
