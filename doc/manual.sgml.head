@@ -353,6 +353,16 @@ Specifying an <ref id="alias_file" name="&dollar;alias&lowbar;file">
 does not add the aliases specified there-in, you must also <ref
 id="source" name="source"> the file.
 
+<p><bf/check-traditional-pgp/<label id="check-traditional-pgp"> (default: ESC P)<newline>
+
+This function will search the current message for content signed or
+encrypted with PGP the "traditional" way, that is, without proper
+MIME tagging.  Technically, this function will temporarily change
+the MIME content types of the body parts containing PGP data; this
+is similar to the <ref id="edit-type" name="edit-type"> function's
+effect.
+
+
 <p><bf/display-toggle-weed/<label id="display-toggle-weed"> (default: h)<newline>
 
 Toggles the weeding of message header fields specified by <ref id="ignore"
@@ -365,6 +375,22 @@ edit the raw current message as it's present in the mail folder.
 After you have finished editing, the changed message will be
 appended to the current folder, and the original message will be
 marked for deletion.
+
+<p><bf/edit-type/<label id="edit-type"><newline>
+(default: ^E on the attachment menu, and in the pager and index menus; ^T on the
+compose menu)
+
+This command is used to temporarily edit an attachment's content
+type to fix, for instance, bogus character set parameters.  When
+invoked from the index or from the pager, you'll have the
+opportunity to edit the top-level attachment's content type.  On the
+<ref id="attach_menu" name="attachment menu">, you can change any
+attachment's content type. These changes are not persistent, and get
+lost upon changing folders.
+
+Note that this command is also available on the <ref
+id="compose_menu" name="compose menu">.  There, it's used to
+fine-tune the properties of attachments you are going to send.
 
 <p><bf/enter-command/<label id="enter-command"> (default: ``:'')<newline>
 
@@ -2343,9 +2369,14 @@ and by using the ``tag-prefix'' operator.  You can also reply to the
 current message from this menu, and only the current attachment (or the
 attachments tagged) will be quoted in your reply.  You can view
 attachments as text, or view them using the mailcap viewer definition.
+
+Finally, you can apply the usual message-related functions (like 
+<ref id="resend-message" name="resend-message">, and the reply
+and forward functions) to attachments of type <tt>message/rfc822</tt>.
+
 See the help on the attachment menu for more information.
 
-<sect2>The Compose Menu
+<sect2>The Compose Menu<label id="compose_menu">
 <p>
 The compose menu is the menu you see before you send a message.  It
 allows you to edit the recipient list, the subject, and other aspects
