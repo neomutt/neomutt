@@ -641,6 +641,40 @@ parse_sort (short *val, const char *s, const struct mapping_t *map, BUFFER *err)
   return 0;
 }
 
+static void mutt_set_default (struct option_t *p)
+{
+  switch (p->type & DT_MASK)
+  {
+    case DT_STR:
+      if (*((char **) p->data))
+        p->init = (unsigned long) safe_strdup (* ((char **) p->data));
+      break;
+    case DT_PATH:
+      if (*((char **) p->data))
+      {
+	char *cp = safe_strdup (*((char **) p->data));
+	mutt_pretty_mailbox (cp);
+        p->init = (unsigned long) cp;
+      }
+      break;
+    case DT_ADDR:
+      if (*((ADDRESS **) p->data))
+      {
+	char tmp[HUGE_STRING];
+	rfc822_write_address (tmp, sizeof (tmp), *((ADDRESS **) p->data));
+	p->init = (unsigned long) safe_strdup (tmp);
+      }
+      break;
+    case DT_RX:
+    {
+      REGEXP *pp = (REGEXP *) p->data;
+      if (pp->pattern)
+	p->init = (unsigned long) safe_strdup (pp->pattern);
+      break;
+    }
+  }
+}
+
 static void mutt_restore_default (struct option_t *p)
 {
   switch (p->type & DT_MASK)
@@ -648,8 +682,6 @@ static void mutt_restore_default (struct option_t *p)
     case DT_STR:
       if (p->init)
 	mutt_str_replace ((char **) p->data, (char *) p->init); 
-      else if (*((char **) p->data))
-        p->init = (unsigned long) safe_strdup (* ((char **) p->data));
       break;
     case DT_PATH:
       if (p->init)
@@ -660,20 +692,12 @@ static void mutt_restore_default (struct option_t *p)
 	mutt_expand_path (path, sizeof (path));
 	mutt_str_replace ((char **) p->data, path);
       }
-      else if (*((char **) p->data))
-        p->init = (unsigned long) safe_strdup (* ((char **) p->data));
       break;
     case DT_ADDR:
       if (p->init)
       {
 	rfc822_free_address ((ADDRESS **) p->data);
 	*((ADDRESS **) p->data) = rfc822_parse_adrlist (NULL, (char *) p->init);
-      }
-      else if (*((ADDRESS **) p->data))
-      {
-	char tmp[HUGE_STRING];
-	rfc822_write_address (tmp, sizeof (tmp), *((ADDRESS **) p->data));
-	p->init = (unsigned long) safe_strdup (tmp);
       }
       break;
     case DT_BOOL:
@@ -726,8 +750,6 @@ static void mutt_restore_default (struct option_t *p)
 	    FREE (&pp->rx);
 	  }
 	}
-	else if (pp->pattern)
-	  p->init = (unsigned long) safe_strdup (pp->pattern);
       }
       break;
   }
@@ -1789,7 +1811,10 @@ void mutt_init (int skip_sys_rc, LIST *commands)
 
   /* Set standard defaults */
   for (i = 0; MuttVars[i].option; i++)
+  {
+    mutt_set_default (&MuttVars[i]);
     mutt_restore_default (&MuttVars[i]);
+  }
 
   CurrentMenu = MENU_MAIN;
 
