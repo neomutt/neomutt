@@ -110,7 +110,7 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
     if (*idxlen == *idxmax)
       safe_realloc ((void **) &idx, sizeof (ATTACHPTR *) * (*idxmax += 5));
 
-    if (m->type == TYPEMULTIPART && m->parts
+    if ((compose || parent_type == -1) && m->type == TYPEMULTIPART && m->parts
 #ifdef _PGPPATH
 	&& !mutt_is_multipart_encrypted(m)
 #endif
@@ -128,7 +128,9 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
       m->tagged = 0;
 
       /* We don't support multipart messages in the compose menu yet */
-      if (!compose && mutt_is_message_type(m->type, m->subtype))
+      if (!compose && 
+	  ((m->type == TYPEMULTIPART && !mutt_is_multipart_encrypted (m))
+	   || mutt_is_message_type(m->type, m->subtype)))
       {
 	idx = mutt_gen_attach_list (m->parts, m->type, idx, idxlen, idxmax, level + 1, compose);
       }
