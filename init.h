@@ -670,6 +670,23 @@ struct option_t MuttVars[] = {
   ** list.
   */
 #ifdef USE_IMAP
+  { "imap_authenticators", DT_STR, R_NONE, UL &ImapAuthenticators, UL 0 },
+  /*
+  ** .pp
+  ** This is a comma-delimited list of authentication methods mutt may
+  ** attempt to use to log in to an IMAP server, in the order mutt should
+  ** try them.  Authentication methods are either 'login' or the right
+  ** side of an IMAP 'AUTH=xxx' capability string, eg 'digest-md5',
+  ** 'gssapi' or 'cram-md5'. This parameter is case-insensitive. If this
+  ** parameter is unset (the default) mutt will try all available methods,
+  ** in order from most-secure to least-secure.
+  ** .pp
+  ** Example: set imap_authenticators="gssapi,cram-md5,login"
+  ** .pp
+  ** \fBNote:\fP Mutt will only fall back to other authentication methods if
+  ** the previous methods are unavailable. If a method is available but
+  ** authentication fails, mutt will not connect to the IMAP server.
+  */
   { "imap_delim_chars",		DT_STR, R_NONE, UL &ImapDelimChars, UL "/." },
   /*
   ** .pp
