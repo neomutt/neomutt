@@ -10,9 +10,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt-1.3.19i\n"
+"Project-Id-Version: mutt-1.3.21.1i\n"
 "POT-Creation-Date: 2001-08-30 23:30+0200\n"
-"PO-Revision-Date: 2001-06-27 18:03+0300\n"
+"PO-Revision-Date: 2001-08-31 18:16+0300\n"
 "Last-Translator: mutt-ru@woe.spb.ru\n"
 "Language-Team: RUSSIAN <mutt-ru@woe.spb.ru>\n"
 "MIME-Version: 1.0\n"
@@ -1355,7 +1355,7 @@ msgstr "Продолжить?"
 #: imap/util.c:245
 #, c-format
 msgid "%s [%s]\n"
-msgstr ""
+msgstr "%s [%s]\n"
 
 #: init.c:460
 msgid "alias: no address"
@@ -2736,7 +2736,7 @@ msgstr "(r)отвергнуть, (o)принять, (a)принять и сохранить"
 
 #: mutt_ssl.c:604
 msgid "roa"
-msgstr ""
+msgstr "roa"
 
 #: mutt_ssl.c:608
 msgid "(r)eject, accept (o)nce"
@@ -2744,7 +2744,7 @@ msgstr "(r)отвергнуть, (o)принять"
 
 #: mutt_ssl.c:609
 msgid "ro"
-msgstr ""
+msgstr "ro"
 
 #: mutt_ssl.c:613 pgpkey.c:510
 msgid "Exit  "
@@ -3244,19 +3244,16 @@ msgid "This ID is expired/disabled/revoked"
 msgstr "Этот ID просрочен, запрещен или отозван."
 
 #: pgpkey.c:612
-#, fuzzy
 msgid "This ID's validity level is undefined."
 msgstr "Степень доверия для этого ID не определена."
 
 #: pgpkey.c:615
-#, fuzzy
 msgid "This ID is not valid."
-msgstr "Степень доверия для этого ID -- \"отсутствие доверия\"."
+msgstr "Этот ID недействителен."
 
 #: pgpkey.c:618
-#, fuzzy
 msgid "This ID is only marginally valid."
-msgstr "Степень доверия для этого ID -- \"частично доверенный\"."
+msgstr "Этот ID действителен только частично."
 
 #: pgpkey.c:622
 #, c-format
