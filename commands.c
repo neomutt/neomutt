@@ -680,9 +680,10 @@ int mutt_save_message (HEADER *h, int delete,
     }
 
     mutt_clear_error ();
+    return (0);
   }
-
-  return (0);
+  
+  return -1;
 }
 
 static void print_msg (FILE *fp, CONTEXT *ctx, HEADER *h)
