@@ -699,10 +699,10 @@ AC_CACHE_CHECK([for wchar_t], mutt_cv_wchar_t,
 #ifdef HAVE_WCHAR_H
 #include <wchar.h>
 #endif
-int main() { wchar_t wc; return 0; }
-			],
-			mutt_cv_wchar_t=yes,
-			mutt_cv_wchar_t=no))
+		],
+		[ wchar_t wc; return 0; ],
+		mutt_cv_wchar_t=yes,
+		mutt_cv_wchar_t=no))
 
 if test "$mutt_cv_wchar_t" = no; then
 	AC_DEFINE(wchar_t, int)
@@ -715,10 +715,10 @@ AC_CACHE_CHECK([for wint_t], mutt_cv_wint_t,
 #ifdef HAVE_WCHAR_H
 #include <wchar.h>
 #endif
-int main() { wint_t wc; return 0; }
-			],
-			mutt_cv_wint_t=yes,
-			mutt_cv_wint_t=no))
+		],
+		[ wint_t wc; return 0; ],
+		mutt_cv_wint_t=yes,
+		mutt_cv_wint_t=no))
 
 if test "$mutt_cv_wint_t" = no; then
 	AC_DEFINE(wint_t, int)
@@ -731,10 +731,10 @@ AC_CACHE_CHECK([for mbstate_t], mutt_cv_mbstate_t,
 #ifdef HAVE_WCHAR_H
 #include <wchar.h>
 #endif
-int main() { mbstate_t s; return 0; }
-			],
-			mutt_cv_mbstate_t=yes,
-			mutt_cv_mbstate_t=no))
+		],
+		[ mbstate_t s; return 0; ],
+		mutt_cv_mbstate_t=yes,
+		mutt_cv_mbstate_t=no))
 
 if test "$mutt_cv_mbstate_t" = no; then
 	AC_DEFINE(mbstate_t, int)
