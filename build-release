@@ -88,7 +88,7 @@ if test "$diff" = yes ; then
 fi
 
 for f in $DISTFILES; do
-	pgp -sb $f
+	gpg -ba $f
 	chmod 644 $f.asc
 done
 
