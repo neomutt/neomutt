@@ -1357,7 +1357,7 @@ and a <ref id="save-hook" name="save-hook"> with its arguments.
 
 <sect1>Change settings based upon message recipients<label id="send-hook"><label id="reply-hook">
 <p>
-Usage: <tt/reply-hook/ &lsqb;!&rsqb;<em/pattern/ <em/command/
+Usage: <tt/reply-hook/ &lsqb;!&rsqb;<em/pattern/ <em/command/<newline>
 Usage: <tt/send-hook/ &lsqb;!&rsqb;<em/pattern/ <em/command/
 
 These commands can be used to execute arbitrary configuration commands based
