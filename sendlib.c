@@ -102,7 +102,7 @@ sysexits_h[] =
   { S_ERR, "Exec error." },
   { -1, NULL}
 };
-      
+
     
 #ifdef HAVE_PGP
 #include "pgp.h"
@@ -1786,28 +1786,35 @@ char *mutt_quote_string (const char *s)
   return (r);
 }
 
-void mutt_prepare_envelope (ENVELOPE *env)
+/* For postponing (!final) do the necessary encodings only */
+void mutt_prepare_envelope (ENVELOPE *env, int final)
 {
   char buffer[LONG_STRING];
 
-  if (env->bcc && !(env->to || env->cc))
+  if (final)
   {
-    /* some MTA's will put an Apparently-To: header field showing the Bcc:
-     * recipients if there is no To: or Cc: field, so attempt to suppress
-     * it by using an empty To: field.
-     */
-    env->to = rfc822_new_address ();
-    env->to->group = 1;
-    env->to->next = rfc822_new_address ();
+    if (env->bcc && !(env->to || env->cc))
+    {
+      /* some MTA's will put an Apparently-To: header field showing the Bcc:
+       * recipients if there is no To: or Cc: field, so attempt to suppress
+       * it by using an empty To: field.
+       */
+      env->to = rfc822_new_address ();
+      env->to->group = 1;
+      env->to->next = rfc822_new_address ();
 
-    buffer[0] = 0;
-    rfc822_cat (buffer, sizeof (buffer), "undisclosed-recipients",
-		RFC822Specials);
+      buffer[0] = 0;
+      rfc822_cat (buffer, sizeof (buffer), "undisclosed-recipients",
+		  RFC822Specials);
 
-    env->to->mailbox = safe_strdup (buffer);
+      env->to->mailbox = safe_strdup (buffer);
+    }
+
+    mutt_set_followup_to (env);
+
+    if (!env->message_id)
+      env->message_id = mutt_gen_msgid ();
   }
-
-  mutt_set_followup_to (env);
 
   /* Take care of 8-bit => 7-bit conversion. */
   rfc2047_encode_adrlist (env->to);
@@ -1823,9 +1830,18 @@ void mutt_prepare_envelope (ENVELOPE *env)
     mutt_str_replace (&env->subject, buffer);
   }
   encode_headers (env->userhdrs);
+}
 
-  if (!env->message_id)
-    env->message_id = mutt_gen_msgid ();
+void mutt_unprepare_envelope (ENVELOPE *env)
+{
+  rfc822_free_address (&env->mail_followup_to);
+
+  /* back conversions */
+  rfc2047_decode_adrlist (env->to);
+  rfc2047_decode_adrlist (env->cc);
+  rfc2047_decode_adrlist (env->from);
+  rfc2047_decode_adrlist (env->reply_to);
+  rfc2047_decode (env->subject, env->subject, mutt_strlen (env->subject) + 1);
 }
 
 static void _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *resent_from)

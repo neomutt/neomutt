@@ -1324,9 +1324,14 @@ main_loop:
        */
       msg->read = 0; msg->old = 0;
 
+      encode_descriptions (msg->content, 1);
+      mutt_prepare_envelope (msg->env, 0);
+
       if (!Postponed || mutt_write_fcc (NONULL (Postponed), msg, (cur && (flags & SENDREPLY)) ? cur->env->message_id : NULL, 1, fcc) < 0)
       {
 	msg->content = mutt_remove_multipart (msg->content);
+	decode_descriptions (msg->content);
+	mutt_unprepare_envelope (msg->env);
 	goto main_loop;
       }
       mutt_update_num_postponed ();
@@ -1403,7 +1408,7 @@ main_loop:
   if (!option (OPTNOCURSES) && !(flags & SENDMAILX))
     mutt_message _("Sending message...");
 
-  mutt_prepare_envelope (msg->env);
+  mutt_prepare_envelope (msg->env, 1);
 
   /* save a copy of the message, if necessary. */
 
@@ -1522,6 +1527,8 @@ full_fcc:
       }
 #endif
       msg->content = mutt_remove_multipart (msg->content);
+      decode_descriptions (msg->content);
+      mutt_unprepare_envelope (msg->env);
       goto main_loop;
     }
     else

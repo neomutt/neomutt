@@ -1,6 +1,5 @@
 Problems are listed in approximate order of priority.
 
-- Fix postponing: Headers should be RFC2047 en- and de-coded.
 - character set support: We should have a global cache of
   character to file name mappings.
 
