@@ -1227,7 +1227,7 @@ int imap_mailbox_check (char* path, int new)
 
   /* If imap_passive is set, don't open a connection to check for new mail */
   if (option (OPTIMAPPASSIVE))
-    connflags &= M_IMAP_CONN_NONEW;
+    connflags = M_IMAP_CONN_NONEW;
 
   if (!(idata = imap_conn_find (&(mx.account), connflags)))
     return -1;
