@@ -21,6 +21,10 @@
 /* command.c: routines for sending commands to an IMAP server and parsing
  *  responses */
 
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include "mutt.h"
 #include "imap_private.h"
 #include "message.h"
