@@ -76,6 +76,7 @@ typedef struct decoder
   /* the buffers */
   struct decoder_buff in;
   struct decoder_buff out;
+  struct decoder_buff *_in;
 } 
 DECODER;
 

@@ -876,9 +876,12 @@ DECODER *mutt_open_decoder (const char *src, const char *dest)
   d->in.size = DECODER_BUFFSIZE;
   d->out.size = DECODER_BUFFSIZE;
 
+  d->_in = &d->out;
+  
   if (!src || !dest || mutt_is_utf8 (dest))
   {
     d->just_take_id = 1;
+    d->_in = &d->in;
     return d;
   }
   
@@ -887,6 +890,7 @@ DECODER *mutt_open_decoder (const char *src, const char *dest)
     if (!(d->chs = mutt_get_charset (dest)) || unicode_init () == -1)
     {
       d->just_take_id = 1;
+      d->_in = &d->in;
       return d;
     }
     
@@ -895,8 +899,11 @@ DECODER *mutt_open_decoder (const char *src, const char *dest)
   }
   
   if (!(d->chm = mutt_get_translation (src, dest)))
+  {
     d->just_take_id = 1;
-  
+    d->_in = &d->in;
+  }
+
   return d;
 }
 
@@ -909,41 +916,25 @@ static void _process_data (DECODER *, short);
 
 void mutt_decoder_push (DECODER *d, void *_buff, size_t blen, size_t *taken)
 {
-  struct decoder_buff *b;
-  
   if (!_buff || !blen)
   {
     _process_data (d, 1);
     return;
   }
-  
-  /* shortcut the identity mapping and save one copying pass */
-  
-  if (d->just_take_id)
-    b = &d->out;
-  else
-    b = &d->in;
-    
-  if ((*taken = MIN(blen, b->size - b->used)))
+
+  if ((*taken = MIN(blen, d->_in->size - d->_in->used)))
   {
-    memcpy (b->buff + b->used, _buff, *taken);
-    b->used += *taken;
+    memcpy (d->_in->buff + d->_in->used, _buff, *taken);
+    d->_in->used += *taken;
   }
 }
 
 int mutt_decoder_push_one (DECODER *d, char c)
 {
-  struct decoder_buff *b;
-
-  if (d->just_take_id)
-    b = &d->out;
-  else
-    b = &d->in;
-
-  if (b->used == b->size)
+  if (d->_in->used == d->_in->size)
     return -1;
-  
-  b->buff[b->used++] = c;
+
+  d->_in->buff[d->_in->used++] = c;
   return 0;
 }
 
