@@ -140,7 +140,6 @@ char *mutt_pgp_hook (ADDRESS *);
 char *mutt_make_date (char *, size_t);
 
 const char *mutt_make_version (void);
-const char *mutt_make_patches (void);
 
 const char *mutt_fqdn(short);
 
@@ -208,6 +207,7 @@ void mutt_pretty_mailbox (char *);
 void mutt_pretty_size (char *, size_t, long);
 void mutt_pipe_message (HEADER *);
 void mutt_print_message (HEADER *);
+void mutt_print_patchlist (void);
 void mutt_query_exit (void);
 void mutt_query_menu (char *, size_t);
 void mutt_safe_path (char *s, size_t l, ADDRESS *a);

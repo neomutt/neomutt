@@ -13,7 +13,7 @@ SUBDIRS = m4 po intl doc contrib $(IMAP_SUBDIR)
 
 bin_SCRIPTS = muttbug flea
 
-BUILT_SOURCES = keymap_defs.h patches.h
+BUILT_SOURCES = keymap_defs.h patchlist.c
 
 bin_PROGRAMS = mutt @DOTLOCK_TARGET@ @PGPAUX_TARGET@
 mutt_SOURCES = $(BUILT_SOURCES) \
@@ -93,7 +93,7 @@ mutt_dotlock.c: dotlock.c
 	cp $(srcdir)/dotlock.c mutt_dotlock.c
 
 CLEANFILES = mutt_dotlock.c stamp-doc-rc makedoc \
-	keymap_alldefs.h keymap_defs.h patches.h
+	keymap_alldefs.h keymap_defs.h patchlist.c
 
 ACLOCAL_AMFLAGS = -I m4
 
@@ -116,8 +116,8 @@ keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.PGP $(srcdir)/OPS.MIX $(srcdir)/ge
 reldate:
 	echo 'const char *ReleaseDate = "'`date +%Y-%m-%d`'";' > $(srcdir)/reldate.h
 
-patches.h: $(srcdir)/PATCHES
-	echo "const char *Patches = \"`tr '\n' '+' < $< | sed -e 's/\+$$//'`\";" > $@
+patchlist.c: $(srcdir)/PATCHES $(srcdir)/patchlist.sh
+	$(srcdir)/patchlist.sh < $< > $@
 
 install-exec-local:
 	if test -f $(DESTDIR)$(bindir)/mutt.dotlock && test -f $(DESTDIR)$(bindir)/mutt_dotlock ; then	\

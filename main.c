@@ -392,9 +392,11 @@ static void show_version (void)
 #else
   puts ("-MIXMASTER");
 #endif
-  
+
   puts(_(ReachingUs));
 
+  mutt_print_patchlist();
+  
   exit (0);
 }
 
