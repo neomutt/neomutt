@@ -775,13 +775,75 @@ static int copy_delete_attach (BODY *b, FILE *fpin, FILE *fpout, char *date)
   return 0;
 }
 
+/* 
+ * This function is the equivalent of mutt_write_address_list(),
+ * but writes to a buffer instead of writing to a stream.
+ * mutt_write_address_list could be re-used if we wouldn't store
+ * all the decoded headers in a huge array, first. 
+ *
+ * XXX - fix that. 
+ */
+
+static void format_address_header (char **h, ADDRESS *a)
+{
+  char buf[HUGE_STRING];
+  char cbuf[STRING];
+  char c2buf[STRING];
+  
+  int l, linelen, buflen, count;
+  linelen = mutt_strlen (*h);
+  buflen  = linelen + 3;
+  
+  
+  safe_realloc ((void **) h, buflen);
+  for (count = 0; a; a = a->next, count++)
+  {
+    ADDRESS *tmp = a->next;
+    a->next = NULL;
+    *buf = *cbuf = *c2buf = '\0';
+    rfc822_write_address (buf, sizeof (buf), a, 0);
+    a->next = tmp;
+    
+    l = mutt_strlen (buf);
+    if (count && linelen + l > 74) 
+    {
+      strcpy (cbuf, "\n\t");  	/* __STRCPY_CHECKED__ */
+      linelen = l + 8;
+    }
+    else
+    {
+      if (a->mailbox)
+      {
+	strcpy (cbuf, " ");	/* __STRCPY_CHECKED__ */
+	linelen++;
+      }
+      linelen += l;
+    }
+    if (!a->group && a->next && a->next->mailbox)
+    {
+      linelen++;
+      buflen++;
+      strcpy (c2buf, ",");	/* __STRCPY_CHECKED__ */
+    }
+    
+    buflen += l + mutt_strlen (cbuf) + mutt_strlen (c2buf);
+    safe_realloc ((void **) h, buflen);
+    strcat (*h, cbuf);		/* __STRCAT_CHECKED__ */
+    strcat (*h, buf);		/* __STRCAT_CHECKED__ */
+    strcat (*h, c2buf);		/* __STRCAT_CHECKED__ */
+  }
+  
+  /* Space for this was allocated in the beginning of this function. */
+  strcat (*h, "\n");		/* __STRCAT_CHECKED__ */
+}
+
 static int address_header_decode (char **h)
 {
   char *s = *h;
-  int l, ll;
-  
+  int l;
+
   ADDRESS *a = NULL;
-  
+
   switch (tolower (*s))
   {
     case 'r': 
@@ -850,17 +912,13 @@ static int address_header_decode (char **h)
   mutt_addrlist_to_local (a);
   rfc2047_decode_adrlist (a);
   
-  ll = mutt_strlen (s) * 6 + 3;	/* XXX -- should be safe  */
-  *h = safe_calloc (1, ll);
+  *h = safe_calloc (1, l + 2);
   
-  strncpy (*h, s, l);
-  strncat (*h, " ", ll);
-  rfc822_write_address (*h + l + 1, ll - l - 1, a, 0);
-  rfc822_free_address (&a);
+  strfcpy (*h, s, l + 1);
+  
+  format_address_header (h, a);
 
-  strncat (*h, "\n", ll);
-  
-  safe_realloc ((void **) h, mutt_strlen (*h) + 1);
+  rfc822_free_address (&a);
   
   FREE (&s);
   return 1;

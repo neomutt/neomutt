@@ -1514,11 +1514,8 @@ void mutt_write_address_list (ADDRESS *adr, FILE *fp, int linelen, int display)
     len = mutt_strlen (buf);
     if (count && linelen + len > 74)
     {
-      if (count)
-      {
-	fputs ("\n\t", fp);
-	linelen = len + 8; /* tab is usually about 8 spaces... */
-      }
+      fputs ("\n\t", fp);
+      linelen = len + 8; /* tab is usually about 8 spaces... */
     }
     else
     {
