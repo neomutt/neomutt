@@ -16,10 +16,14 @@ for d in $dirs ; do
   [ -d $d/charmaps ] && ./parse_i18n ./ $d/charmaps/* >> ./charsets.$$
 done
 
-awk '$1 == "charset" { printf ("%s\n", $2); }' ./charsets.$$ > charsets.list
-awk '$1 == "alias"   { printf ("%s %s\n", $2, $3); }' ./charsets.$$ > charsets.alias
+if test -s ./charsets.$$ ; then
+	awk '$1 == "charset" { printf ("%s\n", $2); }' ./charsets.$$ > charsets.list
+	awk '$1 == "alias"   { printf ("%s %s\n", $2, $3); }' ./charsets.$$ > charsets.alias
+fi
 
-if ! test -s charsets.list ; then
-	mv charsets.alias.$$ charsets.alias
-	mv charsets.list.$$ charsets.list
+if test -s charsets.list ; then
+:
+else
+	mv charsets.alias.$$ charsets.alias ;
+	mv charsets.list.$$ charsets.list ;
 fi

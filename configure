@@ -5097,7 +5097,7 @@ fi
    sed -e "/^#/d" -e "/^\$/d" -e "s,.*,	$posrcprefix& \\\\," -e "\$s/\(.*\) \\\\/\1/" \
 	< $srcdir/po/POTFILES.in > po/POTFILES
   
-CPPFLAGS="$CPPFLAGS -I \$(srcdir)/intl"
+CPPFLAGS="$CPPFLAGS -I\$(srcdir)/intl"
 
 MUTTLOCALEDIR=$mutt_cv_prefix/$DATADIRNAME/locale
 
