@@ -15,7 +15,7 @@ while (<>)
 {
 	if (/^#if/)
 	{
-		if (/${word}/) { $illegal = 1; }
+		if (!/^\#ifn/ && /${word}/) { $illegal = 1; }
 		if ($illegal) { $count++; }
 	}
 	elsif ($illegal && /^#endif/)
