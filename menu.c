@@ -92,7 +92,7 @@ static void print_enriched_string (int attr, unsigned char *s, int do_color)
 	    if (option (OPTASCIICHARS))
 	      addch ('-');
 	    else if (Charset_is_utf8)
-	      addstr ("\342\224\200"); /* FIXME: this is WACS_HLINE but should be WACS_TTEE */
+	      addstr ("\342\224\254"); /* WACS_TTEE */
 	    else
 	      addch (ACS_TTEE);
 	    break;
@@ -100,7 +100,7 @@ static void print_enriched_string (int attr, unsigned char *s, int do_color)
 	    if (option (OPTASCIICHARS))
 	      addch ('-');
 	    else if (Charset_is_utf8)
-	      addstr ("\342\224\200"); /* FIXME: this is WACS_HLINE but should be WACS_BTEE */
+	      addstr ("\342\224\264"); /* WACS_BTEE */
 	    else
 	      addch (ACS_BTEE);
 	    break;
