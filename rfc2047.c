@@ -44,7 +44,7 @@ static void q_encode_string (char *d,
   if(hibit)
   {
     snprintf (charset, sizeof (charset), "=?%s?Q?",
-	      mutt_strcasecmp ("us-ascii", Charset) == 0 ? "unknown-8bit" : NONULL(Charset));
+	      mutt_strcasecmp ("us-ascii", send_charset) == 0 ? "unknown-8bit" : NONULL(send_charset));
   }
   else
     strfcpy(charset, "=?us-ascii?Q?", sizeof(charset));
