@@ -1,3 +1,7 @@
+2003-02-25 21:37:59  Christian Vogel  <vogelchr@vogel.cx>  (roessler)
+
+	* mx.c: Recognize MH folders used by sylpheed.
+
 2003-02-25 21:35:24  jesus.climent@hispalinux.es  (roessler)
 
 	* po/es.po: Fix a typo. (#1482)
