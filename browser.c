@@ -299,6 +299,7 @@ static void add_folder (MUTTMENU *m, struct browser_state *state,
   }
   (state->entry)[state->entrylen].name = safe_strdup (name);
   (state->entry)[state->entrylen].desc = safe_strdup (buffer);
+  (state->entry)[state->entrylen].notfolder = 0;
 
   (state->entrylen)++;
 }

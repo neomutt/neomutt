@@ -1890,7 +1890,7 @@ static int add_namespace (IMAP_DATA *idata, char *host, int port,
 	while (*s)
 	{
 	  s = imap_next_word (s);
-	  if (strncmp (s, "NIL", 3))
+	  if (*s && strncmp (s, "NIL", 3))
 	  {
 	    s++;
 	    while (*s && *s != ')')
