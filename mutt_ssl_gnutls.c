@@ -456,7 +456,7 @@ static int tls_check_certificate (CONNECTION* conn)
   char helpstr[SHORT_STRING];
   char buf[SHORT_STRING];
   char fpbuf[SHORT_STRING];
-  int buflen;
+  size_t buflen;
   char dn_common_name[SHORT_STRING];
   char dn_email[SHORT_STRING];
   char dn_organization[SHORT_STRING];
