@@ -1406,7 +1406,7 @@ void mutt_body_handler (BODY *b, STATE *s)
   else if (b->type == TYPEAPPLICATION)
   {
     if (mutt_is_application_pgp(b))
-      handler = application_pgp_handler;
+      handler = pgp_application_pgp_handler;
   }
 #endif /* _PGPPATH */
 

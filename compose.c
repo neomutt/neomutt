@@ -127,11 +127,9 @@ static void redraw_pgp_lines (int pgp)
 
 static int pgp_send_menu (int bits, int *redraw)
 {
-  char *p;
-  char *micalg = NULL;
+  pgp_key_t *p;
   char input_signas[SHORT_STRING];
   char input_micalg[SHORT_STRING];
-  KEYINFO *secring;
 
   struct pgp_vinfo *pgp = pgp_get_vinfo(PGP_SIGN);
 
@@ -147,39 +145,27 @@ static int pgp_send_menu (int bits, int *redraw)
     break;
 
   case 3: /* sign (a)s */
+
     unset_option(OPTPGPCHECKTRUST);
 
-    if(pgp)
+    if (pgp && (p = pgp_ask_for_key (pgp, _("Sign as: "), NULL, KEYFLAG_CANSIGN, PGP_PUBRING)))
     {
-      if(!(secring = pgp->read_secring(pgp)))
-      {
-	mutt_error _("Can't open your secret key ring!");
-	bits &= ~PGPSIGN;
-      }
-      else 
-      {
-	if ((p = pgp_ask_for_key (pgp, secring, _("Sign as: "), 
-				  NULL, KEYFLAG_CANSIGN, &micalg)))
-	{
-	  snprintf (input_signas, sizeof (input_signas), "0x%s", p);
-	  safe_free((void **) &PgpSignAs);
-	  PgpSignAs = safe_strdup(input_signas);
-	  safe_free((void **) &PgpSignMicalg);
-	  PgpSignMicalg = micalg;	/* micalg is malloc()ed by pgp_ask_for_key */
-	  pgp_void_passphrase ();	/* probably need a different passphrase */
-	  safe_free ((void **) &p);
-	  bits |= PGPSIGN;
-	}
-
-	pgp_close_keydb(&secring);
-	*redraw = REDRAW_FULL;
-      }
+      snprintf (input_signas, sizeof (input_signas), "0x%s", pgp_keyid (p));
+      safe_free((void **) &PgpSignAs); 	    PgpSignAs = safe_strdup (input_signas);
+      safe_free((void **) &PgpSignMicalg);  PgpSignMicalg = safe_strdup (pgp_pkalg_to_mic (p->algorithm));
+      pgp_free_key (&p);
+      
+      bits |= PGPSIGN;
+	
+      pgp_void_passphrase ();	/* probably need a different passphrase */
     }
     else
     {
       bits &= ~PGPSIGN;
       mutt_error _("An unkown PGP version was defined for signing.");
     }
+
+    *redraw = REDRAW_FULL;
     break;
 
   case 4: /* (b)oth */
@@ -187,24 +173,24 @@ static int pgp_send_menu (int bits, int *redraw)
     break;
 
   case 5: /* select (m)ic algorithm */
-    if(!(bits & PGPSIGN))
+    if (!(bits & PGPSIGN))
       mutt_error _("This doesn't make sense if you don't want to sign the message.");
     else
     {
       /* Copy the existing MIC algorithm into place */
-      strfcpy(input_micalg, NONULL(PgpSignMicalg), sizeof(input_micalg));
+      strfcpy(input_micalg, NONULL (PgpSignMicalg), sizeof (input_micalg));
 
-      if(mutt_get_field (_("MIC algorithm: "), input_micalg, sizeof(input_micalg), 0) == 0)
+      if (mutt_get_field (_("MIC algorithm: "), input_micalg, sizeof (input_micalg), 0) == 0)
       {
-	if(mutt_strcasecmp(input_micalg, "pgp-md5") && mutt_strcasecmp(input_micalg, "pgp-sha1")
-	   && mutt_strcasecmp(input_micalg, "pgp-rmd160"))
+	if (mutt_strcasecmp (input_micalg, "pgp-md5") && mutt_strcasecmp (input_micalg, "pgp-sha1")
+	   && mutt_strcasecmp (input_micalg, "pgp-rmd160"))
 	{
 	  mutt_error _("Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160");
 	}
 	else 
 	{
-	  safe_free((void **) &PgpSignMicalg);
-	  PgpSignMicalg = safe_strdup(input_micalg);
+	  safe_free ((void **) &PgpSignMicalg);
+	  PgpSignMicalg = safe_strdup (input_micalg);
 	}
       }
     }

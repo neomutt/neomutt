@@ -108,6 +108,8 @@ const char *mutt_attach_fmt (
 	const char *elsestring,
 	unsigned long data,
 	format_flag flags);
+const char *mutt_stristr (const char *, const char *);
+
 
 char *mutt_charset_hook (const char *);
 char *mutt_expand_path (char *, size_t);

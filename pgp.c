@@ -51,7 +51,7 @@ static struct pgp_vinfo pgp_vinfo[] =
   { PGP_V2, 	
     "pgp2",	
     &PgpV2,	&PgpV2Pubring,	&PgpV2Secring, 	&PgpV2Language, 
-    pgp_read_pubring, pgp_read_secring,
+    pgp_get_candidates,
     pgp_v2_invoke_decode, pgp_v2_invoke_verify, pgp_v2_invoke_decrypt,
     pgp_v2_invoke_sign, pgp_v2_invoke_encrypt, pgp_v2_invoke_import,
     pgp_v2_invoke_export, pgp_v2_invoke_verify_key 
@@ -60,7 +60,7 @@ static struct pgp_vinfo pgp_vinfo[] =
   { PGP_V3, 	
     "pgp3",	
     &PgpV3,	&PgpV3Pubring,	&PgpV3Secring, 	&PgpV3Language, 
-    pgp_read_pubring, pgp_read_secring,
+    pgp_get_candidates,
     pgp_v3_invoke_decode, pgp_v3_invoke_verify, pgp_v3_invoke_decrypt,
     pgp_v3_invoke_sign, pgp_v3_invoke_encrypt, pgp_v3_invoke_import,
     pgp_v3_invoke_export, pgp_v3_invoke_verify_key 
@@ -69,7 +69,7 @@ static struct pgp_vinfo pgp_vinfo[] =
   { PGP_V3, 	
     "pgp5",	
     &PgpV3,	&PgpV3Pubring,	&PgpV3Secring, 	&PgpV3Language, 
-    pgp_read_pubring, pgp_read_secring,
+    pgp_get_candidates,
     pgp_v3_invoke_decode, pgp_v3_invoke_verify, pgp_v3_invoke_decrypt,
     pgp_v3_invoke_sign, pgp_v3_invoke_encrypt, pgp_v3_invoke_import,
     pgp_v3_invoke_export, pgp_v3_invoke_verify_key 
@@ -78,7 +78,7 @@ static struct pgp_vinfo pgp_vinfo[] =
   { PGP_GPG, 	
     "gpg",	
     &PgpGpg,	&PgpGpgDummy,	&PgpGpgDummy, &PgpGpgDummy,
-    gpg_read_pubring, gpg_read_secring,
+    gpg_get_candidates,
     pgp_gpg_invoke_decode, pgp_gpg_invoke_verify, pgp_gpg_invoke_decrypt,
     pgp_gpg_invoke_sign, pgp_gpg_invoke_encrypt, pgp_gpg_invoke_import,
     pgp_gpg_invoke_export, pgp_gpg_invoke_verify_key 
@@ -178,15 +178,15 @@ struct pgp_vinfo *pgp_get_vinfo(enum pgp_ops op)
   return NULL;
 }
 
-char *pgp_keyid(KEYINFO *k)
+char *pgp_keyid(pgp_key_t *k)
 {
-  if((k->flags & KEYFLAG_SUBKEY) && k->mainkey)
-    k = k->mainkey;
+  if((k->flags & KEYFLAG_SUBKEY) && k->parent)
+    k = k->parent;
 
   return _pgp_keyid(k);
 }
 
-char *_pgp_keyid(KEYINFO *k)
+char *_pgp_keyid(pgp_key_t *k)
 {
   if(option(OPTPGPLONGIDS))
     return k->keyid;
@@ -217,7 +217,7 @@ static void pgp_current_time (STATE *s)
 
 /* Support for the Application/PGP Content Type. */
 
-void application_pgp_handler (BODY *m, STATE *s)
+void pgp_application_pgp_handler (BODY *m, STATE *s)
 {
   int needpass = -1, pgp_keyblock = 0;
   int clearsign = 0;
@@ -1231,22 +1231,19 @@ static BODY *pgp_sign_message (BODY *a)
  */
 char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
 {
-  char *key, *keyID, *keylist = NULL;
+  char *keyID, *keylist = NULL;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
   ADDRESS *tmp = NULL;
   ADDRESS **last = &tmp;
   ADDRESS *p;
   int i;
-  KEYINFO *db;
-  KEYINFO *k_info;
-  struct pgp_vinfo *pgp = pgp_get_vinfo(PGP_ENCRYPT);
+  pgp_key_t *k_info, *key;
+  struct pgp_vinfo *pgp = pgp_get_vinfo (PGP_ENCRYPT);
   
-  if(!pgp)
+  if (!pgp)
     return NULL;
   
-  db = pgp->read_pubring(pgp);
-
   for (i = 0; i < 3; i++) 
   {
     switch (i)
@@ -1273,32 +1270,34 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
     {
       snprintf (buf, sizeof (buf), _("Use keyID = \"%s\" for %s?"), keyID, p->mailbox);
       if (mutt_yesorno (buf, M_YES) == M_YES)
-	k_info = ki_getkeybystr (pgp, keyID, db, KEYFLAG_CANENCRYPT);
+	k_info = pgp_getkeybystr (pgp, keyID, KEYFLAG_CANENCRYPT, PGP_PUBRING);
     }
-    if (k_info == NULL && (k_info = ki_getkeybyaddr (pgp, p, db, KEYFLAG_CANENCRYPT)) == NULL)
+
+    if (k_info == NULL && (k_info = pgp_getkeybyaddr (pgp, p, KEYFLAG_CANENCRYPT, PGP_PUBRING)) == NULL)
     {
       snprintf (buf, sizeof (buf), _("Enter keyID for %s: "), p->mailbox);
       
-      if ((key = pgp_ask_for_key (pgp, db, buf, p->mailbox,
-				  KEYFLAG_CANENCRYPT, NULL)) == NULL)
+      if ((key = pgp_ask_for_key (pgp, buf, p->mailbox,
+				  KEYFLAG_CANENCRYPT, PGP_PUBRING)) == NULL)
       {
-	pgp_close_keydb (&db);
 	safe_free ((void **)&keylist);
 	rfc822_free_address (&tmp);
 	return NULL;
       }
     }
     else
-      key = pgp_keyid(k_info);
+      key = k_info;
 
-    keylist_size += mutt_strlen (key) + 4;
+    keyID = pgp_keyid (key);
+    pgp_free_key (&key);
+    
+    keylist_size += mutt_strlen (keyID) + 4;
     safe_realloc ((void **)&keylist, keylist_size);
     sprintf (keylist + keylist_used, "%s0x%s", keylist_used ? " " : "",
-	     key);
+	     keyID);
     keylist_used = mutt_strlen (keylist);
   }
   rfc822_free_address (&tmp);
-  pgp_close_keydb (&db);
   return (keylist);
 }
 
