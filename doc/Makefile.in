@@ -51,7 +51,8 @@ DISTFILES = Makefile.in dotlock.man  	\
 	manual.sgml			\
 	manual.html			\
 	stamp-doc-sgml			\
-	stamp-doc-man
+	stamp-doc-man			\
+	instdoc.sh.in
 
 srcdir_DOCFILES = PGP-Notes.txt applying-patches.txt	\
 	devel-notes.txt
