@@ -175,6 +175,13 @@ PreferredMIMENames[] =
    * submit a patch to <mutt-dev@mutt.org>. 
    */
 
+  /* 
+   * David Champion <dgc@uchicago.edu> has observed this with
+   * nl_langinfo under SunOS 5.8. 
+   */
+
+  { "646",		"us-ascii"	},
+  
   /* End of aliases.  Please keep this line last. */
   
   { NULL, 		NULL		}
