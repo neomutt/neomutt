@@ -293,7 +293,7 @@ static int rfc1524_mailcap_parse (BODY *a,
 	  {
 	    len = mutt_strlen (test_command) + STRING;
 	    safe_realloc ((void **) &test_command, len);
-	    rfc1524_expand_command (a, NULL, type, test_command, len);
+	    rfc1524_expand_command (a, a->filename, type, test_command, len);
 	    if (mutt_system (test_command))
 	    {
 	      /* a non-zero exit code means test failed */
