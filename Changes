@@ -1,52 +1,22 @@
-Changes since 0.92.8
---------------------
+Tue Jun 16 00:22:28 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.90.12i.jmydaes.command-complete.1] Command completion
+	* doc/PGP-Notes.txt: Including Roland's new procmail recipe.
 
-- [patch-0.92.8.mtsirkin.attach-viewer.1] When viewing
-  attachments, fall back to the attachment's file name if
-  no description is available.
+	* protos.h, pattern.c, menu.c, curs_main.c, compose.c, addrbook.c:
+	Including Vikas' search code for the "attach message" menu.
 
-- [patch-0.92.8i.ds.attachmsg.1] Attach messages from the compose menu.
+Mon Jun 15 15:19:49 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.92.8i.tlr.make_string_context.1] Fix a
-  segmentation fault when invoking mutt -p from the
-  command line.
+	* mx.c, main.c, mailbox.h, imap.c, commands.c: Brandon's IMAP patch.
 
-- [patch-0.92.8i.tlr.mh_sequences.1] Don't generate
-  .mh_sequences files for maildir folders.
+Mon Jun  8 20:05:54 1998  Thomas Roessler  <roessler@guug.de>
 
-- fix a NULL pointer deference in hdrline.c
+	* recvattach.c, pgppubring.c, pgpkey.c,
+	pgpinvoke.c, pgp.h, pgp.c, main.c, init.h,
+	gnupgparse.c, init.c, configure.in, configure,
+	config.h.in, compose.c, acconfig.h, Makefile.in:
+	GPG support, first take.
 
-- [patch-0.92.8i.jmy.hook-bugfix.1] Fix a segmentation
-  fault in the send-hook code.
+	* hdrline.c: Fixing the %a format.
 
-- [patch-0.92.8i.tlr.addrbook.1] Untag all aliases before
-  entering the address-book menu.
-
-- Enforce a non-NULL QueryCmd in the beginning of
-  mutt_query_complete() and mutt_query_menu().
-
-- Make all query.c functions except mutt_query_complete()
-  and mutt_query_menu() static.
-
-- The latest IMAP patch from Andy Sloane has been added.
-
-PGP related Changes since 0.92.8i
----------------------------------
-
-- [patch-0.92.8i.maj.MIC_alg.1] Properly initializes a
-  variable in the PGP part of the Compose menu.
-
-- [patch-0.92.8i.tlr.pgpkey_dflt.1] Avoid possible
-  segmentation faults when determining the default value
-  of the PGP key selection prompt.
-
-- [patch-0.92.8i.wk.opgp_5bytelength.1] Recognize
-  OpenPGP's public key algorithm #20 (i.e., ElGamal for
-  Signing and Encrypting).
-
-- Moved doc/pgp-Notes.txt to doc/PGP-Notes.txt, and
-  updated that part of the documentation.
-
-
+	* hdrline.c: Fixing a segmentation fault in the hdr_line code.

@@ -1745,3 +1745,55 @@ PGP-related changes since 0.92.6i
 - [patch-0.92.6i.tlr.pgp_longids.1] Correct the
   calculation of 64 bit "v4" key IDs.
 
+Changes since 0.92.8
+--------------------
+
+- [patch-0.90.12i.jmydaes.command-complete.1] Command completion
+
+- [patch-0.92.8.mtsirkin.attach-viewer.1] When viewing
+  attachments, fall back to the attachment's file name if
+  no description is available.
+
+- [patch-0.92.8i.ds.attachmsg.1] Attach messages from the compose menu.
+
+- [patch-0.92.8i.tlr.make_string_context.1] Fix a
+  segmentation fault when invoking mutt -p from the
+  command line.
+
+- [patch-0.92.8i.tlr.mh_sequences.1] Don't generate
+  .mh_sequences files for maildir folders.
+
+- fix a NULL pointer deference in hdrline.c
+
+- [patch-0.92.8i.jmy.hook-bugfix.1] Fix a segmentation
+  fault in the send-hook code.
+
+- [patch-0.92.8i.tlr.addrbook.1] Untag all aliases before
+  entering the address-book menu.
+
+- Enforce a non-NULL QueryCmd in the beginning of
+  mutt_query_complete() and mutt_query_menu().
+
+- Make all query.c functions except mutt_query_complete()
+  and mutt_query_menu() static.
+
+- The latest IMAP patch from Andy Sloane has been added.
+
+PGP related Changes since 0.92.8i
+---------------------------------
+
+- [patch-0.92.8i.maj.MIC_alg.1] Properly initializes a
+  variable in the PGP part of the Compose menu.
+
+- [patch-0.92.8i.tlr.pgpkey_dflt.1] Avoid possible
+  segmentation faults when determining the default value
+  of the PGP key selection prompt.
+
+- [patch-0.92.8i.wk.opgp_5bytelength.1] Recognize
+  OpenPGP's public key algorithm #20 (i.e., ElGamal for
+  Signing and Encrypting).
+
+- Moved doc/pgp-Notes.txt to doc/PGP-Notes.txt, and
+  updated that part of the documentation.
+
+
