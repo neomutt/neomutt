@@ -96,10 +96,9 @@ char *mutt_history_next (history_class_t hclass)
     return (""); /* disabled */
 
   next = h->cur + 1;
-  if (next > h->last - 1)
+  if (next > HistSize - 1)
     next = 0;
-  if (h->hist[next])
-    h->cur = next;
+  h->cur = h->hist[next] ? next : 0;
   return (h->hist[h->cur] ? h->hist[h->cur] : "");
 }
 
@@ -114,13 +113,9 @@ char *mutt_history_prev (history_class_t hclass)
   prev = h->cur - 1;
   if (prev < 0)
   {
-    prev = h->last - 1;
-    if (prev < 0)
-    {
-      prev = HistSize - 1;
-      while (prev > 0 && h->hist[prev] == NULL)
-	prev--;
-    }
+    prev = HistSize - 1;
+    while (prev > 0 && h->hist[prev] == NULL)
+      prev--;
   }
   if (h->hist[prev])
     h->cur = prev;
