@@ -901,7 +901,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	if (DTYPE (MuttVars[idx].type) == DT_ADDR)
 	  rfc822_free_address ((ADDRESS **) MuttVars[idx].data);
 	else
-	  FREE (MuttVars[idx].data);
+	  FREE (&MuttVars[idx].data);
       }
       else if (query || *s->dptr != '=')
       {
