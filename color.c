@@ -347,7 +347,8 @@ parse_color_name (const char *s, int *col, int *attr, int brite, BUFFER *err)
   {
     s += 5;
     *col = strtol (s, &eptr, 10);
-    if (!*s || *eptr || *col < 0 || *col >= COLORS)
+    if (!*s || *eptr || *col < 0 ||
+	(*col >= COLORS && !option(OPTNOCURSES) && has_colors()))
     {
       snprintf (err->data, err->dsize, "%s: color not supported by term", s);
       return (-1);
