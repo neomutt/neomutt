@@ -625,8 +625,8 @@ pgp_key_t *pgp_getkeybyaddr (struct pgp_vinfo * pgp,
       continue;
     }
 
-    pkey = pgp_principal_key (k);
-    kflags = k->flags | pkey->flags;
+    pk = pgp_principal_key (k);
+    kflags = k->flags | pk->flags;
     
     q = k->address;
     weak_association = 1;
@@ -647,15 +647,20 @@ pgp_key_t *pgp_getkeybyaddr (struct pgp_vinfo * pgp,
 	  match = 1;
 
 	  if (((q->trust & 0x03) == 3) &&
-	      !(kflags & KEYFLAG_CANTUSE) &&
+	      (!(kflags & KEYFLAG_CANTUSE)) &&
 	      (p->mailbox && a->mailbox &&
 	       !mutt_strcasecmp (p->mailbox, a->mailbox)))
+	  {
 	    weak_association = 0;
+	  }
 	}
       }
       rfc822_free_address (&r);
     }
 
+    if (match && weak_association)
+	weak = 1;
+    
     if (match)
     {
       pgp_key_t *_p, *_k;
