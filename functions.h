@@ -200,7 +200,7 @@ struct binding_t OpPager[] = {
   { "next-page",	OP_NEXT_PAGE,			" " },
   { "previous-page",	OP_PREV_PAGE,			"-" },
   { "top",		OP_PAGER_TOP,			"^" },
-  { "bottom",		OP_PAGER_BOTTOM,		"$" },
+  { "sync-mailbox",	OP_MAIN_SYNC_FOLDER,            "$" },
   { "shell-escape",	OP_SHELL_ESCAPE,		"!" },
   { "enter-command",	OP_ENTER_COMMAND,		":" },
   { "search",		OP_SEARCH,			"/" },
@@ -214,6 +214,7 @@ struct binding_t OpPager[] = {
   { "half-up",		OP_HALF_UP,			NULL },
   { "half-down",	OP_HALF_DOWN,			NULL },
   { "previous-line",	OP_PREV_LINE,			NULL },
+  { "bottom",		OP_PAGER_BOTTOM,		NULL },
   { "parent-message",	OP_MAIN_PARENT_MESSAGE,		"P" },
 
 

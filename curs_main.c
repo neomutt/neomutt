@@ -827,48 +827,6 @@ int mutt_index_menu (void)
 	}
 	break;
 
-      case OP_MAIN_SYNC_FOLDER:
-
-	CHECK_MSGCOUNT;
-	CHECK_READONLY;
-	{
-	  int oldvcount = Context->vcount;
-	  int oldcount  = Context->msgcount;
-	  int dcount = 0;
-	  int check;
-
-	  /* calculate the number of messages _above_ the cursor,
-	   * so we can keep the cursor on the current message
-	   */ 
-	  for (j = 0; j <= menu->current; j++)
-	  {
-	    if (Context->hdrs[Context->v2r[j]]->deleted)
-	      dcount++;
-	  }
-
-	  if ((check = mx_sync_mailbox (Context, &index_hint)) == 0)
-	  {
-	    if (Context->vcount != oldvcount)
-	      menu->current -= dcount;
-	    set_option (OPTSEARCHINVALID);
-	  }
-	  else if (check == M_NEW_MAIL || check == M_REOPENED)
-	    update_index (menu, Context, check, oldcount, index_hint);
-
-	  /* 
-	   * do a sanity check even if mx_sync_mailbox failed.
-	   */
-
-	  if (menu->current < 0 || menu->current >= Context->vcount)
-	    menu->current = ci_first_message ();
-	}
-
-	/* check for a fatal error, or all messages deleted */
-	if (!Context->path)
-	  safe_free ((void **) &Context);
-	menu->redraw = REDRAW_FULL;
-	break;
-
       case OP_TAG:
 
 	CHECK_MSGCOUNT;
@@ -917,6 +875,56 @@ int mutt_index_menu (void)
 	/* --------------------------------------------------------------------
 	 * The following operations can be performed inside of the pager.
 	 */
+
+      case OP_MAIN_SYNC_FOLDER:
+
+	CHECK_MSGCOUNT;
+	CHECK_READONLY;
+	{
+	  int oldvcount = Context->vcount;
+	  int oldcount  = Context->msgcount;
+	  int dcount = 0;
+	  int check;
+
+	  /* calculate the number of messages _above_ the cursor,
+	   * so we can keep the cursor on the current message
+	   */ 
+	  for (j = 0; j <= menu->current; j++)
+	  {
+	    if (Context->hdrs[Context->v2r[j]]->deleted)
+	      dcount++;
+	  }
+
+	  if ((check = mx_sync_mailbox (Context, &index_hint)) == 0)
+	  {
+	    if (Context->vcount != oldvcount)
+	      menu->current -= dcount;
+	    set_option (OPTSEARCHINVALID);
+	  }
+	  else if (check == M_NEW_MAIL || check == M_REOPENED)
+	    update_index (menu, Context, check, oldcount, index_hint);
+
+	  /* 
+	   * do a sanity check even if mx_sync_mailbox failed.
+	   */
+
+	  if (menu->current < 0 || menu->current >= Context->vcount)
+	    menu->current = ci_first_message ();
+	}
+
+	/* check for a fatal error, or all messages deleted */
+	if (!Context->path)
+	  safe_free ((void **) &Context);
+
+	/* if we were in the pager, redisplay the message */
+	if (menu->menu == MENU_PAGER)
+	{
+	  op = OP_DISPLAY_MESSAGE;
+	  continue;
+	}
+        else
+	  menu->redraw = REDRAW_FULL;
+	break;
 
       case OP_MAIN_CHANGE_FOLDER:
       

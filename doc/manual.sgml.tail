@@ -118,7 +118,7 @@ view-attachments           v   show MIME attachments
 <sect2>pager
 <p>
 <verb>
-bottom                     $   jump to the bottom of the message
+bottom             not bound   jump to the bottom of the message
 bounce-message             b   remail a message to another user
 change-folder              c   open a different folder
 change-folder-readonly ESC c   open a different folder in read only mode
@@ -181,6 +181,7 @@ search-toggle              \   toggle search pattern coloring
 shell-escape               !   invoke a command in a subshell
 show-version               V   show the Mutt version number and date
 skip-quoted                S   skip beyond quoted text
+sync-mailbox               $   save changes to mailbox
 tag-message                t   tag a message
 toggle-quoted              T   toggle display of quoted text
 top                        ^   jump to the top of the message
