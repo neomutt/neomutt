@@ -1410,6 +1410,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
   static char searchbuf[STRING];
   char buffer[LONG_STRING];
   char helpstr[SHORT_STRING*2];
+  char tmphelp[SHORT_STRING*2];
   int maxLine, lastLine = 0;
   struct line_t *lineInfo;
   struct q_class_t *QuoteList = NULL;
@@ -1475,15 +1476,15 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
   mutt_compile_help (helpstr, sizeof (helpstr), MENU_PAGER, PagerHelp);
   if (IsHeader (extra))
   {
+    strfcpy (tmphelp, helpstr, sizeof (tmphelp));
     mutt_compile_help (buffer, sizeof (buffer), MENU_PAGER, PagerHelpExtra);
-    strcat (helpstr, "  ");	/* __STRCAT_CHECKED__ */	/* we don't seem to have any user-supplied data here */
-    strcat (helpstr, buffer);	/* __STRCAT_CHECKED__ */
+    snprintf (helpstr, sizeof (helpstr), "%s %s", tmphelp, buffer);
   }
   if (!InHelp)
   {
+    strfcpy (tmphelp, helpstr, sizeof (tmphelp));
     mutt_make_help (buffer, sizeof (buffer), _("Help"), MENU_PAGER, OP_HELP);
-    strcat (helpstr, "  ");	/* __STRCAT_CHECKED__ */	/* we don't seem to have any user-supplied data here */
-    strcat (helpstr, buffer);	/* __STRCAT_CHECKED__ */
+    snprintf (helpstr, sizeof (helpstr), "%s %s", tmphelp, buffer);
   }
 
   while (ch != -1)
