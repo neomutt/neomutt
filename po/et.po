@@ -1,0 +1,3526 @@
+# Estonian translations for mutt.
+# Copyright (C) 2001 Free Software Foundation, Inc.
+# Toomas Soome <tsoome@ut.ee>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mutt 1.2.5\n"
+"POT-Creation-Date: 2000-07-28 20:51+0200\n"
+"PO-Revision-Date: 2001-05-18 23:11+02:00\n"
+"Last-Translator: Toomas Soome <tsoome@ut.ee>\n"
+"Language-Team: Estonian <et@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-15\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: addrbook.c:31 browser.c:41 pager.c:1385 postpone.c:37 query.c:43
+#: recvattach.c:57
+msgid "Exit"
+msgstr "Välju"
+
+#: addrbook.c:32
+msgid "Select"
+msgstr "Vali"
+
+#: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:376 imap/imap_ssl.c:493
+#: pager.c:1482 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
+msgid "Help"
+msgstr "Appi"
+
+#: addrbook.c:120
+msgid "You have no aliases!"
+msgstr "Tei pole hüüdnimesid!"
+
+#: addrbook.c:131
+msgid "Aliases"
+msgstr "Hüüdnimed"
+
+#. add a new alias
+#: alias.c:246
+msgid "Alias as: "
+msgstr "Hüüdnimeks: "
+
+#: alias.c:252
+msgid "You already have an alias defined with that name!"
+msgstr "Teil on juba selle nimeline hüüdnimi!"
+
+#: alias.c:266
+msgid "Address: "
+msgstr "Aadress: "
+
+#: alias.c:282
+msgid "Personal name: "
+msgstr "Isiku nimi: "
+
+#: alias.c:291
+#, c-format
+msgid "[%s = %s] Accept?"
+msgstr "[%s = %s] Nõus?"
+
+#: alias.c:308 recvattach.c:396 recvattach.c:453
+msgid "Save to file: "
+msgstr "Salvestan faili: "
+
+#: alias.c:319
+msgid "Alias added."
+msgstr "Hüüdnimi on lisatud."
+
+#: attach.c:111 attach.c:238 attach.c:431 attach.c:889
+msgid "Can't match nametemplate, continue?"
+msgstr "Nimemuster ei sobi, jätkan?"
+
+#. For now, editing requires a file, no piping
+#: attach.c:123
+msgid "Mailcap compose entry requires %%s"
+msgstr "Mailcap koostamise kirje nõuab %%s"
+
+#: attach.c:131 attach.c:256 commands.c:169 compose.c:1126 curs_lib.c:135
+#: curs_lib.c:331
+#, c-format
+msgid "Error running \"%s\"!"
+msgstr "Viga \"%s\" käivitamisel!"
+
+#: attach.c:141
+msgid "Failure to open file to parse headers."
+msgstr "Faili avamine päiste analüüsiks ebaõnnestus."
+
+#: attach.c:172
+msgid "Failure to open file to strip headers."
+msgstr "Faili avamine päiste eemaldamiseks ebaõnnestus."
+
+#: attach.c:190
+#, c-format
+msgid "No mailcap compose entry for %s, creating empty file."
+msgstr "Mailcap koostamise kirjet %s jaoks puudub, loon tühja faili."
+
+#. For now, editing requires a file, no piping
+#: attach.c:250
+msgid "Mailcap Edit entry requires %%s"
+msgstr "Mailcap toimeta kirje nõuab %%s"
+
+#: attach.c:269
+#, c-format
+msgid "No mailcap edit entry for %s"
+msgstr "Mailcap toimeta kirjet %s jaoks ei ole."
+
+#: attach.c:397
+msgid "No matching mailcap entry found.  Viewing as text."
+msgstr "Sobivat mailcap kirjet pole. Käsitlen tekstina."
+
+#: attach.c:410
+msgid "MIME type not defined.  Cannot view attachment."
+msgstr "MIME tüüp ei ole defineeritud. Lisa ei saa vaadata."
+
+#: attach.c:500
+msgid "Cannot create filter"
+msgstr "Filtri loomine ebaõnnestus"
+
+#: attach.c:707 recvattach.c:427
+msgid "Attachment saved."
+msgstr "Lisa on salvestatud."
+
+#: attach.c:764
+msgid "Write fault!"
+msgstr "Viga kirjutamisel!"
+
+#: attach.c:973
+msgid "I don't know how to print that!"
+msgstr "Ma ei tea, kuidas seda trükkida!"
+
+#: browser.c:42
+msgid "Chdir"
+msgstr "Chdir"
+
+#: browser.c:43
+msgid "Mask"
+msgstr "Mask"
+
+#: browser.c:370 browser.c:913
+#, c-format
+msgid "%s is not a directory."
+msgstr "%s ei ole kataloog."
+
+#: browser.c:481
+#, c-format
+msgid "Mailboxes [%d]"
+msgstr "Postkastid [%d]"
+
+#: browser.c:488
+#, c-format
+msgid "Subscribed [%s], File mask: %s"
+msgstr "Tellitud [%s], faili mask: %s"
+
+#: browser.c:492
+#, c-format
+msgid "Directory [%s], File mask: %s"
+msgstr "Kataloog [%s], failimask: %s"
+
+#: browser.c:503
+msgid "Can't attach a directory!"
+msgstr "Kataloogi ei saa lisada!"
+
+#: browser.c:621 browser.c:980 browser.c:1073
+msgid "No files match the file mask"
+msgstr "Maskile vastavaid faile ei ole"
+
+#: browser.c:821
+msgid "Creating mailboxes is not yet supported."
+msgstr "Postkastide loomine ei ole veel võimalik."
+
+#: browser.c:826
+msgid "Delete is only supported for IMAP mailboxes"
+msgstr "Kustutada saab ainult IMAP postkaste"
+
+#: browser.c:834
+#, c-format
+msgid "Really delete mailbox \"%s\"?"
+msgstr "Kas tõesti kustutada postkast \"%s\"?"
+
+#: browser.c:848
+msgid "Mailbox deleted."
+msgstr "Postkast on kustutatud."
+
+#: browser.c:854
+msgid "Mailbox not deleted."
+msgstr "Postkasti ei kustutatud."
+
+#: browser.c:872
+msgid "Chdir to: "
+msgstr "Mine kataloogi: "
+
+#: browser.c:906 browser.c:973
+msgid "Error scanning directory."
+msgstr "Viga kataloogi skaneerimisel."
+
+#: browser.c:924
+msgid "File Mask: "
+msgstr "Failimask: "
+
+#: browser.c:996
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
+msgstr "Järjestan tagurpidi (k)uup., (t)ähest., (s)uuruse järgi või (e)i järjesta? "
+
+#: browser.c:997
+msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
+msgstr "Järjestan (k)uup., (t)ähest., (s)uuruse järgi või (e)i järjesta? "
+
+#: browser.c:998
+msgid "dazn"
+msgstr "ktse"
+
+#: browser.c:1060
+msgid "New file name: "
+msgstr "Uus failinimi: "
+
+#: browser.c:1091
+msgid "Can't view a directory"
+msgstr "Kataloogi ei saa vaadata"
+
+#: browser.c:1109
+msgid "Error trying to view file"
+msgstr "Viga faili vaatamisel"
+
+#: buffy.c:407
+#, c-format
+msgid "New mail in %s."
+msgstr "Uus kiri failis %s."
+
+#: charset.c:1066
+msgid "We can't currently handle utf-8 at this point."
+msgstr "UTF-8 kodeeringut me hetkel ei toeta."
+
+#: charset.c:1072 charset.c:1079
+#, c-format
+msgid "Can't open %s: %s."
+msgstr "%s ei saa avada: %s."
+
+#: charset.c:1148
+#, c-format
+msgid "Error while recoding %s. Leave it unchanged."
+msgstr "Viga %s ümberkodeerimisel. Jätan muutmata."
+
+#: charset.c:1154
+#, c-format
+msgid "Error while recoding %s. See %s for recovering your data."
+msgstr "Viga %s ümberkodeerimisel. Andmete taastamiseks vaadake %s."
+
+#: color.c:322
+#, c-format
+msgid "%s: color not supported by term"
+msgstr "%s: terminal ei toeta värve"
+
+#: color.c:328
+#, c-format
+msgid "%s: no such color"
+msgstr "%s. sellist värvi ei ole"
+
+#: color.c:374 color.c:569 color.c:580
+#, c-format
+msgid "%s: no such object"
+msgstr "%s: sellist objekti ei ole"
+
+#: color.c:381
+#, c-format
+msgid "%s: command valid only for index object"
+msgstr "%s: käsk kehtib ainult indekseeritud objektiga"
+
+#: color.c:389
+#, c-format
+msgid "%s: too few arguments"
+msgstr "%s: liiga vähe argumente"
+
+#: color.c:557
+msgid "Missing arguments."
+msgstr "Puuduvad argumendid."
+
+#: color.c:596 color.c:607
+msgid "color: too few arguments"
+msgstr "color: liiga vähe argumente"
+
+#: color.c:630
+msgid "mono: too few arguments"
+msgstr "mono: liiga vähe argumente"
+
+#: color.c:650
+#, c-format
+msgid "%s: no such attribute"
+msgstr "%s. sellist atribuuti pole"
+
+#: color.c:690 hook.c:61 hook.c:69 keymap.c:697
+msgid "too few arguments"
+msgstr "liiga vähe argumente"
+
+#: color.c:699 hook.c:75
+msgid "too many arguments"
+msgstr "liiga palju argumente"
+
+#: color.c:715
+msgid "default colors not supported"
+msgstr "vaikimisi värve ei toetata"
+
+#. find out whether or not the verify signature
+#: commands.c:94
+msgid "Verify PGP signature?"
+msgstr "Kontrollin PGP allkirja?"
+
+#: commands.c:106 pgp.c:1542 pgpkey.c:491 postpone.c:549
+msgid "Invoking PGP..."
+msgstr "Käivitan PGP..."
+
+#: commands.c:114 mbox.c:735
+msgid "Could not create temporary file!"
+msgstr "Ei õnnestu luua ajutist faili!"
+
+#: commands.c:153
+msgid "PGP signature successfully verified."
+msgstr "PGP allkiri on edukalt kontrollitud."
+
+#: commands.c:176
+msgid "Command: "
+msgstr "Käsklus: "
+
+#: commands.c:194 recvcmd.c:140
+msgid "Bounce message to: "
+msgstr "Peegelda teade aadressile: "
+
+#: commands.c:196 recvcmd.c:142
+msgid "Bounce tagged messages to: "
+msgstr "Peegelda märgitud teated aadressile: "
+
+#: commands.c:211
+msgid "Error parsing address!"
+msgstr "Viga aadressi analüüsimisel!"
+
+#: commands.c:221
+#, c-format
+msgid "Bounce message to %s"
+msgstr "Peegelda teade aadressile %s"
+
+#: commands.c:221
+#, c-format
+msgid "Bounce messages to %s"
+msgstr "Peegelda teated aadressile %s"
+
+#: commands.c:232
+msgid "Message bounced."
+msgstr "Teade on peegeldatud."
+
+#: commands.c:232
+msgid "Messages bounced."
+msgstr "Teated on peegeldatud."
+
+#: commands.c:272
+msgid "Pipe to command: "
+msgstr "Toruga käsule: "
+
+#: commands.c:372
+msgid ""
+"Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
+msgstr "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
+
+#: commands.c:373
+msgid ""
+"Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
+msgstr "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
+
+#: commands.c:374
+msgid "dfrsotuzc"
+msgstr "dfrsotuzc"
+
+#: commands.c:427
+msgid "Shell command: "
+msgstr "Käsurea käsk: "
+
+#: commands.c:560
+#, c-format
+msgid "%s%s to mailbox"
+msgstr "%s%s postkasti"
+
+#: commands.c:561
+msgid "Decode-save"
+msgstr "Dekodeeri-salvesta"
+
+#: commands.c:561
+msgid "Decode-copy"
+msgstr "Dekodeeri-kopeeri"
+
+#: commands.c:562
+msgid "Decrypt-save"
+msgstr "Dekrüpti-salvesta"
+
+#: commands.c:562
+msgid "Decrypt-copy"
+msgstr "Dekrüpti-kopeeri"
+
+#: commands.c:563 curs_main.c:372 recvattach.c:58
+msgid "Save"
+msgstr "Salvesta"
+
+#: commands.c:563
+msgid "Copy"
+msgstr "Kopeeri"
+
+#: commands.c:563
+msgid " tagged"
+msgstr " märgitud"
+
+#: commands.c:632
+#, c-format
+msgid "Copying to %s..."
+msgstr "Kopeerin kausta %s..."
+
+#: commands.c:725
+msgid "Print message?"
+msgstr "Trükin teate?"
+
+#: commands.c:725
+msgid "Print tagged messages?"
+msgstr "Trükin märgitud teated?"
+
+#: commands.c:752
+msgid "Message printed"
+msgstr "Teade on trükitud"
+
+#: commands.c:752
+msgid "Messages printed"
+msgstr "Teated on trükitud"
+
+#: compose.c:40
+msgid "There are no attachments."
+msgstr "Lisasid ei ole."
+
+#: compose.c:85
+msgid "Send"
+msgstr "Saada"
+
+#: compose.c:86 remailer.c:483
+msgid "Abort"
+msgstr "Katkesta"
+
+#: compose.c:90 compose.c:594
+msgid "Attach file"
+msgstr "Lisa fail"
+
+#: compose.c:91
+msgid "Descrip"
+msgstr "Kirjeldus"
+
+#: compose.c:112
+msgid "Sign, Encrypt"
+msgstr "Allkirjasta, krüpti"
+
+#: compose.c:114
+msgid "Encrypt"
+msgstr "Krüpti"
+
+#: compose.c:116
+msgid "Sign"
+msgstr "Allkirjasta"
+
+#: compose.c:118
+msgid "Clear"
+msgstr "Puhas"
+
+#: compose.c:125
+msgid " sign as: "
+msgstr " allkirjasta kui: "
+
+#: compose.c:125
+msgid "<default>"
+msgstr "<vaikimisi>"
+
+#: compose.c:126 compose.c:183
+msgid "MIC algorithm: "
+msgstr "MIC algoritm: "
+
+#: compose.c:137
+msgid ""
+"(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget "
+"it? "
+msgstr "(k)rüpti, (a)llkiri, allk. ku(i), (m)õlemad, vali mi(c) algoritm, (u)nusta? "
+
+#: compose.c:138
+msgid "esabmf"
+msgstr "kaimcu"
+
+#: compose.c:152
+msgid "Sign as: "
+msgstr "Allkirjasta kui: "
+
+#: compose.c:177
+msgid "This doesn't make sense if you don't want to sign the message."
+msgstr "Sel pole mõtet, kui te ei soovi teadet allkirjastada."
+
+#: compose.c:188
+msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
+msgstr "Tundmatu MIC algoritm, lubatud on: pgp-md5, pgp-sha1, pgp-rmd160"
+
+#: compose.c:253
+#, c-format
+msgid "%s [#%d] no longer exists!"
+msgstr "%s [#%d] ei eksisteeri!"
+
+#: compose.c:261
+#, c-format
+msgid "%s [#%d] modified. Update encoding?"
+msgstr "%s [#%d] muudeti. Uuendan kodeerimist?"
+
+#: compose.c:305
+msgid "-- Attachments"
+msgstr "-- Lisad"
+
+#: compose.c:348
+msgid "You may not delete the only attachment."
+msgstr "Ainukest lisa ei saa kustutada."
+
+#: compose.c:391
+msgid "Can't change character set for non-text attachments!"
+msgstr "Mitte-tekstilise lisa kooditabelit ei saa muuta!"
+
+#: compose.c:397
+msgid "Enter character set: "
+msgstr "Sisestage kooditabel: "
+
+#: compose.c:404
+msgid "UTF-8 encoding attachments has not yet been implemented."
+msgstr "UTF-8 kodeeritud lisasid ei ole realiseeritud."
+
+#: compose.c:410
+#, c-format
+msgid "Character set %s is unknown."
+msgstr "Kooditabel %s on tundmatu."
+
+#: compose.c:454
+msgid "Compose"
+msgstr "Kirjuta"
+
+#: compose.c:610
+msgid "Attaching selected files..."
+msgstr "Lisan valitud failid..."
+
+#: compose.c:621
+#, c-format
+msgid "Unable to attach %s!"
+msgstr "%s ei õnnestu lisada!"
+
+#: compose.c:639
+msgid "Open mailbox to attach message from"
+msgstr "Avage postkast, millest lisada teade"
+
+#: compose.c:674
+msgid "No messages in that folder."
+msgstr "Selles kaustas ei ole teateid."
+
+#: compose.c:683
+msgid "Tag the messages you want to attach!"
+msgstr "Märkige teada, mida soovite lisada!"
+
+#: compose.c:715
+msgid "Unable to attach!"
+msgstr "Ei õnnestu lisada!"
+
+#: compose.c:765 compose.c:790
+msgid "Recoding only affects text attachments."
+msgstr "Ümberkodeerimine puudutab ainult tekstilisasid."
+
+#: compose.c:770
+msgid "We currently can't encode to utf-8."
+msgstr "Praegu ei saa UTF-8 tabelisse kodeerida."
+
+#: compose.c:775
+msgid "The current attachment won't be converted."
+msgstr "Käesolevat lisa ei teisendata."
+
+#: compose.c:777
+msgid "The current attachment will be converted."
+msgstr "Käesolev lisa teisendatakse."
+
+#: compose.c:806
+msgid "Recoding successful."
+msgstr "Ümberkodeerimine oli edukas."
+
+#: compose.c:880
+msgid "Invalid encoding."
+msgstr "Vigane kodeering."
+
+#: compose.c:901
+msgid "Save a copy of this message?"
+msgstr "Salvestan sellest teatest koopia?"
+
+#: compose.c:955
+msgid "Rename to: "
+msgstr "Uus nimi: "
+
+#: compose.c:960 editmsg.c:96
+#, c-format
+msgid "Can't stat: %s"
+msgstr "Ei saa lugeda atribuute: %s"
+
+#: compose.c:986
+msgid "New file: "
+msgstr "Uus fail: "
+
+#: compose.c:999
+msgid "Content-Type is of the form base/sub"
+msgstr "Content-Type on kujul baas/alam"
+
+#: compose.c:1005
+#, c-format
+msgid "Unknown Content-Type %s"
+msgstr "Tundmatu Content-Type %s"
+
+#: compose.c:1018
+#, c-format
+msgid "Can't create file %s"
+msgstr "Faili %s ei saa luua"
+
+#: compose.c:1026
+msgid "What we have here is a failure to make an attachment"
+msgstr "See mis siin nüüd on, on viga lisa loomisel"
+
+#: compose.c:1087
+msgid "Postpone this message?"
+msgstr "Panen teate postitusootele?"
+
+#: compose.c:1141
+msgid "Write message to mailbox"
+msgstr "Kirjuta teade postkasti"
+
+#: compose.c:1144
+#, c-format
+msgid "Writing message to %s ..."
+msgstr "Kirjutan teate faili %s ..."
+
+#: compose.c:1153
+msgid "Message written."
+msgstr "Teade on kirjutatud."
+
+#: curs_lib.c:143
+msgid "yes"
+msgstr "jah"
+
+#: curs_lib.c:144
+msgid "no"
+msgstr "ei"
+
+#. restore blocking operation
+#: curs_lib.c:183
+msgid "Exit Mutt?"
+msgstr "Väljuda Muttist?"
+
+#: curs_lib.c:283
+msgid "unknown error"
+msgstr "tundmatu viga"
+
+#: curs_lib.c:303
+msgid "Press any key to continue..."
+msgstr "Jätkamiseks vajutage klahvi..."
+
+#: curs_lib.c:347
+msgid " ('?' for list): "
+msgstr " ('?' annab loendi): "
+
+#: curs_main.c:55 curs_main.c:568
+msgid "No mailbox is open."
+msgstr "Avatud postkaste pole."
+
+#: curs_main.c:56
+msgid "There are no messages."
+msgstr "Teateid ei ole."
+
+#: curs_main.c:57 mx.c:1036 pager.c:61 recvattach.c:47
+msgid "Mailbox is read-only."
+msgstr "Postkast on ainult lugemiseks."
+
+#: curs_main.c:58 pager.c:62 recvattach.c:764
+msgid "Function not permitted in attach-message mode."
+msgstr "Funktsioon ei ole teate lisamise moodis lubatud."
+
+#: curs_main.c:225
+msgid "Cannot toggle write on a readonly mailbox!"
+msgstr "Ainult lugemiseks postkastil ei saa kirjutamist lülitada!"
+
+#: curs_main.c:232
+msgid "Changes to folder will be written on folder exit."
+msgstr "Muudatused kaustas salvestatakse kaustast väljumisel."
+
+#: curs_main.c:237
+msgid "Changes to folder will not be written."
+msgstr "Muudatusi kaustas ei kirjutata."
+
+#: curs_main.c:369
+msgid "Quit"
+msgstr "Välju"
+
+#: curs_main.c:370 pager.c:1392 postpone.c:38
+msgid "Del"
+msgstr "Kustuta"
+
+#: curs_main.c:371 postpone.c:39
+msgid "Undel"
+msgstr "Taasta"
+
+#: curs_main.c:373 query.c:44
+msgid "Mail"
+msgstr "Kiri"
+
+#: curs_main.c:374 pager.c:1393
+msgid "Reply"
+msgstr "Vasta"
+
+#: curs_main.c:375
+msgid "Group"
+msgstr "Grupp"
+
+#: curs_main.c:457
+msgid "Mailbox was externally modified.  Flags may be wrong."
+msgstr "Postkasti on väliselt muudetud. Lipud võivad olla valed."
+
+#: curs_main.c:460
+msgid "New mail in this mailbox."
+msgstr "Selles postkastis on uus kiri."
+
+#: curs_main.c:574
+msgid "No tagged messages."
+msgstr "Märgitud teateid pole."
+
+#: curs_main.c:654
+msgid "Jump to message: "
+msgstr "Hüppa teatele: "
+
+#: curs_main.c:660
+msgid "Argument must be a message number."
+msgstr "Argument peab olema teate number."
+
+#: curs_main.c:693
+msgid "That message is not visible."
+msgstr "See teate ei ole nähtav."
+
+#: curs_main.c:696
+msgid "Invalid message number."
+msgstr "Vigane teate number."
+
+#: curs_main.c:709
+msgid "Delete messages matching: "
+msgstr "Kustuta teated mustriga: "
+
+#: curs_main.c:731
+msgid "No limit pattern is in effect."
+msgstr "Kehtivat piirangumustrit ei ole."
+
+#. i18n: ask for a limit to apply
+#: curs_main.c:736
+#, c-format
+msgid "Limit: %s"
+msgstr "Piirang: %s"
+
+#: curs_main.c:746
+msgid "Limit to messages matching: "
+msgstr "Piirdu teadetega mustriga: "
+
+#: curs_main.c:776
+msgid "Quit Mutt?"
+msgstr "Väljun Muttist?"
+
+#: curs_main.c:899
+msgid "Tag messages matching: "
+msgstr "Märgi teated mustriga: "
+
+#: curs_main.c:907
+msgid "Undelete messages matching: "
+msgstr "Taasta teated mustriga: "
+
+#: curs_main.c:914
+msgid "Untag messages matching: "
+msgstr "Võta märk teadetelt mustriga: "
+
+#: curs_main.c:932
+msgid "Open mailbox in read-only mode"
+msgstr "Avan postkasti ainult lugemiseks"
+
+#: curs_main.c:934
+msgid "Open mailbox"
+msgstr "Avan postkasti"
+
+#: curs_main.c:950 mx.c:454 mx.c:600
+#, c-format
+msgid "%s is not a mailbox."
+msgstr "%s ei ole postkast."
+
+#: curs_main.c:1035
+msgid "Exit Mutt without saving?"
+msgstr "Väljun Muttist salvestamata?"
+
+#: curs_main.c:1071 curs_main.c:1095
+msgid "You are on the last message."
+msgstr "Te olete viimasel teatel."
+
+#: curs_main.c:1078 curs_main.c:1120
+msgid "No undeleted messages."
+msgstr "Kustutamata teateid pole."
+
+#: curs_main.c:1113 curs_main.c:1136
+msgid "You are on the first message."
+msgstr "Te olete esimesel teatel."
+
+#: curs_main.c:1208 pattern.c:1123
+msgid "Search wrapped to top."
+msgstr "Otsing pööras algusest tagasi."
+
+#: curs_main.c:1217 pattern.c:1134
+msgid "Search wrapped to bottom."
+msgstr "Otsing pööras lõpust tagasi."
+
+#: curs_main.c:1250
+msgid "No new messages"
+msgstr "Uusi teateid pole"
+
+#: curs_main.c:1250
+msgid "No unread messages"
+msgstr "Lugemata teateid pole"
+
+#: curs_main.c:1251
+msgid " in this limited view"
+msgstr " selles piiratud vaates"
+
+#: curs_main.c:1375
+msgid "No more threads."
+msgstr "Rohkem teemasid pole."
+
+#: curs_main.c:1377
+msgid "You are on the first thread."
+msgstr "Te olete esimesel teemal."
+
+#: curs_main.c:1447
+msgid "Thread contains unread messages."
+msgstr "Teema sisaldab lugemata teateid."
+
+#: curs_main.c:1460 flags.c:228 thread.c:651 thread.c:702
+msgid "Threading is not enabled."
+msgstr "Teemad ei ole lubatud."
+
+#.
+#. * SLcurses_waddnstr() can't take a "const char *", so this is only
+#. * declared "static" (sigh)
+#.
+#: edit.c:36
+msgid ""
+"~~\t\tinsert a line begining with a single ~\n"
+"~b users\tadd users to the Bcc: field\n"
+"~c users\tadd users to the Cc: field\n"
+"~f messages\tinclude messages\n"
+"~F messages\tsame as ~f, except also include headers\n"
+"~h\t\tedit the message header\n"
+"~m messages\tinclude and quote messages\n"
+"~M messages\tsame as ~m, except include headers\n"
+"~p\t\tprint the message\n"
+"~q\t\twrite file and quit editor\n"
+"~r file\t\tread a file into the editor\n"
+"~t users\tadd users to the To: field\n"
+"~u\t\trecall the previous line\n"
+"~v\t\tedit message with the $visual editor\n"
+"~w file\t\twrite message to file\n"
+"~x\t\tabort changes and quit editor\n"
+"~?\t\tthis message\n"
+".\t\ton a line by itself ends input\n"
+msgstr ""
+"~~\t\tlisa rida, mis algab sümboliga ~\n"
+"~b kasutajad\tlisa kasutajad Bcc: väljale\n"
+"~c kasutajad\tlisa kasutajad Cc: väljale\n"
+"~f teated\tlisa teated\n"
+"~F teated\tsama kui ~f, lisa ka päised\n"
+"~h\t\ttoimeta teate päist\n"
+"~m teated\tlisa ja tsiteeri teateid\n"
+"~M teated\tsama kui ~m, lisa ka päised\n"
+"~p\t\ttrüki teade\n"
+"~q\t\tkirjuta fail ja välju toimetist\n"
+"~r fail\t\tloe toimetisse fail\n"
+"~t kasutajad\tlisa kasutajad To: väljale\n"
+"~u\t\ttühista eelmine rida\n"
+"~v\t\ttoimeta teadet $visual toimetiga\n"
+"~w fail\t\tkirjuta teade faili\n"
+"~x\t\tkatkesta muudatused ja välju toimetist\n"
+"~?\t\tsee teade\n"
+".\t\tüksinda real lõpetab sisendi\n"
+
+#: edit.c:178
+#, c-format
+msgid "%d: invalid message number.\n"
+msgstr "%d: vigane teate number.\n"
+
+#: edit.c:309
+msgid "(End message with a . on a line by itself)\n"
+msgstr "(Teate lõpetab rida, milles on ainult .)\n"
+
+#: edit.c:367
+msgid "No mailbox.\n"
+msgstr "Postkasti pole.\n"
+
+#: edit.c:371
+msgid "Message contains:\n"
+msgstr "Teade sisaldab:\n"
+
+#: edit.c:375 edit.c:426
+msgid "(continue)\n"
+msgstr "(jätka)\n"
+
+#: edit.c:388
+msgid "missing filename.\n"
+msgstr "failinimi puudub.\n"
+
+#: edit.c:408
+msgid "No lines in message.\n"
+msgstr "Teates pole ridu.\n"
+
+#: edit.c:437
+#, c-format
+msgid "%s: unknown editor command (~? for help)\n"
+msgstr "%s: tundmatu toimeti käsk (~? annab abiinfot)\n"
+
+#: editmsg.c:74
+#, c-format
+msgid "could not create temporary folder: %s"
+msgstr "ajutise kausta loomine ebaõnnestus: %s"
+
+#: editmsg.c:84
+#, c-format
+msgid "could not write temporary mail folder: %s"
+msgstr "ei õnnestu kirjutada ajutisse kausta: %s"
+
+#: editmsg.c:102
+msgid "Message file is empty!"
+msgstr "Teate fail on tühi!"
+
+#: editmsg.c:109
+msgid "Message not modified!"
+msgstr "Teadet ei muudetud!"
+
+#: editmsg.c:117
+#, c-format
+msgid "Can't open message file: %s"
+msgstr "Teate faili ei saa avada: %s"
+
+#: editmsg.c:124 editmsg.c:152
+#, c-format
+msgid "Can't append to folder: %s"
+msgstr "Kausta ei saa lisada: %s"
+
+#: editmsg.c:183
+#, c-format
+msgid "Error. Preserving temporary file: %s"
+msgstr "Viga. Säilitan ajutise faili: %s"
+
+#: flags.c:266
+msgid "Set flag"
+msgstr "Sea lipp"
+
+#: flags.c:266
+msgid "Clear flag"
+msgstr "Eemalda lipp"
+
+#: handler.c:114
+msgid "[-- Error: unexpected end of file! --]\n"
+msgstr "[-- Viga: ootamatu faililõpp! --]\n"
+
+#. didn't find anything that we could display!
+#: handler.c:947
+msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
+msgstr "[-- Viga:  Multipart/Alternative osasid ei saa näidata! --]\n"
+
+#: handler.c:1064
+#, c-format
+msgid "[-- Attachment #%d"
+msgstr "[-- Lisa #%d"
+
+#: handler.c:1075
+#, c-format
+msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
+msgstr "[-- Tüüp: %s/%s, Kodeering: %s, Maht: %s --]\n"
+
+#: handler.c:1134
+#, c-format
+msgid "[-- Autoview using %s --]\n"
+msgstr "[-- Autovaade kasutades %s --]\n"
+
+#: handler.c:1135
+#, c-format
+msgid "Invoking autoview command: %s"
+msgstr "Käivitan autovaate käskluse: %s"
+
+#: handler.c:1172 handler.c:1190
+#, c-format
+msgid "[-- Autoview stderr of %s --]\n"
+msgstr "[-- Autovaate %s stderr --]\n"
+
+#: handler.c:1222
+msgid "[-- Error: message/external-body has no access-type parameter --]\n"
+msgstr "[-- Viga: message/external-body juurdepääsu parameeter puudub --]\n"
+
+#: handler.c:1239
+#, c-format
+msgid "[-- This %s/%s attachment "
+msgstr "[-- See %s/%s lisa "
+
+#: handler.c:1246
+#, c-format
+msgid "(size %s bytes) "
+msgstr "(maht %s baiti) "
+
+#: handler.c:1248
+msgid "has been deleted --]\n"
+msgstr "on kustutatud --]\n"
+
+#: handler.c:1251
+#, c-format
+msgid "[-- on %s --]\n"
+msgstr "[-- %s --]\n"
+
+#: handler.c:1261
+#, c-format
+msgid ""
+"[-- This %s/%s attachment is not included, --]\n"
+"[-- and the indicated external source has --]\n"
+"[-- expired. --]\n"
+msgstr ""
+"[-- Lisa %s/%s ei ole kaasatud ja --]\n"
+"[-- osutatud väline allikas on aegunud. --]\n"
+
+#: handler.c:1275
+#, c-format
+msgid ""
+"[-- This %s/%s attachment is not included, --]\n"
+"[-- and the indicated access-type %s is unsupported --]\n"
+msgstr ""
+"[-- Lisa %s/%s ei ole kaasatud ja näidatud --]\n"
+"[-- juurdepääsu tüüpi %s ei toetata --]\n"
+
+#: handler.c:1383
+msgid "Error: multipart/signed has no protocol."
+msgstr "Viga: multipart/signed teatel puudub protokoll."
+
+#: handler.c:1396
+msgid "Error: multipart/encrypted has no protocol parameter!"
+msgstr "Viga: multipart/encrypted teatel puudub protokolli parameeter!"
+
+#: handler.c:1438
+msgid "Unable to open temporary file!"
+msgstr "Ajutise faili avamine ebaõnnestus!"
+
+#: handler.c:1497
+#, c-format
+msgid "[-- %s/%s is unsupported "
+msgstr "[-- %s/%s ei toetata "
+
+#: handler.c:1502
+#, c-format
+msgid "(use '%s' to view this part)"
+msgstr "(selle osa vaatamiseks kasutage '%s')"
+
+#: handler.c:1504
+msgid "(need 'view-attachments' bound to key!)"
+msgstr "('view-attachments' peab olema klahviga seotud!)"
+
+#: headers.c:171
+#, c-format
+msgid "%s: unable to attach file"
+msgstr "%s: faili lisamine ebaõnnestus"
+
+#: help.c:273
+msgid "ERROR: please report this bug"
+msgstr "VIGA: Palun teatage sellest veast"
+
+#: help.c:315
+msgid "<UNKNOWN>"
+msgstr "<TUNDMATU>"
+
+#: help.c:327
+msgid ""
+"\n"
+"Generic bindings:\n"
+"\n"
+msgstr "\nÜldised seosed:\n\n"
+
+#: help.c:331
+msgid ""
+"\n"
+"Unbound functions:\n"
+"\n"
+msgstr "\nSidumata funktsioonid:\n\n"
+
+#: help.c:339
+#, c-format
+msgid "Help for %s"
+msgstr "%s abiinfo"
+
+#: hook.c:243
+#, c-format
+msgid "unhook: unknown hook type: %s"
+msgstr "unhook: tundmatu seose tüüp: %s"
+
+#: imap/auth.c:104
+msgid "Authenticating (CRAM-MD5)..."
+msgstr "Autentimine (CRAM-MD5)..."
+
+#: imap/auth.c:191
+msgid "Authenticating (anonymous)..."
+msgstr "Autentimine (anonüümne)..."
+
+#: imap/auth.c:266
+msgid "IMAP Username: "
+msgstr "IMAP Kasutaja: "
+
+#: imap/auth.c:282
+msgid "Anonymous authentication not supported."
+msgstr "Anonüümset autentimist ei toetata."
+
+#: imap/auth.c:295
+msgid "GSSAPI authentication failed."
+msgstr "GSSAPI autentimine ebaõnnestus."
+
+#: imap/auth.c:313
+#, c-format
+msgid "CRAM key for %s@%s: "
+msgstr "%s@%s CRAM võti: "
+
+#: imap/auth.c:328
+msgid "CRAM-MD5 authentication failed."
+msgstr "CRAM-MD5 autentimine ebaõnnestus."
+
+#: imap/auth.c:343
+msgid "Skipping CRAM-MD5 authentication."
+msgstr "Jätan CRAM-MD5 autentimise vahele."
+
+#: imap/auth.c:355
+#, c-format
+msgid "Password for %s@%s: "
+msgstr "%s@%s parool: "
+
+#: imap/auth.c:371
+msgid "Logging in..."
+msgstr "Meldin..."
+
+#. Login failed, try again
+#: imap/auth.c:383
+msgid "Login failed."
+msgstr "Meldimine ebaõnnestus."
+
+#. now begin login
+#: imap/auth_gss.c:83
+msgid "Authenticating (GSSAPI)..."
+msgstr "Autentimine (GSSAPI)..."
+
+#: imap/browse.c:93
+msgid "Getting namespaces..."
+msgstr "Laen nimeruumid..."
+
+#: imap/browse.c:120
+msgid "Getting folder list..."
+msgstr "Laen kaustade nimekirja..."
+
+#. something is wrong because the server reported fewer messages
+#. * than we previously saw
+#.
+#: imap/command.c:184
+msgid "Fatal error.  Message count is out of sync!"
+msgstr "Fataalne viga. Teadete arv ei ole sünkroonis!"
+
+#: imap/imap.c:234
+#, c-format
+msgid "Reopening mailbox... %s"
+msgstr "Avan postkasti uuesti... %s"
+
+#: imap/imap.c:440
+msgid "This IMAP server is ancient. Mutt does not work with it."
+msgstr "See IMAP server on iganenud. Mutt ei tööta sellega."
+
+#: imap/imap.c:606
+#, c-format
+msgid "Selecting %s..."
+msgstr "Valin %s..."
+
+#. STATUS not supported
+#. * The thing to do seems to be:
+#. *  - Open a *new* IMAP session, select, and then close it. Report the
+#. * error if the mailbox did not exist.
+#: imap/imap.c:824
+msgid "Unable to append to IMAP mailboxes at this server"
+msgstr "Sellel serveril ei saa IMAP postkastidele lisada"
+
+#. command failed cause folder doesn't exist
+#: imap/imap.c:832 imap/message.c:631 muttlib.c:1055
+#, c-format
+msgid "Create %s?"
+msgstr "Loon %s?"
+
+#: imap/imap.c:856
+msgid "Closing connection to IMAP server..."
+msgstr "Sulen ühenduse IMAP serveriga..."
+
+#: imap/imap.c:1010
+#, c-format
+msgid "Marking %d messages deleted..."
+msgstr "märgin %d teadet kustutatuks..."
+
+#: imap/imap.c:1028
+#, c-format
+msgid "Saving message status flags... [%d/%d]"
+msgstr "Salvestan teadete olekud... [%d/%d]"
+
+#: imap/imap.c:1085
+msgid "Closing mailbox..."
+msgstr "Sulen postkasti..."
+
+#: imap/imap.c:1095
+msgid "Expunging messages from server..."
+msgstr "Kustutan serveril teateid..."
+
+#: imap/imap.c:1425
+#, c-format
+msgid "Subscribing to %s..."
+msgstr "Tellin %s..."
+
+#: imap/imap.c:1427
+#, c-format
+msgid "Unsubscribing to %s..."
+msgstr "Loobun kaustast %s..."
+
+#: imap/imap_ssl.c:86
+msgid "Filling entropy pool"
+msgstr "Kogun entroopiat"
+
+#: imap/imap_ssl.c:118
+msgid "Failed to find enough entropy on your system"
+msgstr "Teie süsteemis ei ole piisavalt entroopiat"
+
+#: imap/imap_ssl.c:133
+msgid "SSL disabled due the lack of entropy"
+msgstr "Entroopia nappuse tõttu on SSL kasutamine blokeeritud"
+
+#: imap/imap_ssl.c:213
+msgid "Unable to get certificate from peer"
+msgstr "Ei õnnestu saada partneri sertifikaati"
+
+#: imap/imap_ssl.c:224
+#, c-format
+msgid "SSL connection using %s"
+msgstr "SSL ühendus kasutades %s"
+
+#: imap/imap_ssl.c:249
+msgid "Unknown"
+msgstr "Tundmatu"
+
+#: imap/imap_ssl.c:274
+msgid "[unable to calculate]"
+msgstr "[arvutamine ei õnnestu]"
+
+#: imap/imap_ssl.c:292
+msgid "[invalid date]"
+msgstr "[vigane kuupäev]"
+
+#: imap/imap_ssl.c:367
+msgid "Server certificate is not yet valid"
+msgstr "Serveri sertifikaat ei ole veel kehtiv"
+
+#: imap/imap_ssl.c:374
+msgid "Server certificate has expired"
+msgstr "Serveri sertifikaat on aegunud"
+
+#: imap/imap_ssl.c:447
+msgid "This certificate belongs to:"
+msgstr "Selle serveri omanik on:"
+
+#: imap/imap_ssl.c:457
+msgid "This certificate was issued by:"
+msgstr "Selle sertifikaadi väljastas:"
+
+#: imap/imap_ssl.c:467
+msgid "This certificate is valid"
+msgstr "See sertifikaat on kehtiv"
+
+#: imap/imap_ssl.c:468
+#, c-format
+msgid "   from %s"
+msgstr "   alates %s"
+
+#: imap/imap_ssl.c:470
+#, c-format
+msgid "     to %s"
+msgstr "     kuni %s"
+
+#: imap/imap_ssl.c:476
+#, c-format
+msgid "Fingerprint: %s"
+msgstr "Sõrmejälg: %s"
+
+#: imap/imap_ssl.c:478
+msgid "SSL Certificate check"
+msgstr "SSL Sertifikaadi kontroll"
+
+#: imap/imap_ssl.c:481
+msgid "(r)eject, accept (o)nce, (a)ccept always"
+msgstr "(k)eeldu, (n)õustu korra, nõustu (a)alati"
+
+#: imap/imap_ssl.c:482
+msgid "roa"
+msgstr "kna"
+
+#: imap/imap_ssl.c:486
+msgid "(r)eject, accept (o)nce"
+msgstr "(k)eeldu, (n)õustu korra"
+
+#: imap/imap_ssl.c:487
+msgid "ro"
+msgstr "kn"
+
+#: imap/imap_ssl.c:491 pgpkey.c:442
+msgid "Exit  "
+msgstr "Välju  "
+
+#: imap/imap_ssl.c:516
+msgid "Warning: Couldn't save certificate"
+msgstr "Hoiatus: Sertifikaati ei saa salvestada"
+
+#: imap/imap_ssl.c:518
+msgid "Certificate saved"
+msgstr "Sertifikaat on salvestatud"
+
+#. Unable to fetch headers for lower versions
+#: imap/message.c:77
+msgid "Unable to fetch headers from this IMAP server version."
+msgstr "Sellest IMAP serverist ei saa päiseid laadida."
+
+#: imap/message.c:96
+#, c-format
+msgid "Fetching message headers... [%d/%d]"
+msgstr "Laen teadete päiseid... [%d/%d]"
+
+#: imap/message.c:307
+msgid "Fetching message..."
+msgstr "Laen teadet..."
+
+#: imap/message.c:486
+msgid "Sending APPEND command ..."
+msgstr "Saadan APPEND käsu ..."
+
+#: imap/message.c:525
+msgid "Uploading message ..."
+msgstr "Saadan teadet ..."
+
+#: imap/message.c:610
+#, c-format
+msgid "Copying %d messages to %s..."
+msgstr "Kopeerin %d teadet kausta %s..."
+
+#: imap/message.c:614
+#, c-format
+msgid "Copying message %d to %s..."
+msgstr "Kopeerin teadet %d kausta %s..."
+
+#: imap/socket.c:215
+#, c-format
+msgid "Connecting to %s..."
+msgstr "Ühendus serverisse %s..."
+
+#: imap/socket.c:235
+msgid "preconnect command failed"
+msgstr "preconnect käsklus ebaõnnestus"
+
+#: imap/util.c:42
+msgid "Continue?"
+msgstr "Jätkan?"
+
+#: imap/util.c:48
+#, c-format
+msgid "%s [%s]\n"
+msgstr "%s [%s]\n"
+
+#: init.c:487
+msgid "alias: no address"
+msgstr "alias: aadress puudub"
+
+#: init.c:581
+msgid "invalid header field"
+msgstr "vigane päiseväli"
+
+#: init.c:634
+#, c-format
+msgid "%s: unknown sorting method"
+msgstr "%s: tundmatu järjestamise meetod"
+
+#: init.c:710
+#, c-format
+msgid "mutt_restore_default: error in regexp: %s\n"
+msgstr "mutt_restore_default: vigane regexp: %s\n"
+
+#: init.c:770
+#, c-format
+msgid "%s: unknown variable"
+msgstr "%s: tundmatu muutuja"
+
+#: init.c:779
+msgid "prefix is illegal with reset"
+msgstr "reset käsuga ei ole prefiks lubatud"
+
+#: init.c:785
+msgid "value is illegal with reset"
+msgstr "reset käsuga ei ole väärtus lubatud"
+
+#: init.c:824
+#, c-format
+msgid "%s is set"
+msgstr "%s on seatud"
+
+#: init.c:824
+#, c-format
+msgid "%s is unset"
+msgstr "%s ei ole seatud"
+
+#: init.c:1028
+#, c-format
+msgid "%s: invalid mailbox type"
+msgstr "%s: vigane postkasti tüüp"
+
+#: init.c:1053 init.c:1098
+#, c-format
+msgid "%s: invalid value"
+msgstr "%s: vigane väärtus"
+
+#: init.c:1156
+#, c-format
+msgid "%s: unknown type"
+msgstr "%s: tundmatu tüüp"
+
+#: init.c:1197
+#, c-format
+msgid "Error in %s, line %d: %s"
+msgstr "Viga failis %s, real %d: %s"
+
+#. the muttrc source keyword
+#: init.c:1213
+#, c-format
+msgid "source: errors in %s"
+msgstr "source: vead failis %s"
+
+#: init.c:1214
+#, c-format
+msgid "source: reading aborted due too many errors in %s"
+msgstr "source: lugemine katkestati, kuna %s on liialt vigane"
+
+#: init.c:1228
+#, c-format
+msgid "source: error at %s"
+msgstr "source: viga kohal %s"
+
+#: init.c:1233
+msgid "source: too many arguments"
+msgstr "source: liiga palju argumente"
+
+#: init.c:1284
+#, c-format
+msgid "%s: unknown command"
+msgstr "%s: tundmatu käsk"
+
+#: init.c:1641
+#, c-format
+msgid "Error in command line: %s\n"
+msgstr "Viga käsureal: %s\n"
+
+#: init.c:1684
+msgid "unable to determine home directory"
+msgstr "ei leia kodukataloogi"
+
+#: init.c:1692
+msgid "unable to determine username"
+msgstr "ei suuda tuvastada kasutajanime"
+
+#: keymap.c:433
+msgid "Macro loop detected."
+msgstr "Tuvastasin makros tsükli."
+
+#: keymap.c:636 keymap.c:644
+msgid "Key is not bound."
+msgstr "Klahv ei ole seotud."
+
+#: keymap.c:648
+#, c-format
+msgid "Key is not bound.  Press '%s' for help."
+msgstr "Klahv ei ole seotud. Abiinfo saamiseks vajutage '%s'."
+
+#: keymap.c:659
+msgid "push: too many arguments"
+msgstr "push: liiga palju argumente"
+
+#: keymap.c:680
+#, c-format
+msgid "%s: no such menu"
+msgstr "%s: sellist menüüd ei ole"
+
+#: keymap.c:689
+msgid "null key sequence"
+msgstr "tühi klahvijärjend"
+
+#: keymap.c:771
+msgid "bind: too many arguments"
+msgstr "bind: iiga palju argumente"
+
+#: keymap.c:786
+#, c-format
+msgid "%s: no such function in map"
+msgstr "%s: sellist funktsiooni tabelis ei ole"
+
+#: keymap.c:809
+msgid "macro: empty key sequence"
+msgstr "makro: tühi klahvijärjend"
+
+#: keymap.c:820
+msgid "macro: too many arguments"
+msgstr "makro: liiga palju argumente"
+
+#: keymap.c:850
+msgid "exec: too few arguments"
+msgstr "exec: liiga vähe argumente"
+
+#: keymap.c:870
+#, c-format
+msgid "%s: no such command"
+msgstr "%s: sellist käsku ei ole"
+
+#: keymap_alldefs.h:5
+msgid "null operation"
+msgstr "tühi operatsioon"
+
+#: keymap_alldefs.h:6
+msgid "force viewing of attachment using mailcap"
+msgstr "vaata lisa mailcap vahendusel"
+
+#: keymap_alldefs.h:7
+msgid "view attachment as text"
+msgstr "vaata lisa tekstina"
+
+#: keymap_alldefs.h:8
+msgid "move to the bottom of the page"
+msgstr "liigu lehe lõppu"
+
+#: keymap_alldefs.h:9
+msgid "remail a message to another user"
+msgstr "saada teade edasi teisele kasutajale"
+
+#: keymap_alldefs.h:10
+msgid "select a new file in this directory"
+msgstr "valige sellest kataloogist uus fail"
+
+#: keymap_alldefs.h:11
+msgid "view file"
+msgstr "vaata faili"
+
+#: keymap_alldefs.h:12
+msgid "display the currently selected file's name"
+msgstr "näita praegu valitud faili nime"
+
+#: keymap_alldefs.h:13
+msgid "subscribe to current mailbox (IMAP only)"
+msgstr "telli jooksev postkast (ainult IMAP)"
+
+#: keymap_alldefs.h:14
+msgid "unsubscribe to current mailbox (IMAP only)"
+msgstr "loobu jooksvast postkastist (ainult IMAP)"
+
+#: keymap_alldefs.h:15
+msgid "toggle view all/subscribed mailboxes (IMAP only)"
+msgstr "lülita kõikide/tellitud kaustade vaatamine (ainult IMAP)"
+
+#: keymap_alldefs.h:16
+msgid "change directories"
+msgstr "vaheta kataloogi"
+
+#: keymap_alldefs.h:17
+msgid "check mailboxes for new mail"
+msgstr "kontrolli uusi kirju postkastides"
+
+#: keymap_alldefs.h:18
+msgid "attach a file(s) to this message"
+msgstr "lisa sellele teatele fail(e)"
+
+#: keymap_alldefs.h:19
+msgid "attach message(s) to this message"
+msgstr "lisa sellele teatele teateid"
+
+#: keymap_alldefs.h:20
+msgid "change an attachment's character set"
+msgstr "muuda lisade kooditabelit"
+
+#: keymap_alldefs.h:21
+msgid "edit the BCC list"
+msgstr "toimeta BCC nimekirja"
+
+#: keymap_alldefs.h:22
+msgid "edit the CC list"
+msgstr "toimeta CC nimekirja"
+
+#: keymap_alldefs.h:23
+msgid "edit attachment description"
+msgstr "toimeta lisa kirjeldust"
+
+#: keymap_alldefs.h:24
+msgid "edit attachment transfer-encoding"
+msgstr "toimeta lisa kodeeringut"
+
+#: keymap_alldefs.h:25
+msgid "enter a file to save a copy of this message in"
+msgstr "sisestage failinimi, kuhu salvestada selle teate koopia"
+
+#: keymap_alldefs.h:26
+msgid "edit the file to be attached"
+msgstr "toimeta lisatavat faili"
+
+#: keymap_alldefs.h:27
+msgid "edit the from field"
+msgstr "toimeta from välja"
+
+#: keymap_alldefs.h:28
+msgid "edit the message with headers"
+msgstr "toimeta teadet koos päisega"
+
+#: keymap_alldefs.h:29
+msgid "edit the message"
+msgstr "toimeta teadet"
+
+#: keymap_alldefs.h:30
+msgid "edit attachment using mailcap entry"
+msgstr "toimeta lisa kasutades mailcap kirjet"
+
+#: keymap_alldefs.h:31
+msgid "edit the Reply-To field"
+msgstr "toimeta Reply-To välja"
+
+#: keymap_alldefs.h:32
+msgid "edit the subject of this message"
+msgstr "toimeta selle teate teemat"
+
+#: keymap_alldefs.h:33
+msgid "edit the TO list"
+msgstr "toimeta TO nimekirja"
+
+#: keymap_alldefs.h:34
+msgid "edit attachment content type"
+msgstr "muuda lisa sisu tüüpi"
+
+#: keymap_alldefs.h:35
+msgid "get a temporary copy of an attachment"
+msgstr "loo lisast ajutine koopia"
+
+#: keymap_alldefs.h:36
+msgid "run ispell on the message"
+msgstr "käivita teatel ispell"
+
+#: keymap_alldefs.h:37
+msgid "compose new attachment using mailcap entry"
+msgstr "loo mailcap kirjet kasutades uus lisa"
+
+#: keymap_alldefs.h:38
+msgid "toggle recoding of this attachment"
+msgstr "lülita selle lisa ümberkodeerimine"
+
+#: keymap_alldefs.h:39
+msgid "recode this attachment to/from the local charset"
+msgstr "kodeeri see lisa kohalikust/kohalikku kooditabelisse"
+
+#: keymap_alldefs.h:40
+msgid "save this message to send later"
+msgstr "salvesta teade hilisemaks saatmiseks"
+
+#: keymap_alldefs.h:41
+msgid "rename/move an attached file"
+msgstr "tõsta/nimeta lisatud fail ümber"
+
+#: keymap_alldefs.h:42
+msgid "send the message"
+msgstr "saada teade"
+
+#: keymap_alldefs.h:43
+msgid "toggle disposition between inline/attachment"
+msgstr "lülita paigutust kehasse/lisasse"
+
+#: keymap_alldefs.h:44
+msgid "toggle whether to delete file after sending it"
+msgstr "lülita faili kustutamist peale saatmist"
+
+#: keymap_alldefs.h:45
+msgid "update an attachment's encoding info"
+msgstr "uuenda teate kodeerimise infot"
+
+#: keymap_alldefs.h:46
+msgid "write the message to a folder"
+msgstr "kirjuta teade kausta"
+
+#: keymap_alldefs.h:47
+msgid "copy a message to a file/mailbox"
+msgstr "koleeri teade faili/postkasti"
+
+#: keymap_alldefs.h:48
+msgid "create an alias from a message sender"
+msgstr "loo teate saatjale alias"
+
+#: keymap_alldefs.h:49
+msgid "move entry to bottom of screen"
+msgstr "liiguta kirje ekraanil alla"
+
+#: keymap_alldefs.h:50
+msgid "move entry to middle of screen"
+msgstr "liiguta kirje ekraanil keskele"
+
+#: keymap_alldefs.h:51
+msgid "move entry to top of screen"
+msgstr "liiguta kirje ekraanil üles"
+
+#: keymap_alldefs.h:52
+msgid "make decoded (text/plain) copy"
+msgstr "tee avatud (text/plain) koopia"
+
+#: keymap_alldefs.h:53
+msgid "make decoded copy (text/plain) and delete"
+msgstr "tee avatud (text/plain) koopia ja kustuta"
+
+#: keymap_alldefs.h:54
+msgid "delete the current entry"
+msgstr "kustuta jooksev kirje"
+
+#: keymap_alldefs.h:55
+msgid "delete the current mailbox (IMAP only)"
+msgstr "kustuta jooksev postkast (ainult IMAP)"
+
+#: keymap_alldefs.h:56
+msgid "delete all messages in subthread"
+msgstr "kustuta kõik teated alamteemas"
+
+#: keymap_alldefs.h:57
+msgid "delete all messages in thread"
+msgstr "kustuta kõik teated teemas"
+
+#: keymap_alldefs.h:58
+msgid "display full address of sender"
+msgstr "esita saatja täielik aadress"
+
+#: keymap_alldefs.h:59
+msgid "display message and toggle header weeding"
+msgstr "näita teadet ja lülita päise näitamist"
+
+#: keymap_alldefs.h:60
+msgid "display a message"
+msgstr "näita teadet"
+
+#: keymap_alldefs.h:61
+msgid "edit the raw message"
+msgstr "toimeta kogu teadet"
+
+#: keymap_alldefs.h:62
+msgid "delete the char in front of the cursor"
+msgstr "kustuta sümbol kursori eest"
+
+#: keymap_alldefs.h:63
+msgid "move the cursor one character to the left"
+msgstr "liiguta kursorit sümbol vasakule"
+
+#: keymap_alldefs.h:64
+msgid "jump to the beginning of the line"
+msgstr "hüppa rea algusse"
+
+#: keymap_alldefs.h:65
+msgid "cycle among incoming mailboxes"
+msgstr "vaheta sissetulevaid postkaste"
+
+#: keymap_alldefs.h:66
+msgid "complete filename or alias"
+msgstr "täienda failinime või aliast"
+
+#: keymap_alldefs.h:67
+msgid "complete address with query"
+msgstr "täienda aadressi päringuga"
+
+#: keymap_alldefs.h:68
+msgid "delete the char under the cursor"
+msgstr "kustuta sümbol kursori alt"
+
+#: keymap_alldefs.h:69
+msgid "jump to the end of the line"
+msgstr "hüppa realõppu"
+
+#: keymap_alldefs.h:70
+msgid "move the cursor one character to the right"
+msgstr "liiguta kursorit sümbol paremale"
+
+#: keymap_alldefs.h:71 keymap_alldefs.h:72
+msgid "scroll up through the history list"
+msgstr "keri ajaloos üles"
+
+#: keymap_alldefs.h:73
+msgid "delete chars from cursor to end of line"
+msgstr "kustuta sümbolid kursorist realõpuni"
+
+#: keymap_alldefs.h:74
+msgid "delete all chars on the line"
+msgstr "kustuta real kõik sümbolid"
+
+#: keymap_alldefs.h:75
+msgid "delete the word in front of the cursor"
+msgstr "kustuta sõna kursori eest"
+
+#: keymap_alldefs.h:76
+msgid "quote the next typed key"
+msgstr "kvoodi järgmine klahvivajutus"
+
+#: keymap_alldefs.h:77
+msgid "enter a muttrc command"
+msgstr "sisestage muttrc käsk"
+
+#: keymap_alldefs.h:78
+msgid "enter a file mask"
+msgstr "sisestage faili mask"
+
+#: keymap_alldefs.h:79
+msgid "exit this menu"
+msgstr "välju sellest menüüst"
+
+#: keymap_alldefs.h:80
+msgid "filter attachment through a shell command"
+msgstr "filtreeri lisa läbi väliskäsu"
+
+#: keymap_alldefs.h:81
+msgid "move to the first entry"
+msgstr "liigu esimesele kirjele"
+
+#: keymap_alldefs.h:82
+msgid "toggle a message's 'important' flag"
+msgstr "lülita teate 'tähtsuse' lippu"
+
+#: keymap_alldefs.h:83
+msgid "forward a message with comments"
+msgstr "edasta teade kommentaaridega"
+
+#: keymap_alldefs.h:84
+msgid "select the current entry"
+msgstr "vali jooksev kirje"
+
+#: keymap_alldefs.h:85
+msgid "reply to all recipients"
+msgstr "vasta kõikidele"
+
+#: keymap_alldefs.h:86
+msgid "scroll down 1/2 page"
+msgstr "keri pool lehekülge alla"
+
+#: keymap_alldefs.h:87
+msgid "scroll up 1/2 page"
+msgstr "keri pool lehekülge üles"
+
+#: keymap_alldefs.h:88
+msgid "this screen"
+msgstr "see ekraan"
+
+#: keymap_alldefs.h:89
+msgid "jump to an index number"
+msgstr "hüppa indeksi numbrile"
+
+#: keymap_alldefs.h:90
+msgid "move to the last entry"
+msgstr "liigu viimasele kirjele"
+
+#: keymap_alldefs.h:91
+msgid "reply to specified mailing list"
+msgstr "vasta määratud postiloendile"
+
+#: keymap_alldefs.h:92
+msgid "execute a macro"
+msgstr "käivita makro"
+
+#: keymap_alldefs.h:93
+msgid "compose a new mail message"
+msgstr "koosta uus e-posti teade"
+
+#: keymap_alldefs.h:94
+msgid "open a different folder"
+msgstr "ava teine kaust"
+
+#: keymap_alldefs.h:95
+msgid "open a different folder in read only mode"
+msgstr "ava teine kaust ainult lugemiseks"
+
+#: keymap_alldefs.h:96
+msgid "clear a status flag from a message"
+msgstr "puhasta teate olekulipp"
+
+#: keymap_alldefs.h:97
+msgid "delete messages matching a pattern"
+msgstr "kustuta mustrile vastavad teated"
+
+#: keymap_alldefs.h:98
+msgid "retrieve mail from POP server"
+msgstr "lae kiri POP serverilt"
+
+#: keymap_alldefs.h:99
+msgid "move to the first message"
+msgstr "liigu esimesele teatele"
+
+#: keymap_alldefs.h:100
+msgid "move to the last message"
+msgstr "liigu viimasele teatele"
+
+#: keymap_alldefs.h:101
+msgid "show only messages matching a pattern"
+msgstr "näita ainult mustrile vastavaid teateid"
+
+#: keymap_alldefs.h:102
+msgid "jump to the next new message"
+msgstr "hüppa järgmisele uuele teatele"
+
+#: keymap_alldefs.h:103
+msgid "jump to the next subthread"
+msgstr "hüppa järgmisele alamteemale"
+
+#: keymap_alldefs.h:104
+msgid "jump to the next thread"
+msgstr "hüppa järgmisele teemale"
+
+#: keymap_alldefs.h:105
+msgid "move to the next undeleted message"
+msgstr "liigu järgmisele kustutamata teatele"
+
+#: keymap_alldefs.h:106
+msgid "jump to the next unread message"
+msgstr "hüppa järgmisele lugemata teatele"
+
+#: keymap_alldefs.h:107
+msgid "jump to parent message in thread"
+msgstr "hüppa teema vanemteatele"
+
+#: keymap_alldefs.h:108
+msgid "jump to previous thread"
+msgstr "hüppa eelmisele teemale"
+
+#: keymap_alldefs.h:109
+msgid "jump to previous subthread"
+msgstr "hüppa eelmisele alamteemale"
+
+#: keymap_alldefs.h:110
+msgid "move to the previous undeleted message"
+msgstr "liigu eelmisele kustutamata teatele"
+
+#: keymap_alldefs.h:111
+msgid "jump to the previous new message"
+msgstr "hüppa eelmisele uuele teatele"
+
+#: keymap_alldefs.h:112
+msgid "jump to the previous unread message"
+msgstr "hüppa eelmisele lugemata teatele"
+
+#: keymap_alldefs.h:113
+msgid "mark the current thread as read"
+msgstr "märgi jooksev teema loetuks"
+
+#: keymap_alldefs.h:114
+msgid "mark the current subthread as read"
+msgstr "märgi jooksev alamteema loetuks"
+
+#: keymap_alldefs.h:115
+msgid "set a status flag on a message"
+msgstr "sea teate olekulipp"
+
+#: keymap_alldefs.h:116
+msgid "save changes to mailbox"
+msgstr "salvesta postkasti muutused"
+
+#: keymap_alldefs.h:117
+msgid "tag messages matching a pattern"
+msgstr "märgi mustrile vastavad teated"
+
+#: keymap_alldefs.h:118
+msgid "undelete messages matching a pattern"
+msgstr "taasta mustrile vastavad teated"
+
+#: keymap_alldefs.h:119
+msgid "untag messages matching a pattern"
+msgstr "eemalda märk mustrile vastavatelt teadetelt"
+
+#: keymap_alldefs.h:120
+msgid "move to the middle of the page"
+msgstr "liigu lehe keskele"
+
+#: keymap_alldefs.h:121
+msgid "create a new mailbox (IMAP only)"
+msgstr "loo uus postkast (ainult IMAP)"
+
+#: keymap_alldefs.h:122
+msgid "move to the next entry"
+msgstr "liigu järgmisele kirjele"
+
+#: keymap_alldefs.h:123
+msgid "scroll down one line"
+msgstr "keri üks rida alla"
+
+#: keymap_alldefs.h:124
+msgid "move to the next page"
+msgstr "liigu järgmisele lehele"
+
+#: keymap_alldefs.h:125
+msgid "jump to the bottom of the message"
+msgstr "hüppa teate lõppu"
+
+#: keymap_alldefs.h:126
+msgid "toggle display of quoted text"
+msgstr "lülita tsiteeritud teksti näitamist"
+
+#: keymap_alldefs.h:127
+msgid "skip beyond quoted text"
+msgstr "liigu tsiteeritud teksti lõppu"
+
+#: keymap_alldefs.h:128
+msgid "jump to the top of the message"
+msgstr "hüppa teate algusse"
+
+#: keymap_alldefs.h:129
+msgid "pipe message/attachment to a shell command"
+msgstr "saada teade/lisa käsu sisendisse"
+
+#: keymap_alldefs.h:130
+msgid "move to the previous entry"
+msgstr "liigu eelmisele kirjele"
+
+#: keymap_alldefs.h:131
+msgid "scroll up one line"
+msgstr "keri üks rida üles"
+
+#: keymap_alldefs.h:132
+msgid "move to the previous page"
+msgstr "liigu eelmisele lehele"
+
+#: keymap_alldefs.h:133
+msgid "print the current entry"
+msgstr "trüki jooksev kirje"
+
+#: keymap_alldefs.h:134
+msgid "query external program for addresses"
+msgstr "otsi aadresse välise programmiga"
+
+#: keymap_alldefs.h:135
+msgid "append new query results to current results"
+msgstr "lisa uue päringu tulemused olemasolevatele"
+
+#: keymap_alldefs.h:136
+msgid "save changes to mailbox and quit"
+msgstr "salvesta postkasti muutused ja välju"
+
+#: keymap_alldefs.h:137
+msgid "recall a postponed message"
+msgstr "võta postitusootel teade"
+
+#: keymap_alldefs.h:138
+msgid "clear and redraw the screen"
+msgstr "puhasta ja joonista ekraan uuesti"
+
+#: keymap_alldefs.h:139
+msgid "{internal}"
+msgstr "{sisemine}"
+
+#: keymap_alldefs.h:140
+msgid "reply to a message"
+msgstr "vasta teatele"
+
+#: keymap_alldefs.h:141
+msgid "use the current message as a template for a new one"
+msgstr "võta teade aluseks uuele"
+
+#: keymap_alldefs.h:142
+msgid "save message/attachment to a file"
+msgstr "salvesta teade/lisa faili"
+
+#: keymap_alldefs.h:143
+msgid "search for a regular expression"
+msgstr "otsi regulaaravaldist"
+
+#: keymap_alldefs.h:144
+msgid "search backwards for a regular expression"
+msgstr "otsi regulaaravaldist tagaspidi"
+
+#: keymap_alldefs.h:145
+msgid "search for next match"
+msgstr "otsi järgmist"
+
+#: keymap_alldefs.h:146
+msgid "search for next match in opposite direction"
+msgstr "otsi järgmist vastasuunas"
+
+#: keymap_alldefs.h:147
+msgid "toggle search pattern coloring"
+msgstr "lülita otsingumustri värvimine"
+
+#: keymap_alldefs.h:148
+msgid "invoke a command in a subshell"
+msgstr "käivita käsk käsuinterpretaatoris"
+
+#: keymap_alldefs.h:149
+msgid "sort messages"
+msgstr "järjesta teated"
+
+#: keymap_alldefs.h:150
+msgid "sort messages in reverse order"
+msgstr "järjesta teated tagurpidi"
+
+#: keymap_alldefs.h:151
+msgid "tag the current entry"
+msgstr "märgi jooksev kirje"
+
+#: keymap_alldefs.h:152
+msgid "apply next function to tagged messages"
+msgstr "kasuta funktsiooni märgitud teadetel"
+
+#: keymap_alldefs.h:153
+msgid "tag the current subthread"
+msgstr "märgi jooksev alamteema"
+
+#: keymap_alldefs.h:154
+msgid "tag the current thread"
+msgstr "märgi jooksev teema"
+
+#: keymap_alldefs.h:155
+msgid "toggle a message's 'new' flag"
+msgstr "lülita teate 'värskuse' lippu"
+
+#: keymap_alldefs.h:156
+msgid "toggle whether the mailbox will be rewritten"
+msgstr "lülita postkasti ülekirjutatamist"
+
+#: keymap_alldefs.h:157
+msgid "toggle whether to browse mailboxes or all files"
+msgstr "lülita kas brausida ainult postkaste või kõiki faile"
+
+#: keymap_alldefs.h:158
+msgid "move to the top of the page"
+msgstr "liigu lehe algusse"
+
+#: keymap_alldefs.h:159
+msgid "undelete the current entry"
+msgstr "taasta jooksev kirje"
+
+#: keymap_alldefs.h:160
+msgid "undelete all messages in thread"
+msgstr "taasta kõik teema teated"
+
+#: keymap_alldefs.h:161
+msgid "undelete all messages in subthread"
+msgstr "taasta kõik alamteema teated"
+
+#: keymap_alldefs.h:162
+msgid "show the Mutt version number and date"
+msgstr "näita Mutti versiooni ja kuupäeva"
+
+#: keymap_alldefs.h:163
+msgid "view attachment using mailcap entry if necessary"
+msgstr "vaata lisa kasutades vajadusel mailcap kirjet"
+
+#: keymap_alldefs.h:164
+msgid "show MIME attachments"
+msgstr "näita MIME lisasid"
+
+#: keymap_alldefs.h:165
+msgid "show currently active limit pattern"
+msgstr "näita praegu kehtivat piirangu mustrit"
+
+#: keymap_alldefs.h:166
+msgid "collapse/uncollapse current thread"
+msgstr "ava/sule jooksev teema"
+
+#: keymap_alldefs.h:167
+msgid "collapse/uncollapse all threads"
+msgstr "ava/sule kõik teemad"
+
+#: keymap_alldefs.h:168
+msgid "attach a PGP public key"
+msgstr "lisa PGP avalik võti"
+
+#: keymap_alldefs.h:169
+msgid "show PGP options"
+msgstr "näita PGP võtmeid"
+
+#: keymap_alldefs.h:170
+msgid "extract PGP public keys"
+msgstr "eralda PGP avalikud võtmed"
+
+#: keymap_alldefs.h:171
+msgid "wipe PGP passphrase from memory"
+msgstr "eemalda PGP parool mälust"
+
+#: keymap_alldefs.h:172
+msgid "mail a PGP public key"
+msgstr "saada PGP avalik võti"
+
+#: keymap_alldefs.h:173
+msgid "verify a PGP public key"
+msgstr "kontrolli PGP avalikku võtit"
+
+#: keymap_alldefs.h:174
+msgid "view the key's user id"
+msgstr "vaata võtme kasutaja identifikaatorit"
+
+#: keymap_alldefs.h:175
+msgid "make decrypted copy and delete"
+msgstr "loo avateksti koopia ja kustuta"
+
+#: keymap_alldefs.h:176
+msgid "make decrypted copy"
+msgstr "loo avateksti koopia"
+
+#: keymap_alldefs.h:177
+msgid "Accept the chain constructed"
+msgstr "Aktsepteeri koostatud ahelaga"
+
+#: keymap_alldefs.h:178
+msgid "Append a remailer to the chain"
+msgstr "Lisa edasisaatja ahela lõppu"
+
+#: keymap_alldefs.h:179
+msgid "Insert a remailer into the chain"
+msgstr "Lisa edasisaatja ahelasse"
+
+#: keymap_alldefs.h:180
+msgid "Delete a remailer from the chain"
+msgstr "Eemalda edasisaatja ahelast"
+
+#: keymap_alldefs.h:181
+msgid "Select the previous element of the chain"
+msgstr "Vali ahela eelmine element"
+
+#: keymap_alldefs.h:182
+msgid "Select the next element of the chain"
+msgstr "Vali ahela järgmine element"
+
+#: keymap_alldefs.h:183
+msgid "send the message through a mixmaster remailer chain"
+msgstr "saada teade läbi mixmaster vahendajate ahela"
+
+#: lib.c:59 lib.c:74 lib.c:105
+msgid "Out of memory!"
+msgstr "Mälu on otsas!"
+
+#: main.c:40
+msgid ""
+"To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
+"To report a bug, please use the muttbug utility.\n"
+msgstr ""
+"Arendajatega kontakteerumiseks saatke palun kiri aadressil <mutt-dev@mutt.org>.\n"
+"Vea teatamiseks kasutage muttbug käsku.\n"
+
+#: main.c:44
+msgid ""
+"Copyright (C) 1996-2000 Michael R. Elkins and others.\n"
+"Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
+"Mutt is free software, and you are welcome to redistribute it\n"
+"under certain conditions; type `mutt -vv' for details.\n"
+msgstr ""
+"Autoriõigus (C) 1996-2000 Michael R. Elkins ja teised.\n"
+"Mutt ei paku MITTE MINGISUGUSEID GARANTIISID; detailid käsuga `mutt -vv'.\n"
+"Mutt on vaba tarkvara ja te võite seda teatud tingimustel levitada;\n"
+"detailsemat infot saate käsuga `mutt -vv'.\n"
+
+#: main.c:50
+msgid ""
+"Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
+"Copyright (C) 1997-2000 Thomas Roessler <roessler@guug.de>\n"
+"Copyright (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"\n"
+"Lots of others not mentioned here contributed lots of code,\n"
+"fixes, and suggestions.\n"
+"\n"
+"    This program is free software; you can redistribute it and/or modify\n"
+"    it under the terms of the GNU General Public License as published by\n"
+"    the Free Software Foundation; either version 2 of the License, or\n"
+"    (at your option) any later version.\n"
+"\n"
+"    This program is distributed in the hope that it will be useful,\n"
+"    but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"    GNU General Public License for more details.\n"
+"\n"
+"    You should have received a copy of the GNU General Public License\n"
+"    along with this program; if not, write to the Free Software\n"
+"    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
+msgstr ""
+"Autoriõigus (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Autoriõigus (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
+"Autoriõigus (C) 1997-2000 Thomas Roessler <roessler@guug.de>\n"
+"Autoriõigus (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Autoriõigus (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
+"Autoriõigus (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"\n"
+"Paljud siin mainimata inimesed on saatnud koodi, parandusi ja soovitusi.\n"
+"\n"
+"    This program is free software; you can redistribute it and/or modify\n"
+"    it under the terms of the GNU General Public License as published by\n"
+"    the Free Software Foundation; either version 2 of the License, or\n"
+"    (at your option) any later version.\n"
+"\n"
+"    This program is distributed in the hope that it will be useful,\n"
+"    but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"    GNU General Public License for more details.\n"
+"\n"
+"    You should have received a copy of the GNU General Public License\n"
+"    along with this program; if not, write to the Free Software\n"
+"    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
+
+#: main.c:77
+msgid ""
+"\n"
+"SHA1 implementation Copyright (C) 1995-1997 Eric A. Young "
+"<eay@cryptsoft.com>\n"
+"\n"
+"    Redistribution and use in source and binary forms, with or without\n"
+"    modification, are permitted under certain conditions.\n"
+"\n"
+"    The SHA1 implementation comes AS IS, and ANY EXPRESS OR IMPLIED\n"
+"    WARRANTIES, including, but not limited to, the implied warranties of\n"
+"    merchantability and fitness for a particular purpose ARE DISCLAIMED.\n"
+"\n"
+"    You should have received a copy of the full distribution terms\n"
+"    along with this program; if not, write to the program's developers.\n"
+msgstr ""
+"\n"
+"SHA1 implementation Copyright (C) 1995-1997 Eric A. Young <eay@cryptsoft.com>\n"
+"\n"
+"    Redistribution and use in source and binary forms, with or without\n"
+"    modification, are permitted under certain conditions.\n"
+"\n"
+"    The SHA1 implementation comes AS IS, and ANY EXPRESS OR IMPLIED\n"
+"    WARRANTIES, including, but not limited to, the implied warranties of\n"
+"    merchantability and fitness for a particular purpose ARE DISCLAIMED.\n"
+"\n"
+"    You should have received a copy of the full distribution terms\n"
+"    along with this program; if not, write to the program's developers.\n"
+
+#: main.c:103
+msgid ""
+"usage: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
+"]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
+"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
+"       mutt -v[v]\n"
+"\n"
+"options:\n"
+"  -a <file>\tattach a file to the message\n"
+"  -b <address>\tspecify a blind carbon-copy (BCC) address\n"
+"  -c <address>\tspecify a carbon-copy (CC) address\n"
+"  -e <command>\tspecify a command to be executed after initialization\n"
+"  -f <file>\tspecify which mailbox to read\n"
+"  -F <file>\tspecify an alternate muttrc file\n"
+"  -H <file>\tspecify a draft file to read header from\n"
+"  -i <file>\tspecify a file which Mutt should include in the reply\n"
+"  -m <type>\tspecify a default mailbox type\n"
+"  -n\t\tcauses Mutt not to read the system Muttrc\n"
+"  -p\t\trecall a postponed message\n"
+"  -R\t\topen mailbox in read-only mode\n"
+"  -s <subj>\tspecify a subject (must be in quotes if it has spaces)\n"
+"  -v\t\tshow version and compile-time definitions\n"
+"  -x\t\tsimulate the mailx send mode\n"
+"  -y\t\tselect a mailbox specified in your `mailboxes' list\n"
+"  -z\t\texit immediately if there are no messages in the mailbox\n"
+"  -Z\t\topen the first folder with new message, exit immediately if none\n"
+"  -h\t\tthis help message"
+msgstr ""
+"kasutage: mutt [ -nRzZ ] [ -e <käsk> ] [ -F <fail> ] [ -m <tüüp> ]\n"
+"               [ -f <fail> ]\n"
+"          mutt [ -nx ] [ -e <käsk> ] [ -a <fail> ] [ -F <fail> ] [ -H <fail> ]\n"
+"               [ -i <fail> ] [ -s <teema> ] [ -b <aadr> ] [ -c <aadr> ]\n"
+"               <aadr> [ ... ]\n"
+"          mutt [ -n ] [ -e <käsk> ] [ -F <fail> ] -p\n"
+"          mutt -v[v]\n"
+"\n"
+"võtmed:\n"
+"  -a <fail>\tlisa teatele fail\n"
+"  -b <aadress>\tmäära pimekoopia (BCC) aadress\n"
+"  -c <aadress>\tmäära koopia (CC) aadress\n"
+"  -e <käsk>\tkäivita peale algväärtutamist käsk\n"
+"  -f <fail>\tmillist postkasti lugeda\n"
+"  -F <fail>\tmäära alternatiivne muttrc fail\n"
+"  -H <fail>\tmäära päiste mustandi fail\n"
+"  -i <fail>\tfail mida mutt peab vastamisel lisama\n"
+"  -m <tüüp>\tmääta vaikimisi postkasti tüüp\n"
+"  -n\t\tära loe süsteemset Muttrc faili\n"
+"  -p\t\tlae postitusootel teade\n"
+"  -R\t\tava postkast ainult lugemiseks\n"
+"  -s <teema>\tmäära teate teema (jutumärkides, kui on mitmesõnaline)\n"
+"  -v\t\tnäita versiooni ja kompileerimis-aegseid määranguid\n"
+"  -x\t\tsimuleeri mailx saatmise moodi\n"
+"  -y\t\tvali postkast teie 'postkastide' loendist\n"
+"  -z\t\tvälju kohe, kui postkastis pole uusi teateid\n"
+"  -Z\t\tava esimene kaust uue teatega, välju kohe, kui pole\n"
+"  -h\t\tesita see abiinfo"
+
+#: main.c:155
+msgid ""
+"\n"
+"Compile options:"
+msgstr "\nKompileerimise võtmed:"
+
+#: main.c:303
+msgid "Error initializing terminal."
+msgstr "Viga terminali initsialiseerimisel."
+
+#: main.c:402
+#, c-format
+msgid "Debugging at level %d.\n"
+msgstr "Silumise tase %d.\n"
+
+#: main.c:404
+msgid "DEBUG was not defined during compilation.  Ignored.\n"
+msgstr "DEBUG ei ole kompileerimise ajal defineeritud. Ignoreerin.\n"
+
+#: main.c:523
+#, c-format
+msgid "%s does not exist. Create it?"
+msgstr "%s ei ole. Loon selle?"
+
+#: main.c:527
+#, c-format
+msgid "Can't create %s: %s."
+msgstr "%s ei saa luua: %s."
+
+#: main.c:566
+msgid "No recipients specified.\n"
+msgstr "Saajaid ei ole määratud.\n"
+
+#: main.c:639
+#, c-format
+msgid "%s: unable to attach file.\n"
+msgstr "%s: faili ei saa lisada.\n"
+
+#: main.c:659
+msgid "No mailbox with new mail."
+msgstr "Uute teadetega postkaste ei ole."
+
+#: main.c:668
+msgid "No incoming mailboxes defined."
+msgstr "Sissetulevate kirjade postkaste ei ole määratud."
+
+#: main.c:699
+msgid "Mailbox is empty."
+msgstr "Postkast on tühi."
+
+#: mbox.c:129 mbox.c:287
+msgid "Reading %s... %d (%d%%)"
+msgstr "Loen %s... %d (%d%%)"
+
+#: mbox.c:153 mbox.c:212
+msgid "Mailbox is corrupt!"
+msgstr "Postkast on riknenud!"
+
+#: mbox.c:660
+msgid "Mailbox was corrupted!"
+msgstr "Postkast oli riknenud!"
+
+#: mbox.c:697 mbox.c:972
+msgid "Fatal error!  Could not reopen mailbox!"
+msgstr "Fataalne viga! Postkasti ei õnnestu uuesti avada!"
+
+#: mbox.c:706
+msgid "Unable to lock mailbox!"
+msgstr "Postkasti ei saa lukustada!"
+
+#. this means ctx->changed or ctx->deleted was set, but no
+#. * messages were found to be changed or deleted.  This should
+#. * never happen, is we presume it is a bug in mutt.
+#.
+#: mbox.c:752
+msgid "sync: mbox modified, but no modified messages! (report this bug)"
+msgstr "sync: mbox on muudetud, aga muudetud teateid ei ole! (teatage sellest veast)"
+
+#: mbox.c:793
+msgid "Writing messages... %d (%d%%)"
+msgstr "Kirjutan teateid... %d (%d%%)"
+
+#: mbox.c:956
+#, c-format
+msgid "Write failed!  Saved partial mailbox to %s"
+msgstr "Kirjutamine ebaõnnestus! Osaline postkast salvestatud faili %s"
+
+#: mbox.c:1022
+msgid "Could not reopen mailbox!"
+msgstr "Postkasti ei õnnestu uuesti avada!"
+
+#: mbox.c:1060
+msgid "Reopening mailbox..."
+msgstr "Avan postkasti uuesti..."
+
+#: menu.c:354
+msgid "Jump to: "
+msgstr "Hüppa: "
+
+#: menu.c:363
+msgid "Invalid index number."
+msgstr "Vigane indeksi number."
+
+#: menu.c:367 menu.c:385 menu.c:421 menu.c:462 menu.c:478 menu.c:489
+#: menu.c:500 menu.c:542 menu.c:553 menu.c:566 menu.c:579 menu.c:941
+msgid "No entries."
+msgstr "Kirjeid pole."
+
+#: menu.c:382
+msgid "You cannot scroll down farther."
+msgstr "Enam allapoole ei saa kerida."
+
+#: menu.c:398
+msgid "You cannot scroll up farther."
+msgstr "Enam ülespoole ei saa kerida."
+
+#: menu.c:418
+msgid "You are on the last page."
+msgstr "Te olete viimasel lehel."
+
+#: menu.c:440
+msgid "You are on the first page."
+msgstr "Te olete esimesel lehel."
+
+#: menu.c:519
+msgid "First entry is shown."
+msgstr "Esimene kirje on näidatud."
+
+#: menu.c:539
+msgid "Last entry is shown."
+msgstr "Viimane kirje on näidatud."
+
+#: menu.c:590
+msgid "You are on the last entry."
+msgstr "Te olete viimasel kirjel."
+
+#: menu.c:601
+msgid "You are on the first entry."
+msgstr "Te olete esimesel kirjel."
+
+#: menu.c:661 pattern.c:1069
+msgid "Search for: "
+msgstr "Otsi: "
+
+#: menu.c:662
+msgid "Reverse search for: "
+msgstr "Otsi tagurpidi: "
+
+#: menu.c:672 pattern.c:1102
+msgid "No search pattern."
+msgstr "Otsingumuster puudub."
+
+#: menu.c:702 pager.c:1857 pager.c:1873 pager.c:1961 pattern.c:1167
+msgid "Not found."
+msgstr "Ei leitud."
+
+#: menu.c:811
+msgid "No tagged entries."
+msgstr "Märgitud kirjeid pole."
+
+#: menu.c:904
+msgid "Search is not implemented for this menu."
+msgstr "Selles menüüs ei ole otsimist realiseeritud."
+
+#: menu.c:909
+msgid "Jumping is not implemented for dialogs."
+msgstr "hüppamine ei ole dialoogidele realiseeritud."
+
+#: menu.c:944
+msgid "Tagging is not supported."
+msgstr "Märkimist ei toetata."
+
+#: mh.c:189
+#, c-format
+msgid "Reading %s... %d"
+msgstr "Loen %s... %d"
+
+#: muttlib.c:728
+msgid "File is a directory, save under it?"
+msgstr "Fail on kataloog, salvestan sinna?"
+
+#: muttlib.c:733
+msgid "File under directory: "
+msgstr "Fail kataloogis: "
+
+#: muttlib.c:745
+msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
+msgstr "Fail on olemas, (k)irjutan üle, (l)isan või ka(t)kestan?"
+
+#: muttlib.c:745
+msgid "oac"
+msgstr "klt"
+
+#: muttlib.c:1031
+#, c-format
+msgid "%s is not a mailbox!"
+msgstr "%s ei ole postkast!"
+
+#: muttlib.c:1037
+#, c-format
+msgid "Append messages to %s?"
+msgstr "Lisan teated kausta %s?"
+
+#: mx.c:114
+#, c-format
+msgid "Lock count exceeded, remove lock for %s?"
+msgstr "Lukustamise arv on ületatud, eemaldan %s lukufaili? "
+
+#: mx.c:126
+#, c-format
+msgid "Can't dotlock %s.\n"
+msgstr "%s punktfailiga lukustamine ei õnnestu.\n"
+
+#: mx.c:184
+msgid "Timeout exceeded while attempting fcntl lock!"
+msgstr "fcntl luku seadmine aegus!"
+
+#: mx.c:190
+#, c-format
+msgid "Waiting for fcntl lock... %d"
+msgstr "Ootan fcntl lukku... %d"
+
+#: mx.c:218
+msgid "Timeout exceeded while attempting flock lock!"
+msgstr "flock luku seadmine aegus!"
+
+#: mx.c:225
+#, c-format
+msgid "Waiting for flock attempt... %d"
+msgstr "Ootan flock lukku... %d"
+
+#: mx.c:537
+#, c-format
+msgid "Couldn't lock %s\n"
+msgstr "%s ei saa lukustada\n"
+
+#: mx.c:625
+#, c-format
+msgid "Reading %s..."
+msgstr "Loen %s..."
+
+#: mx.c:714
+#, c-format
+msgid "Writing %s..."
+msgstr "Kirjutan %s..."
+
+#: mx.c:741
+#, c-format
+msgid "Could not synchronize mailbox %s!"
+msgstr "Postkasti %s ei õnnestu sünkroniseerida!"
+
+#: mx.c:806
+#, c-format
+msgid "Move read messages to %s?"
+msgstr "Tõstan loetud teated postkasti %s?"
+
+#: mx.c:815 mx.c:1051
+#, c-format
+msgid "Purge %d deleted message?"
+msgstr "Eemaldan %d kustutatud teate?"
+
+#: mx.c:815 mx.c:1051
+#, c-format
+msgid "Purge %d deleted messages?"
+msgstr "Eemaldan %d kustutatud teadet?"
+
+#: mx.c:836
+#, c-format
+msgid "Moving read messages to %s..."
+msgstr "Tõstan loetud teated kausta %s..."
+
+#: mx.c:887 mx.c:1042
+msgid "Mailbox is unchanged."
+msgstr "Postkasti ei muudetud."
+
+#: mx.c:917
+#, c-format
+msgid "%d kept, %d moved, %d deleted."
+msgstr "%d säilitatud, %d tõstetud, %d kustutatud."
+
+#: mx.c:920 mx.c:1084
+#, c-format
+msgid "%d kept, %d deleted."
+msgstr "%d säilitatud, %d kustutatud."
+
+#: mx.c:1027
+#, c-format
+msgid " Press '%s' to toggle write"
+msgstr "Kirjutamise lülitamiseks vajutage '%s'"
+
+#: mx.c:1029
+msgid "Use 'toggle-write' to re-enable write!"
+msgstr "Kirjutamise uuesti lubamiseks kasutage 'toggle-write'!"
+
+#: mx.c:1031
+#, c-format
+msgid "Mailbox is marked unwritable. %s"
+msgstr "Postkast on märgitud mittekirjutatavaks. %s"
+
+#: mx.c:1081
+#, c-format
+msgid "%d kept."
+msgstr "%d säilitatud."
+
+#: mx.c:1361
+msgid "Can't write message"
+msgstr "Teadet ei õnnestu kirjutada"
+
+#: pager.c:60
+msgid "Not available in this menu."
+msgstr "Ei ole selles menüüs kasutatav."
+
+#: pager.c:1386
+msgid "PrevPg"
+msgstr "EelmLk"
+
+#: pager.c:1387
+msgid "NextPg"
+msgstr "JärgmLm"
+
+#: pager.c:1391
+msgid "View Attachm."
+msgstr "Vaata lisa"
+
+#: pager.c:1394
+msgid "Next"
+msgstr "Järgm."
+
+#. emulate "less -q" and don't go on to the next message.
+#: pager.c:1769 pager.c:1800 pager.c:1829 pager.c:2049
+msgid "Bottom of message is shown."
+msgstr "Teate lõpp on näidatud."
+
+#: pager.c:1785 pager.c:1807 pager.c:1818
+msgid "Top of message is shown."
+msgstr "Teate algus on näidatud."
+
+#: pager.c:1891
+msgid "Reverse search: "
+msgstr "tagurpidi otsing: "
+
+#: pager.c:1892
+msgid "Search: "
+msgstr "Otsing: "
+
+#: pager.c:1987
+msgid "Help is currently being shown."
+msgstr "Te loete praegu abiinfot."
+
+#: pager.c:2016
+msgid "No more quoted text."
+msgstr "Rohkem tsiteetitud teksti pole."
+
+#: pager.c:2029
+msgid "No more unquoted text after quoted text."
+msgstr "Tsiteeritud teksiti järel rohkem teksti ei ole."
+
+#: parse.c:517
+msgid "multipart message has no boundary parameter!"
+msgstr "mitmeosalisel teatel puudub eraldaja!"
+
+#: pattern.c:239
+#, c-format
+msgid "Error in expression: %s"
+msgstr "Viga avaldises: %s"
+
+#: pattern.c:336
+#, c-format
+msgid "Invalid day of month: %s"
+msgstr "Vigane kuupäev: %s"
+
+#: pattern.c:350
+#, c-format
+msgid "Invalid month: %s"
+msgstr "Vigane kuu: %s"
+
+#: pattern.c:404
+msgid "error in expression"
+msgstr "viga avaldises"
+
+#: pattern.c:589 pattern.c:697
+#, c-format
+msgid "error in pattern at: %s"
+msgstr "viga mustris: %s"
+
+#: pattern.c:637
+#, c-format
+msgid "%c: invalid command"
+msgstr "%c: vigane käsklus"
+
+#: pattern.c:643
+#, c-format
+msgid "%c: not supported in this mode"
+msgstr "%c: ei toetata selles moodis"
+
+#: pattern.c:656
+msgid "missing parameter"
+msgstr "parameeter puudub"
+
+#: pattern.c:672
+#, c-format
+msgid "mismatched parenthesis: %s"
+msgstr "sulud ei klapi: %s"
+
+#: pattern.c:704
+msgid "empty pattern"
+msgstr "tühi muster"
+
+#: pattern.c:894
+#, c-format
+msgid "error: unknown op %d (report this error)."
+msgstr "viga: tundmatu op %d (teatage sellest veast)."
+
+#: pattern.c:959 pattern.c:1088
+msgid "Compiling search pattern..."
+msgstr "Kompileerin otsingumustrit..."
+
+#: pattern.c:973
+msgid "Executing command on matching messages..."
+msgstr "Käivitan leitud teadetel käsu..."
+
+#: pattern.c:1036
+msgid "No messages matched criteria."
+msgstr "Ühtegi mustrile vastavat teadet ei leitud."
+
+#: pattern.c:1126
+msgid "Search hit bottom without finding match"
+msgstr "Otsing jõudis midagi leidmata lõppu"
+
+#: pattern.c:1137
+msgid "Search hit top without finding match"
+msgstr "Otsing jõudis midagi leidmata algusse"
+
+#: pattern.c:1159
+msgid "Search interrupted."
+msgstr "Otsing katkestati."
+
+#: pgp.c:89
+msgid "Enter PGP passphrase:"
+msgstr "Sisestage PGP parool:"
+
+#: pgp.c:105
+msgid "PGP passphrase forgotten."
+msgstr "PGP parool on unustatud."
+
+#: pgp.c:135
+msgid "[-- PGP output follows (current time: "
+msgstr "[-- järgneb PGP väljund (praegune aeg: "
+
+#: pgp.c:243
+msgid "[-- Error: unable to create PGP subprocess! --]\n"
+msgstr "[-- Viga: ei õnnestu luua PGP alamprotsessi! --]\n"
+
+#: pgp.c:270
+msgid ""
+"\n"
+"[-- End of PGP output --]\n"
+"\n"
+msgstr "\n[-- PGP väljundi lõpp --]\n\n"
+
+#: pgp.c:276
+msgid ""
+"[-- BEGIN PGP MESSAGE --]\n"
+"\n"
+msgstr "[-- PGP TEATE ALGUS --]\n\n"
+
+#: pgp.c:278
+msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
+msgstr "[-- PGP AVALIKU VÕTME BLOKI ALGUS --]\n"
+
+#: pgp.c:280
+msgid ""
+"[-- BEGIN PGP SIGNED MESSAGE --]\n"
+"\n"
+msgstr "[-- PGP ALLKIRJASTATUD TEATE ALGUS --]\n\n"
+
+#: pgp.c:382
+msgid ""
+"\n"
+"[-- END PGP MESSAGE --]\n"
+msgstr "\n[-- PGP TEATE LÕPP --]\n"
+
+#: pgp.c:384
+msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
+msgstr "[-- PGP AVALIKU VÕTME BLOKI LÕPP --]\n"
+
+#: pgp.c:386
+msgid ""
+"\n"
+"[-- END PGP SIGNED MESSAGE --]\n"
+msgstr "\n[-- PGP ALLKIRJASTATUD TEATE LÕPP --]\n"
+
+#: pgp.c:399
+msgid ""
+"[-- Error: could not find beginning of PGP message! --]\n"
+"\n"
+msgstr "[-- Viga: ei suuda leida PGP teate algust! --]\n\n"
+
+#: pgp.c:592 pgp.c:884
+msgid ""
+"[-- End of PGP output --]\n"
+"\n"
+msgstr "[-- PGP väljundi lõpp --]\n\n"
+
+#: pgp.c:640
+msgid ""
+"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"\n"
+msgstr "[-- Viga: Vigane multipart/signed struktuur! --]\n\n"
+
+#: pgp.c:648
+#, c-format
+msgid ""
+"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"\n"
+msgstr "[-- Viga: Tundmatu multipart/signed protokoll %s! --]\n\n"
+
+#: pgp.c:672
+#, c-format
+msgid ""
+"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"\n"
+msgstr "[-- Hoiatus: Me ai saa kontrollida %s/%s allkirju. --]\n\n"
+
+#. Now display the signed body
+#: pgp.c:682
+msgid ""
+"[-- The following data is signed --]\n"
+"\n"
+msgstr "[-- Järgnev info on allkirjastatud --]\n\n"
+
+#: pgp.c:688
+msgid ""
+"[-- Warning: Can't find any signatures. --]\n"
+"\n"
+msgstr "[-- Hoiatus: Ei leia ühtegi allkirja. --]\n\n"
+
+#: pgp.c:694
+msgid ""
+"\n"
+"[-- End of signed data --]\n"
+msgstr "\n[-- Allkirjastatud info lõpp --]\n"
+
+#: pgp.c:795
+msgid "Internal error. Inform <roessler@guug.de>."
+msgstr "Sisemine viga. Informeerige <roessler@guug.de>."
+
+#: pgp.c:855
+msgid ""
+"[-- Error: could not create a PGP subprocess! --]\n"
+"\n"
+msgstr "[-- Viga: PGP alamprotsessi loomine ei õnnestu! --]\n\n"
+
+#: pgp.c:948
+msgid ""
+"[-- Error: malformed PGP/MIME message! --]\n"
+"\n"
+msgstr "[-- Viga: vigane PGP/MIME teade! --]\n\n"
+
+#: pgp.c:961
+msgid "[-- Error: could not create temporary file! --]\n"
+msgstr "[-- Viga: ajutise faili loomine ebaõnnestus! --]\n"
+
+#: pgp.c:970
+msgid ""
+"[-- The following data is PGP/MIME encrypted --]\n"
+"\n"
+msgstr "[-- Järgneb PGP/MIME krüptitud info --]\n\n"
+
+#: pgp.c:988
+msgid ""
+"\n"
+"[-- End of PGP/MIME encrypted data --]\n"
+msgstr "\n[-- PGP/MIME krüptitud info lõpp --]\n"
+
+#: pgp.c:1068
+msgid "Can't open PGP subprocess!"
+msgstr "PGP protsessi loomine ebaõnnestus!"
+
+#: pgp.c:1195
+#, c-format
+msgid "Use keyID = \"%s\" for %s?"
+msgstr "Kasutan kasutajat = \"%s\" teatel %s?"
+
+#: pgp.c:1222
+#, c-format
+msgid "Enter keyID for %s: "
+msgstr "Sisestage kasutaja teatele %s: "
+
+#: pgp.c:1432
+msgid "Can't invoke PGP"
+msgstr "PGP käivitamine ei õnnestu"
+
+#: pgp.c:1536
+msgid "Create an application/pgp message?"
+msgstr "Loon application/pgp teade?"
+
+#: pgpinvoke.c:301
+msgid "Fetching PGP key..."
+msgstr "Laen PGP võtit..."
+
+#: pgpkey.c:444
+msgid "Select  "
+msgstr "Vali  "
+
+#: pgpkey.c:447
+msgid "Check key  "
+msgstr "Võtme kontroll  "
+
+#: pgpkey.c:460
+#, c-format
+msgid "PGP keys matching <%s>."
+msgstr "PGP võtmed, mis sisaldavad <%s>."
+
+#: pgpkey.c:462
+#, c-format
+msgid "PGP keys matching \"%s\"."
+msgstr "PGP võtmed, mis sisaldavad \"%s\"."
+
+#: pgpkey.c:481 pgpkey.c:675
+msgid "Can't open /dev/null"
+msgstr "/dev/null ei saa avada"
+
+#: pgpkey.c:487 pgpkey.c:669
+msgid "Can't create temporary file"
+msgstr "Ei õnnestu avada ajutist faili"
+
+#: pgpkey.c:498 pgpkey.c:689
+msgid "Can't create filter"
+msgstr "Ei õnnestu luua filtrit"
+
+#: pgpkey.c:508
+#, c-format
+msgid "Key ID: 0x%s"
+msgstr "Võtme ID: 0x%s"
+
+#: pgpkey.c:534
+msgid "This key can't be used: expired/disabled/revoked."
+msgstr "Seda võtit ei saa kasutada: aegunud/blokeeritud/tühistatud."
+
+#: pgpkey.c:548
+msgid "This ID's trust level is undefined."
+msgstr "Selle kasutaja usaldatavust ei ole määratud."
+
+#: pgpkey.c:551
+msgid "This ID is not trusted."
+msgstr "Seda kasutajat ei usaldata."
+
+#: pgpkey.c:554
+msgid "This ID is only marginally trusted."
+msgstr "Seda kasutajat ei usaldata eriti."
+
+#: pgpkey.c:558
+#, c-format
+msgid "%s Do you really want to use it?"
+msgstr "%s Kas te soovitse seda tõesti kasutada?"
+
+#: pgpkey.c:654
+msgid "Please enter the key ID: "
+msgstr "Palun sisestage võtme ID: "
+
+#: pgpkey.c:682
+msgid "Invoking pgp..."
+msgstr "Käivitan pgp..."
+
+#: pgpkey.c:707
+#, c-format
+msgid "PGP Key %s."
+msgstr "PGP Võti %s."
+
+#: pgpkey.c:754 pgpkey.c:870
+#, c-format
+msgid "Looking for keys matching \"%s\"..."
+msgstr "Otsin võtmeid, mis sisaldavad \"%s\"..."
+
+#: pop.c:66
+msgid "POP Password: "
+msgstr "POP Parool: "
+
+#: pop.c:91
+msgid "POP host is not defined."
+msgstr "POP serverit ei ole määratud."
+
+#: pop.c:97
+msgid "No POP username is defined."
+msgstr "POP kasutajanime ei ole määratud."
+
+#: pop.c:114
+#, c-format
+msgid "Could not find address for host %s."
+msgstr "Ei leia masina %s aadressi."
+
+#: pop.c:122
+#, c-format
+msgid "Connecting to %s"
+msgstr "Loon ühendust serveriga %s"
+
+#: pop.c:166 pop.c:341
+msgid "Server closed connection!"
+msgstr "Server sulges ühenduse!"
+
+#: pop.c:187
+msgid "No new mail in POP mailbox."
+msgstr "Uusi teateid POP postkastis pole."
+
+#: pop.c:209
+#, c-format
+msgid "Reading new messages (%d bytes)..."
+msgstr "Loen uusi teateid (%d baiti)..."
+
+#: pop.c:210
+#, c-format
+msgid "Reading new message (%d bytes)..."
+msgstr "Loen uut teadet (%d baiti)..."
+
+#: pop.c:245
+msgid "Error reading message!"
+msgstr "Viga teate lugemisel!"
+
+#: pop.c:281
+msgid "Error while writing mailbox!"
+msgstr "Viga postkasti kirjutamisel!"
+
+#: pop.c:308
+#, c-format
+msgid "%s [%d of %d messages read]"
+msgstr "%s [%d/%d teadet loetud]"
+
+#: pop.c:310
+#, c-format
+msgid "%s [%d message read]"
+msgstr "%s [%d teade loetud]"
+
+#: postpone.c:159
+msgid "Postponed Messages"
+msgstr "Postitusootel teated"
+
+#: postpone.c:250 postpone.c:264
+msgid "No postponed messages."
+msgstr "Postitusootel teateid pole"
+
+#: postpone.c:449 postpone.c:469 postpone.c:478
+msgid "Illegal PGP header"
+msgstr "Vigane PGP päis"
+
+#: query.c:45
+msgid "New Query"
+msgstr "Uus päring"
+
+#: query.c:46
+msgid "Make Alias"
+msgstr "Loo alias"
+
+#: query.c:47
+msgid "Search"
+msgstr "Otsi"
+
+#: query.c:91
+msgid "Waiting for response..."
+msgstr "Ootan vastust..."
+
+#: query.c:191 query.c:216
+msgid "Query command not defined."
+msgstr "Päringukäsku ei ole defineeritud."
+
+#: query.c:243
+msgid "Query"
+msgstr "Päring"
+
+#. Prompt for Query
+#: query.c:256 query.c:284
+msgid "Query: "
+msgstr "Päring: "
+
+#: query.c:267 query.c:293
+#, c-format
+msgid "Query '%s'"
+msgstr "Päring '%s'"
+
+#: recvattach.c:59
+msgid "Pipe"
+msgstr "Toru"
+
+#: recvattach.c:60
+msgid "Print"
+msgstr "Trüki"
+
+#: recvattach.c:424
+msgid "Saving..."
+msgstr "Salvestan..."
+
+#: recvattach.c:487
+msgid "Attachment saved"
+msgstr "Lisa on salvestatud"
+
+#: recvattach.c:499
+#, c-format
+msgid "WARNING!  You are about to overwrite %s, continue?"
+msgstr "HOIATUS: Te olete üle kirjutamas faili %s, jätkan?"
+
+#: recvattach.c:517
+msgid "Attachment filtered."
+msgstr "Lisa on filtreeritud."
+
+#: recvattach.c:584
+msgid "Filter through: "
+msgstr "Filtreeri läbi: "
+
+#: recvattach.c:584
+msgid "Pipe to: "
+msgstr "Toru käsule: "
+
+#: recvattach.c:619
+#, c-format
+msgid "I dont know how to print %s attachments!"
+msgstr "Ma ei tea, kuidas trükkida %s lisasid!"
+
+#: recvattach.c:684
+msgid "Print tagged attachment(s)?"
+msgstr "Trükin märgitud lisa(d)?"
+
+#: recvattach.c:684
+msgid "Print attachment?"
+msgstr "Trükin lisa?"
+
+#: recvattach.c:833
+msgid "Attachments"
+msgstr "Lisad"
+
+#: recvattach.c:900
+msgid "Deletion of attachments from PGP messages is unsupported."
+msgstr "PGP teadetest ei saa lisasid eemaldada."
+
+#: recvattach.c:920 recvattach.c:937
+msgid "Only deletion of multipart attachments is supported."
+msgstr "Kustutada saab ainult mitmeosalise teate lisasid."
+
+#: recvcmd.c:43
+msgid "You may only bounce message/rfc822 parts."
+msgstr "Peegeldada saab ainult message/rfc822 osi."
+
+#: recvcmd.c:155
+#, c-format
+msgid "Bounce message to %s...?"
+msgstr "Peegelda teade aadressile %s...?"
+
+#: recvcmd.c:155
+#, c-format
+msgid "Bounce messages to %s...?"
+msgstr "Peegelda teated aadressile %s...?"
+
+#: recvcmd.c:372
+#, c-format
+msgid "Can't open temporary file %s."
+msgstr "Ajutist faili %s ei saa avada."
+
+#: recvcmd.c:398 recvcmd.c:537 send.c:722
+msgid "Forward MIME encapsulated?"
+msgstr "Edastan MIME pakina?"
+
+#: recvcmd.c:412
+msgid "Can't decode all tagged attachments.  MIME-forward the others?"
+msgstr "Kõiki märgitud lisasid ei saa dekodeerida. Edastan ülejäänud MIME formaadis?"
+
+#: recvcmd.c:545 recvcmd.c:797
+#, c-format
+msgid "Can't create %s."
+msgstr "%s loomine ebaõnnestus."
+
+#: recvcmd.c:676
+msgid "Can't find any tagged messages."
+msgstr "Ei leia ühtegi märgitud teadet."
+
+#: recvcmd.c:697 send.c:647
+msgid "No mailing lists found!"
+msgstr "Postiloendeid pole!"
+
+#: recvcmd.c:776
+msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
+msgstr "Kõiki märgitud lisasid ei saa dekodeerida. Kapseldan ülejäänud MIME formaati?"
+
+#: remailer.c:480
+msgid "Append"
+msgstr "Lõppu"
+
+#: remailer.c:481
+msgid "Insert"
+msgstr "Lisa"
+
+#: remailer.c:482
+msgid "Delete"
+msgstr "Kustuta"
+
+#: remailer.c:484
+msgid "OK"
+msgstr "OK"
+
+#: remailer.c:512
+msgid "Can't get mixmaster's type2.list!"
+msgstr "Mixmaster type2.list laadimine ei õnnestu!"
+
+#: remailer.c:538
+msgid "Select a remailer chain."
+msgstr "Valige vahendajate ahel."
+
+#: remailer.c:598
+#, c-format
+msgid "Error: %s can't be used as the final remailer of a chain."
+msgstr "Viga: %s ei saa ahela viimase vahendajana kasutada."
+
+#: remailer.c:628
+#, c-format
+msgid "Mixmaster chains are limited to %d elements."
+msgstr "Mixmaster ahelad on piiratud %d lüliga."
+
+#: remailer.c:651
+msgid "The remailer chain is already empty."
+msgstr "Vahendajate ahel on juba tühi."
+
+#: remailer.c:661
+msgid "You already have the first chain element selected."
+msgstr "Te olete ahela esimese lüli juba valinud."
+
+#: remailer.c:671
+msgid "You already have the last chain element selected."
+msgstr "Te olete ahela viimase lüli juba valinud."
+
+#: remailer.c:710
+msgid "Mixmaster doesn't accept Cc or Bcc headers."
+msgstr "Mixmaster ei toeta Cc või Bcc päiseid."
+
+#: remailer.c:734
+msgid ""
+"Please set the hostname variable to a proper value when using mixmaster!"
+msgstr "Mixmaster kasutamisel omistage palun hostname muutujale korrektne väärtus!"
+
+#: remailer.c:763
+#, c-format
+msgid "Error sending message, child exited %d.\n"
+msgstr "Viga teate saatmisel, alamprotsess lõpetas koodiga %d.\n"
+
+#: remailer.c:767
+msgid "Error sending message."
+msgstr "Viga teate saatmisel."
+
+#: rfc1524.c:159
+#, c-format
+msgid "Improperly formated entry for type %s in \"%s\" line %d"
+msgstr "Vigaselt formaaditud kirje tüübile %s faili \"%s\" real %d"
+
+#: rfc1524.c:391
+msgid "No mailcap path specified"
+msgstr "Mailcap tee ei ole määratud"
+
+#: rfc1524.c:417
+#, c-format
+msgid "mailcap entry for type %s not found"
+msgstr "Tüübil %s puudub mailcap kirje"
+
+#: score.c:71
+msgid "score: too few arguments"
+msgstr "score: liiga vähe argumente"
+
+#: score.c:80
+msgid "score: too many arguments"
+msgstr "score: liiga palju argumente"
+
+#: send.c:232
+msgid "No subject, abort?"
+msgstr "Teema puudub, katkestan?"
+
+#: send.c:234
+msgid "No subject, aborting."
+msgstr "Teema puudub, katkestan."
+
+#: send.c:428
+#, c-format
+msgid "Follow-up to %s%s?"
+msgstr "Vastus aadressile %s%s?"
+
+#. There are quite a few mailing lists which set the Reply-To:
+#. * header field to the list address, which makes it quite impossible
+#. * to send a message to only the sender of the message.  This
+#. * provides a way to do that.
+#.
+#: send.c:477
+#, c-format
+msgid "Reply to %s%s?"
+msgstr "Vastan aadressile %s%s?"
+
+#. This could happen if the user tagged some messages and then did
+#. * a limit such that none of the tagged message are visible.
+#.
+#: send.c:622
+msgid "No tagged messages are visible!"
+msgstr "Märgitud teateid ei ole näha!"
+
+#: send.c:693
+msgid "Include message in reply?"
+msgstr "Kaasan vastuses teate?"
+
+#: send.c:698
+msgid "Including quoted message..."
+msgstr "Tsiteerin teadet..."
+
+#: send.c:708
+msgid "Could not include all requested messages!"
+msgstr "Kõiki soovitud teateid ei õnnestu kaasata!"
+
+#: send.c:726
+msgid "Preparing forwarded message..."
+msgstr "Valmistan edastatavat teadet..."
+
+#. If the user is composing a new message, check to see if there
+#. * are any postponed messages first.
+#.
+#: send.c:1027
+msgid "Recall postponed message?"
+msgstr "Laen postitusootel teate?"
+
+#: send.c:1256
+msgid "Abort unmodified message?"
+msgstr "Katkestan muutmata teate?"
+
+#: send.c:1258
+msgid "Aborted unmodified message."
+msgstr "Katkestasin muutmata teate saatmise."
+
+#. abort
+#: send.c:1299
+msgid "Mail not sent."
+msgstr "Kirja ei saadetud."
+
+#: send.c:1325
+msgid "Message postponed."
+msgstr "Teade jäeti postitusootele."
+
+#: send.c:1334
+msgid "No recipients are specified!"
+msgstr "Kirja saajaid pole määratud!"
+
+#: send.c:1339
+msgid "No recipients were specified."
+msgstr "Kirja saajaid ei määratud!"
+
+#: send.c:1345
+msgid "No subject, abort sending?"
+msgstr "Teema puudub, katkestan saatmise?"
+
+#: send.c:1349
+msgid "No subject specified."
+msgstr "Teema puudub."
+
+#: send.c:1396
+msgid "Sending message..."
+msgstr "Saadan teadet..."
+
+#: send.c:1523
+msgid "Could not send the message."
+msgstr "Teadet ei õnnestu saata."
+
+#: send.c:1528
+msgid "Mail sent."
+msgstr "Teade on saadetud."
+
+#: send.c:1528
+msgid "Sending in background."
+msgstr "Saadan taustal."
+
+#: sendlib.c:455
+msgid "No boundary parameter found! [report this error]"
+msgstr "Eraldaja puudub! [teatage sellest veast]"
+
+#: sendlib.c:489
+#, c-format
+msgid "%s no longer exists!"
+msgstr "%s ei ole enam!"
+
+#: sendlib.c:729
+#, c-format
+msgid "Could not open %s"
+msgstr "%s ei saa avada"
+
+#: sendlib.c:1712
+#, c-format
+msgid "Error sending message, child exited %d (%s)."
+msgstr "Viga teate saatmisel, alamprotsess lõpetas %d (%s)."
+
+#: sendlib.c:1718
+msgid "Output of the delivery process"
+msgstr "Väljund saatmise protsessist"
+
+#: signal.c:39
+#, c-format
+msgid "%s...  Exiting.\n"
+msgstr "%s...  Väljun.\n"
+
+#: signal.c:42
+#, c-format
+msgid "Caught %s...  Exiting.\n"
+msgstr "Sain %s...  Väljun.\n"
+
+#: signal.c:44
+#, c-format
+msgid "Caught signal %d...  Exiting.\n"
+msgstr "Sain signaali %d...  Väljun.\n"
+
+#: sort.c:200
+msgid "Sorting mailbox..."
+msgstr "Järjestan teateid..."
+
+#: sort.c:232
+msgid "Could not find sorting function! [report this bug]"
+msgstr "Ei leia järjestamisfunktsiooni! [teatage sellest veast]"
+
+#: status.c:102
+msgid "(no mailbox)"
+msgstr "(pole postkast)"
+
+#: thread.c:712
+msgid "Parent message is not visible in limited view"
+msgstr "Vanem teade ei ole piiratud vaates nähtav"
+
+#: thread.c:717
+msgid "Parent message is not available."
+msgstr "Vanem teade ei ole kättesaadav."
