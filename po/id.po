@@ -1246,15 +1246,15 @@ msgstr "Berhenti langganan dari %s..."
 
 #: imap/imap_ssl.c:85
 msgid "Filling entropy pool"
-msgstr ""
+msgstr "Mengisi pool entropy"
 
 #: imap/imap_ssl.c:117
 msgid "Failed to find enough entropy on your system"
-msgstr ""
+msgstr "Gagal menemukan cukup entropy di sistem anda"
 
 #: imap/imap_ssl.c:124
 msgid "SSL disabled due the lack of entropy"
-msgstr ""
+msgstr "SSL tidak dapat digunakan karena kekurangan entropy"
 
 #: imap/imap_ssl.c:204
 msgid "Unable to get certificate from peer"
@@ -1438,7 +1438,7 @@ msgstr "source: errors di %s"
 #: init.c:1211
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
-msgstr ""
+msgstr "source: pembacaan dibatalkan sebab terlalu banyak error di %s"
 
 #: init.c:1225
 #, c-format
