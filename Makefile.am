@@ -163,7 +163,7 @@ commit-changelog:
 commit: pclean check-security commit-real changelog commit-changelog
 
 changelog:
-	sh ./mkchangelog.sh | cat  - ChangeLog > ChangeLog.$$$$ && mv ChangeLog.$$$$ ChangeLog
+	sh ./mkchangelog.sh | fmt -s | cat  - ChangeLog > ChangeLog.$$$$ && mv ChangeLog.$$$$ ChangeLog
 	$(VISUAL) ChangeLog
 
 # kluge around automake problems.
