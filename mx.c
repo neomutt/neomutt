@@ -963,7 +963,7 @@ int mx_sync_mailbox (CONTEXT *ctx)
 
 int mh_open_new_message (MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
 {
-  int hi = 1;
+  int hi = 0;
   int fd, n;
   char *cp;
   char path[_POSIX_PATH_MAX];
