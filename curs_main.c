@@ -434,8 +434,8 @@ int mutt_index_menu (void)
 #ifdef USE_IMAP
       imap_allow_reopen (Context);
 #endif
-      
-      index_hint = (Context->vcount) ? CURHDR->index : 0;
+    
+      index_hint = (Context->vcount && menu->current < Context->vcount) ? CURHDR->index : 0;
 
       if ((check = mx_check_mailbox (Context, &index_hint, 0)) < 0)
       {
@@ -527,7 +527,10 @@ int mutt_index_menu (void)
       }
 
       menu->redraw = 0;
-      menu->oldcurrent = menu->current;
+      if (menu->current < menu->max)
+	menu->oldcurrent = menu->current;
+      else
+	menu->oldcurrent = -1;
 
       if (option (OPTARROWCURSOR))
 	move (menu->current - menu->top + menu->offset, 2);
@@ -738,7 +741,8 @@ int mutt_index_menu (void)
       case OP_MAIN_LIMIT:
 
 	CHECK_MSGCOUNT;
-	menu->oldcurrent = Context->vcount ? CURHDR->index : -1;
+	menu->oldcurrent = (Context->vcount && menu->current < Context->vcount) ?
+		CURHDR->index : -1;
 	if (mutt_pattern_func (M_LIMIT, _("Limit to messages matching: ")) == 0)
 	{
 	  if (menu->oldcurrent >= 0)
