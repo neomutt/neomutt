@@ -161,7 +161,7 @@ struct binding_t OpPager[] = {
   { "flag-message",	OP_FLAG_MESSAGE,		"F" },
   { "group-reply",	OP_GROUP_REPLY,			"g" },
   { "display-toggle-weed",	OP_DISPLAY_HEADERS,		"h" },
-  { "exit",		OP_PAGER_EXIT,			"i" },
+  { "exit",		OP_EXIT,			"i" },
   { "next-undeleted",	OP_MAIN_NEXT_UNDELETED,		"j" },
   { "next-entry",	OP_NEXT_ENTRY,			"J" },
   { "previous-undeleted",OP_MAIN_PREV_UNDELETED,	"k" },

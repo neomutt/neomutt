@@ -1379,15 +1379,15 @@ upNLines (int nlines, struct line_t *info, int cur, int hiding)
 }
 
 static struct mapping_t PagerHelp[] = {
-  { N_("Exit"),	OP_PAGER_EXIT },
-  { N_("PrevPg"),	OP_PREV_PAGE },
+  { N_("Exit"),	OP_EXIT },
+  { N_("PrevPg"), OP_PREV_PAGE },
   { N_("NextPg"), OP_NEXT_PAGE },
   { NULL,	0 }
 };
 static struct mapping_t PagerHelpExtra[] = {
-  { N_("View Attachm."),	OP_VIEW_ATTACHMENTS },
-  { N_("Del"),	OP_DELETE },
-  { N_("Reply"),	OP_REPLY },
+  { N_("View Attachm."), OP_VIEW_ATTACHMENTS },
+  { N_("Del"), OP_DELETE },
+  { N_("Reply"), OP_REPLY },
   { N_("Next"),	OP_MAIN_NEXT_UNDELETED },
   { NULL,	0 }
 };
@@ -1764,7 +1764,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 
     switch (ch)
     {
-      case OP_PAGER_EXIT:
+      case OP_EXIT:
 	rc = -1;
 	ch = -1;
 	break;
