@@ -2,7 +2,7 @@ Major changes since 0.96.3
 --------------------------
 
 - There is a new option $delete_untag.  Former mutt versions used to
-  untag messages when you save them, but leave them tagged whe you
+  untag messages when you save them, but leave them tagged when you
   mark them for deletion.  $delete_untag controls _both_ cases,
   leading to more uniform behaviour.
 

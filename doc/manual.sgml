@@ -4,7 +4,7 @@
 
 <title>The Mutt E-Mail Client
 <author>by Michael Elkins <htmlurl url="mailto:me@cs.hmc.edu" name="&lt;me@cs.hmc.edu&gt;">
-<date>version 0.96.3
+<date>version 0.96.4
 <abstract>
 ``All mail clients suck.  This one just sucks less.'' -me, circa 1995
 </abstract>
@@ -360,7 +360,7 @@ you misspelled the passphrase.
 <p><bf/list-reply/<label id="list-reply"> (default: L)<newline>
 
 Reply to the current or tagged message(s) by extracting any addresses which
-match the addresses given by the <ref id="lists" name="lists"> command.
+match the addresses given by the <ref id="lists" name="subscribe"> command.
 Using this when replying to messages posted to mailing lists help avoid
 duplicate copies being sent to the author of the message you are replying
 to.

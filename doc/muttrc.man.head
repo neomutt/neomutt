@@ -162,7 +162,7 @@ The \fBignore\fP command permits you to specify header fields which
 you usually don't wish to see.  Any header field whose tag
 \fIbegins\fP with an \(lqignored\(rq pattern will be ignored.
 .IP
-The \fBungignore\fP command permits you to define exceptions from
+The \fBunignore\fP command permits you to define exceptions from
 the above mentioned list of ignored headers.
 .PP
 .nf
