@@ -1,3 +1,12 @@
+2004-07-11 16:25:00  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
+
+	* pager.c: Fix #1882.
+
+2004-06-27 13:54:51  Thomas Roessler  <roessler@does-not-exist.org>
+(roessler)
+
+	* postpone.c: Experimental code for #1910.
+
 2004-06-26 08:45:29  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* commands.c: Fix #1909.
