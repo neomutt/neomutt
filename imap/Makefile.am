@@ -2,7 +2,7 @@
 
 AR=@AR@
 
-AUTOMAKE_OPTIONS = foreign
+AUTOMAKE_OPTIONS = 1.6 foreign
 
 if USE_GSS
 GSSSOURCES = auth_gss.c

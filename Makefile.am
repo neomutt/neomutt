@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 ## Use aclocal -I m4; automake --foreign
 
-AUTOMAKE_OPTIONS = foreign
+AUTOMAKE_OPTIONS = 1.6 foreign
 EXTRA_PROGRAMS = mutt_dotlock pgpring makedoc
 
 if BUILD_IMAP
