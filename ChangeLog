@@ -1,3 +1,16 @@
+2003-07-24 18:40:50  Vincent Lefevre  <vincent@vinc17.org>  (roessler)
+
+	* alias.c, copy.c, handler.c, imap/command.c, imap/imap.c,
+	imap/message.c, imap/util.c, init.c, intl/l10nflist.c,
+	intl/loadmsgcat.c, intl/localealias.c, keymap.c, lib.c,
+	makedoc.c, muttlib.c, pattern.c, rfc2047.c, rfc2231.c, rfc822.c,
+	strcasecmp.c, url.c: Some functions/macros like isspace take an
+	int and require the argument to have the value of an unsigned char
+	(or EOF). Under Solaris, gcc complains when the argument is a char
+	(as this is a possible bug, on platforms where char is signed,
+	like Solaris). The attached patch fixes such problems (well,
+	perhaps I've changed more than necessary, but this doesn't hurt).
+
 2003-07-22 12:56:38  dshaw@jabberwocky.com  (roessler)
 
 	* gnupgparse.c: When encrypting a message to a user that has more
