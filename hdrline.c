@@ -234,7 +234,7 @@ static void hdr_format_s (char *dest,
 			  const char *prefix,
 			  char *s)
 {
-  int right_justify = 0;
+  int right_justify = 1;
   char *p;
   int min_width;
   int max_width = INT_MAX;
