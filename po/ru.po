@@ -1,15 +1,18 @@
 # This file was prepared by (in alphabetical order):
 #
-#   Alexey Vyskubov (alexey@alv.stud.pu.ru)
+#   Alexey Vyskubov (alexey@pepper.spb.ru)
 #   Andrew W. Nosenko (awn@bcs.zp.ua)
 #   Michael Sobolev (mss@transas.com)
 #   Vsevolod Volkov (vvv@mutt.kiev.ua)
 #
+# To contact translators, please use mutt-ru mailing list:
+#   http://woe.spb.ru/mailman/listinfo/mutt-ru
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.1.2\n"
+"Project-Id-Version: mutt-1.3.7i\n"
 "POT-Creation-Date: 2000-08-03 11:07+0200\n"
-"PO-Revision-Date: 2000-07-09 18:41+0200\n"
+"PO-Revision-Date: 2000-08-15 18:41+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=koi8-r\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -296,7 +299,7 @@ msgstr "Не удалось создать временный файл!"
 
 #: commands.c:125
 msgid "Cannot create display filter"
-msgstr "Не удалось создать фильтр"
+msgstr "Не удалось создать фильтр просмотра"
 
 #: commands.c:145
 msgid "Could not copy message"
@@ -308,7 +311,7 @@ msgstr "PGP-подпись проверена."
 
 #: commands.c:168
 msgid "PGP signature could NOT be verified."
-msgstr "PGP-подпись НЕ может быть проверена."
+msgstr "PGP-подпись проверить НЕ удалось."
 
 #: commands.c:191
 msgid "Command: "
@@ -426,7 +429,7 @@ msgstr "Сообщения напечатаны"
 #: commands.c:844
 #, c-format
 msgid "Content-Type changed to %s."
-msgstr "Значение Content-Type изменено: %s."
+msgstr "Значение Content-Type изменено на %s."
 
 #: commands.c:846
 #, c-format
@@ -1087,7 +1090,7 @@ msgstr "Справка для %s"
 #: hook.c:245
 #, c-format
 msgid "unhook: unknown hook type: %s"
-msgstr "unhook: неизвестный тип: %s"
+msgstr "unhook: неизвестный тип события: %s"
 
 #. now begin login
 #: imap/auth_gss.c:86
@@ -1180,12 +1183,12 @@ msgstr "Отключение от %s..."
 
 #: imap/imap_ssl.c:107
 msgid "Failed to find enough entropy on your system"
-msgstr "Не достаточно энтропии"
+msgstr "Недостаточно энтропии"
 
 #: imap/imap_ssl.c:122
-#, fuzzy, c-format
+#, c-format
 msgid "Filling entropy pool: %s...\n"
-msgstr "Накопление энтропии"
+msgstr "Накопление энтропии: %s...\n"
 
 #: imap/imap_ssl.c:130
 #, c-format
@@ -1194,7 +1197,7 @@ msgstr ""
 
 #: imap/imap_ssl.c:156
 msgid "SSL disabled due the lack of entropy"
-msgstr "SSL запрещен из-за недостатка энтропии"
+msgstr "Использование SSL-протокола невозможно из-за недостатка энтропии"
 
 #: imap/imap_ssl.c:236
 msgid "Unable to get certificate from peer"
@@ -1223,7 +1226,7 @@ msgstr "Сертификат все еще недействителен"
 
 #: imap/imap_ssl.c:401
 msgid "Server certificate has expired"
-msgstr "Сертификат устарел"
+msgstr "Срок действия сертификата истек"
 
 #: imap/imap_ssl.c:474
 msgid "This certificate belongs to:"
@@ -1609,7 +1612,7 @@ msgstr "создать новое вложение в соответствии с записью в mailcap"
 
 #: keymap_alldefs.h:37
 msgid "toggle recoding of this attachment"
-msgstr "включение/выключение перекодировки вложения"
+msgstr "включить/выключить перекодирование вложения"
 
 #: keymap_alldefs.h:38
 msgid "save this message to send later"
@@ -1709,7 +1712,7 @@ msgstr "передвинуть курсор влево на один символ"
 
 #: keymap_alldefs.h:62
 msgid "move the cursor to the beginning of the word"
-msgstr "перейти в начало слова"
+msgstr "передвинуть курсор в начало слова"
 
 #: keymap_alldefs.h:63
 msgid "jump to the beginning of the line"
@@ -1741,7 +1744,7 @@ msgstr "передвинуть курсор на один символ вправо"
 
 #: keymap_alldefs.h:70
 msgid "move the cursor to the end of the word"
-msgstr "передвинуть курсор на одно слово вправо"
+msgstr "передвинуть курсор в конец слова"
 
 #: keymap_alldefs.h:71 keymap_alldefs.h:72
 msgid "scroll up through the history list"
@@ -2199,20 +2202,19 @@ msgstr "Выбрать следующий элемент в цепочке"
 
 #: keymap_alldefs.h:185
 msgid "send the message through a mixmaster remailer chain"
-msgstr "послать сообщение через цепочку remailer'ов"
+msgstr "послать сообщение через цепочку remailer"
 
 #: lib.c:59 lib.c:74 lib.c:105
 msgid "Out of memory!"
 msgstr "Нехватка памяти!"
 
 #: main.c:40
-#, fuzzy
 msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please use the flea(1) utility.\n"
 msgstr ""
 "Чтобы связаться с разработчиками, используйте адрес <mutt-dev@mutt.org>.\n"
-"Чтобы сообщить об ошибке, используйте программу muttbug.\n"
+"Чтобы сообщить об ошибке, используйте программу flea(1).\n"
 
 #: main.c:44
 msgid ""
@@ -2231,7 +2233,6 @@ msgstr ""
 "более подробной информации введите `mutt -vv'.\n"
 
 #: main.c:50
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
@@ -2264,7 +2265,7 @@ msgstr ""
 "Copyright (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
 "Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-"Copyright (C) 2000      Edmnud Grimley Evans <edmundo@rano.org>\n"
+"Copyright (C) 2000      Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "Многие части кода, исправления и предложения были сделаны неупомянутыми\n"
 "здесь людьми.\n"
@@ -2585,14 +2586,14 @@ msgid "Append messages to %s?"
 msgstr "Добавить сообщения к %s?"
 
 #: mutt_socket.c:247
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "Копируется в %s..."
+msgstr "Определяется адрес сервера %s..."
 
 #: mutt_socket.c:254
 #, c-format
 msgid "Could not find the host \"%s\""
-msgstr "Сервер не найден: %s"
+msgstr "Не удалось определить адрес сервера \"%s\""
 
 #: mutt_socket.c:260
 #, c-format
@@ -2600,9 +2601,8 @@ msgid "Connecting to %s..."
 msgstr "Устанавливается соединение с %s..."
 
 #: mutt_socket.c:280
-#, fuzzy
 msgid "Preconnect command failed."
-msgstr "предварительное соединение для IMAP не установлено"
+msgstr "Предварительное соединение не установлено."
 
 #: mx.c:114
 #, c-format
@@ -2701,9 +2701,8 @@ msgid "Mailbox is marked unwritable. %s"
 msgstr "Почтовый ящик стал доступен только для чтения. %s"
 
 #: mx.c:1100
-#, fuzzy
 msgid "Mailbox checkpointed."
-msgstr "Почтовый ящик удален."
+msgstr "Почтовый ящик обновлен."
 
 #: mx.c:1388
 msgid "Can't write message"
@@ -3110,12 +3109,11 @@ msgstr "PGP-ключ %s."
 #: pgpkey.c:754 pgpkey.c:870
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
-msgstr "Поиск ключа, соответствующего \"%s\"..."
+msgstr "Поиск ключей, соответствующих \"%s\"..."
 
 #: pop.c:46
-#, fuzzy
 msgid "POP Username: "
-msgstr "Имя пользователя IMAP: "
+msgstr "Имя пользователя для POP-ящика: "
 
 #: pop.c:61
 #, c-format
@@ -3127,18 +3125,17 @@ msgid "Logging in..."
 msgstr "Регистрация..."
 
 #: pop.c:109
-#, fuzzy, c-format
+#, c-format
 msgid "Login failed: %s"
-msgstr "Регистрация не удалась."
+msgstr "Регистрация не удалась: %s"
 
 #: pop.c:132
 msgid "POP host is not defined."
 msgstr "POP-сервер не определен."
 
 #: pop.c:165
-#, fuzzy
 msgid "Checking for new messages..."
-msgstr "Подготовка пересылаемого сообщения..."
+msgstr "Проверка наличия новых сообщений..."
 
 #: pop.c:184
 msgid "No new mail in POP mailbox."
@@ -3344,11 +3341,11 @@ msgstr "OK"
 
 #: remailer.c:512
 msgid "Can't get mixmaster's type2.list!"
-msgstr "Не возможно получить type2.list mixmaster'а!"
+msgstr "Не удалось получить type2.list mixmaster!"
 
 #: remailer.c:538
 msgid "Select a remailer chain."
-msgstr "Выбрать цепочку remailer'ов"
+msgstr "Выбрать цепочку remailer"
 
 #: remailer.c:598
 #, c-format
@@ -3358,11 +3355,11 @@ msgstr "Ошибка: %s не может быть использован как последний remailer"
 #: remailer.c:628
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."
-msgstr "Цепочки mixmaster'а имеют ограниченное количество элементов: %d"
+msgstr "Цепочки mixmaster имеют ограниченное количество элементов: %d"
 
 #: remailer.c:651
 msgid "The remailer chain is already empty."
-msgstr "Цепочка remailer'ов уже пустая."
+msgstr "Цепочка remailer уже пустая."
 
 #: remailer.c:661
 msgid "You already have the first chain element selected."
@@ -3379,7 +3376,7 @@ msgstr "Mixmaster не позволяет использовать заголовки Cc и Bcc."
 #: remailer.c:734
 msgid ""
 "Please set the hostname variable to a proper value when using mixmaster!"
-msgstr "Установите значение переменной hostname для использования mixmaster'а!"
+msgstr "Установите значение переменной hostname для использования mixmaster!"
 
 #: remailer.c:763
 #, c-format
@@ -3571,48 +3568,3 @@ msgstr "Родительское сообщение не видимо при просмотре с ограничением"
 #: thread.c:717
 msgid "Parent message is not available."
 msgstr "Родительское сообщение недоступно."
-
-#~ msgid "Authenticating (CRAM-MD5)..."
-#~ msgstr "Аутентификация (метод CRAM-MD5)..."
-
-#~ msgid "Authenticating (anonymous)..."
-#~ msgstr "Аутентификация (анонимная)..."
-
-#~ msgid "IMAP Username: "
-#~ msgstr "Имя пользователя IMAP: "
-
-#~ msgid "Anonymous authentication not supported."
-#~ msgstr "Анонимное подключение не поддерживается."
-
-#~ msgid "CRAM key for %s@%s: "
-#~ msgstr "CRAM-ключ для %s@%s: "
-
-#~ msgid "CRAM-MD5 authentication failed."
-#~ msgstr "Аутентификация (метод CRAM-MD5) не удалась."
-
-#~ msgid "Skipping CRAM-MD5 authentication."
-#~ msgstr "Аутентификация (метод CRAM-MD5) пропущена."
-
-#~ msgid "Login failed."
-#~ msgstr "Регистрация не удалась."
-
-#~ msgid "[-- Error: unexpected end of file! --]\n"
-#~ msgstr "[-- Ошибка: неожиданный конец файла! --]\n"
-
-#~ msgid "Sending APPEND command ..."
-#~ msgstr "Выполняется команда APPEND..."
-
-#~ msgid "%d kept."
-#~ msgstr "Оставлено: %d."
-
-#~ msgid "POP Password: "
-#~ msgstr "POP-пароль: "
-
-#~ msgid "No POP username is defined."
-#~ msgstr "Имя пользователя для POP не определено."
-
-#~ msgid "Could not find address for host %s."
-#~ msgstr "Не удалось найти адрес для сервера %s."
-
-#~ msgid "Connecting to %s"
-#~ msgstr "Устанавливается соединение с %s"
