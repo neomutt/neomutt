@@ -396,7 +396,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
 	last->personal = safe_strdup (comment);
       }
 #ifdef EXACT_ADDRESS
-      if (last)
+      if (last && !last->val)
 	last->val = mutt_substrdup (begin, s);
 #endif
 
