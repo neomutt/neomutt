@@ -64,6 +64,7 @@ display-address            @   display full address of sender
 display-toggle-weed        h   display message and toggle header weeding
 display-message          RET   display a message
 edit-message               e   edit the current message
+edit-type                 ^E   edit the current message's Content-Type
 exit                       x   exit without saving changes
 extract-keys              ^K   extract PGP public keys
 fetch-mail                 G   retrieve mail from POP server
@@ -131,6 +132,7 @@ delete-thread             ^D   delete all messages in thread
 display-address            @   display full address of sender
 display-toggle-weed        h   display message and toggle header weeding
 edit                       e   edit the current message
+edit-type                 ^E   edit the current message's Content-Type
 enter-command              :   enter a muttrc command
 exit                       i   return to the main-menu
 extract-keys              ^K   extract PGP public keys
@@ -214,6 +216,7 @@ decode-copy            ESC C   decode a message and copy it to a file/mailbox
 decode-save            ESC s   decode a message and save it to a file/mailbox
 delete-entry               d   delete the current entry
 display-toggle-weed        h   display message and toggle header weeding
+edit-type                 ^E   edit the current entry's Content-Type
 extract-keys              ^K   extract PGP public keys
 forward-message            f   forward a message with comments
 group-reply                g   reply to all recipients
