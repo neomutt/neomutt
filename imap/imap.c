@@ -1062,13 +1062,14 @@ int imap_mailbox_check (char* path, int new)
     connflags = M_IMAP_CONN_NONEW;
 
   if (!(idata = imap_conn_find (&(mx.account), connflags)))
-    goto fail;
+  {
+    FREE (&mx.mbox);
+    return -1;
+  }
   conn = idata->conn;
 
   imap_fix_path (idata, mx.mbox, buf, sizeof (buf));
-  /* Update the path, if it fits */
-  if (strlen (buf) < strlen (mx.mbox))
-      strcpy (mx.mbox, buf);
+  FREE (&mx.mbox);
 
   imap_munge_mbox_name (mbox, sizeof(mbox), buf);
   strfcpy (mbox_unquoted, buf, sizeof (mbox_unquoted));
@@ -1092,7 +1093,7 @@ int imap_mailbox_check (char* path, int new)
   else
     /* Server does not support STATUS, and this is not the current mailbox.
      * There is no lightweight way to check recent arrivals */
-    goto fail;
+    return -1;
 
   imap_cmd_start (idata, buf);
 
@@ -1128,12 +1129,7 @@ int imap_mailbox_check (char* path, int new)
   }
   while (rc == IMAP_CMD_CONTINUE);
 
-  FREE (&mx.mbox);
   return msgcount;
-
- fail:
-  FREE (&mx.mbox);
-  return -1;
 }
 
 /* all this listing/browsing is a mess. I don't like that name is a pointer

@@ -311,7 +311,7 @@ static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
       if (isparent)
         noselect = 1;
       /* prune current folder from output */
-      if (isparent || strncmp (name, mx.mbox, strlen (name)))
+      if (isparent || mutt_strncmp (name, mx.mbox, strlen (name)))
         imap_add_folder (idata->delim, name, noselect, noinferiors, state,
           isparent);
     }
@@ -348,8 +348,8 @@ static void imap_add_folder (char delim, char *folder, int noselect,
   if (isparent)
     strfcpy (relpath, "../", sizeof (relpath));
   /* strip current folder from target, to render a relative path */
-  else if (!strncmp (mx.mbox, folder, strlen (mx.mbox)))
-    strfcpy (relpath, folder + strlen (mx.mbox), sizeof (relpath));
+  else if (!mutt_strncmp (mx.mbox, folder, mutt_strlen (mx.mbox)))
+    strfcpy (relpath, folder + mutt_strlen (mx.mbox), sizeof (relpath));
   else
     strfcpy (relpath, folder, sizeof (relpath));
 
