@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.5.8i\n"
+"Project-Id-Version: 1.5.9i\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-03-13 17:38+0100\n"
-"PO-Revision-Date: 2005-02-14 10:59+0700\n"
+"PO-Revision-Date: 2005-03-21 17:31+1100\n"
 "Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
 "Language-Team: Indonesia <web@linux.or.id>\n"
 "MIME-Version: 1.0\n"
@@ -207,9 +207,8 @@ msgid "Create is only supported for IMAP mailboxes"
 msgstr "Pembuatan hanya didukung untuk kotak surat jenis IMAP."
 
 #: browser.c:880
-#, fuzzy
 msgid "Rename is only supported for IMAP mailboxes"
-msgstr "Pembuatan hanya didukung untuk kotak surat jenis IMAP."
+msgstr "Penggantian nama hanya didukung untuk kotak surat jenis IMAP."
 
 #: browser.c:901
 msgid "Delete is only supported for IMAP mailboxes"
@@ -1403,19 +1402,18 @@ msgid "Mailbox created."
 msgstr "Kotak surat telah dibuat."
 
 #: imap/browse.c:325
-#, fuzzy, c-format
+#, c-format
 msgid "Rename mailbox %s to: "
-msgstr "Membuat kotak surat: "
+msgstr "Ganti nama kotak surat %s ke: "
 
 #: imap/browse.c:338
-#, fuzzy, c-format
+#, c-format
 msgid "Rename failed: %s"
-msgstr "SSL gagal: %s"
+msgstr "Penggantian nama gagal: %s"
 
 #: imap/browse.c:343
-#, fuzzy
 msgid "Mailbox renamed."
-msgstr "Kotak surat telah dibuat."
+msgstr "Kotak surat telah diganti namanya."
 
 #: imap/command.c:294
 msgid "Mailbox closed"
@@ -1783,11 +1781,11 @@ msgstr "tampilkan nama file yang sedang dipilih"
 
 #: keymap_alldefs.h:15
 msgid "subscribe to current mailbox (IMAP only)"
-msgstr "berlangganan ke kotak surat (untuk IMAP)"
+msgstr "berlangganan ke kotak surat ini (untuk IMAP)"
 
 #: keymap_alldefs.h:16
 msgid "unsubscribe to current mailbox (IMAP only)"
-msgstr "berhenti langganan dari kotak surat (untuk IMAP)"
+msgstr "berhenti langganan dari kotak surat ini (untuk IMAP)"
 
 #: keymap_alldefs.h:17
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
@@ -1947,11 +1945,11 @@ msgstr "buat salinan (text/plain) yang sudah di-decode dan hapus"
 
 #: keymap_alldefs.h:56
 msgid "delete the current entry"
-msgstr "hapus entry"
+msgstr "hapus entry ini"
 
 #: keymap_alldefs.h:57
 msgid "delete the current mailbox (IMAP only)"
-msgstr "hapus kotak surat (untuk IMAP)"
+msgstr "hapus kotak surat ini (untuk IMAP)"
 
 #: keymap_alldefs.h:58
 msgid "delete all messages in subthread"
@@ -2095,7 +2093,7 @@ msgstr "forward surat dengan komentar"
 
 #: keymap_alldefs.h:93
 msgid "select the current entry"
-msgstr "pilih entry"
+msgstr "pilih entry ini"
 
 #: keymap_alldefs.h:94
 msgid "reply to all recipients"
@@ -2223,11 +2221,11 @@ msgstr "ke surat sebelumnya yang belum dibaca"
 
 #: keymap_alldefs.h:125
 msgid "mark the current thread as read"
-msgstr "tandai thread 'sudah dibaca'"
+msgstr "tandai thread ini 'sudah dibaca'"
 
 #: keymap_alldefs.h:126
 msgid "mark the current subthread as read"
-msgstr "tandai subthread 'sudah dibaca'"
+msgstr "tandai subthread ini 'sudah dibaca'"
 
 #: keymap_alldefs.h:127
 msgid "set a status flag on a message"
@@ -2299,7 +2297,7 @@ msgstr "ke halaman sebelumnya"
 
 #: keymap_alldefs.h:144
 msgid "print the current entry"
-msgstr "cetak entry"
+msgstr "cetak entry ini"
 
 #: keymap_alldefs.h:145
 msgid "query external program for addresses"
@@ -2326,9 +2324,8 @@ msgid "{internal}"
 msgstr "{jerohan}"
 
 #: keymap_alldefs.h:151
-#, fuzzy
 msgid "rename the current mailbox (IMAP only)"
-msgstr "hapus kotak surat (untuk IMAP)"
+msgstr "ganti nama kotak surat ini (untuk IMAP)"
 
 #: keymap_alldefs.h:152
 msgid "reply to a message"
@@ -2336,7 +2333,7 @@ msgstr "balas surat"
 
 #: keymap_alldefs.h:153
 msgid "use the current message as a template for a new one"
-msgstr "gunakan surat sebagai template"
+msgstr "gunakan surat ini sebagai template"
 
 #: keymap_alldefs.h:154
 msgid "save message/attachment to a file"
@@ -2376,7 +2373,7 @@ msgstr "urutkan terbalik surat-surat"
 
 #: keymap_alldefs.h:163
 msgid "tag the current entry"
-msgstr "tandai entry"
+msgstr "tandai entry ini"
 
 #: keymap_alldefs.h:164
 msgid "apply next function to tagged messages"
@@ -2388,11 +2385,11 @@ msgstr "lakukan fungsi berikutnya HANYA ke surat-surat yang ditandai"
 
 #: keymap_alldefs.h:166
 msgid "tag the current subthread"
-msgstr "tandai subthread"
+msgstr "tandai subthread ini"
 
 #: keymap_alldefs.h:167
 msgid "tag the current thread"
-msgstr "tandai thread"
+msgstr "tandai thread ini"
 
 #: keymap_alldefs.h:168
 msgid "toggle a message's 'new' flag"
@@ -2412,7 +2409,7 @@ msgstr "ke awal halaman"
 
 #: keymap_alldefs.h:172
 msgid "undelete the current entry"
-msgstr "tidak jadi hapus entry"
+msgstr "tidak jadi hapus entry ini"
 
 #: keymap_alldefs.h:173
 msgid "undelete all messages in thread"
@@ -2440,11 +2437,11 @@ msgstr "tampilkan keycode untuk penekanan tombol"
 
 #: keymap_alldefs.h:179
 msgid "show currently active limit pattern"
-msgstr "tampilkan kriteria batas yang aktif"
+msgstr "tampilkan kriteria batas yang sedang aktif"
 
 #: keymap_alldefs.h:180
 msgid "collapse/uncollapse current thread"
-msgstr "collapse/uncollapse thread"
+msgstr "collapse/uncollapse thread ini"
 
 #: keymap_alldefs.h:181
 msgid "collapse/uncollapse all threads"
@@ -3213,7 +3210,7 @@ msgstr "Cari: "
 
 #: pager.c:2081
 msgid "Help is currently being shown."
-msgstr "Bantuan sudah ditampilkan."
+msgstr "Bantuan sedang ditampilkan."
 
 #: pager.c:2110
 msgid "No more quoted text."
