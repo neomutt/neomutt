@@ -231,9 +231,9 @@ static int try_socket_and_connect (CONNECTION *conn, struct sockaddr_in sin,
 
 int raw_socket_close (CONNECTION *conn)
 {
-  /* Close the descriptor and set it to -1 if successful.
-   * Returns the error code from close */
-  return close (conn->fd) || !(conn->fd = -1);
+  int ret = close (conn->fd);
+  if (ret == 0) conn->fd = -1;
+  return ret;
 }
 
 int raw_socket_read (CONNECTION *conn)
