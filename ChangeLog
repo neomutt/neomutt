@@ -1,6 +1,6 @@
 2004-04-12 20:37:19  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
-	* copy.c: Fix #1804.
+	* copy.c: Fix #1804.  (From vincent@vinc17.org)
 
 	* commands.c, curs_main.c, mutt.h, mutt_crypt.h, pager.c,
 	recvattach.c: A belated fix for #1808 (Debian #233106): Make
