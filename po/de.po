@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.11\n"
+"Project-Id-Version: 1.3.12\n"
 "POT-Creation-Date: 2000-11-27 12:33+0100\n"
-"PO-Revision-Date: 2000-11-01 16:31+01:00\n"
+"PO-Revision-Date: 2000-11-27 17:45+01:00\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -356,9 +356,8 @@ msgid "Pipe to command: "
 msgstr "In Kommando einspeisen: "
 
 #: commands.c:417
-#, fuzzy
 msgid "No printing command has been defined."
-msgstr "Keine Eingangs-Mailboxen definiert."
+msgstr "Kein Druck-Kommando definiert."
 
 #: commands.c:422
 msgid "Print message?"
@@ -377,14 +376,12 @@ msgid "Messages printed"
 msgstr "Nachrichten gedruckt"
 
 #: commands.c:432
-#, fuzzy
 msgid "Message could not be printed"
-msgstr "Nachricht gedruckt"
+msgstr "Nachricht konnte nicht gedruckt werden"
 
 #: commands.c:433
-#, fuzzy
 msgid "Messages could not be printed"
-msgstr "Nachrichten gedruckt"
+msgstr "Nachrichten konnten nicht gedruckt werden"
 
 #: commands.c:442
 msgid ""
@@ -1294,9 +1291,9 @@ msgid "%s: unknown sorting method"
 msgstr "%s: Unbekannte Sortiermethode"
 
 #: init.c:744
-#, fuzzy, c-format
+#, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
-msgstr "mutt_restore_default: Fehler in regulärem Ausdruck: %s\n"
+msgstr "mutt_restore_default(%s): Fehler in regulärem Ausdruck: %s\n"
 
 #: init.c:805
 #, c-format

@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.11i\n"
+"Project-Id-Version: 1.3.12i\n"
 "POT-Creation-Date: 2000-11-27 12:33+0100\n"
-"PO-Revision-Date: 2000-11-01 10:36-0600\n"
+"PO-Revision-Date: 2000-11-27 10:59-0600\n"
 "Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
 "Language-Team: Indonesia <i18n@linux.or.id>\n"
 "MIME-Version: 1.0\n"
@@ -359,9 +359,8 @@ msgid "Pipe to command: "
 msgstr "Pipe ke perintah: "
 
 #: commands.c:417
-#, fuzzy
 msgid "No printing command has been defined."
-msgstr "Tidak ada kotak surat incoming yang didefinisikan."
+msgstr "Perintah untuk mencetak belum didefinisikan."
 
 #: commands.c:422
 msgid "Print message?"
@@ -380,14 +379,12 @@ msgid "Messages printed"
 msgstr "Surat-surat telah dicetak"
 
 #: commands.c:432
-#, fuzzy
 msgid "Message could not be printed"
-msgstr "Surat telah dicetak"
+msgstr "Surat tidak dapat dicetak"
 
 #: commands.c:433
-#, fuzzy
 msgid "Messages could not be printed"
-msgstr "Surat-surat telah dicetak"
+msgstr "Surat-surat tidak dapat dicetak"
 
 #: commands.c:442
 msgid ""
@@ -1296,9 +1293,9 @@ msgid "%s: unknown sorting method"
 msgstr "%s: metoda pengurutan tidak dikenali"
 
 #: init.c:744
-#, fuzzy, c-format
+#, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
-msgstr "mutt_restore_default: error pada regexp: %s\n"
+msgstr "mutt_restore_default(%s): error pada regexp: %s\n"
 
 #: init.c:805
 #, c-format
