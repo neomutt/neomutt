@@ -145,7 +145,7 @@ static void make_from_addr (ENVELOPE *hdr, char *buf, size_t len, int do_lists)
     *buf = 0;
 }
 
-int mutt_user_is_recipient (ADDRESS *a)
+static int user_in_addr (ADDRESS *a)
 {
   for (; a; a = a->next)
     if (mutt_addr_is_user (a))
@@ -160,23 +160,32 @@ int mutt_user_is_recipient (ADDRESS *a)
  * 3: user is in the CC list
  * 4: user is originator
  */
-static int user_is_recipient (ENVELOPE *hdr)
+static int user_is_recipient (HEADER *h)
 {
-  if (mutt_addr_is_user (hdr->from))
-    return 4;
+  ENVELOPE *hdr = h->env;
 
-  if (mutt_user_is_recipient (hdr->to))
+  if(!h->recip_valid)
   {
-    if (hdr->to->next || hdr->cc)
-      return 2; /* non-unique recipient */
-    else
-      return 1; /* unique recipient */
+    h->recip_valid = 1;
+    
+    if (mutt_addr_is_user (hdr->from))
+      h->recipient = 4;
+
+    if (user_in_addr (hdr->to))
+    {
+      if (hdr->to->next || hdr->cc)
+	h->recipient = 2; /* non-unique recipient */
+      else
+	h->recipient = 1; /* unique recipient */
+    }
+    
+    if (user_in_addr (hdr->cc))
+      h->recipient = 3;
+    
+    h->recipient = 0;
   }
-
-  if (mutt_user_is_recipient (hdr->cc))
-    return 3;
-
-  return (0);
+  
+  return h->recipient;
 }
 
 /* %a = address of author
@@ -526,7 +535,7 @@ hdr_format_str (char *dest,
     case 'T':
       snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
       snprintf (dest, destlen, fmt,
-		(Tochars && ((i = user_is_recipient (hdr->env))) < strlen (Tochars)) ? Tochars[i] : ' ');
+		(Tochars && ((i = user_is_recipient (hdr))) < strlen (Tochars)) ? Tochars[i] : ' ');
       break;
 
     case 'u':
@@ -569,7 +578,7 @@ hdr_format_str (char *dest,
 		hdr->deleted ? 'D' : (hdr->attach_del ? 'd' : ch),
 		hdr->tagged ? '*' :
 		(hdr->flagged ? '!' :
-		 (Tochars && ((i = user_is_recipient (hdr->env)) < strlen (Tochars)) ? Tochars[user_is_recipient (hdr->env)] : ' ')));
+		 (Tochars && ((i = user_is_recipient (hdr)) < strlen (Tochars)) ? Tochars[i] : ' ')));
       snprintf (dest, destlen, fmt, buf2);
       break;
 

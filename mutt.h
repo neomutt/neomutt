@@ -497,8 +497,8 @@ typedef struct header
   unsigned int display_subject : 1; /* used for threading */
   unsigned int fake_thread : 1;     /* no ref matched, but subject did */
   unsigned int threaded : 1;        /* message has been threaded */
-
-  unsigned int active : 1;
+  unsigned int recip_valid : 1;  /* is_recipient is valid */
+  unsigned int active : 1;	    /* message is not to be removed */
   
   /* timezone of the sender of this message */
   unsigned int zhours : 5;
@@ -514,6 +514,8 @@ typedef struct header
   unsigned int limited : 1;   /* is this message in a limited view?  */
   size_t num_hidden;          /* number of hidden messages in this view */
 
+  short recipient;	/* user_is_recipient()'s return value, cached */
+  
   int pair; /* color-pair to use when displaying in the index */
 
   time_t date_sent;     /* time when the message was sent (UTC) */

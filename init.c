@@ -806,6 +806,14 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	break;
       }
 
+      if (option(OPTATTACHMSG) && (!strcmp(MuttVars[idx].option, "alternates")
+				   || !strcmp(MuttVars[idx].option, "reply_regexp")))
+      {
+	snprintf (err->data, err->dsize, "Operation not permitted when in attach-message mode.");
+	r = -1;
+	break;
+      }
+      
       s->dptr++;
 
       /* copy the value of the string */
@@ -853,7 +861,8 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	ptr->rx = rx;
 	ptr->not = not;
 
-	/* $reply_regexp requires special treatment */
+	/* $reply_regexp and $alterantes require special treatment */
+	
 	if (Context && Context->msgcount &&
 	    strcmp (MuttVars[idx].option, "reply_regexp") == 0)
 	{
@@ -872,6 +881,15 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	    }
 	  }
 #undef CUR_ENV
+	}
+	
+	if(Context && Context->msgcount &&
+	   strcmp(MuttVars[idx].option, "alternates") == 0)
+	{
+	  int i;
+	  
+	  for(i = 0; i < Context->msgcount; i++)
+	    Context->hdrs[i]->recip_valid = 0;
 	}
       }
     }
