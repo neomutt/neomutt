@@ -2952,7 +2952,7 @@ docdir=$mutt_cv_docdir
 
 
 if test x$mutt_cv_setgid = xyes; then
-	DOTLOCK_GROUP='-g mail'
+	DOTLOCK_GROUP='mail'
 	DOTLOCK_PERMISSION=2755
 else
 	DOTLOCK_GROUP=''
@@ -5092,7 +5092,7 @@ fi
    sed -e "/^#/d" -e "/^\$/d" -e "s,.*,	$posrcprefix& \\\\," -e "\$s/\(.*\) \\\\/\1/" \
 	< $srcdir/po/POTFILES.in > po/POTFILES
   
-MUTTLOCALEDIR=$sharedir/locale
+MUTTLOCALEDIR=$mutt_cv_prefix/$DATADIRNAME/locale
 
 cat >> confdefs.h <<EOF
 #define MUTTLOCALEDIR "$MUTTLOCALEDIR"

@@ -48,4 +48,8 @@ install: charsets.list
 	$(srcdir)/../mkinstalldirs $(sharedir)/charsets
 	( cd $(srcdir) && $(INSTALL) \
 		-m 644 `cat charsets.list` $(sharedir)/charsets )
-	$(INSTALL) -m 644 charsets.alias $(sharedir)/charsets
+	$(INSTALL) -m 644 charsets.alias $(sharedir)/charsets/charsets.alias.dist
+	test -f $(sharedir)/charsets/charsets.alias || 			\
+	  $(INSTALL) -m 644 $(sharedir)/charsets/charsets.alias.dist	\
+			$(sharedir)/charsets/charsets.alias
+

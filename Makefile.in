@@ -120,6 +120,8 @@ EXTRA_mutt_SOURCES = pgp.c pgpinvoke.c pgpkey.c pgppubring.c sha1dgst.c \
 
 BUILT_SOURCES = mutt_dotlock.c
 
+CLEANFILES = mutt_dotlock.c
+
 LDADD = @LIBOBJS@ @INTLLIBS@
 
 SUBDIRS = doc intl po
@@ -427,7 +429,7 @@ all-recursive-am: config.h
 
 all-am: Makefile $(PROGRAMS) config.h
 
-install-exec-am: install-binPROGRAMS
+install-exec-am: install-binPROGRAMS install-exec-local
 
 uninstall-am: uninstall-binPROGRAMS
 
@@ -517,6 +519,16 @@ keymap_defs.h: $(OPS)
 
 reldate:
 	echo 'const char *ReleaseDate = "'`date +%Y-%m-%d`'";' > $(srcdir)/reldate.h
+
+install-exec-local:
+	if test -f $(bindir)/mutt.dotlock && test -f $(bindir)/mutt_dotlock ; then	\
+		rm -f $(bindir)/mutt.dotlock ;		\
+		ln -sf $(bindir)/mutt_dotlock $(bindir)/mutt.dotlock ; \
+	fi
+	if test -f $(bindir)/mutt_dotlock && test x@DOTLOCK_PERMISSION@ != x ; then \
+		chgrp @DOTLOCK_GROUP@ $(bindir)/mutt_dotlock ; \
+		chmod @DOTLOCK_PERMISSION@  $(bindir)/mutt_dotlock ; \
+	fi
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

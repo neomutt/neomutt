@@ -357,7 +357,7 @@ AC_SUBST(docdir)
 
 
 if test x$mutt_cv_setgid = xyes; then
-	DOTLOCK_GROUP='-g mail'
+	DOTLOCK_GROUP='mail'
 	DOTLOCK_PERMISSION=2755
 else
 	DOTLOCK_GROUP=''
@@ -436,7 +436,7 @@ AC_ARG_ENABLE(exact-address, [  --enable-exact-address     enable regeneration o
 AC_SUBST(MUTT_LIB_OBJECTS)
 
 AM_GNU_GETTEXT
-MUTTLOCALEDIR=$sharedir/locale
+MUTTLOCALEDIR=$mutt_cv_prefix/$DATADIRNAME/locale
 AC_SUBST(MUTTLOCALEDIR)
 AC_DEFINE_UNQUOTED(MUTTLOCALEDIR, "$MUTTLOCALEDIR")
 

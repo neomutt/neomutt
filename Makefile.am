@@ -24,6 +24,8 @@ BUILT_SOURCES = mutt_dotlock.c
 mutt_dotlock.c: dotlock.c
 	cp dotlock.c mutt_dotlock.c
 
+CLEANFILES = mutt_dotlock.c
+
 LDADD = @LIBOBJS@ @INTLLIBS@
 
 SUBDIRS = doc intl po
@@ -35,3 +37,13 @@ keymap_defs.h: $(OPS)
 
 reldate:
 	echo 'const char *ReleaseDate = "'`date +%Y-%m-%d`'";' > $(srcdir)/reldate.h
+
+install-exec-local:
+	if test -f $(bindir)/mutt.dotlock && test -f $(bindir)/mutt_dotlock ; then	\
+		rm -f $(bindir)/mutt.dotlock ;		\
+		ln -sf $(bindir)/mutt_dotlock $(bindir)/mutt.dotlock ; \
+	fi
+	if test -f $(bindir)/mutt_dotlock && test x@DOTLOCK_PERMISSION@ != x ; then \
+		chgrp @DOTLOCK_GROUP@ $(bindir)/mutt_dotlock ; \
+		chmod @DOTLOCK_PERMISSION@  $(bindir)/mutt_dotlock ; \
+	fi
