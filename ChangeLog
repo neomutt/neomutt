@@ -1,3 +1,7 @@
+2003-10-04 22:12:10  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* lib.c: mutt_basename() was garbage.
+
 2003-10-04 20:54:37  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* doc/manual.sgml.head: Fix some tags.	Noted by Todd
