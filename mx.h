@@ -53,6 +53,7 @@ int mbox_close_mailbox (CONTEXT *);
 int mbox_lock_mailbox (CONTEXT *, int, int);
 int mbox_parse_mailbox (CONTEXT *);
 int mmdf_parse_mailbox (CONTEXT *);
+void mbox_unlock_mailbox (CONTEXT *);
 
 int mh_read_dir (CONTEXT *, const char *);
 int mh_sync_mailbox (CONTEXT *);
