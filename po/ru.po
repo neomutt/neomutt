@@ -10,9 +10,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt-1.3.24i\n"
+"Project-Id-Version: mutt-1.4i\n"
 "POT-Creation-Date: 2002-01-22 13:12+0100\n"
-"PO-Revision-Date: 2001-12-03 12:18+0200\n"
+"PO-Revision-Date: 2002-01-23 13:48+0200\n"
 "Last-Translator: mutt-ru@woe.spb.ru\n"
 "Language-Team: RUSSIAN <mutt-ru@woe.spb.ru>\n"
 "MIME-Version: 1.0\n"
@@ -3244,25 +3244,21 @@ msgstr "Идентификатор ключа: 0x%s"
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Этот ключ не может быть использован: просрочен, запрещен или отозван."
 
-# FIXME: awn: бредовая фраза получилась...
 #: pgpkey.c:608
-#, fuzzy
 msgid "ID is expired/disabled/revoked."
-msgstr "Этот ID просрочен, запрещен или отозван."
+msgstr "ID просрочен, запрещен или отозван."
 
 #: pgpkey.c:612
 msgid "ID has undefined validity."
-msgstr ""
+msgstr "Степень доверия для ID не определена."
 
 #: pgpkey.c:615
-#, fuzzy
 msgid "ID is not valid."
-msgstr "Этот ID недействителен."
+msgstr "ID недействителен."
 
 #: pgpkey.c:618
-#, fuzzy
 msgid "ID is only marginally valid."
-msgstr "Этот ID действителен только частично."
+msgstr "ID действителен только частично."
 
 #: pgpkey.c:622
 #, c-format
@@ -3791,6 +3787,3 @@ msgstr "Родительское сообщение не видимо при просмотре с ограничением."
 #: thread.c:1035
 msgid "Parent message is not available."
 msgstr "Родительское сообщение недоступно."
-
-#~ msgid "This ID's validity level is undefined."
-#~ msgstr "Степень доверия для этого ID не определена."
