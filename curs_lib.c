@@ -106,7 +106,7 @@ int _mutt_get_field (/* const */ char *field, char *buf, size_t buflen, int comp
     addstr (field);
     mutt_refresh ();
     getyx (stdscr, y, x);
-    ret = _mutt_enter_string ((unsigned char *) buf, buflen, y, x, complete, multiple, files, numfiles);
+    ret = _mutt_enter_string (buf, buflen, y, x, complete, multiple, files, numfiles);
   }
   while (ret == 1);
   CLEARLINE (LINES-1);
@@ -119,7 +119,7 @@ int mutt_get_password (char *msg, char *buf, size_t buflen)
 
   CLEARLINE (LINES-1);
   addstr (msg);
-  rc = mutt_enter_string ((unsigned char *) buf, buflen, LINES - 1, mutt_strlen (msg), M_PASS);
+  rc = mutt_enter_string (buf, buflen, LINES - 1, mutt_strlen (msg), M_PASS);
   CLEARLINE (LINES-1);
   return (rc);
 }
