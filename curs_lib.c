@@ -147,8 +147,8 @@ void mutt_edit_file (const char *editor, const char *data)
 int mutt_yesorno (const char *msg, int def)
 {
   event_t ch;
-  unsigned char *yes = (unsigned char *) _("yes");
-  unsigned char *no = (unsigned char *) _("no");
+  char *yes = _("yes");
+  char *no = _("no");
 
 #ifdef HAVE_LANGINFO_YESEXPR
   regex_t reyes;
@@ -166,10 +166,13 @@ int mutt_yesorno (const char *msg, int def)
   {
     mutt_refresh ();
     ch = mutt_getch ();
-    if (ch.ch == -1)
-      return (-1);
     if (CI_is_return (ch.ch))
       break;
+    if (ch.ch == -1)
+    {
+      def = -1;
+      break;
+    }
 
 #ifdef HAVE_LANGINFO_YESEXPR
     answer[0] = ch.ch;
@@ -199,8 +202,6 @@ int mutt_yesorno (const char *msg, int def)
     }
   }
 
-  addstr ((char *) (def ? yes : no));
-  mutt_refresh ();
 #ifdef HAVE_LANGINFO_YESEXPR    
   if (reyes_ok)
     regfree (& reyes);
@@ -208,6 +209,11 @@ int mutt_yesorno (const char *msg, int def)
     regfree (& reno);
 #endif
 
+  if (def >= 0)
+  {
+    addstr ((char *) (def ? yes : no));
+    mutt_refresh ();
+  }
   return (def);
 }
 
