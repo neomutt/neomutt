@@ -31,6 +31,11 @@
 #include <errno.h>
 #include <ctype.h>
 
+#ifdef HAVE_LANGINFO_YESEXPR
+#include <langinfo.h>
+#include <regex.h>
+#endif
+
 /* not possible to unget more than one char under some curses libs, and it
  * is impossible to unget function keys in SLang, so roll our own input
  * buffering routines.
@@ -144,36 +149,46 @@ int mutt_yesorno (const char *msg, int def)
   event_t ch;
   unsigned char *yes = (unsigned char *) _("yes");
   unsigned char *no = (unsigned char *) _("no");
-  char yes1 = 'y';
-  char no1 = 'n';
 
-  /*
-   * The keys are not localised, because none of the other
-   * keys in mutt are localised. Also, non-ASCII characters
-   * are unlikely to work at present ...
-   */
+#ifdef HAVE_LANGINFO_YESEXPR
+  regex_t reyes;
+  regex_t reno;
+  int reyes_ok = ! regcomp (& reyes, nl_langinfo (YESEXPR), REG_NOSUB);
+  int reno_ok = ! regcomp (& reno, nl_langinfo (NOEXPR), REG_NOSUB);
+  char answer[2];
+
+  answer[1] = 0;
+#endif
 
   CLEARLINE(LINES-1);
-  if (*yes == yes1 && *no == no1) /* English, or not localised */
-    printw ("%s ([%c]/%c): ", msg, def ? yes1 : no1,
-	    def ? no1 : yes1);
-  else
-    printw ("%s ([%c=%s]/%c=%s): ", msg,
-	    def ? yes1 : no1, def ? yes : no,
-	    def ? no1 : yes1, def ? no : yes);
+  printw ("%s ([%s]/%s): ", msg, def ? yes : no, def ? no : yes);
   FOREVER
   {
     mutt_refresh ();
     ch = mutt_getch ();
-    if (ch.ch == -1) return(-1);
+    if (ch.ch == -1)
+      return (-1);
     if (CI_is_return (ch.ch))
       break;
-    else if (tolower (ch.ch) == tolower (yes1))
+
+#ifdef HAVE_LANGINFO_YESEXPR
+    answer[0] = ch.ch;
+    if (reyes_ok ? 
+	(regexec (& reyes, answer, 0, 0, 0) == 0) :
+#else
+    if (
+#endif
+	(tolower (ch.ch) == 'y'))
     {
       def = 1;
       break;
     }
-    else if (tolower (ch.ch) == tolower (no1))
+    else if (
+#ifdef HAVE_LANGINFO_YESEXPR
+	     reno_ok ?
+	     (regexec (& reno, answer, 0, 0, 0) == 0) :
+#endif
+	     (tolower (ch.ch) == 'n'))
     {
       def = 0;
       break;
@@ -183,8 +198,16 @@ int mutt_yesorno (const char *msg, int def)
       BEEP();
     }
   }
+
   addstr ((char *) (def ? yes : no));
   mutt_refresh ();
+#ifdef HAVE_LANGINFO_YESEXPR    
+  if (reyes_ok)
+    regfree (& reyes);
+  if (reno_ok)
+    regfree (& reno);
+#endif
+
   return (def);
 }
 

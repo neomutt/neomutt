@@ -849,6 +849,15 @@ if test $mutt_cv_langinfo_codeset = yes; then
   AC_DEFINE(HAVE_LANGINFO_CODESET)
 fi
 
+AC_CACHE_CHECK([for nl_langinfo and YESEXPR], mutt_cv_langinfo_yesexpr,
+  [AC_TRY_LINK([#include <langinfo.h>],
+    [char* cs = nl_langinfo(YESEXPR);],
+    mutt_cv_langinfo_yesexpr=yes,
+    mutt_cv_langinfo_yesexpr=no)])
+if test $mutt_cv_langinfo_yesexpr = yes; then
+  AC_DEFINE(HAVE_LANGINFO_YESEXPR)
+fi
+
 AC_OUTPUT(Makefile intl/Makefile m4/Makefile dnl
 	po/Makefile.in doc/Makefile contrib/Makefile dnl
 	muttbug.sh dnl

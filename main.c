@@ -358,6 +358,13 @@ static void show_version (void)
 	"-HAVE_LANGINFO_CODESET  "
 #endif
 
+	
+#ifdef HAVE_LANGINFO_YESEXPR
+ 	"+HAVE_LANGINFO_YESEXPR  "
+#else
+ 	"-HAVE_LANGINFO_YESEXPR  "
+#endif
+	
 	"\n"
 
 #if HAVE_ICONV
