@@ -26,20 +26,9 @@ For more information, see the Mutt home page:
 
 The primary distribution points for Mutt is:
 
- ftp://ftp.guug.de/pub/mutt
+ ftp://ftp.mutt.org/pub/mutt
 
-Mirror sites for the pgp-enabled version of mutt can be
-found at the following places:
-
- ftp://ftp.gbnet.net/pub/mutt-international/
- ftp://ftp.fu-berlin.de/pub/unix/mail/mutt/
- ftp://pgp.rasip.fer.hr/pub/mutt/international/
- ftp://ftp.gwdg.de/pub/unix/mail/mutt/
- ftp://ftp.iks-jena.de/pub/mitarb/lutz/crypt/software/pgp/mutt/
- ftp://ftp.lip6.fr/pub/unix/mail/mutt/
- ftp://ftp.arch.pwr.wroc.pl/pub/mutt/
- ftp://ftp.uib.no/pub/mutt/
- ftp://gd.tuwien.ac.at/infosys/mail/mutt-intl/
- ftp://ftp.spyda.net/pub/mutt/
+A list of mirror sites can be found under
+<http://www.mutt.org/download.html>.
 
 $Id$
