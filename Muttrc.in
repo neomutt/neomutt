@@ -37,7 +37,7 @@ macro pager   <f1> "!less @docdir@/manual.txt\n" "Show Mutt documentation"
 ##
 
 # set abort_nosubject=ask-yes
-# set abort_unmodifyed=yes
+# set abort_unmodified=yes
 # set alias_file="~/.muttrc"
 # set alias_format=""%2n %t %-10a   %r"
 # set allow_8bit
@@ -46,7 +46,7 @@ macro pager   <f1> "!less @docdir@/manual.txt\n" "Show Mutt documentation"
 # unset ascii_chars
 # unset askbcc
 # unset askcc
-# set attach_format=""%u%D%t%2n %T%.40d%> [%.7m/%.10M, %.6e, %s] "
+# set attach_format="%u%D%t%2n %T%.40d%> [%.7m/%.10M, %.6e, %s] "
 # set attach_split
 # set attach_sep="\n"
 # set attribution="On %d, %n wrote:"
@@ -161,7 +161,7 @@ macro pager   <f1> "!less @docdir@/manual.txt\n" "Show Mutt documentation"
 # set timeout=600
 # set tmpdir=""
 # set to_chars="+TCF"
-# set nouncollapse_jump
+# unset uncollapse_jump
 # unset use_8bitmime
 # set use_domain
 # set use_from
