@@ -826,26 +826,28 @@ static void transform_to_7bit (BODY *a, FILE *fpin)
   }
 }
 
-static const char *get_text_charset (BODY *b, CONTENT *info)
+static const char *get_text_charset (char *d, size_t dlen, BODY *b, CONTENT *info)
 {
   char send_charset[SHORT_STRING];
   char *chsname;
-
+  char *p;
+  
   chsname = mutt_get_send_charset (send_charset, sizeof (send_charset), b, 1);
   
   /* if charset is unknown assume low bytes are ascii compatible */
 
   if ((chsname == NULL || mutt_strcasecmp (chsname, "us-ascii") == 0)
       && info->hibin)
-    return ("unknown-8bit");
-
-  if (info->hibin || !strcasecmp (chsname, "utf-7"))
-    return (chsname);
-
-  if (info->lobin && !strcasecmp (chsname, "iso-2022-jp"))
-    return (chsname);
+    p = "unknown-8bit";
+  else if (info->hibin || !strcasecmp (chsname, "utf-7"))
+    p = chsname;
+  else if (info->lobin && !strcasecmp (chsname, "iso-2022-jp"))
+    p = chsname;
+  else
+    p = "us-ascii";
   
-  return ("us-ascii");
+  strfcpy (d, p, dlen);
+  return d;
 }
 
 /* determine which Content-Transfer-Encoding to use */
@@ -942,7 +944,8 @@ void mutt_set_body_charset(BODY *b, const char *chs)
 void mutt_update_encoding (BODY *a)
 {
   CONTENT *info;
-
+  char chsbuf[SHORT_STRING];
+  
   if ((info = mutt_get_content_info (a->filename, a)) == NULL)
     return;
 
@@ -950,7 +953,7 @@ void mutt_update_encoding (BODY *a)
   mutt_stamp_attachment(a);
   
   if (a->type == TYPETEXT)
-    mutt_set_body_charset(a, get_text_charset(a, info));
+    mutt_set_body_charset(a, get_text_charset(chsbuf, sizeof (chsbuf), a, info));
 
   safe_free ((void **) &a->content);
   a->content = info;
@@ -1044,6 +1047,7 @@ BODY *mutt_make_file_attach (const char *path)
   BODY *att;
   CONTENT *info;
   char buf[SHORT_STRING];
+  char chsbuf[SHORT_STRING];
   int n;
   
   if ((info = mutt_get_content_info (path, NULL)) == NULL)
@@ -1086,7 +1090,7 @@ BODY *mutt_make_file_attach (const char *path)
   mutt_stamp_attachment(att);
 
   if (att->type == TYPETEXT)
-    mutt_set_body_charset(att, get_text_charset(att, info));
+    mutt_set_body_charset(att, get_text_charset(chsbuf, sizeof (chsbuf), att, info));
 
   att->content = info;
 
