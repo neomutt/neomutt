@@ -693,7 +693,7 @@ same which is visible using the ``-v'' <ref id="commandline"
 name="command line"> switch or using the <tt/show-version/ key (default:
 V) from the index menu.
 
-<sect1>Syntax of Initialization Files
+<sect1>Syntax of Initialization Files<label id="muttrc-syntax">
 <p>
 
 An initialization file consists of a series of <ref id="commands"
@@ -1452,7 +1452,7 @@ expressions, by using various operators to combine smaller expressions.
 
 Note that the regular expression can be enclosed/delimited by either " or
 ' which is useful if the regular expression includes a white-space
-character.  See <ref id="sect1" name="Syntax of Initialization Files">
+character.  See <ref id="muttrc-syntax" name="Syntax of Initialization Files">
 for more information on " and ' delimiter processing.  To match a literal
 " or ' you must preface it with \ (backslash).
 
@@ -1465,14 +1465,14 @@ The period ``.'' matches any single character.  The caret ``&circ;'' and
 the dollar sign ``&dollar'' are metacharacters that respectively match
 the empty string at the beginning and end of a line.
 
-A list of characters enclosed by ``&lsqb;'' and ``&rsqb'' matches any
+A list of characters enclosed by ``&lsqb;'' and ``&rsqb;'' matches any
 single character in that list; if the first character of the list
 is a caret ``&circ;'' then it matches any character <bf/not/ in the
-list.  For example, the regular expression <bf/&lsqb;0123456789&rsqb/
+list.  For example, the regular expression <bf/&lsqb;0123456789&rsqb;/
 matches any single digit.  A range of ASCII characters may be specified
 by giving the first and last characters, separated by a hyphen
 ``&hyphen;''.  Most metacharacters lose their special meaning inside
-lists.  To include a literal ``&rsqb'' place it first in the list.
+lists.  To include a literal ``&rsqb;'' place it first in the list.
 Similarly, to include a literal ``&circ;'' place it anywhere but first.
 Finally, to include a literal hyphen ``&hyphen;'' place it last.
 
