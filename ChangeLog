@@ -1,3 +1,16 @@
+2003-09-19 13:03:26  Mads Martin Joergensen  <mmj@suse.de>  (roessler)
+
+	* imap/browse.c, imap/command.c, parse.c, pgp.c, pgpkey.c,
+	pop_lib.c, query.c, recvattach.c, remailer.c, rfc1524.c,
+	rfc2047.c, rfc2231.c, sendlib.c, smime.c, thread.c, addrbook.c,
+	browser.c, color.c, compose.c, copy.c, crypt.c, curs_lib.c,
+	edit.c, enter.c, handler.c, lib.c, lib.h, mh.c, mutt_idna.c, mx.c,
+	pager.c: As the ones of you who compile with new gcc's probably
+	have noticed, there's a lot of type-punning in Mutt. With help
+	from Philipp Thomas, I've fixed all I could find in CVS (please
+	double-check, one might have slipped through the cracks), I can
+	make one for 1.4 CVS branch as well if wanted.
+
 2003-09-19 12:56:49  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* send.c: Change abort_unmodified so it doesn't abort a message
