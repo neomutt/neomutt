@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2000 mutt-j ML members.
 # FIRST AUTHOR Kikutani Makoto <kikutani@Galaxy.net>, 1999.
-# 2nd AUTHOR OOTA,Toshiya <oota@ppd.fc.nec.co.jp>, 2001.
+# 2nd AUTHOR OOTA,Toshiya <oota@mspd.mt.nec.co.jp>, 2002.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.24\n"
+"Project-Id-Version: 1.3.27\n"
 "POT-Creation-Date: 2002-01-22 13:12+0100\n"
-"PO-Revision-Date: 2001-12-03 10:47+0900\n"
+"PO-Revision-Date: 2002-01-23 10:37+0900\n"
 "Last-Translator: oota toshiya <oota@mspd.mt.nec.co.jp>\n"
 "Language-Team: mutt-j <mutt-j@ns.ribbon.or.jp>\n"
 "MIME-Version: 1.0\n"
@@ -1306,7 +1306,6 @@ msgid "CLOSE failed"
 msgstr "クローズ失敗。"
 
 #: imap/imap.c:1325
-#, fuzzy
 msgid "Bad mailbox name"
 msgstr "不正なメールボックス名"
 
@@ -2307,10 +2306,10 @@ msgstr ""
 
 #: main.c:88
 msgid ""
-"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
-"<file> ]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
-"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
+"]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
+"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -3195,23 +3194,20 @@ msgid "This key can't be used: expired/disabled/revoked."
 msgstr "この鍵は 期限切れ/使用不可/廃棄済み の理由で使えない。"
 
 #: pgpkey.c:608
-#, fuzzy
 msgid "ID is expired/disabled/revoked."
-msgstr "このIDは 期限切れ/使用不可/廃棄済み である。"
+msgstr "IDは 期限切れ/使用不可/廃棄済み である。"
 
 #: pgpkey.c:612
 msgid "ID has undefined validity."
 msgstr ""
 
 #: pgpkey.c:615
-#, fuzzy
 msgid "ID is not valid."
-msgstr "このIDは信用されていない。"
+msgstr "IDは信用されていない。"
 
 #: pgpkey.c:618
-#, fuzzy
 msgid "ID is only marginally valid."
-msgstr "このIDはかろうじて信用されている。"
+msgstr "IDはかろうじて信用されている。"
 
 #: pgpkey.c:622
 #, c-format
