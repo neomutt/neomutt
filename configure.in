@@ -5,7 +5,7 @@ AC_INIT(mutt.h)
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE(mutt, `cat $srcdir/VERSION`)
 
-ALL_LINGUAS="de ru it es"
+ALL_LINGUAS="de ru it es uk"
 
 AC_CANONICAL_HOST
 
