@@ -1,3 +1,7 @@
+2003-04-06 11:00:59  Ivan Vilata i Balaguer  <ivan@selidor.net>  (roessler)
+
+	* po/ca.po: update
+
 2003-04-02 09:05:19  Bjoern Jacke  <muttbug@j3e.de>  (roessler)
 
 	* smime_keys.pl: - add a missing filehandle closure - some
