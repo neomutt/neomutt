@@ -912,7 +912,9 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	     * header is. We must set it now, or mutt will not display
 	     * the message properly
 	     */
-	    ctx->hdrs[msgno]->content->offset=ftell(msg->fp);
+	    ctx->hdrs[msgno]->content->offset = ftell(msg->fp);
+	    ctx->hdrs[msgno]->content->length = bytes - 
+	      ctx->hdrs[msgno]->content->offset;
 	    onbody=1;
 	  }
 	}
@@ -924,10 +926,10 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   while (strncmp (buf, seq, SEQLEN) != 0)
     ;
 
+  mutt_clear_error();
+  
   if (!imap_code (buf))
-  {
     return (-1);
-  }
 
   return 0;
 }
