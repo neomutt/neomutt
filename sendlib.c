@@ -755,7 +755,7 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
 	ret = 0;
 	break;
       }
-      else if (score[i] == (size_t)(-1))
+      else if (cd[i] == (iconv_t)(-1) || score[i] == (size_t)(-1))
 	continue;
       else if (ret == (size_t)(-1) || score[i] < ret)
       {
