@@ -388,6 +388,7 @@ struct enriched_state
   size_t indent_len;
   size_t word_len;
   size_t buff_used;
+  size_t param_used;
   size_t param_len;
   int tag_level[RICH_LAST_TAG];
   int WrapMargin;
@@ -536,7 +537,10 @@ static void enriched_putc (int c, struct enriched_state *stte)
   {
     if (stte->tag_level[RICH_COLOR]) 
     {
-      stte->param[stte->param_len++] = c;
+      if (stte->param_used + 1 >= stte->param_len)
+	safe_realloc ((void **) &stte->param, (stte->param_len += STRING));
+
+      stte->param[stte->param_used++] = c;
     }
     return; /* nothing to do */
   }
@@ -637,7 +641,7 @@ static void enriched_set_flags (const char *tag, struct enriched_state *stte)
 	stte->tag_level[j]--;
       if ((stte->s->flags & M_DISPLAY) && j == RICH_PARAM && stte->tag_level[RICH_COLOR])
       {
-	stte->param[stte->param_len] = '\0';
+	stte->param[stte->param_used] = '\0';
 	if (!mutt_strcasecmp(stte->param, "black"))
 	{
 	  enriched_puts("\033[30m", stte);
@@ -670,12 +674,17 @@ static void enriched_set_flags (const char *tag, struct enriched_state *stte)
 	{
 	  enriched_puts("\033[37m", stte);
 	}
-	stte->param_len = 0;
-	stte->param[0] = '\0';
       }
       if ((stte->s->flags & M_DISPLAY) && j == RICH_COLOR)
       {
 	enriched_puts("\033[0m", stte);
+      }
+
+      /* flush parameter buffer when closing the tag */
+      if (j == RICH_PARAM)
+      {
+	stte->param_used = 0;
+	stte->param[0] = '\0';
       }
     }
     else
@@ -704,6 +713,9 @@ void text_enriched_handler (BODY *a, STATE *s)
   stte.line_max = stte.WrapMargin * 4;
   stte.line = (char *) safe_calloc (1, stte.line_max + 1);
   stte.param = (char *) safe_calloc (1, STRING);
+
+  stte.param_len = STRING;
+  stte.param_used = 0;
 
   if (s->prefix)
   {
