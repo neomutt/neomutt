@@ -165,6 +165,7 @@ typedef struct
   char* capstr;
   unsigned char capabilities[(CAPMAX + 7)/8];
   unsigned int seqno;
+  time_t lastread; /* last time we read a command for the server */
   /* who knows, one day we may run multiple commands in parallel */
   IMAP_COMMAND cmd;
 

@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 1996-8 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2002 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2003 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -525,9 +525,6 @@ int imap_open_mailbox (CONTEXT* ctx)
   /* once again the context is new */
   ctx->data = idata;
 
-  if (idata->status == IMAP_FATAL)
-    goto fail;
-
   /* Clean up path and replace the one in the ctx */
   imap_fix_path (idata, mx.mbox, buf, sizeof (buf));
   FREE(&(idata->mailbox));
@@ -918,7 +915,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
    * to be changed. */
   imap_allow_reopen (ctx);
 
-  if ((rc = imap_check_mailbox (ctx, index_hint)) != 0)
+  if ((rc = imap_check_mailbox (ctx, index_hint, 0)) != 0)
     return rc;
 
   memset (&cmd, 0, sizeof (cmd));
@@ -1085,6 +1082,7 @@ void imap_close_mailbox (CONTEXT* ctx)
     idata->state = IMAP_AUTHENTICATED;
     FREE (&(idata->mailbox));
     mutt_free_list (&idata->flags);
+    idata->ctx = NULL;
   }
 
   /* free IMAP part of headers */
@@ -1109,25 +1107,18 @@ void imap_close_mailbox (CONTEXT* ctx)
  *	0		no change
  *	-1		error
  */
-int imap_check_mailbox (CONTEXT *ctx, int *index_hint)
+int imap_check_mailbox (CONTEXT *ctx, int *index_hint, int force)
 {
   /* overload keyboard timeout to avoid many mailbox checks in a row.
    * Most users don't like having to wait exactly when they press a key. */
-
   IMAP_DATA* idata;
-  time_t now;
   int result = 0;
 
   idata = (IMAP_DATA*) ctx->data;
 
-  now = time(NULL);
-  if (now > ImapLastCheck + Timeout)
-  {
-    ImapLastCheck = now;
-
-    if (imap_exec (idata, "NOOP", 0) != 0)
-      return -1;
-  }
+  if ((force || time(NULL) > idata->lastread + Timeout)
+      && imap_exec (idata, "NOOP", 0) != 0)
+    return -1;
 
   /* We call this even when we haven't run NOOP in case we have pending
    * changes to process, since we can reopen here. */

@@ -509,6 +509,7 @@ int mutt_index_menu (void)
     }
 
 #ifdef USE_IMAP
+    imap_keepalive ();
     imap_disallow_reopen (Context);
 #endif
 
@@ -976,7 +977,8 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 
 #ifdef USE_IMAP
       case OP_MAIN_IMAP_FETCH:
-      	ImapLastCheck = 0;
+	if (Context->magic == M_IMAP)
+	  imap_check_mailbox (Context, &index_hint, 1);
         break;
 #endif
       

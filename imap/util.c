@@ -249,22 +249,7 @@ void imap_error (const char *where, const char *msg)
 /* imap_new_idata: Allocate and initialise a new IMAP_DATA structure.
  *   Returns NULL on failure (no mem) */
 IMAP_DATA* imap_new_idata (void) {
-  IMAP_DATA* idata;
-
-  idata = safe_calloc (1, sizeof (IMAP_DATA));
-  if (!idata)
-    return NULL;
-
-  idata->conn = NULL;
-  idata->capstr = NULL;
-  idata->state = IMAP_DISCONNECTED;
-  idata->seqno = 0;
-
-  idata->cmd.buf = NULL;
-  idata->cmd.blen = 0;
-  idata->cmd.state = IMAP_CMD_OK;
-
-  return idata;
+  return safe_calloc (1, sizeof (IMAP_DATA));
 }
 
 /* imap_free_idata: Release and clear storage in an IMAP_DATA structure. */
@@ -562,12 +547,35 @@ static RETSIGTYPE alrm_handler (int sig)
 
 void imap_keepalive (void)
 {
-  CONTEXT *ctx = Context;
-  
-  if (ctx == NULL || ctx->magic != M_IMAP || CTX_DATA->ctx != ctx)
-    return;
+  CONNECTION *conn;
+  CONTEXT *ctx = NULL;
+  IMAP_DATA *idata;
 
-  imap_check_mailbox (ctx, NULL);
+  conn = mutt_socket_head ();
+  while (conn)
+  {
+    if (conn->account.type == M_ACCT_TYPE_IMAP)
+    {
+      idata = (IMAP_DATA*) conn->data;
+
+      if (idata->state >= IMAP_AUTHENTICATED
+	  && time(NULL) >= idata->lastread + ImapKeepalive)
+      {
+	if (idata->ctx)
+	  ctx = idata->ctx;
+	else
+	{
+	  ctx = safe_calloc (1, sizeof (CONTEXT));
+	  ctx->data = idata;
+	}
+	imap_check_mailbox (ctx, NULL, 1);
+	if (!idata->ctx)
+	  FREE (&ctx);
+      }
+    }
+
+    conn = conn->next;
+  }
 }
 
 int imap_wait_keepalive (pid_t pid)

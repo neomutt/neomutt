@@ -133,7 +133,9 @@ int imap_cmd_step (IMAP_DATA* idata)
     cmd->blen = IMAP_CMD_BUFSIZE;
     dprint (3, (debugfile, "imap_cmd_step: shrank buffer to %u bytes\n", cmd->blen));
   }
-  
+
+  idata->lastread = time(NULL);
+
   /* handle untagged messages. The caller still gets its shot afterwards. */
   if (!ascii_strncmp (cmd->buf, "* ", 2) &&
       cmd_handle_untagged (idata))

@@ -1360,7 +1360,7 @@ int mx_check_mailbox (CONTEXT *ctx, int *index_hint, int lock)
 
 #ifdef USE_IMAP
       case M_IMAP:
-	return (imap_check_mailbox (ctx, index_hint));
+	return (imap_check_mailbox (ctx, index_hint, 0));
 #endif /* USE_IMAP */
 
 #ifdef USE_POP

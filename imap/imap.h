@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1996-8 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2000-1 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2000-3 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ typedef struct
 
 /* imap.c */
 int imap_access (const char*, int);
-int imap_check_mailbox (CONTEXT *ctx, int *index_hint);
+int imap_check_mailbox (CONTEXT *ctx, int *index_hint, int force);
 int imap_close_connection (CONTEXT *ctx);
 int imap_delete_mailbox (CONTEXT* idata, IMAP_MBOX mx);
 int imap_open_mailbox (CONTEXT *ctx);
