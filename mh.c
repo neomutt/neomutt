@@ -613,7 +613,8 @@ static int mh_sync_message (CONTEXT *ctx, int msgno)
   if ((dest = mx_open_new_message (ctx, h, 0)) == NULL)
     return -1;
 
-  if ((rc = mutt_copy_message (dest->fp, ctx, h, M_CM_UPDATE, CH_UPDATE | CH_UPDATE_LEN)) == 0)
+  if ((rc = mutt_copy_message (dest->fp, ctx, h, 
+	       M_CM_UPDATE, CH_UPDATE | CH_UPDATE_LEN)) == 0)
   {
     snprintf (oldpath, _POSIX_PATH_MAX, "%s/%s", ctx->path, h->path);
     strfcpy  (partpath, h->path, _POSIX_PATH_MAX);
