@@ -768,7 +768,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** This specifies the format of the \fIIn-Reply-To\fP header field
-  ** added when replying to a message.  For a ful llisting of
+  ** added when replying to a message.  For a full listing of
   ** defined escape sequences, see the section on $$index_format.
   ** .pp
   ** \fBNote:\fP Don't use any sequences in this format string which
