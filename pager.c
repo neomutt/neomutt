@@ -1954,13 +1954,13 @@ search_next:
 
       case OP_SEARCH:
       case OP_SEARCH_REVERSE:
-	buffer[0] = 0;
+        strfcpy (buffer, searchbuf, sizeof (buffer));
 	if (mutt_get_field ((SearchBack ? _("Reverse search: ") :
 			  _("Search: ")), buffer, sizeof (buffer),
 			  M_CLEAR) != 0)
 	  break;
 
-	if (!buffer[0])
+	if (!strcmp (buffer, searchbuf))
 	{
 	  if (SearchCompiled)
 	  {
@@ -1972,13 +1972,11 @@ search_next:
 
 	    goto search_next;
 	  }
-	  /*
-	   * preserve old behavior of doing nothing if there is no last
-	   * used pattern.
-	   */
-	  break;
 	}
-
+      
+        if (!buffer[0])
+	  break;
+      
 	strfcpy (searchbuf, buffer, sizeof (searchbuf));
 
 	/* leave SearchBack alone if ch == OP_SEARCH_NEXT */
