@@ -72,7 +72,7 @@ static int need_display_subject (CONTEXT *ctx, HEADER *hdr)
 	return (1);
     }
   }
-  
+
   /* if we have no visible parent or previous sibling, display the subject */
   return (1);
 }
@@ -947,16 +947,19 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
   if (!option (OPTSTRICTTHREADS))
     pseudo_threads (ctx);
 
-  ctx->tree = mutt_sort_subthreads (ctx->tree, init);
+  if (ctx->tree)
+  {
+    ctx->tree = mutt_sort_subthreads (ctx->tree, init);
 
-  /* restore the oldsort order. */
-  Sort = oldsort;
+    /* restore the oldsort order. */
+    Sort = oldsort;
+    
+    /* Put the list into an array. */
+    linearize_tree (ctx);
 
-  /* Put the list into an array. */
-  linearize_tree (ctx);
-
-  /* Draw the thread tree. */
-  mutt_draw_tree (ctx);
+    /* Draw the thread tree. */
+    mutt_draw_tree (ctx);
+  }
 }
 
 static HEADER *find_virtual (THREAD *cur, int reverse)
