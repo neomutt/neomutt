@@ -41,6 +41,10 @@ install:
 		$(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir)/samples ;	\
 	done
 
+# Nothing needs to be done - uninstall in doc removes samples as well.
+# This is just so make uninstall doesn't fail.
+uninstall:
+
 maintainer-clean: distclean
 
 Makefile: ../config.status Makefile.in
