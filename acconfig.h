@@ -98,6 +98,9 @@
 /* The "buffy_size" feature */
 #undef BUFFY_SIZE
 
+/* The Sun mailtool attachments support */
+#undef SUN_ATTACHMENT 
+
 /* The result of isprint() is unreliable? */
 #undef LOCALES_HACK
 

@@ -127,6 +127,10 @@ int mutt_check_encoding (const char *c)
     return (ENCBASE64);
   else if (mutt_strncasecmp ("x-uuencode", c, sizeof("x-uuencode")-1) == 0)
     return (ENCUUENCODED);
+#ifdef SUN_ATTACHMENT
+  else if (mutt_strncasecmp ("uuencode", c, sizeof("uuencode")-1) == 0)
+    return (ENCUUENCODED);
+#endif
   else
     return (ENCOTHER);
 }
@@ -237,6 +241,10 @@ int mutt_check_mime_type (const char *s)
     return TYPETEXT;
   else if (mutt_strcasecmp ("multipart", s) == 0)
     return TYPEMULTIPART;
+#ifdef SUN_ATTACHMENT 
+  else if (mutt_strcasecmp ("x-sun-attachment", s) == 0)
+    return TYPEMULTIPART;
+#endif
   else if (mutt_strcasecmp ("application", s) == 0)
     return TYPEAPPLICATION;
   else if (mutt_strcasecmp ("message", s) == 0)
@@ -288,6 +296,11 @@ void mutt_parse_content_type (char *s, BODY *ct)
 
   /* Finally, get the major type */
   ct->type = mutt_check_mime_type (s);
+
+#ifdef SUN_ATTACHMENT
+  if (mutt_strcasecmp ("x-sun-attachment", s) == 0)
+      ct->subtype = safe_strdup ("x-sun-attachment");
+#endif
 
   if (ct->type == TYPEOTHER)
   {
@@ -409,7 +422,24 @@ BODY *mutt_read_mime_header (FILE *fp, int digest)
 	mutt_str_replace (&p->description, c);
 	rfc2047_decode (p->description, p->description, mutt_strlen (p->description) + 1);
       }
+    } 
+#ifdef SUN_ATTACHMENT
+    else if (!mutt_strncasecmp ("x-sun-", line, 6))
+    {
+      if (!mutt_strcasecmp ("data-type", line + 6))
+        mutt_parse_content_type (c, p);
+      else if (!mutt_strcasecmp ("encoding-info", line + 6))
+        p->encoding = mutt_check_encoding (c);
+      else if (!mutt_strcasecmp ("content-lines", line + 6))
+        mutt_set_parameter ("content-lines", safe_strdup (c), &(p->parameter));
+      else if (!mutt_strcasecmp ("data-description", line + 6))
+      {
+        safe_free ((void **) &p->description);
+        p->description = safe_strdup (c);
+        rfc2047_decode (p->description, p->description, mutt_strlen (p->description) + 1);
+      }
     }
+#endif
   }
   p->offset = ftell (fp); /* Mark the start of the real data */
   if (p->type == TYPETEXT && !p->subtype)
@@ -424,11 +454,20 @@ BODY *mutt_read_mime_header (FILE *fp, int digest)
 
 void mutt_parse_part (FILE *fp, BODY *b)
 {
+  char *bound = 0;
+
   switch (b->type)
   {
     case TYPEMULTIPART:
+#ifdef SUN_ATTACHMENT
+      if ( !mutt_strcasecmp (b->subtype, "x-sun-attachment") )
+          bound = "--------";
+      else
+#endif
+          bound = mutt_get_parameter ("boundary", b->parameter);
+
       fseek (fp, b->offset, SEEK_SET);
-      b->parts =  mutt_parse_multipart (fp, mutt_get_parameter ("boundary", b->parameter), 
+      b->parts =  mutt_parse_multipart (fp, bound, 
 					b->offset + b->length,
 					mutt_strcasecmp ("digest", b->subtype) == 0);
       break;
@@ -506,6 +545,9 @@ BODY *mutt_parse_messageRFC822 (FILE *fp, BODY *parent)
 
 BODY *mutt_parse_multipart (FILE *fp, const char *boundary, long end_off, int digest)
 {
+#ifdef SUN_ATTACHMENT
+  int lines;
+#endif
   int blen, len, crlf = 0;
   char buffer[LONG_STRING];
   BODY *head = 0, *last = 0, *new = 0;
@@ -551,6 +593,15 @@ BODY *mutt_parse_multipart (FILE *fp, const char *boundary, long end_off, int di
       else if (buffer[2 + blen] == 0)
       {
 	new = mutt_read_mime_header (fp, digest);
+
+#ifdef SUN_ATTACHMENT
+        if (mutt_get_parameter ("content-lines", new->parameter)) {
+	  for (lines = atoi(mutt_get_parameter ("content-lines", new->parameter));
+	       lines; lines-- )
+	     if (ftell (fp) >= end_off || fgets (buffer, LONG_STRING, fp) == NULL)
+	       break;
+	}
+#endif
 	
 	/*
 	 * Consistency checking - catch

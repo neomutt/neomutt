@@ -624,6 +624,11 @@ AC_ARG_ENABLE(buffy-size, [  --enable-buffy-size        Use file size attribute 
                 AC_DEFINE(BUFFY_SIZE)
         fi])
 
+AC_ARG_ENABLE(mailtool, [  --enable-mailtool            Enable Sun mailtool attachments support ],
+	[if test x$enableval = xyes; then
+                AC_DEFINE(SUN_ATTACHMENT)
+        fi])
+
 AC_ARG_ENABLE(locales-fix, [  --enable-locales-fix       The result of isprint() is unreliable ],
 	[if test x$enableval = xyes; then
                 AC_DEFINE(LOCALES_HACK)
