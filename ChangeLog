@@ -1,3 +1,8 @@
+2003-12-30 13:04:20  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* commands.c, crypt.c, mutt.h, mutt_crypt.h, smime.c: Handle
+	partially signed messages more reasonably.  See #1743.
+
 2003-12-29 11:44:35  Alain Bench  <veronatif@free.fr>  (roessler)
 
 	* commands.c: Fix #844.
