@@ -49,6 +49,8 @@ sub do_verify($$$ );
               
 # Get the directories mutt uses for certificate/key storage.
 
+my $mutt = $ENV{MUTT_CMDLINE} || 'mutt';
+
 my $private_keys_path = mutt_Q 'smime_keys';
 my $certificates_path = mutt_Q 'smime_certificates';
 my $root_certs_path   = mutt_Q 'smime_ca_location';
@@ -192,7 +194,15 @@ EOF
 sub mutt_Q ($) {
     my $var = shift or die;
 
-    my $cmd = "mutt -Q $var 2>/dev/null";
+    my $cmd = "$mutt -v >/dev/null 2>/dev/null";
+    system ($cmd) == 0 
+        or die<<EOF;
+Couldn't launch mutt. I attempted to do so by running the command "$mutt".
+If that's not the right command, you can override it by setting the 
+environment variable \$MUTT_CMDLINE
+EOF
+
+    $cmd = "$mutt -Q $var 2>/dev/null";
     my $answer = `$cmd`;
 
     $? and die<<EOF;
@@ -357,9 +367,9 @@ sub query_label () {
 sub add_entry ($$$$$) {
     my $mailbox = shift or die;
     my $hashvalue = shift or die;
-    my $use_cert = shift or die;
+    my $use_cert = shift;
     my $label = shift or die;
-    my $issuer_hash = shift or die;
+    my $issuer_hash = shift;
 
     my @fields;
 
@@ -647,7 +657,7 @@ sub handle_pem (@) {
 sub modify_entry ($$$;$ ) {
     my $op = shift or die;
     my $hashvalue = shift or die;
-    my $use_cert = shift or die;
+    my $use_cert = shift;
     my $crl;
     my $label;
     my $path;

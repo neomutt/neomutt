@@ -299,11 +299,6 @@ static void show_version (void)
 #else
 	"-HAVE_PGP  "
 #endif
-#ifdef HAVE_SMIME
-	"+HAVE_SMIME  "
-#else
-	"-HAVE_SMIME  "
-#endif
 
 #ifdef HAVE_SMIME
 	"+HAVE_SMIME  "

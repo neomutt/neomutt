@@ -27,6 +27,7 @@
 #define WHERE
 #define _EXTLIB_C
 
+#include <stdlib.h>
 #include "lib.h"
 
 void (*mutt_error) (const char *, ...) = mutt_nocurses_error;

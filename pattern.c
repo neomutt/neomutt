@@ -1050,11 +1050,11 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
       return (pat->not ^ (h->collapsed && h->num_hidden > 1));
 #if defined (HAVE_PGP) || defined (HAVE_SMIME)
    case M_CRYPT_SIGN:
-     return (pat->not ^ h->security & SIGN);
+     return (pat->not ^ (h->security & SIGN));
    case M_CRYPT_VERIFIED:
-     return (pat->not ^ h->security & GOODSIGN);
+     return (pat->not ^ (h->security & GOODSIGN));
    case M_CRYPT_ENCRYPT:
-     return (pat->not ^ h->security & ENCRYPT);
+     return (pat->not ^ (h->security & ENCRYPT));
 #endif
 #ifdef HAVE_PGP
    case M_PGP_KEY:
