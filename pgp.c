@@ -1161,8 +1161,9 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
 
     if ((keyID = mutt_pgp_hook (p)) != NULL)
     {
+      int r;
       snprintf (buf, sizeof (buf), _("Use keyID = \"%s\" for %s?"), keyID, p->mailbox);
-      if (mutt_yesorno (buf, M_YES) == M_YES)
+      if ((r = mutt_yesorno (buf, M_YES)) == M_YES)
       {
 	/* check for e-mail address */
 	if ((t = strchr (keyID, '@')) && 
@@ -1171,8 +1172,15 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
 	  if (fqdn) rfc822_qualify (addr, fqdn);
 	  q = addr;
 	}
-	else
+	else if (r == M_NO)
 	  k_info = pgp_getkeybystr (keyID, KEYFLAG_CANENCRYPT, PGP_PUBRING);
+	else
+	{
+	  safe_free ((void **) &keylist);
+	  rfc822_free_address (&tmp);
+	  rfc822_free_address (&addr);
+	  return NULL;
+	}
       }
     }
 
@@ -1182,7 +1190,7 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
     if (k_info == NULL && (k_info = pgp_getkeybyaddr (q, KEYFLAG_CANENCRYPT, PGP_PUBRING)) == NULL)
     {
       snprintf (buf, sizeof (buf), _("Enter keyID for %s: "), q->mailbox);
-      
+
       if ((key = pgp_ask_for_key (buf, q->mailbox,
 				  KEYFLAG_CANENCRYPT, PGP_PUBRING)) == NULL)
       {
