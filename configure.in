@@ -66,7 +66,7 @@ else
 		AC_DEFINE_UNQUOTED(_PGPPATH, "$PGPPATH")
 	fi
 
-	if test $PGP != no || test $PGPK != no ; then
+	if test $PGP != no || test $PGPK != no || test $GPG != no ; then
 		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pgp.o pgpinvoke.o pgpkey.o pgppubring.o sha1dgst.o gnupgparse.o"
 		OPS="$OPS \$(srcdir)/OPS.PGP"
 	fi
