@@ -1,10 +1,31 @@
+Developers' notes
+=================
+
+If you are planning to hack on mutt, please subscribe to the
+mutt-dev mailinglist (mutt-dev@mutt.org, contact
+majordomo@mutt.org).  Announcements about recent development
+versions go to that mailing list, as go technical discussions and
+patches.
+
+You'll need several GNU development utilities for working on mutt:
+
+- automake
+
+- autoconf
+
+- autoheader
+
+- GNU make may be needed for the dependency tricks
+
+- The i18n stuff requires GNU gettext.  See intl/VERSION for the
+  version we are currently relying on.  Please note that using
+  gettext-0.10 will most probably not work - get the latest test
+  release from alpha.gnu.org, it's the recommended version of
+  gettext anyway.
+
+
 Mutt Programming Style Guide
 ============================
-
-This information is meant for those of you who are hacking
-on Mutt and submitting patches to me.  If you follow these
-guidelines, it will make it much easier for me to
-integrate patches.
 
 - global functions should have the prefix "mutt_".  All
   other functions should be declared "static".
@@ -23,3 +44,5 @@ integrate patches.
 - when adding new options, make the old behaviour the
   default.  Please include the new option and it's default
   setting with the global Muttrc file.
+
+- try to keep mutt as portable as possible.
