@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.5.5.1\n"
+"Project-Id-Version: 1.5.6\n"
 "POT-Creation-Date: 2004-02-01 19:24+0100\n"
-"PO-Revision-Date: 2003-11-15 14:12+0100\n"
+"PO-Revision-Date: 2004-02-02 19:15+0100\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -337,7 +337,7 @@ msgstr "S/MIME Zertifikat-Inhaber stimmt nicht mit Absender überein."
 
 #: commands.c:187 commands.c:198
 msgid "Warning: Part of this message has not been signed."
-msgstr ""
+msgstr "Warnung: Ein Teil dieser Nachricht wurde nicht signiert."
 
 #: commands.c:189
 msgid "S/MIME signature could NOT be verified."
@@ -1619,14 +1619,14 @@ msgid "%s: unknown type"
 msgstr "%s: Unbekannter Typ"
 
 #: init.c:1375
-#, fuzzy, c-format
+#, c-format
 msgid "%s: stat: %s"
-msgstr "Kann Verzeichniseintrag für Datei %s nicht lesen: %s"
+msgstr "%s: stat: %s"
 
 #: init.c:1380
-#, fuzzy, c-format
+#, c-format
 msgid "%s: not a regular file"
-msgstr "%s ist keine normale Datei."
+msgstr "%s: keine normale Datei"
 
 #: init.c:1395
 #, c-format
