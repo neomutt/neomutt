@@ -846,6 +846,8 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
     fp = NULL;
     dprint(1, (debugfile, "mbox_sync_mailbox: fclose() returned non-zero.\n"));
     unlink (tempfile);
+    mutt_perror (tempfile);
+    sleep (5);
     goto bail;
   }
   fp = NULL;
@@ -863,6 +865,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
     mx_fastclose_mailbox (ctx);
     dprint (1, (debugfile, "mbox_sync_mailbox: unable to reopen temp copy of mailbox!\n"));
     mutt_perror (tempfile);
+    sleep (5);
     return (-1);
   }
 
@@ -920,6 +923,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
     mx_fastclose_mailbox (ctx);
     mutt_pretty_mailbox (savefile);
     mutt_error (_("Write failed!  Saved partial mailbox to %s"), savefile);
+    sleep (5);
     return (-1);
   }
 
