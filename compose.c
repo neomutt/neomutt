@@ -417,9 +417,10 @@ static int change_attachment_charset (BODY *b)
 /* 
  * cum_attachs_size: Cumulative Attachments Size
  *
- * 
  * Returns the total number of bytes used by the attachments in the
- * attachment list.
+ * attachment list _after_ content-transfer-encodings have been
+ * applied.
+ * 
  */
 
 static unsigned long cum_attachs_size (MUTTMENU *menu)
@@ -428,21 +429,27 @@ static unsigned long cum_attachs_size (MUTTMENU *menu)
   unsigned short i;
   ATTACHPTR **idx = menu->data;
   CONTENT *info;
+  BODY *b;
   
   for (i = 0, s = 0; i < menu->max; i++)
   {
-    if ((info = idx[i]->content->content))
+    b = idx[i]->content;
+
+    if (!b->content)
+      b->content = mutt_get_content_info (b->filename, b);
+
+    if ((info = b->content))
     {
-      switch (idx[i]->content->encoding)
+      switch (b->encoding)
       {
 	case ENCQUOTEDPRINTABLE:
-	  s += 3 * (info->lobin + info->hibin) + info->ascii;
+	  s += 3 * (info->lobin + info->hibin) + info->ascii + info->crlf;
 	  break;
 	case ENCBASE64:
-	  s += (4 * (info->lobin + info->hibin + info->ascii)) / 3;
+	  s += (4 * (info->lobin + info->hibin + info->ascii + info->crlf)) / 3;
 	  break;
 	default:
-	  s += info->lobin + info->hibin + info->ascii;
+	  s += info->lobin + info->hibin + info->ascii + info->crlf;
 	  break;
       }
     }

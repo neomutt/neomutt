@@ -89,6 +89,8 @@ BODY *mutt_parse_multipart (FILE *, const char *, long, int);
 BODY *mutt_parse_messageRFC822 (FILE *, BODY *);
 BODY *mutt_read_mime_header (FILE *, int);
 
+CONTENT *mutt_get_content_info (const char *fname, BODY *b);
+
 LIST *mutt_make_references(ENVELOPE *e);
 
 ENVELOPE *mutt_read_rfc822_header (FILE *, HEADER *, short, short);

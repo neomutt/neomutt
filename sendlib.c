@@ -512,7 +512,7 @@ void mutt_generate_boundary (PARAMETER **parm)
 }
 
 /* analyze the contents of a file to determine which MIME encoding to use */
-static CONTENT *mutt_get_content_info (const char *fname, BODY *b)
+CONTENT *mutt_get_content_info (const char *fname, BODY *b)
 {
   CONTENT *info;
   FILE *fp;
@@ -533,6 +533,7 @@ static CONTENT *mutt_get_content_info (const char *fname, BODY *b)
     linelen++;
     if (ch == '\n')
     {
+      info->crlf++;
       if (whitespace) info->space = 1;
       if (dot) info->dot = 1;
       if (linelen > info->linemax) info->linemax = linelen;
@@ -542,6 +543,7 @@ static CONTENT *mutt_get_content_info (const char *fname, BODY *b)
     }
     else if (ch == '\r')
     {
+      info->crlf++;
       info->cr = 1;
       if ((ch = fgetc (fp)) == EOF)
       {
@@ -952,9 +954,7 @@ void mutt_update_encoding (BODY *a)
 
   safe_free ((void **) &a->content);
   a->content = info;
-  info = NULL;
 
-  safe_free ((void **) &info);
 }
 
 BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
@@ -1087,18 +1087,8 @@ BODY *mutt_make_file_attach (const char *path)
 
   if (att->type == TYPETEXT)
     mutt_set_body_charset(att, get_text_charset(att, info));
-  
-#ifdef HAVE_PGP
-  /*
-   * save the info in case this message is signed.  we will want to do Q-P
-   * encoding if any lines begin with "From " so the signature won't be munged,
-   * for example.
-   */
-  att->content = info;
-  info = NULL;
-#endif
 
-  safe_free ((void **) &info);
+  att->content = info;
 
   return (att);
 }
