@@ -1297,9 +1297,22 @@ ci_send_message (int flags,		/* send mode */
     
     mutt_update_encoding (msg->content);
 
-    /* If the this isn't a text message, look for a mailcap edit command */
-    if(! (flags & SENDKEY))
+    /*
+     * Select whether or not the user's editor should be called now.  We
+     * don't want to do this when:
+     * 1) we are sending a key/cert
+     * 2) we are forwarding a message and the user doesn't want to edit it.
+     *    This is controled by the quadoption $forward_edit.  However, if
+     *    both $edit_headers and $autoedit are set, we want to ignore the
+     *    setting of $forward_edit because the user probably needs to add the
+     *    recipients.
+     */
+    if (! (flags & SENDKEY) &&
+	((flags & SENDFORWARD) == 0 ||
+	 (option (OPTEDITHDRS) && option (OPTAUTOEDIT)) ||
+	 query_quadoption (OPT_FORWEDIT, _("Edit forwarded message?")) == M_YES))
     {
+      /* If the this isn't a text message, look for a mailcap edit command */
       if (mutt_needs_mailcap (msg->content))
 	mutt_edit_attachment (msg->content);
       else if (!Editor || mutt_strcmp ("builtin", Editor) == 0)

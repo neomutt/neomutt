@@ -588,6 +588,13 @@ struct option_t MuttVars[] = {
   { "forw_decode",	DT_SYN,  R_NONE, UL "forward_decode", 0 },
   /*
   */
+  { "forward_edit",	DT_QUAD, R_NONE, OPT_FORWEDIT, M_YES },
+  /*
+  ** .pp
+  ** This quadoption controls whether or not the user is automatically
+  ** placed in the editor when forwarding messages.  For those who always want
+  ** to forward with no modification, use a setting to ``no''.
+  */
   { "forward_format",	DT_STR,	 R_NONE, UL &ForwFmt, UL "[%a: %s]" },
   /*
   ** .pp
