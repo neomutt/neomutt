@@ -167,11 +167,16 @@ int imap_handle_untagged (IMAP_DATA *idata, char *s)
 	mx_fastclose_mailbox (idata->selected_ctx);
 	return -1;
       }
+      /* at least the InterChange server sends EXISTS messages freely,
+       * even when there is no new mail */
+      else if (count == idata->selected_ctx->msgcount)
+	dprint (3, (debugfile,
+          "imap_handle_untagged: superfluous EXISTS message.\n"));
       else
       {
 	if (idata->status != IMAP_EXPUNGE)
         {
-          dprint(2, (debugfile,
+          dprint (2, (debugfile,
             "imap_handle_untagged: New mail in %s - %d messages total.\n",
             idata->selected_mailbox, count));
 	  idata->status = IMAP_NEW_MAIL;
