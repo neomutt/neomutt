@@ -350,15 +350,15 @@ int km_dokey (int menu)
       char *func = NULL;
       struct binding_t *bindings;
 
-      /* is this a valid op for the current menu? */
-      bindings = km_get_table (CurrentMenu);
+      /* is this a valid op for this menu? */
+      bindings = km_get_table (menu);
       if ((func = get_func (bindings, tmp.op)))
 	return tmp.op;
 
       if (menu == MENU_EDITOR && get_func (OpEditor, tmp.op))
 	return tmp.op;
 
-      if (menu != MENU_EDITOR && CurrentMenu != MENU_PAGER)
+      if (menu != MENU_EDITOR && menu != MENU_PAGER)
       {
 	/* check generic menu */
 	bindings = OpGeneric; 
@@ -804,11 +804,12 @@ int mutt_parse_exec (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     mutt_extract_token (buf, s, 0);
     command = buf->data;
 
-    if ((bindings = km_get_table (CurrentMenu)) == NULL)
+    if ((bindings = km_get_table (CurrentMenu)) == NULL 
+	&& CurrentMenu != MENU_PAGER)
       bindings = OpGeneric;
     
     ops[nops] = get_op (bindings, command, strlen(command));
-    if (ops[nops] == OP_NULL)
+    if (ops[nops] == OP_NULL && CurrentMenu != MENU_PAGER)
       ops[nops] = get_op (OpGeneric, command, strlen(command));
     
     if (ops[nops] == OP_NULL)

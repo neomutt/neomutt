@@ -141,7 +141,7 @@ int mutt_yesorno (const char *msg, int def)
   {
     mutt_refresh ();
     ch = mutt_getch ();
-    if (ch.ch == ERR) return(-1);
+    if (ch.ch == -1) return(-1);
     if (CI_is_return (ch.ch))
       break;
     else if (tolower(ch.ch) == tolower(*yes))
