@@ -122,7 +122,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
   else
   {
     FREE (&c);
-    if (sscanf (path, "{%128[^}]}", tmp) != 1) 
+    if (sscanf (path, "{%127[^}]}", tmp) != 1)
       return -1;
 
     c = strchr (path, '}');
@@ -140,7 +140,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
       mx->account.flags |= M_ACCT_USER;
     }
   
-    if ((n = sscanf (tmp, "%128[^:/]%128s", mx->account.host, tmp)) < 1)
+    if ((n = sscanf (tmp, "%127[^:/]%127s", mx->account.host, tmp)) < 1)
     {
       dprint (1, (debugfile, "imap_parse_path: NULL host in %s\n", path));
       FREE (&mx->mbox);
@@ -148,7 +148,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
     }
   
     if (n > 1) {
-      if (sscanf (tmp, ":%hd%128s", &(mx->account.port), tmp) >= 1)
+      if (sscanf (tmp, ":%hd%127s", &(mx->account.port), tmp) >= 1)
 	mx->account.flags |= M_ACCT_PORT;
       if (sscanf (tmp, "/%s", tmp) == 1)
       {
