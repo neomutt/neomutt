@@ -909,19 +909,43 @@ static void _process_data (DECODER *, short);
 
 void mutt_decoder_push (DECODER *d, void *_buff, size_t blen, size_t *taken)
 {
+  struct decoder_buff *b;
+  
   if (!_buff || !blen)
   {
     _process_data (d, 1);
     return;
   }
-
-  if ((*taken = MIN(blen, d->in.size - d->in.used)))
+  
+  /* shortcut the identity mapping and save one copying pass */
+  
+  if (d->just_take_id)
+    b = &d->out;
+  else
+    b = &d->in;
+    
+  if ((*taken = MIN(blen, b->size - b->used)))
   {
-    memcpy (d->in.buff + d->in.used, _buff, *taken);
-    d->in.used += *taken;
+    memcpy (b->buff + b->used, _buff, *taken);
+    b->used += *taken;
   }
 }
 
+int mutt_decoder_push_one (DECODER *d, char c)
+{
+  struct decoder_buff *b;
+
+  if (d->just_take_id)
+    b = &d->out;
+  else
+    b = &d->in;
+
+  if (b->used == b->size)
+    return -1;
+  
+  b->buff[b->used++] = c;
+  return 0;
+}
 
 void mutt_decoder_pop (DECODER *d, void *_buff, size_t blen, size_t *popped)
 {
@@ -941,14 +965,26 @@ void mutt_decoder_pop_to_state (DECODER *d, STATE *s)
 {
   char tmp[DECODER_BUFFSIZE];
   size_t i, l;
-  
-  do 
+
+  if (s->prefix)
   {
-    mutt_decoder_pop (d, tmp, sizeof (tmp), &l);
-    for (i = 0; i < l; i++)
-      state_prefix_putc (tmp[i], s);
+    do 
+    {
+      mutt_decoder_pop (d, tmp, sizeof (tmp), &l);
+      for (i = 0; i < l; i++)
+	state_prefix_putc (tmp[i], s);
+    }
+    while (l > 0);
   }
-  while (l > 0);
+  else
+  {
+    do 
+    {
+      mutt_decoder_pop (d, tmp, sizeof (tmp), &l);
+      fwrite (tmp, l, 1, s->fpout);
+    }
+    while (l > 0);
+  }
 }
 
 /* this is where things actually happen */
@@ -1010,18 +1046,13 @@ static void _process_data (DECODER *d, short force)
 {
   if (force) d->forced = 1;
   
-  if (d->just_take_id)
+  if (!d->just_take_id)
   {
-    size_t l = MIN (d->out.size - d->out.used, d->in.used);
-    memmove (d->out.buff + d->out.used, d->in.buff, l);
-    memmove (d->in.buff, d->in.buff + l, d->in.used - l);
-    d->in.used -= l;
-    d->out.used += l;
+    if (d->src_is_utf8)
+      _process_data_utf8 (d);
+    else
+      _process_data_8bit (d);
   }
-  else if (d->src_is_utf8)
-    _process_data_utf8 (d);
-  else
-    _process_data_8bit (d);
 }
 
 /* This one is currently lacking utf-8 support */

@@ -84,6 +84,7 @@ void mutt_decoder_push (DECODER *, void *, size_t, size_t *);
 void mutt_decoder_pop (DECODER *, void *, size_t, size_t *);
 void mutt_decoder_pop_to_state (DECODER *, STATE *);
 void mutt_free_decoder (DECODER **);
+int mutt_decoder_push_one (DECODER *, char);
 
 CHARSET *mutt_get_charset(const char *);
 CHARSET_MAP *mutt_get_translation(const char *, const char *);
