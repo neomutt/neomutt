@@ -1009,6 +1009,21 @@ int mutt_index_menu (void)
 	}
 	break;
 
+      case OP_EDIT_TYPE:
+
+	CHECK_MSGCOUNT;
+	CHECK_ATTACH;
+	mutt_edit_content_type (CURHDR, CURHDR->content);
+	/* if we were in the pager, redisplay the message */
+	if (menu->menu == MENU_PAGER)
+	{
+	  op = OP_DISPLAY_MESSAGE;
+	  continue;
+	}
+        else
+	  menu->redraw = REDRAW_CURRENT;
+	break;
+
       case OP_MAIN_NEXT_UNDELETED:
 
 	CHECK_MSGCOUNT;

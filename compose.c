@@ -850,54 +850,13 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	}
         break;
       
-      case OP_COMPOSE_EDIT_TYPE:
+      case OP_EDIT_TYPE:
 	CHECK_COUNT;
-	snprintf (buf, sizeof (buf), "%s/%s",
-		  TYPE (idx[menu->current]->content),
-		  idx[menu->current]->content->subtype);
-	if (mutt_get_field ("Content-Type: ", buf, sizeof (buf), 0) == 0 && buf[0])
-	{
-	  char *s;
-	  PARAMETER *par;
-	  BODY *b;
-	  
-	  b = idx[menu->current]->content;
-	  
-	  s  = b->filename;  par = b->parameter;
-	  b->filename  = NULL;  b->parameter = NULL;
-	  
-	  mutt_parse_content_type (buf, b);
-
-	  safe_free ((void **) &b->filename);
-	  b->filename = s;
-	  
-	  if ((s = mutt_get_parameter("charset", b->parameter)))
-	    mutt_set_parameter("charset", s, &par);
-	  
-	  /* These are needed for "traditional" PGP.
-	   * Should we switch to a "negative list" instead?
-	   */
-
-	  if ((s = mutt_get_parameter("x-action", b->parameter)))
-	    mutt_set_parameter("x-action", s, &par);
-	  if ((s = mutt_get_parameter("format", b->parameter)))
-	    mutt_set_parameter("format", s, &par);
-
-	  /* ignore the other parameters for now */
-	  mutt_free_parameter(&b->parameter);
-	  b->parameter = par;
-
-	  /* this may have been a "structured" message */
-	  if  (b->parts)
-	    mutt_free_body (&b->parts);
-	  if (b->hdr)
-	  {
-	    b->hdr->content = NULL;
-	    mutt_free_header (&b->hdr);
-	  }
+        {
+	  mutt_edit_content_type (NULL, idx[menu->current]->content);
 
 	  /* this may have been a change to text/something */
-	  mutt_update_encoding (b);
+	  mutt_update_encoding (idx[menu->current]->content);
 
 	  menu->redraw = REDRAW_CURRENT;
 	}

@@ -750,3 +750,55 @@ void mutt_version (void)
 {
   mutt_message ("Mutt %s (%s)", MUTT_VERSION, ReleaseDate);
 }
+
+void mutt_edit_content_type (HEADER *h, BODY *b)
+{
+  char buf[LONG_STRING];
+  char tmp[STRING];
+  PARAMETER *p;
+  
+  snprintf (buf, sizeof (buf), "%s/%s", TYPE (b), b->subtype);
+  if (b->parameter)
+  {
+    size_t l;
+    
+    for (p = b->parameter; p; p = p->next)
+    {
+      l = strlen (buf);
+
+      rfc822_cat (tmp, sizeof (tmp), p->value, MimeSpecials);
+      snprintf (buf + l, sizeof (buf) - l, "; %s=%s", p->attribute, tmp);
+    }
+  }
+  
+  if (mutt_get_field ("Content-Type: ", buf, sizeof (buf), 0) != 0 ||
+      buf[0] == 0)
+    return;
+  
+  /* clean up previous junk */
+  mutt_free_parameter (&b->parameter);
+  FREE (&b->subtype);
+  
+  mutt_parse_content_type (buf, b);
+  
+  mutt_message ("Content-Type changed to %s/%s.", TYPE (b),
+		NONULL (b->subtype));
+  
+  if (!is_multipart (b) && b->parts)
+    mutt_free_body (&b->parts);
+  if (!mutt_is_message_type (b->type, b->subtype) && b->hdr)
+  {
+    b->hdr->content = NULL;
+    mutt_free_header (&b->hdr);
+  }
+
+#ifdef _PGPPATH
+  if (h)
+  {
+    if (h->content == b)
+      h->pgp = 0;
+    h->pgp |= pgp_query (b);
+  }
+#endif /* _PGPPATH */
+
+}

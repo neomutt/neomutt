@@ -737,6 +737,12 @@ mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, HEADER *hdr,
 	else
 	  op = OP_NULL;
 	break;
+      case OP_EDIT_TYPE:
+	/* when we edit the content-type, we should redisplay the attachment
+	   immediately */
+	mutt_edit_content_type (hdr, idx[menu->current]->content);
+	op = OP_VIEW_ATTACH;
+	break;
       default:
 	op = OP_NULL;
     }
@@ -993,6 +999,11 @@ void mutt_view_attachments (HEADER *hdr)
 	menu->redraw = REDRAW_FULL;
 	break;
 
+      case OP_EDIT_TYPE:
+	mutt_edit_content_type (hdr, idx[menu->current]->content);
+	menu->redraw = REDRAW_CURRENT;
+	break;
+
       case OP_EXIT:
 	mx_close_message (&msg);
 	hdr->attach_del = 0;
@@ -1007,14 +1018,6 @@ void mutt_view_attachments (HEADER *hdr)
 	  hdr->changed = 1;
 	safe_free ((void **) &idx);
 	idxmax = 0;
-
-
-
-
-
-
-
-
 
 
 
