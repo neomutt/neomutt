@@ -20,7 +20,7 @@
 
 #if HAVE_CONFIG_H
 #include "config.h"
-#endif /* HAVE_CONFIG_H */
+#endif				/* HAVE_CONFIG_H */
 
 #if HAVE_GDBM
 #include <gdbm.h>
@@ -40,560 +40,576 @@
 #include "md5.h"
 
 #if HAVE_GDBM
-static struct
-header_cache
+static struct header_cache
 {
-	GDBM_FILE db;
-	char *folder;
-	unsigned int crc;
+  GDBM_FILE db;
+  char *folder;
+  unsigned int crc;
 } HEADER_CACHE;
 #elif HAVE_DB4
-static struct
-header_cache
+static struct header_cache
 {
-	DB_ENV *env;
-	DB *db;
-	unsigned int crc;
-	int fd;
-	char lockfile[_POSIX_PATH_MAX];
+  DB_ENV *env;
+  DB *db;
+  unsigned int crc;
+  int fd;
+  char lockfile[_POSIX_PATH_MAX];
 } HEADER_CACHE;
 #endif
 
 typedef union
 {
-        struct timeval timeval;
-        unsigned long long uid_validity;
+  struct timeval timeval;
+  unsigned long long uid_validity;
 } validate;
 
 static void *
 lazy_malloc(size_t siz)
 {
-	if (0 < siz && siz < 4096) {
-		siz = 4096;
-	}
+  if (0 < siz && siz < 4096)
+    siz = 4096;
 
-	return safe_malloc(siz);
+  return safe_malloc(siz);
 }
 
 static void
 lazy_realloc(void *ptr, size_t siz)
 {
-	void **p = (void **)ptr;
+  void **p = (void **) ptr;
 
-	if ( p != NULL
-	&&   0 < siz
-	&& siz < 4096) {
-		return;
-	}
+  if (p != NULL && 0 < siz && siz < 4096)
+    return;
 
-	safe_realloc(ptr, siz);
+  safe_realloc(ptr, siz);
 }
 
 static unsigned char *
 dump_int(unsigned int i, unsigned char *d, int *off)
 {
-	lazy_realloc(&d, *off + sizeof(int));
-	memcpy(d + *off, &i, sizeof(int));
-	(*off) += sizeof(int);
+  lazy_realloc(&d, *off + sizeof (int));
+  memcpy(d + *off, &i, sizeof (int));
+  (*off) += sizeof (int);
 
-	return d;
+  return d;
 }
 
 static void
 restore_int(unsigned int *i, const unsigned char *d, int *off)
 {
-	memcpy(i, d + *off, sizeof(int));
-	(*off) += sizeof(int);
+  memcpy(i, d + *off, sizeof (int));
+  (*off) += sizeof (int);
 }
 
 static unsigned char *
 dump_char(char *c, unsigned char *d, int *off)
 {
-	unsigned int size;
+  unsigned int size;
 
-	if (c == NULL) {
-		size = 0;
-		d = dump_int(size, d, off);
-		return d;
-	}
+  if (c == NULL)
+  {
+    size = 0;
+    d = dump_int(size, d, off);
+    return d;
+  }
 
-	size = mutt_strlen(c) + 1;
-	d = dump_int(size, d, off);
-	lazy_realloc(&d, *off + size);
-	memcpy(d + *off, c, size);
-	*off += size;
+  size = mutt_strlen(c) + 1;
+  d = dump_int(size, d, off);
+  lazy_realloc(&d, *off + size);
+  memcpy(d + *off, c, size);
+  *off += size;
 
-	return d;
+  return d;
 }
 
 static unsigned char *
 dump_char_size(char *c, unsigned char *d, int *off, ssize_t size)
 {
-	if (c == NULL) {
-		size = 0;
-		d = dump_int(size, d, off);
-		return d;
-	}
+  if (c == NULL)
+  {
+    size = 0;
+    d = dump_int(size, d, off);
+    return d;
+  }
 
-	d = dump_int(size, d, off);
-	lazy_realloc(&d, *off + size);
-	memcpy(d + *off, c, size);
-	*off += size;
+  d = dump_int(size, d, off);
+  lazy_realloc(&d, *off + size);
+  memcpy(d + *off, c, size);
+  *off += size;
 
-	return d;
+  return d;
 }
 
 static void
 restore_char(char **c, const unsigned char *d, int *off)
 {
-	unsigned int size;
-	restore_int(&size, d, off);
+  unsigned int size;
+  restore_int(&size, d, off);
 
-	if (size == 0) {
-		*c = NULL;
-		return;
-	}
+  if (size == 0)
+  {
+    *c = NULL;
+    return;
+  }
 
-	*c = safe_malloc(size);
-	memcpy(*c, d + *off, size);
-	*off += size;
+  *c = safe_malloc(size);
+  memcpy(*c, d + *off, size);
+  *off += size;
 }
 
 static unsigned char *
-dump_address(ADDRESS *a, unsigned char *d, int *off)
+dump_address(ADDRESS * a, unsigned char *d, int *off)
 {
-	unsigned int counter = 0;
-	unsigned int start_off = *off;
+  unsigned int counter = 0;
+  unsigned int start_off = *off;
 
-	d = dump_int(0xdeadbeef, d, off);
+  d = dump_int(0xdeadbeef, d, off);
 
-	while (a) {
+  while (a)
+  {
 #ifdef EXACT_ADDRESS
-		d = dump_char(a->val, d, off);
+    d = dump_char(a->val, d, off);
 #endif
-		d = dump_char(a->personal, d, off);
-		d = dump_char(a->mailbox, d, off);
-		d = dump_int(a->group, d, off);
-		a = a->next;
-		counter++;
-	}
+    d = dump_char(a->personal, d, off);
+    d = dump_char(a->mailbox, d, off);
+    d = dump_int(a->group, d, off);
+    a = a->next;
+    counter++;
+  }
 
-	memcpy(d + start_off, &counter, sizeof(int));
+  memcpy(d + start_off, &counter, sizeof (int));
 
-	return d;
+  return d;
 }
 
 static void
-restore_address(ADDRESS **a, const unsigned char *d, int *off)
+restore_address(ADDRESS ** a, const unsigned char *d, int *off)
 {
-	unsigned int counter;
+  unsigned int counter;
 
-	restore_int(&counter, d, off);
+  restore_int(&counter, d, off);
 
-	while (counter) {
-		*a = safe_malloc(sizeof(ADDRESS));
+  while (counter)
+  {
+    *a = safe_malloc(sizeof (ADDRESS));
 #ifdef EXACT_ADDRESS
-		restore_char(&(*a)->val, d, off);
+    restore_char(&(*a)->val, d, off);
 #endif
-		restore_char(&(*a)->personal, d, off);
-		restore_char(&(*a)->mailbox, d, off);
-		restore_int((unsigned int *)&(*a)->group, d, off);
-		a = &(*a)->next;
-		counter--;
-	}
+    restore_char(&(*a)->personal, d, off);
+    restore_char(&(*a)->mailbox, d, off);
+    restore_int((unsigned int *) &(*a)->group, d, off);
+    a = &(*a)->next;
+    counter--;
+  }
 
-	*a = NULL;
+  *a = NULL;
 }
 
 static unsigned char *
-dump_list(LIST *l, unsigned char *d, int *off)
+dump_list(LIST * l, unsigned char *d, int *off)
 {
-	unsigned int counter = 0;
-	unsigned int start_off = *off;
+  unsigned int counter = 0;
+  unsigned int start_off = *off;
 
-	d = dump_int(0xdeadbeef, d, off);
+  d = dump_int(0xdeadbeef, d, off);
 
-	while (l) {
-		d = dump_char(l->data, d, off);
-		l = l->next;
-		counter++;
-	}
+  while (l)
+  {
+    d = dump_char(l->data, d, off);
+    l = l->next;
+    counter++;
+  }
 
-	memcpy(d + start_off, &counter, sizeof(int));
+  memcpy(d + start_off, &counter, sizeof (int));
 
-	return d;
+  return d;
 }
 
 static void
-restore_list(LIST **l, const unsigned char *d, int *off)
+restore_list(LIST ** l, const unsigned char *d, int *off)
 {
-	unsigned int counter;
+  unsigned int counter;
 
-	restore_int(&counter, d, off);
+  restore_int(&counter, d, off);
 
-	while (counter) {
-		*l = safe_malloc(sizeof(LIST));
-		restore_char(&(*l)->data, d, off);
-		l = &(*l)->next;
-		counter--;
-	}
+  while (counter)
+  {
+    *l = safe_malloc(sizeof (LIST));
+    restore_char(&(*l)->data, d, off);
+    l = &(*l)->next;
+    counter--;
+  }
 
-	*l = NULL;
+  *l = NULL;
 }
 
 static unsigned char *
-dump_buffer(BUFFER *b, unsigned char *d, int *off)
+dump_buffer(BUFFER * b, unsigned char *d, int *off)
 {
-	if (! b) {
-		d = dump_int(0, d, off);
-		return d;
-	} else {
-		d = dump_int(1, d, off);
-	}
+  if (!b)
+  {
+    d = dump_int(0, d, off);
+    return d;
+  }
+  else
+    d = dump_int(1, d, off);
 
-	d = dump_char_size(b->data, d, off, b->dsize + 1);
-	d = dump_int(b->dptr - b->data, d, off);
-	d = dump_int(b->dsize, d, off);
-	d = dump_int(b->destroy, d, off);
+  d = dump_char_size(b->data, d, off, b->dsize + 1);
+  d = dump_int(b->dptr - b->data, d, off);
+  d = dump_int(b->dsize, d, off);
+  d = dump_int(b->destroy, d, off);
 
-	return d;
+  return d;
 }
 
 static void
-restore_buffer(BUFFER **b, const unsigned char *d, int *off)
+restore_buffer(BUFFER ** b, const unsigned char *d, int *off)
 {
-	unsigned int used;
-	unsigned int offset;
-	restore_int(&used, d, off);
-	if (! used) {
-		return;
-	}
+  unsigned int used;
+  unsigned int offset;
+  restore_int(&used, d, off);
+  if (!used)
+  {
+    return;
+  }
 
-	*b = safe_malloc(sizeof(BUFFER));
+  *b = safe_malloc(sizeof (BUFFER));
 
-	restore_char(& (*b)->data, d, off);
-	restore_int(& offset, d, off);
-	(*b)->dptr = (*b)->data + offset;
-	restore_int(& (*b)->dsize, d, off);
-	restore_int((unsigned int *) & (*b)->destroy, d, off);
+  restore_char(&(*b)->data, d, off);
+  restore_int(&offset, d, off);
+  (*b)->dptr = (*b)->data + offset;
+  restore_int(&(*b)->dsize, d, off);
+  restore_int((unsigned int *) &(*b)->destroy, d, off);
 }
 
 static unsigned char *
-dump_parameter(PARAMETER *p, unsigned char *d, int *off)
+dump_parameter(PARAMETER * p, unsigned char *d, int *off)
 {
-	unsigned int counter = 0;
-	unsigned int start_off = *off;
+  unsigned int counter = 0;
+  unsigned int start_off = *off;
 
-	d = dump_int(0xdeadbeef, d, off);
+  d = dump_int(0xdeadbeef, d, off);
 
-	while (p) {
-		d = dump_char(p->attribute, d, off);
-		d = dump_char(p->value, d, off);
-		p = p->next;
-		counter++;
-	}
+  while (p)
+  {
+    d = dump_char(p->attribute, d, off);
+    d = dump_char(p->value, d, off);
+    p = p->next;
+    counter++;
+  }
 
-	memcpy(d + start_off, &counter, sizeof(int));
+  memcpy(d + start_off, &counter, sizeof (int));
 
-	return d;
+  return d;
 }
 
 static void
-restore_parameter(PARAMETER **p, const unsigned char *d, int *off)
+restore_parameter(PARAMETER ** p, const unsigned char *d, int *off)
 {
-	unsigned int counter;
+  unsigned int counter;
 
-	restore_int(&counter, d, off);
+  restore_int(&counter, d, off);
 
-	while (counter) {
-		*p = safe_malloc(sizeof(PARAMETER));
-		restore_char(&(*p)->attribute, d, off);
-		restore_char(&(*p)->value, d, off);
-		p = &(*p)->next;
-		counter--;
-	}
+  while (counter)
+  {
+    *p = safe_malloc(sizeof (PARAMETER));
+    restore_char(&(*p)->attribute, d, off);
+    restore_char(&(*p)->value, d, off);
+    p = &(*p)->next;
+    counter--;
+  }
 
-	*p = NULL;
+  *p = NULL;
 }
 
 static unsigned char *
-dump_body(BODY *c, unsigned char *d, int *off)
+dump_body(BODY * c, unsigned char *d, int *off)
 {
-	lazy_realloc(&d, *off + sizeof(BODY));
-	memcpy(d + *off, c, sizeof(BODY));
-	*off += sizeof(BODY);
+  lazy_realloc(&d, *off + sizeof (BODY));
+  memcpy(d + *off, c, sizeof (BODY));
+  *off += sizeof (BODY);
 
-	d = dump_char(c->xtype, d, off);
-	d = dump_char(c->subtype, d, off);
+  d = dump_char(c->xtype, d, off);
+  d = dump_char(c->subtype, d, off);
 
-	d = dump_parameter(c->parameter, d, off);
+  d = dump_parameter(c->parameter, d, off);
 
-	d = dump_char(c->description, d, off);
-	d = dump_char(c->form_name, d, off);
-	d = dump_char(c->filename, d, off);
-	d = dump_char(c->d_filename, d, off);
+  d = dump_char(c->description, d, off);
+  d = dump_char(c->form_name, d, off);
+  d = dump_char(c->filename, d, off);
+  d = dump_char(c->d_filename, d, off);
 
-	return d;
+  return d;
 }
 
 static void
-restore_body(BODY *c, const unsigned char *d, int *off)
+restore_body(BODY * c, const unsigned char *d, int *off)
 {
-	memcpy(c, d + *off, sizeof(BODY));
-	*off += sizeof(BODY);
+  memcpy(c, d + *off, sizeof (BODY));
+  *off += sizeof (BODY);
 
-	restore_char(& c->xtype, d, off);
-	restore_char(& c->subtype, d, off);
+  restore_char(&c->xtype, d, off);
+  restore_char(&c->subtype, d, off);
 
-	restore_parameter(& c->parameter, d, off);
+  restore_parameter(&c->parameter, d, off);
 
-	restore_char(& c->description, d, off);
-	restore_char(& c->form_name, d, off);
-	restore_char(& c->filename, d, off);
-	restore_char(& c->d_filename, d, off);
+  restore_char(&c->description, d, off);
+  restore_char(&c->form_name, d, off);
+  restore_char(&c->filename, d, off);
+  restore_char(&c->d_filename, d, off);
 }
 
 static unsigned char *
-dump_envelope(ENVELOPE *e, unsigned char *d, int *off)
+dump_envelope(ENVELOPE * e, unsigned char *d, int *off)
 {
-	d = dump_address(e->return_path, d, off);
-	d = dump_address(e->from, d, off);
-	d = dump_address(e->to, d, off);
-	d = dump_address(e->cc, d, off);
-	d = dump_address(e->bcc, d, off);
-	d = dump_address(e->sender, d, off);
-	d = dump_address(e->reply_to, d, off);
-	d = dump_address(e->mail_followup_to, d, off);
+  d = dump_address(e->return_path, d, off);
+  d = dump_address(e->from, d, off);
+  d = dump_address(e->to, d, off);
+  d = dump_address(e->cc, d, off);
+  d = dump_address(e->bcc, d, off);
+  d = dump_address(e->sender, d, off);
+  d = dump_address(e->reply_to, d, off);
+  d = dump_address(e->mail_followup_to, d, off);
 
-	d = dump_char(e->list_post, d, off);
-	d = dump_char(e->subject, d, off);
-	if (e->real_subj) {
-		d = dump_int(e->real_subj - e->subject, d, off);
-	} else {
-		d = dump_int(-1, d, off);
-	}
-	d = dump_char(e->message_id, d, off);
-	d = dump_char(e->supersedes, d, off);
-	d = dump_char(e->date, d, off);
-	d = dump_char(e->x_label, d, off);
+  d = dump_char(e->list_post, d, off);
+  d = dump_char(e->subject, d, off);
 
-	d = dump_buffer(e->spam, d, off);
+  if (e->real_subj)
+    d = dump_int(e->real_subj - e->subject, d, off);
+  else
+    d = dump_int(-1, d, off);
 
-	d = dump_list(e->references, d, off);
-	d = dump_list(e->in_reply_to, d, off);
-	d = dump_list(e->userhdrs, d, off);
+  d = dump_char(e->message_id, d, off);
+  d = dump_char(e->supersedes, d, off);
+  d = dump_char(e->date, d, off);
+  d = dump_char(e->x_label, d, off);
 
-	return d;
+  d = dump_buffer(e->spam, d, off);
+
+  d = dump_list(e->references, d, off);
+  d = dump_list(e->in_reply_to, d, off);
+  d = dump_list(e->userhdrs, d, off);
+
+  return d;
 }
 
 static void
-restore_envelope(ENVELOPE *e, const unsigned char *d, int *off)
+restore_envelope(ENVELOPE * e, const unsigned char *d, int *off)
 {
-	int real_subj_off;
+  int real_subj_off;
 
-	restore_address(& e->return_path, d, off);
-	restore_address(& e->from, d, off);
-	restore_address(& e->to, d, off);
-	restore_address(& e->cc, d, off);
-	restore_address(& e->bcc, d, off);
-	restore_address(& e->sender, d, off);
-	restore_address(& e->reply_to, d, off);
-	restore_address(& e->mail_followup_to, d, off);
+  restore_address(&e->return_path, d, off);
+  restore_address(&e->from, d, off);
+  restore_address(&e->to, d, off);
+  restore_address(&e->cc, d, off);
+  restore_address(&e->bcc, d, off);
+  restore_address(&e->sender, d, off);
+  restore_address(&e->reply_to, d, off);
+  restore_address(&e->mail_followup_to, d, off);
 
-	restore_char(& e->list_post, d, off);
-	restore_char(& e->subject, d, off);
-	restore_int((unsigned int *) (& real_subj_off), d, off);
-	if (0 <= real_subj_off) {
-		e->real_subj = e->subject + real_subj_off;
-	} else {
-		e->real_subj = NULL;
-	}
-	restore_char(& e->message_id, d, off);
-	restore_char(& e->supersedes, d, off);
-	restore_char(& e->date, d, off);
-	restore_char(& e->x_label, d, off);
+  restore_char(&e->list_post, d, off);
+  restore_char(&e->subject, d, off);
+  restore_int((unsigned int *) (&real_subj_off), d, off);
 
-	restore_buffer(& e->spam, d, off);
+  if (0 <= real_subj_off)
+    e->real_subj = e->subject + real_subj_off;
+  else
+    e->real_subj = NULL;
 
-	restore_list(& e->references, d, off);
-	restore_list(& e->in_reply_to, d, off);
-	restore_list(& e->userhdrs, d, off);
+  restore_char(&e->message_id, d, off);
+  restore_char(&e->supersedes, d, off);
+  restore_char(&e->date, d, off);
+  restore_char(&e->x_label, d, off);
+
+  restore_buffer(&e->spam, d, off);
+
+  restore_list(&e->references, d, off);
+  restore_list(&e->in_reply_to, d, off);
+  restore_list(&e->userhdrs, d, off);
 }
 
-static
-unsigned int crc32(unsigned int crc, unsigned char const *p, size_t len)
+static unsigned int
+crc32(unsigned int crc, unsigned char const *p, size_t len)
 {
-	int i;
-	while (len--) {
-		crc ^= *p++;
-		for (i = 0; i < 8; i++)
-			crc = (crc >> 1) ^ ((crc & 1) ? 0xedb88320 : 0);
-	}
-	return crc;
+  int i;
+  while (len--)
+  {
+    crc ^= *p++;
+    for (i = 0; i < 8; i++)
+      crc = (crc >> 1) ^ ((crc & 1) ? 0xedb88320 : 0);
+  }
+  return crc;
 }
 
 static int
 generate_crc32()
 {
-	int crc = 0;
-	SPAM_LIST *sp = SpamList;
-	RX_LIST   *rx = NoSpamList;
+  int crc = 0;
+  SPAM_LIST *sp = SpamList;
+  RX_LIST *rx = NoSpamList;
 
-	crc = crc32(crc, (unsigned char const *) "sithglan@stud.uni-erlangen.de[sithglan]|hcache.c|20041125191652|14839", mutt_strlen("sithglan@stud.uni-erlangen.de[sithglan]|hcache.c|20041125191652|14839"));
+  crc = crc32(crc, (unsigned char const *) "$Id$", mutt_strlen("$Id$"));
 
 #if HAVE_LANGINFO_CODESET
-	crc = crc32(crc, (unsigned char const *) Charset, mutt_strlen(Charset));
-	crc = crc32(crc, (unsigned char const *) "HAVE_LANGINFO_CODESET", mutt_strlen("HAVE_LANGINFO_CODESET"));
+  crc = crc32(crc, (unsigned char const *) Charset, mutt_strlen(Charset));
+  crc = crc32(crc, (unsigned char const *) "HAVE_LANGINFO_CODESET",
+	mutt_strlen("HAVE_LANGINFO_CODESET"));
 #endif
 
 #if EXACT_ADDRESS
-	crc = crc32(crc, (unsigned char const *) "EXACT_ADDRESS", mutt_strlen("EXACT_ADDRESS"));
+  crc = crc32(crc, (unsigned char const *) "EXACT_ADDRESS",
+	mutt_strlen("EXACT_ADDRESS"));
 #endif
 
 #ifdef USE_POP
-	crc = crc32(crc, (unsigned char const *) "USE_POP", mutt_strlen("USE_POP"));
+  crc = crc32(crc, (unsigned char const *) "USE_POP", mutt_strlen("USE_POP"));
 #endif
 
 #ifdef MIXMASTER
-	crc = crc32(crc, (unsigned char const *) "MIXMASTER", mutt_strlen("MIXMASTER"));
+  crc = crc32(crc, (unsigned char const *) "MIXMASTER",
+        mutt_strlen("MIXMASTER"));
 #endif
 
 #ifdef USE_IMAP
-	crc = crc32(crc, (unsigned char const *) "USE_IMAP", mutt_strlen("USE_IMAP"));
-	crc = crc32(crc, (unsigned char const *) ImapHeaders, mutt_strlen(ImapHeaders));
+  crc = crc32(crc, (unsigned char const *) "USE_IMAP", mutt_strlen("USE_IMAP"));
+  crc = crc32(crc, (unsigned char const *) ImapHeaders,
+        mutt_strlen(ImapHeaders));
 #endif
-	while(sp) {
-		crc = crc32(crc, (unsigned char const *) sp->rx->pattern, mutt_strlen(sp->rx->pattern));
-		sp = sp->next;
-	}
+  while (sp)
+  {
+    crc = crc32(crc, (unsigned char const *) sp->rx->pattern,
+	  mutt_strlen(sp->rx->pattern));
+    sp = sp->next;
+  }
 
-	crc = crc32(crc, (unsigned char const *) "SPAM_SEPERATOR", mutt_strlen("SPAM_SEPERATOR"));
+  crc = crc32(crc, (unsigned char const *) "SPAM_SEPERATOR",
+	mutt_strlen("SPAM_SEPERATOR"));
 
-	while(rx) {
-		crc = crc32(crc, (unsigned char const *) rx->rx->pattern, mutt_strlen(rx->rx->pattern));
-		rx = rx->next;
-	}
+  while (rx)
+  {
+    crc = crc32(crc, (unsigned char const *) rx->rx->pattern,
+	  mutt_strlen(rx->rx->pattern));
+    rx = rx->next;
+  }
 
-	return crc;
+  return crc;
 }
 
 static int
 crc32_matches(const char *d, unsigned int crc)
 {
-	int off = sizeof(validate);
-	unsigned int mycrc = 0;
+  int off = sizeof (validate);
+  unsigned int mycrc = 0;
 
-	if (! d) {
-		return 0;
-	}
+  if (!d)
+    return 0;
 
-	restore_int(&mycrc, (unsigned char *) d, &off);
+  restore_int(&mycrc, (unsigned char *) d, &off);
 
-	return (crc == mycrc);
+  return (crc == mycrc);
 }
 
 /* Append md5sumed folder to path if path is a directory. */
 static const char *
 mutt_hcache_per_folder(const char *path, const char *folder)
 {
-	static char mutt_hcache_per_folder_path[_POSIX_PATH_MAX];
-	struct stat path_stat;
-	MD5_CTX md5;
-	unsigned char md5sum[16];
-	int ret;
+  static char mutt_hcache_per_folder_path[_POSIX_PATH_MAX];
+  struct stat path_stat;
+  MD5_CTX md5;
+  unsigned char md5sum[16];
+  int ret;
 
-	ret = stat(path, &path_stat);
-	if (ret < 0) {
-		return path;
-	}
+  ret = stat(path, &path_stat);
+  if (ret < 0)
+    return path;
 
-	if (! S_ISDIR(path_stat.st_mode)) {
-		return path;
-	}
+  if (!S_ISDIR(path_stat.st_mode))
+    return path;
 
-	MD5Init(&md5);
-	MD5Update(&md5, (unsigned char *) folder, strlen(folder));
-	MD5Final(md5sum, &md5);
+  MD5Init(&md5);
+  MD5Update(&md5, (unsigned char *) folder, strlen(folder));
+  MD5Final(md5sum, &md5);
 
-	ret = snprintf(mutt_hcache_per_folder_path, _POSIX_PATH_MAX,
-                        "%s/%02x%02x%02x%02x%02x%02x%02x%02x"
-                        "%02x%02x%02x%02x%02x%02x%02x%02x",
-			path, md5sum[0], md5sum[1], md5sum[2], md5sum[3],
-			md5sum[4], md5sum[5], md5sum[6], md5sum[7], md5sum[8],
-			md5sum[9], md5sum[10], md5sum[11], md5sum[12],
-			md5sum[13], md5sum[14], md5sum[15]);
+  ret = snprintf(mutt_hcache_per_folder_path, _POSIX_PATH_MAX,
+		 "%s/%02x%02x%02x%02x%02x%02x%02x%02x"
+		 "%02x%02x%02x%02x%02x%02x%02x%02x",
+		 path, md5sum[0], md5sum[1], md5sum[2], md5sum[3],
+		 md5sum[4], md5sum[5], md5sum[6], md5sum[7], md5sum[8],
+		 md5sum[9], md5sum[10], md5sum[11], md5sum[12],
+		 md5sum[13], md5sum[14], md5sum[15]);
 
-	if (ret <= 0) {
-		return path;
-	}
+  if (ret <= 0)
+    return path;
 
-	return mutt_hcache_per_folder_path;
+  return mutt_hcache_per_folder_path;
 }
 
 /* This function transforms a header into a char so that it is useable by
  * db_store */
 static void *
-mutt_hcache_dump(void *_db, HEADER *h, int *off, unsigned long long uid_validity)
+mutt_hcache_dump(void *_db, HEADER * h, int *off,
+		 unsigned long long uid_validity)
 {
-	struct header_cache *db = _db;
-	unsigned char *d = NULL;
-	*off             = 0;
+  struct header_cache *db = _db;
+  unsigned char *d = NULL;
+  *off = 0;
 
-	d = lazy_malloc(sizeof(validate));
+  d = lazy_malloc(sizeof (validate));
 
-	if (uid_validity) {
-		memcpy(d, &uid_validity, sizeof(long long));
-	} else {
-		struct timeval now;
-		gettimeofday(&now, NULL);
-		memcpy(d, &now, sizeof(struct timeval));
-	}
-	*off += sizeof(validate);
+  if (uid_validity)
+    memcpy(d, &uid_validity, sizeof (long long));
+  else
+  {
+    struct timeval now;
+    gettimeofday(&now, NULL);
+    memcpy(d, &now, sizeof (struct timeval));
+  }
+  *off += sizeof (validate);
 
-	d = dump_int(db->crc, d, off);
+  d = dump_int(db->crc, d, off);
 
-	lazy_realloc(&d, *off + sizeof(HEADER));
-	memcpy(d + *off, h, sizeof(HEADER));
-	*off += sizeof(HEADER);
+  lazy_realloc(&d, *off + sizeof (HEADER));
+  memcpy(d + *off, h, sizeof (HEADER));
+  *off += sizeof (HEADER);
 
-	d = dump_envelope(h->env, d, off);
-	d = dump_body(h->content, d, off);
-	d = dump_char(h->maildir_flags, d, off);
+  d = dump_envelope(h->env, d, off);
+  d = dump_body(h->content, d, off);
+  d = dump_char(h->maildir_flags, d, off);
 
-	return d;
+  return d;
 }
 
 HEADER *
-mutt_hcache_restore(const unsigned char *d, HEADER **oh)
+mutt_hcache_restore(const unsigned char *d, HEADER ** oh)
 {
-	int off = 0;
-	HEADER *h        = mutt_new_header();
+  int off = 0;
+  HEADER *h = mutt_new_header();
 
-	/* skip validate */
-	off += sizeof(validate);
+  /* skip validate */
+  off += sizeof (validate);
 
-	/* skip crc */
-	off += sizeof(unsigned int);
+  /* skip crc */
+  off += sizeof (unsigned int);
 
-	memcpy(h, d + off, sizeof(HEADER));
-	off += sizeof(HEADER);
+  memcpy(h, d + off, sizeof (HEADER));
+  off += sizeof (HEADER);
 
-	h->env = mutt_new_envelope();
-	restore_envelope(h->env, d, &off);
+  h->env = mutt_new_envelope();
+  restore_envelope(h->env, d, &off);
 
-	h->content = mutt_new_body();
-	restore_body(h->content, d, &off);
+  h->content = mutt_new_body();
+  restore_body(h->content, d, &off);
 
-	restore_char(&h->maildir_flags, d, &off);
+  restore_char(&h->maildir_flags, d, &off);
 
-	/* this is needed for maildir style mailboxes */
-	if (oh) {
-		h->old  = (*oh)->old;
-		h->path = safe_strdup((*oh)->path);
-		mutt_free_header (oh);
-	}
+  /* this is needed for maildir style mailboxes */
+  if (oh)
+  {
+    h->old = (*oh)->old;
+    h->path = safe_strdup((*oh)->path);
+    mutt_free_header(oh);
+  }
 
-	return h;
+  return h;
 }
 
 #if HAVE_GDBM
@@ -601,301 +617,313 @@ mutt_hcache_restore(const unsigned char *d, HEADER **oh)
 void *
 mutt_hcache_open(const char *path, const char *folder)
 {
-	struct header_cache *h = safe_calloc(1, sizeof(HEADER_CACHE));
-	int pagesize = atoi(HeaderCachePageSize) ? atoi(HeaderCachePageSize) : 16384;
-	h->db     = NULL;
-        h->folder = safe_strdup (folder);
-	h->crc    = generate_crc32();
+  struct header_cache *h = safe_calloc(1, sizeof (HEADER_CACHE));
+  int pagesize = atoi(HeaderCachePageSize) ? atoi(HeaderCachePageSize) : 16384;
+  h->db = NULL;
+  h->folder = safe_strdup(folder);
+  h->crc = generate_crc32();
 
-	if (! path || path[0] == '\0') {
-		FREE(& h->folder);
-		FREE(& h);
-		return NULL;
-	}
+  if (!path || path[0] == '\0')
+  {
+    FREE(&h->folder);
+    FREE(&h);
+    return NULL;
+  }
 
-	path = mutt_hcache_per_folder(path, folder);
+  path = mutt_hcache_per_folder(path, folder);
 
-	h->db = gdbm_open((char *) path, pagesize, GDBM_WRCREAT, 00600, NULL);
-	if (h->db) {
-		return h;
-	}
+  h->db = gdbm_open((char *) path, pagesize, GDBM_WRCREAT, 00600, NULL);
+  if (h->db)
+    return h;
 
-	/* if rw failed try ro */
-	h->db = gdbm_open((char *) path, pagesize, GDBM_READER, 00600, NULL);
-	if(h->db) {
-		return h;
-	} else {
-		FREE(& h->folder);
-		FREE(& h);
+  /* if rw failed try ro */
+  h->db = gdbm_open((char *) path, pagesize, GDBM_READER, 00600, NULL);
+  if (h->db)
+    return h;
+  else
+  {
+    FREE(&h->folder);
+    FREE(&h);
 
-		return NULL;
-	}
+    return NULL;
+  }
 }
 
 void
 mutt_hcache_close(void *db)
 {
-	struct header_cache *h = db;
+  struct header_cache *h = db;
 
-	if (! h) {
-		return;
-	}
+  if (!h)
+    return;
 
-	gdbm_close(h->db);
-	FREE(& h->folder);
-	FREE(& h);
+  gdbm_close(h->db);
+  FREE(&h->folder);
+  FREE(&h);
 }
 
 void *
-mutt_hcache_fetch(void *db, const char *filename, size_t (*keylen)(const char *fn))
+mutt_hcache_fetch(void *db, const char *filename,
+		  size_t(*keylen) (const char *fn))
 {
-	struct header_cache *h = db;
-	datum key;
-	datum data;
-	char path[_POSIX_PATH_MAX];
+  struct header_cache *h = db;
+  datum key;
+  datum data;
+  char path[_POSIX_PATH_MAX];
 
-	if (! h) {
-		return NULL;
-	}
+  if (!h)
+    return NULL;
 
-	strncpy(path, h->folder, sizeof(path));
-        safe_strcat (path, sizeof (path), filename);
+  strncpy(path, h->folder, sizeof (path));
+  safe_strcat(path, sizeof (path), filename);
 
-	key.dptr  = path;
-	key.dsize = keylen(path);
+  key.dptr = path;
+  key.dsize = keylen(path);
 
-	data = gdbm_fetch(h->db, key);
+  data = gdbm_fetch(h->db, key);
 
-	if (! crc32_matches(data.dptr, h->crc)) {
-		FREE(&data.dptr);
-		return NULL;
-	}
+  if (!crc32_matches(data.dptr, h->crc))
+  {
+    FREE(&data.dptr);
+    return NULL;
+  }
 
-	return data.dptr;
+  return data.dptr;
 }
 
 int
-mutt_hcache_store(void *db, const char *filename, HEADER *header, unsigned long long uid_validity, size_t (*keylen)(const char *fn))
+mutt_hcache_store(void *db, const char *filename, HEADER * header,
+		  unsigned long long uid_validity,
+		  size_t(*keylen) (const char *fn))
 {
-	struct header_cache *h = db;
-	datum key;
-	datum data;
-	char path[_POSIX_PATH_MAX];
-	int ret;
+  struct header_cache *h = db;
+  datum key;
+  datum data;
+  char path[_POSIX_PATH_MAX];
+  int ret;
 
-	if (! h) {
-		return -1;
-	}
+  if (!h)
+    return -1;
 
-	strncpy(path, h->folder, sizeof(path));
-        safe_strcat (path, sizeof (path), filename);
+  strncpy(path, h->folder, sizeof (path));
+  safe_strcat(path, sizeof (path), filename);
 
-	key.dptr  = path;
-	key.dsize = keylen(path);
+  key.dptr = path;
+  key.dsize = keylen(path);
 
-	data.dptr = mutt_hcache_dump(db, header, &data.dsize, uid_validity);
+  data.dptr = mutt_hcache_dump(db, header, &data.dsize, uid_validity);
 
-	ret = gdbm_store(h->db, key, data, GDBM_REPLACE);
+  ret = gdbm_store(h->db, key, data, GDBM_REPLACE);
 
-	FREE(& data.dptr);
+  FREE(&data.dptr);
 
-	return ret;
+  return ret;
 }
 
 int
-mutt_hcache_delete(void *db, const char *filename, size_t (*keylen)(const char *fn))
+mutt_hcache_delete(void *db, const char *filename,
+		   size_t(*keylen) (const char *fn))
 {
-	datum key;
-	struct header_cache *h = db;
-	char path[_POSIX_PATH_MAX];
+  datum key;
+  struct header_cache *h = db;
+  char path[_POSIX_PATH_MAX];
 
-	if (! h) {
-		return -1;
-	}
+  if (!h)
+    return -1;
 
-	strncpy(path, h->folder, sizeof(path));
-        safe_strcat (path, sizeof (path), filename);
+  strncpy(path, h->folder, sizeof (path));
+  safe_strcat(path, sizeof (path), filename);
 
-	key.dptr  = path;
-	key.dsize = keylen(path);
+  key.dptr = path;
+  key.dsize = keylen(path);
 
-	return gdbm_delete(h->db, key);
+  return gdbm_delete(h->db, key);
 }
 #elif HAVE_DB4
 
 static void
-mutt_hcache_dbt_init(DBT *dbt, void *data, size_t len)
+mutt_hcache_dbt_init(DBT * dbt, void *data, size_t len)
 {
-	dbt->data = data;
-	dbt->size = dbt->ulen = len;
-	dbt->dlen = dbt->doff = 0;
-	dbt->flags = DB_DBT_USERMEM;
+  dbt->data = data;
+  dbt->size = dbt->ulen = len;
+  dbt->dlen = dbt->doff = 0;
+  dbt->flags = DB_DBT_USERMEM;
 }
 
 static void
-mutt_hcache_dbt_empty_init(DBT *dbt)
+mutt_hcache_dbt_empty_init(DBT * dbt)
 {
-	dbt->data = NULL;
-	dbt->size = dbt->ulen = dbt->dlen = dbt->doff = 0;
-	dbt->flags = 0;
+  dbt->data = NULL;
+  dbt->size = dbt->ulen = dbt->dlen = dbt->doff = 0;
+  dbt->flags = 0;
 }
 
 void *
 mutt_hcache_open(const char *path, const char *folder)
 {
-	struct stat sb;
-	u_int32_t createflags = DB_CREATE;
-	int ret;
-	struct header_cache *h = calloc(1, sizeof(HEADER_CACHE));
-	int pagesize = atoi(HeaderCachePageSize);
+  struct stat sb;
+  u_int32_t createflags = DB_CREATE;
+  int ret;
+  struct header_cache *h = calloc(1, sizeof (HEADER_CACHE));
+  int pagesize = atoi(HeaderCachePageSize);
 
+  h->crc = generate_crc32();
 
-	h->crc = generate_crc32();
+  if (!path || path[0] == '\0')
+  {
+    FREE(&h);
+    return NULL;
+  }
 
-	if (! path || path[0] == '\0') {
-		FREE(& h);
-		return NULL;
-	}
+  path = mutt_hcache_per_folder(path, folder);
 
-	path = mutt_hcache_per_folder(path, folder);
+  snprintf(h->lockfile, _POSIX_PATH_MAX, "%s-lock-hack", path);
 
-	snprintf (h->lockfile, _POSIX_PATH_MAX, "%s-lock-hack", path);
+  h->fd = open(h->lockfile, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
+  if (h->fd < 0)
+  {
+    FREE(&h);
+    return NULL;
+  }
 
-	h->fd = open(h->lockfile, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
-	if (h->fd < 0) {
-		FREE (&h);
-		return NULL;
-	}
+  if (mx_lock_file(h->lockfile, h->fd, 1, 0, 5))
+  {
+    close(h->fd);
+    FREE(&h);
+    return NULL;
+  }
 
-	if (mx_lock_file(h->lockfile, h->fd, 1, 0, 5)) {
-		close(h->fd);
-		FREE (&h);
-		return NULL;
-	}
+  ret = db_env_create(&h->env, 0);
+  if (ret)
+  {
+    mx_unlock_file(h->lockfile, h->fd, 0);
+    close(h->fd);
+    FREE(&h);
+    return NULL;
+  }
 
-	ret = db_env_create(&h->env, 0);
-	if (ret) {
-		mx_unlock_file(h->lockfile, h->fd, 0);
-		close(h->fd);
-		FREE(& h);
-		return NULL;
-	}
+  ret = h->env->open(h->env, NULL, DB_INIT_MPOOL | DB_CREATE | DB_PRIVATE,
+	0600);
+  if (!ret)
+  {
+    ret = db_create(&h->db, h->env, 0);
+    if (ret)
+    {
+      h->env->close(h->env, 0);
+      mx_unlock_file(h->lockfile, h->fd, 0);
+      close(h->fd);
+      FREE(&h);
+      return NULL;
+    }
+  }
 
-	ret = h->env->open(h->env, NULL, DB_INIT_MPOOL | DB_CREATE | DB_PRIVATE, 0600);
-	if (! ret) {
-		ret = db_create(&h->db, h->env, 0);
-		if (ret) {
-			h->env->close(h->env, 0);
-			mx_unlock_file(h->lockfile, h->fd, 0);
-			close(h->fd);
-			FREE(& h);
-			return NULL;
-		}
-	}
+  if (stat(path, &sb) != 0 && errno == ENOENT)
+  {
+    createflags |= DB_EXCL;
+    h->db->set_pagesize(h->db, pagesize);
+  }
 
-	if (stat(path, &sb) != 0 && errno == ENOENT) {
-		createflags |= DB_EXCL;
-		h->db->set_pagesize(h->db, pagesize);
-	}
+  ret = h->db->open(h->db, NULL, path, folder, DB_BTREE, createflags, 0600);
+  if (ret)
+  {
+    h->db->close(h->db, 0);
+    h->env->close(h->env, 0);
+    mx_unlock_file(h->lockfile, h->fd, 0);
+    close(h->fd);
+    FREE(&h);
+    return NULL;
+  }
 
-	ret = h->db->open(h->db, NULL, path, folder, DB_BTREE, createflags, 0600);
-	if (ret) {
-		h->db->close(h->db, 0);
-		h->env->close(h->env, 0);
-		mx_unlock_file(h->lockfile, h->fd, 0);
-		close(h->fd);
-		FREE(& h);
-		return NULL;
-	}
-
-	return h;
+  return h;
 }
 
 void
 mutt_hcache_close(void *db)
 {
-	struct header_cache *h = db;
-	int ret;
+  struct header_cache *h = db;
+  int ret;
 
-	if (! h) {
-		return;
-	}
+  if (!h)
+    return;
 
-	h->db->close(h->db, 0);
-	h->env->close(h->env, 0);
-	mx_unlock_file(h->lockfile, h->fd, 0);
-	close(h->fd);
-	FREE(& h);
+  h->db->close(h->db, 0);
+  h->env->close(h->env, 0);
+  mx_unlock_file(h->lockfile, h->fd, 0);
+  close(h->fd);
+  FREE(&h);
 }
 
 void *
-mutt_hcache_fetch(void *db, const char *filename, size_t (*keylen)(const char *fn))
+mutt_hcache_fetch(void *db, const char *filename,
+		  size_t(*keylen) (const char *fn))
 {
-	DBT key;
-	DBT data;
-	struct header_cache *h = db;
+  DBT key;
+  DBT data;
+  struct header_cache *h = db;
 
-	if (! h) {
-		return NULL;
-	}
+  if (!h)
+    return NULL;
 
-	filename++; /* skip '/' */
+  filename++;			/* skip '/' */
 
-	mutt_hcache_dbt_init(&key, (void *) filename, keylen(filename));
-	mutt_hcache_dbt_empty_init(&data);
-	data.flags = DB_DBT_MALLOC;
+  mutt_hcache_dbt_init(&key, (void *) filename, keylen(filename));
+  mutt_hcache_dbt_empty_init(&data);
+  data.flags = DB_DBT_MALLOC;
 
-	h->db->get(h->db, NULL, &key, &data, 0);
+  h->db->get(h->db, NULL, &key, &data, 0);
 
-	if (! crc32_matches(data.data, h->crc)) {
-		FREE(&data.data);
-		return NULL;
-	}
+  if (!crc32_matches(data.data, h->crc))
+  {
+    FREE(&data.data);
+    return NULL;
+  }
 
-	return data.data;
+  return data.data;
 }
 
 int
-mutt_hcache_store(void *db, const char *filename, HEADER *header, unsigned long long uid_validity, size_t (*keylen)(const char *fn))
+mutt_hcache_store(void *db, const char *filename, HEADER * header,
+		  unsigned long long uid_validity,
+		  size_t(*keylen) (const char *fn))
 {
-	DBT key;
-	DBT data;
-	int ret;
-	struct header_cache *h = db;
+  DBT key;
+  DBT data;
+  int ret;
+  struct header_cache *h = db;
 
-	if (! h) {
-		return -1;
-	}
+  if (!h)
+    return -1;
 
-	filename++; /* skip '/' */
+  filename++;			/* skip '/' */
 
-	mutt_hcache_dbt_init(&key, (void *) filename, keylen(filename));
+  mutt_hcache_dbt_init(&key, (void *) filename, keylen(filename));
 
-	mutt_hcache_dbt_empty_init(&data);
-	data.flags = DB_DBT_USERMEM;
-	data.data = mutt_hcache_dump(db, header, (signed int *) &data.size, uid_validity);
-	data.ulen = data.size;
+  mutt_hcache_dbt_empty_init(&data);
+  data.flags = DB_DBT_USERMEM;
+  data.data = mutt_hcache_dump(db, header, (signed int *) &data.size,
+	      uid_validity);
+  data.ulen = data.size;
 
-	ret = h->db->put(h->db, NULL, &key, &data, 0);
+  ret = h->db->put(h->db, NULL, &key, &data, 0);
 
-	FREE(& data.data);
+  FREE(&data.data);
 
-	return ret;
+  return ret;
 }
 
 int
-mutt_hcache_delete(void *db, const char *filename, size_t (*keylen)(const char *fn))
+mutt_hcache_delete(void *db, const char *filename,
+		   size_t(*keylen) (const char *fn))
 {
-	DBT key;
-	struct header_cache *h = db;
+  DBT key;
+  struct header_cache *h = db;
 
-	if (! h) {
-		return -1;
-	}
+  if (!h)
+    return -1;
 
-	filename++; /* skip '/' */
+  filename++;			/* skip '/' */
 
-	mutt_hcache_dbt_init(&key, (void *) filename, keylen(filename));
-	return h->db->del(h->db, NULL, &key, 0);
+  mutt_hcache_dbt_init(&key, (void *) filename, keylen(filename));
+  return h->db->del(h->db, NULL, &key, 0);
 }
 #endif
