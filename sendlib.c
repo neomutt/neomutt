@@ -552,6 +552,9 @@ static void update_content_info (CONTENT *info, CONTENT_STATE *s, char *d, size_
   {
     if (was_cr)
       info->binary = 1;
+    if (linelen > info->linemax)
+      info->linemax = linelen;
+
     return;
   }
 
@@ -641,6 +644,7 @@ static void update_content_info (CONTENT *info, CONTENT_STATE *s, char *d, size_
   s->dot = dot;
   s->linelen = linelen;
   s->was_cr = was_cr;
+  
 }
 
 /* Define as 1 if iconv sometimes returns -1(EILSEQ) instead of transcribing. */
