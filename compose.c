@@ -205,7 +205,6 @@ static int pgp_send_menu (int bits, int *redraw)
     }
     break;
 
-  case -1: /* abort */
   case 6: /* (f)orget it */
     bits = 0;
     break;
