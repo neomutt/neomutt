@@ -1,3 +1,10 @@
+2005-02-12 19:19:25  Derek Martin  <invalid@pizzashack.org>  (roessler)
+
+	* mutt.h, commands.c, curs_main.c, init.h: pgp-auto-decode: When
+	$pgp_auto_decode is set, then mutt will check for traditional
+	pgp on certain operations.  This is similar (but NOT identical)
+	to the behavior known from PGP/MIME messages.
+
 2005-02-12 19:12:40  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
 
 	* alias.c, doc/manual.sgml.head, globals.h, hdrline.c, init.c,
