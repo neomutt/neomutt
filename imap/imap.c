@@ -1285,7 +1285,6 @@ int imap_sync_mailbox (CONTEXT *ctx, int expunge)
   char flags[LONG_STRING];
   char tmp[LONG_STRING];
   int n;
-  int setstart = 0;
 
   if (CTX_DATA->state != IMAP_SELECTED)
   {
@@ -1296,10 +1295,20 @@ int imap_sync_mailbox (CONTEXT *ctx, int expunge)
   /* if we are expunging anyway, we can do deleted messages very quickly... */
   if (expunge && mutt_bit_isset (CTX_DATA->rights, IMAP_ACL_DELETE))
   {
+    int setstart = 0;
+    HEADER** hdrs;
+
     buf[0] = '\0';
+
+    /* make copy of header pointers to sort in natural order */
+    hdrs = safe_calloc (ctx->msgcount, sizeof (HEADER*));
+    memcpy (hdrs, ctx->hdrs, ctx->msgcount * sizeof (HEADER*));
+    qsort ((void*) hdrs, ctx->msgcount, sizeof (HEADER*),
+      mutt_get_sort_func (SORT_ORDER));
+
     for (n = 0; n < ctx->msgcount; n++)
     {
-      if (ctx->hdrs[n]->changed && ctx->hdrs[n]->deleted)
+      if (hdrs[n]->changed && hdrs[n]->deleted)
       {
         if (setstart == 0)
         {
@@ -1319,15 +1328,21 @@ int imap_sync_mailbox (CONTEXT *ctx, int expunge)
           snprintf (buf, sizeof (buf), "%s:%u", tmp, n+1);
         }
         /* the normal flag update can skip this message */
-        ctx->hdrs[n]->changed = 0;
+        hdrs[n]->changed = 0;
       }
-      else if (setstart && (n > setstart))
+      else if (setstart)
       {
+        if (n > setstart)
+        {
+          strncpy (tmp, buf, sizeof (tmp));
+          snprintf (buf, sizeof (buf), "%s:%u", tmp, n);
+        }
         setstart = 0;
-        strncpy (tmp, buf, sizeof (tmp));
-        snprintf (buf, sizeof (buf), "%s:%u", tmp, n);
       }
     }
+
+    safe_free ((void**) &hdrs);
+
     /* if we have a message set, then let's delete */
     if (buf[0])
     {

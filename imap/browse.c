@@ -162,7 +162,7 @@ int imap_init_browse (char *path, struct browser_state *state)
      *  folder + delimiter. Cyrus servers don't. So we ask for folder,
      *  and tack on delimiter ourselves. */
     for (n--; n >= 0 && mbox[n] != idata->delim ; n--);
-    if (n > 0)			/* "aaaa/bbbb/" -> "aaaa/" */
+    if (n > 0)			/* "aaaa/bbbb/" -> "aaaa" */
     {
       ctmp = mbox[n];
       mbox[n] = '\0';
