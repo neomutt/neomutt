@@ -1454,6 +1454,7 @@ messages:
 ~T              tagged messages
 ~t USER         messages addressed to USER
 ~U              unread messages
+~v		message is part of a collapsed thread.
 ~x EXPR         messages which contain EXPR in the `References' field
 ~z [MIN]-[MAX]  messages with a size in the range MIN to MAX *)
 </verb></tscreen>
