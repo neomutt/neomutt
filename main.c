@@ -784,6 +784,8 @@ int main (int argc, char **argv)
       strfcpy (folder, NONULL(Spoolfile), sizeof (folder));
     mutt_expand_path (folder, sizeof (folder));
 
+    mutt_str_replace (&LastFolder, folder);
+
     if (flags & M_IGNORE)
     {
       struct stat st;
