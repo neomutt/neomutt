@@ -14,7 +14,14 @@
 
 set -e
 
-# devel="devel/"	# comment out for the stable branch
+if test "$1" = "-nodiff" ; then
+	diff=no
+else
+	diff=yes
+fi
+
+
+devel="devel/"	# comment out for the stable branch
 
 # update the source
 
@@ -66,13 +73,19 @@ cvs tag ${TAG}
 
 # build the diff between the two releases
 
-cvs rdiff -u -r ${OTAG} -r ${TAG} mutt | gzip -9 \
-	> diff-${OVERSION}i-${VERSION}i.gz
+if test "$diff" = yes ; then
+	cvs rdiff -u -r ${OTAG} -r ${TAG} mutt | gzip -9 \
+		> diff-${OVERSION}i-${VERSION}i.gz
+fi
 
 # sign the various files
 
 # DISTFILES="mutt-${VERSION}.tar.gz mutt-${VERSION}i.tar.gz diff-${OVERSION}i-${VERSION}i.gz"
-DISTFILES="mutt-${VERSION}i.tar.gz diff-${OVERSION}i-${VERSION}i.gz"
+DISTFILES="mutt-${VERSION}i.tar.gz"
+
+if test "$diff" = yes ; then
+	DISTFILES="$DISTFILES diff-${OVERSION}i-${VERSION}i.gz"
+fi
 
 for f in $DISTFILES; do
 	pgp -sb $f
@@ -86,7 +99,7 @@ read dummy
 
 for f in $DISTFILES ; do
 #	scp1 $f $f.asc sigtrap.guug.de:/home/ftp/pub/mutt/${devel}
-	scp1 $f $f.asc trithemius.gnupg.org:/home/ftp/pub/mutt/${devel}
+	scp $f $f.asc trithemius.gnupg.org:/home/ftp/pub/mutt/${devel}
 done
 
 $HOME/bin/upload-cvs
