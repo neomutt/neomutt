@@ -1,3 +1,10 @@
+2003-12-29 11:37:41  Patrick Welche  <prlw1@newn.cam.ac.uk>  (roessler)
+
+	* m4/gssapi.m4, mutt_sasl.c: A while ago I posted a similar
+	patch which is necessary as when mutt tries to connect to an
+	imap server over ipv6 it stores the address in a sockaddr which
+	may not be large enough to hold the ipv6 address.
+
 2003-12-17 17:42:02  Scott Koranda  <skoranda@gravity.phys.uwm.edu>  (roessler)
 
 	* crypt.c: pkcs7-signature wasn't recognized properly in one
