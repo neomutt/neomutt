@@ -1,5 +1,10 @@
 In no particular order:
 
+19991028: The code to refetch message flags while fetching messages so they
+  don't have to be stored on close seems to have been broken. I am suspicious
+  of the changes to use mutt_flag_set globally instead of tuning them
+  manually...
+
 * Mutt doesn't handle timeouts or dropped connections gracefully. You
   may see occasional segfaults. Solving this cleanly requires some major
   architectural updates. Until that happens, I recommend you keep
@@ -12,17 +17,27 @@ In no particular order:
 * Mutt sometimes doesn't notice new mail has arrived until you've opened
   another folder, leading to the wrong number of messages being downloaded.
   To make matters worse, imap_read_headers doesn't detect the * BAD response.
+  --> note: although the command structure may change, currently this can
+      be handled by adding imap_cmd_finish after any command which may
+      operate in the SELECTED state.
+      Also any code that does SELECT (eg imap_open_mailbox) should be
+      taking care to reset IMAP_DATA state on success. Apparently it's not.
 
 * Mutt marks your connection for logout as soon as you say quit, even if
   you bail out with ^G later.
+  --> This should be fixed by not using imap_set_logout. Instead there
+      should be a function which loops through all connections and logs
+      out of them one at a time. Multiple connections haven't gotten much
+      testing.
 
 * Mutt is uninterruptible during socket calls. We should handle SIGINT.
 
-* Not really an IMAP bug, but postponed-message checking is done too often,
-  incurring needless network overhead.
-
 * Server copy currently doesn't take into account uncommitted changes in
   messages about to be copied. Sync first.
+  --> walk tagged or individual message looking for changes, sync those?
+      may require further additions to imap_make_msg_set and breaking up
+      imap_sync_mailbox, otherwise shouldn't be too bad. Not currently a
+      major priority, though - noone's gotten bit by this.
 
 * Have a hard time when the home namespace isn't default "".
 
@@ -33,4 +48,4 @@ In no particular order:
 * The mutt_pretty routines don't work well when the delimiter isn't '/'.
 
 Brendan Cully <brendan@kublai.com>
-Updated 19991013
+Updated 19991028
