@@ -145,8 +145,7 @@ char *safe_strdup (const char *s)
 
 void mutt_str_replace (char **p, const char *s)
 {
-  if (*p)
-    free (*p);
+  safe_free ((void **) p);
   *p = safe_strdup (s);
 }
 
