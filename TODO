@@ -1,10 +1,10 @@
-This list tries to cover the open problems we have with
-mutt.  It's compiled from the old BUGS and TODO files in
-the distribution, from recent mutt-dev postings, and from
-other messages relating to problems and/or wishes with
-mutt.
+Problems are listed in approximate order of priority.
 
-I'm listing the problems in approximate order of priority.
+- Re-visit nametemplate support.  Currently, we use
+  symbolic links in our temporary directory for this. When
+  using /tmp, this may have security implementations and
+  introduce race conditions.
+
 
 - Fix the "unexpected EXPUNGE" IMAP bug.
 
@@ -52,9 +52,6 @@ I'm listing the problems in approximate order of priority.
   can't be read from the other one.
 
 
-- Re-visit nametemplate support.  Currently, we use
-  symbolic links in our temporary directory for this.
-
 
 - BODY struct should probably have a pointer to its
   corresponding HEADER struct.  this is needed for
@@ -68,8 +65,8 @@ I'm listing the problems in approximate order of priority.
 - handle message/external-body in some fashion
 
 - handle message/partial reconstruction
-  
+
 - not possible to view the header of a single part message
-  which contains something that requires a mailcap entry to
-  view
-  
+  which contains something that requires a mailcap entry
+  to view
+

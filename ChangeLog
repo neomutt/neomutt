@@ -1,4 +1,238 @@
-Mon Aug 24 09:24:28 1998  Thomas Roessler  <roessler@guug.de>
+Fri Sep  4 15:53:27 1998  Thomas Roessler  <roessler@guug.de>
+
+	* sendlib.c: Catch MIME parameters with p->value
+	== NULL.
+
+	* sendlib.c: Fixing a memory leak in
+	mutt_prepare_envelope().
+
+Tue Sep  1 06:54:53 1998  Thomas Roessler  <roessler@guug.de>
+
+	* imap.c: IMAP fixes from Nathan Neulinger.
+	(<19980831170941.A7327@umr.edu> on mutt-dev.)
+
+Mon Aug 31 16:46:29 1998  Thomas Roessler  <roessler@guug.de>
+
+	* send.c: Fix a small problem with Liviu's
+	attach_fcc patch.
+
+	* compose.c: Updating to
+	patch-0.94.4.vikas.attach_message.3.
+
+	* thread.c, protos.h, mutt.h, init.h, hdrline.c,
+	curs_main.c: Updating to
+	patch-0.94.4.vikas.collapse.3.
+
+Sat Aug 29 08:27:02 1998  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.txt, doc/manual.sgml: Correct an
+	editor key binding example.
+
+Fri Aug 28 19:09:24 1998  Thomas Roessler  <roessler@guug.de>
+
+	* send.c, pgp.h, pgp.c: Cleaning up the fcc_attach
+	hack.  From Liviu.
+
+	* functions.h, browser.c, OPS:
+	[patch-0.94.4i.tlr.display_filename.1] Introduce a
+	new function "display-filename" which displays the
+	currently selected file's name on the message
+	line.
+
+	* attach.c: [patch-0.94.4i.tlr.get_attachment.1-2]
+	Get the attachment time stamping business right.
+
+	* protos.h, functions.h, compose.c, attach.c, OPS:
+	[patch-0.94.4i.tlr.get_attachment.1] Create a new
+	"get-attachment" function on the compose menu
+	which will copy an attachment to a temporary file.
+
+	* compose.c: [patch-0.94.4.vikas.attach_message.1]
+	Cleaning up some of the attach-message code.
+
+	* thread.c: removing superfluous include
+	statements.
+
+Thu Aug 27 23:51:58 1998  Thomas Roessler  <roessler@guug.de>
+
+	* curs_main.c: code cosmetics.
+
+	* thread.c, sort.c, protos.h, pattern.c, mx.c,
+	mutt.h, mbox.c, init.h, hdrline.c, functions.h,
+	curs_main.c, OPS: [patch-0.94.4.vikas.collapse.2]
+	Vikas' collapse-thread patch.
+
+	* recvattach.c, postpone.c, mutt.h, lib.c,
+	curs_main.c, browser.c, addrbook.c:
+	[patch-0.94.4i.gt.arrowcursor.1] Padding to the
+	end of line/right jusitifying does not work in
+	menus when $arrow_cursor is set, because the extra
+	space needed for the arrow is not taken into
+	account. (From Gero Treuner
+	<gero@faveve.uni-stuttgart.de>)
+
+	* Attic/testmsg, rfc1524.c:
+	[patch-0.94.4i.tlr.shell_quote.1-2] Fix a
+	brain-dead segmentation fault when freeing
+	non-allocated memory.
+
+	* doc/Attic/mutt.sgml: Mh. This seems to have
+	shown up again while cleaning up the CVS branches.
+
+	* sendlib.c, send.c, protos.h, pgp.h, pgp.c: Make
+	$fcc_attach work correctly when sending
+	PGP-encrypted messages.  Hack by Liviu.
+
+	* doc/manual.txt, doc/manual.sgml: Document
+	attach_format. (From: Gero Treuner
+	<gero@faveve.uni-stuttgart.de>)
+
+	* rfc1524.c, protos.h, pgpinvoke.c, mx.c, lib.c,
+	curs_lib.c: [patch-0.94.4i.tlr.shell_quote.1] Try
+	to quote file name arguments and the like for
+	shell commands.
+
+	* pgpkey.c: Minor nit: if you enter the wrong key
+	ID at Mutt's prompt, Mutt should erase the old
+	value --- otherwise people might think it has just
+	hung there. (From Liviu Daia.)
+
+Wed Aug 26 21:12:23 1998  Thomas Roessler  <roessler@guug.de>
+
+	* rfc822.c: Another possible memory leak in
+	rfc822_parse_adrlist.  The problem and the patch
+	are pretty much the same as with the last fix
+	applied to this file - it's just ',' instaed of
+	';' this time.
+
+	* rfc822.c, TODO:
+	[patch-0.94.4i.tlr.rfc822_leak.1] Fixing a memory leak in
+	the rfc822_parse_adrlist().
+
+	Some explanations seem to be in order here.  Let's look at
+	the code:
+
+	   386	    else if (*s == ';')
+	   387	    {
+	   388	      if (phraselen)
+	   389	      {
+	   390		phrase[phraselen] = 0;
+	   391		add_addrspec (&top, &last, phrase, comment, &commentlen, sizeof (comment) - 1);
+	   392	      }
+	   393	      else if (commentlen && !last->personal)
+	   394	      {
+	   395		comment[commentlen] = 0;
+	   396		last->personal = safe_strdup (comment);
+	   397	      }
+	   398	#ifdef EXACT_ADDRESS
+	   399	      if (last && !last->val)
+
+	Line 399 contains the change; previously, it looked like
+	this:
+
+	   399'       if (last)
+
+	   400		last->val = mutt_substrdup (begin, s);
+	   401	#endif
+	   402
+	   403	      /* add group terminator */
+	   404	      cur = rfc822_new_address ();
+	   405	      if (last)
+	   406	      {
+	   407		last->next = cur;
+	   408		last = cur;
+	   409	      }
+	   410
+	   411	      phraselen = 0;
+	   412	      commentlen = 0;
+	   413	      s++;
+	   414	      begin = s;
+	   415	      SKIPWS (begin);
+	   416	    }
+
+	OK, what happens? There are essentially two situations here:
+
+	-> We have already parsed a complete address specification
+	   and know about this fact, but there was no new address
+	   information.  This is the case if we are parsing
+	   through addresses like
+
+		undisclosed-recipients:;
+
+	   or
+
+		recipients: a, b, c,;
+
+	   (Note the extra ',' before the ';'!)
+
+	   In this case, some of the other code in rfc822.c has
+	   already filled in last->val, and we really shouldn't
+	   overwrite that with a NULL pointer.
+
+	-> The ';' finishes an address spec, like in
+
+		recipients: a;
+
+	   In this case, last is either set by add_addrspec(), or
+	   it has already been set by some of the previous code
+	   (comment handling, ...).  Anyway, last->val is still
+	   NULL, so it is correct to write the complete addr spec
+	   to last->val.
+
+	* imap.c: Error message cosmetics.
+
+Tue Aug 25 22:34:58 1998  Thomas Roessler  <roessler@guug.de>
+
+	* rfc1524.c, attach.c, TODO:
+	[patch-0.94.4i.tlr.nametemplate.1] Fix
+	nametemplate support: We should not move the
+	user's files around just to make them match
+	mailcap's idea of their file name. This patch uses
+	symbolic links instead.
+
+	* curs_main.c: [patch-0.94.4i.tlr.synch_fault.1]
+	Start up two mutts. Delete the last message in
+	both of them.  Synchronize the mailbox in both of
+	them. Segmentation fault.
+
+	* TODO: adding a few notes.
+
+	* commands.c: If you issue "decode-save" on an
+	encrypted message without reading it first, Mutt
+	won't prompt you for a passphrase, and it will
+	happily write an empty message, deleting the
+	original.  (From an unnamed colleague of Liviu
+	Daia.)
+
+	* imap.c: [patch-0.94.4i.tlr.imap_newline.2] Use
+	cr nl instead of single nl when uploading a
+	message to an imap server.
+
+	* sendlib.c, protos.h, postpone.c, compose.c:
+	[patch-0.94.4i.tlr.encoding.1] Fix
+	content-transfer-encoding updates when renaming
+	files from the compose menu and when recalling
+	postponed messages.
+
+	* imap.c: s/free/FREE/
+
+Mon Aug 24 19:40:35 1998  Thomas Roessler  <roessler@guug.de>
+
+	* TODO, Attic/BUGS: Compile BUGS and TODO into a
+	comprehensive issue list.
+
+	* Attic/BUGS: Clean up the bug list.
+
+	* reldate.h, configure.in, configure, ChangeLog:
+	0.94.4i.
+
+	* doc/manual.txt, doc/manual.sgml: Documenting
+	$hidden_host.
+
+	* thread.c, curs_main.c: Fix "previous-subthread"
+	in reverse-threads mode, allow next-(sub)thread
+	and previous-(sub)thread to work in limited mode.
+	(From: Liviu Daia)
 
 	* doc/manual.txt, doc/manual.sgml: Documenting $hidden_host.
 
