@@ -154,9 +154,11 @@ typedef enum
 #define M_TREE_RARROW		7
 #define M_TREE_STAR		8
 #define M_TREE_HIDDEN		9
-#define M_TREE_MISSING		10
-#define M_TREE_EQUALS		11
-#define M_TREE_MAX		12
+#define M_TREE_EQUALS		10
+#define M_TREE_TTEE		11
+#define M_TREE_BTEE		12
+#define M_TREE_MISSING		13
+#define M_TREE_MAX		14
 
 #define M_THREAD_COLLAPSE	(1<<0)
 #define M_THREAD_UNCOLLAPSE	(1<<1)

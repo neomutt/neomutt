@@ -181,6 +181,7 @@ void mutt_sort_headers (CONTEXT *ctx, int init)
   THREAD *thread, *top;
   sort_t *sortfunc;
   
+  init = 1; /* XXX temporary bug workaround (hopefully!) */
   unset_option (OPTNEEDRESORT);
 
   if (!ctx)

@@ -114,7 +114,6 @@ static int is_next_displayed (CONTEXT *ctx, THREAD *tree)
   return (0);
 }
 
-
 /* Since the graphics characters have a value >255, I have to resort to
  * using escape sequences to pass the information to print_enriched_string().
  * These are the macros M_TREE_* defined in mutt.h.
@@ -126,15 +125,24 @@ static int is_next_displayed (CONTEXT *ctx, THREAD *tree)
 void mutt_linearize_tree (CONTEXT *ctx, int linearize)
 {
   char *pfx = NULL, *mypfx = NULL, *arrow = NULL, *myarrow = NULL;
-  char corner = Sort & SORT_REVERSE ? M_TREE_ULCORNER : M_TREE_LLCORNER;
+  char corner = (Sort & SORT_REVERSE) ? M_TREE_ULCORNER : M_TREE_LLCORNER;
+  char vtee = (Sort & SORT_REVERSE) ? M_TREE_BTEE : M_TREE_TTEE;
   int depth = 0, start_depth = 0, max_depth = 0, max_width = 0;
-  int nextdisp = 0, visible;
+  int nextdisp = 0, visible, pseudo = 0;
   THREAD *tree = ctx->tree;
   HEADER **array = ctx->hdrs + (Sort & SORT_REVERSE ? ctx->msgcount - 1 : 0);
   HEADER *hdr;
 
-  FOREVER
+  while (tree)
   {
+    if (depth >= max_depth)
+      safe_realloc ((void **) &pfx,
+		    (max_depth += 32) * 2 * sizeof (char));
+
+    if (depth - start_depth >= max_width)
+      safe_realloc ((void **) &arrow,
+		    (max_width += 16) * 2 * sizeof (char));
+
     hdr = tree->message;
 
     if (hdr)
@@ -147,33 +155,27 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
     else
       visible = 0;
 
-    if (depth >= max_depth)
-      safe_realloc ((void **) &pfx,
-		    (max_depth += 32) * 2 * sizeof (char));
-
-    if (depth - start_depth >= max_width)
-      safe_realloc ((void **) &arrow,
-		    (max_width += 16) * 2 * sizeof (char));
-
     if (depth)
     {
       myarrow = arrow + (depth - start_depth - (start_depth ? 0 : 1)) * 2;
-      nextdisp = is_next_displayed (ctx, tree);
       
       if (depth && start_depth == depth)
 	myarrow[0] = nextdisp ? M_TREE_LTEE : corner;
+      else if (tree->parent->message)
+	myarrow[0] = M_TREE_HIDDEN;
+      else if (option (OPTHIDEMISSING))
+	myarrow[0] = nextdisp ? vtee : M_TREE_HLINE;
       else
-	myarrow[0] = tree->parent->message ? M_TREE_HIDDEN : M_TREE_MISSING;
-      myarrow[1] = (tree->fake_thread ?  M_TREE_STAR
-		    : (tree->duplicate_thread ? M_TREE_EQUALS : M_TREE_HLINE));
+	myarrow[0] = M_TREE_MISSING;
+      myarrow[1] = pseudo ?  M_TREE_STAR
+		    : (tree->duplicate_thread ? M_TREE_EQUALS : M_TREE_HLINE);
+      pseudo = 0;
+
       if (visible)
       {
 	myarrow[2] = M_TREE_RARROW;
 	myarrow[3] = 0;
-      }
 
-      if (visible)
-      {
 	hdr->tree = safe_malloc ((2 + depth * 2) * sizeof (char));
 	if (start_depth > 1)
 	{
@@ -192,43 +194,62 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
       array += Sort & SORT_REVERSE ? -1 : 1;
     }
 
-    if (tree->child)
+    if (tree->child && depth)
     {
-      if (depth)
-      {
-	mypfx = pfx + (depth - 1) * 2;
-	mypfx[0] = nextdisp ? M_TREE_VLINE : M_TREE_SPACE;
-	mypfx[1] = M_TREE_SPACE;
-      }
-      if (depth || !option (OPTHIDEMISSING)
-	  || tree->message || tree->child->next)
-	depth++;
-      if (visible)
-        start_depth = depth;
-      tree = tree->child;
-      hdr = tree->message;
+      mypfx = pfx + (depth - 1) * 2;
+      mypfx[0] = nextdisp ? M_TREE_VLINE : M_TREE_SPACE;
+      mypfx[1] = M_TREE_SPACE;
     }
-    else
+
+    nextdisp = 0;
+
+    do
     {
-      while (!tree->next && tree->parent)
+      if (tree->child)
       {
+	if (hdr || !option (OPTHIDEMISSING) || tree->child->next)
+	{
+	  depth++;
+	  if (visible)
+	    start_depth = depth;
+	}
+
+	tree = tree->child;
+	if (tree->fake_thread)
+	  pseudo = 1;
+	if (!nextdisp)
+	  nextdisp = is_next_displayed (ctx, tree);
+	hdr = tree->message;
+      }
+      else
+      {
+	while (!tree->next && tree->parent)
+	{
+	  if (hdr && VISIBLE (hdr, ctx))
+	    start_depth = depth;
+
+	  tree = tree->parent;
+	  hdr = tree->message;
+
+	  if (hdr || !option (OPTHIDEMISSING) || tree->child->next)
+	  {
+	    if (start_depth == depth)
+	      start_depth--;
+	    depth--;
+	  }
+	}
+
 	if (hdr && VISIBLE (hdr, ctx))
 	  start_depth = depth;
-	tree = tree->parent;
+	tree = tree->next;
+	if (!tree)
+	  break;
+	if (!nextdisp)
+	  nextdisp = is_next_displayed (ctx, tree);
 	hdr = tree->message;
-	if (depth)
-	{
-	  if (start_depth == depth)
-	    start_depth--;
-	  depth--;
-	}
       }
-      if (hdr && VISIBLE (hdr, ctx))
-	start_depth = depth;
-      tree = tree->next;
-      if (!tree)
-	break;
     }
+    while (!(hdr || !option (OPTHIDEMISSING) || tree->child->next));
   }
 
   safe_free ((void **) &pfx);
@@ -857,7 +878,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
   mutt_linearize_tree (ctx, 1);
 }
 
-static HEADER *find_virtual (THREAD *cur)
+static HEADER *find_virtual (THREAD *cur, int reverse)
 {
   THREAD *top;
 
@@ -868,24 +889,32 @@ static HEADER *find_virtual (THREAD *cur)
   if ((cur = cur->child) == NULL)
     return (NULL);
 
+  while (reverse && cur->next)
+    cur = cur->next;
+
   FOREVER
   {
     if (cur->message && cur->message->virtual >= 0)
       return (cur->message);
 
     if (cur->child)
+    {
       cur = cur->child;
-    else if (cur->next)
-      cur = cur->next;
+
+      while (reverse && cur->next)
+	cur = cur->next;
+    }
+    else if (reverse ? cur->prev : cur->next)
+      cur = reverse ? cur->prev : cur->next;
     else
     {
-      while (!cur->next)
+      while (!(reverse ? cur->prev : cur->next))
       {
 	cur = cur->parent;
 	if (cur == top)
 	  return (NULL);
       }
-      cur = cur->next;
+      cur = reverse ? cur->prev : cur->next;
     }
     /* not reached */
   }
@@ -930,7 +959,7 @@ int _mutt_aside_thread (HEADER *hdr, short dir, short subthreads)
       cur = cur->next;
       if (!cur)
 	return (-1);
-      tmp = find_virtual (cur);
+      tmp = find_virtual (cur, 0);
     } while (!tmp);
   }
   else
@@ -940,7 +969,7 @@ int _mutt_aside_thread (HEADER *hdr, short dir, short subthreads)
       cur = cur->prev;
       if (!cur)
 	return (-1);
-      tmp = find_virtual (cur);
+      tmp = find_virtual (cur, 1);
     } while (!tmp);
   }
 
@@ -1050,7 +1079,7 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
     }
   }
 
-  if ((thread = thread->child) == NULL)
+  if (thread == top && (thread = thread->child) == NULL)
   {
     /* return value depends on action requested */
     if (flag & (M_THREAD_COLLAPSE | M_THREAD_UNCOLLAPSE))

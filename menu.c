@@ -88,6 +88,22 @@ static void print_enriched_string (int attr, unsigned char *s, int do_color)
 	    else
 	      addch (ACS_VLINE);
 	    break;
+	  case M_TREE_TTEE:
+	    if (option (OPTASCIICHARS))
+	      addch ('-');
+	    else if (Charset_is_utf8)
+	      addstr ("\342\224\200"); /* FIXME: this is WACS_HLINE but should be WACS_TTEE */
+	    else
+	      addch (ACS_TTEE);
+	    break;
+	  case M_TREE_BTEE:
+	    if (option (OPTASCIICHARS))
+	      addch ('-');
+	    else if (Charset_is_utf8)
+	      addstr ("\342\224\200"); /* FIXME: this is WACS_HLINE but should be WACS_BTEE */
+	    else
+	      addch (ACS_BTEE);
+	    break;
 	  case M_TREE_SPACE:
 	    addch (' ');
 	    break;
@@ -100,11 +116,11 @@ static void print_enriched_string (int attr, unsigned char *s, int do_color)
 	  case M_TREE_HIDDEN:
 	    addch ('&');
 	    break;
-	  case M_TREE_MISSING:
-	    addch ('?');
-	    break;
 	  case M_TREE_EQUALS:
 	    addch ('=');
+	    break;
+	  case M_TREE_MISSING:
+	    addch ('?');
 	    break;
 	}
 	s++, n--;
