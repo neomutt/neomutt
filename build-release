@@ -46,6 +46,7 @@ touch configure.in
 make config.status
 ./config.status
 make update-doc
+make
 
 # build them
 
