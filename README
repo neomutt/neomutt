@@ -1,6 +1,11 @@
 README for mutt-0.95
 ====================
 
+If you got the mutt source code from the public CVS repository (CVS
+root: :pserver:anonymous@ftp.guug.de:/home/roessler/cvs, password
+anonymous), please read doc/devel-notes.txt to make sure that you
+have a complete development environment.
+
 Installation instructions are detailed in ``INSTALL''.
 
 The user manual is in doc/manual.txt.  A list of major changes since

@@ -1,0 +1,16 @@
+#!/bin/sh --
+
+if aclocal && autoconf && autoheader && automake --foreign && ./configure $@
+then
+	echo
+	echo "The mutt source code was successfully prepared."
+	echo "Type make && make install to build and install mutt."
+	echo
+else
+	echo
+	echo "Some part of the preparation process failed."
+	echo "Please refer to doc/building-from-cvs.txt for"
+	echo "details."
+	echo
+	exit 1
+fi

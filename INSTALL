@@ -40,10 +40,15 @@ Installation
 
 Installing Mutt is rather painless through the use of the GNU
 autoconf package.  Simply untar the Mutt distribution, and run the
-``configure'' script.  In most cases, it will automatically determine
-everything it needs to know in order to compile.  However, there are
-a few options to ``configure'' to help it out, or change the default
-behavior:
+``configure'' script.  If you have obtained the distribution from
+the CVS repository, run the ``prepare'' script with the same command
+line parameters you would pass to configure.  It will set up mutt's
+build environment and add the files which are present in the tar
+balls, but not in the CVS repository.
+
+In most cases, configure will automatically determine everything it
+needs to know in order to compile.  However, there are a few options
+to ``configure'' to help it out, or change the default behavior:
 
 --prefix=DIR
 	install Mutt in DIR instead of /usr/local
