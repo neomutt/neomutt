@@ -407,10 +407,10 @@ int mutt_write_mime_header (BODY *a, FILE *f)
   if (a->description)
     fprintf(f, "Content-Description: %s\n", a->description);
 
-  if (a->use_disp && (a->disposition == DISPATTACH || a->filename || a->d_filename))
-  {
-    fprintf (f, "Content-Disposition: %s", DISPOSITION (a->disposition));
+  fprintf (f, "Content-Disposition: %s", DISPOSITION (a->disposition));
 
+  if (a->use_disp)
+  {
     if(!(fn = a->d_filename))
       fn = a->filename;
     
@@ -427,9 +427,9 @@ int mutt_write_mime_header (BODY *a, FILE *f)
       rfc822_cat (buffer, sizeof (buffer), tmp, MimeSpecials);
       fprintf (f, "; filename%s=%s", encode ? "*" : "", buffer);
     }
-
-    fputc ('\n', f);
   }
+
+  fputc ('\n', f);
 
   if (a->encoding != ENC7BIT)
     fprintf(f, "Content-Transfer-Encoding: %s\n", ENCODING (a->encoding));
@@ -999,6 +999,7 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
   body->filename = safe_strdup (buffer);
   body->unlink = 1;
   body->use_disp = 0;
+  body->disposition = DISPINLINE;
 
   mutt_parse_mime_message (ctx, hdr);
 
@@ -1143,6 +1144,7 @@ BODY *mutt_make_multipart (BODY *b)
   new->encoding = get_toplevel_encoding (b);
   mutt_generate_boundary (&new->parameter);
   new->use_disp = 0;  
+  new->disposition = DISPINLINE;
   new->parts = b;
 
   return new;

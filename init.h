@@ -177,7 +177,7 @@ struct option_t MuttVars[] = {
   ** If set, Mutt will prompt you for carbon-copy (Cc) recipients before
   ** editing the body of an outgoing message.
   */  
-  { "attach_format",	DT_STR,  R_NONE, UL &AttachFormat, UL "%u%D%t%4n %T%.40d%> [%.7m/%.10M, %.6e%?C?, %C?, %s] " },
+  { "attach_format",	DT_STR,  R_NONE, UL &AttachFormat, UL "%u%D%t%I%4n %T%.40d%> [%.7m/%.10M, %.6e%?C?, %C?, %s] " },
   /*
   ** .pp
   ** This variable describes the format of the `attachment' menu.  The
@@ -188,6 +188,7 @@ struct option_t MuttVars[] = {
   ** %d      description
   ** %e      MIME content-transfer-encoding
   ** %f      filename
+  ** %I      disposition (I=inline, A=attachment)
   ** %m      major MIME type
   ** %M      MIME subtype
   ** %n      attachment number

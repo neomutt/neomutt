@@ -370,11 +370,12 @@ BODY *mutt_read_mime_header (FILE *fp, int digest)
   char *line = safe_malloc (LONG_STRING);
   size_t linelen = LONG_STRING;
   
-  p->hdr_offset = ftell(fp);
+  p->hdr_offset  = ftell(fp);
 
-  p->encoding = ENC7BIT; /* default from RFC1521 */
-  p->type = digest ? TYPEMESSAGE : TYPETEXT;
-
+  p->encoding    = ENC7BIT; /* default from RFC1521 */
+  p->type        = digest ? TYPEMESSAGE : TYPETEXT;
+  p->disposition = DISPINLINE;
+  
   while (*(line = read_rfc822_line (fp, line, &linelen)) != 0)
   {
     /* Find the value of the current header */
@@ -887,10 +888,13 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
       hdr->content = mutt_new_body ();
 
       /* set the defaults from RFC1521 */
-      hdr->content->type = TYPETEXT;
-      hdr->content->subtype = safe_strdup ("plain");
-      hdr->content->encoding = ENC7BIT;
-      hdr->content->length = -1;
+      hdr->content->type        = TYPETEXT;
+      hdr->content->subtype     = safe_strdup ("plain");
+      hdr->content->encoding    = ENC7BIT;
+      hdr->content->length      = -1;
+
+      /* RFC 2183 says this is arbitrary */
+      hdr->content->disposition = DISPINLINE;
     }
   }
 

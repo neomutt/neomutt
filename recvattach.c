@@ -161,6 +161,7 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
  * %d = description
  * %e = MIME content-transfer-encoding
  * %f = filename
+ * %I = content-disposition, either I (inline) or A (attachment)
  * %t = tagged flag
  * %m = major MIME type
  * %M = MIME subtype
@@ -273,6 +274,13 @@ const char *mutt_attach_fmt (char *dest,
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, ENCODING (aptr->content->encoding));
+      }
+      break;
+    case 'I':
+      if (!optional)
+      {
+	  snprintf (dest, destlen, "%c",
+		  (aptr->content->disposition == DISPINLINE) ? 'I' : 'A');
       }
       break;
     case 'm':

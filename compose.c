@@ -845,6 +845,12 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	}
         break;
       
+      case OP_COMPOSE_TOGGLE_DISPOSITION:
+	/* toggle the content-disposition between inline/attachment */
+	idx[menu->current]->content->disposition = (idx[menu->current]->content->disposition == DISPINLINE) ? DISPATTACH : DISPINLINE;
+	menu->redraw = REDRAW_CURRENT;
+	break;
+
       case OP_EDIT_TYPE:
 	CHECK_COUNT;
         {

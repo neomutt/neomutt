@@ -1122,8 +1122,9 @@ static BODY *pgp_sign_message (BODY *a)
   t = mutt_new_body ();
   t->type = TYPEMULTIPART;
   t->subtype = safe_strdup ("signed");
-  t->use_disp = 0;
   t->encoding = ENC7BIT;
+  t->use_disp = 0;
+  t->disposition = DISPINLINE;
 
   mutt_generate_boundary (&t->parameter);
   mutt_set_parameter ("protocol", "application/pgp-signature", &t->parameter);
@@ -1138,6 +1139,7 @@ static BODY *pgp_sign_message (BODY *a)
   t->subtype = safe_strdup ("pgp-signature");
   t->filename = safe_strdup (sigfile);
   t->use_disp = 0;
+  t->disposition = DISPINLINE;
   t->encoding = ENC7BIT;
   t->unlink = 1; /* ok to remove this file after sending. */
 
@@ -1345,6 +1347,7 @@ static BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
   t->subtype = safe_strdup ("encrypted");
   t->encoding = ENC7BIT;
   t->use_disp = 0;
+  t->disposition = DISPINLINE;
 
   mutt_generate_boundary(&t->parameter);
   mutt_set_parameter("protocol", "application/pgp-encrypted", &t->parameter);
@@ -1353,7 +1356,9 @@ static BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
   t->parts->type = TYPEAPPLICATION;
   t->parts->subtype = safe_strdup ("pgp-encrypted");
   t->parts->encoding = ENC7BIT;
-  t->parts->use_disp = 0;
+  t->parts->use_disp = 1;
+  t->parts->disposition = DISPINLINE;
+  t->parts->d_filename = safe_strdup ("msg.asc"); /* non pgp/mime can save */
 
   t->parts->next = mutt_new_body ();
   t->parts->next->type = TYPEAPPLICATION;
@@ -1361,6 +1366,7 @@ static BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
   t->parts->next->encoding = ENC7BIT;
   t->parts->next->filename = safe_strdup (tempfile);
   t->parts->next->use_disp = 0;
+  t->parts->next->disposition = DISPINLINE;
   t->parts->next->unlink = 1; /* delete after sending the message */
 
   return (t);

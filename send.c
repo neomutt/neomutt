@@ -1038,6 +1038,7 @@ ci_send_message (int flags,		/* send mode */
     msg->content->subtype = safe_strdup ("plain");
     msg->content->unlink = 1;
     msg->content->use_disp = 0;
+    msg->content->disposition = DISPINLINE;
     
     if (!tempfile)
     {

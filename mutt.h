@@ -519,7 +519,7 @@ typedef struct body
   unsigned int type : 4;        /* content-type primary type */
   unsigned int encoding : 3;    /* content-transfer-encoding */
   unsigned int disposition : 2; /* content-disposition */
-  unsigned int use_disp : 1;    /* Content-Disposition field printed? */
+  unsigned int use_disp : 1;    /* Content-Disposition uses filename= ? */
   unsigned int unlink : 1;      /* flag to indicate the the file named by
 				 * "filename" should be unlink()ed before
 				 * free()ing this structure
