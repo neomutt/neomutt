@@ -18,7 +18,7 @@ bind index y print-message
 bind index x sync-mailbox
 bind index $ sort-mailbox
 bind index a tag-prefix
-bind index ; tag-message
+bind index \; tag-entry
 
 # Not possible to simulate zoom-out...
 macro index z ltagged\r
