@@ -1,3 +1,169 @@
+Sun Oct  7 06:43:52 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* doc/manual.sgml.head: We do update .mh_sequences files now.
+
+Sat Oct  6 09:31:44 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* doc/manual.sgml.head:
+	Documentation for check-traditional-pgp and for edit-type when used
+	in read mode.
+
+Tue Oct  2 22:20:03 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* enter.c: Fix #801.
+
+Mon Oct  1 09:58:49 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* mh.c: Create mh_sequences files when they don't exist.  Suggested by
+	TAKIZAWA Takashi <taki@luna.email.ne.jp>.
+
+Fri Sep 28 08:38:44 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* charset.c: More character set aliases, from Ionel Mugurel Ciobica
+	<tgakic@sg10.chem.tue.nl>.
+
+	* pager.c: Color fix from Brandon Long.  Welcome back!
+
+Wed Sep 26 10:56:52 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* mh.c: OK, I couldn't resist. ;-)
+
+	Depending on the user's usage patterns and configuration, there may
+	be a strong bias in maildir files moving either within the new or to
+	the cur subfolder. This patch adds hit counters for each of these
+	directories. Mutt will then look first into the directory
+	encountered more frequently in the past.  This should help to reduce
+	the cost of chasing messages a bit, and isn't too costly itself.
+
+	(Another possibility for optimization may be to actually base the
+	prediction on the configuration and on the message flags as we know
+	them - in particular, the mark_old and move options could have some
+	effect here.  Thinking about message flags, one could even replace
+	the simple heuristic currently implemented by a matrix recording hit
+	counters depending on flags.  But then again, it's all just playing
+	around, since this function will be invoked only rarely. ;-)
+
+	* attach.c, commands.c, copy.c, copy.h, handler.c, mutt.h, recvattach.c:
+	Fix inconsistencies between printing and displaying of
+	message/rfc822 body parts.
+
+	* attach.c: Fix attachment printing.
+
+	* mh.c, mx.c, mx.h:
+	Search for messages which may have been moving under our feet in
+	maildir folders.  Suggested by Bjoern Jacke.
+
+	* contrib/gpg.rc:
+	Remove --comment '' - it breaks pgpewrap and isn't necessary with
+	more recent gpg versions.
+
+Fri Sep 21 09:35:18 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/pl.po: update
+
+Mon Sep 17 10:19:10 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* send.c: fix #737.
+
+Fri Sep 14 08:19:30 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/id.po: update
+
+Tue Sep 11 12:24:32 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* addrbook.c, alias.c, init.c, menu.c, mutt.h, query.c:
+	More addressbook fixes.
+
+	* addrbook.c, attach.h, browser.c, functions.h, init.c, init.h, keymap.c, keymap.h, menu.c, mutt.h, mutt_menu.h, recvattach.c:
+	The addressbook used to crash when someone issued the alias and
+	unalias commands while on that menu.  This patch has a basic fix for
+	this behaviour, and adds delete and undelete functions to this menu.
+	While I'm on it, I've also made sure that "apply-tag" untags
+	everything on all menus.
+
+	The original crash was noted by Oliver Kauss <kauss@gmx.de>.
+
+Sat Sep  8 14:23:05 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* init.c:
+	Thomas Guettler <thomas@thomas-guettler.de> reports a segfault when
+	you search for "~b \\${".
+
+	* po/zh_TW.po: update
+
+Thu Sep  6 12:10:10 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/pl.po: update
+
+	* curs_main.c:
+	Try to fix a boundary condition: Assume that you are in a limited
+	view which includes the folder's last message.  Display that
+	message.  Wait until a new message is added to the current folder
+	which does NOT match the limit pattern. Press tab.  Mutt would get
+	confused.  I think that this patch fixes the problem (but I'm not
+	entirely sure).
+
+Wed Sep  5 12:09:44 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* sendlib.c: BSD/OS portability fix from Edmund Grimley Evans.  #758.
+
+	* imap/imap.c, init.h:
+	patch-1.3.22.1.remove_warnings.awn.1, from Andrew W. Nosenko.
+
+Tue Sep  4 19:12:23 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/da.po: update
+
+	* imap/util.c, muttlib.c, mutt_socket.c, pop.c, url.c, url.h:
+	patch-bac.canonifypath-4.
+
+	The attached patch reverts the IMAP canonification patch I reverted
+	a version ago (sorry for being so wishy-washy). This time I put in
+	some code to preserve IMAP URL passwords in the initial pass, so
+	people who like to use those sorts of URLs still can. That was the
+	only reason I had reverted the patch before.
+
+	(From Brendan Cully.)
+
+	* po/ja.po, po/ru.po, po/uk.po: updates
+
+	* mutt_tunnel.c: patch-bac.tunnelreopen-1 from Brendan Cully.
+
+Mon Sep  3 13:59:37 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* curs_main.c, thread.c:
+	Don't lose track of the current message when collapsing and changing
+	sort modes wildly.  Noted by David T-G.
+
+	* globals.h, init.h, mh.c, NEWS: Make MH sequences variable.
+
+	* po/de.po: update
+
+	* sendlib.c: Don't try to attach non-regular files.  #754.
+
+Fri Aug 31 09:21:55 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* NEWS: Mention mailto URL support.
+
+	* imap/imap.c, imap/util.c, imap/command.c:
+	Fix some memory leaks.  From Pawel Salek, by way of Brendan Cully.
+
+Thu Aug 30 21:30:39 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/sv.po, po/tr.po, po/uk.po, po/zh_CN.po, po/pt_BR.po, po/ru.po, po/sk.po, po/lt.po, po/nl.po, po/pl.po, po/it.po, po/ja.po, po/ko.po, po/gl.po, po/hu.po, po/id.po, po/et.po, po/fr.po, po/eo.po, po/es.po, po/el.po, po/da.po, po/de.po, ChangeLog, doc/Makefile.in, po/cs.po, VERSION:
+	automatic post-release commit for mutt-1.3.22.1
+
+	* po/uk.po, po/zh_CN.po, po/sk.po, po/sv.po, po/tr.po, po/pt_BR.po, po/ru.po, po/pl.po, po/lt.po, po/nl.po, po/it.po, po/ja.po, po/ko.po, po/hu.po, po/id.po, po/gl.po, po/et.po, po/fr.po, po/eo.po, po/es.po, po/el.po, po/de.po, po/da.po, ChangeLog, po/cs.po, reldate.h, VERSION:
+	automatic post-release commit for mutt-1.3.22
+
+	* contrib/sample.muttrc-tlr: update
+
+	* build-release: more preparations for stabilizing 1.3.
+
+	* Attic/README.UPGRADE, Makefile.am: README.UPGRADE is quite outdated.
+
+	* doc/muttrc.man.head, NEWS: documentation updates.
+
 Thu Aug 30 21:04:34 2001  Thomas Roessler  <roessler@does-not-exist.org>
 
 	* po/uk.po, po/zh_CN.po, po/sk.po, po/sv.po, po/tr.po, po/pt_BR.po, po/ru.po, po/pl.po, po/lt.po, po/nl.po, po/it.po, po/ja.po, po/ko.po, po/hu.po, po/id.po, po/gl.po, po/et.po, po/fr.po, po/eo.po, po/es.po, po/el.po, po/de.po, po/da.po, ChangeLog, po/cs.po, reldate.h, VERSION:
