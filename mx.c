@@ -375,6 +375,16 @@ int mx_get_magic (const char *path)
     snprintf (tmp, sizeof (tmp), "%s/.mew_cache", path);
     if (access (tmp, F_OK) == 0)
       return (M_MH);
+
+    /* 
+     * ok, this isn't an mh folder, but mh mode can be used to read
+     * Usenet news from the spool. ;-) 
+     */
+
+    snprintf (tmp, sizeof (tmp), "%s/.overview", path);
+    if (access (tmp, F_OK) == 0)
+      return (M_MH);
+
   }
   else if (st.st_size == 0)
   {
