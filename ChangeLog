@@ -1,3 +1,7 @@
+2005-01-27 20:52:13  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* main.c: Add USE_INODESORT to main.c's option dump.
+
 2005-01-27 20:38:02  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
 
 	* commands.c: 0. In compose mode, press Ctrl-t to change
