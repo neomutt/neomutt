@@ -681,7 +681,7 @@ void mutt_pretty_mailbox (char *s)
   }
   *q = 0;
 
-  if (mutt_strncmp (s, Maildir, (len = mutt_strlen (Maildir))) == 0)
+  if (Maildir && mutt_strncmp (s, Maildir, (len = mutt_strlen (Maildir))) == 0)
   {
     /* chop off delimiters after Maildir. '.' is a hack because IMAP can
      * use arbitrary delimiters, but we may not have a connection. Could
