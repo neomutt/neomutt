@@ -1,4 +1,6 @@
-2004-08-11 12:30:50  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
+2004-08-11 12:31:21  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
+
+	* imap/imap.c: Fix two IMAP memory leaks.
 
 	* imap/imap.c, imap/imap.h: Remove imap_close_connection.
 
