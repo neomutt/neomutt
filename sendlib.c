@@ -860,7 +860,7 @@ static void mutt_set_encoding (BODY *b, CONTENT *info)
 {
   if (b->type == TYPETEXT)
   {
-    if (info->lobin || (info->from && option (OPTENCODEFROM)))
+    if (info->lobin || info->linemax > 990 || (info->from && option (OPTENCODEFROM)))
       b->encoding = ENCQUOTEDPRINTABLE;
     else if (info->hibin)
       b->encoding = option (OPTALLOW8BIT) ? ENC8BIT : ENCQUOTEDPRINTABLE;
@@ -883,7 +883,8 @@ static void mutt_set_encoding (BODY *b, CONTENT *info)
 	   || info->cr || (option (OPTENCODEFROM) && info->from))
   {
     /* Determine which encoding is smaller  */
-    if (1.33 * (float)(info->lobin+info->hibin+info->ascii) < 3.0 * (float) (info->lobin + info->hibin) + (float)info->ascii)
+    if (1.33 * (float)(info->lobin+info->hibin+info->ascii) < 
+	 3.0 * (float)(info->lobin + info->hibin) + (float)info->ascii)
       b->encoding = ENCBASE64;
     else
       b->encoding = ENCQUOTEDPRINTABLE;
