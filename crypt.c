@@ -180,10 +180,9 @@ int mutt_protect (HEADER *msg, char *keylist)
   if (msg->security & APPLICATION_PGP)
   {
     if ((msg->content->type == TYPETEXT) &&
-	!ascii_strcasecmp (msg->content->subtype, "plain") &&
-	((flags & ENCRYPT) || (msg->content->content && msg->content->content->hibin == 0)))
+	!ascii_strcasecmp (msg->content->subtype, "plain"))
     {
-      if ((i = query_quadoption (OPT_PGPTRADITIONAL, _("Create an application/pgp message?"))) == -1)
+      if ((i = query_quadoption (OPT_PGPTRADITIONAL, _("Create an inline PGP message?"))) == -1)
 	return -1;
       else if (i == M_YES)
 	traditional = 1;
@@ -362,7 +361,11 @@ int crypt_query (BODY *m)
   }
 #ifdef HAVE_PGP
   else if (m->type == TYPETEXT)
+  {
     t |= mutt_is_application_pgp (m);
+    if (t && m->goodsig)
+      t |= GOODSIGN;
+  }
 #endif			  
   
   
@@ -761,7 +764,7 @@ void mutt_signed_handler (BODY *a, STATE *s)
       mutt_unlink (tempfile);
 
       b->goodsig = goodsig;
-      b->badsig = goodsig;
+      b->badsig = goodsig;		/* XXX - WHAT!?!?!? */
       
       /* Now display the signed body */
       state_attach_puts (_("[-- The following data is signed --]\n\n"), s);

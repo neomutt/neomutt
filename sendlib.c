@@ -506,11 +506,11 @@ int mutt_write_mime_body (BODY *a, FILE *f)
     fc = fgetconv_open (fpin, 0, 0, 0);
 
   if (a->encoding == ENCQUOTEDPRINTABLE)
-    encode_quoted (fc, f, mutt_is_text_type (a->type, a->subtype));
+    encode_quoted (fc, f, mutt_is_text_part (a));
   else if (a->encoding == ENCBASE64)
-    encode_base64 (fc, f, mutt_is_text_type (a->type, a->subtype));
+    encode_base64 (fc, f, mutt_is_text_part (a));
   else if (a->type == TYPETEXT && (!a->noconv))
-    encode_8bit (fc, f, mutt_is_text_type (a->type, a->subtype));
+    encode_8bit (fc, f, mutt_is_text_part (a));
   else
     mutt_copy_stream (fpin, f);
 

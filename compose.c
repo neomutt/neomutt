@@ -948,7 +948,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
       case OP_COMPOSE_TOGGLE_RECODE:
       {      
         CHECK_COUNT;
-        if (!mutt_is_text_type (CURRENT->type, CURRENT->subtype))
+        if (!mutt_is_text_part (CURRENT))
         {
 	  mutt_error (_("Recoding only affects text attachments."));
 	  break;

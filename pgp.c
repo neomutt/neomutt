@@ -364,18 +364,27 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 	  state_attach_puts (_("[-- BEGIN PGP SIGNED MESSAGE --]\n\n"), s);
       }
 
-      /* Use PGP's output if there was no clearsig signature. */
-      
+      /*
+       * Use PGP's output if there was no clearsig signature.
+       * Assume it's utf-8.
+       */
+
       if(!clearsign && pgpout)
       {
+	int c;
+	FGETCONV *fc;
+	
 	fflush (pgpout);
 	rewind (pgpout);
-	while (fgets (buf, sizeof (buf) - 1, pgpout) != NULL)
+	
+	fc = fgetconv_open (pgpout, "utf-8", Charset, M_ICONV_HOOK_TO);
+	while ((c = fgetconv (fc)) != EOF)
 	{
-	  if (s->prefix)
+	  state_putc (c, s);
+	  if (c == '\n' && s->prefix)
 	    state_puts (s->prefix, s);
-	  state_puts (buf, s);
 	}
+	fgetconv_close (&fc);
       }
 
       /* Close the temporary files iff they were created. 
@@ -1280,7 +1289,7 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
   char pgperrfile[_POSIX_PATH_MAX];
   char pgpinfile[_POSIX_PATH_MAX];
 
-  char send_charset[STRING];
+  const char *send_charset;
   
   FILE *pgpout = NULL, *pgperr = NULL, *pgpin = NULL;
   FILE *fp;
@@ -1311,8 +1320,28 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
     return NULL;
   }
 
-  mutt_copy_stream (fp, pgpin);
-  fclose (fp);
+  if (!mutt_is_us_ascii (Charset))
+  {
+    int c;
+    FGETCONV *fc;
+    
+    if (flags & ENCRYPT)
+      send_charset = "us-ascii";
+    else
+      send_charset = "utf-8";
+    
+    fc = fgetconv_open (fp, Charset, "utf-8", M_ICONV_HOOK_FROM);
+    while ((c = fgetconv (fc)) != EOF)
+      fputc (c, pgpin);
+    
+    fgetconv_close (&fc);
+  }
+  else
+  {
+    send_charset = "us-ascii";
+    mutt_copy_stream (fp, pgpin);
+  }
+  safe_fclose (&fp);
   fclose (pgpin);
 
   mutt_mktemp (pgpoutfile);
@@ -1387,11 +1416,9 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
   b->type = TYPETEXT;
   b->subtype = safe_strdup ("plain");
   
-  mutt_set_parameter ("x-mutt-action", flags & ENCRYPT ? "pgp-encrypt" : "pgp-sign",
+  mutt_set_parameter ("x-action", flags & ENCRYPT ? "pgp-encrypt" : "pgp-sign",
 		      &b->parameter);
-  mutt_set_parameter ("charset", mutt_get_body_charset (send_charset, 
-							sizeof (send_charset), a), 
-		      &b->parameter);
+  mutt_set_parameter ("charset", send_charset, &b->parameter);
   
   b->filename = safe_strdup (pgpoutfile);
   
@@ -1404,6 +1431,11 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
   b->unlink   = 1;
   b->use_disp = 1;
 
+  b->noconv = 1;
+  
+  if (!(flags & ENCRYPT))
+    b->encoding = a->encoding;
+  
   return b;
 }
 

@@ -1720,7 +1720,7 @@ static void external_body_handler (BODY *b, STATE *s)
 
 void mutt_decode_attachment (BODY *b, STATE *s)
 {
-  int istext = mutt_is_text_type (b->type, b->subtype);
+  int istext = mutt_is_text_part (b);
   iconv_t cd = (iconv_t)(-1);
 
   if (istext && s->flags & M_CHARCONV)
@@ -1879,7 +1879,7 @@ void mutt_body_handler (BODY *b, STATE *s)
     /* see if we need to decode this part before processing it */
     if (b->encoding == ENCBASE64 || b->encoding == ENCQUOTEDPRINTABLE ||
 	b->encoding == ENCUUENCODED || plaintext || 
-	mutt_is_text_type (b->type, b->subtype))	/* text subtypes may
+	mutt_is_text_part (b))				/* text subtypes may
 							 * require character
 							 * set conversion even
 							 * with 8bit encoding.

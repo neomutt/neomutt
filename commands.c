@@ -201,7 +201,7 @@ int mutt_display_message (HEADER *cur)
 #endif
 
 #ifdef HAVE_PGP
-    if (cur->security & APPLICATION_PGP && (cmflags & M_CM_VERIFY))
+    if ((cur->security & APPLICATION_PGP) && (cmflags & M_CM_VERIFY))
       mutt_message ((cur->security & GOODSIGN) ?
 		    _("PGP signature successfully verified.") :
 		    _("PGP signature could NOT be verified."));

@@ -201,13 +201,13 @@ const char *mutt_attach_fmt (char *dest,
     case 'C':
       if (!optional)
       {
-	if (mutt_is_text_type (aptr->content->type, aptr->content->subtype) &&
+	if (mutt_is_text_part (aptr->content) &&
 	    mutt_get_body_charset (charset, sizeof (charset), aptr->content))
 	  mutt_format_s (dest, destlen, prefix, charset);
 	else
 	  mutt_format_s (dest, destlen, prefix, "");
       }
-      else if (!mutt_is_text_type (aptr->content->type, aptr->content->subtype) ||
+      else if (!mutt_is_text_part (aptr->content) ||
 	       !mutt_get_body_charset (charset, sizeof (charset), aptr->content))
         optional = 0;
       break;
