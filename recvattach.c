@@ -822,8 +822,10 @@ static void reply_attachment_list (int op, int tag, HEADER *hdr, BODY *body)
     HEADER *newhdr = mutt_new_header();
     char buffer [LONG_STRING];
 
+    mutt_message ("Preparing to forward...");
     if (mutt_prepare_edit_message (ctx, newhdr, hn) < 0)
     {
+      mutt_clear_error();
       mutt_free_header (&newhdr);
       goto cleanup;
     }
@@ -836,6 +838,7 @@ static void reply_attachment_list (int op, int tag, HEADER *hdr, BODY *body)
     mutt_make_string (buffer, sizeof (buffer), NONULL(ForwFmt), ctx, hn);
     newhdr->env->subject = safe_strdup (buffer);
 
+    mutt_clear_error();
     ci_send_message (0, newhdr, NULL, ctx, NULL);
   }
   else
