@@ -1204,7 +1204,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** If set, use 64 bit PGP key IDs. Unset uses the normal 32 bit Key IDs.
   */
-  { "pgp_replyencrypt",	DT_BOOL, R_NONE, OPTPGPREPLYENCRYPT, 0 },
+  { "pgp_replyencrypt",	DT_BOOL, R_NONE, OPTPGPREPLYENCRYPT, 1 },
   /*
   ** .pp
   ** If set, automatically PGP encrypt replies to messages which are
