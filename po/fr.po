@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 0.94.14i\n"
-"POT-Creation-Date: 1998-12-11 21:48+0100\n"
+"POT-Creation-Date: 1998-12-12 10:17+0100\n"
 "PO-Revision-Date: 1998-12-11 09:06+0100\n"
 "Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre "
 "<Vincent.Lefevre@ens-lyon.fr>\n"
@@ -729,39 +729,39 @@ msgstr "Aucun message récupéré."
 msgid "You are on the first message."
 msgstr "Vous êtes sur le premier message."
 
-#: curs_main.c:1125 pattern.c:1103
+#: curs_main.c:1124 pattern.c:1103
 msgid "Search wrapped to top."
 msgstr "La recherche est repartie du début."
 
-#: curs_main.c:1134 pattern.c:1114
+#: curs_main.c:1133 pattern.c:1114
 msgid "Search wrapped to bottom."
 msgstr "La recherche est repartie de la fin."
 
-#: curs_main.c:1160
+#: curs_main.c:1159
 msgid "No new messages"
 msgstr "Pas de nouveaux messages"
 
-#: curs_main.c:1160
+#: curs_main.c:1159
 msgid "No unread messages"
 msgstr "Pas de messages non lus"
 
-#: curs_main.c:1161
+#: curs_main.c:1160
 msgid " in this limited view"
 msgstr " dans cette vue limitée"
 
-#: curs_main.c:1271
+#: curs_main.c:1270
 msgid "No more threads."
 msgstr "Pas d'autres discussions."
 
-#: curs_main.c:1273
+#: curs_main.c:1272
 msgid "You are on the first thread."
 msgstr "Vous êtes sur la première discussion."
 
-#: curs_main.c:1326
+#: curs_main.c:1325
 msgid "Thread contains unread messages."
 msgstr "Cette discussion contient des messages non-lus."
 
-#: curs_main.c:1339 flags.c:220 thread.c:629
+#: curs_main.c:1338 flags.c:220 thread.c:629
 msgid "Threading is not enabled."
 msgstr "L'affichage des discussions n'est pas activé."
 

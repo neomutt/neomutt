@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 1998-12-11 21:48+0100\n"
+"POT-Creation-Date: 1998-12-12 10:17+0100\n"
 "PO-Revision-Date: 1998-10-25 15:44+0200\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "Language-Team: Ukrainian <uk@ua.net>\n"
@@ -698,39 +698,39 @@ msgstr "Вс╕ листи видалено."
 msgid "You are on the first message."
 msgstr "Це перший лист."
 
-#: curs_main.c:1125 pattern.c:1103
+#: curs_main.c:1124 pattern.c:1103
 msgid "Search wrapped to top."
 msgstr "Пошук з початку."
 
-#: curs_main.c:1134 pattern.c:1114
+#: curs_main.c:1133 pattern.c:1114
 msgid "Search wrapped to bottom."
 msgstr "Пошук в╕д к╕нця."
 
-#: curs_main.c:1160
+#: curs_main.c:1159
 msgid "No new messages"
 msgstr "Нових лист╕в нема╓"
 
-#: curs_main.c:1160
+#: curs_main.c:1159
 msgid "No unread messages"
 msgstr "Нечитаних лист╕в нема╓"
 
-#: curs_main.c:1161
+#: curs_main.c:1160
 msgid " in this limited view"
 msgstr " у цих межах огляду"
 
-#: curs_main.c:1271
+#: curs_main.c:1270
 msgid "No more threads."
 msgstr "Ниток б╕льш нема."
 
-#: curs_main.c:1273
+#: curs_main.c:1272
 msgid "You are on the first thread."
 msgstr "Це перша нитка."
 
-#: curs_main.c:1326
+#: curs_main.c:1325
 msgid "Thread contains unread messages."
 msgstr "Нитка ма╓ нечитан╕ листи."
 
-#: curs_main.c:1339 flags.c:220 thread.c:629
+#: curs_main.c:1338 flags.c:220 thread.c:629
 msgid "Threading is not enabled."
 msgstr "Сшивання недоступне."
 

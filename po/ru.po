@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 1998-12-11 21:48+0100\n"
+"POT-Creation-Date: 1998-12-12 10:17+0100\n"
 "PO-Revision-Date: 1998-10-15 07:51+0300\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "Language-Team: Mutt-dev <mutt-dev@mutt.org>\n"
@@ -697,39 +697,39 @@ msgstr "Нет неудалённых сообщений."
 msgid "You are on the first message."
 msgstr "Это первое сообщение."
 
-#: curs_main.c:1125 pattern.c:1103
+#: curs_main.c:1124 pattern.c:1103
 msgid "Search wrapped to top."
 msgstr "Поиск перенесён в начало."
 
-#: curs_main.c:1134 pattern.c:1114
+#: curs_main.c:1133 pattern.c:1114
 msgid "Search wrapped to bottom."
 msgstr "Поиск перенесён в конец."
 
-#: curs_main.c:1160
+#: curs_main.c:1159
 msgid "No new messages"
 msgstr "Нет новых сообщений"
 
-#: curs_main.c:1160
+#: curs_main.c:1159
 msgid "No unread messages"
 msgstr "Нет непрочитанных сообщений"
 
-#: curs_main.c:1161
+#: curs_main.c:1160
 msgid " in this limited view"
 msgstr " в этом ограниченном обзоре"
 
-#: curs_main.c:1271
+#: curs_main.c:1270
 msgid "No more threads."
 msgstr "Нет больше ниток."
 
-#: curs_main.c:1273
+#: curs_main.c:1272
 msgid "You are on the first thread."
 msgstr "Это первая нитка."
 
-#: curs_main.c:1326
+#: curs_main.c:1325
 msgid "Thread contains unread messages."
 msgstr "Нитка содержит непрочитанные сообщения."
 
-#: curs_main.c:1339 flags.c:220 thread.c:629
+#: curs_main.c:1338 flags.c:220 thread.c:629
 msgid "Threading is not enabled."
 msgstr "Сшивание недоступно."
 

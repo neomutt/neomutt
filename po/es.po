@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt\n"
-"POT-Creation-Date: 1998-12-11 21:48+0100\n"
+"POT-Creation-Date: 1998-12-12 10:17+0100\n"
 "PO-Revision-Date: 1998-10-29 19:25+0100\n"
 "Last-Translator: Boris Wesslowski <Boris@Wesslowski.com>\n"
 
@@ -691,39 +691,39 @@ msgstr "Todos los mensajes fueron suprimidos."
 msgid "You are on the first message."
 msgstr "Ya está en el primer mensaje."
 
-#: curs_main.c:1125 pattern.c:1103
+#: curs_main.c:1124 pattern.c:1103
 msgid "Search wrapped to top."
 msgstr "La búsqueda volvió a empezar desde arriba."
 
-#: curs_main.c:1134 pattern.c:1114
+#: curs_main.c:1133 pattern.c:1114
 msgid "Search wrapped to bottom."
 msgstr "La búsqueda volvió a empezar desde abajo."
 
-#: curs_main.c:1160
+#: curs_main.c:1159
 msgid "No new messages"
 msgstr "No hay mensajes nuevos"
 
-#: curs_main.c:1160
+#: curs_main.c:1159
 msgid "No unread messages"
 msgstr "No hay mensajes sin leer"
 
-#: curs_main.c:1161
+#: curs_main.c:1160
 msgid " in this limited view"
 msgstr " en esta vista limitada"
 
-#: curs_main.c:1271
+#: curs_main.c:1270
 msgid "No more threads."
 msgstr "No hay mas temas."
 
-#: curs_main.c:1273
+#: curs_main.c:1272
 msgid "You are on the first thread."
 msgstr "Ya está en el primer tema."
 
-#: curs_main.c:1326
+#: curs_main.c:1325
 msgid "Thread contains unread messages."
 msgstr "Tema contiene mensajes sin leer."
 
-#: curs_main.c:1339 flags.c:220 thread.c:629
+#: curs_main.c:1338 flags.c:220 thread.c:629
 msgid "Threading is not enabled."
 msgstr "La muestra por temas no esta activada."
 
