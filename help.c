@@ -95,11 +95,15 @@ static int print_macro (FILE *f, int maxwidth, const char **macro)
 
   memset (&mbstate1, 0, sizeof (mbstate1));
   memset (&mbstate2, 0, sizeof (mbstate2));
-  for (; (k = mbrtowc (&wc, *macro, len, &mbstate1)); *macro += k, len -= k)
+  for (; len && (k = mbrtowc (&wc, *macro, len, &mbstate1)); *macro += k, len -= k)
   {
     if (k == (size_t)(-1) || k == (size_t)(-2))
-      break;
-    if ((w = wcwidth (wc)) >= 0)
+    {
+      k = (k == (size_t)(-1)) ? 1 : len;
+      wc = replacement_char ();
+    }
+    /* glibc-2.1.3's wcwidth() returns 1 for unprintable chars! */
+    if (IsWPrint (wc) && (w = wcwidth (wc)) >= 0)
     {
       if (w > n)
 	break;

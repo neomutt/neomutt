@@ -529,7 +529,7 @@ void mutt_format_string (char *dest, size_t destlen,
   char *p;
   wchar_t wc;
   int w;
-  size_t k;
+  size_t k, k2;
   char scratch[MB_LEN_MAX];
   mbstate_t mbstate1, mbstate2;
 
@@ -541,19 +541,26 @@ void mutt_format_string (char *dest, size_t destlen,
   {
     if (k == (size_t)(-1) || k == (size_t)(-2))
     {
-      k = 1;
+      k = (k == (size_t)(-1)) ? 1 : n;
       wc = replacement_char ();
     }
-    w = wc < M_TREE_MAX ? 1 : wcwidth (wc); /* hack */
+    if (wc < M_TREE_MAX)
+      w = 1; /* hack */
+    else
+    {
+      if (!IsWPrint (wc))
+	wc = '?';
+      w = wcwidth (wc);
+    }
     if (w >= 0)
     {
-      if (w > max_width || (k = wcrtomb (scratch, wc, &mbstate2)) > destlen)
+      if (w > max_width || (k2 = wcrtomb (scratch, wc, &mbstate2)) > destlen)
 	break;
       min_width -= w;
       max_width -= w;
-      strncpy (p, scratch, k);
-      p += k;            
-      destlen -= k;
+      strncpy (p, scratch, k2);
+      p += k2;            
+      destlen -= k2;
     }
   }
   w = (int)destlen < min_width ? destlen : min_width;
@@ -622,21 +629,23 @@ void mutt_paddstr (int n, const char *s)
   mbstate_t mbstate;
 
   memset (&mbstate, 0, sizeof (mbstate));
-  while (len && (k = mbrtowc (&wc, s, len, &mbstate)))
+  for (; len && (k = mbrtowc (&wc, s, len, &mbstate)); s += k, len -= k)
   {
     if (k == (size_t)(-1) || k == (size_t)(-2))
     {
-      ++s, --len; /* skip ill-formed character */
-      continue;
+      k = (k == (size_t)(-1)) ? 1 : len;
+      wc = replacement_char ();
     }
-    if ((w = wcwidth (wc)) >= 0)
+    if (!IsWPrint (wc))
+      wc = '?';
+    w = wcwidth (wc);
+    if (w >= 0)
     {
       if (w > n)
 	break;
       addnstr ((char *)s, k);
       n -= w;
     }
-    s += k, len -= k;
   }
   while (n-- > 0)
     addch (' ');
