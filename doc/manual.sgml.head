@@ -1337,7 +1337,8 @@ mark:
 set ?allow_8bit
 </verb></tscreen>
 
-The question mark is actually only required for boolean variables.
+The question mark is actually only required for boolean and quadoption 
+variables.
 
 The <tt/reset/ command resets all given variables to the compile time
 defaults (hopefully mentioned in this manual). If you use the command
