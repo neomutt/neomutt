@@ -76,6 +76,7 @@
 struct q_class_t
 {
   int length;
+  int index;
   int color;
   char *prefix;
   struct q_class_t *next, *prev;
@@ -303,6 +304,51 @@ append_line (struct line_t *lineInfo, int n, int cnt)
 }
 
 static void
+new_class_color (struct q_class_t *class, int *q_level)
+{
+  class->index = (*q_level)++;
+  class->color = ColorQuote[class->index % ColorQuoteUsed];
+}
+
+static void
+shift_class_colors (struct q_class_t *QuoteList, struct q_class_t *new_class,
+		      int index, int *q_level)
+{
+  struct q_class_t * q_list;
+
+  q_list = QuoteList;
+  new_class->index = -1;
+
+  while (q_list)
+  {
+    if (q_list->index >= index)
+    {
+      q_list->index++;
+      q_list->color = ColorQuote[q_list->index % ColorQuoteUsed];
+    }
+    if (q_list->down)
+      q_list = q_list->down;
+    else if (q_list->next)
+      q_list = q_list->next;
+    else
+    {
+      while (!q_list->next)
+      {
+	q_list = q_list->up;
+	if (q_list == NULL)
+	  break;
+      }
+      if (q_list)
+	q_list = q_list->next;
+    }
+  }
+
+  new_class->index = index;
+  new_class->color = ColorQuote[index % ColorQuoteUsed];
+  (*q_level)++;
+}
+
+static void
 cleanup_quote (struct q_class_t **QuoteList)
 {
   struct q_class_t *ptr;
@@ -325,9 +371,10 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 		int length, int *force_redraw, int *q_level)
 {
   struct q_class_t *q_list = *QuoteList;
-  struct q_class_t *class = NULL, *tmp = NULL, *ptr;
+  struct q_class_t *class = NULL, *tmp = NULL, *ptr, *save;
   char *tail_qptr;
   int offset, tail_lng;
+  int index = -1;
 
   /* Did I mention how much I like emulating Lisp in C? */
 
@@ -336,13 +383,14 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
   {
     if (length <= q_list->length)
     {
+      /* case 1: check the top level nodes */
+
       if (strncmp (qptr, q_list->prefix, length) == 0)
       {
-	/* same prefix: return the current class */
 	if (length == q_list->length)
-	  return q_list;
+	  return q_list;	/* same prefix: return the current class */
 
-	/* found shorter common prefix */
+	/* found shorter prefix */
 	if (tmp == NULL)
 	{
 	  /* add a node above q_list */
@@ -350,11 +398,6 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 	  tmp->prefix = (char *) safe_calloc (1, length + 1);
 	  strncpy (tmp->prefix, qptr, length);
 	  tmp->length = length;
-	  if (*q_level >= ColorQuoteUsed)
-	    *q_level = 1;
-	  else
-	    (*q_level)++;
-	  tmp->color = ColorQuote[(*q_level) - 1];
 
 	  /* replace q_list by tmp in the top level list */
 	  if (q_list->next)
@@ -372,7 +415,7 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 	  tmp->down = q_list;
 	  q_list->up = tmp;
 
-	  /* q_list has no siblings */
+	  /* q_list has no siblings for now */
 	  q_list->next = NULL;
 	  q_list->prev = NULL;
 
@@ -380,16 +423,23 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 	  if (q_list == *QuoteList)
 	    *QuoteList = tmp;
 
+	  index = q_list->index;
+
 	  /* tmp should be the return class too */
 	  class = tmp;
 
-	  /* next class to test */
+	  /* next class to test; if tmp is a shorter prefix for another
+	   * node, that node can only be in the top level list, so don't
+	   * go down after this point
+	   */
 	  q_list = tmp->next;
 	}
 	else
 	{
+	  /* found another branch for which tmp is a shorter prefix */
+
 	  /* save the next sibling for later */
-	  ptr = q_list->next;
+	  save = q_list->next;
 
 	  /* unlink q_list from the top level list */
 	  if (q_list->next)
@@ -398,17 +448,22 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 	    q_list->prev->next = q_list->next;
 
 	  /* at this point, we have a tmp->down; link q_list to it */
-	  q_list->next = tmp->down;
-	  tmp->down->prev = q_list;
-	  q_list->prev = NULL;
-	  tmp->down = q_list;
+	  ptr = tmp->down;
+	  /* sibling order is important here, q_list should be linked last */
+	  while (ptr->next)
+	    ptr = ptr->next;
+	  ptr->next = q_list;
+	  q_list->next = NULL;
+	  q_list->prev = ptr;
 	  q_list->up = tmp;
 
-	  /* next class to test */
-	  q_list = ptr;
+	  index = q_list->index;
+
+	  /* next class to test; as above, we shouldn't go down */
+	  q_list = save;
 	}
 
-	/* in both cases q_list points now to the next top-level node */
+	/* we found a shorter prefix, so certain quotes have changed classes */
 	*force_redraw = 1;
 	continue;
       }
@@ -421,10 +476,13 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
     }
     else
     {
-      /* longer than the top level prefix: try subclassing it */
+      /* case 2: try subclassing the current top level node */
+      
+      /* tmp != NULL means we already found a shorter prefix at case 1 */
       if (tmp == NULL && strncmp (qptr, q_list->prefix, q_list->length) == 0)
       {
-	/* ok, we may link it as a subclass */
+	/* ok, it's a subclass somewhere on this branch */
+
 	ptr = q_list;
 	offset = q_list->length;
 
@@ -451,11 +509,6 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 		tmp->prefix = (char *) safe_calloc (1, length + 1);
 		strncpy (tmp->prefix, qptr, length);
 		tmp->length = length;
-		if (*q_level >= ColorQuoteUsed)
-		  *q_level = 1;
-		else
-		  (*q_level)++;
-		tmp->color = ColorQuote[(*q_level) - 1];
 			
 		/* replace q_list by tmp */
 		if (q_list->next)
@@ -480,6 +533,8 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 		q_list->next = NULL;
 		q_list->prev = NULL;
                               
+		index = q_list->index;
+
 		/* tmp should be the return class too */
 		class = tmp;
 
@@ -488,8 +543,10 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 	      }
 	      else
 	      {
+		/* found another branch for which tmp is a shorter prefix */
+
 		/* save the next sibling for later */
-		ptr = q_list->next;
+		save = q_list->next;
 
 		/* unlink q_list from the top level list */
 		if (q_list->next)
@@ -498,16 +555,21 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 		  q_list->prev->next = q_list->next;
 
 		/* at this point, we have a tmp->down; link q_list to it */
-		q_list->next = tmp->down;
-		tmp->down->prev = q_list;
-		q_list->prev = NULL;
-		tmp->down = q_list;
+		ptr = tmp->down;
+		while (ptr->next)
+		  ptr = ptr->next;
+		ptr->next = q_list;
+		q_list->next = NULL;
+		q_list->prev = ptr;
 		q_list->up = tmp;
 
+		index = q_list->index;
+
 		/* next class to test */
-		q_list = ptr;
+		q_list = save;
 	      }
 
+	      /* we found a shorter prefix, so we need a redraw */
 	      *force_redraw = 1;
 	      continue;
 	    }
@@ -542,18 +604,13 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 	  }
 	}
 
-	/* if it's still not found so far we mai add it as a sibling */
+	/* still not found so far: add it as a sibling to the current node */
 	if (class == NULL)
 	{
 	  tmp = (struct q_class_t *) safe_calloc (1, sizeof (struct q_class_t));
 	  tmp->prefix = (char *) safe_calloc (1, length + 1);
 	  strncpy (tmp->prefix, qptr, length);
 	  tmp->length = length;
-	  if (*q_level >= ColorQuoteUsed)
-	    *q_level = 1;
-	  else
-	    (*q_level)++;
-	  tmp->color = ColorQuote[(*q_level) - 1];
 
 	  if (ptr->down)
 	  {
@@ -562,7 +619,9 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 	  }
 	  ptr->down = tmp;
 	  tmp->up = ptr;
-	  
+
+	  new_class_color (tmp, q_level);
+
 	  return tmp;
 	}
 	else
@@ -584,11 +643,7 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
     class->prefix = (char *) safe_calloc (1, length + 1);
     strncpy (class->prefix, qptr, length);
     class->length = length;
-    if (*q_level >= ColorQuoteUsed)
-      *q_level = 1;
-    else
-      (*q_level)++;
-    class->color = ColorQuote[(*q_level) - 1];
+    new_class_color (class, q_level);
 
     if (*QuoteList)
     {
@@ -597,6 +652,9 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
     }
     *QuoteList = class;
   }
+
+  if (index != -1)
+    shift_class_colors (*QuoteList, tmp, index, q_level);
 
   return class;
 }
