@@ -1225,7 +1225,7 @@ msgstr "Abonniere %s..."
 #: imap/imap.c:1185
 #, c-format
 msgid "Unsubscribing to %s..."
-msgstr "Beende Abonement von %s..."
+msgstr "Beende Abonnement von %s..."
 
 #. Unable to fetch headers for lower versions
 #: imap/message.c:74
@@ -1427,7 +1427,7 @@ msgstr "Leere Funktion"
 
 #: keymap_alldefs.h:6
 msgid "force viewing of attachment using mailcap"
-msgstr "Erzwinge Ansicht des Anhanges mittels mailcap"
+msgstr "Erzwinge Ansicht des Anhangs mittels mailcap"
 
 #: keymap_alldefs.h:7
 msgid "view attachment as text"
@@ -1559,7 +1559,7 @@ msgstr "Erzeuge neues Attachment via mailcap"
 
 #: keymap_alldefs.h:39
 msgid "toggle recoding of this attachment"
-msgstr "Schalte Kodierung dieses Anhanges um"
+msgstr "Schalte Kodierung dieses Anhangs um"
 
 #: keymap_alldefs.h:40
 msgid "save this message to send later"
@@ -3443,7 +3443,7 @@ msgstr ""
 #: remailer.c:628
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."
-msgstr "Eine Mixmaster-Ketter kann maximal %d Elemente enthalten."
+msgstr "Eine Mixmaster-Kette kann maximal %d Elemente enthalten."
 
 #: remailer.c:651
 msgid "The remailer chain is already empty."
@@ -3656,7 +3656,7 @@ msgstr "(keine Mailbox)"
 
 #: thread.c:714
 msgid "Parent message is not visible in limited view"
-msgstr "Bezugsnachricht ist in der begenzten Sicht nicht verfügbar."
+msgstr "Bezugsnachricht ist in der begrenzten Sicht nicht verfügbar."
 
 #: thread.c:719
 msgid "Parent message is not available."
@@ -3777,10 +3777,10 @@ msgstr "Bezugsnachricht ist nicht verfügbar."
 #~ msgstr "Änderung der Kodierung war erfolgreich."
 
 #~ msgid "change an attachment's character set"
-#~ msgstr "Ändere den Zeichensatz eines Anhanges"
+#~ msgstr "Ändere den Zeichensatz eines Anhangs"
 
 #~ msgid "recode this attachment to/from the local charset"
-#~ msgstr "Ändere die Kodierung dieses Anhanges zum/vom lokalen Zeichensatz"
+#~ msgstr "Ändere die Kodierung dieses Anhangs zum/vom lokalen Zeichensatz"
 
 #~ msgid "Compose"
 #~ msgstr "Nachricht erstellen"
