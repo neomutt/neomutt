@@ -3229,19 +3229,16 @@ msgid "This ID is expired/disabled/revoked"
 msgstr "Dieser ID ist veraltet/deaktiviert/zurückgezogen"
 
 #: pgpkey.c:612
-#, fuzzy
 msgid "This ID's validity level is undefined."
 msgstr "Die Gültigkeit dieser ID ist undefiniert."
 
 #: pgpkey.c:615
-#, fuzzy
 msgid "This ID is not valid."
-msgstr "Diese ID ist nicht vertrauenswürdig."
+msgstr "Diese ID ist ungültig."
 
 #: pgpkey.c:618
-#, fuzzy
 msgid "This ID is only marginally valid."
-msgstr "Diese ID ist nur begrenzt vertrauenswürdig."
+msgstr "Diese Gültigkeit dieser ID ist begrenzt."
 
 #: pgpkey.c:622
 #, c-format
