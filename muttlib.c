@@ -79,6 +79,7 @@ void mutt_adv_mktemp (char *s, size_t l)
   else
   {
     strfcpy (tmp, s, sizeof (tmp));
+    mutt_sanitize_filename (tmp, 1);
     snprintf (s, l, "%s/%s", buf, tmp);
     if (lstat (s, &sb) == -1 && errno == ENOENT)
       return;
