@@ -67,13 +67,13 @@ int ascii_strcasecmp (const char *a, const char *b)
   if (b == NULL && a)
     return 1;
   
-  for (; *a && *b; a++, b++)
+  for (; *a || *b; a++, b++)
   {
     if ((i = ascii_tolower (*a) - ascii_tolower (*b)))
       return i;
   }
-
-  return ascii_tolower (*a) - ascii_tolower (*b);
+  
+  return 0;
 }
 
 int ascii_strncasecmp (const char *a, const char *b, int n)
@@ -87,13 +87,11 @@ int ascii_strncasecmp (const char *a, const char *b, int n)
   if (b == NULL && a)
     return 1;
   
-  for (j = 0; (*a && *b) && j < n; a++, b++, j++)
+  for (j = 0; (*a || *b) && j < n; a++, b++, j++)
   {
     if ((i = ascii_tolower (*a) - ascii_tolower (*b)))
       return i;
   }
-  if (j < n)
-    return ascii_tolower (*a) - ascii_tolower (*b);
-  else
-    return 0;
+  
+  return 0;
 }
