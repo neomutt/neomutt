@@ -235,13 +235,13 @@ to.  They can be customized with the
 <ref id="to_chars" name="&dollar;to&lowbar;chars"> variable.
 
 <p>
-<tscreen><verb>
-+       message is to you and you only
-T       message is to you, but also to or cc'ed to others
-C       message is cc'ed to you
-F       message is from you
-L       message is sent to a subscribed mailing list
-</verb></tscreen>
+<descrip>
+<tag/+/ message is to you and you only
+<tag/T/ message is to you, but also to or cc'ed to others
+<tag/C/ message is cc'ed to you
+<tag/F/ message is from you
+<tag/L/ message is sent to a subscribed mailing list
+</descrip>
 
 <sect2>The Pager
 <p>
