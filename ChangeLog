@@ -1,3 +1,53 @@
+Thu Dec 10 11:06:25 1998  Thomas Roessler  <roessler@guug.de>
+
+	* menu.c: Fix tag-prefix.
+
+	* compose.c:
+	Redraw fix after the content type was changed on the compose menu.
+
+Tue Dec  8 23:09:53 1998  Thomas Roessler  <roessler@guug.de>
+
+	* help.c: Help screen resizing nit.  From Gero Treuner.
+
+	* doc/manual.sgml.in: Typo.
+
+	* sendlib.c:
+	Work around sendmail 8.9.1a invalidating PGP/MIME signatures by
+	re-ordering MIME headers in the way sendmail does.
+
+	* mh.c:
+	Keep track of file name changes for files wandering around between
+	the subfolders of a maildir.
+
+	* mh.c:
+	More fixes to the maildir resynchronization code.  This should now
+	also smoothly handle the case of messages _vanishing_ from maildir's
+	new/ subdirectory.
+
+	* init.c: Make the debug file access unbuffered.  Important if we are
+	debugging crashes.
+
+Mon Dec  7 21:13:44 1998  Thomas Roessler  <roessler@guug.de>
+
+	* mx.c, mh.c:
+	Fix a couple of flag-related bugs in the maildir folder update code.
+
+	* imap.c: Fix a completely ugly comment formatting.
+
+	* mutt.h: Adjust '#' to the first column.
+
+	* rfc2047.c: Don't tag us-ascii headers as $Charset or unknown-8bit.
+
+Thu Dec  3 23:29:37 1998  Thomas Roessler  <roessler@guug.de>
+
+	* po/uk.po, po/ru.po, po/it.po, po/es.po, po/de.po,
+	reldate.h, VERSION, ChangeLog: release-commit 0.94.18.
+
+Wed Dec  2 20:12:35 1998  Thomas Roessler  <roessler@guug.de>
+
+	* contrib/Pine.rc, contrib/Mush.rc:
+	Bring the sample rc files better in synch with the actual code.
+
 Wed Dec  2 20:12:35 1998  Thomas Roessler  <roessler@guug.de>
 
 	* contrib/Pine.rc, contrib/Mush.rc: Bring the sample rc
