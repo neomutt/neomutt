@@ -933,11 +933,12 @@ void mutt_FormatString (char *dest,		/* output buffer */
 {
   char prefix[SHORT_STRING], buf[LONG_STRING], *cp, *wptr = dest, ch;
   char ifstring[SHORT_STRING], elsestring[SHORT_STRING];
-  size_t wlen, count, len;
+  size_t wlen, count, len, col, wid;
 
   prefix[0] = '\0';
   destlen--; /* save room for the terminal \0 */
   wlen = (flags & M_FORMAT_ARROWCURSOR && option (OPTARROWCURSOR)) ? 3 : 0;
+  col = wlen;
     
   while (*src && wlen < destlen)
   {
@@ -947,6 +948,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
       {
 	*wptr++ = '%';
 	wlen++;
+	col++;
 	src++;
 	continue;
       }
@@ -1019,23 +1021,26 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	/* calculate space left on line.  if we've already written more data
 	   than will fit on the line, ignore the rest of the line */
 	count = (COLS < destlen ? COLS : destlen);
-	if (count > wlen)
+	if (count > col)
 	{
-	  count -= wlen; /* how many chars left on this line */
+	  count -= col; /* how many columns left on this line */
 	  mutt_FormatString (buf, sizeof (buf), src, callback, data, flags);
 	  len = mutt_strlen (buf);
-	  if (count > len)
+	  wid = mutt_strwidth (buf);
+	  if (count > wid)
 	  {
-	    count -= len; /* how many chars to pad */
+	    count -= wid; /* how many chars to pad */
 	    memset (wptr, ch, count);
 	    wptr += count;
 	    wlen += count;
+	    col += count;
 	  }
 	  if (len + wlen > destlen)
 	    len = destlen - wlen;
 	  memcpy (wptr, buf, len);
 	  wptr += len;
 	  wlen += len;
+	  col += mutt_strwidth (buf);
 	}
 	break; /* skip rest of input */
       }
@@ -1087,6 +1092,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	memcpy (wptr, buf, len);
 	wptr += len;
 	wlen += len;
+	col += mutt_strwidth (buf);
       }
     }
     else if (*src == '\\')
@@ -1117,11 +1123,13 @@ void mutt_FormatString (char *dest,		/* output buffer */
       src++;
       wptr++;
       wlen++;
+      col++;
     }
     else
     {
       *wptr++ = *src++;
       wlen++;
+      col++;
     }
   }
   *wptr = 0;

@@ -1710,15 +1710,17 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       CLEARLINE (statusoffset);
       if (IsHeader (extra))
       {
-	_mutt_make_string (buffer,
-			   COLS-9 < sizeof (buffer) ? COLS-9 : sizeof (buffer),
-			   NONULL (PagerFmt), Context, extra->hdr, M_FORMAT_MAKEPRINT);
+	size_t l1 = (COLS - 9) * MB_LEN_MAX;
+	size_t l2 = sizeof (buffer);
+	_mutt_make_string (buffer, l1 < l2 ? l1 : l2, NONULL (PagerFmt),
+			   Context, extra->hdr, M_FORMAT_MAKEPRINT);
       }
       else if (IsMsgAttach (extra))
       {
-	_mutt_make_string (buffer,
-			   COLS - 9 < sizeof (buffer) ? COLS - 9: sizeof (buffer),
-			   NONULL (PagerFmt), Context, extra->bdy->hdr, M_FORMAT_MAKEPRINT);
+	size_t l1 = (COLS - 9) * MB_LEN_MAX;
+	size_t l2 = sizeof (buffer);
+	_mutt_make_string (buffer, l1 < l2 ? l1 : l2, NONULL (PagerFmt),
+			   Context, extra->bdy->hdr, M_FORMAT_MAKEPRINT);
       }
       mutt_paddstr (COLS-10, IsHeader (extra) || IsMsgAttach (extra) ?
 		    buffer : banner);
