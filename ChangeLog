@@ -1,3 +1,10 @@
+2002-12-11 22:47:57  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* muttlib.c, pgp.c, protos.h, send.c: Fix #1417; thanks to
+	Derek D. Martin <ddm@sophic.org> for the excellent observation.
+	(In addition to the fix proper, some tracking of temporary files
+	is added to mutt's debugging output.)
+
 2002-12-11 22:23:42  Thomas Roessler  <roessler@does-not-exist.org>
 
 	* crypt.c: Call endwin() before calling PGP for traditional
