@@ -543,23 +543,10 @@ void mix_make_chain (LIST **chainp, int *redraw)
       case OP_GENERIC_SELECT_ENTRY:
       case OP_MIX_APPEND:
       {
-	if (chain->cl < MAXMIXES)
-	{
-	  c_cur = chain->cl++;
-	  chain->ch[c_cur] = menu->current;
-	  mix_screen_coordinates (type2_list, &coords, chain, c_cur);
-	  c_redraw = 1;
-	}
-	else
- 	{
-	  char buff[SHORT_STRING];
-	  snprintf (buff, sizeof (buff), _("Mixmaster chains are limited to %d elements."),
-		    MAXMIXES);
-	  mutt_error (buff);
-	}
-	break;
+	if (chain->cl < MAXMIXES && c_cur < chain->cl)
+	  c_cur++;
       }
-      
+      /* fallthrough */
       case OP_MIX_INSERT:
       {
 	if (chain->cl < MAXMIXES)
