@@ -1,4 +1,36 @@
+SHELL=/bin/sh
+VERSION=@VERSION@
+
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+bindir=@bindir@
+libdir=@libdir@
+mandir=@mandir@
+sharedir=@sharedir@
+srcdir=@srcdir@
+docdir=@docdir@
+VPATH=@srcdir@/doc
+@SET_MAKE@
+
+INSTALL=@INSTALL@
+CC=@CC@
+XCPPFLAGS=-I. @CPPFLAGS@
+CFLAGS=@CFLAGS@ -DSHAREDIR=\"$(sharedir)\" $(XCPPFLAGS)
+LDFLAGS=@LDFLAGS@
+
+
 all: manual.txt mutt.man manual.html
+
+install: mutt.man manual.txt
+	../mkinstalldirs $(mandir)/man1
+	$(INSTALL) -m 644 mutt.man $(mandir)/man1/mutt.1
+	../mkinstalldirs $(docdir)
+	$(INSTALL) -m 644 manual.txt $(docdir)
+	$(INSTALL) -m 644 PGP-Notes.txt $(docdir)
+
+uninstall:
+	-rm -f $(mandir)/man1/mutt.1 $(docdir)/manual.txt	\
+		$(docdir)/PGP-Notes.txt
 
 manual.txt: manual.sgml
 	sgml2txt manual

@@ -12,15 +12,18 @@
   regular expression searches and a powerful pattern matching language
   for selecting groups of messages.
 
+
   11..11..  MMuutttt HHoommee PPaaggee
 
   http://www.cs.hmc.edu/~me/mutt/index.html
+
 
   11..22..  MMaaiilliinngg LLiissttss
 
   To subscribe to one of the following mailing lists, send a message
   with the word _s_u_b_s_c_r_i_b_e in the subject to list-name_-
   _r_e_q_u_e_s_t@cs.hmc.edu.
+
 
   +o  mutt-announce@cs.hmc.edu -- low traffic list for announcements
 
@@ -31,18 +34,23 @@
   NNoottee:: all messages posted to _m_u_t_t_-_a_n_n_o_u_n_c_e are automatically forwarded
   to _m_u_t_t_-_u_s_e_r_s, so you do not need to be subscribed to both lists.
 
+
   11..33..  SSooffttwwaarree DDiissttrriibbuuttiioonn SSiitteess
 
+
   +o  ftp://ftp.cs.hmc.edu/pub/me/mutt/
+
 
   11..44..  IIRRCC
 
   Visit channel _#_m_u_t_t on DALnet (www.dal.net) to chat with other people
   interested in Mutt.
 
+
   11..55..  UUSSEENNEETT
 
   See the newsgroup comp.mail.mutt.
+
 
   11..66..  CCooppyyrriigghhtt
 
@@ -62,7 +70,9 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+
   22..  GGeettttiinngg SSttaarrtteedd
+
 
   This section is intended as a brief overview of how to use Mutt.
   There are many other features which are described elsewhere in the
@@ -78,10 +88,14 @@
   at the command line.  There are various command-line options, see
   either the mutt man page or the ``reference''.
 
+
   22..11..  MMoovviinngg AArroouunndd iinn MMeennuuss
+
 
   Information is presented in menus, very similar to ELM.  Here is a
   table showing the common keys used to navigate menus in Mutt.
+
+
 
        j or Down       next-entry      move to the next entry
        k or Up         previous-entry  move to the previous entry
@@ -92,11 +106,29 @@
        q               quit            exit the current menu
        ?               help            list all keybindings for the current menu
 
+
+
+
+
   22..22..  EEddiittiinngg IInnppuutt FFiieellddss
 
   Mutt has a builtin line editor which is used as the primary way to
   input textual data such as email addresses or filenames.  The keys
   used to move around while editing are very similar to those of Emacs.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   ^A or <Home>    bol             move to the start of the line
   ^B or <Left>    backward-char   move back one char
@@ -113,13 +145,18 @@
   <Tab>           n/a             complete filename (only when prompting for a file)
   <Return>        n/a             finish editing
 
+
+
+
   You can remap the _e_d_i_t_o_r functions using the ``bind'' command.  For
   example, to make the _D_e_l_e_t_e key delete the character in front of the
   cursor rather than under, you could use
 
   bind editor delete backspace
 
+
   22..33..  RReeaaddiinngg MMaaiill -- TThhee IInnddeexx aanndd PPaaggeerr
+
 
   Similar to many other mail clients, there are two modes in which mail
   is read in Mutt.  The first is the index of messages in the mailbox,
@@ -129,7 +166,35 @@
   The next few sections describe the functions provided in each of these
   modes.
 
+
   22..33..11..  TThhee MMeessssaaggee IInnddeexx
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   c               change to a different mailbox
   ESC c           change to a folder in read-only mode
@@ -160,12 +225,20 @@
   ^T              tag messages matching a pattern
   ^U              undelete messages matching a pattern
 
+
+
+
+
   22..33..11..11..  SSttaattuuss FFllaaggss
+
 
   In addition to who sent the message and the subject, a short summary
   of the disposition of each message is printed beside the message
   number.  Zero or more of the following ``flags'' may appear, which
   mean:
+
+
+
 
        D       message is deleted
        K       contains a PGP public key
@@ -178,25 +251,40 @@
        !       message is flagged
        *       message is tagged
 
+
+
+
   Some of the status flags can be turned on or off using
 
   +o  sseett--ffllaagg (default: w)
 
   +o  cclleeaarr--ffllaagg (default: W)
 
+
+
   Furthermore, the following flags reflect who the message is addressed
   to.  They can be customized with the ``$to_chars'' variable.
+
+
+
 
        +       message is to you and you only
        T       message is to you, but also to or cc'ed to others
        C       message is cc'ed to you
        F       message is from you
 
+
+
+
+
   22..33..22..  TThhee PPaaggeerr
+
 
   By default, Mutt uses its builtin pager to display the body of
   messages.  The pager is very similar to the Unix program _l_e_s_s though
   not nearly as featureful.
+
+
 
        <Return>        go down one line
        <Space>         display the next page (or next message if at the end of a message)
@@ -204,7 +292,10 @@
        n               display the next message
        ?               show keybindings
        /               search for a regular expression (pattern)
-       \               toggle search pattern coloring
+       \              toggle search pattern coloring
+
+
+
 
   In addition, many of the functions from the _i_n_d_e_x are available in the
   pager, such as _d_e_l_e_t_e_-_m_e_s_s_a_g_e or _c_o_p_y_-_m_e_s_s_a_g_e (this is one advantage
@@ -222,6 +313,20 @@
   Additionally, the internal pager supports the ANSI escape sequences
   for character attributes.  Mutt translates them into the correct color
   and character settings.  The sequences Mutt supports are:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   ESC [ Ps;Ps;Ps;...;Ps m
   where Ps =
@@ -243,16 +348,22 @@
   6    cyan
   7    white
 
+
+
+
   Mutt uses these attributes for handling text/enriched messages, and
   they can also be used by an external ``autoview'' script for
   highlighting purposes.  NNoottee:: If you change the colors for your
   display, for example by changing the color associated with color2 for
   your xterm, then that color will be used instead of green.
 
+
   22..33..33..  TThhrreeaaddeedd MMooddee
 
   When the mailbox is ``sorted'' by _t_h_r_e_a_d_s, there are a few additional
   functions available in the _i_n_d_e_x and _p_a_g_e_r modes.
+
+
 
        ^D      delete-thread           delete all messages in the current thread
        ^U      undelete-thread         undelete all messages in the current thread
@@ -266,7 +377,11 @@
        ESC r   read-subthread          mark the current subthread as read
        ESC t   tag-thread              toggle the tag on the current thread
 
+
+
+
   See also: ``$strict_threads''.
+
 
   22..33..44..  MMiisscceellllaanneeoouuss FFuunnccttiioonnss
 
@@ -278,10 +393,12 @@
   NNoottee:: Specifying an ``$alias_file'' does not add the aliases specified
   there-in, you must also ``source'' the file.
 
+
   ddiissppllaayy--hheeaaddeerrss (default: h)
 
   Toggles the weeding of message header fields specified by ``ignore''
   commands.
+
 
   eenntteerr--ccoommmmaanndd (default: ``:'')
 
@@ -290,16 +407,19 @@
   variables, or in conjunction with ``macros'' to change settings on the
   fly.
 
+
   eexxttrraacctt--kkeeyyss (default: ESC k)
 
   This command extracts PGP public keys from the current or tagged
   message(s) and adds them to your ``$pgp_v2_pubring'' or
   ``$pgp_v5_pubring'' depending on ``$pgp_key_version''.
 
+
   ffoorrggeett--ppaasssspphhrraassee (default: ^F)
 
   This command wipes the PGP passphrase from memory. It is useful, if
   you misspelled the passphrase.
+
 
   lliisstt--rreeppllyy (default: L)
 
@@ -335,10 +455,15 @@
   This function will go to the next line of non-quoted text which come
   after a line of quoted text in the internal pager.
 
+
   22..44..  SSeennddiinngg MMaaiill
+
+
 
   The following bindings are available in the _i_n_d_e_x for sending
   messages.
+
+
 
        m       compose         compose a new message
        r       reply           reply to sender
@@ -347,6 +472,9 @@
        f       forward         forward message
        b       bounce          bounce (remail) message
        ESC k   mail-key        mail a PGP public key to someone
+
+
+
 
   Bouncing a message sends the message as is to the recipient you
   specify.  Forwarding a message allows you to add comments or modify
@@ -375,6 +503,8 @@
   Once you have finished editing the body of your mail message, you are
   returned to the _c_o_m_p_o_s_e menu.  The following options are available:
 
+
+
        a       attach-file             attach a file
        ESC k   attach-key              attach a PGP public key
        d       edit-description        edit description on attachment
@@ -390,6 +520,11 @@
        q       quit                    quit (abort) sending the message
        i       ispell                  check spelling (if available on your system)
        ^F      forget-passphrase       whipe PGP passphrase from memory
+
+
+
+
+
 
   22..44..11..  EEddiittiinngg tthhee mmeessssaaggee hheeaaddeerr
 
@@ -419,7 +554,9 @@
 
   Also see ``edit_headers''.
 
+
   22..55..  PPoossttppoonniinngg MMaaiill
+
 
   At times it is desirable to delay sending a message that you have
   already begun to compose.  When the _p_o_s_t_p_o_n_e_-_m_e_s_s_a_g_e function is used
@@ -442,7 +579,9 @@
 
   See also the ``$postpone'' quad-option.
 
+
   33..  CCoonnffiigguurraattiioonn
+
 
   While the default configuration (or ``preferences'') make Mutt usable
   right out of the box, it is often desirable to tailor Mutt to suit
@@ -464,15 +603,31 @@
   number is the same which is visible using the ``-v'' ``command line''
   switch or using the show-version key (default: V) from the index menu.
 
+
   33..11..  SSyynnttaaxx ooff IInniittiiaalliizzaattiioonn FFiilleess
 
-  An initialization file consists of a series of ``commands'', each on
-  its own line. The hash mark, or pound sign (``#''), is used as a
-  ``comment'' character. You can use it to annotate your initialization
-  file. All text after the comment character to the end of the line is
-  ignored. For example,
+
+  An initialization file consists of a series of ``commands''.  Each
+  line of the file may contain one or more commands.  When multiple
+  commands are used, they must be separated by a semicolon (;).
+
+
+               set realname='Mutt user' ; ignore x-
+
+
+
+
+  The hash mark, or pound sign (``#''), is used as a ``comment'' charac-
+  ter. You can use it to annotate your initialization file. All text
+  after the comment character to the end of the line is ignored. For
+  example,
+
+
 
        my_hdr X-Disclaimer: Why are you listening to me? # This is a comment
+
+
+
 
   Single quotes (') and double quotes (") can be used to quote strings
   which contain spaces or other special characters.  The difference
@@ -489,7 +644,11 @@
   use ``\'' to force the next character to be a literal instead of
   interpreted character.
 
+
        set realname="Michael \"MuttDude\" Elkins"
+
+
+
 
   ``\\'' means to insert a literal ``\'' into the line.  ``\n'' and
   ``\r'' have their usual C meanings of linefeed and carriage-return,
@@ -503,7 +662,11 @@
   initialization file.  This is accomplished by enclosing the command in
   backquotes (``).  For example,
 
+
        my_hdr X-Operating-System: `uname -a`
+
+
+
 
   The output of the Unix command ``uname -a'' will be substituted before
   the line is parsed.  Note that since initialization files are line
@@ -513,7 +676,9 @@
   For a complete list of the commands understood by mutt, see the
   ``command reference''.
 
+
   33..22..  DDeeffiinniinngg//UUssiinngg aalliiaasseess
+
 
   Usage: alias _k_e_y _a_d_d_r_e_s_s [ , _a_d_d_r_e_s_s, ... ]
 
@@ -529,8 +694,13 @@
 
   unalias _a_d_d_r [ _a_d_d_r _._._. ]
 
+
+
        alias muttdude me@cs.hmc.edu (Michael Elkins)
        alias theguys manny, moe, jack
+
+
+
 
   Unlike other mailers, Mutt doesn't require aliases to be defined in a
   special file.  The alias command can appear anywhere in a
@@ -547,9 +717,12 @@
 
   For example:
 
+
+
        source /usr/local/share/Mutt.aliases
        source ~/.mail_aliases
        set alias_file=~/.mail_aliases
+
 
   To use aliases, you merely use the alias at any place in mutt where
   mutt prompts for addresses, such as the _T_o_: or _C_c_: prompt.  You can
@@ -567,6 +740,7 @@
   _s_e_l_e_c_t_-_e_n_t_r_y key (default: RET), and use the _e_x_i_t key (default: q) to
   return to the address prompt.
 
+
   33..33..  CChhaannggiinngg tthhee ddeeffaauulltt kkeeyy bbiinnddiinnggss
 
   Usage: bind _m_a_p _k_e_y _f_u_n_c_t_i_o_n
@@ -576,6 +750,7 @@
 
   _m_a_p specifies in which menu the binding belongs.  The currently
   defined maps are:
+
 
   +o  generic
 
@@ -607,10 +782,18 @@
 
   In addition, _k_e_y may consist of:
 
-  \t              tab
-  \r              carriage return
-  \n              newline
-  \e              escape
+
+
+
+
+
+
+
+
+  \t             tab
+  \r             carriage return
+  \n             newline
+  \e             escape
   up              up arrow
   down            down arrow
   left            left arrow
@@ -626,12 +809,16 @@
   f1              function key 1
   f10             function key 10
 
+
+
+
   _k_e_y does not need to be enclosed in quotes unless it contains a space
   (`` '').
 
   _f_u_n_c_t_i_o_n specifies which action to take when _k_e_y is pressed.  For a
   complete list of functions, see the ``reference''.  The special
   function noop unbinds the specify key sequence.
+
 
   33..44..  SSeettttiinngg vvaarriiaabblleess bbaasseedd uuppoonn mmaaiillbbooxx
 
@@ -653,11 +840,19 @@
   For example, a command action to perform is to change the sorting
   method based upon the mailbox being read:
 
+
+
        folder-hook mutt set sort=threads
+
+
+
 
   However, the sorting method is not restored to its previous value when
   reading a different mailbox.  To specify a _d_e_f_a_u_l_t command, use the
   pattern ``.'':
+
+
+
 
        folder-hook . set sort=date-sent
 
@@ -679,9 +874,12 @@
   NNoottee:: Macro definitions (if any) listed in the help screen(s), are
   silently truncated at the screen width, and are not wrapped.
 
+
   33..66..  UUssiinngg ccoolloorr aanndd mmoonnoo vviiddeeoo aattttrriibbuutteess
 
   Usage: color _o_b_j_e_c_t _f_o_r_e_g_r_o_u_n_d _b_a_c_k_g_r_o_u_n_d [ _r_e_g_e_x_p ]
+  Usage: color index _f_o_r_e_g_r_o_u_n_d _b_a_c_k_g_r_o_u_n_d [ _p_a_t_t_e_r_n ]
+  Usage: uncolor index _p_a_t_t_e_r_n [ _p_a_t_t_e_r_n ...  ]
 
   If your terminal supports color, you can spice up Mutt by creating
   your own color scheme.  To define the color of an object (type of
@@ -690,6 +888,7 @@
   other).
 
   _o_b_j_e_c_t can be one of:
+
 
   +o  attachment
 
@@ -702,6 +901,8 @@
   +o  header (match _r_e_g_e_x_p in the message header)
 
   +o  hdrdefault (default color of the message header in the pager)
+
+  +o  index (match _p_a_t_t_e_r_n in the message index)
 
   +o  indicator (arrow or bar used to indicate the current item in a
      menu)
@@ -732,6 +933,7 @@
 
   _f_o_r_e_g_r_o_u_n_d and _b_a_c_k_g_r_o_u_n_d can be one of the following:
 
+
   +o  white
 
   +o  black
@@ -761,11 +963,22 @@
   _C_O_L_O_R_F_G_B_G environment variable to the default colors of your terminal
   for this to work; for example (for Bourne-like shells):
 
+
+
        set COLORFGBG="green;black"
        export COLORFGBG
 
+
+
+
   NNoottee:: The _S_-_L_a_n_g library requires you to use the _l_i_g_h_t_g_r_a_y and _b_r_o_w_n
   keywords instead of _w_h_i_t_e and _y_e_l_l_o_w when setting this variable.
+
+  NNoottee:: The uncolor command can be applied to the index object only.  It
+  removes entries from the list. You mmuusstt specify the same pattern
+  specified in the color command for it to be removed.  The pattern
+  ``*'' is a special token which means to clear the color index list of
+  all entries.
 
   Mutt also recognizes the keywords _c_o_l_o_r_0, _c_o_l_o_r_1, ..., _c_o_l_o_rNN--11 (NN
   being the number of colors supported by your terminal).  This is
@@ -775,10 +988,10 @@
 
   If your terminal does not support color, it is still possible change
   the video attributes through the use of the ``mono'' command:
-
   Usage: mono _<_o_b_j_e_c_t_> _<_a_t_t_r_i_b_u_t_e_> [ _r_e_g_e_x_p ]
 
   where _a_t_t_r_i_b_u_t_e is one of the following:
+
 
   +o  none
 
@@ -789,6 +1002,7 @@
   +o  reverse
 
   +o  standout
+
 
   33..77..  IIggnnoorriinngg ((wweeeeddiinngg)) uunnwwaanntteedd mmeessssaaggee hheeaaddeerrss
 
@@ -812,11 +1026,16 @@
 
   For example:
 
+
        # Sven's draconian header weeding
        ignore *
        unignore from date subject to cc
        unignore organization organisation x-mailer: x-newsreader: x-mailing-list:
        unignore posted-to:
+
+
+
+
 
   33..88..  MMaaiilliinngg lliissttss
 
@@ -834,8 +1053,10 @@
   Mutt that this is a mailing list, you would add ``lists mutt-users''
   to your initialization file.
 
+
   The ``unlists'' command is to remove a token from the list of mailing-
   lists.  Use ``unlists *'' to remove all tokens.
+
 
   33..99..  UUssiinngg MMuullttiippllee ssppooooll mmaaiillbbooxxeess
 
@@ -850,6 +1071,7 @@
   Unlike some of the other _h_o_o_k commands, only the _f_i_r_s_t matching
   pattern is used (it is not possible to save read mail in more than a
   single mailbox).
+
 
   33..1100..  DDeeffiinniinngg mmaaiillbbooxxeess wwhhiicchh rreecceeiivvee mmaaiill
 
@@ -872,11 +1094,13 @@
   which accesses the mailbox might cause Mutt to never detect new mail
   for that mailbox if they do not properly reset the access time.
 
+
   NNoottee:: the filenames in the mailboxes command are resolved when the
   command is executed, so if these names contain ``shortcut characters''
   (such as ``='' and ``!''), any variable definition that affect these
   characters (like ``$folder'' and ``$spool'') should be executed before
   the mailboxes command.
+
 
   33..1111..  UUsseerr ddeeffiinneedd hheeaaddeerrss
 
@@ -890,7 +1114,9 @@
   For example, if you would like to add an ``Organization:'' header
   field to all of your outgoing messages, you can put the command
 
+
        my_hdr Organization: A Really Big Company, Anytown, USA
+
 
   in your .muttrc.
 
@@ -902,12 +1128,16 @@
   should either set the ``edit_headers'' variable, or use the _e_d_i_t_-
   _h_e_a_d_e_r_s function (default: ``E'') in the send-menu so that you can
   edit the header of your message along with the body.
+
   To remove user defined header fields, use the ``unmy_hdr'' command.
   You may specify an asterisk (``*'') to remove all header fields, or
   the fields to remove.  For example, to remove all ``To'' and ``Cc''
   header fields, you could use:
 
+
        unmy_hdr to cc
+
+
 
   33..1122..  DDeeffiinniinngg tthhee oorrddeerr ooff hheeaaddeerrss wwhheenn vviieewwiinngg mmeessssaaggeess
 
@@ -916,7 +1146,13 @@
   With this command, you can specify an order in which mutt will attempt
   to present headers to you when viewing messages.
 
+
+
        hdr_order From Date: From: To: Cc: Subject:
+
+
+
+
 
   33..1133..  SSppeecciiffyy ddeeffaauulltt ssaavvee ffiilleennaammee
 
@@ -932,10 +1168,16 @@
 
   Examples:
 
+
+
        save-hook me@(turing\\.)?cs\\.hmc\\.edu$ +elkins
        save-hook aol\\.com$ +spam
 
+
+
+
   Also see the ``fcc-save-hook'' command.
+
 
   33..1144..  SSppeecciiffyy ddeeffaauulltt FFcccc:: mmaaiillbbooxx wwhheenn ccoommppoossiinngg
 
@@ -956,12 +1198,14 @@
   to the `+spammers' mailbox by default.  Also see the ``fcc-save-hook''
   command.
 
+
   33..1155..  SSppeecciiffyy ddeeffaauulltt ssaavvee ffiilleennaammee aanndd ddeeffaauulltt FFcccc:: mmaaiillbbooxx aatt oonnccee
 
   Usage: fcc-save-hook [!]_r_e_g_e_x_p _m_a_i_l_b_o_x
 
   This command is a shortcut, equivalent to doing both a ``fcc-hook''
   and a ``save-hook'' with its arguments.
+
 
   33..1166..  CChhaannggee sseettttiinnggss bbaasseedd uuppoonn mmeessssaaggee rreecciippiieennttss
 
@@ -976,7 +1220,7 @@
   See ``matching messages'' for information on the exact format of
   _r_e_g_e_x_p.
 
-  Example: send-hook mutt "set mime_fwd signature=''"
+  Example: send-hook mutt "set mime_forward signature=''"
 
   Another typical use for this command is to change the values of the
   ``$attribution'', ``$signature'' and ``$locale'' variables in order to
@@ -987,6 +1231,7 @@
   list of recipients.  Adding a recipient after replying or editing the
   message will NOT cause any send-hook to be executed.
 
+
   33..1177..  AAddddiinngg kkeeyy sseeqquueenncceess ttoo tthhee kkeeyybbooaarrdd bbuuffffeerr
 
   Usage: push _s_t_r_i_n_g
@@ -994,6 +1239,7 @@
   This command adds the named string to the keyboard buffer.  You may
   use it to automatically run a sequence of commands at startup, or when
   entering certain folders.
+
 
   33..1188..  MMeessssaaggee SSccoorriinngg
 
@@ -1012,6 +1258,7 @@
   specify the same pattern specified in the score command for it to be
   removed.  The pattern ``*'' is a special token which means to clear
   the list of all score entries.
+
 
   33..1199..  SSeettttiinngg vvaarriiaabblleess
 
@@ -1055,7 +1302,12 @@
   value of a variable by prefixing the name of the variable with a
   question mark:
 
+
+
        set ?allow_8bit
+
+
+
 
   The question mark is actually only required for boolean variables.
 
@@ -1066,7 +1318,6 @@
 
   With the reset command there exists the special variable ``all'',
   which allows you to reset all variables to their system defaults.
-
   33..2200..  RReeaaddiinngg iinniittiiaalliizzaattiioonn ccoommmmaannddss ffrroomm aannootthheerr ffiillee
 
   Usage: source _f_i_l_e_n_a_m_e
@@ -1078,6 +1329,11 @@
 
   If the filename begins with a tilde (``~''), it will be expanded to
   the path of your home directory.
+
+  If the filename ends with a vertical bar (|), then _f_i_l_e_n_a_m_e is
+  considered to be an executable program from which to read input (eg.
+  source ~bin/myscript|/.
+
 
   44..  AAddvvaanncceedd UUssaaggee
 
@@ -1094,6 +1350,7 @@
   must be quoted if used for a regular expression in an initialization
   command: ``\\''.  For more information, see the section on
   ``searching'' below.
+
 
   44..11..11..  RReegguullaarr EExxpprreessssiioonnss
 
@@ -1179,6 +1436,7 @@
   character, as well as several characters that are equivalent for
   collating or sorting purposes:
 
+
      CCoollllaattiinngg SSyymmbboollss
         A collating symbols is a multi-character collating element
         enclosed in ``[.'' and ``.]''.  For example, if ``ch'' is a
@@ -1192,9 +1450,9 @@
         and ``=]''.  For example, the name ``e'' might be used to
         represent all of ``e'' ``e'' and ``e''.  In this case, [[[[==ee==]]]]
         is a regexp that matches any of ``e'', ``e'' and ``e''.
-
   A regular expression matching a single character may be followed by
   one of several repetition operators:
+
 
      ??  The preceding item is optional and matched at most once.
 
@@ -1230,6 +1488,7 @@
   NNoottee:: If you compile Mutt with the GNU _r_x package, the following
   operators may also be used in regular expressions:
 
+
      \\yy Matches the empty string at either the beginning or the end of a
         word.
 
@@ -1252,50 +1511,63 @@
   they may or may not be available in stock libraries on various
   systems.
 
+
   44..11..22..  SSeeaarrcchhiinngg
 
   Many of Mutt's commands allow you to specify a pattern to match
   (limit, tag-pattern, delete-pattern, etc.).  There are several ways to
   select messages:
 
-  ~A              all messages
-  ~b PATTERN      messages which contain PATTERN in the message body
-  ~c USER         messages carbon-copied to USER
-  ~C PATTERN      message is either to: or cc: PATTERN
-  ~D              deleted messages
-  ~d [MIN]-[MAX]  messages with ``date-sent'' in a Date range
-  ~E              expired messages
-  ~e PATTERN      message which contains PATTERN in the ``Sender'' field
-  ~F              flagged messages
-  ~f USER         messages originating from USER
-  ~h PATTERN      messages which contain PATTERN in the message header
-  ~i ID           message which match ID in the ``Message-ID'' field
-  ~L PATTERN      message is either originated or recieved by PATTERN
-  ~l              message is addressed to a known mailing list
-  ~m [MIN]-[MAX]  message in the range MIN to MAX
-  ~n [MIN]-[MAX]  messages with a score in the range MIN to MAX
-  ~N              new messages
-  ~O              old messages
-  ~p              message is addressed to you (consults $alternates)
-  ~P              message is from you (consults $alternates)
-  ~Q              messages which have been replied to
-  ~R              read messages
-  ~r [MIN]-[MAX]  messages with ``date-received'' in a Date range
-  ~S              superseded messages
-  ~s SUBJECT      messages having SUBJECT in the ``Subject'' field.
-  ~T              tagged messages
-  ~t USER         messages addressed to USER
-  ~U              unread messages
-  ~x PATTERN      messages which contain PATTERN in the `References' field
+
+
+       ~A              all messages
+       ~b PATTERN      messages which contain PATTERN in the message body
+       ~c USER         messages carbon-copied to USER
+       ~C PATTERN      message is either to: or cc: PATTERN
+       ~D              deleted messages
+       ~d [MIN]-[MAX]  messages with ``date-sent'' in a Date range
+       ~E              expired messages
+       ~e PATTERN      message which contains PATTERN in the ``Sender'' field
+       ~F              flagged messages
+       ~f USER         messages originating from USER
+       ~h PATTERN      messages which contain PATTERN in the message header
+       ~i ID           message which match ID in the ``Message-ID'' field
+       ~L PATTERN      message is either originated or received by PATTERN
+       ~l              message is addressed to a known mailing list
+       ~m [MIN]-[MAX]  message in the range MIN to MAX
+       ~n [MIN]-[MAX]  messages with a score in the range MIN to MAX
+       ~N              new messages
+       ~O              old messages
+       ~p              message is addressed to you (consults $alternates)
+       ~P              message is from you (consults $alternates)
+       ~Q              messages which have been replied to
+       ~R              read messages
+       ~r [MIN]-[MAX]  messages with ``date-received'' in a Date range
+       ~S              superseded messages
+       ~s SUBJECT      messages having SUBJECT in the ``Subject'' field.
+       ~T              tagged messages
+       ~t USER         messages addressed to USER
+       ~U              unread messages
+       ~x PATTERN      messages which contain PATTERN in the `References' field
+
+
+
 
   Where PATTERN, USER, ID, and SUBJECT are ``regular expressions''.
 
+
   44..11..33..  CCoommpplleexx SSeeaarrcchheess
+
 
   Logical AND is performed by specifying more than one criterion.  For
   example:
 
+
+
        ~t mutt ~f elkins
+
+
+
 
   would select messages which contain the word ``mutt'' in the list of
   recipients aanndd that have the word ``elkins'' in the ``From'' header
@@ -1304,16 +1576,25 @@
   Mutt also recognizes the following operators to create more complex
   search patterns:
 
+
   +o  ! -- logical NOT operator
 
   +o  | -- logical OR operator
+
 
   +o  () -- logical grouping operator
 
   Here is an example illustrating a complex search pattern.  This
   pattern will select all messages which do not contain ``mutt'' in the
   ``To'' or ``Cc'' field and which are from ``elkins''.
+
+
+
        !(~t mutt|~c mutt) ~f elkins
+
+
+
+
 
   44..11..44..  SSeeaarrcchhiinngg bbyy DDaattee
 
@@ -1323,7 +1604,12 @@
   optional, defaulting to the current month and year).  An example of a
   valid range of dates is:
 
+
+
        Limit to messages matching: ~d 20/1/95-31/10
+
+
+
 
   If you omit the minimum (first) date, and just specify ``-DD/MM/YY'',
   all messages _b_e_f_o_r_e the given date will be selected.  If you omit the
@@ -1348,16 +1634,22 @@
   w       weeks
   d       days
 
+
+
   Example: to select messages less than 1 month old, you would use
+
 
        Limit to messages matching: ~d <1m
 
+
+
+
   NNoottee:: all dates used when searching are relative to the llooccaall time
-  zone, so unless you change the setting of your ``$header_format'' to
+  zone, so unless you change the setting of your ``$index_format'' to
   include a %[...] format, these are nnoott the dates shown in the main
   index.
-
   44..22..  UUssiinngg TTaaggss
+
 
   Sometimes it is desirable to perform an operation on a group of
   messages all at once rather than one at a time.  An example might be
@@ -1375,6 +1667,7 @@
   manner.  If the ``$auto_tag'' variable is set, the next operation
   applies to the tagged messages automatically, without requiring the
   ``tag-prefix''.
+
 
   44..33..  UUssiinngg HHooookkss
 
@@ -1399,6 +1692,7 @@
 
      for specific details on each type of _h_o_o_k available.
 
+
   44..33..11..  MMeessssaaggee MMaattcchhiinngg iinn HHooookkss
 
   Hooks that act upon messages (send-hook, save-hook, fcc-hook) are
@@ -1416,7 +1710,9 @@
   For example, if you wanted to set your return address based upon
   sending mail to a specific address, you could do something like:
 
+
        send-hook '~t ^me@cs\.hmc\.edu$' 'my_hdr From: Mutt User <user@host>'
+
 
   which would execute the given command when sending mail to
   _m_e_@_c_s_._h_m_c_._e_d_u.
@@ -1429,6 +1725,7 @@
   time the hook is declared, so the value of ``$dfault_hook'' that is in
   effect at that time will be used.
 
+
   44..44..  EExxtteerrnnaall AAddddrreessss QQuueerriieess
 
   Mutt supports connecting to external directory databases such as LDAP,
@@ -1436,7 +1733,12 @@
   using a simple interface.  Using the ``$query_command'' variable, you
   specify the wrapper command to use.  For example:
 
+
+
        set query_command = "mutt_ldap_query.pl '%s'"
+
+
+
 
   The wrapper script should accept the query on the command-line.  It
   should return a one line message, than each matching response on a
@@ -1447,10 +1749,14 @@
 
   An example multiple response output:
 
+
        Searching database ... 20 entries ... 3 matching:
        me@cs.hmc.edu   Michael Elkins  mutt dude
        blong@fiction.net       Brandon Long    mutt and more
        roessler@guug.de        Thomas Roessler mutt pgp
+
+
+
 
   There are two mechanisms for accessing the query function of mutt.
   One is to do a query from the index menu using the query function
@@ -1470,6 +1776,10 @@
   will activate the query menu.  At the query menu, you can select one
   or more addresses to be added to the prompt.
 
+
+
+
+
   44..55..  MMaaiillbbooxx FFoorrmmaattss
 
   Mutt supports reading and writing of four different mailbox formats:
@@ -1482,7 +1792,12 @@
   messages are stored in a single file.  Each message has a line of the
   form:
 
+
+
        From me@cs.hmc.edu Fri, 11 Apr 1997 11:44:56 PST
+
+
+
 
   to denote the start of a new message (this is often referred to as the
   ``From_'' line).
@@ -1506,11 +1821,13 @@
   programs are writing the mailbox over NFS, which means that no file
   locking is needed.
 
+
   44..66..  MMaaiillbbooxx SShhoorrttccuuttss
 
   There are a number of built in shortcuts which refer to specific
   mailboxes.  These shortcuts can be used anywhere you are prompted for
   a file or mailbox path.
+
 
   +o  ! -- refers to your ``$spool'' (incoming) mailbox
 
@@ -1524,7 +1841,10 @@
 
   +o  = or + -- refers to your ``$folder'' directory
 
+
   44..77..  HHaannddlliinngg MMaaiilliinngg LLiissttss
+
+
 
   Mutt has a few configuration options that make dealing with large
   amounts of mail easier.  The first thing you must do is to let Mutt
@@ -1536,11 +1856,10 @@
   Now that Mutt knows what your mailing lists are, it can do several
   things, the first of which is the ability to show the list name in the
   _i_n_d_e_x menu display.  This is useful to distinguish between personal
-  and list mail in the same mailbox.  In the ``$header_format''
-  variable, the escape ``%L'' will return the string ``To <list>'' when
-  ``list'' appears in the ``To'' field, and ``Cc <list>'' when it
-  appears in the ``Cc'' field (otherwise it returns the name of the
-  author).
+  and list mail in the same mailbox.  In the ``$index_format'' variable,
+  the escape ``%L'' will return the string ``To <list>'' when ``list''
+  appears in the ``To'' field, and ``Cc <list>'' when it appears in the
+  ``Cc'' field (otherwise it returns the name of the author).
 
   Often times the ``To'' and ``Cc'' fields in mailing list messages tend
   to get quite large. Most people do not bother to remove the author of
@@ -1569,6 +1888,7 @@
   dealing with large volume mailing lists easier because you can easily
   delete uninteresting threads and quickly find topics of value.
 
+
   44..88..  DDeelliivveerryy SSttaattuuss NNoottiiffiiccaattiioonn ((DDSSNN)) SSuuppppoorrtt
 
   RFC1894 defines a set of MIME content types for relaying information
@@ -1583,7 +1903,9 @@
   message should be returned with the receipt (headers or full message).
   Refer to the man page on sendmail for more details on DSN.
 
+
   44..99..  PPOOPP33 SSuuppppoorrtt ((OOPPTTIIOONNAALL))
+
 
   If Mutt was compiled with POP3 support (by running the _c_o_n_f_i_g_u_r_e
   script with the _-_-_e_n_a_b_l_e_-_p_o_p flag), it has the ability to fetch your
@@ -1596,9 +1918,11 @@
   Once you have been authenticated, Mutt will fetch all your new mail
   and place it in the local ``spoolfile''.  After this point, Mutt runs
   exactly as if the mail had always been local.
+
   NNoottee:: The POP3 support is there only for convenience, and it's rather
   limited.  If you need more functionality you should consider using a
   specialized program, such as fetchmail
+
 
   55..  MMuutttt''ss MMIIMMEE SSuuppppoorrtt
 
@@ -1611,11 +1935,13 @@
   IANA MIME types.  The other is the mailcap file, which specifies the
   external commands to use for handling specific MIME types.
 
+
   55..11..  UUssiinngg MMIIMMEE iinn MMuutttt
 
   There are three areas/menus in Mutt which deal with MIME, they are the
   pager (while viewing a message), the attachment menu and the compose
   menu.
+
 
   55..11..11..  VViieewwiinngg MMIIMMEE mmeessssaaggeess iinn tthhee ppaaggeerr
 
@@ -1629,8 +1955,12 @@
   Mutt will denote attachments with a couple lines describing them.
   These lines are of the form:
 
+
        [-- Attachment #1: Description --]
        [-- Type: text/plain, Encoding: 7bit, Size: 10000 --]
+
+
+
 
   Where the Description is the description or filename given for the
   attachment, and the Encoding is one of 7bit/8bit/quoted-print-
@@ -1638,7 +1968,15 @@
 
   If Mutt cannot deal with a MIME type, it will display a message like:
 
+
        [-- image/gif is unsupported (use 'v' to view this part) --]
+
+
+
+
+
+
+
 
   55..11..22..  TThhee AAttttaacchhmmeenntt MMeennuu
 
@@ -1653,6 +1991,7 @@
   You can view attachments as text, or view them using the mailcap
   viewer definition.  See the help on the attachment menu for more
   information.
+
 
   55..11..33..  TThhee CCoommppoossee MMeennuu
 
@@ -1669,6 +2008,8 @@
   -   1 [text/plain, 7bit, 1K]             /tmp/mutt-euler-8082-0 <no description>
       2 [applica/x-gunzip, base64, 422K]   ~/src/mutt-0.85.tar.gz <no description>
 
+
+
   The '-' denotes that Mutt will delete the file after sending the
   message.  It can be toggled with the toggle-unlink command (default:
   u).  The next field is the MIME content-type, and can be changed with
@@ -1681,7 +2022,8 @@
   final field is the description of the attachment, and can be changed
   with the edit-description command (default: d).
 
-  55..22..  MMIIMMEE TTyyppee ccoonnffiigguurraattiioonn wwiitthh mime.types
+
+  55..22..  MMIIMMEE TTyyppee ccoonnffiigguurraattiioonn wwiitthh mmiimmee..ttyyppeess
 
   When you add an attachment to your mail message, Mutt searches your
   personal mime.types file at ${HOME}/.mime.types, and then the system
@@ -1692,13 +2034,16 @@
   The mime.types file consist of lines containing a MIME type and a
   space separated list of extensions.  For example:
 
+
        application/postscript          ps eps
        application/pgp                 pgp
        audio/x-aiff                    aif aifc aiff
 
+
+
+
   A sample mime.types file comes with the Mutt distribution, and should
   contain most of the MIME types you are likely to use.
-
   If Mutt can not determine the mime type by the extension of the file
   you attach, it will look at the file.  If the file is free of binary
   information, Mutt will assume that the file is plain text, and mark it
@@ -1710,7 +2055,8 @@
   text, image, video, or audio.  If you attempt to use a different major
   type, Mutt will abort the change.
 
-  55..33..  MMIIMMEE VViieewweerr ccoonnffiigguurraattiioonn wwiitthh mailcap
+
+  55..33..  MMIIMMEE VViieewweerr ccoonnffiigguurraattiioonn wwiitthh mmaaiillccaapp
 
   Mutt supports RFC 1524 MIME Configuration, in particular the Unix
   specific format specified in Appendix A of RFC 1524.  This file format
@@ -1724,7 +2070,11 @@
   find an external handler.  The default search string for these files
   is a colon delimited list set to
 
+
        ${HOME}/.mailcap:SHAREDIR/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap
+
+
+
 
   where $HOME is your home directory and SHAREDIR is the shared direc-
   tory defined at compile time (visible from mutt -v).
@@ -1732,6 +2082,7 @@
   In particular, the metamail distribution will install a mailcap file,
   usually as /usr/local/etc/mailcap, which contains some baseline
   entries.
+
 
   55..33..11..  TThhee BBaassiiccss ooff tthhee mmaaiillccaapp ffiillee
 
@@ -1767,16 +2118,28 @@
   So, in the simplest form, you can send a text/plain message to the
   external pager more on stdin:
 
-  text/plain; more
+
+       text/plain; more
+
+
+
 
   Or, you could send the message as a file:
 
+
        text/plain; more %s
+
+
+
 
   Perhaps you would like to use lynx to interactively view a text/html
   message:
 
+
        text/html; lynx "%s"
+
+
+
 
   In this case, lynx does not support viewing a file from stdin, so you
   must use the %s syntax.  NNoottee:: _S_o_m_e _o_l_d_e_r _v_e_r_s_i_o_n_s _o_f _l_y_n_x _c_o_n_t_a_i_n _a
@@ -1788,17 +2151,30 @@
   just want to have it convert the text/html to text/plain, then you can
   use:
 
+
        text/html; lynx -dump "%s" | more
+
+
+
 
   Perhaps you wish to use lynx to view text/html files, and a pager on
   all other text formats, then you would use the following:
 
+
        text/html; lynx "%s"
        text/*; more
 
+
+
+
   This is the simplest form of a mailcap file.
 
+
   55..33..22..  AAddvvaanncceedd mmaaiillccaapp UUssaaggee
+
+
+
+
 
   55..33..22..11..  OOppttiioonnaall FFiieellddss
 
@@ -1815,7 +2191,11 @@
         use this to replace the pipe to more in the lynx -dump example
         in the Basic section:
 
+
           text/html; lynx -dump %s ; copiousoutput
+
+
+
 
      This will cause lynx to format the text/html output as text/plain
      and Mutt will use your standard pager to display the results.
@@ -1861,7 +2241,11 @@
         file ends in .html.  So, you would specify lynx as a text/html
         viewer with a line in the mailcap file like:
 
-          text/html; lynx %s; nametemplate=%s.html
+
+     text/html; lynx %s; nametemplate=%s.html
+
+
+
 
      tteesstt==<<ccoommmmaanndd>>
         This field specifies a command to run to test whether this
@@ -1873,8 +2257,12 @@
         _c_o_n_t_e_n_t_-_t_y_p_e _m_u_s_t _m_a_t_c_h _b_e_f_o_r_e _M_u_t_t _p_e_r_f_o_r_m_s _t_h_e _t_e_s_t_.  For
         example:
 
+
           text/html; netscape -remote 'openURL(%s)' ; test=RunningX
           text/html; lynx %s
+
+
+
 
      In this example, Mutt will run the program RunningX which will
      return 0 if the X Window manager is running, and non-zero if it
@@ -1882,6 +2270,7 @@
      play the text/html object.  If RunningX doesn't return 0, then Mutt
      will go on to the next entry and use lynx to display the text/html
      object.
+
 
   55..33..22..22..  SSeeaarrcchh OOrrddeerr
 
@@ -1891,9 +2280,13 @@
   in your mailcap file, Mutt will search for an entry with the print
   command:
 
+
        image/*;        xv %s
        image/gif;      ; print= anytopnm %s | pnmtops | lpr; \
                        nametemplate=%s.gif
+
+
+
 
   Mutt will skip the image/* entry and use the image/gif entry with the
   print command.
@@ -1904,15 +2297,20 @@
   can then use the test feature to determine which viewer to use
   interactively depending on your environment.
 
+
        text/html;      netscape -remote 'openURL(%s)' ; test=RunningX
        text/html;      lynx %s; nametemplate=%s.html
        text/html;      lynx -dump %s; nametemplate=%s.html; copiousoutput
 
+
+
+
   For ``Autoview'', Mutt will choose the third entry because of the
   copiousoutput tag.  For interactive viewing, Mutt will run the program
-  RunningX to determine if it should use the first entry.  If the pro-
-  gram returns non-zero, Mutt will use the second entry for interactive
-  viewing.
+  RunningX to determine if it should use the first entry.  If the
+  program returns non-zero, Mutt will use the second entry for interac-
+  tive viewing.
+
 
   55..33..22..33..  CCoommmmaanndd EExxppaannssiioonn
 
@@ -1937,17 +2335,22 @@
         from the Content-Type: line of the mail message.  For instance,
         if Your mail message contains:
 
+
           Content-Type: text/plain; charset=iso-8859-1
+
+
+
 
      then Mutt will expand %{charset} to iso-8859-1.  The default meta-
      mail mailcap file uses this feature to test the charset to spawn an
      xterm using the right charset to view the message.
 
-     \\%% This will be replaced by a %
+     %%  This will be replaced by a %
 
   Mutt does not currently support the %F and %n keywords specified in
   RFC 1524.  The main purpose of these parameters is for multipart mes-
   sages, which is handled internally by Mutt.
+
 
   55..33..33..  EExxaammppllee mmaaiillccaapp ffiilleess
 
@@ -1962,7 +2365,14 @@
   text/html;      netscape -remote 'openURL(%s)'
   ______________________________________________________________________
 
+
+
   This mailcap file shows quite a number of examples:
+
+
+
+
+
 
   ______________________________________________________________________
   # Use xanim to view all videos   Xanim produces a header on startup,
@@ -2006,6 +2416,9 @@
   application/ms-excel; open.pl %s
   ______________________________________________________________________
 
+
+
+
   55..44..  MMIIMMEE AAuuttoovviieeww
 
   In addition to explicitly telling Mutt to view an attachment with the
@@ -2022,10 +2435,14 @@
 
   For instance, if you set auto_view to:
 
+
        auto_view text/html text/enriched application/x-gunzip application/postscript image/gif application/x-tar-gz
+
+
 
   Mutt could use the following mailcap entries to automatically view
   attachments of these types.
+
 
        text/html;      lynx -dump %s; copiousoutput; nametemplate=%s.html
        text/enriched;  enriched.sh  ; copiousoutput
@@ -2033,6 +2450,9 @@
        application/x-gunzip;   gzcat; copiousoutput
        application/x-tar-gz; gunzip -c %s | tar -tf - ; copiousoutput
        application/postscript; ps2ascii %s; copiousoutput
+
+
+
 
   55..55..  MMIIMMEE MMuullttiippaarrtt//AAlltteerrnnaattiivvee
 
@@ -2043,12 +2463,17 @@
   mimetypes in order, including support for implicit and explicit
   wildcards, for example:
 
+
        alternative_order text/enriched text/plain text application/postscript image/*
+
+
+
 
   Next, mutt will check if any of the types have a defined
   ``auto_view'', and use that.  Failing that, Mutt will look for any
   text type.  As a last attempt, mutt will look for any type it knows
   how to handle.
+
 
   66..  RReeffeerreennccee
 
@@ -2057,6 +2482,8 @@
   Running mutt with no arguments will make Mutt attempt to read your
   spool mailbox.  However, it is possible to read other mailboxes and to
   send messages from the command line as well.
+
+
 
        -a      attach a file to a message
        -c      specify a carbon-copy (Cc) address
@@ -2077,6 +2504,8 @@
        -z      exit immediately if there are no messages in the mailbox
        -Z      open the first folder with new message,exit immediately if none
 
+
+
   To read messages in a mailbox
 
   mutt [ -nz ] [ -F _m_u_t_t_r_c ] [ -m _t_y_p_e ] [ -f _m_a_i_l_b_o_x ]
@@ -2095,9 +2524,11 @@
   subject of ``data set for run #2''.  In the body of the message will
   be the contents of the file ``~/run2.dat''.
 
+
   66..22..  CCoonnffiigguurraattiioonn CCoommmmaannddss
 
   The following are the commands understood by mutt.
+
 
   +o  ``alias'' _k_e_y _a_d_d_r_e_s_s [ , _a_d_d_r_e_s_s, ... ]
 
@@ -2149,7 +2580,10 @@
 
   +o  ``source'' _f_i_l_e_n_a_m_e
 
+
   66..33..  CCoonnffiigguurraattiioonn vvaarriiaabblleess
+
+
 
   66..33..11..  aabboorrtt__nnoossuubbjjeecctt
 
@@ -2161,6 +2595,7 @@
   messages with no subject given at the subject prompt will never be
   aborted.
 
+
   66..33..22..  aabboorrtt__uunnmmooddiiffiieedd
 
   Type: quadoption
@@ -2170,6 +2605,7 @@
   message body if no changes are made to the file (this check only
   happens after the _f_i_r_s_t edit of the file).  When set to _n_o,
   composition will never be aborted.
+
 
   66..33..33..  aalliiaass__ffiillee
 
@@ -2182,6 +2618,7 @@
   NNoottee:: Mutt will not automatically source this file; you must
   explicitly use the ``source'' command for it to be executed.
 
+
   66..33..44..  aalliiaass__ffoorrmmaatt
 
   Type: string
@@ -2190,10 +2627,16 @@
   Specifies the format of the data displayed for the `alias' menu.  The
   following printf(3)-style sequences are available.
 
+
   %a      alias name
   %n      index number
   %r      address which alias expands to
   %t      character which indicates if the alias is tagged for inclusion (*/ )
+
+
+
+
+
 
   66..33..55..  aallllooww__88bbiitt
 
@@ -2203,6 +2646,7 @@
   Controls whether 8-bit data is converted to 7-bit using either Quoted-
   Printable or Base64 encoding when sending mail.
 
+
   66..33..66..  aalltteerrnnaatteess
 
   Type: string
@@ -2211,6 +2655,7 @@
   A regexp that allows you to specify _a_l_t_e_r_n_a_t_e addresses where you
   receive mail.  This affects Mutt's idea about messages from you and
   addressed to you.
+
 
   66..33..77..  aarrrrooww__ccuurrssoorr
 
@@ -2223,6 +2668,7 @@
   be redrawn on the screen when moving to the next or previous entries
   in the menu.
 
+
   66..33..88..  aasscciiii__cchhaarrss
 
   Type: boolean
@@ -2230,6 +2676,7 @@
 
   If set, Mutt will use plain ASCII characters when displaying thread
   and attachment trees, instead of the default _A_C_S characters.
+
 
   66..33..99..  aasskkbbcccc
 
@@ -2239,6 +2686,7 @@
   If set, Mutt will prompt you for blind-carbon-copy (Bcc) recipients
   before editing an outgoing message.
 
+
   66..33..1100..  aasskkcccc
 
   Type: boolean
@@ -2247,37 +2695,16 @@
   If set, Mutt will prompt you for carbon-copy (Cc) recipients before
   editing the body of an outgoing message.
 
-  66..33..1111..  aattttaacchh__sseepp
 
-  Type: string
-  Default: newline
-
-  The separator to add between attachments when piping or saving a list
-  of tagged attachments to an external Unix command.
-
-  66..33..1122..  aattttaacchh__sspplliitt
-
-  Type: boolean
-  Default: set
-
-  Used in connection with the _p_i_p_e_-_e_n_t_r_y and _s_a_v_e_-_e_n_t_r_y commands and the
-  ``tag-prefix'' operator in the ``attachment'' menu.  If this variable
-  is unset, when piping or saving a list of tagged attachments Mutt will
-  concatenate the attachments and will pipe or save them as a single
-  file.  The ``attach_sep'' separator will be added after each message.
-  When set, Mutt will pipe or save the messages one by one.  In both
-  cases the the messages are processed in the displayed order.
-
-  66..33..1133..  aattttrriibbuuttiioonn
+  66..33..1111..  aattttrriibbuuttiioonn
 
   Type: format string
   Default: "On %d, %n wrote:"
 
   This is the string that will precede a message which has been included
   in a reply.  For a full listing of defined escape sequences see the
-  section on ``$header_format''.
-
-  66..33..1144..  aauuttooeeddiitt
+  section on ``$index_format''.
+  66..33..1122..  aauuttooeeddiitt
 
   Type: boolean
   Default: unset
@@ -2290,7 +2717,8 @@
   If the ``$edit_headers'' variable is also set, the initial prompts in
   the send-menu are always skipped, even when composing a new message.
 
-  66..33..1155..  aauuttoo__ttaagg
+
+  66..33..1133..  aauuttoo__ttaagg
 
   Type: boolean
   Default: unset
@@ -2300,14 +2728,16 @@
   must first use the tag-prefix function (default: ";") to make the next
   function apply to all tagged messages.
 
-  66..33..1166..  bbeeeepp
+
+  66..33..1144..  bbeeeepp
 
   Type: boolean
   Default: set
 
   When this variable is set, mutt will beep when an error occurs.
 
-  66..33..1177..  bbeeeepp__nneeww
+
+  66..33..1155..  bbeeeepp__nneeww
 
   Type boolean
   Default: unset
@@ -2316,7 +2746,8 @@
   notifying you of new mail.  This is independent of the setting of the
   ``beep'' variable.
 
-  66..33..1188..  cchhaarrsseett
+
+  66..33..1166..  cchhaarrsseett
 
   Type: string
   Default: iso-8859-1
@@ -2326,7 +2757,8 @@
   contain 8-bit characters so that receiving parties can display your
   messages in the correct character set.
 
-  66..33..1199..  cchheecckk__nneeww
+
+  66..33..1177..  cchheecckk__nneeww
 
   Type: boolean
   Default: set
@@ -2338,8 +2770,7 @@
   some time since it involves scanning the directory and checking each
   file to see if it has already been looked at.  If _c_h_e_c_k___n_e_w is _u_n_s_e_t,
   no check for new mail is performed while the mailbox is open.
-
-  66..33..2200..  ccoonnffiirrmmaappppeenndd
+  66..33..1188..  ccoonnffiirrmmaappppeenndd
 
   Type: boolean
   Default: set
@@ -2347,7 +2778,8 @@
   When set, Mutt will prompt for confirmation when appending messages to
   an existing mailbox.
 
-  66..33..2211..  ccoonnffiirrmmccrreeaattee
+
+  66..33..1199..  ccoonnffiirrmmccrreeaattee
 
   Type: boolean
   Default: set
@@ -2355,7 +2787,8 @@
   When set, Mutt will prompt for confirmation when saving messages to a
   mailbox which does not yet exist before creating it.
 
-  66..33..2222..  ccooppyy
+
+  66..33..2200..  ccooppyy
 
   Type: quadoption
   Default: yes
@@ -2364,14 +2797,15 @@
   will be saved for later references.  Also see ``record'',
   ``save_name'', ``force_name'' and ``fcc-hook''.
 
-  66..33..2233..  ddaattee__ffoorrmmaatt
+
+  66..33..2211..  ddaattee__ffoorrmmaatt
 
   Type: string
   Default: "!%a, %b %d, %Y at %I:%M:%S%p %Z"
 
   This variable controls the format of the date printed by the ``%d''
-  sequence in ``$header_format''.  This is passed to the _s_t_r_f_t_i_m_e call
-  to process the date. See the man page for _s_t_r_f_t_i_m_e_(_3_) for the proper
+  sequence in ``$index_format''.  This is passed to the _s_t_r_f_t_i_m_e call to
+  process the date. See the man page for _s_t_r_f_t_i_m_e_(_3_) for the proper
   syntax.
 
   Unless the first character in the string is a bang (``!''), the month
@@ -2381,7 +2815,8 @@
   rest of the string are expanded in the _C locale (that is in US
   English).
 
-  66..33..2244..  ddeeffaauulltt__hhooookk
+
+  66..33..2222..  ddeeffaauulltt__hhooookk
 
   Type: string
   Default: "~f %s | (~P (~c %s | ~t %s))"
@@ -2396,26 +2831,28 @@
   ``alternates'') and is to or cc'ed to a user matching the given
   regular expression.
 
-  66..33..2255..  ddeelleettee
+
+  66..33..2233..  ddeelleettee
 
   Type: quadoption
   Default: ask-yes
-
   Controls whether or not messages are really deleted when closing or
   synchronizing a mailbox.  If set to _y_e_s, messages marked for deleting
   will automatically be purged without prompting.  If set to _n_o,
   messages marked for deletion will be kept in the mailbox.
 
-  66..33..2266..  ddeelleettee__ffoorrmmaatt
+
+  66..33..2244..  ddeelleettee__ffoorrmmaatt
 
   Type: string
   Default: "[-- Attachment from %u deleted on %<%D> --]"
 
   This variable controls the format of the message used to replace an
   attachment when the attachment is deleted.  It uses the same format
-  sequences as the ``$header_format'' variable.
+  sequences as the ``$index_format'' variable.
 
-  66..33..2277..  ddssnn__nnoottiiffyy
+
+  66..33..2255..  ddssnn__nnoottiiffyy
 
   Type: string
   Default: none
@@ -2431,7 +2868,8 @@
 
   Example: set dsn_notify="failure,delay"
 
-  66..33..2288..  ddssnn__rreettuurrnn
+
+  66..33..2266..  ddssnn__rreettuurrnn
 
   Type: string Default: none
 
@@ -2444,7 +2882,8 @@
 
   Example: set dsn_return=hdrs
 
-  66..33..2299..  eeddiitt__hheeaaddeerrss
+
+  66..33..2277..  eeddiitt__hheeaaddeerrss
 
   Type: boolean
   Default: unset
@@ -2452,21 +2891,35 @@
   This option allows you to edit the header of your outgoing messages
   along with the body of your message.
 
-  66..33..3300..  eeddiittoorr
+
+  66..33..2288..  eeddiittoorr
 
   Type: String
   Default: value of environment variable $VISUAL, $EDITOR, or "vi"
 
   This variable specifies which editor to use when composing messages.
 
-  66..33..3311..  eessccaappee
+
+
+
+  66..33..2299..  eemmppttyy__ttoo
+
+  Type: string
+  Default: undisclosed-recipients
+
+  Specifies the text Mutt inserts in the To: header of a message you're
+  sending, if the To: and Cc: fields are empty.
+
+
+  66..33..3300..  eessccaappee
 
   Type: string
   Default: ~
 
   Escape character to use for functions in the builtin editor.
 
-  66..33..3322..  ffaasstt__rreeppllyy
+
+  66..33..3311..  ffaasstt__rreeppllyy
 
   Type: boolean
   Default: unset
@@ -2478,7 +2931,8 @@
   NNoottee:: this variable has no effect when the ``$autoedit'' variable is
   set.
 
-  66..33..3333..  ffcccc__aattttaacchh
+
+  66..33..3322..  ffcccc__aattttaacchh
 
   Type: boolean
   Default: set
@@ -2486,7 +2940,8 @@
   This variable controls whether or not attachments on outgoing messages
   are saved along with the main body of your message.
 
-  66..33..3344..  ffoollddeerr
+
+  66..33..3333..  ffoollddeerr
 
   Type: String
   Default: ~/Mail
@@ -2498,7 +2953,8 @@
   `+' or `=' for any other variables since expansion takes place during
   the `set' command.
 
-  66..33..3355..  ffoolllloowwuupp__ttoo
+
+  66..33..3344..  ffoolllloowwuupp__ttoo
 
   Type: boolean
   Default: set
@@ -2512,8 +2968,7 @@
   will receive a copy of the message if it is addressed to the mailing
   list (and thus there is no need to also include your address in a
   group reply).
-
-  66..33..3366..  ffoorrccee__nnaammee
+  66..33..3355..  ffoorrccee__nnaammee
 
   Type: boolean
   Default: unset
@@ -2524,27 +2979,28 @@
 
   Also see the ``$record'' variable.
 
-  66..33..3377..  ffoorrwwaarrdd__ddeeccooddee
+
+  66..33..3366..  ffoorrwwaarrdd__ddeeccooddee
 
   Type: boolean
-  Default: unset
+  Default: set
 
   Controls the decoding of complex MIME messages into text/plain when
-  forwarding a message.  If ``mime_forward'' is _u_n_s_e_t, then the message
-  header is also RFC2047 decoded (this cannot be done when forwarding a
-  message as a message/rfc822 attachment because it would violate the
-  MIME spec, which states that you must only use US-ASCII in the
-  header).
+  forwarding a message and the message header is also RFC2047 decoded.
+  This variable is only used, if ``mime_forward'' is _u_n_s_e_t, otherwise
+  ``mime_forward_decode'' is used instead.
 
-  66..33..3388..  ffoorrwwaarrdd__ffoorrmmaatt
+
+  66..33..3377..  ffoorrwwaarrdd__ffoorrmmaatt
 
   Type: format string
   Default: "[%a: %s]"
 
   This variable controls the default subject when forwarding a message.
-  It uses the same format sequences as the ``$header_format'' variable.
+  It uses the same format sequences as the ``$index_format'' variable.
 
-  66..33..3399..  ffoorrwwaarrdd__qquuoottee
+
+  66..33..3388..  ffoorrwwaarrdd__qquuoottee
 
   Type: boolean
   Default: unset
@@ -2553,7 +3009,8 @@
   (when ``mime_forward'' is _u_n_s_e_t) will be quoted using
   ``indent_string''.
 
-  66..33..4400..  hheeaaddeerr__ffoorrmmaatt
+
+  66..33..3399..  iinnddeexx__ffoorrmmaatt
 
   Type: format string
   Default: "%4C %Z %{%b %d} %-15.15L (%4l) %s"
@@ -2565,49 +3022,64 @@
   function printf to format output (see the man page for more detail).
   The following sequences are defined in Mutt:
 
-       %a      address of the author
-       %b      filename of the original message folder (think mailBox)
-       %B      the list to which the letter was sent, or else the folder
-               name (%b). 
-       %c      number of characters (bytes) in the message
-       %C      current message number
-       %d      date and time of the message in the format specified by
-               ``date_format''
-       %f      entire From: line (address + real name)
-       %F      author name, or recipient name if the message is from you
-       %i      message-id of the current message
-       %l      number of lines in the message
-       %L      list-from function
-       %m      total number of message in the mailbox
-       %N      message score
-       %n      author's real name (or address if missing)
-       %O      (_O_riginal save folder)  Where mutt would formerly have
-               stashed the message: list name or recipient name if no list
-       %s      subject of the message
-       %S      status of the message (N/D/d/!/*/r)
-       %t      `to:' field (recipients)
-       %T      the appropriate character from the $to_chars string
-       %u      user (login) name of the author
-       %Z      message status flags
 
-       %{fmt}  the date and time of the message is converted to sender's
-               time zone, and ``fmt'' is expanded by the system call
-               ``strftime''; a leading bang disables locales
-       %[fmt]  the date and time of the message is converted to the local
-               time zone, and ``fmt'' is expanded by the system call
-               ``strftime''; a leading bang disables locales
-       %(fmt)  the local date and time when the message was received.
-               ``fmt'' is expanded by the system call ``strftime'';
-               a leading bang disables locales
-       %<fmt>  the current local time. ``fmt'' is expanded by the system
-               call ``strftime''; a leading bang disables locales.
 
-       %>X     right justify the rest of the string and pad with character "X"
-       %|X     pad to the end of the line with character "X"
+
+
+
+
+
+
+
+
+
+
+  %a      address of the author
+  %b      filename of the original message folder (think mailBox)
+  %B      the list to which the letter was sent, or else the folder name (%b).
+  %c      number of characters (bytes) in the message
+  %C      current message number
+  %d      date and time of the message in the format specified by
+          ``date_format''
+  %f      entire From: line (address + real name)
+  %F      author name, or recipient name if the message is from you
+  %i      message-id of the current message
+  %l      number of lines in the message
+  %L      list-from function
+  %m      total number of message in the mailbox
+  %N      message score
+  %n      author's real name (or address if missing)
+  %O       (_O_riginal save folder)  Where mutt would formerly have stashed the
+          message: list name or recipient name if no list
+  %s      subject of the message
+  %S      status of the message (N/D/d/!/*/r)
+  %t      `to:' field (recipients)
+  %T      the appropriate character from the $to_chars string
+  %u      user (login) name of the author
+  %Z      message status flags
+
+  %{fmt}  the date and time of the message is converted to sender's
+          time zone, and ``fmt'' is expanded by the system call
+          ``strftime''; a leading bang disables locales
+  %[fmt]  the date and time of the message is converted to the local
+          time zone, and ``fmt'' is expanded by the system call
+          ``strftime''; a leading bang disables locales
+  %(fmt)  the local date and time when the message was received.
+          ``fmt'' is expanded by the system call ``strftime'';
+          a leading bang disables locales
+  %<fmt>  the current local time. ``fmt'' is expanded by the system
+          call ``strftime''; a leading bang disables locales.
+
+  %>X     right justify the rest of the string and pad with character "X"
+  %|X     pad to the end of the line with character "X"
+
+
+
 
   See also: ``$to_chars''.
 
-  66..33..4411..  hhddrrss
+
+  66..33..4400..  hhddrrss
 
   Type: boolean
   Default: set
@@ -2617,7 +3089,8 @@
   message or replying in order to take effect.  If set, the user defined
   header fields are added to every new message.
 
-  66..33..4422..  hheeaaddeerr
+
+  66..33..4411..  hheeaaddeerr
 
   Type: boolean
   Default: unset
@@ -2625,7 +3098,9 @@
   When set, this variable causes Mutt to include the _f_u_l_l header of the
   message you are replying to into the edit buffer.
 
-  66..33..4433..  hheellpp
+
+
+  66..33..4422..  hheellpp
 
   Type: boolean
   Default: set
@@ -2639,7 +3114,8 @@
   Since this variable is primarily aimed at new users, neither of these
   should present a major problem.
 
-  66..33..4444..  hhiissttoorryy
+
+  66..33..4433..  hhiissttoorryy
 
   Type: number
   Default: 10
@@ -2648,7 +3124,8 @@
   the string history buffer. The buffer is cleared each time the
   variable is set.
 
-  66..33..4455..  hhoossttnnaammee
+
+  66..33..4444..  hhoossttnnaammee
 
   Type: string
   Default: varies
@@ -2657,7 +3134,8 @@
   addresses.  This overrides the compile time definition obtained from
   /etc/resolv.conf.
 
-  66..33..4466..  iiggnnoorree__lliisstt__rreeppllyy__ttoo
+
+  66..33..4455..  iiggnnoorree__lliisstt__rreeppllyy__ttoo
 
   Type: boolean
   Default: unset
@@ -2670,24 +3148,25 @@
   list when this option is set, use the _l_i_s_t_-_r_e_p_l_y function; _g_r_o_u_p_-_r_e_p_l_y
   will reply to both the sender and the list.
 
-  66..33..4477..  iinn__rreeppllyy__ttoo
+
+  66..33..4466..  iinn__rreeppllyy__ttoo
 
   Type: format string
   Default: "%i; from \"%n\" on %{!%a, %b %d, %Y at %I:%M:%S%p}"
 
   This specifies the format of the In-Reply-To: header field added when
   replying to a message. For a full listing of defined escape sequences
-  see the section on ``$header_format''.
+  see the section on ``$index_format''.
 
-  66..33..4488..  iinncclluuddee
+
+  66..33..4477..  iinncclluuddee
 
   Type: quadoption
   Default: ask-yes
 
   Controls whether or not a copy of the message(s) you are replying to
   is included in your reply.
-
-  66..33..4499..  iinnddeenntt__ssttrriinngg
+  66..33..4488..  iinnddeenntt__ssttrriinngg
 
   Type: format string
   Default: "> "
@@ -2696,14 +3175,16 @@
   message to which you are replying.  You are strongly encouraged not to
   change this value, as it tends to agitate the more fanatical netizens.
 
-  66..33..5500..  iissppeellll
+
+  66..33..4499..  iissppeellll
 
   Type: string
   Default: "ispell"
 
   How to invoke ispell (GNU's spell-checking software).
 
-  66..33..5511..  llooccaallee
+
+  66..33..5500..  llooccaallee
 
   Type: string
   Default: "C"
@@ -2711,7 +3192,8 @@
   The locale used by _s_t_r_f_t_i_m_e_(_3_) to format dates. Legal values are the
   strings your system accepts for the locale variable _L_C___T_I_M_E.
 
-  66..33..5522..  mmaaiillccaapp__ppaatthh
+
+  66..33..5511..  mmaaiillccaapp__ppaatthh
 
   Type: string
   Default: $MAILCAPS or
@@ -2720,7 +3202,8 @@
   This variable specifies which files to consult when attempting to
   display MIME bodies not directly supported by Mutt.
 
-  66..33..5533..  mmaarrkk__oolldd
+
+  66..33..5522..  mmaarrkk__oolldd
 
   Type: Boolean
   Default: set
@@ -2733,7 +3216,8 @@
   make Mutt treat all unread messages as new only, you can unset this
   variable.
 
-  66..33..5544..  mmaarrkkeerrss
+
+  66..33..5533..  mmaarrkkeerrss
 
   Type: boolean
   Default: set
@@ -2742,7 +3226,8 @@
   ``+'' marker is displayed at the beginning of wrapped lines. Also see
   the ``$smart_wrap'' variable.
 
-  66..33..5555..  mmaasskk
+
+  66..33..5544..  mmaasskk
 
   Type: string
   Default: "^(\.\.$|[^.])"
@@ -2750,7 +3235,8 @@
   A regular expression used in the file browser. Files whose names don't
   match this mask will not be shown.
 
-  66..33..5566..  mmbbooxx
+
+  66..33..5555..  mmbbooxx
 
   Type: String
   Default: +inbox
@@ -2758,7 +3244,8 @@
   This specifies the folder into which read mail in your ``spoolfile''
   folder will be appended.
 
-  66..33..5577..  mmbbooxx__ttyyppee
+
+  66..33..5566..  mmbbooxx__ttyyppee
 
   Type: String
   Default: mbox
@@ -2766,7 +3253,8 @@
   The default mailbox type used when creating new folders. May be any of
   mbox, MMDF, MH and Maildir.
 
-  66..33..5588..  mmeettoooo
+
+  66..33..5577..  mmeettoooo
 
   Type: boolean
   Default: unset
@@ -2776,7 +3264,8 @@
   you, Mutt will also assume that you want to reply to the recipients of
   that message rather than to yourself.
 
-  66..33..5599..  mmeennuu__ssccrroollll
+
+  66..33..5588..  mmeennuu__ssccrroollll
 
   Type: boolean
   Default: unset
@@ -2786,7 +3275,8 @@
   the next or previous page of the menu is displayed (useful for slow
   links to avoid many redraws).
 
-  66..33..6600..  mmeettaa__kkeeyy
+
+  66..33..5599..  mmeettaa__kkeeyy
 
   Type: Boolean
   Default: unset
@@ -2798,7 +3288,9 @@
   pressed ESC then ``x''.  This is because the result of removing the
   high bit from ``0xf4'' is ``0x74'', which is the ASCII character
   ``x''.
-  66..33..6611..  mmiimmee__ffoorrwwaarrdd
+
+
+  66..33..6600..  mmiimmee__ffoorrwwaarrdd
 
   Type: boolean
   Default: unset
@@ -2808,7 +3300,18 @@
   message.  This is useful for forwarding MIME messages so the receiver
   can properly view the message as it was delivered to you.
 
-  Also see ``forward_decode''.
+  Also see ``forward_decode'' and ``mime_forward_decode''.
+
+
+  66..33..6611..  mmiimmee__ffoorrwwaarrdd__ddeeccooddee
+
+  Type: boolean
+  Default: unset
+
+  Controls the decoding of complex MIME messages into text/plain when
+  forwarding a message while ``mime_forward'' is _s_e_t. Otherwise
+  ``forward_decode'' is used instead.
+
 
   66..33..6622..  mmoovvee
 
@@ -2819,6 +3322,7 @@
   from your spool mailbox to your ``$mbox'' mailbox, or as a result of a
   ``mbox-hook'' command.
 
+
   66..33..6633..  mmeessssaaggee__ffoorrmmaatt
 
   Type: string
@@ -2826,7 +3330,8 @@
 
   This is the string displayed in the ``attachment'' menu for
   attachments of type _m_e_s_s_a_g_e_/_r_f_c_8_2_2.  For a full listing of defined
-  escape sequences see the section on ``header_format''.
+  escape sequences see the section on ``index_format''.
+
 
   66..33..6644..  ppaaggeerr
 
@@ -2838,6 +3343,7 @@
   variable should specify the pathname of the external pager you would
   like to use.
 
+
   66..33..6655..  ppaaggeerr__ccoonntteexxtt
 
   Type: number
@@ -2848,6 +3354,7 @@
   default, Mutt will display the line after the last one on the screen
   at the top of the next page (0 lines of context).
 
+
   66..33..6666..  ppaaggeerr__ffoorrmmaatt
 
   Type: format string
@@ -2855,9 +3362,8 @@
 
   This variable controls the format of the one-line message ``status''
   displayed before each message in either the internal or an external
-  pager.  The valid sequences are listed in the ``header_format''
+  pager.  The valid sequences are listed in the ``index_format''
   section.
-
   66..33..6677..  ppaaggeerr__iinnddeexx__lliinneess
 
   Type: number
@@ -2875,6 +3381,7 @@
   less than _p_a_g_e_r___i_n_d_e_x___l_i_n_e_s, then the index will only use as many
   lines as it needs.
 
+
   66..33..6688..  ppaaggeerr__ssttoopp
 
   Type: boolean
@@ -2882,6 +3389,7 @@
 
   When set, the internal-pager will nnoott move to the next message when
   you are at the end of a message and invoke the _n_e_x_t_-_p_a_g_e function.
+
 
   66..33..6699..  ppggpp__aauuttooeennccrryypptt
 
@@ -2893,6 +3401,7 @@
   to the _s_e_n_d_-_h_o_o_k command.  It can be overridden by use of the _p_g_p_-
   _m_e_n_u, when encryption is not required or signing is requested as well.
 
+
   66..33..7700..  ppggpp__aauuttoossiiggnn
 
   Type: boolean
@@ -2901,6 +3410,7 @@
   Setting this variable will cause Mutt to always attempt to PGP/MIME
   sign outgoing messages.  This can be overridden by use of the _p_g_p_-
   _m_e_n_u, when signing is not required or encryption is requested as well.
+
 
   66..33..7711..  ppggpp__ddeeffaauulltt__vveerrssiioonn
 
@@ -2911,6 +3421,7 @@
   version, you are using primary. This variable is directly used, but it
   is the default for the variables ``$pgp_receive_version'',
   ``$pgp_send_version'', and ``$pgp_key_version''.
+
 
   66..33..7722..  ppggpp__eennccrryyppttsseellff
 
@@ -2930,12 +3441,14 @@
   ``$pgp_default_version'' is used. Set this to pgp2 (PGP 2.*), or pgp5
   (PGP 5.*) if you want a different PGP version for key operations.
 
+
   66..33..7744..  ppggpp__lloonngg__iiddss
 
   Type: boolean
   Default: unset
 
   If set, use 64 bit PGP key IDs. Unset uses the normal 32 bit Key IDs.
+
 
   66..33..7755..  ppggpp__rreecceeiivvee__vveerrssiioonn
 
@@ -2948,6 +3461,7 @@
   pgp2 (PGP 2.*), or pgp5 (PGP 5.*) if you want a different PGP version
   for receiving operations.
 
+
   66..33..7766..  ppggpp__rreeppllyyeennccrryypptt
 
   Type: boolean
@@ -2955,6 +3469,7 @@
 
   If set, automatically PGP encrypt replies to messages which are
   encrypted.
+
 
   66..33..7777..  ppggpp__rreeppllyyssiiggnn
 
@@ -2964,6 +3479,7 @@
   If set, automatically PGP sign replies to messages which are signed.
 
   NNoottee:: this does not work on messages, that are encrypted aanndd signed!
+
 
   66..33..7788..  ppggpp__sseenndd__vveerrssiioonn
 
@@ -2976,6 +3492,10 @@
   pgp2 (PGP 2.*), or pgp5 (PGP 5.*) if you want a different PGP version
   for sending operations.
 
+
+
+
+
   66..33..7799..  ppggpp__ssiiggnn__aass
 
   Type: string
@@ -2984,6 +3504,7 @@
   If you have more than one key pair, this option allows you to specify
   which of your private keys to use.  It is recommended that you use the
   keyid form to specify your key (e.g., ``0xABCDEFGH'').
+
 
   66..33..8800..  ppggpp__ssiiggnn__mmiiccaallgg
 
@@ -3001,6 +3522,7 @@
   here. The value of this variable will show up in the micalg parameter
   of MIME headers when creating RFC 2015 signatures.
 
+
   66..33..8811..  ppggpp__ssttrriicctt__eenncc
 
   Type: boolean
@@ -3011,6 +3533,7 @@
   to problems with non-verifyable PGP signatures, so only change this if
   you know what you are doing.
 
+
   66..33..8822..  ppggpp__ttiimmeeoouutt
 
   Type: number
@@ -3019,6 +3542,7 @@
   The number of seconds after which a cached passphrase will expire if
   not used.
 
+
   66..33..8833..  ppggpp__vv22
 
   Type: string
@@ -3026,6 +3550,7 @@
 
   This variable allows you to override the compile time definition of
   where the PGP 2.* binary resides on your system.
+
 
   66..33..8844..  ppggpp__vv22__llaanngguuaaggee
 
@@ -3036,6 +3561,7 @@
   from the mutt doc directory, you can try the languages "mutt"
   (English) or "muttde" (German) to reduce the noise produced by pgp.
 
+
   66..33..8855..  ppggpp__vv22__ppuubbrriinngg
 
   Type: string
@@ -3043,6 +3569,7 @@
   set.
 
   Points to the PGP 2.* public keyring.
+
 
   66..33..8866..  ppggpp__vv22__sseeccrriinngg
 
@@ -3052,6 +3579,7 @@
 
   Points to the PGP 2.* secret keyring.
 
+
   66..33..8877..  ppggpp__vv55
 
   Type: string
@@ -3059,6 +3587,7 @@
 
   This variable allows you to override the compile time definition of
   where the PGP 5.* binary resides on your system.
+
 
   66..33..8888..  ppggpp__vv55__llaanngguuaaggee
 
@@ -3069,6 +3598,7 @@
   from the mutt doc directory, you can try the languages "mutt"
   (English) to reduce the noise produced by pgp.
 
+
   66..33..8899..  ppggpp__vv55__ppuubbrriinngg
 
   Type: string
@@ -3077,6 +3607,7 @@
 
   Points to the PGP 5.* public keyring.
 
+
   66..33..9900..  ppggpp__vv55__sseeccrriinngg
 
   Type: string
@@ -3084,6 +3615,7 @@
   set.
 
   Points to the PGP 5.* secret keyring.
+
 
   66..33..9911..  ppiippee__ddeeccooddee
 
@@ -3094,6 +3626,8 @@
   will pipe the messages without any preprocessing. When set, Mutt will
   weed headers and will attempt to PGP/MIME decode the messages first.
 
+
+
   66..33..9922..  ppiippee__sseepp
 
   Type: string
@@ -3101,6 +3635,7 @@
 
   The separator to add between messages when piping a list of tagged
   messages to an external Unix command.
+
 
   66..33..9933..  ppiippee__sspplliitt
 
@@ -3114,6 +3649,7 @@
   In both cases the the messages are piped in the current sorted order,
   and the ``$pipe_sep'' separator is added after each message.
 
+
   66..33..9944..  ppoopp__ddeelleettee
 
   Type: boolean
@@ -3123,12 +3659,14 @@
   server when using the fetch-mail function.  When unset, Mutt will
   download messages but also leave them on the POP server.
 
+
   66..33..9955..  ppoopp__hhoosstt
 
   Type: string
   Default: none
 
   The name or address of your POP3 server.
+
 
   66..33..9966..  ppoopp__ppaassss
 
@@ -3141,6 +3679,7 @@
   secure machine, because the superuser can read your muttrc even if you
   are the only one who can read the file.
 
+
   66..33..9977..  ppoopp__ppoorrtt
 
   Type: number
@@ -3148,12 +3687,15 @@
 
   This variable specifies which port your POP server is listening on.
 
+
   66..33..9988..  ppoopp__uusseerr
 
   Type: string
   Default: login name on local system
 
+
   Your login name on the POP3 server.
+
 
   66..33..9999..  ppoosstt__iinnddeenntt__ssttrriinngg
 
@@ -3163,6 +3705,7 @@
   Similar to the ``$attribution'' variable, Mutt will append this string
   after the inclusion of a message which is being replied to.
 
+
   66..33..110000..  ppoossttppoonnee
 
   Type: quadoption
@@ -3170,6 +3713,7 @@
 
   Controls whether or not messages are saved in the ``$postponed''
   mailbox when you elect not to send immediately.
+
 
   66..33..110011..  ppoossttppoonneedd
 
@@ -3181,6 +3725,7 @@
   in the folder specified by this variable.  Also see the ``$postpone''
   variable.
 
+
   66..33..110022..  pprriinntt
 
   Type: quadoption
@@ -3189,12 +3734,14 @@
   Controls whether or not Mutt asks for confirmation before printing.
   This is useful for people (like me) who accidentally hit ``p'' often.
 
+
   66..33..110033..  pprriinntt__ccoommmmaanndd
 
   Type: string
   Default: lpr
 
   This specifies the command pipe that should be used to print messages.
+
 
   66..33..110044..  pprroommpptt__aafftteerr
 
@@ -3206,17 +3753,31 @@
   returning to the index menu.  If unset, Mutt will return to the index
   menu when the external pager exits.
 
+
   66..33..110055..  qquueerryy__ccoommmmaanndd
 
   Type: string
   Default: null
+
 
   This specifies the command that mutt will use to make external address
   queries.  The string should contain a %s, which will be substituted
   with the query string the user types.  See ``query'' for more
   information.
 
-  66..33..110066..  qquuoottee__rreeggeexxpp
+
+  66..33..110066..  qquuiitt
+
+  Type: quadoption
+  Default: yes
+
+  This variable controls whether ``quit'' and ``exit'' actually quit
+  from mutt.  If it set to yes, they do quit, if it is set to no, they
+  have no effect, and if it is set to ask-yes or ask-no, you are
+  prompted for confirmation when you try to quit.
+
+
+  66..33..110077..  qquuoottee__rreeggeexxpp
 
   Type: string
   Default: "^([ \t]*[>|#:}])+"
@@ -3228,7 +3789,8 @@
   need to set this to a regular expression that matches _e_x_a_c_t_l_y the
   quote characters at the beginning of quoted lines.
 
-  66..33..110077..  rreeaadd__iinncc
+
+  66..33..110088..  rreeaadd__iinncc
 
   Type: number
   Default: 10
@@ -3245,14 +3807,16 @@
 
   Also see the ``$write_inc'' variable.
 
-  66..33..110088..  rreeaadd__oonnllyy
+
+  66..33..110099..  rreeaadd__oonnllyy
 
   Type: boolean
   Default: unset
 
   If set, all folders are opened in read-only mode.
 
-  66..33..110099..  rreeaallnnaammee
+
+  66..33..111100..  rreeaallnnaammee
 
   Type: string
   Default: GCOS field from /etc/passwd
@@ -3260,7 +3824,9 @@
   This variable specifies what "real" or "personal" name should be used
   when sending messages.
 
-  66..33..111100..  rreeccaallll
+
+
+  66..33..111111..  rreeccaallll
 
   Type: quadoption
   Default: ask-yes
@@ -3268,7 +3834,8 @@
   Controls whether or not you are prompted to recall postponed messages
   when composing a new message.  Also see ``postponed''
 
-  66..33..111111..  rreeccoorrdd
+
+  66..33..111122..  rreeccoorrdd
 
   Type: string
   Default: none
@@ -3281,7 +3848,8 @@
   The value of _$_r_e_c_o_r_d is overridden by the ``$force_name'' and
   ``$save_name'' variables, and the ``fcc-hook'' command.
 
-  66..33..111122..  rreeppllyy__rreeggeexxpp
+
+  66..33..111133..  rreeppllyy__rreeggeexxpp
 
   Type: string
   Default: "^(re|aw):[ \t]*"
@@ -3290,7 +3858,8 @@
   and replying. The default value corresponds to the English "Re:" and
   the German "Aw:".
 
-  66..33..111133..  rreeppllyy__ttoo
+
+  66..33..111144..  rreeppllyy__ttoo
 
   Type: quadoption
   Default: ask-yes
@@ -3302,7 +3871,8 @@
   header field to the list address and you want to send a private
   message to the author of a message.
 
-  66..33..111144..  rreessoollvvee
+
+  66..33..111155..  rreessoollvvee
 
   Type: boolean
   Default: set
@@ -3311,7 +3881,8 @@
   (possibly undeleted) message whenever a command that modifies the
   current message is executed.
 
-  66..33..111155..  rreevveerrssee__aalliiaass
+
+  66..33..111166..  rreevveerrssee__aalliiaass
 
   Type: boolean
   Default: unset
@@ -3323,15 +3894,24 @@
 
        alias juser abd30425@somewhere.net (Joe User)
 
+
+
+
   and then you receive mail which contains the following header:
 
+
+
        From: abd30425@somewhere.net
+
+
+
 
   It would be displayed in the index menu as ``Joe User'' instead of
   ``abd30425@somewhere.net.''  This is useful when the person's e-mail
   address is not human friendly (like Compu$erve addresses).
 
-  66..33..111166..  rreevveerrssee__nnaammee
+
+  66..33..111177..  rreevveerrssee__nnaammee
 
   Type: boolean
   Default: unset
@@ -3343,7 +3923,8 @@
   messages you are replying to.  If the variable is unset, the _F_r_o_m_:
   line will use your address on the current machine.
 
-  66..33..111177..  ssaavvee__aaddddrreessss
+
+  66..33..111188..  ssaavvee__aaddddrreessss
 
   Type: boolean
   Default: unset
@@ -3352,7 +3933,8 @@
   default folder for saving a mail. If ``save_name'' or ``force_name''
   is set too, the selection of the fcc folder will be changed as well.
 
-  66..33..111188..  ssaavvee__eemmppttyy
+
+  66..33..111199..  ssaavvee__eemmppttyy
 
   Type: boolean
   Default: set
@@ -3364,7 +3946,8 @@
   NNoottee:: This only applies to mbox and MMDF folders, Mutt does not delete
   MH and Maildir directories.
 
-  66..33..111199..  ssaavvee__nnaammee
+
+  66..33..112200..  ssaavvee__nnaammee
 
   Type: boolean
   Default: unset
@@ -3379,15 +3962,18 @@
 
   Also see the ``$force_name'' variable.
 
-  66..33..112200..  sseennddmmaaiill
+
+  66..33..112211..  sseennddmmaaiill
 
   Type: string
   Default: /usr/lib/sendmail -oi -oem
+
   Specifies the program and arguments used to deliver mail sent by Mutt.
   Mutt expects that the specified program will read the message header
   for recipients.
 
-  66..33..112211..  sseennddmmaaiill__wwaaiitt
+
+  66..33..112222..  sseennddmmaaiill__wwaaiitt
 
   Type: number
   Default: 0
@@ -3401,18 +3987,22 @@
   0       wait forever for sendmail to finish
   <0      always put sendmail in the background without waiting
 
+
+
   Note that if you specify a value other than 0, the output of the child
   process will be put in a temporary file.  If there is some error, you
   will be informed as to where to find the output.
 
-  66..33..112222..  sshheellll
+
+  66..33..112233..  sshheellll
 
   Type: string
   Default: retrieved from passwd file
 
   Command to use when spawning a subshell.
 
-  66..33..112233..  ssiigg__ddaasshheess
+
+  66..33..112244..  ssiigg__ddaasshheess
 
   Type: boolean
   Default: set
@@ -3424,7 +4014,8 @@
   detect your signature.  For example, Mutt has the ability to highlight
   the signature in a different color in the builtin pager.
 
-  66..33..112244..  ssiiggnnaattuurree
+
+  66..33..112255..  ssiiggnnaattuurree
 
   Type: string
   Default: ~/.signature
@@ -3433,8 +4024,7 @@
   outgoing messages.   If the filename ends with a pipe (``|''), it is
   assumed that filename is a shell command and input should be read from
   its stdout.
-
-  66..33..112255..  ssiimmppllee__sseeaarrcchh
+  66..33..112266..  ssiimmppllee__sseeaarrcchh
 
   Type: string
   Default: "~f %s | ~s %s"
@@ -3442,13 +4032,15 @@
   Specifies how Mutt should expand a simple search into a real search
   pattern.  A simple search is one that does not contain any of the ~
   operators.  See ``searching'' for more information on search patterns.
+
   For example, if you simply type joe at a search or limit prompt, Mutt
   will automatically expand it to the value specified by this variable.
   For the default value it would be:
 
   ~f joe | ~s joe
 
-  66..33..112266..  ssmmaarrtt__wwrraapp
+
+  66..33..112277..  ssmmaarrtt__wwrraapp
 
   Type: boolean
   Default: set
@@ -3458,12 +4050,14 @@
   unset, lines are simply wrapped at the screen edge. Also see the
   ``$markers'' variable.
 
-  66..33..112277..  ssoorrtt
+
+  66..33..112288..  ssoorrtt
 
   Type: string
   Default: date-sent
 
   Specifies how to sort messages in the _i_n_d_e_x menu.  Valid values are
+
 
   +o  date-sent
 
@@ -3484,7 +4078,8 @@
   You may optionally use the reverse- prefix to specify reverse sorting
   order (example: set sort=reverse-date-sent).
 
-  66..33..112288..  ssoorrtt__aalliiaass
+
+  66..33..112299..  ssoorrtt__aalliiaass
 
   Type: string
   Default: alias
@@ -3492,11 +4087,17 @@
   Specifies how the entries in the `alias' menu are sorted.  The
   following are legal values:
 
+
+
+
   alias           sort alphabetically by alias name
   address         sort alphabetically by email address
   unsorted        leave in order specified in .muttrc
 
-  66..33..112299..  ssoorrtt__aauuxx
+
+
+
+  66..33..113300..  ssoorrtt__aauuxx
 
   Type: string
   Default: date-sent
@@ -3513,12 +4114,14 @@
   thread, that thread becomes the last one displayed (or the first, if
   you have set sort=reverse-threads.)
 
-  66..33..113300..  ssoorrtt__bbrroowwsseerr
+
+  66..33..113311..  ssoorrtt__bbrroowwsseerr
 
   Type: string
 
   Specifies how to sort entries in the file browser.  By default, the
   entries are sorted alphabetically.  Valid values:
+
 
   +o  date
 
@@ -3527,7 +4130,8 @@
   You may optionally use the reverse- prefix to specify reverse sorting
   order (example: set sort_browser=reverse-date).
 
-  66..33..113311..  ssppoooollffiillee
+
+  66..33..113322..  ssppoooollffiillee
 
   Type: string
   Default: most likely /var/mail/$USER or /usr/spool/mail/$USER
@@ -3537,7 +4141,8 @@
   automatically set this variable to the value of the environment
   variable $MAIL if it is not set.
 
-  66..33..113322..  ssoorrtt__rree
+
+  66..33..113333..  ssoorrtt__rree
 
   Type: boolean Default: set
 
@@ -3550,7 +4155,8 @@
   message whether or not this is the case, as long as the
   non-``reply_regexp'' parts of both messages are identical.
 
-  66..33..113333..  ssttaattuuss__cchhaarrss
+
+  66..33..113344..  ssttaattuuss__cchhaarrss
 
   Type: string
   Default: "-*%"
@@ -3562,7 +4168,9 @@
   read-only mode, or if the mailbox will not be written when exiting
   that mailbox (You can toggle whether to write changes to a mailbox
   with the toggle-write operation, bound by default to "%").
-  66..33..113344..  ssttaattuuss__ffoorrmmaatt
+
+
+  66..33..113355..  ssttaattuuss__ffoorrmmaatt
 
   Type: string
   Default: "-%r-Mutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d?
@@ -3570,8 +4178,10 @@
   %l?]---(%s/%S)-%>-(%P)---"
 
   Controls the format of the status line displayed in the _i_n_d_e_x menu.
-  This string is similar to ``$header_format'', but has its own set of
+  This string is similar to ``$index_format'', but has its own set of
   printf()-like sequences:
+
+
 
        %b      number of mailboxes with new mail *
        %d      number of deleted messages *
@@ -3592,17 +4202,23 @@
        %t      number of tagged messages *
        %u      number of unread messages *
        %v      Mutt version string
+       %V      currently active limit pattern, if any *
 
        %>X     right justify the rest of the string and pad with "X"
        %|X     pad to the end of the line with "X"
 
        * = can be optionally printed if nonzero
 
+
+
+
   Some of the above sequences can be used to optionally print a string
   if their value is nonzero.  For example, you may only want to see the
   number of flagged messages if such messages exist, since zero is not
   particularly meaningful.  To optionally print a string based upon one
   of the above sequences, the following construct is used
+
+
 
                %?<sequence_char>?<optional_string>?
 
@@ -3614,9 +4230,15 @@
   Here is an example illustrating how to optionally print the number of
   new messages in a mailbox:
 
+
+
                %?n?%n new messages.?
 
-  66..33..113355..  ssttaattuuss__oonn__ttoopp
+
+
+
+
+  66..33..113366..  ssttaattuuss__oonn__ttoopp
 
   Type: boolean
   Default: unset
@@ -3624,7 +4246,8 @@
   Setting this variable causes the ``status bar'' to be displayed on the
   first line of the screen rather than near the bottom.
 
-  66..33..113366..  ssttrriicctt__tthhrreeaaddss
+
+  66..33..113377..  ssttrriicctt__tthhrreeaaddss
 
   Type: boolean
   Default: unset
@@ -3636,7 +4259,8 @@
   personal mailbox where you might have several unrelated messages with
   the subject ``hi'' which will get grouped together.
 
-  66..33..113377..  ssuussppeenndd
+
+  66..33..113388..  ssuussppeenndd
 
   Type: boolean
   Default: set
@@ -3645,7 +4269,8 @@
   key, usually ``control-Z''. This is useful if you run mutt inside an
   xterm using a command like xterm -e mutt.
 
-  66..33..113388..  tthhoorroouugghh__sseeaarrcchh
+
+  66..33..113399..  tthhoorroouugghh__sseeaarrcchh
 
   Type: boolean
   Default: unset
@@ -3655,15 +4280,15 @@
   to be searched are decoded before searching.  If unset, messages are
   searched as they appear in the folder.
 
-  66..33..113399..  ttiillddee
+
+  66..33..114400..  ttiillddee
 
   Type: boolean
   Default: unset
 
   When set, the internal-pager will pad blank lines to the bottom of the
   screen with a tilde (~).
-
-  66..33..114400..  ttiimmeeoouutt
+  66..33..114411..  ttiimmeeoouutt
 
   Type: number
   Default: 600
@@ -3672,14 +4297,17 @@
   to be pressed in the main menu before timing out and checking for new
   mail.  A value of zero or less will cause Mutt not to ever time out.
 
-  66..33..114411..  ttmmppddiirr
+
+  66..33..114422..  ttmmppddiirr
 
   Type: string
   Default: /tmp
+
   This variable allows you to specify where Mutt will place its
   temporary files needed for displaying and composing messages.
 
-  66..33..114422..  ttoo__cchhaarrss
+
+  66..33..114433..  ttoo__cchhaarrss
 
   Type: string
   Default: " +TCF"
@@ -3694,7 +4322,8 @@
   recipient.  The fifth character is used to indicate mail that was sent
   by _y_o_u.
 
-  66..33..114433..  uussee__88bbiittmmiimmee
+
+  66..33..114444..  uussee__88bbiittmmiimmee
 
   Type: boolean
   Default: unset
@@ -3706,7 +4335,8 @@
   When _s_e_t, Mutt will invoke ``$sendmail'' with the -B8BITMIME flag when
   sending 8-bit messages to enable ESMTP negotiation.
 
-  66..33..114444..  uussee__ddoommaaiinn
+
+  66..33..114455..  uussee__ddoommaaiinn
 
   Type: boolean
   Default: set
@@ -3715,7 +4345,8 @@
   @host portion) with the value of ``$hostname''.  If _u_n_s_e_t, no
   addresses will be qualified.
 
-  66..33..114455..  uussee__ffrroomm
+
+  66..33..114466..  uussee__ffrroomm
 
   Type: boolean
   Default: set
@@ -3723,8 +4354,7 @@
   When _s_e_t, Mutt will generate the `From:' header field when sending
   messages.  If _u_n_s_e_t, no `From:' header field will be generated unless
   the user explicitly sets one using the ``my_hdr'' command.
-
-  66..33..114466..  uussee__mmaaiillccaapp
+  66..33..114477..  uussee__mmaaiillccaapp
 
   Type: quad-option
   Default: ask
@@ -3741,7 +4371,8 @@
   space) for which the corresponding mailcap entries will be used to
   display MIME parts without prompting the user for confirmation.
 
-  66..33..114477..  ppggpp__vveerriiffyy__ssiigg
+
+  66..33..114488..  ppggpp__vveerriiffyy__ssiigg
 
   Type: quad-option
   Default: yes
@@ -3750,7 +4381,8 @@
   ask whether or not to verify the signature.  If ``no'', never attempt
   to verify PGP/MIME signatures.
 
-  66..33..114488..  vviissuuaall
+
+  66..33..114499..  vviissuuaall
 
   Type: string
   Default: $VISUAL
@@ -3758,7 +4390,8 @@
   Specifies the visual editor to invoke when the _~_v command is given in
   the builtin editor.
 
-  66..33..114499..  wwaaiitt__kkeeyy
+
+  66..33..115500..  wwaaiitt__kkeeyy
 
   Type: boolean
   Default: set
@@ -3773,7 +4406,21 @@
   When set, Mutt will always ask for a key. When unset, Mutt will wait
   for a key only if the external command returned a non-zero status.
 
-  66..33..115500..  wwrriittee__iinncc
+
+  66..33..115511..  wwrraapp__sseeaarrcchh
+
+  Type: boolean
+  Default: set
+
+  Controls whether searches wrap around the end of the mailbox.
+
+  When set, searches will wrap around the first (or last) message. When
+  unset, searches will not wrap.
+
+
+
+
+  66..33..115522..  wwrriittee__iinncc
 
   Type: number
   Default: 10
@@ -3784,6 +4431,7 @@
 
   Also see the ``$read_inc'' variable.
 
+
   66..44..  FFuunnccttiioonnss
 
   The following is the list of available functions listed by the mapping
@@ -3791,12 +4439,15 @@
   explanation of what the function does.  The key bindings of these
   functions can be changed with the ``bind'' command.
 
+
   66..44..11..  ggeenneerriicc
+
 
   The _g_e_n_e_r_i_c menu is not a real menu, but specifies common functions
   (such as movement) available in all menus except for _p_a_g_e_r and _e_d_i_t_o_r.
   Changing settings for this menu will affect the default bindings for
   all menus (except as noted).
+
 
   bottom-page                L   move to the bottom of the page
   current-bottom     not bound   move current entry to bottom of page
@@ -3828,7 +4479,12 @@
   tag-prefix                 ;   apply next command to tagged entries
   top-page                   H   move to the top of the page
 
+
+
   66..44..22..  iinnddeexx
+
+
+
 
   bounce-message             b   remail a message to another user
   change-folder              c   open a different folder
@@ -3878,6 +4534,7 @@
   save-message               s   save message/attachment to a file
   set-flag                   w   set a status flag on a message
   show-version               V   show the Mutt version number and date
+  show-limit             ESC l   show currently active limit pattern, if any
   sort-mailbox               o   sort messages
   sort-reverse               O   sort messages in reverse order
   sync-mailbox               $   save changes to mailbox
@@ -3892,7 +4549,74 @@
   untag-pattern             ^T   untag messages matching a pattern
   view-attachments           v   show MIME attachments
 
+
+
+
   66..44..33..  ppaaggeerr
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   bottom                     $   jump to the bottom of the message
   bounce-message             b   remail a message to another user
@@ -3962,13 +4686,19 @@
   undelete-thread           ^U   undelete all messages in thread
   view-attachments           v   show MIME attachments
 
+
+
   66..44..44..  aalliiaass
+
 
   search                     /   search for a regular expression
   search-next                n   search for next match
   search-reverse         ESC /   search backwards for a regular expression
 
+
+
   66..44..55..  qquueerryy
+
 
   create-alias               a   create an alias from a message sender
   mail                       m   compose a new mail message
@@ -3979,7 +4709,10 @@
   search-opposite    not bound   search for next match in opposite direction
   search-reverse         ESC /   search backwards for a regular expression
 
+
+
   66..44..66..  aattttaacchh
+
 
   bounce-message             b   remail a message to another user
   decode-copy            ESC C   decode a message and copy it to a file/mailbox
@@ -3999,7 +4732,23 @@
   view-mailcap               m   force viewing of attachment using mailcap
   view-text                  T   view attachment as text
 
+
+
   66..44..77..  ccoommppoossee
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   attach-file                a   attach a file(s) to this message
   attach-key             ESC k   attach a PGP public key
@@ -4033,12 +4782,18 @@
   toggle-unlink              u   toggle whether to delete file after sending it
   view-attach              RET   view attachment using mailcap entry if necessary
 
+
+
   66..44..88..  ppoossttppoonneedd
+
 
   delete-entry               d   delete the current entry
   undelete-entry             u   undelete the current entry
 
+
+
   66..44..99..  bbrroowwsseerr
+
 
   change-dir                 c   change directories
   check-new                TAB   check mailboxes for new mail
@@ -4050,12 +4805,19 @@
   sort                       o   sort messages
   sort-reverse               O   sort messages in reverse order
 
+
+
   66..44..1100..  ppggpp
+
 
   view-name                  %   view the key's user id
   verify-key                 c   verify a PGP public key
 
+
+
+
   66..44..1111..  eeddiittoorr
+
 
   backspace          BackSpace   delete the char in front of the cursor
   backward-char             ^B   move the cursor one character to the left
@@ -4073,7 +4835,12 @@
   kill-word                 ^W   delete the word in front of the cursor
   quote-char                ^V   quote the next typed key
 
+
+
+
   77..  MMiisscceellllaannyy
+
+
 
   77..11..  AAcckknnoowwlleeddggeemmeennttss
 
@@ -4108,8 +4875,76 @@
   Allain Thivillon <Allain.Thivillon@alma.fr>,
   Ken Weinert <kenw@ihs.com>
 
+
   77..22..  AAbboouutt tthhiiss ddooccuummeenntt
 
   This document was written in SGML, and then rendered using the sgml-
   tools package.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

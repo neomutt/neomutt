@@ -26,6 +26,7 @@ libdir=@libdir@
 mandir=@mandir@
 sharedir=@sharedir@
 srcdir=@srcdir@
+docdir=@docdir@
 VPATH=@srcdir@
 @SET_MAKE@
 
@@ -64,12 +65,10 @@ keymap_defs.h: Makefile $(OPS)
 	rm -f keymap_defs.h
 	$(srcdir)/gen_defs $(OPS) > keymap_defs.h
 
-install: mutt
+install: mutt install.doc
 	$(srcdir)/mkinstalldirs $(bindir)
 	-mv -f $(bindir)/mutt $(bindir)/mutt.old
 	$(INSTALL) @MUTT_GROUP@ -m @MUTT_PERMISSION@ mutt $(bindir)
-	$(srcdir)/mkinstalldirs $(mandir)/man1
-	$(INSTALL) -m 644 $(srcdir)/doc/mutt.man $(mandir)/man1/mutt.1
 	-if [ ! -f $(sharedir)/Muttrc ]; then \
 		$(srcdir)/mkinstalldirs $(sharedir); \
 		$(INSTALL) -m 644 $(srcdir)/Muttrc $(sharedir); \
@@ -78,8 +77,14 @@ install: mutt
 		$(INSTALL) -m 644 $(srcdir)/mime.types $(sharedir); \
 	fi
 
-uninstall:
-	rm -f $(bindir)/mutt $(sharedir)/Muttrc $(mandir)/man1/mutt.1
+install.doc: 
+	make -C  $(srcdir)/doc/ install
+
+uninstall: uninstall.doc
+	rm -f $(bindir)/mutt $(sharedir)/Muttrc
+
+uninstall.doc:
+	make -C $(srcdir)/doc/ uninstall
 
 $(srcdir)/configure: $(srcdir)/configure.in
 	autoconf

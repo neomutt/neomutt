@@ -307,6 +307,22 @@ AC_ARG_WITH(sharedir, [  --with-sharedir=PATH       specify where to put arch in
 sharedir=$mutt_cv_sharedir
 AC_SUBST(sharedir)
 
+AC_ARG_WITH(docdir, [  --with-docdir=PATH       specify where to put the documentation],
+	[mutt_cv_docdir=$withval],
+	[ AC_CACHE_CHECK(where to put the documentation,
+		       mutt_cv_docdir,
+		[if test x$prefix = xNONE; then
+			mutt_cv_prefix=$ac_default_prefix
+		else
+			mutt_cv_prefix=$prefix
+		fi
+		mutt_cv_docdir=$mutt_cv_prefix/doc/mutt])
+	])
+
+docdir=$mutt_cv_docdir
+AC_SUBST(docdir)
+
+
 if test x$mutt_cv_setgid = xyes; then
 	MUTT_GROUP='-g mail'
 	MUTT_PERMISSION=2755
@@ -386,4 +402,4 @@ AC_ARG_ENABLE(exact-address, [  --enable-exact-address     enable regeneration o
 		AC_DEFINE(EXACT_ADDRESS)
 	fi])
 
-AC_OUTPUT(Makefile rx/Makefile Muttrc)
+AC_OUTPUT(Makefile rx/Makefile Muttrc doc/Makefile)
