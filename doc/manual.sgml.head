@@ -329,7 +329,7 @@ Specifying an <ref id="alias_file" name="&dollar;alias&lowbar;file">
 does not add the aliases specified there-in, you must also <ref
 id="source" name="source"> the file.
 
-<p><bf/display-headers/<label id="display-headers"> (default: h)<newline>
+<p><bf/display-toggle-weed/<label id="display-toggle-weed"> (default: h)<newline>
 
 Toggles the weeding of message header fields specified by <ref id="ignore"
 name="ignore"> commands.

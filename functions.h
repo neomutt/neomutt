@@ -85,7 +85,7 @@ struct binding_t OpMain[] = {
 #ifdef USE_POP
   { "fetch-mail",		OP_MAIN_FETCH_MAIL,		"G" },
 #endif
-  { "display-headers",		OP_DISPLAY_HEADERS,		"h" },
+  { "display-toggle-weed",		OP_DISPLAY_HEADERS,		"h" },
   { "next-undeleted",		OP_MAIN_NEXT_UNDELETED,		"j" },
   { "previous-undeleted",	OP_MAIN_PREV_UNDELETED,		"k" },
   { "limit",			OP_MAIN_LIMIT,			"l" },
@@ -160,7 +160,7 @@ struct binding_t OpPager[] = {
   { "forward-message",	OP_FORWARD_MESSAGE,		"f" },
   { "flag-message",	OP_FLAG_MESSAGE,		"F" },
   { "group-reply",	OP_GROUP_REPLY,			"g" },
-  { "display-headers",	OP_DISPLAY_HEADERS,		"h" },
+  { "display-toggle-weed",	OP_DISPLAY_HEADERS,		"h" },
   { "exit",		OP_PAGER_EXIT,			"i" },
   { "next-undeleted",	OP_MAIN_NEXT_UNDELETED,		"j" },
   { "next-entry",	OP_NEXT_ENTRY,			"J" },
@@ -235,7 +235,7 @@ struct binding_t OpPager[] = {
 
 struct binding_t OpAttach[] = {
   { "bounce-message",	OP_BOUNCE_MESSAGE,		"b" },
-  { "display-headers",	OP_DISPLAY_HEADERS,		"h" },
+  { "display-toggle-weed",	OP_DISPLAY_HEADERS,		"h" },
   { "edit-type",	OP_EDIT_TYPE,			"\005" },
   { "print-entry",	OP_PRINT,			"p" },
   { "save-entry",	OP_SAVE,			"s" },
@@ -270,7 +270,7 @@ struct binding_t OpCompose[] = {
   { "edit-cc",		OP_COMPOSE_EDIT_CC,		"c" },
   { "copy-file",	OP_SAVE,			"C" },
   { "detach-file",	OP_DELETE,			"D" },
-  { "display-headers",	OP_DISPLAY_HEADERS,		"h" },
+  { "display-toggle-weed",	OP_DISPLAY_HEADERS,		"h" },
   { "edit-description",	OP_COMPOSE_EDIT_DESCRIPTION,	"d" },
   { "edit-message",	OP_COMPOSE_EDIT_MESSAGE,	"e" },
   { "edit-headers",	OP_COMPOSE_EDIT_HEADERS,	"E" },
