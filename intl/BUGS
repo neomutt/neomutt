@@ -1,7 +1,0 @@
-List of known bugs and limitations:
-
-- getting the string for `dcgettext' or `dgettext' fails if the first
-  argument is some different than a list of identifiers or strings.
-
-- the C code parser currently does not know anything about macro.  I.e.
-  keyword with translations in the macro text are not found.
