@@ -84,7 +84,7 @@ mutt_dotlock.c: dotlock.c
 	cp $(srcdir)/dotlock.c mutt_dotlock.c
 
 CLEANFILES = mutt_dotlock.c stamp-doc-rc makedoc \
-	keymap_alldefs.h keymap_defs.h
+	keymap_alldefs.h keymap_defs.h types.h
 
 ACLOCAL_AMFLAGS = -I m4
 
