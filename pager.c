@@ -2119,6 +2119,7 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
 	  mutt_pipe_attachment_list (extra->fp, 0, extra->bdy, 0);
 	else
 	  mutt_pipe_message (extra->hdr);
+	MAYBE_REDRAW (redraw);
 	break;
 
       case OP_PRINT:

@@ -1568,6 +1568,7 @@ int mutt_index_menu (void)
 
 	CHECK_MSGCOUNT;
 	mutt_pipe_message (tag ? NULL : CURHDR);
+	MAYBE_REDRAW (menu->redraw);
 	break;
 
       case OP_PRINT:
