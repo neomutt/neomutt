@@ -1425,7 +1425,13 @@ int mutt_index_menu (void)
 
       case OP_MAIN_COLLAPSE_THREAD:
 	CHECK_MSGCOUNT;
-	
+
+        if ((Sort & SORT_MASK) != SORT_THREADS)
+        {
+	  mutt_error _("Threading is not enabled.");
+	  break;
+	}
+      
 	if (CURHDR->collapsed)
 	{
 	  menu->current = mutt_uncollapse_thread (Context, CURHDR);
