@@ -1888,8 +1888,6 @@ msgstr "Accodo i messaggi a %s?"
 #: main.c:40
 msgid "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 msgstr ""
-"Per favore invia segnalazioni di bug solo con il Debian bug tracking "
-"system.\n"
 "Per contattare gli sviluppatori scrivi a <mutt-dev@mutt.org>.\n"
 
 #: main.c:43
@@ -2853,9 +2851,9 @@ msgstr "Nessun soggetto, abbandonato."
 #. * provides a way to do that.
 #.
 #: send.c:433
-#, fuzzy, c-format
+#, c-format
 msgid "Reply to %s%s?"
-msgstr "Rispondo a %s?"
+msgstr "Rispondo a %s%s?"
 
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
