@@ -1809,12 +1809,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
     FREE (&token.data);
   }
 
-#ifdef HAVE_LANGINFO_CODESET
   mutt_set_langinfo_charset ();
-#else
-  Charset = safe_strdup ("iso-8859-1");
-#endif
-
   mutt_set_charset (Charset);
   
   

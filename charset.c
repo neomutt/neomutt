@@ -204,6 +204,13 @@ void mutt_set_langinfo_charset (void)
     Charset = safe_strdup ("iso-8859-1");
 }
 
+#else
+
+void mutt_set_langinfo_charset (void)
+{
+  Charset = safe_strdup ("iso-8859-1");
+}
+
 #endif
 
 void mutt_canonical_charset (char *dest, size_t dlen, const char *name)
