@@ -885,7 +885,7 @@ msgstr "Fehler: multipart/signed ohne \"protocol\"-Parameter."
 
 #: handler.c:1332
 msgid "Error: multipart/encrypted has no protocol parameter!"
-msgstr "Fehler: multiparT/encrypted ohne \"protocol\"-Parameter!"
+msgstr "Fehler: multipart/encrypted ohne \"protocol\"-Parameter!"
 
 #: handler.c:1374
 msgid "Unable to open temporary file!"
