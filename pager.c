@@ -2265,10 +2265,9 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 			       (ch == OP_SAVE) || (ch == OP_DECODE_SAVE),
 			       (ch == OP_DECODE_SAVE) || (ch == OP_DECODE_COPY),
 #ifdef _PGPPATH
-			       (ch == OP_DECRYPT_SAVE) || (ch == OP_DECRYPT_COPY),
-#else
-			       0,
+			       (ch == OP_DECRYPT_SAVE) || (ch == OP_DECRYPT_COPY) ||
 #endif
+			       0,
 			       &redraw) == 0 && (ch == OP_SAVE || ch == OP_DECODE_SAVE
 #ifdef _PGPPATH
 						 || ch == OP_DECRYPT_SAVE
