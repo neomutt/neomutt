@@ -130,7 +130,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data)
 
       /* sasl_client_st(art|ep) allocate pc with malloc, expect me to 
        * free it */
-      safe_free ((void) &pc);
+      safe_free ((void *) &pc);
     }
   }
 
