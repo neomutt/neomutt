@@ -1352,6 +1352,46 @@ static void maildir_update_tables (CONTEXT *ctx, int *index_hint)
   mx_update_tables (ctx, 0);
 }
 
+static void maildir_update_flags (CONTEXT *ctx, HEADER *o, HEADER *n)
+{
+  /* save the global state here so we can reset it at the
+   * end of list block if required.
+   */
+  int context_changed = ctx->changed;
+  
+  /* user didn't modify this message.  alter the flags to
+   * match the current state on disk.  This may not actually
+   * do anything, but we can't tell right now.  mutt_set_flag()
+   * will just ignore the call if the status bits are
+   * already properly set.
+   */
+  mutt_set_flag (ctx, o, M_FLAG, n->flagged);
+  mutt_set_flag (ctx, o, M_REPLIED, n->replied);
+  mutt_set_flag (ctx, o, M_READ, n->read);
+  mutt_set_flag (ctx, o, M_OLD, n->old);
+
+  /* Currently, this only plays a role with maildir. */
+  if (ctx->magic == M_MAILDIR)
+  {
+    mutt_set_flag (ctx, o, M_DELETE, n->deleted);
+    o->trash = n->trash;
+  }
+
+  /* mutt_set_flag() will set this, but we don't need to
+   * sync the changes we made because we just updated the
+   * context to match the current on-disk state of the
+   * message.
+   */
+  o->changed = 0;
+  
+  /* if the mailbox was not modified before we made these
+   * changes, unset the changed flag since nothing needs to
+   * be synchronized.
+   */
+  if (!context_changed)
+    ctx->changed = 0;
+}
+
 
 /* This function handles arrival of new mail and reopening of
  * maildir folders.  The basic idea here is we check to see if either
@@ -1447,38 +1487,7 @@ int maildir_check_mailbox (CONTEXT * ctx, int *index_hint)
        * the flags we just detected.
        */
       if (!ctx->hdrs[i]->changed)
-      {
-	/* save the global state here so we can reset it at the
-	 * end of list block if required.
-	 */
-	int context_changed = ctx->changed;
-
-	/* user didn't modify this message.  alter the flags to
-	 * match the current state on disk.  This may not actually
-	 * do anything, but we can't tell right now.  mutt_set_flag()
-	 * will just ignore the call if the status bits are
-	 * already properly set.
-	 */
-	mutt_set_flag (ctx, ctx->hdrs[i], M_FLAG, p->h->flagged);
-	mutt_set_flag (ctx, ctx->hdrs[i], M_REPLIED, p->h->replied);
-	mutt_set_flag (ctx, ctx->hdrs[i], M_READ, p->h->read);
-	mutt_set_flag (ctx, ctx->hdrs[i], M_DELETE, p->h->deleted);
-	mutt_set_flag (ctx, ctx->hdrs[i], M_OLD, p->h->old);
-
-	/* mutt_set_flag() will set this, but we don't need to
-	 * sync the changes we made because we just updated the
-	 * context to match the current on-disk state of the
-	 * message.
-	 */
-	ctx->hdrs[i]->changed = 0;
-
-	/* if the mailbox was not modified before we made these
-	 * changes, unset the changed flag since nothing needs to
-	 * be synchronized.
-	 */
-	if (!context_changed)
-	  ctx->changed = 0;
-      }
+	maildir_update_flags (ctx, ctx->hdrs[i], p->h);
 
       /* this is a duplicate of an existing header, so remove it */
       mutt_free_header (&p->h);
@@ -1599,16 +1608,11 @@ int mh_check_mailbox (CONTEXT * ctx, int *index_hint)
     if ((p = hash_find (fnames, ctx->hdrs[i]->path)) && p->h &&
 	(mbox_strict_cmp_headers (ctx->hdrs[i], p->h)))
     {
+      ctx->hdrs[i]->active = 1;
       /* found the right message */
       if (!ctx->hdrs[i]->changed)
-      {
-	mutt_set_flag (ctx, ctx->hdrs[i], M_FLAG, p->h->flagged);
-	mutt_set_flag (ctx, ctx->hdrs[i], M_REPLIED, p->h->replied);
-	mutt_set_flag (ctx, ctx->hdrs[i], M_READ, p->h->read);
-	mutt_set_flag (ctx, ctx->hdrs[i], M_OLD, p->h->old);
-      }
+	maildir_update_flags (ctx, ctx->hdrs[i], p->h);
 
-      ctx->hdrs[i]->active = 1;
       mutt_free_header (&p->h);
     }
     else /* message has disappeared */
