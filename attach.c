@@ -314,7 +314,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag)
   
   is_message = mutt_is_message_type(a->type, a->subtype);
 #ifdef _PGPPATH
-  if (is_message && (a->hdr->pgp & PGPENCRYPT) && !pgp_valid_passphrase())
+  if (is_message && a->hdr && (a->hdr->pgp & PGPENCRYPT) && !pgp_valid_passphrase())
     return (rc);
 #endif /* _PGPPATH */
   use_mailcap = (flag == M_MAILCAP ||
