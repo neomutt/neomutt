@@ -1150,7 +1150,7 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint)
 {
   char buf[LONG_STRING];
   static time_t checktime=0;
-  time_t t;
+  time_t t = 0;
 
   /* 
    * gcc thinks it has to warn about uninitialized use
