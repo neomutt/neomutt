@@ -149,7 +149,11 @@ us-dist: us-distdir
 	GZIP=$(GZIP) $(TAR) chozf $(distdir)-us.tar.gz $(distdir)-us
 	-rm -rf $(distdir)-us
 
-actual-dist: dist us-dist
+actual-dist:
+	# Note: We can't put these into the dependencies line, since
+	# make will over-optimize some of the distdir targets.
+	$(MAKE) us-dist
+	$(MAKE) dist
 	mv $(distdir).tar.gz $(distdir)i.tar.gz
 	mv $(distdir)-us.tar.gz $(distdir).tar.gz
 	##
