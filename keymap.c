@@ -34,7 +34,6 @@ struct mapping_t Menus[] = {
  { "browser",	MENU_FOLDER },
  { "compose",	MENU_COMPOSE },
  { "editor",	MENU_EDITOR },
- { "generic",	MENU_GENERIC },
  { "index",	MENU_MAIN },
  { "pager",	MENU_PAGER },
  { "postpone",	MENU_POST },
@@ -50,6 +49,7 @@ struct mapping_t Menus[] = {
   
 
  { "query",	MENU_QUERY },
+ { "generic",	MENU_GENERIC },
  { NULL,	0 }
 };
 
