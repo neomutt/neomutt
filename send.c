@@ -418,12 +418,12 @@ static int include_reply (CONTEXT *ctx, HEADER *cur, FILE *out)
   return 0;
 }
 
-static int default_to (ADDRESS **to, ENVELOPE *env, int group)
+static int default_to (ADDRESS **to, ENVELOPE *env, int flags)
 {
   char prompt[STRING];
   int i = 0;
 
-  if (group && env->mail_followup_to)
+  if (flags && env->mail_followup_to)
   {
     snprintf (prompt, sizeof (prompt), _("Follow-up to %s%s?"),
 	      env->mail_followup_to->mailbox,
@@ -435,6 +435,12 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int group)
       return 0;
     }
   }
+
+  /* Exit now if we're setting up the default Cc list for list-reply
+   * (only set if Mail-Followup-To is present and honoured).
+   */
+  if (flags & SENDLISTREPLY)
+    return 0;
 
   if (!option(OPTREPLYSELF) && mutt_addr_is_user (env->from))
   {
@@ -495,6 +501,10 @@ int mutt_fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags)
     tmp = find_mailing_lists (in->to, in->cc);
     rfc822_append (&out->to, tmp);
     rfc822_free_address (&tmp);
+
+    if (in->mail_followup_to &&
+        default_to (&out->cc, in, flags & SENDLISTREPLY) == -1)
+      return (-1); /* abort */
   }
   else
   {
