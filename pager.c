@@ -2383,7 +2383,7 @@ CHECK_IMAP_ACL(IMAP_ACL_WRITE);
       case OP_MAIL:
 	CHECK_MODE(IsHeader (extra) && !IsAttach (extra));
         CHECK_ATTACH;      
-	ci_send_message (0, NULL, NULL, extra->ctx, extra->hdr);
+	ci_send_message (0, NULL, NULL, extra->ctx, NULL);
 	redraw = REDRAW_FULL;
 	break;
 
