@@ -2,15 +2,15 @@
 # Copyright (C) 2003 Free Software Foundation, Inc.
 # Velko Hristov <hristov@informatik.hu-berlin.de>, 2003.
 #
-# decide: remailer, debugging, pipe, mailing list
-# matching: "съвпадащи" или "отговарящи на"?
-#, fuzzy
+# todo: remailer, debugging, pipe, mailing list, clear & continue, subparts, captitalize,
+# todo: overflow, certfile
+# todo: matching - "съвпадащи" или "отговарящи на"?
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.4i\n"
+"Project-Id-Version: Mutt 1.5.5.1\n"
 "POT-Creation-Date: 2003-11-05 21:05+0100\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=windows-1251\n"
+"Content-Type: text/plain; charset=CP1251\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: account.c:144
@@ -76,7 +76,7 @@ msgstr "Адрес:"
 #: alias.c:289 send.c:201
 #, c-format
 msgid "Error: '%s' is a bad IDN."
-msgstr "Грешка: '%s' е лош IDN."
+msgstr "Грешка: '%s' е невалиден IDN."
 
 #: alias.c:301
 msgid "Personal name: "
@@ -452,7 +452,7 @@ msgstr ""
 
 #: commands.c:499
 msgid "dfrsotuzc"
-msgstr "dfrscotuzc"
+msgstr "dfrsotuzc"
 
 #: commands.c:552
 msgid "Shell command: "
@@ -620,7 +620,7 @@ msgstr "-- Приложения"
 #: compose.c:432
 #, c-format
 msgid "Warning: '%s' is a bad IDN."
-msgstr "Предупреждение: '%s' е лош IDN."
+msgstr "Предупреждение: '%s' е невалиден IDN."
 
 #: compose.c:455
 msgid "You may not delete the only attachment."
@@ -759,8 +759,8 @@ msgstr "Въвеждане на SMIME парола:"
 #: crypt.c:192
 msgid "Create a traditional (inline) PGP message?"
 msgstr ""
-"Желаете ли да създадете традиционално PGP писмо? (PGP частта е вмъкната, а "
-"не приложена)"
+"Желаете ли да създадете традиционно PGP писмо? (PGP частта е вмъкната, а не "
+"приложена)"
 
 #: crypt.c:200 pgpkey.c:559 postpone.c:547
 msgid "Invoking PGP..."
@@ -853,7 +853,7 @@ msgstr "Натиснете някой клавиш..."
 
 #: curs_lib.c:411
 msgid " ('?' for list): "
-msgstr "(използвайте '?' за избор от списък): "
+msgstr " (използвайте'?' за избор от списък): "
 
 #: curs_main.c:47 curs_main.c:611 curs_main.c:641
 msgid "No mailbox is open."
@@ -927,9 +927,8 @@ msgid "No tagged messages."
 msgstr "Няма маркирани писма."
 
 #: curs_main.c:653 menu.c:890
-#, fuzzy
 msgid "Nothing to do."
-msgstr "Свързване с %s..."
+msgstr "Няма какво да се прави."
 
 #: curs_main.c:739
 msgid "Jump to message: "
@@ -1138,7 +1137,7 @@ msgstr "Лош IDN в %s: '%s'\n"
 #: edit.c:458
 #, c-format
 msgid "%s: unknown editor command (~? for help)\n"
-msgstr "%s: непозната команда на редактора (използвайте ~? за помощ)\n"
+msgstr "%s: непозната команда на редактора  (използвайте~? за помощ)\n"
 
 #: editmsg.c:74
 #, c-format
@@ -1260,7 +1259,7 @@ msgstr "[-- Това %s/%s приложение не е включено в писмото, --]\n"
 msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
-msgstr "[-- а файлът, определен за прикачане вече не съществува. --]\n"
+msgstr "[-- а файлът, определен за прикачване вече не съществува. --]\n"
 
 #: handler.c:1707
 #, c-format
@@ -1287,7 +1286,7 @@ msgstr "[-- %s/%s не се поддържа"
 #: handler.c:1930
 #, c-format
 msgid "(use '%s' to view this part)"
-msgstr "(използвайте '%s' за да видите тази част)"
+msgstr " (използвайте'%s' за да видите тази част)"
 
 #: handler.c:1932
 msgid "(need 'view-attachments' bound to key!)"
@@ -1368,7 +1367,7 @@ msgstr "Неуспешна CRAM-MD5 идентификация."
 #. now begin login
 #: imap/auth_gss.c:104
 msgid "Authenticating (GSSAPI)..."
-msgstr "Идентифциране (GSSAPI)..."
+msgstr "Идентифициране (GSSAPI)..."
 
 #: imap/auth_gss.c:267
 msgid "GSSAPI authentication failed."
@@ -1387,9 +1386,9 @@ msgid "Login failed."
 msgstr "Неуспешно включване."
 
 #: imap/auth_sasl.c:112
-#, fuzzy, c-format
+#, c-format
 msgid "Authenticating (%s)..."
-msgstr "Идентифциране (APOP)..."
+msgstr "Идентифициране (%s)..."
 
 #: imap/auth_sasl.c:199 pop_auth.c:172
 msgid "SASL authentication failed."
@@ -1447,7 +1446,7 @@ msgstr "Този IMAP-сървър е остарял. Mutt няма да работи с него."
 #: imap/imap.c:397
 #, c-format
 msgid "Unexpected response received from server: %s"
-msgstr ""
+msgstr "Сървърът изпрати неочакван отговор: %s"
 
 #: imap/imap.c:417
 msgid "Secure connection with TLS?"
@@ -1455,7 +1454,7 @@ msgstr "Желаете ли да установите сигурна връзка с TLS?"
 
 #: imap/imap.c:426
 msgid "Could not negotiate TLS connection"
-msgstr "Не може да бъде установена TSL вързка"
+msgstr "Не може да бъде установена TSL връзка"
 
 #: imap/imap.c:563
 #, c-format
@@ -1621,9 +1620,9 @@ msgid "%s: invalid value"
 msgstr "%s: невалидна стойност"
 
 #: init.c:1198
-#, fuzzy, c-format
+#, c-format
 msgid "%s: Unknown type."
-msgstr "%s: непознат тип"
+msgstr "%s: Непознат тип."
 
 #: init.c:1224
 #, c-format
@@ -1740,11 +1739,11 @@ msgstr "празна функция"
 
 #: keymap_alldefs.h:6
 msgid "end of conditional execution (noop)"
-msgstr ""
+msgstr "край на условното изпълнение (noop)"
 
 #: keymap_alldefs.h:7
 msgid "force viewing of attachment using mailcap"
-msgstr "покзава принудително приложението след търсене в mailcap"
+msgstr "показва принудително приложението след търсене в mailcap"
 
 #: keymap_alldefs.h:8
 msgid "view attachment as text"
@@ -1938,7 +1937,7 @@ msgstr "създава декодирано (text/plain) копие"
 
 #: keymap_alldefs.h:55
 msgid "make decoded copy (text/plain) and delete"
-msgstr "създава декодирано (text/plain) копие и изтриване"
+msgstr "създаване на декодирано (text/plain) копие на писмото и изтриване"
 
 #: keymap_alldefs.h:56
 msgid "delete the current entry"
@@ -2279,8 +2278,7 @@ msgstr "скок към началото на писмото"
 
 #: keymap_alldefs.h:140
 msgid "pipe message/attachment to a shell command"
-msgstr ""
-"изпраща писмо или приложение към команда на командния интерпретатор (pipe)"
+msgstr "изпраща писмо или приложение към команда на командния интерпретатор"
 
 #: keymap_alldefs.h:141
 msgid "move to the previous entry"
@@ -2300,7 +2298,7 @@ msgstr "отпечатва текущото писмо"
 
 #: keymap_alldefs.h:145
 msgid "query external program for addresses"
-msgstr "запитване към външна програма за адрес"
+msgstr "изпраща запитване към външна програма за адрес"
 
 #: keymap_alldefs.h:146
 msgid "append new query results to current results"
@@ -2308,7 +2306,7 @@ msgstr "добавя резултатите от запитването към досегашните"
 
 #: keymap_alldefs.h:147
 msgid "save changes to mailbox and quit"
-msgstr "запис на промените в пощенска кутия и напускане на програмата"
+msgstr "записва промените в пощенската кутия и напуска програмата"
 
 #: keymap_alldefs.h:148
 msgid "recall a postponed message"
@@ -2336,11 +2334,11 @@ msgstr "записва писмо или приложение във файл"
 
 #: keymap_alldefs.h:154
 msgid "search for a regular expression"
-msgstr "търси регулярен израз"
+msgstr "търсене на регулярен израз"
 
 #: keymap_alldefs.h:155
 msgid "search backwards for a regular expression"
-msgstr "търси регулярен израз в обратната посока"
+msgstr "търсене на регулярен израз в обратната посока"
 
 #: keymap_alldefs.h:156
 msgid "search for next match"
@@ -2356,7 +2354,7 @@ msgstr "включва/изключва оцветяването при търсене"
 
 #: keymap_alldefs.h:159
 msgid "invoke a command in a subshell"
-msgstr "изпълнява команда в командния интепретатор"
+msgstr "изпълнява команда в командния интерпретатор"
 
 #: keymap_alldefs.h:160
 msgid "sort messages"
@@ -2375,9 +2373,8 @@ msgid "apply next function to tagged messages"
 msgstr "прилага следващата функция върху маркираните писма"
 
 #: keymap_alldefs.h:164
-#, fuzzy
 msgid "apply next function ONLY to tagged messages"
-msgstr "прилага следващата функция върху маркираните писма"
+msgstr "прилага следващата функция САМО върху маркираните писма"
 
 #: keymap_alldefs.h:165
 msgid "tag the current subthread"
@@ -2405,7 +2402,7 @@ msgstr "преместване към началото на страницата"
 
 #: keymap_alldefs.h:171
 msgid "undelete the current entry"
-msgstr "възстановява текущия запис"
+msgstr "възстановява текущото писмо"
 
 #: keymap_alldefs.h:172
 msgid "undelete all messages in thread"
@@ -2421,8 +2418,7 @@ msgstr "показва версията на mutt"
 
 #: keymap_alldefs.h:175
 msgid "view attachment using mailcap entry if necessary"
-msgstr ""
-"показване на приложение, с използване на mailcap вписване при необходимост"
+msgstr "показва приложение, използвайки mailcap"
 
 #: keymap_alldefs.h:176
 msgid "show MIME attachments"
@@ -2498,11 +2494,11 @@ msgstr "изпраща писмото през mixmaster remailer верига"
 
 #: keymap_alldefs.h:194
 msgid "make decrypted copy and delete"
-msgstr "създава дешифровано копие и изтрива"
+msgstr "създава дешифрирано копие и изтрива"
 
 #: keymap_alldefs.h:195
 msgid "make decrypted copy"
-msgstr "създава дешифровано копие"
+msgstr "създава дешифрирано копие"
 
 #: keymap_alldefs.h:196
 msgid "wipe passphrase(s) from memory"
@@ -2517,8 +2513,9 @@ msgid "show S/MIME options"
 msgstr "показва S/MIME настройките"
 
 #: lib.c:60
+#, fuzzy
 msgid "Integer overflow -- can't allocate memory!"
-msgstr ""
+msgstr "Integer overflow -- заделянето на памет е невъзможно!"
 
 #: lib.c:67 lib.c:82 lib.c:114
 msgid "Out of memory!"
@@ -2866,13 +2863,14 @@ msgstr ""
 "maildir_commit_message(): грешка при поставянето на марка за време на файла"
 
 #: muttlib.c:835
-#, fuzzy
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
-msgstr "Файлът е директория. Желаете ли да запишете в нея?"
+msgstr ""
+"Файлът е директория. Желаете ли да запишете в нея? [(y) да, (n) не, (a) "
+"всички]"
 
 #: muttlib.c:835
 msgid "yna"
-msgstr ""
+msgstr "yna"
 
 #: muttlib.c:851
 msgid "File is a directory, save under it?"
@@ -3173,8 +3171,9 @@ msgid "Can't write message"
 msgstr "Невъзможен запис на писмо"
 
 #: mx.c:1535
+#, fuzzy
 msgid "Integer overflow -- can't allocate memory."
-msgstr ""
+msgstr "Integer overflow -- заделянето на памет е невъзможно."
 
 #: pager.c:53
 msgid "Not available in this menu."
@@ -3317,7 +3316,7 @@ msgstr "PGP паролата е забравена."
 
 #: pgp.c:308
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
-msgstr "[-- Грешка: не може да бъде стартиран PGP дъщерен процес! --]\n"
+msgstr "[-- Грешка: не може да бъде стартиран дъщерен PGP процес! --]\n"
 
 #: pgp.c:337 pgp.c:554 pgp.c:755
 msgid ""
@@ -3376,7 +3375,7 @@ msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
 msgstr ""
-"[-- Грешка: не може да бъде стартиран PGP дъщерен процес! --]\n"
+"[-- Грешка: не може да бъде стартиран дъщерен PGP процес! --]\n"
 "\n"
 
 #: pgp.c:821
@@ -3405,7 +3404,7 @@ msgstr "[-- Край на шифрованите с PGP/MIME данни --]\n"
 
 #: pgp.c:913
 msgid "Can't open PGP subprocess!"
-msgstr "Не може да бъде стартиран PGP дъщерен процес!"
+msgstr "Не може да бъде стартиран дъщерен PGP процес!"
 
 #: pgp.c:1057
 #, c-format
@@ -3474,7 +3473,7 @@ msgstr "Този идентификатор е остарял, деактивиран или анулиран."
 
 #: pgpkey.c:612
 msgid "ID has undefined validity."
-msgstr "Тоди идентификатор е с недефинирана валидност."
+msgstr "Този идентификатор е с недефинирана валидност."
 
 #: pgpkey.c:615
 msgid "ID is not valid."
@@ -3568,11 +3567,11 @@ msgstr "Сървърът затвори връзката!"
 
 #: pop_auth.c:89
 msgid "Authenticating (SASL)..."
-msgstr "Идентифциране (SASL)..."
+msgstr "Идентифициране (SASL)..."
 
 #: pop_auth.c:205
 msgid "Authenticating (APOP)..."
-msgstr "Идентифциране (APOP)..."
+msgstr "Идентифициране (APOP)..."
 
 #: pop_auth.c:229
 msgid "APOP authentication failed."
@@ -3902,7 +3901,7 @@ msgstr "Желаете ли да прикачите писмото към отговора?"
 
 #: send.c:738
 msgid "Including quoted message..."
-msgstr "Прикачане на цитирано писмо..."
+msgstr "Прикачване на цитирано писмо..."
 
 #: send.c:748
 msgid "Could not include all requested messages!"
@@ -4091,7 +4090,7 @@ msgstr "Не е намерен (валиден) сертификат за %s."
 
 #: smime.c:842 smime.c:870 smime.c:935 smime.c:979 smime.c:1044 smime.c:1119
 msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "Грешка: не може да бъде стартиран OpenSSL дъщерен процес!"
+msgstr "Грешка: не може да бъде стартиран дъщерен OpenSSL процес!"
 
 #: smime.c:1197
 #, fuzzy
@@ -4105,7 +4104,7 @@ msgstr "няма пощенска кутия"
 #. fatal error while trying to encrypt message
 #: smime.c:1343
 msgid "No output from OpenSSL.."
-msgstr "Няма резултат от дъщерния процес OpenSSL.."
+msgstr "Няма резултат от дъщерния OpenSSL процес.."
 
 #: smime.c:1381
 msgid "Warning: Intermediate certificate not found."
@@ -4113,11 +4112,11 @@ msgstr "Предупреждение: Не може да бъде намерен междинен сертификат."
 
 #: smime.c:1426
 msgid "Can't open OpenSSL subprocess!"
-msgstr "Не може да бъде стартиран OpenSSL дъщерен процес!"
+msgstr "Не може да бъде стартиран дъщерен OpenSSL процес!"
 
 #: smime.c:1464
 msgid "No output from OpenSSL..."
-msgstr "Няма резултат от дъщерния процес OpenSSL..."
+msgstr "Няма резултат от дъщерния OpenSSL процес..."
 
 #: smime.c:1629 smime.c:1751
 msgid ""
@@ -4129,7 +4128,7 @@ msgstr ""
 
 #: smime.c:1712 smime.c:1722
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- Грешка: не може да бъде стартиран OpenSSL дъщерен процес! --]\n"
+msgstr "[-- Грешка: не може да бъде стартиран дъщерен OpenSSL процес! --]\n"
 
 #: smime.c:1755
 msgid "[-- The following data is S/MIME encrypted --]\n"
