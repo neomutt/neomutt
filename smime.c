@@ -1920,6 +1920,7 @@ int smime_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
 static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
 {
   int len=0;
+  int c;
   long last_pos;
   char buf[HUGE_STRING];
   char outfile[_POSIX_PATH_MAX], errfile[_POSIX_PATH_MAX];
@@ -1999,26 +2000,30 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
 
   fclose (smimein);
 	
-  if (s->flags & M_DISPLAY) crypt_current_time (s, "OpenSSL");
-	
   mutt_wait_filter (thepid);
-
   mutt_unlink (tmpfname);
   
 
   if (s->flags & M_DISPLAY)
   {
     rewind (smimeerr);
-    mutt_copy_stream (smimeerr, s->fpout);
-
-    state_attach_puts (_("\n[-- End of OpenSSL output --]\n\n"), s);
-  
+    
+    if ((c = fgetc (smimeerr)) != EOF)
+    {
+      ungetc (c, smimeerr);
+      
+      crypt_current_time (s, "OpenSSL");
+      mutt_copy_stream (smimeerr, s->fpout);
+      state_attach_puts (_("[-- End of OpenSSL output --]\n\n"), s);
+    }
+    
     if (type & ENCRYPT)
-      state_attach_puts (_("\n[-- The following data is S/MIME"
+      state_attach_puts (_("[-- The following data is S/MIME"
                            " encrypted --]\n"), s);
     else
-      state_attach_puts (_("\n[-- The following data is S/MIME signed --]\n"), s);
-  }  
+      state_attach_puts (_("[-- The following data is S/MIME signed --]\n"), s);
+  }
+
   if (smimeout)
   {
     fflush (smimeout);
