@@ -677,6 +677,7 @@ static int sync_mailbox (CONTEXT *ctx)
 
   if (!ctx->quiet)
     mutt_message (_("Writing %s..."), ctx->path);
+
   switch (ctx->magic)
   {
     case M_MBOX:
@@ -699,6 +700,9 @@ static int sync_mailbox (CONTEXT *ctx)
 #endif /* USE_IMAP */
   }
 
+  if (!ctx->quiet && rc == -1)
+    mutt_error ( _("Could not synchronize mailbox %s!"), ctx->path);
+  
 #ifdef BUFFY_SIZE
   if (tmp && tmp->new == 0)
     mutt_update_mailbox (tmp);

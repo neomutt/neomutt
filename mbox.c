@@ -717,7 +717,10 @@ int mbox_sync_mailbox (CONTEXT *ctx)
       (fp = fdopen (i, "w")) == NULL)
   {
     if (-1 != i)
+    {
       close (i);
+      unlink (tempfile);
+    }
     mutt_error _("Could not create temporary file!");
     goto bail;
   }
@@ -737,6 +740,7 @@ int mbox_sync_mailbox (CONTEXT *ctx)
     mutt_error _("sync: mbox modified, but no modified messages! (report this bug)");
     sleep(5); /* the mutt_error /will/ get cleared! */
     dprint(1, (debugfile, "mbox_sync_mailbox(): no modified messages.\n"));
+    unlink (tempfile);
     goto bail;
   }
 
@@ -768,12 +772,19 @@ int mbox_sync_mailbox (CONTEXT *ctx)
       if (ctx->magic == M_MMDF)
       {
 	if (fputs (MMDF_SEP, fp) == EOF)
+	{
+	  unlink (tempfile);
 	  goto bail;
+	}
+	  
       }
       else if (ctx->magic == M_KENDRA)
       {
 	if (fputs (KENDRA_SEP, fp) == EOF)
+	{
+	  unlink (tempfile);
 	  goto bail;
+	}
       }
 
       /* save the new offset for this message.  we add `offset' because the
@@ -783,7 +794,10 @@ int mbox_sync_mailbox (CONTEXT *ctx)
       newOffset[i - first].hdr = ftell (fp) + offset;
 
       if (mutt_copy_message (fp, ctx, ctx->hdrs[i], M_CM_UPDATE, CH_FROM | CH_UPDATE | CH_UPDATE_LEN) == -1)
+      {
+	unlink (tempfile);
 	goto bail;
+      }
 
       /* Since messages could have been deleted, the offsets stored in memory
        * will be wrong, so update what we can, which is the offset of this
@@ -797,13 +811,25 @@ int mbox_sync_mailbox (CONTEXT *ctx)
       switch(ctx->magic)
       {
 	case M_MMDF: 
-	  if(fputs(MMDF_SEP, fp) == EOF) goto bail; 
+	  if(fputs(MMDF_SEP, fp) == EOF) 
+	  {
+	    unlink (tempfile);
+	    goto bail; 
+	  }
 	  break;
 	case M_KENDRA:
-	  if(fputs(KENDRA_SEP, fp) == EOF) goto bail;
+	  if(fputs(KENDRA_SEP, fp) == EOF)
+	  {
+	    unlink (tempfile);
+	    goto bail;
+	  }
 	  break;
 	default:
-	  if(fputs("\n", fp) == EOF) goto bail;
+	  if(fputs("\n", fp) == EOF) 
+	  {
+	    unlink (tempfile);
+	    goto bail;
+	  }
       }
     }
   }

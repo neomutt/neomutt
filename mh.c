@@ -533,13 +533,16 @@ int mh_sync_mailbox (CONTEXT * ctx)
   int i, rc = 0;
   
   i = mh_check_mailbox(ctx, NULL);
+
+#if 0
   if(i == M_REOPENED || i == M_NEW_MAIL)
   {
     set_option(OPTSORTCOLLAPSE);
     mutt_sort_headers(ctx, (i == M_REOPENED));
     unset_option(OPTSORTCOLLAPSE);
   }
-  
+#endif
+
   if(i == M_REOPENED || i == M_NEW_MAIL || i < 0)
     return i;
 
