@@ -385,6 +385,29 @@ char *mutt_get_parameter (const char *s, PARAMETER *p)
   return NULL;
 }
 
+void mutt_set_parameter (const char *attribute, const char *value, PARAMETER **p)
+{
+  PARAMETER *q;
+  for(q = *p; q; q =  q->next)
+  {
+    if (mutt_strcasecmp (attribute, q->attribute) == 0)
+    {
+      safe_free((void **) &q->value);
+      q->value = safe_strdup(value);
+      return;
+    }
+  }
+  
+  q = mutt_new_parameter();
+  q->attribute = safe_strdup(attribute);
+  q->value = safe_strdup(value);
+  q->next = *p;
+  *p = q;
+}
+
+
+
+
 /* returns 1 if Mutt can't display this type of data, 0 otherwise */
 int mutt_needs_mailcap (BODY *m)
 {

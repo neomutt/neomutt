@@ -535,16 +535,18 @@ int mutt_write_mime_body (BODY *a, FILE *f)
 }
 
 #define BOUNDARYLEN 16
-char *mutt_generate_boundary (void)
+void mutt_generate_boundary (PARAMETER **parm)
 {
-  char *rs = (char *)safe_malloc (BOUNDARYLEN + 1);
+  char rs[BOUNDARYLEN + 1];
   char *p = rs;
   int i;
 
   rs[BOUNDARYLEN] = 0;
-  for (i=0;i<BOUNDARYLEN;i++) *p++ = B64Chars[LRAND() % sizeof (B64Chars)];
+  for (i=0;i<BOUNDARYLEN;i++) 
+    *p++ = B64Chars[LRAND() % sizeof (B64Chars)];
   *p = 0;
-  return (rs);
+  
+  mutt_set_parameter ("boundary", rs, parm);
 }
 
 /* analyze the contents of a file to determine which MIME encoding to use */
@@ -935,19 +937,7 @@ void mutt_update_encoding (BODY *a)
   mutt_stamp_attachment(a);
   
   if (a->type == TYPETEXT)
-  {
-    /* make sure the charset is valid */
-    if (a->parameter)
-      safe_free ((void **) &a->parameter->value);
-    else
-    {
-      a->parameter = mutt_new_parameter ();
-      a->parameter->attribute = safe_strdup ("charset");
-    }
-    a->parameter->value = safe_strdup (set_text_charset (info));
-  }
-
-
+    mutt_set_parameter ("charset", set_text_charset (info), &a->parameter);
 
 #ifdef _PGPPATH
   /* save the info in case this message is signed.  we will want to do Q-P
@@ -1077,9 +1067,8 @@ BODY *mutt_make_file_attach (const char *path)
        */
       att->type = TYPETEXT;
       att->subtype = safe_strdup ("plain");
-      att->parameter = mutt_new_parameter ();
-      att->parameter->attribute = safe_strdup ("charset");
-      att->parameter->value = safe_strdup (set_text_charset (info));
+      
+      mutt_set_parameter("charset", set_text_charset(info), &att->parameter);
     }
     else
     {
@@ -1131,9 +1120,7 @@ BODY *mutt_make_multipart (BODY *b)
   new->type = TYPEMULTIPART;
   new->subtype = safe_strdup ("mixed");
   new->encoding = get_toplevel_encoding (b);
-  new->parameter = mutt_new_parameter ();
-  new->parameter->attribute = safe_strdup ("boundary");
-  new->parameter->value = mutt_generate_boundary ();
+  mutt_generate_boundary(&new->parameter);
   new->use_disp = 0;  
   new->parts = b;
 

@@ -720,19 +720,26 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 		  idx[menu->current]->content->subtype);
 	if (mutt_get_field ("Content-Type: ", buf, sizeof (buf), 0) == 0 && buf[0])
 	{
-	  char *p = strchr (buf, '/');
+	  char *s;
+	  PARAMETER *par;
+	  BODY *b;
+	  
+	  b = idx[menu->current]->content;
+	  
+	  s  = b->filename;  par = b->parameter;
+	  b->filename  = NULL;  b->parameter = NULL;
+	  
+	  mutt_parse_content_type(buf, b);
 
-	  if (p)
-	  {
-	    *p++ = 0;
-	    if ((i = mutt_check_mime_type (buf)) != TYPEOTHER)
-	    {
-	      idx[menu->current]->content->type = i;
-	      safe_free ((void **) &idx[menu->current]->content->subtype);
-	      idx[menu->current]->content->subtype = safe_strdup (p);
-	      menu->redraw = REDRAW_CURRENT;
-	    }
-	  }
+	  safe_free((void **) &b->filename);
+	  b->filename =s;
+	  
+	  if ((s = mutt_get_parameter("charset", b->parameter)))
+	    mutt_set_parameter("charset", s, &par);
+
+	  /* ignore the other parameters for now */
+	  mutt_free_parameter(&b->parameter);
+	  b->parameter = par;
 	}
 	break;
 

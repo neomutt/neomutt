@@ -1031,7 +1031,6 @@ static void convert_to_7bit (BODY *a)
 
 static BODY *pgp_sign_message (BODY *a)
 {
-  PARAMETER *p;
   BODY *t;
   char buffer[LONG_STRING];
   char sigfile[_POSIX_PATH_MAX], signedfile[_POSIX_PATH_MAX];
@@ -1129,19 +1128,9 @@ static BODY *pgp_sign_message (BODY *a)
   t->use_disp = 0;
   t->encoding = ENC7BIT;
 
-  t->parameter = p = mutt_new_parameter ();
-  p->attribute = safe_strdup ("protocol");
-  p->value = safe_strdup ("application/pgp-signature");
-
-  p->next = mutt_new_parameter ();
-  p = p->next;
-  p->attribute = safe_strdup ("micalg");
-  p->value = safe_strdup (PgpSignMicalg);
-
-  p->next = mutt_new_parameter ();
-  p = p->next;
-  p->attribute = safe_strdup ("boundary");
-  p->value = mutt_generate_boundary ();
+  mutt_set_parameter ("protocol", "application/pgp-signature", &t->parameter);
+  mutt_set_parameter ("micalg", PgpSignMicalg, &t->parameter);
+  mutt_generate_boundary (&t->parameter);
 
   t->parts = a;
   a = t;
@@ -1243,7 +1232,6 @@ static BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
   char pgpinfile[_POSIX_PATH_MAX];
   FILE *pgpin, *pgperr, *fpout, *fptmp;
   BODY *t;
-  PARAMETER *p;
   int err = 0;
   int empty;
   pid_t thepid;
@@ -1337,15 +1325,9 @@ static BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
   t->encoding = ENC7BIT;
   t->use_disp = 0;
 
-  t->parameter = p = mutt_new_parameter ();
-  p->attribute = safe_strdup ("protocol");
-  p->value = safe_strdup ("application/pgp-encrypted");
-
-  p->next = mutt_new_parameter ();
-  p = p->next;
-  p->attribute = safe_strdup ("boundary");
-  p->value = mutt_generate_boundary ();
-
+  mutt_set_parameter("protocol", "application/pgp-encrypted", &t->parameter);
+  mutt_generate_boundary(&t->parameter);
+  
   t->parts = mutt_new_body ();
   t->parts->type = TYPEAPPLICATION;
   t->parts->subtype = safe_strdup ("pgp-encrypted");

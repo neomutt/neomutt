@@ -63,8 +63,10 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *hdr, int flag);
 typedef const char * format_t (char *, size_t, char, const char *, const char *, const char *, const char *, unsigned long, format_flag);
 
 void mutt_FormatString (char *, size_t, const char *, format_t *, unsigned long, format_flag);
-
+void mutt_parse_content_type (char *, BODY *);
 void mutt_update_encoding (BODY *a);
+void mutt_generate_boundary (PARAMETER **);
+void mutt_set_parameter (const char *, const char *, PARAMETER **);
 
 FILE *mutt_open_read (const char *, pid_t *);
 
@@ -110,7 +112,6 @@ const char *mutt_attach_fmt (
 
 char *mutt_expand_path (char *, size_t);
 char *mutt_find_hook (int, const char *);
-char *mutt_generate_boundary (void);
 char *mutt_gen_msgid (void);
 char *mutt_get_name (ADDRESS *);
 char *mutt_get_parameter (const char *, PARAMETER *);

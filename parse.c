@@ -245,7 +245,7 @@ int mutt_check_mime_type (const char *s)
     return TYPEOTHER;
 }
 
-static void parse_content_type (char *s, BODY *ct)
+void mutt_parse_content_type (char *s, BODY *ct)
 {
   char *pc;
   char *subtype;
@@ -382,7 +382,7 @@ BODY *mutt_read_mime_header (FILE *fp, int digest)
     if (!mutt_strncasecmp ("content-", line, 8))
     {
       if (!mutt_strcasecmp ("type", line + 8))
-	parse_content_type (c, p);
+	mutt_parse_content_type (c, p);
       else if (!mutt_strcasecmp ("transfer-encoding", line + 8))
 	p->encoding = mutt_check_encoding (c);
       else if (!mutt_strcasecmp ("disposition", line + 8))
@@ -928,7 +928,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs)
 	  if (mutt_strcasecmp (line+8, "type") == 0)
 	  {
 	    if (hdr)
-	      parse_content_type (p, hdr->content);
+	      mutt_parse_content_type (p, hdr->content);
 	    matched = 1;
 	  }
 	  else if (mutt_strcasecmp (line+8, "transfer-encoding") == 0)
