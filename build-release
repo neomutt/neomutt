@@ -68,7 +68,7 @@ mv mutt-${VERSION}.tar.gz mutt-${VERSION}i.tar.gz
 # commit and tag the release
 
 cvs commit -m "automatic post-release commit for mutt-${VERSION}"
-make changelog changelog-commit
+make commit-changelog 
 cvs tag ${TAG}
 
 # build the diff between the two releases
