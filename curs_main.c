@@ -606,7 +606,7 @@ int mutt_index_menu (void)
       case OP_JUMP:
 
 	CHECK_MSGCOUNT;
-	mutt_ungetch (LastKey, 0);
+        if (isdigit (LastKey)) mutt_ungetch (LastKey, 0);
 	buf[0] = 0;
 	if (mutt_get_field (_("Jump to message: "), buf, sizeof (buf), 0) != 0
 	    || !buf[0])
