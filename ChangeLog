@@ -1,3 +1,9 @@
+2005-03-05 18:15:20  Christoph Ludwig  <cludwig@cdc.informatik.tu-darmstadt.de>  (roessler)
+
+	* crypt.c: The attached patch fixes a segfault I observed
+	today: mutt failed to check for a possible null pointer in
+	mutt_is_application_smime(Body*).
+
 2005-03-05 07:10:57  brendan  (brendan)
 
 	* mutt_sasl.c, mutt_sasl.h, mutt_socket.c, mutt_socket.h,
