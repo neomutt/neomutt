@@ -1368,6 +1368,18 @@ static int source_rc (const char *rcfile, BUFFER *err)
   char *linebuf = NULL;
   size_t buflen;
   pid_t pid;
+  struct stat s;
+
+  if (stat (rcfile, &s) < 0)
+  {
+    snprintf (err->data, err->dsize, _("%s: stat: %s"), rcfile, strerror (errno));
+    return (-1);
+  }
+  if (!S_ISREG (s.st_mode))
+  {
+    snprintf (err->data, err->dsize, _("%s: not a regular file"), rcfile);
+    return (-1);
+  }
 
   if ((f = mutt_open_read (rcfile, &pid)) == NULL)
   {
