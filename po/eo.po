@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1\n"
-"POT-Creation-Date: 2000-08-03 11:07+0200\n"
-"PO-Revision-Date: 2000-06-21 16:55+01:00\n"
+"POT-Creation-Date: 2000-08-03 21:06+0100\n"
+"PO-Revision-Date: 2000-08-03 21:23+01:00\n"
 "Last-Translator: Edmund GRIMLEY EVANS <edmundo@rano.org>\n"
 "Language-Team: eo <eo@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1111,9 +1111,9 @@ msgid "Fatal error.  Message count is out of sync!"
 msgstr "Fatala eraro. Mesaøonombro ne kongruas!"
 
 #: imap/imap.c:91
-#, fuzzy, c-format
+#, c-format
 msgid "Closing connection to %s..."
-msgstr "Fermas la konekton al la IMAP-servilo ..."
+msgstr "Fermas la konekton al %s ..."
 
 #: imap/imap.c:295
 #, c-format
@@ -1177,14 +1177,14 @@ msgid "Failed to find enough entropy on your system"
 msgstr "Ne trovis sufiæe da entropio en via sistemo"
 
 #: imap/imap_ssl.c:122
-#, fuzzy, c-format
+#, c-format
 msgid "Filling entropy pool: %s...\n"
-msgstr "Plenigas entropiujon ..."
+msgstr "Plenigas entropiujon: %s...\n"
 
 #: imap/imap_ssl.c:130
 #, c-format
 msgid "%s has insecure permissions!"
-msgstr ""
+msgstr "%s havas malsekurajn permesojn!"
 
 #: imap/imap_ssl.c:156
 msgid "SSL disabled due the lack of entropy"
@@ -1294,7 +1294,7 @@ msgstr "Prenas mesaøon ..."
 
 #: imap/message.c:266
 msgid "The message index is incorrect. Try reopening the mailbox."
-msgstr ""
+msgstr "La mesaøindekso estas maløusta. Provu remalfermi la poþtfakon."
 
 #: imap/message.c:447
 msgid "Uploading message ..."
@@ -2195,13 +2195,12 @@ msgid "Out of memory!"
 msgstr "Mankas memoro!"
 
 #: main.c:40
-#, fuzzy
 msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please use the flea(1) utility.\n"
 msgstr ""
 "Por kontakti la kreantojn, bonvolu skribi al <mutt-dev@mutt.org>.\n"
-"Por raporti cimon, bonvolu uzi la programon muttbug.\n"
+"Por raporti cimon, bonvolu uzi la programon flea(1).\n"
 
 #: main.c:44
 msgid ""
@@ -2216,7 +2215,6 @@ msgstr ""
 "sub difinitaj kondiæoj; tajpu 'mutt -v' por detaloj.\n"
 
 #: main.c:50
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
@@ -2249,6 +2247,7 @@ msgstr ""
 "Kopirajto (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
 "Kopirajto (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
 "Kopirajto (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Kopirajto (C) 2000      Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "Multaj aliaj homoj ne menciitaj æi tie kontribuis multe da\n"
 "programlinioj, riparoj, kaj sugestoj.\n"
@@ -2299,7 +2298,6 @@ msgstr ""
 "    æi tiu programo; se ne, skribu al la kreantoj de la programo.\n"
 
 #: main.c:104
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
 "]\n"
@@ -2329,9 +2327,8 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"uzado: mutt [ -nRzZ ] [ -e <kom> ] [ -F <dos> ] [ -m <speco> ] [ -f <dos> ]\n"
-"       mutt [ -nx ] [ -e <kom> ] [ -a <dos> ] [ -F <dos> ] [ -H <dos> ] [ -i "
-"<dos> ] [ -s <temo> ] [ -b <adr> ] [ -c <adr> ] <adr> [ ... ]\n"
+"uzado: mutt [ -nRyzZ ] [ -e <kom> ] [ -F <dos> ] [ -m <speco> ] [ -f <dos> ]\n"
+"       mutt [ -nx ] [ -e <kom> ] [ -a <dos> ] [ -F <dos> ] [ -H <dos> ] [ -i <dos> ] [ -s <temo> ] [ -b <adr> ] [ -c <adr> ] <adr> [ ... ]\n"
 "       mutt [ -n ] [ -e <kom> ] [ -F <dos> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2563,14 +2560,14 @@ msgid "Append messages to %s?"
 msgstr "Æu aldoni mesaøojn al %s?"
 
 #: mutt_socket.c:247
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "Kopias al %s ..."
+msgstr "Seræas pri %s ..."
 
 #: mutt_socket.c:254
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "Ne povis trovi adreson por servilo %s."
+msgstr "Ne povis trovi la servilon \"%s\""
 
 #: mutt_socket.c:260
 #, c-format
@@ -2578,9 +2575,8 @@ msgid "Connecting to %s..."
 msgstr "Konektiøas al %s ..."
 
 #: mutt_socket.c:280
-#, fuzzy
 msgid "Preconnect command failed."
-msgstr "antaýkonekta komando malsukcesis"
+msgstr "Antaýkonekta komando malsukcesis."
 
 #: mx.c:114
 #, c-format
@@ -2679,9 +2675,8 @@ msgid "Mailbox is marked unwritable. %s"
 msgstr "Poþtfako estas markita kiel neskribebla. %s"
 
 #: mx.c:1100
-#, fuzzy
 msgid "Mailbox checkpointed."
-msgstr "Poþtfako forviþita."
+msgstr "Poþtfako sinkronigita."
 
 #: mx.c:1388
 msgid "Can't write message"
@@ -3089,9 +3084,8 @@ msgid "Looking for keys matching \"%s\"..."
 msgstr "Seræas þlosilojn, kiuj kongruas kun \"%s\" ..."
 
 #: pop.c:46
-#, fuzzy
 msgid "POP Username: "
-msgstr "IMAP-uzantonomo: "
+msgstr "POP-uzantonomo: "
 
 #: pop.c:61
 #, c-format
@@ -3103,18 +3097,17 @@ msgid "Logging in..."
 msgstr "Salutas ..."
 
 #: pop.c:109
-#, fuzzy, c-format
+#, c-format
 msgid "Login failed: %s"
-msgstr "Saluto malsukcesis."
+msgstr "Saluto malsukcesis: %s"
 
 #: pop.c:132
 msgid "POP host is not defined."
 msgstr "POP-servilo ne estas difinita."
 
 #: pop.c:165
-#, fuzzy
 msgid "Checking for new messages..."
-msgstr "Pretigas plusenditan mesaøon ..."
+msgstr "Kontrolas pri novaj mesaøoj ..."
 
 #: pop.c:184
 msgid "No new mail in POP mailbox."
@@ -3545,51 +3538,3 @@ msgstr "Patra mesaøo ne estas videbla en limigita rigardo"
 #: thread.c:717
 msgid "Parent message is not available."
 msgstr "Patra mesaøo ne estas havebla."
-
-#~ msgid "Authenticating (CRAM-MD5)..."
-#~ msgstr "Rajtiøas (CRAM-MD5) ..."
-
-#~ msgid "Authenticating (anonymous)..."
-#~ msgstr "Rajtiøas (anonime) ..."
-
-#~ msgid "IMAP Username: "
-#~ msgstr "IMAP-uzantonomo: "
-
-#~ msgid "Anonymous authentication not supported."
-#~ msgstr "Anonima rajtiøo ne funkcias."
-
-#~ msgid "CRAM key for %s@%s: "
-#~ msgstr "CRAM-þlosilo por %s@%s: "
-
-#~ msgid "CRAM-MD5 authentication failed."
-#~ msgstr "CRAM-MD5-rajtiøo malsukcesis."
-
-#~ msgid "Skipping CRAM-MD5 authentication."
-#~ msgstr "Preteriras CRAM-MD5-rajtiøon."
-
-#~ msgid "Login failed."
-#~ msgstr "Saluto malsukcesis."
-
-#~ msgid "[-- Error: unexpected end of file! --]\n"
-#~ msgstr "[-- Eraro: neatendita fino de dosiero! --]\n"
-
-#~ msgid "Sending APPEND command ..."
-#~ msgstr "Sendas la komandon APPEND ..."
-
-#~ msgid "%d kept."
-#~ msgstr "%d retenite."
-
-#~ msgid "POP Password: "
-#~ msgstr "POP-pasvorto: "
-
-#~ msgid "No POP username is defined."
-#~ msgstr "POP-uzantonomo ne estas difinita."
-
-#~ msgid "Could not find address for host %s."
-#~ msgstr "Ne povis trovi adreson por servilo %s."
-
-#~ msgid "Connecting to %s"
-#~ msgstr "Konektiøas al %s"
-
-#~ msgid "Attachment saved"
-#~ msgstr "Parto skribita"

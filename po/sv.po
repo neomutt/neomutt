@@ -1,9 +1,9 @@
 # $Id$
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.3.2\n"
-"POT-Creation-Date: 2000-08-03 11:07+0200\n"
-"PO-Revision-Date: 2000-06-06 21:14+02:00\n"
+"Project-Id-Version: Mutt 1.3.6\n"
+"POT-Creation-Date: 2000-07-28 20:58+0200\n"
+"PO-Revision-Date: 2000-08-01 22:49+02:00\n"
 "Last-Translator: Jörgen Tegnér <teg@post.netlink.se>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr "Avsluta"
 msgid "Select"
 msgstr "Välj"
 
-#: addrbook.c:33 browser.c:42 compose.c:92 curs_main.c:376 imap/imap_ssl.c:520
+#: addrbook.c:33 browser.c:42 compose.c:92 curs_main.c:376 imap/imap_ssl.c:521
 #: pager.c:1459 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Hjälp"
@@ -290,23 +290,20 @@ msgid "Could not create temporary file!"
 msgstr "Kunde inte skapa tillfällig fil!"
 
 #: commands.c:125
-#, fuzzy
 msgid "Cannot create display filter"
-msgstr "Kan inte skapa filter"
+msgstr "Kan inte skapa filter för visning"
 
 #: commands.c:145
-#, fuzzy
 msgid "Could not copy message"
-msgstr "Kunde inte skicka meddelandet."
+msgstr "Kunde inte kopiera meddelandet"
 
 #: commands.c:167
 msgid "PGP signature successfully verified."
 msgstr "PGP-signaturen verifierades framgångsrikt."
 
 #: commands.c:168
-#, fuzzy
 msgid "PGP signature could NOT be verified."
-msgstr "PGP-signaturen verifierades framgångsrikt."
+msgstr "PGP-signaturen kunde INTE verifieras."
 
 #: commands.c:191
 msgid "Command: "
@@ -421,14 +418,14 @@ msgid "Messages printed"
 msgstr "Meddelanden har skrivits ut"
 
 #: commands.c:844
-#, fuzzy, c-format
+#, c-format
 msgid "Content-Type changed to %s."
-msgstr "Ansluter till %s..."
+msgstr "Ändrade 'Content-Type' till %s."
 
 #: commands.c:846
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s."
-msgstr "Teckenuppsättningen %s är okänd."
+msgstr "Teckenuppsättningen ändrad till %s."
 
 #: compose.c:40
 msgid "There are no attachments."
@@ -647,7 +644,7 @@ msgstr "Ingen brevlåda är öppen."
 msgid "There are no messages."
 msgstr "Inga meddelanden."
 
-#: curs_main.c:57 mx.c:1055 pager.c:62 recvattach.c:47
+#: curs_main.c:57 mx.c:1036 pager.c:62 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "Brevlådan kan endast läsas."
 
@@ -1084,14 +1081,57 @@ msgstr "Hjälp för %s"
 msgid "unhook: unknown hook type: %s"
 msgstr "'unhook': okänd sorts 'hook': %s"
 
-#. now begin login
-#: imap/auth_gss.c:86
-msgid "Authenticating (GSSAPI)..."
-msgstr "Verifierar (GSSAPI)..."
+#: imap/auth.c:103
+msgid "Authenticating (CRAM-MD5)..."
+msgstr "Verifierar (CRAM-MD5)..."
 
-#: imap/auth_gss.c:250
+#: imap/auth.c:188
+msgid "Authenticating (anonymous)..."
+msgstr "Verifierar (anonym)..."
+
+#: imap/auth.c:263
+msgid "IMAP Username: "
+msgstr "Användarnamn för IMAP: "
+
+#: imap/auth.c:279
+msgid "Anonymous authentication not supported."
+msgstr "Anonym verifiering stöds inte."
+
+#: imap/auth.c:292
 msgid "GSSAPI authentication failed."
 msgstr "Verifiering med GSSAPI misslyckades."
+
+#: imap/auth.c:310
+#, c-format
+msgid "CRAM key for %s@%s: "
+msgstr "Ange CRAM-nyckel för %s@%s: "
+
+#: imap/auth.c:325
+msgid "CRAM-MD5 authentication failed."
+msgstr "Verifiering med CRAM-MD5 misslyckades."
+
+#: imap/auth.c:340
+msgid "Skipping CRAM-MD5 authentication."
+msgstr "Hoppar över verifiering med CRAM-MD5."
+
+#: imap/auth.c:352 pop.c:61
+#, c-format
+msgid "Password for %s@%s: "
+msgstr "Lösenord för %s@%s: "
+
+#: imap/auth.c:367 pop.c:72
+msgid "Logging in..."
+msgstr "Ansluter..."
+
+#. Login failed, try again
+#: imap/auth.c:389
+msgid "Login failed."
+msgstr "Anslutning misslyckades."
+
+#. now begin login
+#: imap/auth_gss.c:81
+msgid "Authenticating (GSSAPI)..."
+msgstr "Verifierar (GSSAPI)..."
 
 #: imap/browse.c:80
 msgid "Getting namespaces..."
@@ -1109,65 +1149,65 @@ msgid "Fatal error.  Message count is out of sync!"
 msgstr "Fatalt fel. Meddelanderäknaren är inte synkroniserad!"
 
 #: imap/imap.c:91
-#, fuzzy, c-format
+#, c-format
 msgid "Closing connection to %s..."
-msgstr "Stänger förbindelse till IMAP-server..."
+msgstr "Stänger förbindelse till %s..."
 
-#: imap/imap.c:295
+#: imap/imap.c:294
 #, c-format
 msgid "Reopening mailbox... %s"
 msgstr "Öppnar brevlåda en gång till... %s"
 
-#: imap/imap.c:500
+#: imap/imap.c:497
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr ""
 "Den här versionen av IMAP är uråldrig. Mutt fungerar inte tillsammans med "
 "den."
 
-#: imap/imap.c:697
+#: imap/imap.c:701
 #, c-format
 msgid "Selecting %s..."
 msgstr "Väljer %s..."
 
 #. STATUS not supported
-#: imap/imap.c:864
+#: imap/imap.c:868
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Kunde inte skriva till brevlådor i den här IMAP-servern"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:873 imap/message.c:555 muttlib.c:1126
+#: imap/imap.c:877 imap/message.c:547 muttlib.c:1126
 #, c-format
 msgid "Create %s?"
 msgstr "Skapa %s?"
 
-#: imap/imap.c:907
+#: imap/imap.c:911
 msgid "Closing connection to IMAP server..."
 msgstr "Stänger förbindelse till IMAP-server..."
 
-#: imap/imap.c:1070
+#: imap/imap.c:1074
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Märker %d meddelanden som slängda..."
 
-#: imap/imap.c:1089
+#: imap/imap.c:1093
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Sparar statusflagga för meddelanden... [%d/%d]"
 
-#: imap/imap.c:1145
+#: imap/imap.c:1149
 msgid "Expunging messages from server..."
 msgstr "Tar bort meddelanden från server..."
 
-#: imap/imap.c:1174
+#: imap/imap.c:1178
 msgid "Closing mailbox..."
 msgstr "Stänger brevlåda..."
 
-#: imap/imap.c:1443
+#: imap/imap.c:1447
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Prenumerera på %s..."
 
-#: imap/imap.c:1445
+#: imap/imap.c:1449
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Avslutar prenumeration på %s..."
@@ -1177,138 +1217,135 @@ msgid "Failed to find enough entropy on your system"
 msgstr "Kunde inte hitta tillräckligt bra slumptal"
 
 #: imap/imap_ssl.c:122
-#, fuzzy, c-format
+#, c-format
 msgid "Filling entropy pool: %s...\n"
-msgstr "Fyller på i slumptalsreserven"
+msgstr "Fyller på i slumptalsreserven: %s...\n"
 
 #: imap/imap_ssl.c:130
 #, c-format
 msgid "%s has insecure permissions!"
-msgstr ""
+msgstr "Rättigheterna för %s är inte säkra!"
 
 #: imap/imap_ssl.c:156
 msgid "SSL disabled due the lack of entropy"
 msgstr "SSL avstängd på grund av brist på bra slumptal"
 
-#: imap/imap_ssl.c:236
+#: imap/imap_ssl.c:237
 msgid "Unable to get certificate from peer"
 msgstr "Kan inte hämta certifikat från 'peer'"
 
-#: imap/imap_ssl.c:247
+#: imap/imap_ssl.c:248
 #, c-format
 msgid "SSL connection using %s"
 msgstr "Ansluter (SSL) med hjälp av %s"
 
-#: imap/imap_ssl.c:276
+#: imap/imap_ssl.c:277
 msgid "Unknown"
 msgstr "Okänd"
 
-#: imap/imap_ssl.c:301
+#: imap/imap_ssl.c:302
 msgid "[unable to calculate]"
 msgstr "[kan inte beräkna]"
 
-#: imap/imap_ssl.c:319
-#, fuzzy
+#: imap/imap_ssl.c:320
 msgid "[invalid date]"
-msgstr "%s: ogiltigt värde"
+msgstr "[ogiltigt datum]"
 
-#: imap/imap_ssl.c:394
+#: imap/imap_ssl.c:395
 msgid "Server certificate is not yet valid"
-msgstr ""
+msgstr "Certifikatet är inte giltigt än"
 
-#: imap/imap_ssl.c:401
-#, fuzzy
+#: imap/imap_ssl.c:402
 msgid "Server certificate has expired"
-msgstr "Certifikated utfärdat av:"
+msgstr "Certifikatet är inte längre giltigt"
 
-#: imap/imap_ssl.c:474
+#: imap/imap_ssl.c:475
 msgid "This certificate belongs to:"
 msgstr "Certifikatet tillhör:"
 
-#: imap/imap_ssl.c:484
+#: imap/imap_ssl.c:485
 msgid "This certificate was issued by:"
-msgstr "Certifikated utfärdat av:"
-
-#: imap/imap_ssl.c:494
-#, fuzzy
-msgid "This certificate is valid"
-msgstr "Certifikated utfärdat av:"
+msgstr "Certifikatet utfärdat av:"
 
 #: imap/imap_ssl.c:495
+msgid "This certificate is valid"
+msgstr "Certifikatet är giltigt"
+
+#: imap/imap_ssl.c:496
 #, c-format
 msgid "   from %s"
-msgstr ""
+msgstr "   från %s"
 
-#: imap/imap_ssl.c:497
+#: imap/imap_ssl.c:498
 #, c-format
 msgid "     to %s"
-msgstr ""
+msgstr "     till %s"
 
-#: imap/imap_ssl.c:503
+#: imap/imap_ssl.c:504
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "Fingeravtryck: %s"
 
-#: imap/imap_ssl.c:505
+#: imap/imap_ssl.c:506
 msgid "SSL Certificate check"
 msgstr "Kontroll av SSL-certifikat"
 
-#: imap/imap_ssl.c:508
+#: imap/imap_ssl.c:509
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(f)örkasta, (g)odkänn den här gången, godkänn (v)arje gång"
 
-#: imap/imap_ssl.c:509
+#: imap/imap_ssl.c:510
 msgid "roa"
 msgstr "fgv"
 
-#: imap/imap_ssl.c:513
+#: imap/imap_ssl.c:514
 msgid "(r)eject, accept (o)nce"
 msgstr "(f)örkasta, (g)odkänn den här gången"
 
-#: imap/imap_ssl.c:514
+#: imap/imap_ssl.c:515
 msgid "ro"
 msgstr "fg"
 
-#: imap/imap_ssl.c:518 pgpkey.c:442
+#: imap/imap_ssl.c:519 pgpkey.c:442
 msgid "Exit  "
 msgstr "Avsluta "
 
-#: imap/imap_ssl.c:543
+#: imap/imap_ssl.c:544
 msgid "Warning: Couldn't save certificate"
 msgstr "Varning: kunde inte spara certifikat"
 
-#: imap/imap_ssl.c:545
+#: imap/imap_ssl.c:546
 msgid "Certificate saved"
 msgstr "Certifikat sparat"
 
 #. Unable to fetch headers for lower versions
-#: imap/message.c:71
+#: imap/message.c:72
 msgid "Unable to fetch headers from this IMAP server version."
 msgstr "Kunde inte hämta brevhuvuden från den versionen av IMAP-servern."
 
-#: imap/message.c:89
+#: imap/message.c:90
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Hämtar brevhuvuden för meddelanden... [%d/%d]"
 
-#: imap/message.c:229
+#: imap/message.c:222
 msgid "Fetching message..."
 msgstr "Hämtar meddelande..."
 
-#: imap/message.c:266
+#: imap/message.c:259
 msgid "The message index is incorrect. Try reopening the mailbox."
-msgstr ""
+msgstr "Brevets index är fel. Försök att öppna brevlådan igen."
 
-#: imap/message.c:447
+#: imap/message.c:439
 msgid "Uploading message ..."
 msgstr "Skickar meddelande ..."
 
-#: imap/message.c:533
+#: imap/message.c:525
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Kopierar %d meddelanden till %s..."
 
-#: imap/message.c:537
+#: imap/message.c:529
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Kopierar meddelande %d till %s...<"
@@ -2198,14 +2235,12 @@ msgid "Out of memory!"
 msgstr "Slut på minne!"
 
 #: main.c:40
-#, fuzzy
 msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please use the flea(1) utility.\n"
 msgstr ""
-"För att kontakta utvecklarna, var vänlig skicka ett brev till "
-"<mutt-dev@mutt.org>.\n"
-"För att rapportera ett fel, var vänlig använd programmet 'muttbug'.\n"
+"För att kontakta utvecklarna, var vänlig skicka ett brev till <mutt-dev@mutt.org>.\n"
+"För att rapportera ett fel, var vänlig använd programmet flea(1).\n"
 
 #: main.c:44
 msgid ""
@@ -2220,7 +2255,6 @@ msgstr ""
 "under vissa villkor; kör `mutt -vv' för detaljer.\n"
 
 #: main.c:50
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
@@ -2253,6 +2287,7 @@ msgstr ""
 "Upphovsrätt (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
 "Upphovsrätt (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
 "Upphovsrätt (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Upphovsrätt (C) 2000      Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "Många ej nämnda personer har bidragit med kod, fixar och förslag.\n"
 "\n"
@@ -2271,8 +2306,7 @@ msgstr ""
 "    General Public License för ytterligare information.\n"
 "    Du bör ha fått en kopia av GNU General Public License\n"
 "    tillsammans med detta program. Om inte, skriv till Free Software \n"
-"    Foundation,Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, "
-"USA.\n"
+"    Foundation,Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.\n"
 
 #: main.c:78
 msgid ""
@@ -2379,47 +2413,47 @@ msgstr ""
 "\n"
 "Inkompilerade val:"
 
-#: main.c:412
+#: main.c:413
 msgid "Error initializing terminal."
 msgstr "Fel vid initiering av terminalen."
 
-#: main.c:511
+#: main.c:512
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Avlusningsnivån är %d.\n"
 
-#: main.c:513
+#: main.c:514
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG var inte valt vid kompilering.  Ignoreras.\n"
 
-#: main.c:632
+#: main.c:633
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s finns inte. Vill du skapa den?"
 
-#: main.c:636
+#: main.c:637
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Kan inte skapa %s: %s."
 
-#: main.c:675
+#: main.c:676
 msgid "No recipients specified.\n"
 msgstr "Inga mottagare angivna.\n"
 
-#: main.c:748
+#: main.c:749
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: kan inte bifoga fil.\n"
 
-#: main.c:768
+#: main.c:769
 msgid "No mailbox with new mail."
 msgstr "Ingen brevlåda har nya brev."
 
-#: main.c:777
+#: main.c:778
 msgid "No incoming mailboxes defined."
 msgstr "Inga brevlådor för inkommande post är definierade."
 
-#: main.c:808
+#: main.c:809
 msgid "Mailbox is empty."
 msgstr "Brevlådan är tom."
 
@@ -2578,25 +2612,24 @@ msgstr "%s är inte en brevlåda!"
 msgid "Append messages to %s?"
 msgstr "Lägg till meddelanden till %s?"
 
-#: mutt_socket.c:247
-#, fuzzy, c-format
+#: mutt_socket.c:251
+#, c-format
 msgid "Looking up %s..."
-msgstr "Kopierar till %s..."
+msgstr "Slår upp %s..."
 
-#: mutt_socket.c:254
-#, fuzzy, c-format
+#: mutt_socket.c:258
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "Kunde inte hitta adress till servern %s."
+msgstr "Kunde inte hitta servern \"%s\""
 
-#: mutt_socket.c:260
+#: mutt_socket.c:264
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Ansluter till %s..."
 
-#: mutt_socket.c:280
-#, fuzzy
+#: mutt_socket.c:284
 msgid "Preconnect command failed."
-msgstr "kommandot 'preconnect' misslyckades"
+msgstr "Kommandot 'preconnect' misslyckades."
 
 #: mx.c:114
 #, c-format
@@ -2651,55 +2684,54 @@ msgstr "Kunde inte synkronisera brevlådan %s!"
 msgid "Move read messages to %s?"
 msgstr "Flytta lästa meddelanden till %s?"
 
-#: mx.c:818 mx.c:1070
+#: mx.c:815 mx.c:1051
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Rensa %d slängt meddelande?"
 
-#: mx.c:818 mx.c:1070
+#: mx.c:815 mx.c:1051
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Rensa %d slängda meddelanden?"
 
-#: mx.c:842
+#: mx.c:836
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Flyttar lästa meddelanden till %s..."
 
-#: mx.c:900 mx.c:1061
+#: mx.c:887 mx.c:1042
 msgid "Mailbox is unchanged."
 msgstr "Brevlådan är oförändrad."
 
-#: mx.c:936
+#: mx.c:917
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d behölls, %d flyttades, %d slängdes."
 
-#: mx.c:939 mx.c:1103
+#: mx.c:920 mx.c:1084
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d behölls, %d slängdes."
 
-#: mx.c:1046
+#: mx.c:1027
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Tryck '%s' för att toggla skrivning"
 
-#: mx.c:1048
+#: mx.c:1029
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Använd 'toggle-write' för att ge åtkomst för skrivning!"
 
-#: mx.c:1050
+#: mx.c:1031
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Brevlådan är märkt som ej skrivbar. %s"
 
-#: mx.c:1100
-#, fuzzy
+#: mx.c:1081
 msgid "Mailbox checkpointed."
-msgstr "Brevlådan har tagits bort."
+msgstr "Brevlådan är synkroniserad."
 
-#: mx.c:1388
+#: mx.c:1369
 msgid "Can't write message"
 msgstr "Kan inte skriva meddelandet"
 
@@ -2841,9 +2873,9 @@ msgid "PGP passphrase forgotten."
 msgstr "Har glömt lösenfras för PGP."
 
 #: pgp.c:141
-#, fuzzy, c-format
+#, c-format
 msgid "[-- PGP output follows (current time: %c) --]\n"
-msgstr "[-- PGP utdata (klockslag: "
+msgstr "[-- Utdata från PGP följer (aktuell tid: %c) --]\n"
 
 #: pgp.c:245
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
@@ -3107,32 +3139,21 @@ msgid "Looking for keys matching \"%s\"..."
 msgstr "Letar efter nycklar som passar \"%s\"..."
 
 #: pop.c:46
-#, fuzzy
 msgid "POP Username: "
-msgstr "Användarnamn för IMAP: "
-
-#: pop.c:61
-#, c-format
-msgid "Password for %s@%s: "
-msgstr "Lösenord för %s@%s: "
-
-#: pop.c:72
-msgid "Logging in..."
-msgstr "Ansluter..."
+msgstr "Användarnamn för POP: "
 
 #: pop.c:109
-#, fuzzy, c-format
+#, c-format
 msgid "Login failed: %s"
-msgstr "Anslutning misslyckades."
+msgstr "Anslutning misslyckades: %s"
 
 #: pop.c:132
 msgid "POP host is not defined."
 msgstr "Server för POP är inte angiven."
 
 #: pop.c:165
-#, fuzzy
 msgid "Checking for new messages..."
-msgstr "Förbereder vidarebordrat meddelande..."
+msgstr "Söker efter nya brev..."
 
 #: pop.c:184
 msgid "No new mail in POP mailbox."
@@ -3568,88 +3589,3 @@ msgstr "Första meddelandet är inte synligt med begränsad vy"
 msgid "Parent message is not available."
 msgstr "Första meddelandet är inte tillgängligt."
 
-#~ msgid "Authenticating (CRAM-MD5)..."
-#~ msgstr "Verifierar (CRAM-MD5)..."
-
-#~ msgid "Authenticating (anonymous)..."
-#~ msgstr "Verifierar (anonym)..."
-
-#~ msgid "IMAP Username: "
-#~ msgstr "Användarnamn för IMAP: "
-
-#~ msgid "Anonymous authentication not supported."
-#~ msgstr "Anonym verifiering stöds inte."
-
-#~ msgid "CRAM key for %s@%s: "
-#~ msgstr "Ange CRAM-nyckel för %s@%s: "
-
-#~ msgid "CRAM-MD5 authentication failed."
-#~ msgstr "Verifiering med CRAM-MD5 misslyckades."
-
-#~ msgid "Skipping CRAM-MD5 authentication."
-#~ msgstr "Hoppar över verifiering med CRAM-MD5."
-
-#~ msgid "Login failed."
-#~ msgstr "Anslutning misslyckades."
-
-#~ msgid "[-- Error: unexpected end of file! --]\n"
-#~ msgstr "[-- Fel: oväntat filslut! --]\n"
-
-#~ msgid "Sending APPEND command ..."
-#~ msgstr "Skickar kommandot APPEND ..."
-
-#~ msgid "%d kept."
-#~ msgstr "%d behölls."
-
-#~ msgid "POP Password: "
-#~ msgstr "Lösenord för POP: "
-
-#~ msgid "No POP username is defined."
-#~ msgstr "Ingen användarnamn för POP är angivet."
-
-#~ msgid "Could not find address for host %s."
-#~ msgstr "Kunde inte hitta adress till servern %s."
-
-#~ msgid "Connecting to %s"
-#~ msgstr "Ansluter till %s"
-
-#~ msgid "Attachment saved"
-#~ msgstr "Bilaga sparad"
-
-#~ msgid "Can't open %s: %s."
-#~ msgstr "Kan inte öppna %s: %s."
-
-#~ msgid "Error while recoding %s. Leave it unchanged."
-#~ msgstr "Ett fel uppstod när %s kodades om. Lämna den oförändrad."
-
-#~ msgid "Error while recoding %s. See %s for recovering your data."
-#~ msgstr ""
-#~ "Ett fel uppstod när %s kodades om. Se %s för att återskapa dina data."
-
-#~ msgid "Can't change character set for non-text attachments!"
-#~ msgstr ""
-#~ "Kan inte ändra teckenuppsättning för bilagor som inte är endast text!"
-
-#~ msgid "Enter character set: "
-#~ msgstr "Ange teckenuppsättning: "
-
-#~ msgid "Recoding successful."
-#~ msgstr "Omkodning framgångsrik."
-
-#~ msgid "change an attachment's character set"
-#~ msgstr "ändra teckenuppsättning för en bilaga"
-
-#~ msgid "recode this attachment to/from the local charset"
-#~ msgstr "koda om den här bilagan till/från den lokala teckenuppsättningen"
-
-#~ msgid "Compose"
-#~ msgstr "Komponera"
-
-#~ msgid "We can't currently handle utf-8 at this point."
-#~ msgstr "Det finns inget stöd för utf-8 just nu."
-
-#~ msgid "UTF-8 encoding attachments has not yet been implemented."
-#~ msgstr "Bilagor kodade med UTF-8 stöds inte än."
-
-#~ msgid "We currently can't encode to utf-8."
-#~ msgstr "Vi kan inte koda om till utf-8 än."
