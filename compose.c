@@ -787,7 +787,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
         CHECK_COUNT;
         if (!mutt_is_text_type (CURRENT->type, CURRENT->subtype))
         {
-	  mutt_error (_("Recoding only affetcs text attachments."));
+	  mutt_error (_("Recoding only affects text attachments."));
 	  break;
 	}
 
