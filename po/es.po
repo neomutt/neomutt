@@ -1,8 +1,11 @@
+# Spanish translation of mutt
+# Copyright (C) 1999-2001 Boris Wesslowski <Boris@Wesslowski.com>
+
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt\n"
+"Project-Id-Version: mutt 1.4\n"
 "POT-Creation-Date: 2001-06-07 22:11+0200\n"
-"PO-Revision-Date: 2000-09-07 19:18+02:00\n"
+"PO-Revision-Date: 2001-06-08 19:44+02:00\n"
 "Last-Translator: Boris Wesslowski <Boris@Wesslowski.com>\n"
 "Language-Team: -\n"
 "MIME-Version: 1.0\n"
@@ -358,18 +361,16 @@ msgid "Messages bounced."
 msgstr "Mensajes rebotados."
 
 #: commands.c:329 commands.c:368 commands.c:385
-#, fuzzy
 msgid "Can't create filter process"
-msgstr "No se pudo crear filtro"
+msgstr "No se pudo crear el proceso del filtro"
 
 #: commands.c:414
 msgid "Pipe to command: "
 msgstr "Redirigir el mensaje al comando:"
 
 #: commands.c:430
-#, fuzzy
 msgid "No printing command has been defined."
-msgstr "Ningún buzón de entrada fue definido."
+msgstr "No ha sido definida la órden de impresión."
 
 #: commands.c:435
 msgid "Print message?"
@@ -388,14 +389,12 @@ msgid "Messages printed"
 msgstr "Mensajes impresos"
 
 #: commands.c:445
-#, fuzzy
 msgid "Message could not be printed"
-msgstr "Mensaje impreso"
+msgstr "El mensaje no pudo ser imprimido"
 
 #: commands.c:446
-#, fuzzy
 msgid "Messages could not be printed"
-msgstr "Mensajes impresos"
+msgstr "Los mensajes no pudieron ser imprimidos"
 
 #: commands.c:455
 msgid ""
@@ -458,7 +457,7 @@ msgstr "Copiando a %s..."
 #: commands.c:836
 #, c-format
 msgid "Convert to %s upon sending?"
-msgstr ""
+msgstr "¿Convertir a %s al mandar?"
 
 #: commands.c:844
 #, c-format
@@ -466,17 +465,17 @@ msgid "Content-Type changed to %s."
 msgstr "Content-Type cambiado a %s."
 
 #: commands.c:846
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; %s."
-msgstr "El mapa de caracteres cambiado a %s."
+msgstr "El mapa de caracteres fue cambiado a %s; %s."
 
 #: commands.c:848
 msgid "not converting"
-msgstr ""
+msgstr "dejando sin convertir"
 
 #: commands.c:848
 msgid "converting"
-msgstr ""
+msgstr "convirtiendo"
 
 #: compose.c:40
 msgid "There are no attachments."
@@ -523,15 +522,12 @@ msgid "<default>"
 msgstr "<por defecto>"
 
 #: compose.c:132
-#, fuzzy
 msgid "(e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
-msgstr ""
-"co(d)ificar, f(i)rmar (c)omo, amb(o)s, escoger algorithmo (m)ic, ca(n)celar "
+msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s o ca(n)celar? "
 
 #: compose.c:133
-#, fuzzy
 msgid "esabf"
-msgstr "dicomn"
+msgstr "dicon"
 
 #: compose.c:147
 msgid "Sign as: "
@@ -690,9 +686,8 @@ msgid "Function not permitted in attach-message mode."
 msgstr "Función no permitida en el modo de adjuntar mensaje."
 
 #: curs_main.c:63
-#, fuzzy
 msgid "No visible messages."
-msgstr "No hay mensajes nuevos"
+msgstr "No hay mensajes visibles."
 
 #: curs_main.c:238
 msgid "Cannot toggle write on a readonly mailbox!"
@@ -739,9 +734,8 @@ msgid "New mail in this mailbox."
 msgstr "Correo nuevo en este buzón."
 
 #: curs_main.c:477
-#, fuzzy
 msgid "Mailbox was externally modified."
-msgstr "Buzón fue modificado.  Los indicadores pueden estar mal."
+msgstr "Buzón fue modificado externamente."
 
 #: curs_main.c:589
 msgid "No tagged messages."
@@ -863,9 +857,8 @@ msgid "Thread contains unread messages."
 msgstr "El hilo contiene mensajes sin leer."
 
 #: curs_main.c:1667
-#, fuzzy
 msgid "Can't edit message on POP server."
-msgstr "¿Suprimir mensajes del servidor?"
+msgstr "No se pueden editar mensajes en el servidor POP."
 
 #.
 #. * SLcurses_waddnstr() can't take a "const char *", so this is only
@@ -1013,9 +1006,9 @@ msgid "Invoking autoview command: %s"
 msgstr "Invocando comando de automuestra: %s"
 
 #: handler.c:1520
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Can't run %s. --]\n"
-msgstr "[-- el %s --]\n"
+msgstr "[-- No se puede ejecutar %s. --]\n"
 
 #: handler.c:1535 handler.c:1553
 #, c-format
@@ -1136,7 +1129,7 @@ msgstr "Ayuda para %s"
 
 #: hook.c:243
 msgid "unhook: Can't do unhook * from within a hook."
-msgstr ""
+msgstr "unhook: No se puede desenganchar * desde dentro de un gancho."
 
 #: hook.c:255
 #, c-format
@@ -1146,12 +1139,11 @@ msgstr "unhook: tipo de gancho desconocido: %s"
 #: hook.c:261
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s."
-msgstr ""
+msgstr "unhook: No se puede suprimir un %s desde dentro de un %s."
 
 #: imap/auth.c:104
-#, fuzzy
 msgid "No authenticators available"
-msgstr "Verificación de autentidad SASL falló."
+msgstr "Falta un método de verificación de autentidad"
 
 #: imap/auth_anon.c:39
 msgid "Authenticating (anonymous)..."
@@ -1211,18 +1203,16 @@ msgid "Create mailbox: "
 msgstr "Crear buzón: "
 
 #: imap/browse.c:276
-#, fuzzy
 msgid "Mailbox must have a name."
-msgstr "Buzón sin cambios."
+msgstr "El buzón tiene que tener un nombre."
 
 #: imap/browse.c:284
 msgid "Mailbox created."
 msgstr "Buzón creado."
 
 #: imap/command.c:289
-#, fuzzy
 msgid "Mailbox closed"
-msgstr "El buzón fue suprimido."
+msgstr "Buzón cerrado"
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
@@ -1242,11 +1232,11 @@ msgstr "Este servidor IMAP es ancestral. Mutt no puede trabajar con el."
 
 #: imap/imap.c:380
 msgid "Secure connection with TLS?"
-msgstr ""
+msgstr "¿Asegurar conexión con TLS?"
 
 #: imap/imap.c:389
 msgid "Could not negotiate TLS connection"
-msgstr ""
+msgstr "No se pudo negociar una conexión TLS"
 
 #: imap/imap.c:533
 #, c-format
@@ -1283,9 +1273,8 @@ msgid "Expunging messages from server..."
 msgstr "Eliminando mensajes del servidor..."
 
 #: imap/imap.c:1043
-#, fuzzy
 msgid "CLOSE failed"
-msgstr "El login falló."
+msgstr "CLOSE falló"
 
 #: imap/imap.c:1299
 #, c-format
@@ -1353,9 +1342,9 @@ msgid "%s: unknown sorting method"
 msgstr "%s: órden desconocido"
 
 #: init.c:748
-#, fuzzy, c-format
+#, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
-msgstr "mutt_restore_default: error en expresión regular: %s\n"
+msgstr "mutt_restore_default(%s): error en expresión regular: %s\n"
 
 #: init.c:809
 #, c-format
@@ -1503,9 +1492,8 @@ msgid "view attachment as text"
 msgstr "mostrar archivos adjuntos como texto"
 
 #: keymap_alldefs.h:8
-#, fuzzy
 msgid "Toggle display of subparts"
-msgstr "cambiar muestra del texto citado"
+msgstr "Cambiar muestra de subpartes"
 
 #: keymap_alldefs.h:9
 msgid "move to the bottom of the page"
@@ -1793,16 +1781,15 @@ msgstr "transponer el caracter bajo el cursor con el anterior"
 
 #: keymap_alldefs.h:81
 msgid "capitalize the word"
-msgstr ""
+msgstr "capitalizar la palabra"
 
 #: keymap_alldefs.h:82
-#, fuzzy
 msgid "convert the word to lower case"
-msgstr "ir al final de la página"
+msgstr "convertir la palabra a minúsculas"
 
 #: keymap_alldefs.h:83
 msgid "convert the word to upper case"
-msgstr ""
+msgstr "convertir la palabra a mayúsculas"
 
 #: keymap_alldefs.h:84
 msgid "enter a muttrc command"
@@ -1889,9 +1876,8 @@ msgid "delete messages matching a pattern"
 msgstr "suprimir mensajes que coincidan con un patrón"
 
 #: keymap_alldefs.h:105
-#, fuzzy
 msgid "force retrieval of mail from IMAP server"
-msgstr "obtener correo de un servidor POP"
+msgstr "forzar el obtener correo de un servidor IMAP"
 
 #: keymap_alldefs.h:106
 msgid "retrieve mail from POP server"
@@ -2207,7 +2193,7 @@ msgstr "crear copia descifrada"
 
 #: keymap_alldefs.h:184
 msgid "check for classic pgp"
-msgstr ""
+msgstr "verificar presencia de un pgp clásico"
 
 #: keymap_alldefs.h:185
 msgid "Accept the chain constructed"
@@ -2251,20 +2237,18 @@ msgstr ""
 "Para reportar un fallo use la utilería flea(1) por favor.\n"
 
 #: main.c:45
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2001 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2000 Michael R. Elkins y otros.\n"
+"Copyright (C) 1996-2001 Michael R. Elkins y otros.\n"
 "Mutt viene con ABSOLUTAMENTE NINGUNA GARANTÍA; para obtener detalles\n"
 "teclee `mutt -vv'. Mutt es software libre, puede redistribuirlo\n"
 "bajo ciertas condiciones; teclee `mutt -vv' para más detalles.\n"
 
 #: main.c:51
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
@@ -2291,16 +2275,18 @@ msgid ""
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 msgstr ""
-"Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
-"Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2000 Thomas Roessler <roessler@guug.de>\n"
-"Copyright (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
-"Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-"Copyright (C) 2000      Edmund Grimley Evans <edmundo@rano.org>\n"
+"Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Copyright (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
+"Copyright (C) 1997-2001 Thomas Roessler <roessler@guug.de>\n"
+"Copyright (C) 1998-2001 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2001 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 2000-2001 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "Muchos otros no mencionados aqui contribuyeron mucho código,\n"
 "mejoras y sugerencias.\n"
+"\n"
+"La traducción al español fue hecha por Boris Wesslowski <Boris@Wesslowski.com>.\n"
 "\n"
 "    This program is free software; you can redistribute it and/or modify\n"
 "    it under the terms of the GNU General Public License as published by\n"
@@ -2571,9 +2557,8 @@ msgid "oac"
 msgstr "sac"
 
 #: muttlib.c:1136
-#, fuzzy
 msgid "Can't save message to POP mailbox."
-msgstr "Guardar mensaje en el buzón"
+msgstr "No se puede guardar un mensaje en un buzón POP."
 
 #: muttlib.c:1145
 #, c-format
@@ -2586,9 +2571,9 @@ msgid "Append messages to %s?"
 msgstr "¿Agregar mensajes a %s?"
 
 #: mutt_socket.c:84 mutt_socket.c:140
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s closed"
-msgstr "Conectando a %s..."
+msgstr "Conexión a %s cerrada"
 
 #: mutt_socket.c:250
 msgid "SSL is unavailable."
@@ -2599,9 +2584,9 @@ msgid "Preconnect command failed."
 msgstr "La órden anterior a la conexión falló."
 
 #: mutt_socket.c:352 mutt_socket.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Cerrando conexión al servidor IMAP..."
+msgstr "Error al hablar con %s (%s)"
 
 #: mutt_socket.c:400 mutt_socket.c:441
 #, c-format
@@ -2619,9 +2604,9 @@ msgid "Connecting to %s..."
 msgstr "Conectando a %s..."
 
 #: mutt_socket.c:473
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "No se pudo abrir %s"
+msgstr "No se pudo conectar a %s (%s)."
 
 #: mutt_ssl.c:172
 msgid "Failed to find enough entropy on your system"
@@ -2646,9 +2631,9 @@ msgid "Unable to get certificate from peer"
 msgstr "Imposible recoger el certificado de la contraparte"
 
 #: mutt_ssl.c:343
-#, fuzzy, c-format
+#, c-format
 msgid "SSL connection using %s (%s)"
-msgstr "Conectando por SSL con %s"
+msgstr "Conectando por SSL con %s (%s)"
 
 #: mutt_ssl.c:371
 msgid "Unknown"
@@ -2904,9 +2889,9 @@ msgstr "Mes inválido: %s"
 
 #. getDate has its own error message, don't overwrite it here
 #: pattern.c:527
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid relative date: %s"
-msgstr "Mes inválido: %s"
+msgstr "Fecha relativa incorrecta: %s"
 
 #: pattern.c:541
 msgid "error in expression"
@@ -3172,9 +3157,8 @@ msgid "Fetching PGP key..."
 msgstr "Recogiendo clave PGP..."
 
 #: pgpkey.c:486
-#, fuzzy
 msgid "All matching keys are marked expired/revoked."
-msgstr "Esta clave no se puede usar: expirada/desactivada/revocada."
+msgstr "Todas las llaves que coinciden están marcadas expiradas/revocadas."
 
 #. __STRCAT_CHECKED__
 #: pgpkey.c:512
@@ -3214,9 +3198,8 @@ msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Esta clave no se puede usar: expirada/desactivada/revocada."
 
 #: pgpkey.c:608
-#, fuzzy
 msgid "This ID is expired/disabled/revoked"
-msgstr "Esta clave no se puede usar: expirada/desactivada/revocada."
+msgstr "Esta clave está expirada/desactivada/revocada"
 
 #: pgpkey.c:612
 msgid "This ID's trust level is undefined."
@@ -3231,9 +3214,9 @@ msgid "This ID is only marginally trusted."
 msgstr "Esta ID es marginalmente de confianza."
 
 #: pgpkey.c:622
-#, fuzzy, c-format
+#, c-format
 msgid "%s Do you really want to use the key?"
-msgstr "%s ¿Realmente quiere utilizarla?"
+msgstr "%s ¿Realmente quiere utilizar la llave?"
 
 #: pgpkey.c:720
 msgid "Please enter the key ID: "
@@ -3254,29 +3237,24 @@ msgid "Looking for keys matching \"%s\"..."
 msgstr "Buscando claves que conincidan con \"%s\"..."
 
 #: pop.c:89 pop_lib.c:159
-#, fuzzy
 msgid "Command TOP is not supported by server."
-msgstr "Marcar no está soportado."
+msgstr "La órden TOP no es soportada por el servidor."
 
 #: pop.c:116
-#, fuzzy
 msgid "Can't write header to temporary file!"
-msgstr "No se pudo crear archivo temporal"
+msgstr "¡No se pudo escribir la cabecera al archivo temporal!"
 
 #: pop.c:197 pop_lib.c:161
-#, fuzzy
 msgid "Command UIDL is not supported by server."
-msgstr "Marcar no está soportado."
+msgstr "La órden UIDL no es soportada por el servidor."
 
 #: pop.c:270
-#, fuzzy
 msgid "Fetching list of messages..."
-msgstr "Consiguiendo mensaje..."
+msgstr "Consiguiendo la lista de mensajes..."
 
 #: pop.c:407
-#, fuzzy
 msgid "Can't write message to temporary file!"
-msgstr "No se pudo crear archivo temporal"
+msgstr "¡No se pudo escribir el mensaje al archivo temporal!"
 
 #: pop.c:510 pop.c:564
 msgid "Checking for new messages..."
@@ -3313,49 +3291,41 @@ msgid "Server closed connection!"
 msgstr "¡El servidor cerró la conneción!"
 
 #: pop_auth.c:190
-#, fuzzy
 msgid "Authenticating (APOP)..."
-msgstr "Verificando autentidad (GSSAPI)..."
+msgstr "Verificando autentidad (APOP)..."
 
 #: pop_auth.c:214
-#, fuzzy
 msgid "APOP authentication failed."
-msgstr "Verificación de autentidad GSSAPI falló."
+msgstr "Verificación de autentidad APOP falló."
 
 #: pop_auth.c:249
-#, fuzzy
 msgid "Command USER is not supported by server."
-msgstr "Marcar no está soportado."
+msgstr "La órden USER no es soportada por el servidor."
 
 #: pop_auth.c:356
-#, fuzzy
 msgid "Authentication method is unknown."
-msgstr "Verificación de autentidad SASL falló."
+msgstr "Método de verificación de autentidad desconocido."
 
 #: pop_lib.c:157
-#, fuzzy
 msgid "Unable to leave messages on server."
-msgstr "¿Suprimir mensajes del servidor?"
+msgstr "No es posible dejar los mensajes en el servidor."
 
 #: pop_lib.c:204
-#, fuzzy, c-format
+#, c-format
 msgid "Error connecting to server: %s"
-msgstr "Cerrando conexión al servidor IMAP..."
+msgstr "Error al conectar al servidor: %s"
 
 #: pop_lib.c:288
-#, fuzzy
 msgid "Closing connection to POP server..."
-msgstr "Cerrando conexión al servidor IMAP..."
+msgstr "Cerrando conexión al servidor POP..."
 
 #: pop_lib.c:453
-#, fuzzy
 msgid "Verifying message indexes..."
-msgstr "Escribiendo mensaje en %s ..."
+msgstr "Verificando índice de mensajes..."
 
 #: pop_lib.c:477
-#, fuzzy
 msgid "Connection lost. Reconnect to POP server?"
-msgstr "Cerrando conexión al servidor IMAP..."
+msgstr "Conexión perdida. ¿Reconectar al servidor POP?"
 
 #: postpone.c:165
 msgid "Postponed Messages"
@@ -3450,14 +3420,12 @@ msgid "Attachments"
 msgstr "Archivos adjuntos"
 
 #: recvattach.c:922
-#, fuzzy
 msgid "There are no subparts to show!"
-msgstr "No hay archivos adjuntos."
+msgstr "¡No hay subpartes para mostrar!"
 
 #: recvattach.c:983
-#, fuzzy
 msgid "Can't delete attachment from POP server."
-msgstr "obtener correo de un servidor POP"
+msgstr "No se puede suprimir un archivo adjunto del servidor POP."
 
 #: recvattach.c:994
 msgid "Deletion of attachments from PGP messages is unsupported."
@@ -3487,9 +3455,8 @@ msgid "Can't open temporary file %s."
 msgstr "No se pudo abrir el archivo temporal %s"
 
 #: recvcmd.c:405
-#, fuzzy
 msgid "Forward as attachments?"
-msgstr "mostrar archivos adjuntos tipo MIME"
+msgstr "¿Adelatar como archivos adjuntos?"
 
 #: recvcmd.c:419
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
@@ -3650,9 +3617,8 @@ msgid "Could not include all requested messages!"
 msgstr "¡No se pudieron incluir todos los mensajes pedidos!"
 
 #: send.c:747
-#, fuzzy
 msgid "Forward as attachment?"
-msgstr "¿Imprimir archivo adjunto?"
+msgstr "¿Adelatar como archivo adjunto?"
 
 #: send.c:751
 msgid "Preparing forwarded message..."
@@ -3771,57 +3737,3 @@ msgstr "El mensaje anterior no es visible en vista limitada"
 #: thread.c:742
 msgid "Parent message is not available."
 msgstr "El mensaje anterior no está disponible."
-
-#~ msgid "MIC algorithm: "
-#~ msgstr "Algoritmo MIC: "
-
-#~ msgid "This doesn't make sense if you don't want to sign the message."
-#~ msgstr "Esto no tiene caso si no quiere firmar el mensaje."
-
-#~ msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
-#~ msgstr ""
-#~ "Algoritmo MIC desconocido, los válidos son: pgp-md5, pgp-sha1, pgp-rmd160"
-
-#~ msgid ""
-#~ "\n"
-#~ "SHA1 implementation Copyright (C) 1995-1997 Eric A. Young "
-#~ "<eay@cryptsoft.com>\n"
-#~ "\n"
-#~ "    Redistribution and use in source and binary forms, with or without\n"
-#~ "    modification, are permitted under certain conditions.\n"
-#~ "\n"
-#~ "    The SHA1 implementation comes AS IS, and ANY EXPRESS OR IMPLIED\n"
-#~ "    WARRANTIES, including, but not limited to, the implied warranties of\n"
-#~ "    merchantability and fitness for a particular purpose ARE DISCLAIMED.\n"
-#~ "\n"
-#~ "    You should have received a copy of the full distribution terms\n"
-#~ "    along with this program; if not, write to the program's developers.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Implementación SHA1 Copyright (C) 1995-1997 Eric A. Young "
-#~ "<eay@cryptsoft.com>\n"
-#~ "\n"
-#~ "    Redistribución y uso en forma de código fuente y binario con o sin\n"
-#~ "    modificación están permitidos bajo ciertas condiciones.\n"
-#~ "\n"
-#~ "    The SHA1 implementation comes AS IS, and ANY EXPRESS OR IMPLIED\n"
-#~ "    WARRANTIES, including, but not limited to, the implied warranties of\n"
-#~ "    merchantability and fitness for a particular purpose ARE DISCLAIMED.\n"
-#~ "\n"
-#~ "    Debió haber recibido una copia de los términos de distribución\n"
-#~ "    junto con este programa. Si no, escríbale a los desarrolladores.\n"
-
-#~ msgid "POP Username: "
-#~ msgstr "Nombre de usuario POP:"
-
-#~ msgid "Login failed: %s"
-#~ msgstr "El login falló: %s"
-
-#~ msgid "Reading new message (%d bytes)..."
-#~ msgstr "Leyendo mensaje nuevo (%d bytes)..."
-
-#~ msgid "Error reading message!"
-#~ msgstr "¡Error al leer el mensaje!"
-
-#~ msgid "%s [%d message read]"
-#~ msgstr "%s [%d mensajes leídos]"
