@@ -924,6 +924,8 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
   int  flowed_max;
   
   int bytes = a->length;
+
+  int actually_wrap = 0;
   
   char *cont = NULL;
   char *tail = NULL;
@@ -967,6 +969,7 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
       l = mutt_strlen (cont);
       if (quoted + add + col + l > flowed_max)
       {
+	actually_wrap = 1;
 	if ((max = flowed_max - quoted - add - col)
 	    > l)
 	  max = l;
@@ -1017,7 +1020,7 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
 	col++;
       }
       
-      if (!soft)
+      if (!soft || !actually_wrap)
       {
 	state_putc ('\n', s);
 	col = 0;
