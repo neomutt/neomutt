@@ -1271,7 +1271,7 @@ msgstr "[недопустимая дата]"
 
 #: imap/imap_ssl.c:361
 msgid "Server certificate is not yet valid"
-msgstr "Сертификат всё ещё недействителен"
+msgstr "Сертификат все еще недействителен"
 
 #: imap/imap_ssl.c:368
 msgid "Server certificate has expired"
