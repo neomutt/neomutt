@@ -1,3 +1,10 @@
+2003-09-03 17:09:09  Anatoly Vorobey  <mellon@pobox.com>  (roessler)
+
+	* curs_main.c: The commands "read-thread" (^R) and
+	"read-subthread" (Esc-R) do not honor the resolve variable (don't
+	advance cursor after marking the thread/subthread as read),
+	which, to me at least, is a nuisance.
+
 2003-08-11 14:06:08  Brendan Cully  <brendan@kublai.com>  (roessler)
 
 	* imap/imap.c: 1595: My guess is this bug is caused by
