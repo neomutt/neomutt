@@ -1,3 +1,8 @@
+2004-11-19 16:16:51  René Clerc  <rene@clerc.nl>  (roessler)
+
+	* doc/manual.sgml.tail, doc/manual.sgml.head: Document
+	tag-prefix-cond.
+
 2004-11-08 08:43:17  Ralf Wildenhues  <wildenhues@ins.uni-bonn.de>  (roessler)
 
 	* imap/imap_private.h: Having a signed one-bit bitfield is quite
