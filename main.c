@@ -54,7 +54,7 @@ Copyright (C) 1997-2000 Thomas Roessler <roessler@guug.de>\n\
 Copyright (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n\
 Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n\
 Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n\
-Copyright (C) 2000      Edmnud Grimley Evans <edmundo@rano.org>\n\
+Copyright (C) 2000      Edmund Grimley Evans <edmundo@rano.org>\n\
 \n\
 Lots of others not mentioned here contributed lots of code,\n\
 fixes, and suggestions.\n\
