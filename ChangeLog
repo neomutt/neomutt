@@ -1,3 +1,10 @@
+2003-04-08 10:21:01  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* browser.c, enter.c, imap/imap.c, lib.c, mutt_idna.c, mx.c,
+	sendlib.c, smime.c, thread.c: Try to catch a couple of cases
+	in which parameters for malloc calls could overflow.  Thanks to
+	Timo Sirainen for the heads-up.
+
 2003-04-08 10:18:15  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* po/es.po: Mark a translation as fuzzy in order to fix #1522.
