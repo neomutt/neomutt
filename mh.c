@@ -1240,11 +1240,30 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
     strfcpy(buf, ctx->path, sizeof(buf));
     if(stat(buf, &st) == -1)
       return -1;
-    
+
+    /* create .mh_sequences when there isn't one. */
     snprintf (buf, sizeof (buf), "%s/.mh_sequences", ctx->path);
     if (stat (buf, &st_cur) == -1)
-      modified = 1;
-    
+    {
+      if (errno == ENOENT)
+      {
+	char *tmp;
+	FILE *fp = NULL;
+
+	if (mh_mkstemp (ctx, &fp, &tmp) == 0)
+	{
+	  safe_fclose (&fp);
+	  if (safe_rename (tmp, buf) == -1)
+	    unlink (tmp);
+	  safe_free ((void **) &tmp);
+	}
+	
+	if (stat (buf, &st_cur) == -1)
+	  modified = 1;
+      }
+      else
+	modified = 1;
+    }
   }
   else if(ctx->magic == M_MAILDIR)
   {
