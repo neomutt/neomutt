@@ -32,16 +32,16 @@
 #include <sys/stat.h>
 #include <sys/utsname.h>
 
-const char ReachingUs[] = "\
-To contact the developers, please mail to <mutt-dev@mutt.org>.\n";
+const char ReachingUs[] = N_("\
+To contact the developers, please mail to <mutt-dev@mutt.org>.\n");
 
-const char Notice[] = "\
+const char Notice[] = N_("\
 Copyright (C) 1996-8 Michael R. Elkins and others.\n\
 Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n\
 Mutt is free software, and you are welcome to redistribute it\n\
-under certain conditions; type `mutt -vv' for details.\n";
+under certain conditions; type `mutt -vv' for details.\n");
 
-const char Copyright[] = "\
+const char Copyright[] = N_("\
 Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>\n\
 Copyright (C) 1997-8 Thomas Roessler <roessler@guug.de>\n\
 Copyright (C) 1998   Werner Koch <wk@isil.d.shuttle.de>\n\
@@ -60,9 +60,10 @@ Copyright (C) 1998   Ruslan Ermilov <ru@ucb.crimea.ua>\n\
     You should have received a copy of the GNU General Public License\n\
     along with this program; if not, write to the Free Software\n\
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n\
-"
+");
 #ifdef _PGPPATH
-"\n\
+
+const char ShaCopyright[] = N_("\n\
 SHA1 implementation Copyright (C) 1995-7 Eric A. Young <eay@cryptsoft.com>\n\
 \n\
     Redistribution and use in source and binary forms, with or without\n\
@@ -74,9 +75,9 @@ SHA1 implementation Copyright (C) 1995-7 Eric A. Young <eay@cryptsoft.com>\n\
 \n\
     You should have received a copy of the full distribution terms\n\
     along with this program; if not, write to the program's developers.\n\
-"
+");
 #endif
-;
+
 
 void mutt_exit (int code)
 {
@@ -462,6 +463,9 @@ int main (int argc, char **argv)
     default:
       printf ("Mutt %s (%s)\n", MUTT_VERSION, ReleaseDate);
       puts (Copyright);
+#ifdef _PGPPATH
+      puts(ShaCopyright);
+#endif
       puts (ReachingUs);
       exit (0);
   }

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-01 11:31+0200\n"
+"POT-Creation-Date: 1998-10-01 12:10+0200\n"
 "PO-Revision-Date: 1998-10-01 10:20 MET DST\n"
 "Last-Translator: Thomas Roessler <roessler@guug.de>Language-Team: mutt-dev "
 "<mutt-dev@mutt.org>MIME-Version: 1.0\n"
@@ -1650,7 +1650,57 @@ msgstr ""
 msgid "Append messages to %s?"
 msgstr ""
 
-#: main.c:91
+#: main.c:35
+msgid "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
+msgstr ""
+
+#: main.c:38
+msgid ""
+"Copyright (C) 1996-8 Michael R. Elkins and others.\n"
+"Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
+"Mutt is free software, and you are welcome to redistribute it\n"
+"under certain conditions; type `mutt -vv' for details.\n"
+msgstr ""
+
+#: main.c:44
+msgid ""
+"Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Copyright (C) 1997-8 Thomas Roessler <roessler@guug.de>\n"
+"Copyright (C) 1998   Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1998   Ruslan Ermilov <ru@ucb.crimea.ua>\n"
+"\n"
+"    This program is free software; you can redistribute it and/or modify\n"
+"    it under the terms of the GNU General Public License as published by\n"
+"    the Free Software Foundation; either version 2 of the License, or\n"
+"    (at your option) any later version.\n"
+"\n"
+"    This program is distributed in the hope that it will be useful,\n"
+"    but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"    GNU General Public License for more details.\n"
+"\n"
+"    You should have received a copy of the GNU General Public License\n"
+"    along with this program; if not, write to the Free Software\n"
+"    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n"
+msgstr ""
+
+#: main.c:66
+msgid ""
+"\n"
+"SHA1 implementation Copyright (C) 1995-7 Eric A. Young <eay@cryptsoft.com>\n"
+"\n"
+"    Redistribution and use in source and binary forms, with or without\n"
+"    modification, are permitted under certain conditions.\n"
+"\n"
+"    The SHA1 implementation comes AS IS, and ANY EXPRESS OR IMPLIED\n"
+"    WARRANTIES, including, but not limited to, the implied warranties of\n"
+"    merchantability and fitness for a particular purpose ARE DISCLAIMED.\n"
+"\n"
+"    You should have received a copy of the full distribution terms\n"
+"    along with this program; if not, write to the program's developers.\n"
+msgstr ""
+
+#: main.c:92
 msgid ""
 "usage: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
 "]\n"
@@ -1681,33 +1731,33 @@ msgid ""
 "  -h\t\tthis help message"
 msgstr ""
 
-#: main.c:296
+#: main.c:297
 msgid "Error initializing terminal."
 msgstr ""
 
-#: main.c:392
+#: main.c:393
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr ""
 
-#: main.c:394
+#: main.c:395
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr ""
 
-#: main.c:529
+#: main.c:533
 msgid "No recipients specified.\n"
 msgstr ""
 
-#: main.c:602
+#: main.c:606
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr ""
 
-#: main.c:622
+#: main.c:626
 msgid "No mailbox with new mail."
 msgstr ""
 
-#: main.c:656
+#: main.c:660
 msgid "Mailbox is empty."
 msgstr ""
 
