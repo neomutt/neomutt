@@ -294,8 +294,8 @@ dprint(1,(debugfile, "local ip: %s, remote ip:%s\n", iplocalport, ipremoteport))
    * If someone does it'd probably be trivial to write mutt_nss_get_ssf().
    * I have a feeling more SSL code could be shared between those two files,
    * but I haven't looked into it yet, since I still don't know the APIs. */
-#if defined(USE_SSL) && !defined(USE_NSS)
-  if (conn->account.flags & M_ACCT_SSL)
+#if defined(USE_SSL)
+  if (conn->ssf)
   {
 #ifdef USE_SASL2 /* I'm not sure this actually has an effect, at least with SASLv2 */
     dprint (2, (debugfile, "External SSF: %d\n", conn->ssf));
@@ -311,8 +311,8 @@ dprint(1,(debugfile, "local ip: %s, remote ip:%s\n", iplocalport, ipremoteport))
       return -1;
     }
 #ifdef USE_SASL2
-    dprint (2, (debugfile, "External authentication name: %s\n","NULL"));
-    if (sasl_setprop (*saslconn, SASL_AUTH_EXTERNAL, NULL) != SASL_OK)
+    dprint (2, (debugfile, "External authentication name: %s\n", conn->account.user));
+    if (sasl_setprop (*saslconn, SASL_AUTH_EXTERNAL, conn->account.user) != SASL_OK)
      {
       dprint (1, (debugfile, "mutt_sasl_client_new: Error setting external properties\n"));
       return -1;

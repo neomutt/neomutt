@@ -68,13 +68,15 @@ sslsockdata;
 /* local prototypes */
 int ssl_init (void);
 static int add_entropy (const char *file);
-static int ssl_check_certificate (sslsockdata * data);
 static int ssl_socket_read (CONNECTION* conn, char* buf, size_t len);
 static int ssl_socket_write (CONNECTION* conn, const char* buf, size_t len);
 static int ssl_socket_open (CONNECTION * conn);
 static int ssl_socket_close (CONNECTION * conn);
 static int tls_close (CONNECTION* conn);
-int ssl_negotiate (sslsockdata*);
+static int ssl_check_certificate (sslsockdata * data);
+static void ssl_get_client_cert(sslsockdata *ssldata, CONNECTION *conn);
+static int ssl_passwd_cb(char *buf, int size, int rwflag, void *userdata);
+static int ssl_negotiate (sslsockdata*);
 
 /* mutt_ssl_starttls: Negotiate TLS over an already opened connection.
  *   TODO: Merge this code better with ssl_socket_open. */
@@ -93,6 +95,8 @@ int mutt_ssl_starttls (CONNECTION* conn)
     dprint (1, (debugfile, "mutt_ssl_starttls: Error allocating SSL_CTX\n"));
     goto bail_ssldata;
   }
+
+  ssl_get_client_cert(ssldata, conn);
 
   if (! (ssldata->ssl = SSL_new (ssldata->ctx)))
   {
@@ -279,6 +283,8 @@ static int ssl_socket_open (CONNECTION * conn)
     SSL_CTX_set_options(data->ctx, SSL_OP_NO_SSLv3);
   }
 
+  ssl_get_client_cert(data, conn);
+
   data->ssl = SSL_new (data->ctx);
   SSL_set_fd (data->ssl, conn->fd);
 
@@ -296,7 +302,7 @@ static int ssl_socket_open (CONNECTION * conn)
 
 /* ssl_negotiate: After SSL state has been initialised, attempt to negotiate
  *   SSL over the wire, including certificate checks. */
-int ssl_negotiate (sslsockdata* ssldata)
+static int ssl_negotiate (sslsockdata* ssldata)
 {
   int err;
   const char* errmsg;
@@ -315,7 +321,7 @@ int ssl_negotiate (sslsockdata* ssldata)
       errmsg = _("I/O error");
       break;
     case SSL_ERROR_SSL:
-      errmsg = _("unspecified protocol error");
+      errmsg = ERR_error_string (ERR_get_error (), NULL);
       break;
     default:
       errmsg = _("unknown error");
@@ -666,4 +672,32 @@ static int ssl_check_certificate (sslsockdata * data)
   unset_option(OPTUNBUFFEREDINPUT);
   mutt_menuDestroy (&menu);
   return (done == 2);
+}
+
+static void ssl_get_client_cert(sslsockdata *ssldata, CONNECTION *conn)
+{
+  if (SslClientCert)
+  {
+    dprint (2, (debugfile, "Using client certificate %s\n", SslClientCert));
+    SSL_CTX_set_default_passwd_cb_userdata(ssldata->ctx, &conn->account);
+    SSL_CTX_set_default_passwd_cb(ssldata->ctx, ssl_passwd_cb);
+    SSL_CTX_use_certificate_file(ssldata->ctx, SslClientCert, SSL_FILETYPE_PEM);
+    SSL_CTX_use_PrivateKey_file(ssldata->ctx, SslClientCert, SSL_FILETYPE_PEM);
+  }
+}
+
+static int ssl_passwd_cb(char *buf, int size, int rwflag, void *userdata)
+{
+  ACCOUNT *account = (ACCOUNT*)userdata;
+
+  if (mutt_account_getuser (account))
+    return 0;
+
+  dprint (2, (debugfile, "ssl_passwd_cb: getting password for %s@%s:%u\n",
+	      account->user, account->host, account->port));
+  
+  if (mutt_account_getpass (account))
+    return 0;
+
+  return snprintf(buf, size, "%s", account->pass);
 }

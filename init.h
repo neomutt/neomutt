@@ -1849,6 +1849,12 @@ struct option_t MuttVars[] = {
   ** This variables specifies whether to attempt to use TLSv1 in the
   ** SSL authentication process.
   */
+  { "ssl_client_cert", DT_PATH, R_NONE, UL &SslClientCert, 0 },
+  /*
+  ** .pp
+  ** The file containing a client certificate and its associated private
+  ** key.
+  */
 #endif
 
   { "pipe_split",	DT_BOOL, R_NONE, OPTPIPESPLIT, 0 },

@@ -108,6 +108,7 @@ WHERE char *SpamSep;
 #if defined(USE_SSL) || defined(USE_NSS)
 WHERE char *SslCertFile INITVAL (NULL);
 WHERE char *SslEntropyFile INITVAL (NULL);
+WHERE char *SslClientCert INITVAL (NULL);
 #endif
 WHERE char *StChars;
 WHERE char *Status;
