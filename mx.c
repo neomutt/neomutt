@@ -582,8 +582,8 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
   set_option (OPTFORCEREFRESH);
 
   /* create hash tables */
-  ctx->id_hash = hash_create (257);
-  ctx->subj_hash = hash_create (257);
+  ctx->id_hash = hash_create (1031);
+  ctx->subj_hash = hash_create (1031);
 
   if (!ctx->quiet)
     mutt_message (_("Reading %s..."), ctx->path);

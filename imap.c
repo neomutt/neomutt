@@ -617,8 +617,8 @@ static int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint)
   ctx->unread = 0;
   ctx->flagged = 0;
   ctx->changed = 0;
-  ctx->id_hash = hash_create (257);
-  ctx->subj_hash = hash_create (257);
+  ctx->id_hash = hash_create (1031);
+  ctx->subj_hash = hash_create (1031);
 
   mutt_message (_("Reopening mailbox..."), CTX_DATA->mailbox);
   imap_quote_string (buf, sizeof(buf), CTX_DATA->mailbox);

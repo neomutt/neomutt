@@ -1047,8 +1047,8 @@ int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
   ctx->unread = 0;
   ctx->flagged = 0;
   ctx->changed = 0;
-  ctx->id_hash = hash_create (257);
-  ctx->subj_hash = hash_create (257);
+  ctx->id_hash = hash_create (1031);
+  ctx->subj_hash = hash_create (1031);
 
   switch (ctx->magic)
   {

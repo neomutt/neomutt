@@ -116,7 +116,7 @@ static HASH *load_charset_aliases(void)
   if(!(fp = fopen(buffer, "r")))
      return NULL;
 
-  charset_aliases = hash_create(256);
+  charset_aliases = hash_create(127);
   
   while(fgets(buffer, sizeof(buffer), fp))
   {
@@ -137,8 +137,8 @@ static void init_charsets()
 {
   if(Charsets) return;
 
-  Charsets       = hash_create(128);
-  Translations   = hash_create(256);
+  Charsets       = hash_create(127);
+  Translations   = hash_create(127);
   CharsetAliases = load_charset_aliases();
 }
 

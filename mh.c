@@ -680,7 +680,7 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
 
   /* check for modifications and adjust flags */
 
-  fnames = hash_create(1024);
+  fnames = hash_create (1031);
   
   for(p = md; p; p = p->next)
   {
