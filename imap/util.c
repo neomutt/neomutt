@@ -20,6 +20,8 @@
 
 /* general IMAP utility functions */
 
+#include "config.h"
+
 #include "mutt.h"
 #include "mx.h"	/* for M_IMAP */
 #include "url.h"

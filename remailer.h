@@ -23,8 +23,6 @@
  * Mixmaster support for Mutt
  */
 
-#include "config.h"
-
 #ifdef MIXMASTER
 
 #define MIX_CAP_COMPRESS  (1 << 0)

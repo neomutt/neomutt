@@ -1,8 +1,6 @@
 #ifndef _MBYTE_H
 # define _MBYTE_H
 
-# include "config.h"
-
 # ifdef HAVE_WC_FUNCS
 #  ifdef HAVE_WCHAR_H
 #   include <wchar.h>

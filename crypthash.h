@@ -1,8 +1,6 @@
 #ifndef _CRYPTHASH_H
 # define _CRYPTHASH_H
 
-# include "config.h"
-
 
 # include <sys/types.h>
 # if HAVE_INTTYPES_H

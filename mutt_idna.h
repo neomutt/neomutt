@@ -19,7 +19,6 @@
 #ifndef _MUTT_IDNA_H
 # define _MUTT_IDNA_H
 
-#include "config.h"
 #include "rfc822.h"
 #include "charset.h"
 

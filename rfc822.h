@@ -19,8 +19,6 @@
 #ifndef rfc822_h
 #define rfc822_h
 
-#include "config.h"
-
 /* possible values for RFC822Error */
 enum
 {

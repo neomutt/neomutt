@@ -25,8 +25,6 @@
 #ifndef _LIB_H
 # define _LIB_H
 
-# include "config.h"
-
 # include <stdio.h>
 # include <string.h>
 # ifdef HAVE_UNISTD_H
