@@ -381,11 +381,14 @@ AC_SUBST(sharedir)
 
 mutt_cv_charmaps=/usr/share/i18n/charmaps
 AC_ARG_WITH(charmaps, [  --with-charmaps=PATH	     Where to find character set definitions],
-	[mutt_cv_charmaps=$withval])
+	[if test x$withval != x -a $withval != yes ; then
+		mutt_cv_charmaps=$withval
+	fi],
+        [mutt_cv_charmaps=no])
 
 mutt_cv_fake_charmaps=yes
 
-AC_MSG_CHECKING(whether character set definitions on your system are usable)
+AC_MSG_CHECKING(whether character set definitions are desired and usable)
 if test ! -f $mutt_cv_charmaps/ISO_10646 ; then
 	AC_MSG_RESULT(no)
 	mutt_cv_charmaps=$mutt_cv_sharedir/charmaps
