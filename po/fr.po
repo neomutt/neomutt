@@ -5,9 +5,9 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.3\n"
+"Project-Id-Version: Mutt 1.5.3-20021219\n"
 "POT-Creation-Date: 2002-12-18 11:26+0100\n"
-"PO-Revision-Date: 2002-12-17 14:13+0100\n"
+"PO-Revision-Date: 2002-12-19 06:08+0100\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -1748,14 +1748,13 @@ msgstr "%s : cette fonction n'existe pas"
 
 # , c-format
 #: keymap.c:922
-#, fuzzy
 msgid "Enter keys (^G to abort): "
-msgstr "Entrez keyID pour %s : "
+msgstr "Entrez des touches (^G pour abandonner) : "
 
 #: keymap.c:927
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr ""
+msgstr "Caractère = %s, Octal = %o, Decimal = %d"
 
 #: keymap_alldefs.h:5
 msgid "null operation"
