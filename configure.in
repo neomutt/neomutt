@@ -83,7 +83,7 @@ fi
 
 AC_ARG_WITH(slang, [  --with-slang[=DIR]         use S-Lang instead of ncurses],
 	[AC_CACHE_CHECK([if -ltermlib is required], mutt_cv_bsdish,
-		AC_TRY_RUN([#include <sys/param.h>
+		[AC_TRY_RUN([#include <sys/param.h>
 
 main ()
 {
@@ -93,8 +93,9 @@ main ()
 	exit (1);
 #endif
 }],
-			[mutt_cv_bsdish=yes],
-			[mutt_cv_bsdish=no]))
+			mutt_cv_bsdish=yes,
+			mutt_cv_bsdish=no,
+			mutt_cv_bsdish=no)])
 	
 	AC_MSG_CHECKING(for S-Lang)
 	if test $withval = yes; then
@@ -235,7 +236,7 @@ if test $mutt_cv_regex = no ; then
 #include <unistd.h>
 #include <regex.h>
 main() { regex_t blah ; return regcomp(&blah, "foo.*bar", REG_NOSUB) || regexec (&blah, "foobar", 0, NULL, 0); }],
-	mutt_cv_regex_broken=no, mutt_cv_regex_broken=yes)
+	mutt_cv_regex_broken=no, mutt_cv_regex_broken=yes, mutt_cv_regex_broken=yes)
 	AC_MSG_RESULT([$mutt_cv_regex_broken])
 	if test $mutt_cv_regex_broken = yes ; then
 		echo "Using the included GNU rx instead." >&AC_FD_MSG
@@ -286,7 +287,7 @@ else
 	fi
 	AC_DEFINE_UNQUOTED(MAILPATH, "$mutt_cv_mailpath")
 
-	AC_CACHE_CHECK(if $mutt_cv_mailpath is world writable, mutt_cv_worldwrite, AC_TRY_RUN([#include <sys/types.h>
+	AC_CACHE_CHECK(if $mutt_cv_mailpath is world writable, mutt_cv_worldwrite, [AC_TRY_RUN([#include <sys/types.h>
 #include <sys/stat.h>
 
 int main (int argc, char **argv)
@@ -296,14 +297,14 @@ int main (int argc, char **argv)
 	stat ("$mutt_cv_mailpath", &s);
 	if (s.st_mode & S_IWOTH) exit (0);
 	exit (1);
-}], [mutt_cv_worldwrite=yes], [mutt_cv_worldwrite=no]))
+}], mutt_cv_worldwrite=yes, mutt_cv_worldwrite=no, mutt_cv_worldwrite=no)])
 
 	mutt_cv_setgid=no
 	if test $mutt_cv_worldwrite = yes; then
 		AC_DEFINE(USE_DOTLOCK)
 	else
 
-		AC_CACHE_CHECK(if $mutt_cv_mailpath is group writable, mutt_cv_groupwrite, AC_TRY_RUN([#include <sys/types.h>
+		AC_CACHE_CHECK(if $mutt_cv_mailpath is group writable, mutt_cv_groupwrite, [AC_TRY_RUN([#include <sys/types.h>
 #include <sys/stat.h>
 
 int main (int argc, char **argv)
@@ -313,7 +314,7 @@ int main (int argc, char **argv)
 	stat ("$mutt_cv_mailpath", &s);
 	if (s.st_mode & S_IWGRP) exit (0);
 	exit (1);
-}], [mutt_cv_groupwrite=yes], [mutt_cv_groupwrite=no]))
+}], mutt_cv_groupwrite=yes, mutt_cv_groupwrite=no, mutt_cv_groupwrite=no)])
 
 		if test $mutt_cv_groupwrite = yes; then
 			AC_DEFINE(USE_DOTLOCK)
@@ -452,11 +453,11 @@ AC_ARG_ENABLE(exact-address, [  --enable-exact-address     enable regeneration o
 
 AC_SUBST(MUTT_LIB_OBJECTS)
 
-AM_GNU_GETTEXT
+MUTT_AM_GNU_GETTEXT
 CPPFLAGS="$CPPFLAGS -I\$(srcdir)/intl"
 
 MUTTLOCALEDIR=$mutt_cv_prefix/$DATADIRNAME/locale
 AC_SUBST(MUTTLOCALEDIR)
 AC_DEFINE_UNQUOTED(MUTTLOCALEDIR, "$MUTTLOCALEDIR")
 
-AC_OUTPUT(Makefile intl/Makefile po/Makefile.in rx/Makefile Muttrc doc/Makefile doc/manual.sgml doc/dotlock.man doc/mutt.man charsets/Makefile contrib/Makefile)
+AC_OUTPUT(Makefile intl/Makefile m4/Makefile po/Makefile.in rx/Makefile Muttrc doc/Makefile doc/manual.sgml doc/dotlock.man doc/mutt.man charsets/Makefile contrib/Makefile)

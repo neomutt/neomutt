@@ -1,8 +1,9 @@
 # $Id$
 
 ## Process this file with automake to produce Makefile.in
-## Use aclocal; automake --foreign
+## Use aclocal -I m4; automake --foreign
 
+AUTOMAKE_OPTIONS = foreign
 EXTRA_PROGRAMS = mutt_dotlock
 
 bin_PROGRAMS = mutt @DOTLOCK_TARGET@
@@ -47,9 +48,11 @@ mutt_dotlock.c: dotlock.c
 
 CLEANFILES = mutt_dotlock.c
 
+ACLOCAL_AMFLAGS = -I m4
+
 LDADD = @LIBOBJS@ @INTLLIBS@
 
-SUBDIRS = doc intl po rx contrib charsets
+SUBDIRS = doc intl m4 po rx contrib charsets
 
 OPS=$(srcdir)/OPS $(srcdir)/OPS.PGP
 

@@ -1,6 +1,6 @@
 #!/bin/sh --
 
-if aclocal && autoconf && autoheader && automake --foreign && ./configure $@
+if aclocal -I m4 && autoheader && (cd m4 && make -f Makefile.am.in ) && automake --foreign && autoconf && ./configure $@
 then
 	echo
 	echo "The mutt source code was successfully prepared."
