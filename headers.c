@@ -109,11 +109,15 @@ void mutt_edit_headers (const char *editor,
   /* restore old info. */
   n->references = msg->env->references;
   msg->env->references = NULL;
+
   mutt_free_envelope (&msg->env);
-  msg->env = n;
+  msg->env = n; n = NULL;
+
+  if (!msg->env->in_reply_to)
+    mutt_free_list (&msg->env->references);
 
   mutt_expand_aliases_env (msg->env);
-  
+
   /* search through the user defined headers added to see if either a 
    * fcc: or attach-file: field was specified.  
    */
@@ -199,7 +203,4 @@ void mutt_edit_headers (const char *editor,
       mutt_free_list (&tmp);
     }
   }
-
-  if (!msg->env->in_reply_to)
-    mutt_free_list (&msg->env->references);
 }

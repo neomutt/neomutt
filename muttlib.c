@@ -642,6 +642,7 @@ void mutt_free_envelope (ENVELOPE **p)
   safe_free ((void **) &(*p)->supersedes);
   safe_free ((void **) &(*p)->date);
   mutt_free_list (&(*p)->references);
+  mutt_free_list (&(*p)->in_reply_to);
   mutt_free_list (&(*p)->userhdrs);
   safe_free ((void **) p);
 }
