@@ -585,8 +585,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
     /* copy the MIME structure */
     b = mutt_new_body ();
     memcpy (b, hdr->content, sizeof (BODY));
-    hdr->content->parts = NULL;
-    
+
     /* detach the temporary MIME structure from the message. */
     b->xtype = safe_strdup (b->xtype);
     b->subtype = safe_strdup (b->subtype);
@@ -601,6 +600,13 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
       (*ppar)->attribute = safe_strdup (par->attribute);
       (*ppar)->value = safe_strdup (par->value);
     }
+
+    /* re-parse the original message - needed when we 
+     * resend an attached message/rfc822 body.
+     */
+    
+    hdr->content->parts = NULL;
+    mutt_parse_part (fp, hdr->content);
     
     bfp = fp;
   }
