@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt-1.1.11i\n"
-"POT-Creation-Date: 2000-05-03 09:48+0200\n"
+"POT-Creation-Date: 2000-05-09 17:53+0200\n"
 "PO-Revision-Date: 2000-04-01 12:00+0200\n"
 "Last-Translator: Φάνης Δοκιανάκης <madf@hellug.gr>\n"
 "Language-Team: Greek <el@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #
-#: addrbook.c:31 browser.c:41 pager.c:1385 postpone.c:37 query.c:43
+#: addrbook.c:31 browser.c:41 pager.c:1359 postpone.c:37 query.c:43
 #: recvattach.c:57
 msgid "Exit"
 msgstr "Έξοδος"
@@ -27,8 +27,8 @@ msgid "Select"
 msgstr "Επιλέξτε"
 
 #
-#: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:376 imap/imap_ssl.c:361
-#: pager.c:1482 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
+#: addrbook.c:33 browser.c:44 compose.c:93 curs_main.c:376 imap/imap_ssl.c:361
+#: pager.c:1456 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Βοήθεια"
 
@@ -91,8 +91,8 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "Η καταχώρηση στοιχείων του mailcap χρειάζεται το %%s"
 
 #
-#: attach.c:131 attach.c:256 commands.c:169 compose.c:1126 curs_lib.c:135
-#: curs_lib.c:331
+#: attach.c:131 attach.c:256 commands.c:169 compose.c:1121 curs_lib.c:137
+#: curs_lib.c:336
 #, c-format
 msgid "Error running \"%s\"!"
 msgstr "Σφάλμα κατά την εκτέλεση του \"%s\"!"
@@ -278,22 +278,18 @@ msgstr "Σφάλμα κατά την εμφάνιση αρχείου"
 msgid "New mail in %s."
 msgstr "Νέα αλληλογραφία στο %s."
 
-#: charset.c:1066
-msgid "We can't currently handle utf-8 at this point."
-msgstr "Αδυναμία χειρισμού του utf-8 αυτή τη στιγμή."
-
 #
-#: charset.c:1072 charset.c:1079
+#: charset.c:286 charset.c:293
 #, c-format
 msgid "Can't open %s: %s."
 msgstr "Αδυναμία προσβαση του %s: %s"
 
-#: charset.c:1148
+#: charset.c:362
 #, c-format
 msgid "Error while recoding %s. Leave it unchanged."
 msgstr "Σφάλμα κατά την επανακωδικοποιήση του %s. Να μην αλλαχθεί."
 
-#: charset.c:1154
+#: charset.c:368
 #, c-format
 msgid "Error while recoding %s. See %s for recovering your data."
 msgstr "Σφάλμα κατά την επανακωδικοποιήση του %s. Δείτε το %s για επαναφορά."
@@ -407,191 +403,191 @@ msgid "Error parsing address!"
 msgstr "Σφάλμα κατά την ανάλυση της διεύθηνσης!"
 
 #
-#: commands.c:221
+#: commands.c:226
 #, c-format
 msgid "Bounce message to %s"
 msgstr "Διαβίβαση μηνύματος στο %s"
 
 #
-#: commands.c:221
+#: commands.c:226
 #, c-format
 msgid "Bounce messages to %s"
 msgstr "Διαβίβαση μηνημάτων στο %s"
 
 #
-#: commands.c:232
+#: commands.c:240
 msgid "Message bounced."
 msgstr "Το μήνυμα διαβιβάστηκε."
 
 #
-#: commands.c:232
+#: commands.c:240
 msgid "Messages bounced."
 msgstr "Τα μηνύματα διαβιβάστηκαν."
 
 #
-#: commands.c:272
+#: commands.c:280
 msgid "Pipe to command: "
 msgstr "Διοχέτευση στην εντολή: "
 
 #
-#: commands.c:372
+#: commands.c:380
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 
 #
-#: commands.c:373
+#: commands.c:381
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 
 #
-#: commands.c:374
+#: commands.c:382
 msgid "dfrsotuzc"
 msgstr "dfrsotuzc"
 
 #
-#: commands.c:427
+#: commands.c:435
 msgid "Shell command: "
 msgstr "Εντολή φλοιού: "
 
 #
-#: commands.c:560
+#: commands.c:568
 #, c-format
 msgid "%s%s to mailbox"
 msgstr "%s%s στο γραμματοκιβώτιο"
 
 #
-#: commands.c:561
+#: commands.c:569
 msgid "Decode-save"
 msgstr "Αποκωδικοποίηση-αποθήκευση"
 
 #
-#: commands.c:561
+#: commands.c:569
 msgid "Decode-copy"
 msgstr "Αποκωδικοποίηση-αντιγραφή"
 
 #
-#: commands.c:562
+#: commands.c:570
 msgid "Decrypt-save"
 msgstr "Αποκρυπτογράφηση-αποθήκευση"
 
 #
-#: commands.c:562
+#: commands.c:570
 msgid "Decrypt-copy"
 msgstr "Αποκρυπτογράφηση-αντιγραφή"
 
 #
-#: commands.c:563 curs_main.c:372 recvattach.c:58
+#: commands.c:571 curs_main.c:372 recvattach.c:58
 msgid "Save"
 msgstr "Αποθήκ"
 
 #
-#: commands.c:563
+#: commands.c:571
 msgid "Copy"
 msgstr "Αντιγρ"
 
 #
-#: commands.c:563
+#: commands.c:571
 msgid " tagged"
 msgstr " σημειωμένο"
 
 #
-#: commands.c:632
+#: commands.c:640
 #, c-format
 msgid "Copying to %s..."
 msgstr "Αντιγραφή στο %s..."
 
 #
-#: commands.c:725
+#: commands.c:733
 msgid "Print message?"
 msgstr "Εκτύπωση μηνύματος;"
 
 #
-#: commands.c:725
+#: commands.c:733
 msgid "Print tagged messages?"
 msgstr "Εκτύπωση των σημειωμένων μηνυμάτων;"
 
 #
-#: commands.c:752
+#: commands.c:760
 msgid "Message printed"
 msgstr "Το μήνυμα εκτυπώθηκε"
 
 #
-#: commands.c:752
+#: commands.c:760
 msgid "Messages printed"
 msgstr "Τα μηνύματα εκτυπώθηκαν"
 
 #
-#: compose.c:40
+#: compose.c:41
 msgid "There are no attachments."
 msgstr "Δεν υπάρχουν προσαρτήσεις."
 
 #
-#: compose.c:85
+#: compose.c:86
 msgid "Send"
 msgstr "Αποστολή"
 
 #
-#: compose.c:86 remailer.c:483
+#: compose.c:87 remailer.c:483
 msgid "Abort"
 msgstr "Ακύρωση"
 
 #
-#: compose.c:90 compose.c:594
+#: compose.c:91 compose.c:594
 msgid "Attach file"
 msgstr "Προσαρτήστε αρχείο"
 
 #
-#: compose.c:91
+#: compose.c:92
 msgid "Descrip"
 msgstr "Περίγρ"
 
 #
 # compose.c:103
-#: compose.c:112
+#: compose.c:113
 msgid "Sign, Encrypt"
 msgstr "Υπογραφή, κρυπτογράφηση"
 
 #
 # compose.c:105
-#: compose.c:114
+#: compose.c:115
 msgid "Encrypt"
 msgstr "Κρυπτογράφηση"
 
 #
 # compose.c:107
-#: compose.c:116
+#: compose.c:117
 msgid "Sign"
 msgstr "Υπογραφή"
 
 #
-#: compose.c:118
+#: compose.c:119
 msgid "Clear"
 msgstr "Απενεργοποιημένο"
 
 #
-#: compose.c:125
+#: compose.c:126
 msgid " sign as: "
 msgstr " υπογραφή ως: "
 
 #
 # compose.c:116
-#: compose.c:125
+#: compose.c:126
 msgid "<default>"
 msgstr "<εξ'ορισμού>"
 
 #
 # compose.c:117 compose.c:191
-#: compose.c:126 compose.c:183
+#: compose.c:127 compose.c:184
 msgid "MIC algorithm: "
 msgstr "Αλγόριθμος MIC: "
 
 #
 # compose.c:132
-#: compose.c:137
+#: compose.c:138
 msgid ""
 "(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget "
 "it? "
@@ -600,68 +596,64 @@ msgstr ""
 
 #
 # compose.c:133
-#: compose.c:138
+#: compose.c:139
 msgid "esabmf"
 msgstr "esabmf"
 
 #
-#: compose.c:152
+#: compose.c:153
 msgid "Sign as: "
 msgstr "Υπογραφή ως: "
 
 #
 # compose.c:185
-#: compose.c:177
+#: compose.c:178
 msgid "This doesn't make sense if you don't want to sign the message."
 msgstr "Αυτό δεν έχει νόημα αν δεν θέλετε να υπογράψετε το μήνυμα."
 
 #
 # compose.c:196
-#: compose.c:188
+#: compose.c:189
 msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
 msgstr "Άγνωστος αλγόριθμος MIC, έγκυροι είναι: pgp-md5, pgp-sha1, pgp-rmd160"
 
 #
-#: compose.c:253
+#: compose.c:254
 #, c-format
 msgid "%s [#%d] no longer exists!"
 msgstr "Το %s [#%d] δεν υπάρχει πια!"
 
 #
-#: compose.c:261
+#: compose.c:262
 #, c-format
 msgid "%s [#%d] modified. Update encoding?"
 msgstr "Το %s [#%d] αλιώθηκε. Να ενημερώσω την κωδικοποίηση;"
 
 #
-#: compose.c:305
+#: compose.c:308
 msgid "-- Attachments"
 msgstr "-- Προσαρτήσεις"
 
 #
-#: compose.c:348
+#: compose.c:352
 msgid "You may not delete the only attachment."
 msgstr "Δεν μπορείτε να διαγράψετε τη μια μονάχα προσάρτηση."
 
-#: compose.c:391
+#: compose.c:396
 msgid "Can't change character set for non-text attachments!"
 msgstr "Αδυναμία αλλαγής σετ χαρακτήρων για οχι-κείμενο προσαρτήσεις!"
 
-#: compose.c:397
+#: compose.c:402
 msgid "Enter character set: "
 msgstr "Εισάγετε σετ χαρακτήρων: "
 
-#: compose.c:404
-msgid "UTF-8 encoding attachments has not yet been implemented."
-msgstr "Προσαρτήσεις κωδικοποίησης UTF-8 δεν έχουν εφαρμοστεί ακόμη."
-
-#: compose.c:410
+#: compose.c:407
 #, c-format
 msgid "Character set %s is unknown."
 msgstr "Άγνωστο σετ χαρακτήρων %s."
 
 #
-#: compose.c:454
+#: compose.c:453
 msgid "Compose"
 msgstr "Σύνθεση"
 
@@ -695,123 +687,119 @@ msgstr "Σημειώστε τα μηνύματα που θέλετε να προσαρτήσετε!"
 msgid "Unable to attach!"
 msgstr "Δεν μπορώ να προσαρτήσω!"
 
-#: compose.c:765 compose.c:790
+#: compose.c:765 compose.c:785
 msgid "Recoding only affects text attachments."
 msgstr "Η επανακωδικοποίηση επιρρεάζει μόνο της προσαρτήσεις κειμένου."
 
 #: compose.c:770
-msgid "We currently can't encode to utf-8."
-msgstr "Αδυναμία κωδικοποίησης utf-8 αυτή τη στιγμή."
-
-#: compose.c:775
 msgid "The current attachment won't be converted."
 msgstr "Η τρέχουσα προσάρτηση δεν θα μετατραπεί."
 
-#: compose.c:777
+#: compose.c:772
 msgid "The current attachment will be converted."
 msgstr "Η τρέχουσα προσάρτηση θα μετατραπεί."
 
-#: compose.c:806
+#: compose.c:801
 msgid "Recoding successful."
 msgstr "Επιτυχής επανακωδικοποίηση."
 
 #
-#: compose.c:880
+#: compose.c:875
 msgid "Invalid encoding."
 msgstr "Μη έγκυρη κωδικοποίηση."
 
 #
-#: compose.c:901
+#: compose.c:896
 msgid "Save a copy of this message?"
 msgstr "Αποθήκεση αντιγράφου του μηνύματος;"
 
 #
-#: compose.c:955
+#: compose.c:950
 msgid "Rename to: "
 msgstr "Μετονομασία σε: "
 
 #
-#: compose.c:960 editmsg.c:96
+#: compose.c:955 editmsg.c:96
 #, c-format
 msgid "Can't stat: %s"
 msgstr "Αδυναμία στη προσβαση: %s"
 
 #
-#: compose.c:986
+#: compose.c:981
 msgid "New file: "
 msgstr "Νέο αρχείο: "
 
 #
-#: compose.c:999
+#: compose.c:994
 msgid "Content-Type is of the form base/sub"
 msgstr "Το Content-Type είναι της μορφής base/sub"
 
 #
-#: compose.c:1005
+#: compose.c:1000
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Άγνωστο Content-Type %s"
 
 #
-#: compose.c:1018
+#: compose.c:1013
 #, c-format
 msgid "Can't create file %s"
 msgstr "Αδυναμία δημιουργίας αρχείου %s"
 
 #
-#: compose.c:1026
+#: compose.c:1021
 msgid "What we have here is a failure to make an attachment"
 msgstr "Αποτυχία κατά την δημιουργία προσάρτησης"
 
 #
-#: compose.c:1087
+#: compose.c:1082
 msgid "Postpone this message?"
 msgstr "Να αναβληθεί η ταχυδρόμηση αυτού του μήνυματος;"
 
 #
-#: compose.c:1141
+#: compose.c:1136
 msgid "Write message to mailbox"
 msgstr "Εγγραφή τους μήνυματος στο γραμματοκιβώτιο"
 
 #
-#: compose.c:1144
+#: compose.c:1139
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Εγγραφή μηνύματος στο %s ..."
 
 #
-#: compose.c:1153
+#: compose.c:1148
 msgid "Message written."
 msgstr "Το μήνυμα γράφτηκε."
 
 #
-#: curs_lib.c:143
+#: curs_lib.c:145
 msgid "yes"
 msgstr "y(ναι)"
 
 #
-#: curs_lib.c:144
+#: curs_lib.c:146
 msgid "no"
 msgstr "n(όχι)"
 
 #
 #. restore blocking operation
-#: curs_lib.c:183
+#: curs_lib.c:198
 msgid "Exit Mutt?"
 msgstr "Έξοδος από το Mutt;"
 
 #
-#: curs_lib.c:283
+#: curs_lib.c:288
 msgid "unknown error"
 msgstr "άγνωστο σφάλμα"
 
 #
-#: curs_lib.c:303
+#: curs_lib.c:308
 msgid "Press any key to continue..."
 msgstr "Πατήστε ένα πλήκτρο για να συνεχείσετε..."
 
 #
-#: curs_lib.c:347
+#: curs_lib.c:352
 msgid " ('?' for list): "
 msgstr "('?' για λίστα): "
 
@@ -826,12 +814,12 @@ msgid "There are no messages."
 msgstr "Δεν υπάρχουν μηνύματα."
 
 #
-#: curs_main.c:57 mx.c:1036 pager.c:61 recvattach.c:47
+#: curs_main.c:57 mx.c:1036 pager.c:62 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "Το γραμματοκιβώτιο είναι για μόνο-ανάγνωση."
 
 #
-#: curs_main.c:58 pager.c:62 recvattach.c:764
+#: curs_main.c:58 pager.c:63 recvattach.c:764
 msgid "Function not permitted in attach-message mode."
 msgstr "Αυτή η λειτουργίά απαγορεύετε στην κατάσταση προσάρτηση-μηνύματος."
 
@@ -857,7 +845,7 @@ msgid "Quit"
 msgstr "Έξοδος"
 
 #
-#: curs_main.c:370 pager.c:1392 postpone.c:38
+#: curs_main.c:370 pager.c:1366 postpone.c:38
 msgid "Del"
 msgstr "Διαγραφή"
 
@@ -872,7 +860,7 @@ msgid "Mail"
 msgstr "Ταχυδρ"
 
 #
-#: curs_main.c:374 pager.c:1393
+#: curs_main.c:374 pager.c:1367
 msgid "Reply"
 msgstr "Απάντ"
 
@@ -996,12 +984,12 @@ msgid "You are on the first message."
 msgstr "Είστε στο πρώτο μήνυμα."
 
 #
-#: curs_main.c:1204 pattern.c:1123
+#: curs_main.c:1204 pattern.c:1126
 msgid "Search wrapped to top."
 msgstr "Αναζήτηση συνεχίστηκε από την κορυφή."
 
 #
-#: curs_main.c:1213 pattern.c:1134
+#: curs_main.c:1213 pattern.c:1137
 msgid "Search wrapped to bottom."
 msgstr "Αναζήτηση συνεχίστηκε στη βάση."
 
@@ -1036,7 +1024,8 @@ msgid "Thread contains unread messages."
 msgstr "Η συζήτηση περιέχει μη αναγνωσμένα μηνύματα."
 
 #
-#: curs_main.c:1456 flags.c:228 thread.c:651 thread.c:702
+#: curs_main.c:1456 flags.c:228 thread.c:651 thread.c:702 thread.c:898
+#: thread.c:940
 msgid "Threading is not enabled."
 msgstr "Η χρήση συζητήσεων δεν έχει ενεργοποιηθεί."
 
@@ -1310,17 +1299,17 @@ msgid "%s: unable to attach file"
 msgstr "%s: αδυναμία στη προσάρτηση του αρχείου"
 
 #
-#: help.c:273
+#: help.c:269
 msgid "ERROR: please report this bug"
 msgstr "ΣΦΑΛΜΑ: παρακαλώ αναφέρατε αυτό το σφάλμα προγράμματος"
 
 #
-#: help.c:315
+#: help.c:311
 msgid "<UNKNOWN>"
 msgstr "<ΑΓΝΩΣΤΟ>"
 
 #
-#: help.c:327
+#: help.c:323
 msgid ""
 "\n"
 "Generic bindings:\n"
@@ -1331,7 +1320,7 @@ msgstr ""
 "\n"
 
 #
-#: help.c:331
+#: help.c:327
 msgid ""
 "\n"
 "Unbound functions:\n"
@@ -1342,7 +1331,7 @@ msgstr ""
 "\n"
 
 #
-#: help.c:339
+#: help.c:335
 #, c-format
 msgid "Help for %s"
 msgstr "Βοήθεια για το %s"
@@ -1457,7 +1446,7 @@ msgstr "Αδυναμία στη πρόσθηκη στα γραμμ/τια IMAP σε αυτόν τον εξυπηρετητή"
 
 #
 #. command failed cause folder doesn't exist
-#: imap/imap.c:809 imap/message.c:640 muttlib.c:984
+#: imap/imap.c:809 imap/message.c:640 muttlib.c:986
 #, c-format
 msgid "Create %s?"
 msgstr "Δημιουργία του %s;"
@@ -1640,121 +1629,121 @@ msgid "%s [%s]\n"
 msgstr "%s [%s]\n"
 
 #
-#: init.c:487
+#: init.c:488
 msgid "alias: no address"
 msgstr "ψευδώνυμο: καμμία διέυθυνση"
 
 #
-#: init.c:581
+#: init.c:582
 msgid "invalid header field"
 msgstr "μη έγκυρο πεδίο επικεφαλίδας"
 
 #
-#: init.c:634
+#: init.c:635
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: άγνωστη μέθοδος ταξινόμησης"
 
 #
-#: init.c:710
+#: init.c:711
 #, c-format
 msgid "mutt_restore_default: error in regexp: %s\n"
 msgstr "mutt_restore_default: λάθος στο regexp: %s\n"
 
 #
-#: init.c:770
+#: init.c:771
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: άγνωστη μεταβλήτή"
 
 #
-#: init.c:779
+#: init.c:780
 msgid "prefix is illegal with reset"
 msgstr "το πρόθεμα είναι άκυρο με την επαναφορά"
 
 #
-#: init.c:785
+#: init.c:786
 msgid "value is illegal with reset"
 msgstr "η τιμή είναι άκυρη με την επαναφορά"
 
 #
-#: init.c:824
+#: init.c:825
 #, c-format
 msgid "%s is set"
 msgstr "Το %s έχει τεθεί"
 
 #
-#: init.c:824
+#: init.c:825
 #, c-format
 msgid "%s is unset"
 msgstr "Το %s δεν έχει τεθεί"
 
 #
-#: init.c:1028
+#: init.c:1030
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: μη έγκυρος τύπος γραμματοκιβωτίου"
 
 #
-#: init.c:1053 init.c:1098
+#: init.c:1055 init.c:1100
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: μη έγκυρη τιμή"
 
 #
-#: init.c:1156
+#: init.c:1158
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: άγνωστος τύπος"
 
 #
-#: init.c:1197
+#: init.c:1199
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Σφάλμα στο %s, γραμμή %d: %s"
 
 #
 #. the muttrc source keyword
-#: init.c:1213
+#: init.c:1215
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: λάθη στο %s"
 
-#: init.c:1214
+#: init.c:1216
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr "πηγή: απόρριψη ανάγνωσης λόγω πολλών σφαλμάτων στο %s"
 
 #
-#: init.c:1228
+#: init.c:1230
 #, c-format
 msgid "source: error at %s"
 msgstr "source: λάθος στο %s"
 
 #
-#: init.c:1233
+#: init.c:1235
 msgid "source: too many arguments"
 msgstr "source: πάρα πολλά ορίσματα"
 
 #
-#: init.c:1284
+#: init.c:1286
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: άγνωστη εντολή"
 
 #
-#: init.c:1641
+#: init.c:1643
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Λάθος στη γραμμή εντολών: %s\n"
 
 #
-#: init.c:1684
+#: init.c:1686
 msgid "unable to determine home directory"
 msgstr "αδυναμία στον εντοπισμό του καταλόγου χρήστη (home directory)"
 
 #
-#: init.c:1692
+#: init.c:1694
 msgid "unable to determine username"
 msgstr "αδυναμία στον εντοπισμό του ονόματος χρήστη"
 
@@ -3008,98 +2997,98 @@ msgid "Reopening mailbox..."
 msgstr "Επαναπρόσβαση στο γραμματοκιβώτιο..."
 
 #
-#: menu.c:354
+#: menu.c:394
 msgid "Jump to: "
 msgstr "Μετακίνηση στο: "
 
 #
-#: menu.c:363
+#: menu.c:403
 msgid "Invalid index number."
 msgstr "Μη έγκυρος αριθμός δείκτη"
 
 #
-#: menu.c:367 menu.c:385 menu.c:421 menu.c:462 menu.c:478 menu.c:489
-#: menu.c:500 menu.c:542 menu.c:553 menu.c:566 menu.c:579 menu.c:941
+#: menu.c:407 menu.c:425 menu.c:461 menu.c:502 menu.c:518 menu.c:529
+#: menu.c:540 menu.c:582 menu.c:593 menu.c:606 menu.c:619 menu.c:981
 msgid "No entries."
 msgstr "Καμμία καταχώρηση"
 
 #
-#: menu.c:382
+#: menu.c:422
 msgid "You cannot scroll down farther."
 msgstr "Δεν μπορείτε να μετακινηθείτε παρακάτω."
 
 #
-#: menu.c:398
+#: menu.c:438
 msgid "You cannot scroll up farther."
 msgstr "Δεν μπορείτε να μετακινηθείτε παραπάνω."
 
 #
-#: menu.c:418
+#: menu.c:458
 msgid "You are on the last page."
 msgstr "Είστε στην τελευταία σελίδα."
 
 #
-#: menu.c:440
+#: menu.c:480
 msgid "You are on the first page."
 msgstr "Είστε στην πρώτη σελίδα."
 
 #
-#: menu.c:519
+#: menu.c:559
 msgid "First entry is shown."
 msgstr "Η πρώτη καταχώρηση εμφανίζεται."
 
 #
-#: menu.c:539
+#: menu.c:579
 msgid "Last entry is shown."
 msgstr "Η τελευταία καταχώρηση εμφανίζεται."
 
 #
-#: menu.c:590
+#: menu.c:630
 msgid "You are on the last entry."
 msgstr "Είστε στην τελευταία καταχώρηση."
 
 #
-#: menu.c:601
+#: menu.c:641
 msgid "You are on the first entry."
 msgstr "Είστε στην πρώτη καταχώρηση."
 
 #
-#: menu.c:661 pattern.c:1069
+#: menu.c:701 pattern.c:1072
 msgid "Search for: "
 msgstr "Αναζήτηση για: "
 
 #
-#: menu.c:662
+#: menu.c:702
 msgid "Reverse search for: "
 msgstr "Ανάστροφη αναζήτηση για: "
 
 #
-#: menu.c:672 pattern.c:1102
+#: menu.c:712 pattern.c:1105
 msgid "No search pattern."
 msgstr "Κανένα σχέδιο αναζήτησης."
 
 #
-#: menu.c:702 pager.c:1857 pager.c:1873 pager.c:1961 pattern.c:1167
+#: menu.c:742 pager.c:1833 pager.c:1849 pager.c:1937 pattern.c:1170
 msgid "Not found."
 msgstr "Δε βρέθηκε."
 
 #
-#: menu.c:811
+#: menu.c:851
 msgid "No tagged entries."
 msgstr "Καμμία σημειωμένη είσοδος."
 
 #
-#: menu.c:904
+#: menu.c:944
 msgid "Search is not implemented for this menu."
 msgstr "Δεν έχει εφαρμοστεί αναζήτηση για αυτό το μενού."
 
 #
-#: menu.c:909
+#: menu.c:949
 msgid "Jumping is not implemented for dialogs."
 msgstr "Δεν έχει εφαρμοστεί μετακίνηση για τους διαλόγους."
 
 #
-#: menu.c:944
+#: menu.c:984
 msgid "Tagging is not supported."
 msgstr "Σημειώσεις δεν υποστηρίζονται."
 
@@ -3126,13 +3115,13 @@ msgid "oac"
 msgstr "oac"
 
 #
-#: muttlib.c:960
+#: muttlib.c:962
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "Το %s δεν είναι γραμματοκιβώτιο!"
 
 #
-#: muttlib.c:966
+#: muttlib.c:968
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Πρόσθεση μηνυμάτων στο %s;"
@@ -3264,63 +3253,63 @@ msgid "Can't write message"
 msgstr "Αδυναμία εγγραφής του μηνύματος"
 
 #
-#: pager.c:60
+#: pager.c:61
 msgid "Not available in this menu."
 msgstr "Δεν είναι διαθέσιμο σε αυτό το μενού."
 
 #
-#: pager.c:1386
+#: pager.c:1360
 msgid "PrevPg"
 msgstr "ΠροηγΣελ"
 
 #
-#: pager.c:1387
+#: pager.c:1361
 msgid "NextPg"
 msgstr "ΕπόμΣελ"
 
 #
-#: pager.c:1391
+#: pager.c:1365
 msgid "View Attachm."
 msgstr "ΌψηΠροσάρτ"
 
 #
-#: pager.c:1394
+#: pager.c:1368
 msgid "Next"
 msgstr "Επόμενο"
 
 #
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1769 pager.c:1800 pager.c:1829 pager.c:2049
+#: pager.c:1745 pager.c:1776 pager.c:1805 pager.c:2025
 msgid "Bottom of message is shown."
 msgstr "Εμφανίζεται η βάση του μηνύματος."
 
 #
-#: pager.c:1785 pager.c:1807 pager.c:1818
+#: pager.c:1761 pager.c:1783 pager.c:1794
 msgid "Top of message is shown."
 msgstr "Εμφανίζεται η αρχή του μηνύματος."
 
 #
-#: pager.c:1891
+#: pager.c:1867
 msgid "Reverse search: "
 msgstr "Ανάστροφη αναζήτηση: "
 
 #
-#: pager.c:1892
+#: pager.c:1868
 msgid "Search: "
 msgstr "Αναζήτηση:"
 
 #
-#: pager.c:1987
+#: pager.c:1963
 msgid "Help is currently being shown."
 msgstr "Η βοήθεια ήδη εμφανίζεται."
 
 #
-#: pager.c:2016
+#: pager.c:1992
 msgid "No more quoted text."
 msgstr "Όχι άλλο καθορισμένο κείμενο."
 
 #
-#: pager.c:2029
+#: pager.c:2005
 msgid "No more unquoted text after quoted text."
 msgstr "Όχι άλλο μη καθορισμένο κείμενο μετά από καθορισμένο."
 
@@ -3330,95 +3319,95 @@ msgid "multipart message has no boundary parameter!"
 msgstr "το πολυμερές μήνυμα δεν έχει οριοθέτουσα παράμετρο!"
 
 #
-#: pattern.c:239
+#: pattern.c:240
 #, c-format
 msgid "Error in expression: %s"
 msgstr "Λάθος στην έκφραση: %s"
 
 #
-#: pattern.c:336
+#: pattern.c:337
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "Μη έγκυρη μέρα του μήνα: %s"
 
 #
-#: pattern.c:350
+#: pattern.c:351
 #, c-format
 msgid "Invalid month: %s"
 msgstr "Μη έγκυρος μήνας: %s"
 
 #
-#: pattern.c:404
+#: pattern.c:405
 msgid "error in expression"
 msgstr "σφάλμα στην έκφραση"
 
 #
-#: pattern.c:589 pattern.c:697
+#: pattern.c:590 pattern.c:698
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "σφάλμα στο μοντέλο στο: %s"
 
 #
-#: pattern.c:637
+#: pattern.c:638
 #, c-format
 msgid "%c: invalid command"
 msgstr "%c: μη έγκυρη εντολή"
 
 #
-#: pattern.c:643
+#: pattern.c:644
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "Το %c: δεν υποστηρίζεται σε αυτή την κατάσταση"
 
 #
-#: pattern.c:656
+#: pattern.c:657
 msgid "missing parameter"
 msgstr "έλλειψη παραμέτρου"
 
 #
-#: pattern.c:672
+#: pattern.c:673
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "αταίριαστη παρενθέση/εις: %s"
 
 #
-#: pattern.c:704
+#: pattern.c:705
 msgid "empty pattern"
 msgstr "άδειο μοντέλο/μορφή"
 
 #
-#: pattern.c:894
+#: pattern.c:897
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "λάθος: άγνωστη διεργασία %d (ανέφερε αυτό το σφάλμα)."
 
 #
-#: pattern.c:959 pattern.c:1088
+#: pattern.c:962 pattern.c:1091
 msgid "Compiling search pattern..."
 msgstr "Σύνταξη μοντέλου αναζήτησης..."
 
 #
-#: pattern.c:973
+#: pattern.c:976
 msgid "Executing command on matching messages..."
 msgstr "Εκτέλεση εντολής στα παρόμοια μηνύματα..."
 
 #
-#: pattern.c:1036
+#: pattern.c:1039
 msgid "No messages matched criteria."
 msgstr "Κανένα μήνυμα δεν ταιριάζει στα κριτήρια."
 
 #
-#: pattern.c:1126
+#: pattern.c:1129
 msgid "Search hit bottom without finding match"
 msgstr "Η αναζήτηση έφθασε στο τέλος χωρίς να βρει όμοιο"
 
 #
-#: pattern.c:1137
+#: pattern.c:1140
 msgid "Search hit top without finding match"
 msgstr "Η αναζήτηση έφθασε στην αρχή χωρίς να βρει όμοιο"
 
 #
-#: pattern.c:1159
+#: pattern.c:1162
 msgid "Search interrupted."
 msgstr "Η αναζήτηση διεκόπηκε."
 
@@ -3797,7 +3786,7 @@ msgid "Connecting to %s"
 msgstr "Σύνδεση στο %s"
 
 #
-#: pop.c:166 pop.c:341
+#: pop.c:166 pop.c:344
 msgid "Server closed connection!"
 msgstr "Η σύνδεση με τον εξυπηρετητή έκλεισε!"
 
@@ -3808,34 +3797,40 @@ msgstr "Δεν υπάρχει αλληλογραφία στο POP γραμματοκιβώτιο."
 
 #
 #: pop.c:209
+#, fuzzy
+msgid "Delete messages from server?"
+msgstr "Διαγραφή μηνυμάτων από τον εξυπηρετητή..."
+
+#
+#: pop.c:212
 #, c-format
 msgid "Reading new messages (%d bytes)..."
 msgstr "Ανάγνωση νέων μηνυμάτων (%d bytes)..."
 
 #
-#: pop.c:210
+#: pop.c:213
 #, c-format
 msgid "Reading new message (%d bytes)..."
 msgstr "Ανάγνωση νέου μηνύματος (%d bytes)..."
 
 #
-#: pop.c:245
+#: pop.c:248
 msgid "Error reading message!"
 msgstr "Σφάλμα κατά την ανάγνωση του μηνύματος!"
 
 #
-#: pop.c:281
+#: pop.c:284
 msgid "Error while writing mailbox!"
 msgstr "Σφάλμα κατά την εγγραφή στο γραμματοκιβώτιο"
 
 #
-#: pop.c:308
+#: pop.c:311
 #, c-format
 msgid "%s [%d of %d messages read]"
 msgstr "%s [%d από %d μηνύματα διαβάστηκαν]"
 
 #
-#: pop.c:310
+#: pop.c:313
 #, c-format
 msgid "%s [%d message read]"
 msgstr "%s [%d μηνύματα διαβάστηκαν]"
@@ -4251,30 +4246,30 @@ msgid "Sending in background."
 msgstr "Αποστολή στο παρασκήνιο."
 
 #
-#: sendlib.c:455
+#: sendlib.c:441
 msgid "No boundary parameter found! [report this error]"
 msgstr "Δε βρέθηκε παράμετρος οριοθέτησης! [αναφέρατε αυτό το σφάλμα]"
 
 #
-#: sendlib.c:489
+#: sendlib.c:475
 #, c-format
 msgid "%s no longer exists!"
 msgstr "Το %s δεν υπάρχει πια!"
 
 #
-#: sendlib.c:729
+#: sendlib.c:717
 #, c-format
 msgid "Could not open %s"
 msgstr "Αδυναμία ανοίγματος του %s"
 
 #
-#: sendlib.c:1712
+#: sendlib.c:1700
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Σφάλμα κατά την αποστολή μηνύματος, τερματισμός θυγατρικής με %d (%s)."
 
 #
-#: sendlib.c:1718
+#: sendlib.c:1706
 msgid "Output of the delivery process"
 msgstr "Έξοδος της διεργασίας αποστολής"
 
@@ -4321,3 +4316,16 @@ msgstr "Το τρέχων μήνυμα δεν είναι ορατό στην περιορισμένη όψη"
 #: thread.c:717
 msgid "Parent message is not available."
 msgstr "Το τρέχων μήνυμα δεν είναι διαθέσιμο."
+
+#: thread.c:976
+msgid "Target message not found while counting messages in thread."
+msgstr ""
+
+#~ msgid "We can't currently handle utf-8 at this point."
+#~ msgstr "Αδυναμία χειρισμού του utf-8 αυτή τη στιγμή."
+
+#~ msgid "UTF-8 encoding attachments has not yet been implemented."
+#~ msgstr "Προσαρτήσεις κωδικοποίησης UTF-8 δεν έχουν εφαρμοστεί ακόμη."
+
+#~ msgid "We currently can't encode to utf-8."
+#~ msgstr "Αδυναμία κωδικοποίησης utf-8 αυτή τη στιγμή."

@@ -1,3 +1,37 @@
+Tue May  9 15:51:54 2000  Thomas Roessler  <roessler@guug.de>
+
+	* hdrline.c, init.h, protos.h, thread.c:
+	Add a %e option for thread-relative message numbers.  From Markus
+	Holmberg <markush@acc.umu.se>.
+
+	* doc/manual.sgml.head, hdrline.c, init.h, mutt.h, parse.c, pattern.c:
+	X-Label header support from David Champion <dgc@uchicago.edu>.
+
+	* init.h, pop.c: Make pop_delete a quad-option.  From Honza Pazdziora
+	<adelton@informatics.muni.cz>.
+
+	* VERSION:
+	Ups, we should leave the version file on 1.2, so the diff will get
+	built properly when I release 1.3.
+
+	* iconv/Makefile.am, iconv/iconv.c, iconv/iconv.h, lib.h, mbyte.c, mbyte.h, menu.c, muttlib.c, pager.c, pgppubring.c, protos.h, rfc2047.c, rfc2231.c, sendlib.c, utf8.c, wcwidth.c, Makefile.am, VERSION, charset.c, charset.h, commands.c, compose.c, configure.in, curs_lib.c, curs_main.c, enter.c, gettext.c, gnupgparse.c, hdrline.c, help.c, init.c:
+	Edmund Grimley Evans' UTF-8 patch.
+
+	* po/ko.po, po/nl.po, po/pl.po, po/pt_BR.po, po/ru.po, po/sk.po, po/sv.po, po/uk.po, po/zh_TW.Big5.po, VERSION, po/cs.po, po/da.po, po/de.po, po/el.po, po/eo.po, po/es.po, po/fr.po, po/gl.po, po/id.po, po/it.po, reldate.h, ChangeLog:
+	automatic post-release commit for mutt-1.2
+
+	* build-release: unstable branch.
+
+	* build-release: start preparing 1.2.
+
+Wed May  3 07:48:46 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/zh_TW.Big5.po, po/da.po, po/de.po, po/el.po, po/eo.po, po/es.po, po/fr.po, po/gl.po, po/id.po, po/it.po, po/ko.po, po/nl.po, po/pl.po, po/pt_BR.po, po/ru.po, po/sk.po, po/sv.po, po/uk.po, ChangeLog, VERSION, po/cs.po:
+	automatic post-release commit for mutt-1.1.14
+
+	* po/sk.po, po/sv.po, po/uk.po, po/zh_TW.Big5.po, po/da.po, po/de.po, po/el.po, po/eo.po, po/es.po, po/fr.po, po/gl.po, po/id.po, po/it.po, po/ko.po, po/nl.po, po/pl.po, po/pt_BR.po, po/ru.po, ChangeLog, VERSION, po/cs.po, reldate.h:
+	automatic post-release commit for mutt-1.1.13
+
 Wed May  3 06:44:22 2000  Thomas Roessler  <roessler@guug.de>
 
 	* po/sk.po, po/sv.po, po/uk.po, po/zh_TW.Big5.po, po/da.po,

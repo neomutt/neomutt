@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt-1.1.11i\n"
-"POT-Creation-Date: 2000-05-03 09:48+0200\n"
+"POT-Creation-Date: 2000-05-09 17:53+0200\n"
 "PO-Revision-Date: 2000-03-31\n"
 "Last-Translator: Pawe³ Dziekoñski <p.dziekonski@mml.ch.pwr.wroc.pl>\n"
 "Language-Team: POLISH <pl@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-2\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: addrbook.c:31 browser.c:41 pager.c:1385 postpone.c:37 query.c:43
+#: addrbook.c:31 browser.c:41 pager.c:1359 postpone.c:37 query.c:43
 #: recvattach.c:57
 msgid "Exit"
 msgstr "Wyj¶cie"
@@ -26,8 +26,8 @@ msgstr "Wyj¶cie"
 msgid "Select"
 msgstr "Wybierz"
 
-#: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:376 imap/imap_ssl.c:361
-#: pager.c:1482 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
+#: addrbook.c:33 browser.c:44 compose.c:93 curs_main.c:376 imap/imap_ssl.c:361
+#: pager.c:1456 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Pomoc"
 
@@ -78,8 +78,8 @@ msgstr "Nie pasuj±cy szablon nazwy, kontynuowaæ?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Pole \"compose\" w pliku 'mailcap' wymaga %%s"
 
-#: attach.c:131 attach.c:256 commands.c:169 compose.c:1126 curs_lib.c:135
-#: curs_lib.c:331
+#: attach.c:131 attach.c:256 commands.c:169 compose.c:1121 curs_lib.c:137
+#: curs_lib.c:336
 #, c-format
 msgid "Error running \"%s\"!"
 msgstr "B³±d uruchomienia \"%s\"!"
@@ -230,21 +230,17 @@ msgstr "B³±d podczas próby przegl±dania pliku"
 msgid "New mail in %s."
 msgstr "W skrzynce %s pojawi³a siê nowa poczta."
 
-#: charset.c:1066
-msgid "We can't currently handle utf-8 at this point."
-msgstr "utf-8 nie jest, jak na razie, obs³ugiwany."
-
-#: charset.c:1072 charset.c:1079
+#: charset.c:286 charset.c:293
 #, c-format
 msgid "Can't open %s: %s."
 msgstr "Nie mo¿na otworzyæ %s: %s."
 
-#: charset.c:1148
+#: charset.c:362
 #, c-format
 msgid "Error while recoding %s. Leave it unchanged."
 msgstr "B³±d przekodowywania %s. Pozosta³o nie zmienione."
 
-#: charset.c:1154
+#: charset.c:368
 #, c-format
 msgid "Error while recoding %s. See %s for recovering your data."
 msgstr "B³±d przekodowywania %s. Zajrzyj do %s je¶li musisz odzyskaæ dane."
@@ -336,211 +332,207 @@ msgstr "Wy¶lij kopie zaznaczonych listów do: "
 msgid "Error parsing address!"
 msgstr "B³±d interpretacji adresu!"
 
-#: commands.c:221
+#: commands.c:226
 #, c-format
 msgid "Bounce message to %s"
 msgstr "Wy¶lij kopiê listu do %s"
 
-#: commands.c:221
+#: commands.c:226
 #, c-format
 msgid "Bounce messages to %s"
 msgstr "Wy¶lij kopie listów do %s"
 
-#: commands.c:232
+#: commands.c:240
 msgid "Message bounced."
 msgstr "Kopia zosta³a wys³ana."
 
-#: commands.c:232
+#: commands.c:240
 msgid "Messages bounced."
 msgstr "Kopie zosta³y wys³ane."
 
-#: commands.c:272
+#: commands.c:280
 msgid "Pipe to command: "
 msgstr "Wy¶lij przez potok do polecenia: "
 
-#: commands.c:372
+#: commands.c:380
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 "Odwr-Sort "
 "(d)ata/(a)utor/o(t)rzym/t(e)mat/d(o)/(w)±tek/(b)ez/ro(z)miar/wa(g)a?: "
 
-#: commands.c:373
+#: commands.c:381
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 "Sortuj (d)ata/(a)utor/o(t)rzym/t(e)mat/d(o)/(w)±tek/(b)ez/ro(z)miar/wa(g)a?: "
 
-#: commands.c:374
+#: commands.c:382
 msgid "dfrsotuzc"
 msgstr "dateowbzg"
 
-#: commands.c:427
+#: commands.c:435
 msgid "Shell command: "
 msgstr "Polecenie pow³oki: "
 
-#: commands.c:560
+#: commands.c:568
 #, c-format
 msgid "%s%s to mailbox"
 msgstr "%s%s do skrzynki"
 
-#: commands.c:561
+#: commands.c:569
 msgid "Decode-save"
 msgstr "Dekoduj-zapisz"
 
-#: commands.c:561
+#: commands.c:569
 msgid "Decode-copy"
 msgstr "Dekoduj-kopiuj"
 
-#: commands.c:562
+#: commands.c:570
 msgid "Decrypt-save"
 msgstr "Rozszyfruj-zapisz"
 
-#: commands.c:562
+#: commands.c:570
 msgid "Decrypt-copy"
 msgstr "Rozszyfruj-kopiuj"
 
-#: commands.c:563 curs_main.c:372 recvattach.c:58
+#: commands.c:571 curs_main.c:372 recvattach.c:58
 msgid "Save"
 msgstr "Zapisz"
 
-#: commands.c:563
+#: commands.c:571
 msgid "Copy"
 msgstr "Kopiuj"
 
-#: commands.c:563
+#: commands.c:571
 msgid " tagged"
 msgstr " zaznaczone"
 
-#: commands.c:632
+#: commands.c:640
 #, c-format
 msgid "Copying to %s..."
 msgstr "Kopiowanie do %s..."
 
-#: commands.c:725
+#: commands.c:733
 msgid "Print message?"
 msgstr "Wydrukowaæ list?"
 
-#: commands.c:725
+#: commands.c:733
 msgid "Print tagged messages?"
 msgstr "Wydrukowaæ zaznaczone listy?"
 
-#: commands.c:752
+#: commands.c:760
 msgid "Message printed"
 msgstr "List wydrukowany"
 
-#: commands.c:752
+#: commands.c:760
 msgid "Messages printed"
 msgstr "Listy zosta³y wydrukowane"
 
-#: compose.c:40
+#: compose.c:41
 msgid "There are no attachments."
 msgstr "Brak za³±czników."
 
-#: compose.c:85
+#: compose.c:86
 msgid "Send"
 msgstr "Wy¶lij"
 
-#: compose.c:86 remailer.c:483
+#: compose.c:87 remailer.c:483
 msgid "Abort"
 msgstr "Anuluj"
 
-#: compose.c:90 compose.c:594
+#: compose.c:91 compose.c:594
 msgid "Attach file"
 msgstr "Do³±cz plik"
 
-#: compose.c:91
+#: compose.c:92
 msgid "Descrip"
 msgstr "Opis"
 
-#: compose.c:112
+#: compose.c:113
 msgid "Sign, Encrypt"
 msgstr "Podpisz i zaszyfruj"
 
-#: compose.c:114
+#: compose.c:115
 msgid "Encrypt"
 msgstr "Zaszyfruj"
 
-#: compose.c:116
+#: compose.c:117
 msgid "Sign"
 msgstr "Podpisz"
 
-#: compose.c:118
+#: compose.c:119
 msgid "Clear"
 msgstr "Bez jakiegokolwiek kodowania"
 
-#: compose.c:125
+#: compose.c:126
 msgid " sign as: "
 msgstr " podpisz jako: "
 
-#: compose.c:125
+#: compose.c:126
 msgid "<default>"
 msgstr "<domy¶lnie>"
 
-#: compose.c:126 compose.c:183
+#: compose.c:127 compose.c:184
 msgid "MIC algorithm: "
 msgstr "Algorytm MIC: "
 
-#: compose.c:137
+#: compose.c:138
 msgid ""
 "(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget "
 "it? "
 msgstr ""
 "(z)aszyfruj, podpi(s)z, podpisz j(a)ko, o(b)a, algoryt(m) MIC, b(e)z PGP? "
 
-#: compose.c:138
+#: compose.c:139
 msgid "esabmf"
 msgstr "zsabme"
 
-#: compose.c:152
+#: compose.c:153
 msgid "Sign as: "
 msgstr "Podpisz jako: "
 
-#: compose.c:177
+#: compose.c:178
 msgid "This doesn't make sense if you don't want to sign the message."
 msgstr "Czynno¶æ nie ma sensu, je¿eli nie chcesz podpisywaæ listu."
 
-#: compose.c:188
+#: compose.c:189
 msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
 msgstr "Nieznany algorytm MIC, dozwolone s±: pgp-md5, pgp-sha1, pgp-rmd160"
 
-#: compose.c:253
+#: compose.c:254
 #, c-format
 msgid "%s [#%d] no longer exists!"
 msgstr "%s [#%d] ju¿ nie istnieje!"
 
-#: compose.c:261
+#: compose.c:262
 #, c-format
 msgid "%s [#%d] modified. Update encoding?"
 msgstr "%s [#%d] zmieniony. Zaktualizowaæ kodowanie?"
 
-#: compose.c:305
+#: compose.c:308
 msgid "-- Attachments"
 msgstr "-- Za³±czniki"
 
-#: compose.c:348
+#: compose.c:352
 msgid "You may not delete the only attachment."
 msgstr "Nie mo¿esz usun±æ jedynego za³±cznika."
 
-#: compose.c:391
+#: compose.c:396
 msgid "Can't change character set for non-text attachments!"
 msgstr ""
 "Nie mo¿na zmieniæ zestawu znaków dla za³±czników nie bêd±cych tekstem! "
 
-#: compose.c:397
+#: compose.c:402
 msgid "Enter character set: "
 msgstr "Podaj zestaw znaków: "
 
-#: compose.c:404
-msgid "UTF-8 encoding attachments has not yet been implemented."
-msgstr "Za³±czniki zakodowane UTF-8 nie s± jescze obs³ugowane."
-
-#: compose.c:410
+#: compose.c:407
 #, c-format
 msgid "Character set %s is unknown."
 msgstr "Nieznany zestaw znaków %s."
 
-#: compose.c:454
+#: compose.c:453
 msgid "Compose"
 msgstr "Nowy list"
 
@@ -569,104 +561,100 @@ msgstr "Zaznacz listy do do³±czenia!"
 msgid "Unable to attach!"
 msgstr "Nie mo¿na do³±czyæ!"
 
-#: compose.c:765 compose.c:790
+#: compose.c:765 compose.c:785
 msgid "Recoding only affects text attachments."
 msgstr "Tylko tekstowe za³±czniki mo¿na przekodowaæ."
 
 #: compose.c:770
-msgid "We currently can't encode to utf-8."
-msgstr "Kodowanie utf-8 nie jest jeszcze obs³ugiwane."
-
-#: compose.c:775
 msgid "The current attachment won't be converted."
 msgstr "Bie¿±cy za³acznik nie zostanie przekonwertowany."
 
-#: compose.c:777
+#: compose.c:772
 msgid "The current attachment will be converted."
 msgstr "Bie¿±cy za³acznik zostanie przekonwertowany."
 
-#: compose.c:806
+#: compose.c:801
 msgid "Recoding successful."
 msgstr "Zmiana kodowania powiod³a siê."
 
-#: compose.c:880
+#: compose.c:875
 msgid "Invalid encoding."
 msgstr "B³êdne kodowanie."
 
-#: compose.c:901
+#: compose.c:896
 msgid "Save a copy of this message?"
 msgstr "Zapisaæ kopiê tego listu?"
 
-#: compose.c:955
+#: compose.c:950
 msgid "Rename to: "
 msgstr "Zmieñ nazwê na: "
 
-#: compose.c:960 editmsg.c:96
+#: compose.c:955 editmsg.c:96
 #, c-format
 msgid "Can't stat: %s"
 msgstr "Nie mo¿na ustaliæ statusu: %s"
 
-#: compose.c:986
+#: compose.c:981
 msgid "New file: "
 msgstr "Nowy plik: "
 
-#: compose.c:999
+#: compose.c:994
 msgid "Content-Type is of the form base/sub"
 msgstr "Typ \"Content-Type\" musi byæ w postaci podstawowy/po¶ledni"
 
-#: compose.c:1005
+#: compose.c:1000
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Nieznany rodzaj \"Content-Type\" %s"
 
-#: compose.c:1018
+#: compose.c:1013
 #, c-format
 msgid "Can't create file %s"
 msgstr "Nie mo¿na utworzyæ %s"
 
-#: compose.c:1026
+#: compose.c:1021
 msgid "What we have here is a failure to make an attachment"
 msgstr "Mamy tu b³±d tworzenia za³±cznika"
 
-#: compose.c:1087
+#: compose.c:1082
 msgid "Postpone this message?"
 msgstr "Zachowaæ ten list do pó¼niejszej obróbki i ewentualnej wysy³ki?"
 
-#: compose.c:1141
+#: compose.c:1136
 msgid "Write message to mailbox"
 msgstr "Zapisz list do skrzynki"
 
-#: compose.c:1144
+#: compose.c:1139
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Zapisywanie listu do %s ..."
 
-#: compose.c:1153
+#: compose.c:1148
 msgid "Message written."
 msgstr "List zapisany."
 
-#: curs_lib.c:143
+#: curs_lib.c:145
 msgid "yes"
 msgstr "tak"
 
-#: curs_lib.c:144
+#: curs_lib.c:146
 msgid "no"
 msgstr "nie"
 
 #. restore blocking operation
-#: curs_lib.c:183
+#: curs_lib.c:198
 msgid "Exit Mutt?"
 msgstr "Wyj¶æ z Mutta?"
 
-#: curs_lib.c:283
+#: curs_lib.c:288
 msgid "unknown error"
 msgstr "nieznany b³±d"
 
-#: curs_lib.c:303
+#: curs_lib.c:308
 msgid "Press any key to continue..."
 msgstr "Naci¶nij dowolny klawisz by kontynuowaæ..."
 
-#: curs_lib.c:347
+#: curs_lib.c:352
 msgid " ('?' for list): "
 msgstr " (przyci¶niêcie '?' wy¶wietla listê): "
 
@@ -678,11 +666,11 @@ msgstr "Nie otwarto ¿adnej skrzynki."
 msgid "There are no messages."
 msgstr "Brak listów."
 
-#: curs_main.c:57 mx.c:1036 pager.c:61 recvattach.c:47
+#: curs_main.c:57 mx.c:1036 pager.c:62 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "Skrzynka jest tylko do odczytu."
 
-#: curs_main.c:58 pager.c:62 recvattach.c:764
+#: curs_main.c:58 pager.c:63 recvattach.c:764
 msgid "Function not permitted in attach-message mode."
 msgstr "Funkcja niedostêpna w trybie za³±czania"
 
@@ -702,7 +690,7 @@ msgstr "Zmiany w folderze nie zostan± naniesione."
 msgid "Quit"
 msgstr "Wyjd¼"
 
-#: curs_main.c:370 pager.c:1392 postpone.c:38
+#: curs_main.c:370 pager.c:1366 postpone.c:38
 msgid "Del"
 msgstr "Usuñ"
 
@@ -714,7 +702,7 @@ msgstr "Odtwórz"
 msgid "Mail"
 msgstr "Wy¶lij"
 
-#: curs_main.c:374 pager.c:1393
+#: curs_main.c:374 pager.c:1367
 msgid "Reply"
 msgstr "Odpowiedz"
 
@@ -813,11 +801,11 @@ msgstr "Brak odtworzonych listów."
 msgid "You are on the first message."
 msgstr "To jest pierwszy list."
 
-#: curs_main.c:1204 pattern.c:1123
+#: curs_main.c:1204 pattern.c:1126
 msgid "Search wrapped to top."
 msgstr "Kontynuacja poszukiwania od pocz±tku."
 
-#: curs_main.c:1213 pattern.c:1134
+#: curs_main.c:1213 pattern.c:1137
 msgid "Search wrapped to bottom."
 msgstr "Kontynuacja poszukiwania od koñca."
 
@@ -845,7 +833,8 @@ msgstr "To pierwszy w±tek."
 msgid "Thread contains unread messages."
 msgstr "Watek zawiera nieprzeczytane listy."
 
-#: curs_main.c:1456 flags.c:228 thread.c:651 thread.c:702
+#: curs_main.c:1456 flags.c:228 thread.c:651 thread.c:702 thread.c:898
+#: thread.c:940
 msgid "Threading is not enabled."
 msgstr "W±tkowanie nie zosta³o w³±czone."
 
@@ -1078,15 +1067,15 @@ msgstr "(przypisz 'view-attachments' do klawisza!)"
 msgid "%s: unable to attach file"
 msgstr "%s: nie mo¿na do³±czyæ pliku"
 
-#: help.c:273
+#: help.c:269
 msgid "ERROR: please report this bug"
 msgstr "B£¡D: zg³o¶, proszê, ten b³±d"
 
-#: help.c:315
+#: help.c:311
 msgid "<UNKNOWN>"
 msgstr "<NIEZNANY>"
 
-#: help.c:327
+#: help.c:323
 msgid ""
 "\n"
 "Generic bindings:\n"
@@ -1096,7 +1085,7 @@ msgstr ""
 "Standardowe przypisania klawiszy:\n"
 "\n"
 
-#: help.c:331
+#: help.c:327
 msgid ""
 "\n"
 "Unbound functions:\n"
@@ -1106,7 +1095,7 @@ msgstr ""
 "Nie przypisane klawiszom funkcje:\n"
 "\n"
 
-#: help.c:339
+#: help.c:335
 #, c-format
 msgid "Help for %s"
 msgstr "Pomoc dla menu %s"
@@ -1206,7 +1195,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Nie mo¿na dopisaæ do skrzynek IMAP na tym serwerze"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:809 imap/message.c:640 muttlib.c:984
+#: imap/imap.c:809 imap/message.c:640 muttlib.c:986
 #, c-format
 msgid "Create %s?"
 msgstr "Utworzyæ %s?"
@@ -1367,102 +1356,102 @@ msgstr "Kontynuowaæ?"
 msgid "%s [%s]\n"
 msgstr "%s [%s]\n"
 
-#: init.c:487
+#: init.c:488
 msgid "alias: no address"
 msgstr "alias: brak adresu"
 
-#: init.c:581
+#: init.c:582
 msgid "invalid header field"
 msgstr "nieprawid³owy nag³ówek"
 
-#: init.c:634
+#: init.c:635
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: nieznana metoda sortowania"
 
-#: init.c:710
+#: init.c:711
 #, c-format
 msgid "mutt_restore_default: error in regexp: %s\n"
 msgstr "mutt_restore_default: b³±d w wyra¿eniu regularnym: %s\n"
 
-#: init.c:770
+#: init.c:771
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: nieznana zmienna"
 
-#: init.c:779
+#: init.c:780
 msgid "prefix is illegal with reset"
 msgstr "reset: nieprawid³owy prefiks"
 
-#: init.c:785
+#: init.c:786
 msgid "value is illegal with reset"
 msgstr "reset: nieprawid³owa warto¶æ"
 
-#: init.c:824
+#: init.c:825
 #, c-format
 msgid "%s is set"
 msgstr "%s ustawiony"
 
-#: init.c:824
+#: init.c:825
 #, c-format
 msgid "%s is unset"
 msgstr "%s nie jest ustawiony"
 
-#: init.c:1028
+#: init.c:1030
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: nieprawid³owy typ skrzynki"
 
-#: init.c:1053 init.c:1098
+#: init.c:1055 init.c:1100
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: nieprawid³owa warto¶æ"
 
-#: init.c:1156
+#: init.c:1158
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: nieprawid³owy typ"
 
-#: init.c:1197
+#: init.c:1199
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "B³±d w %s, linia %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1213
+#: init.c:1215
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: b³êdy w %s"
 
-#: init.c:1214
+#: init.c:1216
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr "source: wczytywanie zaniechane z powodu zbyt wielu b³êdów w %s"
 
-#: init.c:1228
+#: init.c:1230
 #, c-format
 msgid "source: error at %s"
 msgstr "source: b³êdy w %s"
 
-#: init.c:1233
+#: init.c:1235
 msgid "source: too many arguments"
 msgstr "source: zbyt wiele argumentów"
 
-#: init.c:1284
+#: init.c:1286
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: nieznane polecenie"
 
-#: init.c:1641
+#: init.c:1643
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "B³±d w poleceniu: %s\n"
 
-#: init.c:1684
+#: init.c:1686
 msgid "unable to determine home directory"
 msgstr "nie mo¿na ustaliæ po³o¿enia katalogu domowego"
 
-#: init.c:1692
+#: init.c:1694
 msgid "unable to determine username"
 msgstr "nie mo¿na ustaliæ nazwy u¿ytkownika"
 
@@ -2501,80 +2490,80 @@ msgstr "Nie mo¿na ponownie otworzyæ foldera poczty!"
 msgid "Reopening mailbox..."
 msgstr "Ponowne otwieranie skrzynki..."
 
-#: menu.c:354
+#: menu.c:394
 msgid "Jump to: "
 msgstr "Przeskocz do: "
 
-#: menu.c:363
+#: menu.c:403
 msgid "Invalid index number."
 msgstr "Niew³a¶ciwy numer indeksu."
 
-#: menu.c:367 menu.c:385 menu.c:421 menu.c:462 menu.c:478 menu.c:489
-#: menu.c:500 menu.c:542 menu.c:553 menu.c:566 menu.c:579 menu.c:941
+#: menu.c:407 menu.c:425 menu.c:461 menu.c:502 menu.c:518 menu.c:529
+#: menu.c:540 menu.c:582 menu.c:593 menu.c:606 menu.c:619 menu.c:981
 msgid "No entries."
 msgstr "Brak pozycji."
 
-#: menu.c:382
+#: menu.c:422
 msgid "You cannot scroll down farther."
 msgstr "Nie mo¿na ni¿ej przewin±æ."
 
-#: menu.c:398
+#: menu.c:438
 msgid "You cannot scroll up farther."
 msgstr "Nie mo¿na wy¿ej przewin±æ."
 
-#: menu.c:418
+#: menu.c:458
 msgid "You are on the last page."
 msgstr "To jest ostatnia strona."
 
-#: menu.c:440
+#: menu.c:480
 msgid "You are on the first page."
 msgstr "To jest pierwsza strona."
 
-#: menu.c:519
+#: menu.c:559
 msgid "First entry is shown."
 msgstr "Pokazana jest pierwsza pozycja."
 
-#: menu.c:539
+#: menu.c:579
 msgid "Last entry is shown."
 msgstr "Pokazana jest ostatnia pozycja."
 
-#: menu.c:590
+#: menu.c:630
 msgid "You are on the last entry."
 msgstr "To jest ostatnia pozycja."
 
-#: menu.c:601
+#: menu.c:641
 msgid "You are on the first entry."
 msgstr "To jest pierwsza pozycja."
 
-#: menu.c:661 pattern.c:1069
+#: menu.c:701 pattern.c:1072
 msgid "Search for: "
 msgstr "Szukaj frazy: "
 
-#: menu.c:662
+#: menu.c:702
 msgid "Reverse search for: "
 msgstr "Szukaj frazy w przeciwnym kierunku: "
 
-#: menu.c:672 pattern.c:1102
+#: menu.c:712 pattern.c:1105
 msgid "No search pattern."
 msgstr "Nie ustalono wzorca poszukiwañ."
 
-#: menu.c:702 pager.c:1857 pager.c:1873 pager.c:1961 pattern.c:1167
+#: menu.c:742 pager.c:1833 pager.c:1849 pager.c:1937 pattern.c:1170
 msgid "Not found."
 msgstr "Nic nie znaleziono."
 
-#: menu.c:811
+#: menu.c:851
 msgid "No tagged entries."
 msgstr "Brak zaznaczonych pozycji listy."
 
-#: menu.c:904
+#: menu.c:944
 msgid "Search is not implemented for this menu."
 msgstr "Poszukiwanie nie jest mo¿liwe w tym menu."
 
-#: menu.c:909
+#: menu.c:949
 msgid "Jumping is not implemented for dialogs."
 msgstr ""
 
-#: menu.c:944
+#: menu.c:984
 msgid "Tagging is not supported."
 msgstr "Zaznaczanie nie jest obs³ugiwane."
 
@@ -2599,12 +2588,12 @@ msgstr "Plik istnieje: (n)adpisaæ, (d)o³±czyæ czy (a)nulowaæ?"
 msgid "oac"
 msgstr "nda"
 
-#: muttlib.c:960
+#: muttlib.c:962
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s nie jest skrzynk±!"
 
-#: muttlib.c:966
+#: muttlib.c:968
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Dopisaæ listy do %s?"
@@ -2714,52 +2703,52 @@ msgstr "%d zapisano."
 msgid "Can't write message"
 msgstr "Nie mo¿na zapisaæ listu"
 
-#: pager.c:60
+#: pager.c:61
 msgid "Not available in this menu."
 msgstr "Nie ma takiego polecenia w tym menu."
 
-#: pager.c:1386
+#: pager.c:1360
 msgid "PrevPg"
 msgstr "PoprzStr"
 
-#: pager.c:1387
+#: pager.c:1361
 msgid "NextPg"
 msgstr "NastStr"
 
-#: pager.c:1391
+#: pager.c:1365
 msgid "View Attachm."
 msgstr "Zobacz za³."
 
-#: pager.c:1394
+#: pager.c:1368
 msgid "Next"
 msgstr "Nastêpny"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1769 pager.c:1800 pager.c:1829 pager.c:2049
+#: pager.c:1745 pager.c:1776 pager.c:1805 pager.c:2025
 msgid "Bottom of message is shown."
 msgstr "Pokazany jest koniec listu."
 
-#: pager.c:1785 pager.c:1807 pager.c:1818
+#: pager.c:1761 pager.c:1783 pager.c:1794
 msgid "Top of message is shown."
 msgstr "Pokazany jest pocz±tek listu."
 
-#: pager.c:1891
+#: pager.c:1867
 msgid "Reverse search: "
 msgstr "Szukaj w przeciwnym kierunku: "
 
-#: pager.c:1892
+#: pager.c:1868
 msgid "Search: "
 msgstr "Szukaj: "
 
-#: pager.c:1987
+#: pager.c:1963
 msgid "Help is currently being shown."
 msgstr "Pomoc jest w³a¶nie wy¶wietlana."
 
-#: pager.c:2016
+#: pager.c:1992
 msgid "No more quoted text."
 msgstr "Nie ma wiêcej cytowanego tekstu."
 
-#: pager.c:2029
+#: pager.c:2005
 msgid "No more unquoted text after quoted text."
 msgstr "Brak tekstu za cytowanym fragmentem."
 
@@ -2767,79 +2756,79 @@ msgstr "Brak tekstu za cytowanym fragmentem."
 msgid "multipart message has no boundary parameter!"
 msgstr "wieloczê¶ciowy list nie ma warto¶ci granicznych!"
 
-#: pattern.c:239
+#: pattern.c:240
 #, c-format
 msgid "Error in expression: %s"
 msgstr "B³±d w wyra¿eniu: %s"
 
-#: pattern.c:336
+#: pattern.c:337
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "Niew³a¶ciwy dzieñ miesi±ca: %s"
 
-#: pattern.c:350
+#: pattern.c:351
 #, c-format
 msgid "Invalid month: %s"
 msgstr "Niew³a¶ciwy miesi±c: %s"
 
-#: pattern.c:404
+#: pattern.c:405
 msgid "error in expression"
 msgstr "b³±d w wyra¿eniu"
 
-#: pattern.c:589 pattern.c:697
+#: pattern.c:590 pattern.c:698
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "b³±d we wzorcu: %s"
 
-#: pattern.c:637
+#: pattern.c:638
 #, c-format
 msgid "%c: invalid command"
 msgstr "%c: b³êdne polecenie"
 
-#: pattern.c:643
+#: pattern.c:644
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: nie obs³ugiwane w tym trybie"
 
-#: pattern.c:656
+#: pattern.c:657
 msgid "missing parameter"
 msgstr "brakuj±cy parametr"
 
-#: pattern.c:672
+#: pattern.c:673
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "niesparowane nawiasy: %s"
 
-#: pattern.c:704
+#: pattern.c:705
 msgid "empty pattern"
 msgstr "pusty wzorzec"
 
-#: pattern.c:894
+#: pattern.c:897
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "b³±d: nieznany op %d (zg³o¶ ten b³±d)."
 
-#: pattern.c:959 pattern.c:1088
+#: pattern.c:962 pattern.c:1091
 msgid "Compiling search pattern..."
 msgstr "Kompilacja wzorca poszukiwañ..."
 
-#: pattern.c:973
+#: pattern.c:976
 msgid "Executing command on matching messages..."
 msgstr "Wykonywanie polecenia na pasuj±cych do wzorca listach..."
 
-#: pattern.c:1036
+#: pattern.c:1039
 msgid "No messages matched criteria."
 msgstr "¯aden z listów nie spe³nia kryteriów."
 
-#: pattern.c:1126
+#: pattern.c:1129
 msgid "Search hit bottom without finding match"
 msgstr "Poszukiwanie dotar³o do koñca bez znalezienia frazy"
 
-#: pattern.c:1137
+#: pattern.c:1140
 msgid "Search hit top without finding match"
 msgstr "Poszukiwanie dotar³o do pocz±tku bez znalezienia frazy"
 
-#: pattern.c:1159
+#: pattern.c:1162
 msgid "Search interrupted."
 msgstr "Przeszukiwanie przerwano."
 
@@ -3138,7 +3127,7 @@ msgstr "Nie mo¿na ustaliæ adresu serwera %s."
 msgid "Connecting to %s"
 msgstr "£±czenie z %s"
 
-#: pop.c:166 pop.c:341
+#: pop.c:166 pop.c:344
 msgid "Server closed connection!"
 msgstr "Serwer zamkn±³ po³±czenie!"
 
@@ -3147,29 +3136,34 @@ msgid "No new mail in POP mailbox."
 msgstr "Brak nowej poczty w folderze poczty POP."
 
 #: pop.c:209
+#, fuzzy
+msgid "Delete messages from server?"
+msgstr "Kasowanie listów na serwerze... "
+
+#: pop.c:212
 #, c-format
 msgid "Reading new messages (%d bytes)..."
 msgstr "Czytanie nowych listów (%d bajtów)..."
 
-#: pop.c:210
+#: pop.c:213
 #, c-format
 msgid "Reading new message (%d bytes)..."
 msgstr "Czytanie nowego listu (%d bajtów)..."
 
-#: pop.c:245
+#: pop.c:248
 msgid "Error reading message!"
 msgstr "B³±d czytania listu!"
 
-#: pop.c:281
+#: pop.c:284
 msgid "Error while writing mailbox!"
 msgstr "B³±d podczas zapisywania skrzynki!"
 
-#: pop.c:308
+#: pop.c:311
 #, c-format
 msgid "%s [%d of %d messages read]"
 msgstr "%s [przeczytano %d spo¶ród %d listów]"
 
-#: pop.c:310
+#: pop.c:313
 #, c-format
 msgid "%s [%d message read]"
 msgstr "%s [przeczytano %d listów]"
@@ -3512,26 +3506,26 @@ msgstr "Poczta wys³ana."
 msgid "Sending in background."
 msgstr "Wysy³anie w tle."
 
-#: sendlib.c:455
+#: sendlib.c:441
 msgid "No boundary parameter found! [report this error]"
 msgstr "Brak parametru granicznego! (zg³o¶ ten b³±d)"
 
-#: sendlib.c:489
+#: sendlib.c:475
 #, c-format
 msgid "%s no longer exists!"
 msgstr "%s ju¿ nie istnieje!"
 
-#: sendlib.c:729
+#: sendlib.c:717
 #, c-format
 msgid "Could not open %s"
 msgstr "Nie mo¿na otworzyæ %s"
 
-#: sendlib.c:1712
+#: sendlib.c:1700
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "B³±d podczas wysy³ania listu, proces potomny opu¶ci³ %d (%s)."
 
-#: sendlib.c:1718
+#: sendlib.c:1706
 msgid "Output of the delivery process"
 msgstr "Wynik procesu dostarczania"
 
@@ -3571,3 +3565,16 @@ msgstr ""
 #: thread.c:717
 msgid "Parent message is not available."
 msgstr "Pierwszy list tego w±tku nie jest dostêpny."
+
+#: thread.c:976
+msgid "Target message not found while counting messages in thread."
+msgstr ""
+
+#~ msgid "We can't currently handle utf-8 at this point."
+#~ msgstr "utf-8 nie jest, jak na razie, obs³ugiwany."
+
+#~ msgid "UTF-8 encoding attachments has not yet been implemented."
+#~ msgstr "Za³±czniki zakodowane UTF-8 nie s± jescze obs³ugowane."
+
+#~ msgid "We currently can't encode to utf-8."
+#~ msgstr "Kodowanie utf-8 nie jest jeszcze obs³ugiwane."
