@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 1998-11-10 22:03+0100\n"
+"POT-Creation-Date: 1998-11-17 12:54+0100\n"
 "PO-Revision-Date: 1998-10-15 07:51+0300\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "Language-Team: Mutt-dev <mutt-dev@mutt.org>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=koi8-r\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: addrbook.c:32 browser.c:54 pager.c:1365 postpone.c:33 query.c:44
+#: addrbook.c:32 browser.c:54 pager.c:1369 postpone.c:33 query.c:44
 #: recvattach.c:48
 msgid "Exit"
 msgstr "Выход"
@@ -21,7 +21,7 @@ msgstr "Выход"
 msgid "Select"
 msgstr "Выбор"
 
-#: addrbook.c:34 browser.c:57 compose.c:84 curs_main.c:241 pager.c:1462
+#: addrbook.c:34 browser.c:57 compose.c:84 curs_main.c:241 pager.c:1466
 #: pgpkey.c:181 postpone.c:36 query.c:49 recvattach.c:52
 msgid "Help"
 msgstr "Подсказка"
@@ -56,7 +56,7 @@ msgstr "Полное имя: "
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] Верно?"
 
-#: alias.c:255 recvattach.c:283 recvattach.c:338
+#: alias.c:255 recvattach.c:285 recvattach.c:340
 msgid "Save to file: "
 msgstr "Записать в файл: "
 
@@ -64,7 +64,7 @@ msgstr "Записать в файл: "
 msgid "Alias added."
 msgstr "Алиас сохранён."
 
-#: attach.c:112 attach.c:235 attach.c:367 attach.c:809
+#: attach.c:112 attach.c:235 attach.c:367 attach.c:806
 msgid "Can't match nametemplate, continue?"
 msgstr "Нет подходящего имени, продолжить?"
 
@@ -108,7 +108,7 @@ msgstr "Тип MIME не определён. Присоединение не отображаемо."
 msgid "Cannot create filter"
 msgstr "Нельзя создать фильтр"
 
-#: attach.c:638 recvattach.c:313
+#: attach.c:638 recvattach.c:315
 msgid "Attachment saved."
 msgstr "Присоединение сохранено."
 
@@ -116,7 +116,7 @@ msgstr "Присоединение сохранено."
 msgid "Write fault!"
 msgstr "Ошибка записи!"
 
-#: attach.c:893
+#: attach.c:890
 msgid "I don't know how to print that!"
 msgstr "Не знаю, как это печатать!"
 
@@ -264,12 +264,12 @@ msgstr "Не удалось создать временный файл!"
 msgid "Command: "
 msgstr "Команда: "
 
-#: commands.c:243 recvattach.c:616
+#: commands.c:243 recvattach.c:618
 #, fuzzy
 msgid "Bounce message to: "
 msgstr "Переправить сообщение к: "
 
-#: commands.c:245 recvattach.c:618
+#: commands.c:245 recvattach.c:620
 #, fuzzy
 msgid "Bounce tagged messages to: "
 msgstr "Переправить отмеченные сообщения к: "
@@ -586,7 +586,7 @@ msgstr "Изменения не будут сохраняться."
 msgid "Quit"
 msgstr "Выход"
 
-#: curs_main.c:235 pager.c:1372 postpone.c:34
+#: curs_main.c:235 pager.c:1376 postpone.c:34
 msgid "Del"
 msgstr "Уд."
 
@@ -598,7 +598,7 @@ msgstr "Не уд."
 msgid "Mail"
 msgstr "Письмо"
 
-#: curs_main.c:239 pager.c:1373
+#: curs_main.c:239 pager.c:1377
 msgid "Reply"
 msgstr "Ответ"
 
@@ -837,75 +837,92 @@ msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr ""
 "[-- Ошибка: Не удалось показать ни одной части Multipart/Alternative! --]\n"
 
-#: handler.c:1072
+#: handler.c:1071
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- Присоединение #%d"
 
-#: handler.c:1085
+#: handler.c:1082
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Тип: %s/%s, Кодирование: %s, Размер: %s --]\n"
 
-#: handler.c:1152
+#: handler.c:1141
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Авто-просмотр средствами %s --]\n"
 
-#: handler.c:1154
+#: handler.c:1142
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Вызов команды авто-просмотра: %s"
 
-#: handler.c:1194 handler.c:1217
+#: handler.c:1179 handler.c:1197
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Вывод сообщения об ошибке авто-просмотра %s --]\n"
 
-#: handler.c:1250
+#: handler.c:1229
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr ""
 
-#: handler.c:1270
+#: handler.c:1252
+#, fuzzy, c-format
+msgid "[-- This %s/%s attachment "
+msgstr "[-- Присоединение #%d"
+
+#: handler.c:1259
 #, c-format
-msgid "[-- This %s/%s attachment is deleted --]\n"
+msgid "(size %s bytes) "
 msgstr ""
 
-#: handler.c:1273
+#: handler.c:1261
+msgid "has been deleted --]\n"
+msgstr ""
+
+#: handler.c:1264
 #, fuzzy, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- Авто-просмотр средствами %s --]\n"
 
-#: handler.c:1284
+#: handler.c:1274
 #, c-format
 msgid ""
-"[-- This %s/%s attachment is not included --]\n"
+"[-- This %s/%s attachment is not included, --]\n"
+"[-- and the indicated external source has --]\n"
+"[-- expired. --]\n"
+msgstr ""
+
+#: handler.c:1288
+#, c-format
+msgid ""
+"[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 
-#: handler.c:1381
+#: handler.c:1385
 msgid "Error: multipart/signed has no protocol."
 msgstr "Ошибка: сообщение с подписью без протокола."
 
-#: handler.c:1393
+#: handler.c:1397
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Ошибка: зашифрованное сообщение без параметра протокола!"
 
-#: handler.c:1435
+#: handler.c:1439
 msgid "Unable to open temporary file!"
 msgstr "Нельзя открыть временный файл!"
 
-#: handler.c:1494
+#: handler.c:1498
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s не поддерживается "
 
-#: handler.c:1499
+#: handler.c:1503
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(используйте '%s' для просмотра)"
 
-#: handler.c:1501
+#: handler.c:1505
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(нужно назначить 'view-attachments' на клавишу!)"
 
@@ -997,7 +1014,7 @@ msgstr "Регистрация..."
 msgid "Selecting %s..."
 msgstr "Выбор %s..."
 
-#: imap.c:1084 lib.c:1168
+#: imap.c:1084 lib.c:1154
 #, c-format
 msgid "Create %s?"
 msgstr "Создать %s?"
@@ -1837,24 +1854,24 @@ msgstr "расшифровать"
 msgid "Out of memory!"
 msgstr "Мало памяти!"
 
-#: lib.c:755
+#: lib.c:741
 msgid "File is a directory, save under it?"
 msgstr "Файл является каталогом, сохранить ниже?"
 
-#: lib.c:760
+#: lib.c:746
 msgid "File under directory: "
 msgstr "Файл в каталоге: "
 
-#: lib.c:771
+#: lib.c:757
 msgid "File exists, overwrite?"
 msgstr "Файл существует, переписать?"
 
-#: lib.c:1144
+#: lib.c:1130
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s - это не почтовый ящик!"
 
-#: lib.c:1150
+#: lib.c:1136
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Добавить сообщения к %s?"
@@ -1878,6 +1895,9 @@ msgid ""
 "Copyright (C) 1998   Werner Koch <wk@isil.d.shuttle.de>\n"
 "Copyright (C) 1998   Ruslan Ermilov <ru@ucb.crimea.ua>\n"
 "\n"
+"Lots of others not mentioned here contributed lots of code,\n"
+"fixes, and suggestions.\n"
+"\n"
 "    This program is free software; you can redistribute it and/or modify\n"
 "    it under the terms of the GNU General Public License as published by\n"
 "    the Free Software Foundation; either version 2 of the License, or\n"
@@ -1893,7 +1913,7 @@ msgid ""
 "    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n"
 msgstr ""
 
-#: main.c:71
+#: main.c:74
 msgid ""
 "\n"
 "SHA1 implementation Copyright (C) 1995-7 Eric A. Young <eay@cryptsoft.com>\n"
@@ -1909,7 +1929,7 @@ msgid ""
 "    along with this program; if not, write to the program's developers.\n"
 msgstr ""
 
-#: main.c:97
+#: main.c:100
 msgid ""
 "usage: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
 "]\n"
@@ -1967,33 +1987,33 @@ msgstr ""
 "  -Z\t\tоткрыть первую папку с новым сообщением, иначе сразу выйти\n"
 "  -h\t\tэта подсказка"
 
-#: main.c:303
+#: main.c:306
 msgid "Error initializing terminal."
 msgstr "Ошибка инициализации терминала."
 
-#: main.c:399
+#: main.c:402
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Отладка с уровнем %d.\n"
 
-#: main.c:401
+#: main.c:404
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG не определён при компиляции, игнорируется.\n"
 
-#: main.c:539
+#: main.c:542
 msgid "No recipients specified.\n"
 msgstr "Не указано получателей.\n"
 
-#: main.c:612
+#: main.c:615
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: файл нельзя присоединить.\n"
 
-#: main.c:632
+#: main.c:635
 msgid "No mailbox with new mail."
 msgstr "Нет почтовых ящиков с новой почтой."
 
-#: main.c:666
+#: main.c:669
 msgid "Mailbox is empty."
 msgstr "Почтовый ящик совершенно пуст."
 
@@ -2095,7 +2115,7 @@ msgstr "Искать назад: "
 msgid "No search pattern."
 msgstr "Искомое не найдено."
 
-#: menu.c:627 pager.c:1825 pager.c:1841 pager.c:1928 pattern.c:1125
+#: menu.c:627 pager.c:1829 pager.c:1845 pager.c:1932 pattern.c:1125
 msgid "Not found."
 msgstr "Не найдено."
 
@@ -2197,52 +2217,52 @@ msgstr "Почтовый ящик маркирован незаписываемым. %s"
 msgid "Mailbox is read-only."
 msgstr "Этот почтовый ящик можно только читать."
 
-#: pager.c:1366
+#: pager.c:1370
 msgid "PrevPg"
 msgstr "ПредСтр"
 
-#: pager.c:1367
+#: pager.c:1371
 msgid "NextPg"
 msgstr "СледСтр"
 
-#: pager.c:1371
+#: pager.c:1375
 msgid "View Attachm."
 msgstr "Присоед."
 
-#: pager.c:1374
+#: pager.c:1378
 msgid "Next"
 msgstr "След."
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1737 pager.c:1768 pager.c:1797 pager.c:2016
+#: pager.c:1741 pager.c:1772 pager.c:1801 pager.c:2020
 msgid "Bottom of message is shown."
 msgstr "Перед вами конец сообщения."
 
-#: pager.c:1753 pager.c:1775 pager.c:1786
+#: pager.c:1757 pager.c:1779 pager.c:1790
 msgid "Top of message is shown."
 msgstr "Перед вами начало сообщения."
 
-#: pager.c:1859
+#: pager.c:1863
 msgid "Reverse search: "
 msgstr "Искать назад: "
 
-#: pager.c:1860
+#: pager.c:1864
 msgid "Search: "
 msgstr "Искать: "
 
-#: pager.c:1954
+#: pager.c:1958
 msgid "Help is currently being shown."
 msgstr "Подсказка уже перед вами."
 
-#: pager.c:1983
+#: pager.c:1987
 msgid "No more quoted text."
 msgstr "Больше нет цитируемого текста."
 
-#: pager.c:1996
+#: pager.c:2000
 msgid "No more unquoted text after quoted text."
 msgstr "После цитируемого текста нет ничего."
 
-#: parse.c:479
+#: parse.c:500
 msgid "multipart message has no boundary parameter!"
 msgstr "Многочастное сообщение не имеет параметра разделителя!"
 
@@ -2437,7 +2457,7 @@ msgstr ""
 "[-- Ошибка: не удалось создать подпроцесс PGP! --]\n"
 "\n"
 
-#: pgp.c:968
+#: pgp.c:959
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -2445,11 +2465,11 @@ msgstr ""
 "[-- Ошибка: несформированное сообщение PGP/MIME! --]\n"
 "\n"
 
-#: pgp.c:981
+#: pgp.c:972
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Ошибка: не удалось создать временный файл! --]\n"
 
-#: pgp.c:990
+#: pgp.c:981
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -2457,7 +2477,7 @@ msgstr ""
 "[-- Следующие данные зашифрованы PGP/MIME --]\n"
 "\n"
 
-#: pgp.c:998
+#: pgp.c:989
 msgid ""
 "\n"
 "[-- End of PGP/MIME encrypted data --]\n"
@@ -2465,16 +2485,16 @@ msgstr ""
 "\n"
 "[-- Конец зашифрованных PGP/MIME данных --]\n"
 
-#: pgp.c:1081
+#: pgp.c:1072
 msgid "Can't open PGP subprocess!"
 msgstr "Не удалось открыть подпроцесс PGP!"
 
-#: pgp.c:1215
+#: pgp.c:1206
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Использовать keyID = \"%s\" для %s?"
 
-#: pgp.c:1221
+#: pgp.c:1212
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Введите keyID для %s: "
@@ -2713,71 +2733,71 @@ msgstr "Конвейер"
 msgid "Print"
 msgstr "Печать"
 
-#: recvattach.c:310
+#: recvattach.c:312
 msgid "Saving..."
 msgstr "Сохранение..."
 
-#: recvattach.c:371
+#: recvattach.c:373
 msgid "Attachment saved"
 msgstr "Присоединение сохранено"
 
-#: recvattach.c:383
+#: recvattach.c:385
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "ОСТОРОЖНО!  Вы перезапишете %s, будете продолжать?"
 
-#: recvattach.c:401
+#: recvattach.c:403
 msgid "Attachment filtered."
 msgstr "Присоединение отфильтровано."
 
-#: recvattach.c:467
+#: recvattach.c:469
 msgid "Filter through: "
 msgstr "Через фильтр: "
 
-#: recvattach.c:467
+#: recvattach.c:469
 msgid "Pipe to: "
 msgstr "В конвейер: "
 
-#: recvattach.c:502
+#: recvattach.c:504
 #, c-format
 msgid "I dont know how to print %s attachments!"
 msgstr "Я не знаю, как печатать присоединения %s!"
 
-#: recvattach.c:565
+#: recvattach.c:567
 msgid "Print tagged attachment(s)?"
 msgstr "Печатать отмеченные присоединения?"
 
-#: recvattach.c:565
+#: recvattach.c:567
 msgid "Print attachment?"
 msgstr "Печатать присоединение?"
 
-#: recvattach.c:593
+#: recvattach.c:595
 msgid "You may only bounce message/rfc822 parts."
 msgstr "Можно переправлять только message/rfc822 части."
 
-#: recvattach.c:629
+#: recvattach.c:631
 #, c-format
 msgid "Bounce messages to %s...?"
 msgstr "Переправить сообщения %s...?"
 
-#: recvattach.c:630
+#: recvattach.c:632
 #, c-format
 msgid "Bounce message to %s...?"
 msgstr "Переправить сообщение %s...?"
 
-#: recvattach.c:855
+#: recvattach.c:857
 msgid "Attachments"
 msgstr "Присоединения"
 
-#: recvattach.c:910
-msgid "Only deletion of multipart attachments is supported."
-msgstr "Поддерживается только удаление в многочастных сообщениях."
-
-#: recvattach.c:918
+#: recvattach.c:914
 msgid "Deletion of attachments from PGP messages is unsupported."
 msgstr "Удаление присоединений в сообщениях PGP не поддерживается."
 
-#: recvattach.c:994
+#: recvattach.c:934 recvattach.c:951
+msgid "Only deletion of multipart attachments is supported."
+msgstr "Поддерживается только удаление в многочастных сообщениях."
+
+#: recvattach.c:1001
 msgid "This operation is not currently supported for PGP messages."
 msgstr "Для сообщений PGP эта операция сейчас не поддерживается."
 
