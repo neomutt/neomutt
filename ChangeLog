@@ -1,3 +1,16 @@
+2002-12-10 20:56:52  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* imap/command.c, imap/imap.c, imap/message.c, imap/utf7.c,
+	imap/util.c, score.c, send.c, sendlib.c, smime.c, thread.c, url.c,
+	addrbook.c, alias.c, attach.c, browser.c, buffy.c, charset.c,
+	color.c, compose.c, copy.c, crypt.c, curs_main.c, enter.c,
+	gnupgparse.c, hash.c, history.c, hook.c, init.c, lib.c, main.c,
+	mbox.c, menu.c, mh.c, mutt_ssl.c, mutt_ssl_nss.c, muttlib.c,
+	mx.c, pager.c, parse.c, pattern.c, pgp.c, pgpkey.c, pgplib.c,
+	pgppacket.c, pgppubring.c, pop.c, pop_auth.c, postpone.c,
+	query.c, recvattach.c, remailer.c, rfc1524.c, rfc2047.c,
+	rfc2231.c, rfc822.c: Replace safe_free calls by the FREE macro.
+
 2002-12-09 19:06:40  Thomas Roessler  <roessler@does-not-exist.org>
 
 	* Makefile.am: Minor formatting fix.
