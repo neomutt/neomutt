@@ -17,6 +17,14 @@
  */ 
 
 
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif
+
+#ifdef HAVE_INTTYPES_H
+# include <inttypes.h>
+#endif
+
 #include "mbyte.h"
 
 #ifdef DEBUG
@@ -107,7 +115,7 @@ void *mutt_hcache_open(const char *path, const char *folder);
 void mutt_hcache_close(void *db);
 HEADER *mutt_hcache_restore(const unsigned char *d, HEADER **oh);
 void *mutt_hcache_fetch(void *db, const char *filename, size_t (*keylen)(const char *fn));
-int mutt_hcache_store(void *db, const char *filename, HEADER *h, unsigned long long uid_validity, size_t (*keylen)(const char *fn));
+int mutt_hcache_store(void *db, const char *filename, HEADER *h, uint64_t uid_validity, size_t (*keylen)(const char *fn));
 int mutt_hcache_delete(void *db, const char *filename, size_t (*keylen)(const char *fn));
 #endif /* USE_HCACHE */
 

@@ -65,7 +65,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 
 #if USE_HCACHE
   void *hc   = NULL;
-  unsigned long long *uid_validity = NULL;
+  uint64_t *uid_validity = NULL;
   char uid_buf[64];
 #endif /* USE_HCACHE */
 
@@ -150,7 +150,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       fputs ("\n\n", fp);
 
       sprintf(uid_buf, "/%u", h.data->uid); /* XXX --tg 21:41 04-07-11 */
-      uid_validity = (unsigned long long *) mutt_hcache_fetch (hc, uid_buf, &imap_hcache_keylen);
+      uid_validity = (uint64_t *) mutt_hcache_fetch (hc, uid_buf, &imap_hcache_keylen);
 
       if (uid_validity != NULL
       && *uid_validity == idata->uid_validity) {

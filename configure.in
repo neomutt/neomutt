@@ -3,27 +3,24 @@ dnl Process this file with autoconf to produce a configure script.
 dnl !!! WHEN ADDING NEW CONFIGURE TESTS, PLEASE ADD CODE TO MAIN.C !!!
 dnl !!! TO DUMP THEIR RESULTS WHEN MUTT -V IS CALLED            !!!
 
-AC_PREREQ(2.12)
-AC_INIT(mutt.h)
-AM_CONFIG_HEADER(config.h)
+AC_PREREQ([2.54])
+AC_INIT([mutt.h])
+AM_CONFIG_HEADER([config.h])
 
 mutt_cv_version=`cat $srcdir/VERSION`
 
-
 AM_INIT_AUTOMAKE(mutt, $mutt_cv_version)
 AC_GNU_SOURCE
-
-ifdef([AC_LIBOBJ], , [define([AC_LIBOBJ], [LIB[]OBJS="$LIBOBJS $1.o"])])
 
 ALL_LINGUAS="de ru it es uk fr pl nl cs id sk ko el zh_TW zh_CN pt_BR eo gl sv da lt tr ja hu et ca bg"
 
 AC_CANONICAL_HOST
 
-AC_MSG_CHECKING(for prefix)
+AC_MSG_CHECKING([for prefix])
 if test x$prefix = xNONE; then
-        mutt_cv_prefix=$ac_default_prefix
+  mutt_cv_prefix=$ac_default_prefix
 else
-        mutt_cv_prefix=$prefix
+  mutt_cv_prefix=$prefix
 fi
 AC_MSG_RESULT($mutt_cv_prefix)
 
@@ -58,35 +55,33 @@ else
         DEBUGGER=no
 fi
 
-AC_SUBST(DEBUGGER)
+AC_SUBST([DEBUGGER])
 
-# The following templates should be used with newer automakes
-# instead of acconfig.h
-#
-#AH_TEMPLATE([sig_atomic_t],
-#            [/* Define to `int' if <signal.h> doesn't define.])
-#AH_TEMPLATE([HAVE_START_COLOR],
-#            [Define if you have start_color, as a function or macro.])
-#AH_TEMPLATE([HAVE_TYPEAHEAD],
-#            [Define if you have typeahead, as a function or macro.])
-#AH_TEMPLATE([HAVE_BKGDSET],
-#            [Define if you have bkgdset, as a function or macro.])
-#AH_TEMPLATE([HAVE_CURS_SET],
-#            [Define if you have curs_set, as a function or macro.])
-#AH_TEMPLATE([HAVE_META],
-#            [Define if you have meta, as a function or macro.])
-#AH_TEMPLATE([HAVE_USE_DEFAULT_COLORS],
-#            [Define if you have use_default_colors, as a function or macro.])
-#AH_TEMPLATE([HAVE_RESIZETERM],
-#            [Define if you have resizeterm, as a function or macro.])
-#AH_TEMPLATE([SIG_ATOMIC_VOLATILE_T],
-#            [Some systems declare sig_atomic_t as volatile, some others -- no.
-#             This define will have value `sig_atomic_t' or
-#             `volatile sig_atomic_t' accordingly.])
-#AH_TEMPLATE([ICONV_NONTRANS],
-#            [Define as 1 if iconv() only converts exactly and we should treat
-#             all return values other than (size_t)(-1) as equivalent.])
+AH_TEMPLATE([sig_atomic_t],
+            [/* Define to `int' if <signal.h> doesn't define.])
+AH_TEMPLATE([HAVE_START_COLOR],
+            [Define if you have start_color, as a function or macro.])
+AH_TEMPLATE([HAVE_TYPEAHEAD],
+            [Define if you have typeahead, as a function or macro.])
+AH_TEMPLATE([HAVE_BKGDSET],
+            [Define if you have bkgdset, as a function or macro.])
+AH_TEMPLATE([HAVE_CURS_SET],
+            [Define if you have curs_set, as a function or macro.])
+AH_TEMPLATE([HAVE_META],
+            [Define if you have meta, as a function or macro.])
+AH_TEMPLATE([HAVE_USE_DEFAULT_COLORS],
+            [Define if you have use_default_colors, as a function or macro.])
+AH_TEMPLATE([HAVE_RESIZETERM],
+            [Define if you have resizeterm, as a function or macro.])
+AH_TEMPLATE([SIG_ATOMIC_VOLATILE_T],
+            [Some systems declare sig_atomic_t as volatile, some others -- no.
+             This define will have value `sig_atomic_t' or
+             `volatile sig_atomic_t' accordingly.])
+AH_TEMPLATE([ICONV_NONTRANS],
+            [Define as 1 if iconv() only converts exactly and we should treat
+             all return values other than (size_t)(-1) as equivalent.])
 
+MUTT_C99_INTTYPES
 
 ac_aux_path_sendmail=/usr/sbin:/usr/lib
 AC_PATH_PROG(SENDMAIL, sendmail, /usr/sbin/sendmail, $PATH:$ac_aux_path_sendmail)
@@ -166,14 +161,14 @@ else
 fi
 # We now require all OPS
 OPS="$OPS \$(srcdir)/OPS.PGP \$(srcdir)/OPS.SMIME \$(srcdir)/OPS.CRYPT "
-AC_SUBST(OPS)
+AC_SUBST([OPS])
 
 
 AC_SUBST(PGPAUX_TARGET)
 AC_SUBST(SMIMEAUX_TARGET)
 
 AC_DEFINE_UNQUOTED(SUBVERSION,"$SUBVERSION",[ Is this the international version? ])
-AC_SUBST(SUBVERSION)
+AC_SUBST([SUBVERSION])
 
 AC_PATH_PROG(ISPELL, ispell, no)
 if test $ISPELL != no; then
@@ -326,33 +321,6 @@ else
 fi
 
 AC_DECL_SYS_SIGLIST
-
-dnl For MD5 and SHA1 on 64-bit systems
-AC_C_BIGENDIAN
-AC_CHECK_HEADERS(inttypes.h stdint.h)
-dnl This is the method autoconf-2.50's new AC_CHECK_TYPE macro uses.
-dnl We need to be backwards compatible to autoconf 2.13, though. -lh
-AC_MSG_CHECKING(for uint32_t)
-AC_TRY_COMPILE([
-#include <sys/types.h>
-#if HAVE_INTTYPES_H
-#include <inttypes.h>
-#else
-#if HAVE_STDINT_H
-#include <stdint.h>
-#endif
-#endif],
-[if ((uint32_t *) 0)
-  return 0;
-if (sizeof (uint32_t))
-  return 0;
-],[
-    AC_DEFINE(HAVE_UINT32_T,1,[ Define if you have the uint32_t type. ])
-    AC_MSG_RESULT(yes)
-  ], AC_MSG_RESULT(no)
-)
-AC_CHECK_SIZEOF(int)
-AC_CHECK_SIZEOF(long)
 
 AC_TYPE_PID_T
 AC_CHECK_TYPE(ssize_t, int)

@@ -60,7 +60,7 @@ static struct header_cache
 typedef union
 {
   struct timeval timeval;
-  unsigned long long uid_validity;
+  uint64_t uid_validity;
 } validate;
 
 static void *
@@ -277,7 +277,7 @@ restore_buffer(BUFFER ** b, const unsigned char *d, int *off)
   restore_char(&(*b)->data, d, off);
   restore_int(&offset, d, off);
   (*b)->dptr = (*b)->data + offset;
-  restore_int(&(*b)->dsize, d, off);
+  restore_int((unsigned int *) &(*b)->dsize, d, off);
   restore_int((unsigned int *) &(*b)->destroy, d, off);
 }
 
@@ -547,7 +547,7 @@ mutt_hcache_per_folder(const char *path, const char *folder)
  * db_store */
 static void *
 mutt_hcache_dump(void *_db, HEADER * h, int *off,
-		 unsigned long long uid_validity)
+		 uint64_t uid_validity)
 {
   struct header_cache *db = _db;
   unsigned char *d = NULL;
@@ -556,7 +556,7 @@ mutt_hcache_dump(void *_db, HEADER * h, int *off,
   d = lazy_malloc(sizeof (validate));
 
   if (uid_validity)
-    memcpy(d, &uid_validity, sizeof (long long));
+    memcpy(d, &uid_validity, sizeof (uint64_t));
   else
   {
     struct timeval now;
@@ -693,7 +693,7 @@ mutt_hcache_fetch(void *db, const char *filename,
 
 int
 mutt_hcache_store(void *db, const char *filename, HEADER * header,
-		  unsigned long long uid_validity,
+		  uint64_t uid_validity,
 		  size_t(*keylen) (const char *fn))
 {
   struct header_cache *h = db;
@@ -883,7 +883,7 @@ mutt_hcache_fetch(void *db, const char *filename,
 
 int
 mutt_hcache_store(void *db, const char *filename, HEADER * header,
-		  unsigned long long uid_validity,
+		  uint64_t uid_validity,
 		  size_t(*keylen) (const char *fn))
 {
   DBT key;
