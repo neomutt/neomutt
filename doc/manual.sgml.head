@@ -2393,17 +2393,18 @@ Attachments appear as follows:
     2 [applica/x-gunzip, base64, 422K]   ~/src/mutt-0.85.tar.gz <no description>
 </verb>
 
-The '-' denotes that Mutt will delete the file after sending the
-message.  It can be toggled with the <tt/toggle-unlink/ command
-(default: u).  The next field is the MIME content-type, and can be
-changed with the <tt/edit-type/ command (default: ^T).  The next field
-is the encoding for the attachment, which allows a binary message to
-be encoded for transmission on 7bit links.  It can be changed with the
-<tt/edit-encoding/ command (default: ^E).  The next field is the size
-of the attachment, rounded to kilobytes or megabytes.  The next field
-is the filename, which can be changed with the <tt/rename-file/ command
-(default: R).  The final field is the description of the attachment, and
-can be changed with the <tt/edit-description/ command (default: d).
+The '-' denotes that Mutt will delete the file after sending (or
+postponing, or cancelling) the message.  It can be toggled with the
+<tt/toggle-unlink/ command (default: u).  The next field is the MIME
+content-type, and can be changed with the <tt/edit-type/ command
+(default: ^T).  The next field is the encoding for the attachment,
+which allows a binary message to be encoded for transmission on 7bit
+links.  It can be changed with the <tt/edit-encoding/ command
+(default: ^E).  The next field is the size of the attachment,
+rounded to kilobytes or megabytes.  The next field is the filename,
+which can be changed with the <tt/rename-file/ command (default: R).
+The final field is the description of the attachment, and can be
+changed with the <tt/edit-description/ command (default: d).
 
 <sect1>MIME Type configuration with <tt/mime.types/
 <p>
