@@ -1,3 +1,8 @@
+2005-02-04 12:56:28  Tamotsu Takahashi  <ttakah@lapis.plala.or.jp>  (roessler)
+
+	* Makefile.am: http://bugs.guug.de/db/17/1769.html This is
+	necessary for FreeBSD.
+
 2005-02-03 19:46:53  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
 
 	* hcache.c: this is a fix for hcache.c infrastructure which is
