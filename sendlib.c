@@ -112,7 +112,7 @@ sysexits_h[] =
 
 #define DISPOSITION(X) X==DISPATTACH?"attachment":"inline"
 
-const char MimeSpecials[] = "@.,;<>[]\\\"()?/=";
+const char MimeSpecials[] = "@.,;<>[]\\\"()?/= \t";
 
 char B64Chars[64] = {
   'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
