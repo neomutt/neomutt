@@ -1250,9 +1250,9 @@ ci_send_message (int flags,		/* send mode */
 	msg->security |= SIGN;
       if (option (OPTCRYPTAUTOENCRYPT))
 	msg->security |= ENCRYPT;
-      if (option (OPTCRYPTREPLYENCRYPT) && cur && cur->security & ENCRYPT)
+      if (option (OPTCRYPTREPLYENCRYPT) && cur && (cur->security & ENCRYPT))
 	msg->security |= ENCRYPT;
-      if (option (OPTCRYPTREPLYSIGN) && cur && cur->security & SIGN)
+      if (option (OPTCRYPTREPLYSIGN) && cur && (cur->security & SIGN))
 	msg->security |= SIGN;
       if (option (OPTCRYPTREPLYSIGNENCRYPTED) && cur && cur->security & ENCRYPT)
 	msg->security |= SIGN;
@@ -1261,20 +1261,19 @@ ci_send_message (int flags,		/* send mode */
     if (msg->security && cur)
     {
 #ifdef HAVE_SMIME
-      if (cur->security & APPLICATION_SMIME || option (OPTSMIMEISDEFAULT))
+      if ((cur->security & APPLICATION_SMIME) || option (OPTSMIMEISDEFAULT))
         msg->security |= APPLICATION_SMIME;
 #endif
 #ifdef HAVE_PGP
       if (cur->security & APPLICATION_PGP)
       {
 #ifdef HAVE_SMIME
-        if (option (OPTSMIMEISDEFAULT))
-          msg->security &= ~APPLICATION_SMIME;
+	msg->security &= ~APPLICATION_SMIME;
 #endif
         msg->security |= APPLICATION_PGP;
       }
 #ifdef HAVE_SMIME
-      if (~cur->security && !option (OPTSMIMEISDEFAULT))
+      if (!(cur->security & (APPLICATION_PGP|APPLICATION_SMIME)))
 #endif
 	msg->security |= APPLICATION_PGP;
 #endif /* HAVE_PGP */
