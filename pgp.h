@@ -25,7 +25,7 @@
 
 /* prototypes */
 
-int pgp_use_gpg_agent();
+int pgp_use_gpg_agent(void);
 
 int pgp_check_traditional (FILE *, BODY *, int);
 BODY *pgp_decrypt_part (BODY *, STATE *, FILE *, BODY *);

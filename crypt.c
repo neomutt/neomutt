@@ -26,6 +26,7 @@
 #include "mime.h"
 #include "copy.h"
 #include "mutt_crypt.h"
+#include "pgp.h"
 
 #include <sys/wait.h>
 #include <string.h>
