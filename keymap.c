@@ -343,7 +343,24 @@ int km_dokey (int menu)
 
   FOREVER
   {
+/* ncurses doesn't return on resized screen when timeout is set to zero */
+#if !defined (USE_SLANG_CURSES) && defined (HAVE_RESIZETERM)
+    if (menu == MENU_MAIN || menu == MENU_PAGER)
+      timeout (menu == MENU_MAIN && Timeout > 0 ? Timeout * 1000 : INT_MAX);
+#else
+    if (menu == MENU_MAIN && Timeout > 0)
+      timeout (Timeout * 1000); /* milliseconds */
+#endif
+
     tmp = mutt_getch();
+
+#if !defined (USE_SLANG_CURSES) && defined (HAVE_RESIZETERM)
+    if (menu == MENU_MAIN || menu == MENU_PAGER)
+#else
+    if (menu == MENU_MAIN && Timeout > 0)
+#endif
+      timeout (-1); /* restore blocking operation */
+
     LastKey = tmp.ch;
     if (LastKey == -1)
       return -1;

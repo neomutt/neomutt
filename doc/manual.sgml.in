@@ -3199,6 +3199,11 @@ This variable specifies which pager you would like to use to view messages.
 <tt/builtin/ means to use the builtin pager, otherwise this variable should
 specify the pathname of the external pager you would like to use.
 
+Using an external pager may have some disadvantages: Additional keystrokes
+are necessary because you can't call mutt functions directly from the
+pager, and screen resizes cause lines longer than the screen width to be
+badly formatted in the help menu.
+
 <sect2>pager&lowbar;context<label id="pager_context">
 <p>
 Type: number<newline>

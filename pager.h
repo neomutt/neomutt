@@ -17,6 +17,22 @@
  *     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */ 
 
+/* dynamic internal flags */
+#define M_SHOWFLAT	(1<<0)
+#define M_SHOWCOLOR	(1<<1)
+#define M_HIDE		(1<<2)
+#define M_SEARCH	(1<<3)
+#define M_TYPES		(1<<4)
+#define M_SHOW		(M_SHOWCOLOR | M_SHOWFLAT)
+
+/* exported flags for mutt_(do_)?pager */
+#define M_PAGER_NSKIP		(1<<5)	/* preserve whitespace with smartwrap */
+#define M_PAGER_MARKER		(1<<6)	/* use markers if option is set */
+#define M_PAGER_RETWINCH	(1<<7)	/* need reformatting on SIGWINCH */
+#define M_PAGER_MESSAGE		(M_SHOWCOLOR | M_PAGER_MARKER)
+
+#define M_DISPLAYFLAGS	(M_SHOW | M_PAGER_NSKIP | M_PAGER_MARKER)
+
 typedef struct
 {
   CONTEXT *ctx;	/* current mailbox */

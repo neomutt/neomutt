@@ -85,54 +85,166 @@ mutt_compile_help (char *buf, size_t buflen, int menu, struct mapping_t *items)
   return buf;
 }
 
-static int print_macro (FILE *f, int maxchar, const char *macro)
+static int print_macro (FILE *f, int maxchar, const char **macro)
 {
-  int i;
+  int c = **macro;
+  int n = maxchar;
 
-  for (i = 0; *macro && i < maxchar; macro++, i++)
+  while (c)
   {
-    switch (*macro)
+    if (!IsPrint(c))
     {
-      case '\033':
-	fputs ("\\e", f);
-	i++;
-	break;
-      case '\n':
-	fputs ("\\n", f);
-	i++;
-	break;
-      case '\r':
-	fputs ("\\r", f);
-	i++;
-	break;
-      case '\t':
-	fputs ("\\t", f);
-	i++;
-	break;
-      default:
-	fputc (*macro, f);
-	break;
+      if (c >= ' ')
+	c = '?';
+      else if (n < 2)
+	c = 0;
+      else
+      {
+	--n;
+	switch (c)
+	{
+	  case '\033':
+	    fputc ('\\', f);
+	    c = 'e';
+	    break;
+	  case '\n':
+	    fputc ('\\', f);
+	    c = 'n';
+	    break;
+	  case '\r':
+	    fputc ('\\', f);
+	    c = 'r';
+	    break;
+	  case '\t':
+	    fputc ('\\', f);
+	    c = 't';
+	    break;
+	  default:
+	    fputc ('^', f);
+	    c += '@';
+	    break;
+	}
+      }
     }
+
+    if (c && n > 0)
+    {
+      --n;
+      fputc(c, f);
+      c = *++*macro;
+    }
+    else
+      c = 0;
   }
-  return (i);
+
+  return (maxchar - n);
 }
 
 static int pad (FILE *f, int col, int i)
 {
   char fmt[8];
 
-  if (i < col)
+  if (col < i)
   {
-    snprintf (fmt, sizeof(fmt), "%%-%ds", col - i);
+    snprintf (fmt, sizeof(fmt), "%%-%ds", i - col);
     fprintf (f, fmt, "");
-    i = col;
+    return (i);
+  }
+  fputc (' ', f);
+  return (col + 1);
+}
+
+static void format_line (FILE *f, int ismacro,
+			 const char *t1, const char *t2, const char *t3)
+{
+  int col;
+  int col_a, col_b;
+  int split;
+  int n;
+
+  fputs (t1, f);
+
+  /* don't try to press string into one line with less than 40 characters.
+     The double paranthesis avoid a gcc warning, sigh ... */
+  if ((split = COLS < 40))
+  {
+    col_a = col = 0;
+    col_b = LONG_STRING;
+    fputc ('\n', f);
   }
   else
   {
-    fputc (' ', f);
-    ++i;
+    col_a = 12 + (COLS > 83 ? (COLS - 80) >> 2 : 0);
+    col_b = 19 + (COLS > 43 ? (COLS - 16) >> 2 : 0);
+    col = pad (f, strlen(t1), col_a);
   }
-  return (i);
+
+  if (ismacro > 0)
+  {
+    if (!strcmp (Pager, "builtin"))
+      fputs ("_\010", f);
+    fputs ("M ", f);
+    col += 2;
+
+    if (!split)
+    {
+      col += print_macro (f, col_b - col - 4, &t2);
+      if (strlen (t2) > col_b - col)
+	t2 = "...";
+    }
+  }
+
+  col += print_macro (f, col_b - col - 1, &t2);
+  if (split)
+    fputc ('\n', f);
+  else
+    col = pad (f, col, col_b);
+
+  if (split)
+  {
+    print_macro (f, LONG_STRING, &t3);
+    fputc ('\n', f);
+  }
+  else
+  {
+    while (*t3)
+    {
+      n = COLS - col;
+
+      if (ismacro >= 0)
+      {
+	SKIPWS(t3);
+
+	if ((n = strlen (t3)) > COLS - col)
+	{
+	  n = COLS - col;
+	  for (col_a = n; col_a > 0 && t3[col_a] != ' '; col_a--) ;
+	  if (col_a)
+	    n = col_a;
+	}
+      }
+
+      print_macro (f, n, &t3);
+
+      if (*t3)
+      {
+        if (strcmp (Pager, "builtin"))
+	{
+	  fputc ('\n', f);
+	  n = 0;
+	}
+	else
+	{
+	  n += col - COLS;
+	  if (option (OPTMARKERS))
+	    ++n;
+	}
+	col = pad (f, n, col_b);
+      }
+    }
+  }
+
+  fputc ('\n', f);
 }
 
 static void dump_menu (FILE *f, int menu)
@@ -140,7 +252,6 @@ static void dump_menu (FILE *f, int menu)
   struct keymap_t *map;
   struct binding_t *b;
   char buf[SHORT_STRING];
-  int col;
 
   /* browse through the keymap table */
   for (map = Keymaps[menu]; map; map = map->next)
@@ -148,41 +259,18 @@ static void dump_menu (FILE *f, int menu)
     if (map->op != OP_NULL)
     {
       km_expand_key (buf, sizeof (buf), map);
-      fputs (buf, f);
-      col = pad (f, 12, strlen (buf));
 
       if (map->op == OP_MACRO)
       {
 	if (map->descr == NULL)
-	{
-	  fputs ("macro ", f);
-	  col = pad (f, 35, col + 6);
-	  print_macro (f, COLS - col, map->macro);
-	}
-	else
-	{
-	  fputs ("macro: ", f);
-	  col += 7;
-	  if (strlen (map->macro) < (34 - col))
-	  {
-	    col += print_macro (f, 34 - col, map->macro);
-	    col = pad (f, 35, col);
-	  }
-	  else
-	  {
-	    if (col < 31)
-	      col += print_macro (f, 31 - col, map->macro);
-	    fputs ("... ", f);
-	    col += 4;
-	  }
-	  print_macro (f, COLS - col, map->descr);
-	}
-	fputc ('\n', f);
+	  format_line (f, -1, buf, "macro", map->macro);
+        else
+	  format_line (f, 1, buf, map->macro, map->descr);
       }
       else
       {
 	b = help_lookupFunction (map->op, menu);
-	fprintf (f, "%-22s %s\n", b ? b->name : "UNKNOWN",
+	format_line (f, 0, buf, b ? b->name : "UNKNOWN",
 	      b ? _(HelpStrings[b->op]) : _("ERROR: please report this bug"));
       }
     }
@@ -208,7 +296,7 @@ static void dump_unbound (FILE *f,
   {
     if (! is_bound (map, funcs[i].op) &&
 	(!aux || ! is_bound (aux, funcs[i].op)))
-      fprintf (f, "%-35s%s\n", funcs[i].name, _(HelpStrings[funcs[i].op]));
+      format_line (f, 0, funcs[i].name, "", _(HelpStrings[funcs[i].op]));
   }
 }
 
@@ -221,32 +309,39 @@ void mutt_help (int menu)
   struct binding_t *funcs;
 
   mutt_mktemp (t);
-  if ((f = safe_fopen (t, "w")) == NULL)
-  {
-    mutt_perror (t);
-    return;
-  }
 
   funcs = km_get_table (menu);
   desc = mutt_getnamebyvalue (menu, Menus);
   if (!desc)
     desc = _("<UNKNOWN>");
   
-  dump_menu (f, menu);
-  if (menu != MENU_EDITOR && menu != MENU_PAGER)
-  {
-    fputs (_("\nGeneric bindings:\n\n"), f);
-    dump_menu (f, MENU_GENERIC);
+  do {
+    if ((f = safe_fopen (t, "w")) == NULL)
+    {
+      mutt_perror (t);
+      return;
+    }
+  
+    dump_menu (f, menu);
+    if (menu != MENU_EDITOR && menu != MENU_PAGER)
+    {
+      fputs (_("\nGeneric bindings:\n\n"), f);
+      dump_menu (f, MENU_GENERIC);
+    }
+  
+    fputs (_("\nUnbound functions:\n\n"), f);
+    if (funcs)
+      dump_unbound (f, funcs, Keymaps[menu], NULL);
+    if (menu != MENU_PAGER)
+      dump_unbound (f, OpGeneric, Keymaps[MENU_GENERIC], Keymaps[menu]);
+  
+    fclose (f);
+  
+    snprintf (buf, sizeof (buf), _("Help for %s"), desc);
   }
-
-  fputs (_("\nUnbound functions:\n\n"), f);
-  if (funcs)
-    dump_unbound (f, funcs, Keymaps[menu], NULL);
-  if (menu != MENU_PAGER)
-    dump_unbound (f, OpGeneric, Keymaps[MENU_GENERIC], Keymaps[menu]);
-
-  fclose (f);
-
-  snprintf (buf, sizeof (buf), _("Help for %s"), desc);
-  mutt_do_pager (buf, t, 0, NULL);
+  while
+    (mutt_do_pager (buf, t,
+		    M_PAGER_RETWINCH | M_PAGER_MARKER | M_PAGER_NSKIP,
+		    NULL)
+     == OP_REFORMAT_WINCH);
 }

@@ -47,14 +47,6 @@ static const char rcsid[]="$Id$";
 #include <stdlib.h>
 #include <string.h>
 
-#define M_NOSHOW	0
-#define M_SHOWFLAT	(1 << 0)
-#define M_SHOWCOLOR	(1 << 1)
-#define M_HIDE		(1 << 2)
-#define M_SEARCH	(1 << 3)
-#define M_TYPES		(1 << 4)
-#define M_SHOW		(M_SHOWCOLOR | M_SHOWFLAT)
-
 #define ISHEADER(x) ((x) == MT_COLOR_HEADER || (x) == MT_COLOR_HDEFAULT)
 
 #define IsAttach(x) (x && (x)->bdy)
@@ -125,6 +117,14 @@ typedef struct _ansi_attr {
 } ansi_attr;
 
 static short InHelp = 0;
+
+#if defined (USE_SLANG_CURSES) || defined (HAVE_RESIZETERM)
+static struct resize {
+  int line;
+  int SearchCompiled;
+  int SearchBack;
+} *Resize = NULL;
+#endif
 
 #define NumSigLines 4
 
@@ -955,12 +955,14 @@ static int grok_ansi(unsigned char *buf, int pos, ansi_attr *a)
 
 /*
  * Args:
- *	flags	M_NOSHOW, don't show characters
- *		M_SHOWFLAT, show characters (used for displaying help)
+ *	flags	M_SHOWFLAT, show characters (used for displaying help)
  *		M_SHOWCOLOR, show characters in color
+ *			otherwise don't show characters
  *		M_HIDE, don't show quoted text
  *		M_SEARCH, resolve search patterns
  *		M_TYPES, compute line's type
+ *		M_PAGER_NSKIP, keeps leading whitespace
+ *		M_PAGER_MARKER, eventually show markers
  *
  * Return values:
  *	-1	EOF was reached
@@ -1022,7 +1024,7 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
 
     /* this also prevents searching through the hidden lines */
     if ((flags & M_HIDE) && (*lineInfo)[n].type == MT_COLOR_QUOTED)
-      flags = M_NOSHOW;
+      flags = 0; /* M_NOSHOW */
   }
 
   /* At this point, (*lineInfo[n]).quote may still be undefined. We 
@@ -1082,12 +1084,12 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
   if (!(flags & M_SHOW) && (*lineInfo)[n+1].offset > 0)
   {
     /* we've already scanned this line, so just exit */
-    return 0;
+    return (0);
   }
   if ((flags & M_SHOWCOLOR) && *force_redraw && (*lineInfo)[n+1].offset > 0)
   {
     /* no need to try to display this line... */
-    return 1; /* fake display */
+    return (1); /* fake display */
   }
 
   if ((b_read = fill_buffer (f, last_pos, (*lineInfo)[n].offset, buf, fmt, 
@@ -1178,9 +1180,10 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
       else
 	buf_ptr = buf + cnt; /* a very long word... */
     }
-    /* skip leading blanks on the next line too */
-    while (*buf_ptr == ' ' || *buf_ptr == '\t') 
-      buf_ptr++;
+    if (!(flags & M_PAGER_NSKIP))
+      /* skip leading blanks on the next line too */
+      while (*buf_ptr == ' ' || *buf_ptr == '\t') 
+	buf_ptr++;
   }
 
   if (*buf_ptr == '\r')
@@ -1255,7 +1258,8 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
 
     if (c == '\t')
     {
-      if ((flags & (M_SHOWCOLOR | M_SEARCH)) || last_special || a.attr)
+      if ((flags & (M_SHOWCOLOR | M_SEARCH | M_PAGER_MARKER)) || last_special
+	  || a.attr)
       {
 	resolve_color (*lineInfo, n, vch, flags, special, &a);
 	if (!special)
@@ -1271,8 +1275,8 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
     }
     else if (IsPrint (c))
     {
-      if ((flags & (M_SHOWCOLOR | M_SEARCH)) || special || last_special 
-	  || a.attr)
+      if ((flags & (M_SHOWCOLOR | M_SEARCH | M_PAGER_MARKER)) || special
+	  || last_special || a.attr)
 	resolve_color (*lineInfo, n, vch, flags, special, &a);
       if (!special)
 	last_special = 0;
@@ -1284,7 +1288,8 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
     {
       if ((c != '\r' && c !='\n') || (buf[ch+1] != '\n' && buf[ch+1] != '\0'))
       {
-	if ((flags & (M_SHOWCOLOR | M_SEARCH)) || last_special || a.attr)
+	if ((flags & (M_SHOWCOLOR | M_SEARCH | M_PAGER_MARKER)) || last_special
+	    || a.attr)
 	{
 	  resolve_color (*lineInfo, n, vch, flags, special, &a);
 	  if (!special)
@@ -1298,7 +1303,8 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
     }
     else
     {
-      if ((flags & (M_SHOWCOLOR | M_SEARCH)) || last_special || a.attr)
+      if ((flags & (M_SHOWCOLOR | M_SEARCH | M_PAGER_MARKER)) || last_special
+	  || a.attr)
       {
 	resolve_color (*lineInfo, n, vch, flags, special, &a);
 	if (!special)
@@ -1377,7 +1383,7 @@ static struct mapping_t PagerHelpExtra[] = {
    is there so that we can do operations on the current message without the
    need to pop back out to the main-menu.  */
 int 
-mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
+mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 {
   static char searchbuf[STRING];
   char buffer[LONG_STRING];
@@ -1395,7 +1401,7 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
   struct stat sb;
   regex_t SearchRE;
   int SearchCompiled = 0, SearchFlag = 0, SearchBack = 0;
-  int has_types = (IsHeader(extra) || do_color); /* main message or rfc822 attachment */
+  int has_types = (IsHeader(extra) || (flags & M_SHOWCOLOR)) ? M_TYPES : 0; /* main message or rfc822 attachment */
 
   int bodyoffset = 1;			/* offset of first line of real text */
   int statusoffset = 0; 		/* offset for the status bar */
@@ -1409,7 +1415,8 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
   int old_PagerIndexLines;		/* some people want to resize it
   					 * while inside the pager... */
 
-  do_color = do_color ? M_SHOWCOLOR : M_SHOWFLAT;
+  if (!(flags & M_SHOWCOLOR))
+    flags |= M_SHOWFLAT;
 
   if ((fp = fopen (fname, "r")) == NULL)
   {
@@ -1503,6 +1510,23 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
 	SETCOLOR (MT_COLOR_NORMAL);
       }
 
+#if defined (USE_SLANG_CURSES) || defined (HAVE_RESIZETERM)
+      if (Resize != NULL)
+      {
+	if ((SearchCompiled = Resize->SearchCompiled))
+	{
+	  REGCOMP
+	    (&SearchRE, searchbuf, REG_NEWLINE | mutt_which_case (searchbuf));
+	  SearchFlag = M_SEARCH;
+	  SearchBack = Resize->SearchBack;
+	}
+	lines = Resize->line;
+	redraw |= REDRAW_SIGWINCH;
+
+	safe_free ((void **) &Resize);
+      }
+#endif
+
       if (IsHeader (extra) && PagerIndexLines)
       {
 	if (index == NULL)
@@ -1537,6 +1561,21 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
       mutt_show_error ();
     }
 
+    if (redraw & REDRAW_SIGWINCH)
+    {
+      i = -1;
+      j = -1;
+      while (display_line (fp, &last_pos, &lineInfo, ++i, &lastLine, &maxLine,
+	     has_types | SearchFlag, &QuoteList, &q_level, &force_redraw,
+	     &SearchRE) == 0)
+	if (!lineInfo[i].continuation && ++j == lines)
+	{
+	  topline = i;
+	  if (!SearchFlag)
+	    break;
+	}
+    }
+
     if ((redraw & REDRAW_BODY) || topline != oldtopline)
     {
       do {
@@ -1548,7 +1587,8 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
 	while (lines < bodylen && lineInfo[curline].offset <= sb.st_size - 1)
 	{
 	  if (display_line (fp, &last_pos, &lineInfo, curline, &lastLine, 
-			    &maxLine, do_color | hideQuoted | SearchFlag, 
+			    &maxLine,
+			    (flags & M_DISPLAYFLAGS) | hideQuoted | SearchFlag, 
 			    &QuoteList, &q_level, &force_redraw, &SearchRE) > 0)
 	    lines++;
 	  curline++;
@@ -1626,33 +1666,48 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
     {
       mutt_resize_screen ();
 
-      for (i = 0; i < maxLine; i++)
-      {
-	lineInfo[i].offset = 0;
-	lineInfo[i].type = -1;
-	lineInfo[i].continuation = 0;
-	lineInfo[i].chunks = 0;
-	lineInfo[i].search_cnt = -1;
-	lineInfo[i].quote = NULL;
+      /* Store current position. */
+      lines = -1;
+      for (i = 0; i <= topline; i++)
+	if (!lineInfo[i].continuation)
+	  lines++;
 
-	safe_realloc ((void **)&(lineInfo[i].syntax), sizeof (struct syntax_t));
-	if (SearchCompiled && lineInfo[i].search)
-	    safe_free ((void **) &(lineInfo[i].search));
+      if (flags & M_PAGER_RETWINCH)
+      {
+	Resize = safe_malloc (sizeof (struct resize));
+
+	Resize->line = lines;
+	Resize->SearchCompiled = SearchCompiled;
+	Resize->SearchBack = SearchBack;
+
+	ch = -1;
+	rc = OP_REFORMAT_WINCH;
+      }
+      else
+      {
+	for (i = 0; i < maxLine; i++)
+	{
+	  lineInfo[i].offset = 0;
+	  lineInfo[i].type = -1;
+	  lineInfo[i].continuation = 0;
+	  lineInfo[i].chunks = 0;
+	  lineInfo[i].search_cnt = -1;
+	  lineInfo[i].quote = NULL;
+
+	  safe_realloc ((void **)&(lineInfo[i].syntax),
+			sizeof (struct syntax_t));
+	  if (SearchCompiled && lineInfo[i].search)
+	      safe_free ((void **) &(lineInfo[i].search));
+	}
+
+	lastLine = 0;
+	topline = 0;
+
+	redraw = REDRAW_FULL | REDRAW_SIGWINCH;
+	ch = 0;
       }
 
-      if (SearchCompiled)
-      {
-	regfree (&SearchRE);
-	SearchCompiled = 0;
-	SearchFlag = 0;
-      }
-
-      lastLine = 0;
-      topline = 0;
-
-      redraw = REDRAW_FULL;
       Signals &= ~S_SIGWINCH;
-      ch = 0;
       continue;
     }
 #endif
@@ -1902,7 +1957,7 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
       case OP_PAGER_HIDE_QUOTED:
 	if (has_types)
 	{
-	  hideQuoted = hideQuoted ? 0 : M_HIDE;
+	  hideQuoted ^= M_HIDE;
 	  if (hideQuoted && lineInfo[topline].type == MT_COLOR_QUOTED)
 	    topline = upNLines (1, lineInfo, topline, hideQuoted);
 	  else
@@ -1951,7 +2006,7 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
 	  i = curline;
 	  /* make sure the types are defined to the end of file */
 	  while (display_line (fp, &last_pos, &lineInfo, i, &lastLine, 
-				&maxLine, (has_types ? M_TYPES : M_NOSHOW), 
+				&maxLine, has_types, 
 				&QuoteList, &q_level, &force_redraw,
 				&SearchRE) == 0)
 	    i++;
@@ -2053,6 +2108,13 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
 	if (option (OPTWRAP) != old_smart_wrap || 
 	    option (OPTMARKERS) != old_markers)
 	{
+	  if (flags & M_PAGER_RETWINCH)
+	  {
+	    ch = -1;
+	    rc = OP_REFORMAT_WINCH;
+	    continue;
+	  }
+
 	  /* count the real lines above */
 	  j = 0;
 	  for (i = 0; i <= topline; i++)

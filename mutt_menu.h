@@ -31,6 +31,7 @@
 #define REDRAW_STATUS		(1<<4)
 #define REDRAW_FULL		(1<<5)
 #define REDRAW_BODY		(1<<6)
+#define REDRAW_SIGWINCH		(1<<7)
 
 #define M_MODEFMT "-- Mutt: %s"
 

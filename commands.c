@@ -210,7 +210,7 @@ int mutt_display_message (HEADER *cur)
     memset (&info, 0, sizeof (pager_t));
     info.hdr = cur;
     info.ctx = Context;
-    rc = mutt_pager (NULL, tempfile, 1, &info);
+    rc = mutt_pager (NULL, tempfile, M_PAGER_MESSAGE, &info);
   }
   else
   {

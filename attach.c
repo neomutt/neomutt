@@ -506,7 +506,8 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag)
     info.fp = fp;
     info.bdy = a;
     info.ctx = Context;
-    rc = mutt_do_pager (descrip, pagerfile, is_message, &info);
+    rc = mutt_do_pager (descrip, pagerfile,
+			is_message ? M_PAGER_MESSAGE : 0, &info);
   }
   else
     rc = 0;
