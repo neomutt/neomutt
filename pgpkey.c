@@ -483,7 +483,7 @@ static pgp_key_t *pgp_select_key (pgp_key_t *keys,
 
   if (!i && unusable)
   {
-    mutt_error _("All matching keys are marked expired/revoked.");
+    mutt_error _("All matching keys are expired, revoked, or disabled.");
     mutt_sleep (1);
     return NULL;
   }
