@@ -1,3 +1,9 @@
+2004-07-19 21:44:23  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
+
+	* globals.h, imap/message.c, init.h: Fix #1548.  (The first
+	variant, with $imap_headers specifying headers that are downloaded
+	in addition to the set required for mutt to work properly.)
+
 2004-07-19 21:41:43  David Champion  <dgc@uchicago.edu>  (roessler)
 
 	* mbox.c, mh.c, pgp.c, sendlib.c: Fix some compiler warnings.
