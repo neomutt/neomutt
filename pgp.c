@@ -1289,13 +1289,14 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
       key = k_info;
 
     keyID = pgp_keyid (key);
-    pgp_free_key (&key);
     
     keylist_size += mutt_strlen (keyID) + 4;
     safe_realloc ((void **)&keylist, keylist_size);
     sprintf (keylist + keylist_used, "%s0x%s", keylist_used ? " " : "",
 	     keyID);
     keylist_used = mutt_strlen (keylist);
+
+    pgp_free_key (&key);
   }
   rfc822_free_address (&tmp);
   return (keylist);
