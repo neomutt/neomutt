@@ -204,10 +204,11 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   int uid;
   int cacheno;
   IMAP_CACHE *cache;
+  int read;
+  int rc;
   /* Sam's weird courier server returns an OK response even when FETCH
    * fails. Thanks Sam. */
   short fetched = 0;
-  int rc;
 
   idata = (IMAP_DATA*) ctx->data;
 
@@ -360,6 +361,12 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
    */
   h = ctx->hdrs[msgno];
   rewind (msg->fp);
+  /* It may be that the Status header indicates a message is read, but the
+   * IMAP server doesn't know the message has been \Seen. So we capture
+   * the server's notion of 'read' and if it differs from the message info
+   * picked up in mutt_read_rfc822_header, we mark the message (and context
+   * changed). Another possiblity: ignore Status on IMAP?*/
+  read = h->read;
   /* I hate do this here, since it's so low-level, but I'm not sure where
    * I can abstract it. Problem: the id and subj hashes lose their keys when
    * mutt_free_envelope gets called, but keep their spots in the hash. This
@@ -375,6 +382,14 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
     hash_insert (ctx->id_hash, h->env->message_id, h, 0);
   if (h->env->real_subj)
     hash_insert (ctx->subj_hash, h->env->real_subj, h, 1);
+
+  /* see above. We want the new status in h->read, so we unset it manually
+   * and let mutt_set_flag set it correctly, updating context. */
+  if (read != h->read)
+  {
+    h->read = read;
+    mutt_set_flag (ctx, h, M_NEW, read);
+  }
 
   h->lines = 0;
   fgets (buf, sizeof (buf), msg->fp);
