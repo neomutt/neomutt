@@ -337,7 +337,8 @@ static int include_forward (CONTEXT *ctx, HEADER *cur, FILE *out)
 {
   int chflags = CH_DECODE, cmflags = 0;
   
-  mutt_message_hook (cur, M_MESSAGEHOOK);
+  mutt_parse_mime_message (ctx, cur);
+  mutt_message_hook (ctx, cur, M_MESSAGEHOOK);
 
 #ifdef HAVE_PGP
   if ((cur->pgp & PGPENCRYPT) && option (OPTFORWDECODE))
@@ -360,7 +361,7 @@ static int include_forward (CONTEXT *ctx, HEADER *cur, FILE *out)
   }
   if (option (OPTFORWQUOTE))
     cmflags |= M_CM_PREFIX;
-  mutt_parse_mime_message (ctx, cur);
+
   mutt_copy_message (out, ctx, cur, cmflags, chflags);
   mutt_forward_trailer (out);
   return 0;
@@ -404,7 +405,8 @@ static int include_reply (CONTEXT *ctx, HEADER *cur, FILE *out)
   }
 #endif /* HAVE_PGP */
 
-  mutt_message_hook (cur, M_MESSAGEHOOK);
+  mutt_parse_mime_message (ctx, cur);
+  mutt_message_hook (ctx, cur, M_MESSAGEHOOK);
   
   mutt_make_attribution (ctx, cur, out);
   
@@ -416,9 +418,8 @@ static int include_reply (CONTEXT *ctx, HEADER *cur, FILE *out)
     cmflags |= M_CM_WEED;
   }
 
-  mutt_parse_mime_message (ctx, cur);
   mutt_copy_message (out, ctx, cur, cmflags, chflags);
-  
+
   mutt_make_post_indent (ctx, cur, out);
   
   return 0;
@@ -1152,7 +1153,7 @@ ci_send_message (int flags,		/* send mode */
 
     /* change settings based upon recipients */
     
-    mutt_message_hook (msg, M_SENDHOOK);
+    mutt_message_hook (NULL, msg, M_SENDHOOK);
 
     if (killfrom)
     {
@@ -1164,6 +1165,20 @@ ci_send_message (int flags,		/* send mode */
       process_user_header (msg->env);
 
 
+
+
+    /* include replies/forwarded messages, unless we are given a template */
+    if (!tempfile && (ctx || !(flags & (SENDREPLY|SENDFORWARD)))
+	&& generate_body (tempfp, msg, flags, ctx, cur) == -1)
+      goto cleanup;
+
+    if (! (flags & (SENDMAILX | SENDKEY)) && Editor && mutt_strcmp (Editor, "builtin") != 0)
+      append_signature (tempfp);
+
+    /* 
+     * this wants to be done _after_ generate_body, so message-hooks
+     * can take effect.
+     */
 
 #ifdef HAVE_PGP
     if (! (flags & SENDMAILX))
@@ -1183,13 +1198,6 @@ ci_send_message (int flags,		/* send mode */
 
 
 
-    /* include replies/forwarded messages, unless we are given a template */
-    if (!tempfile && (ctx || !(flags & (SENDREPLY|SENDFORWARD)))
-	&& generate_body (tempfp, msg, flags, ctx, cur) == -1)
-      goto cleanup;
-
-    if (! (flags & (SENDMAILX | SENDKEY)) && Editor && mutt_strcmp (Editor, "builtin") != 0)
-      append_signature (tempfp);
   }
   /* wait until now to set the real name portion of our return address so
      that $realname can be set in a send-hook */

@@ -795,6 +795,8 @@ void mutt_view_attachments (HEADER *hdr)
   /* make sure we have parsed this message */
   mutt_parse_mime_message (Context, hdr);
 
+  mutt_message_hook (Context, hdr, M_MESSAGEHOOK);
+  
   if ((msg = mx_open_message (Context, hdr->msgno)) == NULL)
     return;
 

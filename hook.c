@@ -147,7 +147,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   if (data & (M_SENDHOOK | M_SAVEHOOK | M_FCCHOOK | M_MESSAGEHOOK))
   {
     if ((pat = mutt_pattern_comp (pattern.data,
-	   (data & (M_SENDHOOK | M_FCCHOOK | M_MESSAGEHOOK)) ? 0 : M_FULL_MSG,
+	   (data & (M_SENDHOOK | M_FCCHOOK)) ? 0 : M_FULL_MSG,
 				  err)) == NULL)
       goto error;
   }
@@ -294,7 +294,7 @@ char *mutt_find_hook (int type, const char *pat)
   return (NULL);
 }
 
-void mutt_message_hook (HEADER *hdr, int type)
+void mutt_message_hook (CONTEXT *ctx, HEADER *hdr, int type)
 {
   BUFFER err, token;
   HOOK *hook;
@@ -309,7 +309,7 @@ void mutt_message_hook (HEADER *hdr, int type)
       continue;
 
     if (hook->type & type)
-      if ((mutt_pattern_exec (hook->pattern, 0, NULL, hdr) > 0) ^ hook->rx.not)
+      if ((mutt_pattern_exec (hook->pattern, 0, ctx, hdr) > 0) ^ hook->rx.not)
 	if (mutt_parse_rc_line (hook->command, &token, &err) != 0)
 	{
 	  FREE (&token.data);

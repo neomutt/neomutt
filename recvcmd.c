@@ -566,7 +566,7 @@ static void attach_forward_msgs (FILE * fp, HEADER * hdr,
     
     if (cur)
     {
-      mutt_message_hook (cur->hdr, M_MESSAGEHOOK);
+      /* mutt_message_hook (cur->hdr, M_MESSAGEHOOK); */ 
       mutt_forward_intro (tmpfp, cur->hdr);
       _mutt_copy_message (tmpfp, fp, cur->hdr, cur->hdr->content, cmflags, chflags);
       mutt_forward_trailer (tmpfp);
@@ -577,7 +577,7 @@ static void attach_forward_msgs (FILE * fp, HEADER * hdr,
       {
 	if (idx[i]->content->tagged)
 	{
-	  mutt_message_hook (idx[i]->content->hdr, M_MESSAGEHOOK);
+	  /* mutt_message_hook (idx[i]->content->hdr, M_MESSAGEHOOK); */ 
 	  mutt_forward_intro (tmpfp, idx[i]->content->hdr);
 	  _mutt_copy_message (tmpfp, fp, idx[i]->content->hdr,
 			      idx[i]->content->hdr->content, cmflags, chflags);
@@ -733,7 +733,7 @@ static void attach_include_reply (FILE *fp, FILE *tmpfp, HEADER *cur, int flags)
   int cmflags = M_CM_PREFIX | M_CM_DECODE | M_CM_CHARCONV;
   int chflags = CH_DECODE;
 
-  mutt_message_hook (cur, M_MESSAGEHOOK);
+  /* mutt_message_hook (cur, M_MESSAGEHOOK); */ 
   
   mutt_make_attribution (Context, cur, tmpfp);
   

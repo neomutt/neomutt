@@ -73,7 +73,7 @@ int mutt_display_message (HEADER *cur)
 	    cur->content->subtype);
 
   mutt_parse_mime_message (Context, cur);
-
+  mutt_message_hook (Context, cur, M_MESSAGEHOOK);
 
 #ifdef HAVE_PGP
   /* see if PGP is needed for this message.  if so, we should exit curses */
@@ -112,8 +112,6 @@ int mutt_display_message (HEADER *cur)
     mutt_error _("Could not create temporary file!");
     return (0);
   }
-
-  mutt_message_hook (cur, M_MESSAGEHOOK);
 
   if (DisplayFilter && *DisplayFilter) 
   {
@@ -305,7 +303,7 @@ int mutt_pipe_message (HEADER *h)
   if (h)
   {
 
-
+    mutt_message_hook (Context, h, M_MESSAGEHOOK);
 
 #ifdef HAVE_PGP
     if (option (OPTPIPEDECODE))
@@ -336,6 +334,7 @@ int mutt_pipe_message (HEADER *h)
       for (i = 0; i < Context->vcount; i++)
 	if(Context->hdrs[Context->v2r[i]]->tagged)
 	{
+	  mutt_message_hook (Context, Context->hdrs[Context->v2r[i]], M_MESSAGEHOOK);
 	  mutt_parse_mime_message(Context, Context->hdrs[Context->v2r[i]]);
 	  if (Context->hdrs[Context->v2r[i]]->pgp & PGPENCRYPT &&
 	      !pgp_valid_passphrase())
@@ -352,6 +351,7 @@ int mutt_pipe_message (HEADER *h)
       {
         if (Context->hdrs[Context->v2r[i]]->tagged)
         {
+	  mutt_message_hook (Context, Context->hdrs[Context->v2r[i]], M_MESSAGEHOOK);
 	  endwin ();
 	  thepid = mutt_create_filter (buffer, &(s.fpout), NULL, NULL);
           mutt_pipe_message_to_state (Context->hdrs[Context->v2r[i]], &s);
@@ -372,6 +372,7 @@ int mutt_pipe_message (HEADER *h)
       {
         if (Context->hdrs[Context->v2r[i]]->tagged)
         {
+	  mutt_message_hook (Context, Context->hdrs[Context->v2r[i]], M_MESSAGEHOOK);
           mutt_pipe_message_to_state (Context->hdrs[Context->v2r[i]], &s);
           /* add the message separator */
           if (PipeSep)
@@ -582,6 +583,7 @@ int mutt_save_message (HEADER *h, int delete,
 
   *redraw = 0;
 
+  
   snprintf (prompt, sizeof (prompt), _("%s%s to mailbox"),
 	    decode ? (delete ? _("Decode-save") : _("Decode-copy")) :
 	    (decrypt ? (delete ? _("Decrypt-save") : _("Decrypt-copy")):
@@ -592,6 +594,7 @@ int mutt_save_message (HEADER *h, int delete,
 #ifdef HAVE_PGP
     need_passphrase = h->pgp & PGPENCRYPT;
 #endif
+    mutt_message_hook (Context, h, M_MESSAGEHOOK);
     mutt_default_save (buf, sizeof (buf), h);
   }
   else
@@ -609,6 +612,7 @@ int mutt_save_message (HEADER *h, int delete,
 
     if (h)
     {
+      mutt_message_hook (Context, h, M_MESSAGEHOOK);
       mutt_default_save (buf, sizeof (buf), h);
 #ifdef HAVE_PGP
       need_passphrase |= h->pgp & PGPENCRYPT;
@@ -681,8 +685,11 @@ int mutt_save_message (HEADER *h, int delete,
       for (i = 0; i < Context->vcount; i++)
       {
 	if (Context->hdrs[Context->v2r[i]]->tagged)
+	{
+	  mutt_message_hook (Context, Context->hdrs[Context->v2r[i]], M_MESSAGEHOOK);
 	  _mutt_save_message(Context->hdrs[Context->v2r[i]],
 			     &ctx, delete, decode, decrypt);
+	}
       }
     }
 
@@ -746,6 +753,7 @@ void mutt_print_message (HEADER *h)
   pid_t thepid;
   FILE *fp;
 
+  
   if (query_quadoption (OPT_PRINT,
 			h ? _("Print message?") : _("Print tagged messages?"))
 		  	!= M_YES)
@@ -755,6 +763,7 @@ void mutt_print_message (HEADER *h)
     return;
   if (h)
   {
+    mutt_message_hook (Context, h, M_MESSAGEHOOK);
     print_msg (fp, Context, h);
     count++;
   }
@@ -764,6 +773,7 @@ void mutt_print_message (HEADER *h)
     {
       if (Context->hdrs[Context->v2r[i]]->tagged)
       {
+	mutt_message_hook (Context, Context->hdrs[Context->v2r[i]], M_MESSAGEHOOK);
 	print_msg (fp, Context, Context->hdrs[Context->v2r[i]]);
 	/* add a formfeed */
 	fputc ('\f', fp);
