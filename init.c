@@ -582,13 +582,6 @@ static int parse_my_hdr (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err
     return (-1);
   }
   keylen = p - buf->data + 1;
-  p++;
-  SKIPWS (p);
-  if (!*p)
-  {
-    snprintf (err->data, err->dsize, _("ignoring empty header field: %s"), buf->data);
-    return (-1);
-  }
 
   if (UserHeader)
   {
