@@ -1317,6 +1317,15 @@ int mutt_index_menu (void)
         CHECK_VISIBLE;
 	CHECK_READONLY;
 
+#ifdef USE_POP
+	if (Context->magic == M_POP)
+	{
+	  mutt_flushinp ();
+	  mutt_error _("Can't change 'important' flag on POP server.");
+	  break;
+	}
+#endif
+
         if (tag)
         {
 	  for (j = 0; j < Context->vcount; j++)

@@ -2237,6 +2237,16 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       case OP_FLAG_MESSAGE:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
+
+#ifdef USE_POP
+	if (Context->magic == M_POP)
+	{
+	  mutt_flushinp ();
+	  mutt_error _("Can't change 'important' flag on POP server.");
+	  break;
+	}
+#endif
+
 	mutt_set_flag (Context, extra->hdr, M_FLAG, !extra->hdr->flagged);
 	redraw = REDRAW_STATUS | REDRAW_INDEX;
 	if (option (OPTRESOLVE))
