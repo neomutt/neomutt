@@ -54,7 +54,9 @@ void mutt_check_rescore (CONTEXT *ctx)
     for (i = 0; i < ctx->msgcount; i++)
       mutt_score_message (ctx->hdrs[i]);
 
-    mutt_cache_index_colors (ctx);
+    /* force re-caching of index colors */
+    for (i = 0; ctx && i < ctx->msgcount; i++)
+      ctx->hdrs[i]->pair = 0;
 
     unset_option (OPTNEEDRESCORE);
   }

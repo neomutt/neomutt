@@ -255,8 +255,6 @@ void mutt_sort_headers (CONTEXT *ctx, int init)
       cur->collapsed = 0;
   }
 
-  mutt_cache_index_colors(ctx);
-
   if (!ctx->quiet)
     mutt_clear_error ();
 }

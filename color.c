@@ -428,8 +428,11 @@ _mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err,
 
   if (do_cache && !option (OPTNOCURSES))
   {
-    mutt_cache_index_colors (Context);
+    int i;
     set_option (OPTFORCEREDRAWINDEX);
+    /* force re-caching of index colors */
+    for (i = 0; Context && i < Context->msgcount; i++)
+      Context->hdrs[i]->pair = 0;
   }
   return (0);
 }
@@ -504,6 +507,8 @@ add_pattern (COLOR_LINE **top, const char *s, int sensitive,
 #endif
     if (is_index) 
     {
+      int i;
+
       strfcpy(buf, tmp->pattern, sizeof(buf));
       mutt_check_simple (buf, sizeof (buf), NONULL(SimpleSearch));
       if((tmp->color_pattern = mutt_pattern_comp (buf, M_FULL_MSG, err)) == NULL)
@@ -511,6 +516,9 @@ add_pattern (COLOR_LINE **top, const char *s, int sensitive,
 	mutt_free_color_line(&tmp, 1);
 	return -1;
       }
+      /* force re-caching of index colors */
+      for (i = 0; Context && i < Context->msgcount; i++)
+	Context->hdrs[i]->pair = 0;
     }
     tmp->pair = attr;
     *top = tmp;
@@ -696,7 +704,6 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
   else if (object == MT_COLOR_INDEX)
   {
     r = add_pattern (&ColorIndexList, buf->data, 1, fg, bg, attr, err, 1);
-    mutt_cache_index_colors(Context);
     set_option (OPTFORCEREDRAWINDEX);
   }
   else if (object == MT_COLOR_QUOTED)

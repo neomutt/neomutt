@@ -138,7 +138,13 @@ void index_make_entry (char *s, size_t l, MUTTMENU *menu, int num)
 
 int index_color (int index_no)
 {
-  return Context->hdrs[Context->v2r[index_no]]->pair;
+  HEADER *h = Context->hdrs[Context->v2r[index_no]];
+
+  if (h->pair)
+    return h->pair;
+
+  mutt_set_header_color (Context, h);
+  return h->pair;
 }
 
 static int ci_next_undeleted (int msgno)
@@ -1729,13 +1735,4 @@ void mutt_set_header_color (CONTEXT *ctx, HEADER *curhdr)
       return;
    }
   curhdr->pair = ColorDefs[MT_COLOR_NORMAL];
-}
-
-void mutt_cache_index_colors (CONTEXT *ctx)
-{
- int i;
-
- if (ctx)
-   for (i = 0; i < ctx->msgcount; i++)
-     mutt_set_header_color (ctx, ctx->hdrs[i]);
 }
