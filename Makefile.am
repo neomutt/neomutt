@@ -148,7 +148,10 @@ install-data-local: Muttrc
 # used manually.
 
 pclean:
-       cat /dev/null > PATCHES
+	cat /dev/null > PATCHES
+
+commit: pclean
+	cvs commit
 
 changelog:
 	rcs2log | cat - ChangeLog > ChangeLog.$$$$ && mv ChangeLog.$$$$ ChangeLog
@@ -177,4 +180,4 @@ stamp-doc-rc: $(srcdir)/init.h makedoc Muttrc.head
 jtags:	TAGS mkjtags
 	( ./mkjtags TAGS > tags.$$$$ && mv tags.$$$$ tags )
 
-.PHONY: jtags
+.PHONY: jtags commit pclean
