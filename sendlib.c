@@ -38,6 +38,8 @@
 
 #ifdef HAVE_SYSEXITS_H
 #include <sysexits.h>
+#else /* Make sure EX_OK is defined <philiph@pobox.com> */
+#define EX_OK 0
 #endif
 
 extern char RFC822Specials[];

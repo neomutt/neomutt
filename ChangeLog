@@ -1,3 +1,172 @@
+Wed Mar  3 19:44:24 1999  Thomas Roessler  <roessler@guug.de>
+
+	* reldate.h, regex.c, VERSION, Makefile.am, ChangeLog:
+	release preparations; back-port a couple of things from unstable.
+
+	* curs_main.c: Vikas' resort_index.3.
+
+	* sendlib.c, imap.c, from.c, curs_main.c:
+	from.c: Backport from unstable.
+	others: latest imap related patches.
+
+Tue Mar  2 22:13:30 1999  Thomas Roessler  <roessler@guug.de>
+
+	* curs_main.c, charset.c: Some small fixes from Vikas.
+
+	* parse.c, init.h, imap.c, globals.h:
+	Brandon Long's latest  IMAP fixes.
+
+	* parse.c: Latest IMAP-related fix from Brandon Long.
+
+	* thread.c:
+	Correctly handle messages which have themselves in their references
+	header.
+
+	* thread.c:
+	Properly handle messages which have themselves in "References".
+
+Sun Feb 28 08:30:19 1999  Thomas Roessler  <roessler@guug.de>
+
+	* rfc822.c: Fix a memory leak.  From Liviu.
+
+	* rfc822.c: Fix a memory leak. From Liviu.
+
+	* rfc1524.c, mutt.h, lib.c, attach.c:
+	Fix the $TMPDIR raace noted by Hamish Moffat.
+
+	* rfc1524.c, mutt.h, lib.c, attach.c: Fix a $TMPDIR race condition.
+
+	* po/uk.po, po/ru.po, po/pl.po, po/nl.po, po/it.po, po/fr.po, po/es.po, po/de.po, po/cs.po:
+	post-snapshot commit.
+
+Fri Feb 26 15:42:07 1999  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.in, send.c, regex.c, mutt.h, init.h:
+	Adding pgp_replyencrypt.
+
+Thu Feb 25 06:58:01 1999  Thomas Roessler  <roessler@guug.de>
+
+	* from.c:
+	parse some more from_ lines.  Before, there were problems with cases
+	like this:
+
+	>From <@x400host:"/G=Bob/S=Allinson/CN=Has embedded spaces/OU=X400HOST/
+	>OU=xxxx/O=xxx/PRMD=xxxxx/ADMD=XXXXXX/C=GB/"@x400host>
+	>Tue Feb 23 09:44:52 1999
+
+	Problem noted by johnm@sirius3.demon.co.uk
+
+Tue Feb 23 20:38:49 1999  Thomas Roessler  <roessler@guug.de>
+
+	* imap.c: fix a segfault. From Brandon.
+
+Mon Feb 22 12:37:43 1999  Thomas Roessler  <roessler@guug.de>
+
+	* curs_main.c: Vikas' latest collapse fix.
+
+	* curs_main.c: collapse fix from Vikas.
+
+	* mbox.c, imap.c:
+	Avoid reading past actual headers when reopening mailboxes.  From
+	Daniel Eisenbud.
+
+	* mbox.c, imap.c:
+	Avoid reading past the end of actual headers when reopening folders.
+	From Daniel Eisenbud.
+
+	* pgp.c: Don't override base64 by quoted-printable.
+
+	* menu.c: replace clear() by clrtobot().
+
+	* pgp.c:
+	Currently, PGP signing messages will force quoted-printable encoding
+	even if we should use base64.
+
+Fri Feb 19 07:38:17 1999  Thomas Roessler  <roessler@guug.de>
+
+	* sendlib.c: Don't qp-encode multiparts. ugh.
+
+	* sendlib.c: ... message and multipart, not just message.
+
+	* sendlib.c, mutt.h, init.h:
+	Add $encode_from: This option causes mutt to trigger
+	quoted-printable encoding for any non-multipart attachments which
+	have ^From at the beginning of a line.  Note that we don't trigger
+	on ^From_ since either procmail or sendmail is >-escaping on ^From,
+	and note that this won't help against sites where sendmail has the
+	'9' flag set on the local mailer, as these sites will inevitably
+	transform to 8bit (sic!).
+
+Thu Feb 18 23:14:36 1999  Thomas Roessler  <roessler@guug.de>
+
+	* pgp.c, mutt.h, init.h:
+	Add retainable signatures.  This should work nicely with encrypted
+	mailing lists.
+
+	* mx.c, init.h, globals.h, configure.in, acconfig.h, Makefile.am:
+	Introduce $dotlock_program: This makes the mutt_dotlock program's
+	location a run-time configuration variable.
+
+	* send.c, mutt.h, init.h:
+	Introduce $honor_followup_to.  The user will now be asked whether he
+	wants to honor mail-followup-to or not.
+
+	* curs_main.c:
+	properly handle OP_FLAG_MESSAGE when applied to tagged messages.
+
+	* po/uk.po, po/ru.po, po/pl.po, po/nl.po, po/it.po, po/fr.po, po/es.po, po/de.po, po/cs.po:
+	Updated translations.
+
+	* contrib/sample.mailcap: Fix the text/html entry.
+
+	* regex.c, headers.c, copy.h, configure.in:
+	copy.h: Some flags were used with multiple meanings. bad.
+	configure.in, regex.c: Make regex autoconfiguration work.
+	headers.c: expand aliases on the from header.
+
+	* headers.c: Expand aliases on the From header.
+
+Wed Feb 17 15:48:05 1999  Thomas Roessler  <roessler@guug.de>
+
+	* doc/mutt.man.in: Fix the URL.
+
+	* sendlib.c, init.h: User-Agent, not X-Mailer.
+
+	* po/fr.po: update.
+
+	* copy.h:
+	Some of the M_CM flags erroneously had been defined to have the same
+	value.  _Very_ bad.
+
+	* contrib/sample.mailcap: Correct the netscape text/html entry.
+
+	* po/uk.po, po/ru.po, po/pl.po, po/nl.po, po/it.po, po/fr.po, po/es.po, po/de.po, po/cs.po, po/Makefile.in.in, sendlib.c, send.c, regex.c, pager.c, mutt.h, init.h, configure.in, acconfig.h, Muttrc.in, Makefile.am:
+	- Makefile.am: Fix the dist target to include all necessary files.
+	- po/fr.po: New French translation.  (-> stable!)
+	- Add the new options to Muttrc.in.
+	- regex.c, configure.in: include config.h from regex.c, and handle
+	  alloca in a more intelligent way than before. (Currently, we just
+	  mis-handle it.)
+	  Port this to stable and test it!
+	- po/cs.po: update cs.po.
+	- po/de.po, po/nl.po: updated versions from Roland and Boris.
+	- pager.c: Vikas' grok_ansi fix.
+	- po/Makefile.in.in: keymap_defs is always in po/..  - from Lars
+	  Hecking.
+
+Fri Feb 12 11:23:17 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/uk.po, po/ru.po, po/pl.po, po/nl.po, po/it.po, po/fr.po, po/es.po, po/de.po, po/cs.po, reldate.h, ChangeLog:
+	post-release commit for 0.95.3.
+
+	* po/nl.po, reldate.h, ChangeLog: post-release commit for 0.96.
+
+Thu Feb 11 22:52:03 1999  Thomas Roessler  <roessler@guug.de>
+
+	* imap.c, VERSION: another imap-related fix.
+
+	* pattern.c: another signal fix from liviu.
+
 Thu Feb 11 22:52:03 1999  Thomas Roessler  <roessler@guug.de>
 
 	* imap.c, VERSION: another imap-related fix.

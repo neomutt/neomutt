@@ -299,6 +299,13 @@ int mutt_index_menu (void)
     menu->max = Context ? Context->vcount : 0;
     oldcount = Context ? Context->msgcount : 0;
 
+    /* check if we need to resort the index because just about
+     * any 'op' below could do mutt_enter_command(), either here or
+     * from any new menu launched, and change $sort/$sort_aux
+     */
+    if (option (OPTNEEDRESORT) && Context && Context->msgcount)
+      resort_index (menu);
+
     if (Context && !attach_msg)
     {
       int check;
@@ -949,11 +956,6 @@ int mutt_index_menu (void)
 	  break;
 	}
 
-	if (option (OPTNEEDRESORT) && Context && Context->msgcount)
-	{
-	  resort_index (menu);
-	}
-
 	menu->menu = MENU_PAGER;
 	menu->oldcurrent = menu->current;
 	continue;
@@ -1488,10 +1490,6 @@ int mutt_index_menu (void)
 	CurrentMenu = MENU_MAIN;
 	mutt_enter_command ();
 	mutt_check_rescore (Context);
-	if (option (OPTNEEDRESORT) && Context && Context->msgcount)
-	{
-	  resort_index (menu);
-	}
 	if (option (OPTFORCEREDRAWINDEX))
 	  menu->redraw = REDRAW_FULL;
 	unset_option (OPTFORCEREDRAWINDEX);

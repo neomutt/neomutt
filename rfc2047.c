@@ -284,7 +284,7 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
   int enc = 0, filter = 0, count = 0, c1, c2, c3, c4;
   char *charset = NULL;
   
-  while ((pp = strtok (pp, "?")) != NULL)
+  while (*pp == '?' || (pp = strtok (pp, "?")) != NULL)
   {
     count++;
     switch (count)
