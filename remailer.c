@@ -583,6 +583,14 @@ void mix_make_chain (LIST **chainp, int *redraw)
 
       case OP_MIX_USE:
       {
+	if (!chain->cl)
+	{
+	  chain->cl++;
+	  chain->ch[0] = menu->current;
+	  mix_screen_coordinates (type2_list, &coords, chain, c_cur);
+	  c_redraw = 1;
+	}
+	
 	if (chain->cl && chain->ch[chain->cl - 1] && 
 	    (type2_list[chain->ch[chain->cl-1]]->caps & MIX_CAP_MIDDLEMAN))
 	{
