@@ -186,7 +186,4 @@ stamp-doc-rc: $(srcdir)/init.h makedoc Muttrc.head
 	touch stamp-doc-rc
 
 
-jtags:	TAGS mkjtags
-	( ./mkjtags TAGS > tags.$$$$ && mv tags.$$$$ tags )
-
-.PHONY: jtags commit pclean check-security commit-real commit-changelog
+.PHONY: commit pclean check-security commit-real commit-changelog
