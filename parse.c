@@ -1181,6 +1181,11 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
 	  }
 	  matched = 1;
 	}
+	else if (mutt_strcasecmp (line+1, "-label") == 0)
+	{
+	  e->x_label = safe_strdup(p);
+	  matched = 1;
+	}
 	    
       default:
 	break;

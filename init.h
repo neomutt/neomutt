@@ -806,6 +806,12 @@ struct option_t MuttVars[] = {
   ** %u      user (login) name of the author
   ** %v      first name of the author, or the 
   ** .       recipient if the message is from you
+  ** %y	     `x-label:' field, if present
+  ** %Y	     `x-label' field, if present, and 
+  ** .       (1) not at part of a thread tree,
+  ** .       (2) at the top of a thread, or
+  ** . 	     (3) `x-label' is different from preceding
+  ** .       message's `x-label'.
   ** %Z      message status flags
   ** %{fmt}  the date and time of the message is
   ** .       converted to sender's time zone, and 

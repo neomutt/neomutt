@@ -88,6 +88,7 @@ Flags[] =
   { 'U', M_UNREAD,		0,		NULL },
   { 'v', M_COLLAPSED,		0,		NULL },
   { 'x', M_REFERENCE,		0,		eat_regexp },
+  { 'y', M_XLABEL,		0,		eat_regexp },
   { 'z', M_SIZE,		0,		eat_range },
   { 0 }
 };
@@ -890,6 +891,8 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
    case M_PGP_KEY:
      return (pat->not ^ (h->pgp & PGPKEY));
 #endif
+    case M_XLABEL:
+      return (pat->not ^ (h->env->x_label && regexec (pat->rx, h->env->x_label, 0, NULL, 0) == 0));
   }
   mutt_error (_("error: unknown op %d (report this error)."), pat->op);
   return (-1);

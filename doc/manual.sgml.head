@@ -1610,6 +1610,7 @@ messages:
 ~U              unread messages
 ~v		message is part of a collapsed thread.
 ~x EXPR         messages which contain EXPR in the `References' field
+~y EXPR         messages which contain EXPR in the `X-Label' field
 ~z [MIN]-[MAX]  messages with a size in the range MIN to MAX *)
 </verb></tscreen>
 
@@ -1943,6 +1944,16 @@ prompted as to whether or not you would like to use the address given in
 the ``Reply-To'' field, or reply directly to the address given in the
 ``From'' field.  When unset, the ``Reply-To'' field will be used when
 present.
+
+The ``X-Label:'' header field can be used to further identify mailing
+lists or list subject matter (or just to annotate messages
+individually).  The <ref id="index_format"
+name="&dollar;index&lowbar;format"> variable's ``&percnt;y'' and
+``&percnt;Y'' escapes can be used to expand ``X-Label:'' fields in the
+index, and Mutt's pattern-matcher can match regular expressions to
+``X-Label:'' fields with the ``~y'' selector.  ``X-Label:'' is not a
+standard message header field, but it can easily be inserted by procmail
+and other mail filtering agents.
 
 Lastly, Mutt has the ability to <ref id="sort" name="sort"> the mailbox into
 <ref id="threads" name="threads">.  A thread is a group of messages which all relate to the same

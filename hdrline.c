@@ -217,6 +217,8 @@ int mutt_user_is_recipient (HEADER *h)
  * %T = $to_chars
  * %u = user (login) name of author
  * %v = first name of author, unless from self
+ * %y = `x-label:' field (if present)
+ * %Y = `x-label:' field (if present, tree unfolded, and != parent's x-label)
  * %Z = status flags	*/
 
 struct hdr_format_info
@@ -267,7 +269,7 @@ hdr_format_str (char *dest,
 		format_flag flags)
 {
   struct hdr_format_info *hfi = (struct hdr_format_info *) data;
-  HEADER *hdr;
+  HEADER *hdr, *htmp;
   CONTEXT *ctx;
   char fmt[SHORT_STRING], buf2[SHORT_STRING], ch, *p;
   int do_locales, i;
@@ -650,6 +652,41 @@ hdr_format_str (char *dest,
       hdr_format_s (dest, destlen, prefix, buf2);
       break;
 
+     case 'y':
+       if (optional)
+	 optional = hdr->env->x_label ? 1 : 0;
+
+       hdr_format_s (dest, destlen, prefix, NONULL (hdr->env->x_label));
+       break;
+ 
+    case 'Y':
+      if (hdr->env->x_label)
+      {
+	i = 1;	/* reduce reuse recycle */
+	htmp = NULL;
+	if (flags & M_FORMAT_TREE
+	    && (hdr->prev && hdr->prev->env->x_label))
+	  htmp = hdr->prev;
+	else if (flags & M_FORMAT_TREE
+		 && (hdr->parent && hdr->parent->env->x_label))
+	  htmp = hdr->parent;
+	if (htmp && mutt_strcasecmp (hdr->env->x_label,
+				     htmp->env->x_label) == 0)
+	  i = 0;
+      }
+      else
+	i = 0;
+
+      if (optional)
+	optional = i;
+
+      if (i)
+        hdr_format_s (dest, destlen, prefix, NONULL (hdr->env->x_label));
+      else
+        hdr_format_s (dest, destlen, prefix, "");
+
+      break;
+      
     default:
       snprintf (dest, destlen, "%%%s%c", prefix, op);
       break;

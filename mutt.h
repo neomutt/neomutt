@@ -199,6 +199,7 @@ enum
   M_PGP_ENCRYPT,
   M_PGP_KEY,
 #endif
+  M_XLABEL,
   
   /* Options for Mailcap lookup */
   M_EDIT,
@@ -462,6 +463,7 @@ typedef struct envelope
   char *message_id;
   char *supersedes;
   char *date;
+  char *x_label;
   LIST *references;		/* message references (in reverse order) */
   LIST *userhdrs;		/* user defined headers */
 } ENVELOPE;
