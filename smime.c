@@ -374,7 +374,7 @@ static void smime_entry (char *s, size_t l, MUTTMENU * menu, int num)
       truststate = N_("Unknown   ");
   }
   if (this.public)
-    snprintf(s, l, "  0x%.8X%i %s %-35.35s %s", this.hash, this.suffix, _(truststate), this.email, this.nick);
+    snprintf(s, l, "  0x%.8X%i %s %-35.35s %s", this.hash, this.suffix, truststate, this.email, this.nick);
   else
     snprintf(s, l, "  0x%.8X%i %-35.35s %s", this.hash, this.suffix, this.email, this.nick);
 }
@@ -540,7 +540,7 @@ char *smime_get_field_from_db (char *mailbox, char *query, short public, short m
      specs on their CA-directory.
 
   */
-  snprintf (cert_path, sizeof (cert_path),_("%s/.index"),
+  snprintf (cert_path, sizeof (cert_path), "%s/.index",
 	    (public ? NONULL(SmimeCertificates) : NONULL(SmimeKeys)));
 
   if (!stat (cert_path, &info))
@@ -1284,7 +1284,7 @@ static int smime_add_certificate (char *certificate, char *mailbox)
 
   while (1)
   {
-    snprintf (dest, sizeof (dest), _("%s/%s.%d"), NONULL(SmimeCertificates),
+    snprintf (dest, sizeof (dest), "%s/%s.%d", NONULL(SmimeCertificates),
 	      hashval, i);
 
     if (stat (dest, &info))
