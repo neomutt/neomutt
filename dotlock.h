@@ -37,6 +37,8 @@
 #define DL_FL_RETRY	(1 << 4)
 #define DL_FL_UNLINK	(1 << 5)
 
+#define DL_FL_ACTIONS (DL_FL_TRY|DL_FL_UNLOCK|DL_FL_UNLINK)
+
 #ifndef DL_STANDALONE
 int dotlock_invoke(const char *, int, int);
 #endif
