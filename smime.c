@@ -674,10 +674,7 @@ char *smime_get_field_from_db (char *mailbox, char *query, short public, short m
       else if (key_trust_level == 'v' )
       {
 	mutt_error (_("Warning: You have not yet decided to trust ID %s. (any key to continue)"), key);
-	
-	/* XXX - bad */
-  	mutt_any_key_to_continue ("");
-/*  	mutt_any_key_to_continue (prompt); */
+	mutt_sleep (5);
       }
     }
 
