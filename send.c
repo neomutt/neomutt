@@ -1215,15 +1215,11 @@ main_loop:
 #ifdef _PGPPATH
   if (msg->pgp)
   {
-    if (pgp_get_keys (msg, &pgpkeylist) == -1)
-      goto main_loop;
-
-    mutt_message _("Invoking PGP...");
-    
     /* save the decrypted attachments */
     save_content = msg->content;
 
-    if (pgp_protect (msg, pgpkeylist) == -1)
+    if ((pgp_get_keys (msg, &pgpkeylist) == -1) ||
+	(pgp_protect (msg, pgpkeylist) == -1))
     {
       if (msg->content->parts)
       {

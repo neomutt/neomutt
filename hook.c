@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1996-9 Michael R. Elkins <me@cs.hmc.edu>, and others
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -146,7 +146,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 
   if (data & (M_SENDHOOK | M_SAVEHOOK | M_FCCHOOK))
   {
-    if ((pat = mutt_pattern_comp (pattern.data, (data & M_SAVEHOOK) ? M_FULL_MSG : 0, err)) == NULL)
+    if ((pat = mutt_pattern_comp (pattern.data, (data & (M_SENDHOOK | M_FCCHOOK)) ? 0 : M_FULL_MSG, err)) == NULL)
       goto error;
   }
   else

@@ -1454,6 +1454,8 @@ int pgp_protect (HEADER *msg, char *pgpkeylist)
   if ((msg->pgp & PGPSIGN) && !pgp_valid_passphrase ())
     return (-1);
 
+  mutt_message _("Invoking PGP...");
+  
   if (!isendwin ())
     endwin ();
 
