@@ -1841,9 +1841,9 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   else
   {
 #ifdef HOMESPOOL
-    snprintf (buffer, sizeof (buffer), "%s/%s", NONULL(Homedir), MAILPATH);
+    mutt_concat_path (buffer, NONULL (Homedir), MAILPATH, sizeof (buffer));
 #else
-    snprintf (buffer, sizeof (buffer), "%s/%s", MAILPATH, NONULL(Username));
+    mutt_concat_path (buffer, MAILPATH, NONULL(Username), sizeof (buffer));
 #endif
     Spoolfile = safe_strdup (buffer);
   }

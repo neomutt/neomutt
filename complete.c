@@ -54,17 +54,8 @@ int mutt_complete (char *s, size_t slen)
       p = NONULL (Spoolfile);
     else
       p = NONULL (Maildir);
-    if (s[1])
-    {
-      /* don't append '/' if Maildir/Spoolfile is imap://host/ only */
-      if (mx_is_imap (NONULL (p)) && p[strlen (p)-1] == '/')
-        snprintf (imap_path, sizeof (imap_path), "%s%s", p, s+1);
-      else
-        snprintf (imap_path, sizeof (imap_path), "%s/%s", NONULL (p),
-          s+1);
-    }
-    else
-      strfcpy (imap_path, NONULL(p), sizeof(imap_path));
+
+    mutt_concat_path (imap_path, p, s+1, sizeof (imap_path));
   }
   else
     strfcpy (imap_path, s, sizeof(imap_path));
@@ -85,7 +76,7 @@ int mutt_complete (char *s, size_t slen)
     {
       char buf[_POSIX_PATH_MAX];
       *p++ = 0;
-      snprintf (buf, sizeof (buf), "%s/%s", exp_dirpart, s+1);
+      mutt_concat_path (buf, exp_dirpart, s + 1, sizeof (buf));
       strfcpy (exp_dirpart, buf, sizeof (exp_dirpart));
       snprintf (buf, sizeof (buf), "%s%s/", dirpart, s+1);
       strfcpy (dirpart, buf, sizeof (dirpart));

@@ -622,3 +622,14 @@ void mutt_remove_trailing_ws (char *s)
   for (p = s + mutt_strlen (s) - 1 ; p >= s && ISSPACE (*p) ; p--)
     *p = 0;
 }
+
+char *mutt_concat_path (char *d, const char *dir, const char *fname, size_t l)
+{
+  const char *fmt = "%s/%s";
+  
+  if (!*fname || (*dir && dir[strlen(dir)-1] == '/'))
+    fmt = "%s%s";
+  
+  snprintf (d, sizeof (d), fmt, dir, fname);
+  return d;
+}

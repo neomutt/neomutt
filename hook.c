@@ -411,7 +411,7 @@ void mutt_select_fcc (char *path, size_t pathlen, HEADER *hdr)
     {
       adr = env->to ? env->to : (env->cc ? env->cc : env->bcc);
       mutt_safe_path (buf, sizeof (buf), adr);
-      snprintf (path, pathlen, "%s/%s", NONULL (Maildir), buf);
+      mutt_concat_path (path, NONULL(Maildir), buf, pathlen);
       if (!option (OPTFORCENAME) && mx_access (path, W_OK) != 0)
 	strfcpy (path, NONULL (Outbox), pathlen);
     }
