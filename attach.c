@@ -792,7 +792,7 @@ int mutt_decode_save_attachment (FILE *fp, BODY *m, char *path,
 
   if (s.fpout == NULL)
   {
-    perror ("fopen");
+    mutt_perror ("fopen");
     return (-1);
   }
 
@@ -804,14 +804,14 @@ int mutt_decode_save_attachment (FILE *fp, BODY *m, char *path,
 
     if (stat (m->filename, &st) == -1)
     {
-      perror ("stat");
+      mutt_perror ("stat");
       fclose (s.fpout);
       return (-1);
     }
 
     if ((s.fpin = fopen (m->filename, "r")) == NULL)
     {
-      perror ("fopen");
+      mutt_perror ("fopen");
       return (-1);
     }
 
