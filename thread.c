@@ -535,23 +535,48 @@ void mutt_clear_threads (CONTEXT *ctx)
 
 HEADER *mutt_sort_subthreads (HEADER *hdr, sort_t *func)
 {
-  HEADER *top = NULL;
-  HEADER *t;
+  static HEADER **array = NULL;
+  static unsigned array_size = 0, array_alloc = 0;
+  unsigned array_alloc_base;
+  unsigned items, item;
   
-  while (hdr)
+  if (!func || !hdr)
+    return hdr;
+
+  array_alloc_base = array_alloc;
+  for (item = array_alloc_base; hdr; hdr = hdr->next)
   {
-    t = hdr;
-    hdr = hdr->next;
-    insert_message (&top, t, func);
-    if (t->child)
-      t->child = mutt_sort_subthreads (t->child, func);
+    if (item >= array_size)
+    {
+      array_size = 2 * MAX(array_size, 0x100);
+      safe_realloc ((void **) &array, array_size * sizeof (*array));
+    }
+    array[item++] = hdr;
+    if (hdr->child)
+    {
+      array_alloc = item;
+      hdr->child = mutt_sort_subthreads (hdr->child, func);
+    }
   }
-  return top;
+  array_alloc = array_alloc_base;
+
+  items = item - array_alloc_base;
+  qsort ((void *) (array + array_alloc_base), items, sizeof (*array), func);
+
+  array[array_alloc_base          ]->prev = NULL;
+  array[array_alloc_base + items-1]->next = NULL;
+
+  for (item = array_alloc_base; item < array_alloc_base + items-1; item++)
+  {
+    array[item  ]->next = array[item+1];
+    array[item+1]->prev = array[item  ];
+  }
+
+  return array[array_alloc_base];
 }
 
 void mutt_sort_threads (CONTEXT *ctx, int init)
 {
-  sort_t *usefunc = NULL;
   HEADER *tmp, *CUR;
   int i, oldsort;
   
@@ -562,10 +587,6 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
   oldsort = Sort;
   Sort = SortAux;
   
-  /* if the SORT_LAST bit is set, we save sorting for later */
-  if (!(Sort & SORT_LAST))
-    usefunc = mutt_get_sort_func (Sort);
-
   for (i = 0; i < ctx->msgcount; i++)
   {
     CUR = ctx->hdrs[i];
@@ -580,7 +601,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
       CUR->subject_changed = 1;
       unlink_message (&CUR->parent->child, CUR);
       CUR->parent = NULL;
-      insert_message (&ctx->tree, CUR, usefunc);
+      insert_message (&ctx->tree, CUR, NULL);
     }
     else if (!CUR->threaded)
     {
@@ -603,15 +624,19 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 	 * parent) during the initial threading.
 	 */
 	if (CUR->env->message_id)
-	  move_descendants (tmp ? &tmp->child : &ctx->tree, CUR, usefunc);
+	  move_descendants (tmp ? &tmp->child : &ctx->tree, CUR, NULL);
       }
-      insert_message (tmp ? &tmp->child : &ctx->tree, CUR, usefunc);
+      insert_message (tmp ? &tmp->child : &ctx->tree, CUR, NULL);
       CUR->threaded = 1;
     }
   }
 
   if (!option (OPTSTRICTTHREADS))
-    pseudo_threads (ctx, usefunc);
+    pseudo_threads (ctx, NULL);
+
+  /* if the SORT_LAST bit is not set, sort the whole tree now */
+  if (!(Sort & SORT_LAST))
+    ctx->tree = mutt_sort_subthreads (ctx->tree, mutt_get_sort_func (Sort));
 
   /* now that the whole tree is put together, we can sort by last-* */
   if (Sort & SORT_LAST)
