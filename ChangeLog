@@ -1,4 +1,6 @@
-2003-03-05 21:14:46  Andrew W. Nosenko  <awn@bcs.zp.ua>  (roessler)
+2003-03-05 21:18:24  Andrew W. Nosenko  <awn@bcs.zp.ua>  (roessler)
+
+	* protos.h, sort.c: Fix a warning.
 
 	* mutt_idna.c: Fix tlr's pre-processor screw-up.
 
