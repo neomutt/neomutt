@@ -1192,6 +1192,13 @@ main_loop:
       /* postpone the message until later. */
       if (msg->content->next)
 	msg->content = mutt_make_multipart (msg->content);
+
+      /*
+       * make sure the message is written to the right part of a maildir 
+       * postponed folder.
+       */
+      msg->read = 0; msg->old = 0;
+
       if (!Postponed || mutt_write_fcc (NONULL (Postponed), msg, (cur && (flags & SENDREPLY)) ? cur->env->message_id : NULL, 1, fcc) < 0)
       {
 	msg->content = mutt_remove_multipart (msg->content);
