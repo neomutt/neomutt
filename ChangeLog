@@ -1,3 +1,26 @@
+2003-05-29 17:49:00  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* po/id.po, po/eo.po: Updates from the respective authors.
+
+2003-05-29 17:48:28  David Shaw  <dshaw@jabberwocky.com>  (roessler)
+
+	* pgp.c: Fix part of #1564.
+
+2003-05-29 17:47:10  Matt Larson  <mlarson@verisign.com>  (roessler)
+
+	* imap/imap.c: Look at UNSEEN, not RECENT in
+	imap_check_mailbox().
+
+2003-05-29 17:47:10  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* init.c: Fix a segmentation fault which would occur when
+	pgp_sort_keys is set in a configuration file, but mutt is compiled
+	without PGP support.
+
+	* gnupgparse.c: Fix PGP subkey handling when looking at key
+	capabilities.  This should take care of the recent "mutt does
+	not see all keys" problems.
+
 2003-05-13 13:06:16  Dale Woolridge  <dale-list-mutt-dev-2@woolridge.org>  (roessler)
 
 	* crypt.c: Fix gpg-agent use.
