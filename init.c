@@ -1808,6 +1808,9 @@ void mutt_init (int skip_sys_rc, LIST *commands)
     FREE (&token.data);
   }
 
+  if ((p = getenv ("EMAIL")) != NULL)
+    From = rfc822_parse_adrlist (NULL, p);
+  
   mutt_set_langinfo_charset ();
   mutt_set_charset (Charset);
   

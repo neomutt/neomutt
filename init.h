@@ -577,12 +577,14 @@ struct option_t MuttVars[] = {
   { "forw_quote",	DT_SYN,  R_NONE, UL "forward_quote", 0 },
   /*
   */
-  { "from",		DT_ADDR, R_NONE, UL &From, UL "" },
+  { "from",		DT_ADDR, R_NONE, UL &From, 0 },
   /*
   ** .pp
   ** When set, this variable contains a default from address.  It
   ** can be overridden using my_hdr (including from send-hooks) and
   ** ``$$reverse_name''.
+  ** .pp
+  ** Defaults to the EMAIL environment variable's content.
   */
   { "gecos_mask",	DT_RX,	 R_NONE, UL &GecosMask, UL "^[^,]*" },
   /*

@@ -17,7 +17,7 @@
 .\"     along with this program; if not, write to the Free Software
 .\"     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
 .\"
-.TH mutt 1 "July 2000" Unix "User Manuals"
+.TH mutt 1 "June 2001" Unix "User Manuals"
 .SH NAME
 .PP
 mutt \- The Mutt Mail User Agent
@@ -97,6 +97,8 @@ command which contains new mail.
 .PP
 .IP "EDITOR"
 Editor to invoke when composing a message.
+.IP "EMAIL"
+The user's e-mail address.
 .IP "HOME"
 Full path of the user's home directory.
 .IP "MAIL"
