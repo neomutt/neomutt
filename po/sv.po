@@ -1708,7 +1708,7 @@ msgstr "byt tecken under markören mot föregående tecken"
 
 #: keymap_alldefs.h:80
 msgid "capitalize the word"
-msgstr "ändra ordet till versaler"
+msgstr "skriv ordet med stor begynnelsesbokstav"
 
 #: keymap_alldefs.h:81
 msgid "convert the word to lower case"
