@@ -57,6 +57,7 @@
 #define R_PAGER		(1<<1)
 #define R_RESORT	(1<<2)	/* resort the mailbox */
 #define R_RESORT_SUB	(1<<3)	/* resort subthreads */
+#define R_RESORT_INIT	(1<<4)  /* resort from scratch */
 #define R_BOTH		(R_INDEX | R_PAGER)
 #define R_RESORT_BOTH	(R_RESORT | R_RESORT_SUB)
 
@@ -426,7 +427,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Example: set dsn_return=hdrs
   */
-  { "duplicate_threads",	DT_BOOL, R_NONE, OPTDUPTHREADS, 1 },
+  { "duplicate_threads",	DT_BOOL, R_RESORT|R_RESORT_INIT|R_INDEX, OPTDUPTHREADS, 1 },
   /*
   ** .pp
   ** This variable controls whether mutt, when sorting by threads, threads
@@ -648,7 +649,7 @@ struct option_t MuttVars[] = {
   ** affect the generation of Message-IDs, and it will not lead to the 
   ** cut-off of first-level domains.
   */
-  { "hide_missing",	DT_BOOL, R_NONE, OPTHIDEMISSING, 1 },
+  { "hide_missing",	DT_BOOL, R_RESORT|R_INDEX, OPTHIDEMISSING, 1 },
   /*
   ** .pp
   ** When set, mutt will not indicate the presence of missing messages
@@ -2043,7 +2044,7 @@ struct option_t MuttVars[] = {
   ** You may optionally use the reverse- prefix to specify reverse sorting
   ** order (example: set sort_browser=reverse-date).
   */
-  { "sort_re",		DT_BOOL, R_INDEX|R_RESORT_BOTH, OPTSORTRE, 1 },
+  { "sort_re",		DT_BOOL, R_INDEX|R_RESORT|R_RESORT_INIT, OPTSORTRE, 1 },
   /*
   ** .pp
   ** This variable is only useful when sorting by threads with
@@ -2148,7 +2149,7 @@ struct option_t MuttVars[] = {
   ** Setting this variable causes the ``status bar'' to be displayed on
   ** the first line of the screen rather than near the bottom.
   */
-  { "strict_threads",	DT_BOOL, R_RESORT|R_INDEX, OPTSTRICTTHREADS, 0 },
+  { "strict_threads",	DT_BOOL, R_RESORT|R_RESORT_INIT|R_INDEX, OPTSTRICTTHREADS, 0 },
   /*
   ** .pp
   ** If set, threading will only make use of the ``In-Reply-To'' and
@@ -2175,7 +2176,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Note that $$indent_string is ignored when this option is set.
   */
-  { "thread_received",	DT_BOOL, R_NONE, OPTTHREADRECEIVED, 0 },
+  { "thread_received",	DT_BOOL, R_RESORT|R_RESORT_INIT|R_INDEX, OPTTHREADRECEIVED, 0 },
   /*
   ** .pp
   ** When set, mutt uses the date received rather than the date sent

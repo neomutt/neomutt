@@ -535,11 +535,6 @@ void mutt_enter_command (void)
   BUFFER err, token;
   char buffer[LONG_STRING], errbuf[SHORT_STRING];
   int r;
-  int old_strictthreads  = option (OPTSTRICTTHREADS);
-  int old_sortre	 = option (OPTSORTRE);
-  int old_hidemissing	 = option (OPTHIDEMISSING);
-  int old_threadreceived = option (OPTTHREADRECEIVED);
-  int old_dupthreads	 = option (OPTDUPTHREADS);
 
   buffer[0] = 0;
   if (mutt_get_field (":", buffer, sizeof (buffer), M_COMMAND) != 0 || !buffer[0])
@@ -559,12 +554,6 @@ void mutt_enter_command (void)
     else
       mutt_error ("%s", errbuf);
   }
-  if (option (OPTSTRICTTHREADS) != old_strictthreads ||
-      option (OPTSORTRE) != old_sortre ||
-      option (OPTHIDEMISSING) != old_hidemissing ||
-      option (OPTTHREADRECEIVED) != old_threadreceived ||
-      option (OPTDUPTHREADS) != old_dupthreads)
-    set_option (OPTNEEDRESORT);
 }
 
 void mutt_display_address (ENVELOPE *env)

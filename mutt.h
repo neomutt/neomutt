@@ -437,6 +437,7 @@ enum
   OPTSIGNALSBLOCKED,	/* (pseudo) using by mutt_block_signals () */
   OPTSYSSIGNALSBLOCKED,	/* (pseudo) using by mutt_block_signals_system () */
   OPTNEEDRESORT,	/* (pseudo) used to force a re-sort */
+  OPTRESORTINIT,	/* (pseudo) used to force the next resort to be from scratch */
   OPTVIEWATTACH,	/* (pseudo) signals that we are viewing attachments */
   OPTFORCEREDRAWINDEX,	/* (pseudo) used to force a redraw in the main index */
   OPTFORCEREDRAWPAGER,	/* (pseudo) used to force a redraw in the pager */

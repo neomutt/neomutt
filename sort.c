@@ -222,6 +222,11 @@ void mutt_sort_headers (CONTEXT *ctx, int init)
       Sort = i;
       unset_option (OPTSORTSUBTHREADS);
     }
+    if (option (OPTRESORTINIT))
+    {
+      unset_option (OPTRESORTINIT);
+      init = 1;
+    }
     mutt_sort_threads (ctx, init);
   }
   else if ((sortfunc = mutt_get_sort_func (Sort)) == NULL ||

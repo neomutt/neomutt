@@ -476,7 +476,7 @@ int compare_threads (const void *a, const void *b)
 
 THREAD *mutt_sort_subthreads (THREAD *thread, int init)
 {
-  THREAD **array, *sort_key, *top;
+  THREAD **array, *sort_key, *top, *tmp;
   HEADER *oldsort_key;
   int i, array_size, sort_top = 0;
   
@@ -496,6 +496,8 @@ THREAD *mutt_sort_subthreads (THREAD *thread, int init)
   {
     if (init || !thread->sort_key)
     {
+      thread->sort_key = NULL;
+
       if (thread->parent)
         thread->parent->sort_children = 1;
       else
@@ -555,20 +557,20 @@ THREAD *mutt_sort_subthreads (THREAD *thread, int init)
 
       if (thread->parent)
       {
-	if (!thread->parent->sort_key || thread->parent->sort_children)
-	{
-	  /* make sort_key the first or last sibling, as appropriate */
-	  sort_key = (!(Sort & SORT_LAST) ^ !(Sort & SORT_REVERSE)) ? thread->parent->child : thread;
-	  thread->parent->sort_children = 0;
-	}
-	else
-	  sort_key = NULL;
-
+	tmp = thread;
 	thread = thread->parent;
 
-	if (sort_key)
+	if (!thread->sort_key || thread->sort_children)
 	{
+	  /* make sort_key the first or last sibling, as appropriate */
+	  sort_key = (!(Sort & SORT_LAST) ^ !(Sort & SORT_REVERSE)) ? thread->child : tmp;
+
+	  /* we just sorted its children */
+	  thread->sort_children = 0;
+
 	  oldsort_key = thread->sort_key;
+	  thread->sort_key = thread->message;
+
 	  if (Sort & SORT_LAST)
 	  {
 	    if (!thread->sort_key
@@ -578,7 +580,7 @@ THREAD *mutt_sort_subthreads (THREAD *thread, int init)
 		    > 0))
 	      thread->sort_key = sort_key->sort_key;
 	  }
-	  else if (!thread->sort_key || !thread->message)
+	  else if (!thread->sort_key)
 	    thread->sort_key = sort_key->sort_key;
 
 	  /* if its sort_key has changed, we need to resort it and siblings */
@@ -600,6 +602,38 @@ THREAD *mutt_sort_subthreads (THREAD *thread, int init)
     }
 
     thread = thread->next;
+  }
+}
+
+static void check_subjects (CONTEXT *ctx, int init)
+{
+  HEADER *cur;
+  THREAD *tmp;
+  int i;
+
+  for (i = 0; i < ctx->msgcount; i++)
+  {
+    cur = ctx->hdrs[i];
+    if (cur->thread->check_subject)
+      cur->thread->check_subject = 0;
+    else if (!init)
+      continue;
+
+    /* figure out which messages have subjects different than their parents' */
+    tmp = cur->thread->parent;
+    while (tmp && !tmp->message)
+    {
+      tmp = tmp->parent;
+    }
+
+    if (!tmp)
+      cur->subject_changed = 1;
+    else if (cur->env->real_subj && tmp->message->env->real_subj)
+      cur->subject_changed = mutt_strcmp (cur->env->real_subj,
+					  tmp->message->env->real_subj) ? 1 : 0;
+    else
+      cur->subject_changed = (cur->env->real_subj
+			      || tmp->message->env->real_subj) ? 1 : 0;
   }
 }
 
@@ -644,10 +678,10 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 
     if (!cur->thread)
     {
-      thread = (((!init || option (OPTDUPTHREADS)) && cur->env->message_id)
-		? hash_find (ctx->thread_hash, cur->env->message_id) : NULL);
-      
-      new = (option (OPTDUPTHREADS) ? thread : NULL);
+      if ((!init || option (OPTDUPTHREADS)) && cur->env->message_id)
+	thread = hash_find (ctx->thread_hash, cur->env->message_id);
+      else
+	thread = NULL;
 
       if (thread && !thread->message)
       {
@@ -681,12 +715,15 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 	    unlink_message (&tmp->child, thread);
 	    thread->parent = NULL;
 	    thread->sort_key = NULL;
+	    thread->fake_thread = 0;
 	    thread = tmp;
 	  } while (thread != &top && !thread->child && !thread->message);
 	}
       }
       else
       {
+	new = (option (OPTDUPTHREADS) ? thread : NULL);
+
 	thread = safe_calloc (1, sizeof (THREAD));
 	thread->message = cur;
 	thread->check_subject = 1;
@@ -694,16 +731,18 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 	hash_insert (ctx->thread_hash,
 		     cur->env->message_id ? cur->env->message_id : "",
 		     thread, 1);
-      }
 
-      if (new && new->message)
-      {
-	if (new->duplicate_thread)
-	  new = new->parent;
+	if (new)
+	{
+	  if (new->duplicate_thread)
+	    new = new->parent;
 
-	insert_message (&new->child, new, thread);
-	thread->duplicate_thread = 1;
-	thread->message->threaded = 1;
+	  thread = cur->thread;
+
+	  insert_message (&new->child, new, thread);
+	  thread->duplicate_thread = 1;
+	  thread->message->threaded = 1;
+	}
       }
     }
     else
@@ -807,30 +846,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
   }
   ctx->tree = top.child;
 
-  for (i = 0; i < ctx->msgcount; i++)
-  {
-    cur = ctx->hdrs[i];
-    if (cur->thread->check_subject)
-      cur->thread->check_subject = 0;
-    else if (!init)
-      continue;
-
-    /* figure out which messages have subjects different than their parents' */
-    tmp = cur->thread->parent;
-    while (tmp && !tmp->message)
-    {
-      tmp = tmp->parent;
-    }
-
-    if (!tmp)
-      cur->subject_changed = 1;
-    else if (cur->env->real_subj && tmp->message->env->real_subj)
-      cur->subject_changed = mutt_strcmp (cur->env->real_subj,
-					  tmp->message->env->real_subj) ? 1 : 0;
-    else
-      cur->subject_changed = (cur->env->real_subj
-			      || tmp->message->env->real_subj) ? 1 : 0;
-  }
+  check_subjects (ctx, init);
 
   if (!option (OPTSTRICTTHREADS))
     pseudo_threads (ctx);
