@@ -1,3 +1,50 @@
+2004-06-17 20:36:13  Moritz Schulte  <moritz@g10code.com>  (roessler)
+
+	* Makefile.am, compose.c, configure.in, crypt-mod-pgp-classic.c,
+	crypt-mod-smime-classic.c, crypt-mod.c, crypt-mod.h, crypt.c,
+	cryptglue.c, curs_lib.c, init.h, keymap.c, keymap.h, main.c,
+	mutt.h, mutt_crypt.h, mutt_curses.h, pgp.c, pgp.h, smime.c,
+	smime.h: This is the sequel to the crypto modularization changes
+	I did on 2003-01-21.  Moritz added another abstraction layer
+	which cleans up the code and allows the crypto modules to use
+	their own option menu.	Everything should work as it used to
+	but is now in a really good shape for part III, the Return of
+	the GnuPG Easy Makers. -wk
+
+	* crypt-mod-pgp-classic.c, crypt-mod-smime-classic.c, crypt-mod.c,
+	crypt-mod.h: New files.
+
+	* smime.c (smime_valid_passphrase, smime_send_menu): New
+	functions.  * smime.h: Removed macro: smime_valid_passphrase.
+	Declared: smime_valid_passphrase, smime_send_menu.  * pgp.c:
+	Include "mutt_menu.h".	(pgp_valid_passphrase, pgp_send_menu):
+	New functions.	* pgp.h: Removed macro: pgp_valid_passphrase.
+	Declared: pgp_valid_passphrase, pgp_send_menu.	*
+	mutt_curses.h: Declare: mutt_need_hard_redraw.	* mutt_crypt.h:
+	Declare: crypt_pgp_valid_passphrase, crypt_pgp_send_menu,
+	crypt_smime_valid_passphrase, crypt_smime_send_menu, crypt_init.
+	Adjust WithCrypto definition since the GPGME backend does not
+	exclude anymore the other `classic' backends.  (KEYFLAG_ISX509):
+	New symbol.  * mutt.h (enum): New symbol: OPTCRYPTUSEGPGME.
+	(struct body): New member: is_signed_data, warnsig.  * main.c
+	(main): Call crypt_init.  * keymap.c (km_get_table): Support for
+	MENU_KEY_SELECT_PGP and MENU_KEY_SELECT_SMIME.	(Menus): Added
+	entries fuer MENU_KEY_SELECT_PGP and MENU_KEY_SELECT_SMIME.
+	(km_init): Create bindings for MENU_KEY_SELECT_PGP and
+	MENU_KEY_SELECT_SMIME.	* keymap.h (enum): New enum symbols:
+	MENU_KEY_SELECT_PGP, MENU_KEY_SELECT_SMIME.  * init.h:
+	New configuration variable: crypt_use_gpgme.  * compose.c
+	(pgp_send_menu, smime_send_menu): Removed functions, they are now
+	contained in the crypto backend modules.  (mutt_compose_menu):
+	Use crypt_pgp_send_menu and crypt_smime_send_menu instead
+	pgp_send_menu and smime_send_menu.  * cryptglue.c: Slightly
+	rewritten in order to make use of the module mechanism used to
+	access crypto backends.  * curs_lib.c (mutt_need_hard_redraw):
+	New function.  * crypt.c (crypt_forget_passphrase): Adjust
+	for new crypto backend interface.  (crypt_valid_passphrase):
+	Stripped, use calls to crypt_pgp_valid_passphrase and
+	crypt_smime_valid_passphrase.
+
 2004-06-02 17:55:34  Alain Bench  <veronatif@free.fr>  (roessler)
 
 	* parse.c: Fix #1759.
