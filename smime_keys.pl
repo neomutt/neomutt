@@ -18,6 +18,7 @@
 #     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
 
 use strict;
+use File::Copy;
 
 umask 077;
 
@@ -25,16 +26,16 @@ require "timelocal.pl";
 
 sub usage ();
 sub mutt_Q ($ );
-sub myglob ($ );
+sub mycopy ($$);
 
 #  directory setup routines
-sub mkdir_recursive ($;$ );
+sub mkdir_recursive ($ );
 sub init_paths ();
 
 # key/certificate management methods
 sub list_certs ();
 sub query_label ();
-sub add_entry ($$$$;$ );
+sub add_entry ($$$$$ );
 sub add_certificate ($$$$;$ );
 sub add_key ($$$$);
 sub add_root_cert ($ );
@@ -43,8 +44,8 @@ sub handle_pem (@ );
 sub modify_entry ($$$;$ );
 sub remove_pair ($ );
 sub change_label ($ );
-sub verify_cert($;$ );
-sub do_verify($$;$ );
+sub verify_cert($$);
+sub do_verify($$$ );
               
 # Get the directories mutt uses for certificate/key storage.
 
@@ -205,25 +206,27 @@ EOF
     die "Value of $var is weird\n";
 }
 
+sub mycopy ($$) {
+    my $source = shift or die;
+    my $dest = shift or die;
+
+    copy $source, $dest or die "Problem copying $source to $dest: $!\n";
+}
 
 #
 #  directory setup routines
 #
 
 
-sub mkdir_recursive ($;$) {
-    my $path = shift;
-    my $mode = 0700;
-
-    (@_ == 2) and $mode = shift;
-
+sub mkdir_recursive ($) {
+    my $path = shift or die;
     my $tmp_path;
     
     for my $dir (split /\//, $path) {
         $tmp_path .= "$dir/";
 
         -d $tmp_path 
-            or mkdir $tmp_path, $mode 
+            or mkdir $tmp_path, 0700
                 or die "Can't mkdir $tmp_path: $!";
     }
 }
@@ -342,12 +345,12 @@ sub query_label () {
 
 
 
-sub add_entry ($$$$;$) {
-    my $mailbox = shift;
-    my $hashvalue = shift;
-    my $use_cert = shift;
-    my $label = shift;
-    my $issuer_hash = shift;
+sub add_entry ($$$$$) {
+    my $mailbox = shift or die;
+    my $hashvalue = shift or die;
+    my $use_cert = shift or die;
+    my $label = shift or die;
+    my $issuer_hash = shift or die;
 
     my @fields;
 
@@ -377,10 +380,10 @@ sub add_entry ($$$$;$) {
 
 
 sub add_certificate ($$$$;$) {
-    my $filename = shift;
-    my $hashvalue = shift;
-    my $add_to_index = shift;
-    my $label = shift;
+    my $filename = shift or die;
+    my $hashvalue = shift or die;
+    my $add_to_index = shift or die;
+    my $label = shift or die;
     my $issuer_hash = shift;
 
     my $iter = 0;
@@ -405,8 +408,7 @@ sub add_certificate ($$$$;$) {
     $$hashvalue .= ".$iter";
     
     unless (-e "$certificates_path/$$hashvalue") {
-        my $cmd = "cp $filename $certificates_path/$$hashvalue";
-        system $cmd and die "'$cmd' returned $?";
+        mycopy $filename, "$certificates_path/$$hashvalue";
 
         if ($add_to_index) {
 	    my $cmd = "openssl x509 -in $filename -email -noout";
@@ -430,14 +432,13 @@ sub add_certificate ($$$$;$) {
 
 
 sub add_key ($$$$) {
-    my $file = shift;
-    my $hashvalue = shift;
-    my $mailbox = shift;
-    my $label = shift;
+    my $file = shift or die;
+    my $hashvalue = shift or die;
+    my $mailbox = shift or die;
+    my $label = shift or die;
 
     unless (-e "$private_keys_path/$hashvalue") {
-        my $cmd = "cp $file $private_keys_path/$hashvalue";
-	system $cmd and die "$cmd returned $!";
+        mycopy $file, "$private_keys_path/$hashvalue";
     }    
 
     add_entry($mailbox, $hashvalue, 0, $label, "");
@@ -530,50 +531,47 @@ sub handle_pem (@) {
     @pem_contents = &parse_pem(@_);
 
     # private key and certificate use the same 'localKeyID'
-    while($iter <= $#pem_contents>>2) {
-        if($pem_contents[$iter<<2] eq "K") {
+    while($iter <= $#pem_contents / 4) {
+        if($pem_contents[$iter * 4] eq "K") {
             $key = $iter;
             last;
         }
         $iter++;
     }
-    ($iter > $#pem_contents>>2) and die("Couldn't find private key!");
+    ($iter > $#pem_contents / 2) and die("Couldn't find private key!");
 
-    $pem_contents[($key<<2)+1] or die("Attribute 'localKeyID' wasn't set.");
+    $pem_contents[($key * 4)+1] or die("Attribute 'localKeyID' wasn't set.");
 
     $iter = 0;
-    while($iter <= $#pem_contents>>2) {
+    while($iter <= $#pem_contents / 4) {
         $iter == $key and ($iter++) and next;
-        if($pem_contents[($iter<<2)+1] eq $pem_contents[($key<<2)+1]) {
+        if($pem_contents[($iter * 4)+1] eq $pem_contents[($key * 4)+1]) {
             $certificate = $iter;
             last;
         }
         $iter++;
     }
-    ($iter > $#pem_contents>>2) and die("Couldn't find matching certificate!");
+    ($iter > $#pem_contents / 4) and die("Couldn't find matching certificate!");
 
-    my $cmd = "cp cert_tmp.$key tmp_key";
-    system $cmd and die "'$cmd' returned $?";
-
-    $cmd = "cp cert_tmp.$certificate tmp_certificate";
-    system $cmd and die "'$cmd' returned $?";    
+    mycopy "cert_tmp.$key", "tmp_key";
+    mycopy "cert_tmp.$certificate", "tmp_certificate";
 
     # root certificate is self signed
     $iter = 0;
 
-    while($iter <= $#pem_contents>>2) {
+    while($iter <= $#pem_contents / 4) {
         if ($iter == $key or $iter == $certificate) {
             $iter++; 
             next;
         }
 
-        if($pem_contents[($iter<<2)+2] eq $pem_contents[($iter<<2)+3]) {
+        if($pem_contents[($iter * 4)+2] eq $pem_contents[($iter * 4)+3]) {
             $root_cert = $iter;
             last;
         }
         $iter++;
     }
-    ($iter > $#pem_contents>>2) and die("Couldn't identify root certificate!");
+    ($iter > $#pem_contents / 4) and die("Couldn't identify root certificate!");
 
     # what's left are intermediate certificates.
     $iter = 0;
@@ -582,12 +580,13 @@ sub handle_pem (@) {
 
     # needs to be set, so we can check it later
     $intermediate = $root_cert;
-    while($iter <= $#pem_contents>>2) {
+    while($iter <= $#pem_contents / 4) {
         if ($iter == $key or $iter == $certificate or $iter == $root_cert) {
             $iter++; 
             next;
         }
 
+# FIXME: This should be done in perl
         my $cmd = "cat cert_tmp.$iter >> tmp_issuer_cert";
         system $cmd and die "'$cmd' returned $?";
 
@@ -599,12 +598,12 @@ sub handle_pem (@) {
 
     # no intermediate certificates ? use root-cert instead
     if($intermediate == $root_cert) {
-      $cmd = "cp cert_tmp.$root_cert tmp_issuer_cert";
+        mycopy "cert_tmp.$root_cert", 'tmp_issuer_cert';
     }
 
     my $label = query_label;
 
-    $cmd = "openssl x509 -noout -hash -in tmp_certificate";
+    my $cmd = "openssl x509 -noout -hash -in tmp_certificate";
     my $cert_hash = `$cmd`;
     $? and die "'$cmd' returned $?";
 
@@ -633,16 +632,16 @@ sub handle_pem (@) {
 
 
 sub modify_entry ($$$;$ ) {
-    my $op = shift;
-    my $hashvalue = shift;
-    my $use_cert = shift;
+    my $op = shift or die;
+    my $hashvalue = shift or die;
+    my $use_cert = shift or die;
     my $crl;
     my $label;
     my $path;
     my @fields;
 
-    $op eq 'L' and ($label = shift);
-    $op eq 'V' and ($crl = shift);
+    $op eq 'L' and ($label = shift or die);
+    $op eq 'V' and ($crl = shift or die);
 
 
     if ($use_cert) {
@@ -683,8 +682,8 @@ sub modify_entry ($$$;$ ) {
     close(INDEX);
     close(NEW_INDEX);
 
-    my $cmd = "mv -f $path/.index.tmp $path/.index";
-    system $cmd and die "'$cmd' returned $?";
+    rename "$path/.index.tmp", "$path/.index" 
+        or die "Couldn't rename $path/.index.tmp to $path/.index: $!\n";
 
     print "\n";
 }
@@ -693,7 +692,7 @@ sub modify_entry ($$$;$ ) {
 
 
 sub remove_pair ($ ) {
-  my $keyid = shift;
+  my $keyid = shift or die;
 
   if (-e "$certificates_path/$keyid") {
     unlink "$certificates_path/$keyid";
@@ -714,7 +713,7 @@ sub remove_pair ($ ) {
 
 
 sub change_label ($ ) {
-  my $keyid = shift;
+  my $keyid = shift or die;
   
   my $label = query_label;
 
@@ -736,8 +735,8 @@ sub change_label ($ ) {
 
 
 
-sub verify_cert ($;$ ) {
-  my $keyid = shift;
+sub verify_cert ($$) {
+  my $keyid = shift or die;
   my $crl = shift;
 
   -e "$certificates_path/$keyid" or $keyid eq 'all'
@@ -748,10 +747,10 @@ sub verify_cert ($;$ ) {
 
 
 
-sub do_verify($$;$) {
+sub do_verify($$$) {
 
-  my $cert = shift;
-  my $issuerid = shift;
+  my $cert = shift or die;
+  my $issuerid = shift or die;
   my $crl = shift;
 
   my $result = 'i';
@@ -836,16 +835,15 @@ sub do_verify($$;$) {
 
 
 sub add_root_cert ($) {
-  my $root_cert = shift;
+  my $root_cert = shift or die;
 
   my $cmd = "openssl x509 -noout -hash -in $root_cert";
   my $root_hash = `$cmd`;
   $? and die "'$cmd' returned $?";
 
   if (-d $root_certs_path) {
-    $cmd = "cp $root_cert $root_certs_path/$root_hash";
     -e "$root_certs_path/$root_hash" or
-      system $cmd and die "'$cmd' returned $?";
+        mycopy $root_cert, "$root_certs_path/$root_hash";
   }
   else {
     open(ROOT_CERTS, ">>$root_certs_path") or 
