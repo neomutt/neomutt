@@ -1,3 +1,7 @@
+2003-09-20 06:24:10  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* muttbug.sh.in: Adapt to new GNU coreutils by not using head (1).
+
 2003-09-19 13:09:59  René Clerc  <rene@clerc.nl>  (roessler)
 
 	* po/nl.po: update
