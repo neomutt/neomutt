@@ -1338,7 +1338,7 @@ Usage: <tt/unscore/ <em/pattern/ &lsqb; <em/pattern/ ... &rsqb;
 
 The <tt/score/ commands adds <em/value/ to a message's score if <em/pattern/
 matches it.  <em/pattern/ is a string in the format described in the <ref
-id="pattern" name="patterns"> section.  <em/value/ is a positive or
+id="patterns" name="patterns"> section.  <em/value/ is a positive or
 negative integer.  A message's final score is the sum total of all matching
 <tt/score/ entries.  However, you may optionally prefix <em/value/ with an
 equal sign (=) to cause evaluation to stop at a particular entry if there is
@@ -1436,7 +1436,7 @@ something like <tt/unhook send-hook/.
 <sect1>Regular Expressions<label id="regexp">
 <p>
 All string patterns in Mutt including those in more complex
-<ref id="pattern" name="patterns"> must be specified
+<ref id="patterns" name="patterns"> must be specified
 using regular expressions (regexp) in the ``POSIX extended'' syntax (which
 is more or less the syntax used by egrep and GNU awk).  For your
 convenience, we have included below a brief description of this syntax.
@@ -1590,7 +1590,7 @@ Matches the empty string at the end of a buffer.
 Please note however that these operators are not defined by POSIX, so
 they may or may not be available in stock libraries on various systems.
 
-<sect1>Patterns<label id="pattern">
+<sect1>Patterns<label id="patterns">
 <p>
 Many of Mutt's commands allow you to specify a pattern to match
 (limit, tag-pattern, delete-pattern, etc.).  There are several ways to select
@@ -1741,7 +1741,7 @@ a mailing list to a separate folder, or to delete all messages with a given
 subject.  To tag all messages matching a pattern, use the tag-pattern
 function, which is bound to ``control-T'' by default.  Or you can select
 individual messages by hand using the ``tag-message'' function, which is
-bound to ``t'' by default.  See <ref id="pattern" name="patterns"> for
+bound to ``t'' by default.  See <ref id="patterns" name="patterns"> for
 Mutt's pattern matching syntax.
 
 Once you have tagged the desired messages, you can use the
@@ -1759,7 +1759,7 @@ execute arbitrary commands before performing some operation.  For example,
 you may wish to tailor your configuration based upon which mailbox you are
 reading, or to whom you are sending mail.  In the Mutt world, a <em/hook/
 consists of a <ref id="regexp" name="regular expression"> or
-<ref id="pattern" name="pattern"> along with a
+<ref id="patterns" name="pattern"> along with a
 configuration option/command.  See
 <itemize>
 <item><ref id="folder-hook" name="folder-hook">
@@ -1781,7 +1781,7 @@ sufficient.  But in dealing with messages a finer grain of control is
 needed for matching since for different purposes you want to match
 different criteria.
 
-Mutt allows the use of the <ref id="pattern" name="search pattern">
+Mutt allows the use of the <ref id="patterns" name="search pattern">
 language for matching messages in hook commands.  This works in exactly the
 same way as it would when <em/limiting/ or <em/searching/ the mailbox,
 except that you are restricted to those operators which match information

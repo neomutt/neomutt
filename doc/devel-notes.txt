@@ -168,9 +168,7 @@ similar to [ntg]roff:
 
  - $word will be converted to a reference to word, where appropriate.
    Note that $$word is possible as well.
-
-   (Not yet implemented in makedoc, but please use it nevertheless
-   when writing documentation!)
+   Use $$$ to get a literal $ without making a reference.
 
  - '. ' in the beginning of a line expands to two space characters.
    This is used to protect indentations in tables.

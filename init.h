@@ -510,7 +510,7 @@ struct option_t MuttVars[] = {
   ** Controls whether or not the \fIMail-Followup-To\fP header field is
   ** generated when sending mail.  When \fIset\fP, Mutt will generate this
   ** field when you are replying to a known mailing list, specified with
-  ** the ``$subscribe'' or ``$lists'' commands.
+  ** the ``subscribe'' or ``$lists'' commands.
   ** .pp
   ** This field has two purposes.  First, preventing you from receiving
   ** duplicate copies of replies to messages which you send to mailing
@@ -1010,7 +1010,7 @@ struct option_t MuttVars[] = {
   { "message_format",	DT_STR,	 R_NONE, UL &MsgFmt, UL "%s" },
   /*
   ** .pp
-  ** This is the string displayed in the ``$attachment'' menu for
+  ** This is the string displayed in the ``attachment'' menu for
   ** attachments of type message/rfc822.  For a full listing of defined
   ** escape sequences see the section on ``$$index_format''.
   */
@@ -1910,7 +1910,7 @@ struct option_t MuttVars[] = {
   ** If your spool mailbox is in a non-default place where Mutt cannot find
   ** it, you can specify its location with this variable.  Mutt will
   ** automatically set this variable to the value of the environment
-  ** variable $MAIL if it is not set.
+  ** variable $$$MAIL if it is not set.
   */
   { "status_chars",	DT_STR,	 R_BOTH, UL &StChars, UL "-*%A" },
   /*
@@ -1994,14 +1994,14 @@ struct option_t MuttVars[] = {
   { "status_on_top",	DT_BOOL, R_BOTH, OPTSTATUSONTOP, 0 },
   /*
   ** .pp
-  ** Setting this variable causes the ``$status bar'' to be displayed on
+  ** Setting this variable causes the ``status bar'' to be displayed on
   ** the first line of the screen rather than near the bottom.
   */
   { "strict_threads",	DT_BOOL, R_RESORT|R_INDEX, OPTSTRICTTHREADS, 0 },
   /*
   ** .pp
   ** If set, threading will only make use of the ``In-Reply-To'' and
-  ** ``References'' fields when ``$sorting'' by message threads.  By
+  ** ``References'' fields when you ``$$sort'' by message threads.  By
   ** default, messages with the same subject are grouped together in
   ** ``pseudo threads.''  This may not always be desirable, such as in a
   ** personal mailbox where you might have several unrelated messages with
@@ -2100,7 +2100,7 @@ struct option_t MuttVars[] = {
   ** escape\fP, \fIpipe-message\fP, \fIpipe-entry\fP, \fIprint-message\fP,
   ** and \fIprint-entry\fP commands.
   ** .pp
-  ** It is also used when viewing attachments with ``$autoview'', provided
+  ** It is also used when viewing attachments with ``$auto_view'', provided
   ** that the corresponding mailcap entry has a \fIneedsterminal\fP flag,
   ** and the external program is interactive.
   ** .pp

@@ -1069,6 +1069,30 @@ static int print_it (int special, char *str, FILE *out, int docstat)
   return docstat;
 }
 
+void print_ref (FILE *out, int output_dollar, const char *ref)
+{
+  switch (OutputFormat)
+  {
+  case F_CONF:
+  case F_MAN:
+    if (output_dollar)
+      putc ('$', out);
+    fputs (ref, out);
+    break;
+
+  case F_SGML:
+    fprintf (out, "<ref id=\"%s\" name=\"", ref);
+    if (output_dollar)
+      fputs ("&dollar;", out);
+    sgml_fputs (ref, out);
+    fputs ("\">", out);
+    break;
+
+  default:
+    break;
+  }
+}
+
 static int commit_buff (char *buff, char **d, FILE *out, int docstat)
 {
   if (*d > buff)
@@ -1146,8 +1170,35 @@ static int handle_docline (char *l, FILE *out, int docstat)
       s += 3;
     }
     else if (*s == '$')
-      /* add code for references here. */
-      ;
+    {
+      int output_dollar = 0;
+      char *ref;
+      char save;
+
+      ++s;
+      if (*s == '$')
+      {
+	output_dollar = 1;
+	++s;
+      }
+      if (*s == '$')
+      {
+	*d++ = '$';
+      }
+      else
+      {
+	ref = s;
+	while (isalnum (*s) || *s == '-' || *s == '_')
+	  ++s;
+
+	docstat = commit_buff (buff, &d, out, docstat);
+	save = *s;
+	*s = 0;
+	print_ref (out, output_dollar, ref);
+	*s = save;
+	--s;
+      }
+    }
     else
       *d++ = *s;
   }
