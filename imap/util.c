@@ -144,7 +144,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
     return -1;
   else
     /* walk past closing '}' */
-    mx->mbox = safe_strdup (c+1);
+    mx->mbox = strdup (c+1);
   
   /* Defaults */
   mx->account.flags = 0;

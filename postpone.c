@@ -86,10 +86,16 @@ int mutt_num_postponed (int force)
   {
     if (force)
     {
-      PostCount = imap_mailbox_check (Postponed, 0);
-      PostCount = (PostCount < 0) ? 0 : PostCount;
-      dprint(2, (debugfile,
-        "mutt_num_postponed: %d postponed IMAP messages found.\n", PostCount));
+      short newpc;
+
+      newpc = imap_mailbox_check (Postponed, 0);
+      if (newpc >= 0)
+      {
+	PostCount = newpc;
+	dprint (2, (debugfile, "mutt_num_postponed: %d postponed IMAP messages found.\n", PostCount));
+      }
+      else
+	dprint (2, (debugfile, "mutt_num_postponed: using old IMAP postponed count.\n"));
     }
     return PostCount;
   }
@@ -222,28 +228,10 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
   LIST *next;
   char *p;
   int opt_delete;
-#ifdef USE_IMAP
-  char curpath[LONG_STRING];
-  int need_reopen = 0;
-#endif
 
   if (!Postponed)
     return (-1);
 
-#ifdef USE_IMAP
-  /* if we're in an IMAP folder and the postponed folder is also IMAP, we may
-   * need to take steps to avoid opening an additional connection to the same
-   * server. */
-  if ((ctx && ctx->magic == M_IMAP) && mx_is_imap (Postponed))
-  { 
-    strfcpy (curpath, ctx->path, sizeof (curpath));
-    if (imap_select_mailbox (ctx, Postponed) < 0)
-      return -1;
-    need_reopen = 1;
-    PostContext = ctx;
-  }
-  else
-#endif
   if ((PostContext = mx_open_mailbox (Postponed, M_NOSORT, NULL)) == NULL)
   {
     PostCount = 0;
@@ -255,11 +243,6 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
   {
     PostCount = 0;
     mx_close_mailbox (PostContext, NULL);
-#ifdef USE_IMAP
-  if (need_reopen)
-    ctx = mx_open_mailbox (curpath, 0, PostContext);
-  else
-#endif
     safe_free ((void **) &PostContext);
     mutt_error _("No postponed messages.");
     return (-1);
@@ -273,11 +256,6 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
   else if ((h = select_msg ()) == NULL)
   {
     mx_close_mailbox (PostContext, NULL);
-#ifdef USE_IMAP
-  if (need_reopen)
-    ctx = mx_open_mailbox (curpath, 0, PostContext);
-  else
-#endif
     safe_free ((void **) &PostContext);
     return (-1);
   }
@@ -285,11 +263,6 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
   if (mutt_prepare_template (NULL, PostContext, hdr, h, 0) < 0)
   {
     mx_fastclose_mailbox (PostContext);
-#ifdef USE_IMAP
-    if (need_reopen)
-      ctx = mx_open_mailbox (curpath, 0, NULL);
-    else
-#endif
     safe_free ((void **) &PostContext);
     return (-1);
   }
@@ -306,11 +279,6 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
   mx_close_mailbox (PostContext, NULL);
   set_quadoption (OPT_DELETE, opt_delete);
 
-#ifdef USE_IMAP
-  if (need_reopen)
-    ctx = mx_open_mailbox (curpath, 0, PostContext);
-  else
-#endif
   safe_free ((void **) &PostContext);
 
   for (tmp = hdr->env->userhdrs; tmp; )

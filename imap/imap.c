@@ -747,41 +747,6 @@ int imap_open_mailbox (CONTEXT* ctx)
   return 0;
 }
 
-/* fast switch mailboxes on the same connection - sync without expunge and
- * SELECT */
-int imap_select_mailbox (CONTEXT* ctx, const char* path)
-{
-  IMAP_DATA* idata;
-  char curpath[LONG_STRING];
-  IMAP_MBOX mx;
-
-  idata = CTX_DATA;
-
-  strfcpy (curpath, path, sizeof (curpath));
-  /* check that the target folder makes sense */
-  if (imap_parse_path (curpath, &mx))
-    return -1;
-
-  /* and that it's on the same server as the current folder */
-  if (!mutt_account_match (&(mx.account), &(idata->conn->account)))
-  {
-    dprint(2, (debugfile,
-      "imap_select_mailbox: source server is not target server\n"));
-    return -1;
-  }
-
-  if (imap_sync_mailbox (ctx, 0, NULL) < 0)
-    return -1;
-
-  idata = CTX_DATA;
-  /* now trick imap_open_mailbox into thinking it can just select */
-  FREE (&(ctx->path));
-  ctx->path = safe_strdup(path);
-  idata->state = IMAP_AUTHENTICATED;
-  
-  return imap_open_mailbox (ctx);
-}
-
 int imap_open_mailbox_append (CONTEXT *ctx)
 {
   CONNECTION *conn;
@@ -1101,7 +1066,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int *index_hint)
         imap_error ("imap_sync_mailbox: CLOSE failed", buf);
         return -1;
       }
-      CTX_DATA->state = IMAP_AUTHENTICATED;
+      /* state is set in imap_fastclose_mailbox */
     }
     else if (mutt_bit_isset(CTX_DATA->rights, IMAP_ACL_DELETE))
     {
@@ -1139,7 +1104,10 @@ void imap_fastclose_mailbox (CONTEXT *ctx)
   CTX_DATA->reopen &= IMAP_REOPEN_ALLOW;
 
   if ((CTX_DATA->state == IMAP_SELECTED) && (ctx == CTX_DATA->selected_ctx))
+  {
     CTX_DATA->state = IMAP_AUTHENTICATED;
+    FREE (&(CTX_DATA->selected_mailbox));
+  }
 
   /* free IMAP part of headers */
   for (i = 0; i < ctx->msgcount; i++)
@@ -1153,21 +1121,6 @@ void imap_fastclose_mailbox (CONTEXT *ctx)
       safe_free ((void **) &CTX_DATA->cache[i].path);
     }
   }
-
-#if 0
-  /* This is not the right place to logout, actually. There are two dangers:
-   * 1. status is set to IMAP_LOGOUT as soon as the user says q, even if she
-   *    cancels a bit later.
-   * 2. We may get here when closing the $received folder, but before we sync
-   *    the spool. So the sync will currently cause an abort. */
-  if (CTX_DATA->status == IMAP_BYE || CTX_DATA->status == IMAP_FATAL ||
-    CTX_DATA->status == IMAP_LOGOUT)
-  {
-    imap_close_connection (ctx);
-    CTX_DATA->conn->data = NULL;
-    safe_free ((void **) &ctx->data);
-  }
-#endif
 }
 
 /* use the NOOP command to poll for new mail
@@ -1218,7 +1171,10 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint)
 
 /* returns count of recent messages if new = 1, else count of total messages.
  * (useful for at least postponed function)
- * Question of taste: use RECENT or UNSEEN for new? */
+ * Question of taste: use RECENT or UNSEEN for new?
+ *   0+   number of messages in mailbox
+ *  -1    error while polling mailboxes
+ */
 int imap_mailbox_check (char* path, int new)
 {
   CONNECTION *conn;
@@ -1297,7 +1253,11 @@ int imap_mailbox_check (char* path, int new)
       if (mutt_strncasecmp ("STATUS", s, 6) == 0)
       {
 	s = imap_next_word (s);
-	if (mutt_strncmp (mbox_unquoted, s, mutt_strlen (mbox_unquoted)) == 0)
+	/* The mailbox name may or may not be quoted here. We could try to 
+	 * munge the server response and compare with quoted (or vise versa)
+	 * but it is probably more efficient to just strncmp against both. */
+	if (mutt_strncmp (mbox_unquoted, s, mutt_strlen (mbox_unquoted)) == 0
+	    || mutt_strncmp (mbox, s, mutt_strlen (mbox)) == 0)
 	{
 	  s = imap_next_word (s);
 	  s = imap_next_word (s);
@@ -1310,6 +1270,8 @@ int imap_mailbox_check (char* path, int new)
 	    }
 	  }
 	}
+	else
+	  dprint (1, (debugfile, "imap_mailbox_check: STATUS response doesn't match requested mailbox.\n"));
       }
       else
       {
