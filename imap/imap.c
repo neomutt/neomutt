@@ -526,9 +526,10 @@ int imap_open_mailbox (CONTEXT* ctx)
 
   idata->ctx = ctx;
 
-  /* clear status, ACL */
+  /* clear mailbox status */
   idata->status = 0;
   memset (idata->rights, 0, (RIGHTSMAX+7)/8);
+  idata->newMailCount = 0;
 
   mutt_message (_("Selecting %s..."), idata->mailbox);
   imap_munge_mbox_name (buf, sizeof(buf), idata->mailbox);
@@ -933,7 +934,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
   /* save status changes */
   for (n = 0; n < ctx->msgcount; n++)
   {
-    if (ctx->hdrs[n]->changed)
+    if (ctx->hdrs[n]->active && ctx->hdrs[n]->changed)
     {
       ctx->hdrs[n]->changed = 0;
 
