@@ -4277,6 +4277,15 @@ following construct:
         %?<sequence_char>?<if_string>&<else_string>?
 </verb></tscreen>
 
+You can additionally force the result of any printf-like sequence to
+be lowercase by prefixing the sequence character with an underscore
+(&lowbar;) sign.  For example, if you want to display the local
+hostname in lowercase, you would use:
+
+<tscreen><verb>
+	%_h
+</verb</tscreen>
+
 <sect2>status&lowbar;on&lowbar;top<label id="status_on_top">
 <p>
 Type: boolean<newline>
