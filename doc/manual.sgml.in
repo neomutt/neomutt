@@ -2579,9 +2579,9 @@ open.
 <sect2>collapse&lowbar;unread<label id="collapse_unread">
 <p>
 Type: boolean<newline>
-Default: unset
+Default: set
 
-When <em/set/, Mutt will not collapse a thread if it contains any
+When <em/unset/, Mutt will not collapse a thread if it contains any
 unread messages.
 
 <sect2>confirmappend<label id="confirmappend">
@@ -3079,9 +3079,10 @@ the <ref id="smart_wrap" name="&dollar;smart&lowbar;wrap"> variable.
 Type: string<newline>
 Default: "!^&bsol;.&lsqb;^.&rsqb;"
 
-A regular expression used in the file browser, optionally preceded by
-the <em/not/ operator ``!''. Files whose names don't match this mask
-will not be shown. The match is always case-sensitive.
+A regular expression used in the file browser, optionally preceded
+by the <em/not/ operator ``!''.  Only files whose names match this
+mask will be shown. The match is always case-sensitive.
+
 
 <bf/Note:/ if you need ``!'' at the beginning of the regular expression
 you should enclose it in paranthesis, in order to distinguish it from
