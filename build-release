@@ -102,7 +102,6 @@ for f in $DISTFILES ; do
 	scp $f $f.asc trithemius.gnupg.org:/home/ftp/mutt/${devel}
 done
 
-$HOME/bin/upload-cvs
 cvs update
 
 # Finally, announce the new mutt to the public
