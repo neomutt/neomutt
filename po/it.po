@@ -2517,7 +2517,7 @@ msgstr "File nella directory: "
 
 #: muttlib.c:835
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
-msgstr "Il file esiste, lo s(o)vrascrivo, (a)ccodo, or (c)ancello?"
+msgstr "Il file esiste, lo s(o)vrascrivo, (a)ccodo, o (c) annullo l'operazione?"
 
 #: muttlib.c:835
 msgid "oac"
