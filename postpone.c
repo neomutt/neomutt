@@ -545,7 +545,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 
 #ifdef _PGPPATH
   /* decrypt pgp/mime encoded messages */
-  if ((newhdr->pgp & PGPENCRYPT) && 
+  if ((hdr->pgp & PGPENCRYPT) && 
       mutt_is_multipart_encrypted (newhdr->content))
   {
     newhdr->pgp |= PGPENCRYPT;
