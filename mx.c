@@ -1575,7 +1575,7 @@ void mx_update_context (CONTEXT *ctx, int new_messages)
 
 
 
-#ifdef HAVE_PGP || defined(HAVE_SMIME)
+#if defined(HAVE_PGP) || defined(HAVE_SMIME)
     /* NOTE: this _must_ be done before the check for mailcap! */
     h->security = crypt_query (h->content);
 #endif /* HAVE_PGP || HAVE_SMIME */
