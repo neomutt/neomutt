@@ -21,6 +21,7 @@ auto_view application/ms-tnef text/x-vcard
 auto_view application/x-chess application/x-lotus-notes
 auto_view text/html application/x-gzip application/x-gunzip 
 auto_view application/rtf application/x-rath
+auto_view application/msword
 
 alternative_order text/enriched text/plain text
 
@@ -47,6 +48,7 @@ bind	browser	<home>		first-entry
 bind	editor	"\e<backspace>" kill-word
 bind	editor	"\e<delete>"	kill-word
 bind	editor	"\e\t"		complete-query
+bind	editor	"\Ct"		transpose-chars
 
 bind	generic	"\CV"		next-page
 bind	generic	"\Ca"		first-entry
@@ -62,6 +64,7 @@ bind	generic q		exit
 bind	index	";"		limit
 bind	index	"\Ce"   	last-entry	# override edit-type
 bind	index	"\eV"		previous-page	# override collapse-something
+bind	index	"\e<"		collapse-thread
 bind	index	"\eq"		query
 bind	index	$		last-entry
 bind	index	*		flag-message
@@ -97,6 +100,11 @@ bind	pager	t		display-toggle-weed # like slrn
 bind	pager	y		print-message
 
 bind	query	i		exit
+
+macro	generic	"\ex"		":exec "
+macro 	pager	"\ex"		":exec "
+macro	generic	"\eX"		"\ex"
+macro 	pager	"\eX"		"\ex"
 
 
 # emulate the old URL-browser key bindings.
@@ -160,7 +168,7 @@ set   edit_hdrs				# I want to edit the headers.
 set   editor="/usr/local/jed/bin/jed %s -f 'mail_mode();'"	
  					# Invoke jed with mail_mode.  This may
 	                                # or may not work for you.
-unset envelope_from			# Don't set messages' envelope-from header.
+set envelope_from			# set messages' envelope-from header.
 set   fcc_clear				# Store local copies of messages in the clear.
 set   folder=~/Mail			# Where my mail folders go
 set   followup_to			# Create Mail-Followup-To headers.
@@ -221,6 +229,11 @@ set   index_format="%4C %Z %[%b %d] %-15.15L (%4c) %s"	# Somewhat different inde
 					# nicely with maildir folders.
 set   rfc2047_parameters		# Sometimes, I get mails which use a bogus encoding for
 					# MIME parameters.  Setting this shouldn't harm.
+
+set status_format="-%r-+(%v) %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---"
+set compose_format="--+(%v) Compose  [Approx. msg size: %l   Atts: %a]%>-"
+
+
 
 # PGP command configuration
 source ~/.mutt/pgp2.rc
