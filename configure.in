@@ -104,7 +104,7 @@ if test $ISPELL != no; then
 fi
 
 AC_ARG_WITH(slang, [  --with-slang[=DIR]         use S-Lang instead of ncurses],
-	[AC_CACHE_CHECK([if -ltermlib is required], mutt_cv_bsdish,
+	[AC_CACHE_CHECK([if this is a BSD system], mutt_cv_bsdish,
 		[AC_TRY_RUN([#include <sys/param.h>
 
 main ()
@@ -153,7 +153,7 @@ main ()
 	AC_MSG_RESULT($mutt_cv_slang)
 	LIBS="$LIBS -lslang -lm"
 	if test $mutt_cv_bsdish = yes; then
-		LIBS="$LIBS -ltermlib"
+		AC_CHECK_LIB(termlib, main)
 	fi
 	AC_DEFINE(USE_SLANG_CURSES)
 	AC_DEFINE(HAVE_COLOR)
