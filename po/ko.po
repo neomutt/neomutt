@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.2\n"
-"POT-Creation-Date: 2001-10-31 10:37+0100\n"
+"POT-Creation-Date: 2001-11-08 23:41+0100\n"
 "PO-Revision-Date: 2000-03-09 07:40+0900\n"
 "Last-Translator: Byeong-Chan Kim <redhands@linux.sarag.net>\n"
 "Language-Team: Korean <ko@li.org>\n"
@@ -23,12 +23,12 @@ msgstr "ÀÌ¸§ ¹Ù²Ù±â: "
 msgid "Password for %s@%s: "
 msgstr "%s@%sÀÇ ÆĞ½º¿öµå: "
 
-#: addrbook.c:31 browser.c:40 pager.c:1387 postpone.c:37 query.c:43
+#: addrbook.c:31 browser.c:40 pager.c:1422 postpone.c:37 query.c:43
 #: recvattach.c:57
 msgid "Exit"
 msgstr "Á¾·á"
 
-#: addrbook.c:32 curs_main.c:398 pager.c:1394 postpone.c:38
+#: addrbook.c:32 curs_main.c:398 pager.c:1429 postpone.c:38
 msgid "Del"
 msgstr "»èÁ¦"
 
@@ -42,15 +42,15 @@ msgstr "¼±ÅÃ"
 
 #. __STRCAT_CHECKED__
 #: addrbook.c:35 browser.c:43 compose.c:93 curs_main.c:404 mutt_ssl.c:628
-#: pager.c:1486 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
+#: pager.c:1521 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "µµ¿ò¸»"
 
-#: addrbook.c:134
+#: addrbook.c:140
 msgid "You have no aliases!"
 msgstr "º°ÄªÀ» °¡Áö°í ÀÖÁö ¾ÊÀ½!"
 
-#: addrbook.c:145
+#: addrbook.c:151
 msgid "Aliases"
 msgstr "º°Äª"
 
@@ -136,7 +136,7 @@ msgstr "MIME Á¾·ù°¡ È®½ÇÄ¡ ¾ÊÀ½. Ã·ºÎ¹°À» º¼ ¼ö ¾øÀ½."
 msgid "Cannot create filter"
 msgstr "ÇÊÅÍ¸¦ ¸¸µé ¼ö ¾øÀ½"
 
-#: attach.c:629 attach.c:661 attach.c:943 attach.c:1001 handler.c:1518
+#: attach.c:629 attach.c:661 attach.c:943 attach.c:1001 handler.c:1539
 #: pgpkey.c:566 pgpkey.c:755
 msgid "Can't create filter"
 msgstr "ÇÊÅÍ¸¦ »ı¼ºÇÒ ¼ö ¾øÀ½"
@@ -311,7 +311,7 @@ msgstr "±âº» »ö»óµéÀÌ Áö¿øµÇÁö ¾ÊÀ½"
 msgid "Verify PGP signature?"
 msgstr "PGP ¼­¸íÀ» È®ÀÎÇÒ±î¿ä?"
 
-#: commands.c:105 pgp.c:1699 pgpkey.c:559 postpone.c:519
+#: commands.c:105 pgp.c:1713 pgpkey.c:559 postpone.c:519
 msgid "Invoking PGP..."
 msgstr "PGP¸¦ ±¸µ¿ÇÕ´Ï´Ù..."
 
@@ -430,64 +430,65 @@ msgstr "dfrsotuzc"
 msgid "Shell command: "
 msgstr "½© ¸í·É¾î: "
 
-#: commands.c:655
-#, c-format
-msgid "%s%s to mailbox"
+#: commands.c:647
+#, fuzzy, c-format
+msgid "Decode-save%s to mailbox"
 msgstr "%s%s ÆíÁöÇÔÀ¸·Î"
 
-#: commands.c:656
-msgid "Decode-save"
-msgstr "º¹È£È­-ÀúÀå"
+#: commands.c:648
+#, fuzzy, c-format
+msgid "Decode-copy%s to mailbox"
+msgstr "%s%s ÆíÁöÇÔÀ¸·Î"
 
-#: commands.c:656
-msgid "Decode-copy"
-msgstr "º¹È£È­-º¹»ç"
+#: commands.c:649
+#, fuzzy, c-format
+msgid "Decrypt-save%s to mailbox"
+msgstr "%s%s ÆíÁöÇÔÀ¸·Î"
 
-#: commands.c:657
-msgid "Decrypt-save"
-msgstr "ÇØµ¶-ÀúÀå"
+#: commands.c:650
+#, fuzzy, c-format
+msgid "Decrypt-copy%s to mailbox"
+msgstr "%s%s ÆíÁöÇÔÀ¸·Î"
 
-#: commands.c:657
-msgid "Decrypt-copy"
-msgstr "ÇØµ¶-º¹»ç"
+#: commands.c:651
+#, fuzzy, c-format
+msgid "Save%s to mailbox"
+msgstr "%s%s ÆíÁöÇÔÀ¸·Î"
 
-#: commands.c:658 curs_main.c:400 recvattach.c:58
-msgid "Save"
-msgstr "ÀúÀå"
+#: commands.c:651
+#, fuzzy, c-format
+msgid "Copy%s to mailbox"
+msgstr "%s%s ÆíÁöÇÔÀ¸·Î"
 
-#: commands.c:658
-msgid "Copy"
-msgstr "º¹»ç"
-
-#: commands.c:658
+#: commands.c:652
 msgid " tagged"
 msgstr " ÅÂ±× ºÙÀÓ"
 
-#: commands.c:726
+#: commands.c:720
 #, c-format
 msgid "Copying to %s..."
 msgstr "%s·Î º¹»ç..."
 
-#: commands.c:847
+#: commands.c:841
 #, c-format
 msgid "Convert to %s upon sending?"
 msgstr ""
 
-#: commands.c:855
+#: commands.c:849
 #, fuzzy, c-format
 msgid "Content-Type changed to %s."
 msgstr "%s·Î ¿¬°á Áß..."
 
-#: commands.c:857
+#: commands.c:851
 #, fuzzy, c-format
 msgid "Character set changed to %s; %s."
 msgstr "¾Ë ¼ö ¾ø´Â ¹®ÀÚ¼Â %s."
 
-#: commands.c:859
+#: commands.c:853
 msgid "not converting"
 msgstr ""
 
-#: commands.c:859
+#: commands.c:853
 msgid "converting"
 msgstr ""
 
@@ -616,7 +617,7 @@ msgstr "ÀÌ ¸Ş¼¼ÁöÀÇ º¹»çº»À» ÀúÀåÇÒ±î¿ä?"
 msgid "Rename to: "
 msgstr "ÀÌ¸§ ¹Ù²Ù±â: "
 
-#: compose.c:987 editmsg.c:96 sendlib.c:901
+#: compose.c:987 editmsg.c:96 sendlib.c:902
 #, fuzzy, c-format
 msgid "Can't stat %s: %s"
 msgstr "½ºÅÈÀ» ¾Ë ¼ö ¾øÀ½: %s"
@@ -673,7 +674,7 @@ msgstr "no"
 msgid "Exit Mutt?"
 msgstr "MuttÀ» Á¾·áÇÒ±î¿ä?"
 
-#: curs_lib.c:326 mutt_socket.c:483
+#: curs_lib.c:326 mutt_socket.c:483 mutt_ssl.c:324
 msgid "unknown error"
 msgstr "¾Ë ¼ö ¾ø´Â ¿À·ù"
 
@@ -722,13 +723,17 @@ msgstr "Æú´õ¿¡ º¯°æ »çÇ× ±â·Ï ¾ÈµÊ."
 msgid "Quit"
 msgstr "Á¾·á"
 
+#: curs_main.c:400 recvattach.c:58
+msgid "Save"
+msgstr "ÀúÀå"
+
 # potøeba u¹etøit 2 písmena, abychom
 # se ve¹li do 80 znakù.
 #: curs_main.c:401 query.c:44
 msgid "Mail"
 msgstr "ÆíÁö"
 
-#: curs_main.c:402 pager.c:1395
+#: curs_main.c:402 pager.c:1430
 msgid "Reply"
 msgstr "´äÀå"
 
@@ -852,7 +857,7 @@ msgstr "ÀĞÁö ¾ÊÀº ¸Ş¼¼Áö ¾øÀ½"
 msgid " in this limited view"
 msgstr ""
 
-#: curs_main.c:1331 pager.c:2248
+#: curs_main.c:1331 pager.c:2283
 #, fuzzy
 msgid "Can't change 'important' flag on POP server."
 msgstr "¼­¹öÀÇ ¸Ş¼¼Áö »èÁ¦ Áß..."
@@ -865,7 +870,8 @@ msgstr "´õ ÀÌ»ó ±ÛÅ¸·¡ ¾øÀ½."
 msgid "You are on the first thread."
 msgstr "Ã³À½ ±ÛÅ¸·¡ÀÔ´Ï´Ù.."
 
-#: curs_main.c:1509 curs_main.c:1541 flags.c:249 thread.c:807 thread.c:862
+#: curs_main.c:1509 curs_main.c:1541 flags.c:249 thread.c:904 thread.c:959
+#: thread.c:1014
 msgid "Threading is not enabled."
 msgstr "±ÛÅ¸·¡¸¦ »ç¿ëÇÏÁö ¾ÊÀ½."
 
@@ -996,115 +1002,115 @@ msgstr "ÇÃ·¡±× ¼³Á¤"
 msgid "Clear flag"
 msgstr "ÇÃ·¡±× Áö¿ò"
 
-#. didn't find anything that we could display!
-#: handler.c:1302
+#: handler.c:1320
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr "[-- ¿À·ù:  Multipart/Alternative ºÎºĞÀ» º¸¿©ÁÙ ¼ö ¾øÀ½! --]\n"
 
-#: handler.c:1419
+#: handler.c:1438
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- Ã·ºÎ¹° #%d"
 
-#: handler.c:1430
+#: handler.c:1450
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Á¾·ù: %s/%s, ºÎÈ£È­¹æ½Ä: %s, Å©±â: %s --]\n"
 
-#: handler.c:1489
+#: handler.c:1510
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- %s¸¦ »ç¿ëÇÑ ÀÚµ¿ º¸±â --]\n"
 
-#: handler.c:1490
+#: handler.c:1511
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "ÀÚµ¿ º¸±â ¸í·É¾î ½ÇÇà: %s"
 
-#: handler.c:1520
+#: handler.c:1543
 #, fuzzy, c-format
 msgid "[-- Can't run %s. --]\n"
 msgstr "[-- %s¿¡ --]\n"
 
-#: handler.c:1535 handler.c:1553
+#: handler.c:1561 handler.c:1582
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- %s ÀÚµ¿ º¸±â Ç¥ÁØ ¿¡·¯ --]\n"
 
-#: handler.c:1587
+#: handler.c:1619
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr "[-- ¿À·ù: message/external-body¿¡ access-type ÀÎÀÚ°¡ ¾øÀ½ --]\n"
 
-#: handler.c:1604
+#: handler.c:1638
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[ -- %s/%s Ã·ºÎ¹° "
 
-#: handler.c:1611
+#: handler.c:1645
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(Å©±â: %s ¹ÙÀÌÆ®) "
 
-#: handler.c:1613
+#: handler.c:1647
 msgid "has been deleted --]\n"
 msgstr "»èÁ¦ µÇ¾úÀ½ --]\n"
 
-#: handler.c:1616
+#: handler.c:1652
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- %s¿¡ --]\n"
 
-#: handler.c:1618
+#: handler.c:1657
 #, fuzzy, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- %s¿¡ --]\n"
 
-#: handler.c:1629
-#, c-format
-msgid ""
-"[-- This %s/%s attachment is not included, --]\n"
-"[-- and the indicated external source has --]\n"
-"[-- expired. --]\n"
-msgstr ""
-"[-- %s/%s Ã·ºÎ¹°ÀÌ Æ÷ÇÔµÇÁö ¾ÊÀ½, --]\n"
-"[-- ÁöÁ¤µÈ ¿ÜºÎ ¼Ò½º°¡ ¸¸±âµÊ --]\n"
+#: handler.c:1670 handler.c:1686
+#, fuzzy, c-format
+msgid "[-- This %s/%s attachment is not included, --]\n"
+msgstr "[ -- %s/%s Ã·ºÎ¹° "
 
-#: handler.c:1643
-#, c-format
-msgid ""
-"[-- This %s/%s attachment is not included, --]\n"
-"[-- and the indicated access-type %s is unsupported --]\n"
+#: handler.c:1672
+msgid "[-- and the indicated external source has --]\n"
+msgstr ""
+
+#: handler.c:1673
+msgid "[-- expired. --]\n"
+msgstr ""
+
+#: handler.c:1690
+#, fuzzy, c-format
+msgid "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- %s/%s Ã·ºÎ¹°ÀÌ Æ÷ÇÔµÇÁö ¾ÊÀ½, --]\n"
 "[-- ÁöÁ¤µÈ access-type %s´Â Áö¿øµÇÁö ¾ÊÀ½ --]\n"
 
-#: handler.c:1761
+#: handler.c:1807
 msgid "Error: multipart/signed has no protocol."
 msgstr "¿À·ù: ÇÁ·ÎÅäÄİ¿¡ ¾ø´Â multipart/signed."
 
-#: handler.c:1774
+#: handler.c:1820
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "¿À·ù: ÇÁ·ÎÅäÄİ ¸Å°³ º¯¼ö¿¡ ¾ø´Â multipart/encrypted"
 
-#: handler.c:1821
+#: handler.c:1867
 msgid "Unable to open temporary file!"
 msgstr "ÀÓ½Ã ÆÄÀÏÀ» ¿­ ¼ö ¾øÀ½!"
 
-#: handler.c:1880
+#: handler.c:1927
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- '%s/%s'´Â Áö¿øµÇÁö ¾ÊÀ½ "
 
-#: handler.c:1885
+#: handler.c:1932
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "('%s' Å°·Î ÇöÀç ºÎºĞ º¸±â)"
 
-#: handler.c:1887
+#: handler.c:1934
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "('view-attachments' ±Û¼è Á¤ÀÇ°¡ ÇÊ¿äÇÔ!)"
 
-#: headers.c:173
+#: headers.c:174
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: È­ÀÏÀ» Ã·ºÎÇÒ ¼ö ¾øÀ½"
@@ -1209,6 +1215,11 @@ msgstr "ÀÎÁõ Áß (GSSAPI)..."
 msgid "SASL authentication failed."
 msgstr "GSSAPI ÀÎÁõ¿¡ ½ÇÆĞÇÔ."
 
+#: imap/browse.c:64 imap/imap.c:504
+#, c-format
+msgid "%s is an invalid IMAP path"
+msgstr ""
+
 #: imap/browse.c:81
 msgid "Getting namespaces..."
 msgstr "³×ÀÓ½ºÆäÀÌ½º ¹Ş´Â Áß..."
@@ -1282,7 +1293,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "¼­¹öÀÇ IMAP ÆíÁöÇÔ¿¡ Ãß°¡ÇÒ ¼ö ¾øÀ½"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:719 imap/message.c:600 muttlib.c:1169
+#: imap/imap.c:719 imap/message.c:600 muttlib.c:1174
 #, c-format
 msgid "Create %s?"
 msgstr "%s¸¦ ¸¸µé±î¿ä?"
@@ -1291,7 +1302,7 @@ msgstr "%s¸¦ ¸¸µé±î¿ä?"
 msgid "Closing connection to IMAP server..."
 msgstr "IMAP ¼­¹ö Á¢¼Ó ´İ´Â Áß..."
 
-#: imap/imap.c:918 pop.c:461
+#: imap/imap.c:918 pop.c:465
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Ç¥½ÃµÈ %d°³ÀÇ ¸Ş¼¼Áö¸¦ »èÁ¦ÇÔ..."
@@ -1310,10 +1321,19 @@ msgstr "¸Ş¼¼Áö »óÅÂ ÇÃ·¡±× ÀúÀå... [%d/%d]"
 msgid "Expunging messages from server..."
 msgstr "¼­¹öÀÇ ¸Ş¼¼Áö »èÁ¦ Áß..."
 
+#: imap/imap.c:1031
+msgid "imap_sync_mailbox: EXPUNGE failed"
+msgstr ""
+
 #: imap/imap.c:1065
 #, fuzzy
 msgid "CLOSE failed"
 msgstr "Á¢¼Ó ½ÇÆĞ."
+
+#: imap/imap.c:1313
+#, fuzzy
+msgid "Bad mailbox name"
+msgstr "ÆíÁöÇÔ ¿­±â"
 
 #: imap/imap.c:1325
 #, c-format
@@ -1340,11 +1360,11 @@ msgstr "ÀÓ½ÃÆÄÀÏÀ» ¸¸µé ¼ö ¾øÀ½!"
 msgid "Fetching message headers... [%d/%d]"
 msgstr "¸Ş¼¼Áö Çì´õ °¡Á®¿À´Â Áß... [%d/%d]"
 
-#: imap/message.c:250 pop.c:339
+#: imap/message.c:250 pop.c:343
 msgid "Fetching message..."
 msgstr "¸Ş¼¼Áö °¡Á®¿À´Â Áß..."
 
-#: imap/message.c:293 pop.c:376
+#: imap/message.c:293 pop.c:380
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr ""
 
@@ -1366,107 +1386,102 @@ msgstr "¸Ş½ÃÁö %d¸¦ %s·Î º¹»ç Áß..."
 msgid "Continue?"
 msgstr "°è¼ÓÇÒ±î¿ä?"
 
-#: imap/util.c:245
-#, c-format
-msgid "%s [%s]\n"
-msgstr "%s [%s]\n"
-
-#: init.c:466
+#: init.c:479
 msgid "alias: no address"
 msgstr "º°Äª: ÁÖ¼Ò ¾øÀ½"
 
-#: init.c:566
+#: init.c:579
 msgid "invalid header field"
 msgstr "Àß¸øµÈ Çì´õ ±â·Ï¶õ"
 
-#: init.c:619
+#: init.c:632
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: ¾Ë ¼ö ¾ø´Â Á¤·Ä ¹æ¹ı"
 
-#: init.c:731
+#: init.c:744
 #, fuzzy, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default: Á¤±ÔÇ¥Çö½Ä ¿À·ù: %s\n"
 
-#: init.c:792
+#: init.c:807
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: ¾Ë ¼ö ¾ø´Â º¯¼ö."
 
-#: init.c:801
+#: init.c:816
 msgid "prefix is illegal with reset"
 msgstr "Àß¸øµÈ prefix, ÃÊ±âÈ­"
 
-#: init.c:807
+#: init.c:822
 msgid "value is illegal with reset"
 msgstr "Àß¸øµÈ °ª, ÃÊ±âÈ­"
 
-#: init.c:846
+#: init.c:861
 #, c-format
 msgid "%s is set"
 msgstr "%s ¼³Á¤"
 
-#: init.c:846
+#: init.c:861
 #, c-format
 msgid "%s is unset"
 msgstr "%s ¼³Á¤ ÇØÁ¦"
 
-#: init.c:1052
+#: init.c:1067
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: Àß¸øµÈ Çü½ÄÀÇ ÆíÁöÇÔ"
 
-#: init.c:1077 init.c:1122
+#: init.c:1092 init.c:1137
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: Àß¸øµÈ °ª"
 
-#: init.c:1180
+#: init.c:1195
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: ¾Ë ¼ö ¾ø´Â Çü½Ä"
 
-#: init.c:1221
+#: init.c:1238
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "%sÀÇ %d¹ø ÁÙ¿¡ ¿À·ù: %s"
 
 #. the muttrc source keyword
-#: init.c:1237
+#: init.c:1254
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: %s¿¡ ¿À·ù"
 
-#: init.c:1238
+#: init.c:1255
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr ""
 
-#: init.c:1252
+#: init.c:1269
 #, c-format
 msgid "source: error at %s"
 msgstr "source: %s¿¡ ¿À·ù"
 
-#: init.c:1257
+#: init.c:1274
 msgid "source: too many arguments"
 msgstr "source: ÀÎ¼ö°¡ ³Ê¹« ¸¹À½"
 
-#: init.c:1308
+#: init.c:1325
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: ¾Ë ¼ö ¾ø´Â ¸í·É¾î"
 
-#: init.c:1664
+#: init.c:1681
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "¸í·É¾î ¿À·ù: %s\n"
 
-#: init.c:1707
+#: init.c:1730
 msgid "unable to determine home directory"
 msgstr "È¨ µğ·ºÅä¸®¸¦ Ã£À» ¼ö°¡ ¾ø½À´Ï´Ù"
 
-#: init.c:1715
+#: init.c:1738
 msgid "unable to determine username"
 msgstr "¾Ë ¼ö ¾ø´Â »ç¿ëÀÚ ÀÌ¸§ÀÔ´Ï´Ù"
 
@@ -2283,7 +2298,7 @@ msgstr ""
 msgid "Out of memory!"
 msgstr "¸Ş¸ğ¸® ºÎÁ·!"
 
-#: main.c:41
+#: main.c:40
 #, fuzzy
 msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
@@ -2292,7 +2307,7 @@ msgstr ""
 "°³¹ßÀÚ¿Í ¿¬¶ôÇÏ·Á¸é <mutt-dev@mutt.org>·Î ¸ŞÀÏÀ» º¸³»½Ê½Ã¿À.\n"
 "¹ö±× º¸°í´Â muttbug À¯Æ¿¸®Æ¼¸¦ »ç¿ëÇØ ÁÖ½Ê½Ã¿À.\n"
 
-#: main.c:45
+#: main.c:44
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2001 Michael R. Elkins and others.\n"
@@ -2305,7 +2320,7 @@ msgstr ""
 "¶ø´Ï´Ù. MuttÀº °ø°³ ¼ÒÇÁÆ®¿ş¾îÀÌ¸ç, ÀÏÁ¤ »çÇ×¸¸ ÁöÅ²´Ù¸é ¿©·¯ºĞ²²¼­ ÀÚÀ¯\n"
 "·ÎÀÌ ¹èÆ÷ÇÒ ¼ö ÀÖ½À´Ï´Ù. ÀÚ¼¼ÇÑ »çÇ×Àº 'mutt -vv' ¸¦ ÃÄº¸½Ã±â ¹Ù¶ø´Ï´Ù.\n"
 
-#: main.c:51
+#: main.c:50
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
@@ -2423,47 +2438,47 @@ msgstr ""
 "\n"
 "ÄÄÆÄÀÏ ¼±ÅÃ»çÇ×:"
 
-#: main.c:415
+#: main.c:417
 msgid "Error initializing terminal."
 msgstr "ÅÍ¹Ì³Î ÃÊ±âÈ­ ¿À·ù."
 
-#: main.c:515
+#: main.c:517
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "µğ¹ö±ë ·¹º§ %d.\n"
 
-#: main.c:517
+#: main.c:519
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG°¡ ÄÄÆÄÀÏ½Ã Á¤ÀÇµÇÁö ¾ÊÀ½. ¹«½ÃÇÔ\n"
 
-#: main.c:634
+#: main.c:636
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s°¡ Á¸ÀçÄ¡ ¾ÊÀ½. ¸¸µé±î¿ä?"
 
-#: main.c:638
+#: main.c:640
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "%s¸¦ ¸¸µé ¼ö ¾øÀ½: %s."
 
-#: main.c:683
+#: main.c:685
 msgid "No recipients specified.\n"
 msgstr "¼ö½ÅÀÚ°¡ ÁöÁ¤µÇÁö ¾ÊÀ½.\n"
 
-#: main.c:769
+#: main.c:771
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: ÆÄÀÏÀ» Ã·ºÎÇÒ ¼ö ¾øÀ½.\n"
 
-#: main.c:789
+#: main.c:791
 msgid "No mailbox with new mail."
 msgstr "»õ·Î¿î ÆíÁö°¡ µµÂøÇÑ ÆíÁöÇÔ ¾øÀ½."
 
-#: main.c:798
+#: main.c:800
 msgid "No incoming mailboxes defined."
 msgstr "ÀÎÄ¿¹Ö ÆíÁöÇÔÀÌ Á¤ÀÇµÇÁö ¾ÊÀ½."
 
-#: main.c:829
+#: main.c:831
 msgid "Mailbox is empty."
 msgstr "ÆíÁöÇÔÀÌ ºñ¾úÀ½"
 
@@ -2522,80 +2537,80 @@ msgstr "ÆíÁöÇÔÀ» ´Ù½Ã ¿­ ¼ö ¾øÀ½!"
 msgid "Reopening mailbox..."
 msgstr "ÆíÁöÇÔÀ» ´Ù½Ã ¿±´Ï´Ù..."
 
-#: menu.c:398
+#: menu.c:401
 msgid "Jump to: "
 msgstr "ÀÌµ¿ÇÒ À§Ä¡: "
 
-#: menu.c:407
+#: menu.c:410
 msgid "Invalid index number."
 msgstr "Àß¸øµÈ »öÀÎ ¹øÈ£."
 
-#: menu.c:411 menu.c:429 menu.c:465 menu.c:506 menu.c:522 menu.c:533
-#: menu.c:544 menu.c:586 menu.c:597 menu.c:610 menu.c:623 menu.c:998
+#: menu.c:414 menu.c:432 menu.c:468 menu.c:509 menu.c:525 menu.c:536
+#: menu.c:547 menu.c:589 menu.c:600 menu.c:613 menu.c:626 menu.c:1001
 msgid "No entries."
 msgstr "Ç×¸ñÀÌ ¾øÀ½."
 
-#: menu.c:426
+#: menu.c:429
 msgid "You cannot scroll down farther."
 msgstr "´õ ÀÌ»ó ³»·Á°¥ ¼ö ¾øÀ½."
 
-#: menu.c:442
+#: menu.c:445
 msgid "You cannot scroll up farther."
 msgstr "´õ ÀÌ»ó ¿Ã¶ó°¥ ¼ö ¾øÀ½."
 
-#: menu.c:462
+#: menu.c:465
 msgid "You are on the last page."
 msgstr "¸¶Áö¸· ÆäÀÌÁöÀÔ´Ï´Ù."
 
-#: menu.c:484
+#: menu.c:487
 msgid "You are on the first page."
 msgstr "Ã¹¹øÂ° ÆäÀÌÁöÀÔ´Ï´Ù."
 
-#: menu.c:563
+#: menu.c:566
 msgid "First entry is shown."
 msgstr "Ã¹¹øÂ° Ç×¸ñ º¸ÀÓ."
 
-#: menu.c:583
+#: menu.c:586
 msgid "Last entry is shown."
 msgstr "¸¶Áö¸· Ç×¸ñ º¸ÀÓ."
 
-#: menu.c:634
+#: menu.c:637
 msgid "You are on the last entry."
 msgstr "¸¶Áö¸· Ç×¸ñÀÔ´Ï´Ù."
 
-#: menu.c:645
+#: menu.c:648
 msgid "You are on the first entry."
 msgstr "Ã¹¹øÂ° Ç×¸ñÀÔ´Ï´Ù."
 
-#: menu.c:705 pattern.c:1233
+#: menu.c:708 pattern.c:1233
 msgid "Search for: "
 msgstr "Ã£¾Æº¸±â: "
 
-#: menu.c:706
+#: menu.c:709
 msgid "Reverse search for: "
 msgstr "°Å²Ù·Î Ã£¾Æº¸±â: "
 
-#: menu.c:716 pattern.c:1266
+#: menu.c:719 pattern.c:1266
 msgid "No search pattern."
 msgstr "ÆĞÅÏÀ» Ã£À» ¼ö ¾øÀ½."
 
-#: menu.c:746 pager.c:1865 pager.c:1881 pager.c:1969 pattern.c:1331
+#: menu.c:749 pager.c:1900 pager.c:1916 pager.c:2004 pattern.c:1331
 msgid "Not found."
 msgstr "Ã£À» ¼ö ¾øÀ½."
 
-#: menu.c:862
+#: menu.c:865
 msgid "No tagged entries."
 msgstr "ÅÂ±×°¡ ºÙÀº Ç×¸ñ ¾øÀ½."
 
-#: menu.c:955
+#: menu.c:958
 msgid "Search is not implemented for this menu."
 msgstr "ÀÌ ¸Ş´º¿¡´Â °Ë»ö ±â´ÉÀÌ ¾ø½À´Ï´Ù."
 
-#: menu.c:960
+#: menu.c:963
 msgid "Jumping is not implemented for dialogs."
 msgstr "¼±ÅÃÃ¢¿¡´Â ¹Ù·Î °¡±â ±â´ÉÀÌ ¾ø½À´Ï´Ù."
 
-#: menu.c:1001
+#: menu.c:1004
 msgid "Tagging is not supported."
 msgstr "ÅÂ±×¸¦ ºÙÀÌ´Â °ÍÀ» Áö¿øÄ¡ ¾ÊÀ½."
 
@@ -2604,33 +2619,33 @@ msgstr "ÅÂ±×¸¦ ºÙÀÌ´Â °ÍÀ» Áö¿øÄ¡ ¾ÊÀ½."
 msgid "Reading %s... %d"
 msgstr "%s ÀĞ´Â Áß... %d"
 
-#: muttlib.c:832
+#: muttlib.c:837
 msgid "File is a directory, save under it?"
 msgstr "ÆÄÀÏÀÌ ¾Æ´Ï¶ó µğ·ºÅä¸®ÀÔ´Ï´Ù, ±× ¾Æ·¡¿¡ ÀúÀåÇÒ±î¿ä?"
 
-#: muttlib.c:837
+#: muttlib.c:842
 msgid "File under directory: "
 msgstr "µğ·ºÅÍ¸®ÇÏ¿¡ ÀúÀåÇÒ ÆÄÀÏ:"
 
-#: muttlib.c:849
+#: muttlib.c:854
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "ÆÄÀÏÀÌ Á¸ÀçÇÔ, µ¤¾î¾²±â(o), Ã·°¡(a), Ãë¼Ò(c)?"
 
-#: muttlib.c:849
+#: muttlib.c:854
 msgid "oac"
 msgstr "oac"
 
-#: muttlib.c:1136
+#: muttlib.c:1141
 #, fuzzy
 msgid "Can't save message to POP mailbox."
 msgstr "ÆíÁöÇÔ¿¡ ¸Ş¼¼Áö ¾²±â"
 
-#: muttlib.c:1145
+#: muttlib.c:1150
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s´Â ÆíÁöÇÔÀÌ ¾Æ´Ô!"
 
-#: muttlib.c:1151
+#: muttlib.c:1156
 #, c-format
 msgid "Append messages to %s?"
 msgstr "%s¿¡ ¸Ş¼¼Áö¸¦ Ã·°¡ÇÒ±î¿ä?"
@@ -2691,6 +2706,19 @@ msgstr ""
 #: mutt_ssl.c:224
 msgid "SSL disabled due the lack of entropy"
 msgstr ""
+
+#: mutt_ssl.c:318
+msgid "I/O error"
+msgstr ""
+
+#: mutt_ssl.c:321
+msgid "unspecified protocol error"
+msgstr ""
+
+#: mutt_ssl.c:327
+#, fuzzy, c-format
+msgid "SSL failed: %s"
+msgstr "Á¢¼Ó ½ÇÆĞ."
 
 #: mutt_ssl.c:336
 msgid "Unable to get certificate from peer"
@@ -2892,48 +2920,48 @@ msgstr "¸Ş½ÃÁö¸¦ ¾²Áö ¸øÇÔ"
 msgid "Not available in this menu."
 msgstr "ÀÌ ¸Ş´º¿¡¼± À¯È¿ÇÏÁö ¾ÊÀ½ ¾ÊÀ½."
 
-#: pager.c:1388
+#: pager.c:1423
 msgid "PrevPg"
 msgstr "ÀÌÀüÀå"
 
-#: pager.c:1389
+#: pager.c:1424
 msgid "NextPg"
 msgstr "´ÙÀ½Àå"
 
-#: pager.c:1393
+#: pager.c:1428
 msgid "View Attachm."
 msgstr "Ã·ºÎ¹°º¸±â"
 
-#: pager.c:1396
+#: pager.c:1431
 msgid "Next"
 msgstr "´ÙÀ½"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1774 pager.c:1805 pager.c:1837 pager.c:2057
+#: pager.c:1809 pager.c:1840 pager.c:1872 pager.c:2092
 msgid "Bottom of message is shown."
 msgstr "¸Ş¼¼ÁöÀÇ ³¡ÀÔ´Ï´Ù."
 
-#: pager.c:1790 pager.c:1812 pager.c:1819 pager.c:1826
+#: pager.c:1825 pager.c:1847 pager.c:1854 pager.c:1861
 msgid "Top of message is shown."
 msgstr "¸Ş¼¼ÁöÀÇ Ã³À½ÀÔ´Ï´Ù."
 
-#: pager.c:1899
+#: pager.c:1934
 msgid "Reverse search: "
 msgstr "°Å²Ù·Î Ã£±â: "
 
-#: pager.c:1900
+#: pager.c:1935
 msgid "Search: "
 msgstr "Ã£±â: "
 
-#: pager.c:1995
+#: pager.c:2030
 msgid "Help is currently being shown."
 msgstr "ÇöÀç µµ¿ò¸»À» º¸°í ÀÖ½À´Ï´Ù."
 
-#: pager.c:2024
+#: pager.c:2059
 msgid "No more quoted text."
 msgstr "´õ ÀÌ»óÀÇ ÀÎ¿ë¹® ¾øÀ½."
 
-#: pager.c:2037
+#: pager.c:2072
 msgid "No more unquoted text after quoted text."
 msgstr "ÀÎ¿ë¹® ÀÌÈÄ¿¡ ´õ ÀÌ»óÀÇ ºñ ÀÎ¿ë¹® ¾øÀ½."
 
@@ -3040,17 +3068,15 @@ msgstr "[-- PGP Ãâ·Â (ÇöÀç ½Ã°£: "
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
 msgstr "[-- ¿À·ù: PGP ÇÏºÎ ÇÁ·Î¼¼½º¸¦ »ı¼ºÇÒ ¼ö ¾øÀ½! --]\n"
 
-#: pgp.c:400
+#: pgp.c:402 pgp.c:749 pgp.c:1052
 msgid ""
-"\n"
 "[-- End of PGP output --]\n"
 "\n"
 msgstr ""
-"\n"
 "[-- PGP Ãâ·Â ³¡ --]\n"
 "\n"
 
-#: pgp.c:407
+#: pgp.c:410
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -3058,11 +3084,11 @@ msgstr ""
 "[-- PGP ¸Ş¼¼Áö ½ÃÀÛ --]\n"
 "\n"
 
-#: pgp.c:409
+#: pgp.c:412
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP °ø°³ ¿­¼è ºÎºĞ ½ÃÀÛ --]\n"
 
-#: pgp.c:411
+#: pgp.c:414
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -3070,27 +3096,25 @@ msgstr ""
 "[-- PGP ¼­¸í ¸Ş¼¼Áö ½ÃÀÛ --]\n"
 "\n"
 
-#: pgp.c:452
-msgid ""
-"\n"
-"[-- END PGP MESSAGE --]\n"
+#: pgp.c:456
+#, fuzzy
+msgid "[-- END PGP MESSAGE --]\n"
 msgstr ""
 "\n"
 "[-- PGP ¸Ş¼¼Áö ³¡ --]\n"
 
-#: pgp.c:454
+#: pgp.c:458
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP °ø°³ ¿­¼è ºÎºĞ ³¡--]\n"
 
-#: pgp.c:456
-msgid ""
-"\n"
-"[-- END PGP SIGNED MESSAGE --]\n"
+#: pgp.c:460
+#, fuzzy
+msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr ""
 "\n"
 "[-- PGP ¼­¸í ¸Ş¼¼Áö ³¡ --]\n"
 
-#: pgp.c:471
+#: pgp.c:475
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -3098,15 +3122,7 @@ msgstr ""
 "[-- ¿À·ù: PGP ¸Ş¼¼Áö ½ÃÀÛÀ» Ã£À» ¼ö ¾øÀ½! --]\n"
 "\n"
 
-#: pgp.c:745 pgp.c:1041
-msgid ""
-"[-- End of PGP output --]\n"
-"\n"
-msgstr ""
-"[-- PGP Ãâ·Â ³¡ --]\n"
-"\n"
-
-#: pgp.c:795
+#: pgp.c:799
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
 "\n"
@@ -3114,7 +3130,7 @@ msgstr ""
 "[-- ¿À·ù: ÀÏÄ¡ÇÏÁö ¾Ê´Â multipart/signed ±¸Á¶Ã¼! --]\n"
 "\n"
 
-#: pgp.c:803
+#: pgp.c:808
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -3123,7 +3139,7 @@ msgstr ""
 "[-- ¿À·ù: ¾Ë ¼ö ¾ø´Â multipart/signed ÇÁ·ÎÅäÄİ %s! --]\n"
 "\n"
 
-#: pgp.c:827
+#: pgp.c:834
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -3133,7 +3149,7 @@ msgstr ""
 "\n"
 
 #. Now display the signed body
-#: pgp.c:839
+#: pgp.c:847
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -3141,7 +3157,7 @@ msgstr ""
 "[-- ¾Æ·¡ÀÇ ÀÚ·á´Â ¼­¸í µÇ¾úÀ½ --]\n"
 "\n"
 
-#: pgp.c:845
+#: pgp.c:853
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -3149,19 +3165,18 @@ msgstr ""
 "[-- °æ°í: ¾î¶°ÇÑ ¼­¸íµµ Ã£À» ¼ö ¾øÀ½. --]\n"
 "\n"
 
-#: pgp.c:851
-msgid ""
-"\n"
-"[-- End of signed data --]\n"
+#: pgp.c:861
+#, fuzzy
+msgid "[-- End of signed data --]\n"
 msgstr ""
 "\n"
 "[-- ¼­¸í ÀÚ·á ³¡ --]\n"
 
-#: pgp.c:951
+#: pgp.c:962
 msgid "Internal error. Inform <roessler@guug.de>."
 msgstr "³»ºÎ ¿À·ù. <roessler@guug.de>¿¡°Ô ¾Ë·ÁÁÖ½Ê½Ã¿ä."
 
-#: pgp.c:1011
+#: pgp.c:1022
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -3169,7 +3184,7 @@ msgstr ""
 "[-- Error: PGP ÇÏºÎ ÇÁ·Î¼¼½º¸¦ »ı¼ºÇÒ ¼ö ¾øÀ½! --]\n"
 "\n"
 
-#: pgp.c:1107
+#: pgp.c:1118
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -3177,11 +3192,11 @@ msgstr ""
 "[-- ¿À·ù: Àß¸ø ¸¸µé¾îÁø PGP/MIME Çü½ÄÀÇ ¸Ş¼¼Áö! --]\n"
 "\n"
 
-#: pgp.c:1120
+#: pgp.c:1131
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- ¿À·ù: ÀÓ½Ã ÆÄÀÏÀ» ¸¸µé ¼ö°¡ ¾øÀ½! --]\n"
 
-#: pgp.c:1129
+#: pgp.c:1140
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -3189,33 +3204,32 @@ msgstr ""
 "[-- ¾Æ·¡ÀÇ ÀÚ·á´Â PGP/MIME ¾ÏÈ£È­ µÇ¾úÀ½ --]\n"
 "\n"
 
-#: pgp.c:1147
-msgid ""
-"\n"
-"[-- End of PGP/MIME encrypted data --]\n"
+#: pgp.c:1160
+#, fuzzy
+msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- PGP/MIME ¾ÏÈ£È­ ÀÚ·á ³¡ --]\n"
 
-#: pgp.c:1227
+#: pgp.c:1241
 msgid "Can't open PGP subprocess!"
 msgstr "PGP ÇÏºÎ ÇÁ·Î¼¼½º¸¦ ¿­ ¼ö ¾øÀ½!"
 
-#: pgp.c:1354
+#: pgp.c:1368
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "keyID = \"%s\"¸¦ %s¿¡ »ç¿ëÇÒ±î¿ä?"
 
-#: pgp.c:1381
+#: pgp.c:1395
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "%sÀÇ keyID ÀÔ·Â: "
 
-#: pgp.c:1589
+#: pgp.c:1603
 msgid "Can't invoke PGP"
 msgstr "PGP¸¦ ½ÇÇàÇÏÁö ¸øÇÔ"
 
-#: pgp.c:1693
+#: pgp.c:1707
 msgid "Create an application/pgp message?"
 msgstr "application/pgp ¸Ş¼¼Áö¸¦ ¸¸µé±î¿ä?"
 
@@ -3323,49 +3337,54 @@ msgstr "ÀÓ½Ã È­ÀÏ ¸¸µé ¼ö ¾øÀ½"
 msgid "Command UIDL is not supported by server."
 msgstr "ÅÂ±×¸¦ ºÙÀÌ´Â °ÍÀ» Áö¿øÄ¡ ¾ÊÀ½."
 
-#: pop.c:273
+#: pop.c:246 pop.c:562
+#, c-format
+msgid "%s is an invalid POP path"
+msgstr ""
+
+#: pop.c:277
 #, fuzzy
 msgid "Fetching list of messages..."
 msgstr "¸Ş¼¼Áö °¡Á®¿À´Â Áß..."
 
-#: pop.c:410
+#: pop.c:414
 #, fuzzy
 msgid "Can't write message to temporary file!"
 msgstr "ÀÓ½Ã È­ÀÏ ¸¸µé ¼ö ¾øÀ½"
 
-#: pop.c:513 pop.c:567
+#: pop.c:517 pop.c:581
 #, fuzzy
 msgid "Checking for new messages..."
 msgstr "Àü¼ÛÇÒ ¸Ş½ÃÁö¸¦ ÁØºñ Áß..."
 
-#: pop.c:541
+#: pop.c:546
 msgid "POP host is not defined."
 msgstr "POP ¼­¹ö°¡ ÁöÁ¤µÇÁö ¾ÊÀ½."
 
-#: pop.c:595
+#: pop.c:609
 msgid "No new mail in POP mailbox."
 msgstr "POP ÆíÁöÇÔ¿¡ »õ ÆíÁö°¡ ¾øÀ½."
 
-#: pop.c:602
+#: pop.c:616
 #, fuzzy
 msgid "Delete messages from server?"
 msgstr "¼­¹öÀÇ ¸Ş¼¼Áö »èÁ¦ Áß..."
 
-#: pop.c:604
+#: pop.c:618
 #, c-format
 msgid "Reading new messages (%d bytes)..."
 msgstr "»õ ¸Ş¼¼Áö ÀĞ´Â Áß (%d ¹ÙÀÌÆ®)..."
 
-#: pop.c:646
+#: pop.c:660
 msgid "Error while writing mailbox!"
 msgstr "ÆíÁöÇÔ¿¡ ¾²´Â Áß ¿À·ù!"
 
-#: pop.c:650
+#: pop.c:664
 #, c-format
 msgid "%s [%d of %d messages read]"
 msgstr "%s [%2$d°³ Áß %1$d°³ÀÇ ¸Ş¼¼Áö ÀĞÀ½]"
 
-#: pop.c:673 pop_lib.c:274
+#: pop.c:687 pop_lib.c:274
 msgid "Server closed connection!"
 msgstr "¼­¹ö¿Í ¿¬°áÀÌ ²÷¾îÁü!"
 
@@ -3712,80 +3731,80 @@ msgstr "Àü¼ÛÇÒ ¸Ş½ÃÁö¸¦ ÁØºñ Áß..."
 msgid "Recall postponed message?"
 msgstr "¹ß½Å ¿¬±âµÈ ¸Ş¼¼Áö¸¦ ´Ù½Ã ºÎ¸¦±î¿ä?"
 
-#: send.c:1316
+#: send.c:1302
 msgid "Abort unmodified message?"
 msgstr "º¯°æµÇÁö ¾ÊÀº ¸Ş¼¼Áö¸¦ Ãë¼ÒÇÒ±î¿ä?"
 
-#: send.c:1318
+#: send.c:1304
 msgid "Aborted unmodified message."
 msgstr "º¯°æµÇÁö ¾ÊÀº ¸Ş½ÃÁö Ãë¼ÒÇÔ."
 
 #. abort
-#: send.c:1359
+#: send.c:1345
 msgid "Mail not sent."
 msgstr "º¸³»Áö ¾ÊÀ½."
 
-#: send.c:1385
+#: send.c:1371
 msgid "Message postponed."
 msgstr "¹ß½Å ¿¬±âµÇ¾úÀ½."
 
-#: send.c:1394
+#: send.c:1380
 msgid "No recipients are specified!"
 msgstr "¹ß½ÅÀÎÀÌ ÁöÁ¤µÇÁö ¾ÊÀ½!"
 
-#: send.c:1399
+#: send.c:1385
 msgid "No recipients were specified."
 msgstr "¹ß½ÅÀÎÀÌ ÁöÁ¤µÇÁö ¾ÊÀ½."
 
-#: send.c:1405
+#: send.c:1391
 msgid "No subject, abort sending?"
 msgstr "Á¦¸ñ ¾øÀ½, ¹ß½ÅÀ» Ãë¼ÒÇÒ±î¿ä?"
 
-#: send.c:1409
+#: send.c:1395
 msgid "No subject specified."
 msgstr "Á¦¸ñÀÌ ÁöÁ¤µÇÁö ¾ÊÀ½."
 
-#: send.c:1456
+#: send.c:1442
 msgid "Sending message..."
 msgstr "¸Ş¼¼Áö º¸³»´Â Áß..."
 
-#: send.c:1586
+#: send.c:1572
 msgid "Could not send the message."
 msgstr "¸Ş¼¼Áö¸¦ º¸³¾ ¼ö ¾øÀ½."
 
-#: send.c:1591
+#: send.c:1577
 msgid "Mail sent."
 msgstr "ÆíÁö º¸³¿."
 
-#: send.c:1591
+#: send.c:1577
 msgid "Sending in background."
 msgstr "¹é±×¶ó¿îµå·Î º¸³¿."
 
-#: sendlib.c:457
+#: sendlib.c:458
 msgid "No boundary parameter found! [report this error]"
 msgstr "ÇÑ°è º¯¼ö ¾øÀ½! [¿À·ù º¸°í ¹Ù¶÷]"
 
-#: sendlib.c:491
+#: sendlib.c:492
 #, c-format
 msgid "%s no longer exists!"
 msgstr "%s°¡ ´õ ÀÌ»ó Á¸ÀçÄ¡ ¾ÊÀ½!"
 
-#: sendlib.c:907
+#: sendlib.c:908
 #, fuzzy, c-format
 msgid "%s isn't a regular file."
 msgstr "%s´Â ÆíÁöÇÔÀÌ ¾Æ´Ô."
 
-#: sendlib.c:1076
+#: sendlib.c:1077
 #, c-format
 msgid "Could not open %s"
 msgstr "%s¸¦ ¿­ ¼ö ¾øÀ½"
 
-#: sendlib.c:2028
+#: sendlib.c:2029
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "¸Ş¼¼Áö¸¦ º¸³»´Â Áß ¿À·ù, ÀÚ½Ä Á¾·á %d (%s)."
 
-#: sendlib.c:2034
+#: sendlib.c:2035
 msgid "Output of the delivery process"
 msgstr "¹è´Ş ÇÁ·Î¼¼½ºÀÇ Ãâ·Â"
 
@@ -3816,16 +3835,53 @@ msgstr "Á¤·Ä ÇÔ¼ö Ã£À» ¼ö ¾øÀ½! [¹ö±× º¸°í ¹Ù¶÷]"
 msgid "(no mailbox)"
 msgstr "(ÆíÁöÇÔ ¾øÀ½)"
 
-#: thread.c:874
+#: thread.c:971
+#, fuzzy
+msgid "Parent message is not visible in this limited view."
+msgstr "ºÎ¸ğ ¸Ş¼¼Áö´Â º¼ ¼ö ¾ø´Â »óÅÂÀÓ."
+
+#: thread.c:977
 msgid "Parent message is not available."
 msgstr "ºÎ¸ğ ¸Ş¼¼Áö°¡ Á¸ÀçÇÏÁö ¾ÊÀ½."
+
+#~ msgid "Decode-save"
+#~ msgstr "º¹È£È­-ÀúÀå"
+
+#~ msgid "Decode-copy"
+#~ msgstr "º¹È£È­-º¹»ç"
+
+#~ msgid "Decrypt-save"
+#~ msgstr "ÇØµ¶-ÀúÀå"
+
+#~ msgid "Decrypt-copy"
+#~ msgstr "ÇØµ¶-º¹»ç"
+
+#~ msgid "Copy"
+#~ msgstr "º¹»ç"
+
+#~ msgid ""
+#~ "[-- This %s/%s attachment is not included, --]\n"
+#~ "[-- and the indicated external source has --]\n"
+#~ "[-- expired. --]\n"
+#~ msgstr ""
+#~ "[-- %s/%s Ã·ºÎ¹°ÀÌ Æ÷ÇÔµÇÁö ¾ÊÀ½, --]\n"
+#~ "[-- ÁöÁ¤µÈ ¿ÜºÎ ¼Ò½º°¡ ¸¸±âµÊ --]\n"
+
+#~ msgid "%s [%s]\n"
+#~ msgstr "%s [%s]\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "[-- End of PGP output --]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ "[-- PGP Ãâ·Â ³¡ --]\n"
+#~ "\n"
 
 #, fuzzy
 #~ msgid "Can't stat %s."
 #~ msgstr "½ºÅÈÀ» ¾Ë ¼ö ¾øÀ½: %s"
-
-#~ msgid "Parent message is not visible in limited view"
-#~ msgstr "ºÎ¸ğ ¸Ş¼¼Áö´Â º¼ ¼ö ¾ø´Â »óÅÂÀÓ."
 
 #~ msgid "%s: no such command"
 #~ msgstr "%s ¸í·É¾î ¾øÀ½"
@@ -3846,10 +3902,6 @@ msgstr "ºÎ¸ğ ¸Ş¼¼Áö°¡ Á¸ÀçÇÏÁö ¾ÊÀ½."
 #, fuzzy
 #~ msgid "POP Username: "
 #~ msgstr "IMAP »ç¿ëÀÚ¸í: "
-
-#, fuzzy
-#~ msgid "Login failed: %s"
-#~ msgstr "Á¢¼Ó ½ÇÆĞ."
 
 #~ msgid "Reading new message (%d bytes)..."
 #~ msgstr "»õ ¸Ş¼¼Áö ÀĞ´Â Áß (%d ¹ÙÀÌÆ®)..."

@@ -1,3 +1,109 @@
+Thu Nov  8 17:35:14 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* pager.c, init.h, mutt.h:
+	Add an $allow_ansi option.  Suggested and (mostly) implemented by
+	Mike Schiraldi.
+
+	* Makefile.am: Don't depend on GNU make.  Noted by Bob Bell.
+
+	* pgp.c:
+	Fix some messages, so the color marker is actually in the beginning
+	of a new line.
+
+	* globals.h, handler.c, init.c, mutt.h, muttlib.c, pager.c, pgp.c:
+	somewhat cleaner in-band-signalling between the handlers and the
+	pager.  In particular, it's more difficult now to get fake PGP and
+	other mutt-generated "[-- " messages colored.
+
+	* commands.c, curs_main.c, init.c, init.h, mutt.h, sort.c, thread.c:
+	patch-1.3.23.1-de-new_threads.3-4
+
+	* handler.c: 2.47 introduced another bug.  I should go to bed now.
+
+	* handler.c:
+	Replace a ridiculous for loop by a proper calculation.  Ahem.
+
+	* handler.c, pager.c:
+	Use a slightly different reset sequence for the format=flowed hack,
+	and don't send any such sequence when we aren't in the internal pager.
+
+	* pager.c: Trying to fix #738.
+
+Wed Nov  7 22:25:09 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* handler.c:
+	Fix #860.  Noted: The format=flowed code is not yet utf-8 aware.
+
+	* addrbook.c: Fix #858.
+
+	* doc/patch-notes.txt, main.c, Makefile.am, muttlib.c, patchlist.sh, protos.h, sendlib.c:
+	Implement the patchlist scheme instead of version number munging.
+
+	* complete.c: Fix 706, 853.
+
+	* commands.c, init.h, mutt.h, thread.c:
+	patch-1.3.23.1-de-new_threads.2-3
+
+Tue Nov  6 20:38:17 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* mutt.h, sort.c, sort.h, thread.c, menu.c:
+	[patch.1.3.23.1.de.new_threads.2]  Daniel Eisenbud's redone
+	threading code, version two.
+
+	* doc/patch-notes.txt: fix a typo.
+
+	* PATCHES: uuups, there was a "test" left over.
+
+	* doc/PGP-Notes.txt:
+	Some part of this documentation was severely outdated.
+
+	* doc/Makefile.in, doc/patch-notes.txt, configure.in, main.c, Makefile.am, muttlib.c, PATCHES, protos.h, sendlib.c:
+	Add and document a new mechanism for displaying patches in running
+	mutts' output.
+
+	* send.c:
+	Indentation fixing while staring at the code affected by #857.  No
+	fix for the crash, though.
+
+	* doc/manual.sgml.head, doc/muttrc.man.head, alias.c, init.c:
+	Fix an addressbook bug, and introduce "unalias *".  From "g.c.w. de
+	bruijn" <geerd.debruijn@nl.thalesgroup.com>.
+
+Mon Nov  5 21:38:18 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* imap/browse.c, imap/imap.c, imap/util.c, mutt_ssl.c, mutt_ssl_nss.c, pop.c, thread.c:
+	Missing gettext calls, noted by Byrial Jensen.
+
+	* commands.c:
+	Make the save-copy prompt more translator-friendly.  from Byrial
+	Jensen.
+
+	* po/da.po, po/de.po, po/eo.po, po/fr.po, po/ja.po, po/pl.po: updates
+
+	* mh.c:
+	Fix a segmentation fault which occurs when mutt's get-mail POP mode
+	is used with a maildir spool folder.  Noted by Frédéric L. W.
+	Meunier <0@pervalidus.net>.
+
+	* mutt_socket.c, pop.c:
+	Vsevolod Volkov's fix for #851, and a related bug.
+
+	* headers.c, muttlib.c, protos.h, send.c:
+	Byrial Jensen's mtime hack is needed at more than one place.  Noted
+	by Manoj Kasichainula.
+
+Wed Oct 31 09:38:07 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/tr.po, po/uk.po, po/zh_CN.po, po/zh_TW.po, po/es.po, po/et.po, po/fr.po, po/gl.po, po/hu.po, po/id.po, po/it.po, po/ja.po, po/ko.po, po/lt.po, po/nl.po, po/pl.po, po/pt_BR.po, po/ru.po, po/sk.po, po/sv.po, ChangeLog, po/cs.po, po/da.po, po/de.po, po/el.po, po/eo.po, reldate.h, VERSION:
+	automatic post-release commit for mutt-1.3.23.1
+
+	* imap/message.c, commands.c, curs_main.c, flags.c, hdrline.c, init.h, mbox.c, menu.c, mh.c, mutt.h, mx.c, mx.h, parse.c, pop.c, postpone.c, protos.h, sort.c, sort.h, thread.c:
+	Advanced threading, v 5.1.  From Daniel Eisenbud
+	<eisenbud@cs.swarthmore.edu>.
+
+	* pgpewrap.c:
+	Add magic comment so we can use traditional malloc() in this program.
+
 Wed Oct 31 09:20:40 2001  Thomas Roessler  <roessler@does-not-exist.org>
 
 	* imap/message.c, commands.c, curs_main.c, flags.c, hdrline.c, init.h, mbox.c, menu.c, mh.c, mutt.h, mx.c, mx.h, parse.c, pop.c, postpone.c, protos.h, sort.c, sort.h, thread.c:
