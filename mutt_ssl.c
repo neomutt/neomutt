@@ -381,7 +381,7 @@ static char *x509_get_part (char *line, const char *ndx)
   static char ret[SHORT_STRING];
   char *c, *c2;
 
-  strncpy (ret, _("Unknown"), sizeof (ret));
+  strfcpy (ret, _("Unknown"), sizeof (ret));
 
   c = strstr (line, ndx);
   if (c)
@@ -390,7 +390,7 @@ static char *x509_get_part (char *line, const char *ndx)
     c2 = strchr (c, '/');
     if (c2)
       *c2 = '\0';
-    strncpy (ret, c, sizeof (ret));
+    strfcpy (ret, c, sizeof (ret));
     if (c2)
       *c2 = '/';
   }
@@ -424,7 +424,7 @@ static char *asn1time_to_string (ASN1_UTCTIME *tm)
   static char buf[64];
   BIO *bio;
 
-  strncpy (buf, _("[invalid date]"), sizeof (buf));
+  strfcpy (buf, _("[invalid date]"), sizeof (buf));
   
   bio = BIO_new (BIO_s_mem());
   if (bio)
@@ -579,7 +579,7 @@ static int ssl_check_certificate (sslsockdata * data)
     menu->dialog[i] = (char *) safe_calloc (1, SHORT_STRING * sizeof (char));
 
   row = 0;
-  strncpy (menu->dialog[row++], _("This certificate belongs to:"), SHORT_STRING);
+  strfcpy (menu->dialog[row++], _("This certificate belongs to:"), SHORT_STRING);
   name = X509_NAME_oneline (X509_get_subject_name (data->cert),
 			    buf, sizeof (buf));
   for (i = 0; i < 5; i++)
@@ -589,7 +589,7 @@ static int ssl_check_certificate (sslsockdata * data)
   }
 
   row++;
-  strncpy (menu->dialog[row++], _("This certificate was issued by:"), SHORT_STRING);
+  strfcpy (menu->dialog[row++], _("This certificate was issued by:"), SHORT_STRING);
   name = X509_NAME_oneline (X509_get_issuer_name (data->cert),
 			    buf, sizeof (buf));
   for (i = 0; i < 5; i++)
