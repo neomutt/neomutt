@@ -315,6 +315,65 @@ static void encode_base64 (FILE * fin, FILE *fout, int istext)
   fputc('\n', fout);
 }
 
+#define UUENC(c) ((c) ? ((c) & 077) + ' ' : '`')
+
+static void encode_uuenc (FILE * fin, FILE * fout)
+{
+  register int ch, linelen;
+  register unsigned char *p;
+  unsigned char line[80];
+
+  while ((linelen = fread(line, 1, 45, fin)))
+  {
+    ch = UUENC(linelen);
+    fputc (ch, fout);
+
+    for (p = line; linelen>0; linelen -= 3, p += 3)
+    {
+      ch = *p >> 2;
+      ch = UUENC(ch);
+      fputc(ch, fout);
+
+      if (linelen>1)
+      {
+	ch = ((*p & 0x3) << 4) | (p[1] >> 4);
+	ch = UUENC(ch);
+	fputc(ch, fout);
+      }
+      else
+      {
+	ch = (*p & 0x3) << 4;
+	ch = UUENC(ch);
+	fputc(ch, fout);
+	break;
+      }
+
+      if (linelen>2)
+      {
+	ch = ((p[1] & 0xf) << 2) | (p[2] >> 6);
+	ch = UUENC(ch);
+	fputc(ch, fout);
+      }
+      else
+      {
+	ch = (p[1] & 0xf) << 2;
+	ch = UUENC(ch);
+	fputc(ch, fout);
+	break;
+      }
+
+      ch = p[2] & 0x3f;
+      ch = UUENC(ch);
+      fputc(ch, fout);
+    }
+
+    fputc('\n', fout);
+  }
+  ch = UUENC('\0');
+  fputc(ch, fout);
+  fputc('\n', fout);
+}
+
 int mutt_write_mime_header (BODY *a, FILE *f)
 {
   PARAMETER *p;
@@ -399,6 +458,7 @@ int mutt_write_mime_body (BODY *a, FILE *f)
   char *p, boundary[SHORT_STRING];
   FILE *fpin;
   BODY *t;
+  char *r;
 
   if (a->type == TYPEMULTIPART)
   {
@@ -448,6 +508,17 @@ int mutt_write_mime_body (BODY *a, FILE *f)
     encode_quoted (fpin, f, mutt_is_text_type (a->type, a->subtype));
   else if (a->encoding == ENCBASE64)
     encode_base64 (fpin, f, mutt_is_text_type (a->type, a->subtype));
+  else if (a->encoding == ENCUUENCODED)
+  {
+    /* Strip off the leading path... */
+    if ((r = strrchr (a->filename, '/')))
+      r++;
+    else
+      r = a->filename;
+    fprintf (f, "begin 600 %s\n", r);
+    encode_uuenc (fpin, f);
+    fprintf (f, "end\n");
+  }
   else
     mutt_copy_stream (fpin, f);
   fclose (fpin);

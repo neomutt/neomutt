@@ -39,7 +39,8 @@ enum
   ENC8BIT,
   ENCQUOTEDPRINTABLE,
   ENCBASE64,
-  ENCBINARY
+  ENCBINARY,
+  ENCUUENCODED
 };
 
 /* Content-Disposition values */

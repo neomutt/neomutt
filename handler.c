@@ -289,6 +289,52 @@ void mutt_decode_base64 (STATE *s, BODY *b, int istext)
   state_reset_prefix(s);
 }
 
+unsigned char decode_byte (char ch)
+{
+  if (ch == 96)
+    return 0;
+  return ch - 32;
+}
+
+void mutt_decode_uuencoded (STATE *s, long len, int istext)
+{
+  char tmps[SHORT_STRING];
+  char linelen, c, l, out;
+  char *pt;
+
+  FOREVER
+  {
+    if ((fgets(tmps, sizeof(tmps), s->fpin)) == NULL)
+      return;
+    if ((!strncmp (tmps, "begin", 5)) && isspace (tmps[5]))
+      break;
+  }
+  FOREVER
+  {
+    if ((fgets(tmps, sizeof(tmps), s->fpin)) == NULL)
+      return;
+    if (!strncmp (tmps, "end", 3))
+      break;
+    pt = tmps;
+    linelen = decode_byte (*pt);
+    pt++;
+    for (c = 0; c < linelen;)
+    {
+      for (l = 2; l <= 6; l += 2)
+      {
+	out = decode_byte (*pt) << l;
+	pt++;
+	out |= (decode_byte (*pt) >> (6 - l));
+	state_putc(out, s);
+	c++;
+	if (c == linelen)
+	  break;
+      }
+      pt++;
+    }
+  }
+}
+
 /* ----------------------------------------------------------------------------
  * A (not so) minimal implementation of RFC1563.
  */
@@ -892,7 +938,8 @@ void message_handler (BODY *a, STATE *s)
   long off_start;
 
   off_start = ftell (s->fpin);
-  if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE)
+  if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE || 
+      a->encoding == ENCUUENCODED)
   {
     fstat (fileno (s->fpin), &st);
     b = mutt_new_body ();
@@ -915,7 +962,8 @@ void message_handler (BODY *a, STATE *s)
     mutt_body_handler (b->parts, s);
   }
 
-  if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE)
+  if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE ||
+      a->encoding == ENCUUENCODED)
     mutt_free_body (&b);
 }
 
@@ -979,7 +1027,8 @@ void multipart_handler (BODY *a, STATE *s)
   struct stat st;
   int count;
 
-  if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE)
+  if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE ||
+      a->encoding == ENCUUENCODED)
   {
     fstat (fileno (s->fpin), &st);
     b = mutt_new_body ();
@@ -1037,7 +1086,8 @@ void multipart_handler (BODY *a, STATE *s)
     state_putc ('\n', s);
   }
 
-  if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE)
+  if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE ||
+      a->encoding == ENCUUENCODED)
     mutt_free_body (&b);
 }
 
@@ -1173,6 +1223,9 @@ void mutt_decode_attachment (BODY *b, STATE *s)
     case ENCBASE64:
       mutt_decode_base64 (s, b, mutt_is_text_type (b->type, b->subtype));
       break;
+    case ENCUUENCODED:
+      mutt_decode_uuencoded (s, b->length, mutt_is_text_type (b->type, b->subtype));
+      break;
     default:
       mutt_decode_xbit (s, b, mutt_is_text_type (b->type, b->subtype));
       break;
@@ -1286,7 +1339,7 @@ void mutt_body_handler (BODY *b, STATE *s)
 
     /* see if we need to decode this part before processing it */
     if (b->encoding == ENCBASE64 || b->encoding == ENCQUOTEDPRINTABLE ||
-	plaintext)
+	b->encoding == ENCUUENCODED || plaintext)
     {
       int origType = b->type;
       char *savePrefix = NULL;

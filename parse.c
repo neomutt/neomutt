@@ -126,6 +126,8 @@ int mutt_check_encoding (const char *c)
     return (ENCQUOTEDPRINTABLE);
   else if (strncasecmp ("base64", c, sizeof("base64")-1) == 0)
     return (ENCBASE64);
+  else if (strncasecmp ("x-uuencode", c, sizeof("x-uuencode")-1) == 0)
+    return (ENCUUENCODED);
   else
     return (ENCOTHER);
 }
