@@ -477,11 +477,11 @@ static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
 #ifdef USE_IMAP
   if (state->imap_browse && option (OPTIMAPLSUB))
     snprintf (title, titlelen, _("Subscribed [%s], File mask: %s"),
-	      path, Mask.pattern);
+	      path, NONULL (Mask.pattern));
   else
 #endif
     snprintf (title, titlelen, _("Directory [%s], File mask: %s"),
-	      path, Mask.pattern);
+	      path, NONULL(Mask.pattern));
   }
   menu->redraw = REDRAW_FULL;
 }
