@@ -1,3 +1,7 @@
+2003-04-08 10:18:15  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* po/es.po: Mark a translation as fuzzy in order to fix #1522.
+
 2003-04-07 20:08:10  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* commands.c: Fix #1528.
