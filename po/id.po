@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.14i\n"
+"Project-Id-Version: 1.3.15i\n"
 "POT-Creation-Date: 2001-02-12 18:52+0100\n"
-"PO-Revision-Date: 2001-01-28 14:27-0600\n"
+"PO-Revision-Date: 2001-02-13 15:45-0600\n"
 "Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
 "Language-Team: Indonesia <i18n@linux.or.id>\n"
 "MIME-Version: 1.0\n"
@@ -502,16 +502,13 @@ msgid "<default>"
 msgstr "<default>"
 
 #: compose.c:132
-#, fuzzy
 msgid "(e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
 msgstr ""
-"(a)cak, (t)andatangan, tandatangan (s)bg, ke(d)uanya, pilih alg (m)ic, "
-"(b)atal? "
+"(a)cak, (t)andatangan, tandatangan (s)bg, ke(d)uanya, (b)atal? "
 
 #: compose.c:133
-#, fuzzy
 msgid "esabf"
-msgstr "atsdmb"
+msgstr "atsdb"
 
 #: compose.c:147
 msgid "Sign as: "
@@ -1184,9 +1181,9 @@ msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "IMAP server ini sudah kuno. Mutt tidak bisa menggunakannya."
 
 #: imap/imap.c:315
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s failed."
-msgstr "Menghubungi %s..."
+msgstr "Hubungan ke %s gagal."
 
 #: imap/imap.c:453
 #, c-format
@@ -1271,7 +1268,7 @@ msgstr "Lanjutkan?"
 #: imap/util.c:49
 #, c-format
 msgid "%s [%s]\n"
-msgstr ""
+msgstr "%s [%s]\n"
 
 #: init.c:486
 msgid "alias: no address"
@@ -2818,9 +2815,9 @@ msgstr "Tidak ada bulan: %s"
 
 #. getDate has its own error message, don't overwrite it here
 #: pattern.c:527
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid relative date: %s"
-msgstr "Tidak ada bulan: %s"
+msgstr "Bulan relatif tidak benar: %s"
 
 #: pattern.c:541
 msgid "error in expression"
@@ -3118,7 +3115,7 @@ msgstr "Tidak bisa membuat filter"
 #: pgpkey.c:508
 #, c-format
 msgid "Key ID: 0x%s"
-msgstr ""
+msgstr "Identifikasi kunci: 0x%s"
 
 #: pgpkey.c:534
 msgid "This key can't be used: expired/disabled/revoked."
@@ -3284,17 +3281,17 @@ msgstr "Perintah query tidak diketahui."
 
 #: query.c:243
 msgid "Query"
-msgstr ""
+msgstr "Query"
 
 #. Prompt for Query
 #: query.c:256 query.c:284
 msgid "Query: "
-msgstr ""
+msgstr "Query: "
 
 #: query.c:267 query.c:293
 #, c-format
 msgid "Query '%s'"
-msgstr ""
+msgstr "Query '%s'"
 
 #: recvattach.c:59
 msgid "Pipe"
@@ -3424,7 +3421,7 @@ msgstr "Hapus"
 
 #: remailer.c:484
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: remailer.c:512
 msgid "Can't get mixmaster's type2.list!"
