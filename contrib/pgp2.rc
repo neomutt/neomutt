@@ -33,9 +33,8 @@ set pgp_export_command="pgp -kxaf +language=mutt %r"
 set pgp_verify_key_command="pgp -kcc +language=mutt %r"
 
 # read in the public key ring
-set pgp_list_pubring_command="pgpring -k $PGPPATH/pubring.pgp %r"
+set pgp_list_pubring_command="pgpring -2 %r"
 
 # read in the secret key ring
-set pgp_list_secring_command="pgpring -k $PGPPATH/secring.pgp %r"
-
+set pgp_list_secring_command="pgpring -s -2 %r"
 

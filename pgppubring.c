@@ -63,33 +63,73 @@ int main (int argc, char * const argv[])
 {
   int c;
   
-  char kring[_POSIX_PATH_MAX];
-  char *pgppath;
-
-  if ((pgppath = getenv ("PGPPATH")))
-    snprintf (kring, sizeof (kring), "%s/%s", pgppath, "pubring.pgp");
-  else
-    *kring = '\0';
+  short version = 2;
+  short secring = 0;
   
-  while ((c = getopt (argc, argv, "k:")) != EOF)
+  const char *_kring = NULL;
+  char *env_pgppath, *env_home;
+
+  char pgppath[_POSIX_PATH_MAX];
+  char kring[_POSIX_PATH_MAX];
+
+  while ((c = getopt (argc, argv, "25sk:")) != EOF)
   {
-    if (c == 'k')
-      strfcpy (kring, optarg, sizeof (kring));
+    switch (c)
+    {
+      case 'k':
+      {
+	_kring = optarg;
+	break;
+      }
+      
+      case '2': case '5':
+      {
+	version = 'c' - '0';
+	break;
+      }
+      
+      case 's':
+      {
+	secring = 1;
+	break;
+      }
+    
+      default:
+      {
+	fprintf (stderr, "usage: %s [-k <key ring> | [-2 | -5] [ -s]] [hints]\n",
+		 argv[0]);
+	exit (1);
+      }
+    }
+  }
+
+  if (_kring)
+    strfcpy (kring, _kring, sizeof (kring));
+  else
+  {
+    if ((env_pgppath = getenv ("PGPPATH")))
+      strfcpy (pgppath, env_pgppath, sizeof (pgppath));
+    else if ((env_home = getenv ("HOME")))
+      snprintf (pgppath, sizeof (pgppath), "%s/.pgp", env_home);
     else
     {
-      fprintf (stderr, "usage: %s [-k key ring] [hints]\n",
-	       argv[0]);
+      fprintf (stderr, "%s: Can't determine your PGPPATH.\n", argv[0]);
       exit (1);
     }
+    
+    if (secring)
+      snprintf (kring, sizeof (kring), "%s/secring.%s", pgppath, version == 2 ? "pgp" : "skr");
+    else
+      snprintf (kring, sizeof (kring), "%s/pubring.%s", pgppath, version == 2 ? "pgp" : "pkr");
   }
   
   pgpring_find_candidates (kring, argv + optind, argc - optind);
     
   return 0;
 }
-	       
 
 
+/* The actual key ring parser */
 
 enum packet_tags
 {

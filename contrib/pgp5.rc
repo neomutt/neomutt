@@ -33,9 +33,9 @@ set pgp_export_command="pgpk -xa +language=mutt --OutputInformationFD=1 %r"
 set pgp_verify_key_command="pgpk -c +batchmode +language=mutt --OutputInformationFD=1 %r"
 
 # read in the public key ring
-set pgp_list_pubring_command="pgpring -k $PGPPATH/pubring.pkr %r"
+set pgp_list_pubring_command="pgpring -5 %r" 
 
 # read in the secret key ring
-set pgp_list_secring_command="pgpring -k $PGPPATH/secring.skr %r"
+set pgp_list_secring_command="pgpring -5 -s %r"
 
 

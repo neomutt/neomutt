@@ -133,6 +133,17 @@ mimics the one used by the GNU Privacy Guard (GPG).
 
 You'll need this program with PGP 2 and PGP 5.
 
+Command line options:
+
+	-k <key ring>	Dump the contents of the key ring specified
+			as an argument to -k.
+			
+	-2, -5	 	Use the default key ring for PGP 2 or 5, 
+			respectively.
+			
+	-s		Dump the secret key ring.
+
+
 
 2. pgpewrap
 
