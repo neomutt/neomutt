@@ -1,11 +1,11 @@
 # Mesaøoj por la programo "mutt".
-# Edmund GRIMLEY EVANS <edmundo@rano.org>, 2000.
+# Edmund GRIMLEY EVANS <edmundo@rano.org>, 2000-2001.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1\n"
-"POT-Creation-Date: 2001-02-27 11:50+0100\n"
-"PO-Revision-Date: 2000-09-26 19:15+01:00\n"
+"POT-Creation-Date: 2001-03-04 12:39+0000\n"
+"PO-Revision-Date: 2001-03-04 13:05+00:00\n"
 "Last-Translator: Edmund GRIMLEY EVANS <edmundo@rano.org>\n"
 "Language-Team: eo <eo@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -359,9 +359,8 @@ msgid "Pipe to command: "
 msgstr "Filtri per komando: "
 
 #: commands.c:417
-#, fuzzy
 msgid "No printing command has been defined."
-msgstr "Neniu enir-poþtfako estas difinita."
+msgstr "Neniu pres-komando estas difinita."
 
 #: commands.c:422
 msgid "Print message?"
@@ -380,14 +379,12 @@ msgid "Messages printed"
 msgstr "Mesaøoj presitaj"
 
 #: commands.c:432
-#, fuzzy
 msgid "Message could not be printed"
-msgstr "Mesaøo presita"
+msgstr "Ne eblis presi mesaøon"
 
 #: commands.c:433
-#, fuzzy
 msgid "Messages could not be printed"
-msgstr "Mesaøoj presitaj"
+msgstr "Ne eblis presi mesaøojn"
 
 #: commands.c:442
 msgid ""
@@ -504,16 +501,12 @@ msgid "<default>"
 msgstr "<implicite>"
 
 #: compose.c:132
-#, fuzzy
 msgid "(e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
-msgstr ""
-"æ(i)fri, (s)ubskribi, subskribi (k)iel, (a)mbaý, elektu (m)ic-algoritmon, aý "
-"(f)orgesi? "
+msgstr "æ(i)fri, (s)ubskribi, subskribi (k)iel, (a)mbaý, aý (f)orgesi? "
 
 #: compose.c:133
-#, fuzzy
 msgid "esabf"
-msgstr "iskamf"
+msgstr "iskaf"
 
 #: compose.c:147
 msgid "Sign as: "
@@ -611,7 +604,7 @@ msgstr "Ne povas krei dosieron %s"
 
 #: compose.c:1052
 msgid "What we have here is a failure to make an attachment"
-msgstr "Oni malsukcesis krei aldona¼on"
+msgstr "Oni malsukcesis krei kunsenda¼on"
 
 #: compose.c:1114
 msgid "Postpone this message?"
@@ -835,9 +828,8 @@ msgid "Thread contains unread messages."
 msgstr "Fadeno enhavas nelegitajn mesaøojn."
 
 #: curs_main.c:1628
-#, fuzzy
 msgid "Can't edit message on POP server."
-msgstr "Æu forviþi mesaøojn de servilo?"
+msgstr "Ne eblas redakti mesaøon en POP-servilo."
 
 #.
 #. * SLcurses_waddnstr() can't take a "const char *", so this is only
@@ -1183,13 +1175,13 @@ msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "Æi tiu IMAP-servilo estas antikva. Mutt ne funkcias kun øi."
 
 #: imap/imap.c:363
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s failed."
-msgstr "Konektiøas al %s ..."
+msgstr "Konektiøo al %s malsukcesis."
 
 #: imap/imap.c:383
 msgid "Secure connection with TLS?"
-msgstr ""
+msgstr "Æu sekura konekto per TLS?"
 
 #: imap/imap.c:535
 #, c-format
@@ -1290,9 +1282,9 @@ msgid "%s: unknown sorting method"
 msgstr "%s: nekonata ordigmaniero"
 
 #: init.c:744
-#, fuzzy, c-format
+#, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
-msgstr "mutt_restore_default: eraro en regula esprimo: %s\n"
+msgstr "mutt_restore_default(%s): eraro en regula esprimo: %s\n"
 
 #: init.c:805
 #, c-format
@@ -1440,9 +1432,8 @@ msgid "view attachment as text"
 msgstr "vidigi parton kiel tekston"
 
 #: keymap_alldefs.h:8
-#, fuzzy
 msgid "Toggle display of subparts"
-msgstr "þalti aý malþalti montradon de citita teksto"
+msgstr "þalti aý malþalti montradon de subpartoj"
 
 #: keymap_alldefs.h:9
 msgid "move to the bottom of the page"
@@ -1730,16 +1721,15 @@ msgstr "interþanøi la signon sub la tajpmontrilo kun la antaýa"
 
 #: keymap_alldefs.h:81
 msgid "capitalize the word"
-msgstr ""
+msgstr "majuskligi la vorton"
 
 #: keymap_alldefs.h:82
-#, fuzzy
 msgid "convert the word to lower case"
-msgstr "iri al fino de paøo"
+msgstr "konverti la vorton al minuskloj"
 
 #: keymap_alldefs.h:83
 msgid "convert the word to upper case"
-msgstr ""
+msgstr "konverti la vorton al majuskloj"
 
 #: keymap_alldefs.h:84
 msgid "enter a muttrc command"
@@ -1826,9 +1816,8 @@ msgid "delete messages matching a pattern"
 msgstr "forviþi mesaøojn laý þablono"
 
 #: keymap_alldefs.h:105
-#, fuzzy
 msgid "force retrieval of mail from IMAP server"
-msgstr "elþuti mesaøojn de POP-servilo"
+msgstr "devigi prenadon de mesaøoj de IMAP-servilo"
 
 #: keymap_alldefs.h:106
 msgid "retrieve mail from POP server"
@@ -2144,7 +2133,7 @@ msgstr "fari malæifritan kopion"
 
 #: keymap_alldefs.h:184
 msgid "check for classic pgp"
-msgstr ""
+msgstr "kontroli pri klasika PGP"
 
 #: keymap_alldefs.h:185
 msgid "Accept the chain constructed"
@@ -2505,9 +2494,8 @@ msgid "oac"
 msgstr "san"
 
 #: muttlib.c:1122
-#, fuzzy
 msgid "Can't save message to POP mailbox."
-msgstr "Skribi mesaøon al poþtfako"
+msgstr "Ne eblas skribi mesaøon al POP-poþtfako."
 
 #: muttlib.c:1131
 #, c-format
@@ -2543,9 +2531,9 @@ msgid "Connecting to %s..."
 msgstr "Konektiøas al %s ..."
 
 #: mutt_socket.c:398
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "Ne povas malfermi %s"
+msgstr "Ne povis konektiøi al %s (%s)."
 
 #: mutt_ssl.c:172
 msgid "Failed to find enough entropy on your system"
@@ -2570,9 +2558,9 @@ msgid "Unable to get certificate from peer"
 msgstr "Ne povas akiri SSL-atestilon"
 
 #: mutt_ssl.c:343
-#, fuzzy, c-format
+#, c-format
 msgid "SSL connection using %s (%s)"
-msgstr "SSL-konekto per %s"
+msgstr "SSL-konekto per %s (%s)"
 
 #: mutt_ssl.c:373
 msgid "Unknown"
@@ -2827,9 +2815,9 @@ msgstr "Nevalida monato: %s"
 
 #. getDate has its own error message, don't overwrite it here
 #: pattern.c:527
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid relative date: %s"
-msgstr "Nevalida monato: %s"
+msgstr "Nevalida relativa dato: %s"
 
 #: pattern.c:541
 msgid "error in expression"
@@ -3167,29 +3155,24 @@ msgid "Looking for keys matching \"%s\"..."
 msgstr "Seræas þlosilojn, kiuj kongruas kun \"%s\" ..."
 
 #: pop.c:89 pop_lib.c:159
-#, fuzzy
 msgid "Command TOP is not supported by server."
-msgstr "Markado ne funkcias."
+msgstr "Servilo ne havas la komandon TOP."
 
 #: pop.c:116
-#, fuzzy
 msgid "Can't write header to temporary file!"
-msgstr "Ne povas krei dumtempan dosieron"
+msgstr "Ne povas skribi la æapa¼on al dumtempa dosiero!"
 
 #: pop.c:197 pop_lib.c:161
-#, fuzzy
 msgid "Command UIDL is not supported by server."
-msgstr "Markado ne funkcias."
+msgstr "Servilo ne havas la komandon UIDL."
 
 #: pop.c:270
-#, fuzzy
 msgid "Fetching list of messages..."
-msgstr "Prenas mesaøon ..."
+msgstr "Prenas liston de mesaøoj ..."
 
 #: pop.c:407
-#, fuzzy
 msgid "Can't write message to temporary file!"
-msgstr "Ne povas krei dumtempan dosieron"
+msgstr "Ne povas skribi mesaøon al dumtempa dosiero!"
 
 #: pop.c:510 pop.c:564
 msgid "Checking for new messages..."
@@ -3226,49 +3209,41 @@ msgid "Server closed connection!"
 msgstr "Servilo fermis la konekton!"
 
 #: pop_auth.c:190
-#, fuzzy
 msgid "Authenticating (APOP)..."
-msgstr "Rajtiøas (GSSAPI) ..."
+msgstr "Rajtiøas (APOP) ..."
 
 #: pop_auth.c:214
-#, fuzzy
 msgid "APOP authentication failed."
-msgstr "GSSAPI-rajtiøo malsukcesis."
+msgstr "APOP-rajtiøo malsukcesis."
 
 #: pop_auth.c:249
-#, fuzzy
 msgid "Command USER is not supported by server."
-msgstr "Markado ne funkcias."
+msgstr "Servilo ne havas la komandon USER."
 
 #: pop_auth.c:356
-#, fuzzy
 msgid "Authentication method is unknown."
-msgstr "SASL-rajtiøo malsukcesis."
+msgstr "Rajtiøo-metodo ne estas konata."
 
 #: pop_lib.c:157
-#, fuzzy
 msgid "Unable to leave messages on server."
-msgstr "Æu forviþi mesaøojn de servilo?"
+msgstr "Ne povas lasi mesaøojn æe la servilo."
 
 #: pop_lib.c:204
-#, fuzzy, c-format
+#, c-format
 msgid "Error connecting to server: %s"
-msgstr "Fermas la konekton al la IMAP-servilo ..."
+msgstr "Eraro dum konektiøo al servilo: %s"
 
 #: pop_lib.c:288
-#, fuzzy
 msgid "Closing connection to POP server..."
-msgstr "Fermas la konekton al la IMAP-servilo ..."
+msgstr "Fermas la konekton al POP-servilo ..."
 
 #: pop_lib.c:453
-#, fuzzy
 msgid "Verifying message indexes..."
-msgstr "Skribas mesaøon al %s ..."
+msgstr "Kontrolas mesaøindeksojn ..."
 
 #: pop_lib.c:477
-#, fuzzy
 msgid "Connection lost. Reconnect to POP server?"
-msgstr "Fermas la konekton al la IMAP-servilo ..."
+msgstr "Konekto perdita. Æu rekonekti al POP-servilo?"
 
 #: postpone.c:165
 msgid "Postponed Messages"
@@ -3363,14 +3338,12 @@ msgid "Attachments"
 msgstr "Partoj"
 
 #: recvattach.c:922
-#, fuzzy
 msgid "There are no subparts to show!"
-msgstr "Mankas mesaøopartoj."
+msgstr "Mankas subpartoj por montri!"
 
 #: recvattach.c:983
-#, fuzzy
 msgid "Can't delete attachment from POP server."
-msgstr "elþuti mesaøojn de POP-servilo"
+msgstr "Ne povas forviþi parton de POP-servilo."
 
 #: recvattach.c:994
 msgid "Deletion of attachments from PGP messages is unsupported."
@@ -3400,9 +3373,8 @@ msgid "Can't open temporary file %s."
 msgstr "Ne povas malfermi dumtempan dosieron %s."
 
 #: recvcmd.c:398
-#, fuzzy
 msgid "Forward as attachments?"
-msgstr "montri MIME-partojn"
+msgstr "Æu plusendi kiel kunsenda¼ojn?"
 
 #: recvcmd.c:412
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
@@ -3558,9 +3530,8 @@ msgid "Could not include all requested messages!"
 msgstr "Ne povis inkluzivi æiujn petitajn mesaøojn!"
 
 #: send.c:739
-#, fuzzy
 msgid "Forward as attachment?"
-msgstr "Æu presi parton?"
+msgstr "Æu plusendi kiel kunsenda¼on?"
 
 #: send.c:743
 msgid "Preparing forwarded message..."
@@ -3679,58 +3650,3 @@ msgstr "Patra mesaøo ne estas videbla en limigita rigardo"
 #: thread.c:719
 msgid "Parent message is not available."
 msgstr "Patra mesaøo ne estas havebla."
-
-#~ msgid "MIC algorithm: "
-#~ msgstr "MIC-algoritmo: "
-
-#~ msgid "This doesn't make sense if you don't want to sign the message."
-#~ msgstr "Tio ne havas sencon, se vi ne volas subskribi la mesaøon."
-
-#~ msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
-#~ msgstr ""
-#~ "Nekonata MIC-algoritmo; konataj estas: pgp-md5, pgp-sha1, pgp-rmd160"
-
-#~ msgid ""
-#~ "\n"
-#~ "SHA1 implementation Copyright (C) 1995-1997 Eric A. Young "
-#~ "<eay@cryptsoft.com>\n"
-#~ "\n"
-#~ "    Redistribution and use in source and binary forms, with or without\n"
-#~ "    modification, are permitted under certain conditions.\n"
-#~ "\n"
-#~ "    The SHA1 implementation comes AS IS, and ANY EXPRESS OR IMPLIED\n"
-#~ "    WARRANTIES, including, but not limited to, the implied warranties of\n"
-#~ "    merchantability and fitness for a particular purpose ARE DISCLAIMED.\n"
-#~ "\n"
-#~ "    You should have received a copy of the full distribution terms\n"
-#~ "    along with this program; if not, write to the program's developers.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Realigo de SHA1 Kopirajto (C) 1995-1997 Eric A. Young <eay@cryptsoft.com>\n"
-#~ "\n"
-#~ "    Pludonado de kopioj kaj uzado kaj de la fontprogramo kaj de "
-#~ "celprogramo,\n"
-#~ "    kun aý sen modifado, estas permesataj sub difinitaj kondiæoj.\n"
-#~ "\n"
-#~ "    La realigo de SHA1 venas TIA, KIA ØI ESTAS, kaj ÆIAJ EKSPLICITAJ AÝ\n"
-#~ "    IMPLICITAJ GARANTIOJ, inkluzive de, sed ne limigitaj al, la implicita\n"
-#~ "    garantio de komerca kvalito aý adekvateco por difinita celo,\n"
-#~ "    ESTAS NEITAJ.\n"
-#~ "\n"
-#~ "    Vi devus esti ricevinta kopion de la kompletaj disdonkondiæoj kun\n"
-#~ "    æi tiu programo; se ne, skribu al la kreantoj de la programo.\n"
-
-#~ msgid "POP Username: "
-#~ msgstr "POP-uzantonomo: "
-
-#~ msgid "Login failed: %s"
-#~ msgstr "Saluto malsukcesis: %s"
-
-#~ msgid "Reading new message (%d bytes)..."
-#~ msgstr "Legas novan mesaøon (%d bitokojn) ..."
-
-#~ msgid "Error reading message!"
-#~ msgstr "Eraro dum legado de mesaøo!"
-
-#~ msgid "%s [%d message read]"
-#~ msgstr "%s [%d mesaøo legita]"
