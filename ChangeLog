@@ -1,3 +1,13 @@
+2004-04-12 20:33:33  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* commands.c, curs_main.c, mutt.h, mutt_crypt.h, pager.c,
+	recvattach.c: A belated fix for #1808 (Debian #233106): Make
+	sure check-traditional-pgp doesn't leave the pager context
+	unnecessarily.	This makes message-hooks like this one safe:
+
+	  message-hook '!(~g|~G) ~b"^-----BEGIN\ PGP\ (SIGNED\ )?MESSAGE"'
+		\ "exec check-traditional-pgp"
+
 2004-04-12 19:53:29  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
 
 	* doc/manual.sgml.head, init.h: Various documentation fixes,
