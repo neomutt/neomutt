@@ -357,7 +357,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 	  if (Context)
 	  {
 	    if (!*p && cur)
-	    {
+ 	    {
 	      /* include the current message */
 	      p = tmp + strlen (tmp) + 1;
 	      snprintf (tmp + strlen (tmp), sizeof (tmp) - strlen (tmp), " %d",
@@ -447,7 +447,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
       done = 1;
     else
     {
-      strcat (tmp, "\n");
+      strncat (tmp, "\n", sizeof(tmp)); tmp[sizeof(tmp) - 1] = '\0';
       if (buflen == bufmax)
 	safe_realloc ((void **)&buf, sizeof (char *) * (bufmax += 25));
       buf[buflen++] = safe_strdup (tmp[1] == '~' ? tmp + 1 : tmp);
