@@ -909,7 +909,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	{
 	  /* add '/' at the end of the directory name if not already there */
 	  int len=mutt_strlen(LastDir);
-	  if (LastDir[len-1] != '/' && sizeof (buf) > len)
+	  if (len && LastDir[len-1] != '/' && sizeof (buf) > len)
 	    buf[len]='/';
 	}
 
