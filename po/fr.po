@@ -1304,9 +1304,8 @@ msgid "Selecting %s..."
 msgstr "Sélection de %s..."
 
 #: imap/imap.c:656
-#, fuzzy
 msgid "Error opening mailbox"
-msgstr "Erreur à l'écriture de la boîte aux lettres !"
+msgstr "Erreur à l'ouverture de la boîte aux lettres"
 
 #. STATUS not supported
 #: imap/imap.c:709
@@ -1331,9 +1330,8 @@ msgid "Marking %d messages deleted..."
 msgstr "Marquage de %d messages à effacer..."
 
 #: imap/imap.c:926
-#, fuzzy
 msgid "Expunge failed"
-msgstr "CLOSE a échoué"
+msgstr "Expunge a échoué"
 
 # , c-format
 #: imap/imap.c:941
@@ -1369,9 +1367,9 @@ msgstr ""
 "IMAP."
 
 #: imap/message.c:83
-#, fuzzy, c-format
+#, c-format
 msgid "Could not create temporary file %s"
-msgstr "Impossible de créer le fichier temporaire !"
+msgstr "Impossible de créer le fichier temporaire %s"
 
 # , c-format
 #: imap/message.c:96 pop.c:209
@@ -1572,15 +1570,14 @@ msgid "macro: too many arguments"
 msgstr "macro : trop d'arguments"
 
 #: keymap.c:850
-#, fuzzy
 msgid "exec: no arguments"
-msgstr "exec : pas assez d'arguments"
+msgstr "exec : pas d'arguments"
 
 # , c-format
 #: keymap.c:870
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no such function"
-msgstr "%s : cette fonction n'existe pas dans la table"
+msgstr "%s : cette fonction n'existe pas"
 
 #: keymap_alldefs.h:5
 msgid "null operation"
@@ -2560,9 +2557,8 @@ msgstr "Écriture des messages... %d (%d%%)"
 #. * change/deleted message
 #.
 #: mbox.c:925
-#, fuzzy
 msgid "Committing changes..."
-msgstr "Compilation du motif de recherche..."
+msgstr "Écriture des changements..."
 
 # , c-format
 #: mbox.c:956

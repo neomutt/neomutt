@@ -1247,9 +1247,8 @@ msgid "Selecting %s..."
 msgstr "Wähle %s aus..."
 
 #: imap/imap.c:656
-#, fuzzy
 msgid "Error opening mailbox"
-msgstr "Fehler beim Versuch, die Mailbox zu schreiben!"
+msgstr "Fehler beim Öffnen der Mailbox"
 
 #. STATUS not supported
 #: imap/imap.c:709
@@ -1272,9 +1271,8 @@ msgid "Marking %d messages deleted..."
 msgstr "Markiere %d Nachrichten zum Löschen..."
 
 #: imap/imap.c:926
-#, fuzzy
 msgid "Expunge failed"
-msgstr "CLOSE fehlgeschlagen"
+msgstr "Löschen fehlgeschlagen"
 
 #: imap/imap.c:941
 #, c-format
@@ -1306,9 +1304,9 @@ msgstr ""
 "Kann von dieser Version des IMAP-Servers keine Nachrichtenköpfe erhalten."
 
 #: imap/message.c:83
-#, fuzzy, c-format
+#, c-format
 msgid "Could not create temporary file %s"
-msgstr "Konnte keine Temporärdatei erzeugen!"
+msgstr "Konnte Temporärdatei %s nicht erzeugen"
 
 #: imap/message.c:96 pop.c:209
 #, c-format
@@ -1490,12 +1488,11 @@ msgid "macro: too many arguments"
 msgstr "macro: Zu viele Parameter"
 
 #: keymap.c:850
-#, fuzzy
 msgid "exec: no arguments"
-msgstr "exec: Zu wenige Parameter."
+msgstr "exec: Keine Parameter"
 
 #: keymap.c:870
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no such function"
 msgstr "%s: Funktion unbekannt"
 
@@ -2473,9 +2470,8 @@ msgstr "Schreibe Nachrichten... %d (%d%%)"
 #. * change/deleted message
 #.
 #: mbox.c:925
-#, fuzzy
 msgid "Committing changes..."
-msgstr "Compiliere Suchmuster..."
+msgstr "Speichere Änderungen..."
 
 #: mbox.c:956
 #, c-format

@@ -1259,9 +1259,8 @@ msgid "Selecting %s..."
 msgstr "Выбирается %s..."
 
 #: imap/imap.c:656
-#, fuzzy
 msgid "Error opening mailbox"
-msgstr "Ошибка записи почтового ящика!"
+msgstr "Ошибка открытия почтового ящика"
 
 #. STATUS not supported
 #: imap/imap.c:709
@@ -1284,9 +1283,8 @@ msgid "Marking %d messages deleted..."
 msgstr "%d сообщений помечаются как удаленные..."
 
 #: imap/imap.c:926
-#, fuzzy
 msgid "Expunge failed"
-msgstr "Ошибка выполнения команды CLOSE"
+msgstr "Не удалось очистить почтовый ящик"
 
 #: imap/imap.c:941
 #, c-format
@@ -1317,9 +1315,9 @@ msgid "Unable to fetch headers from this IMAP server version."
 msgstr "Получение списка заголовков не поддерживается этим IMAP-сервером."
 
 #: imap/message.c:83
-#, fuzzy, c-format
+#, c-format
 msgid "Could not create temporary file %s"
-msgstr "Не удалось создать временный файл!"
+msgstr "Не удалось создать временный файл %s"
 
 #: imap/message.c:96 pop.c:209
 #, c-format
@@ -1502,12 +1500,11 @@ msgid "macro: too many arguments"
 msgstr "macro: слишком много аргументов"
 
 #: keymap.c:850
-#, fuzzy
 msgid "exec: no arguments"
-msgstr "exec: слишком мало аргументов"
+msgstr "exec: нет аргументов"
 
 #: keymap.c:870
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no such function"
 msgstr "%s: нет такой функции"
 
@@ -2489,9 +2486,8 @@ msgstr "Запись... %d (%d%%)"
 #. * change/deleted message
 #.
 #: mbox.c:925
-#, fuzzy
 msgid "Committing changes..."
-msgstr "Образец поиска компилируется..."
+msgstr "Сохранение изменений..."
 
 #: mbox.c:956
 #, c-format
@@ -3776,9 +3772,3 @@ msgstr "Родительское сообщение не видимо при просмотре с ограничением"
 #: thread.c:742
 msgid "Parent message is not available."
 msgstr "Родительское сообщение недоступно."
-
-#~ msgid "%s: no such command"
-#~ msgstr "%s: нет такой команды"
-
-#~ msgid "Authentication method is unknown."
-#~ msgstr "Неизвестный метод аутентификации."
