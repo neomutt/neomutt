@@ -43,7 +43,7 @@ set hdr_format="%4C %Z %{%m/%d} %-15.15F (%4c) %s" # format of the index
 #set header			# include message header when replying
 set help			# show the help lines
 #set history=20			# number of lines of history to remember
-#set hostname="cs.hmc.edu"	# my DNS domain
+#set hostname="mutt.org"	# my DNS domain
 set include			# always include messages when replying
 #set indent_string="> "		# how to quote replied text
 #set locale="C"			# locale to use for printing time
@@ -266,10 +266,10 @@ save-hook ^judge +diplomacy
 #	alias <name> <address> [ , <address> ... ]
 
 #alias exam "\# to annoy michael" <user@host>
-#alias me Michael Elkins <michael> # me!
-alias mutt-dev Mutt Development List <mutt-dev@cs.hmc.edu> # power users
-alias mutt-users Mutt User List <mutt-users@cs.hmc.edu>
-alias mutt-announce Mutt Announcement List <mutt-announce@cs.hmc.edu>
+#alias me Michael Elkins <me@mutt.org> # me!
+alias mutt-dev Mutt Development List <mutt-dev@mutt.org> # power users
+alias mutt-users Mutt User List <mutt-users@mutt.org>
+alias mutt-announce Mutt Announcement List <mutt-announce@mutt.org>
 alias wmaker WindowMaker Mailing List <wmaker@eosys.com>
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
