@@ -268,6 +268,13 @@ struct option_t MuttVars[] = {
   ** notifying you of new mail.  This is independent of the setting of the
   ** ``$$beep'' variable.
   */
+  { "bounce",	DT_QUAD, R_NONE, OPT_BOUNCE, M_ASKYES },
+  /*
+  ** Controls whether you will be asked to confirm bouncing messages.
+  ** If set to \fIyes\fP you don't get asked if you want to bounce a
+  ** message. Setting this variable to \fIno\fP is not generally useful,
+  ** and thus not recommended, because your are unable to bounce message.
+  */
   { "bounce_delivered", DT_BOOL, R_NONE, OPTBOUNCEDELIVERED, 1 },
   /*
   ** .pp

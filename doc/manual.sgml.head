@@ -491,7 +491,8 @@ recipients to place on the ``To:'' header field.  Next, it will ask
 you for the ``Subject:'' field for the message, providing a default if
 you are replying to or forwarding a message.  See also <ref id="askcc"
 name="&dollar;askcc">, <ref id="askbcc" name="&dollar;askbcc">, <ref
-id="autoedit" name="&dollar;autoedit">, and <ref id="fast_reply"
+id="autoedit" name="&dollar;autoedit">, <ref id="bounce"
+name="&dollar;bounce">, and <ref id="fast_reply"
 name="&dollar;fast&lowbar;reply"> for changing how Mutt asks these
 questions.
 

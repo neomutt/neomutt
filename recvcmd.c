@@ -126,17 +126,19 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
 	   ATTACHPTR ** idx, short idxlen, BODY * cur)
 {
   short i;
-  short ntagged;
   char prompt[STRING];
   char buf[HUGE_STRING];
   ADDRESS *adr = NULL;
+  int ret = 0;
+  int p   = 0;
 
   if (check_all_msg (idx, idxlen, cur, 1) == -1)
     return;
 
-  ntagged = count_tagged (idx, idxlen);
-  
-  if (cur || ntagged == 1)
+  /* one or more messages? */
+  p = (cur || count_tagged (idx, idxlen) == 1);
+
+  if (p)
     strfcpy (prompt, _("Bounce message to: "), sizeof (prompt));
   else
     strfcpy (prompt, _("Bounce tagged messages to: "), sizeof (prompt));
@@ -161,31 +163,44 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
    * See commands.c.
    */
   snprintf (prompt, sizeof (prompt) - 4, 
-	    cur ? _("Bounce message to %s...?") :  _("Bounce messages to %s...?"), buf);
+   (p ? _("Bounce message to %s") : _("Bounce messages to %s")), buf);
+  
+  if (mutt_strwidth (prompt) > COLS - extra_space)
+  {
+    mutt_format_string (prompt, sizeof (prompt) - 4,
+			0, COLS-extra_space, 0, 0,
+			prompt, sizeof (prompt), 0);
+    strncat (prompt, "...?", sizeof (prompt));
+  }
+  else
+    strncat (prompt, "?", sizeof (prompt));
 
-  mutt_format_string (prompt, sizeof (prompt) - 4,
-		      0, COLS-extra_space, 0, 0,
-		      prompt, sizeof (prompt), 0);
-  strcat (prompt, "...?");	/* __STRCAT_CHECKED__ */
-
-  if (mutt_yesorno (prompt, M_YES) != M_YES)
-    goto bail;
-
+  if (query_quadoption (OPT_BOUNCE, prompt) == M_NO)
+  {
+    rfc822_free_address (&adr);
+    CLEARLINE (LINES - 1);
+    mutt_message (p ? _("Message not bounced.") : _("Messages not bounced."));
+    return;
+  }
+  
+  CLEARLINE (LINES - 1);
+  
   if (cur)
-    mutt_bounce_message (fp, cur->hdr, adr);
+    ret = mutt_bounce_message (fp, cur->hdr, adr);
   else
   {
     for (i = 0; i < idxlen; i++)
     {
       if (idx[i]->content->tagged)
-	mutt_bounce_message (fp, idx[i]->content->hdr, adr);
+	if (mutt_bounce_message (fp, idx[i]->content->hdr, adr))
+	  ret = 1;
     }
   }
 
-bail:
-
-  rfc822_free_address (&adr);
-  CLEARLINE (LINES - 1);
+  if (!ret)
+    mutt_message (p ? _("Message bounced.") : _("Messages bounced."));
+  else
+    mutt_error (p ? _("Error bouncing message!") : _("Error bouncing messages!"));
 }
 
 

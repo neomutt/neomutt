@@ -288,7 +288,8 @@ enum
   OPT_SUBJECT,
   OPT_MIMEFWDREST,
   OPT_FORWEDIT,
-  OPT_MAX
+  OPT_MAX,
+  OPT_BOUNCE
 };
 
 /* flags to ci_send_message() */

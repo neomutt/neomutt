@@ -257,25 +257,29 @@ void ci_bounce_message (HEADER *h, int *redraw)
   rfc822_write_address (buf, sizeof (buf), adr);
 
 #define extra_space (15 + 7 + 2)
-  /*
-   * This is the printing width of "...? ([y=yes]/n=no): ?" plus 2
-   * for good measure. This is not ideal. FIXME.
-   * 
-   * While you fix this, please go to recvcmd.c, and do the same thing there.
-   */
-  snprintf (prompt, sizeof (prompt) - 4,
+  snprintf (prompt, sizeof (prompt),
            (h ? _("Bounce message to %s") : _("Bounce messages to %s")), buf);
-  mutt_format_string (prompt, sizeof (prompt) - 4,
-		      0, COLS-extra_space, 0, 0,
-		      prompt, sizeof (prompt), 0);
-  strcat (prompt, "...?");	/* __STRCAT_CHECKED__ */
-  if (mutt_yesorno (prompt, M_YES) != M_YES)
+
+  if (mutt_strwidth (prompt) > COLS - extra_space)
+  {
+    mutt_format_string (prompt, sizeof (prompt),
+			0, COLS-extra_space, 0, 0,
+			prompt, sizeof (prompt), 0);
+    strncat (prompt, "...?", sizeof (prompt));
+  }
+  else
+    strncat (prompt, "?", sizeof (prompt));
+
+  if (query_quadoption (OPT_BOUNCE, prompt) == M_NO)
   {
     rfc822_free_address (&adr);
-    CLEARLINE (LINES-1);
+    CLEARLINE (LINES - 1);
+    mutt_message (h ? _("Message not bounced.") : _("Messages not bounced."));
     return;
   }
 
+  CLEARLINE (LINES - 1);
+  
   rc = mutt_bounce_message (NULL, h, adr);
   rfc822_free_address (&adr);
   /* If no error, or background, display message. */
