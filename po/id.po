@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.19i\n"
+"Project-Id-Version: 1.3.22.1i\n"
 "POT-Creation-Date: 2001-08-30 23:30+0200\n"
-"PO-Revision-Date: 2001-06-07 17:37-0500\n"
+"PO-Revision-Date: 2001-09-14 13:14+0700\n"
 "Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
 "Language-Team: Indonesia <i18n@linux.or.id>\n"
 "MIME-Version: 1.0\n"
@@ -352,7 +352,7 @@ msgstr "Tembuskan surat ke %s"
 #: commands.c:242
 #, c-format
 msgid "Bounce messages to %s"
-msgstr "Tembuskan surat-surat ke %"
+msgstr "Tembuskan surat-surat ke %s"
 
 #: commands.c:256
 msgid "Message bounced."
@@ -1251,9 +1251,8 @@ msgid "Selecting %s..."
 msgstr "Memilih %s..."
 
 #: imap/imap.c:656
-#, fuzzy
 msgid "Error opening mailbox"
-msgstr "Error sewaktu menulis ke kotak surat!"
+msgstr "Error sewaktu membuka kotak surat"
 
 #. STATUS not supported
 #: imap/imap.c:709
@@ -1276,9 +1275,8 @@ msgid "Marking %d messages deleted..."
 msgstr "Menandai %d surat-surat \"dihapus\"..."
 
 #: imap/imap.c:926
-#, fuzzy
 msgid "Expunge failed"
-msgstr "CLOSE (penutupan) gagal."
+msgstr "Penghapusan gagal"
 
 #: imap/imap.c:941
 #, c-format
@@ -1309,9 +1307,9 @@ msgid "Unable to fetch headers from this IMAP server version."
 msgstr "Tidak dapat mengambil header dari IMAP server versi ini."
 
 #: imap/message.c:83
-#, fuzzy, c-format
+#, c-format
 msgid "Could not create temporary file %s"
-msgstr "Tidak bisa membuat file sementara!"
+msgstr "Tidak bisa membuat file sementara %s"
 
 #: imap/message.c:96 pop.c:209
 #, c-format
@@ -1492,14 +1490,13 @@ msgid "macro: too many arguments"
 msgstr "macro: parameter terlalu banyak"
 
 #: keymap.c:850
-#, fuzzy
 msgid "exec: no arguments"
-msgstr "exec: parameter terlalu banyak"
+msgstr "exec: tidak ada parameter"
 
 #: keymap.c:870
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no such function"
-msgstr "%s: tidak ada fungsi begitu di map"
+msgstr "%s: tidak ada fungsi begitu"
 
 #: keymap_alldefs.h:5
 msgid "null operation"
@@ -2472,9 +2469,8 @@ msgstr "Menulis surat-surat... %d (%d%%)"
 #. * change/deleted message
 #.
 #: mbox.c:925
-#, fuzzy
 msgid "Committing changes..."
-msgstr "Menyusun kriteria pencarian..."
+msgstr "Melakukan perubahan..."
 
 #: mbox.c:956
 #, c-format
@@ -3230,19 +3226,16 @@ msgid "This ID is expired/disabled/revoked"
 msgstr "ID ini telah kadaluwarsa/disabled/dicabut."
 
 #: pgpkey.c:612
-#, fuzzy
 msgid "This ID's validity level is undefined."
-msgstr "Tingkat kepercayaan dari ID ini tidak diketahui."
+msgstr "Tingkat validitas dari ID ini tidak didefinisikan."
 
 #: pgpkey.c:615
-#, fuzzy
 msgid "This ID is not valid."
-msgstr "ID ini tidak dipercaya."
+msgstr "ID ini tidak valid."
 
 #: pgpkey.c:618
-#, fuzzy
 msgid "This ID is only marginally valid."
-msgstr "ID ini tidak dipercaya sepenuhnya."
+msgstr "ID ini hanya valid secara marginal."
 
 #: pgpkey.c:622
 #, c-format
