@@ -1,3 +1,9 @@
+2003-03-04 09:31:19  Edmund GRIMLEY EVANS  <edmundo@rano.org>  (roessler)
+
+	* handler.c: Be more friendly about bad multipart/alternative
+	bodies; #1478. Note that the relevant standards explicitly
+	*forbid* nested MIME encodings.
+
 2003-03-04 09:27:21  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* copy.c: Fix another stupid error, and decode IDNs in the
