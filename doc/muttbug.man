@@ -17,7 +17,7 @@
 .\"     along with this program; if not, write to the Free Software
 .\"     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
 .\"
-.TH mutt 1 "July 2000" Unix "User Manuals"
+.TH flea 1 "July 2000" Unix "User Manuals"
 .SH NAME
 .PP
 flea \- Report a bug (or rather a flea) in mutt.
