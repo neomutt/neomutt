@@ -1167,6 +1167,9 @@ int imap_parse_list_response(IMAP_DATA* idata, char **name, int *noselect,
 	  *noselect = 1;
 	if (!strncasecmp (s, "\\NoInferiors", 12))
 	  *noinferiors = 1;
+	/* See draft-gahrns-imap-child-mailbox-?? */
+	if (!strncasecmp (s, "\\HasNoChildren", 14))
+	  *noinferiors = 1;
 	if (*s != ')')
 	  s++;
 	while (*s && *s != '\\' && *s != ')') s++;
