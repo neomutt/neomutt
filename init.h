@@ -2146,6 +2146,13 @@ struct option_t MuttVars[] = {
   ** generated unless the user explicitly sets one using the ``$my_hdr''
   ** command.
   */
+  { "use_ipv6",		DT_BOOL, R_NONE, OPTUSEIPV6, 1},
+  /*
+  ** .pp
+  ** When \fIset\fP, Mutt will look for IPv6 addresses of hosts it tries to
+  ** contact.  If this option is unset, Mutt will restrict itself to IPv4 addresses.
+  ** Normally, the default should work.
+  */
   { "user_agent",	DT_BOOL, R_NONE, OPTXMAILER, 1},
   /*
   ** .pp

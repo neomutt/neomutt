@@ -318,7 +318,12 @@ int raw_socket_open (CONNECTION* conn)
 
   /* we accept v4 or v6 STREAM sockets */
   memset (&hints, 0, sizeof (hints));
-  hints.ai_family = AF_UNSPEC;
+
+  if (option (OPTUSEIPV6))
+    hints.ai_family = AF_UNSPEC;
+  else
+    hints.ai_family = AF_INET;
+
   hints.ai_socktype = SOCK_STREAM;
 
   snprintf (port, sizeof (port), "%d", conn->account.port);
