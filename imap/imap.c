@@ -778,6 +778,9 @@ void imap_logout (IMAP_DATA* idata)
   imap_cmd_start (idata, "LOGOUT");
   while (imap_cmd_step (idata) == IMAP_CMD_CONTINUE)
     ;
+
+  FREE(& idata->cmd.buf);
+  FREE(& idata);
 }
 
 /* imap_set_flag: append str to flags if we currently have permission
