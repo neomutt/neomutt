@@ -69,8 +69,9 @@ try-txt:
 install: all
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man1
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man5
-	$(INSTALL) -m 644 mutt.man $(DESTDIR)$(mandir)/man1/mutt.1
-	$(INSTALL) -m 644 dotlock.man $(DESTDIR)$(mandir)/man1/mutt_dotlock.1
+	$(INSTALL) -m 644 $(srcdir)/mutt.man $(DESTDIR)$(mandir)/man1/mutt.1
+	$(INSTALL) -m 644 $(srcdir)/dotlock.man \
+		$(DESTDIR)$(mandir)/man1/mutt_dotlock.1
 	$(INSTALL) -m 644 muttrc.man $(DESTDIR)$(mandir)/man5/muttrc.5
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(docdir)
 	for f in $(srcdir_DOCFILES) ; do \

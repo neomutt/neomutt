@@ -32,7 +32,7 @@ all clean distclean:
 install:
 	$(top_srcdir)/mkinstalldirs @docdir@/samples
 	for f in $(SAMPLES) ; do \
-		$(INSTALL) -m 644 $$f @docdir@/samples ;	\
+		$(INSTALL) -m 644 $(srcdir)/$$f @docdir@/samples ;	\
 	done
 
 maintainer-clean:

@@ -10,6 +10,7 @@ endif
 
 if BUILD_IMAP
 IMAP_SUBDIR = imap
+IMAP_INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/imap
 endif
 
 SUBDIRS = m4 po intl doc contrib $(CHARMAP_SUBDIR) $(IMAP_SUBDIR)
@@ -44,7 +45,7 @@ CPP=@CPP@
 
 DEFS=-DSHAREDIR=\"$(sharedir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 	-DBINDIR=\"$(bindir)\" -DHAVE_CONFIG_H=1
-INCLUDES=-I. -I$(includedir)
+INCLUDES=-I. $(IMAP_INCLUDES) -I$(includedir)
 
 non_us_sources = pgp.c pgpinvoke.c pgpkey.c pgplib.c sha1dgst.c \
 	gnupgparse.c sha.h sha_locl.h \
@@ -162,7 +163,7 @@ Muttrc: stamp-doc-rc
 
 stamp-doc-rc: $(srcdir)/init.h makedoc Muttrc.head
 	$(CPP) $(INCLUDES) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C \
-		$(srcdir)/init.h | ./makedoc -c | cat Muttrc.head - \
+		$(srcdir)/init.h | ./makedoc -c | cat $(srcdir)/Muttrc.head - \
 		> Muttrc
 	touch stamp-doc-rc
 
