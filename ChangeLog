@@ -1,3 +1,8 @@
+2003-01-23 22:01:03  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* handler.c: Automatically use the text/plain handler for text/*
+	body parts which don't have a handler of their own.
+
 2003-01-21 18:56:10  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* cryptglue.c: Fix a typo which broke pgp-extract-traditional.
