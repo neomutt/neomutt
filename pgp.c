@@ -193,6 +193,9 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
   FILE *tmpfp;
   pid_t thepid;
 
+  short maybe_goodsig = 1;
+  short have_any_sigs = 0;
+  
   fseek (s->fpin, m->offset, 0);
   last_pos = m->offset;
   
@@ -230,6 +233,8 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 	continue;
       }
 
+      have_any_sigs = have_any_sigs || clearsign;
+      
       if(!clearsign || s->flags & M_VERIFY)
       {
 
@@ -298,9 +303,9 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 	mutt_unlink(tmpfname);
 	
 	if (s->flags & M_DISPLAY)
-	  if (pgp_copy_checksig (pgperr, s->fpout) == 0 && clearsign && rv == 0)
-	    m->goodsig = 1;
-
+	  if (pgp_copy_checksig (pgperr, s->fpout) != 0 || rv != 0)
+	    maybe_goodsig = 0;
+	
 	safe_fclose (&pgperr);
 	
 	if (s->flags & M_DISPLAY)
@@ -430,12 +435,13 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
     }
   }
 
+  m->goodsig = (maybe_goodsig && have_any_sigs);
+
   if (needpass == -1)
   {
     state_puts (_("[-- Error: could not find beginning of PGP message! --]\n\n"), s);
     return;
   }
-
 }
 
 static int pgp_check_traditional_one_body (FILE *fp, BODY *b, int tagged_only)
