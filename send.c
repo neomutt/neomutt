@@ -390,18 +390,13 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int group)
   char prompt[STRING];
   int i = 0;
 
-  if (group)
+  if (group && env->mail_followup_to)
   {
-    if (env->mail_followup_to)
-    {
-      rfc822_append (to, env->mail_followup_to);
-      return 0;
-    }
-    if (mutt_addr_is_user (env->from))
-      return 0;
+    rfc822_append (to, env->mail_followup_to);
+    return 0;
   }
 
-  if (!group && mutt_addr_is_user (env->from))
+  if (mutt_addr_is_user (env->from))
   {
     /* mail is from the user, assume replying to recipients */
     rfc822_append (to, env->to);
@@ -476,7 +471,9 @@ static int fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags)
 
     if ((flags & SENDGROUPREPLY) && !in->mail_followup_to)
     {
-      rfc822_append (&out->to, in->to);
+      if(!mutt_addr_is_user(in->to))
+	rfc822_append (&out->cc, in->to);
+      
       rfc822_append (&out->cc, in->cc);
     }
   }

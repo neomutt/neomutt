@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-04 09:54+0200\n"
+"POT-Creation-Date: 1998-10-04 16:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2651,7 +2651,7 @@ msgstr ""
 #. * to send a message to only the sender of the message.  This
 #. * provides a way to do that.
 #.
-#: send.c:429
+#: send.c:424
 #, c-format
 msgid "Reply to %s?"
 msgstr ""
@@ -2659,75 +2659,75 @@ msgstr ""
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
 #.
-#: send.c:510
+#: send.c:507
 msgid "No tagged messages are visible!"
 msgstr ""
 
-#: send.c:535
+#: send.c:532
 msgid "No mailing lists found!"
 msgstr ""
 
-#: send.c:622
+#: send.c:619
 msgid "Include message in reply?"
 msgstr ""
 
-#: send.c:636
+#: send.c:633
 msgid "Could not include all requested messages!"
 msgstr ""
 
-#: send.c:649
+#: send.c:646
 msgid "Forward MIME encapsulated?"
 msgstr ""
 
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:860
+#: send.c:857
 msgid "Recall postponed message?"
 msgstr ""
 
-#: send.c:1090
+#: send.c:1087
 msgid "Abort unmodified message?"
 msgstr ""
 
-#: send.c:1092
+#: send.c:1089
 msgid "Aborted unmodified message."
 msgstr ""
 
 #. abort
-#: send.c:1130
+#: send.c:1127
 msgid "Mail not sent."
 msgstr ""
 
-#: send.c:1143
+#: send.c:1140
 msgid "Message postponed."
 msgstr ""
 
-#: send.c:1152
+#: send.c:1149
 msgid "No recipients are specified!"
 msgstr ""
 
-#: send.c:1157
+#: send.c:1154
 msgid "No recipients were specified."
 msgstr ""
 
-#: send.c:1163
+#: send.c:1160
 msgid "No subject, abort sending?"
 msgstr ""
 
-#: send.c:1167
+#: send.c:1164
 msgid "No subject specified."
 msgstr ""
 
-#: send.c:1206
+#: send.c:1203
 msgid "Message edited. Really send?"
 msgstr ""
 
-#: send.c:1212
+#: send.c:1209
 msgid "Sending message..."
 msgstr ""
 
-#: send.c:1312
+#: send.c:1309
 msgid "Mail sent."
 msgstr ""
 
