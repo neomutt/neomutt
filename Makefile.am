@@ -72,7 +72,7 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO \
 	rfc2231.h rfc822.h sha1.h sort.h mime.types VERSION prepare \
 	_regex.h OPS.MIX README.SECURITY remailer.c remailer.h browser.h \
 	mbyte.h	lib.h extlib.c pgpewrap.c smime_keys.pl pgplib.h Muttrc.head Muttrc \
-	makedoc.c stamp-doc-rc README.SSL crypt.h \
+	makedoc.c stamp-doc-rc README.SSL crypt.h smime.h\
 	muttbug pgppacket.h depcomp ascii.h BEWARE PATCHES patchlist.sh
 
 mutt_dotlock_SOURCES = mutt_dotlock.c
