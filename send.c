@@ -549,7 +549,7 @@ LIST *mutt_make_references(ENVELOPE *e)
   else
     l = mutt_copy_list (e->in_reply_to);
   
-  if(e->message_id)
+  if (e->message_id)
   {
     t = mutt_new_list();
     t->data = safe_strdup(e->message_id);
@@ -615,13 +615,13 @@ mutt_make_reference_headers (ENVELOPE *curenv, ENVELOPE *env, CONTEXT *ctx)
     
     for(i = 0; i < ctx->vcount; i++)
     {
-      while(*p) p = &(*p)->next;
+      while (*p) p = &(*p)->next;
       while (*q) q = &(*q)->next;
       
       h = ctx->hdrs[ctx->v2r[i]];
-      if(h->tagged)
+      if (h->tagged)
       {
-	*p = mutt_make_references(h->env);
+	*p = mutt_make_references (h->env);
 	if (h->env->message_id)
 	{
 	  *q = mutt_new_list ();
