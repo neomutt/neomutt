@@ -439,7 +439,7 @@ static int ssl_check_certificate (sslsockdata * data)
 
   row = 0;
   strncpy (menu->dialog[row++], _("This certificate belongs to:"), SHORT_STRING);
-  name = X509_NAME_oneline (X509_get_subject_name (data->cert),
+  name = X509_NAME_oneline (X509_get_issuer_name (data->cert),
 			    buf, sizeof (buf));
   for (i = 0; i < 5; i++)
   {
