@@ -23,6 +23,7 @@
 #include "mime.h"
 #include "mailbox.h"
 #include "mapping.h"
+#include "sort.h"
 #ifdef USE_IMAP
 #include "mx.h"
 #include "imap.h"
@@ -153,6 +154,7 @@ static HEADER *select_msg (void)
   MUTTMENU *menu;
   int i, done=0, r=-1;
   char helpstr[SHORT_STRING];
+  short orig_sort;
 
   menu = mutt_new_menu ();
   menu->make_entry = post_entry;
@@ -162,6 +164,12 @@ static HEADER *select_msg (void)
   menu->data = PostContext;
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_POST, PostponeHelp);
 
+  /* The postponed mailbox is setup to have sorting disabled, but the global
+   * Sort variable may indicate something different.   Sorting has to be
+   * disabled while the postpone menu is being displayed. */
+  orig_sort = Sort;
+  Sort = SORT_ORDER;
+  
   while (!done)
   {
     switch (i = mutt_menuLoop (menu))
@@ -197,6 +205,7 @@ static HEADER *select_msg (void)
     }
   }
 
+  Sort = orig_sort;
   mutt_menuDestroy (&menu);
   return (r > -1 ? PostContext->hdrs[r] : NULL);
 }
