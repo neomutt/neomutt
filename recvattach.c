@@ -140,8 +140,7 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
   return (idx);
 }
 
-/* %C = character set
- * %D = deleted flag
+/* %D = deleted flag
  * %d = description
  * %e = MIME content-transfer-encoding
  * %f = filename
@@ -171,18 +170,6 @@ const char *mutt_attach_fmt (char *dest,
   
   switch (op)
   {
-    case 'C':
-      if(!optional)
-      {
-	if(aptr->content->type == TYPETEXT && mutt_get_send_charset(charset, sizeof(charset), aptr->content))
-	{
-	  snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-	  snprintf(dest, destlen, fmt, charset);
-	}
-      }
-      else if(aptr->content->type != TYPETEXT || !mutt_get_send_charset(charset, sizeof(charset), aptr->content))
-        optional = 0;
-      break;
     case 'd':
       if(!optional)
       {
