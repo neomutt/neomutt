@@ -56,7 +56,7 @@ set pgp_encrypt_only_command="pgpewrap /usr/bin/gpg  --charset utf-8    --batch 
 set pgp_encrypt_sign_command="pgpewrap /usr/bin/gpg  --charset utf-8 --passphrase-fd 0  --batch --quiet  --no-verbose  --textmode --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
 
 # import a key into the public key ring
-set pgp_import_command="/usr/bin/gpg  --no-verbose --import -v %f"
+set pgp_import_command="/usr/bin/gpg  --no-verbose --import %f"
 
 # export a key from the public key ring
 set pgp_export_command="/usr/bin/gpg   --no-verbose --export --armor %r"
