@@ -1,4 +1,6 @@
-2002/12/07 19:18:52  Thomas Roessler <roessler@does-not-exist.org>
+2002/12/07 19:19:34  Thomas Roessler <roessler@does-not-exist.org>
+
+	* Makefile.am: yet another one.
 
 	* Makefile.am: Another changelog-related change.
 
