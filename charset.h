@@ -23,18 +23,17 @@
 
 #ifndef _GEN_CHARSETS
 
-typedef int UNICODE_MAP[256];
+typedef int CHARSET_MAP[256];
 
 typedef struct 
 {
-  char *name;
-  UNICODE_MAP *map;
+  CHARSET_MAP *map;
 } CHARSET;
-
-CHARSET *mutt_get_charset(const char *);
-UNICODE_MAP *mutt_get_translation(const char *, const char *);
-int mutt_display_char(int, UNICODE_MAP *);
-int mutt_display_string(char *, UNICODE_MAP *);
+  
+CHARSET     *mutt_get_charset(const char *);
+CHARSET_MAP *mutt_get_translation(const char *, const char *);
+unsigned char mutt_display_char(unsigned char, CHARSET_MAP *);
+int mutt_display_string(char *, CHARSET_MAP *);
 
 #endif
 

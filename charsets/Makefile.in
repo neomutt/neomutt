@@ -36,7 +36,7 @@ distclean: clean
 	-rm -f Makefile
 
 veryclean:
-	-rm -f `cat charsets.list` charsets.list
+	-rm -f `cat charsets.list` charsets.list charsets.alias
 
 charmaps: parse_i18n
 	( cd $(srcdir) && ./gen_charsets )
@@ -45,4 +45,4 @@ install: charsets.list
 	$(srcdir)/../mkinstalldirs $(sharedir)/charsets
 	( cd $(srcdir) && $(INSTALL) \
 		-m 644 `cat charsets.list` $(sharedir)/charsets )
-
+	$(INSTALL) -m 644 charsets.alias $(sharedir)/charsets

@@ -31,12 +31,19 @@ static char *basedir = NULL;
 
 typedef int MAP[256];
 
+typedef struct alias
+{
+  char *charset;
+  struct alias *next;
+} ALIAS;
+
 typedef struct
 {
   char *charset;
   char escape_char;
   char comment_char;
   short is_valid;
+  ALIAS *aliases;
   MAP map;
 } CHARMAP;
 
@@ -100,6 +107,8 @@ static CHARMAP *charmap_new(void)
   m->escape_char = '\\';
   m->comment_char = '#';
   m->is_valid = 0;
+
+  m->aliases = NULL;
   
   for(i = 0; i < 256; i++)
     m->map[i] = -1;
@@ -109,13 +118,33 @@ static CHARMAP *charmap_new(void)
 
 static void charmap_free(CHARMAP **cp)
 {
+  ALIAS *p, *q;
+  
   if(!cp || !*cp)
     return ;
+  
+  for(p = (*cp)->aliases; p; p = q)
+  {
+    q = p->next;
+    safe_free((void **) &p->charset);
+    safe_free((void **) &p);
+  }
   
   safe_free((void **) &(*cp)->charset);
   safe_free((void **) cp);
   
   return;
+}
+
+static void add_alias(CHARMAP *m, const char *alias)
+{
+  ALIAS *aptr;
+
+  aptr = safe_malloc(sizeof(ALIAS));
+  aptr->charset = safe_strdup(alias);
+  canonical_charset(aptr->charset, strlen(aptr->charset) + 1, aptr->charset);
+  aptr->next = m->aliases;
+  m->aliases = aptr;
 }
 
 static CHARMAP *parse_charmap_header(FILE *fp, const char *prefix)
@@ -139,7 +168,14 @@ static CHARMAP *parse_charmap_header(FILE *fp, const char *prefix)
       break;
 
     if(*buffer == m->comment_char)
+    {
+      if((t = strtok(buffer + 1, "\t ")) && !strcasecmp(t, "alias"))
+      {
+	while((t = strtok(NULL, "\t, ")))
+	  add_alias(m, t);
+      }
       continue;
+    }
     
     if(!(t = strtok(buffer, "\t ")))
       continue;
@@ -282,6 +318,7 @@ int main(int argc, const char *argv[])
 {
   FILE *fp;
   CHARMAP *m;
+  ALIAS *aptr;
   int i;
   char buffer[1024];
   
@@ -310,8 +347,15 @@ int main(int argc, const char *argv[])
       
       if((fp = fopen(buffer, "w")))
       {
-	printf("%s\n", m->charset);
 	write_charmap(fp, m);
+	
+	printf("charset %s\n", m->charset);
+	for(aptr = m->aliases; aptr; aptr = aptr->next)
+	{
+	  if(strcmp(aptr->charset, m->charset))
+	    printf("alias %s %s\n", aptr->charset, m->charset);
+	}
+	
 	fclose(fp);
       }
       else
