@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-15 22:36+0200\n"
+"POT-Creation-Date: 1998-10-19 10:54+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -612,7 +612,7 @@ msgstr "Keine Mailbox offen."
 
 #: curs_main.c:526
 msgid "No tagged messages."
-msgstr "Keine markierten Nachrichten"
+msgstr "Keine markierten Nachrichten."
 
 #: curs_main.c:606
 msgid "Jump to message: "
@@ -929,12 +929,12 @@ msgstr ""
 #.
 #: imap.c:355
 msgid "Fatal error.  Message count is out of sync!"
-msgstr ""
+msgstr "Kritischer Fehler.  Nachrichtenzähler weicht ab!"
 
 #: imap.c:425
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
-msgstr ""
+msgstr "Hole Nachrichten-Header... [%d/%d]"
 
 #: imap.c:623 mbox.c:926
 msgid "Reopening mailbox..."
@@ -943,60 +943,60 @@ msgstr "Öffne Mailbox erneut..."
 #: imap.c:858
 #, c-format
 msgid "Connecting to %s..."
-msgstr ""
+msgstr "Verbinde zu %s..."
 
 #: imap.c:877
 msgid "IMAP Username: "
-msgstr ""
+msgstr "IMAP-Nutzername: "
 
 #: imap.c:890
 #, c-format
 msgid "Password for %s@%s: "
-msgstr ""
+msgstr "Paßwort für %s@%s: "
 
 #: imap.c:903
 msgid "Logging in..."
-msgstr ""
+msgstr "Logge ein..."
 
 #: imap.c:958
 #, c-format
 msgid "Selecting %s..."
-msgstr ""
+msgstr "Wähle %s aus..."
 
-#: imap.c:1054 lib.c:1165
+#: imap.c:1054 lib.c:1166
 #, c-format
 msgid "Create %s?"
-msgstr ""
+msgstr "%s erstellen?"
 
 #: imap.c:1098
 msgid "Fetching message..."
-msgstr ""
+msgstr "Hole Nachricht..."
 
 #: imap.c:1206
 msgid "Sending APPEND command ..."
-msgstr ""
+msgstr "Sende APPEND-Kommando..."
 
 #: imap.c:1245
 msgid "Uploading message ..."
-msgstr ""
+msgstr "Lade Nachrichten auf den Server..."
 
 #: imap.c:1300
 msgid "Closing connection to IMAP server..."
-msgstr ""
+msgstr "Schließe Verbindung zu IMAP-Server..."
 
 #: imap.c:1330
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
-msgstr ""
+msgstr "Speichere Nachrichten-Status-Indikatoren... [%d/%d]"
 
 #: imap.c:1356
 msgid "Expunging messages from server..."
-msgstr ""
+msgstr "Lösche Nachrichten auf dem Server..."
 
 #. tell the server to commit changes
 #: imap.c:1407
 msgid "Closing mailbox..."
-msgstr ""
+msgstr "Schließe Mailbox..."
 
 #: init.c:433
 msgid "alias: no address"
@@ -1437,7 +1437,7 @@ msgstr "Leite Nachricht mit Kommentar weiter"
 
 #: keymap_defs.h:76
 msgid "select the current entry"
-msgstr "Wähle den aktuellen Eintag aus"
+msgstr "Wähle den aktuellen Eintrag aus"
 
 #: keymap_defs.h:77
 msgid "reply to all recipients"
@@ -1613,7 +1613,7 @@ msgstr "Springe zum Nachrichtenanfang"
 
 #: keymap_defs.h:120
 msgid "pipe message/attachment to a shell command"
-msgstr "Bearbeite (pipe) Nachricht/Anhang mit Shell-Commando"
+msgstr "Bearbeite (pipe) Nachricht/Anhang mit Shell-Kommando"
 
 #: keymap_defs.h:121
 msgid "move to the previous entry"
@@ -1681,7 +1681,7 @@ msgstr "Schalte Suchtreffer-Einfärbung ein/aus"
 
 #: keymap_defs.h:137
 msgid "invoke a command in a subshell"
-msgstr "Rufe Kommando in Shell aufx"
+msgstr "Rufe Kommando in Shell auf"
 
 #: keymap_defs.h:138
 msgid "sort messages"
@@ -1795,28 +1795,28 @@ msgstr "Erzeuge dechiffrierte Kopie und lösche"
 msgid "make decrypted copy"
 msgstr "Erzeuge dechiffrierte Kopie"
 
-#: lib.c:276 lib.c:291 lib.c:322
+#: lib.c:277 lib.c:292 lib.c:323
 msgid "Out of memory!"
 msgstr "Kein Speicher!"
 
-#: lib.c:754
+#: lib.c:755
 msgid "File is a directory, save under it?"
 msgstr "Datei ist Verzeichnis, darunter abspeichern?"
 
-#: lib.c:759
+#: lib.c:760
 msgid "File under directory: "
 msgstr "Datei unter Verzeichnis: "
 
-#: lib.c:770
+#: lib.c:771
 msgid "File exists, overwrite?"
 msgstr "Datei existiert, überschreiben?"
 
-#: lib.c:1143
+#: lib.c:1144
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s ist keine Mailbox"
 
-#: lib.c:1149
+#: lib.c:1150
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Nachricht an %s anhängen?"

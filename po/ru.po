@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 1998-10-15 22:36+0200\n"
+"POT-Creation-Date: 1998-10-19 10:54+0200\n"
 "PO-Revision-Date: 1998-10-15 07:51+0300\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "Language-Team: Mutt-dev <mutt-dev@mutt.org>\n"
@@ -961,7 +961,7 @@ msgstr "Регистрация..."
 msgid "Selecting %s..."
 msgstr "Выбор %s..."
 
-#: imap.c:1054 lib.c:1165
+#: imap.c:1054 lib.c:1166
 #, c-format
 msgid "Create %s?"
 msgstr "Создать %s?"
@@ -1793,28 +1793,28 @@ msgstr "расшифровать и удалить"
 msgid "make decrypted copy"
 msgstr "расшифровать"
 
-#: lib.c:276 lib.c:291 lib.c:322
+#: lib.c:277 lib.c:292 lib.c:323
 msgid "Out of memory!"
 msgstr "Мало памяти!"
 
-#: lib.c:754
+#: lib.c:755
 msgid "File is a directory, save under it?"
 msgstr "Файл является каталогом, сохранить ниже?"
 
-#: lib.c:759
+#: lib.c:760
 msgid "File under directory: "
 msgstr "Файл в каталоге: "
 
-#: lib.c:770
+#: lib.c:771
 msgid "File exists, overwrite?"
 msgstr "Файл существует, переписать?"
 
-#: lib.c:1143
+#: lib.c:1144
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s - это не почтовый ящик!"
 
-#: lib.c:1149
+#: lib.c:1150
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Добавить сообщения к %s?"
