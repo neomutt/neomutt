@@ -1,3 +1,8 @@
+2005-02-12 19:52:28  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* charset.c, mbyte.c: Recognize euc-jp-ms.  MORIYAMA Masayuki
+	by way of TAKAHASHI Tamotsu.
+
 2005-02-12 19:38:14  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
 
 	* doc/manual.sgml.head, doc/manual.sgml.tail, init.h, main.c:
