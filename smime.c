@@ -400,12 +400,12 @@ char* smime_ask_for_key (char *prompt, char *mailbox, short public)
       * To be able to get it, the .index file will be read twice... */
   char index_file[_POSIX_PATH_MAX];
   FILE *index;
-  char buf[256];
+  char buf[LONG_STRING];
   char fields[5][STRING];
   int numFields, hash_suffix, done, cur; /* The current entry */
   MUTTMENU* menu;
   unsigned int hash;
-  char helpstr[128];
+  char helpstr[HUGE_STRING*3];
   char qry[256];
   char title[256];
 
@@ -473,12 +473,12 @@ char* smime_ask_for_key (char *prompt, char *mailbox, short public)
     /* Make Helpstring */
     helpstr[0] = 0;
     mutt_make_help (buf, sizeof (buf), _("Exit  "), MENU_SMIME, OP_EXIT);
-    strcat (helpstr, buf);
+    strcat (helpstr, buf);	/* __STRCAT_CHECKED__ */
     mutt_make_help (buf, sizeof (buf), _("Select  "), MENU_SMIME,
         OP_GENERIC_SELECT_ENTRY);
-    strcat (helpstr, buf);
+    strcat (helpstr, buf);	/* __STRCAT_CHECKED__ */
     mutt_make_help (buf, sizeof(buf), _("Help"), MENU_SMIME, OP_HELP);
-    strcat (helpstr, buf);
+    strcat (helpstr, buf);	/* __STRCAT_CHECKED__ */
   
     /* Create the menu */
     menu = mutt_new_menu();
@@ -858,7 +858,7 @@ char *smime_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
     
     keylist_size += mutt_strlen (keyID) + 1;
     safe_realloc ((void **)&keylist, keylist_size);
-    sprintf (keylist + keylist_used, "%s", keyID);
+    sprintf (keylist + keylist_used, "%s", keyID);	/* __SPRINTF_CHECKED__ */
     keylist_used = mutt_strlen (keylist);
 
     rfc822_free_address (&addr);
@@ -1843,7 +1843,10 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
     {
       len = mutt_strlen (buf);
       if (len > 1 && buf[len - 2] == '\r')
-	strcpy (buf + len - 2, "\n");
+      {
+	buf[len-2] = '\n';
+	buf[len-1] = '\0';
+      }
       fputs (buf, fpout);
     }
     fflush (fpout);
