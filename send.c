@@ -432,25 +432,14 @@ static int include_reply (CONTEXT *ctx, HEADER *cur, FILE *out)
   return 0;
 }
 
-static int default_to (ADDRESS **to, ENVELOPE *env, int flags)
+static int default_to (ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
 {
   char prompt[STRING];
 
-  if (flags && env->mail_followup_to)
+  if (flags && env->mail_followup_to && hmfupto == M_YES) 
   {
-    snprintf (prompt, sizeof (prompt), _("Follow-up to %s%s?"),
-	      env->mail_followup_to->mailbox,
-	      env->mail_followup_to->next ? ",..." : "");
-
-    switch (query_quadoption (OPT_MFUPTO, prompt))
-    {
-    case M_YES:
-      rfc822_append (to, env->mail_followup_to);
-      return 0;
-
-    case -1:
-      return -1; /* abort */
-    }
+    rfc822_append (to, env->mail_followup_to);
+    return 0;
   }
 
   /* Exit now if we're setting up the default Cc list for list-reply
@@ -519,23 +508,36 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int flags)
 
 int mutt_fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags)
 {
+  char prompt[STRING];
   ADDRESS *tmp;
+  int hmfupto = -1;
+
+  if ((flags & (SENDLISTREPLY|SENDGROUPREPLY)) && in->mail_followup_to)
+  {
+    snprintf (prompt, sizeof (prompt), _("Follow-up to %s%s?"),
+	      in->mail_followup_to->mailbox,
+	      in->mail_followup_to->next ? ",..." : "");
+
+    if ((hmfupto = query_quadoption (OPT_MFUPTO, prompt)) == -1)
+      return -1;
+  }
+
   if (flags & SENDLISTREPLY)
   {
     tmp = find_mailing_lists (in->to, in->cc);
     rfc822_append (&out->to, tmp);
     rfc822_free_address (&tmp);
 
-    if (in->mail_followup_to &&
-        default_to (&out->cc, in, flags & SENDLISTREPLY) == -1)
+    if (in->mail_followup_to && hmfupto == M_YES &&
+        default_to (&out->cc, in, flags & SENDLISTREPLY, hmfupto) == -1)
       return (-1); /* abort */
   }
   else
   {
-    if (default_to (&out->to, in, flags & SENDGROUPREPLY) == -1)
+    if (default_to (&out->to, in, flags & SENDGROUPREPLY, hmfupto) == -1)
       return (-1); /* abort */
 
-    if ((flags & SENDGROUPREPLY) && !in->mail_followup_to)
+    if ((flags & SENDGROUPREPLY) && (!in->mail_followup_to || hmfupto != M_YES))
     {
       /* if(!mutt_addr_is_user(in->to)) */
       rfc822_append (&out->cc, in->to);
