@@ -666,7 +666,8 @@ static int pgp_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
   FILE *fp, *pgpout, *pgperr;
   pid_t thepid;
   int badsig = -1;
-
+  int rv;
+  
   snprintf (sigfile, sizeof (sigfile), "%s.asc", tempfile);
   
   if(!(fp = safe_fopen (sigfile, "w")))
@@ -703,8 +704,10 @@ static int pgp_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
     mutt_copy_stream (pgperr, s->fpout);
     safe_fclose (&pgperr);
     
-    if (mutt_wait_filter (thepid))
+    if ((rv = mutt_wait_filter (thepid)))
       badsig = -1;
+    
+     dprint (1, (debugfile, "pgp_verify_one: mutt_wait_filter returned %d.\n", rv));
   }
   
   state_puts (_("[-- End of PGP output --]\n\n"), s);
