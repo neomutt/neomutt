@@ -1,3 +1,8 @@
+2003-03-12 13:00:03  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* copy.c, sendlib.c: We need to re-format address headers instead
+	of just decoding them.
+
 2003-03-07 14:55:53  Brendan Cully  <brendan@kublai.com>  (roessler)
 
 	* mutt_sasl.c: The global callbacks set up in sasl_client_init
