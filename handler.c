@@ -236,6 +236,7 @@ void mutt_decode_quoted (STATE *s, long len, int istext, iconv_t cd)
   char decline[2*STRING];
   size_t l = 0;
   size_t l2;
+  size_t l3;
 
   state_set_prefix(s);
 
@@ -260,7 +261,8 @@ void mutt_decode_quoted (STATE *s, long len, int istext, iconv_t cd)
      * decode and do character set conversion
      */
     
-    qp_decode_line (decline + l, line, &l);
+    qp_decode_line (decline + l, line, &l3);
+    l += l3;
     convert_to_state (cd, decline, &l, s);
   }
 
