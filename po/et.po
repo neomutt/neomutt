@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt 1.3.21\n"
-"POT-Creation-Date: 2001-11-08 23:41+0100\n"
-"PO-Revision-Date: 2001-08-22 16:18+02:00\n"
+"Project-Id-Version: mutt 1.3.23.2\n"
+"POT-Creation-Date: 2001-11-08 23:42+0100\n"
+"PO-Revision-Date: 2001-11-16 15:14+0200\n"
 "Last-Translator: Toomas Soome <tsoome@ut.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -426,34 +426,34 @@ msgid "Shell command: "
 msgstr "Käsurea käsk: "
 
 #: commands.c:647
-#, fuzzy, c-format
+#, c-format
 msgid "Decode-save%s to mailbox"
-msgstr "%s%s postkasti"
+msgstr "Dekodeeri-salvesta%s postkasti"
 
 #: commands.c:648
-#, fuzzy, c-format
+#, c-format
 msgid "Decode-copy%s to mailbox"
-msgstr "%s%s postkasti"
+msgstr "Dekodeeri-kopeeri%s postkasti"
 
 #: commands.c:649
-#, fuzzy, c-format
+#, c-format
 msgid "Decrypt-save%s to mailbox"
-msgstr "%s%s postkasti"
+msgstr "Dekrüpti-salvesta%s postkasti"
 
 #: commands.c:650
-#, fuzzy, c-format
+#, c-format
 msgid "Decrypt-copy%s to mailbox"
-msgstr "%s%s postkasti"
+msgstr "Dekrüpti-kopeeri%s postkasti"
 
 #: commands.c:651
-#, fuzzy, c-format
+#, c-format
 msgid "Save%s to mailbox"
-msgstr "%s%s postkasti"
+msgstr "Salvesta%s postkasti"
 
 #: commands.c:651
-#, fuzzy, c-format
+#, c-format
 msgid "Copy%s to mailbox"
-msgstr "%s%s postkasti"
+msgstr "Kopeeri%s postkasti"
 
 #: commands.c:652
 msgid " tagged"
@@ -611,9 +611,9 @@ msgid "Rename to: "
 msgstr "Uus nimi: "
 
 #: compose.c:987 editmsg.c:96 sendlib.c:902
-#, fuzzy, c-format
+#, c-format
 msgid "Can't stat %s: %s"
-msgstr "Ei saa lugeda atribuute: %s"
+msgstr "Ei saa lugeda %s atribuute: %s"
 
 #: compose.c:1013
 msgid "New file: "
@@ -847,9 +847,8 @@ msgid " in this limited view"
 msgstr " selles piiratud vaates"
 
 #: curs_main.c:1331 pager.c:2283
-#, fuzzy
 msgid "Can't change 'important' flag on POP server."
-msgstr "POP serveril ei saa teadet toimetada."
+msgstr "POP serveril ei saa muuta lippu 'important' (tähtis)."
 
 #: curs_main.c:1446
 msgid "No more threads."
@@ -1054,24 +1053,22 @@ msgid "[-- name: %s --]\n"
 msgstr "[-- nimi: %s --]\n"
 
 #: handler.c:1670 handler.c:1686
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
-msgstr "[-- See %s/%s lisa "
+msgstr "[-- Seda %s/%s lisa ei ole kaasatud, --]\n"
 
 #: handler.c:1672
 msgid "[-- and the indicated external source has --]\n"
-msgstr ""
+msgstr "[-- ja näidatud väline allikas on --]\n"
 
 #: handler.c:1673
 msgid "[-- expired. --]\n"
-msgstr ""
+msgstr "[-- aegunud. --]\n"
 
 #: handler.c:1690
-#, fuzzy, c-format
+#, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
-msgstr ""
-"[-- Lisa %s/%s ei ole kaasatud ja näidatud --]\n"
-"[-- juurdepääsu tüüpi %s ei toetata --]\n"
+msgstr "[-- ja näidatud juurdepääsu tüüpi %s ei toetata --]\n"
 
 #: handler.c:1807
 msgid "Error: multipart/signed has no protocol."
@@ -1203,7 +1200,7 @@ msgstr "SASL autentimine ebaõnnestus."
 #: imap/browse.c:64 imap/imap.c:504
 #, c-format
 msgid "%s is an invalid IMAP path"
-msgstr ""
+msgstr "%s on vigane IMAP tee"
 
 #: imap/browse.c:81
 msgid "Getting namespaces..."
@@ -1214,13 +1211,12 @@ msgid "Getting folder list..."
 msgstr "Laen kaustade nimekirja..."
 
 #: imap/browse.c:219
-#, fuzzy
 msgid "No such folder"
-msgstr "%s. sellist värvi ei ole"
+msgstr "Sellist värvi ei ole"
 
 #: imap/browse.c:277
 msgid "Create mailbox: "
-msgstr "Loon postkasti"
+msgstr "Loon postkasti: "
 
 #: imap/browse.c:282
 msgid "Mailbox must have a name."
@@ -1232,7 +1228,7 @@ msgstr "Postkast on loodud."
 
 #: imap/command.c:289
 msgid "Mailbox closed"
-msgstr "Postkast on suletud."
+msgstr "Postkast on suletud"
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
@@ -1302,16 +1298,15 @@ msgstr "Kustutan serveril teateid..."
 
 #: imap/imap.c:1031
 msgid "imap_sync_mailbox: EXPUNGE failed"
-msgstr ""
+msgstr "imap_sync_mailbox: EXPUNGE ebaõnnestus"
 
 #: imap/imap.c:1065
 msgid "CLOSE failed"
 msgstr "CLOSE ebaõnnestus."
 
 #: imap/imap.c:1313
-#, fuzzy
 msgid "Bad mailbox name"
-msgstr "Loon postkasti"
+msgstr "Halb nimi postkastile"
 
 #: imap/imap.c:1325
 #, c-format
@@ -2268,8 +2263,8 @@ msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please use the flea(1) utility.\n"
 msgstr ""
-"Arendajatega kontakteerumiseks saatke palun kiri aadressil <mutt-dev@mutt."
-"org>.\n"
+"Arendajatega kontakteerumiseks saatke palun kiri aadressil "
+"<mutt-dev@mutt.org>.\n"
 "Veast teatamiseks kasutage palun käsku flea(1).\n"
 
 #: main.c:44
@@ -2336,10 +2331,10 @@ msgstr ""
 
 #: main.c:88
 msgid ""
-"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
-"<file> ]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
-"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
+"]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
+"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2366,8 +2361,8 @@ msgid ""
 msgstr ""
 "kasutage: mutt [ -nRyzZ ] [ -e <käsk> ] [ -F <fail> ] [ -m <tüüp> ]\n"
 "               [ -f <fail> ]\n"
-"          mutt [ -nx ] [ -e <käsk> ] [ -a <fail> ] [ -F <fail> ] [ -H "
-"<fail> ]\n"
+"          mutt [ -nx ] [ -e <käsk> ] [ -a <fail> ] [ -F <fail> ] [ -H <fail> "
+"]\n"
 "               [ -i <fail> ] [ -s <teema> ] [ -b <aadr> ] [ -c <aadr> ]\n"
 "               <aadr> [ ... ]\n"
 "          mutt [ -n ] [ -e <käsk> ] [ -F <fail> ] -p\n"
@@ -2671,16 +2666,16 @@ msgstr "Entroopia nappuse tõttu on SSL kasutamine blokeeritud"
 
 #: mutt_ssl.c:318
 msgid "I/O error"
-msgstr ""
+msgstr "S/V viga"
 
 #: mutt_ssl.c:321
 msgid "unspecified protocol error"
-msgstr ""
+msgstr "protokolli viga"
 
 #: mutt_ssl.c:327
-#, fuzzy, c-format
+#, c-format
 msgid "SSL failed: %s"
-msgstr "CLOSE ebaõnnestus."
+msgstr "SSL ebaõnnestus: %s"
 
 #: mutt_ssl.c:336
 msgid "Unable to get certificate from peer"
@@ -3055,22 +3050,16 @@ msgstr ""
 "\n"
 
 #: pgp.c:456
-#, fuzzy
 msgid "[-- END PGP MESSAGE --]\n"
-msgstr ""
-"\n"
-"[-- PGP TEATE LÕPP --]\n"
+msgstr "[-- PGP TEATE LÕPP --]\n"
 
 #: pgp.c:458
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP AVALIKU VÕTME BLOKI LÕPP --]\n"
 
 #: pgp.c:460
-#, fuzzy
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
-msgstr ""
-"\n"
-"[-- PGP ALLKIRJASTATUD TEATE LÕPP --]\n"
+msgstr "[-- PGP ALLKIRJASTATUD TEATE LÕPP --]\n"
 
 #: pgp.c:475
 msgid ""
@@ -3124,11 +3113,8 @@ msgstr ""
 "\n"
 
 #: pgp.c:861
-#, fuzzy
 msgid "[-- End of signed data --]\n"
-msgstr ""
-"\n"
-"[-- Allkirjastatud info lõpp --]\n"
+msgstr "[-- Allkirjastatud info lõpp --]\n"
 
 #: pgp.c:962
 msgid "Internal error. Inform <roessler@guug.de>."
@@ -3163,11 +3149,8 @@ msgstr ""
 "\n"
 
 #: pgp.c:1160
-#, fuzzy
 msgid "[-- End of PGP/MIME encrypted data --]\n"
-msgstr ""
-"\n"
-"[-- PGP/MIME krüptitud info lõpp --]\n"
+msgstr "[-- PGP/MIME krüptitud info lõpp --]\n"
 
 #: pgp.c:1241
 msgid "Can't open PGP subprocess!"
@@ -3290,7 +3273,7 @@ msgstr "Server ei toeta UIDL käsklust."
 #: pop.c:246 pop.c:562
 #, c-format
 msgid "%s is an invalid POP path"
-msgstr ""
+msgstr "%s on vigane POP tee"
 
 #: pop.c:277
 msgid "Fetching list of messages..."
@@ -3728,9 +3711,9 @@ msgid "%s no longer exists!"
 msgstr "%s ei ole enam!"
 
 #: sendlib.c:908
-#, fuzzy, c-format
+#, c-format
 msgid "%s isn't a regular file."
-msgstr "%s ei ole postkast."
+msgstr "%s ei ole tavaline fail."
 
 #: sendlib.c:1077
 #, c-format
@@ -3774,49 +3757,9 @@ msgid "(no mailbox)"
 msgstr "(pole postkast)"
 
 #: thread.c:971
-#, fuzzy
 msgid "Parent message is not visible in this limited view."
-msgstr "Vanem teade ei ole piiratud vaates nähtav"
+msgstr "Vanem teade ei ole selles piiratud vaates nähtav."
 
 #: thread.c:977
 msgid "Parent message is not available."
 msgstr "Vanem teade ei ole kättesaadav."
-
-#~ msgid "Decode-save"
-#~ msgstr "Dekodeeri-salvesta"
-
-#~ msgid "Decode-copy"
-#~ msgstr "Dekodeeri-kopeeri"
-
-#~ msgid "Decrypt-save"
-#~ msgstr "Dekrüpti-salvesta"
-
-#~ msgid "Decrypt-copy"
-#~ msgstr "Dekrüpti-kopeeri"
-
-#~ msgid "Copy"
-#~ msgstr "Kopeeri"
-
-#~ msgid ""
-#~ "[-- This %s/%s attachment is not included, --]\n"
-#~ "[-- and the indicated external source has --]\n"
-#~ "[-- expired. --]\n"
-#~ msgstr ""
-#~ "[-- Lisa %s/%s ei ole kaasatud ja --]\n"
-#~ "[-- osutatud väline allikas on aegunud. --]\n"
-
-#~ msgid "%s [%s]\n"
-#~ msgstr "%s [%s]\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "[-- End of PGP output --]\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "[-- PGP väljundi lõpp --]\n"
-#~ "\n"
-
-#, fuzzy
-#~ msgid "Can't stat %s."
-#~ msgstr "Ei saa lugeda atribuute: %s"

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.23.1\n"
+"Project-Id-Version: 1.3.23.2\n"
 "POT-Creation-Date: 2001-11-08 23:41+0100\n"
-"PO-Revision-Date: 2001-11-01 14:30+0100\n"
+"PO-Revision-Date: 2001-11-10 12:59+0100\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -426,38 +426,38 @@ msgid "Shell command: "
 msgstr "Shell-Kommando: "
 
 #: commands.c:647
-#, fuzzy, c-format
+#, c-format
 msgid "Decode-save%s to mailbox"
-msgstr "%s%s in Mailbox"
+msgstr "Speichere%s dekodiert in Mailbox"
 
 #: commands.c:648
-#, fuzzy, c-format
+#, c-format
 msgid "Decode-copy%s to mailbox"
-msgstr "%s%s in Mailbox"
+msgstr "Kopiere%s dekodiert in Mailbox"
 
 #: commands.c:649
-#, fuzzy, c-format
+#, c-format
 msgid "Decrypt-save%s to mailbox"
-msgstr "%s%s in Mailbox"
+msgstr "Speichere%s entschlüsselt in Mailbox"
 
 #: commands.c:650
-#, fuzzy, c-format
+#, c-format
 msgid "Decrypt-copy%s to mailbox"
-msgstr "%s%s in Mailbox"
+msgstr "Kopiere%s entschlüsselt in Mailbox"
 
 #: commands.c:651
-#, fuzzy, c-format
+#, c-format
 msgid "Save%s to mailbox"
-msgstr "%s%s in Mailbox"
+msgstr "Speichere%s in Mailbox"
 
 #: commands.c:651
-#, fuzzy, c-format
+#, c-format
 msgid "Copy%s to mailbox"
-msgstr "%s%s in Mailbox"
+msgstr "Kopiere%s in Mailbox"
 
 #: commands.c:652
 msgid " tagged"
-msgstr " ausgewählt"
+msgstr " ausgewählte"
 
 #: commands.c:720
 #, c-format
@@ -1056,25 +1056,22 @@ msgid "[-- name: %s --]\n"
 msgstr "[-- Name: %s --]\n"
 
 #: handler.c:1670 handler.c:1686
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
-msgstr "[-- Dieser %s/%s-Anhang "
+msgstr "[-- Dieser %s/%s-Anhang ist nicht in der Nachricht enthalten, --]\n"
 
 #: handler.c:1672
 msgid "[-- and the indicated external source has --]\n"
-msgstr ""
+msgstr "[-- und die zugehörige externe Quelle --]\n"
 
 #: handler.c:1673
 msgid "[-- expired. --]\n"
-msgstr ""
+msgstr "[-- existiert nicht mehr. --]\n"
 
 #: handler.c:1690
-#, fuzzy, c-format
+#, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
-msgstr ""
-"[-- Dieser %s/%s-Anhang ist nicht in der Nachricht --]\n"
-"[-- enthalten und die angegebene Zugangsmethode --]\n"
-"[-- %s wird nicht unterstützt. --]\n"
+msgstr "[-- und die angegebene Zugangsmethode %s wird nicht unterstützt --]\n"
 
 #: handler.c:1807
 msgid "Error: multipart/signed has no protocol."
@@ -1206,7 +1203,7 @@ msgstr "SASL Authentifizierung fehlgeschlagen."
 #: imap/browse.c:64 imap/imap.c:504
 #, c-format
 msgid "%s is an invalid IMAP path"
-msgstr ""
+msgstr "%s ist ein ungültiger IMAP Pfad"
 
 #: imap/browse.c:81
 msgid "Getting namespaces..."
@@ -1304,16 +1301,15 @@ msgstr "Lösche Nachrichten auf dem Server..."
 
 #: imap/imap.c:1031
 msgid "imap_sync_mailbox: EXPUNGE failed"
-msgstr ""
+msgstr "imap_sync_mailbox: EXPUNGE fehlgeschlagen"
 
 #: imap/imap.c:1065
 msgid "CLOSE failed"
 msgstr "CLOSE fehlgeschlagen"
 
 #: imap/imap.c:1313
-#, fuzzy
 msgid "Bad mailbox name"
-msgstr "Erzeuge Mailbox: "
+msgstr "Unzulässiger Mailbox Name"
 
 #: imap/imap.c:1325
 #, c-format
@@ -2679,16 +2675,16 @@ msgstr "SSL deaktiviert, weil nicht genügend Entropie zur Verfügung steht"
 
 #: mutt_ssl.c:318
 msgid "I/O error"
-msgstr ""
+msgstr "Ein-/Ausgabe Fehler"
 
 #: mutt_ssl.c:321
 msgid "unspecified protocol error"
-msgstr ""
+msgstr "Nicht spezifizierter Protokollfehler"
 
 #: mutt_ssl.c:327
-#, fuzzy, c-format
+#, c-format
 msgid "SSL failed: %s"
-msgstr "CLOSE fehlgeschlagen"
+msgstr "SSL fehlgeschlagen: %s"
 
 #: mutt_ssl.c:336
 msgid "Unable to get certificate from peer"
@@ -3063,23 +3059,16 @@ msgstr ""
 "\n"
 
 #: pgp.c:456
-#, fuzzy
 msgid "[-- END PGP MESSAGE --]\n"
-msgstr ""
-"\n"
-"[-- END PGP MESSAGE --]\n"
+msgstr "[-- END PGP MESSAGE --]\n"
 
 #: pgp.c:458
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- END PGP PUBLIC KEY BLOCK --]\n"
 
 #: pgp.c:460
-#, fuzzy
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
-msgstr ""
-"\n"
-"[-- END PGP SIGNED MESSAGE --]\n"
-"\n"
+msgstr "[-- END PGP SIGNED MESSAGE --]\n"
 
 #: pgp.c:475
 msgid ""
@@ -3133,15 +3122,12 @@ msgstr ""
 "\n"
 
 #: pgp.c:861
-#, fuzzy
 msgid "[-- End of signed data --]\n"
-msgstr ""
-"\n"
-"[-- Ende der signierten Daten --]\n"
+msgstr "[-- Ende der signierten Daten --]\n"
 
 #: pgp.c:962
 msgid "Internal error. Inform <roessler@guug.de>."
-msgstr "Interner Fehler.  Bitte <roessler@guug.de> informieren."
+msgstr "Interner Fehler. Bitte <roessler@guug.de> informieren."
 
 #: pgp.c:1022
 msgid ""
@@ -3172,11 +3158,8 @@ msgstr ""
 "\n"
 
 #: pgp.c:1160
-#, fuzzy
 msgid "[-- End of PGP/MIME encrypted data --]\n"
-msgstr ""
-"\n"
-"[-- Ende der PGP/MIME-verschlüsselten Daten --]\n"
+msgstr "[-- Ende der PGP/MIME-verschlüsselten Daten --]\n"
 
 #: pgp.c:1241
 msgid "Can't open PGP subprocess!"
@@ -3300,7 +3283,7 @@ msgstr "Kommando UIDL wird vom Server nicht unterstützt."
 #: pop.c:246 pop.c:562
 #, c-format
 msgid "%s is an invalid POP path"
-msgstr ""
+msgstr "%s ist ein ungültiger POP Pfad"
 
 #: pop.c:277
 msgid "Fetching list of messages..."
@@ -3785,9 +3768,8 @@ msgid "(no mailbox)"
 msgstr "(keine Mailbox)"
 
 #: thread.c:971
-#, fuzzy
 msgid "Parent message is not visible in this limited view."
-msgstr "Bezugsnachricht ist in der begrenzten Sicht nicht verfügbar."
+msgstr "Bezugsnachricht ist in dieser begrenzten Sicht nicht sichtbar."
 
 #: thread.c:977
 msgid "Parent message is not available."
