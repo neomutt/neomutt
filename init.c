@@ -611,6 +611,28 @@ static int parse_rx_unlist (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *
   return 0;
 }
 
+static void _alternates_clean (void)
+{
+  int i;
+  if (Context && Context->msgcount) 
+  {
+    for (i = 0; i < Context->msgcount; i++)
+      Context->hdrs[i]->recip_valid = 0;
+  }
+}
+
+static int parse_alternates (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  _alternates_clean();
+  return parse_rx_list (buf, s, data, err);
+}
+
+static int parse_unalternates (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  _alternates_clean();
+  return parse_rx_unlist (buf, s, data, err);
+}
+
 static int parse_spam_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
   BUFFER templ;
@@ -1066,9 +1088,7 @@ static void mutt_restore_default (struct option_t *p)
 
 	  pp->rx = safe_calloc (1, sizeof (regex_t));
 	  pp->pattern = safe_strdup ((char *) p->init);
-	  if (mutt_strcmp (p->option, "alternates") == 0)
-	    flags |= REG_ICASE;
-	  else if (mutt_strcmp (p->option, "mask") != 0)
+	  if (mutt_strcmp (p->option, "mask") != 0)
 	    flags |= mutt_which_case ((const char *) p->init);
 	  if (mutt_strcmp (p->option, "mask") == 0 && *s == '!')
 	  {
@@ -1280,8 +1300,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	break;
       }
 
-      if (option(OPTATTACHMSG) && (!mutt_strcmp(MuttVars[idx].option, "alternates")
-				   || !mutt_strcmp(MuttVars[idx].option, "reply_regexp")))
+      if (option(OPTATTACHMSG) && !mutt_strcmp(MuttVars[idx].option, "reply_regexp"))
       {
 	snprintf (err->data, err->dsize, "Operation not permitted when in attach-message mode.");
 	r = -1;
@@ -1297,11 +1316,8 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       {
 	int not = 0;
 
-	/* $alternates is case-insensitive,
-	   $mask is case-sensitive */
-	if (mutt_strcmp (MuttVars[idx].option, "alternates") == 0)
-	  flags |= REG_ICASE;
-	else if (mutt_strcmp (MuttVars[idx].option, "mask") != 0)
+	/* $mask is case-sensitive */
+	if (mutt_strcmp (MuttVars[idx].option, "mask") != 0)
 	  flags |= mutt_which_case (tmp->data);
 
 	p = tmp->data;
@@ -1355,15 +1371,6 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	    }
 	  }
 #undef CUR_ENV
-	}
-	
-	if(Context && Context->msgcount &&
-	   mutt_strcmp(MuttVars[idx].option, "alternates") == 0)
-	{
-	  int i;
-	  
-	  for(i = 0; i < Context->msgcount; i++)
-	    Context->hdrs[i]->recip_valid = 0;
 	}
       }
     }

@@ -1320,6 +1320,14 @@ ci_send_message (int flags,		/* send mode */
     if (!(msg->security & (APPLICATION_SMIME|APPLICATION_PGP)))
       msg->security = 0;
   }
+  
+  /* 
+   * This hook is even called for postponed messages, and can, e.g., be
+   * used for setting the editor, the sendmail path, or the
+   * envelope sender.
+   */
+  mutt_message_hook (NULL, msg, M_SEND2HOOK);
+  
   /* wait until now to set the real name portion of our return address so
      that $realname can be set in a send-hook */
   if (msg->env->from && !msg->env->from->personal

@@ -2824,6 +2824,9 @@ static int parse_my_hdr (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unmy_hdr (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_subscribe (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 
+static int parse_alternates (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+static int parse_unalternates (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+
 struct command_t
 {
   char *name;
@@ -2832,8 +2835,8 @@ struct command_t
 };
 
 struct command_t Commands[] = {
-  { "alternates",	parse_rx_list,		UL &Alternates },
-  { "unalternates",	parse_rx_unlist,	UL &Alternates },
+  { "alternates",	parse_alternates,	UL &Alternates },
+  { "unalternates",	parse_unalternates,	UL &Alternates },
 #ifdef USE_SOCKET
   { "account-hook",     mutt_parse_hook,        M_ACCOUNTHOOK },
 #endif
@@ -2873,6 +2876,7 @@ struct command_t Commands[] = {
   { "save-hook",	mutt_parse_hook,	M_SAVEHOOK },
   { "score",		mutt_parse_score,	0 },
   { "send-hook",	mutt_parse_hook,	M_SENDHOOK },
+  { "send2-hook",	mutt_parse_hook,	M_SEND2HOOK },
   { "set",		parse_set,		0 },
   { "source",		parse_source,		0 },
   { "spam",		parse_spam_list,	M_SPAM },
