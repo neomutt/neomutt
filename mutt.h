@@ -36,6 +36,9 @@
 #include <posix1_lim.h>
 #endif
 
+#include <pwd.h>
+#include <grp.h>
+
 #include "rfc822.h"
 #include "hash.h"
 

@@ -119,6 +119,7 @@ char *mutt_charset_hook (const char *);
 char *mutt_expand_path (char *, size_t);
 char *_mutt_expand_path (char *, size_t, int);
 char *mutt_find_hook (int, const char *);
+char *mutt_gecos_name (char *, size_t, struct passwd *);
 char *mutt_gen_msgid (void);
 char *mutt_get_name (ADDRESS *);
 char *mutt_get_parameter (const char *, PARAMETER *);

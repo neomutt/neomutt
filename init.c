@@ -42,7 +42,6 @@
 #include "init.h"
 #include "mailbox.h"
 
-#include <pwd.h>
 #include <ctype.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -1710,13 +1709,13 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   /* Get some information about the user */
   if ((pw = getpwuid (getuid ())))
   {
+    char rnbuf[STRING];
+
     Username = safe_strdup (pw->pw_name);
     if (!Homedir)
       Homedir = safe_strdup (pw->pw_dir);
-    if ((p = strchr (pw->pw_gecos, ',')))
-      Realname = mutt_substrdup (pw->pw_gecos, p);
-    else
-      Realname = safe_strdup (pw->pw_gecos);
+
+    Realname = safe_strdup (mutt_gecos_name (rnbuf, sizeof (rnbuf), pw));
     Shell = safe_strdup (pw->pw_shell);
   }
   else 

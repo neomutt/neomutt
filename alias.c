@@ -20,7 +20,6 @@
 #include "mutt_regex.h"
 #include "mutt_curses.h"
 
-#include <pwd.h>
 #include <string.h>
 
 ADDRESS *mutt_lookup_alias (const char *s)
@@ -86,22 +85,11 @@ static ADDRESS *mutt_expand_aliases_r (ADDRESS *a, LIST **expn)
 
 	if (pw)
 	{
-           regmatch_t pat_match[1];
-
-           /* Use regular expression to parse Gecos field.  This result of the
-            * parsing will be used as the personal ID string when the alias is
-            * expanded.
-            */
-	  if (regexec (GecosMask.rx, pw->pw_gecos, 1, pat_match, 0) == 0)
-	  {
-	    /* Malloc enough for the matching pattern + terminating NULL */
-	    a->personal = safe_malloc ((pat_match[0].rm_eo - 
-					pat_match[0].rm_so) + 1);
-	    
-	    strfcpy (a->personal, pw->pw_gecos + pat_match[0].rm_so, 
-		     pat_match[0].rm_eo - pat_match[0].rm_so + 1);
-	  }
-
+	  char namebuf[STRING];
+	  
+	  mutt_gecos_name (namebuf, sizeof (namebuf), pw);
+	  mutt_str_replace (&a->personal, namebuf);
+	  
 #ifdef EXACT_ADDRESS
 	  FREE (&a->val);
 #endif

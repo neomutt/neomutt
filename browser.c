@@ -34,8 +34,6 @@
 #include <ctype.h>
 #include <unistd.h>
 #include <sys/stat.h>
-#include <pwd.h>
-#include <grp.h>
 
 static struct mapping_t FolderHelp[] = {
   { N_("Exit"),  OP_EXIT },
