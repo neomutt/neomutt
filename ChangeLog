@@ -1,3 +1,51 @@
+Tue Oct 20 20:23:03 1998  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.in, keymap.c, functions.h, NEWS: Another
+	macro-function fix from Vikas.
+
+	* socket.c, mutt_socket.h: Fix the multiple connection code.
+	From Brandon Long.
+
+Mon Oct 19 20:08:10 1998  Thomas Roessler  <roessler@guug.de>
+
+	* postpone.c: fix a typo.
+
+	* Makefile.am: Fix dotlock's installation when DOTLOCK_GROUP is empty.
+
+	* po/it.po: Ups, this was missing from the repository.
+
+	* po/ru.po, po/de.po: Adding some new and improved German
+	translations.
+
+	* init.c: handle domain == "@" properly.
+
+	* postpone.c: Fix the behaviour when recalling postponed
+	messages: Content types would not be restored.
+
+Fri Oct 16 12:09:37 1998  Thomas Roessler  <roessler@guug.de>
+
+	* lib.c: Harden mutt_free_header() against NULL pointers.
+
+	* keymap.c, handler.c: Nits from Vikas.
+
+	* send.c: Fix a segmentation fault when OPT_RECALL is ask-something.
+
+	* commands.c: Don't write out bad content-length and lines headers when
+	decode-saving a message.
+
+Thu Oct 15 23:09:30 1998  Thomas Roessler  <roessler@guug.de>
+
+	* rx/rxunfa.c, rx/rxsuper.c, rx/rxstr.c, rx/rxspencer.c, rx/rxsimp.c, rx/rxposix.c, rx/rxnode.c, rx/rxnfa.c, rx/rxhash.c, rx/rxgnucomp.c, rx/rxcset.c, rx/rxbitset.c, rx/rxbasic.c, rx/rxanal.c, rx/rx.c, rx/hashrexp.c, intl/textdomain.c, intl/localealias.c, intl/loadmsgcat.c, intl/l10nflist.c, intl/intl-compat.c, intl/gettext.c, intl/finddomain.c, intl/explodename.c, intl/dgettext.c, intl/dcgettext.c, intl/cat-compat.c, intl/bindtextdom.c, charsets/parse_i18n.c, thread.c, system.c, strcasecmp.c, status.c, sort.c, socket.c, snprintf.c, signal.c, sha1dgst.c, sendlib.c, send.c, score.c, rfc822.c, rfc2047.c, rfc1524.c, resize.c, recvattach.c, query.c, postpone.c, pop.c, pgppubring.c, pgpkey.c, pgpinvoke.c, pgp.c, pattern.c, parse.c, pager.c, mx.c, mh.c, menu.c, mbox.c, main.c, lib.c, keymap.c, init.c, imap.c, hook.c, history.c, help.c, headers.c, hdrline.c, hash.c, handler.c, gnupgparse.c, getdomain.c, from.c, flags.c, filter.c, enter.c, edit.c, dotlock.c, date.c, curs_main.c, curs_lib.c, copy.c, config.h.in, compose.c, complete.c, commands.c, color.c, charset.c, buffy.c, browser.c, attach.c, alias.c, addrbook.c, ChangeLog:
+	Change "static char rcsid[]" to "static const char rcsid[]" to make
+	gcc shut up about this.
+
+	* rx/Makefile.in, po/Attic/stamp-cat-id, po/ru.po, po/Attic/mutt.pot, po/de.po, po/Attic/cat-id-tbl.c, reldate.h, configure.in, configure, config.h.in, Attic/Makefile.in, ChangeLog:
+	Random pre-release clean-up.
+
+	* po/Attic/mutt.pot, doc/manual.sgml.in, pattern.c, mutt.h:
+	This patch introduces the ~k pattern for messages containing
+	pgp key material.
+
 Thu Oct 15 20:15:46 1998  Thomas Roessler  <roessler@guug.de>
 
 	* rx/Makefile.in, po/Attic/stamp-cat-id, po/ru.po,
