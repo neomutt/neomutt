@@ -36,7 +36,7 @@ enum
 static int my_wcwidth (wchar_t wc)
 {
   int n = wcwidth (wc);
-  if (n > 0)
+  if (IsWPrint (wc) && n > 0)
     return n;
   if (!(wc & ~0x7f))
     return 2;
@@ -56,7 +56,7 @@ static int my_wcswidth (const wchar_t *s, size_t n)
 static int my_addwch (wchar_t wc)
 {
   int n = wcwidth (wc);
-  if (n > 0)
+  if (IsWPrint (wc) && n > 0)
     return mutt_addwch (wc);
   if (!(wc & ~0x7f))
     return printw ("^%c", ((int)wc + 0x40) & 0x7f);
