@@ -600,8 +600,12 @@ void km_init (void)
 void km_error_key (int menu)
 {
   char buf[SHORT_STRING];
+  struct keymap_t *key;
 
-  if (km_expand_key (buf, sizeof (buf), km_find_func (menu, OP_HELP)))
+  if(!(key = km_find_func(menu, OP_HELP)))
+    key = km_find_func(MENU_GENERIC, OP_HELP);
+  
+  if(km_expand_key(buf, sizeof(buf), key))
     mutt_error (_("Key is not bound.  Press '%s' for help."), buf);
   else
     mutt_error _("Key is not bound.  See the manual.");
