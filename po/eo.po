@@ -3,9 +3,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.3.23.1\n"
+"Project-Id-Version: Mutt 1.5.5.1\n"
 "POT-Creation-Date: 2003-11-05 21:05+0100\n"
-"PO-Revision-Date: 2003-05-16 12:14+01:00\n"
+"PO-Revision-Date: 2003-11-12 22:03+0000\n"
 "Last-Translator: Edmund GRIMLEY EVANS <edmundo@rano.org>\n"
 "Language-Team: eo <eo@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -915,9 +915,8 @@ msgid "No tagged messages."
 msgstr "Mankas markitaj mesaøoj."
 
 #: curs_main.c:653 menu.c:890
-#, fuzzy
 msgid "Nothing to do."
-msgstr "Konektiøas al %s ..."
+msgstr "Nenio farenda."
 
 #: curs_main.c:739
 msgid "Jump to message: "
@@ -1370,9 +1369,9 @@ msgid "Login failed."
 msgstr "Saluto malsukcesis."
 
 #: imap/auth_sasl.c:112
-#, fuzzy, c-format
+#, c-format
 msgid "Authenticating (%s)..."
-msgstr "Rajtiøas (APOP) ..."
+msgstr "Rajtiøas (%s) ..."
 
 #: imap/auth_sasl.c:199 pop_auth.c:172
 msgid "SASL authentication failed."
@@ -1430,7 +1429,7 @@ msgstr "Æi tiu IMAP-servilo estas antikva. Mutt ne funkcias kun øi."
 #: imap/imap.c:397
 #, c-format
 msgid "Unexpected response received from server: %s"
-msgstr ""
+msgstr "Neatendita respondo ricevita de servilo: %s"
 
 #: imap/imap.c:417
 msgid "Secure connection with TLS?"
@@ -1602,9 +1601,9 @@ msgid "%s: invalid value"
 msgstr "%s: nevalida valoro"
 
 #: init.c:1198
-#, fuzzy, c-format
+#, c-format
 msgid "%s: Unknown type."
-msgstr "%s: nekonata speco"
+msgstr "%s: Nekonata speco."
 
 #: init.c:1224
 #, c-format
@@ -1721,7 +1720,7 @@ msgstr "malplena funkcio"
 
 #: keymap_alldefs.h:6
 msgid "end of conditional execution (noop)"
-msgstr ""
+msgstr "fino de kondiæa rulo (noop)"
 
 #: keymap_alldefs.h:7
 msgid "force viewing of attachment using mailcap"
@@ -2352,9 +2351,8 @@ msgid "apply next function to tagged messages"
 msgstr "apliki la sekvan komandon al æiuj markitaj mesaøoj"
 
 #: keymap_alldefs.h:164
-#, fuzzy
 msgid "apply next function ONLY to tagged messages"
-msgstr "apliki la sekvan komandon al æiuj markitaj mesaøoj"
+msgstr "apliki la sekvan funkcion NUR al markitaj mesaøoj"
 
 #: keymap_alldefs.h:165
 msgid "tag the current subthread"
@@ -2494,7 +2492,7 @@ msgstr "montri S/MIME-funkciojn"
 
 #: lib.c:60
 msgid "Integer overflow -- can't allocate memory!"
-msgstr ""
+msgstr "Entjera troo - ne povas asigni memoron!"
 
 #: lib.c:67 lib.c:82 lib.c:114
 msgid "Out of memory!"
@@ -2834,13 +2832,12 @@ msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): ne povas þanøi tempon de dosiero"
 
 #: muttlib.c:835
-#, fuzzy
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
-msgstr "Tio estas dosierujo; æu skribi dosieron en øi?"
+msgstr "Dosiero estas dosierujo; æu skribi sub øi? [(j)es, (n)e, æ(i)uj]"
 
 #: muttlib.c:835
 msgid "yna"
-msgstr ""
+msgstr "jni"
 
 #: muttlib.c:851
 msgid "File is a directory, save under it?"
@@ -3140,7 +3137,7 @@ msgstr "Ne povas skribi mesaøon"
 
 #: mx.c:1535
 msgid "Integer overflow -- can't allocate memory."
-msgstr ""
+msgstr "Entjera troo - ne povas asigni memoron."
 
 #: pager.c:53
 msgid "Not available in this menu."
