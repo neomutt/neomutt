@@ -74,9 +74,9 @@ msgstr "\"compose\"-Eintrag in der Mailcap-Datei erfordert %%s."
 
 #: attach.c:131 attach.c:256 commands.c:155 compose.c:1161 curs_lib.c:128
 #: curs_lib.c:323
-#, fuzzy, c-format
+#, c-format
 msgid "Error running \"%s\"!"
-msgstr "Unverständliche Adresse!"
+msgstr "Fehler beim Ausführen von \"%s\"!"
 
 #: attach.c:141
 msgid "Failure to open file to parse headers."
@@ -145,9 +145,9 @@ msgid "Mailboxes [%d]"
 msgstr "Mailbox-Dateien [%d]"
 
 #: browser.c:451
-#, fuzzy, c-format
+#, c-format
 msgid "Subscribed [%s], File mask: %s"
-msgstr "Verzeichnis [%s], Dateimaske: %s"
+msgstr "Abonniert [%s], Dateimaske: %s"
 
 #: browser.c:455
 #, c-format
@@ -155,9 +155,8 @@ msgid "Directory [%s], File mask: %s"
 msgstr "Verzeichnis [%s], Dateimaske: %s"
 
 #: browser.c:466
-#, fuzzy
 msgid "Can't attach a directory!"
-msgstr "Verzeichnisse können nicht angezeigt werden."
+msgstr "Verzeichnisse können nicht angehängt werden."
 
 #: browser.c:583 browser.c:882 browser.c:975
 msgid "No files match the file mask"
@@ -207,17 +206,17 @@ msgstr "Neue Nachrichten in %s."
 
 #: charset.c:1066
 msgid "We can't currently handle utf-8 at this point."
-msgstr ""
+msgstr "Wir können UTF-8 zu diesem Zeitpunkt nicht korrekt behandeln."
 
 #: charset.c:1072 charset.c:1079
-#, fuzzy, c-format
+#, c-format
 msgid "Can't open %s: %s."
-msgstr "Kann Verzeichniseintrag für Datei nicht lesen: %s"
+msgstr "Kann %s nicht öffnen: %s."
 
 #: charset.c:1132
 #, c-format
 msgid "Error while recoding %s. See %s for recovering your data."
-msgstr ""
+msgstr "Fehler beim Umschlüsseln von %s. Siehe %s um die Daten zu retten."
 
 #: color.c:315
 #, c-format
@@ -483,9 +482,8 @@ msgid "%s [#%d] modified. Update encoding?"
 msgstr "%s [#%d] wurde modifiziert.  Codierung neu bestimmen?"
 
 #: compose.c:307
-#, fuzzy
 msgid "-- Attachments"
-msgstr "Anhänge"
+msgstr "-- Anhänge"
 
 #: compose.c:350
 msgid "You may not delete the only attachment."
@@ -493,20 +491,20 @@ msgstr "Der einzige Nachrichtenteil kann nicht gelöscht werden."
 
 #: compose.c:393
 msgid "Can't change character set for non-text attachments!"
-msgstr ""
+msgstr "Kann Zeichensatz für Anhänge, die kein Text sind, nicht ändern!"
 
 #: compose.c:399
 msgid "Enter character set: "
-msgstr ""
+msgstr "Bitte Zeichensatz eingeben: "
 
 #: compose.c:406
 msgid "UTF-8 encoding attachments has not yet been implemented."
-msgstr ""
+msgstr "UTF-8 Codierung von Anhängen ist noch nicht implementiert."
 
 #: compose.c:412
 #, c-format
 msgid "Character set %s is unknown."
-msgstr ""
+msgstr "Zeichensatz %s is unbekannt."
 
 #: compose.c:456
 msgid "Compose"
@@ -514,12 +512,12 @@ msgstr "Nachricht erstellen"
 
 #: compose.c:612
 msgid "Attaching selected files..."
-msgstr ""
+msgstr "Hänge ausgewählte Dateien an..."
 
 #: compose.c:623
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to attach %s!"
-msgstr "Kann nicht anhängen!"
+msgstr "Kann %s nicht anhängen!"
 
 #: compose.c:641
 msgid "Open mailbox to attach message from"
@@ -539,27 +537,27 @@ msgstr "Kann nicht anhängen!"
 
 #: compose.c:764
 msgid "Recoding only affects text attachments."
-msgstr ""
+msgstr "Änderen der Kodierung betrifft nur Text Anhänge."
 
 #: compose.c:769
 msgid "We currently can't encode to utf-8."
-msgstr ""
+msgstr "Wir können noch nicht UTF-8 kodieren."
 
 #: compose.c:774
 msgid "The current attachment won't be converted."
-msgstr ""
+msgstr "Der aktuelle Anhang wird nicht konvertiert werden."
 
 #: compose.c:776
 msgid "The current attachment will be converted."
-msgstr ""
+msgstr "Der aktuelle Anhang wird konvertiert werden."
 
 #: compose.c:789
 msgid "Recoding only affetcs text attachments."
-msgstr ""
+msgstr "Die Änderung der Kodierung betrifft nur Text Anhänge."
 
 #: compose.c:805
 msgid "Recoding successful."
-msgstr ""
+msgstr "Änderung der Kodierung war erfolgreich."
 
 #: compose.c:912
 msgid "Invalid encoding."
@@ -688,7 +686,7 @@ msgstr "Neue Nachrichten in dieser Mailbox."
 
 #: curs_main.c:532
 msgid "No mailbox is open."
-msgstr "Keine Mailbox offen."
+msgstr "Keine Mailbox ist geöffnet."
 
 #: curs_main.c:538
 msgid "No tagged messages."
@@ -1140,17 +1138,17 @@ msgstr "Schließe Mailbox..."
 
 #: imap.c:2566
 msgid "Contacted server, getting folder list..."
-msgstr ""
+msgstr "Kontaktiere Server, hole Liste der Ordner..."
 
 #: imap.c:2618
-#, fuzzy, c-format
+#, c-format
 msgid "Subscribing to %s..."
-msgstr "Kopiere nach %s..."
+msgstr "Abonniere %s..."
 
 #: imap.c:2620
-#, fuzzy, c-format
+#, c-format
 msgid "Unsubscribing to %s..."
-msgstr "Verbinde zu %s..."
+msgstr "Beende Abonement von %s..."
 
 #: init.c:432
 msgid "alias: no address"
@@ -1337,15 +1335,15 @@ msgstr "Zeige den Namen der derzeit ausgewählten Datei"
 
 #: keymap_defs.h:13
 msgid "subscribe to current mailbox (IMAP Only)"
-msgstr ""
+msgstr "Abonniere aktuelle Mailbox (nur für IMAP)"
 
 #: keymap_defs.h:14
 msgid "unsubscribe to current mailbox (IMAP Only)"
-msgstr ""
+msgstr "Kündige Abonnement der aktuellen Mailbox (nur für IMAP)"
 
 #: keymap_defs.h:15
 msgid "toggle view all/subscribed mailboxes (IMAP Only)"
-msgstr ""
+msgstr "Umschalter: Ansicht aller/der abonnierten Mailboxen (nur für IMAP)"
 
 #: keymap_defs.h:16
 msgid "change directories"
@@ -1365,7 +1363,7 @@ msgstr "Hänge Nachricht(en) an diese Nachricht an"
 
 #: keymap_defs.h:20
 msgid "change an attachment's character set"
-msgstr ""
+msgstr "Ändere den Zeichensatz eines Anhanges"
 
 #: keymap_defs.h:21
 msgid "edit the BCC list"
@@ -1437,11 +1435,11 @@ msgstr "Erzeuge neues Attachment via mailcap"
 
 #: keymap_defs.h:38
 msgid "toggle recoding of this attachment"
-msgstr ""
+msgstr "Schalte Kodierung dieses Anhanges um"
 
 #: keymap_defs.h:39
 msgid "recode this attachment to/from the local charset"
-msgstr ""
+msgstr "Ändere die Kodierung dieses Anhanges zu/von dem lokalen Zeichensatz"
 
 #: keymap_defs.h:40
 msgid "save this message to send later"
@@ -1825,7 +1823,7 @@ msgstr "Erzeuge Bildschirmanzeige neu"
 
 #: keymap_defs.h:136
 msgid "{internal}"
-msgstr ""
+msgstr "{intern}"
 
 #: keymap_defs.h:137
 msgid "reply to a message"
@@ -1973,36 +1971,31 @@ msgstr "Erzeuge dechiffrierte Kopie"
 
 #: keymap_defs.h:173
 msgid "Accept the chain constructed"
-msgstr ""
+msgstr "Akzeptiere die konstruierte Kette"
 
 #: keymap_defs.h:174
-#, fuzzy
 msgid "Append a remailer to the chain"
-msgstr "Lösche Zeile"
+msgstr "Hänge einen Remailer an die Kette an"
 
 #: keymap_defs.h:175
-#, fuzzy
 msgid "Insert a remailer into the chain"
-msgstr "Lösche Zeile"
+msgstr "Füge einen Remailer in die Kette ein"
 
 #: keymap_defs.h:176
-#, fuzzy
 msgid "Delete a remailer from the chain"
-msgstr "Lösche Zeile"
+msgstr "Lösche einen Remailer aus der Kette"
 
 #: keymap_defs.h:177
-#, fuzzy
 msgid "Select the previous element of the chain"
-msgstr "Lösche Zeile"
+msgstr "Wähle das vorhergehende Element der Kette aus"
 
 #: keymap_defs.h:178
-#, fuzzy
 msgid "Select the next element of the chain"
-msgstr "Lösche Zeile"
+msgstr "Wähle das nächste Element der Kette aus"
 
 #: keymap_defs.h:179
 msgid "send the message through a mixmaster remailer chain"
-msgstr ""
+msgstr "Verschicke die Nachricht über eine Mixmaster Remailer Kette"
 
 #: lib.c:59 lib.c:74 lib.c:105
 msgid "Out of memory!"
@@ -2373,7 +2366,7 @@ msgstr "Mailbox ist als unschreibbar markiert. %s"
 
 #: mx.c:967
 msgid "Mailbox is read-only."
-msgstr "Mailbox kann nicht geschrieben werden."
+msgstr "Mailbox kann nur gelesen, nicht geschrieben werden."
 
 #: pager.c:1376
 msgid "PrevPg"
@@ -2584,12 +2577,11 @@ msgstr ""
 "\n"
 
 #: pgp.c:608
-#, fuzzy
 msgid ""
 "[-- Error: Inconsistant multipart/signed structure! --]\n"
 "\n"
 msgstr ""
-"[-- Fehler: Unbekanntes multipart/signed Protokoll %s! --]\n"
+"[-- Fehler: Inkonsistente multipart/signed Struktur! --]\n"
 "\n"
 
 #: pgp.c:616
@@ -2607,6 +2599,8 @@ msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
 "\n"
 msgstr ""
+"[-- Warnung: %s/%s Unterschriften können nicht geprüft werden. --]\n"
+"\n"
 
 #. Now display the signed body
 #: pgp.c:645
@@ -2622,6 +2616,8 @@ msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
 msgstr ""
+"[-- Warnung: Kann keine Unterschriften finden. --]\n"
+"\n"
 
 #: pgp.c:657
 msgid ""
@@ -2716,11 +2712,12 @@ msgstr "Kann Filter nicht erzeugen"
 #: pgpkey.c:507
 #, c-format
 msgid "Key ID: 0x%s"
-msgstr ""
+msgstr "Schlüssel ID: 0x%s"
 
 #: pgpkey.c:533
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr ""
+"Dieser Schlüssel ist nicht verwendbar: veraltet/deaktiviert/zurückgezogen."
 
 #: pgpkey.c:547
 msgid "This ID's trust level is undefined."
@@ -2744,19 +2741,18 @@ msgid "Please enter the key ID: "
 msgstr "Bitte Schlüsselidentifikation eingeben: "
 
 #: pgpkey.c:684
-#, fuzzy
 msgid "Invoking pgp..."
 msgstr "Rufe PGP auf..."
 
 #: pgpkey.c:708
-#, fuzzy, c-format
+#, c-format
 msgid "PGP Key %s."
-msgstr "PGP Schlüssel 0x%s."
+msgstr "PGP Schlüssel %s."
 
 #: pgpkey.c:752 pgpkey.c:868
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
-msgstr ""
+msgstr "Suche nach Schlüsseln, die auf \"%s\" passen..."
 
 #: pop.c:66
 msgid "POP Password: "
@@ -2964,7 +2960,7 @@ msgid "No subject, aborting."
 msgstr "Kein Betreff, breche ab."
 
 #: send.c:401
-#, fuzzy, c-format
+#, c-format
 msgid "Follow-up to %s%s?"
 msgstr "Antworte an %s%s?"
 
@@ -3059,7 +3055,7 @@ msgstr "Nachricht verschickt."
 
 #: send.c:1360
 msgid "Sending in background."
-msgstr ""
+msgstr "Verschicke im Hintergrund."
 
 #: sendlib.c:440
 msgid "No boundary parameter found! [report this error]"
@@ -3076,18 +3072,18 @@ msgid "Could not open %s"
 msgstr "Konnte %s nicht öffnen."
 
 #: sendlib.c:1685
-#, fuzzy, c-format
+#, c-format
 msgid "Error sending message, child exited %d (%s)."
-msgstr "Fehler %d beim Versand der Nachricht (%s).\n"
+msgstr "Fehler %d beim Versand der Nachricht (%s)."
 
 #: sendlib.c:1691
 msgid "Output of the delivery process"
-msgstr ""
+msgstr "Ausgabe des Auslieferungs-Prozesses"
 
 #: signal.c:39
-#, fuzzy, c-format
+#, c-format
 msgid "%s...  Exiting.\n"
-msgstr "Signal %s... Abbruch.\n"
+msgstr "%s... Abbruch.\n"
 
 #: signal.c:42
 #, c-format
@@ -3116,17 +3112,44 @@ msgstr ""
 msgid "(no mailbox)"
 msgstr "(keine Mailbox)"
 
-#~ msgid "Can't open your secret key ring!"
-#~ msgstr "Kann geheimen Schlüsselbund nicht öffnen!"
-
-#~ msgid "===== Attachments ====="
-#~ msgstr "===== Anhänge ====="
+#~ msgid "PGP signature successfully verified."
+#~ msgstr "PGP Unterschrift erfolgreich überprüft."
 
 #~ msgid "There are no messages."
 #~ msgstr "Es sind keine Nachrichten vorhanden."
 
 #~ msgid "Function not permitted in attach-message mode."
-#~ msgstr "Funktion steht für Anhänge nicht zur Verfügung."
+#~ msgstr "Funktion steht zun Anhängen von Nachrichten nicht zur Verfügung."
+
+#~ msgid "%s does not exist. Create it?"
+#~ msgstr "%s existiert nicht. Neu anlegen?"
+
+#~ msgid "Can't create %s: %s."
+#~ msgstr "Kann %s nicht anlegen: %s."
+
+#~ msgid "Not available in this menu."
+#~ msgstr "Funktion ist in diesem Menü nicht verfügbar."
+
+#~ msgid "Can't invoke PGP"
+#~ msgstr "Kann PGP nicht aufrufen"
+
+#~ msgid "Create an application/pgp message?"
+#~ msgstr "Erzeuge application/pgp Nachricht (statt RFC 2015)?"
+
+#~ msgid "Fetching PGP key..."
+#~ msgstr "Hole PGP Schlüssel..."
+
+#~ msgid "Including quoted message..."
+#~ msgstr "Binde zitierte Nachricht ein..."
+
+#~ msgid "Preparing forwarded message..."
+#~ msgstr "Bereite Nachricht zum Weiterleiten vor..."
+
+#~ msgid "Can't open your secret key ring!"
+#~ msgstr "Kann geheimen Schlüsselbund nicht öffnen!"
+
+#~ msgid "===== Attachments ====="
+#~ msgstr "===== Anhänge ====="
 
 #~ msgid "File is a directory, save under it?"
 #~ msgstr "Datei ist ein Verzeichnis, darin abspeichern?"
@@ -3145,9 +3168,6 @@ msgstr "(keine Mailbox)"
 
 #~ msgid "Append messages to %s?"
 #~ msgstr "Nachricht an %s anhängen?"
-
-#~ msgid "Not available in this menu."
-#~ msgstr "Funktion ist in diesem Menü nicht verfügbar."
 
 #~ msgid "Unknown PGP version \"%s\"."
 #~ msgstr "Unbekannte PGP-Version \"%s\"."

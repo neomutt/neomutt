@@ -1,3 +1,59 @@
+Tue Aug 17 17:53:40 1999  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml, doc/muttrc.man, Muttrc: ispell's default path.
+
+	* postpone.c: Fixing a mutt -p segfault.
+
+	* doc/mutt.man, main.c:
+	cosmetics; mention warranties in the manual page.
+
+Sun Aug 15 19:59:09 1999  Thomas Roessler  <roessler@guug.de>
+
+	* compose.c: Make attach-message work with IMAP folders.
+
+	* po/cs.po: New CS translation.
+
+	* doc/Makefile.in, doc/manual.sgml, doc/muttrc.man, mutt.h, mx.c, pgp.c, pgp.h, pgpinvoke.c, prepare, send.c, Makefile.am, Muttrc, NEWS, README.SECURITY, browser.c, browser.h, commands.c, copy.c, curs_main.c, globals.h, init.c, init.h, main.c:
+	Various changes added over the last week:
+
+	- $delete_untag
+	- creation of "application/pgp" messages
+	- an attempt to fix prepare.
+	- Browser format changes
+
+	* dotlock.h: cosmetics.
+
+	* dotlock.c: [stable] take dotlock.c from unstable.
+
+	* dotlock.c: Commit remaining changes.
+
+	* copy.c, mh.c, mutt.h: Remove ugly mh-synching kludge.
+
+	* dotlock.c, dotlock.h:
+	Really fix $save_empty, even when the dotlocking code is compiled
+	into mutt.
+
+	* dotlock.c, dotlock.h:
+	[stable] Fix $save_empty even when the dotlocking code is linked
+	into mutt.
+
+Mon Aug  9 19:03:12 1999  Thomas Roessler  <roessler@guug.de>
+
+	* ChangeLog: check-point commit.
+
+	* po/sk.po, po/uk.po, po/zh_TW.Big5.po, po/ko.po, po/nl.po, po/pl.po, po/ru.po, po/de.po, po/el.po, po/es.po, po/fr.po, po/id.po, po/it.po, po/cs.po:
+	update-po.
+
+	* po/zh_TW.Big5.po:
+	[stable] Fixing a small typo in the Chinese translation.
+
+	* po/zh_TW.Big5.po, po/uk.po, po/sk.po, po/ru.po, po/pl.po, po/nl.po, po/ko.po, po/it.po, po/id.po, po/fr.po, po/el.po, po/es.po, po/de.po, po/cs.po:
+	[stable] Adding the new polish translation; general "make update-po".
+
+	* Muttrc, doc/muttrc.man, doc/muttrc.man.head, main.c, po/zh_TW.Big5.po:
+	Various fixes.  Additionally, mutt will now create the $folder
+	directory when started in curses mode and if it doesn't exist.
+
 Mon Aug  9 19:01:42 1999  Thomas Roessler  <roessler@guug.de>
 
 	* po/sk.po, po/uk.po, po/zh_TW.Big5.po, po/ko.po, po/nl.po, po/pl.po, po/ru.po, po/de.po, po/el.po, po/es.po, po/fr.po, po/id.po, po/it.po, po/cs.po:
