@@ -1132,7 +1132,7 @@ int mutt_parse_rc_line (/* const */ char *line, BUFFER *token, BUFFER *err)
     mutt_extract_token (token, &expn, 0);
     for (i = 0; Commands[i].name; i++)
     {
-      if (!strcmp (token->data, Commands[i].name))
+      if (!strcmp (NONULL (token->data), Commands[i].name))
       {
 	if (Commands[i].func (token, &expn, Commands[i].data, err) != 0)
 	  goto finish;
@@ -1141,7 +1141,7 @@ int mutt_parse_rc_line (/* const */ char *line, BUFFER *token, BUFFER *err)
     }
     if (!Commands[i].name)
     {
-      snprintf (err->data, err->dsize, "%s: unknown command", token->data);
+      snprintf (err->data, err->dsize, "%s: unknown command", NONULL (token->data));
       goto finish;
     }
   }
