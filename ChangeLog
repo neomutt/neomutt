@@ -1,3 +1,127 @@
+Tue Nov 10 21:02:27 1998  Thomas Roessler  <roessler@guug.de>
+
+	* sendlib.c, mx.h, mx.c, mbox.c, init.c, copy.c, commands.c, buffy.c, attach.c:
+	Experimental support for the so-called "kendra" mail folder format.
+	This seems to be used on OS/2 and is, actually, a slibhtly modified
+	version of the MMDF format.
+
+	* parse.c:
+	Do some sanity checking when reading attachment.  This fix should
+	catch bad attachments.
+
+	* edit.c:
+	Fix a possible buffer overflow.  (This seems to be the one noticed
+	by Pavel Gulchouck <gul@lucky.net>.)
+
+	* compose.c: Wrong fix from Vikas.  Undo it.  (Noted by Byrial.)
+
+	* curs_lib.c, compose.c: Fix a multi_choice related bug.  From Vikas.
+
+	* buffy.c:
+	Skip empty mailbox parameters.  This fixes a segmentation fault
+	noted by Marco d'Itri.
+
+Mon Nov  9 19:28:42 1998  Thomas Roessler  <roessler@guug.de>
+
+	* from.c: Catch possible bad memory access.
+
+	* doc/manual.sgml.in, sendlib.c, protos.h, init.h, globals.h, copy.c, Muttrc.in:
+	Rewrite copy_delete_attach().
+
+	* sort.c, score.c, protos.h, curs_main.c, color.c:
+	Fix an efficiency problem with the color index features.
+
+	* doc/mutt.man.in: Replace @sharedir@ by @sysconfdir@.
+
+	* doc/manual.sgml.in:
+	Make the default_hook documentation match the code.
+
+	* main.c, curs_main.c:
+	Avoid duplicate mx_close_mailbox() when OP_QUIT is called.
+
+	* browser.c:
+	The attached patch fixes a potential problem in folder_format_str()
+	where a fixed buffer might not be null terminated.  From Vikas.
+
+	* init.c:
+	The attached patch fixes a bug in :set variable=<TAB> where variables
+	of type DT_SORT were not getting expanded (only 4 of them, but a bug
+	nevertheless).  From Vikas.
+
+	* browser.c: patch-0.94.15.vikas.browser_sort.3
+
+	* doc/manual.sgml.in:
+	Add a forwarding chapter to the manual.  From Gero Treuner.
+
+	* po/de.po: Revert de.po to the traditional German spelling rules.
+
+	* po/de.po, pop.c: L10 fixes from Gero Treuner.
+
+	* parse.c, handler.c:
+	A message/external-body handler.  From Byrial Jensen.
+
+	* protos.h, parse.c:
+	 - remove the static declaration from parse_date() in parse.c,
+	 - rename it to mutt_parse_date()
+	 - fix a minor bug: the timezone information in an expires-header
+	   was used to set the timezone of the send time.
+
+	(From Byrial Jensen <byrial@post3.tele.dk>.)
+
+	* Muttrc.in: Fix some spelling errors noted by Boris Wesslowski
+	<Boris.Wesslowski@StudBox.Uni-Stuttgart.DE>.
+
+	* handler.c:
+	Byrial Jensen's alternative_handler patches.  This may lead to
+	non-desirable effects with attachment deletion; these effects will
+	go when the new attachment deletion code is implemented.
+
+	* parse.c:
+	SeokChan LEE <bofh@nuri.net> says KST has a nine hour offset from GMT.
+
+	* pager.c, help.c: Fix the display of DEL in the pager.
+
+	* send.c: Fix a group reply problem.
+
+Fri Oct 30 13:00:10 1998  Thomas Roessler  <roessler@guug.de>
+
+	* po/uk.po, po/ru.po, po/it.po, po/es.po, po/de.po:
+	Some recent changes.
+
+Thu Oct 29 09:46:45 1998  Thomas Roessler  <roessler@guug.de>
+
+	* mbox.c:
+	Mbox robustness patch from Johnny Tevessen <j.tevessen@gmx.net>.
+
+	* po/de.po: Fixing a typo.
+
+	* imap.c:
+	This patch should cause mutt to ask for your IMAP login/password
+	again if its wrong.  From Brandon Long.
+
+Wed Oct 28 21:48:36 1998  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.in, reldate.h, VERSION, NEWS, ChangeLog:
+	0.94.15 release commit.
+
+	* po/uk.po, po/ru.po, po/it.po, po/es.po, po/de.po:
+	pre-release commit, take 1.
+
+	* curs_lib.c:
+	Add an IsPrint check to mutt_message() and mutt_curses_error(). This
+	will prevent _some_ advert effects from l10ns which don't fit
+	together with the terminal's abilities.  There are still quite a few
+	raw printw() etc. - we may wish to introduce our own, locale-safe
+	versions of these.
+
+	* po/POTFILES.in: reldate contais really _no_ i18n-related data.
+
+	* send.c:
+	Don't try to recall a postponed message when we are given a template.
+
+	* copy.c:
+	Fix a possible segmentation fault when deleting nested attachments.
+
 Wed Oct 28 21:43:27 1998  Thomas Roessler  <roessler@guug.de>
 
 	* curs_lib.c:
