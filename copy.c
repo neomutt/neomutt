@@ -420,7 +420,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
     BODY *cur;
     FILE *fp;
 
-    if (pgp_decrypt_mime (fpin, &fp, hdr->content->parts->next, &cur))
+    if (pgp_decrypt_mime (fpin, &fp, hdr->content, &cur))
       return (-1);
     fputs ("Mime-Version: 1.0\n", fpout);
     mutt_write_mime_header (cur, fpout);

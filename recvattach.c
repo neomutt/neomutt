@@ -813,7 +813,7 @@ void mutt_view_attachments (HEADER *hdr)
   
   if ((hdr->pgp & PGPENCRYPT) && mutt_is_multipart_encrypted(hdr->content))
   {
-    if (pgp_decrypt_mime (msg->fp, &fp, hdr->content->parts->next, &cur))
+    if (pgp_decrypt_mime (msg->fp, &fp, hdr->content, &cur))
     {
       mx_close_message (&msg);
       return;

@@ -929,6 +929,11 @@ int pgp_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
   
   if(!mutt_is_multipart_encrypted(b))
     return -1;
+
+  if(!b->parts || !b->parts->next)
+    return -1;
+  
+  b = b->parts->next;
   
   memset (&s, 0, sizeof (s));
   s.fpin = fpin;
