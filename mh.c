@@ -40,6 +40,7 @@
 #include <ctype.h>
 #include <errno.h>
 #include <string.h>
+#include <utime.h>
 
 struct maildir
 {
@@ -1000,6 +1001,26 @@ int maildir_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr)
       if (hdr)
 	mutt_str_replace (&hdr->path, path);
       FREE (&msg->path);
+
+      /*
+       * Adjust the mtime on the file to match the time at which this
+       * message was received.  Currently this is only set when copying
+       * messages between mailboxes, so we test to ensure that it is
+       * actually set.
+       */
+      if (msg->received)
+      {
+	struct utimbuf ut;
+
+	ut.actime = msg->received;
+	ut.modtime = msg->received;
+	if (utime (full, &ut))
+	{
+	  mutt_perror (_("maildir_commit_message(): unable to set time on file"));
+	  return -1;
+	}
+      }
+
       return 0;
     }
     else if (errno != EEXIST)

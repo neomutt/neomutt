@@ -51,6 +51,7 @@ typedef struct
     unsigned flagged : 1;
     unsigned replied : 1;
   } flags;
+  time_t received;	/* the time at which this message was received */
 } MESSAGE;
 
 CONTEXT *mx_open_mailbox (const char *, int, CONTEXT *);

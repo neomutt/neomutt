@@ -1254,7 +1254,6 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
   MESSAGE *msg;
   int (*func) (MESSAGE *, CONTEXT *, HEADER *);
   ADDRESS *p = NULL;
-  time_t t;
 
   switch (dest->magic)
   {
@@ -1288,7 +1287,11 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
     msg->flags.flagged = hdr->flagged;
     msg->flags.replied = hdr->replied;
     msg->flags.read    = hdr->read;
+    msg->received = hdr->received;
   }
+
+  if(msg->received == 0)
+    time(&msg->received);
   
   if (func (msg, dest, hdr) == 0)
   {
@@ -1306,15 +1309,9 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
 	  p = hdr->env->sender;
 	else
 	  p = hdr->env->from;
-
-	if (!hdr->received)
-	  hdr->received = time (NULL);
-	t = hdr->received;
       }
-      else
-	t = time (NULL);
 
-      fprintf (msg->fp, "From %s %s", p ? p->mailbox : NONULL(Username), ctime (&t));
+      fprintf (msg->fp, "From %s %s", p ? p->mailbox : NONULL(Username), ctime (&msg->received));
     }
   }
   else
