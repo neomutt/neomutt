@@ -1,11 +1,11 @@
 # $Id$
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.3.19\n"
+"Project-Id-Version: Mutt 1.3.21\n"
 "POT-Creation-Date: 2001-08-21 23:53+0200\n"
-"PO-Revision-Date: 2001-06-08 17:26+02:00\n"
+"PO-Revision-Date: 2001-08-23 00:42+02:00\n"
 "Last-Translator: Jörgen Tegnér <teg@post.netlink.se>\n"
-"Language-Team: \n"
+"Language-Team: Swedish <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1242,9 +1242,8 @@ msgid "Selecting %s..."
 msgstr "Väljer %s..."
 
 #: imap/imap.c:656
-#, fuzzy
 msgid "Error opening mailbox"
-msgstr "Fel när brevlådan skrevs!"
+msgstr "Fel när brevlådan öppnades"
 
 #. STATUS not supported
 #: imap/imap.c:709
@@ -1267,9 +1266,8 @@ msgid "Marking %d messages deleted..."
 msgstr "Märker %d meddelanden som slängda..."
 
 #: imap/imap.c:926
-#, fuzzy
 msgid "Expunge failed"
-msgstr "CLOSE misslyckades."
+msgstr "Radering misslyckades"
 
 #: imap/imap.c:941
 #, c-format
@@ -1300,9 +1298,9 @@ msgid "Unable to fetch headers from this IMAP server version."
 msgstr "Kunde inte hämta brevhuvuden från den versionen av IMAP-servern."
 
 #: imap/message.c:83
-#, fuzzy, c-format
+#, c-format
 msgid "Could not create temporary file %s"
-msgstr "Kunde inte skapa tillfällig fil!"
+msgstr "Kunde inte skapa tillfällig fil %s"
 
 #: imap/message.c:96 pop.c:209
 #, c-format
@@ -1483,14 +1481,13 @@ msgid "macro: too many arguments"
 msgstr "macro: för många parametrar"
 
 #: keymap.c:850
-#, fuzzy
 msgid "exec: no arguments"
-msgstr "exec: för få parametrar"
+msgstr "exec: parametrar saknas"
 
 #: keymap.c:870
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no such function"
-msgstr "%s: ingen sån funktion finns i tabellen"
+msgstr "%s: funktionen saknas"
 
 #: keymap_alldefs.h:5
 msgid "null operation"
@@ -2471,9 +2468,8 @@ msgstr "Skriver meddelanden... %d (%d%%)"
 #. * change/deleted message
 #.
 #: mbox.c:925
-#, fuzzy
 msgid "Committing changes..."
-msgstr "Kompilerar sökmönster..."
+msgstr "Skriver ändringar..."
 
 #: mbox.c:956
 #, c-format
@@ -3229,17 +3225,14 @@ msgid "This ID is expired/disabled/revoked"
 msgstr "Det här ID'et är utgånget/spärrat/återkallat."
 
 #: pgpkey.c:612
-#, fuzzy
 msgid "This ID's validity level is undefined."
-msgstr "Fötroendenivån för det här ID'et är odefinierat."
+msgstr "Förtroendenivån för det här ID'et är odefinierat."
 
 #: pgpkey.c:615
-#, fuzzy
 msgid "This ID is not valid."
-msgstr "Det här ID'et är inte betrott."
+msgstr "Det här ID'et är inte giltigt."
 
 #: pgpkey.c:618
-#, fuzzy
 msgid "This ID is only marginally valid."
 msgstr "Det här ID'et är endast marginellt betrott."
 
