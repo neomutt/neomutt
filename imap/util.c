@@ -32,6 +32,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <signal.h>
+#include <netdb.h>
 
 #include <errno.h>
 
@@ -67,14 +68,36 @@ int imap_expand_path (char* path, size_t len)
  * mx.mbox is malloc'd, caller must free it */
 int imap_parse_path (const char* path, IMAP_MBOX* mx)
 {
+  static unsigned short ImapPort = 0;
+  static unsigned short ImapsPort = 0;
+  struct servent* service;
   char tmp[128];
   ciss_url_t url;
   char *c;
   int n;
 
+  if (!ImapPort)
+  {
+    service = getservbyname ("imap", "tcp");
+    if (service)
+      ImapPort = ntohs (service->s_port);
+    else
+      ImapPort = IMAP_PORT;
+    dprint (3, (debugfile, "Using default IMAP port %d\n", ImapPort));
+  }
+  if (!ImapsPort)
+  {
+    service = getservbyname ("imaps", "tcp");
+    if (service)
+      ImapsPort = ntohs (service->s_port);
+    else
+      ImapsPort = IMAP_SSL_PORT;
+    dprint (3, (debugfile, "Using default IMAPS port %d\n", ImapsPort));
+  }
+
   /* Defaults */
   mx->account.flags = 0;
-  mx->account.port = IMAP_PORT;
+  mx->account.port = ImapPort;
   mx->account.type = M_ACCT_TYPE_IMAP;
 
   c = safe_strdup (path);
@@ -146,7 +169,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
 #endif
 
   if ((mx->account.flags & M_ACCT_SSL) && !(mx->account.flags & M_ACCT_PORT))
-    mx->account.port = IMAP_SSL_PORT;
+    mx->account.port = ImapsPort;
 
   return 0;
 }
