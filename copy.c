@@ -33,6 +33,8 @@
 #include <ctype.h>
 #include <unistd.h> /* needed for SEEK_SET under SunOS 4.1.4 */
 
+extern char MimeSpecials[];
+
 static int copy_delete_attach(HEADER *h, HEADER *p, BODY *m, FILE *fpin,
                               FILE *fpout, int flags);
 
@@ -264,7 +266,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
  	CH_NOSTATUS	ignore the Status: and X-Status:
  	CH_PREFIX	quote header with $indent_str
  	CH_REORDER	output header in order specified by `hdr_order'
-  	CH_TXTPLAIN	generate text/plain MIME headers
+  	CH_TXTPLAIN	generate text/plain MIME headers [hack alert.]
  	CH_UPDATE	write new Status: and X-Status:
  	CH_UPDATE_LEN	write new Content-Length: and Lines:
  	CH_XMIT		ignore Lines: and Content-Length:
@@ -277,16 +279,21 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
 int
 mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
 {
+  char buffer[SHORT_STRING];
+
   if (mutt_copy_hdr (in, out, h->offset, h->content->offset, flags, prefix) == -1)
     return (-1);
 
   if (flags & CH_TXTPLAIN)
   {
     fputs ("Mime-Version: 1.0\n", out);
-    fputs ("Content-Type: text/plain\n", out);
     fputs ("Content-Transfer-Encoding: 8bit\n", out);
+    fputs ("Content-Type: text/plain; charset=", out);
+    rfc822_cat(buffer, sizeof(buffer), Charset, MimeSpecials);
+    fputs(buffer, out);
+    fputc('\n', out);
   }
-  
+
   if (flags & CH_UPDATE)
   {
     if ((flags & CH_NOSTATUS) == 0)
