@@ -5,11 +5,10 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.1-current-20020718\n"
+"Project-Id-Version: Mutt 1.5.2\n"
 "POT-Creation-Date: 2002-12-06 12:10+0100\n"
-"PO-Revision-Date: 2002-07-18 15:38+0200\n"
-"Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre "
-"<vincent@vinc17.org>\n"
+"PO-Revision-Date: 2002-12-07 02:30+0100\n"
+"Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
@@ -69,7 +68,7 @@ msgstr "Vous avez déjà défini un alias ayant ce nom !"
 
 #: alias.c:252
 msgid "Warning: This alias name may not work.  Fix it?"
-msgstr ""
+msgstr "Attention : ce nom d'alias peut ne pas fonctionner. Corriger ?"
 
 #: alias.c:273
 msgid "Address: "
@@ -263,9 +262,8 @@ msgstr "Erreur en essayant de visualiser le fichier"
 
 # , c-format
 #: buffy.c:440
-#, fuzzy
 msgid "New mail in "
-msgstr "Nouveau(x) message(s) dans %s."
+msgstr "Nouveau(x) message(s) dans "
 
 # , c-format
 #: color.c:322
@@ -721,7 +719,7 @@ msgstr "Ajourner ce message ?"
 
 #: compose.c:1295
 msgid "Write message to mailbox"
-msgstr "Enregistrer le message dans la boîte aux lettres"
+msgstr "Écrire le message dans la boîte aux lettres"
 
 # , c-format
 #: compose.c:1298
@@ -1140,9 +1138,9 @@ msgid "could not write temporary mail folder: %s"
 msgstr "impossible d'écrire dans le dossier temporaire : %s"
 
 #: editmsg.c:101
-#, fuzzy, c-format
+#, c-format
 msgid "could not truncate temporary mail folder: %s"
-msgstr "impossible d'écrire dans le dossier temporaire : %s"
+msgstr "impossible de tronquer le dossier temporaire : %s"
 
 #: editmsg.c:116
 msgid "Message file is empty!"
@@ -1786,11 +1784,11 @@ msgstr "afficher le nom du fichier sélectionné actuellement"
 
 #: keymap_alldefs.h:14
 msgid "subscribe to current mailbox (IMAP only)"
-msgstr "s'abonner à la boîte aux lettres courante (IMAP seulement)"
+msgstr "s'abonner à la BAL courante (IMAP seulement)"
 
 #: keymap_alldefs.h:15
 msgid "unsubscribe to current mailbox (IMAP only)"
-msgstr "se désabonner de la boîte aux lettres courante (IMAP seulement)"
+msgstr "se désabonner de la BAL courante (IMAP seulement)"
 
 #: keymap_alldefs.h:16
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
@@ -1798,9 +1796,8 @@ msgstr ""
 "changer entre voir toutes les BAL/voir les BAL abonnées (IMAP seulement)"
 
 #: keymap_alldefs.h:17
-#, fuzzy
 msgid "list mailboxes with new mail"
-msgstr "Pas de boîte aux lettres avec des nouveaux messages."
+msgstr "lister les BAL ayant de nouveaux messages"
 
 #: keymap_alldefs.h:18
 msgid "change directories"
@@ -1808,7 +1805,7 @@ msgstr "changer de répertoires"
 
 #: keymap_alldefs.h:19
 msgid "check mailboxes for new mail"
-msgstr "vérifier la présence de nouveaux messages dans les boîtes aux lettres"
+msgstr "vérifier la présence de nouveaux messages dans les BAL"
 
 #: keymap_alldefs.h:20
 msgid "attach a file(s) to this message"
@@ -1872,7 +1869,7 @@ msgstr "éditer la liste TO"
 
 #: keymap_alldefs.h:35
 msgid "create a new mailbox (IMAP only)"
-msgstr "créer une nouvelle boîte aux lettres (IMAP seulement)"
+msgstr "créer une nouvelle BAL (IMAP seulement)"
 
 #: keymap_alldefs.h:36
 msgid "edit attachment content type"
@@ -1920,11 +1917,11 @@ msgstr "mettre à jour les informations de codage d'un attachement"
 
 #: keymap_alldefs.h:47
 msgid "write the message to a folder"
-msgstr "sauvegarder le message dans un dossier"
+msgstr "écrire le message dans un dossier"
 
 #: keymap_alldefs.h:48
 msgid "copy a message to a file/mailbox"
-msgstr "copier un message dans un fichier ou une boîte aux lettres"
+msgstr "copier un message dans un fichier ou une BAL"
 
 #: keymap_alldefs.h:49
 msgid "create an alias from a message sender"
@@ -1956,7 +1953,7 @@ msgstr "effacer l'entrée courante"
 
 #: keymap_alldefs.h:56
 msgid "delete the current mailbox (IMAP only)"
-msgstr "supprimer la boîte aux lettres courante (IMAP seulement)"
+msgstr "supprimer la BAL courante (IMAP seulement)"
 
 #: keymap_alldefs.h:57
 msgid "delete all messages in subthread"
@@ -2585,7 +2582,6 @@ msgstr ""
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 
 #: main.c:88
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -2621,16 +2617,15 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"usage : mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <fich> ] [ -m <type> ] [ -f "
-"<fich> ]\n"
-"        mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <requête> [ -Q <req> ] "
-"[...]\n"
-"        mutt [ -nx ] [ -e <cmd> ] [ -a <fich> ] [ -F <fich> ] [ -H <fich> ] "
-"[ -i <fich> ] [ -s <obj> ] [ -b <adr> ] [ -c <adr> ] <adr> [ ... ]\n"
+"usage : mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <fich> ] [ -m <type> ] [ -f <fich> ]\n"
+"        mutt [ -nR ] [ -e <cmd> ] [ -F <fich> ] -Q <requête> [ -Q <req> ] [...]\n"
+"        mutt [ -nR ] [ -e <cmd> ] [ -F <fich> ] -A <alias> [ -A <alias> ] [...]\n"
+"        mutt [ -nx ] [ -e <cmd> ] [ -a <fich> ] [ -F <fich> ] [ -H <fich> ] [ -i <fich> ] [ -s <obj> ] [ -b <adr> ] [ -c <adr> ] <adr> [ ... ]\n"
 "        mutt [ -n ] [ -e <cmd> ] [ -F <fich> ] -p\n"
 "        mutt -v[v]\n"
 "\n"
 "options :\n"
+"  -A <alias>\tdéveloppe l'alias mentionné\n"
 "  -a <fich>\tattache un fichier à ce message\n"
 "  -b <adresse>\tspécifie une adresse à mettre en copie aveugle (BCC)\n"
 "  -c <adresse>\tspécifie une adresse à mettre en copie (CC)\n"
@@ -2847,7 +2842,7 @@ msgstr "Lecture de %s... %d"
 
 #: mh.c:1019
 msgid "maildir_commit_message(): unable to set time on file"
-msgstr ""
+msgstr "maildir_commit_message() : impossible de fixer l'heure du fichier"
 
 #: muttlib.c:854
 msgid "File is a directory, save under it?"
@@ -3622,9 +3617,8 @@ msgid "Illegal S/MIME header"
 msgstr "En-tête S/MIME illégal"
 
 #: postpone.c:565
-#, fuzzy
 msgid "Decryption failed."
-msgstr "La connexion a échoué."
+msgstr "Le déchiffrage a échoué."
 
 #: query.c:45
 msgid "New Query"
@@ -3934,9 +3928,8 @@ msgid "Recall postponed message?"
 msgstr "Rappeler un message ajourné ?"
 
 #: send.c:1338
-#, fuzzy
 msgid "Edit forwarded message?"
-msgstr "Préparation du message à faire suivre..."
+msgstr "Éditer le message à faire suivre ?"
 
 #: send.c:1357
 msgid "Abort unmodified message?"
