@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt-CVS-2003.08.28\n"
-"POT-Creation-Date: 2003-11-05 10:48+0100\n"
+"POT-Creation-Date: 2003-11-05 21:05+0100\n"
 "PO-Revision-Date: 2003-08-28\n"
 "Last-Translator: Pawe³ Dziekoñski <dzieko@pwr.wroc.pl>\n"
 "Language-Team: POLISH <pl@li.org>\n"

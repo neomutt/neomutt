@@ -11,7 +11,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt-1.5.4i\n"
-"POT-Creation-Date: 2003-11-05 10:48+0100\n"
+"POT-Creation-Date: 2003-11-05 21:05+0100\n"
 "PO-Revision-Date: 2003-03-26 08:39+0200\n"
 "Last-Translator: mutt-ru@woe.spb.ru\n"
 "Language-Team: RUSSIAN <mutt-ru@woe.spb.ru>\n"
