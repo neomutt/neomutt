@@ -440,20 +440,20 @@ AC_ARG_WITH(domain, [  --with-domain=DOMAIN       Specify your DNS domain name ]
 
 AC_ARG_ENABLE(pop, [  --enable-pop               Enable POP3 support],
 [	AC_DEFINE(USE_POP)
-	AC_CHECK_LIB(socket, socket)
-	AC_CHECK_LIB(nsl, gethostbyname)
-	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pop.o"
+	AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(socket, setsockopt))
+ 	AC_CHECK_FUNC(gethostent, , AC_CHECK_LIB(nsl, gethostent))
+  	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pop.o"
+])
+  
+AC_ARG_ENABLE(imap, [  --enable-imap              Enable IMAP support],
+[	AC_DEFINE(USE_IMAP)
+ 	AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(socket, setsockopt))
+ 	AC_CHECK_FUNC(gethostent, , AC_CHECK_LIB(nsl, gethostent))
+  	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS imap.o socket.o"
 ])
 
 AC_ARG_ENABLE(debug, [  --enable-debug		Enable debugging support],
 	[ AC_DEFINE(DEBUG) ])
-
-AC_ARG_ENABLE(imap, [  --enable-imap              Enable IMAP support],
-[	AC_DEFINE(USE_IMAP)
-	AC_CHECK_LIB(socket, socket)
-	AC_CHECK_LIB(nsl, gethostbyname)
-	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS imap.o socket.o"
-])
 
 AC_ARG_ENABLE(flock, [  --enable-flock             Use flock() to lock files],
 	[if test $enableval = yes; then
