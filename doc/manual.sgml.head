@@ -1979,8 +1979,8 @@ If a message contains URLs (<em/unified ressource locator/ = address in the
 WWW space like <em>http://www.mutt.org/</em>), it is efficient to get
 a menu with all the URLs and start a WWW browser on one of them.  This
 functionality is provided by the external urlview program which can be
-retrieved at <htmlurl url="ftp://ftp.cs.hmc.edu/pub/me/"
-name="ftp://ftp.cs.hmc.edu/pub/me/"> and the configuration commands:
+retrieved at <htmlurl url="ftp://ftp.guug.de/pub/mutt/contrib/"
+name="ftp://ftp.guug.de/pub/mutt/contrib/"> and the configuration commands:
 <tscreen><verb>
 macro index \cb |urlview\n
 macro pager \cb |urlview\n
