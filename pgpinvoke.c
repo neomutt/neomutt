@@ -164,6 +164,9 @@ static pid_t pgp_invoke (FILE **pgpin, FILE **pgpout, FILE **pgperr,
   char cmd[HUGE_STRING];
   
   memset (&cctx, 0, sizeof (cctx));
+
+  if (!format || !*format)
+    return (pid_t) -1;
   
   cctx.need_passphrase = need_passphrase;
   cctx.fname	       = fname;
