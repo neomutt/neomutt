@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 2000 Vsevolod Volkov <vvv@mutt.kiev.ua>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -23,68 +24,108 @@
 #include "mutt.h"
 #include "mailbox.h"
 #include "mx.h"
+#include "mutt_socket.h"
 
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <netdb.h>
 #include <string.h>
 #include <unistd.h>
 
-static int getLine (int fd, char *s, int len)
+/* pop_authenticate: loop until success or user abort. */
+int pop_authenticate (CONNECTION *conn)
 {
-  char ch;
-  int bytes = 0;
+  char buf[LONG_STRING];
+  char user[SHORT_STRING];
+  char pass[SHORT_STRING];
 
-  while (read (fd, &ch, 1) > 0)
+  FOREVER
   {
-    *s++ = ch;
-    bytes++;
-    if (ch == '\n')
+    if (! (conn->account.flags & M_ACCT_USER))
     {
-      *s = 0;
-      return (bytes);
+      if (!PopUser)
+      {
+	strfcpy (user, NONULL (Username), sizeof (user));
+	if (mutt_get_field (_("POP Username: "), user, sizeof (user), 0) != 0 ||
+	    !user[0])
+	  return 0;
+      }
+      else
+	strfcpy (user, PopUser, sizeof (user));
     }
-    /* make sure not to overwrite the buffer */
-    if (bytes == len - 1)
-    {
-      *s = 0;
-      return bytes;
-    }
-  }
-  *s = 0;
-  return (-1);
-}
+    else
+      strfcpy (user, conn->account.user, sizeof (user));
 
-static int getPass (void)
-{
-  if (!PopPass)
-  {
-    char tmp[SHORT_STRING];
-    tmp[0] = '\0';
-    if (mutt_get_password (_("POP Password: "), tmp, sizeof (tmp)) != 0
-	|| *tmp == '\0')
-      return 0;
-    PopPass = safe_strdup (tmp);
+    if (! (conn->account.flags & M_ACCT_PASS))
+    {
+      if (!PopPass)
+      {
+	pass[0]=0;
+	snprintf (buf, sizeof (buf), _("Password for %s@%s: "), user,
+          conn->account.host);
+	if (mutt_get_field (buf, pass, sizeof (pass), M_PASS) != 0 || !pass[0])
+	  return 0;
+      }
+      else
+	strfcpy (pass, PopPass, sizeof (pass));
+    }
+    else
+      strfcpy (pass, conn->account.pass, sizeof (pass));
+
+    mutt_message _("Logging in...");
+
+    snprintf (buf, sizeof (buf), "user %s\r\n", user);
+    mutt_socket_write (conn, buf);
+
+    if (mutt_socket_readln (buf, sizeof (buf), conn) < 0)
+      return -1;
+
+    if (!mutt_strncmp (buf, "+OK", 3))
+    {
+      snprintf (buf, sizeof (buf), "pass %s\r\n", pass);
+      mutt_socket_write_d (conn, buf, 5);
+
+#ifdef DEBUG
+      /* don't print the password unless we're at the ungodly debugging level */
+      if (debuglevel < M_SOCK_LOG_FULL)
+	dprint (M_SOCK_LOG_CMD, (debugfile, "> pass *\r\n"));
+#endif
+
+      if (mutt_socket_readln (buf, sizeof (buf), conn) < 0)
+	return -1;
+
+      if (!mutt_strncmp (buf, "+OK", 3))
+      {
+	/* If they have a successful login, we may as well cache the 
+	 * user/password. */
+	if (!(conn->account.flags & M_ACCT_USER))
+	  strfcpy (conn->account.user, user, sizeof (conn->account.user));
+	if (!(conn->account.flags & M_ACCT_PASS))
+	  strfcpy (conn->account.pass, pass, sizeof (conn->account.pass));
+	conn->account.flags |= (M_ACCT_USER | M_ACCT_PASS);
+
+	return 1;
+      }
+    }
+
+    mutt_remove_trailing_ws (buf);
+    mutt_error (_("Login failed: %s"), buf);
+    sleep (1);
+
+    if (!(conn->account.flags & M_ACCT_USER))
+      FREE (&PopUser);
+    if (!(conn->account.flags & M_ACCT_PASS))
+      FREE (&PopPass);
+    conn->account.flags &= ~M_ACCT_PASS;
   }
-  return 1;
 }
 
 void mutt_fetchPopMail (void)
 {
-  struct sockaddr_in sin;
-#if SIZEOF_LONG == 4
-  long n;
-#else
-  int n;
-#endif
-  struct hostent *he;
-  char buffer[2048];
+  char buffer[LONG_STRING];
   char msgbuf[SHORT_STRING];
-  int s, i, delanswer, last = 0, msgs, bytes, err = 0;
+  int i, delanswer, last = 0, msgs, bytes, err = 0;
   CONTEXT ctx;
   MESSAGE *msg = NULL;
+  ACCOUNT account;
+  CONNECTION *conn;
 
   if (!PopHost)
   {
@@ -92,85 +133,41 @@ void mutt_fetchPopMail (void)
     return;
   }
 
-  if (!PopUser)
-  {
-    mutt_error _("No POP username is defined.");
+  strfcpy (account.host, PopHost, sizeof (account.host));
+  account.port = PopPort;
+  account.type = M_ACCT_TYPE_POP;
+  account.flags = 0;
+  conn = mutt_socket_find (&account, 0);
+  if (mutt_socket_open (conn) < 0)
     return;
-  }
-    
-  if (!getPass ()) return;
 
-  s = socket (AF_INET, SOCK_STREAM, IPPROTO_IP);
+  if (mutt_socket_readln (buffer, sizeof (buffer), conn) < 0)
+    goto fail;
 
-  memset ((char *) &sin, 0, sizeof(sin));
-  sin.sin_family = AF_INET;
-  sin.sin_port = htons (PopPort);
-
-  if ((n = inet_addr (NONULL(PopHost))) == -1)
+  if (mutt_strncmp (buffer, "+OK", 3))
   {
-    /* Must be a DNS name */
-    if ((he = gethostbyname (NONULL(PopHost))) == NULL)
+    mutt_remove_trailing_ws (buffer);
+    mutt_error ("%s", buffer);
+    goto finish;
+  }
+
+  switch (pop_authenticate (conn))
+  {
+    case -1:
+      goto fail;
+    case 0:
     {
-      mutt_error (_("Could not find address for host %s."), PopHost);
-      return;
+      mutt_clear_error ();
+      goto finish;
     }
-    memcpy ((void *)&sin.sin_addr, *(he->h_addr_list), he->h_length);
-  }
-  else
-    memcpy ((void *)&sin.sin_addr, (void *)&n, sizeof(n));
-  
-  mutt_message (_("Connecting to %s"), inet_ntoa (sin.sin_addr));
-
-  if (connect (s, (struct sockaddr *) &sin, sizeof (struct sockaddr_in)) == -1)
-  {
-    mutt_perror ("connect");
-    return;
-  }
-  
-  if (getLine (s, buffer, sizeof (buffer)) == -1)
-    goto fail;
-
-  if (mutt_strncmp (buffer, "+OK", 3) != 0)
-  {
-    mutt_remove_trailing_ws (buffer);
-    mutt_error ("%s", buffer);
-    goto finish;
   }
 
-  snprintf (buffer, sizeof(buffer), "user %s\r\n", PopUser);
-  write (s, buffer, mutt_strlen (buffer));
+  mutt_message _("Checking for new messages...");
 
-  if (getLine (s, buffer, sizeof (buffer)) == -1)
-    goto fail;
-
-  if (mutt_strncmp (buffer, "+OK", 3) != 0)
-  {
-    mutt_remove_trailing_ws (buffer);
-    mutt_error ("%s", buffer);
-    goto finish;
-  }
-  
-  snprintf (buffer, sizeof(buffer), "pass %s\r\n", NONULL(PopPass));
-  write (s, buffer, mutt_strlen (buffer));
-  
-  if (getLine (s, buffer, sizeof (buffer)) == -1)
-    goto fail;
-
-  if (mutt_strncmp (buffer, "+OK", 3) != 0)
-  {
-    if(PopPass)
-      memset(PopPass, 0, mutt_strlen(PopPass));
-    
-    safe_free((void **) &PopPass); /* void the given password */
-    mutt_remove_trailing_ws (buffer);
-    mutt_error ("%s", buffer[0] ? buffer : _("Server closed connection!"));
-    goto finish;
-  }
-  
   /* find out how many messages are in the mailbox. */
-  write (s, "stat\r\n", 6);
-  
-  if (getLine (s, buffer, sizeof (buffer)) == -1)
+  mutt_socket_write (conn, "stat\r\n");
+
+  if (mutt_socket_readln (buffer, sizeof (buffer), conn) < 0)
     goto fail;
 
   if (mutt_strncmp (buffer, "+OK", 3) != 0)
@@ -179,7 +176,7 @@ void mutt_fetchPopMail (void)
     mutt_error ("%s", buffer);
     goto finish;
   }
-  
+
   sscanf (buffer, "+OK %d %d", &msgs, &bytes);
 
   if (msgs == 0)
@@ -188,16 +185,16 @@ void mutt_fetchPopMail (void)
     goto finish;
   }
 
-  if (mx_open_mailbox (NONULL(Spoolfile), M_APPEND, &ctx) == NULL)
+  if (mx_open_mailbox (NONULL (Spoolfile), M_APPEND, &ctx) == NULL)
     goto finish;
 
   /* only get unread messages */
-  if(option(OPTPOPLAST))
+  if (option (OPTPOPLAST))
   {
-    write (s, "last\r\n", 6);
-    if (getLine (s, buffer, sizeof (buffer)) == -1)
+    mutt_socket_write (conn, "last\r\n");
+    if (mutt_socket_readln (buffer, sizeof (buffer), conn) == -1)
       goto fail;
-    
+
     if (mutt_strncmp (buffer, "+OK", 3) == 0)
       sscanf (buffer, "+OK %d", &last);
     else
@@ -206,17 +203,19 @@ void mutt_fetchPopMail (void)
   }
 
   if (msgs - last)
-    delanswer = query_quadoption(OPT_POPDELETE, _("Delete messages from server?"));
+    delanswer = query_quadoption (OPT_POPDELETE, _("Delete messages from server?"));
 
-  mutt_message (msgs > 1 ? _("Reading new messages (%d bytes)...") :
-		    _("Reading new message (%d bytes)..."), bytes);
+  snprintf (msgbuf, sizeof (msgbuf),
+	    msgs > 1 ? _("Reading new messages (%d bytes)...") :
+		       _("Reading new message (%d bytes)..."), bytes);
+  mutt_message ("%s", msgbuf);
 
   for (i = last + 1 ; i <= msgs ; i++)
   {
-    snprintf (buffer, sizeof(buffer), "retr %d\r\n", i);
-    write (s, buffer, mutt_strlen (buffer));
+    snprintf (buffer, sizeof (buffer), "retr %d\r\n", i);
+    mutt_socket_write (conn, buffer);
 
-    if (getLine (s, buffer, sizeof (buffer)) == -1)
+    if (mutt_socket_readln (buffer, sizeof (buffer), conn) < 0)
     {
       mx_fastclose_mailbox (&ctx);
       goto fail;
@@ -239,42 +238,34 @@ void mutt_fetchPopMail (void)
     FOREVER
     {
       char *p;
-      int chunk;
+      int chunk, tail = 0;
 
-      if ((chunk = getLine (s, buffer, sizeof (buffer))) == -1)
+      if ((chunk = mutt_socket_readln_d (buffer, sizeof (buffer), conn, 3)) < 0)
       {
 	mutt_error _("Error reading message!");
 	err = 1;
 	break;
       }
 
-      /* check to see if we got a full line */
-      if (buffer[chunk-2] == '\r' && buffer[chunk-1] == '\n')
+      p = buffer;
+      if (!tail && buffer[0] == '.')
       {
-	if (mutt_strcmp(".\r\n", buffer) == 0)
-	{
-	  /* end of message */
-	  break;
-	}
-
-	/* change CRLF to just LF */
-	buffer[chunk-2] = '\n';
-	buffer[chunk-1] = 0;
-	chunk--;
-
-	/* see if the line was byte-stuffed */
-	if (buffer[0] == '.')
-	{
+	if (buffer[1] == '.')
 	  p = buffer + 1;
-	  chunk--;
-	}
 	else
-	  p = buffer;
+	  break; /* end of message */
+      }
+
+      fputs (p, msg->fp);
+      if (chunk >= sizeof (buffer))
+      {
+	tail = 1;
       }
       else
-	p = buffer;
-      
-      fwrite (p, 1, chunk, msg->fp);
+      {
+	fputc ('\n', msg->fp);
+	tail = 0;
+      }
     }
 
     if (mx_commit_message (msg, &ctx) != 0)
@@ -291,11 +282,11 @@ void mutt_fetchPopMail (void)
     if (delanswer == M_YES)
     {
       /* delete the message on the server */
-      snprintf (buffer, sizeof(buffer), "dele %d\r\n", i);
-      write (s, buffer, mutt_strlen (buffer));
+      snprintf (buffer, sizeof (buffer), "dele %d\r\n", i);
+      mutt_socket_write (conn, buffer);
 
       /* eat the server response */
-      getLine (s, buffer, sizeof (buffer));
+      mutt_socket_readln (buffer, sizeof (buffer), conn);
       if (mutt_strncmp (buffer, "+OK", 3) != 0)
       {
 	err = 1;
@@ -304,12 +295,11 @@ void mutt_fetchPopMail (void)
 	break;
       }
     }
-    
+
     if ( msgs > 1)
       mutt_message (_("%s [%d of %d messages read]"), msgbuf, i, msgs);
     else
       mutt_message (_("%s [%d message read]"), msgbuf, msgs);
-
   }
 
   if (msg)
@@ -323,16 +313,16 @@ void mutt_fetchPopMail (void)
   if (err)
   {
     /* make sure no messages get deleted */
-    write (s, "rset\r\n", 6);
-    getLine (s, buffer, sizeof (buffer)); /* snarf the response */
+    mutt_socket_write (conn, "rset\r\n");
+    mutt_socket_readln (buffer, sizeof (buffer), conn); /* snarf the response */
   }
 
 finish:
 
   /* exit gracefully */
-  write (s, "quit\r\n", 6);
-  getLine (s, buffer, sizeof (buffer)); /* snarf the response */
-  close (s);
+  mutt_socket_write (conn, "quit\r\n");
+  mutt_socket_readln (buffer, sizeof (buffer), conn); /* snarf the response */
+  mutt_socket_close (conn);
   return;
 
   /* not reached */
@@ -340,5 +330,5 @@ finish:
 fail:
 
   mutt_error _("Server closed connection!");
-  close (s);
+  mutt_socket_close (conn);
 }
