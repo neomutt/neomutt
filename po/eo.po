@@ -3,9 +3,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.3.20\n"
+"Project-Id-Version: Mutt 1.3.23.1\n"
 "POT-Creation-Date: 2001-10-31 10:37+0100\n"
-"PO-Revision-Date: 2001-10-11 20:51+0100\n"
+"PO-Revision-Date: 2001-11-03 13:51+0000\n"
 "Last-Translator: Edmund GRIMLEY EVANS <edmundo@rano.org>\n"
 "Language-Team: eo <eo@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -612,9 +612,9 @@ msgid "Rename to: "
 msgstr "Renomi al: "
 
 #: compose.c:987 editmsg.c:96 sendlib.c:901
-#, fuzzy, c-format
+#, c-format
 msgid "Can't stat %s: %s"
-msgstr "Ne povas ekzameni la dosieron %s"
+msgstr "Ne povas ekzameni la dosieron %s: %s"
 
 #: compose.c:1013
 msgid "New file: "
@@ -844,9 +844,8 @@ msgid " in this limited view"
 msgstr " en æi tiu limigita rigardo"
 
 #: curs_main.c:1331 pager.c:2248
-#, fuzzy
 msgid "Can't change 'important' flag on POP server."
-msgstr "Ne eblas redakti mesaøon en POP-servilo."
+msgstr "Ne povas þanøi la flagon 'important' æe POP-servilo."
 
 #: curs_main.c:1446
 msgid "No more threads."
@@ -1206,9 +1205,8 @@ msgid "Getting folder list..."
 msgstr "Prenas liston de poþtfakoj ..."
 
 #: imap/browse.c:219
-#, fuzzy
 msgid "No such folder"
-msgstr "%s: koloro ne ekzistas"
+msgstr "Poþtfako ne ekzistas"
 
 #: imap/browse.c:277
 msgid "Create mailbox: "

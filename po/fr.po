@@ -5,9 +5,9 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.3.23-current-20011028\n"
+"Project-Id-Version: Mutt 1.3.23.1\n"
 "POT-Creation-Date: 2001-10-31 10:37+0100\n"
-"PO-Revision-Date: 2001-10-28 11:15+0100\n"
+"PO-Revision-Date: 2001-11-01 14:59+0100\n"
 "Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
@@ -308,7 +308,7 @@ msgstr "mono : pas assez d'arguments"
 #: color.c:650
 #, c-format
 msgid "%s: no such attribute"
-msgstr "%s : attribut inexistant"
+msgstr "%s : cet attribut n'existe pas"
 
 #: color.c:690 hook.c:64 hook.c:72 keymap.c:697
 msgid "too few arguments"
@@ -1263,9 +1263,8 @@ msgstr "Récupération de la liste des dossiers..."
 
 # , c-format
 #: imap/browse.c:219
-#, fuzzy
 msgid "No such folder"
-msgstr "%s : cette couleur n'existe pas"
+msgstr "Ce dossier n'existe pas"
 
 #: imap/browse.c:277
 msgid "Create mailbox: "
@@ -1555,7 +1554,7 @@ msgstr "push : trop d'arguments"
 #: keymap.c:680
 #, c-format
 msgid "%s: no such menu"
-msgstr "%s : menu inexistant"
+msgstr "%s : ce menu n'existe pas"
 
 #: keymap.c:689
 msgid "null key sequence"

@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.22\n"
+"Project-Id-Version: 1.3.23.1\n"
 "POT-Creation-Date: 2001-10-31 10:37+0100\n"
-"PO-Revision-Date: 2001-09-01 10:15+0900\n"
+"PO-Revision-Date: 2001-11-02 11:15+0900\n"
 "Last-Translator: oota toshiya <oota@mspd.mt.nec.co.jp>\n"
 "Language-Team: mutt-j <mutt-j@ns.ribbon.or.jp>\n"
 "MIME-Version: 1.0\n"
@@ -610,9 +610,9 @@ msgid "Rename to: "
 msgstr "名前変更先: "
 
 #: compose.c:987 editmsg.c:96 sendlib.c:901
-#, fuzzy, c-format
+#, c-format
 msgid "Can't stat %s: %s"
-msgstr "%s の属性調査できず"
+msgstr "%2$s で %1$s の属性調査できず"
 
 #: compose.c:1013
 msgid "New file: "
@@ -842,9 +842,8 @@ msgid " in this limited view"
 msgstr " 表示制限された中にある"
 
 #: curs_main.c:1331 pager.c:2248
-#, fuzzy
 msgid "Can't change 'important' flag on POP server."
-msgstr "POPサーバ上ではメッセージ編集はできない"
+msgstr "POPサーバ上では'重要'フラグ変更はできない"
 
 #: curs_main.c:1446
 msgid "No more threads."
@@ -1205,9 +1204,8 @@ msgid "Getting folder list..."
 msgstr "フォルダリスト取得中..."
 
 #: imap/browse.c:219
-#, fuzzy
 msgid "No such folder"
-msgstr "%s という色はない"
+msgstr "%s というフォルダはない"
 
 #: imap/browse.c:277
 msgid "Create mailbox: "
@@ -2297,10 +2295,10 @@ msgstr ""
 
 #: main.c:88
 msgid ""
-"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
-"<file> ]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
-"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
+"]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
+"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -3730,9 +3728,3 @@ msgstr "(メールボックスなし)"
 #: thread.c:874
 msgid "Parent message is not available."
 msgstr "親メッセージが無効。"
-
-#~ msgid "Can't stat %s."
-#~ msgstr "%s の属性調査できず"
-
-#~ msgid "Parent message is not visible in limited view"
-#~ msgstr "親メッセージは制限表示モードでは表示不能。"
