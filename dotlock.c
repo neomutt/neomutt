@@ -434,7 +434,7 @@ dotlock_prepare(char *bn, size_t l, const char *f)
     dirname = ".";
   }
 
-  if(mutt_strlen(basename) + 1 > l)
+  if(strlen(basename) + 1 > l)
     return -1;
   
   strfcpy(bn, basename, l);
