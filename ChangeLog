@@ -1,3 +1,12 @@
+2005-02-04 16:54:13  Brendan Cully  <brendan@kublai.com>  (brendan)
+                                 
+	* Makefile.am: Add smime_keys to EXTRA_SCRIPTS (for make dist).
+                                 
+2005-02-04 12:56:28  Tamotsu Takahashi  <ttakah@lapis.plala.or.jp>  (roessler)
+                                 
+        * Makefile.am: http://bugs.guug.de/db/17/1769.html
+                  This is necessary for FreeBSD.
+                                 
 2005-02-04 12:56:28  Tamotsu Takahashi  <ttakah@lapis.plala.or.jp>  (roessler)
 
 	* Makefile.am: http://bugs.guug.de/db/17/1769.html This is
