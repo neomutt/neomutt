@@ -1785,6 +1785,11 @@ void mutt_body_handler (BODY *b, STATE *s)
       /* avoid copying this part twice since removing the transfer-encoding is
        * the only operation needed.
        */
+#ifdef HAVE_PGP
+      if (mutt_is_application_pgp (b))
+	handler = pgp_application_pgp_handler;
+      else
+#endif	
       if (ascii_strcasecmp ("flowed", mutt_get_parameter ("format", b->parameter)) == 0)
 	handler = text_plain_flowed_handler;
       else
@@ -1854,7 +1859,7 @@ void mutt_body_handler (BODY *b, STATE *s)
   else if (b->type == TYPEAPPLICATION)
   {
 #ifdef HAVE_PGP
-    if (mutt_is_application_pgp(b))
+    if (mutt_is_application_pgp (b))
       handler = pgp_application_pgp_handler;
 #endif /* HAVE_PGP */
 #ifdef HAVE_SMIME

@@ -627,7 +627,7 @@ static void set_copy_flags (HEADER *hdr, int decode, int decrypt, int *cmflags, 
       *chflags = CH_NONEWLINE | CH_XMIT | CH_MIME;
       *cmflags = M_CM_DECODE_PGP;
     }
-    else if (mutt_is_application_pgp(hdr->content) & ENCRYPT)
+    else if (mutt_is_application_pgp (hdr->content) & ENCRYPT)
       decode = 1;
 #endif
 #if defined(HAVE_PGP) && defined(HAVE_SMIME)

@@ -180,7 +180,7 @@ int mutt_protect (HEADER *msg, char *keylist)
   if (msg->security & APPLICATION_PGP)
   {
     if ((msg->content->type == TYPETEXT) &&
-	!mutt_strcasecmp (msg->content->subtype, "plain") &&
+	!ascii_strcasecmp (msg->content->subtype, "plain") &&
 	((flags & ENCRYPT) || (msg->content->content && msg->content->content->hibin == 0)))
     {
       if ((i = query_quadoption (OPT_PGPTRADITIONAL, _("Create an application/pgp message?"))) == -1)
@@ -360,6 +360,11 @@ int crypt_query (BODY *m)
     if (t && m->badsig) t |= BADSIGN;
 #endif
   }
+#ifdef HAVE_PGP
+  else if (m->type == TYPETEXT)
+    t |= mutt_is_application_pgp (m);
+#endif			  
+  
   
   if (m->type == TYPEMULTIPART)
   {

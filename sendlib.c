@@ -500,7 +500,7 @@ int mutt_write_mime_body (BODY *a, FILE *f)
 
   if (a->type == TYPETEXT && (!a->noconv))
     fc = fgetconv_open (fpin, Charset, 
-			mutt_get_body_charset (send_charset, sizeof (send_charset), a), 
+			mutt_get_body_charset (send_charset, sizeof (send_charset), a),
 			M_ICONV_HOOK_TO);
   else
     fc = fgetconv_open (fpin, 0, 0, 0);

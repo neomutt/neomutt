@@ -441,7 +441,7 @@ static int pgp_check_traditional_one_body (FILE *fp, BODY *b, int tagged_only)
 
   if (tagged_only && !b->tagged)
     return 0;
-  
+
   mutt_mktemp (tempfile);
   if (mutt_decode_save_attachment (fp, b, tempfile, 0, 0) != 0)
   {
@@ -454,7 +454,7 @@ static int pgp_check_traditional_one_body (FILE *fp, BODY *b, int tagged_only)
     unlink (tempfile);
     return 0;
   }
-    
+  
   while (fgets (buf, sizeof (buf), tfp))
   {
     if (mutt_strncmp ("-----BEGIN PGP ", buf, 15) == 0)
@@ -465,7 +465,6 @@ static int pgp_check_traditional_one_body (FILE *fp, BODY *b, int tagged_only)
 	sgn = 1;
     }
   }
-  
   safe_fclose (&tfp);
   unlink (tempfile);
 
@@ -486,12 +485,18 @@ static int pgp_check_traditional_one_body (FILE *fp, BODY *b, int tagged_only)
 int pgp_check_traditional (FILE *fp, BODY *b, int tagged_only)
 {
   int rv = 0;
+  int r;
   for (; b; b = b->next)
   {
     if (is_multipart (b))
       rv = pgp_check_traditional (fp, b->parts, tagged_only) || rv;
     else if (b->type == TYPETEXT)
-      rv = pgp_check_traditional_one_body (fp, b, tagged_only) || rv;
+    {
+      if ((r = mutt_is_application_pgp (b)))
+	rv = rv || r;
+      else
+	rv = pgp_check_traditional_one_body (fp, b, tagged_only) || rv;
+    }
   }
 
   return rv;
@@ -536,6 +541,14 @@ int mutt_is_application_pgp (BODY *m)
 
     if (!ascii_strcasecmp (m->subtype, "pgp-keys"))
       t |= PGPKEY;
+  }
+  else if (m->type == TYPETEXT && ascii_strcasecmp ("plain", m->subtype) == 0)
+  {
+    if ((p = mutt_get_parameter ("x-mutt-action", m->parameter)) &&
+	!ascii_strcasecmp ("pgp-sign", p))
+      t |= PGPSIGN;
+    else if (p && !ascii_strcasecmp ("pgp-encrypt", p))
+      t |= PGPENCRYPT;
   }
   return t;
 }
@@ -1264,6 +1277,8 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
   char pgpoutfile[_POSIX_PATH_MAX];
   char pgperrfile[_POSIX_PATH_MAX];
   char pgpinfile[_POSIX_PATH_MAX];
+
+  char send_charset[STRING];
   
   FILE *pgpout = NULL, *pgperr = NULL, *pgpin = NULL;
   FILE *fp;
@@ -1274,6 +1289,11 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
   char buff[STRING];
 
   pid_t thepid;
+
+  if (a->type != TYPETEXT)
+    return NULL;
+  if (ascii_strcasecmp (a->subtype, "plain"))
+    return NULL;
   
   if ((fp = fopen (a->filename, "r")) == NULL)
   {
@@ -1362,13 +1382,15 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
   
   b->encoding = ENC7BIT;
 
-  b->type = TYPEAPPLICATION;
-  b->subtype = safe_strdup ("pgp");
-
-  mutt_set_parameter ("format", "text", &b->parameter);
-  mutt_set_parameter ("x-action", flags & ENCRYPT ? "encrypt" : "sign",
+  b->type = TYPETEXT;
+  b->subtype = safe_strdup ("plain");
+  
+  mutt_set_parameter ("x-mutt-action", flags & ENCRYPT ? "pgp-encrypt" : "pgp-sign",
 		      &b->parameter);
-
+  mutt_set_parameter ("charset", mutt_get_body_charset (send_charset, 
+							sizeof (send_charset), a), 
+		      &b->parameter);
+  
   b->filename = safe_strdup (pgpoutfile);
   
   /* The following is intended to give a clue to some completely brain-dead 
