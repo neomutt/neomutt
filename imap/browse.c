@@ -157,15 +157,17 @@ int imap_init_browse (char *path, struct browser_state *state)
       n--;
     }
 
-    /* Find superiors to list */
+    /* Find superiors to list
+     * Note: UW-IMAP servers return folder + delimiter when asked to list
+     *  folder + delimiter. Cyrus servers don't. So we ask for folder,
+     *  and tack on delimiter ourselves. */
     for (n--; n >= 0 && mbox[n] != idata->delim ; n--);
     if (n > 0)			/* "aaaa/bbbb/" -> "aaaa/" */
     {
-      n++;
       ctmp = mbox[n];
       mbox[n] = '\0';
       /* List it to see if it can be selected */
-      dprint (2, (debugfile, "imap_init_browse: listing %s\n", mbox));
+      dprint (2, (debugfile, "imap_init_browse: listing possible parent %s\n", mbox));
       imap_make_sequence (seq, sizeof (seq));
       snprintf (buf, sizeof (buf), "%s %s \"\" \"%s\"\r\n", seq, 
         list_cmd, mbox);
@@ -266,6 +268,9 @@ static int add_list_result (CONNECTION *conn, const char *seq, const char *cmd,
     if (name)
     {
       imap_unquote_string (name);
+      /* Let a parent folder never be selectable for navigation */
+      if (isparent)
+        noselect = 1;
       /* prune current folder from output */
       if (isparent || strncmp (name, curfolder, strlen (name)))
         imap_add_folder (idata->delim, name, noselect, noinferiors, state,
@@ -337,7 +342,7 @@ static void imap_add_folder (char delim, char *folder, int noselect,
     imap_qualify_path (tmp, sizeof (tmp), host, port, folder, trailing_delim);
     (state->entry)[state->entrylen].name = safe_strdup (tmp);
 
-    if (strlen (relpath) < sizeof (relpath) - 2)
+    if (!isparent && (strlen (relpath) < sizeof (relpath) - 2))
       strcat (relpath, trailing_delim);
     (state->entry)[state->entrylen].desc = safe_strdup (relpath);
 
