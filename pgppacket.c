@@ -220,7 +220,6 @@ bail:
 void pgp_release_packet (void)
 {
   plen = 0;
-  free (pbuf);
-  pbuf = NULL;
+  safe_free (&pbuf);
 }
 
