@@ -308,6 +308,10 @@ static void add_to_list (LIST **list, const char *str)
 {
   LIST *t, *last = NULL;
 
+  /* don't add a NULL or empty string to the list */
+  if (!str || *str == '\0')
+    return;
+
   /* check to make sure the item is not already on this list */
   for (last = *list; last; last = last->next)
   {
