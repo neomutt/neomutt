@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt-1.1.9 \n"
-"POT-Creation-Date: 2000-03-29 22:11+0200\n"
+"POT-Creation-Date: 2000-03-30 17:13+0200\n"
 "PO-Revision-Date: 2000-03-19 22:56+01:00\n"
 "Last-Translator: Morten Bo Johansen <mojo@image.dk>\n"
 "Language-Team: Danish <da@li.org>\n"
@@ -665,7 +665,7 @@ msgstr "Tryk på en taste for at fortsætte."
 msgid " ('?' for list): "
 msgstr " ('?' for en liste): "
 
-#: curs_main.c:55 curs_main.c:564
+#: curs_main.c:55 curs_main.c:565
 msgid "No mailbox is open."
 msgstr "Ingen brevbakke er åben."
 
@@ -725,122 +725,122 @@ msgstr "Brevbakke ændret udefra. Status-indikatorer kan være forkerte."
 msgid "New mail in this mailbox."
 msgstr "Ny(e) brev(e) i denne brevbakke."
 
-#: curs_main.c:570
+#: curs_main.c:571
 msgid "No tagged messages."
 msgstr "Ingen breve er udvalgt."
 
-#: curs_main.c:650
+#: curs_main.c:651
 msgid "Jump to message: "
 msgstr "Hop til brev: "
 
-#: curs_main.c:656
+#: curs_main.c:657
 msgid "Argument must be a message number."
 msgstr "Parameter skal være nummeret på et brev."
 
-#: curs_main.c:689
+#: curs_main.c:690
 msgid "That message is not visible."
 msgstr "Brevet er ikke synligt."
 
-#: curs_main.c:692
+#: curs_main.c:693
 msgid "Invalid message number."
 msgstr "Ugyldigt brevnummer."
 
-#: curs_main.c:705
+#: curs_main.c:706
 msgid "Delete messages matching: "
 msgstr "Slet breve efter mønster: "
 
-#: curs_main.c:727
+#: curs_main.c:728
 msgid "No limit pattern is in effect."
 msgstr "Intet afgrænsnings-mønster er i brug."
 
 #. i18n: ask for a limit to apply
-#: curs_main.c:732
+#: curs_main.c:733
 #, c-format
 msgid "Limit: %s"
 msgstr "Afgrænsning: %s"
 
-#: curs_main.c:741
+#: curs_main.c:742
 msgid "Limit to messages matching: "
 msgstr "Afgræns til breve efter mønster: "
 
-#: curs_main.c:771
+#: curs_main.c:772
 msgid "Quit Mutt?"
 msgstr "Afslut Mutt?"
 
-#: curs_main.c:894
+#: curs_main.c:895
 msgid "Tag messages matching: "
 msgstr "Udvælg breve efter mønster: "
 
-#: curs_main.c:902
+#: curs_main.c:903
 msgid "Undelete messages matching: "
 msgstr "Behold breve efter mønster: "
 
-#: curs_main.c:909
+#: curs_main.c:910
 msgid "Untag messages matching: "
 msgstr "Fjern valg efter mønster: "
 
-#: curs_main.c:927
+#: curs_main.c:928
 msgid "Open mailbox in read-only mode"
 msgstr "Åbn brevbakke i skrivebeskyttet tilstand"
 
-#: curs_main.c:929
+#: curs_main.c:930
 msgid "Open mailbox"
 msgstr "Åbn brevbakke"
 
-#: curs_main.c:945 mx.c:454 mx.c:600
+#: curs_main.c:946 mx.c:454 mx.c:600
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s er ikke en brevbakke."
 
-#: curs_main.c:1030
+#: curs_main.c:1031
 msgid "Exit Mutt without saving?"
 msgstr "Afslut Mutt uden at gemme?"
 
-#: curs_main.c:1066 curs_main.c:1090
+#: curs_main.c:1067 curs_main.c:1091
 msgid "You are on the last message."
 msgstr "Du er ved sidste brev."
 
-#: curs_main.c:1073 curs_main.c:1115
+#: curs_main.c:1074 curs_main.c:1116
 msgid "No undeleted messages."
 msgstr "Alle breve har slette-markering."
 
-#: curs_main.c:1108 curs_main.c:1131
+#: curs_main.c:1109 curs_main.c:1132
 msgid "You are on the first message."
 msgstr "Du er ved første brev."
 
-#: curs_main.c:1203 pattern.c:1123
+#: curs_main.c:1204 pattern.c:1123
 msgid "Search wrapped to top."
 msgstr "Søgning fortsat fra top."
 
-#: curs_main.c:1212 pattern.c:1134
+#: curs_main.c:1213 pattern.c:1134
 msgid "Search wrapped to bottom."
 msgstr "Søgning fortsat fra bund."
 
-#: curs_main.c:1245
+#: curs_main.c:1246
 msgid "No new messages"
 msgstr "Ingen nye breve"
 
-#: curs_main.c:1245
+#: curs_main.c:1246
 msgid "No unread messages"
 msgstr "Ingen ulæste breve"
 
-#: curs_main.c:1246
+#: curs_main.c:1247
 msgid " in this limited view"
 msgstr " i dette afgrænsede billede"
 
-#: curs_main.c:1370
+#: curs_main.c:1371
 msgid "No more threads."
 msgstr "Ikke flere tråde."
 
-#: curs_main.c:1372
+#: curs_main.c:1373
 msgid "You are on the first thread."
 msgstr "Du er ved den første tråd."
 
-#: curs_main.c:1442
+#: curs_main.c:1443
 msgid "Thread contains unread messages."
 msgstr "Tråden indeholder ulæste breve."
 
-#: curs_main.c:1455 flags.c:228 thread.c:657 thread.c:708
+#: curs_main.c:1456 flags.c:228 thread.c:657 thread.c:708
 msgid "Threading is not enabled."
 msgstr "Trådning er ikke i brug."
 
@@ -1511,6 +1511,718 @@ msgstr "%s: for få parametre."
 #, c-format
 msgid "%s: no such command"
 msgstr "%s: ukendt kommando."
+
+#: keymap_alldefs.h:5
+msgid "null operation"
+msgstr "tom funktion"
+
+#: keymap_alldefs.h:6
+msgid "force viewing of attachment using mailcap"
+msgstr "fremtving visning af denne del ved brug af mailcap"
+
+#: keymap_alldefs.h:7
+msgid "view attachment as text"
+msgstr "vis denne del som tekst"
+
+#: keymap_alldefs.h:8
+msgid "move to the bottom of the page"
+msgstr "gå til bunden af siden"
+
+#: keymap_alldefs.h:9
+msgid "remail a message to another user"
+msgstr "videresend et brev til en anden modtager"
+
+#: keymap_alldefs.h:10
+msgid "select a new file in this directory"
+msgstr "Vælg en ny fil i dette filkatalog"
+
+#: keymap_alldefs.h:11
+msgid "view file"
+msgstr "vis fil"
+
+#: keymap_alldefs.h:12
+msgid "display the currently selected file's name"
+msgstr "vis navnet på den aktuelt valgte fil"
+
+#: keymap_alldefs.h:13
+msgid "subscribe to current mailbox (IMAP only)"
+msgstr "abonnér på aktuelle brevbakke (kun IMAP)"
+
+#: keymap_alldefs.h:14
+msgid "unsubscribe to current mailbox (IMAP only)"
+msgstr "afmeld abonnement på aktuelle brevbakke (kun IMAP)"
+
+#: keymap_alldefs.h:15
+msgid "toggle view all/subscribed mailboxes (IMAP only)"
+msgstr "skift mellem visning af alle/abonnerede postbakker (kun IMAP)"
+
+#: keymap_alldefs.h:16
+msgid "change directories"
+msgstr "skift filkatalog"
+
+#: keymap_alldefs.h:17
+msgid "check mailboxes for new mail"
+msgstr "undersøg brevbakker for nye breve"
+
+#: keymap_alldefs.h:18
+msgid "attach a file(s) to this message"
+msgstr "vedlæg fil(er) til dette brev"
+
+#: keymap_alldefs.h:19
+msgid "attach message(s) to this message"
+msgstr "vedlæg brev(e) til dette brev"
+
+#: keymap_alldefs.h:20
+msgid "change an attachment's character set"
+msgstr "skift tegnsæt for en brevdel"
+
+#: keymap_alldefs.h:21
+msgid "edit the BCC list"
+msgstr "ret i Bcc-listen"
+
+#: keymap_alldefs.h:22
+msgid "edit the CC list"
+msgstr "ret i Cc-listen"
+
+#: keymap_alldefs.h:23
+msgid "edit attachment description"
+msgstr "ret delens beskrivelse"
+
+#: keymap_alldefs.h:24
+msgid "edit attachment transfer-encoding"
+msgstr "ret delens indkodning"
+
+#: keymap_alldefs.h:25
+msgid "enter a file to save a copy of this message in"
+msgstr "kopiér dette brev til fil"
+
+#: keymap_alldefs.h:26
+msgid "edit the file to be attached"
+msgstr "redigér i den fil der skal vedlægges"
+
+#: keymap_alldefs.h:27
+msgid "edit the from field"
+msgstr "ret afsender (from:)"
+
+#: keymap_alldefs.h:28
+msgid "edit the message with headers"
+msgstr "redigér brev (med brevhoved)"
+
+#: keymap_alldefs.h:29
+msgid "edit the message"
+msgstr "redigér brev"
+
+#: keymap_alldefs.h:30
+msgid "edit attachment using mailcap entry"
+msgstr "redigér brevdel efter mailcap-regel"
+
+#: keymap_alldefs.h:31
+msgid "edit the Reply-To field"
+msgstr "ret Reply-To-feltet"
+
+#: keymap_alldefs.h:32
+msgid "edit the subject of this message"
+msgstr "ret dette brevs emne (Subject:)"
+
+#: keymap_alldefs.h:33
+msgid "edit the TO list"
+msgstr "ret listen over modtagere (To:)"
+
+#: keymap_alldefs.h:34
+msgid "edit attachment content type"
+msgstr "ret brevdelens \"content-type\""
+
+#: keymap_alldefs.h:35
+msgid "get a temporary copy of an attachment"
+msgstr "lav en midlertidig kopi af en brevdel"
+
+#: keymap_alldefs.h:36
+msgid "run ispell on the message"
+msgstr "stavekontrollér brevet"
+
+#: keymap_alldefs.h:37
+msgid "compose new attachment using mailcap entry"
+msgstr "lav en ny brevdel efter mailcap-regel"
+
+#: keymap_alldefs.h:38
+msgid "toggle recoding of this attachment"
+msgstr "slå omkodning af denne brevdel til/fra"
+
+#: keymap_alldefs.h:39
+msgid "recode this attachment to/from the local charset"
+msgstr "omkod denne brevdel til/fra det lokale tegnsæt"
+
+#: keymap_alldefs.h:40
+msgid "save this message to send later"
+msgstr "gem dette brev til senere forsendelse"
+
+#: keymap_alldefs.h:41
+msgid "rename/move an attached file"
+msgstr "omdøb/flyt en vedlagt fil"
+
+#: keymap_alldefs.h:42
+msgid "send the message"
+msgstr "send brevet"
+
+#: keymap_alldefs.h:43
+msgid "toggle disposition between inline/attachment"
+msgstr "skift status mellem intregeret og bilagt"
+
+#: keymap_alldefs.h:44
+msgid "toggle whether to delete file after sending it"
+msgstr "vælg om filen skal slettes efter afsendelse"
+
+#: keymap_alldefs.h:45
+msgid "update an attachment's encoding info"
+msgstr "opdatér data om brevdelens indkodning"
+
+#: keymap_alldefs.h:46
+msgid "write the message to a folder"
+msgstr "læg brevet i en brevbakke"
+
+#: keymap_alldefs.h:47
+msgid "copy a message to a file/mailbox"
+msgstr "kopiér brev til en fil/brevbakke"
+
+#: keymap_alldefs.h:48
+msgid "create an alias from a message sender"
+msgstr "opret et alias fra afsenderadresse"
+
+#: keymap_alldefs.h:49
+msgid "move entry to bottom of screen"
+msgstr "flyt til nederste listning"
+
+#: keymap_alldefs.h:50
+msgid "move entry to middle of screen"
+msgstr "flyt til midterste listning"
+
+#: keymap_alldefs.h:51
+msgid "move entry to top of screen"
+msgstr "flyt til øverste listning"
+
+#: keymap_alldefs.h:52
+msgid "make decoded (text/plain) copy"
+msgstr "lav en afkodet kopi (text/plain)"
+
+#: keymap_alldefs.h:53
+msgid "make decoded copy (text/plain) and delete"
+msgstr "lav en afkodet kopi (text/plain) og slet"
+
+#: keymap_alldefs.h:54
+msgid "delete the current entry"
+msgstr "slet den aktuelle listning"
+
+#: keymap_alldefs.h:55
+msgid "delete the current mailbox (IMAP only)"
+msgstr "slet den aktuelle brevbakke (kun IMAP)"
+
+#: keymap_alldefs.h:56
+msgid "delete all messages in subthread"
+msgstr "slet alle breve i deltråd"
+
+#: keymap_alldefs.h:57
+msgid "delete all messages in thread"
+msgstr "slet alle breve i tråd"
+
+#: keymap_alldefs.h:58
+msgid "display full address of sender"
+msgstr "vis fuld afsenderadresse"
+
+#: keymap_alldefs.h:59
+msgid "display message and toggle header weeding"
+msgstr "fremvis meddelelsen med helt eller beskåret brevhoved"
+
+#: keymap_alldefs.h:60
+msgid "display a message"
+msgstr "fremvis et brev"
+
+#: keymap_alldefs.h:61
+msgid "edit the raw message"
+msgstr "redigér det \"rå\" brev"
+
+#: keymap_alldefs.h:62
+msgid "delete the char in front of the cursor"
+msgstr "slet tegnet foran markøren"
+
+#: keymap_alldefs.h:63
+msgid "move the cursor one character to the left"
+msgstr "flyt markøren et tegn til venstre"
+
+#: keymap_alldefs.h:64
+msgid "jump to the beginning of the line"
+msgstr "gå til begyndelsen af linje"
+
+#: keymap_alldefs.h:65
+msgid "cycle among incoming mailboxes"
+msgstr "Gennemløb indbakker"
+
+#: keymap_alldefs.h:66
+msgid "complete filename or alias"
+msgstr "færdiggør filnavn eller alias"
+
+#: keymap_alldefs.h:67
+msgid "complete address with query"
+msgstr "færdiggør adresse ved forespørgsel"
+
+#: keymap_alldefs.h:68
+msgid "delete the char under the cursor"
+msgstr "slet tegnet under markøren"
+
+#: keymap_alldefs.h:69
+msgid "jump to the end of the line"
+msgstr "gå til linjeslut"
+
+#: keymap_alldefs.h:70
+msgid "move the cursor one character to the right"
+msgstr "flyt markøren et tegn til højre"
+
+#: keymap_alldefs.h:71 keymap_alldefs.h:72
+msgid "scroll up through the history list"
+msgstr "gå op igennem historik-listen"
+
+#: keymap_alldefs.h:73
+msgid "delete chars from cursor to end of line"
+msgstr "slet alle tegn til linjeafslutning"
+
+#: keymap_alldefs.h:74
+msgid "delete all chars on the line"
+msgstr "slet linje"
+
+#: keymap_alldefs.h:75
+msgid "delete the word in front of the cursor"
+msgstr "slet ord foran markør"
+
+#: keymap_alldefs.h:76
+msgid "quote the next typed key"
+msgstr "citér den næste taste"
+
+#: keymap_alldefs.h:77
+msgid "enter a muttrc command"
+msgstr "skriv en muttrc-kommando"
+
+#: keymap_alldefs.h:78
+msgid "enter a file mask"
+msgstr "skriv en filmaske"
+
+#: keymap_alldefs.h:79
+msgid "exit this menu"
+msgstr "forlad denne menu"
+
+#: keymap_alldefs.h:80
+msgid "filter attachment through a shell command"
+msgstr "filtrér brevdel gennem en skalkommando"
+
+#: keymap_alldefs.h:81
+msgid "move to the first entry"
+msgstr "gå til den første listning"
+
+#: keymap_alldefs.h:82
+msgid "toggle a message's 'important' flag"
+msgstr "markér brev som vigtig/fjern markering"
+
+#: keymap_alldefs.h:83
+msgid "forward a message with comments"
+msgstr "videresend et brev med kommentarer"
+
+#: keymap_alldefs.h:84
+msgid "select the current entry"
+msgstr "vælg den aktuelle listning"
+
+#: keymap_alldefs.h:85
+msgid "reply to all recipients"
+msgstr "svar til alle modtagere"
+
+#: keymap_alldefs.h:86
+msgid "scroll down 1/2 page"
+msgstr "gå ½ side ned"
+
+#: keymap_alldefs.h:87
+msgid "scroll up 1/2 page"
+msgstr "gå ½ side op"
+
+#: keymap_alldefs.h:88
+msgid "this screen"
+msgstr "dette skærmbillede"
+
+#: keymap_alldefs.h:89
+msgid "jump to an index number"
+msgstr "gå til et indeksnummer"
+
+#: keymap_alldefs.h:90
+msgid "move to the last entry"
+msgstr "gå til den sidste listning"
+
+#: keymap_alldefs.h:91
+msgid "reply to specified mailing list"
+msgstr "svar til en angivet postliste"
+
+#: keymap_alldefs.h:92
+msgid "execute a macro"
+msgstr "udfør makro"
+
+#: keymap_alldefs.h:93
+msgid "compose a new mail message"
+msgstr "skriv et nyt brev"
+
+#: keymap_alldefs.h:94
+msgid "open a different folder"
+msgstr "åbn en anden brevbakke"
+
+#: keymap_alldefs.h:95
+msgid "open a different folder in read only mode"
+msgstr "åbn en anden brevbakke som skrivebeskyttet"
+
+#: keymap_alldefs.h:96
+msgid "clear a status flag from a message"
+msgstr "fjern status-indikator fra brev"
+
+#: keymap_alldefs.h:97
+msgid "delete messages matching a pattern"
+msgstr "slet breve efter mønster"
+
+#: keymap_alldefs.h:98
+msgid "retrieve mail from POP server"
+msgstr "hent breve fra POP-tjener"
+
+#: keymap_alldefs.h:99
+msgid "move to the first message"
+msgstr "gå til det første brev"
+
+#: keymap_alldefs.h:100
+msgid "move to the last message"
+msgstr "gå til det sidste brev"
+
+#: keymap_alldefs.h:101
+msgid "show only messages matching a pattern"
+msgstr "vis kun breve der matcher et mønster"
+
+#: keymap_alldefs.h:102
+msgid "jump to the next new message"
+msgstr "hop til det næste nye brev"
+
+#: keymap_alldefs.h:103
+msgid "jump to the next subthread"
+msgstr "hop til næste deltråd"
+
+#: keymap_alldefs.h:104
+msgid "jump to the next thread"
+msgstr "hop til næste tråd"
+
+#: keymap_alldefs.h:105
+msgid "move to the next undeleted message"
+msgstr "hop til næste ikke-slettede brev"
+
+#: keymap_alldefs.h:106
+msgid "jump to the next unread message"
+msgstr "hop til næste ulæste brev"
+
+#: keymap_alldefs.h:107
+msgid "jump to parent message in thread"
+msgstr "hop til forrige brev i tråden"
+
+#: keymap_alldefs.h:108
+msgid "jump to previous thread"
+msgstr "hop til forrige tråd"
+
+#: keymap_alldefs.h:109
+msgid "jump to previous subthread"
+msgstr "hop til forrige deltråd"
+
+#: keymap_alldefs.h:110
+msgid "move to the previous undeleted message"
+msgstr "hop til forrige ikke-slettede brev"
+
+#: keymap_alldefs.h:111
+msgid "jump to the previous new message"
+msgstr "hop til forrige nye brev"
+
+#: keymap_alldefs.h:112
+msgid "jump to the previous unread message"
+msgstr "hop til forrige ulæste brev"
+
+#: keymap_alldefs.h:113
+msgid "mark the current thread as read"
+msgstr "markér den aktuelle tråd som læst"
+
+#: keymap_alldefs.h:114
+msgid "mark the current subthread as read"
+msgstr "markér den aktuelle deltråd som læst"
+
+#: keymap_alldefs.h:115
+msgid "set a status flag on a message"
+msgstr "sæt en status-indikator på et brev"
+
+#: keymap_alldefs.h:116
+msgid "save changes to mailbox"
+msgstr "gem ændringer i brevbakke"
+
+#: keymap_alldefs.h:117
+msgid "tag messages matching a pattern"
+msgstr "udvælg breve efter et mønster"
+
+#: keymap_alldefs.h:118
+msgid "undelete messages matching a pattern"
+msgstr "fjern slet-markering efter mønster"
+
+#: keymap_alldefs.h:119
+msgid "untag messages matching a pattern"
+msgstr "fjern valg efter mønster"
+
+#: keymap_alldefs.h:120
+msgid "move to the middle of the page"
+msgstr "gå til midten af siden"
+
+#: keymap_alldefs.h:121
+msgid "create a new mailbox (IMAP only)"
+msgstr "opret en ny brevbakke (kun IMAP)"
+
+#: keymap_alldefs.h:122
+msgid "move to the next entry"
+msgstr "gå til næste listning"
+
+#: keymap_alldefs.h:123
+msgid "scroll down one line"
+msgstr "flyt en linje ned"
+
+#: keymap_alldefs.h:124
+msgid "move to the next page"
+msgstr "gå til næste side"
+
+#: keymap_alldefs.h:125
+msgid "jump to the bottom of the message"
+msgstr "gå til bunden af brevet"
+
+#: keymap_alldefs.h:126
+msgid "toggle display of quoted text"
+msgstr "vælg om citeret tekst skal vises"
+
+#: keymap_alldefs.h:127
+msgid "skip beyond quoted text"
+msgstr "gå forbi citeret tekst"
+
+#: keymap_alldefs.h:128
+msgid "jump to the top of the message"
+msgstr "gå til toppen af brevet"
+
+#: keymap_alldefs.h:129
+msgid "pipe message/attachment to a shell command"
+msgstr "overfør brev/brevdel til en skalkommando"
+
+#: keymap_alldefs.h:130
+msgid "move to the previous entry"
+msgstr "gå til forrige listning"
+
+#: keymap_alldefs.h:131
+msgid "scroll up one line"
+msgstr "flyt en linje op"
+
+#: keymap_alldefs.h:132
+msgid "move to the previous page"
+msgstr "gå til den forrige side"
+
+#: keymap_alldefs.h:133
+msgid "print the current entry"
+msgstr "udskriv den aktuelle listning"
+
+#: keymap_alldefs.h:134
+msgid "query external program for addresses"
+msgstr "send adresse-forespørgsel til hjælpeprogram"
+
+#: keymap_alldefs.h:135
+msgid "append new query results to current results"
+msgstr "føj nye resultater af forespørgsel til de aktuelle resultater"
+
+#: keymap_alldefs.h:136
+msgid "save changes to mailbox and quit"
+msgstr "gem ændringer i brevbakke og afslut"
+
+#: keymap_alldefs.h:137
+msgid "recall a postponed message"
+msgstr "genindlæs et tilbageholdt brev"
+
+#: keymap_alldefs.h:138
+msgid "clear and redraw the screen"
+msgstr "ryd og opfrisk skærmen"
+
+#: keymap_alldefs.h:139
+msgid "{internal}"
+msgstr "{intern}"
+
+#: keymap_alldefs.h:140
+msgid "reply to a message"
+msgstr "svar på et brev"
+
+#: keymap_alldefs.h:141
+msgid "use the current message as a template for a new one"
+msgstr "anvend det aktuelle brev som skabelon for et nyt"
+
+#: keymap_alldefs.h:142
+msgid "save message/attachment to a file"
+msgstr "gem brev/brevdel i en fil"
+
+#: keymap_alldefs.h:143
+msgid "search for a regular expression"
+msgstr "søg efter et regulært udtryk"
+
+#: keymap_alldefs.h:144
+msgid "search backwards for a regular expression"
+msgstr "søg baglæns efter et regulært udtryk"
+
+#: keymap_alldefs.h:145
+msgid "search for next match"
+msgstr "søg efter næste resultat"
+
+#: keymap_alldefs.h:146
+msgid "search for next match in opposite direction"
+msgstr "søg efter næste resultat i modsat retning"
+
+#: keymap_alldefs.h:147
+msgid "toggle search pattern coloring"
+msgstr "vælg om fundne søgningsmønstre skal farves"
+
+#: keymap_alldefs.h:148
+msgid "invoke a command in a subshell"
+msgstr "kør en kommando i en under-skal"
+
+#: keymap_alldefs.h:149
+msgid "sort messages"
+msgstr "sortér breve"
+
+#: keymap_alldefs.h:150
+msgid "sort messages in reverse order"
+msgstr "sortér breve i omvendt rækkefølge"
+
+#: keymap_alldefs.h:151
+msgid "tag the current entry"
+msgstr "udvælg den aktuelle listning"
+
+#: keymap_alldefs.h:152
+msgid "apply next function to tagged messages"
+msgstr "anvend næste funktion på de udvalgte breve"
+
+#: keymap_alldefs.h:153
+msgid "tag the current subthread"
+msgstr "markér den aktuelle deltråd"
+
+#: keymap_alldefs.h:154
+msgid "tag the current thread"
+msgstr "markér den aktuelle tråd"
+
+#: keymap_alldefs.h:155
+msgid "toggle a message's 'new' flag"
+msgstr "sæt/fjern et brevs \"ny\"-indikator"
+
+#: keymap_alldefs.h:156
+msgid "toggle whether the mailbox will be rewritten"
+msgstr "slå genskrivning af brevbakke til/fra"
+
+#: keymap_alldefs.h:157
+msgid "toggle whether to browse mailboxes or all files"
+msgstr "skift mellem visning af brevbakker eller alle filer"
+
+#: keymap_alldefs.h:158
+msgid "move to the top of the page"
+msgstr "gå til toppen af siden"
+
+#: keymap_alldefs.h:159
+msgid "undelete the current entry"
+msgstr "fjern slet-markering fra den aktuelle listning"
+
+#: keymap_alldefs.h:160
+msgid "undelete all messages in thread"
+msgstr "fjern slet-markering fra alle breve i tråd"
+
+#: keymap_alldefs.h:161
+msgid "undelete all messages in subthread"
+msgstr "fjern slet-markering fra alle breve i deltråd"
+
+#: keymap_alldefs.h:162
+msgid "show the Mutt version number and date"
+msgstr "vis Mutts versions-nummer og dato"
+
+#: keymap_alldefs.h:163
+msgid "view attachment using mailcap entry if necessary"
+msgstr "vis brevdel, om nødvendigt ved brug af mailcap"
+
+#: keymap_alldefs.h:164
+msgid "show MIME attachments"
+msgstr "vis MIME-dele"
+
+#: keymap_alldefs.h:165
+msgid "show currently active limit pattern"
+msgstr "vis det aktive afgrænsningsmønster"
+
+#: keymap_alldefs.h:166
+msgid "collapse/uncollapse current thread"
+msgstr "sammen-/udfold den aktuelle tråd"
+
+#: keymap_alldefs.h:167
+msgid "collapse/uncollapse all threads"
+msgstr "sammen-/udfold alle tråde"
+
+#: keymap_alldefs.h:168
+msgid "attach a PGP public key"
+msgstr "vedlæg en offentlig PGP-nøgle (public key)"
+
+#: keymap_alldefs.h:169
+msgid "show PGP options"
+msgstr "vis tilvalg for PGP"
+
+#: keymap_alldefs.h:170
+msgid "extract PGP public keys"
+msgstr "udtræk offentlige PGP-nøgler"
+
+#: keymap_alldefs.h:171
+msgid "wipe PGP passphrase from memory"
+msgstr "fjern PGP-løsen fra hukommelse"
+
+#: keymap_alldefs.h:172
+msgid "mail a PGP public key"
+msgstr "send en offentlig PGP-nøgle"
+
+#: keymap_alldefs.h:173
+msgid "verify a PGP public key"
+msgstr "efterprøv en offentlig PGP-nøgle"
+
+#: keymap_alldefs.h:174
+msgid "view the key's user id"
+msgstr "vis nøglens bruger-id"
+
+#: keymap_alldefs.h:175
+msgid "make decrypted copy and delete"
+msgstr "opret dekrypteret kopi og slet"
+
+#: keymap_alldefs.h:176
+msgid "make decrypted copy"
+msgstr "opret dekrypteret kopi"
+
+#: keymap_alldefs.h:177
+msgid "Accept the chain constructed"
+msgstr "Brug den opbyggede kæde"
+
+#: keymap_alldefs.h:178
+msgid "Append a remailer to the chain"
+msgstr "Føj en genposter til kæden"
+
+#: keymap_alldefs.h:179
+msgid "Insert a remailer into the chain"
+msgstr "indsæt en genposter i kæden"
+
+#: keymap_alldefs.h:180
+msgid "Delete a remailer from the chain"
+msgstr "Slet en genposter fra kæden"
+
+#: keymap_alldefs.h:181
+msgid "Select the previous element of the chain"
+msgstr "Vælg kædens forrige led"
+
+#: keymap_alldefs.h:182
+msgid "Select the next element of the chain"
+msgstr "Vælg kædens næste led"
+
+#: keymap_alldefs.h:183
+msgid "send the message through a mixmaster remailer chain"
+msgstr "send brevet gennem en mixmaster-genposterkæde"
 
 #: lib.c:58 lib.c:73 lib.c:104
 msgid "Out of memory!"
@@ -2834,537 +3546,3 @@ msgstr "Forrige brev i tråden er ikke synlig i afgrænset visning"
 #: thread.c:723
 msgid "Parent message is not available."
 msgstr "Forrige brev i tråden er ikke tilgængelig."
-
-#~ msgid "null operation"
-#~ msgstr "tom funktion"
-
-#~ msgid "force viewing of attachment using mailcap"
-#~ msgstr "fremtving visning af denne del ved brug af mailcap"
-
-#~ msgid "view attachment as text"
-#~ msgstr "vis denne del som tekst"
-
-#~ msgid "move to the bottom of the page"
-#~ msgstr "gå til bunden af siden"
-
-#~ msgid "remail a message to another user"
-#~ msgstr "videresend et brev til en anden modtager"
-
-#~ msgid "select a new file in this directory"
-#~ msgstr "Vælg en ny fil i dette filkatalog"
-
-#~ msgid "view file"
-#~ msgstr "vis fil"
-
-#~ msgid "display the currently selected file's name"
-#~ msgstr "vis navnet på den aktuelt valgte fil"
-
-#~ msgid "subscribe to current mailbox (IMAP only)"
-#~ msgstr "abonnér på aktuelle brevbakke (kun IMAP)"
-
-#~ msgid "unsubscribe to current mailbox (IMAP only)"
-#~ msgstr "afmeld abonnement på aktuelle brevbakke (kun IMAP)"
-
-#~ msgid "toggle view all/subscribed mailboxes (IMAP only)"
-#~ msgstr "skift mellem visning af alle/abonnerede postbakker (kun IMAP)"
-
-#~ msgid "change directories"
-#~ msgstr "skift filkatalog"
-
-#~ msgid "check mailboxes for new mail"
-#~ msgstr "undersøg brevbakker for nye breve"
-
-#~ msgid "attach a file(s) to this message"
-#~ msgstr "vedlæg fil(er) til dette brev"
-
-#~ msgid "attach message(s) to this message"
-#~ msgstr "vedlæg brev(e) til dette brev"
-
-#~ msgid "change an attachment's character set"
-#~ msgstr "skift tegnsæt for en brevdel"
-
-#~ msgid "edit the BCC list"
-#~ msgstr "ret i Bcc-listen"
-
-#~ msgid "edit the CC list"
-#~ msgstr "ret i Cc-listen"
-
-#~ msgid "edit attachment description"
-#~ msgstr "ret delens beskrivelse"
-
-#~ msgid "edit attachment transfer-encoding"
-#~ msgstr "ret delens indkodning"
-
-#~ msgid "enter a file to save a copy of this message in"
-#~ msgstr "kopiér dette brev til fil"
-
-#~ msgid "edit the file to be attached"
-#~ msgstr "redigér i den fil der skal vedlægges"
-
-#~ msgid "edit the from field"
-#~ msgstr "ret afsender (from:)"
-
-#~ msgid "edit the message with headers"
-#~ msgstr "redigér brev (med brevhoved)"
-
-#~ msgid "edit the message"
-#~ msgstr "redigér brev"
-
-#~ msgid "edit attachment using mailcap entry"
-#~ msgstr "redigér brevdel efter mailcap-regel"
-
-#~ msgid "edit the Reply-To field"
-#~ msgstr "ret Reply-To-feltet"
-
-#~ msgid "edit the subject of this message"
-#~ msgstr "ret dette brevs emne (Subject:)"
-
-#~ msgid "edit the TO list"
-#~ msgstr "ret listen over modtagere (To:)"
-
-#~ msgid "edit attachment content type"
-#~ msgstr "ret brevdelens \"content-type\""
-
-#~ msgid "get a temporary copy of an attachment"
-#~ msgstr "lav en midlertidig kopi af en brevdel"
-
-#~ msgid "run ispell on the message"
-#~ msgstr "stavekontrollér brevet"
-
-#~ msgid "compose new attachment using mailcap entry"
-#~ msgstr "lav en ny brevdel efter mailcap-regel"
-
-#~ msgid "toggle recoding of this attachment"
-#~ msgstr "slå omkodning af denne brevdel til/fra"
-
-#~ msgid "recode this attachment to/from the local charset"
-#~ msgstr "omkod denne brevdel til/fra det lokale tegnsæt"
-
-#~ msgid "save this message to send later"
-#~ msgstr "gem dette brev til senere forsendelse"
-
-#~ msgid "rename/move an attached file"
-#~ msgstr "omdøb/flyt en vedlagt fil"
-
-#~ msgid "send the message"
-#~ msgstr "send brevet"
-
-#~ msgid "toggle disposition between inline/attachment"
-#~ msgstr "skift status mellem intregeret og bilagt"
-
-#~ msgid "toggle whether to delete file after sending it"
-#~ msgstr "vælg om filen skal slettes efter afsendelse"
-
-#~ msgid "update an attachment's encoding info"
-#~ msgstr "opdatér data om brevdelens indkodning"
-
-#~ msgid "write the message to a folder"
-#~ msgstr "læg brevet i en brevbakke"
-
-#~ msgid "copy a message to a file/mailbox"
-#~ msgstr "kopiér brev til en fil/brevbakke"
-
-#~ msgid "create an alias from a message sender"
-#~ msgstr "opret et alias fra afsenderadresse"
-
-#~ msgid "move entry to bottom of screen"
-#~ msgstr "flyt til nederste listning"
-
-#~ msgid "move entry to middle of screen"
-#~ msgstr "flyt til midterste listning"
-
-#~ msgid "move entry to top of screen"
-#~ msgstr "flyt til øverste listning"
-
-#~ msgid "make decoded (text/plain) copy"
-#~ msgstr "lav en afkodet kopi (text/plain)"
-
-#~ msgid "make decoded copy (text/plain) and delete"
-#~ msgstr "lav en afkodet kopi (text/plain) og slet"
-
-#~ msgid "delete the current entry"
-#~ msgstr "slet den aktuelle listning"
-
-#~ msgid "delete the current mailbox (IMAP only)"
-#~ msgstr "slet den aktuelle brevbakke (kun IMAP)"
-
-#~ msgid "delete all messages in subthread"
-#~ msgstr "slet alle breve i deltråd"
-
-#~ msgid "delete all messages in thread"
-#~ msgstr "slet alle breve i tråd"
-
-#~ msgid "display full address of sender"
-#~ msgstr "vis fuld afsenderadresse"
-
-#~ msgid "display message and toggle header weeding"
-#~ msgstr "fremvis meddelelsen med helt eller beskåret brevhoved"
-
-#~ msgid "display a message"
-#~ msgstr "fremvis et brev"
-
-#~ msgid "edit the raw message"
-#~ msgstr "redigér det \"rå\" brev"
-
-#~ msgid "delete the char in front of the cursor"
-#~ msgstr "slet tegnet foran markøren"
-
-#~ msgid "move the cursor one character to the left"
-#~ msgstr "flyt markøren et tegn til venstre"
-
-#~ msgid "jump to the beginning of the line"
-#~ msgstr "gå til begyndelsen af linje"
-
-#~ msgid "cycle among incoming mailboxes"
-#~ msgstr "Gennemløb indbakker"
-
-#~ msgid "complete filename or alias"
-#~ msgstr "færdiggør filnavn eller alias"
-
-#~ msgid "complete address with query"
-#~ msgstr "færdiggør adresse ved forespørgsel"
-
-#~ msgid "delete the char under the cursor"
-#~ msgstr "slet tegnet under markøren"
-
-#~ msgid "jump to the end of the line"
-#~ msgstr "gå til linjeslut"
-
-#~ msgid "move the cursor one character to the right"
-#~ msgstr "flyt markøren et tegn til højre"
-
-#~ msgid "scroll up through the history list"
-#~ msgstr "gå op igennem historik-listen"
-
-#~ msgid "delete chars from cursor to end of line"
-#~ msgstr "slet alle tegn til linjeafslutning"
-
-#~ msgid "delete all chars on the line"
-#~ msgstr "slet linje"
-
-#~ msgid "delete the word in front of the cursor"
-#~ msgstr "slet ord foran markør"
-
-#~ msgid "quote the next typed key"
-#~ msgstr "citér den næste taste"
-
-#~ msgid "enter a muttrc command"
-#~ msgstr "skriv en muttrc-kommando"
-
-#~ msgid "enter a file mask"
-#~ msgstr "skriv en filmaske"
-
-#~ msgid "exit this menu"
-#~ msgstr "forlad denne menu"
-
-#~ msgid "filter attachment through a shell command"
-#~ msgstr "filtrér brevdel gennem en skalkommando"
-
-#~ msgid "move to the first entry"
-#~ msgstr "gå til den første listning"
-
-#~ msgid "toggle a message's 'important' flag"
-#~ msgstr "markér brev som vigtig/fjern markering"
-
-#~ msgid "forward a message with comments"
-#~ msgstr "videresend et brev med kommentarer"
-
-#~ msgid "select the current entry"
-#~ msgstr "vælg den aktuelle listning"
-
-#~ msgid "reply to all recipients"
-#~ msgstr "svar til alle modtagere"
-
-#~ msgid "scroll down 1/2 page"
-#~ msgstr "gå ½ side ned"
-
-#~ msgid "scroll up 1/2 page"
-#~ msgstr "gå ½ side op"
-
-#~ msgid "this screen"
-#~ msgstr "dette skærmbillede"
-
-#~ msgid "jump to an index number"
-#~ msgstr "gå til et indeksnummer"
-
-#~ msgid "move to the last entry"
-#~ msgstr "gå til den sidste listning"
-
-#~ msgid "reply to specified mailing list"
-#~ msgstr "svar til en angivet postliste"
-
-#~ msgid "execute a macro"
-#~ msgstr "udfør makro"
-
-#~ msgid "compose a new mail message"
-#~ msgstr "skriv et nyt brev"
-
-#~ msgid "open a different folder"
-#~ msgstr "åbn en anden brevbakke"
-
-#~ msgid "open a different folder in read only mode"
-#~ msgstr "åbn en anden brevbakke som skrivebeskyttet"
-
-#~ msgid "clear a status flag from a message"
-#~ msgstr "fjern status-indikator fra brev"
-
-#~ msgid "delete messages matching a pattern"
-#~ msgstr "slet breve efter mønster"
-
-#~ msgid "retrieve mail from POP server"
-#~ msgstr "hent breve fra POP-tjener"
-
-#~ msgid "move to the first message"
-#~ msgstr "gå til det første brev"
-
-#~ msgid "move to the last message"
-#~ msgstr "gå til det sidste brev"
-
-#~ msgid "show only messages matching a pattern"
-#~ msgstr "vis kun breve der matcher et mønster"
-
-#~ msgid "jump to the next new message"
-#~ msgstr "hop til det næste nye brev"
-
-#~ msgid "jump to the next subthread"
-#~ msgstr "hop til næste deltråd"
-
-#~ msgid "jump to the next thread"
-#~ msgstr "hop til næste tråd"
-
-#~ msgid "move to the next undeleted message"
-#~ msgstr "hop til næste ikke-slettede brev"
-
-#~ msgid "jump to the next unread message"
-#~ msgstr "hop til næste ulæste brev"
-
-#~ msgid "jump to parent message in thread"
-#~ msgstr "hop til forrige brev i tråden"
-
-#~ msgid "jump to previous thread"
-#~ msgstr "hop til forrige tråd"
-
-#~ msgid "jump to previous subthread"
-#~ msgstr "hop til forrige deltråd"
-
-#~ msgid "move to the previous undeleted message"
-#~ msgstr "hop til forrige ikke-slettede brev"
-
-#~ msgid "jump to the previous new message"
-#~ msgstr "hop til forrige nye brev"
-
-#~ msgid "jump to the previous unread message"
-#~ msgstr "hop til forrige ulæste brev"
-
-#~ msgid "mark the current thread as read"
-#~ msgstr "markér den aktuelle tråd som læst"
-
-#~ msgid "mark the current subthread as read"
-#~ msgstr "markér den aktuelle deltråd som læst"
-
-#~ msgid "set a status flag on a message"
-#~ msgstr "sæt en status-indikator på et brev"
-
-#~ msgid "save changes to mailbox"
-#~ msgstr "gem ændringer i brevbakke"
-
-#~ msgid "tag messages matching a pattern"
-#~ msgstr "udvælg breve efter et mønster"
-
-#~ msgid "undelete messages matching a pattern"
-#~ msgstr "fjern slet-markering efter mønster"
-
-#~ msgid "untag messages matching a pattern"
-#~ msgstr "fjern valg efter mønster"
-
-#~ msgid "move to the middle of the page"
-#~ msgstr "gå til midten af siden"
-
-#~ msgid "create a new mailbox (IMAP only)"
-#~ msgstr "opret en ny brevbakke (kun IMAP)"
-
-#~ msgid "move to the next entry"
-#~ msgstr "gå til næste listning"
-
-#~ msgid "scroll down one line"
-#~ msgstr "flyt en linje ned"
-
-#~ msgid "move to the next page"
-#~ msgstr "gå til næste side"
-
-#~ msgid "jump to the bottom of the message"
-#~ msgstr "gå til bunden af brevet"
-
-#~ msgid "toggle display of quoted text"
-#~ msgstr "vælg om citeret tekst skal vises"
-
-#~ msgid "skip beyond quoted text"
-#~ msgstr "gå forbi citeret tekst"
-
-#~ msgid "jump to the top of the message"
-#~ msgstr "gå til toppen af brevet"
-
-#~ msgid "pipe message/attachment to a shell command"
-#~ msgstr "overfør brev/brevdel til en skalkommando"
-
-#~ msgid "move to the previous entry"
-#~ msgstr "gå til forrige listning"
-
-#~ msgid "scroll up one line"
-#~ msgstr "flyt en linje op"
-
-#~ msgid "move to the previous page"
-#~ msgstr "gå til den forrige side"
-
-#~ msgid "print the current entry"
-#~ msgstr "udskriv den aktuelle listning"
-
-#~ msgid "query external program for addresses"
-#~ msgstr "send adresse-forespørgsel til hjælpeprogram"
-
-#~ msgid "append new query results to current results"
-#~ msgstr "føj nye resultater af forespørgsel til de aktuelle resultater"
-
-#~ msgid "save changes to mailbox and quit"
-#~ msgstr "gem ændringer i brevbakke og afslut"
-
-#~ msgid "recall a postponed message"
-#~ msgstr "genindlæs et tilbageholdt brev"
-
-#~ msgid "clear and redraw the screen"
-#~ msgstr "ryd og opfrisk skærmen"
-
-#~ msgid "{internal}"
-#~ msgstr "{intern}"
-
-#~ msgid "reply to a message"
-#~ msgstr "svar på et brev"
-
-#~ msgid "use the current message as a template for a new one"
-#~ msgstr "anvend det aktuelle brev som skabelon for et nyt"
-
-#~ msgid "save message/attachment to a file"
-#~ msgstr "gem brev/brevdel i en fil"
-
-#~ msgid "search for a regular expression"
-#~ msgstr "søg efter et regulært udtryk"
-
-#~ msgid "search backwards for a regular expression"
-#~ msgstr "søg baglæns efter et regulært udtryk"
-
-#~ msgid "search for next match"
-#~ msgstr "søg efter næste resultat"
-
-#~ msgid "search for next match in opposite direction"
-#~ msgstr "søg efter næste resultat i modsat retning"
-
-#~ msgid "toggle search pattern coloring"
-#~ msgstr "vælg om fundne søgningsmønstre skal farves"
-
-#~ msgid "invoke a command in a subshell"
-#~ msgstr "kør en kommando i en under-skal"
-
-#~ msgid "sort messages"
-#~ msgstr "sortér breve"
-
-#~ msgid "sort messages in reverse order"
-#~ msgstr "sortér breve i omvendt rækkefølge"
-
-#~ msgid "tag the current entry"
-#~ msgstr "udvælg den aktuelle listning"
-
-#~ msgid "apply next function to tagged messages"
-#~ msgstr "anvend næste funktion på de udvalgte breve"
-
-#~ msgid "tag the current subthread"
-#~ msgstr "markér den aktuelle deltråd"
-
-#~ msgid "tag the current thread"
-#~ msgstr "markér den aktuelle tråd"
-
-#~ msgid "toggle a message's 'new' flag"
-#~ msgstr "sæt/fjern et brevs \"ny\"-indikator"
-
-#~ msgid "toggle whether the mailbox will be rewritten"
-#~ msgstr "slå genskrivning af brevbakke til/fra"
-
-#~ msgid "toggle whether to browse mailboxes or all files"
-#~ msgstr "skift mellem visning af brevbakker eller alle filer"
-
-#~ msgid "move to the top of the page"
-#~ msgstr "gå til toppen af siden"
-
-#~ msgid "undelete the current entry"
-#~ msgstr "fjern slet-markering fra den aktuelle listning"
-
-#~ msgid "undelete all messages in thread"
-#~ msgstr "fjern slet-markering fra alle breve i tråd"
-
-#~ msgid "undelete all messages in subthread"
-#~ msgstr "fjern slet-markering fra alle breve i deltråd"
-
-#~ msgid "show the Mutt version number and date"
-#~ msgstr "vis Mutts versions-nummer og dato"
-
-#~ msgid "view attachment using mailcap entry if necessary"
-#~ msgstr "vis brevdel, om nødvendigt ved brug af mailcap"
-
-#~ msgid "show MIME attachments"
-#~ msgstr "vis MIME-dele"
-
-#~ msgid "show currently active limit pattern"
-#~ msgstr "vis det aktive afgrænsningsmønster"
-
-#~ msgid "collapse/uncollapse current thread"
-#~ msgstr "sammen-/udfold den aktuelle tråd"
-
-#~ msgid "collapse/uncollapse all threads"
-#~ msgstr "sammen-/udfold alle tråde"
-
-#~ msgid "attach a PGP public key"
-#~ msgstr "vedlæg en offentlig PGP-nøgle (public key)"
-
-#~ msgid "show PGP options"
-#~ msgstr "vis tilvalg for PGP"
-
-#~ msgid "extract PGP public keys"
-#~ msgstr "udtræk offentlige PGP-nøgler"
-
-#~ msgid "wipe PGP passphrase from memory"
-#~ msgstr "fjern PGP-løsen fra hukommelse"
-
-#~ msgid "mail a PGP public key"
-#~ msgstr "send en offentlig PGP-nøgle"
-
-#~ msgid "verify a PGP public key"
-#~ msgstr "efterprøv en offentlig PGP-nøgle"
-
-#~ msgid "view the key's user id"
-#~ msgstr "vis nøglens bruger-id"
-
-#~ msgid "make decrypted copy and delete"
-#~ msgstr "opret dekrypteret kopi og slet"
-
-#~ msgid "make decrypted copy"
-#~ msgstr "opret dekrypteret kopi"
-
-#~ msgid "Accept the chain constructed"
-#~ msgstr "Brug den opbyggede kæde"
-
-#~ msgid "Append a remailer to the chain"
-#~ msgstr "Føj en genposter til kæden"
-
-#~ msgid "Insert a remailer into the chain"
-#~ msgstr "indsæt en genposter i kæden"
-
-#~ msgid "Delete a remailer from the chain"
-#~ msgstr "Slet en genposter fra kæden"
-
-#~ msgid "Select the previous element of the chain"
-#~ msgstr "Vælg kædens forrige led"
-
-#~ msgid "Select the next element of the chain"
-#~ msgstr "Vælg kædens næste led"
-
-#~ msgid "send the message through a mixmaster remailer chain"
-#~ msgstr "send brevet gennem en mixmaster-genposterkæde"

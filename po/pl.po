@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt-1.1.9i\n"
-"POT-Creation-Date: 2000-03-29 22:11+0200\n"
+"POT-Creation-Date: 2000-03-30 17:13+0200\n"
 "PO-Revision-Date: 2000-03-14\n"
 "Last-Translator: Pawe³ Dziekoñski <p.dziekonski@mml.ch.pwr.wroc.pl>\n"
 "Language-Team: POLISH <pl@li.org>\n"
@@ -670,7 +670,7 @@ msgstr "Naci¶nij dowolny klawisz by kontynuowaæ..."
 msgid " ('?' for list): "
 msgstr " (przyci¶niêcie '?' wy¶wietla listê): "
 
-#: curs_main.c:55 curs_main.c:564
+#: curs_main.c:55 curs_main.c:565
 msgid "No mailbox is open."
 msgstr "Nie otwarto ¿adnej skrzynki."
 
@@ -730,122 +730,122 @@ msgstr "Skrzynka zosta³a zmodyfikowana z zewn±trz. Flagi mog± byæ nieaktualne."
 msgid "New mail in this mailbox."
 msgstr "Uwaga - w bie¿±cej skrzynce pojawi³a siê nowa poczta!"
 
-#: curs_main.c:570
+#: curs_main.c:571
 msgid "No tagged messages."
 msgstr "Brak zaznaczonych listów."
 
-#: curs_main.c:650
+#: curs_main.c:651
 msgid "Jump to message: "
 msgstr "Skocz do listu: "
 
-#: curs_main.c:656
+#: curs_main.c:657
 msgid "Argument must be a message number."
 msgstr "Argumentem musi byæ numer listu."
 
-#: curs_main.c:689
+#: curs_main.c:690
 msgid "That message is not visible."
 msgstr "Ten list nie jest widoczny."
 
-#: curs_main.c:692
+#: curs_main.c:693
 msgid "Invalid message number."
 msgstr "B³êdny numer listu."
 
-#: curs_main.c:705
+#: curs_main.c:706
 msgid "Delete messages matching: "
 msgstr "Usuñ listy pasuj±ce do wzorca: "
 
-#: curs_main.c:727
+#: curs_main.c:728
 msgid "No limit pattern is in effect."
 msgstr "Ograniczenie nie jest okre¶lone."
 
 #. i18n: ask for a limit to apply
-#: curs_main.c:732
+#: curs_main.c:733
 #, c-format
 msgid "Limit: %s"
 msgstr "Ograniczenie: %s"
 
-#: curs_main.c:741
+#: curs_main.c:742
 msgid "Limit to messages matching: "
 msgstr "Ogranicz do pasuj±cych listów: "
 
-#: curs_main.c:771
+#: curs_main.c:772
 msgid "Quit Mutt?"
 msgstr "Wyj¶æ z Mutta?"
 
-#: curs_main.c:894
+#: curs_main.c:895
 msgid "Tag messages matching: "
 msgstr "Zaznacz pasuj±ce listy: "
 
-#: curs_main.c:902
+#: curs_main.c:903
 msgid "Undelete messages matching: "
 msgstr "Odtwórz pasuj±ce listy: "
 
-#: curs_main.c:909
+#: curs_main.c:910
 msgid "Untag messages matching: "
 msgstr "Odznacz pasuj±ce listy: "
 
-#: curs_main.c:927
+#: curs_main.c:928
 msgid "Open mailbox in read-only mode"
 msgstr "Otwórz skrzynkê tylko do odczytu"
 
-#: curs_main.c:929
+#: curs_main.c:930
 msgid "Open mailbox"
 msgstr "Otwórz skrzynkê"
 
-#: curs_main.c:945 mx.c:454 mx.c:600
+#: curs_main.c:946 mx.c:454 mx.c:600
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s nie jest skrzynk±."
 
-#: curs_main.c:1030
+#: curs_main.c:1031
 msgid "Exit Mutt without saving?"
 msgstr "Wyj¶æ z Mutta bez zapisywania zmian?"
 
-#: curs_main.c:1066 curs_main.c:1090
+#: curs_main.c:1067 curs_main.c:1091
 msgid "You are on the last message."
 msgstr "To jest ostatni list."
 
-#: curs_main.c:1073 curs_main.c:1115
+#: curs_main.c:1074 curs_main.c:1116
 msgid "No undeleted messages."
 msgstr "Brak odtworzonych listów."
 
-#: curs_main.c:1108 curs_main.c:1131
+#: curs_main.c:1109 curs_main.c:1132
 msgid "You are on the first message."
 msgstr "To jest pierwszy list."
 
-#: curs_main.c:1203 pattern.c:1123
+#: curs_main.c:1204 pattern.c:1123
 msgid "Search wrapped to top."
 msgstr "Kontynuacja poszukiwania od pocz±tku."
 
-#: curs_main.c:1212 pattern.c:1134
+#: curs_main.c:1213 pattern.c:1134
 msgid "Search wrapped to bottom."
 msgstr "Kontynuacja poszukiwania od koñca."
 
-#: curs_main.c:1245
+#: curs_main.c:1246
 msgid "No new messages"
 msgstr "Brak nowych listów"
 
-#: curs_main.c:1245
+#: curs_main.c:1246
 msgid "No unread messages"
 msgstr "Przeczytano ju¿ wszystkie listy"
 
-#: curs_main.c:1246
+#: curs_main.c:1247
 msgid " in this limited view"
 msgstr " w trybie ograniczonego przegl±dania"
 
-#: curs_main.c:1370
+#: curs_main.c:1371
 msgid "No more threads."
 msgstr "Nie ma wiêcej w±tków."
 
-#: curs_main.c:1372
+#: curs_main.c:1373
 msgid "You are on the first thread."
 msgstr "To pierwszy w±tek."
 
-#: curs_main.c:1442
+#: curs_main.c:1443
 msgid "Thread contains unread messages."
 msgstr "Watek zawiera nieprzeczytane listy."
 
-#: curs_main.c:1455 flags.c:228 thread.c:657 thread.c:708
+#: curs_main.c:1456 flags.c:228 thread.c:657 thread.c:708
 msgid "Threading is not enabled."
 msgstr "W±tkowanie nie zosta³o w³±czone."
 
@@ -1517,6 +1517,719 @@ msgstr "exec: zbyt ma³o argumentów"
 #, c-format
 msgid "%s: no such command"
 msgstr "%s: nie ma takiego polecenia"
+
+#: keymap_alldefs.h:5
+msgid "null operation"
+msgstr "pusta operacja"
+
+#: keymap_alldefs.h:6
+msgid "force viewing of attachment using mailcap"
+msgstr "wymu¶ obejrzenie za³±czników poprzez plik 'mailcap'"
+
+#: keymap_alldefs.h:7
+msgid "view attachment as text"
+msgstr "obejrzyj za³±cznik jako tekst"
+
+#: keymap_alldefs.h:8
+msgid "move to the bottom of the page"
+msgstr "przejd¼ na koniec strony"
+
+#: keymap_alldefs.h:9
+msgid "remail a message to another user"
+msgstr "wy¶lij ponownie do innego u¿ytkownika"
+
+#: keymap_alldefs.h:10
+msgid "select a new file in this directory"
+msgstr "wybierz nowy plik w tym katalogu"
+
+#: keymap_alldefs.h:11
+msgid "view file"
+msgstr "ogl±daj plik"
+
+#: keymap_alldefs.h:12
+msgid "display the currently selected file's name"
+msgstr "wy¶wietl nazwy aktualnie wybranych plików"
+
+#: keymap_alldefs.h:13
+msgid "subscribe to current mailbox (IMAP only)"
+msgstr "zasubskrybuj bie¿±c± skrzynkê (tylko IMAP)"
+
+#: keymap_alldefs.h:14
+msgid "unsubscribe to current mailbox (IMAP only)"
+msgstr "odsubskrybuj bie¿±c± skrzynkê (tylko IMAP)"
+
+#: keymap_alldefs.h:15
+msgid "toggle view all/subscribed mailboxes (IMAP only)"
+msgstr ""
+"zmieñ tryb przegl±dania skrzynek: wszystkie/zasubskrybowane (tylko IMAP)"
+
+#: keymap_alldefs.h:16
+msgid "change directories"
+msgstr "zmieñ katalog"
+
+#: keymap_alldefs.h:17
+msgid "check mailboxes for new mail"
+msgstr "szukaj nowych listów w skrzynkach"
+
+#: keymap_alldefs.h:18
+msgid "attach a file(s) to this message"
+msgstr "do³±cz plik(i) do tego listu"
+
+#: keymap_alldefs.h:19
+msgid "attach message(s) to this message"
+msgstr "do³±cz list(y) do tego listu"
+
+#: keymap_alldefs.h:20
+msgid "change an attachment's character set"
+msgstr "zmieñ zestaw znaków za³±cznika"
+
+#: keymap_alldefs.h:21
+msgid "edit the BCC list"
+msgstr "podaj tre¶æ pola BCC"
+
+#: keymap_alldefs.h:22
+msgid "edit the CC list"
+msgstr "podaj tre¶æ pola CC"
+
+#: keymap_alldefs.h:23
+msgid "edit attachment description"
+msgstr "edytuj opis za³±cznika"
+
+#: keymap_alldefs.h:24
+msgid "edit attachment transfer-encoding"
+msgstr "podaj sposób zakodowania za³±cznika"
+
+#: keymap_alldefs.h:25
+msgid "enter a file to save a copy of this message in"
+msgstr "podaj nazwê pliku, do którego ma byæ skopiowany list"
+
+#: keymap_alldefs.h:26
+msgid "edit the file to be attached"
+msgstr "podaj nazwê pliku za³±cznika"
+
+#: keymap_alldefs.h:27
+msgid "edit the from field"
+msgstr "podaj tre¶æ pola From:"
+
+#: keymap_alldefs.h:28
+msgid "edit the message with headers"
+msgstr "edytuj tre¶æ listu i nag³ówków"
+
+#: keymap_alldefs.h:29
+msgid "edit the message"
+msgstr "edytuj tre¶æ listu"
+
+#: keymap_alldefs.h:30
+msgid "edit attachment using mailcap entry"
+msgstr "edytuj za³±cznik u¿ywaj±c pliku 'mailcap'"
+
+#: keymap_alldefs.h:31
+msgid "edit the Reply-To field"
+msgstr "podaj tre¶c pola Reply-To:"
+
+#: keymap_alldefs.h:32
+msgid "edit the subject of this message"
+msgstr "podaj tytu³ listu"
+
+#: keymap_alldefs.h:33
+msgid "edit the TO list"
+msgstr "podaj tre¶æ listy TO"
+
+#: keymap_alldefs.h:34
+msgid "edit attachment content type"
+msgstr "podaj rodzaj \"Content-Type\" za³±cznika"
+
+#: keymap_alldefs.h:35
+msgid "get a temporary copy of an attachment"
+msgstr "we¼ tymczasow± kopiê za³±cznika"
+
+#: keymap_alldefs.h:36
+msgid "run ispell on the message"
+msgstr "sprawd¼ poprawno¶æ pisowni listu"
+
+#: keymap_alldefs.h:37
+msgid "compose new attachment using mailcap entry"
+msgstr "utwórz nowy za³±cznik u¿ywaj±c pliku 'mailcap'"
+
+#: keymap_alldefs.h:38
+msgid "toggle recoding of this attachment"
+msgstr "zdecyduj czy za³±cznik ma byæ przekodowywany"
+
+#: keymap_alldefs.h:39
+msgid "recode this attachment to/from the local charset"
+msgstr "przekoduj ten za³±cznik do/z lokalnego zewstawu"
+
+#: keymap_alldefs.h:40
+msgid "save this message to send later"
+msgstr "zapisz list aby wys³aæ go pó¼niej"
+
+#: keymap_alldefs.h:41
+msgid "rename/move an attached file"
+msgstr "przezwij/przenie¶ do³±czony plik"
+
+#: keymap_alldefs.h:42
+msgid "send the message"
+msgstr "wy¶lij list"
+
+#: keymap_alldefs.h:43
+msgid "toggle disposition between inline/attachment"
+msgstr "ustala czy wstawiaæ w tre¶ci czy jako za³±cznik"
+
+#: keymap_alldefs.h:44
+msgid "toggle whether to delete file after sending it"
+msgstr "ustala czy usun±æ plik po wys³aniu"
+
+#: keymap_alldefs.h:45
+msgid "update an attachment's encoding info"
+msgstr "zaktualizuj informacjê o kodowaniu za³±cznika"
+
+#: keymap_alldefs.h:46
+msgid "write the message to a folder"
+msgstr "zapisz list do foldera"
+
+#: keymap_alldefs.h:47
+msgid "copy a message to a file/mailbox"
+msgstr "kopiuj list do pliku/skrzynki"
+
+#: keymap_alldefs.h:48
+msgid "create an alias from a message sender"
+msgstr "utwórz alias dla nadawcy"
+
+#: keymap_alldefs.h:49
+msgid "move entry to bottom of screen"
+msgstr "przesuñ pozycjê kursora na dó³ ekranu"
+
+#: keymap_alldefs.h:50
+msgid "move entry to middle of screen"
+msgstr "przesuñ pozycjê kursora na ¶rodek ekranu"
+
+#: keymap_alldefs.h:51
+msgid "move entry to top of screen"
+msgstr "przesuñ pozycjê kursora na górê ekranu"
+
+#: keymap_alldefs.h:52
+msgid "make decoded (text/plain) copy"
+msgstr "utwórz rozkodowan± (text/plain) kopiê"
+
+#: keymap_alldefs.h:53
+msgid "make decoded copy (text/plain) and delete"
+msgstr "utwórz rozkodowan± kopiê (text/plain) i usuñ"
+
+#: keymap_alldefs.h:54
+msgid "delete the current entry"
+msgstr "usuñ bie¿±cy list"
+
+#: keymap_alldefs.h:55
+msgid "delete the current mailbox (IMAP only)"
+msgstr "usuñ bie¿±c± skrzynkê (tylko IMAP)"
+
+#: keymap_alldefs.h:56
+msgid "delete all messages in subthread"
+msgstr "usuñ wszystkie listy w podw±tku"
+
+#: keymap_alldefs.h:57
+msgid "delete all messages in thread"
+msgstr "usuñ wszystkie listy w w±tku"
+
+#: keymap_alldefs.h:58
+msgid "display full address of sender"
+msgstr "wy¶wietl pe³ny adres nadawcy"
+
+#: keymap_alldefs.h:59
+msgid "display message and toggle header weeding"
+msgstr "wy¶wielt list ze wszystkimi nag³ówkami"
+
+#: keymap_alldefs.h:60
+msgid "display a message"
+msgstr "wy¶wietl list"
+
+#: keymap_alldefs.h:61
+msgid "edit the raw message"
+msgstr "edytuj list z nag³owkami"
+
+#: keymap_alldefs.h:62
+msgid "delete the char in front of the cursor"
+msgstr "usuñ znak przed kursorem"
+
+#: keymap_alldefs.h:63
+msgid "move the cursor one character to the left"
+msgstr "przesuñ kursor jeden znak w lewo"
+
+#: keymap_alldefs.h:64
+msgid "jump to the beginning of the line"
+msgstr "przeskocz do pocz±tku linii"
+
+#: keymap_alldefs.h:65
+msgid "cycle among incoming mailboxes"
+msgstr "kr±¿ pomiêdzy skrzynkami pocztowymi"
+
+#: keymap_alldefs.h:66
+msgid "complete filename or alias"
+msgstr "uzupe³nij nazwê pliku lub alias"
+
+#: keymap_alldefs.h:67
+msgid "complete address with query"
+msgstr "uzupe³nij adres poprzez zapytanie"
+
+#: keymap_alldefs.h:68
+msgid "delete the char under the cursor"
+msgstr "usuñ znak pod kursorem"
+
+#: keymap_alldefs.h:69
+msgid "jump to the end of the line"
+msgstr "przeskocz do koñca linii"
+
+#: keymap_alldefs.h:70
+msgid "move the cursor one character to the right"
+msgstr "przesuñ kursor o znak w prawo"
+
+#: keymap_alldefs.h:71 keymap_alldefs.h:72
+msgid "scroll up through the history list"
+msgstr "przewijaj do góry listê wydanych poleceñ"
+
+#: keymap_alldefs.h:73
+msgid "delete chars from cursor to end of line"
+msgstr "usuñ znaki pocz±wszy od kursora a¿ do koñca linii"
+
+#: keymap_alldefs.h:74
+msgid "delete all chars on the line"
+msgstr "usuñ wszystkie znaki w linii"
+
+#: keymap_alldefs.h:75
+msgid "delete the word in front of the cursor"
+msgstr "usuñ s³owo z przodu kursora"
+
+#: keymap_alldefs.h:76
+msgid "quote the next typed key"
+msgstr "zacytuj nastêpny wpisany znak"
+
+#: keymap_alldefs.h:77
+msgid "enter a muttrc command"
+msgstr "wprowad¼ polecenie pliku startowego (muttrc)"
+
+#: keymap_alldefs.h:78
+msgid "enter a file mask"
+msgstr "wprowad¼ maskê pliku"
+
+#: keymap_alldefs.h:79
+msgid "exit this menu"
+msgstr "opu¶æ niniejsze menu"
+
+#: keymap_alldefs.h:80
+msgid "filter attachment through a shell command"
+msgstr "przefiltruj za³±cznik przez polecenie pow³oki"
+
+#: keymap_alldefs.h:81
+msgid "move to the first entry"
+msgstr "przesuñ siê do pierwszej pozycji"
+
+#: keymap_alldefs.h:82
+msgid "toggle a message's 'important' flag"
+msgstr "w³±cz dla listu flagê 'wa¿ne!'"
+
+#: keymap_alldefs.h:83
+msgid "forward a message with comments"
+msgstr "prze¶lij dalej list opatruj±c j± uwagami"
+
+#: keymap_alldefs.h:84
+msgid "select the current entry"
+msgstr "wska¿ obecn± pozycjê"
+
+#: keymap_alldefs.h:85
+msgid "reply to all recipients"
+msgstr "odpowiedz wszystkim adresatom"
+
+#: keymap_alldefs.h:86
+msgid "scroll down 1/2 page"
+msgstr "przewiñ w dó³ o pó³ strony"
+
+#: keymap_alldefs.h:87
+msgid "scroll up 1/2 page"
+msgstr "przewiñ w górê o pó³ strony"
+
+#: keymap_alldefs.h:88
+msgid "this screen"
+msgstr "niniejszy ekran"
+
+#: keymap_alldefs.h:89
+msgid "jump to an index number"
+msgstr "przeskocz do konkretnej pozycji w indeksie"
+
+#: keymap_alldefs.h:90
+msgid "move to the last entry"
+msgstr "przejd¼ do ostatniej pozycji"
+
+#: keymap_alldefs.h:91
+msgid "reply to specified mailing list"
+msgstr "opowiedz na wskazan± listê pocztow±"
+
+#: keymap_alldefs.h:92
+msgid "execute a macro"
+msgstr "wykonaj makropolecenie"
+
+#: keymap_alldefs.h:93
+msgid "compose a new mail message"
+msgstr "zredaguj nowy list"
+
+#: keymap_alldefs.h:94
+msgid "open a different folder"
+msgstr "otwórz inny folder"
+
+#: keymap_alldefs.h:95
+msgid "open a different folder in read only mode"
+msgstr "otwórz inny folder w trybie tylko do odczytu"
+
+#: keymap_alldefs.h:96
+msgid "clear a status flag from a message"
+msgstr "usuñ flagê ze statusem wiadmo¶ci"
+
+#: keymap_alldefs.h:97
+msgid "delete messages matching a pattern"
+msgstr "usuñ listy pasuj±ce do wzorca"
+
+#: keymap_alldefs.h:98
+msgid "retrieve mail from POP server"
+msgstr "pobierz pocztê z serwera POP"
+
+#: keymap_alldefs.h:99
+msgid "move to the first message"
+msgstr "przejd¼ do pierwszego listu"
+
+#: keymap_alldefs.h:100
+msgid "move to the last message"
+msgstr "przejd¼ do ostatniego listu"
+
+#: keymap_alldefs.h:101
+msgid "show only messages matching a pattern"
+msgstr "poka¿ tylko listy pasuj±ce do wzorca"
+
+#: keymap_alldefs.h:102
+msgid "jump to the next new message"
+msgstr "przejd¼ do nastêpnego nowego listu"
+
+#: keymap_alldefs.h:103
+msgid "jump to the next subthread"
+msgstr "przejd¼ do nastêpnego podw±tku"
+
+#: keymap_alldefs.h:104
+msgid "jump to the next thread"
+msgstr "przejd¼ do nastêpnego w±tku"
+
+#: keymap_alldefs.h:105
+msgid "move to the next undeleted message"
+msgstr "przejd¼ do nastêpnego nieusuniêtego listu"
+
+#: keymap_alldefs.h:106
+msgid "jump to the next unread message"
+msgstr "przejd¼ do nastêpnego nieprzeczytanego listu"
+
+#: keymap_alldefs.h:107
+msgid "jump to parent message in thread"
+msgstr "przejd¼ na pocz±tek w±tku"
+
+#: keymap_alldefs.h:108
+msgid "jump to previous thread"
+msgstr "przejd¼ do poprzedniego w±tku"
+
+#: keymap_alldefs.h:109
+msgid "jump to previous subthread"
+msgstr "przejd¼ do poprzedniego podw±tku"
+
+#: keymap_alldefs.h:110
+msgid "move to the previous undeleted message"
+msgstr "przejd¼ do poprzedniego nieusuniêtego listu"
+
+#: keymap_alldefs.h:111
+msgid "jump to the previous new message"
+msgstr "przejd¼ do poprzedniego nowego listu"
+
+#: keymap_alldefs.h:112
+msgid "jump to the previous unread message"
+msgstr "przejd¼ do poprzedniego nieprzeczytanego listu"
+
+#: keymap_alldefs.h:113
+msgid "mark the current thread as read"
+msgstr "zaznacz obecny w±tek jako przeczytany"
+
+#: keymap_alldefs.h:114
+msgid "mark the current subthread as read"
+msgstr "zaznacz obecny podw±tek jako przeczytany"
+
+#: keymap_alldefs.h:115
+msgid "set a status flag on a message"
+msgstr "ustaw flagê statusu listu"
+
+#: keymap_alldefs.h:116
+msgid "save changes to mailbox"
+msgstr "zapisz zmiany do foldera poczty"
+
+#: keymap_alldefs.h:117
+msgid "tag messages matching a pattern"
+msgstr "zaznacz listy pasuj±ce do wzorca"
+
+#: keymap_alldefs.h:118
+msgid "undelete messages matching a pattern"
+msgstr "odtwórz listy pasuj±ce do wzorca"
+
+#: keymap_alldefs.h:119
+msgid "untag messages matching a pattern"
+msgstr "odznacz listy pasuj±ce do wzorca"
+
+#: keymap_alldefs.h:120
+msgid "move to the middle of the page"
+msgstr "przejd¼ do po³owy strony"
+
+#: keymap_alldefs.h:121
+msgid "create a new mailbox (IMAP only)"
+msgstr "utwórz now± skrzynkê (tylko IMAP)"
+
+#: keymap_alldefs.h:122
+msgid "move to the next entry"
+msgstr "przejd¼ do nastêpnej pozycji"
+
+#: keymap_alldefs.h:123
+msgid "scroll down one line"
+msgstr "przewiñ w dó³ o liniê"
+
+#: keymap_alldefs.h:124
+msgid "move to the next page"
+msgstr "przejd¼ do nastêpnej strony"
+
+#: keymap_alldefs.h:125
+msgid "jump to the bottom of the message"
+msgstr "przejd¼ na koniec listu"
+
+#: keymap_alldefs.h:126
+msgid "toggle display of quoted text"
+msgstr "ustala sposób pokazywania zaznaczonego tekstu"
+
+#: keymap_alldefs.h:127
+msgid "skip beyond quoted text"
+msgstr "przeskocz poza zaznaczony fragment tekstu"
+
+#: keymap_alldefs.h:128
+msgid "jump to the top of the message"
+msgstr "przejd¼ na pocz±tek listu"
+
+#: keymap_alldefs.h:129
+msgid "pipe message/attachment to a shell command"
+msgstr "przekieruj list/za³±cznik do polecenia pow³oki"
+
+#: keymap_alldefs.h:130
+msgid "move to the previous entry"
+msgstr "przejd¼ do poprzedniej pozycji"
+
+#: keymap_alldefs.h:131
+msgid "scroll up one line"
+msgstr "przewiñ w górê o liniê"
+
+#: keymap_alldefs.h:132
+msgid "move to the previous page"
+msgstr "przejd¼ do poprzedniej strony"
+
+#: keymap_alldefs.h:133
+msgid "print the current entry"
+msgstr "wydrukuj obecn± pozycjê"
+
+#: keymap_alldefs.h:134
+msgid "query external program for addresses"
+msgstr "zapytaj zewnêtrzny program o adres"
+
+#: keymap_alldefs.h:135
+msgid "append new query results to current results"
+msgstr "dodaj rezultaty nowych poszukiwañ do obecnych"
+
+#: keymap_alldefs.h:136
+msgid "save changes to mailbox and quit"
+msgstr "zapisz zmiany do skrzynki i opu¶æ program pocztowy"
+
+#: keymap_alldefs.h:137
+msgid "recall a postponed message"
+msgstr "wywo³aj od³o¿ony list"
+
+#: keymap_alldefs.h:138
+msgid "clear and redraw the screen"
+msgstr "wyczy¶æ i od¶wie¿ ekran"
+
+#: keymap_alldefs.h:139
+msgid "{internal}"
+msgstr "{wewnêtrzne}"
+
+#: keymap_alldefs.h:140
+msgid "reply to a message"
+msgstr "odpowiedz na list"
+
+#: keymap_alldefs.h:141
+msgid "use the current message as a template for a new one"
+msgstr "u¿yj bie¿±cego listu jako wzorca dla nowych wiadomo¶ci"
+
+#: keymap_alldefs.h:142
+msgid "save message/attachment to a file"
+msgstr "zapisz list/za³±cznik do pliku"
+
+#: keymap_alldefs.h:143
+msgid "search for a regular expression"
+msgstr "szukaj wyra¿enia regularnego"
+
+#: keymap_alldefs.h:144
+msgid "search backwards for a regular expression"
+msgstr "szukaj wstecz wyra¿enia regularnego"
+
+#: keymap_alldefs.h:145
+msgid "search for next match"
+msgstr "szukaj nastêpnego pozytywnego rezultatu"
+
+#: keymap_alldefs.h:146
+msgid "search for next match in opposite direction"
+msgstr "szukaj wstecz nastêpnego pozytywnego rezultatu"
+
+#: keymap_alldefs.h:147
+msgid "toggle search pattern coloring"
+msgstr "ustala czy szukana fraza ma byæ zaznaczona kolorem"
+
+#: keymap_alldefs.h:148
+msgid "invoke a command in a subshell"
+msgstr "wywo³aj polecenie w podpow³oce"
+
+#: keymap_alldefs.h:149
+msgid "sort messages"
+msgstr "uszereguj listy"
+
+#: keymap_alldefs.h:150
+msgid "sort messages in reverse order"
+msgstr "uszereguj listy w odwrotnej kolejno¶ci"
+
+#: keymap_alldefs.h:151
+msgid "tag the current entry"
+msgstr "zaznacz bie¿±c± pozycjê"
+
+#: keymap_alldefs.h:152
+msgid "apply next function to tagged messages"
+msgstr "wykonaj nastêpne polecenie na zaznaczonych listach"
+
+#: keymap_alldefs.h:153
+msgid "tag the current subthread"
+msgstr "zaznacz bie¿±cy podw±tek"
+
+#: keymap_alldefs.h:154
+msgid "tag the current thread"
+msgstr "zaznacz bie¿±cy w±tek"
+
+#: keymap_alldefs.h:155
+msgid "toggle a message's 'new' flag"
+msgstr "ustaw flagê listu na 'nowy'"
+
+#: keymap_alldefs.h:156
+msgid "toggle whether the mailbox will be rewritten"
+msgstr "ustala czy skrzynka bêdzie ponownie zapisana"
+
+#: keymap_alldefs.h:157
+msgid "toggle whether to browse mailboxes or all files"
+msgstr "ustala czy przegl±daæ skrzynki czy wszystkie pliki"
+
+#: keymap_alldefs.h:158
+msgid "move to the top of the page"
+msgstr "przejd¼ na pocz±tek strony"
+
+#: keymap_alldefs.h:159
+msgid "undelete the current entry"
+msgstr "odtwórz bie¿±c± pozycjê listy"
+
+#: keymap_alldefs.h:160
+msgid "undelete all messages in thread"
+msgstr "odtwórz wszystkie listy z tego w±tku"
+
+#: keymap_alldefs.h:161
+msgid "undelete all messages in subthread"
+msgstr "odtwórz wszystkie listy z tego podw±tku"
+
+#: keymap_alldefs.h:162
+msgid "show the Mutt version number and date"
+msgstr "poka¿ wersjê i datê programu pocztowego Mutt"
+
+#: keymap_alldefs.h:163
+msgid "view attachment using mailcap entry if necessary"
+msgstr "poka¿ za³±cznik u¿ywaj±c, je¶li to niezbêdne, pliku 'mailcap'"
+
+#: keymap_alldefs.h:164
+msgid "show MIME attachments"
+msgstr "poka¿ za³±czniki MIME"
+
+#: keymap_alldefs.h:165
+msgid "show currently active limit pattern"
+msgstr "poka¿ bie¿±cy wzorzec ograniczaj±cy"
+
+#: keymap_alldefs.h:166
+msgid "collapse/uncollapse current thread"
+msgstr "zwiñ/rozwiñ bie¿±cy w±tek"
+
+#: keymap_alldefs.h:167
+msgid "collapse/uncollapse all threads"
+msgstr "zwiñ/rozwiñ wszystkie w±tki"
+
+#: keymap_alldefs.h:168
+msgid "attach a PGP public key"
+msgstr "do³±cz w³asny klucz publiczny PGP"
+
+#: keymap_alldefs.h:169
+msgid "show PGP options"
+msgstr "poka¿ opcje PGP"
+
+#: keymap_alldefs.h:170
+msgid "extract PGP public keys"
+msgstr "kopiuj klucz publiczny PGP"
+
+#: keymap_alldefs.h:171
+msgid "wipe PGP passphrase from memory"
+msgstr "wyma¿ has³o PGP z pamiêci operacyjnej"
+
+#: keymap_alldefs.h:172
+msgid "mail a PGP public key"
+msgstr "wy¶lij w³asny klucz publiczny PGP"
+
+#: keymap_alldefs.h:173
+msgid "verify a PGP public key"
+msgstr "sprawd¼ klucz publiczny PGP"
+
+#: keymap_alldefs.h:174
+msgid "view the key's user id"
+msgstr "obejrzyj identyfikator u¿ytkownika klucza"
+
+#: keymap_alldefs.h:175
+msgid "make decrypted copy and delete"
+msgstr "utwórz rozkodowan± kopiê i usuñ orygina³"
+
+#: keymap_alldefs.h:176
+msgid "make decrypted copy"
+msgstr "utwórz rozkodowan± kopiê"
+
+#: keymap_alldefs.h:177
+msgid "Accept the chain constructed"
+msgstr "Potwierd¼ skonstruowany ³añcuch"
+
+#: keymap_alldefs.h:178
+msgid "Append a remailer to the chain"
+msgstr "Dodaj remailera do ³añcucha"
+
+#: keymap_alldefs.h:179
+msgid "Insert a remailer into the chain"
+msgstr "Wprowadz remailera do ³añcucha"
+
+#: keymap_alldefs.h:180
+msgid "Delete a remailer from the chain"
+msgstr "Usuñ remailera z ³añcucha"
+
+#: keymap_alldefs.h:181
+msgid "Select the previous element of the chain"
+msgstr "Wybierz poprzedni element ³añcucha"
+
+#: keymap_alldefs.h:182
+msgid "Select the next element of the chain"
+msgstr "Wybierz nastepny element ³añcucha"
+
+#: keymap_alldefs.h:183
+msgid "send the message through a mixmaster remailer chain"
+msgstr "przeslij list przez ³añcuch anonimowych remailerów typu mixmaster"
 
 #: lib.c:58 lib.c:73 lib.c:104
 msgid "Out of memory!"
@@ -2858,538 +3571,3 @@ msgstr ""
 #: thread.c:723
 msgid "Parent message is not available."
 msgstr "Pierwszy list tego w±tku nie jest dostêpny."
-
-#~ msgid "null operation"
-#~ msgstr "pusta operacja"
-
-#~ msgid "force viewing of attachment using mailcap"
-#~ msgstr "wymu¶ obejrzenie za³±czników poprzez plik 'mailcap'"
-
-#~ msgid "view attachment as text"
-#~ msgstr "obejrzyj za³±cznik jako tekst"
-
-#~ msgid "move to the bottom of the page"
-#~ msgstr "przejd¼ na koniec strony"
-
-#~ msgid "remail a message to another user"
-#~ msgstr "wy¶lij ponownie do innego u¿ytkownika"
-
-#~ msgid "select a new file in this directory"
-#~ msgstr "wybierz nowy plik w tym katalogu"
-
-#~ msgid "view file"
-#~ msgstr "ogl±daj plik"
-
-#~ msgid "display the currently selected file's name"
-#~ msgstr "wy¶wietl nazwy aktualnie wybranych plików"
-
-#~ msgid "subscribe to current mailbox (IMAP only)"
-#~ msgstr "zasubskrybuj bie¿±c± skrzynkê (tylko IMAP)"
-
-#~ msgid "unsubscribe to current mailbox (IMAP only)"
-#~ msgstr "odsubskrybuj bie¿±c± skrzynkê (tylko IMAP)"
-
-#~ msgid "toggle view all/subscribed mailboxes (IMAP only)"
-#~ msgstr ""
-#~ "zmieñ tryb przegl±dania skrzynek: wszystkie/zasubskrybowane (tylko IMAP)"
-
-#~ msgid "change directories"
-#~ msgstr "zmieñ katalog"
-
-#~ msgid "check mailboxes for new mail"
-#~ msgstr "szukaj nowych listów w skrzynkach"
-
-#~ msgid "attach a file(s) to this message"
-#~ msgstr "do³±cz plik(i) do tego listu"
-
-#~ msgid "attach message(s) to this message"
-#~ msgstr "do³±cz list(y) do tego listu"
-
-#~ msgid "change an attachment's character set"
-#~ msgstr "zmieñ zestaw znaków za³±cznika"
-
-#~ msgid "edit the BCC list"
-#~ msgstr "podaj tre¶æ pola BCC"
-
-#~ msgid "edit the CC list"
-#~ msgstr "podaj tre¶æ pola CC"
-
-#~ msgid "edit attachment description"
-#~ msgstr "edytuj opis za³±cznika"
-
-#~ msgid "edit attachment transfer-encoding"
-#~ msgstr "podaj sposób zakodowania za³±cznika"
-
-#~ msgid "enter a file to save a copy of this message in"
-#~ msgstr "podaj nazwê pliku, do którego ma byæ skopiowany list"
-
-#~ msgid "edit the file to be attached"
-#~ msgstr "podaj nazwê pliku za³±cznika"
-
-#~ msgid "edit the from field"
-#~ msgstr "podaj tre¶æ pola From:"
-
-#~ msgid "edit the message with headers"
-#~ msgstr "edytuj tre¶æ listu i nag³ówków"
-
-#~ msgid "edit the message"
-#~ msgstr "edytuj tre¶æ listu"
-
-#~ msgid "edit attachment using mailcap entry"
-#~ msgstr "edytuj za³±cznik u¿ywaj±c pliku 'mailcap'"
-
-#~ msgid "edit the Reply-To field"
-#~ msgstr "podaj tre¶c pola Reply-To:"
-
-#~ msgid "edit the subject of this message"
-#~ msgstr "podaj tytu³ listu"
-
-#~ msgid "edit the TO list"
-#~ msgstr "podaj tre¶æ listy TO"
-
-#~ msgid "edit attachment content type"
-#~ msgstr "podaj rodzaj \"Content-Type\" za³±cznika"
-
-#~ msgid "get a temporary copy of an attachment"
-#~ msgstr "we¼ tymczasow± kopiê za³±cznika"
-
-#~ msgid "run ispell on the message"
-#~ msgstr "sprawd¼ poprawno¶æ pisowni listu"
-
-#~ msgid "compose new attachment using mailcap entry"
-#~ msgstr "utwórz nowy za³±cznik u¿ywaj±c pliku 'mailcap'"
-
-#~ msgid "toggle recoding of this attachment"
-#~ msgstr "zdecyduj czy za³±cznik ma byæ przekodowywany"
-
-#~ msgid "recode this attachment to/from the local charset"
-#~ msgstr "przekoduj ten za³±cznik do/z lokalnego zewstawu"
-
-#~ msgid "save this message to send later"
-#~ msgstr "zapisz list aby wys³aæ go pó¼niej"
-
-#~ msgid "rename/move an attached file"
-#~ msgstr "przezwij/przenie¶ do³±czony plik"
-
-#~ msgid "send the message"
-#~ msgstr "wy¶lij list"
-
-#~ msgid "toggle disposition between inline/attachment"
-#~ msgstr "ustala czy wstawiaæ w tre¶ci czy jako za³±cznik"
-
-#~ msgid "toggle whether to delete file after sending it"
-#~ msgstr "ustala czy usun±æ plik po wys³aniu"
-
-#~ msgid "update an attachment's encoding info"
-#~ msgstr "zaktualizuj informacjê o kodowaniu za³±cznika"
-
-#~ msgid "write the message to a folder"
-#~ msgstr "zapisz list do foldera"
-
-#~ msgid "copy a message to a file/mailbox"
-#~ msgstr "kopiuj list do pliku/skrzynki"
-
-#~ msgid "create an alias from a message sender"
-#~ msgstr "utwórz alias dla nadawcy"
-
-#~ msgid "move entry to bottom of screen"
-#~ msgstr "przesuñ pozycjê kursora na dó³ ekranu"
-
-#~ msgid "move entry to middle of screen"
-#~ msgstr "przesuñ pozycjê kursora na ¶rodek ekranu"
-
-#~ msgid "move entry to top of screen"
-#~ msgstr "przesuñ pozycjê kursora na górê ekranu"
-
-#~ msgid "make decoded (text/plain) copy"
-#~ msgstr "utwórz rozkodowan± (text/plain) kopiê"
-
-#~ msgid "make decoded copy (text/plain) and delete"
-#~ msgstr "utwórz rozkodowan± kopiê (text/plain) i usuñ"
-
-#~ msgid "delete the current entry"
-#~ msgstr "usuñ bie¿±cy list"
-
-#~ msgid "delete the current mailbox (IMAP only)"
-#~ msgstr "usuñ bie¿±c± skrzynkê (tylko IMAP)"
-
-#~ msgid "delete all messages in subthread"
-#~ msgstr "usuñ wszystkie listy w podw±tku"
-
-#~ msgid "delete all messages in thread"
-#~ msgstr "usuñ wszystkie listy w w±tku"
-
-#~ msgid "display full address of sender"
-#~ msgstr "wy¶wietl pe³ny adres nadawcy"
-
-#~ msgid "display message and toggle header weeding"
-#~ msgstr "wy¶wielt list ze wszystkimi nag³ówkami"
-
-#~ msgid "display a message"
-#~ msgstr "wy¶wietl list"
-
-#~ msgid "edit the raw message"
-#~ msgstr "edytuj list z nag³owkami"
-
-#~ msgid "delete the char in front of the cursor"
-#~ msgstr "usuñ znak przed kursorem"
-
-#~ msgid "move the cursor one character to the left"
-#~ msgstr "przesuñ kursor jeden znak w lewo"
-
-#~ msgid "jump to the beginning of the line"
-#~ msgstr "przeskocz do pocz±tku linii"
-
-#~ msgid "cycle among incoming mailboxes"
-#~ msgstr "kr±¿ pomiêdzy skrzynkami pocztowymi"
-
-#~ msgid "complete filename or alias"
-#~ msgstr "uzupe³nij nazwê pliku lub alias"
-
-#~ msgid "complete address with query"
-#~ msgstr "uzupe³nij adres poprzez zapytanie"
-
-#~ msgid "delete the char under the cursor"
-#~ msgstr "usuñ znak pod kursorem"
-
-#~ msgid "jump to the end of the line"
-#~ msgstr "przeskocz do koñca linii"
-
-#~ msgid "move the cursor one character to the right"
-#~ msgstr "przesuñ kursor o znak w prawo"
-
-#~ msgid "scroll up through the history list"
-#~ msgstr "przewijaj do góry listê wydanych poleceñ"
-
-#~ msgid "delete chars from cursor to end of line"
-#~ msgstr "usuñ znaki pocz±wszy od kursora a¿ do koñca linii"
-
-#~ msgid "delete all chars on the line"
-#~ msgstr "usuñ wszystkie znaki w linii"
-
-#~ msgid "delete the word in front of the cursor"
-#~ msgstr "usuñ s³owo z przodu kursora"
-
-#~ msgid "quote the next typed key"
-#~ msgstr "zacytuj nastêpny wpisany znak"
-
-#~ msgid "enter a muttrc command"
-#~ msgstr "wprowad¼ polecenie pliku startowego (muttrc)"
-
-#~ msgid "enter a file mask"
-#~ msgstr "wprowad¼ maskê pliku"
-
-#~ msgid "exit this menu"
-#~ msgstr "opu¶æ niniejsze menu"
-
-#~ msgid "filter attachment through a shell command"
-#~ msgstr "przefiltruj za³±cznik przez polecenie pow³oki"
-
-#~ msgid "move to the first entry"
-#~ msgstr "przesuñ siê do pierwszej pozycji"
-
-#~ msgid "toggle a message's 'important' flag"
-#~ msgstr "w³±cz dla listu flagê 'wa¿ne!'"
-
-#~ msgid "forward a message with comments"
-#~ msgstr "prze¶lij dalej list opatruj±c j± uwagami"
-
-#~ msgid "select the current entry"
-#~ msgstr "wska¿ obecn± pozycjê"
-
-#~ msgid "reply to all recipients"
-#~ msgstr "odpowiedz wszystkim adresatom"
-
-#~ msgid "scroll down 1/2 page"
-#~ msgstr "przewiñ w dó³ o pó³ strony"
-
-#~ msgid "scroll up 1/2 page"
-#~ msgstr "przewiñ w górê o pó³ strony"
-
-#~ msgid "this screen"
-#~ msgstr "niniejszy ekran"
-
-#~ msgid "jump to an index number"
-#~ msgstr "przeskocz do konkretnej pozycji w indeksie"
-
-#~ msgid "move to the last entry"
-#~ msgstr "przejd¼ do ostatniej pozycji"
-
-#~ msgid "reply to specified mailing list"
-#~ msgstr "opowiedz na wskazan± listê pocztow±"
-
-#~ msgid "execute a macro"
-#~ msgstr "wykonaj makropolecenie"
-
-#~ msgid "compose a new mail message"
-#~ msgstr "zredaguj nowy list"
-
-#~ msgid "open a different folder"
-#~ msgstr "otwórz inny folder"
-
-#~ msgid "open a different folder in read only mode"
-#~ msgstr "otwórz inny folder w trybie tylko do odczytu"
-
-#~ msgid "clear a status flag from a message"
-#~ msgstr "usuñ flagê ze statusem wiadmo¶ci"
-
-#~ msgid "delete messages matching a pattern"
-#~ msgstr "usuñ listy pasuj±ce do wzorca"
-
-#~ msgid "retrieve mail from POP server"
-#~ msgstr "pobierz pocztê z serwera POP"
-
-#~ msgid "move to the first message"
-#~ msgstr "przejd¼ do pierwszego listu"
-
-#~ msgid "move to the last message"
-#~ msgstr "przejd¼ do ostatniego listu"
-
-#~ msgid "show only messages matching a pattern"
-#~ msgstr "poka¿ tylko listy pasuj±ce do wzorca"
-
-#~ msgid "jump to the next new message"
-#~ msgstr "przejd¼ do nastêpnego nowego listu"
-
-#~ msgid "jump to the next subthread"
-#~ msgstr "przejd¼ do nastêpnego podw±tku"
-
-#~ msgid "jump to the next thread"
-#~ msgstr "przejd¼ do nastêpnego w±tku"
-
-#~ msgid "move to the next undeleted message"
-#~ msgstr "przejd¼ do nastêpnego nieusuniêtego listu"
-
-#~ msgid "jump to the next unread message"
-#~ msgstr "przejd¼ do nastêpnego nieprzeczytanego listu"
-
-#~ msgid "jump to parent message in thread"
-#~ msgstr "przejd¼ na pocz±tek w±tku"
-
-#~ msgid "jump to previous thread"
-#~ msgstr "przejd¼ do poprzedniego w±tku"
-
-#~ msgid "jump to previous subthread"
-#~ msgstr "przejd¼ do poprzedniego podw±tku"
-
-#~ msgid "move to the previous undeleted message"
-#~ msgstr "przejd¼ do poprzedniego nieusuniêtego listu"
-
-#~ msgid "jump to the previous new message"
-#~ msgstr "przejd¼ do poprzedniego nowego listu"
-
-#~ msgid "jump to the previous unread message"
-#~ msgstr "przejd¼ do poprzedniego nieprzeczytanego listu"
-
-#~ msgid "mark the current thread as read"
-#~ msgstr "zaznacz obecny w±tek jako przeczytany"
-
-#~ msgid "mark the current subthread as read"
-#~ msgstr "zaznacz obecny podw±tek jako przeczytany"
-
-#~ msgid "set a status flag on a message"
-#~ msgstr "ustaw flagê statusu listu"
-
-#~ msgid "save changes to mailbox"
-#~ msgstr "zapisz zmiany do foldera poczty"
-
-#~ msgid "tag messages matching a pattern"
-#~ msgstr "zaznacz listy pasuj±ce do wzorca"
-
-#~ msgid "undelete messages matching a pattern"
-#~ msgstr "odtwórz listy pasuj±ce do wzorca"
-
-#~ msgid "untag messages matching a pattern"
-#~ msgstr "odznacz listy pasuj±ce do wzorca"
-
-#~ msgid "move to the middle of the page"
-#~ msgstr "przejd¼ do po³owy strony"
-
-#~ msgid "create a new mailbox (IMAP only)"
-#~ msgstr "utwórz now± skrzynkê (tylko IMAP)"
-
-#~ msgid "move to the next entry"
-#~ msgstr "przejd¼ do nastêpnej pozycji"
-
-#~ msgid "scroll down one line"
-#~ msgstr "przewiñ w dó³ o liniê"
-
-#~ msgid "move to the next page"
-#~ msgstr "przejd¼ do nastêpnej strony"
-
-#~ msgid "jump to the bottom of the message"
-#~ msgstr "przejd¼ na koniec listu"
-
-#~ msgid "toggle display of quoted text"
-#~ msgstr "ustala sposób pokazywania zaznaczonego tekstu"
-
-#~ msgid "skip beyond quoted text"
-#~ msgstr "przeskocz poza zaznaczony fragment tekstu"
-
-#~ msgid "jump to the top of the message"
-#~ msgstr "przejd¼ na pocz±tek listu"
-
-#~ msgid "pipe message/attachment to a shell command"
-#~ msgstr "przekieruj list/za³±cznik do polecenia pow³oki"
-
-#~ msgid "move to the previous entry"
-#~ msgstr "przejd¼ do poprzedniej pozycji"
-
-#~ msgid "scroll up one line"
-#~ msgstr "przewiñ w górê o liniê"
-
-#~ msgid "move to the previous page"
-#~ msgstr "przejd¼ do poprzedniej strony"
-
-#~ msgid "print the current entry"
-#~ msgstr "wydrukuj obecn± pozycjê"
-
-#~ msgid "query external program for addresses"
-#~ msgstr "zapytaj zewnêtrzny program o adres"
-
-#~ msgid "append new query results to current results"
-#~ msgstr "dodaj rezultaty nowych poszukiwañ do obecnych"
-
-#~ msgid "save changes to mailbox and quit"
-#~ msgstr "zapisz zmiany do skrzynki i opu¶æ program pocztowy"
-
-#~ msgid "recall a postponed message"
-#~ msgstr "wywo³aj od³o¿ony list"
-
-#~ msgid "clear and redraw the screen"
-#~ msgstr "wyczy¶æ i od¶wie¿ ekran"
-
-#~ msgid "{internal}"
-#~ msgstr "{wewnêtrzne}"
-
-#~ msgid "reply to a message"
-#~ msgstr "odpowiedz na list"
-
-#~ msgid "use the current message as a template for a new one"
-#~ msgstr "u¿yj bie¿±cego listu jako wzorca dla nowych wiadomo¶ci"
-
-#~ msgid "save message/attachment to a file"
-#~ msgstr "zapisz list/za³±cznik do pliku"
-
-#~ msgid "search for a regular expression"
-#~ msgstr "szukaj wyra¿enia regularnego"
-
-#~ msgid "search backwards for a regular expression"
-#~ msgstr "szukaj wstecz wyra¿enia regularnego"
-
-#~ msgid "search for next match"
-#~ msgstr "szukaj nastêpnego pozytywnego rezultatu"
-
-#~ msgid "search for next match in opposite direction"
-#~ msgstr "szukaj wstecz nastêpnego pozytywnego rezultatu"
-
-#~ msgid "toggle search pattern coloring"
-#~ msgstr "ustala czy szukana fraza ma byæ zaznaczona kolorem"
-
-#~ msgid "invoke a command in a subshell"
-#~ msgstr "wywo³aj polecenie w podpow³oce"
-
-#~ msgid "sort messages"
-#~ msgstr "uszereguj listy"
-
-#~ msgid "sort messages in reverse order"
-#~ msgstr "uszereguj listy w odwrotnej kolejno¶ci"
-
-#~ msgid "tag the current entry"
-#~ msgstr "zaznacz bie¿±c± pozycjê"
-
-#~ msgid "apply next function to tagged messages"
-#~ msgstr "wykonaj nastêpne polecenie na zaznaczonych listach"
-
-#~ msgid "tag the current subthread"
-#~ msgstr "zaznacz bie¿±cy podw±tek"
-
-#~ msgid "tag the current thread"
-#~ msgstr "zaznacz bie¿±cy w±tek"
-
-#~ msgid "toggle a message's 'new' flag"
-#~ msgstr "ustaw flagê listu na 'nowy'"
-
-#~ msgid "toggle whether the mailbox will be rewritten"
-#~ msgstr "ustala czy skrzynka bêdzie ponownie zapisana"
-
-#~ msgid "toggle whether to browse mailboxes or all files"
-#~ msgstr "ustala czy przegl±daæ skrzynki czy wszystkie pliki"
-
-#~ msgid "move to the top of the page"
-#~ msgstr "przejd¼ na pocz±tek strony"
-
-#~ msgid "undelete the current entry"
-#~ msgstr "odtwórz bie¿±c± pozycjê listy"
-
-#~ msgid "undelete all messages in thread"
-#~ msgstr "odtwórz wszystkie listy z tego w±tku"
-
-#~ msgid "undelete all messages in subthread"
-#~ msgstr "odtwórz wszystkie listy z tego podw±tku"
-
-#~ msgid "show the Mutt version number and date"
-#~ msgstr "poka¿ wersjê i datê programu pocztowego Mutt"
-
-#~ msgid "view attachment using mailcap entry if necessary"
-#~ msgstr "poka¿ za³±cznik u¿ywaj±c, je¶li to niezbêdne, pliku 'mailcap'"
-
-#~ msgid "show MIME attachments"
-#~ msgstr "poka¿ za³±czniki MIME"
-
-#~ msgid "show currently active limit pattern"
-#~ msgstr "poka¿ bie¿±cy wzorzec ograniczaj±cy"
-
-#~ msgid "collapse/uncollapse current thread"
-#~ msgstr "zwiñ/rozwiñ bie¿±cy w±tek"
-
-#~ msgid "collapse/uncollapse all threads"
-#~ msgstr "zwiñ/rozwiñ wszystkie w±tki"
-
-#~ msgid "attach a PGP public key"
-#~ msgstr "do³±cz w³asny klucz publiczny PGP"
-
-#~ msgid "show PGP options"
-#~ msgstr "poka¿ opcje PGP"
-
-#~ msgid "extract PGP public keys"
-#~ msgstr "kopiuj klucz publiczny PGP"
-
-#~ msgid "wipe PGP passphrase from memory"
-#~ msgstr "wyma¿ has³o PGP z pamiêci operacyjnej"
-
-#~ msgid "mail a PGP public key"
-#~ msgstr "wy¶lij w³asny klucz publiczny PGP"
-
-#~ msgid "verify a PGP public key"
-#~ msgstr "sprawd¼ klucz publiczny PGP"
-
-#~ msgid "view the key's user id"
-#~ msgstr "obejrzyj identyfikator u¿ytkownika klucza"
-
-#~ msgid "make decrypted copy and delete"
-#~ msgstr "utwórz rozkodowan± kopiê i usuñ orygina³"
-
-#~ msgid "make decrypted copy"
-#~ msgstr "utwórz rozkodowan± kopiê"
-
-#~ msgid "Accept the chain constructed"
-#~ msgstr "Potwierd¼ skonstruowany ³añcuch"
-
-#~ msgid "Append a remailer to the chain"
-#~ msgstr "Dodaj remailera do ³añcucha"
-
-#~ msgid "Insert a remailer into the chain"
-#~ msgstr "Wprowadz remailera do ³añcucha"
-
-#~ msgid "Delete a remailer from the chain"
-#~ msgstr "Usuñ remailera z ³añcucha"
-
-#~ msgid "Select the previous element of the chain"
-#~ msgstr "Wybierz poprzedni element ³añcucha"
-
-#~ msgid "Select the next element of the chain"
-#~ msgstr "Wybierz nastepny element ³añcucha"
-
-#~ msgid "send the message through a mixmaster remailer chain"
-#~ msgstr "przeslij list przez ³añcuch anonimowych remailerów typu mixmaster"

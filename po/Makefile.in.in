@@ -16,7 +16,6 @@ SHELL = /bin/sh
 
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
-top_builddir = ..
 VPATH = @srcdir@
 
 prefix = @prefix@
@@ -52,7 +51,7 @@ GMOFILES = @GMOFILES@
 DISTFILES = Makefile.in.in POTFILES.in $(srcdir)/$(PACKAGE).pot \
 stamp-cat-id $(POFILES) $(GMOFILES) $(SOURCES)
 
-POTFILES = $(top_builddir)/keymap_alldefs.h \
+POTFILES = \
 
 CATALOGS = @CATALOGS@
 CATOBJEXT = @CATOBJEXT@
@@ -85,9 +84,9 @@ all: all-@USE_NLS@
 all-yes: cat-id-tbl.c $(CATALOGS)
 all-no:
 
-.PHONY: $(top_builddir)/keymap_alldefs.h
-$(top_builddir)/keymap_alldefs.h:
-	cd $(top_builddir) && $(MAKE) keymap_alldefs.h
+.PHONY: ../keymap_alldefs.h
+../keymap_alldefs.h:
+	cd .. && $(MAKE) keymap_alldefs.h
 
 $(srcdir)/$(PACKAGE).pot: $(POTFILES)
 	$(XGETTEXT) --default-domain=$(PACKAGE) --directory=$(top_srcdir) \
@@ -233,9 +232,14 @@ update-po: Makefile
 	done
 
 POTFILES: POTFILES.in
-	(   rm -f $@-t $@ \
+	( if test 'x$(srcdir)' != 'x.'; then \
+	    posrcprefix='$(top_srcdir)/'; \
+	  else \
+	    posrcprefix="../"; \
+	  fi; \
+	  rm -f $@-t $@ \
 	    && (sed -e '/^#/d' -e '/^[ 	]*$$/d' \
-		    -e "s@.*@	$$(top_srcdir)& \\\\@" < $(srcdir)/$@.in \
+		    -e "s@.*@	$$posrcprefix& \\\\@" < $(srcdir)/$@.in \
 		| sed -e '$$s/\\$$//') > $@-t \
 	    && chmod a-w $@-t \
 	    && mv $@-t $@ )

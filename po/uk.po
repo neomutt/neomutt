@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 2000-03-13 19:41+0100\n"
+"POT-Creation-Date: 2000-03-30 17:13+0200\n"
 "PO-Revision-Date: 2000-03-17 12:12+0200\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "Language-Team: Ukrainian <uk@ua>\n"
@@ -22,7 +22,7 @@ msgstr "Вих╕д"
 msgid "Select"
 msgstr "Виб╕р"
 
-#: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:376 imap/imap_ssl.c:255
+#: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:376 imap/imap_ssl.c:352
 #: pager.c:1482 pgpkey.c:448 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "П╕дказка"
@@ -349,79 +349,79 @@ msgstr "Коп╕ю листа переслано."
 msgid "Messages bounced."
 msgstr "Коп╕╖ лист╕в переслано."
 
-#: commands.c:267
+#: commands.c:272
 msgid "Pipe to command: "
 msgstr "Передати до програми: "
 
-#: commands.c:367
+#: commands.c:372
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 
-#: commands.c:368
+#: commands.c:373
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 
-#: commands.c:369
+#: commands.c:374
 msgid "dfrsotuzc"
 msgstr ""
 
-#: commands.c:422
+#: commands.c:427
 msgid "Shell command: "
 msgstr "Команда системи: "
 
-#: commands.c:555
+#: commands.c:560
 #, c-format
 msgid "%s%s to mailbox"
 msgstr "%s%s до скриньки"
 
-#: commands.c:556
+#: commands.c:561
 msgid "Decode-save"
 msgstr "Розкод. й знищ."
 
-#: commands.c:556
+#: commands.c:561
 msgid "Decode-copy"
 msgstr "Розкодувати"
 
-#: commands.c:557
+#: commands.c:562
 msgid "Decrypt-save"
 msgstr "Розшифр. й знищ."
 
-#: commands.c:557
+#: commands.c:562
 msgid "Decrypt-copy"
 msgstr "Розшифрувати"
 
-#: commands.c:558 curs_main.c:372 recvattach.c:58
+#: commands.c:563 curs_main.c:372 recvattach.c:58
 msgid "Save"
 msgstr "Збер."
 
-#: commands.c:558
+#: commands.c:563
 msgid "Copy"
 msgstr "Коп."
 
-#: commands.c:558
+#: commands.c:563
 msgid " tagged"
 msgstr " вид╕лен╕"
 
-#: commands.c:627
+#: commands.c:632
 #, c-format
 msgid "Copying to %s..."
 msgstr "Коп╕ювання до %s..."
 
-#: commands.c:720
+#: commands.c:725
 msgid "Print message?"
 msgstr "Друкувати пов╕домлення?"
 
-#: commands.c:720
+#: commands.c:725
 msgid "Print tagged messages?"
 msgstr "Друкувати вид╕лен╕ пов╕домлення?"
 
-#: commands.c:747
+#: commands.c:752
 msgid "Message printed"
 msgstr "Пов╕домлення надруковано"
 
-#: commands.c:747
+#: commands.c:752
 msgid "Messages printed"
 msgstr "Пов╕домлення надруковано"
 
@@ -593,7 +593,7 @@ msgstr "Зберегти коп╕ю цього пов╕домлення?"
 msgid "Rename to: "
 msgstr "Перейменувати у: "
 
-#: compose.c:960 editmsg.c:94
+#: compose.c:960 editmsg.c:95
 #, c-format
 msgid "Can't stat: %s"
 msgstr "Неможливо отримати дан╕: %s"
@@ -662,7 +662,7 @@ msgstr "Натисн╕ть будь-яку клав╕шу..."
 msgid " ('?' for list): "
 msgstr " ('?' - перел╕к): "
 
-#: curs_main.c:55 curs_main.c:564
+#: curs_main.c:55 curs_main.c:565
 msgid "No mailbox is open."
 msgstr "Нема╓ в╕дкрито╖ поштово╖ скриньки."
 
@@ -722,122 +722,122 @@ msgstr "Поштову скриньку зм╕нила зовн╕шня програма. Флаги можуть бути зм╕нен╕."
 msgid "New mail in this mailbox."
 msgstr "Нова пошта у ц╕й поштов╕й скриньц╕."
 
-#: curs_main.c:570
+#: curs_main.c:571
 msgid "No tagged messages."
 msgstr "Жодного листа не вид╕лено."
 
-#: curs_main.c:650
+#: curs_main.c:651
 msgid "Jump to message: "
 msgstr "Перейти до листа: "
 
-#: curs_main.c:656
+#: curs_main.c:657
 msgid "Argument must be a message number."
 msgstr "Аргумент повинен бути номером листа."
 
-#: curs_main.c:689
+#: curs_main.c:690
 msgid "That message is not visible."
 msgstr "Цей лист не можна побачити."
 
-#: curs_main.c:692
+#: curs_main.c:693
 msgid "Invalid message number."
 msgstr "Нев╕рний номер листа."
 
-#: curs_main.c:705
+#: curs_main.c:706
 msgid "Delete messages matching: "
 msgstr "Видалити листи за шаблоном: "
 
-#: curs_main.c:727
+#: curs_main.c:728
 msgid "No limit pattern is in effect."
 msgstr "Не встановлено обмежень."
 
 #. i18n: ask for a limit to apply
-#: curs_main.c:732
+#: curs_main.c:733
 #, c-format
 msgid "Limit: %s"
 msgstr "Обмеження: %s"
 
-#: curs_main.c:741
+#: curs_main.c:742
 msgid "Limit to messages matching: "
 msgstr "Обмежитись пов╕домленнями за шаблоном: "
 
-#: curs_main.c:771
+#: curs_main.c:772
 msgid "Quit Mutt?"
 msgstr "Вийти з Mutt?"
 
-#: curs_main.c:894
+#: curs_main.c:895
 msgid "Tag messages matching: "
 msgstr "Вид╕лити листи за шаблоном: "
 
-#: curs_main.c:902
+#: curs_main.c:903
 msgid "Undelete messages matching: "
 msgstr "В╕дновити листи за шаблоном: "
 
-#: curs_main.c:909
+#: curs_main.c:910
 msgid "Untag messages matching: "
 msgstr "Зняти вид╕лення з лист╕в за шаблоном: "
 
-#: curs_main.c:927
+#: curs_main.c:928
 msgid "Open mailbox in read-only mode"
 msgstr "В╕дкрити скриньку в режим╕ лише для читання"
 
-#: curs_main.c:929
+#: curs_main.c:930
 msgid "Open mailbox"
 msgstr "В╕дкрити скриньку"
 
-#: curs_main.c:945 mx.c:454 mx.c:600
+#: curs_main.c:946 mx.c:454 mx.c:600
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s не ╓ поштовою скринькою."
 
-#: curs_main.c:1030
+#: curs_main.c:1031
 msgid "Exit Mutt without saving?"
 msgstr "Покинути Mutt без збереження зм╕н?"
 
-#: curs_main.c:1066 curs_main.c:1090
+#: curs_main.c:1067 curs_main.c:1091
 msgid "You are on the last message."
 msgstr "Це останн╕й лист."
 
-#: curs_main.c:1073 curs_main.c:1115
+#: curs_main.c:1074 curs_main.c:1116
 msgid "No undeleted messages."
 msgstr "Вс╕ листи видалено."
 
-#: curs_main.c:1108 curs_main.c:1131
+#: curs_main.c:1109 curs_main.c:1132
 msgid "You are on the first message."
 msgstr "Це перший лист."
 
-#: curs_main.c:1203 pattern.c:1123
+#: curs_main.c:1204 pattern.c:1123
 msgid "Search wrapped to top."
 msgstr "Досягнуто к╕нець. Пошук перенесено на початок."
 
-#: curs_main.c:1212 pattern.c:1134
+#: curs_main.c:1213 pattern.c:1134
 msgid "Search wrapped to bottom."
 msgstr "Досягнуто початок. Пошук перенесено на к╕нець."
 
-#: curs_main.c:1245
+#: curs_main.c:1246
 msgid "No new messages"
 msgstr "Нема╓ нових лист╕в"
 
-#: curs_main.c:1245
+#: curs_main.c:1246
 msgid "No unread messages"
 msgstr "Нема╓ нечитаних лист╕в"
 
-#: curs_main.c:1246
+#: curs_main.c:1247
 msgid " in this limited view"
 msgstr " у цих межах огляду"
 
-#: curs_main.c:1370
+#: curs_main.c:1371
 msgid "No more threads."
 msgstr "Бес╕д б╕льш нема."
 
-#: curs_main.c:1372
+#: curs_main.c:1373
 msgid "You are on the first thread."
 msgstr "Це перша бес╕да."
 
-#: curs_main.c:1442
+#: curs_main.c:1443
 msgid "Thread contains unread messages."
 msgstr "Бес╕да ма╓ нечитан╕ листи."
 
-#: curs_main.c:1455 flags.c:228 thread.c:661 thread.c:712
+#: curs_main.c:1456 flags.c:228 thread.c:657 thread.c:708
 msgid "Threading is not enabled."
 msgstr "Сшивання недоступне."
 
@@ -929,25 +929,25 @@ msgstr "не вийшло створити тимчасову скриньку: %s"
 msgid "could not write temporary mail folder: %s"
 msgstr "не вийшло записати тимчасову скриньку: %s"
 
-#: editmsg.c:100
+#: editmsg.c:101
 msgid "Message file is empty!"
 msgstr "Файл пов╕домлень порожн╕й!"
 
-#: editmsg.c:107
+#: editmsg.c:108
 msgid "Message not modified!"
 msgstr "Пов╕домлення не зм╕нено!"
 
-#: editmsg.c:115
+#: editmsg.c:116
 #, c-format
 msgid "Can't open message file: %s"
 msgstr "Неможливо в╕дкрити файл пов╕домлення: %s"
 
-#: editmsg.c:122 editmsg.c:150
+#: editmsg.c:123 editmsg.c:151
 #, c-format
 msgid "Can't append to folder: %s"
 msgstr "Неможливо додати до скриньки: %s"
 
-#: editmsg.c:181
+#: editmsg.c:182
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Помилка. Резервування тимчасового файлу: %s"
@@ -1154,7 +1154,7 @@ msgid "Login failed."
 msgstr "Помилка ре╓страц╕╖."
 
 #. now begin login
-#: imap/auth_gss.c:74
+#: imap/auth_gss.c:82
 msgid "Authenticating (GSSAPI)..."
 msgstr "Аутентиф╕кац╕я (GSSAPI)..."
 
@@ -1196,7 +1196,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Неможливо додавати до скриньок IMAP на цьому сервер╕"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:813 imap/message.c:615 muttlib.c:980
+#: imap/imap.c:813 imap/message.c:625 muttlib.c:978
 #, c-format
 msgid "Create %s?"
 msgstr "Створити %s?"
@@ -1233,65 +1233,77 @@ msgstr "П╕дписування до %s..."
 msgid "Unsubscribing to %s..."
 msgstr "В╕дписування в╕д %s..."
 
-#: imap/imap_ssl.c:107
+#: imap/imap_ssl.c:85
+msgid "Filling entropy pool"
+msgstr ""
+
+#: imap/imap_ssl.c:117
+msgid "Failed to find enough entropy on your system"
+msgstr ""
+
+#: imap/imap_ssl.c:124
+msgid "SSL disabled due the lack of entropy"
+msgstr ""
+
+#: imap/imap_ssl.c:204
 msgid "Unable to get certificate from peer"
 msgstr "Неможливо отримати сертиф╕кат"
 
-#: imap/imap_ssl.c:118
+#: imap/imap_ssl.c:215
 #, c-format
 msgid "SSL connection using %s"
 msgstr "З'╓днання SSL з використанням %s"
 
-#: imap/imap_ssl.c:143
+#: imap/imap_ssl.c:240
 msgid "Unknown"
 msgstr "Нев╕доме"
 
-#: imap/imap_ssl.c:168
+#: imap/imap_ssl.c:265
 msgid "[unable to calculate]"
 msgstr "[неможливо обчислити]"
 
-#: imap/imap_ssl.c:218
+#: imap/imap_ssl.c:315
 msgid "This certificate belongs to:"
 msgstr "Цей сертиф╕кат належить:"
 
-#: imap/imap_ssl.c:227
+#: imap/imap_ssl.c:324
 msgid "This certificate was issued by:"
 msgstr "Цей сертиф╕кат видано:"
 
-#: imap/imap_ssl.c:238
+#: imap/imap_ssl.c:335
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "В╕дбиток: %s"
 
-#: imap/imap_ssl.c:240
+#: imap/imap_ssl.c:337
 msgid "SSL Certificate check"
 msgstr "Перев╕рка сертиф╕кату SSL"
 
-#: imap/imap_ssl.c:243
+#: imap/imap_ssl.c:340
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)не приймати, прийняти (o)одноразово або (a)завжди"
 
-#: imap/imap_ssl.c:244
+#: imap/imap_ssl.c:341
 msgid "roa"
 msgstr ""
 
-#: imap/imap_ssl.c:248
+#: imap/imap_ssl.c:345
 msgid "(r)eject, accept (o)nce"
 msgstr "(r)не приймати, (o)прийняти одноразово"
 
-#: imap/imap_ssl.c:249
+#: imap/imap_ssl.c:346
 msgid "ro"
 msgstr ""
 
-#: imap/imap_ssl.c:253 pgpkey.c:441
+#: imap/imap_ssl.c:350 pgpkey.c:441
 msgid "Exit  "
 msgstr "Вих╕д  "
 
-#: imap/imap_ssl.c:278
+#: imap/imap_ssl.c:375
 msgid "Warning: Couldn't save certificate"
 msgstr "Попередження: неможливо зберегти сертиф╕кат"
 
-#: imap/imap_ssl.c:280
+#: imap/imap_ssl.c:377
 msgid "Certificate saved"
 msgstr "Сертиф╕кат збережено"
 
@@ -1309,30 +1321,30 @@ msgstr "Отримання заголовк╕в лист╕в... [%d/%d]"
 msgid "Fetching message..."
 msgstr "Отримання листа..."
 
-#: imap/message.c:470
+#: imap/message.c:480
 msgid "Sending APPEND command ..."
 msgstr "Надсилання команди APPEND..."
 
-#: imap/message.c:509
+#: imap/message.c:519
 msgid "Uploading message ..."
 msgstr "В╕дправлення листа..."
 
-#: imap/message.c:594
+#: imap/message.c:604
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Коп╕ювання %d лист╕в до %s..."
 
-#: imap/message.c:598
+#: imap/message.c:608
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Коп╕ювання %d листа до %s..."
 
-#: imap/socket.c:218
+#: imap/socket.c:215
 #, c-format
 msgid "Connecting to %s..."
 msgstr "З'╓днання з %s..."
 
-#: imap/socket.c:238
+#: imap/socket.c:235
 msgid "preconnect command failed"
 msgstr ""
 
@@ -1401,41 +1413,46 @@ msgstr "%s: нев╕рне значення"
 msgid "%s: unknown type"
 msgstr "%s: нев╕домий тип"
 
-#: init.c:1192
+#: init.c:1194
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Помилка в %s, рядок %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1203
+#: init.c:1210
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: помилки в %s"
 
-#: init.c:1213
+#: init.c:1211
+#, c-format
+msgid "source: reading aborted due too many errors in %s"
+msgstr ""
+
+#: init.c:1225
 #, c-format
 msgid "source: error at %s"
 msgstr "source: помилка в %s"
 
-#: init.c:1218
+#: init.c:1230
 msgid "source: too many arguments"
 msgstr "source: дуже багато аргумент╕в"
 
-#: init.c:1269
+#: init.c:1281
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: нев╕дома команда"
 
-#: init.c:1626
+#: init.c:1638
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Помилка командного рядку: %s\n"
 
-#: init.c:1669
+#: init.c:1681
 msgid "unable to determine home directory"
 msgstr "неможливо з'ясувати домашн╕й каталог"
 
-#: init.c:1677
+#: init.c:1689
 msgid "unable to determine username"
 msgstr "неможливо з'ясувати ╕м'я користувача"
 
@@ -2504,28 +2521,28 @@ msgstr "Вид╕лення не п╕дтриму╓ться."
 msgid "Reading %s... %d"
 msgstr "Читання %s... %d"
 
-#: muttlib.c:653
+#: muttlib.c:651
 msgid "File is a directory, save under it?"
 msgstr "Файл ╓ каталогом, зберегти у ньому?"
 
-#: muttlib.c:658
+#: muttlib.c:656
 msgid "File under directory: "
 msgstr "Файл у каталоз╕: "
 
-#: muttlib.c:670
+#: muttlib.c:668
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Файл ╕сну╓, (o)переписати, (a)додати до нього чи (c)в╕дмовити?"
 
-#: muttlib.c:670
+#: muttlib.c:668
 msgid "oac"
 msgstr ""
 
-#: muttlib.c:956
+#: muttlib.c:954
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s не ╓ поштовою скринькою!"
 
-#: muttlib.c:962
+#: muttlib.c:960
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Додати листи до %s?"
@@ -2851,7 +2868,8 @@ msgstr ""
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
 "\n"
-msgstr "[-- Помилка: несум╕сна структура multipart/signed! --]\n"
+msgstr ""
+"[-- Помилка: несум╕сна структура multipart/signed! --]\n"
 "\n"
 
 #: pgp.c:648
@@ -2859,7 +2877,8 @@ msgstr "[-- Помилка: несум╕сна структура multipart/signed! --]\n"
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
 "\n"
-msgstr "[-- Помилка: нев╕домий протокол multipart/signed %s! --]\n"
+msgstr ""
+"[-- Помилка: нев╕домий протокол multipart/signed %s! --]\n"
 "\n"
 
 #: pgp.c:672
@@ -3266,43 +3285,43 @@ msgstr ""
 msgid "Select a remailer chain."
 msgstr ""
 
-#: remailer.c:591
+#: remailer.c:599
 #, c-format
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr ""
 
-#: remailer.c:624
+#: remailer.c:632
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."
 msgstr ""
 
-#: remailer.c:649
+#: remailer.c:657
 msgid "The remailer chain is already empty."
 msgstr ""
 
-#: remailer.c:659
+#: remailer.c:667
 msgid "You already have the first chain element selected."
 msgstr ""
 
-#: remailer.c:669
+#: remailer.c:677
 msgid "You already have the last chain element selected."
 msgstr ""
 
-#: remailer.c:708
+#: remailer.c:716
 msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr ""
 
-#: remailer.c:732
+#: remailer.c:740
 msgid ""
 "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr ""
 
-#: remailer.c:761
+#: remailer.c:769
 #, c-format
 msgid "Error sending message, child exited %d.\n"
 msgstr "Помилка в╕дправки, код повернення %d.\n"
 
-#: remailer.c:765
+#: remailer.c:773
 msgid "Error sending message."
 msgstr "Помилка при в╕дправц╕."
 
@@ -3381,52 +3400,52 @@ msgstr "П╕дготування листа для пересилання..."
 msgid "Recall postponed message?"
 msgstr "Викликати залишений лист?"
 
-#: send.c:1269
+#: send.c:1256
 msgid "Abort unmodified message?"
 msgstr "В╕дм╕нити в╕дправку не зм╕неного листа?"
 
-#: send.c:1271
+#: send.c:1258
 msgid "Aborted unmodified message."
 msgstr "Лист не зм╕нено, тому в╕дправку в╕дм╕нено."
 
 #. abort
-#: send.c:1312
+#: send.c:1299
 msgid "Mail not sent."
 msgstr "Лист не в╕дправлено."
 
-#: send.c:1338
+#: send.c:1325
 msgid "Message postponed."
 msgstr "Лист залишено для подальшо╖ в╕дправки.."
 
-#: send.c:1347
+#: send.c:1334
 msgid "No recipients are specified!"
 msgstr "Не вказано отримувач╕в!"
 
-#: send.c:1352
+#: send.c:1339
 msgid "No recipients were specified."
 msgstr "Отримувач╕в не було вказано."
 
-#: send.c:1358
+#: send.c:1345
 msgid "No subject, abort sending?"
 msgstr "Теми нема╓, в╕дм╕нити в╕дправку?"
 
-#: send.c:1362
+#: send.c:1349
 msgid "No subject specified."
 msgstr "Теми не вказано."
 
-#: send.c:1409
+#: send.c:1396
 msgid "Sending message..."
 msgstr "Лист в╕дправля╓ться..."
 
-#: send.c:1536
+#: send.c:1523
 msgid "Could not send the message."
 msgstr "Не вийшло в╕дправити лист."
 
-#: send.c:1541
+#: send.c:1528
 msgid "Mail sent."
 msgstr "Лист послано."
 
-#: send.c:1541
+#: send.c:1528
 msgid "Sending in background."
 msgstr "Фонова в╕дправка."
 
@@ -3444,12 +3463,12 @@ msgstr "%s б╕льше не ╕сну╓!"
 msgid "Could not open %s"
 msgstr "Не вийшло в╕дкрити %s"
 
-#: sendlib.c:1709
+#: sendlib.c:1712
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Помилка в╕дправки, код повернення %d (%s)."
 
-#: sendlib.c:1715
+#: sendlib.c:1718
 msgid "Output of the delivery process"
 msgstr "Вих╕д процесу доставки"
 
@@ -3472,7 +3491,7 @@ msgstr "Отримано сигнал %d...  Виходжу.\n"
 msgid "Sorting mailbox..."
 msgstr "Сортування поштово╖ скриньки..."
 
-#: sort.c:229
+#: sort.c:232
 msgid "Could not find sorting function! [report this bug]"
 msgstr "Не знайдено функц╕ю сортування! [спов╕стить про це]"
 
@@ -3480,11 +3499,11 @@ msgstr "Не знайдено функц╕ю сортування! [спов╕стить про це]"
 msgid "(no mailbox)"
 msgstr "(скриньки нема╓)"
 
-#: thread.c:722
+#: thread.c:718
 msgid "Parent message is not visible in limited view"
 msgstr "\"Батьк╕вський\" лист не можна побачити при цьому обмеженн╕"
 
-#: thread.c:727
+#: thread.c:723
 msgid "Parent message is not available."
 msgstr "\"Батьк╕вський\" лист не можна побачити."
 

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.5i\n"
-"POT-Creation-Date: 2000-03-29 22:11+0200\n"
+"POT-Creation-Date: 2000-03-30 17:13+0200\n"
 "PO-Revision-Date: 2000-03-05 01:14-0300\n"
 "Last-Translator: Marcus Brito <marcus@visaotec.com.br>\n"
 "Language-Team: LIE-BR (http://lie-br.conectiva.com.br)\n"
@@ -661,7 +661,7 @@ msgstr "Pressione qualquer tecla para continuar..."
 msgid " ('?' for list): "
 msgstr " ('?' para uma lista): "
 
-#: curs_main.c:55 curs_main.c:564
+#: curs_main.c:55 curs_main.c:565
 msgid "No mailbox is open."
 msgstr "Nenhuma caixa aberta."
 
@@ -721,122 +721,122 @@ msgstr "A caixa foi modificada externamente. As marcas podem estar erradas."
 msgid "New mail in this mailbox."
 msgstr "Novas mensagens nesta caixa."
 
-#: curs_main.c:570
+#: curs_main.c:571
 msgid "No tagged messages."
 msgstr "Nenhuma mensagem marcada."
 
-#: curs_main.c:650
+#: curs_main.c:651
 msgid "Jump to message: "
 msgstr "Pular para mensagem: "
 
-#: curs_main.c:656
+#: curs_main.c:657
 msgid "Argument must be a message number."
 msgstr "O argumento deve ser um número de mensagem."
 
-#: curs_main.c:689
+#: curs_main.c:690
 msgid "That message is not visible."
 msgstr "Aquela mensagem não está visível."
 
-#: curs_main.c:692
+#: curs_main.c:693
 msgid "Invalid message number."
 msgstr "Número de mensagem inválido."
 
-#: curs_main.c:705
+#: curs_main.c:706
 msgid "Delete messages matching: "
 msgstr "Apagar mensagens que casem com: "
 
-#: curs_main.c:727
+#: curs_main.c:728
 msgid "No limit pattern is in effect."
 msgstr "Nenhum padrão limitante está em efeito."
 
 #. i18n: ask for a limit to apply
-#: curs_main.c:732
+#: curs_main.c:733
 #, c-format
 msgid "Limit: %s"
 msgstr "Limitar: %s"
 
-#: curs_main.c:741
+#: curs_main.c:742
 msgid "Limit to messages matching: "
 msgstr "Limitar a mensagens que casem com: "
 
-#: curs_main.c:771
+#: curs_main.c:772
 msgid "Quit Mutt?"
 msgstr "Sair do Mutt?"
 
-#: curs_main.c:894
+#: curs_main.c:895
 msgid "Tag messages matching: "
 msgstr "Marcar mensagens que casem com: "
 
-#: curs_main.c:902
+#: curs_main.c:903
 msgid "Undelete messages matching: "
 msgstr "Restaurar mensagens que casem com: "
 
-#: curs_main.c:909
+#: curs_main.c:910
 msgid "Untag messages matching: "
 msgstr "Desmarcar mensagens que casem com: "
 
-#: curs_main.c:927
+#: curs_main.c:928
 msgid "Open mailbox in read-only mode"
 msgstr "Abrir caixa somente para leitura"
 
-#: curs_main.c:929
+#: curs_main.c:930
 msgid "Open mailbox"
 msgstr "Abrir caixa de correio"
 
-#: curs_main.c:945 mx.c:454 mx.c:600
+#: curs_main.c:946 mx.c:454 mx.c:600
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s não é uma caixa de correio."
 
-#: curs_main.c:1030
+#: curs_main.c:1031
 msgid "Exit Mutt without saving?"
 msgstr "Sair do Mutt sem salvar alterações?"
 
-#: curs_main.c:1066 curs_main.c:1090
+#: curs_main.c:1067 curs_main.c:1091
 msgid "You are on the last message."
 msgstr "Você está na última mensagem."
 
-#: curs_main.c:1073 curs_main.c:1115
+#: curs_main.c:1074 curs_main.c:1116
 msgid "No undeleted messages."
 msgstr "Nenhuma mensagem não removida."
 
-#: curs_main.c:1108 curs_main.c:1131
+#: curs_main.c:1109 curs_main.c:1132
 msgid "You are on the first message."
 msgstr "Você está na primeira mensagem."
 
-#: curs_main.c:1203 pattern.c:1123
+#: curs_main.c:1204 pattern.c:1123
 msgid "Search wrapped to top."
 msgstr "A pesquisa voltou ao início."
 
-#: curs_main.c:1212 pattern.c:1134
+#: curs_main.c:1213 pattern.c:1134
 msgid "Search wrapped to bottom."
 msgstr "A pesquisa passou para o final."
 
-#: curs_main.c:1245
+#: curs_main.c:1246
 msgid "No new messages"
 msgstr "Nenhuma mensagem nova"
 
-#: curs_main.c:1245
+#: curs_main.c:1246
 msgid "No unread messages"
 msgstr "Nenhuma mensagem não lida"
 
-#: curs_main.c:1246
+#: curs_main.c:1247
 msgid " in this limited view"
 msgstr " nesta visão limitada"
 
-#: curs_main.c:1370
+#: curs_main.c:1371
 msgid "No more threads."
 msgstr "Nenhuma discussão restante."
 
-#: curs_main.c:1372
+#: curs_main.c:1373
 msgid "You are on the first thread."
 msgstr "Você está na primeira discussão."
 
-#: curs_main.c:1442
+#: curs_main.c:1443
 msgid "Thread contains unread messages."
 msgstr "A discussão contém mensagens não lidas."
 
-#: curs_main.c:1455 flags.c:228 thread.c:657 thread.c:708
+#: curs_main.c:1456 flags.c:228 thread.c:657 thread.c:708
 msgid "Threading is not enabled."
 msgstr "Separar discussões não está ativado."
 
@@ -1508,6 +1508,718 @@ msgstr "exec: poucos argumentos"
 #, c-format
 msgid "%s: no such command"
 msgstr "%s: não existe tal comando"
+
+#: keymap_alldefs.h:5
+msgid "null operation"
+msgstr "operação nula"
+
+#: keymap_alldefs.h:6
+msgid "force viewing of attachment using mailcap"
+msgstr "forçar a visualizaçãdo do anexo usando o mailcap"
+
+#: keymap_alldefs.h:7
+msgid "view attachment as text"
+msgstr "ver anexo como texto"
+
+#: keymap_alldefs.h:8
+msgid "move to the bottom of the page"
+msgstr "anda até o fim da página"
+
+#: keymap_alldefs.h:9
+msgid "remail a message to another user"
+msgstr "re-envia uma mensagem para outro usuário"
+
+#: keymap_alldefs.h:10
+msgid "select a new file in this directory"
+msgstr "escolhe um novo arquivo neste diretório"
+
+#: keymap_alldefs.h:11
+msgid "view file"
+msgstr "vê arquivo"
+
+#: keymap_alldefs.h:12
+msgid "display the currently selected file's name"
+msgstr "mostra o nome do arquivo atualmente selecionado"
+
+#: keymap_alldefs.h:13
+msgid "subscribe to current mailbox (IMAP only)"
+msgstr "assina à caixa de correio atual (só para IMAP)"
+
+#: keymap_alldefs.h:14
+msgid "unsubscribe to current mailbox (IMAP only)"
+msgstr "cancela assinatura da caixa atual (só para IMAP)"
+
+#: keymap_alldefs.h:15
+msgid "toggle view all/subscribed mailboxes (IMAP only)"
+msgstr "troca ver todas as caixas/só as inscritas (só para IMAP)"
+
+#: keymap_alldefs.h:16
+msgid "change directories"
+msgstr "muda de diretório"
+
+#: keymap_alldefs.h:17
+msgid "check mailboxes for new mail"
+msgstr "verifica se há novas mensagens na caixa"
+
+#: keymap_alldefs.h:18
+msgid "attach a file(s) to this message"
+msgstr "anexa um(ns) arquivo(s) à esta mensagem"
+
+#: keymap_alldefs.h:19
+msgid "attach message(s) to this message"
+msgstr "anexa uma(s) mensagem(ns) à esta mensagem"
+
+#: keymap_alldefs.h:20
+msgid "change an attachment's character set"
+msgstr "muda o conjunto de caracteres do anexo"
+
+#: keymap_alldefs.h:21
+msgid "edit the BCC list"
+msgstr "edita a lista de Cópias Escondidas (BCC)"
+
+#: keymap_alldefs.h:22
+msgid "edit the CC list"
+msgstr "edita a lista de Cópias (CC)"
+
+#: keymap_alldefs.h:23
+msgid "edit attachment description"
+msgstr "edita a descrição do anexo"
+
+#: keymap_alldefs.h:24
+msgid "edit attachment transfer-encoding"
+msgstr "edita o código de transferência do anexo"
+
+#: keymap_alldefs.h:25
+msgid "enter a file to save a copy of this message in"
+msgstr "informe um arquivo no qual salvar uma cópia desta mensagem"
+
+#: keymap_alldefs.h:26
+msgid "edit the file to be attached"
+msgstr "edita o arquivo a ser anexado"
+
+#: keymap_alldefs.h:27
+msgid "edit the from field"
+msgstr "edita o campo From"
+
+#: keymap_alldefs.h:28
+msgid "edit the message with headers"
+msgstr "edita a mensagem e seus cabeçalhos"
+
+#: keymap_alldefs.h:29
+msgid "edit the message"
+msgstr "edita a mensagem"
+
+#: keymap_alldefs.h:30
+msgid "edit attachment using mailcap entry"
+msgstr "edita o anexo usando sua entrada no mailcap"
+
+#: keymap_alldefs.h:31
+msgid "edit the Reply-To field"
+msgstr "edita o campo Reply-To"
+
+#: keymap_alldefs.h:32
+msgid "edit the subject of this message"
+msgstr "edita o assunto desta mensagem"
+
+#: keymap_alldefs.h:33
+msgid "edit the TO list"
+msgstr "edita a lista de Destinatários (To)"
+
+#: keymap_alldefs.h:34
+msgid "edit attachment content type"
+msgstr "edita o tipo de anexo"
+
+#: keymap_alldefs.h:35
+msgid "get a temporary copy of an attachment"
+msgstr "obtém uma cópia temporária do anexo"
+
+#: keymap_alldefs.h:36
+msgid "run ispell on the message"
+msgstr "executa o ispell na mensagem"
+
+#: keymap_alldefs.h:37
+msgid "compose new attachment using mailcap entry"
+msgstr "compõe um novo anexo usando a entrada no mailcap"
+
+#: keymap_alldefs.h:38
+msgid "toggle recoding of this attachment"
+msgstr "ativa/desativa recodificação deste anexo"
+
+#: keymap_alldefs.h:39
+msgid "recode this attachment to/from the local charset"
+msgstr "recodifica este anexo para/de o conjunto de caracteres local"
+
+#: keymap_alldefs.h:40
+msgid "save this message to send later"
+msgstr "salva esta mensagem para ser enviada depois"
+
+#: keymap_alldefs.h:41
+msgid "rename/move an attached file"
+msgstr "renomeia/move um arquivo anexado"
+
+#: keymap_alldefs.h:42
+msgid "send the message"
+msgstr "envia a mensagem"
+
+#: keymap_alldefs.h:43
+msgid "toggle disposition between inline/attachment"
+msgstr "troca a visualização de anexos/em linha"
+
+#: keymap_alldefs.h:44
+msgid "toggle whether to delete file after sending it"
+msgstr "troca entre apagar o arquivo após enviá-lo ou não"
+
+#: keymap_alldefs.h:45
+msgid "update an attachment's encoding info"
+msgstr "atualiza a informação de codificação de um anexo"
+
+#: keymap_alldefs.h:46
+msgid "write the message to a folder"
+msgstr "grava a mensagem em uma pasta"
+
+#: keymap_alldefs.h:47
+msgid "copy a message to a file/mailbox"
+msgstr "copia uma mensagem para um arquivo/caixa"
+
+#: keymap_alldefs.h:48
+msgid "create an alias from a message sender"
+msgstr "cria um apelido a partir do remetente de uma mensagem"
+
+#: keymap_alldefs.h:49
+msgid "move entry to bottom of screen"
+msgstr "move a entrada para o fundo da tela"
+
+#: keymap_alldefs.h:50
+msgid "move entry to middle of screen"
+msgstr "move a entrada para o meio da tela"
+
+#: keymap_alldefs.h:51
+msgid "move entry to top of screen"
+msgstr "move a entrada para o topo da tela"
+
+#: keymap_alldefs.h:52
+msgid "make decoded (text/plain) copy"
+msgstr "cria uma cópia decodificada (text/plain)"
+
+#: keymap_alldefs.h:53
+msgid "make decoded copy (text/plain) and delete"
+msgstr "cria uma cópia decodificada (text/plain) e apaga"
+
+#: keymap_alldefs.h:54
+msgid "delete the current entry"
+msgstr "apaga a entrada atual"
+
+#: keymap_alldefs.h:55
+msgid "delete the current mailbox (IMAP only)"
+msgstr "apaga a caixa de correio atual (só para IMAP)"
+
+#: keymap_alldefs.h:56
+msgid "delete all messages in subthread"
+msgstr "apaga todas as mensagens na sub-discussão"
+
+#: keymap_alldefs.h:57
+msgid "delete all messages in thread"
+msgstr "apaga todas as mensagens na discussão"
+
+#: keymap_alldefs.h:58
+msgid "display full address of sender"
+msgstr "mostra o endereço completo do remetente"
+
+#: keymap_alldefs.h:59
+msgid "display message and toggle header weeding"
+msgstr "mostra a mensagem e ativa/desativa poda de cabeçalhos"
+
+#: keymap_alldefs.h:60
+msgid "display a message"
+msgstr "mostra uma mensagem"
+
+#: keymap_alldefs.h:61
+msgid "edit the raw message"
+msgstr "edita a mensagem pura"
+
+#: keymap_alldefs.h:62
+msgid "delete the char in front of the cursor"
+msgstr "apaga o caractere na frente do cursor"
+
+#: keymap_alldefs.h:63
+msgid "move the cursor one character to the left"
+msgstr "move o cursor um caractere para a esquerda"
+
+#: keymap_alldefs.h:64
+msgid "jump to the beginning of the line"
+msgstr "pula para o início da linha"
+
+#: keymap_alldefs.h:65
+msgid "cycle among incoming mailboxes"
+msgstr "circula entre as caixas de mensagem"
+
+#: keymap_alldefs.h:66
+msgid "complete filename or alias"
+msgstr "completa um nome de arquivo ou apelido"
+
+#: keymap_alldefs.h:67
+msgid "complete address with query"
+msgstr "completa um endereço com uma pesquisa"
+
+#: keymap_alldefs.h:68
+msgid "delete the char under the cursor"
+msgstr "apaga o caractere sob o cursor"
+
+#: keymap_alldefs.h:69
+msgid "jump to the end of the line"
+msgstr "pula para o final da linha"
+
+#: keymap_alldefs.h:70
+msgid "move the cursor one character to the right"
+msgstr "move o cursor um caractere para a direita"
+
+#: keymap_alldefs.h:71 keymap_alldefs.h:72
+msgid "scroll up through the history list"
+msgstr "volta uma página no histórico"
+
+#: keymap_alldefs.h:73
+msgid "delete chars from cursor to end of line"
+msgstr "apaga os caracteres a partir do cursor até o final da linha"
+
+#: keymap_alldefs.h:74
+msgid "delete all chars on the line"
+msgstr "apaga todos os caracteres na linha"
+
+#: keymap_alldefs.h:75
+msgid "delete the word in front of the cursor"
+msgstr "apaga a palavra em frente ao cursor"
+
+#: keymap_alldefs.h:76
+msgid "quote the next typed key"
+msgstr "põe a próxima tecla digitada entre aspas"
+
+#: keymap_alldefs.h:77
+msgid "enter a muttrc command"
+msgstr "entra um comando do muttrc"
+
+#: keymap_alldefs.h:78
+msgid "enter a file mask"
+msgstr "entra uma máscara de arquivos"
+
+#: keymap_alldefs.h:79
+msgid "exit this menu"
+msgstr "sai deste menu"
+
+#: keymap_alldefs.h:80
+msgid "filter attachment through a shell command"
+msgstr "filtra o anexo através de um comando do shell"
+
+#: keymap_alldefs.h:81
+msgid "move to the first entry"
+msgstr "anda até a primeira entrada"
+
+#: keymap_alldefs.h:82
+msgid "toggle a message's 'important' flag"
+msgstr "troca a marca 'importante' da mensagem"
+
+#: keymap_alldefs.h:83
+msgid "forward a message with comments"
+msgstr "encaminha uma mensagem com comentários"
+
+#: keymap_alldefs.h:84
+msgid "select the current entry"
+msgstr "seleciona a entrada atual"
+
+#: keymap_alldefs.h:85
+msgid "reply to all recipients"
+msgstr "responde a todos os destinatários"
+
+#: keymap_alldefs.h:86
+msgid "scroll down 1/2 page"
+msgstr "passa meia página"
+
+#: keymap_alldefs.h:87
+msgid "scroll up 1/2 page"
+msgstr "volta meia página"
+
+#: keymap_alldefs.h:88
+msgid "this screen"
+msgstr "esta tela"
+
+#: keymap_alldefs.h:89
+msgid "jump to an index number"
+msgstr "pula para um número de índice"
+
+#: keymap_alldefs.h:90
+msgid "move to the last entry"
+msgstr "anda até a última entrada"
+
+#: keymap_alldefs.h:91
+msgid "reply to specified mailing list"
+msgstr "responde à lista de email especificada"
+
+#: keymap_alldefs.h:92
+msgid "execute a macro"
+msgstr "executa um macro"
+
+#: keymap_alldefs.h:93
+msgid "compose a new mail message"
+msgstr "compõe uma nova mensagem eletrônica"
+
+#: keymap_alldefs.h:94
+msgid "open a different folder"
+msgstr "abre uma pasta diferente"
+
+#: keymap_alldefs.h:95
+msgid "open a different folder in read only mode"
+msgstr "abre uma pasta diferente somente para leitura"
+
+#: keymap_alldefs.h:96
+msgid "clear a status flag from a message"
+msgstr "retira uma marca de estado de uma mensagem"
+
+#: keymap_alldefs.h:97
+msgid "delete messages matching a pattern"
+msgstr "apaga mensagens que casem com um padrão"
+
+#: keymap_alldefs.h:98
+msgid "retrieve mail from POP server"
+msgstr "obtém mensagens do servidor POP"
+
+#: keymap_alldefs.h:99
+msgid "move to the first message"
+msgstr "anda até a primeira mensagem"
+
+#: keymap_alldefs.h:100
+msgid "move to the last message"
+msgstr "anda até a última mensagem"
+
+#: keymap_alldefs.h:101
+msgid "show only messages matching a pattern"
+msgstr "mostra somente mensagens que casem com um padrão"
+
+#: keymap_alldefs.h:102
+msgid "jump to the next new message"
+msgstr "pula para a próxima mensagem nova"
+
+#: keymap_alldefs.h:103
+msgid "jump to the next subthread"
+msgstr "pula para a próxima sub-discussão"
+
+#: keymap_alldefs.h:104
+msgid "jump to the next thread"
+msgstr "pula para a próxima discussão"
+
+#: keymap_alldefs.h:105
+msgid "move to the next undeleted message"
+msgstr "anda até a próxima mensagem não apagada"
+
+#: keymap_alldefs.h:106
+msgid "jump to the next unread message"
+msgstr "pula para a próxima mensagem não lida"
+
+#: keymap_alldefs.h:107
+msgid "jump to parent message in thread"
+msgstr "pula para a mensagem pai na discussão"
+
+#: keymap_alldefs.h:108
+msgid "jump to previous thread"
+msgstr "pula para a discussão anterior"
+
+#: keymap_alldefs.h:109
+msgid "jump to previous subthread"
+msgstr "pula para a sub-discussão anterior"
+
+#: keymap_alldefs.h:110
+msgid "move to the previous undeleted message"
+msgstr "anda até a mensagem não apagada anterior"
+
+#: keymap_alldefs.h:111
+msgid "jump to the previous new message"
+msgstr "pula para a mensagem nova anterior"
+
+#: keymap_alldefs.h:112
+msgid "jump to the previous unread message"
+msgstr "pula para a mensagem não lida anterior"
+
+#: keymap_alldefs.h:113
+msgid "mark the current thread as read"
+msgstr "marca a discussão atual como lida"
+
+#: keymap_alldefs.h:114
+msgid "mark the current subthread as read"
+msgstr "marca a sub-discussão atual como lida"
+
+#: keymap_alldefs.h:115
+msgid "set a status flag on a message"
+msgstr "atribui uma marca de estado em uma mensagem"
+
+#: keymap_alldefs.h:116
+msgid "save changes to mailbox"
+msgstr "salva as mudanças à caixa"
+
+#: keymap_alldefs.h:117
+msgid "tag messages matching a pattern"
+msgstr "marca mensagens que casem com um padrão"
+
+#: keymap_alldefs.h:118
+msgid "undelete messages matching a pattern"
+msgstr "restaura mensagens que casem com um padrão"
+
+#: keymap_alldefs.h:119
+msgid "untag messages matching a pattern"
+msgstr "desmarca mensagens que casem com um padrão"
+
+#: keymap_alldefs.h:120
+msgid "move to the middle of the page"
+msgstr "anda até o meio da página"
+
+#: keymap_alldefs.h:121
+msgid "create a new mailbox (IMAP only)"
+msgstr "cria uma nova caixa de correio (só para IMAP)"
+
+#: keymap_alldefs.h:122
+msgid "move to the next entry"
+msgstr "anda até a próxima entrada"
+
+#: keymap_alldefs.h:123
+msgid "scroll down one line"
+msgstr "desce uma linha"
+
+#: keymap_alldefs.h:124
+msgid "move to the next page"
+msgstr "anda até a próxima página"
+
+#: keymap_alldefs.h:125
+msgid "jump to the bottom of the message"
+msgstr "pula para o fim da mensagem"
+
+#: keymap_alldefs.h:126
+msgid "toggle display of quoted text"
+msgstr "troca entre mostrar texto citado ou não"
+
+#: keymap_alldefs.h:127
+msgid "skip beyond quoted text"
+msgstr "pula para depois do texto citado"
+
+#: keymap_alldefs.h:128
+msgid "jump to the top of the message"
+msgstr "volta para o início da mensagem"
+
+#: keymap_alldefs.h:129
+msgid "pipe message/attachment to a shell command"
+msgstr "passa a mensagem/anexo para um comando do shell através de um cano"
+
+#: keymap_alldefs.h:130
+msgid "move to the previous entry"
+msgstr "anda até a entrada anterior"
+
+#: keymap_alldefs.h:131
+msgid "scroll up one line"
+msgstr "sobe uma linha"
+
+#: keymap_alldefs.h:132
+msgid "move to the previous page"
+msgstr "anda até a página anterior"
+
+#: keymap_alldefs.h:133
+msgid "print the current entry"
+msgstr "imprime a entrada atual"
+
+#: keymap_alldefs.h:134
+msgid "query external program for addresses"
+msgstr "executa uma busca por um endereço através de um programa externo"
+
+#: keymap_alldefs.h:135
+msgid "append new query results to current results"
+msgstr "anexa os resultados da nova busca aos resultados atuais"
+
+#: keymap_alldefs.h:136
+msgid "save changes to mailbox and quit"
+msgstr "salva mudanças à caixa e sai"
+
+#: keymap_alldefs.h:137
+msgid "recall a postponed message"
+msgstr "edita uma mensagem adiada"
+
+#: keymap_alldefs.h:138
+msgid "clear and redraw the screen"
+msgstr "limpa e redesenha a tela"
+
+#: keymap_alldefs.h:139
+msgid "{internal}"
+msgstr "{interno}"
+
+#: keymap_alldefs.h:140
+msgid "reply to a message"
+msgstr "responde a uma mensagem"
+
+#: keymap_alldefs.h:141
+msgid "use the current message as a template for a new one"
+msgstr "usa a mensagem atual como modelo para uma nova mensagem"
+
+#: keymap_alldefs.h:142
+msgid "save message/attachment to a file"
+msgstr "salva mensagem/anexo em um arquivo"
+
+#: keymap_alldefs.h:143
+msgid "search for a regular expression"
+msgstr "procura por uma expressão regular"
+
+#: keymap_alldefs.h:144
+msgid "search backwards for a regular expression"
+msgstr "procura de trás para a frente por uma expressão regular"
+
+#: keymap_alldefs.h:145
+msgid "search for next match"
+msgstr "procura pelo próximo resultado"
+
+#: keymap_alldefs.h:146
+msgid "search for next match in opposite direction"
+msgstr "procura pelo próximo resultado na direção oposta"
+
+#: keymap_alldefs.h:147
+msgid "toggle search pattern coloring"
+msgstr "troca entre mostrar cores nos padrões de busca ou não"
+
+#: keymap_alldefs.h:148
+msgid "invoke a command in a subshell"
+msgstr "executa um comando em um subshell"
+
+#: keymap_alldefs.h:149
+msgid "sort messages"
+msgstr "ordena mensagens"
+
+#: keymap_alldefs.h:150
+msgid "sort messages in reverse order"
+msgstr "ordena mensagens em ordem reversa"
+
+#: keymap_alldefs.h:151
+msgid "tag the current entry"
+msgstr "marca a entrada atual"
+
+#: keymap_alldefs.h:152
+msgid "apply next function to tagged messages"
+msgstr "aplica a próxima função às mensagens marcadas"
+
+#: keymap_alldefs.h:153
+msgid "tag the current subthread"
+msgstr "marca a sub-discussão atual"
+
+#: keymap_alldefs.h:154
+msgid "tag the current thread"
+msgstr "marca a discussão atual"
+
+#: keymap_alldefs.h:155
+msgid "toggle a message's 'new' flag"
+msgstr "troca a marca 'nova' de uma mensagem"
+
+#: keymap_alldefs.h:156
+msgid "toggle whether the mailbox will be rewritten"
+msgstr "troca entre reescrever a caixa ou não"
+
+#: keymap_alldefs.h:157
+msgid "toggle whether to browse mailboxes or all files"
+msgstr "troca entre pesquisar em caixas ou em todos os arquivos"
+
+#: keymap_alldefs.h:158
+msgid "move to the top of the page"
+msgstr "anda até o topo da página"
+
+#: keymap_alldefs.h:159
+msgid "undelete the current entry"
+msgstr "restaura a entrada atual"
+
+#: keymap_alldefs.h:160
+msgid "undelete all messages in thread"
+msgstr "restaura todas as mensagens na discussão"
+
+#: keymap_alldefs.h:161
+msgid "undelete all messages in subthread"
+msgstr "restaura todas as mensagens na sub-discussão"
+
+#: keymap_alldefs.h:162
+msgid "show the Mutt version number and date"
+msgstr "mostra o número e a data da versão do Mutt"
+
+#: keymap_alldefs.h:163
+msgid "view attachment using mailcap entry if necessary"
+msgstr "vê anexo usando sua entrada no mailcap se necessário"
+
+#: keymap_alldefs.h:164
+msgid "show MIME attachments"
+msgstr "mostra anexos MIME"
+
+#: keymap_alldefs.h:165
+msgid "show currently active limit pattern"
+msgstr "mostra o padrão limitante atualmente ativado"
+
+#: keymap_alldefs.h:166
+msgid "collapse/uncollapse current thread"
+msgstr "abre/fecha a discussão atual"
+
+#: keymap_alldefs.h:167
+msgid "collapse/uncollapse all threads"
+msgstr "abre/fecha todas as discussões"
+
+#: keymap_alldefs.h:168
+msgid "attach a PGP public key"
+msgstr "anexa uma chave pública do PGP"
+
+#: keymap_alldefs.h:169
+msgid "show PGP options"
+msgstr "mostra as opções do PGP"
+
+#: keymap_alldefs.h:170
+msgid "extract PGP public keys"
+msgstr "extrai chaves públicas do PGP"
+
+#: keymap_alldefs.h:171
+msgid "wipe PGP passphrase from memory"
+msgstr "retira a senha do PGP da memória"
+
+#: keymap_alldefs.h:172
+msgid "mail a PGP public key"
+msgstr "envia uma chave pública do PGP"
+
+#: keymap_alldefs.h:173
+msgid "verify a PGP public key"
+msgstr "verifica uma chave pública do PGP"
+
+#: keymap_alldefs.h:174
+msgid "view the key's user id"
+msgstr "vê a identificação de usuário da chave"
+
+#: keymap_alldefs.h:175
+msgid "make decrypted copy and delete"
+msgstr "cria cópia desencriptada e apaga"
+
+#: keymap_alldefs.h:176
+msgid "make decrypted copy"
+msgstr "cria cópia desencriptada"
+
+#: keymap_alldefs.h:177
+msgid "Accept the chain constructed"
+msgstr "Aceita a sequência construída"
+
+#: keymap_alldefs.h:178
+msgid "Append a remailer to the chain"
+msgstr "Anexa um reenviador à sequência"
+
+#: keymap_alldefs.h:179
+msgid "Insert a remailer into the chain"
+msgstr "Insere um reenviador à sequência"
+
+#: keymap_alldefs.h:180
+msgid "Delete a remailer from the chain"
+msgstr "Remove um reenviador da sequência"
+
+#: keymap_alldefs.h:181
+msgid "Select the previous element of the chain"
+msgstr "Seleciona o elemento anterior da sequência"
+
+#: keymap_alldefs.h:182
+msgid "Select the next element of the chain"
+msgstr "Seleciona o próximo elemento da sequência"
+
+#: keymap_alldefs.h:183
+msgid "send the message through a mixmaster remailer chain"
+msgstr "envia a mensagem através de uma sequência de reenviadores mixmaster"
 
 #: lib.c:58 lib.c:73 lib.c:104
 msgid "Out of memory!"
@@ -2856,540 +3568,6 @@ msgstr "A mensagem pai não está visível nesta visão limitada"
 #: thread.c:723
 msgid "Parent message is not available."
 msgstr "A mensagem pai não está disponível."
-
-#~ msgid "null operation"
-#~ msgstr "operação nula"
-
-#~ msgid "force viewing of attachment using mailcap"
-#~ msgstr "forçar a visualizaçãdo do anexo usando o mailcap"
-
-#~ msgid "view attachment as text"
-#~ msgstr "ver anexo como texto"
-
-#~ msgid "move to the bottom of the page"
-#~ msgstr "anda até o fim da página"
-
-#~ msgid "remail a message to another user"
-#~ msgstr "re-envia uma mensagem para outro usuário"
-
-#~ msgid "select a new file in this directory"
-#~ msgstr "escolhe um novo arquivo neste diretório"
-
-#~ msgid "view file"
-#~ msgstr "vê arquivo"
-
-#~ msgid "display the currently selected file's name"
-#~ msgstr "mostra o nome do arquivo atualmente selecionado"
-
-#~ msgid "subscribe to current mailbox (IMAP only)"
-#~ msgstr "assina à caixa de correio atual (só para IMAP)"
-
-#~ msgid "unsubscribe to current mailbox (IMAP only)"
-#~ msgstr "cancela assinatura da caixa atual (só para IMAP)"
-
-#~ msgid "toggle view all/subscribed mailboxes (IMAP only)"
-#~ msgstr "troca ver todas as caixas/só as inscritas (só para IMAP)"
-
-#~ msgid "change directories"
-#~ msgstr "muda de diretório"
-
-#~ msgid "check mailboxes for new mail"
-#~ msgstr "verifica se há novas mensagens na caixa"
-
-#~ msgid "attach a file(s) to this message"
-#~ msgstr "anexa um(ns) arquivo(s) à esta mensagem"
-
-#~ msgid "attach message(s) to this message"
-#~ msgstr "anexa uma(s) mensagem(ns) à esta mensagem"
-
-#~ msgid "change an attachment's character set"
-#~ msgstr "muda o conjunto de caracteres do anexo"
-
-#~ msgid "edit the BCC list"
-#~ msgstr "edita a lista de Cópias Escondidas (BCC)"
-
-#~ msgid "edit the CC list"
-#~ msgstr "edita a lista de Cópias (CC)"
-
-#~ msgid "edit attachment description"
-#~ msgstr "edita a descrição do anexo"
-
-#~ msgid "edit attachment transfer-encoding"
-#~ msgstr "edita o código de transferência do anexo"
-
-#~ msgid "enter a file to save a copy of this message in"
-#~ msgstr "informe um arquivo no qual salvar uma cópia desta mensagem"
-
-#~ msgid "edit the file to be attached"
-#~ msgstr "edita o arquivo a ser anexado"
-
-#~ msgid "edit the from field"
-#~ msgstr "edita o campo From"
-
-#~ msgid "edit the message with headers"
-#~ msgstr "edita a mensagem e seus cabeçalhos"
-
-#~ msgid "edit the message"
-#~ msgstr "edita a mensagem"
-
-#~ msgid "edit attachment using mailcap entry"
-#~ msgstr "edita o anexo usando sua entrada no mailcap"
-
-#~ msgid "edit the Reply-To field"
-#~ msgstr "edita o campo Reply-To"
-
-#~ msgid "edit the subject of this message"
-#~ msgstr "edita o assunto desta mensagem"
-
-#~ msgid "edit the TO list"
-#~ msgstr "edita a lista de Destinatários (To)"
-
-#~ msgid "edit attachment content type"
-#~ msgstr "edita o tipo de anexo"
-
-#~ msgid "get a temporary copy of an attachment"
-#~ msgstr "obtém uma cópia temporária do anexo"
-
-#~ msgid "run ispell on the message"
-#~ msgstr "executa o ispell na mensagem"
-
-#~ msgid "compose new attachment using mailcap entry"
-#~ msgstr "compõe um novo anexo usando a entrada no mailcap"
-
-#~ msgid "toggle recoding of this attachment"
-#~ msgstr "ativa/desativa recodificação deste anexo"
-
-#~ msgid "recode this attachment to/from the local charset"
-#~ msgstr "recodifica este anexo para/de o conjunto de caracteres local"
-
-#~ msgid "save this message to send later"
-#~ msgstr "salva esta mensagem para ser enviada depois"
-
-#~ msgid "rename/move an attached file"
-#~ msgstr "renomeia/move um arquivo anexado"
-
-#~ msgid "send the message"
-#~ msgstr "envia a mensagem"
-
-#~ msgid "toggle disposition between inline/attachment"
-#~ msgstr "troca a visualização de anexos/em linha"
-
-#~ msgid "toggle whether to delete file after sending it"
-#~ msgstr "troca entre apagar o arquivo após enviá-lo ou não"
-
-#~ msgid "update an attachment's encoding info"
-#~ msgstr "atualiza a informação de codificação de um anexo"
-
-#~ msgid "write the message to a folder"
-#~ msgstr "grava a mensagem em uma pasta"
-
-#~ msgid "copy a message to a file/mailbox"
-#~ msgstr "copia uma mensagem para um arquivo/caixa"
-
-#~ msgid "create an alias from a message sender"
-#~ msgstr "cria um apelido a partir do remetente de uma mensagem"
-
-#~ msgid "move entry to bottom of screen"
-#~ msgstr "move a entrada para o fundo da tela"
-
-#~ msgid "move entry to middle of screen"
-#~ msgstr "move a entrada para o meio da tela"
-
-#~ msgid "move entry to top of screen"
-#~ msgstr "move a entrada para o topo da tela"
-
-#~ msgid "make decoded (text/plain) copy"
-#~ msgstr "cria uma cópia decodificada (text/plain)"
-
-#~ msgid "make decoded copy (text/plain) and delete"
-#~ msgstr "cria uma cópia decodificada (text/plain) e apaga"
-
-#~ msgid "delete the current entry"
-#~ msgstr "apaga a entrada atual"
-
-#~ msgid "delete the current mailbox (IMAP only)"
-#~ msgstr "apaga a caixa de correio atual (só para IMAP)"
-
-#~ msgid "delete all messages in subthread"
-#~ msgstr "apaga todas as mensagens na sub-discussão"
-
-#~ msgid "delete all messages in thread"
-#~ msgstr "apaga todas as mensagens na discussão"
-
-#~ msgid "display full address of sender"
-#~ msgstr "mostra o endereço completo do remetente"
-
-#~ msgid "display message and toggle header weeding"
-#~ msgstr "mostra a mensagem e ativa/desativa poda de cabeçalhos"
-
-#~ msgid "display a message"
-#~ msgstr "mostra uma mensagem"
-
-#~ msgid "edit the raw message"
-#~ msgstr "edita a mensagem pura"
-
-#~ msgid "delete the char in front of the cursor"
-#~ msgstr "apaga o caractere na frente do cursor"
-
-#~ msgid "move the cursor one character to the left"
-#~ msgstr "move o cursor um caractere para a esquerda"
-
-#~ msgid "jump to the beginning of the line"
-#~ msgstr "pula para o início da linha"
-
-#~ msgid "cycle among incoming mailboxes"
-#~ msgstr "circula entre as caixas de mensagem"
-
-#~ msgid "complete filename or alias"
-#~ msgstr "completa um nome de arquivo ou apelido"
-
-#~ msgid "complete address with query"
-#~ msgstr "completa um endereço com uma pesquisa"
-
-#~ msgid "delete the char under the cursor"
-#~ msgstr "apaga o caractere sob o cursor"
-
-#~ msgid "jump to the end of the line"
-#~ msgstr "pula para o final da linha"
-
-#~ msgid "move the cursor one character to the right"
-#~ msgstr "move o cursor um caractere para a direita"
-
-#~ msgid "scroll up through the history list"
-#~ msgstr "volta uma página no histórico"
-
-#~ msgid "delete chars from cursor to end of line"
-#~ msgstr "apaga os caracteres a partir do cursor até o final da linha"
-
-#~ msgid "delete all chars on the line"
-#~ msgstr "apaga todos os caracteres na linha"
-
-#~ msgid "delete the word in front of the cursor"
-#~ msgstr "apaga a palavra em frente ao cursor"
-
-#~ msgid "quote the next typed key"
-#~ msgstr "põe a próxima tecla digitada entre aspas"
-
-#~ msgid "enter a muttrc command"
-#~ msgstr "entra um comando do muttrc"
-
-#~ msgid "enter a file mask"
-#~ msgstr "entra uma máscara de arquivos"
-
-#~ msgid "exit this menu"
-#~ msgstr "sai deste menu"
-
-#~ msgid "filter attachment through a shell command"
-#~ msgstr "filtra o anexo através de um comando do shell"
-
-#~ msgid "move to the first entry"
-#~ msgstr "anda até a primeira entrada"
-
-#~ msgid "toggle a message's 'important' flag"
-#~ msgstr "troca a marca 'importante' da mensagem"
-
-#~ msgid "forward a message with comments"
-#~ msgstr "encaminha uma mensagem com comentários"
-
-#~ msgid "select the current entry"
-#~ msgstr "seleciona a entrada atual"
-
-#~ msgid "reply to all recipients"
-#~ msgstr "responde a todos os destinatários"
-
-#~ msgid "scroll down 1/2 page"
-#~ msgstr "passa meia página"
-
-#~ msgid "scroll up 1/2 page"
-#~ msgstr "volta meia página"
-
-#~ msgid "this screen"
-#~ msgstr "esta tela"
-
-#~ msgid "jump to an index number"
-#~ msgstr "pula para um número de índice"
-
-#~ msgid "move to the last entry"
-#~ msgstr "anda até a última entrada"
-
-#~ msgid "reply to specified mailing list"
-#~ msgstr "responde à lista de email especificada"
-
-#~ msgid "execute a macro"
-#~ msgstr "executa um macro"
-
-#~ msgid "compose a new mail message"
-#~ msgstr "compõe uma nova mensagem eletrônica"
-
-#~ msgid "open a different folder"
-#~ msgstr "abre uma pasta diferente"
-
-#~ msgid "open a different folder in read only mode"
-#~ msgstr "abre uma pasta diferente somente para leitura"
-
-#~ msgid "clear a status flag from a message"
-#~ msgstr "retira uma marca de estado de uma mensagem"
-
-#~ msgid "delete messages matching a pattern"
-#~ msgstr "apaga mensagens que casem com um padrão"
-
-#~ msgid "retrieve mail from POP server"
-#~ msgstr "obtém mensagens do servidor POP"
-
-#~ msgid "move to the first message"
-#~ msgstr "anda até a primeira mensagem"
-
-#~ msgid "move to the last message"
-#~ msgstr "anda até a última mensagem"
-
-#~ msgid "show only messages matching a pattern"
-#~ msgstr "mostra somente mensagens que casem com um padrão"
-
-#~ msgid "jump to the next new message"
-#~ msgstr "pula para a próxima mensagem nova"
-
-#~ msgid "jump to the next subthread"
-#~ msgstr "pula para a próxima sub-discussão"
-
-#~ msgid "jump to the next thread"
-#~ msgstr "pula para a próxima discussão"
-
-#~ msgid "move to the next undeleted message"
-#~ msgstr "anda até a próxima mensagem não apagada"
-
-#~ msgid "jump to the next unread message"
-#~ msgstr "pula para a próxima mensagem não lida"
-
-#~ msgid "jump to parent message in thread"
-#~ msgstr "pula para a mensagem pai na discussão"
-
-#~ msgid "jump to previous thread"
-#~ msgstr "pula para a discussão anterior"
-
-#~ msgid "jump to previous subthread"
-#~ msgstr "pula para a sub-discussão anterior"
-
-#~ msgid "move to the previous undeleted message"
-#~ msgstr "anda até a mensagem não apagada anterior"
-
-#~ msgid "jump to the previous new message"
-#~ msgstr "pula para a mensagem nova anterior"
-
-#~ msgid "jump to the previous unread message"
-#~ msgstr "pula para a mensagem não lida anterior"
-
-#~ msgid "mark the current thread as read"
-#~ msgstr "marca a discussão atual como lida"
-
-#~ msgid "mark the current subthread as read"
-#~ msgstr "marca a sub-discussão atual como lida"
-
-#~ msgid "set a status flag on a message"
-#~ msgstr "atribui uma marca de estado em uma mensagem"
-
-#~ msgid "save changes to mailbox"
-#~ msgstr "salva as mudanças à caixa"
-
-#~ msgid "tag messages matching a pattern"
-#~ msgstr "marca mensagens que casem com um padrão"
-
-#~ msgid "undelete messages matching a pattern"
-#~ msgstr "restaura mensagens que casem com um padrão"
-
-#~ msgid "untag messages matching a pattern"
-#~ msgstr "desmarca mensagens que casem com um padrão"
-
-#~ msgid "move to the middle of the page"
-#~ msgstr "anda até o meio da página"
-
-#~ msgid "create a new mailbox (IMAP only)"
-#~ msgstr "cria uma nova caixa de correio (só para IMAP)"
-
-#~ msgid "move to the next entry"
-#~ msgstr "anda até a próxima entrada"
-
-#~ msgid "scroll down one line"
-#~ msgstr "desce uma linha"
-
-#~ msgid "move to the next page"
-#~ msgstr "anda até a próxima página"
-
-#~ msgid "jump to the bottom of the message"
-#~ msgstr "pula para o fim da mensagem"
-
-#~ msgid "toggle display of quoted text"
-#~ msgstr "troca entre mostrar texto citado ou não"
-
-#~ msgid "skip beyond quoted text"
-#~ msgstr "pula para depois do texto citado"
-
-#~ msgid "jump to the top of the message"
-#~ msgstr "volta para o início da mensagem"
-
-#~ msgid "pipe message/attachment to a shell command"
-#~ msgstr "passa a mensagem/anexo para um comando do shell através de um cano"
-
-#~ msgid "move to the previous entry"
-#~ msgstr "anda até a entrada anterior"
-
-#~ msgid "scroll up one line"
-#~ msgstr "sobe uma linha"
-
-#~ msgid "move to the previous page"
-#~ msgstr "anda até a página anterior"
-
-#~ msgid "print the current entry"
-#~ msgstr "imprime a entrada atual"
-
-#~ msgid "query external program for addresses"
-#~ msgstr "executa uma busca por um endereço através de um programa externo"
-
-#~ msgid "append new query results to current results"
-#~ msgstr "anexa os resultados da nova busca aos resultados atuais"
-
-#~ msgid "save changes to mailbox and quit"
-#~ msgstr "salva mudanças à caixa e sai"
-
-#~ msgid "recall a postponed message"
-#~ msgstr "edita uma mensagem adiada"
-
-#~ msgid "clear and redraw the screen"
-#~ msgstr "limpa e redesenha a tela"
-
-#~ msgid "{internal}"
-#~ msgstr "{interno}"
-
-#~ msgid "reply to a message"
-#~ msgstr "responde a uma mensagem"
-
-#~ msgid "use the current message as a template for a new one"
-#~ msgstr "usa a mensagem atual como modelo para uma nova mensagem"
-
-#~ msgid "save message/attachment to a file"
-#~ msgstr "salva mensagem/anexo em um arquivo"
-
-#~ msgid "search for a regular expression"
-#~ msgstr "procura por uma expressão regular"
-
-#~ msgid "search backwards for a regular expression"
-#~ msgstr "procura de trás para a frente por uma expressão regular"
-
-#~ msgid "search for next match"
-#~ msgstr "procura pelo próximo resultado"
-
-#~ msgid "search for next match in opposite direction"
-#~ msgstr "procura pelo próximo resultado na direção oposta"
-
-#~ msgid "toggle search pattern coloring"
-#~ msgstr "troca entre mostrar cores nos padrões de busca ou não"
-
-#~ msgid "invoke a command in a subshell"
-#~ msgstr "executa um comando em um subshell"
-
-#~ msgid "sort messages"
-#~ msgstr "ordena mensagens"
-
-#~ msgid "sort messages in reverse order"
-#~ msgstr "ordena mensagens em ordem reversa"
-
-#~ msgid "tag the current entry"
-#~ msgstr "marca a entrada atual"
-
-#~ msgid "apply next function to tagged messages"
-#~ msgstr "aplica a próxima função às mensagens marcadas"
-
-#~ msgid "tag the current subthread"
-#~ msgstr "marca a sub-discussão atual"
-
-#~ msgid "tag the current thread"
-#~ msgstr "marca a discussão atual"
-
-#~ msgid "toggle a message's 'new' flag"
-#~ msgstr "troca a marca 'nova' de uma mensagem"
-
-#~ msgid "toggle whether the mailbox will be rewritten"
-#~ msgstr "troca entre reescrever a caixa ou não"
-
-#~ msgid "toggle whether to browse mailboxes or all files"
-#~ msgstr "troca entre pesquisar em caixas ou em todos os arquivos"
-
-#~ msgid "move to the top of the page"
-#~ msgstr "anda até o topo da página"
-
-#~ msgid "undelete the current entry"
-#~ msgstr "restaura a entrada atual"
-
-#~ msgid "undelete all messages in thread"
-#~ msgstr "restaura todas as mensagens na discussão"
-
-#~ msgid "undelete all messages in subthread"
-#~ msgstr "restaura todas as mensagens na sub-discussão"
-
-#~ msgid "show the Mutt version number and date"
-#~ msgstr "mostra o número e a data da versão do Mutt"
-
-#~ msgid "view attachment using mailcap entry if necessary"
-#~ msgstr "vê anexo usando sua entrada no mailcap se necessário"
-
-#~ msgid "show MIME attachments"
-#~ msgstr "mostra anexos MIME"
-
-#~ msgid "show currently active limit pattern"
-#~ msgstr "mostra o padrão limitante atualmente ativado"
-
-#~ msgid "collapse/uncollapse current thread"
-#~ msgstr "abre/fecha a discussão atual"
-
-#~ msgid "collapse/uncollapse all threads"
-#~ msgstr "abre/fecha todas as discussões"
-
-#~ msgid "attach a PGP public key"
-#~ msgstr "anexa uma chave pública do PGP"
-
-#~ msgid "show PGP options"
-#~ msgstr "mostra as opções do PGP"
-
-#~ msgid "extract PGP public keys"
-#~ msgstr "extrai chaves públicas do PGP"
-
-#~ msgid "wipe PGP passphrase from memory"
-#~ msgstr "retira a senha do PGP da memória"
-
-#~ msgid "mail a PGP public key"
-#~ msgstr "envia uma chave pública do PGP"
-
-#~ msgid "verify a PGP public key"
-#~ msgstr "verifica uma chave pública do PGP"
-
-#~ msgid "view the key's user id"
-#~ msgstr "vê a identificação de usuário da chave"
-
-#~ msgid "make decrypted copy and delete"
-#~ msgstr "cria cópia desencriptada e apaga"
-
-#~ msgid "make decrypted copy"
-#~ msgstr "cria cópia desencriptada"
-
-#~ msgid "Accept the chain constructed"
-#~ msgstr "Aceita a sequência construída"
-
-#~ msgid "Append a remailer to the chain"
-#~ msgstr "Anexa um reenviador à sequência"
-
-#~ msgid "Insert a remailer into the chain"
-#~ msgstr "Insere um reenviador à sequência"
-
-#~ msgid "Delete a remailer from the chain"
-#~ msgstr "Remove um reenviador da sequência"
-
-#~ msgid "Select the previous element of the chain"
-#~ msgstr "Seleciona o elemento anterior da sequência"
-
-#~ msgid "Select the next element of the chain"
-#~ msgstr "Seleciona o próximo elemento da sequência"
-
-#~ msgid "send the message through a mixmaster remailer chain"
-#~ msgstr "envia a mensagem através de uma sequência de reenviadores mixmaster"
 
 #~ msgid "move to the last undelete message"
 #~ msgstr "anda até a última mensagem não apagada"
