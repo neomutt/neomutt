@@ -134,7 +134,7 @@ static void show_version (void)
   struct utsname uts;
 
   printf ("Mutt %s (%s)\n", MUTT_VERSION, ReleaseDate);
-  puts (Notice);
+  puts (_(Notice));
 
   uname (&uts);
 
