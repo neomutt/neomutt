@@ -233,7 +233,6 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
     ctx->hdrs[ctx->msgcount] = mutt_new_header ();
     ctx->hdrs[ctx->msgcount]->index = ctx->msgcount;
 
-    ctx->hdrs[msgno]->env = mutt_read_rfc822_header (fp, ctx->hdrs[msgno], 0, 0);
     ploc = ftell (fp);
     ctx->hdrs[msgno]->read = h->read;
     ctx->hdrs[msgno]->old = h->old;
@@ -242,8 +241,13 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
     ctx->hdrs[msgno]->replied = h->replied;
     ctx->hdrs[msgno]->changed = h->changed;
     ctx->hdrs[msgno]->received = h->received;
-    ctx->hdrs[msgno]->content->length = h->content_length;
     ctx->hdrs[msgno]->data = (void *) (h->data);
+
+    /* NOTE: if Date: header is missing, mutt_read_rfc822_header depends
+     *   on h->received being set */
+    ctx->hdrs[msgno]->env = mutt_read_rfc822_header (fp, ctx->hdrs[msgno], 0, 0);
+    /* content built as a side-effect of mutt_read_rfc822_header */
+    ctx->hdrs[msgno]->content->length = h->content_length;
 
     mx_update_context (ctx); /* increments ->msgcount */
 
