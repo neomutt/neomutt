@@ -160,7 +160,7 @@ actual-dist:
 	## This part is maintainer-only and very specific to some
 	## local settings.
 	##
-	if test $HOSTNAME = sobolev && test $LOGNAME = roessler ; then
+	if test $$HOSTNAME = sobolev && test $$LOGNAME = roessler ; then
 		pgp -sb $(distdir)i.tar.gz && chmod 644 $(distdir)i.tar.gz.asc
 		pgp -sb $(distdir).tar.gz && chmod 644 $(distdir).tar.gz.asc
 		if ! ssh-add -l | grep -q roessler@guug.de ; then
@@ -174,8 +174,8 @@ actual-dist:
 		cvs commit -m "automatic post-release commit for $(distdir)"
 		cvs tag $(distdir)-rel
 		cvs update
-		$(HOME)/bin/upload-mutt
-		mutt -s "[Announce] $(distdir) is out" mutt-announce@mutt.org
+		$$HOME/bin/upload-mutt
+		mutt -s "[Announce] $(distdir) is out" mutt-dev@mutt.org
 	fi
 
 bump-version:
