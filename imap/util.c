@@ -159,12 +159,12 @@ int imap_parse_path (const char *path, IMAP_MBOX *mx)
   {
     return -1;
   }
-  mx->mbox = strchr (path, '}');
-  if (!(mx->mbox))
+  c = strchr (path, '}');
+  if (!c)
     return -1;
   else
     /* walk past closing '}' */
-    (mx->mbox)++;
+    mx->mbox = safe_strdup (c+1);
   
   /* Defaults */
   mx->flags = 0;
