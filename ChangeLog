@@ -1,3 +1,42 @@
+2003-01-21 12:33:41  Werner Koch  <wk@gnupg.org>  (roessler)
+
+	* Makefile.am, acconfig.h, attach.c, commands.c, compose.c,
+	 configure.in, copy.c, copy.h, crypt.c, cryptglue.c, curs_main.c,
+	 functions.h, globals.h, gnupgparse.c, handler.c, hdrline.c,
+	 headers.c, hook.c, init.c, init.h, keymap.c, keymap.h,
+	 main.c, mutt.h, mutt_crypt.h, muttlib.c, mx.c, pager.c,
+	 parse.c, pattern.c, pgp.c, pgp.h, pgpkey.c, pgplib.c, pgplib.h,
+	 pgppubring.c, pop.c, postpone.c, protos.h, recvattach.c, send.c,
+	 sendlib.c, smime.c, smime.h, sort.h:  
+	 
+	 - To cleanup the pgp/smime code and prepare for other
+       	   backends.  
+	 - Support gpg-agent by not asking for a passphrase.
+
+	This is just a start and probably we need a couple of other things
+	to do. One drawback is that the help menu does always list all
+	crypto realted stuff even when configured for no crypto at all.
+	Same goes for the configure options but I consider thsi a feature:
+	It allows to use the same .muttrc for different versions of mutt -
+	at least during development, this is an advantage.  This all might
+	be fixed but requires some changes to the configuration system.
+
+	Note, the use of the WithCrypto macro - it enables the compiler
+	to do dead-code-elimination depending on the configured backend.
+	This is better readable than all the nested ifdefs.  I did some
+	short tests and it seems to work, althoug mutt's size does not
+	change largely when compiled w/o crypto.
+
+	cryptglue.c is new as a warpper to all crypto calls; some are
+	still in crypt.c but they should eventually also be wrapped.
+	We don't use function pointers to keep a path to use dlopen or
+	runtime configured backends.  crypt.h is also new and replaces
+	pgp.h and smime.h in most files (except for the backend).
+
+	(Details are in Werner's changelog entries from January 4
+	and January 6 below.  Note that the configure update Werner
+	had done are not in the CVS at this point. -- T.R.)
+
 2003-01-09 17:27:25  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* pgppubring.c: Don't make a "hard" transition to the new GnuPG
@@ -20,6 +59,19 @@
 	* curs_lib.c: A recent change causes all mutt_yesorno prompts
 	to come out as [yes]/yes or [no]/no.  Here's a fix.
 
+2003-01-06  Werner Koch  <wk@gnupg.org>  (Committed 2003-01-21, roessler.)
+
+	* crypt.c (crypt_valid_passphrase): Detect gpg-agent and don't ask
+	for the passphrase.
+	* pgp.c (pgp_decrypt_part, pgp_application_pgp_handler)
+	(pgp_sign_message, pgp_encrypt_message)
+	(pgp_traditional_encryptsign): Make sure that we never ever send
+	the passphrase if the gpg-agent has been detected.  Likewise.
+
+	* acconfig.h: Removed all remaining stuff as AC_TEMPLATEs to
+	configure.in. BTW, we should consider to rename configure.in to
+	configure.ac.
+
 2003-01-05 22:16:02  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* smime_keys.pl: Error checking for the creation of the temporary
@@ -41,6 +93,176 @@
 	of mutt_yesorno(): Always explicitly use the M_YES and M_NO
 	constants.  Fixes a couple of cases in which C-g would be
 	mis-interpreted.
+
+2003-01-04  Werner Koch  <wk@gnupg.org>  (Committed 2003-01-21, roessler.)
+
+        Replaced the use of HAVE_PGP and HAVE_SMIME by a more readable
+	and extendable solution.
+
+	* pgplib.h: Moved enum pgp_ring and KEYFLAGS_* to
+	* crypt.h: here.
+	* smime.c (mutt_is_application_smime): Moved to 
+	* crypt.c (mutt_is_application_smime): here.
+	* pgp.c (mutt_is_application_pgp): Moved to 
+	* crypt.c (mutt_is_application_pgp): here.
+	* pgp.c (pgp_is_multipart_encrypted): Removed. Merged code with 
+	* crypt.c (mutt_is_multipart_encrypted): this.
+
+	* mutt.h: Protect against double inclusion.
+
+	* pgplib.h (struct pgp_keyinfo): Remove the typedef to pgp_key_t.
+	* crypt.h (pgp_key_t): Declare the typedef here.  NOTE:  This is
+	now a pointer.  Changed all usages accordingly.
+
+	* configure.in: Replace HAVE_PGP and HAVE_SMIME by the new
+	CRYPT_BACKEND macros.  Always include all OPS.*. 
+	(LIBOBJ): Replaced by AC_LIBOBJ as required by newer autoconfs.
+	* Makefile.am (EXTRA_mutt_SOURCES): Move crypt.c to mutt_SOURCES.
+	(mutt_SOURCES): Add cryptglue.c
+	(EXTRA_DIST): Add crypt.h
+
+	* pgp.h, pgplib.h, smime.h: Use the header only when the
+	approriate backend has been configured.
+	* pgp.c, pgpkey.c, smime.c: Build only if the approriate
+	CRYPT_BACKEND_ macro is defined.
+	* pgp.h, smime.h, global.h: Moved all variable declarations to
+	global.h because they are now always defined. 
+
+	* sort.h: Always define PgpSortKey, although it does not belong to
+	here.
+
+	* keymap.h: Unconditionally include all PGP and SMIME stuff.
+	* mutt.h: Ditto.
+	* protos.h: Ditto.
+
+	* init.h (HAVE_SMIME): Unconditionally include all crypto related
+	definitions.  Mark the doc entries with "(Crypto/PGP/SMIME only)".
+
+	* globals.h: Replace gpg.h and smime.h by crypt.h.
+
+	* functions.h: Always include all crypto commands.
+	
+	* copy.h: Unconditionally define the crypto related M_CM_
+
+	* pgplib.h: Move APPLICATION_PGP and PGP* to crypt.h and include
+	it.
+	* smime.h: Move APPLICATION_SMIME and SMIME* to crypt.h and
+	include it.
+	* mutt_crypt.h (ENCRYPT,SIGN,GOODSIGN, BADSIGN): Move to crypt.h.
+
+	* crypt.c: Replaced pgp.h and smime.h header by crypt.h.  Always
+	include all functions but shortcut them depending on WITHCRYPTO.
+        All over the place use WITHCRYPTO instead of ifdefs.  Replaced all
+	direct calls of the backend fucntions by twrapper functions
+	defined in cryptglue.c
+	(crypt_get_keys): Removed prototypes.
+	* pgp.h (pgp_findKeys): New prototype.
+	* smime.h (smime_findKeys): New prototype.
+	* cryptglue.c: New.
+	* crypt.h: New.
+	* mutt_crypt.h: Moved all crypt_* prototypes to gcrypt.h.
+	Unconditionally use this file.
+	
+	* init.c: Replaced pgp.h and smime.h header by crypt.h.
+	(parse_set): Use WITHCRYPTO instead of ifdefs.
+	(mutt_var_value_complete): Ditto.
+
+	* sendlib.c: Replaced pgp.h and smime.h header by crypt.h.
+	(write_as_text_part): Now one macro using WITHCRYPTO.
+	(mutt_write_mime_body): Use WITHCRYPTO instead of ifdefs.
+	(mutt_make_message_attach): Ditto.
+	(mutt_write_fcc): Ditto.
+
+	* send.c: Replaced pgp.h and smime.h header by crypt.h.
+	(include_forward): Use WITHCRYPTO and validate passphrases for pgp
+	and smime.
+	(include_reply): Ditto.
+	(generate_body): Use WITHCRYPTO instead of ifdefs.
+	(ci_send_message): Ditto.
+
+	* recvattach.c: Replaced pgp.h and smime.h header by crypt.h.
+	(mutt_gen_attach_list): Use WITHCRYPTO instead of ifdefs.
+	(mutt_attach_display_loop): Ditto
+	(mutt_view_attachments): Ditto.
+
+	* postpone.c: Replaced pgp.h and smime.h header by crypt.h.
+	(mutt_get_postponed): Use WITHCRYPTO instead of ifdefs.
+	(mutt_parse_crypt_hdr): Always include and use WITHCRYPTO instead
+	of ifdefs.
+	(mutt_prepare_template): Use WITHCRYPTO instead of ifdefs.
+
+	* pop.c: Removed pgp.h and smime.h.
+	(pop_fetch_message): Use WITHCRYPTO instead of ifdefs.
+
+	* pattern.c: Replaced pgp.h and smime.h header by crypt.h.
+	(Flags): Always include the crypto flags.
+	(msg_search): Use WITHCRYPTO instead of ifdefs.
+	(mutt_pattern_exec): Ditto.
+
+	* parse.c: Removed pgp.h and smime.h.
+	(mutt_parse_mime_message): Use WITHCRYPTO instead of ifdefs.
+
+	* pager.c: Replaced pgp.h and smime.h header by crypt.h.
+	(mutt_pager): Use WITHCRYPTO instead of ifdefs.
+
+	* mx.c: Removed smime.h and pgp.h.
+	(mx_update_context): Use WITHCRYPTO instead of ifdefs.
+
+	* muttlib.c: Replaced pgp.h and smime.h header by crypt.h.
+	(mutt_needs_mailcap): Use WITHCRYPTO. Note, that there used to be
+	an error when PGP was not configured so that TYPEAPPLICATION was
+	not recognized for SMIME.
+	(mutt_is_text_part): Use WITHCRYPTO instead of ifdefs.
+
+	* main.c: Include crypt.h.
+	(show_version): Remove HAVE_PGP and HAVE_SMIME.  Add
+	CRYPT_BACKEND_CLASSIC_PGP, CRYPT_BACKEND_CLASSIC_SMIME.
+
+	* keymap.c: Include crypt.h so that we can test WITHCRYPTO.
+	(Menus): Always include pgp and smime. 
+	(km_init): Create smime and pgp bindings depending on WITHCRYPTO.
+	(km_get_table): Return OpPgp depending on WITHCRYPTO.
+
+	* hook.c (mutt_parse_hook): Use WITHCRYPTO instead of ifdefs.
+	(mutt_crypt_hook): Always include.
+
+	* headers.c: Replaced pgp.h and smime.h header by crypt.h.
+	(mutt_edit_headers): Use WITHCRYPTO instead of ifdefs
+
+	* hdrline.c: Replaced pgp.h and smime.h header by crypt.h.
+	(hdr_format_str): Use WITHCRYPTO.
+
+	* handler.c: Replaced pgp.h and smime.h header by crypt.h.
+	(mutt_can_decode): Use WITHCRYPTO instead of ifdefs.
+	(mutt_can_decode): Application/smime is now also checked when PGP
+	support is not configured.
+	(mutt_body_handler): Use WITHCRYPTO
+
+	* curs_main.c: Replaced pgp.h and smime.h header by crypt.h.
+	(mutt_index_menu): Shortcut crypto only operations depending on
+	WITHCRYPTO.
+
+	* copy.c: Replaced pgp.h and smime.h header by crypt.h.
+	(_mutt_copy_message): 
+
+	* compose.c: Replaced pgp.h and smime.h header by crypt.h.
+	(enum): Always include HDR_CRYPT and HDR_CRYPTINFO.
+	(redraw_crypt_lines): Always include this fnc but shortcut it
+	depending on WITHCRYPT.  Draw lines depending on the configured
+	crypto support.
+	(pgp_send_menu): Always include this one.  Call wrapper functions.
+	(smime_send_menu): Likewise.
+	(draw_envelope): Use WITHCRYPTO instead of ifdefs.
+	(mutt_compose_menu): Allow pgp/smime commands only when configured.
+
+	* commands.c: Replaced pgp.h and smime.h header by crypt.h.
+	(mutt_display_message,pipe_msg, _mutt_pipe_message)
+	(set_copy_flags, mutt_save_message, mutt_edit_content_type)
+	(_mutt_check_traditional_pgp): Use pgp wrapper.
+
+	* attach.c (mutt_view_attachment): Removed HAVE_GPG and HAVE_SMIME
+	and replaced by global variable WITHCRYPTO.  Replaced pgp and
+	smime header by crypt.h.x
 
 2003-01-03 18:07:36  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
