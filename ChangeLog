@@ -1,3 +1,7 @@
+2004-06-23 08:09:43  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* pgp.c: Zero out the PGP passphrase before asking for a new one.
+
 2004-06-17 20:39:20  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* smime.c: Change S/MIME send menu behavior to xor instead of or,
