@@ -64,6 +64,31 @@ using procmail, aren't you?):
 
 		   ------------------------------
 
+For users of maildrop, "Mark Weinem"
+<mark.weinem@unidui.uni-duisburg.de> suggests the following recipe:
+
+		   ------------------------------
+
+BPGPM="-----BEGIN PGP MESSAGE-----"
+EPGPM="-----END PGP MESSAGE-----"
+BPGPS="-----BEGIN PGP SIGNATURE-----"
+EPGPS="-----END PGP SIGNATURE-----"
+
+if (!/^Content-Type: message/ && !/^Content-Type: multipart/ \
+	&& !/^Content-Type: application\/pgp/)
+{	
+if (/^$BPGPM/:b && /^$EPGPM/:b)
+	xfilter "reformail -A 'Content-Type: application/pgp; format=text; \
+		x-action=encrypt'"
+
+if (/^$BPGPS/:b && /^$EPGPS/:b)
+	xfilter "reformail -A 'Content-Type: application/pgp; format=text; \
+		x-action=sign'"
+}
+
+		   ------------------------------
+
+
 
 Q: "I don't like that PGP/MIME stuff, but want to use the
     old way of PGP-signing my mails.  Can't you include
