@@ -34,9 +34,17 @@ DISTFILES = Makefile.in dotlock.man.in  \
 DOCFILES = PGP-Notes.txt applying-patches.txt devel-notes.txt	\
 	manual.txt
 
+
+all: mutt.man dotlock.man manual.txt try-html
+
 complete: all html
 
-all: mutt.man dotlock.man manual.txt 
+# We don't ship the html stuff, but we build and install it
+# if sgml2html is available.  Instead of nifty autoconf magic,
+# we just do this in the makefile. ;)
+
+try-html:
+	-$(MAKE) html
 
 html: manual.html
 
@@ -61,8 +69,8 @@ dotlock.man: dotlock.man.in
 	(cd .. ; ./config.status)
 
 uninstall:
-	-rm -f $(mandir)/man1/mutt.1 $(docdir)/manual.txt	\
-		$(docdir)/PGP-Notes.txt
+	-rm -f $(mandir)/man1/mutt.1
+	-rm -rf $(docdir)
 
 manual.txt: manual.sgml
 	sgml2txt -c latin manual
