@@ -45,6 +45,7 @@
 #ifdef HAVE_GETOPT_H
 # include <getopt.h>
 #endif
+#include <errno.h>
 
 extern char *optarg;
 extern int optind;
@@ -758,7 +759,14 @@ static void pgpring_find_candidates (char *ringfile, const char *hints[], int nh
   
   if ((rfp = fopen (ringfile, "r")) == NULL)
   {
-    perror ("fopen");
+    char *error_buf;
+    size_t error_buf_len;
+
+    error_buf_len = sizeof ("fopen: ") - 1 + strlen (ringfile) + 1;
+    error_buf = malloc (error_buf_len);
+    snprintf (error_buf, error_buf_len, "fopen: %s", ringfile);
+    perror (error_buf);
+    free (error_buf);
     return;
   }
 
