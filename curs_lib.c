@@ -35,9 +35,8 @@
  * buffering routines.
  */
 static short UngetCount = 0;
-
 #define UngetBufLen 128
-static int UngetBuf[UngetBufLen];
+static event_t KeyEvent[UngetBufLen] = { {0,0} };
 
 void mutt_refresh (void)
 {
@@ -46,12 +45,13 @@ void mutt_refresh (void)
     refresh ();
 }
 
-int mutt_getch (void)
+event_t mutt_getch (void)
 {
   int ch;
+  event_t err = {-1,0}, ret;
 
   if (UngetCount)
-    return (UngetBuf[--UngetCount]);
+    return (KeyEvent[--UngetCount]);
 
   Signals &= ~S_INTERRUPT;
 
@@ -66,17 +66,21 @@ int mutt_getch (void)
     mutt_query_exit ();
 
   if(ch == -1)
-    return ch;
+    return err;
   
   if ((ch & 0x80) && option (OPTMETAKEY))
   {
     /* send ALT-x as ESC-x */
     ch &= ~0x80;
-    mutt_ungetch (ch);
-    return ('\033');
+    mutt_ungetch (ch, 0);
+    ret.ch = '\033';
+    ret.op = 0;
+    return ret;
   }
 
-  return (ch == ctrl ('G') ? ERR : ch);
+  ret.ch = ch;
+  ret.op = 0;
+  return (ch == ctrl ('G') ? err : ret);
 }
 
 int mutt_get_field (/* const */ char *field, char *buf, size_t buflen, int complete)
@@ -126,7 +130,7 @@ void mutt_edit_file (const char *editor, const char *data)
 
 int mutt_yesorno (const char *msg, int def)
 {
-  int ch;
+  event_t ch;
   const char *yes = _("yes");
   const char *no = _("no");
   
@@ -137,15 +141,15 @@ int mutt_yesorno (const char *msg, int def)
   {
     mutt_refresh ();
     ch = mutt_getch ();
-    if (ch == ERR) return(-1);
-    if (CI_is_return (ch))
+    if (ch.ch == ERR) return(-1);
+    if (CI_is_return (ch.ch))
       break;
-    else if (tolower(ch) == tolower(*yes))
+    else if (tolower(ch.ch) == tolower(*yes))
     {
       def = 1;
       break;
     }
-    else if (tolower(ch) == tolower(*no))
+    else if (tolower(ch.ch) == tolower(*no))
     {
       def = 0;
       break;
@@ -297,7 +301,7 @@ int mutt_do_pager (const char *banner,
 
 int mutt_enter_fname (const char *prompt, char *buf, size_t blen, int *redraw, int buffy)
 {
-  int i;
+  event_t ch;
 
   mvaddstr (LINES-1, 0, (char *) prompt);
   addstr (_(" ('?' for list): "));
@@ -306,12 +310,13 @@ int mutt_enter_fname (const char *prompt, char *buf, size_t blen, int *redraw, i
   clrtoeol ();
   mutt_refresh ();
 
-  if ((i = mutt_getch ()) == ERR)
+  ch = mutt_getch();
+  if (ch.ch == -1)
   {
     CLEARLINE (LINES-1);
     return (-1);
   }
-  else if (i == '?')
+  else if (ch.ch == '?')
   {
     mutt_refresh ();
     buf[0] = 0;
@@ -323,7 +328,7 @@ int mutt_enter_fname (const char *prompt, char *buf, size_t blen, int *redraw, i
     char *pc = safe_malloc (strlen (prompt) + 3);
 
     sprintf (pc, "%s: ", prompt);
-    mutt_ungetch (i);
+    mutt_ungetch (ch.ch, 0);
     if (mutt_get_field (pc, buf, blen, (buffy ? M_EFILE : M_FILE) | M_CLEAR)
 	!= 0)
       buf[0] = 0;
@@ -337,10 +342,15 @@ int mutt_enter_fname (const char *prompt, char *buf, size_t blen, int *redraw, i
 /* FOO - this could be made more efficient by allocating/deallocating memory
  * instead of using a fixed array
  */
-void mutt_ungetch (int ch)
+void mutt_ungetch (int ch, int op)
 {
+  event_t tmp;
+
+  tmp.ch = ch;
+  tmp.op = op;
+
   if (UngetCount < UngetBufLen) /* make sure not to overflow */
-    UngetBuf[UngetCount++] = ch;
+    KeyEvent[UngetCount++] = tmp;
 }
 
 void mutt_flushinp (void)

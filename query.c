@@ -240,13 +240,15 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
   int op;
   char helpstr[SHORT_STRING];
   char title[STRING];
+  int savedmenu = CurrentMenu;
+
   snprintf (title, sizeof (title), _("Query")); /* FIXME */
 
   menu = mutt_new_menu ();
   menu->make_entry = query_entry;
   menu->search = query_search;
   menu->tag = query_tag;
-  menu->menu = MENU_QUERY;
+  menu->menu = CurrentMenu = MENU_QUERY;
   menu->title = title;
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_QUERY, QueryHelp);
 
@@ -462,4 +464,5 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
   }
 
   mutt_menuDestroy (&menu);
+  CurrentMenu = savedmenu;
 }

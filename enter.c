@@ -53,6 +53,7 @@ enum
 int mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 		       int flags)
 {
+  event_t event;
   int curpos = 0;		/* the location of the cursor */
   int lastchar = 0; 		/* offset of the last char in the string */
   int begin = 0;		/* first character displayed on the line */
@@ -122,7 +123,7 @@ int mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
       return (-1);
     }
 
-    if (ch != 0)
+    if (ch != OP_NULL)
     {
       first = 0; /* make sure not to clear the buffer */
       if (ch != OP_EDITOR_COMPLETE)
@@ -414,7 +415,8 @@ int mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 
 	case OP_EDITOR_QUOTE_CHAR:
 	  ADDCH (LastKey);
-	  LastKey = mutt_getch ();
+	  event = mutt_getch ();
+	  LastKey = event.ch;
 	  move (y, x + curpos - begin);
 	  goto self_insert;
 
@@ -436,7 +438,7 @@ self_insert:
 	first = 0;
 	if (IsPrint (ch))
 	{
-	  mutt_ungetch (ch);
+	  mutt_ungetch (ch, 0);
 	  buf[0] = 0;
 	  redraw = M_REDRAW_INIT;
 	  continue;

@@ -809,6 +809,7 @@ void mutt_view_attachments (HEADER *hdr)
   short idxmax = 0;
   int flags = 0;
   int op;
+  int savedmenu = CurrentMenu;
   
   /* make sure we have parsed this message */
   mutt_parse_mime_message (Context, hdr);
@@ -847,7 +848,7 @@ void mutt_view_attachments (HEADER *hdr)
   menu->max = idxlen;
   menu->make_entry = attach_entry;
   menu->tag = mutt_tag_attach;
-  menu->menu = MENU_ATTACH;
+  menu->menu = CurrentMenu = MENU_ATTACH;
   menu->title = _("Attachments");
   menu->data = idx;
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_ATTACH, AttachHelp);
@@ -1043,6 +1044,7 @@ void mutt_view_attachments (HEADER *hdr)
 
 
 	mutt_menuDestroy  (&menu);
+	CurrentMenu = savedmenu;
 	return;
     }
   }

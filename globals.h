@@ -114,6 +114,8 @@ WHERE short WriteInc;
 /* vector to store received signals */
 WHERE short Signals INITVAL (0);
 
+WHERE int CurrentMenu;
+
 WHERE ALIAS *Aliases INITVAL (0);
 WHERE LIST *UserHeader INITVAL (0);
 

@@ -219,11 +219,37 @@ void km_bindkey (char *s, int menu, int op)
   km_bind (s, menu, op, NULL, NULL);
 }
 
+static int get_op (struct binding_t *bindings, const char *start, size_t len)
+{
+  int i;
+
+  for (i = 0; bindings[i].name; i++)
+  {
+    if (!strncasecmp (start, bindings[i].name, len))
+      return bindings[i].op;
+  }
+
+  return OP_NULL;
+}
+
+static char *get_func (struct binding_t *bindings, int op)
+{
+  int i;
+
+  for (i = 0; bindings[i].name; i++)
+  {
+    if (bindings[i].op == op)
+      return bindings[i].name;
+  }
+
+  return NULL;
+}
+
 static void push_string (char *s)
 {
   char *pp, *p = s + strlen (s) - 1;
   size_t l;
-  int i;
+  int i, op = OP_NULL;
 
   while (p >= s)
   {
@@ -244,13 +270,33 @@ static void push_string (char *s)
 	if (KeyNames[i].name)
 	{
 	  /* found a match */
-	  mutt_ungetch (KeyNames[i].value);
+	  mutt_ungetch (KeyNames[i].value, 0);
+	  p = pp - 1;
+	  continue;
+	}
+
+	/* See if it is a valid command
+	 * skip the '<' and the '>' when comparing */
+	for (i = 0; Menus[i].name; i++)
+	{
+	  struct binding_t *binding = km_get_table (Menus[i].value);
+	  if (binding)
+	  {
+	    op = get_op (binding, pp + 1, l - 2);
+	    if (op != OP_NULL)
+	      break;
+	  }
+	}
+
+	if (op != OP_NULL)
+	{
+	  mutt_ungetch (0, op);
 	  p = pp - 1;
 	  continue;
 	}
       }
     }
-    mutt_ungetch (*p--);
+    mutt_ungetch (*p--, 0);
   }
 }
 
@@ -259,9 +305,9 @@ static int retry_generic (int menu, keycode_t *keys, int keyslen, int lastkey)
   if (menu != MENU_EDITOR && menu != MENU_GENERIC && menu != MENU_PAGER)
   {
     if (lastkey)
-      mutt_ungetch (lastkey);
+      mutt_ungetch (lastkey, 0);
     for (; keyslen; keyslen--)
-      mutt_ungetch (keys[keyslen - 1]);
+      mutt_ungetch (keys[keyslen - 1], 0);
     return (km_dokey (MENU_GENERIC));
   }
   if (menu != MENU_EDITOR)
@@ -279,18 +325,65 @@ static int retry_generic (int menu, keycode_t *keys, int keyslen, int lastkey)
  */
 int km_dokey (int menu)
 {
+  event_t tmp;
   struct keymap_t *map = Keymaps[menu];
   int pos = 0;
   int n = 0;
+  int i;
 
   if (!map)
     return (retry_generic (menu, NULL, 0, 0));
 
   FOREVER
   {
-    if ((LastKey = mutt_getch ()) == ERR)
-      return (-1);
+    tmp = mutt_getch();
+    LastKey = tmp.ch;
+    if (LastKey == -1)
+      return -1;
 
+    /* do we have an op already? */
+    if (tmp.op)
+    {
+      char *func = NULL;
+      struct binding_t *bindings;
+
+      /* is this a valid op for the current menu? */
+      bindings = km_get_table (CurrentMenu);
+      if ((func = get_func (bindings, tmp.op)))
+	return tmp.op;
+      if (CurrentMenu != MENU_PAGER)
+      {
+	/* check generic menu */
+	bindings = OpGeneric; 
+	if ((func = get_func (bindings, tmp.op)))
+	  return tmp.op;
+      }
+
+      /* Sigh. Valid function but not in this context.
+       * Find the literal string and push it back */
+      for (i = 0; Menus[i].name; i++)
+      {
+	bindings = km_get_table (Menus[i].value);
+	if (bindings)
+	{
+	  func = get_func (bindings, tmp.op);
+	  if (func)
+	  {
+	    /* careful not to feed the <..> as one token. otherwise 
+	    * push_string() will push the bogus op right back! */
+	    mutt_ungetch ('>', 0);
+	    push_string (func);
+	    mutt_ungetch ('<', 0);
+	    break;
+	  }
+	}
+      }
+      /* continue to chew */
+      if (func)
+	continue;
+    }
+
+    /* Nope. Business as usual */
     while (LastKey > map->keys[pos])
     {
       if (pos > map->eq || !map->next)
@@ -303,14 +396,15 @@ int km_dokey (int menu)
 
     if (++pos == map->len)
     {
+
       if (map->op != OP_MACRO)
-	return (map->op);
+	return map->op;
 
       if (n++ == 10)
       {
 	mutt_flushinp ();
 	mutt_error _("Macro loop detected.");
-	return (-1);
+	return -1;
       }
 
       push_string (map->macro);
@@ -691,4 +785,46 @@ int mutt_parse_macro (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   }
   FREE (&key);
   return (r);
+}
+
+/* exec command-name */
+int mutt_parse_exec (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  int op = OP_NULL;
+  char *command = NULL; 
+  struct binding_t *bindings = NULL;
+
+  if (!MoreArgs (s))
+  {
+    strfcpy (err->data, _("exec: too few arguments"), err->dsize);
+    return (-1);
+  }
+
+  mutt_extract_token (buf, s, 0);
+  command = safe_strdup (buf->data);
+
+  if (MoreArgs (s))
+  {
+    strfcpy (err->data, _("too many arguments"), err->dsize);
+    return (-1);
+  }
+
+  if ((bindings = km_get_table (CurrentMenu)) == NULL)
+    bindings = OpGeneric;
+
+  op = get_op (bindings, command, strlen(command));
+  if (op == OP_NULL)
+    op = get_op (OpGeneric, command, strlen(command));
+
+  if (op == OP_NULL)
+  {
+    mutt_flushinp ();
+    mutt_error (_("%s: no such command"), command);
+    FREE (&command);
+    return (-1);
+  }
+
+  mutt_ungetch (0, op);
+  FREE (&command);
+  return 0;
 }

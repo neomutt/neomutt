@@ -241,7 +241,8 @@ struct mapping_t IndexHelp[] = {
 int mutt_index_menu (void)
 {
   char buf[LONG_STRING], helpstr[SHORT_STRING];
-  int op = OP_NULL;                 /* function to execute */
+  int op = OP_NULL;
+  event_t event = {OP_NULL, 0};
   int done = 0;                /* controls when to exit the "event" loop */
   int i = 0, j;
   int tag = 0;                 /* has the tag-prefix command been pressed? */
@@ -254,9 +255,10 @@ int mutt_index_menu (void)
   int do_buffy_notify = 1;
   int close = 0; /* did we OP_QUIT or OP_EXIT out of this menu? */
   int attach_msg = option(OPTATTACHMSG);
+  int savedmenu = CurrentMenu;
 
   menu = mutt_new_menu ();
-  menu->menu = MENU_MAIN;
+  menu->menu = CurrentMenu = MENU_MAIN;
   menu->offset = 1;
   menu->pagelen = LINES - 3;
   menu->make_entry = index_make_entry;
@@ -474,25 +476,26 @@ int mutt_index_menu (void)
       if (Timeout > 0)
       {
 	timeout (Timeout * 1000); /* milliseconds */      
-	op = mutt_getch ();
+	event = mutt_getch ();
 	timeout (-1); /* restore blocking operation */
-	if (op != -1)
+	if (event.ch != -1)
 	{
-	  mutt_ungetch (op);
+	  mutt_ungetch (event.ch, event.op);
 	  op = km_dokey (MENU_MAIN);
 	}
       }
       else
 	op = km_dokey (MENU_MAIN);
-      mutt_curs_set (1);
 
+      mutt_curs_set (1);
+      
 #if defined (USE_SLANG_CURSES) || defined (HAVE_RESIZETERM)
       if (Signals & S_SIGWINCH)
       {
 	mutt_flushinp ();
 	mutt_resize_screen ();
 	menu->redraw = REDRAW_FULL;
-	menu->menu = MENU_MAIN;
+	menu->menu = CurrentMenu = MENU_MAIN;
 	Signals &= ~S_SIGWINCH;
 	menu->top = 0; /* so we scroll the right amount */
 	continue;
@@ -591,7 +594,7 @@ int mutt_index_menu (void)
       case OP_JUMP:
 
 	CHECK_MSGCOUNT;
-	mutt_ungetch (LastKey);
+	mutt_ungetch (LastKey, 0);
 	buf[0] = 0;
 	if (mutt_get_field (_("Jump to message: "), buf, sizeof (buf), 0) != 0
 	    || !buf[0])
@@ -957,7 +960,7 @@ int mutt_index_menu (void)
 	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 	}
 
-	menu->menu = MENU_PAGER;
+	menu->menu = CurrentMenu = MENU_PAGER;
 	menu->oldcurrent = menu->current;
 	continue;
 
@@ -1461,6 +1464,7 @@ int mutt_index_menu (void)
 
       case OP_ENTER_COMMAND:
 
+	CurrentMenu = MENU_MAIN;
 	mutt_enter_command ();
 	mutt_check_rescore (Context);
 	if (option (OPTNEEDRESORT) && Context && Context->msgcount)
@@ -1706,7 +1710,7 @@ int mutt_index_menu (void)
 
     if (menu->menu == MENU_PAGER)
     {
-      menu->menu = MENU_MAIN;
+      menu->menu = CurrentMenu = MENU_MAIN;
       menu->redraw = REDRAW_FULL;
       set_option (OPTWEED); /* turn header weeding back on. */
     }
@@ -1715,6 +1719,7 @@ int mutt_index_menu (void)
   }
 
   mutt_menuDestroy (&menu);
+  CurrentMenu = savedmenu;
   return (close);
 }
 

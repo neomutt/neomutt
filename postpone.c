@@ -103,10 +103,11 @@ static HEADER *select_msg (void)
   MUTTMENU *menu;
   int i, done=0, r=-1;
   char helpstr[SHORT_STRING];
+  int savedmenu = CurrentMenu;
 
   menu = mutt_new_menu ();
   menu->make_entry = post_entry;
-  menu->menu = MENU_POST;
+  menu->menu = CurrentMenu = MENU_POST;
   menu->max = PostContext->msgcount;
   menu->title = _("Postponed Messages");
   menu->data = PostContext;
@@ -148,6 +149,7 @@ static HEADER *select_msg (void)
   }
 
   mutt_menuDestroy (&menu);
+  CurrentMenu = savedmenu;
   return (r > -1 ? PostContext->hdrs[r] : NULL);
 }
 

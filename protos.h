@@ -238,6 +238,7 @@ int mutt_is_valid_mailbox (const char *);
 int mutt_needs_mailcap (BODY *);
 int mutt_num_postponed (void);
 int mutt_parse_bind (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+int mutt_parse_exec (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 int mutt_parse_color (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 int mutt_parse_uncolor (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 int mutt_parse_hook (BUFFER *, BUFFER *, unsigned long, BUFFER *);

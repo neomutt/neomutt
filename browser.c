@@ -465,6 +465,7 @@ void mutt_select_file (char *f, size_t flen, int buffy)
   MUTTMENU *menu;
   struct stat st;
   int i, killPrefix = 0;
+  int savedmenu = CurrentMenu;
 
   memset (&state, 0, sizeof (struct browser_state));
 
@@ -515,7 +516,7 @@ void mutt_select_file (char *f, size_t flen, int buffy)
     return;
 
   menu = mutt_new_menu ();
-  menu->menu = MENU_FOLDER;
+  menu->menu = CurrentMenu = MENU_FOLDER;
   menu->make_entry = folder_entry;
   menu->search = select_file_search;
   menu->title = title;
@@ -624,6 +625,7 @@ void mutt_select_file (char *f, size_t flen, int buffy)
 
 	destroy_state (&state);
 	mutt_menuDestroy (&menu);
+	CurrentMenu = savedmenu;
 	return;
 
       case OP_BROWSER_TELL:
@@ -662,6 +664,7 @@ void mutt_select_file (char *f, size_t flen, int buffy)
 		mutt_error _("Error scanning directory.");
 		destroy_state (&state);
 		mutt_menuDestroy (&menu);
+		CurrentMenu = savedmenu;
 		return;
 	      }
 	    }
@@ -718,6 +721,7 @@ void mutt_select_file (char *f, size_t flen, int buffy)
 	    {
 	      mutt_error _("Error scanning directory.");
 	      mutt_menuDestroy (&menu);
+	      CurrentMenu = savedmenu;
 	      return;
 	    }
 	    killPrefix = 0;
@@ -736,6 +740,7 @@ void mutt_select_file (char *f, size_t flen, int buffy)
 
 	{
 	  int reverse = 0;
+	  event_t ch;
 
 	  move (LINES - 1, 0);
 	  if (i == OP_SORT_REVERSE)
@@ -747,18 +752,21 @@ void mutt_select_file (char *f, size_t flen, int buffy)
 	  }
 	  clrtoeol ();
 
-	  while ((i = mutt_getch ()) != EOF && i != 'a' && i != 'd' && i != 'z'
-		 && i != 'n')
+	  FOREVER
 	  {
-	    if (i == ERR || CI_is_return (i))
+	    ch = mutt_getch();
+	    if (ch.ch == EOF || ch.ch == 'a' || ch.ch == 'd' || ch.ch == 'z' || ch.ch == 'n')
+	      break;
+
+	    if (ch.ch == ERR || CI_is_return (ch.ch))
 	      break;
 	    else
 	      BEEP ();
 	  }
 
-	  if (i != EOF)
+	  if (ch.ch != EOF)
 	  {
-	    switch (i)
+	    switch (ch.ch)
 	    {
 	      case 'a': 
 	        BrowserSort = reverse | SORT_SUBJECT;
@@ -805,6 +813,7 @@ void mutt_select_file (char *f, size_t flen, int buffy)
 	  strfcpy (f, buf, flen);
 	  destroy_state (&state);
 	  mutt_menuDestroy (&menu);
+	  CurrentMenu = savedmenu;
 	  return;
 	}
 	MAYBE_REDRAW (menu->redraw);

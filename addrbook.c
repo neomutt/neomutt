@@ -125,6 +125,7 @@ void mutt_alias_menu (char *buf, size_t buflen, ALIAS *aliases)
   int t = -1;
   int i, done = 0;
   char helpstr[SHORT_STRING];
+  int savedmenu = CurrentMenu;
 
   if (!aliases)
   {
@@ -139,7 +140,7 @@ void mutt_alias_menu (char *buf, size_t buflen, ALIAS *aliases)
   menu->make_entry = alias_entry;
   menu->search = alias_search;
   menu->tag = alias_tag;
-  menu->menu = MENU_ALIAS;
+  menu->menu = CurrentMenu = MENU_ALIAS;
   menu->title = _("Aliases");
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_ALIAS, AliasHelp);
 
@@ -188,5 +189,6 @@ void mutt_alias_menu (char *buf, size_t buflen, ALIAS *aliases)
     rfc822_write_address (buf, buflen, AliasTable[t]->addr);
   
   mutt_menuDestroy (&menu);
+  CurrentMenu = savedmenu;
   safe_free ((void **) &AliasTable);
 }

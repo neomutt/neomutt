@@ -3,7 +3,7 @@ AC_INIT(mutt.h)
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE(mutt, 0.94.10)
 
-ALL_LINGUAS="de"
+ALL_LINGUAS="de ru"
 
 AC_CANONICAL_HOST
 

@@ -123,6 +123,7 @@ static KEYINFO *pgp_select_key (struct pgp_vinfo *pgp,
   FILE *fp, *devnull;
   pid_t thepid;
   KEYINFO *info;
+  int savedmenu = CurrentMenu;
   
   
   for (i = 0, l = keys; l; l = l->next)
@@ -184,7 +185,7 @@ static KEYINFO *pgp_select_key (struct pgp_vinfo *pgp,
   menu->max = keymax;
   menu->make_entry = pgp_entry;
   menu->search = pgp_search;
-  menu->menu = MENU_PGP;
+  menu->menu = CurrentMenu = MENU_PGP;
   menu->help = helpstr;
   menu->data = KeyTable;
 
@@ -282,6 +283,7 @@ static KEYINFO *pgp_select_key (struct pgp_vinfo *pgp,
   }
 
   mutt_menuDestroy (&menu);
+  CurrentMenu = savedmenu;
   safe_free ((void **) &KeyTable);
 
   return (info);

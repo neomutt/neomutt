@@ -221,7 +221,7 @@ int mutt_display_message (HEADER *cur)
     mutt_set_flag (Context, cur, M_READ, 1);
     if (option (OPTPROMPTAFTER))
     {
-      mutt_ungetch (mutt_any_key_to_continue _("Command: "));
+      mutt_ungetch (mutt_any_key_to_continue _("Command: "), 0);
       rc = km_dokey (MENU_PAGER);
     }
     else
@@ -393,7 +393,7 @@ int mutt_pipe_message (HEADER *h)
 int mutt_select_sort (int reverse)
 {
   int method = Sort; /* save the current method in case of abort */
-  int ch;
+  event_t ch;
 
   Sort = 0;
   while (!Sort)
@@ -403,13 +403,13 @@ int mutt_select_sort (int reverse)
 _("Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: ") :
 _("Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "));
     ch = mutt_getch ();
-    if (ch == ERR || CI_is_return (ch))
+    if (ch.ch == -1 || CI_is_return (ch.ch))
     {
       Sort = method;
       CLEARLINE (LINES-1);
       return (-1);
     }
-    switch (ch)
+    switch (ch.ch)
     {
       case 'c':
 	Sort = SORT_SCORE;

@@ -2032,6 +2032,7 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
 	old_markers = option (OPTMARKERS);
 	old_PagerIndexLines = PagerIndexLines;
 
+	CurrentMenu = MENU_PAGER;
 	mutt_enter_command ();
 
 	if (option (OPTNEEDRESORT))

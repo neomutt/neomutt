@@ -292,7 +292,7 @@ void menu_jump (MUTTMENU *menu)
 
   if (menu->max)
   {
-    mutt_ungetch (LastKey);
+    mutt_ungetch (LastKey, 0);
     buf[0] = 0;
     if (mutt_get_field (_("Jump to: "), buf, sizeof (buf), 0) == 0 && buf[0])
     {
@@ -769,6 +769,7 @@ int mutt_menuLoop (MUTTMENU *menu)
 	break;
 
       case OP_ENTER_COMMAND:
+	CurrentMenu = menu->menu;
 	mutt_enter_command ();
 	if (option (OPTFORCEREDRAWINDEX))
 	{
