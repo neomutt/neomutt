@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt\n"
-"POT-Creation-Date: 1998-12-12 10:17+0100\n"
+"POT-Creation-Date: 1999-01-04 13:55+0100\n"
 "PO-Revision-Date: 1998-10-29 19:25+0100\n"
 "Last-Translator: Boris Wesslowski <Boris@Wesslowski.com>\n"
 
@@ -14,7 +14,7 @@ msgstr "Salir"
 msgid "Select"
 msgstr "Seleccionar"
 
-#: addrbook.c:34 browser.c:57 compose.c:84 curs_main.c:241 pager.c:1466
+#: addrbook.c:34 browser.c:57 compose.c:84 curs_main.c:259 pager.c:1466
 #: pgpkey.c:181 postpone.c:36 query.c:49 recvattach.c:52
 msgid "Help"
 msgstr "Ayuda"
@@ -251,7 +251,7 @@ msgstr "Invocando PGP..."
 msgid "Verify PGP signature?"
 msgstr "¿Verificar firma PGP?"
 
-#: commands.c:177 mbox.c:721
+#: commands.c:177 mbox.c:724
 msgid "Could not create temporary file!"
 msgstr "¡No se pudo crear el archivo temporal!"
 
@@ -332,7 +332,7 @@ msgstr "Guardar descifrado"
 msgid "Decrypt-copy"
 msgstr "Copiar descifrado"
 
-#: commands.c:575 curs_main.c:237 recvattach.c:49
+#: commands.c:575 curs_main.c:255 recvattach.c:49
 msgid "Save"
 msgstr "Guardar"
 
@@ -479,84 +479,84 @@ msgstr "Marque el mensaje que quiere adjuntar."
 msgid "Unable to attach!"
 msgstr "¡Imposible adjuntar!"
 
-#: compose.c:763
+#: compose.c:772
 msgid "Invalid encoding."
 msgstr "La codificación no es válida."
 
-#: compose.c:778
+#: compose.c:787
 msgid "Save a copy of this message?"
 msgstr "¿Guardar una copia de este mensaje?"
 
-#: compose.c:823
+#: compose.c:832
 msgid "Rename to: "
 msgstr "Renombrar a: "
 
-#: compose.c:828
+#: compose.c:837
 #, c-format
 msgid "Can't stat: %s"
 msgstr "No se pudo probar: %s"
 
-#: compose.c:855
+#: compose.c:864
 msgid "New file: "
 msgstr "Archivo nuevo: "
 
-#: compose.c:868
+#: compose.c:877
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type tiene la forma base/subtipo"
 
-#: compose.c:874
+#: compose.c:883
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Content-Type %s desconocido"
 
-#: compose.c:887
+#: compose.c:896
 #, c-format
 msgid "Can't create file %s"
 msgstr "No se pudo creal el archivo %s"
 
-#: compose.c:895
+#: compose.c:904
 msgid "What we have here is a failure to make an attachment"
 msgstr "No se pudo producir el archivo a adjuntar"
 
-#: compose.c:958
+#: compose.c:967
 msgid "Postpone this message?"
 msgstr "¿Posponer el mensaje?"
 
-#: compose.c:1010
+#: compose.c:1019
 msgid "Write message to mailbox"
 msgstr "Guardar mensaje en el buzón"
 
-#: compose.c:1014
+#: compose.c:1023
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Guardando mensaje en %s ..."
 
-#: compose.c:1025
+#: compose.c:1034
 msgid "Message written."
 msgstr "Mensaje guardado."
 
-#: curs_lib.c:135
+#: curs_lib.c:136
 msgid "yes"
 msgstr "si"
 
-#: curs_lib.c:136
+#: curs_lib.c:137
 msgid "no"
 msgstr "no"
 
 #. restore blocking operation
-#: curs_lib.c:175
+#: curs_lib.c:176
 msgid "Exit Mutt?"
 msgstr "¿Salir de Mutt?"
 
-#: curs_lib.c:262
+#: curs_lib.c:275
 msgid "unknown error"
 msgstr "error desconocido"
 
-#: curs_lib.c:282
+#: curs_lib.c:295
 msgid "Press any key to continue..."
 msgstr "Presione una tecla para continuar..."
 
-#: curs_lib.c:320
+#: curs_lib.c:333
 msgid " ('?' for list): "
 msgstr " ('?' para ver opciones): "
 
@@ -572,105 +572,105 @@ msgstr "Cambios al buzón seran escritos al salir den buzón."
 msgid "Changes to folder will not be written."
 msgstr "Cambios al buzón no serán escritos."
 
-#: curs_main.c:234
+#: curs_main.c:252
 msgid "Quit"
 msgstr "Salir"
 
-#: curs_main.c:235 pager.c:1376 postpone.c:34
+#: curs_main.c:253 pager.c:1376 postpone.c:34
 msgid "Del"
 msgstr "Sup."
 
-#: curs_main.c:236 postpone.c:35
+#: curs_main.c:254 postpone.c:35
 msgid "Undel"
 msgstr "Recuperar"
 
-#: curs_main.c:238 query.c:45
+#: curs_main.c:256 query.c:45
 msgid "Mail"
 msgstr "Nuevo"
 
-#: curs_main.c:239 pager.c:1377
+#: curs_main.c:257 pager.c:1377
 msgid "Reply"
 msgstr "Responder"
 
-#: curs_main.c:240
+#: curs_main.c:258
 msgid "Group"
 msgstr "Grupo"
 
-#: curs_main.c:405
+#: curs_main.c:423
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Buzón fue modificado.  Los indicadores pueden estar mal."
 
-#: curs_main.c:408
+#: curs_main.c:426
 msgid "New mail in this mailbox."
 msgstr "Correo nuevo en este buzón."
 
-#: curs_main.c:508
+#: curs_main.c:526
 msgid "No mailbox is open."
 msgstr "Ningún buzón esta abierto."
 
-#: curs_main.c:514
+#: curs_main.c:532
 msgid "No tagged messages."
 msgstr "No hay mensajes marcados."
 
-#: curs_main.c:594
+#: curs_main.c:612
 msgid "Jump to message: "
 msgstr "Saltar a mensaje: "
 
-#: curs_main.c:600
+#: curs_main.c:618
 msgid "Argument must be a message number."
 msgstr "Argumento tiene que ser un número de mensaje."
 
-#: curs_main.c:633
+#: curs_main.c:651
 msgid "That message is not visible."
 msgstr "Ese mensaje no es visible."
 
-#: curs_main.c:636
+#: curs_main.c:654
 msgid "Invalid message number."
 msgstr "Número de mensaje erróneo."
 
-#: curs_main.c:649
+#: curs_main.c:667
 msgid "Delete messages matching: "
 msgstr "Suprimir mensajes que coincidan con: "
 
-#: curs_main.c:671
+#: curs_main.c:689
 msgid "No limit pattern is in effect."
 msgstr "No hay patrón limitante activo."
 
 #. i18n: ask for a limit to apply
-#: curs_main.c:676
+#: curs_main.c:694
 #, c-format
 msgid "Limit: %s"
 msgstr "Límite: %s"
 
-#: curs_main.c:685
+#: curs_main.c:703
 msgid "Limit to messages matching: "
 msgstr "Limitar a mensajes que coincidan con: "
 
-#: curs_main.c:715
+#: curs_main.c:733
 msgid "Quit Mutt?"
 msgstr "¿Salir de Mutt?"
 
-#: curs_main.c:826
+#: curs_main.c:835
 msgid "Tag messages matching: "
 msgstr "Marcar mensajes que coincidan con: "
 
-#: curs_main.c:834
+#: curs_main.c:843
 msgid "Undelete messages matching: "
 msgstr "No suprimir mensajes que coincidan con: "
 
-#: curs_main.c:841
+#: curs_main.c:850
 msgid "Untag messages matching: "
 msgstr "Desmarcar mensajes que coincidan con: "
 
-#: curs_main.c:859
+#: curs_main.c:868
 msgid "Open mailbox"
 msgstr "Abrir buzón"
 
-#: curs_main.c:861
+#: curs_main.c:870
 msgid "Open mailbox in read-only mode"
 msgstr "Abrir buzón en modo de sólo lectura"
 
-#: curs_main.c:877 mx.c:423 mx.c:564
+#: curs_main.c:886 mx.c:423 mx.c:564
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s no es un buzón."
@@ -679,51 +679,51 @@ msgstr "%s no es un buzón."
 msgid "Exit Mutt without saving?"
 msgstr "¿Salir de Mutt sin guardar cambios?"
 
-#: curs_main.c:987 curs_main.c:1011
+#: curs_main.c:990 curs_main.c:1014
 msgid "You are on the last message."
 msgstr "Ya está en el último mensaje."
 
-#: curs_main.c:994 curs_main.c:1036
+#: curs_main.c:997 curs_main.c:1039
 msgid "No undeleted messages."
 msgstr "Todos los mensajes fueron suprimidos."
 
-#: curs_main.c:1029 curs_main.c:1052
+#: curs_main.c:1032 curs_main.c:1055
 msgid "You are on the first message."
 msgstr "Ya está en el primer mensaje."
 
-#: curs_main.c:1124 pattern.c:1103
+#: curs_main.c:1127 pattern.c:1114
 msgid "Search wrapped to top."
 msgstr "La búsqueda volvió a empezar desde arriba."
 
-#: curs_main.c:1133 pattern.c:1114
+#: curs_main.c:1136 pattern.c:1125
 msgid "Search wrapped to bottom."
 msgstr "La búsqueda volvió a empezar desde abajo."
 
-#: curs_main.c:1159
+#: curs_main.c:1162
 msgid "No new messages"
 msgstr "No hay mensajes nuevos"
 
-#: curs_main.c:1159
+#: curs_main.c:1162
 msgid "No unread messages"
 msgstr "No hay mensajes sin leer"
 
-#: curs_main.c:1160
+#: curs_main.c:1163
 msgid " in this limited view"
 msgstr " en esta vista limitada"
 
-#: curs_main.c:1270
+#: curs_main.c:1273
 msgid "No more threads."
 msgstr "No hay mas temas."
 
-#: curs_main.c:1272
+#: curs_main.c:1275
 msgid "You are on the first thread."
 msgstr "Ya está en el primer tema."
 
-#: curs_main.c:1325
+#: curs_main.c:1328
 msgid "Thread contains unread messages."
 msgstr "Tema contiene mensajes sin leer."
 
-#: curs_main.c:1338 flags.c:220 thread.c:629
+#: curs_main.c:1341 flags.c:220 thread.c:635
 msgid "Threading is not enabled."
 msgstr "La muestra por temas no esta activada."
 
@@ -856,26 +856,26 @@ msgstr "[-- Error al ejecutar %s --]\n"
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr ""
 
-#: handler.c:1252
+#: handler.c:1246
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- Archivo adjunto #%d"
 
-#: handler.c:1259
+#: handler.c:1253
 #, c-format
 msgid "(size %s bytes) "
 msgstr ""
 
-#: handler.c:1261
+#: handler.c:1255
 msgid "has been deleted --]\n"
 msgstr ""
 
-#: handler.c:1264
+#: handler.c:1258
 #, fuzzy, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- Automuestra usando %s --]\n"
 
-#: handler.c:1274
+#: handler.c:1268
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -883,36 +883,36 @@ msgid ""
 "[-- expired. --]\n"
 msgstr ""
 
-#: handler.c:1288
+#: handler.c:1282
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 
-#: handler.c:1385
+#: handler.c:1379
 msgid "Error: multipart/signed has no protocol."
 msgstr "Error: multipart/signed no tiene protocolo."
 
-#: handler.c:1397
+#: handler.c:1391
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Error: multipart/signed no tiene parámetro de protocolo."
 
-#: handler.c:1439
+#: handler.c:1433
 msgid "Unable to open temporary file!"
 msgstr "¡Imposible abrir archivo temporal!"
 
-#: handler.c:1498
+#: handler.c:1492
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s no es soportado "
 
-#: handler.c:1503
+#: handler.c:1497
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(use '%s' para ver esta parte)"
 
-#: handler.c:1505
+#: handler.c:1499
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(necesita 'view-attachments' enlazado a una tecla)"
 
@@ -971,7 +971,7 @@ msgstr "¡Error fatal!  La cuenta de mensajes no esta sincronizada."
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Consiguiendo cabeceras de mensajes... [%d/%d]"
 
-#: imap.c:623 mbox.c:981
+#: imap.c:623 mbox.c:1007
 msgid "Reopening mailbox..."
 msgstr "Reabriendo buzón..."
 
@@ -1004,7 +1004,7 @@ msgstr "Entrando..."
 msgid "Selecting %s..."
 msgstr "Seleccionando %s..."
 
-#: imap.c:1083 lib.c:1177
+#: imap.c:1083 lib.c:1194
 #, c-format
 msgid "Create %s?"
 msgstr "¿Crear %s?"
@@ -1843,24 +1843,24 @@ msgstr "crear copia decriptada"
 msgid "Out of memory!"
 msgstr "¡Se acabó la memoria!"
 
-#: lib.c:764
+#: lib.c:781
 msgid "File is a directory, save under it?"
 msgstr "Archivo es un directorio, ¿guardar adentro?"
 
-#: lib.c:769
+#: lib.c:786
 msgid "File under directory: "
 msgstr "Archivo en el directorio: "
 
-#: lib.c:780
+#: lib.c:797
 msgid "File exists, overwrite?"
 msgstr "Archivo existe, ¿sobreescribir?"
 
-#: lib.c:1153
+#: lib.c:1170
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "¡%s no es un buzón!"
 
-#: lib.c:1159
+#: lib.c:1176
 #, c-format
 msgid "Append messages to %s?"
 msgstr "¿Agregar mensajes a %s?"
@@ -1949,6 +1949,12 @@ msgid ""
 "  -h\t\tthis help message"
 msgstr ""
 
+#: main.c:152
+msgid ""
+"\n"
+"Compile options:"
+msgstr ""
+
 #: main.c:306
 msgid "Error initializing terminal."
 msgstr "Error al inicializar la terminal"
@@ -1991,7 +1997,7 @@ msgstr "Leyendo %s... %d (%d%%)"
 msgid "Mailbox was corrupted!"
 msgstr "¡Buzón fue corrompido!"
 
-#: mbox.c:687 mbox.c:904
+#: mbox.c:687 mbox.c:930
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "¡Error fatal! No se pudo reabrir el buzón."
 
@@ -2003,21 +2009,21 @@ msgstr "¡Imposible bloquear buzón!"
 #. * messages were found to be changed or deleted.  This should
 #. * never happen, is we presume it is a bug in mutt.
 #.
-#: mbox.c:737
+#: mbox.c:740
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr ""
 "sync: buzón modificado, pero sin mensajes modificados (reporte este error)"
 
-#: mbox.c:765
+#: mbox.c:769
 msgid "Writing messages... %d (%d%%)"
 msgstr "Guardando mensajes... %d (%d%%)"
 
-#: mbox.c:889
+#: mbox.c:915
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "¡Escritura falló! Buzón parcial fue guardado a %s"
 
-#: mbox.c:941
+#: mbox.c:967
 msgid "Could not reopen mailbox!"
 msgstr "¡Imposible reabrir buzón!"
 
@@ -2066,7 +2072,7 @@ msgstr "Está en la última entrada."
 msgid "You are on the first entry."
 msgstr "Está en la primera entrada."
 
-#: menu.c:596 pattern.c:1049
+#: menu.c:596 pattern.c:1060
 msgid "Search for: "
 msgstr "Buscar: "
 
@@ -2074,11 +2080,11 @@ msgstr "Buscar: "
 msgid "Reverse search for: "
 msgstr "Buscar en sentido opuesto: "
 
-#: menu.c:608 pattern.c:1082
+#: menu.c:608 pattern.c:1093
 msgid "No search pattern."
 msgstr "Nada que buscar."
 
-#: menu.c:638 pager.c:1829 pager.c:1845 pager.c:1932 pattern.c:1147
+#: menu.c:638 pager.c:1829 pager.c:1845 pager.c:1932 pattern.c:1158
 msgid "Not found."
 msgstr "No fue encontrado."
 
@@ -2095,7 +2101,7 @@ msgstr "No puede buscar en este menú."
 msgid "Tagging is not supported."
 msgstr "Marcar no es soportado."
 
-#: mh.c:182
+#: mh.c:183
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Leyendo %s... %d"
@@ -2128,60 +2134,65 @@ msgstr "Esperando bloqueo flock... %d"
 msgid "Reading %s..."
 msgstr "Leyendo %s..."
 
-#: mx.c:676
+#: mx.c:679
 #, c-format
 msgid "Writing %s..."
 msgstr "Escribiendo %s..."
 
-#: mx.c:758
+#: mx.c:704
+#, fuzzy, c-format
+msgid "Could not synchronize mailbox %s!"
+msgstr "¡Imposible reabrir buzón!"
+
+#: mx.c:767
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "¿Mover mensajes a %s?"
 
-#: mx.c:767 mx.c:955
+#: mx.c:776 mx.c:964
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "¿Expulsar %d mensaje suprimido?"
 
-#: mx.c:767 mx.c:955
+#: mx.c:776 mx.c:964
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "¿Expulsar %d mensajes suprimidos?"
 
-#: mx.c:787
+#: mx.c:796
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Moviendo mensajes leídos a %s..."
 
-#: mx.c:803 mx.c:946
+#: mx.c:812 mx.c:955
 msgid "Mailbox is unchanged."
 msgstr "Buzón no cambió."
 
-#: mx.c:822
+#: mx.c:831
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "quedan %d, %d movidos, %d suprimidos."
 
-#: mx.c:825 mx.c:971
+#: mx.c:834 mx.c:980
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "quedan %d, %d suprimidos."
 
-#: mx.c:931
+#: mx.c:940
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr "Presione '%s' para cambiar escritura"
 
-#: mx.c:933
+#: mx.c:942
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "¡Use 'toggle-write' para activar escritura!"
 
-#: mx.c:935
+#: mx.c:944
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Buzón esta marcado inescribible. %s"
 
-#: mx.c:940
+#: mx.c:949
 msgid "Mailbox is read-only."
 msgstr "Buzón es de sólo lectura."
 
@@ -2286,27 +2297,27 @@ msgstr "patrón vacío"
 msgid "error: unknown op %d (report this error)."
 msgstr "error: op %d desconocida (reporte este error)."
 
-#: pattern.c:940 pattern.c:1068
+#: pattern.c:941 pattern.c:1079
 msgid "Compiling search pattern..."
 msgstr "Compilando patrón de búsqueda..."
 
-#: pattern.c:954
+#: pattern.c:955
 msgid "Executing command on matching messages..."
 msgstr "Ejecutando comando con mensajes que coinciden..."
 
-#: pattern.c:1011
+#: pattern.c:1022
 msgid "No messages matched criteria."
 msgstr "Ningún mensaje tiene los criterios."
 
-#: pattern.c:1106
+#: pattern.c:1117
 msgid "Search hit bottom without finding match"
 msgstr "Búsqueda llegó al final sin encontrar nada."
 
-#: pattern.c:1117
+#: pattern.c:1128
 msgid "Search hit top without finding match"
 msgstr "Búsqueda llegó al principio sin encontrar nada."
 
-#: pattern.c:1139
+#: pattern.c:1150
 msgid "Search interrupted."
 msgstr "Búsqueda interrumpida."
 
@@ -2373,6 +2384,15 @@ msgstr ""
 #: pgp.c:462
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- FIN DEL BLOQUE DE LLAVES PÚBLICAS PGP --]\n"
+
+#: pgp.c:464
+#, fuzzy
+msgid ""
+"\n"
+"[-- END PGP SIGNED MESSAGE --]\n"
+msgstr ""
+"[-- PRINCIPIO DEL MENSAJE FIRMADO CON PGP --]\n"
+"\n"
 
 #: pgp.c:477
 msgid ""
@@ -2883,7 +2903,12 @@ msgstr "Mensaje editado. ¿Realmente lo quiere mandar?"
 msgid "Sending message..."
 msgstr "Mandando mensaje..."
 
-#: send.c:1322
+#: send.c:1324
+#, fuzzy
+msgid "Could not send the message."
+msgstr "mandar el mensaje"
+
+#: send.c:1330
 msgid "Mail sent."
 msgstr "Correo mandado."
 
@@ -2901,17 +2926,17 @@ msgstr "¡%s ya no existe!"
 msgid "Could not open %s"
 msgstr "No se pudo abrir %s"
 
-#: sendlib.c:1690
+#: sendlib.c:1695
 #, c-format
 msgid "Error sending message, child exited %d (%s).\n"
 msgstr "Error al mandar mensaje, %d (%s).\n"
 
-#: sendlib.c:1692
+#: sendlib.c:1697
 #, c-format
 msgid "Saved output of child process to %s.\n"
 msgstr "Salida del subproceso guardada en %s.\n"
 
-#: sendlib.c:1696
+#: sendlib.c:1701
 msgid "Error sending message."
 msgstr "Error al mandar el mensaje."
 
