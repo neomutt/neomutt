@@ -41,6 +41,7 @@ bind	attach	i		exit
 bind	attach	n		next-entry
 bind	attach	p		previous-entry
 bind	attach 	" "		select-entry
+bind	attach	y		print-entry
 
 bind	browser	<end>		last-entry
 bind	browser	<home>		first-entry
@@ -134,6 +135,8 @@ macro   compose "\ee"   "Fpgp -eatf "
 source ~/.mutt/colors.`if [ "$TERM" = "linux" ] ; then echo linux ; else echo default ; fi`
 
 mono  index bold ~F
+# mono  body  bold '\*[^*]+\*'
+# mono  body  underline '_[^_]+_'
 
 #
 # The header weed list
@@ -148,7 +151,11 @@ ignore resent- return-path xref path
 ignore x400 importance sensitivity autoforward original-encoded-information
 ignore x-
 
+ignore list- comments posted-to approved-by
+
 unignore x-spam x-url x-mailer
+
+hdr_order from to cc date subject reply-to mail-followup-to
 
 #
 # Various settings
@@ -160,12 +167,13 @@ set   alias_file=~/.mutt/aliases	# Where to store aliases
 unset allow_8bit			# Produce correct MIME
 unset arrow_cursor			# Use the bar cursor
 set   askcc				# Ask me about CCs
+unset bounce_delivered			# Don't include Delivered-to with bounces
 set   charset=iso-8859-1		# The local character set
 set   confirmcreate			# Ask me about creating new files
 unset confirmappend			# Don't ask me about appending to files
 set   delete=yes			# Don't ask me whether or not I meant to delete messages
 set   edit_hdrs				# I want to edit the headers.
-set   editor="/usr/local/jed/bin/jed %s -f 'mail_mode();'"	
+set   editor="/usr/bin/jed %s -f 'mail_mode();'"	
  					# Invoke jed with mail_mode.  This may
 	                                # or may not work for you.
 set envelope_from			# set messages' envelope-from header.
@@ -191,7 +199,8 @@ set   pgp_timeout=3600			# Forget the PGP passphrase after an hour.
 set   pipe_decode			# Decode messages I pipe to commands, typically to patch(1).
 set   postponed=~/.mutt/postponed	# Where to put postponed messages
 set   print=ask-no			# Don't waste paper
-set   print_cmd="enscript -2 -r -G"	# Two columns, landscape, fancy header.
+set   print_cmd="enscript -Email -2 -r -G"	# Two columns, landscape, fancy header.
+set   print_split=yes			# Invoke enscript once per message
 set   quit=yes				# Don't ask me whether or not I want to quit.
 set   quote_regexp="^ *[a-zA-Z]*[>|][>:|]*"	# Recognize quotes in the pager.
 set   read_inc=50			# Progress indicator when reading folders.
@@ -210,10 +219,16 @@ set   smart_wrap			# Try to be smart when wrapping around lines in the pager
 set   sort=threads			# sort by threads,
 set   sort_aux=date			# then by date
 unset strict_threads	 		# don't be strict about threads
-set   suspend=no			# Don't suspend - I usually run mutt like this: "xterm -e mutt"
+# set   suspend=no			# Don't suspend - I usually run mutt like this: "xterm -e mutt"
 set   tilde				# Indicate empty lines in the pager.
 set   tmpdir=~/.tmp			# Temporary files aren't stored in public places.
+set   to_chars=" +TCF "			# Don't tag list mail in the index
+
 unset use_domain			# Don't append a domain to addresses.
+
+# folder-hook . "set use_domain"		# hack, so I can enter address fragments 
+# send-hook ~A  "set use_domain"		# on the command line.
+
 set   write_inc=50			# Progress indicator when writing folders.
 set   query_command="lbdbq %s"		# Use the Little Brother's Database with the external
 					# query feature.
@@ -230,7 +245,7 @@ set   index_format="%4C %Z %[%b %d] %-15.15L (%4c) %s"	# Somewhat different inde
 set   rfc2047_parameters		# Sometimes, I get mails which use a bogus encoding for
 					# MIME parameters.  Setting this shouldn't harm.
 
-set status_format="-%r-+(%v) %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---"
+set status_format="-%r-+(%v) %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]----%>-(%P)---"
 set compose_format="--+(%v) Compose  [Approx. msg size: %l   Atts: %a]%>-"
 
 
