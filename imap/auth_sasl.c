@@ -116,7 +116,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
   irc = IMAP_CMD_CONTINUE;
 
   /* looping protocol */
-  while (rc == SASL_CONTINUE)
+  while (rc == SASL_CONTINUE || olen > 0)
   {
     do
       irc = imap_cmd_step (idata);
@@ -180,6 +180,8 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
       mutt_socket_write (idata->conn, "*\r\n");
       dprint (1, (debugfile, "imap_auth_sasl: sasl_client_step error %d\n",rc));
     }
+	  
+    olen = 0;
   }
 
   while (irc != IMAP_CMD_OK)
