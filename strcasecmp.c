@@ -4,7 +4,7 @@ static const char rcsid[]="$Id$";
 
 /* UnixWare doesn't have these functions in its standard C library */
 
-int mutt_strncasecmp (char *s1, char *s2, size_t n)
+int strncasecmp (char *s1, char *s2, size_t n)
 {
     register int c1, c2, l = 0;
 
@@ -21,7 +21,7 @@ int mutt_strncasecmp (char *s1, char *s2, size_t n)
     return (int) (0);
 }
 
-int mutt_strcasecmp (char *s1, char *s2)
+int strcasecmp (char *s1, char *s2)
 {
     register int c1, c2;
 
