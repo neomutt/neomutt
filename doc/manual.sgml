@@ -671,6 +671,7 @@ defined maps are:
 <item>compose
 <item>pager
 <item>pgp
+<item>postpone
 </itemize>
 
 <em/key/ is the key (or key sequence) you wish to bind.  To specify a
@@ -4389,7 +4390,7 @@ send-message               y   send the message
 toggle-unlink              u   toggle whether to delete file after sending it
 view-attach              RET   view attachment using mailcap entry if necessary
 </verb>
-<sect2>postponed
+<sect2>postpone
 <p>
 <verb>
 delete-entry               d   delete the current entry

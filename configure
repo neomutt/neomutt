@@ -2626,7 +2626,7 @@ echo "configure:2626: checking where to put architecture-dependent files" >&5
 if eval "test \"`echo '$''{'mutt_cv_libdir'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
-        mutt_cv_libdir="${mutt_cv_prefix}/lib/mutt " 
+        mutt_cv_libdir="${mutt_cv_prefix}/lib/mutt" 
 fi
 
 echo "$ac_t""$mutt_cv_libdir" 1>&6

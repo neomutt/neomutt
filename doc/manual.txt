@@ -781,6 +781,8 @@
 
   ·  pgp
 
+  ·  postpone
+
   _k_e_y is the key (or key sequence) you wish to bind.  To specify a
   control character, use the sequence _\_C_x, where _x is the letter of the
   control character (for example, to specify control-A use ``\Ca'').
@@ -788,8 +790,6 @@
   _\_c_A and _\_c_a are all equivalent.  An alternative form is to specify the
   key as a three digit octal number prefixed with a ``\'' (for example
   _\_1_7_7 is equivalent to _\_c_?).
-
-
   In addition, _k_e_y may consist of:
 
 
@@ -5048,7 +5048,7 @@
 
 
 
-  66..44..88..  ppoossttppoonneedd
+  66..44..88..  ppoossttppoonnee
 
 
   delete-entry               d   delete the current entry

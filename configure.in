@@ -319,7 +319,7 @@ AC_ARG_WITH(libdir, [  --with-libdir=PATH       specify where to put arch depend
 	[mutt_cv_libdir=$withval],
 	[ AC_CACHE_CHECK(where to put architecture-dependent files,
 		       mutt_cv_libdir,
-		[      mutt_cv_libdir="${mutt_cv_prefix}/lib/mutt " ])
+		[      mutt_cv_libdir="${mutt_cv_prefix}/lib/mutt" ])
 	])
 
 libdir=$mutt_cv_libdir
