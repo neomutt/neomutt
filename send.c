@@ -398,7 +398,7 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int group)
     return 0;
   }
 
-  if (mutt_addr_is_user (env->from))
+  if (!option(OPTMETOO) && mutt_addr_is_user (env->from))
   {
     /* mail is from the user, assume replying to recipients */
     rfc822_append (to, env->to);
