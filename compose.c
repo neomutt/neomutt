@@ -1071,6 +1071,11 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
       case OP_COMPOSE_WRITE_MESSAGE:
 
        fname[0] = '\0';
+       if (Context)
+       {
+	 strfcpy (fname, NONULL (Context->path), sizeof (fname));
+	 mutt_pretty_mailbox (fname);
+       }
        if (idxlen)
          msg->content = idx[0]->content;
        if (mutt_enter_fname (_("Write message to mailbox"), fname, sizeof (fname),
