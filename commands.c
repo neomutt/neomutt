@@ -295,9 +295,11 @@ void ci_bounce_message (HEADER *h, int *redraw)
     return;
   }
 
-  mutt_bounce_message (NULL, h, adr);
+  rc = mutt_bounce_message (NULL, h, adr);
   rfc822_free_address (&adr);
-  mutt_message (h ? _("Message bounced.") : _("Messages bounced."));
+  /* If no error, or background, display message. */
+  if ((rc == 0) || (rc == S_BKG))
+    mutt_message (h ? _("Message bounced.") : _("Messages bounced."));
 }
 
 static void pipe_set_flags (int decode, int print, int *cmflags, int *chflags)

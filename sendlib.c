@@ -2215,24 +2215,26 @@ void mutt_unprepare_envelope (ENVELOPE *env)
   rfc2047_decode (&env->subject);
 }
 
-static void _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *resent_from,
+static int _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *resent_from,
 				  ADDRESS *env_from)
 {
-  int i;
+  int i, ret = 0;
   FILE *f;
   char date[SHORT_STRING], tempfile[_POSIX_PATH_MAX];
   MESSAGE *msg = NULL;
 
   if (!h)
   {
+	  /* Try to bounce each message out, aborting if we get any failures. */
     for (i=0; i<Context->msgcount; i++)
       if (Context->hdrs[i]->tagged)
-	_mutt_bounce_message (fp, Context->hdrs[i], to, resent_from, env_from);
-    return;
+        ret |= _mutt_bounce_message (fp, Context->hdrs[i], to, resent_from, env_from);
+    return ret;
   }
 
+  /* If we failed to open a message, return with error */
   if (!fp && (msg = mx_open_message (Context, h->msgno)) == NULL)
-    return;
+    return -1;
 
   if (!fp) fp = msg->fp;
 
@@ -2255,19 +2257,22 @@ static void _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *
     mutt_copy_bytes (fp, f, h->content->length);
     fclose (f);
 
-    mutt_invoke_sendmail (env_from, to, NULL, NULL, tempfile,
-			  h->content->encoding == ENC8BIT);
+    ret = mutt_invoke_sendmail (env_from, to, NULL, NULL, tempfile,
+			  	h->content->encoding == ENC8BIT);
   }
 
   if (msg)
     mx_close_message (&msg);
+
+  return ret;
 }
 
-void mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to)
+int mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to)
 {
   ADDRESS *from;
   const char *fqdn = mutt_fqdn (1);
   char resent_from[STRING];
+  int ret;
 
   resent_from[0] = '\0';
   from = mutt_default_from ();
@@ -2279,9 +2284,11 @@ void mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to)
   
   rfc822_write_address (resent_from, sizeof (resent_from), from);
 
-  _mutt_bounce_message (fp, h, to, resent_from, from);
+  ret = _mutt_bounce_message (fp, h, to, resent_from, from);
 
   rfc822_free_address (&from);
+
+  return ret;
 }
 
 
