@@ -124,6 +124,8 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
       new->content = m;
       new->parent_type = parent_type;
       new->level = level;
+      /* called when creating new menu, so clear the tagged indicator */
+      m->tagged = 0;
 
       /* We don't support multipart messages in the compose menu yet */
       if (!compose && mutt_is_message_type(m->type, m->subtype))
