@@ -1,6 +1,6 @@
 # Hellenic support for mutt by
 #
-# Copyright (C) 1999-2000 Fanis Dokianakis <madf@hellug.gr>
+# Copyright (C) 1999-2001 Fanis Dokianakis <madf@hellug.gr>
 # Nikos Mayrogiannopoulos <nmav@hellug.gr>
 # Simos Xenitellis <S.Xenitellis@rhbnc.ac.uk>
 # Corrections from kromJx <kromJx@crosswinds.net>
@@ -8,14 +8,15 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt-1.3.15i\n"
-"POT-Creation-Date: 2001-06-07 22:11+0200\n"
-"PO-Revision-Date: 2001-02-14 12:00+0200\n"
-"Last-Translator: Φάνης Δοκιανάκης <madf@hellug.gr>\n"
-"Language-Team: Greek <el@li.org>\n"
+"Project-Id-Version: Mutt-1.3.19i\n"
+"POT-Creation-Date: 2001-06-07 22:12+0200\n"
+"PO-Revision-Date: 2001-06-08 08:08GMT+2\n"
+"Last-Translator: Dokianakis Theofanis <madf@hellug.gr>\n"
+"Language-Team: Greek <EL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-7\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 0.8\n"
 
 #
 #: account.c:144
@@ -97,7 +98,7 @@ msgstr "Το ψευδώνυμο προστέθηκε."
 #
 #: attach.c:111 attach.c:238 attach.c:431 attach.c:908
 msgid "Can't match nametemplate, continue?"
-msgstr "Αδυναμία ταιριάσματος του nametemplate, να συνεχίσω;"
+msgstr "Αδυναμία ταιριάσματος του nametemplate, συνέχεια;"
 
 #
 #. For now, editing requires a file, no piping
@@ -143,7 +144,7 @@ msgstr "Δεν υπάρχει καταχώρηση mailcap για επεξεργασία κειμένου για το %s"
 #
 #: attach.c:397
 msgid "No matching mailcap entry found.  Viewing as text."
-msgstr "Δεν βρέθηκε όμοια καταχώρηση Mailcap. Αναγιγνώσκεται ως κείμενο."
+msgstr "Δεν βρέθηκε όμοια καταχώρηση Mailcap. Απεικόνιση ως κείμενο."
 
 #
 #: attach.c:410
@@ -159,7 +160,7 @@ msgstr "Αδυναμία δημιουργίας φίλτρου"
 #: attach.c:629 attach.c:661 attach.c:941 attach.c:993 handler.c:1518
 #: pgpkey.c:566 pgpkey.c:755
 msgid "Can't create filter"
-msgstr "Δεν μπορώ να δημιουργήσω φίλτρο"
+msgstr "Αδυναμία δημιουργίας φίλτρου"
 
 #
 #: attach.c:725 recvattach.c:415 recvattach.c:475
@@ -266,8 +267,8 @@ msgstr "Μάσκα αρχείου: "
 #: browser.c:1040
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr ""
-"Ανάστροφη ταξινόμηση κατά (d)ημερομηνία, (a)αλφαβητικά, (z)μέγεθος ή "
-"(n)άκυρο;"
+"Ανάστροφη ταξινόμηση κατά (d)ημερομηνία, (a)αλφαβητικά, (z)μέγεθος ή (n)"
+"άκυρο;"
 
 #
 #: browser.c:1041
@@ -396,11 +397,11 @@ msgstr "Αδυναμία αντιγραφής του μηνύματος."
 
 #: commands.c:168
 msgid "PGP signature successfully verified."
-msgstr "Η υπογραφή PGP επαληθεύθηκε επιτυχώς."
+msgstr "Η υπογραφή PGP επαληθεύτηκε επιτυχώς."
 
 #: commands.c:169
 msgid "PGP signature could NOT be verified."
-msgstr "Η υπογραφή PGP ΔΕΝ επαληθεύθηκε."
+msgstr "Η υπογραφή PGP ΔΕΝ επαληθεύτηκε."
 
 #
 #: commands.c:192
@@ -446,9 +447,8 @@ msgstr "Τα μηνύματα διαβιβάστηκαν."
 
 #
 #: commands.c:329 commands.c:368 commands.c:385
-#, fuzzy
 msgid "Can't create filter process"
-msgstr "Δεν μπορώ να δημιουργήσω φίλτρο"
+msgstr "Αδυναμία δημιουργίας διεργασίας φίλτρου"
 
 #
 #: commands.c:414
@@ -564,7 +564,7 @@ msgstr "Αντιγραφή στο %s..."
 #: commands.c:836
 #, c-format
 msgid "Convert to %s upon sending?"
-msgstr ""
+msgstr "Μετατροπή σε %s κατά τη μεταφορά;"
 
 #
 #: commands.c:844
@@ -573,17 +573,17 @@ msgid "Content-Type changed to %s."
 msgstr "Το Content-Type άλλαξε σε %s."
 
 #: commands.c:846
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; %s."
-msgstr "Το σετ χαρακτήρων άλλαξε σε %s."
+msgstr "Το σετ χαρακτήρων άλλαξε σε %s; %s."
 
 #: commands.c:848
 msgid "not converting"
-msgstr ""
+msgstr "όχι μετατροπή"
 
 #: commands.c:848
 msgid "converting"
-msgstr ""
+msgstr "μετατροπή"
 
 #
 #: compose.c:40
@@ -608,7 +608,7 @@ msgstr "Προσαρτήστε αρχείο"
 #
 #: compose.c:91
 msgid "Descrip"
-msgstr "Περίγρ"
+msgstr "Περιγραφή"
 
 #
 # compose.c:103
@@ -671,7 +671,7 @@ msgstr "Το %s [#%d] δεν υπάρχει πια!"
 #: compose.c:234
 #, c-format
 msgid "%s [#%d] modified. Update encoding?"
-msgstr "Το %s [#%d] μεταβλήθηκε. Να ενημερώσω την κωδικοποίηση;"
+msgstr "Το %s [#%d] μεταβλήθηκε. Ενημέρωση της κωδικοποίησης;"
 
 #
 #: compose.c:280
@@ -711,11 +711,11 @@ msgstr "Σημειώστε τα μηνύματα που θέλετε να προσαρτήσετε!"
 #
 #: compose.c:781
 msgid "Unable to attach!"
-msgstr "Δεν μπορώ να προσαρτήσω!"
+msgstr "Αδυναμία προσάρτησης!"
 
 #: compose.c:828
 msgid "Recoding only affects text attachments."
-msgstr "Η επανακωδικοποίηση επηρρεάζει μόνο της προσαρτήσεις κειμένου."
+msgstr "Η επανακωδικοποίηση επηρεάζει μόνο της προσαρτήσεις κειμένου."
 
 #: compose.c:833
 msgid "The current attachment won't be converted."
@@ -733,7 +733,7 @@ msgstr "Μη έγκυρη κωδικοποίηση."
 #
 #: compose.c:927
 msgid "Save a copy of this message?"
-msgstr "Αποθήκεση αντιγράφου του μηνύματος;"
+msgstr "Αποθήκευση αντιγράφου του μηνύματος;"
 
 #
 #: compose.c:981
@@ -744,7 +744,7 @@ msgstr "Μετονομασία σε: "
 #: compose.c:986 editmsg.c:96
 #, c-format
 msgid "Can't stat: %s"
-msgstr "Αδυναμία στην προσβαση: %s"
+msgstr "Αδυναμία στην πρόσβαση: %s"
 
 #
 #: compose.c:1012
@@ -847,9 +847,8 @@ msgstr "Η λειτουργία απαγορεύεται στην κατάσταση προσάρτηση-μηνύματος."
 
 #
 #: curs_main.c:63
-#, fuzzy
 msgid "No visible messages."
-msgstr "Δεν υπάρχουν νέα μηνύματα"
+msgstr "Δεν υπάρχουν ορατά μηνύματα."
 
 #
 #: curs_main.c:238
@@ -910,10 +909,8 @@ msgstr "Νέα αλληλογραφία σε αυτό το γραμματοκιβώτιο."
 
 #
 #: curs_main.c:477
-#, fuzzy
 msgid "Mailbox was externally modified."
-msgstr ""
-"Το γραμματοκιβώτιο τροποποιήθηκε εξωτερικά. Οι σημαίες μπορεί να είναι λάθος"
+msgstr "Το γραμματοκιβώτιο τροποποιήθηκε εξωτερικά."
 
 #
 #: curs_main.c:589
@@ -970,17 +967,17 @@ msgstr "Έξοδος από το Mutt;"
 #
 #: curs_main.c:872
 msgid "Tag messages matching: "
-msgstr "Σημείωστε τα παρόμοια μηνύματα με: "
+msgstr "Σημειώστε μηνύματα που ταιριάζουν σε: "
 
 #
 #: curs_main.c:881
 msgid "Undelete messages matching: "
-msgstr "Επαναφέρετε τα παρόμοια μηνύματα με: "
+msgstr "Επαναφορά τα μηνύματα που ταιριάζουν σε: "
 
 #
 #: curs_main.c:889
 msgid "Untag messages matching: "
-msgstr "Ξεσημειώστε τα παρόμοια μηνύματα με: "
+msgstr "Αφαίρεση της σημείωσης στα μηνύματα που ταιριάζουν σε: "
 
 #
 #: curs_main.c:964
@@ -1051,7 +1048,7 @@ msgstr "Δεν υπάρχουν άλλες συζητήσεις."
 #
 #: curs_main.c:1416
 msgid "You are on the first thread."
-msgstr "Είστε στη πρώτη συζήτηση."
+msgstr "Είστε στην πρώτη συζήτηση."
 
 #
 #: curs_main.c:1477 curs_main.c:1509 flags.c:250 thread.c:676 thread.c:727
@@ -1100,7 +1097,7 @@ msgstr ""
 "~f μηνύματα\tσυμπεριλάβετε τα μηνύματα\n"
 "~F μηνύματα\tτο ίδιο όπως το ~f, αλλά και με τις επικεφαλίδείτε\n"
 "~h\t\tεπεξεργαστείτε την επικεφαλίδα\n"
-"~m μηνύματα\tσυμπεριλάβετε και παράθεστε τα μηνύματα\n"
+"~m μηνύματα\tσυμπεριλάβετε και παραθέστε τα μηνύματα\n"
 "~M μηνύματα\tτο ίδιο με το ~m, αλλά και με τις επικεφαλίδείτε\n"
 "~p\t\tεκτυπώστε το μήνυμα\n"
 "~q\t\tεγγραφή του αρχείο και έξοδος από τον κειμενογράφο\n"
@@ -1210,7 +1207,7 @@ msgstr "Καθαρίστε σημαία"
 #: handler.c:1302
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr ""
-"[-- Λάθος: Δεν μπορώ να απεικονίσω κανένα μέρος του Multipart/Alternative! "
+"[-- Σφάλμα: Αδυναμία απεικόνισης σε όλα τα μέρη του Multipart/Alternative! "
 "--]\n"
 
 #
@@ -1239,9 +1236,9 @@ msgstr "Κλήση της εντολής autoview: %s"
 
 #
 #: handler.c:1520
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Can't run %s. --]\n"
-msgstr "[-- στις %s --]\n"
+msgstr "[-- Αδυναμία εκτέλεσης στις %s --]\n"
 
 #
 #: handler.c:1535 handler.c:1553
@@ -1319,7 +1316,7 @@ msgstr "Σφάλμα: το πολυμερές/κρυπτογραφημένο δεν έχει παράμετρο πρωτοκόλλου!"
 #
 #: handler.c:1816
 msgid "Unable to open temporary file!"
-msgstr "Αδυναμία ανοιγματος προσωρινού αρχείου!"
+msgstr "Αδυναμία ανοίγματος προσωρινού αρχείου!"
 
 #
 #: handler.c:1875
@@ -1384,7 +1381,7 @@ msgstr "Βοήθεια για το %s"
 
 #: hook.c:243
 msgid "unhook: Can't do unhook * from within a hook."
-msgstr ""
+msgstr "unhook: Αδυναμία unhook * μέσα από ένα hook."
 
 #
 #: hook.c:255
@@ -1395,12 +1392,11 @@ msgstr "unhook: άγνωστος τύπος hook: %s"
 #: hook.c:261
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s."
-msgstr ""
+msgstr "unhook: Αδυναμία διαγραφής ενός %s μέσα από ένα %s."
 
 #: imap/auth.c:104
-#, fuzzy
 msgid "No authenticators available"
-msgstr "Αυθεντικοποίηση SASL απέτυχε."
+msgstr "Δεν υπάρχει διαθέσιμη αυθεντικοποίηση."
 
 #: imap/auth_anon.c:39
 msgid "Authenticating (anonymous)..."
@@ -1465,9 +1461,8 @@ msgstr "Δημιουργία γραμματοκιβωτίου: "
 
 #
 #: imap/browse.c:276
-#, fuzzy
 msgid "Mailbox must have a name."
-msgstr "Δεν έγινε αλλαγή στο γραμματοκιβώτιο "
+msgstr "Το γραμματοκιβώτιο πρέπει να έχει όνομα."
 
 #
 #: imap/browse.c:284
@@ -1476,9 +1471,8 @@ msgstr "Το γραμματοκιβώτιο δημιουργήθηκε."
 
 #
 #: imap/command.c:289
-#, fuzzy
 msgid "Mailbox closed"
-msgstr "Το γραμματοκιβώτιου διαγράφηκε."
+msgstr "Το γραμματοκιβώτιο έκλεισε"
 
 #
 #. something is wrong because the server reported fewer messages
@@ -1502,11 +1496,11 @@ msgstr ""
 
 #: imap/imap.c:380
 msgid "Secure connection with TLS?"
-msgstr ""
+msgstr "Ασφαλής σύνδεση με TLS;"
 
 #: imap/imap.c:389
 msgid "Could not negotiate TLS connection"
-msgstr ""
+msgstr "Αδυναμία διαπραγμάτευσης σύνδεσης TLS"
 
 #
 #: imap/imap.c:533
@@ -1518,7 +1512,7 @@ msgstr "Επιλογή %s..."
 #. STATUS not supported
 #: imap/imap.c:703
 msgid "Unable to append to IMAP mailboxes at this server"
-msgstr "Αδυναμία στην πρόσθηκη στα γραμμ/τια IMAP σε αυτόν τον εξυπηρετητή"
+msgstr "Αδυναμία στην προσθήκη στα γραμμ/τια IMAP σε αυτόν τον εξυπηρετητή"
 
 #
 #. command failed cause folder doesn't exist
@@ -1551,9 +1545,8 @@ msgstr "Διαγραφή μηνυμάτων από τον εξυπηρετητή..."
 
 #
 #: imap/imap.c:1043
-#, fuzzy
 msgid "CLOSE failed"
-msgstr "Απέτυχε η είσοδος στο σύστημα."
+msgstr "CLOSE απέτυχε"
 
 #
 #: imap/imap.c:1299
@@ -1618,7 +1611,7 @@ msgstr "%s [%s]\n"
 #
 #: init.c:490
 msgid "alias: no address"
-msgstr "ψευδώνυμο: καμμία διέυθυνση"
+msgstr "ψευδώνυμο: καμμία διεύθυνση"
 
 #
 #: init.c:584
@@ -1641,7 +1634,7 @@ msgstr "mutt_restore_default(%s): λάθος στο regexp: %s\n"
 #: init.c:809
 #, c-format
 msgid "%s: unknown variable"
-msgstr "%s: άγνωστη μεταβλήτή"
+msgstr "%s: άγνωστη μεταβλητή"
 
 #
 #: init.c:818
@@ -1806,12 +1799,12 @@ msgstr "κενή λειτουργία"
 #
 #: keymap_alldefs.h:6
 msgid "force viewing of attachment using mailcap"
-msgstr "αναγκάζει την εμφάνιση της προσάρτησης χρησιμοποιόντας το mailcap"
+msgstr "αναγκάζει την εμφάνιση της προσάρτησης χρησιμοποιώντας το mailcap"
 
 #
 #: keymap_alldefs.h:7
 msgid "view attachment as text"
-msgstr "παρουσίαση της προσαρτήσης ως κείμενο"
+msgstr "παρουσίαση της προσάρτησης ως κείμενο"
 
 #
 #: keymap_alldefs.h:8
@@ -1853,7 +1846,7 @@ msgstr "διαγραφή από το τρέχων γραμματοκιβώτιο (IMAP μόνο)"
 
 #: keymap_alldefs.h:16
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
-msgstr "αλλάγή όψης όλα/εγγεγραμμένα γραμματοκιβώτια  (IMAP μόνο)"
+msgstr "αλλαγή όψης όλα/εγγεγραμμένα γραμματοκιβώτια  (IMAP μόνο)"
 
 #
 #: keymap_alldefs.h:17
@@ -1923,7 +1916,7 @@ msgstr "επεξεργασία του μηνύματος"
 #
 #: keymap_alldefs.h:30
 msgid "edit attachment using mailcap entry"
-msgstr "επεξεργασία της προσάρτησης χρησιμοποιόντας καταχώρηση mailcap"
+msgstr "επεξεργασία της προσάρτησης χρησιμοποιώντας καταχώρηση mailcap"
 
 #
 #: keymap_alldefs.h:31
@@ -1952,12 +1945,12 @@ msgstr "επεξεργασία του τύπου του περιεχομένου της προσάρτησης"
 #
 #: keymap_alldefs.h:36
 msgid "get a temporary copy of an attachment"
-msgstr "απόδοση ένός προσωρινού αντιγράφου της προσάρτησης"
+msgstr "απόδοση ενός προσωρινού αντιγράφου της προσάρτησης"
 
 #
 #: keymap_alldefs.h:37
 msgid "run ispell on the message"
-msgstr "ελεγχος του μηνύματος με το  ispell"
+msgstr "έλεγχος του μηνύματος με το  ispell"
 
 #
 #: keymap_alldefs.h:38
@@ -2005,7 +1998,7 @@ msgstr "εγγραφή του μηνύματος σε ένα φάκελο"
 #
 #: keymap_alldefs.h:47
 msgid "copy a message to a file/mailbox"
-msgstr "αντιγραφή ενος μηνύματος σε ένα αρχείο/γραμμα/τιο"
+msgstr "αντιγραφή ενός μηνύματος σε ένα αρχείο/γραμμα/τιο"
 
 #
 #: keymap_alldefs.h:48
@@ -2035,7 +2028,7 @@ msgstr "δημιουργία αποκωδικοποιημένου (text/plain) αντιγράφου"
 #
 #: keymap_alldefs.h:53
 msgid "make decoded copy (text/plain) and delete"
-msgstr "δημιουργία αποκωδικοποιημένου (text/plain) αντιγράφο και διεγραφή"
+msgstr "δημιουργία αποκωδικοποιημένου (text/plain) αντιγράφου και διαγραφή"
 
 #
 #: keymap_alldefs.h:54
@@ -2139,12 +2132,12 @@ msgstr "μετακίνηση μέσα στην λίστα ιστορίας"
 #
 #: keymap_alldefs.h:75
 msgid "delete chars from cursor to end of line"
-msgstr "διαγραφή των χαρακτήρων από το κέρσορα εώς το τέλος της γραμμής"
+msgstr "διαγραφή των χαρακτήρων από το κέρσορα ώς το τέλος της γραμμής"
 
 #
 #: keymap_alldefs.h:76
 msgid "delete chars from the cursor to the end of the word"
-msgstr "διαγραφή των χαρακτήρων από το κέρσορα εώς το τέλος της λέξης"
+msgstr "διαγραφή των χαρακτήρων από το κέρσορα ώς το τέλος της λέξης"
 
 #
 #: keymap_alldefs.h:77
@@ -2276,12 +2269,12 @@ msgstr "άνοιγμα ενός διαφορετικού φακέλου σε κατάσταση μόνο-ανάγνωσης"
 #
 #: keymap_alldefs.h:103
 msgid "clear a status flag from a message"
-msgstr "καθαρισμος της σημαίας κατάστασης από το μήνυμα"
+msgstr "καθαρισμός της σημαίας κατάστασης από το μήνυμα"
 
 #
 #: keymap_alldefs.h:104
 msgid "delete messages matching a pattern"
-msgstr "διαγραφή των μηνυματων που ταιριάζουν σε ένα μοντέλο/μορφή"
+msgstr "διαγραφή των μηνυμάτων που ταιριάζουν σε ένα μοντέλο/μορφή"
 
 #
 #: keymap_alldefs.h:105
@@ -2448,7 +2441,7 @@ msgstr "διοχέτευση του μηνύματος/προσάρτησης σε μια εντολή φλοιού"
 #
 #: keymap_alldefs.h:137
 msgid "move to the previous entry"
-msgstr "μετακίνηση στην προηγούμενη καταχώριση"
+msgstr "μετακίνηση στην προηγούμενη καταχώρηση"
 
 #
 #: keymap_alldefs.h:138
@@ -2473,7 +2466,7 @@ msgstr "ερώτηση ενός εξωτερικού προγράμματος για διευθύνσεις"
 #
 #: keymap_alldefs.h:142
 msgid "append new query results to current results"
-msgstr "πρόσθεση των νέων αποτελεσμάτων της ερώτησης στα τρέχωντα"
+msgstr "πρόσθεση των νέων αποτελεσμάτων της ερώτησης στα τρέχοντα"
 
 #
 #: keymap_alldefs.h:143
@@ -2547,7 +2540,7 @@ msgstr "ταξινόμηση των μηνυμάτων"
 #
 #: keymap_alldefs.h:157
 msgid "sort messages in reverse order"
-msgstr "ταξινόμηση των μηνυμάτων σε ανάστροφη σείρα"
+msgstr "ταξινόμηση των μηνυμάτων σε ανάστροφη σειρά"
 
 #
 #: keymap_alldefs.h:158
@@ -2577,7 +2570,7 @@ msgstr "επιλογή της 'νέας' σημαίας μηνύματος"
 #
 #: keymap_alldefs.h:163
 msgid "toggle whether the mailbox will be rewritten"
-msgstr "επιλογή εάν το γραμματοκιβώτιο θα ξαναγραφτεί"
+msgstr "επιλογή εάν το γραμματοκιβώτιο θα ξαναγραφεί"
 
 #
 #: keymap_alldefs.h:164
@@ -2689,7 +2682,7 @@ msgstr "δημιουργία αποκρυπτογραφημένου αντιγράφου"
 
 #: keymap_alldefs.h:184
 msgid "check for classic pgp"
-msgstr ""
+msgstr "έλεγχος για το κλασσικό pgp"
 
 #: keymap_alldefs.h:185
 msgid "Accept the chain constructed"
@@ -2731,29 +2724,27 @@ msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please use the flea(1) utility.\n"
 msgstr ""
-"Για να επικοινωνήσετε με τους developers, στείλτε mail στο "
-"<mutt-dev@mutt.org>.\n"
+"Για να επικοινωνήσετε με τους developers, στείλτε mail στο <mutt-dev@mutt."
+"org>.\n"
 "Για να αναφέρετε ένα πρόβλημα χρησιμοποιήσετε το εργαλείο flea(1).\n"
 
 #
 #: main.c:45
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2001 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2000 Michael R. Elkins και άλλοι.\n"
-"Το Mutt έρχεται ΑΠΟΚΛΕΙΣΤΙΚΑ ΧΩΡΙΣ ΕΓΓΥΗΣΗ; για λεπτομέρειες πατήστε `mutt "
-"-vv'.\n"
-"Το Mutt έιναι ελεύθερο λογισμικό, και ευχαρίστως μπορείτε να το "
+"Copyright (C) 1996-2001 Michael R. Elkins και άλλοι.\n"
+"Το Mutt έρχεται ΑΠΟΚΛΕΙΣΤΙΚΑ ΧΩΡΙΣ ΕΓΓΥΗΣΗ; για λεπτομέρειες πατήστε `mutt -"
+"vv'.\n"
+"Το Mutt είναι ελεύθερο λογισμικό, και ευχαρίστως μπορείτε να το "
 "επαναδιανέμετε\n"
-"υπο ορισμένους όρους; γράψτε `mutt -vv' για λεπτομέρειες.\n"
+"υπό ορισμένους όρους; γράψτε `mutt -vv' για λεπτομέρειες.\n"
 
 #
 #: main.c:51
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
@@ -2780,20 +2771,20 @@ msgid ""
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 msgstr ""
-"Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
-"Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2000 Thomas Roessler <roessler@guug.de>\n"
-"Copyright (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
-"Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-"Copyright (C) 2000      Edmund Grimley Evans <edmundo@rano.org>\n"
+"Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Copyright (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
+"Copyright (C) 1997-2001 Thomas Roessler <roessler@guug.de>\n"
+"Copyright (C) 1998-2001 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2001 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 2000-2001 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "Πολλοί άλλοι που δεν αναφέρονται εδώ έχουν συνεισφέρει κώδικα,\n"
 "διορθώσεις, και προτάσεις.\n"
 "\n"
 "Αυτό το πρόγραμμα είναι ελεύθερο λογισμικό. Μπορείτε να το αναδιανέμετε\n"
 "και/ή να το αλλάξετε σύμφωνα με τους κανόνες της GNU Γενικής Δημόσιας "
-"Αδειας\n"
+"Άδειας\n"
 "όπως δημοσιοποιήθηκε από το Ίδρυμα Ελεύθερου Λογισμικού (Free Software\n"
 "Foundation), είτε την δεύτερη έκδοση της άδειας, είτε (κατ'επιλογή σας)\n"
 "κάθε μετέπειτα έκδοση.\n"
@@ -2801,9 +2792,9 @@ msgstr ""
 "Αυτό το πρόγραμμα διανέμεται με την ελπίδα ότι θα είναι χρήσιμο,\n"
 "αλλά ΧΩΡΙΣ ΚΑΜΙΑ ΕΓΓΥΗΣΗ. Ούτε ακόμα για την υπονοούμενη εγγύηση της\n"
 "ΕΜΠΟΡΕΥΣΙΜΟΤΗΤΑΣ ή ΚΑΤΑΛΛΗΛΟΤΗΤΑ ΓΙΑ ΣΥΓΚΕΚΡΙΜΕΝΟ ΣΚΟΠΟ. Δείτε την\n"
-"GNU Γενική Δημόσια Αδεια για περισσότερες λεπτομέρειες.\n"
+"GNU Γενική Δημόσια Άδεια για περισσότερες λεπτομέρειες.\n"
 "\n"
-"Θα έπρεπε να έχετε λάβει ένα αντίγραφο της GNU Γενικής Δημόσιας Αδειας\n"
+"Θα έπρεπε να έχετε λάβει ένα αντίγραφο της GNU Γενικής Δημόσιας Άδειας\n"
 "με αυτό το πρόγραμμα. Εάν όχι, γράψτε στο Free Software \n"
 "Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 "\n"
@@ -2811,10 +2802,10 @@ msgstr ""
 #
 #: main.c:88
 msgid ""
-"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
-"]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
-"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
+"<file> ]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
+"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2851,17 +2842,17 @@ msgstr ""
 "  -a <αρχείο>\tπροσαρτήστε ένα αρχείο σε αυτό το μήνυμα\n"
 "  -b <διεύθ>\tκαθορίστε μια διεύθυνση τυφλού-πιστού-αντιγράφου (BCC)\n"
 "  -c <διεύθ>\tκαθορίστε μια διεύθυνση πιστού-αντιγράφου (CC)\n"
-"  -e <εντολή>\tκαθορίστε μια εντολή για να εκτελεστή μετά την εκκίνηση\n"
-"  -f <αρχείο>\tκαθορίστε ποιο γραμματοκιβώτιο να διαβάσω\n"
+"  -e <εντολή>\tκαθορίστε μια εντολή για να εκτελεστεί μετά την εκκίνηση\n"
+"  -f <αρχείο>\tκαθορίστε ποιο γραμματοκιβώτιο να αναγνωστεί\n"
 "  -F <αρχείο>\tκαθορίστε ένα εναλλακτικό αρχείο muttrc\n"
 "  -H <αρχείο>\tκαθορίστε ένα προσχέδιο από το οποίο θα διαβαστεί η "
 "επικεφαλίδα\n"
-"  -i <αρχείο>\tκαθορίστε ένα αρχείο που το Mutt θα συμπεριλαμβάνει κατά την "
-"\n"
+"  -i <αρχείο>\tκαθορίστε ένα αρχείο που το Mutt θα συμπεριλαμβάνει κατά "
+"την \n"
 "απάντηση\n"
 "  -m <τύπος>\tκαθορίστε ένα τύπο προκαθορισμένου γραμματοκιβωτίου\n"
 "  -n\t\tκάνετε το Mutt να μην διαβάσει το Muttrc του συστήματος\n"
-"  -p\t\tεπαναφέρατε ένα αναβεβλήμένο μήνυμα\n"
+"  -p\t\tεπαναφέρετε ένα αναβεβλήμένο μήνυμα\n"
 "  -R\t\tανοίξτε το γραμματοκιβώτιο σε κατάσταση μόνο-ανάγνωσης\n"
 "  -s <θέμα>\tκαθορίστε ένα θέμα (σε εισαγωγικά εάν έχει κενά)\n"
 "  -v\t\tδείξτε την έκδοση και τους ορισμούς κατά τη μεταγλώττιση\n"
@@ -3127,13 +3118,13 @@ msgstr "Πρόσθεση μηνυμάτων στο %s;"
 
 #
 #: mutt_socket.c:84 mutt_socket.c:140
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s closed"
-msgstr "Η σύνδεση στο %s απέτυχε."
+msgstr "Έκλεισε η σύνδεση στο %s"
 
 #: mutt_socket.c:250
 msgid "SSL is unavailable."
-msgstr "Το SSL δεν είναι διαθεσιμο."
+msgstr "Το SSL δεν είναι διαθέσιμο."
 
 #: mutt_socket.c:281
 msgid "Preconnect command failed."
@@ -3141,9 +3132,9 @@ msgstr "Αποτυχία εντολής προσύνδεσης"
 
 #
 #: mutt_socket.c:352 mutt_socket.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Σφάλμα κατα τη σύνδεση στο διακομιστή: %s"
+msgstr "Σφάλμα στη συνομιλία με το %s (%s)"
 
 #
 #: mutt_socket.c:400 mutt_socket.c:441
@@ -3190,13 +3181,13 @@ msgstr "Το SSL απενεργοποιήθηκε λόγω λήψης εντροπίας"
 #
 #: mutt_ssl.c:335
 msgid "Unable to get certificate from peer"
-msgstr "Αδυναμια στη λήψη πιστοποιητικού από το ταίρι"
+msgstr "Αδυναμία στη λήψη πιστοποιητικού από το ταίρι"
 
 #
 #: mutt_ssl.c:343
 #, c-format
 msgid "SSL connection using %s (%s)"
-msgstr "Σύνδεση SSL χρησιμοποιόντας το %s (%s)"
+msgstr "Σύνδεση SSL χρησιμοποιώντας το %s (%s)"
 
 #
 #: mutt_ssl.c:371
@@ -3349,7 +3340,7 @@ msgstr "Μετακίνηση αναγνωσμένων μηνυμάτων στο %s;"
 #: mx.c:884 mx.c:1137
 #, c-format
 msgid "Purge %d deleted message?"
-msgstr "Καθαρισμός %d διεγραμμένου μηνήματος;"
+msgstr "Καθαρισμός %d διεγραμμένου μηνύματος;"
 
 #
 #: mx.c:884 mx.c:1137
@@ -3496,7 +3487,7 @@ msgstr "Μη έγκυρος μήνας: %s"
 #: pattern.c:527
 #, c-format
 msgid "Invalid relative date: %s"
-msgstr "Μη έγκυρη σχετική ημερομηνία: %s"
+msgstr "Μη έγκυρος αναφορικώς μήνας: %s"
 
 #
 #: pattern.c:541
@@ -3530,7 +3521,7 @@ msgstr "έλλειψη παραμέτρου"
 #: pattern.c:830
 #, c-format
 msgid "mismatched parenthesis: %s"
-msgstr "αταίριαστη παρενθέση/εις: %s"
+msgstr "αταίριαστη παρένθεση/εις: %s"
 
 #
 #: pattern.c:862
@@ -3571,7 +3562,7 @@ msgstr "Η αναζήτηση έφθασε στην αρχή χωρίς να βρει όμοιο"
 #
 #: pattern.c:1323
 msgid "Search interrupted."
-msgstr "Η αναζήτηση διεκόπηκε."
+msgstr "Η αναζήτηση διακόπηκε."
 
 #
 # pgp.c:130
@@ -3760,13 +3751,13 @@ msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
 msgstr ""
-"[-- Σφάλμα: κακοφτιαγμένο μήνημα PGP/MIME! --]\n"
+"[-- Σφάλμα: κακοφτιαγμένο μήνυμα PGP/MIME! --]\n"
 "\n"
 
 #
 #: pgp.c:1099
 msgid "[-- Error: could not create temporary file! --]\n"
-msgstr "[-- Σφάλμα: δε μπορώ να δημιουργήσω προσωρινό αρχείο! --]\n"
+msgstr "[-- Σφάλμα: αδυναμία δημιουργίας προσωρινού αρχείου! --]\n"
 
 #
 # pgp.c:980
@@ -3823,10 +3814,8 @@ msgid "Fetching PGP key..."
 msgstr "Λήψη κλειδιού PGP..."
 
 #: pgpkey.c:486
-#, fuzzy
 msgid "All matching keys are marked expired/revoked."
-msgstr ""
-"Αυτό το κλειδί δεν μπορεί να χρησιμοποιηθεί ληγμένο/αχρηστευμένο/άκυρο."
+msgstr "Όλα τα όμοια κλειδιά είναι σημειωμένα σαν ληγμένα/άκυρα."
 
 #
 #. __STRCAT_CHECKED__
@@ -3839,7 +3828,7 @@ msgstr "Διαλέξτε "
 #. __STRCAT_CHECKED__
 #: pgpkey.c:515
 msgid "Check key  "
-msgstr "Έλέγξτε κλειδί "
+msgstr "Ελέγξτε κλειδί "
 
 #
 #: pgpkey.c:528
@@ -3862,7 +3851,7 @@ msgstr "Αδυναμία ανοίγματος /dev/null"
 #
 #: pgpkey.c:555 pgpkey.c:735
 msgid "Can't create temporary file"
-msgstr "Δεν μπορώ να δημιουργήσω προσωρινό αρχείο"
+msgstr "Αδυναμία δημιουργίας προσωρινού αρχείου"
 
 #
 # pgpkey.c:236
@@ -3877,10 +3866,8 @@ msgstr ""
 "Αυτό το κλειδί δεν μπορεί να χρησιμοποιηθεί ληγμένο/αχρηστευμένο/άκυρο."
 
 #: pgpkey.c:608
-#, fuzzy
 msgid "This ID is expired/disabled/revoked"
-msgstr ""
-"Αυτό το κλειδί δεν μπορεί να χρησιμοποιηθεί ληγμένο/αχρηστευμένο/άκυρο."
+msgstr "Αυτό το ID είναι ληγμένο/αχρηστευμένο/άκυρο."
 
 #
 # pgpkey.c:257
@@ -3902,9 +3889,9 @@ msgstr "Αυτό το ID τυγχάνει ελάχιστη εμπιστοσύνη."
 #
 # pgpkey.c:262
 #: pgpkey.c:622
-#, fuzzy, c-format
+#, c-format
 msgid "%s Do you really want to use the key?"
-msgstr "%s Θέλετε σίγουρα να το χρησιμοποιήσετε;"
+msgstr "%s Θέλετε σίγουρα να χρησιμοποιήσετε το κλειδί;"
 
 #
 # pgpkey.c:369
@@ -3928,7 +3915,7 @@ msgstr "Κλειδί PGP %s."
 #: pgpkey.c:835 pgpkey.c:953
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
-msgstr "Εύρεση όμοιων κλειδιών \"%s\"..."
+msgstr "Εύρεση όμοιων κλειδιών με \"%s\"..."
 
 #
 #: pop.c:89 pop_lib.c:159
@@ -4059,7 +4046,7 @@ msgstr "Ακατάλληλη επικεφαλίδα PGP"
 #
 #: query.c:45
 msgid "New Query"
-msgstr "Νεα Ερώτηση"
+msgstr "Νέα Ερώτηση"
 
 #
 #: query.c:46
@@ -4132,7 +4119,7 @@ msgstr "Φιλτράρισμα μέσω: "
 #
 #: recvattach.c:572
 msgid "Pipe to: "
-msgstr "Διοχετεύση στο: "
+msgstr "Διοχέτευση στο: "
 
 #
 #: recvattach.c:607
@@ -4233,8 +4220,8 @@ msgstr "Δεν βρέθηκαν λίστες συζητήσεων!"
 #: recvcmd.c:787
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr ""
-"Αδυναμία αποκωδικοποίησης όλων των σημειωμένων προσαρτήσεων. "
-"MIME-encapsulate τις άλλες;"
+"Αδυναμία αποκωδικοποίησης όλων των σημειωμένων προσαρτήσεων. MIME-"
+"encapsulate τις άλλες;"
 
 #
 #: remailer.c:480
