@@ -1,3 +1,8 @@
+2005-02-03 19:46:53  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
+
+	* hcache.c: this is a fix for hcache.c infrastructure which is
+	about wrongly calculate unique id
+
 2005-02-03 18:44:27  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* pgp.c: Fix PGP clear signature handling.
