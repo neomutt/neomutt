@@ -243,7 +243,7 @@ char *utf8_to_utf7 (const char *u8, size_t u8len, char **u7, size_t *u7len)
   return 0;
 }
 
-void mutt_utf7_encode (char **s)
+void imap_utf7_encode (char **s)
 {
   if (Charset)
   {
@@ -254,7 +254,7 @@ void mutt_utf7_encode (char **s)
   }
 }
 
-void mutt_utf7_decode (char **s)
+void imap_utf7_decode (char **s)
 {
   if (Charset)
   {
