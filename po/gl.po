@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.0i\n"
-"POT-Creation-Date: 2000-02-01 08:36+0100\n"
+"POT-Creation-Date: 2000-02-08 10:59+0100\n"
 "PO-Revision-Date: 1999-10-27 14:05+0200\n"
 "Last-Translator: Roberto Suarez Soto <ask4it@bigfoot.com>\n"
 "Language-Team: Galician <gpul-traduccion@ceu.fi.udc.es>\n"
@@ -23,7 +23,7 @@ msgid "Select"
 msgstr "Seleccionar"
 
 #: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:269 imap/imap_ssl.c:256
-#: pager.c:1479 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
+#: pager.c:1480 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Axuda"
 
@@ -229,7 +229,7 @@ msgstr "Non é posible ver un directorio"
 msgid "Error trying to view file"
 msgstr "Erro intentando ver ficheiro"
 
-#: buffy.c:405
+#: buffy.c:407
 #, c-format
 msgid "New mail in %s."
 msgstr "Novo correo en %s."
@@ -290,7 +290,7 @@ msgstr "mono: parámetros insuficientes"
 msgid "%s: no such attribute"
 msgstr "%s: non hai tal atributo"
 
-#: color.c:686 hook.c:61 hook.c:69 keymap.c:706
+#: color.c:686 hook.c:61 hook.c:69 keymap.c:697
 msgid "too few arguments"
 msgstr "parámetros insuficientes"
 
@@ -728,7 +728,7 @@ msgstr "Grupo"
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "O buzón foi modificado externamente. Os indicadores poden ser erróneos"
 
-#: curs_main.c:444
+#: curs_main.c:444 pager.c:1498
 msgid "New mail in this mailbox."
 msgstr "Novo correo neste buzón."
 
@@ -1405,102 +1405,102 @@ msgstr "%s non está activada"
 msgid "%s: invalid mailbox type"
 msgstr "%s: tipo de buzón inválido"
 
-#: init.c:1094
+#: init.c:1060 init.c:1105
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: valor inválido"
 
-#: init.c:1149
+#: init.c:1160
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: tipo descoñecido"
 
-#: init.c:1188
+#: init.c:1199
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Erro en %s, liña %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1199
+#: init.c:1210
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: erros en %s"
 
-#: init.c:1209
+#: init.c:1220
 #, c-format
 msgid "source: error at %s"
 msgstr "source: erro en %s"
 
-#: init.c:1214
+#: init.c:1225
 msgid "source: too many arguments"
 msgstr "source: demasiados parámetros"
 
-#: init.c:1265
+#: init.c:1276
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: comando descoñecido"
 
-#: init.c:1622
+#: init.c:1633
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Erro na liña de comando: %s\n"
 
-#: init.c:1665
+#: init.c:1676
 msgid "unable to determine home directory"
 msgstr "non foi posible determina-lo directorio \"home\""
 
-#: init.c:1673
+#: init.c:1684
 msgid "unable to determine username"
 msgstr "non foi posible determina-lo nome de usuario"
 
-#: keymap.c:442
+#: keymap.c:433
 msgid "Macro loop detected."
 msgstr "Bucle de macro detectado."
 
-#: keymap.c:645 keymap.c:653
+#: keymap.c:636 keymap.c:644
 msgid "Key is not bound."
 msgstr "A tecla non está vinculada."
 
-#: keymap.c:657
+#: keymap.c:648
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "A tecla non está vinculada. Pulsa '%s' para axuda."
 
-#: keymap.c:668
+#: keymap.c:659
 msgid "push: too many arguments"
 msgstr "push: demasiados parámetros"
 
-#: keymap.c:689
+#: keymap.c:680
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: non hai tal menú"
 
-#: keymap.c:698
+#: keymap.c:689
 msgid "null key sequence"
 msgstr "secuencia de teclas nula"
 
-#: keymap.c:780
+#: keymap.c:771
 msgid "bind: too many arguments"
 msgstr "bind: demasiados argumentos"
 
-#: keymap.c:795
+#: keymap.c:786
 #, c-format
 msgid "%s: no such function in map"
 msgstr "%s: función descoñecida"
 
-#: keymap.c:818
+#: keymap.c:809
 msgid "macro: empty key sequence"
 msgstr "macro: secuencia de teclas baleira"
 
-#: keymap.c:829
+#: keymap.c:820
 msgid "macro: too many arguments"
 msgstr "macro: demasiados parámetros"
 
-#: keymap.c:859
+#: keymap.c:850
 msgid "exec: too few arguments"
 msgstr "exec: parámetros insuficientes"
 
-#: keymap.c:879
+#: keymap.c:870
 #, c-format
 msgid "%s: no such command"
 msgstr "%s: non hai tal comando"
@@ -2233,12 +2233,15 @@ msgid "Out of memory!"
 msgstr "¡Memoria agotada!"
 
 #: main.c:40
-msgid "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
+#, fuzzy
+msgid ""
+"To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
+"To report a bug, please use the muttbug utility.\n"
 msgstr ""
 "Para pórse en contacto cós desenvolvedores, manda unha mensaxe a "
 "<mutt-dev@mutt.org>.\n"
 
-#: main.c:43
+#: main.c:44
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2000 Michael R. Elkins and others.\n"
@@ -2252,7 +2255,7 @@ msgstr ""
 "Mutt é software libre, e vostede é benvido cando desexe redistribuilo \n"
 "baixo certas condicións; escriba `mutt -vv' para ve-losdetalles.\n"
 
-#: main.c:49
+#: main.c:50
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
@@ -2296,7 +2299,7 @@ msgstr ""
 "    xunto deste programa; se non foi así, escriba á Free Software\n"
 "    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n"
 
-#: main.c:76
+#: main.c:77
 #, fuzzy
 msgid ""
 "\n"
@@ -2323,7 +2326,7 @@ msgstr ""
 "    comercialización e adaptación a un propósito particular SON\n"
 "    DESCARGADAS.\n"
 
-#: main.c:102
+#: main.c:103
 msgid ""
 "usage: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
 "]\n"
@@ -2383,7 +2386,7 @@ msgstr ""
 "si non hai tal\n"
 "  -h\t\testa mensaxe de axuda"
 
-#: main.c:154
+#: main.c:155
 msgid ""
 "\n"
 "Compile options:"
@@ -2536,7 +2539,7 @@ msgstr "Búsqueda inversa de: "
 msgid "No search pattern."
 msgstr "Non hai patrón de búsqueda."
 
-#: menu.c:698 pager.c:1849 pager.c:1865 pager.c:1953 pattern.c:1156
+#: menu.c:698 pager.c:1868 pager.c:1884 pager.c:1972 pattern.c:1156
 msgid "Not found."
 msgstr "Non se atopou."
 
@@ -2711,31 +2714,31 @@ msgid "Next"
 msgstr "Seguinte"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1761 pager.c:1792 pager.c:1821 pager.c:2041
+#: pager.c:1780 pager.c:1811 pager.c:1840 pager.c:2060
 msgid "Bottom of message is shown."
 msgstr "Amosase o final da mensaxe."
 
-#: pager.c:1777 pager.c:1799 pager.c:1810
+#: pager.c:1796 pager.c:1818 pager.c:1829
 msgid "Top of message is shown."
 msgstr "Amosase o principio da mensaxe."
 
-#: pager.c:1883
+#: pager.c:1902
 msgid "Reverse search: "
 msgstr "Búsqueda inversa: "
 
-#: pager.c:1884
+#: pager.c:1903
 msgid "Search: "
 msgstr "Búsqueda: "
 
-#: pager.c:1979
+#: pager.c:1998
 msgid "Help is currently being shown."
 msgstr "Estase a amosa-la axuda"
 
-#: pager.c:2008
+#: pager.c:2027
 msgid "No more quoted text."
 msgstr "Non hai máis texto citado."
 
-#: pager.c:2021
+#: pager.c:2040
 msgid "No more unquoted text after quoted text."
 msgstr "Non hai máis texto sen citar despois do texto citado."
 

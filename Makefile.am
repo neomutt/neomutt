@@ -36,6 +36,8 @@ mutt_SOURCES = $(BUILT_SOURCES) \
 	status.c system.c thread.c charset.c history.c lib.c \
 	muttlib.c editmsg.c
 
+muttbug_SOURCES = muttbug.sh.in
+
 mutt_LDADD = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAP) $(GSSLIBS) $(INTLLIBS) 
 mutt_DEPENDENCIES = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAPDEPS) $(INTLDEPS)
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.2i\n"
-"POT-Creation-Date: 2000-02-01 08:36+0100\n"
+"POT-Creation-Date: 2000-02-08 10:59+0100\n"
 "PO-Revision-Date: 2000-01-30 12:40-0600\n"
 "Last-Translator: Ronny Haryanto <ronny-muttpo@haryan.to>\n"
 "Language-Team: Indonesia <i18n@linux.or.id>\n"
@@ -23,7 +23,7 @@ msgid "Select"
 msgstr "Pilih"
 
 #: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:269 imap/imap_ssl.c:256
-#: pager.c:1479 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
+#: pager.c:1480 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Bantuan"
 
@@ -222,7 +222,7 @@ msgstr "Tidak bisa menampilkan sebuah direktori"
 msgid "Error trying to view file"
 msgstr "Gagal menampilkan file"
 
-#: buffy.c:405
+#: buffy.c:407
 #, c-format
 msgid "New mail in %s."
 msgstr "Surat baru di %s."
@@ -284,7 +284,7 @@ msgstr "mono: parameternya kurang"
 msgid "%s: no such attribute"
 msgstr "%s: tidak ada atribut begitu"
 
-#: color.c:686 hook.c:61 hook.c:69 keymap.c:706
+#: color.c:686 hook.c:61 hook.c:69 keymap.c:697
 msgid "too few arguments"
 msgstr "parameternya kurang"
 
@@ -722,7 +722,7 @@ msgstr ""
 "Kotak surat diobok-obok oleh program lain. Tanda-tanda surat mungkin tidak "
 "tepat."
 
-#: curs_main.c:444
+#: curs_main.c:444 pager.c:1498
 msgid "New mail in this mailbox."
 msgstr "Surat baru di kotak ini."
 
@@ -1401,102 +1401,102 @@ msgstr "%s mati"
 msgid "%s: invalid mailbox type"
 msgstr "%s: jenis kotak surat tidak dikenali"
 
-#: init.c:1094
+#: init.c:1060 init.c:1105
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: nilai tidak betul"
 
-#: init.c:1149
+#: init.c:1160
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: jenis tidak dikenali"
 
-#: init.c:1188
+#: init.c:1199
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Error di %s, baris %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1199
+#: init.c:1210
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: errors di %s"
 
-#: init.c:1209
+#: init.c:1220
 #, c-format
 msgid "source: error at %s"
 msgstr "source: error pada %s"
 
-#: init.c:1214
+#: init.c:1225
 msgid "source: too many arguments"
 msgstr "source: parameter terlalu banyak"
 
-#: init.c:1265
+#: init.c:1276
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: perintah tidak dikenali"
 
-#: init.c:1622
+#: init.c:1633
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Error di baris perintah: %s\n"
 
-#: init.c:1665
+#: init.c:1676
 msgid "unable to determine home directory"
 msgstr "tidak bisa menentukan home direktori"
 
-#: init.c:1673
+#: init.c:1684
 msgid "unable to determine username"
 msgstr "tidak bisa menentukan username"
 
-#: keymap.c:442
+#: keymap.c:433
 msgid "Macro loop detected."
 msgstr "Loop macro terdeteksi."
 
-#: keymap.c:645 keymap.c:653
+#: keymap.c:636 keymap.c:644
 msgid "Key is not bound."
 msgstr "Tombol itu tidak ditentukan untuk apa."
 
-#: keymap.c:657
+#: keymap.c:648
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Tombol itu tidak ditentukan untuk apa. Tekan '%s' utk bantuan."
 
-#: keymap.c:668
+#: keymap.c:659
 msgid "push: too many arguments"
 msgstr "push: parameter terlalu banyak"
 
-#: keymap.c:689
+#: keymap.c:680
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: tidak ada menu begitu"
 
-#: keymap.c:698
+#: keymap.c:689
 msgid "null key sequence"
 msgstr "urutan tombol kosong"
 
-#: keymap.c:780
+#: keymap.c:771
 msgid "bind: too many arguments"
 msgstr "bind: parameter terlalu banyak"
 
-#: keymap.c:795
+#: keymap.c:786
 #, c-format
 msgid "%s: no such function in map"
 msgstr "%s: tidak ada fungsi begitu di map"
 
-#: keymap.c:818
+#: keymap.c:809
 msgid "macro: empty key sequence"
 msgstr "macro: urutan tombol kosong"
 
-#: keymap.c:829
+#: keymap.c:820
 msgid "macro: too many arguments"
 msgstr "macro: parameter terlalu banyak"
 
-#: keymap.c:859
+#: keymap.c:850
 msgid "exec: too few arguments"
 msgstr "exec: parameter terlalu banyak"
 
-#: keymap.c:879
+#: keymap.c:870
 #, c-format
 msgid "%s: no such command"
 msgstr "%s: tidak ada perintah begitu"
@@ -2223,10 +2223,13 @@ msgid "Out of memory!"
 msgstr "Buset, memory abis!"
 
 #: main.c:40
-msgid "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
+#, fuzzy
+msgid ""
+"To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
+"To report a bug, please use the muttbug utility.\n"
 msgstr "Untuk menghubungi developersnya, kirim email ke <mutt-dev@mutt.org>.\n"
 
-#: main.c:43
+#: main.c:44
 msgid ""
 "Copyright (C) 1996-2000 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
@@ -2238,7 +2241,7 @@ msgstr ""
 "Mutt adalah software bebas, anda diperbolehkan utk menyebarluaskannya\n"
 "dengan beberapa persyaratan; baca 'mutt -vv' utk jelasnya.\n"
 
-#: main.c:49
+#: main.c:50
 msgid ""
 "Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
@@ -2289,7 +2292,7 @@ msgstr ""
 "    bersama dengan program ini; jika tidak, silakan bersurat kepada\n"
 "    Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n"
 
-#: main.c:76
+#: main.c:77
 msgid ""
 "\n"
 "SHA1 implementation Copyright (C) 1995-1997 Eric A. Young "
@@ -2306,7 +2309,7 @@ msgid ""
 "    along with this program; if not, write to the program's developers.\n"
 msgstr ""
 
-#: main.c:102
+#: main.c:103
 msgid ""
 "usage: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
 "]\n"
@@ -2364,7 +2367,7 @@ msgstr ""
 "  -Z\t\tbuka folder pertama dg surat baru, langsung keluar jika tidak ada\n"
 "  -h\t\tpesan ini"
 
-#: main.c:154
+#: main.c:155
 msgid ""
 "\n"
 "Compile options:"
@@ -2515,7 +2518,7 @@ msgstr "Cari mundur: "
 msgid "No search pattern."
 msgstr "Tidak ada kriteria pencarian."
 
-#: menu.c:698 pager.c:1849 pager.c:1865 pager.c:1953 pattern.c:1156
+#: menu.c:698 pager.c:1868 pager.c:1884 pager.c:1972 pattern.c:1156
 msgid "Not found."
 msgstr "Tidak ketemu."
 
@@ -2688,31 +2691,31 @@ msgid "Next"
 msgstr "Brkt"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1761 pager.c:1792 pager.c:1821 pager.c:2041
+#: pager.c:1780 pager.c:1811 pager.c:1840 pager.c:2060
 msgid "Bottom of message is shown."
 msgstr "Sudah paling bawah."
 
-#: pager.c:1777 pager.c:1799 pager.c:1810
+#: pager.c:1796 pager.c:1818 pager.c:1829
 msgid "Top of message is shown."
 msgstr "Sudah paling atas."
 
-#: pager.c:1883
+#: pager.c:1902
 msgid "Reverse search: "
 msgstr "Cari mundur: "
 
-#: pager.c:1884
+#: pager.c:1903
 msgid "Search: "
 msgstr "Cari: "
 
-#: pager.c:1979
+#: pager.c:1998
 msgid "Help is currently being shown."
 msgstr "Bantuan sudah ditampilkan."
 
-#: pager.c:2008
+#: pager.c:2027
 msgid "No more quoted text."
 msgstr "Tidak ada lagi teks kutipan."
 
-#: pager.c:2021
+#: pager.c:2040
 msgid "No more unquoted text after quoted text."
 msgstr "Tidak ada lagi teks yang tidak dikutp setelah teks kutipan."
 

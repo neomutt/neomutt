@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.95.3i\n"
-"POT-Creation-Date: 2000-02-01 08:36+0100\n"
+"POT-Creation-Date: 2000-02-08 10:59+0100\n"
 "PO-Revision-Date: 1999-02-13 01:12+0100\n"
 "Last-Translator: Jiøí Pavlovský <pavlovsk@ff.cuni.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
@@ -23,7 +23,7 @@ msgid "Select"
 msgstr "Volba"
 
 #: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:269 imap/imap_ssl.c:256
-#: pager.c:1479 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
+#: pager.c:1480 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Pomoc"
 
@@ -225,7 +225,7 @@ msgstr "Adresáø nelze zobrazit"
 msgid "Error trying to view file"
 msgstr "Chyba pøi zobrazování souboru"
 
-#: buffy.c:405
+#: buffy.c:407
 #, c-format
 msgid "New mail in %s."
 msgstr "V %s je nová po¹ta."
@@ -286,7 +286,7 @@ msgstr "mono: pøíli¹ málo argumentù"
 msgid "%s: no such attribute"
 msgstr "Atribut %s není definován."
 
-#: color.c:686 hook.c:61 hook.c:69 keymap.c:706
+#: color.c:686 hook.c:61 hook.c:69 keymap.c:697
 msgid "too few arguments"
 msgstr "pøíli¹ málo argumentù"
 
@@ -729,7 +729,7 @@ msgstr "Skupina"
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Obsah schránky byl zmìnìn zvenèí. Atributy mohou být nesprávné."
 
-#: curs_main.c:444
+#: curs_main.c:444 pager.c:1498
 msgid "New mail in this mailbox."
 msgstr "V této schránce je nová po¹ta."
 
@@ -1406,102 +1406,102 @@ msgstr "%s není nastaveno"
 msgid "%s: invalid mailbox type"
 msgstr "%s je nesprávný typ schránky."
 
-#: init.c:1094
+#: init.c:1060 init.c:1105
 #, c-format
 msgid "%s: invalid value"
 msgstr "Hodnota %s je nesprávná."
 
-#: init.c:1149
+#: init.c:1160
 #, c-format
 msgid "%s: unknown type"
 msgstr "neznámý typ %s"
 
-#: init.c:1188
+#: init.c:1199
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Chyba v %s na øádku %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1199
+#: init.c:1210
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: chyby v %s"
 
-#: init.c:1209
+#: init.c:1220
 #, c-format
 msgid "source: error at %s"
 msgstr "source: chyba na %s"
 
-#: init.c:1214
+#: init.c:1225
 msgid "source: too many arguments"
 msgstr "source: pøíli¹ mnoho argumentù"
 
-#: init.c:1265
+#: init.c:1276
 #, c-format
 msgid "%s: unknown command"
 msgstr "Pøíkaz %s není znám."
 
-#: init.c:1622
+#: init.c:1633
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Chyba %s na pøíkazovém øádku\n"
 
-#: init.c:1665
+#: init.c:1676
 msgid "unable to determine home directory"
 msgstr "domovský adresáø nelze urèit"
 
-#: init.c:1673
+#: init.c:1684
 msgid "unable to determine username"
 msgstr "u¾ivatelské jméno nelze urèit"
 
-#: keymap.c:442
+#: keymap.c:433
 msgid "Macro loop detected."
 msgstr "Detekována smyèka v makru."
 
-#: keymap.c:645 keymap.c:653
+#: keymap.c:636 keymap.c:644
 msgid "Key is not bound."
 msgstr "Klávesa není svázána s ¾ádnou funkcí."
 
-#: keymap.c:657
+#: keymap.c:648
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Klávesa není svázána. Stisknìte '%s' pro nápovìdu."
 
-#: keymap.c:668
+#: keymap.c:659
 msgid "push: too many arguments"
 msgstr "push: pøíli¹ mnoho argumentù"
 
-#: keymap.c:689
+#: keymap.c:680
 #, c-format
 msgid "%s: no such menu"
 msgstr "menu %s neexistuje"
 
-#: keymap.c:698
+#: keymap.c:689
 msgid "null key sequence"
 msgstr "prázdný sled kláves"
 
-#: keymap.c:780
+#: keymap.c:771
 msgid "bind: too many arguments"
 msgstr "bind: pøíli¹ mnoho argumentù"
 
-#: keymap.c:795
+#: keymap.c:786
 #, c-format
 msgid "%s: no such function in map"
 msgstr "funkce %s není v mapì"
 
-#: keymap.c:818
+#: keymap.c:809
 msgid "macro: empty key sequence"
 msgstr "macro: sled kláves je prázdný"
 
-#: keymap.c:829
+#: keymap.c:820
 msgid "macro: too many arguments"
 msgstr "macro: pøíli¹ mnoho argumentù"
 
-#: keymap.c:859
+#: keymap.c:850
 msgid "exec: too few arguments"
 msgstr "exec: pøíli¹ málo argumentù"
 
-#: keymap.c:879
+#: keymap.c:870
 #, c-format
 msgid "%s: no such command"
 msgstr "pøíkaz %s neexistuje"
@@ -2242,13 +2242,16 @@ msgid "Out of memory!"
 msgstr "Pamì» vyèerpána!"
 
 #: main.c:40
-msgid "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
+#, fuzzy
+msgid ""
+"To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
+"To report a bug, please use the muttbug utility.\n"
 msgstr ""
 "Vývojáøe programu mù¾ete kontaktovat na adrese <mutt-dev@mutt.org> "
 "(anglicky).\n"
 "Pøipomínky k pøekladu zasílejte na adresu <cs@li.org> (èesky).\n"
 
-#: main.c:43
+#: main.c:44
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2000 Michael R. Elkins and others.\n"
@@ -2263,7 +2266,7 @@ msgstr ""
 "vítáno, musíte ov¹em dodr¾et urèitá pravidla; dal¹í informace\n"
 "získáte pøíkazem `mutt -vv'.\n"
 
-#: main.c:49
+#: main.c:50
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
@@ -2317,7 +2320,7 @@ msgstr ""
 "675 Mass Ave, Cambridge, MA 02139, USA.\n"
 "\n"
 
-#: main.c:76
+#: main.c:77
 #, fuzzy
 msgid ""
 "\n"
@@ -2347,7 +2350,7 @@ msgstr ""
 "    Kopie podmínek ¹íøení mìla být dodána spolu s tímto programem; pokud se\n"
 "    tak nestalo, napi¹te o ni vývojáøùm programu.\n"
 
-#: main.c:102
+#: main.c:103
 msgid ""
 "usage: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
 "]\n"
@@ -2408,7 +2411,7 @@ msgstr ""
 "    \t\tnení, pak skonèí\n"
 "  -h\t\tvypí¹e tuto nápovìdu"
 
-#: main.c:154
+#: main.c:155
 msgid ""
 "\n"
 "Compile options:"
@@ -2559,7 +2562,7 @@ msgstr "Vyhledat obráceným smìrem: "
 msgid "No search pattern."
 msgstr "Není ¾ádný vzor k vyhledání."
 
-#: menu.c:698 pager.c:1849 pager.c:1865 pager.c:1953 pattern.c:1156
+#: menu.c:698 pager.c:1868 pager.c:1884 pager.c:1972 pattern.c:1156
 msgid "Not found."
 msgstr "Nenalezeno."
 
@@ -2737,31 +2740,31 @@ msgid "Next"
 msgstr "Dal¹í"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1761 pager.c:1792 pager.c:1821 pager.c:2041
+#: pager.c:1780 pager.c:1811 pager.c:1840 pager.c:2060
 msgid "Bottom of message is shown."
 msgstr "Konec zprávy je zobrazen."
 
-#: pager.c:1777 pager.c:1799 pager.c:1810
+#: pager.c:1796 pager.c:1818 pager.c:1829
 msgid "Top of message is shown."
 msgstr "Zaèátek zprávy je zobrazen."
 
-#: pager.c:1883
+#: pager.c:1902
 msgid "Reverse search: "
 msgstr "Hledat opaèným smìrem: "
 
-#: pager.c:1884
+#: pager.c:1903
 msgid "Search: "
 msgstr "Hledat: "
 
-#: pager.c:1979
+#: pager.c:1998
 msgid "Help is currently being shown."
 msgstr "Pomoc je právì zobrazena."
 
-#: pager.c:2008
+#: pager.c:2027
 msgid "No more quoted text."
 msgstr "®ádný dal¹í citovaný text."
 
-#: pager.c:2021
+#: pager.c:2040
 msgid "No more unquoted text after quoted text."
 msgstr "Za citovaným textem ji¾ nenásleduje ¾ádný bì¾ný text."
 

@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt-1.1.2i\n"
-"POT-Creation-Date: 2000-02-01 08:36+0100\n"
+"POT-Creation-Date: 2000-02-08 10:59+0100\n"
 "PO-Revision-Date: 2000-01-19 18:30+0200\n"
 "Last-Translator: Pawe³ Dziekoñski <pdziekonski@mml.ch.pwr.wroc.pl>\n"
 "Language-Team: POLISH <pl@li.org>\n"
@@ -27,7 +27,7 @@ msgid "Select"
 msgstr "Wybierz"
 
 #: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:269 imap/imap_ssl.c:256
-#: pager.c:1479 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
+#: pager.c:1480 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Pomoc"
 
@@ -229,7 +229,7 @@ msgstr "Nie mo¿na przegl±daæ tego katalogu"
 msgid "Error trying to view file"
 msgstr "B³±d podczas próby przegl±dania pliku"
 
-#: buffy.c:405
+#: buffy.c:407
 #, c-format
 msgid "New mail in %s."
 msgstr "W skrzynce %s pojawi³a siê nowa poczta."
@@ -290,7 +290,7 @@ msgstr "mono: za ma³o argumentów"
 msgid "%s: no such attribute"
 msgstr "%s: nie ma takiego atrybutu"
 
-#: color.c:686 hook.c:61 hook.c:69 keymap.c:706
+#: color.c:686 hook.c:61 hook.c:69 keymap.c:697
 msgid "too few arguments"
 msgstr "za ma³o argumentów"
 
@@ -726,7 +726,7 @@ msgstr "Grupie"
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Skrzynka zosta³a zmodyfikowana z zewn±trz. Flagi mog± byæ nieaktualne."
 
-#: curs_main.c:444
+#: curs_main.c:444 pager.c:1498
 msgid "New mail in this mailbox."
 msgstr "Uwaga - w bie¿±cej skrzynce pojawi³a siê nowa poczta!"
 
@@ -1405,102 +1405,102 @@ msgstr "%s nie jest ustawiony"
 msgid "%s: invalid mailbox type"
 msgstr "%s: nieprawid³owy typ skrzynki"
 
-#: init.c:1094
+#: init.c:1060 init.c:1105
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: nieprawid³owa warto¶æ"
 
-#: init.c:1149
+#: init.c:1160
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: nieprawid³owy typ"
 
-#: init.c:1188
+#: init.c:1199
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "B³±d w %s, linia %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1199
+#: init.c:1210
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: b³êdy w %s"
 
-#: init.c:1209
+#: init.c:1220
 #, c-format
 msgid "source: error at %s"
 msgstr "source: b³êdy w %s"
 
-#: init.c:1214
+#: init.c:1225
 msgid "source: too many arguments"
 msgstr "source: zbyt wiele argumentów"
 
-#: init.c:1265
+#: init.c:1276
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: nieznane polecenie"
 
-#: init.c:1622
+#: init.c:1633
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "B³±d w poleceniu: %s\n"
 
-#: init.c:1665
+#: init.c:1676
 msgid "unable to determine home directory"
 msgstr "nie mo¿na ustaliæ po³o¿enia katalogu domowego"
 
-#: init.c:1673
+#: init.c:1684
 msgid "unable to determine username"
 msgstr "nie mo¿na ustaliæ nazwy u¿ytkownika"
 
-#: keymap.c:442
+#: keymap.c:433
 msgid "Macro loop detected."
 msgstr "Wykryto pêtlê w makrze."
 
-#: keymap.c:645 keymap.c:653
+#: keymap.c:636 keymap.c:644
 msgid "Key is not bound."
 msgstr "Klawisz nie zosta³ przypisany."
 
-#: keymap.c:657
+#: keymap.c:648
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Klawisz nie zosta³ przypisany. Aby uzyskaæ pomoc - przyci¶nij '%s'."
 
-#: keymap.c:668
+#: keymap.c:659
 msgid "push: too many arguments"
 msgstr "push: zbyt wiele argumentów"
 
-#: keymap.c:689
+#: keymap.c:680
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: nie ma takiego menu"
 
-#: keymap.c:698
+#: keymap.c:689
 msgid "null key sequence"
 msgstr "pusta sekwencja klawiszy"
 
-#: keymap.c:780
+#: keymap.c:771
 msgid "bind: too many arguments"
 msgstr "bind: zbyt wiele argumentów"
 
-#: keymap.c:795
+#: keymap.c:786
 #, c-format
 msgid "%s: no such function in map"
 msgstr "%s: nie ma takiej funkcji"
 
-#: keymap.c:818
+#: keymap.c:809
 msgid "macro: empty key sequence"
 msgstr "macro: pusta sekwencja klawiszy"
 
-#: keymap.c:829
+#: keymap.c:820
 msgid "macro: too many arguments"
 msgstr "macro: zbyt wiele argumentów"
 
-#: keymap.c:859
+#: keymap.c:850
 msgid "exec: too few arguments"
 msgstr "exec: zbyt ma³o argumentów"
 
-#: keymap.c:879
+#: keymap.c:870
 #, c-format
 msgid "%s: no such command"
 msgstr "%s: nie ma takiego polecenia"
@@ -2234,13 +2234,16 @@ msgid "Out of memory!"
 msgstr "Brak pamiêci!"
 
 #: main.c:40
-msgid "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
+#, fuzzy
+msgid ""
+"To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
+"To report a bug, please use the muttbug utility.\n"
 msgstr ""
 "Aby powiadomiæ autorów, proszê pisaæ na <mutt-dev@mutt.org>.\n"
 "T³umaczenie na jêzyk polski: Sergiusz Paw³owicz <ser@hyperreal.art.pl>\n"
 "i Pawe³ Dziekoñski <P.Dziekonski@mml.ch.pwr.wroc.pl>\n"
 
-#: main.c:43
+#: main.c:44
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2000 Michael R. Elkins and others.\n"
@@ -2255,7 +2258,7 @@ msgstr ""
 "jego redystrybucji pod pewnymi warunkami, szczegó³y poznasz pisz±c 'mutt "
 "-vv'.\n"
 
-#: main.c:49
+#: main.c:50
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
@@ -2307,7 +2310,7 @@ msgstr ""
 "Inc.,\n"
 "   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.\n"
 
-#: main.c:76
+#: main.c:77
 #, fuzzy
 msgid ""
 "\n"
@@ -2339,7 +2342,7 @@ msgstr ""
 "    Powiniene¶ dostaæ kopiê licencji dystrybucyjnej wraz z programem,\n"
 "    je¶li nie, napisz do jego twórców.\n"
 
-#: main.c:102
+#: main.c:103
 msgid ""
 "usage: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
 "]\n"
@@ -2398,7 +2401,7 @@ msgstr ""
 "  -Z\t\totwórz pierwszy folder z nowym listem i wyjd¼ je¶li brak nowych\n"
 "  -h\t\tten tekst"
 
-#: main.c:154
+#: main.c:155
 msgid ""
 "\n"
 "Compile options:"
@@ -2550,7 +2553,7 @@ msgstr "Szukaj frazy w przeciwnym kierunku: "
 msgid "No search pattern."
 msgstr "Nie ustalono wzorca poszukiwañ."
 
-#: menu.c:698 pager.c:1849 pager.c:1865 pager.c:1953 pattern.c:1156
+#: menu.c:698 pager.c:1868 pager.c:1884 pager.c:1972 pattern.c:1156
 msgid "Not found."
 msgstr "Nic nie znaleziono."
 
@@ -2724,31 +2727,31 @@ msgid "Next"
 msgstr "Nastêpny"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1761 pager.c:1792 pager.c:1821 pager.c:2041
+#: pager.c:1780 pager.c:1811 pager.c:1840 pager.c:2060
 msgid "Bottom of message is shown."
 msgstr "Pokazany jest koniec listu."
 
-#: pager.c:1777 pager.c:1799 pager.c:1810
+#: pager.c:1796 pager.c:1818 pager.c:1829
 msgid "Top of message is shown."
 msgstr "Pokazany jest pocz±tek listu."
 
-#: pager.c:1883
+#: pager.c:1902
 msgid "Reverse search: "
 msgstr "Szukaj w przeciwnym kierunku: "
 
-#: pager.c:1884
+#: pager.c:1903
 msgid "Search: "
 msgstr "Szukaj: "
 
-#: pager.c:1979
+#: pager.c:1998
 msgid "Help is currently being shown."
 msgstr "Pomoc jest w³a¶nie wy¶wietlana."
 
-#: pager.c:2008
+#: pager.c:2027
 msgid "No more quoted text."
 msgstr "Nie ma wiêcej cytowanego tekstu."
 
-#: pager.c:2021
+#: pager.c:2040
 msgid "No more unquoted text after quoted text."
 msgstr "Brak tekstu za cytowanym fragmentem."
 

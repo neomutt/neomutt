@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1\n"
-"POT-Creation-Date: 2000-02-07 22:41+0000\n"
+"POT-Creation-Date: 2000-02-08 10:59+0100\n"
 "PO-Revision-Date: 2000-02-07 22:44+00:00\n"
 "Last-Translator: Edmund GRIMLEY EVANS <edmundo@rano.org>\n"
 "Language-Team: eo <eo@li.org>\n"
@@ -22,7 +22,7 @@ msgid "Select"
 msgstr "Elekto"
 
 #: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:269 imap/imap_ssl.c:256
-#: pager.c:1479 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
+#: pager.c:1480 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Helpo"
 
@@ -221,7 +221,7 @@ msgstr "Ne povas rigardi dosierujon"
 msgid "Error trying to view file"
 msgstr "Eraro dum vidigo de dosiero"
 
-#: buffy.c:405
+#: buffy.c:407
 #, c-format
 msgid "New mail in %s."
 msgstr "Nova mesaøo en %s."
@@ -282,7 +282,7 @@ msgstr "mono: nesufiæe da argumentoj"
 msgid "%s: no such attribute"
 msgstr "%s: nekonata trajto"
 
-#: color.c:686 hook.c:61 hook.c:69 keymap.c:706
+#: color.c:686 hook.c:61 hook.c:69 keymap.c:697
 msgid "too few arguments"
 msgstr "nesufiæe da argumentoj"
 
@@ -718,7 +718,7 @@ msgstr "Respondi al grupo"
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Poþtfako estis modifita de ekstere. Flagoj povas esti maløustaj."
 
-#: curs_main.c:444
+#: curs_main.c:444 pager.c:1498
 msgid "New mail in this mailbox."
 msgstr "Nova mesaøo en æi tiu poþtfako"
 
@@ -1387,102 +1387,102 @@ msgstr "%s estas malþaltita"
 msgid "%s: invalid mailbox type"
 msgstr "%s: nevalida poþtfakospeco"
 
-#: init.c:1094
+#: init.c:1060 init.c:1105
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: nevalida valoro"
 
-#: init.c:1149
+#: init.c:1160
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: nekonata speco"
 
-#: init.c:1188
+#: init.c:1199
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Eraro en %s, linio %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1199
+#: init.c:1210
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: eraroj en %s"
 
-#: init.c:1209
+#: init.c:1220
 #, c-format
 msgid "source: error at %s"
 msgstr "source: eraro æe %s"
 
-#: init.c:1214
+#: init.c:1225
 msgid "source: too many arguments"
 msgstr "source: tro da argumentoj"
 
-#: init.c:1265
+#: init.c:1276
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: nekonata komando"
 
-#: init.c:1622
+#: init.c:1633
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Eraro en komandlinio: %s\n"
 
-#: init.c:1665
+#: init.c:1676
 msgid "unable to determine home directory"
 msgstr "ne povas eltrovi la hejmdosierujon"
 
-#: init.c:1673
+#: init.c:1684
 msgid "unable to determine username"
 msgstr "ne povas eltrovi la uzantonomo"
 
-#: keymap.c:442
+#: keymap.c:433
 msgid "Macro loop detected."
 msgstr "Cirkla makroo trovita."
 
-#: keymap.c:645 keymap.c:653
+#: keymap.c:636 keymap.c:644
 msgid "Key is not bound."
 msgstr "Klavo ne estas difinita."
 
-#: keymap.c:657
+#: keymap.c:648
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Klavo ne estas difinita. Premu '%s' por helpo."
 
-#: keymap.c:668
+#: keymap.c:659
 msgid "push: too many arguments"
 msgstr "push: tro da argumentoj"
 
-#: keymap.c:689
+#: keymap.c:680
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: nekonata menuo"
 
-#: keymap.c:698
+#: keymap.c:689
 msgid "null key sequence"
 msgstr "malplena klavoserio"
 
-#: keymap.c:780
+#: keymap.c:771
 msgid "bind: too many arguments"
 msgstr "bind: tro da argumentoj"
 
-#: keymap.c:795
+#: keymap.c:786
 #, c-format
 msgid "%s: no such function in map"
 msgstr "%s: nekonata funkcio"
 
-#: keymap.c:818
+#: keymap.c:809
 msgid "macro: empty key sequence"
 msgstr "macro: malplena klavoserio"
 
-#: keymap.c:829
+#: keymap.c:820
 msgid "macro: too many arguments"
 msgstr "macro: tro da argumentoj"
 
-#: keymap.c:859
+#: keymap.c:850
 msgid "exec: too few arguments"
 msgstr "exec: nesufiæe da argumentoj"
 
-#: keymap.c:879
+#: keymap.c:870
 #, c-format
 msgid "%s: no such command"
 msgstr "%s: nekonata komando"
@@ -2227,7 +2227,7 @@ msgstr ""
 "Mutt estas libera programo, kaj vi rajtas pludoni kopiojn\n"
 "sub difinitaj kondiæoj; tajpu 'mutt -v' por detaloj.\n"
 
-#: main.c:49
+#: main.c:50
 msgid ""
 "Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
@@ -2277,7 +2277,7 @@ msgstr ""
 "    GNU kun æi tiu programo; se ne, skribu al Free Software Foundation,\n"
 "    Inc., 675 Mass Ave, Cambridge, MA 02139, Usono.\n"
 
-#: main.c:76
+#: main.c:77
 msgid ""
 "\n"
 "SHA1 implementation Copyright (C) 1995-1997 Eric A. Young "
@@ -2308,7 +2308,7 @@ msgstr ""
 "    Vi devus esti ricevinta kopion de la kompletaj disdonkondiæoj kun\n"
 "    æi tiu programo; se ne, skribu al la kreantoj de la programo.\n"
 
-#: main.c:102
+#: main.c:103
 msgid ""
 "usage: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
 "]\n"
@@ -2365,7 +2365,7 @@ msgstr ""
 "  -Z\t\tmalfermi la unuan poþtfakon kun nova mesaøo; eliri tuj, se mankas\n"
 "  -h\t\tdoni æi tiun mesaøon"
 
-#: main.c:154
+#: main.c:155
 msgid ""
 "\n"
 "Compile options:"
@@ -2516,7 +2516,7 @@ msgstr "Inversa seræo pri: "
 msgid "No search pattern."
 msgstr "Mankas seræþablono."
 
-#: menu.c:698 pager.c:1849 pager.c:1865 pager.c:1953 pattern.c:1156
+#: menu.c:698 pager.c:1868 pager.c:1884 pager.c:1972 pattern.c:1156
 msgid "Not found."
 msgstr "Ne trovita."
 
@@ -2689,31 +2689,31 @@ msgid "Next"
 msgstr "Sekva"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1761 pager.c:1792 pager.c:1821 pager.c:2041
+#: pager.c:1780 pager.c:1811 pager.c:1840 pager.c:2060
 msgid "Bottom of message is shown."
 msgstr "Fino de mesaøo estas montrita."
 
-#: pager.c:1777 pager.c:1799 pager.c:1810
+#: pager.c:1796 pager.c:1818 pager.c:1829
 msgid "Top of message is shown."
 msgstr "Vi estas æe la komenco de la mesaøo"
 
-#: pager.c:1883
+#: pager.c:1902
 msgid "Reverse search: "
 msgstr "Inversa seræo: "
 
-#: pager.c:1884
+#: pager.c:1903
 msgid "Search: "
 msgstr "Seræo: "
 
-#: pager.c:1979
+#: pager.c:1998
 msgid "Help is currently being shown."
 msgstr "Helpo estas nun montrata."
 
-#: pager.c:2008
+#: pager.c:2027
 msgid "No more quoted text."
 msgstr "Ne plu da citita teksto."
 
-#: pager.c:2021
+#: pager.c:2040
 msgid "No more unquoted text after quoted text."
 msgstr "Ne plu da necitita teksto post citita teksto."
 

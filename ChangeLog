@@ -1,3 +1,310 @@
+Tue Feb  8 20:34:51 2000  Thomas Roessler  <roessler@guug.de>
+
+	* build-release:
+	Don't build US releases.  RedHat and Caldera don't object, Debian
+	uses the international version anyways, and SuSE (1) sits in Germany
+	and (2) doesn't react.
+
+Tue Feb  8 20:34:51 2000  Thomas Roessler  <roessler@guug.de>
+
+	* build-release:
+	Don't build US releases.  RedHat and Caldera don't object, Debian
+	uses the international version anyways, and SuSE (1) sits in Germany
+	and (2) doesn't react.
+
+	* contrib/pgp2.rc: add a comment concerning +encrypttoself.
+
+	* pager.c, keymap.c: Avoid IMAP timeouts when viewing messages.  From
+	Tommi.Komulainen@iki.fi.
+
+	* po/eo.po: Small fix from Edmund.
+
+Mon Feb  7 19:16:41 2000  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.head: Add a note on my_hdr when used from send-hook.
+
+	* muttbug.sh.in:
+	Remove another Debian reference from the severity level descriptions.
+
+	* muttbug.sh.in: More fixes.
+
+	* muttlib.c, protos.h, rfc2047.c, rfc2231.c: Fix bug#22.
+
+	* muttbug.sh.in: Various fixes from Roland Rosenfeld.
+
+	* buffy.c: Fix a NULL pointer deference.
+
+Thu Feb  3 13:41:38 2000  Thomas Roessler  <roessler@guug.de>
+
+	* acconfig.h, configure.in, muttbug.sh.in:
+	Add debugger support to muttbug.
+
+	* init.c: Add a comment concerning muttbug.sh.
+
+	* muttbug.sh.in:
+	More changes to the bug report script.  Most of them were suggest by
+	Roland Rosenfeld.
+
+	* po/de.po: Minor fixes from Roland Rosenfeld.
+
+	* muttbug.sh.in: Add some Debian specifics.
+
+	* muttbug.sh.in: Strip comments from included configuration files.
+
+	* muttbug.sh.in: another minor fix.
+
+	* muttbug.sh.in: Minor fixes.
+
+	* Makefile.am, configure.in, main.c, muttbug.sh.in:
+	Add muttbug, the bug reporting utility.  (Yes, we are about to get a
+	real bug-tracking system, see http://bugs.guug.de/.)
+
+	* doc/manual.sgml.head: Documentation fix.
+
+Wed Feb  2 10:53:28 2000  Thomas Roessler  <roessler@guug.de>
+
+	* init.c: Make the parsing of integers more
+
+	* lib.c: Use O_NOFOLLOW when it's there, and needed.
+
+Tue Feb  1 18:47:49 2000  Thomas Roessler  <roessler@guug.de>
+
+	* main.c: Cosmetics.
+
+	* doc/mutt.man, doc/muttrc.man.head:
+	Cosmetics.  Additionally, remove the y2k compliance notice from the
+	manual page.
+
+	* makedoc.c:
+	Change the font used for typesetting "tables", so we get usable
+	output when roffing the muttrc (5) manual page for a postscript
+	printer.
+
+	* po/zh_TW.Big5.po, po/sk.po, po/sv.po, po/uk.po, po/pl.po, po/ru.po, po/ko.po, po/nl.po, po/gl.po, po/id.po, po/it.po, po/el.po, po/eo.po, po/es.po, po/fr.po, po/cs.po, po/de.po:
+	Include various po-file updaes, and make update-po.
+
+	* po/Makefile.in.in, po/POTFILES.in, Makefile.am:
+	Build fix for the po/ subdirectory, from Edmund G. Evans.
+
+	* po/eo.po: New Esperanto translation.
+
+	* init.h: Add a bit more documentation on $recall.
+
+Sun Jan 30 13:35:22 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/sv.po, po/uk.po, po/zh_TW.Big5.po, po/ru.po, po/sk.po, po/nl.po, po/pl.po, po/id.po, po/it.po, po/ko.po, po/es.po, po/fr.po, po/gl.po, po/eo.po, po/POTFILES.in, po/cs.po, po/de.po, po/el.po, po/Makefile.in.in, configure.in:
+	Try to fix the build process in the po/ subdirectory.
+
+	* configure.in: Add some languages to ALL_LINGUAS.
+
+	* po/gl.po, po/sv.po: Adding translations from stable to unstable.
+
+	* po/ru.po, po/zh_TW.Big5.po, po/fr.po, po/id.po, po/ko.po, po/pl.po, po/de.po, po/el.po, po/eo.po:
+	make update-po; including new revisions submitted so far.
+
+Sat Jan 29 08:03:48 2000  Thomas Roessler  <roessler@guug.de>
+
+	* init.h: Another change to attach_format.
+
+	* pgp.c, recvattach.c, send.c, sendlib.c, OPS, compose.c, functions.h, init.h, mutt.h, parse.c:
+	Michael Elkins' content-disposition patch, with some small changes.
+
+Fri Jan 28 21:32:47 2000  Thomas Roessler  <roessler@guug.de>
+
+	* init.h:
+	Make the documentation for rfc2047_parameters comprehensible to the
+	end user.
+
+	* init.h: Documentation fix.
+
+	* rfc2231.c: RFC2231 support should understand utf-8.
+
+Thu Jan 27 09:57:09 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/imap_ssl.c, README.SSL, init.h, mutt.h:
+	Add options to disallow individual SSL protocols.  From Jeremy Katz
+	<katzj@linuxpower.org>.
+
+Tue Jan 25 21:21:10 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/BUGS, imap/README, imap/TODO, imap/command.c, imap/imap.c, imap/message.c:
+	Brendan Cully's latest changes:
+
+	   Here is a patch to add some support for read-only IMAP folders.
+	   This is most useful if you have multiple copies of mutt open, but
+	   it also allows you to open a folder read-only and not have to
+	   worry about flags getting changed. Toggling read-only still
+	   doesn't work correctly - you may lose your 'N' flags if you open
+	   a folder normally and switch to read-only.
+
+	  I've also decided to try using UID FETCH, although I'm not sure if
+	  older IMAP servers support it, but then again I'm not sure if
+	  anyone's using any really old IMAP servers. The main advantage is
+	  in the case of multiple clients, where one client is deleting
+	  messages and the other isn't getting notification. I'm
+	  experiencing that on my UW-IMAP 4.6 server. On the other hand,
+	  this server seems to have all sorts of terrible problems with this
+	  scenario, so I'm not sure how well the code functions. It's a
+	  two-line change so far, it's experimental, and it's the only IMAP
+	  code in an #if 0 block...
+
+	* doc/Makefile.in:
+	Make the build process work when sgmltools aren't present.  From
+	Lawrence Greenfield <leg+@andrew.cmu.edu>.
+
+	* imap/auth.c:
+	Fix GSSAPI support.  From Lawrence Greenfield <leg+@andrew.cmu.edu>.
+
+Mon Jan 24 13:17:17 2000  Thomas Roessler  <roessler@guug.de>
+
+	* dotlock.h, mx.c, dotlock.c: Locking fix.
+
+	* enter.c: patch-1.1.2.mg.autocomplete.1 - from Marius Gedminas
+	<mgedmin@pub.osf.lt>.
+
+	* Makefile.am: small build process fix.
+
+	* m4/Makefile.am.in:
+	Patch from Lars Hecking in order to build mutt cleanly under Solaris
+	2.6.
+
+	* doc/manual.sgml.head:
+	More list-reply documentation from Mikko.Hanninen@iki.fi.
+
+	* init.h, mutt.h, rfc822.c:
+	Removing rewrite_uucp.  There were too many objections against it.
+
+	* init.h, mutt.h, rfc822.c: Adding the $rewrite_uucp option.
+
+	* po/ru.po: update.
+
+	* po/eo.po, configure.in:
+	Adding the Esperanto translation to unstable.  From Edmund GRIMLEY
+	EVANS <edmundo@rano.org>.
+
+Fri Jan 21 09:28:56 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/el.po: New greek translation.
+
+	* po/id.po: updated translation.
+
+Thu Jan 20 17:35:41 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/pl.po: Updated polish translation.
+
+	* contrib/Makefile.in, Makefile.am:
+	"make distclean" fixes from Marco d'Itri.
+
+	* compose.c: Typo noted by edmundo@rano.org.
+
+	* po/ko.po: Update.
+
+	* send.c: Honor mail-followup-to when doing a list-reply.  From
+	Mikko.Hanninen@iki.fi.
+
+Wed Jan 19 14:59:01 2000  Thomas Roessler  <roessler@guug.de>
+
+	* commands.c:
+	Don't move the index cursor after a failed attempt to save a
+	message.  From Joe Orton <joe@orton.demon.co.uk>.
+
+	* po/de.po: New German translation for unstable, from Roland Rosenfeld.
+
+	* pgp.c: Fiksing a speling mysdeik nodet by Michael Sobolev. ;-)
+
+	* NEWS: Add a notice on display-toggle-weed.
+
+	* doc/manual.sgml.head, doc/manual.sgml.tail, OPS, functions.h:
+	Rename display-headers to display-toggle-weed.
+
+Tue Jan 18 22:46:18 2000  Thomas Roessler  <roessler@guug.de>
+
+	* mx.c: mx_open_mailbox_append: Add an error message and remove a file
+	descriptor leak when we can open, but can't lock an MMDF or MBOX
+	folder.
+
+	* po/zh_TW.Big5.po, po/uk.po, po/sv.po, po/sk.po, po/ru.po, po/pt_BR.po, po/pl.po, po/nl.po, po/ko.po, po/it.po, po/gl.po, po/id.po, po/fr.po, po/eo.po, po/es.po, po/el.po, po/de.po, po/cs.po, reldate.h, VERSION, ChangeLog:
+	automatic post-release commit for mutt-1.0.1
+
+	* contrib/Makefile.in:
+	Respect $DESTDIR in contrib/Makefile.  From Hao Li
+	<hli@rainfinity.com>.
+
+	* imap/imap.c, imap/message.c:
+	Fix use of confirmcreate with IMAP.  A patch for this was suggested
+	by Brian R. Gaeke.
+
+	* init.h, alias.c:
+	Documentation fix about gecos_mask.  From Will Fiveash.
+
+Sun Jan 16 14:44:12 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/eo.po: new esperanto translation from edmundo@rano.org.
+
+	* editmsg.c:
+	Use Visual, not Editor, for editing messages.  Noted by Marius
+	Gedminas <mgedmin@pub.osf.lt>.
+
+	* rfc822.c:
+	quote-related fix to the RFC822 parser.  From Edmund Grimley Evans.
+
+Wed Jan 12 09:20:34 2000  Thomas Roessler  <roessler@guug.de>
+
+	* init.c:
+	It was impossible to unset a string.  If you did "unset realname" it
+	would just print out the value of the string.  Attached is the fix.
+
+Mon Jan 10 21:34:06 2000  Thomas Roessler  <roessler@guug.de>
+
+	* reap.pl: Handle #ifndef in reap.pl.
+
+	* configure.in:
+	Recognize differently-named gccs as such, and enable warnings.  From
+	"Andrew W. Nosenko" <awn@bcs.zp.ua>.
+
+	* pgp.c:
+	To compile on SunOs 4.1.4, the order of two includes needs to be
+	switched (<sys/resource.h> contains a struct timeval.)
+
+	From Mark Seiden <mis@seiden.com>.
+
+	* doc/manual.sgml.head, pgplib.h, postpone.c, recvattach.c, recvcmd.c, remailer.c, remailer.h, rfc2231.c, rfc2231.h, attach.c, charset.c, charset.h, dotlock.h, editmsg.c, extlib.c, gnupgparse.c, lib.c, lib.h, makedoc.c, mh.c, muttlib.c, mx.c, mx.h, pgp.h:
+	More copyright cosmetics - noted by Martin Michlmayr <tbm@cyrius.com>.
+
+	* lib.c: Use safe_free() instead of free() with mutt_str_replace -
+	equivalent, but nicer.
+
+	* parse.c, pgpkey.c, postpone.c, protos.h, recvattach.c, rfc1524.c, rfc2047.c, send.c, sendlib.c, attach.c, browser.c, compose.c, curs_main.c, edit.c, history.c, init.c, lib.c, main.c, menu.c, mh.c, muttlib.c:
+	Add (and use) a function mutt_str_replace, which essentially
+	replaces the sequence:
+
+		safe_free (&s);
+		s = safe_strdup (t);
+
+	* build-release, gnupgparse.c:
+	Fix PGP uid parsing.  Noted by Edmund GRIMLEY EVANS
+	<edmundo@rano.demon.co.uk>.
+
+Sat Jan  8 10:31:28 2000  Thomas Roessler  <roessler@guug.de>
+
+	* VERSION, reldate.h, ChangeLog:
+	automatic post-release commit for mutt-1.1.2
+
+	* keymap.c:
+	Fix a macro-related segmentation fault in stable.   From Byrial
+	Jensen.
+
+	* keymap.c:
+	Fix a macro-related segmentation fault.  From Byrial Jensen.
+
+	* OPS, commands.c, compose.c, curs_main.c, functions.h, protos.h, recvattach.c:
+	Unified edit-type function for the index, compose, and
+	receive-attachment menus.  Mostly by Michael Elkins.
+
+	* curs_lib.c: patch-1.1.1.me.endwin.1, from Michael Elkins.
+
+	* mutt.h, parse.c, init.h: Undo Michaels "pgpsearchext" patch.
+
 Sat Jan  8 09:40:02 2000  Thomas Roessler  <roessler@guug.de>
 
 	* keymap.c:
