@@ -1,3 +1,7 @@
+2003-12-03 08:19:11  Alain Bench  <veronatif@free.fr>  (roessler)
+
+	* pager.c: Fix 1716.
+
 2003-11-15 09:32:30  Velko Hristov  <hristov@informatik.hu-berlin.de>  (roessler)
 
 	* po/bg.po: updat
