@@ -299,38 +299,19 @@ sub list_certs () {
             die "Couldn't open $certfile: $!";
         local $/;
         $cert = <F>;
+	close F;
     }
 
     my $subject_in;
     my $issuer_in;
     my $date1_in;
     my $date2_in;
-    my $cert_tmp_list = newfile("cert_tmp.list","temp");
-    
-    while (1) {
-	
-        open(TMP_FILE, ">$cert_tmp_list")
-            or die "Couldn't open $cert_tmp_list: $!";
-        print TMP_FILE $cert;
-        close TMP_FILE;        
 
-        my $format = -B $certfile ? 'DER' : 'PEM'; 
-        my $cmd = "$opensslbin x509 -subject -issuer -dates -noout -in $cert_tmp_list -inform $format";
-        ($subject_in, $issuer_in, $date1_in, $date2_in) = `$cmd`;
-        $? and die "'$cmd' returned $?";
+    my $format = -B $certfile ? 'DER' : 'PEM'; 
+    my $cmd = "$opensslbin x509 -subject -issuer -dates -noout -in $certfile -inform $format";
+    ($subject_in, $issuer_in, $date1_in, $date2_in) = `$cmd`;
+    $? and print "ERROR: '$cmd' returned $?\n\n" and next;
 
-        last if $subject_in =~ /email\=/i;
-        last if $subject_in =~ /cn\=recipients/i;
-
-        my $index = index $cert, '-----END CERTIFICATE-----';
-
-        $index > 0 
-            or die "Certificate $certfile cannot be parsed";
-
-        $index += length '-----END CERTIFICATE-----';
-
-        $cert = substr $cert, $index;
-    }
 
     my @subject = split(/\//, $subject_in);
     while(@subject) {
@@ -361,8 +342,8 @@ sub list_certs () {
     -e "$private_keys_path/$fields[1]" and
       print "$tab - Matching private key installed -\n";
 
-    my $format = -B "$certificates_path/$fields[1]" ? 'DER' : 'PEM'; 
-    my $cmd = "$opensslbin x509 -purpose -noout -in $cert_tmp_list -inform $format";
+    $format = -B "$certificates_path/$fields[1]" ? 'DER' : 'PEM'; 
+    $cmd = "$opensslbin x509 -purpose -noout -in $certfile -inform $format";
     my $purpose_in = `$cmd`;
     $? and die "'$cmd' returned $?";
 
