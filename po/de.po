@@ -74,9 +74,9 @@ msgstr "\"compose\"-Eintrag in der Mailcap-Datei erfordert %%s."
 
 #: attach.c:131 attach.c:256 commands.c:155 compose.c:1170 curs_lib.c:128
 #: curs_lib.c:323
-#, fuzzy, c-format
+#, c-format
 msgid "Error running \"%s\"!"
-msgstr "Unverständliche Adresse!"
+msgstr "Fehler beim Ausführen von \"%s\"!"
 
 #: attach.c:141
 msgid "Failure to open file to parse headers."
@@ -145,9 +145,9 @@ msgid "Mailboxes [%d]"
 msgstr "Mailbox-Dateien [%d]"
 
 #: browser.c:451
-#, fuzzy, c-format
+#, c-format
 msgid "Subscribed [%s], File mask: %s"
-msgstr "Verzeichnis [%s], Dateimaske: %s"
+msgstr "Bestellt [%s], Dateimaske: %s"
 
 #: browser.c:455
 #, c-format
@@ -155,9 +155,8 @@ msgid "Directory [%s], File mask: %s"
 msgstr "Verzeichnis [%s], Dateimaske: %s"
 
 #: browser.c:466
-#, fuzzy
 msgid "Can't attach a directory!"
-msgstr "Verzeichnisse können nicht angezeigt werden."
+msgstr "Kann Verzeichnis nicht anhängen."
 
 #: browser.c:583 browser.c:882 browser.c:975
 msgid "No files match the file mask"
@@ -207,17 +206,17 @@ msgstr "Neue Nachrichten in %s."
 
 #: charset.c:970
 msgid "We can't currently handle utf-8 at this point."
-msgstr ""
+msgstr "Wir können hier im Moment nicht mit utf-8 umgehen."
 
 #: charset.c:976 charset.c:983
-#, fuzzy, c-format
+#, c-format
 msgid "Can't open %s: %s."
-msgstr "Kann Verzeichniseintrag für Datei nicht lesen: %s"
+msgstr "Kann %s nicht öffnen: %s."
 
 #: charset.c:1013
 #, c-format
 msgid "Error while recoding %s. See %s for recovering your data."
-msgstr ""
+msgstr "Fehler beim Umcodieren von %s. Siehe %s um die Daten zu retten."
 
 #: color.c:315
 #, c-format
@@ -483,9 +482,8 @@ msgid "%s [#%d] modified. Update encoding?"
 msgstr "%s [#%d] wurde modifiziert.  Codierung neu bestimmen?"
 
 #: compose.c:309
-#, fuzzy
 msgid "-- Attachments"
-msgstr "Anhänge"
+msgstr "-- Anhänge"
 
 #: compose.c:352
 msgid "You may not delete the only attachment."
@@ -493,20 +491,20 @@ msgstr "Der einzige Nachrichtenteil kann nicht gelöscht werden."
 
 #: compose.c:395
 msgid "Can't change character set for non-text attachments!"
-msgstr ""
+msgstr "Kann den Zeichensatz von Nicht-Textdateien nicht ändern!"
 
 #: compose.c:401
 msgid "Enter character set: "
-msgstr ""
+msgstr "Geben Sie den Zeichensatz ein: "
 
 #: compose.c:408
 msgid "UTF-8 encoding attachments has not yet been implemented."
-msgstr ""
+msgstr "UTF-8 Codieren von Anhängen ist noch nicht implementiert."
 
 #: compose.c:414
 #, c-format
 msgid "Character set %s is unknown."
-msgstr ""
+msgstr "Zeichensatz %s ist unbekannt."
 
 #: compose.c:460
 msgid "Compose"
@@ -526,12 +524,12 @@ msgstr "Bitte markieren Sie die Nachrichten, die Sie anhängen wollen!"
 
 #: compose.c:687
 msgid "Attaching selected files..."
-msgstr ""
+msgstr "Hänge ausgewählte Dateien an..."
 
 #: compose.c:698
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to attach %s!"
-msgstr "Kann nicht anhängen!"
+msgstr "Kann %s nicht anhängen!"
 
 #: compose.c:722
 msgid "Unable to attach!"
@@ -539,27 +537,27 @@ msgstr "Kann nicht anhängen!"
 
 #: compose.c:773
 msgid "Recoding only affects text attachments."
-msgstr ""
+msgstr "Die Umcodierung wirkt sich nur auf Text-Anhänge aus."
 
 #: compose.c:778
 msgid "We currently can't encode to utf-8."
-msgstr ""
+msgstr "Kann bis jetzt nicht in UTF-8 codieren."
 
 #: compose.c:783
 msgid "The current attachment won't be converted."
-msgstr ""
+msgstr "Der aktuelle Anhang wird nicht konvertiert werden."
 
 #: compose.c:785
 msgid "The current attachment will be converted."
-msgstr ""
+msgstr "Der aktuelle Anhang wird konvertiert werden."
 
 #: compose.c:798
 msgid "Recoding only affetcs text attachments."
-msgstr ""
+msgstr "Die Umcodierung wirkt sich nur auf Text-Anhänge aus."
 
 #: compose.c:814
 msgid "Recoding successful."
-msgstr ""
+msgstr "Umcodierung war erfolgreich."
 
 #: compose.c:921
 msgid "Invalid encoding."
@@ -1060,16 +1058,17 @@ msgstr "Hole Nachrichten-Köpfe... [%d/%d]"
 #. Unable to fetch headers for lower versions
 #: imap.c:688
 msgid "Unable to fetch headers from this IMAP server version."
-msgstr ""
+msgstr "Kann keine Nachrichten-Köpfe von dieser Version des IMAP-Servers holen."
 
 #: imap.c:880
-#, fuzzy, c-format
+#, c-format
 msgid "Reopening mailbox... %s"
-msgstr "Öffne Mailbox erneut..."
+msgstr "Öffne Mailbox erneut... %s"
 
 #: imap.c:1230
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr ""
+"Dieser IMAP-Server ist veraltet. Mutt kann nicht mit ihm zusammenarbeiten."
 
 #: imap.c:1251
 msgid "IMAP Username: "
@@ -1100,7 +1099,7 @@ msgstr "Wähle %s aus..."
 #. * error if the mailbox did not exist.
 #: imap.c:1550
 msgid "Unable to append to IMAP mailboxes at this server"
-msgstr ""
+msgstr "Kann nicht an Mailboxen auf diesem IMAP-Server anhängen"
 
 #: imap.c:1560 lib.c:1210
 #, c-format
@@ -1139,17 +1138,17 @@ msgstr "Schließe Mailbox..."
 
 #: imap.c:2497
 msgid "Contacted server, getting folder list..."
-msgstr ""
+msgstr "Server kontaktiert, hole Folderliste..."
 
 #: imap.c:2549
-#, fuzzy, c-format
+#, c-format
 msgid "Subscribing to %s..."
-msgstr "Kopiere nach %s..."
+msgstr "Bestelle %s..."
 
 #: imap.c:2551
-#, fuzzy, c-format
+#, c-format
 msgid "Unsubscribing to %s..."
-msgstr "Verbinde zu %s..."
+msgstr "Bestelle %s ab..."
 
 #: init.c:432
 msgid "alias: no address"
@@ -1336,15 +1335,15 @@ msgstr "Zeige den Namen der derzeit ausgewählten Datei"
 
 #: keymap_defs.h:13
 msgid "subscribe to current mailbox (IMAP Only)"
-msgstr ""
+msgstr "bestelle die aktuelle Mailbox (nur IMAP)"
 
 #: keymap_defs.h:14
 msgid "unsubscribe to current mailbox (IMAP Only)"
-msgstr ""
+msgstr "bestelle die aktuelle Mailbox ab (nur IMAP)"
 
 #: keymap_defs.h:15
 msgid "toggle view all/subscribed mailboxes (IMAP Only)"
-msgstr ""
+msgstr "Schalte zwischen Ansicht aller und bestellter Mailboxen um (nur IMAP)"
 
 #: keymap_defs.h:16
 msgid "change directories"
@@ -1364,7 +1363,7 @@ msgstr "Hänge Nachricht(en) an diese Nachricht an"
 
 #: keymap_defs.h:20
 msgid "change an attachment's character set"
-msgstr ""
+msgstr "Ändere den Zeichensatz eines Anhanges"
 
 #: keymap_defs.h:21
 msgid "edit the BCC list"
@@ -1436,11 +1435,11 @@ msgstr "Erzeuge neues Attachment via mailcap"
 
 #: keymap_defs.h:38
 msgid "toggle recoding of this attachment"
-msgstr ""
+msgstr "Schalte das Umcodieren dieses Anhangs ein/aus"
 
 #: keymap_defs.h:39
 msgid "recode this attachment to/from the local charset"
-msgstr ""
+msgstr "Codiere diesen Anhang zum/vom lokalen Zeichensatz"
 
 #: keymap_defs.h:40
 msgid "save this message to send later"
@@ -1891,9 +1890,8 @@ msgid "toggle whether the mailbox will be rewritten"
 msgstr "Schalte Sichern von Änderungen ein/aus"
 
 #: keymap_defs.h:153
-#, fuzzy
 msgid "toggle whether to browse mailboxes or all files"
-msgstr "Wähle zwischen Mailboxen und allen Dateien"
+msgstr "Schalte zwischen Mailboxen und allen Dateien um"
 
 #: keymap_defs.h:154
 msgid "move to the top of the page"
@@ -1973,36 +1971,31 @@ msgstr "Erzeuge dechiffrierte Kopie"
 
 #: keymap_defs.h:173
 msgid "Accept the chain constructed"
-msgstr ""
+msgstr "Akzeptiere die aufgebaute Kette"
 
 #: keymap_defs.h:174
-#, fuzzy
 msgid "Append a remailer to the chain"
-msgstr "Lösche Zeile"
+msgstr "Hänge einen Remailer an die Kette an"
 
 #: keymap_defs.h:175
-#, fuzzy
 msgid "Insert a remailer into the chain"
-msgstr "Lösche Zeile"
+msgstr "Füge einen Remailer in die Kette ein"
 
 #: keymap_defs.h:176
-#, fuzzy
 msgid "Delete a remailer from the chain"
-msgstr "Lösche Zeile"
+msgstr "Lösche einen Remailer aus der Kette"
 
 #: keymap_defs.h:177
-#, fuzzy
 msgid "Select the previous element of the chain"
-msgstr "Lösche Zeile"
+msgstr "Wähle das vorige Element der Kette aus"
 
 #: keymap_defs.h:178
-#, fuzzy
 msgid "Select the next element of the chain"
-msgstr "Lösche Zeile"
+msgstr "Wähle das nächste Element der Kette aus"
 
 #: keymap_defs.h:179
 msgid "send the message through a mixmaster remailer chain"
-msgstr ""
+msgstr "Versende die Nachricht über eine Mixmaster Remailer-Kette"
 
 #: lib.c:280 lib.c:295 lib.c:326
 msgid "Out of memory!"
@@ -2017,18 +2010,17 @@ msgid "File under directory: "
 msgstr "Datei in diesem Verzeichnis: "
 
 #: lib.c:802
-#, fuzzy
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
-msgstr "Datei existiert, überschreiben?"
+msgstr "Datei existiert, (u)eberschreiben, (a)nhängen, a(b)brechen?"
 
 #: lib.c:802
 msgid "oac"
-msgstr ""
+msgstr "uab"
 
 #: lib.c:1186
 #, c-format
 msgid "%s is not a mailbox!"
-msgstr "%s ist keine Mailbox"
+msgstr "%s ist keine Mailbox!"
 
 #: lib.c:1192
 #, c-format
@@ -2156,7 +2148,7 @@ msgstr ""
 
 #: main.c:306
 msgid "Error initializing terminal."
-msgstr "Kann Termial nicht initialisieren"
+msgstr "Kann Terminal nicht initialisieren"
 
 #: main.c:405
 #, c-format
@@ -2313,9 +2305,9 @@ msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Lock-Datei für %s entfernen?"
 
 #: mx.c:125
-#, fuzzy, c-format
+#, c-format
 msgid "Can't dotlock %s.\n"
-msgstr "Kann Verzeichniseintrag für Datei nicht lesen: %s"
+msgstr "Kann %s nicht locken.\n"
 
 #: mx.c:183
 msgid "Timeout exceeded while attempting fcntl lock!"
@@ -2445,7 +2437,7 @@ msgstr "Kein weiterer zitierter Text."
 
 #: pager.c:2006
 msgid "No more unquoted text after quoted text."
-msgstr "Kein weiterer eigener Text nach zitiertem Text"
+msgstr "Kein weiterer eigener Text nach zitiertem Text."
 
 #: parse.c:501
 msgid "multipart message has no boundary parameter!"
@@ -2620,6 +2612,8 @@ msgid ""
 "[-- Error: Inconsistant multipart/signed structure! --]\n"
 "\n"
 msgstr ""
+"[-- Fehler: Inkonsistente multipart/signed Struktur! --]\n"
+"\n"
 
 #: pgp.c:728
 #, c-format
@@ -2636,6 +2630,8 @@ msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
 "\n"
 msgstr ""
+"[-- Warnung: %s/s% Signaturen können nicht geprüft werden. --]\n"
+"\n"
 
 #. Now display the signed body
 #: pgp.c:757
@@ -2651,6 +2647,8 @@ msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
 msgstr ""
+"[-- Warnung: Kann keine Signaturen finden. --]\n"
+"\n"
 
 #: pgp.c:769
 msgid ""
@@ -2750,6 +2748,7 @@ msgstr ""
 #: pgpkey.c:531
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr ""
+"Dieser Schlüssel kann nicht benutzt werden: verfallen/gesperrt/zurückgezogen."
 
 #: pgpkey.c:545
 msgid "This ID's trust level is undefined."
@@ -2773,7 +2772,6 @@ msgid "Please enter the key ID: "
 msgstr "Bitte Schlüsselidentifikation eingeben: "
 
 #: pgpkey.c:690
-#, fuzzy
 msgid "Invoking pgp..."
 msgstr "Rufe PGP auf..."
 
@@ -2785,7 +2783,7 @@ msgstr "PGP Schlüssel 0x%s."
 #: pgpkey.c:760 pgpkey.c:877
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
-msgstr ""
+msgstr "Suche nach Keys die auf \"%s\" passen..."
 
 #: pgppubring.c:63
 msgid "reserved"
@@ -3061,7 +3059,7 @@ msgid "No subject, aborting."
 msgstr "Kein Betreff, breche ab."
 
 #: send.c:401
-#, fuzzy, c-format
+#, c-format
 msgid "Follow-up to %s%s?"
 msgstr "Antworte an %s%s?"
 
@@ -3156,7 +3154,7 @@ msgstr "Nachricht verschickt."
 
 #: send.c:1366
 msgid "Sending in background."
-msgstr ""
+msgstr "Verschicke im Hintergrund."
 
 #: sendlib.c:440
 msgid "No boundary parameter found! [report this error]"
@@ -3173,16 +3171,16 @@ msgid "Could not open %s"
 msgstr "Konnte %s nicht öffnen."
 
 #: sendlib.c:1680
-#, fuzzy, c-format
+#, c-format
 msgid "Error sending message, child exited %d (%s)."
-msgstr "Fehler %d beim Versand der Nachricht (%s).\n"
+msgstr "Fehler %d beim Versand der Nachricht (%s)."
 
 #: sendlib.c:1686
 msgid "Output of the delivery process"
-msgstr ""
+msgstr "Ausgabe der Mail-Auslieferung"
 
 #: signal.c:39
-#, fuzzy, c-format
+#, c-format
 msgid "%s...  Exiting.\n"
 msgstr "Signal %s... Abbruch.\n"
 
