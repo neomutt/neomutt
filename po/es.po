@@ -3437,7 +3437,7 @@ msgstr "Clave PGP %s."
 #: pgpkey.c:835 pgpkey.c:953
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
-msgstr "Buscando claves que conincidan con \"%s\"..."
+msgstr "Buscando claves que coincidan con \"%s\"..."
 
 #: pop.c:93 pop_lib.c:159
 msgid "Command TOP is not supported by server."
