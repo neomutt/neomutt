@@ -1,10 +1,14 @@
-README for mutt-1.3
+README for mutt-1.5
 ===================
 
 If you got the mutt source code from the public CVS repository (CVS
 root: :pserver:anonymous@cvs.mutt.org:/home/roessler/cvs, password
 anonymous), please read doc/devel-notes.txt to make sure that you
 have a complete development environment.
+
+NOTE: The CVS repository now resides on a machine which is different
+from ftp.mutt.org.  Anonymous CVS from ftp.mutt.org does not work
+any more.
 
 Installation instructions are detailed in ``INSTALL''.
 
