@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1996-2000,2002 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -505,6 +505,16 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
 	hdr->attach_del = 0;
 	hdr->lines = new_lines;
 	body->offset = new_offset;
+
+	/* update the total size of the mailbox to reflect this deletion */
+	Context->size -= body->length - new_length;
+	/*
+	 * if the message is visible, update the visible size of the mailbox
+	 * as well.
+	 */
+	if (Context->v2r[hdr->msgno] != -1)
+	  Context->vsize -= body->length - new_length;
+
 	body->length = new_length;
 	mutt_free_body (&body->parts);
       }
