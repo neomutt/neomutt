@@ -587,10 +587,10 @@ pgp_key_t *pgp_getkeybyaddr (struct pgp_vinfo * pgp,
   ADDRESS *r, *p;
   LIST *hints = NULL;
   int weak = 0;
-  int weak_association;
+  int weak_association, kflags;
   int match;
   pgp_uid_t *q;
-  pgp_key_t *keys, *k, *kn;
+  pgp_key_t *keys, *k, *kn, *pk;
   pgp_key_t *matches = NULL;
   pgp_key_t **last = &matches;
   
@@ -625,6 +625,9 @@ pgp_key_t *pgp_getkeybyaddr (struct pgp_vinfo * pgp,
       continue;
     }
 
+    pkey = pgp_principal_key (k);
+    kflags = k->flags | pkey->flags;
+    
     q = k->address;
     weak_association = 1;
     match = 0;
@@ -644,7 +647,9 @@ pgp_key_t *pgp_getkeybyaddr (struct pgp_vinfo * pgp,
 	  match = 1;
 
 	  if (((q->trust & 0x03) == 3) &&
-	      (p->mailbox && a->mailbox && !mutt_strcasecmp (p->mailbox, a->mailbox)))
+	      !(kflags & KEYFLAG_CANTUSE) &&
+	      (p->mailbox && a->mailbox &&
+	       !mutt_strcasecmp (p->mailbox, a->mailbox)))
 	    weak_association = 0;
 	}
       }
