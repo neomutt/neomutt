@@ -5,11 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt-1.3.8i \n"
+"Project-Id-Version: Mutt-1.3.10i \n"
 "POT-Creation-Date: 2000-10-11 12:45+0200\n"
-"PO-Revision-Date: 2000-08-31 20:34+02:00\n"
-"Last-Translator: Byrial Jensen <byrial@image.dk>, Morten Bo Johansen "
-"<mojo@image.dk> \n"
+"PO-Revision-Date: 2000-10-11 21:06+02:00\n"
+"Last-Translator: Byrial Jensen <byrial@image.dk>, Morten Bo Johansen <mojo@image.dk> \n"
 "Language-Team: Danish <da@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
@@ -830,9 +829,8 @@ msgid "Thread contains unread messages."
 msgstr "Tråden indeholder ulæste breve."
 
 #: curs_main.c:1614
-#, fuzzy
 msgid "Can't edit message on POP server."
-msgstr "Slet breve på tjener?"
+msgstr "Kan ikke redigere brev på POP-tjener."
 
 #.
 #. * SLcurses_waddnstr() can't take a "const char *", so this is only
@@ -2464,9 +2462,8 @@ msgid "oac"
 msgstr "ota"
 
 #: muttlib.c:1111
-#, fuzzy
 msgid "Can't save message to POP mailbox."
-msgstr "Skriv brevet til brevbakke"
+msgstr "Kan ikke gemme brev i POP-brevbakke."
 
 #: muttlib.c:1120
 #, c-format
@@ -2502,9 +2499,9 @@ msgid "Connecting to %s..."
 msgstr "Forbinder til %s..."
 
 #: mutt_socket.c:398
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "Kunne ikke åbne %s."
+msgstr "Kunne ikke forbinde til %s (%s)."
 
 #: mutt_ssl.c:105
 msgid "Failed to find enough entropy on your system"
@@ -3115,29 +3112,24 @@ msgid "Looking for keys matching \"%s\"..."
 msgstr "Leder efter nøgler, der matcher \"%s\"..."
 
 #: pop.c:89 pop_lib.c:158
-#, fuzzy
 msgid "Command TOP is not supported by server."
-msgstr "Udvælgelse er ikke understøttet."
+msgstr "Kommandoen TOP understøttes ikke af tjener."
 
 #: pop.c:116
-#, fuzzy
 msgid "Can't write header to temporary file!"
-msgstr "Kan ikke oprette midlertidig fil"
+msgstr "Kan ikke skrive brevhoved til midlertidig fil!"
 
 #: pop.c:197 pop_lib.c:160
-#, fuzzy
 msgid "Command UIDL is not supported by server."
-msgstr "Udvælgelse er ikke understøttet."
+msgstr "Kommandoen UIDL er ikke understøttet af tjener."
 
 #: pop.c:270
-#, fuzzy
 msgid "Fetching list of messages..."
-msgstr "Henter brev ..."
+msgstr "Henter liste over breve..."
 
 #: pop.c:407
-#, fuzzy
 msgid "Can't write message to temporary file!"
-msgstr "Kan ikke oprette midlertidig fil"
+msgstr "Kan ikke skrive brev til midlertidig fil!"
 
 #: pop.c:510 pop.c:564
 msgid "Checking for new messages..."
@@ -3174,49 +3166,41 @@ msgid "Server closed connection!"
 msgstr "Tjeneren afbrød forbindelsen!"
 
 #: pop_auth.c:193
-#, fuzzy
 msgid "Authenticating (APOP)..."
-msgstr "Godkender (GSSAPI)..."
+msgstr "Godkender (APOP)..."
 
 #: pop_auth.c:217
-#, fuzzy
 msgid "APOP authentication failed."
-msgstr "GSSAPI-godkendelse slog fejl."
+msgstr "APOP-godkendelse slog fejl."
 
 #: pop_auth.c:252
-#, fuzzy
 msgid "Command USER is not supported by server."
-msgstr "Udvælgelse er ikke understøttet."
+msgstr "Kommandoen USER er ikke understøttet af tjener."
 
 #: pop_auth.c:359
-#, fuzzy
 msgid "Authentication method is unknown."
-msgstr "SASL-godkendelse slog fejl."
+msgstr "Ukendt godkendelsesmetode."
 
 #: pop_lib.c:156
-#, fuzzy
 msgid "Unable to leave messages on server."
-msgstr "Slet breve på tjener?"
+msgstr "Kunne ikke efterlade breve på tjener."
 
 #: pop_lib.c:203
-#, fuzzy, c-format
+#, c-format
 msgid "Error connecting to server: %s"
-msgstr "Lukker forbindelsen til IMAP-tjeneren ..."
+msgstr "Fejl under forbindelse til tjener: %s"
 
 #: pop_lib.c:286
-#, fuzzy
 msgid "Closing connection to POP server..."
-msgstr "Lukker forbindelsen til IMAP-tjeneren ..."
+msgstr "Lukker forbindelsen til POP-tjener ..."
 
 #: pop_lib.c:445
-#, fuzzy
 msgid "Verifying message indexes..."
-msgstr "Skriver brevet til %s ..."
+msgstr "Efterkontrollerer brevfortegnelser..."
 
 #: pop_lib.c:469
-#, fuzzy
 msgid "Connection lost. Reconnect to POP server?"
-msgstr "Lukker forbindelsen til IMAP-tjeneren ..."
+msgstr "Mistede forbindelsen. Opret ny forbindelse til POP-tjener?"
 
 #: postpone.c:165
 msgid "Postponed Messages"
@@ -3266,7 +3250,7 @@ msgstr "Forespørgsel: '%s'"
 
 #: recvattach.c:59
 msgid "Pipe"
-msgstr "Pipe"
+msgstr "Overfør til program"
 
 #: recvattach.c:60
 msgid "Print"
@@ -3311,9 +3295,8 @@ msgid "Attachments"
 msgstr "Brevdele"
 
 #: recvattach.c:882
-#, fuzzy
 msgid "Can't delete attachment from POP server."
-msgstr "hent breve fra POP-tjener"
+msgstr "Kan ikke slette bilag fra POP-tjener."
 
 #: recvattach.c:893
 msgid "Deletion of attachments from PGP messages is unsupported."
@@ -3612,48 +3595,3 @@ msgstr "Forrige brev i tråden er ikke synligt i afgrænset visning"
 #: thread.c:717
 msgid "Parent message is not available."
 msgstr "Forrige brev i tråden er ikke tilgængeligt."
-
-#~ msgid ""
-#~ "\n"
-#~ "SHA1 implementation Copyright (C) 1995-1997 Eric A. Young "
-#~ "<eay@cryptsoft.com>\n"
-#~ "\n"
-#~ "    Redistribution and use in source and binary forms, with or without\n"
-#~ "    modification, are permitted under certain conditions.\n"
-#~ "\n"
-#~ "    The SHA1 implementation comes AS IS, and ANY EXPRESS OR IMPLIED\n"
-#~ "    WARRANTIES, including, but not limited to, the implied warranties of\n"
-#~ "    merchantability and fitness for a particular purpose ARE DISCLAIMED.\n"
-#~ "\n"
-#~ "    You should have received a copy of the full distribution terms\n"
-#~ "    along with this program; if not, write to the program's developers.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "SHA1 implementering Copyright (C) 1995-1997 Eric A. Young\n"
-#~ "<eay@cryptsoft.com>\n"
-#~ "\n"
-#~ "     Redistribution og brug i kilde- og binær form, med eller uden\n"
-#~ "     ændringer, tillades under visse betingelser.\n"
-#~ "\n"
-#~ "     SHA-implementeringen medfølger som SOM DEN ER, og ENHVER UDTRYKKELIG\n"
-#~ "     ELLER IMPLICIT GARANTI, indbefattende, men ikke begrænset til,\n"
-#~ "     de implicitte garantier, der omhandler salgbarhed eller egnethed \n"
-#~ "     til noget bestemt formål, GIVES IKKE.\n"
-#~ "\n"
-#~ "     Du bør have modtaget en kopi af de betingelser, hvorunder dette\n"
-#~ "     program distribueres. Hvis ikke, så skriv til programmets udviklere.\n"
-
-#~ msgid "POP Username: "
-#~ msgstr "POP-brugernavn: "
-
-#~ msgid "Login failed: %s"
-#~ msgstr "Login slog fejl: %s"
-
-#~ msgid "Reading new message (%d bytes)..."
-#~ msgstr "Indlæser nyt brev (%d bytes)..."
-
-#~ msgid "Error reading message!"
-#~ msgstr "Fejl ved læsning af brev!"
-
-#~ msgid "%s [%d message read]"
-#~ msgstr "%s [%d brev læst]"
