@@ -99,13 +99,15 @@ static short get_abilities(unsigned char type)
  */
 
 static KEYINFO *
-parse_pub_line( char *buf )
+parse_pub_line( char *buf, int *is_subkey )
 {
     KEYINFO *k=NULL;
     PGPUID *uid = NULL;
     int field = 0;
     char *pend, *p;
+    int trust = 0;
 
+    *is_subkey = 0;
     if( !*buf )
 	return NULL;
     for( p = buf; p; p = pend ) {
@@ -117,17 +119,28 @@ parse_pub_line( char *buf )
 
 	switch( field ) {
 	  case 1: /* record type */
-	    if( strcmp(p,"pub") )
+	    if( !strcmp(p,"pub") )
+		;
+	    else if( !strcmp(p,"sub") )
+		*is_subkey = 1;
+	    else if( !strcmp(p,"sec") )
+		;
+	    else if( !strcmp(p,"ssb") )
+		*is_subkey = 1;
+	    else
 		return NULL;
 	    k = safe_malloc( sizeof(KEYINFO) );
-	    k->keyid = NULL;
-	    k->address = NULL;
-	    k->flags = 0;
-	    k->next = NULL;
-	    k->keylen = 0;
+	    memset(k, 0, sizeof(KEYINFO) );
 	    break;
 	  case 2: /* trust info */
-	    /* k_>flags |= KEYFLAG_EXPIRED */
+	    switch( *p ) { /* look only at the first letter */
+	      case 'e': k->flags |= KEYFLAG_EXPIRED;   break;
+	      case 'n': trust = 1;  break;
+	      case 'm': trust = 2;  break;
+	      case 'f': trust = 3;  break;
+	      case 'u': trust = 3;  break;
+	      case 'r': k->flags |= KEYFLAG_REVOKED;   break;
+	    }
 	    break;
 	  case 3: /* key length  */
 	    k->keylen = atoi(p); /* fixme: add validation checks */
@@ -142,18 +155,22 @@ parse_pub_line( char *buf )
 	    break;
 	  case 6: /* timestamp (1998-02-28) */
 	    break;
-	  case 7: /* Local id	      */
+	  case 7: /* valid for n days */
 	    break;
-	  case 8: /* ownertrust       */
+	  case 8: /* Local id	      */
 	    break;
-	  case 9: /* name	      */
+	  case 9: /* ownertrust       */
+	    break;
+	  case 10: /* name	       */
+	    if( !pend || !*p )
+		break; /* empty field or no trailing colon */
 	    k->address = mutt_new_list();
 	    k->address->data = safe_malloc( sizeof(PGPUID) );
 	    uid = (PGPUID *)k->address->data;
 	    uid->addr = safe_strdup(p);
-	    uid->trust = 0;
+	    uid->trust = trust;
 	    break;
-	  case 10: /* signature class  */
+	  case 11: /* signature class  */
 	    break;
 	  default:
 	    break;
@@ -165,7 +182,7 @@ parse_pub_line( char *buf )
 static pid_t gpg_invoke_list_keys(struct pgp_vinfo *pgp,
 				  FILE **pgpin, FILE **pgpout, FILE **pgperr,
 				  int pgpinfd, int pgpoutfd, int pgperrfd,
-				  const char *uids)
+				  const char *uids, int secret)
 {
   char cmd[HUGE_STRING];
   char tmpcmd[HUGE_STRING];
@@ -174,8 +191,8 @@ static pid_t gpg_invoke_list_keys(struct pgp_vinfo *pgp,
   
   /* we use gpgm here */
   snprintf(cmd, sizeof(cmd),
-	   "%sm --no-verbose --batch --with-colons --list-keys ",
-	   NONULL(*pgp->binary));
+	   "%sm --no-verbose --batch --with-colons --list-%skeys ",
+	   NONULL(*pgp->binary), secret? "secret-":"");
 
   keylist = safe_strdup(uids);
   for(cp = strtok(keylist, " "); cp ; cp = strtok(NULL, " "))
@@ -185,29 +202,43 @@ static pid_t gpg_invoke_list_keys(struct pgp_vinfo *pgp,
     strcpy(cmd, tmpcmd);
   }
   safe_free((void **) &keylist);
-  
   return mutt_create_filter_fd(cmd, pgpin, pgpout, pgperr,
 			       pgpinfd, pgpoutfd, pgperrfd);
 }
 
-KEYINFO *gpg_read_pubring(struct pgp_vinfo *pgp)
+static KEYINFO *
+read_ring(struct pgp_vinfo *pgp, int secret )
 {
     FILE *fp;
     pid_t thepid;
     char buf[LONG_STRING];
-    KEYINFO *db = NULL, **kend, *k = NULL;
+    KEYINFO *db = NULL, **kend, *k = NULL, *kk, *mainkey=NULL;
+    int is_sub;
 
-    thepid = gpg_invoke_list_keys(pgp, NULL, &fp, NULL, -1, -1, -1, NULL);
+    thepid = gpg_invoke_list_keys(pgp, NULL, &fp, NULL, -1, -1, -1,
+							NULL, secret);
     if( thepid == -1 )
 	return NULL;
 
     kend = &db;
     k = NULL;
     while( fgets( buf, sizeof(buf)-1, fp ) ) {
+	kk = parse_pub_line(buf, &is_sub );
+	if( !kk )
+	    continue;
 	if( k )
 	    kend = &k->next;
-	*kend = k = parse_pub_line(buf);
+	*kend = k = kk;
+
+	if( is_sub ) {
+	    k->flags |= KEYFLAG_SUBKEY;
+	    k->mainkey = mainkey;
     }
+	else
+	    mainkey = k;
+    }
+    if( ferror(fp) )
+	mutt_perror("fgets");
 
     fclose( fp );
     mutt_wait_filter( thepid );
@@ -216,9 +247,13 @@ KEYINFO *gpg_read_pubring(struct pgp_vinfo *pgp)
 }
 
 
+KEYINFO *gpg_read_pubring(struct pgp_vinfo *pgp)
+{
+    return read_ring( pgp, 0 );
+}
+
+
 KEYINFO *gpg_read_secring(struct pgp_vinfo *pgp)
 {
-  mutt_error("gpg_read_secring() has not yet been implemented.");
-  sleep(1);
-  return NULL;
+    return read_ring( pgp, 1 );
 }

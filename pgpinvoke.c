@@ -330,8 +330,7 @@ pid_t pgp_gpg_invoke_decode(struct pgp_vinfo *pgp,
   char cmd[HUGE_STRING];
   
   snprintf(cmd, sizeof(cmd),
-	   "%s%s --no-verbose  -v --batch --status-fd 2 -o - "
-	   "--decrypt %s",
+	   "%s%s --no-verbose --batch --status-fd 2 -o - %s",
 	   NONULL(*pgp->binary), need_passphrase? " --passphrase-fd 0":"",
 	   fname);
   
@@ -363,7 +362,7 @@ pid_t pgp_gpg_invoke_decrypt(struct pgp_vinfo *pgp,
   char cmd[HUGE_STRING];
   
   snprintf(cmd, sizeof(cmd),
-	   "%s --passphrase-fd 0 --no-verbose -v --batch --status-fd 2 -o - "
+	   "%s --passphrase-fd 0 --no-verbose --batch --status-fd 2 -o - "
 	   "--decrypt %s",
 	   NONULL(*pgp->binary), fname );
   
@@ -396,13 +395,13 @@ pid_t pgp_gpg_invoke_sign(struct pgp_vinfo *pgp,
   char cmd[HUGE_STRING];
   
   snprintf(cmd, sizeof(cmd),
-	   "%s --no-verbose -vv --batch --status-fd 2 -o - "
+	   "%s --no-verbose --batch --status-fd 2 -o - "
 	   "--passphrase-fd 0 --digest-algo %s "
 	   "--detach-sign --textmode --armor %s%s %s",
 	   NONULL(*pgp->binary),
 	   gpg_digalg(),
-	   *PgpSignAs? "-u " : "",
-	   *PgpSignAs? PgpSignAs : "", fname );
+	   PgpSignAs? "-u " : "",
+	   PgpSignAs? PgpSignAs : "", fname );
   
   
   return mutt_create_filter_fd(cmd, pgpin, pgpout, pgperr,
@@ -422,15 +421,15 @@ pid_t pgp_gpg_invoke_encrypt(struct pgp_vinfo *pgp,
   char *keylist;
   
   snprintf(cmd, sizeof(cmd),
-	   "%s%s --no-verbose --batch --status-fd 2 -o - "
+	   "%s%s --no-verbose -v --batch --status-fd 2 -o - "
 	   "--digest-algo %s "
-	   "--encrypt%s --textmode --armor %s%s",
+	   "--encrypt%s --textmode --armor --always-trust %s%s",
 	   NONULL(*pgp->binary),
 	   sign? " --passphrase-fd 0":"",
 	   gpg_digalg(),
 	   sign? " --sign":"",
-	   *PgpSignAs? "-u " : "",
-	   *PgpSignAs? PgpSignAs : "" );
+	   PgpSignAs? "-u " : "",
+	   PgpSignAs? PgpSignAs : "" );
   
   keylist = safe_strdup(uids);
 
@@ -450,15 +449,24 @@ pid_t pgp_gpg_invoke_encrypt(struct pgp_vinfo *pgp,
 
 void pgp_gpg_invoke_import(struct pgp_vinfo *pgp, const char *fname)
 {
-  mutt_error("pgp_gpg_invoke_import() has not yet been implemented.");
+  char cmd[HUGE_STRING];
+
+  snprintf(cmd, sizeof(cmd), "%sm --no-verbose --import -v %s",
+	   NONULL (*pgp->binary), fname);
+  mutt_system(cmd);
 }
 
 pid_t pgp_gpg_invoke_export(struct pgp_vinfo *pgp,
 			   FILE **pgpin, FILE **pgpout, FILE **pgperr,
 			   int pgpinfd, int pgpoutfd, int pgperrfd, const char *id)
 {
-  mutt_error("pgp_gpg_invoke_export() has not yet been implemented.");
-  return -1;
+  char cmd[HUGE_STRING];
+
+  snprintf(cmd, sizeof(cmd), "%sm --no-verbose --export --armor 0x%8s",
+	   NONULL (*pgp->binary), id);
+
+  return mutt_create_filter_fd(cmd, pgpin, pgpout, pgperr,
+			       pgpinfd, pgpoutfd, pgperrfd);
 }
 
 
