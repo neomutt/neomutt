@@ -18,7 +18,7 @@
 
 #include "mutt.h"
 #include "mutt_curses.h"
-
+#include "sort.h"
 
 
 #ifdef _PGPPATH
@@ -224,6 +224,9 @@ hdr_format_str (char *dest,
   char fmt[SHORT_STRING], buf2[SHORT_STRING], ch, *p;
   int do_locales, i;
   int optional = (flags & M_FORMAT_OPTIONAL);
+  int threads = ((Sort & SORT_MASK) == SORT_THREADS);
+  int is_index = (flags & M_FORMAT_INDEX);
+#define NEW (threads && hdr->collapsed && hdr->num_hidden > 1 && mutt_thread_contains_unread (ctx, hdr))
   size_t len;
 
   hdr = hfi->hdr;
@@ -446,22 +449,22 @@ hdr_format_str (char *dest,
       break;
 
     case 's':
-      snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
-      if (flags & M_FORMAT_TREE)
+      
+      snprintf (fmt, sizeof (fmt), "%s%%%ss", threads && is_index ? "   " : "", prefix);
+      if (threads && is_index && hdr->collapsed && hdr->num_hidden > 1)
+	snprintf (dest, destlen, "%2d %s", hdr->num_hidden, NONULL(hdr->env->subject));
+      else if (flags & M_FORMAT_TREE)
       {
 	if (flags & M_FORMAT_FORCESUBJ)
 	{
-	  snprintf (buf2, sizeof (buf2), "%s%s", hdr->tree,
-		    hdr->env->subject ? hdr->env->subject : "");
+	  snprintf (buf2, sizeof (buf2), "%s%s", hdr->tree, NONULL (hdr->env->subject));
 	  snprintf (dest, destlen, fmt, buf2);
 	}
 	else
 	  snprintf (dest, destlen, fmt, hdr->tree);
       }
       else
-      {
-	snprintf (dest, destlen, fmt, hdr->env->subject ? hdr->env->subject : "");
-      }
+	snprintf (dest, destlen, fmt, NONULL (hdr->env->subject));
       break;
 
     case 'S':
@@ -544,7 +547,7 @@ hdr_format_str (char *dest,
       snprintf (buf2, sizeof (buf2),
 		"%c%c%c",
 		(hdr->read && (ctx && ctx->msgnotreadyet != hdr->msgno))
-		? (hdr->replied ? 'r' : ' ') : (hdr->old ? 'O' : 'N'),
+		? (NEW ? 'n' : (hdr->replied ? 'r' : ' ')) : (hdr->old ? 'O' : (NEW ? 'n' : 'N')),
 		hdr->deleted ? 'D' : (hdr->attach_del ? 'd' : ch),
 		hdr->tagged ? '*' :
 		(hdr->flagged ? '!' :
@@ -563,6 +566,7 @@ hdr_format_str (char *dest,
     mutt_FormatString (dest, destlen, elsestring, hdr_format_str, (unsigned long) hfi, flags);
 
   return (src);
+#undef NEW
 }
 
 void

@@ -540,6 +540,7 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
   ctx->path = safe_strdup (path);
 
   ctx->msgnotreadyet = -1;
+  ctx->collapsed = 0;
   
   if (flags & M_QUIET)
     ctx->quiet = 1;
@@ -956,7 +957,9 @@ int mx_sync_mailbox (CONTEXT *ctx)
 #undef this_body
     ctx->msgcount = j;
 
+    set_option (OPTSORTCOLLAPSE);
     mutt_sort_headers (ctx, 1); /* rethread from scratch */
+    unset_option (OPTSORTCOLLAPSE);
   }
 
   return (rc);

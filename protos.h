@@ -46,6 +46,13 @@ int _mutt_system (const char *, int);
 #define mutt_previous_subthread(x) _mutt_aside_thread(x,0,1)
 int _mutt_aside_thread (HEADER *, short, short);
 
+#define mutt_collapse_thread(x,y) _mutt_traverse_thread (x,y,M_THREAD_COLLAPSE)
+#define mutt_uncollapse_thread(x,y) _mutt_traverse_thread (x,y,M_THREAD_UNCOLLAPSE)
+#define mutt_get_hidden(x,y)_mutt_traverse_thread (x,y,M_THREAD_GET_HIDDEN) 
+#define mutt_thread_contains_unread(x,y) _mutt_traverse_thread (x,y,M_THREAD_UNREAD)
+#define mutt_thread_next_new(x,y) _mutt_traverse_thread(x,y,M_THREAD_NEXT_NEW)
+int _mutt_traverse_thread (CONTEXT *ctx, HEADER *hdr, int flag);
+
 #define ISSPACE(c) isspace((unsigned char)c)
 
 #define mutt_new_parameter() safe_calloc (1, sizeof (PARAMETER))
@@ -123,7 +130,7 @@ void mutt_block_signals_system (void);
 void mutt_body_handler (BODY *, STATE *);
 void mutt_bounce_message (HEADER *, ADDRESS *);
 void mutt_buffy (char *);
-void mutt_check_rescore (CONTEXT *ctx);
+void mutt_check_rescore (CONTEXT *);
 void mutt_clear_error (void);
 void mutt_create_alias (ENVELOPE *, ADDRESS *);
 void mutt_decode_attachment (BODY *, STATE *);
@@ -185,6 +192,7 @@ void mutt_update_encoding (BODY *a);
 void mutt_update_tree (ATTACHPTR **, short);
 void mutt_version (void);
 void mutt_view_attachments (HEADER *);
+void mutt_set_virtual (CONTEXT *);
 
 int mutt_addr_is_user (ADDRESS *);
 int mutt_alias_complete (char *, size_t);

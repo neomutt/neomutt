@@ -68,6 +68,8 @@ struct binding_t OpMain[] = {
   { "bounce-message",		OP_BOUNCE_MESSAGE,		"b" },
   { "change-folder",		OP_MAIN_CHANGE_FOLDER,		"c" },
   { "change-folder-readonly",	OP_MAIN_CHANGE_FOLDER_READONLY,	"\033c" },
+  { "collapse-thread",		OP_MAIN_COLLAPSE_THREAD,	"\033v" },
+  { "collapse-all",		OP_MAIN_COLLAPSE_ALL,		"\033V" },
   { "copy-message",		OP_COPY_MESSAGE,		"C" },
   { "decode-copy",		OP_DECODE_COPY,			"\033C" },
   { "decode-save",		OP_DECODE_SAVE,			"\033s" },

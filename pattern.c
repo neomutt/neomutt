@@ -899,12 +899,18 @@ int mutt_pattern_func (int op, char *prompt)
   if (op == M_LIMIT)
   {
     for (i = 0; i < Context->msgcount; i++)
+    {
       Context->hdrs[i]->virtual = -1;
+      Context->hdrs[i]->limited = 0;
+      Context->hdrs[i]->collapsed = 0;
+      Context->hdrs[i]->num_hidden = 0;
+    }
     Context->vcount = 0;
     Context->vsize = 0;
+    Context->collapsed = 0;
   }
 
-#define this_body Context->hdrs[i]->content
+#define THIS_BODY Context->hdrs[i]->content
 
   for (i = 0; i < Context->msgcount; i++)
     if (mutt_pattern_exec (pat, M_MATCH_FULL_ADDRESS, Context, Context->hdrs[i]))
@@ -925,19 +931,21 @@ int mutt_pattern_func (int op, char *prompt)
 	  break;
 	case M_LIMIT:
 	  Context->hdrs[i]->virtual = Context->vcount;
+	  Context->hdrs[i]->limited = 1;
 	  Context->v2r[Context->vcount] = i;
 	  Context->vcount++;
-	  Context->vsize+=this_body->length + this_body->offset -
-	                  this_body->hdr_offset;
+	  Context->vsize+=THIS_BODY->length + THIS_BODY->offset -
+	                  THIS_BODY->hdr_offset;
 	  break;
       }
     }
-#undef this_body
+#undef THIS_BODY
 
   mutt_clear_error ();
 
   if (op == M_LIMIT)
   {
+    Context->collapsed = 0;
     safe_free ((void **) &Context->pattern);
     if (Context->limit_pattern) 
       mutt_pattern_free (&Context->limit_pattern);
@@ -948,6 +956,9 @@ int mutt_pattern_func (int op, char *prompt)
       for (i = 0; i < Context->msgcount; i++)
       {
 	Context->hdrs[i]->virtual = i;
+	Context->hdrs[i]->limited = 0;
+	Context->hdrs[i]->num_hidden = 0;
+	Context->hdrs[i]->collapsed = 0;
 	Context->v2r[i] = i;
       }
 

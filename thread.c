@@ -17,7 +17,18 @@
  */ 
 
 #include "mutt.h"
+#include "mutt_curses.h"
+#include "mutt_menu.h"
 #include "sort.h"
+#include "mailbox.h"
+#include "copy.h"
+#include "mx.h"
+#include <sys/stat.h>
+#include <utime.h>
+
+#ifdef BUFFY_SIZE
+#include "buffy.h"
+#endif
 
 #include <string.h>
 #include <ctype.h>
@@ -38,7 +49,7 @@ static HEADER *find_reference (HEADER *cur, CONTEXT *ctx)
 }
 
 /* Determines whether to display a message's subject. */
-static int need_display_subject (HEADER *tree)
+static int need_display_subject (CONTEXT *ctx, HEADER *tree)
 {
   HEADER *tmp;
 
@@ -46,7 +57,7 @@ static int need_display_subject (HEADER *tree)
     return (1);
   for (tmp = tree->prev; tmp; tmp = tmp->prev)
   {
-    if (tmp->virtual >= 0)
+    if (tmp->virtual >= 0 || (tmp->collapsed && (!ctx->pattern || tmp->limited)))
     {
       if (!tmp->subject_changed)
 	return (0);
@@ -56,7 +67,7 @@ static int need_display_subject (HEADER *tree)
   }
   for (tmp = tree->parent; tmp; tmp = tmp->parent)
   {
-    if (tmp->virtual >= 0)
+    if (tmp->virtual >= 0 || (tmp->collapsed && (!ctx->pattern || tmp->limited)))
       return (0);
     else if (tmp->subject_changed)
       return (1);
@@ -66,7 +77,7 @@ static int need_display_subject (HEADER *tree)
 
 /* determines whether a later sibling or the child of a later 
    sibling is displayed.  */
-int is_next_displayed (HEADER *tree)
+static int is_next_displayed (CONTEXT *ctx, HEADER *tree)
 {
   int depth = 0;
 
@@ -75,7 +86,7 @@ int is_next_displayed (HEADER *tree)
 
   FOREVER
   {
-    if (tree->virtual >= 0)
+    if (tree->virtual >= 0 || (tree->collapsed && (!ctx->pattern || tree->limited)))
       return (1);
 
     if (tree->child)
@@ -122,8 +133,8 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
 
   FOREVER
   {
-    if (tree->virtual >= 0)
-      tree->display_subject = need_display_subject (tree);
+    if (tree->virtual >= 0 || (tree->collapsed && (!ctx->pattern || tree->limited)))
+      tree->display_subject = need_display_subject (ctx, tree);
 
     if (depth >= max_depth)
       safe_realloc ((void **) &pfx,
@@ -136,26 +147,26 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
     safe_free ((void **) &tree->tree);
     if (!depth)
     {
-      if (tree->virtual >= 0)
+      if (tree->virtual >= 0 || (tree->collapsed && (!ctx->pattern || tree->limited)))
 	tree->tree = safe_strdup ("");
     }
     else
     {
       myarrow = arrow + (depth - start_depth - (start_depth ? 0 : 1)) * 2;
-      nextdisp = is_next_displayed (tree);
+      nextdisp = is_next_displayed (ctx, tree);
       
       if (depth && start_depth == depth)
 	myarrow[0] = nextdisp ? M_TREE_LTEE : corner;
       else
 	myarrow[0] = M_TREE_HIDDEN;
       myarrow[1] = tree->fake_thread ? M_TREE_STAR : M_TREE_HLINE;
-      if (tree->virtual >= 0)
+      if (tree->virtual >= 0 || (tree->collapsed && (!ctx->pattern || tree->limited)))
       {
 	myarrow[2] = M_TREE_RARROW;
 	myarrow[3] = 0;
       }
 
-      if (tree->virtual >= 0)
+      if (tree->virtual >= 0 || (tree->collapsed && (!ctx->pattern || tree->limited)))
       {
 	tree->tree = safe_malloc ((2 + depth * 2) * sizeof (char));
 	if (start_depth > 1)
@@ -184,7 +195,7 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
 	mypfx[1] = M_TREE_SPACE;
       }
       depth++;
-      if (tree->virtual >= 0)
+      if (tree->virtual >= 0 || (tree->collapsed && (!ctx->pattern || tree->limited)))
         start_depth = depth;
       tree = tree->child;
     }
@@ -192,14 +203,14 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
     {
       while (!tree->next && tree->parent)
       {
-	if (tree->virtual >= 0)
+	if (tree->virtual >= 0 || (tree->collapsed && (!ctx->pattern || tree->limited)))
 	  start_depth = depth;
 	tree = tree->parent;
 	if (start_depth == depth)
 	  start_depth--;
 	depth--;
       }
-      if (tree->virtual >= 0)
+      if (tree->virtual >= 0 || (tree->collapsed && (!ctx->pattern || tree->limited)))
 	start_depth = depth;
       if ((tree = tree->next) == NULL)
 	break;
@@ -671,3 +682,166 @@ int _mutt_aside_thread (HEADER *hdr, short dir, short subthreads)
 
   return (tmp->virtual);
 }
+
+void mutt_set_virtual (CONTEXT *ctx)
+{
+  int i;
+
+  ctx->vcount = 0;
+  ctx->vsize = 0;
+
+#define THIS_BODY cur->content
+  for (i = 0; i < ctx->msgcount; i++)
+  {
+    HEADER *cur = ctx->hdrs[i];
+    if (cur->virtual != -1)
+    {
+      cur->virtual = ctx->vcount;
+      ctx->v2r[ctx->vcount] = i;
+      ctx->vcount++;
+      ctx->vsize += THIS_BODY->length + THIS_BODY->offset - THIS_BODY->hdr_offset;
+      cur->num_hidden = mutt_get_hidden (ctx, cur);
+    }
+  }
+#undef THIS_BODY
+}
+
+int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
+{
+  HEADER *roothdr = NULL, *top;
+  int final, reverse = (Sort & SORT_REVERSE), minmsgno;
+  int num_hidden = 0, unread = 0;
+  int min_unread_msgno = INT_MAX, min_unread = cur->virtual;
+#define CHECK_LIMIT (!ctx->pattern || cur->limited)
+
+  if ((Sort & SORT_MASK) != SORT_THREADS && !(flag & M_THREAD_GET_HIDDEN))
+  {
+    mutt_error ("Threading is not enabled.");
+    return (cur->virtual);
+  }
+
+  final = cur->virtual;
+  while (cur->parent) 
+     cur = cur->parent;
+  top = cur;
+  minmsgno = cur->msgno;
+  
+
+  if (!cur->read && CHECK_LIMIT)
+  {
+    unread = 1;
+    if (cur->msgno < min_unread_msgno)
+    {
+      min_unread = cur->virtual;
+      min_unread_msgno = cur->msgno;
+    }
+  }
+
+  if (cur->virtual == -1 && CHECK_LIMIT)
+    num_hidden++;
+
+  if (flag & (M_THREAD_COLLAPSE | M_THREAD_UNCOLLAPSE))
+  {
+    cur->collapsed = flag & M_THREAD_COLLAPSE;
+    if (cur->virtual != -1)
+    {
+      roothdr = cur;
+      if (flag & M_THREAD_COLLAPSE)
+	final = roothdr->virtual;
+    }
+  }
+
+  if ((cur = cur->child) == NULL)
+  {
+    /* return value depends on action requested */
+    if (flag & (M_THREAD_COLLAPSE | M_THREAD_UNCOLLAPSE))
+      return (final);
+    else if (flag & M_THREAD_UNREAD)
+      return (unread);
+    else if (flag & M_THREAD_GET_HIDDEN)
+      return (num_hidden);
+    else if (flag & M_THREAD_NEXT_NEW)
+      return (min_unread);
+  }
+  
+  FOREVER
+  {
+    if (flag & (M_THREAD_COLLAPSE | M_THREAD_UNCOLLAPSE))
+    {
+      cur->collapsed = flag & M_THREAD_COLLAPSE;
+      if (!roothdr && CHECK_LIMIT)
+      {
+	roothdr = cur;
+	if (flag & M_THREAD_COLLAPSE)
+	  final = roothdr->virtual;
+      }
+
+      if (reverse && (flag & M_THREAD_COLLAPSE) && (cur->msgno < minmsgno) 
+	  && CHECK_LIMIT)
+      {
+	minmsgno = cur->msgno;
+	final = cur->virtual;
+      }
+
+      if (flag & M_THREAD_COLLAPSE)
+      {
+	if (cur != roothdr)
+	  cur->virtual = -1;
+      }
+      else 
+      {
+	if (CHECK_LIMIT)
+	  cur->virtual = cur->msgno;
+      }
+    }
+
+
+    if (!cur->read && CHECK_LIMIT)
+    {
+      unread = 1;
+      if (cur->msgno < min_unread_msgno)
+      {
+	min_unread = cur->virtual;
+	min_unread_msgno = cur->msgno;
+      }
+    }
+
+    if (cur->virtual == -1 && CHECK_LIMIT)
+      num_hidden++;
+
+    if (cur->child)
+      cur = cur->child;
+    else if (cur->next)
+      cur = cur->next;
+    else
+    {
+      int done = 0;
+      while (!cur->next)
+      {
+	cur = cur->parent;
+	if (cur == top)
+	{
+	  done = 1;
+	  break;
+	}
+      }
+      if (done)
+	break;
+      cur = cur->next;
+    }
+  }
+
+  /* return value depends on action requested */
+  if (flag & (M_THREAD_COLLAPSE | M_THREAD_UNCOLLAPSE))
+    return (final);
+  else if (flag & M_THREAD_UNREAD)
+    return (unread);
+  else if (flag & M_THREAD_GET_HIDDEN)
+    return (num_hidden+1);
+  else if (flag & M_THREAD_NEXT_NEW)
+    return (min_unread);
+
+  return (0);
+#undef CHECK_LIMIT
+}
+

@@ -100,7 +100,8 @@ typedef enum
   M_FORMAT_MAKEPRINT	= (1<<2), /* make sure that all chars are printable */
   M_FORMAT_OPTIONAL	= (1<<3),
   M_FORMAT_STAT_FILE	= (1<<4), /* used by mutt_attach_fmt */
-  M_FORMAT_ARROWCURSOR	= (1<<5)  /* reserve space for arrow_cursor */
+  M_FORMAT_ARROWCURSOR	= (1<<5), /* reserve space for arrow_cursor */
+  M_FORMAT_INDEX	= (1<<6)  /* this is a main index entry */
 } format_flag;
 
 /* types for mutt_add_hook() */
@@ -122,6 +123,12 @@ typedef enum
 #define M_TREE_STAR		8
 #define M_TREE_HIDDEN		9
 #define M_TREE_MAX		10
+
+#define M_THREAD_COLLAPSE	(1<<0)
+#define M_THREAD_UNCOLLAPSE	(1<<1)
+#define M_THREAD_GET_HIDDEN	(1<<2)
+#define M_THREAD_UNREAD		(1<<3)
+#define M_THREAD_NEXT_NEW	(1<<4)
 
 enum
 {
@@ -236,11 +243,13 @@ enum
   OPTASKBCC,
   OPTASKCC,
   OPTATTACHSPLIT,
+  OPTAUTOCOLLAPSE,
   OPTAUTOEDIT,
   OPTAUTOTAG,
   OPTBEEP,
   OPTBEEPNEW,
   OPTCHECKNEW,
+  OPTCOLLAPSENEW,
   OPTCONFIRMAPPEND,
   OPTCONFIRMCREATE,
   OPTEDITHDRS,
@@ -280,6 +289,7 @@ enum
   OPTSUSPEND,
   OPTTHOROUGHSRC,
   OPTTILDE,
+  OPTUNCOLLAPSEJUMPNEW,
   OPTUSE8BITMIME,
   OPTUSEDOMAIN,
   OPTUSEFROM,
@@ -288,7 +298,7 @@ enum
   OPTWRAP,
   OPTWRAPSEARCH,
   OPTWRITEBCC,		/* write out a bcc header? */
-  
+
   /* PGP options */
   
 #ifdef _PGPPATH
@@ -318,6 +328,7 @@ enum
   OPTFORCEREDRAWPAGER,	/* (pseudo) used to force a redraw in the pager */
   OPTSORTSUBTHREADS,	/* (pseudo) used when $sort_aux changes */
   OPTNEEDRESCORE,	/* (pseudo) set when the `score' command is used */
+  OPTSORTCOLLAPSE,	/* (pseudo) used by mutt_sort_headers() */
 
 #ifdef _PGPPATH
   OPTPGPCHECKTRUST,	/* (pseudo) used by pgp_select_key () */
@@ -502,6 +513,11 @@ typedef struct header
   unsigned int searched : 1;
   unsigned int matched : 1;
 
+  /* the following are used to support collapsing threads  */
+  unsigned int collapsed : 1; /* is this message part of a collapsed thread? */
+  unsigned int limited : 1;   /* is this message in a limited view?  */
+  size_t num_hidden;          /* number of hidden messages in this view */
+
   int pair; /* color-pair to use when displaying in the index */
 
   time_t date_sent;     /* time when the message was sent (UTC) */
@@ -583,6 +599,7 @@ typedef struct
   unsigned int setgid : 1;
   unsigned int quiet : 1;	/* inhibit status messages? */
   unsigned int revsort : 1;	/* mailbox sorted in reverse? */
+  unsigned int collapsed : 1;   /* are all threads collapsed? */
 } CONTEXT;
 
 typedef struct attachptr
