@@ -1270,9 +1270,13 @@ int mutt_index_menu (void)
       case OP_MAIN_NEXT_NEW_THEN_UNREAD:
       case OP_MAIN_PREV_NEW_THEN_UNREAD:
 
+      {
+	int first_unread = -1;
+	int first_new    = -1;
+	
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-      next_unread_again:
+
 	i = menu->current;
 	menu->current = -1;
 	for (j = 0; j != Context->vcount; j++)
@@ -1299,43 +1303,40 @@ int mutt_index_menu (void)
 
 	  if (CURHDRi->collapsed && (Sort & SORT_MASK) == SORT_THREADS)
 	  {
-	    if ((op == OP_MAIN_NEXT_UNREAD || op == OP_MAIN_PREV_UNREAD) &&
-		UNREAD (CURHDRi))
-	    {
-	      menu->current = i;
-	      break;
-	    }
-	    if ((op == OP_MAIN_NEXT_NEW || op == OP_MAIN_PREV_NEW || 
-		 op == OP_MAIN_NEXT_NEW_THEN_UNREAD || op == OP_MAIN_PREV_NEW_THEN_UNREAD) &&
-		UNREAD (CURHDRi) == 1)
-	    {
-	      menu->current = i;
-	      break;
-	    }
+	    if (UNREAD (CURHDRi) && first_unread == -1)
+	      first_unread = i;
+	    if (UNREAD (CURHDRi) == 1 && first_new == -1)
+	      first_new = i;
 	  }
 	  else if ((!CURHDRi->deleted && !CURHDRi->read))
 	  {
-	    if (op == OP_MAIN_NEXT_UNREAD || op == OP_MAIN_PREV_UNREAD || !CURHDRi->old)
-	    {
-	      menu->current = i;
-	      break;
-	    }
+	    if (first_unread == -1)
+	      first_unread = i;
+	    if ((!CURHDRi->old) && first_new == -1)
+	      first_new = i;
 	  }
+	  
+	  if ((op == OP_MAIN_NEXT_UNREAD || op == OP_MAIN_PREV_UNREAD) &&
+	      first_unread != -1)
+	    break;
+	  if ((op == OP_MAIN_NEXT_NEW || op == OP_MAIN_PREV_NEW ||
+	       op == OP_MAIN_NEXT_NEW_THEN_UNREAD || op == OP_MAIN_PREV_NEW_THEN_UNREAD)
+	      && first_new != -1)
+	    break;
 	}
 #undef CURHDRi
+	if ((op == OP_MAIN_NEXT_NEW || op == OP_MAIN_PREV_NEW ||
+	     op == OP_MAIN_NEXT_NEW_THEN_UNREAD || op == OP_MAIN_PREV_NEW_THEN_UNREAD) 
+	    && first_new != -1)
+	  menu->current = first_new;
+	else if ((op == OP_MAIN_NEXT_UNREAD || op == OP_MAIN_PREV_UNREAD ||
+		  op == OP_MAIN_NEXT_NEW_THEN_UNREAD || op == OP_MAIN_PREV_NEW_THEN_UNREAD)
+		 && first_unread != -1)
+	  menu->current = first_unread;
+
 	if (menu->current == -1)
 	{
 	  menu->current = menu->oldcurrent;
-	  if (op == OP_MAIN_NEXT_NEW_THEN_UNREAD) 
-	  {
-	    op = OP_MAIN_NEXT_UNREAD;
-	    goto next_unread_again;
-	  }
-	  if (op == OP_MAIN_PREV_NEW_THEN_UNREAD)
-	  {
-	    op = OP_MAIN_PREV_UNREAD;
-	    goto next_unread_again;
-	  }
 	  mutt_error ("%s%s.", (op == OP_MAIN_NEXT_NEW || op == OP_MAIN_PREV_NEW) ? _("No new messages") : _("No unread messages"),
 		      Context->pattern ? _(" in this limited view") : "");
 	}
@@ -1347,7 +1348,7 @@ int mutt_index_menu (void)
 	else
 	  menu->redraw = REDRAW_MOTION;
 	break;
-
+      }
       case OP_FLAG_MESSAGE:
 
 	CHECK_MSGCOUNT;
