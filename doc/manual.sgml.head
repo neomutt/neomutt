@@ -129,14 +129,16 @@ around while editing are very similar to those of Emacs.
 ^D or <Delete>  delete-char     delete the char under the cursor
 ^E or <End>     eol             move to the end of the line
 ^F or <Right>   forward-char    move forward one char
+<Tab>           complete        complete filename or alias
 ^K              kill-eol        delete to the end of the line
+^T              complete-query  complete address with query
 ^U              kill-line       delete entire line
+^V              quote-char      quote the next typed key
 ^W              kill-word       kill the word in front of the cursor
 <Up>            history-up      recall previous string from history
 <Down>          history-down    recall next string from history
 <BackSpace>     backspace       kill the char in front of the cursor
 ^G              n/a             abort
-<Tab>           n/a             complete filename (only when prompting for a file)
 <Return>        n/a             finish editing
 </verb></tscreen>
 
@@ -175,8 +177,10 @@ o               change the current sort method
 O               reverse sort the mailbox
 q               save changes and exit
 s               save-message
+T               tag messages matching a pattern
 t               toggle the tag on a message
 ESC t           toggle tag on entire message thread
+U               undelete messages matching a pattern
 u               undelete-message
 v               view-attachments
 x               abort changes and exit
@@ -187,8 +191,7 @@ $               save changes to mailbox
 /               search
 ESC /           search-reverse
 ^L              clear and redraw the screen
-^T              tag messages matching a pattern
-^U              undelete messages matching a pattern
+^T              untag messages matching a pattern
 </verb></tscreen>
 
 <sect3>Status Flags
@@ -243,10 +246,15 @@ featureful.
 <Return>        go down one line
 <Space>         display the next page (or next message if at the end of a message)
 -               go back to the previous page
-n               display the next message
+n               search for next match
+S               skip beyond quoted text
+T               toggle display of quoted text
 ?               show keybindings
 /               search for a regular expression (pattern)
+ESC /           search backwards for a regular expression
 \               toggle search pattern coloring
+^               jump to the top of the message
+$               jump to the bottom of the message
 </verb></tscreen>
 
 In addition, many of the functions from the <em/index/ are available in
@@ -464,7 +472,9 @@ A	attach-message		attach message(s) to the message
 ESC k   attach-key              attach a PGP public key
 d       edit-description        edit description on attachment
 D       detach-file             detach a file
-T       edit-to                 edit the To field
+t       edit-to                 edit the To field
+ESC f   edit-from               edit the From field
+r       edit-reply-to           edit the Reply-To field
 c       edit-cc                 edit the Cc field
 b       edit-bcc                edit the Bcc field
 y       send-message            send the message
