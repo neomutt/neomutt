@@ -1,3 +1,7 @@
+2003-11-12 14:01:03  René Clerc  <rene@clerc.nl>  (roessler)
+
+	* po/nl.po: update
+
 2003-11-12 13:49:32  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* configure.in, mutt_idna.c, mutt_idna.h, mutt_socket.c: Fix
