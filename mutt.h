@@ -154,7 +154,8 @@ typedef enum
 #define M_TREE_RARROW		7
 #define M_TREE_STAR		8
 #define M_TREE_HIDDEN		9
-#define M_TREE_MAX		10
+#define M_TREE_MISSING		10
+#define M_TREE_MAX		11
 
 #define M_THREAD_COLLAPSE	(1<<0)
 #define M_THREAD_UNCOLLAPSE	(1<<1)
@@ -329,6 +330,7 @@ enum
   OPTHEADER,
   OPTHELP,
   OPTHIDDENHOST,
+  OPTHIDEMISSING,
   OPTIGNORELISTREPLYTO,
 #ifdef USE_IMAP
   OPTIMAPLSUB,
@@ -385,6 +387,7 @@ enum
   OPTSUSPEND,
   OPTTEXTFLOWED,
   OPTTHOROUGHSRC,
+  OPTTHREADRECEIVED,
   OPTTILDE,
   OPTUNCOLLAPSEJUMP,
   OPTUSE8BITMIME,
@@ -617,8 +620,6 @@ typedef struct header
   unsigned int replied : 1;
   unsigned int subject_changed : 1; /* used for threading */
   unsigned int display_subject : 1; /* used for threading */
-  unsigned int fake_thread : 1;     /* no ref matched, but subject did */
-  unsigned int threaded : 1;        /* message has been threaded */
   unsigned int recip_valid : 1;  /* is_recipient is valid */
   unsigned int active : 1;	    /* message is not to be removed */
   
@@ -652,13 +653,8 @@ typedef struct header
   BODY *content;	/* list of MIME parts */
   char *path;
   
-  /* the following are used for threading support */
-  struct header *parent;
-  struct header *child;  /* decendants of this message */
-  struct header *next;   /* next message in this thread */
-  struct header *prev;   /* previous message in thread */
-  struct header *last_sort; /* last message in subthread, for secondary SORT_LAST */
   char *tree;            /* character string to print thread tree */
+  struct thread *thread;
 
 #ifdef MIXMASTER
   LIST *chain;
@@ -672,6 +668,17 @@ typedef struct header
   void *data;            /* driver-specific data */
 #endif
 } HEADER;
+
+typedef struct thread
+{
+  unsigned int fake_thread : 1;
+  struct thread *parent;
+  struct thread *child;
+  struct thread *next;
+  struct thread *prev;
+  HEADER *message;
+  HEADER *sort_key;
+} THREAD;
 
 #include "mutt_regex.h"
 
@@ -705,9 +712,10 @@ typedef struct
   char *pattern;                /* limit pattern string */
   pattern_t *limit_pattern;     /* compiled limit pattern */
   HEADER **hdrs;
-  HEADER *tree;			/* top of thread tree */
+  THREAD *tree;			/* top of thread tree */
   HASH *id_hash;		/* hash table by msg id */
   HASH *subj_hash;		/* hash table by subject */
+  HASH *thread_hash;		/* hash table for threading */
   int *v2r;			/* mapping from virtual to real msgno */
   int hdrmax;			/* number of pointers in hdrs */
   int msgcount;			/* number of messages in the mailbox */

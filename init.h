@@ -640,6 +640,13 @@ struct option_t MuttVars[] = {
   ** affect the generation of Message-IDs, and it will not lead to the 
   ** cut-off of first-level domains.
   */
+  { "hide_missing",	DT_BOOL, R_NONE, OPTHIDEMISSING, 1 },
+  /*
+  ** .pp
+  ** When set, mutt will not indicate the presence of missing messages
+  ** whose ancestors neither have siblings nor are in the current mailbox,
+  ** in the thread tree.
+  */
   { "history",		DT_NUM,	 R_NONE, UL &HistSize, 10 },
   /*
   ** .pp
@@ -2159,6 +2166,12 @@ struct option_t MuttVars[] = {
   ** features, you'll need support in your editor.
   ** .pp
   ** Note that $$indent_string is ignored when this option is set.
+  */
+  { "thread_received",	DT_BOOL, R_NONE, OPTTHREADRECEIVED, 0 },
+  /*
+  ** .pp
+  ** When set, mutt uses the date received rather than the date sent
+  ** to thread messages by subject.
   */
   { "thorough_search",	DT_BOOL, R_NONE, OPTTHOROUGHSRC, 0 },
   /*

@@ -96,6 +96,9 @@ BODY *mutt_read_mime_header (FILE *, int);
 
 CONTENT *mutt_get_content_info (const char *fname, BODY *b);
 
+HASH *mutt_make_id_hash (CONTEXT *);
+HASH *mutt_make_subj_hash (CONTEXT *);
+
 LIST *mutt_make_references(ENVELOPE *e);
 
 ENVELOPE *mutt_read_rfc822_header (FILE *, HEADER *, short, short);
@@ -280,8 +283,7 @@ int mutt_is_list_recipient (int, ADDRESS *, ADDRESS *);
 int mutt_is_subscribed_list (ADDRESS *);
 int mutt_is_text_type (int, char *);
 int mutt_is_valid_mailbox (const char *);
-int mutt_messages_in_thread (HEADER *);
-int mutt_msgno_in_thread (HEADER *);
+int mutt_messages_in_thread (HEADER *, int);
 int mutt_multi_choice (char *prompt, char *letters);
 int mutt_needs_mailcap (BODY *);
 int mutt_num_postponed (int);

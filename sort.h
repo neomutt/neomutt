@@ -40,7 +40,7 @@ void mutt_clear_threads (CONTEXT *);
 void mutt_sort_headers (CONTEXT *, int);
 void mutt_sort_threads (CONTEXT *, int);
 int mutt_select_sort (int);
-HEADER *mutt_sort_subthreads (HEADER *, sort_t *);
+THREAD *mutt_sort_subthreads (THREAD *);
 
 WHERE short BrowserSort INITVAL (SORT_SUBJECT);
 WHERE short Sort INITVAL (SORT_DATE);

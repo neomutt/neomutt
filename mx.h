@@ -77,7 +77,7 @@ int mbox_strict_cmp_headers (const HEADER *, const HEADER *);
 int mutt_reopen_mailbox (CONTEXT *, int *);
 
 void mx_alloc_memory (CONTEXT *);
-void mx_update_context (CONTEXT *);
+void mx_update_context (CONTEXT *, int);
 void mx_update_tables (CONTEXT *, int);
 
 

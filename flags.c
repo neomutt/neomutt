@@ -240,10 +240,9 @@ void mutt_tag_set_flag (int flag, int bf)
     if (Context->hdrs[Context->v2r[j]]->tagged)
       mutt_set_flag (Context, Context->hdrs[Context->v2r[j]], flag, bf);
 }
-
-int mutt_thread_set_flag (HEADER *cur, int flag, int bf, int subthread)
+int mutt_thread_set_flag (HEADER *hdr, int flag, int bf, int subthread)
 {
-  HEADER *start;
+  THREAD *start, *cur = hdr->thread;
   
   if ((Sort & SORT_MASK) != SORT_THREADS)
   {
@@ -256,12 +255,17 @@ int mutt_thread_set_flag (HEADER *cur, int flag, int bf, int subthread)
       cur = cur->parent;
   start = cur;
   
-  mutt_set_flag (Context, cur, flag, bf);
+  if (cur->message)
+    mutt_set_flag (Context, cur->message, flag, bf);
+
   if ((cur = cur->child) == NULL)
     return (0);
+
   FOREVER
   {
-    mutt_set_flag (Context, cur, flag, bf);
+    if (cur->message)
+      mutt_set_flag (Context, cur->message, flag, bf);
+
     if (cur->child)
       cur = cur->child;
     else if (cur->next)

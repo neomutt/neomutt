@@ -82,7 +82,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
 {
   char buf[HUGE_STRING];
   char return_path[LONG_STRING];
-  int count = 0;
+  int count = 0, oldmsgcount = ctx->msgcount;
   int lines;
   time_t t, tz;
   long loc, tmploc;
@@ -138,6 +138,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
 
       if (fgets (buf, sizeof (buf) - 1, ctx->fp) == NULL)
       {
+	/* TODO: memory leak??? */
 	dprint (1, (debugfile, "mmdf_parse_mailbox: unexpected EOF\n"));
 	break;
       }
@@ -201,7 +202,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
       if (!hdr->env->from)
 	hdr->env->from = rfc822_cpy_adr (hdr->env->return_path);
 
-      mx_update_context (ctx);
+      ctx->msgcount++;
       if(ctx->magic == M_KENDRA && feof(ctx->fp))
 	break;
     }
@@ -213,7 +214,10 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
     }
   }
 
-  return 0;
+  if (ctx->msgcount > oldmsgcount)
+    mx_update_context (ctx, ctx->msgcount - oldmsgcount);
+
+  return (0);
 }
 
 /* Note that this function is also called when new mail is appended to the
@@ -359,7 +363,7 @@ int mbox_parse_mailbox (CONTEXT *ctx)
 	}
       }
 
-      mx_update_context (ctx);
+      ctx->msgcount++;
 
       if (!curhdr->env->return_path && return_path[0])
 	curhdr->env->return_path = rfc822_parse_adrlist (curhdr->env->return_path, return_path);
@@ -392,6 +396,8 @@ int mbox_parse_mailbox (CONTEXT *ctx)
 
     if (!PREV->lines)
       PREV->lines = lines ? lines - 1 : 0;
+
+    mx_update_context (ctx, count);
   }
 
   return (0);
@@ -1074,8 +1080,11 @@ int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
   old_msgcount = 0;
   
   /* simulate a close */
-  hash_destroy (&ctx->id_hash, NULL);
-  hash_destroy (&ctx->subj_hash, NULL);
+  if (ctx->id_hash)
+    hash_destroy (&ctx->id_hash, NULL);
+  if (ctx->subj_hash)
+    hash_destroy (&ctx->subj_hash, NULL);
+  mutt_clear_threads (ctx);
   safe_free ((void **) &ctx->v2r);
   if (ctx->readonly)
   {
@@ -1100,8 +1109,8 @@ int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
   ctx->unread = 0;
   ctx->flagged = 0;
   ctx->changed = 0;
-  ctx->id_hash = hash_create (1031);
-  ctx->subj_hash = hash_create (1031);
+  ctx->id_hash = NULL;
+  ctx->subj_hash = NULL;
 
   switch (ctx->magic)
   {

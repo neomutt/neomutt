@@ -411,12 +411,12 @@ hdr_format_str (char *dest,
 
     case 'e':
       snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
-      snprintf (dest, destlen, fmt, mutt_msgno_in_thread(hdr) + 1);
+      snprintf (dest, destlen, fmt, mutt_messages_in_thread(hdr, 1));
       break;
 
     case 'E':
       snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
-      snprintf (dest, destlen, fmt, mutt_messages_in_thread(hdr));
+      snprintf (dest, destlen, fmt, mutt_messages_in_thread(hdr, 0));
       break;
 
     case 'f':
@@ -653,11 +653,13 @@ hdr_format_str (char *dest,
 	i = 1;	/* reduce reuse recycle */
 	htmp = NULL;
 	if (flags & M_FORMAT_TREE
-	    && (hdr->prev && hdr->prev->env->x_label))
-	  htmp = hdr->prev;
+	    && (hdr->thread->prev && hdr->thread->prev->message
+		&& hdr->thread->prev->message->env->x_label))
+	  htmp = hdr->thread->prev->message;
 	else if (flags & M_FORMAT_TREE
-		 && (hdr->parent && hdr->parent->env->x_label))
-	  htmp = hdr->parent;
+		 && (hdr->thread->parent && hdr->thread->parent->message
+		     && hdr->thread->parent->message->env->x_label))
+	  htmp = hdr->thread->parent->message;
 	if (htmp && mutt_strcasecmp (hdr->env->x_label,
 				     htmp->env->x_label) == 0)
 	  i = 0;
@@ -674,7 +676,7 @@ hdr_format_str (char *dest,
         mutt_format_s (dest, destlen, prefix, "");
 
       break;
-      
+
     default:
       snprintf (dest, destlen, "%%%s%c", prefix, op);
       break;

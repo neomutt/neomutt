@@ -53,7 +53,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   char tempfile[_POSIX_PATH_MAX];
   int msgno;
   IMAP_HEADER h;
-  int rc, mfhrc;
+  int rc, mfhrc, oldmsgcount;
   int fetchlast = 0;
   const char *want_headers = "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE IN-REPLY-TO REPLY-TO LINES X-LABEL";
 
@@ -120,6 +120,8 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
     memset (&h, 0, sizeof (h));
     h.data = safe_calloc (1, sizeof (IMAP_HEADER_DATA));
 
+    oldmsgcount = ctx->msgcount;
+
     /* this DO loop does two things:
      * 1. handles untagged messages, so we can try again on the same msg
      * 2. fetches the tagged response at the end of the last message.
@@ -167,10 +169,13 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       /* content built as a side-effect of mutt_read_rfc822_header */
       ctx->hdrs[msgno]->content->length = h.content_length;
 
-      mx_update_context (ctx); /* increments ->msgcount */
+      ctx->msgcount++;
     }
     while ((rc != IMAP_CMD_OK) && ((mfhrc == -1) ||
       ((msgno + 1) >= fetchlast)));
+
+    if (ctx->msgcount > oldmsgcount)
+      mx_update_context (ctx, ctx->msgcount - oldmsgcount);
 
     if ((mfhrc < -1) || ((rc != IMAP_CMD_CONTINUE) && (rc != IMAP_CMD_OK)))
     {
@@ -343,15 +348,15 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
    * mutt_free_envelope gets called, but keep their spots in the hash. This
    * confuses threading. Alternatively we could try to merge the new
    * envelope into the old one. Also messy and lowlevel. */
-  if (h->env->message_id)
+  if (ctx->id_hash && h->env->message_id)
     hash_delete (ctx->id_hash, h->env->message_id, h, NULL);
-  if (h->env->real_subj)
+  if (ctx->subj_hash && h->env->real_subj)
     hash_delete (ctx->subj_hash, h->env->real_subj, h, NULL);
   mutt_free_envelope (&h->env);
   h->env = mutt_read_rfc822_header (msg->fp, h, 0, 0);
-  if (h->env->message_id)
+  if (ctx->id_hash && h->env->message_id)
     hash_insert (ctx->id_hash, h->env->message_id, h, 0);
-  if (h->env->real_subj)
+  if (ctx->subj_hash && h->env->real_subj)
     hash_insert (ctx->subj_hash, h->env->real_subj, h, 1);
 
   /* see above. We want the new status in h->read, so we unset it manually

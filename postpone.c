@@ -291,6 +291,8 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
 	   the user attempted to reply to is in this mailbox */
 	p = tmp->data + 18;
 	SKIPWS (p);
+	if (!ctx->id_hash)
+	  ctx->id_hash = mutt_make_id_hash (ctx);
 	*cur = hash_find (ctx->id_hash, p);
       }
 

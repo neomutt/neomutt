@@ -22,76 +22,37 @@
 #include <string.h>
 #include <ctype.h>
 
-/* returns 1 if `a' is a descendant (child) of thread `b' */
-static int is_descendant (HEADER *a, HEADER *b)
+#define VISIBLE(hdr, ctx) (hdr->virtual >= 0 || (hdr->collapsed && (!ctx->pattern || hdr->limited)))
+
+/* determine whether a is a descendant of b */
+static int is_descendant (THREAD *a, THREAD *b)
 {
-  /* find the top parent of the thread */
-  while (a->parent)
-    a = a->parent;
-  return (a == b);
-}
-
-/* This function makes use of the fact that Mutt stores message references in
- * reverse order (i.e., last to first).  This is optiminal since we would like
- * to find the most recent message to which "cur" refers itself.  
- */
-
-static HEADER *find_ref (LIST *refs, HEADER *cur, CONTEXT *ctx)
-{
-  HEADER *ptr;
-
-  for (; refs; refs = refs->next)
+  while (a)
   {
-    /* ups, this message is in a reference loop. bad. */
-    if (cur->env->message_id && !strcmp (cur->env->message_id, refs->data))
-      continue;
-
-    if ((ptr = hash_find (ctx->id_hash, refs->data)))
-    {
-      if (is_descendant (ptr, cur))
-	continue;
-
-      return ptr;
-    }
+    if (a == b)
+      return (1);
+    a = a->parent;
   }
-  
-  return NULL;
-}
-
-/*
- * In-Reply-To contains the direct parents according to RFC 2822.
- * References is second best, since it may contain indirect parents,
- * too.
- */
-
-static HEADER *find_reference (HEADER *cur, CONTEXT *ctx)
-{
-  HEADER *ptr;
-  
-  if ((ptr = find_ref (cur->env->in_reply_to, cur, ctx)))
-    return ptr;
-  if ((ptr = find_ref (cur->env->references, cur, ctx)))
-    return ptr;
-  
-  return NULL;
+  return (0);
 }
 
 /* Determines whether to display a message's subject. */
-static int need_display_subject (CONTEXT *ctx, HEADER *tree)
+static int need_display_subject (CONTEXT *ctx, HEADER *hdr)
 {
-  HEADER *tmp;
+  THREAD *tmp, *tree = hdr->thread;
 
   /* if our subject is different from our parent's, display it */
-  if (tree->subject_changed)
+  if (hdr->subject_changed)
     return (1);
 
   /* if our subject is different from that of our closest previously displayed
    * sibling, display the subject */
   for (tmp = tree->prev; tmp; tmp = tmp->prev)
   {
-    if (tmp->virtual >= 0 || (tmp->collapsed && (!ctx->pattern || tmp->limited)))
+    hdr = tmp->message;
+    if (hdr && VISIBLE (hdr, ctx))
     {
-      if (tmp->subject_changed)
+      if (hdr->subject_changed)
 	return (1);
       else
 	break;
@@ -102,10 +63,14 @@ static int need_display_subject (CONTEXT *ctx, HEADER *tree)
    * closest displayed ancestor, display the subject */
   for (tmp = tree->parent; tmp; tmp = tmp->parent)
   {
-    if (tmp->virtual >= 0 || (tmp->collapsed && (!ctx->pattern || tmp->limited)))
-      return (0);
-    else if (tmp->subject_changed)
-      return (1);
+    hdr = tmp->message;
+    if (hdr)
+    {
+      if (VISIBLE (hdr, ctx))
+	return (0);
+      else if (hdr->subject_changed)
+	return (1);
+    }
   }
   
   /* if we have no visible parent or previous sibling, display the subject */
@@ -116,16 +81,18 @@ static int need_display_subject (CONTEXT *ctx, HEADER *tree)
  * sibling is displayed.  
  */
 
-static int is_next_displayed (CONTEXT *ctx, HEADER *tree)
+static int is_next_displayed (CONTEXT *ctx, THREAD *tree)
 {
   int depth = 0;
+  HEADER *hdr;
 
   if ((tree = tree->next) == NULL)
     return (0);
 
   FOREVER
   {
-    if (tree->virtual >= 0 || (tree->collapsed && (!ctx->pattern || tree->limited)))
+    hdr = tree->message;
+    if (hdr && VISIBLE (hdr, ctx))
       return (1);
 
     if (tree->child)
@@ -162,19 +129,23 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
   char corner = Sort & SORT_REVERSE ? M_TREE_ULCORNER : M_TREE_LLCORNER;
   int depth = 0, start_depth = 0, max_depth = 0, max_width = 0;
   int nextdisp = 0, visible;
-  HEADER *tree = ctx->tree;
+  THREAD *tree = ctx->tree;
   HEADER **array = ctx->hdrs + (Sort & SORT_REVERSE ? ctx->msgcount - 1 : 0);
-
-  /* A NULL tree should never be passed here, but may occur if there is
-   * a cycle.  
-   */
-  if (!tree)
-    return;
+  HEADER *hdr;
 
   FOREVER
   {
-    if ((visible = (tree->virtual >= 0 || (tree->collapsed && (!ctx->pattern || tree->limited)))))
-      tree->display_subject = need_display_subject (ctx, tree);
+    hdr = tree->message;
+
+    if (hdr)
+    {
+      if ((visible = VISIBLE (hdr, ctx)) !=  0)
+	hdr->display_subject = need_display_subject (ctx, hdr);
+
+      safe_free ((void **) &hdr->tree);
+    }
+    else
+      visible = 0;
 
     if (depth >= max_depth)
       safe_realloc ((void **) &pfx,
@@ -184,8 +155,6 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
       safe_realloc ((void **) &arrow,
 		    (max_width += 16) * 2 * sizeof (char));
 
-    safe_free ((void **) &tree->tree);
-
     if (depth)
     {
       myarrow = arrow + (depth - start_depth - (start_depth ? 0 : 1)) * 2;
@@ -194,8 +163,8 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
       if (depth && start_depth == depth)
 	myarrow[0] = nextdisp ? M_TREE_LTEE : corner;
       else
-	myarrow[0] = M_TREE_HIDDEN;
-      myarrow[1] = tree->fake_thread ? M_TREE_STAR : M_TREE_HLINE;
+	myarrow[0] = tree->parent->message ? M_TREE_HIDDEN : M_TREE_MISSING;
+      myarrow[1] = (tree->fake_thread) ? M_TREE_STAR : M_TREE_HLINE;
       if (visible)
       {
 	myarrow[2] = M_TREE_RARROW;
@@ -204,21 +173,21 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
 
       if (visible)
       {
-	tree->tree = safe_malloc ((2 + depth * 2) * sizeof (char));
+	hdr->tree = safe_malloc ((2 + depth * 2) * sizeof (char));
 	if (start_depth > 1)
 	{
-	  strncpy (tree->tree, pfx, (start_depth - 1) * 2);
-	  strfcpy (tree->tree + (start_depth - 1) * 2,
+	  strncpy (hdr->tree, pfx, (start_depth - 1) * 2);
+	  strfcpy (hdr->tree + (start_depth - 1) * 2,
 		   arrow, (2 + depth - start_depth) * 2);
 	}
 	else
-	  strfcpy (tree->tree, arrow, 2 + depth * 2);
+	  strfcpy (hdr->tree, arrow, 2 + depth * 2);
       }
     }
 
-    if (linearize)
+    if (linearize && hdr)
     {
-      *array = tree;
+      *array = hdr;
       array += Sort & SORT_REVERSE ? -1 : 1;
     }
 
@@ -230,25 +199,33 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
 	mypfx[0] = nextdisp ? M_TREE_VLINE : M_TREE_SPACE;
 	mypfx[1] = M_TREE_SPACE;
       }
-      depth++;
+      if (depth || !option (OPTHIDEMISSING)
+	  || tree->message || tree->child->next)
+	depth++;
       if (visible)
         start_depth = depth;
       tree = tree->child;
+      hdr = tree->message;
     }
     else
     {
       while (!tree->next && tree->parent)
       {
-	if (tree->virtual >= 0 || (tree->collapsed && (!ctx->pattern || tree->limited)))
+	if (hdr && VISIBLE (hdr, ctx))
 	  start_depth = depth;
 	tree = tree->parent;
-	if (start_depth == depth)
-	  start_depth--;
-	depth--;
+	hdr = tree->message;
+	if (depth)
+	{
+	  if (start_depth == depth)
+	    start_depth--;
+	  depth--;
+	}
       }
-      if (tree->virtual >= 0 || (tree->collapsed && (!ctx->pattern || tree->limited)))
+      if (hdr && VISIBLE (hdr, ctx))
 	start_depth = depth;
-      if ((tree = tree->next) == NULL)
+      tree = tree->next;
+      if (!tree)
 	break;
     }
   }
@@ -261,9 +238,12 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
  * assumes that `tree' is the first element in the list, and not some
  * element in the middle of the list.
  */
-static void insert_message (HEADER **tree, HEADER *msg, sort_t *sortFunc)
+
+static void insert_message (THREAD **tree, THREAD *msg)
 {
-  HEADER *tmp;
+#if 0 /* XXX */
+  THREAD *tmp;
+#endif
 
   /* NOTE: we do NOT clear the `msg->child' link here because when we do
    * the pseudo-threading, we want to preserve any sub-threads.  So we clear
@@ -279,13 +259,16 @@ static void insert_message (HEADER **tree, HEADER *msg, sort_t *sortFunc)
   }
 
   /* check to see if this message belongs at the beginning of the list */
+#if 0 /* XXX */
   if (!sortFunc || sortFunc ((void *) &msg, (void *) tree) < 0)
   {
+#endif
     (*tree)->prev = msg;
     msg->next = *tree;
     msg->prev = NULL;
     *tree = msg;
     return;
+#if 0 /* XXX */
   }
   
   /* search for the correct spot in the list to insert */
@@ -303,47 +286,114 @@ static void insert_message (HEADER **tree, HEADER *msg, sort_t *sortFunc)
   tmp->next = msg;
   msg->prev = tmp;
   msg->next = NULL;
+#endif
 }
 
+static LIST *make_subject_list (THREAD *cur, time_t *dateptr)
+{
+  THREAD *start = cur;
+  ENVELOPE *env;
+  time_t thisdate;
+  LIST *curlist, *oldlist, *newlist, *subjects = NULL;
+  int rc = 0;
+  
+  FOREVER
+  {
+    while (!cur->message)
+      cur = cur->child;
+
+    if (dateptr)
+    {
+      thisdate = option (OPTTHREADRECEIVED)
+	? cur->message->received : cur->message->date_sent;
+      if (!*dateptr || thisdate < *dateptr)
+	*dateptr = thisdate;
+    }
+
+    env = cur->message->env;
+    if (env->real_subj &&
+	((env->real_subj != env->subject) || (!option (OPTSORTRE))))
+    {
+      for (curlist = subjects, oldlist = NULL;
+	   curlist; oldlist = curlist, curlist = curlist->next)
+      {
+	rc = mutt_strcmp (env->real_subj, curlist->data);
+	if (rc >= 0)
+	  break;
+      }
+      if (!curlist || rc > 0)
+      {
+	newlist = safe_calloc (1, sizeof (LIST));
+	newlist->data = env->real_subj;
+	if (oldlist)
+	{
+	  newlist->next = oldlist->next;
+	  oldlist->next = newlist;
+	}
+	else
+	{
+	  newlist->next = subjects;
+	  subjects = newlist;
+	}
+      }
+    }
+
+    while (!cur->next && cur != start)
+    {
+      cur = cur->parent;
+    }
+    if (cur == start)
+      break;
+    cur = cur->next;
+  }
+
+  return (subjects);
+}
 
 /* find the best possible match for a parent mesage based upon subject.
  * if there are multiple matches, the one which was sent the latest, but
  * before the current message, is used. 
  */
-
-static HEADER *find_subject (CONTEXT *ctx, HEADER *cur)
+static THREAD *find_subject (CONTEXT *ctx, THREAD *cur)
 {
   struct hash_elem *ptr;
-  HEADER *tmp, *last = NULL;
-  ENVELOPE *env = cur->env;
+  THREAD *tmp, *last = NULL;
   int hash;
+  LIST *subjects = NULL, *oldlist;
+  time_t date = 0;  
 
-  if (env->real_subj &&
-      ((env->real_subj != env->subject) || (!option (OPTSORTRE))))
+  subjects = make_subject_list (cur, &date);
+
+  while (subjects)
   {
-    hash = hash_string ((unsigned char *) env->real_subj, ctx->subj_hash->nelem);
+    hash = hash_string ((unsigned char *) subjects->data, ctx->subj_hash->nelem);
     for (ptr = ctx->subj_hash->table[hash]; ptr; ptr = ptr->next)
     {
-      tmp = ptr->data;
+      tmp = ((HEADER *) ptr->data)->thread;
       if (tmp != cur &&			/* don't match the same message */
 	  !tmp->fake_thread &&		/* don't match pseudo threads */
-	  tmp->subject_changed &&	/* only match interesting replies */
+	  tmp->message->subject_changed &&	/* only match interesting replies */
 	  !is_descendant (tmp, cur) &&	/* don't match in the same thread */
-	  ( ( (SORT_MASK & SortAux) == SORT_RECEIVED) ?
-		cur->received >= tmp->received :
-		cur->date_sent >= tmp->date_sent) &&
-	  (!last || (last->date_sent <= tmp->date_sent)) &&
-	  tmp->env->real_subj &&
-	  mutt_strcmp (env->real_subj, tmp->env->real_subj) == 0)
-      {
+	  (date >= (option (OPTTHREADRECEIVED) ?
+		    tmp->message->received :
+		    tmp->message->date_sent)) &&
+	  (!last ||
+	   (option (OPTTHREADRECEIVED) ?
+	    (last->message->received < tmp->message->received) :
+	    (last->message->date_sent < tmp->message->date_sent))) &&
+	  tmp->message->env->real_subj &&
+	  mutt_strcmp (subjects->data, tmp->message->env->real_subj) == 0)
 	last = tmp; /* best match so far */
-      }
     }
+
+    oldlist = subjects;
+    subjects = subjects->next;
+    safe_free ((void **) &oldlist);
   }
-  return last;
+  return (last);
 }
 
-static void unlink_message (HEADER **top, HEADER *cur)
+static void unlink_message (THREAD **top, THREAD *cur)
 {
   if (cur->prev)
   {
@@ -360,162 +410,71 @@ static void unlink_message (HEADER **top, HEADER *cur)
   }
 }
 
-static void pseudo_threads (CONTEXT *ctx, sort_t *sortFunc)
+static void pseudo_threads (CONTEXT *ctx)
 {
-  HEADER *tree = ctx->tree;
-  HEADER *top = tree, *cur, *tmp, *curchild, *nextchild;
+  THREAD *tree = ctx->tree, *top = tree;
+  THREAD *tmp, *cur, *parent, *curchild, *nextchild;
+
+  if (!ctx->subj_hash)
+    ctx->subj_hash = mutt_make_subj_hash (ctx);
 
   while (tree)
   {
     cur = tree;
     tree = tree->next;
-    if ((tmp = find_subject (ctx, cur)) != NULL)
+    if ((parent = find_subject (ctx, cur)) != NULL)
     {
-      /* detach this message from it's current location */
+      /* detach this message from its current location */
       unlink_message (&top, cur);
 
-      cur->subject_changed = 0;
       cur->fake_thread = 1;
-      cur->parent = tmp;
-      insert_message (&tmp->child, cur, sortFunc);
+      cur->parent = parent;
+      insert_message (&parent->child, cur);
       
-      /* if the message we're attaching has pseudo-children, they
-	 need to be attached to its parent, so move them up a level.  */
-      for (curchild = cur->child; curchild; )
+      tmp = cur;
+
+      FOREVER
       {
-	nextchild = curchild->next;
-	if (curchild->fake_thread)
+	while (!tmp->message)
+	  tmp = tmp->child;
+
+	if (tmp == cur
+	    || !mutt_strcmp (tmp->message->env->real_subj,
+			     parent->message->env->real_subj))
 	{
-	  /* detach this message from its current location */
-	  unlink_message (&cur->child, curchild);
-	  curchild->parent = tmp;
-	  insert_message (&tmp->child, curchild, sortFunc);
+	  tmp->message->subject_changed = 0;
+
+	  /* if the message we're attaching has pseudo-children, they
+	   * need to be attached to its parent, so move them up a level.  */
+	  for (curchild = tmp->child; curchild; )
+	  {
+	    nextchild = curchild->next;
+	    if (curchild->fake_thread)
+	    {
+	      /* detach this message from its current location */
+	      unlink_message (&tmp->child, curchild);
+	      curchild->parent = parent;
+	      /* we care in this case that insert_message inserts the
+	       * message at the beginning of the list! */
+	      insert_message (&parent->child, curchild);
+	    }
+	    curchild = nextchild;
+	  }
 	}
-	curchild = nextchild;
+
+	while (!tmp->next && tmp != cur)
+	{
+	  tmp = tmp->parent;
+	}
+	if (tmp == cur)
+	  break;
+	tmp = tmp->next;
       }
     }
   }
   ctx->tree = top;
 }
 
-static HEADER *sort_last (HEADER *top)
-{
-  HEADER *tree;
-  HEADER *tmp;
-  HEADER *first;
-  HEADER *last;
-  HEADER *nextsearch;
-  sort_t *usefunc;
-  
-  usefunc = mutt_get_sort_func (Sort);
-  
-  tree = top;
-  FOREVER
-  {
-    if (tree->child)
-      tree = tree->child;
-    else
-    {
-      while (!tree->next)
-      {
-	first = last = tree;
-	nextsearch = tree->prev;
-	first->prev = NULL;
-	last->next = NULL;
-	while ((tree = nextsearch) != NULL)
-	{
-          tmp = last;
-          nextsearch = nextsearch->prev;
-	  while (tmp && (*usefunc) ((void *) &tree->last_sort, 
-				    (void *) &tmp->last_sort) < 0)
-	    tmp = tmp->prev;
-	  if (tmp)
-	  {
-	    if ((tree->next = tmp->next) != NULL)
-	      tmp->next->prev = tree;
-	    else
-	      last = tree;
-	    tmp->next = tree;
-	    tree->prev = tmp;
-	  }
-	  else
-	  {
-	    tree->next = first;
-	    first->prev = tree;
-	    first = tree;
-	    tree->prev = NULL;
-	  }
-	}
-	if (first->parent)
-	{
-	  first->parent->child = first;
-	  tree = first->parent;
-	  if (Sort & SORT_REVERSE)
-	  {
-	    if ((*usefunc) ((void *) &tree->last_sort,
-			    (void *) &first->last_sort) > 0)
-	      tree->last_sort = first->last_sort;
-	  }
-	  else
-	  {
-	    if ((*usefunc) ((void *) &tree->last_sort,
-			    (void *) &last->last_sort) < 0)
-	      tree->last_sort = last->last_sort;
-	  }
-	}
-	else
-	{
-	  top = first;
-	  tree = last;
-	  break;
-	}
-      }
-      if ((tree = tree->next) == NULL)
-	break;
-    }
-  }
-  return top;
-}
-
-static int matches_in_reply_to (HEADER *t, const char *p)
-{
-  LIST *irt;
-  
-  for (irt = t->env->in_reply_to; irt; irt = irt->next)
-    if (mutt_strcmp (irt->data, p) == 0)
-      return 1;
-  
-  return 0;
-}
-
-static void move_descendants (HEADER **tree, HEADER *cur, sort_t *usefunc)
-{
-  HEADER *ptr, *tmp = *tree;
-
-  while (tmp)
-  {
-    /* Look at the entire in-reply-to header, and at the last (!) reference. */
-    if (matches_in_reply_to (tmp, cur->env->message_id) ||
-	(tmp->env->references && mutt_strcmp (tmp->env->references->data, cur->env->message_id) == 0))
-    {
-      /* remove message from current location */
-      unlink_message (tree, tmp);
-
-      tmp->parent = cur;
-      if (cur->env->real_subj && tmp->env->real_subj)
-	tmp->subject_changed = mutt_strcmp (tmp->env->real_subj, cur->env->real_subj) ? 1 : 0;
-      else
-	tmp->subject_changed = (cur->env->real_subj || tmp->env->real_subj) ? 1 : 0;
-      tmp->fake_thread = 0; /* real reference */
-
-      ptr = tmp;
-      tmp = tmp->next;
-      insert_message (&cur->child, ptr, usefunc);
-    }
-    else
-      tmp = tmp->next;
-  }
-}
 
 void mutt_clear_threads (CONTEXT *ctx)
 {
@@ -523,62 +482,136 @@ void mutt_clear_threads (CONTEXT *ctx)
 
   for (i = 0; i < ctx->msgcount; i++)
   {
-    ctx->hdrs[i]->parent = NULL;
-    ctx->hdrs[i]->next = NULL;
-    ctx->hdrs[i]->prev = NULL;
-    ctx->hdrs[i]->child = NULL;
-    ctx->hdrs[i]->threaded = 0;
-    ctx->hdrs[i]->fake_thread = 0;
+    ctx->hdrs[i]->thread = NULL;
   }
   ctx->tree = NULL;
+
+  if (ctx->thread_hash)
+    hash_destroy (&ctx->thread_hash, *free);
 }
 
-HEADER *mutt_sort_subthreads (HEADER *hdr, sort_t *func)
+int compare_threads (const void *a, const void *b)
 {
-  static HEADER **array = NULL;
-  static unsigned array_size = 0, array_alloc = 0;
-  unsigned array_alloc_base;
-  unsigned items, item;
+  static sort_t *sort_func = NULL;
+
+  if (a || b)
+    return ((*sort_func) (&(*((THREAD **) a))->sort_key,
+			  &(*((THREAD **) b))->sort_key));
+  /* a hack to let us reset sort_func even though we can't
+   * have extra arguments because of qsort
+   */
+  else
+  {
+    sort_func = NULL;
+    sort_func = mutt_get_sort_func (Sort);
+    return (sort_func ? 1 : 0);
+  }
+}
+
+THREAD *mutt_sort_subthreads (THREAD *thread)
+{
+  THREAD **array, *sort_key;
+  int i, array_size;
   
-  if (!func || !hdr)
-    return hdr;
+  Sort ^= SORT_REVERSE;
+  if (!thread || !compare_threads (NULL, NULL))
+    return thread;
 
-  array_alloc_base = array_alloc;
-  for (item = array_alloc_base; hdr; hdr = hdr->next)
+  /* we put things into the array backwards to save some cycles,
+   * but we want to have to move less stuff around if we're 
+   * resorting, so we sort backwards and then put them back
+   * in reverse order so they're forwards
+   */
+
+  array = safe_malloc ((array_size = 256) * sizeof (THREAD *));
+  while (1)
   {
-    if (item >= array_size)
+    while (thread->child)
     {
-      array_size = 2 * MAX(array_size, 0x100);
-      safe_realloc ((void **) &array, array_size * sizeof (*array));
+      thread->sort_key = thread->message;
+      thread = thread->child;
     }
-    array[item++] = hdr;
-    if (hdr->child)
+
+    while (thread->next && !thread->child)
     {
-      array_alloc = item;
-      hdr->child = mutt_sort_subthreads (hdr->child, func);
+      thread->sort_key = thread->message;
+      thread = thread->next;
     }
+
+    if (thread->child)
+      continue;
+
+    thread->sort_key = thread->message;
+
+    while (!thread->next)
+    {
+      if (thread->prev)
+      {
+	for (i = 0; thread; i++, thread = thread->prev)
+	{
+	  if (i >= array_size)
+	    safe_realloc ((void **) &array, (array_size *= 2) * sizeof (THREAD *));
+
+	  array[i] = thread;
+	}
+
+	qsort ((void *) array, i, sizeof (THREAD *), *compare_threads);
+
+	array[0]->next = NULL;
+
+	thread = array[i - 1];
+	thread->prev = NULL;
+
+	if (thread->parent)
+	{
+	  thread->parent->child = thread;
+	  sort_key = array[(!(Sort & SORT_LAST) ^ !(Sort & SORT_REVERSE)) ? i - 1 : 0];
+	}
+	
+	while (--i)
+	{
+	  array[i - 1]->prev = array[i];
+	  array[i]->next = array[i - 1];
+	}
+      }
+      else
+	sort_key = thread;
+
+
+      if (thread->parent)
+      {
+	if (Sort & SORT_LAST)
+	{
+	  if (!thread->parent->sort_key
+	      || ((((Sort & SORT_REVERSE) ? 1 : -1)
+		   * compare_threads ((void *) &thread->parent,
+				      (void *) &sort_key))
+		  > 0))
+	    thread->parent->sort_key = sort_key->sort_key;
+	}
+	else if (!thread->parent->sort_key)
+	  thread->parent->sort_key = sort_key->sort_key;
+
+	thread = thread->parent;
+      }
+      else
+      {
+	Sort ^= SORT_REVERSE;
+	return (thread);
+      }
+    }
+
+    thread = thread->next;
   }
-  array_alloc = array_alloc_base;
-
-  items = item - array_alloc_base;
-  qsort ((void *) (array + array_alloc_base), items, sizeof (*array), func);
-
-  array[array_alloc_base          ]->prev = NULL;
-  array[array_alloc_base + items-1]->next = NULL;
-
-  for (item = array_alloc_base; item < array_alloc_base + items-1; item++)
-  {
-    array[item  ]->next = array[item+1];
-    array[item+1]->prev = array[item  ];
-  }
-
-  return array[array_alloc_base];
 }
 
 void mutt_sort_threads (CONTEXT *ctx, int init)
 {
-  HEADER *tmp, *CUR;
-  int i, oldsort;
+  HEADER *cur;
+  int i, oldsort, using_refs = 0;
+  HASH *id_hash;
+  THREAD *thread, *new, *tmp;
+  LIST *ref = NULL;
   
   /* set Sort to the secondary method to support the set sort_aux=reverse-*
    * settings.  The sorting functions just look at the value of
@@ -587,83 +620,155 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
   oldsort = Sort;
   Sort = SortAux;
   
+  id_hash = hash_create (ctx->msgcount * 2);
+  ctx->tree = safe_calloc (1, sizeof (THREAD));
   for (i = 0; i < ctx->msgcount; i++)
   {
-    CUR = ctx->hdrs[i];
+    cur = ctx->hdrs[i];
+    thread = safe_calloc (1, sizeof (THREAD));
+    thread->message = cur;
+    cur->thread = thread;
+    hash_insert (id_hash, cur->env->message_id ? cur->env->message_id : "", thread, 1);
+  }
 
-    if (CUR->fake_thread)
+  for (i = 0; i < ctx->msgcount; i++)
+  {
+    cur = ctx->hdrs[i];
+    thread = cur->thread;
+    using_refs = 0;
+
+    while (1)
     {
-      /* Move pseudo threads back to the top level thread so that they can
-       * can be moved later if they are descendants of messages that were
-       * just delivered.
-       */
-      CUR->fake_thread = 0;
-      CUR->subject_changed = 1;
-      unlink_message (&CUR->parent->child, CUR);
-      CUR->parent = NULL;
-      insert_message (&ctx->tree, CUR, NULL);
-    }
-    else if (!CUR->threaded)
-    {
-      if ((tmp = find_reference (CUR, ctx)) != NULL)
+      if (using_refs == 0)
       {
-	CUR->parent = tmp;
-	if (CUR->env->real_subj && tmp->env->real_subj)
-	  CUR->subject_changed = mutt_strcmp (tmp->env->real_subj, CUR->env->real_subj) ? 1 : 0;
+	/* look at the beginning of in-reply-to: */
+	if ((ref = cur->env->in_reply_to) != NULL)
+	{
+	  using_refs = 1;
+	}
 	else
-	  CUR->subject_changed = (CUR->env->real_subj || tmp->env->real_subj) ? 1 : 0;
+	{
+	  ref = cur->env->references;
+	  using_refs = 2;
+	}
+      }
+      else if (using_refs == 1)
+      {
+	/* if there's no references header, use all the in-reply-to:
+	 * data that we have.  otherwise, use the first reference
+	 * if it's different than the first in-reply-to, otherwise use
+	 * the second reference (since at least eudora puts the most
+	 * recent reference in in-reply-to and the rest in references
+	 */
+	if (!cur->env->references)
+	  ref = ref->next;
+	else
+	{
+	  if (mutt_strcmp (ref->data, cur->env->references->data))
+	    ref = cur->env->references;
+	  else
+	    ref = cur->env->references->next;
+	  
+	  using_refs = 2;
+	}
       }
       else
-	CUR->subject_changed = 1;
+	ref = ref->next;
+      
+      if (!ref)
+	break;
 
-      if (!init)
+      if ((new = hash_find (id_hash, ref->data)) == NULL)
       {
-	/* Search the children of `tmp' for decendants of `cur'.  This is only
-	 * done when the mailbox has already been threaded since we don't have
-	 * to worry about the tree being threaded wrong (because of a missing
-	 * parent) during the initial threading.
-	 */
-	if (CUR->env->message_id)
-	  move_descendants (tmp ? &tmp->child : &ctx->tree, CUR, NULL);
+	new = safe_calloc (1, sizeof (THREAD));
+	hash_insert (id_hash, ref->data, new, 1);
       }
-      insert_message (tmp ? &tmp->child : &ctx->tree, CUR, NULL);
-      CUR->threaded = 1;
+      else if (is_descendant (new, thread)) /* no loops! */
+	break;
+
+      /* make new the parent of thread */
+      if (thread->parent)
+      {
+	/* this can only happen if thread is attached directly to ctx->tree.
+	 * detach it.
+	 */
+	if (thread->prev)
+	  thread->prev->next = thread->next;
+	if (thread->next)
+	  thread->next->prev = thread->prev;
+	if (thread->parent->child == thread)
+	  thread->parent->child = thread->next;
+      }
+
+      thread->parent = new;
+      thread->prev = NULL;
+      if ((thread->next = new->child) != NULL)
+	thread->next->prev = thread;
+      new->child = thread;
+
+      thread = new;
+
+      if (thread->message || (thread->parent && thread->parent != ctx->tree))
+	break;
     }
+
+    if (!thread->parent)
+    {
+      if ((thread->next = ctx->tree->child) != NULL)
+      {
+	thread->next->prev = thread;
+      }
+      ctx->tree->child = thread;
+      thread->parent = ctx->tree;
+    }
+  }
+
+  for (thread = ctx->tree->child; thread; thread = thread->next)
+  {
+    thread->parent = NULL;
+  }
+  
+  tmp = ctx->tree;
+  ctx->tree = ctx->tree->child;
+  safe_free ((void **) &tmp);
+
+  for (i = 0; i < ctx->msgcount; i++)
+  {
+    cur = ctx->hdrs[i];
+    tmp = cur->thread->parent;
+    while (tmp && !tmp->message)
+    {
+      tmp = tmp->parent;
+    }
+
+    if (!tmp)
+      cur->subject_changed = 1;
+    else if (cur->env->real_subj && tmp->message->env->real_subj)
+      cur->subject_changed = mutt_strcmp (cur->env->real_subj, tmp->message->env->real_subj) ? 1 : 0;
+    else
+      cur->subject_changed = (cur->env->real_subj || tmp->message->env->real_subj) ? 1 : 0;
   }
 
   if (!option (OPTSTRICTTHREADS))
-    pseudo_threads (ctx, NULL);
+    pseudo_threads (ctx);
 
-  /* if the SORT_LAST bit is not set, sort the whole tree now */
-  if (!(Sort & SORT_LAST))
-    ctx->tree = mutt_sort_subthreads (ctx->tree, mutt_get_sort_func (Sort));
+  ctx->tree = mutt_sort_subthreads (ctx->tree);
 
-  /* now that the whole tree is put together, we can sort by last-* */
-  if (Sort & SORT_LAST)
-  {
-    for (i = 0; i < ctx->msgcount; i++)
-      ctx->hdrs[i]->last_sort = ctx->hdrs[i];
-    ctx->tree = sort_last (ctx->tree);
-  }
-  
   /* restore the oldsort order. */
   Sort = oldsort;
 
-  /* Put the list into an array.  If we are reverse sorting, give the
-   * offset of the last message, and work backwards (tested for and
-   * done inside the function), so that the threads go backwards. 
-   * This, of course, means the auxillary sort has to go forwards
-   * because we map it backwards here.
-   */
+  /* Put the list into an array. */
   mutt_linearize_tree (ctx, 1);
+
+  ctx->thread_hash = id_hash;
 }
 
-static HEADER *find_virtual (HEADER *cur)
+static HEADER *find_virtual (THREAD *cur)
 {
-  HEADER *top;
+  THREAD *top;
 
-  if (cur->virtual >= 0)
-      return (cur);
+  if (cur->message && cur->message->virtual >= 0)
+    return (cur->message);
 
   top = cur;
   if ((cur = cur->child) == NULL)
@@ -671,8 +776,8 @@ static HEADER *find_virtual (HEADER *cur)
 
   FOREVER
   {
-    if (cur->virtual >= 0)
-      return (cur);
+    if (cur->message && cur->message->virtual >= 0)
+      return (cur->message);
 
     if (cur->child)
       cur = cur->child;
@@ -694,6 +799,7 @@ static HEADER *find_virtual (HEADER *cur)
 
 int _mutt_aside_thread (HEADER *hdr, short dir, short subthreads)
 {
+  THREAD *cur;
   HEADER *tmp;
 
   if ((Sort & SORT_MASK) != SORT_THREADS)
@@ -702,22 +808,24 @@ int _mutt_aside_thread (HEADER *hdr, short dir, short subthreads)
     return (hdr->virtual);
   }
 
+  cur = hdr->thread;
+
   if (!subthreads)
   {
-    while (hdr->parent)
-      hdr = hdr->parent;
+    while (cur->parent)
+      cur = cur->parent;
   }
   else
   {
     if ((dir != 0) ^ ((Sort & SORT_REVERSE) != 0))
     {
-      while (!hdr->next && hdr->parent)
-	hdr = hdr->parent;
+      while (!cur->next && cur->parent)
+	cur = cur->parent;
     }
     else
     {
-      while (!hdr->prev && hdr->parent)
-	hdr = hdr->parent;
+      while (!cur->prev && cur->parent)
+	cur = cur->parent;
     }
   }
 
@@ -725,20 +833,20 @@ int _mutt_aside_thread (HEADER *hdr, short dir, short subthreads)
   {
     do
     { 
-	hdr = hdr->next;
-	if (!hdr)
-	  return (-1);
-	tmp = find_virtual (hdr);
+      cur = cur->next;
+      if (!cur)
+	return (-1);
+      tmp = find_virtual (cur);
     } while (!tmp);
   }
   else
   {
     do
     { 
-	hdr = hdr->prev;
-	if (!hdr)
-	  return (-1);
-	tmp = find_virtual (hdr);
+      cur = cur->prev;
+      if (!cur)
+	return (-1);
+      tmp = find_virtual (cur);
     } while (!tmp);
   }
 
@@ -747,54 +855,52 @@ int _mutt_aside_thread (HEADER *hdr, short dir, short subthreads)
 
 int mutt_parent_message (CONTEXT *ctx, HEADER *hdr)
 {
+  THREAD *thread;
+
   if ((Sort & SORT_MASK) != SORT_THREADS)
   {
     mutt_error _("Threading is not enabled.");
     return (hdr->virtual);
   }
-  if (hdr->parent)
+
+  thread = hdr->thread;
+  while ((thread = thread->parent))
   {
-    while ((hdr = hdr->parent))
-    {
-      if (hdr->virtual >= 0 && hdr->collapsed && (!ctx->pattern || hdr->limited))
-	return (hdr->virtual);
-    }
-    mutt_error _("Parent message is not visible in limited view");
-    return -1;
+    hdr = thread->message;
+    if (hdr && VISIBLE (hdr, ctx))
+      return (hdr->virtual);
   }
-  else
-  {
-    mutt_error _("Parent message is not available.");
-    return -1;
-  }
+  
+  mutt_error _("Parent message is not available.");
+  return (-1);
 }
 
 void mutt_set_virtual (CONTEXT *ctx)
 {
   int i;
+  HEADER *cur;
 
   ctx->vcount = 0;
   ctx->vsize = 0;
 
-#define THIS_BODY cur->content
   for (i = 0; i < ctx->msgcount; i++)
   {
-    HEADER *cur = ctx->hdrs[i];
-    if (cur->virtual != -1)
+    cur = ctx->hdrs[i];
+    if (cur->virtual >= 0)
     {
       cur->virtual = ctx->vcount;
       ctx->v2r[ctx->vcount] = i;
       ctx->vcount++;
-      ctx->vsize += THIS_BODY->length + THIS_BODY->offset - THIS_BODY->hdr_offset;
+      ctx->vsize += cur->content->length + cur->content->offset - cur->content->hdr_offset;
       cur->num_hidden = mutt_get_hidden (ctx, cur);
     }
   }
-#undef THIS_BODY
 }
 
 int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
 {
-  HEADER *roothdr = NULL, *top;
+  THREAD *thread, *top;
+  HEADER *roothdr = NULL;
   int final, reverse = (Sort & SORT_REVERSE), minmsgno;
   int num_hidden = 0, new = 0, old = 0;
   int min_unread_msgno = INT_MAX, min_unread = cur->virtual;
@@ -807,11 +913,14 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
   }
 
   final = cur->virtual;
-  while (cur->parent) 
-     cur = cur->parent;
-  top = cur;
+  thread = cur->thread;
+  while (thread->parent)
+    thread = thread->parent;
+  top = thread;
+  while (!thread->message)
+    thread = thread->child;
+  cur = thread->message;
   minmsgno = cur->msgno;
-  
 
   if (!cur->read && CHECK_LIMIT)
   {
@@ -841,7 +950,7 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
     }
   }
 
-  if ((cur = cur->child) == NULL)
+  if ((thread = thread->child) == NULL)
   {
     /* return value depends on action requested */
     if (flag & (M_THREAD_COLLAPSE | M_THREAD_UNCOLLAPSE))
@@ -856,63 +965,68 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
   
   FOREVER
   {
-    if (flag & (M_THREAD_COLLAPSE | M_THREAD_UNCOLLAPSE))
+    cur = thread->message;
+
+    if (cur)
     {
-      cur->pair = 0; /* force index entry's color to be re-evaluated */
-      cur->collapsed = flag & M_THREAD_COLLAPSE;
-      if (!roothdr && CHECK_LIMIT)
+      if (flag & (M_THREAD_COLLAPSE | M_THREAD_UNCOLLAPSE))
       {
-	roothdr = cur;
+	cur->pair = 0; /* force index entry's color to be re-evaluated */
+	cur->collapsed = flag & M_THREAD_COLLAPSE;
+	if (!roothdr && CHECK_LIMIT)
+	{
+	  roothdr = cur;
+	  if (flag & M_THREAD_COLLAPSE)
+	    final = roothdr->virtual;
+	}
+
+	if (reverse && (flag & M_THREAD_COLLAPSE) && (cur->msgno < minmsgno) && CHECK_LIMIT)
+	{
+	  minmsgno = cur->msgno;
+	  final = cur->virtual;
+	}
+
 	if (flag & M_THREAD_COLLAPSE)
-	  final = roothdr->virtual;
+	{
+	  if (cur != roothdr)
+	    cur->virtual = -1;
+	}
+	else 
+	{
+	  if (CHECK_LIMIT)
+	    cur->virtual = cur->msgno;
+	}
       }
 
-      if (reverse && (flag & M_THREAD_COLLAPSE) && (cur->msgno < minmsgno) && CHECK_LIMIT)
+
+      if (!cur->read && CHECK_LIMIT)
       {
-	minmsgno = cur->msgno;
-	final = cur->virtual;
+	if (cur->old)
+	  old = 2;
+	else
+	  new = 1;
+	if (cur->msgno < min_unread_msgno)
+	{
+	  min_unread = cur->virtual;
+	  min_unread_msgno = cur->msgno;
+	}
       }
 
-      if (flag & M_THREAD_COLLAPSE)
-      {
-	if (cur != roothdr)
-	  cur->virtual = -1;
-      }
-      else 
-      {
-	if (CHECK_LIMIT)
-	  cur->virtual = cur->msgno;
-      }
+      if (cur->virtual == -1 && CHECK_LIMIT)
+	num_hidden++;
     }
 
-
-    if (!cur->read && CHECK_LIMIT)
-    {
-      if (cur->old)
-	old = 2;
-      else
-	new = 1;
-      if (cur->msgno < min_unread_msgno)
-      {
-	min_unread = cur->virtual;
-	min_unread_msgno = cur->msgno;
-      }
-    }
-
-    if (cur->virtual == -1 && CHECK_LIMIT)
-      num_hidden++;
-
-    if (cur->child)
-      cur = cur->child;
-    else if (cur->next)
-      cur = cur->next;
+    if (thread->child)
+      thread = thread->child;
+    else if (thread->next)
+      thread = thread->next;
     else
     {
       int done = 0;
-      while (!cur->next)
+      while (!thread->next)
       {
-	cur = cur->parent;
-	if (cur == top)
+	thread = thread->parent;
+	if (thread == top)
 	{
 	  done = 1;
 	  break;
@@ -920,7 +1034,7 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
       }
       if (done)
 	break;
-      cur = cur->next;
+      thread = thread->next;
     }
   }
 
@@ -938,89 +1052,71 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
 #undef CHECK_LIMIT
 }
 
-int mutt_messages_in_thread (HEADER *cur)
+
+/* if flag is 0, we want to know how many messages
+ * are in the thread.  if flag is 1, we want to know
+ * our position in the thread. */
+int mutt_messages_in_thread (HEADER *hdr, int flag)
 {
-  HEADER *top;
-  int n = 1;
- 
+  THREAD *threads[2];
+  int i;
+
   if ((Sort & SORT_MASK) != SORT_THREADS)
-  {
-    /* mutt_error _("Threading is not enabled."); */
     return (1);
-  }
 
-  /* find top parent */
-  while (cur->parent)
-    cur = cur->parent;
-  top = cur;
- 
-  /* return if there are no children */
-  if ((cur = cur->child) == NULL)
-    return n;
+  threads[0] = hdr->thread;
+  while (threads[0]->parent)
+    threads[0] = threads[0]->parent;
+  while (threads[0]->prev)
+    threads[0] = threads[0]->prev;
 
-  FOREVER
+  if (flag)
+    threads[1] = hdr->thread;
+  else
+    threads[1] = threads[0]->next;
+
+  for (i = 0; i < flag ? 1 : 2; i++)
   {
-    n++;
-    if (cur->child)
-      cur = cur->child;
-    else if (cur->next)
-      cur = cur->next;
-    else 
-    {
-      while (!cur->next) 
-      {
-        cur = cur->parent;
-        if (cur == top)
-          return n;
-      }
-      cur = cur->next;
-    }
-  }
-  /* not reached */
+    while (!threads[i]->message)
+      threads[i] = threads[i]->child;
+  } 
+
+  return (((Sort & SORT_REVERSE ? -1 : 1)
+	   * threads[1]->message->msgno - threads[0]->message->msgno) + (flag ? 1 : 0));
 }
 
-int mutt_msgno_in_thread (HEADER *cur)
+HASH *mutt_make_id_hash (CONTEXT *ctx)
 {
-  HEADER *top;
-  HEADER *target;
-  int n = 0;
+  int i;
+  HEADER *hdr;
+  HASH *hash;
 
-  if ((Sort & SORT_MASK) != SORT_THREADS)
-  { 
-    /* mutt_error _("Threading is not enabled."); */
-    return (0);
-  } 
+  hash = hash_create (ctx->msgcount * 2);
 
-  /* save target */
-  target = cur;
-
-  /* find top parent */
-  while (cur->parent)
-    cur = cur->parent;
-  top = cur;
-
-  /* return if single message */
-  if (top == target)
-    return n;
-
-  /* step into first child */
-  cur = cur->child;
-
-  FOREVER
+  for (i = 0; i < ctx->msgcount; i++)
   {
-    n++;
-    if (cur == target)
-      return n;
-    if (cur->child)
-      cur = cur->child;
-    else if (cur->next) 
-      cur = cur->next;
-    else 
-    {
-      while (!cur->next) 
-        cur = cur->parent;
-      cur = cur->next;
-    } 
-  } 
-  /* not reached */
+    hdr = ctx->hdrs[i];
+    if (hdr->env->message_id)
+      hash_insert (hash, hdr->env->message_id, hdr, 0);
+  }
+
+  return hash;
+}
+
+HASH *mutt_make_subj_hash (CONTEXT *ctx)
+{
+  int i;
+  HEADER *hdr;
+  HASH *hash;
+
+  hash = hash_create (ctx->msgcount * 2);
+
+  for (i = 0; i < ctx->msgcount; i++)
+  {
+    hdr = ctx->hdrs[i];
+    if (hdr->env->real_subj)
+      hash_insert (hash, hdr->env->real_subj, hdr, 1);
+  }
+
+  return hash;
 }

@@ -668,6 +668,8 @@ static int maildir_parse_dir(CONTEXT *ctx, struct maildir ***last,
 
 static void maildir_add_to_context(CONTEXT *ctx, struct maildir *md)
 {
+  int oldmsgcount = ctx->msgcount;
+
   while(md)
   {
     
@@ -692,10 +694,13 @@ static void maildir_add_to_context(CONTEXT *ctx, struct maildir *md)
 	md->h->content->length + md->h->content->offset - md->h->content->hdr_offset;
       
       md->h = NULL;
-      mx_update_context(ctx);
+      ctx->msgcount++;
     }
     md = md->next;
   }
+
+  if (ctx->msgcount > oldmsgcount)
+    mx_update_context (ctx, ctx->msgcount - oldmsgcount);
 }
 
 static void maildir_move_to_context(CONTEXT *ctx, struct maildir **md)

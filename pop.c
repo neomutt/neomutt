@@ -213,8 +213,11 @@ static int pop_fetch_headers (CONTEXT *ctx)
       if (ret < 0)
 	break;
 
-      mx_update_context (ctx);
+      ctx->msgcount++;
     }
+
+    if (i > old_count)
+      mx_update_context (ctx, i - old_count);
   }
 
   if (ret < 0)

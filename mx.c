@@ -671,10 +671,6 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
    */
   set_option (OPTFORCEREFRESH);
 
-  /* create hash tables */
-  ctx->id_hash = hash_create (1031);
-  ctx->subj_hash = hash_create (1031);
-
   if (!ctx->quiet)
     mutt_message (_("Reading %s..."), ctx->path);
 
@@ -754,6 +750,7 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
     hash_destroy (&ctx->subj_hash, NULL);
   if (ctx->id_hash)
     hash_destroy (&ctx->id_hash, NULL);
+  mutt_clear_threads (ctx);
   for (i = 0; i < ctx->msgcount; i++)
     mutt_free_header (&ctx->hdrs[i]);
   safe_free ((void **) &ctx->hdrs);
@@ -1090,9 +1087,9 @@ void mx_update_tables(CONTEXT *ctx, int committing)
 		      ctx->hdrs[i]->content->offset -
 		      ctx->hdrs[i]->content->hdr_offset);
       /* remove message from the hash tables */
-      if (ctx->hdrs[i]->env->real_subj)
+      if (ctx->subj_hash && ctx->hdrs[i]->env->real_subj)
 	hash_delete (ctx->subj_hash, ctx->hdrs[i]->env->real_subj, ctx->hdrs[i], NULL);
-      if (ctx->hdrs[i]->env->message_id)
+      if (ctx->id_hash && ctx->hdrs[i]->env->message_id)
 	hash_delete (ctx->id_hash, ctx->hdrs[i]->env->message_id, ctx->hdrs[i], NULL);
       mutt_free_header (&ctx->hdrs[i]);
     }
@@ -1552,60 +1549,69 @@ void mx_alloc_memory (CONTEXT *ctx)
 /* this routine is called to update the counts in the context structure for
  * the last message header parsed.
  */
-void mx_update_context (CONTEXT *ctx)
+void mx_update_context (CONTEXT *ctx, int new_messages)
 {
-  HEADER *h = ctx->hdrs[ctx->msgcount];
+  HEADER *h;
+  int msgno;
 
+  for (msgno = ctx->msgcount - new_messages; msgno < ctx->msgcount; msgno++)
+  {
+    h = ctx->hdrs[msgno];
 
 
 
 #ifdef HAVE_PGP
-  /* NOTE: this _must_ be done before the check for mailcap! */
-  h->pgp = pgp_query (h->content);
+    /* NOTE: this _must_ be done before the check for mailcap! */
+    h->pgp = pgp_query (h->content);
 #endif /* HAVE_PGP */
 
-  if (!ctx->pattern)
-  {
-    ctx->v2r[ctx->vcount] = ctx->msgcount;
-    h->virtual = ctx->vcount++;
-  }
-  else
-    h->virtual = -1;
-  h->msgno = ctx->msgcount;
-  ctx->msgcount++;
-
-  if (h->env->supersedes)
-  {
-    HEADER *h2 = hash_find (ctx->id_hash, h->env->supersedes);
-
-    /* safe_free (&h->env->supersedes); should I ? */
-    if (h2)
+    if (!ctx->pattern)
     {
-      h2->superseded = 1;
-      if (option (OPTSCORE)) 
-	mutt_score_message (ctx, h2, 1);
+      ctx->v2r[ctx->vcount] = msgno;
+      h->virtual = ctx->vcount++;
     }
-  }
+    else
+      h->virtual = -1;
+    h->msgno = msgno;
 
-  /* add this message to the hash tables */
-  if (h->env->message_id)
-    hash_insert (ctx->id_hash, h->env->message_id, h, 0);
-  if (h->env->real_subj)
-    hash_insert (ctx->subj_hash, h->env->real_subj, h, 1);
+    if (h->env->supersedes)
+    {
+      HEADER *h2;
 
-  if (option (OPTSCORE)) 
-    mutt_score_message (ctx, h, 0);
-  
-  if (h->changed)
-    ctx->changed = 1;
-  if (h->flagged)
-    ctx->flagged++;
-  if (h->deleted)
-    ctx->deleted++;
-  if (!h->read)
-  {
-    ctx->unread++;
-    if (!h->old)
-      ctx->new++;
+      if (!ctx->id_hash)	
+	ctx->id_hash = mutt_make_id_hash (ctx);
+
+      h2 = hash_find (ctx->id_hash, h->env->supersedes);
+
+      /* safe_free (&h->env->supersedes); should I ? */
+      if (h2)
+      {
+	h2->superseded = 1;
+	if (option (OPTSCORE)) 
+	  mutt_score_message (ctx, h2, 1);
+      }
+    }
+
+    /* add this message to the hash tables */
+    if (ctx->id_hash && h->env->message_id)
+      hash_insert (ctx->id_hash, h->env->message_id, h, 0);
+    if (ctx->subj_hash && h->env->real_subj)
+      hash_insert (ctx->subj_hash, h->env->real_subj, h, 1);
+
+    if (option (OPTSCORE)) 
+      mutt_score_message (ctx, h, 0);
+
+    if (h->changed)
+      ctx->changed = 1;
+    if (h->flagged)
+      ctx->flagged++;
+    if (h->deleted)
+      ctx->deleted++;
+    if (!h->read)
+    {
+      ctx->unread++;
+      if (!h->old)
+	ctx->new++;
+    }
   }
 }

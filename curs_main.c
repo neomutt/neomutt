@@ -107,12 +107,12 @@ void index_make_entry (char *s, size_t l, MUTTMENU *menu, int num)
 {
   format_flag flag = M_FORMAT_MAKEPRINT | M_FORMAT_ARROWCURSOR | M_FORMAT_INDEX;
   int edgemsgno, reverse = Sort & SORT_REVERSE;
-  HEADER *tmp, *h = Context->hdrs[Context->v2r[num]];
+  HEADER *h = Context->hdrs[Context->v2r[num]];
+  THREAD *tmp;
 
   if ((Sort & SORT_MASK) == SORT_THREADS && h->tree)
   {
     flag |= M_FORMAT_TREE; /* display the thread tree */
-
     if (h->display_subject)
       flag |= M_FORMAT_FORCESUBJ;
     else
@@ -127,26 +127,32 @@ void index_make_entry (char *s, size_t l, MUTTMENU *menu, int num)
       else
 	edgemsgno = Context->v2r[menu->top];
 
-      for (tmp = h->parent; tmp; tmp = tmp->parent)
+      for (tmp = h->thread->parent; tmp; tmp = tmp->parent)
       {
+	if (!tmp->message)
+	  continue;
+
 	/* if no ancestor is visible on current screen, provisionally force
 	 * subject... */
-	if (reverse ? tmp->msgno > edgemsgno : tmp->msgno < edgemsgno)
+	if (reverse ? tmp->message->msgno > edgemsgno : tmp->message->msgno < edgemsgno)
 	{
 	  flag |= M_FORMAT_FORCESUBJ;
 	  break;
 	}
-	else if (tmp->virtual >= 0)
+	else if (tmp->message->virtual >= 0)
 	  break;
       }
-      if ((flag & M_FORMAT_FORCESUBJ) && h->prev)
+      if (flag & M_FORMAT_FORCESUBJ)
       {
-	for (tmp = h->prev; tmp; tmp = tmp->prev)
+	for (tmp = h->thread->prev; tmp; tmp = tmp->prev)
 	{
+	  if (!tmp->message)
+	    continue;
+
 	  /* ...but if a previous sibling is available, don't force it */
-	  if (reverse ? tmp->msgno > edgemsgno : tmp->msgno < edgemsgno)
+	  if (reverse ? tmp->message->msgno > edgemsgno : tmp->message->msgno < edgemsgno)
 	    break;
-	  else if (tmp->virtual >= 0)
+	  else if (tmp->message->virtual >= 0)
 	  {
 	    flag &= ~M_FORMAT_FORCESUBJ;
 	    break;
@@ -305,21 +311,21 @@ static void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
   
   /* if the mailbox was reopened, need to rethread from scratch */
   mutt_sort_headers (Context, (check == M_REOPENED));
-  
+
   /* uncollapse threads with new mail */
   if ((Sort & SORT_MASK) == SORT_THREADS)
   {
     if (check == M_REOPENED)
     {
-      HEADER *h;
+      THREAD *h, *j;
       
-      h = Context->tree;
       Context->collapsed = 0;
       
-      while (h)
+      for (h = Context->tree; h; h = h->next)
       {
-	mutt_uncollapse_thread (Context, h);
-	h = h->next;
+	for (j = h; !j->message; j = j->child)
+	  ;
+	mutt_uncollapse_thread (Context, j->message);
       }
       mutt_set_virtual (Context);
     }
@@ -793,7 +799,8 @@ int mutt_index_menu (void)
 	  else
 	    menu->current = 0;
 	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
-	  mutt_linearize_tree (Context, 0);
+	  if (Sort & SORT_THREADS)
+	    mutt_linearize_tree (Context, 0);
 	}
 	break;	  
 
@@ -1537,6 +1544,7 @@ int mutt_index_menu (void)
 
         {
 	  HEADER *h, *base;
+	  THREAD *thread, *top;
 	  int final;
 	  
 	  if (CURHDR->collapsed)
@@ -1548,10 +1556,14 @@ int mutt_index_menu (void)
 	  
 	  base = Context->hdrs[Context->v2r[final]];
 	  
-	  h = Context->tree;
+	  top = Context->tree;
 	  Context->collapsed = !Context->collapsed;
-	  while (h)
+	  while ((thread = top) != NULL)
 	  {
+	    while (!thread->message)
+	      thread = thread->child;
+	    h = thread->message;
+
 	    if (h->collapsed != Context->collapsed)
 	    {
 	      if (h->collapsed)
@@ -1559,7 +1571,7 @@ int mutt_index_menu (void)
 	      else if (option (OPTCOLLAPSEUNREAD) || !UNREAD (h))
 		mutt_collapse_thread (Context, h);
 	    }
-	    h = h->next;
+	    top = top->next;
 	  }
 	  
 	  mutt_set_virtual (Context);
@@ -1573,8 +1585,8 @@ int mutt_index_menu (void)
 	  }
 	  
 	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
-	  break;
 	}
+	break;
       
       /* --------------------------------------------------------------------
        * These functions are invoked directly from the internal-pager
