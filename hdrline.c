@@ -492,9 +492,9 @@ hdr_format_str (char *dest,
   }
 
   if (optional)
-    mutt_FormatString (dest, destlen, ifstring, hdr_format_str, (unsigned long) hdr, flags);
+    mutt_FormatString (dest, destlen, ifstring, hdr_format_str, (unsigned long) hfi, flags);
   else if (flags & M_FORMAT_OPTIONAL)
-    mutt_FormatString (dest, destlen, elsestring, hdr_format_str, (unsigned long) hdr, flags);
+    mutt_FormatString (dest, destlen, elsestring, hdr_format_str, (unsigned long) hfi, flags);
 
   return (src);
 }
