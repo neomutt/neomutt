@@ -1328,7 +1328,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
             && msg->security & APPLICATION_SMIME)
 	{
 	  if (mutt_yesorno (_("S/MIME already selected. Clear & continue ? "),
-			     M_YES) == M_NO)
+			     M_YES) != M_YES)
 	  {
 	    mutt_clear_error ();
 	    break;
@@ -1353,7 +1353,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
             && msg->security & APPLICATION_PGP)
 	{
 	  if (mutt_yesorno (_("PGP already selected. Clear & continue ? "),
-			      M_YES) == M_NO)
+			      M_YES) != M_YES)
 	  {
 	     mutt_clear_error ();
 	     break;
