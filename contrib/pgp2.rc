@@ -5,6 +5,12 @@
 # $Id$
 #
 
+#
+# Note: In order to be able to read your own messages, you'll have
+# the +encrypttoself command line parameter to the pgp_encrypt_only_command
+# and pgp_encrypt_sign_command variables.
+#
+
 # decode application/pgp
 set pgp_decode_command="%?p?PGPPASSFD=0; export PGPPASSFD;? cat %?p?-? %f | pgp +language=mutt +verbose=0 +batchmode -f"
 
