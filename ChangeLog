@@ -1,3 +1,7 @@
+2003-09-19 13:09:59  René Clerc  <rene@clerc.nl>  (roessler)
+
+	* po/nl.po: update
+
 2003-09-19 13:05:13  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* imap/utf7.c: Fix remaining (void **) casts.
