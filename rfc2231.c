@@ -56,6 +56,25 @@ static void rfc2231_free_parameter (struct rfc2231_parameter **);
 static void rfc2231_join_continuations (PARAMETER **, struct rfc2231_parameter *);
 static void rfc2231_list_insert (struct rfc2231_parameter **, struct rfc2231_parameter *);
 
+static void purge_empty_parameters (PARAMETER **headp)
+{
+  PARAMETER *p, *q, **last;
+  
+  for (last = headp, p = *headp; p; p = q)
+  {
+    q = p->next;
+    if (!p->attribute || !p->value)
+    {
+      *last = q;
+      p->next = NULL;
+      mutt_free_parameter (&p);
+    }
+    else
+      last = &p->next;
+  }
+}
+
+
 void rfc2231_decode_parameters (PARAMETER **headp)
 {
   PARAMETER *head = NULL;
@@ -70,8 +89,10 @@ void rfc2231_decode_parameters (PARAMETER **headp)
 
   int encoded;
   int index;
-  
+
   if (!headp) return;
+
+  purge_empty_parameters (headp);
   
   for (last = &head, p = *headp; p; p = q)
   {
@@ -134,6 +155,8 @@ void rfc2231_decode_parameters (PARAMETER **headp)
     rfc2231_join_continuations (last, conthead);
   
   *headp = head;
+  
+  purge_empty_parameters (headp);
 }
   
 static struct rfc2231_parameter *rfc2231_new_parameter (void)
