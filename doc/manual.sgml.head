@@ -590,7 +590,7 @@ function.  Finally, to abandon your changes, leave the menu, or
 Note that different remailers do have different capabilities,
 indicated in the &percnt;c entry of the remailer menu lines (see
 <ref id="mix_entry_format"
-name="&dollar;mix&lowbar;etry&lowbar;format">).  Most important is
+name="&dollar;mix&lowbar;entry&lowbar;format">).  Most important is
 the ``middleman'' capability, indicated by a capital ``M'': This
 means that the remailer in question cannot be used as the final
 element of a chain, but will only forward messages to other
