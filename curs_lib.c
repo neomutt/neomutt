@@ -244,11 +244,23 @@ void mutt_show_error (void)
 
 void mutt_endwin (const char *msg)
 {
+
+#ifdef SLANG_CURSES
+  CLEARLINE (LINES - 1);
+  move (LINES - 1, 0)
+#else
   move (LINES - 1, COLS - 1);
+  CLEARLINE (LINES - 1);
+#endif
+
   attrset (A_NORMAL);
   mutt_refresh ();
   endwin ();
+
+#ifndef SLANG_CURSES
   fputc ('\n', stdout);
+#endif
+
   if (msg)
     puts (msg);
 }
