@@ -1,6 +1,6 @@
 2005-01-28 16:40:33  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
-	* pgp.c: Adeotato points out on IRC that feof() only works
+	* pgp.c: Adeodato points out on IRC that feof() only works
 	after a read. So, we now check for an unsuccessful fgetc().
 
 2005-01-28 14:50:31  Paul Walker  <paul@black-sun.demon.co.uk>  (roessler)
