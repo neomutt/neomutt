@@ -299,10 +299,12 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
 	      }
 	  }
 
-        if (!is_uid && !(*is_subkey && option (OPTPGPIGNORESUB)))
+        if (!is_uid && 
+	    (!*is_subkey || !option (OPTPGPIGNORESUB) || !(flags & KEYFLAG_DISABLED)))
 	  k->flags |= flags;
 
 	break;
+      
       default:
         break;
     }
