@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt-1.1.2i\n"
-"POT-Creation-Date: 2000-01-30 14:25+0100\n"
+"POT-Creation-Date: 2000-02-01 08:36+0100\n"
 "PO-Revision-Date: 2000-01-19 18:30+0200\n"
 "Last-Translator: Pawe³ Dziekoñski <pdziekonski@mml.ch.pwr.wroc.pl>\n"
 "Language-Team: POLISH <pl@li.org>\n"
@@ -1505,727 +1505,727 @@ msgstr "exec: zbyt ma³o argumentów"
 msgid "%s: no such command"
 msgstr "%s: nie ma takiego polecenia"
 
-#: keymap_defs.h:5
+#: keymap_alldefs.h:5
 msgid "null operation"
 msgstr "pusta operacja"
 
-#: keymap_defs.h:6
+#: keymap_alldefs.h:6
 msgid "force viewing of attachment using mailcap"
 msgstr "wymu¶ obejrzenie za³±czników poprzez plik 'mailcap'"
 
-#: keymap_defs.h:7
+#: keymap_alldefs.h:7
 msgid "view attachment as text"
 msgstr "obejrzyj za³±cznik jako tekst"
 
-#: keymap_defs.h:8
+#: keymap_alldefs.h:8
 msgid "move to the bottom of the page"
 msgstr "przejd¼ na koniec strony"
 
-#: keymap_defs.h:9
+#: keymap_alldefs.h:9
 msgid "remail a message to another user"
 msgstr "wy¶lij ponownie do innego u¿ytkownika"
 
-#: keymap_defs.h:10
+#: keymap_alldefs.h:10
 msgid "select a new file in this directory"
 msgstr "wybierz nowy plik w tym katalogu"
 
-#: keymap_defs.h:11
+#: keymap_alldefs.h:11
 msgid "view file"
 msgstr "ogl±daj plik"
 
-#: keymap_defs.h:12
+#: keymap_alldefs.h:12
 msgid "display the currently selected file's name"
 msgstr "wy¶wietl nazwy aktualnie wybranych plików"
 
-#: keymap_defs.h:13
+#: keymap_alldefs.h:13
 #, fuzzy
 msgid "subscribe to current mailbox (IMAP only)"
 msgstr "zasubskrybuj bie¿±c± skrzynkê (tylko IMAP)"
 
-#: keymap_defs.h:14
+#: keymap_alldefs.h:14
 #, fuzzy
 msgid "unsubscribe to current mailbox (IMAP only)"
 msgstr "odsubskrybuj bie¿±c± skrzynkê (tylko IMAP)"
 
-#: keymap_defs.h:15
+#: keymap_alldefs.h:15
 #, fuzzy
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr ""
 "zmieñ tryb przegl±dania skrzynek: wszystkie/zasubskrybowane (tylko IMAP)"
 
-#: keymap_defs.h:16
+#: keymap_alldefs.h:16
 msgid "change directories"
 msgstr "zmieñ katalog"
 
-#: keymap_defs.h:17
+#: keymap_alldefs.h:17
 msgid "check mailboxes for new mail"
 msgstr "szukaj nowych listów w skrzynkach"
 
-#: keymap_defs.h:18
+#: keymap_alldefs.h:18
 msgid "attach a file(s) to this message"
 msgstr "do³±cz plik(i) do tego listu"
 
-#: keymap_defs.h:19
+#: keymap_alldefs.h:19
 msgid "attach message(s) to this message"
 msgstr "do³±cz list(y) do tego listu"
 
-#: keymap_defs.h:20
+#: keymap_alldefs.h:20
 msgid "change an attachment's character set"
 msgstr "zmieñ zestaw znaków za³±cznika"
 
-#: keymap_defs.h:21
+#: keymap_alldefs.h:21
 msgid "edit the BCC list"
 msgstr "podaj tre¶æ pola BCC"
 
-#: keymap_defs.h:22
+#: keymap_alldefs.h:22
 msgid "edit the CC list"
 msgstr "podaj tre¶æ pola CC"
 
-#: keymap_defs.h:23
+#: keymap_alldefs.h:23
 msgid "edit attachment description"
 msgstr "edytuj opis za³±cznika"
 
-#: keymap_defs.h:24
+#: keymap_alldefs.h:24
 msgid "edit attachment transfer-encoding"
 msgstr "podaj sposób zakodowania za³±cznika"
 
-#: keymap_defs.h:25
+#: keymap_alldefs.h:25
 msgid "enter a file to save a copy of this message in"
 msgstr "podaj nazwê pliku, do którego ma byæ skopiowany list"
 
-#: keymap_defs.h:26
+#: keymap_alldefs.h:26
 msgid "edit the file to be attached"
 msgstr "podaj nazwê pliku za³±cznika"
 
-#: keymap_defs.h:27
+#: keymap_alldefs.h:27
 msgid "edit the from field"
 msgstr "podaj tre¶æ pola From:"
 
-#: keymap_defs.h:28
+#: keymap_alldefs.h:28
 msgid "edit the message with headers"
 msgstr "edytuj tre¶æ listu i nag³ówków"
 
-#: keymap_defs.h:29
+#: keymap_alldefs.h:29
 msgid "edit the message"
 msgstr "edytuj tre¶æ listu"
 
-#: keymap_defs.h:30
+#: keymap_alldefs.h:30
 msgid "edit attachment using mailcap entry"
 msgstr "edytuj za³±cznik u¿ywaj±c pliku 'mailcap'"
 
-#: keymap_defs.h:31
+#: keymap_alldefs.h:31
 msgid "edit the Reply-To field"
 msgstr "podaj tre¶c pola Reply-To:"
 
-#: keymap_defs.h:32
+#: keymap_alldefs.h:32
 msgid "edit the subject of this message"
 msgstr "podaj tytu³ listu"
 
-#: keymap_defs.h:33
+#: keymap_alldefs.h:33
 msgid "edit the TO list"
 msgstr "podaj tre¶æ listy TO"
 
-#: keymap_defs.h:34
+#: keymap_alldefs.h:34
 #, fuzzy
 msgid "edit attachment content type"
 msgstr "podaj typ za³±cznika"
 
-#: keymap_defs.h:35
+#: keymap_alldefs.h:35
 msgid "get a temporary copy of an attachment"
 msgstr "we¼ tymczasow± kopiê za³±cznika"
 
-#: keymap_defs.h:36
+#: keymap_alldefs.h:36
 msgid "run ispell on the message"
 msgstr "sprawd¼ poprawno¶æ pisowni listu"
 
-#: keymap_defs.h:37
+#: keymap_alldefs.h:37
 msgid "compose new attachment using mailcap entry"
 msgstr "utwórz nowy za³±cznik u¿ywaj±c pliku 'mailcap'"
 
-#: keymap_defs.h:38
+#: keymap_alldefs.h:38
 msgid "toggle recoding of this attachment"
 msgstr "zdecyduj czy za³±cznik ma byæ przekodowywany"
 
-#: keymap_defs.h:39
+#: keymap_alldefs.h:39
 msgid "recode this attachment to/from the local charset"
 msgstr "przekoduj ten za³±cznik do/z lokalnego zewstawu"
 
-#: keymap_defs.h:40
+#: keymap_alldefs.h:40
 msgid "save this message to send later"
 msgstr "zapisz list aby wys³aæ go pó¼niej"
 
-#: keymap_defs.h:41
+#: keymap_alldefs.h:41
 msgid "rename/move an attached file"
 msgstr "przezwij/przenie¶ do³±czony plik"
 
-#: keymap_defs.h:42
+#: keymap_alldefs.h:42
 msgid "send the message"
 msgstr "wy¶lij list"
 
-#: keymap_defs.h:43
+#: keymap_alldefs.h:43
 msgid "toggle disposition between inline/attachment"
 msgstr ""
 
-#: keymap_defs.h:44
+#: keymap_alldefs.h:44
 msgid "toggle whether to delete file after sending it"
 msgstr "ustala czy usun±æ plik po wys³aniu"
 
-#: keymap_defs.h:45
+#: keymap_alldefs.h:45
 msgid "update an attachment's encoding info"
 msgstr "zaktualizuj informacjê o kodowaniu za³±cznika"
 
-#: keymap_defs.h:46
+#: keymap_alldefs.h:46
 msgid "write the message to a folder"
 msgstr "zapisz list do foldera"
 
-#: keymap_defs.h:47
+#: keymap_alldefs.h:47
 msgid "copy a message to a file/mailbox"
 msgstr "kopiuj list do pliku/skrzynki"
 
-#: keymap_defs.h:48
+#: keymap_alldefs.h:48
 msgid "create an alias from a message sender"
 msgstr "utwórz alias dla nadawcy"
 
-#: keymap_defs.h:49
+#: keymap_alldefs.h:49
 msgid "move entry to bottom of screen"
 msgstr "przesuñ pozycjê kursora na dó³ ekranu"
 
-#: keymap_defs.h:50
+#: keymap_alldefs.h:50
 msgid "move entry to middle of screen"
 msgstr "przesuñ pozycjê kursora na ¶rodek ekranu"
 
-#: keymap_defs.h:51
+#: keymap_alldefs.h:51
 msgid "move entry to top of screen"
 msgstr "przesuñ pozycjê kursora na górê ekranu"
 
-#: keymap_defs.h:52
+#: keymap_alldefs.h:52
 msgid "make decoded (text/plain) copy"
 msgstr "utwórz rozkodowan± (text/plain) kopiê"
 
-#: keymap_defs.h:53
+#: keymap_alldefs.h:53
 msgid "make decoded copy (text/plain) and delete"
 msgstr "utwórz rozkodowan± kopiê (text/plain) i usuñ"
 
-#: keymap_defs.h:54
+#: keymap_alldefs.h:54
 msgid "delete the current entry"
 msgstr "usuñ bie¿±cy list"
 
-#: keymap_defs.h:55
+#: keymap_alldefs.h:55
 #, fuzzy
 msgid "delete the current mailbox (IMAP only)"
 msgstr "zasubskrybuj bie¿±c± skrzynkê (tylko IMAP)"
 
-#: keymap_defs.h:56
+#: keymap_alldefs.h:56
 msgid "delete all messages in subthread"
 msgstr "usuñ wszystkie listy w podw±tku"
 
-#: keymap_defs.h:57
+#: keymap_alldefs.h:57
 msgid "delete all messages in thread"
 msgstr "usuñ wszystkie listy w w±tku"
 
-#: keymap_defs.h:58
+#: keymap_alldefs.h:58
 msgid "display full address of sender"
 msgstr "wy¶wietl pe³ny adres nadawcy"
 
-#: keymap_defs.h:59
+#: keymap_alldefs.h:59
 #, fuzzy
 msgid "display message and toggle header weeding"
 msgstr "wy¶wietl list ze wszystkimi nag³ówkami"
 
-#: keymap_defs.h:60
+#: keymap_alldefs.h:60
 msgid "display a message"
 msgstr "wy¶wietl list"
 
-#: keymap_defs.h:61
+#: keymap_alldefs.h:61
 msgid "edit the raw message"
 msgstr "edytuj list z nag³owkami"
 
-#: keymap_defs.h:62
+#: keymap_alldefs.h:62
 msgid "delete the char in front of the cursor"
 msgstr "usuñ znak przed kursorem"
 
-#: keymap_defs.h:63
+#: keymap_alldefs.h:63
 msgid "move the cursor one character to the left"
 msgstr "przesuñ kursor jeden znak w lewo"
 
-#: keymap_defs.h:64
+#: keymap_alldefs.h:64
 msgid "jump to the beginning of the line"
 msgstr "przeskocz do pocz±tku linii"
 
-#: keymap_defs.h:65
+#: keymap_alldefs.h:65
 msgid "cycle among incoming mailboxes"
 msgstr "kr±¿ pomiêdzy skrzynkami pocztowymi"
 
-#: keymap_defs.h:66
+#: keymap_alldefs.h:66
 msgid "complete filename or alias"
 msgstr "uzupe³nij nazwê pliku lub alias"
 
-#: keymap_defs.h:67
+#: keymap_alldefs.h:67
 msgid "complete address with query"
 msgstr "uzupe³nij adres poprzez zapytanie"
 
-#: keymap_defs.h:68
+#: keymap_alldefs.h:68
 msgid "delete the char under the cursor"
 msgstr "usuñ znak pod kursorem"
 
-#: keymap_defs.h:69
+#: keymap_alldefs.h:69
 msgid "jump to the end of the line"
 msgstr "przeskocz do koñca linii"
 
-#: keymap_defs.h:70
+#: keymap_alldefs.h:70
 msgid "move the cursor one character to the right"
 msgstr "przesuñ kursor o znak w prawo"
 
-#: keymap_defs.h:71 keymap_defs.h:72
+#: keymap_alldefs.h:71 keymap_alldefs.h:72
 msgid "scroll up through the history list"
 msgstr "przewijaj do góry listê wydanych poleceñ"
 
-#: keymap_defs.h:73
+#: keymap_alldefs.h:73
 msgid "delete chars from cursor to end of line"
 msgstr "usuñ znaki pocz±wszy od kursora a¿ do koñca linii"
 
-#: keymap_defs.h:74
+#: keymap_alldefs.h:74
 msgid "delete all chars on the line"
 msgstr "usuñ wszystkie znaki w linii"
 
-#: keymap_defs.h:75
+#: keymap_alldefs.h:75
 msgid "delete the word in front of the cursor"
 msgstr "usuñ s³owo z przodu kursora"
 
-#: keymap_defs.h:76
+#: keymap_alldefs.h:76
 msgid "quote the next typed key"
 msgstr "zacytuj nastêpny wpisany znak"
 
-#: keymap_defs.h:77
+#: keymap_alldefs.h:77
 msgid "enter a muttrc command"
 msgstr "wprowad¼ polecenie pliku startowego (muttrc)"
 
-#: keymap_defs.h:78
+#: keymap_alldefs.h:78
 msgid "enter a file mask"
 msgstr "wprowad¼ maskê pliku"
 
-#: keymap_defs.h:79
+#: keymap_alldefs.h:79
 msgid "exit this menu"
 msgstr "opu¶æ niniejsze menu"
 
-#: keymap_defs.h:80
+#: keymap_alldefs.h:80
 msgid "filter attachment through a shell command"
 msgstr "przefiltruj za³±cznik przez polecenie pow³oki"
 
-#: keymap_defs.h:81
+#: keymap_alldefs.h:81
 msgid "move to the first entry"
 msgstr "przesuñ siê do pierwszej pozycji"
 
-#: keymap_defs.h:82
+#: keymap_alldefs.h:82
 msgid "toggle a message's 'important' flag"
 msgstr "w³±cz dla listu flagê 'wa¿ne!'"
 
-#: keymap_defs.h:83
+#: keymap_alldefs.h:83
 msgid "forward a message with comments"
 msgstr "prze¶lij dalej list opatruj±c j± uwagami"
 
-#: keymap_defs.h:84
+#: keymap_alldefs.h:84
 msgid "select the current entry"
 msgstr "wska¿ obecn± pozycjê"
 
-#: keymap_defs.h:85
+#: keymap_alldefs.h:85
 msgid "reply to all recipients"
 msgstr "odpowiedz wszystkim adresatom"
 
-#: keymap_defs.h:86
+#: keymap_alldefs.h:86
 msgid "scroll down 1/2 page"
 msgstr "przewiñ w dó³ o pó³ strony"
 
-#: keymap_defs.h:87
+#: keymap_alldefs.h:87
 msgid "scroll up 1/2 page"
 msgstr "przewiñ w górê o pó³ strony"
 
-#: keymap_defs.h:88
+#: keymap_alldefs.h:88
 msgid "this screen"
 msgstr "niniejszy ekran"
 
-#: keymap_defs.h:89
+#: keymap_alldefs.h:89
 msgid "jump to an index number"
 msgstr "przeskocz do konkretnej pozycji w indeksie"
 
-#: keymap_defs.h:90
+#: keymap_alldefs.h:90
 msgid "move to the last entry"
 msgstr "przejd¼ do ostatniej pozycji"
 
-#: keymap_defs.h:91
+#: keymap_alldefs.h:91
 msgid "reply to specified mailing list"
 msgstr "opowiedz na wskazan± listê pocztow±"
 
-#: keymap_defs.h:92
+#: keymap_alldefs.h:92
 msgid "execute a macro"
 msgstr "wykonaj makropolecenie"
 
-#: keymap_defs.h:93
+#: keymap_alldefs.h:93
 msgid "compose a new mail message"
 msgstr "zredaguj nowy list"
 
-#: keymap_defs.h:94
+#: keymap_alldefs.h:94
 msgid "open a different folder"
 msgstr "otwórz inny folder"
 
-#: keymap_defs.h:95
+#: keymap_alldefs.h:95
 msgid "open a different folder in read only mode"
 msgstr "otwórz inny folder w trybie tylko do odczytu"
 
-#: keymap_defs.h:96
+#: keymap_alldefs.h:96
 msgid "clear a status flag from a message"
 msgstr "usuñ flagê ze statusem wiadmo¶ci"
 
-#: keymap_defs.h:97
+#: keymap_alldefs.h:97
 msgid "delete messages matching a pattern"
 msgstr "usuñ listy pasuj±ce do wzorca"
 
-#: keymap_defs.h:98
+#: keymap_alldefs.h:98
 msgid "retrieve mail from POP server"
 msgstr "pobierz pocztê z serwera POP"
 
-#: keymap_defs.h:99
+#: keymap_alldefs.h:99
 msgid "move to the first message"
 msgstr "przejd¼ do pierwszego listu"
 
-#: keymap_defs.h:100
+#: keymap_alldefs.h:100
 msgid "move to the last message"
 msgstr "przejd¼ do ostatniego listu"
 
-#: keymap_defs.h:101
+#: keymap_alldefs.h:101
 msgid "show only messages matching a pattern"
 msgstr "poka¿ tylko listy pasuj±ce do wzorca"
 
-#: keymap_defs.h:102
+#: keymap_alldefs.h:102
 msgid "jump to the next new message"
 msgstr "przejd¼ do nastêpnego nowego listu"
 
-#: keymap_defs.h:103
+#: keymap_alldefs.h:103
 msgid "jump to the next subthread"
 msgstr "przejd¼ do nastêpnego podw±tku"
 
-#: keymap_defs.h:104
+#: keymap_alldefs.h:104
 msgid "jump to the next thread"
 msgstr "przejd¼ do nastêpnego w±tku"
 
-#: keymap_defs.h:105
+#: keymap_alldefs.h:105
 msgid "move to the next undeleted message"
 msgstr "przejd¼ do nastêpnego nieusuniêtego listu"
 
-#: keymap_defs.h:106
+#: keymap_alldefs.h:106
 msgid "jump to the next unread message"
 msgstr "przejd¼ do nastêpnego nieprzeczytanego listu"
 
-#: keymap_defs.h:107
+#: keymap_alldefs.h:107
 msgid "jump to parent message in thread"
 msgstr "przejd¼ na pocz±tek w±tku"
 
-#: keymap_defs.h:108
+#: keymap_alldefs.h:108
 msgid "jump to previous thread"
 msgstr "przejd¼ do poprzedniego w±tku"
 
-#: keymap_defs.h:109
+#: keymap_alldefs.h:109
 msgid "jump to previous subthread"
 msgstr "przejd¼ do poprzedniego podw±tku"
 
-#: keymap_defs.h:110
+#: keymap_alldefs.h:110
 msgid "move to the last undelete message"
 msgstr "przejd¼ do ostatniego nieusuniêtego listu"
 
-#: keymap_defs.h:111
+#: keymap_alldefs.h:111
 msgid "jump to the previous new message"
 msgstr "przejd¼ do poprzedniego nowego listu"
 
-#: keymap_defs.h:112
+#: keymap_alldefs.h:112
 msgid "jump to the previous unread message"
 msgstr "przejd¼ do poprzedniego nieprzeczytanego listu"
 
-#: keymap_defs.h:113
+#: keymap_alldefs.h:113
 msgid "mark the current thread as read"
 msgstr "zaznacz obecny w±tek jako przeczytany"
 
-#: keymap_defs.h:114
+#: keymap_alldefs.h:114
 msgid "mark the current subthread as read"
 msgstr "zaznacz obecny podw±tek jako przeczytany"
 
-#: keymap_defs.h:115
+#: keymap_alldefs.h:115
 msgid "set a status flag on a message"
 msgstr "ustaw flagê statusu listu"
 
-#: keymap_defs.h:116
+#: keymap_alldefs.h:116
 msgid "save changes to mailbox"
 msgstr "zapisz zmiany do foldera poczty"
 
-#: keymap_defs.h:117
+#: keymap_alldefs.h:117
 msgid "tag messages matching a pattern"
 msgstr "zaznacz listy pasuj±ce do wzorca"
 
-#: keymap_defs.h:118
+#: keymap_alldefs.h:118
 msgid "undelete messages matching a pattern"
 msgstr "odtwórz listy pasuj±ce do wzorca"
 
-#: keymap_defs.h:119
+#: keymap_alldefs.h:119
 msgid "untag messages matching a pattern"
 msgstr "odznacz listy pasuj±ce do wzorca"
 
-#: keymap_defs.h:120
+#: keymap_alldefs.h:120
 msgid "move to the middle of the page"
 msgstr "przejd¼ do po³owy strony"
 
-#: keymap_defs.h:121
+#: keymap_alldefs.h:121
 #, fuzzy
 msgid "create a new mailbox (IMAP only)"
 msgstr "zasubskrybuj bie¿±c± skrzynkê (tylko IMAP)"
 
-#: keymap_defs.h:122
+#: keymap_alldefs.h:122
 msgid "move to the next entry"
 msgstr "przejd¼ do nastêpnej pozycji"
 
-#: keymap_defs.h:123
+#: keymap_alldefs.h:123
 msgid "scroll down one line"
 msgstr "przewiñ w dó³ o liniê"
 
-#: keymap_defs.h:124
+#: keymap_alldefs.h:124
 msgid "move to the next page"
 msgstr "przejd¼ do nastêpnej strony"
 
-#: keymap_defs.h:125
+#: keymap_alldefs.h:125
 msgid "jump to the bottom of the message"
 msgstr "przejd¼ na koniec listu"
 
-#: keymap_defs.h:126
+#: keymap_alldefs.h:126
 msgid "return to the main-menu"
 msgstr "powróæ do menu g³ównego"
 
-#: keymap_defs.h:127
+#: keymap_alldefs.h:127
 msgid "toggle display of quoted text"
 msgstr "ustala sposób pokazywania zaznaczonego tekstu"
 
-#: keymap_defs.h:128
+#: keymap_alldefs.h:128
 msgid "skip beyond quoted text"
 msgstr "przeskocz poza zaznaczony fragment tekstu"
 
-#: keymap_defs.h:129
+#: keymap_alldefs.h:129
 msgid "jump to the top of the message"
 msgstr "przejd¼ na pocz±tek listu"
 
-#: keymap_defs.h:130
+#: keymap_alldefs.h:130
 msgid "pipe message/attachment to a shell command"
 msgstr "przekieruj list/za³±cznik do polecenia pow³oki"
 
-#: keymap_defs.h:131
+#: keymap_alldefs.h:131
 msgid "move to the previous entry"
 msgstr "przejd¼ do poprzedniej pozycji"
 
-#: keymap_defs.h:132
+#: keymap_alldefs.h:132
 msgid "scroll up one line"
 msgstr "przewiñ w górê o liniê"
 
-#: keymap_defs.h:133
+#: keymap_alldefs.h:133
 msgid "move to the previous page"
 msgstr "przejd¼ do poprzedniej strony"
 
-#: keymap_defs.h:134
+#: keymap_alldefs.h:134
 msgid "print the current entry"
 msgstr "wydrukuj obecn± pozycjê"
 
-#: keymap_defs.h:135
+#: keymap_alldefs.h:135
 msgid "query external program for addresses"
 msgstr "zapytaj zewnêtrzny program o adres"
 
-#: keymap_defs.h:136
+#: keymap_alldefs.h:136
 msgid "append new query results to current results"
 msgstr "dodaj rezultaty nowych poszukiwañ do obecnych"
 
-#: keymap_defs.h:137
+#: keymap_alldefs.h:137
 msgid "save changes to mailbox and quit"
 msgstr "zapisz zmiany do skrzynki i opu¶æ program pocztowy"
 
-#: keymap_defs.h:138
+#: keymap_alldefs.h:138
 msgid "recall a postponed message"
 msgstr "wywo³aj od³o¿ony list"
 
-#: keymap_defs.h:139
+#: keymap_alldefs.h:139
 msgid "clear and redraw the screen"
 msgstr "wyczy¶æ i od¶wie¿ ekran"
 
-#: keymap_defs.h:140
+#: keymap_alldefs.h:140
 msgid "{internal}"
 msgstr "{wewnêtrzne}"
 
-#: keymap_defs.h:141
+#: keymap_alldefs.h:141
 msgid "reply to a message"
 msgstr "odpowiedz na list"
 
-#: keymap_defs.h:142
+#: keymap_alldefs.h:142
 msgid "use the current message as a template for a new one"
 msgstr ""
 
-#: keymap_defs.h:143
+#: keymap_alldefs.h:143
 msgid "save message/attachment to a file"
 msgstr "zapisz list/za³±cznik do pliku"
 
-#: keymap_defs.h:144
+#: keymap_alldefs.h:144
 msgid "search for a regular expression"
 msgstr "szukaj wyra¿enia regularnego"
 
-#: keymap_defs.h:145
+#: keymap_alldefs.h:145
 msgid "search backwards for a regular expression"
 msgstr "szukaj wstecz wyra¿enia regularnego"
 
-#: keymap_defs.h:146
+#: keymap_alldefs.h:146
 msgid "search for next match"
 msgstr "szukaj nastêpnego pozytywnego rezultatu"
 
-#: keymap_defs.h:147
+#: keymap_alldefs.h:147
 msgid "search for next match in opposite direction"
 msgstr "szukaj wstecz nastêpnego pozytywnego rezultatu"
 
-#: keymap_defs.h:148
+#: keymap_alldefs.h:148
 msgid "toggle search pattern coloring"
 msgstr "ustala czy szukana fraza ma byæ zaznaczona kolorem"
 
-#: keymap_defs.h:149
+#: keymap_alldefs.h:149
 msgid "invoke a command in a subshell"
 msgstr "wywo³aj polecenie w podpow³oce"
 
-#: keymap_defs.h:150
+#: keymap_alldefs.h:150
 msgid "sort messages"
 msgstr "uszereguj listy"
 
-#: keymap_defs.h:151
+#: keymap_alldefs.h:151
 msgid "sort messages in reverse order"
 msgstr "uszereguj listy w odwrotnej kolejno¶ci"
 
-#: keymap_defs.h:152
+#: keymap_alldefs.h:152
 msgid "tag the current entry"
 msgstr "zaznacz bie¿±c± pozycjê"
 
-#: keymap_defs.h:153
+#: keymap_alldefs.h:153
 msgid "apply next function to tagged messages"
 msgstr "wykonaj nastêpne polecenie na zaznaczonych listach"
 
-#: keymap_defs.h:154
+#: keymap_alldefs.h:154
 msgid "tag the current subthread"
 msgstr "zaznacz bie¿±cy podw±tek"
 
-#: keymap_defs.h:155
+#: keymap_alldefs.h:155
 msgid "tag the current thread"
 msgstr "zaznacz bie¿±cy w±tek"
 
-#: keymap_defs.h:156
+#: keymap_alldefs.h:156
 msgid "toggle a message's 'new' flag"
 msgstr "ustaw flagê listu na 'nowy'"
 
-#: keymap_defs.h:157
+#: keymap_alldefs.h:157
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "ustala czy skrzynka bêdzie ponownie zapisana"
 
-#: keymap_defs.h:158
+#: keymap_alldefs.h:158
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "ustala czy przegl±daæ skrzynki czy wszystkie pliki"
 
-#: keymap_defs.h:159
+#: keymap_alldefs.h:159
 msgid "move to the top of the page"
 msgstr "przejd¼ na pocz±tek strony"
 
-#: keymap_defs.h:160
+#: keymap_alldefs.h:160
 msgid "undelete the current entry"
 msgstr "odtwórz bie¿±c± pozycjê listy"
 
-#: keymap_defs.h:161
+#: keymap_alldefs.h:161
 msgid "undelete all messages in thread"
 msgstr "odtwórz wszystkie listy z tego w±tku"
 
-#: keymap_defs.h:162
+#: keymap_alldefs.h:162
 msgid "undelete all messages in subthread"
 msgstr "odtwórz wszystkie listy z tego podw±tku"
 
-#: keymap_defs.h:163
+#: keymap_alldefs.h:163
 msgid "show the Mutt version number and date"
 msgstr "poka¿ wersjê i datê programu pocztowego Mutt"
 
-#: keymap_defs.h:164
+#: keymap_alldefs.h:164
 msgid "view attachment using mailcap entry if necessary"
 msgstr "poka¿ za³±cznik u¿ywaj±c, je¶li to niezbêdne, pliku 'mailcap'"
 
-#: keymap_defs.h:165
+#: keymap_alldefs.h:165
 msgid "show MIME attachments"
 msgstr "poka¿ za³±czniki MIME"
 
-#: keymap_defs.h:166
+#: keymap_alldefs.h:166
 msgid "show currently active limit pattern"
 msgstr "poka¿ bie¿±cy wzorzec ograniczaj±cy"
 
-#: keymap_defs.h:167
+#: keymap_alldefs.h:167
 msgid "collapse/uncollapse current thread"
 msgstr "zwiñ/rozwiñ bie¿±cy w±tek"
 
-#: keymap_defs.h:168
+#: keymap_alldefs.h:168
 msgid "collapse/uncollapse all threads"
 msgstr "zwiñ/rozwiñ wszystkie w±tki"
 
-#: keymap_defs.h:169
+#: keymap_alldefs.h:169
 msgid "attach a PGP public key"
 msgstr "do³±cz w³asny klucz publiczny PGP"
 
-#: keymap_defs.h:170
+#: keymap_alldefs.h:170
 msgid "show PGP options"
 msgstr "poka¿ opcje PGP"
 
-#: keymap_defs.h:171
+#: keymap_alldefs.h:171
 msgid "extract PGP public keys"
 msgstr "kopiuj klucz publiczny PGP"
 
-#: keymap_defs.h:172
+#: keymap_alldefs.h:172
 msgid "wipe PGP passphrase from memory"
 msgstr "wyma¿ has³o PGP z pamiêci operacyjnej"
 
-#: keymap_defs.h:173
+#: keymap_alldefs.h:173
 msgid "mail a PGP public key"
 msgstr "wy¶lij w³asny klucz publiczny PGP"
 
-#: keymap_defs.h:174
+#: keymap_alldefs.h:174
 msgid "verify a PGP public key"
 msgstr "sprawd¼ klucz publiczny PGP"
 
-#: keymap_defs.h:175
+#: keymap_alldefs.h:175
 msgid "view the key's user id"
 msgstr "obejrzyj identyfikator u¿ytkownika klucza"
 
-#: keymap_defs.h:176
+#: keymap_alldefs.h:176
 msgid "make decrypted copy and delete"
 msgstr "utwórz rozkodowan± kopiê i usuñ orygina³"
 
-#: keymap_defs.h:177
+#: keymap_alldefs.h:177
 msgid "make decrypted copy"
 msgstr "utwórz rozkodowan± kopiê"
 
-#: keymap_defs.h:178
+#: keymap_alldefs.h:178
 msgid "Accept the chain constructed"
 msgstr "Potwierd¼ skonstruowany ³añcuch"
 
-#: keymap_defs.h:179
+#: keymap_alldefs.h:179
 msgid "Append a remailer to the chain"
 msgstr "Dodaj remailera do ³añcucha"
 
-#: keymap_defs.h:180
+#: keymap_alldefs.h:180
 msgid "Insert a remailer into the chain"
 msgstr "Wprowadz remailera do ³añcucha"
 
-#: keymap_defs.h:181
+#: keymap_alldefs.h:181
 msgid "Delete a remailer from the chain"
 msgstr "Usuñ remailera z ³añcucha"
 
-#: keymap_defs.h:182
+#: keymap_alldefs.h:182
 msgid "Select the previous element of the chain"
 msgstr "Wybierz poprzedni element ³añcucha"
 
-#: keymap_defs.h:183
+#: keymap_alldefs.h:183
 msgid "Select the next element of the chain"
 msgstr "Wybierz nastepny element ³añcucha"
 
-#: keymap_defs.h:184
+#: keymap_alldefs.h:184
 msgid "send the message through a mixmaster remailer chain"
 msgstr "przeslij list przez ³añcuch anonimowych remailerów typu mixmaster"
 

@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.1.2i-1\n"
-"POT-Creation-Date: 2000-01-30 14:25+0100\n"
-"PO-Revision-Date: 2000-01-20 21:25-0600\n"
+"Project-Id-Version: 1.1.2i\n"
+"POT-Creation-Date: 2000-02-01 08:36+0100\n"
+"PO-Revision-Date: 2000-01-30 12:40-0600\n"
 "Last-Translator: Ronny Haryanto <ronny-muttpo@haryan.to>\n"
 "Language-Team: Indonesia <i18n@linux.or.id>\n"
 "MIME-Version: 1.0\n"
@@ -169,7 +169,6 @@ msgid "Creating mailboxes is not yet supported."
 msgstr "Pembuatan kotak surat belum diimplementasikan."
 
 #: browser.c:810
-#, fuzzy
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Penghapusan hanya didukung untuk kotak surat jenis IMAP."
 
@@ -1113,15 +1112,15 @@ msgstr "Bantuan utk %s"
 #. now begin login
 #: imap/auth.c:144
 msgid "Authenticating (GSSAPI)..."
-msgstr ""
+msgstr "Mengauthentikasi (GSSAPI)..."
 
 #: imap/auth.c:337
 msgid "Authenticating (CRAM-MD5)..."
-msgstr ""
+msgstr "Mengauthentikasi (CRAM-MD5)..."
 
 #: imap/auth.c:424
 msgid "Authenticating (anonymous)..."
-msgstr ""
+msgstr "Mengauthentikasi (anonim)..."
 
 #: imap/auth.c:499
 msgid "IMAP Username: "
@@ -1502,725 +1501,720 @@ msgstr "exec: parameter terlalu banyak"
 msgid "%s: no such command"
 msgstr "%s: tidak ada perintah begitu"
 
-#: keymap_defs.h:5
+#: keymap_alldefs.h:5
 msgid "null operation"
 msgstr "null operation"
 
-#: keymap_defs.h:6
+#: keymap_alldefs.h:6
 msgid "force viewing of attachment using mailcap"
 msgstr "paksa menampilkan lampiran menggunakan mailcap"
 
-#: keymap_defs.h:7
+#: keymap_alldefs.h:7
 msgid "view attachment as text"
 msgstr "tampilkan lampiran sebagai teks"
 
-#: keymap_defs.h:8
+#: keymap_alldefs.h:8
 msgid "move to the bottom of the page"
 msgstr "ke akhir halaman"
 
-#: keymap_defs.h:9
+#: keymap_alldefs.h:9
 msgid "remail a message to another user"
 msgstr "kirim surat ke user lain"
 
-#: keymap_defs.h:10
+#: keymap_alldefs.h:10
 msgid "select a new file in this directory"
 msgstr "pilih file baru di direktori ini"
 
-#: keymap_defs.h:11
+#: keymap_alldefs.h:11
 msgid "view file"
 msgstr "tampilkan file"
 
-#: keymap_defs.h:12
+#: keymap_alldefs.h:12
 msgid "display the currently selected file's name"
 msgstr "tampilkan nama file yang sedang dipilih"
 
-#: keymap_defs.h:13
-#, fuzzy
+#: keymap_alldefs.h:13
 msgid "subscribe to current mailbox (IMAP only)"
 msgstr "berlangganan ke kotak surat (untuk IMAP)"
 
-#: keymap_defs.h:14
-#, fuzzy
+#: keymap_alldefs.h:14
 msgid "unsubscribe to current mailbox (IMAP only)"
 msgstr "berhenti langganan dari kotak surat (untuk IMAP)"
 
-#: keymap_defs.h:15
-#, fuzzy
+#: keymap_alldefs.h:15
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "tampilkan semua kotak surat atau hanya yang langganan? (untuk IMAP)"
 
-#: keymap_defs.h:16
+#: keymap_alldefs.h:16
 msgid "change directories"
 msgstr "pindah direktori"
 
-#: keymap_defs.h:17
+#: keymap_alldefs.h:17
 msgid "check mailboxes for new mail"
 msgstr "periksa kotak surat apakah ada surat baru"
 
-#: keymap_defs.h:18
+#: keymap_alldefs.h:18
 msgid "attach a file(s) to this message"
 msgstr "lampirkan file ke surat ini"
 
-#: keymap_defs.h:19
+#: keymap_alldefs.h:19
 msgid "attach message(s) to this message"
 msgstr "lampirkan surat lain ke surat ini"
 
-#: keymap_defs.h:20
+#: keymap_alldefs.h:20
 msgid "change an attachment's character set"
 msgstr "ubah character set dari lampiran"
 
-#: keymap_defs.h:21
+#: keymap_alldefs.h:21
 msgid "edit the BCC list"
 msgstr "edit daftar BCC"
 
-#: keymap_defs.h:22
+#: keymap_alldefs.h:22
 msgid "edit the CC list"
 msgstr "edit daftar CC"
 
-#: keymap_defs.h:23
+#: keymap_alldefs.h:23
 msgid "edit attachment description"
 msgstr "edit keterangan lampiran"
 
-#: keymap_defs.h:24
+#: keymap_alldefs.h:24
 msgid "edit attachment transfer-encoding"
 msgstr "edit transfer-encoding dari lampiran"
 
-#: keymap_defs.h:25
+#: keymap_alldefs.h:25
 msgid "enter a file to save a copy of this message in"
 msgstr "masukkan nama file di mana salinan surat ini mau disimpan"
 
-#: keymap_defs.h:26
+#: keymap_alldefs.h:26
 msgid "edit the file to be attached"
 msgstr "edit file yang akan dilampirkan"
 
-#: keymap_defs.h:27
+#: keymap_alldefs.h:27
 msgid "edit the from field"
 msgstr "edit kolom From"
 
-#: keymap_defs.h:28
+#: keymap_alldefs.h:28
 msgid "edit the message with headers"
 msgstr "edit surat berikut dengan headers"
 
-#: keymap_defs.h:29
+#: keymap_alldefs.h:29
 msgid "edit the message"
 msgstr "edit surat"
 
-#: keymap_defs.h:30
+#: keymap_alldefs.h:30
 msgid "edit attachment using mailcap entry"
 msgstr "edit lampiran berdasarkan mailcap"
 
-#: keymap_defs.h:31
+#: keymap_alldefs.h:31
 msgid "edit the Reply-To field"
 msgstr "edit kolom Reply-To"
 
-#: keymap_defs.h:32
+#: keymap_alldefs.h:32
 msgid "edit the subject of this message"
 msgstr "edit subjek dari surat ini"
 
-#: keymap_defs.h:33
+#: keymap_alldefs.h:33
 msgid "edit the TO list"
 msgstr "edit daftar TO"
 
-#: keymap_defs.h:34
-#, fuzzy
+#: keymap_alldefs.h:34
 msgid "edit attachment content type"
 msgstr "edit jenis isi (content-type) lampiran"
 
-#: keymap_defs.h:35
+#: keymap_alldefs.h:35
 msgid "get a temporary copy of an attachment"
 msgstr "ambil salinan sementara dari lampiran"
 
-#: keymap_defs.h:36
+#: keymap_alldefs.h:36
 msgid "run ispell on the message"
 msgstr "jalankan ispell ke surat"
 
-#: keymap_defs.h:37
+#: keymap_alldefs.h:37
 msgid "compose new attachment using mailcap entry"
 msgstr "buat lampiran berdasarkan mailcap"
 
-#: keymap_defs.h:38
+#: keymap_alldefs.h:38
 msgid "toggle recoding of this attachment"
 msgstr "peng-coding-an ulang dari lampiran ini"
 
-#: keymap_defs.h:39
+#: keymap_alldefs.h:39
 msgid "recode this attachment to/from the local charset"
 msgstr "peng-coding-an ulang ke/dari charset lokal"
 
-#: keymap_defs.h:40
+#: keymap_alldefs.h:40
 msgid "save this message to send later"
 msgstr "simpan surat ini untuk dikirim nanti"
 
-#: keymap_defs.h:41
+#: keymap_alldefs.h:41
 msgid "rename/move an attached file"
 msgstr "ganti nama/pindahkan file lampiran"
 
-#: keymap_defs.h:42
+#: keymap_alldefs.h:42
 msgid "send the message"
 msgstr "kirim suratnya"
 
-#: keymap_defs.h:43
+#: keymap_alldefs.h:43
 msgid "toggle disposition between inline/attachment"
 msgstr ""
 
-#: keymap_defs.h:44
+#: keymap_alldefs.h:44
 msgid "toggle whether to delete file after sending it"
 msgstr "hapus atau tidak setelah suratnya dikirim"
 
-#: keymap_defs.h:45
+#: keymap_alldefs.h:45
 msgid "update an attachment's encoding info"
 msgstr "betulkan encoding info dari lampiran"
 
-#: keymap_defs.h:46
+#: keymap_alldefs.h:46
 msgid "write the message to a folder"
 msgstr "simpan surat ke sebuah folder"
 
-#: keymap_defs.h:47
+#: keymap_alldefs.h:47
 msgid "copy a message to a file/mailbox"
 msgstr "simpan surat ke file/kotak surat"
 
-#: keymap_defs.h:48
+#: keymap_alldefs.h:48
 msgid "create an alias from a message sender"
 msgstr "buat alias dari pengirim surat"
 
-#: keymap_defs.h:49
+#: keymap_alldefs.h:49
 msgid "move entry to bottom of screen"
 msgstr "pindahkan entry ke akhir layar"
 
-#: keymap_defs.h:50
+#: keymap_alldefs.h:50
 msgid "move entry to middle of screen"
 msgstr "pindahkan entry ke tengah layar"
 
-#: keymap_defs.h:51
+#: keymap_alldefs.h:51
 msgid "move entry to top of screen"
 msgstr "pindahkan entry ke awal layar"
 
-#: keymap_defs.h:52
+#: keymap_alldefs.h:52
 msgid "make decoded (text/plain) copy"
 msgstr "buat salinan (text/plain) yang sudah di-decode"
 
-#: keymap_defs.h:53
+#: keymap_alldefs.h:53
 msgid "make decoded copy (text/plain) and delete"
 msgstr "buat salinan (text/plain) yang sudah di-decode dan hapus"
 
-#: keymap_defs.h:54
+#: keymap_alldefs.h:54
 msgid "delete the current entry"
 msgstr "hapus entry"
 
-#: keymap_defs.h:55
+#: keymap_alldefs.h:55
 msgid "delete the current mailbox (IMAP only)"
 msgstr "hapus kotak surat (untuk IMAP)"
 
-#: keymap_defs.h:56
+#: keymap_alldefs.h:56
 msgid "delete all messages in subthread"
 msgstr "hapus semua surat di subthread"
 
-#: keymap_defs.h:57
+#: keymap_alldefs.h:57
 msgid "delete all messages in thread"
 msgstr "hapus semua surat di thread"
 
-#: keymap_defs.h:58
+#: keymap_alldefs.h:58
 msgid "display full address of sender"
 msgstr "tampilkan alamat lengkap pengirim"
 
-#: keymap_defs.h:59
-#, fuzzy
+#: keymap_alldefs.h:59
 msgid "display message and toggle header weeding"
-msgstr "tampilkan surat berikut semua headers"
+msgstr "tampilkan surat dan pilih penghapusan header"
 
-#: keymap_defs.h:60
+#: keymap_alldefs.h:60
 msgid "display a message"
 msgstr "tampilkan surat"
 
-#: keymap_defs.h:61
+#: keymap_alldefs.h:61
 msgid "edit the raw message"
 msgstr "edit keseluruhan surat"
 
-#: keymap_defs.h:62
+#: keymap_alldefs.h:62
 msgid "delete the char in front of the cursor"
 msgstr "hapus karakter di depan kursor"
 
-#: keymap_defs.h:63
+#: keymap_alldefs.h:63
 msgid "move the cursor one character to the left"
 msgstr "pindahkan kursor satu karakter ke kanan"
 
-#: keymap_defs.h:64
+#: keymap_alldefs.h:64
 msgid "jump to the beginning of the line"
 msgstr "ke awal baris"
 
-#: keymap_defs.h:65
+#: keymap_alldefs.h:65
 msgid "cycle among incoming mailboxes"
 msgstr "cycle antara kotak surat yang menerima surat"
 
-#: keymap_defs.h:66
+#: keymap_alldefs.h:66
 msgid "complete filename or alias"
 msgstr "lengkapi nama file atau alias"
 
-#: keymap_defs.h:67
+#: keymap_alldefs.h:67
 msgid "complete address with query"
 msgstr "lengkapi alamat dengan query"
 
-#: keymap_defs.h:68
+#: keymap_alldefs.h:68
 msgid "delete the char under the cursor"
 msgstr "hapus karakter di bawah kursor"
 
-#: keymap_defs.h:69
+#: keymap_alldefs.h:69
 msgid "jump to the end of the line"
 msgstr "ke akhir baris"
 
-#: keymap_defs.h:70
+#: keymap_alldefs.h:70
 msgid "move the cursor one character to the right"
 msgstr "pindahkan kursor satu karakter ke kanan"
 
-#: keymap_defs.h:71 keymap_defs.h:72
+#: keymap_alldefs.h:71 keymap_alldefs.h:72
 msgid "scroll up through the history list"
 msgstr "yang diisi sebelumnya (history-prev)"
 
-#: keymap_defs.h:73
+#: keymap_alldefs.h:73
 msgid "delete chars from cursor to end of line"
 msgstr "hapus dari kursor sampai akhir baris"
 
-#: keymap_defs.h:74
+#: keymap_alldefs.h:74
 msgid "delete all chars on the line"
 msgstr "hapus baris"
 
-#: keymap_defs.h:75
+#: keymap_alldefs.h:75
 msgid "delete the word in front of the cursor"
 msgstr "hapus kata di depan kursor"
 
-#: keymap_defs.h:76
+#: keymap_alldefs.h:76
 msgid "quote the next typed key"
 msgstr "kutip tombol yang akan ditekan berikut"
 
-#: keymap_defs.h:77
+#: keymap_alldefs.h:77
 msgid "enter a muttrc command"
 msgstr "menjalankan perintah muttrc"
 
-#: keymap_defs.h:78
+#: keymap_alldefs.h:78
 msgid "enter a file mask"
 msgstr "menentukan file mask"
 
-#: keymap_defs.h:79
+#: keymap_alldefs.h:79
 msgid "exit this menu"
 msgstr "keluar dari menu ini"
 
-#: keymap_defs.h:80
+#: keymap_alldefs.h:80
 msgid "filter attachment through a shell command"
 msgstr "mem-filter lampiran melalui perintah shell"
 
-#: keymap_defs.h:81
+#: keymap_alldefs.h:81
 msgid "move to the first entry"
 msgstr "ke entry pertama"
 
-#: keymap_defs.h:82
+#: keymap_alldefs.h:82
 msgid "toggle a message's 'important' flag"
 msgstr "menandai surat penting atau tidak ('important' flag)"
 
-#: keymap_defs.h:83
+#: keymap_alldefs.h:83
 msgid "forward a message with comments"
 msgstr "forward surat dengan komentar"
 
-#: keymap_defs.h:84
+#: keymap_alldefs.h:84
 msgid "select the current entry"
 msgstr "pilih entry"
 
-#: keymap_defs.h:85
+#: keymap_alldefs.h:85
 msgid "reply to all recipients"
 msgstr "balas ke semua penerima"
 
-#: keymap_defs.h:86
+#: keymap_alldefs.h:86
 msgid "scroll down 1/2 page"
 msgstr "geser ke bawah setengah layar"
 
-#: keymap_defs.h:87
+#: keymap_alldefs.h:87
 msgid "scroll up 1/2 page"
 msgstr "geser ke atas setengah layar"
 
-#: keymap_defs.h:88
+#: keymap_alldefs.h:88
 msgid "this screen"
 msgstr "layar ini"
 
-#: keymap_defs.h:89
+#: keymap_alldefs.h:89
 msgid "jump to an index number"
 msgstr "ke nomer indeks"
 
-#: keymap_defs.h:90
+#: keymap_alldefs.h:90
 msgid "move to the last entry"
 msgstr "ke entry terakhir"
 
-#: keymap_defs.h:91
+#: keymap_alldefs.h:91
 msgid "reply to specified mailing list"
 msgstr "balas ke mailing list yang disebut"
 
-#: keymap_defs.h:92
+#: keymap_alldefs.h:92
 msgid "execute a macro"
 msgstr "menjalankan macro"
 
-#: keymap_defs.h:93
+#: keymap_alldefs.h:93
 msgid "compose a new mail message"
 msgstr "menulis surat baru"
 
-#: keymap_defs.h:94
+#: keymap_alldefs.h:94
 msgid "open a different folder"
 msgstr "membuka folder lain"
 
-#: keymap_defs.h:95
+#: keymap_alldefs.h:95
 msgid "open a different folder in read only mode"
 msgstr "membuka folder lain dengan mode read-only"
 
-#: keymap_defs.h:96
+#: keymap_alldefs.h:96
 msgid "clear a status flag from a message"
 msgstr "bersihkan suatu tanda status pada surat"
 
-#: keymap_defs.h:97
+#: keymap_alldefs.h:97
 msgid "delete messages matching a pattern"
 msgstr "hapus surat yang cocok dengan suatu kriteria"
 
-#: keymap_defs.h:98
+#: keymap_alldefs.h:98
 msgid "retrieve mail from POP server"
 msgstr "mengambil surat dari server POP"
 
-#: keymap_defs.h:99
+#: keymap_alldefs.h:99
 msgid "move to the first message"
 msgstr "ke surat pertama"
 
-#: keymap_defs.h:100
+#: keymap_alldefs.h:100
 msgid "move to the last message"
 msgstr "ke surat terakhir"
 
-#: keymap_defs.h:101
+#: keymap_alldefs.h:101
 msgid "show only messages matching a pattern"
 msgstr "hanya tunjukkan surat yang cocok dengan suatu kriteria"
 
-#: keymap_defs.h:102
+#: keymap_alldefs.h:102
 msgid "jump to the next new message"
 msgstr "ke surat berikutnya yang baru"
 
-#: keymap_defs.h:103
+#: keymap_alldefs.h:103
 msgid "jump to the next subthread"
 msgstr "ke subthread berikutnya"
 
-#: keymap_defs.h:104
+#: keymap_alldefs.h:104
 msgid "jump to the next thread"
 msgstr "ke thread berikutnya"
 
-#: keymap_defs.h:105
+#: keymap_alldefs.h:105
 msgid "move to the next undeleted message"
 msgstr "ke surat berikutnya yang tidak dihapus"
 
-#: keymap_defs.h:106
+#: keymap_alldefs.h:106
 msgid "jump to the next unread message"
 msgstr "ke surat berikutnya yang belum dibaca"
 
-#: keymap_defs.h:107
+#: keymap_alldefs.h:107
 msgid "jump to parent message in thread"
 msgstr "loncat ke pesan induk di thread ini"
 
-#: keymap_defs.h:108
+#: keymap_alldefs.h:108
 msgid "jump to previous thread"
 msgstr "ke thread sebelumnya"
 
-#: keymap_defs.h:109
+#: keymap_alldefs.h:109
 msgid "jump to previous subthread"
 msgstr "ke subthread sebelumnya"
 
-#: keymap_defs.h:110
+#: keymap_alldefs.h:110
 msgid "move to the last undelete message"
 msgstr "ke surat terakhir yang tidak dihapus"
 
-#: keymap_defs.h:111
+#: keymap_alldefs.h:111
 msgid "jump to the previous new message"
 msgstr "ke surat sebelumnya yang baru"
 
-#: keymap_defs.h:112
+#: keymap_alldefs.h:112
 msgid "jump to the previous unread message"
 msgstr "ke surat sebelumnya yang belum dibaca"
 
-#: keymap_defs.h:113
+#: keymap_alldefs.h:113
 msgid "mark the current thread as read"
 msgstr "tandai thread 'sudah dibaca'"
 
-#: keymap_defs.h:114
+#: keymap_alldefs.h:114
 msgid "mark the current subthread as read"
 msgstr "tandai subthread 'sudah dibaca'"
 
-#: keymap_defs.h:115
+#: keymap_alldefs.h:115
 msgid "set a status flag on a message"
 msgstr "tandai status dari surat"
 
-#: keymap_defs.h:116
+#: keymap_alldefs.h:116
 msgid "save changes to mailbox"
 msgstr "simpan perubahan ke kotak surat"
 
-#: keymap_defs.h:117
+#: keymap_alldefs.h:117
 msgid "tag messages matching a pattern"
 msgstr "tandai surat-surat yang cocok dengan kriteria"
 
-#: keymap_defs.h:118
+#: keymap_alldefs.h:118
 msgid "undelete messages matching a pattern"
 msgstr "tidak jadi menghapus surat-surat yang cocok dengan kriteria"
 
-#: keymap_defs.h:119
+#: keymap_alldefs.h:119
 msgid "untag messages matching a pattern"
 msgstr "tidak jadi menandai surat-surat yang cocok dengan kriteria"
 
-#: keymap_defs.h:120
+#: keymap_alldefs.h:120
 msgid "move to the middle of the page"
 msgstr "ke tengah halaman"
 
-#: keymap_defs.h:121
+#: keymap_alldefs.h:121
 msgid "create a new mailbox (IMAP only)"
 msgstr "buat kotak surat baru (untuk IMAP)"
 
-#: keymap_defs.h:122
+#: keymap_alldefs.h:122
 msgid "move to the next entry"
 msgstr "ke entry berikutnya"
 
-#: keymap_defs.h:123
+#: keymap_alldefs.h:123
 msgid "scroll down one line"
 msgstr "geser ke bawah satu baris"
 
-#: keymap_defs.h:124
+#: keymap_alldefs.h:124
 msgid "move to the next page"
 msgstr "ke halaman berikutnya"
 
-#: keymap_defs.h:125
+#: keymap_alldefs.h:125
 msgid "jump to the bottom of the message"
 msgstr "ke akhir surat"
 
-#: keymap_defs.h:126
+#: keymap_alldefs.h:126
 msgid "return to the main-menu"
 msgstr "kembali ke menu utama"
 
-#: keymap_defs.h:127
+#: keymap_alldefs.h:127
 msgid "toggle display of quoted text"
 msgstr "tampilkan atau tidak teks yang dikutip"
 
-#: keymap_defs.h:128
+#: keymap_alldefs.h:128
 msgid "skip beyond quoted text"
 msgstr "lompati setelah teks yang dikutip"
 
-#: keymap_defs.h:129
+#: keymap_alldefs.h:129
 msgid "jump to the top of the message"
 msgstr "ke awal surat"
 
-#: keymap_defs.h:130
+#: keymap_alldefs.h:130
 msgid "pipe message/attachment to a shell command"
 msgstr "pipe surat/lampiran ke perintah shell"
 
-#: keymap_defs.h:131
+#: keymap_alldefs.h:131
 msgid "move to the previous entry"
 msgstr "ke entry sebelumnya"
 
-#: keymap_defs.h:132
+#: keymap_alldefs.h:132
 msgid "scroll up one line"
 msgstr "geser ke atas satu baris"
 
-#: keymap_defs.h:133
+#: keymap_alldefs.h:133
 msgid "move to the previous page"
 msgstr "ke halaman sebelumnya"
 
-#: keymap_defs.h:134
+#: keymap_alldefs.h:134
 msgid "print the current entry"
 msgstr "cetak entry"
 
-#: keymap_defs.h:135
+#: keymap_alldefs.h:135
 msgid "query external program for addresses"
 msgstr "gunakan program lain untuk mencari alamat"
 
-#: keymap_defs.h:136
+#: keymap_alldefs.h:136
 msgid "append new query results to current results"
 msgstr "tambahkan hasil pencarian baru ke hasil yang sudah ada"
 
-#: keymap_defs.h:137
+#: keymap_alldefs.h:137
 msgid "save changes to mailbox and quit"
 msgstr "simpan perubahan ke kotak surat dan keluar"
 
-#: keymap_defs.h:138
+#: keymap_alldefs.h:138
 msgid "recall a postponed message"
 msgstr "lanjutkan surat yang ditunda"
 
-#: keymap_defs.h:139
+#: keymap_alldefs.h:139
 msgid "clear and redraw the screen"
 msgstr "bersihkan layar dan redraw"
 
-#: keymap_defs.h:140
+#: keymap_alldefs.h:140
 msgid "{internal}"
 msgstr "{jerohan}"
 
-#: keymap_defs.h:141
+#: keymap_alldefs.h:141
 msgid "reply to a message"
 msgstr "balas surat"
 
-#: keymap_defs.h:142
+#: keymap_alldefs.h:142
 msgid "use the current message as a template for a new one"
 msgstr "gunakan surat sebagai template"
 
-#: keymap_defs.h:143
+#: keymap_alldefs.h:143
 msgid "save message/attachment to a file"
 msgstr "simpan surat/lampiran ke suatu file"
 
-#: keymap_defs.h:144
+#: keymap_alldefs.h:144
 msgid "search for a regular expression"
 msgstr "cari dengan regular expression"
 
-#: keymap_defs.h:145
+#: keymap_alldefs.h:145
 msgid "search backwards for a regular expression"
 msgstr "cari mundur dengan regular expression"
 
-#: keymap_defs.h:146
+#: keymap_alldefs.h:146
 msgid "search for next match"
 msgstr "cari yang cocok berikutnya"
 
-#: keymap_defs.h:147
+#: keymap_alldefs.h:147
 msgid "search for next match in opposite direction"
 msgstr "cari mundur yang cocok berikutnya"
 
-#: keymap_defs.h:148
+#: keymap_alldefs.h:148
 msgid "toggle search pattern coloring"
 msgstr "diwarnai atau tidak jika ketemu"
 
-#: keymap_defs.h:149
+#: keymap_alldefs.h:149
 msgid "invoke a command in a subshell"
 msgstr "jalankan perintah di subshell"
 
-#: keymap_defs.h:150
+#: keymap_alldefs.h:150
 msgid "sort messages"
 msgstr "urutkan surat-surat"
 
-#: keymap_defs.h:151
+#: keymap_alldefs.h:151
 msgid "sort messages in reverse order"
 msgstr "urutkan terbalik surat-surat"
 
-#: keymap_defs.h:152
+#: keymap_alldefs.h:152
 msgid "tag the current entry"
 msgstr "tandai entry"
 
-#: keymap_defs.h:153
+#: keymap_alldefs.h:153
 msgid "apply next function to tagged messages"
 msgstr "terapkan fungsi berikutnya ke surat-surat yang ditandai"
 
-#: keymap_defs.h:154
+#: keymap_alldefs.h:154
 msgid "tag the current subthread"
 msgstr "tandai subthread"
 
-#: keymap_defs.h:155
+#: keymap_alldefs.h:155
 msgid "tag the current thread"
 msgstr "tandai thread"
 
-#: keymap_defs.h:156
+#: keymap_alldefs.h:156
 msgid "toggle a message's 'new' flag"
 msgstr "tandai atau tidak sebuah surat 'baru'"
 
-#: keymap_defs.h:157
+#: keymap_alldefs.h:157
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "apakah kotak surat akan ditulis ulang"
 
-#: keymap_defs.h:158
+#: keymap_alldefs.h:158
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "apakah menjelajahi kotak-kotak surat saja atau semua file"
 
-#: keymap_defs.h:159
+#: keymap_alldefs.h:159
 msgid "move to the top of the page"
 msgstr "ke awal halaman"
 
-#: keymap_defs.h:160
+#: keymap_alldefs.h:160
 msgid "undelete the current entry"
 msgstr "tidak jadi hapus entry"
 
-#: keymap_defs.h:161
+#: keymap_alldefs.h:161
 msgid "undelete all messages in thread"
 msgstr "tidak jadi hapus semua surat di thread"
 
-#: keymap_defs.h:162
+#: keymap_alldefs.h:162
 msgid "undelete all messages in subthread"
 msgstr "tidak jadi hapus semua surat di subthread"
 
-#: keymap_defs.h:163
+#: keymap_alldefs.h:163
 msgid "show the Mutt version number and date"
 msgstr "tunjukkan versi dan tanggal dari Mutt"
 
-#: keymap_defs.h:164
+#: keymap_alldefs.h:164
 msgid "view attachment using mailcap entry if necessary"
 msgstr "tampilkan lampiran berdasarkan mailcap jika perlu"
 
-#: keymap_defs.h:165
+#: keymap_alldefs.h:165
 msgid "show MIME attachments"
 msgstr "tampilkan lampiran MIME"
 
-#: keymap_defs.h:166
+#: keymap_alldefs.h:166
 msgid "show currently active limit pattern"
 msgstr "tampilkan kriteria batas yang aktif"
 
-#: keymap_defs.h:167
+#: keymap_alldefs.h:167
 msgid "collapse/uncollapse current thread"
 msgstr "collapse/uncollapse thread"
 
-#: keymap_defs.h:168
+#: keymap_alldefs.h:168
 msgid "collapse/uncollapse all threads"
 msgstr "collapse/uncollapse semua thread"
 
-#: keymap_defs.h:169
+#: keymap_alldefs.h:169
 msgid "attach a PGP public key"
 msgstr "lampirkan PGP public key"
 
-#: keymap_defs.h:170
+#: keymap_alldefs.h:170
 msgid "show PGP options"
 msgstr "tunjukan options PGP"
 
-#: keymap_defs.h:171
+#: keymap_alldefs.h:171
 msgid "extract PGP public keys"
 msgstr "ambil PGP public keys"
 
-#: keymap_defs.h:172
+#: keymap_alldefs.h:172
 msgid "wipe PGP passphrase from memory"
 msgstr "hapus PGP passphrase dari memory"
 
-#: keymap_defs.h:173
+#: keymap_alldefs.h:173
 msgid "mail a PGP public key"
 msgstr "kirim PGP public key lewat surat"
 
-#: keymap_defs.h:174
+#: keymap_alldefs.h:174
 msgid "verify a PGP public key"
 msgstr "periksa PGP public key"
 
-#: keymap_defs.h:175
+#: keymap_alldefs.h:175
 msgid "view the key's user id"
 msgstr "tampilkan user ID dari key"
 
-#: keymap_defs.h:176
+#: keymap_alldefs.h:176
 msgid "make decrypted copy and delete"
 msgstr "buat salinan yang sudah di-decrypt dan hapus"
 
-#: keymap_defs.h:177
+#: keymap_alldefs.h:177
 msgid "make decrypted copy"
 msgstr "buat salinan yang sudah di-decrypt"
 
-#: keymap_defs.h:178
+#: keymap_alldefs.h:178
 msgid "Accept the chain constructed"
 msgstr ""
 
-#: keymap_defs.h:179
+#: keymap_alldefs.h:179
 msgid "Append a remailer to the chain"
 msgstr ""
 
-#: keymap_defs.h:180
+#: keymap_alldefs.h:180
 msgid "Insert a remailer into the chain"
 msgstr ""
 
-#: keymap_defs.h:181
+#: keymap_alldefs.h:181
 #, fuzzy
 msgid "Delete a remailer from the chain"
 msgstr "hapus baris"
 
-#: keymap_defs.h:182
+#: keymap_alldefs.h:182
 msgid "Select the previous element of the chain"
 msgstr ""
 
-#: keymap_defs.h:183
+#: keymap_alldefs.h:183
 msgid "Select the next element of the chain"
 msgstr ""
 
-#: keymap_defs.h:184
+#: keymap_alldefs.h:184
 msgid "send the message through a mixmaster remailer chain"
 msgstr ""
 
@@ -2233,7 +2227,6 @@ msgid "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 msgstr "Untuk menghubungi developersnya, kirim email ke <mutt-dev@mutt.org>.\n"
 
 #: main.c:43
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2000 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
@@ -2271,6 +2264,30 @@ msgid ""
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n"
 msgstr ""
+"Hak Cipta (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Hak Cipta (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
+"Hak Cipta (C) 1997-2000 Thomas Roessler <roessler@guug.de>\n"
+"Hak Cipta (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Hak Cipta (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
+"Hak Cipta (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"\n"
+"Dan banyak lagi yang tidak dapat disebutkan di sini satu per satu telah\n"
+"menyumbangkan banyak kode, perbaikan dan saran.\n"
+"\n"
+"    Program ini adalah program bebas; anda dapat mendistribusikan ulang\n"
+"    dan/atau mengubahnya di bawah persyaratan dan aturan dari GNU General\n"
+"    Public License seperti yang dipublikasikan oleh Free Software "
+"Foundation;\n"
+"    baik versi 2 dari lisensi tersebut, atau yang lebih baru.\n"
+"\n"
+"    Program ini didistribusikan dengan harapan agar berguna, tetapi\n"
+"    TANPA JAMINAN APAPUN; bahkan tanpa jaminan terimplikasi dari\n"
+"    kelayakan perdagangan atau kecocokan untuk suatu kegunaan. Silakan\n"
+"    mengacu ke GNU General Public License untuk informasi lebih lanjut.\n"
+"\n"
+"    Anda seharusnya sudah menerima salinan dari GNU General Public License\n"
+"    bersama dengan program ini; jika tidak, silakan bersurat kepada\n"
+"    Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n"
 
 #: main.c:76
 msgid ""
@@ -2319,14 +2336,14 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"usage: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
-"]\n"
+"penggunaan: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
+"<file> ]\n"
 "       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
 "-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
-"options:\n"
+"pilihan:\n"
 "  -a <file>\tlampirkan file ke surat\n"
 "  -b <alamat>\talamat blind carbon-copy (BCC)\n"
 "  -c <alamat>\talamat carbon-copy (CC)\n"
@@ -2862,7 +2879,6 @@ msgstr ""
 "\n"
 
 #: pgp.c:640
-#, fuzzy
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
 "\n"
@@ -2988,9 +3004,9 @@ msgid "Check key  "
 msgstr "Cek key  "
 
 #: pgpkey.c:460
-#, fuzzy, c-format
+#, c-format
 msgid "PGP keys matching <%s>."
-msgstr "PGP keys yg cocok dg \"%s\"."
+msgstr "PGP keys yg cocok dg <%s>."
 
 #: pgpkey.c:462
 #, c-format
@@ -3084,12 +3100,12 @@ msgid "No new mail in POP mailbox."
 msgstr "Tidak ada surat baru di kotak surat POP."
 
 #: pop.c:209
-#, fuzzy, c-format
+#, c-format
 msgid "Reading new messages (%d bytes)..."
 msgstr "Membaca surat-surat baru (%d bytes)..."
 
 #: pop.c:210
-#, fuzzy, c-format
+#, c-format
 msgid "Reading new message (%d bytes)..."
 msgstr "Membaca surat baru (%d bytes)..."
 
@@ -3107,7 +3123,7 @@ msgid "%s [%d of %d messages read]"
 msgstr "%s [%d dari %d surat dibaca]"
 
 #: pop.c:310
-#, fuzzy, c-format
+#, c-format
 msgid "%s [%d message read]"
 msgstr "%s [%d surat dibaca]"
 
@@ -3283,9 +3299,8 @@ msgid "Can't get mixmaster's type2.list!"
 msgstr ""
 
 #: remailer.c:538
-#, fuzzy
 msgid "Select a remailer chain."
-msgstr "hapus baris"
+msgstr ""
 
 #: remailer.c:592
 #, c-format
@@ -3513,7 +3528,3 @@ msgstr "Surat induk tidak ada."
 
 #~ msgid "Recoding only affetcs text attachments."
 #~ msgstr "Peng-coding-an ulang hanya berpengaruh terhadap lampiran teks."
-
-#, fuzzy
-#~ msgid "PGP keys matching "
-#~ msgstr "PGP keys yg cocok dg <%s>."

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.2\n"
-"POT-Creation-Date: 2000-01-30 14:25+0100\n"
+"POT-Creation-Date: 2000-02-01 08:36+0100\n"
 "PO-Revision-Date: 1999-12-20 20:41+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -1496,725 +1496,725 @@ msgstr "exec：引數太少"
 msgid "%s: no such command"
 msgstr "%s：無此指令"
 
-#: keymap_defs.h:5
+#: keymap_alldefs.h:5
 msgid "null operation"
 msgstr "空的運算"
 
-#: keymap_defs.h:6
+#: keymap_alldefs.h:6
 msgid "force viewing of attachment using mailcap"
 msgstr "強迫使用 mailcap 瀏覽夾檔"
 
-#: keymap_defs.h:7
+#: keymap_alldefs.h:7
 msgid "view attachment as text"
 msgstr "用文字方式顯示附件內容"
 
-#: keymap_defs.h:8
+#: keymap_alldefs.h:8
 msgid "move to the bottom of the page"
 msgstr "移到本頁的最後面"
 
-#: keymap_defs.h:9
+#: keymap_alldefs.h:9
 msgid "remail a message to another user"
 msgstr "重新寄信給另外一個使用者"
 
-#: keymap_defs.h:10
+#: keymap_alldefs.h:10
 msgid "select a new file in this directory"
 msgstr "請選擇本目錄中一個新的檔案"
 
-#: keymap_defs.h:11
+#: keymap_alldefs.h:11
 msgid "view file"
 msgstr "顯示檔案"
 
-#: keymap_defs.h:12
+#: keymap_alldefs.h:12
 msgid "display the currently selected file's name"
 msgstr "顯示所選擇的檔案"
 
-#: keymap_defs.h:13
+#: keymap_alldefs.h:13
 #, fuzzy
 msgid "subscribe to current mailbox (IMAP only)"
 msgstr "訂閱\這個郵箱 (只適用於 IMAP)"
 
-#: keymap_defs.h:14
+#: keymap_alldefs.h:14
 #, fuzzy
 msgid "unsubscribe to current mailbox (IMAP only)"
 msgstr "取消訂閱\這個郵箱 (只適用於 IMAP)"
 
-#: keymap_defs.h:15
+#: keymap_alldefs.h:15
 #, fuzzy
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "切換顯示 全部/已訂閱\ 的郵箱 (只適用於 IMAP)"
 
-#: keymap_defs.h:16
+#: keymap_alldefs.h:16
 msgid "change directories"
 msgstr "改變目錄"
 
-#: keymap_defs.h:17
+#: keymap_alldefs.h:17
 msgid "check mailboxes for new mail"
 msgstr "檢查信箱是否有新信件"
 
-#: keymap_defs.h:18
+#: keymap_alldefs.h:18
 msgid "attach a file(s) to this message"
 msgstr "在這封信件中夾帶檔案"
 
-#: keymap_defs.h:19
+#: keymap_alldefs.h:19
 msgid "attach message(s) to this message"
 msgstr "在這封信件中夾帶信件"
 
-#: keymap_defs.h:20
+#: keymap_alldefs.h:20
 msgid "change an attachment's character set"
 msgstr "改變附件的字符集"
 
-#: keymap_defs.h:21
+#: keymap_alldefs.h:21
 msgid "edit the BCC list"
 msgstr "編輯 BCC 列表"
 
-#: keymap_defs.h:22
+#: keymap_alldefs.h:22
 msgid "edit the CC list"
 msgstr "編輯 CC 列表"
 
-#: keymap_defs.h:23
+#: keymap_alldefs.h:23
 msgid "edit attachment description"
 msgstr "編輯夾檔的說明"
 
-#: keymap_defs.h:24
+#: keymap_alldefs.h:24
 msgid "edit attachment transfer-encoding"
 msgstr "編輯夾檔的傳輸編碼法則"
 
-#: keymap_defs.h:25
+#: keymap_alldefs.h:25
 msgid "enter a file to save a copy of this message in"
 msgstr "請輸入用來儲存這封信件拷貝的檔案名稱"
 
-#: keymap_defs.h:26
+#: keymap_alldefs.h:26
 msgid "edit the file to be attached"
 msgstr "編輯要被夾帶的檔案名稱"
 
-#: keymap_defs.h:27
+#: keymap_alldefs.h:27
 msgid "edit the from field"
 msgstr "編輯發信人欄位"
 
-#: keymap_defs.h:28
+#: keymap_alldefs.h:28
 msgid "edit the message with headers"
 msgstr "編輯信件的標頭"
 
-#: keymap_defs.h:29
+#: keymap_alldefs.h:29
 msgid "edit the message"
 msgstr "編輯信件內容"
 
-#: keymap_defs.h:30
+#: keymap_alldefs.h:30
 msgid "edit attachment using mailcap entry"
 msgstr "使用 mailcap 編輯夾檔"
 
-#: keymap_defs.h:31
+#: keymap_alldefs.h:31
 msgid "edit the Reply-To field"
 msgstr "編輯 Reply-To 欄位"
 
-#: keymap_defs.h:32
+#: keymap_alldefs.h:32
 msgid "edit the subject of this message"
 msgstr "編輯信件的標題"
 
-#: keymap_defs.h:33
+#: keymap_alldefs.h:33
 msgid "edit the TO list"
 msgstr "編輯 TO 列表"
 
-#: keymap_defs.h:34
+#: keymap_alldefs.h:34
 #, fuzzy
 msgid "edit attachment content type"
 msgstr "編輯附件的的 content type"
 
-#: keymap_defs.h:35
+#: keymap_alldefs.h:35
 msgid "get a temporary copy of an attachment"
 msgstr "取得附件的暫存拷貝"
 
-#: keymap_defs.h:36
+#: keymap_alldefs.h:36
 msgid "run ispell on the message"
 msgstr "這封信件執行 ispell"
 
-#: keymap_defs.h:37
+#: keymap_alldefs.h:37
 msgid "compose new attachment using mailcap entry"
 msgstr "使用 mailcap 來組合新的夾檔"
 
-#: keymap_defs.h:38
+#: keymap_alldefs.h:38
 msgid "toggle recoding of this attachment"
 msgstr "切換是否再為附件重新編碼"
 
-#: keymap_defs.h:39
+#: keymap_alldefs.h:39
 msgid "recode this attachment to/from the local charset"
 msgstr "重新將附件編碼至本地字符集，或由本地字符集重新編碼"
 
-#: keymap_defs.h:40
+#: keymap_alldefs.h:40
 msgid "save this message to send later"
 msgstr "儲存信件以便稍後寄出"
 
-#: keymap_defs.h:41
+#: keymap_alldefs.h:41
 msgid "rename/move an attached file"
 msgstr "更改檔名/移除 一個夾帶的檔案"
 
-#: keymap_defs.h:42
+#: keymap_alldefs.h:42
 msgid "send the message"
 msgstr "寄出信件"
 
-#: keymap_defs.h:43
+#: keymap_alldefs.h:43
 msgid "toggle disposition between inline/attachment"
 msgstr ""
 
-#: keymap_defs.h:44
+#: keymap_alldefs.h:44
 msgid "toggle whether to delete file after sending it"
 msgstr "寄出後切換至是否刪除檔案"
 
-#: keymap_defs.h:45
+#: keymap_alldefs.h:45
 msgid "update an attachment's encoding info"
 msgstr "更新附件的編碼資訊"
 
-#: keymap_defs.h:46
+#: keymap_alldefs.h:46
 msgid "write the message to a folder"
 msgstr "存入一封信件到某個檔案夾"
 
-#: keymap_defs.h:47
+#: keymap_alldefs.h:47
 msgid "copy a message to a file/mailbox"
 msgstr "拷貝一封信件到某個檔案或信箱"
 
-#: keymap_defs.h:48
+#: keymap_alldefs.h:48
 msgid "create an alias from a message sender"
 msgstr "建立某封信件寄信人的別名"
 
-#: keymap_defs.h:49
+#: keymap_alldefs.h:49
 msgid "move entry to bottom of screen"
 msgstr "移至螢幕結尾"
 
-#: keymap_defs.h:50
+#: keymap_alldefs.h:50
 msgid "move entry to middle of screen"
 msgstr "移至螢幕中央"
 
-#: keymap_defs.h:51
+#: keymap_alldefs.h:51
 msgid "move entry to top of screen"
 msgstr "移至螢幕開頭"
 
-#: keymap_defs.h:52
+#: keymap_alldefs.h:52
 msgid "make decoded (text/plain) copy"
 msgstr "製作可解碼的 (text/plain) 拷貝"
 
-#: keymap_defs.h:53
+#: keymap_alldefs.h:53
 msgid "make decoded copy (text/plain) and delete"
 msgstr "製作可解碼的拷貝 (text/plain) 並且刪除之"
 
-#: keymap_defs.h:54
+#: keymap_alldefs.h:54
 msgid "delete the current entry"
 msgstr "刪除所在的信件資料"
 
-#: keymap_defs.h:55
+#: keymap_alldefs.h:55
 msgid "delete the current mailbox (IMAP only)"
 msgstr "刪除這個郵箱 (只適用於 IMAP)"
 
-#: keymap_defs.h:56
+#: keymap_alldefs.h:56
 msgid "delete all messages in subthread"
 msgstr "刪除所有在子序列中的信件"
 
-#: keymap_defs.h:57
+#: keymap_alldefs.h:57
 msgid "delete all messages in thread"
 msgstr "刪除所有在序列中的信件"
 
-#: keymap_defs.h:58
+#: keymap_alldefs.h:58
 msgid "display full address of sender"
 msgstr "顯示寄信人的完整位址"
 
-#: keymap_defs.h:59
+#: keymap_alldefs.h:59
 msgid "display message and toggle header weeding"
 msgstr "顯示信件並切換壓抑標頭資料顯示"
 
-#: keymap_defs.h:60
+#: keymap_alldefs.h:60
 msgid "display a message"
 msgstr "顯示一封信件"
 
-#: keymap_defs.h:61
+#: keymap_alldefs.h:61
 #, fuzzy
 msgid "edit the raw message"
 msgstr "編輯信件內容"
 
-#: keymap_defs.h:62
+#: keymap_alldefs.h:62
 msgid "delete the char in front of the cursor"
 msgstr "刪除游標所在位置之前的字母"
 
-#: keymap_defs.h:63
+#: keymap_alldefs.h:63
 msgid "move the cursor one character to the left"
 msgstr "向左移動一個字元"
 
-#: keymap_defs.h:64
+#: keymap_alldefs.h:64
 msgid "jump to the beginning of the line"
 msgstr "跳到行首"
 
-#: keymap_defs.h:65
+#: keymap_alldefs.h:65
 msgid "cycle among incoming mailboxes"
 msgstr "圈選進入的郵筒"
 
-#: keymap_defs.h:66
+#: keymap_alldefs.h:66
 msgid "complete filename or alias"
 msgstr "完整的檔名或別名"
 
-#: keymap_defs.h:67
+#: keymap_alldefs.h:67
 msgid "complete address with query"
 msgstr "附上完整的位址查詢"
 
-#: keymap_defs.h:68
+#: keymap_alldefs.h:68
 msgid "delete the char under the cursor"
 msgstr "刪除游標所在的字母"
 
-#: keymap_defs.h:69
+#: keymap_alldefs.h:69
 msgid "jump to the end of the line"
 msgstr "跳到行尾"
 
-#: keymap_defs.h:70
+#: keymap_alldefs.h:70
 msgid "move the cursor one character to the right"
 msgstr "向游標向右移動一個字元"
 
-#: keymap_defs.h:71 keymap_defs.h:72
+#: keymap_alldefs.h:71 keymap_alldefs.h:72
 msgid "scroll up through the history list"
 msgstr "向上捲動使用紀錄清單"
 
-#: keymap_defs.h:73
+#: keymap_alldefs.h:73
 msgid "delete chars from cursor to end of line"
 msgstr "由游標所在位置刪除至行尾所有的字元"
 
-#: keymap_defs.h:74
+#: keymap_alldefs.h:74
 msgid "delete all chars on the line"
 msgstr "刪除某行上所有的字母"
 
-#: keymap_defs.h:75
+#: keymap_alldefs.h:75
 msgid "delete the word in front of the cursor"
 msgstr "刪除游標之前的字"
 
-#: keymap_defs.h:76
+#: keymap_alldefs.h:76
 msgid "quote the next typed key"
 msgstr "用下一個輸入的鍵值作引言"
 
-#: keymap_defs.h:77
+#: keymap_alldefs.h:77
 msgid "enter a muttrc command"
 msgstr "輸入 muttrc 指令"
 
-#: keymap_defs.h:78
+#: keymap_alldefs.h:78
 msgid "enter a file mask"
 msgstr "輸入檔案遮罩"
 
-#: keymap_defs.h:79
+#: keymap_alldefs.h:79
 msgid "exit this menu"
 msgstr "離開這個選單"
 
-#: keymap_defs.h:80
+#: keymap_alldefs.h:80
 msgid "filter attachment through a shell command"
 msgstr "透過 shell 指令來過濾附件"
 
-#: keymap_defs.h:81
+#: keymap_alldefs.h:81
 msgid "move to the first entry"
 msgstr "移到第一項資料"
 
-#: keymap_defs.h:82
+#: keymap_alldefs.h:82
 msgid "toggle a message's 'important' flag"
 msgstr "切換某封信件的 '重要' 旗標"
 
-#: keymap_defs.h:83
+#: keymap_alldefs.h:83
 msgid "forward a message with comments"
 msgstr "轉寄訊息並加上額外文字"
 
-#: keymap_defs.h:84
+#: keymap_alldefs.h:84
 msgid "select the current entry"
 msgstr "選擇所在的資料記錄"
 
-#: keymap_defs.h:85
+#: keymap_alldefs.h:85
 msgid "reply to all recipients"
 msgstr "回覆給所有收件人"
 
-#: keymap_defs.h:86
+#: keymap_alldefs.h:86
 msgid "scroll down 1/2 page"
 msgstr "向下捲動半頁"
 
-#: keymap_defs.h:87
+#: keymap_alldefs.h:87
 msgid "scroll up 1/2 page"
 msgstr "向上捲動半頁"
 
-#: keymap_defs.h:88
+#: keymap_alldefs.h:88
 msgid "this screen"
 msgstr "這個畫面"
 
-#: keymap_defs.h:89
+#: keymap_alldefs.h:89
 msgid "jump to an index number"
 msgstr "跳到某一個索引號碼"
 
-#: keymap_defs.h:90
+#: keymap_alldefs.h:90
 msgid "move to the last entry"
 msgstr "移動到最後一項資料"
 
-#: keymap_defs.h:91
+#: keymap_alldefs.h:91
 msgid "reply to specified mailing list"
 msgstr "回覆給某一個指定的郵件列表"
 
-#: keymap_defs.h:92
+#: keymap_alldefs.h:92
 msgid "execute a macro"
 msgstr "執行一個巨集"
 
-#: keymap_defs.h:93
+#: keymap_alldefs.h:93
 msgid "compose a new mail message"
 msgstr "撰寫一封新的信件"
 
-#: keymap_defs.h:94
+#: keymap_alldefs.h:94
 msgid "open a different folder"
 msgstr "開啟另一個檔案夾"
 
-#: keymap_defs.h:95
+#: keymap_alldefs.h:95
 msgid "open a different folder in read only mode"
 msgstr "用唯讀模式開啟另一個檔案夾"
 
-#: keymap_defs.h:96
+#: keymap_alldefs.h:96
 msgid "clear a status flag from a message"
 msgstr "清除某封信件上的狀態旗標"
 
-#: keymap_defs.h:97
+#: keymap_alldefs.h:97
 msgid "delete messages matching a pattern"
 msgstr "刪除符合某個格式的信件"
 
-#: keymap_defs.h:98
+#: keymap_alldefs.h:98
 msgid "retrieve mail from POP server"
 msgstr "取回 POP 伺服器上的信件"
 
-#: keymap_defs.h:99
+#: keymap_alldefs.h:99
 msgid "move to the first message"
 msgstr "移動到第一封信件"
 
-#: keymap_defs.h:100
+#: keymap_alldefs.h:100
 msgid "move to the last message"
 msgstr "移動到最後一封信件"
 
-#: keymap_defs.h:101
+#: keymap_alldefs.h:101
 msgid "show only messages matching a pattern"
 msgstr "只顯示符合某個格式的信件"
 
-#: keymap_defs.h:102
+#: keymap_alldefs.h:102
 msgid "jump to the next new message"
 msgstr "跳到下一封新的信件"
 
-#: keymap_defs.h:103
+#: keymap_alldefs.h:103
 msgid "jump to the next subthread"
 msgstr "跳到下一個子序列"
 
-#: keymap_defs.h:104
+#: keymap_alldefs.h:104
 msgid "jump to the next thread"
 msgstr "跳到下一個序列"
 
-#: keymap_defs.h:105
+#: keymap_alldefs.h:105
 msgid "move to the next undeleted message"
 msgstr "移動到下一個未刪除的信件"
 
-#: keymap_defs.h:106
+#: keymap_alldefs.h:106
 msgid "jump to the next unread message"
 msgstr "跳到下一個未讀取的信件"
 
-#: keymap_defs.h:107
+#: keymap_alldefs.h:107
 msgid "jump to parent message in thread"
 msgstr "跳到這個序列的主信件"
 
-#: keymap_defs.h:108
+#: keymap_alldefs.h:108
 msgid "jump to previous thread"
 msgstr "跳到上一個序列"
 
-#: keymap_defs.h:109
+#: keymap_alldefs.h:109
 msgid "jump to previous subthread"
 msgstr "跳到上一個子序列"
 
-#: keymap_defs.h:110
+#: keymap_alldefs.h:110
 msgid "move to the last undelete message"
 msgstr "移動到最後一封未刪除的信件"
 
-#: keymap_defs.h:111
+#: keymap_alldefs.h:111
 msgid "jump to the previous new message"
 msgstr "跳到上一個新的信件"
 
-#: keymap_defs.h:112
+#: keymap_alldefs.h:112
 msgid "jump to the previous unread message"
 msgstr "跳到上一個未讀取的信件"
 
-#: keymap_defs.h:113
+#: keymap_alldefs.h:113
 msgid "mark the current thread as read"
 msgstr "標記現在的序列為已讀取"
 
-#: keymap_defs.h:114
+#: keymap_alldefs.h:114
 msgid "mark the current subthread as read"
 msgstr "標記現在的子序列為已讀取"
 
-#: keymap_defs.h:115
+#: keymap_alldefs.h:115
 msgid "set a status flag on a message"
 msgstr "設定某一封信件的狀態旗標"
 
-#: keymap_defs.h:116
+#: keymap_alldefs.h:116
 msgid "save changes to mailbox"
 msgstr "儲存變動到信箱"
 
-#: keymap_defs.h:117
+#: keymap_alldefs.h:117
 msgid "tag messages matching a pattern"
 msgstr "標記符合某個格式的信件"
 
-#: keymap_defs.h:118
+#: keymap_alldefs.h:118
 msgid "undelete messages matching a pattern"
 msgstr "反刪除符合某個格式的信件"
 
-#: keymap_defs.h:119
+#: keymap_alldefs.h:119
 msgid "untag messages matching a pattern"
 msgstr "反標記符合某個格式的信件"
 
-#: keymap_defs.h:120
+#: keymap_alldefs.h:120
 msgid "move to the middle of the page"
 msgstr "移動到本頁的中間"
 
-#: keymap_defs.h:121
+#: keymap_alldefs.h:121
 msgid "create a new mailbox (IMAP only)"
 msgstr "製造新郵箱 (只適用於 IMAP)"
 
-#: keymap_defs.h:122
+#: keymap_alldefs.h:122
 msgid "move to the next entry"
 msgstr "移動到下一項資料"
 
-#: keymap_defs.h:123
+#: keymap_alldefs.h:123
 msgid "scroll down one line"
 msgstr "向下捲動一行"
 
-#: keymap_defs.h:124
+#: keymap_alldefs.h:124
 msgid "move to the next page"
 msgstr "移到下一頁"
 
-#: keymap_defs.h:125
+#: keymap_alldefs.h:125
 msgid "jump to the bottom of the message"
 msgstr "跳到信件的最後面"
 
-#: keymap_defs.h:126
+#: keymap_alldefs.h:126
 msgid "return to the main-menu"
 msgstr "回到主選單"
 
-#: keymap_defs.h:127
+#: keymap_alldefs.h:127
 msgid "toggle display of quoted text"
 msgstr "切換引言顯示"
 
-#: keymap_defs.h:128
+#: keymap_alldefs.h:128
 msgid "skip beyond quoted text"
 msgstr "跳過引言"
 
-#: keymap_defs.h:129
+#: keymap_alldefs.h:129
 msgid "jump to the top of the message"
 msgstr "跳到信件的最上面"
 
-#: keymap_defs.h:130
+#: keymap_alldefs.h:130
 msgid "pipe message/attachment to a shell command"
 msgstr "輸出導向 訊息/附件 至命令解譯器"
 
-#: keymap_defs.h:131
+#: keymap_alldefs.h:131
 msgid "move to the previous entry"
 msgstr "移到上一項資料"
 
-#: keymap_defs.h:132
+#: keymap_alldefs.h:132
 msgid "scroll up one line"
 msgstr "向上捲動一行"
 
-#: keymap_defs.h:133
+#: keymap_alldefs.h:133
 msgid "move to the previous page"
 msgstr "移到上一頁"
 
-#: keymap_defs.h:134
+#: keymap_alldefs.h:134
 msgid "print the current entry"
 msgstr "列印現在的資料"
 
-#: keymap_defs.h:135
+#: keymap_alldefs.h:135
 msgid "query external program for addresses"
 msgstr "利用外部應用程式查詢地址"
 
-#: keymap_defs.h:136
+#: keymap_alldefs.h:136
 msgid "append new query results to current results"
 msgstr "附加新的查詢結果至現今的查詢結果"
 
-#: keymap_defs.h:137
+#: keymap_alldefs.h:137
 msgid "save changes to mailbox and quit"
 msgstr "儲存變動過的資料到信箱並且離開"
 
-#: keymap_defs.h:138
+#: keymap_alldefs.h:138
 msgid "recall a postponed message"
 msgstr "重新叫出一封被延遲寄出的信件"
 
-#: keymap_defs.h:139
+#: keymap_alldefs.h:139
 msgid "clear and redraw the screen"
 msgstr "清除並重新繪製畫面"
 
-#: keymap_defs.h:140
+#: keymap_alldefs.h:140
 msgid "{internal}"
 msgstr "{內部的}"
 
-#: keymap_defs.h:141
+#: keymap_alldefs.h:141
 msgid "reply to a message"
 msgstr "回覆一封信件"
 
-#: keymap_defs.h:142
+#: keymap_alldefs.h:142
 msgid "use the current message as a template for a new one"
 msgstr "用這封信件作為新信件的範本"
 
-#: keymap_defs.h:143
+#: keymap_alldefs.h:143
 msgid "save message/attachment to a file"
 msgstr "儲存信件/附件到某個檔案"
 
-#: keymap_defs.h:144
+#: keymap_alldefs.h:144
 msgid "search for a regular expression"
 msgstr "用正規表示式尋找"
 
-#: keymap_defs.h:145
+#: keymap_alldefs.h:145
 msgid "search backwards for a regular expression"
 msgstr "向後搜尋一個正規表示式"
 
-#: keymap_defs.h:146
+#: keymap_alldefs.h:146
 msgid "search for next match"
 msgstr "尋找下一個符合的資料"
 
-#: keymap_defs.h:147
+#: keymap_alldefs.h:147
 msgid "search for next match in opposite direction"
 msgstr "返方向搜尋下一個符合的資料"
 
-#: keymap_defs.h:148
+#: keymap_alldefs.h:148
 msgid "toggle search pattern coloring"
 msgstr "切換搜尋格式的顏色"
 
-#: keymap_defs.h:149
+#: keymap_alldefs.h:149
 msgid "invoke a command in a subshell"
 msgstr "在子 shell 執行指令"
 
-#: keymap_defs.h:150
+#: keymap_alldefs.h:150
 msgid "sort messages"
 msgstr "信件排序"
 
-#: keymap_defs.h:151
+#: keymap_alldefs.h:151
 msgid "sort messages in reverse order"
 msgstr "以相反的次序來做訊息排序"
 
-#: keymap_defs.h:152
+#: keymap_alldefs.h:152
 msgid "tag the current entry"
 msgstr "標記現在的記錄"
 
-#: keymap_defs.h:153
+#: keymap_alldefs.h:153
 msgid "apply next function to tagged messages"
 msgstr "應用下一個功\能到已標記的訊息"
 
-#: keymap_defs.h:154
+#: keymap_alldefs.h:154
 msgid "tag the current subthread"
 msgstr "標記目前的子序列"
 
-#: keymap_defs.h:155
+#: keymap_alldefs.h:155
 msgid "tag the current thread"
 msgstr "標記目前的序列"
 
-#: keymap_defs.h:156
+#: keymap_alldefs.h:156
 msgid "toggle a message's 'new' flag"
 msgstr "切換將訊息切換為 'new' 旗標"
 
-#: keymap_defs.h:157
+#: keymap_alldefs.h:157
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "切換是否重新寫入郵筒中"
 
-#: keymap_defs.h:158
+#: keymap_alldefs.h:158
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "切換是否瀏覽郵筒或所有的檔案"
 
-#: keymap_defs.h:159
+#: keymap_alldefs.h:159
 msgid "move to the top of the page"
 msgstr "移到頁首"
 
-#: keymap_defs.h:160
+#: keymap_alldefs.h:160
 msgid "undelete the current entry"
 msgstr "反刪除現在的記錄"
 
-#: keymap_defs.h:161
+#: keymap_alldefs.h:161
 msgid "undelete all messages in thread"
 msgstr "反刪除這個序列中的所有信件"
 
-#: keymap_defs.h:162
+#: keymap_alldefs.h:162
 msgid "undelete all messages in subthread"
 msgstr "反刪除這個子序列中的所有信件"
 
-#: keymap_defs.h:163
+#: keymap_alldefs.h:163
 msgid "show the Mutt version number and date"
 msgstr "顯示 Mutt 的版本號碼與日期"
 
-#: keymap_defs.h:164
+#: keymap_alldefs.h:164
 msgid "view attachment using mailcap entry if necessary"
 msgstr "如果需要的話使用 mailcap 瀏覽附件"
 
-#: keymap_defs.h:165
+#: keymap_alldefs.h:165
 msgid "show MIME attachments"
 msgstr "顯示 MIME 附件"
 
-#: keymap_defs.h:166
+#: keymap_alldefs.h:166
 msgid "show currently active limit pattern"
 msgstr "顯示目前有作用的限制樣式"
 
-#: keymap_defs.h:167
+#: keymap_alldefs.h:167
 msgid "collapse/uncollapse current thread"
 msgstr "打開/關閉 目前的序列"
 
-#: keymap_defs.h:168
+#: keymap_alldefs.h:168
 msgid "collapse/uncollapse all threads"
 msgstr "打開/關閉 所有的序列"
 
-#: keymap_defs.h:169
+#: keymap_alldefs.h:169
 msgid "attach a PGP public key"
 msgstr "附帶一把 PGP 公共鑰匙"
 
-#: keymap_defs.h:170
+#: keymap_alldefs.h:170
 msgid "show PGP options"
 msgstr "顯示 PGP 選項"
 
-#: keymap_defs.h:171
+#: keymap_alldefs.h:171
 msgid "extract PGP public keys"
 msgstr "擷取 PGP 公共鑰匙"
 
-#: keymap_defs.h:172
+#: keymap_alldefs.h:172
 msgid "wipe PGP passphrase from memory"
 msgstr "清除記憶體中的 PGP 通行密碼"
 
-#: keymap_defs.h:173
+#: keymap_alldefs.h:173
 msgid "mail a PGP public key"
 msgstr "寄出 PGP 公共鑰匙"
 
-#: keymap_defs.h:174
+#: keymap_alldefs.h:174
 msgid "verify a PGP public key"
 msgstr "檢驗 PGP 公共鑰匙"
 
-#: keymap_defs.h:175
+#: keymap_alldefs.h:175
 msgid "view the key's user id"
 msgstr "檢閱\這把鑰匙的使用者 id"
 
-#: keymap_defs.h:176
+#: keymap_alldefs.h:176
 msgid "make decrypted copy and delete"
 msgstr "製作解密的拷貝並且刪除之"
 
-#: keymap_defs.h:177
+#: keymap_alldefs.h:177
 msgid "make decrypted copy"
 msgstr "製作一份解密的拷貝"
 
-#: keymap_defs.h:178
+#: keymap_alldefs.h:178
 msgid "Accept the chain constructed"
 msgstr ""
 
-#: keymap_defs.h:179
+#: keymap_alldefs.h:179
 msgid "Append a remailer to the chain"
 msgstr ""
 
-#: keymap_defs.h:180
+#: keymap_alldefs.h:180
 msgid "Insert a remailer into the chain"
 msgstr ""
 
-#: keymap_defs.h:181
+#: keymap_alldefs.h:181
 #, fuzzy
 msgid "Delete a remailer from the chain"
 msgstr "刪除某行上所有的字母"
 
-#: keymap_defs.h:182
+#: keymap_alldefs.h:182
 msgid "Select the previous element of the chain"
 msgstr ""
 
-#: keymap_defs.h:183
+#: keymap_alldefs.h:183
 msgid "Select the next element of the chain"
 msgstr ""
 
-#: keymap_defs.h:184
+#: keymap_alldefs.h:184
 msgid "send the message through a mixmaster remailer chain"
 msgstr ""
 
