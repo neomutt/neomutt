@@ -2003,7 +2003,7 @@ correspond to the message number Mutt displays). Deleted messages are
 renamed with a comma (,) prepended to the filename. <bf/Note:/ Mutt
 detects this type of mailbox by looking for either <tt/.mh&lowbar;sequences/
 or <tt/.xmhcache/ (needed to distinguish normal directories from MH
-mailboxes). Mutt does not update these files, yet.
+mailboxes).
 
 <bf/Maildir/.  The newest of the mailbox formats, used by the Qmail MTA (a
 replacement for sendmail).  Similar to <em/MH/, except that it adds three
