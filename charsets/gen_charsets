@@ -4,6 +4,8 @@ dirs="/usr/local/lib/nls /usr/lib/nls /usr/local/share/nls /usr/share/nls"
 dirs="$dirs /usr/local/lib/i18n /usr/lib/i18n /usr/local/share/i18n"
 dirs="$dirs /usr/share/i18n"
 
+trap "rm -f ./charsets.$$; exit" 0 1 2 15
+
 rm -f ./charsets.list ./charsets.alias ./charsets.$$
 
 for d in $dirs ; do

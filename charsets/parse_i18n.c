@@ -21,8 +21,6 @@
 #include <string.h>
 #include <ctype.h>
 
-#define _GEN_CHARSETS
-
 #include "../charset.h"
 
 #if 0

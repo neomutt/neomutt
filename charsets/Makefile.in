@@ -19,12 +19,15 @@
 SHELL=/bin/sh
 sharedir=@sharedir@
 CC=@CC@
-CFLAGS=@CFLAGS@
+CFLAGS=@CFLAGS@ -D_GEN_CHARSETS
 LDFLAGS=@LDFLAGS@
 srcdir=@srcdir@
 VPATH=@srcdir@
 @SET_MAKE@
 INSTALL=@INSTALL@
+
+charsets.list: parse_i18n
+	sh gen_charsets
 
 parse_i18n: parse_i18n.o
 	$(CC) -o parse_i18n parse_i18n.o
@@ -32,7 +35,7 @@ parse_i18n: parse_i18n.o
 clean:
 	-rm -f *.o *~ core parse_i18n
 
-distclean: clean
+distclean: clean veryclean
 	-rm -f Makefile
 
 veryclean:

@@ -57,13 +57,16 @@ NONEXPORT=pgp.c pgp.h pgpinvoke.c pgpkey.c pgppubring.c sha.h sha1dgst.c \
 	gnupgparse.c sha_locl.h OPS.PGP doc/pgp-Notes.txt doc/language.txt \
 	doc/language50.txt
 
-all: mutt @DOTLOCK_TARGET@ 
+all: mutt @DOTLOCK_TARGET@ charsets/charsets.list
 
 mutt: keymap_defs.h $(OBJS) $(REGEX)
 	$(CC) -o mutt $(OBJS) $(REGEX) $(LDFLAGS) $(LIBS)
 
 dotlock: dotlock.o @SNPRINTFOBJS@
 	$(CC) -o dotlock dotlock.o @SNPRINTFOBJS@
+
+charsets/charsets.list:
+	( cd $(srcdir)/charsets &&  $(MAKE) charsets.list)
 
 keymap_defs.h: Makefile $(OPS)
 	rm -f keymap_defs.h
@@ -127,6 +130,7 @@ clean:
 
 veryclean:
 	rm -f $(VERYCLEANFILES)
+	(cd $(srcdir)/charsets && $(MAKE) $@)
 
 distclean:
 	(cd $(srcdir) && rm -f $(DISTCLEANFILES))
