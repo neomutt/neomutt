@@ -356,7 +356,7 @@ int main (int argc, char **argv)
 	fi
 fi
 
-AC_ARG_ENABLE(external_dotlock, [  --enable-external_dotlock  Force use of an external dotlock program],
+AC_ARG_ENABLE(external_dotlock, [  --enable-external-dotlock  Force use of an external dotlock program],
 	[mutt_cv_external_dotlock="$enableval"])
 
 if test "x$mutt_cv_setgid" = "xyes" || test "x$mutt_cv_fchdir" = "xno" \
