@@ -482,6 +482,7 @@ void mutt_free_envelope (ENVELOPE **p)
   rfc822_free_address (&(*p)->mail_followup_to);
   safe_free ((void **) &(*p)->subject);
   safe_free ((void **) &(*p)->message_id);
+  safe_free ((void **) &(*p)->supersedes);
   safe_free ((void **) &(*p)->date);
   mutt_free_list (&(*p)->references);
   mutt_free_list (&(*p)->userhdrs);
