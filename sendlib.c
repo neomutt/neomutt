@@ -1911,7 +1911,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
   /* We need to add a Content-Length field to avoid problems where a line in
    * the message body begins with "From "   
    */
-  if (f.magic == M_MMDF || f.magic == M_MBOX)
+  if (f.magic == M_MMDF || f.magic == M_MBOX || f.magic == M_KENDRA)
   {
     mutt_mktemp (tempfile);
     if ((tempfp = safe_fopen (tempfile, "w+")) == NULL)

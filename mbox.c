@@ -19,6 +19,10 @@ static const char rcsid[]="$Id$";
 
 /* This file contains code to parse ``mbox'' and ``mmdf'' style mailboxes */
 
+/* OS/2's "kendra" mail folder format is also supported.  It's a slightly
+ * modified version of MMDF.
+ */
+
 #include "mutt.h"
 #include "mailbox.h"
 #include "mx.h"
@@ -106,12 +110,13 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
   tz = mutt_local_tz ();
 
   buf[sizeof (buf) - 1] = 0;
+  
   FOREVER
   {
     if (fgets (buf, sizeof (buf) - 1, ctx->fp) == NULL)
       break;
 
-    if (strcmp (buf, MMDF_SEP) == 0)
+    if (strcmp (buf, ctx->magic == M_MMDF ? MMDF_SEP : KENDRA_SEP) == 0)
     {
       loc = ftell (ctx->fp);
 
@@ -154,7 +159,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
 	{
 	  if (fseek (ctx->fp, tmploc, SEEK_SET) != 0 ||
 	      fgets (buf, sizeof (buf) - 1, ctx->fp) == NULL ||
-	      strcmp (MMDF_SEP, buf) != 0)
+	      strcmp (ctx->magic == M_MMDF ? MMDF_SEP : KENDRA_SEP, buf) != 0)
 	  {
 	    if (fseek (ctx->fp, loc, SEEK_SET) != 0)
 	      dprint (1, (debugfile, "mmdf_parse_mailbox: fseek() failed\n"));
@@ -175,7 +180,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
 	  if (fgets (buf, sizeof (buf) - 1, ctx->fp) == NULL)
 	    break;
 	  lines++;
-	} while (strcmp (buf, MMDF_SEP) != 0);
+	} while (strcmp (buf, ctx->magic == M_MMDF ? MMDF_SEP : KENDRA_SEP) != 0);
 
 	hdr->lines = lines;
 	hdr->content->length = loc - hdr->content->offset;
@@ -188,6 +193,8 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
 	hdr->env->from = rfc822_cpy_adr (hdr->env->return_path);
 
       mx_update_context (ctx);
+      if(ctx->magic == M_KENDRA && feof(ctx->fp))
+	break;
     }
     else
     {
@@ -402,7 +409,7 @@ int mbox_open_mailbox (CONTEXT *ctx)
 
   if (ctx->magic == M_MBOX)
     rc = mbox_parse_mailbox (ctx);
-  else if (ctx->magic == M_MMDF)
+  else if (ctx->magic == M_MMDF || ctx->magic == M_KENDRA)
     rc = mmdf_parse_mailbox (ctx);
   else
     rc = -1;
@@ -586,7 +593,8 @@ int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
       if (fgets (buffer, sizeof (buffer), ctx->fp) != NULL)
       {
 	if ((ctx->magic == M_MBOX && strncmp ("From ", buffer, 5) == 0) ||
-	    (ctx->magic == M_MMDF && strcmp (MMDF_SEP, buffer) == 0))
+	    (ctx->magic == M_MMDF && strcmp (MMDF_SEP, buffer) == 0) ||
+	    (ctx->magic == M_KENDRA && strcmp(KENDRA_SEP, buffer) == 0))
 	{
 	  if (fseek (ctx->fp, ctx->size, SEEK_SET) != 0)
 	    dprint (1, (debugfile, "mbox_check_mailbox: fseek() failed\n"));
@@ -650,7 +658,7 @@ int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
 int mbox_sync_mailbox (CONTEXT *ctx)
 {
   char tempfile[_POSIX_PATH_MAX];
-  char buf[16];
+  char buf[32];
   int i, j, save_sort = SORT_ORDER;
   int need_sort = 0; /* flag to resort mailbox if new mail arrives */
   int first;	/* first message to be written */
@@ -732,15 +740,19 @@ int mbox_sync_mailbox (CONTEXT *ctx)
     goto bail;
   }
 
+    /* save the index of the first changed/deleted message */
+  first = i; 
+  /* where to start overwriting */
+  offset = ctx->hdrs[i]->offset; 
 
-  first = i; /* save the index of the first changed/deleted message */
-  offset = ctx->hdrs[i]->offset; /* where to start overwriting */
   /* the offset stored in the header does not include the MMDF_SEP, so make
    * sure we seek to the correct location
    */
   if (ctx->magic == M_MMDF)
     offset -= strlen (MMDF_SEP);
-
+  else if (ctx->magic == M_KENDRA)
+    offset -= strlen(KENDRA_SEP);
+  
   /* allocate space for the new offsets */
   newOffset = safe_calloc (ctx->msgcount - first, sizeof (struct m_update_t));
 
@@ -756,6 +768,11 @@ int mbox_sync_mailbox (CONTEXT *ctx)
       if (ctx->magic == M_MMDF)
       {
 	if (fputs (MMDF_SEP, fp) == EOF)
+	  goto bail;
+      }
+      else if (ctx->magic == M_KENDRA)
+      {
+	if (fputs (KENDRA_SEP, fp) == EOF)
 	  goto bail;
       }
 
@@ -777,11 +794,20 @@ int mbox_sync_mailbox (CONTEXT *ctx)
       newOffset[i - first].body = ftell (fp) - ctx->hdrs[i]->content->length + offset;
       mutt_free_body (&ctx->hdrs[i]->content->parts);
 
-      if (fputs (ctx->magic == M_MMDF ? MMDF_SEP : "\n", fp) == EOF)
-	goto bail;
+      switch(ctx->magic)
+      {
+	case M_MMDF: 
+	  if(fputs(MMDF_SEP, fp) == EOF) goto bail; 
+	  break;
+	case M_KENDRA:
+	  if(fputs(KENDRA_SEP, fp) == EOF) goto bail;
+	  break;
+	default:
+	  if(fputs("\n", fp) == EOF) goto bail;
+      }
     }
   }
-
+  
   if (fclose (fp) != 0)
   {
     fp = NULL;
@@ -811,7 +837,8 @@ int mbox_sync_mailbox (CONTEXT *ctx)
       /* do a sanity check to make sure the mailbox looks ok */
       fgets (buf, sizeof (buf), ctx->fp) == NULL ||
       (ctx->magic == M_MBOX && strncmp ("From ", buf, 5) != 0) ||
-      (ctx->magic == M_MMDF && strcmp (MMDF_SEP, buf) != 0))
+      (ctx->magic == M_MMDF && strcmp (MMDF_SEP, buf) != 0) ||
+      (ctx->magic == M_KENDRA && strcmp (KENDRA_SEP, buf) != 0))
   {
     dprint (1, (debugfile, "mbox_sync_mailbox: message not in expected position."));
     dprint (1, (debugfile, "\tLINE: %s\n", buf));
@@ -1001,6 +1028,7 @@ int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
   {
     case M_MBOX:
     case M_MMDF:
+    case M_KENDRA:
       if (fseek (ctx->fp, 0, SEEK_SET) != 0)
       {
         dprint (1, (debugfile, "mutt_reopen_mailbox: fseek() failed\n"));

@@ -657,7 +657,7 @@ int mutt_save_message (HEADER *h, int delete, int decode, int decrypt, int *redr
       }
     }
 
-    need_buffy_cleanup = (ctx.magic == M_MBOX || ctx.magic == M_MMDF);
+    need_buffy_cleanup = (ctx.magic == M_MBOX || ctx.magic == M_MMDF || ctx.magic == M_KENDRA);
 
     mx_close_mailbox (&ctx);
 

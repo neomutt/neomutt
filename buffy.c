@@ -46,10 +46,11 @@ static short BuffyNotify = 0;	/* # of unnotified new boxes */
 int fseek_last_message (FILE * f)
 {
   long int pos;
-  char buffer[BUFSIZ + 7];	/* 7 for "\n\nFrom " */
+  char buffer[BUFSIZ + 9];	/* 7 for "\n\nFrom " */
   int bytes_read;
   int i;			/* Index into `buffer' for scanning.  */
-  memset (buffer, 0, BUFSIZ+7);
+
+  memset (buffer, 0, sizeof(buffer));
   fseek (f, 0, SEEK_END);
   pos = ftell (f);
 
@@ -63,7 +64,7 @@ int fseek_last_message (FILE * f)
   while ((pos -= bytes_read) >= 0)
   {
     /* we save in the buffer at the end the first 7 chars from the last read */
-    strncpy (buffer + BUFSIZ, buffer, 7);
+    strncpy (buffer + BUFSIZ, buffer, 5+2); /* 2 == 2 * strlen(CRLF) */
     fseek (f, pos, SEEK_SET);
     bytes_read = fread (buffer, sizeof (char), bytes_read, f);
     if (bytes_read == -1)
@@ -113,7 +114,7 @@ int test_new_folder (const char *path)
 
   typ = mx_get_magic (path);
 
-  if (typ != M_MBOX && typ != M_MMDF)
+  if (typ != M_MBOX && typ != M_MMDF && typ != M_KENDRA)
     return 0;
 
   f = fopen (path, "rb");
@@ -277,6 +278,7 @@ int mutt_buffy_check (int force)
       {
       case M_MBOX:
       case M_MMDF:
+      case M_KENDRA:
 
 	if (STAT_CHECK)
 	{

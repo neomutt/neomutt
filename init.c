@@ -907,6 +907,9 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	  case M_MMDF:
 	    p = "MMDF";
 	    break;
+	  case M_KENDRA:
+	    p = "KENDRA";
+	    break;
 	  case M_MH:
 	    p = "MH";
 	    break;

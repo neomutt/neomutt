@@ -392,6 +392,8 @@ int mx_set_magic (const char *s)
     DefaultMagic = M_MH;
   else if (strcasecmp (s, "maildir") == 0)
     DefaultMagic = M_MAILDIR;
+  else if (strcasecmp (s, "kendra") == 0)
+    DefaultMagic = M_KENDRA;
   else
     return (-1);
 
