@@ -100,6 +100,17 @@ static char LastSearchExpn[LONG_STRING] = { 0 }; /* expanded version of
 
 #define M_MAXRANGE -1
 
+/* constants for parse_date_range() */
+#define M_PDR_NONE	0x0000
+#define M_PDR_MINUS	0x0001
+#define M_PDR_PLUS	0x0002
+#define M_PDR_WINDOW	0x0004
+#define M_PDR_ABSOLUTE	0x0008
+#define M_PDR_DONE	0x0010
+#define M_PDR_ERROR	0x0100
+#define M_PDR_ERRORDONE	(M_PDR_ERROR | M_PDR_DONE)
+
+
 int mutt_getvaluebychar (char ch, struct mapping_t *table)
 {
   int i;
@@ -382,28 +393,140 @@ static const char *getDate (const char *s, struct tm *t, BUFFER *err)
    Nm	months
    Nw	weeks
    Nd	days */
-static const char *get_offset (struct tm *tm, const char *s)
+static const char *get_offset (struct tm *tm, const char *s, int sign)
 {
   char *ps;
   int offset = strtol (s, &ps, 0);
+  if ((sign < 0 && offset > 0) || (sign > 0 && offset < 0))
+    offset = -offset;
 
   switch (*ps)
   {
     case 'y':
-      tm->tm_year -= offset;
+      tm->tm_year += offset;
       break;
     case 'm':
-      tm->tm_mon -= offset;
+      tm->tm_mon += offset;
       break;
     case 'w':
-      tm->tm_mday -= 7 * offset;
+      tm->tm_mday += 7 * offset;
       break;
     case 'd':
-      tm->tm_mday -= offset;
+      tm->tm_mday += offset;
       break;
+    default:
+      return s;
   }
   mutt_normalize_time (tm);
   return (ps + 1);
+}
+
+static void adjust_date_range (struct tm *min, struct tm *max)
+{
+  if (min->tm_year > max->tm_year
+      || (min->tm_year == max->tm_year && min->tm_mon > max->tm_mon)
+      || (min->tm_year == max->tm_year && min->tm_mon == max->tm_mon
+	&& min->tm_mday > max->tm_mday))
+  {
+    int tmp;
+    
+    tmp = min->tm_year;
+    min->tm_year = max->tm_year;
+    max->tm_year = tmp;
+      
+    tmp = min->tm_mon;
+    min->tm_mon = max->tm_mon;
+    max->tm_mon = tmp;
+      
+    tmp = min->tm_mday;
+    min->tm_mday = max->tm_mday;
+    max->tm_mday = tmp;
+    
+    min->tm_hour = min->tm_min = min->tm_sec = 0;
+    max->tm_hour = 23;
+    max->tm_min = max->tm_sec = 59;
+  }
+}
+
+static const char * parse_date_range (const char* pc, struct tm *min,
+    struct tm *max, int haveMin, struct tm *baseMin, BUFFER *err)
+{
+  int flag = M_PDR_NONE;	
+  while (*pc && ((flag & M_PDR_DONE) == 0))
+  {
+    const char *pt;
+    char ch = *pc++;
+    SKIPWS (pc);
+    switch (ch)
+    {
+      case '-':
+      {
+	/* try a range of absolute date minus offset of Ndwmy */
+	pt = get_offset (min, pc, -1);
+	if (pc == pt)
+	{
+	  if (flag == M_PDR_NONE)
+	  { /* nothing yet and no offset parsed => absolute date? */
+	    if (!getDate (pc, max, err))
+	      flag |= (M_PDR_ABSOLUTE | M_PDR_ERRORDONE);  /* done bad */
+	    else
+	    {
+	      /* reestablish initial base minimum if not specified */
+	      if (!haveMin)
+		memcpy (min, baseMin, sizeof(struct tm));
+	      flag |= (M_PDR_ABSOLUTE | M_PDR_DONE);  /* done good */
+	    }
+	  }
+	  else
+	    flag |= M_PDR_ERRORDONE;
+	}
+	else
+	{
+	  pc = pt;
+	  if (flag == M_PDR_NONE && !haveMin)
+	  { /* the very first "-3d" without a previous absolute date */
+	    max->tm_year = min->tm_year;
+	    max->tm_mon = min->tm_mon;
+	    max->tm_mday = min->tm_mday;
+	  }
+	  flag |= M_PDR_MINUS;
+	}
+      }
+      break;
+      case '+':
+      { /* enlarge plusRange */
+	pt = get_offset (max, pc, 1);
+	if (pc == pt)
+	  flag |= M_PDR_ERRORDONE;
+	else
+	{
+	  pc = pt;
+	  flag |= M_PDR_PLUS;
+	}
+      }
+      break;
+      case '*':
+      { /* enlarge window in both directions */
+	pt = get_offset (min, pc, -1);
+	if (pc == pt)
+	  flag |= M_PDR_ERRORDONE;
+	else
+	{
+	  pc = get_offset (max, pc, 1);
+	  flag |= M_PDR_WINDOW;
+	}
+      }
+      break;
+      default:
+	flag |= M_PDR_ERRORDONE;
+    }
+    SKIPWS (pc);
+  }
+  if ((flag & M_PDR_ERROR) && !(flag & M_PDR_ABSOLUTE))
+  { /* getDate has its own error message, don't overwrite it here */
+    snprintf (err->data, err->dsize, _("Invalid relative date: %s"), pc-1);
+  }
+  return ((flag & M_PDR_ERROR) ? NULL : pc);
 }
 
 static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
@@ -462,9 +585,10 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
 	exact++;
     }
     tm->tm_hour = 23;
-    tm->tm_min = max.tm_sec = 59;
+    tm->tm_min = tm->tm_sec = 59;
 
-    get_offset (tm, buffer.data + 1);
+    /* force negative offset */
+    get_offset (tm, buffer.data + 1, -1);
 
     if (exact)
     {
@@ -477,7 +601,9 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
   {
     const char *pc = buffer.data;
 
-    if (*pc != '-')
+    int haveMin = FALSE;
+    int untilNow = FALSE;
+    if (isdigit ((unsigned char)*pc))
     {
       /* mininum date specified */
       if ((pc = getDate (pc, &min, err)) == NULL)
@@ -485,28 +611,46 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
 	FREE (&buffer.data);
 	return (-1);
       }
+      haveMin = TRUE;
+      SKIPWS (pc);
+      if (*pc == '-')
+      {
+        const char *pt = pc + 1;
+	SKIPWS (pt);
+	untilNow = (*pt == '\0');
+      }
     }
 
-    if (*pc && *pc == '-')
-    {
-      /* max date */
-      pc++; /* skip the `-' */
-      SKIPWS (pc);
-      if (*pc)
-	if (!getDate (pc, &max, err))
-	{
-	  FREE (&buffer.data);
-	  return (-1);
-	}
-    }
-    else
-    {
-      /* search for messages on a specific day */
+    if (!untilNow)
+    { /* max date or relative range/window */
+
+      struct tm baseMin;
+
+      if (!haveMin)
+      { /* save base minimum and set current date, e.g. for "-3d+1d" */
+	time_t now = time (NULL);
+	struct tm *tm = localtime (&now);
+	memcpy (&baseMin, &min, sizeof(baseMin));
+	memcpy (&min, tm, sizeof (min));
+	min.tm_hour = min.tm_sec = min.tm_min = 0;
+      }
+      
+      /* preset max date for relative offsets,
+	 if nothing follows we search for messages on a specific day */
       max.tm_year = min.tm_year;
       max.tm_mon = min.tm_mon;
       max.tm_mday = min.tm_mday;
+
+      if (!parse_date_range (pc, &min, &max, haveMin, &baseMin, err))
+      { /* bail out on any parsing error */
+	FREE (&buffer.data);
+	return (-1);
+      }
     }
   }
+
+  /* Since we allow two dates to be specified we'll have to adjust that. */
+  adjust_date_range (&min, &max);
 
   pat->min = mutt_mktime (&min, 1);
   pat->max = mutt_mktime (&max, 1);
