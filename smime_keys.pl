@@ -934,6 +934,7 @@ sub newfile ($;$$) {
 	# returns a file name which does not exist for tmp file creation
 	my $filename = shift;
 	my $option = shift;
+	$option = "notemp" if (not defined($option));
 	if (! $tmpdir and $option eq "temp") {
 		$tmpdir = mutt_Q 'tmpdir';
 		$tmpdir = newfile("$tmpdir/smime");
