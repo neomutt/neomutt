@@ -690,10 +690,10 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
   if (cd1 == (iconv_t)(-1))
     return -1;
 
-  cd     = safe_malloc (ncodes * sizeof (iconv_t));
-  score  = safe_calloc (1, ncodes * sizeof (size_t));
-  states = safe_calloc (1, ncodes * sizeof (CONTENT_STATE));
-  infos  = safe_calloc (1, ncodes * sizeof (CONTENT));
+  cd     = safe_calloc (ncodes, sizeof (iconv_t));
+  score  = safe_calloc (ncodes, sizeof (size_t));
+  states = safe_calloc (ncodes, sizeof (CONTENT_STATE));
+  infos  = safe_calloc (ncodes, sizeof (CONTENT));
 
   for (i = 0; i < ncodes; i++)
     if (ascii_strcasecmp (tocodes[i], "UTF-8"))

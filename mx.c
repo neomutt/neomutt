@@ -1537,7 +1537,15 @@ int mx_close_message (MESSAGE **msg)
 void mx_alloc_memory (CONTEXT *ctx)
 {
   int i;
-
+  size_t s = MAX (sizeof (HEADER *), sizeof (int));
+  
+  if ((ctx->hdrmax + 25) * s < ctx->hdrmax * s)
+  {
+    mutt_error _("Integer overflow -- can't allocate memory.");
+    sleep (1);
+    mutt_exit (1);
+  }
+  
   if (ctx->hdrs)
   {
     safe_realloc ((void **) &ctx->hdrs, sizeof (HEADER *) * (ctx->hdrmax += 25));
@@ -1545,8 +1553,8 @@ void mx_alloc_memory (CONTEXT *ctx)
   }
   else
   {
-    ctx->hdrs = safe_malloc (sizeof (HEADER *) * (ctx->hdrmax += 25));
-    ctx->v2r = safe_malloc (sizeof (int) * ctx->hdrmax);
+    ctx->hdrs = safe_calloc ((ctx->hdrmax += 25), sizeof (HEADER *));
+    ctx->v2r = safe_calloc (ctx->hdrmax, sizeof (int));
   }
   for (i = ctx->msgcount ; i < ctx->hdrmax ; i++)
   {

@@ -797,7 +797,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  if (menu->tagged)
 	  {
 	    *numfiles = menu->tagged;
-	    tfiles = safe_malloc (*numfiles * sizeof (char *));
+	    tfiles = safe_calloc (*numfiles, sizeof (char *));
 	    for (i = 0, j = 0; i < state.entrylen; i++)
 	    {
 	      struct folder_file ff = state.entry[i];
@@ -814,7 +814,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  else if (f[0]) /* no tagged entries. return selected entry */
 	  {
 	    *numfiles = 1;
-	    tfiles = safe_malloc (*numfiles * sizeof (char *));
+	    tfiles = safe_calloc (*numfiles, sizeof (char *));
 	    mutt_expand_path (f, flen);
 	    tfiles[0] = safe_strdup (f);
 	    *files = tfiles;

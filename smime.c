@@ -379,7 +379,7 @@ char* smime_ask_for_key (char *prompt, char *mailbox, short public)
     }
     /* Read Entries */
     cur = 0;
-    Table = safe_malloc(sizeof (smime_id) * cert_num);
+    Table = safe_calloc(cert_num, sizeof (smime_id));
     while (!feof(index)) {
         numFields = fscanf (index, MUTT_FORMAT(STRING) " %x.%i " MUTT_FORMAT(STRING), fields[0], &hash,
           &hash_suffix, fields[2]);

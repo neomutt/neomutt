@@ -127,7 +127,7 @@ static int mbox_to_udomain (const char *mbx, char **user, char **domain)
   p = strchr (mbx, '@');
   if (!p)
     return -1;
-  *user = safe_malloc((p - mbx + 1) * sizeof(mbx[0]));
+  *user = safe_calloc((p - mbx + 1), sizeof(mbx[0]));
   strfcpy (*user, mbx, (p - mbx + 1));
   *domain = safe_strdup(p + 1);
   return 0;

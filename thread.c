@@ -591,7 +591,7 @@ THREAD *mutt_sort_subthreads (THREAD *thread, int init)
 
   top = thread;
 
-  array = safe_malloc ((array_size = 256) * sizeof (THREAD *));
+  array = safe_calloc ((array_size = 256), sizeof (THREAD *));
   while (1)
   {
     if (init || !thread->sort_key)

@@ -148,7 +148,7 @@ static void replace_part (ENTER_STATE *state, size_t from, char *buf)
 {
   /* Save the suffix */
   size_t savelen = state->lastchar - state->curpos;
-  wchar_t *savebuf = safe_malloc (savelen * sizeof (wchar_t));
+  wchar_t *savebuf = safe_calloc (savelen, sizeof (wchar_t));
   memcpy (savebuf, state->wbuf + state->curpos, savelen * sizeof (wchar_t));
 
   /* Convert to wide characters */
@@ -657,7 +657,7 @@ self_insert:
 	{
 	  char **tfiles;
 	  *numfiles = 1;
-	  tfiles = safe_malloc (*numfiles * sizeof (char *));
+	  tfiles = safe_calloc (*numfiles, sizeof (char *));
 	  mutt_expand_path (buf, buflen);
 	  tfiles[0] = safe_strdup (buf);
 	  *files = tfiles;
