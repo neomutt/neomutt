@@ -1,6 +1,7 @@
 Subject: Developers' notes
 From: Thomas Roessler <roessler@guug.de>
-Date: Tue, 13 Oct 1998 22:57:02 +0200
+Date: Wed, 21 Oct 1998 17:51:30 +0200
+
 
 Required tools
 --------------
@@ -25,7 +26,36 @@ You'll need several GNU development utilities for working on mutt:
   release from alpha.gnu.org, it's the recommended version of
   gettext anyway.
 
+  If you are experiencing problems with unknown "dcgettext" symbols,
+  the autoconf/automake macros from your gettext package are broken.
+  Apply the following patch to that macro file (usually found under
+  /usr/share/aclocal/gettext.m4):
+
+--- gettext.m4.bak	Thu Jul  2 18:46:08 1998
++++ gettext.m4	Mon Oct  5 23:32:54 1998
+@@ -46,12 +46,13 @@
+ 
+ 	   if test "$gt_cv_func_gettext_libc" != "yes"; then
+ 	     AC_CHECK_LIB(intl, bindtextdomain,
+-	       [AC_CACHE_CHECK([for gettext in libintl],
+-		 gt_cv_func_gettext_libintl,
+-		 [AC_CHECK_LIB(intl, gettext,
+-		  gt_cv_func_gettext_libintl=yes,
+-		  gt_cv_func_gettext_libintl=no)],
++	       [AC_CHECK_LIB(intl, gettext,
++	         gt_cv_func_gettext_libintl=yes,
+ 		 gt_cv_func_gettext_libintl=no)])
++	   fi
++
++	   if test "$gt_cv_func_gettext_libintl" = "yes" ; then
++	     LIBS="-lintl $LIBS"
+ 	   fi
+ 
+ 	   if test "$gt_cv_func_gettext_libc" = "yes" \
+
+
 - GNU make may be needed for the dependency tricks
+
 
 
 A word about warnings
