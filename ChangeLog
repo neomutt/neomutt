@@ -1,3 +1,16 @@
+2004-08-08 16:19:15  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* pgp.c, smime.c: Fix the PGP and S/MIME menus. Complaints
+	and suggestions of many lead to these changes.	See mutt-dev
+	discussions around this time for details.
+
+	* Makefile.am, crypthash.h, md5.h, sha1.h: Fix uint32_t
+	portability problem. Reported by Steve Kennedy.
+
+2004-08-07 05:23:33  Johan Svedberg  <johan@svedberg.pp.se>  (roessler)
+
+	* po/sv.po: update
+
 2004-08-02 08:03:46  Nathan Dushman  <nhd+mutt@andrew.cmu.edu>  (roessler)
 
 	* imap/command.c: Fix the improvement to address #1655.
