@@ -41,8 +41,9 @@ static short BuffyNotify = 0;	/* # of unnotified new boxes */
 
 #ifdef BUFFY_SIZE
 
-/* Find the last message in the file. * upon success return 0. * If no
- * message found - return -1 */
+/* Find the last message in the file. 
+ * upon success return 0. If no message found - return -1 */
+
 int fseek_last_message (FILE * f)
 {
   long int pos;
@@ -257,7 +258,7 @@ int mutt_buffy_check (int force)
     }
     else
 #endif
-    if (stat (tmp->path, &sb) != 0 ||
+    if (stat (tmp->path, &sb) != 0 || sb.st_size == 0 ||
 	(!tmp->magic && (tmp->magic = mx_get_magic (tmp->path)) <= 0))
     {
       /* if the mailbox still doesn't exist, set the newly created flag to
