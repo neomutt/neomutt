@@ -542,9 +542,12 @@ int mutt_fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags)
 
 LIST *mutt_make_references(ENVELOPE *e)
 {
-  LIST *t, *l;
-  
-  l = mutt_copy_list(e->references);
+  LIST *t = NULL, *l = NULL;
+
+  if (e->references)
+    l = mutt_copy_list (e->references);
+  else
+    l = mutt_copy_list (e->in_reply_to);
   
   if(e->message_id)
   {
