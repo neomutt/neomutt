@@ -33,7 +33,7 @@ set copy=yes			# always save a copy of outgoing messages
 set delete=yes			# purge deleted messages without asking
 set edit_headers		# let me edit the message header when composing
 #set editor="emacs -nw"		# editor to use when composing messages
-#set fast_bounce		# don't ask about bouncing messages, just do it
+#set bounce=yes			# don't ask about bouncing messages, just do it
 #set fast_reply			# skip initial prompts when replying
 #set fcc_attach			# keep attachments in copies of sent messages?
 #set force_name			# fcc by recipient, create if mailbox doesn't exist
