@@ -2408,6 +2408,30 @@ Default: unset
 If set, Mutt will prompt you for carbon-copy (Cc) recipients before editing
 the body of an outgoing message.
 
+<sect2>attach&lowbar;format<label id="attach_format">
+<p>
+Type: format string<newline>
+Default: &dquot;&percnt;u&percnt;D&percnt;t&percnt;2n &percnt;T&percnt;.40d&percnt;&gt; &lsqb;&percnt;.7m/&percnt;.10M, &percnt;.6e, &percnt;s&rsqb;&nbsp;&dquot;
+
+This variable describes the format of the `attachment' menu.  The
+following printf-style sequences are understood:
+
+<tscreen><verb>
+%D      deleted flag
+%d      description
+%e      MIME content-transfer-encoding
+%f      filename
+%m      major MIME type
+%M      MIME subtype
+%n      attachment number
+%s      size
+%t      tagged flag
+%u      unlink (=to delete) flag
+
+%>X     right justify the rest of the string and pad with character "X"
+%|X     pad to the end of the line with character "X"
+</verb></tscreen>
+
 <sect2>attribution<label id="attribution">
 <p>
 Type: format string<newline>
