@@ -1,4 +1,7 @@
-2002-12-17 12:35:00  Thomas Roessler  <roessler@does-not-exist.org>
+2002-12-17 13:01:26  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* Makefile.am, mkjtags.c: Remve that jed tags generator.  I don't
+	use it anyway.
 
 	* cvslog2changelog.pl: Adding Michael's address to the changelog
 	generator.
