@@ -2,6 +2,8 @@
 ## The following options are only available if you have
 ## compiled in S/MIME support
 
+# If you compiled mutt with support for both PGP and S/MIME, PGP
+# will be the default method unless the following option is set
 set smime_is_default
 
 # Passphrase expiration
