@@ -373,14 +373,20 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
 /* try to decode anything that looks like a valid RFC2047 encoded
  * header field, ignoring RFC822 parsing rules
  */
-void rfc2047_decode (char *d, const char *s, size_t dlen)
+void rfc2047_decode (char **pd)
 {
   const char *p, *q;
   size_t n;
   int found_encoded = 0;
-  int in_place = (d == s);
- 
-  dlen--; /* save room for the terminal nul */
+  char *d0, *d;
+  const char *s = *pd;
+  size_t dlen;
+
+  if (!*s)
+    return;
+
+  dlen = MB_LEN_MAX * strlen (s); /* should be enough */
+  d = d0 = safe_malloc (dlen + 1);
 
   while (*s && dlen > 0)
   {
@@ -390,9 +396,9 @@ void rfc2047_decode (char *d, const char *s, size_t dlen)
 	(q = strstr (q + 1, "?=")) == NULL)
     {
       /* no encoded words */
-      if (d != s)
-	strfcpy (d, s, dlen + 1);
-      return;
+      strncpy (d, s, dlen);
+      d += dlen;
+      break;
     }
 
     if (p != s)
@@ -410,7 +416,7 @@ void rfc2047_decode (char *d, const char *s, size_t dlen)
       }
     }
 
-    rfc2047_decode_word (d, p, in_place ? q + 2 - p : dlen);
+    rfc2047_decode_word (d, p, dlen);
     found_encoded = 1;
     s = q + 2;
     n = mutt_strlen (d);
@@ -418,6 +424,8 @@ void rfc2047_decode (char *d, const char *s, size_t dlen)
     d += n;
   }
   *d = 0;
+  *pd = strdup (d0);
+  safe_free ((void **) &d0);
 }
 
 void rfc2047_decode_adrlist (ADDRESS *a)
@@ -425,10 +433,10 @@ void rfc2047_decode_adrlist (ADDRESS *a)
   while (a)
   {
     if (a->personal && strstr (a->personal, "=?") != NULL)
-      rfc2047_decode (a->personal, a->personal, mutt_strlen (a->personal) + 1);
+      rfc2047_decode (&a->personal);
 #ifdef EXACT_ADDRESS
     if (a->val && strstr (a->val, "=?") != NULL)
-      rfc2047_decode (a->val, a->val, mutt_strlen (a->val) + 1);
+      rfc2047_decode (&a->val);
 #endif
     a = a->next;
   }

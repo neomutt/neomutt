@@ -1810,7 +1810,7 @@ void mutt_unprepare_envelope (ENVELOPE *env)
   LIST *item;
 
   for (item = env->userhdrs; item; item = item->next)
-    rfc2047_decode (item->data, item->data,  mutt_strlen (item->data) + 1);
+    rfc2047_decode (&item->data);
 
   rfc822_free_address (&env->mail_followup_to);
 
@@ -1819,7 +1819,7 @@ void mutt_unprepare_envelope (ENVELOPE *env)
   rfc2047_decode_adrlist (env->cc);
   rfc2047_decode_adrlist (env->from);
   rfc2047_decode_adrlist (env->reply_to);
-  rfc2047_decode (env->subject, env->subject, mutt_strlen (env->subject) + 1);
+  rfc2047_decode (&env->subject);
 }
 
 static void _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *resent_from)

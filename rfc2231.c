@@ -112,7 +112,7 @@ void rfc2231_decode_parameters (PARAMETER **headp)
        */
 
       if (option (OPTRFC2047PARAMS) && p->value && strstr (p->value, "=?"))
-	rfc2047_decode (p->value, p->value, strlen (p->value) + 1);
+	rfc2047_decode (&p->value);
 
       *last = p;
       last = &p->next;

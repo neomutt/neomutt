@@ -19,5 +19,5 @@
 void rfc2047_encode_string (char *, size_t, const unsigned char *);
 void rfc2047_encode_adrlist (ADDRESS *);
 
-void rfc2047_decode (char *, const char *, size_t);
+void rfc2047_decode (char **);
 void rfc2047_decode_adrlist (ADDRESS *);

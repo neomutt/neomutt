@@ -427,7 +427,7 @@ BODY *mutt_read_mime_header (FILE *fp, int digest)
       else if (!mutt_strcasecmp ("description", line + 8))
       {
 	mutt_str_replace (&p->description, c);
-	rfc2047_decode (p->description, p->description, mutt_strlen (p->description) + 1);
+	rfc2047_decode (&p->description);
       }
     } 
 #ifdef SUN_ATTACHMENT
@@ -443,7 +443,7 @@ BODY *mutt_read_mime_header (FILE *fp, int digest)
       {
         safe_free ((void **) &p->description);
         p->description = safe_strdup (c);
-        rfc2047_decode (p->description, p->description, mutt_strlen (p->description) + 1);
+        rfc2047_decode (&p->description);
       }
     }
 #endif
@@ -932,12 +932,10 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
   LIST *last = NULL;
   char *line = safe_malloc (LONG_STRING);
   char *p;
-  char in_reply_to[STRING];
+  char *in_reply_to = 0;
   long loc;
   int matched;
   size_t linelen = LONG_STRING;
-
-  in_reply_to[0] = 0;
 
   if (hdr)
   {
@@ -1044,9 +1042,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
 	    if (hdr)
 	    {
 	      mutt_str_replace (&hdr->content->description, p);
-	      rfc2047_decode (hdr->content->description,
-			      hdr->content->description,
-			      mutt_strlen (hdr->content->description) + 1);
+	      rfc2047_decode (&hdr->content->description);
 	    }
 	    matched = 1;
 	  }
@@ -1088,9 +1084,8 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
 	{
 	  if (hdr)
 	  {
-	    strfcpy (in_reply_to, p, sizeof (in_reply_to));
-	    rfc2047_decode (in_reply_to, in_reply_to,
-			    sizeof (in_reply_to));
+	    in_reply_to = strdup (p);
+	    rfc2047_decode (&in_reply_to);
 	  }
 	}
 	break;
@@ -1266,7 +1261,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
       }
       else
 	last = e->userhdrs = mutt_new_list ();
-      rfc2047_decode (line, line, linelen);
+      rfc2047_decode (&line);
       last->data = safe_strdup (line);
     }
   }
@@ -1281,7 +1276,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
     /* if an in-reply-to was given, check to see if it is in the references
      * list already.  if not, add it so we can do a better job of threading.
      */
-    if (in_reply_to[0] && (p = extract_message_id (in_reply_to)) != NULL)
+    if (in_reply_to && (p = extract_message_id (in_reply_to)) != NULL)
     {
       if (!e->references ||
 	  (e->references && mutt_strcmp (e->references->data, p) != 0))
@@ -1309,7 +1304,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
     {
       regmatch_t pmatch[1];
 
-      rfc2047_decode (e->subject, e->subject, mutt_strlen (e->subject) + 1);
+      rfc2047_decode (&e->subject);
 
       if (regexec (ReplyRegexp.rx, e->subject, 1, pmatch, 0) == 0)
 	e->real_subj = e->subject + pmatch[0].rm_eo;
@@ -1325,6 +1320,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
     }
   }
 
+  safe_free ((void *) &in_reply_to);
   return (e);
 }
 
