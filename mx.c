@@ -1033,7 +1033,6 @@ int imap_open_new_message (MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
   if ((msg->fp = safe_fopen (tmp, "w")) == NULL)
     return (-1);
   msg->path = safe_strdup(tmp);
-  msg->ctx = dest;
   return 0;
 }
 #endif
