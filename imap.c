@@ -49,7 +49,7 @@
 
 
 
-/* Minimal support for IMAP 4rev1 */
+/* Minimal support for IMAP 4rev1. Slightly more minimal for IMAP 4. */
 
 #define IMAP_PORT 143
 
@@ -65,6 +65,55 @@ enum
   IMAP_EXPUNGE,
   IMAP_BYE,
   IMAP_OK_FAIL
+};
+
+/* Capabilities */
+enum
+{
+  IMAP4 = 0,
+  IMAP4REV1,
+  STATUS,
+  ACL,				/* RFC 2086: IMAP4 ACL extension */
+  NAMESPACE,                   	/* RFC 2342: IMAP4 Namespace */
+  /* From here down, we don't care */
+  ACRAM_MD5,			/* AUTH=CRAM-MD5 */
+  AKERBEROS_V4,			/* AUTH=KERBEROS_V4 */
+  AGSSAPI,			/* AUTH=GSSAPI */
+  ALOGIN,			/* AUTH=LOGIN */
+  AUTH_LOGIN,			/* AUTH-LOGIN */
+  APLAIN,			/* AUTH=PLAIN */
+  ASKEY,			/* AUTH=SKEY */
+  IDLE,				/* RFC 2177: IMAP4 IDLE command */
+  LOGIN_REFERRALS,		/* LOGIN-REFERRALS */
+  MAILBOX_REFERRALS,		/* MAILBOX-REFERRALS */
+  SCAN,
+  SORT,
+  TORDEREDSUBJECT,		/* THREAD=ORDEREDSUBJECT */
+  UIDPLUS,			/* RFC 2859: IMAP4 UIDPLUS extension */
+  
+  CAPMAX
+};
+
+static char *Capabilities[] = {"IMAP4", "IMAP4rev1", "STATUS", "ACL", 
+  "NAMESPACE", "AUTH=CRAM-MD5", "AUTH=KERBEROS_V4", "AUTH=GSSAPI", 
+  "AUTH=LOGIN", "AUTH-LOGIN", "AUTH=PLAIN", "AUTH=SKEY", "IDLE", 
+  "LOGIN-REFERRALS", "MAILBOX-REFERRALS", "QUOTA", "SCAN", "SORT", 
+  "THREAD=ORDEREDSUBJECT", "UIDPLUS", NULL};
+
+/* ACL Rights */
+enum
+{
+  IMAP_ACL_LOOKUP = 0,
+  IMAP_ACL_READ,
+  IMAP_ACL_SEEN,
+  IMAP_ACL_WRITE,
+  IMAP_ACL_INSERT,
+  IMAP_ACL_POST,
+  IMAP_ACL_CREATE,
+  IMAP_ACL_DELETE,
+  IMAP_ACL_ADMIN,
+
+  RIGHTSMAX
 };
 
 enum
@@ -88,11 +137,13 @@ typedef struct
   short status;
   short state;
   char delim;
+  unsigned char capabilities[(CAPMAX + 7)/8];
   CONNECTION *conn;
 
   /* The following data is all specific to the currently SELECTED mbox */
   CONTEXT *selected_ctx;
   char *selected_mailbox;
+  unsigned char rights[(RIGHTSMAX + 7)/8];
   unsigned int newMailCount;
   IMAP_CACHE cache[IMAP_CACHE_LEN];
 } IMAP_DATA;
@@ -118,6 +169,26 @@ typedef struct imap_header_info
   long content_length;
   struct imap_header_info *next;
 } IMAP_HEADER_INFO;
+
+enum
+{
+  /* Namespace types */
+  IMAP_NS_PERSONAL = 0,
+  IMAP_NS_OTHER,
+  IMAP_NS_SHARED
+};
+
+typedef struct 
+{
+  int type;
+  int listable;
+  char *prefix;
+  char delim;
+  int home_namespace;
+  /* We get these when we check if namespace exists - cache them */
+  int noselect;			
+  int noinferiors;
+} IMAP_NAMESPACE_INFO;
 
 static void imap_make_sequence (char *buf, size_t buflen)
 {
@@ -390,6 +461,44 @@ static char *imap_next_word (char *s)
   return s;
 }
 
+/* a is a word, b a string of words */
+static int imap_wordcasecmp(const char *a, const char *b)
+{
+  char tmp[SHORT_STRING];
+  char *s = (char *)b;
+  int i;
+
+  tmp[SHORT_STRING-1] = 0;
+  for(i=0;i < SHORT_STRING-2;i++,s++)
+  {
+    if (!*s || ISSPACE(*s))
+    {
+      tmp[i] = 0;
+      break;
+    }
+    tmp[i] = *s;
+  }
+  tmp[i+1] = 0;
+  return mutt_strcasecmp(a, tmp);
+    
+}
+
+static void imap_parse_capabilities (IMAP_DATA *idata, char *s)
+{
+  int x;
+
+  while (*s) 
+  {
+    for (x = 0; x < CAPMAX; x++)
+      if (imap_wordcasecmp(Capabilities[x], s) == 0)
+      {
+	mutt_bit_set (idata->capabilities, x);
+	break;
+      }
+    s = imap_next_word (s);
+  }   
+}
+
 static int imap_handle_untagged (IMAP_DATA *idata, char *s)
 {
   char *pn;
@@ -433,6 +542,50 @@ static int imap_handle_untagged (IMAP_DATA *idata, char *s)
        idata->status = IMAP_EXPUNGE;
     }
   }
+  else if (mutt_strncasecmp ("CAPABILITY", s, 10) == 0)
+  {
+    /* parse capabilities */
+    imap_parse_capabilities (idata, s);
+  }
+  else if (mutt_strncasecmp ("MYRIGHTS", s, 8) == 0)
+  {
+    s = imap_next_word (s);
+    s = imap_next_word (s);
+    while (*s && !isspace(*s))
+    {
+      switch (*s) 
+      {
+	case 'l':
+	  mutt_bit_set (idata->rights, IMAP_ACL_LOOKUP);
+	  break;
+	case 'r':
+	  mutt_bit_set (idata->rights, IMAP_ACL_READ);
+	  break;
+	case 's':
+	  mutt_bit_set (idata->rights, IMAP_ACL_SEEN);
+	  break;
+	case 'w':
+	  mutt_bit_set (idata->rights, IMAP_ACL_WRITE);
+	  break;
+	case 'i':
+	  mutt_bit_set (idata->rights, IMAP_ACL_INSERT);
+	  break;
+	case 'p':
+	  mutt_bit_set (idata->rights, IMAP_ACL_POST);
+	  break;
+	case 'c':
+	  mutt_bit_set (idata->rights, IMAP_ACL_CREATE);
+	  break;
+	case 'd':
+	  mutt_bit_set (idata->rights, IMAP_ACL_DELETE);
+	  break;
+	case 'a':
+	  mutt_bit_set (idata->rights, IMAP_ACL_ADMIN);
+	  break;
+      }
+      s++;
+    }
+  }
   else if (mutt_strncasecmp ("BYE", s, 3) == 0)
   {
     /* server shut down our connection */
@@ -453,6 +606,22 @@ static int imap_handle_untagged (IMAP_DATA *idata, char *s)
   return 0;
 }
 
+static int get_literal_count(const char *buf, long *bytes)
+{
+  char *pc;
+  char *pn;
+
+  if (!(pc = strchr (buf, '{')))
+    return (-1);
+  pc++;
+  pn = pc;
+  while (isdigit (*pc))
+    pc++;
+  *pc = 0;
+  *bytes = atoi(pn);
+  return (0);
+}
+
 /*
  * Changed to read many headers instead of just one. It will return the
  * msgno of the last message read. It will return a value other than
@@ -461,16 +630,18 @@ static int imap_handle_untagged (IMAP_DATA *idata, char *s)
 static int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
 {
   char buf[LONG_STRING],fetchbuf[LONG_STRING];
+  char hdrreq[STRING];
   FILE *fp;
   char tempfile[_POSIX_PATH_MAX];
   char seq[8];
   char *pc,*fpc,*hdr;
-  char *pn;
   long ploc;
   long bytes = 0;
   int msgno,fetchlast;
   IMAP_HEADER_INFO *h0,*h,*htemp;
-
+#define WANT_HEADERS  "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE IN-REPLY-TO REPLY-TO" 
+  const char *want_headers = WANT_HEADERS;
+  int using_body_peek = 0;
   fetchlast = 0;
 
   /*
@@ -501,7 +672,27 @@ static int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
        * If we get more messages while doing this, we make another
        * request for all the new messages.
        */
-      snprintf (buf, sizeof (buf), "%s FETCH %d:%d (FLAGS INTERNALDATE RFC822.SIZE BODY.PEEK[HEADER.FIELDS (DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE IN-REPLY-TO REPLY-TO)])\r\n", seq, msgno + 1, msgend + 1);
+      if (mutt_bit_isset(CTX_DATA->capabilities,IMAP4REV1))
+      {
+	snprintf(hdrreq, sizeof (hdrreq), "BODY.PEEK[HEADER.FIELDS (%s)]", 
+		want_headers); 
+	using_body_peek = 1;
+      } 
+      else if (mutt_bit_isset(CTX_DATA->capabilities,IMAP4))
+      {
+	snprintf(hdrreq, sizeof (hdrreq), "RFC822.HEADER.LINES (%s)", 
+		want_headers);
+      }
+      else
+      {	/* Unable to fetch headers for lower versions */
+	mutt_error _("Unable to fetch headers from this IMAP server version.");
+	sleep (1);	/* pause a moment to let the user see the error */
+	return (-1);
+      }
+      snprintf (buf, sizeof (buf), 
+		"%s FETCH %d:%d (FLAGS INTERNALDATE RFC822.SIZE %s)\r\n", 
+		seq, msgno + 1, msgend + 1, hdrreq);
+
       mutt_socket_write (CTX_DATA->conn, buf);
       fetchlast = msgend + 1;
     }
@@ -531,24 +722,25 @@ static int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
           fpc=fetchbuf;
           while (*pc != '\0' && *pc != ')')
           {
-            hdr=strstr(pc,"BODY");
+	    if (using_body_peek) 
+	      hdr=strstr(pc,"BODY");
+	    else
+	      hdr=strstr(pc,"RFC822.HEADER");
+	    if (!hdr)
+            {
+              imap_error ("imap_read_headers()", buf);
+              return (-1);
+            }
             strncpy(fpc,pc,hdr-pc);
             fpc += hdr-pc;
             *fpc = '\0';
             pc=hdr;
             /* get some number of bytes */
-            if (!(pc = strchr (pc, '{')))
+	    if (get_literal_count(buf, &bytes) < 0)
             {
               imap_error ("imap_read_headers()", buf);
               return (-1);
             }
-            pc++;
-            pn = pc;
-            while (isdigit (*pc))
-              pc++;
-            *pc = 0;
-            bytes = atoi (pn);
-
             imap_read_bytes (fp, CTX_DATA->conn, bytes);
             if (mutt_socket_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
             {
@@ -1003,6 +1195,45 @@ static char *imap_fix_path (IMAP_DATA *idata, char *mailbox, char *path,
   return path;
 }
 
+static int imap_check_acl (IMAP_DATA *idata)
+{
+  char buf[LONG_STRING];
+  char mbox[LONG_STRING];
+  char seq[16];
+
+  imap_make_sequence (seq, sizeof (seq));
+  imap_quote_string (mbox, sizeof(mbox), idata->selected_mailbox);
+  snprintf (buf, sizeof (buf), "%s MYRIGHTS %s\r\n", seq, mbox);
+  if (imap_exec (buf, sizeof (buf), idata, seq, buf, 0) != 0)
+  {
+    imap_error ("imap_check_acl", buf);
+    return (-1);
+  }
+  return (0);
+}
+
+static int imap_check_capabilities (IMAP_DATA *idata)
+{
+  char buf[LONG_STRING];
+  char seq[16];
+
+  imap_make_sequence (seq, sizeof (seq));
+  snprintf (buf, sizeof (buf), "%s CAPABILITY\r\n", seq);
+  if (imap_exec (buf, sizeof (buf), idata, seq, buf, 0) != 0)
+  {
+    imap_error ("imap_check_capabilities", buf);
+    return (-1);
+  }
+  if (!(mutt_bit_isset(idata->capabilities,IMAP4)
+      ||mutt_bit_isset(idata->capabilities,IMAP4REV1)))
+  {
+    mutt_error _("This IMAP server is ancient. Mutt does not work with it.");
+    sleep (5);	/* pause a moment to let the user see the error */
+    return (-1);
+  }
+  return (0);
+}
+
 static int imap_authenticate (IMAP_DATA *idata, CONNECTION *conn)
 {
   char buf[LONG_STRING];
@@ -1094,7 +1325,8 @@ static int imap_open_connection (IMAP_DATA *idata, CONNECTION *conn)
 
   if (mutt_strncmp ("* OK", buf, 4) == 0)
   {
-    if (imap_authenticate (idata, conn) != 0)
+    if (imap_check_capabilities(idata) != 0 
+	|| imap_authenticate (idata, conn) != 0)
     {
       close (conn->fd);
       idata->state = IMAP_DISCONNECTED;
@@ -1153,6 +1385,7 @@ int imap_open_mailbox (CONTEXT *ctx)
 
   /* Clean up path and replace the one in the ctx */
   imap_fix_path (idata, pc, buf, sizeof (buf));
+  FREE(&(idata->selected_mailbox));
   idata->selected_mailbox = safe_strdup (buf);
   if (port != IMAP_PORT)
     snprintf (buf, sizeof (buf), "{%s:%d}%s", host, port, 
@@ -1209,6 +1442,25 @@ int imap_open_mailbox (CONTEXT *ctx)
     idata->state = IMAP_AUTHENTICATED;
     sleep (1);
     return (-1);
+  }
+
+  if (mutt_bit_isset (idata->capabilities, ACL))
+  {
+    if (imap_check_acl (idata))
+    {
+      return (-1);
+    }
+  }
+  else
+  {
+    mutt_bit_set (idata->rights, IMAP_ACL_LOOKUP);
+    mutt_bit_set (idata->rights, IMAP_ACL_READ);
+    mutt_bit_set (idata->rights, IMAP_ACL_SEEN);
+    mutt_bit_set (idata->rights, IMAP_ACL_WRITE);
+    mutt_bit_set (idata->rights, IMAP_ACL_INSERT);
+    mutt_bit_set (idata->rights, IMAP_ACL_POST);
+    mutt_bit_set (idata->rights, IMAP_ACL_CREATE);
+    mutt_bit_set (idata->rights, IMAP_ACL_DELETE);
   }
 
   ctx->hdrmax = count;
@@ -1278,8 +1530,27 @@ int imap_open_mailbox_append (CONTEXT *ctx)
 
   imap_quote_string (mbox, sizeof (mbox), mailbox);
   imap_make_sequence (seq, sizeof (seq));
-  snprintf (buf, sizeof (buf), "%s STATUS %s (UIDVALIDITY)\r\n", seq, mbox);
-      
+				
+  if (mutt_bit_isset(idata->capabilities,IMAP4REV1))
+  {
+    snprintf (buf, sizeof (buf), "%s STATUS %s (UIDVALIDITY)\r\n", seq, mbox);
+  }
+  else if (mutt_bit_isset(idata->capabilities,STATUS))
+  { 
+    /* We have no idea what the other guy wants. UW imapd 8.3 wants this
+     * (but it does not work if another mailbox is selected) */
+    snprintf (buf, sizeof (buf), "%s STATUS %s (UID-VALIDITY)\r\n", seq, mbox);
+  }
+  else
+  {
+    /* STATUS not supported
+     * The thing to do seems to be:
+     *  - Open a *new* IMAP session, select, and then close it. Report the
+     * error if the mailbox did not exist. */
+    mutt_message _("Unable to append to IMAP mailboxes at this server");
+    return (-1);
+  }
+
   r = imap_exec (buf, sizeof (buf), idata, seq, buf, IMAP_OK_FAIL);
   if (r == -2)
   {
@@ -1311,7 +1582,6 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   char buf[LONG_STRING];
   char path[_POSIX_PATH_MAX];
   char *pc;
-  char *pn;
   long bytes;
   int pos, len;
   IMAP_CACHE *cache;
@@ -1368,17 +1638,11 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
       pc = imap_next_word (pc);
       if (mutt_strncasecmp ("FETCH", pc, 5) == 0)
       {
-	if (!(pc = strchr (buf, '{')))
+        if (get_literal_count(buf, &bytes) < 0)
 	{
 	  imap_error ("imap_fetch_message()", buf);
 	  return (-1);
 	}
-	pc++;
-	pn = pc;
-	while (isdigit (*pc))
-	  pc++;
-	*pc = 0;
-	bytes = atoi (pn);
 	for (pos = 0; pos < bytes; )
 	{
 	  len = mutt_socket_read_line (buf, sizeof (buf), CTX_DATA->conn);
@@ -1405,6 +1669,15 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   rewind (msg->fp);
   mutt_free_envelope (&ctx->hdrs[msgno]->env);
   ctx->hdrs[msgno]->env = mutt_read_rfc822_header (msg->fp, ctx->hdrs[msgno],0);
+  fgets (buf, sizeof (buf), msg->fp);
+  while (!feof (msg->fp))
+  {
+    ctx->hdrs[msgno]->lines++;
+    fgets (buf, sizeof (buf), msg->fp);
+  }
+
+  ctx->hdrs[msgno]->content->length = ftell (msg->fp) - 
+                                        ctx->hdrs[msgno]->content->offset;
 
   /* This needs to be done in case this is a multipart message */
 #ifdef _PGPPATH
@@ -1587,13 +1860,17 @@ int imap_sync_mailbox (CONTEXT *ctx)
 	n+1, ctx->msgcount);
       mutt_message (tmp);
       *tmp = 0;
-      if (ctx->hdrs[n]->read)
+      if (ctx->hdrs[n]->read && mutt_bit_isset(CTX_DATA->rights, IMAP_ACL_SEEN))
 	strcat (tmp, "\\Seen ");
-      if (ctx->hdrs[n]->flagged)
-	strcat (tmp, "\\Flagged ");
-      if (ctx->hdrs[n]->replied)
-	strcat (tmp, "\\Answered ");
-      if (ctx->hdrs[n]->deleted)
+      if (mutt_bit_isset(CTX_DATA->rights, IMAP_ACL_WRITE))
+      {
+	if (ctx->hdrs[n]->flagged)
+	  strcat (tmp, "\\Flagged ");
+	if (ctx->hdrs[n]->replied)
+	  strcat (tmp, "\\Answered ");
+      }
+      if (ctx->hdrs[n]->deleted && 
+	  mutt_bit_isset(CTX_DATA->rights, IMAP_ACL_DELETE))
         strcat (tmp, "\\Deleted");
       mutt_remove_trailing_ws (tmp);
 
@@ -1609,16 +1886,19 @@ int imap_sync_mailbox (CONTEXT *ctx)
     }
   }
 
-  mutt_message _("Expunging messages from server...");
-  CTX_DATA->status = IMAP_EXPUNGE;
-  imap_make_sequence (seq, sizeof (seq));
-  snprintf (buf, sizeof (buf), "%s EXPUNGE\r\n", seq);
-  if (imap_exec (buf, sizeof (buf), CTX_DATA, seq, buf, 0) != 0)
+  if (mutt_bit_isset(CTX_DATA->rights, IMAP_ACL_DELETE))
   {
-    imap_error ("imap_sync_mailbox()", buf);
-    return (-1);
+    mutt_message _("Expunging messages from server...");
+    CTX_DATA->status = IMAP_EXPUNGE;
+    imap_make_sequence (seq, sizeof (seq));
+    snprintf (buf, sizeof (buf), "%s EXPUNGE\r\n", seq);
+    if (imap_exec (buf, sizeof (buf), CTX_DATA, seq, buf, 0) != 0)
+    {
+      imap_error ("imap_sync_mailbox()", buf);
+      return (-1);
+    }
+    CTX_DATA->status = 0;
   }
-  CTX_DATA->status = 0;
 
   for (n = 0; n < IMAP_CACHE_LEN; n++)
   {
@@ -1747,9 +2027,27 @@ int imap_buffy_check (char *path)
   if (strlen (buf) < strlen (pc))
       strcpy (pc, buf);
 
-  imap_make_sequence (seq, sizeof (seq));
+  imap_make_sequence (seq, sizeof (seq));		
   imap_quote_string (mbox, sizeof(mbox), buf);
-  snprintf (buf, sizeof (buf), "%s STATUS %s (RECENT)\r\n", seq, mbox);
+  /* The draft IMAP implementor's guide warns againts using the STATUS
+   * command on a mailbox that you have selected */
+  if (mutt_strcmp(mbox, idata->selected_mailbox) == 0
+      || (mutt_strcasecmp(mbox, "INBOX") == 0
+	  && mutt_strcasecmp(mbox, idata->selected_mailbox) == 0))
+  {
+    snprintf (buf, sizeof (buf), "%s NOOP\r\n", seq);
+  }
+  else if (mutt_bit_isset(idata->capabilities,IMAP4REV1) ||
+	   mutt_bit_isset(idata->capabilities,STATUS))
+  {				
+    snprintf (buf, sizeof (buf), "%s STATUS %s (RECENT)\r\n", seq, mbox);
+  }
+  else
+  {
+    /* Server does not support STATUS, and this is not the current mailbox.
+     * There is no lightweight way to check recent arrivals */
+      return (-1);
+  }
 
   mutt_socket_write (conn, buf);
 
@@ -1838,7 +2136,7 @@ static void add_folder (char delim, char *folder, char *host, int port,
   {
     int nodelim = 0;
 
-    if (delim == folder[flen - 1])
+    if (flen == 0 || delim == folder[flen - 1])
       nodelim = 1;
     if (port == IMAP_PORT)
       snprintf (tmp, sizeof (tmp), "{%s}%s%c", host, folder, 
@@ -1856,8 +2154,107 @@ static void add_folder (char delim, char *folder, char *host, int port,
   }
 }
 
-static int add_namespace (IMAP_DATA *idata, char *host, int port, 
-    struct browser_state *state)
+static int imap_parse_list_response(CONNECTION *conn, char *buf, int buflen,
+    char **name, int *noselect, int *noinferiors, char *delim)
+{
+  IMAP_DATA *idata = CONN_DATA;
+  char *s;
+  long bytes;
+
+  *name = NULL;
+  if (mutt_socket_read_line_d (buf, buflen, conn) < 0)
+  {
+    return (-1);
+  }
+
+  if (buf[0] == '*')
+  {
+    s = imap_next_word (buf);
+    if ((mutt_strncasecmp ("LIST", s, 4) == 0) ||
+	(mutt_strncasecmp ("LSUB", s, 4) == 0))
+    {
+      *noselect = 0;
+      *noinferiors = 0;
+      
+      s = imap_next_word (s); /* flags */
+      if (*s == '(')
+      {
+	char *ep;
+	
+	s++;
+	ep = s;
+	while (*ep && *ep != ')') ep++;
+	do {
+	  if (!strncmp (s, "\\NoSelect", 9))
+	    *noselect = 1;
+	  if (!strncmp (s, "\\NoInferiors", 12))
+	    *noinferiors = 1;
+	  if (*s != ')')
+	    s++;
+	  while (*s && *s != '\\' && *s != ')') s++;
+	} while (s != ep);
+      }
+      else
+	return (0);
+      s = imap_next_word (s); /* delim */
+      /* Reset the delimiter, this can change */
+      if (strncmp (s, "NIL", 3))
+	if (s && s[0] == '\"' && s[1] && s[2] == '\"')
+	  *delim = s[1];
+	else if (s && s[0] == '\"' && s[1] && s[1] == '\\' && s[2] && s[3] == '\"')
+	  *delim = s[2];
+      s = imap_next_word (s); /* name */
+      if (s && *s == '{')	/* Literal */
+      { 
+	int len;
+	
+	if (get_literal_count(buf, &bytes) < 0)
+	  return (-1);
+	len = mutt_socket_read_line (buf, buflen, conn);
+	if (len < 0)
+	  return (-1);
+	*name = buf;
+      }
+      else
+	*name = s;
+    }
+    else
+    {
+      if (imap_handle_untagged (idata, buf) != 0)
+	return (-1);
+    }
+  }
+  return (0);
+}
+
+static int add_list_result (CONNECTION *conn, const char *seq, const char *cmd,
+			    char *host, int port,  struct browser_state *state)
+{
+  IMAP_DATA *idata = CONN_DATA;
+  char buf[LONG_STRING];
+  char *name;
+  int noselect;
+  int noinferiors;
+
+  mutt_socket_write (conn, cmd);
+
+  do 
+  {
+    if (imap_parse_list_response(conn, buf, sizeof(buf), &name,
+	    &noselect, &noinferiors, &(idata->delim)) != 0)
+      return (-1);
+    if (name)
+    {
+      add_folder (idata->delim, name, host, port, 
+		  noselect, noinferiors, state);
+    }
+  }
+  while ((mutt_strncmp (buf, seq, SEQLEN) != 0));
+  return (0);
+}
+
+static int get_namespace (IMAP_DATA *idata, char *nsbuf, int nsblen, 
+			  IMAP_NAMESPACE_INFO *nsi, int nsilen, int *nns)
 {
   char buf[LONG_STRING];
   char seq[16];
@@ -1865,6 +2262,11 @@ static int add_namespace (IMAP_DATA *idata, char *host, int port,
   int n;
   char ns[LONG_STRING];
   char delim = '/';
+  int type;
+  int nsbused = 0;
+
+  *nns = 0;
+  nsbuf[nsblen-1] = '\0';
 
   imap_make_sequence (seq, sizeof (seq));
   snprintf (buf, sizeof (buf), "%s NAMESPACE\r\n", seq);
@@ -1884,7 +2286,7 @@ static int add_namespace (IMAP_DATA *idata, char *host, int port,
       {
 	/* There are three sections to the response, User, Other, Shared,
 	 * and maybe more by extension */
-	while (*s)
+	for (type = IMAP_NS_PERSONAL; *s; type++)
 	{
 	  s = imap_next_word (s);
 	  if (*s && strncmp (s, "NIL", 3))
@@ -1920,8 +2322,17 @@ static int add_namespace (IMAP_DATA *idata, char *host, int port,
 		  delim = s[1];
 		else if (s[1] && s[1] == '\\' && s[2] && s[3] == '\"')
 		  delim = s[2];
-	      if (strcmp (ns, "INBOX"))
-		add_folder (delim, ns, host, port, 1, 0, state);
+	      /* Save result (if space) */
+	      if ((nsbused < nsblen) && (*nns < nsilen))
+	      {
+		nsi->type = type;
+		strncpy(nsbuf+nsbused,ns,nsblen-nsbused-1);
+		nsi->prefix = nsbuf+nsbused;
+		nsbused += n+1;
+		nsi->delim = delim;
+		nsi++;
+		(*nns)++;
+	      }
 	      while (*s && *s != ')') s++;
 	      s++;
 	    }
@@ -1939,18 +2350,60 @@ static int add_namespace (IMAP_DATA *idata, char *host, int port,
   return 0;
 }
 
+/* Check which namespaces actually exist */
+static int verify_namespace (CONNECTION *conn, IMAP_NAMESPACE_INFO *nsi, 
+			     int nns)
+{
+  char buf[LONG_STRING];
+  char seq[16];
+  int i = 0;
+  char *name;
+  char delim;
+
+  for (i = 0; i < nns; i++, nsi++)
+  {
+    imap_make_sequence (seq, sizeof (seq));
+    snprintf (buf, sizeof (buf), "%s %s \"\" \"%s\"\r\n", seq, 
+	      option (OPTIMAPLSUB) ? "LSUB" : "LIST", nsi->prefix);
+    mutt_socket_write (conn, buf);
+
+    nsi->listable = 0;
+    nsi->home_namespace = 0;
+    do 
+    {
+      if (imap_parse_list_response(conn, buf, sizeof(buf), &name,
+				   &(nsi->noselect), &(nsi->noinferiors), 
+				   &delim) != 0)
+	return (-1);
+      nsi->listable |= (name != NULL);
+    }
+    while ((mutt_strncmp (buf, seq, SEQLEN) != 0));
+  }
+  return (0);
+}
+
+static int compare_names(struct folder_file *a, struct folder_file *b) 
+{
+  return mutt_strcmp(a->name, b->name);
+}
+
 int imap_init_browse (char *path, struct browser_state *state)
 {
   CONNECTION *conn;
   IMAP_DATA *idata;
   char buf[LONG_STRING];
+  char nsbuf[LONG_STRING];
   char mbox[LONG_STRING];
   char host[SHORT_STRING];
   char seq[16];
   char *ipath = NULL;
   int n;
+  int i;
+  int nsup;
   int port;
-  char *s;
+  IMAP_NAMESPACE_INFO nsi[16];
+  int nns;
+  int home_namespace = 0;
 
   if (imap_parse_path (path, host, sizeof (host), &port, &ipath))
     return (-1);
@@ -1971,107 +2424,92 @@ int imap_init_browse (char *path, struct browser_state *state)
       return (-1);
   }
 
-  imap_fix_path (idata, ipath, mbox, sizeof (mbox));
-  for (n = mutt_strlen (mbox) - 1; n > 0 && mbox[n] != idata->delim ; n--);
-  if (n > 0)
+  if (ipath[0] == '\0')
   {
-    int i;
-    for (i = n - 1; i > 0 && mbox[i] != idata->delim ; i--);
-    if (i > 0)
+    home_namespace = 1;
+    mbox[0] = 0;		/* Do not replace "" with "INBOX" here */
+    ipath = ImapHomeNamespace;
+    nns = 0;
+    if (mutt_bit_isset(idata->capabilities,NAMESPACE))
     {
-      mbox[i] = '\0';
-      add_folder (idata->delim, mbox, host, port, 1, 0, state);
-      mbox[i] = idata->delim;
-    }
-    else if (i != 0)
-      add_folder (idata->delim, "INBOX", host, port, 0, 0, state);
-    else
-      add_folder (idata->delim, "/", host, port, 1, 0, state);
-
-    mbox[n] = '\0';
-    /* Don't duplicate INBOX here */
-    if (strcmp ("INBOX", mbox))
-      add_folder (idata->delim, mbox, host, port, 0, 1, state);
-    mbox[n] = idata->delim;
-    mbox[n+1] = '\0';
-  }
-  else
-  {
-    if (mbox[0] != '#')
-    {
-      if (idata->delim == '/')
-	strcpy (mbox, "/");
-      else if (idata->delim == '\\')
-	strcpy (mbox, "\\");
-      else
-	mbox[0] = '\0';
-      if (add_namespace (idata, host, port, state) < 0)
+      if (get_namespace (idata, nsbuf, sizeof (nsbuf), 
+			 nsi, sizeof (nsi),  &nns) != 0)
 	return (-1);
-      add_folder (idata->delim, "INBOX", host, port, 0, 0, state);
+      if (verify_namespace (conn, nsi, nns) != 0)
+	return (-1);
+    }
+    if (!ipath)		/* Any explicitly set imap_home_namespace wins */
+    { 
+      for (i = 0; i < nns; i++)
+	if (nsi[i].listable &&
+	    (nsi[i].type == IMAP_NS_PERSONAL || nsi[i].type == IMAP_NS_SHARED))
+	{
+	  ipath = nsi->prefix;
+	  nsi->home_namespace = 1;
+	  break;
+	}
     }
   }
-  imap_make_sequence (seq, sizeof (seq));
+  if (ipath && ipath[0] != '\0')
+  {
+    imap_fix_path (idata, ipath, mbox, sizeof (mbox) - 1);
+    n = mutt_strlen (mbox);
+    if (mbox[n-1] != idata->delim)
+    {
+      mbox[n] = idata->delim;		
+      n++;
+      mbox[n] = 0;		
+    }
+    /* Find superiors to list */
+    for (n = n-2; n >= 0 && mbox[n] != idata->delim ; n--);
+    if (n > 0)			/* "aaaa/bbbb/" -> add "aaaa" */
+    {
+      mbox[n] = '\0';
+      /* List it to see if it can be selected */
+      imap_make_sequence (seq, sizeof (seq));
+      snprintf (buf, sizeof (buf), "%s %s \"\" \"%s%%\"\r\n", seq, 
+	  option (OPTIMAPLSUB) ? "LSUB" : "LIST", mbox);
+      if (add_list_result(conn, seq, buf, host, port, state) != 0)
+	return (-1);
+      mbox[n] = idata->delim;
+    } 
+    else  /* "/bbbb/" -> add  "/", "aaaa/" -> add "" */
+    {
+      snprintf (buf, sizeof (buf), "%c" , n<0 ? '\0' :idata->delim);
+      add_folder (idata->delim, buf, host, port, 1, 0, state); 
+    }
+  }
 
+  if (home_namespace && mbox[0] != '\0')
+  {
+    /* Listing the home namespace, so INBOX should be included. Home 
+     * namespace is not "", so we have to list it explicitly. We ask the 
+     * server to see if it has descendants. */
+    imap_make_sequence (seq, sizeof (seq));
+    snprintf (buf, sizeof (buf), "%s LIST \"\" \"INBOX\"\r\n", seq);
+    if (add_list_result(conn, seq, buf, host, port, state) != 0)
+      return (-1);
+  }
+
+  nsup = state->entrylen;
+
+  imap_make_sequence (seq, sizeof (seq));
   mutt_message _("Contacted server, getting folder list...");
   snprintf (buf, sizeof (buf), "%s %s \"\" \"%s%%\"\r\n", seq, 
       option (OPTIMAPLSUB) ? "LSUB" : "LIST", mbox);
+  if (add_list_result(conn, seq, buf, host, port, state) != 0)
+    return (-1);
 
-  mutt_socket_write (conn, buf);
-
-  do 
-  {
-    if (mutt_socket_read_line_d (buf, sizeof (buf), conn) < 0)
-    {
-      return (-1);
-    }
-
-    if (buf[0] == '*') 
-    {
-      s = imap_next_word (buf);
-      if ((mutt_strncasecmp ("LIST", s, 4) == 0) ||
-	  (mutt_strncasecmp ("LSUB", s, 4) == 0))
-      {
-	int noselect = 0;
-	int noinferiors = 0;
-
-	s = imap_next_word (s); /* flags */
-	if (*s == '(')
-	{
-	  char *ep;
-
-	  s++;
-	  ep = s;
-	  while (*ep && *ep != ')') ep++;
-	  do {
-	    if (!strncmp (s, "\\NoSelect", 9))
-	      noselect = 1;
-	    if (!strncmp (s, "\\NoInferiors", 12))
-	      noinferiors = 1;
-	    if (*s != ')')
-	      s++;
-	    while (*s && *s != '\\' && *s != ')') s++;
-	  } while (s != ep);
-	}
-	else
-	  break;
-	s = imap_next_word (s); /* delim */
-	/* Reset the delimiter, this can change */
-	if (strncmp (s, "NIL", 3))
-	if (s && s[0] == '\"' && s[1] && s[2] == '\"')
-	  idata->delim = s[1];
-	else if (s && s[0] == '\"' && s[1] && s[1] == '\\' && s[2] && s[3] == '\"')
-	  idata->delim = s[2];
-	s = imap_next_word (s); /* name */
-	add_folder (idata->delim, s, host, port, noselect, noinferiors, state);
-      }
-      else
-      {
-	if (imap_handle_untagged (idata, buf) != 0)
-	  return (-1);
-      }
-    }
+  qsort(&(state->entry[nsup]),state->entrylen-nsup,sizeof(state->entry[0]),
+	(int (*)(const void*,const void*)) compare_names);
+  if (home_namespace)
+  {				/* List additional namespaces */
+    for (i = 0; i < nns; i++)
+      if (nsi[i].listable && !nsi[i].home_namespace)
+	add_folder(nsi[i].delim, nsi[i].prefix, host, port, 
+		   nsi[i].noselect, nsi[i].noinferiors, state);
   }
-  while ((mutt_strncmp (buf, seq, SEQLEN) != 0));
+
   mutt_clear_error ();
   return 0;
 }

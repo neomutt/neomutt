@@ -133,6 +133,7 @@ struct option_t MuttVars[] = {
   { "imap_user",	DT_STR,  R_NONE, UL &ImapUser, UL 0 },
   { "imap_pass", 	DT_STR,  R_NONE, UL &ImapPass, UL 0 },
   { "imap_passive",		DT_BOOL, R_NONE, OPTIMAPPASSIVE, 1 },
+  { "imap_home_namespace",	DT_STR, R_NONE, UL &ImapHomeNamespace, UL 0},
 #endif
   { "implicit_autoview", DT_BOOL,R_NONE, OPTIMPLICITAUTOVIEW, 0},
   { "in_reply_to",	DT_STR,	 R_NONE, UL &InReplyTo, UL "%i; from %n on %{!%a, %b %d, %Y at %I:%M:%S%p %Z}" },
