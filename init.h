@@ -488,7 +488,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Controls whether or not the \fIMail-Followup-To\fP header field is
   ** generated when sending mail.  When \fIset\fP, Mutt will generate this
-  ** field when you are replying to a known mailing ``$lists''.
+  ** field when you are replying to a subscribed mailing list.
   ** .pp
   ** The purpose of this field is to prevent you from receiving duplicate
   ** copies of replies to messages which you send by specifying that you
