@@ -17,8 +17,8 @@
  */
 
 #include "mutt.h"
-
 #include "mutt_crypt.h"
+#include "mutt_idna.h"
 
 #include <sys/stat.h>
 #include <string.h>
@@ -46,7 +46,8 @@ void mutt_edit_headers (const char *editor,
     mutt_perror (path);
     return;
   }
-
+  
+  mutt_env_to_local (msg->env);
   mutt_write_rfc822_header (ofp, msg->env, NULL, 1, 0);
   fputc ('\n', ofp);	/* tie off the header. */
 

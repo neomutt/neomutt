@@ -25,6 +25,7 @@
 #include "mailbox.h"
 #include "url.h"
 #include "mutt_crypt.h"
+#include "mutt_idna.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -36,6 +37,10 @@
 
 #ifdef HAVE_GETOPT_H
 #include <getopt.h>
+#endif
+
+#ifdef HAVE_LIBIDN
+#include <stringprep.h>
 #endif
 
 static const char *ReachingUs = N_("\
@@ -147,6 +152,11 @@ static void show_version (void)
 #ifdef _LIBICONV_VERSION
   printf (" [using libiconv %d.%d]", _LIBICONV_VERSION >> 8,
 	  _LIBICONV_VERSION & 0xff);
+#endif
+
+#ifdef HAVE_LIBIDN
+  printf (" [using libidn %s (compiled with %s)]", stringprep_check_version (NULL), 
+	  STRINGPREP_VERSION);
 #endif
   
   puts (_("\nCompile options:"));
@@ -383,6 +393,12 @@ static void show_version (void)
 	"-ICONV_NONTRANS  "
 #endif
 
+#if HAVE_LIBIDN
+	"+HAVE_LIBIDN  "
+#else
+	"-HAVE_LIBIDN  "
+#endif
+	
 #if HAVE_GETSID
 	"+HAVE_GETSID  "
 #else
@@ -647,7 +663,11 @@ int main (int argc, char **argv)
     for (; alias_queries; alias_queries = alias_queries->next)
     {
       if ((a = mutt_lookup_alias (alias_queries->data)))
-	mutt_write_address_list (a, stdout, 0);
+      {	
+	/* output in machine-readable form */
+	mutt_addrlist_to_idna (a, NULL);
+	mutt_write_address_list (a, stdout, 0, 0);
+      }
       else
       {
 	rv = 1;

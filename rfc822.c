@@ -33,6 +33,8 @@
 #include "rfc822.h"
 #endif
 
+#include "mutt_idna.h"
+
 #define terminate_string(a, b, c) do { if ((b) < (c)) a[(b)] = 0; else \
 	a[(c)] = 0; } while (0)
 
@@ -541,7 +543,8 @@ rfc822_cat (char *buf, size_t buflen, const char *value, const char *specials)
     strfcpy (buf, value, buflen);
 }
 
-void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr)
+void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr,
+				  int display)
 {
   size_t len;
   char *pbuf = buf;
@@ -628,9 +631,14 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr)
   {
     if (!buflen)
       goto done;
-    if (ascii_strcmp (addr->mailbox, "@"))
+    if (ascii_strcmp (addr->mailbox, "@") && !display)
     {
       strfcpy (pbuf, addr->mailbox, buflen);
+      len = mutt_strlen (pbuf);
+    }
+    else if (ascii_strcmp (addr->mailbox, "@") && display)
+    {
+      strfcpy (pbuf, mutt_addr_for_display (addr), buflen);
       len = mutt_strlen (pbuf);
     }
     else
@@ -675,7 +683,7 @@ done:
 }
 
 /* note: it is assumed that `buf' is nul terminated! */
-void rfc822_write_address (char *buf, size_t buflen, ADDRESS *addr)
+void rfc822_write_address (char *buf, size_t buflen, ADDRESS *addr, int display)
 {
   char *pbuf = buf;
   size_t len = mutt_strlen (buf);
@@ -703,7 +711,7 @@ void rfc822_write_address (char *buf, size_t buflen, ADDRESS *addr)
   {
     /* use buflen+1 here because we already saved space for the trailing
        nul char, and the subroutine can make use of it */
-    rfc822_write_address_single (pbuf, buflen + 1, addr);
+    rfc822_write_address_single (pbuf, buflen + 1, addr, display);
 
     /* this should be safe since we always have at least 1 char passed into
        the above call, which means `pbuf' should always be nul terminated */

@@ -19,6 +19,7 @@
 #include "mutt.h"
 #include "mutt_regex.h"
 #include "mutt_curses.h"
+#include "mutt_idna.h"
 
 #include <string.h>
 #include <ctype.h>
@@ -210,6 +211,7 @@ void mutt_create_alias (ENVELOPE *cur, ADDRESS *iadr)
 {
   ALIAS *new, *t;
   char buf[LONG_STRING], prompt[SHORT_STRING], *pc;
+  char *err = NULL;
   char fixed[LONG_STRING];
   FILE *rc;
   ADDRESS *adr = NULL;
@@ -278,6 +280,12 @@ retry_name:
     
     if((new->addr = rfc822_parse_adrlist (new->addr, buf)) == NULL)
       BEEP ();
+    if (mutt_addrlist_to_idna (new->addr, &err))
+    {
+      mutt_error (_("Error: '%s' is a bad IDN."), err);
+      mutt_sleep (2);
+      continue;
+    }
   }
   while(new->addr == NULL);
   
@@ -294,7 +302,7 @@ retry_name:
   new->addr->personal = safe_strdup (buf);
 
   buf[0] = 0;
-  rfc822_write_address (buf, sizeof (buf), new->addr);
+  rfc822_write_address (buf, sizeof (buf), new->addr, 1);
   snprintf (prompt, sizeof (prompt), _("[%s = %s] Accept?"), new->name, buf);
   if (mutt_yesorno (prompt, M_YES) != M_YES)
   {
@@ -323,7 +331,7 @@ retry_name:
       strfcpy (buf, new->name, sizeof (buf));
     fprintf (rc, "alias %s ", buf);
     buf[0] = 0;
-    rfc822_write_address (buf, sizeof (buf), new->addr);
+    rfc822_write_address (buf, sizeof (buf), new->addr, 0);
     write_safe_address (rc, buf);
     fputc ('\n', rc);
     fclose (rc);

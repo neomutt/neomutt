@@ -27,6 +27,7 @@
 #include "mx.h"
 #include "pager.h"
 #include "mutt_crypt.h"
+#include "mutt_idna.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -227,6 +228,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
   char prompt[SHORT_STRING];
   char buf[HUGE_STRING] = { 0 };
   ADDRESS *adr = NULL;
+  char *err = NULL;
   int rc;
 
   if(h)
@@ -253,8 +255,16 @@ void ci_bounce_message (HEADER *h, int *redraw)
 
   adr = mutt_expand_aliases (adr);
 
+  if (mutt_addrlist_to_idna (adr, &err) < 0)
+  {
+    mutt_error (_("Bad IDN: '%s'"), err);
+    FREE (&err);
+    rfc822_free_address (&adr);
+    return;
+  }
+
   buf[0] = 0;
-  rfc822_write_address (buf, sizeof (buf), adr);
+  rfc822_write_address (buf, sizeof (buf), adr, 1);
 
 #define extra_space (15 + 7 + 2)
   snprintf (prompt, sizeof (prompt),
@@ -590,9 +600,16 @@ void mutt_display_address (ENVELOPE *env)
   adr = mutt_get_address (env, &pfx);
 
   if (!adr) return;
-
+  
+  /* 
+   * Note: We don't convert IDNA to local representation this time.
+   * That is intentional, so the user has an opportunity to copy &
+   * paste the on-the-wire form of the address to other, IDN-unable
+   * software. 
+   */
+  
   buf[0] = 0;
-  rfc822_write_address (buf, sizeof (buf), adr);
+  rfc822_write_address (buf, sizeof (buf), adr, 0);
   mutt_message ("%s: %s", pfx, buf);
 }
 

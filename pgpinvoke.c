@@ -35,6 +35,7 @@
 
 #include "mutt.h"
 #include "mutt_curses.h"
+#include "mutt_idna.h"
 #include "pgp.h"
 #include "rfc822.h"
 
@@ -287,7 +288,8 @@ void pgp_invoke_getkeys (ADDRESS *addr)
   addr->personal = NULL;
   
   *tmp = '\0';
-  rfc822_write_address_single (tmp, sizeof (tmp), addr);
+  mutt_addrlist_to_local (addr);
+  rfc822_write_address_single (tmp, sizeof (tmp), addr, 0);
   mutt_quote_filename (buff, sizeof (buff), tmp);
 
   addr->personal = personal;

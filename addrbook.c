@@ -55,7 +55,7 @@ alias_format_str (char *dest, size_t destlen, char op, const char *src,
       break;
     case 'r':
       adr[0] = 0;
-      rfc822_write_address (adr, sizeof (adr), alias->addr);
+      rfc822_write_address (adr, sizeof (adr), alias->addr, 1);
       snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
       snprintf (dest, destlen, tmp, adr);
       break;
@@ -222,13 +222,13 @@ new_aliases:
   {
     if (AliasTable[i]->tagged)
     {
-      rfc822_write_address (buf, buflen, AliasTable[i]->addr);
+      rfc822_write_address (buf, buflen, AliasTable[i]->addr, 0);
       t = -1;
     }
   }
 
   if(t != -1)
-    rfc822_write_address (buf, buflen, AliasTable[t]->addr);
+    rfc822_write_address (buf, buflen, AliasTable[t]->addr, 0);
 
   mutt_menuDestroy (&menu);
   FREE (&AliasTable);

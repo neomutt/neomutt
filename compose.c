@@ -18,6 +18,7 @@
 
 #include "mutt.h"
 #include "mutt_curses.h"
+#include "mutt_idna.h"
 #include "mutt_menu.h"
 #include "rfc1524.h"
 #include "mime.h"
@@ -363,7 +364,7 @@ static void draw_envelope_addr (int line, ADDRESS *addr)
   char buf[STRING];
 
   buf[0] = 0;
-  rfc822_write_address (buf, sizeof (buf), addr);
+  rfc822_write_address (buf, sizeof (buf), addr, 1);
   mvprintw (line, 0, TITLE_FMT, Prompts[line - 1]);
   mutt_paddstr (W, buf);
 }
@@ -399,8 +400,10 @@ static void draw_envelope (HEADER *msg, char *fcc)
 static int edit_address_list (int line, ADDRESS **addr)
 {
   char buf[HUGE_STRING] = ""; /* needs to be large for alias expansion */
-
-  rfc822_write_address (buf, sizeof (buf), *addr);
+  char *err = NULL;
+  
+  mutt_addrlist_to_local (*addr);
+  rfc822_write_address (buf, sizeof (buf), *addr, 0);
   if (mutt_get_field (Prompts[line - 1], buf, sizeof (buf), M_ALIAS) == 0)
   {
     rfc822_free_address (addr);
@@ -414,12 +417,19 @@ static int edit_address_list (int line, ADDRESS **addr)
     return (REDRAW_FULL);
   }
 
+  if (mutt_addrlist_to_idna (*addr, &err) != 0)
+  {
+    mutt_error (_("Warning: '%s' is a bad IDN."), err);
+    mutt_refresh();
+    FREE (&err);
+  }
+
   /* redraw the expanded list so the user can see the result */
   buf[0] = 0;
-  rfc822_write_address (buf, sizeof (buf), *addr);
+  rfc822_write_address (buf, sizeof (buf), *addr, 1);
   move (line, HDR_XOFFSET);
   mutt_paddstr (W, buf);
-
+  
   return 0;
 }
 
@@ -692,8 +702,15 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	if (op == OP_COMPOSE_EDIT_HEADERS ||
 	    (op == OP_COMPOSE_EDIT_MESSAGE && option (OPTEDITHDRS)))
 	{
+	  char *tag = NULL, *err = NULL;
+	  mutt_env_to_local (msg->env);
 	  mutt_edit_headers (NONULL (Editor), msg->content->filename, msg,
 			     fcc, fcclen);
+	  if (mutt_env_to_idna (msg->env, &tag, &err))
+	  {
+	    mutt_error (_("Bad IDN in \"%s\": '%s'"), tag, err);
+	    FREE (&err);
+	  }
 	}
 	else
 	{

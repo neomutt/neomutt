@@ -29,7 +29,7 @@
 #include "mapping.h"
 #include "mx.h"
 #include "copy.h"
-
+#include "mutt_idna.h"
 
 /* some helper functions to verify that we are exclusively operating
  * on message/rfc822 attachments
@@ -128,6 +128,7 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
   short i;
   char prompt[STRING];
   char buf[HUGE_STRING];
+  char *err = NULL;
   ADDRESS *adr = NULL;
   int ret = 0;
   int p   = 0;
@@ -155,8 +156,17 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
   }
 
   adr = mutt_expand_aliases (adr);
+  
+  if (mutt_addrlist_to_idna (adr, &err) < 0)
+  {
+    mutt_error (_("Bad IDN: '%s'"), err);
+    FREE (&err);
+    rfc822_free_address (&adr);
+    return;
+  }
+  
   buf[0] = 0;
-  rfc822_write_address (buf, sizeof (buf), adr);
+  rfc822_write_address (buf, sizeof (buf), adr, 1);
 
 #define extra_space (15+7+2)
   /*

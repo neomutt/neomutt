@@ -21,6 +21,7 @@
 #include "sort.h"
 #include "charset.h"
 #include "mutt_crypt.h"
+#include "mutt_idna.h"
 
 #include <ctype.h>
 #include <stdlib.h>
@@ -261,7 +262,7 @@ hdr_format_str (char *dest,
     case 'A':
       if(hdr->env->reply_to && hdr->env->reply_to->mailbox)
       {
-	mutt_format_s (dest, destlen, prefix, hdr->env->reply_to->mailbox);
+	mutt_format_s (dest, destlen, prefix, mutt_addr_for_display (hdr->env->reply_to));
 	break;
       }
       /* fall through if 'A' returns nothing */
@@ -269,7 +270,7 @@ hdr_format_str (char *dest,
     case 'a':
       if(hdr->env->from && hdr->env->from->mailbox)
       {
-	mutt_format_s (dest, destlen, prefix, hdr->env->from->mailbox);
+	mutt_format_s (dest, destlen, prefix, mutt_addr_for_display (hdr->env->from));
       }
       else
         dest[0] = '\0';
@@ -429,7 +430,7 @@ hdr_format_str (char *dest,
 
     case 'f':
       buf2[0] = 0;
-      rfc822_write_address (buf2, sizeof (buf2), hdr->env->from);
+      rfc822_write_address (buf2, sizeof (buf2), hdr->env->from, 1);
       mutt_format_s (dest, destlen, prefix, buf2);
       break;
 
@@ -593,7 +594,7 @@ hdr_format_str (char *dest,
     case 'u':
       if (hdr->env->from && hdr->env->from->mailbox)
       {
-	strfcpy (buf2, hdr->env->from->mailbox, sizeof (buf2));
+	strfcpy (buf2, mutt_addr_for_display (hdr->env->from), sizeof (buf2));
 	if ((p = strpbrk (buf2, "%@")))
 	  *p = 0;
       }

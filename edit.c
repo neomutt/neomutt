@@ -20,6 +20,7 @@
 
 #include "mutt.h"
 #include "mutt_curses.h"
+#include "mutt_idna.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -192,7 +193,7 @@ static void be_print_header (ENVELOPE *env)
   {
     addstr ("To: ");
     tmp[0] = 0;
-    rfc822_write_address (tmp, sizeof (tmp), env->to);
+    rfc822_write_address (tmp, sizeof (tmp), env->to, 1);
     addstr (tmp);
     addch ('\n');
   }
@@ -200,7 +201,7 @@ static void be_print_header (ENVELOPE *env)
   {
     addstr ("Cc: ");
     tmp[0] = 0;
-    rfc822_write_address (tmp, sizeof (tmp), env->cc);
+    rfc822_write_address (tmp, sizeof (tmp), env->cc, 1);
     addstr (tmp);
     addch ('\n');
   }
@@ -208,7 +209,7 @@ static void be_print_header (ENVELOPE *env)
   {
     addstr ("Bcc: ");
     tmp[0] = 0;
-    rfc822_write_address (tmp, sizeof (tmp), env->bcc);
+    rfc822_write_address (tmp, sizeof (tmp), env->bcc, 1);
     addstr (tmp);
     addch ('\n');
   }
@@ -232,7 +233,8 @@ static void be_edit_header (ENVELOPE *e, int force)
 
   addstr ("To: ");
   tmp[0] = 0;
-  rfc822_write_address (tmp, sizeof (tmp), e->to);
+  mutt_addrlist_to_local (e->to);
+  rfc822_write_address (tmp, sizeof (tmp), e->to, 0);
   if (!e->to || force)
   {
     if (mutt_enter_string (tmp, sizeof (tmp), LINES-1, 4, 0) == 0)
@@ -240,13 +242,15 @@ static void be_edit_header (ENVELOPE *e, int force)
       rfc822_free_address (&e->to);
       e->to = mutt_parse_adrlist (e->to, tmp);
       e->to = mutt_expand_aliases (e->to);
+      mutt_addrlist_to_idna (e->to, NULL);	/* XXX - IDNA error reporting? */
       tmp[0] = 0;
-      rfc822_write_address (tmp, sizeof (tmp), e->to);
+      rfc822_write_address (tmp, sizeof (tmp), e->to, 1);
       mvaddstr (LINES - 1, 4, tmp);
     }
   }
   else
   {
+    mutt_addrlist_to_idna (e->to, NULL);	/* XXX - IDNA error reporting? */
     addstr (tmp);
   }
   addch ('\n');
@@ -264,16 +268,20 @@ static void be_edit_header (ENVELOPE *e, int force)
   {
     addstr ("Cc: ");
     tmp[0] = 0;
-    rfc822_write_address (tmp, sizeof (tmp), e->cc);
+    mutt_addrlist_to_local (e->cc);
+    rfc822_write_address (tmp, sizeof (tmp), e->cc, 0);
     if (mutt_enter_string (tmp, sizeof (tmp), LINES-1, 4, 0) == 0)
     {
       rfc822_free_address (&e->cc);
       e->cc = mutt_parse_adrlist (e->cc, tmp);
       e->cc = mutt_expand_aliases (e->cc);
       tmp[0] = 0;
-      rfc822_write_address (tmp, sizeof (tmp), e->cc);
+      mutt_addrlist_to_idna (e->cc, NULL);
+      rfc822_write_address (tmp, sizeof (tmp), e->cc, 1);
       mvaddstr (LINES - 1, 4, tmp);
     }
+    else
+      mutt_addrlist_to_idna (e->cc, NULL);
     addch ('\n');
   }
 
@@ -281,16 +289,20 @@ static void be_edit_header (ENVELOPE *e, int force)
   {
     addstr ("Bcc: ");
     tmp[0] = 0;
-    rfc822_write_address (tmp, sizeof (tmp), e->bcc);
+    mutt_addrlist_to_local (e->bcc);
+    rfc822_write_address (tmp, sizeof (tmp), e->bcc, 0);
     if (mutt_enter_string (tmp, sizeof (tmp), LINES-1, 5, 0) == 0)
     {
       rfc822_free_address (&e->bcc);
       e->bcc = mutt_parse_adrlist (e->bcc, tmp);
       e->bcc = mutt_expand_aliases (e->bcc);
+      mutt_addrlist_to_idna (e->bcc, NULL);
       tmp[0] = 0;
-      rfc822_write_address (tmp, sizeof (tmp), e->bcc);
+      rfc822_write_address (tmp, sizeof (tmp), e->bcc, 1);
       mvaddstr (LINES - 1, 5, tmp);
     }
+    else
+      mutt_addrlist_to_idna (e->bcc, NULL);
     addch ('\n');
   }
 }
@@ -415,12 +427,18 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 	case 'v':
 	  if (be_barf_file (path, buf, buflen) == 0)
 	  {
+	    char *tag, *err;
 	    be_free_memory (buf, buflen);
 	    buf = NULL;
 	    bufmax = buflen = 0;
 
 	    if (option (OPTEDITHDRS))
+	    {
+	      mutt_env_to_local (msg->env);
 	      mutt_edit_headers (NONULL(Visual), path, msg, NULL, 0);
+	      if (mutt_env_to_idna (msg->env, &tag, &err))
+		printw (_("Bad IDN in %s: '%s'\n"), tag, err);
+	    }
 	    else
 	      mutt_edit_file (NONULL(Visual), path);
 

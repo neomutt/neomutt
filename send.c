@@ -25,6 +25,7 @@
 #include "copy.h"
 #include "mx.h"
 #include "mutt_crypt.h"
+#include "mutt_idna.h"
 
 #include <ctype.h>
 #include <stdlib.h>
@@ -183,13 +184,27 @@ static ADDRESS *find_mailing_lists (ADDRESS *t, ADDRESS *c)
 static int edit_address (ADDRESS **a, /* const */ char *field)
 {
   char buf[HUGE_STRING];
-
-  buf[0] = 0;
-  rfc822_write_address (buf, sizeof (buf), *a);
-  if (mutt_get_field (field, buf, sizeof (buf), M_ALIAS) != 0)
-    return (-1);
-  rfc822_free_address (a);
-  *a = mutt_expand_aliases (mutt_parse_adrlist (NULL, buf));
+  char *err = NULL;
+  int idna_ok = 0;
+  
+  do
+  {
+    buf[0] = 0;
+    mutt_addrlist_to_local (*a);
+    rfc822_write_address (buf, sizeof (buf), *a, 0);
+    if (mutt_get_field (field, buf, sizeof (buf), M_ALIAS) != 0)
+      return (-1);
+    rfc822_free_address (a);
+    *a = mutt_expand_aliases (mutt_parse_adrlist (NULL, buf));
+    if ((idna_ok = mutt_addrlist_to_idna (*a, &err)) != 0)
+    {
+      mutt_error (_("Error: '%s' is a bad IDN."), err);
+      mutt_refresh ();
+      mutt_sleep (2);
+      FREE (&err);
+    }
+  } 
+  while (idna_ok != 0);
   return 0;
 }
 
@@ -321,7 +336,7 @@ void mutt_forward_intro (FILE *fp, HEADER *cur)
   
   fputs ("----- Forwarded message from ", fp);
   buffer[0] = 0;
-  rfc822_write_address (buffer, sizeof (buffer), cur->env->from);
+  rfc822_write_address (buffer, sizeof (buffer), cur->env->from, 1);
   fputs (buffer, fp);
   fputs (" -----\n\n", fp);
 }
@@ -406,7 +421,7 @@ static int include_reply (CONTEXT *ctx, HEADER *cur, FILE *out)
     cmflags |= M_CM_NOHEADER;
   if (option (OPTWEED))
   {
-    chflags |= CH_WEED;
+    chflags |= CH_WEED | CH_REORDER;
     cmflags |= M_CM_WEED;
   }
 
@@ -1030,6 +1045,7 @@ ci_send_message (int flags,		/* send mode */
   char *pgpkeylist = NULL;
   /* save current value of "pgp_sign_as" */
   char *signas = NULL;
+  char *tag = NULL, *err = NULL;
 
   int rv = -1;
   
@@ -1307,7 +1323,11 @@ ci_send_message (int flags,		/* send mode */
       else if (!Editor || mutt_strcmp ("builtin", Editor) == 0)
 	mutt_builtin_editor (msg->content->filename, msg, cur);
       else if (option (OPTEDITHDRS))
+      {
+	mutt_env_to_local (msg->env);
 	mutt_edit_headers (Editor, msg->content->filename, msg, fcc, sizeof (fcc));
+	mutt_env_to_idna (msg->env, NULL, NULL);
+      }
       else
 	mutt_edit_file (Editor, msg->content->filename);
     }
@@ -1379,6 +1399,7 @@ main_loop:
 
       encode_descriptions (msg->content, 1);
       mutt_prepare_envelope (msg->env, 0);
+      mutt_env_to_idna (msg->env, NULL, NULL);	/* Handle bad IDNAs the next time. */
 
       if (!Postponed || mutt_write_fcc (NONULL (Postponed), msg, (cur && (flags & SENDREPLY)) ? cur->env->message_id : NULL, 1, fcc) < 0)
       {
@@ -1407,6 +1428,13 @@ main_loop:
     }
   }
 
+  if (mutt_env_to_idna (msg->env, &tag, &err))
+  {
+    mutt_error (_("Bad IDN in \"%s\": '%s'"), tag, err);
+    FREE (&err);
+    goto main_loop;
+  }
+  
   if (!msg->env->subject && ! (flags & SENDBATCH) &&
       (i = query_quadoption (OPT_SUBJECT, _("No subject, abort sending?"))) != M_NO)
   {

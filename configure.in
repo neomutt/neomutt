@@ -677,6 +677,19 @@ AC_ARG_WITH(sasl2, [  --with-sasl2[=PFX]         Use Cyrus SASL library version 
         ])
 AM_CONDITIONAL(USE_SASL, test x$need_sasl = xyes)
 
+AC_ARG_WITH(idn, [  --with-idn=[PFX]		Use GNU libidn for domain names],
+		 [
+		  if test "$with_idn" != "no" ; then
+		  	if test "$with_idn" != "yes" ; then
+			   CPPFLAGS="$CPPFLAGS -I$with_idn/include"
+			   LDFLAGS="$LDFLAGS -L$with_idn/lib"
+			fi
+		  fi
+		 ]
+)
+
+AC_CHECK_LIB(idn, idna_to_ascii_from_utf8)
+
 if test "$need_md5" = "yes"
 then
         MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS md5c.o"

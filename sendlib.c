@@ -29,6 +29,7 @@
 #include "pager.h"
 #include "charset.h"
 #include "mutt_crypt.h"
+#include "mutt_idna.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -1497,7 +1498,7 @@ char *mutt_make_date (char *s, size_t len)
 
 /* wrapper around mutt_write_address() so we can handle very large
    recipient lists without needing a huge temporary buffer in memory */
-void mutt_write_address_list (ADDRESS *adr, FILE *fp, int linelen)
+void mutt_write_address_list (ADDRESS *adr, FILE *fp, int linelen, int display)
 {
   ADDRESS *tmp;
   char buf[LONG_STRING];
@@ -1509,7 +1510,7 @@ void mutt_write_address_list (ADDRESS *adr, FILE *fp, int linelen)
     tmp = adr->next;
     adr->next = NULL;
     buf[0] = 0;
-    rfc822_write_address (buf, sizeof (buf), adr);
+    rfc822_write_address (buf, sizeof (buf), adr, display);
     len = mutt_strlen (buf);
     if (count && linelen + len > 74)
     {
@@ -1573,6 +1574,8 @@ static void write_references (LIST *r, FILE *f)
 /* Note: all RFC2047 encoding should be done outside of this routine, except
  * for the "real name."  This will allow this routine to be used more than
  * once, if necessary.
+ * 
+ * Likewise, all IDN processing should happen outside of this routine.
  *
  * mode == 1  => "lite" mode (used for edit_hdrs)
  * mode == 0  => normal mode.  write full header + MIME headers
@@ -1581,7 +1584,7 @@ static void write_references (LIST *r, FILE *f)
  * privacy != 0 => will omit any headers which may identify the user.
  *               Output generated is suitable for being sent through
  * 		 anonymous remailer chains.
- * 
+ *
  */
 
 int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach, 
@@ -1601,14 +1604,14 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
   if (env->from && !privacy)
   {
     buffer[0] = 0;
-    rfc822_write_address (buffer, sizeof (buffer), env->from);
+    rfc822_write_address (buffer, sizeof (buffer), env->from, 0);
     fprintf (fp, "From: %s\n", buffer);
   }
 
   if (env->to)
   {
     fputs ("To: ", fp);
-    mutt_write_address_list (env->to, fp, 4);
+    mutt_write_address_list (env->to, fp, 4, 0);
   }
   else if (mode > 0)
     fputs ("To: \n", fp);
@@ -1616,7 +1619,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
   if (env->cc)
   {
     fputs ("Cc: ", fp);
-    mutt_write_address_list (env->cc, fp, 4);
+    mutt_write_address_list (env->cc, fp, 4, 0);
   }
   else if (mode > 0)
     fputs ("Cc: \n", fp);
@@ -1626,7 +1629,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
     if(mode != 0 || option(OPTWRITEBCC))
     {
       fputs ("Bcc: ", fp);
-      mutt_write_address_list (env->bcc, fp, 5);
+      mutt_write_address_list (env->bcc, fp, 5, 0);
     }
   }
   else if (mode > 0)
@@ -1644,7 +1647,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
   if (env->reply_to)
   {
     fputs ("Reply-To: ", fp);
-    mutt_write_address_list (env->reply_to, fp, 10);
+    mutt_write_address_list (env->reply_to, fp, 10, 0);
   }
   else if (mode > 0)
     fputs ("Reply-To: \n", fp);
@@ -1652,7 +1655,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
   if (env->mail_followup_to)
   {
     fputs ("Mail-Followup-To: ", fp);
-    mutt_write_address_list (env->mail_followup_to, fp, 18);
+    mutt_write_address_list (env->mail_followup_to, fp, 18, 0);
   }
 
   if (mode <= 0)
@@ -2228,7 +2231,7 @@ static int _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *r
     fprintf (f, "\nResent-%s", mutt_make_date (date, sizeof(date)));
     fprintf (f, "Resent-Message-ID: %s\n", mutt_gen_msgid());
     fputs ("Resent-To: ", f);
-    mutt_write_address_list (to, f, 11);
+    mutt_write_address_list (to, f, 11, 0);
     mutt_copy_header (fp, h, f, ch_flags, NULL);
     fputc ('\n', f);
     mutt_copy_bytes (fp, f, h->content->length);
@@ -2250,7 +2253,8 @@ int mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to)
   const char *fqdn = mutt_fqdn (1);
   char resent_from[STRING];
   int ret;
-
+  char *err;
+  
   resent_from[0] = '\0';
   from = mutt_default_from ();
 
@@ -2258,8 +2262,13 @@ int mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to)
     rfc822_qualify (from, fqdn);
 
   rfc2047_encode_adrlist (from, "Resent-From");
-  
-  rfc822_write_address (resent_from, sizeof (resent_from), from);
+  if (mutt_addrlist_to_idna (from, &err))
+  {
+    mutt_error (_("Bad IDN %s while preparing resent-from."),
+		err);
+    return -1;
+  }
+  rfc822_write_address (resent_from, sizeof (resent_from), from, 0);
 
   ret = _mutt_bounce_message (fp, h, to, resent_from, from);
 

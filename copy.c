@@ -23,12 +23,14 @@
 #include "rfc2047.h"
 #include "mime.h"
 #include "mutt_crypt.h"
+#include "mutt_idna.h"
 
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include <unistd.h> /* needed for SEEK_SET under SunOS 4.1.4 */
 
+static int address_header_decode (char **str);
 static int copy_delete_attach (BODY *b, FILE *fpin, FILE *fpout, char *date);
 
 /* Ok, the only reason for not merging this with mutt_copy_header()
@@ -47,6 +49,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
   char **headers;
   int hdr_count;
   int x;
+  char *this_one = NULL;
   int error;
 
   if (ftell (in) != off_start)
@@ -134,6 +137,28 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
     /* Is it the begining of a header? */
     if (nl && buf[0] != ' ' && buf[0] != '\t')
     {
+      /* Do we have anything pending? */
+      if (this_one)
+      {
+	if (flags & CH_DECODE) 
+	{
+	  if (!address_header_decode (&this_one))
+	    rfc2047_decode (&this_one);
+	}
+	
+	if (!headers[x])
+	  headers[x] = this_one;
+	else 
+	{
+	  safe_realloc ((void **) &headers[x], mutt_strlen (headers[x]) + 
+			mutt_strlen (this_one) + sizeof (char));
+	  strcat (headers[x], this_one); /* __STRCAT_CHECKED__ */
+	  FREE (&this_one);
+	}
+	
+	this_one = NULL;
+      }
+      
       ignore = 1;
       this_is_from = 0;
       if (!from && mutt_strncmp ("From ", buf, 5) == 0)
@@ -181,32 +206,55 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
 	  }
 	}
       }
-
+      
       ignore = 0;
     } /* If beginning of header */
 
     if (!ignore)
     {
       dprint (2, (debugfile, "Reorder: x = %d; hdr_count = %d\n", x, hdr_count));
-      /* Save the header in headers[x] */
-      if (!headers[x])
-	headers[x] = safe_strdup (buf);
+      if (!this_one)
+	this_one = safe_strdup (buf);
       else
       {
-	safe_realloc ((void **) &headers[x],
-		      mutt_strlen (headers[x]) + mutt_strlen (buf) + sizeof (char));
-	strcat (headers[x], buf);	/* __STRCAT_CHECKED__ */
+	safe_realloc ((void **) &this_one, 
+		      mutt_strlen (this_one) + mutt_strlen (buf) + sizeof (char));
+	strcat (this_one, buf); /* __STRCAT_CHECKED__ */
       }
     }
   } /* while (ftell (in) < off_end) */
+
+  /* Do we have anything pending?  -- XXX, same code as in above in the loop. */
+  if (this_one)
+  {
+    if (flags & CH_DECODE) 
+    {
+      if (!address_header_decode (&this_one))
+	rfc2047_decode (&this_one);
+    }
+    
+    if (!headers[x])
+      headers[x] = this_one;
+    else 
+    {
+      safe_realloc ((void **) &headers[x], mutt_strlen (headers[x]) + 
+		    mutt_strlen (this_one) + sizeof (char));
+      strcat (headers[x], this_one); /* __STRCAT_CHECKED__ */
+      FREE (&this_one);
+    }
+    
+    this_one = NULL;
+  }
 
   /* Now output the headers in order */
   for (x = 0; x < hdr_count; x++)
   {
     if (headers[x])
     {
+#if 0
       if (flags & CH_DECODE)
 	rfc2047_decode (&headers[x]);
+#endif
 
       /* We couldn't do the prefixing when reading because RFC 2047
        * decoding may have concatenated lines.
@@ -725,4 +773,88 @@ static int copy_delete_attach (BODY *b, FILE *fpin, FILE *fpout, char *date)
     return -1;
 
   return 0;
+}
+
+static int address_header_decode (char **h)
+{
+  char *s = *h;
+  int l, ll;
+  
+  ADDRESS *a = NULL;
+  
+  switch (tolower (*s))
+  {
+    case 'r': 
+    {
+      if (ascii_strncasecmp (s, "return-path:", 12) == 0)
+      {
+	l = 12;
+	break;
+      }
+      else if (ascii_strncasecmp (s, "reply-to:", 9) == 0)
+      {
+	l = 9;
+	break;
+      }
+      return 0;
+    }
+    case 'f': 
+    {
+      if (ascii_strncasecmp (s, "from:", 5)) 
+	return 0; 
+      l = 5;
+      break;
+    }
+    case 'c':
+    {
+      if (ascii_strncasecmp (s, "to:", 3))
+	return 0;
+      l = 3;
+      break;
+      
+    }
+    case 'b':
+    {
+      if (ascii_strncasecmp (s, "bcc:", 4))
+	return 0;
+      l = 4;
+      break;
+    }
+    case 's':
+    {
+      if (ascii_strncasecmp (s, "sender:", 7))
+	return 0;
+      l = 7;
+      break;
+    }
+    case 'm':
+    {
+      if (ascii_strncasecmp (s, "mail-followup-to:", 17))
+	return 0;
+      l = 17;
+      break;
+    }
+    default: return 0;    
+  }
+
+  if ((a = rfc822_parse_adrlist (a, s + l + 1)) == NULL)
+    return 0;
+  
+  mutt_addrlist_to_local (a);
+  rfc2047_decode_adrlist (a);
+  
+  ll = mutt_strlen (s) * 6 + 3;	/* XXX -- should be safe  */
+  *h = safe_calloc (1, ll);
+  
+  strncpy (*h, s, l);
+  strncat (*h, " ", ll);
+  rfc822_write_address (*h + l + 1, ll - l - 1, a, 0);
+  rfc822_free_address (&a);
+
+  strncat (*h, "\n", ll);
+  
+  safe_realloc ((void **) h, mutt_strlen (*h) + 1);
+  
+  FREE (&s);
+  return 1;
 }

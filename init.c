@@ -25,6 +25,7 @@
 #include "mbyte.h"
 #include "charset.h"
 #include "mutt_crypt.h"
+#include "mutt_idna.h"
 
 #if defined(USE_SSL) || defined(USE_NSS)
 #include "mutt_ssl.h"
@@ -488,7 +489,8 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
   ALIAS *tmp = Aliases;
   ALIAS *last = NULL;
-
+  char *estr = NULL;
+  
   if (!MoreArgs (s))
   {
     strfcpy (err->data, _("alias: no address"), err->dsize);
@@ -529,6 +531,12 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     last->next = tmp;
   else
     Aliases = tmp;
+  if (mutt_addrlist_to_idna (tmp->addr, &estr))
+  {
+    snprintf (err->data, err->dsize, _("Warning: Bad IDN '%s' in alias '%s'.\n"),
+	      estr, tmp->name);
+    return -1;
+  }
   return 0;
 }
 
@@ -671,7 +679,7 @@ static void mutt_set_default (struct option_t *p)
       {
 	char tmp[HUGE_STRING];
 	*tmp = '\0';
-	rfc822_write_address (tmp, sizeof (tmp), *((ADDRESS **) p->data));
+	rfc822_write_address (tmp, sizeof (tmp), *((ADDRESS **) p->data), 0);
 	p->init = (unsigned long) safe_strdup (tmp);
       }
       break;
@@ -902,7 +910,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	if (DTYPE (MuttVars[idx].type) == DT_ADDR)
 	{
 	  _tmp[0] = '\0';
-	  rfc822_write_address (_tmp, sizeof (_tmp), *((ADDRESS **) MuttVars[idx].data));
+	  rfc822_write_address (_tmp, sizeof (_tmp), *((ADDRESS **) MuttVars[idx].data), 0);
 	  val = _tmp;
 	}
 	else
@@ -1582,7 +1590,7 @@ int mutt_var_value_complete (char *buffer, size_t len, int pos)
       }
       else if (DTYPE (MuttVars[idx].type) == DT_ADDR)
       {
-	rfc822_write_address (tmp, sizeof (tmp), *((ADDRESS **) MuttVars[idx].data));
+	rfc822_write_address (tmp, sizeof (tmp), *((ADDRESS **) MuttVars[idx].data), 0);
       }
       else if (DTYPE (MuttVars[idx].type) == DT_QUAD)
 	strfcpy (tmp, vals[quadoption (MuttVars[idx].data)], sizeof (tmp));

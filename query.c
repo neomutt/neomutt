@@ -18,6 +18,7 @@
 
 #include "mutt.h"
 #include "mutt_menu.h"
+#include "mutt_idna.h"
 #include "mapping.h"
 #include "sort.h"
 
@@ -64,6 +65,7 @@ static ADDRESS *result_to_addr (QUERY *r)
   if(!tmp.next && !tmp.personal)
     tmp.personal = r->name;
   
+  mutt_addrlist_to_idna (&tmp, NULL);
   return &tmp;
 }
 
@@ -193,7 +195,7 @@ static void query_entry (char *s, size_t slen, MUTTMENU *m, int num)
       SecondColumn = QUERY_MIN_COLUMN_LENGHT;
   }
 
-  rfc822_write_address (buf, sizeof (buf), table[num].data->addr);
+  rfc822_write_address (buf, sizeof (buf), table[num].data->addr, 1);
 
   mutt_format_string (buf2, sizeof (buf2),
 		      FirstColumn + 2, FirstColumn + 2,
@@ -222,6 +224,7 @@ static int query_tag (MUTTMENU *menu, int n, int m)
 int mutt_query_complete (char *buf, size_t buflen)
 {
   QUERY *results = NULL;
+  ADDRESS *tmpa;
 
   if (!QueryCmd)
   {
@@ -235,8 +238,10 @@ int mutt_query_complete (char *buf, size_t buflen)
     /* only one response? */
     if (results->next == NULL)
     {
+      tmpa = result_to_addr (results);
+      mutt_addrlist_to_local (tmpa);
       buf[0] = '\0';
-      rfc822_write_address (buf, buflen, result_to_addr(results));
+      rfc822_write_address (buf, buflen, tmpa, 0);
       mutt_clear_error ();
       return (0);
     }
@@ -462,15 +467,19 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 	{
 	  if (curpos == 0)
 	  {
+	    ADDRESS *tmpa = result_to_addr (QueryTable[i].data);
+	    mutt_addrlist_to_local (tmpa);
 	    tagged = 1;
-	    rfc822_write_address (buf, buflen, result_to_addr(QueryTable[i].data));
+	    rfc822_write_address (buf, buflen, tmpa, 0);
 	    curpos = mutt_strlen (buf);
 	  }
 	  else if (curpos + 2 < buflen)
 	  {
+	    ADDRESS *tmpa = result_to_addr (QueryTable[i].data);
+	    mutt_addrlist_to_local (tmpa);
 	    strcat (buf, ", ");	/* __STRCAT_CHECKED__ */
 	    rfc822_write_address ((char *) buf + curpos + 1, buflen - curpos - 1,
-				  result_to_addr(QueryTable[i].data));
+				  tmpa, 0);
 	    curpos = mutt_strlen (buf);
 	  }
 	}
@@ -478,7 +487,9 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
       /* then enter current message */
       if (!tagged)
       {
-	rfc822_write_address (buf, buflen, result_to_addr(QueryTable[menu->current].data));
+	ADDRESS *tmpa = result_to_addr (QueryTable[menu->current].data);
+	mutt_addrlist_to_local (tmpa);
+	rfc822_write_address (buf, buflen, tmpa, 0);
       }
       
     }
