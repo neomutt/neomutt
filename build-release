@@ -73,9 +73,10 @@ done
 
 # upload the source
 
-echo pon
+pppd call provider
+
 for f in $DISTFILES ; do
-	echo scp $f sigtrap.guug.de:/home/ftp/pub/mutt/${devel}
+	scp $f $f.asc sigtrap.guug.de:/home/ftp/pub/mutt/${devel}
 done
 
 $HOME/bin/upload-cvs
