@@ -1,3 +1,143 @@
+Sun Nov  7 22:52:40 1999  Thomas Roessler  <roessler@guug.de>
+
+	* sendlib.c:
+	short-cut utf-7 as a 7bit character set.  Currently, utf-7 may be
+	overridden by us-ascii.
+
+	* protos.h, recvattach.c, recvcmd.c, rfc1524.c, rfc1524.h, send.c, sendlib.c, attach.c, attach.h, browser.c, commands.c, compose.c, curs_main.c, functions.h, init.h, mutt.h, muttlib.c, pager.c, pager.h, postpone.c, Makefile.am:
+	Rewriting lots of the recvattach code.
+
+Sun Nov  7 22:52:40 1999  Thomas Roessler  <roessler@guug.de>
+
+	* sendlib.c:
+	short-cut utf-7 as a 7bit character set.  Currently, utf-7 may be
+	overridden by us-ascii.
+
+	* protos.h, recvattach.c, recvcmd.c, rfc1524.c, rfc1524.h, send.c, sendlib.c, attach.c, attach.h, browser.c, commands.c, compose.c, curs_main.c, functions.h, init.h, mutt.h, muttlib.c, pager.c, pager.h, postpone.c, Makefile.am:
+	Rewriting lots of the recvattach code.
+
+	* po/Attic/eo.po: Esperanto translation from Edmund GRIMLEY EVANS
+	<edmundo@rano.demon.co.uk>.
+
+	* po/Attic/eo.po:
+	file eo.po was initially added on branch mutt-1-0-stable.
+
+	* configure.in: Esperanto translation from Edmund GRIMLEY EVANS
+	<edmundo@rano.demon.co.uk>.
+
+Fri Nov  5 07:28:11 1999  Thomas Roessler  <roessler@guug.de>
+
+	* pgppubring.c: preprocess out some unused strings.
+
+Thu Nov  4 21:35:32 1999  Thomas Roessler  <roessler@guug.de>
+
+	* rfc2231.c:
+	Catch a segmenatation fault.  Note that this is not the real fix for
+	the problem...
+
+	* menu.c: Change a short to an int where it should have been one.
+
+	* po/Attic/gl.po: New version.
+
+	* protos.h, send.c, status.c, buffy.c, globals.h, postpone.c:
+	IMAP postpone changes from Byrial Jensen.
+
+Wed Nov  3 20:30:19 1999  Thomas Roessler  <roessler@guug.de>
+
+	* recvattach.c:
+	Adding a comment which describes some ideas on how the attachment
+	menu should work.
+
+Tue Nov  2 15:51:07 1999  Thomas Roessler  <roessler@guug.de>
+
+	* imap/BUGS, imap/command.c, imap/imap.c, imap/imap_private.h, imap/message.c, imap/util.c, buffy.c:
+	Various IMAP-related fixes from Brendan Cully.
+
+Sun Oct 31 17:12:55 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/it.po: [stable] Small fix from Marco d'Itri.
+
+	* m4/.cvsignore, intl/.cvsignore, imap/BUGS, imap/message.c, contrib/.cvsignore, charmaps/.cvsignore:
+	From Brendan Cully: IMAP updates should work properly again.
+
+Fri Oct 29 05:43:40 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/.cvsignore: Cosmetics.
+
+	* imap/BUGS: Update the documentation.
+
+	* doc/.cvsignore: Cosmetics.
+
+	* buffy.c, globals.h, postpone.c, send.c, status.c:
+	Don't check the number of postponed messages every time the status
+	line is updated - this gets quite slow when used with slow IMAP
+	connections.
+
+Thu Oct 28 17:42:07 1999  Thomas Roessler  <roessler@guug.de>
+
+	* README: Fix the version number in the README file.
+
+	* pop.c: Cosmetic POP fixes from Evan DiBiase <evand@telerama.com>.
+
+	* pop.c: Cosmetic fixes from Evan DiBiase <evand@telerama.com>.
+
+	* imap/imap_socket.h, imap/socket.c, init.h, globals.h:
+	Adding imap_preconnect.  This way, you can let mutt start an ssh
+	tunnel before it tries to connect to an IMAP server.
+
+	From: <Jon.K.Hellan@item.ntnu.no>
+
+Wed Oct 27 12:17:34 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/Attic/gl.po: Adding a Galician translation.
+
+	* po/Attic/gl.po:
+	file gl.po was initially added on branch mutt-1-0-stable.
+
+	* configure.in: Adding a Galician translation.
+
+Tue Oct 26 15:14:01 1999  Thomas Roessler  <roessler@guug.de>
+
+	* curs_lib.c, main.c: Some display-related fixes from Andrej Gritsenko.
+
+	* editmsg.c:
+	Fix a small bug in the new edit-message feature.  From Andrej
+	Gritsenko.
+
+	* imap/imap.c, imap/imap_private.h, imap/util.c, imap/auth.c, imap/browse.c, imap/command.c:
+	* stops mutt from logging CRAM secrets in debug mode.
+	* should fix mutt segfaulting when trying to open {}
+	* helps with the problem of mutt detecting new mail in the wrong
+	  folder. Now, IMAP commands from the SELECTED state should call
+	  imap_cmd_finish after they've executed commands. I've only put
+	  this is imap_buffy_check for now - in my opinion the command
+	  execution path is still not stable, and rewrites may obviate the
+	  need for this...
+
+	(From: Brendan Cully <brendan@kublai.com>)
+
+Mon Oct 25 20:05:14 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/Attic/sv.po: Adding the Swedish translation to stable.
+
+	* po/Attic/sv.po:
+	file sv.po was initially added on branch mutt-1-0-stable.
+
+	* configure.in: Adding the Swedish translation to stable.
+
+	* po/de.po: Updated German translation from Roland Rosenfeld.
+
+	* imap/imap.h, imap/imap_private.h, imap/message.c, imap/util.c, imap/.cvsignore, imap/BUGS, imap/Makefile.am, imap/browse.c, imap/command.c, imap/imap.c, init.h:
+	Brendan Cully's IMAP code movements patch.
+
+Fri Oct 22 08:49:30 1999  Thomas Roessler  <roessler@guug.de>
+
+	* Makefile.am, VERSION, reldate.h, ChangeLog:
+	automatic post-release commit for mutt-1.1
+
+	* po/zh_TW.Big5.po, po/uk.po, po/sk.po, po/pt_BR.po, po/ru.po, po/pl.po, po/nl.po, po/ko.po, po/it.po, po/id.po, po/fr.po, po/es.po, po/el.po, po/de.po, po/cs.po, NEWS, VERSION, reldate.h, ChangeLog:
+	post-release commit for one dot zero.  (yes, really.)
+
 Fri Oct 22 07:52:22 1999  Thomas Roessler  <roessler@guug.de>
 
 	* po/zh_TW.Big5.po, po/uk.po, po/sk.po, po/pt_BR.po,
