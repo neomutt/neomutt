@@ -807,7 +807,7 @@ static int address_header_decode (char **h)
     }
     case 'c':
     {
-      if (ascii_strncasecmp (s, "to:", 3))
+      if (ascii_strncasecmp (s, "cc:", 3))
 	return 0;
       l = 3;
       break;
