@@ -185,7 +185,7 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
   else
     strncat (prompt, "?", sizeof (prompt));
 
-  if (query_quadoption (OPT_BOUNCE, prompt) == M_NO)
+  if (query_quadoption (OPT_BOUNCE, prompt) != M_YES)
   {
     rfc822_free_address (&adr);
     CLEARLINE (LINES - 1);
