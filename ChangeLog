@@ -1,3 +1,7 @@
+2003-04-09 08:21:59  Zardoz@users.sourceforge.net  (roessler)
+
+	* recvcmd.c: Fix #1531.  (recvcmd.c duplicate of #1528)
+
 2003-04-08 22:32:56  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* lib.c: Avoid a division by zero.
