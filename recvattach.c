@@ -120,7 +120,7 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
       new->level = level;
 
       /* We don't support multipart messages in the compose menu yet */
-      if (!compose && mutt_is_message_type(m->type, m->subtype) && is_multipart (m->parts))
+      if (!compose && mutt_is_message_type(m->type, m->subtype))
       {
 	idx = mutt_gen_attach_list (m->parts, idx, idxlen, idxmax, level + 1, compose);
       }
