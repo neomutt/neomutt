@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt-1.1.11 \n"
-"POT-Creation-Date: 2000-04-22 20:34+0200\n"
-"PO-Revision-Date: 2000-04-02 23:01+02:00\n"
-"Last-Translator: Byrial Jensen <byrial@image.dk>\n"
+"Project-Id-Version: Mutt-1.1.12i \n"
+"POT-Creation-Date: 2000-03-30 17:29+0200\n"
+"PO-Revision-Date: 2000-04-26 10:26+02:00\n"
+"Last-Translator: Morten Bo Johansen <mojo@image.dk>\n"
 "Language-Team: Danish <da@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
@@ -24,7 +24,7 @@ msgid "Select"
 msgstr "Vælg"
 
 #: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:376 imap/imap_ssl.c:352
-#: pager.c:1482 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
+#: pager.c:1482 pgpkey.c:448 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Hjælp"
 
@@ -136,88 +136,88 @@ msgstr "Skift filkatalog"
 msgid "Mask"
 msgstr "Maske"
 
-#: browser.c:370 browser.c:913
+#: browser.c:369 browser.c:912
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s er ikke et filkatalog."
 
-#: browser.c:481
+#: browser.c:480
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Indbakker [%d]"
 
-#: browser.c:488
+#: browser.c:487
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Abonnementer [%s], filmaske: %s"
 
-#: browser.c:492
+#: browser.c:491
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Filkatalog [%s], filmaske: %s"
 
-#: browser.c:503
+#: browser.c:502
 msgid "Can't attach a directory!"
 msgstr "Kan ikke vedlægge et filkatalog!"
 
-#: browser.c:621 browser.c:980 browser.c:1073
+#: browser.c:620 browser.c:979 browser.c:1072
 msgid "No files match the file mask"
 msgstr "Ingen filer passer til filmasken."
 
-#: browser.c:821
+#: browser.c:820
 msgid "Creating mailboxes is not yet supported."
 msgstr "Oprettelse af brevbakker er endnu ikke understøttet."
 
-#: browser.c:826
+#: browser.c:825
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Sletning er kun understøttet for IMAP-brevbakker"
 
-#: browser.c:834
+#: browser.c:833
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Virkelig slette brevbakke \"%s\"?"
 
-#: browser.c:848
+#: browser.c:847
 msgid "Mailbox deleted."
 msgstr "Brevbakke slettet."
 
-#: browser.c:854
+#: browser.c:853
 msgid "Mailbox not deleted."
 msgstr "Brevbakke ikke slettet."
 
-#: browser.c:872
+#: browser.c:871
 msgid "Chdir to: "
 msgstr "Skift til filkatalog: "
 
-#: browser.c:906 browser.c:973
+#: browser.c:905 browser.c:972
 msgid "Error scanning directory."
 msgstr "Fejl ved indlæsning af filkatalog."
 
-#: browser.c:924
+#: browser.c:923
 msgid "File Mask: "
 msgstr "Filmaske: "
 
-#: browser.c:996
+#: browser.c:995
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Omvendt sortering efter (d)ato, (a)lfabetisk, (s)tr. eller (i)ngen?"
 
-#: browser.c:997
+#: browser.c:996
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Sortering efter (d)ato, (a)lfabetisk, (s)tr. eller (i)ngen?"
 
-#: browser.c:998
+#: browser.c:997
 msgid "dazn"
 msgstr "dasi"
 
-#: browser.c:1060
+#: browser.c:1059
 msgid "New file name: "
 msgstr "Nyt filnavn: "
 
-#: browser.c:1091
+#: browser.c:1090
 msgid "Can't view a directory"
 msgstr "Filkataloger kan ikke vises."
 
-#: browser.c:1109
+#: browser.c:1108
 msgid "Error trying to view file"
 msgstr "Fejl ved visning af fil."
 
@@ -226,21 +226,21 @@ msgstr "Fejl ved visning af fil."
 msgid "New mail in %s."
 msgstr "Ny post i %s."
 
-#: charset.c:1066
+#: charset.c:1065
 msgid "We can't currently handle utf-8 at this point."
 msgstr "UTF-8 understøttes ikke for øjeblikket."
 
-#: charset.c:1072 charset.c:1079
+#: charset.c:1071 charset.c:1078
 #, c-format
 msgid "Can't open %s: %s."
 msgstr "Kan ikke åbne %s: %s."
 
-#: charset.c:1148
+#: charset.c:1147
 #, c-format
 msgid "Error while recoding %s. Leave it unchanged."
 msgstr "Fejl ved omkodning af %s. Efterlader den uændret."
 
-#: charset.c:1154
+#: charset.c:1153
 #, c-format
 msgid "Error while recoding %s. See %s for recovering your data."
 msgstr "Fejl ved omkodning af %s. Se %s for at genskabe dine data."
@@ -304,7 +304,7 @@ msgstr "standard-farver er ikke understøttet."
 msgid "Verify PGP signature?"
 msgstr "Efterprøv PGP-underskrift?"
 
-#: commands.c:106 pgp.c:1542 pgpkey.c:491 postpone.c:549
+#: commands.c:106 pgp.c:1542 pgpkey.c:490 postpone.c:549
 msgid "Invoking PGP..."
 msgstr "Starter PGP ..."
 
@@ -320,11 +320,11 @@ msgstr "PGP-underskrift klarede efterprøvning"
 msgid "Command: "
 msgstr "Kommando: "
 
-#: commands.c:194 recvcmd.c:140
+#: commands.c:194 recvcmd.c:139
 msgid "Bounce message to: "
 msgstr "Gensend brev til: "
 
-#: commands.c:196 recvcmd.c:142
+#: commands.c:196 recvcmd.c:141
 msgid "Bounce tagged messages to: "
 msgstr "Gensend udvalgte breve til: "
 
@@ -437,7 +437,7 @@ msgstr "Der er ingen bilag."
 msgid "Send"
 msgstr "Send"
 
-#: compose.c:86 remailer.c:483
+#: compose.c:86 remailer.c:482
 msgid "Abort"
 msgstr "Afbryd"
 
@@ -596,7 +596,7 @@ msgstr "Gem en kopi af dette brev?"
 msgid "Rename to: "
 msgstr "Omdøb til: "
 
-#: compose.c:960 editmsg.c:96
+#: compose.c:960 editmsg.c:95
 #, c-format
 msgid "Can't stat: %s"
 msgstr "Kan ikke finde filen %s"
@@ -840,7 +840,7 @@ msgstr "Du er ved den første tråd."
 msgid "Thread contains unread messages."
 msgstr "Tråden indeholder ulæste breve."
 
-#: curs_main.c:1456 flags.c:228 thread.c:651 thread.c:702
+#: curs_main.c:1456 flags.c:228 thread.c:657 thread.c:708
 msgid "Threading is not enabled."
 msgstr "Trådning er ikke i brug."
 
@@ -872,7 +872,7 @@ msgstr ""
 "~~\t\tindsæt en linje som begynder med en enkelt ~.\n"
 "~b adresser\tføj adresser til Bcc-feltet.\n"
 "~c adresser\tføj adresser til Cc-feltet.\n"
-"~f [brevnummmer]\tindføj brev.\n"
+"~f [brevnummer]\tindføj brev.\n"
 "~F [brevnummer]\tsamme som ~f, men inkl. brevhoved.\n"
 "~h\t\tret i brevhoved.\n"
 "~m [brevnummer]\tcitér brev.\n"
@@ -922,35 +922,35 @@ msgstr "Ingen linjer i brevet.\n"
 msgid "%s: unknown editor command (~? for help)\n"
 msgstr "%s: ukendt editor-kommando (~? for hjælp)\n"
 
-#: editmsg.c:74
+#: editmsg.c:73
 #, c-format
 msgid "could not create temporary folder: %s"
 msgstr "kunne ikke oprette midlertidig brevbakke: %s"
 
-#: editmsg.c:84
+#: editmsg.c:83
 #, c-format
 msgid "could not write temporary mail folder: %s"
 msgstr "Kunne ikke skrive til midlertidig brevbakke: %s"
 
-#: editmsg.c:102
+#: editmsg.c:101
 msgid "Message file is empty!"
 msgstr "Brevfilen er tom!"
 
-#: editmsg.c:109
+#: editmsg.c:108
 msgid "Message not modified!"
 msgstr "Brevet er uændret!"
 
-#: editmsg.c:117
+#: editmsg.c:116
 #, c-format
 msgid "Can't open message file: %s"
 msgstr "Kan ikke åbne brev: %s."
 
-#: editmsg.c:124 editmsg.c:152
+#: editmsg.c:123 editmsg.c:151
 #, c-format
 msgid "Can't append to folder: %s"
 msgstr "Kan ikke føje til brevbakke: %s"
 
-#: editmsg.c:183
+#: editmsg.c:182
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Fejl. Bevarer midlertidig fil: %s"
@@ -1067,7 +1067,7 @@ msgstr "(brug '%s' for vise denne brevdel)"
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "('view-attachments' må tildeles en taste!)"
 
-#: headers.c:171
+#: headers.c:159
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: kunne ikke vedlægge fil."
@@ -1200,7 +1200,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Kunne ikke føje til IMAP-brevbakker på denne tjener."
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:813 imap/message.c:625 muttlib.c:984
+#: imap/imap.c:813 imap/message.c:625 muttlib.c:978
 #, c-format
 msgid "Create %s?"
 msgstr "Opret %s?"
@@ -1299,7 +1299,7 @@ msgstr "(a)fvis, (g)odkend denne gang"
 msgid "ro"
 msgstr "ag"
 
-#: imap/imap_ssl.c:350 pgpkey.c:442
+#: imap/imap_ssl.c:350 pgpkey.c:441
 msgid "Exit  "
 msgstr "Afslut "
 
@@ -1412,51 +1412,51 @@ msgstr "%s: ugyldig type brevbakke"
 msgid "%s: invalid value"
 msgstr "%s: Ugyldig værdi"
 
-#: init.c:1156
+#: init.c:1153
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: ukendt type"
 
-#: init.c:1197
+#: init.c:1194
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Fejl i %s, linje %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1213
+#: init.c:1210
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: Fejl i %s"
 
-#: init.c:1214
+#: init.c:1211
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr "source: læsning afbrudt pga. for mange fejl i %s"
 
-#: init.c:1228
+#: init.c:1225
 #, c-format
 msgid "source: error at %s"
 msgstr "source: Fejl ved %s"
 
-#: init.c:1233
+#: init.c:1230
 msgid "source: too many arguments"
 msgstr "source: For mange parametre"
 
-#: init.c:1284
+#: init.c:1281
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: Ukendt kommando"
 
-#: init.c:1641
+#: init.c:1638
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Fejl i kommandolinje: %s\n"
 
-#: init.c:1684
+#: init.c:1681
 msgid "unable to determine home directory"
 msgstr "Kan ikke bestemme hjemmekatalog."
 
-#: init.c:1692
+#: init.c:1689
 msgid "unable to determine username"
 msgstr "kan ikke bestemme brugernavn."
 
@@ -1730,7 +1730,7 @@ msgstr "vis fuld afsenderadresse"
 
 #: keymap_alldefs.h:59
 msgid "display message and toggle header weeding"
-msgstr "fremvis meddelelsen med helt eller beskåret brevhoved"
+msgstr "fremvis brev med helt eller beskåret brevhoved"
 
 #: keymap_alldefs.h:60
 msgid "display a message"
@@ -2224,7 +2224,7 @@ msgstr "Vælg kædens næste led"
 msgid "send the message through a mixmaster remailer chain"
 msgstr "send brevet gennem en mixmaster-genposterkæde"
 
-#: lib.c:59 lib.c:74 lib.c:105
+#: lib.c:58 lib.c:73 lib.c:104
 msgid "Out of memory!"
 msgstr "Ikke mere hukommelse!"
 
@@ -2395,47 +2395,47 @@ msgstr ""
 "\n"
 "Tilvalg ved oversættelsen:"
 
-#: main.c:303
+#: main.c:295
 msgid "Error initializing terminal."
 msgstr "Kan ikke klargøre terminal."
 
-#: main.c:402
+#: main.c:394
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Afluser på niveau %d.\n"
 
-#: main.c:404
+#: main.c:396
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG blev ikke defineret ved oversættelsen. Ignoreret.\n"
 
-#: main.c:523
+#: main.c:515
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s findes ikke. Opret?"
 
-#: main.c:527
+#: main.c:519
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Kan ikke oprette %s: %s."
 
-#: main.c:566
+#: main.c:558
 msgid "No recipients specified.\n"
 msgstr "Ingen angivelse af modtagere.\n"
 
-#: main.c:639
+#: main.c:631
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: kan ikke vedlægge fil.\n"
 
-#: main.c:659
+#: main.c:651
 msgid "No mailbox with new mail."
 msgstr "Ingen brevbakke med nye breve."
 
-#: main.c:668
+#: main.c:660
 msgid "No incoming mailboxes defined."
 msgstr "Ingen indbakker er defineret"
 
-#: main.c:697
+#: main.c:689
 msgid "Mailbox is empty."
 msgstr "Brevbakken er tom."
 
@@ -2566,28 +2566,28 @@ msgstr "Udvælgelse er ikke understøttet."
 msgid "Reading %s... %d"
 msgstr "Læser %s ... %d"
 
-#: muttlib.c:657
+#: muttlib.c:651
 msgid "File is a directory, save under it?"
 msgstr "Filen er et filkatalog, gem i det?"
 
-#: muttlib.c:662
+#: muttlib.c:656
 msgid "File under directory: "
 msgstr "Fil i dette filkatalog: "
 
-#: muttlib.c:674
+#: muttlib.c:668
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Filen eksisterer , (o)verskriv, (t)ilføj, (a)nnulér?"
 
-#: muttlib.c:674
+#: muttlib.c:668
 msgid "oac"
 msgstr "ota"
 
-#: muttlib.c:960
+#: muttlib.c:954
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s er ingen brevbakke"
 
-#: muttlib.c:966
+#: muttlib.c:960
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Tilføj breve til %s?"
@@ -2952,7 +2952,7 @@ msgid ""
 "[-- End of signed data --]\n"
 msgstr ""
 "\n"
-"[-- Slut på uderskrevne data --]\n"
+"[-- Slut på underskrevne data --]\n"
 
 #: pgp.c:795
 msgid "Internal error. Inform <roessler@guug.de>."
@@ -3016,80 +3016,80 @@ msgstr "Kan ikke starte PGP"
 msgid "Create an application/pgp message?"
 msgstr "Lav et \"application/pgp\"-brev?"
 
-#: pgpinvoke.c:301
+#: pgpinvoke.c:300
 msgid "Fetching PGP key..."
 msgstr "Henter PGP-nøgle..."
 
-#: pgpkey.c:444
+#: pgpkey.c:443
 msgid "Select  "
 msgstr "Udvælg  "
 
-#: pgpkey.c:447
+#: pgpkey.c:446
 msgid "Check key  "
 msgstr "Undersøg nøgle  "
 
-#: pgpkey.c:460
+#: pgpkey.c:459
 #, c-format
 msgid "PGP keys matching <%s>."
 msgstr "PGP-nøgler som matcher <%s>."
 
-#: pgpkey.c:462
+#: pgpkey.c:461
 #, c-format
 msgid "PGP keys matching \"%s\"."
 msgstr "PGP-nøgler som matcher \"%s\"."
 
-#: pgpkey.c:481 pgpkey.c:675
+#: pgpkey.c:480 pgpkey.c:674
 msgid "Can't open /dev/null"
 msgstr "Kan ikke åbne /dev/null"
 
-#: pgpkey.c:487 pgpkey.c:669
+#: pgpkey.c:486 pgpkey.c:668
 msgid "Can't create temporary file"
 msgstr "Kan ikke oprette midlertidig fil"
 
-#: pgpkey.c:498 pgpkey.c:689
+#: pgpkey.c:497 pgpkey.c:688
 msgid "Can't create filter"
 msgstr "Kan ikke oprette filter"
 
-#: pgpkey.c:508
+#: pgpkey.c:507
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "Nøgle-id: 0x%s"
 
-#: pgpkey.c:534
+#: pgpkey.c:533
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Denne nøgle kan ikke bruges: udløbet/sat ud af kraft/tilbagekaldt."
 
-#: pgpkey.c:548
+#: pgpkey.c:547
 msgid "This ID's trust level is undefined."
 msgstr "Troværdigheds-niveauet for denne id er ikke bestemt."
 
-#: pgpkey.c:551
+#: pgpkey.c:550
 msgid "This ID is not trusted."
 msgstr "Denne id er ikke troværdig."
 
-#: pgpkey.c:554
+#: pgpkey.c:553
 msgid "This ID is only marginally trusted."
 msgstr "Denne id er kun marginalt troværdig."
 
-#: pgpkey.c:558
+#: pgpkey.c:557
 #, c-format
 msgid "%s Do you really want to use it?"
 msgstr "%s Vil du virkelig anvende den?"
 
-#: pgpkey.c:654
+#: pgpkey.c:653
 msgid "Please enter the key ID: "
 msgstr "Anfør venligst nøgle-id: "
 
-#: pgpkey.c:682
+#: pgpkey.c:681
 msgid "Invoking pgp..."
 msgstr "Starter pgp ..."
 
-#: pgpkey.c:707
+#: pgpkey.c:706
 #, c-format
 msgid "PGP Key %s."
 msgstr "PGP-nøgle %s."
 
-#: pgpkey.c:754 pgpkey.c:870
+#: pgpkey.c:753 pgpkey.c:869
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Leder efter nøgler, der matcher \"%s\"..."
@@ -3256,111 +3256,111 @@ msgstr "Sletning af brevdele fra PGP-breve er ikke understøttet."
 msgid "Only deletion of multipart attachments is supported."
 msgstr "Sletning af brevdele fra udelte breve er ikke understøttet."
 
-#: recvcmd.c:43
+#: recvcmd.c:42
 msgid "You may only bounce message/rfc822 parts."
 msgstr "Du kan kun gensende message/rfc822-brevdele."
 
-#: recvcmd.c:155
+#: recvcmd.c:154
 #, c-format
 msgid "Bounce message to %s...?"
 msgstr "Gensend brev til %s ...?"
 
-#: recvcmd.c:155
+#: recvcmd.c:154
 #, c-format
 msgid "Bounce messages to %s...?"
 msgstr "Gensend breve til %s ...?"
 
-#: recvcmd.c:372
+#: recvcmd.c:371
 #, c-format
 msgid "Can't open temporary file %s."
 msgstr "Kan ikke åbne midlertidig fil %s"
 
-#: recvcmd.c:398 recvcmd.c:537 send.c:722
+#: recvcmd.c:397 recvcmd.c:536 send.c:722
 msgid "Forward MIME encapsulated?"
 msgstr "Videresend MIME-indkapslet?"
 
-#: recvcmd.c:412
+#: recvcmd.c:411
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
 msgstr "Kan ikke afkode alle udvalgte brevdele. MIME-videresend de øvrige?"
 
-#: recvcmd.c:545 recvcmd.c:797
+#: recvcmd.c:544 recvcmd.c:796
 #, c-format
 msgid "Can't create %s."
 msgstr "Kan ikke oprette %s."
 
-#: recvcmd.c:676
+#: recvcmd.c:675
 msgid "Can't find any tagged messages."
 msgstr "Kan ikke finde nogen udvalgte breve."
 
-#: recvcmd.c:697 send.c:647
+#: recvcmd.c:696 send.c:647
 msgid "No mailing lists found!"
 msgstr "Ingen postlister fundet!"
 
-#: recvcmd.c:776
+#: recvcmd.c:775
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr "Kan ikke afkode alle udvalgte brevdele. MIME-indkapsl de øvrige?"
 
-#: remailer.c:480
+#: remailer.c:479
 msgid "Append"
 msgstr "Tilføj"
 
-#: remailer.c:481
+#: remailer.c:480
 msgid "Insert"
 msgstr "Indsæt"
 
-#: remailer.c:482
+#: remailer.c:481
 msgid "Delete"
 msgstr "Slet"
 
-#: remailer.c:484
+#: remailer.c:483
 msgid "OK"
 msgstr "O.k."
 
-#: remailer.c:512
+#: remailer.c:511
 msgid "Can't get mixmaster's type2.list!"
 msgstr "Kan ikke hente mixmasters type2.liste!"
 
-#: remailer.c:538
+#: remailer.c:537
 msgid "Select a remailer chain."
 msgstr "Vælg en genposterkæde"
 
-#: remailer.c:600
+#: remailer.c:599
 #, c-format
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr "Fejl: %s kan ikke være sidste led i kæden."
 
-#: remailer.c:633
+#: remailer.c:632
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."
 msgstr "Kæden må højst have %d led."
 
-#: remailer.c:658
+#: remailer.c:657
 msgid "The remailer chain is already empty."
 msgstr "Genposterkæden er allerede tom."
 
-#: remailer.c:668
+#: remailer.c:667
 msgid "You already have the first chain element selected."
 msgstr "Du har allerede valgt kædens første led."
 
-#: remailer.c:678
+#: remailer.c:677
 msgid "You already have the last chain element selected."
 msgstr "Du har allerede valgt kædens sidste led."
 
-#: remailer.c:717
+#: remailer.c:716
 msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Breve sendt med Mixmaster må ikke have Cc- eller Bcc-felter."
 
-#: remailer.c:741
+#: remailer.c:740
 msgid ""
 "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr "Sæt hostname-variablen til en passende værdi ved brug af mixmaster!"
 
-#: remailer.c:770
+#: remailer.c:769
 #, c-format
 msgid "Error sending message, child exited %d.\n"
 msgstr "Fejl ved afsendelse af brev, afslutningskode fra barneproces: %d.\n"
 
-#: remailer.c:774
+#: remailer.c:773
 msgid "Error sending message."
 msgstr "Fejl ved afsendelse af brev."
 
@@ -3538,10 +3538,10 @@ msgstr "Kunne ikke finde sorteringsfunktion! [rapportér denne fejl]"
 msgid "(no mailbox)"
 msgstr "(ingen brevbakke)"
 
-#: thread.c:712
+#: thread.c:718
 msgid "Parent message is not visible in limited view"
 msgstr "Forrige brev i tråden er ikke synlig i afgrænset visning"
 
-#: thread.c:717
+#: thread.c:723
 msgid "Parent message is not available."
 msgstr "Forrige brev i tråden er ikke tilgængelig."
