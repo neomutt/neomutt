@@ -17,6 +17,7 @@ systems:
 	Atari MiNT
 	MkLinux
 	NetBSD
+	OpenBSD
 	QNX
 	SCO Unix 3.2v4/5
 	Solaris
