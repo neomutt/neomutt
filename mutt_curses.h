@@ -56,7 +56,7 @@
 
 #define CLEARLINE(x) move(x,0), clrtoeol()
 #define CENTERLINE(x,y) move(y, (COLS-strlen(x))/2), addstr(x)
-#define BEEP if (option (OPTBEEP)) beep
+#define BEEP() do { if (option (OPTBEEP)) beep(); } while (0)
 
 #if ! (defined(USE_SLANG_CURSES) || defined(HAVE_CURS_SET))
 #define curs_set(x)
