@@ -360,6 +360,35 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
   return (0);
 }
 
+/* Count the number of lines to be deleted in this body*/
+static int count_delete_lines (FILE *fp, BODY *b)
+{
+  int dellines = 0;
+  long l;
+  int ch;
+
+  if (b->deleted)
+  {
+    fseek (fp, b->offset, SEEK_SET);
+    for (l = b->length ; l ; l --)
+    {
+      ch = getc (fp);
+      if (ch == EOF)
+	break;
+      if (ch == '\n')
+	dellines ++;
+    }
+    /* Add lines to a new message/external-body part */
+    dellines -= 3;
+  }
+  else
+  {
+    for (b = b->parts ; b ; b = b->next)
+      dellines += count_delete_lines (fp, b);
+  }
+  return dellines;
+}
+
 /* make a copy of a message
  
    fpout	where to write output
@@ -393,54 +422,31 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
 
     else if (hdr->attach_del && (chflags & CH_UPDATE_LEN))
     {
-      /* We shall delete attachments and update the length count.
-       * We have to copy/delete the body to a temporary file so we
-       * can count the new length before copying the headers */
-      FILE *fpbody;
-      char tempfile[_POSIX_PATH_MAX];
       int new_lines;
-      long new_length;
       long new_offset;
-      int ch;
 
-      /* Make and open a temporary file */
-      mutt_mktemp (tempfile);
-      if ((fpbody = safe_fopen (tempfile, "w+")) == NULL)
-      {
-	mutt_perror (_("Failed to open temporary file"));
-	return -1;
-      }
-
-      /* Copy the body to the temporary file */
+      /* Count the number of lines to be deleted */
       fseek (fpin, body->offset, SEEK_SET);
-      if (copy_delete_attach (body, fpin, fpbody) ||
-	  fflush (fpbody))
-	goto write_fail;
+      new_lines = hdr->lines - count_delete_lines (fpin, body);
+      if (new_lines < 0)
+	new_lines = 0;
 
-      /* Get the length and count the lines in the temporary file */
-      new_length = ftell (fpbody);
-      rewind (fpbody);
-      new_lines = 0;
-      while ((ch = getc (fpbody)) != EOF)
-	if (ch == '\n')
-	  new_lines ++;
-
-      /* Now copy the headers to fpout */
+      /* Copy the headers */
       if (mutt_copy_header (fpin, hdr, fpout,
 			    chflags | CH_NOLEN | CH_NONEWLINE, NULL))
-	goto write_fail;
-      fprintf (fpout,
-	       "Content-Length: %ld\n"
-	       "Lines: %d\n"
-	       "\n", new_length, new_lines);
-      if (ferror (fpbody))
-	goto write_fail;
+	return -1;
+      if (new_lines)
+      {
+	fprintf (fpout, "Lines: %d\n\n", new_lines);
+	if (ferror (fpout))
+	  return -1;
+      }
       new_offset = ftell (fpout);
 
-      /* Copy the body from the temporary file to fpout */
-      rewind (fpbody);
-      if (mutt_copy_bytes (fpbody, fpout, new_length))
-	goto write_fail;
+      /* Copy the body */
+      fseek (fpin, body->offset, SEEK_SET);
+      if (copy_delete_attach (body, fpin, fpout))
+	return -1;
 
       /* Update original message if we are sync'ing a mailfolder */ 
       if (flags & M_CM_UPDATE)
@@ -448,20 +454,11 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
 	hdr->attach_del = 0;
 	hdr->lines = new_lines;
 	body->offset = new_offset;
-	body->length = new_length;
+	body->length = ftell (fpout) - new_offset;
 	mutt_free_body (&body->parts);
       }
 
-      /* Clean up and return */
-      (void) fclose (fpbody);
-      mutt_unlink (tempfile);
       return 0;
-
-      write_fail:
-      mutt_perror (_("Failed to write temporary file"));
-      (void) fclose (fpbody);
-      mutt_unlink (tempfile);
-      return -1;
     }
 
     if (mutt_copy_header (fpin, hdr, fpout, chflags,
@@ -650,8 +647,6 @@ static int copy_delete_attach (BODY *b, FILE *fpin, FILE *fpout)
 
 	/* And output the mime headers of the deleted part */
 	mutt_write_mime_header (part->parts, fpout);
-	if (putc ('\n', fpout) == EOF)
-	  return -1;
 
 	/* Skip the deleted body */
 	fseek (fpin, part->offset + part->length, SEEK_SET);
