@@ -76,7 +76,7 @@ install-data-local:
 		mv $(sharedir)/Muttrc $(sysconfdir) ; \
 	elif [ -f $(sharedir)/../Muttrc ] ; then \
 	 	mv $(sharedir)/../Muttrc $(sysconfdir) ; \
-	else \
+	elif [ ! -f $(sysconfdir)/Muttrc ] ; then \
 		$(INSTALL) -m 644 $(srcdir)/Muttrc $(sysconfdir) ; \
 	fi
 	-if [ ! -f $(sysconfdir)/mime.types ]; then \
