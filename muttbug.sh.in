@@ -97,6 +97,18 @@ trap "rm -r -f ${SCRATCH} ; trap '' 0 ; exit" 0 1 2
 
 TEMPLATE=${SCRATCH}/template.txt
 
+if test -z "$EMAIL" ; then
+	EMAIL="`mutt -Q from 2> /dev/null | sed -e 's/^from=.\(.*\).$/\1/'`"
+fi
+
+echo "Please enter your e-mail address [$EMAIL]:"
+echo $n "> $c"
+read EMAILTMP
+
+if test -n "$EMAILTMP" ; then
+	EMAIL="$EMAILTMP"
+fi
+
 echo "Please enter a one-line description of the problem you experience:"
 echo $n "> $c"
 read SUBJECT
@@ -183,7 +195,7 @@ else
 	DPKG=no
 fi
 
-if rpm -q mutt > /dev/null ; then
+if rpm -q mutt > /dev/null 2> /dev/null ; then
 	echo "Mutt seems to come from an RPM package."
 	RPMVERSION="`rpm -q mutt`"
 	RPMPACKAGER="`rpm -q -i mutt | sed -n -e 's/^Packager *: *//p'`"
@@ -200,10 +212,10 @@ test "$ORGANIZATION" && echo "Organization: $ORGANIZATION"
 
 echo "Subject: mutt-$MUTTVERSION: $SUBJECT"
 echo "To: $SUBMIT"
-echo "Bcc: ${EMAIL-$LOGNAME}"
+test "$EMAIL" 	     && echo "Bcc: ${EMAIL}"
 echo
 echo "Package: mutt"
-echo "Version: ${DEBIANVERSION-${RPMVERSION-MUTTVERSION}}"
+echo "Version: ${DEBIANVERSION-${RPMVERSION-$MUTTVERSION}}"
 echo "Severity: $severity"
 echo 
 echo "-- Please type your report below this line"
@@ -213,7 +225,7 @@ echo
 
 if test "$DEBIAN" = "yes" ; then
 	echo "Obtaining Debian-specific information..." > /dev/tty
-	bug -p -s dummy mutt < /dev/null |                     \
+	bug -p -s dummy mutt < /dev/null 2> /dev/null |        \
 		sed -n -e "/^-- System Information/,/^---/p" | \
 		grep -v '^---'
 else
