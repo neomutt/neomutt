@@ -820,6 +820,44 @@ create_tagged_message (const char *tempfile,
  * Analyze and fix this.
  */
 
+/*
+ * Idea:
+ * 
+ * 1. Forwarding
+ * 
+ * Variant 1: mime_forward is set (or activated by the user).  In this case, generate 
+ * a new message whose main body contains the forwarded message's header, and 
+ * attach all tagged attachments.
+ * 
+ * Variant 2: mime_forward is not set (or activated).  In this case, generate a new
+ * message whose main body contains the forwarded message's header, and formatted
+ * versions of all attachments we can handle in-line (i.e., hard-coded handlers + auto_view).
+ * 
+ * When there are any tagged attachments we can't handle this way, ask the user
+ * whether he wants to ignore or whether he wants to attach them to the new message.
+ * Make this a quad-option.
+ * 
+ * 2. Replying
+ * 
+ * Always fall back to the behaviour from forwarding, variant 2.
+ * 
+ * 3. Special handling for message/rfc822 attachments
+ * 
+ * resend-message and bounce should be possible.  forward and reply should have
+ * special semantics when they are applied ONLY to message/rfc822 body parts.
+ * 
+ * Note: Some of this behaviour is implemented by the current code.  However, DO NOT
+ * use it - it's horribly slow even on fast machines.  We have sufficient information
+ * at hand to create the message structures needed by ci_send_message from scratch, and
+ * without any temporary folders.
+ *
+ * 
+ * (Thanks to Roland Rosenfeld with whom I discussed this stuff.) 
+ * 
+ * tlr, Wed,  3 Nov 1999 21:29:19 +0100
+ * 
+ */
+
 static void reply_attachment_list (int op, int tag, HEADER *hdr, BODY *body)
 {
   HEADER *hn;
