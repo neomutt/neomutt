@@ -24,6 +24,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <ctype.h>
+
 #include <sys/types.h>
 #include <dirent.h>
 #include <unistd.h>
@@ -238,8 +240,8 @@ void mutt_canonical_charset (char *dest, size_t dlen, const char *name)
 
   /* for cosmetics' sake, transform to lowercase. */
   for (p = dest; *p; p++)
-    if ('A' <= *p && *p <= 'Z')
-      *p += 'a' - 'A';
+    if (isupper (*p))
+      *p = tolower (*p);
 }
 
 int mutt_chscmp (const char *s, const char *chs)
@@ -520,5 +522,5 @@ void fgetconv_close (FGETCONV **_fc)
 
   if (fc->cd != (iconv_t)-1)
     iconv_close (fc->cd);
-  safe_free (_fc);
+  safe_free ((void **) _fc);
 }
