@@ -1,3 +1,8 @@
+2003-02-25 21:41:32  Michael Elkins  <me@sigpipe.org>  (roessler)
+
+	* query.c: Use mutt_strwidth for query response formatting.
+	(#1477)
+
 2003-02-25 21:37:59  Christian Vogel  <vogelchr@vogel.cx>  (roessler)
 
 	* mx.c: Recognize MH folders used by sylpheed.
