@@ -1,4 +1,8 @@
-2003-04-08 10:21:01  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+2003-04-08 21:41:39  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* color.c: Make sure has_colors() is only invoked when OPTNOCURSES
+	is unset.  This fixes a segmentation fault on RH 8.0 which was
+	observed by Matt Larson <mlarson@verisign.com>.
 
 	* browser.c, enter.c, imap/imap.c, lib.c, mutt_idna.c, mx.c,
 	sendlib.c, smime.c, thread.c: Try to catch a couple of cases
