@@ -24,9 +24,9 @@
 #include "rfc2231.h"
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 #include "pgp.h"
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
 
 
@@ -842,9 +842,9 @@ void mutt_parse_mime_message (CONTEXT *ctx, HEADER *cur)
     mutt_parse_part (msg->fp, cur->content);
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
     cur->pgp = pgp_query (cur->content);
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
 
     mx_close_message (&msg);

@@ -27,7 +27,7 @@
 #include "message.h"
 #include "mx.h"
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 #include "pgp.h"
 #endif
 
@@ -387,9 +387,9 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
                                         ctx->hdrs[msgno]->content->offset;
 
   /* This needs to be done in case this is a multipart message */
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   ctx->hdrs[msgno]->pgp = pgp_query (ctx->hdrs[msgno]->content);
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
   mutt_clear_error();
   rewind (msg->fp);

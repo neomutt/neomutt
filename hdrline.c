@@ -21,7 +21,7 @@
 #include "sort.h"
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 #include "pgp.h"
 #endif
 
@@ -613,7 +613,7 @@ hdr_format_str (char *dest,
     
       ch = ' ';
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
       if (hdr->pgp & PGPGOODSIGN)
         ch = 'S';
       else if (hdr->pgp & PGPENCRYPT)

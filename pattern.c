@@ -31,7 +31,7 @@
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 #include "pgp.h"
 #endif
 
@@ -61,13 +61,13 @@ Flags[] =
   { 'E', M_EXPIRED,		0,		NULL },
   { 'f', M_FROM,		0,		eat_regexp },
   { 'F', M_FLAG,		0,		NULL },
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   { 'g', M_PGP_SIGN, 		0, 		NULL },
   { 'G', M_PGP_ENCRYPT, 	0, 		NULL },
 #endif
   { 'h', M_HEADER,		M_FULL_MSG,	eat_regexp },
   { 'i', M_ID,			0,		eat_regexp },
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   { 'k', M_PGP_KEY, 		0, 		NULL },
 #endif
   { 'L', M_ADDRESS,		0,		eat_regexp },
@@ -160,7 +160,7 @@ msg_search (CONTEXT *ctx, regex_t *rx, char *buf, size_t blen, int op, int msgno
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 	if (h->pgp & PGPENCRYPT && !pgp_valid_passphrase())
 	{
 	  mx_close_message (&msg);
@@ -871,7 +871,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
       return (pat->not ^ match_user (pat->alladdr, h->env->from, NULL));
     case M_COLLAPSED:
       return (pat->not ^ (h->collapsed && h->num_hidden > 1));
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
    case M_PGP_SIGN:
      return (pat->not ^ (h->pgp & PGPSIGN));
    case M_PGP_ENCRYPT:

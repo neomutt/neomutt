@@ -23,7 +23,7 @@
 #include "mailbox.h"
 #include "mx.h"
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 #include "pgp.h"
 #endif
 
@@ -433,12 +433,12 @@ int mutt_needs_mailcap (BODY *m)
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
     case TYPEAPPLICATION:
       if(mutt_is_application_pgp(m))
 	return 0;
       break;
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
 
     case TYPEMULTIPART:
@@ -463,13 +463,13 @@ int mutt_is_text_type (int t, char *s)
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   if (t == TYPEAPPLICATION)
   {
     if (!mutt_strcasecmp ("pgp-keys", s))
       return 1;
   }
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
 
 

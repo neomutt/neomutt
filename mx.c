@@ -26,7 +26,7 @@
 #include "keymap.h"
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 #include "pgp.h"
 #endif
 
@@ -1412,10 +1412,10 @@ void mx_update_context (CONTEXT *ctx)
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   /* NOTE: this _must_ be done before the check for mailcap! */
   h->pgp = pgp_query (h->content);
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
   if (!ctx->pattern)
   {

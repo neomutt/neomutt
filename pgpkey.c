@@ -37,7 +37,7 @@
 
 #include <locale.h>
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 
 struct pgp_cache
 {
@@ -940,4 +940,4 @@ pgp_key_t *pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
 
 
 
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */

@@ -33,7 +33,7 @@
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 #include "pgp.h"
 #endif
 
@@ -1011,7 +1011,7 @@ int mutt_can_decode (BODY *a)
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
     if (mutt_strcasecmp (a->subtype, "signed") == 0 ||
 	mutt_strcasecmp (a->subtype, "encrypted") == 0)
       return (1);
@@ -1033,7 +1033,7 @@ int mutt_can_decode (BODY *a)
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   else if (a->type == TYPEAPPLICATION)
   {
     if (mutt_is_application_pgp(a))
@@ -1372,9 +1372,9 @@ void mutt_body_handler (BODY *b, STATE *s)
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
     char *p;
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
 
 
@@ -1383,7 +1383,7 @@ void mutt_body_handler (BODY *b, STATE *s)
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
     else if (mutt_strcasecmp ("signed", b->subtype) == 0)
     {
       p = mutt_get_parameter ("protocol", b->parameter);
@@ -1406,7 +1406,7 @@ void mutt_body_handler (BODY *b, STATE *s)
       else if (mutt_strcasecmp ("application/pgp-encrypted", p) == 0)
         handler = pgp_encrypted_handler;
     }
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
 
 
@@ -1416,13 +1416,13 @@ void mutt_body_handler (BODY *b, STATE *s)
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   else if (b->type == TYPEAPPLICATION)
   {
     if (mutt_is_application_pgp(b))
       handler = pgp_application_pgp_handler;
   }
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
 
 

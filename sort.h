@@ -46,7 +46,7 @@ WHERE short BrowserSort INITVAL (SORT_SUBJECT);
 WHERE short Sort INITVAL (SORT_DATE);
 WHERE short SortAux INITVAL (SORT_DATE); /* auxiallary sorting method */
 WHERE short SortAlias INITVAL (SORT_ALIAS);
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 WHERE short PgpSortKeys INITVAL (SORT_ADDRESS);
 #endif
 

@@ -24,7 +24,7 @@
 #include "parse.h"
 #include "mime.h"
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 #include "pgp.h"
 #endif
 
@@ -510,14 +510,14 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
     if (flags & M_CM_CHARCONV)
       s.flags |= M_CHARCONV;
     
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
     if (flags & M_CM_VERIFY)
       s.flags |= M_VERIFY;
 #endif
 
     mutt_body_handler (body, &s);
   }
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   else if ((flags & M_CM_DECODE_PGP) && (hdr->pgp & PGPENCRYPT) &&
       hdr->content->type == TYPEMULTIPART)
   {

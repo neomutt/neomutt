@@ -166,7 +166,7 @@ extern const char *Months[];
 #include "mutt_regex.h"
 #include "buffy.h"
 #include "sort.h"
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 #include "pgp.h"
 #endif
 #endif /* MAIN_C */

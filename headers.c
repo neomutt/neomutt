@@ -18,7 +18,7 @@
 
 #include "mutt.h"
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 #include "pgp.h"
 #endif
 
@@ -169,7 +169,7 @@ void mutt_edit_headers (const char *editor,
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
     else if (mutt_strncasecmp ("pgp:", cur->data, 4) == 0)
     {
       msg->pgp = mutt_parse_pgp_hdr (cur->data + 4, 0);

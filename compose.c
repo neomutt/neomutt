@@ -57,7 +57,7 @@ enum
   HDR_MIX,
 #endif
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   HDR_PGP,
   HDR_PGPSIGINFO,
 #endif
@@ -102,7 +102,7 @@ static void snd_entry (char *b, size_t blen, MUTTMENU *menu, int num)
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 #include "pgp.h"
 
 static void redraw_pgp_lines (int pgp)
@@ -201,7 +201,7 @@ static int pgp_send_menu (int bits, int *redraw)
     redraw_pgp_lines (bits);
   return (bits);
 }
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
 #ifdef MIXMASTER
 
@@ -293,9 +293,9 @@ static void draw_envelope (HEADER *msg, char *fcc)
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   redraw_pgp_lines (msg->pgp);
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
 #ifdef MIXMASTER
   redraw_mix_line (msg->chain);
@@ -547,7 +547,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
       case OP_COMPOSE_ATTACH_KEY:
 
 	if (idxlen == idxmax)
@@ -1157,7 +1157,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
       case OP_COMPOSE_PGP_MENU:
 
 	msg->pgp = pgp_send_menu (msg->pgp, &menu->redraw);
@@ -1168,7 +1168,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	mutt_forget_passphrase ();
 	break;
 
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
 
 #ifdef MIXMASTER

@@ -26,7 +26,7 @@
 #define M_CM_CHARCONV	(1<<6)  /* perform character set conversions */
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 #define M_CM_DECODE_PGP	(1<<7)	/* used for decoding PGP messages */
 #define M_CM_VERIFY	(1<<8)	/* do signature verification */
 #endif

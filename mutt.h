@@ -123,7 +123,7 @@ typedef enum
 #define M_FCCHOOK	(1<<3)
 #define M_SAVEHOOK	(1<<4)
 #define M_CHARSETHOOK	(1<<5)
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 #define M_PGPHOOK	(1<<6)
 #endif
 
@@ -194,7 +194,7 @@ enum
   M_PERSONAL_RECIP,
   M_PERSONAL_FROM,
   M_ADDRESS,
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   M_PGP_SIGN,
   M_PGP_ENCRYPT,
   M_PGP_KEY,
@@ -230,7 +230,7 @@ enum
 enum
 {
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   OPT_VERIFYSIG,      /* verify PGP signatures */
   OPT_PGPTRADITIONAL, /* create old-style PGP messages */
 #endif
@@ -351,7 +351,7 @@ enum
 
   /* PGP options */
   
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   OPTPGPAUTOSIGN,
   OPTPGPAUTOENCRYPT,
   OPTPGPLONGIDS,
@@ -391,7 +391,7 @@ enum
 			 * 	    external program.
 			 */
   
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   OPTPGPCHECKTRUST,	/* (pseudo) used by pgp_select_key () */
   OPTDONTHANDLEPGPKEYS,	/* (pseudo) used to extract PGP keys */
 #endif
@@ -528,7 +528,7 @@ typedef struct body
   unsigned int deleted : 1;	/* attachment marked for deletion */
   unsigned int noconv : 1;	/* don't do character set conversion */
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   unsigned int goodsig : 1;	/* good PGP signature */
 #endif
 
@@ -536,7 +536,7 @@ typedef struct body
 
 typedef struct header
 {
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   unsigned int pgp : 4;
 #endif
 
@@ -689,7 +689,7 @@ typedef struct
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 #define M_VERIFY	(1<<1) /* perform signature verification */
 #endif
 

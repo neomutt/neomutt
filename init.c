@@ -24,7 +24,7 @@
 #include "keymap.h"
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 #include "pgp.h"
 #endif
 
@@ -1129,7 +1129,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	case DT_SORT_BROWSER:
 	  map = SortBrowserMethods;
 	  break;
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 	case DT_SORT_KEYS:
 	  map = SortKeyMethods;
 	  break;
@@ -1535,7 +1535,7 @@ int mutt_var_value_complete (char *buffer, size_t len, int pos)
 	  case DT_SORT_BROWSER:
 	    map = SortBrowserMethods;
 	    break;
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 	  case DT_SORT_KEYS:
 	    map = SortKeyMethods;
 	    break;

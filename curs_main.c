@@ -31,7 +31,7 @@
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 #include "pgp.h"
 #endif
 
@@ -1108,24 +1108,24 @@ int mutt_index_menu (void)
       case OP_SAVE:
       case OP_DECODE_COPY:
       case OP_DECODE_SAVE:
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
       case OP_DECRYPT_COPY:
       case OP_DECRYPT_SAVE:
 #endif
 	CHECK_MSGCOUNT;
         if (mutt_save_message (tag ? NULL : CURHDR,
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 			       (op == OP_DECRYPT_SAVE) ||
 #endif
 			       (op == OP_SAVE) || (op == OP_DECODE_SAVE),
 			       (op == OP_DECODE_SAVE) || (op == OP_DECODE_COPY),
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 			       (op == OP_DECRYPT_SAVE) || (op == OP_DECRYPT_COPY) ||
 #endif
 			       0,
 			       &menu->redraw) == 0 &&
 	    (op == OP_SAVE || op == OP_DECODE_SAVE
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 	     || op == OP_DECRYPT_SAVE
 #endif
 	     ))
@@ -1576,12 +1576,12 @@ int mutt_index_menu (void)
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
       case OP_FORGET_PASSPHRASE:
 
 	mutt_forget_passphrase ();
 	break;
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
 
 
@@ -1614,7 +1614,7 @@ int mutt_index_menu (void)
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
       case OP_MAIL_KEY:
 	
 	CHECK_ATTACH;
@@ -1629,7 +1629,7 @@ int mutt_index_menu (void)
         menu->redraw = REDRAW_FULL;
         break;
       
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
 
 

@@ -104,9 +104,9 @@ sysexits_h[] =
 };
       
     
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 #include "pgp.h"
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
 
 
@@ -472,14 +472,14 @@ int mutt_write_mime_body (BODY *a, FILE *f)
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   /* This is pretty gross, but it's the best solution for now... */
   if (a->type == TYPEAPPLICATION && mutt_strcmp (a->subtype, "pgp-encrypted") == 0)
   {
     fputs ("Version: 1\n", f);
     return 0;
   }
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
 
 
@@ -958,7 +958,7 @@ void mutt_update_encoding (BODY *a)
   if (a->type == TYPETEXT)
     mutt_set_body_charset(a, get_text_charset(a, info));
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   /* save the info in case this message is signed.  we will want to do Q-P
    * encoding if any lines begin with "From " so the signature won't be munged,
    * for example.
@@ -979,15 +979,15 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
   BODY *body;
   FILE *fp;
   int cmflags, chflags;
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   int pgp = hdr->pgp;
 #endif
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   if ((option(OPTMIMEFORWDECODE) || option(OPTFORWDECRYPT)) &&
       (hdr->pgp & PGPENCRYPT) && !pgp_valid_passphrase())
     return (NULL);
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
   mutt_mktemp (buffer);
   if ((fp = safe_fopen (buffer, "w+")) == NULL)
@@ -1011,11 +1011,11 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
   {
     chflags |= CH_MIME | CH_TXTPLAIN;
     cmflags = M_CM_DECODE | M_CM_CHARCONV;
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
     pgp &= ~PGPENCRYPT;
 #endif
   }
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   else
     if (option (OPTFORWDECRYPT)
        && (hdr->pgp & PGPENCRYPT))
@@ -1044,9 +1044,9 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
   body->hdr->offset = 0;
   /* we don't need the user headers here */
   body->hdr->env = mutt_read_rfc822_header(fp, body->hdr, 0, 0);
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   body->hdr->pgp = pgp;
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
   mutt_update_encoding (body);
   body->parts = body->hdr->content;
 
@@ -1104,7 +1104,7 @@ BODY *mutt_make_file_attach (const char *path)
   if (att->type == TYPETEXT)
     mutt_set_body_charset(att, get_text_charset(att, info));
   
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   /*
    * save the info in case this message is signed.  we will want to do Q-P
    * encoding if any lines begin with "From " so the signature won't be munged,
@@ -1986,7 +1986,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   /* (postponment) if the mail is to be signed or encrypted, save this info */
   if (post && (hdr->pgp & (PGPENCRYPT | PGPSIGN)))
   {
@@ -2003,7 +2003,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
     }
     fputc ('\n', msg->fp);
   }
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
 #ifdef MIXMASTER
   /* (postponement) if the mail is to be sent through a mixmaster 

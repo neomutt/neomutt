@@ -47,7 +47,7 @@
 # include <sys/resource.h>
 #endif
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 
 
 char PgpPass[STRING];
@@ -1594,4 +1594,4 @@ int pgp_protect (HEADER *msg, char *pgpkeylist)
   return (0);
 }
 
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */

@@ -64,35 +64,15 @@ if test -f $srcdir/EXPORTABLE ; then
 	SUBVERSION="us"
 else
 	SUBVERSION="i"
-	PGPPATH=no
 
-	AC_PATH_PROG(GPG, gpg, no)
-	if test $GPG != no ; then
-		AC_DEFINE_UNQUOTED(_PGPGPGPATH, "$GPG")
-		PGPPATH="$GPG"
-		AC_DEFINE(HAVE_GPG)
-	fi
+	AC_ARG_ENABLE(pgp, [  --disable-pgp               Disable PGP support],
+	[	if test x$enableval = xno ; then
+			HAVE_PGP=no
+		fi
+	])
 
-	AC_PATH_PROG(PGPK, pgpk, no)
-	if test $PGPK != no ; then
-		PGPK=`echo $PGPK | sed 's,.$,,'`
-		AC_DEFINE_UNQUOTED(_PGPV3PATH, "$PGPK")
-		PGPPATH="$PGPK"
-		AC_DEFINE(HAVE_PGP5)
-	fi
-
-	AC_PATH_PROG(PGP, pgp, no)
-	if test $PGP != no ; then
-		AC_DEFINE_UNQUOTED(_PGPV2PATH, "$PGP")
-		PGPPATH="$PGP"
-		AC_DEFINE(HAVE_PGP2)
-	fi
-
-	if test $PGPPATH != no ; then
-		AC_DEFINE_UNQUOTED(_PGPPATH, "$PGPPATH")
-	fi
-
-	if test $PGP != no || test $PGPK != no || test $GPG != no ; then
+	if test x$HAVE_PGP != xno ; then
+		AC_DEFINE(HAVE_PGP)
 		PGPAUX_TARGET=pgpring
 		AM_CONDITIONAL(NEEDS_PGPEWRAP, true)
 		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pgp.o pgpinvoke.o pgpkey.o pgplib.o gnupgparse.o"

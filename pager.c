@@ -28,7 +28,7 @@
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 #include "pgp.h"
 #endif
 
@@ -2324,7 +2324,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	redraw = REDRAW_FULL;
 	break;
 
-#ifdef _PGPPATH      
+#ifdef HAVE_PGP      
       case OP_DECRYPT_SAVE:
 #endif
       case OP_SAVE:
@@ -2337,22 +2337,22 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       case OP_COPY_MESSAGE:
       case OP_DECODE_SAVE:
       case OP_DECODE_COPY:
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
       case OP_DECRYPT_COPY:
 #endif
 	CHECK_MODE(IsHeader (extra));
 	if (mutt_save_message (extra->hdr,
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 			       (ch == OP_DECRYPT_SAVE) ||
 #endif			       
 			       (ch == OP_SAVE) || (ch == OP_DECODE_SAVE),
 			       (ch == OP_DECODE_SAVE) || (ch == OP_DECODE_COPY),
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 			       (ch == OP_DECRYPT_SAVE) || (ch == OP_DECRYPT_COPY) ||
 #endif
 			       0,
 			       &redraw) == 0 && (ch == OP_SAVE || ch == OP_DECODE_SAVE
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 						 || ch == OP_DECRYPT_SAVE
 #endif
 						 ))
@@ -2451,7 +2451,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
       case OP_FORGET_PASSPHRASE:
 	mutt_forget_passphrase ();
 	break;
@@ -2468,7 +2468,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
         pgp_extract_keys_from_messages(extra->hdr);
         redraw = REDRAW_FULL;
         break;
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
 
 

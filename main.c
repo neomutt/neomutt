@@ -72,7 +72,7 @@ fixes, and suggestions.\n\
     along with this program; if not, write to the Free Software\n\
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n\
 ");
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 
 const char* ShaCopyright = N_("\n\
 SHA1 implementation Copyright (C) 1995-1997 Eric A. Young <eay@cryptsoft.com>\n\
@@ -237,21 +237,11 @@ static void show_version (void)
 	"-HAVE_COLOR  "
 #endif
 
-#ifdef _PGPPATH
-
-#ifdef HAVE_PGP5
-	"+HAVE_PGP5  "
+#ifdef HAVE_PGP
+	"+HAVE_PGP  "
+#else
+	"-HAVE_PGP  "
 #endif
-#ifdef HAVE_PGP2
-	"+HAVE_PGP2  "
-#endif
-#ifdef HAVE_GPG
-	"+HAVE_GPG  "
-#endif
-	"\n"
-#endif
-
-
 
 #ifdef BUFFY_SIZE
 	"+BUFFY_SIZE "
@@ -284,22 +274,6 @@ static void show_version (void)
 #else
   puts ("-ISPELL");
 #endif
-
-
-
-#ifdef _PGPPATH
-  printf ("_PGPPATH=\"%s\"\n", _PGPPATH);
-# ifdef _PGPV2PATH
-  printf ("_PGPV2PATH=\"%s\"\n", _PGPV2PATH);
-# endif
-# ifdef _PGPV3PATH
-  printf ("_PGPV3PATH=\"%s\"\n", _PGPV3PATH);
-# endif
-# ifdef _PGPGPGPATH
-  printf ("_PGPGPGPATH=\"%s\"\n", _PGPGPGPATH);
-# endif
-#endif
-
 
   puts(_(ReachingUs));
 
@@ -492,7 +466,7 @@ int main (int argc, char **argv)
     default:
       printf ("Mutt %s (%s)\n", MUTT_VERSION, ReleaseDate);
       puts (_(Copyright));
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
       puts(_(ShaCopyright));
 #endif
       puts (_(ReachingUs));

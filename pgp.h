@@ -17,7 +17,7 @@
  *     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 
 #include "pgplib.h"
 
@@ -114,4 +114,4 @@ pid_t pgp_invoke_traditional (FILE **pgpin, FILE **pgpout, FILE **pgperr,
 void pgp_invoke_import (const char *fname);
 void pgp_invoke_getkeys (ADDRESS *);
 
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */

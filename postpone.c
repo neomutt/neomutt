@@ -43,9 +43,9 @@ static struct mapping_t PostponeHelp[] = {
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 #include "pgp.h"
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
 
 static short PostCount = 0;
@@ -358,7 +358,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
     else if (mutt_strncmp ("Pgp:", tmp->data, 4) == 0 /* this is generated
 						       * by old mutt versions
 						       */
@@ -376,7 +376,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
       mutt_free_list (&tmp);
       tmp = next;
     }
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
 #ifdef MIXMASTER
     else if (mutt_strncmp ("X-Mutt-Mix:", tmp->data, 11) == 0)
@@ -413,7 +413,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 
 int mutt_parse_pgp_hdr (char *p, int set_signas)
 {
@@ -490,7 +490,7 @@ int mutt_parse_pgp_hdr (char *p, int set_signas)
 
   return pgp;
 }
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
 int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 			       short weed)
@@ -537,7 +537,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   safe_free ((void **) &newhdr->env->message_id);
   safe_free ((void **) &newhdr->env->mail_followup_to);
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   /* decrypt pgp/mime encoded messages */
   if ((hdr->pgp & PGPENCRYPT) && 
       mutt_is_multipart_encrypted (newhdr->content))

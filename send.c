@@ -34,7 +34,7 @@
 #include <sys/wait.h>
 #include <dirent.h>
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 #include "pgp.h"
 #endif
 
@@ -335,13 +335,13 @@ static int include_forward (CONTEXT *ctx, HEADER *cur, FILE *out)
   int chflags = CH_DECODE, cmflags = 0;
   
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   if ((cur->pgp & PGPENCRYPT) && option (OPTFORWDECODE))
   {
     /* make sure we have the user's passphrase before proceeding... */
     pgp_valid_passphrase ();
   }
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
   mutt_forward_intro (out, cur);
 
@@ -389,7 +389,7 @@ static int include_reply (CONTEXT *ctx, HEADER *cur, FILE *out)
   int cmflags = M_CM_PREFIX | M_CM_DECODE | M_CM_CHARCONV;
   int chflags = CH_DECODE;
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   if (cur->pgp)
   {
     if (cur->pgp & PGPENCRYPT)
@@ -398,7 +398,7 @@ static int include_reply (CONTEXT *ctx, HEADER *cur, FILE *out)
       pgp_valid_passphrase ();
     }
   }
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
   mutt_make_attribution (ctx, cur, out);
   
@@ -769,7 +769,7 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   else if (flags & SENDKEY) 
   {
     BODY *tmp;
@@ -953,7 +953,7 @@ ci_send_message (int flags,		/* send mode */
   BODY *pbody;
   int i, killfrom = 0;
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   BODY *save_content = NULL;
   BODY *clear_content = NULL;
   char *pgpkeylist = NULL;
@@ -978,13 +978,13 @@ ci_send_message (int flags,		/* send mode */
   }
   
   
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   if (flags & SENDPOSTPONED)
   {
     signas = safe_strdup(PgpSignAs);
     signmic = safe_strdup(PgpSignMicalg);
   }
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
   if (msg)
   {
@@ -1125,7 +1125,7 @@ ci_send_message (int flags,		/* send mode */
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
     if (! (flags & SENDMAILX))
     {
       if (option (OPTPGPAUTOSIGN))
@@ -1139,7 +1139,7 @@ ci_send_message (int flags,		/* send mode */
       if (option (OPTPGPREPLYSIGNENCRYPTED) && cur && cur->pgp & PGPENCRYPT)
 	msg->pgp |= PGPSIGN;
     }
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
 
 
@@ -1158,7 +1158,7 @@ ci_send_message (int flags,		/* send mode */
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   
   if (! (flags & SENDKEY) && tempfp)
   {
@@ -1172,7 +1172,7 @@ ci_send_message (int flags,		/* send mode */
     
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
     
   }
 
@@ -1314,7 +1314,7 @@ main_loop:
    * in case of error.  Ugh.
    */
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   if (msg->pgp)
   {
     /* save the decrypted attachments */
@@ -1341,7 +1341,7 @@ main_loop:
    * - something else.  In this case, it's the same as clear_content.
    */
 
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
   if (!option (OPTNOCURSES) && !(flags & SENDMAILX))
     mutt_message _("Sending message...");
@@ -1371,12 +1371,12 @@ main_loop:
   if (*fcc && mutt_strcmp ("/dev/null", fcc) != 0)
   {
     BODY *tmpbody = msg->content;
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
     BODY *save_sig = NULL;
     BODY *save_parts = NULL;
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
     if (msg->pgp && option (OPTFCCCLEAR))
       msg->content = clear_content;
 #endif
@@ -1384,7 +1384,7 @@ main_loop:
     /* check to see if the user wants copies of all attachments */
     if (!option (OPTFCCATTACH) && msg->content->type == TYPEMULTIPART)
     {
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
       if (mutt_strcmp (msg->content->subtype, "encrypted") == 0 ||
 	  mutt_strcmp (msg->content->subtype, "signed") == 0)
       {
@@ -1414,19 +1414,19 @@ main_loop:
 	}
       }
       else
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 	msg->content = msg->content->parts;
     }
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 full_fcc:
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
     if (msg->content)
       mutt_write_fcc (fcc, msg, NULL, 0, NULL);
 
     msg->content = tmpbody;
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
     if (save_sig)
     {
       /* cleanup the second signature structures */
@@ -1444,7 +1444,7 @@ full_fcc:
       mutt_free_body (&save_content);
     }
       
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
   }
 
 
@@ -1452,7 +1452,7 @@ full_fcc:
   {
     if (!(flags & SENDBATCH))
     {
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
       if ((msg->pgp & PGPENCRYPT) || 
 	  ((msg->pgp & PGPSIGN) && msg->content->type == TYPEAPPLICATION))
       {
@@ -1477,14 +1477,14 @@ full_fcc:
   else if (!option (OPTNOCURSES) && ! (flags & SENDMAILX))
     mutt_message (i == 0 ? _("Mail sent.") : _("Sending in background."));
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   if (msg->pgp & PGPENCRYPT)
   {
     /* cleanup structures from the first encryption */
     mutt_free_body (&clear_content);
     FREE (&pgpkeylist);
   }
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
   if (flags & SENDREPLY)
   {
@@ -1505,7 +1505,7 @@ cleanup:
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   if (flags & SENDPOSTPONED)
   {
     
@@ -1521,7 +1521,7 @@ cleanup:
       PgpSignMicalg = signmic;
     }
   }
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
    
   if (tempfp)
     fclose (tempfp);

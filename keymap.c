@@ -39,7 +39,7 @@ struct mapping_t Menus[] = {
  { "postpone",	MENU_POST },
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
  { "pgp",	MENU_PGP },
 #endif  
   
@@ -529,7 +529,7 @@ void km_init (void)
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   create_bindings (OpPgp, MENU_PGP);
 #endif
 
@@ -739,7 +739,7 @@ struct binding_t *km_get_table (int menu)
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
     case MENU_PGP:
       return OpPgp;
 #endif

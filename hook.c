@@ -85,9 +85,9 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     pattern.data = safe_strdup (path);
   }
   else if (DefaultHook && !(data & M_CHARSETHOOK)
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
       && !(data & M_PGPHOOK)
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
       )
   {
     char tmp[HUGE_STRING];
@@ -156,7 +156,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     if ((rc = REGCOMP (rx, pattern.data, ((data & (M_PGPHOOK|M_CHARSETHOOK)) ? REG_ICASE : 0))) != 0)
 #else
       if ((rc = REGCOMP (rx, pattern.data, (data & M_CHARSETHOOK) ? REG_ICASE : 0)) != 0)
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
     {
       regerror (rc, rx, err->data, err->dsize);
       regfree (rx);
@@ -348,9 +348,9 @@ char *mutt_charset_hook (const char *chs)
   return _mutt_string_hook (chs, M_CHARSETHOOK);
 }
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 char *mutt_pgp_hook (ADDRESS *adr)
 {
   return _mutt_string_hook (adr->mailbox, M_PGPHOOK);
 }
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */

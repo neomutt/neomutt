@@ -61,7 +61,7 @@ enum
   MENU_QUERY,
 
   
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   MENU_PGP,
 #endif
 
@@ -101,9 +101,9 @@ extern struct binding_t OpBrowser[];
 extern struct binding_t OpEditor[];
 extern struct binding_t OpQuery[];
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 extern struct binding_t OpPgp[];
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
 #ifdef MIXMASTER
 extern struct binding_t OpMix[];

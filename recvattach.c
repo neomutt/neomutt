@@ -30,7 +30,7 @@
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 #include "pgp.h"
 #endif
 
@@ -119,7 +119,7 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
 
     if (m->type == TYPEMULTIPART && m->parts
 	&& (compose || (parent_type == -1 && mutt_strcasecmp ("alternative", m->subtype)))
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 	&& !mutt_is_multipart_encrypted(m)
 #endif
 	)
@@ -138,7 +138,7 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
       /* We don't support multipart messages in the compose menu yet */
       if (!compose && 
 	  ((m->type == TYPEMULTIPART
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 	    && !mutt_is_multipart_encrypted (m)
 #endif
 	    )
@@ -775,7 +775,7 @@ void mutt_view_attachments (HEADER *hdr)
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   int pgp = 0;
 #endif
 
@@ -800,7 +800,7 @@ void mutt_view_attachments (HEADER *hdr)
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   if((hdr->pgp & PGPENCRYPT) && !pgp_valid_passphrase())
   {
     mx_close_message (&msg);
@@ -817,7 +817,7 @@ void mutt_view_attachments (HEADER *hdr)
     pgp = 1;
   }
   else
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
   {
     fp = msg->fp;
     cur = hdr->content;
@@ -858,7 +858,7 @@ void mutt_view_attachments (HEADER *hdr)
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
       case OP_EXTRACT_KEYS:
         pgp_extract_keys_from_attachment_list (fp, menu->tagprefix, 
 		  menu->tagprefix ? cur : idx[menu->current]->content);
@@ -893,7 +893,7 @@ void mutt_view_attachments (HEADER *hdr)
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
         if (hdr->pgp)
         {
 	  mutt_message _(
@@ -1026,13 +1026,13 @@ void mutt_view_attachments (HEADER *hdr)
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 	if (pgp)
 	{
 	  fclose (fp);
 	  mutt_free_body (&cur);
 	}
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
 
 

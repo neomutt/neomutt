@@ -17,7 +17,7 @@
  *     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 
 #define PGPENCRYPT  (1 << 0)
 #define PGPSIGN     (1 << 1)
@@ -95,4 +95,4 @@ void pgp_free_key (pgp_key_t **kpp);
 
 #define pgp_new_keyinfo() safe_calloc (sizeof (pgp_key_t), 1)
 
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */

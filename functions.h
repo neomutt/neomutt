@@ -132,7 +132,7 @@ struct binding_t OpMain[] = {
   { "parent-message",		OP_MAIN_PARENT_MESSAGE,		"P" },
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   { "extract-keys",		OP_EXTRACT_KEYS,		"\013" },
   { "forget-passphrase",	OP_FORGET_PASSPHRASE,		"\006" },
   { "mail-key",			OP_MAIL_KEY,			"\033k" },
@@ -219,7 +219,7 @@ struct binding_t OpPager[] = {
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   { "extract-keys",	OP_EXTRACT_KEYS,		"\013" },
   { "forget-passphrase",OP_FORGET_PASSPHRASE,		"\006" },
   { "mail-key",		OP_MAIL_KEY,			"\033k" },
@@ -253,7 +253,7 @@ struct binding_t OpAttach[] = {
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   { "extract-keys",	OP_EXTRACT_KEYS,		"\013" },
 #endif
 
@@ -300,7 +300,7 @@ struct binding_t OpCompose[] = {
   { "send-message",	OP_COMPOSE_SEND_MESSAGE,	"y" },
   { "pipe-entry",	OP_PIPE,			"|" },
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   { "attach-key",	OP_COMPOSE_ATTACH_KEY,		"\033k" },
   { "forget-passphrase",OP_FORGET_PASSPHRASE,		"\006"  },
   { "pgp-menu",		OP_COMPOSE_PGP_MENU,		"p" 	},
@@ -370,13 +370,13 @@ struct binding_t OpEditor[] = {
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 struct binding_t OpPgp[] = {
   { "verify-key",	OP_VERIFY_KEY,		"c" },
   { "view-name",	OP_VIEW_ID,		"%" },
   { NULL,		0,				NULL }
 };
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
 
 #ifdef MIXMASTER

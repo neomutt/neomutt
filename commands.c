@@ -36,7 +36,7 @@
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 #include "pgp.h"
 #endif
 
@@ -77,7 +77,7 @@ int mutt_display_message (HEADER *cur)
   mutt_parse_mime_message (Context, cur);
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   /* see if PGP is needed for this message.  if so, we should exit curses */
   if (cur->pgp)
   {
@@ -139,7 +139,7 @@ int mutt_display_message (HEADER *cur)
     return (0);
   }
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   /* update PGP information for this message */
   cur->pgp |= pgp_query (cur->content);
 #endif
@@ -148,7 +148,7 @@ int mutt_display_message (HEADER *cur)
   {
     pager_t info;
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
     if (cur->pgp & PGPGOODSIGN)
       mutt_message _("PGP signature successfully verified.");
 #endif
@@ -277,7 +277,7 @@ int mutt_pipe_message (HEADER *h)
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
     if (option (OPTPIPEDECODE))
     {
       mutt_parse_mime_message (Context, h);
@@ -299,7 +299,7 @@ int mutt_pipe_message (HEADER *h)
 
 
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 
     if(option(OPTPIPEDECODE))
     {
@@ -486,7 +486,7 @@ static void set_copy_flags (HEADER *hdr, int decode, int decrypt, int *cmflags, 
   *cmflags = 0;
   *chflags = CH_UPDATE_LEN;
   
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   if (!decode && decrypt && (hdr->pgp & PGPENCRYPT))
   {
     if (mutt_is_multipart_encrypted(hdr->content))
@@ -538,7 +538,7 @@ int mutt_save_message (HEADER *h, int delete,
 		       int decode, int decrypt, int *redraw)
 {
   int i, need_buffy_cleanup;
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   int need_passphrase = 0;
 #endif
   char prompt[SHORT_STRING], buf[_POSIX_PATH_MAX];
@@ -559,7 +559,7 @@ int mutt_save_message (HEADER *h, int delete,
   
   if (h)
   {
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
     need_passphrase = h->pgp & PGPENCRYPT;
 #endif
     mutt_default_save (buf, sizeof (buf), h);
@@ -580,7 +580,7 @@ int mutt_save_message (HEADER *h, int delete,
     if (h)
     {
       mutt_default_save (buf, sizeof (buf), h);
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
       need_passphrase |= h->pgp & PGPENCRYPT;
 #endif
       h = NULL;
@@ -619,7 +619,7 @@ int mutt_save_message (HEADER *h, int delete,
     return (-1);
   }
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   if(need_passphrase && (decode || decrypt) && !pgp_valid_passphrase())
     return -1;
 #endif
@@ -697,7 +697,7 @@ static void print_msg (FILE *fp, CONTEXT *ctx, HEADER *h)
     chflags |= CH_WEED;
   }
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   if (h->pgp & PGPENCRYPT)
   {
     if (!pgp_valid_passphrase ())
@@ -793,13 +793,13 @@ void mutt_edit_content_type (HEADER *h, BODY *b)
     mutt_free_header (&b->hdr);
   }
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   if (h)
   {
     if (h->content == b)
       h->pgp = 0;
     h->pgp |= pgp_query (b);
   }
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
 }

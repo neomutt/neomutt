@@ -85,8 +85,8 @@ struct option_t
 # ifndef MIXMASTER
 #  define MIXMASTER "mixmaster"
 # endif
-# ifndef _PGPPATH
-#  define _PGPPATH
+# ifndef HAVE_PGP
+#  define HAVE_PGP
 # endif
 # ifndef USE_POP
 #  define USE_POP
@@ -442,7 +442,7 @@ struct option_t MuttVars[] = {
   ** This variable controls whether or not attachments on outgoing messages
   ** are saved along with the main body of your message.
   */
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   { "fcc_clear",	DT_BOOL, R_NONE, OPTFCCCLEAR, 0 },
   /*
   ** .pp
@@ -1041,7 +1041,7 @@ struct option_t MuttVars[] = {
   */
   
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 
   { "pgp_autosign",	DT_BOOL, R_NONE, OPTPGPAUTOSIGN, 0 },
   /*
@@ -1313,7 +1313,7 @@ struct option_t MuttVars[] = {
   { "forw_decrypt",	DT_SYN,  R_NONE, UL "forward_decrypt", 0 },
   /*
   */
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
   
 #ifdef USE_SSL
   { "certificate_file",	DT_PATH, R_NONE, UL &SslCertFile, 0 },
@@ -2095,7 +2095,7 @@ const struct mapping_t SortAliasMethods[] = {
   { NULL }
 };
 
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 const struct mapping_t SortKeyMethods[] = {
   { "address",	SORT_ADDRESS },
   { "date",	SORT_DATE },
@@ -2103,7 +2103,7 @@ const struct mapping_t SortKeyMethods[] = {
   { "trust",	SORT_TRUST },
   { NULL }
 };
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 
 
 /* functions used to parse commands in a rc file */
@@ -2150,9 +2150,9 @@ struct command_t Commands[] = {
   { "mbox-hook",	mutt_parse_hook,	M_MBOXHOOK },
   { "mono",		mutt_parse_mono,	0 },
   { "my_hdr",		parse_my_hdr,		0 },
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
   { "pgp-hook",		mutt_parse_hook,	M_PGPHOOK },
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
   { "push",		mutt_parse_push,	0 },
   { "reset",		parse_set,		M_SET_RESET },
   { "save-hook",	mutt_parse_hook,	M_SAVEHOOK },

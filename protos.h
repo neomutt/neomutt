@@ -118,9 +118,9 @@ char *mutt_gen_msgid (void);
 char *mutt_get_name (ADDRESS *);
 char *mutt_get_parameter (const char *, PARAMETER *);
 char *mutt_get_send_charset (char *, size_t, BODY *, short);
-#ifdef _PGPPATH
+#ifdef HAVE_PGP
 char *mutt_pgp_hook (ADDRESS *);
-#endif /* _PGPPATH */
+#endif /* HAVE_PGP */
 char *mutt_make_date (char *, size_t);
 
 const char *mutt_fqdn(short);

@@ -152,7 +152,7 @@ us-distdir: distdir dist-hook
 
 us-dist: us-distdir
 	for file in $(distdir)-us/*.c $(distdir)-us/*.h ; do \
-		$(srcdir)/reap.pl _PGPPATH < $$file | $(srcdir)/reap.pl MIXMASTER | $(srcdir)/reap.pl USE_SSL > $$file.n && rm $$file && mv $$file.n $$file ; \
+		$(srcdir)/reap.pl HAVE_PGP < $$file | $(srcdir)/reap.pl MIXMASTER | $(srcdir)/reap.pl USE_SSL > $$file.n && rm $$file && mv $$file.n $$file ; \
 	done
 	for file in $(non_us_sources) ; do \
 		echo "/* This file is only available in the international mutt version */" \
