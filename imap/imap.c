@@ -377,7 +377,7 @@ int imap_open_connection (IMAP_DATA* idata)
       goto bail;
 #if defined(USE_SSL) && !defined(USE_NSS)
     /* Attempt STARTTLS if available and desired. */
-    if (mutt_bit_isset (idata->capabilities, STARTTLS))
+    if (mutt_bit_isset (idata->capabilities, STARTTLS) && !idata->conn->ssf)
     {
       if ((rc = query_quadoption (OPT_SSLSTARTTLS,
         _("Secure connection with TLS?"))) == -1)
