@@ -28,6 +28,7 @@ typedef struct
   char inbuf[LONG_STRING];
   int bufpos;
   int available;
+  void *data;
 } CONNECTION;
 
 int mutt_socket_readchar (CONNECTION *conn, char *c);
