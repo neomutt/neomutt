@@ -146,4 +146,5 @@ Other changes
 	bind	editor	"\e\t"		complete-query
 	bind	editor	"\Ct"		transpose-chars
 
-
+- mailto URL support:  You can pass a mailto URL to mutt on the
+  command line.
