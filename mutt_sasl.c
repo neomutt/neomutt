@@ -190,7 +190,7 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
       service = "imap";
       break;
     case M_ACCT_TYPE_POP:
-      service = "pop-3";
+      service = "pop";
       break;
     default:
       dprint (1, (debugfile, "mutt_sasl_client_new: account type unset\n"));
