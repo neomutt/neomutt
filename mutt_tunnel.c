@@ -39,17 +39,21 @@ static int tunnel_socket_close (CONNECTION*);
 /* -- public functions -- */
 int mutt_tunnel_socket_setup (CONNECTION *conn)
 {
+  TUNNEL_DATA* tunnel = (TUNNEL_DATA*) safe_malloc (sizeof (TUNNEL_DATA));
+
+  conn->sockdata = tunnel;
+  
   conn->open = tunnel_socket_open;
+  conn->close = tunnel_socket_close;
   conn->read = raw_socket_read;
   conn->write = raw_socket_write;
-  conn->close = tunnel_socket_close;
 
   return 0;
 }
 
 static int tunnel_socket_open (CONNECTION *conn)
 {
-  TUNNEL_DATA* tunnel;
+  TUNNEL_DATA* tunnel = (TUNNEL_DATA*) conn->sockdata;
   int pid;
   int rc;
   int sv[2];
@@ -63,18 +67,25 @@ static int tunnel_socket_open (CONNECTION *conn)
     return -1;
   }
 
+  mutt_block_signals_system ();
   if ((pid = fork ()) == 0)
   {
-    mutt_block_signals_system ();
+    mutt_unblock_signals_system (0);
     if (close (sv[0]) < 0 ||
 	dup2 (sv[1], STDIN_FILENO) < 0 ||
 	dup2 (sv[1], STDOUT_FILENO) < 0 ||
+	close (STDERR_FILENO) ||
 	close (sv[1]) < 0)
       _exit (127);
+
+    /* Don't let the subprocess think it can use the controlling tty */
+    setsid ();
 
     execl (EXECSHELL, "sh", "-c", Tunnel, NULL);
     _exit (127);
   }
+  mutt_unblock_signals_system (1);
+
   if (pid == -1)
   {
     close (sv[0]);
@@ -86,7 +97,6 @@ static int tunnel_socket_open (CONNECTION *conn)
     mutt_perror ("close");
 
   conn->fd = sv[0];
-  tunnel = (TUNNEL_DATA*) safe_malloc (sizeof (TUNNEL_DATA));
   tunnel->pid = pid;
 
   return 0;
@@ -94,15 +104,12 @@ static int tunnel_socket_open (CONNECTION *conn)
 
 static int tunnel_socket_close (CONNECTION* conn)
 {
-  TUNNEL_DATA* tunnel = (TUNNEL_DATA*) conn->data;
+  TUNNEL_DATA* tunnel = (TUNNEL_DATA*) conn->sockdata;
+  int rc;
 
-  if (!tunnel)
-    return 0;
-
+  rc = close (conn->fd);
   waitpid (tunnel->pid, NULL, 0);
-  close (conn->fd);
-  conn->fd = -1;
-  FREE (&conn->data);
+  FREE (&conn->sockdata);
 
-  return 0;
+  return rc;
 }
