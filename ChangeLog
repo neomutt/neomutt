@@ -1,3 +1,16 @@
+2004-02-02 10:22:56  Vincent Lefevre  <vincent@vinc17.org>  (roessler)
+
+	* po/fr.po: update
+
+2004-02-01 18:26:13  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* po/pt_BR.po, po/ru.po, po/sk.po, po/sv.po, po/tr.po, po/uk.po,
+	po/zh_CN.po, po/zh_TW.po, po/id.po, po/it.po, po/ja.po, po/ko.po,
+	po/lt.po, po/nl.po, po/pl.po, VERSION, po/bg.po, po/ca.po,
+	po/cs.po, po/da.po, po/de.po, po/el.po, po/eo.po, po/es.po,
+	po/et.po, po/fr.po, po/gl.po, po/hu.po, reldate.h: automatic
+	post-release commit for mutt-1.5.6
+
 2004-02-01 18:00:16  Mike Schiraldi  <1074468571@schiraldi.org>  (roessler)
 
 	* init.c: As you all know, running "mutt -F foo.rc" will have
