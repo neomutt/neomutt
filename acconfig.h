@@ -17,9 +17,6 @@
 /* What is your domain name? */
 #undef DOMAIN
 
-/* Mutt version info */
-#undef VERSION
-
 /* use dotlocking to lock mailboxes? */
 #undef USE_DOTLOCK
 
@@ -117,9 +114,6 @@
 /* Does your system have the fchdir() call? */
 #undef HAVE_FCHDIR
 
-/* getopt() is available, but not declared in any header */
-#undef HAVE_GETOPT_DECL
-
 /* Define if your locale.h file contains LC_MESSAGES.  */
 #undef HAVE_LC_MESSAGES
 
@@ -156,5 +150,24 @@
 /* define when your system has the setrlimit function */
 #undef HAVE_SETRLIMIT
 
-/* where can we find a debugger */
-#undef DEBUGGER
+/* Define if you have start_color, as a function or macro.  */
+#undef HAVE_START_COLOR
+
+/* Define if you have typeahead, as a function or macro.  */
+#undef HAVE_TYPEAHEAD
+
+/* Define if you have bkgdset, as a function or macro.  */
+#undef HAVE_BKGDSET
+
+/* Define if you have curs_set, as a function or macro.  */
+#undef HAVE_CURS_SET
+
+/* Define if you have meta, as a function or macro.  */
+#undef HAVE_META
+
+/* Define if you have use_default_colors, as a function or macro.  */
+#undef HAVE_USE_DEFAULT_COLORS
+
+/* Define if you have resizeterm, as a function or macro.  */
+#undef HAVE_RESIZETERM
+
