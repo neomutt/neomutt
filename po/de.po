@@ -630,7 +630,7 @@ msgstr "Nachricht zurückstellen?"
 
 #: compose.c:1141
 msgid "Write message to mailbox"
-msgstr "Schreibe Nachricht in Mailbox."
+msgstr "Schreibe Nachricht in Mailbox"
 
 #: compose.c:1144
 #, c-format
