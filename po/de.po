@@ -447,7 +447,7 @@ msgstr "Kopiere nach %s..."
 #: commands.c:823
 #, c-format
 msgid "Convert to %s upon sending?"
-msgstr ""
+msgstr "Konvertiere beim Senden nach %s?"
 
 #: commands.c:831
 #, c-format
@@ -455,17 +455,17 @@ msgid "Content-Type changed to %s."
 msgstr "Content-Type in %s abgeändert."
 
 #: commands.c:833
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; %s."
-msgstr "Zeichensatz in %s abgeändert."
+msgstr "Zeichensatz in %s abgeändert; %s."
 
 #: commands.c:835
 msgid "not converting"
-msgstr ""
+msgstr "nicht konvertiert"
 
 #: commands.c:835
 msgid "converting"
-msgstr ""
+msgstr "konvertiert"
 
 #: compose.c:40
 msgid "There are no attachments."
@@ -1108,7 +1108,7 @@ msgstr "Hilfe für %s"
 
 #: hook.c:243
 msgid "unhook: Can't do unhook * from within a hook."
-msgstr ""
+msgstr "unhook: Innerhalb eines hook kann kein unhook * aufgerufen werden."
 
 #: hook.c:255
 #, c-format
@@ -1118,7 +1118,7 @@ msgstr "unhook: Unbekannter hook-Typ: %s"
 #: hook.c:261
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s."
-msgstr ""
+msgstr "unhook: Kann kein %s innerhalb von %s löschen."
 
 #: imap/auth_anon.c:39
 msgid "Authenticating (anonymous)..."
@@ -2202,21 +2202,19 @@ msgstr ""
 "Um einen Bug zu melden, verwenden Sie bitte das Programm flea(1).\n"
 
 #: main.c:45
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2001 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2000 Michael R. Elkins und andere.\n"
+"Copyright (C) 1996-2001 Michael R. Elkins und andere.\n"
 "Mutt übernimmt KEINERLEI GEWÄHRLEISTUNG. Starten Sie `mutt -vv', um\n"
 "weitere Details darüber zu erfahren. Mutt ist freie Software. \n"
 "Sie können es unter bestimmten Bedingungen weitergeben; starten Sie\n"
 "`mutt -vv' für weitere Details.\n"
 
 #: main.c:51
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
@@ -2243,13 +2241,13 @@ msgid ""
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 msgstr ""
-"Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
-"Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2000 Thomas Roessler <roessler@guug.de>\n"
-"Copyright (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
-"Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-"Copyright (C) 2000      Edmund Grimley Evans <edmundo@rano.org>\n"
+"Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Copyright (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
+"Copyright (C) 1997-2001 Thomas Roessler <roessler@guug.de>\n"
+"Copyright (C) 1998-2001 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2001 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 2000-2001 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "Viele andere, die hier nicht erwähnt sind, haben viel Code, viele\n"
 "Bugfixes und viele Ideen beigesteuert.\n"
@@ -2268,8 +2266,7 @@ msgstr ""
 "\n"
 "    Sie sollten eine Kopie der GNU General Public License zusammen mit\n"
 "    diesem Programm erhalten haben; falls nicht, schreiben sie an Free\n"
-"    Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  "
-"02111, USA.\n"
+"    Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 
 #: main.c:88
 msgid ""
@@ -3114,10 +3111,8 @@ msgid "Fetching PGP key..."
 msgstr "Hole PGP Schlüssel..."
 
 #: pgpkey.c:486
-#, fuzzy
 msgid "All matching keys are marked expired/revoked."
-msgstr ""
-"Dieser Schlüssel ist nicht verwendbar: veraltet/deaktiviert/zurückgezogen."
+msgstr "Alles passenden Schlüssel sind als veraltet/zurückgezogen markiert."
 
 #. __STRCAT_CHECKED__
 #: pgpkey.c:512
@@ -3162,10 +3157,8 @@ msgstr ""
 "Dieser Schlüssel ist nicht verwendbar: veraltet/deaktiviert/zurückgezogen."
 
 #: pgpkey.c:608
-#, fuzzy
 msgid "This ID is expired/disabled/revoked"
-msgstr ""
-"Dieser Schlüssel ist nicht verwendbar: veraltet/deaktiviert/zurückgezogen."
+msgstr "Dieser ID ist veraltet/deaktiviert/zurückgezogen"
 
 #: pgpkey.c:612
 msgid "This ID's trust level is undefined."
@@ -3180,9 +3173,9 @@ msgid "This ID is only marginally trusted."
 msgstr "Diese ID ist nur begrenzt vertrauenswürdig."
 
 #: pgpkey.c:622
-#, fuzzy, c-format
+#, c-format
 msgid "%s Do you really want to use the key?"
-msgstr "%s Wollen Sie sie wirklich benutzen?"
+msgstr "%s Wollen Sie den Schlüssel wirklich benutzen?"
 
 #: pgpkey.c:720
 msgid "Please enter the key ID: "
