@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000 Vsevolod Volkov <vvv@mutt.org.ua>
+ * Copyright (C) 2000-2002 Vsevolod Volkov <vvv@mutt.org.ua>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -251,6 +251,8 @@ int pop_open_connection (POP_DATA *pop_data)
   ret = pop_authenticate (pop_data);
   if (ret == -1)
     goto err_conn;
+  if (ret == -3)
+    mutt_clear_error ();
   if (ret != 0)
     return ret;
 
