@@ -116,40 +116,30 @@ using procmail, aren't you?):
 
 ------------------------------
 
-  ##
-  ## PGP
-  ##
+##
+## PGP
+##
   
-  :0 H
-  * ^Content-Type: text
-  {
-      :0 fBw
-      * ^-----BEGIN PGP MESSAGE-----
-      | formail -I "Content-Type: application/pgp; format=text; x-action=encryptsign"
-  
-      :0 fBw
-      * ^-----BEGIN PGP SIGNED MESSAGE-----
-      | formail -I "Content-Type: application/pgp; format=text; x-action=sign"
-  }
-  
-  ##
-  ## Add a "Content-Type: application/pgp" header so Mutt will know the
-  ## mail is encrypted.
-  ##
-  
-  :0 fBw
-  * ^-----BEGIN PGP MESSAGE-----
-  | formail -a "Content-Type: application/pgp; format=text; x-action=encryptsign"
-  
-  ##
-  ## Add a "Content-Type: application/pgp" header so Mutt will know the
-  ## mail is signed.
-  ##
-  
-  :0 fBw
-  * ^-----BEGIN PGP SIGNED MESSAGE-----
-  | formail -a "Content-Type: application/pgp; format=text; x-action=sign"
-  
+:0
+* !^Content-Type: message/
+* !^Content-Type: multipart/
+* !^Content-Type: application/pgp
+{
+        :0 fBw
+        * ^-----BEGIN PGP MESSAGE-----
+        * ^-----END PGP MESSAGE-----
+        | formail \
+            -i "Content-Type: application/pgp; format=text; x-action=encrypt"
+
+        :0 fBw
+        * ^-----BEGIN PGP SIGNED MESSAGE-----
+        * ^-----BEGIN PGP SIGNATURE-----
+        * ^-----END PGP SIGNATURE-----
+        | formail \
+            -i "Content-Type: application/pgp; format=text; x-action=sign"
+}
+
+
 ------------------------------
 
 
