@@ -219,7 +219,12 @@ static void rfc2231_decode_one (char *dest, char *src, char *chs)
   *d = '\0';
   
   if (chs && strcmp (chs, "us-ascii") && strcmp (chs, Charset))
-    mutt_display_string (dest, mutt_get_translation (chs, Charset));
+  {
+    if (mutt_is_utf8 (chs))
+      mutt_decode_utf8_string (dest, mutt_get_charset (Charset));
+    else
+      mutt_display_string (dest, mutt_get_translation (chs, Charset));
+  }
 }
 
 /* insert parameter into an ordered list.
