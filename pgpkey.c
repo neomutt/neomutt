@@ -910,13 +910,11 @@ pgp_key_t *pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring)
   
   if (matches)
   {
-    if (the_valid_key && !multi && !weak 
-	&& !(invalid && option (OPTPGPSHOWUNUSABLE)))
-    {	
-      /* 
-       * There was precisely one strong match on a valid ID, there
-       * were no valid keys with weak matches, and we aren't
-       * interested in seeing invalid keys.
+    if (the_valid_key && !multi /* && !weak 
+	&& !(invalid && option (OPTPGPSHOWUNUSABLE)) */)
+    {
+      /*
+       * There was precisely one strong match on a valid ID.
        * 
        * Proceed without asking the user.
        */
