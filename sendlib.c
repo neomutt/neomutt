@@ -784,8 +784,8 @@ static size_t convert_file_from_to (FILE *file,
   char *fcode;
   char **tcode;
   const char *c, *c1;
-  size_t n;
-  int ncodes, i, ret, cn;
+  size_t n, ret;
+  int ncodes, i, cn;
 
   /* Count the tocodes */
   ncodes = 0;
@@ -811,8 +811,7 @@ static size_t convert_file_from_to (FILE *file,
   }
 
   /* Try each fromcode in turn */
-  ret = -1;
-  cn = -1;
+  ret = (size_t)(-1);
   for (c = fromcodes; c; c = c1 ? c1 + 1 : 0)
   {
     c1 = strchr (c, ':');
