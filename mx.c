@@ -101,11 +101,10 @@ static int dotlock_file (const char *path, int retry)
 {
   int r;
   int flags = DL_FL_USEPRIV | DL_FL_RETRY;
-  
+
   if (retry) retry = 1;
 
 retry_lock:
-  mutt_clear_error();
   if ((r = invoke_dotlock(path, flags, retry)) == DL_EX_EXIST)
   {
     if (!option (OPTNOCURSES))
@@ -118,6 +117,7 @@ retry_lock:
       {
 	flags |= DL_FL_FORCE;
 	retry--;
+	mutt_clear_error ();
 	goto retry_lock;
       }
     } 
