@@ -28,13 +28,9 @@ AC_PROG_INSTALL
 AC_ISC_POSIX
 AC_PROG_RANLIB
 
-case "$host" in
-*-*-hpux*)
-	if test -z "$GCC" ; then
-		CFLAGS="$CFLAGS -Ae -D_HPUX_SOURCE"
-	fi
-	;;
-esac
+AM_C_PROTOTYPES
+AC_C_CONST
+AC_C_INLINE
 
 ac_aux_path_sendmail=/usr/sbin:/usr/lib   
 AC_PATH_PROG(SENDMAIL, sendmail, no, $PATH:$ac_aux_path_sendmail)
