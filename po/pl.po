@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutt-1.3.22.1i\n"
 "POT-Creation-Date: 2001-08-30 23:30+0200\n"
-"PO-Revision-Date: 2001-09-06\n"
+"PO-Revision-Date: 2001-09-16\n"
 "Last-Translator: Pawe³ Dziekoñski <p.dziekonski@mml.ch.pwr.wroc.pl>\n"
 "Language-Team: POLISH <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -510,7 +510,7 @@ msgstr "Podpisz"
 
 #: compose.c:118
 msgid "Clear"
-msgstr "Bez jakiegokolwiek kodowania"
+msgstr "Bez jakiegokolwiek szyfrowania"
 
 #: compose.c:124
 msgid " sign as: "
@@ -1577,7 +1577,7 @@ msgstr "zapisz list aby wys³aæ go pó¼niej"
 
 #: keymap_alldefs.h:41
 msgid "rename/move an attached file"
-msgstr "przezwij/przenie¶ do³±czony plik"
+msgstr "zmieñ nazwê lub przenie¶ do³±czony plik"
 
 #: keymap_alldefs.h:42
 msgid "send the message"
@@ -2137,11 +2137,11 @@ msgstr "obejrzyj identyfikator u¿ytkownika klucza"
 
 #: keymap_alldefs.h:182
 msgid "make decrypted copy and delete"
-msgstr "utwórz rozkodowan± kopiê i usuñ orygina³"
+msgstr "utwórz rozszyfrowana± kopiê i usuñ orygina³"
 
 #: keymap_alldefs.h:183
 msgid "make decrypted copy"
-msgstr "utwórz rozkodowan± kopiê"
+msgstr "utwórz rozszyfrowan± kopiê"
 
 #: keymap_alldefs.h:184
 msgid "check for classic pgp"
@@ -3389,7 +3389,7 @@ msgstr "Wywo³aæ od³o¿ony list?"
 
 #: send.c:1316
 msgid "Abort unmodified message?"
-msgstr "List nie zosta³ zmieniony. Zaniechaæ wys³ania?"
+msgstr "List nie zosta³ 1mieniony. Zaniechaæ wys³ania?"
 
 #: send.c:1318
 msgid "Aborted unmodified message."
