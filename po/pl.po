@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt-1.5.2i\n"
-"POT-Creation-Date: 2002-12-17 11:35+0100\n"
+"POT-Creation-Date: 2002-12-18 11:26+0100\n"
 "PO-Revision-Date: 2002-12-09\n"
 "Last-Translator: Pawe³ Dziekoñski <dzieko@pwr.wroc.pl>\n"
 "Language-Team: POLISH <pl@li.org>\n"
@@ -1657,6 +1657,16 @@ msgstr "exec: brak argumentów"
 #, c-format
 msgid "%s: no such function"
 msgstr "%s: brak takiej funkcji"
+
+#: keymap.c:922
+#, fuzzy
+msgid "Enter keys (^G to abort): "
+msgstr "Wprowad¼ numer klucza dla %s: "
+
+#: keymap.c:927
+#, c-format
+msgid "Char = %s, Octal = %o, Decimal = %d"
+msgstr ""
 
 #: keymap_alldefs.h:5
 msgid "null operation"

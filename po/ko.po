@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.5.1i\n"
-"POT-Creation-Date: 2002-12-17 11:35+0100\n"
+"POT-Creation-Date: 2002-12-18 11:26+0100\n"
 "PO-Revision-Date: 2002-05-02 19:15+300\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Im Eunjea <eunjea@kldp.org>\n"
@@ -1652,6 +1652,16 @@ msgstr "exec: 인수가 없음"
 #, c-format
 msgid "%s: no such function"
 msgstr "%s: 그런 기능 없음"
+
+#: keymap.c:922
+#, fuzzy
+msgid "Enter keys (^G to abort): "
+msgstr "%s의 keyID 입력: "
+
+#: keymap.c:927
+#, c-format
+msgid "Char = %s, Octal = %o, Decimal = %d"
+msgstr ""
 
 #: keymap_alldefs.h:5
 msgid "null operation"

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.5.2\n"
-"POT-Creation-Date: 2002-12-17 11:35+0100\n"
+"POT-Creation-Date: 2002-12-18 11:26+0100\n"
 "PO-Revision-Date: 2002-12-07 01:40+0900\n"
 "Last-Translator: Tamotsu TAKAHASHI <tamo@momonga-linux.org>\n"
 "Language-Team: mutt-j <mutt-j@ribbon.or.jp>\n"
@@ -1662,6 +1662,16 @@ msgstr "exec: 引数がない"
 #, c-format
 msgid "%s: no such function"
 msgstr "%s という機能はない"
+
+#: keymap.c:922
+#, fuzzy
+msgid "Enter keys (^G to abort): "
+msgstr "%s の鍵 ID 入力: "
+
+#: keymap.c:927
+#, c-format
+msgid "Char = %s, Octal = %o, Decimal = %d"
+msgstr ""
 
 #: keymap_alldefs.h:5
 msgid "null operation"

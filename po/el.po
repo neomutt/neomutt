@@ -11,7 +11,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt-1.5.2i\n"
-"POT-Creation-Date: 2002-12-17 11:35+0100\n"
+"POT-Creation-Date: 2002-12-18 11:26+0100\n"
 "PO-Revision-Date: 2002-12-09 00:01GMT+2\n"
 "Last-Translator: Dokianakis Fanis <madf@hellug.gr>\n"
 "Language-Team: Greek <EL@li.org>\n"
@@ -2002,6 +2002,18 @@ msgstr "exec: καθόλου ορίσματα"
 #, c-format
 msgid "%s: no such function"
 msgstr "%s: δεν υπάρχει τέτοια λειτουργία"
+
+#
+# pgp.c:1200
+#: keymap.c:922
+#, fuzzy
+msgid "Enter keys (^G to abort): "
+msgstr "Εισάγετε keyID για το %s: "
+
+#: keymap.c:927
+#, c-format
+msgid "Char = %s, Octal = %o, Decimal = %d"
+msgstr ""
 
 #
 #: keymap_alldefs.h:5

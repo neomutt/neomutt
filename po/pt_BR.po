@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.5i\n"
-"POT-Creation-Date: 2002-12-17 11:35+0100\n"
+"POT-Creation-Date: 2002-12-18 11:26+0100\n"
 "PO-Revision-Date: 2000-03-05 01:14-0300\n"
 "Last-Translator: Marcus Brito <marcus@visaotec.com.br>\n"
 "Language-Team: LIE-BR (http://lie-br.conectiva.com.br)\n"
@@ -1696,6 +1696,16 @@ msgstr "exec: poucos argumentos"
 #, fuzzy, c-format
 msgid "%s: no such function"
 msgstr "%s: não existe tal função no mapa"
+
+#: keymap.c:922
+#, fuzzy
+msgid "Enter keys (^G to abort): "
+msgstr "Entre a keyID para %s: "
+
+#: keymap.c:927
+#, c-format
+msgid "Char = %s, Octal = %o, Decimal = %d"
+msgstr ""
 
 #: keymap_alldefs.h:5
 msgid "null operation"

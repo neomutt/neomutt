@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.5.1\n"
-"POT-Creation-Date: 2002-12-17 11:35+0100\n"
+"POT-Creation-Date: 2002-12-18 11:26+0100\n"
 "PO-Revision-Date: 2002-05-02 21:18+02:00\n"
 "Last-Translator: Jörgen Tegnér <jorgen.tegner@telia.se>\n"
 "Language-Team: Swedish <mutt-po@mutt.org>\n"
@@ -1654,6 +1654,16 @@ msgstr "exec: parametrar saknas"
 #, c-format
 msgid "%s: no such function"
 msgstr "%s: funktionen saknas"
+
+#: keymap.c:922
+#, fuzzy
+msgid "Enter keys (^G to abort): "
+msgstr "Ange nyckel-ID för %s: "
+
+#: keymap.c:927
+#, c-format
+msgid "Char = %s, Octal = %o, Decimal = %d"
+msgstr ""
 
 #: keymap_alldefs.h:5
 msgid "null operation"

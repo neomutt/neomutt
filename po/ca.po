@@ -10,7 +10,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt 1.3.27i\n"
-"POT-Creation-Date: 2002-12-17 11:35+0100\n"
+"POT-Creation-Date: 2002-12-18 11:26+0100\n"
 "PO-Revision-Date: 2002-02-02 11:29+01:00\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -1747,6 +1747,16 @@ msgstr "exec: Manquen arguments."
 #, c-format
 msgid "%s: no such function"
 msgstr "%s: La funció no existeix."
+
+#: keymap.c:922
+#, fuzzy
+msgid "Enter keys (^G to abort): "
+msgstr "Entreu l'ID de clau per %s: "
+
+#: keymap.c:927
+#, c-format
+msgid "Char = %s, Octal = %o, Decimal = %d"
+msgstr ""
 
 # ivb (2001/11/24)
 # ivb  Totes aquestes cadenes són missatges d'ajuda.  No sembla haver
