@@ -181,13 +181,25 @@ char *mutt_strlower (char *s)
 
 void mutt_unlink (const char *s)
 {
+  int fd;
+  int flags;
   FILE *f;
   struct stat sb;
   char buf[2048];
+
+  /* Defend against symlink attacks */
+  
+#ifdef O_NOFOLLOW 
+  flags = O_RDWR | O_NOFOLLOW;
+#else
+  flags = O_RDWR;
+#endif
   
   if (stat (s, &sb) == 0)
   {
-    if ((f = fopen (s, "r+")))
+    if ((fd = open (s, flags)) < 0)
+      return;
+    if ((f = fdopen (fd, "r+")))
     {
       unlink (s);
       memset (buf, 0, sizeof (buf));

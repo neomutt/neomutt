@@ -108,7 +108,8 @@ int mutt_compose_attachment (BODY *a)
 	  if (mutt_yesorno (_("Can't match nametemplate, continue?"), M_YES) != M_YES)
 	    goto bailout;
 	}
-	unlink_newfile = 1;
+	else
+	  unlink_newfile = 1;
       }
       else
 	strfcpy(newfile, a->filename, sizeof(newfile));
@@ -173,7 +174,11 @@ int mutt_compose_attachment (BODY *a)
 	    fclose (fp);
 	    fclose (tfp);
 	    mutt_unlink (a->filename);  
-	    mutt_rename_file (tempfile, a->filename); 
+	    if (mutt_rename_file (tempfile, a->filename) != 0) 
+	    {
+	      mutt_perror _("Failure to rename file.");
+	      goto bailout;
+	    }
 
 	    mutt_free_body (&b);
 	  }
@@ -235,7 +240,8 @@ int mutt_edit_attachment (BODY *a)
 	  if (mutt_yesorno (_("Can't match nametemplate, continue?"), M_YES) != M_YES)
 	    goto bailout;
 	}
-	unlink_newfile = 1;
+	else
+	  unlink_newfile = 1;
       }
       else
 	strfcpy(newfile, a->filename, sizeof(newfile));
@@ -607,6 +613,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
 
     rc = mutt_do_pager (descrip, pagerfile,
 			M_PAGER_ATTACHMENT | (is_message ? M_PAGER_MESSAGE : 0), &info);
+    *pagerfile = '\0';
   }
   else
     rc = 0;
