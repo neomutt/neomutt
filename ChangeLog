@@ -1,3 +1,102 @@
+Wed Oct 11 10:21:57 2000  Thomas Roessler  <roessler@guug.de>
+
+	* buffy.c: Compilation fix from Emil Sit <sit@cisco.com>.
+
+Tue Oct 10 19:22:48 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/POTFILES.in, doc/manual.sgml.head, globals.h, init.c, init.h, mailbox.h, mutt.h, muttlib.c, mx.c, mx.h, pop_auth.c, pop.c, pop.h, pop_lib.c, protos.h, recvattach.c, browser.c, buffy.c, commands.c, compose.c, configure.in, curs_main.c, Makefile.am:
+	Vsevolod Volkov's POP mailbox patch.
+
+	* doc/manual.sgml.head:
+	Mixmaster documentation patch from Brian Salter-Duke.
+
+Mon Oct  9 08:30:35 2000  Thomas Roessler  <roessler@guug.de>
+
+	* main.c: Add an #ifdef for HAVE_GETADDRINFO.
+
+	* mutt_socket.c: Use AF_INET6 only when necessary.
+
+Sat Oct  7 18:06:24 2000  Thomas Roessler  <roessler@guug.de>
+
+	* curs_lib.c, help.c: Display fixes from EGE.
+
+Thu Oct  5 19:12:28 2000  Thomas Roessler  <roessler@guug.de>
+
+	* query.c: Catch some possible NULL pointer deferences.  From
+	chris+usenet@chiappa.net (Chris Chiappa), posted to comp.mail.mutt.
+
+Wed Oct  4 18:50:35 2000  Thomas Roessler  <roessler@guug.de>
+
+	* mutt_ssl_nss.c:
+	Downgrade Michael Elkins' indentation style to the version used
+	throughout mutt. ;-)
+
+	* acconfig.h, configure.in, init.c, init.h, Makefile.am, mutt.h, mutt_socket.c, mutt_ssl_nss.c, pop.c:
+	Adding support for Netscape's (pardon, Mozilla's) SSL
+	implementation.  From Michael Elkins.
+
+	* globals.h, init.h, mutt_socket.c, protos.h, signal.c:
+	patch.me.connect_timeout.1
+
+Tue Oct  3 10:47:20 2000  Thomas Roessler  <roessler@guug.de>
+
+	* NEWS: Document some of the recent user-visible changes.
+
+	* doc/manual.sgml.head:
+	More documentation for the "L" to_char.  Thanks, Byrial!
+
+	* hdrline.c, init.h:
+	Adding a list flag to to_chars,  From Andreas Plesner Jacobsen
+	<apj@wol.dk>.  Note: If you don't like the new behaviour, just set
+	$to_chars to the old " +TCF" value.
+
+	* po/ru.po: update
+
+Mon Oct  2 09:11:52 2000  Thomas Roessler  <roessler@guug.de>
+
+	* configure.in, mutt_socket.c: patch-bac.ipv6-1
+
+	* curs_lib.c: patch-1.3.9.bj.yesno.1
+
+Thu Sep 28 06:53:36 2000  Thomas Roessler  <roessler@guug.de>
+
+	* init.h: Fix a minor typo.  From Byrial.
+
+	* charset.c, charset.h, init.c, INSTALL:
+	Document the --without-wc-funcs switch to configure, and clean up
+	the code to set the character set from nl_langinfo from EGE.
+
+Wed Sep 27 14:28:35 2000  Thomas Roessler  <roessler@guug.de>
+
+	* charset.c:
+	Catch another error condition which may be caused by a broken
+	nl_langinfo() function.
+
+	* COPYRIGHT: We don't need to mention EAY's copyright any more.
+
+	* charset.c: Fix #287.
+
+Tue Sep 26 23:05:46 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/eo.po: update
+
+	* Attic/sha1dgst.c, Attic/sha.h, Attic/sha_locl.h, checktypes.c, main.c, Makefile.am, pgppubring.c, sha1.c, sha1.h:
+	Replace the BSD-licensed sha-1 from SSLeay with a public domain
+	version in order to satisfy GPL license zelots.
+
+Mon Sep 25 13:03:09 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/sv.po: update
+
+	* send.c: patch-1.3.9.bj.f-up-prompt.1
+
+Thu Sep 21 09:37:14 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/sk.po, po/sv.po, po/uk.po, po/zh_CN.GB2312.po, po/zh_TW.Big5.po, po/ru.po, po/nl.po, po/pl.po, po/pt_BR.po, po/it.po, po/ko.po, po/es.po, po/fr.po, po/gl.po, po/id.po, po/el.po, po/eo.po, po/da.po, po/de.po, po/cs.po, ChangeLog, reldate.h, VERSION:
+	automatic post-release commit for mutt-1.3.9
+
+	* rfc2047.c: Make some of the code more readable.  From EGE.
+
 Thu Sep 21 07:56:40 2000  Thomas Roessler  <roessler@guug.de>
 
 	* rfc2047.c: Make some of the code more readable.  From EGE.
