@@ -1,3 +1,270 @@
+Thu Sep 23 21:13:55 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/el.po: New Greek tranlsation from Fanis <madf@geocities.com>.
+
+	* browser.c: [stable] Solaris snprintf vs. NULL pointers.
+
+	* browser.c:
+	Try not to pass NULL pointers to snprintf - the Solaris version
+	doesn't like them.  (Noted by Thomas.Parmelan@efrei.fr.)
+
+	* imap/imap_private.h, imap/socket.c, imap/util.c, imap/BUGS, imap/imap.c, buffy.c:
+	Brendan Cully's latest changes:
+
+	* includes all of my last patch, since it hasn't been committed yet.
+	* catches a couple segfault problems if Context is NULL.
+	* works harder to avoid sending null STORE FLAGS commands. May not
+	  be perfect yet, but also has extra debugging code.
+	* has the beginnings of a more interactive IMAP error handler.
+	  Doesn't do anything yet, I'm just including it because I want to
+	  get the rest of the patch out.
+
+	* doc/Makefile.in, Makefile.am:
+	Use $(MAKE) instead of make.  Noted by Ryan Murray
+	<rmurray@cyberhqz.com>.
+
+	* doc/Makefile.in, Makefile.am, configure.in, init.h:
+	A small portability fix related to makedoc.
+
+	* po/es.po: [stable] new spanish translation from Boris Wesslowski
+	<Boris.Wesslowski@StudBox.Uni-Stuttgart.DE>.
+
+	* alias.c: increase this limit for stable as well.
+
+	* handler.c:
+	[stable] Fix a buffer overflow and a bug helping with exploiting this
+	overflow in the text/enriched handler.
+
+	* handler.c:
+	Fix a buffer overflow and a bug helping with exploiting this
+	overflow in the text/enriched handler.
+
+	* imap/browse.c, doc/manual.sgml.head, curs_main.c: This small patch:
+
+	* catches a possible null-pointer dereference in mx_close_mailbox when
+	  logging out of the server.
+	* fixes IMAP tab-completion cosmetics (slightly broken with last
+	  Cyrus-compatibility updates)
+	* adds a bit to the IMAP part of the manual.
+
+	Brendan Cully <brendan@kublai.com>
+
+	* alias.c:
+	Increase a buffer to make larger group aliases possible.  The
+	current STRING buffer was far too small.
+
+Sun Sep 12 19:39:10 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/es.po: [stable] Updated spanish translation from Boris Wesslowski.
+
+	* po/es.po:
+	[stable] Fixes for the Spanish translation.  From Nicolás Lichtmaier
+	<nick@debian.org>.
+
+	* imap/BUGS, imap/Makefile.am, imap/TODO, imap/auth.c, imap/imap.c, imap/imap.h, imap/imap_private.h, imap/message.c, imap/util.c, buffy.c, commands.c, globals.h, init.h:
+	The attached patch (imap-turbocharge.diff):
+
+	* changes mutt_buffy_check to only poll the selected folder when it
+	  is opened, not all mailboxes (unless the timeout has expired).
+	  This is a noticeable win if you have a few IMAP mailboxes.
+
+	* sets the default checkinterval to 60 seconds from 0. Things are
+	  much much slower with 0.
+
+	* makes some cosmetic renames
+
+	* moves lots of generic imap stuff into a separate file, imap/util.c
+
+	* abstracts the process of sending a command to an IMAP server a bit
+	  better (lots more to do here, though).
+
+	* moves the message-set creation code used by the new fastdelete
+	  code into its own function, since it is generally useful.
+
+	* implements server-side copy of messages. Tagged messages are
+	  copied in one command, thanks to the message-set function. Speedy!
+
+	(From: Brendan Cully; modifications by tlr.)
+
+Sat Sep 11 17:04:12 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/pl.po: [stable] new polish translation from Pawel Dienkonski.
+
+	* po/es.po: [stable] New Spanish translation from Boris Wesslowski.
+
+	* configure.in: [stable] Hurd portability patch from Marcus Brinkmann.
+
+	* configure.in: Hurd portability patch from Marcus Brinkmann.
+
+	* imap/browse.c, imap/imap.c: Fix IMAP fast deletion.  From Brendan.
+
+	* Attic/Muttrc.in: typos fixed by Telsa.
+
+	* doc/Attic/manual.sgml.in:
+	Small manual fix for stable.  Noted by Telsa
+	<hobbit@aloss.ukuu.org.uk>.
+
+Wed Sep  8 06:05:54 1999  Thomas Roessler  <roessler@guug.de>
+
+	* imap/imap.c, imap/imap.h, imap/imap_private.h, mx.c, curs_main.c:
+	The attached patch:
+
+	* gets Mutt to properly log off the IMAP server when quitting. Clients
+	  don't care, but it's polite and proper.
+	* further updates the flags changes from yesterday
+	* uses CLOSE instead of EXPUNGE when closing a mailbox and purging
+	  messages, for some slight speed gain.
+	* purges all messages marked for deletion in one command (if purging),
+	  making for very cool speed gains switching mailboxes if you're on,
+	  say, a few high volume mailing lists. Yeah, baby! (I personally love
+	  this one).
+
+	(From Brendan Cully <brendan@kublai.com>)
+
+Tue Sep  7 17:01:28 1999  Thomas Roessler  <roessler@guug.de>
+
+	* Makefile.am: Bail out if the chmod of mutt_dotlock fails.
+
+	* pgpkey.c: Fix a strtok NULL pointer problem.
+
+	* doc/Attic/manual.sgml.in: notes on how to produce secure mailcaps.
+
+	* gnupgparse.c, pgpinvoke.c: GPG-related fix from Gero Treuner.
+
+	* imap/BUGS, imap/Makefile.am, imap/TODO, imap/imap.c, imap/imap_private.h, imap/message.c, imap/message.h, mutt.h, muttlib.c, mx.c, status.c, complete.c, flags.c:
+	* redoes the folder update optimisation I did yesterday. It's somewhat
+	  cleaner and less invasive, and I'm not so worried about memory leaks
+	  now.
+
+	* Fixes the bug where mutt would append a '/' to $folder even if it
+	  was only {mailhost}, causing mutt to browse the root directory
+	  instead of the home directory.
+
+	* includes a first stab at preserving the D flag on the IMAP server.
+	  Now if you answer no to 'Purge deleted', the server still stores
+	  the messages as deleted, but doesn't expunge them on exit.
+
+	  NOTE: this is a first attempt. Play around, but don't mark things
+	  as deleted that you'd be sorry to see disappear.
+
+	(From: Brendan Cully <brendan@kublai.com>)
+
+	* doc/manual.sgml.head: Adding notes from README.SECURITY.
+
+Mon Sep  6 09:16:53 1999  Thomas Roessler  <roessler@guug.de>
+
+	* imap/Makefile.am, imap/TODO, imap/imap.c, imap/imap.h, imap/imap_private.h, imap/message.c, imap/message.h, mutt.h, muttlib.c:
+	* Small imap/Makefile.am tweak for make dist
+
+	* Hold on to mailbox flags, message flags, do update in one pass
+	  instead of two, halving traffic on mailbox sync.
+
+	* Update message flags at fetch as well as header download, if the
+	  server thinks they've changed. Saves some unneeded updates on
+	  sync.
+
+	* Move some structures out of imap_private.h into message.h, since
+	  they are local now.
+
+	(From: Brendan Cully <brendan@kublai.com>)
+
+Sun Sep  5 08:42:23 1999  Thomas Roessler  <roessler@guug.de>
+
+	* contrib/Tin.rc: add a sample of tin/lynx-like key bindings.
+
+	* imap/Makefile.am: include message.c with the IMAP library.
+
+	* init.c: [stable] Fixing "unignore *".
+
+	* init.c: Fix "unignore *": We must not add "*" to the unignore list.
+
+	* init.h: Documentation nit, from Liviu.
+
+Sat Sep  4 04:55:58 1999  Thomas Roessler  <roessler@guug.de>
+
+	* imap/BUGS, imap/browse.c, imap/imap.c, imap/imap_private.h, imap/message.c:
+	Fix some more IMAP problems.  From Brendan Cully.
+
+Fri Sep  3 21:42:16 1999  Thomas Roessler  <roessler@guug.de>
+
+	* contrib/sample.muttrc:
+	fix mailing list addresses.  Noted by David Benfell
+	<benfell@greybeard95a.com>.
+
+	* browser.c:
+	- If the name of the folder returned by an IMAP server is empty, Mutt
+	  could segfault in the browser window attempting to display it.
+	- add_folder in browser.c looks like it got corrupted in some CVS
+	  update. A small patch makes things work again for
+	  examine_mailboxes.
+	(From: Brendan Cully <brendan@kublai.com>)
+
+	* strdup.c, configure.in: strdup for unstable.
+
+	* configure.in, strdup.c:
+	[stable] Some systems may not have strdup.  Substitute it.
+
+	* strdup.c:
+	file strdup.c was initially added on branch mutt-1-0-stable.
+
+	* browser.c: [stable] cosmetic fix from Brendan Cully.
+
+Thu Sep  2 18:50:46 1999  Thomas Roessler  <roessler@guug.de>
+
+	* editmsg.c:
+	Don't copy the Status header to the user's edit buffer - we destroy
+	it later when copying the message back.
+
+	* acconfig.h, configure.in, init.c, init.h, main.c:
+	[stable] Improved pgp 6.5.1 support.  From Jochen Schmitt
+	<Jochen@herr-schmitt.de>.
+
+	* doc/manual.sgml.head, Makefile.am, OPS, compose.c, curs_main.c, editmsg.c, mutt.h, protos.h, send.c, sendlib.c:
+	A new edit-message feature, giving the raw message in an editor.
+
+	* imap/auth.c: Fix a tiny signedness warning.
+
+	* dotlock.c: Remove a superfluous label.
+
+	* dotlock.c: [stable] remove a superfluous label.
+
+	* po/cs.po:
+	New czech translation.  From Jiri Pavlovsky <pavlovsk@ff.cuni.cz>.
+
+	* doc/Attic/manual.sgml.in:
+	[stable] It's www.sgmltools.org, not www.sgml-tools.org.  Noted by
+	Heiko Schlichting.
+
+Wed Sep  1 21:41:19 1999  Thomas Roessler  <roessler@guug.de>
+
+	* doc/Makefile.in, Makefile.am:
+	A couple of build process and portability fixes concerning the
+	automatically generated documentation.
+
+	* mutt.h, init.c:
+	[stable] Fix ignore/unignore.  This is a back-port from the unstable
+	branch.
+
+	* po/ko.po: New Korean translation.  From Byeong-Chan Kim
+	<redhands@linux.sarang.net>.
+
+	* curs_lib.c, edit.c, hdrline.c, sendlib.c:
+	Fix a couple of possible compilation warnings.  (Noted by "John C.
+	Place" <placej@ctcdist.com>.)
+
+	* hdrline.c, sendlib.c, curs_lib.c, edit.c:
+	[stable] Fix a couple of small warnings.  Noted by "John C. Place"
+	<placej@ctcdist.com>.
+
+	* ChangeLog: check-point commit.
+
+	* mx.c: Don't clear the error line whenever dotlocking a file.
+
+	* mx.h: adding a prototype.
+
+	* curs_main.c, mailbox.h, mx.c:
+	When the user synchronizes a mail folder, do a thorough check.
+
 Wed Sep  1 07:47:40 1999  Thomas Roessler  <roessler@guug.de>
 
 	* mx.c: Don't clear the error line whenever dotlocking a file.

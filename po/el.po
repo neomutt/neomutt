@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt-0.95.6\n"
-"POT-Creation-Date: 1999-06-03 23:26+0200\n"
+"POT-Creation-Date: 1999-09-02 13:20+0200\n"
 "PO-Revision-Date: 1999-06-25 12:00+0200\n"
 "Last-Translator: Φάνης Δοκιανάκης <fanis@freemail.gr>\n"
 "Language-Team: Greek <el@li.org>\n"
@@ -16,8 +16,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #
-#: addrbook.c:31 browser.c:41 pager.c:1375 postpone.c:32 query.c:43
-#: recvattach.c:47
+#: addrbook.c:31 browser.c:41 pager.c:1379 postpone.c:37 query.c:43
+#: recvattach.c:57
 msgid "Exit"
 msgstr "Έξοδος"
 
@@ -27,8 +27,8 @@ msgid "Select"
 msgstr "Επιλέξτε"
 
 #
-#: addrbook.c:33 browser.c:44 compose.c:90 curs_main.c:259 pager.c:1472
-#: pgpkey.c:449 postpone.c:35 query.c:48 recvattach.c:51
+#: addrbook.c:33 browser.c:44 compose.c:90 curs_main.c:264 pager.c:1476
+#: pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Βοήθεια"
 
@@ -44,114 +44,114 @@ msgstr "Ψευδώνυμα"
 
 #
 #. add a new alias
-#: alias.c:192
+#: alias.c:215
 msgid "Alias as: "
 msgstr "Ψευδώνυμο ως: "
 
 #
-#: alias.c:198
+#: alias.c:221
 msgid "You already have an alias defined with that name!"
 msgstr "Έχετε ήδη ένα ψευδώνυμο με αυτό το όνομα!"
 
 #
-#: alias.c:212
+#: alias.c:235
 msgid "Address: "
 msgstr "Διεύθυνση: "
 
 #
-#: alias.c:228
+#: alias.c:251
 msgid "Personal name: "
 msgstr "Προσωπικό Όνομα: "
 
 #
-#: alias.c:237
+#: alias.c:260
 #, c-format
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] Δέχεστε;"
 
 #
-#: alias.c:254 recvattach.c:381 recvattach.c:438
+#: alias.c:277 recvattach.c:391 recvattach.c:448
 msgid "Save to file: "
 msgstr "Αποθήκευση στο αρχείο: "
 
 #
-#: alias.c:265
+#: alias.c:288
 msgid "Alias added."
 msgstr "Το ψευδώνυμο προστέθηκε."
 
 #
-#: attach.c:111 attach.c:238 attach.c:430 attach.c:881
+#: attach.c:112 attach.c:239 attach.c:431 attach.c:883
 msgid "Can't match nametemplate, continue?"
 msgstr "Αδυναμία ταιριάσματος του nametemplate, να συνεχίσω;"
 
 #
 #. For now, editing requires a file, no piping
-#: attach.c:123
+#: attach.c:124
 msgid "Mailcap compose entry requires %%s"
 msgstr "Η καταχώρηση στοιχείων του mailcap χρειάζεται το %%s"
 
 #
-#: attach.c:131 attach.c:256 commands.c:155 compose.c:1161 curs_lib.c:128
-#: curs_lib.c:323
+#: attach.c:132 attach.c:257 commands.c:165 compose.c:1166 curs_lib.c:128
+#: curs_lib.c:324
 #, fuzzy, c-format
 msgid "Error running \"%s\"!"
 msgstr "Σφάλμα κατά την ανάλυση της διεύθηνσης!"
 
 #
-#: attach.c:141
+#: attach.c:142
 msgid "Failure to open file to parse headers."
 msgstr "Αποτυχία κατά το άνοιγμα αρχείου για την ανάλυση των επικεφαλίδων."
 
 #
-#: attach.c:172
+#: attach.c:173
 msgid "Failure to open file to strip headers."
 msgstr "Αποτυχία κατά το άνοιγμα αρχείου για την απογύμνωση των επικεφαλίδων"
 
 #
-#: attach.c:190
+#: attach.c:191
 #, c-format
 msgid "No mailcap compose entry for %s, creating empty file."
 msgstr "Καμμία καταχώρηση mailcap για το %s, δημιουργία κενού αρχείου."
 
 #
 #. For now, editing requires a file, no piping
-#: attach.c:250
+#: attach.c:251
 msgid "Mailcap Edit entry requires %%s"
 msgstr "Η καταχώρηση mailcap Edit χρειάζεται το %%s"
 
 #
-#: attach.c:269
+#: attach.c:270
 #, c-format
 msgid "No mailcap edit entry for %s"
 msgstr "Δεν υπάρχει καταχώρηση mailcap για επεξεργασία κειμένου για το %s"
 
 #
-#: attach.c:396
+#: attach.c:397
 msgid "No matching mailcap entry found.  Viewing as text."
 msgstr "Δεν βρέθηκε όμοια καταχώρηση Mailcap. Αναγιγνώσκεται ως κείμενο."
 
 #
-#: attach.c:409
+#: attach.c:410
 msgid "MIME type not defined.  Cannot view attachment."
 msgstr "Ο τύπος MIME δεν έχει οριστεί. Αδυναμία εμφανισης προσαρτήσεως."
 
 #
-#: attach.c:499
+#: attach.c:500
 msgid "Cannot create filter"
 msgstr "Αδυναμία δημιουργίας φίλτρου"
 
 #
-#: attach.c:701 recvattach.c:412
+#: attach.c:702 recvattach.c:422
 msgid "Attachment saved."
 msgstr "Η προσάρτηση αποθηκεύθηκε."
 
 #
-#: attach.c:756
+#: attach.c:758
 msgid "Write fault!"
 msgstr "Σφάλμα εγγραφής!"
 
 #
-#: attach.c:965
+#: attach.c:967
 msgid "I don't know how to print that!"
 msgstr "Δε γνωρίζω πως να το τυπώσω αυτό!"
 
@@ -166,327 +166,331 @@ msgid "Mask"
 msgstr "Μάσκα"
 
 #
-#: browser.c:336 browser.c:825
+#: browser.c:363 browser.c:853
 #, c-format
 msgid "%s is not a directory."
 msgstr "Το %s δεν είναι κατάλογος."
 
 #
-#: browser.c:444
+#: browser.c:474
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Γραμματοκιβώτια [%d]"
 
 #
-#: browser.c:451
+#: browser.c:481
 #, fuzzy, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Κατάλογος [%s], Μάσκα αρχείου: %s"
 
 #
-#: browser.c:455
+#: browser.c:485
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Κατάλογος [%s], Μάσκα αρχείου: %s"
 
 #
-#: browser.c:466
+#: browser.c:496
 #, fuzzy
 msgid "Can't attach a directory!"
 msgstr "Αδυναμία ανάγνωσης ενός κατάλογου"
 
 #
-#: browser.c:583 browser.c:882 browser.c:975
+#: browser.c:613 browser.c:921 browser.c:1014
 msgid "No files match the file mask"
 msgstr "Κανένα αρχείο δε ταιριάζει με τη μάσκα αρχείου"
 
 #
-#: browser.c:784
+#: browser.c:812
 msgid "Chdir to: "
 msgstr "Αλλαγή καταλόγου σε:"
 
 #
-#: browser.c:818 browser.c:875
+#: browser.c:846 browser.c:914
 msgid "Error scanning directory."
 msgstr "Σφάλμα κατά τη διερεύνηση του καταλόγου."
 
 #
-#: browser.c:836
+#: browser.c:864
 msgid "File Mask: "
 msgstr "Μάσκα αρχείου: "
 
 #
-#: browser.c:898
+#: browser.c:937
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr ""
 "Ανάστροφη ταξινόμηση κατά (d)ημερομηνία, (a)αλφαβητικά, (z)μέγεθος ή "
 "(n)άκυρο;"
 
 #
-#: browser.c:899
+#: browser.c:938
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Ταξινόμηση κατά (d)ημερομηνία, (a)αλφαβητικά, (z)μέγεθος ή (n)άκυρο;"
 
 #
-#: browser.c:900
+#: browser.c:939
 msgid "dazn"
 msgstr "dazn"
 
 #
-#: browser.c:962
+#: browser.c:1001
 msgid "New file name: "
 msgstr "Νέο όνομα αρχείου: "
 
 #
-#: browser.c:983
+#: browser.c:1022
 msgid "Can't view a directory"
 msgstr "Αδυναμία ανάγνωσης ενός κατάλογου"
 
 #
-#: browser.c:1001
+#: browser.c:1040
 msgid "Error trying to view file"
 msgstr "Σφάλμα κατά την εμφάνιση αρχείου"
 
 #
-#: buffy.c:363
+#: buffy.c:399
 #, c-format
 msgid "New mail in %s."
 msgstr "Νέα αλληλογραφία στο %s."
 
-#: charset.c:1066
+#: charset.c:1065
 msgid "We can't currently handle utf-8 at this point."
 msgstr ""
 
 #
-#: charset.c:1072 charset.c:1079
+#: charset.c:1071 charset.c:1078
 #, fuzzy, c-format
 msgid "Can't open %s: %s."
 msgstr "Αδυναμία στη προσβαση: %s"
 
-#: charset.c:1132
+#: charset.c:1131
 #, c-format
 msgid "Error while recoding %s. See %s for recovering your data."
 msgstr ""
 
 #
-#: color.c:315
+#: color.c:322
 #, c-format
 msgid "%s: color not supported by term"
 msgstr "%s: το τερματικό δεν υποστηρίζει χρώμα"
 
 #
-#: color.c:321
+#: color.c:328
 #, c-format
 msgid "%s: no such color"
 msgstr "%s: δεν υπάρχει τέτοιο χρώμα"
 
 #
-#: color.c:367 color.c:558 color.c:569
+#: color.c:374 color.c:565 color.c:576
 #, c-format
 msgid "%s: no such object"
 msgstr "%s: δεν υπάρχει τέτοιο αντικείμενο"
 
 #
-#: color.c:374
+#: color.c:381
 #, c-format
 msgid "%s: command valid only for index object"
 msgstr "%s: η εντολή ισχύει μόνο για το χαρακτηριστικό αντικείμενο"
 
 #
-#: color.c:382
+#: color.c:389
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: πολύ λίγα ορίσματα"
 
 #
-#: color.c:546
+#: color.c:553
 msgid "Missing arguments."
 msgstr "Ελλιπή ορίσματα."
 
 #
-#: color.c:585 color.c:596
+#: color.c:592 color.c:603
 msgid "color: too few arguments"
 msgstr "χρώμα: πολύ λίγα ορίσματα"
 
 #
-#: color.c:619
+#: color.c:626
 msgid "mono: too few arguments"
 msgstr "μονόχρωμα: λίγα ορίσματα"
 
 #
-#: color.c:639
+#: color.c:646
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s: δεν υπάρχει τέτοια ιδιότητα"
 
 #
-#: color.c:679 hook.c:61 hook.c:69 keymap.c:695
+#: color.c:686 hook.c:61 hook.c:69 keymap.c:706
 msgid "too few arguments"
 msgstr "πολύ λίγα ορίσματα"
 
 #
-#: color.c:688 hook.c:75
+#: color.c:695 hook.c:75
 msgid "too many arguments"
 msgstr "πάρα πολλά ορίσματα"
 
 #
-#: color.c:702
+#: color.c:709
 msgid "default colors not supported"
 msgstr "δεν υποστηρίζονται τα εξ'ορισμού χρώματα"
 
 #
-# commands.c:87 commands.c:95 pgp.c:1373 pgpkey.c:220
-#: commands.c:87 commands.c:95 pgp.c:1318 pgpkey.c:490
-msgid "Invoking PGP..."
-msgstr "Κλήση του PGP..."
-
-#
 # commands.c:92
 #. find out whether or not the verify signature
-#: commands.c:92
+#: commands.c:90
 msgid "Verify PGP signature?"
 msgstr "Επιβεβαίωση της PGP ψηφιακής υπογραφής?"
+
+#
+# commands.c:87 commands.c:95 pgp.c:1373 pgpkey.c:220
+#: commands.c:102 pgp.c:1500 pgpkey.c:490
+msgid "Invoking PGP..."
+msgstr "Κλήση του PGP..."
 
 #
 #: commands.c:110 mbox.c:722
 msgid "Could not create temporary file!"
 msgstr "Αδυναμία κατά τη δημιουργία προσωρινού αρχείου!"
 
+#: commands.c:149
+msgid "PGP signature successfully verified."
+msgstr ""
+
 #
-#: commands.c:162
+#: commands.c:172
 msgid "Command: "
 msgstr "Εντολή: "
 
 #
-#: commands.c:180 recvattach.c:717
+#: commands.c:190 recvattach.c:727
 msgid "Bounce message to: "
 msgstr "Αναπήδηση μηνύματος στο: "
 
 #
-#: commands.c:182 recvattach.c:719
+#: commands.c:192 recvattach.c:729
 msgid "Bounce tagged messages to: "
 msgstr "Αναπήδηση σημειωμένων μηνυμάτων στο: "
 
 #
-#: commands.c:197
+#: commands.c:207
 msgid "Error parsing address!"
 msgstr "Σφάλμα κατά την ανάλυση της διεύθηνσης!"
 
 #
-#: commands.c:207
+#: commands.c:217
 #, c-format
 msgid "Bounce message to %s"
 msgstr "Αναπήδηση μηνύματος στο %s"
 
 #
-#: commands.c:207
+#: commands.c:217
 #, c-format
 msgid "Bounce messages to %s"
 msgstr "Αναπήδηση μηνημάτων στο %s"
 
 #
-#: commands.c:218
+#: commands.c:228
 msgid "Message bounced."
 msgstr "Το μήνυμα αναπηδήστε."
 
 #
-#: commands.c:218
+#: commands.c:228
 msgid "Messages bounced."
 msgstr "Τα μηνύματα αναπήδησαν."
 
 #
-#: commands.c:239
+#: commands.c:263
 msgid "Pipe to command: "
 msgstr "Διοχέτευση στην εντολή: "
 
 #
-#: commands.c:339
+#: commands.c:363
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 
 #
-#: commands.c:340
+#: commands.c:364
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 
 #
-#: commands.c:341
+#: commands.c:365
 msgid "dfrsotuzc"
 msgstr "dfrsotuzc"
 
 #
-#: commands.c:394
+#: commands.c:418
 msgid "Shell command: "
 msgstr "Εντολή φλοιού: "
 
 #
-#: commands.c:510
+#: commands.c:550
 #, c-format
 msgid "%s%s to mailbox"
 msgstr "%s%s στο γραμματοκιβώτιο"
 
 #
-#: commands.c:511
+#: commands.c:551
 msgid "Decode-save"
 msgstr "Αποκωδικοποίηση-αποθήκευση"
 
 #
-#: commands.c:511
+#: commands.c:551
 msgid "Decode-copy"
 msgstr "Αποκωδικοποίηση-αντιγραφή"
 
 #
-#: commands.c:512
+#: commands.c:552
 msgid "Decrypt-save"
 msgstr "Αποκρυπτογράφηση-αποθήκευση"
 
 #
-#: commands.c:512
+#: commands.c:552
 msgid "Decrypt-copy"
 msgstr "Αποκρυπτογράφηση-αντιγραφή"
 
 #
-#: commands.c:513 curs_main.c:255 recvattach.c:48
+#: commands.c:553 curs_main.c:260 recvattach.c:58
 msgid "Save"
 msgstr "Αποθήκ"
 
 #
-#: commands.c:513
+#: commands.c:553
 msgid "Copy"
 msgstr "Αντιγρ"
 
 #
-#: commands.c:513
+#: commands.c:553
 msgid " tagged"
 msgstr " σημειωμένο"
 
 #
-#: commands.c:582
+#: commands.c:622
 #, c-format
 msgid "Copying to %s..."
 msgstr "Αντιγραφή στο %s..."
 
 #
-#: commands.c:654
+#: commands.c:698
 msgid "Print message?"
 msgstr "Εκτύπωση μηνύματος;"
 
 #
-#: commands.c:654
+#: commands.c:698
 msgid "Print tagged messages?"
 msgstr "Εκτύπωση των σημειωμένων μηνυμάτων;"
 
 #
-#: commands.c:681
+#: commands.c:725
 msgid "Message printed"
 msgstr "Το μήνυμα εκτυπώθηκε"
 
 #
-#: commands.c:681
+#: commands.c:725
 msgid "Messages printed"
 msgstr "Τα μηνύματα εκτυπώθηκαν"
 
@@ -501,7 +505,7 @@ msgid "Abort"
 msgstr "Ακύρωση"
 
 #
-#: compose.c:88 compose.c:597
+#: compose.c:88 compose.c:596
 msgid "Attach file"
 msgstr "Προσαρτήστε αρχείο"
 
@@ -546,7 +550,7 @@ msgstr "<εξ'ορισμού>"
 
 #
 # compose.c:117 compose.c:191
-#: compose.c:124 compose.c:182
+#: compose.c:124 compose.c:181
 msgid "MIC algorithm: "
 msgstr "Αλγόριθμος MIC: "
 
@@ -571,188 +575,182 @@ msgid "Sign as: "
 msgstr "Υπογραφή ως: "
 
 #
-# compose.c:175
-#: compose.c:164
-msgid "An unkown PGP version was defined for signing."
-msgstr "Μια άγνωστη έκδοση του PGP ορίστηκε για υπογραφή."
-
-#
 # compose.c:185
-#: compose.c:176
+#: compose.c:175
 msgid "This doesn't make sense if you don't want to sign the message."
 msgstr "Αυτό δεν έχει νόημα αν δεν θέλετε να υπογράψετε το μήνυμα."
 
 #
 # compose.c:196
-#: compose.c:187
+#: compose.c:186
 msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
 msgstr "Άγνωστος αλγόριθμος MIC, έγκυροι είναι: pgp-md5, pgp-sha1, pgp-rmd160"
 
 #
-#: compose.c:255
+#: compose.c:254
 #, c-format
 msgid "%s [#%d] no longer exists!"
 msgstr "Το %s [#%d] δεν υπάρχει πια!"
 
 #
-#: compose.c:263
+#: compose.c:262
 #, c-format
 msgid "%s [#%d] modified. Update encoding?"
 msgstr "Το %s [#%d] αλιώθηκε. Να ενημερώσω την κωδικοποίηση;"
 
 #
-#: compose.c:307
+#: compose.c:306
 #, fuzzy
 msgid "-- Attachments"
 msgstr "Προσαρτήσεις"
 
 #
-#: compose.c:350
+#: compose.c:349
 msgid "You may not delete the only attachment."
 msgstr "Δεν μπορείτε να διαγράψετε τη μια μονάχα προσάρτηση."
 
-#: compose.c:393
+#: compose.c:392
 msgid "Can't change character set for non-text attachments!"
 msgstr ""
 
-#: compose.c:399
+#: compose.c:398
 msgid "Enter character set: "
 msgstr ""
 
-#: compose.c:406
+#: compose.c:405
 msgid "UTF-8 encoding attachments has not yet been implemented."
 msgstr ""
 
-#: compose.c:412
+#: compose.c:411
 #, c-format
 msgid "Character set %s is unknown."
 msgstr ""
 
 #
-#: compose.c:456
+#: compose.c:455
 msgid "Compose"
 msgstr "Σύνθεση"
 
-#: compose.c:612
+#: compose.c:611
 msgid "Attaching selected files..."
 msgstr ""
 
 #
-#: compose.c:623
+#: compose.c:622
 #, fuzzy, c-format
 msgid "Unable to attach %s!"
 msgstr "Δεν μπορώ να προσαρτήσω!"
 
 #
-#: compose.c:641
+#: compose.c:640
 msgid "Open mailbox to attach message from"
 msgstr "Άνοιγμα γραμματοκιβωτίου για την προσάρτηση μηνύματος από"
 
 #
-#: compose.c:673
+#: compose.c:675
 msgid "No messages in that folder."
 msgstr "Δεν υπάρχουν μηνύματα σε αυτό το φάκελο."
 
 #
-#: compose.c:682
+#: compose.c:684
 msgid "Tag the messages you want to attach!"
 msgstr "Σημειώστε τα μηνύματα που θέλετε να προσαρτήσετε!"
 
 #
-#: compose.c:714
+#: compose.c:716
 msgid "Unable to attach!"
 msgstr "Δεν μπορώ να προσαρτήσω!"
 
-#: compose.c:764
+#: compose.c:766
 msgid "Recoding only affects text attachments."
 msgstr ""
 
-#: compose.c:769
+#: compose.c:771
 msgid "We currently can't encode to utf-8."
 msgstr ""
 
-#: compose.c:774
+#: compose.c:776
 msgid "The current attachment won't be converted."
 msgstr ""
 
-#: compose.c:776
+#: compose.c:778
 msgid "The current attachment will be converted."
 msgstr ""
 
-#: compose.c:789
+#: compose.c:791
 msgid "Recoding only affetcs text attachments."
 msgstr ""
 
-#: compose.c:805
+#: compose.c:807
 msgid "Recoding successful."
 msgstr ""
 
 #
-#: compose.c:912
+#: compose.c:917
 msgid "Invalid encoding."
 msgstr "Μη έγκυρη κωδικοποίηση."
 
 #
-#: compose.c:933
+#: compose.c:938
 msgid "Save a copy of this message?"
 msgstr "Αποθήκεση αντιγράφου του μηνύματος;"
 
 #
-#: compose.c:987
+#: compose.c:992
 msgid "Rename to: "
 msgstr "Μετονομασία σε: "
 
 #
-#: compose.c:992
+#: compose.c:997
 #, c-format
 msgid "Can't stat: %s"
 msgstr "Αδυναμία στη προσβαση: %s"
 
 #
-#: compose.c:1019
+#: compose.c:1024
 msgid "New file: "
 msgstr "Νέο αρχείο: "
 
 #
-#: compose.c:1032
+#: compose.c:1037
 msgid "Content-Type is of the form base/sub"
 msgstr "Το Content-Type είναι της μορφής base/sub"
 
 #
-#: compose.c:1038
+#: compose.c:1043
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Άγνωστο Content-Type %s"
 
 #
-#: compose.c:1051
+#: compose.c:1056
 #, c-format
 msgid "Can't create file %s"
 msgstr "Αδυναμία δημιουργίας αρχείου %s"
 
 #
-#: compose.c:1059
+#: compose.c:1064
 msgid "What we have here is a failure to make an attachment"
 msgstr "Αποτυχία κατά την δημιουργία προσάρτησης"
 
 #
-#: compose.c:1122
+#: compose.c:1127
 msgid "Postpone this message?"
 msgstr "Να αναβληθεί η ταχυδρόμηση αυτού του μήνυματος;"
 
 #
-#: compose.c:1176
+#: compose.c:1181
 msgid "Write message to mailbox"
 msgstr "Εγγραφή τους μήνυματος στο γραμματοκιβώτιο"
 
 #
-#: compose.c:1180
+#: compose.c:1184
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Εγγραφή μηνύματος στο %s ..."
 
 #
-#: compose.c:1191
+#: compose.c:1193
 msgid "Message written."
 msgstr "Το μήνυμα γράφτηκε."
 
@@ -783,217 +781,234 @@ msgid "Press any key to continue..."
 msgstr "Πατήστε ένα πλήκτρο για να συνεχείσετε..."
 
 #
-#: curs_lib.c:339
+#: curs_lib.c:340
 msgid " ('?' for list): "
 msgstr "('?' για λίστα): "
 
 #
-#: curs_main.c:215
+#: curs_main.c:50 curs_main.c:540
+msgid "No mailbox is open."
+msgstr "Δεν υπάρχουν ανοιχτά γραμματοκιβώτια."
+
+#
+#: curs_main.c:51
+#, fuzzy
+msgid "There are no messages."
+msgstr "Η συζήτηση περιέχει μη αναγνωσμένα μηνύματα."
+
+#
+#: curs_main.c:52 mx.c:997 pager.c:55 recvattach.c:47
+msgid "Mailbox is read-only."
+msgstr "Το γραμματοκιβώτιο είναι για μόνο-ανάγνωση."
+
+#
+#: curs_main.c:53 pager.c:56
+#, fuzzy
+msgid "Function not permitted in attach-message mode."
+msgstr "Το %c: δεν υποστηρίζεται σε αυτή την κατάσταση"
+
+#
+#: curs_main.c:220
 msgid "Cannot toggle write on a readonly mailbox!"
 msgstr ""
 "Αδυναμία αλλαγής σε κατάσταση εγγραφής σε γραμματοκιβώτιο μόνο για ανάγνωση!"
 
 #
-#: curs_main.c:222
+#: curs_main.c:227
 msgid "Changes to folder will be written on folder exit."
 msgstr "Οι αλλαγές στο φάκελο θα γραφούν κατά τη έξοδο από το φάκελο."
 
 #
-#: curs_main.c:227
+#: curs_main.c:232
 msgid "Changes to folder will not be written."
 msgstr "Οι αλλαγές στο φάκελο δεν θα γραφούν."
 
 #
-#: curs_main.c:252
+#: curs_main.c:257
 msgid "Quit"
 msgstr "Έξοδος"
 
 #
-#: curs_main.c:253 pager.c:1382 postpone.c:33
+#: curs_main.c:258 pager.c:1386 postpone.c:38
 msgid "Del"
 msgstr "Διαγραφή"
 
 #
-#: curs_main.c:254 postpone.c:34
+#: curs_main.c:259 postpone.c:39
 msgid "Undel"
 msgstr "Επαναφορά"
 
 #
-#: curs_main.c:256 query.c:44
+#: curs_main.c:261 query.c:44
 msgid "Mail"
 msgstr "Ταχυδρ"
 
 #
-#: curs_main.c:257 pager.c:1383
+#: curs_main.c:262 pager.c:1387
 msgid "Reply"
 msgstr "Απάντ"
 
 #
-#: curs_main.c:258
+#: curs_main.c:263
 msgid "Group"
 msgstr "Ομάδα"
 
 #
-#: curs_main.c:429
+#: curs_main.c:435
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr ""
 "Το γραμματοκιβώτιο τροποποιήθηκε εξωτερικά. Η σημαίες μπορεί να είναι λάθος"
 
 #
-#: curs_main.c:432
+#: curs_main.c:438
 msgid "New mail in this mailbox."
 msgstr "Νέα αλληλογραφία σε αυτό το γραμματοκιβώτιο."
 
 #
-#: curs_main.c:532
-msgid "No mailbox is open."
-msgstr "Δεν υπάρχουν ανοιχτά γραμματοκιβώτια."
-
-#
-#: curs_main.c:538
+#: curs_main.c:546
 msgid "No tagged messages."
 msgstr "Δεν υπάρχουν σημειωμένα μηνύματα."
 
 #
-#: curs_main.c:618
+#: curs_main.c:626
 msgid "Jump to message: "
 msgstr "Μετάβαση στο μήνυμα: "
 
 #
-#: curs_main.c:624
+#: curs_main.c:632
 msgid "Argument must be a message number."
 msgstr "Η παράμετρος πρέπει να είναι αριθμός μηνύματος."
 
 #
-#: curs_main.c:657
+#: curs_main.c:665
 msgid "That message is not visible."
 msgstr "Αυτό το μήνυμα δεν είναι ορατό."
 
 #
-#: curs_main.c:660
+#: curs_main.c:668
 msgid "Invalid message number."
 msgstr "Μη έγκυρος αριθμός μηνύματος."
 
 #
-#: curs_main.c:673
+#: curs_main.c:681
 msgid "Delete messages matching: "
 msgstr "Διαγραφή παρόμοιων μηνυμάτων: "
 
 #
-#: curs_main.c:695
+#: curs_main.c:703
 msgid "No limit pattern is in effect."
 msgstr "Κανένα υπόδειγμα ορίων σε λειτουργία."
 
 #
 #. i18n: ask for a limit to apply
-#: curs_main.c:700
+#: curs_main.c:708
 #, c-format
 msgid "Limit: %s"
 msgstr "Όριο: %s"
 
 #
-#: curs_main.c:709
+#: curs_main.c:717
 msgid "Limit to messages matching: "
 msgstr "Περιορισμός στα παρόμοια μηνύματα: "
 
 #
-#: curs_main.c:739
+#: curs_main.c:747
 msgid "Quit Mutt?"
 msgstr "Έξοδος από το Mutt;"
 
 #
-#: curs_main.c:841
+#: curs_main.c:853
 msgid "Tag messages matching: "
 msgstr "Σημείωστε τα παρόμοια μηνύματα με: "
 
 #
-#: curs_main.c:849
+#: curs_main.c:861
 msgid "Undelete messages matching: "
 msgstr "Επανέφερετε τα παρόμοια μηνύματα με: "
 
 #
-#: curs_main.c:856
+#: curs_main.c:868
 msgid "Untag messages matching: "
 msgstr "Ξεσημειώστετε τα παρόμοια μηνύματα με: "
 
 #
-#: curs_main.c:874
-msgid "Open mailbox"
-msgstr "Ανοίξτε το γραμματοκιβώτιο"
-
-#
-#: curs_main.c:876
+#: curs_main.c:886
 msgid "Open mailbox in read-only mode"
 msgstr "Ανοίξτε το γραμματοκιβώτιο σε κατάσταση μόνο για εγγραφή"
 
 #
-#: curs_main.c:892 mx.c:428 mx.c:569
+#: curs_main.c:888
+msgid "Open mailbox"
+msgstr "Ανοίξτε το γραμματοκιβώτιο"
+
+#
+#: curs_main.c:904 mx.c:457 mx.c:598
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "Το %s δεν είναι γραμματοκιβώτιο."
 
 #
-#: curs_main.c:974
+#: curs_main.c:986
 msgid "Exit Mutt without saving?"
 msgstr "Έξοδος από το Mutt χωρίς αποθήκευση;"
 
 #
-#: curs_main.c:991 curs_main.c:1015
+#: curs_main.c:1003 curs_main.c:1027
 msgid "You are on the last message."
 msgstr "Είστε στο τελευταίο μήνυμα."
 
 #
-#: curs_main.c:998 curs_main.c:1040
+#: curs_main.c:1010 curs_main.c:1052
 msgid "No undeleted messages."
 msgstr "Δεν υπάρχουν απεκαταστημένα μηνύματα."
 
 #
-#: curs_main.c:1033 curs_main.c:1056
+#: curs_main.c:1045 curs_main.c:1068
 msgid "You are on the first message."
 msgstr "Είστε στο πρώτο μήνυμα."
 
 #
-#: curs_main.c:1128 pattern.c:1109
+#: curs_main.c:1140 pattern.c:1109
 msgid "Search wrapped to top."
 msgstr "Αναζήτηση συνεχίστηκε από την κορυφή."
 
 #
-#: curs_main.c:1137 pattern.c:1120
+#: curs_main.c:1149 pattern.c:1120
 msgid "Search wrapped to bottom."
 msgstr "Αναζήτηση συνεχίστηκε στη βάση."
 
 #
-#: curs_main.c:1170
+#: curs_main.c:1182
 msgid "No new messages"
 msgstr "Δεν υπάρχουν νέα μηνύματα"
 
 #
-#: curs_main.c:1170
+#: curs_main.c:1182
 msgid "No unread messages"
 msgstr "Δεν υπάρχουν μη αναγνωσμένα μηνύματα"
 
 #
-#: curs_main.c:1171
+#: curs_main.c:1183
 msgid " in this limited view"
 msgstr "σε αυτή την περιορισμένη όψη"
 
 #
-#: curs_main.c:1295
+#: curs_main.c:1307
 msgid "No more threads."
 msgstr "Δεν υπάρχουν άλλες συζητήσεις."
 
 #
-#: curs_main.c:1297
+#: curs_main.c:1309
 msgid "You are on the first thread."
 msgstr "Είστε στη πρώτη συζήτηση."
 
 #
-#: curs_main.c:1350
+#: curs_main.c:1379
 msgid "Thread contains unread messages."
 msgstr "Η συζήτηση περιέχει μη αναγνωσμένα μηνύματα."
 
 #
-#: curs_main.c:1363 flags.c:219 thread.c:661
+#: curs_main.c:1392 flags.c:219 thread.c:661 thread.c:712
 msgid "Threading is not enabled."
 msgstr "Η χρήση συζητήσεων δεν έχει ενεργοποιηθεί."
 
@@ -1265,257 +1280,122 @@ msgid "Help for %s"
 msgstr "Βοήθεια για το %s"
 
 #
-#: imap.c:207
-#, c-format
-msgid "imap_error(): unexpected response in %s: %s\n"
-msgstr "imap_error(): μη αναμενόμενη απάντηση σε %s: %s\n"
-
-#
-#. something is wrong because the server reported fewer messages
-#. * than we previously saw
-#.
-#: imap.c:530
-msgid "Fatal error.  Message count is out of sync!"
-msgstr "Μοιραίο σφάλμα. Ο αριθμός των μηνυμάτων δεν είναι σε συμφωνία!"
-
-#
-#: imap.c:663
-#, c-format
-msgid "Fetching message headers... [%d/%d]"
-msgstr "Λήψη επικεφαλίδων από μηνύματα... [%d/%d]"
-
-#
-#. Unable to fetch headers for lower versions
-#: imap.c:690
-msgid "Unable to fetch headers from this IMAP server version."
-msgstr ""
-"Δεν κατάφερα να λάβω επικεφαλίδείτε από αυτή την έκδοση του εξυπηρετητή IMAP."
-
-#
-#: imap.c:882
-#, c-format
-msgid "Reopening mailbox... %s"
-msgstr "Ξανά άνοιγμα του γραμματοκιβωτίου... %s"
-
-#
-#: imap.c:1234
-msgid "This IMAP server is ancient. Mutt does not work with it."
-msgstr ""
-"Αυτός ο εξυπηρετητής IMAP είναι αρχαίος. Το Mutt δεν είναι συμβατό με αυτόν."
-
-#
-#: imap.c:1255
-msgid "IMAP Username: "
-msgstr "Όνομα χρήστη IMAP: "
-
-#
-#: imap.c:1268
-#, c-format
-msgid "Password for %s@%s: "
-msgstr "Συνθηματικό για το %s@%s: "
-
-#
-#: imap.c:1281
-msgid "Logging in..."
-msgstr "Είσοδος στο σύστημα..."
-
-#
-#. Login failed, try again
-#: imap.c:1294
-msgid "Login failed."
-msgstr "Απέτυχε η είσοδος στο σύστημα."
-
-#
-#: imap.c:1414
-#, c-format
-msgid "Selecting %s..."
-msgstr "Επιλογή %s..."
-
-#
-#. STATUS not supported
-#. * The thing to do seems to be:
-#. *  - Open a *new* IMAP session, select, and then close it. Report the
-#. * error if the mailbox did not exist.
-#: imap.c:1563
-msgid "Unable to append to IMAP mailboxes at this server"
-msgstr "Αδυναμία στη πρόσθηκη στα γραμμ/τια IMAP σε αυτόν τον εξυπηρετητή"
-
-#
-#: imap.c:1573
-#, c-format
-msgid "Create %s?"
-msgstr "Δημιουργία του %s;"
-
-#
-#: imap.c:1625
-msgid "Fetching message..."
-msgstr "Λήψη μηνύματος..."
-
-#
-#: imap.c:1763
-msgid "Sending APPEND command ..."
-msgstr "Αποστολή εντολής APPEND ..."
-
-#
-#: imap.c:1802
-msgid "Uploading message ..."
-msgstr "Ανέβασμα μηνύματος ..."
-
-#
-#: imap.c:1857
-msgid "Closing connection to IMAP server..."
-msgstr "Κλείσιμο σύνδεσης στον εξυπηρετητή IMAP..."
-
-#
-#: imap.c:1901
-#, c-format
-msgid "Saving message status flags... [%d/%d]"
-msgstr "Αποθήκευση σημαιών κατάστασης μηνύματος... [%d/%d]"
-
-#
-#: imap.c:1944
-msgid "Expunging messages from server..."
-msgstr "Διαγραφή μηνυμάτων από τον εξυπηρετητή..."
-
-#
-#. tell the server to commit changes
-#: imap.c:1975
-msgid "Closing mailbox..."
-msgstr "Κλείσιμο γραμματοκιβωτίου..."
-
-#: imap.c:2566
-msgid "Contacted server, getting folder list..."
-msgstr ""
-
-#
-#: imap.c:2618
-#, fuzzy, c-format
-msgid "Subscribing to %s..."
-msgstr "Αντιγραφή στο %s..."
-
-#
-#: imap.c:2620
-#, fuzzy, c-format
-msgid "Unsubscribing to %s..."
-msgstr "Σύνδεση στο %s..."
-
-#
-#: init.c:432
+#: init.c:476
 msgid "alias: no address"
 msgstr "ψευδώνυμο: καμμία διέυθυνση"
 
 #
-#: init.c:526
+#: init.c:570
 msgid "invalid header field"
 msgstr "μη έγκυρο πεδίο επικεφαλίδας"
 
 #
-#: init.c:534
+#: init.c:578
 #, c-format
 msgid "ignoring empty header field: %s"
 msgstr "αγνόηση άδειου πεδίου επικεφαλίδας: %s"
 
 #
-#: init.c:586
+#: init.c:630
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: άγνωστη μέθοδος ταξινόμησης"
 
 #
-#: init.c:659
+#: init.c:710
 #, c-format
 msgid "mutt_restore_default: error in regexp: %s\n"
 msgstr "mutt_restore_default: λάθος στο regexp: %s\n"
 
 #
-#: init.c:719
+#: init.c:770
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: άγνωστη μεταβλήτή"
 
 #
-#: init.c:728
+#: init.c:779
 msgid "prefix is illegal with reset"
 msgstr "το πρόθεμα είναι άκυρο με την επαναφορά"
 
 #
-#: init.c:734
+#: init.c:785
 msgid "value is illegal with reset"
 msgstr "η τιμή είναι άκυρη με την ανανέωση"
 
 #
-#: init.c:773
+#: init.c:824
 #, c-format
 msgid "%s is set"
 msgstr "Το %s τεθεί"
 
 #
-#: init.c:773
+#: init.c:824
 #, c-format
 msgid "%s is unset"
 msgstr "Το %s δεν έχει τεθεί"
 
 #
-#: init.c:947
+#: init.c:1019
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: μη έγκυρος τύπος γραμματοκιβωτίου"
 
 #
-#: init.c:1006
+#: init.c:1078
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: μη έγκυρη τιμή"
 
 #
-#: init.c:1061
+#: init.c:1133
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: άγνωστος τύπος"
 
 #
-#: init.c:1100
+#: init.c:1172
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Σφάλμα στο %s, γραμμή %d: %s"
 
 #
 #. the muttrc source keyword
-#: init.c:1111
+#: init.c:1183
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: λάθη στο %s"
 
 #
-#: init.c:1121
+#: init.c:1193
 #, c-format
 msgid "source: error at %s"
 msgstr "source: λάθος στο %s"
 
 #
-#: init.c:1126
+#: init.c:1198
 msgid "source: too many arguments"
 msgstr "source: πάρα πολλά ορίσματα"
 
 #
-#: init.c:1177
+#: init.c:1249
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: άγνωστη εντολή"
 
 #
-#: init.c:1514
+#: init.c:1606
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Λάθος στη γραμμή εντολών: %s\n"
 
 #
-#: init.c:1557
+#: init.c:1649
 msgid "unable to determine home directory"
 msgstr "αδυναμία στον εντοπισμό του καταλόγου χρήστη (home directory)"
 
 #
-#: init.c:1565
+#: init.c:1657
 msgid "unable to determine username"
 msgstr "αδυναμία στον εντοπισμό του ονόματος χρήστη"
 
@@ -1525,60 +1405,60 @@ msgid "Macro loop detected."
 msgstr "Εντοπίστηκε βρόγχος μακροεντολής."
 
 #
-#: keymap.c:634 keymap.c:642
+#: keymap.c:645 keymap.c:653
 msgid "Key is not bound."
 msgstr "Το πλήκτρο δεν είναι συνδεδεμένο."
 
 #
-#: keymap.c:646
+#: keymap.c:657
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Το πλήκτρο δεν είναι συνδεδεμένο. Πατήστε '%s' για βοήθεια."
 
 #
-#: keymap.c:657
+#: keymap.c:668
 msgid "push: too many arguments"
 msgstr "push: πάρα πολλά ορίσματα"
 
 #
-#: keymap.c:678
+#: keymap.c:689
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: δεν υπάρχει τέτοιο μενού"
 
 #
-#: keymap.c:687
+#: keymap.c:698
 msgid "null key sequence"
 msgstr "κενή ακολουθία πλήκτρων"
 
 #
-#: keymap.c:769
+#: keymap.c:780
 msgid "bind: too many arguments"
 msgstr "bind: πάρα πολλά ορίσματα"
 
 #
-#: keymap.c:784
+#: keymap.c:795
 #, c-format
 msgid "%s: no such function in map"
 msgstr "%s: δεν έχει καθοριστεί τέτοια λειτουργία"
 
 #
-#: keymap.c:807
+#: keymap.c:818
 msgid "macro: empty key sequence"
 msgstr "macro: άδεια ακολουθία πλήκτρων"
 
 #
-#: keymap.c:818
+#: keymap.c:829
 msgid "macro: too many arguments"
 msgstr "macro: πάρα πολλές παράμετροι"
 
 #
-#: keymap.c:848
+#: keymap.c:859
 msgid "exec: too few arguments"
 msgstr "exec: πολύ λίγα ορίσματα"
 
 #
-#: keymap.c:868
+#: keymap.c:879
 #, c-format
 msgid "%s: no such command"
 msgstr "%s: δεν υπάρχει τέτοια εντολή"
@@ -1850,8 +1730,9 @@ msgstr "απεικονίζει το μήνυμα"
 
 #
 #: keymap_defs.h:59
-msgid "edit the current message for resending"
-msgstr "επεξεργάζετε το τρέχον μήνυμα για επαναποστολή"
+#, fuzzy
+msgid "edit the raw message"
+msgstr "επεξεργάζετε το μήνυμα"
 
 #
 #: keymap_defs.h:60
@@ -2075,388 +1956,394 @@ msgstr "αναπήδηση στο επόμενο μη αναγνωσμένο μήνυμα"
 
 #
 #: keymap_defs.h:105
+#, fuzzy
+msgid "jump to parent message in thread"
+msgstr "αποκαταστησέτε όλα τα μηνύματα στη ροή συζήτησης"
+
+#
+#: keymap_defs.h:106
 msgid "jump to previous thread"
 msgstr "αναπήδηση στη προηγούμενη συζήτηση"
 
 #
-#: keymap_defs.h:106
+#: keymap_defs.h:107
 msgid "jump to previous subthread"
 msgstr "αναπήδηση στη προηγούμενη δευτερεύουσα συζήτηση"
 
 #
-#: keymap_defs.h:107
+#: keymap_defs.h:108
 msgid "move to the last undelete message"
 msgstr "μετακίνηση στο τελευταίο αποκαταστημένο μήνυμα"
 
 #
-#: keymap_defs.h:108
+#: keymap_defs.h:109
 msgid "jump to the previous new message"
 msgstr "αναπήδηση στο προηγούμενο νέο μήνυμα"
 
 #
-#: keymap_defs.h:109
+#: keymap_defs.h:110
 msgid "jump to the previous unread message"
 msgstr "αναπήδηση στο προηγούμενο μη αναγνωσμένο μήνυμα"
 
 #
-#: keymap_defs.h:110
+#: keymap_defs.h:111
 msgid "mark the current thread as read"
 msgstr "σημειώνει την τρέχουσα ροή συζήτησης ως αναγνωσμένη"
 
 #
-#: keymap_defs.h:111
+#: keymap_defs.h:112
 msgid "mark the current subthread as read"
 msgstr "σημειώνει την τρέχουσα ροή υποσυζήτησης ως αναγνωσμένη"
 
 #
-#: keymap_defs.h:112
+#: keymap_defs.h:113
 msgid "set a status flag on a message"
 msgstr "ορίζει την σημαία κατάστασης σε ένα μήνυμα"
 
 #
-#: keymap_defs.h:113
+#: keymap_defs.h:114
 msgid "save changes to mailbox"
 msgstr "αποθηκεύει τις αλλαγές στο γραμματοκιβώτιο"
 
 #
-#: keymap_defs.h:114
+#: keymap_defs.h:115
 msgid "tag messages matching a pattern"
 msgstr "σημειώνει τα μηνύματα που ταιριάζουν με μια μορφή/μοντέλο"
 
 #
-#: keymap_defs.h:115
+#: keymap_defs.h:116
 msgid "undelete messages matching a pattern"
 msgstr "αποκαθηστά (undelete) τα μηνύματα που ταιριάζουν με μία μορφή/μοντέλο"
 
 #
-#: keymap_defs.h:116
+#: keymap_defs.h:117
 msgid "untag messages matching a pattern"
 msgstr ""
 "αφαιρεί τη σημείωση από τα μηνύματα που ταιριάζουν με μία μορφή/μοντέλο"
 
 #
-#: keymap_defs.h:117
+#: keymap_defs.h:118
 msgid "move to the middle of the page"
 msgstr "μετακίνηση στο μέσο της σελίδας"
 
 #
-#: keymap_defs.h:118
+#: keymap_defs.h:119
 msgid "move to the next entry"
 msgstr "μετακίνηση στην επόμενη καταχώρηση"
 
 #
-#: keymap_defs.h:119
+#: keymap_defs.h:120
 msgid "scroll down one line"
 msgstr "μετακινεί μια γραμμή προς τα κάτω"
 
 #
-#: keymap_defs.h:120
+#: keymap_defs.h:121
 msgid "move to the next page"
 msgstr "μετακινεί στην επόμενη σελίδα"
 
 #
-#: keymap_defs.h:121
+#: keymap_defs.h:122
 msgid "jump to the bottom of the message"
 msgstr "αναπηδήστε στη βάση του μηνύματος"
 
 #
-#: keymap_defs.h:122
+#: keymap_defs.h:123
 msgid "return to the main-menu"
 msgstr "επιστροφή στο κυρίως-μενού"
 
 #
-#: keymap_defs.h:123
+#: keymap_defs.h:124
 msgid "toggle display of quoted text"
 msgstr "επιλέξτε την εμφάνιση του quoted κειμένου"
 
 #
-#: keymap_defs.h:124
+#: keymap_defs.h:125
 msgid "skip beyond quoted text"
 msgstr "προσπερνά πέρα από το quoted κείμενο"
 
 #
-#: keymap_defs.h:125
+#: keymap_defs.h:126
 msgid "jump to the top of the message"
 msgstr "αναπήδηση στην αρχή του μηνύματος"
 
 #
-#: keymap_defs.h:126
+#: keymap_defs.h:127
 msgid "pipe message/attachment to a shell command"
 msgstr "διοχετεύει το μήνυμα/προσάρτηση σε μια εντολή φλοιού"
 
 #
-#: keymap_defs.h:127
+#: keymap_defs.h:128
 msgid "move to the previous entry"
 msgstr "μετακίνηση στην προηγούμενη καταχώριση"
 
 #
-#: keymap_defs.h:128
+#: keymap_defs.h:129
 msgid "scroll up one line"
 msgstr "μετακίνηση μια γραμμή προς τα πάνω"
 
 #
-#: keymap_defs.h:129
+#: keymap_defs.h:130
 msgid "move to the previous page"
 msgstr "μετακίνηση στην προηγούμενη σελίδα"
 
 #
-#: keymap_defs.h:130
+#: keymap_defs.h:131
 msgid "print the current entry"
 msgstr "εκτυπώνει την τρέχουσα καταχώρηση"
 
 #
-#: keymap_defs.h:131
+#: keymap_defs.h:132
 msgid "query external program for addresses"
 msgstr "ερωτά ένα εξωτερικό πρόγραμμα για διευθύνσεις"
 
 #
-#: keymap_defs.h:132
+#: keymap_defs.h:133
 msgid "append new query results to current results"
 msgstr "προσθέτει τα νέα αποτελέσματα της ερώτησης στα τρέχουσα"
 
 #
-#: keymap_defs.h:133
+#: keymap_defs.h:134
 msgid "save changes to mailbox and quit"
 msgstr "αποθηκεύει τις αλλαγές στο γραμματοκιβώτιο και εγκαταλείψατε"
 
 #
-#: keymap_defs.h:134
+#: keymap_defs.h:135
 msgid "recall a postponed message"
 msgstr "επανακαλεί ένα αναβεβλημένο μήνυμα"
 
 #
-#: keymap_defs.h:135
+#: keymap_defs.h:136
 msgid "clear and redraw the screen"
 msgstr "καθαρίζει και ανανεώνει την οθόνη"
 
 #
-#: keymap_defs.h:136
+#: keymap_defs.h:137
 msgid "{internal}"
 msgstr "{εσωτερικό}"
 
 #
-#: keymap_defs.h:137
+#: keymap_defs.h:138
 msgid "reply to a message"
 msgstr "απαντήστε σε ένα μήνυμα"
 
 #
-#: keymap_defs.h:138
+#: keymap_defs.h:139
 msgid "save message/attachment to a file"
 msgstr "αποθηκεύστε μήνυμα/προσάρτηση σε ένα αρχείο"
 
 #
-#: keymap_defs.h:139
+#: keymap_defs.h:140
 msgid "search for a regular expression"
 msgstr "αναζητήστε μια κανονική έκφραση"
 
 #
-#: keymap_defs.h:140
+#: keymap_defs.h:141
 msgid "search backwards for a regular expression"
 msgstr "αναζητήστε μια κανονική έκφραση προς τα πίσω"
 
 #
-#: keymap_defs.h:141
+#: keymap_defs.h:142
 msgid "search for next match"
 msgstr "αναζήτηση για επόμενο ταίριασμα"
 
 #
-#: keymap_defs.h:142
+#: keymap_defs.h:143
 msgid "search for next match in opposite direction"
 msgstr "αναζητήστε το επόμενο ταίριασμα προς την αντίθετη κατεύθυνση"
 
 #
-#: keymap_defs.h:143
+#: keymap_defs.h:144
 msgid "toggle search pattern coloring"
 msgstr "διαλέξτε το χρωματισμό των αποτελεσμάτων αναζήτησης"
 
 #
-#: keymap_defs.h:144
+#: keymap_defs.h:145
 msgid "invoke a command in a subshell"
 msgstr "επικαλεσθείτε μια εντολή σε ένα δευτερεύων φλοιό"
 
 #
-#: keymap_defs.h:145
+#: keymap_defs.h:146
 msgid "sort messages"
 msgstr "ταξινομήστε τα μηνύματα"
 
 #
-#: keymap_defs.h:146
+#: keymap_defs.h:147
 msgid "sort messages in reverse order"
 msgstr "ταξινομήστε τα μηνύματα σε ανάστροφη σείρα"
 
 #
-#: keymap_defs.h:147
+#: keymap_defs.h:148
 msgid "tag the current entry"
 msgstr "σημειώστε την τρέχουσα καταχώρηση"
 
 #
-#: keymap_defs.h:148
+#: keymap_defs.h:149
 msgid "apply next function to tagged messages"
 msgstr "εφαρμόστε την επόμενη λειτουργία στα σημειωμένα μηνύματα"
 
 #
-#: keymap_defs.h:149
+#: keymap_defs.h:150
 msgid "tag the current subthread"
 msgstr "σημειώστε την τρέχουσα δευτερεύουσα ροή συζήτησης"
 
 #
-#: keymap_defs.h:150
+#: keymap_defs.h:151
 msgid "tag the current thread"
 msgstr "σημειώστε την τρέχουσα ροή συζήτησης"
 
 #
-#: keymap_defs.h:151
+#: keymap_defs.h:152
 msgid "toggle a message's 'new' flag"
 msgstr "διαλέξτε την 'νέα' σημαία μηνύματος"
 
 #
-#: keymap_defs.h:152
+#: keymap_defs.h:153
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "διαλέξτε εάν το γραμματοκιβώτιο θα ξαναγραφτεί"
 
 #
-#: keymap_defs.h:153
+#: keymap_defs.h:154
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "διαλέξτε εάν θα ξεφυλίσεις τα γραμματοκιβώτια ή όλα τα αρχεία"
 
 #
-#: keymap_defs.h:154
+#: keymap_defs.h:155
 msgid "move to the top of the page"
 msgstr "μετακινηθείτε στην αρχή της σελίδας"
 
 #
-#: keymap_defs.h:155
+#: keymap_defs.h:156
 msgid "undelete the current entry"
 msgstr "αποκαταστησέτε την τρέχουσα καταχώρηση"
 
 #
-#: keymap_defs.h:156
+#: keymap_defs.h:157
 msgid "undelete all messages in thread"
 msgstr "αποκαταστησέτε όλα τα μηνύματα στη ροή συζήτησης"
 
 #
-#: keymap_defs.h:157
+#: keymap_defs.h:158
 msgid "undelete all messages in subthread"
 msgstr "αποκαταστησέτε όλα τα μηνύματα στη δευτερεύσουσα ροή συζήτησης"
 
 #
-#: keymap_defs.h:158
+#: keymap_defs.h:159
 msgid "show the Mutt version number and date"
 msgstr "δείξτε τον αριθμό έκδοσης και την ημερομηνία του Mutt"
 
 #
-#: keymap_defs.h:159
+#: keymap_defs.h:160
 msgid "view attachment using mailcap entry if necessary"
 msgstr ""
 "δείτε την προσάρτηση χρησιμοποιώντας εάν χρειάζεται την καταχώρηση mailcap"
 
 #
-#: keymap_defs.h:160
+#: keymap_defs.h:161
 msgid "show MIME attachments"
 msgstr "δείξτε τις προσαρτήσεις MIME"
 
 #
-#: keymap_defs.h:161
+#: keymap_defs.h:162
 msgid "show currently active limit pattern"
 msgstr "δείξτε το ενεργό μοντέλο ορίων"
 
 #
-#: keymap_defs.h:162
+#: keymap_defs.h:163
 msgid "collapse/uncollapse current thread"
 msgstr "μαζέψτε/απλώστε την τρέχουσα ροή συζήτησης"
 
 #
-#: keymap_defs.h:163
+#: keymap_defs.h:164
 msgid "collapse/uncollapse all threads"
 msgstr "μαζέψτε/απλώστε όλες τις ροές συζήτησεων"
 
 #
 # keymap_defs.h:158
-#: keymap_defs.h:164
+#: keymap_defs.h:165
 msgid "attach a PGP public key"
 msgstr "προσαρτήστε το δημόσιο κλειδί PGP"
 
 #
 # keymap_defs.h:159
-#: keymap_defs.h:165
+#: keymap_defs.h:166
 msgid "show PGP options"
 msgstr "εμφανίστε τις επιλογές PGP"
 
 #
 # keymap_defs.h:160
-#: keymap_defs.h:166
+#: keymap_defs.h:167
 msgid "extract PGP public keys"
 msgstr "εξαγάγετε τα δημόσια κλειδιά PGP"
 
 #
 # keymap_defs.h:161
-#: keymap_defs.h:167
+#: keymap_defs.h:168
 msgid "wipe PGP passphrase from memory"
 msgstr "εξαφανίστε την φράση κλειδί PGP από τη μνήμη"
 
 #
 # keymap_defs.h:162
-#: keymap_defs.h:168
+#: keymap_defs.h:169
 msgid "mail a PGP public key"
 msgstr "στείλτε με γράμμα το δημόσιο κλειδί PGP"
 
 #
 # keymap_defs.h:163
-#: keymap_defs.h:169
+#: keymap_defs.h:170
 msgid "verify a PGP public key"
 msgstr "επιβεβαιώστε ένα δημόσιο κλειδί PGP"
 
 #
 # keymap_defs.h:164
-#: keymap_defs.h:170
+#: keymap_defs.h:171
 msgid "view the key's user id"
 msgstr "εμφανίστε τον ιδιοκτήτη του κλειδιού"
 
 #
-#: keymap_defs.h:171
+#: keymap_defs.h:172
 msgid "make decrypted copy and delete"
 msgstr "κάντε αποκωδικοποιημένο αντίγραφο και διέγραψε"
 
 #
-#: keymap_defs.h:172
+#: keymap_defs.h:173
 msgid "make decrypted copy"
 msgstr "κάντε αποκωδικοποιημένο αντίγραφο"
 
-#: keymap_defs.h:173
+#: keymap_defs.h:174
 msgid "Accept the chain constructed"
 msgstr ""
 
 #
-#: keymap_defs.h:174
+#: keymap_defs.h:175
 #, fuzzy
 msgid "Append a remailer to the chain"
 msgstr "διεγράφει όλους τους χαρακτήρες στη γραμμή"
 
 #
-#: keymap_defs.h:175
+#: keymap_defs.h:176
 #, fuzzy
 msgid "Insert a remailer into the chain"
 msgstr "διεγράφει όλους τους χαρακτήρες στη γραμμή"
 
 #
-#: keymap_defs.h:176
+#: keymap_defs.h:177
 #, fuzzy
 msgid "Delete a remailer from the chain"
 msgstr "διεγράφει όλους τους χαρακτήρες στη γραμμή"
 
 #
-#: keymap_defs.h:177
+#: keymap_defs.h:178
 #, fuzzy
 msgid "Select the previous element of the chain"
 msgstr "διεγράφει όλους τους χαρακτήρες στη γραμμή"
 
 #
-#: keymap_defs.h:178
+#: keymap_defs.h:179
 #, fuzzy
 msgid "Select the next element of the chain"
 msgstr "διεγράφει όλους τους χαρακτήρες στη γραμμή"
 
-#: keymap_defs.h:179
+#: keymap_defs.h:180
 msgid "send the message through a mixmaster remailer chain"
 msgstr ""
 
@@ -2496,6 +2383,7 @@ msgid ""
 "Copyright (C) 1996-9 Brandon Long <blong@fiction.net>\n"
 "Copyright (C) 1997-9 Thomas Roessler <roessler@guug.de>\n"
 "Copyright (C) 1998-9 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1999   Brendan Cully <brendan@kublai.com>\n"
 "\n"
 "Lots of others not mentioned here contributed lots of code,\n"
 "fixes, and suggestions.\n"
@@ -2541,7 +2429,7 @@ msgstr ""
 
 #
 # main.c:73
-#: main.c:74
+#: main.c:75
 msgid ""
 "\n"
 "SHA1 implementation Copyright (C) 1995-7 Eric A. Young <eay@cryptsoft.com>\n"
@@ -2570,7 +2458,7 @@ msgstr ""
 "    along with this program; if not, write to the program's developers.\n"
 
 #
-#: main.c:100
+#: main.c:101
 msgid ""
 "usage: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
 "]\n"
@@ -2632,7 +2520,7 @@ msgstr ""
 "  -h\t\tαυτό το μήνυμα βοήθειας"
 
 #
-#: main.c:152
+#: main.c:153
 msgid ""
 "\n"
 "Compile options:"
@@ -2641,39 +2529,50 @@ msgstr ""
 "Παράμετροι μεταγλώττισης:"
 
 #
-#: main.c:306
+#: main.c:315
 msgid "Error initializing terminal."
 msgstr "Λάθος κατά την αρχικοποίηση του τερματικού."
 
 #
-#: main.c:405
+#: main.c:415
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Αποσφαλμάτωση στο επίπεδο %d.\n"
 
 #
-#: main.c:407
+#: main.c:417
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "Το DEBUG δεν ορίστηκε κατά την διάρκεια του compile. Αγνοήθηκε.\n"
 
+#: main.c:536
+#, c-format
+msgid "%s does not exist. Create it?"
+msgstr ""
+
 #
-#: main.c:545
+#: main.c:540
+#, fuzzy, c-format
+msgid "Can't create %s: %s."
+msgstr "Αδυναμία δημιουργίας αρχείου %s"
+
+#
+#: main.c:579
 msgid "No recipients specified.\n"
 msgstr "Δεν έχουν οριστεί παραλήπτες.\n"
 
 #
-#: main.c:618
+#: main.c:652
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: δε μπορώ να προσαρτήσω το αρχείο.\n"
 
 #
-#: main.c:638
+#: main.c:672
 msgid "No mailbox with new mail."
 msgstr "Δεν υπάρχει νέα αλληλογραφία σε κανένα γραμματοκιβώτιο."
 
 #
-#: main.c:672
+#: main.c:706
 msgid "Mailbox is empty."
 msgstr "Το γραμματοκιβώτιο είναι άδειο."
 
@@ -2806,7 +2705,7 @@ msgid "No search pattern."
 msgstr "Κανένα μοντέλο αναζήτησης."
 
 #
-#: menu.c:652 pager.c:1835 pager.c:1851 pager.c:1938 pattern.c:1153
+#: menu.c:652 pager.c:1839 pager.c:1855 pager.c:1943 pattern.c:1153
 msgid "Not found."
 msgstr "Δε βρέθηκε."
 
@@ -2826,7 +2725,7 @@ msgid "Tagging is not supported."
 msgstr "Σημειώσεις δεν υποστηρίζονται."
 
 #
-#: mh.c:182
+#: mh.c:189
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Ανάγνωση %s... %d"
@@ -2838,172 +2737,173 @@ msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Ο αριθμός κλειδωμάτων ξεπεράστηκε, να βγάλω το κλείδωμα για το %s?"
 
 #
-#: mx.c:125
+#: mx.c:126
 #, c-format
 msgid "Can't dotlock %s.\n"
 msgstr "Δεν μπορώ να κάνω dotlock το %s.\n"
 
 #
-#: mx.c:183
+#: mx.c:184
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Το όριο χρόνου ξεπεράστηκε κατά την προσπάθεια κλειδώματος με fcntl!"
 
 #
-#: mx.c:189
+#: mx.c:190
 #, c-format
 msgid "Waiting for fcntl lock... %d"
 msgstr "Αναμονή για το κλείδωμα fcntl... %d"
 
 #
-#: mx.c:217
+#: mx.c:218
 msgid "Timeout exceeded while attempting flock lock!"
 msgstr "Το όριο χρόνου ξεπεράστηκε κατά την προσπάθεια κλειδώματος flock!"
 
 #
-#: mx.c:224
+#: mx.c:225
 #, c-format
 msgid "Waiting for flock attempt... %d"
 msgstr "Αναμονή για προσπάθεια flock... %d"
 
 #
-#: mx.c:594
+#: mx.c:623
 #, c-format
 msgid "Reading %s..."
 msgstr "Ανάγνωση %s..."
 
 #
-#: mx.c:684
+#: mx.c:713
 #, c-format
 msgid "Writing %s..."
 msgstr "Εγγραφή %s..."
 
 #
-#: mx.c:710
+#: mx.c:740
 #, c-format
 msgid "Could not synchronize mailbox %s!"
 msgstr "Δεν μπορώ να συγχρονίσω το γραμματοκιβώτιο %s!"
 
 #
-#: mx.c:774
+#: mx.c:804
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Μετακίνηση αναγνωσμένων μηνυμάτων στο %s;"
 
 #
-#: mx.c:783 mx.c:982
+#: mx.c:813 mx.c:1012
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Καθαρισμός %d διεγραμμένου μηνήματος;"
 
 #
-#: mx.c:783 mx.c:982
+#: mx.c:813 mx.c:1012
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Καθαρισμός %d διεγραμμένων μηνυμάτων;"
 
 #
-#: mx.c:807
+#: mx.c:837
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Μετακίνηση αναγνωσμένων μηνυμάτων στο %s..."
 
 #
-#: mx.c:830 mx.c:973
+#: mx.c:860 mx.c:1003
 msgid "Mailbox is unchanged."
 msgstr "Δεν έγινε αλλαγή στο γραμματοκιβώτιο "
 
 #
-#: mx.c:849
+#: mx.c:879
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d κρατήθηκαν, %d μετακινήθηκαν, %d διαγράφθηκαν."
 
 #
-#: mx.c:852 mx.c:998
+#: mx.c:882 mx.c:1028
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d κρατήθηκαν, %d διαγράφθηκαν."
 
 #
-#: mx.c:958
+#: mx.c:988
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr "Πατήστε '%s' για να ενεργοποιήσετε την εγγραφή!"
 
 #
-#: mx.c:960
+#: mx.c:990
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Χρησιμοποιήστε το 'toggle-write' για να ενεργοποιήσετε την εγγραφή!"
 
 #
-#: mx.c:962
+#: mx.c:992
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Το γραμματοκιβώτιο είναι σημειωμένο μη εγγράψιμο. %s"
 
 #
-#: mx.c:967
-msgid "Mailbox is read-only."
-msgstr "Το γραμματοκιβώτιο είναι για μόνο-ανάγνωση."
+#: pager.c:54
+#, fuzzy
+msgid "Not available in this menu."
+msgstr "Νέα αλληλογραφία σε αυτό το γραμματοκιβώτιο."
 
 #
-#: pager.c:1376
+#: pager.c:1380
 msgid "PrevPg"
 msgstr "ΠροηγΣελ"
 
 #
-#: pager.c:1377
+#: pager.c:1381
 msgid "NextPg"
 msgstr "ΕπόμΣελ"
 
 #
-#: pager.c:1381
+#: pager.c:1385
 msgid "View Attachm."
 msgstr "ΌψηΠροσάρτ"
 
 #
-#: pager.c:1384
+#: pager.c:1388
 msgid "Next"
 msgstr "Επόμενο"
 
 #
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1747 pager.c:1778 pager.c:1807 pager.c:2026
+#: pager.c:1751 pager.c:1782 pager.c:1811 pager.c:2031
 msgid "Bottom of message is shown."
 msgstr "Εμφανίζεται η βάση του μηνύματος."
 
 #
-#: pager.c:1763 pager.c:1785 pager.c:1796
+#: pager.c:1767 pager.c:1789 pager.c:1800
 msgid "Top of message is shown."
 msgstr "Εμφανίζεται η αρχή του μηνύματος."
 
 #
-#: pager.c:1869
+#: pager.c:1873
 msgid "Reverse search: "
 msgstr "Ανάστροφη αναζήτηση: "
 
 #
-#: pager.c:1870
+#: pager.c:1874
 msgid "Search: "
 msgstr "Αναζήτηση:"
 
 #
-#: pager.c:1964
+#: pager.c:1969
 msgid "Help is currently being shown."
 msgstr "Η βοήθεια ήδη εμφανίζεται."
 
 #
-#: pager.c:1993
+#: pager.c:1998
 msgid "No more quoted text."
 msgstr "Όχι άλλο καθορισμένο κείμενο."
 
 #
-#: pager.c:2006
+#: pager.c:2011
 msgid "No more unquoted text after quoted text."
 msgstr "Όχι άλλο μη καθορισμένο κείμενο μετά από καθορισμένο."
 
 #
-#: parse.c:508
+#: parse.c:516
 msgid "multipart message has no boundary parameter!"
 msgstr "το πολυμερές μήνυμα δεν έχει οριοθέτουσα παράμετρο!"
 
@@ -3198,7 +3098,7 @@ msgstr ""
 
 #
 # pgp.c:669 pgp.c:894
-#: pgp.c:562 pgp.c:847
+#: pgp.c:564 pgp.c:856
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -3206,7 +3106,7 @@ msgstr ""
 "[-- Τέλος της εξόδου PGP --]\n"
 "\n"
 
-#: pgp.c:608
+#: pgp.c:612
 msgid ""
 "[-- Error: Inconsistant multipart/signed structure! --]\n"
 "\n"
@@ -3214,14 +3114,14 @@ msgstr ""
 
 #
 # handler.c:1378
-#: pgp.c:616
+#: pgp.c:620
 #, fuzzy, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
 "\n"
 msgstr "Σφάλμα: το πολυμερές/υπογεγραμμένο δεν έχει πρωτόκολλο"
 
-#: pgp.c:637
+#: pgp.c:644
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -3231,7 +3131,7 @@ msgstr ""
 #
 # pgp.c:676
 #. Now display the signed body
-#: pgp.c:645
+#: pgp.c:654
 #, fuzzy
 msgid ""
 "[-- The following data is signed --]\n"
@@ -3240,7 +3140,7 @@ msgstr ""
 "[-- Τα επόμενα δεδομένα είναι υπεγραμμένα με PGP/MIME --]\n"
 "\n"
 
-#: pgp.c:651
+#: pgp.c:660
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -3248,7 +3148,7 @@ msgstr ""
 
 #
 # pgp.c:682
-#: pgp.c:657
+#: pgp.c:666
 #, fuzzy
 msgid ""
 "\n"
@@ -3259,13 +3159,13 @@ msgstr ""
 
 #
 # pgp.c:801
-#: pgp.c:758
+#: pgp.c:767
 msgid "Internal error. Inform <roessler@guug.de>."
 msgstr "Εσωτερικό σφάλμα. Πληροφορήστε <roessler@guug.de>."
 
 #
 # pgp.c:865
-#: pgp.c:818
+#: pgp.c:827
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -3275,7 +3175,7 @@ msgstr ""
 
 #
 # pgp.c:958
-#: pgp.c:911
+#: pgp.c:920
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -3284,13 +3184,13 @@ msgstr ""
 "\n"
 
 #
-#: pgp.c:924
+#: pgp.c:933
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Σφάλμα: δε μπορώ να δημιουργήσω προσωρινό αρχείο! --]\n"
 
 #
 # pgp.c:980
-#: pgp.c:933
+#: pgp.c:942
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -3300,7 +3200,7 @@ msgstr ""
 
 #
 # pgp.c:988
-#: pgp.c:941
+#: pgp.c:960
 msgid ""
 "\n"
 "[-- End of PGP/MIME encrypted data --]\n"
@@ -3310,23 +3210,39 @@ msgstr ""
 
 #
 # pgp.c:1070
-#: pgp.c:1021
+#: pgp.c:1040
 msgid "Can't open PGP subprocess!"
 msgstr "Αδυναμία ανοίγματος υποδιεργασίας PGP!"
 
 #
 # pgp.c:1194
-#: pgp.c:1138
+#: pgp.c:1164
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Να χρησιμοποιηθεί keyID = \"%s\" για το %s?"
 
 #
 # pgp.c:1200
-#: pgp.c:1145
+#: pgp.c:1184
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Εισηγάγετε keyID για το %s: "
+
+#: pgp.c:1390
+msgid "Can't invoke PGP"
+msgstr ""
+
+#
+#: pgp.c:1494
+#, fuzzy
+msgid "Create an application/pgp message?"
+msgstr "δημιουργεί ένα ψευδώνυμο από ένα αποστολέα μηνύματος"
+
+#
+#: pgpinvoke.c:298
+#, fuzzy
+msgid "Fetching PGP key..."
+msgstr "Λήψη μηνύματος..."
 
 #
 #: pgpkey.c:442
@@ -3415,12 +3331,12 @@ msgstr "Κλήση του PGP..."
 
 #
 # pgpkey.c:416
-#: pgpkey.c:708
+#: pgpkey.c:709
 #, fuzzy, c-format
 msgid "PGP Key %s."
 msgstr "Κλειδί PGP 0x%s."
 
-#: pgpkey.c:752 pgpkey.c:868
+#: pgpkey.c:754 pgpkey.c:870
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr ""
@@ -3453,7 +3369,7 @@ msgid "Connecting to %s"
 msgstr "Σύνδεση στο %s"
 
 #
-#: pop.c:166 pop.c:331
+#: pop.c:166 pop.c:336
 msgid "Server closed connection!"
 msgstr "Η σύνδεση με τον εξυπηρετητή έκλεισε!"
 
@@ -3485,24 +3401,24 @@ msgid "Error while writing mailbox!"
 msgstr "Σφάλμα κατά την εγγραφή στο γραμματοκιβώτιο"
 
 #
-#: pop.c:305
+#: pop.c:307
 #, c-format
 msgid "%s [%d messages read]"
 msgstr "%s [%d μηνύματα διαβάστηκαν]"
 
 #
-#: postpone.c:111
+#: postpone.c:131
 msgid "Postponed Messages"
 msgstr "Ανεβεβλημένα Μηνύματα"
 
 #
-#: postpone.c:184 postpone.c:193
+#: postpone.c:222 postpone.c:236
 msgid "No postponed messages."
 msgstr "Δεν υπάρχουν αναβεβλημένα μηνύματα."
 
 #
 # postpone.c:338 postpone.c:358 postpone.c:367
-#: postpone.c:363 postpone.c:383 postpone.c:392
+#: postpone.c:421 postpone.c:441 postpone.c:450
 msgid "Illegal PGP header"
 msgstr "Ακατάλληλη επικεφαλίδα PGP"
 
@@ -3549,97 +3465,97 @@ msgid "Query '%s'"
 msgstr "Ερώτηση '%s'"
 
 #
-#: recvattach.c:49
+#: recvattach.c:59
 msgid "Pipe"
 msgstr "Διοχετεύει"
 
 #
-#: recvattach.c:50
+#: recvattach.c:60
 msgid "Print"
 msgstr "Εκτύπώνει"
 
 #
-#: recvattach.c:409
+#: recvattach.c:419
 msgid "Saving..."
 msgstr "Αποθήκευση..."
 
 #
-#: recvattach.c:472
+#: recvattach.c:482
 msgid "Attachment saved"
 msgstr "Η προσάρτηση αποθηκεύθηκε"
 
 #
-#: recvattach.c:484
+#: recvattach.c:494
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "ΠΡΟΕΙΔΟΠΟΙΗΣΗ! Πρόκειται να γράψεις πάνω από το %s, να συνεχίσω;"
 
 #
-#: recvattach.c:502
+#: recvattach.c:512
 msgid "Attachment filtered."
 msgstr "Η προσάρτηση έχει φιλτραριστεί."
 
 #
-#: recvattach.c:568
+#: recvattach.c:578
 msgid "Filter through: "
 msgstr "Φιλτράρισμα μέσω: "
 
 #
-#: recvattach.c:568
+#: recvattach.c:578
 msgid "Pipe to: "
 msgstr "Διοχετεύση στο: "
 
 #
-#: recvattach.c:603
+#: recvattach.c:613
 #, c-format
 msgid "I dont know how to print %s attachments!"
 msgstr "Δεν ξέρω πως να τυπώσω τις %s προσαρτήσεις!"
 
 #
-#: recvattach.c:666
+#: recvattach.c:676
 msgid "Print tagged attachment(s)?"
 msgstr "Εκτύπωση σημειωμένου/ων προσάρτησης/σεων;"
 
 #
-#: recvattach.c:666
+#: recvattach.c:676
 msgid "Print attachment?"
 msgstr "Εκτύπωση προσαρτήσεων;"
 
 #
-#: recvattach.c:694
+#: recvattach.c:704
 msgid "You may only bounce message/rfc822 parts."
 msgstr "Μπορείς να αναπηδήσεις μόνο μήνυμα/μέρη rfc822"
 
 #
-#: recvattach.c:730
+#: recvattach.c:740
 #, c-format
 msgid "Bounce messages to %s...?"
 msgstr "Αναπήδηση μυνημάτων στο %s...?"
 
 #
-#: recvattach.c:731
+#: recvattach.c:741
 #, c-format
 msgid "Bounce message to %s...?"
 msgstr "Αναπήδηση μυνήματος στο %s...?"
 
 #
-#: recvattach.c:983
+#: recvattach.c:1015
 msgid "Attachments"
 msgstr "Προσαρτήσεις"
 
 #
-#: recvattach.c:1040
+#: recvattach.c:1075
 msgid "Deletion of attachments from PGP messages is unsupported."
 msgstr "Η διαγραφή προσαρτήσεων από μηνύματα PGP δεν υποστηρίζεται."
 
 #
-#: recvattach.c:1060 recvattach.c:1077
+#: recvattach.c:1095 recvattach.c:1112
 msgid "Only deletion of multipart attachments is supported."
 msgstr "Μόνο η διαγραφή πολυμερών προσαρτήσεων υποστηρίζεται."
 
 #
 # recvattach.c:1065
-#: recvattach.c:1127
+#: recvattach.c:1163
 msgid "This operation is not currently supported for PGP messages."
 msgstr "Αυτή η λειτουργία δεν υποστηρίζεται προς το παρόν για μηνύματα PGP."
 
@@ -3681,7 +3597,7 @@ msgid "No subject, aborting."
 msgstr "Δεν υπάρχει θέμα, εγκατάλειψη."
 
 #
-#: send.c:401
+#: send.c:404
 #, fuzzy, c-format
 msgid "Follow-up to %s%s?"
 msgstr "Απάντηση στο %s%s?"
@@ -3692,7 +3608,7 @@ msgstr "Απάντηση στο %s%s?"
 #. * to send a message to only the sender of the message.  This
 #. * provides a way to do that.
 #.
-#: send.c:444
+#: send.c:447
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "Απάντηση στο %s%s?"
@@ -3701,128 +3617,135 @@ msgstr "Απάντηση στο %s%s?"
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
 #.
-#: send.c:528
+#: send.c:531
 msgid "No tagged messages are visible!"
 msgstr "Κανένα σημειωμένο μήνυμα δεν είναι ορατό!"
 
 #
-#: send.c:553
+#: send.c:556
 msgid "No mailing lists found!"
 msgstr "Δεν βρέθηκαν λίστες συζητήσεων!"
 
 #
-#: send.c:640
+#: send.c:641
 msgid "Include message in reply?"
 msgstr "Να συμπεριλάβω το μήνυμα στην απάντηση;"
 
 #
-#: send.c:654
+#: send.c:646
+#, fuzzy
+msgid "Including quoted message..."
+msgstr "Αποστολή μηνύματος..."
+
+#
+#: send.c:656
 msgid "Could not include all requested messages!"
 msgstr "Δεν μπόρεσα να συμπεριλάβω όλα τα μηνύματα που ζητήθηκαν!"
 
 #
-#: send.c:667
+#: send.c:670
 msgid "Forward MIME encapsulated?"
 msgstr "Προώθηση ενσωματωμένου MIME;"
+
+#
+#: send.c:674
+#, fuzzy
+msgid "Preparing forwarded message..."
+msgstr "Ανέβασμα μηνύματος ..."
 
 #
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:891
+#: send.c:909
 msgid "Recall postponed message?"
 msgstr "Ανάκληση αναβεβλημένου μηνύματος;"
 
 #
-#: send.c:1125
+#: send.c:1138
 msgid "Abort unmodified message?"
 msgstr "Ματαίωση μη τροποποιημένου μηνύματος;"
 
 #
-#: send.c:1127
+#: send.c:1140
 msgid "Aborted unmodified message."
 msgstr "Ματαιώθηκε μη τροποποιημένο μηνύματος."
 
 #
 #. abort
-#: send.c:1167
+#: send.c:1180
 msgid "Mail not sent."
 msgstr "Το γράμμα δε στάλθηκε."
 
 #
-#: send.c:1180
+#: send.c:1193
 msgid "Message postponed."
 msgstr "Το μήνυμα ανεβλήθη."
 
 #
-#: send.c:1189
+#: send.c:1202
 msgid "No recipients are specified!"
 msgstr "Δεν έχουν καθοριστεί παραλήπτες!"
 
 #
-#: send.c:1194
+#: send.c:1207
 msgid "No recipients were specified."
 msgstr "Δεν καθορίστηκαν παραλήπτες."
 
 #
-#: send.c:1200
+#: send.c:1213
 msgid "No subject, abort sending?"
 msgstr "Δεν υπάρχει θέμα, ακύρωση αποστολής;"
 
 #
-#: send.c:1204
+#: send.c:1217
 msgid "No subject specified."
 msgstr "Δεν καθορίστηκε θέμα."
 
 #
-#: send.c:1244
-msgid "Message edited. Really send?"
-msgstr "Το μήνυμα τροποποιήθηκε. Σίγουρα να το στείλω;"
-
-#
-#: send.c:1252
+#: send.c:1259
 msgid "Sending message..."
 msgstr "Αποστολή μηνύματος..."
 
 #
-#: send.c:1355
+#: send.c:1364
 msgid "Could not send the message."
 msgstr "Δεν κατάφερα να στείλω το μήνυμα."
 
 #
-#: send.c:1360
+#: send.c:1369
 msgid "Mail sent."
 msgstr "Το γράμμα στάλθηκε."
 
-#: send.c:1360
+#: send.c:1369
 msgid "Sending in background."
 msgstr ""
 
 #
-#: sendlib.c:440
+#: sendlib.c:455
 msgid "No boundary parameter found! [report this error]"
 msgstr "Δε βρέθηκε παράμετρος οριοθέτησης! [αναφέρατε αυτό το σφάλμα]"
 
 #
-#: sendlib.c:474
+#: sendlib.c:489
 #, c-format
 msgid "%s no longer exists!"
 msgstr "Το %s δεν υπάρχει πια!"
 
 #
-#: sendlib.c:713
+#: sendlib.c:729
 #, c-format
 msgid "Could not open %s"
 msgstr "Αδυναμία ανοίγματος του %s"
 
 #
-#: sendlib.c:1685
+#: sendlib.c:1692
 #, fuzzy, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr ""
 "Σφάλμα κατά την αποστολή μηνύματος, τερματισμός διεργασίας με %d (%s).\n"
 
-#: sendlib.c:1691
+#: sendlib.c:1698
 msgid "Output of the delivery process"
 msgstr ""
 
@@ -3845,12 +3768,6 @@ msgid "Caught signal %d...  Exiting.\n"
 msgstr "Εντοπισμός σήματος %d...  Εγκατάλειψη.\n"
 
 #
-#: socket.c:130
-#, c-format
-msgid "Connecting to %s..."
-msgstr "Σύνδεση στο %s..."
-
-#
 #: sort.c:198
 msgid "Sorting mailbox..."
 msgstr "Τακτοποίηση γραμματοκιβωτίου..."
@@ -3867,50 +3784,194 @@ msgid "(no mailbox)"
 msgstr "(κανένα γραμματοκιβώτιο)"
 
 #
+#: thread.c:722
 #, fuzzy
-#~ msgid "There are no messages."
-#~ msgstr "Η συζήτηση περιέχει μη αναγνωσμένα μηνύματα."
+msgid "Parent message is not visible in limited view"
+msgstr "Αυτό το μήνυμα δεν είναι ορατό."
 
 #
+#: thread.c:727
 #, fuzzy
-#~ msgid "Function not permitted in attach-message mode."
-#~ msgstr "Το %c: δεν υποστηρίζεται σε αυτή την κατάσταση"
+msgid "Parent message is not available."
+msgstr "Αυτό το μήνυμα δεν είναι ορατό."
+
+#. now begin login
+#: imap/auth.c:143
+msgid "Authenticating (GSSAPI)..."
+msgstr ""
+
+#: imap/auth.c:322
+msgid "Authenticating (CRAM-MD5)..."
+msgstr ""
 
 #
-#, fuzzy
-#~ msgid "Can't create %s: %s."
-#~ msgstr "Αδυναμία δημιουργίας αρχείου %s"
+#: imap/auth.c:430
+msgid "IMAP Username: "
+msgstr "Όνομα χρήστη IMAP: "
 
-#
-#, fuzzy
-#~ msgid "Not available in this menu."
-#~ msgstr "Νέα αλληλογραφία σε αυτό το γραμματοκιβώτιο."
-
-#
-#, fuzzy
-#~ msgid "Create an application/pgp message?"
-#~ msgstr "δημιουργεί ένα ψευδώνυμο από ένα αποστολέα μηνύματος"
-
-#
-#, fuzzy
-#~ msgid "Fetching PGP key..."
-#~ msgstr "Λήψη μηνύματος..."
-
-#
-#, fuzzy
-#~ msgid "Including quoted message..."
-#~ msgstr "Αποστολή μηνύματος..."
-
-#
-#, fuzzy
-#~ msgid "Preparing forwarded message..."
-#~ msgstr "Ανέβασμα μηνύματος ..."
+#: imap/auth.c:446
+msgid "GSSAPI authentication failed."
+msgstr ""
 
 #
 # pgp.c:1200
-#, fuzzy
-#~ msgid "CRAM key for %s@%s: "
-#~ msgstr "Εισηγάγετε keyID για το %s: "
+#: imap/auth.c:462
+#, fuzzy, c-format
+msgid "CRAM key for %s@%s: "
+msgstr "Εισηγάγετε keyID για το %s: "
+
+#: imap/auth.c:476
+msgid "CRAM-MD5 authentication failed."
+msgstr ""
+
+#
+#: imap/auth.c:488
+#, c-format
+msgid "Password for %s@%s: "
+msgstr "Συνθηματικό για το %s@%s: "
+
+#
+#: imap/auth.c:501
+msgid "Logging in..."
+msgstr "Είσοδος στο σύστημα..."
+
+#
+#. Login failed, try again
+#: imap/auth.c:514
+msgid "Login failed."
+msgstr "Απέτυχε η είσοδος στο σύστημα."
+
+#: imap/browse.c:113
+msgid "Contacted server, getting folder list..."
+msgstr ""
+
+#
+#: imap/imap.c:79
+#, c-format
+msgid "imap_error(): unexpected response in %s: %s\n"
+msgstr "imap_error(): μη αναμενόμενη απάντηση σε %s: %s\n"
+
+#
+#. something is wrong because the server reported fewer messages
+#. * than we previously saw
+#.
+#: imap/imap.c:414
+msgid "Fatal error.  Message count is out of sync!"
+msgstr "Μοιραίο σφάλμα. Ο αριθμός των μηνυμάτων δεν είναι σε συμφωνία!"
+
+#
+#: imap/imap.c:547
+#, c-format
+msgid "Fetching message headers... [%d/%d]"
+msgstr "Λήψη επικεφαλίδων από μηνύματα... [%d/%d]"
+
+#
+#. Unable to fetch headers for lower versions
+#: imap/imap.c:574
+msgid "Unable to fetch headers from this IMAP server version."
+msgstr ""
+"Δεν κατάφερα να λάβω επικεφαλίδείτε από αυτή την έκδοση του εξυπηρετητή IMAP."
+
+#
+#: imap/imap.c:766
+#, c-format
+msgid "Reopening mailbox... %s"
+msgstr "Ξανά άνοιγμα του γραμματοκιβωτίου... %s"
+
+#
+#: imap/imap.c:1133
+msgid "This IMAP server is ancient. Mutt does not work with it."
+msgstr ""
+"Αυτός ο εξυπηρετητής IMAP είναι αρχαίος. Το Mutt δεν είναι συμβατό με αυτόν."
+
+#
+#: imap/imap.c:1239
+#, c-format
+msgid "Selecting %s..."
+msgstr "Επιλογή %s..."
+
+#
+#. STATUS not supported
+#. * The thing to do seems to be:
+#. *  - Open a *new* IMAP session, select, and then close it. Report the
+#. * error if the mailbox did not exist.
+#: imap/imap.c:1425
+msgid "Unable to append to IMAP mailboxes at this server"
+msgstr "Αδυναμία στη πρόσθηκη στα γραμμ/τια IMAP σε αυτόν τον εξυπηρετητή"
+
+#
+#: imap/imap.c:1435
+#, c-format
+msgid "Create %s?"
+msgstr "Δημιουργία του %s;"
+
+#
+#: imap/imap.c:1487
+msgid "Fetching message..."
+msgstr "Λήψη μηνύματος..."
+
+#
+#: imap/imap.c:1624
+msgid "Sending APPEND command ..."
+msgstr "Αποστολή εντολής APPEND ..."
+
+#
+#: imap/imap.c:1663
+msgid "Uploading message ..."
+msgstr "Ανέβασμα μηνύματος ..."
+
+#
+#: imap/imap.c:1718
+msgid "Closing connection to IMAP server..."
+msgstr "Κλείσιμο σύνδεσης στον εξυπηρετητή IMAP..."
+
+#
+#: imap/imap.c:1766
+#, c-format
+msgid "Saving message status flags... [%d/%d]"
+msgstr "Αποθήκευση σημαιών κατάστασης μηνύματος... [%d/%d]"
+
+#
+#: imap/imap.c:1811
+msgid "Expunging messages from server..."
+msgstr "Διαγραφή μηνυμάτων από τον εξυπηρετητή..."
+
+#
+#. tell the server to commit changes
+#: imap/imap.c:1843
+msgid "Closing mailbox..."
+msgstr "Κλείσιμο γραμματοκιβωτίου..."
+
+#
+#: imap/imap.c:2157
+#, fuzzy, c-format
+msgid "Subscribing to %s..."
+msgstr "Αντιγραφή στο %s..."
+
+#
+#: imap/imap.c:2159
+#, fuzzy, c-format
+msgid "Unsubscribing to %s..."
+msgstr "Σύνδεση στο %s..."
+
+#
+#: imap/socket.c:130
+#, c-format
+msgid "Connecting to %s..."
+msgstr "Σύνδεση στο %s..."
+
+#
+# compose.c:175
+#~ msgid "An unkown PGP version was defined for signing."
+#~ msgstr "Μια άγνωστη έκδοση του PGP ορίστηκε για υπογραφή."
+
+#
+#~ msgid "edit the current message for resending"
+#~ msgstr "επεξεργάζετε το τρέχον μήνυμα για επαναποστολή"
+
+#
+#~ msgid "Message edited. Really send?"
+#~ msgstr "Το μήνυμα τροποποιήθηκε. Σίγουρα να το στείλω;"
 
 #
 # compose.c:150
