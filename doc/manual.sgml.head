@@ -1767,7 +1767,7 @@ which is equivalent to giving identical plus and minus error margins.
 Example: To select any messages two weeks around January 15, 2001,
 you'd use the following pattern: 
 <tscreen><verb> 
-Limit to messages matching: ~d 1/1/2001*2w
+Limit to messages matching: ~d 15/1/2001*2w
 </verb></tscreen>
 
 
