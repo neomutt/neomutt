@@ -50,7 +50,7 @@ AC_DEFUN([MUTT_AM_WITH_NLS],
   [AC_MSG_CHECKING([whether NLS is requested])
     dnl Default is enabled NLS
     AC_ARG_ENABLE(nls,
-      [  --disable-nls           do not use Native Language Support],
+      [  --disable-nls              Do not use Native Language Support],
       USE_NLS=$enableval, USE_NLS=yes)
     AC_MSG_RESULT($USE_NLS)
     AC_SUBST(USE_NLS)
@@ -66,7 +66,7 @@ AC_DEFUN([MUTT_AM_WITH_NLS],
    is requested.])
       AC_MSG_CHECKING([whether included gettext is requested])
       AC_ARG_WITH(included-gettext,
-        [  --with-included-gettext use the GNU gettext library included here],
+        [  --with-included-gettext    Use the GNU gettext library included here],
         nls_cv_force_use_gnu_gettext=$withval,
         nls_cv_force_use_gnu_gettext=no)
       AC_MSG_RESULT($nls_cv_force_use_gnu_gettext)
