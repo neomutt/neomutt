@@ -1,10 +1,15 @@
+2005-03-16 02:49:33  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* configure.in, doc/Makefile.in, hcache.c, Makefile.am: Various
+	cygwin portability fixes
+
 2005-03-15 04:40:40  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* crypthash.h: Don't define uint32_t anywhere but in
 	config.h. Spotted by Alain Bench. 
-                                 
+
 2005-03-13 16:35:35  roessler  (roessler)
-                                 
+
 	* po/sv.po, po/tr.po, po/uk.po, po/zh_CN.po, po/zh_TW.po,
 	po/id.po, po/it.po, po/ja.po, po/ko.po, po/lt.po, po/nl.po,
 	po/pl.po, po/pt_BR.po, po/ru.po, po/sk.po, VERSION, po/bg.po,
