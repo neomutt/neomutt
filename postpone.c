@@ -405,17 +405,7 @@ int mutt_prepare_edit_message (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr)
   {
     BODY *b;
 
-    fseek (msg->fp, hdr->content->offset, 0);
-
-    if (hdr->content->type == TYPEMULTIPART)
-    {
-      hdr->content->parts = mutt_parse_multipart (msg->fp, 
-	       mutt_get_parameter ("boundary", hdr->content->parameter),
-	       hdr->content->offset + hdr->content->length,
-	       mutt_strcasecmp ("digest", hdr->content->subtype) == 0);
-    }
-    else
-      hdr->content->parts = mutt_parse_messageRFC822 (msg->fp, hdr->content);
+    mutt_parse_part (msg->fp, hdr->content);
 
     /* Now that we know what was in the other message, convert to the new
      * message.

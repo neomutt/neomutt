@@ -908,16 +908,7 @@ BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout)
 
     /* See if we need to recurse on this MIME part.  */
 
-    if (tattach->type == TYPEMULTIPART)
-    {
-      fseek (fpout, tattach->offset, 0);
-      tattach->parts = mutt_parse_multipart (fpout, mutt_get_parameter ("boundary", tattach->parameter), tattach->offset + tattach->length, mutt_strcasecmp ("digest", tattach->subtype) == 0);
-    }
-    else if (tattach->type == TYPEMESSAGE)
-    {
-      fseek (fpout, tattach->offset, 0);
-      tattach->parts = mutt_parse_messageRFC822 (fpout, tattach);
-    }
+    mutt_parse_part (fpout, tattach);
   }
 
   return (tattach);

@@ -55,7 +55,7 @@ static const char rcsid[]="$Id$";
 #define CHECK_MODE(x)	if (!(x)) \
 			{ \
 			  	mutt_flushinp (); \
-				mutt_error ("Not available in this menu."); \
+				mutt_error _("Not available in this menu."); \
 				break; \
 			}
 
@@ -69,7 +69,7 @@ static const char rcsid[]="$Id$";
 #define CHECK_ATTACH if(option(OPTATTACHMSG)) \
 		     {\
 			mutt_flushinp (); \
-			mutt_error ("Function not permitted in attach-message mode."); \
+			mutt_error _("Function not permitted in attach-message mode."); \
 			break; \
 		     }
 
@@ -1020,6 +1020,10 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
 
       resolve_types ((char *) fmt, *lineInfo, n, *last,
 		      QuoteList, q_level, force_redraw, flags & M_SHOWCOLOR);
+
+      /* avoid race condition for continuation lines when scrolling up */
+      for (m = n + 1; m < *last && (*lineInfo)[m].offset && (*lineInfo)[m].continuation; m++)
+	(*lineInfo)[m].type = (*lineInfo)[n].type;
     }
 
     /* this also prevents searching through the hidden lines */
@@ -1028,7 +1032,7 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
   }
 
   /* At this point, (*lineInfo[n]).quote may still be undefined. We 
-   * don't wont to compute it every time M_TYPES is set, since this
+   * don't want to compute it every time M_TYPES is set, since this
    * would slow down the "bottom" function unacceptably. A compromise
    * solution is hence to call regexec() again, just to find out the
    * length of the quote prefix.

@@ -427,6 +427,17 @@ void mutt_parse_part (FILE *fp, BODY *b)
 	  b->parts = mutt_read_mime_header (fp, 0);
       }
       break;
+
+    default:
+      return;
+  }
+
+  /* try to recover from parsing error */
+  if (!b->parts)
+  {
+    b->type = TYPETEXT;
+    safe_free ((void **) &b->subtype);
+    b->subtype = safe_strdup ("plain");
   }
 }
 
@@ -459,21 +470,7 @@ BODY *mutt_parse_messageRFC822 (FILE *fp, BODY *parent)
   if (msg->length < 0)
     msg->length = 0;
 
-  if (msg->type == TYPEMULTIPART)
-    msg->parts = mutt_parse_multipart (fp, mutt_get_parameter ("boundary", msg->parameter), msg->offset + msg->length, mutt_strcasecmp ("digest", msg->subtype) == 0);
-  else if (msg->type == TYPEMESSAGE)
-    msg->parts = mutt_parse_messageRFC822 (fp, msg);
-  else
-    return (msg);
-  
-  /* try to recover from parsing error */
-  if (!msg->parts)
-  {
-    msg->type = TYPETEXT;
-    safe_free ((void **) &msg->subtype);
-    msg->subtype = safe_strdup ("plain");
-  }
-
+  mutt_parse_part(fp, msg);
   return (msg);
 }
 
@@ -813,27 +810,7 @@ void mutt_parse_mime_message (CONTEXT *ctx, HEADER *cur)
 
   if ((msg = mx_open_message (ctx, cur->msgno)))
   {
-    fseek (msg->fp, cur->content->offset, 0);
-
-    if (cur->content->type == TYPEMULTIPART)
-    {
-      if (!cur->content->parts)
-	cur->content->parts = mutt_parse_multipart (msg->fp, mutt_get_parameter ("boundary", cur->content->parameter), cur->content->offset + cur->content->length, mutt_strcasecmp ("digest", cur->content->subtype) == 0);
-    }
-    else
-    {
-      if (!cur->content->parts)
-	cur->content->parts = mutt_parse_messageRFC822 (msg->fp, cur->content);
-    }
-
-    /* try to recover from parsing error */
-    if (!cur->content->parts)
-    {
-      cur->content->type = TYPETEXT;
-      safe_free ((void **) &cur->content->subtype);
-      cur->content->subtype = safe_strdup ("plain");
-    }
-    
+    mutt_parse_part (msg->fp, cur->content);
 
 
 #ifdef _PGPPATH
