@@ -692,10 +692,10 @@ void _smime_getkeys (char *mailbox)
   }
 
   snprintf (SmimeKeyToUse, sizeof (SmimeKeyToUse), "%s/%s", 
-	    NONULL (SmimeKeys), SmimeDefaultKey);
+	    NONULL (SmimeKeys), NONULL (SmimeDefaultKey));
   
   snprintf (SmimeCertToUse, sizeof (SmimeCertToUse), "%s/%s",
-	    NONULL (SmimeCertificates), SmimeDefaultKey);
+	    NONULL (SmimeCertificates), NONULL (SmimeDefaultKey));
 }
 
 void smime_getkeys (ENVELOPE *env)
