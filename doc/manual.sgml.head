@@ -2355,7 +2355,7 @@ If Mutt can not determine the mime type by the extension of the file you
 attach, it will look at the file.  If the file is free of binary
 information, Mutt will assume that the file is plain text, and mark it
 as <tt>text/plain</tt>.  If the file contains binary information, then Mutt will
-mark it as <tt>application/octect-stream</tt>.  You can change the MIME
+mark it as <tt>application/octet-stream</tt>.  You can change the MIME
 type that Mutt assigns to an attachment by using the <tt/edit-type/
 command from the compose menu (default: ^T). The MIME type is actually a
 major mime type followed by the sub-type, separated by a '/'. 6 major
