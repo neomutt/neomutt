@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 1996,1997 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (c) 1998 Thomas Roessler <roessler@guug.de>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -106,7 +107,9 @@ static int pgp_compare (const void *a, const void *b)
     return strcasecmp(pgp_keyid(s->k), pgp_keyid(t->k));
 }
 
-static KEYINFO *pgp_select_key (LIST *keys, ADDRESS *p, const char *s)
+static KEYINFO *pgp_select_key (struct pgp_vinfo *pgp,
+				LIST *keys, 
+				ADDRESS *p, const char *s)
 {
   int keymax;
   pgp_key_t *KeyTable;
@@ -216,7 +219,7 @@ static KEYINFO *pgp_select_key (LIST *keys, ADDRESS *p, const char *s)
 
 	mutt_message ("Invoking PGP...");
 	
-        if((thepid = pgp_invoke_verify_key(NULL, NULL, NULL, -1,
+        if((thepid = pgp->invoke_verify_key(pgp, NULL, NULL, NULL, -1,
 					   fileno(fp), fileno(devnull), 
 					   pgp_keyid(KeyTable[menu->current].k))) == -1)
         {
@@ -283,16 +286,13 @@ static KEYINFO *pgp_select_key (LIST *keys, ADDRESS *p, const char *s)
   return (info);
 }
 
-char *pgp_ask_for_key (const char *ringfile, KEYINFO *udb, char *tag, char *whatfor,
+char *pgp_ask_for_key (struct pgp_vinfo *pgp, KEYINFO *db, char *tag, char *whatfor,
 		       short abilities, char **alg)
 {
-  KEYINFO *db;
   KEYINFO *key;
   char *key_id;
   char resp[SHORT_STRING];
   struct pgp_cache *l = NULL;
-
-  db = udb ? udb : pgp_read_keyring(ringfile);
 
   resp[0] = 0;
   if (whatfor) 
@@ -310,10 +310,7 @@ char *pgp_ask_for_key (const char *ringfile, KEYINFO *udb, char *tag, char *what
   FOREVER
   {
     if (mutt_get_field (tag, resp, sizeof (resp), M_CLEAR) != 0)
-    {
-      if (!udb) pgp_closedb (db);
       return NULL;
-    }
     
     if (whatfor) 
     {
@@ -332,14 +329,13 @@ char *pgp_ask_for_key (const char *ringfile, KEYINFO *udb, char *tag, char *what
       }
     }
 
-    if ((key = ki_getkeybystr (resp, db, abilities)))
+    if ((key = ki_getkeybystr (pgp, resp, db, abilities)))
     {
       key_id = safe_strdup(pgp_keyid (key));
 
       if (alg) 
 	*alg = safe_strdup(pgp_pkalg_to_mic(key->algorithm));
       
-      if (!udb) pgp_closedb (db);
       return (key_id);
     }
     BEEP ();
@@ -359,11 +355,19 @@ BODY *pgp_make_key_attachment (char * tempf)
   FILE *devnull;
   struct stat sb;
   pid_t thepid;
+  KEYINFO *db;
+  struct pgp_vinfo *pgp = pgp_get_vinfo(PGP_EXPORT);
 
+  if(!pgp)
+    return NULL;
+  
   unset_option (OPTPGPCHECKTRUST);
   
-  if (!(id = pgp_ask_for_key (pgp_pubring(PGP_EXTRACT),
-			      NULL, "Please enter the key ID: ", NULL, 0, NULL)))
+  db = pgp->read_pubring(pgp);
+  id = pgp_ask_for_key (pgp, db, "Please enter the key ID: ", NULL, 0, NULL);
+  pgp_close_keydb(&db);
+  
+  if(!id)
     return NULL;
 
   if (!tempf) {
@@ -385,8 +389,9 @@ BODY *pgp_make_key_attachment (char * tempf)
     return NULL;
   }
 
-  if ((thepid = pgp_invoke_extract_key(NULL, NULL, NULL, -1, 
-				       fileno(tempfp), fileno(devnull), id)) == -1)
+  if ((thepid = pgp->invoke_export(pgp,
+				   NULL, NULL, NULL, -1, 
+				   fileno(tempfp), fileno(devnull), id)) == -1)
   {
     mutt_perror ("Can't create filter");
     unlink (tempf);
@@ -437,7 +442,8 @@ static char *mutt_stristr (char *haystack, char *needle)
   return NULL;
 }
 
-KEYINFO *ki_getkeybyaddr (ADDRESS *a, KEYINFO *k, short abilities)
+KEYINFO *ki_getkeybyaddr (struct pgp_vinfo *pgp, 
+			  ADDRESS *a, KEYINFO *k, short abilities)
 {
   ADDRESS *r, *p;
   LIST *l = NULL, *t = NULL;
@@ -510,7 +516,7 @@ KEYINFO *ki_getkeybyaddr (ADDRESS *a, KEYINFO *k, short abilities)
     if (l->next || weak)
     {
       /* query for which key the user wants */
-      k = pgp_select_key (l, a, NULL);
+      k = pgp_select_key (pgp, l, a, NULL);
     }
     else
       k = (KEYINFO *)l->data;
@@ -526,7 +532,8 @@ KEYINFO *ki_getkeybyaddr (ADDRESS *a, KEYINFO *k, short abilities)
   return (k);
 }
 
-KEYINFO *ki_getkeybystr (char *p, KEYINFO *k, short abilities)
+KEYINFO *ki_getkeybystr (struct pgp_vinfo *pgp,
+			 char *p, KEYINFO *k, short abilities)
 {
   LIST *t = NULL, *l = NULL;
   LIST *a;
@@ -572,7 +579,7 @@ KEYINFO *ki_getkeybystr (char *p, KEYINFO *k, short abilities)
 
   if (l)
   {
-    k = pgp_select_key (l, NULL, p);
+    k = pgp_select_key (pgp, l, NULL, p);
     set_option(OPTNEEDREDRAW);
 
     for(t = l; t; t = t->next)

@@ -120,6 +120,9 @@ static int pgp_send_menu (int bits)
   char *micalg = NULL;
   char input_signas[SHORT_STRING];
   char input_micalg[SHORT_STRING];
+  KEYINFO *secring;
+
+  struct pgp_vinfo *pgp = pgp_get_vinfo(PGP_SIGN);
   
   mvaddstr (LINES-1, 0, "(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget it? ");
   clrtoeol ();
@@ -131,17 +134,36 @@ static int pgp_send_menu (int bits)
     if (c == 'a')
     {
       unset_option(OPTPGPCHECKTRUST);
-      if ((p = pgp_ask_for_key (pgp_secring(PGP_SIGN), 
-				NULL, "Sign as: ", NULL, KEYFLAG_CANSIGN, &micalg)))
+      
+      if(pgp)
       {
-	snprintf (input_signas, sizeof (input_signas), "0x%s", p);
-	safe_free((void **) &PgpSignAs);
-	PgpSignAs = safe_strdup(input_signas);
-	safe_free((void **) &PgpSignMicalg);
-	PgpSignMicalg = micalg;	/* micalg is malloc()ed by pgp_ask_for_key */
-	pgp_void_passphrase (); /* probably need a different passphrase */
-	safe_free ((void **) &p);
-	bits |= PGPSIGN;
+	if(!(secring = pgp->read_secring(pgp)))
+	{
+	  mutt_error("Can't open your secret key ring!");
+	  bits &= ~PGPSIGN;
+	}
+	else 
+	{
+	  if ((p = pgp_ask_for_key (pgp, secring, "Sign as: ", 
+				    NULL, KEYFLAG_CANSIGN, &micalg)))
+	  {
+	    snprintf (input_signas, sizeof (input_signas), "0x%s", p);
+	    safe_free((void **) &PgpSignAs);
+	    PgpSignAs = safe_strdup(input_signas);
+	    safe_free((void **) &PgpSignMicalg);
+	    PgpSignMicalg = micalg;	/* micalg is malloc()ed by pgp_ask_for_key */
+	    pgp_void_passphrase (); 	/* probably need a different passphrase */
+	    safe_free ((void **) &p);
+	    bits |= PGPSIGN;
+	  }
+	  
+	  pgp_close_keydb(&secring);
+	}
+      }
+      else
+      {
+	bits &= ~PGPSIGN;
+	mutt_error("An unkown PGP version was defined for signing.");
       }
     }
     else if (c == 'm')
@@ -160,7 +182,8 @@ static int pgp_send_menu (int bits)
 	  {
 	    mutt_error("Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160");
 	  }
-	  else {
+	  else 
+	  {
 	    safe_free((void **) &PgpSignMicalg);
 	    PgpSignMicalg = safe_strdup(input_micalg);
 	  }
@@ -187,10 +210,6 @@ static int pgp_send_menu (int bits)
   return (bits);
 }
 #endif /* _PGPPATH */
-
-
-
-
 
 
 

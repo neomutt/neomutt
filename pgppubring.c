@@ -719,7 +719,7 @@ static int pgp_parse_sig(unsigned char *buff, size_t l, KEYINFO *p)
 }
 
   
-KEYINFO *pgp_read_keyring(const char *fname)
+static KEYINFO *pgp_read_keyring(const char *fname)
 {
   FILE *fp;
   unsigned char *buff;
@@ -821,11 +821,21 @@ KEYINFO *pgp_read_keyring(const char *fname)
   return db;
 }
 
-void pgp_closedb (KEYINFO *k)
+KEYINFO *pgp_read_pubring(struct pgp_vinfo *pgp)
 {
-  KEYINFO *tmp;
-  LIST *q;
+  return pgp_read_keyring(NONULL(*pgp->pubring));
+}
 
+KEYINFO *pgp_read_secring(struct pgp_vinfo *pgp)
+{
+  return pgp_read_keyring(NONULL(*pgp->secring));
+}
+
+void pgp_close_keydb (KEYINFO **ki)
+{
+  KEYINFO *tmp, *k = *ki;
+  LIST *q;
+  
   while (k)
   {
     if (k->keyid) safe_free ((void **)&k->keyid);
@@ -835,4 +845,5 @@ void pgp_closedb (KEYINFO *k)
     k = k->next;
     safe_free ((void **)&tmp);
   }
+  *ki = NULL;
 }

@@ -202,6 +202,9 @@ static void show_version (void)
 #ifdef HAVE_PGP2
 	"+HAVE_PGP2  "
 #endif
+#ifdef HAVE_GPG
+	"+HAVE_GPG   "
+#endif
 #endif
 
 
@@ -240,6 +243,9 @@ static void show_version (void)
 # endif
 # ifdef _PGPV3PATH
   printf ("_PGPV3PATH=\"%s\"\n", _PGPV3PATH);
+# endif
+# ifdef _PGPGPPATH
+  pritnf ("_PGPGPGPATH=\"%s\"\n", _PGPGPGPATH);
 # endif
 #endif
 

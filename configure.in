@@ -23,6 +23,14 @@ OPS='$(srcdir)/OPS'
 if test -f $srcdir/pgp.c; then
 	SUBVERSION=i
 	PGPPATH=no
+	
+	AC_PATH_PROG(GPG, gpg, no)
+	if test $GPG != no ; then
+		AC_DEFINE_UNQUOTED(_PGPGPGPATH, "$GPG")
+		PGPPATH="$GPG"
+		AC_DEFINE(HAVE_GPG)
+	fi
+	
 	AC_PATH_PROG(PGPK, pgpk, no)
 	if test $PGPK != no ; then
 		PGPK=`echo $PGPK | sed 's,.$,,'`
@@ -43,7 +51,7 @@ if test -f $srcdir/pgp.c; then
 	fi
 
 	if test $PGP != no || test $PGPK != no ; then
-		LIBOBJS="$LIBOBJS pgp.o pgpinvoke.o pgpkey.o pgppubring.o sha1dgst.o"
+		LIBOBJS="$LIBOBJS pgp.o pgpinvoke.o pgpkey.o pgppubring.o sha1dgst.o gnupgparse.o"
 		OPS="$OPS \$(srcdir)/OPS.PGP"
 	fi
 fi

@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 1996,1997 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (c) 1998 Thomas Roessler <roessler@guug.de>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -46,10 +47,51 @@ static time_t PgpExptime = 0; /* when does the cached passphrase expire? */
 
 static struct pgp_vinfo pgp_vinfo[] =
 {
-  { PGP_V2, 	"pgp2",	&PgpV2,	&PgpV2Pubring,	&PgpV2Secring, 	&PgpV2Language },
-  { PGP_V3, 	"pgp3", &PgpV3,	&PgpV3Pubring,	&PgpV3Secring, 	&PgpV3Language },
-  { PGP_V3, 	"pgp5", &PgpV3,	&PgpV3Pubring,	&PgpV3Secring, 	&PgpV3Language },
-  { PGP_UNKNOWN, NULL,	NULL,	NULL,		NULL,		NULL}
+
+  { PGP_V2, 	
+    "pgp2",	
+    &PgpV2,	&PgpV2Pubring,	&PgpV2Secring, 	&PgpV2Language, 
+    pgp_read_pubring, pgp_read_secring,
+    pgp_v2_invoke_decode, pgp_v2_invoke_verify, pgp_v2_invoke_decrypt,
+    pgp_v2_invoke_sign, pgp_v2_invoke_encrypt, pgp_v2_invoke_import,
+    pgp_v2_invoke_export, pgp_v2_invoke_verify_key 
+  },
+
+  { PGP_V3, 	
+    "pgp3",	
+    &PgpV3,	&PgpV3Pubring,	&PgpV3Secring, 	&PgpV3Language, 
+    pgp_read_pubring, pgp_read_secring,
+    pgp_v3_invoke_decode, pgp_v3_invoke_verify, pgp_v3_invoke_decrypt,
+    pgp_v3_invoke_sign, pgp_v3_invoke_encrypt, pgp_v3_invoke_import,
+    pgp_v3_invoke_export, pgp_v3_invoke_verify_key 
+  },
+  
+  { PGP_V3, 	
+    "pgp5",	
+    &PgpV3,	&PgpV3Pubring,	&PgpV3Secring, 	&PgpV3Language, 
+    pgp_read_pubring, pgp_read_secring,
+    pgp_v3_invoke_decode, pgp_v3_invoke_verify, pgp_v3_invoke_decrypt,
+    pgp_v3_invoke_sign, pgp_v3_invoke_encrypt, pgp_v3_invoke_import,
+    pgp_v3_invoke_export, pgp_v3_invoke_verify_key 
+  },
+  
+  { PGP_GPG, 	
+    "gpg",	
+    &PgpGpg,	&PgpGpgDummy,	&PgpGpgDummy, &PgpGpgDummy,
+    gpg_read_pubring, gpg_read_secring,
+    pgp_gpg_invoke_decode, pgp_gpg_invoke_verify, pgp_gpg_invoke_decrypt,
+    pgp_gpg_invoke_sign, pgp_gpg_invoke_encrypt, pgp_gpg_invoke_import,
+    pgp_gpg_invoke_export, pgp_gpg_invoke_verify_key 
+  },
+  
+  { PGP_UNKNOWN,
+    NULL, 
+    NULL, NULL, NULL, NULL,
+    NULL,
+    NULL, NULL, NULL,
+    NULL, NULL, NULL, 
+    NULL, NULL
+  }
 };
 
 static struct
@@ -65,8 +107,8 @@ pgp_opvers[] =
   { PGP_SIGN,		&PgpSendVersion    },
   { PGP_ENCRYPT,	&PgpSendVersion	  },
   { PGP_VERIFY_KEY,	&PgpSendVersion	  },
-  { PGP_EXTRACT,	&PgpKeyVersion	  },
-  { PGP_EXTRACT_KEY,	&PgpKeyVersion	  },
+  { PGP_IMPORT,		&PgpKeyVersion	  },
+  { PGP_EXPORT,		&PgpKeyVersion	  },
   { PGP_LAST_OP,	NULL		  }
 };
 
@@ -109,6 +151,7 @@ struct pgp_vinfo *pgp_get_vinfo(enum pgp_ops op)
 {
   int i;
   char *version = "default";
+  char msg[LONG_STRING];
   
   for(i = 0; pgp_opvers[i].op != PGP_LAST_OP; i++)
   {
@@ -127,30 +170,13 @@ struct pgp_vinfo *pgp_get_vinfo(enum pgp_ops op)
     if(!strcasecmp(pgp_vinfo[i].name, version))
       return &pgp_vinfo[i];
   }
-  
+
+  snprintf(msg, sizeof(msg), "Unknown PGP version \"%s\".",
+	   version);
+  mutt_error(msg);
+
   return NULL;
 }
-
-enum pgp_version pgp_version(enum pgp_ops op)
-{
-  struct pgp_vinfo *info = pgp_get_vinfo(op);
-  return info ? info->v : PGP_UNKNOWN;
-}
-
-
-char *pgp_getring (enum pgp_ops op, int pub)
-{
-  struct pgp_vinfo *info = pgp_get_vinfo(op);
-  if(!info) return NULL;
-  return pub ? *info->pubring : *info->secring;
-}
-
-char *pgp_binary(enum pgp_ops op)
-{
-  struct pgp_vinfo *info = pgp_get_vinfo(op);
-  return info ? *info->binary : NULL;
-}
-
 
 char *pgp_keyid(KEYINFO *k)
 {
@@ -203,8 +229,11 @@ void application_pgp_handler (BODY *m, STATE *s)
   FILE *pgpout = NULL, *pgpin, *pgperr;
   FILE *tmpfp;
   pid_t thepid;
-  
+  struct pgp_vinfo *pgp = pgp_get_vinfo(PGP_DECODE);
 
+  if(!pgp)
+    return;
+  
   fseek (s->fpin, m->offset, 0);
   last_pos = m->offset;
   
@@ -279,8 +308,12 @@ void application_pgp_handler (BODY *m, STATE *s)
 
 	fclose(tmpfp);
 	
-	if ((thepid = pgp_invoke_decode (&pgpin, NULL, &pgperr, -1,
-					   fileno (pgpout), -1, tmpfname, needpass)) == -1)
+	if ((thepid = pgp->invoke_decode (pgp,
+					  &pgpin, NULL, 
+					  &pgperr, -1,
+					  fileno (pgpout), 
+					  -1, tmpfname, 
+					  needpass)) == -1)
 	{
 	  fclose (pgpout); pgpout = NULL;
 	  mutt_unlink(tmpfname);
@@ -513,6 +546,10 @@ void pgp_signed_handler (BODY *a, STATE *s)
   int hadcr;
   int c;
   pid_t thepid;
+  struct pgp_vinfo *pgp = pgp_get_vinfo(PGP_VERIFY);
+  
+  if(!pgp)
+    return;
   
   a = a->parts;
 
@@ -583,8 +620,10 @@ void pgp_signed_handler (BODY *a, STATE *s)
       
       pgp_current_time (s);
 
-      if((thepid = pgp_invoke_verify (NULL, &pgpout, NULL, -1, -1, fileno(pgperr),
-				  tempfile, sigfile)) != -1)
+      if((thepid = pgp->invoke_verify (pgp,
+				       NULL, &pgpout, NULL, 
+				       -1, -1, fileno(pgperr),
+				       tempfile, sigfile)) != -1)
       {
 	mutt_copy_stream(pgpout, s->fpout);
 	fclose (pgpout);
@@ -627,6 +666,10 @@ void pgp_extract_keys_from_messages (HEADER *h)
   int i;
   STATE s;
   char tempfname[_POSIX_PATH_MAX];
+  struct pgp_vinfo *pgp = pgp_get_vinfo(PGP_IMPORT);
+  
+  if(!pgp)
+    return;
   
   if(h)
   {
@@ -676,7 +719,7 @@ void pgp_extract_keys_from_messages (HEADER *h)
       
   fclose(s.fpout);
   endwin();
-  pgp_invoke_extract(tempfname);
+  pgp->invoke_import(pgp, tempfname);
   mutt_any_key_to_continue(NULL);
 
   bailout:
@@ -686,7 +729,8 @@ void pgp_extract_keys_from_messages (HEADER *h)
   
 }
 
-static void pgp_extract_keys_from_attachment(FILE *fp, BODY *top)
+static void pgp_extract_keys_from_attachment(struct pgp_vinfo *pgp,
+					     FILE *fp, BODY *top)
 {
   STATE s;
   FILE *tempfp;
@@ -708,7 +752,7 @@ static void pgp_extract_keys_from_attachment(FILE *fp, BODY *top)
 
   fclose(tempfp);
 
-  pgp_invoke_extract(tempfname);
+  pgp->invoke_import(pgp, tempfname);
   mutt_any_key_to_continue(NULL);
 
   mutt_unlink(tempfname);
@@ -717,6 +761,11 @@ static void pgp_extract_keys_from_attachment(FILE *fp, BODY *top)
 
 void pgp_extract_keys_from_attachment_list (FILE *fp, int tag, BODY *top)
 {
+  struct pgp_vinfo *pgp = pgp_get_vinfo(PGP_IMPORT);
+  
+  if(!pgp)
+    return;
+  
   if(!fp)
   {
     mutt_error("Internal error. Inform <roessler@guug.de>.");
@@ -729,7 +778,7 @@ void pgp_extract_keys_from_attachment_list (FILE *fp, int tag, BODY *top)
   for(; top; top = top->next)
   {
     if(!tag || top->tagged)
-      pgp_extract_keys_from_attachment (fp, top);
+      pgp_extract_keys_from_attachment (pgp, fp, top);
     
     if(!tag)
       break;
@@ -748,7 +797,11 @@ BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout)
   char pgperrfile[_POSIX_PATH_MAX];
   char pgptmpfile[_POSIX_PATH_MAX];
   pid_t thepid;
-
+  struct pgp_vinfo *pgp = pgp_get_vinfo(PGP_DECRYPT);
+  
+  if(!pgp)
+    return NULL;
+  
   mutt_mktemp (pgperrfile);
   if ((pgperr = safe_fopen (pgperrfile, "w+")) == NULL)
   {
@@ -773,7 +826,7 @@ BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout)
   mutt_copy_bytes (s->fpin, pgptmp, a->length);
   fclose (pgptmp);
 
-  if ((thepid = pgp_invoke_decrypt (&pgpin, &pgpout, NULL, -1, -1,
+  if ((thepid = pgp->invoke_decrypt (pgp, &pgpin, &pgpout, NULL, -1, -1,
 				    fileno (pgperr), pgptmpfile)) == -1)
   {
     fclose (pgperr);
@@ -933,7 +986,11 @@ BODY *pgp_sign_message (BODY *a)
   int err = 0;
   int empty = 1;
   pid_t thepid;
-
+  struct pgp_vinfo *pgp = pgp_get_vinfo(PGP_SIGN);
+  
+  if(!pgp)
+    return NULL;
+  
   convert_to_7bit (a); /* Signed data _must_ be in 7-bit format. */
 
   mutt_mktemp (sigfile);
@@ -956,7 +1013,7 @@ BODY *pgp_sign_message (BODY *a)
   mutt_write_mime_body (a, sfp);
   fclose(sfp);
   
-  if((thepid = pgp_invoke_sign(&pgpin, &pgpout, &pgperr,
+  if((thepid = pgp->invoke_sign(pgp, &pgpin, &pgpout, &pgperr,
 			       -1, -1, -1, signedfile)) == -1)
   {
     mutt_perror("Can't open PGP subprocess!");
@@ -1053,7 +1110,6 @@ BODY *pgp_sign_message (BODY *a)
  */
 char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
 {
-  char *pubring = pgp_pubring(PGP_ENCRYPT);
   char *key, *keylist = NULL;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
@@ -1063,8 +1119,12 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
   int i;
   KEYINFO *db;
   KEYINFO *k_info;
+  struct pgp_vinfo *pgp = pgp_get_vinfo(PGP_ENCRYPT);
   
-  db = pgp_read_keyring(pubring);
+  if(!pgp)
+    return NULL;
+  
+  db = pgp->read_pubring(pgp);
 
   for (i = 0; i < 3; i++) 
   {
@@ -1085,15 +1145,15 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
 
   for (p = tmp; p ; p = p->next)
   {
-    if ((k_info = ki_getkeybyaddr (p, db, KEYFLAG_CANENCRYPT)) == NULL)
+    if ((k_info = ki_getkeybyaddr (pgp, p, db, KEYFLAG_CANENCRYPT)) == NULL)
     {
       char buf[LONG_STRING];
       snprintf (buf, sizeof (buf), "Enter keyID for %s: ", p->mailbox);
       
-      if ((key = pgp_ask_for_key (pubring, db, buf, p->mailbox,
+      if ((key = pgp_ask_for_key (pgp, db, buf, p->mailbox,
 				  KEYFLAG_CANENCRYPT, NULL)) == NULL)
       {
-	pgp_closedb (db);
+	pgp_close_keydb (&db);
 	safe_free ((void **)&keylist);
 	rfc822_free_address (&tmp);
 	return NULL;
@@ -1109,7 +1169,7 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
     keylist_used = strlen (keylist);
   }
   rfc822_free_address (&tmp);
-  pgp_closedb (db);
+  pgp_close_keydb (&db);
   return (keylist);
 }
 
@@ -1124,6 +1184,10 @@ BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
   int err = 0;
   int empty;
   pid_t thepid;
+  struct pgp_vinfo *pgp = pgp_get_vinfo(PGP_ENCRYPT);
+  
+  if(!pgp)
+    return NULL;
   
   mutt_mktemp (tempfile);
   if ((fpout = safe_fopen (tempfile, "w+")) == NULL)
@@ -1160,9 +1224,9 @@ BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
   mutt_write_mime_body (a, fptmp);
   fclose(fptmp);
   
-  if ((thepid = pgp_invoke_encrypt (&pgpin, NULL, NULL, -1, 
-				    fileno (fpout), fileno (pgperr),
-				    pgpinfile, keylist, sign)) == -1)
+  if ((thepid = pgp->invoke_encrypt (pgp, &pgpin, NULL, NULL, -1, 
+				     fileno (fpout), fileno (pgperr),
+				     pgpinfile, keylist, sign)) == -1)
   {
     fclose (pgperr);
     unlink(pgpinfile);

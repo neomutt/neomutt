@@ -66,11 +66,17 @@
 /* Where is PGP 5 located on your system? */
 #undef _PGPV3PATH
 
+/* Where is GNU Privacy Guard located on your system? */
+#undef _PGPGPGPATH
+
 /* Do we have PGP 2.*? */
 #undef HAVE_PGP2
 
 /* Do we have PGP 5.0 or up? */
 #undef HAVE_PGP5
+
+/* Do we have GPG? */
+#undef HAVE_GPG
 
 /* Where to find ispell on your system? */
 #undef ISPELL

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996,1997 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1996-1998 Michael R. Elkins <me@cs.hmc.edu>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by

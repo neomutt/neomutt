@@ -177,21 +177,27 @@ struct option_t MuttVars[] = {
   { "pgp_v5_pubring",	DT_PATH, R_NONE, UL &PgpV3Pubring, 0 },
   { "pgp_v5_secring",	DT_PATH, R_NONE, UL &PgpV3Secring, 0 },
 
+  { "pgp_gpg",		DT_PATH, R_NONE, UL &PgpGpg, 0 },
+  
 # ifdef HAVE_PGP2
   { "pgp_default_version",	DT_STR, R_NONE, UL &PgpDefaultVersion, UL "pgp2" },
 # else
 #  ifdef HAVE_PGP5
   { "pgp_default_version",	DT_STR, R_NONE, UL &PgpDefaultVersion, UL "pgp5" },
+#  else
+#   ifdef HAVE_GPG
+  { "pgp_default_version",	DT_STR,	R_NONE, UL &PgpDefaultVersion, UL "gpg" },
+#   endif
 #  endif
 # endif
   { "pgp_receive_version", 	DT_STR,	R_NONE, UL &PgpReceiveVersion, UL "default" },
   { "pgp_send_version",		DT_STR,	R_NONE, UL &PgpSendVersion, UL "default" },
   { "pgp_key_version",		DT_STR, R_NONE, UL &PgpKeyVersion, UL "default" },
-
-#endif /* _PGPPATH */
-
   
-
+#endif /* _PGPPATH */
+  
+  
+  
   { "pipe_split",	DT_BOOL, R_NONE, OPTPIPESPLIT, 0 },
   { "pipe_decode",	DT_BOOL, R_NONE, OPTPIPEDECODE, 0 },
   { "pipe_sep",		DT_STR,	 R_NONE, UL &PipeSep, UL "\n" },

@@ -52,7 +52,7 @@ DISTCLEANFILES=$(VERYCLEANFILES) tags keymap_defs.h *.rej *.orig *~ Makefile.bak
 
 # kill these files when making new export distributions
 NONEXPORT=pgp.c pgp.h pgpinvoke.c pgpkey.c pgppubring.c sha.h sha1dgst.c \
-	sha_locl.h OPS.PGP doc/pgp-Notes.txt doc/language.txt \
+	gnupgparse.c sha_locl.h OPS.PGP doc/pgp-Notes.txt doc/language.txt \
 	doc/language50.txt
 
 all: mutt

@@ -1400,6 +1400,10 @@ void mutt_init (int skip_sys_rc, LIST *commands)
     PgpV3Secring = safe_strdup (buffer);
   }
 #endif
+  
+#ifdef _PGPGPGPATH
+  PgpGpg = safe_strdup (_PGPGPGPATH);
+#endif
 
 #endif /* _PGPPATH */
   
