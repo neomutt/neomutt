@@ -33,8 +33,11 @@ extern int Charset_is_utf8; /* FIXME: bad modularisation */
 static void print_enriched_string (int attr, unsigned char *s, int do_color)
 {
   wchar_t wc;
-  int k;
+  size_t k;
+  size_t n = mutt_strlen ((char *)s);
+  mbstate_t mbstate;
 
+  memset (&mbstate, 0, sizeof (mbstate));
   while (*s)
   {
     if (*s < M_TREE_MAX)
@@ -98,14 +101,14 @@ static void print_enriched_string (int attr, unsigned char *s, int do_color)
 	    addch ('&');
 	    break;
 	}
-	s++;
+	s++, n--;
       }
       if (do_color) attrset(attr);
     }
-    else if ((k = mbtowc (&wc, (char *)s, -1)) > 0)
+    else if ((k = mbrtowc (&wc, (char *)s, n, &mbstate)) > 0)
     {
       addnstr ((char *)s, k);
-      s += k;
+      s += k, n-= k;
     }
     else
       break;
@@ -125,9 +128,7 @@ static void menu_make_entry (char *s, int l, MUTTMENU *menu, int i)
 
 void menu_pad_string (char *s, size_t l)
 {
-#if !defined(HAVE_BKGDSET) && !defined (USE_SLANG_CURSES)
-  int n = mutt_strlen (s);
-#endif
+  size_t n = mutt_strlen (s);
   int shift = option (OPTARROWCURSOR) ? 3 : 0;
   
   l--; /* save room for the terminal \0 */
@@ -135,7 +136,7 @@ void menu_pad_string (char *s, size_t l)
     l = COLS - shift;
 
   /* Let's just pad the string anyway ... */
-  mutt_format_string (s, INT_MAX, l, l, 0, ' ', s, INT_MAX);
+  mutt_format_string (s, INT_MAX, l, l, 0, ' ', s, n);
   return;
 
 #if !defined (HAVE_BKGDSET) && !defined (USE_SLANG_CURSES)

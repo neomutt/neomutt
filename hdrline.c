@@ -251,7 +251,7 @@ static void hdr_format_s (char *dest,
   }
 
   mutt_format_string (dest, destlen, min_width, max_width,
-		      right_justify, ' ', s, -1);
+		      right_justify, ' ', s, mutt_strlen (s));
 }
 
 static const char *

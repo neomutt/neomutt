@@ -467,14 +467,16 @@ int mutt_multi_choice (char *prompt, char *letters)
 
 int mutt_addwch (wchar_t wc)
 {
-  char buf[MB_LEN_MAX];
-  int n;
+  char buf[MB_LEN_MAX*2];
+  mbstate_t mbstate;
+  size_t n1, n2;
 
-  n = wctomb (buf, wc);
-  if (n == -1)
-    return n;
+  memset (&mbstate, 0, sizeof (mbstate));
+  if ((n1 = wcrtomb (buf, wc, &mbstate)) == (size_t)(-1) ||
+      (n2 = wcrtomb (buf + n1, 0, &mbstate)) == (size_t)(-1))
+    return -1; /* ERR */
   else
-    return addnstr (buf, n);
+    return addstr (buf);
 }
 
 /*
@@ -491,23 +493,26 @@ void mutt_format_string (char *dest, size_t destlen,
 {
   char *p;
   wchar_t wc;
-  int w, k;
+  int w;
+  size_t k;
   char scratch[MB_LEN_MAX];
+  mbstate_t mbstate1, mbstate2;
 
+  memset(&mbstate1, 0, sizeof (mbstate1));
+  memset(&mbstate2, 0, sizeof (mbstate2));
   --destlen;
   p = dest;
-  while ((k = mbtowc (&wc, s, n)))
+  for (; n && (k = mbrtowc (&wc, s, n, &mbstate1)); s += k, n -= k)
   {
-    if (k == -1 && n > 0)
+    if (k == (size_t)(-1) || k == (size_t)(-2))
     {
       k = 1;
       wc = replacement_char ();
     }
-    s += k, n -= k;
     w = wc < M_TREE_MAX ? 1 : wcwidth (wc); /* hack */
     if (w >= 0)
     {
-      if (w > max_width || (k = wctomb (scratch, wc)) > destlen)
+      if (w > max_width || (k = wcrtomb (scratch, wc, &mbstate2)) > destlen)
 	break;
       min_width -= w;
       max_width -= w;
@@ -516,40 +521,44 @@ void mutt_format_string (char *dest, size_t destlen,
       destlen -= k;
     }
   }
-  k = (int)destlen < min_width ? destlen : min_width;
-  if (k <= 0)
+  w = (int)destlen < min_width ? destlen : min_width;
+  if (w <= 0)
     *p = '\0';
   else if (right_justify)
   {
-    p[k] = '\0';
+    p[w] = '\0';
     while (--p >= dest)
-      p[k] = *p;
-    while (--k >= 0)
-      dest[k] = pad_char;
+      p[w] = *p;
+    while (--w >= 0)
+      dest[w] = pad_char;
   }
   else
   {
-    while (--k >= 0)
+    while (--w >= 0)
       *p++ = pad_char;
     *p = '\0';
   }
 }
 
 /*
- * mutt_paddstr (n, s) is equivalent to
+ * mutt_paddstr (n, s) is almost equivalent to
  * mutt_format_string (bigbuf, big, n, n, 0, ' ', s, big), addstr (bigbuf)
  */
 
 void mutt_paddstr (int n, const char *s)
 {
   wchar_t wc;
-  int k, w;
+  int w;
+  size_t k;
+  size_t len = mutt_strlen (s);
+  mbstate_t mbstate;
 
-  while ((k = mbtowc (&wc, s, -1)))
+  memset (&mbstate, 0, sizeof (mbstate));
+  while (len && (k = mbrtowc (&wc, s, len, &mbstate)))
   {
-    if (k == -1)
+    if (k == (size_t)(-1) || k == (size_t)(-2))
     {
-      ++s; /* skip ill-formed character */
+      ++s, --len; /* skip ill-formed character */
       continue;
     }
     if ((w = wcwidth (wc)) >= 0)
@@ -559,7 +568,7 @@ void mutt_paddstr (int n, const char *s)
       addnstr ((char *)s, k);
       n -= w;
     }
-    s += k;
+    s += k, len -= k;
   }
   while (n-- > 0)
     addch (' ');

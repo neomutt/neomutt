@@ -20,10 +20,24 @@ void mutt_set_charset (char *charset)
 
 #ifndef HAVE_WC_FUNCS
 
-int wctomb (char *s, wchar_t wc)
+size_t wcrtomb (char *s, wchar_t wc, mbstate_t *ps)
 {
+  static mbstate_t mbstate;
+
+  if (!ps)
+    ps = &mbstate;
+
   if (!s)
-    return 0;
+  {
+    memset (ps, 0, sizeof (*ps));
+    return 1;
+  }
+  if (!wc)
+  {
+    memset (ps, 0, sizeof (*ps));
+    *s = 0;
+    return 1;
+  }
   if (Charset_is_utf8)
     return mutt_wctoutf8 (s, wc);
   else if (wc < 0x100)
@@ -32,19 +46,10 @@ int wctomb (char *s, wchar_t wc)
     return 1;
   }
   else
-    return -1;
-}
-
-int mbtowc (wchar_t *pwc, const char *s, size_t n)
-{
-  mbstate_t state;
-  int result;
-  memset(&state, 0, sizeof(state));
-  result = mbrtowc (pwc, s, n, &state);
-  if (result >= 0)
-    return result;
-  else
-    return -1;
+  {
+    errno = EILSEQ;
+    return (size_t)(-1);
+  }
 }
 
 size_t mbrtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *ps)

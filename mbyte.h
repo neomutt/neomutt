@@ -7,8 +7,7 @@ extern int Charset_is_utf8;
 size_t utf8rtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *_ps);
 
 #ifndef HAVE_WC_FUNCS
-int wctomb (char *s, wchar_t wc);
-int mbtowc (wchar_t *pwc, const char *s, size_t n);
+size_t wcrtomb (char *s, wchar_t wc, mbstate_t *ps);
 size_t mbrtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *ps);
 int iswprint (wint_t wc);
 int wcwidth (wchar_t wc);

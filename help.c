@@ -88,11 +88,16 @@ static int print_macro (FILE *f, int maxwidth, const char **macro)
 {
   int n = maxwidth;
   wchar_t wc;
-  int k, w;
+  int w;
+  size_t k;
+  size_t len = mutt_strlen (*macro);
+  mbstate_t mbstate1, mbstate2;
 
-  for (;;)
+  memset (&mbstate1, 0, sizeof (mbstate1));
+  memset (&mbstate2, 0, sizeof (mbstate2));
+  for (; (k = mbrtowc (&wc, *macro, len, &mbstate1)); *macro += k, len -= k)
   {
-    if ((k = mbtowc (&wc, *macro, -1)) <= 0)
+    if (k == (size_t)(-1) || k == (size_t)(-2))
       break;
     if ((w = wcwidth (wc)) >= 0)
     {
@@ -100,10 +105,11 @@ static int print_macro (FILE *f, int maxwidth, const char **macro)
 	break;
       n -= w;
       {
-	char tb[7];
-	int m = wctomb (tb, wc);
-	if (0 < m && m < 7)
-	  tb[m] = '\0', fprintf (f, "%s", tb);
+	char buf[MB_LEN_MAX*2];
+	size_t n1, n2;
+	if ((n1 = wcrtomb (buf, wc, &mbstate2)) != (size_t)(-1) &&
+	    (n2 = wcrtomb (buf + n1, 0, &mbstate2)) != (size_t)(-1))
+	  fputs (buf, f);
       }
     }
     else if (wc < 0x20 || wc == 0x7f)
@@ -129,7 +135,6 @@ static int print_macro (FILE *f, int maxwidth, const char **macro)
       n -= 1;
       fprintf (f, "?");
     }
-    *macro += k;
   }
   return (maxwidth - n);
 }
