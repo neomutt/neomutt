@@ -666,7 +666,7 @@ msgstr "ukendt fejl"
 
 #: curs_lib.c:346
 msgid "Press any key to continue..."
-msgstr "Tryk på en taste for at fortsætte."
+msgstr "Tryk på en tast for at fortsætte."
 
 #: curs_lib.c:390
 msgid " ('?' for list): "
@@ -1090,7 +1090,7 @@ msgstr "(brug '%s' for vise denne brevdel)"
 
 #: handler.c:1887
 msgid "(need 'view-attachments' bound to key!)"
-msgstr "('view-attachments' må tildeles en taste!)"
+msgstr "('view-attachments' må tildeles en tast!)"
 
 #: headers.c:173
 #, c-format
@@ -1788,7 +1788,7 @@ msgstr "slet ord foran markør"
 
 #: keymap_alldefs.h:79
 msgid "quote the next typed key"
-msgstr "citér den næste taste"
+msgstr "citér den næste tast"
 
 #: keymap_alldefs.h:80
 msgid "transpose character under cursor with previous"
