@@ -718,15 +718,17 @@ BODY *pgp_make_key_attachment (char *tempf)
 
 static LIST *pgp_add_string_to_hints (LIST *hints, const char *str)
 {
-  char *scratch = safe_strdup (str);
+  char *scratch;
   char *t;
-  
-  t = strtok (scratch, " ,.:\"()<>\n");
-  while (t)
+
+  if ((scratch = safe_strdup (str)) == NULL)
+    return hints;
+
+  for (t = strtok (scratch, " ,.:\"()<>\n"); t;
+       		t = strtok (NULL, " ,.:\"()<>\n"))
   {
     if (strlen (t) > 3)
       hints = mutt_add_list (hints, t);
-    t = strtok (NULL, " ,.:\"()<>\n");
   }
 
   safe_free ((void **) &scratch);
