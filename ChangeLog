@@ -1,3 +1,8 @@
+2003-05-03 20:07:40  Dan Nelson  <dnelson@allantgroup.com>  (roessler)
+
+	* mutt.h, muttlib.c: Fix #1558.  (mutt_expand_fmt rewrite;
+	OPT_MAX wasn't maximal.)
+
 2003-04-15 13:17:05  René Clerc  <rene@clerc.nl>  (roessler)
 
 	* compose.c: Fix two more cases in which ctrl-G is interpreted
