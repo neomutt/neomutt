@@ -1993,6 +1993,7 @@ int imap_buffy_check (char *path)
   char host[SHORT_STRING];
   char buf[LONG_STRING];
   char mbox[LONG_STRING];
+  char mbox_unquoted[LONG_STRING];
   char seq[8];
   char *s;
   char *pc;
@@ -2029,8 +2030,12 @@ int imap_buffy_check (char *path)
 
   imap_make_sequence (seq, sizeof (seq));		
   imap_quote_string (mbox, sizeof(mbox), buf);
+  strfcpy (mbox_unquoted, buf, sizeof (mbox_unquoted));
+
   /* The draft IMAP implementor's guide warns againts using the STATUS
-   * command on a mailbox that you have selected */
+   * command on a mailbox that you have selected 
+   */
+
   if (mutt_strcmp(mbox, idata->selected_mailbox) == 0
       || (mutt_strcasecmp(mbox, "INBOX") == 0
 	  && mutt_strcasecmp(mbox, idata->selected_mailbox) == 0))
@@ -2064,7 +2069,7 @@ int imap_buffy_check (char *path)
       if (mutt_strncasecmp ("STATUS", s, 6) == 0)
       {
 	s = imap_next_word (s);
-	if (mutt_strncmp (mbox, s, mutt_strlen (mbox)) == 0)
+	if (mutt_strncmp (mbox_unquoted, s, mutt_strlen (mbox_unquoted)) == 0)
 	{
 	  s = imap_next_word (s);
 	  s = imap_next_word (s);
