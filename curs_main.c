@@ -618,7 +618,14 @@ int mutt_index_menu (void)
       mutt_clear_error ();
     }
     else
+    {
+      if (menu->current < menu->max)
+	menu->oldcurrent = menu->current;
+      else
+	menu->oldcurrent = -1;
+      
       mutt_curs_set (1);	/* fallback from the pager */
+    }
 
     switch (op)
     {
