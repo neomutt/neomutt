@@ -210,6 +210,12 @@ static void show_version (void)
 #endif
 	);
   puts (
+#ifdef USE_POP
+	"+USE_POP  "
+#else
+	"-USE_POP  "
+#endif
+
 #ifdef USE_IMAP
         "+USE_IMAP  "
 #else
@@ -222,12 +228,6 @@ static void show_version (void)
 	"-USE_GSS  "
 #endif
 
-#ifdef HAVE_HEIMDAHL
-	"+HAVE_HEIMDAHL  "
-#else
-	"-HAVE_HEIMDAHL  "
-#endif
-	
 	
 #ifdef USE_SSL
 	"+USE_SSL  "
@@ -235,14 +235,13 @@ static void show_version (void)
 	"-USE_SSL  "
 #endif
 
+#ifdef USE_SASL
+	"+USE_SASL  "
+#else
+	"-USE_SASL  "
+#endif
 	"\n"
 	
-#ifdef USE_POP
-	"+USE_POP  "
-#else
-	"-USE_POP  "
-#endif
-
 #ifdef HAVE_REGCOMP
 	"+HAVE_REGCOMP  "
 #else

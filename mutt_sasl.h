@@ -16,37 +16,16 @@
  *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
  */ 
 
-/* remote host account manipulation (POP/IMAP) */
+/* common SASL helper routines */
 
-#ifndef _MUTT_ACCOUNT_H_
-#define _MUTT_ACCOUNT_H_ 1
+#ifndef _MUTT_SASL_H_
+#define _MUTT_SASL_H_ 1
 
-/* account types */
-enum
-{
-  M_ACCT_TYPE_NONE = 0,
-  M_ACCT_TYPE_IMAP,
-  M_ACCT_TYPE_POP
-};
+#include "mutt_socket.h"
 
-/* account flags */
-#define M_ACCT_PORT (1<<0)
-#define M_ACCT_USER (1<<1)
-#define M_ACCT_PASS (1<<2)
-#define M_ACCT_SSL  (1<<3)
+#include <sasl.h>
 
-typedef struct
-{
-  char user[64];
-  char pass[32];
-  char host[128];
-  unsigned short port;
-  unsigned char type;
-  unsigned char flags;
-} ACCOUNT;
+int mutt_sasl_start (void);
+sasl_callback_t* mutt_sasl_get_callbacks (ACCOUNT* account);
 
-int mutt_account_match (const ACCOUNT* a1, const ACCOUNT* m2);
-int mutt_account_getuser (ACCOUNT* account);
-int mutt_account_getpass (ACCOUNT* account);
-
-#endif /* _MUTT_ACCOUNT_H_ */
+#endif /* _MUTT_SASL_H_ */

@@ -685,15 +685,6 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This variable defaults to your user name on the local machine.
   */
-  { "imap_cramkey",	DT_STR,	 R_NONE, UL &ImapCRAMKey, UL 0 },
-  /*
-  ** .pp
-  ** Sets your CRAM secret, for use with the CRAM-MD5 IMAP authentication
-  ** method (this is the IMAP equivelent of APOP). This method will be
-  ** attempted automatically if the server supports it, in preference to the
-  ** less secure login technique. If you use CRAM-MD5, you do not need to set
-  ** \fIimap_pass\fP.
-  */
   { "imap_pass", 	DT_STR,  R_NONE, UL &ImapPass, UL 0 },
   /*
   ** .pp

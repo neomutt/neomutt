@@ -16,37 +16,30 @@
  *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
  */ 
 
-/* remote host account manipulation (POP/IMAP) */
+/* common defs for authenticators. A good place to set up a generic callback
+ * system */
 
-#ifndef _MUTT_ACCOUNT_H_
-#define _MUTT_ACCOUNT_H_ 1
+#ifndef _IMAP_AUTH_H
+#define _IMAP_AUTH_H 1
 
-/* account types */
-enum
+typedef enum
 {
-  M_ACCT_TYPE_NONE = 0,
-  M_ACCT_TYPE_IMAP,
-  M_ACCT_TYPE_POP
-};
+  IMAP_AUTH_SUCCESS = 0,
+  IMAP_AUTH_FAILURE,
+  IMAP_AUTH_UNAVAIL
+} imap_auth_res_t;
 
-/* account flags */
-#define M_ACCT_PORT (1<<0)
-#define M_ACCT_USER (1<<1)
-#define M_ACCT_PASS (1<<2)
-#define M_ACCT_SSL  (1<<3)
+typedef imap_auth_res_t (*imap_auth_t)(IMAP_DATA* idata);
 
-typedef struct
-{
-  char user[64];
-  char pass[32];
-  char host[128];
-  unsigned short port;
-  unsigned char type;
-  unsigned char flags;
-} ACCOUNT;
+/* external authenticator prototypes */
+imap_auth_res_t imap_auth_anon (IMAP_DATA* idata);
+imap_auth_res_t imap_auth_cram_md5 (IMAP_DATA* idata);
+imap_auth_res_t imap_auth_login (IMAP_DATA* idata);
+#ifdef USE_GSS
+imap_auth_res_t imap_auth_gss (IMAP_DATA* idata);
+#endif
+#ifdef USE_SASL
+imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata);
+#endif
 
-int mutt_account_match (const ACCOUNT* a1, const ACCOUNT* m2);
-int mutt_account_getuser (ACCOUNT* account);
-int mutt_account_getpass (ACCOUNT* account);
-
-#endif /* _MUTT_ACCOUNT_H_ */
+#endif /* _IMAP_AUTH_H */

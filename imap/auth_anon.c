@@ -1,0 +1,72 @@
+/*
+ * Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>
+ * 
+ *     This program is free software; you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation; either version 2 of the License, or
+ *     (at your option) any later version.
+ * 
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ * 
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program; if not, write to the Free Software
+ *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ */ 
+
+/* IMAP login/authentication code */
+
+#include "mutt.h"
+#include "imap_private.h"
+#include "auth.h"
+
+/* this is basically a stripped-down version of the cram-md5 method. */
+imap_auth_res_t imap_auth_anon (IMAP_DATA* idata)
+{
+  char buf[LONG_STRING];
+
+  if (!mutt_bit_isset (idata->capabilities, AUTH_ANON))
+    return IMAP_AUTH_UNAVAIL;
+
+  if (mutt_account_getuser (&idata->conn->account))
+    return IMAP_AUTH_FAILURE;
+
+  if (idata->conn->account.user[0] != '\0')
+    return IMAP_AUTH_UNAVAIL;
+
+  mutt_message _("Authenticating (anonymous)...");
+
+  imap_cmd_start (idata, "AUTHENTICATE ANONYMOUS");
+
+  if (mutt_socket_readln (buf, sizeof (buf), idata->conn) < 0)
+  {
+    dprint (1, (debugfile, "Error receiving server response.\n"));
+    goto bail;
+  }
+
+  if (buf[0] != '+')
+  {
+    dprint (1, (debugfile, "Invalid response from server.\n"));
+    goto bail;
+  }
+
+  strfcpy (buf, "ZHVtbXkK\r\n", sizeof (buf)); 	/* base64 ("dummy") */
+
+  mutt_socket_write (idata->conn, buf);
+
+  if (mutt_socket_readln (buf, sizeof (buf), idata->conn) < 0)
+  {
+    dprint (1, (debugfile, "Error receiving server response.\n"));
+    goto bail;
+  }
+
+  if (imap_code (buf))
+    return IMAP_AUTH_SUCCESS;
+
+ bail:
+  mutt_error _("Anonymous authentication failed.");
+  sleep (2);
+  return IMAP_AUTH_FAILURE;
+}

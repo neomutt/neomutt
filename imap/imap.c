@@ -41,7 +41,7 @@
 static int imap_get_delim (IMAP_DATA *idata);
 static char* imap_get_flags (LIST** hflags, char* s);
 static int imap_check_acl (IMAP_DATA *idata);
-static int imap_check_capabilities (IMAP_DATA *idata);
+static int imap_check_capabilities (IMAP_DATA* idata);
 static void imap_set_flag (IMAP_DATA* idata, int aclbit, int flag,
   const char* str, char* flags);
 
@@ -86,7 +86,7 @@ void imap_logout_all (void)
   {
     tmp = conn;
 
-    if (conn->account.type == M_ACCT_TYPE_IMAP && conn->up)
+    if (conn->account.type == M_ACCT_TYPE_IMAP && conn->fd >= 0)
     {
       mutt_message (_("Closing connection to %s..."), conn->account.host);
       imap_logout ((IMAP_DATA*) conn->data);
@@ -482,7 +482,8 @@ static int imap_check_acl (IMAP_DATA *idata)
   return 0;
 }
 
-static int imap_check_capabilities (IMAP_DATA *idata)
+/* imap_check_capabilities: make sure we can log in to this server. */
+static int imap_check_capabilities (IMAP_DATA* idata)
 {
   char buf[LONG_STRING];
 
@@ -491,13 +492,16 @@ static int imap_check_capabilities (IMAP_DATA *idata)
     imap_error ("imap_check_capabilities", buf);
     return -1;
   }
+
   if (!(mutt_bit_isset(idata->capabilities,IMAP4)
       ||mutt_bit_isset(idata->capabilities,IMAP4REV1)))
   {
     mutt_error _("This IMAP server is ancient. Mutt does not work with it.");
     sleep (5);	/* pause a moment to let the user see the error */
+
     return -1;
   }
+
   return 0;
 }
 
@@ -562,44 +566,35 @@ int imap_open_connection (IMAP_DATA* idata)
   idata->state = IMAP_CONNECTED;
 
   if (mutt_socket_readln (buf, sizeof (buf), idata->conn) < 0)
-  {
-    mutt_socket_close (idata->conn);
-    idata->state = IMAP_DISCONNECTED;
-
-    return -1;
-  }
+    goto bail;
 
   if (mutt_strncmp ("* OK", buf, 4) == 0)
   {
-    if (imap_check_capabilities(idata) != 0 
-	|| imap_authenticate (idata) != 0)
-    {
-      mutt_socket_close (idata->conn);
-      idata->state = IMAP_DISCONNECTED;
-      return -1;
-    }
+    if (imap_check_capabilities (idata) || imap_authenticate (idata))
+      goto bail;
   }
   else if (mutt_strncmp ("* PREAUTH", buf, 9) == 0)
   {
     if (imap_check_capabilities(idata) != 0)
-    {
-      mutt_socket_close (idata->conn);
-      idata->state = IMAP_DISCONNECTED;
-      return -1;
-    }
+      goto bail;
   } 
   else
   {
     imap_error ("imap_open_connection()", buf);
-    mutt_socket_close (idata->conn);
-    idata->state = IMAP_DISCONNECTED;
-    return -1;
+    goto bail;
   }
 
+  FREE (&idata->capstr);
   idata->state = IMAP_AUTHENTICATED;
 
   imap_get_delim (idata);
   return 0;
+
+ bail:
+  FREE (&idata->capstr);
+  mutt_socket_close (idata->conn);
+  idata->state = IMAP_DISCONNECTED;
+  return -1;
 }
 
 /* imap_get_flags: Make a simple list out of a FLAGS response.

@@ -52,3 +52,57 @@ int mutt_account_match (const ACCOUNT* a1, const ACCOUNT* a2)
 
   return 1;
 }
+
+/* mutt_account_getuser: retrieve username into ACCOUNT, if neccessary */
+int mutt_account_getuser (ACCOUNT* account)
+{
+  /* already set */
+  if (account->flags & M_ACCT_USER)
+    return 0;
+#ifdef USE_IMAP
+  else if ((account->type == M_ACCT_TYPE_IMAP) && ImapUser)
+    strfcpy (account->user, ImapUser, sizeof (account->user));
+#endif
+#ifdef USE_POP
+  else if ((account->type == M_ACCT_TYPE_POP) && PopUser)
+    strfcpy (account->user, PopUser, sizeof (account->user));
+#endif
+  /* prompt (defaults to unix username), copy into account->user */
+  else
+  {
+    strfcpy (account->user, NONULL (Username), sizeof (account->user));
+    if (mutt_get_field (_("Username: "), account->user,
+        sizeof (account->user), 0))
+      return -1;
+  }
+
+  account->flags |= M_ACCT_USER;
+
+  return 0;
+}
+
+/* mutt_account_getpass: fetch password into ACCOUNT, if neccessary */
+int mutt_account_getpass (ACCOUNT* account)
+{
+  if (account->flags & M_ACCT_PASS)
+    return 0;
+#ifdef USE_IMAP
+  else if ((account->type == M_ACCT_TYPE_IMAP) && ImapPass)
+    strfcpy (account->pass, ImapPass, sizeof (account->pass));
+#endif
+#ifdef USE_POP
+  else if ((account->type == M_ACCT_TYPE_POP) && PopPass)
+    strfcpy (account->pass, PopPass, sizeof (account->pass));
+#endif
+  else
+  {
+    account->pass[0] = '\0';
+    if (mutt_get_field (_("Password: "), account->pass,
+        sizeof (account->pass), M_PASS))
+      return -1;
+  }
+
+  account->flags |= M_ACCT_PASS;
+
+  return 0;
+}

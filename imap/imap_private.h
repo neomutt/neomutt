@@ -110,7 +110,7 @@ enum
   TORDEREDSUBJECT,		/* THREAD=ORDEREDSUBJECT */
   UIDPLUS,			/* RFC 2859: IMAP4 UIDPLUS extension */
   AUTH_ANON,			/* AUTH=ANONYMOUS */
-  
+
   CAPMAX
 };
 
@@ -145,6 +145,15 @@ typedef struct
   unsigned char status;
   unsigned char check_status;
   unsigned char capabilities[(CAPMAX + 7)/8];
+  /* let me explain capstr: SASL needs the capability string (not bits).
+   * we have 3 options:
+   *   1. rerun CAPABILITY inside SASL function.
+   *   2. build appropriate CAPABILITY string by reverse-engineering from bits.
+   *   3. keep a copy until after authentication.
+   * I've chosen (3) for now. (2) might not be too bad, but it involves
+   * tracking all possible capabilities. bah. (1) I don't like because
+   * it's just no fun to get the same information twice */
+  char* capstr;
   char seq[SEQLEN+1];
 
   /* The following data is all specific to the currently SELECTED mbox */

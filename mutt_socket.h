@@ -21,6 +21,7 @@
 #define _MUTT_SOCKET_H_ 1
 
 #include "account.h"
+#include "lib.h"
 
 /* logging levels */
 #define M_SOCK_LOG_CMD  2
@@ -44,10 +45,6 @@ typedef struct _connection
   int (*write) (struct _connection *conn, const char *buf);
   int (*open) (struct _connection *conn);
   int (*close) (struct _connection *conn);
-
-  /* status bits */
-  
-  int up : 1; /* is the connection up? */
 } CONNECTION;
 
 int mutt_socket_open (CONNECTION* conn);

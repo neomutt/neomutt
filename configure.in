@@ -663,6 +663,37 @@ AM_CONDITIONAL(USE_SSL, test x$need_ssl = xyes)
 
 dnl -- end imap dependencies --
 
+AC_ARG_WITH(sasl, [  --with-sasl[=DIR]          Use Cyrus SASL library for POP/IMAP authentication],
+	[
+	if test "$need_socket" != "yes"
+	then
+	  AC_MSG_ERROR([SASL support is only useful with POP or IMAP support])
+	fi
+
+	if test "$with_sasl" != "no"
+	then
+	  if test "$with_sasl" != "yes"
+	  then
+	    CPPFLAGS="$CPPFLAGS -I$with_sasl/include"
+	    LDFLAGS="$LDFLAGS -L$with_sasl/lib"
+	  fi
+
+	  saved_LIBS="$LIBS"
+
+	  AC_CHECK_LIB(sasl, sasl_client_init,,
+	    AC_MSG_ERROR([could not find libsasl]),)
+
+	  MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_sasl.o"
+	  MUTTLIBS="$MUTTLIBS -lsasl"
+	  LIBS="$saved_LIBS"
+	  AC_DEFINE(USE_SASL)
+	  need_sasl=yes
+	fi
+	])
+AM_CONDITIONAL(USE_SASL, test x$need_sasl = xyes)
+
+dnl -- end socket --
+
 AC_ARG_ENABLE(debug, [  --enable-debug             Enable debugging support],
 	[ if test x$enableval = xyes ; then
 		AC_DEFINE(DEBUG)
@@ -702,7 +733,7 @@ AC_ARG_ENABLE(buffy-size, [  --enable-buffy-size        Use file size attribute 
                 AC_DEFINE(BUFFY_SIZE)
         fi])
 
-AC_ARG_ENABLE(mailtool, [  --enable-mailtool            Enable Sun mailtool attachments support ],
+AC_ARG_ENABLE(mailtool, [  --enable-mailtool          Enable Sun mailtool attachments support ],
 	[if test x$enableval = xyes; then
                 AC_DEFINE(SUN_ATTACHMENT)
         fi])
@@ -717,7 +748,7 @@ AC_ARG_WITH(exec-shell, [  --with-exec-shell=SHELL    Specify alternate shell (O
 		AC_DEFINE_UNQUOTED(EXECSHELL, "$withval")
 	fi])
 
-AC_ARG_ENABLE(exact-address, [  --enable-exact-address     enable regeneration of email addresses],
+AC_ARG_ENABLE(exact-address, [  --enable-exact-address     Enable regeneration of email addresses],
 	[if test $enableval = yes; then
 		AC_DEFINE(EXACT_ADDRESS)
 	fi])

@@ -22,7 +22,7 @@
 #include "globals.h"
 #include "mutt_socket.h"
 #ifdef USE_SSL
-#include "imap_ssl.h"
+# include "imap_ssl.h"
 #endif
 
 #include <unistd.h>
@@ -44,20 +44,17 @@ static CONNECTION* socket_new_conn ();
 /* Wrappers */
 int mutt_socket_open (CONNECTION* conn) 
 {
-  int rc;
-  
-  rc = conn->open (conn);
-  if (!rc)
-    conn->up = 1;
-
-  return rc;
+  return conn->open (conn);
 }
 
 int mutt_socket_close (CONNECTION* conn)
 {
-  conn->up = 0;
+  int rc;
 
-  return conn->close (conn);
+  rc = conn->close (conn);
+  conn->fd = -1;
+
+  return rc;
 }
 
 int mutt_socket_write_d (CONNECTION *conn, const char *buf, int dbg)
@@ -146,11 +143,10 @@ void mutt_socket_free (CONNECTION* conn)
 }
 
 /* mutt_conn_find: find a connection off the list of connections whose
- *   account matches account. If newconn is true, don't reuse one, but add
- *   it to the list. If start is not null, only search for connections after
- *   the given connection (allows higher level socket code to make more
- *   fine-grained searches than account info - eg in IMAP we may wish
- *   to find a connection which is not in IMAP_SELECTED state) */
+ *   account matches account. If start is not null, only search for
+ *   connections after the given connection (allows higher level socket code
+ *   to make more fine-grained searches than account info - eg in IMAP we may
+ *   wish to find a connection which is not in IMAP_SELECTED state) */
 CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account)
 {
   CONNECTION* conn;

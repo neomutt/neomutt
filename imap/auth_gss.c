@@ -23,6 +23,7 @@
 
 #include "mutt.h"
 #include "imap_private.h"
+#include "auth.h"
 
 #include <netinet/in.h>
 
@@ -39,9 +40,8 @@
 #define GSS_AUTH_P_INTEGRITY 2
 #define GSS_AUTH_P_PRIVACY   4
 
-/* imap_auth_gss: AUTH=GSSAPI support. Used unconditionally if the server
- *   supports it */
-int imap_auth_gss (IMAP_DATA* idata, const char* user)
+/* imap_auth_gss: AUTH=GSSAPI support. */
+imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
 {
   gss_buffer_desc request_buf, send_token;
   gss_buffer_t sec_token;
@@ -54,8 +54,14 @@ int imap_auth_gss (IMAP_DATA* idata, const char* user)
   char buf1[GSS_BUFSIZE], buf2[GSS_BUFSIZE], server_conf_flags;
   unsigned long buf_size;
 
-  dprint (2, (debugfile, "Attempting GSS login...\n"));
+  if (!mutt_bit_isset (idata->capabilities, AGSSAPI))
+    return IMAP_AUTH_UNAVAIL;
 
+  mutt_message _("Authenticating (GSS)...");
+
+  if (mutt_account_getuser (&idata->conn->account))
+    return IMAP_AUTH_FAILURE;
+  
   /* get an IMAP service ticket for the server */
   snprintf (buf1, sizeof (buf1), "imap@%s", idata->conn->account.host);
   request_buf.value = buf1;
@@ -65,7 +71,7 @@ int imap_auth_gss (IMAP_DATA* idata, const char* user)
   if (maj_stat != GSS_S_COMPLETE)
   {
     dprint (2, (debugfile, "Couldn't get service name for [%s]\n", buf1));
-    return -1;
+    goto bail;
   }
 #ifdef DEBUG	
   else if (debuglevel >= 2)
@@ -87,16 +93,14 @@ int imap_auth_gss (IMAP_DATA* idata, const char* user)
   {
     dprint (1, (debugfile, "Error receiving server response.\n"));
     gss_release_name (&min_stat, &target_name);
-
-    return -1;
+    goto bail;
   }
 
   if (buf1[0] != '+')
   {
     dprint (2, (debugfile, "Invalid response from server: %s\n", buf1));
     gss_release_name (&min_stat, &target_name);
-
-    return -1;
+    goto bail;
   }
 
   /* now start the security context initialisation loop... */
@@ -126,8 +130,7 @@ int imap_auth_gss (IMAP_DATA* idata, const char* user)
       /* end authentication attempt */
       mutt_socket_write (idata->conn, "*\r\n");
       mutt_socket_readln (buf1, sizeof (buf1), idata->conn);
-
-      return -1;
+      goto bail;
     }
 
     /* send token */
@@ -143,8 +146,7 @@ int imap_auth_gss (IMAP_DATA* idata, const char* user)
       {
         dprint (1, (debugfile, "Error receiving server response.\n"));
         gss_release_name (&min_stat, &target_name);
-
-        return -1;
+	goto bail;
       }
 
       request_buf.length = mutt_from_base64 (buf2, buf1 + 2);
@@ -160,8 +162,7 @@ int imap_auth_gss (IMAP_DATA* idata, const char* user)
   if (mutt_socket_readln (buf1, sizeof (buf1), idata->conn) < 0)
   {
     dprint (1, (debugfile, "Error receiving server response.\n"));
-
-    return -1;
+    goto bail;
   }
   request_buf.length = mutt_from_base64 (buf2, buf1 + 2);
   request_buf.value = buf2;
@@ -172,9 +173,8 @@ int imap_auth_gss (IMAP_DATA* idata, const char* user)
   {
     dprint (2, (debugfile, "Couldn't unwrap security level data\n"));
     gss_release_buffer (&min_stat, &send_token);
-
     mutt_socket_write(idata->conn, "*\r\n");
-    return -1;
+    goto bail;
   }
   dprint (2, (debugfile, "Credential exchange complete\n"));
 
@@ -184,9 +184,8 @@ int imap_auth_gss (IMAP_DATA* idata, const char* user)
   {
     dprint (2, (debugfile, "Server requires integrity or privace\n"));
     gss_release_buffer (&min_stat, &send_token);
-
     mutt_socket_write(idata->conn, "*\r\n");
-    return -1;
+    goto bail;
   }
 
   /* we don't care about buffer size if we don't wrap content. But here it is */
@@ -204,21 +203,21 @@ int imap_auth_gss (IMAP_DATA* idata, const char* user)
   memcpy (buf1, &buf_size, 4);
   buf1[0] = GSS_AUTH_P_NONE;
   /* server decides if principal can log in as user */
-  strncpy (buf1 + 4, user, sizeof (buf1) - 4);
+  strncpy (buf1 + 4, idata->conn->account.user, sizeof (buf1) - 4);
   request_buf.value = buf1;
-  request_buf.length = 4 + strlen (user) + 1;
+  request_buf.length = 4 + strlen (idata->conn->account.user) + 1;
   maj_stat = gss_wrap (&min_stat, context, 0, GSS_C_QOP_DEFAULT, &request_buf,
     &cflags, &send_token);
   if (maj_stat != GSS_S_COMPLETE)
   {
     dprint (2, (debugfile, "Error creating login request\n"));
-
     mutt_socket_write(idata->conn, "*\r\n");
-    return -1;
+    goto bail;
   }
 
   mutt_to_base64 ((unsigned char*) buf1, send_token.value, send_token.length);
-  dprint (2, (debugfile, "Requesting authorisation as %s\n", user));
+  dprint (2, (debugfile, "Requesting authorisation as %s\n",
+    idata->conn->account.user));
   strncat (buf1, "\r\n", sizeof (buf1));
   mutt_socket_write (idata->conn, buf1);
 
@@ -226,9 +225,8 @@ int imap_auth_gss (IMAP_DATA* idata, const char* user)
   if (mutt_socket_readln (buf1, GSS_BUFSIZE, idata->conn) < 0)
   {
     dprint (1, (debugfile, "Error receiving server response.\n"));
-
     mutt_socket_write(idata->conn, "*\r\n");
-    return -1;
+    goto bail;
   }
   if (imap_code (buf1))
   {
@@ -238,8 +236,7 @@ int imap_auth_gss (IMAP_DATA* idata, const char* user)
     if (maj_stat != GSS_S_COMPLETE)
     {
       dprint (1, (debugfile, "Error releasing credentials\n"));
-
-      return -1;
+      goto bail;
     }
     /* send_token may contain a notification to the server to flush
      * credentials. RFC 1731 doesn't specify what to do, and since this
@@ -247,13 +244,11 @@ int imap_auth_gss (IMAP_DATA* idata, const char* user)
      * enough to flush its own credentials */
     gss_release_buffer (&min_stat, &send_token);
 
-    dprint (2, (debugfile, "GSS login complete\n"));
-
-    return 0;
+    return IMAP_AUTH_SUCCESS;
   }
 
-  /* logon failed */
-  dprint (2, (debugfile, "GSS login failed.\n"));
-
-  return -1;
+ bail:
+  mutt_error _("GSS authentication failed.");
+  sleep (2);
+  return IMAP_AUTH_FAILURE;
 }

@@ -46,13 +46,17 @@
 /* Do you want support for the IMAP protocol? (--enable-imap) */
 #undef USE_IMAP
 
+/* Do you want to use the Cyrus SASL library for POP/IMAP authentication?
+ * (--with-sasl) */
+#undef USE_SASL
+
 /* Do you want support for IMAP GSSAPI authentication? (--with-gss) */
 #undef USE_GSS
 
 /* Do you have the Heimdal version of Kerberos V? (for gss support) */
 #undef HAVE_HEIMDAL
 
-/* Do you want support for SSL? (--enable-ssl) */
+/* Do you want support for SSL? (--with-ssl) */
 #undef USE_SSL
 
 /* Avoid SSL routines which used patent-encumbered RC5 algorithms */

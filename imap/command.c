@@ -274,6 +274,8 @@ static void cmd_parse_capabilities (IMAP_DATA* idata, char* s)
 {
   int x;
 
+  idata->capstr = safe_strdup (imap_next_word (s));
+  
   while (*s) 
   {
     for (x = 0; x < CAPMAX; x++)
@@ -283,7 +285,7 @@ static void cmd_parse_capabilities (IMAP_DATA* idata, char* s)
 	break;
       }
     s = imap_next_word (s);
-  }   
+  }
 }
 
 /* cmd_parse_expunge: mark headers with new sequence ID and mark idata to

@@ -63,15 +63,15 @@ non_us_sources = pgp.c pgpinvoke.c pgpkey.c pgplib.c sha1dgst.c \
 	contrib/pgp2.rc contrib/pgp5.rc contrib/gpg.rc \
 	imap/imap_ssl.c imap/imap_ssl.h README.SSL
 
-EXTRA_mutt_SOURCES = account.c mutt_socket.c pop.c pgp.c pgpinvoke.c pgpkey.c \
-	pgplib.c sha1dgst.c gnupgparse.c resize.c dotlock.c remailer.c \
-	browser.h mbyte.h remailer.h
+EXTRA_mutt_SOURCES = account.c mutt_sasl.c mutt_socket.c pop.c pgp.c \
+	pgpinvoke.c pgpkey.c pgplib.c sha1dgst.c gnupgparse.c resize.c \
+	dotlock.c remailer.c browser.h mbyte.h remailer.h
 
 EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO configure acconfig.h account.h \
 	attach.h buffy.h charset.h copy.h dotlock.h functions.h gen_defs \
 	globals.h hash.h history.h init.h keymap.h \
 	mailbox.h mapping.h mime.h mutt.h mutt_curses.h mutt_menu.h  \
-	mutt_regex.h mutt_socket.h mx.h pager.h pgp.h protos.h  \
+	mutt_regex.h mutt_sasl.h mutt_socket.h mx.h pager.h pgp.h protos.h  \
 	reldate.h rfc1524.h rfc2047.h rfc2231.h rfc822.h sha.h sha_locl.h \
 	sort.h mime.types VERSION prepare _regex.h OPS.MIX	\
 	README.SECURITY remailer.c remailer.h browser.h \
