@@ -230,6 +230,24 @@ static int mx_toggle_write (CONTEXT *ctx)
   return 0;
 }
 
+static void resort_index (MUTTMENU *menu)
+{
+  int i;
+  const HEADER *current = CURHDR;
+
+  mutt_sort_headers (Context, 0);
+  /* Restore the current message */
+  for (i = 0; i < Context->vcount; i++)
+  {
+    if (Context->hdrs[Context->v2r[i]] == current)
+    {
+      menu->current = i;
+      break;
+    }
+  }
+  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
+}
+
 struct mapping_t IndexHelp[] = {
   { N_("Quit"),  OP_QUIT },
   { N_("Del"),   OP_DELETE },
@@ -746,16 +764,7 @@ int mutt_index_menu (void)
 	{
 	  if (Context && Context->msgcount)
 	  {
-	    menu->oldcurrent = CURHDR->index;
-	    mutt_sort_headers (Context, 0);
-
-	    /* try to restore the current message */
-	    for (i = 0; i < Context->vcount; i++)
-	    {
-	      if (Context->hdrs[Context->v2r[i]]->index == menu->oldcurrent)
-		menu->current = i;
-	    }
-	    menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
+	    resort_index (menu);
 	    set_option (OPTSEARCHINVALID);
 	  }
 	}
@@ -943,16 +952,7 @@ int mutt_index_menu (void)
 
 	if (option (OPTNEEDRESORT) && Context && Context->msgcount)
 	{
-	  menu->oldcurrent = CURHDR->index;
-	  mutt_sort_headers (Context, 0);
-
-	  /* try to restore the current message */
-	  for (i = 0; i < Context->vcount; i++)
-	  {
-	    if (Context->hdrs[Context->v2r[i]]->index == menu->oldcurrent)
-	      menu->current = i;
-	  }
-	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
+	  resort_index (menu);
 	}
 
 	menu->menu = MENU_PAGER;
@@ -1470,16 +1470,7 @@ int mutt_index_menu (void)
 	mutt_check_rescore (Context);
 	if (option (OPTNEEDRESORT) && Context && Context->msgcount)
 	{
-	  menu->oldcurrent = CURHDR->index;
-	  mutt_sort_headers (Context, 0);
-
-	  /* try to restore the current message */
-	  for (i = 0; i < Context->vcount; i++)
-	  {
-	    if (Context->hdrs[Context->v2r[i]]->index == menu->oldcurrent)
-	      menu->current = i;
-	  }
-	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
+	  resort_index (menu);
 	}
 	if (option (OPTFORCEREDRAWINDEX))
 	  menu->redraw = REDRAW_FULL;
