@@ -1797,3 +1797,28 @@ PGP related Changes since 0.92.8i
   updated that part of the documentation.
 
 
+Changes since 0.92.9i
+---------------------
+
+Tue Jun 16 00:22:28 1998  Thomas Roessler  <roessler@guug.de>
+
+	* doc/PGP-Notes.txt: Including Roland's new procmail recipe.
+
+	* protos.h, pattern.c, menu.c, curs_main.c, compose.c, addrbook.c:
+	Including Vikas' search code for the "attach message" menu.
+
+Mon Jun 15 15:19:49 1998  Thomas Roessler  <roessler@guug.de>
+
+	* mx.c, main.c, mailbox.h, imap.c, commands.c: Brandon's IMAP patch.
+
+Mon Jun  8 20:05:54 1998  Thomas Roessler  <roessler@guug.de>
+
+	* recvattach.c, pgppubring.c, pgpkey.c,
+	pgpinvoke.c, pgp.h, pgp.c, main.c, init.h,
+	gnupgparse.c, init.c, configure.in, configure,
+	config.h.in, compose.c, acconfig.h, Makefile.in:
+	GPG support, first take.
+
+	* hdrline.c: Fixing the %a format.
+
+	* hdrline.c: Fixing a segmentation fault in the hdr_line code.

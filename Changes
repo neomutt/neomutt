@@ -1,25 +1,25 @@
-Changes since 0.92.9i
----------------------
+Changes since 0.92.10i
+----------------------
 
-Tue Jun 16 00:22:28 1998  Thomas Roessler  <roessler@guug.de>
+Tue Jun 16 15:15:00 1998  Thomas Roessler  <roessler@guug.de>
 
-	* doc/PGP-Notes.txt: Including Roland's new procmail recipe.
+	* imap.h: Check in a proper version of imap.h.
 
-	* protos.h, pattern.c, menu.c, curs_main.c, compose.c, addrbook.c:
-	Including Vikas' search code for the "attach message" menu.
+	* color.c: Fix the "unknown color" bug reported by Vikas.
 
-Mon Jun 15 15:19:49 1998  Thomas Roessler  <roessler@guug.de>
+	* mx.c: Remove a spurious #include "imap.h" from mx.c.
 
-	* mx.c, main.c, mailbox.h, imap.c, commands.c: Brandon's IMAP patch.
+	* doc/style-guide: Add a note about the global Muttrc to style-guide.
 
-Mon Jun  8 20:05:54 1998  Thomas Roessler  <roessler@guug.de>
+	* configure.in, Muttrc.in, configure, Attic/Muttrc, Makefile.in:
+	The global Muttrc contains a list of default settings
+	which can be used as a starting-point for the user's own
+	configuration.
 
-	* recvattach.c, pgppubring.c, pgpkey.c,
-	pgpinvoke.c, pgp.h, pgp.c, main.c, init.h,
-	gnupgparse.c, init.c, configure.in, configure,
-	config.h.in, compose.c, acconfig.h, Makefile.in:
-	GPG support, first take.
+	* pgppubring.c, pgp.h, gnupgparse.c:
+	Removing some duplicate code from gnupgparse.c and
+	pgppubring.c.
 
-	* hdrline.c: Fixing the %a format.
+	* pgpinvoke.c, gnupgparse.c:
+	Include part of Werner Koch's latest GPG patches.
 
-	* hdrline.c: Fixing a segmentation fault in the hdr_line code.

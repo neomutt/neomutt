@@ -555,7 +555,7 @@ fi
 
 
 
-VERSION=0.92.10
+VERSION=0.92.11
 SUBVERSION=''
 
 echo $ac_n "checking for prefix""... $ac_c" 1>&6
