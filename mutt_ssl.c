@@ -72,7 +72,7 @@ sslsockdata;
 int ssl_init (void);
 static int add_entropy (const char *file);
 static int ssl_check_certificate (sslsockdata * data);
-static int ssl_socket_read (CONNECTION * conn);
+static int ssl_socket_read (CONNECTION* conn, char* buf, size_t len);
 static int ssl_socket_write (CONNECTION* conn, const char* buf, size_t len);
 static int ssl_socket_open (CONNECTION * conn);
 static int ssl_socket_close (CONNECTION * conn);
@@ -242,10 +242,10 @@ int ssl_socket_setup (CONNECTION * conn)
   return 0;
 }
 
-int ssl_socket_read (CONNECTION * conn)
+static int ssl_socket_read (CONNECTION* conn, char* buf, size_t len)
 {
   sslsockdata *data = conn->sockdata;
-  return SSL_read (data->ssl, conn->inbuf, LONG_STRING);
+  return SSL_read (data->ssl, buf, len);
 }
 
 int ssl_socket_write (CONNECTION* conn, const char* buf, size_t len)

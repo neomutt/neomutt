@@ -160,6 +160,8 @@ int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes)
     if (mutt_socket_readchar (idata->conn, &c) != 1)
     {
       dprint (1, (debugfile, "imap_read_literal: error during read, %ld bytes read\n", pos));
+      idata->status = IMAP_FATAL;
+      
       return -1;
     }
 
@@ -358,11 +360,7 @@ int imap_open_connection (IMAP_DATA* idata)
   int rc;
 
   if (mutt_socket_open (idata->conn) < 0)
-  {
-    mutt_error (_("Connection to %s failed."), idata->conn->account.host);
-    mutt_sleep (1);
     return -1;
-  }
 
   idata->state = IMAP_CONNECTED;
 
@@ -380,7 +378,7 @@ int imap_open_connection (IMAP_DATA* idata)
     {
       if ((rc = query_quadoption (OPT_SSLSTARTTLS,
         _("Secure connection with TLS?"))) == -1)
-	goto bail;
+	goto err_close_conn;
       if (rc == M_YES) {
 	if ((rc = imap_exec (idata, "STARTTLS", IMAP_CMD_FAIL_OK)) == -1)
 	  goto bail;
@@ -425,9 +423,10 @@ int imap_open_connection (IMAP_DATA* idata)
   imap_get_delim (idata);
   return 0;
 
+ err_close_conn:
+  mutt_socket_close (idata->conn);
  bail:
   FREE (&idata->capstr);
-  mutt_socket_close (idata->conn);
   idata->state = IMAP_DISCONNECTED;
   return -1;
 }
@@ -1041,7 +1040,7 @@ void imap_close_mailbox (CONTEXT* ctx)
       (ctx == idata->ctx))
   {
     if (!(idata->noclose) && imap_exec (idata, "CLOSE", 0))
-      imap_error ("CLOSE failed", idata->cmd.buf);
+      mutt_error (_("CLOSE failed"));
 
     idata->reopen &= IMAP_REOPEN_ALLOW;
     idata->state = IMAP_AUTHENTICATED;
@@ -1086,10 +1085,7 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint)
     ImapLastCheck = now;
 
     if (imap_exec (idata, "NOOP", 0) != 0)
-    {
-      imap_error ("imap_check_mailbox", idata->cmd.buf);
       return -1;
-    }
   }
     
   if (idata->check_status & IMAP_NEWMAIL_PENDING)

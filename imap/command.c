@@ -111,12 +111,11 @@ int imap_cmd_step (IMAP_DATA* idata)
 		  cmd->blen));
     }
 
-    if ((c = mutt_socket_readln (cmd->buf + len, cmd->blen - len,
-      idata->conn)) < 0)
+    c = mutt_socket_readln (cmd->buf + len, cmd->blen - len, idata->conn);
+    if (c <= 0)
     {
-      dprint (1, (debugfile, "imap_cmd_step: Error while reading server response, closing connection.\n"));
-      mutt_socket_close (idata->conn);
-      idata->status = IMAP_FATAL;
+      dprint (1, (debugfile, "imap_cmd_step: Error reading server response.\n"));
+      cmd_handle_fatal (idata);
       return IMAP_CMD_BAD;
     }
 
@@ -196,7 +195,10 @@ int imap_exec (IMAP_DATA* idata, const char* cmd, int flags)
   safe_free ((void**) &out);
 
   if (rc < 0)
+  {
+    cmd_handle_fatal (idata);
     return -1;
+  }
 
   do
     rc = imap_cmd_step (idata);
@@ -207,17 +209,10 @@ int imap_exec (IMAP_DATA* idata, const char* cmd, int flags)
 
   if (rc != IMAP_CMD_OK)
   {
-    char *pc;
-
     if (flags & IMAP_CMD_FAIL_OK)
       return -2;
 
     dprint (1, (debugfile, "imap_exec: command failed: %s\n", idata->cmd.buf));
-    pc = idata->cmd.buf;
-    pc = imap_next_word (pc);
-    mutt_error ("%s", pc);
-    mutt_sleep (2);
-
     return -1;
   }
 
@@ -282,7 +277,7 @@ static void cmd_handle_fatal (IMAP_DATA* idata)
       (idata->reopen & IMAP_REOPEN_ALLOW) &&
       !idata->ctx->closing)
   {
-    idata->status = IMAP_BYE;
+    idata->status = 0;
     idata->state = IMAP_DISCONNECTED;
     mx_fastclose_mailbox (idata->ctx);
   }

@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
  * Copyright (C) 2000 Edmund Grimley Evans <edmundo@rano.org>

@@ -56,9 +56,6 @@ static int tunnel_socket_open (CONNECTION *conn)
 
   mutt_message (_("Connecting with \"%s\"..."), Tunnel);
 
-  if ((rc = mutt_socket_preconnect ()))
-    return rc;
-
   rc = socketpair (PF_UNIX, SOCK_STREAM, IPPROTO_IP, sv);
   if (rc == -1)
   {

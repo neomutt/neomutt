@@ -46,7 +46,7 @@ typedef struct
   void* sockdata;
   int (*open) (CONNECTION* conn);
   int (*close) (CONNECTION* conn);
-  int (*read) (CONNECTION* conn);
+  int (*read) (CONNECTION* conn, char* buf, size_t len);
   int (*write) (CONNECTION* conn, const char* buf, size_t count);
 }
 SASL_DATA;

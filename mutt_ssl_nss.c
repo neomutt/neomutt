@@ -237,9 +237,6 @@ mutt_nss_bad_cert (void *arg, PRFileDesc * fd)
   return i;
 }
 
-/* TODO: this currently doesn't support the `Preconnect', it should be
- * moved out of raw_socket_open() into a generic function instead.
- */
 static int
 mutt_nss_socket_open (CONNECTION * con)
 {
@@ -359,10 +356,9 @@ mutt_nss_socket_close (CONNECTION * con)
 }
 
 static int
-mutt_nss_socket_read (CONNECTION * con)
+mutt_nss_socket_read (CONNECTION* conn, char* buf, size_t len)
 {
-  return PR_Read (((mutt_nss_t *) con->sockdata)->fd, con->inbuf,
-		  LONG_STRING);
+  return PR_Read (((mutt_nss_t*) conn->sockdata)->fd, buf, len);
 }
 
 static int

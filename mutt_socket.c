@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1998 Michael R. Elkins <me@cs.hmc.edu>
- * Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>
  * Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>
  * 
  *     This program is free software; you can redistribute it and/or modify
@@ -40,12 +40,16 @@
 static CONNECTION *Connections = NULL;
 
 /* forward declarations */
+static int socket_preconnect (void);
 static int socket_connect (int fd, struct sockaddr* sa);
 static CONNECTION* socket_new_conn ();
 
 /* Wrappers */
 int mutt_socket_open (CONNECTION* conn) 
 {
+  if (socket_preconnect ())
+    return -1;
+
   return conn->open (conn);
 }
 
@@ -59,6 +63,29 @@ int mutt_socket_close (CONNECTION* conn)
     rc = conn->close (conn);
 
   conn->fd = -1;
+
+  return rc;
+}
+
+int mutt_socket_read (CONNECTION* conn, char* buf, size_t len)
+{
+  int rc;
+
+  if (conn->fd < 0)
+  {
+    dprint (1, (debugfile, "mutt_socket_read: attempt to read from closed connection\n"));
+    return -1;
+  }
+
+  rc = conn->read (conn, buf, len);
+  /* EOF */
+  if (rc == 0)
+  {
+    mutt_error (_("Connection to %s closed"), conn->account.host);
+    mutt_sleep (2);
+  }
+  if (rc <= 0)
+    mutt_socket_close (conn);
 
   return rc;
 }
@@ -101,15 +128,23 @@ int mutt_socket_readchar (CONNECTION *conn, char *c)
   if (conn->bufpos >= conn->available)
   {
     if (conn->fd >= 0)
-      conn->available = conn->read (conn);
+      conn->available = conn->read (conn, conn->inbuf, sizeof (conn->inbuf));
     else
     {
-      dprint (1, (debugfile, "mutt_socket_readchar: attempt to read closed from connection.\n"));
+      dprint (1, (debugfile, "mutt_socket_readchar: attempt to read from closed connection.\n"));
       return -1;
     }
     conn->bufpos = 0;
+    if (conn->available == 0)
+    {
+      mutt_error (_("Connection to %s closed"), conn->account.host);
+      mutt_sleep (2);
+    }
     if (conn->available <= 0)
-      return conn->available; /* returns 0 for EOF or -1 for other error */
+    {
+      mutt_socket_close (conn);
+      return -1;
+    }
   }
   *c = conn->inbuf[conn->bufpos];
   conn->bufpos++;
@@ -120,6 +155,7 @@ int mutt_socket_readln_d (char* buf, size_t buflen, CONNECTION* conn, int dbg)
 {
   char ch;
   int i;
+  int rc;
 
   for (i = 0; i < buflen-1; i++)
   {
@@ -128,6 +164,7 @@ int mutt_socket_readln_d (char* buf, size_t buflen, CONNECTION* conn, int dbg)
       buf[i] = '\0';
       return -1;
     }
+
     if (ch == '\n')
       break;
     buf[i] = ch;
@@ -229,16 +266,16 @@ CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account)
   return conn;
 }
 
-int mutt_socket_preconnect (void)
+static int socket_preconnect (void)
 {
   int rc;
   int save_errno;
 
   if (mutt_strlen (Preconnect))
   {
-    dprint (1, (debugfile, "Executing preconnect: %s\n", Preconnect));
+    dprint (2, (debugfile, "Executing preconnect: %s\n", Preconnect));
     rc = mutt_system (Preconnect);
-    dprint (1, (debugfile, "Preconnect result: %d\n", rc));
+    dprint (2, (debugfile, "Preconnect result: %d\n", rc));
     if (rc)
     {
       save_errno = errno;
@@ -256,11 +293,7 @@ int mutt_socket_preconnect (void)
 static int socket_connect (int fd, struct sockaddr* sa)
 {
   int sa_size;
-  int rc;
   int save_errno;
-
-  if ((rc = mutt_socket_preconnect ()))
-    return rc;
 
   if (sa->sa_family == AF_INET)
     sa_size = sizeof (struct sockaddr_in);
@@ -313,14 +346,32 @@ int raw_socket_close (CONNECTION *conn)
   return ret;
 }
 
-int raw_socket_read (CONNECTION *conn)
+int raw_socket_read (CONNECTION* conn, char* buf, size_t len)
 {
-  return read (conn->fd, conn->inbuf, LONG_STRING);
+  int rc;
+
+  if ((rc = read (conn->fd, buf, len)) == -1)
+  {
+    mutt_error (_("Error talking to %s (%s)"), conn->account.host,
+		strerror (errno));
+    mutt_sleep (2);
+  }
+
+  return rc;
 }
 
 int raw_socket_write (CONNECTION* conn, const char* buf, size_t count)
 {
-  return write (conn->fd, buf, count);
+  int rc;
+
+  if ((rc = write (conn->fd, buf, count)) == -1)
+  {
+    mutt_error (_("Error talking to %s (%s)"), conn->account.host,
+		strerror (errno));
+    mutt_sleep (2);
+  }
+
+  return rc;
 }
 
 int raw_socket_open (CONNECTION* conn)
@@ -424,8 +475,9 @@ int raw_socket_open (CONNECTION* conn)
   {
     mutt_error (_("Could not connect to %s (%s)."), conn->account.host,
 	    (rc > 0) ? strerror (rc) : _("unknown error"));
-    sleep (2);
+    mutt_sleep (2);
+    return -1;
   }
   
-  return rc;
+  return 0;
 }

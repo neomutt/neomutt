@@ -44,7 +44,7 @@ typedef struct _connection
   struct _connection *next;
 
   void *sockdata;
-  int (*read) (struct _connection *conn);
+  int (*read) (struct _connection* conn, char* buf, size_t len);
   int (*write) (struct _connection *conn, const char *buf, size_t count);
   int (*open) (struct _connection *conn);
   int (*close) (struct _connection *conn);
@@ -52,6 +52,7 @@ typedef struct _connection
 
 int mutt_socket_open (CONNECTION* conn);
 int mutt_socket_close (CONNECTION* conn);
+int mutt_socket_read (CONNECTION* conn, char* buf, size_t len);
 int mutt_socket_readchar (CONNECTION *conn, char *c);
 #define mutt_socket_readln(A,B,C) mutt_socket_readln_d(A,B,C,M_SOCK_LOG_CMD)
 int mutt_socket_readln_d (char *buf, size_t buflen, CONNECTION *conn, int dbg);
@@ -63,10 +64,7 @@ CONNECTION* mutt_socket_head (void);
 void mutt_socket_free (CONNECTION* conn);
 CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account);
 
-/* other methods may call this to try preconnect code */
-int mutt_socket_preconnect (void);
-
-int raw_socket_read (CONNECTION *conn);
+int raw_socket_read (CONNECTION* conn, char* buf, size_t len);
 int raw_socket_write (CONNECTION* conn, const char* buf, size_t count);
 int raw_socket_open (CONNECTION *conn);
 int raw_socket_close (CONNECTION *conn);

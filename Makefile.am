@@ -6,7 +6,7 @@ EXTRA_PROGRAMS = mutt_dotlock pgpring makedoc
 
 if BUILD_IMAP
 IMAP_SUBDIR = imap
-IMAP_INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/imap
+IMAP_INCLUDES = -I$(top_srcdir)/imap
 endif
 
 SUBDIRS = m4 po intl doc contrib $(IMAP_SUBDIR)
@@ -55,9 +55,7 @@ CPP=@CPP@
 DEFS=-DSHAREDIR=\"$(sharedir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 	-DBINDIR=\"$(bindir)\" -DHAVE_CONFIG_H=1
 
-# top_srcdir is for building outside of the source tree
-INCLUDES=-I$(top_srcdir) -I. $(IMAP_INCLUDES) \
-	 -Iintl -I$(includedir)
+INCLUDES=-I. -I$(top_srcdir) $(IMAP_INCLUDES) -Iintl -I$(includedir)
 
 non_us_sources = pgp.c pgpinvoke.c pgpkey.c pgplib.c sha1.c \
 	pgpmicalg.c gnupgparse.c sha1.h \

@@ -44,7 +44,7 @@ static int mutt_sasl_cb_pass (sasl_conn_t* conn, void* context, int id,
 /* socket wrappers for a SASL security layer */
 static int mutt_sasl_conn_open (CONNECTION* conn);
 static int mutt_sasl_conn_close (CONNECTION* conn);
-static int mutt_sasl_conn_read (CONNECTION* conn);
+static int mutt_sasl_conn_read (CONNECTION* conn, char* buf, size_t len);
 static int mutt_sasl_conn_write (CONNECTION* conn, const char* buf,
   size_t count);
 
@@ -400,7 +400,7 @@ static int mutt_sasl_conn_close (CONNECTION* conn)
   return rc;
 }
 
-static int mutt_sasl_conn_read (CONNECTION* conn)
+static int mutt_sasl_conn_read (CONNECTION* conn, char* buf, size_t len)
 {
   SASL_DATA* sasldata;
   int rc;
@@ -409,13 +409,13 @@ static int mutt_sasl_conn_read (CONNECTION* conn)
 
   sasldata = (SASL_DATA*) conn->sockdata;
 
-  /* if we still have data in our read buffer, copy it into conn->inbuf */
+  /* if we still have data in our read buffer, copy it into buf */
   if (sasldata->blen > sasldata->bpos)
   {
-    olen = (sasldata->blen - sasldata->bpos > sizeof (conn->inbuf)) ?
-      sizeof (conn->inbuf) : sasldata->blen - sasldata->bpos;
+    olen = (sasldata->blen - sasldata->bpos > len) ? len :
+      sasldata->blen - sasldata->bpos;
 
-    memcpy (conn->inbuf, sasldata->buf+sasldata->bpos, olen);
+    memcpy (buf, sasldata->buf+sasldata->bpos, olen);
     sasldata->bpos += olen;
 
     return olen;
@@ -433,11 +433,11 @@ static int mutt_sasl_conn_read (CONNECTION* conn)
     do
     {
       /* call the underlying read function to fill the buffer */
-      rc = (sasldata->read) (conn);
+      rc = (sasldata->read) (conn, buf, len);
       if (rc <= 0)
 	goto out;
 
-      rc = sasl_decode (sasldata->saslconn, conn->inbuf, rc, &sasldata->buf,
+      rc = sasl_decode (sasldata->saslconn, buf, rc, &sasldata->buf,
         &sasldata->blen);
       if (rc != SASL_OK)
       {
@@ -448,16 +448,16 @@ static int mutt_sasl_conn_read (CONNECTION* conn)
     }
     while (!sasldata->blen);
 
-    olen = (sasldata->blen - sasldata->bpos > sizeof (conn->inbuf)) ?
-      sizeof (conn->inbuf) : sasldata->blen - sasldata->bpos;
+    olen = (sasldata->blen - sasldata->bpos > len) ? len :
+      sasldata->blen - sasldata->bpos;
 
-    memcpy (conn->inbuf, sasldata->buf, olen);
+    memcpy (buf, sasldata->buf, olen);
     sasldata->bpos += olen;
 
     rc = olen;
   }
   else
-    rc = (sasldata->read) (conn);
+    rc = (sasldata->read) (conn, buf, len);
 
   out:
     conn->sockdata = sasldata;
