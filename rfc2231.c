@@ -308,9 +308,20 @@ int rfc2231_encode_string (char **pd)
   char *charset, *s, *t, *e, *d = 0;
   size_t slen, dlen = 0;
 
-  if (!*pd)
-    return 0;
+  /* 
+   * A shortcut to detect pure 7bit data.
+   * 
+   * This should prevent the worst when character set handling
+   * is flawed.
+   */
 
+  for (s = *pd; *s; s++)
+    if (*s & 0x80)
+      break;
+  
+  if (!*s)
+    return 0;
+  
   if (!Charset || !SendCharset ||
       !(charset = mutt_choose_charset (Charset, SendCharset,
 				  *pd, strlen (*pd), &d, &dlen)))
