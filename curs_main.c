@@ -777,7 +777,7 @@ int mutt_index_menu (void)
           if (Context && Context->magic == M_IMAP)
             imap_set_logout (Context);
 #endif
-	  oldcount = Context->msgcount;
+	  oldcount = Context ? Context->msgcount : 0;
 
 	  if (!Context || (check = mx_close_mailbox (Context, &index_hint)) == 0)
 	    done = 1;
@@ -951,7 +951,7 @@ int mutt_index_menu (void)
 	  int check;
 
 	  mutt_str_replace (&LastFolder, Context->path);
-	  oldcount = Context->msgcount;
+	  oldcount = Context ? Context->msgcount : 0;
 
 	  if ((check = mx_close_mailbox (Context, &index_hint)) != 0)
 	  {
