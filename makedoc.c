@@ -69,6 +69,8 @@ enum output_formats_t
 #define D_TAB		(1 << 3)
 #define D_NP		(1 << 4)
 #define D_INIT		(1 << 5)
+#define D_DL		(1 << 6)
+#define D_DT		(1 << 7)
 
 enum
 {
@@ -80,6 +82,10 @@ enum
   SP_STR,
   SP_START_TAB,
   SP_END_TAB,
+  SP_START_DL,
+  SP_DT,
+  SP_DD,
+  SP_END_DL,
   SP_REFER
 };
 
@@ -693,8 +699,11 @@ static void print_confline (const char *varname, int type, const char *val, FILE
  ** - \fI switches to italics
  ** - \fB switches to boldface
  ** - \fP switches to normal display
- ** - .ts on a line starts a "tscreen" environment (name taken from
- **   SGML).
+ ** - .dl on a line starts a definition list (name taken taken from HTML).
+ ** - .dt starts a term in a definition list.
+ ** - .dd starts a definition in a definition list.
+ ** - .de on a line finishes a definition list.
+ ** - .ts on a line starts a "tscreen" environment (name taken from SGML).
  ** - .te on a line finishes this environment.
  ** - .pp on a line starts a paragraph.
  ** - \$word will be converted to a reference to word, where appropriate.
@@ -720,7 +729,10 @@ static int flush_doc (int docstat, FILE *out)
 
   if (docstat & (D_TAB))
     docstat = print_it (SP_END_TAB, NULL, out, docstat);
-  
+
+  if (docstat & (D_DL))
+    docstat = print_it (SP_END_DL, NULL, out, docstat);
+
   if (docstat & (D_EM | D_BF))
     docstat = print_it (SP_END_FT, NULL, out, docstat);
 
@@ -740,10 +752,13 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 
   switch (OutputFormat)
   {
+    /* configuration file */
     case F_CONF:
     {
       switch (special)
       {
+	static int Continuation = 0;
+
 	case SP_END_FT: docstat &= ~(D_EM|D_BF); break;
 	case SP_START_BF: docstat |= D_BF; break;
 	case SP_START_EM: docstat |= D_EM; break;
@@ -756,6 +771,8 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 	    fputs ("\n# ", out);
 	    docstat |= D_NL;
 	  }
+	  if (docstat & D_DL)
+	    ++ Continuation;
 	  break;
 	}
 	case SP_NEWPAR:
@@ -781,20 +798,56 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 	}
 	case SP_END_TAB:
 	{
-	  fputs ("\n# ", out);
 	  docstat &= ~D_TAB;
+	  docstat |= D_NL;
+	  break;
+	}
+	case SP_START_DL:
+	{
+	  docstat |= D_DL;
+	  break;
+	}
+	case SP_DT:
+	{
+	  Continuation = 0;
+	  docstat |= D_DT;
+	  break;
+	}
+	case SP_DD:
+	{
+	  Continuation = 0;
+	  break;
+	}
+	case SP_END_DL:
+	{
+	  Continuation = 0;
+	  docstat &= ~D_DL;
 	  break;
 	}
 	case SP_STR:
 	{
+	  if (Continuation)
+	  {
+	    Continuation = 0;
+	    fputs ("        ", out);
+	  }
 	  fputs (str, out);
+	  if (docstat & D_DT)
+	  { 
+	    int i;
+
+	    for (i = strlen (str) ; i < 8 ; i++)
+	      putc (' ', out);
+	    docstat &= ~D_DT;
+	    docstat |= D_NL;
+	  }
 	  break;
 	}
       }
       break;
     }
 
-    
+    /* manual page */
     case F_MAN:
     {
       switch (special)
@@ -858,6 +911,28 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 	  docstat |= D_NL;
 	  break;
 	}
+	case SP_START_DL:
+	{
+	  fputs ("\n.RS", out);
+	  docstat |= D_DL;
+	  break;
+	}
+	case SP_DT:
+	{
+	  fputs ("\n.IP ", out);
+	  break;
+	}
+	case SP_DD:
+	{
+	  fputs ("\n", out);
+	  break;
+	}
+	case SP_END_DL:
+	{
+	  fputs ("\n.RE", out);
+	  docstat &= ~D_DL;
+	  break;
+	}
 	case SP_STR:
 	{
 	  while (*str)
@@ -887,6 +962,8 @@ static int print_it (int special, char *str, FILE *out, int docstat)
       }
       break;
     }
+
+    /* SGML based manual */
     case F_SGML:
     {
       switch (special)
@@ -951,6 +1028,28 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 	  docstat |= D_NL;
 	  break;
 	}
+	case SP_START_DL:
+	{
+	  fputs ("\n<descrip>\n", out);
+	  docstat |= D_DL;
+	  break;
+	}
+	case SP_DT:
+	{
+	  fputs ("<tag>", out);
+	  break;
+	}
+	case SP_DD:
+	{
+	  fputs ("</tag>", out);
+	  break;
+	}
+	case SP_END_DL:
+	{
+	  fputs ("</descrip>\n", out);
+	  docstat &= ~D_DL;
+	  break;
+	}
 	case SP_STR:
 	{
 	  if (docstat & D_TAB)
@@ -997,6 +1096,10 @@ static int handle_docline (char *l, FILE *out, int docstat)
     return print_it (SP_START_TAB, NULL, out, docstat);
   else if (!strncmp (l, ".te", 3))
     return print_it (SP_END_TAB, NULL, out, docstat);
+  else if (!strncmp (l, ".dl", 3))
+    return print_it (SP_START_DL, NULL, out, docstat);
+  else if (!strncmp (l, ".de", 3))
+    return print_it (SP_END_DL, NULL, out, docstat);
   else if (!strncmp (l, ". ", 2))
     *l = ' ';
 
@@ -1029,6 +1132,18 @@ static int handle_docline (char *l, FILE *out, int docstat)
       docstat = commit_buff (buff, &d, out, docstat);
       docstat = print_it (SP_END_FT, NULL, out, docstat);
       s += 2;
+    }
+    else if (!strncmp (s, ".dt", 3))
+    {
+      docstat = commit_buff (buff, &d, out, docstat);
+      docstat = print_it (SP_DT, NULL, out, docstat);
+      s += 3;
+    }
+    else if (!strncmp (s, ".dd", 3))
+    {
+      docstat = commit_buff (buff, &d, out, docstat);
+      docstat = print_it (SP_DD, NULL, out, docstat);
+      s += 3;
     }
     else if (*s == '$')
       /* add code for references here. */

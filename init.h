@@ -130,13 +130,12 @@ struct option_t MuttVars[] = {
   ** Specifies the format of the data displayed for the `alias' menu.  The
   ** following printf(3)-style sequences are available:
   ** .pp
-  ** .ts
-  ** %a      alias name
-  ** %n      index number
-  ** %r      address which alias expands to
-  ** %t      character which indicates if the alias is 
-  ** .       tagged for inclusion
-  ** .te
+  ** .dl
+  ** .dt %a .dd alias name
+  ** .dt %n .dd index number
+  ** .dt %r .dd address which alias expands to
+  ** .dt %t .dd character which indicates if the alias is tagged for inclusion
+  ** .de
   */
   { "allow_8bit",	DT_BOOL, R_NONE, OPTALLOW8BIT, 1 },
   /*
@@ -184,24 +183,22 @@ struct option_t MuttVars[] = {
   ** This variable describes the format of the `attachment' menu.  The
   ** following printf-style sequences are understood:
   ** .pp
-  ** .ts
-  ** %D      deleted flag
-  ** %d      description
-  ** %e      MIME content-transfer-encoding
-  ** %f      filename
-  ** %I      disposition (I=inline, A=attachment)
-  ** %m      major MIME type
-  ** %M      MIME subtype
-  ** %n      attachment number
-  ** %s      size
-  ** %t      tagged flag
-  ** %u      unlink (=to delete) flag
-  ** %>X     right justify the rest of the
-  ** .       string and pad with character "X"
-  ** %|X     pad to the end of the line with
-  ** .       character "X"
-  ** .te
-  */  
+  ** .dl
+  ** .dt %D  .dd deleted flag
+  ** .dt %d  .dd description
+  ** .dt %e  .dd MIME content-transfer-encoding
+  ** .dt %f  .dd filename
+  ** .dt %I  .dd disposition (I=inline, A=attachment)
+  ** .dt %m  .dd major MIME type
+  ** .dt %M  .dd MIME subtype
+  ** .dt %n  .dd attachment number
+  ** .dt %s  .dd size
+  ** .dt %t  .dd tagged flag
+  ** .dt %u  .dd unlink (=to delete) flag
+  ** .dt %>X .dd right justify the rest of the string and pad with character "X"
+  ** .dt %|X .dd pad to the end of the line with character "X"
+  ** .de
+  */
   { "attach_sep",	DT_STR,	 R_NONE, UL &AttachSep, UL "\n" },
   /*
   ** .pp
@@ -298,12 +295,12 @@ struct option_t MuttVars[] = {
   ** menu.  This string is similar to ``$$status_format'', but has its own
   ** set of printf()-like sequences:
   ** .pp
-  ** .ts
-  ** %a      total number of attachments 
-  ** %h      local hostname
-  ** %l      approximate size (in bytes) of the current message
-  ** %v      Mutt version string
-  ** .te
+  ** .dl
+  ** .dt %a .dd total number of attachments 
+  ** .dt %h .dd local hostname
+  ** .dt %l .dd approximate size (in bytes) of the current message
+  ** .dt %v .dd Mutt version string
+  ** .de
   ** .pp
   ** See the text describing the ``$$status_format'' option for more 
   ** information on how to set ``$$compose_format''.
@@ -486,21 +483,20 @@ struct option_t MuttVars[] = {
   ** personal taste.  This string is similar to ``$$index_format'', but has
   ** its own set of printf()-like sequences:
   ** .pp
-  ** .ts
-  ** %C      current file number
-  ** %d      date/time folder was last modified
-  ** %f      filename
-  ** %F      file permissions
-  ** %g      group name (or numeric gid, if missing)
-  ** %l      number of hard links
-  ** %N      N if folder has new mail, blank otherwise
-  ** %s      size in bytes
-  ** %t      * if the file is tagged, blank otherwise
-  ** %u      owner name (or numeric uid, if missing)
-  ** %>X     right justify the rest of the string and pad 
-  ** .       with character "X"
-  ** %|X     pad to the end of the line with character "X"
-  ** .te
+  ** .dl
+  ** .dt %C  .dd current file number
+  ** .dt %d  .dd date/time folder was last modified
+  ** .dt %f  .dd filename
+  ** .dt %F  .dd file permissions
+  ** .dt %g  .dd group name (or numeric gid, if missing)
+  ** .dt %l  .dd number of hard links
+  ** .dt %N  .dd N if folder has new mail, blank otherwise
+  ** .dt %s  .dd size in bytes
+  ** .dt %t  .dd * if the file is tagged, blank otherwise
+  ** .dt %u  .dd owner name (or numeric uid, if missing)
+  ** .dt %>X .dd right justify the rest of the string and pad with character "X"
+  ** .dt %|X .dd pad to the end of the line with character "X"
+  ** .de
   */
   { "followup_to",	DT_BOOL, R_NONE, OPTFOLLOWUPTO, 1 },
   /*
@@ -787,76 +783,54 @@ struct option_t MuttVars[] = {
   ** function printf to format output (see the man page for more detail).
   ** The following sequences are defined in Mutt:
   ** .pp
-  ** .ts
-  ** %a      address of the author
-  ** %b      filename of the original message 
-  ** .       folder (think mailBox)
-  ** %B      the list to which the letter was sent, 
-  ** .       or else the folder name (%b).
-  ** %c      number of characters (bytes) in the message
-  ** %C      current message number
-  ** %d      date and time of the message in the format 
-  ** .       specified by ``date_format'' converted to 
-  ** .       sender's time zone
-  ** %D      date and time of the message in the format
-  ** .       specified by ``date_format'' converted to 
-  ** .       the local time zone
-  ** %e      current message number in thread
-  ** %E      number of messages in current thread
-  ** %f      entire From: line (address + real name)
-  ** %F      author name, or recipient name if the 
-  ** .       message is from you
-  ** %i      message-id of the current message
-  ** %l      number of lines in the message
-  ** %L      list-from function
-  ** %m      total number of message in the mailbox
-  ** %M      number of hidden messages if the thread 
-  ** .       is collapsed.
-  ** %N      message score
-  ** %n      author's real name (or address if missing)
-  ** %O      (_O_riginal save folder)  Where 
-  ** .       mutt would formerly have stashed the
-  ** .       message: list name or recipient name 
-  ** .       if no list
-  ** %s      subject of the message
-  ** %S      status of the message (N/D/d/!/r/\(as)
-  ** %t      `to:' field (recipients)
-  ** %T      the appropriate character from the 
-  ** .       $$to_chars string
-  ** %u      user (login) name of the author
-  ** %v      first name of the author, or the 
-  ** .       recipient if the message is from you
-  ** %y	     `x-label:' field, if present
-  ** %Y	     `x-label' field, if present, and 
-  ** .       (1) not at part of a thread tree,
-  ** .       (2) at the top of a thread, or
-  ** . 	     (3) `x-label' is different from preceding
-  ** .       message's `x-label'.
-  ** %Z      message status flags
-  ** %{fmt}  the date and time of the message is
-  ** .       converted to sender's time zone, and 
-  ** .       ``fmt'' is expanded by the library 
-  ** .       function ``strftime''; a leading bang 
-  ** .       disables locales
-  ** %[fmt]  the date and time of the message is 
-  ** .       converted to the local time zone, and
-  ** .       ``fmt'' is expanded by the library 
-  ** .       function ``strftime''; a leading bang 
-  ** .       disables locales
-  ** %(fmt)  the local date and time when the 
-  ** .       message was received.
-  ** .       ``fmt'' is expanded by the library
-  ** .       function ``strftime'';
-  ** .       a leading bang disables locales
-  ** %<fmt>  the current local time. 
-  ** .       ``fmt'' is expanded by the library
-  ** .       function ``strftime''; 
-  ** .       a leading bang disables locales.
-  ** %>X     right justify the rest of the string 
-  ** .       and pad with character "X"
-  ** %|X     pad to the end of the line with
-  ** .       character "X"
-  ** .te
+  ** .dl
+  ** .dt %a .dd address of the author
+  ** .dt %b .dd filename of the original message folder (think mailBox)
+  ** .dt %B .dd the list to which the letter was sent, or else the folder name (%b).
+  ** .dt %c .dd number of characters (bytes) in the message
+  ** .dt %C .dd current message number
+  ** .dt %d .dd date and time of the message in the format specified by
+  **            ``date_format'' converted to sender's time zone
+  ** .dt %D .dd date and time of the message in the format specified by
+  **            ``date_format'' converted to the local time zone
+  ** .dt %e .dd current message number in thread
+  ** .dt %E .dd number of messages in current thread
+  ** .dt %f .dd entire From: line (address + real name)
+  ** .dt %F .dd author name, or recipient name if the message is from you
+  ** .dt %i .dd message-id of the current message
+  ** .dt %l .dd number of lines in the message
+  ** .dt %L .dd list-from function
+  ** .dt %m .dd total number of message in the mailbox
+  ** .dt %M .dd number of hidden messages if the thread is collapsed.
+  ** .dt %N .dd message score
+  ** .dt %n .dd author's real name (or address if missing)
+  ** .dt %O .dd (_O_riginal save folder)  Where mutt would formerly have
+  **            stashed the message: list name or recipient name if no list
+  ** .dt %s .dd subject of the message
+  ** .dt %S .dd status of the message (N/D/d/!/r/\(as)
+  ** .dt %t .dd `to:' field (recipients)
+  ** .dt %T .dd the appropriate character from the $$to_chars string
+  ** .dt %u .dd user (login) name of the author
+  ** .dt %v .dd first name of the author, or the recipient if the message is from you
+  ** .dt %y .dd `x-label:' field, if present
+  ** .dt %Y .dd `x-label' field, if present, and (1) not at part of a thread tree,
+  **            (2) at the top of a thread, or (3) `x-label' is different from
+  **            preceding message's `x-label'.
+  ** .dt %Z .dd message status flags
+  ** .dt %{fmt} .dd the date and time of the message is converted to sender's
+  **                time zone, and ``fmt'' is expanded by the library function
+  **                ``strftime''; a leading bang disables locales
+  ** .dt %[fmt] .dd the date and time of the message is converted to the local
+  **                time zone, and ``fmt'' is expanded by the library function
+  **                ``strftime''; a leading bang disables locales
+  ** .dt %(fmt) .dd the local date and time when the message was received.
+  **                ``fmt'' is expanded by the library function ``strftime'';
+  **                a leading bang disables locales
+  ** .dt %<fmt> .dd the current local time. ``fmt'' is expanded by the library
+  **                function ``strftime''; a leading bang disables locales.
+  ** .dt %>X    .dd right justify the rest of the string and pad with character "X"
+  ** .dt %|X    .dd pad to the end of the line with character "X"
+  ** .de
   ** .pp
   ** See also: ``$$to_chars''.
   */
@@ -1002,12 +976,12 @@ struct option_t MuttVars[] = {
   ** chain selection screen.  The following printf-like sequences are 
   ** supported:
   ** .pp
-  ** .ts
-  ** %n      The running number on the menu.
-  ** %c	     Remailer capabilities.
-  ** %s	     The remailer's short name.
-  ** %a	     The remailer's e-mail address.
-  ** .te
+  ** .dl
+  ** .dt %n .dd The running number on the menu.
+  ** .dt %c .dd Remailer capabilities.
+  ** .dt %s .dd The remailer's short name.
+  ** .dt %a .dd The remailer's e-mail address.
+  ** .de
   */
   { "mixmaster",	DT_PATH, R_NONE, UL &Mixmaster, UL MIXMASTER },
   /*
@@ -1116,18 +1090,17 @@ struct option_t MuttVars[] = {
   ** your personal taste. This string is similar to ``$$index_format'', but
   ** has its own set of printf()-like sequences:
   ** .pp
-  ** .ts
-  **  %n      number
-  **  %k      key id
-  **  %u      user id
-  **  %a      algorithm
-  **  %l      key length
-  **  %f      flags
-  **  %c      capabilities
-  **  %t      trust/validity of the key-uid association
-  **  %[<s>]  date of the key where <s> is an strftime(3) 
-  ** .        expression
-  ** .te
+  ** .dl
+  ** .dt %n     .dd number
+  ** .dt %k     .dd key id
+  ** .dt %u     .dd user id
+  ** .dt %a     .dd algorithm
+  ** .dt %l     .dd key length
+  ** .dt %f     .dd flags
+  ** .dt %c     .dd capabilities
+  ** .dt %t     .dd trust/validity of the key-uid association
+  ** .dt %[<s>] .dd date of the key where <s> is an strftime(3) expression
+  ** .de
   */
   { "pgp_long_ids",	DT_BOOL, R_NONE, OPTPGPLONGIDS, 0 },
   /*
@@ -1223,12 +1196,12 @@ struct option_t MuttVars[] = {
   ** Specifies how the entries in the `pgp keys' menu are sorted. The
   ** following are legal values:
   ** .pp
-  ** .ts
-  ** address 	sort alphabetically by user id
-  ** keyid 	sort alphabetically by key id
-  ** date 	sort by key creation date
-  ** trust      sort by the trust of the key
-  ** .te
+  ** .dl
+  ** .dt address .dd sort alphabetically by user id
+  ** .dt keyid   .dd sort alphabetically by key id
+  ** .dt date    .dd sort by key creation date
+  ** .dt trust   .dd sort by the trust of the key
+  ** .de
   ** .pp
   ** If you prefer reverse order of the above values, prefix it with
   ** `reverse-'.
@@ -1257,18 +1230,15 @@ struct option_t MuttVars[] = {
   ** .pp
   ** The PGP command formats have their own set of printf-like sequences:
   ** .pp
-  ** .ts
-  ** %p        Expands to PGPPASSFD=0 when a pass phrase 
-  ** .         is needed, to an empty string otherwise.  
-  ** .         Note: This may be used with a %? construct.
-  ** %f        Expands to the name of a file containing 
-  ** .         a message.
-  ** %s        Expands to the name of a file containing 
-  ** .         the signature part of a multipart/signed 
-  ** .         attachment when verifying it.
-  ** %a        The value of $$pgp_sign_as.
-  ** %r        One or more key IDs.
-  ** .te
+  ** .dl
+  ** .dt %p .dd Expands to PGPPASSFD=0 when a pass phrase is needed, to an empty
+  **            string otherwise. Note: This may be used with a %? construct.
+  ** .dt %f .dd Expands to the name of a file containing a message.
+  ** .dt %s .dd Expands to the name of a file containing the signature part
+  ** .          of a multipart/signed attachment when verifying it.
+  ** .dt %a .dd The value of $$pgp_sign_as.
+  ** .dt %r .dd One or more key IDs.
+  ** .de
   ** .pp
   ** For examples on how to configure these formats for the various versions
   ** of PGP which are floating around, see the pgp*.rc and gpg.rc files in
@@ -1761,13 +1731,11 @@ struct option_t MuttVars[] = {
   ** to finish before giving up and putting delivery in the background.
   ** .pp
   ** Mutt interprets the value of this variable as follows:
-  ** .ts
-  ** >0      number of seconds to wait for sendmail to 
-  ** .       finish before continuing
-  ** 0       wait forever for sendmail to finish
-  ** <0      always put sendmail in the background 
-  ** .       without waiting
-  ** .te
+  ** .dl
+  ** .dt >0 .dd number of seconds to wait for sendmail to finish before continuing
+  ** .dt 0  .dd wait forever for sendmail to finish
+  ** .dt <0 .dd always put sendmail in the background without waiting
+  ** .de
   ** .pp
   ** Note that if you specify a value other than 0, the output of the child
   ** process will be put in a temporary file.  If there is some error, you
@@ -1932,34 +1900,32 @@ struct option_t MuttVars[] = {
   ** menu.  This string is similar to ``$$index_format'', but has its own
   ** set of printf()-like sequences:
   ** .pp
-  ** .ts
-  ** %b      number of mailboxes with new mail *
-  ** %d      number of deleted messages *
-  ** %h      local hostname
-  ** %f      the full pathname of the current mailbox
-  ** %F      number of flagged messages *
-  ** %l      size (in bytes) of the current mailbox *
-  ** %L      size (in bytes) of the messages shown 
-  ** .       (i.e., which match the current limit) *
-  ** %m      the number of messages in the mailbox *
-  ** %M      the number of messages shown (i.e., which 
-  ** .       match the current limit) *
-  ** %n      number of new messages in the mailbox *
-  ** %o      number of old unread messages
-  ** %p      number of postponed messages *
-  ** %P      percentage of the way through the index
-  ** %r      modified/read-only/won't-write/attach-message 
-  ** .       indicator, according to $$status_chars
-  ** %s      current sorting mode ($$sort)
-  ** %S      current aux sorting method ($$sort_aux)
-  ** %t      number of tagged messages *
-  ** %u      number of unread messages *
-  ** %v      Mutt version string
-  ** %V      currently active limit pattern, if any *
-  ** %>X     right justify the rest of the string and
-  ** .       pad with "X"
-  ** %|X     pad to the end of the line with "X"
-  ** .te
+  ** .dl
+  ** .dt %b  .dd number of mailboxes with new mail *
+  ** .dt %d  .dd number of deleted messages *
+  ** .dt %h  .dd local hostname
+  ** .dt %f  .dd the full pathname of the current mailbox
+  ** .dt %F  .dd number of flagged messages *
+  ** .dt %l  .dd size (in bytes) of the current mailbox *
+  ** .dt %L  .dd size (in bytes) of the messages shown 
+  **             (i.e., which match the current limit) *
+  ** .dt %m  .dd the number of messages in the mailbox *
+  ** .dt %M  .dd the number of messages shown (i.e., which match the current limit) *
+  ** .dt %n  .dd number of new messages in the mailbox *
+  ** .dt %o  .dd number of old unread messages
+  ** .dt %p  .dd number of postponed messages *
+  ** .dt %P  .dd percentage of the way through the index
+  ** .dt %r  .dd modified/read-only/won't-write/attach-message indicator,
+  **             according to $$status_chars
+  ** .dt %s  .dd current sorting mode ($$sort)
+  ** .dt %S  .dd current aux sorting method ($$sort_aux)
+  ** .dt %t  .dd number of tagged messages *
+  ** .dt %u  .dd number of unread messages *
+  ** .dt %v  .dd Mutt version string
+  ** .dt %V  .dd currently active limit pattern, if any *
+  ** .dt %>X .dd right justify the rest of the string and pad with "X"
+  ** .dt %|X .dd pad to the end of the line with "X"
+  ** .de
   ** .pp
   ** * = can be optionally printed if nonzero
   ** .pp

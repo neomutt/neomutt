@@ -148,6 +148,15 @@ similar to [ntg]roff:
    to help avoiding poblems when trying to represent any of the \
    sequences used by makedoc.
 
+ - .dl on a line starts a "definition list" environment (name taken
+    from HTML) where terms and definitions alternate.
+
+ - .dt marks a term in a definition list.
+
+ - .dd marks a definition in a definition list.
+
+ - .de on a line finishes a definition list environment.
+
  - .ts on a line starts a "verbose tscreen" environment (name taken from
    SGML).  Please try to keep lines inside such an environment
    short; a length of abut 40 characters should be ok.  This is
