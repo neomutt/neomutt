@@ -1,10 +1,5 @@
 Problems are listed in approximate order of priority.
 
-- Re-visit nametemplate support.  Currently, we use
-  symbolic links in our temporary directory for this. When
-  using /tmp, this may have security implementations and
-  introduce race conditions.
-
 
 - Fix the "unexpected EXPUNGE" IMAP bug.
 

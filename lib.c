@@ -656,6 +656,41 @@ void mutt_expand_fmt (char *dest, size_t destlen, const char *fmt, const char *s
   FREE(&_src);
 }
 
+static int 
+compare_stat (struct stat *osb, struct stat *nsb)
+{
+  if (osb->st_dev != nsb->st_dev || osb->st_ino != nsb->st_ino ||
+      osb->st_rdev != nsb->st_rdev)
+  {
+    return -1;
+  }
+
+  return 0;
+}
+
+int safe_symlink(const char *oldpath, const char *newpath)
+{
+  struct stat osb, nsb;
+
+  if(!oldpath || !newpath)
+    return -1;
+  
+  if(unlink(newpath) == -1 && errno != ENOENT)
+    return -1;
+  
+  if(symlink(oldpath, newpath) == -1)
+    return -1;
+  
+  if(stat(oldpath, &osb) == -1 || stat(newpath, &nsb) == -1
+     || compare_stat(&osb, &nsb) == -1)
+  {
+    unlink(newpath);
+    return -1;
+  }
+  
+  return 0;
+}
+
 int safe_open (const char *path, int flags)
 {
   struct stat osb, nsb;
@@ -666,8 +701,7 @@ int safe_open (const char *path, int flags)
 
   /* make sure the file is not symlink */
   if (lstat (path, &osb) < 0 || fstat (fd, &nsb) < 0 ||
-      osb.st_dev != nsb.st_dev || osb.st_ino != nsb.st_ino ||
-      osb.st_rdev != nsb.st_rdev)
+      compare_stat(&osb, &nsb) == -1)
   {
     dprint (1, (debugfile, "safe_open(): %s is a symlink!\n", path));
     close (fd);

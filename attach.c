@@ -106,7 +106,7 @@ int mutt_compose_attachment (BODY *a)
       {
 	dprint(1, (debugfile, "oldfile: %s\t newfile: %s\n",
 				  a->filename, newfile));
-	if (symlink (a->filename, newfile) == -1)
+	if (safe_symlink (a->filename, newfile) == -1)
 	{
 	  if (!mutt_yesorno ("Can't match nametemplate, continue?", 1))
 	    goto bailout;
@@ -228,7 +228,7 @@ int mutt_edit_attachment (BODY *a)
       {
 	dprint(1, (debugfile, "oldfile: %s\t newfile: %s\n",
 				  a->filename, newfile));
-	if (symlink (a->filename, newfile) == -1)
+	if (safe_symlink (a->filename, newfile) == -1)
 	{
 	  if (!mutt_yesorno ("Can't match nametemplate, continue?", 1))
 	    goto bailout;
@@ -360,7 +360,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag)
       if (fp == NULL)
       {
 	/* send case: the file is already there */
-	if (symlink (a->filename, tempfile) == -1)
+	if (safe_symlink (a->filename, tempfile) == -1)
 	{
 	  if (mutt_yesorno ("Can't match nametemplate, continue?", 1) == M_YES)
 	    strfcpy (tempfile, a->filename, sizeof (tempfile));
@@ -807,7 +807,7 @@ int mutt_print_attachment (FILE *fp, BODY *a)
     {
       if (!fp)
       {
-	if (symlink(a->filename, newfile) == -1)
+	if (safe_symlink(a->filename, newfile) == -1)
 	{
 	  if (mutt_yesorno ("Can't match nametemplate, continue?", 1) != M_YES)
 	  {
