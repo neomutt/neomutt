@@ -2368,7 +2368,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	break;
 
       case OP_FORWARD_MESSAGE:
-	CHECK_MODE(IsHeader (extra) && !IsMsgAttach (extra));
+	CHECK_MODE(IsHeader (extra) || IsMsgAttach (extra));
         CHECK_ATTACH;
         if (IsMsgAttach (extra))
 	  mutt_attach_forward (extra->fp, extra->hdr, extra->idx,
