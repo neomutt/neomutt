@@ -1147,7 +1147,8 @@ command line with the <tt/-y/ option.
 <bf/Note:/ new mail is detected by comparing the last modification time to
 the last access time.  Utilities like <tt/biff/ or <tt/frm/ or any other
 program which accesses the mailbox might cause Mutt to never detect new mail
-for that mailbox if they do not properly reset the access time.
+for that mailbox if they do not properly reset the access time.  Backup
+tools are another common reason for updated access times.
 <p>
 
 <bf/Note:/ the filenames in the <tt/mailboxes/ command are resolved when

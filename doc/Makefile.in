@@ -58,12 +58,12 @@ srcdir_DOCFILES = PGP-Notes.txt applying-patches.txt	\
 topsrcdir_DOCFILES = COPYRIGHT GPL INSTALL ChangeLog	\
 	README NEWS TODO README.SECURITY README.SSL README.UPGRADE
 
-all: try-html try-txt muttrc.man
+all: muttrc.man try-html try-txt
 
-try-html:
+try-html: ../makedoc
 	test -f manual.html || $(MAKE) manual.html || cp $(srcdir)/manual*.html ./
 
-try-txt:
+try-txt: ../makedoc
 	test -f manual.txt || $(MAKE) manual.txt || cp $(srcdir)/manual.txt ./
 
 install: all

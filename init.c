@@ -1167,6 +1167,8 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
   return (r);
 }
 
+#define MAXERRS 128
+
 /* reads the specified initialization file.  returns -1 if errors were found
    so that we can pause to let the user know...  */
 static int source_rc (const char *rcfile, BUFFER *err)
@@ -1190,8 +1192,12 @@ static int source_rc (const char *rcfile, BUFFER *err)
     if (mutt_parse_rc_line (linebuf, &token, err) == -1)
     {
       mutt_error (_("Error in %s, line %d: %s"), rcfile, line, err->data);
-      rc = -1;
+      if (--rc < -MAXERRS)
+        break;
     }
+    else
+      if (rc < 0)
+        rc = -1;
   }
   FREE (&token.data);
   safe_free ((void **) &linebuf);
@@ -1199,10 +1205,16 @@ static int source_rc (const char *rcfile, BUFFER *err)
   if (pid != -1)
     mutt_wait_filter (pid);
   if (rc)
+  {
     /* the muttrc source keyword */
-    snprintf (err->data, err->dsize, _("source: errors in %s"), rcfile);
+    snprintf (err->data, err->dsize, rc >= -MAXERRS ? _("source: errors in %s")
+      : _("source: reading aborted due too many errors in %s"), rcfile);
+    rc = -1;
+  }
   return (rc);
 }
+
+#undef MAXERRS
 
 static int parse_source (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 {

@@ -1420,6 +1420,11 @@ msgstr "Fehler in %s, Zeile %d: %s"
 msgid "source: errors in %s"
 msgstr "source: Fehler in %s"
 
+#: init.c:1210
+#, c-format
+msgid "source: reading aborted due too many errors in %s"
+msgstr "source: Lesevorgang abgebrochen, zu viele Fehler in %s"
+
 #: init.c:1213
 #, c-format
 msgid "source: error at %s"

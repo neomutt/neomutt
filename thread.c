@@ -149,7 +149,7 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
   char *pfx = NULL, *mypfx = NULL, *arrow = NULL, *myarrow = NULL;
   char corner = Sort & SORT_REVERSE ? M_TREE_ULCORNER : M_TREE_LLCORNER;
   int depth = 0, start_depth = 0, max_depth = 0, max_width = 0;
-  int nextdisp = 0;
+  int nextdisp = 0, visible;
   HEADER *tree = ctx->tree;
   HEADER **array = ctx->hdrs + (Sort & SORT_REVERSE ? ctx->msgcount - 1 : 0);
 
@@ -161,7 +161,7 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
 
   FOREVER
   {
-    if (tree->virtual >= 0 || (tree->collapsed && (!ctx->pattern || tree->limited)))
+    if ((visible = (tree->virtual >= 0 || (tree->collapsed && (!ctx->pattern || tree->limited)))))
       tree->display_subject = need_display_subject (ctx, tree);
 
     if (depth >= max_depth)
@@ -173,12 +173,8 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
 		    (max_width += 16) * 2 * sizeof (char));
 
     safe_free ((void **) &tree->tree);
-    if (!depth)
-    {
-      if (tree->virtual >= 0 || (tree->collapsed && (!ctx->pattern || tree->limited)))
-	tree->tree = safe_strdup ("");
-    }
-    else
+
+    if (depth)
     {
       myarrow = arrow + (depth - start_depth - (start_depth ? 0 : 1)) * 2;
       nextdisp = is_next_displayed (ctx, tree);
@@ -188,13 +184,13 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
       else
 	myarrow[0] = M_TREE_HIDDEN;
       myarrow[1] = tree->fake_thread ? M_TREE_STAR : M_TREE_HLINE;
-      if (tree->virtual >= 0 || (tree->collapsed && (!ctx->pattern || tree->limited)))
+      if (visible)
       {
 	myarrow[2] = M_TREE_RARROW;
 	myarrow[3] = 0;
       }
 
-      if (tree->virtual >= 0 || (tree->collapsed && (!ctx->pattern || tree->limited)))
+      if (visible)
       {
 	tree->tree = safe_malloc ((2 + depth * 2) * sizeof (char));
 	if (start_depth > 1)
@@ -223,7 +219,7 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
 	mypfx[1] = M_TREE_SPACE;
       }
       depth++;
-      if (tree->virtual >= 0 || (tree->collapsed && (!ctx->pattern || tree->limited)))
+      if (visible)
         start_depth = depth;
       tree = tree->child;
     }
