@@ -1,3 +1,696 @@
+Fri Dec  6 10:56:30 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* curs_lib.c, pgppubring.c:
+	From: Thomas Roessler <roessler@does-not-exist.org>
+
+	Fixing a number of traditional malloc calls which have made their
+	way into the code.
+
+	* build-release: From: Thomas Roessler <roessler@does-not-exist.org>
+
+	Don't post announcements automatically for the moment.
+
+Thu Dec  5 22:30:02 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* doc/manual.sgml.head: From: Michael Elkins <me@sigpipe.org>
+
+	Fix #1398.
+
+Mon Nov 25 14:16:47 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* sendlib.c, ChangeLog, charset.h, configure.in, INSTALL:
+	From: Lars Hecking <lhecking@nmrc.ucc.ie>
+
+	The noiconv patch.
+
+Thu Nov 14 08:12:30 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* curs_lib.c: From: Michael Elkins <me@sigpipe.org>
+
+	Fix #1388.
+
+Wed Nov 13 10:10:52 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* main.c: From: Thomas Roessler <roessler@does-not-exist.org>
+
+	A description of -A was lacking from the help string.
+
+	* doc/manual.sgml.head, doc/mutt.man, main.c, protos.h:
+	From: Thomas Roessler <roessler@does-not-exist.org>
+
+	Add a new command line option -A which is used to expand aliases.
+
+	* keymap.c: From: Thomas Roessler <roessler@does-not-exist.org>
+
+	Add a safeguard #ifdef for the KEY_BTAB entry.  Suggested by Thomas
+	Dickey.
+
+Tue Nov 12 09:20:30 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* keymap.c: From: Michael Elkins <me@sigpipe.org>
+
+	Tell mutt about the back-tab key (shift tab).
+
+	* Makefile.am: From: Thomas Roessler <roessler@does-not-exist.org>
+
+	ups.
+
+	* Makefile.am: From: Thomas Roessler <roessler@does-not-exist.org>
+
+	Add "make pclean" in order to clean up PATCHES.
+
+	* po/ja.po: From: TAKAHASHI Tamotsu <arms405@jade.dti.ne.jp>
+
+	update
+
+	* README: From: Thomas Roessler <roessler@does-not-exist.org>
+
+	Add an explicit note that CVS doesn't work from ftp.mutt.org any more.
+
+	* mbyte.c: From: "Yasuhiro Matsumoto" <mattn_jp@hotmail.com>
+
+	cp932 should be treated like shift_jis.
+
+	* imap/auth_gss.c, imap/auth_sasl.c, configure.in, main.c, mutt_sasl.c, mutt_sasl.h:
+	From: Nathan Dushman <nhd+mutt@andrew.cmu.edu>
+
+	Hi - this is a patch against mutt-1.4 to use version 2 of the Cyrus
+	SASL library; all changes are ifdef'd so as not to break SASLv1
+	support. This includes a patch to configure.in to allow the choice
+	between v1 and v2, but someone with a better understanding of
+	autoconf should double-check it.
+
+	* handler.c: From: Michael Elkins <me@sigpipe.org>
+
+	Actually commit patch-1.5.1.me.long_qp.2.
+
+	* mailbox.h, mh.c, mx.c: From: Michael Elkins <me@sigpipe.org>
+
+	The maildir_time patch.
+
+Mon Nov 11 21:17:25 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* muttbug.sh.in: From: Thomas Roessler <roessler@does-not-exist.org>
+
+	You shall not use CVS to distribute test versions.
+
+	* muttbug.sh.in: From: Thomas Roessler <roessler@does-not-exist.org>
+
+	more fixes.
+
+	* muttbug.sh.in: From: Thomas Roessler <roessler@does-not-exist.org>
+
+	Add some rpm-related intelligence to flea.
+
+	* muttbug.sh.in: From: Thomas Roessler <roessler@does-not-exist.org>
+
+	Fix flea's interaction with bug(1) on Debian systems.
+
+	* PATCHES: From: Thomas Roessler <roessler@does-not-exist.org>
+
+	Clean up the patch list.
+
+	* hdrline.c, PATCHES: From: Michael Elkins <me@sigpipe.org>
+
+	Fix #485: Make %z work like %Z inside of %{} in $index_format.
+
+	* copy.c, PATCHES: From: Michael Elkins <me@sigpipe.org>
+
+	Fix #1379 - update the total mailbox size when an attachment is
+	deleted.
+
+	* curs_main.c, menu.c, pager.c, PATCHES:
+	From: Michael Elkins <me@sigpipe.org>
+
+	Fix #1310; redraw problems.
+
+	* doc/manual.sgml.head, init.h: From: Michael Elkins <me@sigpipe.org>
+
+	Fix #1306.
+
+	* send.c: From: Michael Elkins <me@sigpipe.org>
+
+	Fix #1364.
+
+	* pgp.c: From: Steve Kennedy <steve-md@gbnet.net>
+
+	Fix memory leak in the PGP code.
+
+	* commands.c, protos.h, sendlib.c:
+	From: Paul Walker <paul@black-sun.demon.co.uk>
+
+	Fix #718.
+
+	* sendlib.c: From: Thomas Roessler <roessler@does-not-exist.org>
+
+	Fix #1366.
+
+	* mx.c: From: Martin Siegert <siegert@sfu.ca>
+
+	Fix IMAP moving; #1367.
+
+	* send.c: From: rene@clerc.nl
+
+	Another S/MIME ifdef misses and causes compilation problems.
+
+	* init.h: From: Michael Elkins <me@sigpipe.org>
+
+	patch-1.5.1-me.status_doc.2
+
+	* alias.c, init.c, protos.h:
+	From: Thomas Roessler <roessler@does-not-exist.org>
+
+	patch-1.5-tlr.alias-parse.1 - extension of patch-1.5.1-me.aliascheck.1
+
+	This patch catches the same kind of bad alias names caught by
+	Michael's patch.  There are some extensions:
+
+	1. Mutt makes sure that it doesn't _suggest_ bad names to the user.
+	2. If a name is bad, the user is informed, and may elect to fix the
+	   name.  In this case, mutt will automatically suggest a fixed
+	   version.
+	3. If the user insists in the bad name, it's written into the
+	   aliases file with proper quoting.
+	4. When mutt parses the aliases file, it now uses the normal
+	   tokenizer routines in order to properly handle quoted alias names.
+
+	* handler.c: From: Michael Elkins <me@sigpipe.org>
+
+	patch-1.5-me.long_qp.2 (#1371) - fix truncation with overly long Q-P
+	encoded lines.
+
+Tue Oct 22 21:24:07 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* commands.c: From: René Clerc <rene@clerc.nl>
+
+	Add some missing #ifdefs.
+
+	* init.h, recvattach.c: From: Michael Elkins <me@sigpipe.org>
+
+	Documentation fix; #1326
+
+	* send.c: From: René Clerc <rene@clerc.nl>
+
+	Another crypt_reply fix.
+
+	* contrib/sample.muttrc: From: Michael Elkins <me@sigpipe.org>
+
+	#1357
+
+Thu Oct 10 09:50:03 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* send.c: From: René Clerc <rene@clerc.nl>
+
+	Make sure that crypt_reply replies with the same type, despite a
+	possible S/MIME default.
+
+	* doc/manual.sgml.head: From: Michael Elkins <me@sigpipe.org>
+
+	Document escaping rules for regular expressions (#1351).
+
+	* pager.c: From: Michael Elkins <me@sigpipe.org>
+
+	Fix header coloring, so there is no difference between ncurses and
+	slang.
+
+	* init.h: From: Michael Elkins <me@sigpipe.org>
+
+	PGP documentation glitch.
+
+	* doc/manual.sgml.head: From: Paul Walker <paul@black-sun.demon.co.uk>
+
+	Fix #1340 (documentation)
+
+	* pager.c: From: Michael Elkins <me@sigpipe.org>
+
+	Jeremy Lin wrote:
+	> When I search with / and get a match, doing '/\r' doesn't move to the next
+	> match. This behavior is unlike the less pager, and is rather useless, IMHO.
+
+	Try the attached patch.
+
+Mon Sep 23 12:08:43 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* buffy.c: From: Thomas Roessler <roessler@does-not-exist.org>
+
+	A variant of buffy notification.  Note:  If you folks don't like
+	this, we can return to the old version.
+
+Mon Sep  9 21:48:19 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* browser.c, buffy.c, curs_main.c, functions.h, OPS, pager.c, protos.h:
+	From: Rudi Chiarito <nutello@sweetness.com>
+
+	Add a buffy-list function, and display more information when new
+	mail arrives.  With some modifications from tlr.
+
+	* mh.c: From: Michael Elkins <me@sigpipe.org>
+
+	Fix #1321.
+
+	* mh.c: From: Michael Elkins <me@sigpipe.org>
+
+	[STABLE] Fix #1321.
+
+	* signal.c: From: Tony Leneis <tony@cvr.ds.adp.com>
+
+	Tru64 Unix portability patch.
+
+	* signal.c: From: Tony Leneis <tony@cvr.ds.adp.com>
+
+	[STABLE] Tru64 Unix portability patch.
+
+	* doc/manual.sgml.head: From: Vincent Lefevre <vincent@vinc17.org>
+
+	Fixing a typo.
+
+	* postpone.c: From: Thomas Roessler <roessler@does-not-exist.org>
+
+	Fixing #1300.  Noted by David Shaw <dshaw@jabberwocky.com>.
+
+	* postpone.c: From: Thomas Roessler <roessler@does-not-exist.org>
+
+	Fix #1299; noted by David Shaw <dshaw@jabberwocky.com>.
+
+	* init.h, mutt.h, send.c: From: Michael Elkins <me@sigpipe.org>
+
+	Introducing $forward_edit.
+
+	* send.c: From: Michael Elkins <me@sigpipe.org>
+
+	#265:
+
+	> Suppose a user wants to fcc to a file (e.g., /a/b/c) but accidentally
+	> typed a = before the path name. Mutt will fail to find the =/a/b/c
+	> folder, display the error message and beep, but immediately erase the
+	> error message; the mail will be sent even though the fcc failed. (The
+	> same can be accomplished by accidentally mistyping other parts of the
+	> path name.) On local systems where screen update is quick, the user
+	> might not notice the error message at all.
+	>
+	> The problem with this behaviour is that the user might have no chance
+	> to read the error message if the screen update is quick enough; as a
+	> result (s)he might not notice that the fcc failed.
+	>
+	> A related thing (probably can't be classified as a problem) is that if
+	> fcc fails, the user probably don't want to send the mail out because
+	> if fcc is requested (s)he probably very much want to keep a copy of
+	> the sent mail.
+
+	Try the following patch.  We keep track of whether or not the fcc
+	failed with a local var `fcc_error' and perform the same behavior as
+	if the actual send of the message failed (without really sending)
+	when the FCC fails, thus giving the user a chance to correct the
+	error.
+
+	* globals.h, init.h, send.c: From: Michael Elkins <me@sigpipe.org>
+
+	Introduce $content_type.  There's one change against Michael's
+	patch, in how the "format=flowed" parameter is used.
+
+	* history.c: From: Vincent Lefevre <vincent@vinc17.org>
+
+	[STABLE] Fixing history classes.
+
+	* history.c: From: Vincent Lefevre <vincent@vinc17.org>
+
+	Fixing history classes.
+
+	* mh.c: From: Armin Wolfermann <aw@osn.de>
+
+	when doing the second parsing pass on a maildir, mutt doesn't delete
+	the fake HEADER struct if the file is unreadable. With this fix
+	unreadable files get silently ignored (like in the MH case).
+
+	* po/ja.po: From: "TAKAHASHI, Tamotsu" <arms405@jade.dti.ne.jp>
+
+	Update.
+
+	* editmsg.c: From: Michael Elkins <me@sigpipe.org>
+
+	Fixing #1149:  Truncate files used for editing messages.
+
+	* doc/manual.sgml.head, doc/muttrc.man.head, buffy.c, buffy.h, init.h:
+	From: Nicolas Rachinsky <nicolas@dauerreden.de>
+
+	An unmailboxes command.  #1311.
+
+	* attach.c: From: Michael Elkins <me@sigpipe.org>
+
+	Fixing #1330.
+
+	* attach.c: From: Michael Elkins <me@sigpipe.org>
+
+	[STABLE] Fixing #1330.
+
+Fri Aug  9 07:01:11 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* doc/muttrc.man.head:
+	From: Thomas Roessler <roessler@does-not-exist.org>
+
+	Document unalternative_order in the manual page.
+
+	* doc/manual.sgml.head, init.c, init.h:
+	From: Michael Elkins <me@sigpipe.org>
+
+	The following patch adds the `unalternative_order' command.  It also
+	allows using "*" more generically in un-commands which use
+	parse_unlists().
+
+Mon Aug  5 17:25:05 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* pgpewrap.c, pgppubring.c: From: Michael Elkins <me@sigpipe.org>
+
+	Error handling fixes.
+
+Fri Jul 26 08:24:01 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* doc/manual.sgml.head: From: Michael Elkins <me@sigpipe.org>
+
+	Documentation for reply-hook.  Another patch (for the manual page)
+	would be most welcome. ;-))
+
+	* curs_lib.c: From: Michael Elkins <me@sigpipe.org>
+
+	The attached patch fixes mutt_yesorno() so that the question will be
+	truncated enough to always fit in the default answer string.  The
+	size is calculated on the fly so that there is no artificial
+	truncation.
+
+Wed Jul 24 09:46:58 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* mutt.h: From: TAKIZAWA Takashi <taki@luna.email.ne.jp>
+
+	The attached patch sets MB_LEN_MAX to 16, which is MB_LEN_MAX value
+	on glibc-2.2. It works only with --without-wc-funcs switch. It may
+	be applied to mutt-1.4 and mutt-1.5.1.
+
+	* configure.in: From: Lars Hecking <lhecking@nmrc.ie>
+
+	Fix a quoting sloppiness.  Noted by Vincent Lefevre.
+
+	* browser.c: From: Thomas Roessler <roessler@does-not-exist.org>
+
+	Fixing #1282.  An off-by-one error. :-/
+
+	* mutt.h, send.c, hook.c, init.h: From: Michael Elkins <me@sigpipe.org>
+
+	reply-hook.  Documentation still needed.
+
+	* po/fr.po: From: Vincent Lefevre <vincent@vinc17.org>
+
+	update.
+
+	* doc/mutt.man, compose.c, editmsg.c, init.c, init.h, attach.c:
+	From: Michael Elkins <me@sigpipe.org>
+
+	Fix $editor and $visual.  Based on an earlier patch from Edmund
+	Grimley Evans.
+
+Fri Jul 19 19:23:21 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* doc/manual.sgml.head: From: Michael Elkins <me@sigpipe.org>
+
+	Another documentation patch.
+
+Wed Jul 17 12:48:38 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* sendlib.c: From: Rocco Rutte <s1118644@mail.inf.tu-dresden.de>
+
+	* Thomas Roessler [02-07-08 10:14:53 +0200] wrote:
+	>  * sendlib.c, 3.12 -> 3.13
+	>    From: Rocco Rutte <s1118644@mail.inf.tu-dresden.de>
+
+	>    Make encode_from a bit more aggressive, by also catching a 'f' in
+	>    the beginning of a line.
+
+	'Catch' is good but also to encode it is better. It may have
+	been too late (sorry for that) so I fixed it. I don't know
+	why the current source only escapes lines that actually
+	begin with 'from' or 'From' followed by some text. I think
+	that escaping 'from' or 'From' on a single line should be
+	done, too.
+
+	Not a big deal, anyways.
+
+Tue Jul 16 07:28:11 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* main.c: From: Michael Elkins <me@sigpipe.org>
+
+	Update copyright notices.
+
+Sun Jul  7 19:33:50 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* doc/manual.sgml.head, doc/mutt.man, init.h:
+	From: Cedric Duval <cedricduval@free.fr>
+
+	Documentation fixes.
+
+	* doc/manual.sgml.head:
+	From: "TAKAHASHI, Tamotsu" <arms405@jade.dti.ne.jp>
+
+	Dcumentation fixes.
+
+	* doc/manual.sgml.head, doc/mutt.man, init.h:
+	From: Cedric Duval <cedricduval@free.fr>
+
+	Documentation fixes.
+
+	* sendlib.c: From: Rocco Rutte <s1118644@mail.inf.tu-dresden.de>
+
+	Make encode_from a bit more aggressive, by also catching a 'f' in
+	the beginning of a line.
+
+	* po/Attic/bg.po: From: Velko Hristov <hristov@informatik.hu-berlin.de>
+
+	Update.
+
+	* init.h: From: Jeremy Blosser <jblosser-mutt@firinn.org>
+
+	Add unauto_view to the stable branch.  A one-liner.
+
+Fri Jun 28 19:52:31 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* doc/manual.sgml.head: From: Michael Elkins <me@sigpipe.org>
+
+	Documentation fix (#271).
+
+Tue Jun 18 10:03:52 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/zh_TW.po, po/tr.po, po/uk.po, po/zh_CN.po, po/sv.po, po/sk.po, po/ru.po, po/pt_BR.po, po/nl.po, po/pl.po, po/ja.po, po/ko.po, po/lt.po, po/it.po, po/gl.po, po/hu.po, po/id.po, po/eo.po, po/es.po, po/et.po, po/fr.po, po/el.po, po/da.po, po/de.po, po/ca.po, po/cs.po:
+	From: (automatic)
+
+	"make update-po"
+
+	* po/ca.po: From: several submitters
+
+	Adding a BG translation.  Update for CA.
+
+	* po/Attic/bg.po:
+	file bg.po was initially added on branch mutt-1-4-stable.
+
+	* po/Attic/bg.po: From: several submitters
+
+	Adding a BG translation.  Update for CA.
+
+	* configure.in: From: several submitters
+
+	Adding a BG translation.
+
+	* init.c: From: Michael Elkins <me@sigpipe.org>
+
+	The string used to store the commmand for a backtic expansion in the
+	muttrc was not free'd if the command failed for some reason.
+
+	* m4/gssapi.m4: From: David Champion <dgc@uchicago.edu>
+
+	Okay, two bugs here. One's an oversight of mine in my previous patch,
+	where I tried to use "[hH]" as Bourne code while m4 had quoting set to
+	([, ]) -- this probably makes mutt mis-detect Heimdal after all.
+
+	The other is not mine (i.e., it's in cvs now) and it makes mutt
+	overstrike $LIBS if Heimdal or MIT Kerberos is detected. This is a
+	problem for anyone who needs -lnsl -lsocket, in particular. I was
+	fixing
+	this by hand during late 1.3.x releases, as I didn't have time to
+	track
+	it down....
+
+	Here's a patch against the current (unpatched) 1.5 cvs copy of
+	m4/gssapi.m4. It probably should go into both branches. Sorry for the
+	repeats.
+
+Thu Jun  6 23:13:54 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* color.c: From: Michael Elkins <me@sigpipe.org>
+
+	Fix #1230.
+
+	* init.h: From: Will Fiveash <william.fiveash@sun.com>
+
+	Fix a couple of compile-time warnings.
+
+Fri May 31 16:59:39 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* charset.c, charset.h, sendlib.c:
+	From: Edmund GRIMLEY EVANS <edmundo@rano.org>
+
+	Fix charset-hook.
+
+	* m4/iconv.m4, charset.h, configure.in, INSTALL:
+	From: Lars Hecking <lhecking@nmrc.ucc.ie>
+
+	The noiconv patch.  Should probably have been in 1.4.
+
+Thu May 30 12:15:02 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* rfc822.c: From: Thomas Roessler <roessler@does-not-exist.org>
+
+	Properly handle empty addresses (<>) when they show up in mail
+	headers.  The approach taken is to store this address as <@>, and to
+	check this special case when printing an address.
+
+Wed May 29 09:31:51 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/zh_CN.po, po/zh_TW.po, po/uk.po, po/tr.po, po/sk.po, po/sv.po, po/pl.po, po/pt_BR.po, po/ru.po, po/ko.po, po/lt.po, po/nl.po, po/it.po, po/ja.po, po/fr.po, po/gl.po, po/hu.po, po/id.po, po/eo.po, po/es.po, po/et.po, po/da.po, po/de.po, po/el.po, po/ca.po, po/cs.po, reldate.h, VERSION, ChangeLog:
+	automatic post-release commit for mutt-1.4
+
+	* po/de.po: From: Roland Rosenfeld <roland@spinnaker.de>
+
+	update.
+
+	* po/id.po: From: Ronny Haryanto <ronny@haryan.to>
+
+	update
+
+Tue May 28 09:07:29 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* mx.h, postpone.c: From: Michael Elkins <me@sigpipe.org>
+
+	Fix some warnings noted by Vincent Lefevre.
+
+Tue May 21 07:28:28 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/eo.po: From: Edmund GRIMLEY EVANS <edmundo@rano.org>
+
+	update
+
+Sat May 18 05:39:55 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* pattern.c: From: Thomas Roessler <roessler@does-not-exist.org>
+
+	Fix #1175.
+
+	* pattern.c: From: Thomas Roessler <roessler@does-not-exist.org>
+
+	Fix #1175.  Noticed by Alain Bench.
+
+	* pop_lib.c: From: Vsevolod Volkov <vvv@mutt.org.ua>
+
+	Attached patch for mutt 1.3.X/1.4 and 1.5.X removes gcc warning in
+	pop_lib.c.
+
+Thu May 16 17:33:19 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/pl.po: From: Pawel Dziekonski <dzieko@pwr.wroc.pl>
+
+	update
+
+	* po/ko.po: From: Im Eunjea <eunjea@koru.org>
+
+	update.
+
+	* po/ko.po: From: Im Eunjea <eunjea@koru.org>
+
+	update
+
+	* po/id.po: From: Ronny Haryanto <ronny@haryan.to>
+
+	update.
+
+	* compose.c: From: Ronny Haryanto <ronny@haryan.to>
+
+	Triple-DES, not Tripple-DES.
+
+Tue May 14 18:56:01 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/uk.po: From: "Andrej N. Gritsenko" <andrej@lucky.net>
+
+	update
+
+Mon May 13 20:18:57 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/et.po: From: Toomas Soome <Toomas.Soome@microlink.ee>
+
+	update
+
+	* po/ru.po, po/uk.po: From: Vsevolod Volkov <vvv@mutt.org.ua>
+
+	update
+
+	* po/da.po: From: Byrial Jensen <byrial@image.dk>
+
+	update
+
+	* po/ru.po: From: Vsevolod Volkov <vvv@mutt.org.ua>
+
+	update
+
+	* po/sv.po: From: Jörgen Tegnér <jorgen.tegner@telia.com>
+
+	update
+
+	* po/fr.po: From: Vincent Lefevre <vincent@vinc17.org>
+
+	update
+
+Thu May  9 09:52:09 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* doc/muttrc.man.head:
+	From: Thomas Roessler <roessler@does-not-exist.org>
+
+	#1190, from Tim Alexeevsky <tim@zhuchka.gbnet.net>
+
+Mon May  6 11:27:20 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* doc/manual.sgml.head:
+	From: Thomas Roessler <roessler@does-not-exist.org>
+
+	Remove -Q which is only present in unstable from the stable
+	documentation.  Thanks to Andreas Kneib <Andreas.Kneib@t-online.de>
+	for noting.
+
+Thu May  2 01:05:27 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* Makefile.am: From: Thomas Roessler <roessler@does-not-exist.org>
+
+	Include smime.h with EXRA_DIST.
+
+Wed May  1 23:24:17 2002  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/zh_TW.po, po/sk.po, po/sv.po, po/tr.po, po/uk.po, po/zh_CN.po, po/pl.po, po/pt_BR.po, po/ru.po, po/id.po, po/it.po, po/ja.po, po/ko.po, po/lt.po, po/nl.po, po/eo.po, po/es.po, po/et.po, po/fr.po, po/gl.po, po/hu.po, po/ca.po, po/cs.po, po/da.po, po/de.po, po/el.po, reldate.h, VERSION, ChangeLog:
+	automatic post-release commit for mutt-1.5.1
+
+	* smime.c: From: Thomas Roessler <roessler@does-not-exist.org>
+
+	Shut up check_sec.sh.  No security holes, but some ugly code.
+
+	* check_sec.sh: From: Thomas Roessler <roessler@does-not-exist.org>
+
+	Give all the warnings at once.
+
+	* build-release: From: Thomas Roessler <roessler@does-not-exist.org>
+
+	- This is a development branch.
+	- Add a -nodiff option to suppress generating a patch.
+
+	* po/tr.po, po/uk.po, po/zh_CN.po, po/zh_TW.po, po/sk.po, po/sv.po, po/pl.po, po/pt_BR.po, po/ru.po, po/lt.po, po/nl.po, po/it.po, po/ja.po, po/ko.po, po/et.po, po/fr.po, po/gl.po, po/hu.po, po/id.po, po/da.po, po/de.po, po/el.po, po/eo.po, po/es.po, ChangeLog, po/ca.po, po/cs.po, reldate.h, VERSION:
+	automatic post-release commit for mutt-1.3.99
+
+	* build-release: From: Thomas Roessler <roessler@does-not-exist.org>
+
+	s/scp1/scp/
+
 Tue May  7 15:42:37 IST 2002  Lars Hecking  <lhecking@nmrc.ie>
 
 	* INSTALL: Document new --disable-iconv configure option.

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.3.27/1.4\n"
-"POT-Creation-Date: 2002-05-02 01:23+0200\n"
+"POT-Creation-Date: 2002-12-06 12:10+0100\n"
 "PO-Revision-Date: 2002-01-23 15:14+0200\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "MIME-Version: 1.0\n"
@@ -22,12 +22,12 @@ msgstr "Користувач у %s: "
 msgid "Password for %s@%s: "
 msgstr "Пароль для %s@%s: "
 
-#: addrbook.c:31 browser.c:40 pager.c:1439 postpone.c:37 query.c:43
+#: addrbook.c:31 browser.c:40 pager.c:1449 postpone.c:37 query.c:43
 #: recvattach.c:61
 msgid "Exit"
 msgstr "Вих╕д"
 
-#: addrbook.c:32 curs_main.c:402 pager.c:1446 postpone.c:38
+#: addrbook.c:32 curs_main.c:402 pager.c:1456 postpone.c:38
 msgid "Del"
 msgstr "Вид."
 
@@ -41,7 +41,7 @@ msgstr "Виб╕р"
 
 #. __STRCAT_CHECKED__
 #: addrbook.c:35 browser.c:43 compose.c:92 curs_main.c:408 mutt_ssl.c:627
-#: pager.c:1538 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:65
+#: pager.c:1548 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:65
 #: smime.c:480
 msgid "Help"
 msgstr "П╕дказка"
@@ -55,36 +55,40 @@ msgid "Aliases"
 msgstr "Псевдон╕ми"
 
 #. add a new alias
-#: alias.c:234
+#: alias.c:240
 msgid "Alias as: "
 msgstr "Псевдон╕м як: "
 
-#: alias.c:240
+#: alias.c:246
 msgid "You already have an alias defined with that name!"
 msgstr "Ви вже ма╓те псевдон╕м на це ╕м'я!"
 
-#: alias.c:255
+#: alias.c:252
+msgid "Warning: This alias name may not work.  Fix it?"
+msgstr ""
+
+#: alias.c:273
 msgid "Address: "
 msgstr "Адреса: "
 
-#: alias.c:271
+#: alias.c:289
 msgid "Personal name: "
 msgstr "Повне ╕м'я: "
 
-#: alias.c:280
+#: alias.c:298
 #, c-format
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] В╕рно?"
 
-#: alias.c:297 recvattach.c:395 recvattach.c:449
+#: alias.c:315 recvattach.c:396 recvattach.c:450
 msgid "Save to file: "
 msgstr "Внести до файлу: "
 
-#: alias.c:308
+#: alias.c:330
 msgid "Alias added."
 msgstr "Псевдон╕м додано."
 
-#: attach.c:115 attach.c:242 attach.c:472 attach.c:956
+#: attach.c:115 attach.c:242 attach.c:471 attach.c:961
 msgid "Can't match nametemplate, continue?"
 msgstr "Нема╓ в╕дпов╕дного ╕мен╕, дал╕?"
 
@@ -94,8 +98,8 @@ msgstr "Нема╓ в╕дпов╕дного ╕мен╕, дал╕?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Компонування, вказане у mailcap, потребу╓ %%s"
 
-#: attach.c:135 attach.c:260 commands.c:229 compose.c:1278 curs_lib.c:145
-#: curs_lib.c:377
+#: attach.c:135 attach.c:260 commands.c:229 compose.c:1277 curs_lib.c:147
+#: curs_lib.c:393
 #, c-format
 msgid "Error running \"%s\"!"
 msgstr "Помилка виконання \"%s\"!"
@@ -119,37 +123,37 @@ msgstr "В mailcap не визначено компонування %s, створено порожн╕й файл."
 msgid "Mailcap Edit entry requires %%s"
 msgstr "Редагування, вказане у mailcap, потребу╓ %%s"
 
-#: attach.c:273
+#: attach.c:272
 #, c-format
 msgid "No mailcap edit entry for %s"
 msgstr "В mailcap не визначено редагування %s"
 
-#: attach.c:438
+#: attach.c:437
 msgid "No matching mailcap entry found.  Viewing as text."
 msgstr "Не знайдено в╕домостей у mailcap. Показано як текст."
 
-#: attach.c:451
+#: attach.c:450
 msgid "MIME type not defined.  Cannot view attachment."
 msgstr "Тип MIME не визначено. Неможливо побачити додаток."
 
-#: attach.c:541
+#: attach.c:540
 msgid "Cannot create filter"
 msgstr "Неможливо створити ф╕льтр"
 
-#: attach.c:670 attach.c:702 attach.c:989 attach.c:1047 handler.c:1562
+#: attach.c:669 attach.c:701 attach.c:994 attach.c:1052 handler.c:1561
 #: pgpkey.c:566 pgpkey.c:755
 msgid "Can't create filter"
 msgstr "Неможливо створити ф╕льтр"
 
-#: attach.c:777 recvattach.c:423 recvattach.c:483
+#: attach.c:782 recvattach.c:424 recvattach.c:484
 msgid "Attachment saved."
 msgstr "Додаток записано."
 
-#: attach.c:828
+#: attach.c:833
 msgid "Write fault!"
 msgstr "Зб╕й запису!"
 
-#: attach.c:1070
+#: attach.c:1075
 msgid "I don't know how to print that!"
 msgstr "Не знаю, як це друкувати!"
 
@@ -161,94 +165,94 @@ msgstr "Каталог"
 msgid "Mask"
 msgstr "Маска"
 
-#: browser.c:375 browser.c:963
+#: browser.c:377 browser.c:965
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s не ╓ каталогом."
 
-#: browser.c:495
+#: browser.c:497
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Поштов╕ скриньки [%d]"
 
-#: browser.c:502
+#: browser.c:504
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "П╕дписан╕ [%s] з маскою: %s"
 
-#: browser.c:506
+#: browser.c:508
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Каталог [%s] з маскою: %s"
 
-#: browser.c:518
+#: browser.c:520
 msgid "Can't attach a directory!"
 msgstr "Неможливо додати каталог!"
 
-#: browser.c:649 browser.c:1030 browser.c:1123
+#: browser.c:651 browser.c:1032 browser.c:1129
 msgid "No files match the file mask"
 msgstr "Нема╓ файл╕в, що в╕дпов╕дають масц╕"
 
-#: browser.c:855
+#: browser.c:857
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "Створення п╕дтриму╓ться лише для скриньок IMAP"
 
-#: browser.c:875
+#: browser.c:877
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Видалення п╕дтриму╓ться лише для скриньок IMAP"
 
-#: browser.c:883
+#: browser.c:885
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Впевнен╕ у видаленн╕ скриньки \"%s\"?"
 
-#: browser.c:897
+#: browser.c:899
 msgid "Mailbox deleted."
 msgstr "Поштову скриньку видалено."
 
-#: browser.c:903
+#: browser.c:905
 msgid "Mailbox not deleted."
 msgstr "Поштову скриньку не видалено."
 
-#: browser.c:922
+#: browser.c:924
 msgid "Chdir to: "
 msgstr "Перейти до: "
 
-#: browser.c:956 browser.c:1023
+#: browser.c:958 browser.c:1025
 msgid "Error scanning directory."
 msgstr "Каталог не скану╓ться."
 
-#: browser.c:974
+#: browser.c:976
 msgid "File Mask: "
 msgstr "Маска: "
 
-#: browser.c:1046
+#: browser.c:1048
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Зворотньо сортувати за датою(d), л╕терою(a), розм╕ром(s), чи н╕(n)?"
 
-#: browser.c:1047
+#: browser.c:1049
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Сортувати за датою(d), л╕терою(a), розм╕ром(s), чи н╕(n)?"
 
-#: browser.c:1048
+#: browser.c:1050
 msgid "dazn"
 msgstr ""
 
-#: browser.c:1110
+#: browser.c:1116
 msgid "New file name: "
 msgstr "╤м'я нового файлу: "
 
-#: browser.c:1141
+#: browser.c:1147
 msgid "Can't view a directory"
 msgstr "Неможливо побачити каталог"
 
-#: browser.c:1159
+#: browser.c:1165
 msgid "Error trying to view file"
 msgstr "Неможливо побачити файл"
 
-#: buffy.c:413
-#, c-format
-msgid "New mail in %s."
+#: buffy.c:440
+#, fuzzy
+msgid "New mail in "
 msgstr "Нова пошта в %s."
 
 #: color.c:322
@@ -293,7 +297,7 @@ msgstr "mono: дуже мало аргумент╕в"
 msgid "%s: no such attribute"
 msgstr "%s: такого атр╕буту нема╓"
 
-#: color.c:690 hook.c:64 hook.c:72 keymap.c:705
+#: color.c:690 hook.c:64 hook.c:72 keymap.c:708
 msgid "too few arguments"
 msgstr "дуже мало аргумент╕в"
 
@@ -379,127 +383,127 @@ msgstr "Над╕слати коп╕ю листа %s"
 msgid "Bounce messages to %s"
 msgstr "Над╕слати коп╕╖ лист╕в %s"
 
-#: commands.c:300
+#: commands.c:302
 msgid "Message bounced."
 msgstr "Коп╕ю листа переслано."
 
-#: commands.c:300
+#: commands.c:302
 msgid "Messages bounced."
 msgstr "Коп╕╖ лист╕в переслано."
 
-#: commands.c:382 commands.c:421 commands.c:438
+#: commands.c:384 commands.c:423 commands.c:440
 msgid "Can't create filter process"
 msgstr "Неможливо створити процес ф╕льтру"
 
-#: commands.c:467
+#: commands.c:469
 msgid "Pipe to command: "
 msgstr "Передати до програми: "
 
-#: commands.c:484
+#: commands.c:486
 msgid "No printing command has been defined."
 msgstr "Команду для друку не визначено."
 
-#: commands.c:489
+#: commands.c:491
 msgid "Print message?"
 msgstr "Друкувати пов╕домлення?"
 
-#: commands.c:489
+#: commands.c:491
 msgid "Print tagged messages?"
 msgstr "Друкувати вид╕лен╕ пов╕домлення?"
 
-#: commands.c:498
+#: commands.c:500
 msgid "Message printed"
 msgstr "Пов╕домлення надруковано"
 
-#: commands.c:498
+#: commands.c:500
 msgid "Messages printed"
 msgstr "Пов╕домлення надруковано"
 
-#: commands.c:500
+#: commands.c:502
 msgid "Message could not be printed"
 msgstr "Пов╕домлення не може бути надруковано"
 
-#: commands.c:501
+#: commands.c:503
 msgid "Messages could not be printed"
 msgstr "Пов╕домлення не можуть бути надрукован╕"
 
-#: commands.c:510
+#: commands.c:512
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 
-#: commands.c:511
+#: commands.c:513
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 
-#: commands.c:512
+#: commands.c:514
 msgid "dfrsotuzc"
 msgstr ""
 
-#: commands.c:565
+#: commands.c:567
 msgid "Shell command: "
 msgstr "Команда системи: "
 
-#: commands.c:707
+#: commands.c:709
 #, c-format
 msgid "Decode-save%s to mailbox"
 msgstr "Розкодувати-перенести%s до скриньки"
 
-#: commands.c:708
+#: commands.c:710
 #, c-format
 msgid "Decode-copy%s to mailbox"
 msgstr "Розкодувати-коп╕ювати%s до скриньки"
 
-#: commands.c:709
+#: commands.c:711
 #, c-format
 msgid "Decrypt-save%s to mailbox"
 msgstr "Розшифрувати-перенести%s до скриньки"
 
-#: commands.c:710
+#: commands.c:712
 #, c-format
 msgid "Decrypt-copy%s to mailbox"
 msgstr "Розшифрувати-коп╕ювати%s до скриньки"
 
-#: commands.c:711
+#: commands.c:713
 #, c-format
 msgid "Save%s to mailbox"
 msgstr "Перенести%s до скриньки"
 
-#: commands.c:711
+#: commands.c:713
 #, c-format
 msgid "Copy%s to mailbox"
 msgstr "Коп╕ювати%s до скриньки"
 
-#: commands.c:712
+#: commands.c:714
 msgid " tagged"
 msgstr " вид╕лен╕"
 
-#: commands.c:782
+#: commands.c:786
 #, c-format
 msgid "Copying to %s..."
 msgstr "Коп╕ювання до %s..."
 
-#: commands.c:903
+#: commands.c:907
 #, c-format
 msgid "Convert to %s upon sending?"
 msgstr "Перетворити на %s при надсиланн╕?"
 
-#: commands.c:911
+#: commands.c:915
 #, c-format
 msgid "Content-Type changed to %s."
 msgstr "Тип додатку зм╕нено на %s."
 
-#: commands.c:913
+#: commands.c:917
 #, c-format
 msgid "Character set changed to %s; %s."
 msgstr "Кодування зм╕нено на %s; %s."
 
-#: commands.c:915
+#: commands.c:919
 msgid "not converting"
 msgstr "не перетворено"
 
-#: commands.c:915
+#: commands.c:919
 msgid "converting"
 msgstr "перетворено"
 
@@ -578,7 +582,7 @@ msgstr ""
 
 #: compose.c:240
 msgid ""
-"1: DES, 2: Tripple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, or (f)orget it? "
+"1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, or (f)orget it? "
 msgstr ""
 
 #: compose.c:242
@@ -648,59 +652,59 @@ msgstr "Нев╕рне кодування."
 msgid "Save a copy of this message?"
 msgstr "Зберегти коп╕ю цього пов╕домлення?"
 
-#: compose.c:1106
+#: compose.c:1105
 msgid "Rename to: "
 msgstr "Перейменувати у: "
 
-#: compose.c:1111 editmsg.c:96 sendlib.c:915
+#: compose.c:1110 editmsg.c:110 sendlib.c:925
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "Неможливо отримати дан╕ %s: %s"
 
-#: compose.c:1137
+#: compose.c:1136
 msgid "New file: "
 msgstr "Новий файл: "
 
-#: compose.c:1150
+#: compose.c:1149
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type по форм╕ base/sub"
 
-#: compose.c:1156
+#: compose.c:1155
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Нев╕домий Content-Type %s"
 
-#: compose.c:1169
+#: compose.c:1168
 #, c-format
 msgid "Can't create file %s"
 msgstr "Неможливо створити файл %s"
 
-#: compose.c:1177
+#: compose.c:1176
 msgid "What we have here is a failure to make an attachment"
 msgstr "Не вийшло створити додаток"
 
-#: compose.c:1239
+#: compose.c:1238
 msgid "Postpone this message?"
 msgstr "Залишити лист до подальшого редагування та в╕дправки?"
 
-#: compose.c:1296
+#: compose.c:1295
 msgid "Write message to mailbox"
 msgstr "Записати лист до поштово╖ скриньки"
 
-#: compose.c:1299
+#: compose.c:1298
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Запис листа до %s..."
 
-#: compose.c:1308
+#: compose.c:1307
 msgid "Message written."
 msgstr "Лист записано."
 
-#: compose.c:1320
+#: compose.c:1319
 msgid "S/MIME already selected. Clear & continue ? "
 msgstr ""
 
-#: compose.c:1350
+#: compose.c:1349
 msgid "PGP already selected. Clear & continue ? "
 msgstr ""
 
@@ -793,32 +797,32 @@ msgid ""
 "[-- End of signed data --]\n"
 msgstr "[-- К╕нець п╕дписаних даних --]\n"
 
-#: curs_lib.c:153
+#: curs_lib.c:155
 msgid "yes"
 msgstr ""
 
-#: curs_lib.c:154
+#: curs_lib.c:156
 msgid "no"
 msgstr ""
 
 #. restore blocking operation
-#: curs_lib.c:236
+#: curs_lib.c:252
 msgid "Exit Mutt?"
 msgstr "Покинути Mutt?"
 
-#: curs_lib.c:329 mutt_socket.c:483 mutt_ssl.c:321
+#: curs_lib.c:345 mutt_socket.c:483 mutt_ssl.c:321
 msgid "unknown error"
 msgstr "нев╕дома помилка"
 
-#: curs_lib.c:349
+#: curs_lib.c:365
 msgid "Press any key to continue..."
 msgstr "Натисн╕ть будь-яку клав╕шу..."
 
-#: curs_lib.c:393
+#: curs_lib.c:409
 msgid " ('?' for list): "
 msgstr " ('?' - перел╕к): "
 
-#: curs_main.c:63 curs_main.c:609
+#: curs_main.c:63 curs_main.c:614
 msgid "No mailbox is open."
 msgstr "Нема╓ в╕дкрито╖ поштово╖ скриньки."
 
@@ -826,11 +830,11 @@ msgstr "Нема╓ в╕дкрито╖ поштово╖ скриньки."
 msgid "There are no messages."
 msgstr "Жодного пов╕домлення нема╓."
 
-#: curs_main.c:65 mx.c:1136 pager.c:69 recvattach.c:51
+#: curs_main.c:65 mx.c:1135 pager.c:69 recvattach.c:51
 msgid "Mailbox is read-only."
 msgstr "Поштова скринька в╕дкрита т╕льки для читання"
 
-#: curs_main.c:66 pager.c:70 recvattach.c:825
+#: curs_main.c:66 pager.c:70 recvattach.c:826
 msgid "Function not permitted in attach-message mode."
 msgstr "Функц╕ю не дозволено в режим╕ додавання пов╕домлення."
 
@@ -862,7 +866,7 @@ msgstr "Збер."
 msgid "Mail"
 msgstr "Лист"
 
-#: curs_main.c:406 pager.c:1447
+#: curs_main.c:406 pager.c:1457
 msgid "Reply"
 msgstr "В╕дп."
 
@@ -882,131 +886,131 @@ msgstr "Нова пошта у ц╕й поштов╕й скриньц╕."
 msgid "Mailbox was externally modified."
 msgstr "Поштову скриньку зм╕нила зовн╕шня програма."
 
-#: curs_main.c:615
+#: curs_main.c:620
 msgid "No tagged messages."
 msgstr "Жодного листа не вид╕лено."
 
-#: curs_main.c:703
+#: curs_main.c:708
 msgid "Jump to message: "
 msgstr "Перейти до листа: "
 
-#: curs_main.c:709
+#: curs_main.c:714
 msgid "Argument must be a message number."
 msgstr "Аргумент повинен бути номером листа."
 
-#: curs_main.c:742
+#: curs_main.c:747
 msgid "That message is not visible."
 msgstr "Цей лист не можна побачити."
 
-#: curs_main.c:745
+#: curs_main.c:750
 msgid "Invalid message number."
 msgstr "Нев╕рний номер листа."
 
-#: curs_main.c:759
+#: curs_main.c:764
 msgid "Delete messages matching: "
 msgstr "Видалити листи за шаблоном: "
 
-#: curs_main.c:781
+#: curs_main.c:786
 msgid "No limit pattern is in effect."
 msgstr "Не встановлено обмежень."
 
 #. i18n: ask for a limit to apply
-#: curs_main.c:786
+#: curs_main.c:791
 #, c-format
 msgid "Limit: %s"
 msgstr "Обмеження: %s"
 
-#: curs_main.c:796
+#: curs_main.c:801
 msgid "Limit to messages matching: "
 msgstr "Обмежитись пов╕домленнями за шаблоном: "
 
-#: curs_main.c:827
+#: curs_main.c:832
 msgid "Quit Mutt?"
 msgstr "Вийти з Mutt?"
 
-#: curs_main.c:906
+#: curs_main.c:911
 msgid "Tag messages matching: "
 msgstr "Вид╕лити листи за шаблоном: "
 
-#: curs_main.c:915
+#: curs_main.c:920
 msgid "Undelete messages matching: "
 msgstr "В╕дновити листи за шаблоном: "
 
-#: curs_main.c:923
+#: curs_main.c:928
 msgid "Untag messages matching: "
 msgstr "Зняти вид╕лення з лист╕в за шаблоном: "
 
-#: curs_main.c:998
+#: curs_main.c:1003
 msgid "Open mailbox in read-only mode"
 msgstr "В╕дкрити скриньку лише для читання"
 
-#: curs_main.c:1000
+#: curs_main.c:1005
 msgid "Open mailbox"
 msgstr "В╕дкрити скриньку"
 
-#: curs_main.c:1016 mx.c:512 mx.c:658
+#: curs_main.c:1021 mx.c:512 mx.c:658
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s не ╓ поштовою скринькою."
 
-#: curs_main.c:1102
+#: curs_main.c:1107
 msgid "Exit Mutt without saving?"
 msgstr "Покинути Mutt без збереження зм╕н?"
 
-#: curs_main.c:1136 curs_main.c:1161
+#: curs_main.c:1141 curs_main.c:1166
 msgid "You are on the last message."
 msgstr "Це останн╕й лист."
 
-#: curs_main.c:1143 curs_main.c:1187
+#: curs_main.c:1148 curs_main.c:1192
 msgid "No undeleted messages."
 msgstr "Вс╕ листи видалено."
 
-#: curs_main.c:1180 curs_main.c:1204
+#: curs_main.c:1185 curs_main.c:1209
 msgid "You are on the first message."
 msgstr "Це перший лист."
 
-#: curs_main.c:1278 pattern.c:1301
+#: curs_main.c:1283 pattern.c:1301
 msgid "Search wrapped to top."
 msgstr "Досягнуто к╕нець. Пошук перенесено на початок."
 
-#: curs_main.c:1287 pattern.c:1312
+#: curs_main.c:1292 pattern.c:1312
 msgid "Search wrapped to bottom."
 msgstr "Досягнуто початок. Пошук перенесено на к╕нець."
 
-#: curs_main.c:1320
+#: curs_main.c:1325
 msgid "No new messages"
 msgstr "Нема╓ нових лист╕в"
 
-#: curs_main.c:1320
+#: curs_main.c:1325
 msgid "No unread messages"
 msgstr "Нема╓ нечитаних лист╕в"
 
-#: curs_main.c:1321
+#: curs_main.c:1326
 msgid " in this limited view"
 msgstr " у цих межах огляду"
 
-#: curs_main.c:1342 pager.c:2300
+#: curs_main.c:1347 pager.c:2334
 msgid "Can't change 'important' flag on POP server."
 msgstr "Неможливо зм╕нити флаг 'важливе' на POP сервер╕."
 
-#: curs_main.c:1457
+#: curs_main.c:1462
 msgid "No more threads."
 msgstr "Бес╕д б╕льш нема."
 
-#: curs_main.c:1459
+#: curs_main.c:1464
 msgid "You are on the first thread."
 msgstr "Це перша бес╕да."
 
-#: curs_main.c:1520 curs_main.c:1552 flags.c:237 thread.c:1012 thread.c:1067
+#: curs_main.c:1525 curs_main.c:1557 flags.c:237 thread.c:1012 thread.c:1067
 #: thread.c:1122
 msgid "Threading is not enabled."
 msgstr "Сшивання недоступне."
 
-#: curs_main.c:1538
+#: curs_main.c:1543
 msgid "Thread contains unread messages."
 msgstr "Бес╕да ма╓ нечитан╕ листи."
 
-#: curs_main.c:1716
+#: curs_main.c:1721
 msgid "Can't edit message on POP server."
 msgstr "Неможливо редагувати пов╕домлення на POP сервер╕."
 
@@ -1098,25 +1102,30 @@ msgstr "не вийшло створити тимчасову скриньку: %s"
 msgid "could not write temporary mail folder: %s"
 msgstr "не вийшло записати тимчасову скриньку: %s"
 
-#: editmsg.c:102
+#: editmsg.c:101
+#, fuzzy, c-format
+msgid "could not truncate temporary mail folder: %s"
+msgstr "не вийшло записати тимчасову скриньку: %s"
+
+#: editmsg.c:116
 msgid "Message file is empty!"
 msgstr "Файл пов╕домлень порожн╕й!"
 
-#: editmsg.c:109
+#: editmsg.c:123
 msgid "Message not modified!"
 msgstr "Пов╕домлення не зм╕нено!"
 
-#: editmsg.c:117
+#: editmsg.c:131
 #, c-format
 msgid "Can't open message file: %s"
 msgstr "Неможливо в╕дкрити файл пов╕домлення: %s"
 
-#: editmsg.c:124 editmsg.c:152
+#: editmsg.c:138 editmsg.c:166
 #, c-format
 msgid "Can't append to folder: %s"
 msgstr "Неможливо додати до скриньки: %s"
 
-#: editmsg.c:183
+#: editmsg.c:197
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Помилка. Резервування тимчасового файлу: %s"
@@ -1129,108 +1138,108 @@ msgstr "Встановити флаг"
 msgid "Clear flag"
 msgstr "Зняти флаг"
 
-#: handler.c:1335
+#: handler.c:1334
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr ""
 "[-- Помилка: жодну частину Multipart/Alternative не вийшло побачити! --]\n"
 
-#: handler.c:1461
+#: handler.c:1460
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- Додаток номер %d"
 
-#: handler.c:1473
+#: handler.c:1472
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Тип: %s/%s, кодування: %s, розм╕р: %s --]\n"
 
-#: handler.c:1533
+#: handler.c:1532
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Автопроглядання за допомогою %s --]\n"
 
-#: handler.c:1534
+#: handler.c:1533
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Виклик команди автоматичного проглядання: %s"
 
-#: handler.c:1566
+#: handler.c:1565
 #, c-format
 msgid "[-- Can't run %s. --]\n"
 msgstr "[-- Неможливо виконати %s. --]\n"
 
-#: handler.c:1584 handler.c:1605
+#: handler.c:1583 handler.c:1604
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Программа проглядання %s пов╕домила помилку --]\n"
 
-#: handler.c:1642
+#: handler.c:1641
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr "[-- Помилка: message/external-body не ма╓ параметру типу доступу --]\n"
 
-#: handler.c:1661
+#: handler.c:1660
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- Цей %s/%s додаток "
 
-#: handler.c:1668
+#: handler.c:1667
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(розм. %s байт) "
 
-#: handler.c:1670
+#: handler.c:1669
 msgid "has been deleted --]\n"
 msgstr "було видалено --]\n"
 
-#: handler.c:1675
+#: handler.c:1674
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- %s --]\n"
 
-#: handler.c:1680
+#: handler.c:1679
 #, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- ╕м'я: %s --]\n"
 
-#: handler.c:1693 handler.c:1709
+#: handler.c:1692 handler.c:1708
 #, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
 msgstr "[-- Цей %s/%s додаток не включено, --]\n"
 
-#: handler.c:1695
+#: handler.c:1694
 msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
 msgstr "[-- в╕дпов╕дне зовн╕шн╓ джерело видалено за давн╕стю. --]\n"
 
-#: handler.c:1713
+#: handler.c:1712
 #, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr "[-- в╕дпов╕дний тип доступу %s не п╕дтриму╓ться --]\n"
 
-#: handler.c:1835
+#: handler.c:1834
 msgid "Error: multipart/signed has no protocol."
 msgstr "Помилка: нема╓ протоколу для multipart/signed."
 
-#: handler.c:1845
+#: handler.c:1844
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Помилка: нема╓ параметру протоколу для multipart/encrypted!"
 
-#: handler.c:1899
+#: handler.c:1898
 msgid "Unable to open temporary file!"
 msgstr "Неможливо в╕дкрити тимчасовий файл!"
 
-#: handler.c:1959
+#: handler.c:1958
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s не п╕дтриму╓ться "
 
-#: handler.c:1964
+#: handler.c:1963
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(використовуйте '%s' для ц╕╓╖ частини)"
 
-#: handler.c:1966
+#: handler.c:1965
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(треба призначити клав╕шу до 'view-attachments'!)"
 
@@ -1327,11 +1336,11 @@ msgstr "Ре╓страц╕я..."
 msgid "Login failed."
 msgstr "Помилка ре╓страц╕╖."
 
-#: imap/auth_sasl.c:93 pop_auth.c:76
+#: imap/auth_sasl.c:112 pop_auth.c:76
 msgid "Authenticating (SASL)..."
 msgstr "Аутентиф╕кац╕я (SASL)..."
 
-#: imap/auth_sasl.c:174 pop_auth.c:154
+#: imap/auth_sasl.c:199 pop_auth.c:154
 msgid "SASL authentication failed."
 msgstr "Помилка аутентиф╕кац╕╖ SASL."
 
@@ -1497,153 +1506,153 @@ msgstr "Коп╕ювання %d листа до %s..."
 msgid "Continue?"
 msgstr "Дал╕?"
 
-#: init.c:497
+#: init.c:504
 msgid "alias: no address"
 msgstr "alias: адреси нема╓"
 
-#: init.c:597
+#: init.c:601
 msgid "invalid header field"
 msgstr "нев╕рне поле заголовку"
 
-#: init.c:650
+#: init.c:654
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: нев╕домий метод сортування"
 
-#: init.c:762
+#: init.c:766
 #, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s): помилка виразу: %s\n"
 
-#: init.c:827
+#: init.c:831
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: нев╕дома зм╕нна"
 
-#: init.c:836
+#: init.c:840
 msgid "prefix is illegal with reset"
 msgstr "преф╕кс неприпустимий для скидання"
 
-#: init.c:842
+#: init.c:846
 msgid "value is illegal with reset"
 msgstr "значення неприпустиме для скидання"
 
-#: init.c:881
+#: init.c:885
 #, c-format
 msgid "%s is set"
 msgstr "%s встановлено"
 
-#: init.c:881
+#: init.c:885
 #, c-format
 msgid "%s is unset"
 msgstr "%s не встановлено"
 
-#: init.c:1087
+#: init.c:1091
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: нев╕рний тип скриньки"
 
-#: init.c:1112 init.c:1157
+#: init.c:1116 init.c:1161
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: нев╕рне значення"
 
-#: init.c:1218
+#: init.c:1222
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: нев╕домий тип"
 
-#: init.c:1263
+#: init.c:1267
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Помилка в %s, рядок %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1279
+#: init.c:1283
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: помилки в %s"
 
-#: init.c:1280
+#: init.c:1284
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr "source: читання завершено, дуже багато помилок у %s"
 
-#: init.c:1294
+#: init.c:1298
 #, c-format
 msgid "source: error at %s"
 msgstr "source: помилка в %s"
 
-#: init.c:1299
+#: init.c:1303
 msgid "source: too many arguments"
 msgstr "source: дуже багато аргумент╕в"
 
-#: init.c:1350
+#: init.c:1354
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: нев╕дома команда"
 
-#: init.c:1738
+#: init.c:1742
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Помилка командного рядку: %s\n"
 
-#: init.c:1787
+#: init.c:1791
 msgid "unable to determine home directory"
 msgstr "неможливо з'ясувати домашн╕й каталог"
 
-#: init.c:1795
+#: init.c:1799
 msgid "unable to determine username"
 msgstr "неможливо з'ясувати ╕м'я користувача"
 
-#: keymap.c:437
+#: keymap.c:440
 msgid "Macro loop detected."
 msgstr "Знайдено зациклення макросу."
 
-#: keymap.c:644 keymap.c:652
+#: keymap.c:647 keymap.c:655
 msgid "Key is not bound."
 msgstr "Клав╕шу не призначено."
 
-#: keymap.c:656
+#: keymap.c:659
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Клав╕шу не призначено. Натисн╕ть '%s' для п╕дказки."
 
-#: keymap.c:667
+#: keymap.c:670
 msgid "push: too many arguments"
 msgstr "push: дуже багато аргумент╕в"
 
-#: keymap.c:688
+#: keymap.c:691
 #, c-format
 msgid "%s: no such menu"
 msgstr "меню '%s' не ╕сну╓"
 
-#: keymap.c:697
+#: keymap.c:700
 msgid "null key sequence"
 msgstr "порожня посл╕довн╕сть клав╕ш"
 
-#: keymap.c:781
+#: keymap.c:784
 msgid "bind: too many arguments"
 msgstr "bind: дуже багато аргумент╕в"
 
-#: keymap.c:796
+#: keymap.c:799
 #, c-format
 msgid "%s: no such function in map"
 msgstr "функц╕я '%s' не ╕сну╓ в карт╕"
 
-#: keymap.c:819
+#: keymap.c:822
 msgid "macro: empty key sequence"
 msgstr "macro: порожня посл╕довн╕сть клав╕ш"
 
-#: keymap.c:830
+#: keymap.c:833
 msgid "macro: too many arguments"
 msgstr "macro: дуже багато аргумент╕в"
 
-#: keymap.c:860
+#: keymap.c:863
 msgid "exec: no arguments"
 msgstr "exec: нема╓ аргумент╕в"
 
-#: keymap.c:880
+#: keymap.c:883
 #, c-format
 msgid "%s: no such function"
 msgstr "функц╕я '%s' не ╕сну╓"
@@ -1697,708 +1706,713 @@ msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "вибрати: перел╕к вс╕х/п╕дписаних (лише IMAP)"
 
 #: keymap_alldefs.h:17
+#, fuzzy
+msgid "list mailboxes with new mail"
+msgstr "Нема╓ поштово╖ скриньки з новою поштою."
+
+#: keymap_alldefs.h:18
 msgid "change directories"
 msgstr "зм╕нити каталог"
 
-#: keymap_alldefs.h:18
+#: keymap_alldefs.h:19
 msgid "check mailboxes for new mail"
 msgstr "перев╕рити наявн╕сть ново╖ пошти у скриньках"
 
-#: keymap_alldefs.h:19
+#: keymap_alldefs.h:20
 msgid "attach a file(s) to this message"
 msgstr "при╓днати файл(и) до цього листа"
 
-#: keymap_alldefs.h:20
+#: keymap_alldefs.h:21
 msgid "attach message(s) to this message"
 msgstr "при╓днати лист(и) до цього листа"
 
-#: keymap_alldefs.h:21
+#: keymap_alldefs.h:22
 msgid "edit the BCC list"
 msgstr "зм╕нити перел╕к Bcc"
 
-#: keymap_alldefs.h:22
+#: keymap_alldefs.h:23
 msgid "edit the CC list"
 msgstr "зм╕нити перел╕к Cc"
 
-#: keymap_alldefs.h:23
+#: keymap_alldefs.h:24
 msgid "edit attachment description"
 msgstr "зм╕нити пояснення до додатку"
 
-#: keymap_alldefs.h:24
+#: keymap_alldefs.h:25
 msgid "edit attachment transfer-encoding"
 msgstr "зм╕нити спос╕б кодування додатку"
 
-#: keymap_alldefs.h:25
+#: keymap_alldefs.h:26
 msgid "enter a file to save a copy of this message in"
 msgstr "ввести ╕м'я файлу, куди додати коп╕ю листа"
 
-#: keymap_alldefs.h:26
+#: keymap_alldefs.h:27
 msgid "edit the file to be attached"
 msgstr "редагувати файл, що при╓дну╓ться"
 
-#: keymap_alldefs.h:27
+#: keymap_alldefs.h:28
 msgid "edit the from field"
 msgstr "зм╕нити поле From"
 
-#: keymap_alldefs.h:28
+#: keymap_alldefs.h:29
 msgid "edit the message with headers"
 msgstr "редагувати лист з заголовком"
 
-#: keymap_alldefs.h:29
+#: keymap_alldefs.h:30
 msgid "edit the message"
 msgstr "редагувати лист"
 
-#: keymap_alldefs.h:30
+#: keymap_alldefs.h:31
 msgid "edit attachment using mailcap entry"
 msgstr "редагувати додаток, використовуючи mailcap"
 
-#: keymap_alldefs.h:31
+#: keymap_alldefs.h:32
 msgid "edit the Reply-To field"
 msgstr "зм╕нити поле Reply-To"
 
-#: keymap_alldefs.h:32
+#: keymap_alldefs.h:33
 msgid "edit the subject of this message"
 msgstr "редагувати тему цього листа"
 
-#: keymap_alldefs.h:33
+#: keymap_alldefs.h:34
 msgid "edit the TO list"
 msgstr "зм╕нити перел╕к To"
 
-#: keymap_alldefs.h:34
+#: keymap_alldefs.h:35
 msgid "create a new mailbox (IMAP only)"
 msgstr "створити нову поштову скриньку (лише IMAP)"
 
-#: keymap_alldefs.h:35
+#: keymap_alldefs.h:36
 msgid "edit attachment content type"
 msgstr "зм╕нити тип додатку"
 
-#: keymap_alldefs.h:36
+#: keymap_alldefs.h:37
 msgid "get a temporary copy of an attachment"
 msgstr "отримати тимчасову коп╕ю додатку"
 
-#: keymap_alldefs.h:37
+#: keymap_alldefs.h:38
 msgid "run ispell on the message"
 msgstr "перев╕рити граматику у лист╕"
 
-#: keymap_alldefs.h:38
+#: keymap_alldefs.h:39
 msgid "compose new attachment using mailcap entry"
 msgstr "компонувати новий додаток, використ. mailcap"
 
-#: keymap_alldefs.h:39
+#: keymap_alldefs.h:40
 msgid "toggle recoding of this attachment"
 msgstr "вимкнути/вв╕мкнути перекодовування додатку"
 
-#: keymap_alldefs.h:40
+#: keymap_alldefs.h:41
 msgid "save this message to send later"
 msgstr "зберегти цей лист, аби в╕д╕слати п╕зн╕ше"
 
-#: keymap_alldefs.h:41
+#: keymap_alldefs.h:42
 msgid "rename/move an attached file"
 msgstr "перейменувати при╓днаний файл"
 
-#: keymap_alldefs.h:42
+#: keymap_alldefs.h:43
 msgid "send the message"
 msgstr "в╕д╕слати лист"
 
-#: keymap_alldefs.h:43
+#: keymap_alldefs.h:44
 msgid "toggle disposition between inline/attachment"
 msgstr "зм╕нити inline на attachment або навпаки"
 
-#: keymap_alldefs.h:44
+#: keymap_alldefs.h:45
 msgid "toggle whether to delete file after sending it"
 msgstr "вибрати, чи треба видаляти файл п╕сля в╕дпр."
 
-#: keymap_alldefs.h:45
+#: keymap_alldefs.h:46
 msgid "update an attachment's encoding info"
 msgstr "обновити в╕домост╕ про кодування додатку"
 
-#: keymap_alldefs.h:46
+#: keymap_alldefs.h:47
 msgid "write the message to a folder"
 msgstr "додати лист до скриньки"
 
-#: keymap_alldefs.h:47
+#: keymap_alldefs.h:48
 msgid "copy a message to a file/mailbox"
 msgstr "коп╕ювати лист до файлу/поштово╖ скриньки"
 
-#: keymap_alldefs.h:48
+#: keymap_alldefs.h:49
 msgid "create an alias from a message sender"
 msgstr "створити ал╕ас на в╕дправителя листа"
 
-#: keymap_alldefs.h:49
+#: keymap_alldefs.h:50
 msgid "move entry to bottom of screen"
 msgstr "пересунути позиц╕ю донизу екрану"
 
-#: keymap_alldefs.h:50
+#: keymap_alldefs.h:51
 msgid "move entry to middle of screen"
 msgstr "пересунути позиц╕ю досередини екрану"
 
-#: keymap_alldefs.h:51
+#: keymap_alldefs.h:52
 msgid "move entry to top of screen"
 msgstr "пересунути позиц╕ю догори екрану"
 
-#: keymap_alldefs.h:52
+#: keymap_alldefs.h:53
 msgid "make decoded (text/plain) copy"
 msgstr "зробити декодовану (простий текст) коп╕ю"
 
-#: keymap_alldefs.h:53
+#: keymap_alldefs.h:54
 msgid "make decoded copy (text/plain) and delete"
 msgstr "зробити декодовану (текст) коп╕ю та видалити"
 
-#: keymap_alldefs.h:54
+#: keymap_alldefs.h:55
 msgid "delete the current entry"
 msgstr "видалити поточну позиц╕ю"
 
-#: keymap_alldefs.h:55
+#: keymap_alldefs.h:56
 msgid "delete the current mailbox (IMAP only)"
 msgstr "видалити поточну скриньку (лише IMAP)"
 
-#: keymap_alldefs.h:56
+#: keymap_alldefs.h:57
 msgid "delete all messages in subthread"
 msgstr "видалити вс╕ листи п╕дбес╕ди"
 
-#: keymap_alldefs.h:57
+#: keymap_alldefs.h:58
 msgid "delete all messages in thread"
 msgstr "видалити вс╕ листи бес╕ди"
 
-#: keymap_alldefs.h:58
+#: keymap_alldefs.h:59
 msgid "display full address of sender"
 msgstr "показати повну адресу в╕дправителя"
 
-#: keymap_alldefs.h:59
+#: keymap_alldefs.h:60
 msgid "display message and toggle header weeding"
 msgstr "показати лист й вимкн./вв╕мкн. ужимання заг."
 
-#: keymap_alldefs.h:60
+#: keymap_alldefs.h:61
 msgid "display a message"
 msgstr "показати лист"
 
-#: keymap_alldefs.h:61
+#: keymap_alldefs.h:62
 msgid "edit the raw message"
 msgstr "редагувати лист"
 
-#: keymap_alldefs.h:62
+#: keymap_alldefs.h:63
 msgid "delete the char in front of the cursor"
 msgstr "видалити символ перед курсором"
 
-#: keymap_alldefs.h:63
+#: keymap_alldefs.h:64
 msgid "move the cursor one character to the left"
 msgstr "пересунути курсор на один символ вл╕во"
 
-#: keymap_alldefs.h:64
+#: keymap_alldefs.h:65
 msgid "move the cursor to the beginning of the word"
 msgstr "пересунути курсор до початку слова"
 
-#: keymap_alldefs.h:65
+#: keymap_alldefs.h:66
 msgid "jump to the beginning of the line"
 msgstr "перейти до початку рядку"
 
-#: keymap_alldefs.h:66
+#: keymap_alldefs.h:67
 msgid "cycle among incoming mailboxes"
 msgstr "перейти по вх╕дних поштових скриньках"
 
-#: keymap_alldefs.h:67
+#: keymap_alldefs.h:68
 msgid "complete filename or alias"
 msgstr "доповнити ╕м'я файлу чи ал╕ас"
 
-#: keymap_alldefs.h:68
+#: keymap_alldefs.h:69
 msgid "complete address with query"
 msgstr "посл╕довно доповнити адресу"
 
-#: keymap_alldefs.h:69
+#: keymap_alldefs.h:70
 msgid "delete the char under the cursor"
 msgstr "видалити символ на м╕сц╕ курсору"
 
-#: keymap_alldefs.h:70
+#: keymap_alldefs.h:71
 msgid "jump to the end of the line"
 msgstr "перейти до к╕нця рядку"
 
-#: keymap_alldefs.h:71
+#: keymap_alldefs.h:72
 msgid "move the cursor one character to the right"
 msgstr "пересунути курсор на один символ вправо"
 
-#: keymap_alldefs.h:72
+#: keymap_alldefs.h:73
 msgid "move the cursor to the end of the word"
 msgstr "пересунути курсор до к╕нця слова"
 
-#: keymap_alldefs.h:73
+#: keymap_alldefs.h:74
 msgid "scroll down through the history list"
 msgstr "прогорнути ╕стор╕ю вводу донизу"
 
-#: keymap_alldefs.h:74
+#: keymap_alldefs.h:75
 msgid "scroll up through the history list"
 msgstr "прогорнути ╕стор╕ю вводу нагору"
 
-#: keymap_alldefs.h:75
+#: keymap_alldefs.h:76
 msgid "delete chars from cursor to end of line"
 msgstr "видалити в╕д курсору до к╕нця рядку"
 
-#: keymap_alldefs.h:76
+#: keymap_alldefs.h:77
 msgid "delete chars from the cursor to the end of the word"
 msgstr "видалити в╕д курсору до к╕нця слова"
 
-#: keymap_alldefs.h:77
+#: keymap_alldefs.h:78
 msgid "delete all chars on the line"
 msgstr "спорожнити рядок"
 
-#: keymap_alldefs.h:78
+#: keymap_alldefs.h:79
 msgid "delete the word in front of the cursor"
 msgstr "видалити слово перед курсором"
 
-#: keymap_alldefs.h:79
+#: keymap_alldefs.h:80
 msgid "quote the next typed key"
 msgstr "сприйняти наступний символ, як ╓"
 
-#: keymap_alldefs.h:80
+#: keymap_alldefs.h:81
 msgid "transpose character under cursor with previous"
 msgstr "пересунути поточний символ до попереднього"
 
-#: keymap_alldefs.h:81
+#: keymap_alldefs.h:82
 msgid "capitalize the word"
 msgstr "написати слово з велико╖ л╕тери"
 
-#: keymap_alldefs.h:82
+#: keymap_alldefs.h:83
 msgid "convert the word to lower case"
 msgstr "перетворити л╕тери слова до строкових"
 
-#: keymap_alldefs.h:83
+#: keymap_alldefs.h:84
 msgid "convert the word to upper case"
 msgstr "перетворити л╕тери слова до заголовних"
 
-#: keymap_alldefs.h:84
+#: keymap_alldefs.h:85
 msgid "enter a muttrc command"
 msgstr "ввести команду muttrc"
 
-#: keymap_alldefs.h:85
+#: keymap_alldefs.h:86
 msgid "enter a file mask"
 msgstr "ввести маску файл╕в"
 
-#: keymap_alldefs.h:86
+#: keymap_alldefs.h:87
 msgid "exit this menu"
 msgstr "вийти з цього меню"
 
-#: keymap_alldefs.h:87
+#: keymap_alldefs.h:88
 msgid "filter attachment through a shell command"
 msgstr "ф╕льтрувати додаток через команду shell"
 
-#: keymap_alldefs.h:88
+#: keymap_alldefs.h:89
 msgid "move to the first entry"
 msgstr "перейти до першо╖ позиц╕╖"
 
-#: keymap_alldefs.h:89
+#: keymap_alldefs.h:90
 msgid "toggle a message's 'important' flag"
 msgstr "зм╕нити флаг важливост╕ листа"
 
-#: keymap_alldefs.h:90
+#: keymap_alldefs.h:91
 msgid "forward a message with comments"
 msgstr "переслати лист з коментарем"
 
-#: keymap_alldefs.h:91
+#: keymap_alldefs.h:92
 msgid "select the current entry"
 msgstr "вибрати поточну позиц╕ю"
 
-#: keymap_alldefs.h:92
+#: keymap_alldefs.h:93
 msgid "reply to all recipients"
 msgstr "в╕дпов╕сти вс╕м адресатам"
 
-#: keymap_alldefs.h:93
+#: keymap_alldefs.h:94
 msgid "scroll down 1/2 page"
 msgstr "прогорнути на п╕встор╕нки донизу"
 
-#: keymap_alldefs.h:94
+#: keymap_alldefs.h:95
 msgid "scroll up 1/2 page"
 msgstr "прогорнути на п╕встор╕нки догори"
 
-#: keymap_alldefs.h:95
+#: keymap_alldefs.h:96
 msgid "this screen"
 msgstr "цей екран"
 
-#: keymap_alldefs.h:96
+#: keymap_alldefs.h:97
 msgid "jump to an index number"
 msgstr "перейти до позиц╕╖ з номером"
 
-#: keymap_alldefs.h:97
+#: keymap_alldefs.h:98
 msgid "move to the last entry"
 msgstr "перейти до останньо╖ позиц╕╖"
 
-#: keymap_alldefs.h:98
+#: keymap_alldefs.h:99
 msgid "reply to specified mailing list"
 msgstr "в╕дпов╕сти до вказано╖ розсилки"
 
-#: keymap_alldefs.h:99
+#: keymap_alldefs.h:100
 msgid "execute a macro"
 msgstr "виконати макрос"
 
-#: keymap_alldefs.h:100
+#: keymap_alldefs.h:101
 msgid "compose a new mail message"
 msgstr "компонувати новий лист"
 
-#: keymap_alldefs.h:101
+#: keymap_alldefs.h:102
 msgid "open a different folder"
 msgstr "в╕дкрити ╕ншу поштову скриньку"
 
-#: keymap_alldefs.h:102
+#: keymap_alldefs.h:103
 msgid "open a different folder in read only mode"
 msgstr "в╕дкрити ╕ншу скриньку т╕льки для читання"
 
-#: keymap_alldefs.h:103
+#: keymap_alldefs.h:104
 msgid "clear a status flag from a message"
 msgstr "скинути флаг статусу листа"
 
-#: keymap_alldefs.h:104
+#: keymap_alldefs.h:105
 msgid "delete messages matching a pattern"
 msgstr "видалити листи, що м╕стять вираз"
 
-#: keymap_alldefs.h:105
+#: keymap_alldefs.h:106
 msgid "force retrieval of mail from IMAP server"
 msgstr "примусово отримати пошту з сервера IMAP"
 
-#: keymap_alldefs.h:106
+#: keymap_alldefs.h:107
 msgid "retrieve mail from POP server"
 msgstr "отримати пошту з сервера POP"
 
-#: keymap_alldefs.h:107
+#: keymap_alldefs.h:108
 msgid "move to the first message"
 msgstr "перейти до першого листа"
 
-#: keymap_alldefs.h:108
+#: keymap_alldefs.h:109
 msgid "move to the last message"
 msgstr "перейти до останнього листа"
 
-#: keymap_alldefs.h:109
+#: keymap_alldefs.h:110
 msgid "show only messages matching a pattern"
 msgstr "показати лише листи, що м╕стять вираз"
 
-#: keymap_alldefs.h:110
+#: keymap_alldefs.h:111
 msgid "jump to the next new message"
 msgstr "перейти до наступного нового листа"
 
-#: keymap_alldefs.h:111
+#: keymap_alldefs.h:112
 msgid "jump to the next subthread"
 msgstr "перейти до наступно╖ п╕дбес╕ди"
 
-#: keymap_alldefs.h:112
+#: keymap_alldefs.h:113
 msgid "jump to the next thread"
 msgstr "перейти до наступно╖ бес╕ди"
 
-#: keymap_alldefs.h:113
+#: keymap_alldefs.h:114
 msgid "move to the next undeleted message"
 msgstr "перейти до наступного невидаленого листа"
 
-#: keymap_alldefs.h:114
+#: keymap_alldefs.h:115
 msgid "jump to the next unread message"
 msgstr "перейти до наступного нечитаного листа"
 
-#: keymap_alldefs.h:115
+#: keymap_alldefs.h:116
 msgid "jump to parent message in thread"
 msgstr "перейти до \"батьк╕вського\" листа у бес╕д╕"
 
-#: keymap_alldefs.h:116
+#: keymap_alldefs.h:117
 msgid "jump to previous thread"
 msgstr "перейти до попередньо╖ бес╕ди"
 
-#: keymap_alldefs.h:117
+#: keymap_alldefs.h:118
 msgid "jump to previous subthread"
 msgstr "перейти до попередньо╖ п╕дбес╕ди"
 
-#: keymap_alldefs.h:118
+#: keymap_alldefs.h:119
 msgid "move to the previous undeleted message"
 msgstr "перейти до наступного невидаленого листа"
 
-#: keymap_alldefs.h:119
+#: keymap_alldefs.h:120
 msgid "jump to the previous new message"
 msgstr "перейти до попереднього нового листа"
 
-#: keymap_alldefs.h:120
+#: keymap_alldefs.h:121
 msgid "jump to the previous unread message"
 msgstr "перейти до попереднього нечитаного листа"
 
-#: keymap_alldefs.h:121
+#: keymap_alldefs.h:122
 msgid "mark the current thread as read"
 msgstr "в╕дм╕тити поточну бес╕ду як читану"
 
-#: keymap_alldefs.h:122
+#: keymap_alldefs.h:123
 msgid "mark the current subthread as read"
 msgstr "в╕дм╕тити поточну п╕дбес╕ду як читану"
 
-#: keymap_alldefs.h:123
+#: keymap_alldefs.h:124
 msgid "set a status flag on a message"
 msgstr "встановити флаг статусу листа"
 
-#: keymap_alldefs.h:124
+#: keymap_alldefs.h:125
 msgid "save changes to mailbox"
 msgstr "записати зм╕ни до поштово╖ скриньки"
 
-#: keymap_alldefs.h:125
+#: keymap_alldefs.h:126
 msgid "tag messages matching a pattern"
 msgstr "вид╕лити листи, що м╕стять вираз"
 
-#: keymap_alldefs.h:126
+#: keymap_alldefs.h:127
 msgid "undelete messages matching a pattern"
 msgstr "в╕дновити листи, що м╕стять вираз"
 
-#: keymap_alldefs.h:127
+#: keymap_alldefs.h:128
 msgid "untag messages matching a pattern"
 msgstr "зняти вид╕лення з лист╕в, що м╕стять вираз"
 
-#: keymap_alldefs.h:128
+#: keymap_alldefs.h:129
 msgid "move to the middle of the page"
 msgstr "перейти до середини стор╕нки"
 
-#: keymap_alldefs.h:129
+#: keymap_alldefs.h:130
 msgid "move to the next entry"
 msgstr "перейти до наступно╖ позиц╕╖"
 
-#: keymap_alldefs.h:130
+#: keymap_alldefs.h:131
 msgid "scroll down one line"
 msgstr "прогорнути на рядок донизу"
 
-#: keymap_alldefs.h:131
+#: keymap_alldefs.h:132
 msgid "move to the next page"
 msgstr "перейти до наступно╖ стор╕нки"
 
-#: keymap_alldefs.h:132
+#: keymap_alldefs.h:133
 msgid "jump to the bottom of the message"
 msgstr "перейти до к╕нця листа"
 
-#: keymap_alldefs.h:133
+#: keymap_alldefs.h:134
 msgid "toggle display of quoted text"
 msgstr "вимк./вв╕мкн. в╕дображення цитованого тексту"
 
-#: keymap_alldefs.h:134
+#: keymap_alldefs.h:135
 msgid "skip beyond quoted text"
 msgstr "пропустити цитований текст ц╕лком"
 
-#: keymap_alldefs.h:135
+#: keymap_alldefs.h:136
 msgid "jump to the top of the message"
 msgstr "перейти до початку листа"
 
-#: keymap_alldefs.h:136
+#: keymap_alldefs.h:137
 msgid "pipe message/attachment to a shell command"
 msgstr "в╕ддати лист/додаток у конве╓р команд╕ shell"
 
-#: keymap_alldefs.h:137
+#: keymap_alldefs.h:138
 msgid "move to the previous entry"
 msgstr "перейти до попередньо╖ позиц╖╖"
 
-#: keymap_alldefs.h:138
+#: keymap_alldefs.h:139
 msgid "scroll up one line"
 msgstr "прогорнути на рядок догори"
 
-#: keymap_alldefs.h:139
+#: keymap_alldefs.h:140
 msgid "move to the previous page"
 msgstr "перейти до попередньо╖ стор╕нки"
 
-#: keymap_alldefs.h:140
+#: keymap_alldefs.h:141
 msgid "print the current entry"
 msgstr "друкувати поточну позиц╕ю"
 
-#: keymap_alldefs.h:141
+#: keymap_alldefs.h:142
 msgid "query external program for addresses"
 msgstr "запит зовн╕шньо╖ програми по адреси"
 
-#: keymap_alldefs.h:142
+#: keymap_alldefs.h:143
 msgid "append new query results to current results"
 msgstr "додати результати нового запиту до поточних"
 
-#: keymap_alldefs.h:143
+#: keymap_alldefs.h:144
 msgid "save changes to mailbox and quit"
 msgstr "зберегти зм╕ни скриньки та вийти"
 
-#: keymap_alldefs.h:144
+#: keymap_alldefs.h:145
 msgid "recall a postponed message"
 msgstr "викликати залишений лист"
 
-#: keymap_alldefs.h:145
+#: keymap_alldefs.h:146
 msgid "clear and redraw the screen"
 msgstr "очистити та перемалювати екран"
 
-#: keymap_alldefs.h:146
+#: keymap_alldefs.h:147
 msgid "{internal}"
 msgstr "{внутр╕шня}"
 
-#: keymap_alldefs.h:147
+#: keymap_alldefs.h:148
 msgid "reply to a message"
 msgstr "в╕дпов╕сти на лист"
 
-#: keymap_alldefs.h:148
+#: keymap_alldefs.h:149
 msgid "use the current message as a template for a new one"
 msgstr "взяти цей лист в якост╕ шаблону для нового"
 
-#: keymap_alldefs.h:149
+#: keymap_alldefs.h:150
 msgid "save message/attachment to a file"
 msgstr "зберегти лист/додаток у файл╕"
 
-#: keymap_alldefs.h:150
+#: keymap_alldefs.h:151
 msgid "search for a regular expression"
 msgstr "пошук виразу в напрямку уперед"
 
-#: keymap_alldefs.h:151
+#: keymap_alldefs.h:152
 msgid "search backwards for a regular expression"
 msgstr "пошук виразу в напрямку назад"
 
-#: keymap_alldefs.h:152
+#: keymap_alldefs.h:153
 msgid "search for next match"
 msgstr "пошук наступно╖ в╕дпов╕дност╕"
 
-#: keymap_alldefs.h:153
+#: keymap_alldefs.h:154
 msgid "search for next match in opposite direction"
 msgstr "пошук наступного в зворотньому напрямку"
 
-#: keymap_alldefs.h:154
+#: keymap_alldefs.h:155
 msgid "toggle search pattern coloring"
 msgstr "вимк./вв╕мкнути вид╕лення виразу пошуку"
 
-#: keymap_alldefs.h:155
+#: keymap_alldefs.h:156
 msgid "invoke a command in a subshell"
 msgstr "викликати команду в shell"
 
-#: keymap_alldefs.h:156
+#: keymap_alldefs.h:157
 msgid "sort messages"
 msgstr "сортувати листи"
 
-#: keymap_alldefs.h:157
+#: keymap_alldefs.h:158
 msgid "sort messages in reverse order"
 msgstr "сортувати листи в зворотньому напрямку"
 
-#: keymap_alldefs.h:158
+#: keymap_alldefs.h:159
 msgid "tag the current entry"
 msgstr "вид╕лити поточну позиц╕ю"
 
-#: keymap_alldefs.h:159
+#: keymap_alldefs.h:160
 msgid "apply next function to tagged messages"
 msgstr "використати наступну функц╕ю до вид╕леного"
 
-#: keymap_alldefs.h:160
+#: keymap_alldefs.h:161
 msgid "tag the current subthread"
 msgstr "вид╕лити поточну п╕дбес╕ду"
 
-#: keymap_alldefs.h:161
+#: keymap_alldefs.h:162
 msgid "tag the current thread"
 msgstr "вид╕лити поточну бес╕ду"
 
-#: keymap_alldefs.h:162
+#: keymap_alldefs.h:163
 msgid "toggle a message's 'new' flag"
 msgstr "зм╕нити флаг нового листа"
 
-#: keymap_alldefs.h:163
+#: keymap_alldefs.h:164
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "вимкнути/вв╕мкнути перезаписування скриньки"
 
-#: keymap_alldefs.h:164
+#: keymap_alldefs.h:165
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "виб╕р проглядання скриньок/вс╕х файл╕в"
 
-#: keymap_alldefs.h:165
+#: keymap_alldefs.h:166
 msgid "move to the top of the page"
 msgstr "перейти до початку стор╕нки"
 
-#: keymap_alldefs.h:166
+#: keymap_alldefs.h:167
 msgid "undelete the current entry"
 msgstr "в╕дновити поточну позиц╕ю"
 
-#: keymap_alldefs.h:167
+#: keymap_alldefs.h:168
 msgid "undelete all messages in thread"
 msgstr "в╕дновити вс╕ листи бес╕ди"
 
-#: keymap_alldefs.h:168
+#: keymap_alldefs.h:169
 msgid "undelete all messages in subthread"
 msgstr "в╕дновити вс╕ листи п╕дбес╕ди"
 
-#: keymap_alldefs.h:169
+#: keymap_alldefs.h:170
 msgid "show the Mutt version number and date"
 msgstr "показати верс╕ю та дату Mutt"
 
-#: keymap_alldefs.h:170
+#: keymap_alldefs.h:171
 msgid "view attachment using mailcap entry if necessary"
 msgstr "проглянути за допомогою mailcap при потреб╕"
 
-#: keymap_alldefs.h:171
+#: keymap_alldefs.h:172
 msgid "show MIME attachments"
 msgstr "показати додатки MIME"
 
-#: keymap_alldefs.h:172
+#: keymap_alldefs.h:173
 msgid "show currently active limit pattern"
 msgstr "показати поточний вираз обмеження"
 
-#: keymap_alldefs.h:173
+#: keymap_alldefs.h:174
 msgid "collapse/uncollapse current thread"
 msgstr "згорнути/розгорнути поточну бес╕ду"
 
-#: keymap_alldefs.h:174
+#: keymap_alldefs.h:175
 msgid "collapse/uncollapse all threads"
 msgstr "згорнути/розгорнути вс╕ бес╕ди"
 
-#: keymap_alldefs.h:175
+#: keymap_alldefs.h:176
 msgid "attach a PGP public key"
 msgstr "при╓днати загальний ключ PGP"
 
-#: keymap_alldefs.h:176
+#: keymap_alldefs.h:177
 msgid "show PGP options"
 msgstr "показати параметри PGP"
 
-#: keymap_alldefs.h:177
+#: keymap_alldefs.h:178
 msgid "mail a PGP public key"
 msgstr "в╕д╕слати загальний ключ PGP"
 
-#: keymap_alldefs.h:178
+#: keymap_alldefs.h:179
 msgid "verify a PGP public key"
 msgstr "перев╕рити загальний ключ PGP"
 
-#: keymap_alldefs.h:179
+#: keymap_alldefs.h:180
 msgid "view the key's user id"
 msgstr "побачити ╕дент╕ф╕катор користувача ключа"
 
-#: keymap_alldefs.h:180
+#: keymap_alldefs.h:181
 msgid "check for classic pgp"
 msgstr "перев╕рка на класичне pgp"
 
-#: keymap_alldefs.h:181
+#: keymap_alldefs.h:182
 msgid "Accept the chain constructed"
 msgstr "Прийняти скоструйований ланцюжок"
 
-#: keymap_alldefs.h:182
+#: keymap_alldefs.h:183
 msgid "Append a remailer to the chain"
 msgstr "Додати remailer до ланцюжку"
 
-#: keymap_alldefs.h:183
+#: keymap_alldefs.h:184
 msgid "Insert a remailer into the chain"
 msgstr "Вставити remailer в ланцюжок"
 
-#: keymap_alldefs.h:184
+#: keymap_alldefs.h:185
 msgid "Delete a remailer from the chain"
 msgstr "Видалити remailer з ланцюжку"
 
-#: keymap_alldefs.h:185
+#: keymap_alldefs.h:186
 msgid "Select the previous element of the chain"
 msgstr "Вибрати попередн╕й елемент ланцюжку"
 
-#: keymap_alldefs.h:186
+#: keymap_alldefs.h:187
 msgid "Select the next element of the chain"
 msgstr "Вибрати наступний елемент ланцюжку"
 
-#: keymap_alldefs.h:187
+#: keymap_alldefs.h:188
 msgid "send the message through a mixmaster remailer chain"
 msgstr "в╕д╕слати лист через ланку mixmaster remailer"
 
-#: keymap_alldefs.h:188
+#: keymap_alldefs.h:189
 msgid "make decrypted copy and delete"
 msgstr "зробити розшифровану коп╕ю та видалити"
 
-#: keymap_alldefs.h:189
+#: keymap_alldefs.h:190
 msgid "make decrypted copy"
 msgstr "зробити розшифровану коп╕ю"
 
-#: keymap_alldefs.h:190
+#: keymap_alldefs.h:191
 #, fuzzy
 msgid "wipe passphrase(s) from memory"
 msgstr "знищити пароль PGP у пам'ят╕"
 
-#: keymap_alldefs.h:191
+#: keymap_alldefs.h:192
 #, fuzzy
 msgid "extract supported public keys"
 msgstr "розпакувати загальний ключ PGP"
 
-#: keymap_alldefs.h:192
+#: keymap_alldefs.h:193
 #, fuzzy
 msgid "show S/MIME options"
 msgstr "показати параметри PGP"
@@ -2417,7 +2431,7 @@ msgstr ""
 
 #: main.c:44
 msgid ""
-"Copyright (C) 1996-2001 Michael R. Elkins and others.\n"
+"Copyright (C) 1996-2002 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
@@ -2425,13 +2439,13 @@ msgstr ""
 
 #: main.c:50
 msgid ""
-"Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
-"Copyright (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2001 Thomas Roessler <roessler@guug.de>\n"
-"Copyright (C) 1998-2001 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>\n"
-"Copyright (C) 1999-2001 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-"Copyright (C) 2000-2001 Edmund Grimley Evans <edmundo@rano.org>\n"
+"Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>\n"
+"Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
+"Copyright (C) 1997-2002 Thomas Roessler <roessler@guug.de>\n"
+"Copyright (C) 1998-2002 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1999-2002 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "Lots of others not mentioned here contributed lots of code,\n"
 "fixes, and suggestions.\n"
@@ -2458,12 +2472,15 @@ msgid ""
 "<file> ]\n"
 "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] "
 "[...]\n"
+"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] "
+"[...]\n"
 "       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
 "[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
 "options:\n"
+"  -A <alias>\texpand the given alias\n"
 "  -a <file>\tattach a file to the message\n"
 "  -b <address>\tspecify a blind carbon-copy (BCC) address\n"
 "  -c <address>\tspecify a carbon-copy (CC) address\n"
@@ -2513,7 +2530,7 @@ msgstr ""
 "  -Z\t\tв╕дкрити першу скриньку з новим листом, якщо нема╓ - одразу вийти\n"
 "  -h\t\tця п╕дказка"
 
-#: main.c:149
+#: main.c:151
 msgid ""
 "\n"
 "Compile options:"
@@ -2521,47 +2538,47 @@ msgstr ""
 "\n"
 "Параметри комп╕ляц╕╖:"
 
-#: main.c:430
+#: main.c:437
 msgid "Error initializing terminal."
 msgstr "Помилка ╕н╕ц╕ал╕зац╕╖ терм╕налу."
 
-#: main.c:531
+#: main.c:542
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr ""
 
-#: main.c:533
+#: main.c:544
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG не вказано п╕д час комп╕ляц╕╖. ╤гнору╓ться.\n"
 
-#: main.c:657
+#: main.c:685
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s не ╕сну╓. Створити його?"
 
-#: main.c:661
+#: main.c:689
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Неможливо створити %s: %s."
 
-#: main.c:706
+#: main.c:734
 msgid "No recipients specified.\n"
 msgstr "Отримувач╕в не вказано.\n"
 
-#: main.c:792
+#: main.c:820
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: неможливо додати файл.\n"
 
-#: main.c:812
+#: main.c:840
 msgid "No mailbox with new mail."
 msgstr "Нема╓ поштово╖ скриньки з новою поштою."
 
-#: main.c:821
+#: main.c:849
 msgid "No incoming mailboxes defined."
 msgstr "Вх╕дних поштових скриньок не вказано."
 
-#: main.c:848
+#: main.c:876
 msgid "Mailbox is empty."
 msgstr "Поштова скринька порожня."
 
@@ -2628,7 +2645,7 @@ msgid "Invalid index number."
 msgstr "Нев╕рний номер перел╕ку."
 
 #: menu.c:418 menu.c:436 menu.c:472 menu.c:513 menu.c:529 menu.c:540
-#: menu.c:551 menu.c:593 menu.c:604 menu.c:617 menu.c:630 menu.c:1005
+#: menu.c:551 menu.c:593 menu.c:604 menu.c:617 menu.c:630 menu.c:1006
 msgid "No entries."
 msgstr "Жодно╖ позиц╖╖."
 
@@ -2676,7 +2693,7 @@ msgstr "Зворотн╕й пошук виразу: "
 msgid "No search pattern."
 msgstr "Нема╓ виразу пошуку."
 
-#: menu.c:753 pager.c:1917 pager.c:1933 pager.c:2021 pattern.c:1345
+#: menu.c:753 pager.c:1929 pager.c:1945 pager.c:2055 pattern.c:1345
 msgid "Not found."
 msgstr "Не знайдено."
 
@@ -2684,22 +2701,26 @@ msgstr "Не знайдено."
 msgid "No tagged entries."
 msgstr "Жодно╖ позиц╕╖ не вибрано."
 
-#: menu.c:962
+#: menu.c:963
 msgid "Search is not implemented for this menu."
 msgstr "Пошук у цьому меню не п╕дтриму╓ться."
 
-#: menu.c:967
+#: menu.c:968
 msgid "Jumping is not implemented for dialogs."
 msgstr "Перех╕д у цьому д╕алоз╕ не п╕дриму╓ться."
 
-#: menu.c:1008
+#: menu.c:1009
 msgid "Tagging is not supported."
 msgstr "Вид╕лення не п╕дтриму╓ться."
 
-#: mh.c:641
+#: mh.c:643
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Читання %s... %d"
+
+#: mh.c:1019
+msgid "maildir_commit_message(): unable to set time on file"
+msgstr ""
 
 #: muttlib.c:854
 msgid "File is a directory, save under it?"
@@ -2941,12 +2962,12 @@ msgstr "Не вийшло с╕нхрон╕зувати поштову скриньку %s!"
 msgid "Move read messages to %s?"
 msgstr "Перенести читан╕ листи до %s?"
 
-#: mx.c:894 mx.c:1151
+#: mx.c:894 mx.c:1150
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Знищити %d видалений лист?"
 
-#: mx.c:894 mx.c:1151
+#: mx.c:894 mx.c:1150
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Знищити %d видалених лист╕в?"
@@ -2956,39 +2977,39 @@ msgstr "Знищити %d видалених лист╕в?"
 msgid "Moving read messages to %s..."
 msgstr "Перенос читаних лист╕в до %s..."
 
-#: mx.c:978 mx.c:1142
+#: mx.c:977 mx.c:1141
 msgid "Mailbox is unchanged."
 msgstr "Поштову скриньку не зм╕нено."
 
-#: mx.c:1014
+#: mx.c:1013
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d збережено, %d перенесено, %d знищено."
 
-#: mx.c:1017 mx.c:1189
+#: mx.c:1016 mx.c:1188
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d збережено, %d знищено."
 
-#: mx.c:1127
+#: mx.c:1126
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr "Натисн╕ть '%s' для зм╕ни можливост╕ запису"
 
-#: mx.c:1129
+#: mx.c:1128
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Зроб╕ть 'toggle-write' для вв╕мкнення запису!"
 
-#: mx.c:1131
+#: mx.c:1130
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Скриньку пом╕чено незм╕нюваною. %s"
 
-#: mx.c:1186
+#: mx.c:1185
 msgid "Mailbox checkpointed."
 msgstr "Поштову скриньку перев╕рено."
 
-#: mx.c:1505
+#: mx.c:1501
 msgid "Can't write message"
 msgstr "Неможливо записати лист"
 
@@ -2996,48 +3017,48 @@ msgstr "Неможливо записати лист"
 msgid "Not available in this menu."
 msgstr "Неможливо у цьому меню."
 
-#: pager.c:1440
+#: pager.c:1450
 msgid "PrevPg"
 msgstr "ПопСт"
 
-#: pager.c:1441
+#: pager.c:1451
 msgid "NextPg"
 msgstr "НастСт"
 
-#: pager.c:1445
+#: pager.c:1455
 msgid "View Attachm."
 msgstr "Додатки"
 
-#: pager.c:1448
+#: pager.c:1458
 msgid "Next"
 msgstr "Наст"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1826 pager.c:1857 pager.c:1889 pager.c:2109
+#: pager.c:1837 pager.c:1868 pager.c:1900 pager.c:2143
 msgid "Bottom of message is shown."
 msgstr "Ви бачите к╕нець листа."
 
-#: pager.c:1842 pager.c:1864 pager.c:1871 pager.c:1878
+#: pager.c:1853 pager.c:1875 pager.c:1882 pager.c:1889
 msgid "Top of message is shown."
 msgstr "Ви бачите початок листа."
 
-#: pager.c:1951
+#: pager.c:1958
 msgid "Reverse search: "
 msgstr "Зворотн╕й пошук: "
 
-#: pager.c:1952
+#: pager.c:1959
 msgid "Search: "
 msgstr "Пошук: "
 
-#: pager.c:2047
+#: pager.c:2081
 msgid "Help is currently being shown."
 msgstr "П╕дказку зараз показано."
 
-#: pager.c:2076
+#: pager.c:2110
 msgid "No more quoted text."
 msgstr "Цитованого тексту б╕льш нема╓."
 
-#: pager.c:2089
+#: pager.c:2123
 msgid "No more unquoted text after quoted text."
 msgstr "П╕сля цитованого тексту н╕чого нема╓."
 
@@ -3376,7 +3397,7 @@ msgstr "Помилка п╕д час запису поштово╖ скриньки!"
 msgid "%s [%d of %d messages read]"
 msgstr "%s [%d з %d лист╕в прочитано]"
 
-#: pop.c:692 pop_lib.c:276
+#: pop.c:692 pop_lib.c:278
 msgid "Server closed connection!"
 msgstr "Сервер закрив з'╓днання!"
 
@@ -3401,15 +3422,15 @@ msgstr "Неможливо залишити пов╕домлення на сервер╕."
 msgid "Error connecting to server: %s"
 msgstr "Помилка з'╓днання з сервером: %s"
 
-#: pop_lib.c:290
+#: pop_lib.c:292
 msgid "Closing connection to POP server..."
 msgstr "Закриття з'╓днання з сервером POP..."
 
-#: pop_lib.c:455
+#: pop_lib.c:458
 msgid "Verifying message indexes..."
 msgstr "Перев╕рка ╕ндекс╕в пов╕домлень..."
 
-#: pop_lib.c:479
+#: pop_lib.c:482
 msgid "Connection lost. Reconnect to POP server?"
 msgstr "З'╓днання загублено. В╕дновити зв'язок з сервером POP?"
 
@@ -3429,6 +3450,11 @@ msgstr "Нев╕рний заголовок PGP"
 #, fuzzy
 msgid "Illegal S/MIME header"
 msgstr "Нев╕рний заголовок PGP"
+
+#: postpone.c:565
+#, fuzzy
+msgid "Decryption failed."
+msgstr "Помилка ре╓страц╕╖."
 
 #: query.c:45
 msgid "New Query"
@@ -3472,63 +3498,63 @@ msgstr "Конв."
 msgid "Print"
 msgstr "Друк"
 
-#: recvattach.c:420
+#: recvattach.c:421
 msgid "Saving..."
 msgstr "Збереження..."
 
-#: recvattach.c:495
+#: recvattach.c:496
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "ОБЕРЕЖНО! Ви знищите ╕снуючий %s при запису. Ви певн╕?"
 
-#: recvattach.c:513
+#: recvattach.c:514
 msgid "Attachment filtered."
 msgstr "Додаток отф╕льтровано."
 
-#: recvattach.c:580
+#: recvattach.c:581
 msgid "Filter through: "
 msgstr "Ф╕льтрувати через: "
 
-#: recvattach.c:580
+#: recvattach.c:581
 msgid "Pipe to: "
 msgstr "Передати у конве╓р команд╕: "
 
-#: recvattach.c:615
+#: recvattach.c:616
 #, c-format
 msgid "I dont know how to print %s attachments!"
 msgstr "Я не знаю, як друкувати додатки типу %s!"
 
-#: recvattach.c:680
+#: recvattach.c:681
 msgid "Print tagged attachment(s)?"
 msgstr "Друкувати вид╕лен╕ додатки?"
 
-#: recvattach.c:680
+#: recvattach.c:681
 msgid "Print attachment?"
 msgstr "Друкувати додаток?"
 
-#: recvattach.c:906
+#: recvattach.c:907
 #, fuzzy
 msgid "Can't decrypt encrypted message!"
 msgstr "Не знайдено вид╕лених лист╕в."
 
-#: recvattach.c:920
+#: recvattach.c:921
 msgid "Attachments"
 msgstr "Додатки"
 
-#: recvattach.c:956
+#: recvattach.c:957
 msgid "There are no subparts to show!"
 msgstr "Нема╓ п╕дчастин для проглядання!"
 
-#: recvattach.c:1020
+#: recvattach.c:1021
 msgid "Can't delete attachment from POP server."
 msgstr "Неможливо видалити додаток з сервера POP."
 
-#: recvattach.c:1031
+#: recvattach.c:1032
 #, fuzzy
 msgid "Deletion of attachments from encrypted messages is unsupported."
 msgstr "Видалення додатк╕в з лист╕в з PGP не п╕дтриму╓ться."
 
-#: recvattach.c:1051 recvattach.c:1068
+#: recvattach.c:1052 recvattach.c:1069
 msgid "Only deletion of multipart attachments is supported."
 msgstr "П╕дтриму╓ться т╕льки видалення в багаточастинних листах."
 
@@ -3720,84 +3746,89 @@ msgstr "П╕дготування листа для пересилання..."
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:1058
+#: send.c:1059
 msgid "Recall postponed message?"
 msgstr "Викликати залишений лист?"
 
-#: send.c:1306
+#: send.c:1338
+#, fuzzy
+msgid "Edit forwarded message?"
+msgstr "П╕дготування листа для пересилання..."
+
+#: send.c:1357
 msgid "Abort unmodified message?"
 msgstr "В╕дм╕нити в╕дправку не зм╕неного листа?"
 
-#: send.c:1308
+#: send.c:1359
 msgid "Aborted unmodified message."
 msgstr "Лист не зм╕нено, тому в╕дправку в╕дм╕нено."
 
 #. abort
-#: send.c:1349
+#: send.c:1401
 msgid "Mail not sent."
 msgstr "Лист не в╕дправлено."
 
-#: send.c:1375
+#: send.c:1427
 msgid "Message postponed."
 msgstr "Лист залишено для подальшо╖ в╕дправки.."
 
-#: send.c:1384
+#: send.c:1436
 msgid "No recipients are specified!"
 msgstr "Не вказано отримувач╕в!"
 
-#: send.c:1389
+#: send.c:1441
 msgid "No recipients were specified."
 msgstr "Отримувач╕в не було вказано."
 
-#: send.c:1395
+#: send.c:1447
 msgid "No subject, abort sending?"
 msgstr "Теми нема╓, в╕дм╕нити в╕дправку?"
 
-#: send.c:1399
+#: send.c:1451
 msgid "No subject specified."
 msgstr "Теми не вказано."
 
-#: send.c:1446
+#: send.c:1498
 msgid "Sending message..."
 msgstr "Лист в╕дправля╓ться..."
 
-#: send.c:1583
+#: send.c:1646
 msgid "Could not send the message."
 msgstr "Не вийшло в╕дправити лист."
 
-#: send.c:1588
+#: send.c:1651
 msgid "Mail sent."
 msgstr "Лист послано."
 
-#: send.c:1588
+#: send.c:1651
 msgid "Sending in background."
 msgstr "Фонова в╕дправка."
 
-#: sendlib.c:469
+#: sendlib.c:475
 msgid "No boundary parameter found! [report this error]"
 msgstr "Нема╓ параметру меж╕! [спов╕ст╕ть про цю помилку]"
 
-#: sendlib.c:503
+#: sendlib.c:509
 #, c-format
 msgid "%s no longer exists!"
 msgstr "%s б╕льше не ╕сну╓!"
 
-#: sendlib.c:921
+#: sendlib.c:931
 #, c-format
 msgid "%s isn't a regular file."
 msgstr "%s не ╓ звичайним файлом."
 
-#: sendlib.c:1090
+#: sendlib.c:1100
 #, c-format
 msgid "Could not open %s"
 msgstr "Не вийшло в╕дкрити %s"
 
-#: sendlib.c:2071
+#: sendlib.c:2081
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Помилка в╕дправки, код повернення %d (%s)."
 
-#: sendlib.c:2077
+#: sendlib.c:2087
 msgid "Output of the delivery process"
 msgstr "Вих╕д процесу доставки"
 
@@ -3806,12 +3837,12 @@ msgstr "Вих╕д процесу доставки"
 msgid "%s...  Exiting.\n"
 msgstr "%s...  Виходжу.\n"
 
-#: signal.c:42
+#: signal.c:42 signal.c:45
 #, c-format
 msgid "Caught %s...  Exiting.\n"
 msgstr "Отримано %s...  Виходжу.\n"
 
-#: signal.c:44
+#: signal.c:47
 #, c-format
 msgid "Caught signal %d...  Exiting.\n"
 msgstr "Отримано сигнал %d...  Виходжу.\n"
