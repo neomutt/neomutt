@@ -45,7 +45,7 @@ OBJS=	addrbook.o alias.o attach.o browser.o buffy.o color.o \
 	main.o mbox.o menu.o mh.o mx.o pager.o parse.o pattern.o \
 	postpone.o query.o recvattach.o rfc822.o \
 	rfc1524.o rfc2047.o score.o send.o sendlib.o signal.o sort.o \
-	status.o system.o thread.o @LIBOBJS@
+	status.o system.o thread.o charset.o @LIBOBJS@
 
 CLEANFILES=dotlock mutt *.o core
 VERYCLEANFILES=$(CLEANFILES) Makefile config.cache config.log \

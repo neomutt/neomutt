@@ -29,6 +29,7 @@
 #include "keymap.h"
 #include "mime.h"
 #include "copy.h"
+#include "charset.h"
 
 
 
@@ -63,13 +64,17 @@ int Index_64[128] = {
     41,42,43,44, 45,46,47,48, 49,50,51,-1, -1,-1,-1,-1
 };
 
-void mutt_decode_xbit (STATE *s, long len, int istext)
+void mutt_decode_xbit (STATE *s, BODY *b, int istext)
 {
+  long len = b->length;
   int c;
   int lbreak = 1;
   
   if (istext)
   {
+    CHARSET *body_charset = mutt_get_charset(mutt_get_parameter("charset", b->parameter));
+    CHARSET *display_charset = mutt_get_charset(Charset);
+
     while ((c = fgetc(s->fpin)) != EOF && len--)
     {
       if(lbreak && s->prefix)
@@ -91,7 +96,7 @@ void mutt_decode_xbit (STATE *s, long len, int istext)
 	}
 	
       }
-      fputc(c, s->fpout);
+      state_putc(mutt_display_char(c, body_charset, display_charset), s);
       if(c == '\n')
 	lbreak = 1;
     }
@@ -112,9 +117,12 @@ static int handler_state_fgetc(STATE *s)
   return ch;
 }
 
-void mutt_decode_quoted (STATE *s, long len, int istext)
+void mutt_decode_quoted (STATE *s, BODY *b, int istext)
 {
+  long len = b->length;
   int ch, lbreak = 1;
+  CHARSET *body_charset = mutt_get_charset(mutt_get_parameter("charset", b->parameter));
+  CHARSET *display_charset = mutt_get_charset(Charset);
 
   while (len > 0)
   {
@@ -182,17 +190,20 @@ void mutt_decode_quoted (STATE *s, long len, int istext)
     }
 
     if(ch != EOF)
-      state_putc (ch, s);
+      state_putc(istext ? mutt_display_char(ch, body_charset, display_charset) : ch, s);
 
     if(ch == '\n')
       lbreak = 1;
   }
 }
 
-void mutt_decode_base64 (STATE *s, long len, int istext)
+void mutt_decode_base64 (STATE *s, BODY *b, int istext)
 {
+  long len = b->length;
   char buf[5];
   int c1, c2, c3, c4, ch, cr = 0, i;
+  CHARSET *body_charset = mutt_get_charset(mutt_get_parameter("charset", b->parameter));
+  CHARSET *display_charset = mutt_get_charset(Charset);
 
   buf[4] = 0;
 
@@ -221,7 +232,7 @@ void mutt_decode_base64 (STATE *s, long len, int istext)
       cr = 1;
     else
     {
-      state_putc (ch, s);
+      state_putc(istext ? mutt_display_char(ch, body_charset, display_charset) : ch, s);
       if (ch == '\n' && s->prefix) state_puts (s->prefix, s);
     }
 
@@ -238,7 +249,7 @@ void mutt_decode_base64 (STATE *s, long len, int istext)
       cr = 1;
     else
     {
-      state_putc (ch, s);
+      state_putc(istext ? mutt_display_char(ch, body_charset, display_charset) : ch, s);
       if (ch == '\n' && s->prefix)
 	state_puts (s->prefix, s);
     }
@@ -255,7 +266,7 @@ void mutt_decode_base64 (STATE *s, long len, int istext)
       cr = 1;
     else
     {
-      state_putc (ch, s);
+      state_putc(istext ? mutt_display_char(ch, body_charset, display_charset) : ch, s);
       if (ch == '\n' && s->prefix)
 	state_puts (s->prefix, s);
     }
@@ -1134,13 +1145,13 @@ void mutt_decode_attachment (BODY *b, STATE *s)
   switch (b->encoding)
   {
     case ENCQUOTEDPRINTABLE:
-      mutt_decode_quoted (s, b->length, mutt_is_text_type (b->type, b->subtype));
+      mutt_decode_quoted (s, b, mutt_is_text_type (b->type, b->subtype));
       break;
     case ENCBASE64:
-      mutt_decode_base64 (s, b->length, mutt_is_text_type (b->type, b->subtype));
+      mutt_decode_base64 (s, b, mutt_is_text_type (b->type, b->subtype));
       break;
     default:
-      mutt_decode_xbit (s, b->length, mutt_is_text_type (b->type, b->subtype));
+      mutt_decode_xbit (s, b, mutt_is_text_type (b->type, b->subtype));
       break;
   }
 }
@@ -1252,7 +1263,7 @@ void mutt_body_handler (BODY *b, STATE *s)
 
     /* see if we need to decode this part before processing it */
     if (b->encoding == ENCBASE64 || b->encoding == ENCQUOTEDPRINTABLE ||
-	(s->prefix && plaintext))
+	plaintext)
     {
       int origType = b->type;
       char *savePrefix = NULL;
@@ -1304,8 +1315,6 @@ void mutt_body_handler (BODY *b, STATE *s)
 
       b->type = origType;
     }
-    else if (plaintext)
-      mutt_copy_bytes (s->fpin, s->fpout, b->length);
 
     /* process the (decoded) body part */
     if (handler)
