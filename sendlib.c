@@ -626,7 +626,7 @@ static void update_content_info (CONTENT *info, CONTENT_STATE *s, char *d, size_
     {
       if (linelen == 1)
       {
-        if (ch == 'F')
+        if ((ch == 'F') || (ch == 'f'))
           from = 1;
         else
           from = 0;
