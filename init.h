@@ -1032,6 +1032,13 @@ struct option_t MuttVars[] = {
   ** be a single global header cache. By default it is unset and so no
   ** header caching will be used.
   */
+  { "maildir_header_cache_verify", DT_BOOL, R_NONE, OPTHCACHEVERIFY, 1 },
+  /*
+  ** .pp
+  ** Check for Maildir unaware programs other than mutt having modified maildir
+  ** files when the header cache is in use.  This incurs one stat(2) per
+  ** message every time the folder is opened.
+  */
   { "header_cache_pagesize", DT_STR, R_NONE, UL &HeaderCachePageSize, UL "16384" },
   /*
   ** .pp
