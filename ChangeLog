@@ -1,3 +1,12 @@
+2005-02-28 15:15:23  Christoph Berg  <cb@df7cb.de>  (roessler)
+
+	* init.h, menu.c, mutt.h: I've updated the menu_context patch to
+	reintroduce the menu_move_off variable that hasn't made it into
+	1.5.8. The patch fixes menu_prev_line and menu_next_line which
+	didn't work with menu_context > 0 and also makes <current-middle>
+	work even if there are less messages than screen lines (thanks
+	to René Clerc and Vincent Lefevre for spotting these issues).
+
 2005-02-28 14:37:09  Udo Schweigert  <mutt@cert.siemens.de>  (roessler)
 
 	* smime.c: As pointed out in a separate thread, here is a patch
