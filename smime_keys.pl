@@ -1,8 +1,4 @@
-#!/usr/bin/perl -w
-
-# Settings:
-
-my $SmimeMuttrc="$ENV{HOME}/.mutt/muttrc";
+#! /usr/bin/perl -w
 
 # Copyright (C) 2001 Oliver Ehli <elmy@acm.org>
 # Copyright (C) 2001 Mike Schiraldi <raldi@research.netsol.com>
@@ -25,16 +21,8 @@ use strict;
 
 require "timelocal.pl";
 
-# Global variables:
-
-my $private_keys_path;
-my $certificates_path;
-my $root_certs_switch;
-my $root_certs_path;
-
-
 sub usage ();
-sub get_paths ($ );
+sub mutt_Q ($ );
 sub myglob ($ );
 
 #  directory setup routines
@@ -47,26 +35,27 @@ sub query_label ();
 sub add_entry ($$$$;$ );
 sub add_certificate ($$$$;$ );
 sub add_key ($$$$);
-sub add_root_cert ($);
+sub add_root_cert ($ );
 sub parse_pem (@ );
 sub handle_pem (@ );
 sub modify_entry ($$$;$ );
 sub remove_pair ($ );
 sub change_label ($ );
 sub verify_cert($;$ );
-sub do_verify($$;$);
-
-
-
-
+sub do_verify($$;$ );
+              
 # Get the directories mutt uses for certificate/key storage.
 
-($private_keys_path, $certificates_path,
- $root_certs_switch, $root_certs_path) = get_paths($SmimeMuttrc);
+my $private_keys_path = mutt_Q 'smime_keys';
+my $certificates_path = mutt_Q 'smime_certificates';
+my $root_certs_path   = mutt_Q 'smime_ca_location';
+my $root_certs_switch;
+if ( -d $root_certs_path) {
+	$root_certs_switch = -CApath;
+} else {
+	$root_certs_switch = -CAfile;
+}
 
-$certificates_path and $private_keys_path
-  and $root_certs_switch and $root_certs_path or
-  die("Couldn't get paths to certificates/keys from $SmimeMuttrc");
 
 #
 # OPS
@@ -187,57 +176,27 @@ Usage: smime_keys <operation>  [file(s) | keyID [file(s)]]
 EOF
 }
 
-sub get_paths ($) {
-    my @files = (shift);
-    my $certs;
-    my $keys;
-    my $roots;
-    my $switch;
-    
-    while (@files) {        
-        my $file = myglob shift @files;
-        
-        if (open(FILE, $file)) {
-        
-            while(<FILE>) {
-            	chomp;
-            	s/\#.*//;
-            
-            	/^\s*source\s*\"?([^\"]*)\"?/
-                	and push @files, $1;
-            
-           	/^\s*set\s*smime_keys\s*=\s*\"?([^\"]*)\"?/
-                	and $keys = myglob $1;
-            
-            	/^\s*set\s*smime_certificates\s*=\s*\"?([^\"]*)\"?/
-                	and $certs = myglob $1;        
+sub mutt_Q ($) {
+    my $var = shift or die;
 
-            	/^\s*set\s*smime_verify[^CA]*(-CA[^\s]*)\s*([^\s]*)./
-                	and $switch = myglob $1 and $roots = myglob $2;
-	    }
-	    close(FILE);
-	}
-    }
-    return ($keys, $certs, $switch, $roots);
+    my $cmd = "mutt -Q $var 2>/dev/null";
+    my $answer = `$cmd`;
+
+    $? and die<<EOF;
+Couldn't look up the value of the mutt variable "$var". 
+You must set this in your mutt config file. See contrib/smime.rc for an example.
+EOF
+#'
+
+    $answer =~ /\"(.*?)\"/ and return $1;
+    
+    $answer =~ /^Mutt (.*?) / and die<<EOF;
+This script requires mutt 1.5.0 or later. You are using mutt $1.
+EOF
+    
+    die "Value of $var is weird\n";
 }
 
-sub myglob ($) {
-    my $file = shift;
-    
-    $file =~ s{
-                ^ ~             # find a leading tilde
-                (               # save this in $1
-                    [^/]        # a non-slash character
-                          *     # repeated 0 or more times (0 means me)
-                )
-              }{
-                $1
-                ? (getpwnam($1))[7]
-                : ( $ENV{HOME} || $ENV{LOGDIR} || (getpwuid($<))[7] )
-               }ex;
-
-    return $file;
-}
 
 #
 #  directory setup routines
@@ -834,9 +793,17 @@ sub do_verify($$;$) {
   print "\n";
 
   if ($result eq 'v') {
-    print "Certificate was successfully verified.\nDo you choose to trust this certificate ? (yes/no) ";
-    chomp($trust_q = <STDIN>);
-    $trust_q eq 'yes' and $result = 't';
+    print "Certificate was successfully verified.\n";
+    while(1) {
+      print "Do you choose to trust this certificate ? (yes/no) ";
+      chomp($trust_q = <STDIN>);
+      if ($trust_q =~ /^y/i) {
+        return 't';
+      } elsif ($trust_q =~ /^n/i) {
+        return 'v';
+      }
+      print "That made no sense.\n";
+    }   
   }
 
   return $result;

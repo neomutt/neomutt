@@ -22,6 +22,9 @@ set crypt_verify_sig = yes
 # line and replace the keyid with your own.
 #set smime_sign_as="12345678.0"
 
+# Path to a file or directory with trusted certificates
+set smime_ca_location="~/.smime/ca-bundle.crt"
+
 # Path to where all known certificates go. (must exist!)
 set smime_certificates="~/.smime/certificates"
 
@@ -67,10 +70,10 @@ set smime_sign_command="openssl smime -sign -signer %c -inkey %k -passin stdin -
 set smime_decrypt_command="openssl smime -decrypt  -passin stdin -inform DER -in %f -inkey %k -recip %c"
 
 # Verify a signature of type multipart/signed
-set smime_verify_command="openssl smime -verify -inform DER -in %s -CAfile ~/.smime/ca-bundle.crt -content %f"
+set smime_verify_command="openssl smime -verify -inform DER -in %s %C -content %f"
 
 # Verify a signature of type application/x-pkcs7-mime
-set smime_verify_opaque_command="openssl smime -verify -inform DER -in %s -CAfile ~/.smime/ca-bundle.crt"
+set smime_verify_opaque_command="openssl smime -verify -inform DER -in %s %C"
 
 
 
@@ -85,10 +88,3 @@ set smime_verify_opaque_command="openssl smime -verify -inform DER -in %s -CAfil
 # set smime_verify_command="openssl smime -verify -inform DER -in %s -content %f -noverify"
 # set smime_verify_opaque_command="openssl smime -verify -inform DER -in %s -noverify"
 #
-# setup with the directory flag:
-#
-# Verify a signature of type multipart/signed
-# set smime_verify_command="openssl smime -verify -inform DER -in %s -CApath ~/.smime/root_certs -content %f"
-#
-# Verify a signature of type application/x-pkcs7-mime
-# set smime_verify_opaque_command="openssl smime -verify -inform DER -in %s -CApath ~/.smime/root_certs"

@@ -1491,6 +1491,12 @@ struct option_t MuttVars[] = {
   ** which contains mailbox-address keyid pai, and which can be manually
   ** edited.
   */
+  { "smime_ca_location",	DT_PATH, R_NONE, UL &SmimeCALocation, 0 },
+  /*
+  ** .pp
+  ** This variable contains the name of either a directory, or a file which
+  ** contains trusted certificates for use with OpenSSL.
+  */
   { "smime_certificates",	DT_PATH, R_NONE, UL &SmimeCertificates, 0 },
   /*
   ** .pp
@@ -1517,6 +1523,9 @@ struct option_t MuttVars[] = {
   ** .dt %k .dd The key-pair specified with $$smime_sign_as.
   ** .dt %c .dd One or more certificate IDs.
   ** .dt %a .dd The algorithm used for encryption.
+  ** .dt %C .dd CA location:  Depending on whether $$smime_ca_location
+  ** .		points to a directory or file, this expands to 
+  ** . 		"-CApath $$smime_ca_location" or "-CAfile $$smime_ca_location".
   ** .de
   ** .pp
   ** For examples on how to configure these formats, see the smime.rc

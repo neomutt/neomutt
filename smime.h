@@ -27,6 +27,7 @@ WHERE short SmimeTimeout;
 WHERE char *SmimeCertificates;
 WHERE char *SmimeKeys;
 WHERE char *SmimeCryptAlg;
+WHERE char *SmimeCALocation;
 
 /* The command formats */
 
@@ -43,6 +44,7 @@ WHERE char *SmimePk7outCommand;
 WHERE char *SmimeGetCertCommand;
 WHERE char *SmimeHashCertCommand;
 WHERE char *SmimeGetCertEmailCommand;
+
 
 #define APPLICATION_SMIME  (1 << 6)
 
