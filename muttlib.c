@@ -461,13 +461,6 @@ char *_mutt_expand_path (char *s, size_t slen, int rx)
   }
   while (recurse);
 
-#ifdef USE_IMAP
-  /* Rewrite IMAP path in canonical form - aids in string comparisons of
-   *   folders. May possibly fail, in which case s should be the same. */
-  if (mx_is_imap (s))
-    imap_expand_path (s, slen);
-#endif
-
   return (s);
 }
 
