@@ -50,10 +50,12 @@ extern char *optarg;
 extern int optind;
 
 #include "sha1.h"
+#include "md5.h"
 #include "lib.h"
 #include "pgplib.h"
 #include "pgppacket.h"
 
+#define MD5_DIGEST_LENGTH  16
 
 #ifdef HAVE_FGETPOS
 #define FGETPOS(fp,pos) fgetpos((fp),&(pos))
@@ -65,6 +67,7 @@ extern int optind;
 
 
 static short dump_signatures = 0;
+static short dump_fingerprints = 0;
 
 
 static void pgpring_find_candidates (char *ringfile, const char *hints[], int nhints);
@@ -83,13 +86,19 @@ int main (int argc, char * const argv[])
   char pgppath[_POSIX_PATH_MAX];
   char kring[_POSIX_PATH_MAX];
 
-  while ((c = getopt (argc, argv, "25sk:S")) != EOF)
+  while ((c = getopt (argc, argv, "f25sk:S")) != EOF)
   {
     switch (c)
     {
       case 'S':
       {
 	dump_signatures = 1;
+	break;
+      }
+
+      case 'f':
+      {
+	dump_fingerprints = 1;
 	break;
       }
 
@@ -113,7 +122,7 @@ int main (int argc, char * const argv[])
     
       default:
       {
-	fprintf (stderr, "usage: %s [-k <key ring> | [-2 | -5] [ -s]] [hints]\n",
+	fprintf (stderr, "usage: %s [-k <key ring> | [-2 | -5] [ -s] [-S] [-f]] [hints]\n",
 		 argv[0]);
 	exit (1);
       }
@@ -148,10 +157,38 @@ int main (int argc, char * const argv[])
 
 /* The actual key ring parser */
 
+static void pgp_make_pgp2_fingerprint (unsigned char *buff,
+                                       unsigned char *digest)
+{
+
+  MD5_CTX context;
+  unsigned int size = 0;
+
+
+  MD5Init (&context);
+
+  size = (buff[0] << 8) + buff[1];
+  size = ((size + 7) / 8);
+  buff = &buff[2];
+
+  MD5Update (&context, buff, size);
+  buff = &buff[size];
+
+  size = (buff[0] << 8) + buff[1];
+  size = ((size + 7) / 8);
+  buff = &buff[2];
+
+  MD5Update (&context, buff, size);
+
+  MD5Final (digest, &context);
+
+} /* pgp_make_pgp2_fingerprint() */
+
 static pgp_key_t *pgp_parse_pgp2_key (unsigned char *buff, size_t l)
 {
   pgp_key_t *p;
   unsigned char alg;
+  unsigned char digest[MD5_DIGEST_LENGTH];
   size_t expl;
   unsigned long id;
   time_t gen_time = 0;
@@ -182,6 +219,16 @@ static pgp_key_t *pgp_parse_pgp2_key (unsigned char *buff, size_t l)
   p->algorithm = pgp_pkalgbytype (alg);
   p->flags |= pgp_get_abilities (alg);
 
+  if (dump_fingerprints)
+  {
+    /* j now points to the key material, which we need for the fingerprint */
+    p->fp_len = MD5_DIGEST_LENGTH;
+    pgp_make_pgp2_fingerprint (&buff[j], digest);
+    memcpy (p->fingerprint, digest, MD5_DIGEST_LENGTH);
+  }
+  else	/* just to be usre */
+    memset (p->fingerprint, 0, MD5_DIGEST_LENGTH);
+    
   expl = 0;
   for (i = 0; i < 2; i++)
     expl = (expl << 8) + buff[j++];
@@ -289,13 +336,15 @@ static pgp_key_t *pgp_parse_pgp3_key (unsigned char *buff, size_t l)
   len = (buff[j] << 8) + buff[j + 1];
   p->keylen = len;
 
+
   if (alg >= 1 && alg <= 3)
     skip_bignum (buff, l, j, &j, 2);
   else if (alg == 17 || alg == 16 || alg == 20)
     skip_bignum (buff, l, j, &j, 1);
 
   pgp_make_pgp3_fingerprint (buff, j, digest);
-
+  p->fp_len = SHA_DIGEST_LENGTH;
+  
   for (k = 0; k < 2; k++)
   {
     for (id = 0, i = SHA_DIGEST_LENGTH - 8 + k * 4;
@@ -772,6 +821,18 @@ static void print_userid (const char *id)
   }
 }
 
+static void print_fingerprint (pgp_key_t *p) 
+{
+  int i = 0;
+
+  printf ("fpr:::::::::");
+  for (i = 0; i < p->fp_len; i++)
+    printf ("%02X", p->fingerprint[i]);
+  printf (":\n");
+
+} /* print_fingerprint() */
+
+
 static void pgpring_dump_signatures (pgp_sig_t *sig)
 {
   for (; sig; sig = sig->next)
@@ -854,6 +915,8 @@ static void pgpring_dump_keyblock (pgp_key_t *p)
 	
 	print_userid (uid->addr);
 	printf (":\n");
+	if (dump_fingerprints) 
+          print_fingerprint (p);
       }
       
       if (dump_signatures)

@@ -63,6 +63,13 @@ typedef struct pgp_keyinfo
   struct pgp_keyinfo *parent;
   struct pgp_signature *sigs;
   struct pgp_keyinfo *next;
+
+  short fp_len;			  /* length of fingerprint.
+				   * 20 for sha-1, 16 for md5.
+				   */
+  unsigned char fingerprint[20];  /* large enough to hold SHA-1 and RIPEMD160
+                                     hashes (20 bytes), MD5 hashes just use the
+                                     first 16 bytes */
 }
 pgp_key_t;
 

@@ -79,7 +79,7 @@ mutt_dotlock_SOURCES = mutt_dotlock.c
 mutt_dotlock_LDADD = @LIBOBJS@
 mutt_dotlock_DEPENDENCIES = @LIBOBJS@
 
-pgpring_SOURCES = pgppubring.c pgplib.c lib.c extlib.c sha1.c pgppacket.c ascii.c
+pgpring_SOURCES = pgppubring.c pgplib.c lib.c extlib.c sha1.c md5c.c pgppacket.c ascii.c
 pgpring_LDADD = @LIBOBJS@ $(INTLLIBS) 
 pgpring_DEPENDENCIES = @LIBOBJS@ $(INTLDEPS)
 
