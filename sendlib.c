@@ -302,7 +302,7 @@ static void encode_base64 (FILE * fin, FILE *fout, int istext)
 {
   int ch, ch1 = EOF;
   
-  b64_num = 0;
+  b64_num = b64_linelen = 0;
   
   while((ch = fgetc(fin)) != EOF)
   {
