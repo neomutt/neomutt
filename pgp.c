@@ -80,7 +80,7 @@ int pgp_use_gpg_agent (void)
 
 char *pgp_keyid(pgp_key_t k)
 {
-  if((k->flags & KEYFLAG_SUBKEY) && k->parent)
+  if((k->flags & KEYFLAG_SUBKEY) && k->parent && option(OPTPGPIGNORESUB))
     k = k->parent;
 
   return _pgp_keyid(k);

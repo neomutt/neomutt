@@ -1,14 +1,14 @@
-# Ronny Haryanto <ronny-mutt-po-file@haryan.to>, 1999-2002
+# Ronny Haryanto <ronny-mutt-po-file@haryan.to>, 1999-2003
 #
-# http://i18n.linux.or.id
+# http://www.linux.or.id
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.5.1i\n"
+"Project-Id-Version: 1.5.4i\n"
 "POT-Creation-Date: 2003-03-19 23:37+0100\n"
-"PO-Revision-Date: 2002-05-23 09:30+0700\n"
+"PO-Revision-Date: 2003-04-14 09:30+0700\n"
 "Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
-"Language-Team: Indonesia <i18n@linux.or.id>\n"
+"Language-Team: Indonesia <web@linux.or.id>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 7bit\n"
@@ -66,7 +66,7 @@ msgstr "Anda telah punya alias dengan nama tersebut!"
 
 #: alias.c:254
 msgid "Warning: This alias name may not work.  Fix it?"
-msgstr ""
+msgstr "Peringatan: Nama alias ini mungkin tidak akan bekerja. Betulkan?"
 
 #: alias.c:279
 msgid "Address: "
@@ -75,7 +75,7 @@ msgstr "Alamat: "
 #: alias.c:289 send.c:201
 #, c-format
 msgid "Error: '%s' is a bad IDN."
-msgstr ""
+msgstr "Error: IDN '%s' tidak benar."
 
 #: alias.c:301
 msgid "Personal name: "
@@ -259,9 +259,8 @@ msgid "Error trying to view file"
 msgstr "Gagal menampilkan file"
 
 #: buffy.c:443
-#, fuzzy
 msgid "New mail in "
-msgstr "Surat baru di %s."
+msgstr "Surat baru di "
 
 #: color.c:322
 #, c-format
@@ -360,11 +359,11 @@ msgstr "Perintah: "
 
 #: commands.c:235 recvcmd.c:143
 msgid "Bounce message to: "
-msgstr "Tembuskan surat ke: "
+msgstr "Bounce surat ke: "
 
 #: commands.c:237 recvcmd.c:145
 msgid "Bounce tagged messages to: "
-msgstr "Tembuskan surat yang telah ditandai ke: "
+msgstr "Bounce surat yang telah ditandai ke: "
 
 #: commands.c:252 recvcmd.c:154
 msgid "Error parsing address!"
@@ -373,35 +372,33 @@ msgstr "Gagal menguraikan alamat!"
 #: commands.c:260 recvcmd.c:162
 #, c-format
 msgid "Bad IDN: '%s'"
-msgstr ""
+msgstr "IDN salah: '%s'"
 
 #: commands.c:271 recvcmd.c:176
 #, c-format
 msgid "Bounce message to %s"
-msgstr "Tembuskan surat ke %s"
+msgstr "Bounce surat ke %s"
 
 #: commands.c:271 recvcmd.c:176
 #, c-format
 msgid "Bounce messages to %s"
-msgstr "Tembuskan surat-surat ke %s"
+msgstr "Bounce surat-surat ke %s"
 
 #: commands.c:287 recvcmd.c:192
-#, fuzzy
 msgid "Message not bounced."
-msgstr "Surat telah ditembuskan."
+msgstr "Surat tidak dibounce."
 
 #: commands.c:287 recvcmd.c:192
-#, fuzzy
 msgid "Messages not bounced."
-msgstr "Surat-surat telah ditembuskan."
+msgstr "Surat-surat tidak dibounce."
 
 #: commands.c:297 recvcmd.c:211
 msgid "Message bounced."
-msgstr "Surat telah ditembuskan."
+msgstr "Surat telah dibounce."
 
 #: commands.c:297 recvcmd.c:211
 msgid "Messages bounced."
-msgstr "Surat-surat telah ditembuskan."
+msgstr "Surat-surat telah dibounce."
 
 #: commands.c:374 commands.c:408 commands.c:425
 msgid "Can't create filter process"
@@ -592,15 +589,14 @@ msgstr ""
 "(b)atal? "
 
 #: compose.c:223
-#, fuzzy
 msgid "eswabf"
-msgstr "etsdb"
+msgstr "etgsdb"
 
 #: compose.c:231
-#, fuzzy
 msgid ""
 "1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, or (f)orget it? "
-msgstr "1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, or (b)atal? "
+msgstr ""
+"1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, atau (b)atal? "
 
 #: compose.c:233
 msgid "12345f"
@@ -623,7 +619,7 @@ msgstr "-- Lampiran"
 #: compose.c:422
 #, c-format
 msgid "Warning: '%s' is a bad IDN."
-msgstr ""
+msgstr "Peringatan: IDN '%s' tidak benar."
 
 #: compose.c:445
 msgid "You may not delete the only attachment."
@@ -632,7 +628,7 @@ msgstr "Tidak bisa menghapus satu-satunya lampiran."
 #: compose.c:711 send.c:1433
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
-msgstr ""
+msgstr "IDN di \"%s\" tidak benar: '%s'"
 
 #: compose.c:799
 msgid "Attaching selected files..."
@@ -758,9 +754,8 @@ msgid "Enter SMIME passphrase:"
 msgstr "Masukkan passphrase S/MIME: "
 
 #: crypt.c:192
-#, fuzzy
 msgid "Create a traditional (inline) PGP message?"
-msgstr "Buat surat PGP inline?"
+msgstr "Buat surat PGP traditional (inline)?"
 
 #: crypt.c:200 pgpkey.c:559 postpone.c:538
 msgid "Invoking PGP..."
@@ -1125,7 +1120,7 @@ msgstr "Tidak ada sebaris pun di dalam surat.\n"
 #: edit.c:440
 #, c-format
 msgid "Bad IDN in %s: '%s'\n"
-msgstr ""
+msgstr "IDN di %s tidak benar: '%s'\n"
 
 #: edit.c:458
 #, c-format
@@ -1143,9 +1138,9 @@ msgid "could not write temporary mail folder: %s"
 msgstr "Tidak bisa membuat kotak surat sementara: %s"
 
 #: editmsg.c:101
-#, fuzzy, c-format
+#, c-format
 msgid "could not truncate temporary mail folder: %s"
-msgstr "Tidak bisa membuat kotak surat sementara: %s"
+msgstr "tidak bisa memotong kotak surat sementara: %s"
 
 #: editmsg.c:116
 msgid "Message file is empty!"
@@ -1556,7 +1551,7 @@ msgstr "alias: tidak ada alamat email"
 #: init.c:536
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr ""
+msgstr "Peringatan: IDN '%s' di alias '%s' tidak benar.\n"
 
 #: init.c:599
 msgid "invalid header field"
@@ -1706,14 +1701,13 @@ msgid "%s: no such function"
 msgstr "%s: tidak ada fungsi begitu"
 
 #: keymap.c:909
-#, fuzzy
 msgid "Enter keys (^G to abort): "
-msgstr "Masukkan keyID untuk %s: "
+msgstr "Masukkan kunci-kunci (^G utk batal): "
 
 #: keymap.c:914
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr ""
+msgstr "Kar = %s, Oktal = %o, Desimal = %d"
 
 #: keymap_alldefs.h:5
 msgid "null operation"
@@ -1764,9 +1758,8 @@ msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "tampilkan semua kotak surat atau hanya yang langganan? (untuk IMAP)"
 
 #: keymap_alldefs.h:17
-#, fuzzy
 msgid "list mailboxes with new mail"
-msgstr "Tidak ada kotak surat dengan surat baru."
+msgstr "tampilkan daftar kotak surat dengan surat baru"
 
 #: keymap_alldefs.h:18
 msgid "change directories"
@@ -2145,9 +2138,8 @@ msgid "jump to the next new message"
 msgstr "ke surat berikutnya yang baru"
 
 #: keymap_alldefs.h:112
-#, fuzzy
 msgid "jump to the next new or unread message"
-msgstr "ke surat berikutnya yang belum dibaca"
+msgstr "ke surat berikutnya yang baru atau belum dibaca"
 
 #: keymap_alldefs.h:113
 msgid "jump to the next subthread"
@@ -2186,9 +2178,8 @@ msgid "jump to the previous new message"
 msgstr "ke surat sebelumnya yang baru"
 
 #: keymap_alldefs.h:122
-#, fuzzy
 msgid "jump to the previous new or unread message"
-msgstr "ke surat sebelumnya yang belum dibaca"
+msgstr "ke surat sebelumnya yang baru atau belum dibaca"
 
 #: keymap_alldefs.h:123
 msgid "jump to the previous unread message"
@@ -2400,7 +2391,7 @@ msgstr "tampilkan lampiran MIME"
 
 #: keymap_alldefs.h:175
 msgid "display the keycode for a key press"
-msgstr ""
+msgstr "tampilkan keycode untuk penekanan tombol"
 
 #: keymap_alldefs.h:176
 msgid "show currently active limit pattern"
@@ -2499,20 +2490,18 @@ msgstr ""
 "Untuk melaporkan bug, mohon gunakan program flea(1).\n"
 
 #: main.c:50
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2002 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2001 Michael R. Elkins dan kawan-kawan.\n"
+"Copyright (C) 1996-2002 Michael R. Elkins dan kawan-kawan.\n"
 "Mutt TIDAK menyertakan jaminan dalam bentuk apapun; baca 'mutt -vv'.\n"
 "Mutt adalah software bebas, anda diperbolehkan utk menyebarluaskannya\n"
 "dengan beberapa persyaratan; baca 'mutt -vv' utk jelasnya.\n"
 
 #: main.c:56
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -2539,13 +2528,13 @@ msgid ""
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 msgstr ""
-"Hak Cipta (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
-"Hak Cipta (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
-"Hak Cipta (C) 1997-2001 Thomas Roessler <roessler@guug.de>\n"
-"Hak Cipta (C) 1998-2001 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Hak Cipta (C) 1999-2001 Brendan Cully <brendan@kublai.com>\n"
-"Hak Cipta (C) 1999-2001 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-"Copyright (C) 2000-2001 Edmund Grimley Evans <edmundo@rano.org>\n"
+"Hak Cipta (C) 1996-2002 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Hak Cipta (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
+"Hak Cipta (C) 1997-2002 Thomas Roessler <roessler@guug.de>\n"
+"Hak Cipta (C) 1998-2002 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Hak Cipta (C) 1999-2002 Brendan Cully <brendan@kublai.com>\n"
+"Hak Cipta (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "Dan banyak lagi yang tidak dapat disebutkan di sini satu per satu telah\n"
 "menyumbangkan banyak kode, perbaikan dan saran.\n"
@@ -2567,7 +2556,6 @@ msgstr ""
 "02111, USA.\n"
 
 #: main.c:94
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -2607,12 +2595,15 @@ msgstr ""
 "<file> ]\n"
 "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] "
 "[...]\n"
+"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] "
+"[...]\n"
 "       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
 "[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
 "opsi:\n"
+"  -A <alias>\tekspansi alias\n"
 "  -a <file>\tlampirkan file ke surat\n"
 "  -b <alamat>\talamat blind carbon-copy (BCC)\n"
 "  -c <alamat>\talamat carbon-copy (CC)\n"
@@ -2825,7 +2816,7 @@ msgstr "Membaca %s... %d"
 
 #: mh.c:1042
 msgid "maildir_commit_message(): unable to set time on file"
-msgstr ""
+msgstr "maildir_commit_message(): tidak dapat mengeset waktu pada file"
 
 #: muttlib.c:839
 msgid "File is a directory, save under it?"
@@ -2878,7 +2869,7 @@ msgstr "Kesalahan waktu menghubungi ke server %s (%s)"
 #: mutt_socket.c:418 mutt_socket.c:475
 #, c-format
 msgid "Bad IDN \"%s\"."
-msgstr ""
+msgstr "IDN \"%s\" tidak benar."
 
 #: mutt_socket.c:425 mutt_socket.c:482
 #, c-format
@@ -3315,9 +3306,8 @@ msgstr ""
 "\n"
 
 #: pgp.c:662
-#, fuzzy
 msgid "Internal error. Inform <roessler@does-not-exist.org>."
-msgstr "Internal error. Hubungi <roessler@guug.de>."
+msgstr "Internal error. Beritahukan kepada <roessler@does-not-exist.org>."
 
 #: pgp.c:722
 msgid ""
@@ -3374,9 +3364,8 @@ msgid "Fetching PGP key..."
 msgstr "Mengambil PGP key..."
 
 #: pgpkey.c:486
-#, fuzzy
 msgid "All matching keys are expired, revoked, or disabled."
-msgstr "Semua kunci yang cocok telah ditandai kadaluwarsa/dicabut."
+msgstr "Semua kunci yang cocok telah kadaluwarsa, dicabut, atau disabled."
 
 #. __STRCAT_CHECKED__
 #: pgpkey.c:512 smime.c:412
@@ -3563,9 +3552,8 @@ msgid "Illegal S/MIME header"
 msgstr "S/MIME header tidak betul"
 
 #: postpone.c:545
-#, fuzzy
 msgid "Decryption failed."
-msgstr "Login gagal."
+msgstr "Dekripsi gagal."
 
 #: query.c:46
 msgid "New Query"
@@ -3672,14 +3660,12 @@ msgid "You may only bounce message/rfc822 parts."
 msgstr "Anda hanya dapat menge-bounce bagian-bagian 'message/rfc822'."
 
 #: recvcmd.c:213
-#, fuzzy
 msgid "Error bouncing message!"
-msgstr "Gagal mengirim surat."
+msgstr "Gagal menge-bounce surat!"
 
 #: recvcmd.c:213
-#, fuzzy
 msgid "Error bouncing messages!"
-msgstr "Gagal mengirim surat."
+msgstr "Gagal menge-bounce surat-surat!"
 
 #: recvcmd.c:413
 #, c-format
@@ -3863,9 +3849,8 @@ msgid "Recall postponed message?"
 msgstr "Lanjutkan surat yang ditunda sebelumnya?"
 
 #: send.c:1318
-#, fuzzy
 msgid "Edit forwarded message?"
-msgstr "Mempersiapkan surat yg diforward..."
+msgstr "Edit surat yg diforward?"
 
 #: send.c:1341
 msgid "Abort unmodified message?"
@@ -3947,7 +3932,7 @@ msgstr "Keluaran dari proses pengiriman"
 #: sendlib.c:2264
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
-msgstr ""
+msgstr "IDN %s pada saat mempersiapkan resent-from tidak benar."
 
 #: signal.c:39
 #, c-format
@@ -3990,7 +3975,7 @@ msgstr "Tdk valid "
 
 #: smime.c:318
 msgid "Unknown   "
-msgstr ""
+msgstr "Tdk diketahui"
 
 #: smime.c:347
 msgid "Enter keyID: "
