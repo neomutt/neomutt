@@ -818,15 +818,16 @@ int mutt_decode_save_attachment (FILE *fp, BODY *m, char *path,
     }
 
     saved_encoding = m->encoding;
+    if (!is_multipart (m))
+      m->encoding = ENC8BIT;
+    
     m->length = st.st_size;
-    m->encoding = ENC8BIT;
     m->offset = 0;
     saved_parts = m->parts;
     saved_hdr = m->hdr;
     mutt_parse_part (s.fpin, m);
 
-    /* display a readable version to the user */
-    if (m->noconv)
+    if (m->noconv || is_multipart (m))
       s.flags |= M_CHARCONV;
   }
   else
