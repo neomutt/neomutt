@@ -1782,7 +1782,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   else
   {
     /* Default search path from RFC1524 */
-    MailcapPath = safe_strdup ("~/.mailcap:" SHAREDIR "/mailcap:" SYSCONFDIR "/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap");
+    MailcapPath = safe_strdup ("~/.mailcap:" PKGDATADIR "/mailcap:" SYSCONFDIR "/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap");
   }
 
   Tempdir = safe_strdup ((p = getenv ("TMPDIR")) ? p : "/tmp");
@@ -1881,9 +1881,9 @@ void mutt_init (int skip_sys_rc, LIST *commands)
     if (access (buffer, F_OK) == -1)
       snprintf (buffer, sizeof(buffer), "%s/Muttrc", SYSCONFDIR);
     if (access (buffer, F_OK) == -1)
-      snprintf (buffer, sizeof (buffer), "%s/Muttrc-%s", SHAREDIR, MUTT_VERSION);
+      snprintf (buffer, sizeof (buffer), "%s/Muttrc-%s", PKGDATADIR, MUTT_VERSION);
     if (access (buffer, F_OK) == -1)
-      snprintf (buffer, sizeof (buffer), "%s/Muttrc", SHAREDIR);
+      snprintf (buffer, sizeof (buffer), "%s/Muttrc", PKGDATADIR);
     if (access (buffer, F_OK) != -1)
     {
       if (source_rc (buffer, &err) != 0)

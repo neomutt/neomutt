@@ -61,10 +61,6 @@ to ``configure'' to help it out, or change the default behavior:
 --prefix=DIR
 	install Mutt in DIR instead of /usr/local
 
---with-sharedir=DIR
-	specify where to put architecture independent data files
-
-
 --with-curses=DIR
 	use the curses lib in DIR/lib.  If you have ncurses, ``configure''
 	will automatically look in /usr/include/ncurses for the include

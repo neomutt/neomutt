@@ -52,7 +52,7 @@ makedoc_DEPENDENCIES =
 
 CPP=@CPP@
 
-DEFS=-DSHAREDIR=\"$(sharedir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
+DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 	-DBINDIR=\"$(bindir)\" -DHAVE_CONFIG_H=1
 
 INCLUDES=-I. -I$(top_srcdir) $(IMAP_INCLUDES) -Iintl -I$(includedir)
@@ -129,12 +129,11 @@ install-exec-local:
 	fi
 
 install-data-local: Muttrc
-	$(srcdir)/mkinstalldirs $(DESTDIR)$(sharedir)
 	$(srcdir)/mkinstalldirs $(DESTDIR)$(sysconfdir)
-	-if [ -f $(DESTDIR)$(sharedir)/Muttrc ] ; then \
-		mv $(DESTDIR)$(sharedir)/Muttrc $(DESTDIR)$(sysconfdir) ; \
-	elif [ -f $(DESTDIR)$(sharedir)/../Muttrc ] ; then \
-	 	mv $(DESTDIR)$(sharedir)/../Muttrc $(DESTDIR)$(sysconfdir) ; \
+	-if [ -f $(DESTDIR)$(pkgdatadir)/Muttrc ] ; then \
+		mv $(DESTDIR)$(pkgdatadir)/Muttrc* $(DESTDIR)$(sysconfdir) ; \
+	elif [ -f $(DESTDIR)$(pkgdatadir)/../Muttrc ] ; then \
+	 	mv $(DESTDIR)$(pkgdatadir)/../Muttrc* $(DESTDIR)$(sysconfdir) ; \
 	elif [ ! -f $(DESTDIR)$(sysconfdir)/Muttrc ] ; then \
 		$(INSTALL) -m 644 $(srcdir)/Muttrc $(DESTDIR)$(sysconfdir) ; \
 	fi

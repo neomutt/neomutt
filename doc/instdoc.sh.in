@@ -5,7 +5,6 @@ exec_prefix=@exec_prefix@
 bindir=@bindir@
 libdir=@libdir@
 mandir=@mandir@
-sharedir=@sharedir@
 srcdir=@srcdir@
 docdir=@docdir@
 includedir=@includedir@

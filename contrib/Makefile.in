@@ -1,34 +1,33 @@
 # $Id$
 
-SHELL=/bin/sh
+SHELL = /bin/sh
 
-PACKAGE=@PACKAGE@
-VERSION=@VERSION@
+PACKAGE = @PACKAGE@
+VERSION = @VERSION@
 
-prefix=@prefix@
-exec_prefix=@exec_prefix@
-bindir=@bindir@
-libdir=@libdir@
-mandir=@mandir@
-sharedir=@sharedir@
-srcdir=@srcdir@
-docdir=@docdir@
-top_srcdir=@top_srcdir@
-top_builddir=..
-INSTALL=@INSTALL@
-VPATH=@srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+bindir = @bindir@
+libdir = @libdir@
+mandir = @mandir@
+srcdir = @srcdir@
+docdir = @docdir@
+top_srcdir = @top_srcdir@
+top_builddir = ..
+INSTALL = @INSTALL@
+VPATH = @srcdir@
 @SET_MAKE@
 
-subdir=contrib
+subdir = contrib
 
-SAMPLES=Mush.rc Pine.rc gpg.rc pgp2.rc pgp5.rc pgp6.rc Tin.rc \
+SAMPLES = Mush.rc Pine.rc gpg.rc pgp2.rc pgp5.rc pgp6.rc Tin.rc \
 	sample.muttrc  sample.mailcap sample.muttrc-tlr
 
-DISTFILES= Makefile.in language.txt language50.txt  \
+DISTFILES = Makefile.in language.txt language50.txt  \
 	patch.slang-1.2.2.keypad.1	\
 	$(SAMPLES)
 
-ICONV_DISTFILES=README make.sh
+ICONV_DISTFILES = README make.sh
 
 all clean:
 

@@ -35,7 +35,7 @@ prefix=@prefix@
 DEBUGGER=@DEBUGGER@
 SENDMAIL=@SENDMAIL@
 sysconfdir=@sysconfdir@
-sharedir=@sharedir@
+pkgdatadir=@pkgdatadir@
 
 include_file ()
 {
@@ -251,7 +251,7 @@ fi
 
 if test "$global" = "yes" ; then
 	CANDIDATES="Muttrc-${MUTTVERSION} Muttrc"
-	DIRECTORIES="$sysconfdir $sharedir"
+	DIRECTORIES="$sysconfdir $pkgdatadir"
 	MATCHED="none"
 	for d in $DIRECTORIES ; do
 		for f in $CANDIDATES; do

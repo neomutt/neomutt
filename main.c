@@ -382,7 +382,7 @@ static void show_version (void)
 
   printf ("SENDMAIL=\"%s\"\n", SENDMAIL);
   printf ("MAILPATH=\"%s\"\n", MAILPATH);
-  printf ("SHAREDIR=\"%s\"\n", SHAREDIR);
+  printf ("PKGDATADIR=\"%s\"\n", PKGDATADIR);
   printf ("SYSCONFDIR=\"%s\"\n", SYSCONFDIR);
   printf ("EXECSHELL=\"%s\"\n", EXECSHELL);
 #ifdef MIXMASTER

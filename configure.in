@@ -404,29 +404,6 @@ fi
 
 AC_SUBST(DOTLOCK_TARGET)
 
-
-AC_MSG_CHECKING(where to put architecture-dependent files)
-AC_ARG_WITH(libdir, [  --with-libdir=PATH         Specify where to put arch dependent files],
-        [mutt_cv_libdir=$withval],
-        [mutt_cv_libdir="${mutt_cv_prefix}/lib/mutt"])
-AC_MSG_RESULT($mutt_cv_libdir)
-
-libdir=$mutt_cv_libdir
-AC_SUBST(libdir)
-
-AC_MSG_CHECKING(where to put architecture-independent data files)
-AC_ARG_WITH(sharedir, [  --with-sharedir=PATH       Specify where to put arch independent files],
-        [mutt_cv_sharedir=$withval],
-        [if test -d ${mutt_cv_prefix}/share; then
-                mutt_cv_sharedir="${mutt_cv_prefix}/share/mutt"
-        else
-                mutt_cv_sharedir="$libdir"
-        fi])
-AC_MSG_RESULT($mutt_cv_sharedir)
-
-sharedir=$mutt_cv_sharedir
-AC_SUBST(sharedir)
-
 AC_ARG_WITH(iconv, [  --with-iconv=DIR           Where libiconv is installed ],
        [mutt_cv_iconv=$withval
        if test "$mutt_cv_iconv" != yes -a \

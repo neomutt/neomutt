@@ -968,14 +968,14 @@ static int lookup_mime_type (BODY *att, const char *path)
 	snprintf (buf, sizeof (buf), "%s/.mime.types", NONULL(Homedir));
 	break;
       case 1:
-        strfcpy (buf, SYSCONFDIR"/mime.types", sizeof(buf));
-        break;
+	strfcpy (buf, SYSCONFDIR"/mime.types", sizeof(buf));
+	break;
       case 2:
-	strfcpy (buf, SHAREDIR"/mime.types", sizeof (buf));
+	strfcpy (buf, PKGDATADIR"/mime.types", sizeof (buf));
 	break;
       default:
-        dprint (1, (debugfile, "lookup_mime_type: Internal error, count = %d.\n", count));
-        goto bye;	/* shouldn't happen */
+	dprint (1, (debugfile, "lookup_mime_type: Internal error, count = %d.\n", count));
+	goto bye;	/* shouldn't happen */
     }
 
     if ((f = fopen (buf, "r")) != NULL)

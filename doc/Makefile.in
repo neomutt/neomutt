@@ -1,39 +1,37 @@
 # $Id$
 
-SHELL=/bin/sh
+SHELL = /bin/sh
 
-PACKAGE=@PACKAGE@
-VERSION=@VERSION@
+PACKAGE = @PACKAGE@
+VERSION = @VERSION@
 
-prefix=@prefix@
-exec_prefix=@exec_prefix@
-bindir=@bindir@
-libdir=@libdir@
-mandir=@mandir@
-sharedir=@sharedir@
-srcdir=@srcdir@
-docdir=@docdir@
-includedir = @includedir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+bindir = @bindir@
+libdir = @libdir@
+mandir = @mandir@
+srcdir = @srcdir@
+docdir = @docdir@
+includedir  =  @includedir@
 top_srcdir=@top_srcdir@
-top_builddir=..
-VPATH=@srcdir@
+top_builddir = ..
+VPATH = @srcdir@
 @SET_MAKE@
 
-INSTALL=@INSTALL@
-CC=@CC@
-CPP=@CPP@
-XCPPFLAGS=-I. @CPPFLAGS@
-CFLAGS=@CFLAGS@ -DSHAREDIR=\"$(sharedir)\" $(XCPPFLAGS)
-LDFLAGS=@LDFLAGS@
+INSTALL = @INSTALL@
+CC = @CC@
+CPP = @CPP@
+XCPPFLAGS = -I. @CPPFLAGS@
+CFLAGS = @CFLAGS@ $(XCPPFLAGS)
+LDFLAGS = @LDFLAGS@
 subdir = doc
 
 CPPFLAGS = @CPPFLAGS@
 
-DEFS=-DSHAREDIR=\"$(sharedir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
-	-DBINDIR=\"$(bindir)\" -DHAVE_CONFIG_H=1
-INCLUDES=-I. -I.. -I$(includedir) -I$(top_srcdir)
+DEFS = -DSYSCONFDIR=\"$(sysconfdir)\" -DBINDIR=\"$(bindir)\" -DHAVE_CONFIG_H=1
+INCLUDES = -I. -I.. -I$(includedir) -I$(top_srcdir)
 
-MAKEDOC_CPP=$(CPP) $(INCLUDES) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C 
+MAKEDOC_CPP = $(CPP) $(INCLUDES) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C 
 
 DISTFILES = Makefile.in dotlock.man  	\
 	muttbug.man			\
@@ -150,7 +148,7 @@ dist distdir: Makefile $(DISTFILES)
 	(cd .. && $(MAKE) makedoc)
 
 # hack around autoconf mixing up patterns.
-at=@
+at = @
 
 update-doc:  ../makedoc stamp-doc-sgml stamp-doc-man manual.txt manual.html
 
