@@ -770,7 +770,7 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
       chflags |= (ctx.magic == M_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
       if (_mutt_copy_message (msg->fp, fp, hn, hn->content, 0, chflags) == 0 
 	  && mx_commit_message (msg, &ctx) == 0)
-	mutt_message _("Attachment saved.");
+	r = 0;
       else
 	r = -1;
 
