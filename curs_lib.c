@@ -249,7 +249,7 @@ void mutt_endwin (const char *msg)
   {
 #ifdef USE_SLANG_CURSES
     CLEARLINE (LINES - 1);
-    move (LINES - 1, 0)
+    move (LINES - 1, 0);
 #else
       move (LINES - 1, COLS - 1);
     CLEARLINE (LINES - 1);
