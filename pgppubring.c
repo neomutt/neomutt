@@ -897,6 +897,8 @@ static void pgpring_dump_keyblock (pgp_key_t *p)
       putchar ('r');
     if (p->flags & KEYFLAG_EXPIRED)
       putchar ('e');
+    if (p->flags & KEYFLAG_DISABLED)
+      putchar ('d');
 
     for (uid = p->address; uid; uid = uid->next, first = 0)
     {
