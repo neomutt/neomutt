@@ -161,7 +161,14 @@ static int pgp_copy_checksig (FILE *fpin, FILE *fpout)
     while ((line = mutt_read_line (line, &linelen, fpin, &lineno)) != NULL)
     {
       if (regexec (PgpGoodSign.rx, line, 0, NULL, 0) == 0)
+      {
+	dprint (2, (debugfile, "pgp_copy_checksig: \"%s\" matches regexp.\n",
+		    line));
 	rv = 0;
+      }
+      else
+	dprint (2, (debugfile, "pgp_copy_checksig: \"%s\" doesn't match regexp.\n",
+		    line));
       
       fputs (line, fpout);
       fputc ('\n', fpout);
@@ -170,6 +177,7 @@ static int pgp_copy_checksig (FILE *fpin, FILE *fpout)
   }
   else
   {
+    dprint (2, (debugfile, "pgp_copy_checksig: No pattern.\n"));
     mutt_copy_stream (fpin, fpout);
     rv = 1;
   }
@@ -716,7 +724,10 @@ static int pgp_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
     safe_fclose (&pgpout);
     fflush (pgperr);
     rewind (pgperr);
-    mutt_copy_stream (pgperr, s->fpout);
+    
+    if (pgp_copy_checksig  (pgperr, s->fpout) >= 0)
+      badsig = 0;
+
     safe_fclose (&pgperr);
     
     if ((rv = mutt_wait_filter (thepid)))
@@ -730,6 +741,8 @@ static int pgp_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
   mutt_unlink (sigfile);
   mutt_unlink (pgperrfile);
 
+  dprint (1, (debugfile, "pgp_verify_one: returning %d.\n", badsig));
+  
   return badsig;
 }
 
@@ -813,6 +826,8 @@ void pgp_signed_handler (BODY *a, STATE *s)
       mutt_unlink (tempfile);
 
       b->goodsig = goodsig;
+      
+      dprint (2, (debugfile, "pgp_signed_handler: goodsig = %d\n", goodsig));
       
       /* Now display the signed body */
       state_puts (_("[-- The following data is signed --]\n\n"), s);
