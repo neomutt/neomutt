@@ -88,7 +88,7 @@ int ssl_init (void)
 #ifdef HAVE_RAND_EGD
   file = SslEntropyFile;
   if (file && RAND_egd(file) != -1)
-    GOT_ENTROPY;
+    GOT_ENTROPY();
   file = getenv("EGDSOCKET");
   if (file && RAND_egd(file) != -1)
     GOT_ENTROPY();
