@@ -148,7 +148,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
     }
   
     if (n > 1) {
-      if (sscanf (tmp, ":%hd%127s", &(mx->account.port), tmp) >= 1)
+      if (sscanf (tmp, ":%hu%127s", &(mx->account.port), tmp) >= 1)
 	mx->account.flags |= M_ACCT_PORT;
       if (sscanf (tmp, "/%s", tmp) == 1)
       {
