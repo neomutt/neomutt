@@ -1,3 +1,8 @@
+2004-07-20 08:17:21  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* imap/message.c, mutt.h, parse.c, send.c, url.c: Use List-Post
+	headers when doing list-reply.
+
 2004-07-19 21:44:23  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
 
 	* globals.h, imap/message.c, init.h: Fix #1548.  (The first
