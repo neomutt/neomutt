@@ -694,7 +694,7 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
 	return -1;
       if (mx_open_mailbox(path, M_APPEND | M_QUIET, &ctx) == NULL)
 	return -1;
-      if ((msg = mx_open_new_message (&ctx, hn, is_from (buf, NULL, 0) ? 0 : M_ADD_FROM)) == NULL)
+      if ((msg = mx_open_new_message (&ctx, hn, is_from (buf, NULL, 0, NULL) ? 0 : M_ADD_FROM)) == NULL)
       {
 	mx_close_mailbox(&ctx, NULL);
 	return -1;

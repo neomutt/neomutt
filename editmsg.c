@@ -127,7 +127,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
 
   of = cf = 0;
   
-  if (fgets (buff, sizeof (buff), fp) && is_from (buff, NULL, 0))
+  if (fgets (buff, sizeof (buff), fp) && is_from (buff, NULL, 0, NULL))
   {
     if (tmpctx.magic == M_MBOX || tmpctx.magic == M_MMDF ||
 	tmpctx.magic == M_KENDRA)

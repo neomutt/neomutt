@@ -143,9 +143,8 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
       }
 
       return_path[0] = 0;
-      t = is_from (buf, return_path, sizeof (return_path));
 
-      if (!t)
+      if (!is_from (buf, return_path, sizeof (return_path), &t))
       {
 	if (fseek (ctx->fp, loc, SEEK_SET) != 0)
 	{
@@ -264,7 +263,7 @@ int mbox_parse_mailbox (CONTEXT *ctx)
   loc = ftell (ctx->fp);
   while (fgets (buf, sizeof (buf), ctx->fp) != NULL)
   {
-    if ((t = is_from (buf, return_path, sizeof (return_path))))
+    if (is_from (buf, return_path, sizeof (return_path), &t))
     {
       /* Save the Content-Length of the previous message */
       if (count > 0)

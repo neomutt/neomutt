@@ -21,7 +21,6 @@
 #include "mx.h"
 #include "copy.h"
 #include "rfc2047.h"
-#include "parse.h"
 #include "mime.h"
 
 #ifdef HAVE_PGP

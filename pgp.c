@@ -29,7 +29,6 @@
 #include "mutt_curses.h"
 #include "pgp.h"
 #include "mime.h"
-#include "parse.h"
 
 #include <sys/wait.h>
 #include <string.h>

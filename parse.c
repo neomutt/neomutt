@@ -966,7 +966,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
       /* some bogus MTAs will quote the original "From " line */
       if (mutt_strncmp (">From ", line, 6) == 0)
 	continue; /* just ignore */
-      else if ((t = is_from (line, return_path, sizeof (return_path))))
+      else if (is_from (line, return_path, sizeof (return_path), &t))
       {
 	/* MH somtimes has the From_ line in the middle of the header! */
 	if (hdr && !hdr->received)

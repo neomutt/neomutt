@@ -57,7 +57,7 @@ static int is_day_name (const char *s)
  * From [ <return-path> ] <weekday> <month> <day> <time> [ <timezone> ] <year>
  */
 
-time_t is_from (const char *s, char *path, size_t pathlen)
+int is_from (const char *s, char *path, size_t pathlen, time_t *tp)
 {
   struct tm tm;
   int yr;
@@ -178,5 +178,6 @@ time_t is_from (const char *s, char *path, size_t pathlen)
 
   tm.tm_isdst = -1;
 
-  return (mutt_mktime (&tm, 0));
+  if (tp) *tp = mutt_mktime (&tm, 0);
+  return 1;
 }
