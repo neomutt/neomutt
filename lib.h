@@ -70,7 +70,7 @@
  * 
  * See K&R 2nd ed, p. 231 for an explanation.
  */
-# define _MUTT_FORMAT_2(a,b)	"%" ## a ## b
+# define _MUTT_FORMAT_2(a,b)	"%" a  b
 # define _MUTT_FORMAT_1(a, b)	_MUTT_FORMAT_2(#a, b)
 # define MUTT_FORMAT(a)		_MUTT_FORMAT_1(a, "s")
 # define MUTT_FORMAT2(a,b)	_MUTT_FORMAT_1(a, b)
