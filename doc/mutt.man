@@ -17,7 +17,7 @@
 .\"     along with this program; if not, write to the Free Software
 .\"     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
 .\"
-.TH mutt 1 "June 2001" Unix "User Manuals"
+.TH mutt 1 "January 2002" Unix "User Manuals"
 .SH NAME
 .PP
 mutt \- The Mutt Mail User Agent
@@ -40,6 +40,9 @@ mutt \- The Mutt Mail User Agent
 .PP
 .B mutt
 [-n] [-e \fIcmd\fP] [-F \fIfile\fP] -p
+.PP
+.B mutt
+[-n] [-e \fIcmd\fP] [-F \fIfile\fP] -Q \fIquery\fP
 .PP
 .B mutt 
 -v[v]
@@ -76,6 +79,10 @@ specify a default mailbox type
 Causes Mutt to bypass the system configuration file.
 .IP "-p"
 Resume a postponed message.
+.IP "-Q \fIquery\fP"
+Qeury a configuration variables value.  The query is executed after
+all configuration files have been parsed, and any commands given on
+the command line have been executed.
 .IP "-R"
 Open a mailbox in \fIread-only\fP mode.
 .IP "-s \fIsubject\fP"
