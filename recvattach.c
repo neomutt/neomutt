@@ -766,7 +766,9 @@ mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, HEADER *hdr,
 	}
         op = OP_VIEW_ATTACH;
 	break;
+      /* functions which are passed through from the pager */
       case OP_ATTACH_COLLAPSE:
+      case OP_CHECK_TRADITIONAL:
         if (recv)
           return op;
       default:
@@ -842,7 +844,7 @@ void mutt_view_attachments (HEADER *hdr)
   short idxlen = 0;
   short idxmax = 0;
   int flags = 0;
-  int op;
+  int op = OP_NULL;
   
   /* make sure we have parsed this message */
   mutt_parse_mime_message (Context, hdr);
@@ -890,7 +892,9 @@ void mutt_view_attachments (HEADER *hdr)
 
   FOREVER
   {
-    switch (op = mutt_menuLoop (menu))
+    if (op == OP_NULL)
+      op = mutt_menuLoop (menu);
+    switch (op)
     {
       case OP_ATTACH_VIEW_MAILCAP:
 	mutt_view_attachment (fp, idx[menu->current]->content, M_MAILCAP,
@@ -908,11 +912,8 @@ void mutt_view_attachments (HEADER *hdr)
       case OP_VIEW_ATTACH:
         op = mutt_attach_display_loop (menu, op, fp, hdr, cur, &idx, &idxlen, &idxmax, 1);
         menu->redraw = REDRAW_FULL;
-        if (op != OP_ATTACH_COLLAPSE)
-          break;
-        if (!idx[menu->current]->content->collapsed)
-	  break;
-        /* else fall through - hack! */
+        continue;
+
       case OP_ATTACH_COLLAPSE:
         if (!idx[menu->current]->content->parts)
         {
@@ -928,10 +929,23 @@ void mutt_view_attachments (HEADER *hdr)
       
 
 #ifdef HAVE_PGP
+      case OP_FORGET_PASSPHRASE:
+        mutt_forget_passphrase ();
+        break;
+      
       case OP_EXTRACT_KEYS:
         pgp_extract_keys_from_attachment_list (fp, menu->tagprefix, 
 		  menu->tagprefix ? cur : idx[menu->current]->content);
         menu->redraw = REDRAW_FULL;
+        break;
+      
+      case OP_CHECK_TRADITIONAL:
+        if (pgp_check_traditional (fp, menu->tagprefix ? cur : idx[menu->current]->content,
+				   menu->tagprefix))
+        {
+	  hdr->pgp = pgp_query (cur);
+	  menu->redraw = REDRAW_FULL;
+	}
         break;
 #endif
       
@@ -1119,6 +1133,8 @@ void mutt_view_attachments (HEADER *hdr)
 	mutt_menuDestroy  (&menu);
 	return;
     }
+
+    op = OP_NULL;
   }
 
   /* not reached */

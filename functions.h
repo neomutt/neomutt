@@ -136,6 +136,7 @@ struct binding_t OpMain[] = {
 
 
 #ifdef HAVE_PGP
+  { "check-traditional-pgp",	OP_CHECK_TRADITIONAL,		"\033P" },
   { "extract-keys",		OP_EXTRACT_KEYS,		"\013" },
   { "forget-passphrase",	OP_FORGET_PASSPHRASE,		"\006" },
   { "mail-key",			OP_MAIL_KEY,			"\033k" },
@@ -227,6 +228,7 @@ struct binding_t OpPager[] = {
 
 
 #ifdef HAVE_PGP
+  { "check-traditional-pgp",	OP_CHECK_TRADITIONAL,		"\033P"   },
   { "extract-keys",	OP_EXTRACT_KEYS,		"\013" },
   { "forget-passphrase",OP_FORGET_PASSPHRASE,		"\006" },
   { "mail-key",		OP_MAIL_KEY,			"\033k" },
@@ -261,7 +263,9 @@ struct binding_t OpAttach[] = {
   
 
 #ifdef HAVE_PGP
-  { "extract-keys",	OP_EXTRACT_KEYS,		"\013" },
+  { "check-traditional-pgp",	OP_CHECK_TRADITIONAL,		"\033P"   },
+  { "extract-keys",		OP_EXTRACT_KEYS,		"\013" },
+  { "forget-passphrase",	OP_FORGET_PASSPHRASE,		"\006" },
 #endif
 
 

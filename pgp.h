@@ -46,6 +46,7 @@ WHERE char *PgpGetkeysCommand;
 
 /* prototypes */
 
+int pgp_check_traditional (FILE *, BODY *, int);
 BODY *pgp_decrypt_part (BODY *, STATE *, FILE *);
 BODY *pgp_make_key_attachment (char *);
 const char *pgp_micalg (const char *fname);

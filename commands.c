@@ -847,3 +847,43 @@ void mutt_edit_content_type (HEADER *h, BODY *b, FILE *fp)
 #endif /* HAVE_PGP */
 
 }
+
+
+#ifdef HAVE_PGP
+
+static int _mutt_check_traditional_pgp (HEADER *h, int *redraw)
+{
+  MESSAGE *msg;
+  int rv = 0;
+  
+  mutt_parse_mime_message (Context, h);
+  if ((msg = mx_open_message (Context, h->msgno)) == NULL)
+    return 0;
+  if (pgp_check_traditional (msg->fp, h->content, 0))
+  {
+    h->pgp = pgp_query (h->content);
+    *redraw |= REDRAW_FULL;
+    rv = 1;
+  }
+  
+  mx_close_message (&msg);
+  return rv;
+}
+
+int mutt_check_traditional_pgp (HEADER *h, int *redraw)
+{
+  int i;
+  int rv = 0;
+  if (h)
+    rv = _mutt_check_traditional_pgp (h, redraw);
+  else
+  {
+    for (i = 0; i < Context->vcount; i++)
+      if (Context->hdrs[Context->v2r[i]]->tagged)
+	rv = _mutt_check_traditional_pgp (Context->hdrs[Context->v2r[i]], redraw)
+	  || rv;
+  }
+  return rv;
+}
+
+#endif

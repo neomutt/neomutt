@@ -1697,6 +1697,17 @@ int mutt_index_menu (void)
         pgp_extract_keys_from_messages(tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
         break;
+
+      case OP_CHECK_TRADITIONAL:
+      
+        CHECK_MSGCOUNT;
+        mutt_check_traditional_pgp (tag ? NULL : CURHDR, &menu->redraw);
+        if (menu->menu == MENU_PAGER)
+        {
+	  op = OP_DISPLAY_MESSAGE;
+	  continue;
+	}
+        break;
       
 #endif /* HAVE_PGP */
 
