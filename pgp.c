@@ -1172,15 +1172,15 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
 	  if (fqdn) rfc822_qualify (addr, fqdn);
 	  q = addr;
 	}
-	else if (r == M_NO)
-	  k_info = pgp_getkeybystr (keyID, KEYFLAG_CANENCRYPT, PGP_PUBRING);
 	else
-	{
-	  safe_free ((void **) &keylist);
-	  rfc822_free_address (&tmp);
-	  rfc822_free_address (&addr);
-	  return NULL;
-	}
+	  k_info = pgp_getkeybystr (keyID, KEYFLAG_CANENCRYPT, PGP_PUBRING);
+      }
+      else if (r == -1)
+      {
+	safe_free ((void **) &keylist);
+	rfc822_free_address (&tmp);
+	rfc822_free_address (&addr);
+	return NULL;
       }
     }
 
