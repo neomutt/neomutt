@@ -4,7 +4,7 @@
 ## Use aclocal -I m4; automake --foreign
 
 AUTOMAKE_OPTIONS = foreign
-EXTRA_PROGRAMS = mutt_dotlock pgpring
+EXTRA_PROGRAMS = mutt_dotlock pgpring makedoc
 
 if BUILD_CHARMAPS
 CHARMAP_SUBDIR = charmaps
@@ -39,6 +39,8 @@ mutt_SOURCES = $(BUILT_SOURCES) \
 
 mutt_LDADD = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAP) $(GSSLIBS) $(INTLLIBS) 
 mutt_DEPENDENCIES = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAPDEPS) $(INTLDEPS)
+
+makedoc_SOURCES = makedoc.c
 
 CPP=@CPP@
 
@@ -75,7 +77,6 @@ pgpring_SOURCES = pgppubring.c pgplib.c lib.c extlib.c sha1dgst.c
 pgpring_LDADD = @LIBOBJS@ $(INTLLIBS) 
 pgpring_DEPENDENCIES = @LIBOBJS@ $(INTLDEPS)
 
-makedoc:  makedoc.c
 
 mutt_dotlock.c: dotlock.c
 	cp $(srcdir)/dotlock.c mutt_dotlock.c
