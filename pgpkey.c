@@ -378,26 +378,39 @@ static int pgp_compare_trust (const void *a, const void *b)
 				       : _pgp_compare_trust (a, b));
 }
 
-static int pgp_id_is_valid (pgp_uid_t *uid)
+static int pgp_key_is_valid (pgp_key_t *k)
 {
-  pgp_key_t *pk = pgp_principal_key (uid->parent);
-
-  if (uid->parent->flags & KEYFLAG_CANTUSE)
+  pgp_key_t *pk = pgp_principal_key (k);
+  if (k->flags & KEYFLAG_CANTUSE)
     return 0;
   if (pk->flags & KEYFLAG_CANTUSE)
     return 0;
-  if (uid->flags & KEYFLAG_CANTUSE)
-    return 0;
-  if ((uid->trust & 0x03) < 3)
+  
+  return 1;
+}
+
+static int pgp_id_is_strong (pgp_uid_t *uid)
+{
+  if ((uid->trust & 3) < 3)
     return 0;
   /* else */
   return 1;
 }
 
+static int pgp_id_is_valid (pgp_uid_t *uid)
+{
+  if (!pgp_key_is_valid (uid->parent))
+    return 0;
+  if (uid->flags & KEYFLAG_CANTUSE)
+    return 0;
+  /* else */
+  return 1;
+}
 
-#define PGP_KV_VALID  1
-#define PGP_KV_ADDR   2
-#define PGP_KV_STRING 4
+#define PGP_KV_VALID  	1
+#define PGP_KV_ADDR   	2
+#define PGP_KV_STRING 	4
+#define PGP_KV_STRONGID 8
 
 #define PGP_KV_MATCH (PGP_KV_ADDR|PGP_KV_STRING)
 
@@ -408,6 +421,9 @@ static int pgp_id_matches_addr (ADDRESS *addr, ADDRESS *u_addr, pgp_uid_t *uid)
   if (pgp_id_is_valid (uid))
     rv |= PGP_KV_VALID;
 
+  if (pgp_id_is_strong (uid))
+    rv |= PGP_KV_STRONGID;
+  
   if (addr->mailbox && u_addr->mailbox
       && mutt_strcasecmp (addr->mailbox, u_addr->mailbox) == 0)
     rv |= PGP_KV_ADDR;
@@ -575,21 +591,15 @@ static pgp_key_t *pgp_select_key (pgp_key_t *keys,
       /* XXX make error reporting more verbose */
       
       if (option (OPTPGPCHECKTRUST))
-      {
-	pgp_key_t *key, *principal;
-	
-	key = KeyTable[menu->current]->parent;
-	principal = pgp_principal_key (key);
-	
-	if ((key->flags | principal->flags) & KEYFLAG_CANTUSE)
+	if (!pgp_key_is_valid (KeyTable[menu->current]->parent))
 	{
 	  mutt_error _("This key can't be used: expired/disabled/revoked.");
 	  break;
 	}
-      }
       
       if (option (OPTPGPCHECKTRUST) &&
-	  !pgp_id_is_valid (KeyTable[menu->current]))
+	  (!pgp_id_is_valid (KeyTable[menu->current])
+	   || !pgp_id_is_strong (KeyTable[menu->current])))
       {
 	char *s = "";
 	char buff[LONG_STRING];
@@ -789,15 +799,30 @@ static LIST *pgp_add_string_to_hints (LIST *hints, const char *str)
   return hints;
 }
 
+static pgp_key_t **pgp_get_lastp (pgp_key_t *p)
+{
+  for (; p; p = p->next)
+    if (!p->next)
+      return &p->next;
+
+  return NULL;
+}
 
 pgp_key_t *pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring)
 {
   ADDRESS *r, *p;
   LIST *hints = NULL;
-  int weak = 0;
-  int weak_association;
+
+  int weak    = 0;
+  int invalid = 0;
+  int multi   = 0;
+  int this_key_has_strong;
+  int this_key_has_weak;
+  int this_key_has_invalid;
   int match;
+
   pgp_key_t *keys, *k, *kn;
+  pgp_key_t *the_valid_key = NULL;
   pgp_key_t *matches = NULL;
   pgp_key_t **last = &matches;
   pgp_uid_t *q;
@@ -833,47 +858,51 @@ pgp_key_t *pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring)
       continue;
     }
 
-    weak_association = 1;
-    match = 0;
+    this_key_has_weak    = 0;	/* weak but valid match   */
+    this_key_has_invalid = 0;   /* invalid match          */
+    this_key_has_strong  = 0;	/* strong and valid match */
+    match                = 0;   /* any match 		  */
 
     for (q = k->address; q; q = q->next)
     {
       r = rfc822_parse_adrlist (NULL, q->addr);
 
-      for (p = r; p && weak_association; p = p->next)
+      for (p = r; p; p = p->next)
       {
 	int validity = pgp_id_matches_addr (a, p, q);
-	if (validity & PGP_KV_MATCH)
+
+	if (validity & PGP_KV_MATCH)	/* something matches */
 	  match = 1;
-	if ((validity & PGP_KV_ADDR) && (validity & PGP_KV_VALID))
-	  weak_association = 0;
+
+	/* is this key a strong candidate? */
+	if ((validity & PGP_KV_VALID) && (validity & PGP_KV_STRONGID) 
+	    && (validity & PGP_KV_ADDR))
+	{
+	  if (the_valid_key && the_valid_key != k)
+	    multi             = 1;
+	  the_valid_key       = k;
+	  this_key_has_strong = 1;
+	}
+	else if ((validity & PGP_KV_MATCH) && !(validity & PGP_KV_VALID))
+	  this_key_has_invalid = 1;
+	else if ((validity & PGP_KV_MATCH) 
+		 && (!(validity & PGP_KV_STRONGID) || !(validity & PGP_KV_ADDR)))
+	  this_key_has_weak    = 1;
       }
 
       rfc822_free_address (&r);
     }
 
-    if (match && weak_association)
+    if (match && !this_key_has_strong && this_key_has_invalid)
+      invalid = 1;
+    if (match && !this_key_has_strong && this_key_has_weak)
       weak = 1;
     
     if (match)
     {
-      pgp_key_t *_p, *_k;
-
-      _k = pgp_principal_key (k);
-      
-      *last = _k;
-      kn = pgp_remove_key (&keys, _k);
-
-      /* start with k, not with _k: k is always a successor of _k. */
-      
-      for (_p = k; _p; _p = _p->next)
-      {
-	if (!_p->next)
-	{
-	  last = &_p->next;
-	  break;
-	}
-      }
+      *last  = pgp_principal_key (k);
+      kn     = pgp_remove_key (&keys, *last);
+      last   = pgp_get_lastp (k);
     }
   }
 
@@ -881,18 +910,30 @@ pgp_key_t *pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring)
   
   if (matches)
   {
-    if (matches->next || weak)
+    if (the_valid_key && !multi && !weak 
+	&& !(invalid && option (OPTPGPSHOWUNUSABLE)))
+    {	
+      /* 
+       * There was precisely one strong match on a valid ID, there
+       * were no valid keys with weak matches, and we aren't
+       * interested in seeing invalid keys.
+       * 
+       * Proceed without asking the user.
+       */
+      pgp_remove_key (&matches, the_valid_key);
+      pgp_free_key (&matches);
+      k = the_valid_key;
+    }
+    else 
     {
-      /* query for which key the user wants */
-      k = pgp_select_key (matches, a, NULL);
-      if (k) 
+      /* 
+       * Else: Ask the user.
+       */
+      if ((k = pgp_select_key (matches, a, NULL)))
 	pgp_remove_key (&matches, k);
-
       pgp_free_key (&matches);
     }
-    else
-      k = matches;
-    
+
     return k;
   }
 
@@ -945,23 +986,9 @@ pgp_key_t *pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
     
     if (match)
     {
-      pgp_key_t *_p, *_k;
-
-      _k = pgp_principal_key (k);
-      
-      *last = _k;
-      kn = pgp_remove_key (&keys, _k);
-
-      /* start with k, not with _k: k is always a successor of _k. */
-      
-      for (_p = k; _p; _p = _p->next)
-      {
-	if (!_p->next)
-	{
-	  last = &_p->next;
-	  break;
-	}
-      }
+      *last = pgp_principal_key (k);
+      kn    = pgp_remove_key (&keys, *last);
+      last  = pgp_get_lastp (k);
     }
   }
 
@@ -969,8 +996,7 @@ pgp_key_t *pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
 
   if (matches)
   {
-    k = pgp_select_key (matches, NULL, p);
-    if (k) 
+    if ((k = pgp_select_key (matches, NULL, p)))
       pgp_remove_key (&matches, k);
     
     pgp_free_key (&matches);
