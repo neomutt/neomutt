@@ -716,9 +716,12 @@ int mh_read_dir (CONTEXT *ctx, const char *subdir)
   if(maildir_parse_dir(ctx, &last, subdir, &count) == -1)
     return -1;
 
-  mh_read_sequences (&mhs, ctx->path);
-  mh_update_maildir (md, &mhs);
-  mhs_free_sequences (&mhs);
+  if (ctx->magic == M_MH)
+  {
+    mh_read_sequences (&mhs, ctx->path);
+    mh_update_maildir (md, &mhs);
+    mhs_free_sequences (&mhs);
+  }
   
   maildir_move_to_context(ctx, &md);
   return 0;
@@ -1159,7 +1162,8 @@ int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
     }
   }
 
-  mh_update_sequences (ctx);
+  if (ctx->magic == M_MH)
+    mh_update_sequences (ctx);
   
   /* XXX race condition? */
 
