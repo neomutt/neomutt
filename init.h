@@ -377,6 +377,12 @@ struct option_t MuttVars[] = {
   ** for deletion.  This applies when you either explicitly delete a message,
   ** or when you save it to another folder.
   */
+  { "digest_collapse",	DT_BOOL, R_NONE, OPTDIGESTCOLLAPSE, 1},
+  /*
+  ** .pp
+  ** If this option is \fIset\fP, mutt's revattach menu will not show the subparts of
+  ** individual messages in a digest.  To see these subparts, press 'v' on that menu.
+  */
   { "display_filter",	DT_PATH, R_PAGER, UL &DisplayFilter, UL "" },
   /*
   ** .pp

@@ -242,7 +242,7 @@ struct binding_t OpPager[] = {
 
 struct binding_t OpAttach[] = {
   { "bounce-message",	OP_BOUNCE_MESSAGE,		"b" },
-  { "display-toggle-weed",	OP_DISPLAY_HEADERS,		"h" },
+  { "display-toggle-weed",	OP_DISPLAY_HEADERS,	"h" },
   { "edit-type",	OP_EDIT_TYPE,			"\005" },
   { "print-entry",	OP_PRINT,			"p" },
   { "save-entry",	OP_SAVE,			"s" },
@@ -257,8 +257,8 @@ struct binding_t OpAttach[] = {
   { "view-attach",	OP_VIEW_ATTACH,			M_ENTER_S },
   { "delete-entry",	OP_DELETE,			"d" },
   { "undelete-entry",	OP_UNDELETE,			"u" },
-
-
+  { "collapse-parts",	OP_ATTACH_COLLAPSE,		"v" },
+  
 
 #ifdef HAVE_PGP
   { "extract-keys",	OP_EXTRACT_KEYS,		"\013" },

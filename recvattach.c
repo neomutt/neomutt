@@ -111,11 +111,16 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
 				  int compose)
 {
   ATTACHPTR *new;
-
+  int i;
+  
   for (; m; m = m->next)
   {
     if (*idxlen == *idxmax)
-      safe_realloc ((void **) &idx, sizeof (ATTACHPTR *) * (*idxmax += 5));
+    {
+      safe_realloc ((void **) &idx, sizeof (ATTACHPTR *) * ((*idxmax) += 5));
+      for (i = *idxlen; i < *idxmax; i++)
+	idx[i] = NULL;
+    }
 
     if (m->type == TYPEMULTIPART && m->parts
 	&& (compose || (parent_type == -1 && mutt_strcasecmp ("alternative", m->subtype)))
@@ -128,15 +133,16 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
     }
     else
     {
-      new = idx[(*idxlen)++] = (ATTACHPTR *) safe_calloc (1, sizeof (ATTACHPTR));
+      if (!idx[*idxlen])
+	idx[*idxlen] = (ATTACHPTR *) safe_calloc (1, sizeof (ATTACHPTR));
+
+      new = idx[(*idxlen)++];
       new->content = m;
       new->parent_type = parent_type;
       new->level = level;
-      /* called when creating new menu, so clear the tagged indicator */
-      m->tagged = 0;
 
       /* We don't support multipart messages in the compose menu yet */
-      if (!compose && 
+      if (!compose && !m->collapsed && 
 	  ((m->type == TYPEMULTIPART
 #ifdef HAVE_PGP
 	    && !mutt_is_multipart_encrypted (m)
@@ -682,29 +688,35 @@ void mutt_print_attachment_list (FILE *fp, int tag, BODY *top)
     print_attachment_list (fp, tag, top, &state);
 }
 
-ATTACHPTR **mutt_update_attach_index (BODY *cur, ATTACHPTR **idx,
+void
+mutt_update_attach_index (BODY *cur, ATTACHPTR ***idxp,
 				      short *idxlen, short *idxmax,
 				      MUTTMENU *menu)
 {
+  ATTACHPTR **idx = *idxp;
+  while (--(*idxlen) >= 0)
+    idx[(*idxlen)]->content = NULL;
   *idxlen = 0;
-  idx = mutt_gen_attach_list (cur, -1, idx, idxlen, idxmax, 0, 0);
+
+  idx = *idxp = mutt_gen_attach_list (cur, -1, idx, idxlen, idxmax, 0, 0);
   
   menu->max  = *idxlen;
-  menu->data = idx;
+  menu->data = *idxp;
 
   if (menu->current >= menu->max)
     menu->current = menu->max - 1;
   menu_check_recenter (menu);
   menu->redraw |= REDRAW_INDEX;
   
-  return idx;
 }
 
 
-void
+int
 mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, HEADER *hdr,
-			  BODY *cur, ATTACHPTR **idx, short *idxlen, short *idxmax)
+			  BODY *cur, ATTACHPTR ***idxp, short *idxlen, short *idxmax,
+			  int recv)
 {
+  ATTACHPTR **idx = *idxp;
 #if 0
   int old_optweed = option (OPTWEED);
   set_option (OPTWEED);
@@ -747,10 +759,16 @@ mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, HEADER *hdr,
 	/* when we edit the content-type, we should redisplay the attachment
 	   immediately */
 	mutt_edit_content_type (hdr, idx[menu->current]->content, fp);
-        if (idxmax) 
-	  mutt_update_attach_index (cur, idx, idxlen, idxmax, menu);
+        if (idxmax)
+        {
+	  mutt_update_attach_index (cur, idxp, idxlen, idxmax, menu);
+	  idx = *idxp;
+	}
         op = OP_VIEW_ATTACH;
 	break;
+      case OP_ATTACH_COLLAPSE:
+        if (recv)
+          return op;
       default:
 	op = OP_NULL;
     }
@@ -761,8 +779,36 @@ mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, HEADER *hdr,
   if (option (OPTWEED) != old_optweed)
     toggle_option (OPTWEED);
 #endif
+  return op;
 }
 
+static void attach_collapse (BODY *b, short collapse, short init, short just_one)
+{
+  short i;
+  for (; b; b = b->next)
+  {
+    i = init || b->collapsed;
+    if (i && option (OPTDIGESTCOLLAPSE) && b->type == TYPEMULTIPART
+	&& !mutt_strcasecmp (b->subtype, "digest"))
+      attach_collapse (b->parts, 1, 1, 0);
+    else if (b->type == TYPEMULTIPART || mutt_is_message_type (b->type, b->subtype))
+      attach_collapse (b->parts, collapse, i, 0);
+    b->collapsed = collapse;
+    if (just_one)
+      return;
+  }
+}
+
+void mutt_attach_init (BODY *b)
+{
+  for (; b; b = b->next)
+  {
+    b->tagged = 0;
+    b->collapsed = 0;
+    if (b->parts) 
+      mutt_attach_init (b->parts);
+  }
+}
 
 static const char *Function_not_permitted = N_("Function not permitted in attach-message mode.");
 
@@ -772,6 +818,7 @@ static const char *Function_not_permitted = N_("Function not permitted in attach
 			mutt_error _(Function_not_permitted); \
 			break; \
 		     }
+
 
 
 
@@ -837,19 +884,14 @@ void mutt_view_attachments (HEADER *hdr)
   menu->tag = mutt_tag_attach;
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_ATTACH, AttachHelp);
 
-
-  idx  = mutt_update_attach_index (cur, idx, &idxlen, &idxmax, menu);
+  mutt_attach_init (cur);
+  attach_collapse (cur, 0, 1, 0);
+  mutt_update_attach_index (cur, &idx, &idxlen, &idxmax, menu);
 
   FOREVER
   {
     switch (op = mutt_menuLoop (menu))
     {
-      case OP_DISPLAY_HEADERS:
-      case OP_VIEW_ATTACH:
-	mutt_attach_display_loop (menu, op, fp, hdr, cur, idx, &idxlen, &idxmax);
-	menu->redraw = REDRAW_FULL;
-	break;
-
       case OP_ATTACH_VIEW_MAILCAP:
 	mutt_view_attachment (fp, idx[menu->current]->content, M_MAILCAP,
 			      hdr, idx, idxlen);
@@ -862,7 +904,35 @@ void mutt_view_attachments (HEADER *hdr)
 	menu->redraw = REDRAW_FULL;
 	break;
 
-
+      case OP_DISPLAY_HEADERS:
+      case OP_VIEW_ATTACH:
+        op = mutt_attach_display_loop (menu, op, fp, hdr, cur, &idx, &idxlen, &idxmax, 1);
+        menu->redraw = REDRAW_FULL;
+        if (op != OP_ATTACH_COLLAPSE)
+          break;
+        /* else fall through - hack! */
+      case OP_ATTACH_COLLAPSE:
+        if (!idx[menu->current]->content->collapsed)
+        {
+	  if (!idx[menu->current]->content->parts)
+	  {
+	    mutt_error _("There are no subparts to hide!");
+	    break;
+	  }
+	  attach_collapse (idx[menu->current]->content, 1, 0, 1);
+	}
+        else
+        {
+	  if (!idx[menu->current]->content->parts)
+	  {
+	    mutt_error _("There are no subparts to show!");
+	    break;
+	  }
+	  attach_collapse (idx[menu->current]->content, 0, 1, 1);
+	}
+        mutt_update_attach_index (cur, &idx, &idxlen, &idxmax, menu);
+        break;
+      
 
 #ifdef HAVE_PGP
       case OP_EXTRACT_KEYS:
@@ -1021,18 +1091,20 @@ void mutt_view_attachments (HEADER *hdr)
 
       case OP_EDIT_TYPE:
 	mutt_edit_content_type (hdr, idx[menu->current]->content, fp);
-        mutt_update_attach_index (cur, idx, &idxlen, &idxmax, menu);
+        mutt_update_attach_index (cur, &idx, &idxlen, &idxmax, menu);
 	break;
 
       case OP_EXIT:
 	mx_close_message (&msg);
 	hdr->attach_del = 0;
-	while (idxlen-- > 0)
+	while (idxmax-- > 0)
 	{
-	  if (idx[idxlen]->content->deleted)
+	  if (!idx[idxmax])
+	    continue;
+	  if (idx[idxmax]->content && idx[idxmax]->content->deleted)
 	    hdr->attach_del = 1;
-	  safe_free ((void **) &idx[idxlen]->tree);
-	  safe_free ((void **) &idx[idxlen]);
+	  safe_free ((void **) &idx[idxmax]->tree);
+	  safe_free ((void **) &idx[idxmax]);
 	}
 	if (hdr->attach_del)
 	  hdr->changed = 1;

@@ -1,6 +1,7 @@
 OP_NULL "null operation"
 OP_ATTACH_VIEW_MAILCAP "force viewing of attachment using mailcap"
 OP_ATTACH_VIEW_TEXT "view attachment as text"
+OP_ATTACH_COLLAPSE "Toggle display of subparts"
 OP_BOTTOM_PAGE "move to the bottom of the page"
 OP_BOUNCE_MESSAGE "remail a message to another user"
 OP_BROWSER_NEW_FILE "select a new file in this directory"

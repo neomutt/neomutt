@@ -533,6 +533,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
   int oldSort, oldSortAux;
   struct stat st;
 
+  mutt_attach_init (msg->content);
   idx = mutt_gen_attach_list (msg->content, -1, idx, &idxlen, &idxmax, 0, 1);
 
   menu = mutt_new_menu ();
@@ -1112,7 +1113,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
       case OP_VIEW_ATTACH:
       case OP_DISPLAY_HEADERS:
 	CHECK_COUNT;
-	mutt_attach_display_loop (menu, op, NULL, NULL, NULL, idx, &idxlen, NULL);
+	mutt_attach_display_loop (menu, op, NULL, NULL, NULL, &idx, &idxlen, NULL, 0);
 	menu->redraw = REDRAW_FULL;
 	break;
 

@@ -29,6 +29,7 @@
 #define M_PAGER_MARKER		(1<<6)	/* use markers if option is set */
 #define M_PAGER_RETWINCH	(1<<7)	/* need reformatting on SIGWINCH */
 #define M_PAGER_MESSAGE		(M_SHOWCOLOR | M_PAGER_MARKER)
+#define M_PAGER_ATTACHMENT	(1<<8)
 
 #define M_DISPLAYFLAGS	(M_SHOW | M_PAGER_NSKIP | M_PAGER_MARKER)
 

@@ -2417,6 +2417,12 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	break;
 
       case OP_VIEW_ATTACHMENTS:
+        if (flags & M_PAGER_ATTACHMENT)
+        {
+	  ch = -1;
+	  rc = OP_ATTACH_COLLAPSE;
+	  break;
+	}
 	CHECK_MODE(IsHeader (extra));
 	mutt_view_attachments (extra->hdr);
 	if (extra->hdr->attach_del)

@@ -305,6 +305,7 @@ enum
   OPTCONFIRMAPPEND,
   OPTCONFIRMCREATE,
   OPTDELETEUNTAG,
+  OPTDIGESTCOLLAPSE,
   OPTEDITHDRS,
   OPTENCODEFROM,
   OPTENVFROM,
@@ -424,7 +425,6 @@ enum
 			 * 	    functions while we are executing an
 			 * 	    external program.
 			 */
-  
 #ifdef HAVE_PGP
   OPTPGPCHECKTRUST,	/* (pseudo) used by pgp_select_key () */
   OPTDONTHANDLEPGPKEYS,	/* (pseudo) used to extract PGP keys */
@@ -573,6 +573,7 @@ typedef struct body
   unsigned int goodsig : 1;	/* good PGP signature */
 #endif
 
+  unsigned int collapsed : 1;	/* used by recvattach */
 
 } BODY;
 
