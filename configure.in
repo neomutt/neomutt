@@ -14,7 +14,7 @@ AM_INIT_AUTOMAKE(mutt, $mutt_cv_version)
 
 ifdef([AC_LIBOBJ], , [define([AC_LIBOBJ], [LIB[]OBJS="$LIBOBJS $1.o"])])
 
-ALL_LINGUAS="de ru it es uk fr pl nl cs id sk ko el zh_TW zh_CN pt_BR eo gl sv da lt tr ja hu et ca"
+ALL_LINGUAS="de ru it es uk fr pl nl cs id sk ko el zh_TW zh_CN pt_BR eo gl sv da lt tr ja hu et ca bg"
 
 AC_CANONICAL_HOST
 
