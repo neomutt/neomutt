@@ -73,7 +73,6 @@ postpone.c
 protos.h
 query.c
 recvattach.c
-reldate.h
 resize.c
 rfc1524.c
 rfc1524.h
