@@ -79,7 +79,7 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO \
 	makedoc.c stamp-doc-rc README.SSL smime.h\
 	muttbug pgppacket.h depcomp ascii.h BEWARE PATCHES patchlist.sh	\
 	ChangeLog.old mkchangelog.sh cvslog2changelog.pl mutt_idna.h \
-	snprintf.c regex.c
+	snprintf.c regex.c crypt-gpgme.h
 
 EXTRA_SCRIPTS = smime_keys
 
