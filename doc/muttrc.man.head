@@ -324,7 +324,7 @@ In various places with mutt, including some of the abovementioned
 .PP
 A simple pattern consists of an operator of the form
 \(lq\fB~\fP\fIcharacter\fP\(rq, possibly followed by a parameter
-against which mutt is supposed to match the obeject specified by
+against which mutt is supposed to match the object specified by
 this operator.  (For a list of operators, see below.)
 .PP
 With some of these operators, the object to be matched consists of
