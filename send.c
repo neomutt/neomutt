@@ -439,23 +439,6 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int group)
   return (0);
 }
 
-static LIST *make_references(ENVELOPE *e)
-{
-  LIST *t, *l;
-  
-  l = mutt_copy_list(e->references);
-  
-  if(e->message_id)
-  {
-    t = mutt_new_list();
-    t->data = safe_strdup(e->message_id);
-    t->next = l;
-    l = t;
-  }
-  
-  return l;
-}
-
 static int fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags)
 {
   ADDRESS *tmp;
@@ -479,6 +462,23 @@ static int fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags)
     }
   }
   return 0;
+}
+
+static LIST *make_references(ENVELOPE *e)
+{
+  LIST *t, *l;
+  
+  l = mutt_copy_list(e->references);
+  
+  if(e->message_id)
+  {
+    t = mutt_new_list();
+    t->data = safe_strdup(e->message_id);
+    t->next = l;
+    l = t;
+  }
+  
+  return l;
 }
 
 static int
