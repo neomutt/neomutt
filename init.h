@@ -704,6 +704,14 @@ struct option_t MuttVars[] = {
   ** user/password pairs on mutt invocation, or if opening the connection
   ** is slow.
   */
+  { "imap_peek", DT_BOOL, R_NONE, OPTIMAPPEEK, 1 },
+  /*
+  ** .pp
+  ** If set, mutt will avoid implicitly marking your mail as read whenever
+  ** you fetch a message from the server. This is generally a good thing,
+  ** but can make closing an IMAP folder somewhat slower. This option
+  ** exists to appease spead freaks.
+  */
   { "imap_servernoise",		DT_BOOL, R_NONE, OPTIMAPSERVERNOISE, 1 },
   /*
   ** .pp

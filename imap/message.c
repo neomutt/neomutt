@@ -245,8 +245,11 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
     return -1;
   }
 
-  snprintf (buf, sizeof (buf), "UID FETCH %d RFC822",
-    HEADER_DATA(ctx->hdrs[msgno])->uid);
+  snprintf (buf, sizeof (buf), "UID FETCH %d %s",
+	    HEADER_DATA(ctx->hdrs[msgno])->uid,
+	    (mutt_bit_isset (idata->capabilities, IMAP4REV1) ?
+	     (option (OPTIMAPPEEK) ? "BODY.PEEK[]" : "BODY[]") :
+	     "RFC822"));
 
   imap_cmd_start (idata, buf);
   do
@@ -272,7 +275,8 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	  if (uid != HEADER_DATA(ctx->hdrs[msgno])->uid)
 	    mutt_error (_("The message index is incorrect. Try reopening the mailbox."));
 	}
-	else if (strncasecmp ("RFC822", pc, 6) == 0)
+	else if ((strncasecmp ("RFC822", pc, 6) == 0) ||
+		 (strncasecmp ("BODY[]", pc, 6) == 0))
 	{
 	  pc = imap_next_word (pc);
 	  if (imap_get_literal_count(pc, &bytes) < 0)
