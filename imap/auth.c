@@ -44,6 +44,7 @@ static void hmac_md5 (const char* password, char* challenge,
   unsigned char* response);
 static int imap_auth_cram_md5 (IMAP_DATA* idata, const char* user,
   const char* pass);
+static int imap_auth_anon (IMAP_DATA *idata);
 #ifdef USE_GSS
 static int imap_auth_gss (IMAP_DATA* idata, const char* user);
 #endif
@@ -399,6 +400,58 @@ static int imap_auth_cram_md5 (IMAP_DATA* idata, const char* user,
   return -1;
 }
 
+/* this is basically a stripped-down version of the anonymous method. */
+
+static int imap_auth_anon (IMAP_DATA* idata)
+{
+  char ibuf[LONG_STRING], obuf[LONG_STRING];
+  char seq[16];
+
+  dprint (2, (debugfile, "Attempting anonymous login...\n"));
+  mutt_message _("Authenticating (anonymous)...");
+  imap_make_sequence (seq, sizeof (seq));
+  snprintf (obuf, LONG_STRING, "%s AUTHENTICATE ANONYMOUS\r\n", seq);
+  mutt_socket_write (idata->conn, obuf);
+
+  if (mutt_socket_read_line_d (ibuf, LONG_STRING, idata->conn) < 0)
+  {
+    dprint (1, (debugfile, "Error receiving server response.\n"));
+
+    return -1;
+  }
+
+  if (ibuf[0] != '+')
+  {
+    dprint (1, (debugfile, "Invalid response from server: %s\n", ibuf));
+
+    return -1;
+  }
+
+  strfcpy (ibuf, "ZHVtbXkK", sizeof (ibuf)); 	/* base64 ("dummy") */
+
+  strcpy (ibuf + strlen (ibuf), "\r\n");
+  mutt_socket_write (idata->conn, ibuf);
+
+  if (mutt_socket_read_line_d (ibuf, LONG_STRING, idata->conn) < 0)
+  {
+    dprint (1, (debugfile, "Error receiving server response.\n"));
+
+    return -1;
+  }
+
+  if (imap_code (ibuf))
+  {
+    dprint (2, (debugfile, "Anonymous login complete.\n"));
+
+    return 0;
+  }
+
+  dprint (2, (debugfile, "Anonymous login failed.\n"));
+  return -1;
+}
+
+
+
 /* imap_authenticate: loop until success or user abort. At each loop, all
  *   supported authentication methods are tried, from strongest to weakest.
  *   Currently available:
@@ -429,8 +482,7 @@ int imap_authenticate (IMAP_DATA *idata, CONNECTION *conn)
     if (!ImapUser)
     {
       strfcpy (user, NONULL(Username), sizeof (user));
-      if (mutt_get_field (_("IMAP Username: "), user, sizeof (user), 0) != 0 ||
-	  !user[0])
+      if (mutt_get_field (_("IMAP Username: "), user, sizeof (user), 0) != 0)
       {
 	user[0] = 0;
 	return (-1);
@@ -439,6 +491,17 @@ int imap_authenticate (IMAP_DATA *idata, CONNECTION *conn)
     else
       strfcpy (user, ImapUser, sizeof (user));
 
+    if (!user[0])
+    {
+      if (!mutt_bit_isset (idata->capabilities, AUTH_ANON))
+      {
+	mutt_error _("Anonymous authentication not supported.");
+	return -1;
+      }
+      
+      return imap_auth_anon (idata);
+    }
+    
 #ifdef USE_GSS
     /* attempt GSSAPI authentication, if available */
     if (mutt_bit_isset (idata->capabilities, AGSSAPI))
@@ -514,6 +577,7 @@ int imap_authenticate (IMAP_DATA *idata, CONNECTION *conn)
       /* Login failed, try again */
       mutt_error _("Login failed.");
       sleep (1);
+
       FREE (&ImapUser);
       FREE (&ImapPass);
     }

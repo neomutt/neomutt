@@ -42,7 +42,7 @@ static char *Capabilities[] = {"IMAP4", "IMAP4rev1", "STATUS", "ACL",
   "NAMESPACE", "AUTH=CRAM-MD5", "AUTH=KERBEROS_V4", "AUTH=GSSAPI", 
   "AUTH=LOGIN", "AUTH-LOGIN", "AUTH=PLAIN", "AUTH=SKEY", "IDLE", 
   "LOGIN-REFERRALS", "MAILBOX-REFERRALS", "QUOTA", "SCAN", "SORT", 
-  "THREAD=ORDEREDSUBJECT", "UIDPLUS", NULL};
+  "THREAD=ORDEREDSUBJECT", "UIDPLUS", "AUTH=ANONYMOUS", NULL};
 
 /* imap forward declarations */
 static int imap_wordcasecmp(const char *a, const char *b);
