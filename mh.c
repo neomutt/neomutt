@@ -593,8 +593,9 @@ static HEADER *maildir_parse_message (int magic, const char *fname,
       h->old = is_old;
       maildir_parse_flags (h, fname);
     }
+    return h;
   }
-  return h;
+  return NULL;
 }
 
 /* 
