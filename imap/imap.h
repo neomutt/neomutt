@@ -35,7 +35,7 @@ typedef struct
 int imap_access (const char*, int);
 int imap_check_mailbox (CONTEXT *ctx, int *index_hint);
 int imap_close_connection (CONTEXT *ctx);
-int imap_delete_mailbox (CONTEXT* idata, char* mailbox);
+int imap_delete_mailbox (CONTEXT* idata, IMAP_MBOX mx);
 int imap_open_mailbox (CONTEXT *ctx);
 int imap_open_mailbox_append (CONTEXT *ctx);
 int imap_sync_mailbox (CONTEXT *ctx, int expunge, int *index_hint);

@@ -884,7 +884,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
             mx.mbox);
 	  if (mutt_yesorno (msg, M_NO) == M_YES)
           {
-	    if (!imap_delete_mailbox (Context, mx.mbox))
+	    if (!imap_delete_mailbox (Context, mx))
             {
 	      /* free the mailbox from the browser */
 	      safe_free ((void **) &((state.entry)[nentry].name));
