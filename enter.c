@@ -198,8 +198,11 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
   wchar_t *tempbuf = 0;
   size_t templen = 0;
   history_class_t hclass;
+  wchar_t wc;
+  mbstate_t mbstate;
 
   int rv = 0;
+  memset (&mbstate, 0, sizeof (mbstate));
   
   if (state->wbuf)
   {
@@ -611,14 +614,34 @@ self_insert:
       /* use the raw keypress */
       ch = LastKey;
 
+      /* this probably shouldn't happen */
+      if (ch & ~0xff)
+	continue;
+
+      /* gather the octets into a wide character */
+      {
+	char c;
+	size_t k;
+
+	c = ch;
+	k = mbrtowc (&wc, &c, 1, &mbstate);
+	if (k == (size_t)(-2))
+	  continue;
+	else if (k && k != 1)
+	{
+	  memset (&mbstate, 0, sizeof (mbstate));
+	  continue;
+	}
+      }
+
       if (first && (flags & M_CLEAR))
       {
 	first = 0;
-	if (IsWPrint (ch)) /* why? */
+	if (IsWPrint (wc)) /* why? */
 	  state->curpos = state->lastchar = 0;
       }
 
-      if (CI_is_return (ch))
+      if (wc == '\r' || wc == '\n')
       {
 	/* Convert from wide characters */
 	my_wcstombs (buf, buflen, state->wbuf, state->lastchar);
@@ -637,7 +660,7 @@ self_insert:
 	rv = 0; 
 	goto bye;
       }
-      else if (ch && (ch < ' ' || IsWPrint (ch))) /* why? */
+      else if (wc && (wc < ' ' || IsWPrint (wc))) /* why? */
       {
 	if (state->lastchar >= state->wbuflen)
 	{
@@ -645,7 +668,7 @@ self_insert:
 	  safe_realloc ((void **) &state->wbuf, state->wbuflen * sizeof (wchar_t));
 	}
 	memmove (state->wbuf + state->curpos + 1, state->wbuf + state->curpos, (state->lastchar - state->curpos) * sizeof (wchar_t));
-	state->wbuf[state->curpos++] = ch;
+	state->wbuf[state->curpos++] = wc;
 	state->lastchar++;
       }
       else

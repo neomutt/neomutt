@@ -146,7 +146,7 @@ static int parsekeys (char *str, keycode_t *d, int max)
 
     if(!*d)
     {
-      *d = *s;
+      *d = (unsigned char)*s;
       s++;
     }
     d++;
