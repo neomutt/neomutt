@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1996,1997 Michael R. Elkins <me@mutt.org>
- * Copyright (c) 1998,1999 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 1998,1999 Thomas Roessler <roessler@does-not-exist.org>
  * Copyright (C) 2004 g10 Code GmbH
  *
  *     This program is free software; you can redistribute it and/or modify
@@ -213,7 +213,7 @@ static void pgp_copy_clearsigned (FILE *fpin, STATE *s, char *charset)
     if (armor_header)
     {
       char *p = mutt_skip_whitespace (buf);
-      if (*p == '\n') 
+      if (*p == '\0') 
 	armor_header = 0;
       continue;
     }
