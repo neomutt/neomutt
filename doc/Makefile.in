@@ -31,11 +31,17 @@ DISTFILES = Makefile.in dotlock.man.in  \
 	devel-notes.txt			\
 	manual.txt
 
-DOCFILES = PGP-Notes.txt applying-patches.txt devel-notes.txt	\
+srcdir_DOCFILES = PGP-Notes.txt applying-patches.txt	\
+	devel-notes.txt	\
 	manual.txt
 
+topsrcdir_DOCFILES = COPYRIGHT GPL INSTALL ChangeLog	\
+	README NEWS TODO
 
-all: mutt.man dotlock.man manual.txt try-html
+DOCFILES = manual.txt
+
+
+all: mutt.man dotlock.man try-html try-txt
 
 complete: all html
 
@@ -46,14 +52,19 @@ complete: all html
 try-html:
 	-$(MAKE) html
 
+try-txt:
+	-$(MAKE) manual.txt
+
 html: manual.html
 
-install: dotlock.man mutt.man manual.txt
+install: dotlock.man mutt.man all
 	$(top_srcdir)/mkinstalldirs $(mandir)/man1
 	$(INSTALL) -m 644 mutt.man $(mandir)/man1/mutt.1
 	$(INSTALL) -m 644 dotlock.man $(mandir)/man1/mutt.dotlock.1
 	$(top_srcdir)/mkinstalldirs $(docdir)
 	for f in $(DOCFILES) ; do $(INSTALL) -m 644 $$f $(docdir) ; done
+	for f in $(srcdir_DOCFILES) ; do $(INSTALL) -m 644 $(srcdir)/$$f $(docdir) ; done
+	for f in $(topsrcdir_DOCFILES) ; do $(INSTALL) -m 644 $(top_srcdir)/$$f $(docdir) ; done
 	if [ -f manual.html ] ; then \
 		$(MAKE) install-html ; \
 	fi
@@ -62,11 +73,6 @@ install-html: html
 	$(top_srcdir)/mkinstalldirs $(docdir)/html
 	for f in manual*.html ; do $(INSTALL) -m 644 $$f $(docdir)/html ; done
 
-mutt.man: mutt.man.in
-	(cd .. ; ./config.status)
-
-dotlock.man: dotlock.man.in
-	(cd .. ; ./config.status)
 
 uninstall:
 	-rm -f $(mandir)/man1/mutt.1
@@ -90,6 +96,14 @@ distclean: clean
 	rm -f Makefile
 
 Makefile: Makefile.in ../config.status
+	cd .. \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+mutt.man: mutt.man.in ../config.status
+	cd .. \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+dotlock.man: dotlock.man.in ../config.status
 	cd .. \
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
