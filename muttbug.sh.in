@@ -28,22 +28,26 @@
 #
 
 SUBMIT="submit@bugs.guug.de"
+DEBIAN_SUBMIT="submit@bugs.debian.org"
 
 
 include_file ()
 {
 	echo
-	echo "-- $1"
-	echo
+	echo "--- Begin $1"
 	sed -e 's/^-/- -/' $1 | egrep -v '^[ 	]*(#|$)'
+	echo "--- End $1"
+	echo
 }
-
 
 case `echo -n` in
 "") n=-n; c=   ;;
  *) n=; c='\c' ;;
 esac
  
+
+exec > /dev/tty
+exec < /dev/tty
 
 SCRATCH=${TMPDIR-/tmp}/`basename $0`.`hostname`.$$
 
@@ -56,11 +60,6 @@ mkdir ${SCRATCH} || \
 trap "rm -r -f ${SCRATCH} ; trap '' 0 ; exit" 0 1 2
 
 TEMPLATE=${SCRATCH}/template.txt
-
-MUTTVERSION="`mutt -v | head -1 | awk '{print $2}' | tr -d i`"
-
-exec > /dev/tty
-exec < /dev/tty
 
 echo "Please enter a one-line description of the problem you experience:"
 echo $n "> $c"
@@ -80,6 +79,33 @@ case "$global" in
     *)	global=yes ;;
 esac
 
+if test -f /etc/debian_version ; then
+	DEBIAN=yes
+	echo $n "Checking whether mutt has been installed as a package... $c"
+	MUTTVERSION="`dpkg -l mutt | grep ^i | awk '{print $3}'`" 2> /dev/null
+	if test "$MUTTVERSION" ; then
+		DPKG=yes
+	else
+		DPKG=no
+	fi
+	echo "$DPKG"
+	if test "$DPKG" = "no" ; then
+		echo $n "File this bug with Debian? [Y|n]$c"
+		read $DPKG
+		case "$DPKG" in
+		[nN])	DPKG=no ;;
+		*)	DPKG=yes ;;
+		esac
+	fi
+else
+	DEBIAN=no
+	DPKG=no
+fi
+
+test "$MUTTVERSION"  || MUTTVERSION="`mutt -v | head -1 | awk '{print $2}' | tr -d i`"
+test "$DPKG" = "yes" && SUBMIT="$SUBMIT, $DEBIAN_SUBMIT"
+
+
 exec > ${TEMPLATE}
 
 echo "Subject: mutt-$MUTTVERSION: $SUBJECT"
@@ -94,8 +120,15 @@ echo
 echo
 echo
 
+if test "$DEBIAN" = "yes" ; then
+	echo "Obtaining Debian-specific information..." > /dev/tty
+	bug -p -s dummy mutt |                                 \
+		sed -n -e "/^-- System Information/,/^---/p" | \
+		grep -v '^---'
+fi
+
 echo
-echo "-- Version information"
+echo "-- Mutt Version Information"
 echo
 mutt -v
 
@@ -139,13 +172,13 @@ fi
 
 exec > /dev/tty
 
-cp $TEMPLATE $SCRATCH/bug.txt
+cp $TEMPLATE $SCRATCH/mutt-bug.txt
 
 input="e"
 while : ; do
 	if test "$input" = "e" ; then
-		${VISUAL-vi} $SCRATCH/bug.txt
-		if cmp $SCRATCH/bug.txt ${TEMPLATE} > /dev/null ; then
+		${VISUAL-vi} $SCRATCH/mutt-bug.txt
+		if cmp $SCRATCH/mutt-bug.txt ${TEMPLATE} > /dev/null ; then
 			echo "Warning: Bug report was not modified!"
 		fi
 	fi
@@ -155,8 +188,8 @@ while : ; do
 	input="`echo $_input | tr EPSQ epsq`"
 	case $input in
 	e*)	;;
-	p*)	${PAGER-more} $SCRATCH/bug.txt ;;
-	s*|"")	@SENDMAIL@ -t < $SCRATCH/bug.txt ; exit ;;
+	p*)	${PAGER-more} $SCRATCH/mutt-bug.txt ;;
+	s*|"")	@SENDMAIL@ -t < $SCRATCH/mutt-bug.txt ; exit ;;
 	q*)	exit
 	esac
 done
