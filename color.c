@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -508,7 +508,22 @@ add_pattern (COLOR_LINE **top, const char *s, int sensitive,
     char buf[STRING];
 
     tmp = mutt_new_color_line ();
-    if ((r = REGCOMP (&tmp->rx, s, (sensitive ? mutt_which_case (s) : REG_ICASE))) != 0)
+    if (is_index) 
+    {
+      int i;
+
+      strfcpy(buf, NONULL(s), sizeof(buf));
+      mutt_check_simple (buf, sizeof (buf), NONULL(SimpleSearch));
+      if((tmp->color_pattern = mutt_pattern_comp (buf, M_FULL_MSG, err)) == NULL)
+      {
+	mutt_free_color_line(&tmp, 1);
+	return -1;
+      }
+      /* force re-caching of index colors */
+      for (i = 0; Context && i < Context->msgcount; i++)
+	Context->hdrs[i]->pair = 0;
+    }
+    else if ((r = REGCOMP (&tmp->rx, s, (sensitive ? mutt_which_case (s) : REG_ICASE))) != 0)
     {
       regerror (r, &tmp->rx, err->data, err->dsize);
       mutt_free_color_line(&tmp, 1);
@@ -524,21 +539,6 @@ add_pattern (COLOR_LINE **top, const char *s, int sensitive,
       attr |= mutt_alloc_color (fg, bg);
     }
 #endif
-    if (is_index) 
-    {
-      int i;
-
-      strfcpy(buf, NONULL(tmp->pattern), sizeof(buf));
-      mutt_check_simple (buf, sizeof (buf), NONULL(SimpleSearch));
-      if((tmp->color_pattern = mutt_pattern_comp (buf, M_FULL_MSG, err)) == NULL)
-      {
-	mutt_free_color_line(&tmp, 1);
-	return -1;
-      }
-      /* force re-caching of index colors */
-      for (i = 0; Context && i < Context->msgcount; i++)
-	Context->hdrs[i]->pair = 0;
-    }
     tmp->pair = attr;
     *top = tmp;
   }
