@@ -299,7 +299,7 @@ hdr_format_str (char *dest,
       if (dest[0])
       {
 	strfcpy (buf2, dest, sizeof(buf2));
-	snprintf (dest, destlen, prefix, buf2);
+	hdr_format_s (dest, destlen, prefix, buf2);
 	break;
       }
       /* fall through if 'B' returns nothing */
