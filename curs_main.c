@@ -745,7 +745,7 @@ int mutt_index_menu (void)
       case OP_MAIN_LIMIT:
 
 	CHECK_MSGCOUNT;
-	menu->oldcurrent = (Context->vcount && menu->current < Context->vcount) ?
+	menu->oldcurrent = (Context->vcount && menu->current >= 0 && menu->current < Context->vcount) ?
 		CURHDR->index : -1;
 	if (mutt_pattern_func (M_LIMIT, _("Limit to messages matching: ")) == 0)
 	{
