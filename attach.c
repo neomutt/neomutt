@@ -264,8 +264,7 @@ int mutt_edit_attachment (BODY *a)
   else if (a->type == TYPETEXT)
   {
     /* On text, default to editor */
-    mutt_edit_file ((!Editor || mutt_strcmp ("builtin", Editor) == 0) ? 
-		    NONULL(Visual) : NONULL(Editor), newfile);
+    mutt_edit_file (NONULL (Editor), newfile);
   }
   else
   {

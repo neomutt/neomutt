@@ -103,7 +103,7 @@ command which contains new mail.
 .SH ENVIRONMENT
 .PP
 .IP "EDITOR"
-Editor to invoke when composing a message.
+Specifies the editor to use if VISUAL is unset.
 .IP "EMAIL"
 The user's e-mail address.
 .IP "HOME"
@@ -126,7 +126,7 @@ Directory in which temporary files are created.
 .IP "REPLYTO"
 Default Reply-To address.
 .IP "VISUAL"
-Editor to invoke when the ~v command is given in the builtin editor.
+Specifies the editor to use when composing messages.
 .SH FILES
 .PP
 .IP "~/.muttrc or ~/.mutt/muttrc"

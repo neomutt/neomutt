@@ -706,8 +706,8 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	if (op == OP_COMPOSE_EDIT_HEADERS ||
 	    (op == OP_COMPOSE_EDIT_MESSAGE && option (OPTEDITHDRS)))
 	{
-	  mutt_edit_headers ((!Editor || mutt_strcmp ("builtin", Editor) == 0) ? NONULL(Visual) : NONULL(Editor),
-			     msg->content->filename, msg, fcc, fcclen);
+	  mutt_edit_headers (NONULL (Editor), msg->content->filename, msg,
+			     fcc, fcclen);
 	}
 	else
 	{
@@ -1061,8 +1061,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
       case OP_COMPOSE_EDIT_FILE:
 	CHECK_COUNT;
-	mutt_edit_file ((!Editor || mutt_strcmp ("builtin", Editor) == 0) ? NONULL(Visual) : NONULL(Editor),
-			idx[menu->current]->content->filename);
+	mutt_edit_file (NONULL(Editor), idx[menu->current]->content->filename);
 	mutt_update_encoding (idx[menu->current]->content);
 	menu->redraw = REDRAW_CURRENT | REDRAW_STATUS;
 	break;

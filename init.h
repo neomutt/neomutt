@@ -463,8 +463,8 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** This variable specifies which editor is used by mutt.
-  ** It defaults to the value of the EDITOR or VISUAL environment
-  ** variable, or to the string "vi".
+  ** It defaults to the value of the VISUAL, or EDITOR, environment
+  ** variable, or to the string "vi" if neither of those are set.
   */
   { "encode_from",	DT_BOOL, R_NONE, OPTENCODEFROM, 0 },
   /*
