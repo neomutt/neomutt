@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.5.1i\n"
-"POT-Creation-Date: 2002-12-06 12:10+0100\n"
+"POT-Creation-Date: 2002-12-09 14:26+0100\n"
 "PO-Revision-Date: 2002-05-23 09:30+0700\n"
 "Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
 "Language-Team: Indonesia <i18n@linux.or.id>\n"
@@ -580,8 +580,9 @@ msgstr ""
 "(b)atal? "
 
 #: compose.c:232
-msgid "ewsabf"
-msgstr "etgsdb"
+#, fuzzy
+msgid "eswabf"
+msgstr "etsdb"
 
 #: compose.c:240
 #, fuzzy
@@ -1422,7 +1423,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Tidak dapat menambah ke kotak surat IMAP di server ini"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:729 imap/message.c:600 muttlib.c:1192
+#: imap/imap.c:729 imap/message.c:600 muttlib.c:1193
 #, c-format
 msgid "Create %s?"
 msgstr "Buat %s?"
@@ -2752,41 +2753,41 @@ msgstr "Pelompatan tidak diimplementasikan untuk dialogs."
 msgid "Tagging is not supported."
 msgstr "Penandaan tidak didukung."
 
-#: mh.c:643
+#: mh.c:656
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Membaca %s... %d"
 
-#: mh.c:1019
+#: mh.c:1042
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr ""
 
-#: muttlib.c:854
+#: muttlib.c:855
 msgid "File is a directory, save under it?"
 msgstr "File adalah sebuah direktori, simpan di dalamnya?"
 
-#: muttlib.c:859
+#: muttlib.c:860
 msgid "File under directory: "
 msgstr "File di dalam direktori: "
 
-#: muttlib.c:871
+#: muttlib.c:872
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "File sudah ada, (t)impa, t(a)mbahkan, atau (b)atal?"
 
-#: muttlib.c:871
+#: muttlib.c:872
 msgid "oac"
 msgstr "tab"
 
-#: muttlib.c:1159
+#: muttlib.c:1160
 msgid "Can't save message to POP mailbox."
 msgstr "Tidak bisa menyimpan surat ke kotak surat POP"
 
-#: muttlib.c:1168
+#: muttlib.c:1169
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s bukan kotak surat!"
 
-#: muttlib.c:1174
+#: muttlib.c:1175
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Tambahkan surat-surat ke %s?"
@@ -4037,6 +4038,9 @@ msgstr "Surat induk tidak bisa dilihat di tampilan terbatas ini."
 #: thread.c:1085
 msgid "Parent message is not available."
 msgstr "Surat induk tidak ada."
+
+#~ msgid "ewsabf"
+#~ msgstr "etgsdb"
 
 #, fuzzy
 #~ msgid "Certificate *NOT* added."

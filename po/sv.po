@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.5.1\n"
-"POT-Creation-Date: 2002-12-06 12:10+0100\n"
+"POT-Creation-Date: 2002-12-09 14:26+0100\n"
 "PO-Revision-Date: 2002-05-02 21:18+02:00\n"
 "Last-Translator: Jörgen Tegnér <jorgen.tegner@telia.se>\n"
 "Language-Team: Swedish <mutt-po@mutt.org>\n"
@@ -572,7 +572,8 @@ msgstr ""
 "S/MIME: (k)ryptera, (s)ignera, signera s(o)m, (b)åda, eller sk(i)ppa det?"
 
 #: compose.c:232
-msgid "ewsabf"
+#, fuzzy
+msgid "eswabf"
 msgstr "ksobi"
 
 #: compose.c:240
@@ -1413,7 +1414,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Kunde inte skriva till brevlådor i den här IMAP-servern"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:729 imap/message.c:600 muttlib.c:1192
+#: imap/imap.c:729 imap/message.c:600 muttlib.c:1193
 #, c-format
 msgid "Create %s?"
 msgstr "Skapa %s?"
@@ -2751,41 +2752,41 @@ msgstr "Hopp stöds inte för dialoger."
 msgid "Tagging is not supported."
 msgstr "Märkning stöds inte."
 
-#: mh.c:643
+#: mh.c:656
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Läser %s... %d"
 
-#: mh.c:1019
+#: mh.c:1042
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr ""
 
-#: muttlib.c:854
+#: muttlib.c:855
 msgid "File is a directory, save under it?"
 msgstr "Filen är en katalog, spar i den?"
 
-#: muttlib.c:859
+#: muttlib.c:860
 msgid "File under directory: "
 msgstr "Fil i katalog: "
 
-#: muttlib.c:871
+#: muttlib.c:872
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Filen finns, skriv (ö)ver, (l)ägg till, eller (a)vbryt?"
 
-#: muttlib.c:871
+#: muttlib.c:872
 msgid "oac"
 msgstr "öla"
 
-#: muttlib.c:1159
+#: muttlib.c:1160
 msgid "Can't save message to POP mailbox."
 msgstr "Kan inte spara meddelandet till POP-brevlådan."
 
-#: muttlib.c:1168
+#: muttlib.c:1169
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s är inte en brevlåda!"
 
-#: muttlib.c:1174
+#: muttlib.c:1175
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Lägg till meddelanden till %s?"
@@ -4041,6 +4042,9 @@ msgstr "Första meddelandet är inte synligt med begränsad vy"
 #: thread.c:1085
 msgid "Parent message is not available."
 msgstr "Första meddelandet är inte tillgängligt."
+
+#~ msgid "ewsabf"
+#~ msgstr "ksobi"
 
 #, fuzzy
 #~ msgid "Certificate *NOT* added."

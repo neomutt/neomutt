@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt 1.4i\n"
-"POT-Creation-Date: 2002-12-06 12:10+0100\n"
+"POT-Creation-Date: 2002-12-09 14:26+0100\n"
 "PO-Revision-Date: 2001-06-12 12:47+0200\n"
 "Last-Translator: Fatih Demir <kabalak@gtranslator.org>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
@@ -587,7 +587,7 @@ msgstr ""
 
 #: compose.c:232
 #, fuzzy
-msgid "ewsabf"
+msgid "eswabf"
 msgstr "imfkcp"
 
 #: compose.c:240
@@ -1432,7 +1432,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Bu sunucudaki IMAP eposta kutularýna ileti eklenemiyor"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:729 imap/message.c:600 muttlib.c:1192
+#: imap/imap.c:729 imap/message.c:600 muttlib.c:1193
 #, c-format
 msgid "Create %s?"
 msgstr "%s yaratýlsýn mý?"
@@ -2756,41 +2756,41 @@ msgstr "Diyaloklar için hýzlý geçiþ þimdilik mümkün deðildir."
 msgid "Tagging is not supported."
 msgstr "Iþaretleme desteklenmiyor."
 
-#: mh.c:643
+#: mh.c:656
 #, c-format
 msgid "Reading %s... %d"
 msgstr "%s okunuyor... %d"
 
-#: mh.c:1019
+#: mh.c:1042
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr ""
 
-#: muttlib.c:854
+#: muttlib.c:855
 msgid "File is a directory, save under it?"
 msgstr "Dosya bir dizin, dizin altýnda kaydedilsin mi?"
 
-#: muttlib.c:859
+#: muttlib.c:860
 msgid "File under directory: "
 msgstr "Dosyayý dizin altýnda kaydet: "
 
-#: muttlib.c:871
+#: muttlib.c:872
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Dosya zaten var, ü(s)tüne yaz, (e)kle yoksa i(p)tal mý?"
 
-#: muttlib.c:871
+#: muttlib.c:872
 msgid "oac"
 msgstr "sep"
 
-#: muttlib.c:1159
+#: muttlib.c:1160
 msgid "Can't save message to POP mailbox."
 msgstr "Ileti POP eposta kutusuna kaydedilmiyor."
 
-#: muttlib.c:1168
+#: muttlib.c:1169
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s bir eposta kutusu deðil!"
 
-#: muttlib.c:1174
+#: muttlib.c:1175
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Iletiler %s'e eklensin mi?"
@@ -4082,6 +4082,10 @@ msgstr "Sýnýrlandýrýlmýþ bakýþta ana ileti görünemez."
 #: thread.c:1085
 msgid "Parent message is not available."
 msgstr "Kök iletisi yok."
+
+#, fuzzy
+#~ msgid "ewsabf"
+#~ msgstr "imfkcp"
 
 #, fuzzy
 #~ msgid "Certificate *NOT* added."

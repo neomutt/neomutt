@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.3.27/1.4\n"
-"POT-Creation-Date: 2002-12-06 12:10+0100\n"
+"POT-Creation-Date: 2002-12-09 14:26+0100\n"
 "PO-Revision-Date: 2002-01-23 15:14+0200\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "MIME-Version: 1.0\n"
@@ -577,7 +577,7 @@ msgid ""
 msgstr "шифр.(e), п╕дп.(s), п╕дп. як(a), усе(b) чи в╕дм╕на(f)? "
 
 #: compose.c:232
-msgid "ewsabf"
+msgid "eswabf"
 msgstr ""
 
 #: compose.c:240
@@ -1416,7 +1416,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Неможливо додавати до скриньок IMAP на цьому сервер╕"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:729 imap/message.c:600 muttlib.c:1192
+#: imap/imap.c:729 imap/message.c:600 muttlib.c:1193
 #, c-format
 msgid "Create %s?"
 msgstr "Створити %s?"
@@ -2713,41 +2713,41 @@ msgstr "Перех╕д у цьому д╕алоз╕ не п╕дриму╓ться."
 msgid "Tagging is not supported."
 msgstr "Вид╕лення не п╕дтриму╓ться."
 
-#: mh.c:643
+#: mh.c:656
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Читання %s... %d"
 
-#: mh.c:1019
+#: mh.c:1042
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr ""
 
-#: muttlib.c:854
+#: muttlib.c:855
 msgid "File is a directory, save under it?"
 msgstr "Файл ╓ каталогом, зберегти у ньому?"
 
-#: muttlib.c:859
+#: muttlib.c:860
 msgid "File under directory: "
 msgstr "Файл у каталоз╕: "
 
-#: muttlib.c:871
+#: muttlib.c:872
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Файл ╕сну╓, (o)переписати, (a)додати до нього чи (c)в╕дмовити?"
 
-#: muttlib.c:871
+#: muttlib.c:872
 msgid "oac"
 msgstr ""
 
-#: muttlib.c:1159
+#: muttlib.c:1160
 msgid "Can't save message to POP mailbox."
 msgstr "Неможливо записати лист до скриньки POP."
 
-#: muttlib.c:1168
+#: muttlib.c:1169
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s не ╓ поштовою скринькою!"
 
-#: muttlib.c:1174
+#: muttlib.c:1175
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Додати листи до %s?"

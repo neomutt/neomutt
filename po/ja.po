@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.5.2\n"
-"POT-Creation-Date: 2002-12-06 12:10+0100\n"
+"POT-Creation-Date: 2002-12-09 14:26+0100\n"
 "PO-Revision-Date: 2002-12-07 01:40+0900\n"
 "Last-Translator: Tamotsu TAKAHASHI <tamo@momonga-linux.org>\n"
 "Language-Team: mutt-j <mutt-j@ribbon.or.jp>\n"
@@ -575,7 +575,7 @@ msgstr ""
 "S/MIME (e)暗号化,(s)署名,(w)..で暗号化,(a)..として署名,(b)両者,(f)解除?"
 
 #: compose.c:232
-msgid "ewsabf"
+msgid "eswabf"
 msgstr ""
 
 #: compose.c:240
@@ -1421,7 +1421,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "このサーバの IMAP メールボックスには追加できない"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:729 imap/message.c:600 muttlib.c:1192
+#: imap/imap.c:729 imap/message.c:600 muttlib.c:1193
 #, c-format
 msgid "Create %s?"
 msgstr "%s を作成?"
@@ -2725,41 +2725,41 @@ msgstr "ジャンプ機能はダイアログでは実装されていない。"
 msgid "Tagging is not supported."
 msgstr "タグ付け機能がサポートされていない。"
 
-#: mh.c:643
+#: mh.c:656
 #, c-format
 msgid "Reading %s... %d"
 msgstr "%s から読み出し中... %d"
 
-#: mh.c:1019
+#: mh.c:1042
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): ファイルに時刻を設定できない"
 
-#: muttlib.c:854
+#: muttlib.c:855
 msgid "File is a directory, save under it?"
 msgstr "ファイルはディレクトリである。その配下に保存?"
 
-#: muttlib.c:859
+#: muttlib.c:860
 msgid "File under directory: "
 msgstr "ディレクトリ配下のファイル: "
 
-#: muttlib.c:871
+#: muttlib.c:872
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "ファイルが存在、(o)上書き (a)追加 (c)中止?"
 
-#: muttlib.c:871
+#: muttlib.c:872
 msgid "oac"
 msgstr ""
 
-#: muttlib.c:1159
+#: muttlib.c:1160
 msgid "Can't save message to POP mailbox."
 msgstr "POP メールボックスにはメッセージを保存できない"
 
-#: muttlib.c:1168
+#: muttlib.c:1169
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s はメールボックスではない!"
 
-#: muttlib.c:1174
+#: muttlib.c:1175
 #, c-format
 msgid "Append messages to %s?"
 msgstr "%s にメッセージを追加?"

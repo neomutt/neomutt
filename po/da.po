@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt-1.3.27\n"
-"POT-Creation-Date: 2002-12-06 12:10+0100\n"
+"POT-Creation-Date: 2002-12-09 14:26+0100\n"
 "PO-Revision-Date: 2002-01-23 16:07+0100\n"
 "Last-Translator: Byrial Jensen <byrial@image.dk>, Morten Bo Johansen "
 "<mojo@image.dk>\n"
@@ -584,7 +584,7 @@ msgstr "(k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, (i)ngen PGP"
 
 #: compose.c:232
 #, fuzzy
-msgid "ewsabf"
+msgid "eswabf"
 msgstr "kusbi"
 
 #: compose.c:240
@@ -1418,7 +1418,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Kunne ikke føje til IMAP-brevbakker på denne server."
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:729 imap/message.c:600 muttlib.c:1192
+#: imap/imap.c:729 imap/message.c:600 muttlib.c:1193
 #, c-format
 msgid "Create %s?"
 msgstr "Opret %s?"
@@ -2746,41 +2746,41 @@ msgstr "Man kan ikke springe rundt i dialogerne"
 msgid "Tagging is not supported."
 msgstr "Udvælgelse er ikke understøttet."
 
-#: mh.c:643
+#: mh.c:656
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Læser %s ... %d"
 
-#: mh.c:1019
+#: mh.c:1042
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr ""
 
-#: muttlib.c:854
+#: muttlib.c:855
 msgid "File is a directory, save under it?"
 msgstr "Filen er et filkatalog, gem i det?"
 
-#: muttlib.c:859
+#: muttlib.c:860
 msgid "File under directory: "
 msgstr "Fil i dette filkatalog: "
 
-#: muttlib.c:871
+#: muttlib.c:872
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Filen eksisterer , (o)verskriv, (t)ilføj, (a)nnulér?"
 
-#: muttlib.c:871
+#: muttlib.c:872
 msgid "oac"
 msgstr "ota"
 
-#: muttlib.c:1159
+#: muttlib.c:1160
 msgid "Can't save message to POP mailbox."
 msgstr "Kan ikke gemme brev i POP-brevbakke."
 
-#: muttlib.c:1168
+#: muttlib.c:1169
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s er ingen brevbakke"
 
-#: muttlib.c:1174
+#: muttlib.c:1175
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Føj breve til %s?"
@@ -4042,6 +4042,10 @@ msgstr "Forrige brev i tråden er ikke synligt i afgrænset visning"
 #: thread.c:1085
 msgid "Parent message is not available."
 msgstr "Forrige brev i tråden er ikke tilgængeligt."
+
+#, fuzzy
+#~ msgid "ewsabf"
+#~ msgstr "kusbi"
 
 #, fuzzy
 #~ msgid "Certificate *NOT* added."

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3.23.1\n"
-"POT-Creation-Date: 2002-12-06 12:10+0100\n"
+"POT-Creation-Date: 2002-12-09 14:26+0100\n"
 "PO-Revision-Date: 2002-01-20 16:52+0000\n"
 "Last-Translator: Edmund GRIMLEY EVANS <edmundo@rano.org>\n"
 "Language-Team: eo <eo@li.org>\n"
@@ -584,7 +584,7 @@ msgstr "æ(i)fri, (s)ubskribi, subskribi (k)iel, (a)mbaý, aý (f)orgesi? "
 
 #: compose.c:232
 #, fuzzy
-msgid "ewsabf"
+msgid "eswabf"
 msgstr "iskaf"
 
 #: compose.c:240
@@ -1422,7 +1422,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Ne povas aldoni al IMAP-poþtfako æe æi tiu servilo"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:729 imap/message.c:600 muttlib.c:1192
+#: imap/imap.c:729 imap/message.c:600 muttlib.c:1193
 #, c-format
 msgid "Create %s?"
 msgstr "Æu krei %s?"
@@ -2751,41 +2751,41 @@ msgstr "Saltado ne funkcias æe dialogoj."
 msgid "Tagging is not supported."
 msgstr "Markado ne funkcias."
 
-#: mh.c:643
+#: mh.c:656
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Legas %s ... %d"
 
-#: mh.c:1019
+#: mh.c:1042
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr ""
 
-#: muttlib.c:854
+#: muttlib.c:855
 msgid "File is a directory, save under it?"
 msgstr "Tio estas dosierujo; æu skribi dosieron en øi?"
 
-#: muttlib.c:859
+#: muttlib.c:860
 msgid "File under directory: "
 msgstr "Dosiero en dosierujo: "
 
-#: muttlib.c:871
+#: muttlib.c:872
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Dosiero ekzistas; æu (s)urskribi, (a)ldoni, aý (n)uligi?"
 
-#: muttlib.c:871
+#: muttlib.c:872
 msgid "oac"
 msgstr "san"
 
-#: muttlib.c:1159
+#: muttlib.c:1160
 msgid "Can't save message to POP mailbox."
 msgstr "Ne eblas skribi mesaøon al POP-poþtfako."
 
-#: muttlib.c:1168
+#: muttlib.c:1169
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s ne estas poþtfako!"
 
-#: muttlib.c:1174
+#: muttlib.c:1175
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Æu aldoni mesaøojn al %s?"
@@ -4047,6 +4047,10 @@ msgstr "Patra mesaøo ne estas videbla en æi tiu limigita rigardo."
 #: thread.c:1085
 msgid "Parent message is not available."
 msgstr "Patra mesaøo ne estas havebla."
+
+#, fuzzy
+#~ msgid "ewsabf"
+#~ msgstr "iskaf"
 
 #, fuzzy
 #~ msgid "Certificate *NOT* added."

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.5i\n"
-"POT-Creation-Date: 2002-12-06 12:10+0100\n"
+"POT-Creation-Date: 2002-12-09 14:26+0100\n"
 "PO-Revision-Date: 2000-03-05 01:14-0300\n"
 "Last-Translator: Marcus Brito <marcus@visaotec.com.br>\n"
 "Language-Team: LIE-BR (http://lie-br.conectiva.com.br)\n"
@@ -590,7 +590,7 @@ msgstr ""
 
 #: compose.c:232
 #, fuzzy
-msgid "ewsabf"
+msgid "eswabf"
 msgstr "escamq"
 
 #: compose.c:240
@@ -1452,7 +1452,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Não é possível anexar a caixas IMAP neste servidor"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:729 imap/message.c:600 muttlib.c:1192
+#: imap/imap.c:729 imap/message.c:600 muttlib.c:1193
 #, c-format
 msgid "Create %s?"
 msgstr "Criar %s?"
@@ -2801,42 +2801,42 @@ msgstr "O pulo não está implementado em diálogos."
 msgid "Tagging is not supported."
 msgstr "Não é possível marcar."
 
-#: mh.c:643
+#: mh.c:656
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Lendo %s... %d"
 
-#: mh.c:1019
+#: mh.c:1042
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr ""
 
-#: muttlib.c:854
+#: muttlib.c:855
 msgid "File is a directory, save under it?"
 msgstr "O arquivo é um diretório, salvar lá?"
 
-#: muttlib.c:859
+#: muttlib.c:860
 msgid "File under directory: "
 msgstr "Arquivo no diretório: "
 
-#: muttlib.c:871
+#: muttlib.c:872
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Arquivo existe, (s)obrescreve, (a)nexa ou (c)ancela?"
 
-#: muttlib.c:871
+#: muttlib.c:872
 msgid "oac"
 msgstr "sac"
 
-#: muttlib.c:1159
+#: muttlib.c:1160
 #, fuzzy
 msgid "Can't save message to POP mailbox."
 msgstr "Gravar mensagem na caixa"
 
-#: muttlib.c:1168
+#: muttlib.c:1169
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s não é uma caixa de mensagens!"
 
-#: muttlib.c:1174
+#: muttlib.c:1175
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Anexa mensagens a %s?"
@@ -4147,6 +4147,10 @@ msgstr "A mensagem pai não está visível nesta visão limitada"
 #: thread.c:1085
 msgid "Parent message is not available."
 msgstr "A mensagem pai não está disponível."
+
+#, fuzzy
+#~ msgid "ewsabf"
+#~ msgstr "escamq"
 
 #, fuzzy
 #~ msgid "Certificate *NOT* added."

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.5.2\n"
-"POT-Creation-Date: 2002-12-06 12:10+0100\n"
+"POT-Creation-Date: 2002-12-09 14:26+0100\n"
 "PO-Revision-Date: 2002-12-08 14:50+0100\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
@@ -571,16 +571,19 @@ msgstr "Signiere als: "
 #: compose.c:231
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (f)orget it? "
-msgstr "S/MIME (v)erschl., (s)ign., verschl. (m)it, sign. (a)ls, (b)eides, (k)eins? "
+msgstr ""
+"S/MIME (v)erschl., (s)ign., verschl. (m)it, sign. (a)ls, (b)eides, (k)eins? "
 
 #: compose.c:232
-msgid "ewsabf"
-msgstr "emsabk"
+#, fuzzy
+msgid "eswabf"
+msgstr "vsabk"
 
 #: compose.c:240
 msgid ""
 "1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, or (f)orget it? "
-msgstr "1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, oder (k)ein S/MIME? "
+msgstr ""
+"1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, oder (k)ein S/MIME? "
 
 #: compose.c:242
 msgid "12345f"
@@ -787,7 +790,9 @@ msgstr ""
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
-msgstr "\n[-- Ende der signierten Daten --]\n"
+msgstr ""
+"\n"
+"[-- Ende der signierten Daten --]\n"
 
 #: curs_lib.c:155
 msgid "yes"
@@ -1412,7 +1417,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Kann auf diesem IMAP-Server zu Mailboxen nichts hinzufügen."
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:729 imap/message.c:600 muttlib.c:1192
+#: imap/imap.c:729 imap/message.c:600 muttlib.c:1193
 #, c-format
 msgid "Create %s?"
 msgstr "%s erstellen?"
@@ -2489,7 +2494,8 @@ msgstr ""
 "\n"
 "    Sie sollten eine Kopie der GNU General Public License zusammen mit\n"
 "    diesem Programm erhalten haben; falls nicht, schreiben sie an Free\n"
-"    Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
+"    Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  "
+"02111, USA.\n"
 
 #: main.c:88
 msgid ""
@@ -2527,10 +2533,14 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> ]\n"
-"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] [...]\n"
-"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] [...]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
+"<file> ]\n"
+"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] "
+"[...]\n"
+"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] "
+"[...]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
+"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2741,41 +2751,41 @@ msgstr "Springen in Dialogen ist nicht möglich."
 msgid "Tagging is not supported."
 msgstr "Markieren wird nicht unterstützt."
 
-#: mh.c:643
+#: mh.c:656
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Lese %s... %d"
 
-#: mh.c:1019
+#: mh.c:1042
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): kann Zeitstempel der Datei nicht setzen"
 
-#: muttlib.c:854
+#: muttlib.c:855
 msgid "File is a directory, save under it?"
 msgstr "Datei ist ein Verzeichnis, darin abspeichern?"
 
-#: muttlib.c:859
+#: muttlib.c:860
 msgid "File under directory: "
 msgstr "Datei in diesem Verzeichnis: "
 
-#: muttlib.c:871
+#: muttlib.c:872
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Datei existiert, (u)eberschreiben, (a)nhängen, a(b)brechen?"
 
-#: muttlib.c:871
+#: muttlib.c:872
 msgid "oac"
 msgstr "uab"
 
-#: muttlib.c:1159
+#: muttlib.c:1160
 msgid "Can't save message to POP mailbox."
 msgstr "Kann Nachricht nicht in POP Mailbox schreiben."
 
-#: muttlib.c:1168
+#: muttlib.c:1169
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s ist keine Mailbox!"
 
-#: muttlib.c:1174
+#: muttlib.c:1175
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Nachricht an %s anhängen?"
@@ -3876,7 +3886,8 @@ msgstr "Signal %d... Abbruch.\n"
 
 #: smime.c:136
 msgid "S/MIME messages with no hints on content are unsupported."
-msgstr "S/MIME Nachrichten ohne Hinweis auf den Inhalt werden nicht unterstützt."
+msgstr ""
+"S/MIME Nachrichten ohne Hinweis auf den Inhalt werden nicht unterstützt."
 
 #: smime.c:365
 msgid "Trusted   "
@@ -3973,7 +3984,9 @@ msgstr "Keine Ausgabe von OpenSSL..."
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
-msgstr "[-- Ende der OpenSSL-Ausgabe --]\n\n"
+msgstr ""
+"[-- Ende der OpenSSL-Ausgabe --]\n"
+"\n"
 
 #: smime.c:1777 smime.c:1787
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
@@ -3991,13 +4004,17 @@ msgstr "[-- Die folgenden Daten sind S/MIME signiert --]\n"
 msgid ""
 "\n"
 "[-- End of S/MIME encrypted data. --]\n"
-msgstr "\n[-- Ende der S/MIME-verschlüsselten Daten --]\n"
+msgstr ""
+"\n"
+"[-- Ende der S/MIME-verschlüsselten Daten --]\n"
 
 #: smime.c:1889
 msgid ""
 "\n"
 "[-- End of S/MIME signed data. --]\n"
-msgstr "\n[-- Ende der S/MIME signierten Daten --]\n"
+msgstr ""
+"\n"
+"[-- Ende der S/MIME signierten Daten --]\n"
 
 #: sort.c:201
 msgid "Sorting mailbox..."
@@ -4018,6 +4035,9 @@ msgstr "Bezugsnachricht ist in dieser begrenzten Sicht nicht sichtbar."
 #: thread.c:1085
 msgid "Parent message is not available."
 msgstr "Bezugsnachricht ist nicht verfügbar."
+
+#~ msgid "ewsabf"
+#~ msgstr "emsabk"
 
 #~ msgid "This ID's validity level is undefined."
 #~ msgstr "Die Gültigkeit dieser ID ist undefiniert."

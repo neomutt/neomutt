@@ -229,13 +229,13 @@ static int smime_send_menu (HEADER *msg, int *redraw)
     char *p;
 
   switch (mutt_multi_choice (_("S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (f)orget it? "),
-			     _("ewsabf")))
+			     _("eswabf")))
   {
   case 1: /* (e)ncrypt */
     msg->security |= SMIMEENCRYPT;
     break;
 
-  case 2: /* encrypt (w)ith */
+  case 3: /* encrypt (w)ith */
     msg->security |= SMIMEENCRYPT;
     switch (mutt_multi_choice (_("1: DES, 2: Triple-DES, 3: RC2-40,"
 				 " 4: RC2-64, 5: RC2-128, or (f)orget it? "),
@@ -260,7 +260,7 @@ static int smime_send_menu (HEADER *msg, int *redraw)
     }
     break;
 
-  case 3: /* (s)ign */
+  case 2: /* (s)ign */
       
     if(!SmimeDefaultKey)
 	mutt_message("Can\'t sign: No key specified. use sign(as).");

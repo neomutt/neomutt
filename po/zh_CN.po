@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.2\n"
-"POT-Creation-Date: 2002-12-06 12:10+0100\n"
+"POT-Creation-Date: 2002-12-09 14:26+0100\n"
 "PO-Revision-Date: 1999-12-20 20:41+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -594,7 +594,7 @@ msgstr ""
 "弃？"
 
 #: compose.c:232
-msgid "ewsabf"
+msgid "eswabf"
 msgstr ""
 
 #: compose.c:240
@@ -1461,7 +1461,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "无法附加在这个伺服器上的 IMAP 信箱"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:729 imap/message.c:600 muttlib.c:1192
+#: imap/imap.c:729 imap/message.c:600 muttlib.c:1193
 #, c-format
 msgid "Create %s?"
 msgstr "建立 %s？"
@@ -2810,42 +2810,42 @@ msgstr "对话模式中不支持跳跃功能。"
 msgid "Tagging is not supported."
 msgstr "不支持标记功能。"
 
-#: mh.c:643
+#: mh.c:656
 #, c-format
 msgid "Reading %s... %d"
 msgstr "读取 %s… %d"
 
-#: mh.c:1019
+#: mh.c:1042
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr ""
 
-#: muttlib.c:854
+#: muttlib.c:855
 msgid "File is a directory, save under it?"
 msgstr "文件是一个目录, 储存在它下面 ?"
 
-#: muttlib.c:859
+#: muttlib.c:860
 msgid "File under directory: "
 msgstr "在目录底下的文件："
 
-#: muttlib.c:871
+#: muttlib.c:872
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "文件已经存在, (o)覆盖, (a)附加, 或是 (c)取消 ?"
 
-#: muttlib.c:871
+#: muttlib.c:872
 msgid "oac"
 msgstr ""
 
-#: muttlib.c:1159
+#: muttlib.c:1160
 #, fuzzy
 msgid "Can't save message to POP mailbox."
 msgstr "将信件写入到信箱"
 
-#: muttlib.c:1168
+#: muttlib.c:1169
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s 不是信箱！"
 
-#: muttlib.c:1174
+#: muttlib.c:1175
 #, c-format
 msgid "Append messages to %s?"
 msgstr "附加信件到 %s ?"

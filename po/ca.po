@@ -10,7 +10,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt 1.3.27i\n"
-"POT-Creation-Date: 2002-12-06 12:10+0100\n"
+"POT-Creation-Date: 2002-12-09 14:26+0100\n"
 "PO-Revision-Date: 2002-02-02 11:29+01:00\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -618,7 +618,7 @@ msgstr "(x)ifra, (s)igna, s(i)gna com a, (a)mbdós, o en (c)lar? "
 # ivb  (x)ifra, (s)igna, s(i)gna com a, (a)mbdós, (c)lar
 #: compose.c:232
 #, fuzzy
-msgid "ewsabf"
+msgid "eswabf"
 msgstr "xsiac"
 
 #: compose.c:240
@@ -1499,7 +1499,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Aquest servidor no permet afegir a les bústies IMAP."
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:729 imap/message.c:600 muttlib.c:1192
+#: imap/imap.c:729 imap/message.c:600 muttlib.c:1193
 #, c-format
 msgid "Create %s?"
 msgstr "Voleu crear «%s»?"
@@ -2861,43 +2861,43 @@ msgstr "No es pot saltar en un diàleg."
 msgid "Tagging is not supported."
 msgstr "No es pot marcar."
 
-#: mh.c:643
+#: mh.c:656
 #, c-format
 msgid "Reading %s... %d"
 msgstr "S'està llegint «%s»... %d"
 
-#: mh.c:1019
+#: mh.c:1042
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr ""
 
-#: muttlib.c:854
+#: muttlib.c:855
 msgid "File is a directory, save under it?"
 msgstr "El fitxer és un directori; voleu desar-hi a sota?"
 
-#: muttlib.c:859
+#: muttlib.c:860
 msgid "File under directory: "
 msgstr "Fitxer a sota del directori: "
 
-#: muttlib.c:871
+#: muttlib.c:872
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "El fitxer ja existeix; (s)obreescriu, (a)fig o (c)ancel·la?"
 
 # ivb (2001/11/27)
 # ivb  (s)obreescriu, (a)fig, (c)ancel·la
-#: muttlib.c:871
+#: muttlib.c:872
 msgid "oac"
 msgstr "sac"
 
-#: muttlib.c:1159
+#: muttlib.c:1160
 msgid "Can't save message to POP mailbox."
 msgstr "No es poden desar missatges en bústies POP."
 
-#: muttlib.c:1168
+#: muttlib.c:1169
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "«%s» no és una bústia!"
 
-#: muttlib.c:1174
+#: muttlib.c:1175
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Voleu afegir els missatges a «%s»?"
@@ -4239,6 +4239,12 @@ msgstr "El missatge pare no és visible en aquesta vista limitada."
 #: thread.c:1085
 msgid "Parent message is not available."
 msgstr "El missatge pare no es troba disponible."
+
+# ivb (2001/11/19)
+# ivb  (x)ifra, (s)igna, s(i)gna com a, (a)mbdós, (c)lar
+#, fuzzy
+#~ msgid "ewsabf"
+#~ msgstr "xsiac"
 
 #, fuzzy
 #~ msgid "Certificate *NOT* added."
