@@ -75,7 +75,7 @@ install: all instdoc
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man5
 	./instdoc $(srcdir)/mutt.man $(DESTDIR)$(mandir)/man1/mutt.1
 	./instdoc $(srcdir)/muttbug.man $(DESTDIR)$(mandir)/man1/flea.1
-	echo ".so $(mandir)/man1/flea.1" > $(DESTDIR)$(mandir)/man1/muttbug.1
+	./instdoc $(srcdir)/muttbug.man $(DESTDIR)$(mandir)/man1/muttbug.1
 	./instdoc $(srcdir)/dotlock.man \
 		$(DESTDIR)$(mandir)/man1/mutt_dotlock.1
 	./instdoc muttrc.man $(DESTDIR)$(mandir)/man5/muttrc.5
