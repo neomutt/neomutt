@@ -483,7 +483,8 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	  else if (flags & M_ALIAS)
 	  {
 	    /* invoke the alias-menu to get more addresses */
-	    for (i = state->curpos; i && state->wbuf[i-1] != ','; i--)
+	    for (i = state->curpos; i && state->wbuf[i-1] != ',' && 
+		 state->wbuf[i-1] != ':'; i--)
 	      ;
 	    for (; i < state->lastchar && state->wbuf[i] == ' '; i++)
 	      ;
