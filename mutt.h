@@ -50,6 +50,13 @@
 #include "hash.h"
 #include "charset.h"
 
+#ifndef HAVE_WC_FUNCS
+# ifdef MB_LEN_MAX
+#  undef MB_LEN_MAX
+# endif
+# define MB_LEN_MAX 16
+#endif
+
 #ifdef SUBVERSION
 # define MUTT_VERSION (VERSION SUBVERSION)
 #else  
