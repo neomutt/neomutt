@@ -138,7 +138,6 @@ struct option_t MuttVars[] = {
   { "imap_home_namespace",	DT_STR, R_NONE, UL &ImapHomeNamespace, UL 0},
 #endif
   { "implicit_autoview", DT_BOOL,R_NONE, OPTIMPLICITAUTOVIEW, 0},
-  { "in_reply_to",	DT_STR,	 R_NONE, UL &InReplyTo, UL "%i; from %n on %{!%a, %b %d, %Y at %I:%M:%S%p %Z}" },
   { "include",		DT_QUAD, R_NONE, OPT_INCLUDE, M_ASKYES },
   { "indent_string",	DT_STR,	 R_NONE, UL &Prefix, UL "> " },
   { "indent_str",	DT_SYN,  R_NONE, UL "indent_string", 0 },

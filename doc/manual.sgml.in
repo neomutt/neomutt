@@ -3061,16 +3061,6 @@ at the environment variable <em/MM&lowbar;NOASK/.  Setting this to
 comma-separated list of type names (without white space) for which
 the corresponding mailcap entries will be used to display MIME parts.
 
-<sect2>in&lowbar;reply&lowbar;to
-<p>
-Type: format string<newline>
-Default: &dquot;&percnt;i; from &bsol;&dquot;&percnt;n&bsol;&dquot; on &percnt;{!&percnt;a, &percnt;b &percnt;d, &percnt;Y at &percnt;I:&percnt;M:&percnt;S&percnt;p}&dquot;
-
-This specifies the format of the <tt/In-Reply-To:/ header
-field added when replying to a message. For a full listing of
-defined escape sequences see the section on <ref id="index_format"
-name="&dollar;index&lowbar;format">.
-
 <sect2>include<label id="include">
 <p>
 Type: quadoption<newline>

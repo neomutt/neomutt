@@ -87,7 +87,6 @@ macro pager   <f1> "!less @docdir@/manual.txt\n" "Show Mutt documentation"
 # set hostname=""
 # unset ignore_list_rely_to
 # set implicit_autoview=no
-# set in_reply_to="%i; from %n on %{!%a, %b %d, %Y at %I:%M:%S%p %Z}"
 # set include=ask-yes
 # set indent_string="> "
 # set index_format="%4C %Z %{%b %d} %-15.15L (%4l) %s"
