@@ -829,6 +829,73 @@ int mx_close_mailbox (CONTEXT *ctx)
   return 0;
 }
 
+
+/* update a Context structure's internal tables. */
+
+void mx_update_tables(CONTEXT *ctx, int do_delete)
+{
+  int i, j;
+  
+  /* update memory to reflect the new state of the mailbox */
+  ctx->vcount = 0;
+  ctx->vsize = 0;
+  ctx->tagged = 0;
+  ctx->deleted = 0;
+  ctx->new = 0;
+  ctx->unread = 0;
+  ctx->changed = 0;
+  ctx->flagged = 0;
+#define this_body ctx->hdrs[j]->content
+  for (i = 0, j = 0; i < ctx->msgcount; i++)
+  {
+    if ((do_delete && !ctx->hdrs[i]->deleted) || 
+	(!do_delete && ctx->hdrs[i]->active))
+    {
+      if (i != j)
+      {
+	ctx->hdrs[j] = ctx->hdrs[i];
+	ctx->hdrs[i] = NULL;
+      }
+      ctx->hdrs[j]->msgno = j;
+      if (ctx->hdrs[j]->virtual != -1)
+      {
+	ctx->v2r[ctx->vcount] = j;
+	ctx->hdrs[j]->virtual = ctx->vcount++;
+	ctx->vsize += this_body->length + this_body->offset -
+	  this_body->hdr_offset;
+      }
+      ctx->hdrs[j]->changed = 0;
+      if (ctx->hdrs[j]->tagged)
+	ctx->tagged++;
+      if (ctx->hdrs[j]->flagged)
+	ctx->flagged++;
+      if (!ctx->hdrs[j]->read)
+      { 
+	ctx->unread++;
+	if (!ctx->hdrs[j]->old)
+	  ctx->new++;
+      } 
+      j++;
+    }
+    else
+    {
+      if (ctx->magic == M_MH || ctx->magic == M_MAILDIR)
+	ctx->size -= (ctx->hdrs[i]->content->length +
+		      ctx->hdrs[i]->content->offset -
+		      ctx->hdrs[i]->content->hdr_offset);
+      /* remove message from the hash tables */
+      if (ctx->hdrs[i]->env->real_subj)
+	hash_delete (ctx->subj_hash, ctx->hdrs[i]->env->real_subj, ctx->hdrs[i], NULL);
+      if (ctx->hdrs[i]->env->message_id)
+	hash_delete (ctx->id_hash, ctx->hdrs[i]->env->message_id, ctx->hdrs[i], NULL);
+      mutt_free_header (&ctx->hdrs[i]);
+    }
+  }
+#undef this_body
+  ctx->msgcount = j;
+}
+
+
 /* save changes to mailbox
  *
  * return values:
@@ -837,7 +904,7 @@ int mx_close_mailbox (CONTEXT *ctx)
  */
 int mx_sync_mailbox (CONTEXT *ctx)
 {
-  int rc, i, j;
+  int rc, i;
 
   if (ctx->dontwrite)
   {
@@ -896,63 +963,7 @@ int mx_sync_mailbox (CONTEXT *ctx)
       return 0;
     }
 
-    /* update memory to reflect the new state of the mailbox */
-    ctx->vcount = 0;
-    ctx->vsize = 0;
-    ctx->tagged = 0;
-    ctx->deleted = 0;
-    ctx->new = 0;
-    ctx->unread = 0;
-    ctx->changed = 0;
-    ctx->flagged = 0;
-#define this_body ctx->hdrs[j]->content
-    for (i = 0, j = 0; i < ctx->msgcount; i++)
-    {
-      if (!ctx->hdrs[i]->deleted)
-      {
-	if (i != j)
-	{
-	  ctx->hdrs[j] = ctx->hdrs[i];
-	  ctx->hdrs[i] = NULL;
-	}
-	ctx->hdrs[j]->msgno = j;
-	if (ctx->hdrs[j]->virtual != -1)
-	{
-	  ctx->v2r[ctx->vcount] = j;
-	  ctx->hdrs[j]->virtual = ctx->vcount++;
-	  ctx->vsize += this_body->length + this_body->offset -
-	                this_body->hdr_offset;
-	}
-	ctx->hdrs[j]->changed = 0;
-	if (ctx->hdrs[j]->tagged)
-	  ctx->tagged++;
-	if (ctx->hdrs[j]->flagged)
-	  ctx->flagged++;
-	if (!ctx->hdrs[j]->read)
-	{ 
-	  ctx->unread++;
-	  if (!ctx->hdrs[j]->old)
-	    ctx->new++;
-	} 
-	j++;
-      }
-      else
-      {
-	if (ctx->magic == M_MH || ctx->magic == M_MAILDIR)
-	 ctx->size -= (ctx->hdrs[i]->content->length +
-	               ctx->hdrs[i]->content->offset -
-		       ctx->hdrs[i]->content->hdr_offset);
-	/* remove message from the hash tables */
-	if (ctx->hdrs[i]->env->real_subj)
-	  hash_delete (ctx->subj_hash, ctx->hdrs[i]->env->real_subj, ctx->hdrs[i], NULL);
-	if (ctx->hdrs[i]->env->message_id)
-	  hash_delete (ctx->id_hash, ctx->hdrs[i]->env->message_id, ctx->hdrs[i], NULL);
-	mutt_free_header (&ctx->hdrs[i]);
-      }
-    }
-#undef this_body
-    ctx->msgcount = j;
-
+    mx_update_tables(ctx, 1);
     set_option (OPTSORTCOLLAPSE);
     mutt_sort_headers (ctx, 1); /* rethread from scratch */
     unset_option (OPTSORTCOLLAPSE);
@@ -1116,186 +1127,6 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
     safe_free ((void **) &msg);
 
   return msg;
-}
-
-int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
-{
-  int (*cmp_headers) (const HEADER *, const HEADER *) = NULL;
-  HEADER **old_hdrs;
-  int old_msgcount;
-  int msg_mod = 0;
-  int index_hint_set;
-  int i, j;
-  int rc = -1;
-
-  /* silent operations */
-  ctx->quiet = 1;
-  
-  mutt_message ("Reopening mailbox...");
-  
-  /* our heuristics require the old mailbox to be unsorted */
-  if (Sort != SORT_ORDER)
-  {
-    short old_sort;
-
-    old_sort = Sort;
-    Sort = SORT_ORDER;
-    mutt_sort_headers (ctx, 1);
-    Sort = old_sort;
-  }
-
-  old_hdrs = NULL;
-  old_msgcount = 0;
-  
-  /* simulate a close */
-  hash_destroy (&ctx->id_hash, NULL);
-  hash_destroy (&ctx->subj_hash, NULL);
-  safe_free ((void **) &ctx->v2r);
-  if (ctx->readonly)
-  {
-    for (i = 0; i < ctx->msgcount; i++)
-      mutt_free_header (&(ctx->hdrs[i])); /* nothing to do! */
-    safe_free ((void **) &ctx->hdrs);
-  }
-  else
-  {
-      /* save the old headers */
-    old_msgcount = ctx->msgcount;
-    old_hdrs = ctx->hdrs;
-    ctx->hdrs = NULL;
-  }
-
-  ctx->hdrmax = 0;	/* force allocation of new headers */
-  ctx->msgcount = 0;
-  ctx->vcount = 0;
-  ctx->tagged = 0;
-  ctx->deleted = 0;
-  ctx->new = 0;
-  ctx->unread = 0;
-  ctx->flagged = 0;
-  ctx->changed = 0;
-  ctx->id_hash = hash_create (257);
-  ctx->subj_hash = hash_create (257);
-
-  switch (ctx->magic)
-  {
-    case M_MBOX:
-      fseek (ctx->fp, 0, 0);
-      cmp_headers = mbox_strict_cmp_headers;
-      rc = mbox_parse_mailbox (ctx);
-      break;
-
-    case M_MMDF:
-      fseek (ctx->fp, 0, 0);
-      cmp_headers = mbox_strict_cmp_headers;
-      rc = mmdf_parse_mailbox (ctx);
-      break;
-
-    case M_MH:
-      /* cmp_headers = mh_strict_cmp_headers; */
-      rc = mh_read_dir (ctx, NULL);
-      break;
-
-    case M_MAILDIR:
-      /* cmp_headers = maildir_strict_cmp_headers; */
-      rc = maildir_read_dir (ctx);
-      break;
-
-    default:
-      rc = -1;
-      break;
-  }
-  
-  if (rc == -1)
-  {
-    /* free the old headers */
-    for (j = 0; j < old_msgcount; j++)
-      mutt_free_header (&(old_hdrs[j]));
-    safe_free ((void **) &old_hdrs);
-
-    ctx->quiet = 0;
-    return (-1);
-  }
-
-  /* now try to recover the old flags */
-
-  index_hint_set = (index_hint == NULL);
-
-  if (!ctx->readonly)
-  {
-    for (i = 0; i < ctx->msgcount; i++)
-    {
-      int found = 0;
-
-      /* some messages have been deleted, and new  messages have been
-       * appended at the end; the heuristic is that old messages have then
-       * "advanced" towards the beginning of the folder, so we begin the
-       * search at index "i"
-       */
-      for (j = i; j < old_msgcount; j++)
-      {
-	if (old_hdrs[j] == NULL)
-	  continue;
-	if (cmp_headers (ctx->hdrs[i], old_hdrs[j]))
-	{
-	  found = 1;
-	  break;
-	}
-      }
-      if (!found)
-      {
-	for (j = 0; j < i; j++)
-	{
-	  if (old_hdrs[j] == NULL)
-	    continue;
-	  if (cmp_headers (ctx->hdrs[i], old_hdrs[j]))
-	  {
-	    found = 1;
-	    break;
-	  }
-	}
-      }
-
-      if (found)
-      {
-	/* this is best done here */
-	if (!index_hint_set && *index_hint == j)
-	  *index_hint = i;
-
-	if (old_hdrs[j]->changed)
-	{
-	  /* Only update the flags if the old header was changed;
-	   * otherwise, the header may have been modified externally,
-	   * and we don't want to lose _those_ changes
-	   */
-	  mutt_set_flag (ctx, ctx->hdrs[i], M_FLAG, old_hdrs[j]->flagged);
-	  mutt_set_flag (ctx, ctx->hdrs[i], M_REPLIED, old_hdrs[j]->replied);
-	  mutt_set_flag (ctx, ctx->hdrs[i], M_OLD, old_hdrs[j]->old);
-	  mutt_set_flag (ctx, ctx->hdrs[i], M_READ, old_hdrs[j]->read);
-	}
-	mutt_set_flag (ctx, ctx->hdrs[i], M_DELETE, old_hdrs[j]->deleted);
-	mutt_set_flag (ctx, ctx->hdrs[i], M_TAG, old_hdrs[j]->tagged);
-
-	/* we don't need this header any more */
-	mutt_free_header (&(old_hdrs[j]));
-      }
-    }
-
-    /* free the remaining old headers */
-    for (j = 0; j < old_msgcount; j++)
-    {
-      if (old_hdrs[j])
-      {
-	mutt_free_header (&(old_hdrs[j]));
-	msg_mod = 1;
-      }
-    }
-    safe_free ((void **) &old_hdrs);
-  }
-
-  ctx->quiet = 0;
-
-  return ((ctx->changed || msg_mod) ? M_REOPENED : M_NEW_MAIL);
 }
 
 /* check for new mail */

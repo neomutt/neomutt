@@ -475,6 +475,10 @@ typedef struct body
 
 typedef struct header
 {
+  #ifdef _PGPPATH
+  unsigned int pgp : 3;
+#endif
+
   unsigned int mime : 1;    /* has a Mime-Version header? */
   unsigned int mailcap : 1; /* requires mailcap to display? */
   unsigned int flagged : 1; /* marked important? */
@@ -486,28 +490,14 @@ typedef struct header
   unsigned int read : 1;
   unsigned int expired : 1; /* already expired? */
   unsigned int superseded : 1; /* got superseded? */
-
-
-
-
-#ifdef _PGPPATH
-  unsigned int pgp : 3;
-#endif
-
-
-
-
-
-
-
-
-
   unsigned int replied : 1;
   unsigned int subject_changed : 1; /* used for threading */
   unsigned int display_subject : 1; /* used for threading */
   unsigned int fake_thread : 1;     /* no ref matched, but subject did */
   unsigned int threaded : 1;        /* message has been threaded */
 
+  unsigned int active : 1;
+  
   /* timezone of the sender of this message */
   unsigned int zhours : 5;
   unsigned int zminutes : 6;
@@ -571,6 +561,7 @@ typedef struct
   char *path;
   FILE *fp;
   time_t mtime;
+  time_t mtime_cur;		/* used with maildir folders */
   off_t size;
   off_t vsize;
   char *pattern;                /* limit pattern string */
