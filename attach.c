@@ -61,8 +61,8 @@ int mutt_get_tmp_attachment (BODY *a)
 
   if(stat(a->filename, &st) == -1)
     return -1;
-  
-  if((fpin = fopen(a->filename, "r")) && (fpout = safe_fopen(tempfile, "w")))
+
+  if((fpin = fopen(a->filename, "r")) && (fpout = safe_fopen(tempfile, "w")))  /* __FOPEN_CHECKED__ */
   {
     mutt_copy_stream (fpin, fpout);
     mutt_str_replace (&a->filename, tempfile);
@@ -722,7 +722,7 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
       if (flags == M_SAVE_APPEND)
 	s.fpout = fopen (path, "a");
       else if (flags == M_SAVE_OVERWRITE)
-	s.fpout = fopen (path, "w");
+	s.fpout = fopen (path, "w");		/* __FOPEN_CHECKED__ */
       else
 	s.fpout = safe_fopen (path, "w");
       if (s.fpout == NULL)
@@ -788,7 +788,7 @@ int mutt_decode_save_attachment (FILE *fp, BODY *m, char *path,
   if (flags == M_SAVE_APPEND)
     s.fpout = fopen (path, "a");
   else if (flags == M_SAVE_OVERWRITE)
-    s.fpout = fopen (path, "w");
+    s.fpout = fopen (path, "w");	/* __FOPEN_CHECKED__ */
   else
     s.fpout = safe_fopen (path, "w");
 

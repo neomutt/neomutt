@@ -20,6 +20,10 @@ devel="devel/"	# uncomment for the stable branch
 
 cvs update
 
+# Do automated security checks
+
+./check_sec.sh || exit 1
+
 # bump the version number, and calculate the tags
 
 rm -f VERSION 

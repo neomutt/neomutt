@@ -476,7 +476,7 @@ static pgp_key_t *pgp_select_key (pgp_key_t *keys,
     case OP_VERIFY_KEY:
 
       mutt_mktemp (tempfile);
-      if ((devnull = fopen ("/dev/null", "w")) == NULL)
+      if ((devnull = fopen ("/dev/null", "w")) == NULL)	/* __FOPEN_CHECKED__ */
       {
 	mutt_perror _("Can't open /dev/null");
 	break;
@@ -670,7 +670,7 @@ BODY *pgp_make_key_attachment (char *tempf)
     return NULL;
   }
 
-  if ((devnull = fopen ("/dev/null", "w")) == NULL)
+  if ((devnull = fopen ("/dev/null", "w")) == NULL)	/* __FOPEN_CHECKED__ */
   {
     mutt_perror _("Can't open /dev/null");
     fclose (tempfp);
