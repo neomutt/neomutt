@@ -57,6 +57,7 @@ int mutt_recode_file (const char *, const char *, const char *);
 
 int mutt_convert_string (char **, const char *, const char *);
 
+iconv_t mutt_iconv_open (const char *, const char *);
 size_t mutt_iconv (iconv_t, const char **, size_t *, char **, size_t *, const char **, const char *);
 
 typedef void * FGETCONV;

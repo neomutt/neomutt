@@ -656,18 +656,12 @@ static CHARSET *mutt_get_charset (const char *name)
   CHARSET *charset;
   char buffer[SHORT_STRING];
   char *real_charset;
-  char *hooked;
-  
+
   if (!name || !*name)
     return (NULL);
 
   init_charsets();
   mutt_canonical_charset (buffer, sizeof(buffer), name);
-
-  /* needs to be documented */
-  
-  if ((hooked = mutt_charset_hook (buffer)))
-    mutt_canonical_charset (buffer, sizeof (buffer), hooked);
 
   dprint (2, (debugfile, "mutt_get_charset: Looking for %s\n", buffer));
   

@@ -402,7 +402,7 @@ static int change_attachment_charset (BODY *b)
   if (mutt_get_field (_("Enter character set: "), buff, sizeof(buff), 0) == -1)
     return 0;
 
-  if ((cd = iconv_open (buff, "us-ascii")) == (iconv_t)-1)
+  if ((cd = mutt_iconv_open (buff, "us-ascii")) == (iconv_t)-1)
   {
     mutt_error (_("Character set %s is unknown."), buff);
     return 0;

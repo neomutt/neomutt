@@ -79,9 +79,16 @@ iconv_t mutt_iconv_open (const char *tocode, const char *fromcode)
 {
   char tocode1[SHORT_STRING];
   char fromcode1[SHORT_STRING];
+  char *tmp;
 
   mutt_canonical_charset (tocode1, sizeof (tocode1), tocode);
+  if ((tmp = mutt_charset_hook (tocode1)))
+    mutt_canonical_charset (tocode1, sizeof (tocode1), tmp);
+
   mutt_canonical_charset (fromcode1, sizeof (fromcode1), fromcode);
+  if ((tmp = mutt_charset_hook (fromcode1)))
+    mutt_canonical_charset (fromcode1, sizeof (fromcode1), tmp);
+
   return iconv_open (tocode1, fromcode1);
 }
 
