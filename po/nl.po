@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-12-12 09:15+0100\n"
+"POT-Creation-Date: 1999-01-04 14:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -89,7 +89,6 @@ msgstr "Geen \"compose\"-entry in mailcap, een leeg bestand wordt aangemaakt."
 msgid "Mailcap Edit entry requires %%s"
 msgstr "\"edit\"-entry in mailcap vereist %%s."
 
-
 #: attach.c:265
 #, c-format
 msgid "No mailcap edit entry for %s"
@@ -160,7 +159,9 @@ msgstr "Bestandsmasker: "
 
 #: browser.c:745
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
-msgstr "Achteruit sorteren op (d)atum, bestands(g)rootte, (a)lpha of helemaal (n)iet ?"
+msgstr ""
+"Achteruit sorteren op (d)atum, bestands(g)rootte, (a)lpha of helemaal (n)iet "
+"?"
 
 #: browser.c:746
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
@@ -568,7 +569,8 @@ msgstr "Kan niet schrijven in een scrijfbeveiligde mailbox!"
 
 #: curs_main.c:222
 msgid "Changes to folder will be written on folder exit."
-msgstr "Wijzigingen zullen worden weggeschreven bij het verlaten van de mailbox."
+msgstr ""
+"Wijzigingen zullen worden weggeschreven bij het verlaten van de mailbox."
 
 #: curs_main.c:227
 msgid "Changes to folder will not be written."
@@ -701,7 +703,7 @@ msgstr "Zoekopdracht bovenaan begonnen."
 msgid "Search wrapped to bottom."
 msgstr "Zoekopdracht onderaan begonnen."
 
-#: curs_main.c:1160
+#: curs_main.c:1162
 msgid "No new messages"
 msgstr "Geen nieuwe berichten"
 
@@ -868,23 +870,23 @@ msgstr "[-- Deze %s/%s-bijlage "
 msgid "(size %s bytes) "
 msgstr "(grootte %s bytes)"
 
-#: handler.c:1261
+#: handler.c:1255
 msgid "has been deleted --]\n"
 msgstr "werd gewist --]\n"
 
-#: handler.c:1264
+#: handler.c:1258
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- op %s --]\n"
 
-#: handler.c:1274
+#: handler.c:1268
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
-msgstr "(Größe %s Byte) "
-"[-- Deze %s/%s bijlage is niet in het bericht --]\n"
+msgstr ""
+"(Größe %s Byte) [-- Deze %s/%s bijlage is niet in het bericht --]\n"
 "[-- opgenomen, en de aangegeven externe bron --]\n"
 "[-- bestaat niet meer --]\n"
 
@@ -902,25 +904,25 @@ msgstr ""
 msgid "Error: multipart/signed has no protocol."
 msgstr "Fout: multipart/signed zonder \"protocol\"-parameter."
 
-#: handler.c:1391
+#: handler.c:1392
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Fout: multipart/encrypted zonder \"protocol\"-parameter!"
 
-#: handler.c:1433
+#: handler.c:1434
 msgid "Unable to open temporary file!"
 msgstr "Tijdelijk bestand kon niet worden geopend!"
 
-#: handler.c:1492
+#: handler.c:1493
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s is niet ondersteund "
 
-#: handler.c:1497
+#: handler.c:1498
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(gebruik '%s', om dit gedeelte weer te geven)"
 
-#: handler.c:1499
+#: handler.c:1500
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "('view-attachments' moet aan een toets gekoppeld zijn!)"
 
@@ -1874,7 +1876,8 @@ msgstr "Bericht aan %s toevoegen?"
 
 #: main.c:40
 msgid "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
-msgstr "Stuur een bericht naar <mutt-dev@mutt.org> om de auteurs te bereiken.\n"
+msgstr ""
+"Stuur een bericht naar <mutt-dev@mutt.org> om de auteurs te bereiken.\n"
 
 #: main.c:43
 msgid ""
@@ -1956,6 +1959,12 @@ msgid ""
 "  -h\t\tthis help message"
 msgstr ""
 
+#: main.c:152
+msgid ""
+"\n"
+"Compile options:"
+msgstr ""
+
 #: main.c:306
 msgid "Error initializing terminal."
 msgstr "Kan terminal niet initialiseren."
@@ -1998,7 +2007,7 @@ msgstr "Bezig met het lezen van %s... %d (%d%%)"
 msgid "Mailbox was corrupted!"
 msgstr "Mailbox was beschadigd!"
 
-#: mbox.c:687 mbox.c:904
+#: mbox.c:687 mbox.c:930
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Fatale fout! Kon mailbox niet opnieuw openen!"
 
@@ -2010,9 +2019,11 @@ msgstr "Kan mailbox niet claimen!"
 #. * messages were found to be changed or deleted.  This should
 #. * never happen, is we presume it is a bug in mutt.
 #.
-#: mbox.c:737
+#: mbox.c:740
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr "sync: mbox wurde modifiziert, aber keine modifizierten Nachrichten.  Interner Fehler."
+msgstr ""
+"sync: mbox wurde modifiziert, aber keine modifizierten Nachrichten.  "
+"Interner Fehler."
 
 #: mbox.c:769
 msgid "Writing messages... %d (%d%%)"
@@ -2384,6 +2395,15 @@ msgstr ""
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- END PGP PUBLIC KEY BLOCK --]\n"
 
+#: pgp.c:464
+#, fuzzy
+msgid ""
+"\n"
+"[-- END PGP SIGNED MESSAGE --]\n"
+msgstr ""
+"[-- BEGIN PGP SIGNED MESSAGE --]\n"
+"\n"
+
 #: pgp.c:477
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
@@ -2392,7 +2412,7 @@ msgstr ""
 "[-- Fout: Kon begin van PGP-bericht niet vinden! --]\n"
 "\n"
 
-#: pgp.c:670 pgp.c:895
+#: pgp.c:669 pgp.c:975
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -2400,36 +2420,56 @@ msgstr ""
 "[-- Einde van PGP uitvoer --]\n"
 "\n"
 
-#. Now display the signed body
-#: pgp.c:677
+#: pgp.c:721
 msgid ""
-"[-- The following data is PGP/MIME signed --]\n"
+"[-- Error: Inconsistant multipart/signed structure! --]\n"
+"\n"
+msgstr ""
+
+#: pgp.c:729
+#, fuzzy, c-format
+msgid ""
+"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"\n"
+msgstr "Fout: multipart/signed zonder \"protocol\"-parameter."
+
+#: pgp.c:750
+#, c-format
+msgid ""
+"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"\n"
+msgstr ""
+
+#. Now display the signed body
+#: pgp.c:758
+#, fuzzy
+msgid ""
+"[-- The following data is signed --]\n"
 "\n"
 msgstr ""
 "[-- De volgende gegevens zijn PGP/MIME ondertekend --]\n"
 "\n"
 
-#: pgp.c:683
+#: pgp.c:764
+msgid ""
+"[-- Warning: Can't find any signatures. --]\n"
+"\n"
+msgstr ""
+
+#: pgp.c:770
+#, fuzzy
 msgid ""
 "\n"
-"[-- End of PGP/MIME signed data --]\n"
+"[-- End of signed data --]\n"
 msgstr ""
 "\n"
 "[-- Einde van PGP/MIME ondertekende gegevens --]\n"
 
-#: pgp.c:688
-msgid ""
-"[-- Error: this message does not comply with the PGP/MIME specification! "
-"--]\n"
-"\n"
-msgstr ""
-"[-- Fout: Dit bericht komt niet overeen met de PGP/MIME specificatie! --]\n" 
-
-#: pgp.c:802
+#: pgp.c:882
 msgid "Internal error. Inform <roessler@guug.de>."
 msgstr "Interne fout.  Informeer <roessler@guug.de>."
 
-#: pgp.c:866
+#: pgp.c:946
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -2437,7 +2477,7 @@ msgstr ""
 "[-- Fout: Kon PGP-subproces niet starten! --]\n"
 "\n"
 
-#: pgp.c:959
+#: pgp.c:1039
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -2445,11 +2485,11 @@ msgstr ""
 "[-- Fout: Foutief PGP/MIME bericht! --]\n"
 "\n"
 
-#: pgp.c:972
+#: pgp.c:1052
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Fout: Kon geen tijdelijk bestand aanmaken! --]\n"
 
-#: pgp.c:981
+#: pgp.c:1061
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -2457,7 +2497,7 @@ msgstr ""
 "[-- De volgende gegevens zijn PGP/MIME versleuteld --]\n"
 "\n"
 
-#: pgp.c:989
+#: pgp.c:1069
 msgid ""
 "\n"
 "[-- End of PGP/MIME encrypted data --]\n"
@@ -2465,16 +2505,16 @@ msgstr ""
 "\n"
 "[-- Einde van PGP/MIME versleutelde data --]\n"
 
-#: pgp.c:1071
+#: pgp.c:1151
 msgid "Can't open PGP subprocess!"
 msgstr "Kan PGP-Subproces niet starten!"
 
-#: pgp.c:1195
+#: pgp.c:1275
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "KeyID = \"%s\" voor %s gebruiken?"
 
-#: pgp.c:1201
+#: pgp.c:1281
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "KeyID voor %s: "
@@ -2490,7 +2530,6 @@ msgstr "Selecteer  "
 #: pgpkey.c:179
 msgid "Check key  "
 msgstr "Controleer key "
-
 
 #: pgpkey.c:192
 msgid "PGP keys matching "
@@ -2893,7 +2932,12 @@ msgstr "Bericht veranderd. Werkelijk versturen?"
 msgid "Sending message..."
 msgstr "Verstuur bericht..."
 
-#: send.c:1322
+#: send.c:1324
+#, fuzzy
+msgid "Could not send the message."
+msgstr "Verstuur het bericht"
+
+#: send.c:1330
 msgid "Mail sent."
 msgstr "Bericht verstuurd."
 
@@ -2946,6 +2990,13 @@ msgstr "Kan 'sorting function' niet vinden! [Meldt deze bug!]"
 #: status.c:102
 msgid "(no mailbox)"
 msgstr "(geen Mailbox)"
+
+#~ msgid ""
+#~ "[-- Error: this message does not comply with the PGP/MIME specification! "
+#~ "--]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- Fout: Dit bericht komt niet overeen met de PGP/MIME specificatie! --]\n"
 
 #~ msgid "This encoding is deprecated.  Really use it?"
 #~ msgstr "Deze codering zou u eigenlijk niet moeten gebruiken. Toch doen?"

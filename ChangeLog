@@ -1,3 +1,201 @@
+Thu Feb 11 22:52:03 1999  Thomas Roessler  <roessler@guug.de>
+
+	* imap.c, VERSION: another imap-related fix.
+
+	* pattern.c: another signal fix from liviu.
+
+	* imap.c: Remove a superfluous if statement.
+
+	* imap.c: ups, that one was bad.
+
+	* imap.c:
+	The HEADER structure doesn't have a mailcap component any more.
+
+	* imap.c:
+	The HEADER structure doesn't have a mailcap component any more.
+	Noted by Johan van Selst <johans@stack.nl>.
+
+	* signal.c, sendlib.c, pattern.c, pager.c, mutt.h, menu.c, globals.h, curs_main.c, curs_lib.c:
+	patch.mutt-0.95.1i.ld.signals.1-2.gz
+
+	* po/nl.po: new nl translation.
+
+	* pattern.c, curs_main.c: pattern.c: Collapse patch from Vikas.
+
+	* po/nl.po: New nl translation.
+
+	* pattern.c, curs_main.c:
+	curs_main.c: Check whether the user pressed a number before putting
+	it back onto the stack.  (OP_JUMP)
+	pattern.c: Vikas' latest fix.
+
+	* po/uk.po, po/ru.po, po/pl.po, po/nl.po, po/it.po, po/fr.po, po/es.po, po/de.po, po/cs.po:
+	Updating the po files.
+
+	* doc/manual.sgml.in, doc/Makefile.in:
+	Install README.SECURITY in the doc directory, document
+	mailcap_sanitize.
+
+	* reldate.h, prepare, configure.in, VERSION, Makefile.am, Attic/$output.in:
+	Preparing for 0.96: $output.in was real fun in the dist target.
+	*argh*
+
+	* po/uk.po, po/ru.po, po/pl.po, po/nl.po, po/it.po, po/fr.po, po/es.po, po/de.po, po/cs.po, doc/manual.sgml.in, doc/Makefile.in, reldate.h, VERSION, NEWS, Makefile.am, ChangeLog:
+	[stable] post-release commit for 0.95.2.
+
+	* README.SECURITY: Add a note on how to write mailcap files.
+
+	* README.SECURITY: Add a note on how to write mailcaps.
+
+Wed Feb 10 23:12:27 1999  Thomas Roessler  <roessler@guug.de>
+
+	* browser.c: Ups, this one needed a #ifdef USE_IMAP.
+
+	* imap.c, browser.c:
+	Some patches Brandon Long posted to comp.mail.mutt.
+
+	* rfc1524.c, protos.h, lib.c, handler.c, attach.c:
+	Fix the security fix.
+
+	* rfc1524.c, mutt.h, lib.c, init.h: [stable] $mailcap_sanitize
+
+	* rfc1524.c, mutt.h, lib.c, init.h: [unstable] $mailcap_sanitize.
+
+	* system.c, signal.c, sendlib.c, send.c, protos.h, mutt.h, globals.h, curs_lib.c, compose.c, commands.c, attach.c, TODO:
+	patch.mutt-0.95.1i.ld.signals.1: A major redesign of how child
+	processes are invoked.  From Liviu.
+
+Tue Feb  9 23:54:03 1999  Thomas Roessler  <roessler@guug.de>
+
+	* sort.c, mx.c, mutt.h, mh.c, mbox.c, curs_main.c, ChangeLog:
+	Vikas' latest collapse fix.
+
+	* prepare: Small prepare bug noted by vikas.
+
+	* pgppubring.c, pgpkey.c, pgp.h, main.c, gnupgparse.c, browser.h:
+	browser.h: re-insert the "tagged" component.
+	pgp support: fix handling of PGP 5 subkeys, algorithm 20.
+
+	* pgppubring.c: [stable] Alg. 16 is encrypt-only, el-gamal.
+
+	* commands.c:
+	honor hdr_order when decode-piping a message.  From Vikas.
+
+	* po/cs.po: New czech translation.
+
+	* commands.c: Reorder headers when decode-piping.
+
+	* po/cs.po, doc/manual.sgml.in, socket.c, mx.c, mutt_socket.h, mutt.h, menu.c, init.h, imap.h, imap.c, functions.h, complete.c, browser.h, browser.c, OPS:
+	Brandon's IMAP clean-up; new czech translation.
+
+Thu Feb  4 12:00:10 1999  Thomas Roessler  <roessler@guug.de>
+
+	* rfc1524.c, protos.h, pgpinvoke.c, mx.c, lib.c:
+	[unstable] Change the way mutt_quote_filename() worked.  It's not
+	too reasonable to allocate memory dynamically whenever we quote a
+	file name.  (I guess I should add "vim" to pgpinvoke.c's copyright
+	notice. :-)
+
+	* mx.c:
+	[unstable] Check for write errors when moving messages to $mbox.
+
+	* mx.c: Check for write errors when moving messages to $mbox.
+
+Wed Feb  3 22:14:18 1999  Thomas Roessler  <roessler@guug.de>
+
+	* sendlib.c, recvattach.c, postpone.c, main.c, hash.c, functions.h, compose.c, charset.h, charset.c, OPS:
+	[unstable] Produce some reasonable character set support when
+	postponing messages.
+
+	Additionally, this patch fixes a nasty pointer leak in
+	load_charset() [noted with electric fence], and a completely
+	mis-lead attempt to use bsearch().  Apparently, nobody ever tested
+	the utf8 decoder for quite some time.
+
+Tue Feb  2 21:57:44 1999  Thomas Roessler  <roessler@guug.de>
+
+	* pattern.c: merge ~v patch into unstable.
+
+	* pattern.c: small nit-fix from vikas to the ~v pattern.
+
+	* pgp.c: Thou shall not use dangling pointers.
+
+	* attach.c:
+	[unstable] Fix mutt_decode_save_attachment's handling of character
+	set conversions.
+
+	* sendlib.c, send.c, rfc2047.c, recvattach.c, protos.h, pgp.c, pattern.c, mutt.h, init.h, handler.c, globals.h, functions.h, copy.h, copy.c, compose.c, commands.c, charset.h, charset.c, attach.c, OPS:
+	Merging the external character set patch into unstable.
+	Additionally, this change introduces a M_CHARCONV state flag which
+	gives us some more control about when character set conversions are
+	actually done.  Current versions of mutt would happily apply
+	character set conversions when, e.g., saving a text/plain attachment
+	to a file.  (We had at least one corrupt russing translation file
+	due to this mis-feature.)
+
+	Additionally, we clean up some of the character set related code in
+	handler.c.  Most of that is now done by the decoder functions in
+	charset.c.
+
+	* imap.c: Brandon's imap_create patch.
+
+	* pgpkey.c:
+	[unstable] clear the message line before letting people select
+	public keys.
+
+	* imap.c, copy.c: [unstable] merging Brandon's imap fixes.
+
+	* copy.c, imap.c: A couple of IMAP fixes from Brandon Long.
+
+Sat Jan 30 17:07:30 1999  Thomas Roessler  <roessler@guug.de>
+
+	* pgpkey.c:
+	really fix the weak associations problem.  it was worse than i
+	thought.
+
+	* pgpkey.c:
+	Handle expired keys correclty, even when they are the only and exact
+	match when searching for keys by address.
+
+Fri Jan 29 11:15:15 1999  Thomas Roessler  <roessler@guug.de>
+
+	* init.h: [unstable] Change some default formats.
+
+	* remailer.c, pgpkey.c, menu.c, addrbook.c: Add generic menu searching.
+
+	* remailer.h, remailer.c, init.h, globals.h:
+	Use a user-definable format for the mixmaster menu.
+
+	* pgpkey.c, pgp.h, init.h: [unstable] add $pgp_entry_format.
+
+Thu Jan 28 09:08:47 1999  Thomas Roessler  <roessler@guug.de>
+
+	* gnupgparse.c:
+	gnupg's trust model is currently unusable.  As a work-around, we
+	don't present the user with _any_ trust information if he uses
+	gnupg.
+
+Wed Jan 27 19:53:46 1999  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.in, pgpkey.c, mutt.h, init.h, gnupgparse.c:
+	Add $pgp_show_unusable.
+
+Tue Jan 26 21:24:56 1999  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.in: [unstable] document ~v.
+
+	* doc/manual.sgml.in: [stable] document ~v.
+
+	* thread.c, pattern.c, mutt.h:
+	[unstable] Add the ~v pattern.  From Vikas.
+
+	* thread.c, pattern.c, mutt.h: [stable] Add the ~v pattern.
+
+	* doc/manual.sgml.in, ChangeLog:
+	ChangeLog, documentation for implicit_autoview.
+
+	* doc/manual.sgml.in: Document $implicit_autoview.
+
 Tue Jan 26 09:51:53 1999  Thomas Roessler  <roessler@guug.de>
 
 	* doc/manual.sgml.in: Document $implicit_autoview.
