@@ -515,7 +515,7 @@ typedef struct body
 
 typedef struct header
 {
-  #ifdef _PGPPATH
+#ifdef _PGPPATH
   unsigned int pgp : 3;
 #endif
 
