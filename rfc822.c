@@ -256,7 +256,7 @@ parse_route_addr (const char *s,
     {
       if (tokenlen < sizeof (token) - 1)
 	token[tokenlen++] = '@';
-      s = parse_mailboxdomain (s + 1, ".\\[](", token,
+      s = parse_mailboxdomain (s + 1, ",.\\[](", token,
 			       &tokenlen, sizeof (token) - 1,
 			       comment, commentlen, commentmax);
     }
@@ -773,7 +773,7 @@ int main (int argc, char **argv)
   ADDRESS *list;
   char buf[256];
 # if 0
-  char *str = "michael, Michael Elkins <me@cs.hmc.edu>, testing a really complex address: this example <@contains.a.source.route@with.multiple.hosts:address@example.com>;, lothar@of.the.hillpeople (lothar)";
+  char *str = "michael, Michael Elkins <me@cs.hmc.edu>, testing a really complex address: this example <@contains.a.source.route,@with.multiple.hosts:address@example.com>;, lothar@of.the.hillpeople (lothar)";
 # else
   char *str = "a b c ";
 # endif
