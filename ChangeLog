@@ -1,4 +1,7 @@
-2005-02-12 19:29:52  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
+2005-02-12 19:35:36  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
+
+	* editmsg.c: Partially fix debian bug #275060 (editing a message
+	in a mbox loses its flags).
 
 	* TODO: We have $include_onlyfirst.
 
