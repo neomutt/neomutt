@@ -25,7 +25,7 @@
 /* this is basically a stripped-down version of the cram-md5 method. */
 imap_auth_res_t imap_auth_anon (IMAP_DATA* idata)
 {
-  char buf[LONG_STRING];
+  int rc;
 
   if (!mutt_bit_isset (idata->capabilities, AUTH_ANON))
     return IMAP_AUTH_UNAVAIL;
@@ -40,29 +40,29 @@ imap_auth_res_t imap_auth_anon (IMAP_DATA* idata)
 
   imap_cmd_start (idata, "AUTHENTICATE ANONYMOUS");
 
-  if (mutt_socket_readln (buf, sizeof (buf), idata->conn) < 0)
-  {
-    dprint (1, (debugfile, "Error receiving server response.\n"));
-    goto bail;
-  }
+  do
+    rc = imap_cmd_resp (idata);
+  while (rc == IMAP_CMD_CONTINUE);
 
-  if (buf[0] != '+')
+  if (rc != IMAP_CMD_RESPOND)
   {
     dprint (1, (debugfile, "Invalid response from server.\n"));
     goto bail;
   }
 
-  strfcpy (buf, "ZHVtbXkK\r\n", sizeof (buf)); 	/* base64 ("dummy") */
+  mutt_socket_write (idata->conn, "ZHVtbXkK\r\n"); /* base64 ("dummy") */
 
-  mutt_socket_write (idata->conn, buf);
-
-  if (mutt_socket_readln (buf, sizeof (buf), idata->conn) < 0)
+  do
+    rc = imap_cmd_resp (idata);
+  while (rc == IMAP_CMD_CONTINUE);
+  
+  if (rc != IMAP_CMD_DONE)
   {
     dprint (1, (debugfile, "Error receiving server response.\n"));
     goto bail;
   }
 
-  if (imap_code (buf))
+  if (imap_code (idata->buf))
     return IMAP_AUTH_SUCCESS;
 
  bail:

@@ -31,7 +31,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
 {
   sasl_conn_t* saslconn;
   sasl_interact_t* interaction = NULL;
-  int rc;
+  int rc, irc;
   char buf[LONG_STRING];
   const char* mech;
   char* pc;
@@ -92,26 +92,26 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
 
   snprintf (buf, sizeof (buf), "AUTHENTICATE %s", mech);
   imap_cmd_start (idata, buf);
+  irc = IMAP_CMD_CONTINUE;
 
   /* looping protocol */
   while (rc == SASL_CONTINUE)
   {
-    if (mutt_socket_readln (buf, sizeof (buf), idata->conn) < 0)
+    do
+      irc = imap_cmd_resp (idata);
+    while (irc == IMAP_CMD_CONTINUE);
+
+    if (irc == IMAP_CMD_FAIL)
       goto bail;
 
-    if (!mutt_strncmp (buf, "+ ", 2))
+    if (irc == IMAP_CMD_RESPOND)
     {
-      if (sasl_decode64 (buf+2, strlen (buf+2), buf, &len) != SASL_OK)
+      if (sasl_decode64 (idata->buf+2, strlen (idata->buf+2), buf, &len) !=
+	  SASL_OK)
       {
 	dprint (1, (debugfile, "imap_auth_sasl: error base64-decoding server response.\n"));
 	goto bail;
       }
-    }
-    else if ((buf[0] == '*'))
-    {
-      if (imap_handle_untagged (idata, buf))
-	goto bail;
-      else continue;
     }
 
     if (!client_start)
@@ -146,14 +146,14 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
     }
   }
 
-  while (mutt_strncmp (buf, idata->seq, SEQLEN))
-    if (mutt_socket_readln (buf, sizeof (buf), idata->conn) < 0)
-      goto bail;
+  while (irc != IMAP_CMD_DONE)
+    if ((irc = imap_cmd_resp (idata)) != IMAP_CMD_CONTINUE)
+      break;
 
   if (rc != SASL_OK)
     goto bail;
 
-  if (imap_code (buf))
+  if (imap_code (idata->buf))
   {
     mutt_sasl_setup_conn (idata->conn, saslconn);
     return IMAP_AUTH_SUCCESS;

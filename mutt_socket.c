@@ -110,13 +110,14 @@ int mutt_socket_readln_d (char* buf, size_t buflen, CONNECTION* conn, int dbg)
 
   /* strip \r from \r\n termination */
   if (i && buf[i-1] == '\r')
-    buf[i-1] = '\0';
+    buf[--i] = '\0';
   else
     buf[i] = '\0';
 
   dprint (dbg, (debugfile, "< %s\n", buf));
   
-  return i+1;
+  /* number of bytes read, not strlen */
+  return i + 1;
 }
 
 CONNECTION* mutt_socket_head (void)

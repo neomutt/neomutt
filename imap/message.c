@@ -45,23 +45,26 @@ static char* msg_parse_flags (IMAP_HEADER* h, char* s);
  */
 int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
 {
+  IMAP_DATA* idata;
   char buf[LONG_STRING];
   char hdrreq[STRING];
   FILE *fp;
   char tempfile[_POSIX_PATH_MAX];
   int msgno;
   IMAP_HEADER h;
-  int rc;
+  int rc, mfhrc;
   int fetchlast = 0;
   const char *want_headers = "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE IN-REPLY-TO REPLY-TO LINES X-LABEL";
+
+  idata = (IMAP_DATA*) ctx->data;
   
   /* define search string */
-  if (mutt_bit_isset (CTX_DATA->capabilities,IMAP4REV1))
+  if (mutt_bit_isset (idata->capabilities,IMAP4REV1))
   {
     snprintf (hdrreq, sizeof (hdrreq), "BODY.PEEK[HEADER.FIELDS (%s)]", 
       want_headers); 
   } 
-  else if (mutt_bit_isset (CTX_DATA->capabilities,IMAP4))
+  else if (mutt_bit_isset (idata->capabilities,IMAP4))
   {
     snprintf (hdrreq, sizeof (hdrreq), "RFC822.HEADER.LINES (%s)", 
       want_headers);
@@ -69,7 +72,7 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
   else
   {	/* Unable to fetch headers for lower versions */
     mutt_error _("Unable to fetch headers from this IMAP server version.");
-    sleep (1);	/* pause a moment to let the user see the error */
+    sleep (2);	/* pause a moment to let the user see the error */
     return -1;
   }
 
@@ -102,7 +105,7 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
         "FETCH %d:%d (UID FLAGS INTERNALDATE RFC822.SIZE %s)", msgno + 1,
         msgend + 1, hdrreq);
 
-      imap_cmd_start (CTX_DATA, buf);
+      imap_cmd_start (idata, buf);
 
       fetchlast = msgend + 1;
     }
@@ -118,72 +121,66 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
      */
     do
     {
-      rc = 0;
+      mfhrc = 0;
 
-      if (mutt_socket_readln (buf, sizeof (buf), CTX_DATA->conn) < 0)
-      {
-	imap_free_header_data ((void**) &h.data);
-	fclose (fp);
-        return -1;
-      }
+      rc = imap_cmd_resp (idata);
+      if (rc != IMAP_CMD_CONTINUE)
+	break;
 
-      if (buf[0] == '*')
-      {
-	if ((rc = msg_fetch_header (ctx, &h, buf, fp)))
-	{
-	  if (rc == -1 && !imap_handle_untagged (CTX_DATA, buf))
-	    continue;
-	  else
-	  {
-	    imap_free_header_data ((void**) h.data);
-	    fclose (fp);
-	    return -1;
-	  }
-	}
+      if ((mfhrc = msg_fetch_header (ctx, &h, idata->buf, fp)) == -1)
+	continue;
+      else if (mfhrc < 0)
+	break;
 
-	/* make sure we don't get remnants from older larger message headers */
-	fputs ("\n\n", fp);
+      /* make sure we don't get remnants from older larger message headers */
+      fputs ("\n\n", fp);
 
-	/* update context with message header */
-	ctx->hdrs[msgno] = mutt_new_header ();
-	ctx->hdrs[msgno]->index = ctx->msgcount;
+      /* update context with message header */
+      ctx->hdrs[msgno] = mutt_new_header ();
+      ctx->hdrs[msgno]->index = ctx->msgcount;
 
-	/* messages which have not been expunged are ACTIVE (borrowed from
-	 * mh folders) */
-	ctx->hdrs[msgno]->active = 1;
-	ctx->hdrs[msgno]->read = h.read;
-	ctx->hdrs[msgno]->old = h.old;
-	ctx->hdrs[msgno]->deleted = h.deleted;
-	ctx->hdrs[msgno]->flagged = h.flagged;
-	ctx->hdrs[msgno]->replied = h.replied;
-	ctx->hdrs[msgno]->changed = h.changed;
-	ctx->hdrs[msgno]->received = h.received;
-	ctx->hdrs[msgno]->data = (void *) (h.data);
+      /* messages which have not been expunged are ACTIVE (borrowed from mh 
+       * folders) */
+      ctx->hdrs[msgno]->active = 1;
+      ctx->hdrs[msgno]->read = h.read;
+      ctx->hdrs[msgno]->old = h.old;
+      ctx->hdrs[msgno]->deleted = h.deleted;
+      ctx->hdrs[msgno]->flagged = h.flagged;
+      ctx->hdrs[msgno]->replied = h.replied;
+      ctx->hdrs[msgno]->changed = h.changed;
+      ctx->hdrs[msgno]->received = h.received;
+      ctx->hdrs[msgno]->data = (void *) (h.data);
 
-	rewind (fp);
-	/* NOTE: if Date: header is missing, mutt_read_rfc822_header depends
-	 *   on h.received being set */
-	ctx->hdrs[msgno]->env = mutt_read_rfc822_header (fp, ctx->hdrs[msgno],
-          0, 0);
-	/* content built as a side-effect of mutt_read_rfc822_header */
-	ctx->hdrs[msgno]->content->length = h.content_length;
+      rewind (fp);
+      /* NOTE: if Date: header is missing, mutt_read_rfc822_header depends
+       *   on h.received being set */
+      ctx->hdrs[msgno]->env = mutt_read_rfc822_header (fp, ctx->hdrs[msgno],
+        0, 0);
+      /* content built as a side-effect of mutt_read_rfc822_header */
+      ctx->hdrs[msgno]->content->length = h.content_length;
 
-	mx_update_context (ctx); /* increments ->msgcount */
-
-      }
+      mx_update_context (ctx); /* increments ->msgcount */
     }
-    while ((rc == -1) || ((msgno + 1) >= fetchlast &&
-      !mutt_strncmp (CTX_DATA->seq, buf, SEQLEN) != 0));
+    while ((rc != IMAP_CMD_DONE) && ((mfhrc == -1) ||
+      ((msgno + 1) >= fetchlast)));
 
+    if ((mfhrc < -1) || ((rc != IMAP_CMD_CONTINUE) && (rc != IMAP_CMD_DONE)))
+    {
+      imap_free_header_data ((void**) &h.data);
+      fclose (fp);
+
+      return -1;
+    }
+	
     /* h.data shouldn't be freed here, it is kept in ctx->headers */
 
     /* in case we get new mail while fetching the headers */
-    if (CTX_DATA->status == IMAP_NEW_MAIL)
+    if (idata->status == IMAP_NEW_MAIL)
     {
-      msgend = CTX_DATA->newMailCount - 1;
+      msgend = idata->newMailCount - 1;
       while ((msgend) >= ctx->hdrmax)
 	mx_alloc_memory (ctx);
-      CTX_DATA->status = 0;
+      idata->status = 0;
     }
   }
 
@@ -194,6 +191,7 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
 
 int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 {
+  IMAP_DATA* idata;
   char buf[LONG_STRING];
   char path[_POSIX_PATH_MAX];
   char *pc;
@@ -201,10 +199,13 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   int uid;
   int cacheno;
   IMAP_CACHE *cache;
+  int rc;
+
+  idata = (IMAP_DATA*) ctx->data;
 
   /* see if we already have the message in our cache */
   cacheno = HEADER_DATA(ctx->hdrs[msgno])->uid % IMAP_CACHE_LEN;
-  cache = &CTX_DATA->cache[cacheno];
+  cache = &idata->cache[cacheno];
 
   if (cache->path)
   {
@@ -240,104 +241,102 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   snprintf (buf, sizeof (buf), "UID FETCH %d RFC822",
     HEADER_DATA(ctx->hdrs[msgno])->uid);
 
-  imap_cmd_start (CTX_DATA, buf);
+  imap_cmd_start (idata, buf);
   do
   {
-    if (mutt_socket_readln (buf, sizeof (buf), CTX_DATA->conn) < 0)
-      goto bail;
+    if ((rc = imap_cmd_resp (idata)) != IMAP_CMD_CONTINUE)
+      continue;
 
-    if (buf[0] == '*')
+    pc = idata->buf;
+    pc = imap_next_word (pc);
+    pc = imap_next_word (pc);
+    if (!mutt_strncasecmp ("FETCH", pc, 5))
     {
-      pc = buf;
-      pc = imap_next_word (pc);
-      pc = imap_next_word (pc);
-      if (mutt_strncasecmp ("FETCH", pc, 5) == 0)
+      while (*pc)
       {
-	while (*pc)
+	pc = imap_next_word (pc);
+	if (pc[0] == '(')
+	  pc++;
+	if (strncasecmp ("UID", pc, 3) == 0)
 	{
 	  pc = imap_next_word (pc);
-	  if (pc[0] == '(')
-	    pc++;
-	  if (strncasecmp ("UID", pc, 3) == 0)
+	  uid = atoi (pc);
+	  if (uid != HEADER_DATA(ctx->hdrs[msgno])->uid)
+	    mutt_error (_("The message index is incorrect. Try reopening the mailbox."));
+	}
+	else if (strncasecmp ("RFC822", pc, 6) == 0)
+	{
+	  pc = imap_next_word (pc);
+	  if (imap_get_literal_count(pc, &bytes) < 0)
 	  {
-	    pc = imap_next_word (pc);
-	    uid = atoi (pc);
-	    if (uid != HEADER_DATA(ctx->hdrs[msgno])->uid)
-	      mutt_error (_("The message index is incorrect. Try reopening the mailbox."));
+	    imap_error ("imap_fetch_message()", buf);
+	    goto bail;
 	  }
-	  else if (strncasecmp ("RFC822", pc, 6) == 0)
-	  {
-	    pc = imap_next_word (pc);
-	    if (imap_get_literal_count(pc, &bytes) < 0)
-	    {
-	      imap_error ("imap_fetch_message()", buf);
-	      goto bail;
-	    }
-	    if (imap_read_literal (msg->fp, CTX_DATA, bytes) < 0)
-	      goto bail;
-	    /* pick up trailing line */
-	    if (mutt_socket_readln (buf, sizeof (buf), CTX_DATA->conn) < 0)
-	      goto bail;
-	    pc = buf;
-	  }
-          /* UW-IMAP will provide a FLAGS update here if the FETCH causes a
-           * change (eg from \Unseen to \Seen).
-           * Uncommitted changes in mutt take precedence. If we decide to
-           * incrementally update flags later, this won't stop us syncing */
-          else if ((strncasecmp ("FLAGS", pc, 5) == 0) &&
-            !ctx->hdrs[msgno]->changed)
-          {
-	    IMAP_HEADER newh;
-            HEADER* h = ctx->hdrs[msgno];
-	    unsigned char readonly;
+	  if (imap_read_literal (msg->fp, idata, bytes) < 0)
+	    goto bail;
+	  /* pick up trailing line */
+	  if ((rc = imap_cmd_resp (idata)) != IMAP_CMD_CONTINUE)
+	    goto bail;
+	  pc = idata->buf;
+	}
+	/* UW-IMAP will provide a FLAGS update here if the FETCH causes a
+	 * change (eg from \Unseen to \Seen).
+	 * Uncommitted changes in mutt take precedence. If we decide to
+	 * incrementally update flags later, this won't stop us syncing */
+	else if ((strncasecmp ("FLAGS", pc, 5) == 0) &&
+		 !ctx->hdrs[msgno]->changed)
+	{
+	  IMAP_HEADER newh;
+	  HEADER* h = ctx->hdrs[msgno];
+	  unsigned char readonly;
 
-	    memset (&newh, 0, sizeof (newh));
-	    newh.data = safe_calloc (1, sizeof (IMAP_HEADER_DATA));
+	  memset (&newh, 0, sizeof (newh));
+	  newh.data = safe_calloc (1, sizeof (IMAP_HEADER_DATA));
 
-            dprint (2, (debugfile, "imap_fetch_message: parsing FLAGS\n"));
-            if ((pc = msg_parse_flags (&newh, pc)) == NULL)
-	      goto bail;
+	  dprint (2, (debugfile, "imap_fetch_message: parsing FLAGS\n"));
+	  if ((pc = msg_parse_flags (&newh, pc)) == NULL)
+	    goto bail;
 	      
-	    /* this is less efficient than the code which used to be here,
-	     * but (1) this is only invoked when fetching messages, and (2)
-	     * this way, we can make sure that side effects of flag changes
-	     * are taken account of the proper way.
-	     */
+	  /* this is less efficient than the code which used to be here,
+	   * but (1) this is only invoked when fetching messages, and (2)
+	   * this way, we can make sure that side effects of flag changes
+	   * are taken account of the proper way.
+	   */
 
-	    /* YAUH (yet another ugly hack): temporarily set context to
-	     * read-write even if it's read-only, so *server* updates of
-	     * flags can be processed by mutt_set_flag. ctx->changed must
-	     * be restored afterwards */
-	    readonly = ctx->readonly;
-	    ctx->readonly = 0;
+	  /* YAUH (yet another ugly hack): temporarily set context to
+	   * read-write even if it's read-only, so *server* updates of
+	   * flags can be processed by mutt_set_flag. ctx->changed must
+	   * be restored afterwards */
+	  readonly = ctx->readonly;
+	  ctx->readonly = 0;
 	    
-	    mutt_set_flag (ctx, h, M_NEW, 
-		    !(newh.read || newh.old || h->read || h->old));
-	    mutt_set_flag (ctx, h, M_OLD, newh.old);
-	    mutt_set_flag (ctx, h, M_READ, h->read || newh.read);
-	    mutt_set_flag (ctx, h, M_DELETE, h->deleted || newh.deleted);
-	    mutt_set_flag (ctx, h, M_FLAG, h->flagged || newh.flagged);
-	    mutt_set_flag (ctx, h, M_REPLIED, h->replied || newh.replied);
+	  mutt_set_flag (ctx, h, M_NEW, 
+			 !(newh.read || newh.old || h->read || h->old));
+	  mutt_set_flag (ctx, h, M_OLD, newh.old);
+	  mutt_set_flag (ctx, h, M_READ, h->read || newh.read);
+	  mutt_set_flag (ctx, h, M_DELETE, h->deleted || newh.deleted);
+	  mutt_set_flag (ctx, h, M_FLAG, h->flagged || newh.flagged);
+	  mutt_set_flag (ctx, h, M_REPLIED, h->replied || newh.replied);
 
-            /* this message is now definitively *not* changed (mutt_set_flag
-             * marks things changed as a side-effect) */
-            h->changed = 0;
-	    ctx->changed &= ~readonly;
-	    ctx->readonly = readonly;
+	  /* this message is now definitively *not* changed (mutt_set_flag
+	   * marks things changed as a side-effect) */
+	  h->changed = 0;
+	  ctx->changed &= ~readonly;
+	  ctx->readonly = readonly;
 
-            mutt_free_list (&(HEADER_DATA(h)->keywords));
-            HEADER_DATA(h)->keywords = newh.data->keywords;
-	    FREE(&newh.data);
-          }
+	  mutt_free_list (&(HEADER_DATA(h)->keywords));
+	  HEADER_DATA(h)->keywords = newh.data->keywords;
+	  FREE(&newh.data);
 	}
       }
-      else if (imap_handle_untagged (CTX_DATA, buf) != 0)
-	goto bail;
     }
   }
-  while (mutt_strncmp (buf, CTX_DATA->seq, SEQLEN) != 0);
+  while (rc == IMAP_CMD_CONTINUE);
 
-  if (!imap_code (buf))
+  if (rc != IMAP_CMD_DONE)
+    goto bail;
+
+  if (!imap_code (idata->buf))
     goto bail;
     
   /* Update the header information.  Previously, we only downloaded a
@@ -380,6 +379,7 @@ bail:
 
 int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
 {
+  IMAP_DATA* idata;
   FILE *fp;
   char buf[LONG_STRING];
   char mbox[LONG_STRING];
@@ -387,11 +387,14 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   size_t len;
   int c, last;
   IMAP_MBOX mx;
+  int rc;
+
+  idata = (IMAP_DATA*) ctx->data;
 
   if (imap_parse_path (ctx->path, &mx))
-    return (-1);
+    return -1;
 
-  imap_fix_path (CTX_DATA, mx.mbox, mailbox, sizeof (mailbox));
+  imap_fix_path (idata, mx.mbox, mailbox, sizeof (mailbox));
   
   if ((fp = fopen (msg->path, "r")) == NULL)
   {
@@ -411,31 +414,19 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   imap_munge_mbox_name (mbox, sizeof (mbox), mailbox);
   snprintf (buf, sizeof (buf), "APPEND %s {%d}", mbox, len);
 
-  imap_cmd_start (CTX_DATA, buf);
+  imap_cmd_start (idata, buf);
 
-  do 
-  {
-    if (mutt_socket_readln (buf, sizeof (buf), CTX_DATA->conn) < 0)
-    {
-      fclose (fp);
-      return (-1);
-    }
+  do
+    rc = imap_cmd_resp (idata);
+  while (rc == IMAP_CMD_CONTINUE);
 
-    if (buf[0] == '*' && imap_handle_untagged (CTX_DATA, buf) != 0)
-    {
-      fclose (fp);
-      return (-1);
-    }
-  }
-  while ((mutt_strncmp (buf, CTX_DATA->seq, SEQLEN) != 0) && (buf[0] != '+'));
-
-  if (buf[0] != '+')
+  if (rc != IMAP_CMD_RESPOND)
   {
     char *pc;
 
-    dprint (1, (debugfile, "imap_append_message(): command failed: %s\n", buf));
+    dprint (1, (debugfile, "imap_append_message(): command failed: %s\n", idata->buf));
 
-    pc = buf + SEQLEN;
+    pc = idata->buf + SEQLEN;
     SKIPWS (pc);
     pc = imap_next_word (pc);
     mutt_error ("%s", pc);
@@ -454,31 +445,25 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
     buf[len++] = c;
 
     if (len > sizeof(buf) - 3)
-      flush_buffer(buf, &len, CTX_DATA->conn);
+      flush_buffer(buf, &len, idata->conn);
   }
   
   if (len)
-    flush_buffer(buf, &len, CTX_DATA->conn);
+    flush_buffer(buf, &len, idata->conn);
 
-  mutt_socket_write (CTX_DATA->conn, "\r\n");
+  mutt_socket_write (idata->conn, "\r\n");
   fclose (fp);
 
   do
-  {
-    if (mutt_socket_readln (buf, sizeof (buf), CTX_DATA->conn) < 0)
-      return (-1);
+    rc = imap_cmd_resp (idata);
+  while (rc == IMAP_CMD_CONTINUE);
 
-    if (buf[0] == '*' && imap_handle_untagged (CTX_DATA, buf) != 0)
-      return (-1);
-  }
-  while (mutt_strncmp (buf, CTX_DATA->seq, SEQLEN) != 0);
-
-  if (!imap_code (buf))
+  if (!imap_code (idata->buf))
   {
     char *pc;
 
-    dprint (1, (debugfile, "imap_append_message(): command failed: %s\n", buf));
-    pc = buf + SEQLEN;
+    dprint (1, (debugfile, "imap_append_message(): command failed: %s\n", idata->buf));
+    pc = idata->buf + SEQLEN;
     SKIPWS (pc);
     pc = imap_next_word (pc);
     mutt_error ("%s", pc);
@@ -497,6 +482,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
  *       1: non-fatal error - try fetch/append */
 int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
 {
+  IMAP_DATA* idata;
   char buf[HUGE_STRING];
   char cmd[LONG_STRING];
   char mbox[LONG_STRING];
@@ -504,6 +490,8 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   int rc;
   int n;
   IMAP_MBOX mx;
+
+  idata = (IMAP_DATA*) ctx->data;
 
   if (imap_parse_path (dest, &mx))
   {
@@ -519,12 +507,12 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
     return 1;
   }
 
-  imap_fix_path (CTX_DATA, mx.mbox, cmd, sizeof (cmd));
+  imap_fix_path (idata, mx.mbox, cmd, sizeof (cmd));
 
   /* Null HEADER* means copy tagged messages */
   if (!h)
   {
-    rc = imap_make_msg_set (CTX_DATA, buf, sizeof (buf), M_TAG, 0);
+    rc = imap_make_msg_set (idata, buf, sizeof (buf), M_TAG, 0);
     if (!rc)
     {
       dprint (1, (debugfile, "imap_copy_messages: No messages tagged\n"));
@@ -542,13 +530,13 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   strncpy (mbox, cmd, sizeof (mbox));
   imap_munge_mbox_name (mmbox, sizeof (mmbox), cmd);
   snprintf (cmd, sizeof (cmd), "UID COPY %s %s", buf, mmbox);
-  rc = imap_exec (buf, sizeof (buf), CTX_DATA, cmd, IMAP_CMD_FAIL_OK);
+  rc = imap_exec (idata, cmd, IMAP_CMD_FAIL_OK);
   if (rc == -2)
   {
     /* bail out if command failed for reasons other than nonexistent target */
-    if (strncmp (imap_get_qualifier (buf), "[TRYCREATE]", 11))
+    if (strncmp (imap_get_qualifier (idata->buf), "[TRYCREATE]", 11))
     {
-      imap_error ("imap_copy_messages", buf);
+      imap_error ("imap_copy_messages", idata->buf);
       return -1;
     }
     dprint (2, (debugfile, "imap_copy_messages: server suggests TRYCREATE\n"));
@@ -562,11 +550,11 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
       return -1;
 
     /* try again */
-    rc = imap_exec (buf, sizeof (buf), CTX_DATA, cmd, 0);
+    rc = imap_exec (idata, cmd, 0);
   }
   if (rc != 0)
   {
-    imap_error ("imap_copy_messages", buf);
+    imap_error ("imap_copy_messages", idata->buf);
     return -1;
   }
 
@@ -633,8 +621,11 @@ void imap_free_header_data (void** data)
  *     -2 if the string is a corrupt fetch response */
 static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf, FILE* fp)
 {
+  IMAP_DATA* idata;
   long bytes;
   int rc = -1; /* default now is that string isn't FETCH response*/
+
+  idata = (IMAP_DATA*) ctx->data;
 
   if (buf[0] != '*')
     return rc;
@@ -660,17 +651,16 @@ static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf, FILE* fp)
   
   if (imap_get_literal_count (buf, &bytes) < 0)
     return rc;
-  imap_read_literal (fp, CTX_DATA, bytes);
+  imap_read_literal (fp, idata, bytes);
 
   /* we may have other fields of the FETCH _after_ the literal
    * (eg Domino puts FLAGS here). Nothing wrong with that, either.
    * This all has to go - we should accept literals and nonliterals
    * interchangeably at any time. */
-  if (mutt_socket_readln (buf, sizeof (buf), CTX_DATA->conn)
-      < 0)
-    return rc;
-
-  if (msg_parse_fetch (h, buf) == -1)
+  if (imap_cmd_resp (idata) != IMAP_CMD_CONTINUE)
+    return -2;
+  
+  if (msg_parse_fetch (h, idata->buf) == -1)
     return rc;
 
   rc = 0; /* success */

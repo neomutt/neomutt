@@ -36,10 +36,11 @@ static int browse_get_namespace (IMAP_DATA *idata, char *nsbuf, int nsblen,
 static int browse_verify_namespace (IMAP_DATA* idata,
   IMAP_NAMESPACE_INFO* nsi, int nns);
 
+/* imap_browse: IMAP hook into the folder browser, fills out browser_state,
+ *   given a current folder to browse */
 int imap_browse (char* path, struct browser_state* state)
 {
-  CONNECTION *conn;
-  IMAP_DATA *idata;
+  IMAP_DATA* idata;
   char buf[LONG_STRING];
   char nsbuf[LONG_STRING];
   char mbox[LONG_STRING];
@@ -67,7 +68,6 @@ int imap_browse (char* path, struct browser_state* state)
 
   if (!(idata = imap_conn_find (&(mx.account), 0)))
     return -1;
-  conn = idata->conn;
 
   if (mx.mbox[0] == '\0')
   {
@@ -84,24 +84,6 @@ int imap_browse (char* path, struct browser_state* state)
       if (browse_verify_namespace (idata, nsi, nns) != 0)
 	return -1;
     }
-    /* What if you have a shared namespace of ""? You'll never be
-     * able to browse it. This isn't conjecture: connect to the Cyrus
-     * reference server (cyrus.andrew.cmu.edu) as anonymous. argh! */
-#if 0
-    if (!mx.mbox)   /* Any explicitly set imap_home_namespace wins */
-    { 
-      for (i = 0; i < nns; i++)
-	if (nsi[i].listable &&
-	    (nsi[i].type == IMAP_NS_PERSONAL || nsi[i].type == IMAP_NS_SHARED))
-	{
-	  mx.mbox = nsi->prefix;
-	  nsi->home_namespace = 1;
-	  break;
-	}
-    }
-    else
-      dprint (4, (debugfile, "Home namespace: %s\n", mx.mbox));
-#endif
   }
 
   mutt_message _("Getting folder list...");
@@ -116,7 +98,7 @@ int imap_browse (char* path, struct browser_state* state)
     strncpy (mbox, buf, sizeof (mbox) - 1);
     n = mutt_strlen (mbox);
 
-    dprint (3, (debugfile, "imap_init_browse: mbox: %s\n", mbox));
+    dprint (3, (debugfile, "imap_browse: mbox: %s\n", mbox));
 
     /* if our target exists and has inferiors, enter it if we
      * aren't already going to */
@@ -126,8 +108,8 @@ int imap_browse (char* path, struct browser_state* state)
       imap_cmd_start (idata, buf);
       do 
       {
-        if (imap_parse_list_response(idata, buf, sizeof(buf), &cur_folder,
-    	    &noselect, &noinferiors, &(idata->delim)) != 0)
+        if (imap_parse_list_response (idata, &cur_folder, &noselect,
+            &noinferiors, &idata->delim) != 0)
           return -1;
 
         if (cur_folder)
@@ -142,7 +124,7 @@ int imap_browse (char* path, struct browser_state* state)
           }
         }
       }
-      while ((mutt_strncmp (buf, idata->seq, SEQLEN) != 0));
+      while (mutt_strncmp (idata->buf, idata->seq, SEQLEN));
     }
 
     /* if we're descending a folder, mark it as current in browser_state */
@@ -247,7 +229,6 @@ int imap_browse (char* path, struct browser_state* state)
 static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
   struct browser_state* state, short isparent)
 {
-  char buf[LONG_STRING];
   char *name;
   int noselect;
   int noinferiors;
@@ -264,8 +245,8 @@ static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
 
   do 
   {
-    if (imap_parse_list_response(idata, buf, sizeof(buf), &name,
-        &noselect, &noinferiors, &(idata->delim)) != 0)
+    if (imap_parse_list_response(idata, &name, &noselect, &noinferiors,
+        &idata->delim) != 0)
       return -1;
 
     if (name)
@@ -279,7 +260,7 @@ static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
           isparent);
     }
   }
-  while ((mutt_strncmp (buf, idata->seq, SEQLEN) != 0));
+  while ((mutt_strncmp (idata->buf, idata->seq, SEQLEN) != 0));
 
   return 0;
 }
@@ -351,13 +332,13 @@ static int compare_names(struct folder_file *a, struct folder_file *b)
 static int browse_get_namespace (IMAP_DATA* idata, char* nsbuf, int nsblen,
   IMAP_NAMESPACE_INFO* nsi, int nsilen, int* nns)
 {
-  char buf[LONG_STRING];
   char *s;
   int n;
   char ns[LONG_STRING];
   char delim = '/';
   int type;
   int nsbused = 0;
+  int rc;
 
   *nns = 0;
   nsbuf[nsblen-1] = '\0';
@@ -366,89 +347,84 @@ static int browse_get_namespace (IMAP_DATA* idata, char* nsbuf, int nsblen,
   
   do 
   {
-    if (mutt_socket_readln (buf, sizeof (buf), idata->conn) < 0)
-      return -1;
+    if ((rc = imap_cmd_resp (idata)) != IMAP_CMD_CONTINUE)
+      break;
 
-    if (buf[0] == '*') 
+    s = imap_next_word (idata->buf);
+    if (mutt_strncasecmp ("NAMESPACE", s, 9) == 0)
     {
-      s = imap_next_word (buf);
-      if (mutt_strncasecmp ("NAMESPACE", s, 9) == 0)
+      /* There are three sections to the response, User, Other, Shared,
+       * and maybe more by extension */
+      for (type = IMAP_NS_PERSONAL; *s; type++)
       {
-	/* There are three sections to the response, User, Other, Shared,
-	 * and maybe more by extension */
-	for (type = IMAP_NS_PERSONAL; *s; type++)
+	s = imap_next_word (s);
+	if (*s && strncmp (s, "NIL", 3))
 	{
-	  s = imap_next_word (s);
-	  if (*s && strncmp (s, "NIL", 3))
+	  s++;
+	  while (*s && *s != ')')
 	  {
-	    s++;
-	    while (*s && *s != ')')
-	    {
-	      s++; /* skip ( */
-	      /* copy namespace */
-	      n = 0;
-	      delim = '\0';
+	    s++; /* skip ( */
+	    /* copy namespace */
+	    n = 0;
+	    delim = '\0';
 
-	      if (*s == '\"')
-	      {
-		s++;
-		while (*s && *s != '\"') 
-		{
-		  if (*s == '\\')
-		    s++;
-		  ns[n++] = *s;
-		  s++;
-		}
-	      }
-	      else
-		while (*s && !ISSPACE (*s)) 
-		{
-		  ns[n++] = *s;
-		  s++;
-		}
-	      ns[n] = '\0';
-	      /* delim? */
-	      s = imap_next_word (s);
-	      /* delimiter is meaningless if namespace is "". Why does
-	       * Cyrus provide one?! */
-	      if (n && *s && *s == '\"')
-              {
-		if (s[1] && s[2] == '\"')
-		  delim = s[1];
-		else if (s[1] && s[1] == '\\' && s[2] && s[3] == '\"')
-		  delim = s[2];
-              }
-	      /* skip "" namespaces, they are already listed at the root */
-	      if ((ns[0] != '\0') && (nsbused < nsblen) && (*nns < nsilen))
-	      {
-		dprint (3, (debugfile, "browse_get_namespace: adding %s\n", ns));
-		nsi->type = type;
-		/* Cyrus doesn't append the delimiter to the namespace,
-		 * but UW-IMAP does. We'll strip it here and add it back
-		 * as if it were a normal directory, from the browser */
-		if (n && (ns[n-1] == delim))
-		  ns[--n] = '\0';
-		strncpy(nsbuf+nsbused,ns,nsblen-nsbused-1);
-		nsi->prefix = nsbuf+nsbused;
-		nsbused += n+1;
-		nsi->delim = delim;
-		nsi++;
-		(*nns)++;
-	      }
-	      while (*s && *s != ')') s++;
+	    if (*s == '\"')
+	    {
 	      s++;
+	      while (*s && *s != '\"') 
+	      {
+		if (*s == '\\')
+		  s++;
+		ns[n++] = *s;
+		s++;
+	      }
 	    }
+	    else
+	      while (*s && !ISSPACE (*s)) 
+	      {
+		ns[n++] = *s;
+		s++;
+	      }
+	    ns[n] = '\0';
+	    /* delim? */
+	    s = imap_next_word (s);
+	    /* delimiter is meaningless if namespace is "". Why does
+	     * Cyrus provide one?! */
+	    if (n && *s && *s == '\"')
+	    {
+	      if (s[1] && s[2] == '\"')
+		delim = s[1];
+	      else if (s[1] && s[1] == '\\' && s[2] && s[3] == '\"')
+		delim = s[2];
+	    }
+	    /* skip "" namespaces, they are already listed at the root */
+	    if ((ns[0] != '\0') && (nsbused < nsblen) && (*nns < nsilen))
+	    {
+	      dprint (3, (debugfile, "browse_get_namespace: adding %s\n", ns));
+	      nsi->type = type;
+	      /* Cyrus doesn't append the delimiter to the namespace,
+	       * but UW-IMAP does. We'll strip it here and add it back
+	       * as if it were a normal directory, from the browser */
+	      if (n && (ns[n-1] == delim))
+		ns[--n] = '\0';
+	      strncpy (nsbuf+nsbused,ns,nsblen-nsbused-1);
+	      nsi->prefix = nsbuf+nsbused;
+	      nsbused += n+1;
+	      nsi->delim = delim;
+	      nsi++;
+	      (*nns)++;
+	    }
+	    while (*s && *s != ')') s++;
+	    s++;
 	  }
 	}
       }
-      else
-      {
-	if (imap_handle_untagged (idata, buf) != 0)
-	  return (-1);
-      }
     }
   }
-  while ((mutt_strncmp (buf, idata->seq, SEQLEN) != 0));
+  while (rc == IMAP_CMD_CONTINUE);
+
+  if (rc != IMAP_CMD_DONE)
+    return -1;
 
   return 0;
 }
@@ -481,12 +457,12 @@ static int browse_verify_namespace (IMAP_DATA* idata,
     nsi->home_namespace = 0;
     do 
     {
-      if (imap_parse_list_response(idata, buf, sizeof(buf), &name,
-          &(nsi->noselect), &(nsi->noinferiors), &delim) != 0)
+      if (imap_parse_list_response(idata, &name, &nsi->noselect,
+          &nsi->noinferiors, &delim) != 0)
 	return -1;
       nsi->listable |= (name != NULL);
     }
-    while ((mutt_strncmp (buf, idata->seq, SEQLEN) != 0));
+    while ((mutt_strncmp (idata->buf, idata->seq, SEQLEN) != 0));
   }
 
   return 0;

@@ -36,6 +36,7 @@ imap_auth_res_t imap_auth_cram_md5 (IMAP_DATA* idata)
   char ibuf[LONG_STRING], obuf[LONG_STRING];
   unsigned char hmac_response[MD5_DIGEST_LEN];
   int len;
+  int rc;
 
   if (!mutt_bit_isset (idata->capabilities, ACRAM_MD5))
     return IMAP_AUTH_UNAVAIL;
@@ -56,19 +57,17 @@ imap_auth_res_t imap_auth_cram_md5 (IMAP_DATA* idata)
    * primary host name of the server. The syntax of the unencoded form must
    * correspond to that of an RFC 822 'msg-id' [RFC822] as described in [POP3].
    */
-  if (mutt_socket_readln (ibuf, sizeof (ibuf), idata->conn) < 0)
-  {
-    dprint (1, (debugfile, "Error receiving server response.\n"));
-    goto bail;
-  }
-
-  if (ibuf[0] != '+')
+  do
+    rc = imap_cmd_resp (idata);
+  while (rc == IMAP_CMD_CONTINUE);
+  
+  if (rc != IMAP_CMD_RESPOND)
   {
     dprint (1, (debugfile, "Invalid response from server: %s\n", ibuf));
     goto bail;
   }
 
-  if ((len = mutt_from_base64 (obuf, ibuf + 2)) == -1)
+  if ((len = mutt_from_base64 (obuf, idata->buf + 2)) == -1)
   {
     dprint (1, (debugfile, "Error decoding base64 response.\n"));
     goto bail;
@@ -103,13 +102,17 @@ imap_auth_res_t imap_auth_cram_md5 (IMAP_DATA* idata)
   strcpy (ibuf + strlen (ibuf), "\r\n");
   mutt_socket_write (idata->conn, ibuf);
 
-  if (mutt_socket_readln (ibuf, LONG_STRING, idata->conn) < 0)
+  do
+    rc = imap_cmd_resp (idata);
+  while (rc == IMAP_CMD_CONTINUE);
+
+  if (rc != IMAP_CMD_DONE)
   {
     dprint (1, (debugfile, "Error receiving server response.\n"));
     goto bail;
   }
 
-  if (imap_code (ibuf))
+  if (imap_code (idata->buf))
     return IMAP_AUTH_SUCCESS;
 
  bail:

@@ -54,6 +54,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
   OM_uint32 maj_stat, min_stat;
   char buf1[GSS_BUFSIZE], buf2[GSS_BUFSIZE], server_conf_flags;
   unsigned long buf_size;
+  int rc;
 
   if (!mutt_bit_isset (idata->capabilities, AGSSAPI))
     return IMAP_AUTH_UNAVAIL;
@@ -88,14 +89,11 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
   imap_cmd_start (idata, "AUTHENTICATE GSSAPI");
 
   /* expect a null continuation response ("+") */
-  if (mutt_socket_readln (buf1, sizeof (buf1), idata->conn) < 0)
-  {
-    dprint (1, (debugfile, "Error receiving server response.\n"));
-    gss_release_name (&min_stat, &target_name);
-    goto bail;
-  }
+  do
+    rc = imap_cmd_resp (idata);
+  while (rc == IMAP_CMD_CONTINUE);
 
-  if (buf1[0] != '+')
+  if (rc != IMAP_CMD_RESPOND)
   {
     dprint (2, (debugfile, "Invalid response from server: %s\n", buf1));
     gss_release_name (&min_stat, &target_name);
@@ -128,7 +126,9 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
       gss_release_name (&min_stat, &target_name);
       /* end authentication attempt */
       mutt_socket_write (idata->conn, "*\r\n");
-      mutt_socket_readln (buf1, sizeof (buf1), idata->conn);
+      do
+	rc = imap_cmd_resp (idata);
+      while (rc == IMAP_CMD_CONTINUE);
       goto bail;
     }
 
@@ -141,14 +141,18 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
 
     if (maj_stat == GSS_S_CONTINUE_NEEDED)
     {
-      if (mutt_socket_readln (buf1, sizeof (buf1), idata->conn) < 0)
+      do
+	rc = imap_cmd_resp (idata);
+      while (rc == IMAP_CMD_CONTINUE);
+
+      if (rc != IMAP_CMD_RESPOND)
       {
         dprint (1, (debugfile, "Error receiving server response.\n"));
         gss_release_name (&min_stat, &target_name);
 	goto bail;
       }
 
-      request_buf.length = mutt_from_base64 (buf2, buf1 + 2);
+      request_buf.length = mutt_from_base64 (buf2, idata->buf + 2);
       request_buf.value = buf2;
       sec_token = &request_buf;
     }
@@ -158,12 +162,16 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
   gss_release_name (&min_stat, &target_name);
 
   /* get security flags and buffer size */
-  if (mutt_socket_readln (buf1, sizeof (buf1), idata->conn) < 0)
+  do
+    rc = imap_cmd_resp (idata);
+  while (rc == IMAP_CMD_CONTINUE);
+
+  if (rc != IMAP_CMD_RESPOND)
   {
     dprint (1, (debugfile, "Error receiving server response.\n"));
     goto bail;
   }
-  request_buf.length = mutt_from_base64 (buf2, buf1 + 2);
+  request_buf.length = mutt_from_base64 (buf2, idata->buf + 2);
   request_buf.value = buf2;
 
   maj_stat = gss_unwrap (&min_stat, context, &request_buf, &send_token,
@@ -221,13 +229,16 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
   mutt_socket_write (idata->conn, buf1);
 
   /* Joy of victory or agony of defeat? */
-  if (mutt_socket_readln (buf1, GSS_BUFSIZE, idata->conn) < 0)
+  do
+    rc = imap_cmd_resp (idata);
+  while (rc == IMAP_CMD_CONTINUE);
+  if (rc != IMAP_CMD_DONE)
   {
     dprint (1, (debugfile, "Error receiving server response.\n"));
     mutt_socket_write(idata->conn, "*\r\n");
     goto bail;
   }
-  if (imap_code (buf1))
+  if (imap_code (idata->buf))
   {
     /* flush the security context */
     dprint (2, (debugfile, "Releasing GSS credentials\n"));

@@ -29,6 +29,8 @@
 #include <ctype.h>
 #include <stdlib.h>
 
+#define IMAP_CMD_BUFSIZE 512
+
 /* forward declarations */
 static void cmd_make_sequence (char* buf, size_t buflen);
 static void cmd_parse_capabilities (IMAP_DATA* idata, char* s);
@@ -58,6 +60,67 @@ void imap_cmd_start (IMAP_DATA* idata, const char* cmd)
   mutt_socket_write (idata->conn, out);
 
   safe_free ((void**) &out);
+}
+
+/* imap_cmd_resp: Reads server responses from an IMAP command, detects
+ *   tagged completion response, handles untagged messages, can read
+ *   arbitrarily large strings (using malloc, so don't make it _too_
+ *   large!). */
+int imap_cmd_resp (IMAP_DATA* idata)
+{
+  unsigned int len = 0;
+  int c;
+
+  /* read into buffer, expanding buffer as necessary until we have a full
+   * line */
+  do
+  {
+    if (len == idata->blen)
+    {
+      safe_realloc ((void**) &idata->buf, idata->blen + IMAP_CMD_BUFSIZE);
+      idata->blen = idata->blen + IMAP_CMD_BUFSIZE;
+      dprint (3, (debugfile, "imap_cmd_resp: grew buffer to %u bytes\n", idata->blen));
+    }
+
+    if ((c = mutt_socket_readln (idata->buf + len, idata->blen - len,
+      idata->conn)) < 0)
+    {
+      dprint (1, (debugfile, "imap_cmd_resp: Error while reading server response.\n"));
+      return IMAP_CMD_FAIL;
+    }
+
+    len += c;
+  }
+  /* if we've read all the way to the end of the buffer, we haven't read a
+   * full line (mutt_socket_readln strips the \r, so we always have at least
+   * one character free when we've read a full line) */
+  while (len == idata->blen);
+
+  /* don't let one large string make idata->buf hog memory forever */
+  if ((idata->blen > IMAP_CMD_BUFSIZE) && (len <= IMAP_CMD_BUFSIZE))
+  {
+    safe_realloc ((void**) &idata->buf, IMAP_CMD_BUFSIZE);
+    idata->blen = IMAP_CMD_BUFSIZE;
+    dprint (3, (debugfile, "imap_cmd_resp: shrank buffer to %u bytes\n", idata->blen));
+  }
+  
+  /* handle untagged messages. The caller still gets its shot afterwards. */
+  if (!strncmp (idata->buf, "* ", 2) &&
+      imap_handle_untagged (idata, idata->buf))
+    return IMAP_CMD_FAIL;
+
+  /* server demands a continuation response from us */
+  if (!strncmp (idata->buf, "+ ", 2))
+    return IMAP_CMD_RESPOND;
+
+  /* tagged completion code */
+  if (!mutt_strncmp (idata->buf, idata->seq, SEQLEN))
+  {
+    imap_cmd_finish (idata);
+    return IMAP_CMD_DONE;
+  }
+
+  return IMAP_CMD_CONTINUE;
 }
 
 /* imap_cmd_finish: When the caller has finished reading command responses,
@@ -104,7 +167,6 @@ void imap_cmd_finish (IMAP_DATA* idata)
   }
 
   idata->status = 0;
-  mutt_clear_error ();
 }
 
 /* imap_code: returns 1 if the command result was OK, or 0 if NO or BAD */
@@ -123,11 +185,11 @@ int imap_code (const char *s)
  *   IMAP_CMD_PASS: command contains a password. Suppress logging.
  * Return 0 on success, -1 on Failure, -2 on OK Failure
  */
-int imap_exec (char* buf, size_t buflen, IMAP_DATA* idata, const char* cmd,
-  int flags)
+int imap_exec (IMAP_DATA* idata, const char* cmd, int flags)
 {
   char* out;
   int outlen;
+  int rc;
 
   /* create sequence for command */
   cmd_make_sequence (idata->seq, sizeof (idata->seq));
@@ -142,30 +204,24 @@ int imap_exec (char* buf, size_t buflen, IMAP_DATA* idata, const char* cmd,
   safe_free ((void**) &out);
 
   do
-  {
-    if (mutt_socket_readln (buf, buflen, idata->conn) < 0)
-      return -1;
+    rc = imap_cmd_resp (idata);
+  while (rc == IMAP_CMD_CONTINUE);
 
-    if (buf[0] == '*' && imap_handle_untagged (idata, buf) != 0)
-      return -1;
-  }
-  while (mutt_strncmp (buf, idata->seq, SEQLEN) != 0);
+  if (rc != IMAP_CMD_DONE)
+    return -1;
 
-  imap_cmd_finish (idata);
-
-  if (!imap_code (buf))
+  if (!imap_code (idata->buf))
   {
     char *pc;
 
     if (flags & IMAP_CMD_FAIL_OK)
       return -2;
 
-    dprint (1, (debugfile, "imap_exec: command failed: %s\n", buf));
-    pc = buf + SEQLEN;
-    SKIPWS (pc);
+    dprint (1, (debugfile, "imap_exec: command failed: %s\n", idata->buf));
+    pc = idata->buf;
     pc = imap_next_word (pc);
     mutt_error ("%s", pc);
-    sleep (1);
+    sleep (2);
 
     return -1;
   }
@@ -174,7 +230,7 @@ int imap_exec (char* buf, size_t buflen, IMAP_DATA* idata, const char* cmd,
 }
 
 /* imap_handle_untagged: fallback parser for otherwise unhandled messages. */
-int imap_handle_untagged (IMAP_DATA *idata, char *s)
+int imap_handle_untagged (IMAP_DATA* idata, char* s)
 {
   char *pn;
   int count;
@@ -191,6 +247,8 @@ int imap_handle_untagged (IMAP_DATA *idata, char *s)
      */
     if (mutt_strncasecmp ("EXISTS", s, 6) == 0)
     {
+      dprint (2, (debugfile, "Handling EXISTS\n"));
+
       /* new mail arrived */
       count = atoi (pn);
 
@@ -232,6 +290,12 @@ int imap_handle_untagged (IMAP_DATA *idata, char *s)
     cmd_parse_myrights (idata, s);
   else if (mutt_strncasecmp ("BYE", s, 3) == 0)
   {
+    dprint (2, (debugfile, "Handling BYE\n"));
+
+    /* check if we're logging out */
+    if (idata->status == IMAP_BYE)
+      return 0;
+
     /* server shut down our connection */
     s += 3;
     SKIPWS (s);
@@ -246,13 +310,12 @@ int imap_handle_untagged (IMAP_DATA *idata, char *s)
   }
   else if (option (OPTIMAPSERVERNOISE) && (mutt_strncasecmp ("NO", s, 2) == 0))
   {
+    dprint (2, (debugfile, "Handling untagged NO\n"));
+
     /* Display the warning message from the server */
     mutt_error ("%s", s+3);
     sleep (2);
   }
-  else
-    dprint (1, (debugfile, "imap_handle_untagged(): unhandled request: %s\n",
-      s));
 
   return 0;
 }
@@ -274,6 +337,8 @@ static void cmd_parse_capabilities (IMAP_DATA* idata, char* s)
 {
   int x;
 
+  dprint (2, (debugfile, "Handling CAPABILITY\n"));
+
   idata->capstr = safe_strdup (imap_next_word (s));
   
   while (*s) 
@@ -294,6 +359,8 @@ static void cmd_parse_expunge (IMAP_DATA* idata, char* s)
 {
   int expno, cur;
   HEADER* h;
+
+  dprint (2, (debugfile, "Handling EXPUNGE\n"));
 
   expno = atoi (s);
 
@@ -317,6 +384,8 @@ static void cmd_parse_expunge (IMAP_DATA* idata, char* s)
 /* cmd_parse_myrights: set rights bits according to MYRIGHTS response */
 static void cmd_parse_myrights (IMAP_DATA* idata, char* s)
 {
+  dprint (2, (debugfile, "Handling MYRIGHTS\n"));
+
   s = imap_next_word (s);
   s = imap_next_word (s);
 

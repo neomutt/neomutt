@@ -26,7 +26,7 @@
 imap_auth_res_t imap_auth_login (IMAP_DATA* idata)
 {
   char q_user[SHORT_STRING], q_pass[SHORT_STRING];
-  char buf[LONG_STRING];
+  char buf[STRING];
   int rc;
 
   if (mutt_account_getuser (&idata->conn->account))
@@ -49,8 +49,7 @@ imap_auth_res_t imap_auth_login (IMAP_DATA* idata)
 #endif
 
   snprintf (buf, sizeof (buf), "LOGIN %s %s", q_user, q_pass);
-  rc = imap_exec (buf, sizeof (buf), idata, buf,
-    IMAP_CMD_FAIL_OK | IMAP_CMD_PASS);
+  rc = imap_exec (idata, buf, IMAP_CMD_FAIL_OK | IMAP_CMD_PASS);
   
   if (!rc)
     return IMAP_AUTH_SUCCESS;
