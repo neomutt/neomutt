@@ -112,6 +112,9 @@
 #define M_TOKEN_COMMENT		(1<<5)	/* don't reap comments */
 #define M_TOKEN_SEMICOLON	(1<<6)	/* don't treat ; as special */
 
+/* flags for km_dokey() */
+#define M_KM_UNBUFFERED 1 /* don't read from the key buffer */
+
 typedef struct
 {
   char *data;	/* pointer to data */

@@ -172,7 +172,7 @@ int mutt_account_getpass (ACCOUNT* account)
     snprintf (prompt, sizeof (prompt), _("Password for %s@%s: "),
       account->user, account->host);
     account->pass[0] = '\0';
-    if (mutt_get_field (prompt, account->pass, sizeof (account->pass), M_PASS))
+    if (mutt_get_password (prompt, account->pass, sizeof (account->pass)))
       return -1;
   }
 

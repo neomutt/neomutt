@@ -57,12 +57,12 @@ void mutt_refresh (void)
   refresh ();
 }
 
-event_t mutt_getch (void)
+event_t _mutt_getch (int flags)
 {
   int ch;
   event_t err = {-1, OP_NULL }, ret;
 
-  if (UngetCount)
+  if (!(flags & M_KM_UNBUFFERED) && UngetCount)
     return (KeyEvent[--UngetCount]);
 
   SigInt = 0;

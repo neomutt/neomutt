@@ -27,7 +27,8 @@ typedef short keycode_t;
 
 void km_bind (char *, int, int, char *, char *);
 void km_bindkey (char *, int, int);
-int km_dokey (int);
+#define km_dokey(menu) _km_dokey(menu, 0)
+int _km_dokey (int, int);
 
 /* entry in the keymap tree */
 struct keymap_t
