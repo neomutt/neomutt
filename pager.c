@@ -1485,6 +1485,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
   {
     mutt_curs_set (0);
 
+    /* IMAP keep-alive */
     if (mutt_buffy_notify () && option (OPTBEEPNEW))
       beep ();
 

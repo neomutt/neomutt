@@ -751,6 +751,10 @@ int mutt_menuLoop (MUTTMENU *menu)
   {
     mutt_curs_set (0);
 
+    /* IMAP keepalive */
+    if (mutt_buffy_notify () && option (OPTBEEPNEW))
+      beep ();
+    
     /* See if all or part of the screen needs to be updated.  */
     if (menu->redraw & REDRAW_FULL)
     {
