@@ -439,7 +439,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   rewind (fp);
   
   imap_munge_mbox_name (mbox, sizeof (mbox), mailbox);
-  snprintf (buf, sizeof (buf), "APPEND %s (\\Seen) {%d}", mbox, len);
+  snprintf (buf, sizeof (buf), "APPEND %s (\\Seen) {%lu}", mbox, (unsigned long)len);
 
   imap_cmd_start (idata, buf);
 
