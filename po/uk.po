@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 1998-12-04 00:20+0100\n"
+"POT-Creation-Date: 1998-12-10 12:09+0100\n"
 "PO-Revision-Date: 1998-10-25 15:44+0200\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "Language-Team: Ukrainian <uk@ua.net>\n"
@@ -486,59 +486,59 @@ msgstr "Вид╕л╕ть пов╕домлення, що дода╓те!"
 msgid "Unable to attach!"
 msgstr "Неможливо додати!"
 
-#: compose.c:761
+#: compose.c:763
 msgid "Invalid encoding."
 msgstr "Нев╕рне кодування."
 
-#: compose.c:776
+#: compose.c:778
 msgid "Save a copy of this message?"
 msgstr "Зберегти коп╕ю цього пов╕домлення?"
 
-#: compose.c:821
+#: compose.c:823
 msgid "Rename to: "
 msgstr "Перейменувати у: "
 
-#: compose.c:826
+#: compose.c:828
 #, c-format
 msgid "Can't stat: %s"
 msgstr ""
 
-#: compose.c:853
+#: compose.c:855
 msgid "New file: "
 msgstr "Новий файл: "
 
-#: compose.c:866
+#: compose.c:868
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type по форм╕ base/sub"
 
-#: compose.c:872
+#: compose.c:874
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Нев╕домий Content-Type %s"
 
-#: compose.c:885
+#: compose.c:887
 #, c-format
 msgid "Can't create file %s"
 msgstr "Неможливо створити файл %s"
 
-#: compose.c:893
+#: compose.c:895
 msgid "What we have here is a failure to make an attachment"
 msgstr "Ми ма╓мо зараз в╕дмову зробити додаток"
 
-#: compose.c:956
+#: compose.c:958
 msgid "Postpone this message?"
 msgstr "Залишити лист до подальшого редагування та в╕дправки?"
 
-#: compose.c:1008
+#: compose.c:1010
 msgid "Write message to mailbox"
 msgstr "Записати лист до поштово╖ скриньки"
 
-#: compose.c:1012
+#: compose.c:1014
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Запис листа до %s..."
 
-#: compose.c:1023
+#: compose.c:1025
 msgid "Message written."
 msgstr "Лист записано."
 
@@ -979,67 +979,67 @@ msgstr "Отримання заголовк╕в лист╕в... [%d/%d]"
 msgid "Reopening mailbox..."
 msgstr "Повторне в╕дкриття поштово╖ скриньки..."
 
-#: imap.c:866
+#: imap.c:865
 #, c-format
 msgid "Connecting to %s..."
 msgstr "З'╓днання з %s..."
 
-#: imap.c:889
+#: imap.c:888
 msgid "IMAP Username: "
 msgstr "╤м'я користувача IMAP: "
 
-#: imap.c:902
+#: imap.c:901
 #, c-format
 msgid "Password for %s@%s: "
 msgstr "Пароль для %s@%s: "
 
-#: imap.c:915
+#: imap.c:914
 msgid "Logging in..."
 msgstr "Ре╓страц╕я..."
 
 #. Login failed, try again
-#: imap.c:928
+#: imap.c:927
 #, fuzzy
 msgid "Login failed."
 msgstr "Ре╓страц╕я..."
 
-#: imap.c:985
+#: imap.c:984
 #, c-format
 msgid "Selecting %s..."
 msgstr "Виб╕р %s..."
 
-#: imap.c:1084 lib.c:1177
+#: imap.c:1083 lib.c:1177
 #, c-format
 msgid "Create %s?"
 msgstr "Створити %s?"
 
-#: imap.c:1133
+#: imap.c:1132
 msgid "Fetching message..."
 msgstr "Отримання листа..."
 
-#: imap.c:1241
+#: imap.c:1240
 msgid "Sending APPEND command ..."
 msgstr "Надсилання команди APPEND..."
 
-#: imap.c:1280
+#: imap.c:1279
 msgid "Uploading message ..."
 msgstr "Забирання листа..."
 
-#: imap.c:1335
+#: imap.c:1334
 msgid "Closing connection to IMAP server..."
 msgstr "Закриття з'╓днання з сервером IMAP..."
 
-#: imap.c:1365
+#: imap.c:1364
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Збереження флаг╕в статусу листа... [%d/%d]"
 
-#: imap.c:1391
+#: imap.c:1390
 msgid "Expunging messages from server..."
 msgstr ""
 
 #. tell the server to commit changes
-#: imap.c:1442
+#: imap.c:1441
 msgid "Closing mailbox..."
 msgstr "Закриття поштово╖ скриньки..."
 
@@ -1134,16 +1134,16 @@ msgstr "source: дуже багато аргумент╕в"
 msgid "%s: unknown command"
 msgstr "%s: нев╕дома команда"
 
-#: init.c:1496
+#: init.c:1497
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Помилка командного рядку: %s\n"
 
-#: init.c:1539
+#: init.c:1540
 msgid "unable to determine home directory"
 msgstr "неможливо з'ясувати домашн╕й каталог"
 
-#: init.c:1547
+#: init.c:1548
 msgid "unable to determine username"
 msgstr "неможливо з'ясувати ╕м'я користувача"
 
@@ -2060,7 +2060,7 @@ msgid "Invalid index number."
 msgstr "Нев╕рний номер перел╕ку."
 
 #: menu.c:322 menu.c:340 menu.c:376 menu.c:417 menu.c:433 menu.c:444
-#: menu.c:455 menu.c:497 menu.c:508 menu.c:521 menu.c:534 menu.c:804
+#: menu.c:455 menu.c:497 menu.c:508 menu.c:521 menu.c:534 menu.c:813
 msgid "No entries."
 msgstr "Жодно╖ позиц╖╖."
 
@@ -2112,11 +2112,16 @@ msgstr "Нема╓ виразу пошуку."
 msgid "Not found."
 msgstr "Не знайдено."
 
-#: menu.c:768
+#: menu.c:689
+#, fuzzy
+msgid "No tagged entries."
+msgstr "Жодно╖ позиц╖╖."
+
+#: menu.c:777
 msgid "Search is not implemented for this menu."
 msgstr "Пошук в цьому меню не орган╕зовано."
 
-#: menu.c:807
+#: menu.c:816
 msgid "Tagging is not supported."
 msgstr "Вид╕лення не п╕дтриму╓ться."
 
@@ -2163,12 +2168,12 @@ msgstr "Запис %s..."
 msgid "Move read messages to %s?"
 msgstr "Перенести читан╕ листи до %s?"
 
-#: mx.c:767 mx.c:944
+#: mx.c:767 mx.c:955
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Знищити %d видалений лист?"
 
-#: mx.c:767 mx.c:944
+#: mx.c:767 mx.c:955
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Знищити %d видалених лист╕в?"
@@ -2178,7 +2183,7 @@ msgstr "Знищити %d видалених лист╕в?"
 msgid "Moving read messages to %s..."
 msgstr "Перенос читаних лист╕в до %s..."
 
-#: mx.c:803 mx.c:935
+#: mx.c:803 mx.c:946
 msgid "Mailbox is unchanged."
 msgstr "Поштову скриньку не зм╕нено."
 
@@ -2187,26 +2192,26 @@ msgstr "Поштову скриньку не зм╕нено."
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d збережено, %d перенесено, %d знищено."
 
-#: mx.c:825 mx.c:960
+#: mx.c:825 mx.c:971
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d збережено, %d знищено."
 
-#: mx.c:920
+#: mx.c:931
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr "Натисн╕ть '%s' для зм╕ни можливост╕ запису"
 
-#: mx.c:922
+#: mx.c:933
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Зроб╕ть 'toggle-write' для вв╕мкнення запису!"
 
-#: mx.c:924
+#: mx.c:935
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Скриньку пом╕чено незм╕нюваною. %s"
 
-#: mx.c:929
+#: mx.c:940
 msgid "Mailbox is read-only."
 msgstr "Поштова скринька т╕льки для читання"
 

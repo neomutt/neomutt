@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt\n"
-"POT-Creation-Date: 1998-12-04 00:20+0100\n"
+"POT-Creation-Date: 1998-12-10 12:09+0100\n"
 "PO-Revision-Date: 1998-10-29 19:25+0100\n"
 "Last-Translator: Boris Wesslowski <Boris@Wesslowski.com>\n"
 
@@ -479,59 +479,59 @@ msgstr "Marque el mensaje que quiere adjuntar."
 msgid "Unable to attach!"
 msgstr "¡Imposible adjuntar!"
 
-#: compose.c:761
+#: compose.c:763
 msgid "Invalid encoding."
 msgstr "La codificación no es válida."
 
-#: compose.c:776
+#: compose.c:778
 msgid "Save a copy of this message?"
 msgstr "¿Guardar una copia de este mensaje?"
 
-#: compose.c:821
+#: compose.c:823
 msgid "Rename to: "
 msgstr "Renombrar a: "
 
-#: compose.c:826
+#: compose.c:828
 #, c-format
 msgid "Can't stat: %s"
 msgstr "No se pudo probar: %s"
 
-#: compose.c:853
+#: compose.c:855
 msgid "New file: "
 msgstr "Archivo nuevo: "
 
-#: compose.c:866
+#: compose.c:868
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type tiene la forma base/subtipo"
 
-#: compose.c:872
+#: compose.c:874
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Content-Type %s desconocido"
 
-#: compose.c:885
+#: compose.c:887
 #, c-format
 msgid "Can't create file %s"
 msgstr "No se pudo creal el archivo %s"
 
-#: compose.c:893
+#: compose.c:895
 msgid "What we have here is a failure to make an attachment"
 msgstr "No se pudo producir el archivo a adjuntar"
 
-#: compose.c:956
+#: compose.c:958
 msgid "Postpone this message?"
 msgstr "¿Posponer el mensaje?"
 
-#: compose.c:1008
+#: compose.c:1010
 msgid "Write message to mailbox"
 msgstr "Guardar mensaje en el buzón"
 
-#: compose.c:1012
+#: compose.c:1014
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Guardando mensaje en %s ..."
 
-#: compose.c:1023
+#: compose.c:1025
 msgid "Message written."
 msgstr "Mensaje guardado."
 
@@ -975,67 +975,67 @@ msgstr "Consiguiendo cabeceras de mensajes... [%d/%d]"
 msgid "Reopening mailbox..."
 msgstr "Reabriendo buzón..."
 
-#: imap.c:866
+#: imap.c:865
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Conectando a %s..."
 
-#: imap.c:889
+#: imap.c:888
 msgid "IMAP Username: "
 msgstr "Nombre de usuario IMAP:"
 
-#: imap.c:902
+#: imap.c:901
 #, c-format
 msgid "Password for %s@%s: "
 msgstr "Contraseña para %s@%s: "
 
-#: imap.c:915
+#: imap.c:914
 msgid "Logging in..."
 msgstr "Entrando..."
 
 #. Login failed, try again
-#: imap.c:928
+#: imap.c:927
 #, fuzzy
 msgid "Login failed."
 msgstr "Entrando..."
 
-#: imap.c:985
+#: imap.c:984
 #, c-format
 msgid "Selecting %s..."
 msgstr "Seleccionando %s..."
 
-#: imap.c:1084 lib.c:1177
+#: imap.c:1083 lib.c:1177
 #, c-format
 msgid "Create %s?"
 msgstr "¿Crear %s?"
 
-#: imap.c:1133
+#: imap.c:1132
 msgid "Fetching message..."
 msgstr "Consiguiendo mensaje..."
 
-#: imap.c:1241
+#: imap.c:1240
 msgid "Sending APPEND command ..."
 msgstr "Mandando comando APPEND..."
 
-#: imap.c:1280
+#: imap.c:1279
 msgid "Uploading message ..."
 msgstr "Subiendo mensaje ..."
 
-#: imap.c:1335
+#: imap.c:1334
 msgid "Closing connection to IMAP server..."
 msgstr "Cerrando conexión al servidor IMAP..."
 
-#: imap.c:1365
+#: imap.c:1364
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Guardando indicadores de estado de mensajes... [%d/%d]"
 
-#: imap.c:1391
+#: imap.c:1390
 msgid "Expunging messages from server..."
 msgstr "Eliminando mensajes del servidor..."
 
 #. tell the server to commit changes
-#: imap.c:1442
+#: imap.c:1441
 msgid "Closing mailbox..."
 msgstr "Cerrando buzón..."
 
@@ -1130,16 +1130,16 @@ msgstr "fuente: demasiados argumentos"
 msgid "%s: unknown command"
 msgstr "%s: comando desconocido"
 
-#: init.c:1496
+#: init.c:1497
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Error en línea de comando: %s\n"
 
-#: init.c:1539
+#: init.c:1540
 msgid "unable to determine home directory"
 msgstr "imposible determinar el directorio del usuario"
 
-#: init.c:1547
+#: init.c:1548
 msgid "unable to determine username"
 msgstr "imposible determinar nombre del usuario"
 
@@ -2030,7 +2030,7 @@ msgid "Invalid index number."
 msgstr "Número de índice inválido."
 
 #: menu.c:322 menu.c:340 menu.c:376 menu.c:417 menu.c:433 menu.c:444
-#: menu.c:455 menu.c:497 menu.c:508 menu.c:521 menu.c:534 menu.c:804
+#: menu.c:455 menu.c:497 menu.c:508 menu.c:521 menu.c:534 menu.c:813
 msgid "No entries."
 msgstr "No hay entradas."
 
@@ -2082,11 +2082,16 @@ msgstr "Nada que buscar."
 msgid "Not found."
 msgstr "No fue encontrado."
 
-#: menu.c:768
+#: menu.c:689
+#, fuzzy
+msgid "No tagged entries."
+msgstr "No hay entradas."
+
+#: menu.c:777
 msgid "Search is not implemented for this menu."
 msgstr "No puede buscar en este menú."
 
-#: menu.c:807
+#: menu.c:816
 msgid "Tagging is not supported."
 msgstr "Marcar no es soportado."
 
@@ -2133,12 +2138,12 @@ msgstr "Escribiendo %s..."
 msgid "Move read messages to %s?"
 msgstr "¿Mover mensajes a %s?"
 
-#: mx.c:767 mx.c:944
+#: mx.c:767 mx.c:955
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "¿Expulsar %d mensaje suprimido?"
 
-#: mx.c:767 mx.c:944
+#: mx.c:767 mx.c:955
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "¿Expulsar %d mensajes suprimidos?"
@@ -2148,7 +2153,7 @@ msgstr "¿Expulsar %d mensajes suprimidos?"
 msgid "Moving read messages to %s..."
 msgstr "Moviendo mensajes leídos a %s..."
 
-#: mx.c:803 mx.c:935
+#: mx.c:803 mx.c:946
 msgid "Mailbox is unchanged."
 msgstr "Buzón no cambió."
 
@@ -2157,26 +2162,26 @@ msgstr "Buzón no cambió."
 msgid "%d kept, %d moved, %d deleted."
 msgstr "quedan %d, %d movidos, %d suprimidos."
 
-#: mx.c:825 mx.c:960
+#: mx.c:825 mx.c:971
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "quedan %d, %d suprimidos."
 
-#: mx.c:920
+#: mx.c:931
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr "Presione '%s' para cambiar escritura"
 
-#: mx.c:922
+#: mx.c:933
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "¡Use 'toggle-write' para activar escritura!"
 
-#: mx.c:924
+#: mx.c:935
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Buzón esta marcado inescribible. %s"
 
-#: mx.c:929
+#: mx.c:940
 msgid "Mailbox is read-only."
 msgstr "Buzón es de sólo lectura."
 

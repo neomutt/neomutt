@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt-0.94.17\n"
-"POT-Creation-Date: 1998-12-04 00:20+0100\n"
+"POT-Creation-Date: 1998-12-10 12:09+0100\n"
 "PO-Revision-Date: 1998-11-19 15:54+01:00\n"
 "Last-Translator: Marco d'Itri <md@linux.it>\n"
 "Language-Team: none\n"
@@ -492,59 +492,59 @@ msgstr "Segna i messaggi che vuoi allegare!"
 msgid "Unable to attach!"
 msgstr "Impossibile allegare!"
 
-#: compose.c:761
+#: compose.c:763
 msgid "Invalid encoding."
 msgstr "Codifica non valida."
 
-#: compose.c:776
+#: compose.c:778
 msgid "Save a copy of this message?"
 msgstr "Salvo una copia di questo messaggio?"
 
-#: compose.c:821
+#: compose.c:823
 msgid "Rename to: "
 msgstr "Rinomina in: "
 
-#: compose.c:826
+#: compose.c:828
 #, c-format
 msgid "Can't stat: %s"
 msgstr "Non riesco a fare stat: %s"
 
-#: compose.c:853
+#: compose.c:855
 msgid "New file: "
 msgstr "Nuovo file: "
 
-#: compose.c:866
+#: compose.c:868
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type non è nella forma base/sub"
 
-#: compose.c:872
+#: compose.c:874
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Content-Type %s sconosciuto"
 
-#: compose.c:885
+#: compose.c:887
 #, c-format
 msgid "Can't create file %s"
 msgstr "Impossibile creare il file %s"
 
-#: compose.c:893
+#: compose.c:895
 msgid "What we have here is a failure to make an attachment"
 msgstr "Quel che abbiamo qui è l'impossibilità di fare un allegato"
 
-#: compose.c:956
+#: compose.c:958
 msgid "Postpone this message?"
 msgstr "Rimando a dopo questo messaggio?"
 
-#: compose.c:1008
+#: compose.c:1010
 msgid "Write message to mailbox"
 msgstr "Salva il messaggio nella mailbox"
 
-#: compose.c:1012
+#: compose.c:1014
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Scrivo il messaggio in %s ..."
 
-#: compose.c:1023
+#: compose.c:1025
 msgid "Message written."
 msgstr "Messaggio scritto."
 
@@ -996,66 +996,66 @@ msgstr "Prendo gli header dei messaggi... [%d/%d]"
 msgid "Reopening mailbox..."
 msgstr "Riapro la mailbox..."
 
-#: imap.c:866
+#: imap.c:865
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Mi connetto a %s..."
 
-#: imap.c:889
+#: imap.c:888
 msgid "IMAP Username: "
 msgstr "Nome dell'utente IMAP: "
 
-#: imap.c:902
+#: imap.c:901
 #, c-format
 msgid "Password for %s@%s: "
 msgstr "Password per %s@%s: "
 
-#: imap.c:915
+#: imap.c:914
 msgid "Logging in..."
 msgstr "Faccio il login..."
 
 #. Login failed, try again
-#: imap.c:928
+#: imap.c:927
 msgid "Login failed."
 msgstr "Login fallito."
 
-#: imap.c:985
+#: imap.c:984
 #, c-format
 msgid "Selecting %s..."
 msgstr "Seleziono %s..."
 
-#: imap.c:1084 lib.c:1177
+#: imap.c:1083 lib.c:1177
 #, c-format
 msgid "Create %s?"
 msgstr "Creo %s?"
 
-#: imap.c:1133
+#: imap.c:1132
 msgid "Fetching message..."
 msgstr "Prendo il messaggio..."
 
-#: imap.c:1241
+#: imap.c:1240
 msgid "Sending APPEND command ..."
 msgstr "Mando il comando APPEND ..."
 
-#: imap.c:1280
+#: imap.c:1279
 msgid "Uploading message ..."
 msgstr "Mando il messaggio ..."
 
-#: imap.c:1335
+#: imap.c:1334
 msgid "Closing connection to IMAP server..."
 msgstr "Chiudo la connessione al server IMAP..."
 
-#: imap.c:1365
+#: imap.c:1364
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Salvo i flag di stato dei messaggi... [%d/%d]"
 
-#: imap.c:1391
+#: imap.c:1390
 msgid "Expunging messages from server..."
 msgstr "Cancello i messaggi dal server..."
 
 #. tell the server to commit changes
-#: imap.c:1442
+#: imap.c:1441
 msgid "Closing mailbox..."
 msgstr "Chiudo la mailbox..."
 
@@ -1150,16 +1150,16 @@ msgstr "source: troppi argomenti"
 msgid "%s: unknown command"
 msgstr "%s: comando sconosciuto"
 
-#: init.c:1496
+#: init.c:1497
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Errore nella riga di comando: %s\n"
 
-#: init.c:1539
+#: init.c:1540
 msgid "unable to determine home directory"
 msgstr "impossibile determinare la home directory"
 
-#: init.c:1547
+#: init.c:1548
 msgid "unable to determine username"
 msgstr "impossibile determinare l'username"
 
@@ -2082,7 +2082,7 @@ msgid "Invalid index number."
 msgstr "Numero dell'indice non valido."
 
 #: menu.c:322 menu.c:340 menu.c:376 menu.c:417 menu.c:433 menu.c:444
-#: menu.c:455 menu.c:497 menu.c:508 menu.c:521 menu.c:534 menu.c:804
+#: menu.c:455 menu.c:497 menu.c:508 menu.c:521 menu.c:534 menu.c:813
 msgid "No entries."
 msgstr "Nessuna voce."
 
@@ -2134,11 +2134,16 @@ msgstr "Nessun modello di ricerca."
 msgid "Not found."
 msgstr "Non trovato."
 
-#: menu.c:768
+#: menu.c:689
+#, fuzzy
+msgid "No tagged entries."
+msgstr "Nessuna voce."
+
+#: menu.c:777
 msgid "Search is not implemented for this menu."
 msgstr "In questo menù la ricerca non è stata implementata."
 
-#: menu.c:807
+#: menu.c:816
 msgid "Tagging is not supported."
 msgstr "Non è possibile segnare un messaggio."
 
@@ -2185,12 +2190,12 @@ msgstr "Scrivo %s..."
 msgid "Move read messages to %s?"
 msgstr "Sposto i messaggi letti in %s?"
 
-#: mx.c:767 mx.c:944
+#: mx.c:767 mx.c:955
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Cancello %d messaggio cancellato?"
 
-#: mx.c:767 mx.c:944
+#: mx.c:767 mx.c:955
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Cancello %d messaggi cancellati?"
@@ -2200,7 +2205,7 @@ msgstr "Cancello %d messaggi cancellati?"
 msgid "Moving read messages to %s..."
 msgstr "Sposto i messaggi letti in %s..."
 
-#: mx.c:803 mx.c:935
+#: mx.c:803 mx.c:946
 msgid "Mailbox is unchanged."
 msgstr "La mailbox non è stata modificata."
 
@@ -2209,26 +2214,26 @@ msgstr "La mailbox non è stata modificata."
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d tenuti, %d spostati, %d cancellati."
 
-#: mx.c:825 mx.c:960
+#: mx.c:825 mx.c:971
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d tenuti, %d cancellati."
 
-#: mx.c:920
+#: mx.c:931
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr "Premi '%s' per (dis)abilitare la scrittura"
 
-#: mx.c:922
+#: mx.c:933
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Usa  'toggle-write' per riabilitare la scrittura!"
 
-#: mx.c:924
+#: mx.c:935
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "La mailbox è indicata non scrivibile. %s"
 
-#: mx.c:929
+#: mx.c:940
 msgid "Mailbox is read-only."
 msgstr "La mailbox è di sola lettura."
 
