@@ -138,7 +138,8 @@ parse_quote (const char *s, char *token, size_t *tokenlen, size_t tokenmax)
       if (!*++s)
 	break;
 
-      token[*tokenlen] = *s;
+      if (*tokenlen < tokenmax)
+	token[*tokenlen] = *s;
     }
     (*tokenlen)++;
     s++;
