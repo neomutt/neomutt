@@ -55,7 +55,7 @@ DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 
 INCLUDES=-I. -I$(top_srcdir) $(IMAP_INCLUDES) -Iintl
 
-CPPFLAGS=@CPPFLAGS@ -I$(includedir) -D_FILE_OFFSET_BITS=64
+CPPFLAGS=@CPPFLAGS@ -I$(includedir)
 
 
 EXTRA_mutt_SOURCES = account.c md5c.c mutt_sasl.c mutt_socket.c mutt_ssl.c \
