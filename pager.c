@@ -2075,6 +2075,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 			      extra->bdy);
         else
 	  mutt_resend_message (NULL, extra->ctx, extra->hdr);
+        redraw = REDRAW_FULL;
         break;
       
       case OP_CREATE_ALIAS:
