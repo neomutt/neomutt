@@ -1208,7 +1208,7 @@ int imap_mailbox_check (char* path, int new)
 	   mutt_bit_isset(idata->capabilities,STATUS))
   {				
     snprintf (buf, sizeof (buf), "STATUS %s (%s)", mbox,
-      new ? "UNSEEN" : "MESSAGES");
+      new ? "RECENT" : "MESSAGES");
   }
   else
     /* Server does not support STATUS, and this is not the current mailbox.
