@@ -891,7 +891,21 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
   char chsbuf[STRING];
   size_t r;
 
+  struct stat sb;
+  
   if(b && !fname) fname = b->filename;
+
+  if (stat (fname, &sb) == -1)
+  {
+    mutt_error (_("Can't stat %s."), fname);
+    return NULL;
+  }
+  
+  if (!S_ISREG(sb.st_mode))
+  {
+    mutt_error (_("%s isn't a regular file."), fname);
+    return NULL;
+  }
   
   if ((fp = fopen (fname, "r")) == NULL)
   {
@@ -1375,7 +1389,10 @@ BODY *mutt_make_file_attach (const char *path)
 #endif
   
   if ((info = mutt_get_content_info (path, att)) == NULL)
+  {
+    mutt_free_body (&att);
     return NULL;
+  }
 
   if (!att->subtype)
   {
