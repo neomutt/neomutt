@@ -1,3 +1,247 @@
+Fri Jul 28 18:57:31 2000  Thomas Roessler  <roessler@guug.de>
+
+	* Makefile.am: parse.h no longer exists, so don't try to distribute it.
+
+	* po/sv.po, po/uk.po, po/zh_TW.Big5.po, po/pt_BR.po, po/ru.po, po/sk.po, po/ko.po, po/nl.po, po/pl.po, po/gl.po, po/id.po, po/it.po, po/el.po, po/eo.po, po/es.po, po/fr.po, po/cs.po, po/da.po, po/de.po, reldate.h, ChangeLog, VERSION:
+	automatic post-release commit for mutt-1.2.5
+
+	* imap/imap.c, imap/imap_private.h, imap/message.c:
+	Use UIDs instead of sequence numbers in IMAP.  (Brendan)
+
+Fri Jul 28 18:51:38 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/sv.po, po/uk.po, po/zh_TW.Big5.po, po/pt_BR.po, po/ru.po, po/sk.po, po/ko.po, po/nl.po, po/pl.po, po/gl.po, po/id.po, po/it.po, po/el.po, po/eo.po, po/es.po, po/fr.po, po/cs.po, po/da.po, po/de.po, reldate.h, ChangeLog, VERSION:
+	automatic post-release commit for mutt-1.2.5
+
+	* imap/imap.c, imap/imap_private.h, imap/message.c:
+	Use UIDs instead of sequence numbers in IMAP.  (Brendan)
+
+	* imap/imap.c, imap/imap_private.h, imap/message.c, imap/message.h, imap/command.c, mutt.h, muttlib.c, mx.c:
+	Handle expunged messages.  From Brendan Cully.
+
+Wed Jul 26 09:30:01 2000  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.head: Nits from Michael Sobolev.
+
+Tue Jul 25 16:35:48 2000  Thomas Roessler  <roessler@guug.de>
+
+	* Makefile.am: Include the muttbug wrapper with the distribution.
+
+	* doc/Makefile.in: Install muttbug.man als flea.1.
+
+	* doc/muttbug.man, doc/mutt.man, main.c, Makefile.am, muttbug:
+	Install muttbug(1) as flea(1), and adjust the documentation
+	accordingly.  Note: Typing muttbug will still work.
+
+	* doc/muttbug.man: More tiny fixes.
+
+	* doc/muttbug.man:
+	Fix some typos.  In particular, it's bug tracking system, not buck
+	tracking system.  Oh well.
+
+	* doc/Makefile.in, doc/muttbug.man, doc/mutt.man:
+	muttbug(1) has a manual page of it's own now.
+
+	* muttbug.sh.in: Fix a little bug concerning version numbers.
+
+	* Makefile.am: The warning about README.UPGRADE can go.
+
+	* doc/mutt.man: Mention the bug tracking system.
+
+	* INSTALL:
+	Mention that mutt needs an iconv implementation, and point users to
+	libiconv.
+
+	* INSTALL: Mention OpenBSD
+
+	* Makefile.am: Remove types.h at "make clean" time.
+
+	* curs_main.c: Fix a segmentation fault in the index.
+
+	* curs_main.c: Try to fix a segmentation fault in the index.
+
+Mon Jul 24 07:48:53 2000  Thomas Roessler  <roessler@guug.de>
+
+	* browser.h:
+	make bit types unsigned.  From albert chin <china@thewrittenword.com>.
+
+	* curs_lib.c, hdrline.c, help.c, mbyte.c, mbyte.h, menu.c:
+	Replace wctomb and mbtowc with wcrtomb and mbrtowc.  From TAKIZAWA
+	Takashi <taki@luna.email.ne.jp>, with small changes from Edmund
+	Grimley Evans.
+
+Sun Jul 23 21:47:01 2000  Thomas Roessler  <roessler@guug.de>
+
+	* menu.c: Fix #108, from Gero Treuner.
+
+	* configure.in, resize.c: sys/ioctl.h vs. ioctl.h.  From Sam Roberts.
+
+	* rfc2231.c:
+	Fix an obvious bug which prevented rfc2231 _encoding_ support from
+	working.
+
+Sat Jul 22 09:01:43 2000  Thomas Roessler  <roessler@guug.de>
+
+	* configure.in, mutt.h: Some more QNX compiling aides.
+
+Fri Jul 21 07:32:12 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/md5.h, checktypes.c, Makefile.am:
+	Try to be smart about integer types.
+
+	* imap/imap.c: Fix imap_passive.  From Brendan Cully.
+
+	* contrib/Makefile.in: Fix #150.  From Brendan Cully.
+
+Thu Jul 20 17:51:52 2000  Thomas Roessler  <roessler@guug.de>
+
+	* doc/devel-notes.txt: Typo.
+
+	* imap/browse.c, imap/command.c, imap/imap.c, imap/imap.h, imap/imap_private.h, imap/util.c, mutt_socket.c, mutt_socket.h, mx.c, pop.c:
+	Another IMAP patch from Brendan.
+
+	* imap/util.c: quick hack against mx->mbox being NULL.
+
+	* imap/BUGS, imap/imap.c, imap/imap.h, imap/util.c, postpone.c:
+	patch-bac.postpone-2
+
+	* pop.c: Use shared socket code, from Vsevolod Volkov.
+
+Wed Jul 19 10:21:57 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/POTFILES.in, imap/Attic/imap_socket.h, imap/Attic/socket.c, imap/auth.c, imap/auth_gss.c, imap/browse.c, imap/imap.c, imap/imap.h, imap/imap_private.h, imap/imap_ssl.c, imap/imap_ssl.h, imap/Makefile.am, imap/message.c, imap/util.c, acconfig.h, account.c, account.h, browser.c, configure.in, gettext.c, globals.h, init.c, init.h, Makefile.am, mutt_socket.c, mutt_socket.h:
+	IMAP socket moves by Brendan Cully, with a fix from Tommi
+	Komulainen, and most likely based on input from Vsevolod Voykov
+	(sp?).
+
+	* imap/util.c:
+	Fix more possible IMAP memory corruption.  From Brendan Cully.
+
+	* imap/util.c:
+	Fix possible memory corruption in stable.  From Brendan Cully.
+
+	* imap/Attic/socket.c, imap/imap_private.h, imap/message.c, imap/imap.c:
+	Backport various IMAP bug-fixes to stable.  From Brendan Cully.
+
+Tue Jul 18 14:38:13 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/Attic/socket.c, imap/auth.c, imap/auth_gss.c, imap/browse.c, imap/command.c, imap/imap.c, imap/imap_private.h, imap/message.c:
+	More IMAP clean-up from Brendan Cully.
+
+	* imap/Attic/socket.c, imap/imap.c, imap/imap_private.h, imap/message.c, imap/utf7.c:
+	IMAP fixes from Brendan Cully.
+
+	* init.h: Documentation fix.
+
+Mon Jul 17 18:08:27 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/message.c: Fix possible heap corruption.  From Brendan Cully.
+
+	* imap/utf7.c: Name changes left out by EGE's patch.
+
+	* imap/util.c, imap/imap_private.h: imap/UTF7 related fixes from EGE.
+
+	* curs_main.c: Fix #192.
+
+Sun Jul 16 15:35:14 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/browse.c, imap/imap.c, imap/imap_private.h, imap/Makefile.am, imap/message.c, imap/utf7.c, imap/util.c:
+	Support modified UTF-7 in folder names.  From Edmund Grimley Evans,
+	modified by Brendan Cully.
+
+	* handler.c: Another qp fix.
+
+	* handler.c:
+	More qp decoder modifications: We should handle multibyte characters
+	spanning soft line breaks.
+
+	* handler.c:
+	Rewrite the quoted-printable decoder so it properly chops off
+	trailing white space.  Problem noted by Byrial Jensen.
+
+Sat Jul 15 06:51:47 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/Attic/socket.c: Add a message that we are looking up a host.
+
+Fri Jul 14 15:03:43 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/message.c, imap/message.h: Brendan's latest IMAP changes.
+
+	* README.SSL:
+	Tommi Komulainen's entropy gathering patch - documentation.
+
+Wed Jul 12 14:17:46 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/cs.po: update.
+
+	* imap/imap_ssl.c: Entropy gathering fixes.
+
+	* configure.in: Re-apply the iconv patch from vvv.
+
+	* configure.in: undo the enable-external-dotlock patch.
+
+	* handler.c:
+	Initialize a variable in order to avoid a segmentation fault.  From
+	Aaron Schrab.
+
+Tue Jul 11 20:38:49 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/Attic/socket.c, imap/imap.c, imap/imap_private.h:
+	Unify logout stuff in _one_ function.  From Vsevolod Volkov.
+
+	* imap/message.c:
+	Disable a bug work-around which actually breaks things.
+
+	* configure.in: Typo, noted by Brad <brad@comstyle.com>.
+
+Mon Jul 10 19:52:12 2000  Thomas Roessler  <roessler@guug.de>
+
+	* main.c: Typo.
+
+	* po/id.po: update.
+
+	* rfc2047.c:
+	Fix some possible NULL pointer deferences in the RFC2047 code.
+
+	* imap/Attic/socket.c, imap/command.c, imap/imap.c, imap/message.c, browser.c, pgpkey.c, pop.c, query.c, remailer.c:
+	Fix a bunch of cases where format parameters were missing from calls
+	to mutt_message and mutt_error.
+
+	* imap/command.c, imap/imap.c, imap/message.c, browser.c, pgpkey.c, pop.c, query.c, remailer.c:
+	[stable] Fix a bunch of cases where format parameters were missing
+	to calls of mutt_error and mutt_message.
+
+	* po/ru.po, po/de.po, po/da.po: update.
+
+	* po/da.po: Update.
+
+	* acconfig.h, charset.c, configure.in, INSTALL, main.c:
+	Some changes from EGE.
+
+Fri Jul  7 15:12:37 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/fr.po: update
+
+	* attach.c, Attic/parse.h, copy.c, editmsg.c, from.c, mbox.c, parse.c, pgp.c, protos.h:
+	Fix #185:  is_from would return 0 (i.e., error) when parsing Jan 1
+	1970 12:00 - apparently, this point of time occurs on real mail
+	folders.
+
+Thu Jul  6 23:08:39 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/sv.po, po/uk.po, po/zh_TW.Big5.po, po/pt_BR.po, po/ru.po, po/sk.po, po/nl.po, po/pl.po, po/it.po, po/ko.po, po/es.po, po/fr.po, po/gl.po, po/id.po, po/da.po, po/de.po, po/el.po, po/eo.po, ChangeLog, po/cs.po, VERSION:
+	automatic post-release commit for mutt-1.2.4
+
+	* muttlib.c: ups, this should be fixed in stable.
+
+	* po/pt_BR.po, po/ru.po, po/sk.po, po/sv.po, po/uk.po, po/zh_TW.Big5.po, po/ko.po, po/nl.po, po/pl.po, po/eo.po, po/es.po, po/fr.po, po/gl.po, po/id.po, po/it.po, po/cs.po, po/da.po, po/de.po, po/el.po, reldate.h, ChangeLog, VERSION:
+	automatic post-release commit for mutt-1.3.5
+
+	* po/sv.po, po/uk.po, po/zh_TW.Big5.po, po/pt_BR.po, po/ru.po, po/sk.po, po/ko.po, po/nl.po, po/pl.po, po/fr.po, po/gl.po, po/id.po, po/it.po, po/el.po, po/eo.po, po/es.po, po/cs.po, po/da.po, po/de.po, reldate.h, ChangeLog, VERSION:
+	automatic post-release commit for mutt-1.2.3
+
+	* po/fr.po: update.
+
 Thu Jul  6 22:34:55 2000  Thomas Roessler  <roessler@guug.de>
 
 	* po/sv.po, po/uk.po, po/zh_TW.Big5.po, po/pt_BR.po, po/ru.po, po/sk.po, po/ko.po, po/nl.po, po/pl.po, po/fr.po, po/gl.po, po/id.po, po/it.po, po/el.po, po/eo.po, po/es.po, po/cs.po, po/da.po, po/de.po, reldate.h, ChangeLog, VERSION:
