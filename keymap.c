@@ -269,6 +269,13 @@ static void push_string (char *s)
 	;
       if (pp >= s)
       {
+	if ((i = parse_fkey (pp)) > 0)
+	{
+	  mutt_ungetch (KEY_F (i), 0);
+	  p = pp - 1;
+	  continue;
+	}
+
 	l = p - pp + 1;
 	for (i = 0; KeyNames[i].name; i++)
 	{

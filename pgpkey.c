@@ -35,6 +35,8 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 
+#include <locale.h>
+
 #ifdef _PGPPATH
 
 struct pgp_cache

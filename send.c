@@ -874,7 +874,6 @@ ci_send_message (int flags,		/* send mode */
   FILE *tempfp = NULL;
   BODY *pbody;
   int i, killfrom = 0;
-  struct stat st;
 
 #ifdef _PGPPATH
   BODY *save_content = NULL;
@@ -1206,19 +1205,6 @@ main_loop:
     goto main_loop;
   }
 
-  /* Do FCC checking before any real processing happens, so we 
-   * don't have to do too much clean-up work.
-   */
-  
-  mutt_expand_path (fcc, sizeof (fcc));
-  if (*fcc && mutt_strcmp ("/dev/null", fcc) != 0 &&
-      !option (OPTNOCURSES) && !(flags & SENDMAILX) &&
-      !mutt_save_confirm (fcc, &st))
-  {
-    mutt_clear_error ();
-    goto main_loop;
-  }
-
   if (msg->content->next)
     msg->content = mutt_make_multipart (msg->content);
 
@@ -1274,6 +1260,7 @@ main_loop:
 
   /* save a copy of the message, if necessary. */
 
+  mutt_expand_path (fcc, sizeof (fcc));
   if (*fcc && mutt_strcmp ("/dev/null", fcc) != 0)
   {
     BODY *tmpbody = msg->content;
