@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.5\n"
+"Project-Id-Version: 1.3.6\n"
 "POT-Creation-Date: 2000-07-28 20:58+0200\n"
-"PO-Revision-Date: 2000-07-09 17:22+02:00\n"
+"PO-Revision-Date: 2000-07-29 01:13+02:00\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -1221,14 +1221,14 @@ msgid "Failed to find enough entropy on your system"
 msgstr "Nicht genügend Entropie auf diesem System gefunden"
 
 #: imap/imap_ssl.c:122
-#, fuzzy, c-format
+#, c-format
 msgid "Filling entropy pool: %s...\n"
-msgstr "Sammle Entropie für Zufallsgenerator"
+msgstr "Sammle Entropie für Zufallsgenerator: %s...\n"
 
 #: imap/imap_ssl.c:130
 #, c-format
 msgid "%s has insecure permissions!"
-msgstr ""
+msgstr "%s hat unsichere Zugriffsrechte!"
 
 #: imap/imap_ssl.c:156
 msgid "SSL disabled due the lack of entropy"
@@ -1339,7 +1339,7 @@ msgstr "Hole Nachricht..."
 
 #: imap/message.c:259
 msgid "The message index is incorrect. Try reopening the mailbox."
-msgstr ""
+msgstr "Der Nachrichtenindex ist fehlerhaft. Versuche die Mailbox neu zu öffnen."
 
 #: imap/message.c:439
 msgid "Uploading message ..."
@@ -2240,14 +2240,13 @@ msgid "Out of memory!"
 msgstr "Kein Speicher verfügbar!"
 
 #: main.c:40
-#, fuzzy
 msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please use the flea(1) utility.\n"
 msgstr ""
 "Um die Entwickler zu kontaktieren, schicken Sie bitte\n"
 "eine Nachricht (in englisch) an <mutt-dev@mutt.org>.\n"
-"Um einen Bug zu melden, verwenden Sie bitte das Programm muttbug.\n"
+"Um einen Bug zu melden, verwenden Sie bitte das Programm flea(1).\n"
 
 #: main.c:44
 msgid ""
@@ -2263,7 +2262,6 @@ msgstr ""
 "`mutt -vv' für weitere Details.\n"
 
 #: main.c:50
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
@@ -2296,7 +2294,7 @@ msgstr ""
 "Copyright (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
 "Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-"Copyright (C) 2000      Edmnud Grimley Evans <edmundo@rano.org>\n"
+"Copyright (C) 2000      Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "Viele andere, die hier nicht erwähnt sind, haben viel Code, viele\n"
 "Bugfixes und viele Ideen beigesteuert.\n"
@@ -2315,8 +2313,7 @@ msgstr ""
 "\n"
 "    Sie sollten eine Kopie der GNU General Public License zusammen mit\n"
 "    diesem Programm erhalten haben; falls nicht, schreiben sie an Free\n"
-"    Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  "
-"02111, USA.\n"
+"    Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 
 #: main.c:78
 msgid ""
@@ -2615,9 +2612,9 @@ msgid "Append messages to %s?"
 msgstr "Nachricht an %s anhängen?"
 
 #: mutt_socket.c:251
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "Kopiere nach %s..."
+msgstr "Schlage %s nach..."
 
 #: mutt_socket.c:258
 #, c-format
@@ -2630,9 +2627,8 @@ msgid "Connecting to %s..."
 msgstr "Verbinde zu %s..."
 
 #: mutt_socket.c:284
-#, fuzzy
 msgid "Preconnect command failed."
-msgstr "IMAP \"preconnect\" Kommando fehlgeschlagen"
+msgstr "\"Preconnect\" Kommando fehlgeschlagen."
 
 #: mx.c:114
 #, c-format
@@ -2731,9 +2727,8 @@ msgid "Mailbox is marked unwritable. %s"
 msgstr "Mailbox ist als unschreibbar markiert. %s"
 
 #: mx.c:1081
-#, fuzzy
 msgid "Mailbox checkpointed."
-msgstr "Mailbox gelöscht."
+msgstr "Checkpoint in der Mailbox gesetzt."
 
 #: mx.c:1369
 msgid "Can't write message"
@@ -3145,23 +3140,21 @@ msgid "Looking for keys matching \"%s\"..."
 msgstr "Suche nach Schlüsseln, die auf \"%s\" passen..."
 
 #: pop.c:46
-#, fuzzy
 msgid "POP Username: "
-msgstr "IMAP-Nutzername: "
+msgstr "POP Benutzername: "
 
 #: pop.c:109
-#, fuzzy, c-format
+#, c-format
 msgid "Login failed: %s"
-msgstr "Anmeldung gescheitert..."
+msgstr "Anmeldung gescheitert: %s"
 
 #: pop.c:132
 msgid "POP host is not defined."
 msgstr "Es wurde kein POP-Server definiert."
 
 #: pop.c:165
-#, fuzzy
 msgid "Checking for new messages..."
-msgstr "Bereite Nachricht zum Weiterleiten vor..."
+msgstr "Prüfe auf neue Nachrichten..."
 
 #: pop.c:184
 msgid "No new mail in POP mailbox."
