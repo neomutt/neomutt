@@ -1,1057 +1,1733 @@
-# Copyright (C) 2000-2001 Free Software Foundation, Inc.
-# Fatih Demir <kabalak@gmx.net>, 2000-2001.
+# Turkish translation of mutt.
+# (C) 2001 the Free Software Foundation.
+# Fatih Demir <kabalak@gtranslator.org>, 2001.
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt 1.3.17i\n"
+"Project-Id-Version: mutt 1.4i\n"
 "POT-Creation-Date: 2001-06-07 22:11+0200\n"
-"PO-Revision-Date: 2001-04-05 16:28+0200\n"
-"Last-Translator: Fatih Demir <kabalak@gmx.net>\n"
-"Language-Team: GNOME Turk <gnome-turk@gnome.org>\n"
+"PO-Revision-Date: 2001-06-12 12:47+0200\n"
+"Last-Translator: Fatih Demir <kabalak@gtranslator.org>\n"
+"Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-9\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: account.c:144
-#, c-format
-msgid "Username at %s: "
-msgstr "%s'deki kullanýcý adý: "
-
-#: account.c:172
-#, c-format
-msgid "Password for %s@%s: "
-msgstr "%s@%s için parola: "
-
-#: addrbook.c:31 browser.c:40 pager.c:1363 postpone.c:37 query.c:43
-#: recvattach.c:57
-msgid "Exit"
-msgstr "Çýk"
-
-#: addrbook.c:32
-msgid "Select"
-msgstr "Seç"
-
-#. __STRCAT_CHECKED__
-#: addrbook.c:33 browser.c:43 compose.c:92 curs_main.c:389 mutt_ssl.c:615
-#: pager.c:1460 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
-msgid "Help"
-msgstr "Yardým"
-
-#: addrbook.c:120
-msgid "You have no aliases!"
-msgstr "Hýc bir lakabýn yok!"
-
-#: addrbook.c:131
-msgid "Aliases"
-msgstr "Lakaplar"
-
-#. add a new alias
-#: alias.c:234
-msgid "Alias as: "
-msgstr "Farklý lakap yarat: "
-
-#: alias.c:240
-msgid "You already have an alias defined with that name!"
-msgstr "Bu isimli bir lakap zaten tanýmlanmýþ!"
-
-#: alias.c:254
-msgid "Address: "
-msgstr "Adres:"
-
-#: alias.c:270
-msgid "Personal name: "
-msgstr "Þahsi isim: "
-
-#: alias.c:279
-#, c-format
-msgid "[%s = %s] Accept?"
-msgstr "[ %s = %s] Kabul ediliyor mu?"
-
-#: alias.c:296 recvattach.c:387 recvattach.c:441
-msgid "Save to file: "
-msgstr "Dosyaya kaydet: "
-
-#: alias.c:307
-msgid "Alias added."
-msgstr "Lakap eklendi."
-
-#: attach.c:111 attach.c:238 attach.c:431 attach.c:908
-msgid "Can't match nametemplate, continue?"
+msgid ""
+"\n"
+"Compile options:"
 msgstr ""
+"\n"
+"Denetleme seçenekleri:"
 
-#. For now, editing requires a file, no piping
-#: attach.c:123
-msgid "Mailcap compose entry requires %%s"
-msgstr "Mailcap düzenleme birimi %%s gerektiriyor"
+msgid ""
+"\n"
+"[-- END PGP MESSAGE --]\n"
+msgstr ""
+"\n"
+"[-- PGP ILETI SONU --]\n"
 
-#: attach.c:131 attach.c:256 commands.c:185 compose.c:1153 curs_lib.c:145
-#: curs_lib.c:374
-#, c-format
-msgid "Error running \"%s\"!"
-msgstr "\"%s\" çalýþtýrýlýrken bir hata oluþtu!"
+msgid ""
+"\n"
+"[-- END PGP SIGNED MESSAGE --]\n"
+msgstr ""
+"\n"
+"[-- PGP IMZALANMIÞ ILETI SONU --]\n"
 
-#: attach.c:141
-msgid "Failure to open file to parse headers."
-msgstr "Dosyayý baþlýklarýný taramak için açamadým."
+msgid ""
+"\n"
+"[-- End of PGP output --]\n"
+"\n"
+msgstr ""
+"\n"
+"[-- PGP geri veri sonu --]\n"
+"\n"
 
-#: attach.c:172
-msgid "Failure to open file to strip headers."
-msgstr "Dosyayý baþlýklarýný ayýrmak için açamadým."
+msgid ""
+"\n"
+"[-- End of PGP/MIME encrypted data --]\n"
+msgstr ""
+"\n"
+"[-- PGP/MIME ile þifrelenmiþ bilgi sonu --]\n"
 
-#: attach.c:190
-#, c-format
-msgid "No mailcap compose entry for %s, creating empty file."
-msgstr "%s için mailcap yazma birimi yok, boþ dosya yaratýlýyor."
+msgid ""
+"\n"
+"[-- End of signed data --]\n"
+msgstr ""
+"\n"
+"[-- Imzalanmýþ bilginin sonu --]\n"
 
-#. For now, editing requires a file, no piping
-#: attach.c:250
-msgid "Mailcap Edit entry requires %%s"
-msgstr "Mailcap düzenleme birimi %%s gerektiriyor"
+msgid "     to %s"
+msgstr "     %s'e"
 
-#: attach.c:269
-#, c-format
-msgid "No mailcap edit entry for %s"
-msgstr "%s için mailcap düzenleme birimi yok"
+msgid "   from %s"
+msgstr "   %s'den"
 
-#: attach.c:397
-msgid "No matching mailcap entry found.  Viewing as text."
-msgstr "Uyan mailcap birimi bulunamadý. Metin olarak gösteriliyor."
+msgid " ('?' for list): "
+msgstr " (sýralama için '?' iye bas): "
 
-#: attach.c:410
-msgid "MIME type not defined.  Cannot view attachment."
-msgstr "MIME tipi belirlenmemiþ. Eklenti gösterilemiyor."
+msgid " Press '%s' to toggle write"
+msgstr " Yazabilir yapmak icýn '%s'e basýlýr"
 
-#: attach.c:500
-msgid "Cannot create filter"
-msgstr "Filtrayý yaratamadým"
+msgid " in this limited view"
+msgstr " bu sýnýrlandýrýlmýþ bakýþta"
 
-#: attach.c:629 attach.c:661 attach.c:941 attach.c:993 handler.c:1518
-#: pgpkey.c:566 pgpkey.c:755
-msgid "Can't create filter"
-msgstr "Filtrayý yaratamadým"
+msgid " sign as: "
+msgstr " farklý imzala: "
 
-#: attach.c:725 recvattach.c:415 recvattach.c:475
-msgid "Attachment saved."
-msgstr "Eklenti kaydedildi."
+msgid " tagged"
+msgstr " iþaretli "
 
-#: attach.c:782
-msgid "Write fault!"
-msgstr "Yazma hatasý!"
+msgid "%c: invalid command"
+msgstr "%c : geçersiz komuta"
 
-#: attach.c:1010
-msgid "I don't know how to print that!"
-msgstr "Bunu nasýl yazdýracaðýmý bilinmiyor!"
+msgid "%c: not supported in this mode"
+msgstr "%c : bu türde desteklenmiyor"
 
-#: browser.c:41
-msgid "Chdir"
-msgstr "Dizine geç"
+msgid "%d kept, %d deleted."
+msgstr "%d kaldý, %d silindi."
 
-#: browser.c:42
-msgid "Mask"
-msgstr "Maske"
+msgid "%d kept, %d moved, %d deleted."
+msgstr "%d kaldý, %d taþýndý, %d silindi."
 
-#: browser.c:375 browser.c:957
-#, c-format
+msgid "%d: invalid message number.\n"
+msgstr "%d : geçersiz ileti numarasý.\n"
+
+msgid "%s Do you really want to use the key?"
+msgstr "%s Gerçekten bu anahtarý kullanmak ister misiniz?"
+
+msgid "%s [#%d] modified. Update encoding?"
+msgstr "%s [#%d] deðiþtirildi. Þekillenmeyi yenileyim mi?"
+
+msgid "%s [#%d] no longer exists!"
+msgstr "%s [#%d] yok!"
+
+msgid "%s [%d of %d messages read]"
+msgstr "%1$s [ %3$d iletiden %2$d ileti okundu]"
+
+msgid "%s [%s]\n"
+msgstr "%s [%s]\n"
+
+msgid "%s does not exist. Create it?"
+msgstr "%s yok. Yaratýlsýn mý?"
+
+msgid "%s has insecure permissions!"
+msgstr "%s güvenilir eriþim haklarýna sahip deðildir"
+
 msgid "%s is not a directory."
 msgstr "%s bir dizin deðil."
 
-#: browser.c:493
-#, c-format
-msgid "Mailboxes [%d]"
-msgstr "%d eposta kutusu "
+msgid "%s is not a mailbox!"
+msgstr "%s bir eposta kutusu deðil!"
 
-#: browser.c:500
-#, c-format
-msgid "Subscribed [%s], File mask: %s"
-msgstr "Abone [%s], Dosya maskesi: %s"
+msgid "%s is not a mailbox."
+msgstr "%s bir eposta kutusu deðildir!"
 
-#: browser.c:504
-#, c-format
-msgid "Directory [%s], File mask: %s"
-msgstr "Dizin [%s], Dosya maskesi: %s"
+msgid "%s is set"
+msgstr "%s oturtulmuþtur"
 
-#: browser.c:515
-msgid "Can't attach a directory!"
-msgstr "Bir dizini topyekun ekleyenmiyor!"
+msgid "%s is unset"
+msgstr "%s oturtulamamýþtýr"
 
-#: browser.c:643 browser.c:1024 browser.c:1117
-msgid "No files match the file mask"
-msgstr "Dosya maskesine uyan dosya yok"
+msgid "%s no longer exists!"
+msgstr "%s daha yok!"
 
-#: browser.c:849
-msgid "Create is only supported for IMAP mailboxes"
-msgstr "Yaratma sadece IMAP eposta kutularý için destekleniyor"
+msgid "%s%s to mailbox"
+msgstr "eposta kutusuna %s%s"
 
-#: browser.c:869
-msgid "Delete is only supported for IMAP mailboxes"
-msgstr "Silme sadece IMAP eposta kutularý için destekleniyor"
+msgid "%s...  Exiting.\n"
+msgstr "%s... Çýkýlýyor.\n"
 
-#: browser.c:877
-#, c-format
-msgid "Really delete mailbox \"%s\"?"
-msgstr "Vallahi mi eposta kutusu \"%s\"'yi sileyim mi?"
-
-#: browser.c:891
-msgid "Mailbox deleted."
-msgstr "eposta kutusu silindi."
-
-#: browser.c:897
-msgid "Mailbox not deleted."
-msgstr "eposta kutusu silinmedi."
-
-#: browser.c:916
-msgid "Chdir to: "
-msgstr "Dizine geç: "
-
-#: browser.c:950 browser.c:1017
-msgid "Error scanning directory."
-msgstr "Dizin taranýrken hata oldu."
-
-#: browser.c:968
-msgid "File Mask: "
-msgstr "Dosya aðý: "
-
-#: browser.c:1040
-msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
-msgstr "(t)arih, (a)lfabetik,(b)oyuta yada (h)iç mi terse sýralayým?"
-
-#: browser.c:1041
-msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
-msgstr "(t)arih, (a)lfabetik,(b)oyuta yada (h)iç mi sýralayým? "
-
-#: browser.c:1042
-msgid "dazn"
-msgstr "tabh"
-
-#: browser.c:1104
-msgid "New file name: "
-msgstr "Yeni dosya ismi: "
-
-#: browser.c:1135
-msgid "Can't view a directory"
-msgstr "Bir dizini gösterilmiyor"
-
-#: browser.c:1153
-msgid "Error trying to view file"
-msgstr "Dosyayý göstermeye uðraþýrken hata oldu"
-
-#: buffy.c:407
-#, c-format
-msgid "New mail in %s."
-msgstr "%s'de yeni eposta var."
-
-#: color.c:322
-#, c-format
 msgid "%s: color not supported by term"
 msgstr "%s : renk komuta tarafýndan desteklenmiyor"
 
-#: color.c:328
-#, c-format
-msgid "%s: no such color"
-msgstr "%s : böyle bir renk yok"
-
-#: color.c:374 color.c:569 color.c:580
-#, c-format
-msgid "%s: no such object"
-msgstr "%s : böyle bir þey yok"
-
-#: color.c:381
-#, c-format
 msgid "%s: command valid only for index object"
 msgstr "%s : komuta sadece indeks nesneleri için geçerlidir"
 
-#: color.c:389
-#, c-format
-msgid "%s: too few arguments"
-msgstr "%s : çok az argüman verilmiþ"
+msgid "%s: invalid mailbox type"
+msgstr "%s: geçersiz eposta tipi"
 
-#: color.c:557
-msgid "Missing arguments."
-msgstr "Eksik argümanlar."
+msgid "%s: invalid value"
+msgstr "%s: geçersiz deðer"
 
-#: color.c:596 color.c:607
-msgid "color: too few arguments"
-msgstr "renkli : eksik argüman"
-
-#: color.c:630
-msgid "mono: too few arguments"
-msgstr "siyah-beyaz : eksik argüman"
-
-#: color.c:650
-#, c-format
 msgid "%s: no such attribute"
 msgstr "böyle bir ayar yok : %s"
 
-#: color.c:690 hook.c:64 hook.c:72 keymap.c:697
-msgid "too few arguments"
-msgstr "çok az seçenek"
+msgid "%s: no such color"
+msgstr "%s : böyle bir renk yok"
 
-#: color.c:699 hook.c:78
-msgid "too many arguments"
-msgstr "çok fazla seçenek"
+msgid "%s: no such command"
+msgstr "%s: böyle bir komuta yoktur"
 
-#: color.c:715
-msgid "default colors not supported"
-msgstr "varsayýlan renkler desteklenmiyor"
+msgid "%s: no such function in map"
+msgstr "%s: haritada öyle bir iþlev yoktur"
 
-#. find out whether or not the verify signature
-#: commands.c:93
-msgid "Verify PGP signature?"
-msgstr "PGP imzasý doðrulansýn mý?"
+msgid "%s: no such menu"
+msgstr "%s: böyle bir mönü yoktur"
 
-#: commands.c:105 pgp.c:1678 pgpkey.c:559 postpone.c:517
-msgid "Invoking PGP..."
-msgstr "PGP'yi çaðýrýlýyor..."
+msgid "%s: no such object"
+msgstr "%s : böyle bir þey yok"
 
-#: commands.c:113 mbox.c:734
-msgid "Could not create temporary file!"
-msgstr "Geçici dosyayý yaratamadým!"
+msgid "%s: too few arguments"
+msgstr "%s : çok az argüman verilmiþ"
 
-#: commands.c:126
-msgid "Cannot create display filter"
-msgstr "Gösterim filtrasýný yaratamadým"
+msgid "%s: unable to attach file"
+msgstr "%s: dosyayý eklenemiyor"
 
-#: commands.c:146
-msgid "Could not copy message"
-msgstr "Iletiyi kopyalamayadým."
+msgid "%s: unable to attach file.\n"
+msgstr "%s: dosya eklenemedi.\n"
 
-#: commands.c:168
-msgid "PGP signature successfully verified."
-msgstr "PGP imzasý baþarýyla doðrulandý."
+msgid "%s: unknown command"
+msgstr "%s: bilinmeyen komuta"
 
-#: commands.c:169
-msgid "PGP signature could NOT be verified."
-msgstr "PGP imzasý doðrulanamadý."
+msgid "%s: unknown editor command (~? for help)\n"
+msgstr "%s : bilinmeyen editör komutasý (~?'le yardým iste)\n"
 
-#: commands.c:192
-msgid "Command: "
-msgstr "Komuta: "
+msgid "%s: unknown sorting method"
+msgstr "%s: bilinmeyen sýralama tipi"
 
-#: commands.c:210 recvcmd.c:140
-msgid "Bounce message to: "
-msgstr "Iletiyi ilet:"
+msgid "%s: unknown type"
+msgstr "%s: bilinmeyen tip"
 
-#: commands.c:212 recvcmd.c:142
-msgid "Bounce tagged messages to: "
-msgstr "Iþaretli iletileri ilet:"
+msgid "%s: unknown variable"
+msgstr "%s: bilinmeyen veri"
 
-#: commands.c:227
-msgid "Error parsing address!"
-msgstr "Adresi tararken hata oldu!"
+msgid "(End message with a . on a line by itself)\n"
+msgstr "(Iletiyi '.' içerikli bir satýrla bitir)\n"
 
-#: commands.c:242
-#, c-format
+msgid "(continue)\n"
+msgstr "(devam et)\n"
+
+msgid "(e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
+msgstr ""
+"þ(i)frele, i(m)zala, (f)arklý imzala, i(k)isi de, mi(c) algoritmini seç yoksa "
+"i(p)talmý? "
+
+msgid "(no mailbox)"
+msgstr "(eposta kutusu yok)"
+
+msgid "(r)eject, accept (o)nce"
+msgstr "(r)ed'et, (s)adece bu defalýðýna kabul et"
+
+msgid "(r)eject, accept (o)nce, (a)ccept always"
+msgstr "(r)ed'et, (s)adece bu defa , (h)erzaman kabul et"
+
+msgid "(size %s bytes) "
+msgstr "(boyut %s bayt) "
+
+msgid "(use '%s' to view this part)"
+msgstr "('%s' ile bu bölüme bakabilirsiniz)"
+
+msgid "-- Attachments"
+msgstr "-- Eklentiler"
+
+msgid "<UNKNOWN>"
+msgstr "<BILINMIYOR>"
+
+msgid "<default>"
+msgstr "<varsayýlan>"
+
+msgid "APOP authentication failed."
+msgstr "APOP doðrulamasý baþarýsýz oldu."
+
+msgid "Abort"
+msgstr "Iptal"
+
+msgid "Abort unmodified message?"
+msgstr "Deðiþtirilmemiþ ileti iptal edilsin mi?"
+
+msgid "Aborted unmodified message."
+msgstr "Deðiþtirilmemiþ ileti iptal edildi."
+
+msgid "Address: "
+msgstr "Adres:"
+
+msgid "Alias added."
+msgstr "Lakap eklendi."
+
+msgid "Alias as: "
+msgstr "Farklý lakap yarat: "
+
+msgid "Aliases"
+msgstr "Lakaplar"
+
+msgid "All matching keys are marked expired/revoked."
+msgstr "Yekin uyan anahtarlarýn süresi bitti yada geri alýndý."
+
+msgid "Anonymous authentication failed."
+msgstr "Anonim doðrulama baþarýsýz oldu."
+
+msgid "Append"
+msgstr "Ekle"
+
+msgid "Append messages to %s?"
+msgstr "Iletiler %s'e eklensin mi?"
+
+msgid "Argument must be a message number."
+msgstr "Argüman bir ileti numarasý olmak zorunda."
+
+msgid "Attach file"
+msgstr "Dosya ekle"
+
+msgid "Attaching selected files..."
+msgstr "Seçili dosyalar ekleniyor..."
+
+msgid "Attachment filtered."
+msgstr "Eklentiler filtra edildi."
+
+msgid "Attachment saved."
+msgstr "Eklenti kaydedildi."
+
+msgid "Attachments"
+msgstr "Eklentiler"
+
+msgid "Authenticating (APOP)..."
+msgstr "Doðrulanýyor (APOP)..."
+
+msgid "Authenticating (CRAM-MD5)..."
+msgstr "Doðrulanýyor (CRAM-MD5)..."
+
+msgid "Authenticating (GSSAPI)..."
+msgstr "Doðrulanýyor (GSSAPI)..."
+
+msgid "Authenticating (SASL)..."
+msgstr "Doðrulanýyor (SASL)..."
+
+msgid "Authenticating (anonymous)..."
+msgstr "Doðrulanýyor (anonim)..."
+
+msgid "Authentication method is unknown."
+msgstr "Doðrulama metodu bilinmiyor."
+
+msgid "Bottom of message is shown."
+msgstr "Iletinin sonu gösteriliyor."
+
 msgid "Bounce message to %s"
 msgstr "Iletiyi %s'e ilet"
 
-#: commands.c:242
-#, c-format
+msgid "Bounce message to %s...?"
+msgstr "Ileti %s'e iletilsin mi...?"
+
+msgid "Bounce message to: "
+msgstr "Iletiyi ilet:"
+
 msgid "Bounce messages to %s"
 msgstr "Iletileri %s'e ilet"
 
-#: commands.c:256
+msgid "Bounce messages to %s...?"
+msgstr "Iletiler %s'e iletilsin mi...?"
+
+msgid "Bounce tagged messages to: "
+msgstr "Iþaretli iletileri ilet:"
+
+msgid "CLOSE failed"
+msgstr "CLOSE baþarýsýz oldu"
+
+msgid "CRAM-MD5 authentication failed."
+msgstr "CRAM-MD5 doðrulamasý baþarýsýz oldu."
+
+msgid "Can't append to folder: %s"
+msgstr "%s dizinine eklenemiyor"
+
+msgid "Can't attach a directory!"
+msgstr "Bir dizini topyekun ekleyenmiyor!"
+
+msgid "Can't create %s."
+msgstr "%s yaratýlamadý."
+
+msgid "Can't create %s: %s."
+msgstr "%s: %s yaratýlanamadý."
+
+msgid "Can't create file %s"
+msgstr "Dosya %s yaratýlamadý"
+
+msgid "Can't create filter"
+msgstr "Filtrayý yaratamadým"
+
+msgid "Can't create filter process"
+msgstr "Filtra iþlemi yaratýlamadý"
+
+msgid "Can't create temporary file"
+msgstr "Geçici dosyayý yaratamadým"
+
+msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
+msgstr ""
+"Yekin iþaretlenmiþ eklentiler çözülemiyor. Geriye kalanlar MIME'yle "
+"þekillendirilsin mi?"
+
+msgid "Can't delete attachment from POP server."
+msgstr "Eklenti POP sunucusundan silinemiyor."
+
+msgid "Can't edit message on POP server."
+msgstr "Ileti POP sunucusunda deðiþtirilenemedi."
+
+msgid "Can't find any tagged messages."
+msgstr "Iþaretli hýc bir ileti yok."
+
+msgid "Can't invoke PGP"
+msgstr "PGP çalýþtýrýlamýyor"
+
+msgid "Can't open /dev/null"
+msgstr "/dev/null'ý açamadým"
+
+msgid "Can't open PGP subprocess!"
+msgstr "PGP altiþlemi açýlamýyor!"
+
+msgid "Can't open message file: %s"
+msgstr "Ileti dosyasý %s'yi açamadým"
+
+msgid "Can't open temporary file %s."
+msgstr "Geçici dosya %s'yi açamadým."
+
+msgid "Can't save message to POP mailbox."
+msgstr "Ileti POP eposta kutusuna kaydedilmiyor."
+
+msgid "Can't stat: %s"
+msgstr "Stat edemedim : %s"
+
+msgid "Can't view a directory"
+msgstr "Bir dizini gösterilmiyor"
+
+msgid "Can't write header to temporary file!"
+msgstr "Baþlýðý geçici bir dosyaya yazamadým!"
+
+msgid "Can't write message"
+msgstr "Iletiyi yazamadým"
+
+msgid "Can't write message to temporary file!"
+msgstr "iletiyi geçici bir dosyaya yazýlamadý!"
+
+msgid "Cannot create display filter"
+msgstr "Gösterim filtrasýný yaratamadým"
+
+msgid "Cannot create filter"
+msgstr "Filtrayý yaratamadým"
+
+msgid "Cannot toggle write on a readonly mailbox!"
+msgstr "Salt-okunur bir eposta kutusu yazýlabilir yapýlamaz!"
+
+msgid "Caught %s...  Exiting.\n"
+msgstr "%s yakalýnýyor... Çýkýlýyor.\n"
+
+msgid "Caught signal %d...  Exiting.\n"
+msgstr "Sinyal %d alýndý... Çýkýlýyor.\n"
+
+msgid "Certificate saved"
+msgstr "Sertifika kaydedildi"
+
+msgid "Changes to folder will be written on folder exit."
+msgstr "Klasöre olan deðiþiklikler çýkýþta kaydedilecektir."
+
+msgid "Changes to folder will not be written."
+msgstr "Klasöre olan deðiþiklikler kaydedilmeyecektir."
+
+msgid "Character set changed to %s; %s."
+msgstr "Karakter kümesi deðiþtirildi: %s -> %s"
+
+msgid "Chdir"
+msgstr "Dizine geç"
+
+msgid "Chdir to: "
+msgstr "Dizine geç: "
+
+msgid "Check key  "
+msgstr "Anahtarý kontrol et  "
+
+msgid "Checking for new messages..."
+msgstr "Yeni ileti için bakýlýyor..."
+
+msgid "Clear"
+msgstr "Temizle"
+
+msgid "Clear flag"
+msgstr "Iþareti temizle"
+
+msgid "Closing connection to %s..."
+msgstr "Baðlantý %s kapatýlýyor..."
+
+msgid "Closing connection to IMAP server..."
+msgstr "IMAP sunucusuna varolan baðlantý kapatýlýyor..."
+
+msgid "Closing connection to POP server..."
+msgstr "POP sunucuya varolan baðlantý kapatýlýyor..."
+
+msgid "Command TOP is not supported by server."
+msgstr "TOP komutasý sunucu tarafýndan desteklenmiyor."
+
+msgid "Command UIDL is not supported by server."
+msgstr "UIDL komutasý sunucu tarafýndan desteklenmiyor."
+
+msgid "Command USER is not supported by server."
+msgstr "Sunucu USER komutasýný desteklentiiyor."
+
+msgid "Command: "
+msgstr "Komuta: "
+
+msgid "Compiling search pattern..."
+msgstr "Arama tabiri denetleniyor..."
+
+msgid "Connecting to %s..."
+msgstr "%s'e baðlanýlýyor..."
+
+msgid "Connection lost. Reconnect to POP server?"
+msgstr "Baðlantý kayboldu. Yeniden POP sunucusuna baðlanýlsýn mý?"
+
+msgid "Connection to %s closed"
+msgstr "%s'ye varolan baðlantý kapatýldý"
+
+msgid "Content-Type changed to %s."
+msgstr "Içerik tipi %s iye deðiþtirildi."
+
+msgid "Content-Type is of the form base/sub"
+msgstr "Içerik-tipi temel/altçeþit þeklindedir"
+
+msgid "Continue?"
+msgstr "Devam edilsin mi?"
+
+msgid "Convert to %s upon sending?"
+msgstr "Gönderirken %s'ye dönüþtürülsün mü?"
+
+msgid "Copy"
+msgstr "Kopyala"
+
+msgid "Copying %d messages to %s..."
+msgstr "%d ileti %s'e kopyalanýyor..."
+
+msgid "Copying message %d to %s..."
+msgstr "%d ileti %s'e kopyalanýyor..."
+
+msgid "Copying to %s..."
+msgstr "%s'e kopyalanýyor..."
+
+msgid ""
+"Copyright (C) 1996-2001 Michael R. Elkins and others.\n"
+"Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
+"Mutt is free software, and you are welcome to redistribute it\n"
+"under certain conditions; type `mutt -vv' for details.\n"
+msgstr ""
+"Telif hakký (C) 1996-2001 Michal R. Elkins ve baþkalarý.\n"
+"Mutt hiçbir garantiyle gelmez; daha fazla bilgi için 'mutt -vv' çalýþtýr.\n"
+"Mutt GPL lisansý altýnda yayýnlanmýþtýr ve daha fazla\n"
+"bilgi için 'mutt -vv' çalýþtýrabilirsiniz.\n"
+
+msgid "Could not connect to %s (%s)."
+msgstr "%s (%s)'e baðlanýlýnamadý."
+
+msgid "Could not copy message"
+msgstr "Iletiyi kopyalamayadým."
+
+msgid "Could not create temporary file!"
+msgstr "Geçici dosyayý yaratamadým!"
+
+msgid "Could not find sorting function! [report this bug]"
+msgstr "Sýralama iþlevi bulunamadý! [hata raporu yaz]"
+
+msgid "Could not find the host \"%s\""
+msgstr "Sunucu \"%s\" bulunamýyor."
+
+msgid "Could not include all requested messages!"
+msgstr "Istenilen her ileti içerilenemedi!"
+
+msgid "Could not negotiate TLS connection"
+msgstr "TLS baðlantýsý kurulamadý"
+
+msgid "Could not open %s"
+msgstr "%s açýlanamadý"
+
+msgid "Could not reopen mailbox!"
+msgstr "Eposta kutusu yeniden açýlanamadý!"
+
+msgid "Could not send the message."
+msgstr "Ileti gönderilemedi."
+
+msgid "Could not synchronize mailbox %s!"
+msgstr "Eposta kutusu %s'yi eþitlenemedi!"
+
+msgid "Couldn't lock %s\n"
+msgstr "%s kilitlenemedi\n"
+
+msgid "Create %s?"
+msgstr "%s yaratýlsýn mý?"
+
+msgid "Create an application/pgp message?"
+msgstr "application/pgp iletisi yaratýlsýn mý?"
+
+msgid "Create is only supported for IMAP mailboxes"
+msgstr "Yaratma sadece IMAP eposta kutularý için destekleniyor"
+
+msgid "Create mailbox: "
+msgstr "Eposta kutusunu yarat:"
+
+msgid "DEBUG was not defined during compilation.  Ignored.\n"
+msgstr "DEBUG (bilgilendir iletileri) derleme sýrasýnda belirlenmemiþ.\n"
+
+msgid "Debugging at level %d.\n"
+msgstr "%d seviyesinde bilgilendirme iletileri gösteriliyor.\n"
+
+msgid "Decode-copy"
+msgstr "Çöz-kopyala"
+
+msgid "Decode-save"
+msgstr "Çöz-kaydet"
+
+msgid "Decrypt-copy"
+msgstr "Deþifre et-kopyala"
+
+msgid "Decrypt-save"
+msgstr "Deþifre et-kaydet"
+
+msgid "Del"
+msgstr "Sil"
+
+msgid "Delete"
+msgstr "Sil"
+
+msgid "Delete is only supported for IMAP mailboxes"
+msgstr "Silme sadece IMAP eposta kutularý için destekleniyor"
+
+msgid "Delete messages from server?"
+msgstr "Iletiler sunucudan silinsin mi?"
+
+msgid "Delete messages matching: "
+msgstr "Tabire uyan iletileri sil: "
+
+msgid "Deletion of attachments from PGP messages is unsupported."
+msgstr "PGP iletilerinin eklentilerinin silinmesi desteklenmiyor."
+
+msgid "Descrip"
+msgstr "Anlatým"
+
+msgid "Directory [%s], File mask: %s"
+msgstr "Dizin [%s], Dosya maskesi: %s"
+
+msgid "ERROR: please report this bug"
+msgstr "HATA: bu hatayý lütfen rapor edin"
+
+msgid "Encrypt"
+msgstr "Þifrele"
+
+msgid "Enter PGP passphrase:"
+msgstr "PGP parolasýný verin:"
+
+msgid "Enter keyID for %s: "
+msgstr "%s için anahtar numarasýný belirleyin: "
+
+msgid "Error connecting to server: %s"
+msgstr "%s'e baðlanýlýrken hata oldu"
+
+msgid "Error in %s, line %d: %s"
+msgstr "%s'de hata var, satýr %d: %s"
+
+msgid "Error in command line: %s\n"
+msgstr "Komuta satrýnda hata: %s\n"
+
+msgid "Error in expression: %s"
+msgstr "Tabirde hata var: %s"
+
+msgid "Error initializing terminal."
+msgstr "Komutayý baþlatýrken hata oldu."
+
+msgid "Error parsing address!"
+msgstr "Adresi tararken hata oldu!"
+
+msgid "Error running \"%s\"!"
+msgstr "\"%s\" çalýþtýrýlýrken bir hata oluþtu!"
+
+msgid "Error scanning directory."
+msgstr "Dizin taranýrken hata oldu."
+
+msgid "Error sending message, child exited %d (%s)."
+msgstr "Ileti gönderilirken hata oldu, altiþlem %d ile iptal bitirildi (%s)."
+
+msgid "Error sending message, child exited %d.\n"
+msgstr "Iletiyi gönderirken hata oldu, altiþlem %d ile bitirildi.\n"
+
+msgid "Error sending message."
+msgstr "Iletiyi gönderirken hata oldu."
+
+msgid "Error talking to %s (%s)"
+msgstr "%s'le konuþurken hata oldu (%s)"
+
+msgid "Error trying to view file"
+msgstr "Dosyayý göstermeye uðraþýrken hata oldu"
+
+msgid "Error while writing mailbox!"
+msgstr "Eposta kutusunu yazarken hata oldu!"
+
+msgid "Error. Preserving temporary file: %s"
+msgstr "Hata. Geçici dosya %s korunmaya alýndý"
+
+msgid "Error: multipart/encrypted has no protocol parameter!"
+msgstr "Hata: multipart/encrypted protokol verisi yok!"
+
+msgid "Error: multipart/signed has no protocol."
+msgstr "Hata: multipart/signed protokolu yok."
+
+msgid "Exit"
+msgstr "Çýk"
+
+msgid "Exit  "
+msgstr "Çýk  "
+
+msgid "Exit Mutt without saving?"
+msgstr "Mutt'tan kaydedilmeden çýkýlsýn mý?"
+
+msgid "Exit Mutt?"
+msgstr "Mutt'tan çýkýlsýn mý?"
+
+msgid "Expunging messages from server..."
+msgstr "Iletileri sunucudan sil..."
+
+msgid "Failure to open file to parse headers."
+msgstr "Dosyayý baþlýklarýný taramak için açamadým."
+
+msgid "Failure to open file to strip headers."
+msgstr "Dosyayý baþlýklarýný ayýrmak için açamadým."
+
+msgid "Fatal error!  Could not reopen mailbox!"
+msgstr "Aðýr hata! Eposta kutusunu yeniden açamadým!"
+
+msgid "Fatal error.  Message count is out of sync!"
+msgstr "Aðýr hata. Ileti sayýlarý karýþtý!"
+
+msgid "Fetching PGP key..."
+msgstr "PGP anahtarý alýnýyor..."
+
+msgid "Fetching list of messages..."
+msgstr "Ileti listesi alýnýyor..."
+
+msgid "Fetching message headers... [%d/%d]"
+msgstr "Ileti baþlýklarýný alýnýyor... [%d/%d]"
+
+msgid "Fetching message..."
+msgstr "Ileti alýnýyor..."
+
+msgid "File Mask: "
+msgstr "Dosya aðý: "
+
+msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
+msgstr "Dosya zaten var, ü(s)tüne yaz, (e)kle yoksa i(p)tal mý?"
+
+msgid "File is a directory, save under it?"
+msgstr "Dosya bir dizin, dizin altýnda kaydedilsin mi?"
+
+msgid "File under directory: "
+msgstr "Dosyayý dizin altýnda kaydet: "
+
+msgid "Filter through: "
+msgstr "Filtra: "
+
+msgid "Fingerprint: %s"
+msgstr "Parmak izi: %s"
+
+msgid "First entry is shown."
+msgstr "Ilk birim gösteriliyor."
+
+msgid "Follow-up to %s%s?"
+msgstr "%s%s iye cevap gönderilsin mi?"
+
+msgid "Forward as attachment?"
+msgstr "Eklenti olarak iletilsin mi?"
+
+msgid "Forward as attachments?"
+msgstr "Eklenti olarak iletilsin mi?"
+
+msgid "Function not permitted in attach-message mode."
+msgstr "Iþlev ileti eklentie mödüsünde yasaktýr."
+
+msgid "GSSAPI authentication failed."
+msgstr "GSSAPI doðrulamasý baþarýsýz oldu."
+
+msgid "Getting folder list..."
+msgstr "Dizin listesi alýnýyor..."
+
+msgid "Getting namespaces..."
+msgstr "Isim yüzeyleri alýnýyor..."
+
+msgid "Group"
+msgstr "K. Cevap"
+
+msgid "Help"
+msgstr "Yardým"
+
+msgid "Help for %s"
+msgstr "%s yardýmý"
+
+msgid "Help is currently being shown."
+msgstr "Yardým þu an gösteriliyor."
+
+msgid "I don't know how to print that!"
+msgstr "Bunu nasýl yazdýracaðýmý bilinmiyor!"
+
+msgid "I dont know how to print %s attachments!"
+msgstr "%s eklentilerinin nasýl yazdýrýlacaðý bilinmiyor!"
+
+msgid "Illegal PGP header"
+msgstr "Geçersiz PGP baþlýðý"
+
+msgid "Improperly formated entry for type %s in \"%s\" line %d"
+msgstr "\"%2$s\"'de satýr %3$d'de tip %1$s için hatalý birim vardýr"
+
+msgid "Include message in reply?"
+msgstr "Ileti cevap da içerilsin mi?"
+
+msgid "Including quoted message..."
+msgstr "Esas metin cevap bazý olarak kullanýlýyor..."
+
+msgid "Insert"
+msgstr "Içer"
+
+msgid "Internal error. Inform <roessler@guug.de>."
+msgstr "Iç hata. Thomas R. <roessler@guug.de>'ye haber ver."
+
+msgid "Invalid day of month: %s"
+msgstr "Geçersiz ay günü: %s"
+
+msgid "Invalid encoding."
+msgstr "Geçersiz þekillendirme."
+
+msgid "Invalid index number."
+msgstr "Geçersiz sýralama numarasý."
+
+msgid "Invalid message number."
+msgstr "Geçersiz ileti numarasý."
+
+msgid "Invalid month: %s"
+msgstr "Geçersiz ay : %s"
+
+msgid "Invalid relative date: %s"
+msgstr "Geçersiz rölatif tarih: %s"
+
+msgid "Invoking PGP..."
+msgstr "PGP'yi çaðýrýlýyor..."
+
+msgid "Invoking autoview command: %s"
+msgstr "Otomatik gösterme komuatasý: %s"
+
+msgid "Invoking pgp..."
+msgstr "Pgp çalýþtýrýlýyor...."
+
+msgid "Jump to message: "
+msgstr "Iletiye geç: "
+
+msgid "Jump to: "
+msgstr "Geç: "
+
+msgid "Jumping is not implemented for dialogs."
+msgstr "Diyaloklar için hýzlý geçiþ þimdilik mümkün deðildir."
+
+msgid "Key ID: 0x%s"
+msgstr "Anahtar numara: 0x%s"
+
+msgid "Key is not bound."
+msgstr "Tuþ ayarlanmamýþ."
+
+msgid "Key is not bound.  Press '%s' for help."
+msgstr "Tuþ ayarlanmamýþ. Yardým için lütfen '%s' basýnýz."
+
+msgid "LOGIN disabled on this server."
+msgstr "Bu sunucuda LOGIN kapalýdýr."
+
+msgid "Last entry is shown."
+msgstr "son birim gösteriliyor."
+
+msgid "Limit to messages matching: "
+msgstr "Tabire uyan iletilere sýnýrla: "
+
+msgid "Limit: %s"
+msgstr "Sýnýr : %s"
+
+msgid "Lock count exceeded, remove lock for %s?"
+msgstr "Kilit sýnýrlandýrmasý aþýldý, %s için varolan kilit silinsin mi?"
+
+msgid "Logging in..."
+msgstr "Giriþ yapýlýyor..."
+
+msgid "Login failed."
+msgstr "Giriþ baþarýsýz oldu."
+
+msgid "Looking for keys matching \"%s\"..."
+msgstr "\"%s\" tabirine uyan anahtarlar aranýyor..."
+
+msgid "Looking up %s..."
+msgstr "%s aranýyor..."
+
+msgid "MIME type not defined.  Cannot view attachment."
+msgstr "MIME tipi belirlenmemiþ. Eklenti gösterilemiyor."
+
+msgid "Mail"
+msgstr "Gönder"
+
+msgid "Mail not sent."
+msgstr "eposta gönderilmedi."
+
+msgid "Mail sent."
+msgstr "eposta gönderildi."
+
+msgid "Mailbox checkpointed."
+msgstr "Eposta kutusu kontrol edildi."
+
+msgid "Mailbox closed"
+msgstr "Eposta kutusu kapatýldý"
+
+msgid "Mailbox created."
+msgstr "Eposta kutusu yaratýldý."
+
+msgid "Mailbox deleted."
+msgstr "eposta kutusu silindi."
+
+msgid "Mailbox is corrupt!"
+msgstr "Eposta kutusu bozuktur!"
+
+msgid "Mailbox is empty."
+msgstr "Eposta kutusu boþtur."
+
+msgid "Mailbox is marked unwritable. %s"
+msgstr "eposta kutusu yazýlamayabilir yapýldý. %s"
+
+msgid "Mailbox is read-only."
+msgstr "eposta kutusu salt-okunur."
+
+msgid "Mailbox is unchanged."
+msgstr "eposta kutusu deðiþtirilmedi."
+
+msgid "Mailbox must have a name."
+msgstr "Her eposta kutusunun ismi olmak zorunda."
+
+msgid "Mailbox not deleted."
+msgstr "eposta kutusu silinmedi."
+
+msgid "Mailbox was corrupted!"
+msgstr "Eposta kutusu bozulmuþtur!"
+
+msgid "Mailbox was externally modified."
+msgstr "Eposta kutusu deðiþtirilmiþ."
+
+msgid "Mailbox was externally modified.  Flags may be wrong."
+msgstr "Eposta kutusu deðiþtirilmiþ. Bazý iþaretlet hatalý olabilir."
+
+msgid "Mailboxes [%d]"
+msgstr "%d eposta kutusu "
+
+msgid "Mailcap Edit entry requires %%s"
+msgstr "Mailcap düzenleme birimi %%s gerektiriyor"
+
+msgid "Mailcap compose entry requires %%s"
+msgstr "Mailcap düzenleme birimi %%s gerektiriyor"
+
+msgid "Make Alias"
+msgstr "Lakap yarat"
+
+msgid "Marking %d messages deleted..."
+msgstr "%d ileti silinmek için iþaretlenmiþ..."
+
+msgid "Mask"
+msgstr "Maske"
+
 msgid "Message bounced."
 msgstr "Ileti iletildi."
 
-#: commands.c:256
-msgid "Messages bounced."
-msgstr "Iletiler iletildi."
+msgid "Message contains:\n"
+msgstr "Ileti içeriði:\n"
 
-#: commands.c:329 commands.c:368 commands.c:385
-#, fuzzy
-msgid "Can't create filter process"
-msgstr "Filtrayý yaratamadým"
-
-#: commands.c:414
-msgid "Pipe to command: "
-msgstr "Komutaya ver: "
-
-#: commands.c:430
-msgid "No printing command has been defined."
-msgstr "Yazdýrma komutasý belirlenmemiþ."
-
-#: commands.c:435
-msgid "Print message?"
-msgstr "Ileti yazdýrýlsýn mý?"
-
-#: commands.c:435
-msgid "Print tagged messages?"
-msgstr "Iþaretli iletiler yazdýrýlsýn mý?"
-
-#: commands.c:443
-msgid "Message printed"
-msgstr "Ileti yazdýrýldi"
-
-#: commands.c:443
-msgid "Messages printed"
-msgstr "Iletiler yazdýrýldi"
-
-#: commands.c:445
 msgid "Message could not be printed"
 msgstr "Ileti yazdýrýlýmadý"
 
-#: commands.c:446
+msgid "Message file is empty!"
+msgstr "Ileti dosyasý boþ!"
+
+msgid "Message not modified!"
+msgstr "Ileti deðiþtirilmedi!"
+
+msgid "Message postponed."
+msgstr "Ileti kaydedildi."
+
+msgid "Message printed"
+msgstr "Ileti yazdýrýldi"
+
+msgid "Message written."
+msgstr "Ileti yazýldý."
+
+msgid "Messages bounced."
+msgstr "Iletiler iletildi."
+
 msgid "Messages could not be printed"
 msgstr "Iletiler yazdýrýlýmadý"
 
-#: commands.c:455
+msgid "Messages printed"
+msgstr "Iletiler yazdýrýldi"
+
+msgid "Missing arguments."
+msgstr "Eksik argümanlar."
+
+msgid "Mixmaster doesn't accept Cc or Bcc headers."
+msgstr "Mixmaster Cc yada Bcc baþlýklarý kabul etmez."
+
+msgid "Move read messages to %s?"
+msgstr "Okunan iletiler %s'e taþýnsýn mý?"
+
+msgid "Moving read messages to %s..."
+msgstr "Okunan iletiler %s'e taþýnýyor..."
+
+msgid "New Query"
+msgstr "Yeni sorgulama"
+
+msgid "New file name: "
+msgstr "Yeni dosya ismi: "
+
+msgid "New file: "
+msgstr "Yeni dosya: "
+
+msgid "New mail in %s."
+msgstr "%s'de yeni eposta var."
+
+msgid "New mail in this mailbox."
+msgstr "Yeni eposta var!"
+
+msgid "Next"
+msgstr "Ileri"
+
+msgid "NextPg"
+msgstr "Sa. Ileri"
+
+msgid "No authenticators available"
+msgstr "Doðrulamacýlar eriþilir deðil"
+
+msgid "No boundary parameter found! [report this error]"
+msgstr "Sýnýrlandýrma verisi bulunamadý! [bu hata rapor edilmesi gerek]"
+
+msgid "No entries."
+msgstr "Birim yok."
+
+msgid "No files match the file mask"
+msgstr "Dosya maskesine uyan dosya yok"
+
+msgid "No incoming mailboxes defined."
+msgstr "Gelen kutularý belirlenmedi."
+
+msgid "No limit pattern is in effect."
+msgstr "Sýnýrlandýrma tabiri kullanýmda deðildir."
+
+msgid "No lines in message.\n"
+msgstr "Iletide satýr yok.\n"
+
+msgid "No mailbox is open."
+msgstr "Hiç bir eposta kutusu açýk deðil."
+
+msgid "No mailbox with new mail."
+msgstr "Yeni epostalý eposta kutusu yoktur."
+
+msgid "No mailbox.\n"
+msgstr "Eposta kutusu yok.\n"
+
+msgid "No mailcap compose entry for %s, creating empty file."
+msgstr "%s için mailcap yazma birimi yok, boþ dosya yaratýlýyor."
+
+msgid "No mailcap edit entry for %s"
+msgstr "%s için mailcap düzenleme birimi yok"
+
+msgid "No mailcap path specified"
+msgstr "mailcap dizini belirlenmedi"
+
+msgid "No mailing lists found!"
+msgstr "Eposta listesi bulunamadý!"
+
+msgid "No matching mailcap entry found.  Viewing as text."
+msgstr "Uyan mailcap birimi bulunamadý. Metin olarak gösteriliyor."
+
+msgid "No messages in that folder."
+msgstr "Bu klasörde ileti yok."
+
+msgid "No messages matched criteria."
+msgstr "Tabire uygun ileti yok."
+
+msgid "No more threads."
+msgstr "Daha fazla konum yok."
+
+msgid "No new mail in POP mailbox."
+msgstr "POP eposta kutusunda yeni eposta yok."
+
+msgid "No new messages"
+msgstr "Yeni ileti yok"
+
+msgid "No postponed messages."
+msgstr "Kaydedilmiþ ileti yok."
+
+msgid "No printing command has been defined."
+msgstr "Yazdýrma komutasý belirlenmemiþ."
+
+msgid "No recipients are specified!"
+msgstr "Alýcý belirlenmemiþ!"
+
+msgid "No recipients specified.\n"
+msgstr "Alýcýlar belirlenmedi.\n"
+
+msgid "No recipients were specified."
+msgstr "Alýcýlar belirlenmemiþ."
+
+msgid "No search pattern."
+msgstr "Arama tabiri yok."
+
+msgid "No subject specified."
+msgstr "Konu belirlenmemiþ."
+
+msgid "No subject, abort sending?"
+msgstr "Konu yok, gönderme iptal edilsin mi?"
+
+msgid "No subject, abort?"
+msgstr "Konu yok, iptal edilsin mi?"
+
+msgid "No subject, aborting."
+msgstr "Konu yok, iptal ediliyor."
+
+msgid "No tagged entries."
+msgstr "Iþaretlenmiþ birim yok."
+
+msgid "No tagged messages are visible!"
+msgstr "Hiç bir iþaretlenmiþ ileti gözükmüyor ki!"
+
+msgid "No tagged messages."
+msgstr "Iþaretli ileti yok."
+
+msgid "No undeleted messages."
+msgstr "Kurtarýlan ileti yok."
+
+msgid "No unread messages"
+msgstr "Okunmamýþ ileti yok"
+
+msgid "No visible messages."
+msgstr "Görünebilir ileti yok."
+
+msgid "Not available in this menu."
+msgstr "Bu mönüde yoktur."
+
+msgid "Not found."
+msgstr "Bulunmadý."
+
+msgid "OK"
+msgstr "Oldu"
+
+msgid "Only deletion of multipart attachments is supported."
+msgstr ""
+"Sadece birden fazla bölümden oluþan eklentilerin silinmesi destekleniyor."
+
+msgid "Open mailbox"
+msgstr "eposta kutusunu aç"
+
+msgid "Open mailbox in read-only mode"
+msgstr "Eposta kutusunu salt-okunur aç"
+
+msgid "Open mailbox to attach message from"
+msgstr "Iletiye eklenecek iletiyi seçilecek eposta kutusunu seç"
+
+msgid "Out of memory!"
+msgstr "Bellek iflasý ,-)"
+
+msgid "Output of the delivery process"
+msgstr "Gönderme iþleminin geri verisi"
+
+msgid "PGP Key %s."
+msgstr "PGP anahtarý %s."
+
+msgid "PGP keys matching \"%s\"."
+msgstr "\"%s\"'e uyan PGP anahtarlarý."
+
+msgid "PGP keys matching <%s>."
+msgstr "<%s>'e uyan PGP anahtarlarý."
+
+msgid "PGP passphrase forgotten."
+msgstr "PGP parolasý unutuldu."
+
+msgid "PGP signature could NOT be verified."
+msgstr "PGP imzasý doðrulanamadý."
+
+msgid "PGP signature successfully verified."
+msgstr "PGP imzasý baþarýyla doðrulandý."
+
+msgid "POP host is not defined."
+msgstr "POP sunucusu belirlenmedi."
+
+msgid "Parent message is not available."
+msgstr "Kök iletisi yok."
+
+msgid "Parent message is not visible in limited view"
+msgstr "Sýnýrlandýrýlmýþ bakýþta ana ileti görünemez."
+
+msgid "Password for %s@%s: "
+msgstr "%s@%s için parola: "
+
+msgid "Personal name: "
+msgstr "Þahsi isim: "
+
+msgid "Pipe"
+msgstr "Boru"
+
+msgid "Pipe to command: "
+msgstr "Komutaya ver: "
+
+msgid "Pipe to: "
+msgstr "Borula: "
+
+msgid "Please enter the key ID: "
+msgstr "Anahtar numarasýný belirle: "
+
+msgid ""
+"Please set the hostname variable to a proper value when using mixmaster!"
+msgstr "Mixmaster kullanýrken yerel makina adý doðru belirtilmesi lazým!"
+
+msgid "Postpone this message?"
+msgstr "Iletiyi kaydediyem mi?"
+
+msgid "Postponed Messages"
+msgstr "Kaydedilmiþ iletiler"
+
+msgid "Preconnect command failed."
+msgstr "Önceden baðlanma komutasý baþarýsýz oldu."
+
+msgid "Preparing forwarded message..."
+msgstr "Iletilmiþ ileti hazýrlanýyor..."
+
+msgid "Press any key to continue..."
+msgstr "Devam etmek için bir tuþa bas..."
+
+msgid "PrevPg"
+msgstr "Sa. Geri"
+
+msgid "Print"
+msgstr "Yazdýr"
+
+msgid "Print attachment?"
+msgstr "Eklenti yazdýrýlsýn mý?"
+
+msgid "Print message?"
+msgstr "Ileti yazdýrýlsýn mý?"
+
+msgid "Print tagged attachment(s)?"
+msgstr "Iþaretli ileti(leri) yazýlsýn mý?"
+
+msgid "Print tagged messages?"
+msgstr "Iþaretli iletiler yazdýrýlsýn mý?"
+
+msgid "Purge %d deleted message?"
+msgstr "Silmek için iþaretlenmiþ %d ileti silinsin mi?"
+
+msgid "Purge %d deleted messages?"
+msgstr "Silmek için iþaretlenmiþ %d ileti silinsin mi?"
+
+msgid "Query"
+msgstr "Sorgula"
+
+msgid "Query '%s'"
+msgstr "Sorgulama '%s'"
+
+msgid "Query command not defined."
+msgstr "Sorgulama komutasý belirlenmedi."
+
+msgid "Query: "
+msgstr "Sorgulama: "
+
+msgid "Quit"
+msgstr "Çýk"
+
+msgid "Quit Mutt?"
+msgstr "Mutt'tan çýkýlsýn mý?"
+
+msgid "Reading %s..."
+msgstr "%s okunuyor..."
+
+msgid "Reading %s... %d"
+msgstr "%s okunuyor... %d"
+
+msgid "Reading %s... %d (%d%%)"
+msgstr "%s okunuyor... %d (%%%d)"
+
+msgid "Reading new messages (%d bytes)..."
+msgstr "Yeni iletileri okunuyor (%d bayt)..."
+
+msgid "Really delete mailbox \"%s\"?"
+msgstr "Vallahi mi eposta kutusu \"%s\"'yi sileyim mi?"
+
+msgid "Recall postponed message?"
+msgstr "Kaydedilmiþ ileti açýlsýn mý?"
+
+msgid "Rename to: "
+msgstr "Adýný deðiþtir: "
+
+msgid "Reopening mailbox..."
+msgstr "Eposta kutusu yeniden açýlýyor..."
+
+msgid "Reply"
+msgstr "Cevap"
+
+msgid "Reply to %s%s?"
+msgstr "%s%s iye cevap verilsin mi?"
+
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 "Ters sýralama tipi: "
-"(t)arih/(g)önderen/(a)lan/(k)onu/gönder(i)len/k(o)num/dü(z)enmemiþ/(b)oyut/(p"
-")uan: "
+""
+""
+""
+""
+""
+"(t)arih/(g)önderen/(a)lan/(k)onu/gönder(i)len/k(o)num/dü(z)enmemiþ/(b)oyut/(p)uan: "
+""
 
-#: commands.c:456
+msgid "Reverse search for: "
+msgstr "Ters ara: "
+
+msgid "Reverse search: "
+msgstr "Geriye dönük ara: "
+
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
+msgstr "(t)arih, (a)lfabetik,(b)oyuta yada (h)iç mi terse sýralayým?"
+
+msgid "SASL authentication failed."
+msgstr "SASL doðrulamasý baþarasýz oldu."
+
+msgid "SSL Certificate check"
+msgstr "SSL sertifika doðrulamasý"
+
+msgid "SSL connection using %s (%s)"
+msgstr "%s (%s) kullanarak SSL baðlantýsý kuruluyor"
+
+msgid "SSL is unavailable."
+msgstr "SSL eriþilir deðil."
+
+msgid "Save"
+msgstr "Kaydet"
+
+msgid "Save a copy of this message?"
+msgstr "Bu iletinin bir kopyasýný kaydedeyim mi?"
+
+msgid "Save to file: "
+msgstr "Dosyaya kaydet: "
+
+msgid "Saving message status flags... [%d/%d]"
+msgstr "Ileti durum iþaretleri kaydediliyor... [%d/%d]"
+
+msgid "Saving..."
+msgstr "Kaydediliyor..."
+
+msgid "Search"
+msgstr "Ara"
+
+msgid "Search for: "
+msgstr "Ara: "
+
+msgid "Search interrupted."
+msgstr "Arama iptal edildi."
+
+msgid "Search is not implemented for this menu."
+msgstr "Bu mönüde arama þimdilik mümkün deðildir."
+
+msgid "Search wrapped to bottom."
+msgstr "Arama sona ulaþtý."
+
+msgid "Search wrapped to top."
+msgstr "Arama baþa döndü."
+
+msgid "Search: "
+msgstr "Ara: "
+
+msgid "Secure connection with TLS?"
+msgstr "TLS ile güvenli baðlanýlsýn mý?"
+
+msgid "Select"
+msgstr "Seç"
+
+msgid "Select  "
+msgstr "Seç  "
+
+msgid "Selecting %s..."
+msgstr "%s seçiliyor..."
+
+msgid "Send"
+msgstr "Gönder"
+
+msgid "Sending in background."
+msgstr "Ardalanda gönderiliyor."
+
+msgid "Sending message..."
+msgstr "Ileti gönderiliyor..."
+
+msgid "Server certificate has expired"
+msgstr "Sunucu sertifikasýnýn süresi bitmiþtir"
+
+msgid "Server certificate is not yet valid"
+msgstr "Sunucu sertifikasý daha geçerli deðildir"
+
+msgid "Server closed connection!"
+msgstr "Sunucu baðlantýyý kesti!"
+
+msgid "Set flag"
+msgstr "Iþareti otur"
+
+msgid "Shell command: "
+msgstr "Komuta komutasý: "
+
+msgid "Sign"
+msgstr "Imzala"
+
+msgid "Sign as: "
+msgstr "Farklý imzala: "
+
+msgid "Sign, Encrypt"
+msgstr "Imzala ve þifrele"
+
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 "Sýralama tipi: "
-"(t)arih/(g)önderen/(a)lan/(k)onu/gönder(i)len/k(o)num/dü(z)enlenmemiþ/(b)oyut"
-"/(p)uan?"
+""
+""
+""
+""
+""
+""
+""
+""
+"(t)arih/(g)önderen/(a)lan/(k)onu/gönder(i)len/k(o)num/dü(z)enlenmemiþ/(b)oyut/(p)uan?"
+
+msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
+msgstr "(t)arih, (a)lfabetik,(b)oyuta yada (h)iç mi sýralayým? "
+
+msgid "Sorting mailbox..."
+msgstr "Eposta kutusu sýralanýyor..."
+
+msgid "Subscribed [%s], File mask: %s"
+msgstr "Abone [%s], Dosya maskesi: %s"
+
+msgid "Subscribing to %s..."
+msgstr "%s'e abone olunuyor..."
 
-#: commands.c:457
-msgid "dfrsotuzc"
-msgstr "tgakiozbp"
-
-#: commands.c:510
-msgid "Shell command: "
-msgstr "Komuta komutasý: "
-
-#: commands.c:644
-#, c-format
-msgid "%s%s to mailbox"
-msgstr "eposta kutusuna %s%s"
-
-#: commands.c:645
-msgid "Decode-save"
-msgstr "Çöz-kaydet"
-
-#: commands.c:645
-msgid "Decode-copy"
-msgstr "Çöz-kopyala"
-
-#: commands.c:646
-msgid "Decrypt-save"
-msgstr "Deþifre et-kaydet"
-
-#: commands.c:646
-msgid "Decrypt-copy"
-msgstr "Deþifre et-kopyala"
-
-#: commands.c:647 curs_main.c:385 recvattach.c:58
-msgid "Save"
-msgstr "Kaydet"
-
-#: commands.c:647
-msgid "Copy"
-msgstr "Kopyala"
-
-#: commands.c:647
-msgid " tagged"
-msgstr " iþaretli "
-
-#: commands.c:715
-#, c-format
-msgid "Copying to %s..."
-msgstr "%s'e kopyalanýyor..."
-
-#: commands.c:836
-#, c-format
-msgid "Convert to %s upon sending?"
-msgstr ""
-
-#: commands.c:844
-#, c-format
-msgid "Content-Type changed to %s."
-msgstr "Içerik tipi %s iye deðiþtirildi."
-
-#: commands.c:846
-#, fuzzy, c-format
-msgid "Character set changed to %s; %s."
-msgstr "Karakter kümesi deðiþtirildi: %s"
-
-#: commands.c:848
-msgid "not converting"
-msgstr ""
-
-#: commands.c:848
-msgid "converting"
-msgstr ""
-
-#: compose.c:40
-msgid "There are no attachments."
-msgstr "Eklemler yok."
-
-#: compose.c:85
-msgid "Send"
-msgstr "Gönder"
-
-#: compose.c:86 remailer.c:483
-msgid "Abort"
-msgstr "Iptal"
-
-#: compose.c:90 compose.c:657
-msgid "Attach file"
-msgstr "Dosya ekle"
-
-#: compose.c:91
-msgid "Descrip"
-msgstr "Anlatým"
-
-#: compose.c:112
-msgid "Sign, Encrypt"
-msgstr "Imzala ve þifrele"
-
-#: compose.c:114
-msgid "Encrypt"
-msgstr "Þifrele"
-
-#: compose.c:116
-msgid "Sign"
-msgstr "Imzala"
-
-#: compose.c:118
-msgid "Clear"
-msgstr "Temizle"
-
-#: compose.c:124
-msgid " sign as: "
-msgstr " farklý imzala: "
-
-#: compose.c:124
-msgid "<default>"
-msgstr "<varsayýlan>"
-
-#: compose.c:132
-msgid "(e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
-msgstr ""
-"þ(i)frele, i(m)zala, (f)arklý imzala, i(k)isi de, mi(c) algoritmini seç "
-"yoksa i(p)talmý? "
-
-#: compose.c:133
-msgid "esabf"
-msgstr "imfkcp"
-
-#: compose.c:147
-msgid "Sign as: "
-msgstr "Farklý imzala: "
-
-#: compose.c:226
-#, c-format
-msgid "%s [#%d] no longer exists!"
-msgstr "%s [#%d] yok!"
-
-#: compose.c:234
-#, c-format
-msgid "%s [#%d] modified. Update encoding?"
-msgstr "%s [#%d] deðiþtirildi. Þekillenmeyi yenileyim mi?"
-
-#: compose.c:280
-msgid "-- Attachments"
-msgstr "-- Eklentiler"
-
-#: compose.c:324
-msgid "You may not delete the only attachment."
-msgstr "Geriye kalan tek eklemi silemezsin."
-
-#: compose.c:673
-msgid "Attaching selected files..."
-msgstr "Seçili dosyalar ekleniyor..."
-
-#: compose.c:684
-#, c-format
-msgid "Unable to attach %s!"
-msgstr "%s'yi ekleyemedim!"
-
-#: compose.c:702
-msgid "Open mailbox to attach message from"
-msgstr "Iletiye eklenecek iletiyi seçilecek eposta kutusunu seç"
-
-#: compose.c:740
-msgid "No messages in that folder."
-msgstr "Bu klasörde ileti yok."
-
-#: compose.c:749
-msgid "Tag the messages you want to attach!"
-msgstr "Eklemek istediðin iletiler iþaretlenecektir!"
-
-#: compose.c:781
-msgid "Unable to attach!"
-msgstr "Eklenemedi!"
-
-#: compose.c:828
-msgid "Recoding only affects text attachments."
-msgstr ""
-
-#: compose.c:833
-msgid "The current attachment won't be converted."
-msgstr "Geçerli eklenti dönüþtürülmeyecektir."
-
-#: compose.c:835
-msgid "The current attachment will be converted."
-msgstr "Geçerli eklenti dönüþtürülecektir."
-
-#: compose.c:906
-msgid "Invalid encoding."
-msgstr "Geçersiz þekillendirme."
-
-#: compose.c:927
-msgid "Save a copy of this message?"
-msgstr "Bu iletinin bir kopyasýný kaydedeyim mi?"
-
-#: compose.c:981
-msgid "Rename to: "
-msgstr "Adýný deðiþtir: "
-
-#: compose.c:986 editmsg.c:96
-#, c-format
-msgid "Can't stat: %s"
-msgstr "Stat edemedim : %s"
-
-#: compose.c:1012
-msgid "New file: "
-msgstr "Yeni dosya: "
-
-#: compose.c:1025
-msgid "Content-Type is of the form base/sub"
-msgstr "Içerik-tipi temel/altçeþit þeklindedir"
-
-#: compose.c:1031
-#, c-format
-msgid "Unknown Content-Type %s"
-msgstr "Bilinmeyen içerik tipi %s"
-
-#: compose.c:1044
-#, c-format
-msgid "Can't create file %s"
-msgstr "Dosya %s yaratýlamadý"
-
-#: compose.c:1052
-msgid "What we have here is a failure to make an attachment"
-msgstr "Eklenti yaparak burada bir hata oluþtu"
-
-#: compose.c:1114
-msgid "Postpone this message?"
-msgstr "Iletiyi kaydediyem mi?"
-
-#: compose.c:1171
-msgid "Write message to mailbox"
-msgstr "Iletiye eposta kutuma yaz"
-
-#: compose.c:1174
-#, c-format
-msgid "Writing message to %s ..."
-msgstr "Ileti %s iye yazýlýyor..."
-
-#: compose.c:1183
-msgid "Message written."
-msgstr "Ileti yazýldý."
-
-#: curs_lib.c:153
-msgid "yes"
-msgstr "evet"
-
-#: curs_lib.c:154
-msgid "no"
-msgstr "hayýr"
-
-#. restore blocking operation
-#: curs_lib.c:236
-msgid "Exit Mutt?"
-msgstr "Mutt'tan çýkýlsýn mý?"
-
-#: curs_lib.c:326 mutt_socket.c:474
-msgid "unknown error"
-msgstr "bilinmeyen hata"
-
-#: curs_lib.c:346
-msgid "Press any key to continue..."
-msgstr "Devam etmek için bir tuþa bas..."
-
-#: curs_lib.c:390
-msgid " ('?' for list): "
-msgstr " (sýralama için '?' iye bas): "
-
-#: curs_main.c:59 curs_main.c:583
-msgid "No mailbox is open."
-msgstr "Hiç bir eposta kutusu açýk deðil."
-
-#: curs_main.c:60
-msgid "There are no messages."
-msgstr "Ileti yok."
-
-#: curs_main.c:61 mx.c:1122 pager.c:62 recvattach.c:47
-msgid "Mailbox is read-only."
-msgstr "eposta kutusu salt-okunur."
-
-#: curs_main.c:62 pager.c:63 recvattach.c:817
-msgid "Function not permitted in attach-message mode."
-msgstr "Iþlev ileti ekleme mödüsünde yasaktýr."
-
-#: curs_main.c:63
-#, fuzzy
-msgid "No visible messages."
-msgstr "Yeni ileti yok"
-
-#: curs_main.c:238
-msgid "Cannot toggle write on a readonly mailbox!"
-msgstr "Salt-okunur bir eposta kutusu yazýlabilir yapýlamaz!"
-
-#: curs_main.c:245
-msgid "Changes to folder will be written on folder exit."
-msgstr "Klasöre olan deðiþiklikler çýkýþta kaydedilecektir."
-
-#: curs_main.c:250
-msgid "Changes to folder will not be written."
-msgstr "Klasöre olan deðiþiklikler kaydedilmeyecektir."
-
-#: curs_main.c:382
-msgid "Quit"
-msgstr "Çýk"
-
-#: curs_main.c:383 pager.c:1370 postpone.c:38
-msgid "Del"
-msgstr "Sil"
-
-#: curs_main.c:384 postpone.c:39
-msgid "Undel"
-msgstr "Kurtar"
-
-#: curs_main.c:386 query.c:44
-msgid "Mail"
-msgstr "Gönder"
-
-#: curs_main.c:387 pager.c:1371
-msgid "Reply"
-msgstr "Cevap"
-
-#: curs_main.c:388
-msgid "Group"
-msgstr "K. Cevap"
-
-#: curs_main.c:470
-msgid "Mailbox was externally modified.  Flags may be wrong."
-msgstr "Eposta kutusu deðiþtirilmiþ. Bazý iþaretlet hatalý olabilir."
-
-#: curs_main.c:473
-msgid "New mail in this mailbox."
-msgstr "Yeni eposta var!"
-
-#: curs_main.c:477
-#, fuzzy
-msgid "Mailbox was externally modified."
-msgstr "Eposta kutusu deðiþtirilmiþ. Bazý iþaretlet hatalý olabilir."
-
-#: curs_main.c:589
-msgid "No tagged messages."
-msgstr "Iþaretli ileti yok."
-
-#: curs_main.c:670
-msgid "Jump to message: "
-msgstr "Iletiye geç: "
-
-#: curs_main.c:676
-msgid "Argument must be a message number."
-msgstr "Argüman bir ileti numarasý olmak zorunda."
-
-#: curs_main.c:709
-msgid "That message is not visible."
-msgstr "Bu ileti görünemez."
-
-#: curs_main.c:712
-msgid "Invalid message number."
-msgstr "Geçersiz ileti numarasý."
-
-#: curs_main.c:726
-msgid "Delete messages matching: "
-msgstr "Tabire uyan iletileri sil: "
-
-#: curs_main.c:748
-msgid "No limit pattern is in effect."
-msgstr "Sýnýrlandýrma tabiri kullanýmda deðildir."
-
-#. i18n: ask for a limit to apply
-#: curs_main.c:753
-#, c-format
-msgid "Limit: %s"
-msgstr "Sýnýr : %s"
-
-#: curs_main.c:763
-msgid "Limit to messages matching: "
-msgstr "Tabire uyan iletilere sýnýrla: "
-
-#: curs_main.c:793
-msgid "Quit Mutt?"
-msgstr "Mutt'tan çýkýlsýn mý?"
-
-#: curs_main.c:872
 msgid "Tag messages matching: "
 msgstr "Tabire uyan iletileri iþaretle: "
 
-#: curs_main.c:881
-msgid "Undelete messages matching: "
-msgstr "Tabire uyan iletileri kurtar: "
+msgid "Tag the messages you want to attach!"
+msgstr "Eklemek istediðin iletiler iþaretlenecektir!"
 
-#: curs_main.c:889
-msgid "Untag messages matching: "
-msgstr "Tabire uyan iletilerden iþareti sil: "
+msgid "Tagging is not supported."
+msgstr "Iþaretleme desteklenmiyor."
 
-#: curs_main.c:964
-msgid "Open mailbox in read-only mode"
-msgstr "Eposta kutusunu salt-okunur aç"
+msgid "That message is not visible."
+msgstr "Bu ileti görünemez."
 
-#: curs_main.c:966
-msgid "Open mailbox"
-msgstr "eposta kutusunu aç"
+msgid "The current attachment will be converted."
+msgstr "Geçerli eklenti dönüþtürülecektir."
 
-#: curs_main.c:982 mx.c:504 mx.c:650
-#, c-format
-msgid "%s is not a mailbox."
-msgstr "%s bir eposta kutusu deðildir!"
+msgid "The current attachment won't be converted."
+msgstr "Geçerli eklenti dönüþtürülmeyecektir."
 
-#: curs_main.c:1068
-msgid "Exit Mutt without saving?"
-msgstr "Mutt'tan kaydedilmeden çýkýlsýn mý?"
+msgid "The message index is incorrect. Try reopening the mailbox."
+msgstr "Ileti sayýsý yanlýþtýr. Eposta kutusu yeniden açilmasý denenebilir."
 
-#: curs_main.c:1102 curs_main.c:1127
-msgid "You are on the last message."
-msgstr "Son iletidesiniz."
+msgid "There are no attachments."
+msgstr "Eklemler yok."
 
-#: curs_main.c:1109 curs_main.c:1153
-msgid "No undeleted messages."
-msgstr "Kurtarýlan ileti yok."
+msgid "There are no messages."
+msgstr "Ileti yok."
 
-#: curs_main.c:1146 curs_main.c:1170
-msgid "You are on the first message."
-msgstr "Ilk iletidesiniz."
+msgid "There are no subparts to show!"
+msgstr "Gösterilecek altbölümler yok!"
 
-#: curs_main.c:1244 pattern.c:1287
-msgid "Search wrapped to top."
-msgstr "Arama baþa döndü."
+msgid "This ID is expired/disabled/revoked"
+msgstr "Bu anahtarýn süresi bitti/kapalý/geriye alýndý."
 
-#: curs_main.c:1253 pattern.c:1298
-msgid "Search wrapped to bottom."
-msgstr "Arama sona ulaþtý."
+msgid "This ID is not trusted."
+msgstr "Bu anahtar numarasýna güvenilmiyor."
 
-#: curs_main.c:1286
-msgid "No new messages"
-msgstr "Yeni ileti yok"
+msgid "This ID is only marginally trusted."
+msgstr "Bu anahtar numarasýna çok az güveniliyor."
 
-#: curs_main.c:1286
-msgid "No unread messages"
-msgstr "Okunmamýþ ileti yok"
+msgid "This ID's trust level is undefined."
+msgstr "Bu anahtar numarasýna olan güven belirlenmemiþ."
 
-#: curs_main.c:1287
-msgid " in this limited view"
-msgstr " bu sýnýrlandýrýlmýþ bakýþta"
+msgid "This IMAP server is ancient. Mutt does not work with it."
+msgstr "Bu IMAP sunucusu çok eski. Mutt bu sunucuyla çalýþmaz."
 
-#: curs_main.c:1414
-msgid "No more threads."
-msgstr "Daha fazla konum yok."
+msgid "This certificate belongs to:"
+msgstr "Sertifikanýn sahibi kuruluþ:"
 
-#: curs_main.c:1416
-msgid "You are on the first thread."
-msgstr "Ilk konumdasýnýz."
+msgid "This certificate is valid"
+msgstr "Bu sertifika geçerlidir"
 
-#: curs_main.c:1477 curs_main.c:1509 flags.c:250 thread.c:676 thread.c:727
-msgid "Threading is not enabled."
-msgstr "Konumlaþtýrma kapalýdýr."
+msgid "This certificate was issued by:"
+msgstr "Sertifikayý veren kuruluþ:"
 
-#: curs_main.c:1495
+msgid "This key can't be used: expired/disabled/revoked."
+msgstr "Bu anahtar kullanýlamaz: süresi bitti/kapalý/geriye alýndý."
+
 msgid "Thread contains unread messages."
 msgstr "Konum okunmamýþ ileti içeriyor."
 
-#: curs_main.c:1667
-msgid "Can't edit message on POP server."
-msgstr "Ileti POP sunucusunda deðiþtirilenemedi."
+msgid "Threading is not enabled."
+msgstr "Konumlaþtýrma kapalýdýr."
 
-#.
-#. * SLcurses_waddnstr() can't take a "const char *", so this is only
-#. * declared "static" (sigh)
-#.
-#: edit.c:36
 msgid ""
-"~~\t\tinsert a line begining with a single ~\n"
-"~b users\tadd users to the Bcc: field\n"
-"~c users\tadd users to the Cc: field\n"
-"~f messages\tinclude messages\n"
-"~F messages\tsame as ~f, except also include headers\n"
-"~h\t\tedit the message header\n"
-"~m messages\tinclude and quote messages\n"
-"~M messages\tsame as ~m, except include headers\n"
-"~p\t\tprint the message\n"
-"~q\t\twrite file and quit editor\n"
-"~r file\t\tread a file into the editor\n"
-"~t users\tadd users to the To: field\n"
-"~u\t\trecall the previous line\n"
-"~v\t\tedit message with the $visual editor\n"
-"~w file\t\twrite message to file\n"
-"~x\t\tabort changes and quit editor\n"
-"~?\t\tthis message\n"
-".\t\ton a line by itself ends input\n"
+"To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
+"To report a bug, please use the flea(1) utility.\n"
 msgstr ""
-"~~\t\ttek bir ~ içeren bir satýrý baþa ekle\n"
-"~b isimler\tisimleri görünmez kopya listesine (BCC) ekle\n"
-"~c isimler\tisimleri görünür kopya listesine (CC) ekle\n"
-"~f iletiler\tiletileri içer\n"
-"~F iletiler\t~f'ye benzer fakat bu seçenek baþlýklarý da içerir\n"
-"~h\t\tileti baþlýðýn_i deðiþtir\n"
-"~m iletiler\tiletileri içer ve cevap ver\n"
-"~M iletiler\t~m gibi fakat bu seçenek baþlýklarý da içerir\n"
-"~p\t\tiletiyi yazdýrýr\n"
-"~q\t\tdosyayý kaydedip editörden çýk\n"
-"~r dosya\t\tdosyayý editörle aç\n"
-"~t isimler\tisimleri gönderilenler listesine ekle\n"
-"~u\t\tson satýrý tekrar et\n"
-"~v\t\tiletiyi $visual editörüyle düzenle\n"
-"~w dosya\t\tiletiyi dosyaya kaydet\n"
-"~x\t\tdeðiþiklikleri iptal et ve editörden çýk\n"
-"~?\t\tbu ileti\n"
-".\t\tsatýrda tek bir . iþlevi bitirir\n"
+"Yazarlara ulaþmak içim lütfen <mutt-dev@mutt.org> listesine eposta gönderin.\n"
+"Bir hata raporunu göndermek için lütfen flea(1) uygulamasýný kullanýn.\n"
 
-#: edit.c:178
-#, c-format
-msgid "%d: invalid message number.\n"
-msgstr "%d : geçersiz ileti numarasý.\n"
+msgid "Toggle display of subparts"
+msgstr "Altbölümlerin gösterilmesini aç/kapat"
 
-#: edit.c:309
-msgid "(End message with a . on a line by itself)\n"
-msgstr "(Iletiyi '.' içerikli bir satýrla bitir)\n"
+msgid "Top of message is shown."
+msgstr "Iletinin baþý gösteriliyor."
 
-#: edit.c:367
-msgid "No mailbox.\n"
-msgstr "Eposta kutusu yok.\n"
+msgid "Unable to append to IMAP mailboxes at this server"
+msgstr "Bu sunucudaki IMAP eposta kutularýna ileti eklenemiyor"
 
-#: edit.c:371
-msgid "Message contains:\n"
-msgstr "Ileti içeriði:\n"
+msgid "Unable to attach %s!"
+msgstr "%s'yi ekleyemedim!"
 
-#: edit.c:375 edit.c:426
-msgid "(continue)\n"
-msgstr "(devam et)\n"
+msgid "Unable to attach!"
+msgstr "Eklenemedi!"
 
-#: edit.c:388
-msgid "missing filename.\n"
-msgstr "eksik dosya ismi.\n"
+msgid "Unable to fetch headers from this IMAP server version."
+msgstr "Bu IMAP sunucu neslinden baþlýklarý alýnamýyor."
 
-#: edit.c:408
-msgid "No lines in message.\n"
-msgstr "Iletide satýr yok.\n"
+msgid "Unable to leave messages on server."
+msgstr "Iletiler sunucuda býrakýlamýyor."
 
-#: edit.c:437
-#, c-format
-msgid "%s: unknown editor command (~? for help)\n"
-msgstr "%s : bilinmeyen editör komutasý (~?'le yardým iste)\n"
+msgid "Unable to lock mailbox!"
+msgstr "Eposta kutusunu kilitleyemedim!"
 
-#: editmsg.c:74
-#, c-format
-msgid "could not create temporary folder: %s"
-msgstr "geçici dizini yaratamadým : %s"
+msgid "Unable to open temporary file!"
+msgstr "Geçici dosyayý açamadým!"
 
-#: editmsg.c:84
-#, c-format
-msgid "could not write temporary mail folder: %s"
-msgstr "geçici eposta dizinini yaratamadým : %s"
+msgid "Undel"
+msgstr "Kurtar"
 
-#: editmsg.c:102
-msgid "Message file is empty!"
-msgstr "Ileti dosyasý boþ!"
+msgid "Undelete messages matching: "
+msgstr "Tabire uyan iletileri kurtar: "
 
-#: editmsg.c:109
-msgid "Message not modified!"
-msgstr "Ileti deðiþtirilmedi!"
+msgid "Unknown"
+msgstr "Bilinmiyor"
 
-#: editmsg.c:117
-#, c-format
-msgid "Can't open message file: %s"
-msgstr "Ileti dosyasý %s'yi açamadým"
+msgid "Unknown Content-Type %s"
+msgstr "Bilinmeyen içerik tipi %s"
 
-#: editmsg.c:124 editmsg.c:152
-#, c-format
-msgid "Can't append to folder: %s"
-msgstr "%s dizinine eklenemiyor"
+msgid "Unsubscribing to %s..."
+msgstr "%s'deki abonelik feshediliyor..."
 
-#: editmsg.c:183
-#, c-format
-msgid "Error. Preserving temporary file: %s"
-msgstr "Hata. Geçici dosya %s korunmaya alýndý"
+msgid "Untag messages matching: "
+msgstr "Tabire uyan iletilerden iþareti sil: "
 
-#: flags.c:288
-msgid "Set flag"
-msgstr "Iþareti otur"
+msgid "Uploading message ..."
+msgstr "Ileti yükleniyor..."
 
-#: flags.c:288
-msgid "Clear flag"
-msgstr "Iþareti temizle"
+msgid "Use 'toggle-write' to re-enable write!"
+msgstr "'toggle-write' ile yeniden yazýlabilir yapabilinir!"
 
-#. didn't find anything that we could display!
-#: handler.c:1302
+msgid "Use keyID = \"%s\" for %s?"
+msgstr "%s için anahtar numara = \"%s\" kullanýlsýn mý?"
+
+msgid "Username at %s: "
+msgstr "%s'deki kullanýcý adý: "
+
+msgid "Verify PGP signature?"
+msgstr "PGP imzasý doðrulansýn mý?"
+
+msgid "Verifying message indexes..."
+msgstr "Ileti sayýsýný doðrula..."
+
+msgid "View Attachm."
+msgstr "Eklenti göster"
+
+msgid "WARNING!  You are about to overwrite %s, continue?"
+msgstr "IKAZ!   %s'nin üstüne yazmak üzeresin, devam edilsin mi?"
+
+msgid "Waiting for response..."
+msgstr "Cevap bekleniyor..."
+
+msgid "Warning: Couldn't save certificate"
+msgstr "Ikaz: Sertifika kaydedilemedi"
+
+msgid "What we have here is a failure to make an attachment"
+msgstr "Eklenti yaparak burada bir hata oluþtu"
+
+msgid "Write failed!  Saved partial mailbox to %s"
+msgstr "Yazma baþarýsýz oldu! Eposta kutusunun bir bölümü %s'ye yazýlmýþtýr"
+
+msgid "Write fault!"
+msgstr "Yazma hatasý!"
+
+msgid "Write message to mailbox"
+msgstr "Iletiye eposta kutuma yaz"
+
+msgid "Writing %s..."
+msgstr "%s yazýlýyor..."
+
+msgid "Writing message to %s ..."
+msgstr "Ileti %s iye yazýlýyor..."
+
+msgid "Writing messages... %d (%d%%)"
+msgstr "Iletiler yazýlýyor... %d (%%%d)"
+
+msgid "You already have an alias defined with that name!"
+msgstr "Bu isimli bir lakap zaten tanýmlanmýþ!"
+
+msgid "You are on the first entry."
+msgstr "Ilk birimdesiniz."
+
+msgid "You are on the first message."
+msgstr "Ilk iletidesiniz."
+
+msgid "You are on the first page."
+msgstr "Ilk sayfadasýnýz."
+
+msgid "You are on the first thread."
+msgstr "Ilk konumdasýnýz."
+
+msgid "You are on the last entry."
+msgstr "Son birimdesiniz."
+
+msgid "You are on the last message."
+msgstr "Son iletidesiniz."
+
+msgid "You are on the last page."
+msgstr "Son sayfadasýnýz."
+
+msgid "You cannot scroll down farther."
+msgstr "Daha alta geçmek mümkün deðildir."
+
+msgid "You cannot scroll up farther."
+msgstr "Daga yukarýya geçmek mümkün deðildir."
+
+msgid "You have no aliases!"
+msgstr "Hýc bir lakabýn yok!"
+
+msgid "You may not delete the only attachment."
+msgstr "Geriye kalan tek eklentii silemezsin."
+
+msgid "You may only bounce message/rfc822 parts."
+msgstr "Sadece ileti yada RFC822 bölümleri iletilebilir."
+
+msgid "[%s = %s] Accept?"
+msgstr "[ %s = %s] Kabul ediliyor mu?"
+
+msgid "[-- %s/%s is unsupported "
+msgstr "[-- %s/%s desteklenmiyor "
+
+msgid "[-- Attachment #%d"
+msgstr "[-- Eklenti #%d"
+
+msgid "[-- Autoview stderr of %s --]\n"
+msgstr "[-- %s ile otomatik gösterme hatasý --]\n"
+
+msgid "[-- Autoview using %s --]\n"
+msgstr "[-- %s ile gösteriliyor --]\n"
+
+msgid ""
+"[-- BEGIN PGP MESSAGE --]\n"
+"\n"
+msgstr ""
+"[-- PGP ILETISI BAÞI --]\n"
+"\n"
+
+msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
+msgstr "[-- PGP RESMI ANAHTAR BÖLÜMÜ BAÞI --]\n"
+
+msgid ""
+"[-- BEGIN PGP SIGNED MESSAGE --]\n"
+"\n"
+msgstr ""
+"[-- PGP IMZALANMIÞ ILETI BAÞI --]\n"
+"\n"
+
+msgid "[-- Can't run %s. --]\n"
+msgstr "[-- %s çalýþtýrýlamadý --]\n"
+
+msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
+msgstr "[-- PGP RESMI ANAHTAR BÖLÜMÜ SONU --]\n"
+
+msgid ""
+"[-- End of PGP output --]\n"
+"\n"
+msgstr ""
+"[-- PGP geri verisi sonu --]\n"
+"\n"
+
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr ""
 "[-- Hata:  Multipart/Alternative bölümlerinin hiç bir bölümü gösterilemiyor! "
 "--]\n"
 
-#: handler.c:1419
-#, c-format
-msgid "[-- Attachment #%d"
-msgstr "[-- Eklenti #%d"
+msgid ""
+"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"\n"
+msgstr ""
+"[-- Hata: Hatalý multipart/signed þekili! --]\n"
+"\n"
 
-#: handler.c:1430
-#, c-format
-msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- Tip: %s/%s, Þekillendirme: %s, Boyut: %s --]\n"
+msgid ""
+"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"\n"
+msgstr ""
+"[-- Hata: Bilinmeyen multipart/signed protokolu %s! --]\n"
+"\n"
 
-#: handler.c:1489
-#, c-format
-msgid "[-- Autoview using %s --]\n"
-msgstr "[-- %s ile gösteriliyor --]\n"
+msgid ""
+"[-- Error: could not create a PGP subprocess! --]\n"
+"\n"
+msgstr ""
+"[-- Hata: PGP altiþlemini yaratamadým! --]\n"
+"\n"
 
-#: handler.c:1490
-#, c-format
-msgid "Invoking autoview command: %s"
-msgstr "Otomatik gösterme komuatasý: %s"
+msgid "[-- Error: could not create temporary file! --]\n"
+msgstr "[-- Hata: geçici dosya yaratýlamýyor! --]\n"
 
-#: handler.c:1520
-#, fuzzy, c-format
-msgid "[-- Can't run %s. --]\n"
-msgstr "[-- %s'de --]\n"
+msgid ""
+"[-- Error: could not find beginning of PGP message! --]\n"
+"\n"
+msgstr ""
+"[-- Hata: PGP iletisinin baþýný bulamadým! --]\n"
+"\n"
 
-#: handler.c:1535 handler.c:1553
-#, c-format
-msgid "[-- Autoview stderr of %s --]\n"
-msgstr "[-- %s ile otomatik gösterme hatasý --]\n"
+msgid ""
+"[-- Error: malformed PGP/MIME message! --]\n"
+"\n"
+msgstr ""
+"[-- Hata: Hatalý PGP/MIME iletisi! --]\n"
+"\n"
 
-#: handler.c:1587
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr "[-- Hata: message/external-bods hiç bir eriþim tipi belirlemiyor --]\n"
 
-#: handler.c:1604
-#, c-format
+msgid "[-- Error: unable to create PGP subprocess! --]\n"
+msgstr "[-- Hata: PGP altiþlemi yaratýlamadý! --]\n"
+
+msgid "[-- PGP output follows (current time: %c) --]\n"
+msgstr "[-- PGP geri verisi (geçerli zaman: %c) --]\n"
+
+msgid ""
+"[-- The following data is PGP/MIME encrypted --]\n"
+"\n"
+msgstr ""
+"[-- Bu bilgi PGP/MIME ile þifrelenmiþtir --]\n"
+"\n"
+
+msgid ""
+"[-- The following data is signed --]\n"
+"\n"
+msgstr ""
+"[-- Bu bilgi imzalanmýþtýr --]\n"
+"\n"
+
 msgid "[-- This %s/%s attachment "
 msgstr "[-- Bu %s/%s eklentisi"
 
-#: handler.c:1611
-#, c-format
-msgid "(size %s bytes) "
-msgstr "(boyut %s bayt) "
+msgid ""
+"[-- This %s/%s attachment is not included, --]\n"
+"[-- and the indicated access-type %s is unsupported --]\n"
+msgstr ""
+"[-- Bu %s/%s eklentisi içerilmiyor, --]\n"
+"[-- ve ima edilen eriþme tipi %s de desteklenmiyor --]\n"
 
-#: handler.c:1613
-msgid "has been deleted --]\n"
-msgstr "silinmiþtir --]\n"
-
-#: handler.c:1616
-#, c-format
-msgid "[-- on %s --]\n"
-msgstr "[-- %s'de --]\n"
-
-#: handler.c:1618
-#, c-format
-msgid "[-- name: %s --]\n"
-msgstr "[-- isim: %s --]\n"
-
-#: handler.c:1629
-#, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated external source has --]\n"
@@ -1061,1232 +1737,615 @@ msgstr ""
 "[-- ve ima edilen kaynaðýn geçerliliði --]\n"
 "[-- de bitti. --]\n"
 
-#: handler.c:1643
-#, c-format
+msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
+msgstr "[-- Tip: %s/%s, Þekillendirme: %s, Boyut: %s --]\n"
+
 msgid ""
-"[-- This %s/%s attachment is not included, --]\n"
-"[-- and the indicated access-type %s is unsupported --]\n"
+"[-- Warning: Can't find any signatures. --]\n"
+"\n"
 msgstr ""
-"[-- Bu %s/%s eklentisi içerilmiyor, --]\n"
-"[-- ve ima edilen eriþme tipi %s de desteklenmiyor --]\n"
+"[-- Ikaz: Hiç bir imza bulunmamýþtýr. --]\n"
+"\n"
 
-#: handler.c:1756
-msgid "Error: multipart/signed has no protocol."
-msgstr "Hata: multipart/signed protokolu yok."
-
-#: handler.c:1769
-msgid "Error: multipart/encrypted has no protocol parameter!"
-msgstr "Hata: multipart/encrypted protokol verisi yok!"
-
-#: handler.c:1816
-msgid "Unable to open temporary file!"
-msgstr "Geçici dosyayý açamadým!"
-
-#: handler.c:1875
-#, c-format
-msgid "[-- %s/%s is unsupported "
-msgstr "[-- %s/%s desteklenmiyor "
-
-#: handler.c:1880
-#, c-format
-msgid "(use '%s' to view this part)"
-msgstr "('%s' ile bu bölüme bakabilirsiniz)"
-
-#: handler.c:1882
-msgid "(need 'view-attachments' bound to key!)"
-msgstr ""
-
-#: headers.c:173
-#, c-format
-msgid "%s: unable to attach file"
-msgstr "%s: dosyayý eklenemiyor"
-
-#: help.c:278
-msgid "ERROR: please report this bug"
-msgstr "HATA: bu hatayý lütfen rapor edin"
-
-#: help.c:320
-msgid "<UNKNOWN>"
-msgstr "<BILINMIYOR>"
-
-#: help.c:332
 msgid ""
-"\n"
-"Generic bindings:\n"
-"\n"
-msgstr ""
-
-#: help.c:336
-msgid ""
-"\n"
-"Unbound functions:\n"
+"[-- Warning: We can't verify %s/%s signatures. --]\n"
 "\n"
 msgstr ""
+"[-- Ikaz: %s/%s imzalarý doðrulanamýyor. --]\n"
+"\n"
 
-#: help.c:344
-#, c-format
-msgid "Help for %s"
-msgstr "%s yardýmý"
+msgid "[-- name: %s --]\n"
+msgstr "[-- isim: %s --]\n"
 
-#: hook.c:243
-msgid "unhook: Can't do unhook * from within a hook."
-msgstr ""
+msgid "[-- on %s --]\n"
+msgstr "[-- %s'de --]\n"
 
-#: hook.c:255
-#, c-format
-msgid "unhook: unknown hook type: %s"
-msgstr ""
+msgid "[invalid date]"
+msgstr "[geçersiz tarih]"
 
-#: hook.c:261
-#, c-format
-msgid "unhook: Can't delete a %s from within a %s."
-msgstr ""
+msgid "[unable to calculate]"
+msgstr "[hesaplanamýyor]"
 
-#: imap/auth.c:104
-#, fuzzy
-msgid "No authenticators available"
-msgstr "SASL doðrulamasý baþarasýz oldu."
-
-#: imap/auth_anon.c:39
-msgid "Authenticating (anonymous)..."
-msgstr "Doðrulanýyor (anonim)..."
-
-#: imap/auth_anon.c:69
-msgid "Anonymous authentication failed."
-msgstr "Anonim doðrulama baþarýsýz oldu."
-
-#: imap/auth_cram.c:44
-msgid "Authenticating (CRAM-MD5)..."
-msgstr "Doðrulanýyor (CRAM-MD5)..."
-
-#: imap/auth_cram.c:124
-msgid "CRAM-MD5 authentication failed."
-msgstr "CRAM-MD5 doðrulamasý baþarýsýz oldu."
-
-#. now begin login
-#: imap/auth_gss.c:104
-msgid "Authenticating (GSSAPI)..."
-msgstr "Doðrulanýyor (GSSAPI)..."
-
-#: imap/auth_gss.c:267
-msgid "GSSAPI authentication failed."
-msgstr "GSSAPI doðrulamasý baþarýsýz oldu."
-
-#: imap/auth_login.c:34
-msgid "LOGIN disabled on this server."
-msgstr "Bu sunucuda LOGIN kapalýdýr."
-
-#: imap/auth_login.c:43 pop_auth.c:229
-msgid "Logging in..."
-msgstr "Giriþ yapýlýyor..."
-
-#: imap/auth_login.c:63 pop_auth.c:272
-msgid "Login failed."
-msgstr "Giriþ baþærýsýz oldu."
-
-#: imap/auth_sasl.c:96 pop_auth.c:76
-msgid "Authenticating (SASL)..."
-msgstr "Doðrulanýyor (SASL)..."
-
-#: imap/auth_sasl.c:177 pop_auth.c:154
-msgid "SASL authentication failed."
-msgstr "SASL doðrulamasý baþarasýz oldu."
-
-#: imap/browse.c:81
-msgid "Getting namespaces..."
-msgstr "Isim yüzeyleri alýnýyor..."
-
-#: imap/browse.c:90
-msgid "Getting folder list..."
-msgstr "Dizin listesi alýnýyor..."
-
-#: imap/browse.c:271
-msgid "Create mailbox: "
-msgstr "Eposta kutusunu yarat:"
-
-#: imap/browse.c:276
-#, fuzzy
-msgid "Mailbox must have a name."
-msgstr "eposta kutusu deðiþtirilmedi."
-
-#: imap/browse.c:284
-msgid "Mailbox created."
-msgstr "Eposta kutusu yaratýldý."
-
-#: imap/command.c:289
-#, fuzzy
-msgid "Mailbox closed"
-msgstr "eposta kutusu silindi."
-
-#. something is wrong because the server reported fewer messages
-#. * than we previously saw
-#.
-#: imap/command.c:326
-msgid "Fatal error.  Message count is out of sync!"
-msgstr "Aðýr hata. Ileti sayýlarý karýþtý!"
-
-#: imap/imap.c:135
-#, c-format
-msgid "Closing connection to %s..."
-msgstr "Baðlantý %s kapatýlýyor..."
-
-#: imap/imap.c:295
-msgid "This IMAP server is ancient. Mutt does not work with it."
-msgstr "Bu IMAP sunucusu çok eski. Mutt bu sunucuyla çalýþmaz."
-
-#: imap/imap.c:380
-msgid "Secure connection with TLS?"
-msgstr "TLS ile güvenli baðlanýlsýn mý?"
-
-#: imap/imap.c:389
-msgid "Could not negotiate TLS connection"
-msgstr ""
-
-#: imap/imap.c:533
-#, c-format
-msgid "Selecting %s..."
-msgstr "%s seçiliyor..."
-
-#. STATUS not supported
-#: imap/imap.c:703
-msgid "Unable to append to IMAP mailboxes at this server"
-msgstr "Bu sunucudaki IMAP eposta kutularýna ileti eklenemiyor"
-
-#. command failed cause folder doesn't exist
-#: imap/imap.c:712 imap/message.c:584 muttlib.c:1169
-#, c-format
-msgid "Create %s?"
-msgstr "%s yaratýlsýn mý?"
-
-#: imap/imap.c:748
-msgid "Closing connection to IMAP server..."
-msgstr "IMAP sunucusuna varolan baðlantý kapatýlýyor..."
-
-#: imap/imap.c:912 pop.c:458
-#, c-format
-msgid "Marking %d messages deleted..."
-msgstr "%d ileti silinmek için iþaretlenmiþ..."
-
-#: imap/imap.c:931
-#, c-format
-msgid "Saving message status flags... [%d/%d]"
-msgstr "Ileti durum iþaretleri kaydediliyor... [%d/%d]"
-
-#: imap/imap.c:1006
-msgid "Expunging messages from server..."
-msgstr "Iletileri sunucudan sil..."
-
-#: imap/imap.c:1043
-#, fuzzy
-msgid "CLOSE failed"
-msgstr "Giriþ baþærýsýz oldu."
-
-#: imap/imap.c:1299
-#, c-format
-msgid "Subscribing to %s..."
-msgstr "%s'e abone olunuyor..."
-
-#: imap/imap.c:1301
-#, c-format
-msgid "Unsubscribing to %s..."
-msgstr "%s'deki abonelik feshediliyor..."
-
-#. Unable to fetch headers for lower versions
-#: imap/message.c:73
-msgid "Unable to fetch headers from this IMAP server version."
-msgstr "Bu IMAP sunucu neslinden baþlýklarý alýnamýyor."
-
-#: imap/message.c:92 pop.c:209
-#, c-format
-msgid "Fetching message headers... [%d/%d]"
-msgstr "Ileti baþlýklarýný alýnýyor... [%d/%d]"
-
-#: imap/message.c:239 pop.c:336
-msgid "Fetching message..."
-msgstr "Ileti alýnýyor..."
-
-#: imap/message.c:282 pop.c:373
-msgid "The message index is incorrect. Try reopening the mailbox."
-msgstr "Ileti sayýsý yanlýþtýr. Eposta kutusu yeniden açilmasý denenebilir."
-
-#: imap/message.c:455
-msgid "Uploading message ..."
-msgstr "Ileti yükleniyor..."
-
-#: imap/message.c:562
-#, c-format
-msgid "Copying %d messages to %s..."
-msgstr "%d ileti %s'e kopyalanýyor..."
-
-#: imap/message.c:566
-#, c-format
-msgid "Copying message %d to %s..."
-msgstr "%d ileti %s'e kopyalanýyor..."
-
-#: imap/util.c:238
-msgid "Continue?"
-msgstr "Devam edilsin mi?"
-
-#: imap/util.c:244
-#, c-format
-msgid "%s [%s]\n"
-msgstr "%s [%s]\n"
-
-#: init.c:490
 msgid "alias: no address"
 msgstr "alias: adres yok"
 
-#: init.c:584
-msgid "invalid header field"
-msgstr "geçersiz baþlýk birimi"
+msgid "append new query results to current results"
+msgstr "yeni sorgulama sonuçlarýný geçerli sonuçlara ekle"
 
-#: init.c:637
-#, c-format
-msgid "%s: unknown sorting method"
-msgstr "%s: bilinmeyen sýralama tipi"
+msgid "attach a PGP public key"
+msgstr "bir PGP resmi anahtarý ekle"
 
-#: init.c:748
-#, c-format
-msgid "mutt_restore_default(%s): error in regexp: %s\n"
-msgstr "mutt_restore_default(%s): tabirde hata var: %s\n"
-
-#: init.c:809
-#, c-format
-msgid "%s: unknown variable"
-msgstr "%s: bilinmeyen veri"
-
-#: init.c:818
-msgid "prefix is illegal with reset"
-msgstr ""
-
-#: init.c:824
-msgid "value is illegal with reset"
-msgstr ""
-
-#: init.c:863
-#, c-format
-msgid "%s is set"
-msgstr "%s oturtulmuþtur"
-
-#: init.c:863
-#, c-format
-msgid "%s is unset"
-msgstr "%s oturtulamamýþtýr"
-
-#: init.c:1069
-#, c-format
-msgid "%s: invalid mailbox type"
-msgstr "%s: geçersiz eposta tipi"
-
-#: init.c:1094 init.c:1139
-#, c-format
-msgid "%s: invalid value"
-msgstr "%s: geçersiz deðer"
-
-#: init.c:1197
-#, c-format
-msgid "%s: unknown type"
-msgstr "%s: bilinmeyen tip"
-
-#: init.c:1238
-#, c-format
-msgid "Error in %s, line %d: %s"
-msgstr "%s'de hata var, satýr %d: %s"
-
-#. the muttrc source keyword
-#: init.c:1254
-#, c-format
-msgid "source: errors in %s"
-msgstr "source: %s'de hatalar var"
-
-#: init.c:1255
-#, c-format
-msgid "source: reading aborted due too many errors in %s"
-msgstr "source: %s'de oluþan çok fazla hatadan dolayý okuma iptal edildi"
-
-#: init.c:1269
-#, c-format
-msgid "source: error at %s"
-msgstr "source: %s'de hata var"
-
-#: init.c:1274
-msgid "source: too many arguments"
-msgstr "source: çok fazla argüman"
-
-#: init.c:1325
-#, c-format
-msgid "%s: unknown command"
-msgstr "%s: bilinmeyen komuta"
-
-#: init.c:1681
-#, c-format
-msgid "Error in command line: %s\n"
-msgstr "Komuta satrýnda hata: %s\n"
-
-#: init.c:1724
-msgid "unable to determine home directory"
-msgstr "baþlangýç dizini belirlenemedi"
-
-#: init.c:1732
-msgid "unable to determine username"
-msgstr "kullanýcý adý belirlenemedi"
-
-#: keymap.c:433
-msgid "Macro loop detected."
-msgstr ""
-
-#: keymap.c:636 keymap.c:644
-msgid "Key is not bound."
-msgstr "Tuþ ayarlanmamýþ."
-
-#: keymap.c:648
-#, c-format
-msgid "Key is not bound.  Press '%s' for help."
-msgstr "Tuþ ayarlanmamýþ. Yardým için lütfen '%s' basýnýz."
-
-#: keymap.c:659
-msgid "push: too many arguments"
-msgstr ""
-
-#: keymap.c:680
-#, c-format
-msgid "%s: no such menu"
-msgstr "%s: böyle bir mönü yoktur"
-
-#: keymap.c:689
-msgid "null key sequence"
-msgstr ""
-
-#: keymap.c:771
-msgid "bind: too many arguments"
-msgstr "bind: çok fazla argüman"
-
-#: keymap.c:786
-#, c-format
-msgid "%s: no such function in map"
-msgstr "%s: haritada öyle bir iþlev yoktur"
-
-#: keymap.c:809
-msgid "macro: empty key sequence"
-msgstr ""
-
-#: keymap.c:820
-msgid "macro: too many arguments"
-msgstr ""
-
-#: keymap.c:850
-msgid "exec: too few arguments"
-msgstr "exec: yetersiz argüman sayýsý"
-
-#: keymap.c:870
-#, c-format
-msgid "%s: no such command"
-msgstr "%s: böyle bir komuta yoktur"
-
-#: keymap_alldefs.h:5
-msgid "null operation"
-msgstr ""
-
-#: keymap_alldefs.h:6
-msgid "force viewing of attachment using mailcap"
-msgstr "mailcap birimlerini kullanarak eklentiyi zarureten göster"
-
-#: keymap_alldefs.h:7
-msgid "view attachment as text"
-msgstr "eklentiyi metin olarak göster"
-
-#: keymap_alldefs.h:8
-msgid "Toggle display of subparts"
-msgstr "Altbölümlerin gösterilmesini aç/kapat"
-
-#: keymap_alldefs.h:9
-msgid "move to the bottom of the page"
-msgstr "sayfanýn sonuna geç"
-
-#: keymap_alldefs.h:10
-msgid "remail a message to another user"
-msgstr "iletiyi baþka bir kullanýcýya yeniden gönder"
-
-#: keymap_alldefs.h:11
-msgid "select a new file in this directory"
-msgstr "bu dizinde yeni bir dosya seç"
-
-#: keymap_alldefs.h:12
-msgid "view file"
-msgstr "dosyayý göster"
-
-#: keymap_alldefs.h:13
-msgid "display the currently selected file's name"
-msgstr "seçili dosyanýn ismini göster"
-
-#: keymap_alldefs.h:14
-msgid "subscribe to current mailbox (IMAP only)"
-msgstr "geçerli eposta kutusuna abone ol (sadece IMAP)"
-
-#: keymap_alldefs.h:15
-msgid "unsubscribe to current mailbox (IMAP only)"
-msgstr "geçerli eposta kutusuna varolan aboneliði fehset (sadece IMAP)"
-
-#: keymap_alldefs.h:16
-msgid "toggle view all/subscribed mailboxes (IMAP only)"
-msgstr "yekin/abone olunan eposta kutusu bakýþlarý arasýnda geç (sadece IMAP)"
-
-#: keymap_alldefs.h:17
-msgid "change directories"
-msgstr "dizin deðiþtir"
-
-#: keymap_alldefs.h:18
-msgid "check mailboxes for new mail"
-msgstr "eposta kutularýný yeni eposta için kontrol et"
-
-#: keymap_alldefs.h:19
 msgid "attach a file(s) to this message"
 msgstr "bu iletiye dosya ekle"
 
-#: keymap_alldefs.h:20
 msgid "attach message(s) to this message"
 msgstr "bu iletiye ileti ekle"
 
-#: keymap_alldefs.h:21
-msgid "edit the BCC list"
-msgstr "BCC listesini düzenle"
+msgid "bind: too many arguments"
+msgstr "bind: çok fazla argüman"
 
-#: keymap_alldefs.h:22
-msgid "edit the CC list"
-msgstr "CC listesini düzenle"
-
-#: keymap_alldefs.h:23
-msgid "edit attachment description"
-msgstr "eklenti anlatýmýný düzenle"
-
-#: keymap_alldefs.h:24
-msgid "edit attachment transfer-encoding"
-msgstr "eklenti þekillendirmesini düzenle"
-
-#: keymap_alldefs.h:25
-msgid "enter a file to save a copy of this message in"
-msgstr "bu iletinin bir kopyasý kaydedilecek olan dosyayý belirt"
-
-#: keymap_alldefs.h:26
-msgid "edit the file to be attached"
-msgstr "eklenecek dosyayý düzenle"
-
-#: keymap_alldefs.h:27
-msgid "edit the from field"
-msgstr "gönderen birimini düzenle"
-
-#: keymap_alldefs.h:28
-msgid "edit the message with headers"
-msgstr "iletiyi baþlýklarýyla düzenle"
-
-#: keymap_alldefs.h:29
-msgid "edit the message"
-msgstr "iletiyi düzenle"
-
-#: keymap_alldefs.h:30
-msgid "edit attachment using mailcap entry"
-msgstr "eklentiyi mailcap birimi sayesinde düzenle"
-
-#: keymap_alldefs.h:31
-msgid "edit the Reply-To field"
-msgstr "Reply-To birimini düzenle"
-
-#: keymap_alldefs.h:32
-msgid "edit the subject of this message"
-msgstr "bu iletini konusunu düzenle"
-
-#: keymap_alldefs.h:33
-msgid "edit the TO list"
-msgstr "gönderilen listesini düzenle"
-
-#: keymap_alldefs.h:34
-msgid "create a new mailbox (IMAP only)"
-msgstr "yeni bir eposta kutusu yarat (sadece IMAP)"
-
-#: keymap_alldefs.h:35
-msgid "edit attachment content type"
-msgstr "eklenti içerik tipini düzenle"
-
-#: keymap_alldefs.h:36
-msgid "get a temporary copy of an attachment"
-msgstr "bir eklentinin geçici bir kopyasýný elde et"
-
-#: keymap_alldefs.h:37
-msgid "run ispell on the message"
-msgstr "iletiye ispell komutasýný uygula"
-
-#: keymap_alldefs.h:38
-msgid "compose new attachment using mailcap entry"
-msgstr "mailcap birimlerini kullanarak yeni bir eklenti düzenle"
-
-#: keymap_alldefs.h:39
-msgid "toggle recoding of this attachment"
-msgstr ""
-
-#: keymap_alldefs.h:40
-msgid "save this message to send later"
-msgstr "bu iletiyi sonra göndermek üzere kaydet"
-
-#: keymap_alldefs.h:41
-msgid "rename/move an attached file"
-msgstr "eklenmiþ bir dosyayý yeniden adlandýr/taþý"
-
-#: keymap_alldefs.h:42
-msgid "send the message"
-msgstr "iletiyi gönder"
-
-#: keymap_alldefs.h:43
-msgid "toggle disposition between inline/attachment"
-msgstr ""
-
-#: keymap_alldefs.h:44
-msgid "toggle whether to delete file after sending it"
-msgstr ""
-
-#: keymap_alldefs.h:45
-msgid "update an attachment's encoding info"
-msgstr ""
-
-#: keymap_alldefs.h:46
-msgid "write the message to a folder"
-msgstr "iletiyi bir klasöre yaz"
-
-#: keymap_alldefs.h:47
-msgid "copy a message to a file/mailbox"
-msgstr "bir iletiyi bir dosyaya/eposta kutusuna kopyala"
-
-#: keymap_alldefs.h:48
-msgid "create an alias from a message sender"
-msgstr "gönderenden yola çýkarak bir lakap yarat"
-
-#: keymap_alldefs.h:49
-msgid "move entry to bottom of screen"
-msgstr "birimi ekran sonuna taþý"
-
-#: keymap_alldefs.h:50
-msgid "move entry to middle of screen"
-msgstr "birimi ekran ortasýna taþý"
-
-#: keymap_alldefs.h:51
-msgid "move entry to top of screen"
-msgstr "birimi ekran baþýna taþý"
-
-#: keymap_alldefs.h:52
-msgid "make decoded (text/plain) copy"
-msgstr ""
-
-#: keymap_alldefs.h:53
-msgid "make decoded copy (text/plain) and delete"
-msgstr ""
-
-#: keymap_alldefs.h:54
-msgid "delete the current entry"
-msgstr "geçerli birimi sil"
-
-#: keymap_alldefs.h:55
-msgid "delete the current mailbox (IMAP only)"
-msgstr "geçerli eposta kutusunu sil (sadece IMAP)"
-
-#: keymap_alldefs.h:56
-msgid "delete all messages in subthread"
-msgstr "altkonumdaki yekin iletileri sil"
-
-#: keymap_alldefs.h:57
-msgid "delete all messages in thread"
-msgstr "konumdaki yekin iletileri sil"
-
-#: keymap_alldefs.h:58
-msgid "display full address of sender"
-msgstr "gönderenin tam adresini göster"
-
-#: keymap_alldefs.h:59
-msgid "display message and toggle header weeding"
-msgstr ""
-
-#: keymap_alldefs.h:60
-msgid "display a message"
-msgstr "bir iletiyi göster"
-
-#: keymap_alldefs.h:61
-msgid "edit the raw message"
-msgstr ""
-
-#: keymap_alldefs.h:62
-msgid "delete the char in front of the cursor"
-msgstr ""
-
-#: keymap_alldefs.h:63
-msgid "move the cursor one character to the left"
-msgstr ""
-
-#: keymap_alldefs.h:64
-msgid "move the cursor to the beginning of the word"
-msgstr ""
-
-#: keymap_alldefs.h:65
-msgid "jump to the beginning of the line"
-msgstr "satýr baþýna geç"
-
-#: keymap_alldefs.h:66
-msgid "cycle among incoming mailboxes"
-msgstr ""
-
-#: keymap_alldefs.h:67
-msgid "complete filename or alias"
-msgstr "dosya adýný yada lakabý tamamla"
-
-#: keymap_alldefs.h:68
-msgid "complete address with query"
-msgstr "adresi bir sorgulamayla tamamla"
-
-#: keymap_alldefs.h:69
-msgid "delete the char under the cursor"
-msgstr ""
-
-#: keymap_alldefs.h:70
-msgid "jump to the end of the line"
-msgstr "satýr sonuna geç"
-
-#: keymap_alldefs.h:71
-msgid "move the cursor one character to the right"
-msgstr ""
-
-#: keymap_alldefs.h:72
-msgid "move the cursor to the end of the word"
-msgstr ""
-
-#: keymap_alldefs.h:73 keymap_alldefs.h:74
-msgid "scroll up through the history list"
-msgstr "geçmiþler listesinde yukarý çýk"
-
-#: keymap_alldefs.h:75
-msgid "delete chars from cursor to end of line"
-msgstr ""
-
-#: keymap_alldefs.h:76
-msgid "delete chars from the cursor to the end of the word"
-msgstr ""
-
-#: keymap_alldefs.h:77
-msgid "delete all chars on the line"
-msgstr "satýrdaki yekin harfleri sil"
-
-#: keymap_alldefs.h:78
-msgid "delete the word in front of the cursor"
-msgstr ""
-
-#: keymap_alldefs.h:79
-msgid "quote the next typed key"
-msgstr ""
-
-#: keymap_alldefs.h:80
-msgid "transpose character under cursor with previous"
-msgstr ""
-
-#: keymap_alldefs.h:81
 msgid "capitalize the word"
-msgstr ""
+msgstr "kelimeyi büyük yaz"
 
-#: keymap_alldefs.h:82
-msgid "convert the word to lower case"
-msgstr ""
+msgid "change directories"
+msgstr "dizin deðiþtir"
 
-#: keymap_alldefs.h:83
-msgid "convert the word to upper case"
-msgstr ""
+msgid "check for classic pgp"
+msgstr "klasik pgp için ara"
 
-#: keymap_alldefs.h:84
-msgid "enter a muttrc command"
-msgstr "bir muttrc komutasý belirle"
+msgid "check mailboxes for new mail"
+msgstr "eposta kutularýný yeni eposta için kontrol et"
 
-#: keymap_alldefs.h:85
-msgid "enter a file mask"
-msgstr "bir dosya maskesi belirle"
-
-#: keymap_alldefs.h:86
-msgid "exit this menu"
-msgstr "bu mönüden çýk"
-
-#: keymap_alldefs.h:87
-msgid "filter attachment through a shell command"
-msgstr ""
-
-#: keymap_alldefs.h:88
-msgid "move to the first entry"
-msgstr "ilk birime geç"
-
-#: keymap_alldefs.h:89
-msgid "toggle a message's 'important' flag"
-msgstr ""
-
-#: keymap_alldefs.h:90
-msgid "forward a message with comments"
-msgstr "bir iletiyi anlatýmlarla ilet"
-
-#: keymap_alldefs.h:91
-msgid "select the current entry"
-msgstr "geçerli iletiye geç"
-
-#: keymap_alldefs.h:92
-msgid "reply to all recipients"
-msgstr ""
-
-#: keymap_alldefs.h:93
-msgid "scroll down 1/2 page"
-msgstr "yarým sayfa aþaða geç"
-
-#: keymap_alldefs.h:94
-msgid "scroll up 1/2 page"
-msgstr "yarým sayfa yukarý geç"
-
-#: keymap_alldefs.h:95
-msgid "this screen"
-msgstr "bu ekran"
-
-#: keymap_alldefs.h:96
-msgid "jump to an index number"
-msgstr ""
-
-#: keymap_alldefs.h:97
-msgid "move to the last entry"
-msgstr "son birime geç"
-
-#: keymap_alldefs.h:98
-msgid "reply to specified mailing list"
-msgstr ""
-
-#: keymap_alldefs.h:99
-msgid "execute a macro"
-msgstr ""
-
-#: keymap_alldefs.h:100
-msgid "compose a new mail message"
-msgstr "yeni bir eposta iletisi yarat"
-
-#: keymap_alldefs.h:101
-msgid "open a different folder"
-msgstr "baþka bir dizin yarat"
-
-#: keymap_alldefs.h:102
-msgid "open a different folder in read only mode"
-msgstr ""
-
-#: keymap_alldefs.h:103
 msgid "clear a status flag from a message"
-msgstr ""
+msgstr "iletinin durumunu temizle"
 
-#: keymap_alldefs.h:104
-msgid "delete messages matching a pattern"
-msgstr ""
-
-#: keymap_alldefs.h:105
-msgid "force retrieval of mail from IMAP server"
-msgstr "IMAP sunucularýndan eposta alýmýný zorla"
-
-#: keymap_alldefs.h:106
-msgid "retrieve mail from POP server"
-msgstr "POP sunucusundan epostalarý al"
-
-#: keymap_alldefs.h:107
-msgid "move to the first message"
-msgstr "ilk iletiye geç"
-
-#: keymap_alldefs.h:108
-msgid "move to the last message"
-msgstr "son iletiye geç"
-
-#: keymap_alldefs.h:109
-msgid "show only messages matching a pattern"
-msgstr ""
-
-#: keymap_alldefs.h:110
-msgid "jump to the next new message"
-msgstr ""
-
-#: keymap_alldefs.h:111
-msgid "jump to the next subthread"
-msgstr ""
-
-#: keymap_alldefs.h:112
-msgid "jump to the next thread"
-msgstr ""
-
-#: keymap_alldefs.h:113
-msgid "move to the next undeleted message"
-msgstr ""
-
-#: keymap_alldefs.h:114
-msgid "jump to the next unread message"
-msgstr ""
-
-#: keymap_alldefs.h:115
-msgid "jump to parent message in thread"
-msgstr ""
-
-#: keymap_alldefs.h:116
-msgid "jump to previous thread"
-msgstr ""
-
-#: keymap_alldefs.h:117
-msgid "jump to previous subthread"
-msgstr ""
-
-#: keymap_alldefs.h:118
-msgid "move to the previous undeleted message"
-msgstr ""
-
-#: keymap_alldefs.h:119
-msgid "jump to the previous new message"
-msgstr ""
-
-#: keymap_alldefs.h:120
-msgid "jump to the previous unread message"
-msgstr ""
-
-#: keymap_alldefs.h:121
-msgid "mark the current thread as read"
-msgstr ""
-
-#: keymap_alldefs.h:122
-msgid "mark the current subthread as read"
-msgstr ""
-
-#: keymap_alldefs.h:123
-msgid "set a status flag on a message"
-msgstr ""
-
-#: keymap_alldefs.h:124
-msgid "save changes to mailbox"
-msgstr ""
-
-#: keymap_alldefs.h:125
-msgid "tag messages matching a pattern"
-msgstr ""
-
-#: keymap_alldefs.h:126
-msgid "undelete messages matching a pattern"
-msgstr ""
-
-#: keymap_alldefs.h:127
-msgid "untag messages matching a pattern"
-msgstr ""
-
-#: keymap_alldefs.h:128
-msgid "move to the middle of the page"
-msgstr ""
-
-#: keymap_alldefs.h:129
-msgid "move to the next entry"
-msgstr "önümüzdeki birime geç"
-
-#: keymap_alldefs.h:130
-msgid "scroll down one line"
-msgstr "bir satýr aþaða in"
-
-#: keymap_alldefs.h:131
-msgid "move to the next page"
-msgstr ""
-
-#: keymap_alldefs.h:132
-msgid "jump to the bottom of the message"
-msgstr ""
-
-#: keymap_alldefs.h:133
-msgid "toggle display of quoted text"
-msgstr ""
-
-#: keymap_alldefs.h:134
-msgid "skip beyond quoted text"
-msgstr ""
-
-#: keymap_alldefs.h:135
-msgid "jump to the top of the message"
-msgstr ""
-
-#: keymap_alldefs.h:136
-msgid "pipe message/attachment to a shell command"
-msgstr ""
-
-#: keymap_alldefs.h:137
-msgid "move to the previous entry"
-msgstr "önceki birime geç"
-
-#: keymap_alldefs.h:138
-msgid "scroll up one line"
-msgstr "bir satýr yukarý çýk"
-
-#: keymap_alldefs.h:139
-msgid "move to the previous page"
-msgstr ""
-
-#: keymap_alldefs.h:140
-msgid "print the current entry"
-msgstr ""
-
-#: keymap_alldefs.h:141
-msgid "query external program for addresses"
-msgstr ""
-
-#: keymap_alldefs.h:142
-msgid "append new query results to current results"
-msgstr ""
-
-#: keymap_alldefs.h:143
-msgid "save changes to mailbox and quit"
-msgstr ""
-
-#: keymap_alldefs.h:144
-msgid "recall a postponed message"
-msgstr ""
-
-#: keymap_alldefs.h:145
 msgid "clear and redraw the screen"
 msgstr "ekraný tamizle ve yeniden göster"
 
-#: keymap_alldefs.h:146
-msgid "{internal}"
-msgstr "{iç kullaným}"
+msgid "collapse/uncollapse all threads"
+msgstr "yekin konumlarý göster/gizle"
 
-#: keymap_alldefs.h:147
-msgid "reply to a message"
-msgstr "bir iletiye cevap ver"
+msgid "collapse/uncollapse current thread"
+msgstr "geçerli konumu göster/gizle"
 
-#: keymap_alldefs.h:148
-msgid "use the current message as a template for a new one"
-msgstr ""
+msgid "color: too few arguments"
+msgstr "renkli : eksik argüman"
 
-#: keymap_alldefs.h:149
-msgid "save message/attachment to a file"
-msgstr "iletiyi/eklentiyi dosyaya kaydet"
+msgid "complete address with query"
+msgstr "adresi bir sorgulamayla tamamla"
 
-#: keymap_alldefs.h:150
-msgid "search for a regular expression"
-msgstr ""
+msgid "complete filename or alias"
+msgstr "dosya adýný yada lakabý tamamla"
 
-#: keymap_alldefs.h:151
-msgid "search backwards for a regular expression"
-msgstr ""
+msgid "compose a new mail message"
+msgstr "yeni bir eposta iletisi yarat"
 
-#: keymap_alldefs.h:152
-msgid "search for next match"
-msgstr ""
+msgid "compose new attachment using mailcap entry"
+msgstr "mailcap birimlerini kullanarak yeni bir eklenti düzenle"
 
-#: keymap_alldefs.h:153
-msgid "search for next match in opposite direction"
-msgstr ""
+msgid "convert the word to lower case"
+msgstr "kelimeyi ufak yazýlýma geçir"
 
-#: keymap_alldefs.h:154
-msgid "toggle search pattern coloring"
-msgstr ""
+msgid "convert the word to upper case"
+msgstr "kelimeyi büyük yazýlýma geçir"
 
-#: keymap_alldefs.h:155
+msgid "converting"
+msgstr "dönüþtürülüyor"
+
+msgid "copy a message to a file/mailbox"
+msgstr "bir iletiyi bir dosyaya/eposta kutusuna kopyala"
+
+msgid "could not create temporary folder: %s"
+msgstr "geçici dizini yaratamadým : %s"
+
+msgid "could not write temporary mail folder: %s"
+msgstr "geçici eposta dizinini yaratamadým : %s"
+
+msgid "create a new mailbox (IMAP only)"
+msgstr "yeni bir eposta kutusu yarat (sadece IMAP)"
+
+msgid "create an alias from a message sender"
+msgstr "gönderenden yola çýkarak bir lakap yarat"
+
+msgid "cycle among incoming mailboxes"
+msgstr "eposta kutularý arasýnda gezin"
+
+msgid "dazn"
+msgstr "tabh"
+
+msgid "default colors not supported"
+msgstr "varsayýlan renkler desteklenmiyor"
+
+msgid "delete all chars on the line"
+msgstr "satýrdaki yekin harfleri sil"
+
+msgid "delete all messages in subthread"
+msgstr "altkonumdaki yekin iletileri sil"
+
+msgid "delete all messages in thread"
+msgstr "konumdaki yekin iletileri sil"
+
+msgid "delete chars from cursor to end of line"
+msgstr "imleçten satýr sonuna kadar olan harfleri sil"
+
+msgid "delete chars from the cursor to the end of the word"
+msgstr "imleçten kelime sonuna kadar olan harfleri sil"
+
+msgid "delete messages matching a pattern"
+msgstr "tabire uyan iletileri sil"
+
+msgid "delete the char in front of the cursor"
+msgstr "imleçin önündeki harfi sil"
+
+msgid "delete the char under the cursor"
+msgstr "imleçin altýndaki harfi sil"
+
+msgid "delete the current entry"
+msgstr "geçerli birimi sil"
+
+msgid "delete the current mailbox (IMAP only)"
+msgstr "geçerli eposta kutusunu sil (sadece IMAP)"
+
+msgid "delete the word in front of the cursor"
+msgstr "imleçin önündeki kelimeyi sil"
+
+msgid "dfrsotuzc"
+msgstr "tgakiozbp"
+
+msgid "display a message"
+msgstr "bir iletiyi göster"
+
+msgid "display full address of sender"
+msgstr "gönderenin tam adresini göster"
+
+msgid "display the currently selected file's name"
+msgstr "seçili dosyanýn ismini göster"
+
+msgid "edit attachment content type"
+msgstr "eklenti içerik tipini düzenle"
+
+msgid "edit attachment description"
+msgstr "eklenti anlatýmýný düzenle"
+
+msgid "edit attachment transfer-encoding"
+msgstr "eklenti þekillendirmesini düzenle"
+
+msgid "edit attachment using mailcap entry"
+msgstr "eklentiyi mailcap birimi sayesinde düzenle"
+
+msgid "edit the BCC list"
+msgstr "BCC listesini düzenle"
+
+msgid "edit the CC list"
+msgstr "CC listesini düzenle"
+
+msgid "edit the Reply-To field"
+msgstr "Reply-To birimini düzenle"
+
+msgid "edit the TO list"
+msgstr "gönderilen listesini düzenle"
+
+msgid "edit the file to be attached"
+msgstr "eklenecek dosyayý düzenle"
+
+msgid "edit the from field"
+msgstr "gönderen birimini düzenle"
+
+msgid "edit the message"
+msgstr "iletiyi düzenle"
+
+msgid "edit the message with headers"
+msgstr "iletiyi baþlýklarýyla düzenle"
+
+msgid "edit the raw message"
+msgstr "kaynak iletiyi düzenle"
+
+msgid "edit the subject of this message"
+msgstr "bu iletini konusunu düzenle"
+
+msgid "empty pattern"
+msgstr "boþ tabir"
+
+msgid "enter a file mask"
+msgstr "bir dosya maskesi belirle"
+
+msgid "enter a file to save a copy of this message in"
+msgstr "bu iletinin bir kopyasý kaydedilecek olan dosyayý belirt"
+
+msgid "enter a muttrc command"
+msgstr "bir muttrc komutasý belirle"
+
+msgid "error in expression"
+msgstr "tabirde hata var"
+
+msgid "error in pattern at: %s"
+msgstr "tabirde %s'de hata var"
+
+msgid "esabf"
+msgstr "imfkcp"
+
+msgid "exec: too few arguments"
+msgstr "exec: yetersiz argüman sayýsý"
+
+msgid "execute a macro"
+msgstr "bir macro çalýþtýr"
+
+msgid "exit this menu"
+msgstr "bu mönüden çýk"
+
+msgid "extract PGP public keys"
+msgstr "PGP resmi anahtarlarý çýkar"
+
+msgid "filter attachment through a shell command"
+msgstr "eklentii bir komuta yoluyla filtrala"
+
+msgid "force retrieval of mail from IMAP server"
+msgstr "IMAP sunucularýndan eposta alýmýný zorla"
+
+msgid "force viewing of attachment using mailcap"
+msgstr "mailcap birimlerini kullanarak eklentiyi zarureten göster"
+
+msgid "forward a message with comments"
+msgstr "bir iletiyi anlatýmlarla ilet"
+
+msgid "get a temporary copy of an attachment"
+msgstr "bir eklentinin geçici bir kopyasýný elde et"
+
+msgid "has been deleted --]\n"
+msgstr "silinmiþtir --]\n"
+
+msgid "invalid header field"
+msgstr "geçersiz baþlýk birimi"
+
 msgid "invoke a command in a subshell"
 msgstr "bir alt-kabukta bir komuta çalýþtýr"
 
-#: keymap_alldefs.h:156
-msgid "sort messages"
-msgstr "iletileri sýralandýr"
+msgid "jump to an index number"
+msgstr "endeks sayýsýna geç"
 
-#: keymap_alldefs.h:157
-msgid "sort messages in reverse order"
-msgstr "iletileri ters sýrala"
+msgid "jump to parent message in thread"
+msgstr "konumdaki ana iletiye geç"
 
-#: keymap_alldefs.h:158
-msgid "tag the current entry"
-msgstr ""
+msgid "jump to previous subthread"
+msgstr "önceki alt-konuma geç"
 
-#: keymap_alldefs.h:159
-msgid "apply next function to tagged messages"
-msgstr ""
+msgid "jump to previous thread"
+msgstr "önceki konuma geç"
 
-#: keymap_alldefs.h:160
-msgid "tag the current subthread"
-msgstr ""
+msgid "jump to the beginning of the line"
+msgstr "satýr baþýna geç"
 
-#: keymap_alldefs.h:161
-msgid "tag the current thread"
-msgstr ""
+msgid "jump to the bottom of the message"
+msgstr "iletinin sonuna geç"
 
-#: keymap_alldefs.h:162
-msgid "toggle a message's 'new' flag"
-msgstr ""
+msgid "jump to the end of the line"
+msgstr "satýr sonuna geç"
 
-#: keymap_alldefs.h:163
-msgid "toggle whether the mailbox will be rewritten"
-msgstr ""
+msgid "jump to the next new message"
+msgstr "önümüzdeki yeni iletiye geç"
 
-#: keymap_alldefs.h:164
-msgid "toggle whether to browse mailboxes or all files"
-msgstr ""
+msgid "jump to the next subthread"
+msgstr "önümüzdeki alt-konuma geç"
 
-#: keymap_alldefs.h:165
+msgid "jump to the next thread"
+msgstr "önümüzdeki konuma geç"
+
+msgid "jump to the next unread message"
+msgstr "önümüzdeki okunmamýþ iletiye geç"
+
+msgid "jump to the previous new message"
+msgstr "önceki yeni iletiye geç"
+
+msgid "jump to the previous unread message"
+msgstr "önceki okunmamýþ iletiye geç"
+
+msgid "jump to the top of the message"
+msgstr "iletinin baþýna geç"
+
+msgid "macro: empty key sequence"
+msgstr "macro: boþ tuþ metni"
+
+msgid "macro: too many arguments"
+msgstr "macro: çok fazla argüman"
+
+msgid "mail a PGP public key"
+msgstr "bir PGP resmi anahtarý gönder"
+
+msgid "mailcap entry for type %s not found"
+msgstr "%s için mailcap birimi bulunamadý"
+
+msgid "make decrypted copy"
+msgstr "çözülmüþ kopya yarat"
+
+msgid "make decrypted copy and delete"
+msgstr "çözülmüþ kopyasýný yarat ve sil"
+
+msgid "mark the current subthread as read"
+msgstr "geçerli alt-konumu okunmuþ olarak iþaretle"
+
+msgid "mark the current thread as read"
+msgstr "geçerli konumu okunmuþ olarak iþaretle"
+
+msgid "mismatched parenthesis: %s"
+msgstr "hatalý parantez : %s"
+
+msgid "missing filename.\n"
+msgstr "eksik dosya ismi.\n"
+
+msgid "missing parameter"
+msgstr "eksik argüman"
+
+msgid "mono: too few arguments"
+msgstr "siyah-beyaz : eksik argüman"
+
+msgid "move entry to bottom of screen"
+msgstr "birimi ekran sonuna taþý"
+
+msgid "move entry to middle of screen"
+msgstr "birimi ekran ortasýna taþý"
+
+msgid "move entry to top of screen"
+msgstr "birimi ekran baþýna taþý"
+
+msgid "move the cursor one character to the left"
+msgstr "imleçi bir harf sola taþý"
+
+msgid "move the cursor one character to the right"
+msgstr "imleçi bir harf saða taþý"
+
+msgid "move the cursor to the beginning of the word"
+msgstr "imleçi kelime baþýna taþý"
+
+msgid "move the cursor to the end of the word"
+msgstr "imleçi kelime sonuna taþý"
+
+msgid "move to the bottom of the page"
+msgstr "sayfanýn sonuna geç"
+
+msgid "move to the first entry"
+msgstr "ilk birime geç"
+
+msgid "move to the first message"
+msgstr "ilk iletiye geç"
+
+msgid "move to the last entry"
+msgstr "son birime geç"
+
+msgid "move to the last message"
+msgstr "son iletiye geç"
+
+msgid "move to the middle of the page"
+msgstr "sayfanýn ortasýna geç"
+
+msgid "move to the next entry"
+msgstr "önümüzdeki birime geç"
+
+msgid "move to the next page"
+msgstr "önümüzdeki sayfaya geç"
+
+msgid "move to the next undeleted message"
+msgstr "önümüzdeki silinmemiþ iletiye geç"
+
+msgid "move to the previous entry"
+msgstr "önceki birime geç"
+
+msgid "move to the previous page"
+msgstr "önceki sayfaya geç"
+
+msgid "move to the previous undeleted message"
+msgstr "önceki silinmemiþ iletiye geç"
+
 msgid "move to the top of the page"
-msgstr ""
+msgstr "sayfanýn baþýna geç"
 
-#: keymap_alldefs.h:166
-msgid "undelete the current entry"
-msgstr ""
+msgid "mutt_restore_default(%s): error in regexp: %s\n"
+msgstr "mutt_restore_default(%s): tabirde hata var: %s\n"
 
-#: keymap_alldefs.h:167
-msgid "undelete all messages in thread"
-msgstr ""
+msgid "no"
+msgstr "hayýr"
 
-#: keymap_alldefs.h:168
-msgid "undelete all messages in subthread"
-msgstr ""
+msgid "not converting"
+msgstr "dönüþtürülmüyor"
 
-#: keymap_alldefs.h:169
-msgid "show the Mutt version number and date"
-msgstr ""
+msgid "null key sequence"
+msgstr "boþ tuþ metni"
 
-#: keymap_alldefs.h:170
-msgid "view attachment using mailcap entry if necessary"
-msgstr ""
+msgid "null operation"
+msgstr "belirlenmemiþ iþlem"
 
-#: keymap_alldefs.h:171
+msgid "oac"
+msgstr "sep"
+
+msgid "open a different folder"
+msgstr "baþka bir dizin yarat"
+
+msgid "open a different folder in read only mode"
+msgstr "baþka bir dizini salt okunur aç"
+
+msgid "pipe message/attachment to a shell command"
+msgstr "ileti/eklentii bir komutaya boru yoluyla filtrala"
+
+msgid "print the current entry"
+msgstr "geçerli birimi yazdýrt"
+
+msgid "push: too many arguments"
+msgstr "push: çok fazla argüman"
+
+msgid "query external program for addresses"
+msgstr "adresler için baþka bir uygulamayý sorgula"
+
+msgid "recall a postponed message"
+msgstr "kenara býrakýlmýþ iletiyi yeniden düzenle"
+
+msgid "remail a message to another user"
+msgstr "iletiyi baþka bir kullanýcýya yeniden gönder"
+
+msgid "rename/move an attached file"
+msgstr "eklenmiþ bir dosyayý yeniden adlandýr/taþý"
+
+msgid "reply to a message"
+msgstr "bir iletiye cevap ver"
+
+msgid "reply to all recipients"
+msgstr "yekin alýcýlara cevap ver"
+
+msgid "reply to specified mailing list"
+msgstr "belirlenmiþ eposta listesine cevap ver"
+
+msgid "retrieve mail from POP server"
+msgstr "POP sunucusundan epostalarý al"
+
+msgid "ro"
+msgstr "rs"
+
+msgid "roa"
+msgstr "rsh"
+
+msgid "run ispell on the message"
+msgstr "iletiye ispell komutasýný uygula"
+
+msgid "save changes to mailbox"
+msgstr "eposta kutusuna yapýlan deðiþiklikleri kaydet"
+
+msgid "save changes to mailbox and quit"
+msgstr "eposta kutusuna yapýlan deðiþiklikleri kaydet ve çýk"
+
+msgid "save message/attachment to a file"
+msgstr "iletiyi/eklentiyi dosyaya kaydet"
+
+msgid "save this message to send later"
+msgstr "bu iletiyi sonra göndermek üzere kaydet"
+
+msgid "score: too few arguments"
+msgstr "puan: yeterinden az argüman"
+
+msgid "score: too many arguments"
+msgstr "puan: çok fazla argüman"
+
+msgid "scroll down 1/2 page"
+msgstr "yarým sayfa aþaða geç"
+
+msgid "scroll down one line"
+msgstr "bir satýr aþaða in"
+
+msgid "scroll up 1/2 page"
+msgstr "yarým sayfa yukarý geç"
+
+msgid "scroll up one line"
+msgstr "bir satýr yukarý çýk"
+
+msgid "scroll up through the history list"
+msgstr "geçmiþler listesinde yukarý çýk"
+
+msgid "search for next match"
+msgstr "önümüzdeki eþleþimi ara"
+
+msgid "search for next match in opposite direction"
+msgstr "önümüzdeki eþleþimi ters yönden ara"
+
+msgid "select a new file in this directory"
+msgstr "bu dizinde yeni bir dosya seç"
+
+msgid "select the current entry"
+msgstr "geçerli iletiye geç"
+
+msgid "send the message"
+msgstr "iletiyi gönder"
+
+msgid "set a status flag on a message"
+msgstr "bir iletinin durumunu belirle"
+
 msgid "show MIME attachments"
 msgstr "MIME eklentileri göster"
 
-#: keymap_alldefs.h:172
-msgid "show currently active limit pattern"
-msgstr ""
-
-#: keymap_alldefs.h:173
-msgid "collapse/uncollapse current thread"
-msgstr ""
-
-#: keymap_alldefs.h:174
-msgid "collapse/uncollapse all threads"
-msgstr ""
-
-#: keymap_alldefs.h:175
-msgid "attach a PGP public key"
-msgstr ""
-
-#: keymap_alldefs.h:176
 msgid "show PGP options"
 msgstr "PGP ayarlarýný göster"
 
-#: keymap_alldefs.h:177
-msgid "extract PGP public keys"
-msgstr ""
+msgid "show only messages matching a pattern"
+msgstr "sadece tabire uyan iletileri göster"
 
-#: keymap_alldefs.h:178
-msgid "wipe PGP passphrase from memory"
-msgstr ""
+msgid "show the Mutt version number and date"
+msgstr "Mutt sürümünü ve tarihini göster ve çýk"
 
-#: keymap_alldefs.h:179
-msgid "mail a PGP public key"
-msgstr ""
+msgid "sort messages"
+msgstr "iletileri sýralandýr"
 
-#: keymap_alldefs.h:180
-msgid "verify a PGP public key"
-msgstr ""
+msgid "sort messages in reverse order"
+msgstr "iletileri ters sýrala"
 
-#: keymap_alldefs.h:181
-msgid "view the key's user id"
-msgstr ""
+msgid "source: error at %s"
+msgstr "source: %s'de hata var"
 
-#: keymap_alldefs.h:182
-msgid "make decrypted copy and delete"
-msgstr ""
+msgid "source: errors in %s"
+msgstr "source: %s'de hatalar var"
 
-#: keymap_alldefs.h:183
-msgid "make decrypted copy"
-msgstr ""
+msgid "source: reading aborted due too many errors in %s"
+msgstr "source: %s'de oluþan çok fazla hatadan dolayý okuma iptal edildi"
 
-#: keymap_alldefs.h:184
-msgid "check for classic pgp"
-msgstr ""
+msgid "source: too many arguments"
+msgstr "source: çok fazla argüman"
 
-#: keymap_alldefs.h:185
-msgid "Accept the chain constructed"
-msgstr ""
+msgid "subscribe to current mailbox (IMAP only)"
+msgstr "geçerli eposta kutusuna abone ol (sadece IMAP)"
 
-#: keymap_alldefs.h:186
-msgid "Append a remailer to the chain"
-msgstr ""
+msgid "tag the current entry"
+msgstr "geçerli birimi iþaretle"
 
-#: keymap_alldefs.h:187
-msgid "Insert a remailer into the chain"
-msgstr ""
+msgid "tag the current subthread"
+msgstr "geçerli alt-konumu iþaretle"
 
-#: keymap_alldefs.h:188
-msgid "Delete a remailer from the chain"
-msgstr ""
+msgid "tag the current thread"
+msgstr "geçerli konumu iþaretle"
 
-#: keymap_alldefs.h:189
-msgid "Select the previous element of the chain"
-msgstr ""
+msgid "this screen"
+msgstr "bu ekran"
 
-#: keymap_alldefs.h:190
-msgid "Select the next element of the chain"
-msgstr ""
+msgid "toggle a message's 'important' flag"
+msgstr "iletinin 'önemli' durumunu aç/kapat"
 
-#: keymap_alldefs.h:191
-msgid "send the message through a mixmaster remailer chain"
-msgstr ""
+msgid "toggle a message's 'new' flag"
+msgstr "bir iletinin 'yeni' iþaretini aç/kapat"
 
-#: lib.c:59 lib.c:74 lib.c:105
-msgid "Out of memory!"
-msgstr "Bellek iflasý ,-)"
+msgid "toggle view all/subscribed mailboxes (IMAP only)"
+msgstr "yekin/abone olunan eposta kutusu bakýþlarý arasýnda geç (sadece IMAP)"
 
-#: main.c:41
-msgid ""
-"To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
-"To report a bug, please use the flea(1) utility.\n"
-msgstr ""
-"Yazarlara ulaþmak içim lütfen <mutt-dev@mutt.org> listesine eposta "
-"gönderin.\n"
-"Bir hata raporunu göndermek için lütfen flea(1) uygulamasýný kullanýn.\n"
+msgid "toggle whether the mailbox will be rewritten"
+msgstr "eposta kutusunun yeniden yazýlmasýný aç/kapat"
 
-#: main.c:45
-#, fuzzy
-msgid ""
-"Copyright (C) 1996-2001 Michael R. Elkins and others.\n"
-"Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
-"Mutt is free software, and you are welcome to redistribute it\n"
-"under certain conditions; type `mutt -vv' for details.\n"
-msgstr ""
-"Telif hakký (C) 1996-2000 Michael R. Elkins ve baþkalarý.\n"
-"Mutt hiçbir garantiyle gelmez; daha fazla bilgi için 'mutt -vv' çalýþtýr.\n"
-"Mutt GPL lisansý altýnda yayýnlanmýþtýr ve daha fazla\n"
-"bilgi için 'mutt -vv' çalýþtýrabilirsiniz.\n"
+msgid "toggle whether to browse mailboxes or all files"
+msgstr "sadece eposta kutularýný mý yoksa yekin dosyalarý gezmesini aç/kapat"
 
-#: main.c:51
-msgid ""
-"Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
-"Copyright (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2001 Thomas Roessler <roessler@guug.de>\n"
-"Copyright (C) 1998-2001 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>\n"
-"Copyright (C) 1999-2001 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-"Copyright (C) 2000-2001 Edmund Grimley Evans <edmundo@rano.org>\n"
-"\n"
-"Lots of others not mentioned here contributed lots of code,\n"
-"fixes, and suggestions.\n"
-"\n"
-"    This program is free software; you can redistribute it and/or modify\n"
-"    it under the terms of the GNU General Public License as published by\n"
-"    the Free Software Foundation; either version 2 of the License, or\n"
-"    (at your option) any later version.\n"
-"\n"
-"    This program is distributed in the hope that it will be useful,\n"
-"    but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"    GNU General Public License for more details.\n"
-"\n"
-"    You should have received a copy of the GNU General Public License\n"
-"    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
-msgstr ""
+msgid "too few arguments"
+msgstr "çok az seçenek"
 
-#: main.c:88
+msgid "too many arguments"
+msgstr "çok fazla seçenek"
+
+msgid "unable to determine home directory"
+msgstr "baþlangýç dizini belirlenemedi"
+
+msgid "unable to determine username"
+msgstr "kullanýcý adý belirlenemedi"
+
+msgid "undelete all messages in subthread"
+msgstr "alt-konumdaki yekin iletileri kurtar"
+
+msgid "undelete all messages in thread"
+msgstr "konumdaki yekin iletileri kurtar"
+
+msgid "undelete the current entry"
+msgstr "geçerli birimi kurtar"
+
+msgid "unknown error"
+msgstr "bilinmeyen hata"
+
+msgid "unsubscribe to current mailbox (IMAP only)"
+msgstr "geçerli eposta kutusuna varolan aboneliði fehset (sadece IMAP)"
+
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
-"]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
-"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"]\n       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
+"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2339,1386 +2398,66 @@ msgstr ""
 "  -Z\t\tyeni ileti içeren ilk klasörü göster, yeni ileti yoksa hemen çýk\n"
 "  -h\t\tbu yardým iletisini göster"
 
-#: main.c:140
+msgid "use the current message as a template for a new one"
+msgstr "geçerli iletiyi yeni bir ileti için örnek olarak kullan"
+
+msgid "verify a PGP public key"
+msgstr "bir PGP resmi anahtarý doðrula"
+
+msgid "view attachment as text"
+msgstr "eklentiyi metin olarak göster"
+
+msgid "view file"
+msgstr "dosyayý göster"
+
+msgid "view the key's user id"
+msgstr "anahtarýn kullanýcý numarasýný göster"
+
+msgid "write the message to a folder"
+msgstr "iletiyi bir klasöre yaz"
+
+msgid "yes"
+msgstr "evet"
+
+msgid "{internal}"
+msgstr "{iç kullaným}"
+
 msgid ""
-"\n"
-"Compile options:"
+"~~\t\tinsert a line begining with a single ~\n"
+"~b users\tadd users to the Bcc: field\n"
+"~c users\tadd users to the Cc: field\n"
+"~f messages\tinclude messages\n"
+"~F messages\tsame as ~f, except also include headers\n"
+"~h\t\tedit the message header\n"
+"~m messages\tinclude and quote messages\n"
+"~M messages\tsame as ~m, except include headers\n"
+"~p\t\tprint the message\n"
+"~q\t\twrite file and quit editor\n"
+"~r file\t\tread a file into the editor\n"
+"~t users\tadd users to the To: field\n"
+"~u\t\trecall the previous line\n"
+"~v\t\tedit message with the $visual editor\n"
+"~w file\t\twrite message to file\n"
+"~x\t\tabort changes and quit editor\n"
+"~?\t\tthis message\n"
+".\t\ton a line by itself ends input\n"
 msgstr ""
-"\n"
-"Denetleme seçenekleri:"
+"~~\t\ttek bir ~ içeren bir satýrý baþa ekle\n"
+"~b isimler\tisimleri görünmez kopya listesine (BCC) ekle\n"
+"~c isimler\tisimleri görünür kopya listesine (CC) ekle\n"
+"~f iletiler\tiletileri içer\n"
+"~F iletiler\t~f'ye benzer fakat bu seçenek baþlýklarý da içerir\n"
+"~h\t\tileti baþlýðýný deðiþtir\n"
+"~m iletiler\tiletileri içer ve cevap ver\n"
+"~M iletiler\t~m gibi fakat bu seçenek baþlýklarý da içerir\n"
+"~p\t\tiletiyi yazdýrýr\n"
+"~q\t\tdosyayý kaydedip editörden çýk\n"
+"~r dosya\t\tdosyayý editörle aç\n"
+"~t isimler\tisimleri gönderilenler listesine ekle\n"
+"~u\t\tson satýrý tekrar et\n"
+"~v\t\tiletiyi $visual editörüyle düzenle\n"
+"~w dosya\t\tiletiyi dosyaya kaydet\n"
+"~x\t\tdeðiþiklikleri iptal et ve editörden çýk\n"
+"~?\t\tbu ileti\n"
+".\t\tsatýrda tek bir . iþlevi bitirir\n"
 
-#: main.c:413
-msgid "Error initializing terminal."
-msgstr "Komutayý baþlatýrken hata oldu."
-
-#: main.c:513
-#, c-format
-msgid "Debugging at level %d.\n"
-msgstr ""
-
-#: main.c:515
-msgid "DEBUG was not defined during compilation.  Ignored.\n"
-msgstr ""
-
-#: main.c:632
-#, c-format
-msgid "%s does not exist. Create it?"
-msgstr "%s yok. Yaratýlsýn mý?"
-
-#: main.c:636
-#, c-format
-msgid "Can't create %s: %s."
-msgstr "%s: %s yaratýlanamadý."
-
-#: main.c:681
-msgid "No recipients specified.\n"
-msgstr "Alýcýlar belirlenmedi.\n"
-
-#: main.c:767
-#, c-format
-msgid "%s: unable to attach file.\n"
-msgstr "%s: dosya eklenemedi.\n"
-
-#: main.c:787
-msgid "No mailbox with new mail."
-msgstr "Yeni epostalý eposta kutusu yoktur."
-
-#: main.c:796
-msgid "No incoming mailboxes defined."
-msgstr "Gelen kutularý belirlenmedi."
-
-#: main.c:827
-msgid "Mailbox is empty."
-msgstr "Eposta kutusu boþtur."
-
-#: mbox.c:129 mbox.c:286
-msgid "Reading %s... %d (%d%%)"
-msgstr "%s okunuyor... %d (%%%d)"
-
-#: mbox.c:152 mbox.c:211
-msgid "Mailbox is corrupt!"
-msgstr "Eposta kutusu bozuktur!"
-
-#: mbox.c:659
-msgid "Mailbox was corrupted!"
-msgstr "Eposta kutusu bozulmuþtur!"
-
-#: mbox.c:696 mbox.c:971
-msgid "Fatal error!  Could not reopen mailbox!"
-msgstr "Aðýr hata! Eposta kutusunu yeniden açamadým!"
-
-#: mbox.c:705
-msgid "Unable to lock mailbox!"
-msgstr "Eposta kutusunu kilitleyemedim!"
-
-#. this means ctx->changed or ctx->deleted was set, but no
-#. * messages were found to be changed or deleted.  This should
-#. * never happen, is we presume it is a bug in mutt.
-#.
-#: mbox.c:751
-msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr ""
-
-#: mbox.c:792
-msgid "Writing messages... %d (%d%%)"
-msgstr "Iletiler yazýlýyor... %d (%%%d)"
-
-#: mbox.c:955
-#, c-format
-msgid "Write failed!  Saved partial mailbox to %s"
-msgstr "Yazma baþarýsýz oldu! Eposta kutusunun bir bölümü %s'ye yazýlmýþtýr"
-
-#: mbox.c:1021
-msgid "Could not reopen mailbox!"
-msgstr "Eposta kutusu yeniden açýlanamadý!"
-
-#: mbox.c:1059
-msgid "Reopening mailbox..."
-msgstr "Eposta kutusu yeniden açýlýyor..."
-
-#: menu.c:395
-msgid "Jump to: "
-msgstr "Geç: "
-
-#: menu.c:404
-msgid "Invalid index number."
-msgstr "Geçersiz sýralama numarasý."
-
-#: menu.c:408 menu.c:426 menu.c:462 menu.c:503 menu.c:519 menu.c:530
-#: menu.c:541 menu.c:583 menu.c:594 menu.c:607 menu.c:620 menu.c:982
-msgid "No entries."
-msgstr "Birim yok."
-
-#: menu.c:423
-msgid "You cannot scroll down farther."
-msgstr "Daha alta geçmek mümkün deðildir."
-
-#: menu.c:439
-msgid "You cannot scroll up farther."
-msgstr "Daga yukarýya geçmek mümkün deðildir."
-
-#: menu.c:459
-msgid "You are on the last page."
-msgstr "Son sayfadasýnýz."
-
-#: menu.c:481
-msgid "You are on the first page."
-msgstr "Ilk sayfadasýnýz."
-
-#: menu.c:560
-msgid "First entry is shown."
-msgstr "Ilk birim gösteriliyor."
-
-#: menu.c:580
-msgid "Last entry is shown."
-msgstr "son birim gösteriliyor."
-
-#: menu.c:631
-msgid "You are on the last entry."
-msgstr "Son birimdesiniz."
-
-#: menu.c:642
-msgid "You are on the first entry."
-msgstr "Ilk birimdesiniz."
-
-#: menu.c:702 pattern.c:1233
-msgid "Search for: "
-msgstr "Ara: "
-
-#: menu.c:703
-msgid "Reverse search for: "
-msgstr "Ters ara: "
-
-#: menu.c:713 pattern.c:1266
-msgid "No search pattern."
-msgstr "Arama tabiri yok."
-
-#: menu.c:743 pager.c:1840 pager.c:1856 pager.c:1944 pattern.c:1331
-msgid "Not found."
-msgstr "Bulunmadý."
-
-#: menu.c:852
-msgid "No tagged entries."
-msgstr "Iþaretlenmiþ birim yok."
-
-#: menu.c:945
-msgid "Search is not implemented for this menu."
-msgstr "Bu mönüde arama þimdilik mümkün deðildir."
-
-#: menu.c:950
-msgid "Jumping is not implemented for dialogs."
-msgstr "Diyaloklar için hýzlý geçiþ þimdilik mümkün deðildir."
-
-#: menu.c:985
-msgid "Tagging is not supported."
-msgstr "Iþaretleme desteklenmiyor."
-
-#: mh.c:194
-#, c-format
-msgid "Reading %s... %d"
-msgstr "%s okunuyor... %d"
-
-#: muttlib.c:832
-msgid "File is a directory, save under it?"
-msgstr "Dosya bir dizin, dizin altýnda kaydedilsin mi?"
-
-#: muttlib.c:837
-msgid "File under directory: "
-msgstr "Dosyayý dizin altýnda kaydet: "
-
-#: muttlib.c:849
-msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
-msgstr "Dosya zaten var, ü(s)tüne yaz, (e)kle yoksa i(p)tal mý?"
-
-#: muttlib.c:849
-msgid "oac"
-msgstr "sep"
-
-#: muttlib.c:1136
-msgid "Can't save message to POP mailbox."
-msgstr "Ileti POP eposta kutusuna kaydedilmiyor."
-
-#: muttlib.c:1145
-#, c-format
-msgid "%s is not a mailbox!"
-msgstr "%s bir eposta kutusu deðil!"
-
-#: muttlib.c:1151
-#, c-format
-msgid "Append messages to %s?"
-msgstr "Iletiler %s'e eklensin mi?"
-
-#: mutt_socket.c:84 mutt_socket.c:140
-#, fuzzy, c-format
-msgid "Connection to %s closed"
-msgstr "%s'ye baðlanmak baþærýsýz oldu."
-
-#: mutt_socket.c:250
-msgid "SSL is unavailable."
-msgstr "SSL eriþilir deðil."
-
-#: mutt_socket.c:281
-msgid "Preconnect command failed."
-msgstr "Önceden baðlanma komutasý baþærýsýz oldu."
-
-#: mutt_socket.c:352 mutt_socket.c:366
-#, fuzzy, c-format
-msgid "Error talking to %s (%s)"
-msgstr "%s'e baðlanýlýrken hata oldu"
-
-#: mutt_socket.c:400 mutt_socket.c:441
-#, c-format
-msgid "Looking up %s..."
-msgstr "%s aranýyor..."
-
-#: mutt_socket.c:405 mutt_socket.c:445
-#, c-format
-msgid "Could not find the host \"%s\""
-msgstr "Sunucu \"%s\" bulunamýyor."
-
-#: mutt_socket.c:409 mutt_socket.c:450
-#, c-format
-msgid "Connecting to %s..."
-msgstr "%s'e baðlanýlýyor..."
-
-#: mutt_socket.c:473
-#, c-format
-msgid "Could not connect to %s (%s)."
-msgstr "%s (%s)'e baðlanýlýnamadý."
-
-#: mutt_ssl.c:172
-msgid "Failed to find enough entropy on your system"
-msgstr ""
-
-#: mutt_ssl.c:196
-#, c-format
-msgid "Filling entropy pool: %s...\n"
-msgstr ""
-
-#: mutt_ssl.c:204
-#, c-format
-msgid "%s has insecure permissions!"
-msgstr "%s güvenilir eriþim haklarýna sahip deðildir"
-
-#: mutt_ssl.c:223
-msgid "SSL disabled due the lack of entropy"
-msgstr ""
-
-#: mutt_ssl.c:335
-msgid "Unable to get certificate from peer"
-msgstr ""
-
-#: mutt_ssl.c:343
-#, c-format
-msgid "SSL connection using %s (%s)"
-msgstr "%s (%s) kullanarak SSL baðlantýsý kuruluyor"
-
-#: mutt_ssl.c:371
-msgid "Unknown"
-msgstr "Bilinmiyor"
-
-#: mutt_ssl.c:396
-msgid "[unable to calculate]"
-msgstr "[hesaplanamýyor]"
-
-#: mutt_ssl.c:414
-msgid "[invalid date]"
-msgstr "[geçersiz tarih]"
-
-#: mutt_ssl.c:489
-msgid "Server certificate is not yet valid"
-msgstr "Sunucu sertifikasý daha geçerli deðildir"
-
-#: mutt_ssl.c:496
-msgid "Server certificate has expired"
-msgstr "Sunucu sertifikasýnýn süresi bitmiþtir"
-
-#: mutt_ssl.c:569
-msgid "This certificate belongs to:"
-msgstr "Sertifikanýn sahibi kuruluþ:"
-
-#: mutt_ssl.c:579
-msgid "This certificate was issued by:"
-msgstr "Sertifikayý veren kuruluþ:"
-
-#: mutt_ssl.c:589
-msgid "This certificate is valid"
-msgstr "Bu sertifika geçerlidir"
-
-#: mutt_ssl.c:590
-#, c-format
-msgid "   from %s"
-msgstr "   %s'den"
-
-#: mutt_ssl.c:592
-#, c-format
-msgid "     to %s"
-msgstr "     %s'e"
-
-#: mutt_ssl.c:598
-#, c-format
-msgid "Fingerprint: %s"
-msgstr ""
-
-#: mutt_ssl.c:600
-msgid "SSL Certificate check"
-msgstr "SSL sertifika doðrulamasý"
-
-#: mutt_ssl.c:603
-msgid "(r)eject, accept (o)nce, (a)ccept always"
-msgstr "(r)ed'et, (s)adece bu defa , (h)erzaman kabul et"
-
-#: mutt_ssl.c:604
-msgid "roa"
-msgstr "rsh"
-
-#: mutt_ssl.c:608
-msgid "(r)eject, accept (o)nce"
-msgstr "(r)ed'et, (s)adece bu defalýðýna kabul et"
-
-#: mutt_ssl.c:609
-msgid "ro"
-msgstr "rs"
-
-#: mutt_ssl.c:613 pgpkey.c:510
-msgid "Exit  "
-msgstr "Çýk  "
-
-#: mutt_ssl.c:639
-msgid "Warning: Couldn't save certificate"
-msgstr "Ikaz: Sertifika kaydedilemedi"
-
-#: mutt_ssl.c:644
-msgid "Certificate saved"
-msgstr "Sertifika kaydedildi"
-
-#: mx.c:118
-#, c-format
-msgid "Lock count exceeded, remove lock for %s?"
-msgstr ""
-
-#: mx.c:130
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr ""
-
-#: mx.c:188
-msgid "Timeout exceeded while attempting fcntl lock!"
-msgstr ""
-
-#: mx.c:194
-#, c-format
-msgid "Waiting for fcntl lock... %d"
-msgstr ""
-
-#: mx.c:222
-msgid "Timeout exceeded while attempting flock lock!"
-msgstr ""
-
-#: mx.c:229
-#, c-format
-msgid "Waiting for flock attempt... %d"
-msgstr ""
-
-#: mx.c:587
-#, c-format
-msgid "Couldn't lock %s\n"
-msgstr ""
-
-#: mx.c:675
-#, c-format
-msgid "Reading %s..."
-msgstr "%s okunuyor..."
-
-#: mx.c:774
-#, c-format
-msgid "Writing %s..."
-msgstr "%s yazýlýyor..."
-
-#: mx.c:807
-#, c-format
-msgid "Could not synchronize mailbox %s!"
-msgstr "Eposta kutusu %s'yi eþitlenemedi!"
-
-#: mx.c:872
-#, c-format
-msgid "Move read messages to %s?"
-msgstr "Okunan iletiler %s'e taþýnsýn mý?"
-
-#: mx.c:884 mx.c:1137
-#, c-format
-msgid "Purge %d deleted message?"
-msgstr "Silmek için iþaretlenmiþ %d ileti silinsin mi?"
-
-#: mx.c:884 mx.c:1137
-#, c-format
-msgid "Purge %d deleted messages?"
-msgstr "Silmek için iþaretlenmiþ %d ileti silinsin mi?"
-
-#: mx.c:908
-#, c-format
-msgid "Moving read messages to %s..."
-msgstr "Okunan iletiler %s'e taþýnýyor..."
-
-#: mx.c:966 mx.c:1128
-msgid "Mailbox is unchanged."
-msgstr "eposta kutusu deðiþtirilmedi."
-
-#: mx.c:1002
-#, c-format
-msgid "%d kept, %d moved, %d deleted."
-msgstr "%d kaldý, %d taþýndý, %d silindi."
-
-#: mx.c:1005 mx.c:1175
-#, c-format
-msgid "%d kept, %d deleted."
-msgstr "%d kaldý, %d silindi."
-
-#: mx.c:1113
-#, c-format
-msgid " Press '%s' to toggle write"
-msgstr " Yazabilir yapmak icýn '%s'e basýlýr"
-
-#: mx.c:1115
-msgid "Use 'toggle-write' to re-enable write!"
-msgstr "'toggle-write' ile yeniden yazýlabilir yapabilinir!"
-
-#: mx.c:1117
-#, c-format
-msgid "Mailbox is marked unwritable. %s"
-msgstr "eposta kutusu yazýlamayabilir yapýldý. %s"
-
-#: mx.c:1172
-msgid "Mailbox checkpointed."
-msgstr "Eposta kutusu kontrol edildi."
-
-#: mx.c:1472
-msgid "Can't write message"
-msgstr "Iletiyi yazamadým"
-
-#: pager.c:61
-msgid "Not available in this menu."
-msgstr "Bu mönüde yoktur."
-
-#: pager.c:1364
-msgid "PrevPg"
-msgstr "Sa. Geri"
-
-#: pager.c:1365
-msgid "NextPg"
-msgstr "Sa. Ileri"
-
-#: pager.c:1369
-msgid "View Attachm."
-msgstr "Eklenti göster"
-
-#: pager.c:1372
-msgid "Next"
-msgstr "Ileri"
-
-#. emulate "less -q" and don't go on to the next message.
-#: pager.c:1749 pager.c:1780 pager.c:1812 pager.c:2032
-msgid "Bottom of message is shown."
-msgstr "Iletinin sonu gösteriliyor."
-
-#: pager.c:1765 pager.c:1787 pager.c:1794 pager.c:1801
-msgid "Top of message is shown."
-msgstr "Iletinin baþý gösteriliyor."
-
-#: pager.c:1874
-msgid "Reverse search: "
-msgstr "Geriye dönük ara: "
-
-#: pager.c:1875
-msgid "Search: "
-msgstr "Ara: "
-
-#: pager.c:1970
-msgid "Help is currently being shown."
-msgstr "Yardým þu an gösteriliyor."
-
-#: pager.c:1999
-msgid "No more quoted text."
-msgstr ""
-
-#: pager.c:2012
-msgid "No more unquoted text after quoted text."
-msgstr ""
-
-#: parse.c:559
-msgid "multipart message has no boundary parameter!"
-msgstr ""
-
-#: pattern.c:251
-#, c-format
-msgid "Error in expression: %s"
-msgstr "Tabirde hata var: %s"
-
-#: pattern.c:361
-#, c-format
-msgid "Invalid day of month: %s"
-msgstr "Geçersiz ay günü: %s"
-
-#: pattern.c:375
-#, c-format
-msgid "Invalid month: %s"
-msgstr "Geçersiz ay : %s"
-
-#. getDate has its own error message, don't overwrite it here
-#: pattern.c:527
-#, c-format
-msgid "Invalid relative date: %s"
-msgstr "Geçersiz rölatif tarih: %s"
-
-#: pattern.c:541
-msgid "error in expression"
-msgstr "tabirde hata var"
-
-#: pattern.c:747 pattern.c:855
-#, c-format
-msgid "error in pattern at: %s"
-msgstr "tabirde %s'de hata var"
-
-#: pattern.c:795
-#, c-format
-msgid "%c: invalid command"
-msgstr "%c : geçersiz komuta"
-
-#: pattern.c:801
-#, c-format
-msgid "%c: not supported in this mode"
-msgstr "%c : bu türde desteklenmiyor"
-
-#: pattern.c:814
-msgid "missing parameter"
-msgstr "eksik argüman"
-
-#: pattern.c:830
-#, c-format
-msgid "mismatched parenthesis: %s"
-msgstr "hatalý parantez : %s"
-
-#: pattern.c:862
-msgid "empty pattern"
-msgstr "boþ tabir"
-
-#: pattern.c:1054
-#, c-format
-msgid "error: unknown op %d (report this error)."
-msgstr ""
-
-#: pattern.c:1123 pattern.c:1252
-msgid "Compiling search pattern..."
-msgstr "Arama tabiri denetleniyor..."
-
-#: pattern.c:1137
-msgid "Executing command on matching messages..."
-msgstr ""
-
-#: pattern.c:1200
-msgid "No messages matched criteria."
-msgstr "Tabire uygun ileti yok."
-
-#: pattern.c:1290
-msgid "Search hit bottom without finding match"
-msgstr ""
-
-#: pattern.c:1301
-msgid "Search hit top without finding match"
-msgstr ""
-
-#: pattern.c:1323
-msgid "Search interrupted."
-msgstr "Arama iptal edildi."
-
-#: pgp.c:93
-msgid "Enter PGP passphrase:"
-msgstr "PGP parolasýný verin:"
-
-#: pgp.c:109
-msgid "PGP passphrase forgotten."
-msgstr "PGP parolasý unutuldu."
-
-#: pgp.c:142
-#, c-format
-msgid "[-- PGP output follows (current time: %c) --]\n"
-msgstr "[-- PGP geri verisi (geçerli zaman: %c) --]\n"
-
-#: pgp.c:352
-msgid "[-- Error: unable to create PGP subprocess! --]\n"
-msgstr "[-- Hata: PGP altiþlemi yaratýlamadý! --]\n"
-
-#: pgp.c:387
-msgid ""
-"\n"
-"[-- End of PGP output --]\n"
-"\n"
-msgstr ""
-"\n"
-"[-- PGP geri veri sonu --]\n"
-"\n"
-
-#: pgp.c:393
-msgid ""
-"[-- BEGIN PGP MESSAGE --]\n"
-"\n"
-msgstr ""
-"[-- PGP ILETISI BAÞI --]\n"
-"\n"
-
-#: pgp.c:395
-msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
-msgstr "[-- PGP RESMI ANAHTAR BÖLÜMÜ BAÞI --]\n"
-
-#: pgp.c:397
-msgid ""
-"[-- BEGIN PGP SIGNED MESSAGE --]\n"
-"\n"
-msgstr ""
-"[-- PGP IMZALANMIÞ ILETI BAÞI --]\n"
-"\n"
-
-#: pgp.c:438
-msgid ""
-"\n"
-"[-- END PGP MESSAGE --]\n"
-msgstr ""
-"\n"
-"[-- PGP ILETI SONU --]\n"
-
-#: pgp.c:440
-msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
-msgstr "[-- PGP RESMI ANAHTAR BÖLÜMÜ SONU --]\n"
-
-#: pgp.c:442
-msgid ""
-"\n"
-"[-- END PGP SIGNED MESSAGE --]\n"
-msgstr ""
-"\n"
-"[-- PGP IMZALANMIÞ ILETI SONU --]\n"
-
-#: pgp.c:457
-msgid ""
-"[-- Error: could not find beginning of PGP message! --]\n"
-"\n"
-msgstr ""
-"[-- Hata: PGP iletisinin baþýný bulamadým! --]\n"
-"\n"
-
-#: pgp.c:728 pgp.c:1020
-msgid ""
-"[-- End of PGP output --]\n"
-"\n"
-msgstr ""
-"[-- PGP geri verisi sonu --]\n"
-"\n"
-
-#: pgp.c:776
-msgid ""
-"[-- Error: Inconsistent multipart/signed structure! --]\n"
-"\n"
-msgstr ""
-"[-- Hata: Hatalý multipart/signed þekili! --]\n"
-"\n"
-
-#: pgp.c:784
-#, c-format
-msgid ""
-"[-- Error: Unknown multipart/signed protocol %s! --]\n"
-"\n"
-msgstr ""
-"[-- Hata: Bilinmeyen multipart/signed protokolu %s! --]\n"
-"\n"
-
-#: pgp.c:808
-#, c-format
-msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
-"\n"
-msgstr ""
-"[-- Ikaz: %s/%s imzalarý doðrulanamýyor. --]\n"
-"\n"
-
-#. Now display the signed body
-#: pgp.c:818
-msgid ""
-"[-- The following data is signed --]\n"
-"\n"
-msgstr ""
-"[-- Bu bilgi imzalanmýþtýr --]\n"
-"\n"
-
-#: pgp.c:824
-msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
-"\n"
-msgstr ""
-"[-- Ikaz: Hiç bir imza bulunmamýþtýr. --]\n"
-"\n"
-
-#: pgp.c:830
-msgid ""
-"\n"
-"[-- End of signed data --]\n"
-msgstr ""
-"\n"
-"[-- Imzalanmýþ bilginin sonu --]\n"
-
-#: pgp.c:930
-msgid "Internal error. Inform <roessler@guug.de>."
-msgstr "Iç hata. Thomas R. <roessler@guug.de>'ye haber ver."
-
-#: pgp.c:990
-msgid ""
-"[-- Error: could not create a PGP subprocess! --]\n"
-"\n"
-msgstr ""
-"[-- Hata: PGP altiþlemini yaratamadým! --]\n"
-"\n"
-
-#: pgp.c:1086
-msgid ""
-"[-- Error: malformed PGP/MIME message! --]\n"
-"\n"
-msgstr ""
-"[-- Hata: Hatalý PGP/MIME iletisi! --]\n"
-"\n"
-
-#: pgp.c:1099
-msgid "[-- Error: could not create temporary file! --]\n"
-msgstr "[-- Hata: geçici dosya yaratýlamýyor! --]\n"
-
-#: pgp.c:1108
-msgid ""
-"[-- The following data is PGP/MIME encrypted --]\n"
-"\n"
-msgstr ""
-"[-- Bu bilgi PGP/MIME ile þifrelenmiþtir --]\n"
-"\n"
-
-#: pgp.c:1126
-msgid ""
-"\n"
-"[-- End of PGP/MIME encrypted data --]\n"
-msgstr ""
-"\n"
-"[-- PGP/MIME ile þifrelenmiþ bilgi sonu --]\n"
-
-#: pgp.c:1206
-msgid "Can't open PGP subprocess!"
-msgstr "PGP altiþlemi açýlamýyor!"
-
-#: pgp.c:1333
-#, c-format
-msgid "Use keyID = \"%s\" for %s?"
-msgstr "%s için anahtar numara = \"%s\" kullanýlsýn mý?"
-
-#: pgp.c:1360
-#, c-format
-msgid "Enter keyID for %s: "
-msgstr "%s için anahtar numarasýný belirleyin: "
-
-#: pgp.c:1568
-msgid "Can't invoke PGP"
-msgstr "PGP çalýþtýrýlamýyor"
-
-#: pgp.c:1672
-msgid "Create an application/pgp message?"
-msgstr "application/pgp iletisi yaratýlsýn mý?"
-
-#: pgpinvoke.c:301
-msgid "Fetching PGP key..."
-msgstr "PGP anahtarý alýnýyor..."
-
-#: pgpkey.c:486
-#, fuzzy
-msgid "All matching keys are marked expired/revoked."
-msgstr "Bu anahtar kullanýlamaz: süresi bitti/kapalý/geriye alýndý."
-
-#. __STRCAT_CHECKED__
-#: pgpkey.c:512
-msgid "Select  "
-msgstr "Seç  "
-
-#. __STRCAT_CHECKED__
-#: pgpkey.c:515
-msgid "Check key  "
-msgstr "Anahtarý kontrol et  "
-
-#: pgpkey.c:528
-#, c-format
-msgid "PGP keys matching <%s>."
-msgstr "<%s>'e uyan PGP anahtarlarý."
-
-#: pgpkey.c:530
-#, c-format
-msgid "PGP keys matching \"%s\"."
-msgstr "\"%s\"'e uyan PGP anahtarlarý."
-
-#: pgpkey.c:549 pgpkey.c:741
-msgid "Can't open /dev/null"
-msgstr "/dev/null'ý açamadým"
-
-#: pgpkey.c:555 pgpkey.c:735
-msgid "Can't create temporary file"
-msgstr "Geçici dosyayý yaratamadým"
-
-#: pgpkey.c:576
-#, c-format
-msgid "Key ID: 0x%s"
-msgstr "Anahtar numara: 0x%s"
-
-#: pgpkey.c:596
-msgid "This key can't be used: expired/disabled/revoked."
-msgstr "Bu anahtar kullanýlamaz: süresi bitti/kapalý/geriye alýndý."
-
-#: pgpkey.c:608
-#, fuzzy
-msgid "This ID is expired/disabled/revoked"
-msgstr "Bu anahtar kullanýlamaz: süresi bitti/kapalý/geriye alýndý."
-
-#: pgpkey.c:612
-msgid "This ID's trust level is undefined."
-msgstr "Bu anahtar numarasýna olan güven belirlenmemiþ."
-
-#: pgpkey.c:615
-msgid "This ID is not trusted."
-msgstr "Bu anahtar numarasýna güvenilmiyor."
-
-#: pgpkey.c:618
-msgid "This ID is only marginally trusted."
-msgstr "Bu anahtar numarasýna çok az güveniliyor."
-
-#: pgpkey.c:622
-#, c-format
-msgid "%s Do you really want to use the key?"
-msgstr ""
-
-#: pgpkey.c:720
-msgid "Please enter the key ID: "
-msgstr "Anahtar numarasýný belirle: "
-
-#: pgpkey.c:748
-msgid "Invoking pgp..."
-msgstr "Pgp çalýþtýrýlýyor...."
-
-#: pgpkey.c:773
-#, c-format
-msgid "PGP Key %s."
-msgstr "PGP anahtarý %s."
-
-#: pgpkey.c:835 pgpkey.c:953
-#, c-format
-msgid "Looking for keys matching \"%s\"..."
-msgstr "\"%s\" tabirine uyan anahtarlar aranýyor..."
-
-#: pop.c:89 pop_lib.c:159
-msgid "Command TOP is not supported by server."
-msgstr "TOP komutasý sunucu tarafýndan desteklenmiyor."
-
-#: pop.c:116
-msgid "Can't write header to temporary file!"
-msgstr "Baþlýðý geçici bir dosyaya yazamadým!"
-
-#: pop.c:197 pop_lib.c:161
-msgid "Command UIDL is not supported by server."
-msgstr "UIDL komutasý sunucu tarafýndan desteklenmiyor."
-
-#: pop.c:270
-msgid "Fetching list of messages..."
-msgstr "Ileti listesi alýnýyor..."
-
-#: pop.c:407
-msgid "Can't write message to temporary file!"
-msgstr "iletiyi geçici bir dosyaya yazýlamadý!"
-
-#: pop.c:510 pop.c:564
-msgid "Checking for new messages..."
-msgstr "Yeni ileti için bakýlýyor..."
-
-#: pop.c:538
-msgid "POP host is not defined."
-msgstr "POP sunucusu belirlenmedi."
-
-#: pop.c:592
-msgid "No new mail in POP mailbox."
-msgstr "POP eposta kutusunda yeni eposta yok."
-
-#: pop.c:599
-msgid "Delete messages from server?"
-msgstr "Iletiler sunucudan silinsin mi?"
-
-#: pop.c:601
-#, c-format
-msgid "Reading new messages (%d bytes)..."
-msgstr "Yeni iletileri okunuyor (%d bayt)..."
-
-#: pop.c:643
-msgid "Error while writing mailbox!"
-msgstr "Eposta kutusunu yazarken hata oldu!"
-
-#: pop.c:647
-#, c-format
-msgid "%s [%d of %d messages read]"
-msgstr "%1$s [ %3$d iletiden %2$d ileti okundu]"
-
-#: pop.c:670 pop_lib.c:274
-msgid "Server closed connection!"
-msgstr "Sunucu baðlantýyý kesti!"
-
-#: pop_auth.c:190
-msgid "Authenticating (APOP)..."
-msgstr "Doðrulanýyor (APOP)..."
-
-#: pop_auth.c:214
-msgid "APOP authentication failed."
-msgstr "APOP doðrulamasý baþarýsýz oldu."
-
-#: pop_auth.c:249
-msgid "Command USER is not supported by server."
-msgstr "Sunucu USER komutasýný desteklemiyor."
-
-#: pop_auth.c:356
-msgid "Authentication method is unknown."
-msgstr "Doðrulama metodu bilinmiyor."
-
-#: pop_lib.c:157
-msgid "Unable to leave messages on server."
-msgstr "Iletiler sunucuda býrakýlamýyor."
-
-#: pop_lib.c:204
-#, c-format
-msgid "Error connecting to server: %s"
-msgstr "%s'e baðlanýlýrken hata oldu"
-
-#: pop_lib.c:288
-msgid "Closing connection to POP server..."
-msgstr "POP sunucuya varolan baðlantý kapatýlýyor..."
-
-#: pop_lib.c:453
-msgid "Verifying message indexes..."
-msgstr "Ileti sayýsýný doðrula..."
-
-#: pop_lib.c:477
-msgid "Connection lost. Reconnect to POP server?"
-msgstr "Baðlantý kayboldu. Yeniden POP sunucusuna baðlanýlsýn mý?"
-
-#: postpone.c:165
-msgid "Postponed Messages"
-msgstr "Kaydedilmiþ iletiler"
-
-#: postpone.c:238 postpone.c:247
-msgid "No postponed messages."
-msgstr "Kaydedilmiþ ileti yok."
-
-#: postpone.c:416 postpone.c:437 postpone.c:445
-msgid "Illegal PGP header"
-msgstr "Geçersiz PGP baþlýðý"
-
-#: query.c:45
-msgid "New Query"
-msgstr "Yeni sorgulama"
-
-#: query.c:46
-msgid "Make Alias"
-msgstr "Lakap yarat"
-
-#: query.c:47
-msgid "Search"
-msgstr "Ara"
-
-#: query.c:91
-msgid "Waiting for response..."
-msgstr "Cevap bekleniyor..."
-
-#: query.c:210 query.c:235
-msgid "Query command not defined."
-msgstr "Sorgulama komutasý belirlenmedi."
-
-#: query.c:262
-msgid "Query"
-msgstr "Sorgula"
-
-#. Prompt for Query
-#: query.c:275 query.c:303
-msgid "Query: "
-msgstr "Sorgulama: "
-
-#: query.c:286 query.c:312
-#, c-format
-msgid "Query '%s'"
-msgstr "Sorgulama '%s'"
-
-#: recvattach.c:59
-msgid "Pipe"
-msgstr "Boru"
-
-#: recvattach.c:60
-msgid "Print"
-msgstr "Yazdýr"
-
-#: recvattach.c:412
-msgid "Saving..."
-msgstr "Kaydediliyor..."
-
-#: recvattach.c:487
-#, c-format
-msgid "WARNING!  You are about to overwrite %s, continue?"
-msgstr "IKAZ!   %s'nin üstüne yazmak üzeresin, devam edilsin mi?"
-
-#: recvattach.c:505
-msgid "Attachment filtered."
-msgstr "Eklentiler filtra edildi."
-
-#: recvattach.c:572
-msgid "Filter through: "
-msgstr "Filtra: "
-
-#: recvattach.c:572
-msgid "Pipe to: "
-msgstr "Borula: "
-
-#: recvattach.c:607
-#, c-format
-msgid "I dont know how to print %s attachments!"
-msgstr "%s eklentilerinin nasýl yazdýrýlacaðý bilinmiyor!"
-
-#: recvattach.c:672
-msgid "Print tagged attachment(s)?"
-msgstr "Iþaretli ileti(leri) yazýlsýn mý?"
-
-#: recvattach.c:672
-msgid "Print attachment?"
-msgstr "Eklenti yazdýrýlsýn mý?"
-
-#: recvattach.c:886
-msgid "Attachments"
-msgstr "Eklentiler"
-
-#: recvattach.c:922
-msgid "There are no subparts to show!"
-msgstr "Gösterilecek altbölümler yok!"
-
-#: recvattach.c:983
-msgid "Can't delete attachment from POP server."
-msgstr "Eklenti POP sunucusundan silinemiyor."
-
-#: recvattach.c:994
-msgid "Deletion of attachments from PGP messages is unsupported."
-msgstr "PGP iletilerinin eklentilerinin silinmesi desteklenmiyor."
-
-#: recvattach.c:1014 recvattach.c:1031
-msgid "Only deletion of multipart attachments is supported."
-msgstr ""
-"Sadece birden fazla bölümden oluþan eklentilerin silinmesi destekleniyor."
-
-#: recvcmd.c:43
-msgid "You may only bounce message/rfc822 parts."
-msgstr "Sadece ileti yada RFC822 bölümleri iletilebilir."
-
-#: recvcmd.c:155
-#, c-format
-msgid "Bounce message to %s...?"
-msgstr "Ileti %s'e iletilsin mi...?"
-
-#: recvcmd.c:155
-#, c-format
-msgid "Bounce messages to %s...?"
-msgstr "Iletiler %s'e iletilsin mi...?"
-
-#: recvcmd.c:374
-#, c-format
-msgid "Can't open temporary file %s."
-msgstr "Geçici dosya %s'yi açamadým."
-
-#: recvcmd.c:405
-msgid "Forward as attachments?"
-msgstr "Eklenti olarak iletilsin mi?"
-
-#: recvcmd.c:419
-msgid "Can't decode all tagged attachments.  MIME-forward the others?"
-msgstr ""
-
-#: recvcmd.c:544
-msgid "Forward MIME encapsulated?"
-msgstr ""
-
-#: recvcmd.c:552 recvcmd.c:808
-#, c-format
-msgid "Can't create %s."
-msgstr "%s yaratýlamadý."
-
-#: recvcmd.c:685
-msgid "Can't find any tagged messages."
-msgstr "Iþaretli hýc bir ileti yok."
-
-#: recvcmd.c:706 send.c:691
-msgid "No mailing lists found!"
-msgstr "Eposta listesi bulunamadý!"
-
-#: recvcmd.c:787
-msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
-msgstr ""
-"Yekin iþaretlenmiþ eklentiler çözülemiyor. Geriye kalanlar MIME'yle "
-"þekillendirilsin mi?"
-
-#: remailer.c:480
-msgid "Append"
-msgstr "Ekle"
-
-#: remailer.c:481
-msgid "Insert"
-msgstr "Içer"
-
-#: remailer.c:482
-msgid "Delete"
-msgstr "Sil"
-
-#: remailer.c:484
-msgid "OK"
-msgstr "Oldu"
-
-#: remailer.c:512
-msgid "Can't get mixmaster's type2.list!"
-msgstr ""
-
-#: remailer.c:538
-msgid "Select a remailer chain."
-msgstr ""
-
-#: remailer.c:598
-#, c-format
-msgid "Error: %s can't be used as the final remailer of a chain."
-msgstr ""
-
-#: remailer.c:628
-#, c-format
-msgid "Mixmaster chains are limited to %d elements."
-msgstr ""
-
-#: remailer.c:651
-msgid "The remailer chain is already empty."
-msgstr ""
-
-#: remailer.c:661
-msgid "You already have the first chain element selected."
-msgstr ""
-
-#: remailer.c:671
-msgid "You already have the last chain element selected."
-msgstr ""
-
-#: remailer.c:710
-msgid "Mixmaster doesn't accept Cc or Bcc headers."
-msgstr "Mixmaster Cc yada Bcc baþlýklarý kabul etmez."
-
-#: remailer.c:734
-msgid ""
-"Please set the hostname variable to a proper value when using mixmaster!"
-msgstr "Mixmaster kullanýrken yerel makina adý doðru belirtilmesi lazým!"
-
-#: remailer.c:765
-#, c-format
-msgid "Error sending message, child exited %d.\n"
-msgstr "Iletiyi gönderirken hata oldu, altiþlem %d ile bitirildi.\n"
-
-#: remailer.c:769
-msgid "Error sending message."
-msgstr "Iletiyi gönderirken hata oldu."
-
-#: rfc1524.c:159
-#, c-format
-msgid "Improperly formated entry for type %s in \"%s\" line %d"
-msgstr "\"%2$s\"'de satýr %3$d'de tip %1$s için hatalý birim vardýr"
-
-#: rfc1524.c:391
-msgid "No mailcap path specified"
-msgstr "mailcap dizini belirlenmedi"
-
-#: rfc1524.c:417
-#, c-format
-msgid "mailcap entry for type %s not found"
-msgstr "%s için mailcap birimi bulunamadý"
-
-#: score.c:71
-msgid "score: too few arguments"
-msgstr "puan: yeterinden az argüman"
-
-#: score.c:80
-msgid "score: too many arguments"
-msgstr "puan: çok fazla argüman"
-
-#: send.c:235
-msgid "No subject, abort?"
-msgstr "Konu yok, iptal edilsin mi?"
-
-#: send.c:237
-msgid "No subject, aborting."
-msgstr "Konu yok, iptal ediliyor."
-
-#: send.c:436
-#, c-format
-msgid "Follow-up to %s%s?"
-msgstr "%s%s iye cevap gönderilsin mi?"
-
-#. There are quite a few mailing lists which set the Reply-To:
-#. * header field to the list address, which makes it quite impossible
-#. * to send a message to only the sender of the message.  This
-#. * provides a way to do that.
-#.
-#: send.c:489
-#, c-format
-msgid "Reply to %s%s?"
-msgstr "%s%s iye cevap verilsin mi?"
-
-#. This could happen if the user tagged some messages and then did
-#. * a limit such that none of the tagged message are visible.
-#.
-#: send.c:666
-msgid "No tagged messages are visible!"
-msgstr "Hiç bir iþaretlenmiþ ileti gözükmüyor ki!"
-
-#: send.c:718
-msgid "Include message in reply?"
-msgstr "Ileti cevap da içerilsin mi?"
-
-#: send.c:723
-msgid "Including quoted message..."
-msgstr ""
-
-#: send.c:733
-msgid "Could not include all requested messages!"
-msgstr "Istenilen her ileti içerilenemedi!"
-
-#: send.c:747
-msgid "Forward as attachment?"
-msgstr "Eklenti olarak iletilsin mi?"
-
-#: send.c:751
-msgid "Preparing forwarded message..."
-msgstr "Iletilmiþ ileti hazýrlanýyor..."
-
-#. If the user is composing a new message, check to see if there
-#. * are any postponed messages first.
-#.
-#: send.c:1086
-msgid "Recall postponed message?"
-msgstr "Kaydedilmiþ ileti açýlsýn mý?"
-
-#: send.c:1316
-msgid "Abort unmodified message?"
-msgstr "Deðiþtirilmemiþ ileti iptal edilsin mi?"
-
-#: send.c:1318
-msgid "Aborted unmodified message."
-msgstr "Deðiþtirilmemiþ ileti iptal edildi."
-
-#. abort
-#: send.c:1359
-msgid "Mail not sent."
-msgstr "eposta gönderilmedi."
-
-#: send.c:1385
-msgid "Message postponed."
-msgstr "Ileti kaydedildi."
-
-#: send.c:1394
-msgid "No recipients are specified!"
-msgstr "Alýcý belirlenmemiþ!"
-
-#: send.c:1399
-msgid "No recipients were specified."
-msgstr "Alýcýlar belirlenmemiþ."
-
-#: send.c:1405
-msgid "No subject, abort sending?"
-msgstr "Konu yok, gönderme iptal edilsin mi?"
-
-#: send.c:1409
-msgid "No subject specified."
-msgstr "Konu belirlenmemiþ."
-
-#: send.c:1456
-msgid "Sending message..."
-msgstr "Ileti gönderiliyor..."
-
-#: send.c:1583
-msgid "Could not send the message."
-msgstr "Ileti gönderilemedi."
-
-#: send.c:1588
-msgid "Mail sent."
-msgstr "eposta gönderildi."
-
-#: send.c:1588
-msgid "Sending in background."
-msgstr "Ardalanda gönderiliyor."
-
-#: sendlib.c:457
-msgid "No boundary parameter found! [report this error]"
-msgstr "Sýnýrlandýrma verisi bulunamadý! [bu hata rapor edilmesi gerek]"
-
-#: sendlib.c:491
-#, c-format
-msgid "%s no longer exists!"
-msgstr "%s daha yok!"
-
-#: sendlib.c:1057
-#, c-format
-msgid "Could not open %s"
-msgstr "%s açýlanamadý"
-
-#: sendlib.c:1994
-#, c-format
-msgid "Error sending message, child exited %d (%s)."
-msgstr "Ileti gönderilirken hata oldu, altiþlem %d ile iptal bitirildi (%s)."
-
-#: sendlib.c:2000
-msgid "Output of the delivery process"
-msgstr "Gönderme iþleminin geri verisi"
-
-#: signal.c:39
-#, c-format
-msgid "%s...  Exiting.\n"
-msgstr "%s... Çýkýlýyor.\n"
-
-#: signal.c:42
-#, c-format
-msgid "Caught %s...  Exiting.\n"
-msgstr "%s yakalýnýyor... Çýkýlýyor.\n"
-
-#: signal.c:44
-#, c-format
-msgid "Caught signal %d...  Exiting.\n"
-msgstr "Sinyal %d alýndý... Çýkýlýyor.\n"
-
-#: sort.c:200
-msgid "Sorting mailbox..."
-msgstr "Eposta kutusu sýralanýyor..."
-
-#: sort.c:232
-msgid "Could not find sorting function! [report this bug]"
-msgstr "Sýralama iþlevi bulunamadý! [hata raporu yaz]"
-
-#: status.c:102
-msgid "(no mailbox)"
-msgstr "(eposta kutusu yok)"
-
-#: thread.c:737
-msgid "Parent message is not visible in limited view"
-msgstr "Sýnýrlandýrýlmýþ bakýþta ana ileti görünemez."
-
-#: thread.c:742
-msgid "Parent message is not available."
-msgstr "Kök iletisi yok."
-
-#~ msgid "MIC algorithm: "
-#~ msgstr "MIC algoritmi : "
-
-#~ msgid "This doesn't make sense if you don't want to sign the message."
-#~ msgstr "Ileti imzalanmamak isteniyorsa, bunun hiç bir anlamý yoktur."
-
-#~ msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
-#~ msgstr ""
-#~ "Bilinmeyen MIC algoritmi, geçerli olanlar: pgp-md5, pgp-sha1, pgp-rmd160"
