@@ -105,6 +105,11 @@ static void maildir_parse_flags(HEADER *h, const char *path)
 	
 	h->replied = 1;
 	break;
+
+	case 'T': /* trashed */
+
+	h->deleted = 1;
+	break;
       }
       p++;
     }
@@ -377,13 +382,14 @@ static void maildir_flags (char *dest, size_t destlen, HEADER *hdr)
 {
   *dest = '\0';
   
-  if (hdr && (hdr->flagged || hdr->replied || hdr->read))
+  if (hdr && (hdr->flagged || hdr->replied || hdr->read || hdr->deleted))
   {
     snprintf (dest, destlen, 
-	      ":2,%s%s%s",
+	      ":2,%s%s%s%s",
 	     hdr->flagged ? "F" : "",
 	     hdr->replied ? "R" : "",
-	     hdr->read ? "S" : "");
+	     hdr->read ? "S" : "",
+	     hdr->deleted ? "T" : "");
   }
 }
     
@@ -736,7 +742,7 @@ int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
 
   for (i = 0; i < ctx->msgcount; i++)
   {
-    if (ctx->hdrs[i]->deleted)
+    if (ctx->hdrs[i]->deleted && (ctx->magic != M_MAILDIR || !option(OPTMAILDIRTRASH)))
     {
       snprintf (path, sizeof (path), "%s/%s", ctx->path, ctx->hdrs[i]->path);
       if (ctx->magic == M_MAILDIR || (option (OPTMHPURGE) && ctx->magic == M_MH))

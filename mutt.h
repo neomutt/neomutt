@@ -331,6 +331,7 @@ enum
 #endif
   OPTIMPLICITAUTOVIEW,
   OPTMAILCAPSANITIZE,
+  OPTMAILDIRTRASH,
   OPTMARKERS,
   OPTMARKOLD,
   OPTMENUSCROLL,	/* scroll menu instead of implicit next-page */

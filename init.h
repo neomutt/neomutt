@@ -859,6 +859,14 @@ struct option_t MuttVars[] = {
   ** \fBDON'T CHANGE THIS SETTING UNLESS YOU ARE REALLY SURE WHAT YOU ARE
   ** DOING!\fP
   */
+  { "maildir_trash", DT_BOOL, R_NONE, OPTMAILDIRTRASH, 0 },
+  /*
+  ** .pp
+  ** If set, messages marked as deleted will be saved with the maildir
+  ** (T)rashed flag instead of unlinked.  \fBNOTE:\fP this only applies
+  ** to maildir-style mailboxes.  Setting it will have no effect on other
+  ** mailbox types.
+  */
   { "mark_old",		DT_BOOL, R_BOTH, OPTMARKOLD, 1 },
   /*
   ** .pp
