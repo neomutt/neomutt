@@ -383,10 +383,7 @@ mutt_cv_charmaps=/usr/share/i18n/charmaps
 AC_ARG_WITH(charmaps, [  --with-charmaps=PATH	     Where to find character set definitions],
 	[if test x$withval != x -a $withval != yes ; then
 		mutt_cv_charmaps=$withval
-	fi],
-        [mutt_cv_charmaps=no])
-
-mutt_cv_fake_charmaps=yes
+	fi])
 
 AC_MSG_CHECKING(whether character set definitions are desired and usable)
 if test ! -f $mutt_cv_charmaps/ISO_10646 ; then
@@ -396,7 +393,6 @@ if test ! -f $mutt_cv_charmaps/ISO_10646 ; then
 	if test \( -d $srcdir/charmaps \) -a \( -d $srcdir/charmaps/maps \) ; then
 		echo "We will install the included character set definitions." >&AC_FD_MSG
 		mutt_cv_add_subdirs="charmaps"
-		mutt_cv_fake_charmaps=no
 	else
 		mutt_cv_add_subdirs=""
 		echo "If you want character set support, read INSTALL". >& AC_FD_MSG
