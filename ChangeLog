@@ -1,3 +1,23 @@
+2002-12-11 11:19:42  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* imap/auth.c, imap/command.c, imap/imap.c, imap/imap.h,
+	imap/util.c, date.c, dotlock.c, dotlock.h, edit.c, editmsg.c,
+	enter.c, extlib.c, flags.c, from.c, functions.h, gnupgparse.c,
+	handler.c, hash.c, hash.h, headers.c, help.c, history.c,
+	history.h, keymap.c, keymap.h, lib.c, lib.h, main.c, makedoc.c,
+	mapping.h, menu.c, mh.c, mime.h, mkjtags.c, mutt_curses.h,
+	mutt_menu.h, mutt_regex.h, mutt_socket.c, muttlib.c, mx.c, mx.h,
+	pager.h, parse.c, pattern.c, pgp.c, pgp.h, pgpinvoke.c, pgpkey.c,
+	pgplib.c, pgplib.h, postpone.c, protos.h, query.c, recvattach.c,
+	recvcmd.c, remailer.c, remailer.h, resize.c, rfc1524.c, rfc1524.h,
+	rfc2047.c, rfc2047.h, rfc2231.c, rfc2231.h, rfc822.c, rfc822.h,
+	score.c, signal.c, snprintf.c, sort.c, sort.h, status.c,
+	system.c, thread.c, url.c, addrbook.c, alias.c, attach.c,
+	attach.h, browser.c, browser.h, buffy.c, buffy.h, charset.c,
+	charset.h, commands.c, complete.c, compose.c, copy.h, crypt.c,
+	crypt.h, curs_main.c: Fix Mike's and my e-mail addresses in
+	copyright lines.
+
 2002-12-11 10:31:29  Thomas Roessler  <roessler@does-not-exist.org>
 
 	* muttbug.sh.in: Ask for the user's e-mail address.
