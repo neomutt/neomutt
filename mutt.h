@@ -709,6 +709,8 @@ typedef struct header
 #if defined USE_POP || defined USE_IMAP
   void *data;            	/* driver-specific data */
 #endif
+  
+  char *maildir_flags;		/* unknown maildir flags */
 } HEADER;
 
 typedef struct thread

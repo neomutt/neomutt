@@ -493,7 +493,7 @@ static void maildir_free_maildir (struct maildir **md)
 
 static void maildir_parse_flags (HEADER * h, const char *path)
 {
-  char *p;
+  char *p, *q = NULL;
 
   h->flagged = 0;
   h->read = 0;
@@ -502,6 +502,10 @@ static void maildir_parse_flags (HEADER * h, const char *path)
   if ((p = strrchr (path, ':')) != NULL && mutt_strncmp (p + 1, "2,", 2) == 0)
   {
     p += 3;
+    
+    mutt_str_replace (&h->maildir_flags, p);
+    q = h->maildir_flags;
+
     while (*p)
     {
       switch (*p)
@@ -525,10 +529,19 @@ static void maildir_parse_flags (HEADER * h, const char *path)
 	h->trash = 1;
 	h->deleted = 1;
 	break;
+      
+      default:
+	*q++ = *p;
+	break;
       }
       p++;
     }
   }
+  
+  if (q == h->maildir_flags)
+    safe_free ((void **) &h->maildir_flags);
+  else if (q)
+    *q = '\0';
 }
 
 static void maildir_update_mtime (CONTEXT * ctx)
@@ -851,6 +864,11 @@ int mh_open_new_message (MESSAGE * msg, CONTEXT * dest, HEADER * hdr)
   return mh_mkstemp (dest, &msg->fp, &msg->path);
 }
 
+int ch_compar (const void *a, const void *b)
+{
+  return (int)( *((const char *) a) - *((const char *) b));
+}
+
 static void maildir_flags (char *dest, size_t destlen, HEADER * hdr)
 {
   *dest = '\0';
@@ -863,13 +881,18 @@ static void maildir_flags (char *dest, size_t destlen, HEADER * hdr)
    * test even though there is no associated flag.
    */
   
-  if (hdr && (hdr->flagged || hdr->replied || hdr->read || hdr->deleted || hdr->old))
+  if (hdr && (hdr->flagged || hdr->replied || hdr->read || hdr->deleted || hdr->old || hdr->maildir_flags))
   {
-    snprintf (dest, destlen,
-	      ":2,%s%s%s%s",
+    char tmp[LONG_STRING];
+    snprintf (tmp, sizeof (tmp),
+	      "%s%s%s%s%s",
 	      hdr->flagged ? "F" : "",
 	      hdr->replied ? "R" : "",
-	      hdr->read ? "S" : "", hdr->deleted ? "T" : "");
+	      hdr->read ? "S" : "", hdr->deleted ? "T" : "",
+	      NONULL(hdr->maildir_flags));
+    if (hdr->maildir_flags)
+      qsort (tmp, strlen (tmp), 1, ch_compar);
+    snprintf (dest, destlen, ":2,%s", tmp);
   }
 }
 

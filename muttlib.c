@@ -269,6 +269,7 @@ void mutt_free_header (HEADER **h)
   if(!h || !*h) return;
   mutt_free_envelope (&(*h)->env);
   mutt_free_body (&(*h)->content);
+  safe_free ((void **) &(*h)->maildir_flags);
   safe_free ((void **) &(*h)->tree);
   safe_free ((void **) &(*h)->path);
 #ifdef MIXMASTER
