@@ -1821,6 +1821,17 @@ configuration option/command.  See
 </itemize>
 for specific details on each type of <em/hook/ available.
 
+<bf/Note:/ if a hook changes configuration settings, these changes remain
+effective until the end of the current mutt session. As this is generally
+not desired, a default hook needs to be added before all other hooks to
+restore configuration defaults. Here is an example with send-hook and the
+my_hdr directive:
+
+<tscreen><verb>
+send-hook . 'unmy_hdr From:'
+send-hook ~Cb@b.b my_hdr from: c@c.c
+</verb></tscreen>
+
 <sect2>Message Matching in Hooks<label id="pattern_hook">
 <p>
 Hooks that act upon messages (<tt/send-hook, save-hook, fcc-hook,
