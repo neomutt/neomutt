@@ -63,7 +63,7 @@ static struct header_cache
 typedef union
 {
   struct timeval timeval;
-  uint64_t uid_validity;
+  unsigned long uid_validity;
 } validate;
 
 static void *
@@ -550,7 +550,7 @@ mutt_hcache_per_folder(const char *path, const char *folder)
  * db_store */
 static void *
 mutt_hcache_dump(void *_db, HEADER * h, int *off,
-		 uint64_t uid_validity)
+		 unsigned long uid_validity)
 {
   struct header_cache *db = _db;
   unsigned char *d = NULL;
@@ -559,7 +559,7 @@ mutt_hcache_dump(void *_db, HEADER * h, int *off,
   d = lazy_malloc(sizeof (validate));
 
   if (uid_validity)
-    memcpy(d, &uid_validity, sizeof (uint64_t));
+    memcpy(d, &uid_validity, sizeof (unsigned long));
   else
   {
     struct timeval now;
@@ -696,7 +696,7 @@ mutt_hcache_fetch(void *db, const char *filename,
 
 int
 mutt_hcache_store(void *db, const char *filename, HEADER * header,
-		  uint64_t uid_validity,
+		  unsigned long uid_validity,
 		  size_t(*keylen) (const char *fn))
 {
   struct header_cache *h = db;
@@ -886,7 +886,7 @@ mutt_hcache_fetch(void *db, const char *filename,
 
 int
 mutt_hcache_store(void *db, const char *filename, HEADER * header,
-		  uint64_t uid_validity,
+		  unsigned long uid_validity,
 		  size_t(*keylen) (const char *fn))
 {
   DBT key;
