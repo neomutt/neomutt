@@ -135,7 +135,7 @@ You can remap the <em/editor/ functions using the <ref id="bind" name="bind">
 command.  For example, to make the <em/Delete/ key delete the character in
 front of the cursor rather than under, you could use
 
-<tt/bind editor delete backspace/
+<tt/bind editor <delete> backspace/
 
 <sect1>Reading Mail - The Index and Pager
 <p>
