@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.3.12\n"
-"POT-Creation-Date: 2001-07-24 23:29+0200\n"
+"POT-Creation-Date: 2001-07-25 21:49+0200\n"
 "PO-Revision-Date: 2000-11-18 16:04+0200\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "Language-Team: Ukrainian <uk@ua>\n"
@@ -82,6 +82,7 @@ msgstr "Нема╓ в╕дпов╕дного ╕мен╕, дал╕?"
 
 #. For now, editing requires a file, no piping
 #: attach.c:123
+#, c-format
 msgid "Mailcap compose entry requires %%s"
 msgstr "Компонування, вказане у mailcap, потребу╓ %%s"
 
@@ -106,6 +107,7 @@ msgstr "В mailcap не визначено компонування %s, створено порожн╕й файл."
 
 #. For now, editing requires a file, no piping
 #: attach.c:250
+#, c-format
 msgid "Mailcap Edit entry requires %%s"
 msgstr "Редагування, вказане у mailcap, потребу╓ %%s"
 
@@ -522,8 +524,8 @@ msgstr "<за змовчанням>"
 #, fuzzy
 msgid "(e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
 msgstr ""
-"шифр.(e), п╕дп.(s), п╕дп. як(a), усе(b), зм╕на (m)ic алгоритму чи "
-"в╕дм╕на(f)? "
+"шифр.(e), п╕дп.(s), п╕дп. як(a), усе(b), зм╕на (m)ic алгоритму чи в╕дм╕на"
+"(f)? "
 
 #: compose.c:133
 msgid "esabf"
@@ -2295,10 +2297,10 @@ msgstr ""
 
 #: main.c:88
 msgid ""
-"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
-"]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
-"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
+"<file> ]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
+"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2325,8 +2327,8 @@ msgid ""
 msgstr ""
 "використання: mutt [ -nRyzZ ] [ -e <кмд> ] [ -F <файл> ] [ -m <тип> ] [ -f "
 "<файл> ]\n"
-"       mutt [ -nx ] [ -e <кмд> ] [ -a <файл> ] [ -F <файл> ] [ -H <файл> ] [ "
-"-i <файл> ] [ -s <тема> ] [ -b <адр> ] [ -c <адр> ] <адр> [ ... ]\n"
+"       mutt [ -nx ] [ -e <кмд> ] [ -a <файл> ] [ -F <файл> ] [ -H <файл> ] "
+"[ -i <файл> ] [ -s <тема> ] [ -b <адр> ] [ -c <адр> ] <адр> [ ... ]\n"
 "       mutt [ -n ] [ -e <кмд> ] [ -F <файл> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2404,6 +2406,7 @@ msgid "Mailbox is empty."
 msgstr "Поштова скринька порожня."
 
 #: mbox.c:129 mbox.c:286
+#, c-format
 msgid "Reading %s... %d (%d%%)"
 msgstr "Читання %s... %d (%d%%)"
 
@@ -2432,6 +2435,7 @@ msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr "sync: скриньку зм╕нено, але нема╓ зм╕нених лист╕в! (пов╕домьте про це)"
 
 #: mbox.c:792
+#, c-format
 msgid "Writing messages... %d (%d%%)"
 msgstr "Запис лист╕в... %d (%d%%)"
 

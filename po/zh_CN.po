@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.2\n"
-"POT-Creation-Date: 2001-07-24 23:29+0200\n"
+"POT-Creation-Date: 2001-07-25 21:49+0200\n"
 "PO-Revision-Date: 1999-12-20 20:41+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -82,6 +82,7 @@ msgstr "无法匹配名称模板，继续？"
 
 #. For now, editing requires a file, no piping
 #: attach.c:123
+#, c-format
 msgid "Mailcap compose entry requires %%s"
 msgstr "Mailcap 编辑项目需要 %%s"
 
@@ -106,6 +107,7 @@ msgstr "没有 %s 的 mailcap 组成登录，正在建立空的文件。"
 
 #. For now, editing requires a file, no piping
 #: attach.c:250
+#, c-format
 msgid "Mailcap Edit entry requires %%s"
 msgstr "编辑 Mailcap 项目时需要 %%s"
 
@@ -406,15 +408,15 @@ msgstr "信件已印出"
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
-"反方向 "
-"d)日期,f)发信人,r)收信时间,s)标题,o)收信人,t)序列,u)不排,z)大小,c)分数:"
+"反方向 d)日期,f)发信人,r)收信时间,s)标题,o)收信人,t)序列,u)不排,z)大小,c)分"
+"数:"
 
 #: commands.c:456
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
-"排序 "
-"d)日期,f)发信人,r)收信时间,s)标题,o)收信人,t)序列,u)不排序,z)大小,c)分数:"
+"排序 d)日期,f)发信人,r)收信时间,s)标题,o)收信人,t)序列,u)不排序,z)大小,c)分"
+"数:"
 
 #: commands.c:457
 msgid "dfrsotuzc"
@@ -533,8 +535,8 @@ msgstr "<预设值>"
 #, fuzzy
 msgid "(e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
 msgstr ""
-"(e)加密, (s)签名, (a)用别的身份签, (b)两者皆要, 选择 (m)ic 演算法 或 "
-"(f)放弃？"
+"(e)加密, (s)签名, (a)用别的身份签, (b)两者皆要, 选择 (m)ic 演算法 或 (f)放"
+"弃？"
 
 #: compose.c:133
 msgid "esabf"
@@ -2362,10 +2364,10 @@ msgstr ""
 #: main.c:88
 #, fuzzy
 msgid ""
-"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
-"]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
-"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
+"<file> ]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
+"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2390,8 +2392,8 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"用法: mutt [ -nRzZ ] [ -e <命令> ] [ -F <文件> ] [ -m <类型> ] [ -f <文件> "
-"]\n"
+"用法: mutt [ -nRzZ ] [ -e <命令> ] [ -F <文件> ] [ -m <类型> ] [ -f <文件"
+"> ]\n"
 "        mutt [ -nx ] [ -e <命令> ] [ -a <文件> ] [ -F <文件> ] [ -H <文件> ] "
 "[ -i <文件> ] [ -s <主题> ] [ -b <地址> ] [ -c <地址> ] <地址> [ ... ]\n"
 "        mutt [ -n ] [ -e <命令> ] [ -F <文件> ] -p\n"
@@ -2472,6 +2474,7 @@ msgid "Mailbox is empty."
 msgstr "信箱内空无一物。"
 
 #: mbox.c:129 mbox.c:286
+#, c-format
 msgid "Reading %s... %d (%d%%)"
 msgstr "读取 %s 中… %d (%d%%)"
 
@@ -2500,6 +2503,7 @@ msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr "同步：信箱已被修改，但没有被修改过的信件！（请回报这个错误）"
 
 #: mbox.c:792
+#, c-format
 msgid "Writing messages... %d (%d%%)"
 msgstr "写入信件中… %d (%d%%)"
 
@@ -3846,8 +3850,8 @@ msgstr "主信件不存在。"
 #, fuzzy
 #~ msgid ""
 #~ "\n"
-#~ "SHA1 implementation Copyright (C) 1995-1997 Eric A. Young "
-#~ "<eay@cryptsoft.com>\n"
+#~ "SHA1 implementation Copyright (C) 1995-1997 Eric A. Young <eay@cryptsoft."
+#~ "com>\n"
 #~ "\n"
 #~ "    Redistribution and use in source and binary forms, with or without\n"
 #~ "    modification, are permitted under certain conditions.\n"
@@ -3860,7 +3864,8 @@ msgstr "主信件不存在。"
 #~ "    along with this program; if not, write to the program's developers.\n"
 #~ msgstr ""
 #~ "\n"
-#~ "SHA1 implementation Copyrigt (C) 1995-7 Eric A. Young <eay@cryptsoft.com>\n"
+#~ "SHA1 implementation Copyrigt (C) 1995-7 Eric A. Young <eay@cryptsoft."
+#~ "com>\n"
 #~ "\n"
 #~ "     重复散布并使用原始程序码和编译过的程序码，不管有否经过修改，\n"
 #~ "     在某些条件下是许可的。\n"

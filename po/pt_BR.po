@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.5i\n"
-"POT-Creation-Date: 2001-07-24 23:29+0200\n"
+"POT-Creation-Date: 2001-07-25 21:49+0200\n"
 "PO-Revision-Date: 2000-03-05 01:14-0300\n"
 "Last-Translator: Marcus Brito <marcus@visaotec.com.br>\n"
 "Language-Team: LIE-BR (http://lie-br.conectiva.com.br)\n"
@@ -79,6 +79,7 @@ msgstr "Não pude casar o nome, continuo?"
 
 #. For now, editing requires a file, no piping
 #: attach.c:123
+#, c-format
 msgid "Mailcap compose entry requires %%s"
 msgstr "Entrada de composição no mailcap requer %%s"
 
@@ -104,6 +105,7 @@ msgstr ""
 
 #. For now, editing requires a file, no piping
 #: attach.c:250
+#, c-format
 msgid "Mailcap Edit entry requires %%s"
 msgstr "Entrada de edição no mailcap requer %%s"
 
@@ -2274,8 +2276,8 @@ msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please use the flea(1) utility.\n"
 msgstr ""
-"Para contactar os programadores, envie uma mensagem para "
-"<mutt-dev@mutt.org>.\n"
+"Para contactar os programadores, envie uma mensagem para <mutt-dev@mutt."
+"org>.\n"
 "Para relatar um problema, por favor use o programa muttbug.\n"
 
 #: main.c:45
@@ -2353,10 +2355,10 @@ msgstr ""
 #: main.c:88
 #, fuzzy
 msgid ""
-"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
-"]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
-"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
+"<file> ]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
+"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2462,6 +2464,7 @@ msgid "Mailbox is empty."
 msgstr "A caixa de mensagens está vazia."
 
 #: mbox.c:129 mbox.c:286
+#, c-format
 msgid "Reading %s... %d (%d%%)"
 msgstr "Lendo %s... %d (%d%%)"
 
@@ -2492,6 +2495,7 @@ msgstr ""
 "problema)"
 
 #: mbox.c:792
+#, c-format
 msgid "Writing messages... %d (%d%%)"
 msgstr "Gravando mensagens... %d(%d%%)"
 
@@ -3834,8 +3838,8 @@ msgstr "A mensagem pai não está disponível."
 
 #~ msgid ""
 #~ "\n"
-#~ "SHA1 implementation Copyright (C) 1995-1997 Eric A. Young "
-#~ "<eay@cryptsoft.com>\n"
+#~ "SHA1 implementation Copyright (C) 1995-1997 Eric A. Young <eay@cryptsoft."
+#~ "com>\n"
 #~ "\n"
 #~ "    Redistribution and use in source and binary forms, with or without\n"
 #~ "    modification, are permitted under certain conditions.\n"
@@ -3861,7 +3865,8 @@ msgstr "A mensagem pai não está disponível."
 #~ "ESTÃO\n"
 #~ "    REVOGADAS.\n"
 #~ "\n"
-#~ "    Você deve ter recebido uma cópia dos termos de distribuição completos\n"
+#~ "    Você deve ter recebido uma cópia dos termos de distribuição "
+#~ "completos\n"
 #~ "    junto com este programa; caso contrário, escreva para os "
 #~ "desenvolvedores\n"
 #~ "    do programa.\n"

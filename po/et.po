@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt 1.3.19\n"
-"POT-Creation-Date: 2001-07-24 23:29+0200\n"
+"POT-Creation-Date: 2001-07-25 21:49+0200\n"
 "PO-Revision-Date: 2001-06-08 20:15+02:00\n"
 "Last-Translator: Toomas Soome <tsoome@ut.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
@@ -82,6 +82,7 @@ msgstr "Nimemuster ei sobi, jätkan?"
 
 #. For now, editing requires a file, no piping
 #: attach.c:123
+#, c-format
 msgid "Mailcap compose entry requires %%s"
 msgstr "Mailcap koostamise kirje nõuab %%s"
 
@@ -106,6 +107,7 @@ msgstr "Mailcap koostamise kirjet %s jaoks puudub, loon tühja faili."
 
 #. For now, editing requires a file, no piping
 #: attach.c:250
+#, c-format
 msgid "Mailcap Edit entry requires %%s"
 msgstr "Mailcap toimeta kirje nõuab %%s"
 
@@ -2244,8 +2246,8 @@ msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please use the flea(1) utility.\n"
 msgstr ""
-"Arendajatega kontakteerumiseks saatke palun kiri aadressil "
-"<mutt-dev@mutt.org>.\n"
+"Arendajatega kontakteerumiseks saatke palun kiri aadressil <mutt-dev@mutt."
+"org>.\n"
 "Veast teatamiseks kasutage palun käsku flea(1).\n"
 
 #: main.c:45
@@ -2312,10 +2314,10 @@ msgstr ""
 
 #: main.c:88
 msgid ""
-"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
-"]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
-"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
+"<file> ]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
+"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2342,8 +2344,8 @@ msgid ""
 msgstr ""
 "kasutage: mutt [ -nRyzZ ] [ -e <käsk> ] [ -F <fail> ] [ -m <tüüp> ]\n"
 "               [ -f <fail> ]\n"
-"          mutt [ -nx ] [ -e <käsk> ] [ -a <fail> ] [ -F <fail> ] [ -H <fail> "
-"]\n"
+"          mutt [ -nx ] [ -e <käsk> ] [ -a <fail> ] [ -F <fail> ] [ -H "
+"<fail> ]\n"
 "               [ -i <fail> ] [ -s <teema> ] [ -b <aadr> ] [ -c <aadr> ]\n"
 "               <aadr> [ ... ]\n"
 "          mutt [ -n ] [ -e <käsk> ] [ -F <fail> ] -p\n"
@@ -2423,6 +2425,7 @@ msgid "Mailbox is empty."
 msgstr "Postkast on tühi."
 
 #: mbox.c:129 mbox.c:286
+#, c-format
 msgid "Reading %s... %d (%d%%)"
 msgstr "Loen %s... %d (%d%%)"
 
@@ -2452,6 +2455,7 @@ msgstr ""
 "sync: mbox on muudetud, aga muudetud teateid ei ole! (teatage sellest veast)"
 
 #: mbox.c:792
+#, c-format
 msgid "Writing messages... %d (%d%%)"
 msgstr "Kirjutan teateid... %d (%d%%)"
 

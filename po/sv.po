@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3.19\n"
-"POT-Creation-Date: 2001-07-24 23:29+0200\n"
+"POT-Creation-Date: 2001-07-25 21:49+0200\n"
 "PO-Revision-Date: 2001-06-08 17:26+02:00\n"
 "Last-Translator: Jörgen Tegnér <teg@post.netlink.se>\n"
 "Language-Team: \n"
@@ -79,6 +79,7 @@ msgstr "Kan inte para ihop namnmall, fortsätt?"
 
 #. For now, editing requires a file, no piping
 #: attach.c:123
+#, c-format
 msgid "Mailcap compose entry requires %%s"
 msgstr "'compose' i 'mailcap' kräver %%s"
 
@@ -103,6 +104,7 @@ msgstr "Saknar 'compose' i mailcap för %s, skapar en tom fil."
 
 #. For now, editing requires a file, no piping
 #: attach.c:250
+#, c-format
 msgid "Mailcap Edit entry requires %%s"
 msgstr "'edit' i 'mailcap' kräver %%s"
 
@@ -2243,8 +2245,8 @@ msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please use the flea(1) utility.\n"
 msgstr ""
-"För att kontakta utvecklarna, var vänlig skicka ett brev till "
-"<mutt-dev@mutt.org>.\n"
+"För att kontakta utvecklarna, var vänlig skicka ett brev till <mutt-dev@mutt."
+"org>.\n"
 "För att rapportera ett fel, var vänlig använd programmet flea(1).\n"
 
 #: main.c:45
@@ -2316,10 +2318,10 @@ msgstr ""
 
 #: main.c:88
 msgid ""
-"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
-"]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
-"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
+"<file> ]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
+"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2430,6 +2432,7 @@ msgid "Mailbox is empty."
 msgstr "Brevlådan är tom."
 
 #: mbox.c:129 mbox.c:286
+#, c-format
 msgid "Reading %s... %d (%d%%)"
 msgstr "Läser %s... %d (%d%%)"
 
@@ -2460,6 +2463,7 @@ msgstr ""
 "rapportera det här felet]."
 
 #: mbox.c:792
+#, c-format
 msgid "Writing messages... %d (%d%%)"
 msgstr "Skriver meddelanden... %d (%d%%)"
 
@@ -3774,8 +3778,8 @@ msgstr "Första meddelandet är inte tillgängligt."
 
 #~ msgid ""
 #~ "\n"
-#~ "SHA1 implementation Copyright (C) 1995-1997 Eric A. Young "
-#~ "<eay@cryptsoft.com>\n"
+#~ "SHA1 implementation Copyright (C) 1995-1997 Eric A. Young <eay@cryptsoft."
+#~ "com>\n"
 #~ "\n"
 #~ "    Redistribution and use in source and binary forms, with or without\n"
 #~ "    modification, are permitted under certain conditions.\n"
@@ -3791,19 +3795,24 @@ msgstr "Första meddelandet är inte tillgängligt."
 #~ "SHA1 implementering, upphovsrätt (C) 1995-1997 Eric A. Young "
 #~ "<eay@cryptsoft.com>\n"
 #~ "\n"
-#~ "    Följande text är en informell översättning som enbart tillhandahålls i\n"
+#~ "    Följande text är en informell översättning som enbart tillhandahålls "
+#~ "i\n"
 #~ "    informativt syfte. För alla juridiska tolkningar gäller den engelska\n"
 #~ "    originaltexten.\n"
 #~ "\n"
-#~ "    Spridning och användning av källkod och binära former, med eller utan\n"
+#~ "    Spridning och användning av källkod och binära former, med eller "
+#~ "utan\n"
 #~ "    modifieringar, är tillåtna under vissa villkor.\n"
 #~ "\n"
 #~ "    Implementeringen av SHA1 distribueras i hopp om att det ska vara \n"
-#~ "    användbart, men UTAN NÅGON SOM HELST GARANTI, även utan underförstådd \n"
+#~ "    användbart, men UTAN NÅGON SOM HELST GARANTI, även utan "
+#~ "underförstådd \n"
 #~ "    garanti om SÄLJBARHET eller LÄMPLIGHET FÖR NÅGOT SPECIELLT ÄNDAMÅL.\n"
 #~ "\n"
-#~ "    Du skall ha fått en kopia av de fullständiga villkoren för distribution\n"
-#~ "    tillsammans med programmet; om inte, skriv till programmets utvecklare.\n"
+#~ "    Du skall ha fått en kopia av de fullständiga villkoren för "
+#~ "distribution\n"
+#~ "    tillsammans med programmet; om inte, skriv till programmets "
+#~ "utvecklare.\n"
 
 #~ msgid "POP Username: "
 #~ msgstr "Användarnamn för POP: "

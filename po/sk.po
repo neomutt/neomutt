@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.95.6i\n"
-"POT-Creation-Date: 2001-07-24 23:29+0200\n"
+"POT-Creation-Date: 2001-07-25 21:49+0200\n"
 "PO-Revision-Date: 1999-07-29 00:00+0100\n"
 "Last-Translator: Miroslav Vasko <vasko@ies.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -82,6 +82,7 @@ msgstr "Nena¹iel som ¹ablónu názvu, pokraèova»?"
 
 #. For now, editing requires a file, no piping
 #: attach.c:123
+#, c-format
 msgid "Mailcap compose entry requires %%s"
 msgstr "Zostavovacia polo¾ka mailcap-u vy¾aduje %%s"
 
@@ -106,6 +107,7 @@ msgstr "®iadna zostavovacia polo¾ka mailcap-u pre %s, vytváram prázdny súbor."
 
 #. For now, editing requires a file, no piping
 #: attach.c:250
+#, c-format
 msgid "Mailcap Edit entry requires %%s"
 msgstr "Vstupná polo¾ka mailcap-u vy¾aduje %%s"
 
@@ -409,8 +411,8 @@ msgstr "Správy boli vytlaèené"
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
-"Spät.tried.(d)át/(f)-od/p(r)í/(s)-pred/k(o)mu/(t)-re»/(u)-ne/(z)-veµ/(c)-skór"
-"e: "
+"Spät.tried.(d)át/(f)-od/p(r)í/(s)-pred/k(o)mu/(t)-re»/(u)-ne/(z)-veµ/(c)-"
+"skóre: "
 
 #: commands.c:456
 msgid ""
@@ -2367,10 +2369,10 @@ msgstr ""
 #: main.c:88
 #, fuzzy
 msgid ""
-"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
-"]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
-"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
+"<file> ]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
+"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2395,10 +2397,10 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"pou¾itie: mutt [ -nRzZ ] [ -e <prík> ] [ -F <súb> ] [ -m <typ> ] [ -f <súb> "
-"]\n"
-"       mutt [ -nx ] [ -e <prík> ] [ -a <súb> ] [ -F <súb> ] [ -H <súb> ] [ "
-"-i <súb> ] [ -s <predm> ] [ -b <adr> ] [ -c <adr> ] <adr> [ ... ]\n"
+"pou¾itie: mutt [ -nRzZ ] [ -e <prík> ] [ -F <súb> ] [ -m <typ> ] [ -f "
+"<súb> ]\n"
+"       mutt [ -nx ] [ -e <prík> ] [ -a <súb> ] [ -F <súb> ] [ -H <súb> ] [ -"
+"i <súb> ] [ -s <predm> ] [ -b <adr> ] [ -c <adr> ] <adr> [ ... ]\n"
 "       mutt [ -n ] [ -e <prík> ] [ -F <súb> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2478,6 +2480,7 @@ msgid "Mailbox is empty."
 msgstr "Schránka je prázdna."
 
 #: mbox.c:129 mbox.c:286
+#, c-format
 msgid "Reading %s... %d (%d%%)"
 msgstr "Èítam %s... %d (%d%%)"
 
@@ -2507,6 +2510,7 @@ msgstr ""
 "sync: schránka zmenená, ale ¾iadne zmenené správy! (oznámte túto chybu)"
 
 #: mbox.c:792
+#, c-format
 msgid "Writing messages... %d (%d%%)"
 msgstr "Zapisujem správy... %d (%d%%)"
 
@@ -3847,8 +3851,8 @@ msgstr "Táto správa nie je viditeµná."
 #, fuzzy
 #~ msgid ""
 #~ "\n"
-#~ "SHA1 implementation Copyright (C) 1995-1997 Eric A. Young "
-#~ "<eay@cryptsoft.com>\n"
+#~ "SHA1 implementation Copyright (C) 1995-1997 Eric A. Young <eay@cryptsoft."
+#~ "com>\n"
 #~ "\n"
 #~ "    Redistribution and use in source and binary forms, with or without\n"
 #~ "    modification, are permitted under certain conditions.\n"
@@ -3861,7 +3865,8 @@ msgstr "Táto správa nie je viditeµná."
 #~ "    along with this program; if not, write to the program's developers.\n"
 #~ msgstr ""
 #~ "\n"
-#~ "SHA1 implementácia Copyright (C) 1995-7 Eric A. Young <eay@cryptsoft.com>\n"
+#~ "SHA1 implementácia Copyright (C) 1995-7 Eric A. Young <eay@cryptsoft."
+#~ "com>\n"
 #~ "\n"
 #~ "    Redistribúcia a pou¾itie v zdrojovej a binárnej forme, s alebo bez\n"
 #~ "    modifikácie, sú umo¾nené pod urèenými podmienkami.\n"

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.3.19i\n"
-"POT-Creation-Date: 2001-07-24 23:29+0200\n"
+"POT-Creation-Date: 2001-07-25 21:49+0200\n"
 "PO-Revision-Date: 2001-06-07 17:37-0500\n"
 "Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
 "Language-Team: Indonesia <i18n@linux.or.id>\n"
@@ -82,6 +82,7 @@ msgstr "Tidak cocok dengan nametemplate, lanjutkan?"
 
 #. For now, editing requires a file, no piping
 #: attach.c:123
+#, c-format
 msgid "Mailcap compose entry requires %%s"
 msgstr "'compose' di file mailcap membutuhkan %%s"
 
@@ -107,6 +108,7 @@ msgstr ""
 
 #. For now, editing requires a file, no piping
 #: attach.c:250
+#, c-format
 msgid "Mailcap Edit entry requires %%s"
 msgstr "'Edit' di file mailcap membutuhkan %%s"
 
@@ -400,15 +402,15 @@ msgstr "Surat-surat tidak dapat dicetak"
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
-"Urut terbalik tan(g)gal/d(a)ri/t(e)rima/(s)ubj/(k)e/(t)hread/(n)ggak "
-"urut/(u)kuran/n(i)lai? "
+"Urut terbalik tan(g)gal/d(a)ri/t(e)rima/(s)ubj/(k)e/(t)hread/(n)ggak urut/(u)"
+"kuran/n(i)lai? "
 
 #: commands.c:456
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
-"Urut tan(g)gal/d(a)ri/t(e)rima/(s)ubj/(k)e/(t)hread/(n)ggak "
-"urut/(u)kuran/n(i)lai? "
+"Urut tan(g)gal/d(a)ri/t(e)rima/(s)ubj/(k)e/(t)hread/(n)ggak urut/(u)kuran/n"
+"(i)lai? "
 
 #: commands.c:457
 msgid "dfrsotuzc"
@@ -2323,10 +2325,10 @@ msgstr ""
 
 #: main.c:88
 msgid ""
-"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
-"]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
-"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
+"<file> ]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
+"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2353,8 +2355,8 @@ msgid ""
 msgstr ""
 "penggunaan: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
-"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
+"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2432,6 +2434,7 @@ msgid "Mailbox is empty."
 msgstr "Kotak surat kosong."
 
 #: mbox.c:129 mbox.c:286
+#, c-format
 msgid "Reading %s... %d (%d%%)"
 msgstr "Membaca %s... %d (%d%%)"
 
@@ -2461,6 +2464,7 @@ msgstr ""
 "sync: mbox diubah, tapi tidak ada surat yang berubah! (laporkan bug ini)"
 
 #: mbox.c:792
+#, c-format
 msgid "Writing messages... %d (%d%%)"
 msgstr "Menulis surat-surat... %d (%d%%)"
 
@@ -3774,8 +3778,8 @@ msgstr "Surat induk tidak ada."
 
 #~ msgid ""
 #~ "\n"
-#~ "SHA1 implementation Copyright (C) 1995-1997 Eric A. Young "
-#~ "<eay@cryptsoft.com>\n"
+#~ "SHA1 implementation Copyright (C) 1995-1997 Eric A. Young <eay@cryptsoft."
+#~ "com>\n"
 #~ "\n"
 #~ "    Redistribution and use in source and binary forms, with or without\n"
 #~ "    modification, are permitted under certain conditions.\n"
@@ -3788,7 +3792,8 @@ msgstr "Surat induk tidak ada."
 #~ "    along with this program; if not, write to the program's developers.\n"
 #~ msgstr ""
 #~ "\n"
-#~ "Implementasi SHA1 Hak Cipta (C) 1995-1997 Eric A. Young <eay@cryptsoft.com>\n"
+#~ "Implementasi SHA1 Hak Cipta (C) 1995-1997 Eric A. Young <eay@cryptsoft."
+#~ "com>\n"
 #~ "\n"
 #~ "    Pendistribusian ulang dan penggunaan dalam bentuk sumber dan biner\n"
 #~ "    dengan maupun tanpa perubahan, diperbolehkan dengan syarat-syarat\n"
@@ -3798,7 +3803,8 @@ msgstr "Surat induk tidak ada."
 #~ "    dalam bentuk apapun, baik eksplisit maupun terimplikasi, termasuk\n"
 #~ "    tapi tidak terbatas kepada jaminan perdagangan dan ketepatgunaan.\n"
 #~ "\n"
-#~ "    Anda semestinya sudah menerima sebuah salinan dari persyaratan lengkap\n"
+#~ "    Anda semestinya sudah menerima sebuah salinan dari persyaratan "
+#~ "lengkap\n"
 #~ "    pendistribusian ulang bersama program ini; jika tidak, hubungi\n"
 #~ "    para pembuat program ini.\n"
 

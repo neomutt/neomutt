@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt 1.4i\n"
-"POT-Creation-Date: 2001-07-24 23:29+0200\n"
+"POT-Creation-Date: 2001-07-25 21:49+0200\n"
 "PO-Revision-Date: 2001-06-12 12:47+0200\n"
 "Last-Translator: Fatih Demir <kabalak@gtranslator.org>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
@@ -82,6 +82,7 @@ msgstr ""
 
 #. For now, editing requires a file, no piping
 #: attach.c:123
+#, c-format
 msgid "Mailcap compose entry requires %%s"
 msgstr "Mailcap düzenleme birimi %%s gerektiriyor"
 
@@ -106,6 +107,7 @@ msgstr "%s için mailcap yazma birimi yok, boþ dosya yaratýlýyor."
 
 #. For now, editing requires a file, no piping
 #: attach.c:250
+#, c-format
 msgid "Mailcap Edit entry requires %%s"
 msgstr "Mailcap düzenleme birimi %%s gerektiriyor"
 
@@ -398,17 +400,15 @@ msgstr "Iletiler yazdýrýlýmadý"
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
-"Ters sýralama tipi: "
-"(t)arih/(g)önderen/(a)lan/(k)onu/gönder(i)len/k(o)num/dü(z)enmemiþ/(b)oyut/(p"
-")uan: "
+"Ters sýralama tipi: (t)arih/(g)önderen/(a)lan/(k)onu/gönder(i)len/k(o)num/dü"
+"(z)enmemiþ/(b)oyut/(p)uan: "
 
 #: commands.c:456
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
-"Sýralama tipi: "
-"(t)arih/(g)önderen/(a)lan/(k)onu/gönder(i)len/k(o)num/dü(z)enlenmemiþ/(b)oyut"
-"/(p)uan?"
+"Sýralama tipi: (t)arih/(g)önderen/(a)lan/(k)onu/gönder(i)len/k(o)num/dü(z)"
+"enlenmemiþ/(b)oyut/(p)uan?"
 
 #: commands.c:457
 msgid "dfrsotuzc"
@@ -2309,10 +2309,10 @@ msgstr ""
 
 #: main.c:88
 msgid ""
-"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
-"]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
-"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
+"<file> ]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
+"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2418,6 +2418,7 @@ msgid "Mailbox is empty."
 msgstr "Eposta kutusu boþtur."
 
 #: mbox.c:129 mbox.c:286
+#, c-format
 msgid "Reading %s... %d (%d%%)"
 msgstr "%s okunuyor... %d (%%%d)"
 
@@ -2446,6 +2447,7 @@ msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr ""
 
 #: mbox.c:792
+#, c-format
 msgid "Writing messages... %d (%d%%)"
 msgstr "Iletiler yazýlýyor... %d (%%%d)"
 
