@@ -51,9 +51,12 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
     return POP_A_FAILURE;
   }
 
+  if (!method)
+    method = pop_data->auth_list;
+
   FOREVER
   {
-    rc = sasl_client_start (saslconn, pop_data->auth_list, NULL,
+    rc = sasl_client_start (saslconn, method, NULL,
 			    &interaction, &pc, &olen, &mech);
     if (rc != SASL_INTERACT)
       break;
@@ -373,12 +376,7 @@ int pop_authenticate (POP_DATA* pop_data)
 	attempts++;
       if (ret == POP_A_SUCCESS || ret == POP_A_SOCKET ||
 	  (ret == POP_A_FAILURE && !option (OPTPOPAUTHTRYALL)))
-      {
-	/* awn@bcs.zp.ua: `comma' variable is unneeded here.  This was
-	 * cut-n-paste, IMHO. */
-	/* comma = NULL; */
 	break;
-      }
 
       authenticator++;
     }
