@@ -1008,6 +1008,45 @@ int mutt_resend_message (FILE *fp, CONTEXT *ctx, HEADER *cur)
   return ci_send_message (SENDRESEND, msg, NULL, ctx, cur);
 }
 
+#ifdef HAVE_PGP
+
+static int _set_pgp_flags (HEADER *cur)
+{
+  int flags = 0;
+  
+  if (option (OPTPGPREPLYENCRYPT) && cur && cur->pgp & PGPENCRYPT)
+    flags |= PGPENCRYPT;
+  if (option (OPTPGPREPLYSIGN) && cur && cur->pgp & PGPSIGN)
+    flags |= PGPSIGN;
+  if (option (OPTPGPREPLYSIGNENCRYPTED) && cur && cur->pgp & PGPENCRYPT)
+    flags |= PGPSIGN;
+
+  return flags;
+
+}
+
+static int set_pgp_flags (HEADER *cur, CONTEXT *ctx)
+{
+  int i;
+  int flags = 0;
+  
+  if (cur) 
+    return _set_pgp_flags (cur);
+  
+  /* else */
+  
+  for (i = 0; i < ctx->vcount; i++)
+  {
+    cur = ctx->hdrs[ctx->v2r[i]];
+    if (cur->tagged)
+      flags |= _set_pgp_flags (cur);
+  }
+  
+  return flags;
+}
+
+#endif /* HAVE_PGP */
+
 int
 ci_send_message (int flags,		/* send mode */
 		 HEADER *msg,		/* template to use for new message */
@@ -1196,14 +1235,12 @@ ci_send_message (int flags,		/* send mode */
 	msg->pgp |= PGPSIGN;
       if (option (OPTPGPAUTOENCRYPT))
 	msg->pgp |= PGPENCRYPT;
-      if (option (OPTPGPREPLYENCRYPT) && cur && cur->pgp & PGPENCRYPT)
-	msg->pgp |= PGPENCRYPT;
-      if (option (OPTPGPREPLYSIGN) && cur && cur->pgp & PGPSIGN)
-	msg->pgp |= PGPSIGN;
-      if (option (OPTPGPREPLYSIGNENCRYPTED) && cur && cur->pgp & PGPENCRYPT)
-	msg->pgp |= PGPSIGN;
+      
+      msg->pgp |= set_pgp_flags (cur, ctx);
     }
+
 #endif /* HAVE_PGP */
+      
 
 
 
