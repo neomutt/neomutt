@@ -207,9 +207,13 @@ static void query_entry (char *s, size_t slen, MUTTMENU *m, int num)
 	    NONULL (table[num].data->other));
 }
 
-static int query_tag (MUTTMENU *menu, int n)
+static int query_tag (MUTTMENU *menu, int n, int m)
 {
-  return ((((ENTRY *) menu->data)[n].tagged = !((ENTRY *) menu->data)[n].tagged) ? 1 : -1);
+  ENTRY *cur = &((ENTRY *) menu->data)[n];
+  int ot = cur->tagged;
+  
+  cur->tagged = m >= 0 ? m : !cur->tagged;
+  return cur->tagged - ot;
 }
 
 int mutt_query_complete (char *buf, size_t buflen)

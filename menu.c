@@ -794,6 +794,13 @@ int mutt_menuLoop (MUTTMENU *menu)
 
   FOREVER
   {
+    if (option (OPTMENUCALLER))
+    {
+      unset_option (OPTMENUCALLER);
+      return OP_NULL;
+    }
+    
+    
     mutt_curs_set (0);
 
 #ifdef USE_IMAP

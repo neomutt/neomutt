@@ -442,7 +442,7 @@ enum
 			 * 	    functions while we are executing an
 			 * 	    external program.
 			 */
-  OPTALIASMENU,		/* (pseudo) alias menu active */
+  OPTMENUCALLER,	/* (pseudo) tell menu to give caller a take */
 #ifdef HAVE_PGP
   OPTPGPCHECKTRUST,	/* (pseudo) used by pgp_select_key () */
   OPTDONTHANDLEPGPKEYS,	/* (pseudo) used to extract PGP keys */
@@ -486,6 +486,7 @@ void mutt_init (int, LIST *);
 
 typedef struct alias
 {
+  struct alias *self;		/* XXX - ugly hack */
   char *name;
   ADDRESS *addr;
   struct alias *next;

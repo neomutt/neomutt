@@ -117,7 +117,7 @@ static int alias_SortAddress (const void *a, const void *b)
 
 void mutt_alias_menu (char *buf, size_t buflen, ALIAS *aliases)
 {
-  ALIAS *aliasp, *aliasl;
+  ALIAS *aliasp;
   MUTTMENU *menu;
   ALIAS **AliasTable = NULL;
   int t = -1;
@@ -125,17 +125,16 @@ void mutt_alias_menu (char *buf, size_t buflen, ALIAS *aliases)
   int op;
   char helpstr[SHORT_STRING];
 
+  int omax;
+  
   if (!aliases)
   {
     mutt_error _("You have no aliases!");
     return;
   }
-
+  
   /* tell whoever called me to redraw the screen when I return */
   set_option (OPTNEEDREDRAW);
-
-  /* tell mutt_alias and mutt_unalias that this menu is active */
-  set_option (OPTALIASMENU);
   
   menu = mutt_new_menu ();
   menu->make_entry = alias_entry;
@@ -144,18 +143,26 @@ void mutt_alias_menu (char *buf, size_t buflen, ALIAS *aliases)
   menu->title = _("Aliases");
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_ALIAS, AliasHelp);
 
+new_aliases:
+
+  omax = menu->max;
+  
   /* count the number of aliases */
   for (aliasp = aliases; aliasp; aliasp = aliasp->next)
   {
-    aliasp->del    = 0;
-    aliasp->tagged = 0;
+    aliasp->self->del    = 0;
+    aliasp->self->tagged = 0;
     menu->max++;
   }
 
-  menu->data = AliasTable = (ALIAS **) safe_calloc (menu->max, sizeof (ALIAS *));
+  safe_realloc ((void **) &AliasTable, menu->max * sizeof (ALIAS *));
+  menu->data = AliasTable;
 
-  for (i = 0, aliasp = aliases; aliasp; aliasp = aliasp->next, i++)
-    AliasTable[i] = aliasp;
+  for (i = omax, aliasp = aliases; aliasp; aliasp = aliasp->next, i++)
+  {
+    AliasTable[i] = aliasp->self;
+    aliases       = aliasp;
+  }
 
   if ((SortAlias & SORT_MASK) != SORT_ORDER)
   {
@@ -167,6 +174,13 @@ void mutt_alias_menu (char *buf, size_t buflen, ALIAS *aliases)
 
   while (!done)
   {
+    if (aliases->next)
+    {
+      menu->redraw |= REDRAW_FULL;
+      aliases       = aliases->next;
+      goto new_aliases;
+    }
+    
     switch ((op = mutt_menuLoop (menu)))
     {
       case OP_DELETE:
@@ -180,7 +194,7 @@ void mutt_alias_menu (char *buf, size_t buflen, ALIAS *aliases)
 	}
         else
         {
-	  AliasTable[menu->current]->del = (op == OP_DELETE) ? 1 : 0;
+	  AliasTable[menu->current]->self->del = (op == OP_DELETE) ? 1 : 0;
 	  menu->redraw |= REDRAW_CURRENT;
 	  if (option (OPTRESOLVE) && menu->current < menu->max - 1)
 	  {
@@ -212,29 +226,4 @@ void mutt_alias_menu (char *buf, size_t buflen, ALIAS *aliases)
   mutt_menuDestroy (&menu);
   safe_free ((void **) &AliasTable);
   
-  unset_option (OPTALIASMENU);
-
-  /* remove aliases marked for deletion. */
-  aliasl = NULL;
-  for (aliasp = Aliases; aliasp; aliasp = aliasp->next)
-  {
-    if (aliasp->del)
-    {
-      if (aliasl) 
-	aliasl->next = aliasp->next;
-      else
-	Aliases = aliasp->next;
-      
-      aliasp->next = NULL;
-      mutt_free_alias (&aliasp);
-
-      if (aliasl)
-	aliasp = aliasl;
-      else
-	aliasp = Aliases;
-    }
-    else
-      aliasl = aliasp;
-  }
-
 }

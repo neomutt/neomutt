@@ -241,7 +241,8 @@ void mutt_create_alias (ENVELOPE *cur, ADDRESS *iadr)
     return;
   }
 
-  new = safe_calloc (1, sizeof (ALIAS));
+  new       = safe_calloc (1, sizeof (ALIAS));
+  new->self = new;
   new->name = safe_strdup (buf);
 
   if (adr)
@@ -381,6 +382,7 @@ int mutt_alias_complete (char *s, size_t buflen)
       }
 
       /* build alias list and show it */
+
       a = Aliases;
       while (a)
       {
@@ -414,6 +416,29 @@ int mutt_alias_complete (char *s, size_t buflen)
     safe_free ((void **) &a_cur);
   }
 
+  /* remove any aliases marked for deletion */
+  a_list = NULL;
+  for (a_cur = Aliases; a_cur; a_cur = a_cur->next)
+  {
+    if (a_cur->del)
+    {
+      if (a_list)
+	a_list->next = a_cur->next;
+      else
+	Aliases = a_cur->next;
+      
+      a_cur->next = NULL;
+      mutt_free_alias (&a_cur);
+      
+      if (a_list)
+	a_cur = a_list;
+      else
+	a_cur = Aliases;
+    }
+    else
+      a_list = a_cur;
+  }
+  
   return 0;
 }
 

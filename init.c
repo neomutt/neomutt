@@ -432,7 +432,7 @@ static int parse_unalias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *er
     {
       if (mutt_strcasecmp (buf->data, tmp->name) == 0)
       {
-	if (option (OPTALIASMENU))
+	if (CurrentMenu == MENU_ALIAS)
 	{
 	  tmp->del = 1;
 	  set_option (OPTFORCEREDRAWINDEX);
@@ -481,15 +481,19 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   {
     /* create a new alias */
     tmp = (ALIAS *) safe_calloc (1, sizeof (ALIAS));
+    tmp->self = tmp;
     tmp->name = safe_malloc (len + 1);
     memcpy (tmp->name, s->dptr, len);
     tmp->name[len] = 0;
+    /* give the main addressbook code a chance */
+    if (CurrentMenu == MENU_ALIAS)
+      set_option (OPTMENUCALLER);
   }
   else
   {
     /* override the previous value */
     rfc822_free_address (&tmp->addr);
-    if (option (OPTALIASMENU))
+    if (CurrentMenu == MENU_ALIAS)
       set_option (OPTFORCEREDRAWINDEX);
   }
   s->dptr = p;
