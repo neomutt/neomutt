@@ -580,7 +580,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
         mutt_clear_error ();
 	return -1;
       }
-      if (imap_create_mailbox (CTX_DATA, mbox) < 0)
+      if (imap_create_mailbox (ctx, mbox) < 0)
 	return -1;
     }
     /* try again */

@@ -337,6 +337,9 @@ static void init_state (struct browser_state *state, MUTTMENU *menu)
   state->entrymax = 256;
   state->entry = (struct folder_file *) safe_malloc (sizeof (struct folder_file) * state->entrymax);
   memset (state->entry, 0, sizeof (struct folder_file) * state->entrymax);
+#ifdef USE_IMAP
+  state->imap_browse = 0;
+#endif
   if (menu)
     menu->data = state->entry;
 }
@@ -596,7 +599,8 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
   if (multiple)
     menu->tag = file_tag;
 
-  menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_FOLDER, FolderHelp);
+  menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_FOLDER,
+    FolderHelp);
 
   init_menu (&state, menu, title, sizeof (title), buffy);
 
@@ -793,6 +797,45 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 	}
 	mutt_ungetch (0, OP_CHECK_NEW);
 	break;
+
+      case OP_NEW_MAILBOX:
+	mutt_error (_("Creating mailboxes is not yet supported."));
+	break;
+
+      case OP_DELETE_MAILBOX:
+	if (!mx_is_imap (state.entry[menu->current].name))
+	  mutt_error (_("Delete is only supported for IMAP mailboxes"));
+	else
+        {
+	  char msg[LONG_STRING];
+	  char* mbox;
+	  int nentry = menu->current;
+	  
+	  imap_parse_path (state.entry[nentry].name, NULL, 0, NULL,
+            NULL, &mbox);
+	  snprintf (msg, sizeof (msg), _("Really delete mailbox \"%s\"?"),
+            mbox);
+	  if (mutt_yesorno (msg, M_NO) == M_YES)
+          {
+	    if (!imap_delete_mailbox (Context, mbox))
+            {
+	      /* free the mailbox from the browser */
+	      safe_free ((void **) &((state.entry)[nentry].name));
+	      safe_free ((void **) &((state.entry)[nentry].desc));
+	      /* and move all other entries up */
+	      if (nentry+1 < state.entrylen)
+		memmove (state.entry + nentry, state.entry + nentry + 1,
+                  sizeof (struct folder_file) * (state.entrylen - (nentry+1)));
+	      state.entrylen--;
+	      mutt_message _("Mailbox deleted.");
+	      init_menu (&state, menu, title, sizeof (title), buffy);
+	      MAYBE_REDRAW (menu->redraw);
+	    }
+	  }
+	  else
+	    mutt_message _("Mailbox not deleted.");
+        }
+        break;
 #endif
       
       case OP_CHANGE_DIRECTORY:

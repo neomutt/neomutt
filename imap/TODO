@@ -27,6 +27,12 @@ IMAP enhancements, by priority:
  
   PRIORITY: [** ]
 
+* See if we can't add more info to the IMAP browser than just name (without
+  incurring too much overhead). eg which folders contain new mail, size,
+  number of messages.
+
+  PRIORITY: [** ]
+
 [ -- speed -- ]
 * Persistent caching of data. I think the nicest way to do this is to store
   local copies like IMAP does, with an invisible control message at the top,
@@ -41,6 +47,12 @@ IMAP enhancements, by priority:
   o IMAP can't discriminate between its own store and a fake Mutt cache. If
     the server changes its file format, bad things might happen. Could be
     worked around with a specific Mutt header in all messages, probably.
+
+  PRIORITY: [*  ]
+
+* Instead of testing for the existence of a mailbox for APPEND, just append
+  and create/retry on failure. This is only a small bandwidth savings, but
+  it should be easy.
 
   PRIORITY: [*  ]
 
@@ -60,4 +72,4 @@ IMAP enhancements, by priority:
   PRIORITY: [** ]
 
 Brendan Cully <brendan@kublai.com>
-Updated: 19990911
+Updated: 19991119

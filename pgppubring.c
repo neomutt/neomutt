@@ -133,7 +133,7 @@ int main (int argc, char * const argv[])
       snprintf (kring, sizeof (kring), "%s/pubring.%s", pgppath, version == 2 ? "pgp" : "pkr");
   }
   
-  pgpring_find_candidates (kring, argv + optind, argc - optind);
+  pgpring_find_candidates (kring, (const char**) argv + optind, argc - optind);
     
   return 0;
 }

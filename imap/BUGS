@@ -1,5 +1,16 @@
 In no particular order:
 
+* Mutt doesn't detect when a mailbox has only been opened read-only
+  (because, say, another process has it open), so it lets you store
+  changes that it can't commit.
+  --> just pick up the [READ-ONLY] in the tagged response, set mutt's flag
+
+* ~h searches download the entire folder, setting everything to \Seen in
+  the process.
+  --> Use SEARCH? or at least try to use .PEEK when doing scans. I've been
+      thinking of going to always PEEK anyway, but then you'd have to store
+      updates for every message you touched. Maybe a config option?
+
 * No checks are performed on long commands to make sure that they are
   still correct after they've been made to fit in their buffers.
   Tagged message sets can exceed the fixed space we've allocated for
@@ -40,4 +51,4 @@ In no particular order:
 * The mutt_pretty routines don't work well when the delimiter isn't '/'.
 
 Brendan Cully <brendan@kublai.com>
-Updated 19991102
+Updated 19991110

@@ -25,3 +25,4 @@ New features vs. the stable distribution:
 * Use an IMAP path as your Maildir (set folder='')
 * Preserve message keywords
 * Preserve deleted messages if you don't choose to expunge them
+* Delete mailboxes (from the browser)

@@ -128,19 +128,23 @@ int imap_parse_path (char* path, char* host, size_t hlen, int* port,
   char *pt;
 
   /* set default port */
-  *port = 0;
+  if (port)
+    *port = 0;
   if (socktype)
     *socktype = M_NEW_SOCKET;
   pc = path;
   if (*pc != '{')
     return -1;
   pc++;
-  n = 0;
-  while (*pc && *pc != '}' && *pc != ':' && *pc != '/' && (n < hlen-1))
-    host[n++] = *pc++;
-  host[n] = 0;
-  /* catch NULL hosts */
-  if (!*host)
+  /* skip over the entire host, but copy in only what we have room for */
+  for (n = 0; *pc && *pc != '}' && *pc != ':' && *pc != '/'; pc++)
+    if (n+1 < hlen)
+      host[n++] = *pc;
+  if (hlen)
+    host[n] = 0;
+
+  /* catch NULL hosts, unless we're deliberately not parsing them */
+  if (hlen && !*host)
   {
     dprint (1, (debugfile, "imap_parse_path: NULL host in %s\n", path));
     return -1;
@@ -157,8 +161,9 @@ int imap_parse_path (char* path, char* host, size_t hlen, int* port,
       return -1;
     c = *pc;
     *pc = '\0';
-    *port = atoi (pt);
-    if (!port)
+    if (port)
+      *port = atoi (pt);
+    if (port && !*port)
     {
       dprint (1, (debugfile, "imap_parse_path: bad port in %s\n", path));
       return -1;
@@ -178,7 +183,7 @@ int imap_parse_path (char* path, char* host, size_t hlen, int* port,
     {
       if (socktype)
 	*socktype = M_NEW_SSL_SOCKET;
-      if (!*port)
+      if (port && !*port)
 	*port = IMAP_SSL_PORT;
     } else
 #endif
@@ -187,7 +192,7 @@ int imap_parse_path (char* path, char* host, size_t hlen, int* port,
   }
   pc++;
   
-  if (!*port)
+  if (port && !*port)
     *port = IMAP_PORT;
   
   *mbox = pc;

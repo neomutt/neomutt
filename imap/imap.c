@@ -42,6 +42,37 @@ static char* imap_get_flags (LIST** hflags, char* s);
 static int imap_check_acl (IMAP_DATA *idata);
 static int imap_check_capabilities (IMAP_DATA *idata);
 
+int imap_create_mailbox (CONTEXT* ctx, char* mailbox)
+{
+  char buf[LONG_STRING], mbox[LONG_STRING];
+
+  imap_quote_string (mbox, sizeof (mbox), mailbox);
+  snprintf (buf, sizeof (buf), "CREATE %s", mbox);
+      
+  if (imap_exec (buf, sizeof (buf), CTX_DATA, buf, 0) != 0)
+  {
+    imap_error ("imap_create_mailbox()", buf);
+    return -1;
+  }
+  return 0;
+}
+
+int imap_delete_mailbox (CONTEXT* ctx, char* mailbox)
+{
+  char buf[LONG_STRING], mbox[LONG_STRING];
+  
+  imap_quote_string (mbox, sizeof (mbox), mailbox);
+  snprintf (buf, sizeof (buf), "DELETE %s", mbox);
+
+  if (imap_exec (buf, sizeof (buf), CTX_DATA, buf, 0) != 0)
+  {
+    imap_error ("imap_delete_mailbox", buf);
+    return -1;
+  }
+
+  return 0;
+}
+
 void imap_set_logout (CONTEXT *ctx)
 {
   if (CTX_DATA)
@@ -712,21 +743,6 @@ int imap_select_mailbox (CONTEXT* ctx, const char* path)
   return imap_open_mailbox (ctx);
 }
 
-int imap_create_mailbox (IMAP_DATA* idata, char* mailbox)
-{
-  char buf[LONG_STRING], mbox[LONG_STRING];
-
-  imap_quote_string (mbox, sizeof (mbox), mailbox);
-  snprintf (buf, sizeof (buf), "CREATE %s", mbox);
-      
-  if (imap_exec (buf, sizeof (buf), idata, buf, 0) != 0)
-  {
-    imap_error ("imap_create_mailbox()", buf);
-    return (-1);
-  }
-  return 0;
-}
-
 int imap_open_mailbox_append (CONTEXT *ctx)
 {
   CONNECTION *conn;
@@ -798,7 +814,7 @@ int imap_open_mailbox_append (CONTEXT *ctx)
       {
 	return (-1);
       }
-      if (imap_create_mailbox (idata, mailbox) < 0)
+      if (imap_create_mailbox (ctx, mailbox) < 0)
       {
 	return (-1);
       }

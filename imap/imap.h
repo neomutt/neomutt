@@ -22,8 +22,11 @@
 #include "browser.h"
 #include "mailbox.h"
 
+/* imap.c */
 int imap_check_mailbox (CONTEXT *ctx, int *index_hint);
+int imap_create_mailbox (CONTEXT* idata, char* mailbox);
 int imap_close_connection (CONTEXT *ctx);
+int imap_delete_mailbox (CONTEXT* idata, char* mailbox);
 int imap_open_mailbox (CONTEXT *ctx);
 int imap_open_mailbox_append (CONTEXT *ctx);
 int imap_select_mailbox (CONTEXT *ctx, const char* path);
