@@ -656,6 +656,10 @@ int main (int argc, char **argv)
     }
     else if (flags & M_SELECT)
     {
+      if (!Incoming) {
+	mutt_endwin _("No incoming mailboxes defined.");
+	exit (1);
+      }
       folder[0] = 0;
       mutt_select_file (folder, sizeof (folder), 1);
       if (!folder[0])
