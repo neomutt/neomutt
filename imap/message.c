@@ -141,6 +141,9 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
 	ctx->hdrs[ctx->msgcount] = mutt_new_header ();
 	ctx->hdrs[ctx->msgcount]->index = ctx->msgcount;
 
+	/* messages which have not been expunged are ACTIVE (borrowed from
+	 * mh folders) */
+	ctx->hdrs[msgno]->active = 1;
 	ctx->hdrs[msgno]->read = h->read;
 	ctx->hdrs[msgno]->old = h->old;
 	ctx->hdrs[msgno]->deleted = h->deleted;
@@ -189,14 +192,16 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   char *pc;
   long bytes;
   int uid;
+  int cacheno;
   IMAP_CACHE *cache;
 
   /* see if we already have the message in our cache */
-  cache = &CTX_DATA->cache[ctx->hdrs[msgno]->index % IMAP_CACHE_LEN];
+  cacheno = HEADER_DATA(ctx->hdrs[msgno])->uid % IMAP_CACHE_LEN;
+  cache = &CTX_DATA->cache[cacheno];
 
   if (cache->path)
   {
-    if (cache->index == ctx->hdrs[msgno]->index)
+    if (cache->uid == HEADER_DATA(ctx->hdrs[msgno])->uid)
     {
       /* yes, so just return a pointer to the message */
       if (!(msg->fp = fopen (cache->path, "r")))
@@ -216,7 +221,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 
   mutt_message _("Fetching message...");
 
-  cache->index = ctx->hdrs[msgno]->index;
+  cache->uid = HEADER_DATA(ctx->hdrs[msgno])->uid;
   mutt_mktemp (path);
   cache->path = safe_strdup (path);
   if (!(msg->fp = safe_fopen (path, "w+")))
@@ -628,7 +633,7 @@ static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf, FILE* fp)
   
   /* skip to message number */
   buf = imap_next_word (buf);
-  h->number = atoi (buf);
+  h->data->sid = atoi (buf);
 
   /* find FETCH tag */
   buf = imap_next_word (buf);

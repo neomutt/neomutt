@@ -27,6 +27,7 @@
 #include "globals.h"
 #include "sort.h"
 #include "browser.h"
+#include "message.h"
 #include "imap_private.h"
 
 #include <unistd.h>
@@ -186,6 +187,40 @@ int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes)
   return 0;
 }
 
+/* imap_expunge_mailbox: Purge IMAP portion of expunged messages from the
+ *   context. Must not be done while something has a handle on any headers
+ *   (eg inside pager or editor). mx_update_tables and mutt_sort_headers
+ *   must be called afterwards. */
+void imap_expunge_mailbox (IMAP_DATA* idata)
+{
+  HEADER* h;
+  int i, cacheno;
+
+  for (i = 0; i < idata->ctx->msgcount; i++)
+  {
+    h = idata->ctx->hdrs[i];
+
+    if (!HEADER_DATA(h)->sid)
+    {
+      dprint (2, (debugfile, "Expunging message UID %d.\n", HEADER_DATA (h)->uid));
+
+      h->active = 0;
+
+      /* free cached body from disk, if neccessary */
+      cacheno = HEADER_DATA(h)->uid % IMAP_CACHE_LEN;
+      if (idata->cache[cacheno].uid == HEADER_DATA(h)->uid &&
+	  idata->cache[cacheno].path)
+      {
+	unlink (idata->cache[cacheno].path);
+	FREE (&idata->cache[cacheno].path);
+      }
+
+      imap_free_header_data (&h->data);
+    }
+  }
+}
+
+#if 0
 /* imap_reopen_mailbox: Reopen an imap mailbox.  This is used when the
  * server sends an EXPUNGE message, indicating that some messages may have
  * been deleted. This is a heavy handed approach, as it reparses all of the
@@ -193,9 +228,10 @@ int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes)
  * something to actually only remove the messages that are marked
  * EXPUNGE.
  */
-int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint)
+int imap_reopen_mailbox (IMAP_DATA* idata)
 {
   HEADER **old_hdrs;
+  CONTEXT* ctx;
   int old_msgcount;
   char buf[LONG_STRING];
   char bufout[LONG_STRING];
@@ -205,6 +241,8 @@ int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint)
   int n;
   int i, j;
   int index_hint_set;
+
+  ctx = idata->ctx;
 
   ctx->quiet = 1;
 
@@ -304,7 +342,7 @@ int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint)
   ctx->msgcount = 0;
   count = imap_read_headers (ctx, 0, count - 1) + 1;
 
-  index_hint_set = (index_hint == NULL);
+  index_hint_set = 1;
 
   if (!ctx->readonly)
   {
@@ -343,8 +381,10 @@ int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint)
       if (found)
       {
 	/* this is best done here */
+/*
 	if (!index_hint_set && *index_hint == j)
 	  *index_hint = i;
+*/
 
 	if (old_hdrs[j]->changed)
 	{
@@ -382,6 +422,7 @@ int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint)
 
   return 0;
 }
+#endif
 
 static int imap_get_delim (IMAP_DATA *idata)
 {
@@ -1095,22 +1136,10 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
       mutt_bit_isset(idata->rights, IMAP_ACL_DELETE))
   {
     mutt_message _("Expunging messages from server...");
-    /* FIXME: these status changes seem dubious */
-    idata->status = IMAP_EXPUNGE;
     if (imap_exec (buf, sizeof (buf), CTX_DATA, "EXPUNGE", 0) != 0)
     {
       imap_error ("imap_sync_mailbox: EXPUNGE failed", buf);
       return -1;
-    }
-    idata->status = 0;
-  }
-
-  for (n = 0; n < IMAP_CACHE_LEN; n++)
-  {
-    if (CTX_DATA->cache[n].path)
-    {
-      unlink (CTX_DATA->cache[n].path);
-      safe_free ((void **) &CTX_DATA->cache[n].path);
     }
   }
 

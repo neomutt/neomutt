@@ -1078,7 +1078,7 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
   {
 #ifdef USE_IMAP
     if (ctx->magic == M_IMAP && !purge)
-      mutt_message (_("%d kept."), ctx->msgcount);
+      mutt_message (_("Mailbox checkpointed."), ctx->msgcount);
     else
 #endif
     mutt_message (_("%d kept, %d deleted."), ctx->msgcount - ctx->deleted,
@@ -1098,7 +1098,15 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
     /* if we haven't deleted any messages, we don't need to resort */
     if (purge)
     {
-      mx_update_tables(ctx, 1);
+#ifdef USE_IMAP
+      /* IMAP uses the active flag, since deleted messages may remain after
+       * a sync */
+      if (ctx->magic == M_IMAP)
+	mx_update_tables (ctx, 0);
+      else
+#endif
+	mx_update_tables (ctx, 1);
+
       mutt_sort_headers (ctx, 1); /* rethread from scratch */
     }
   }

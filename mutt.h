@@ -628,7 +628,7 @@ typedef struct header
 #endif
 
 #ifdef USE_IMAP
-  void *data;            /* driver-specific data (only used by IMAP */
+  void *data;            /* driver-specific data (only used by IMAP) */
 #endif
 } HEADER;
 

@@ -26,12 +26,11 @@
 /* IMAP-specific header data, stored as HEADER->data */
 typedef struct imap_header_data
 {
+  unsigned int sid;     /* server message sequence number */
   unsigned int uid;	/* 32-bit Message UID */
   LIST *keywords;
 } IMAP_HEADER_DATA;
 
-/* Linked list to hold header information while downloading message
- * headers */
 typedef struct
 {
   unsigned int read : 1;
@@ -42,7 +41,6 @@ typedef struct
   unsigned int changed : 1;
 
   IMAP_HEADER_DATA* data;
-  unsigned int number;
 
   time_t received;
   long content_length;
@@ -50,4 +48,5 @@ typedef struct
 
 /* -- macros -- */
 #define HEADER_DATA(ph) ((IMAP_HEADER_DATA*) ((ph)->data))
-#endif
+
+#endif /* MESSAGE_H */

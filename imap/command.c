@@ -23,6 +23,7 @@
 
 #include "mutt.h"
 #include "imap_private.h"
+#include "message.h"
 #include "mx.h"
 
 #include <ctype.h>
@@ -30,7 +31,8 @@
 
 /* forward declarations */
 static void cmd_make_sequence (char* buf, size_t buflen);
-static void cmd_parse_capabilities (IMAP_DATA *idata, char *s);
+static void cmd_parse_capabilities (IMAP_DATA* idata, char* s);
+static void cmd_parse_expunge (IMAP_DATA* idata, char* s);
 static void cmd_parse_myrights (IMAP_DATA* idata, char* s);
 
 static char *Capabilities[] = {"IMAP4", "IMAP4rev1", "STATUS", "ACL", 
@@ -71,7 +73,6 @@ void imap_cmd_finish (IMAP_DATA* idata)
   }
   
   if ((idata->status == IMAP_NEW_MAIL || 
-       idata->status == IMAP_EXPUNGE ||
        (idata->reopen & (IMAP_REOPEN_PENDING|IMAP_NEWMAIL_PENDING)))
       && (idata->reopen & IMAP_REOPEN_ALLOW))
   {
@@ -90,7 +91,7 @@ void imap_cmd_finish (IMAP_DATA* idata)
     }
     else
     {
-      imap_reopen_mailbox (idata->ctx, NULL);
+      imap_expunge_mailbox (idata);
       idata->check_status = IMAP_REOPENED;
       idata->reopen &= ~(IMAP_REOPEN_PENDING|IMAP_NEWMAIL_PENDING);
     }
@@ -100,9 +101,6 @@ void imap_cmd_finish (IMAP_DATA* idata)
   {
     if (idata->status == IMAP_NEW_MAIL)
       idata->reopen |= IMAP_NEWMAIL_PENDING;
-    
-    if (idata->status == IMAP_EXPUNGE)
-      idata->reopen |= IMAP_REOPEN_PENDING;
   }
 
   idata->status = 0;
@@ -196,7 +194,8 @@ int imap_handle_untagged (IMAP_DATA *idata, char *s)
       /* new mail arrived */
       count = atoi (pn);
 
-      if ( (idata->status != IMAP_EXPUNGE) && count < idata->ctx->msgcount)
+      if ( !(idata->reopen & IMAP_REOPEN_PENDING) &&
+	   count < idata->ctx->msgcount)
       {
 	/* something is wrong because the server reported fewer messages
 	 * than we previously saw
@@ -213,7 +212,7 @@ int imap_handle_untagged (IMAP_DATA *idata, char *s)
           "imap_handle_untagged: superfluous EXISTS message.\n"));
       else
       {
-	if (idata->status != IMAP_EXPUNGE)
+	if (!(idata->reopen & IMAP_REOPEN_PENDING))
         {
           dprint (2, (debugfile,
             "imap_handle_untagged: New mail in %s - %d messages total.\n",
@@ -224,7 +223,8 @@ int imap_handle_untagged (IMAP_DATA *idata, char *s)
       }
     }
     else if (mutt_strncasecmp ("EXPUNGE", s, 7) == 0)
-       idata->status = IMAP_EXPUNGE;
+      /* pn vs. s: need initial seqno */
+      cmd_parse_expunge (idata, pn);
   }
   else if (mutt_strncasecmp ("CAPABILITY", s, 10) == 0)
     cmd_parse_capabilities (idata, s);
@@ -248,7 +248,7 @@ int imap_handle_untagged (IMAP_DATA *idata, char *s)
   {
     /* Display the warning message from the server */
     mutt_error ("%s", s+3);
-    sleep (1);
+    sleep (2);
   }
   else
     dprint (1, (debugfile, "imap_handle_untagged(): unhandled request: %s\n",
@@ -270,7 +270,7 @@ static void cmd_make_sequence (char* buf, size_t buflen)
 
 /* cmd_parse_capabilities: set capability bits according to CAPABILITY
  *   response */
-static void cmd_parse_capabilities (IMAP_DATA *idata, char *s)
+static void cmd_parse_capabilities (IMAP_DATA* idata, char* s)
 {
   int x;
 
@@ -284,6 +284,32 @@ static void cmd_parse_capabilities (IMAP_DATA *idata, char *s)
       }
     s = imap_next_word (s);
   }   
+}
+
+/* cmd_parse_expunge: mark headers with new sequence ID and mark idata to
+ *   be reopened at our earliest convenience */
+static void cmd_parse_expunge (IMAP_DATA* idata, char* s)
+{
+  int expno, cur;
+  HEADER* h;
+
+  expno = atoi (s);
+
+  /* walk headers, zero seqno of expunged message, decrement seqno of those
+   * above. Possibly we could avoid walking the whole list by resorting
+   * and guessing a good starting point, but I'm guessing the resort would
+   * nullify the gains */
+  for (cur = 0; cur < idata->ctx->msgcount; cur++)
+  {
+    h = idata->ctx->hdrs[cur];
+
+    if (HEADER_DATA (h)->sid == expno)
+      HEADER_DATA (h)->sid = 0;
+    else if (HEADER_DATA (h)->sid > expno)
+      HEADER_DATA (h)->sid--;
+  }
+
+  idata->reopen |= IMAP_REOPEN_PENDING;
 }
 
 /* cmd_parse_myrights: set rights bits according to MYRIGHTS response */

@@ -49,7 +49,6 @@ enum
 {
   IMAP_FATAL = 1,
   IMAP_NEW_MAIL,
-  IMAP_EXPUNGE,
   IMAP_BYE,
   IMAP_REOPENED
 };
@@ -122,8 +121,8 @@ enum
 /* -- data structures -- */
 typedef struct
 {
-  unsigned int index;
-  char *path;
+  unsigned int uid;
+  char* path;
 } IMAP_CACHE;
 
 typedef struct 
@@ -175,7 +174,8 @@ time_t imap_parse_date (char* s);
 int imap_parse_list_response(IMAP_DATA* idata, char* buf, int buflen,
   char** name, int* noselect, int* noinferiors, char* delim);
 int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes);
-int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint);
+void imap_expunge_mailbox (IMAP_DATA* idata);
+int imap_reopen_mailbox (IMAP_DATA* idata);
 void imap_logout (IMAP_DATA* idata);
 
 /* auth.c */
