@@ -3411,6 +3411,7 @@
        %t      `to:' field (recipients)
        %T      the appropriate character from the $to_chars string
        %u      user (login) name of the author
+       %v      first name of the author, or the recipient if the message is from you
        %Z      message status flags
 
        %{fmt}  the date and time of the message is converted to sender's
@@ -3427,7 +3428,6 @@
 
        %>X     right justify the rest of the string and pad with character "X"
        %|X     pad to the end of the line with character "X"
-
 
 
   See also: ``$to_chars''.

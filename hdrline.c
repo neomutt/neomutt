@@ -206,6 +206,7 @@ static int user_is_recipient (HEADER *h)
  * %t = `to:' field (recipients)
  * %T = $to_chars
  * %u = user (login) name of author
+ * %v = first name of author, unless from self
  * %Z = status flags	*/
 
 struct hdr_format_info
@@ -546,6 +547,24 @@ hdr_format_str (char *dest,
       else
 	buf2[0] = 0;
       snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+      snprintf (dest, destlen, fmt, buf2);
+      break;
+
+    case 'v':
+      snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+      if (mutt_addr_is_user (hdr->env->from)) 
+      {
+	if (hdr->env->to)
+	  snprintf (buf2, sizeof (buf2), fmt, mutt_get_name (hdr->env->to));
+	else if (hdr->env->cc)
+	  snprintf (buf2, sizeof (buf2), fmt, mutt_get_name (hdr->env->cc));
+	else
+	  *buf2 = 0;
+      }
+      else
+	snprintf (buf2, sizeof (buf2), fmt, mutt_get_name (hdr->env->from));
+      if ((p = strpbrk (buf2, " %@")))
+	*p = 0;
       snprintf (dest, destlen, fmt, buf2);
       break;
 

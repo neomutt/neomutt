@@ -2984,6 +2984,7 @@ following sequences are defined in Mutt:
 %t      `to:' field (recipients)
 %T      the appropriate character from the $to_chars string
 %u      user (login) name of the author
+%v      first name of the author, or the recipient if the message is from you
 %Z      message status flags
 
 %{fmt}  the date and time of the message is converted to sender's 
