@@ -22,6 +22,9 @@
 
 #include <gnutls/gnutls.h>
 #include <gnutls/x509.h>
+#ifdef HAVE_GNUTLS_OPENSSL_H
+#include <gnutls/openssl.h>
+#endif
 
 #include "mutt.h"
 #include "mutt_socket.h"

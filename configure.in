@@ -611,6 +611,27 @@ AC_ARG_WITH(nss, [  --with-nss[=PFX]           Compile in SSL support for POP/IM
         fi
 ])
 
+AC_ARG_WITH([gnutls], [  --with-gnutls[=PFX]        Enable SSL support using gnutls],
+    [gnutls_prefix="$withval"], [gnutls_prefix="no"])
+if test "$gnutls_prefix" != "no"
+then
+  if test "$need_socket" != "yes"
+  then
+    AC_MSG_ERROR([SSL support is only useful with POP or IMAP support])
+  fi
+  MUTT_AM_PATH_GNUTLS([$gnutls_prefix],
+    [dnl GNUTLS found
+    CPPFLAGS="$CPPFLAGS $LIBGNUTLS_CFLAGS"
+    MUTTLIBS="$MUTTLIBS $LIBGNUTLS_LIBS"
+    AC_DEFINE(USE_GNUTLS, 1, [Define if you want support for SSL via the gnutls library.])
+
+    MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl_gnutls.o"
+    need_ssl=yes],
+    [dnl GNUTLS not found
+      AC_MSG_ERROR([could not find libgnutls])
+    ])
+fi
+
 AC_ARG_WITH(sasl, [  --with-sasl[=PFX]          Use Cyrus SASL library for POP/IMAP authentication],
         [
         if test "$need_socket" != "yes"
