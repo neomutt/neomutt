@@ -1,4 +1,3 @@
-/* $Id$ */
 /*
  * Copyright (C) 1998 Brandon Long <blong@fiction.net>
  * 

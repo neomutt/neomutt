@@ -1,4 +1,3 @@
-/* $Id$ */
 /*
  * Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>
  * Copyright (C) 1998 Thomas Roessler <roessler@guug.de>

@@ -1,4 +1,3 @@
-static const char rcsid[]="$Id$";
 /*
  * Copyright (C) 1996-1998 Michael R. Elkins <me@cs.hmc.edu>
  * 

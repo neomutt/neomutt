@@ -1,4 +1,3 @@
-/* $Id$ */
 /*
  * Copyright (C) 1999 Thomas Roessler <roessler@guug.de>
  *
