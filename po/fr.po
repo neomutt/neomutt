@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3\n"
 "POT-Creation-Date: 2000-05-20 10:07+0200\n"
-"PO-Revision-Date: 2000-05-09 22:00+0200\n"
+"PO-Revision-Date: 2000-05-20 17:36+0200\n"
 "Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
@@ -1057,9 +1057,9 @@ msgstr "[-- le %s --]\n"
 
 # , c-format
 #: handler.c:1253
-#, fuzzy, c-format
+#, c-format
 msgid "[-- name: %s --]\n"
-msgstr "[-- le %s --]\n"
+msgstr "[-- nom: %s --]\n"
 
 # , c-format
 #: handler.c:1264
@@ -1831,9 +1831,8 @@ msgid "move the cursor one character to the left"
 msgstr "déplacer le curseur d'un caractère vers la gauche"
 
 #: keymap_alldefs.h:64
-#, fuzzy
 msgid "move the cursor to the beginning of the word"
-msgstr "aller au début de la ligne"
+msgstr "déplacer le curseur au début du mot"
 
 #: keymap_alldefs.h:65
 msgid "jump to the beginning of the line"
@@ -1864,9 +1863,8 @@ msgid "move the cursor one character to the right"
 msgstr "déplacer le curseur d'un caractère vers la droite"
 
 #: keymap_alldefs.h:72
-#, fuzzy
 msgid "move the cursor to the end of the word"
-msgstr "déplacer le curseur d'un caractère vers la droite"
+msgstr "déplacer le curseur à la fin du mot"
 
 #: keymap_alldefs.h:73 keymap_alldefs.h:74
 msgid "scroll up through the history list"
@@ -1877,9 +1875,8 @@ msgid "delete chars from cursor to end of line"
 msgstr "effacer la fin de la ligne à partir du curseur"
 
 #: keymap_alldefs.h:76
-#, fuzzy
 msgid "delete chars from the cursor to the end of the word"
-msgstr "effacer la fin de la ligne à partir du curseur"
+msgstr "effacer la fin du mot à partir du curseur"
 
 #: keymap_alldefs.h:77
 msgid "delete all chars on the line"
@@ -1895,7 +1892,7 @@ msgstr "entrer le caractère correspondant à la prochaine touche"
 
 #: keymap_alldefs.h:80
 msgid "transpose character under cursor with previous"
-msgstr ""
+msgstr "échanger le caractère situé sous le curseur avec le précédent"
 
 #: keymap_alldefs.h:81
 msgid "enter a muttrc command"
@@ -2435,7 +2432,6 @@ msgstr ""
 "    programme.\n"
 
 #: main.c:103
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
 "]\n"
@@ -2465,7 +2461,7 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"usage : mutt [ -nRzZ ] [ -e <cmd> ] [ -F <fich> ] [ -m <type> ] [ -f <fich> "
+"usage : mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <fich> ] [ -m <type> ] [ -f <fich> "
 "]\n"
 "        mutt [ -nx ] [ -e <cmd> ] [ -a <fich> ] [ -F <fich> ] [ -H <fich> ] "
 "[ -i <fich> ] [ -s <obj> ] [ -b <adr> ] [ -c <adr> ] <adr> [ ... ]\n"
