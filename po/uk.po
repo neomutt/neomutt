@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.22.1\n"
+"Project-Id-Version: 1.3.27/1.4\n"
 "POT-Creation-Date: 2002-01-22 13:12+0100\n"
-"PO-Revision-Date: 2001-09-03 12:25+0300\n"
+"PO-Revision-Date: 2002-01-23 15:14+0200\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=koi8-u\n"
@@ -422,34 +422,34 @@ msgid "Shell command: "
 msgstr "Команда системи: "
 
 #: commands.c:647
-#, fuzzy, c-format
+#, c-format
 msgid "Decode-save%s to mailbox"
-msgstr "%s%s до скриньки"
+msgstr "Розкодувати-перенести%s до скриньки"
 
 #: commands.c:648
-#, fuzzy, c-format
+#, c-format
 msgid "Decode-copy%s to mailbox"
-msgstr "%s%s до скриньки"
+msgstr "Розкодувати-коп╕ювати%s до скриньки"
 
 #: commands.c:649
-#, fuzzy, c-format
+#, c-format
 msgid "Decrypt-save%s to mailbox"
-msgstr "%s%s до скриньки"
+msgstr "Розшифрувати-перенести%s до скриньки"
 
 #: commands.c:650
-#, fuzzy, c-format
+#, c-format
 msgid "Decrypt-copy%s to mailbox"
-msgstr "%s%s до скриньки"
+msgstr "Розшифрувати-коп╕ювати%s до скриньки"
 
 #: commands.c:651
-#, fuzzy, c-format
+#, c-format
 msgid "Save%s to mailbox"
-msgstr "%s%s до скриньки"
+msgstr "Перенести%s до скриньки"
 
 #: commands.c:651
-#, fuzzy, c-format
+#, c-format
 msgid "Copy%s to mailbox"
-msgstr "%s%s до скриньки"
+msgstr "Коп╕ювати%s до скриньки"
 
 #: commands.c:652
 msgid " tagged"
@@ -607,9 +607,9 @@ msgid "Rename to: "
 msgstr "Перейменувати у: "
 
 #: compose.c:987 editmsg.c:96 sendlib.c:902
-#, fuzzy, c-format
+#, c-format
 msgid "Can't stat %s: %s"
-msgstr "Неможливо отримати дан╕: %s"
+msgstr "Неможливо отримати дан╕ %s: %s"
 
 #: compose.c:1013
 msgid "New file: "
@@ -843,9 +843,8 @@ msgid " in this limited view"
 msgstr " у цих межах огляду"
 
 #: curs_main.c:1331 pager.c:2296
-#, fuzzy
 msgid "Can't change 'important' flag on POP server."
-msgstr "Неможливо редагувати пов╕домлення на POP сервер╕."
+msgstr "Неможливо зм╕нити флаг 'важливе' на POP сервер╕."
 
 #: curs_main.c:1446
 msgid "No more threads."
@@ -1051,25 +1050,21 @@ msgid "[-- name: %s --]\n"
 msgstr "[-- ╕м'я: %s --]\n"
 
 #: handler.c:1680 handler.c:1696
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
-msgstr "[-- Цей %s/%s додаток "
+msgstr "[-- Цей %s/%s додаток не включено, --]\n"
 
 #: handler.c:1682
-#, fuzzy
 msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
 msgstr ""
-"[-- Цей %s/%s додаток не включено, --]\n"
 "[-- в╕дпов╕дне зовн╕шн╓ джерело видалено за давн╕стю. --]\n"
 
 #: handler.c:1700
-#, fuzzy, c-format
+#, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
-msgstr ""
-"[-- Цей %s/%s додаток не включено, --]\n"
-"[-- в╕дпов╕дний тип доступу %s не п╕дтриму╓ться --]\n"
+msgstr "[-- в╕дпов╕дний тип доступу %s не п╕дтриму╓ться --]\n"
 
 #: handler.c:1817
 msgid "Error: multipart/signed has no protocol."
@@ -1201,7 +1196,7 @@ msgstr "Помилка аутентиф╕кац╕╖ SASL."
 #: imap/browse.c:64 imap/imap.c:516
 #, c-format
 msgid "%s is an invalid IMAP path"
-msgstr ""
+msgstr "%s - неприпустимий шлях IMAP"
 
 #: imap/browse.c:81
 msgid "Getting namespaces..."
@@ -1212,9 +1207,8 @@ msgid "Getting folder list..."
 msgstr "Отримання перел╕ку скриньок..."
 
 #: imap/browse.c:219
-#, fuzzy
 msgid "No such folder"
-msgstr "%s: такого кольору нема╓"
+msgstr "Тако╖ скриньки нема╓"
 
 #: imap/browse.c:277
 msgid "Create mailbox: "
@@ -1300,16 +1294,15 @@ msgstr "Видалення пов╕домлень з серверу..."
 
 #: imap/imap.c:1043
 msgid "imap_sync_mailbox: EXPUNGE failed"
-msgstr ""
+msgstr "imap_sync_mailbox: помилка EXPUNGE"
 
 #: imap/imap.c:1077
 msgid "CLOSE failed"
 msgstr "Помилка CLOSE"
 
 #: imap/imap.c:1325
-#, fuzzy
 msgid "Bad mailbox name"
-msgstr "Створити скриньку: "
+msgstr "Погане ╕м'я для скриньки"
 
 #: imap/imap.c:1337
 #, c-format
@@ -2639,16 +2632,16 @@ msgstr "SSL недосяжне завдяки втрат╕ ентроп╕╖"
 
 #: mutt_ssl.c:315
 msgid "I/O error"
-msgstr ""
+msgstr "помилка вводу-виводу"
 
 #: mutt_ssl.c:318
 msgid "unspecified protocol error"
-msgstr ""
+msgstr "невизначена помилка протоколу"
 
 #: mutt_ssl.c:324
-#, fuzzy, c-format
+#, c-format
 msgid "SSL failed: %s"
-msgstr "Помилка CLOSE"
+msgstr "Помилка SSL: %s"
 
 #: mutt_ssl.c:333
 msgid "Unable to get certificate from peer"
@@ -3023,23 +3016,16 @@ msgstr ""
 "\n"
 
 #: pgp.c:456
-#, fuzzy
 msgid "[-- END PGP MESSAGE --]\n"
-msgstr ""
-"\n"
-"[-- К╕нець пов╕домлення PGP --]\n"
-"\n"
+msgstr "[-- К╕нець пов╕домлення PGP --]\n"
 
 #: pgp.c:458
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- К╕нець блоку в╕дкритого ключа PGP --]\n"
 
 #: pgp.c:460
-#, fuzzy
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
-msgstr ""
-"\n"
-"[-- К╕нець пов╕домлення з PGP п╕дписом --]\n"
+msgstr "[-- К╕нець пов╕домлення з PGP п╕дписом --]\n"
 
 #: pgp.c:475
 msgid ""
@@ -3093,11 +3079,8 @@ msgstr ""
 "\n"
 
 #: pgp.c:861
-#, fuzzy
 msgid "[-- End of signed data --]\n"
-msgstr ""
-"\n"
-"[-- К╕нець п╕дписаних даних --]\n"
+msgstr "[-- К╕нець п╕дписаних даних --]\n"
 
 #: pgp.c:962
 msgid "Internal error. Inform <roessler@guug.de>."
@@ -3132,11 +3115,8 @@ msgstr ""
 "\n"
 
 #: pgp.c:1160
-#, fuzzy
 msgid "[-- End of PGP/MIME encrypted data --]\n"
-msgstr ""
-"\n"
-"[-- К╕нець даних, зашифрованих PGP/MIME --]\n"
+msgstr "[-- К╕нець даних, зашифрованих PGP/MIME --]\n"
 
 #: pgp.c:1241
 msgid "Can't open PGP subprocess!"
@@ -3206,23 +3186,20 @@ msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Цей ключ неможливо використати: давн╕й/вимкнений/зам╕нений."
 
 #: pgpkey.c:608
-#, fuzzy
 msgid "ID is expired/disabled/revoked."
-msgstr "Цей ID давн╕й/вимкнений/зам╕нений"
+msgstr "ID давн╕й/вимкнений/зам╕нений."
 
 #: pgpkey.c:612
 msgid "ID has undefined validity."
-msgstr ""
+msgstr "Д╕йсн╕сть ID не визначена."
 
 #: pgpkey.c:615
-#, fuzzy
 msgid "ID is not valid."
-msgstr "Цей ID нед╕йсний."
+msgstr "ID нед╕йсний."
 
 #: pgpkey.c:618
-#, fuzzy
 msgid "ID is only marginally valid."
-msgstr "Цей ID д╕йсний лише частково."
+msgstr "ID д╕йсний лише частково."
 
 #: pgpkey.c:622
 #, c-format
@@ -3262,7 +3239,7 @@ msgstr "Команда UIDL не п╕дтриму╓ться сервером."
 #: pop.c:246 pop.c:562
 #, c-format
 msgid "%s is an invalid POP path"
-msgstr ""
+msgstr "%s - неприпустимий шлях POP"
 
 #: pop.c:277
 msgid "Fetching list of messages..."
@@ -3698,9 +3675,9 @@ msgid "%s no longer exists!"
 msgstr "%s б╕льше не ╕сну╓!"
 
 #: sendlib.c:908
-#, fuzzy, c-format
+#, c-format
 msgid "%s isn't a regular file."
-msgstr "%s не ╓ поштовою скринькою."
+msgstr "%s не ╓ звичайним файлом."
 
 #: sendlib.c:1077
 #, c-format
@@ -3744,9 +3721,8 @@ msgid "(no mailbox)"
 msgstr "(скриньки нема╓)"
 
 #: thread.c:1029
-#, fuzzy
 msgid "Parent message is not visible in this limited view."
-msgstr "\"Батьк╕вський\" лист не можна побачити при цьому обмеженн╕"
+msgstr "\"Батьк╕вський\" лист не можна побачити при цьому обмеженн╕."
 
 #: thread.c:1035
 msgid "Parent message is not available."
