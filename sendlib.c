@@ -374,6 +374,14 @@ int mutt_write_mime_header (BODY *a, FILE *f)
       encode = rfc2231_encode (tmp, sizeof (tmp), (unsigned char *) p->value);
       rfc822_cat (buffer, sizeof (buffer), tmp, MimeSpecials);
 
+      /* Dirty hack to make messages readable by Outlook Express 
+       * for the Mac: force quotes around the boundary parameter
+       * even when they aren't needed.
+       */
+
+      if (!strcasecmp (p->attribute, "boundary") && !strcmp (buffer, tmp))
+	snprintf (buffer, sizeof (buffer), "\"%s\"", tmp);
+      
       tmplen = mutt_strlen (buffer) + mutt_strlen (p->attribute) + 1;
 
       if (len + tmplen + 2 > 76)
