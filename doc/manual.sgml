@@ -302,7 +302,17 @@ ESC n   next-subthread          jump to the start of the next subthread
 ESC p   previous-subthread      jump to the start of the previous subthread
 ESC r   read-subthread          mark the current subthread as read
 ESC t   tag-thread              toggle the tag on the current thread
+ESC v	collapse-thread		toggle collapse for the current thread
+ESC V	collapse-all		toggle collapse for all threads
 </verb></tscreen>
+
+<bf/Note:/ Collapsing a thread displays only the first message
+in the thread and hides the others. This is useful when threads
+contain so many messages that you can only see a handful of threads on
+the screen. See %M in <ref id="index_format"name="&dollar;index&lowbar;format">.
+For example, you could use "%?M?(#%03M)&(%4l)?" in <ref
+id="index_format"name="&dollar;index&lowbar;format"> to optionally
+display the number of hidden messages if the thread is collapsed.
 
 See also: <ref id="strict_threads" name="&dollar;strict&lowbar;threads">.
 
@@ -321,6 +331,13 @@ id="source" name="source"> the file.
 
 Toggles the weeding of message header fields specified by <ref id="ignore"
 name="ignore"> commands.
+
+<p><bf/edit-message/<label id="edit-messaage"> (default: e)<newline>
+
+This command (available in the ``index'' and ``pager'') allows you to
+edit the current message. Once editing is complete, the <em/Compose/ menu
+is shown. You can now re-send the message or write the edited message
+to any folder using the ``write-fcc'' function.
 
 <p><bf/enter-command/<label id="enter-command"> (default: ``:'')<newline>
 
@@ -435,6 +452,7 @@ returned to the <em/compose/ menu.  The following options are available:
 
 <tscreen><verb>
 a       attach-file             attach a file
+A	attach-message		attach message(s) to the message
 ESC k   attach-key              attach a PGP public key
 d       edit-description        edit description on attachment
 D       detach-file             detach a file
@@ -447,9 +465,18 @@ f       edit-fcc                specify an ``Fcc'' mailbox
 p       pgp-menu                select PGP options (``i'' version only)
 P       postpone-message        postpone this message until later
 q       quit                    quit (abort) sending the message
+w	write-fcc		write the message to a folder
 i       ispell                  check spelling (if available on your system)
 ^F      forget-passphrase       whipe PGP passphrase from memory
 </verb></tscreen>
+
+<bf/Note:/ The attach-message function will prompt you for a folder to
+attach messages from. You can now tag messages in that folder and they
+will be attached to the message you are sending. Note that certain
+operations like composing a new mail, replying, forwarding, etc. are
+not permitted when you are in that folder. The %r in <ref
+id="status_format" name="&dollar;status&lowbar;format"> will change to
+a 'A' to indicate that you are in attach-message mode.
 
 <sect2>Editing the message header<label id="edit_headers">
 <p>
@@ -2433,6 +2460,26 @@ following printf-style sequences are understood:
 %|X     pad to the end of the line with character "X"
 </verb></tscreen>
 
+<sect2>attach&lowbar;sep<label id="attach_sep">
+<p>
+Type: string<newline>
+Default: newline
+
+The separator to add between attachments when operating (saving,
+printing, piping, etc) on a list of tagged attachments.
+
+<sect2>attach&lowbar;split<label id="attach_split">
+<p>
+Type: boolean<newline>
+Default: set
+
+If this variable is unset, when operating (saving, printing, piping,
+etc) on a list of tagged attachments, Mutt will concatenate the
+attachments and will operate on them as a single attachment. The <ref
+id="attach_sep" name="&dollar;attach&lowbar;sep"> separator is added
+after each attachment. When set, Mutt will operate on the attachments
+one by one.
+
 <sect2>attribution<label id="attribution">
 <p>
 Type: format string<newline>
@@ -2506,6 +2553,14 @@ some time since it involves scanning the directory and checking each
 file to see if it has already been looked at.  If <em/check&lowbar;new/
 is <em/unset/, no check for new mail is performed while the mailbox is
 open.
+
+<sect2>collapse&lowbar;unread<label id="collapse_unread">
+<p>
+Type: boolean<newline>
+Default: unset
+
+When <em/set/, Mutt will not collapse a thread if it contains any
+unread messages.
 
 <sect2>confirmappend<label id="confirmappend">
 <p>
@@ -2914,6 +2969,7 @@ following sequences are defined in Mutt:
 %l      number of lines in the message
 %L      list-from function
 %m      total number of message in the mailbox
+%M	number of hidden messages if the thread is collapsed.
 %N      message score
 %n      author's real name (or address if missing)
 %O       (_O_riginal save folder)  Where mutt would formerly have stashed the
@@ -3889,7 +3945,7 @@ both messages are identical.
 <sect2>status&lowbar;chars<label id="status_chars">
 <p>
 Type: string<newline>
-Default: &dquot;-*&percnt;&dquot;
+Default: &dquot;-*&percnt;A&dquot;
 
 Controls the characters used by the &dquot;&percnt;r&dquot; indicator
 in <ref id="status_format" name="status&lowbar;format">. The first
@@ -3898,7 +3954,10 @@ the mailbox has been changed, and it needs to be resynchronized. The
 third is used if the mailbox is in read-only mode, or if the mailbox
 will not be written when exiting that mailbox (You can toggle whether
 to write changes to a mailbox with the toggle-write operation, bound by
-default to &dquot;&percnt;&dquot;).
+default to &dquot;&percnt;&dquot;). The fourth is used to indicate
+that the current folder has been opened in attach-message mode
+(Certain operations like composing a new mail, replying, forwarding,
+etc. are not permitted in this mode).
 
 <sect2>status&lowbar;format<label id="status_format">
 <p>
@@ -3924,7 +3983,7 @@ sequences:
 %o      number of old unread messages
 %p      number of postponed messages *
 %P      percentage of the way through the index
-%r      modified/read-only/won't-write indicator, according to $status_chars
+%r      modified/read-only/won't-write/attach-message indicator, according to $status_chars
 %s      current sorting mode ($sort)
 %S      current aux sorting method ($sort_aux)
 %t      number of tagged messages *
@@ -4049,6 +4108,14 @@ header field, but you are not the only recipient of the message (default:
 T).  The fourth character is used when your address is specified in the CC
 header field, but you are not the only recipient.  The fifth character is used
 to indicate mail that was sent by <em/you/.
+
+<sect2>uncollapse&lowbar;jump<label id="uncollapse_jump">
+<p>
+Type: boolean<newline>
+Default: unset
+
+When <em/set/, Mutt will jump to the next unread message, if any, when
+the current thread is <em/un/collapsed.
 
 <sect2>use&lowbar;8bitmime<label id="use_8bitmime">
 <p>
@@ -4227,6 +4294,7 @@ delete-thread             ^D   delete all messages in thread
 display-address            @   display full address of sender
 display-headers            h   display message with full headers
 display-message          RET   display a message
+edit-message               e   edit the current message
 exit                       x   exit without saving changes
 extract-keys              ^K   extract PGP public keys
 fetch-mail                 G   retrieve mail from POP server
@@ -4291,6 +4359,7 @@ delete-subthread       ESC d   delete all messages in subthread
 delete-thread             ^D   delete all messages in thread
 display-address            @   display full address of sender
 display-headers            h   display message with full headers
+edit-message               e   edit the current message
 enter-command              :   enter a muttrc command
 exit                       i   return to the main-menu
 extract-keys              ^K   extract PGP public keys
@@ -4390,6 +4459,7 @@ view-text                  T   view attachment as text
 <p>
 <verb>
 attach-file                a   attach a file(s) to this message
+attach-message             A   attach message(s) to this message
 attach-key             ESC k   attach a PGP public key
 copy-file                  C   save message/attachment to a file
 detach-file                D   delete the current entry
@@ -4420,6 +4490,7 @@ rename-file                R   rename/move an attached file
 send-message               y   send the message
 toggle-unlink              u   toggle whether to delete file after sending it
 view-attach              RET   view attachment using mailcap entry if necessary
+write-fcc		   w   write the message to a folder
 </verb>
 <sect2>postpone
 <p>
