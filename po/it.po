@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutt-1.3.23\n"
 "POT-Creation-Date: 2001-11-29 10:43+0100\n"
-"PO-Revision-Date: 2001-10-15 23:54+0200\n"
+"PO-Revision-Date: 2001-12-11 01:50+0100\n"
 "Last-Translator: Marco d'Itri <md@linux.it>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
@@ -432,34 +432,34 @@ msgid "Shell command: "
 msgstr "Comando della shell: "
 
 #: commands.c:647
-#, fuzzy, c-format
+#, c-format
 msgid "Decode-save%s to mailbox"
-msgstr "%s%s nella mailbox"
+msgstr "Decodifica e salva nella mailbox%s"
 
 #: commands.c:648
-#, fuzzy, c-format
+#, c-format
 msgid "Decode-copy%s to mailbox"
-msgstr "%s%s nella mailbox"
+msgstr "Decodifica e copia nella mailbox%s"
 
 #: commands.c:649
-#, fuzzy, c-format
+#, c-format
 msgid "Decrypt-save%s to mailbox"
-msgstr "%s%s nella mailbox"
+msgstr "Decifra e salva nella mailbox%s"
 
 #: commands.c:650
-#, fuzzy, c-format
+#, c-format
 msgid "Decrypt-copy%s to mailbox"
-msgstr "%s%s nella mailbox"
+msgstr "Decifra e copia nella mailbox%s"
 
 #: commands.c:651
-#, fuzzy, c-format
+#, c-format
 msgid "Save%s to mailbox"
-msgstr "%s%s nella mailbox"
+msgstr "Salva nella mailbox%s"
 
 #: commands.c:651
-#, fuzzy, c-format
+#, c-format
 msgid "Copy%s to mailbox"
-msgstr "%s%s nella mailbox"
+msgstr "Copia nella mailbox%s"
 
 #: commands.c:652
 msgid " tagged"
@@ -617,9 +617,9 @@ msgid "Rename to: "
 msgstr "Rinomina in: "
 
 #: compose.c:987 editmsg.c:96 sendlib.c:902
-#, fuzzy, c-format
+#, c-format
 msgid "Can't stat %s: %s"
-msgstr "Impossibile fare stat: %s"
+msgstr "Impossibile fare stat di %s: %s"
 
 #: compose.c:1013
 msgid "New file: "
@@ -854,9 +854,8 @@ msgid " in this limited view"
 msgstr " in questa visualizzazione limitata"
 
 #: curs_main.c:1331 pager.c:2288
-#, fuzzy
 msgid "Can't change 'important' flag on POP server."
-msgstr "Impossibile modificare i messaggi sul server POP."
+msgstr "Impossibile cambiare il flag \"importante\" sul server POP."
 
 #: curs_main.c:1446
 msgid "No more threads."
@@ -1064,25 +1063,20 @@ msgid "[-- name: %s --]\n"
 msgstr "[-- nome: %s --]\n"
 
 #: handler.c:1675 handler.c:1691
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
-msgstr "[-- Questo allegato %s/%s "
+msgstr "[-- Questo allegato %s/%s non è incluso, --]\n"
 
 #: handler.c:1677
-#, fuzzy
 msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
-msgstr ""
-"[-- Questo allegato %s/%s non è incluso --]\n"
-"[-- e l'origine esterna indicata è scaduta. --]\n"
+msgstr "[-- e l'origine esterna indicata è scaduta. --]\n"
 
 #: handler.c:1695
-#, fuzzy, c-format
+#, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
-msgstr ""
-"[-- Questo allegato %s/%s non è incluso --]\n"
-"[-- e il l'access-type %s indicato non è gestito --]\n"
+msgstr "[-- e il l'access-type %s indicato non è gestito --]\n"
 
 #: handler.c:1812
 msgid "Error: multipart/signed has no protocol."
@@ -1214,7 +1208,7 @@ msgstr "Autenticazione SASL fallita."
 #: imap/browse.c:64 imap/imap.c:504
 #, c-format
 msgid "%s is an invalid IMAP path"
-msgstr ""
+msgstr "%s non è un percorso IMAP valido"
 
 #: imap/browse.c:81
 msgid "Getting namespaces..."
@@ -1225,9 +1219,8 @@ msgid "Getting folder list..."
 msgstr "Scarico la lista dei folder..."
 
 #: imap/browse.c:219
-#, fuzzy
 msgid "No such folder"
-msgstr "%s: colore inesistente"
+msgstr "Folder inesistente"
 
 #: imap/browse.c:277
 msgid "Create mailbox: "
@@ -1313,16 +1306,15 @@ msgstr "Cancello i messaggi dal server..."
 
 #: imap/imap.c:1031
 msgid "imap_sync_mailbox: EXPUNGE failed"
-msgstr ""
+msgstr "imap_sync_mailbox: EXPUNGE fallito"
 
 #: imap/imap.c:1065
 msgid "CLOSE failed"
 msgstr "CLOSE fallito"
 
 #: imap/imap.c:1313
-#, fuzzy
 msgid "Bad mailbox name"
-msgstr "Crea la mailbox:"
+msgstr "Nome della mailbox non valido"
 
 #: imap/imap.c:1325
 #, c-format
@@ -2681,16 +2673,16 @@ msgstr "SSL disabilitato a causa della mancanza di entropia"
 
 #: mutt_ssl.c:318
 msgid "I/O error"
-msgstr ""
+msgstr "errore di I/O"
 
 #: mutt_ssl.c:321
 msgid "unspecified protocol error"
-msgstr ""
+msgstr "errore del protocollo non precisato"
 
 #: mutt_ssl.c:327
-#, fuzzy, c-format
+#, c-format
 msgid "SSL failed: %s"
-msgstr "CLOSE fallito"
+msgstr "SSL fallito: %s"
 
 #: mutt_ssl.c:336
 msgid "Unable to get certificate from peer"
@@ -3061,22 +3053,16 @@ msgid ""
 msgstr "[-- INIZIO DEL MESSAGGIO FIRMATO CON PGP --]\n"
 
 #: pgp.c:456
-#, fuzzy
 msgid "[-- END PGP MESSAGE --]\n"
-msgstr ""
-"\n"
-"[-- FINE DEL MESSAGGIO DI PGP --]\n"
+msgstr "[-- FINE DEL MESSAGGIO DI PGP --]\n"
 
 #: pgp.c:458
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- FINE DEL BLOCCO DELLA CHIAVE PUBBLICA --]\n"
 
 #: pgp.c:460
-#, fuzzy
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
-msgstr ""
-"\n"
-"[-- FINE DEL MESSAGGIO FIRMATO CON PGP --]\n"
+msgstr "[-- FINE DEL MESSAGGIO FIRMATO CON PGP --]\n"
 
 #: pgp.c:475
 msgid ""
@@ -3126,11 +3112,8 @@ msgstr ""
 "\n"
 
 #: pgp.c:861
-#, fuzzy
 msgid "[-- End of signed data --]\n"
-msgstr ""
-"\n"
-"[-- Fine dei dati firmati --]\n"
+msgstr "[-- Fine dei dati firmati --]\n"
 
 #: pgp.c:962
 msgid "Internal error. Inform <roessler@guug.de>."
@@ -3163,11 +3146,8 @@ msgid ""
 msgstr "[-- I seguenti dati sono crittografati con PGP/MIME  --]\n"
 
 #: pgp.c:1160
-#, fuzzy
 msgid "[-- End of PGP/MIME encrypted data --]\n"
-msgstr ""
-"\n"
-"[-- Fine dei dati crittografati con PGP/MIME  --]\n"
+msgstr "[-- Fine dei dati crittografati con PGP/MIME  --]\n"
 
 #: pgp.c:1241
 msgid "Can't open PGP subprocess!"
@@ -3290,7 +3270,7 @@ msgstr "Il comando UIDL non è gestito dal server."
 #: pop.c:246 pop.c:562
 #, c-format
 msgid "%s is an invalid POP path"
-msgstr ""
+msgstr "%s non è un percorso POP valido"
 
 #: pop.c:277
 msgid "Fetching list of messages..."
@@ -3774,40 +3754,9 @@ msgid "(no mailbox)"
 msgstr "(nessuna mailbox)"
 
 #: thread.c:968
-#, fuzzy
 msgid "Parent message is not visible in this limited view."
-msgstr "Il messaggio padre non è visibile nella visualizzazione limitata"
+msgstr "Il messaggio padre non è visibil in questa visualizzazione limitata."
 
 #: thread.c:974
 msgid "Parent message is not available."
 msgstr "Il messaggio padre non è disponibile."
-
-#~ msgid "Decode-save"
-#~ msgstr "Decodifica e salva"
-
-#~ msgid "Decode-copy"
-#~ msgstr "Decodifica e copia"
-
-#~ msgid "Decrypt-save"
-#~ msgstr "Decodifica e salva"
-
-#~ msgid "Decrypt-copy"
-#~ msgstr "Decodifica e copia"
-
-#~ msgid "Copy"
-#~ msgstr "Copia"
-
-#~ msgid "%s [%s]\n"
-#~ msgstr "%s [%s]\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "[-- End of PGP output --]\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "[-- Fine dell'output di PGP --]\n"
-#~ "\n"
-
-#~ msgid "Can't stat %s."
-#~ msgstr "Impossibile fare stat di %s."
