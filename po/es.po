@@ -2804,8 +2804,8 @@ msgstr "Sin asunto, cancelando."
 #.
 #: send.c:432
 #, c-format
-msgid "Reply to %s?"
-msgstr "¿Responder a %s?"
+msgid "Reply to %s%s?"
+msgstr "¿Responder a %s%s?"
 
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.

@@ -405,7 +405,7 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int group)
   }
   else if (env->reply_to)
   {
-    if (mutt_addrcmp (env->from, env->reply_to) || 
+    if ((mutt_addrcmp (env->from, env->reply_to) && !env->reply_to->next) || 
 	(option (OPTIGNORELISTREPLYTO) &&
 	mutt_is_mail_list (env->reply_to) &&
 	(mutt_addrsrc (env->reply_to, env->to) ||
@@ -421,7 +421,8 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int group)
        */
       rfc822_append (to, env->from);
     }
-    else if (!mutt_addrcmp (env->from, env->reply_to) &&
+    else if (!(mutt_addrcmp (env->from, env->reply_to) && 
+	       !env->reply_to->next) &&
 	     quadoption (OPT_REPLYTO) != M_YES)
     {
       /* There are quite a few mailing lists which set the Reply-To:
@@ -429,7 +430,9 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int group)
        * to send a message to only the sender of the message.  This
        * provides a way to do that.
        */
-      snprintf (prompt, sizeof (prompt), _("Reply to %s?"), env->reply_to->mailbox);
+      snprintf (prompt, sizeof (prompt), _("Reply to %s%s?"),
+		env->reply_to->mailbox, 
+		env->reply_to->next?",...":"");
       if ((i = query_quadoption (OPT_REPLYTO, prompt)) == M_YES)
 	rfc822_append (to, env->reply_to);
       else if (i == M_NO)
