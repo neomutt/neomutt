@@ -1940,11 +1940,12 @@ int smime_send_menu (HEADER *msg, int *redraw)
   if (!(WithCrypto & APPLICATION_SMIME))
     return msg->security;
 
-  switch (mutt_multi_choice (_("S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (f)orget it? "),
-			     _("eswabf")))
+  switch (mutt_multi_choice (_("S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "),
+			     _("eswabfc")))
   {
   case 1: /* (e)ncrypt */
-    msg->security ^= ENCRYPT;
+    msg->security |= ENCRYPT;
+    msg->security &= ~SIGN;
     break;
 
   case 3: /* encrypt (w)ith */
@@ -1975,14 +1976,18 @@ int smime_send_menu (HEADER *msg, int *redraw)
   case 2: /* (s)ign */
       
     if(!SmimeDefaultKey)
-	mutt_message("Can\'t sign: No key specified. use sign(as).");
+	mutt_message _("Can't sign: No key specified. Use Sign As.");
     else
-	msg->security ^= SIGN;
+    {
+      msg->security |= SIGN;
+      msg->security &= ~ENCRYPT;
+    }
     break;
 
   case 4: /* sign (a)s */
 
-    if ((p = smime_ask_for_key (_("Sign as: "), NULL, 0))) {
+    if ((p = smime_ask_for_key (_("Sign as: "), NULL, 0))) 
+    {
       p[mutt_strlen (p)-1] = '\0';
       mutt_str_replace (&SmimeDefaultKey, p);
 	
@@ -1991,8 +1996,10 @@ int smime_send_menu (HEADER *msg, int *redraw)
       /* probably need a different passphrase */
       crypt_smime_void_passphrase ();
     }
+#if 0
     else
       msg->security &= ~SIGN;
+#endif
 
     *redraw = REDRAW_FULL;
     break;
@@ -2002,6 +2009,7 @@ int smime_send_menu (HEADER *msg, int *redraw)
     break;
 
   case 6: /* (f)orget it */
+  case 7: /* (c)lear */
     msg->security = 0;
     break;
   }

@@ -1459,18 +1459,25 @@ int pgp_send_menu (HEADER *msg, int *redraw)
   pgp_key_t p;
   char input_signas[SHORT_STRING];
 
+  char prompt[LONG_STRING];
+  
   if (!(WithCrypto & APPLICATION_PGP))
     return msg->security;
-
-  switch (mutt_multi_choice (_("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (i)nline, or (f)orget it? "),
-			     _("esabif")))
+  
+  snprintf (prompt, sizeof (prompt), 
+	    _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s, or (c)lear? "),
+	    (msg->security & INLINE) ? _("PGP/M(i)ME") : _("(i)nline"));
+  
+  switch (mutt_multi_choice (prompt, _("esabifc")))
   {
   case 1: /* (e)ncrypt */
-    msg->security ^= ENCRYPT;
+    msg->security |= ENCRYPT;
+    msg->security &= ~SIGN;
     break;
 
   case 2: /* (s)ign */
-    msg->security ^= SIGN;
+    msg->security |= SIGN;
+    msg->security &= ~ENCRYPT;
     break;
 
   case 3: /* sign (a)s */
@@ -1487,19 +1494,18 @@ int pgp_send_menu (HEADER *msg, int *redraw)
 	
       crypt_pgp_void_passphrase ();  /* probably need a different passphrase */
     }
+#if 0
     else
     {
       msg->security &= ~SIGN;
     }
+#endif
 
     *redraw = REDRAW_FULL;
     break;
 
   case 4: /* (b)oth */
-    if ((msg->security & (ENCRYPT | SIGN)) == (ENCRYPT | SIGN))
-      msg->security = 0;
-    else
-      msg->security |= (ENCRYPT | SIGN);
+    msg->security |= (ENCRYPT | SIGN);
     break;
 
   case 5: /* (i)nline */
@@ -1510,6 +1516,7 @@ int pgp_send_menu (HEADER *msg, int *redraw)
     break;
 
   case 6: /* (f)orget it */
+  case 7: /* (c)lear     */
     msg->security = 0;
     break;
   }
