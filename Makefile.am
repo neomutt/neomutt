@@ -39,7 +39,13 @@ mutt_DEPENDENCIES = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAPDEPS) \
 	$(INTLDEPS)
 
 makedoc_SOURCES = makedoc.c
+makedoc_LDADD =
+makedoc_DEPENDENCIES = 
+
 checktypes_SOURCES = checktypes.c
+checktypes_LDADD =
+checktypes_DEPENDENCIES = 
+
 
 CPP=@CPP@
 
