@@ -202,6 +202,8 @@ int mutt_user_is_recipient (HEADER *h)
  * %C = current message number
  * %d = date and time of message using $date_format and sender's timezone
  * %D = date and time of message using $date_format and local timezone
+ * %e = current message number in thread
+ * %E = number of messages in current thread
  * %f = entire from line
  * %F = like %n, unless from self
  * %i = message-id

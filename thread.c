@@ -895,8 +895,8 @@ int mutt_messages_in_thread (HEADER *cur)
  
   if ((Sort & SORT_MASK) != SORT_THREADS)
   {
-    mutt_error _("Threading is not enabled.");
-    return (-1);
+    /* mutt_error _("Threading is not enabled."); */
+    return (1);
   }
 
   /* find top parent */
@@ -904,7 +904,7 @@ int mutt_messages_in_thread (HEADER *cur)
     cur = cur->parent;
   top = cur;
  
-  /* return if there are no children at all */
+  /* return if there are no children */
   if ((cur = cur->child) == NULL)
     return n;
 
@@ -937,8 +937,8 @@ int mutt_msgno_in_thread (HEADER *cur)
 
   if ((Sort & SORT_MASK) != SORT_THREADS)
   { 
-    mutt_error _("Threading is not enabled.");
-    return (-1);
+    /* mutt_error _("Threading is not enabled."); */
+    return (0);
   } 
 
   /* save target */
@@ -953,9 +953,8 @@ int mutt_msgno_in_thread (HEADER *cur)
   if (top == target)
     return n;
 
-  /* return if there are no children at all */
-  if ((cur = cur->child) == NULL)
-    return n;
+  /* step into first child */
+  cur = cur->child;
 
   FOREVER
   {
@@ -969,14 +968,7 @@ int mutt_msgno_in_thread (HEADER *cur)
     else 
     {
       while (!cur->next) 
-      {
         cur = cur->parent;
-        if (cur == top) 
-	{
-          mutt_error _("Target message not found while counting messages in thread.");
-          return (-1);
-        }
-      }
       cur = cur->next;
     } 
   } 
