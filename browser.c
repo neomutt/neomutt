@@ -34,6 +34,7 @@
 #include <ctype.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <errno.h>
 
 static struct mapping_t FolderHelp[] = {
   { N_("Exit"),  OP_EXIT },
@@ -343,7 +344,7 @@ static void init_state (struct browser_state *state, MUTTMENU *menu)
 }
 
 static int examine_directory (MUTTMENU *menu, struct browser_state *state,
-			      const char *d, const char *prefix)
+			      char *d, const char *prefix)
 {
   struct stat s;
   DIR *dp;
@@ -351,8 +352,19 @@ static int examine_directory (MUTTMENU *menu, struct browser_state *state,
   char buffer[_POSIX_PATH_MAX + SHORT_STRING];
   BUFFY *tmp;
 
-  if (stat (d, &s) == -1)
+  while (stat (d, &s) == -1)
   {
+    if (errno == ENOENT)
+    {
+      /* The last used directory is deleted, try to use the parent dir. */
+      char *c = strrchr (d, '/');
+
+      if (c && (c > d))
+      {
+	*c = 0;
+	continue;
+      }
+    }
     mutt_perror (d);
     return (-1);
   }
