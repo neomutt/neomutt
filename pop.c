@@ -120,7 +120,7 @@ int pop_authenticate (CONNECTION *conn)
 void mutt_fetchPopMail (void)
 {
   char buffer[LONG_STRING];
-  char msgbuf[SHORT_STRING];
+  char msgbuf[SHORT_STRING], *p;
   int i, delanswer, last = 0, msgs, bytes, err = 0;
   CONTEXT ctx;
   MESSAGE *msg = NULL;
@@ -133,10 +133,30 @@ void mutt_fetchPopMail (void)
     return;
   }
 
-  strfcpy (account.host, PopHost, sizeof (account.host));
-  account.port = PopPort;
-  account.type = M_ACCT_TYPE_POP;
+  /* if the host is specified as `my.com/ssl', use ssl to connect to the
+   * given port.  this is kinda silly (looks like nobody was using this
+   * as of 9-29-2000), but it's easier to test pop+ssl than imap+ssl for
+   * the new NSS support.  -me
+   */
   account.flags = 0;
+  strfcpy (account.host, PopHost, sizeof (account.host));
+  p = strchr(account.host, '/');
+  if (p) {
+      if (!strcmp (p+1, "ssl")) {
+	  *p = 0;
+	  account.flags |= M_ACCT_SSL;
+      }
+  }
+  account.type = M_ACCT_TYPE_POP;
+  if (PopPort < 0) {
+      /* auto-select the port based upon what we are attempting to do */
+      if (account.flags & M_ACCT_SSL)
+	  account.port = 995;	/* pop3s (pop3 + ssl) */
+      else
+	  account.port = 110;	/* pop3 */
+  }
+  else
+    account.port = PopPort;
   conn = mutt_conn_find (NULL, &account);
   if (mutt_socket_open (conn) < 0)
     return;

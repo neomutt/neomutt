@@ -195,6 +195,8 @@ CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account)
   {
 #ifdef USE_SSL
     ssl_socket_setup (conn);
+#elif USE_NSS
+    mutt_nss_socket_setup (conn);
 #else
     mutt_error _("SSL is unavailable.");
     sleep (2);

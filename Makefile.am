@@ -69,11 +69,12 @@ non_us_sources = pgp.c pgpinvoke.c pgpkey.c pgplib.c sha1.c \
 	doc/language.txt doc/language50.txt OPS.PGP doc/PGP-Notes.txt \
 	OPS.MIX remailer.c remailer.h pgpewrap	\
 	contrib/pgp2.rc contrib/pgp5.rc contrib/gpg.rc \
-	mutt_ssl.c mutt_ssl.h README.SSL
+	mutt_ssl.c mutt_ssl.h README.SSL mutt_ssl_nss.c
 
 EXTRA_mutt_SOURCES = account.c md5c.c mutt_sasl.c mutt_socket.c mutt_ssl.c \
 	pop.c pgp.c pgpinvoke.c pgpkey.c pgplib.c sha1.c gnupgparse.c \
-	resize.c dotlock.c remailer.c browser.h mbyte.h remailer.h url.h
+	resize.c dotlock.c remailer.c browser.h mbyte.h remailer.h url.h \
+	mutt_ssl_nss.c
 
 EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO configure acconfig.h account.h \
 	attach.h buffy.h charset.h copy.h dotlock.h functions.h gen_defs \

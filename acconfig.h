@@ -59,6 +59,9 @@
 /* Do you want support for SSL? (--with-ssl) */
 #undef USE_SSL
 
+/* Do you want support for SSL via the NSS library? (--with-nss) */
+#undef USE_NSS
+
 /* Avoid SSL routines which used patent-encumbered RC5 algorithms */
 #undef NO_RC5
 

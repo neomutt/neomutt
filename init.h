@@ -1326,7 +1326,7 @@ struct option_t MuttVars[] = {
   */
 #endif /* HAVE_PGP */
   
-#ifdef USE_SSL
+#if defined(USE_SSL)||defined(USE_NSS)
   { "certificate_file",	DT_PATH, R_NONE, UL &SslCertFile, 0 },
   /*
   ** .pp
@@ -1412,10 +1412,14 @@ struct option_t MuttVars[] = {
   ** .pp
   ** The name or address of your POP3 server.
   */
-  { "pop_port",		DT_NUM,	 R_NONE, UL &PopPort, 110 },
+  { "pop_port",		DT_NUM,	 R_NONE, UL &PopPort, -1 },
   /*
   ** .pp
   ** This variable specifies which port your POP server is listening on.
+  ** If you specify a value less than zero, Mutt will auto-select the port
+  ** based upon whether your are doing normal pop3 (110) or pop3s (995).
+  ** If your POP3 server listens on a non-standard port, you will have to
+  ** set this to the correct value for your environment.
   */
   { "pop_last",		DT_BOOL, R_NONE, OPTPOPLAST, 0 },
   /*

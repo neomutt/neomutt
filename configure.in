@@ -554,8 +554,8 @@ dnl -- end socket dependencies --
 
 if test "$need_socket" = "yes"
 then
-	AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(socket, setsockopt))
 	AC_CHECK_FUNC(gethostent, , AC_CHECK_LIB(nsl, gethostent))
+	AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(socket, setsockopt))
 	AC_CHECK_FUNCS(getaddrinfo)
 	AC_DEFINE(USE_SOCKET)
 	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS account.o mutt_socket.o"
@@ -658,6 +658,30 @@ AC_ARG_WITH(ssl, [    --with-ssl[=PFX]         Compile in SSL socket support for
 	fi
 ])
 AM_CONDITIONAL(USE_SSL, test x$need_ssl = xyes)
+
+dnl SSL support via NSS
+AC_ARG_WITH(nss, [    --with-nss[=PFX]	Compile in SSL socket support for POP/IMAP via NSS],
+[	if test "$with_nss" != no
+	then
+	  if test "$need_socket" != "yes"; then
+	   AC_MSG_ERROR([SSL support is only useful with POP or IMAP support])
+	  fi
+
+	  if test "$with_nss" != "yes"
+	  then
+	   LDFLAGS="$LDFLAGS -L$withval/lib"
+	   CPPFLAGS="$CPPFLAGS -I$withval/include -I$withval/public/security"
+	  fi	
+
+	  AC_DEFINE(USE_NSS)
+	  MUTTLIBS="$MUTTLIBS -lssl -lnss -lcertdb -lcerthi -lcryptohi"
+	  MUTTLIBS="$MUTTLIBS -lpk11wrap -lsoftoken -lsecutil -ldbm -lplds4 -lplc4 -lfreebl"
+	  MUTTLIBS="$MUTTLIBS -lnspr4"
+
+	  MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl_nss.o"
+	  need_ssl=yes
+	fi
+])
 
 dnl -- end imap dependencies --
 

@@ -31,7 +31,7 @@
 #endif
 
 
-#ifdef USE_SSL
+#if defined(USE_SSL) || defined(USE_NSS)
 #include "mutt_ssl.h"
 #endif
 
