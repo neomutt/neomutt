@@ -1,3 +1,7 @@
+2005-02-03 18:44:27  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* pgp.c: Fix PGP clear signature handling.
+
 2005-02-03 17:01:44  Brendan Cully  <brendan@kublai.com>  (brendan)
                                  
 	* pgpkey.c, pgplib.c, pgpmicalg.c, pgppacket.c, pgppubring.c,
