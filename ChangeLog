@@ -1,3 +1,8 @@
+2003-03-07 07:52:49  Jim Mock  <mij@soupnazi.org>  (roessler)
+
+	* globals.h: globals.h is looking for crypt.h instead of
+	mutt_crypt.h.
+
 2003-03-06 21:23:53  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* send.c: Fixing a segmentation fault.	Here's how to
