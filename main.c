@@ -211,9 +211,15 @@ static void show_version (void)
 #endif
 
 #ifdef USE_FLOCK
-	"+USE_FLOCK"
+	"+USE_FLOCK   "
 #else
-	"-USE_FLOCK"
+	"-USE_FLOCK   "
+#endif
+	
+#ifdef USE_INODESORT
+	"+USE_INODESORT   "
+#else
+	"-USE_INODESORT   "
 #endif
 	);
   puts (
