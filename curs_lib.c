@@ -115,7 +115,8 @@ int mutt_get_password (char *msg, char *buf, size_t buflen)
 void mutt_clear_error (void)
 {
   Errorbuf[0] = 0;
-  CLEARLINE (LINES-1);
+  if (!option(OPTNOCURSES))
+    CLEARLINE (LINES-1);
 }
 
 void mutt_edit_file (const char *editor, const char *data)
