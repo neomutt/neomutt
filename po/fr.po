@@ -5,9 +5,9 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.3.18\n"
+"Project-Id-Version: Mutt 1.3.19\n"
 "POT-Creation-Date: 2001-06-07 22:11+0200\n"
-"PO-Revision-Date: 2001-05-31 20:41+0200\n"
+"PO-Revision-Date: 2001-06-08 00:34+0200\n"
 "Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
@@ -378,9 +378,8 @@ msgid "Messages bounced."
 msgstr "Messages renvoyés."
 
 #: commands.c:329 commands.c:368 commands.c:385
-#, fuzzy
 msgid "Can't create filter process"
-msgstr "Impossible de créer le filtre"
+msgstr "Impossible de créer le processus filtrant"
 
 #: commands.c:414
 msgid "Pipe to command: "
@@ -765,10 +764,8 @@ msgid "New mail in this mailbox."
 msgstr "Nouveau(x) message(s) dans cette boîte aux lettres."
 
 #: curs_main.c:477
-#, fuzzy
 msgid "Mailbox was externally modified."
-msgstr ""
-"Boîte aux lettres modifiée extérieurement. Les indicateurs peuvent être faux."
+msgstr "La boîte aux lettres a été modifiée extérieurement."
 
 #: curs_main.c:589
 msgid "No tagged messages."
@@ -1053,9 +1050,9 @@ msgstr "Invocation de la commande de visualisation automatique : %s"
 
 # , c-format
 #: handler.c:1520
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Can't run %s. --]\n"
-msgstr "[-- le %s --]\n"
+msgstr "[-- Impossible d'exécuter %s. --]\n"
 
 # , c-format
 #: handler.c:1535 handler.c:1553
@@ -1202,9 +1199,8 @@ msgid "unhook: Can't delete a %s from within a %s."
 msgstr "unhook : impossible de supprimer un %s à l'intérieur d'un %s."
 
 #: imap/auth.c:104
-#, fuzzy
 msgid "No authenticators available"
-msgstr "L'authentification SASL a échoué."
+msgstr "Pas d'authentificateurs disponibles"
 
 #: imap/auth_anon.c:39
 msgid "Authenticating (anonymous)..."
@@ -1272,9 +1268,8 @@ msgid "Mailbox created."
 msgstr "Boîte aux lettres créée."
 
 #: imap/command.c:289
-#, fuzzy
 msgid "Mailbox closed"
-msgstr "Boîte aux lettres supprimée."
+msgstr "Boîte aux lettres fermée"
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
@@ -1298,7 +1293,7 @@ msgstr "Connexion sécurisée avec TLS ?"
 
 #: imap/imap.c:389
 msgid "Could not negotiate TLS connection"
-msgstr ""
+msgstr "Impossible de négocier la connexion TLS"
 
 # , c-format
 #: imap/imap.c:533

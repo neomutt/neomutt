@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.16i\n"
+"Project-Id-Version: 1.3.19i\n"
 "POT-Creation-Date: 2001-06-07 22:11+0200\n"
-"PO-Revision-Date: 2001-02-27 19:30-0600\n"
+"PO-Revision-Date: 2001-06-07 17:37-0500\n"
 "Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
 "Language-Team: Indonesia <i18n@linux.or.id>\n"
 "MIME-Version: 1.0\n"
@@ -361,9 +361,8 @@ msgid "Messages bounced."
 msgstr "Surat-surat telah ditembuskan."
 
 #: commands.c:329 commands.c:368 commands.c:385
-#, fuzzy
 msgid "Can't create filter process"
-msgstr "Tidak bisa membuat filter"
+msgstr "Tidak bisa membuat proses filter"
 
 #: commands.c:414
 msgid "Pipe to command: "
@@ -689,9 +688,8 @@ msgid "Function not permitted in attach-message mode."
 msgstr "Fungsi ini tidak diperbolehkan pada mode pelampiran-surat"
 
 #: curs_main.c:63
-#, fuzzy
 msgid "No visible messages."
-msgstr "Tidak ada surat baru"
+msgstr "Tidak ada surat yg bisa dilihat."
 
 #: curs_main.c:238
 msgid "Cannot toggle write on a readonly mailbox!"
@@ -740,11 +738,8 @@ msgid "New mail in this mailbox."
 msgstr "Surat baru di kotak ini."
 
 #: curs_main.c:477
-#, fuzzy
 msgid "Mailbox was externally modified."
-msgstr ""
-"Kotak surat diobok-obok oleh program lain. Tanda-tanda surat mungkin tidak "
-"tepat."
+msgstr "Kotak surat diobok-obok oleh program lain."
 
 #: curs_main.c:589
 msgid "No tagged messages."
@@ -1015,9 +1010,9 @@ msgid "Invoking autoview command: %s"
 msgstr "Menjalankan perintah tampil-otomatis: %s"
 
 #: handler.c:1520
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Can't run %s. --]\n"
-msgstr "[-- pada %s --]\n"
+msgstr "[-- Tidak bisa menjalankan %s. --]\n"
 
 #: handler.c:1535 handler.c:1553
 #, c-format
@@ -1152,9 +1147,8 @@ msgid "unhook: Can't delete a %s from within a %s."
 msgstr "unhook: Tidak dapat menghapus %s dari %s."
 
 #: imap/auth.c:104
-#, fuzzy
 msgid "No authenticators available"
-msgstr "Authentikasi SASL gagal."
+msgstr "Tidak ada pengauthentikasi yg bisa digunakan"
 
 #: imap/auth_anon.c:39
 msgid "Authenticating (anonymous)..."
@@ -1214,18 +1208,16 @@ msgid "Create mailbox: "
 msgstr "Membuat kotak surat: "
 
 #: imap/browse.c:276
-#, fuzzy
 msgid "Mailbox must have a name."
-msgstr "Kotak surat tidak berubah."
+msgstr "Kotak surat harus punya nama."
 
 #: imap/browse.c:284
 msgid "Mailbox created."
 msgstr "Kotak surat telah dibuat."
 
 #: imap/command.c:289
-#, fuzzy
 msgid "Mailbox closed"
-msgstr "Kotak surat telah dihapus."
+msgstr "Kotak surat telah ditutup."
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
@@ -1249,7 +1241,7 @@ msgstr "Gunakan hubungan aman dg TLS?"
 
 #: imap/imap.c:389
 msgid "Could not negotiate TLS connection"
-msgstr ""
+msgstr "Tidak dapat negosiasi hubungan TLS"
 
 #: imap/imap.c:533
 #, c-format
@@ -1286,9 +1278,8 @@ msgid "Expunging messages from server..."
 msgstr "Menghapus surat-surat di server..."
 
 #: imap/imap.c:1043
-#, fuzzy
 msgid "CLOSE failed"
-msgstr "Login gagal."
+msgstr "CLOSE (penutupan) gagal."
 
 #: imap/imap.c:1299
 #, c-format
@@ -2583,9 +2574,9 @@ msgid "Append messages to %s?"
 msgstr "Tambahkan surat-surat ke %s?"
 
 #: mutt_socket.c:84 mutt_socket.c:140
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s closed"
-msgstr "Hubungan ke %s gagal."
+msgstr "Hubungan ke %s ditutup."
 
 #: mutt_socket.c:250
 msgid "SSL is unavailable."
@@ -2596,9 +2587,9 @@ msgid "Preconnect command failed."
 msgstr "Perintah pra-koneksi gagal."
 
 #: mutt_socket.c:352 mutt_socket.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Kesalahan waktu menghubungi ke server: %s"
+msgstr "Kesalahan waktu menghubungi ke server %s (%s)"
 
 #: mutt_socket.c:400 mutt_socket.c:441
 #, c-format
