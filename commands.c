@@ -641,16 +641,17 @@ static void set_copy_flags (HEADER *hdr, int decode, int decrypt, int *cmflags, 
   {
     *chflags = CH_XMIT | CH_MIME | CH_TXTPLAIN;
     *cmflags = M_CM_DECODE | M_CM_CHARCONV;
-  }
 
-  /* respect $weed only if decode doesn't kick in
-   * for decrypt.
-   */
+    if (!decrypt)	/* If decode doesn't kick in for decrypt, */
+    {
+      *chflags |= CH_DECODE;	/* then decode RFC 2047 headers, */
 
-  if (decode && !decrypt && option (OPTWEED))
-  {
-    *chflags |= CH_WEED;
-    *cmflags |= M_CM_WEED;
+      if (option (OPTWEED))
+      {
+	*chflags |= CH_WEED;	/* and respect $weed. */
+	*cmflags |= M_CM_WEED;
+      }
+    }
   }
 }
 
