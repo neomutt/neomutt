@@ -69,7 +69,7 @@ static void q_encode_string (char *d, size_t dlen, const unsigned char *s)
       wordlen++;
       dlen--;
     }
-    else if ((*s & 0x80) || *s == '\t' || strchr (MimeSpecials, *s))
+    else if ((*s & 0x80) || *s == '\t' || *s == '_' || strchr (MimeSpecials, *s))
     {
       if (wordlen >= 70)
       {
