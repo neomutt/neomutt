@@ -1109,9 +1109,9 @@ int imap_open_mailbox_append (CONTEXT *ctx)
       snprintf (buf, sizeof (buf), _("Create %s?"), CTX_DATA->mailbox);
       if (mutt_yesorno (buf, 1) < 1)
 	return (-1);
-      if (imap_create_mailbox (ctx) < 0)
-	return (-1);
     }
+    if (imap_create_mailbox (ctx) < 0)
+      return (-1);
   }
   else if (r == -1)
   {
