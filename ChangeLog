@@ -1,3 +1,7 @@
+2002-12-22 20:04:51  René Clerc  <rene@clerc.nl>  (roessler)
+
+	* po/nl.po: update
+
 2002-12-22 20:01:32  Bjoern Jacke  <bjoern@j3e.de>  (roessler)
 
 	* smime_keys.pl: Remove an unnecessary invocation of "cat";
