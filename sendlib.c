@@ -850,7 +850,7 @@ static void transform_to_7bit (BODY *a, FILE *fpin)
 
       transform_to_7bit (a->parts, fpin);
     } 
-    else if (a->type == TYPEMESSAGE && mutt_strcasecmp (a->subtype, "delivery-status"))
+    else if (mutt_is_message_type(a->type, a->subtype))
     {
       mutt_message_to_7bit (a, fpin);
     }
