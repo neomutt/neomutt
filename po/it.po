@@ -6,9 +6,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt-0.93i\n"
+"Project-Id-Version: mutt-0.94.17\n"
 "POT-Creation-Date: 1998-11-19 00:08+0100\n"
-"PO-Revision-Date: 1998-11-11 15:50+01:00\n"
+"PO-Revision-Date: 1998-11-19 15:54+01:00\n"
 "Last-Translator: Marco d'Itri <md@linux.it>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
@@ -874,18 +874,18 @@ msgstr ""
 "[-- Errore: message/external-body non ha un parametro access-type --]\n"
 
 #: handler.c:1252
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment "
-msgstr "[-- Questo allegato %s/%s è stato cancellato --]\n"
+msgstr "[-- Questo allegato %s/%s "
 
 #: handler.c:1259
 #, c-format
 msgid "(size %s bytes) "
-msgstr ""
+msgstr "(dimensioni %s byte) "
 
 #: handler.c:1261
 msgid "has been deleted --]\n"
-msgstr ""
+msgstr "è stato cancellato -- ]\n"
 
 #: handler.c:1264
 #, c-format
@@ -893,17 +893,17 @@ msgid "[-- on %s --]\n"
 msgstr "[-- su %s --]\n"
 
 #: handler.c:1274
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
 msgstr ""
 "[-- Questo allegato %s/%s non è incluso --]\n"
-"[-- e il l'access-type %s indicato non è gestito --]\n"
+"[-- e l'origine esterna indicata è scaduta. --]\n"
 
 #: handler.c:1288
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
@@ -2849,8 +2849,8 @@ msgstr "Nessun soggetto, abbandonato."
 #.
 #: send.c:432
 #, c-format
-msgid "Reply to %s%s?"
-msgstr "Rispondo a %s%s?"
+msgid "Reply to %s?"
+msgstr "Rispondo a %s?"
 
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
@@ -2977,6 +2977,3 @@ msgstr "Could not find sorting function! [segnala questo bug]"
 #: status.c:102
 msgid "(no mailbox)"
 msgstr "(nessuna mailbox)"
-
-#~ msgid "This encoding is deprecated.  Really use it?"
-#~ msgstr "Questa codifica è sconsigliata.  Vuoi usarla davvero?"
