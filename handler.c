@@ -89,8 +89,7 @@ void mutt_decode_xbit (STATE *s, BODY *b, int istext)
     else
       map = mutt_get_translation(charset, Charset);
 
-    if(s->prefix)
-      state_puts(s->prefix, s);
+    state_set_prefix(s);
     
     while ((c = fgetc(s->fpin)) != EOF && len--)
     {
@@ -108,6 +107,8 @@ void mutt_decode_xbit (STATE *s, BODY *b, int istext)
       state_maybe_utf8_putc(s, c, is_utf8, chs, map);
     }
     
+    state_reset_prefix(s);
+
     if(is_utf8)
       state_fput_utf8(s, '\0', chs);
     
@@ -145,7 +146,7 @@ void mutt_decode_quoted (STATE *s, BODY *b, int istext)
       map = mutt_get_translation(charset, Charset);
   }
   
-  if(s->prefix) state_puts(s->prefix, s);
+  state_set_prefix(s);
   
   while (len > 0)
   {
@@ -203,6 +204,8 @@ void mutt_decode_quoted (STATE *s, BODY *b, int istext)
       state_maybe_utf8_putc(s, ch, is_utf8, chs, map);
   }
   
+  state_reset_prefix(s);
+
   if(is_utf8)
     state_fput_utf8(s, '\0', chs);
 }
@@ -227,7 +230,7 @@ void mutt_decode_base64 (STATE *s, BODY *b, int istext)
   
   buf[4] = 0;
 
-  if (s->prefix && istext) state_puts (s->prefix, s);
+  if (istext) state_set_prefix(s);
 
   while (len > 0)
   {
@@ -282,6 +285,7 @@ void mutt_decode_base64 (STATE *s, BODY *b, int istext)
     else
       state_maybe_utf8_putc(s, ch, is_utf8, chs, map);
   }
+  state_reset_prefix(s);
 }
 
 /* ----------------------------------------------------------------------------

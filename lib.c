@@ -1221,7 +1221,15 @@ char *mutt_quote_filename(const char *f)
 
 void state_prefix_putc(char c, STATE *s)
 {
+  if (s->flags & M_PENDINGPREFIX)
+  {
+    state_reset_prefix(s);
+    if (s->prefix)
+      state_puts(s->prefix, s);
+  }
+
   state_putc(c, s);
-  if(c == '\n' && s->prefix)
-    state_puts(s->prefix, s);
+
+  if(c == '\n')
+    state_set_prefix(s);
 }

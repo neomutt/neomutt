@@ -651,6 +651,10 @@ typedef struct
 
 
 
+#define M_PENDINGPREFIX (1<<2) /* prefix to write, but character must follow */
+
+#define state_set_prefix(s) ((s)->flags |= M_PENDINGPREFIX)
+#define state_reset_prefix(s) ((s)->flags &= ~M_PENDINGPREFIX)
 #define state_puts(x,y) fputs(x,(y)->fpout)
 #define state_putc(x,y) fputc(x,(y)->fpout)
 
