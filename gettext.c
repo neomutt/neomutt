@@ -95,10 +95,10 @@ char *mutt_gettext (const char *message)
 	for (p = messages[i]; p; p = pn)
 	{
 	  pn = p->next;
-	  free (p);
+	  safe_free ((void **) &p);
 	}
-      free (messages);
-      messages = 0;
+
+      safe_free ((void **) &messages);
     }
   }
 
@@ -147,7 +147,7 @@ char *mutt_gettext (const char *message)
     n = strlen (t);
     s = safe_malloc (n+1);
     memcpy (s, t, n+1);
-    free (t);
+    safe_free ((void **) &t);
 
     p = safe_malloc (sizeof (struct gt_hash_elem));
     p->key = orig;
