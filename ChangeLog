@@ -1,3 +1,80 @@
+Sat Apr 22 09:33:46 2000  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.head:
+	Add a link to http://www.mutt.org/download.html.
+
+	* init.c, init.h, thread.c:
+	Handle sort_aux="threads" somewhat different, and probably more
+	safely.  Problem and principle of fix noted by Gero Treuner and
+	Michael Tatge <Michael.Tatge@studserv.uni-stuttgart.de>.
+
+	* lib.c: Coda compatibility.  From Jan Harkes <jaharkes@cs.cmu.edu>.
+
+	* parse.c:
+	Fix message parsing.  This fixes the "Reply-To in body" bug.  From
+	Edmund GRIMLEY EVANS.
+
+	* doc/manual.sgml.tail: Fix the sgmltools URL.  From Martin Michlmayr.
+
+	* charset.c, editmsg.c, extlib.c, gnupgparse.c, lib.c, lib.h, pgpinvoke.c, pgpkey.c, pgplib.c, pgppubring.c, recvcmd.c, remailer.c, rfc2231.c, rfc2231.h:
+	Comment cosmetics.  From Martin Michlmayer.
+
+	* doc/manual.sgml.head:
+	Document the elmish "!!" shortcut for the last folder.  From Martin
+	Michlmayr <tbm@cyrius.com>.
+
+	* curs_main.c, pager.c:
+	Fix various inconsistencies with respect to thread deletion.
+
+Wed Apr 12 16:32:26 2000  Thomas Roessler  <roessler@guug.de>
+
+	* browser.c: Initialize some more memory.  Noted by Vsevolod Volkov
+	<vvv@lucky.net>.
+
+	* headers.c: Catch some error conditions.
+
+	* main.c: Tell us whether debugging is enabled or not.
+
+Sun Apr  9 13:32:36 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/sv.po: Update.
+
+	* imap/imap_ssl.c: Another file mode change.
+
+	* po/fr.po, po/es.po, po/el.po: update.
+
+	* imap/imap_ssl.c:
+	Save more than one SSL certificate to the certificate file.
+
+	* po/da.po, po/cs.po: update.
+
+	* imap/socket.c: Make host name comparison case-insensitive.
+
+	* doc/manual.sgml.head:
+	Minor typo in the documentation.  Noted by Vsevolod Volkov
+	<vvv@lucky.net>.
+
+	* muttlib.c:
+	The "!!" shortcut had another flaw.  Noted by Martin Michlmayr
+	<tbm@cyrius.com>.
+
+	* imap/BUGS: Documentation patch from Brendan Cully.
+
+	* pattern.c: Fix ^ and ! pattern modifiers.
+
+Fri Mar 31 12:37:21 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/pl.po, po/id.po: update.
+
+Thu Mar 30 15:33:14 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/uk.po, po/zh_TW.Big5.po, po/sk.po, po/sv.po, po/pt_BR.po, po/ru.po, po/nl.po, po/pl.po, po/ko.po, po/it.po, po/fr.po, po/gl.po, po/id.po, po/eo.po, po/es.po, po/el.po, po/da.po, po/de.po, po/cs.po, VERSION, reldate.h, ChangeLog:
+	automatic post-release commit for mutt-1.1.11
+
+	* po/uk.po, po/zh_TW.Big5.po, po/sv.po, po/sk.po, po/pt_BR.po, po/ru.po, po/nl.po, po/pl.po, po/ko.po, po/id.po, po/it.po, po/gl.po, po/fr.po, po/es.po, po/eo.po, po/el.po, po/de.po, po/da.po, po/Makefile.in.in, po/POTFILES.in, po/cs.po:
+	make update-po, and undo most parts of Lars' and Tommi's patch - it
+	broke things here.
+
 Thu Mar 30 15:16:22 2000  Thomas Roessler  <roessler@guug.de>
 
 	* po/uk.po, po/zh_TW.Big5.po, po/sv.po, po/sk.po,

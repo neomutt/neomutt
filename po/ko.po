@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.2\n"
-"POT-Creation-Date: 2000-03-30 17:28+0200\n"
+"POT-Creation-Date: 2000-04-22 20:34+0200\n"
 "PO-Revision-Date: 2000-03-09 07:40+0900\n"
 "Last-Translator: Byeong-Chan Kim <redhands@linux.sarag.net>\n"
 "Language-Team: Korean <ko@li.org>\n"
@@ -23,7 +23,7 @@ msgid "Select"
 msgstr "선택"
 
 #: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:376 imap/imap_ssl.c:352
-#: pager.c:1482 pgpkey.c:448 postpone.c:40 query.c:48 recvattach.c:61
+#: pager.c:1482 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "도움말"
 
@@ -135,88 +135,88 @@ msgstr "디렉토리 이동"
 msgid "Mask"
 msgstr "매스크"
 
-#: browser.c:369 browser.c:912
+#: browser.c:370 browser.c:913
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s는 디렉토리가 아닙니다."
 
-#: browser.c:480
+#: browser.c:481
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "편지함 [%d]"
 
-#: browser.c:487
+#: browser.c:488
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "가입 [%s], 파일 매스크: %s"
 
-#: browser.c:491
+#: browser.c:492
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "디렉토리 [%s], 파일 매스크: %s"
 
-#: browser.c:502
+#: browser.c:503
 msgid "Can't attach a directory!"
 msgstr "디렉토리를 첨부할 수 없음!"
 
-#: browser.c:620 browser.c:979 browser.c:1072
+#: browser.c:621 browser.c:980 browser.c:1073
 msgid "No files match the file mask"
 msgstr "파일 매스크와 일치하는 파일 없음."
 
-#: browser.c:820
+#: browser.c:821
 msgid "Creating mailboxes is not yet supported."
 msgstr "매일함 생성을 지원치 않음."
 
-#: browser.c:825
+#: browser.c:826
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "삭제는 IMAP 메일함에서만 지원됨"
 
-#: browser.c:833
+#: browser.c:834
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "\"%s\" 매일함을 지울까요?"
 
-#: browser.c:847
+#: browser.c:848
 msgid "Mailbox deleted."
 msgstr "매일함 삭제됨."
 
-#: browser.c:853
+#: browser.c:854
 msgid "Mailbox not deleted."
 msgstr "보내지 삭제되지 않음."
 
-#: browser.c:871
+#: browser.c:872
 msgid "Chdir to: "
 msgstr "이동할 디렉토리: "
 
-#: browser.c:905 browser.c:972
+#: browser.c:906 browser.c:973
 msgid "Error scanning directory."
 msgstr "디렉토리 검사중 오류."
 
-#: browser.c:923
+#: browser.c:924
 msgid "File Mask: "
 msgstr "파일 매스크: "
 
-#: browser.c:995
+#: browser.c:996
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "역정렬 방법 날짜(d), 낱말(a), 크기(z) 또는 안함(n)?"
 
-#: browser.c:996
+#: browser.c:997
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "정렬 방법 날짜(d), 글자(a), 크기(z) 또는 안함(n)?"
 
-#: browser.c:997
+#: browser.c:998
 msgid "dazn"
 msgstr "dazn"
 
-#: browser.c:1059
+#: browser.c:1060
 msgid "New file name: "
 msgstr "새 파일 이름: "
 
-#: browser.c:1090
+#: browser.c:1091
 msgid "Can't view a directory"
 msgstr "디렉토리를 볼 수 없음"
 
-#: browser.c:1108
+#: browser.c:1109
 msgid "Error trying to view file"
 msgstr "파일 보기 시도 중 오류"
 
@@ -225,21 +225,21 @@ msgstr "파일 보기 시도 중 오류"
 msgid "New mail in %s."
 msgstr "%s에 새 편지 도착."
 
-#: charset.c:1065
+#: charset.c:1066
 msgid "We can't currently handle utf-8 at this point."
 msgstr "히 항목에서는 아직 UTF-8을 제어할 수 없음."
 
-#: charset.c:1071 charset.c:1078
+#: charset.c:1072 charset.c:1079
 #, c-format
 msgid "Can't open %s: %s."
 msgstr "%s를 열 수 없음: %s"
 
-#: charset.c:1147
+#: charset.c:1148
 #, c-format
 msgid "Error while recoding %s. Leave it unchanged."
 msgstr "%s 기록 중 오류. 변경하지 않고 그만둠."
 
-#: charset.c:1153
+#: charset.c:1154
 #, c-format
 msgid "Error while recoding %s. See %s for recovering your data."
 msgstr "%s 기록 중 오류. 자료를 복구하려면 %s를 보세요."
@@ -303,7 +303,7 @@ msgstr "기본 색상들이 지원되지 않음"
 msgid "Verify PGP signature?"
 msgstr "PGP 서명을 확인할까요?"
 
-#: commands.c:106 pgp.c:1542 pgpkey.c:490 postpone.c:549
+#: commands.c:106 pgp.c:1542 pgpkey.c:491 postpone.c:549
 msgid "Invoking PGP..."
 msgstr "PGP를 구동합니다..."
 
@@ -319,11 +319,11 @@ msgstr "PGP 서명 검증에 성공함."
 msgid "Command: "
 msgstr "명령어: "
 
-#: commands.c:194 recvcmd.c:139
+#: commands.c:194 recvcmd.c:140
 msgid "Bounce message to: "
 msgstr "전달 메세지의 수신자: "
 
-#: commands.c:196 recvcmd.c:141
+#: commands.c:196 recvcmd.c:142
 msgid "Bounce tagged messages to: "
 msgstr "선택한 전달 메세지의 수신자: "
 
@@ -435,7 +435,7 @@ msgstr "첨부물이 없습니다."
 msgid "Send"
 msgstr "보내기"
 
-#: compose.c:86 remailer.c:482
+#: compose.c:86 remailer.c:483
 msgid "Abort"
 msgstr "종료"
 
@@ -594,7 +594,7 @@ msgstr "이 메세지의 복사본을 저장할까요?"
 msgid "Rename to: "
 msgstr "이름 바꾸기: "
 
-#: compose.c:960 editmsg.c:95
+#: compose.c:960 editmsg.c:96
 #, c-format
 msgid "Can't stat: %s"
 msgstr "스탯을 알 수 없음: %s"
@@ -840,7 +840,7 @@ msgstr "처음 글타래입니다.."
 msgid "Thread contains unread messages."
 msgstr "글타래에 읽지 않은 메세지 있음."
 
-#: curs_main.c:1456 flags.c:228 thread.c:657 thread.c:708
+#: curs_main.c:1456 flags.c:228 thread.c:651 thread.c:702
 msgid "Threading is not enabled."
 msgstr "글타래를 사용하지 않음."
 
@@ -921,35 +921,35 @@ msgstr "메세지에 내용 없음.\n"
 msgid "%s: unknown editor command (~? for help)\n"
 msgstr "%s: 알 수 없는 편집 명령 (~? 도움말)\n"
 
-#: editmsg.c:73
+#: editmsg.c:74
 #, c-format
 msgid "could not create temporary folder: %s"
 msgstr "임시 폴더를 만들 수 없음: %s"
 
-#: editmsg.c:83
+#: editmsg.c:84
 #, c-format
 msgid "could not write temporary mail folder: %s"
 msgstr "임시 메일 폴더를 만들 수 없음: %s"
 
-#: editmsg.c:101
+#: editmsg.c:102
 msgid "Message file is empty!"
 msgstr "메시지 파일이 비었음!"
 
-#: editmsg.c:108
+#: editmsg.c:109
 msgid "Message not modified!"
 msgstr "메세지가 변경되지 않음!"
 
-#: editmsg.c:116
+#: editmsg.c:117
 #, c-format
 msgid "Can't open message file: %s"
 msgstr "메시지 파일을 열 수 없음: %s"
 
-#: editmsg.c:123 editmsg.c:151
+#: editmsg.c:124 editmsg.c:152
 #, c-format
 msgid "Can't append to folder: %s"
 msgstr "폴더에 첨가할 수 없음: %s"
 
-#: editmsg.c:182
+#: editmsg.c:183
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "임시 파일을 보존하는 중 오류: %s"
@@ -1064,7 +1064,7 @@ msgstr "('%s' 키로 현재 부분 보기)"
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "('view-attachments' 글쇠 정의가 필요함!)"
 
-#: headers.c:159
+#: headers.c:171
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: 화일을 첨부할 수 없음"
@@ -1197,7 +1197,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "서버의 IMAP 편지함에 추가할 수 없음"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:813 imap/message.c:625 muttlib.c:978
+#: imap/imap.c:813 imap/message.c:625 muttlib.c:984
 #, c-format
 msgid "Create %s?"
 msgstr "%s를 만들까요?"
@@ -1296,7 +1296,7 @@ msgstr "거부(r), 이번만 허가(o)"
 msgid "ro"
 msgstr "ro"
 
-#: imap/imap_ssl.c:350 pgpkey.c:441
+#: imap/imap_ssl.c:350 pgpkey.c:442
 msgid "Exit  "
 msgstr "끝내기  "
 
@@ -1409,51 +1409,51 @@ msgstr "%s: 잘못된 형식의 편지함"
 msgid "%s: invalid value"
 msgstr "%s: 잘못된 값"
 
-#: init.c:1153
+#: init.c:1156
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: 알 수 없는 형식"
 
-#: init.c:1194
+#: init.c:1197
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "%s의 %d번 줄에 오류: %s"
 
 #. the muttrc source keyword
-#: init.c:1210
+#: init.c:1213
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: %s에 오류"
 
-#: init.c:1211
+#: init.c:1214
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr ""
 
-#: init.c:1225
+#: init.c:1228
 #, c-format
 msgid "source: error at %s"
 msgstr "source: %s에 오류"
 
-#: init.c:1230
+#: init.c:1233
 msgid "source: too many arguments"
 msgstr "source: 인수가 너무 많음"
 
-#: init.c:1281
+#: init.c:1284
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: 알 수 없는 명령어"
 
-#: init.c:1638
+#: init.c:1641
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "명령어 오류: %s\n"
 
-#: init.c:1681
+#: init.c:1684
 msgid "unable to determine home directory"
 msgstr "홈 디렉토리를 찾을 수가 없습니다"
 
-#: init.c:1689
+#: init.c:1692
 msgid "unable to determine username"
 msgstr "알 수 없는 사용자 이름입니다"
 
@@ -2227,7 +2227,7 @@ msgstr "체인에서 리메일러 삭제"
 msgid "send the message through a mixmaster remailer chain"
 msgstr ""
 
-#: lib.c:58 lib.c:73 lib.c:104
+#: lib.c:59 lib.c:74 lib.c:105
 msgid "Out of memory!"
 msgstr "메모리 부족!"
 
@@ -2385,47 +2385,47 @@ msgstr ""
 "\n"
 "컴파일 선택사항:"
 
-#: main.c:295
+#: main.c:303
 msgid "Error initializing terminal."
 msgstr "터미널 초기화 오류."
 
-#: main.c:394
+#: main.c:402
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "디버깅 레벨 %d.\n"
 
-#: main.c:396
+#: main.c:404
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG가 컴파일시 정의되지 않음. 무시함\n"
 
-#: main.c:515
+#: main.c:523
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s가 존재치 않음. 만들까요?"
 
-#: main.c:519
+#: main.c:527
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "%s를 만들 수 없음: %s."
 
-#: main.c:558
+#: main.c:566
 msgid "No recipients specified.\n"
 msgstr "수신자가 지정되지 않음.\n"
 
-#: main.c:631
+#: main.c:639
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: 파일을 첨부할 수 없음.\n"
 
-#: main.c:651
+#: main.c:659
 msgid "No mailbox with new mail."
 msgstr "새로운 편지가 도착한 편지함 없음."
 
-#: main.c:660
+#: main.c:668
 msgid "No incoming mailboxes defined."
 msgstr "인커밍 편지함이 정의되지 않음."
 
-#: main.c:689
+#: main.c:697
 msgid "Mailbox is empty."
 msgstr "편지함이 비었음"
 
@@ -2556,28 +2556,28 @@ msgstr "태그를 붙이는 것을 지원치 않음."
 msgid "Reading %s... %d"
 msgstr "%s 읽는 중... %d"
 
-#: muttlib.c:651
+#: muttlib.c:657
 msgid "File is a directory, save under it?"
 msgstr "파일이 아니라 디렉토리입니다, 그 아래에 저장할까요?"
 
-#: muttlib.c:656
+#: muttlib.c:662
 msgid "File under directory: "
 msgstr "디렉터리하에 저장할 파일:"
 
-#: muttlib.c:668
+#: muttlib.c:674
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "파일이 존재함, 덮어쓰기(o), 첨가(a), 취소(c)?"
 
-#: muttlib.c:668
+#: muttlib.c:674
 msgid "oac"
 msgstr "oac"
 
-#: muttlib.c:954
+#: muttlib.c:960
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s는 편지함이 아님!"
 
-#: muttlib.c:960
+#: muttlib.c:966
 #, c-format
 msgid "Append messages to %s?"
 msgstr "%s에 메세지를 첨가할까요?"
@@ -3011,80 +3011,80 @@ msgstr "PGP를 실행하지 못함"
 msgid "Create an application/pgp message?"
 msgstr "application/pgp 메세지를 만들까요?"
 
-#: pgpinvoke.c:300
+#: pgpinvoke.c:301
 msgid "Fetching PGP key..."
 msgstr "PGP 키 가져오는 중..."
 
-#: pgpkey.c:443
+#: pgpkey.c:444
 msgid "Select  "
 msgstr "선택  "
 
-#: pgpkey.c:446
+#: pgpkey.c:447
 msgid "Check key  "
 msgstr "열쇠 확인  "
 
-#: pgpkey.c:459
+#: pgpkey.c:460
 #, c-format
 msgid "PGP keys matching <%s>."
 msgstr "PGP 키가 <%s>와 일치함."
 
-#: pgpkey.c:461
+#: pgpkey.c:462
 #, c-format
 msgid "PGP keys matching \"%s\"."
 msgstr "PGP 키가 \"%s\"와 일치함."
 
-#: pgpkey.c:480 pgpkey.c:674
+#: pgpkey.c:481 pgpkey.c:675
 msgid "Can't open /dev/null"
 msgstr "/dev/null 열 수 없음"
 
-#: pgpkey.c:486 pgpkey.c:668
+#: pgpkey.c:487 pgpkey.c:669
 msgid "Can't create temporary file"
 msgstr "임시 화일 만들 수 없음"
 
-#: pgpkey.c:497 pgpkey.c:688
+#: pgpkey.c:498 pgpkey.c:689
 msgid "Can't create filter"
 msgstr "필터를 생성할 수 없음"
 
-#: pgpkey.c:507
+#: pgpkey.c:508
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "열쇠 ID: 0x%s"
 
-#: pgpkey.c:533
+#: pgpkey.c:534
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "이 키는 사용할 수 없습니다: expired/disabled/revoked."
 
-#: pgpkey.c:547
+#: pgpkey.c:548
 msgid "This ID's trust level is undefined."
 msgstr "이 ID의 신용 등급을 알 수 없음."
 
-#: pgpkey.c:550
+#: pgpkey.c:551
 msgid "This ID is not trusted."
 msgstr "이 ID는 믿을 수가 없음."
 
-#: pgpkey.c:553
+#: pgpkey.c:554
 msgid "This ID is only marginally trusted."
 msgstr "이 ID는 신용도가 낮음"
 
-#: pgpkey.c:557
+#: pgpkey.c:558
 #, c-format
 msgid "%s Do you really want to use it?"
 msgstr "%s 정말로 사용을 하겠습니까?"
 
-#: pgpkey.c:653
+#: pgpkey.c:654
 msgid "Please enter the key ID: "
 msgstr "열쇠 ID 를 입력하십시요: "
 
-#: pgpkey.c:681
+#: pgpkey.c:682
 msgid "Invoking pgp..."
 msgstr "PGP를 구동합니다..."
 
-#: pgpkey.c:706
+#: pgpkey.c:707
 #, c-format
 msgid "PGP Key %s."
 msgstr "PGP 키 %s."
 
-#: pgpkey.c:753 pgpkey.c:869
+#: pgpkey.c:754 pgpkey.c:870
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "\"%s\"와 일치하는 키를 찾는 중..."
@@ -3251,111 +3251,111 @@ msgstr "PGP 메시지에서의 첨부물 삭제는 지원되지 않음."
 msgid "Only deletion of multipart attachments is supported."
 msgstr "다중체계 첨부물의 삭제만이 지원됩니다."
 
-#: recvcmd.c:42
+#: recvcmd.c:43
 msgid "You may only bounce message/rfc822 parts."
 msgstr "message/rfc822 파트만 전달할 수 있습니다."
 
-#: recvcmd.c:154
+#: recvcmd.c:155
 #, c-format
 msgid "Bounce message to %s...?"
 msgstr "%s에게 메세지를 전달할까요?"
 
-#: recvcmd.c:154
+#: recvcmd.c:155
 #, c-format
 msgid "Bounce messages to %s...?"
 msgstr "%s에게 메세지를 전달할까요?"
 
-#: recvcmd.c:371
+#: recvcmd.c:372
 #, c-format
 msgid "Can't open temporary file %s."
 msgstr "임시 화일 %s를 열지 못함"
 
-#: recvcmd.c:397 recvcmd.c:536 send.c:722
+#: recvcmd.c:398 recvcmd.c:537 send.c:722
 msgid "Forward MIME encapsulated?"
 msgstr "MIME 캡슐에 넣어 전달할까요?"
 
-#: recvcmd.c:411
+#: recvcmd.c:412
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
 msgstr ""
 
-#: recvcmd.c:544 recvcmd.c:796
+#: recvcmd.c:545 recvcmd.c:797
 #, c-format
 msgid "Can't create %s."
 msgstr "%s를 만들 수 없음."
 
-#: recvcmd.c:675
+#: recvcmd.c:676
 msgid "Can't find any tagged messages."
 msgstr "어떤 선택된 메시지도 찾지 못했습니다."
 
-#: recvcmd.c:696 send.c:647
+#: recvcmd.c:697 send.c:647
 msgid "No mailing lists found!"
 msgstr "메일링 리스트를 찾을 수 없음!"
 
-#: recvcmd.c:775
+#: recvcmd.c:776
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr ""
 
-#: remailer.c:479
+#: remailer.c:480
 msgid "Append"
 msgstr "첨가"
 
-#: remailer.c:480
+#: remailer.c:481
 msgid "Insert"
 msgstr "삼입"
 
-#: remailer.c:481
+#: remailer.c:482
 msgid "Delete"
 msgstr "삭제"
 
-#: remailer.c:483
+#: remailer.c:484
 msgid "OK"
 msgstr "확인"
 
-#: remailer.c:511
+#: remailer.c:512
 msgid "Can't get mixmaster's type2.list!"
 msgstr ""
 
-#: remailer.c:537
+#: remailer.c:538
 msgid "Select a remailer chain."
 msgstr ""
 
-#: remailer.c:599
+#: remailer.c:600
 #, c-format
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr ""
 
-#: remailer.c:632
+#: remailer.c:633
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."
 msgstr ""
 
-#: remailer.c:657
+#: remailer.c:658
 msgid "The remailer chain is already empty."
 msgstr ""
 
-#: remailer.c:667
+#: remailer.c:668
 msgid "You already have the first chain element selected."
 msgstr ""
 
-#: remailer.c:677
+#: remailer.c:678
 msgid "You already have the last chain element selected."
 msgstr ""
 
-#: remailer.c:716
+#: remailer.c:717
 msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr ""
 
-#: remailer.c:740
+#: remailer.c:741
 msgid ""
 "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr ""
 
-#: remailer.c:769
+#: remailer.c:770
 #, c-format
 msgid "Error sending message, child exited %d.\n"
 msgstr "메세지 보내는 중 오류, 자식이 종료됨 %d.\n"
 
-#: remailer.c:773
+#: remailer.c:774
 msgid "Error sending message."
 msgstr "메세지 보내는 중 오류."
 
@@ -3533,10 +3533,10 @@ msgstr "정렬 함수 찾을 수 없음! [버그 보고 바람]"
 msgid "(no mailbox)"
 msgstr "(편지함 없음)"
 
-#: thread.c:718
+#: thread.c:712
 msgid "Parent message is not visible in limited view"
 msgstr "부모 메세지는 볼 수 없는 상태임."
 
-#: thread.c:723
+#: thread.c:717
 msgid "Parent message is not available."
 msgstr "부모 메세지가 존재하지 않음."

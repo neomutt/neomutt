@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.5i\n"
-"POT-Creation-Date: 2000-03-30 17:28+0200\n"
+"POT-Creation-Date: 2000-04-22 20:34+0200\n"
 "PO-Revision-Date: 2000-02-27 09:00-0600\n"
 "Last-Translator: Ronny Haryanto <ronny@haryan.to>\n"
 "Language-Team: Indonesia <i18n@linux.or.id>\n"
@@ -23,7 +23,7 @@ msgid "Select"
 msgstr "Pilih"
 
 #: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:376 imap/imap_ssl.c:352
-#: pager.c:1482 pgpkey.c:448 postpone.c:40 query.c:48 recvattach.c:61
+#: pager.c:1482 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Bantuan"
 
@@ -136,89 +136,89 @@ msgstr "Pindah dir"
 msgid "Mask"
 msgstr "Mask"
 
-#: browser.c:369 browser.c:912
+#: browser.c:370 browser.c:913
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s bukan direktori."
 
-#: browser.c:480
+#: browser.c:481
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Kotak surat [%d]"
 
-#: browser.c:487
+#: browser.c:488
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Berlangganan [%s], File mask: %s"
 
-#: browser.c:491
+#: browser.c:492
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Direktori [%s], File mask: %s"
 
-#: browser.c:502
+#: browser.c:503
 msgid "Can't attach a directory!"
 msgstr "Tidak bisa melampirkan sebuah direktori"
 
-#: browser.c:620 browser.c:979 browser.c:1072
+#: browser.c:621 browser.c:980 browser.c:1073
 msgid "No files match the file mask"
 msgstr "Tidak ada file yang sesuai dengan mask"
 
-#: browser.c:820
+#: browser.c:821
 msgid "Creating mailboxes is not yet supported."
 msgstr "Pembuatan kotak surat belum diimplementasikan."
 
-#: browser.c:825
+#: browser.c:826
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Penghapusan hanya didukung untuk kotak surat jenis IMAP."
 
-#: browser.c:833
+#: browser.c:834
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Yakin hapus kotak surat \"%s\"?"
 
-#: browser.c:847
+#: browser.c:848
 msgid "Mailbox deleted."
 msgstr "Kotak surat telah dihapus."
 
-#: browser.c:853
+#: browser.c:854
 msgid "Mailbox not deleted."
 msgstr "Kotak surat tidak dihapus."
 
-#: browser.c:871
+#: browser.c:872
 msgid "Chdir to: "
 msgstr "Pindah dir ke: "
 
-#: browser.c:905 browser.c:972
+#: browser.c:906 browser.c:973
 msgid "Error scanning directory."
 msgstr "Gagal membaca direktori."
 
-#: browser.c:923
+#: browser.c:924
 msgid "File Mask: "
 msgstr "File Mask: "
 
-#: browser.c:995
+#: browser.c:996
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr ""
 "Urut terbalik berdasarkan (t)anggal, (a)bjad, (u)kuran atau (n)ggak diurut? "
 
-#: browser.c:996
+#: browser.c:997
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Urut berdasarkan (t)anggal, (a)bjad, (u)kuran atau (n)ggak diurut? "
 
-#: browser.c:997
+#: browser.c:998
 msgid "dazn"
 msgstr "taun"
 
-#: browser.c:1059
+#: browser.c:1060
 msgid "New file name: "
 msgstr "Nama file baru: "
 
-#: browser.c:1090
+#: browser.c:1091
 msgid "Can't view a directory"
 msgstr "Tidak bisa menampilkan sebuah direktori"
 
-#: browser.c:1108
+#: browser.c:1109
 msgid "Error trying to view file"
 msgstr "Gagal menampilkan file"
 
@@ -227,21 +227,21 @@ msgstr "Gagal menampilkan file"
 msgid "New mail in %s."
 msgstr "Surat baru di %s."
 
-#: charset.c:1065
+#: charset.c:1066
 msgid "We can't currently handle utf-8 at this point."
 msgstr "Kami belum bisa menangani UTF-8 pada saat ini."
 
-#: charset.c:1071 charset.c:1078
+#: charset.c:1072 charset.c:1079
 #, c-format
 msgid "Can't open %s: %s."
 msgstr "Tidak bisa membuka: %s"
 
-#: charset.c:1147
+#: charset.c:1148
 #, c-format
 msgid "Error while recoding %s. Leave it unchanged."
 msgstr "Error meng-coding ulang %s. Biarkan saja, jangan diubah."
 
-#: charset.c:1153
+#: charset.c:1154
 #, c-format
 msgid "Error while recoding %s. See %s for recovering your data."
 msgstr ""
@@ -306,7 +306,7 @@ msgstr "warna default tidak didukung"
 msgid "Verify PGP signature?"
 msgstr "Periksa tandatangan PGP?"
 
-#: commands.c:106 pgp.c:1542 pgpkey.c:490 postpone.c:549
+#: commands.c:106 pgp.c:1542 pgpkey.c:491 postpone.c:549
 msgid "Invoking PGP..."
 msgstr "Menjalankan PGP..."
 
@@ -322,11 +322,11 @@ msgstr "Tanda tangan PGP berhasil diverifikasi."
 msgid "Command: "
 msgstr "Perintah: "
 
-#: commands.c:194 recvcmd.c:139
+#: commands.c:194 recvcmd.c:140
 msgid "Bounce message to: "
 msgstr "Tembuskan surat ke: "
 
-#: commands.c:196 recvcmd.c:141
+#: commands.c:196 recvcmd.c:142
 msgid "Bounce tagged messages to: "
 msgstr "Tembuskan surat yang telah ditandai ke: "
 
@@ -440,7 +440,7 @@ msgstr "Tidak ada lampiran."
 msgid "Send"
 msgstr "Kirim"
 
-#: compose.c:86 remailer.c:482
+#: compose.c:86 remailer.c:483
 msgid "Abort"
 msgstr "Batal"
 
@@ -600,7 +600,7 @@ msgstr "Simpan salinan dari surat ini?"
 msgid "Rename to: "
 msgstr "Ganti nama ke: "
 
-#: compose.c:960 editmsg.c:95
+#: compose.c:960 editmsg.c:96
 #, c-format
 msgid "Can't stat: %s"
 msgstr "Tidak bisa stat: %s"
@@ -846,7 +846,7 @@ msgstr "Anda di thread yang pertama."
 msgid "Thread contains unread messages."
 msgstr "Thread berisi surat yang belum dibaca."
 
-#: curs_main.c:1456 flags.c:228 thread.c:657 thread.c:708
+#: curs_main.c:1456 flags.c:228 thread.c:651 thread.c:702
 msgid "Threading is not enabled."
 msgstr "Tidak disetting untuk melakukan threading."
 
@@ -928,35 +928,35 @@ msgstr "Tidak ada sebaris pun di dalam surat.\n"
 msgid "%s: unknown editor command (~? for help)\n"
 msgstr "%s: perintah editor tidak dikenali (~? utk bantuan)\n"
 
-#: editmsg.c:73
+#: editmsg.c:74
 #, c-format
 msgid "could not create temporary folder: %s"
 msgstr "Tidak bisa membuat kotak surat sementara: %s"
 
-#: editmsg.c:83
+#: editmsg.c:84
 #, c-format
 msgid "could not write temporary mail folder: %s"
 msgstr "Tidak bisa membuat kotak surat sementara: %s"
 
-#: editmsg.c:101
+#: editmsg.c:102
 msgid "Message file is empty!"
 msgstr "Surat kosong!"
 
-#: editmsg.c:108
+#: editmsg.c:109
 msgid "Message not modified!"
 msgstr "Surat tidak diubah!"
 
-#: editmsg.c:116
+#: editmsg.c:117
 #, c-format
 msgid "Can't open message file: %s"
 msgstr "Tidak bisa membuka file pesan: %s"
 
-#: editmsg.c:123 editmsg.c:151
+#: editmsg.c:124 editmsg.c:152
 #, c-format
 msgid "Can't append to folder: %s"
 msgstr "Tidak bisa menambah ke kotak surat: %s"
 
-#: editmsg.c:182
+#: editmsg.c:183
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Error. Menyimpan file sementara: %s"
@@ -1074,7 +1074,7 @@ msgstr "(gunakan '%s' untuk melihat bagian ini)"
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(tombol untuk 'view-attachments' belum ditentukan!)"
 
-#: headers.c:159
+#: headers.c:171
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: tidak bisa melampirkan file"
@@ -1207,7 +1207,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Tidak dapat menambah ke kotak surat IMAP di server ini"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:813 imap/message.c:625 muttlib.c:978
+#: imap/imap.c:813 imap/message.c:625 muttlib.c:984
 #, c-format
 msgid "Create %s?"
 msgstr "Buat %s?"
@@ -1306,7 +1306,7 @@ msgstr "(t)olak, terima (s)ekali"
 msgid "ro"
 msgstr "ts"
 
-#: imap/imap_ssl.c:350 pgpkey.c:441
+#: imap/imap_ssl.c:350 pgpkey.c:442
 msgid "Exit  "
 msgstr "Keluar  "
 
@@ -1419,51 +1419,51 @@ msgstr "%s: jenis kotak surat tidak dikenali"
 msgid "%s: invalid value"
 msgstr "%s: nilai tidak betul"
 
-#: init.c:1153
+#: init.c:1156
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: jenis tidak dikenali"
 
-#: init.c:1194
+#: init.c:1197
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Error di %s, baris %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1210
+#: init.c:1213
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: errors di %s"
 
-#: init.c:1211
+#: init.c:1214
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr "source: pembacaan dibatalkan sebab terlalu banyak error di %s"
 
-#: init.c:1225
+#: init.c:1228
 #, c-format
 msgid "source: error at %s"
 msgstr "source: error pada %s"
 
-#: init.c:1230
+#: init.c:1233
 msgid "source: too many arguments"
 msgstr "source: parameter terlalu banyak"
 
-#: init.c:1281
+#: init.c:1284
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: perintah tidak dikenali"
 
-#: init.c:1638
+#: init.c:1641
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Error di baris perintah: %s\n"
 
-#: init.c:1681
+#: init.c:1684
 msgid "unable to determine home directory"
 msgstr "tidak bisa menentukan home direktori"
 
-#: init.c:1689
+#: init.c:1692
 msgid "unable to determine username"
 msgstr "tidak bisa menentukan username"
 
@@ -2231,7 +2231,7 @@ msgstr "Pilih elemen berikutnya dalam rangkaian"
 msgid "send the message through a mixmaster remailer chain"
 msgstr "kirim pesan melalui sebuah rangkaian remailer mixmaster"
 
-#: lib.c:58 lib.c:73 lib.c:104
+#: lib.c:59 lib.c:74 lib.c:105
 msgid "Out of memory!"
 msgstr "Buset, memory abis!"
 
@@ -2390,47 +2390,47 @@ msgstr ""
 "\n"
 "Pilihan sewaktu kompilasi:"
 
-#: main.c:295
+#: main.c:303
 msgid "Error initializing terminal."
 msgstr "Gagal menginisialisasi terminal."
 
-#: main.c:394
+#: main.c:402
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Melakukan debug tingkat %d.\n"
 
-#: main.c:396
+#: main.c:404
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG tidak digunakan sewaktu compile. Cuek.\n"
 
-#: main.c:515
+#: main.c:523
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s tidak ada. Buat?"
 
-#: main.c:519
+#: main.c:527
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Tidak bisa membuat %s: %s."
 
-#: main.c:558
+#: main.c:566
 msgid "No recipients specified.\n"
 msgstr "Tidak ada penerima yang disebutkan.\n"
 
-#: main.c:631
+#: main.c:639
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: tidak bisa melampirkan file.\n"
 
-#: main.c:651
+#: main.c:659
 msgid "No mailbox with new mail."
 msgstr "Tidak ada kotak surat dengan surat baru."
 
-#: main.c:660
+#: main.c:668
 msgid "No incoming mailboxes defined."
 msgstr "Tidak ada kotak surat incoming yang didefinisikan."
 
-#: main.c:689
+#: main.c:697
 msgid "Mailbox is empty."
 msgstr "Kotak surat kosong."
 
@@ -2562,28 +2562,28 @@ msgstr "Penandaan tidak didukung."
 msgid "Reading %s... %d"
 msgstr "Membaca %s... %d"
 
-#: muttlib.c:651
+#: muttlib.c:657
 msgid "File is a directory, save under it?"
 msgstr "File adalah sebuah direktori, simpan di dalamnya?"
 
-#: muttlib.c:656
+#: muttlib.c:662
 msgid "File under directory: "
 msgstr "File di dalam direktori: "
 
-#: muttlib.c:668
+#: muttlib.c:674
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "File sudah ada, (t)impa, t(a)mbahkan, atau (b)atal?"
 
-#: muttlib.c:668
+#: muttlib.c:674
 msgid "oac"
 msgstr "tab"
 
-#: muttlib.c:954
+#: muttlib.c:960
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s bukan kotak surat!"
 
-#: muttlib.c:960
+#: muttlib.c:966
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Tambahkan surat-surat ke %s?"
@@ -3017,80 +3017,80 @@ msgstr "Tidak dapat menjalankan PGP"
 msgid "Create an application/pgp message?"
 msgstr "Buat surat application/pgp?"
 
-#: pgpinvoke.c:300
+#: pgpinvoke.c:301
 msgid "Fetching PGP key..."
 msgstr "Mengambil PGP key..."
 
-#: pgpkey.c:443
+#: pgpkey.c:444
 msgid "Select  "
 msgstr "Pilih  "
 
-#: pgpkey.c:446
+#: pgpkey.c:447
 msgid "Check key  "
 msgstr "Cek key  "
 
-#: pgpkey.c:459
+#: pgpkey.c:460
 #, c-format
 msgid "PGP keys matching <%s>."
 msgstr "PGP keys yg cocok dg <%s>."
 
-#: pgpkey.c:461
+#: pgpkey.c:462
 #, c-format
 msgid "PGP keys matching \"%s\"."
 msgstr "PGP keys yg cocok dg \"%s\"."
 
-#: pgpkey.c:480 pgpkey.c:674
+#: pgpkey.c:481 pgpkey.c:675
 msgid "Can't open /dev/null"
 msgstr "Tidak bisa membuka /dev/null"
 
-#: pgpkey.c:486 pgpkey.c:668
+#: pgpkey.c:487 pgpkey.c:669
 msgid "Can't create temporary file"
 msgstr "Tidak bisa membuat file sementara"
 
-#: pgpkey.c:497 pgpkey.c:688
+#: pgpkey.c:498 pgpkey.c:689
 msgid "Can't create filter"
 msgstr "Tidak bisa membuat filter"
 
-#: pgpkey.c:507
+#: pgpkey.c:508
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr ""
 
-#: pgpkey.c:533
+#: pgpkey.c:534
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Kunci ini tidak dapat digunakan: kadaluwarsa/disabled/dicabut."
 
-#: pgpkey.c:547
+#: pgpkey.c:548
 msgid "This ID's trust level is undefined."
 msgstr "Tingkat kepercayaan dari ID ini tidak diketahui."
 
-#: pgpkey.c:550
+#: pgpkey.c:551
 msgid "This ID is not trusted."
 msgstr "ID ini tidak dipercaya."
 
-#: pgpkey.c:553
+#: pgpkey.c:554
 msgid "This ID is only marginally trusted."
 msgstr "ID ini tidak dipercaya sepenuhnya."
 
-#: pgpkey.c:557
+#: pgpkey.c:558
 #, c-format
 msgid "%s Do you really want to use it?"
 msgstr "%s Anda yakin mau menggunakannya?"
 
-#: pgpkey.c:653
+#: pgpkey.c:654
 msgid "Please enter the key ID: "
 msgstr "Masukkan key ID: "
 
-#: pgpkey.c:681
+#: pgpkey.c:682
 msgid "Invoking pgp..."
 msgstr "Menjalankan PGP..."
 
-#: pgpkey.c:706
+#: pgpkey.c:707
 #, c-format
 msgid "PGP Key %s."
 msgstr "Kunci PGP %s."
 
-#: pgpkey.c:753 pgpkey.c:869
+#: pgpkey.c:754 pgpkey.c:870
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Mencari kunci yg cocok dengan \"%s\"..."
@@ -3257,115 +3257,115 @@ msgstr "Penghapusan lampiran dari surat PGP tidak didukung."
 msgid "Only deletion of multipart attachments is supported."
 msgstr "Hanya penghapusan lampiran dari surat multi bagian yang didukung."
 
-#: recvcmd.c:42
+#: recvcmd.c:43
 msgid "You may only bounce message/rfc822 parts."
 msgstr "Anda hanya dapat menge-bounce bagian-bagian 'message/rfc822'."
 
-#: recvcmd.c:154
+#: recvcmd.c:155
 #, c-format
 msgid "Bounce message to %s...?"
 msgstr "Bounce surat ke %s...?"
 
-#: recvcmd.c:154
+#: recvcmd.c:155
 #, c-format
 msgid "Bounce messages to %s...?"
 msgstr "Bounce surat-surat ke %s...?"
 
-#: recvcmd.c:371
+#: recvcmd.c:372
 #, c-format
 msgid "Can't open temporary file %s."
 msgstr "Tidak bisa membuka file sementara %s."
 
-#: recvcmd.c:397 recvcmd.c:536 send.c:722
+#: recvcmd.c:398 recvcmd.c:537 send.c:722
 msgid "Forward MIME encapsulated?"
 msgstr "Forward dalam MIME?"
 
-#: recvcmd.c:411
+#: recvcmd.c:412
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
 msgstr ""
 "Tidak dapat menguraikan semua lampiran yang ditandai. MIME-forward yg "
 "lainnya?"
 
-#: recvcmd.c:544 recvcmd.c:796
+#: recvcmd.c:545 recvcmd.c:797
 #, c-format
 msgid "Can't create %s."
 msgstr "Tidak bisa membuat %s."
 
-#: recvcmd.c:675
+#: recvcmd.c:676
 msgid "Can't find any tagged messages."
 msgstr "Tidak dapat menemukan surat yang ditandai."
 
-#: recvcmd.c:696 send.c:647
+#: recvcmd.c:697 send.c:647
 msgid "No mailing lists found!"
 msgstr "Tidak ada mailing list yang ditemukan!"
 
-#: recvcmd.c:775
+#: recvcmd.c:776
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr ""
 "Tidak dapat menguraikan semua lampiran yang ditandai. Ubah yg lainnya ke "
 "MIME?"
 
-#: remailer.c:479
+#: remailer.c:480
 msgid "Append"
 msgstr "Tambahkan"
 
-#: remailer.c:480
+#: remailer.c:481
 msgid "Insert"
 msgstr "Masukkan"
 
-#: remailer.c:481
+#: remailer.c:482
 msgid "Delete"
 msgstr "Hapus"
 
-#: remailer.c:483
+#: remailer.c:484
 msgid "OK"
 msgstr ""
 
-#: remailer.c:511
+#: remailer.c:512
 msgid "Can't get mixmaster's type2.list!"
 msgstr "Tidak dapat mengambil type2.list milik mixmaster!"
 
-#: remailer.c:537
+#: remailer.c:538
 msgid "Select a remailer chain."
 msgstr "Pilih rangkaian remailer."
 
-#: remailer.c:599
+#: remailer.c:600
 #, c-format
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr "Error: %s tidak dapat digunakan sebagai akhir rangkaian remailer."
 
-#: remailer.c:632
+#: remailer.c:633
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."
 msgstr "Rangkaian mixmaster dibatasi hingga %d elemen."
 
-#: remailer.c:657
+#: remailer.c:658
 msgid "The remailer chain is already empty."
 msgstr "Rangkaian remailer sudah kosong."
 
-#: remailer.c:667
+#: remailer.c:668
 msgid "You already have the first chain element selected."
 msgstr "Anda sudah memilih awal rangkaian."
 
-#: remailer.c:677
+#: remailer.c:678
 msgid "You already have the last chain element selected."
 msgstr "Anda sudah memilih akhir rangkaian."
 
-#: remailer.c:716
+#: remailer.c:717
 msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster tidak menerima header Cc maupun Bcc."
 
-#: remailer.c:740
+#: remailer.c:741
 msgid ""
 "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr "Mohon variabel hostname diisi dengan benar jika menggunakan mixmaster!"
 
-#: remailer.c:769
+#: remailer.c:770
 #, c-format
 msgid "Error sending message, child exited %d.\n"
 msgstr "Error mengirimkan surat, proses keluar dengan kode %d.\n"
 
-#: remailer.c:773
+#: remailer.c:774
 msgid "Error sending message."
 msgstr "Gagal mengirim surat."
 
@@ -3543,11 +3543,11 @@ msgstr "Tidak bisa menemukan fungsi pengurutan! [laporkan bug ini]"
 msgid "(no mailbox)"
 msgstr "(tidak ada kotak surat)"
 
-#: thread.c:718
+#: thread.c:712
 msgid "Parent message is not visible in limited view"
 msgstr "Surat induk tidak bisa dilihat di tampilan terbatas."
 
-#: thread.c:723
+#: thread.c:717
 msgid "Parent message is not available."
 msgstr "Surat induk tidak ada."
 

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.11\n"
-"POT-Creation-Date: 2000-03-30 17:28+0200\n"
+"POT-Creation-Date: 2000-04-22 20:34+0200\n"
 "PO-Revision-Date: 2000-04-07 08:46+01:00\n"
 "Last-Translator: Jörgen Tegnér <teg@post.netlink.se>\n"
 "Language-Team: \n"
@@ -20,7 +20,7 @@ msgid "Select"
 msgstr "Välj"
 
 #: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:376 imap/imap_ssl.c:352
-#: pager.c:1482 pgpkey.c:448 postpone.c:40 query.c:48 recvattach.c:61
+#: pager.c:1482 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Hjälp"
 
@@ -132,88 +132,88 @@ msgstr "Ändra katalog"
 msgid "Mask"
 msgstr "Mask"
 
-#: browser.c:369 browser.c:912
+#: browser.c:370 browser.c:913
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s är inte en katalog."
 
-#: browser.c:480
+#: browser.c:481
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Brevlådor [%d]"
 
-#: browser.c:487
+#: browser.c:488
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Prenumererar på [%s], filmask: %s"
 
-#: browser.c:491
+#: browser.c:492
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Katalog [%s], filmask: %s"
 
-#: browser.c:502
+#: browser.c:503
 msgid "Can't attach a directory!"
 msgstr "Kan inte bifoga en katalog!"
 
-#: browser.c:620 browser.c:979 browser.c:1072
+#: browser.c:621 browser.c:980 browser.c:1073
 msgid "No files match the file mask"
 msgstr "Ingen fil passar med filmasken"
 
-#: browser.c:820
+#: browser.c:821
 msgid "Creating mailboxes is not yet supported."
 msgstr "Skapande av brevlådor stöds inte än."
 
-#: browser.c:825
+#: browser.c:826
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Endast brevlådor av IMAP-typ kan tas bort"
 
-#: browser.c:833
+#: browser.c:834
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Ta bort brevlådan '%s'?"
 
-#: browser.c:847
+#: browser.c:848
 msgid "Mailbox deleted."
 msgstr "Brevlådan har tagits bort."
 
-#: browser.c:853
+#: browser.c:854
 msgid "Mailbox not deleted."
 msgstr "Brevlådan togs inte bort."
 
-#: browser.c:871
+#: browser.c:872
 msgid "Chdir to: "
 msgstr "Ändra katalog till: "
 
-#: browser.c:905 browser.c:972
+#: browser.c:906 browser.c:973
 msgid "Error scanning directory."
 msgstr "Ett fel uppstod när katalogen skulle läsas."
 
-#: browser.c:923
+#: browser.c:924
 msgid "File Mask: "
 msgstr "Filmask: "
 
-#: browser.c:995
+#: browser.c:996
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Sortera omvänt efter (d)atum, (a)lpha, (s)torlek eller i(n)te alls? "
 
-#: browser.c:996
+#: browser.c:997
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Sortera efter (d)atum, (a)lpha, (s)torlek eller i(n)te alls? "
 
-#: browser.c:997
+#: browser.c:998
 msgid "dazn"
 msgstr "dasn"
 
-#: browser.c:1059
+#: browser.c:1060
 msgid "New file name: "
 msgstr "Nytt filnamn: "
 
-#: browser.c:1090
+#: browser.c:1091
 msgid "Can't view a directory"
 msgstr "Kan inte visa katalogen"
 
-#: browser.c:1108
+#: browser.c:1109
 msgid "Error trying to view file"
 msgstr "Ett fel uppstod när filen skulle visas"
 
@@ -222,21 +222,21 @@ msgstr "Ett fel uppstod när filen skulle visas"
 msgid "New mail in %s."
 msgstr "Nytt brev i %s."
 
-#: charset.c:1065
+#: charset.c:1066
 msgid "We can't currently handle utf-8 at this point."
 msgstr "Det finns inget stöd för utf-8 just nu."
 
-#: charset.c:1071 charset.c:1078
+#: charset.c:1072 charset.c:1079
 #, c-format
 msgid "Can't open %s: %s."
 msgstr "Kan inte öppna %s: %s."
 
-#: charset.c:1147
+#: charset.c:1148
 #, c-format
 msgid "Error while recoding %s. Leave it unchanged."
 msgstr "Ett fel uppstod när %s kodades om. Lämna den oförändrad."
 
-#: charset.c:1153
+#: charset.c:1154
 #, c-format
 msgid "Error while recoding %s. See %s for recovering your data."
 msgstr "Ett fel uppstod när %s kodades om. Se %s för att återskapa dina data."
@@ -300,7 +300,7 @@ msgstr "standardfärgerna stöds inte"
 msgid "Verify PGP signature?"
 msgstr "Verifiera PGP-signatur?"
 
-#: commands.c:106 pgp.c:1542 pgpkey.c:490 postpone.c:549
+#: commands.c:106 pgp.c:1542 pgpkey.c:491 postpone.c:549
 msgid "Invoking PGP..."
 msgstr "Startar PGP ..."
 
@@ -316,11 +316,11 @@ msgstr "PGP-signaturen verifierades framgångsrikt."
 msgid "Command: "
 msgstr "Kommando: "
 
-#: commands.c:194 recvcmd.c:139
+#: commands.c:194 recvcmd.c:140
 msgid "Bounce message to: "
 msgstr "Återsänd meddelandet till: "
 
-#: commands.c:196 recvcmd.c:141
+#: commands.c:196 recvcmd.c:142
 msgid "Bounce tagged messages to: "
 msgstr "Återsänd märkta meddelanden till: "
 
@@ -432,7 +432,7 @@ msgstr "Det finns inga bilagor."
 msgid "Send"
 msgstr "Skicka"
 
-#: compose.c:86 remailer.c:482
+#: compose.c:86 remailer.c:483
 msgid "Abort"
 msgstr "Avbryt"
 
@@ -593,7 +593,7 @@ msgstr "Spara en kopia av meddelandet?"
 msgid "Rename to: "
 msgstr "Byt namn till: "
 
-#: compose.c:960 editmsg.c:95
+#: compose.c:960 editmsg.c:96
 #, c-format
 msgid "Can't stat: %s"
 msgstr "Kan inte ta status på filen %s"
@@ -837,7 +837,7 @@ msgstr "Du ser den första tråden."
 msgid "Thread contains unread messages."
 msgstr "Tråden har olästa meddelanden."
 
-#: curs_main.c:1456 flags.c:228 thread.c:657 thread.c:708
+#: curs_main.c:1456 flags.c:228 thread.c:651 thread.c:702
 msgid "Threading is not enabled."
 msgstr "Trådning är inte aktiverad."
 
@@ -919,35 +919,35 @@ msgstr "Ingen text i meddelande.\n"
 msgid "%s: unknown editor command (~? for help)\n"
 msgstr "%s: okänt kommando i editorn (~? för hjälp)\n"
 
-#: editmsg.c:73
+#: editmsg.c:74
 #, c-format
 msgid "could not create temporary folder: %s"
 msgstr "kunde inte skapa tillfällig katalog: %s"
 
-#: editmsg.c:83
+#: editmsg.c:84
 #, c-format
 msgid "could not write temporary mail folder: %s"
 msgstr "kunde inte skapa tillfällig brevlåda: %s"
 
-#: editmsg.c:101
+#: editmsg.c:102
 msgid "Message file is empty!"
 msgstr "Filen för meddelandet är tom!"
 
-#: editmsg.c:108
+#: editmsg.c:109
 msgid "Message not modified!"
 msgstr "Meddelandet är inte ändrat!"
 
-#: editmsg.c:116
+#: editmsg.c:117
 #, c-format
 msgid "Can't open message file: %s"
 msgstr "Kan inte öppna meddelandefil: %s"
 
-#: editmsg.c:123 editmsg.c:151
+#: editmsg.c:124 editmsg.c:152
 #, c-format
 msgid "Can't append to folder: %s"
 msgstr "Kan inte lägga till brevlådan: %s"
 
-#: editmsg.c:182
+#: editmsg.c:183
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Fel. Sparar tillfällig fil: %s"
@@ -1063,7 +1063,7 @@ msgstr "(använd '%s' för att visa den här delen)"
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "('view-attachments' måste knytas till tangent!)"
 
-#: headers.c:159
+#: headers.c:171
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: kan inte bifoga fil"
@@ -1198,7 +1198,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Kunde inte skriva till brevlådor i den här IMAP-servern"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:813 imap/message.c:625 muttlib.c:978
+#: imap/imap.c:813 imap/message.c:625 muttlib.c:984
 #, c-format
 msgid "Create %s?"
 msgstr "Skapa %s?"
@@ -1297,7 +1297,7 @@ msgstr "(f)örkasta, (g)odkänn den här gången"
 msgid "ro"
 msgstr "fg"
 
-#: imap/imap_ssl.c:350 pgpkey.c:441
+#: imap/imap_ssl.c:350 pgpkey.c:442
 msgid "Exit  "
 msgstr "Avsluta "
 
@@ -1410,51 +1410,51 @@ msgstr "%s: ogiltig typ av brevlåda"
 msgid "%s: invalid value"
 msgstr "%s: ogiltigt värde"
 
-#: init.c:1153
+#: init.c:1156
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: okänd typ"
 
-#: init.c:1194
+#: init.c:1197
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Fel i %s, rad %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1210
+#: init.c:1213
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: fel i %s"
 
-#: init.c:1211
+#: init.c:1214
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr "source: läsningen avbruten pga för många fel i %s"
 
-#: init.c:1225
+#: init.c:1228
 #, c-format
 msgid "source: error at %s"
 msgstr "source: fel vid %s"
 
-#: init.c:1230
+#: init.c:1233
 msgid "source: too many arguments"
 msgstr "source: för många parametrar"
 
-#: init.c:1281
+#: init.c:1284
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: okänt kommando"
 
-#: init.c:1638
+#: init.c:1641
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Fel i kommandorad: %s\n"
 
-#: init.c:1681
+#: init.c:1684
 msgid "unable to determine home directory"
 msgstr "kan inte avgöra var hemkatalogen är"
 
-#: init.c:1689
+#: init.c:1692
 msgid "unable to determine username"
 msgstr "kan inte avgöra användarnamn"
 
@@ -2222,7 +2222,7 @@ msgstr "Välj nästa brev i kedjan"
 msgid "send the message through a mixmaster remailer chain"
 msgstr "skicka meddelandet genom en återpostarkedja (mixmaster)"
 
-#: lib.c:58 lib.c:73 lib.c:104
+#: lib.c:59 lib.c:74 lib.c:105
 msgid "Out of memory!"
 msgstr "Slut på minne!"
 
@@ -2405,47 +2405,47 @@ msgstr ""
 "\n"
 "Inkompilerade val:"
 
-#: main.c:295
+#: main.c:303
 msgid "Error initializing terminal."
 msgstr "Fel vid initiering av terminalen."
 
-#: main.c:394
+#: main.c:402
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Avlusningsnivån är %d.\n"
 
-#: main.c:396
+#: main.c:404
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG var inte valt vid kompilering.  Ignoreras.\n"
 
-#: main.c:515
+#: main.c:523
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s finns inte. Vill du skapa den?"
 
-#: main.c:519
+#: main.c:527
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Kan inte skapa %s: %s."
 
-#: main.c:558
+#: main.c:566
 msgid "No recipients specified.\n"
 msgstr "Inga mottagare angivna.\n"
 
-#: main.c:631
+#: main.c:639
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: kan inte bifoga fil.\n"
 
-#: main.c:651
+#: main.c:659
 msgid "No mailbox with new mail."
 msgstr "Ingen brevlåda har nya brev."
 
-#: main.c:660
+#: main.c:668
 msgid "No incoming mailboxes defined."
 msgstr "Inga brevlådor för inkommande post är definierade."
 
-#: main.c:689
+#: main.c:697
 msgid "Mailbox is empty."
 msgstr "Brevlådan är tom."
 
@@ -2578,28 +2578,28 @@ msgstr "Märkning stöds inte."
 msgid "Reading %s... %d"
 msgstr "Läser %s... %d"
 
-#: muttlib.c:651
+#: muttlib.c:657
 msgid "File is a directory, save under it?"
 msgstr "Filen är en katalog, spar i den?"
 
-#: muttlib.c:656
+#: muttlib.c:662
 msgid "File under directory: "
 msgstr "Fil i katalog: "
 
-#: muttlib.c:668
+#: muttlib.c:674
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Filen finns, skriv (ö)ver, (l)ägg till, eller (a)vbryt?"
 
-#: muttlib.c:668
+#: muttlib.c:674
 msgid "oac"
 msgstr "öla"
 
-#: muttlib.c:954
+#: muttlib.c:960
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s är inte en brevlåda!"
 
-#: muttlib.c:960
+#: muttlib.c:966
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Lägg till meddelanden till %s?"
@@ -2868,7 +2868,9 @@ msgstr ""
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
-msgstr "[-- MEDDELANDE KRYPTERAT MED PGP BÖRJAR --]\n\n"
+msgstr ""
+"[-- MEDDELANDE KRYPTERAT MED PGP BÖRJAR --]\n"
+"\n"
 
 #: pgp.c:278
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
@@ -2878,13 +2880,17 @@ msgstr "[-- BLOCK MED PGP-NYCKEL BÖRJAR --]\n"
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
-msgstr "[-- MEDDELANDE SIGNERAT MED PGP BÖRJAR --]\n\n"
+msgstr ""
+"[-- MEDDELANDE SIGNERAT MED PGP BÖRJAR --]\n"
+"\n"
 
 #: pgp.c:382
 msgid ""
 "\n"
 "[-- END PGP MESSAGE --]\n"
-msgstr "\n[-- SLUT PÅ MEDDELANDE KRYPTERAT MED PGP --]\n"
+msgstr ""
+"\n"
+"[-- SLUT PÅ MEDDELANDE KRYPTERAT MED PGP --]\n"
 
 #: pgp.c:384
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
@@ -2894,7 +2900,9 @@ msgstr "[-- SLUT PÅ BLOCK MED PGP-NYCKEL --]\n"
 msgid ""
 "\n"
 "[-- END PGP SIGNED MESSAGE --]\n"
-msgstr "\n[-- SLUT PÅ MEDDELANDE SIGNERAT MED PGP --]\n"
+msgstr ""
+"\n"
+"[-- SLUT PÅ MEDDELANDE SIGNERAT MED PGP --]\n"
 
 #: pgp.c:399
 msgid ""
@@ -3025,80 +3033,80 @@ msgstr "Kan inte starta PGP"
 msgid "Create an application/pgp message?"
 msgstr "Skapa ett meddelande av typ 'application/pgp'?"
 
-#: pgpinvoke.c:300
+#: pgpinvoke.c:301
 msgid "Fetching PGP key..."
 msgstr "Hämtar nyckel för PGP..."
 
-#: pgpkey.c:443
+#: pgpkey.c:444
 msgid "Select  "
 msgstr "Välj  "
 
-#: pgpkey.c:446
+#: pgpkey.c:447
 msgid "Check key  "
 msgstr "Kontrollera nyckel "
 
-#: pgpkey.c:459
+#: pgpkey.c:460
 #, c-format
 msgid "PGP keys matching <%s>."
 msgstr "PGP-nycklar som passar <%s>."
 
-#: pgpkey.c:461
+#: pgpkey.c:462
 #, c-format
 msgid "PGP keys matching \"%s\"."
 msgstr "PGP-nycklar som passar \"%s\"."
 
-#: pgpkey.c:480 pgpkey.c:674
+#: pgpkey.c:481 pgpkey.c:675
 msgid "Can't open /dev/null"
 msgstr "Kan inte öppna /dev/null"
 
-#: pgpkey.c:486 pgpkey.c:668
+#: pgpkey.c:487 pgpkey.c:669
 msgid "Can't create temporary file"
 msgstr "Kan inte skapa tillfällig fil"
 
-#: pgpkey.c:497 pgpkey.c:688
+#: pgpkey.c:498 pgpkey.c:689
 msgid "Can't create filter"
 msgstr "Kan inte skapa filter"
 
-#: pgpkey.c:507
+#: pgpkey.c:508
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "NyckelID: 0x%s"
 
-#: pgpkey.c:533
+#: pgpkey.c:534
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Den här nyckeln kan inte användas: utgången/spärrad/återkallad."
 
-#: pgpkey.c:547
+#: pgpkey.c:548
 msgid "This ID's trust level is undefined."
 msgstr "Fötroendenivån för det här ID'et är odefinierat."
 
-#: pgpkey.c:550
+#: pgpkey.c:551
 msgid "This ID is not trusted."
 msgstr "Det här ID'et är inte betrott."
 
-#: pgpkey.c:553
+#: pgpkey.c:554
 msgid "This ID is only marginally trusted."
 msgstr "Det här ID'et är endast marginellt betrott."
 
-#: pgpkey.c:557
+#: pgpkey.c:558
 #, c-format
 msgid "%s Do you really want to use it?"
 msgstr "%s Vill du verkligen använda den?"
 
-#: pgpkey.c:653
+#: pgpkey.c:654
 msgid "Please enter the key ID: "
 msgstr "Ange nyckelID: "
 
-#: pgpkey.c:681
+#: pgpkey.c:682
 msgid "Invoking pgp..."
 msgstr "Startar PGP..."
 
-#: pgpkey.c:706
+#: pgpkey.c:707
 #, c-format
 msgid "PGP Key %s."
 msgstr "PGP-nyckel %s."
 
-#: pgpkey.c:753 pgpkey.c:869
+#: pgpkey.c:754 pgpkey.c:870
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Letar efter nycklar som passar \"%s\"..."
@@ -3265,114 +3273,114 @@ msgstr "Stöd saknas att ta bort bilagor från PGP-meddelanden."
 msgid "Only deletion of multipart attachments is supported."
 msgstr "Endast multipart-bilagor kan tas bort."
 
-#: recvcmd.c:42
+#: recvcmd.c:43
 msgid "You may only bounce message/rfc822 parts."
 msgstr "Du kan bara återsända 'message/rfc822 parts'"
 
-#: recvcmd.c:154
+#: recvcmd.c:155
 #, c-format
 msgid "Bounce message to %s...?"
 msgstr "Återsänd meddelande till %s...?"
 
-#: recvcmd.c:154
+#: recvcmd.c:155
 #, c-format
 msgid "Bounce messages to %s...?"
 msgstr "Återsänd meddelanden till %s...?"
 
-#: recvcmd.c:371
+#: recvcmd.c:372
 #, c-format
 msgid "Can't open temporary file %s."
 msgstr "Kan inte skapa tillfällig fil %s."
 
-#: recvcmd.c:397 recvcmd.c:536 send.c:722
+#: recvcmd.c:398 recvcmd.c:537 send.c:722
 msgid "Forward MIME encapsulated?"
 msgstr "Vidarebefordra som MIME-bilaga?"
 
-#: recvcmd.c:411
+#: recvcmd.c:412
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
 msgstr ""
 "Kan inte avkoda alla märkta bilagor. Vidarebefordra övriga som MIME-bilagor?"
 
-#: recvcmd.c:544 recvcmd.c:796
+#: recvcmd.c:545 recvcmd.c:797
 #, c-format
 msgid "Can't create %s."
 msgstr "Kan inte skapa %s."
 
-#: recvcmd.c:675
+#: recvcmd.c:676
 msgid "Can't find any tagged messages."
 msgstr "Kan inte hitta några märkta meddelanden."
 
-#: recvcmd.c:696 send.c:647
+#: recvcmd.c:697 send.c:647
 msgid "No mailing lists found!"
 msgstr "Inga sändlistor hittades!"
 
-#: recvcmd.c:775
+#: recvcmd.c:776
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr "Kan inte avkoda alla märkta bilagor. 'MIME-encapsulate' de övriga?"
 
-#: remailer.c:479
+#: remailer.c:480
 msgid "Append"
 msgstr "Skicka"
 
-#: remailer.c:480
+#: remailer.c:481
 msgid "Insert"
 msgstr "Lägg in"
 
-#: remailer.c:481
+#: remailer.c:482
 msgid "Delete"
 msgstr "Ta bort"
 
-#: remailer.c:483
+#: remailer.c:484
 msgid "OK"
 msgstr "OK"
 
-#: remailer.c:511
+#: remailer.c:512
 msgid "Can't get mixmaster's type2.list!"
 msgstr "Kan inte hämta mixmasters type2.list!"
 
-#: remailer.c:537
+#: remailer.c:538
 msgid "Select a remailer chain."
 msgstr "Välj en återpostarkedja."
 
-#: remailer.c:599
+#: remailer.c:600
 #, c-format
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr "Fel: %s kan inte användas som en kedjas sista återpostare."
 
-#: remailer.c:632
+#: remailer.c:633
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."
 msgstr "Mixmaster-kedjor kan bara ha %d länkar."
 
-#: remailer.c:657
+#: remailer.c:658
 msgid "The remailer chain is already empty."
 msgstr "Återpostarkedjan är redan tom."
 
-#: remailer.c:667
+#: remailer.c:668
 msgid "You already have the first chain element selected."
 msgstr "Det har redan valt den första länken i kedjan."
 
-#: remailer.c:677
+#: remailer.c:678
 msgid "You already have the last chain element selected."
 msgstr "Det har redan valt den sista länken i kedjan."
 
-#: remailer.c:716
+#: remailer.c:717
 msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster accepterar inte Cc eller Bcc i brevhuvudet."
 
-#: remailer.c:740
+#: remailer.c:741
 msgid ""
 "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr ""
 "Sätt variabeln 'hostname' till ett passande värde vid användande av "
 "mixmaster!"
 
-#: remailer.c:769
+#: remailer.c:770
 #, c-format
 msgid "Error sending message, child exited %d.\n"
 msgstr "Fel vid sändning av meddelande, delprocess returnerade %d.\n"
 
-#: remailer.c:773
+#: remailer.c:774
 msgid "Error sending message."
 msgstr "Fel när meddelande sändes."
 
@@ -3551,10 +3559,10 @@ msgstr ""
 msgid "(no mailbox)"
 msgstr "(ingen brevlåda)"
 
-#: thread.c:718
+#: thread.c:712
 msgid "Parent message is not visible in limited view"
 msgstr "Första meddelandet är inte synligt med begränsad vy"
 
-#: thread.c:723
+#: thread.c:717
 msgid "Parent message is not available."
 msgstr "Första meddelandet är inte tillgängligt."
