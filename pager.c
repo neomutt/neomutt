@@ -260,10 +260,10 @@ resolve_color (struct line_t *lineInfo, int n, int cnt, int flags, int special,
   if (special || a->attr)
   {
 #ifdef HAVE_COLOR
-    if (a->attr & ANSI_COLOR)
+    if ((a->attr & ANSI_COLOR))
     {
       if (a->pair == -1)
-	a->pair = mutt_alloc_color (a->fg,a->bg);
+	a->pair = mutt_alloc_color (a->fg, a->bg);
       color = a->pair;
       if (a->attr & ANSI_BOLD)
 	  color |= A_BOLD;
@@ -315,12 +315,9 @@ append_line (struct line_t *lineInfo, int n, int cnt)
   lineInfo[n+1].continuation = 1;
 
   /* find the real start of the line */
-  m = n;
-  while (m >= 0)
-  {
+  for (m = n; m >= 0; m--)
     if (lineInfo[m].continuation == 0) break;
-    m--;
-  }
+
   (lineInfo[n+1].syntax)[0].first = m;
   (lineInfo[n+1].syntax)[0].last = (lineInfo[n].continuation) ? 
     cnt + (lineInfo[n].syntax)[0].last : cnt;
@@ -702,7 +699,7 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 }
 
 static void
-resolve_types (char *buf, struct line_t *lineInfo, int n, int last,
+resolve_types (char *buf, char *raw, struct line_t *lineInfo, int n, int last,
 		struct q_class_t **QuoteList, int *q_level, int *force_redraw,
 		int q_classify)
 {
@@ -735,6 +732,8 @@ resolve_types (char *buf, struct line_t *lineInfo, int n, int last,
       }
     }
   }
+  else if (mutt_strncmp ("\033[0;m", raw, 5) == 0)	/* a little hack... */
+    lineInfo[n].type = MT_COLOR_NORMAL;
   else if (mutt_strncmp ("[-- ", buf, 4) == 0)
     lineInfo[n].type = MT_COLOR_ATTACHMENT;
   else if (mutt_strcmp ("-- \n", buf) == 0 || mutt_strcmp ("-- \r\n", buf) == 0)
@@ -858,57 +857,13 @@ resolve_types (char *buf, struct line_t *lineInfo, int n, int last,
   }
 }
 
-static int
-fill_buffer (FILE *f, long *last_pos, long offset, unsigned char *buf, 
-	     unsigned char *fmt, size_t blen, int *buf_ready)
-{
-  unsigned char *p;
-  static int b_read;
-
-  if (*buf_ready == 0)
-  {
-    buf[blen - 1] = 0;
-    if (offset != *last_pos)
-      fseek (f, offset, 0);
-    if (fgets ((char *) buf, blen - 1, f) == NULL)
-    {
-      fmt[0] = 0;
-      return (-1);
-    }
-    *last_pos = ftell (f);
-    b_read = (int) (*last_pos - offset);
-    *buf_ready = 1;
-
-    /* copy "buf" to "fmt", but without bold and underline controls */
-    p = buf;
-    while (*p)
-    {
-      if (*p == '\010' && (p > buf))
-      {
-	if (*(p+1) == '_')	/* underline */
-	  p += 2;
-	else if (*(p+1))	/* bold or overstrike */
-	{
-	  *(fmt-1) = *(p+1);
-	  p += 2;
-	}
-	else			/* ^H */
-	  *fmt++ = *p++;
-      }
-      else
-	*fmt++ = *p++;
-    }
-    *fmt = 0;
-  }
-  return b_read;
-}
-
 static int is_ansi (unsigned char *buf)
 {
   while (buf && (isdigit(*buf) || *buf == ';'))
     buf++;
   return (*buf == 'm');
 }
+
 
 static int grok_ansi(unsigned char *buf, int pos, ansi_attr *a)
 {
@@ -994,6 +949,55 @@ static int grok_ansi(unsigned char *buf, int pos, ansi_attr *a)
   return pos;
 }
 
+static int
+fill_buffer (FILE *f, long *last_pos, long offset, unsigned char *buf, 
+	     unsigned char *fmt, size_t blen, int *buf_ready)
+{
+  unsigned char *p;
+  static int b_read;
+
+  if (*buf_ready == 0)
+  {
+    buf[blen - 1] = 0;
+    if (offset != *last_pos)
+      fseek (f, offset, 0);
+    if (fgets ((char *) buf, blen - 1, f) == NULL)
+    {
+      fmt[0] = 0;
+      return (-1);
+    }
+    *last_pos = ftell (f);
+    b_read = (int) (*last_pos - offset);
+    *buf_ready = 1;
+
+    /* copy "buf" to "fmt", but without bold and underline controls */
+    p = buf;
+    while (*p)
+    {
+      if (*p == '\010' && (p > buf))
+      {
+	if (*(p+1) == '_')	/* underline */
+	  p += 2;
+	else if (*(p+1))	/* bold or overstrike */
+	{
+	  *(fmt-1) = *(p+1);
+	  p += 2;
+	}
+	else			/* ^H */
+	  *fmt++ = *p++;
+      }
+      else if (*p == '\033' && *(p+1) == '[' && is_ansi (p + 2))	/* skip ANSI sequence */
+	while (*p++ != 'm')
+	  ;
+      else
+	*fmt++ = *p++;
+    }
+    *fmt = 0;
+  }
+  return b_read;
+}
+
+
 static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
 			int flags, ansi_attr *pa, int cnt,
 			int *pspace, int *pvch, int *pcol, int *pspecial)
@@ -1013,7 +1017,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
     while (cnt-ch >= 2 && buf[ch] == '\033' && buf[ch+1] == '[' &&
 	   is_ansi (buf+ch+2))
       ch = grok_ansi (buf, ch+2, pa) + 1;
-
+    
     k = mbrtowc (&wc, (char *)buf+ch, cnt-ch, &mbstate);
     if (k == -2 || k == -1)
     {
@@ -1194,7 +1198,7 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
 	return (-1);
       }
 
-      resolve_types ((char *) fmt, *lineInfo, n, *last,
+      resolve_types ((char *) fmt, (char *) buf, *lineInfo, n, *last,
 		      QuoteList, q_level, force_redraw, flags & M_SHOWCOLOR);
 
       /* avoid race condition for continuation lines when scrolling up */
@@ -1334,6 +1338,7 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
     clrtoeol ();
     SETCOLOR (MT_COLOR_NORMAL);
     BKGDSET (MT_COLOR_NORMAL);
+    
   }
   else
     clrtoeol ();
