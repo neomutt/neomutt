@@ -1,9 +1,9 @@
 # $Id$
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.2\n"
+"Project-Id-Version: Mutt 1.5.4\n"
 "POT-Creation-Date: 2003-03-19 23:37+0100\n"
-"PO-Revision-Date: 2002-12-18\n"
+"PO-Revision-Date: 2003-03-21\n"
 "Last-Translator: René Clerc <rene@clerc.nl>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -72,7 +72,7 @@ msgstr "Adres: "
 #: alias.c:289 send.c:201
 #, c-format
 msgid "Error: '%s' is a bad IDN."
-msgstr ""
+msgstr "Fout: '%s' is een ongeldige IDN."
 
 #: alias.c:301
 msgid "Personal name: "
@@ -368,7 +368,7 @@ msgstr "Ongeldig adres!"
 #: commands.c:260 recvcmd.c:162
 #, c-format
 msgid "Bad IDN: '%s'"
-msgstr ""
+msgstr "Ongeldig IDN: '%s'"
 
 #: commands.c:271 recvcmd.c:176
 #, c-format
@@ -381,14 +381,12 @@ msgid "Bounce messages to %s"
 msgstr "Berichten doorsturen aan %s"
 
 #: commands.c:287 recvcmd.c:192
-#, fuzzy
 msgid "Message not bounced."
-msgstr "Bericht doorgestuurd."
+msgstr "Bericht niet doorgestuurd."
 
 #: commands.c:287 recvcmd.c:192
-#, fuzzy
 msgid "Messages not bounced."
-msgstr "Berichten doorgestuurd."
+msgstr "Berichten niet doorgestuurd."
 
 #: commands.c:297 recvcmd.c:211
 msgid "Message bounced."
@@ -616,7 +614,7 @@ msgstr "-- Bijlagen"
 #: compose.c:422
 #, c-format
 msgid "Warning: '%s' is a bad IDN."
-msgstr ""
+msgstr "Waarschuwing: '%s' is een ongeldige IDN."
 
 #: compose.c:445
 msgid "You may not delete the only attachment."
@@ -625,7 +623,7 @@ msgstr "Een bericht bestaat uit minimaal één gedeelte."
 #: compose.c:711 send.c:1433
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
-msgstr ""
+msgstr "Ongeldige IDN in \"%s\": '%s'"
 
 #: compose.c:799
 msgid "Attaching selected files..."
@@ -751,7 +749,6 @@ msgid "Enter SMIME passphrase:"
 msgstr "Geef S/MIME-wachtwoord in:"
 
 #: crypt.c:192
-#, fuzzy
 msgid "Create a traditional (inline) PGP message?"
 msgstr "Een traditioneel PGP bericht aanmaken?"
 
@@ -1118,7 +1115,7 @@ msgstr "Bericht bevat geen regels.\n"
 #: edit.c:440
 #, c-format
 msgid "Bad IDN in %s: '%s'\n"
-msgstr ""
+msgstr "Ongeldige IDN in %s: '%s'\n"
 
 #: edit.c:458
 #, c-format
@@ -1548,7 +1545,7 @@ msgstr "alias: Geen adres"
 #: init.c:536
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr ""
+msgstr "Waarschuwing: Ongeldige IDN '%s' in alias '%s'.\n"
 
 #: init.c:599
 msgid "invalid header field"
@@ -2866,7 +2863,7 @@ msgstr "Verbinding met %s mislukt (%s)"
 #: mutt_socket.c:418 mutt_socket.c:475
 #, c-format
 msgid "Bad IDN \"%s\"."
-msgstr ""
+msgstr "Ongeldige IDN \"%s\"."
 
 #: mutt_socket.c:425 mutt_socket.c:482
 #, c-format
@@ -3361,7 +3358,6 @@ msgid "Fetching PGP key..."
 msgstr "PGP sleutel wordt gelezen..."
 
 #: pgpkey.c:486
-#, fuzzy
 msgid "All matching keys are expired, revoked, or disabled."
 msgstr "Alle overeenkomende sleutels zijn verlopen/ingetrokken."
 
@@ -3659,14 +3655,12 @@ msgid "You may only bounce message/rfc822 parts."
 msgstr "U kunt alleen message/rfc882-gedeelten doorsturen!"
 
 #: recvcmd.c:213
-#, fuzzy
 msgid "Error bouncing message!"
-msgstr "Fout opgetreden tijdens het verzenden van het bericht."
+msgstr "Fout opgetreden tijdens het doorsturen van het bericht!"
 
 #: recvcmd.c:213
-#, fuzzy
 msgid "Error bouncing messages!"
-msgstr "Fout opgetreden tijdens het verzenden van het bericht."
+msgstr "Fout opgetreden tijdens het doorsturen van de berichten!"
 
 #: recvcmd.c:413
 #, c-format
@@ -3929,7 +3923,7 @@ msgstr "Uitvoer van het afleverings proces"
 #: sendlib.c:2264
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
-msgstr ""
+msgstr "Ongeldige IDN %s tijdens maken resent-from header."
 
 #: signal.c:39
 #, c-format
