@@ -1054,6 +1054,7 @@ BODY *mutt_make_file_attach (const char *path)
   /* Attempt to determine the appropriate content-type based on the filename
    * suffix.
    */
+
   if ((n = lookup_mime_type (buf, path)) != TYPEOTHER)
   {
     att->type = n;
@@ -1070,7 +1071,6 @@ BODY *mutt_make_file_attach (const char *path)
        */
       att->type = TYPETEXT;
       att->subtype = safe_strdup ("plain");
-      mutt_set_body_charset(att, get_text_charset(att, info));
     }
     else
     {
@@ -1079,9 +1079,14 @@ BODY *mutt_make_file_attach (const char *path)
     }
   } 
 
+  /* XXX - just call mutt_update_encoding? -tlr */
+
   mutt_set_encoding (att, info);
   mutt_stamp_attachment(att);
 
+  if (att->type == TYPETEXT)
+    mutt_set_body_charset(att, get_text_charset(att, info));
+  
 #ifdef _PGPPATH
   /*
    * save the info in case this message is signed.  we will want to do Q-P
@@ -1091,8 +1096,6 @@ BODY *mutt_make_file_attach (const char *path)
   att->content = info;
   info = NULL;
 #endif
-
-
 
   safe_free ((void **) &info);
 
@@ -1122,7 +1125,7 @@ BODY *mutt_make_multipart (BODY *b)
   new->type = TYPEMULTIPART;
   new->subtype = safe_strdup ("mixed");
   new->encoding = get_toplevel_encoding (b);
-  mutt_generate_boundary(&new->parameter);
+  mutt_generate_boundary (&new->parameter);
   new->use_disp = 0;  
   new->parts = b;
 

@@ -667,6 +667,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    break;
 	  }
 	}
+
         {
 	  int numtag = 0;
 
