@@ -945,7 +945,7 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
  * exists.
  */
 
-static int lookup_mime_type (char *d, const char *s)
+static int lookup_mime_type (char *d, char *x, const char *s)
 {
   FILE *f;
   char *p, *ct,
@@ -954,6 +954,7 @@ static int lookup_mime_type (char *d, const char *s)
   int szf, sze, cur_n, cur_sze;
 
   *d = 0;
+  *x = 0;
   cur_n = TYPEOTHER;
   cur_sze = 0;
   szf = mutt_strlen (s);
@@ -1021,7 +1022,12 @@ static int lookup_mime_type (char *d, const char *s)
 	      *dc++ = *p++;
 	    *dc = 0;
 
-	    cur_n = mutt_check_mime_type (ct);
+	    if ((cur_n = mutt_check_mime_type (ct)) == TYPEOTHER)
+	    {
+	      for (dc = x, p = ct; *p && *p != '/' && !ISSPACE (*p); p++)
+		*dc++ = *p;
+	      *dc = 0;
+	    }
 	    cur_sze = sze;
 	  }
 	  p = NULL;
@@ -1333,6 +1339,7 @@ BODY *mutt_make_file_attach (const char *path)
   BODY *att;
   CONTENT *info;
   char buf[SHORT_STRING];
+  char xbuf[SHORT_STRING];
   int n;
 
   att = mutt_new_body ();
@@ -1342,10 +1349,11 @@ BODY *mutt_make_file_attach (const char *path)
    * suffix.
    */
 
-  if ((n = lookup_mime_type (buf, path)) != TYPEOTHER)
+  if ((n = lookup_mime_type (buf, xbuf, path)) != TYPEOTHER || *xbuf != '\0')
   {
     att->type = n;
     att->subtype = safe_strdup (buf);
+    att->xtype = safe_strdup (xbuf);
   }
 
   if ((info = mutt_get_content_info (path, att)) == NULL)
