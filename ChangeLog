@@ -1,4 +1,6 @@
-2003-03-03 14:01:06  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+2003-03-03 14:13:40  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* mutt_socket.c: IDNA support for the socket back-end.
 
 	* Makefile.am, addrbook.c, alias.c, charset.h, commands.c,
 	compose.c, configure.in, copy.c, edit.c, hdrline.c, headers.c,
