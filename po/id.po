@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.5i\n"
+"Project-Id-Version: 1.3.6i\n"
 "POT-Creation-Date: 2000-07-28 20:58+0200\n"
-"PO-Revision-Date: 2000-07-10 13:30-0500\n"
+"PO-Revision-Date: 2000-07-28 23:44-0500\n"
 "Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
 "Language-Team: Indonesia <i18n@linux.or.id>\n"
 "MIME-Version: 1.0\n"
@@ -1225,14 +1225,13 @@ msgid "Failed to find enough entropy on your system"
 msgstr "Gagal menemukan cukup entropy di sistem anda"
 
 #: imap/imap_ssl.c:122
-#, fuzzy, c-format
 msgid "Filling entropy pool: %s...\n"
-msgstr "Mengisi pool entropy"
+msgstr "Mengisi pool entropy: %s...\n"
 
 #: imap/imap_ssl.c:130
 #, c-format
 msgid "%s has insecure permissions!"
-msgstr ""
+msgstr "%s mempunyai permissions yang tidak aman!"
 
 #: imap/imap_ssl.c:156
 msgid "SSL disabled due the lack of entropy"
@@ -1342,7 +1341,7 @@ msgstr "Mengambil surat..."
 
 #: imap/message.c:259
 msgid "The message index is incorrect. Try reopening the mailbox."
-msgstr ""
+msgstr "Index dari surat tidak benar. Cobalah membuka kembali kotak surat tsb."
 
 #: imap/message.c:439
 msgid "Uploading message ..."
@@ -2243,13 +2242,12 @@ msgid "Out of memory!"
 msgstr "Buset, memory abis!"
 
 #: main.c:40
-#, fuzzy
 msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please use the flea(1) utility.\n"
 msgstr ""
 "Untuk menghubungi developersnya, kirim email ke <mutt-dev@mutt.org>.\n"
-"Untuk melaporkan bug, mohon gunakan alat bantu muttbug.\n"
+"Untuk melaporkan bug, mohon gunakan program flea(1).\n"
 
 #: main.c:44
 msgid ""
@@ -2264,7 +2262,6 @@ msgstr ""
 "dengan beberapa persyaratan; baca 'mutt -vv' utk jelasnya.\n"
 
 #: main.c:50
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
@@ -2614,9 +2611,8 @@ msgid "Append messages to %s?"
 msgstr "Tambahkan surat-surat ke %s?"
 
 #: mutt_socket.c:251
-#, fuzzy, c-format
 msgid "Looking up %s..."
-msgstr "Sedang menyalin ke %s..."
+msgstr "Mencari %s..."
 
 #: mutt_socket.c:258
 #, c-format
@@ -2629,9 +2625,8 @@ msgid "Connecting to %s..."
 msgstr "Menghubungi %s..."
 
 #: mutt_socket.c:284
-#, fuzzy
 msgid "Preconnect command failed."
-msgstr "Perintah pra-koneksi IMAP gagal"
+msgstr "Perintah pra-koneksi gagal."
 
 #: mx.c:114
 #, c-format
@@ -2730,9 +2725,8 @@ msgid "Mailbox is marked unwritable. %s"
 msgstr "Kotak surat ditandai tidak boleh ditulisi. %s"
 
 #: mx.c:1081
-#, fuzzy
 msgid "Mailbox checkpointed."
-msgstr "Kotak surat telah dihapus."
+msgstr "Kotak surat telah di-checkpoint."
 
 #: mx.c:1369
 msgid "Can't write message"
@@ -3142,23 +3136,20 @@ msgid "Looking for keys matching \"%s\"..."
 msgstr "Mencari kunci yg cocok dengan \"%s\"..."
 
 #: pop.c:46
-#, fuzzy
 msgid "POP Username: "
-msgstr "IMAP Username: "
+msgstr "Nama user POP: "
 
 #: pop.c:109
-#, fuzzy, c-format
 msgid "Login failed: %s"
-msgstr "Login gagal."
+msgstr "Login gagal: %s"
 
 #: pop.c:132
 msgid "POP host is not defined."
 msgstr "Nama server POP tidak diketahui."
 
 #: pop.c:165
-#, fuzzy
 msgid "Checking for new messages..."
-msgstr "Mempersiapkan pesan yg diforward..."
+msgstr "Memeriksa surat baru..."
 
 #: pop.c:184
 msgid "No new mail in POP mailbox."
