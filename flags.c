@@ -39,9 +39,9 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
     case M_DELETE:
 
 #ifdef USE_IMAP
-	if (Context->magic == M_IMAP)
-		if (mutt_bit_isset (((IMAP_DATA *)Context->data)->capabilities, ACL) \
-		&& !mutt_bit_isset(((IMAP_DATA *)Context->data)->rights,IMAP_ACL_DELETE))
+	if (ctx && ctx->magic == M_IMAP)
+		if (mutt_bit_isset (((IMAP_DATA *)ctx->data)->capabilities, ACL) \
+		&& !mutt_bit_isset(((IMAP_DATA *)ctx->data)->rights,IMAP_ACL_DELETE))
 			return;
 #endif
 
@@ -54,7 +54,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 #ifdef USE_IMAP
           /* deleted messages aren't treated as changed elsewhere so that the
            * purge-on-sync option works correctly. This isn't applicable here */
-          if (ctx->magic == M_IMAP)
+          if (ctx && ctx->magic == M_IMAP)
           {
             h->changed = 1;
 	    if (upd_ctx) ctx->changed = 1;
@@ -90,9 +90,9 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
     case M_NEW:
 
 #ifdef USE_IMAP
-	if (Context->magic == M_IMAP)
-		if (mutt_bit_isset (((IMAP_DATA *)Context->data)->capabilities, ACL) \
-		&& !mutt_bit_isset(((IMAP_DATA *)Context->data)->rights,IMAP_ACL_SEEN))
+	if (ctx && ctx->magic == M_IMAP)
+		if (mutt_bit_isset (((IMAP_DATA *)ctx->data)->capabilities, ACL) \
+		&& !mutt_bit_isset(((IMAP_DATA *)ctx->data)->rights,IMAP_ACL_SEEN))
 			return;
 #endif
 
@@ -125,9 +125,9 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
     case M_OLD:
 
 #ifdef USE_IMAP
-	if (Context->magic == M_IMAP)
-		if (mutt_bit_isset (((IMAP_DATA *)Context->data)->capabilities, ACL) \
-		&& !mutt_bit_isset(((IMAP_DATA *)Context->data)->rights,IMAP_ACL_SEEN))
+	if (ctx && ctx->magic == M_IMAP)
+		if (mutt_bit_isset (((IMAP_DATA *)ctx->data)->capabilities, ACL) \
+		&& !mutt_bit_isset(((IMAP_DATA *)ctx->data)->rights,IMAP_ACL_SEEN))
 			return;
 #endif
 
@@ -155,9 +155,9 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
     case M_READ:
 
 #ifdef USE_IMAP
-	if (Context->magic == M_IMAP)
-		if (mutt_bit_isset (((IMAP_DATA *)Context->data)->capabilities, ACL) \
-		&& !mutt_bit_isset(((IMAP_DATA *)Context->data)->rights,IMAP_ACL_SEEN))
+	if (ctx && ctx->magic == M_IMAP)
+		if (mutt_bit_isset (((IMAP_DATA *)ctx->data)->capabilities, ACL) \
+		&& !mutt_bit_isset(((IMAP_DATA *)ctx->data)->rights,IMAP_ACL_SEEN))
 			return;
 #endif
 
@@ -187,9 +187,9 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
     case M_REPLIED:
 
 #ifdef USE_IMAP
-	if (Context->magic == M_IMAP)
-		if (mutt_bit_isset (((IMAP_DATA *)Context->data)->capabilities, ACL) \
-		&& !mutt_bit_isset(((IMAP_DATA *)Context->data)->rights,IMAP_ACL_WRITE))
+	if (ctx && ctx->magic == M_IMAP)
+		if (mutt_bit_isset (((IMAP_DATA *)ctx->data)->capabilities, ACL) \
+		&& !mutt_bit_isset(((IMAP_DATA *)ctx->data)->rights,IMAP_ACL_WRITE))
 			return;
 #endif
 
@@ -220,9 +220,9 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
     case M_FLAG:
 
 #ifdef USE_IMAP
-	if (Context->magic == M_IMAP)
-		if (mutt_bit_isset (((IMAP_DATA *)Context->data)->capabilities, ACL) \
-		&& !mutt_bit_isset(((IMAP_DATA *)Context->data)->rights,IMAP_ACL_WRITE))
+	if (ctx && ctx->magic == M_IMAP)
+		if (mutt_bit_isset (((IMAP_DATA *)ctx->data)->capabilities, ACL) \
+		&& !mutt_bit_isset(((IMAP_DATA *)ctx->data)->rights,IMAP_ACL_WRITE))
 			return;
 #endif
 
