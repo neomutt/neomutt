@@ -1086,7 +1086,7 @@ struct option_t MuttVars[] = {
   ** .dt %[<s>] .dd date of the key where <s> is an strftime(3) expression
   ** .de
   */
-  { "pgp_good_sign",	DT_RX,  R_NONE, UL &PgpGoodSign, UL "" },
+  { "pgp_good_sign",	DT_RX,  R_NONE, UL &PgpGoodSign, 0 },
   /*
   ** .pp
   ** If you assign a text to this variable, then a PGP signature is only
