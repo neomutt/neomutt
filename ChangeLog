@@ -1,3 +1,7 @@
+2002/12/09 17:54:25  Jesus Climent <jesus.climent@hispalinux.es>
+
+	* po/es.po: Fix a typo.  (#1392)
+
 2002/12/09 17:52:50  Anders Helmersson <anders.helmersson@telia.com>
 
 	* addrbook.c, curs_lib.c, protos.h, query.c: Fix #1390.
