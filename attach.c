@@ -762,7 +762,7 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
       fseek (fp, m->offset, 0);
       if (fgets (buf, sizeof (buf), fp) == NULL)
 	return -1;
-      if (mx_open_mailbox(path, M_APPEND | M_QUIET, &ctx) == NULL)
+      if (mx_open_mailbox (path, (flags == M_SAVE_APPEND ? M_APPEND : M_NEW) | M_QUIET, &ctx) == NULL)
 	return -1;
       if ((msg = mx_open_new_message (&ctx, hn, is_from (buf, NULL, 0, NULL) ? 0 : M_ADD_FROM)) == NULL)
       {

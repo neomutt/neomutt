@@ -489,7 +489,7 @@ int mx_access (const char* path, int flags)
   return access (path, flags);
 }
 
-static int mx_open_mailbox_append (CONTEXT *ctx)
+static int mx_open_mailbox_append (CONTEXT *ctx, int flags)
 {
   struct stat sb;
 
@@ -585,7 +585,7 @@ static int mx_open_mailbox_append (CONTEXT *ctx)
   {
     case M_MBOX:
     case M_MMDF:
-      if ((ctx->fp = fopen (ctx->path, "a")) == NULL ||
+    if ((ctx->fp = safe_fopen (ctx->path, flags & M_NEW ? "w" : "a")) == NULL ||
 	  mbox_lock_mailbox (ctx, 1, 1) != 0)
       {
 	if (!ctx->fp)
@@ -640,9 +640,9 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
   if (flags & M_READONLY)
     ctx->readonly = 1;
 
-  if (flags & M_APPEND)
+  if (flags & (M_APPEND|M_NEW))
   {
-    if (mx_open_mailbox_append (ctx) != 0)
+    if (mx_open_mailbox_append (ctx, flags) != 0)
     {
       mx_fastclose_mailbox (ctx);
       if (!pctx)

@@ -65,7 +65,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
   omagic = DefaultMagic;
   DefaultMagic = M_MBOX;
 
-  rc = (mx_open_mailbox (tmp, M_APPEND, &tmpctx) == NULL) ? -1 : 0;
+  rc = (mx_open_mailbox (tmp, M_NEW, &tmpctx) == NULL) ? -1 : 0;
 
   DefaultMagic = omagic;
 
