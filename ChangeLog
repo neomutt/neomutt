@@ -1,3 +1,7 @@
+2003-11-10 18:02:26  Rudy Taraschi  <rudy@cae.com>  (roessler)
+
+	* mutt_socket.c: Fix double-free problems related to IDN support.
+
 2003-11-10 10:37:10  Vincent Lefevre  <vincent@vinc17.org>  (roessler)
 
 	* po/fr.po: update
