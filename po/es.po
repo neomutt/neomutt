@@ -1,11 +1,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt\n"
-"POT-Creation-Date: 1998-10-28 09:22+0100\n"
+"POT-Creation-Date: 1998-10-28 17:40+0100\n"
 "PO-Revision-Date: 1998-10-27 21:50+0200\n"
 "Last-Translator: Boris Wesslowski <Boris@Wesslowski.com>\n"
 
-#: addrbook.c:32 browser.c:54 pager.c:1359 postpone.c:33 query.c:44
+#: addrbook.c:32 browser.c:54 pager.c:1365 postpone.c:33 query.c:44
 #: recvattach.c:48
 msgid "Exit"
 msgstr "Salir"
@@ -14,7 +14,7 @@ msgstr "Salir"
 msgid "Select"
 msgstr "Seleccionar"
 
-#: addrbook.c:34 browser.c:57 compose.c:84 curs_main.c:235 pager.c:1455
+#: addrbook.c:34 browser.c:57 compose.c:84 curs_main.c:235 pager.c:1462
 #: pgpkey.c:181 postpone.c:36 query.c:49 recvattach.c:52
 msgid "Help"
 msgstr "Ayuda"
@@ -57,7 +57,7 @@ msgstr "Guardar en archivo: "
 msgid "Alias added."
 msgstr "Dirección añadida."
 
-#: attach.c:112 attach.c:235 attach.c:367 attach.c:808
+#: attach.c:112 attach.c:235 attach.c:367 attach.c:809
 msgid "Can't match nametemplate, continue?"
 msgstr "No se pudo encontrar el nombre, continuar?"
 
@@ -102,15 +102,15 @@ msgstr "Tipo MIME no definido.  No se puede ver el archivo adjunto."
 msgid "Cannot create filter"
 msgstr "No se pudo crear el filtro"
 
-#: attach.c:637 recvattach.c:313
+#: attach.c:638 recvattach.c:313
 msgid "Attachment saved."
 msgstr "Archivo adjunto guardado."
 
-#: attach.c:690
+#: attach.c:691
 msgid "Write fault!"
 msgstr "Error de escritura!"
 
-#: attach.c:892
+#: attach.c:893
 msgid "I don't know how to print that!"
 msgstr "No sé cómo se imprime eso!"
 
@@ -224,7 +224,7 @@ msgstr "mono: faltan parámetros"
 msgid "%s: no such attribute"
 msgstr "%s: atributo desconocido"
 
-#: color.c:663 hook.c:62 hook.c:70 keymap.c:664
+#: color.c:663 hook.c:62 hook.c:70 keymap.c:681
 msgid "too few arguments"
 msgstr "Faltan parámetros"
 
@@ -586,7 +586,7 @@ msgstr "Cambios al buzón no serán escritos."
 msgid "Quit"
 msgstr "Salir"
 
-#: curs_main.c:229 pager.c:1366 postpone.c:34
+#: curs_main.c:229 pager.c:1372 postpone.c:34
 msgid "Del"
 msgstr "Suprimir"
 
@@ -598,7 +598,7 @@ msgstr "No suprimir"
 msgid "Mail"
 msgstr "Correo nuevo"
 
-#: curs_main.c:233 pager.c:1367
+#: curs_main.c:233 pager.c:1373
 msgid "Reply"
 msgstr "Respuesta"
 
@@ -606,134 +606,134 @@ msgstr "Respuesta"
 msgid "Group"
 msgstr "Responder al grupo"
 
-#: curs_main.c:400
+#: curs_main.c:399
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Buzón fue modificado."
 
-#: curs_main.c:403
+#: curs_main.c:402
 msgid "New mail in this mailbox."
 msgstr "Correo nuevo en este buzón."
 
-#: curs_main.c:520
+#: curs_main.c:502
 msgid "No mailbox is open."
 msgstr "Ningún buzón esta abierto."
 
-#: curs_main.c:526
+#: curs_main.c:508
 msgid "No tagged messages."
 msgstr "No hay mensajes marcados."
 
-#: curs_main.c:606
+#: curs_main.c:588
 msgid "Jump to message: "
 msgstr "Saltar a mensaje: "
 
-#: curs_main.c:612
+#: curs_main.c:594
 msgid "Argument must be a message number."
 msgstr "Argumento tiene que ser un número de mensaje."
 
-#: curs_main.c:645
+#: curs_main.c:627
 msgid "That message is not visible."
 msgstr "Ese mensaje no es visible."
 
-#: curs_main.c:648
+#: curs_main.c:630
 msgid "Invalid message number."
 msgstr "Número de mensaje erróneo."
 
-#: curs_main.c:661
+#: curs_main.c:643
 msgid "Delete messages matching: "
 msgstr "Suprimir mensajes que coincidan con: "
 
-#: curs_main.c:683
+#: curs_main.c:665
 msgid "No limit pattern is in effect."
 msgstr "No hay máscara limitante activa."
 
 #. i18n: ask for a limit to apply
-#: curs_main.c:688
+#: curs_main.c:670
 #, c-format
 msgid "Limit: %s"
 msgstr "Límite: %s"
 
-#: curs_main.c:697
+#: curs_main.c:679
 msgid "Limit to messages matching: "
 msgstr "Limitar a mensajes que coincidan con: "
 
-#: curs_main.c:727
+#: curs_main.c:709
 msgid "Quit Mutt?"
 msgstr "Salir de Mutt?"
 
-#: curs_main.c:838
+#: curs_main.c:820
 msgid "Tag messages matching: "
 msgstr "Marcar mensajes que coincidan con: "
 
-#: curs_main.c:846
+#: curs_main.c:828
 msgid "Undelete messages matching: "
 msgstr "No suprimir mensajes que coincidan con: "
 
-#: curs_main.c:853
+#: curs_main.c:835
 msgid "Untag messages matching: "
 msgstr "Desmarcar mensajes que coincidan con: "
 
-#: curs_main.c:871
+#: curs_main.c:853
 msgid "Open mailbox"
 msgstr "Abrir buzón"
 
-#: curs_main.c:873
+#: curs_main.c:855
 msgid "Open mailbox in read-only mode"
 msgstr "Abrir buzón en modo de sólo lectura"
 
-#: curs_main.c:889 mx.c:421 mx.c:562
+#: curs_main.c:871 mx.c:421 mx.c:562
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s no es un buzón."
 
-#: curs_main.c:985
+#: curs_main.c:967
 msgid "Exit Mutt without saving?"
 msgstr "Salir de Mutt sin guardar cambios?"
 
-#: curs_main.c:995 curs_main.c:1019
+#: curs_main.c:977 curs_main.c:1001
 msgid "You are on the last message."
 msgstr "Ya está en el último mensaje."
 
-#: curs_main.c:1002 curs_main.c:1044
+#: curs_main.c:984 curs_main.c:1026
 msgid "No undeleted messages."
 msgstr "Todos los mensajes fueron suprimidos."
 
-#: curs_main.c:1037 curs_main.c:1060
+#: curs_main.c:1019 curs_main.c:1042
 msgid "You are on the first message."
 msgstr "Ya está en el primer mensaje."
 
-#: curs_main.c:1133 pattern.c:1081
+#: curs_main.c:1115 pattern.c:1081
 msgid "Search wrapped to top."
 msgstr "La búsqueda volvió a empezar desde arriba."
 
-#: curs_main.c:1142 pattern.c:1092
+#: curs_main.c:1124 pattern.c:1092
 msgid "Search wrapped to bottom."
 msgstr "La búsqueda volvió a empezar desde abajo."
 
-#: curs_main.c:1168
+#: curs_main.c:1150
 msgid "No new messages"
 msgstr "No hay mensajes nuevos"
 
-#: curs_main.c:1168
+#: curs_main.c:1150
 msgid "No unread messages"
 msgstr "No hay mensajes sin leer"
 
-#: curs_main.c:1169
+#: curs_main.c:1151
 msgid " in this limited view"
 msgstr " en esta vista limitada"
 
-#: curs_main.c:1279
+#: curs_main.c:1261
 msgid "No more threads."
 msgstr "No hay mas temas."
 
-#: curs_main.c:1281
+#: curs_main.c:1263
 msgid "You are on the first thread."
 msgstr "Ya está en el primer tema."
 
-#: curs_main.c:1334
+#: curs_main.c:1316
 msgid "Thread contains unread messages."
 msgstr "Tema contiene mensajes sin leer."
 
-#: curs_main.c:1347 flags.c:220 thread.c:629
+#: curs_main.c:1329 flags.c:220 thread.c:629
 msgid "Threading is not enabled."
 msgstr "La muestra por temas no esta activada."
 
@@ -893,15 +893,15 @@ msgstr "(necesita 'view-attachments' enlazado a una tecla)"
 msgid "%s: unable to attach file"
 msgstr "%s: imposible añadir archivo"
 
-#: help.c:186
+#: help.c:274
 msgid "ERROR: please report this bug"
 msgstr "Error: por favor reporte esta falla"
 
-#: help.c:233
+#: help.c:316
 msgid "<UNKNOWN>"
 msgstr "<desconocido>"
 
-#: help.c:238
+#: help.c:328
 msgid ""
 "\n"
 "Generic bindings:\n"
@@ -911,7 +911,7 @@ msgstr ""
 "Enlaces genéricos:\n"
 "\n"
 
-#: help.c:242
+#: help.c:332
 msgid ""
 "\n"
 "Unbound functions:\n"
@@ -921,7 +921,7 @@ msgstr ""
 "Funciones sin enlace:\n"
 "\n"
 
-#: help.c:250
+#: help.c:340
 #, c-format
 msgid "Help for %s"
 msgstr "Ayuda para %s"
@@ -1109,55 +1109,55 @@ msgstr "imposible determinar el directorio del usuario"
 msgid "unable to determine username"
 msgstr "imposible determinar nombre del usuario"
 
-#: keymap.c:417
+#: keymap.c:434
 msgid "Macro loop detected."
 msgstr ""
 
-#: keymap.c:603 keymap.c:611
+#: keymap.c:620 keymap.c:628
 #, fuzzy
 msgid "Key is not bound."
 msgstr "Tecla sin enlace. Vea el manual."
 
-#: keymap.c:615
+#: keymap.c:632
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Tecla sin enlace. Presione '%s' para obtener ayuda."
 
-#: keymap.c:626
+#: keymap.c:643
 msgid "push: too many arguments"
 msgstr "push: demasiados argumentos"
 
-#: keymap.c:647
+#: keymap.c:664
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: menú desconocido"
 
-#: keymap.c:656
+#: keymap.c:673
 msgid "null key sequence"
 msgstr "sequencia de teclas vacía"
 
-#: keymap.c:734
+#: keymap.c:751
 msgid "bind: too many arguments"
 msgstr "bind: demasiados argumentos"
 
-#: keymap.c:749
+#: keymap.c:766
 #, c-format
 msgid "%s: no such function in map"
 msgstr "%s: función deconocida"
 
-#: keymap.c:772
+#: keymap.c:789
 msgid "macro: empty key sequence"
 msgstr "macro: sequencia de teclas vacía"
 
-#: keymap.c:783
+#: keymap.c:800
 msgid "macro: too many arguments"
 msgstr "macro: demasiados argumentos"
 
-#: keymap.c:813
+#: keymap.c:830
 msgid "exec: too few arguments"
 msgstr "exec: faltan argumentos"
 
-#: keymap.c:833
+#: keymap.c:850
 #, c-format
 msgid "%s: no such command"
 msgstr "%s: comando desconocido"
@@ -1659,146 +1659,150 @@ msgid "clear and redraw the screen"
 msgstr "refrescar la pantalla"
 
 #: keymap_defs.h:130
+msgid "{internal}"
+msgstr ""
+
+#: keymap_defs.h:131
 msgid "reply to a message"
 msgstr "contestar un mensaje"
 
-#: keymap_defs.h:131
+#: keymap_defs.h:132
 msgid "save message/attachment to a file"
 msgstr "guardar mensaje/archivo añadido en un archivo"
 
-#: keymap_defs.h:132
+#: keymap_defs.h:133
 msgid "search for a regular expression"
 msgstr "buscar con una expresión regular"
 
-#: keymap_defs.h:133
+#: keymap_defs.h:134
 msgid "search backwards for a regular expression"
 msgstr "buscar con una expresión regular hacia atrás"
 
-#: keymap_defs.h:134
+#: keymap_defs.h:135
 msgid "search for next match"
 msgstr "buscar próxima coincidencia"
 
-#: keymap_defs.h:135
+#: keymap_defs.h:136
 msgid "search for next match in opposite direction"
 msgstr "buscar próxima coincidencia en dirección opuesta"
 
-#: keymap_defs.h:136
+#: keymap_defs.h:137
 msgid "toggle search pattern coloring"
 msgstr "cambiar coloración de máscara de búsqueda"
 
-#: keymap_defs.h:137
+#: keymap_defs.h:138
 msgid "invoke a command in a subshell"
 msgstr "invocar comando en una subshell"
 
-#: keymap_defs.h:138
+#: keymap_defs.h:139
 msgid "sort messages"
 msgstr "ordenar mensajes"
 
-#: keymap_defs.h:139
+#: keymap_defs.h:140
 msgid "sort messages in reverse order"
 msgstr "ordenar mensajes en orden inverso"
 
-#: keymap_defs.h:140
+#: keymap_defs.h:141
 msgid "tag the current entry"
 msgstr "marcar la entrara actual"
 
-#: keymap_defs.h:141
+#: keymap_defs.h:142
 msgid "apply next function to tagged messages"
 msgstr "aplicar la próxima función a los mensajes marcados"
 
-#: keymap_defs.h:142
+#: keymap_defs.h:143
 msgid "tag the current subthread"
 msgstr "marcar el subtemario actual"
 
-#: keymap_defs.h:143
+#: keymap_defs.h:144
 msgid "tag the current thread"
 msgstr "marcar el temario actual"
 
-#: keymap_defs.h:144
+#: keymap_defs.h:145
 msgid "toggle a message's 'new' flag"
 msgstr "cambiar el indicador de 'nuevo' de un mensaje"
 
-#: keymap_defs.h:145
+#: keymap_defs.h:146
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "cambiar si los cambios del buzón serán guardados"
 
-#: keymap_defs.h:146
+#: keymap_defs.h:147
 msgid "toggle wether to browse mailboxes or all files"
 msgstr "cambiar la navegación de buzones o todos los archivos"
 
-#: keymap_defs.h:147
+#: keymap_defs.h:148
 msgid "move to the top of the page"
 msgstr "ir al principio de la página"
 
-#: keymap_defs.h:148
+#: keymap_defs.h:149
 msgid "undelete the current entry"
 msgstr "restaurar la entrada actual"
 
-#: keymap_defs.h:149
+#: keymap_defs.h:150
 msgid "undelete all messages in thread"
 msgstr "restaurar todos los mensajes del temario"
 
-#: keymap_defs.h:150
+#: keymap_defs.h:151
 msgid "undelete all messages in subthread"
 msgstr "restaurar todos los mensajes del subtemario"
 
-#: keymap_defs.h:151
+#: keymap_defs.h:152
 msgid "show the Mutt version number and date"
 msgstr "mostrar la versión y fecha de Mutt"
 
-#: keymap_defs.h:152
+#: keymap_defs.h:153
 msgid "view attachment using mailcap entry if necessary"
 msgstr "mostrar archivo añadido usando entrada mailcap si es necesario"
 
-#: keymap_defs.h:153
+#: keymap_defs.h:154
 msgid "show MIME attachments"
 msgstr "mostrar archivos añadidos tipo MIME"
 
-#: keymap_defs.h:154
+#: keymap_defs.h:155
 msgid "show currently active limit pattern"
 msgstr "mostrar máscara de limitación activa"
 
-#: keymap_defs.h:155
+#: keymap_defs.h:156
 msgid "collapse/uncollapse current thread"
 msgstr "colapsar/expander temario actual"
 
-#: keymap_defs.h:156
+#: keymap_defs.h:157
 msgid "collapse/uncollapse all threads"
 msgstr "colapsar/expander todos los temarios"
 
-#: keymap_defs.h:157
+#: keymap_defs.h:158
 msgid "attach a PGP public key"
 msgstr "añadir llave PGP pública"
 
-#: keymap_defs.h:158
+#: keymap_defs.h:159
 msgid "show PGP options"
 msgstr "mostrar opciones PGP"
 
-#: keymap_defs.h:159
+#: keymap_defs.h:160
 msgid "extract PGP public keys"
 msgstr "extraer llaves PGP públicas"
 
-#: keymap_defs.h:160
+#: keymap_defs.h:161
 msgid "wipe PGP passphrase from memory"
 msgstr "borrar contraseña PGP de la memoria"
 
-#: keymap_defs.h:161
+#: keymap_defs.h:162
 msgid "mail a PGP public key"
 msgstr "mandar llave PGP pública"
 
-#: keymap_defs.h:162
+#: keymap_defs.h:163
 msgid "verify a PGP public key"
 msgstr "verificar llave PGP pública"
 
-#: keymap_defs.h:163
+#: keymap_defs.h:164
 msgid "view the key's user id"
 msgstr "mostrar la identificación del usuario de la llave"
 
-#: keymap_defs.h:164
+#: keymap_defs.h:165
 msgid "make decrypted copy and delete"
 msgstr "crear copi decriptada y suprimir "
 
-#: keymap_defs.h:165
+#: keymap_defs.h:166
 msgid "make decrypted copy"
 msgstr "crear copia decriptada"
 
@@ -2039,7 +2043,7 @@ msgstr "Buscar en sentido opuesto: "
 msgid "No search pattern."
 msgstr "Nada que buscar."
 
-#: menu.c:627 pager.c:1770 pager.c:1786 pager.c:1873 pattern.c:1125
+#: menu.c:627 pager.c:1825 pager.c:1841 pager.c:1928 pattern.c:1125
 msgid "Not found."
 msgstr "No fue encontrado."
 
@@ -2141,48 +2145,48 @@ msgstr "Buzón esta marcado inescribible. %s"
 msgid "Mailbox is read-only."
 msgstr "Buzón es de sólo lectura."
 
-#: pager.c:1360
+#: pager.c:1366
 msgid "PrevPg"
 msgstr "Página anterior"
 
-#: pager.c:1361
+#: pager.c:1367
 msgid "NextPg"
 msgstr "Próxima página"
 
-#: pager.c:1365
+#: pager.c:1371
 msgid "View Attachm."
 msgstr "Mostrar archivo añadido."
 
-#: pager.c:1368
+#: pager.c:1374
 msgid "Next"
 msgstr "Siguiente"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1682 pager.c:1713 pager.c:1742 pager.c:1961
+#: pager.c:1737 pager.c:1768 pager.c:1797 pager.c:2016
 msgid "Bottom of message is shown."
 msgstr "Final del mensaje esta siendo mostrado."
 
-#: pager.c:1698 pager.c:1720 pager.c:1731
+#: pager.c:1753 pager.c:1775 pager.c:1786
 msgid "Top of message is shown."
 msgstr "El principio del mensaje esta siendo mostrado."
 
-#: pager.c:1804
+#: pager.c:1859
 msgid "Reverse search: "
 msgstr "Buscar hacia atrás: "
 
-#: pager.c:1805
+#: pager.c:1860
 msgid "Search: "
 msgstr "Buscar: "
 
-#: pager.c:1899
+#: pager.c:1954
 msgid "Help is currently being shown."
 msgstr "La ayuda esta siendo mostrada."
 
-#: pager.c:1928
+#: pager.c:1983
 msgid "No more quoted text."
 msgstr "No hay mas texto citado."
 
-#: pager.c:1941
+#: pager.c:1996
 msgid "No more unquoted text after quoted text."
 msgstr "No hay mas texto bajo texto citado."
 
