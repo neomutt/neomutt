@@ -17,6 +17,7 @@
  */
 
 #include "mutt.h"
+#include "mailbox.h"
 
 #include <limits.h>
 #include <string.h>
@@ -385,7 +386,7 @@ void mutt_select_fcc (char *path, size_t pathlen, HEADER *hdr)
       adr = env->to ? env->to : (env->cc ? env->cc : env->bcc);
       mutt_safe_path (buf, sizeof (buf), adr);
       snprintf (path, pathlen, "%s/%s", NONULL (Maildir), buf);
-      if (!option (OPTFORCENAME) && access (path, W_OK) != 0)
+      if (!option (OPTFORCENAME) && mx_access (path, W_OK) != 0)
 	strfcpy (path, NONULL (Outbox), pathlen);
     }
     else

@@ -32,6 +32,7 @@ typedef struct
 } IMAP_MBOX;
 
 /* imap.c */
+int imap_access (const char*, int);
 int imap_check_mailbox (CONTEXT *ctx, int *index_hint);
 int imap_close_connection (CONTEXT *ctx);
 int imap_delete_mailbox (CONTEXT* idata, char* mailbox);

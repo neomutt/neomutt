@@ -468,6 +468,19 @@ int mx_set_magic (const char *s)
   return 0;
 }
 
+/* mx_access: Wrapper for access, checks permissions on a given mailbox.
+ *   We may be interested in using ACL-style flags at some point, currently
+ *   we use the normal access() flags. */
+int mx_access (const char* path, int flags)
+{
+#ifdef USE_IMAP
+  if (mx_is_imap (path))
+    return imap_access (path, flags);
+#endif
+
+  return access (path, flags);
+}
+
 static int mx_open_mailbox_append (CONTEXT *ctx)
 {
   struct stat sb;

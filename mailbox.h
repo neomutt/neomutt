@@ -65,5 +65,6 @@ int mx_is_imap (const char *);
 int mx_is_pop (const char *);
 #endif
 
+int mx_access (const char*, int);
 
 #endif
