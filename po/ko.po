@@ -1,14 +1,14 @@
 # Korean messages for mutt.
 # Copyright (C) 1998 Free Software Foundation, Inc.
-# Sang-Jin Hwang,ı <accel@linux.mdworld.com>, 1998, 1999.
+# Sang-Jin Hwang,? <accel@linux.mdworld.com>, 1998, 1999.
 # Byeong-Chan Kim <redhands@linux.sarag.net>, 2000.
-# Im Eunjea <eunjea@kldp.org>, 2002, 2003.
+# Im Eunjea <eunjea@kldp.org>, 2002, 2003, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.5.1i\n"
+"Project-Id-Version: 1.5.6i\n"
 "POT-Creation-Date: 2004-02-01 19:24+0100\n"
-"PO-Revision-Date: 2003-08-26 23:46+300\n"
+"PO-Revision-Date: 2004-02-02 23:25+300\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Im Eunjea <eunjea@kldp.org>\n"
 "MIME-Version: 1.0\n"
@@ -914,9 +914,8 @@ msgid "No tagged messages."
 msgstr "Ç¥½ÃµÈ ¸ŞÀÏÀÌ ¾øÀ½."
 
 #: curs_main.c:653 menu.c:896
-#, fuzzy
 msgid "Nothing to do."
-msgstr "%s·Î ¿¬°á Áß..."
+msgstr "¾Æ¹«°Íµµ ÇÏÁö ¾ÊÀ½."
 
 #: curs_main.c:739
 msgid "Jump to message: "
@@ -1368,9 +1367,8 @@ msgid "Login failed."
 msgstr "Á¢¼Ó ½ÇÆĞ."
 
 #: imap/auth_sasl.c:112
-#, fuzzy, c-format
 msgid "Authenticating (%s)..."
-msgstr "ÀÎÁõ Áß (APOP)..."
+msgstr "ÀÎÁõ Áß (%s)..."
 
 #: imap/auth_sasl.c:199 pop_auth.c:172
 msgid "SASL authentication failed."
@@ -1600,7 +1598,6 @@ msgid "%s: invalid value"
 msgstr "%s: Àß¸øµÈ °ª"
 
 #: init.c:1312
-#, fuzzy, c-format
 msgid "%s: Unknown type."
 msgstr "%s: ¾Ë ¼ö ¾ø´Â Çü½Ä"
 
@@ -1610,14 +1607,12 @@ msgid "%s: unknown type"
 msgstr "%s: ¾Ë ¼ö ¾ø´Â Çü½Ä"
 
 #: init.c:1375
-#, fuzzy, c-format
 msgid "%s: stat: %s"
-msgstr "%s: %sÀÇ »óÅÂ¸¦ ¾Ë¼ö ¾øÀ½."
+msgstr "%s: »óÅÂ: %s"
 
 #: init.c:1380
-#, fuzzy, c-format
 msgid "%s: not a regular file"
-msgstr "%s´Â ¿Ã¹Ù¸¥ ÆÄÀÏÀÌ ¾Æ´Ô."
+msgstr "%s: ÀÏ¹İ ÆÄÀÏÀÌ ¾Æ´Ô."
 
 #: init.c:1395
 #, c-format
@@ -2360,7 +2355,6 @@ msgid "apply next function to tagged messages"
 msgstr "´ÙÀ½ ±â´ÉÀ» ÅÂ±×°¡ ºÙÀº ¸ŞÀÏ¿¡ Àû¿ë"
 
 #: keymap_alldefs.h:164
-#, fuzzy
 msgid "apply next function ONLY to tagged messages"
 msgstr "´ÙÀ½ ±â´ÉÀ» ÅÂ±×°¡ ºÙÀº ¸ŞÀÏ¿¡ Àû¿ë"
 
@@ -2844,9 +2838,8 @@ msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): ÆÄÀÏ ½Ã°£À» ¼³Á¤ÇÒ ¼ö ¾øÀ½"
 
 #: muttlib.c:835
-#, fuzzy
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
-msgstr "ÆÄÀÏÀÌ ¾Æ´Ï¶ó µğ·ºÅä¸®ÀÔ´Ï´Ù, ±× ¾Æ·¡¿¡ ÀúÀåÇÒ±î¿ä?"
+msgstr "ÆÄÀÏÀÌ ¾Æ´Ï¶ó µğ·ºÅä¸®ÀÔ´Ï´Ù, ±× ¾Æ·¡¿¡ ÀúÀåÇÒ±î¿ä? [(y)³×, (n)¾Æ´Ï¿À, (a)¸ğµÎ]"
 
 #: muttlib.c:835
 msgid "yna"
