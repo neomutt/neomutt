@@ -265,7 +265,6 @@ struct binding_t OpAttach[] = {
 struct binding_t OpCompose[] = {
   { "attach-file",	OP_COMPOSE_ATTACH_FILE,		"a" },
   { "attach-message",	OP_COMPOSE_ATTACH_MESSAGE,	"A" },
-  { "change-charset",	OP_COMPOSE_CHANGE_CHARSET,	NULL },
   { "edit-bcc",		OP_COMPOSE_EDIT_BCC,		"b" },
   { "edit-cc",		OP_COMPOSE_EDIT_CC,		"c" },
   { "copy-file",	OP_SAVE,			"C" },

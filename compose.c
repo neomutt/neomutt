@@ -386,33 +386,6 @@ static void update_idx (MUTTMENU *menu, ATTACHPTR **idx, short idxlen)
   return;
 }
 
-static int change_attachment_charset (BODY *b)
-{
-  char buff[SHORT_STRING];
-  iconv_t cd;
-
-  if (!mutt_is_text_type (b->type, b->subtype))
-  {
-    mutt_error _("Can't change character set for non-text attachments!");
-    return 0;
-  }
-
-  mutt_get_send_charset (buff, sizeof(buff), b, 0);
-  
-  if (mutt_get_field (_("Enter character set: "), buff, sizeof(buff), 0) == -1)
-    return 0;
-
-  if ((cd = mutt_iconv_open (buff, "us-ascii")) == (iconv_t)-1)
-  {
-    mutt_error (_("Character set %s is unknown."), buff);
-    return 0;
-  }
-  else
-    iconv_close (cd);
-  
-  mutt_set_body_charset (b, buff);
-  return REDRAW_CURRENT;
-}
 
 /* 
  * cum_attachs_size: Cumulative Attachments Size
@@ -868,11 +841,6 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
         menu->redraw |= REDRAW_STATUS;
 	break;
-
-      case OP_COMPOSE_CHANGE_CHARSET:
-        CHECK_COUNT;
-        menu->redraw = change_attachment_charset(idx[menu->current]->content);
-        break;
 
 #define CURRENT idx[menu->current]->content
       

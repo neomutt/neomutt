@@ -1238,7 +1238,8 @@ void mutt_update_encoding (BODY *a)
   CONTENT *info;
 
   /* Previous value is usually wrong, apparently. */
-  mutt_set_parameter ("charset", 0, &a->parameter);
+  if (!a->force_charset)
+    mutt_set_parameter ("charset", 0, &a->parameter);
 
   if ((info = mutt_get_content_info (a->filename, a)) == NULL)
     return;

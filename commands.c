@@ -785,10 +785,21 @@ void mutt_version (void)
 void mutt_edit_content_type (HEADER *h, BODY *b)
 {
   char buf[LONG_STRING];
+  char obuf[LONG_STRING];
   char tmp[STRING];
   PARAMETER *p;
+
+  char charset[STRING];
+  char *cp;
+
+  short charset_changed = 0;
+  short type_changed = 0;
   
+  cp = mutt_get_parameter ("charset", b->parameter);
+  strfcpy (charset, NONULL (cp), sizeof (charset));
+
   snprintf (buf, sizeof (buf), "%s/%s", TYPE (b), b->subtype);
+  strfcpy (obuf, buf, sizeof (obuf));
   if (b->parameter)
   {
     size_t l;
@@ -811,9 +822,21 @@ void mutt_edit_content_type (HEADER *h, BODY *b)
   FREE (&b->subtype);
   
   mutt_parse_content_type (buf, b);
+
+  /* inform the user */
   
-  mutt_message ("Content-Type changed to %s/%s.", TYPE (b),
-		NONULL (b->subtype));
+  
+  snprintf (tmp, sizeof (tmp), "%s/%s", TYPE (b), NONULL (b->subtype));
+  type_changed = mutt_strcmp (tmp, obuf);
+  charset_changed = mutt_strcmp (charset, mutt_get_parameter ("charset", b->parameter));
+				 
+  if (type_changed)
+    mutt_message (_("Content-Type changed to %s."), tmp);
+  else if (b->type == TYPETEXT && charset_changed)
+    mutt_message (_("Character set changed to %s."), 
+		  mutt_get_parameter ("charset", b->parameter));
+
+  b->force_charset |= charset_changed;
   
   if (!is_multipart (b) && b->parts)
     mutt_free_body (&b->parts);

@@ -544,11 +544,17 @@ typedef struct body
 				 */
   unsigned int tagged : 1;
   unsigned int deleted : 1;	/* attachment marked for deletion */
+
   unsigned int noconv : 1;	/* don't do character set conversion */
+  unsigned int force_charset : 1; 
+  				/* send mode: don't adjust the character
+				 * set when in send-mode.
+				 */
 
 #ifdef HAVE_PGP
   unsigned int goodsig : 1;	/* good PGP signature */
 #endif
+
 
 } BODY;
 
