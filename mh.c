@@ -276,9 +276,9 @@ void mh_update_sequences (CONTEXT *ctx)
   struct mh_sequences mhs;
   memset (&mhs, 0, sizeof (mhs));
   
-  snprintf (seq_unseen, sizeof (seq_unseen), "%s:", MhUnseen);
-  snprintf (seq_replied, sizeof (seq_replied), "%s:", MhReplied);
-  snprintf (seq_flagged, sizeof (seq_flagged), "%s:", MhFlagged);
+  snprintf (seq_unseen, sizeof (seq_unseen), "%s:", NONULL (MhUnseen));
+  snprintf (seq_replied, sizeof (seq_replied), "%s:", NONULL (MhReplied));
+  snprintf (seq_flagged, sizeof (seq_flagged), "%s:", NONULL (MhFlagged));
   
   if (mh_mkstemp (ctx, &nfp, &tmpfname) != 0)
   {
@@ -337,9 +337,9 @@ void mh_update_sequences (CONTEXT *ctx)
   }
 
   /* write out the new sequences */
-  if (unseen)  mhs_write_one_sequence (nfp, &mhs, MH_SEQ_UNSEEN, MhUnseen);
-  if (flagged) mhs_write_one_sequence (nfp, &mhs, MH_SEQ_FLAGGED, MhFlagged);
-  if (replied) mhs_write_one_sequence (nfp, &mhs, MH_SEQ_REPLIED, MhReplied);
+  if (unseen)  mhs_write_one_sequence (nfp, &mhs, MH_SEQ_UNSEEN, NONULL (MhUnseen));
+  if (flagged) mhs_write_one_sequence (nfp, &mhs, MH_SEQ_FLAGGED, NONULL (MhFlagged));
+  if (replied) mhs_write_one_sequence (nfp, &mhs, MH_SEQ_REPLIED, NONULL (MhReplied));
 
   mhs_free_sequences (&mhs);
 
@@ -379,9 +379,9 @@ static void mh_sequences_add_one (CONTEXT *ctx, int n, short unseen, short flagg
   if (mh_mkstemp (ctx, &nfp, &tmpfname) == -1)
     return;
 
-  snprintf (seq_unseen, sizeof (seq_unseen), "%s:", MhUnseen);
-  snprintf (seq_replied, sizeof (seq_replied), "%s:", MhReplied);
-  snprintf (seq_flagged, sizeof (seq_flagged), "%s:", MhFlagged);
+  snprintf (seq_unseen, sizeof (seq_unseen), "%s:", NONULL (MhUnseen));
+  snprintf (seq_replied, sizeof (seq_replied), "%s:", NONULL (MhReplied));
+  snprintf (seq_flagged, sizeof (seq_flagged), "%s:", NONULL (MhFlagged));
   
   snprintf (sequences, sizeof (sequences), "%s/.mh_sequences", ctx->path);
   if ((ofp = fopen (sequences, "r")))
@@ -410,9 +410,9 @@ static void mh_sequences_add_one (CONTEXT *ctx, int n, short unseen, short flagg
   safe_fclose (&ofp);
   safe_free ((void **) &buff);
   
-  if (!unseen_done  && unseen)   fprintf (nfp, "%s: %d\n", MhUnseen, n);
-  if (!flagged_done && flagged)  fprintf (nfp, "%s: %d\n", MhFlagged, n);
-  if (!replied_done && replied)  fprintf (nfp, "%s: %d\n", MhReplied, n);
+  if (!unseen_done  && unseen)   fprintf (nfp, "%s: %d\n", NONULL (MhUnseen), n);
+  if (!flagged_done && flagged)  fprintf (nfp, "%s: %d\n", NONULL (MhFlagged), n);
+  if (!replied_done && replied)  fprintf (nfp, "%s: %d\n", NONULL (MhReplied), n);
   
   safe_fclose (&nfp);
   
