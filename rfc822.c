@@ -132,7 +132,10 @@ parse_quote (const char *s, char *token, size_t *tokenlen, size_t tokenmax)
     if (*tokenlen < tokenmax)
       token[*tokenlen] = *s;
     if (*s == '"')
+    {
+      (*tokenlen)++;
       return (s + 1);
+    }
     if (*s == '\\')
     {
       if (!*++s)
