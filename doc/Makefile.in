@@ -60,7 +60,7 @@ html: manual.html
 install: dotlock.man mutt.man all
 	$(top_srcdir)/mkinstalldirs $(mandir)/man1
 	$(INSTALL) -m 644 mutt.man $(mandir)/man1/mutt.1
-	$(INSTALL) -m 644 dotlock.man $(mandir)/man1/mutt.dotlock.1
+	$(INSTALL) -m 644 dotlock.man $(mandir)/man1/mutt_dotlock.1
 	$(top_srcdir)/mkinstalldirs $(docdir)
 	for f in $(DOCFILES) ; do $(INSTALL) -m 644 $$f $(docdir) ; done
 	for f in $(srcdir_DOCFILES) ; do $(INSTALL) -m 644 $(srcdir)/$$f $(docdir) ; done
@@ -113,4 +113,3 @@ dist distdir: Makefile $(DISTFILES)
 		ln $(srcdir)/$$file $(distdir) 2> /dev/null 	\
 			|| cp -p $(srcdir)/$$file $(distdir); 	\
 	done
-			
