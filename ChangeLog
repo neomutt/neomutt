@@ -1,3 +1,8 @@
+2004-04-12 19:53:29  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
+
+	* doc/manual.sgml.head, init.h: Various documentation fixes,
+	#1790.
+
 2004-04-12 19:47:59  Alain Bench  <veronatif@free.fr>  (roessler)
 
 	* doc/mbox.man, doc/muttbug.man: Fix #1831, Debian#237827.
