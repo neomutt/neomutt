@@ -1220,8 +1220,8 @@ struct option_t MuttVars[] = {
   ** if you want to play interesting key selection games.
   ** (PGP only)
   */
-  { "pgp_replyencrypt",		DT_SYN,  R_NONE, UL "crypt_replyencrypt", 0 },
-  { "crypt_replyencrypt",	DT_BOOL, R_NONE, OPTCRYPTREPLYENCRYPT, 0 },
+  { "pgp_replyencrypt",		DT_SYN,  R_NONE, UL "crypt_replyencrypt", 1  },
+  { "crypt_replyencrypt",	DT_BOOL, R_NONE, OPTCRYPTREPLYENCRYPT, 1 },
   /*
   ** .pp
   ** If set, automatically PGP or OpenSSL encrypt replies to messages which are
