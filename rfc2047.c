@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
- * Copyright (C) 2000 Edmund Grimley Evans <edmundo@rano.org>
+ * Copyright (C) 2000-2001 Edmund Grimley Evans <edmundo@rano.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -335,21 +335,20 @@ static size_t choose_block (char *d, size_t dlen, int col,
 			    encoder_t *encoder, size_t *wlen)
 {
   size_t n, nn;
+  int utf8 = fromcode && !ascii_strcasecmp (fromcode, "UTF-8");
 
   n = dlen;
   for (;;)
   {
     assert (d + n > d);
     nn = try_block (d, n, fromcode, tocode, encoder, wlen);
-    if (!nn && col + *wlen <= ENCWORD_LEN_MAX + 1)
+    if (!nn && (col + *wlen <= ENCWORD_LEN_MAX + 1 || n <= 1))
       break;
-    nn = (nn ? nn : n) - 1;
-    while (CONTINUATION_BYTE(d[nn]))
-      --nn;
-    assert (d + nn >= d);
-    if (!nn)
-      break;
-    n = nn;
+    n = (nn ? nn : n) - 1;
+    assert (n > 0);
+    if (utf8)
+      while (n > 1 && CONTINUATION_BYTE(d[n]))
+	--n;
   }
   return n;
 }
@@ -445,8 +444,10 @@ static int rfc2047_encode (const char *d, size_t dlen, int col,
   {
     if (!HSPACE(*(t0-1)))
       continue;
-    for (t = t0 + 1; t < u + ulen && CONTINUATION_BYTE(*t); t++)
-      ;
+    t = t0 + 1;
+    if (icode)
+      while (t < u + ulen && CONTINUATION_BYTE(*t))
+	++t;
     if (!try_block (t0, t - t0, icode, tocode, &encoder, &wlen) &&
 	col + (t0 - u) + wlen <= ENCWORD_LEN_MAX + 1)
       break;
@@ -457,8 +458,10 @@ static int rfc2047_encode (const char *d, size_t dlen, int col,
   {
     if (!HSPACE(*t1))
       continue;
-    for (t = t1 - 1; CONTINUATION_BYTE(*t); t--)
-      ;
+    t = t1 - 1;
+    if (icode)
+      while (CONTINUATION_BYTE(*t))
+	--t;
     if (!try_block (t, t1 - t, icode, tocode, &encoder, &wlen) &&
 	1 + wlen + (u + ulen - t1) <= ENCWORD_LEN_MAX + 1)
       break;
@@ -484,8 +487,10 @@ static int rfc2047_encode (const char *d, size_t dlen, int col,
       /* See if we can fit the us-ascii suffix, too. */
       if (col + wlen + (u + ulen - t1) <= ENCWORD_LEN_MAX + 1)
 	break;
-      for (n = t1 - t - 1; CONTINUATION_BYTE(t[n]); n--)
-	;
+      n = t1 - t - 1;
+      if (icode)
+	while (CONTINUATION_BYTE(t[n]))
+	  --n;
       assert (t + n >= t);
       if (!n)
       {
