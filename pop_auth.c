@@ -33,7 +33,7 @@
 
 #ifdef USE_SASL
 /* SASL authenticator */
-static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data)
+static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
 {
   sasl_conn_t *saslconn;
   sasl_interact_t *interaction = NULL;
@@ -170,7 +170,7 @@ void pop_apop_timestamp (POP_DATA *pop_data, char *buf)
 }
 
 /* APOP authenticator */
-static pop_auth_res_t pop_auth_apop (POP_DATA *pop_data)
+static pop_auth_res_t pop_auth_apop (POP_DATA *pop_data, const char *method)
 {
   MD5_CTX mdContext;
   unsigned char digest[16];
@@ -212,7 +212,7 @@ static pop_auth_res_t pop_auth_apop (POP_DATA *pop_data)
 }
 
 /* USER authenticator */
-static pop_auth_res_t pop_auth_user (POP_DATA *pop_data)
+static pop_auth_res_t pop_auth_user (POP_DATA *pop_data, const char *method)
 {
   char buf[LONG_STRING];
   int ret;
@@ -356,13 +356,13 @@ int pop_authenticate (POP_DATA* pop_data)
 
     while (authenticator->authenticate)
     {
-      ret = authenticator->authenticate (pop_data, method);
+      ret = authenticator->authenticate (pop_data, authenticator->method);
       if (ret == POP_A_SOCKET)
 	switch (pop_connect (pop_data))
 	{
 	  case 0:
 	  {
-	    ret = authenticator->authenticate (pop_data, method);
+	    ret = authenticator->authenticate (pop_data, authenticator->method);
 	    break;
 	  }
 	  case -2:
@@ -374,7 +374,9 @@ int pop_authenticate (POP_DATA* pop_data)
       if (ret == POP_A_SUCCESS || ret == POP_A_SOCKET ||
 	  (ret == POP_A_FAILURE && !option (OPTPOPAUTHTRYALL)))
       {
-	comma = NULL;
+	/* awn@bcs.zp.ua: `comma' variable is unneeded here.  This was
+	 * cut-n-paste, IMHO. */
+	/* comma = NULL; */
 	break;
       }
 
