@@ -1903,7 +1903,8 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	  /* update the search pointers */
 	  i = 0;
 	  while (display_line (fp, &last_pos, &lineInfo, i, &lastLine, 
-				&maxLine, M_SEARCH, &QuoteList, &q_level,
+				&maxLine, M_SEARCH | (flags & M_PAGER_NSKIP),
+				&QuoteList, &q_level,
 				&force_redraw, &SearchRE) == 0)
 	    i++;
 
