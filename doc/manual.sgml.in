@@ -3139,6 +3139,18 @@ Default: &dollar;MAILCAPS or &tilde;/.mailcap:/usr/local/share/mailcap:/etc/mail
 This variable specifies which files to consult when attempting to display
 MIME bodies not directly supported by Mutt.
 
+<sect2>mailcap&lowbar;sanitize<label id="mailcap_sanitize">
+<p>
+Type: boolean<newline>
+Default: set
+
+If set, mutt will restrict possible characters in mailcap % expandos
+to a well-defined set of safe characters.  This is the safe setting,
+but we are not sure it doesn't break some more advanced MIME stuff.
+
+<bf/DON'T CHANGE THIS SETTING UNLESS YOU ARE REALLY SURE WHAT YOU ARE
+DOING!/
+
 <sect2>mail&lowbar;check<label id="mail_check">
 <p>
 Type: number<newline>

@@ -38,7 +38,7 @@ srcdir_DOCFILES = PGP-Notes.txt applying-patches.txt	\
 	manual.txt
 
 topsrcdir_DOCFILES = COPYRIGHT GPL INSTALL ChangeLog	\
-	README NEWS TODO
+	README NEWS TODO README.SECURITY
 
 DOCFILES = manual.txt
 
