@@ -1,3 +1,8 @@
+2003-01-03 18:07:36  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* pgp.c: Detect in-line key material when checking for traditional
+	PGP messages.
+
 2002-12-22 20:04:51  René Clerc  <rene@clerc.nl>  (roessler)
 
 	* po/nl.po: update
