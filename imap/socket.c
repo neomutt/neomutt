@@ -245,6 +245,8 @@ int raw_socket_open (CONNECTION *conn)
   /* This might be a config variable */
   int first_try_without_preconnect = TRUE; 
 
+  mutt_message (_("Looking up %s..."), conn->mx.host);
+  
   memset (&sin, 0, sizeof (sin));
   sin.sin_port = htons (conn->mx.port);
   sin.sin_family = AF_INET;
