@@ -322,7 +322,6 @@ int mutt_from_base64 (char*, const char*);
 
 /* utf8.c */
 int mutt_wctoutf8 (char *s, unsigned int c);
-int mutt_utf8towc (unsigned int *pwc, const char *s, size_t n);
 
 #ifdef LOCALES_HACK
 #define IsPrint(c) (isprint((unsigned char)(c)) || \

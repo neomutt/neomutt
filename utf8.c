@@ -1,3 +1,10 @@
+#ifndef HAVE_WC_FUNCS
+
+#include <errno.h>
+
+#ifndef EILSEQ
+#define EILSEQ EINVAL
+#endif
 
 int mutt_wctoutf8 (char *s, unsigned int c)
 {
@@ -62,5 +69,8 @@ int mutt_wctoutf8 (char *s, unsigned int c)
     }
     return 6;
   }
-  return 0;
+  errno = EILSEQ;
+  return -1;
 }
+
+#endif /* !HAVE_WC_FUNCS */

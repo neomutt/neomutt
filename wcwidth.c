@@ -7,15 +7,14 @@
  */
 
 /* Adapted for Mutt by Edmund Grimley Evans.
- * wcwidth() now refers to Charset_is_utf8.
  */
+
+#ifndef HAVE_WC_FUNCS
 
 #include "mutt.h"
 #include "mbyte.h"
 
 #include <ctype.h>
-
-#ifndef HAVE_WC_FUNCS
 
 /* These functions define the column width of an ISO 10646 character
  * as follows:
@@ -41,7 +40,7 @@
  * in ISO 10646.
  */
 
-int wcwidth(wchar_t ucs)
+int wcwidth_ucs(wchar_t ucs)
 {
   /* sorted list of non-overlapping intervals of non-spacing characters */
   static const struct interval {
@@ -87,14 +86,6 @@ int wcwidth(wchar_t ucs)
   if (ucs == 0)
     return 0;
 
-  /* non-UCS case */
-  if (!Charset_is_utf8) {
-    if (0 <= ucs && ucs < 256)
-      return IsPrint(ucs) ? 1 : -1;
-    else
-      return -1;
-  }
-
   /* test for 8-bit control characters */
   if (ucs < 32 || (ucs >= 0x7f && ucs < 0xa0))
     return -1;
@@ -131,7 +122,7 @@ int wcwidth(wchar_t ucs)
      (ucs >= 0xffe0 && ucs <= 0xffe6));
 }
 
-#endif /* HAVE_WCWIDTH */
+#endif /* !HAVE_WC_FUNCS */
 
 #if 0 /* original */
 int wcswidth(const wchar_t *pwcs, size_t n)
