@@ -245,6 +245,7 @@ struct option_t MuttVars[] = {
   { "signature",	DT_PATH, R_NONE, UL &Signature, UL "~/.signature" },
   { "simple_search",	DT_STR,	 R_NONE, UL &SimpleSearch, UL "~f %s | ~s %s" },
   { "smart_wrap",	DT_BOOL, R_PAGER, OPTWRAP, 1 },
+  { "smileys",		DT_RX,	 R_PAGER, UL &Smileys, UL "(>From )|(:[-^]?[][)(><}{|/DP])" },
   { "sort",		DT_SORT, R_INDEX|R_RESORT, UL &Sort, SORT_DATE },
   { "sort_alias",	DT_SORT|DT_SORT_ALIAS,	R_NONE,	UL &SortAlias, SORT_ALIAS },
   { "sort_aux",		DT_SORT, R_INDEX|R_RESORT_BOTH, UL &SortAux, SORT_DATE },

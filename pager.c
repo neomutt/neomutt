@@ -667,12 +667,12 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 }
 
 static void
-resolve_types (const char *buf, struct line_t *lineInfo, int n, int last,
+resolve_types (char *buf, struct line_t *lineInfo, int n, int last,
 		struct q_class_t **QuoteList, int *q_level, int *force_redraw,
 		int q_classify)
 {
   COLOR_LINE *color_line;
-  regmatch_t pmatch[1];
+  regmatch_t pmatch[1], smatch[1];
   int found, offset, null_rx, i;
 
   if (n == 0 || ISHEADER (lineInfo[n-1].type))
@@ -724,14 +724,43 @@ resolve_types (const char *buf, struct line_t *lineInfo, int n, int last,
   }
   else if (check_sig (buf, lineInfo, n - 1) == 0)
     lineInfo[n].type = MT_COLOR_SIGNATURE;
-  else if (regexec ((regex_t *) QuoteRegexp.rx, buf, 1, pmatch, 0) == 0 &&
-	    strncmp (buf, ">From ", 6))
+  else if (regexec ((regex_t *) QuoteRegexp.rx, buf, 1, pmatch, 0) == 0)
   {
-    if (q_classify && lineInfo[n].quote == NULL)
-      lineInfo[n].quote = classify_quote (QuoteList, buf + pmatch[0].rm_so,
-			     pmatch[0].rm_eo - pmatch[0].rm_so,
-			     force_redraw, q_level);
-     lineInfo[n].type = MT_COLOR_QUOTED;
+    if (regexec ((regex_t *) Smileys.rx, buf, 1, smatch, 0) == 0)
+    {
+      if (smatch[0].rm_so > 0)
+      {
+	char c;
+
+	/* hack to avoid making an extra copy of buf */
+	c = buf[smatch[0].rm_so];
+	buf[smatch[0].rm_so] = 0;
+
+	if (regexec ((regex_t *) QuoteRegexp.rx, buf, 1, pmatch, 0) == 0)
+	{
+	  if (q_classify && lineInfo[n].quote == NULL)
+	    lineInfo[n].quote = classify_quote (QuoteList,
+				  buf + pmatch[0].rm_so,
+				  pmatch[0].rm_eo - pmatch[0].rm_so,
+				  force_redraw, q_level);
+	  lineInfo[n].type = MT_COLOR_QUOTED;
+	}
+	else
+	  lineInfo[n].type = MT_COLOR_NORMAL;
+
+	buf[smatch[0].rm_so] = c;
+      }
+      else
+	lineInfo[n].type = MT_COLOR_NORMAL;
+    }
+    else
+    {
+      if (q_classify && lineInfo[n].quote == NULL)
+	lineInfo[n].quote = classify_quote (QuoteList, buf + pmatch[0].rm_so,
+			      pmatch[0].rm_eo - pmatch[0].rm_so,
+			      force_redraw, q_level);
+      lineInfo[n].type = MT_COLOR_QUOTED;
+    }
   }
   else
     lineInfo[n].type = MT_COLOR_NORMAL;

@@ -50,5 +50,6 @@ WHERE REGEXP Alternates;
 WHERE REGEXP Mask;
 WHERE REGEXP QuoteRegexp;
 WHERE REGEXP ReplyRegexp;
+WHERE REGEXP Smileys;
 
 #endif /* MUTT_REGEX_H */
