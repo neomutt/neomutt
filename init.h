@@ -1351,6 +1351,19 @@ struct option_t MuttVars[] = {
   ** if you accept it or not. If you accept it, the certificate can also 
   ** be saved in this file and further connections are automatically 
   ** accepted.
+  ** .pp
+  ** You can also manually add CA certificates in this file. Any server
+  ** certificate that is signed with one of these CA certificates are 
+  ** also automatically accepted.
+  ** .pp
+  ** Example: set certificate_file=~/.mutt/certificates
+  */
+  { "ssl_usesystemcerts", DT_BOOL, R_NONE, OPTSSLSYSTEMCERTS, 1 },
+  /*
+  ** .pp
+  ** If set to \fIyes\fP, mutt will use CA certificates in the
+  ** system-wide certificate store when checking if server certificate 
+  ** is signed by a trusted CA.
   */
   { "entropy_file",	DT_PATH, R_NONE, UL &SslEntropyFile, 0 },
   /*

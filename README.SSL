@@ -41,16 +41,33 @@ $EGDSOCKET (if this environment variable is set), ~/.entropy and
 described above.
 
 
+Certificates
+------------
 Each time a server is contacted, its certificate is checked against
 known valid certificates. When an unknown certificate is encountered,
 you are asked to verify it. If you reject the certificate, the
 connection will be terminated immediately. If you accept the
-certificate, the connection will be established. If you accept the
-certificate, you can also save it so that further connections to the
-server are automatically accepted. Certificates will be saved in the
-file specified by $certificate_file variable. It is empty as default,
-so if you don't want to verify certificates each time you connect to a
-server, you have set this variable to some reasonable value.
+certificate, the connection will be established. Accepted certificates
+can also be saved so that further connections to the server are
+automatically accepted. 
+
+If your organization has several equivalent IMAP-servers, each of them
+should have a unique certificate which is signed with a common
+certificate.  If you want to use all of those servers, you don't need to
+save each server certificate on the first connect.  Instead, you can get
+the signer certificate and save it instead.  That way, mutt will
+automatically accept all certificates signed with the saved certificate.
+
+System-wide certificates are by default considered trusted when checking
+certificates by signer.  This allows system administrators to setup
+trusted certificates for all users.  How to install certificates
+system-wide, depends on the OpenSSL installation.  Use of system-wide
+certificates can be disabled by unsetting $ssl_usesystemcerts variable.
+
+Certificates will be saved in the file specified by $certificate_file
+variable.  It is empty as default, so if you don't want to verify
+certificates each time you connect to a server, you have set this
+variable to some reasonable value.
 
 For example:
 	set certificate_file=~/.mutt/certificates
