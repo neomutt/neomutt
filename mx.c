@@ -585,7 +585,7 @@ static int mx_open_mailbox_append (CONTEXT *ctx, int flags)
   {
     case M_MBOX:
     case M_MMDF:
-    if ((ctx->fp = safe_fopen (ctx->path, flags & M_NEW ? "w" : "a")) == NULL ||
+    if ((ctx->fp = safe_fopen (ctx->path, flags & M_NEWFOLDER ? "w" : "a")) == NULL ||
 	  mbox_lock_mailbox (ctx, 1, 1) != 0)
       {
 	if (!ctx->fp)
@@ -640,7 +640,7 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
   if (flags & M_READONLY)
     ctx->readonly = 1;
 
-  if (flags & (M_APPEND|M_NEW))
+  if (flags & (M_APPEND|M_NEWFOLDER))
   {
     if (mx_open_mailbox_append (ctx, flags) != 0)
     {

@@ -24,7 +24,7 @@
 #define M_APPEND	(1<<1) /* open mailbox for appending messages */
 #define M_READONLY	(1<<2) /* open in read-only mode */
 #define M_QUIET		(1<<3) /* do not print any messages */
-#define M_NEW		(1<<4) /* create a new folder - same as M_APPEND, but uses
+#define M_NEWFOLDER	(1<<4) /* create a new folder - same as M_APPEND, but uses
 				* safe_fopen() for mbox-style folders.
 				*/
 
