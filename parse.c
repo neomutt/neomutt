@@ -660,7 +660,7 @@ TimeZones[] =
  * This routine assumes that `h' has been initialized to 0.  the `timezone'
  * field is optional, defaulting to +0000 if missing.
  */
-time_t mutt_parse_date (char *s, HEADER *h)
+time_t mutt_parse_date (const char *s, HEADER *h)
 {
   int count = 0;
   char *t;
@@ -673,12 +673,19 @@ time_t mutt_parse_date (char *s, HEADER *h)
   int zoccident = 0;
   const char *ptz;
   char tzstr[SHORT_STRING];
+  char scratch[SHORT_STRING];
 
+  /* Don't modify our argument. Fixed-size buffer is ok here since
+   * the date format imposes a natural limit. 
+   */
+
+  strfcpy (scratch, s, sizeof (scratch));
+  
   /* kill the day of the week, if it exists. */
-  if ((t = strchr (s, ',')))
+  if ((t = strchr (scratch, ',')))
     t++;
   else
-    t = s;
+    t = scratch;
   SKIPWS (t);
 
   memset (&tm, 0, sizeof (tm));

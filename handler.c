@@ -1231,14 +1231,8 @@ static void external_body_handler (BODY *b, STATE *s)
   }
 
   expiration = mutt_get_parameter ("expiration", b->parameter);
-  if (expiration) 
-  {
-    /* mutt_parse_date() will alter its argument, so we need a copy */
-    char *e = safe_strdup (expiration);
-
-    expire = mutt_parse_date (e, NULL);
-    free (e);
-  }
+  if (expiration)
+    expire = mutt_parse_date (expiration, NULL);
   else
     expire = -1;
 

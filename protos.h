@@ -97,7 +97,7 @@ ATTACHPTR **mutt_gen_attach_list (BODY *, int, ATTACHPTR **, short *, short *, i
 time_t mutt_local_tz (void);
 time_t mutt_mktime (struct tm *, int);
 time_t is_from (const char *, char *, size_t);
-time_t mutt_parse_date (char *, HEADER *);
+time_t mutt_parse_date (const char *, HEADER *);
 
 const char *mutt_attach_fmt (
 	char *dest,
