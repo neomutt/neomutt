@@ -86,8 +86,20 @@ void mutt_edit_headers (const char *editor,
   mutt_free_list (&msg->env->userhdrs);
 
   /* Read the temp file back in */
-  ifp = fopen (path, "r");
-  ofp = safe_fopen (body, "w");
+  if ((ifp = fopen (path, "r")) == NULL)
+  {
+    mutt_perror (path);
+    return;
+  }
+  
+  if ((ofp = safe_fopen (body, "w")) == NULL)
+  {
+    /* intentionally leak a possible temporary file here */
+    fclose (ifp);
+    mutt_perror (body);
+    return;
+  }
+  
   n = mutt_read_rfc822_header (ifp, NULL, 1, 0);
   while ((i = fread (buffer, 1, sizeof (buffer), ifp)) > 0)
     fwrite (buffer, 1, i, ofp);
