@@ -9,9 +9,9 @@ GSSSOURCES = auth_gss.c
 endif
 
 if USE_SASL
-AUTHENTICATORS = auth_sasl.c $(GSSSOURCES)
+AUTHENTICATORS = auth_sasl.c
 else
-AUTHENTICATORS = auth_anon.c auth_cram.c md5c.c $(GSSSOURCES)
+AUTHENTICATORS = auth_anon.c auth_cram.c md5c.c
 endif
 
 if USE_SSL
@@ -28,5 +28,5 @@ noinst_LIBRARIES = libimap.a
 noinst_HEADERS = auth.h imap_private.h md5.h message.h $(SSLHEADERS)
 
 libimap_a_SOURCES = auth.c auth_login.c browse.c command.c imap.c imap.h \
-	message.c utf7.c util.c $(AUTHENTICATORS) $(SSLSOURCES)
+	message.c utf7.c util.c $(AUTHENTICATORS) $(SSLSOURCES) $(GSSSOURCES)
 

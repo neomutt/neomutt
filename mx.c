@@ -1037,6 +1037,7 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
 {
   int rc, i;
   int purge = 1;
+  int msgcount, deleted;
 
   if (ctx->dontwrite)
   {
@@ -1087,6 +1088,11 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
     }
   }
 
+  /* really only for IMAP - imap_sync_mailbox results in a call to
+   * mx_update_tables, so ctx->deleted is 0 when it comes back */
+  msgcount = ctx->msgcount;
+  deleted = ctx->deleted;
+
 #ifdef USE_IMAP
   if (ctx->magic == M_IMAP)
     rc = imap_sync_mailbox (ctx, purge, index_hint);
@@ -1097,11 +1103,11 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
   {
 #ifdef USE_IMAP
     if (ctx->magic == M_IMAP && !purge)
-      mutt_message (_("Mailbox checkpointed."), ctx->msgcount);
+      mutt_message _("Mailbox checkpointed.");
     else
 #endif
-    mutt_message (_("%d kept, %d deleted."), ctx->msgcount - ctx->deleted,
-      ctx->deleted);
+    mutt_message (_("%d kept, %d deleted."), msgcount - deleted,
+      deleted);
 
     sleep (1); /* allow the user time to read the message */
 

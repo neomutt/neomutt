@@ -77,7 +77,7 @@ install: all
 	$(INSTALL) -m 644 $(srcdir)/dotlock.man \
 		$(DESTDIR)$(mandir)/man1/mutt_dotlock.1
 	$(INSTALL) -m 644 muttrc.man $(DESTDIR)$(mandir)/man5/muttrc.5
-	$(INSTALL) -m 644 mbox.man $(DESTDIR)$(mandir)/man5/mbox.5
+	$(INSTALL) -m 644 $(srcdir)/mbox.man $(DESTDIR)$(mandir)/man5/mbox.5
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(docdir)
 	for f in $(srcdir_DOCFILES) ; do \
 		$(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir) ; \

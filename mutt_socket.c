@@ -51,7 +51,11 @@ int mutt_socket_close (CONNECTION* conn)
 {
   int rc;
 
-  rc = conn->close (conn);
+  if (conn->fd < 0)
+    dprint (1, (debugfile, "mutt_socket_close: Attempt to close closed connection.\n"));
+  else
+    rc = conn->close (conn);
+
   conn->fd = -1;
 
   return rc;
