@@ -1330,7 +1330,6 @@ finish:
 }
 
 
-#define MAX(a,b) (((a) >= (b)) ? (a) : (b))
 #define NUMVARS (sizeof (MuttVars)/sizeof (MuttVars[0]))
 #define NUMCOMMANDS (sizeof (Commands)/sizeof (Commands[0]))
 /* initial string that starts completion. No telling how much crap 

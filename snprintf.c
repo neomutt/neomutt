@@ -116,7 +116,6 @@ static void dopr_outch (char *buffer, size_t *currlen, size_t maxlen, char c );
 #define DP_C_LDOUBLE 3
 
 #define char_to_int(p) (p - '0')
-#define MAX(p,q) ((p >= q) ? p : q)
 
 static void dopr (char *buffer, size_t maxlen, const char *format, va_list args)
 {

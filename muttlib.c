@@ -37,9 +37,6 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#define MIN(a,b) ((a) < (b) ? (a) : (b))
-#define MAX(a,b) ((a) < (b) ? (b) : (a))
-
 BODY *mutt_new_body (void)
 {
   BODY *p = (BODY *) safe_calloc (1, sizeof (BODY));

@@ -1049,5 +1049,5 @@ static void pgpring_dump_keyblock (pgp_key_t *p)
 
 char *mutt_gettext (const char *message)
 {
-  return message;
+  return (char *)message;
 }
