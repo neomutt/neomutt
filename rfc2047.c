@@ -484,7 +484,7 @@ void rfc2047_encode_string (char **pd)
   size_t elen;
   char *charsets;
 
-  if (!Charset)
+  if (!Charset || !*pd)
     return;
 
   charsets = SendCharset;
@@ -669,7 +669,7 @@ void rfc2047_decode (char **pd)
   const char *s = *pd;
   size_t dlen;
 
-  if (!*s)
+  if (!*s || !s)
     return;
 
   dlen = 4 * strlen (s); /* should be enough */
