@@ -1225,7 +1225,7 @@ void mutt_update_encoding (BODY *a)
   char chsbuff[STRING];
 
   /* override noconv when it's us-ascii */
-  if (!mutt_strcasecmp (mutt_get_body_charset (chsbuff, sizeof (chsbuff), a), "us-ascii"))
+  if (mutt_is_us_ascii (mutt_get_body_charset (chsbuff, sizeof (chsbuff), a)))
     a->noconv = 0;
 
   if (!a->force_charset && !a->noconv)

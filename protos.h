@@ -246,7 +246,9 @@ int mutt_display_message (HEADER *h);
 int mutt_edit_attachment(BODY *);
 int mutt_edit_message (CONTEXT *, HEADER *);
 int mutt_fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags);
-int mutt_is_utf8 (const char *);
+int mutt_chscmp (const char *s, const char *chs);
+#define mutt_is_utf8(a) mutt_chscmp (a, "utf-8")
+#define mutt_is_us_ascii(a) mutt_chscmp (a, "us-ascii")
 int mutt_parent_message (CONTEXT *, HEADER *);
 int mutt_prepare_template(FILE*, CONTEXT *, HEADER *, HEADER *, short);
 int mutt_resend_message (FILE *, CONTEXT *, HEADER *);

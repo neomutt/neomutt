@@ -232,15 +232,14 @@ void mutt_canonical_charset (char *dest, size_t dlen, const char *name)
       *p += 'a' - 'A';
 }
 
-int mutt_is_utf8 (const char *s)
+int mutt_chscmp (const char *s, const char *chs)
 {
-  char buffer[8];
+  char buffer[STRING];
 
-  if (!s) 
-    return 0;
+  if (!s) return 0;
 
   mutt_canonical_charset (buffer, sizeof (buffer), s);
-  return !mutt_strcmp (buffer, "utf-8");
+  return !mutt_strcasecmp (buffer, chs);
 }
 
 

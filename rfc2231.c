@@ -330,7 +330,7 @@ int rfc2231_encode_string (char **pd)
     d = *pd, dlen = strlen (d);
   }
 
-  if (strcasecmp (charset, "us-ascii"))
+  if (!mutt_is_us_ascii (charset))
     encode = 1;
 
   for (s = d, slen = dlen; slen; s++, slen--)
