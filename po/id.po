@@ -1,13 +1,13 @@
-# Ronny Haryanto <ronny-mutt-po-file@haryan.to>, 1999-2003
+# Ronny Haryanto <ronny-mutt-po-file@haryan.to>, 1999-2005
 #
 # http://www.linux.or.id
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.5.6i\n"
+"Project-Id-Version: 1.5.8i\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-02-12 21:58+0100\n"
-"PO-Revision-Date: 2004-08-18 00:10+1000\n"
+"PO-Revision-Date: 2005-02-14 10:59+0700\n"
 "Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
 "Language-Team: Indonesia <web@linux.or.id>\n"
 "MIME-Version: 1.0\n"
@@ -1501,9 +1501,9 @@ msgid "Could not create temporary file %s"
 msgstr "Tidak bisa membuat file sementara %s"
 
 #: imap/message.c:134
-#, fuzzy, c-format
+#, c-format
 msgid "Evaluating cache... [%d/%d]"
-msgstr "Mengambil header surat... [%d/%d]"
+msgstr "Memeriksa cache... [%d/%d]"
 
 #: imap/message.c:202 pop.c:210
 #, c-format
@@ -2580,7 +2580,6 @@ msgstr ""
 "02111, USA.\n"
 
 #: main.c:99
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -2616,7 +2615,7 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"penggunaan: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
+"penggunaan: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
 "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] "
 "[...]\n"
@@ -2635,8 +2634,8 @@ msgstr ""
 "  -e <perintah>\tperintah yang dijalankan setelah inisialisasi\n"
 "  -f <file>\tkotak surat yang dibaca\n"
 "  -F <file>\tfile muttrc alternatif\n"
-"  -H <file>\tfile contoh daftar headers\n"
-"  -i <file>\tfile yang disertakan dalam surat balasan\n"
+"  -H <file>\tfile draft sebagai sumber header dan badan\n"
+"  -i <file>\tfile yang disertakan dalam badan surat\n"
 "  -m <jenis>\tjenis kotak surat yang digunakan\n"
 "  -n\t\tmenyuruh Mutt untuk tidak membaca muttrc dari system\n"
 "  -p\t\tlanjutkan surat yang ditunda\n"
@@ -2648,7 +2647,7 @@ msgstr ""
 "  -y\t\tpilih kotak surat yg ada di daftar `mailboxes'\n"
 "  -z\t\tlangsung keluar jika tidak ada surat di kotak surat\n"
 "  -Z\t\tbuka folder pertama dg surat baru, langsung keluar jika tidak ada\n"
-"  -h\t\tsurat ini"
+"  -h\t\tpesan bantuan ini"
 
 #: main.c:167
 msgid ""
@@ -2966,9 +2965,9 @@ msgid "Unknown"
 msgstr "Tidak diketahui"
 
 #: mutt_ssl.c:413
-#, fuzzy, c-format
+#, c-format
 msgid "[unable to calculate]"
-msgstr "%s: tidak bisa melampirkan file"
+msgstr "[tidak bisa melakukan penghitungan]"
 
 #: mutt_ssl.c:431
 msgid "[invalid date]"
