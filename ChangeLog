@@ -1,8 +1,13 @@
-2002-12-19 07:42:36  Vincent Lefevre  <vincent@vinc17.org>
+2002-12-19 07:48:39  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* cvslog2changelog.pl: Identify both the author of a change and
+	the one who committed it to the CVS in the changelog.
+
+2002-12-19 07:42:36  Vincent Lefevre  <vincent@vinc17.org>  (roessler)
 
 	* po/fr.po: update
 
-2002-12-19 07:37:01  Thomas Roessler  <roessler@does-not-exist.org>
+2002-12-19 07:37:01  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* Makefile.am: Michael doesn't have $VISUAL set.
 
