@@ -257,7 +257,17 @@ int eat_range (pattern_t *pat, BUFFER *s, BUFFER *err)
 {
   char *tmp;
   int do_exclusive = 0;
+  int skip_quote = 0;
   
+  /*
+   * If simple_search is set to "~m %s", the range will have double quotes 
+   * around it...
+   */
+  if (*s->dptr == '"')
+  {
+    s->dptr++;
+    skip_quote = 1;
+  }
   if (*s->dptr == '<')
     do_exclusive = 1;
   if ((*s->dptr != '-') && (*s->dptr != '<'))
@@ -319,6 +329,9 @@ int eat_range (pattern_t *pat, BUFFER *s, BUFFER *err)
   }
   else
     pat->max = M_MAXRANGE;
+
+  if (skip_quote && *tmp == '"')
+    tmp++;
 
   SKIPWS (tmp);
   s->dptr = tmp;
