@@ -1,3 +1,102 @@
+Sat Sep 26 10:13:39 1998  Thomas Roessler  <roessler@guug.de>
+
+	* mh.c: Changing the index_hint handling for mh folders once again.
+
+	* mh.c:
+	Resort the incoming folder from mh_sync_mailbox() also when new mail
+	arrived.
+
+Fri Sep 25 06:56:35 1998  Thomas Roessler  <roessler@guug.de>
+
+	* pager.c: patch.mutt-0.94.5i.ld.quote_levels.3-4
+
+Thu Sep 24 23:19:50 1998  Thomas Roessler  <roessler@guug.de>
+
+	* pager.c: A new quote_levels patch from liviu.
+
+	* sendlib.c:
+	Rewrite the base64-encoder used for messages.  This should be
+	unified with the encoder in rfc2047.c at some point.
+
+	* pager.c: Undoing Livius quote-levels patch for now.
+
+	* sendlib.c, mutt.h, charset.h, charset.c:
+	[patch-0.94.7i.gt.charset-send.1.gz] With the new charset support in
+	mutt there are better chances to say whether a mail to send consists
+	of characters of the ASCII set only (the charset should be
+	"us-ascii" then) or of other characters from the given charset (this
+	charset should be given then): ASCII characters have the unicode
+	values from 0 to 127.
+
+	* init.c: Fix a segmentation fault with mismatched backticks.
+
+	* init.c: Vikas' merged completion patch, level 3.
+
+Wed Sep 23 20:01:06 1998  Thomas Roessler  <roessler@guug.de>
+
+	* pager.c, mutt_regex.h, init.h: Liviu Daia's smiley patch.
+
+	* status.c, sendlib.c, recvattach.c, protos.h, pager.h, pager.c, mutt.h, main.c, init.h, curs_main.c, curs_lib.c, compose.c, commands.c:
+	Disable recursive invocations of the attach-message function.
+
+	* mh.c: Really fix the index hints.
+
+	* mh.c: Correct the index_hint handling in mh_check_mailbox().
+
+	* sendlib.c: RFC2047-encode the mail-followup-to header.
+
+	* TODO: Remove the maildir/mh resynch entry.
+
+	* pager.c:
+	There is a long-standing problem in Mutt, related to coloring the
+	various levels of quoting: if the attributions are missing, like
+	this:
+	        >>> blah blah from A
+		>> blah blah from B
+		> blah blah from C
+
+	then the "quoted" color object is associated with ">>>", "quoted1"
+	with ">>" and "quoted2" with ">" --- which is not what most people
+	expect. The reason is Mutt doesn't count the quote characters (since
+	there is no way to distinguish between a single quote ">> " and a
+	">" followed by a "> "), and it allocates colors as it finds new
+	types of quote prefixes. The attached patch fixes this problem still
+	without counting the quote characters.
+
+Tue Sep 22 22:54:52 1998  Thomas Roessler  <roessler@guug.de>
+
+	* mx.h, mx.c, mutt.h, mh.c, mbox.c, buffy.c:
+	A first take at corrected mh/maildir support.
+
+	* mx.c, mh.c: Some fixes and code clean-ups.
+
+	* mutt.h, mh.c, init.h: Introduce the $mh_purge option.
+
+	* sendlib.c: Produce "undisclosed-recipients:;" instead of
+	""undisclosed-recipients:;":;" when the user gives no To-Header.
+
+	* mx.c: When generating new messages in MH folders, the initial number
+	should be "1", not "2".  Fix from Gero Treuner.
+
+	* init.c: patch-0.94.7i.vikas.jmy.misc_complete.2
+
+Mon Sep 21 12:49:50 1998  Thomas Roessler  <roessler@guug.de>
+
+	* sendlib.c: Avoid a dangling pointer in mutt_message_to_7bit().
+
+Sun Sep 20 12:05:39 1998  Thomas Roessler  <roessler@guug.de>
+
+	* pager.c: Byrial Jensen's bold-underline patch.
+
+	* charsets/parse_i18n.c: parse_i18n.c doesn't really need snprintf.
+
+Fri Sep 18 05:45:56 1998  Thomas Roessler  <roessler@guug.de>
+
+	* reldate.h, configure.in, configure, ChangeLog: Preparing 0.94.7i.
+
+	* protos.h, init.c, enter.c:
+	Applying the third generation of command completion patches.
+
 Fri Sep 18 05:40:24 1998  Thomas Roessler  <roessler@guug.de>
 
 	* protos.h, init.c, enter.c:

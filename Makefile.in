@@ -137,6 +137,10 @@ reldate:
 	rm -f $(srcdir)/reldate.h
 	echo 'const char *ReleaseDate = "'`date +%Y-%m-%d`'";' > $(srcdir)/reldate.h
 
+changelog:
+	( rcs2log | cat - ChangeLog >> ChangeLog.$$$$ ;\
+	mv ChangeLog.$$$$ ChangeLog )
+
 # make export version
 usdist: distclean reldate
 	rm -rf /tmp/mutt-$(VERSION)

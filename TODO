@@ -6,9 +6,6 @@ Problems are listed in approximate order of priority.
 - Ask IMAP servers for hierarchy separators. (-> Brandon's
   note from Aug 18)
 
-- Apply proper quoting when sending imap "ASTRING"s.  (->
-  John Prevost wrote something on this on Aug 19).
-
   
 - In the "attachment" menu, assume this:
 
