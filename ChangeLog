@@ -1,3 +1,17 @@
+2003-04-02 08:28:24  David Shaw  <dshaw@jabberwocky.com>  (roessler)
+
+	* init.h, mutt.h, pgp.c: Here is the pgp_check_exit patch
+	updated for 1.5.4.  This patch adds the pgp_check_exit option
+	(enabled by default) that causes mutt to check the exit code
+	of the PGP subprocess.	A non-zero exit code means that the
+	subprocess failed and mutt will not continue to send the message.
+
+	This is needed as in certain cases, PGP or GnuPG can fail to
+	completely process a document (say, if the gpg.conf file is
+	mangled, which is how I discovered the problem).  Without an
+	exit code check, mutt will continue anyway and send the half
+	processed file.
+
 2003-04-02 08:21:09  Vsevolod Volkov  <vvv@mutt.org.ua>  (roessler)
 
 	* po/ru.po: update.
