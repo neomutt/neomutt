@@ -803,7 +803,7 @@ one address), you <bf/must/ separate the addresses with a comma (``,'').
 
 To remove an alias or aliases:
 
-<tt/unalias/ <em/addr/ &lsqb; <em/addr/ <em/.../ &rsqb;
+<tt/unalias/ <em/key/ &lsqb; <em/key/ <em/.../ &rsqb;
 
 <tscreen><verb>
 alias muttdude me@cs.hmc.edu (Michael Elkins)
@@ -917,7 +917,7 @@ sequence.
 
 <sect1>Defining aliases for character sets <label id="charset-hook">
 <p>
-Usage: <tt/charset-hook/ <em/alias/ <em/charset/
+Usage: <tt/charset-hook/ <em/alias/ <em/charset/<newline>
 Usage: <tt/iconv-hook/ <em/charset/ <em/local-charset/
 
 The <tt/charset-hook/ command defines an alias for a character set.
@@ -998,7 +998,7 @@ silently truncated at the screen width, and are not wrapped.
 <sect1>Using color and mono video attributes<label id="color">
 <p>
 Usage: <tt/color/ <em/object/ <em/foreground/ <em/background/ &lsqb; <em/regexp/ &rsqb;<newline>
-Usage: <tt/color/ index <em/foreground/ <em/background/ &lsqb; <em/pattern/ &rsqb;<newline>
+Usage: <tt/color/ index <em/foreground/ <em/background/ <em/pattern/<newline>
 Usage: <tt/uncolor/ index <em/pattern/ &lsqb; <em/pattern/ ...  &rsqb;<newline>
 
 If your terminal supports color, you can spice up Mutt by creating your own
@@ -1078,7 +1078,9 @@ for your xterm), since color names may then lose their normal meaning.
 If your terminal does not support color, it is still possible change the video
 attributes through the use of the ``mono'' command:
 
-Usage: <tt/mono/ <em/&lt;object&gt; &lt;attribute&gt;/ &lsqb; <em/regexp/ &rsqb;
+Usage: <tt/mono/ <em/&lt;object&gt; &lt;attribute&gt;/ &lsqb; <em/regexp/ &rsqb;<newline>
+Usage: <tt/mono/ index <em/attribute/ <em/pattern/<newline>
+Usage: <tt/unmono/ index <em/pattern/ &lsqb; <em/pattern/ ...  &rsqb;<newline>
 
 where <em/attribute/ is one of the following:
 
@@ -1371,7 +1373,15 @@ string in the <ref id="macro" name="macro"> command. You may use it to
 automatically run a sequence of commands at startup, or when entering
 certain folders.
 
-<sect1>Message Scoring
+<sect1>Executing functions<label id="exec">
+<p>
+Usage: <tt/exec/ <em/function/ &lsqb; <em/function/ ... &rsqb;
+
+This command can be used to execute any function. Functions are
+listed in the <ref id="functions" name="function reference">.
+``exec function'' is equivalent to ``push &lt;function&gt;''.
+
+<sect1>Message Scoring<label id="score-command">
 <p>
 Usage: <tt/score/ <em/pattern/ <em/value/<newline>
 Usage: <tt/unscore/ <em/pattern/ &lsqb; <em/pattern/ ... &rsqb;
@@ -2792,7 +2802,7 @@ The following are the commands understood by mutt.
 <item>
 <tt><ref id="alias" name="alias"></tt> <em/key/ <em/address/ &lsqb; , <em/address/, ... &rsqb;
 <item>
-<tt><ref id="alias" name="unalias"></tt> <em/key/ <em/address/ &lsqb; , <em/address/, ... &rsqb;
+<tt><ref id="alias" name="unalias"></tt> <em/key/ &lsqb; <em/key/ ... &rsqb;
 <item>
 <tt><ref id="alternative_order" name="alternative&lowbar;order"></tt> <em/mimetype/ &lsqb; <em/mimetype/ ... &rsqb;
 <item>
@@ -2800,45 +2810,65 @@ The following are the commands understood by mutt.
 <item>
 <tt><ref id="bind" name="bind"></tt> <em/map/ <em/key/ <em/function/
 <item>
+<tt><ref id="charset-hook" name="charset-hook"></tt> <em/alias/ <em/charset/
+<item>
 <tt><ref id="color" name="color"></tt> <em/object/ <em/foreground/ <em/background/ &lsqb; <em/regexp/ &rsqb;
 <item>
-<tt><ref id="message-hook" name="message-hook"></tt> <em/pattern/ <em/command/
+<tt><ref id="color" name="uncolor"></tt> <em/index/ <em/pattern/ &lsqb; <em/pattern/ ... &rsqb;
+<item>
+<tt><ref id="exec" name="exec"></tt> <em/function/ &lsqb; <em/function/ ... &rsqb;
+<item>
+<tt><ref id="fcc-hook" name="fcc-hook"></tt> <em/pattern/ <em/mailbox/
+<item>
+<tt><ref id="fcc-save-hook" name="fcc-save-hook"></tt> <em/pattern/ <em/mailbox/
 <item>
 <tt><ref id="folder-hook" name="folder-hook"></tt> <em/pattern/ <em/command/
-<item>
-<tt><ref id="ignore" name="ignore"></tt> <em/pattern/ &lsqb; <em/pattern/ ... &rsqb;
-<item>
-<tt><ref id="ignore" name="unignore"></tt> <em/pattern/ &lsqb; <em/pattern/ ... &rsqb;
 <item>
 <tt><ref id="hdr_order" name="hdr&lowbar;order"></tt> <em/header/ &lsqb; <em/header/ ... &rsqb;
 <item>
 <tt><ref id="hdr_order" name="unhdr&lowbar;order"></tt> <em/header/ &lsqb; <em/header/ ... &rsqb;
 <item>
+<tt><ref id="charset-hook" name="iconv-hook"></tt> <em/charset/ <em/local-charset/
+<item>
+<tt><ref id="ignore" name="ignore"></tt> <em/pattern/ &lsqb; <em/pattern/ ... &rsqb;
+<item>
+<tt><ref id="ignore" name="unignore"></tt> <em/pattern/ &lsqb; <em/pattern/ ... &rsqb;
+<item>
 <tt><ref id="lists" name="lists"></tt> <em/address/ &lsqb; <em/address/ ... &rsqb; 
 <item>
 <tt><ref id="lists" name="unlists"></tt> <em/address/ &lsqb; <em/address/ ... &rsqb; 
 <item>
-<tt><ref id="macro" name="macro"></tt> <em/menu/ <em/key/ <em/sequence/
+<tt><ref id="macro" name="macro"></tt> <em/menu/ <em/key/ <em/sequence/ &lsqb; <em/description/ &rsqb; 
 <item>
 <tt><ref id="mailboxes" name="mailboxes"></tt> <em/filename/ &lsqb; <em/filename/ ... &rsqb;
 <item>
+<tt><ref id="mbox-hook" name="mbox-hook"></tt> <em/pattern/ <em/mailbox/
+<item>
+<tt><ref id="message-hook" name="message-hook"></tt> <em/pattern/ <em/command/
+<item>
 <tt><ref id="color" name="mono"></tt> <em/object attribute/ &lsqb; <em/regexp/ &rsqb;
 <item>
-<tt><ref id="mbox-hook" name="mbox-hook"></tt> <em/pattern/ <em/mailbox/
+<tt><ref id="color" name="unmono"></tt> <em/index/ <em/pattern/ &lsqb; <em/pattern/ ... &rsqb;
 <item>
 <tt><ref id="my_hdr" name="my&lowbar;hdr"></tt> <em/string/
 <item>
 <tt><ref id="my_hdr" name="unmy&lowbar;hdr"></tt> <em/field/ &lsqb; <em/field/ ... &rsqb;
 <item>
+<tt><ref id="pgp-hook" name="pgp-hook"></tt> <em/pattern/ <em/key-id/
+<item>
 <tt><ref id="push" name="push"></tt> <em/string/
 <item>
+<tt><ref id="set" name="reset"></tt> <em/variable/ &lsqb;<em/variable/ ... &rsqb;
+<item>
 <tt><ref id="save-hook" name="save-hook"></tt> <em/regexp/ <em/filename/
+<item>
+<tt><ref id="score-command" name="score"></tt> <em/pattern/ <em/value/
+<item>
+<tt><ref id="score-command" name="unscore"></tt> <em/pattern/ &lsqb; <em/pattern/ ... &rsqb;
 <item>
 <tt><ref id="send-hook" name="send-hook"></tt> <em/regexp/ <em/command/
 <item>
 <tt><ref id="set" name="set"></tt> &lsqb;no|inv&rsqb;<em/variable/&lsqb;=<em/value/&rsqb; &lsqb; <em/variable/ ... &rsqb;
-<item>
-<tt><ref id="set" name="toggle"></tt> <em/variable/ &lsqb;<em/variable/ ... &rsqb;
 <item>
 <tt><ref id="set" name="unset"></tt> <em/variable/ &lsqb;<em/variable/ ... &rsqb;
 <item>
@@ -2847,6 +2877,8 @@ The following are the commands understood by mutt.
 <tt><ref id="lists" name="subscribe"></tt> <em/address/ &lsqb; <em/address/ ... &rsqb; 
 <item>
 <tt><ref id="lists" name="unsubscribe"></tt> <em/address/ &lsqb; <em/address/ ... &rsqb; 
+<item>
+<tt><ref id="set" name="toggle"></tt> <em/variable/ &lsqb;<em/variable/ ... &rsqb;
 <item>
 <tt><ref id="unhook" name="unhook"></tt> <em/hook-type/
 </itemize>
