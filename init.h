@@ -1503,7 +1503,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Mutt allows you to indefinitely ``$postpone sending a message'' which
   ** you are editing.  When you choose to postpone a message, Mutt saves it
-  ** in the folder specified by this variable.  Also see the ``$$postpone''
+  ** in the mail folder specified by this variable.  Also see the ``$$postpone''
   ** variable.
   */
 #ifdef USE_SOCKET
