@@ -1401,7 +1401,9 @@ static void maildir_update_tables (CONTEXT *ctx, int *index_hint)
     if (ctx->hdrs[i]->active)
       ctx->hdrs[i]->index = j++;
   }
+
   mx_update_tables (ctx, 0);
+  mutt_clear_threads (ctx);
 }
 
 static void maildir_update_flags (CONTEXT *ctx, HEADER *o, HEADER *n)
