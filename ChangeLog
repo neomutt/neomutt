@@ -1,4 +1,4 @@
-2002-12-21 20:30:36  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+2002-12-21 20:32:13  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* curs_main.c: OK, Michael is right: Gotos suck. ;-)
 
