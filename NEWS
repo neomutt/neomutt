@@ -1,8 +1,11 @@
 Major changes since 1.1
 -----------------------
 
-- Tommi Komulainen <Tommi.Komulainen@iki.fi> contributed SSL support
-  for mutt's IMAP client code.
+- There is a new variable $fcc_clear.  When set, FCCs are not
+  affected by PGP encryption or signatures.
+
+- Tommi Komulainen <Tommi.Komulainen@iki.fi> has contributed SSL
+  support for mutt's IMAP client code.
 
 Major changes since 0.96.3
 --------------------------
