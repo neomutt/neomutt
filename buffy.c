@@ -189,6 +189,9 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
       *tmp = (BUFFY *) safe_calloc (1, sizeof (BUFFY));
       (*tmp)->path = safe_strdup (buf);
       (*tmp)->next = NULL;
+      /* it is tempting to set magic right here */
+      (*tmp)->magic = 0;
+      
     }
 
     (*tmp)->new = 0;
@@ -266,12 +269,12 @@ int mutt_buffy_check (int force)
     tmp->new = 0;
 
 #ifdef USE_IMAP
-    if ((tmp->magic == M_IMAP) || mx_is_imap (tmp->path))
+    if (mx_is_imap (tmp->path))
       tmp->magic = M_IMAP;
     else
 #endif
 #ifdef USE_POP
-    if ((tmp->magic == M_POP) || mx_is_pop (tmp->path))
+    if (mx_is_pop (tmp->path))
       tmp->magic = M_POP;
     else
 #endif
