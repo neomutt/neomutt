@@ -1,4 +1,6 @@
-2004-08-17 15:47:17  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+2004-08-17 15:56:23  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* configure.in: Check for ssize_t, really.
 
 	* configure.in: Check for ssize_t.
 
