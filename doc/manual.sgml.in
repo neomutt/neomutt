@@ -2852,6 +2852,28 @@ to even if that mailbox does not exist.
 
 Also see the <ref id="record" name="&dollar;record"> variable.
 
+<sect2>forward&lowbar;attachment<label id="forward_attachment">
+<p>
+Type: boolean<newline>
+Default: unset
+
+When set, and you (tag-)forward attachments from the Attachment menu,
+Mutt creates a new message with the specified attachments <em/only/.
+<ref id="forward_format" name="&dollar;forward&lowbar;format"> is used
+to set the default subject.
+
+When unset, Mutt creates a pseudo-message comprising the tagged
+attachments and forwards that. See the section on Forwarding a message
+for details.
+
+For example: if you have a message containing a image/gif,
+application/octet-stream, or whatever attachment, you can go to the
+Attachment menu and forward ONLY that attachment to someone else.
+
+Basically, setting this variable produces the same effect as
+explicitly saving the attachment(s), composing a new message and then
+attaching the saved file(s).
+
 <sect2>forward&lowbar;decode<label id="forward_decode">
 <p>
 Type: boolean<newline>

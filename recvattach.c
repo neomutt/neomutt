@@ -825,7 +825,7 @@ static void reply_attachment_list (int op, int tag, HEADER *hdr, BODY *body)
     if (mutt_prepare_edit_message (ctx, newhdr, hn) < 0)
     {
       mutt_free_header (&newhdr);
-      return;
+      goto cleanup;
     }
 
     mutt_free_envelope (&newhdr->env);
@@ -843,6 +843,8 @@ static void reply_attachment_list (int op, int tag, HEADER *hdr, BODY *body)
 
   if (hn->replied && !hdr->replied)
     mutt_set_flag (Context, hdr, M_REPLIED, 1);
+
+cleanup:
 
   if (ctx != Context)
   {

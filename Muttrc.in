@@ -74,6 +74,7 @@ macro pager   <f1> "!less @docdir@/manual.txt\n" "Show Mutt documentation"
 # set folder_format="%N %F %2l %-8.8u %-8.8g %8s %d %f"
 # set followup_to
 # unset force_name
+# unset forward_attachment
 # set forward_decode
 # unset forward_decrypt
 # set forward_format="[%a: %s]"
