@@ -1,6 +1,6 @@
 Subject: Developers' notes
 From: Thomas Roessler <roessler@guug.de>
-Date: Fri,  6 Aug 1999 09:09:58 +0200
+Date: Tue,  9 May 2000 19:48:08 +0200
 
 
 Required tools
@@ -114,11 +114,13 @@ where you may have to add documentation:
   Manual in nroff format (see man(7)), which deals with
   configuration file commands.
 
-Configuration _variables_ are documented directly in init.h.  The
-parts of The Manual and the muttrc manual page dealing with these
-variables, and the global Muttrc, are generated automatically from
-that documentation.  To start this process, type "make update-doc"
-in the top-level source directory.  
+Configuration _variables_ are documented directly in init.h.   Note
+that this includes documentation for possibly added format flags!
+
+The parts of The Manual and the muttrc manual page dealing with
+these variables, and the global Muttrc, are generated automatically
+from that documentation.  To start this process, type "make
+update-doc" in the top-level source directory.
 
 Note that you may have to update the makedoc utility (makedoc.c)
 when adding new data types to init.h.
