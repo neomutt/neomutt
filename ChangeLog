@@ -1,3 +1,8 @@
+2003-09-29 15:05:52  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* doc/dotlock.man, doc/mutt.man, doc/muttrc.man.head: Fix #1652
+	(Debian #213007), noted by Jens Seidel <tux-master@web.de>.
+
 2003-09-20 06:24:10  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* muttbug.sh.in: Adapt to new GNU coreutils by not using head (1).
