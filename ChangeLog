@@ -1,3 +1,9 @@
+2005-03-16 07:01:59  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* doc/Makefile.in: As Ralf Wildenhues noted, the cygwin EXEEXT
+	patch was incomplete. Note to self: avoid patching on short
+	sleep. Starting tomorrow.
+
 2005-03-16 02:49:33  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* configure.in, doc/Makefile.in, hcache.c, Makefile.am: Various
