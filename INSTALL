@@ -144,6 +144,9 @@ to ``configure'' to help it out, or change the default behavior:
 	addresses in the same form they are parsed.  NOTE: this requires
 	significantly more memory.
 
+	WARNING: DO NOT USE THIS OPTION, IT IS BROKEN.
+
+
 Once ``configure'' has completed, simply type ``make install.''
 
 Mutt should compile cleanly (without errors) and you should end up with a
