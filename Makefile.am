@@ -19,7 +19,14 @@ mutt_DEPENDENCIES = @MUTT_LIB_OBJECTS@
 EXTRA_mutt_SOURCES = pgp.c pgpinvoke.c pgpkey.c pgppubring.c sha1dgst.c \
 	gnupgparse.c resize.c snprintf.c dotlock.c pop.c imap.c socket.c
 
-BUILT_SOURCES = mutt_dotlock.c
+EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO acconfig.h attach.h \
+	buffy.h charset.h config.h copy.h dotlock.h functions.h gen_defs \
+	globals.h hash.h history.h imap.h init.h keymap.h \
+	mailbox.h mapping.h mime.h mutt.h mutt_curses.h mutt_menu.h  \
+	mutt_regex.h mutt_socket.h mx.h pager.h parse.h pgp.h protos.h  \
+	reldate.h rfc1524.h rfc2047.h rfc822.h sha.h sha_locl.h sort.h mime.types
+
+BUILT_SOURCES = mutt_dotlock.c keymap_defs.h
 
 mutt_dotlock.c: dotlock.c
 	cp dotlock.c mutt_dotlock.c
@@ -28,7 +35,7 @@ CLEANFILES = mutt_dotlock.c
 
 LDADD = @LIBOBJS@ @INTLLIBS@
 
-SUBDIRS = doc intl po rx
+SUBDIRS = doc intl po rx contrib charsets
 
 OPS=$(srcdir)/OPS $(srcdir)/OPS.PGP
 
@@ -47,3 +54,24 @@ install-exec-local:
 		chgrp @DOTLOCK_GROUP@ $(bindir)/mutt_dotlock ; \
 		chmod @DOTLOCK_PERMISSION@  $(bindir)/mutt_dotlock ; \
 	fi
+
+install-data-local:
+	-if [ ! -f $(sharedir)/Muttrc ]; then \
+		$(srcdir)/mkinstalldirs $(sharedir); \
+		$(INSTALL) -m 644 $(srcdir)/Muttrc $(sharedir); \
+	fi
+	-if [ ! -f $(sharedir)/mime.types ]; then \
+		$(INSTALL) -m 644 $(srcdir)/mime.types $(sharedir); \
+	fi
+
+
+# Don't make this one ChangeLog - it's intended to be
+# used manually.
+
+changelog:
+	rcs2log | cat - ChangeLog > ChangeLog.$$$$ && mv ChangeLog.$$$$ ChangeLog
+	$(VISUAL) ChangeLog
+
+dist-hook:
+	-for file in $(BUILT_SOURCES) ; do rm -f $(distdir)/$$file ; done
+	-rm -f $(distdir)/config.h

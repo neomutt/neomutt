@@ -4,9 +4,13 @@ dirs="/usr/local/lib/nls /usr/lib/nls /usr/local/share/nls /usr/share/nls"
 dirs="$dirs /usr/local/lib/i18n /usr/lib/i18n /usr/local/share/i18n"
 dirs="$dirs /usr/share/i18n"
 
-trap "rm -f ./charsets.$$; exit" 0 1 2 15
+trap "rm -f ./charsets.$$ charsets.list.$$ charsets.alias.$$ ; exit" 0 1 2 15
 
-rm -f ./charsets.list ./charsets.alias ./charsets.$$
+rm -f ./charsets.$$
+
+for i in charsets.list charsets.alias ; do
+	mv -f $i $i.$$
+done
 
 for d in $dirs ; do
   [ -d $d/charmaps ] && ./parse_i18n ./ $d/charmaps/* >> ./charsets.$$
@@ -14,3 +18,8 @@ done
 
 awk '$1 == "charset" { printf ("%s\n", $2); }' ./charsets.$$ > charsets.list
 awk '$1 == "alias"   { printf ("%s %s\n", $2, $3); }' ./charsets.$$ > charsets.alias
+
+if ! test -s charsets.list ; then
+	mv charsets.alias.$$ charsets.alias
+	mv charsets.list.$$ charsets.list
+fi

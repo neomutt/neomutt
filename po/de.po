@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-02 16:05+0200\n"
+"POT-Creation-Date: 1998-10-04 00:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -678,11 +678,11 @@ msgstr "Alle Nachrichten gelöscht."
 msgid "You are on the first message."
 msgstr "Sie sind bereits auf der ersten Nachricht."
 
-#: curs_main.c:1123 pattern.c:1062
+#: curs_main.c:1123 pattern.c:1074
 msgid "Search wrapped to top."
 msgstr "Suche von vorne begonnen."
 
-#: curs_main.c:1132 pattern.c:1073
+#: curs_main.c:1132 pattern.c:1085
 msgid "Search wrapped to bottom."
 msgstr "Suche von hinten begonnen."
 
@@ -840,7 +840,7 @@ msgstr "In Kommando einspeisen: "
 #: handler.c:1115 handler.c:1138
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
-msgstr "[-- Fehlerausgame von %s --]\n"
+msgstr "[-- Fehlerausgabe von %s --]\n"
 
 #: handler.c:1239
 msgid "Error: multipart/signed has no protocol."
@@ -2001,7 +2001,7 @@ msgstr "Sie sind auf dem letzten Eintrag."
 msgid "You are on the first entry."
 msgstr "Sie sind auf dem ersten Eintrag"
 
-#: menu.c:584 pattern.c:1008
+#: menu.c:584 pattern.c:1020
 msgid "Search for: "
 msgstr "Suche nach: "
 
@@ -2009,11 +2009,11 @@ msgstr "Suche nach: "
 msgid "Reverse search for: "
 msgstr "Suche rückwärts nach: "
 
-#: menu.c:596 pattern.c:1041
+#: menu.c:596 pattern.c:1053
 msgid "No search pattern."
 msgstr "Kein Suchmuster."
 
-#: menu.c:626 pager.c:1769 pager.c:1785 pager.c:1872 pattern.c:1106
+#: menu.c:626 pager.c:1769 pager.c:1785 pager.c:1872 pattern.c:1118
 msgid "Not found."
 msgstr "Nicht gefunden."
 
@@ -2183,60 +2183,60 @@ msgstr "Ungültiger Monat: %s"
 msgid "error in expression"
 msgstr "Fehler in Ausdruck."
 
-#: pattern.c:574 pattern.c:677
+#: pattern.c:579 pattern.c:687
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "Fehler in Muster bei: %s"
 
-#: pattern.c:619
+#: pattern.c:627
 #, c-format
 msgid "%c: invalid command"
 msgstr "%c: Ungültiges Kommando"
 
-#: pattern.c:625
+#: pattern.c:633
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: Wird in diesem Modus nicht unterstützt."
 
-#: pattern.c:638
+#: pattern.c:646
 msgid "missing parameter"
 msgstr "Fehlender Parameter"
 
-#: pattern.c:654
+#: pattern.c:662
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "Unpasende Klammern: %s"
 
-#: pattern.c:684
+#: pattern.c:694
 msgid "empty pattern"
 msgstr "Leeres Muster"
 
-#: pattern.c:835
+#: pattern.c:847
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr ""
 
-#: pattern.c:899 pattern.c:1027
+#: pattern.c:911 pattern.c:1039
 msgid "Compiling search pattern..."
 msgstr "Compiliere Suchmuster..."
 
-#: pattern.c:913
+#: pattern.c:925
 msgid "Executing command on matching messages..."
 msgstr "Führe Kommando aus..."
 
-#: pattern.c:970
+#: pattern.c:982
 msgid "No messages matched criteria."
 msgstr "Keine Nachrichten haben Kriterium erfüllt."
 
-#: pattern.c:1065
+#: pattern.c:1077
 msgid "Search hit bottom without finding match"
 msgstr "Suche hat Ende erreicht, ohne Treffer zu erzielen."
 
-#: pattern.c:1076
+#: pattern.c:1088
 msgid "Search hit top without finding match"
 msgstr "Suche hat Anfang erreicht, ohne Treffer zu erzielen."
 
-#: pattern.c:1098
+#: pattern.c:1110
 msgid "Search interrupted."
 msgstr "Suche unterbrochen."
 
@@ -2522,6 +2522,11 @@ msgstr "Server hat Verbindung geschlossen!"
 #: pop.c:187
 msgid "No new mail in POP mailbox."
 msgstr "Keine neuen Nachrichten auf dem POP-Server."
+
+#: pop.c:195
+#, c-format
+msgid "Reading %d new message (%d bytes)..."
+msgstr ""
 
 #: pop.c:231
 msgid "Error reading message!"

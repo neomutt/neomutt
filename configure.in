@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(mutt.h)
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(mutt, 0.94.9p1)
+AM_INIT_AUTOMAKE(mutt, 0.94.10)
 
 ALL_LINGUAS="de"
 
@@ -445,4 +445,4 @@ MUTTLOCALEDIR=$mutt_cv_prefix/$DATADIRNAME/locale
 AC_SUBST(MUTTLOCALEDIR)
 AC_DEFINE_UNQUOTED(MUTTLOCALEDIR, "$MUTTLOCALEDIR")
 
-AC_OUTPUT(Makefile intl/Makefile po/Makefile.in rx/Makefile Muttrc doc/Makefile doc/dotlock.man doc/mutt.man charsets/Makefile)
+AC_OUTPUT(Makefile intl/Makefile po/Makefile.in rx/Makefile Muttrc doc/Makefile doc/dotlock.man doc/mutt.man charsets/Makefile contrib/Makefile)

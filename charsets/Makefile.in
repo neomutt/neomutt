@@ -22,12 +22,17 @@ CC=@CC@
 CFLAGS=@CFLAGS@ -D_GEN_CHARSETS
 LDFLAGS=@LDFLAGS@
 srcdir=@srcdir@
+top_srcdir=@top_srcdir@
 VPATH=@srcdir@
 @SET_MAKE@
 INSTALL=@INSTALL@
 
-charsets.list: parse_i18n
-	sh gen_charsets
+subdir=charsets
+distdir=@distdir@
+
+DISTFILES = parse_i18n.c Makefile.in charsets.list charsets.alias gen_charsets
+
+all: charsets.list
 
 parse_i18n: parse_i18n.o
 	$(CC) -o parse_i18n parse_i18n.o
@@ -35,16 +40,14 @@ parse_i18n: parse_i18n.o
 clean:
 	-rm -f *.o *~ core parse_i18n
 
-distclean: clean veryclean
+distclean: clean
 	-rm -f Makefile
 
-veryclean:
+maintainer-clean: distclean
 	-rm -f `cat charsets.list` charsets.list charsets.alias
 
-maintainer-clean: distclean
-
-charmaps: parse_i18n
-	( cd $(srcdir) && ./gen_charsets )
+charmaps charsets.list: parse_i18n
+	cd $(srcdir) && sh ./gen_charsets
 
 install: charsets.list
 	$(srcdir)/../mkinstalldirs $(sharedir)/charsets
@@ -55,3 +58,12 @@ install: charsets.list
 	  $(INSTALL) -m 644 $(sharedir)/charsets/charsets.alias.dist	\
 			$(sharedir)/charsets/charsets.alias
 
+Makefile: ../config.status Makefile.in
+	cd .. \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+distdir dist: Makefile $(DISTFILES)
+	for file in `cat charsets.list` $(DISTFILES) ; do	\
+		ln $(srcdir)/$$file $(distdir) 2> /dev/null	\
+			|| cp -p $(srcdir)/$$file $(distdir);	\
+	done

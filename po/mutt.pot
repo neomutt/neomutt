@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-02 16:20+0200\n"
+"POT-Creation-Date: 1998-10-04 00:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -679,11 +679,11 @@ msgstr ""
 msgid "You are on the first message."
 msgstr ""
 
-#: curs_main.c:1123 pattern.c:1062
+#: curs_main.c:1123 pattern.c:1074
 msgid "Search wrapped to top."
 msgstr ""
 
-#: curs_main.c:1132 pattern.c:1073
+#: curs_main.c:1132 pattern.c:1085
 msgid "Search wrapped to bottom."
 msgstr ""
 
@@ -1974,7 +1974,7 @@ msgstr ""
 msgid "You are on the first entry."
 msgstr ""
 
-#: menu.c:584 pattern.c:1008
+#: menu.c:584 pattern.c:1020
 msgid "Search for: "
 msgstr ""
 
@@ -1982,11 +1982,11 @@ msgstr ""
 msgid "Reverse search for: "
 msgstr ""
 
-#: menu.c:596 pattern.c:1041
+#: menu.c:596 pattern.c:1053
 msgid "No search pattern."
 msgstr ""
 
-#: menu.c:626 pager.c:1769 pager.c:1785 pager.c:1872 pattern.c:1106
+#: menu.c:626 pager.c:1769 pager.c:1785 pager.c:1872 pattern.c:1118
 msgid "Not found."
 msgstr ""
 
@@ -2156,60 +2156,60 @@ msgstr ""
 msgid "error in expression"
 msgstr ""
 
-#: pattern.c:574 pattern.c:677
+#: pattern.c:579 pattern.c:687
 #, c-format
 msgid "error in pattern at: %s"
 msgstr ""
 
-#: pattern.c:619
+#: pattern.c:627
 #, c-format
 msgid "%c: invalid command"
 msgstr ""
 
-#: pattern.c:625
+#: pattern.c:633
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr ""
 
-#: pattern.c:638
+#: pattern.c:646
 msgid "missing parameter"
 msgstr ""
 
-#: pattern.c:654
+#: pattern.c:662
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr ""
 
-#: pattern.c:684
+#: pattern.c:694
 msgid "empty pattern"
 msgstr ""
 
-#: pattern.c:835
+#: pattern.c:847
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr ""
 
-#: pattern.c:899 pattern.c:1027
+#: pattern.c:911 pattern.c:1039
 msgid "Compiling search pattern..."
 msgstr ""
 
-#: pattern.c:913
+#: pattern.c:925
 msgid "Executing command on matching messages..."
 msgstr ""
 
-#: pattern.c:970
+#: pattern.c:982
 msgid "No messages matched criteria."
 msgstr ""
 
-#: pattern.c:1065
+#: pattern.c:1077
 msgid "Search hit bottom without finding match"
 msgstr ""
 
-#: pattern.c:1076
+#: pattern.c:1088
 msgid "Search hit top without finding match"
 msgstr ""
 
-#: pattern.c:1098
+#: pattern.c:1110
 msgid "Search interrupted."
 msgstr ""
 
@@ -2474,6 +2474,11 @@ msgstr ""
 
 #: pop.c:187
 msgid "No new mail in POP mailbox."
+msgstr ""
+
+#: pop.c:195
+#, c-format
+msgid "Reading %d new message (%d bytes)..."
 msgstr ""
 
 #: pop.c:231

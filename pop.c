@@ -192,7 +192,7 @@ void mutt_fetchPopMail (void)
     goto finish;
 
   snprintf (msgbuf, sizeof (msgbuf),
-	    msgs > 1 ? "_(Reading %d new message (%d bytes)...") :
+	    msgs > 1 ? _("Reading %d new message (%d bytes)...") :
 		    ("Reading %d new messages (%d bytes)..."), msgs, bytes);
   mutt_message (msgbuf);
 

@@ -1,4 +1,6 @@
 SHELL=/bin/sh
+
+PACKAGE=@PACKAGE@
 VERSION=@VERSION@
 
 prefix=@prefix@
@@ -9,7 +11,9 @@ mandir=@mandir@
 sharedir=@sharedir@
 srcdir=@srcdir@
 docdir=@docdir@
-VPATH=@srcdir@/doc
+top_srcdir=@top_srcdir@
+top_builddir=..
+VPATH=@srcdir@
 @SET_MAKE@
 
 INSTALL=@INSTALL@
@@ -18,6 +22,11 @@ XCPPFLAGS=-I. @CPPFLAGS@
 CFLAGS=@CFLAGS@ -DSHAREDIR=\"$(sharedir)\" $(XCPPFLAGS)
 LDFLAGS=@LDFLAGS@
 
+DISTFILES = Makefile.in PGP-Notes.txt dotlock.man.in \
+	manual.sgml manual.txt mutt.man.in style-guide
+
+subdir = doc
+
 complete: all html
 
 all: mutt.man dotlock.man manual.txt 
@@ -25,10 +34,10 @@ all: mutt.man dotlock.man manual.txt
 html: manual.html
 
 install: dotlock.man mutt.man manual.txt
-	../mkinstalldirs $(mandir)/man1
+	$(top_srcdir)/mkinstalldirs $(mandir)/man1
 	$(INSTALL) -m 644 mutt.man $(mandir)/man1/mutt.1
 	$(INSTALL) -m 644 dotlock.man $(mandir)/man1/mutt.dotlock.1
-	../mkinstalldirs $(docdir)
+	$(top_srcdir)/mkinstalldirs $(docdir)
 	$(INSTALL) -m 644 manual.txt $(docdir)
 	$(INSTALL) -m 644 PGP-Notes.txt $(docdir)
 
@@ -58,3 +67,15 @@ maintainer-clean: clean clean-real
 
 distclean: clean
 	rm -f Makefile
+
+Makefile: Makefile.in ../config.status
+	cd .. \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+distdir = ../$(PACKAGE)-$(VERSION)/$(subdir)
+dist distdir: Makefile $(DISTFILES)
+	for file in $(DISTFILES) ; do				\
+		ln $(srcdir)/$$file $(distdir) 2> /dev/null 	\
+			|| cp -p $(srcdir)/$$file $(distdir); 	\
+	done
+			
