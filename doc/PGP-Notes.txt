@@ -123,7 +123,16 @@ For PGP 2.6, a German version called "muttde" is available
 as well.
 
 
+Q: "My PGP signatures are being invalidated.  BTW, I'm using Courier
+    MTA."
 
+The author of the Courier MTA believes that the standard specifying
+multipart/signed is broken.  For that reason, he has choosen to
+implement his MTA in a way which does not assure that
+multipart/signed body parts are left untouched.
+
+We suggest that you abandon courier and change to sendmail, postfix,
+or exim.
 
 
 
