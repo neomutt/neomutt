@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.3.25i\n"
-"POT-Creation-Date: 2002-01-15 10:03+0100\n"
+"POT-Creation-Date: 2002-01-18 12:44+0100\n"
 "PO-Revision-Date: 2002-01-15 21:57+300\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Im Eunjea <eunjea@kldp.org>\n"
@@ -138,7 +138,7 @@ msgstr "정의되지 않은 MIME 형식. 첨부물을 볼 수 없음."
 msgid "Cannot create filter"
 msgstr "필터를 만들 수 없음"
 
-#: attach.c:629 attach.c:661 attach.c:948 attach.c:1006 handler.c:1544
+#: attach.c:629 attach.c:661 attach.c:948 attach.c:1006 handler.c:1549
 #: pgpkey.c:566 pgpkey.c:755
 msgid "Can't create filter"
 msgstr "필터를 만들 수 없음"
@@ -686,7 +686,7 @@ msgstr "열린 메일함이 없음."
 msgid "There are no messages."
 msgstr "메일이 없음."
 
-#: curs_main.c:61 mx.c:1128 pager.c:65 recvattach.c:47
+#: curs_main.c:61 mx.c:1132 pager.c:65 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "읽기 전용 메일함."
 
@@ -857,8 +857,8 @@ msgstr "더 이상 글타래 없음."
 msgid "You are on the first thread."
 msgstr "처음 글타래입니다."
 
-#: curs_main.c:1509 curs_main.c:1541 flags.c:249 thread.c:935 thread.c:990
-#: thread.c:1045
+#: curs_main.c:1509 curs_main.c:1541 flags.c:237 thread.c:962 thread.c:1017
+#: thread.c:1072
 msgid "Threading is not enabled."
 msgstr "글타래 모드가 아님."
 
@@ -980,115 +980,115 @@ msgstr "폴더에 첨가할 수 없음: %s"
 msgid "Error. Preserving temporary file: %s"
 msgstr "임시 파일을 저장하는 중 오류: %s"
 
-#: flags.c:292
+#: flags.c:280
 msgid "Set flag"
 msgstr "플래그 설정"
 
-#: flags.c:292
+#: flags.c:280
 msgid "Clear flag"
 msgstr "플래그 지움"
 
-#: handler.c:1325
+#: handler.c:1330
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr "[-- 오류:  Multipart/Alternative 부분을 표시 수 없음! --]\n"
 
-#: handler.c:1443
+#: handler.c:1448
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- 첨부물 #%d"
 
-#: handler.c:1455
+#: handler.c:1460
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- 종류: %s/%s, 인코딩 방식: %s, 크기: %s --]\n"
 
-#: handler.c:1515
+#: handler.c:1520
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- %s를 사용한 자동 보기 --]\n"
 
-#: handler.c:1516
+#: handler.c:1521
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "자동 보기 명령 실행: %s"
 
-#: handler.c:1548
+#: handler.c:1553
 #, c-format
 msgid "[-- Can't run %s. --]\n"
 msgstr "[-- %s를 실행할 수 없음. --]\n"
 
-#: handler.c:1566 handler.c:1587
+#: handler.c:1571 handler.c:1592
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- %s의 자동 보기 오류 --]\n"
 
-#: handler.c:1624
+#: handler.c:1629
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr "[-- 오류: message/external-body에 access-type 변수가 없음 --]\n"
 
-#: handler.c:1643
+#: handler.c:1648
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[ -- %s/%s 첨부물 "
 
-#: handler.c:1650
+#: handler.c:1655
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(크기: %s 바이트) "
 
-#: handler.c:1652
+#: handler.c:1657
 msgid "has been deleted --]\n"
 msgstr "삭제 되었음 --]\n"
 
-#: handler.c:1657
+#: handler.c:1662
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- %s에 --]\n"
 
-#: handler.c:1662
+#: handler.c:1667
 #, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- 이름: %s --]\n"
 
-#: handler.c:1675 handler.c:1691
+#: handler.c:1680 handler.c:1696
 #, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
 msgstr "[-- 이 %s/%s 첨부물은 포함되지 않음, --]\n"
 
-#: handler.c:1677
+#: handler.c:1682
 msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
 msgstr "[-- 지정된 외부 소스가 만기됨 --]\n"
 
-#: handler.c:1695
+#: handler.c:1700
 #, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr "[-- 지정된 access-type %s는 지원되지 않음 --]\n"
 
-#: handler.c:1812
+#: handler.c:1817
 msgid "Error: multipart/signed has no protocol."
 msgstr "오류: multipart/signed는 프로토콜이 없음."
 
-#: handler.c:1825
+#: handler.c:1830
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "오류: multipart/encrypted 프로토콜 변수가 없음!"
 
-#: handler.c:1872
+#: handler.c:1877
 msgid "Unable to open temporary file!"
 msgstr "임시 파일을 열 수 없음!"
 
-#: handler.c:1932
+#: handler.c:1937
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- '%s/%s'는 지원되지 않음 "
 
-#: handler.c:1937
+#: handler.c:1942
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "('%s' 키: 부분 보기)"
 
-#: handler.c:1939
+#: handler.c:1944
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "('첨부물 보기' 글쇠 정의가 필요함!)"
 
@@ -1355,102 +1355,102 @@ msgstr "메세지 %d를 %s로 복사 중..."
 msgid "Continue?"
 msgstr "계속할까요?"
 
-#: init.c:486
+#: init.c:492
 msgid "alias: no address"
 msgstr "별칭: 주소 없음"
 
-#: init.c:586
+#: init.c:592
 msgid "invalid header field"
 msgstr "잘못된 헤더 필드"
 
-#: init.c:639
+#: init.c:645
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: 알 수 없는 정렬 방법"
 
-#: init.c:751
+#: init.c:757
 #, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default: 정규표현식 오류: %s\n"
 
-#: init.c:814
+#: init.c:820
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: 알 수 없는 변수"
 
-#: init.c:823
+#: init.c:829
 msgid "prefix is illegal with reset"
 msgstr "잘못된 접두사"
 
-#: init.c:829
+#: init.c:835
 msgid "value is illegal with reset"
 msgstr "잘못된 변수값"
 
-#: init.c:868
+#: init.c:874
 #, c-format
 msgid "%s is set"
 msgstr "%s 설정"
 
-#: init.c:868
+#: init.c:874
 #, c-format
 msgid "%s is unset"
 msgstr "%s 설정 해제"
 
-#: init.c:1074
+#: init.c:1080
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: 잘못된 메일함 형식"
 
-#: init.c:1099 init.c:1144
+#: init.c:1105 init.c:1150
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: 잘못된 값"
 
-#: init.c:1202
+#: init.c:1208
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: 알 수 없는 형식"
 
-#: init.c:1245
+#: init.c:1251
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "%s의 %d번 줄에 오류: %s"
 
 #. the muttrc source keyword
-#: init.c:1261
+#: init.c:1267
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: %s에 오류"
 
-#: init.c:1262
+#: init.c:1268
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr "source: %s에 오류가 많으므로 읽기 취소"
 
-#: init.c:1276
+#: init.c:1282
 #, c-format
 msgid "source: error at %s"
 msgstr "source: %s에 오류"
 
-#: init.c:1281
+#: init.c:1287
 msgid "source: too many arguments"
 msgstr "source: 인수가 너무 많음"
 
-#: init.c:1332
+#: init.c:1338
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: 알 수 없는 명령어"
 
-#: init.c:1688
+#: init.c:1694
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "명령어 오류: %s\n"
 
-#: init.c:1737
+#: init.c:1743
 msgid "unable to determine home directory"
 msgstr "홈 디렉토리를 찾을 수 없음"
 
-#: init.c:1745
+#: init.c:1751
 msgid "unable to determine username"
 msgstr "사용자 이름을 알수 없음"
 
@@ -2566,7 +2566,7 @@ msgstr "선택창에는 바로 가기 기능이 없습니다."
 msgid "Tagging is not supported."
 msgstr "태그를 붙이는 것을 지원하지 않음."
 
-#: mh.c:597
+#: mh.c:603
 #, c-format
 msgid "Reading %s... %d"
 msgstr "%s 읽는 중... %d"
@@ -2811,54 +2811,54 @@ msgstr "%s 메일함을 동기화 시킬 수 없음!"
 msgid "Move read messages to %s?"
 msgstr "읽은 메일을 %s로 옮길까요?"
 
-#: mx.c:886 mx.c:1143
+#: mx.c:890 mx.c:1147
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "삭제 표시된 메일(%d)을 삭제할까요?"
 
-#: mx.c:886 mx.c:1143
+#: mx.c:890 mx.c:1147
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "삭제 표시된 메일들(%d)을 삭제할까요?"
 
-#: mx.c:910
+#: mx.c:914
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "읽은 메일을 %s로 옮기는 중..."
 
-#: mx.c:970 mx.c:1134
+#: mx.c:974 mx.c:1138
 msgid "Mailbox is unchanged."
 msgstr "메일함이 변경되지 않음."
 
-#: mx.c:1006
+#: mx.c:1010
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d개 보관, %d개 이동, %d개 삭제"
 
-#: mx.c:1009 mx.c:1181
+#: mx.c:1013 mx.c:1185
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d개 보관, %d개 삭제"
 
-#: mx.c:1119
+#: mx.c:1123
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " 쓰기 상태 바꾸기; `%s'를 누르세요"
 
-#: mx.c:1121
+#: mx.c:1125
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "다시 쓰기를 가능하게 하려면 'toggle-write'를 사용하세요!"
 
-#: mx.c:1123
+#: mx.c:1127
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "메일함이 쓰기 불가능으로 표시 되었음. %s"
 
-#: mx.c:1178
+#: mx.c:1182
 msgid "Mailbox checkpointed."
 msgstr "메일함이 표시됨."
 
-#: mx.c:1496
+#: mx.c:1500
 msgid "Can't write message"
 msgstr "메일을 쓰지 못함"
 
@@ -3749,11 +3749,11 @@ msgstr "정렬 함수 찾을 수 없음! [버그 보고 바람]"
 msgid "(no mailbox)"
 msgstr "(메일함 없음)"
 
-#: thread.c:1002
+#: thread.c:1029
 msgid "Parent message is not visible in this limited view."
 msgstr "제한된 보기로 부모 메일은 보이지 않는 상태임."
 
-#: thread.c:1008
+#: thread.c:1035
 msgid "Parent message is not available."
 msgstr "부모 메일이 존재하지 않음."
 

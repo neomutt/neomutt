@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.3.23.2i\n"
-"POT-Creation-Date: 2002-01-15 10:03+0100\n"
+"POT-Creation-Date: 2002-01-18 12:44+0100\n"
 "PO-Revision-Date: 2001-11-28 10:38+0700\n"
 "Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
 "Language-Team: Indonesia <i18n@linux.or.id>\n"
@@ -137,7 +137,7 @@ msgstr "Jenis MIME tidak didefinisikan. Tidak bisa melihat lampiran."
 msgid "Cannot create filter"
 msgstr "Tidak bisa membuat filter"
 
-#: attach.c:629 attach.c:661 attach.c:948 attach.c:1006 handler.c:1544
+#: attach.c:629 attach.c:661 attach.c:948 attach.c:1006 handler.c:1549
 #: pgpkey.c:566 pgpkey.c:755
 msgid "Can't create filter"
 msgstr "Tidak bisa membuat filter"
@@ -690,7 +690,7 @@ msgstr "Tidak ada kotak surat yang terbuka."
 msgid "There are no messages."
 msgstr "Tidak ada surat."
 
-#: curs_main.c:61 mx.c:1128 pager.c:65 recvattach.c:47
+#: curs_main.c:61 mx.c:1132 pager.c:65 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "Kotak surat hanya bisa dibaca."
 
@@ -863,8 +863,8 @@ msgstr "Tidak ada thread lagi."
 msgid "You are on the first thread."
 msgstr "Anda di thread yang pertama."
 
-#: curs_main.c:1509 curs_main.c:1541 flags.c:249 thread.c:935 thread.c:990
-#: thread.c:1045
+#: curs_main.c:1509 curs_main.c:1541 flags.c:237 thread.c:962 thread.c:1017
+#: thread.c:1072
 msgid "Threading is not enabled."
 msgstr "Tidak disetting untuk melakukan threading."
 
@@ -987,118 +987,118 @@ msgstr "Tidak bisa menambah ke kotak surat: %s"
 msgid "Error. Preserving temporary file: %s"
 msgstr "Error. Menyimpan file sementara: %s"
 
-#: flags.c:292
+#: flags.c:280
 msgid "Set flag"
 msgstr "Tandai"
 
-#: flags.c:292
+#: flags.c:280
 msgid "Clear flag"
 msgstr "Batal ditandai"
 
-#: handler.c:1325
+#: handler.c:1330
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr ""
 "[-- Error: Tidak ada bagian Multipart/Alternative yg bisa ditampilkan! --]\n"
 
-#: handler.c:1443
+#: handler.c:1448
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- Lampiran #%d"
 
-#: handler.c:1455
+#: handler.c:1460
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Jenis: %s/%s, Encoding: %s, Ukuran: %s --]\n"
 
-#: handler.c:1515
+#: handler.c:1520
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Tampil-otomatis dengan %s --]\n"
 
-#: handler.c:1516
+#: handler.c:1521
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Menjalankan perintah tampil-otomatis: %s"
 
-#: handler.c:1548
+#: handler.c:1553
 #, c-format
 msgid "[-- Can't run %s. --]\n"
 msgstr "[-- Tidak bisa menjalankan %s. --]\n"
 
-#: handler.c:1566 handler.c:1587
+#: handler.c:1571 handler.c:1592
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Stderr dari tampil-otomatis %s --]\n"
 
-#: handler.c:1624
+#: handler.c:1629
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr ""
 "[-- Error:  message/external-body tidak punya parameter access-type --]\n"
 
-#: handler.c:1643
+#: handler.c:1648
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- Lampiran %s/%s ini "
 
-#: handler.c:1650
+#: handler.c:1655
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(ukuran %s bytes) "
 
-#: handler.c:1652
+#: handler.c:1657
 msgid "has been deleted --]\n"
 msgstr "telah dihapus --]\n"
 
-#: handler.c:1657
+#: handler.c:1662
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- pada %s --]\n"
 
-#: handler.c:1662
+#: handler.c:1667
 #, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- nama: %s --]\n"
 
-#: handler.c:1675 handler.c:1691
+#: handler.c:1680 handler.c:1696
 #, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
 msgstr "[-- Lampiran %s/%s ini tidak disertakan, --]\n"
 
-#: handler.c:1677
+#: handler.c:1682
 #, fuzzy
 msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
 msgstr "-- dan sumber eksternal yg disebutkan telah --]\n"
 
-#: handler.c:1695
+#: handler.c:1700
 #, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr "[-- dan tipe akses %s tsb tidak didukung --]\n"
 
-#: handler.c:1812
+#: handler.c:1817
 msgid "Error: multipart/signed has no protocol."
 msgstr "Error: multipart/signed tidak punya protokol."
 
-#: handler.c:1825
+#: handler.c:1830
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Error: multipart/encrypted tidak punya parameter protokol!"
 
-#: handler.c:1872
+#: handler.c:1877
 msgid "Unable to open temporary file!"
 msgstr "Tidak bisa membuka file sementara!"
 
-#: handler.c:1932
+#: handler.c:1937
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s tidak didukung "
 
-#: handler.c:1937
+#: handler.c:1942
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(gunakan '%s' untuk melihat bagian ini)"
 
-#: handler.c:1939
+#: handler.c:1944
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(tombol untuk 'view-attachments' belum ditentukan!)"
 
@@ -1365,102 +1365,102 @@ msgstr "Menyalin surat %d ke %s..."
 msgid "Continue?"
 msgstr "Lanjutkan?"
 
-#: init.c:486
+#: init.c:492
 msgid "alias: no address"
 msgstr "alias: tidak ada alamat email"
 
-#: init.c:586
+#: init.c:592
 msgid "invalid header field"
 msgstr "kolom header tidak dikenali"
 
-#: init.c:639
+#: init.c:645
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: metoda pengurutan tidak dikenali"
 
-#: init.c:751
+#: init.c:757
 #, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s): error pada regexp: %s\n"
 
-#: init.c:814
+#: init.c:820
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: variable tidak diketahui"
 
-#: init.c:823
+#: init.c:829
 msgid "prefix is illegal with reset"
 msgstr "prefix tidak diperbolehkan dengan reset"
 
-#: init.c:829
+#: init.c:835
 msgid "value is illegal with reset"
 msgstr "nilai tidak diperbolehkan dengan reset"
 
-#: init.c:868
+#: init.c:874
 #, c-format
 msgid "%s is set"
 msgstr "%s hidup"
 
-#: init.c:868
+#: init.c:874
 #, c-format
 msgid "%s is unset"
 msgstr "%s mati"
 
-#: init.c:1074
+#: init.c:1080
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: jenis kotak surat tidak dikenali"
 
-#: init.c:1099 init.c:1144
+#: init.c:1105 init.c:1150
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: nilai tidak betul"
 
-#: init.c:1202
+#: init.c:1208
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: jenis tidak dikenali"
 
-#: init.c:1245
+#: init.c:1251
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Error di %s, baris %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1261
+#: init.c:1267
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: errors di %s"
 
-#: init.c:1262
+#: init.c:1268
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr "source: pembacaan dibatalkan sebab terlalu banyak error di %s"
 
-#: init.c:1276
+#: init.c:1282
 #, c-format
 msgid "source: error at %s"
 msgstr "source: error pada %s"
 
-#: init.c:1281
+#: init.c:1287
 msgid "source: too many arguments"
 msgstr "source: parameter terlalu banyak"
 
-#: init.c:1332
+#: init.c:1338
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: perintah tidak dikenali"
 
-#: init.c:1688
+#: init.c:1694
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Error di baris perintah: %s\n"
 
-#: init.c:1737
+#: init.c:1743
 msgid "unable to determine home directory"
 msgstr "tidak bisa menentukan home direktori"
 
-#: init.c:1745
+#: init.c:1751
 msgid "unable to determine username"
 msgstr "tidak bisa menentukan username"
 
@@ -2580,7 +2580,7 @@ msgstr "Pelompatan tidak diimplementasikan untuk dialogs."
 msgid "Tagging is not supported."
 msgstr "Penandaan tidak didukung."
 
-#: mh.c:597
+#: mh.c:603
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Membaca %s... %d"
@@ -2825,54 +2825,54 @@ msgstr "Tidak bisa mensinkronisasi kotak surat %s!"
 msgid "Move read messages to %s?"
 msgstr "Pindahkan surat-surat yang sudah dibaca ke %s?"
 
-#: mx.c:886 mx.c:1143
+#: mx.c:890 mx.c:1147
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Benar-benar hapus %d surat yang ditandai akan dihapus?"
 
-#: mx.c:886 mx.c:1143
+#: mx.c:890 mx.c:1147
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Benar-benar hapus %d surat yang ditandai akan dihapus?"
 
-#: mx.c:910
+#: mx.c:914
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Pindahkan surat-surat yang sudah dibaca ke %s..."
 
-#: mx.c:970 mx.c:1134
+#: mx.c:974 mx.c:1138
 msgid "Mailbox is unchanged."
 msgstr "Kotak surat tidak berubah."
 
-#: mx.c:1006
+#: mx.c:1010
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d disimpan, %d dipindahkan, %d dihapus."
 
-#: mx.c:1009 mx.c:1181
+#: mx.c:1013 mx.c:1185
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d disimpan, %d dihapus."
 
-#: mx.c:1119
+#: mx.c:1123
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr "Tekan '%s' untuk mengeset bisa/tidak menulis"
 
-#: mx.c:1121
+#: mx.c:1125
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Gunakan 'toggle-write' supaya bisa menulis lagi!"
 
-#: mx.c:1123
+#: mx.c:1127
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Kotak surat ditandai tidak boleh ditulisi. %s"
 
-#: mx.c:1178
+#: mx.c:1182
 msgid "Mailbox checkpointed."
 msgstr "Kotak surat telah di-checkpoint."
 
-#: mx.c:1496
+#: mx.c:1500
 msgid "Can't write message"
 msgstr "Tidak dapat menulis pesan"
 
@@ -3767,11 +3767,11 @@ msgstr "Tidak bisa menemukan fungsi pengurutan! [laporkan bug ini]"
 msgid "(no mailbox)"
 msgstr "(tidak ada kotak surat)"
 
-#: thread.c:1002
+#: thread.c:1029
 msgid "Parent message is not visible in this limited view."
 msgstr "Surat induk tidak bisa dilihat di tampilan terbatas ini."
 
-#: thread.c:1008
+#: thread.c:1035
 msgid "Parent message is not available."
 msgstr "Surat induk tidak ada."
 

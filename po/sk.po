@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.95.6i\n"
-"POT-Creation-Date: 2002-01-15 10:03+0100\n"
+"POT-Creation-Date: 2002-01-18 12:44+0100\n"
 "PO-Revision-Date: 1999-07-29 00:00+0100\n"
 "Last-Translator: Miroslav Vasko <vasko@ies.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -136,7 +136,7 @@ msgstr "MIME typ nie je definovaný. Nemo¾no zobrazi» pripojené dáta."
 msgid "Cannot create filter"
 msgstr "Nemo¾no vytvori» filter."
 
-#: attach.c:629 attach.c:661 attach.c:948 attach.c:1006 handler.c:1544
+#: attach.c:629 attach.c:661 attach.c:948 attach.c:1006 handler.c:1549
 #: pgpkey.c:566 pgpkey.c:755
 msgid "Can't create filter"
 msgstr "Nemo¾no vytvori» filter"
@@ -705,7 +705,7 @@ msgstr "Nie je otvorená ¾iadna schránka."
 msgid "There are no messages."
 msgstr "Vlákno obsahuje neèítané správy."
 
-#: curs_main.c:61 mx.c:1128 pager.c:65 recvattach.c:47
+#: curs_main.c:61 mx.c:1132 pager.c:65 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "Schránka je iba na èítanie."
 
@@ -880,8 +880,8 @@ msgstr "®iadne ïaµ¹ie vlákna."
 msgid "You are on the first thread."
 msgstr "Ste na prvom vlákne."
 
-#: curs_main.c:1509 curs_main.c:1541 flags.c:249 thread.c:935 thread.c:990
-#: thread.c:1045
+#: curs_main.c:1509 curs_main.c:1541 flags.c:237 thread.c:962 thread.c:1017
+#: thread.c:1072
 msgid "Threading is not enabled."
 msgstr "Vláknenie nie je povolené."
 
@@ -1007,83 +1007,83 @@ msgstr "Nemo¾no vytvori» súbor %s"
 msgid "Error. Preserving temporary file: %s"
 msgstr "Nemo¾no vytvori» doèasný súbor"
 
-#: flags.c:292
+#: flags.c:280
 msgid "Set flag"
 msgstr "Nastavi» príznak"
 
-#: flags.c:292
+#: flags.c:280
 msgid "Clear flag"
 msgstr "Vymaza» príznak"
 
-#: handler.c:1325
+#: handler.c:1330
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr "[-- Chyba: Nemo¾no zobrazi» ¾iadnu èas» z Multipart/Alternative! --]\n"
 
-#: handler.c:1443
+#: handler.c:1448
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- Príloha #%d"
 
-#: handler.c:1455
+#: handler.c:1460
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Typ: %s/%s, Kódovanie: %s, Veµkos»: %s --]\n"
 
-#: handler.c:1515
+#: handler.c:1520
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Autoprezeranie pou¾itím %s --]\n"
 
-#: handler.c:1516
+#: handler.c:1521
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Vyvolávam príkaz na automatické prezeranie: %s"
 
-#: handler.c:1548
+#: handler.c:1553
 #, fuzzy, c-format
 msgid "[-- Can't run %s. --]\n"
 msgstr "[-- na %s --]\n"
 
-#: handler.c:1566 handler.c:1587
+#: handler.c:1571 handler.c:1592
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Chyba pri automatickom prezeraní (stderr) %s --]\n"
 
-#: handler.c:1624
+#: handler.c:1629
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr ""
 "[-- Chyba: message/external-body nemá vyplnený parameter access-type --]\n"
 
-#: handler.c:1643
+#: handler.c:1648
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- Príloha %s/%s "
 
-#: handler.c:1650
+#: handler.c:1655
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(veµkos» %s bytov) "
 
-#: handler.c:1652
+#: handler.c:1657
 msgid "has been deleted --]\n"
 msgstr "bola zmazaná --]\n"
 
-#: handler.c:1657
+#: handler.c:1662
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- na %s --]\n"
 
-#: handler.c:1662
+#: handler.c:1667
 #, fuzzy, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- na %s --]\n"
 
-#: handler.c:1675 handler.c:1691
+#: handler.c:1680 handler.c:1696
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
 msgstr "[-- Príloha %s/%s "
 
-#: handler.c:1677
+#: handler.c:1682
 #, fuzzy
 msgid ""
 "[-- and the indicated external source has --]\n"
@@ -1093,36 +1093,36 @@ msgstr ""
 "[-- a oznaèenému externému zdroju --]\n"
 "[-- vypr¹ala platnos». --]\n"
 
-#: handler.c:1695
+#: handler.c:1700
 #, fuzzy, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- Príloha %s/%s nie je vlo¾ená v správe, --]\n"
 "[-- a oznaèený typ prístupu %s nie je podporovaný --]\n"
 
-#: handler.c:1812
+#: handler.c:1817
 msgid "Error: multipart/signed has no protocol."
 msgstr "Chyba: multipart/signed nemá protokol."
 
-#: handler.c:1825
+#: handler.c:1830
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Chyba: multipart/encrypted nemá vyplnený parameter protokolu!"
 
-#: handler.c:1872
+#: handler.c:1877
 msgid "Unable to open temporary file!"
 msgstr "Nemo¾no otvori» doèasný súbor!"
 
-#: handler.c:1932
+#: handler.c:1937
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s nie je podporovaný "
 
-#: handler.c:1937
+#: handler.c:1942
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(pou¾ite '%s' na prezeranie tejto èasti)"
 
-#: handler.c:1939
+#: handler.c:1944
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(potrebujem 'view-attachments' priradené na klávesu!)"
 
@@ -1400,102 +1400,102 @@ msgstr "Zapisujem správu do %s ..."
 msgid "Continue?"
 msgstr "(pokraèova»)\n"
 
-#: init.c:486
+#: init.c:492
 msgid "alias: no address"
 msgstr "zástupca: ¾iadna adresa"
 
-#: init.c:586
+#: init.c:592
 msgid "invalid header field"
 msgstr "neplatná polo¾ka hlavièky"
 
-#: init.c:639
+#: init.c:645
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: neznáma metóda triedenia"
 
-#: init.c:751
+#: init.c:757
 #, fuzzy, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default: chyba v regvýr: %s\n"
 
-#: init.c:814
+#: init.c:820
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: neznáma premenná"
 
-#: init.c:823
+#: init.c:829
 msgid "prefix is illegal with reset"
 msgstr "prefix je neplatný s vynulovaním"
 
-#: init.c:829
+#: init.c:835
 msgid "value is illegal with reset"
 msgstr "hodnota je neplatná s vynulovaním"
 
-#: init.c:868
+#: init.c:874
 #, c-format
 msgid "%s is set"
 msgstr "%s je nastavené"
 
-#: init.c:868
+#: init.c:874
 #, c-format
 msgid "%s is unset"
 msgstr "%s je nenastavené"
 
-#: init.c:1074
+#: init.c:1080
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: neplatný typ schránky"
 
-#: init.c:1099 init.c:1144
+#: init.c:1105 init.c:1150
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: neplatná hodnota"
 
-#: init.c:1202
+#: init.c:1208
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: neznáma hodnota"
 
-#: init.c:1245
+#: init.c:1251
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Chyba v %s, riadok %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1261
+#: init.c:1267
 #, c-format
 msgid "source: errors in %s"
 msgstr "zdroj: chyby v %s"
 
-#: init.c:1262
+#: init.c:1268
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr ""
 
-#: init.c:1276
+#: init.c:1282
 #, c-format
 msgid "source: error at %s"
 msgstr "zdroj: chyba na %s"
 
-#: init.c:1281
+#: init.c:1287
 msgid "source: too many arguments"
 msgstr "zdroj: príli¹ veµa argumentov"
 
-#: init.c:1332
+#: init.c:1338
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: neznámy príkaz"
 
-#: init.c:1688
+#: init.c:1694
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Chyba v príkazovom riadku: %s\n"
 
-#: init.c:1737
+#: init.c:1743
 msgid "unable to determine home directory"
 msgstr "nemo¾no urèi» domáci adresár"
 
-#: init.c:1745
+#: init.c:1751
 msgid "unable to determine username"
 msgstr "nemo¾no urèi» meno pou¾ívateµa"
 
@@ -2639,7 +2639,7 @@ msgstr "Hµadanie nie je implementované pre toto menu."
 msgid "Tagging is not supported."
 msgstr "Oznaèovanie nie je podporované."
 
-#: mh.c:597
+#: mh.c:603
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Èítam %s... %d"
@@ -2890,55 +2890,55 @@ msgstr "Nemo¾no zosynchronizova» schránku %s!"
 msgid "Move read messages to %s?"
 msgstr "Presunú» preèítané správy do %s?"
 
-#: mx.c:886 mx.c:1143
+#: mx.c:890 mx.c:1147
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Odstráni» %d zmazané správy?"
 
-#: mx.c:886 mx.c:1143
+#: mx.c:890 mx.c:1147
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Odstráni» %d zmazaných správ?"
 
-#: mx.c:910
+#: mx.c:914
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Presúvam preèítané správy do %s..."
 
-#: mx.c:970 mx.c:1134
+#: mx.c:974 mx.c:1138
 msgid "Mailbox is unchanged."
 msgstr "Schránka nie je zmenená."
 
-#: mx.c:1006
+#: mx.c:1010
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d ostalo, %d presunutých, %d vymazaných."
 
-#: mx.c:1009 mx.c:1181
+#: mx.c:1013 mx.c:1185
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d ostalo, %d vymazaných."
 
-#: mx.c:1119
+#: mx.c:1123
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Stlaète '%s' na prepnutie zápisu"
 
-#: mx.c:1121
+#: mx.c:1125
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Pou¾ite 'prepnú»-zápis' na povolenie zápisu!"
 
-#: mx.c:1123
+#: mx.c:1127
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Schránka je oznaèená len na èítanie. %s"
 
-#: mx.c:1178
+#: mx.c:1182
 #, fuzzy
 msgid "Mailbox checkpointed."
 msgstr "Bola zistená sluèka v makre."
 
-#: mx.c:1496
+#: mx.c:1500
 #, fuzzy
 msgid "Can't write message"
 msgstr "upravi» správu"
@@ -3862,12 +3862,12 @@ msgstr "Nemo¾no nájs» triediacu funkciu! [oznámte túto chybu]"
 msgid "(no mailbox)"
 msgstr "(¾iadna schránka)"
 
-#: thread.c:1002
+#: thread.c:1029
 #, fuzzy
 msgid "Parent message is not visible in this limited view."
 msgstr "Táto správa nie je viditeµná."
 
-#: thread.c:1008
+#: thread.c:1035
 #, fuzzy
 msgid "Parent message is not available."
 msgstr "Táto správa nie je viditeµná."

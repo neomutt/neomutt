@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.3.24\n"
-"POT-Creation-Date: 2002-01-15 10:03+0100\n"
+"POT-Creation-Date: 2002-01-18 12:44+0100\n"
 "PO-Revision-Date: 2001-12-03 10:47+0900\n"
 "Last-Translator: oota toshiya <oota@mspd.mt.nec.co.jp>\n"
 "Language-Team: mutt-j <mutt-j@ns.ribbon.or.jp>\n"
@@ -137,7 +137,7 @@ msgstr "MIME type未定義なので、添付ファイルの表示できず"
 msgid "Cannot create filter"
 msgstr "フィルタ作成できず"
 
-#: attach.c:629 attach.c:661 attach.c:948 attach.c:1006 handler.c:1544
+#: attach.c:629 attach.c:661 attach.c:948 attach.c:1006 handler.c:1549
 #: pgpkey.c:566 pgpkey.c:755
 msgid "Can't create filter"
 msgstr "フィルタ作成できず"
@@ -687,7 +687,7 @@ msgstr "1つもメールボックスが開いていない"
 msgid "There are no messages."
 msgstr "1通もメッセージが無い"
 
-#: curs_main.c:61 mx.c:1128 pager.c:65 recvattach.c:47
+#: curs_main.c:61 mx.c:1132 pager.c:65 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "メールボックスは読み出し専用"
 
@@ -858,8 +858,8 @@ msgstr "もうスレッドはありません"
 msgid "You are on the first thread."
 msgstr "すでに最初のスレッドです"
 
-#: curs_main.c:1509 curs_main.c:1541 flags.c:249 thread.c:935 thread.c:990
-#: thread.c:1045
+#: curs_main.c:1509 curs_main.c:1541 flags.c:237 thread.c:962 thread.c:1017
+#: thread.c:1072
 msgid "Threading is not enabled."
 msgstr "スレッド表示は無効"
 
@@ -982,83 +982,83 @@ msgstr "フォルダ %s に追加できず"
 msgid "Error. Preserving temporary file: %s"
 msgstr "エラー。一時ファイル %s は保管"
 
-#: flags.c:292
+#: flags.c:280
 msgid "Set flag"
 msgstr "フラグ設定"
 
-#: flags.c:292
+#: flags.c:280
 msgid "Clear flag"
 msgstr "フラグ解除"
 
-#: handler.c:1325
+#: handler.c:1330
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr "[--エラー: どの Multipart/Alternative パートも表示不可! --]\n"
 
-#: handler.c:1443
+#: handler.c:1448
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- 添付ファイル #%d"
 
-#: handler.c:1455
+#: handler.c:1460
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- タイプ: %s/%s, エンコード法: %s, サイズ: %s --]\n"
 
-#: handler.c:1515
+#: handler.c:1520
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- %s を使った自動表示 --]\n"
 
-#: handler.c:1516
+#: handler.c:1521
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "自動表示コマンド %s 起動"
 
-#: handler.c:1548
+#: handler.c:1553
 #, c-format
 msgid "[-- Can't run %s. --]\n"
 msgstr "[-- %s を実行できず --]\n"
 
-#: handler.c:1566 handler.c:1587
+#: handler.c:1571 handler.c:1592
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- %s の自動表示標準エラー出力 --]\n"
 
-#: handler.c:1624
+#: handler.c:1629
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr ""
 "[-- エラー: message/external-body に access-type パラメータの指定がない --]\n"
 
-#: handler.c:1643
+#: handler.c:1648
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- この %s/%s 添付ファイル "
 
-#: handler.c:1650
+#: handler.c:1655
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(大きさ %s バイト) "
 
-#: handler.c:1652
+#: handler.c:1657
 msgid "has been deleted --]\n"
 msgstr "はすでに削除済み --]\n"
 
-#: handler.c:1657
+#: handler.c:1662
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- 上の %s --]\n"
 
-#: handler.c:1662
+#: handler.c:1667
 #, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- 名前: %s --]\n"
 
-#: handler.c:1675 handler.c:1691
+#: handler.c:1680 handler.c:1696
 #, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
 msgstr "[-- この %s/%s 添付ファイル は含まれない。 --]\n"
 
-#: handler.c:1677
+#: handler.c:1682
 msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
@@ -1066,34 +1066,34 @@ msgstr ""
 "[-- かつ、指定された外部のソースは期限が --]\n"
 "[-- 満了している --]\n"
 
-#: handler.c:1695
+#: handler.c:1700
 #, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr "[-- かつ、指定された access-type %s はサポートされない。--]\n"
 
-#: handler.c:1812
+#: handler.c:1817
 msgid "Error: multipart/signed has no protocol."
 msgstr "エラー: multipart/signed にプロトコルが無い!"
 
-#: handler.c:1825
+#: handler.c:1830
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "エラー: multipart/encrypted にプロトコルパラメータが無い!"
 
-#: handler.c:1872
+#: handler.c:1877
 msgid "Unable to open temporary file!"
 msgstr "一時ファイルがオープンできない!"
 
-#: handler.c:1932
+#: handler.c:1937
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s は未サポート "
 
-#: handler.c:1937
+#: handler.c:1942
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(このパートを表示するには '%s' を使用)"
 
-#: handler.c:1939
+#: handler.c:1944
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(キーに割り当てられた 'view-attachments' が必要!)"
 
@@ -1361,102 +1361,102 @@ msgstr "メッセージ %d を %s にコピー中..."
 msgid "Continue?"
 msgstr "継続する?"
 
-#: init.c:486
+#: init.c:492
 msgid "alias: no address"
 msgstr "別名: アドレスが無い"
 
-#: init.c:586
+#: init.c:592
 msgid "invalid header field"
 msgstr "不正なへッダフィールド"
 
-#: init.c:639
+#: init.c:645
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: は未定義の整列方法"
 
-#: init.c:751
+#: init.c:757
 #, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s): のregexp中でエラー: %s\n"
 
-#: init.c:814
+#: init.c:820
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: は未定義の変数"
 
-#: init.c:823
+#: init.c:829
 msgid "prefix is illegal with reset"
 msgstr "reset と共に使う 接頭辞 が不正"
 
-#: init.c:829
+#: init.c:835
 msgid "value is illegal with reset"
 msgstr "reset と共に使う値が不正"
 
-#: init.c:868
+#: init.c:874
 #, c-format
 msgid "%s is set"
 msgstr "%s を設定"
 
-#: init.c:868
+#: init.c:874
 #, c-format
 msgid "%s is unset"
 msgstr "%s を解除"
 
-#: init.c:1074
+#: init.c:1080
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: は不正なメールボックス形式"
 
-#: init.c:1099 init.c:1144
+#: init.c:1105 init.c:1150
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: は不正な値"
 
-#: init.c:1202
+#: init.c:1208
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: は不明なタイプ"
 
-#: init.c:1245
+#: init.c:1251
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "%s中の %d行目でエラー: %s"
 
 #. the muttrc source keyword
-#: init.c:1261
+#: init.c:1267
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: %s 中でエラー"
 
-#: init.c:1262
+#: init.c:1268
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr "source: %s 中にエラーが多すぎるので読み出し中止"
 
-#: init.c:1276
+#: init.c:1282
 #, c-format
 msgid "source: error at %s"
 msgstr "source: 場所 %s でエラー"
 
-#: init.c:1281
+#: init.c:1287
 msgid "source: too many arguments"
 msgstr "source: 引数が多すぎる"
 
-#: init.c:1332
+#: init.c:1338
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: 不明なコマンド"
 
-#: init.c:1688
+#: init.c:1694
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "コマンド行 %s 中でエラー\n"
 
-#: init.c:1737
+#: init.c:1743
 msgid "unable to determine home directory"
 msgstr "ホームディレクトリを決定できない"
 
-#: init.c:1745
+#: init.c:1751
 msgid "unable to determine username"
 msgstr "ユーザ名を決定できない"
 
@@ -2548,7 +2548,7 @@ msgstr "ジャンプ機能はこのダイアログでは未提供。"
 msgid "Tagging is not supported."
 msgstr "タグ付与機能は未提供。"
 
-#: mh.c:597
+#: mh.c:603
 #, c-format
 msgid "Reading %s... %d"
 msgstr "%s から読み出し中... %d"
@@ -2793,54 +2793,54 @@ msgstr "%s メールボックスの同期がとれない!"
 msgid "Move read messages to %s?"
 msgstr "%s に既読メッセージを移動するか?"
 
-#: mx.c:886 mx.c:1143
+#: mx.c:890 mx.c:1147
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "削除された %d メッセージを廃棄?"
 
-#: mx.c:886 mx.c:1143
+#: mx.c:890 mx.c:1147
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "削除された %d メッセージを廃棄?"
 
-#: mx.c:910
+#: mx.c:914
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "%s に既読メッセージを移動中..."
 
-#: mx.c:970 mx.c:1134
+#: mx.c:974 mx.c:1138
 msgid "Mailbox is unchanged."
 msgstr "メールボックスは変更なし"
 
-#: mx.c:1006
+#: mx.c:1010
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d 保持, %d 移動, %d 廃棄"
 
-#: mx.c:1009 mx.c:1181
+#: mx.c:1013 mx.c:1185
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d 保持, %d 廃棄"
 
-#: mx.c:1119
+#: mx.c:1123
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " '%s' を押すと書き込み状態反転"
 
-#: mx.c:1121
+#: mx.c:1125
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "'toggle-write' を使って書き込み状態を有効にせよ!"
 
-#: mx.c:1123
+#: mx.c:1127
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "メールボックスは書き込み不能にマーク。 %s"
 
-#: mx.c:1178
+#: mx.c:1182
 msgid "Mailbox checkpointed."
 msgstr "メールボックスのチェックポイント採取。"
 
-#: mx.c:1496
+#: mx.c:1500
 msgid "Can't write message"
 msgstr "メッセージ書き込み不能"
 
@@ -3732,11 +3732,11 @@ msgstr "整列機能が見つからず![このバグを報告して]"
 msgid "(no mailbox)"
 msgstr "(メールボックスなし)"
 
-#: thread.c:1002
+#: thread.c:1029
 msgid "Parent message is not visible in this limited view."
 msgstr "親メッセージはこの制限された表示範囲では不可視。"
 
-#: thread.c:1008
+#: thread.c:1035
 msgid "Parent message is not available."
 msgstr "親メッセージが無効。"
 

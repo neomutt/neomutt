@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3.25\n"
-"POT-Creation-Date: 2002-01-15 10:03+0100\n"
+"POT-Creation-Date: 2002-01-18 12:44+0100\n"
 "PO-Revision-Date: 2002-01-03 19:06+01:00\n"
 "Last-Translator: Jörgen Tegnér <teg@post.netlink.se>\n"
 "Language-Team: Swedish <mutt-po@mutt.org>\n"
@@ -133,7 +133,7 @@ msgstr "MIME-typ är inte definierad. Kan inte visa bilaga."
 msgid "Cannot create filter"
 msgstr "Kan inte skapa filter"
 
-#: attach.c:629 attach.c:661 attach.c:948 attach.c:1006 handler.c:1544
+#: attach.c:629 attach.c:661 attach.c:948 attach.c:1006 handler.c:1549
 #: pgpkey.c:566 pgpkey.c:755
 msgid "Can't create filter"
 msgstr "Kan inte skapa filter"
@@ -683,7 +683,7 @@ msgstr "Ingen brevlåda är öppen."
 msgid "There are no messages."
 msgstr "Inga meddelanden."
 
-#: curs_main.c:61 mx.c:1128 pager.c:65 recvattach.c:47
+#: curs_main.c:61 mx.c:1132 pager.c:65 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "Brevlådan kan endast läsas."
 
@@ -854,8 +854,8 @@ msgstr "Inga fler trådar."
 msgid "You are on the first thread."
 msgstr "Du ser den första tråden."
 
-#: curs_main.c:1509 curs_main.c:1541 flags.c:249 thread.c:935 thread.c:990
-#: thread.c:1045
+#: curs_main.c:1509 curs_main.c:1541 flags.c:237 thread.c:962 thread.c:1017
+#: thread.c:1072
 msgid "Threading is not enabled."
 msgstr "Trådning är inte aktiverad."
 
@@ -978,82 +978,82 @@ msgstr "Kan inte lägga till brevlådan: %s"
 msgid "Error. Preserving temporary file: %s"
 msgstr "Fel. Sparar tillfällig fil: %s"
 
-#: flags.c:292
+#: flags.c:280
 msgid "Set flag"
 msgstr "Sätt flagga"
 
-#: flags.c:292
+#: flags.c:280
 msgid "Clear flag"
 msgstr "Ta bort flagga"
 
-#: handler.c:1325
+#: handler.c:1330
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr "[-- Fel : Kan inte visa någon del av 'Multipart/Alternative'! --]\n"
 
-#: handler.c:1443
+#: handler.c:1448
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- Bilaga #%d"
 
-#: handler.c:1455
+#: handler.c:1460
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Typ: %s/%s, Kodning: %s, Storlek: %s --]\n"
 
-#: handler.c:1515
+#: handler.c:1520
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Automatisk visning med %s --]\n"
 
-#: handler.c:1516
+#: handler.c:1521
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Startar kommando för automatisk visning: %s"
 
-#: handler.c:1548
+#: handler.c:1553
 #, c-format
 msgid "[-- Can't run %s. --]\n"
 msgstr "[-- Kan inte köra %s. --]\n"
 
-#: handler.c:1566 handler.c:1587
+#: handler.c:1571 handler.c:1592
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Automatisk visning av standard fel gällande %s --]\n"
 
-#: handler.c:1624
+#: handler.c:1629
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr "[-- Fel: 'message/external-body' har ingen parameter för åtkomst --]\n"
 
-#: handler.c:1643
+#: handler.c:1648
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- Den här %s/%s bilagan "
 
-#: handler.c:1650
+#: handler.c:1655
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(storlek %s byte)"
 
-#: handler.c:1652
+#: handler.c:1657
 msgid "has been deleted --]\n"
 msgstr "har raderats --]\n"
 
-#: handler.c:1657
+#: handler.c:1662
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- på %s --]\n"
 
-#: handler.c:1662
+#: handler.c:1667
 #, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- namn: %s --]\n"
 
-#: handler.c:1675 handler.c:1691
+#: handler.c:1680 handler.c:1696
 #, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
 msgstr "[-- Den här %s/%s bilagan är inte inkluderad, --]\n"
 
-#: handler.c:1677
+#: handler.c:1682
 msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
@@ -1061,34 +1061,34 @@ msgstr ""
 "[-- och den angivna externa källan är --]\n"
 "[-- utgången. --]\n"
 
-#: handler.c:1695
+#: handler.c:1700
 #, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr "[-- och den angivna åtkomsttypen %s stöds inte --]\n"
 
-#: handler.c:1812
+#: handler.c:1817
 msgid "Error: multipart/signed has no protocol."
 msgstr "Fel: 'multipart/signed' saknar protokoll."
 
-#: handler.c:1825
+#: handler.c:1830
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Fel: 'multipart/encrypted' saknar parameter för protokoll!"
 
-#: handler.c:1872
+#: handler.c:1877
 msgid "Unable to open temporary file!"
 msgstr "Kunde inte öppna tillfällig fil!"
 
-#: handler.c:1932
+#: handler.c:1937
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s stöds inte "
 
-#: handler.c:1937
+#: handler.c:1942
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(använd '%s' för att visa den här delen)"
 
-#: handler.c:1939
+#: handler.c:1944
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "('view-attachments' måste knytas till tangent!)"
 
@@ -1357,102 +1357,102 @@ msgstr "Kopierar meddelande %d till %s...<"
 msgid "Continue?"
 msgstr "Fortsätt?"
 
-#: init.c:486
+#: init.c:492
 msgid "alias: no address"
 msgstr "alias: ingen adress"
 
-#: init.c:586
+#: init.c:592
 msgid "invalid header field"
 msgstr "ogiltigt fält i brevhuvud"
 
-#: init.c:639
+#: init.c:645
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: okänd metod för sortering"
 
-#: init.c:751
+#: init.c:757
 #, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s): fel i mönster: %s\n"
 
-#: init.c:814
+#: init.c:820
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: okänd variabel"
 
-#: init.c:823
+#: init.c:829
 msgid "prefix is illegal with reset"
 msgstr "prefix är inte tillåtet med 'reset'"
 
-#: init.c:829
+#: init.c:835
 msgid "value is illegal with reset"
 msgstr "värde är inte tillåtet med 'reset'"
 
-#: init.c:868
+#: init.c:874
 #, c-format
 msgid "%s is set"
 msgstr "%s är satt"
 
-#: init.c:868
+#: init.c:874
 #, c-format
 msgid "%s is unset"
 msgstr "%s är inte satt"
 
-#: init.c:1074
+#: init.c:1080
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: ogiltig typ av brevlåda"
 
-#: init.c:1099 init.c:1144
+#: init.c:1105 init.c:1150
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: ogiltigt värde"
 
-#: init.c:1202
+#: init.c:1208
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: okänd typ"
 
-#: init.c:1245
+#: init.c:1251
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Fel i %s, rad %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1261
+#: init.c:1267
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: fel i %s"
 
-#: init.c:1262
+#: init.c:1268
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr "source: läsningen avbruten pga för många fel i %s"
 
-#: init.c:1276
+#: init.c:1282
 #, c-format
 msgid "source: error at %s"
 msgstr "source: fel vid %s"
 
-#: init.c:1281
+#: init.c:1287
 msgid "source: too many arguments"
 msgstr "source: för många parametrar"
 
-#: init.c:1332
+#: init.c:1338
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: okänt kommando"
 
-#: init.c:1688
+#: init.c:1694
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Fel i kommandorad: %s\n"
 
-#: init.c:1737
+#: init.c:1743
 msgid "unable to determine home directory"
 msgstr "kan inte avgöra var hemkatalogen är"
 
-#: init.c:1745
+#: init.c:1751
 msgid "unable to determine username"
 msgstr "kan inte avgöra användarnamn"
 
@@ -2580,7 +2580,7 @@ msgstr "Hopp stöds inte för dialoger."
 msgid "Tagging is not supported."
 msgstr "Märkning stöds inte."
 
-#: mh.c:597
+#: mh.c:603
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Läser %s... %d"
@@ -2825,54 +2825,54 @@ msgstr "Kunde inte synkronisera brevlådan %s!"
 msgid "Move read messages to %s?"
 msgstr "Flytta lästa meddelanden till %s?"
 
-#: mx.c:886 mx.c:1143
+#: mx.c:890 mx.c:1147
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Rensa %d slängt meddelande?"
 
-#: mx.c:886 mx.c:1143
+#: mx.c:890 mx.c:1147
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Rensa %d slängda meddelanden?"
 
-#: mx.c:910
+#: mx.c:914
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Flyttar lästa meddelanden till %s..."
 
-#: mx.c:970 mx.c:1134
+#: mx.c:974 mx.c:1138
 msgid "Mailbox is unchanged."
 msgstr "Brevlådan är oförändrad."
 
-#: mx.c:1006
+#: mx.c:1010
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d behölls, %d flyttades, %d slängdes."
 
-#: mx.c:1009 mx.c:1181
+#: mx.c:1013 mx.c:1185
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d behölls, %d slängdes."
 
-#: mx.c:1119
+#: mx.c:1123
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Tryck '%s' för att toggla skrivning"
 
-#: mx.c:1121
+#: mx.c:1125
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Använd 'toggle-write' för att ge åtkomst för skrivning!"
 
-#: mx.c:1123
+#: mx.c:1127
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Brevlådan är märkt som ej skrivbar. %s"
 
-#: mx.c:1178
+#: mx.c:1182
 msgid "Mailbox checkpointed."
 msgstr "Brevlådan är synkroniserad."
 
-#: mx.c:1496
+#: mx.c:1500
 msgid "Can't write message"
 msgstr "Kan inte skriva meddelandet"
 
@@ -3767,11 +3767,11 @@ msgstr ""
 msgid "(no mailbox)"
 msgstr "(ingen brevlåda)"
 
-#: thread.c:1002
+#: thread.c:1029
 msgid "Parent message is not visible in this limited view."
 msgstr "Första meddelandet är inte synligt med begränsad vy"
 
-#: thread.c:1008
+#: thread.c:1035
 msgid "Parent message is not available."
 msgstr "Första meddelandet är inte tillgängligt."
 

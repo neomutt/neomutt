@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt 1.4i\n"
-"POT-Creation-Date: 2002-01-15 10:03+0100\n"
+"POT-Creation-Date: 2002-01-18 12:44+0100\n"
 "PO-Revision-Date: 2001-06-12 12:47+0200\n"
 "Last-Translator: Fatih Demir <kabalak@gtranslator.org>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
@@ -136,7 +136,7 @@ msgstr "MIME tipi belirlenmemiþ. Eklenti gösterilemiyor."
 msgid "Cannot create filter"
 msgstr "Filtrayý yaratamadým"
 
-#: attach.c:629 attach.c:661 attach.c:948 attach.c:1006 handler.c:1544
+#: attach.c:629 attach.c:661 attach.c:948 attach.c:1006 handler.c:1549
 #: pgpkey.c:566 pgpkey.c:755
 msgid "Can't create filter"
 msgstr "Filtrayý yaratamadým"
@@ -690,7 +690,7 @@ msgstr "Hiç bir eposta kutusu açýk deðil."
 msgid "There are no messages."
 msgstr "Ileti yok."
 
-#: curs_main.c:61 mx.c:1128 pager.c:65 recvattach.c:47
+#: curs_main.c:61 mx.c:1132 pager.c:65 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "eposta kutusu salt-okunur."
 
@@ -862,8 +862,8 @@ msgstr "Daha fazla konum yok."
 msgid "You are on the first thread."
 msgstr "Ilk konumdasýnýz."
 
-#: curs_main.c:1509 curs_main.c:1541 flags.c:249 thread.c:935 thread.c:990
-#: thread.c:1045
+#: curs_main.c:1509 curs_main.c:1541 flags.c:237 thread.c:962 thread.c:1017
+#: thread.c:1072
 msgid "Threading is not enabled."
 msgstr "Konumlaþtýrma kapalýdýr."
 
@@ -986,84 +986,84 @@ msgstr "%s dizinine eklenemiyor"
 msgid "Error. Preserving temporary file: %s"
 msgstr "Hata. Geçici dosya %s korunmaya alýndý"
 
-#: flags.c:292
+#: flags.c:280
 msgid "Set flag"
 msgstr "Iþareti otur"
 
-#: flags.c:292
+#: flags.c:280
 msgid "Clear flag"
 msgstr "Iþareti temizle"
 
-#: handler.c:1325
+#: handler.c:1330
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr ""
 "[-- Hata:  Multipart/Alternative bölümlerinin hiç bir bölümü gösterilemiyor! "
 "--]\n"
 
-#: handler.c:1443
+#: handler.c:1448
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- Eklenti #%d"
 
-#: handler.c:1455
+#: handler.c:1460
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Tip: %s/%s, Þekillendirme: %s, Boyut: %s --]\n"
 
-#: handler.c:1515
+#: handler.c:1520
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- %s ile gösteriliyor --]\n"
 
-#: handler.c:1516
+#: handler.c:1521
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Otomatik gösterme komuatasý: %s"
 
-#: handler.c:1548
+#: handler.c:1553
 #, c-format
 msgid "[-- Can't run %s. --]\n"
 msgstr "[-- %s çalýþtýrýlamadý --]\n"
 
-#: handler.c:1566 handler.c:1587
+#: handler.c:1571 handler.c:1592
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- %s ile otomatik gösterme hatasý --]\n"
 
-#: handler.c:1624
+#: handler.c:1629
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr "[-- Hata: message/external-bods hiç bir eriþim tipi belirlemiyor --]\n"
 
-#: handler.c:1643
+#: handler.c:1648
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- Bu %s/%s eklentisi"
 
-#: handler.c:1650
+#: handler.c:1655
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(boyut %s bayt) "
 
-#: handler.c:1652
+#: handler.c:1657
 msgid "has been deleted --]\n"
 msgstr "silinmiþtir --]\n"
 
-#: handler.c:1657
+#: handler.c:1662
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- %s'de --]\n"
 
-#: handler.c:1662
+#: handler.c:1667
 #, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- isim: %s --]\n"
 
-#: handler.c:1675 handler.c:1691
+#: handler.c:1680 handler.c:1696
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
 msgstr "[-- Bu %s/%s eklentisi"
 
-#: handler.c:1677
+#: handler.c:1682
 #, fuzzy
 msgid ""
 "[-- and the indicated external source has --]\n"
@@ -1073,36 +1073,36 @@ msgstr ""
 "[-- ve ima edilen kaynaðýn geçerliliði --]\n"
 "[-- de bitti. --]\n"
 
-#: handler.c:1695
+#: handler.c:1700
 #, fuzzy, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- Bu %s/%s eklentisi içerilmiyor, --]\n"
 "[-- ve ima edilen eriþme tipi %s de desteklenmiyor --]\n"
 
-#: handler.c:1812
+#: handler.c:1817
 msgid "Error: multipart/signed has no protocol."
 msgstr "Hata: multipart/signed protokolu yok."
 
-#: handler.c:1825
+#: handler.c:1830
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Hata: multipart/encrypted protokol verisi yok!"
 
-#: handler.c:1872
+#: handler.c:1877
 msgid "Unable to open temporary file!"
 msgstr "Geçici dosyayý açamadým!"
 
-#: handler.c:1932
+#: handler.c:1937
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s desteklenmiyor "
 
-#: handler.c:1937
+#: handler.c:1942
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "('%s' ile bu bölüme bakabilirsiniz)"
 
-#: handler.c:1939
+#: handler.c:1944
 msgid "(need 'view-attachments' bound to key!)"
 msgstr ""
 
@@ -1367,102 +1367,102 @@ msgstr "%d ileti %s'e kopyalanýyor..."
 msgid "Continue?"
 msgstr "Devam edilsin mi?"
 
-#: init.c:486
+#: init.c:492
 msgid "alias: no address"
 msgstr "alias: adres yok"
 
-#: init.c:586
+#: init.c:592
 msgid "invalid header field"
 msgstr "geçersiz baþlýk birimi"
 
-#: init.c:639
+#: init.c:645
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: bilinmeyen sýralama tipi"
 
-#: init.c:751
+#: init.c:757
 #, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s): tabirde hata var: %s\n"
 
-#: init.c:814
+#: init.c:820
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: bilinmeyen veri"
 
-#: init.c:823
+#: init.c:829
 msgid "prefix is illegal with reset"
 msgstr ""
 
-#: init.c:829
+#: init.c:835
 msgid "value is illegal with reset"
 msgstr ""
 
-#: init.c:868
+#: init.c:874
 #, c-format
 msgid "%s is set"
 msgstr "%s oturtulmuþtur"
 
-#: init.c:868
+#: init.c:874
 #, c-format
 msgid "%s is unset"
 msgstr "%s oturtulamamýþtýr"
 
-#: init.c:1074
+#: init.c:1080
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: geçersiz eposta tipi"
 
-#: init.c:1099 init.c:1144
+#: init.c:1105 init.c:1150
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: geçersiz deðer"
 
-#: init.c:1202
+#: init.c:1208
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: bilinmeyen tip"
 
-#: init.c:1245
+#: init.c:1251
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "%s'de hata var, satýr %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1261
+#: init.c:1267
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: %s'de hatalar var"
 
-#: init.c:1262
+#: init.c:1268
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr "source: %s'de oluþan çok fazla hatadan dolayý okuma iptal edildi"
 
-#: init.c:1276
+#: init.c:1282
 #, c-format
 msgid "source: error at %s"
 msgstr "source: %s'de hata var"
 
-#: init.c:1281
+#: init.c:1287
 msgid "source: too many arguments"
 msgstr "source: çok fazla argüman"
 
-#: init.c:1332
+#: init.c:1338
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: bilinmeyen komuta"
 
-#: init.c:1688
+#: init.c:1694
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Komuta satrýnda hata: %s\n"
 
-#: init.c:1737
+#: init.c:1743
 msgid "unable to determine home directory"
 msgstr "baþlangýç dizini belirlenemedi"
 
-#: init.c:1745
+#: init.c:1751
 msgid "unable to determine username"
 msgstr "kullanýcý adý belirlenemedi"
 
@@ -2575,7 +2575,7 @@ msgstr "Diyaloklar için hýzlý geçiþ þimdilik mümkün deðildir."
 msgid "Tagging is not supported."
 msgstr "Iþaretleme desteklenmiyor."
 
-#: mh.c:597
+#: mh.c:603
 #, c-format
 msgid "Reading %s... %d"
 msgstr "%s okunuyor... %d"
@@ -2821,54 +2821,54 @@ msgstr "Eposta kutusu %s'yi eþitlenemedi!"
 msgid "Move read messages to %s?"
 msgstr "Okunan iletiler %s'e taþýnsýn mý?"
 
-#: mx.c:886 mx.c:1143
+#: mx.c:890 mx.c:1147
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Silmek için iþaretlenmiþ %d ileti silinsin mi?"
 
-#: mx.c:886 mx.c:1143
+#: mx.c:890 mx.c:1147
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Silmek için iþaretlenmiþ %d ileti silinsin mi?"
 
-#: mx.c:910
+#: mx.c:914
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Okunan iletiler %s'e taþýnýyor..."
 
-#: mx.c:970 mx.c:1134
+#: mx.c:974 mx.c:1138
 msgid "Mailbox is unchanged."
 msgstr "eposta kutusu deðiþtirilmedi."
 
-#: mx.c:1006
+#: mx.c:1010
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d kaldý, %d taþýndý, %d silindi."
 
-#: mx.c:1009 mx.c:1181
+#: mx.c:1013 mx.c:1185
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d kaldý, %d silindi."
 
-#: mx.c:1119
+#: mx.c:1123
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Yazabilir yapmak icýn '%s'e basýlýr"
 
-#: mx.c:1121
+#: mx.c:1125
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "'toggle-write' ile yeniden yazýlabilir yapabilinir!"
 
-#: mx.c:1123
+#: mx.c:1127
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "eposta kutusu yazýlamayabilir yapýldý. %s"
 
-#: mx.c:1178
+#: mx.c:1182
 msgid "Mailbox checkpointed."
 msgstr "Eposta kutusu kontrol edildi."
 
-#: mx.c:1496
+#: mx.c:1500
 msgid "Can't write message"
 msgstr "Iletiyi yazamadým"
 
@@ -3781,12 +3781,12 @@ msgstr "Sýralama iþlevi bulunamadý! [hata raporu yaz]"
 msgid "(no mailbox)"
 msgstr "(eposta kutusu yok)"
 
-#: thread.c:1002
+#: thread.c:1029
 #, fuzzy
 msgid "Parent message is not visible in this limited view."
 msgstr "Sýnýrlandýrýlmýþ bakýþta ana ileti görünemez."
 
-#: thread.c:1008
+#: thread.c:1035
 msgid "Parent message is not available."
 msgstr "Kök iletisi yok."
 
