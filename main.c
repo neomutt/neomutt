@@ -228,17 +228,16 @@ static void show_version (void)
 	"-USE_GNU_REGEX  "
 #endif
 
+	"\n"
+	
 #ifdef HAVE_COLOR
 	"+HAVE_COLOR  "
 #else
 	"-HAVE_COLOR  "
 #endif
 
-	);
-  puts (
-
 #ifdef _PGPPATH
-	"\n"
+
 #ifdef HAVE_PGP5
 	"+HAVE_PGP5  "
 #endif
