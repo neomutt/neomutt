@@ -101,6 +101,11 @@ Editor to invoke when composing a message.
 Full path of the user's home directory.
 .IP "MAIL"
 Full path of the user's spool mailbox.
+.IP "MAILDIR"
+Full path of the user's spool mailbox.  Commonly used when the spool
+mailbox is a 
+.B maildir (5)
+folder.
 .IP "MAILCAPS"
 Path to search for mailcap files.
 .IP "MM_NOASK"
@@ -160,14 +165,16 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 .SH SEE ALSO
 .PP
-.BR flea (1),
-.BR muttrc (5),
 .BR curses (3),
+.BR flea (1),
+.BR mailcap (5),
+.BR maildir (5),
+.BR mbox (5),
 .BR mutt_dotlock (1),
+.BR muttrc (5),
 .BR ncurses (3),
 .BR sendmail (1),
-.BR smail (1),
-.BR mailcap (5)
+.BR smail (1)
 .PP
 Mutt Home Page: http://www.mutt.org/
 .PP
