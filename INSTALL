@@ -187,6 +187,8 @@ run the ``configure'' script again.
 
 Please note that "VPATH" builds currently do _not_ work.
 
+
+
 Character set support
 =====================
 
@@ -198,11 +200,28 @@ on a system which does not have them, it is recommended that you
 install Bruno Haible's portable libiconv library, which you can obtain
 from:
 
-ftp://ftp.ilog.fr/pub/Users/haible/gnu/
+	       ftp://ftp.ilog.fr/pub/Users/haible/gnu/
 
 Even if your system does provide the iconv functions, you might want
 to install libiconv, as some systems provide only a very limited
 version of iconv.
+
+
+If you decide to use your system's iconv implementation, you may
+need to tell mutt about implementation-defined names for some
+character sets.  Sample configuration files for various systems can
+be found in the directory contrib/iconv/ in this source
+distribution, and will be installed in the samples/iconv directory
+as part of mutt's documentation.
+
+In order to use these sample configuration files, just put a line
+like
+
+     source /usr/local/doc/mutt/samples/iconv/iconv.osf1-4.0d.rc
+
+into your system's global Muttrc, which normally resides in /etc or
+/usr/local/etc.
+
 
 If you really want to, you can configure Mutt --without-iconv, but
 there will then be no character set conversion.
