@@ -1,9 +1,9 @@
 # $Id$
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.3.15\n"
+"Project-Id-Version: Mutt 1.3.17\n"
 "POT-Creation-Date: 2001-03-28 15:10+0200\n"
-"PO-Revision-Date: 2001-02-19 22:21+01:00\n"
+"PO-Revision-Date: 2001-03-29 20:16+02:00\n"
 "Last-Translator: Jörgen Tegnér <teg@post.netlink.se>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1177,7 +1177,7 @@ msgstr "Anslutning till %s misslyckades."
 
 #: imap/imap.c:383
 msgid "Secure connection with TLS?"
-msgstr ""
+msgstr "Säker förbindelse med TLS?"
 
 #: imap/imap.c:535
 #, c-format
@@ -2129,7 +2129,7 @@ msgstr "skapa avkrypterad kopia"
 
 #: keymap_alldefs.h:184
 msgid "check for classic pgp"
-msgstr ""
+msgstr "leta efter klassisk pgp"
 
 #: keymap_alldefs.h:185
 msgid "Accept the chain constructed"
