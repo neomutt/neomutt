@@ -109,7 +109,7 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
     if (*idxlen == *idxmax)
       safe_realloc ((void **) &idx, sizeof (ATTACHPTR *) * (*idxmax += 5));
 
-    if (m->type == TYPEMULTIPART && m->parts)
+    if (m->type == TYPEMULTIPART && m->parts && !mutt_is_multipart_encrypted(m))
     {
       idx = mutt_gen_attach_list (m->parts, idx, idxlen, idxmax, level, compose);
     }
