@@ -1,3 +1,12 @@
+2004-06-02 17:55:34  Alain Bench  <veronatif@free.fr>  (roessler)
+
+	* parse.c: Fix #1759.
+
+2004-04-30 06:49:37  Urs Janﬂen  <urs@tin.org>	(roessler)
+
+	* doc/Makefile.in, doc/mbox.man, doc/mmdf.man: mmdf(5), new mbox
+	(5).  (These changes have been sitting in my inbox for ages, tlr.)
+
 2004-04-13 15:10:38  Brendan Cully  <brendan@kublai.com>  (roessler)
 
 	* imap/message.c: Fix #1795
