@@ -41,7 +41,7 @@ static iconv_t charset_from_utf8 = (iconv_t)(-1);
 
 void mutt_set_charset (char *charset)
 {
-  char buffer[8];
+  char buffer[STRING];
 
   mutt_canonical_charset (buffer, sizeof (buffer), charset);
 

@@ -38,17 +38,6 @@
 # define EILSEQ EINVAL
 #endif
 
-#ifdef HAVE_LANGINFO_CODESET
-# include <langinfo.h>
-
-/* 
- * Try to convert nl_langinfo's return value to something we can
- * use for MIME's purposes.
- *
- * Note that the algorithm used here is quite different from the
- * one in mutt_canonical_charset. 
- */
-
 /* 
  * The following list has been created manually from the data under:
  * http://www.isi.edu/in-notes/iana/assignments/character-sets
@@ -190,6 +179,10 @@ PreferredMIMENames[] =
   
   { NULL, 		NULL		}
 };
+
+#ifdef HAVE_LANGINFO_CODESET
+# include <langinfo.h>
+
 
 void mutt_set_langinfo_charset (void)
 {

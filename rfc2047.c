@@ -357,7 +357,7 @@ static int rfc2047_encode (const char *d, size_t dlen, int col,
   size_t ulen, r, n, wlen;
   encoder_t encoder;
   char *tocode1 = 0;
-  const char *tocode;
+  char tocode[STRING];
   char *icode = "UTF-8";
 
   /* Try to convert to UTF-8. */
@@ -384,15 +384,18 @@ static int rfc2047_encode (const char *d, size_t dlen, int col,
   }
 
   /* Choose target charset. */
-  tocode = fromcode;
+  mutt_canonical_charset (tocode, sizeof (tocode), fromcode);
   if (icode)
   {
     if ((tocode1 = mutt_choose_charset (icode, charsets, u, ulen, 0, 0)))
-      tocode = tocode1;
+      mutt_canonical_charset (tocode, sizeof (tocode), tocode1);
     else
       ret = 2, icode = 0;
   }
-
+  
+  if (mutt_is_us_ascii (tocode))
+    strfcpy (tocode, "unknown-8bit", sizeof (tocode));
+  
   /* Adjust t0 for maximum length of line. */
   t = u + (ENCWORD_LEN_MAX + 1) - col - ENCWORD_LEN_MIN;
   t = t > u ? t : u;

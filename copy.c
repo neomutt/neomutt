@@ -284,16 +284,18 @@ int
 mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
 {
   char buffer[SHORT_STRING];
-
+  
   if (mutt_copy_hdr (in, out, h->offset, h->content->offset, flags, prefix) == -1)
     return (-1);
 
   if (flags & CH_TXTPLAIN)
   {
+    char chsbuf[SHORT_STRING];
     fputs ("Mime-Version: 1.0\n", out);
     fputs ("Content-Transfer-Encoding: 8bit\n", out);
     fputs ("Content-Type: text/plain; charset=", out);
-    rfc822_cat(buffer, sizeof(buffer), Charset ? Charset : "", MimeSpecials);
+    mutt_canonical_charset (chsbuf, sizeof (chsbuf), Charset ? Charset : "us-ascii");
+    rfc822_cat(buffer, sizeof(buffer), chsbuf, MimeSpecials);
     fputs(buffer, out);
     fputc('\n', out);
     

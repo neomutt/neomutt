@@ -890,6 +890,7 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
   FILE *fp = NULL;
   char *tocode;
   char buffer[100];
+  char chsbuf[STRING];
   size_t r;
 
   if(b && !fname) fname = b->filename;
@@ -912,7 +913,10 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
 			      0, &tocode, info) != (size_t)(-1))
     {
       if (!chs)
+      {
+	mutt_canonical_charset (chsbuf, sizeof (chsbuf), tocode);
 	mutt_set_parameter ("charset", tocode, &b->parameter);
+      }
       safe_free ((void **) &tocode);
       safe_fclose (&fp);
       return info;
@@ -928,7 +932,7 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
   
   if (b != NULL && b->type == TYPETEXT && (!b->noconv && !b->force_charset))
     mutt_set_parameter ("charset", (!info->hibin ? "us-ascii" :
-				    Charset ? Charset : "unknown-8bit"),
+				    Charset  && !mutt_is_us_ascii (Charset) ? Charset : "unknown-8bit"),
 			&b->parameter);
 
   return info;
@@ -1159,7 +1163,7 @@ static void mutt_set_encoding (BODY *b, CONTENT *info)
   if (b->type == TYPETEXT)
   {
     char *chsname = mutt_get_body_charset (send_charset, sizeof (send_charset), b);
-    if ((info->lobin && strncasecmp (chsname, "iso-2022-jp", 11)) || info->linemax > 990 || (info->from && option (OPTENCODEFROM)))
+    if ((info->lobin && strncasecmp (chsname, "iso-2022", 8)) || info->linemax > 990 || (info->from && option (OPTENCODEFROM)))
       b->encoding = ENCQUOTEDPRINTABLE;
     else if (info->hibin)
       b->encoding = option (OPTALLOW8BIT) ? ENC8BIT : ENCQUOTEDPRINTABLE;
@@ -1210,7 +1214,7 @@ char *mutt_get_body_charset (char *d, size_t dlen, BODY *b)
     p = mutt_get_parameter ("charset", b->parameter);
 
   if (p)
-    strfcpy (d, NONULL(p), dlen);
+    mutt_canonical_charset (d, dlen, NONULL(p));
   else
     strfcpy (d, "us-ascii", dlen);
 
