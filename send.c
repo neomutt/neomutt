@@ -1377,6 +1377,8 @@ ci_send_message (int flags,		/* send mode */
       }
       else
 	mutt_edit_file (Editor, msg->content->filename);
+      
+      mutt_message_hook (NULL, msg, M_SEND2HOOK);
     }
 
     if (! (flags & (SENDPOSTPONED | SENDFORWARD | SENDKEY | SENDRESEND)))
