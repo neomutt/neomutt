@@ -47,6 +47,10 @@
 #include <string.h>
 #include <utime.h>
 
+#if HAVE_SYS_TIME_H
+#include <sys/time.h>
+#endif
+
 struct maildir
 {
   HEADER *h;
