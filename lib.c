@@ -584,6 +584,11 @@ size_t mutt_strlen(const char *a)
   return a ? strlen (a) : 0;
 }
 
+int mutt_strcoll(const char *a, const char *b)
+{
+  return strcoll(NONULL(a), NONULL(b));
+}
+
 const char *mutt_stristr (const char *haystack, const char *needle)
 {
   const char *p, *q;

@@ -107,6 +107,7 @@ int mutt_strcasecmp (const char *, const char *);
 int mutt_strcmp (const char *, const char *);
 int mutt_strncasecmp (const char *, const char *, size_t);
 int mutt_strncmp (const char *, const char *, size_t);
+int mutt_strcoll (const char *, const char *);
 int safe_open (const char *, int);
 int safe_symlink (const char *, const char *);
 int safe_rename (const char *, const char *);
