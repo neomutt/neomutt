@@ -77,42 +77,6 @@ static int need_display_subject (CONTEXT *ctx, HEADER *hdr)
   return (1);
 }
 
-/* determines whether a later sibling or the child of a later 
- * sibling is displayed.  
- */
-static int is_next_displayed (CONTEXT *ctx, THREAD *tree)
-{
-  int depth = 0;
-  HEADER *hdr;
-
-  if ((tree = tree->next) == NULL)
-    return (0);
-
-  FOREVER
-  {
-    hdr = tree->message;
-    if (hdr && VISIBLE (hdr, ctx))
-      return (1);
-
-    if (tree->child)
-    {
-      tree = tree->child;
-      depth++;
-    }
-    else
-    {
-      while (!tree->next && depth > 0)
-      {
-	tree = tree->parent;
-	depth--;
-      }
-      if ((tree = tree->next) == NULL)
-	break;
-    }
-  }
-  return (0);
-}
-
 static void linearize_tree (CONTEXT *ctx)
 {
   THREAD *tree = ctx->tree;
@@ -144,6 +108,104 @@ static void linearize_tree (CONTEXT *ctx)
   }
 }
 
+/* this calculates whether a node is the root of a subtree that has visible
+ * nodes, whether a node itself is visible, whether, if invisible, it has
+ * depth anyway, and whether any of its later siblings are roots of visible
+ * subtrees.  while it's at it, it frees the old thread display, so we can
+ * skip parts of the tree in mutt_draw_tree() if we've decided here that we
+ * don't care about them any more.
+ */
+static void calculate_visibility (CONTEXT *ctx)
+{
+  THREAD *tmp, *tree = ctx->tree;
+  int hide_top_missing = option (OPTHIDETOPMISSING) && !option (OPTHIDEMISSING);
+  int hide_top_limited = option (OPTHIDETOPLIMITED) && !option (OPTHIDELIMITED);
+
+  /* we walk each level backwards to make it easier to compute next_subtree_visible */
+  while (tree->next)
+    tree = tree->next;
+
+  FOREVER
+  {
+    tree->subtree_visible = 0;
+    if (tree->message)
+    {
+      safe_free ((void **) &tree->message->tree);
+      if (VISIBLE (tree->message, ctx))
+      {
+	tree->deep = 1;
+	tree->visible = 1;
+	tree->message->display_subject = need_display_subject (ctx, tree->message);
+	for (tmp = tree; tmp; tmp = tmp->parent)
+	{
+	  if (tmp->subtree_visible)
+	  {
+	    tmp->deep = 1;
+	    tmp->subtree_visible = 2;
+	    break;
+	  }
+	  else
+	    tmp->subtree_visible = 1;
+	}
+      }
+      else
+      {
+	tree->visible = 0;
+	tree->deep = !option (OPTHIDELIMITED);
+      }
+    }
+    else
+    {
+      tree->visible = 0;
+      tree->deep = !option (OPTHIDEMISSING);
+    }
+    tree->next_subtree_visible = tree->next && (tree->next->next_subtree_visible
+						|| tree->next->subtree_visible);
+    if (tree->child)
+    {
+      tree = tree->child;
+      while (tree->next)
+	tree = tree->next;
+    }
+    else if (tree->prev)
+      tree = tree->prev;
+    else
+    {
+      while (tree && !tree->prev)
+	tree = tree->parent;
+      if (!tree)
+	break;
+      else
+	tree = tree->prev;
+    }
+  }
+  
+  /* now fix up for the OPTHIDETOP* options if necessary */
+  if (hide_top_limited || hide_top_missing)
+  {
+    tree = ctx->tree;
+    FOREVER
+    {
+      if (!tree->visible && tree->deep && tree->subtree_visible < 2 
+	  && ((tree->message && hide_top_limited) || (!tree->message && hide_top_missing)))
+	tree->deep = 0;
+      if (!tree->deep && tree->child && tree->subtree_visible)
+	tree = tree->child;
+      else if (tree->next)
+	tree = tree->next;
+      else
+      {
+	while (tree && !tree->next)
+	  tree = tree->parent;
+	if (!tree)
+	  break;
+	else
+	  tree = tree->next;
+      }
+    }
+  }
+}
+
 /* Since the graphics characters have a value >255, I have to resort to
  * using escape sequences to pass the information to print_enriched_string().
  * These are the macros M_TREE_* defined in mutt.h.
@@ -158,53 +220,39 @@ void mutt_draw_tree (CONTEXT *ctx)
   char corner = (Sort & SORT_REVERSE) ? M_TREE_ULCORNER : M_TREE_LLCORNER;
   char vtee = (Sort & SORT_REVERSE) ? M_TREE_BTEE : M_TREE_TTEE;
   int depth = 0, start_depth = 0, max_depth = 0, max_width = 0;
-  int nextdisp = 0, visible, pseudo = 0, hidden = 0;
-  THREAD *tree = ctx->tree;
+  THREAD *nextdisp = NULL, *pseudo = NULL, *parent = NULL, *tree = ctx->tree;
   HEADER *hdr;
 
+  /* Do the visibility calculations and free the old thread chars.
+   * From now on we can simply ignore invisible subtrees
+   */
+  calculate_visibility (ctx);
   while (tree)
   {
     if (depth >= max_depth)
       safe_realloc ((void **) &pfx,
 		    (max_depth += 32) * 2 * sizeof (char));
-
     if (depth - start_depth >= max_width)
       safe_realloc ((void **) &arrow,
 		    (max_width += 16) * 2 * sizeof (char));
-
     hdr = tree->message;
-
-    if (hdr)
-    {
-      if ((visible = VISIBLE (hdr, ctx)) !=  0)
-	hdr->display_subject = need_display_subject (ctx, hdr);
-      else hidden = 1;
-
-      safe_free ((void **) &hdr->tree);
-    }
-    else
-      visible = 0;
-
     if (depth)
     {
       myarrow = arrow + (depth - start_depth - (start_depth ? 0 : 1)) * 2;
-      
       if (depth && start_depth == depth)
 	myarrow[0] = nextdisp ? M_TREE_LTEE : corner;
-      else if (tree->parent->message)
+      else if (parent->message && !option (OPTHIDELIMITED))
 	myarrow[0] = M_TREE_HIDDEN;
-      else if (option (OPTHIDEMISSING))
-	myarrow[0] = nextdisp ? vtee : M_TREE_HLINE;
-      else
+      else if (!parent->message && !option (OPTHIDEMISSING))
 	myarrow[0] = M_TREE_MISSING;
+      else
+	myarrow[0] = vtee;
       myarrow[1] = pseudo ?  M_TREE_STAR
 		    : (tree->duplicate_thread ? M_TREE_EQUALS : M_TREE_HLINE);
-
-      if (visible)
+      if (tree->visible)
       {
 	myarrow[2] = M_TREE_RARROW;
 	myarrow[3] = 0;
-
 	hdr->tree = safe_malloc ((2 + depth * 2) * sizeof (char));
 	if (start_depth > 1)
 	{
@@ -216,69 +264,66 @@ void mutt_draw_tree (CONTEXT *ctx)
 	  strfcpy (hdr->tree, arrow, 2 + depth * 2);
       }
     }
-
     if (tree->child && depth)
     {
       mypfx = pfx + (depth - 1) * 2;
       mypfx[0] = nextdisp ? M_TREE_VLINE : M_TREE_SPACE;
       mypfx[1] = M_TREE_SPACE;
     }
-
-    nextdisp = 0;
-    pseudo = 0;
-    hidden = 0;
-
+    parent = tree;
+    nextdisp = NULL;
+    pseudo = NULL;
     do
     {
-      if (tree->child)
+      if (tree->child && tree->subtree_visible)
       {
-	if (hdr || !option (OPTHIDEMISSING) || tree->child->next)
-	{
+	if (tree->deep)
 	  depth++;
-	  if (visible)
-	    start_depth = depth;
-	  else
-	    hidden = 1;
-	}
-
+	if (tree->visible)
+	  start_depth = depth;
 	tree = tree->child;
-	if (tree->fake_thread)
-	  pseudo = 1;
-	if (depth && !nextdisp)
-	  nextdisp = is_next_displayed (ctx, tree);
-	hdr = tree->message;
+
+	/* we do this here because we need to make sure that the first child thread
+	 * of the old tree that we deal with is actually displayed if any are,
+	 * or we might set the parent variable wrong while going through it. */
+	while (!tree->subtree_visible && tree->next)
+	  tree = tree->next;
       }
       else
       {
 	while (!tree->next && tree->parent)
 	{
-	  if (hdr && VISIBLE (hdr, ctx))
+	  if (tree == pseudo)
+	    pseudo = NULL;
+	  if (tree == nextdisp)
+	    nextdisp = NULL;
+	  if (tree->visible)
 	    start_depth = depth;
-
 	  tree = tree->parent;
-	  hdr = tree->message;
-
-	  if (hdr || !option (OPTHIDEMISSING) || tree->child->next)
+	  if (tree->deep)
 	  {
 	    if (start_depth == depth)
 	      start_depth--;
 	    depth--;
 	  }
 	}
-
-	if (hdr && VISIBLE (hdr, ctx))
+	if (tree == pseudo)
+	  pseudo = NULL;
+	if (tree == nextdisp)
+	  nextdisp = NULL;
+	if (tree->visible)
 	  start_depth = depth;
 	tree = tree->next;
 	if (!tree)
 	  break;
-	if (tree->fake_thread)
-	  pseudo = 1;
-	if (depth && !nextdisp)
-	  nextdisp = is_next_displayed (ctx, tree);
-	hdr = tree->message;
       }
+      hdr = tree->message;
+      if (!pseudo && tree->fake_thread)
+	pseudo = tree;
+      if (!nextdisp && tree->next_subtree_visible)
+	nextdisp = tree;
     }
-    while (!(hdr || !option (OPTHIDEMISSING) || tree->child->next));
+    while (!tree->deep);
   }
 
   safe_free ((void **) &pfx);
