@@ -1,3 +1,10 @@
+2003-02-19 21:33:43  David Shaw  <dshaw@jabberwocky.com>  (roessler)
+
+	* pgpmicalg.c: 3156 defined several micalg values (pgp-md5,
+	pgp-sha1, etc.)  Since then, three more hashes have been assigned
+	numbers in 2440bis.  Here is a patch to add values for pgp-sha256,
+	pgp-sha384, and pgp-sha512 so mutt can properly handle them.
+
 2003-02-19 21:31:19  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* parse.c: Fix a memory leak observed by Vineet Kumar
