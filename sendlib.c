@@ -986,6 +986,7 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
   chflags = CH_XMIT;
   cmflags = 0;
 
+  /* If we are attaching a message, ignore OPTMIMEFORWDECODE */
   if (!attach_msg && option (OPTMIMEFORWDECODE))
   {
     chflags |= CH_MIME | CH_TXTPLAIN;
@@ -994,8 +995,8 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
     pgp &= ~PGPENCRYPT;
 #endif
   }
-  else
 #ifdef _PGPPATH
+  else
     if(option(OPTFORWDECRYPT)
        && (hdr->pgp & PGPENCRYPT))
   {
@@ -1014,7 +1015,6 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
   }
 #endif
 
-  /* If we are attaching a message, ignore OPTMIMEFORWDECODE */
   mutt_copy_message (fp, ctx, hdr, cmflags, chflags);
   
   fflush(fp);
