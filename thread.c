@@ -537,12 +537,6 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
   oldsort = Sort;
   Sort = SortAux;
   
-  /* get secondary sorting method.  we can't have threads, so use the date
-   * if the user specified it
-   */
-  if ((Sort & SORT_MASK) == SORT_THREADS)
-    Sort = (Sort & ~SORT_MASK) | SORT_DATE;
-  
   /* if the SORT_LAST bit is set, we save sorting for later */
   if (!(Sort & SORT_LAST))
     usefunc = mutt_get_sort_func (Sort);

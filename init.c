@@ -1127,6 +1127,9 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	  map = SortKeyMethods;
 	  break;
 #endif
+	case DT_SORT_AUX:
+	  map = SortAuxMethods;
+	  break;
 	default:
 	  map = SortMethods;
 	  break;

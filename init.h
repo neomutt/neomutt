@@ -44,6 +44,7 @@
 #define DT_SORT_ALIAS	0x10
 #define DT_SORT_BROWSER 0x20
 #define DT_SORT_KEYS	0x40
+#define DT_SORT_AUX	0x80
 
 /* flags to parse_set() */
 #define M_SET_INV	(1<<0)	/* default is to invert all vars */
@@ -1823,7 +1824,7 @@ struct option_t MuttVars[] = {
   ** .  unsorted (leave in order specified in .muttrc)
   ** .te
   */
-  { "sort_aux",		DT_SORT, R_INDEX|R_RESORT_BOTH, UL &SortAux, SORT_DATE },
+  { "sort_aux",		DT_SORT|DT_SORT_AUX, R_INDEX|R_RESORT_BOTH, UL &SortAux, SORT_DATE },
   /*
   ** .pp
   ** When sorting by threads, this variable controls how threads are sorted
@@ -2119,6 +2120,25 @@ const struct mapping_t SortMethods[] = {
   { "score",		SORT_SCORE },
   { NULL,		0 }
 };
+
+/* same as SortMethods, but with "threads" replaced by "date" */
+
+const struct mapping_t SortAuxMethods[] = {
+  { "date",		SORT_DATE },
+  { "date-sent",	SORT_DATE },
+  { "date-received",	SORT_RECEIVED },
+  { "mailbox-order",	SORT_ORDER },
+  { "subject",		SORT_SUBJECT },
+  { "from",		SORT_FROM },
+  { "size",		SORT_SIZE },
+  { "threads",		SORT_DATE },	/* note: sort_aux == threads
+					 * isn't possible. 
+					 */
+  { "to",		SORT_TO },
+  { "score",		SORT_SCORE },
+  { NULL,		0 }
+};
+  
 
 const struct mapping_t SortBrowserMethods[] = {
   { "alpha",	SORT_SUBJECT },
