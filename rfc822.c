@@ -340,7 +340,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
       }
 
 #ifdef EXACT_ADDRESS
-      if (last)
+      if (last && !last->val)
 	last->val = mutt_substrdup (begin, s);
 #endif
       commentlen = 0;
