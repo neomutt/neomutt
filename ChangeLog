@@ -1,3 +1,8 @@
+2003-03-04 09:51:07  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* mutt_idna.c, mutt_socket.c: Unset UseSTD3ASCIIRules, and set
+	AllowUnassigned.  (Just reading some standards.)
+
 2003-03-04 09:31:19  Edmund GRIMLEY EVANS  <edmundo@rano.org>  (roessler)
 
 	* handler.c: Be more friendly about bad multipart/alternative
