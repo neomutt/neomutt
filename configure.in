@@ -406,7 +406,9 @@ AC_ARG_WITH(iconv, [  --with-iconv=DIR           Where libiconv is installed ],
        fi])
 
 LIBICONV=
+
 if test "$mutt_cv_iconv" != no; then
+
 AC_CACHE_CHECK(for iconv, mutt_cv_func_iconv,
     [ mutt_cv_func_iconv=no
       mutt_cv_lib_iconv=no
@@ -432,7 +434,6 @@ if test "$mutt_cv_lib_iconv" = yes; then
   LIBICONV="-liconv"
 fi
 AC_DEFINE(HAVE_ICONV)
-fi
 
 AC_SUBST(LIBICONV)
 
@@ -498,6 +499,10 @@ changequote([, ])dnl
 if test "$mutt_cv_iconv_nontrans" = yes; then
   AC_DEFINE(ICONV_NONTRANS, 1)
 else
+  AC_DEFINE(ICONV_NONTRANS, 0)
+fi
+
+else # "$mutt_cv_iconv" != no
   AC_DEFINE(ICONV_NONTRANS, 0)
 fi
 
