@@ -831,7 +831,8 @@ void mutt_signed_handler (BODY *a, STATE *s)
     ;
   else if ((WithCrypto & APPLICATION_SMIME)
            && protocol_major == TYPEAPPLICATION
-	   && !mutt_strcasecmp (protocol_minor, "x-pkcs7-signature"))
+	   && !(mutt_strcasecmp (protocol_minor, "x-pkcs7-signature")
+	       && mutt_strcasecmp (protocol_minor, "pkcs7-signature"))
     ;
   else if (protocol_major == TYPEMULTIPART
 	   && !mutt_strcasecmp (protocol_minor, "mixed"))
