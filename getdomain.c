@@ -12,11 +12,23 @@ int fclose ();
  * return the DNS domain, but the NIS domain.
  */
 
+static void strip_trailing_dot (char *q)
+{
+  char *p = q;
+  
+  for (; *q; q++)
+    p = q;
+  
+  if (*p == '.')
+    *p = '\0';
+}
+
 int getdnsdomainname (char *s, size_t l)
 {
   FILE *f;
   char tmp[1024];
   char *p = NULL;
+  char *q;
 
   if ((f = fopen ("/etc/resolv.conf", "r")) == NULL) return (-1);
 
@@ -31,24 +43,22 @@ int getdnsdomainname (char *s, size_t l)
     if (mutt_strncmp ("domain", p, 6) == 0 || mutt_strncmp ("search", p, 6) == 0)
     {
       p += 6;
-      while (ISSPACE (*p)) p++;
+      
+      for (q = strtok (p, " \t\n"); q; q = strtok (NULL, " \t\n"))
+	if (strcmp (q, "."))
+	  break;
 
-      if (*p)
+      if (q)
       {
-	while (*p && !ISSPACE (*p) && l > 0)
-	{
-	  *s++ = *p++;
-	  l--;
-	}
-	if (*(s-1) == '.') s--;
-	*s = 0;
-
-	fclose (f);
-	return (0);
+	strip_trailing_dot (q);
+	strfcpy (s, q, l);
+	safe_fclose (&f);
+	return 0;
       }
+      
     }
   }
 
-  fclose (f);
+  safe_fclose (&f);
   return (-1);
 }
