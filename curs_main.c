@@ -1181,20 +1181,34 @@ int mutt_index_menu (void)
 
 	CHECK_MSGCOUNT;
 	CHECK_READONLY;
-	mutt_set_flag (Context, CURHDR, M_FLAG, !CURHDR->flagged);
 
-	if (option (OPTRESOLVE))
-	{
-	  if ((menu->current = ci_next_undeleted (menu->current)) == -1)
+        if (tag)
+        {
+	  for (j = 0; j < Context->vcount; j++)
 	  {
-	    menu->current = menu->oldcurrent;
-	    menu->redraw = REDRAW_CURRENT;
+	    if (Context->hdrs[Context->v2r[j]]->tagged)
+	      mutt_set_flag (Context, Context->hdrs[Context->v2r[j]],
+			     M_FLAG, !Context->hdrs[Context->v2r[j]]->flagged);
+	  }
+
+	  menu->redraw |= REDRAW_INDEX;
+	}
+        else
+        {
+	  mutt_set_flag (Context, CURHDR, M_FLAG, !CURHDR->flagged);
+	  if (option (OPTRESOLVE))
+	  {
+	    if ((menu->current = ci_next_undeleted (menu->current)) == -1)
+	    {
+	      menu->current = menu->oldcurrent;
+	      menu->redraw = REDRAW_CURRENT;
+	    }
+	    else
+	      menu->redraw = REDRAW_MOTION_RESYNCH;
 	  }
 	  else
-	    menu->redraw = REDRAW_MOTION_RESYNCH;
+	    menu->redraw = REDRAW_CURRENT;
 	}
-	else
-	  menu->redraw = REDRAW_CURRENT;
 	menu->redraw |= REDRAW_STATUS;
 	break;
 
