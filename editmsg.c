@@ -154,7 +154,10 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
   }
 
   if ((rc = mutt_copy_hdr (fp, msg->fp, 0, sb.st_size, CH_NOSTATUS | CH_NOLEN | cf, NULL)) == 0)
+  {
+    fputc ('\n', msg->fp);
     rc = mutt_copy_stream (fp, msg->fp);
+  }
 
   rc = mx_commit_message (msg, &tmpctx);
   mx_close_message (&msg);
