@@ -26,7 +26,6 @@
 #include "mailbox.h"
 #include "sort.h"
 #include "charset.h"
-#include "iconv.h"
 
 #ifdef MIXMASTER
 #include "remailer.h"
