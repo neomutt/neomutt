@@ -291,6 +291,23 @@ struct option_t MuttVars[] = {
   ** When \fIset\fP, Mutt will jump to the next unread message, if any,
   ** when the current thread is \fIun\fPcollapsed.
   */
+  { "compose_format",	DT_STR,	 R_BOTH, UL &ComposeFormat, UL "-- Mutt: Compose  [Approx. msg size: %l   Atts: %a]%>-" },
+  /*
+  ** .pp
+  ** Controls the format of the status line displayed in the \fCompose\fP
+  ** menu.  This string is similar to ``$$status_format'', but has its own
+  ** set of printf()-like sequences:
+  ** .pp
+  ** .ts
+  ** %a      total number of attachments 
+  ** %h      local hostname
+  ** %l      approximate size (in bytes) of the current message
+  ** %v      Mutt version string
+  ** .te
+  ** .pp
+  ** See the text describing the ``$$status_format'' option for more 
+  ** information on how to set ``$$compose_format''.
+  */
   { "confirmappend",	DT_BOOL, R_NONE, OPTCONFIRMAPPEND, 1 },
   /*
   ** .pp

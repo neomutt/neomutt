@@ -34,6 +34,7 @@ WHERE char *AttachSep;
 WHERE char *Attribution;
 WHERE char *AttachFormat;
 WHERE char *Charset;
+WHERE char *ComposeFormat;
 WHERE char *DefaultHook;
 WHERE char *DateFmt;
 WHERE char *DsnNotify;

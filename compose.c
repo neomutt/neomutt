@@ -414,6 +414,118 @@ static int change_attachment_charset (BODY *b)
   return REDRAW_CURRENT;
 }
 
+/* 
+ * cum_attachs_size: Cumulative Attachments Size
+ *
+ * 
+ * Returns the total number of bytes used by the attachments in the
+ * attachment list.
+ */
+
+static unsigned long cum_attachs_size (MUTTMENU *menu)
+{
+  size_t s;
+  unsigned short i;
+  ATTACHPTR **idx = menu->data;
+  CONTENT *info;
+  
+  for (i = 0, s = 0; i < menu->max; i++)
+  {
+    if ((info = idx[i]->content->content))
+    {
+      switch (idx[i]->content->encoding)
+      {
+	case ENCQUOTEDPRINTABLE:
+	  s += 3 * (info->lobin + info->hibin) + info->ascii;
+	  break;
+	case ENCBASE64:
+	  s += (4 * (info->lobin + info->hibin + info->ascii)) / 3;
+	  break;
+	default:
+	  s += info->lobin + info->hibin + info->ascii;
+	  break;
+      }
+    }
+  }
+
+  return s;
+}
+
+/* prototype for use below */
+void compose_status_line (char *buf, size_t buflen, MUTTMENU *menu, 
+      const char *p);
+
+/*
+ * compose_format_str()
+ *
+ * %a = total number of attachments 
+ * %h = hostname  [option]
+ * %l = approx. length of current message (in bytes) 
+ * %v = Mutt version 
+ *
+ * This function is similar to status_format_str().  Look at that function for
+ * help when modifying this function.
+ */
+
+static const char *
+compose_format_str (char *buf, size_t buflen, char op, const char *src,
+		   const char *prefix, const char *ifstring,
+		   const char *elsestring,
+		   unsigned long data, format_flag flags)
+{
+  char fmt[SHORT_STRING], tmp[SHORT_STRING];
+  int optional = (flags & M_FORMAT_OPTIONAL);
+  MUTTMENU *menu = (MUTTMENU *) data;
+
+  *buf = 0;
+  switch (op)
+  {
+    case 'a': /* total number of attachments */
+	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
+	snprintf (buf, buflen, fmt, menu->max);
+      break;
+
+    case 'h':  /* hostname */
+      snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+      snprintf (buf, buflen, fmt, NONULL(Hostname));
+      break;
+
+    case 'l': /* approx length of current message in bytes */
+	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+	mutt_pretty_size (tmp, sizeof (tmp), menu ? cum_attachs_size(menu) : 0);
+	snprintf (buf, buflen, fmt, tmp);
+      break;
+
+    case 'v':
+      snprintf (fmt, sizeof (fmt), "Mutt %%s");
+      snprintf (buf, buflen, fmt, MUTT_VERSION);
+      break;
+
+    case 0:
+      *buf = 0;
+      return (src);
+
+    default:
+      snprintf (buf, buflen, "%%%s%c", prefix, op);
+      break;
+  }
+
+  if (optional)
+    compose_status_line (buf, buflen, menu, ifstring);
+  else if (flags & M_FORMAT_OPTIONAL)
+    compose_status_line (buf, buflen, menu, elsestring);
+
+  return (src);
+}
+
+void compose_status_line (char *buf, size_t buflen, MUTTMENU *menu, 
+      const char *p)
+{
+  mutt_FormatString (buf, buflen, p, compose_format_str, 
+        (unsigned long) menu, 0);
+}
+
+
 /* return values:
  *
  * 1	message should be postponed
@@ -450,7 +562,6 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
   menu->max = idxlen;
   menu->make_entry = snd_entry;
   menu->tag = mutt_tag_attach;
-  menu->title = _("Compose");
   menu->data = idx;
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_COMPOSE, ComposeHelp);
   
@@ -459,7 +570,6 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
     switch (op = mutt_menuLoop (menu))
     {
       case OP_REDRAW:
-	menu_redraw_status (menu);
 	draw_envelope (msg, fcc);
 	menu->offset = HDR_ATTACH;
 	menu->pagelen = LINES - HDR_ATTACH - 2;
@@ -510,7 +620,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	{
 	  mutt_edit_file (Editor, msg->content->filename);
 	  mutt_update_encoding (msg->content);
-	  menu->redraw = REDRAW_CURRENT;
+	  menu->redraw = REDRAW_CURRENT | REDRAW_STATUS;
 	  break;
 	}
 	/* fall through */
@@ -574,7 +684,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
 	menu->redraw |= REDRAW_STATUS;
 
-	if(option(OPTNEEDREDRAW))
+	if (option(OPTNEEDREDRAW))
 	{
 	  menu->redraw = REDRAW_FULL;
 	  unset_option(OPTNEEDREDRAW);
@@ -748,6 +858,8 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
 	if (menu->current == 0)
 	  msg->content = idx[0]->content;
+
+        menu->redraw |= REDRAW_STATUS;
 	break;
 
       case OP_COMPOSE_CHANGE_CHARSET:
@@ -836,7 +948,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
         else
         {
           mutt_update_encoding(idx[menu->current]->content);
-	  menu->redraw = REDRAW_CURRENT;
+	  menu->redraw = REDRAW_CURRENT | REDRAW_STATUS;
 	}
         break;
       
@@ -868,7 +980,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  if ((i = mutt_check_encoding (buf)) != ENCOTHER && i != ENCUUENCODED)
 	  {
 	    idx[menu->current]->content->encoding = i;
-	    menu->redraw = REDRAW_CURRENT;
+	    menu->redraw = REDRAW_CURRENT | REDRAW_STATUS;
 	    mutt_clear_error();
 	  }
 	  else
@@ -908,7 +1020,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	mutt_edit_file ((!Editor || mutt_strcmp ("builtin", Editor) == 0) ? NONULL(Visual) : NONULL(Editor),
 			idx[menu->current]->content->filename);
 	mutt_update_encoding (idx[menu->current]->content);
-	menu->redraw = REDRAW_CURRENT;
+	menu->redraw = REDRAW_CURRENT | REDRAW_STATUS;
 	break;
 
       case OP_COMPOSE_TOGGLE_UNLINK:
@@ -1076,6 +1188,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	mutt_pipe_attachment_list (NULL, menu->tagprefix, menu->tagprefix ? msg->content : idx[menu->current]->content, op == OP_FILTER);
 	if (op == OP_FILTER) /* cte might have changed */
 	  menu->redraw = menu->tagprefix ? REDRAW_FULL : REDRAW_CURRENT; 
+        menu->redraw |= REDRAW_STATUS;
 	break;
 
       case OP_EXIT:
@@ -1120,7 +1233,10 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	if (mutt_system (buf) == -1)
 	  mutt_error (_("Error running \"%s\"!"), buf);
 	else
+        {
 	  mutt_update_encoding (msg->content);
+	  menu->redraw |= REDRAW_STATUS;
+	}
 	break;
 
       case OP_COMPOSE_WRITE_MESSAGE:
@@ -1172,6 +1288,17 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
         break;
 #endif
 
+    }
+
+    /* Draw formated compose status line */
+    if (menu->redraw & REDRAW_STATUS) 
+    {
+       	compose_status_line (buf, sizeof (buf), menu, NONULL(ComposeFormat));
+	CLEARLINE (option (OPTSTATUSONTOP) ? 0 : LINES-2);
+	SETCOLOR (MT_COLOR_STATUS);
+	printw ("%-*.*s", COLS, COLS, buf);
+	SETCOLOR (MT_COLOR_NORMAL);
+	menu->redraw &= ~REDRAW_STATUS;
     }
   }
 

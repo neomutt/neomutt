@@ -950,17 +950,9 @@ void mutt_update_encoding (BODY *a)
   if (a->type == TYPETEXT)
     mutt_set_body_charset(a, get_text_charset(a, info));
 
-#ifdef HAVE_PGP
-  /* save the info in case this message is signed.  we will want to do Q-P
-   * encoding if any lines begin with "From " so the signature won't be munged,
-   * for example.
-   */ 
   safe_free ((void **) &a->content);
   a->content = info;
   info = NULL;
-#endif
-
-
 
   safe_free ((void **) &info);
 }
