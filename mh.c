@@ -1517,7 +1517,7 @@ int maildir_check_mailbox (CONTEXT * ctx, int *index_hint)
     ctx->hdrs[i]->active = 0;
     maildir_canon_filename (buf, ctx->hdrs[i]->path, sizeof (buf));
     p = hash_find (fnames, buf);
-    if (p)
+    if (p && p->h)
     {
       /* message already exists, merge flags */
       ctx->hdrs[i]->active = 1;
