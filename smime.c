@@ -1,6 +1,5 @@
 /*
  * Copyright (C) 2001 Oliver Ehli <elmy@acm.org>
- * Copyright (C) 2002 Mike Schiraldi <raldi@research.netsol.com>
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -820,11 +819,15 @@ char *smime_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
 
 
 
-/* Check one single certificate for an email address */
-static int smime_check_cert_email (char *certificate, char *email)
+
+
+
+static int smime_check_cert_email (char *certificate, char *mailbox)
 {
   FILE *fpout = NULL, *fperr = NULL;
   char tmpfname[_POSIX_PATH_MAX];
+  char email[STRING];
+  int ret = 0;
   pid_t thepid;
 
   mutt_mktemp (tmpfname);
@@ -844,7 +847,7 @@ static int smime_check_cert_email (char *certificate, char *email)
   }
   mutt_unlink (tmpfname);
 
-  if ((thepid = smime_invoke (NULL, NULL, NULL,
+  if ((thepid =  smime_invoke (NULL, NULL, NULL,
 			       -1, fileno (fpout), fileno (fperr),
 			       certificate, NULL, NULL, NULL, NULL, NULL,
 			       SmimeGetCertEmailCommand))== -1)
@@ -862,97 +865,205 @@ static int smime_check_cert_email (char *certificate, char *email)
   rewind (fperr);
   fflush (fperr);
 
-  if (!(fgets (email, STRING, fpout)))
+
+  if (!(fgets (email, sizeof (email), fpout)))
   {
     mutt_copy_stream (fperr, stdout);
     fclose (fpout);
     fclose (fperr);
     mutt_endwin(NULL);
-    return 2;
+    printf ("Alert: No mailbox specified in certificate.\n");
+    return 1;
   }
   *(email+mutt_strlen(email)-1) = '\0';
 
-  return 0;
-}
 
-/* Loop through the list of certs, trying to find an email address.
- * Stop as soon as one is found 
- */
-static int smime_check_certs_email (char *certificates, char *mailbox)
-{
-  FILE *fpcerts = NULL;
-  char email[STRING];
-  int ret = 0;
-  
-  if ((fpcerts = fopen(certificates, "r")) == NULL)
-  {
-    mutt_perror (certificates);
-    return 1;
-  }
-  
-  /* For each certificate, copy it into a temp file and call 
-   * smime_check_cert_email() on it */
-  do 
-  {
-    char *line = NULL;
-    int lineno = 0;
-    size_t linelen;
-
-    FILE *fptmp = NULL;
-    char tmpfname[_POSIX_PATH_MAX];
-    
-    if (feof (fpcerts))
-    {
-      mutt_error (_("Error: Unable to extract email address from certificate"));
-      return 1;
-    }
-    
-    mutt_mktemp (tmpfname);
-    if ((fptmp = safe_fopen (tmpfname, "w+")) == NULL)
-    {
-      mutt_perror (tmpfname);
-      return 1;
-    }
-    
-    /* Copy up until the next blank line */
-    while(1) 
-    {
-      line = mutt_read_line (line, &linelen, fpcerts, &lineno);
-
-      /* EOF */
-      if (line == NULL)
-        break;
-      
-      /* Blank line */
-      if (line[0] == 0)
-        {
-          safe_free ((void **) &line);
-          break;
-        }
-      
-      fprintf (fptmp, "%s\n", line);  
-      safe_free ((void **) &line);
-    }
-    
-    fclose (fptmp);
-    
-    ret = smime_check_cert_email (tmpfname, email);
-    
-    mutt_unlink (tmpfname);
-    
-    if (ret == 1)
-      return 1;
-  } while (ret != 0);
-  
-  if (mutt_strncasecmp (email, mailbox, mutt_strlen (mailbox)))
+  if(mutt_strncasecmp (email, mailbox, mutt_strlen (mailbox)))
   {
     mutt_endwin(NULL);
-    mutt_error (_("Alert: Certificate belongs to \"%s\".\n"
-                  "       But sender was \"%s\".\n"), email, mailbox);
+    printf ("Alert: Certificate belongs to \"%s\".\n"
+	    "       But sender was \"%s\".\n", email, mailbox);
     ret = 1;
   }
 
+  fclose (fpout);
+  fclose (fperr);
+
   return ret;
+}
+
+
+
+static char *smime_extract_certificate (char *infile)
+{
+  FILE *fpout = NULL, *fperr = NULL;
+  char pk7out[_POSIX_PATH_MAX], certfile[_POSIX_PATH_MAX];
+  char tmpfname[_POSIX_PATH_MAX];
+  pid_t thepid;
+  int empty;
+
+
+  mutt_mktemp (tmpfname);
+  if ((fperr = safe_fopen (tmpfname, "w+")) == NULL)
+  {
+    mutt_perror (tmpfname);
+    return NULL;
+  }
+  mutt_unlink (tmpfname);
+
+  mutt_mktemp (pk7out);
+  if ((fpout = safe_fopen (pk7out, "w+")) == NULL)
+  {
+    fclose (fperr);
+    mutt_perror (pk7out);
+    return NULL;
+  }
+
+  /* Step 1: Convert the signature to a PKCS#7 structure, as we can't
+     extract the full set of certificates directly.
+  */
+  if ((thepid =  smime_invoke (NULL, NULL, NULL,
+			       -1, fileno (fpout), fileno (fperr),
+			       infile, NULL, NULL, NULL, NULL, NULL,
+			       SmimePk7outCommand))== -1)
+  {
+    mutt_any_key_to_continue (_("Error: unable to create OpenSSL subprocess!"));
+    fclose (fperr);
+    fclose (fpout);
+    mutt_unlink (pk7out);
+    return NULL;
+  }
+
+  mutt_wait_filter (thepid);
+
+
+  fflush (fpout);
+  rewind (fpout);
+  rewind (fperr);
+  fflush (fperr);
+  empty = (fgetc (fpout) == EOF);
+  if (empty)
+  {
+    mutt_perror (pk7out);
+    mutt_copy_stream (fperr, stdout);
+    fclose (fpout);
+    fclose (fperr);
+    mutt_unlink (pk7out);
+    return NULL;
+    
+  }
+
+
+  fclose (fpout);
+  mutt_mktemp (certfile);
+  if ((fpout = safe_fopen (certfile, "w+")) == NULL)
+  {
+    fclose (fperr);
+    mutt_unlink (pk7out);
+    mutt_perror (certfile);
+    return NULL;
+  }
+  
+  /* Step 2: Extract the certificates from a PKCS#7 structure.
+   */
+  if ((thepid =  smime_invoke (NULL, NULL, NULL,
+			       -1, fileno (fpout), fileno (fperr),
+			       pk7out, NULL, NULL, NULL, NULL, NULL,
+			       SmimeGetCertCommand))== -1)
+  {
+    mutt_any_key_to_continue (_("Error: unable to create OpenSSL subprocess!"));
+    fclose (fperr);
+    fclose (fpout);
+    mutt_unlink (pk7out);
+    mutt_unlink (certfile);
+    return NULL;
+  }
+
+  mutt_wait_filter (thepid);
+
+  mutt_unlink (pk7out);
+
+  fflush (fpout);
+  rewind (fpout);
+  rewind (fperr);
+  fflush (fperr);
+  empty =  (fgetc (fpout) == EOF);
+  if (empty)
+  {
+    mutt_copy_stream (fperr, stdout);
+    fclose (fpout);
+    fclose (fperr);
+    mutt_unlink (certfile);
+    return NULL;
+  }
+
+  fclose (fpout);
+  fclose (fperr);
+
+  return safe_strdup (certfile);
+}
+
+static char *smime_extract_signer_certificate (char *infile)
+{
+  FILE *fpout = NULL, *fperr = NULL;
+  char pk7out[_POSIX_PATH_MAX], certfile[_POSIX_PATH_MAX];
+  char tmpfname[_POSIX_PATH_MAX];
+  pid_t thepid;
+  int empty;
+
+
+  mutt_mktemp (tmpfname);
+  if ((fperr = safe_fopen (tmpfname, "w+")) == NULL)
+  {
+    mutt_perror (tmpfname);
+    return NULL;
+  }
+  mutt_unlink (tmpfname);
+
+
+  mutt_mktemp (certfile);
+  if ((fpout = safe_fopen (certfile, "w+")) == NULL)
+  {
+    fclose (fperr);
+    mutt_perror (certfile);
+    return NULL;
+  }
+  
+  /* Extract signer's certificate
+   */
+  if ((thepid =  smime_invoke (NULL, NULL, NULL,
+			       -1, -1, fileno (fperr),
+			       infile, NULL, NULL, NULL, certfile, NULL,
+			       SmimeGetSignerCertCommand))== -1)
+  {
+    mutt_any_key_to_continue (_("Error: unable to create OpenSSL subprocess!"));
+    fclose (fperr);
+    fclose (fpout);
+    mutt_unlink (pk7out);
+    mutt_unlink (certfile);
+    return NULL;
+  }
+
+  mutt_wait_filter (thepid);
+
+  fflush (fpout);
+  rewind (fpout);
+  rewind (fperr);
+  fflush (fperr);
+  empty =  (fgetc (fpout) == EOF);
+  if (empty)
+  {
+    mutt_copy_stream (fperr, stdout);
+    fclose (fpout);
+    fclose (fperr);
+    mutt_unlink (certfile);
+    return NULL;
+  }
+
+  fclose (fpout);
+  fclose (fperr);
+
+  return safe_strdup (certfile);
 }
 
 
@@ -966,13 +1077,6 @@ static void smime_add_certificate (char *certificate, char *mailbox, short publi
   struct stat info;
   int i = 0;
   pid_t thepid;
-
-
-  if (smime_check_certs_email (certificate, mailbox))
-  {
-    mutt_message _("Certificate *NOT* added.");
-    return;
-  }
 
   mutt_mktemp (tmpfname);
   if ((fperr = safe_fopen (tmpfname, "w+")) == NULL)
@@ -1111,191 +1215,29 @@ static void smime_add_certificate (char *certificate, char *mailbox, short publi
 
 
 
-
-static char *smime_extract_certificate (char *infile, int split)
-{
-  FILE *fpout = NULL, *fperr = NULL;
-  char pk7out[_POSIX_PATH_MAX], certfile[_POSIX_PATH_MAX];
-  char tmpfname[_POSIX_PATH_MAX];
-  pid_t thepid;
-  int empty;
-
-
-  mutt_mktemp (tmpfname);
-  if ((fperr = safe_fopen (tmpfname, "w+")) == NULL)
-  {
-    mutt_perror (tmpfname);
-    return NULL;
-  }
-  mutt_unlink (tmpfname);
-
-  mutt_mktemp (pk7out);
-  if ((fpout = safe_fopen (pk7out, "w+")) == NULL)
-  {
-    fclose (fperr);
-    mutt_perror (pk7out);
-    return NULL;
-  }
-
-  /* Step 1: Convert the signature to a PKCS#7 structure, as we can't
-     extract the full set of certificates directly.
-  */
-  if ((thepid =  smime_invoke (NULL, NULL, NULL,
-			       -1, fileno (fpout), fileno (fperr),
-			       infile, NULL, NULL, NULL, NULL, NULL,
-			       SmimePk7outCommand))== -1)
-  {
-    mutt_any_key_to_continue (_("Error: unable to create OpenSSL subprocess!"));
-    fclose (fperr);
-    fclose (fpout);
-    mutt_unlink (pk7out);
-    return NULL;
-  }
-
-  mutt_wait_filter (thepid);
-
-
-  fflush (fpout);
-  rewind (fpout);
-  rewind (fperr);
-  fflush (fperr);
-  empty = (fgetc (fpout) == EOF);
-  if (empty)
-  {
-    mutt_perror (pk7out);
-    mutt_copy_stream (fperr, stdout);
-    fclose (fpout);
-    fclose (fperr);
-    mutt_unlink (pk7out);
-    return NULL;
-    
-  }
-
-
-  fclose (fpout);
-  mutt_mktemp (certfile);
-  if ((fpout = safe_fopen (certfile, "w+")) == NULL)
-  {
-    fclose (fperr);
-    mutt_unlink (pk7out);
-    mutt_perror (certfile);
-    return NULL;
-  }
-  
-  /* Step 2: Extract the certificates from a PKCS#7 structure.
-   */
-  if ((thepid =  smime_invoke (NULL, NULL, NULL,
-			       -1, fileno (fpout), fileno (fperr),
-			       pk7out, NULL, NULL, NULL, NULL, NULL,
-			       SmimeGetCertCommand))== -1)
-  {
-    mutt_any_key_to_continue (_("Error: unable to create OpenSSL subprocess!"));
-    fclose (fperr);
-    fclose (fpout);
-    mutt_unlink (pk7out);
-    mutt_unlink (certfile);
-    return NULL;
-  }
-
-  mutt_wait_filter (thepid);
-
-  mutt_unlink (pk7out);
-
-  fflush (fpout);
-  rewind (fpout);
-  rewind (fperr);
-  fflush (fperr);
-  empty =  (fgetc (fpout) == EOF);
-  if (empty)
-  {
-    mutt_copy_stream (fperr, stdout);
-    fclose (fpout);
-    fclose (fperr);
-    mutt_unlink (certfile);
-    return NULL;
-  }
-
-  fclose (fpout);
-  fclose (fperr);
-
-  return safe_strdup (certfile);
-}
-
-
-
-
-static char *smime_extract_signer_certificate (char *infile, int split)
-{
-  FILE *fpout = NULL, *fperr = NULL;
-  char pk7out[_POSIX_PATH_MAX], certfile[_POSIX_PATH_MAX];
-  char tmpfname[_POSIX_PATH_MAX];
-  pid_t thepid;
-  int empty;
-
-
-  mutt_mktemp (tmpfname);
-  if ((fperr = safe_fopen (tmpfname, "w+")) == NULL)
-  {
-    mutt_perror (tmpfname);
-    return NULL;
-  }
-  mutt_unlink (tmpfname);
-
-
-  mutt_mktemp (certfile);
-  if ((fpout = safe_fopen (certfile, "w+")) == NULL)
-  {
-    fclose (fperr);
-    mutt_perror (certfile);
-    return NULL;
-  }
-  
-  /* Extract signer's certificate
-   */
-  if ((thepid =  smime_invoke (NULL, NULL, NULL,
-			       -1, -1, fileno (fperr),
-			       infile, NULL, NULL, NULL, certfile, NULL,
-			       SmimeGetSignerCertCommand))== -1)
-  {
-    mutt_any_key_to_continue (_("Error: unable to create OpenSSL subprocess!"));
-    fclose (fperr);
-    fclose (fpout);
-    mutt_unlink (pk7out);
-    mutt_unlink (certfile);
-    return NULL;
-  }
-
-  mutt_wait_filter (thepid);
-
-  fflush (fpout);
-  rewind (fpout);
-  rewind (fperr);
-  fflush (fperr);
-  empty =  (fgetc (fpout) == EOF);
-  if (empty)
-  {
-    mutt_copy_stream (fperr, stdout);
-    fclose (fpout);
-    fclose (fperr);
-    mutt_unlink (certfile);
-    return NULL;
-    
-  }
-
-  fclose (fpout);
-  fclose (fperr);
-
-  return safe_strdup (certfile);
-}
-
-
-
-
 void smime_invoke_import (char *infile, char *mailbox)
 {
   char *certfile = NULL;
+  int i;
+  certfile = smime_extract_signer_certificate(infile);
+  
+  if (certfile == NULL)
+  { 
+    mutt_message _("Certificate *NOT* added.");
+    return;
+  }  
+  
+  i = smime_check_cert_email (certfile, mailbox);
+  
+  mutt_unlink(certfile);
+  
+  if (i)
+  {
+    mutt_message _("Certificate *NOT* added.");
+    return;
+  }
 
-  if ((certfile = smime_extract_certificate(infile, FALSE)))
+  if ((certfile = smime_extract_certificate(infile)))
   {
     smime_add_certificate (certfile, mailbox, 1);
     mutt_unlink (certfile);
@@ -1343,10 +1285,10 @@ int smime_verify_sender(HEADER *h)
 
   if (mbox)
   {
-    if ((certfile = smime_extract_signer_certificate(tempfname,TRUE)))
+    if ((certfile = smime_extract_signer_certificate(tempfname)))
     {
       mutt_unlink(tempfname);
-      if (smime_check_certs_email (certfile, mbox))
+      if (smime_check_cert_email (certfile, mbox))
 	mutt_any_key_to_continue(NULL);
       else
 	retval = 0;
