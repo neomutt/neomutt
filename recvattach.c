@@ -812,6 +812,12 @@ create_tagged_message (const char *tempfile,
  * hdr		current message
  * body		current attachment 
  */
+
+/* 
+ * XXX - this code looks way too complicated, and rather ineffective.
+ * Analyze and fix this.
+ */
+
 static void reply_attachment_list (int op, int tag, HEADER *hdr, BODY *body)
 {
   HEADER *hn;
@@ -848,6 +854,8 @@ static void reply_attachment_list (int op, int tag, HEADER *hdr, BODY *body)
 
     mutt_free_envelope (&newhdr->env);
     newhdr->env = mutt_new_envelope();
+    newhdr->received = 0;
+    newhdr->date_sent = 0;
 
     /* set the default subject for the message. */
     buffer[0] = 0;
