@@ -32,6 +32,8 @@
 #endif
 
 static void flush_buffer(char* buf, size_t* len, CONNECTION* conn);
+static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf,
+  FILE* fp);
 static int msg_has_flag (LIST* flag_list, const char* flag);
 static IMAP_HEADER* msg_new_header (void);
 static int msg_parse_fetch (IMAP_HEADER* h, char* s);
@@ -44,31 +46,26 @@ static char* msg_parse_flags (IMAP_HEADER* h, char* s);
  */
 int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
 {
-  char buf[LONG_STRING],fetchbuf[LONG_STRING];
+  char buf[LONG_STRING];
   char hdrreq[STRING];
   FILE *fp;
   char tempfile[_POSIX_PATH_MAX];
-  char seq[8];
-  char *pc,*fpc,*hdr;
-  long ploc;
-  long bytes = 0;
-  int msgno,fetchlast;
-  IMAP_HEADER *h, *h0;
+  char seq[SEQLEN+1];
+  int msgno;
+  IMAP_HEADER* h;
+  int rc;
+  int fetchlast = 0;
   const char *want_headers = "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE IN-REPLY-TO REPLY-TO LINES X-LABEL";
-  int using_body_peek = 0;
   
-  fetchlast = 0;
-
   /* define search string */
-  if (mutt_bit_isset(CTX_DATA->capabilities,IMAP4REV1))
+  if (mutt_bit_isset (CTX_DATA->capabilities,IMAP4REV1))
   {
-    snprintf(hdrreq, sizeof (hdrreq), "BODY.PEEK[HEADER.FIELDS (%s)]", 
+    snprintf (hdrreq, sizeof (hdrreq), "BODY.PEEK[HEADER.FIELDS (%s)]", 
       want_headers); 
-    using_body_peek = 1;
   } 
-  else if (mutt_bit_isset(CTX_DATA->capabilities,IMAP4))
+  else if (mutt_bit_isset (CTX_DATA->capabilities,IMAP4))
   {
-    snprintf(hdrreq, sizeof (hdrreq), "RFC822.HEADER.LINES (%s)", 
+    snprintf (hdrreq, sizeof (hdrreq), "RFC822.HEADER.LINES (%s)", 
       want_headers);
   }
   else
@@ -78,22 +75,17 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
     return -1;
   }
 
-  /*
-   * We now download all of the headers into one file. This should be
-   * faster on most systems.
-   */
+  /* instead of downloading all headers and then parsing them, we parse them
+   * as they come in. */
   mutt_mktemp (tempfile);
   if (!(fp = safe_fopen (tempfile, "w+")))
     return -1;
-
   unlink (tempfile);
 
-  h = msg_new_header ();
-  h0 = h;
   for (msgno = msgbegin; msgno <= msgend ; msgno++)
   {
-    mutt_message (_("Fetching message headers... [%d/%d]"), 
-		  msgno + 1, msgend + 1);
+    mutt_message (_("Fetching message headers... [%d/%d]"), msgno + 1,
+      msgend + 1);
 
     if (msgno + 1 > fetchlast)
     {
@@ -115,111 +107,57 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
 
     do
     {
+      /* freshen fp, h */
+      rewind (fp);
+      h = msg_new_header ();
+      
       if (mutt_socket_readln (buf, sizeof (buf), CTX_DATA->conn) < 0)
       {
+	imap_free_header_data ((void**) &(h->data));
+	safe_free ((void**) &h);
 	fclose (fp);
         return -1;
       }
 
       if (buf[0] == '*')
       {
-        pc = buf;
-        pc = imap_next_word (pc);
-	h->number = atoi (pc);
-	dprint (1, (debugfile, "fetching message %d\n", h->number));
-        pc = imap_next_word (pc);
-        if (mutt_strncasecmp ("FETCH", pc, 5) == 0)
-        {
-          if (!(pc = strchr (pc, '(')))
-          {
-            imap_error ("imap_read_headers()", buf);
-	    fclose (fp);
-            return (-1);
-          }
-          pc++;
-          fpc=fetchbuf;
-          while (*pc != '\0' && *pc != ')')
-          {
-	    if (using_body_peek) 
-	      hdr=strstr(pc,"BODY");
-	    else
-	      hdr=strstr(pc,"RFC822.HEADER");
-	    if (!hdr)
-            {
-              imap_error ("imap_read_headers()", buf);
-	      fclose (fp);
-              return -1;
-            }
-            strncpy (fpc,pc,hdr-pc);
-            fpc += hdr-pc;
-            *fpc = '\0';
-            pc=hdr;
-            /* get some number of bytes */
-	    if (imap_get_literal_count(buf, &bytes) < 0)
-            {
-              imap_error ("imap_read_headers()", buf);
-	      fclose (fp);
-              return -1;
-            }
-            imap_read_bytes (fp, CTX_DATA->conn, bytes);
-#if 0
-	    /* make sure headers are followed by ONE blank line (separator
-	     * for mutt_read_rfc822_header) */
-
-	    /* 
-	     * XXX - this is supposed to fix things, but seems to
-	     * break them.
-	     */
-
-	    do
-	      fseek (fp, -2, SEEK_CUR);
-	    while (fgetc (fp) == '\n');
-	    fputs ("\n\n", fp);
-#endif	    
-	    /* we may have other fields of the FETCH _after_ the literal
-	     * (eg Domino puts FLAGS here). Nothing wrong with that, either.
-	     * This all has to go - we should accept literals and nonliterals
-	     * interchangeably at any time. */
-	    if (mutt_socket_readln (buf, sizeof (buf), CTX_DATA->conn)
-		< 0)
-	    {
-	      fclose (fp);
-	      return -1;
-	    }
-	    pc = buf;
-
-	    if (buf[0] == ' ')
-	    {
-	      /* skip space, closing parenthesis */
-	      strncpy (fpc, buf+1, strlen (buf)-2);
-	      fpc += strlen (buf)-2;
-	      *fpc = '\0';
-	      if (!(pc = strrchr (buf, ')')))
-	      {
-		dprint (2, (debugfile, "imap_read_headers: unterminated FETCH\n"));
-		pc = buf;
-	      }
-	    }
-	  }
-        }
-        else if (imap_handle_untagged (CTX_DATA, buf) != 0)
+	rc = msg_fetch_header (ctx, h, buf, fp);
+	if ((rc == -1 && imap_handle_untagged (CTX_DATA, buf)) || rc == -2)
 	{
+	  imap_free_header_data ((void**) &(h->data));
+	  safe_free ((void**) &h);
 	  fclose (fp);
-          return -1;
+	  return -1;
 	}
+
+	/* update context with message header */
+	ctx->hdrs[ctx->msgcount] = mutt_new_header ();
+	ctx->hdrs[ctx->msgcount]->index = ctx->msgcount;
+
+	ctx->hdrs[msgno]->read = h->read;
+	ctx->hdrs[msgno]->old = h->old;
+	ctx->hdrs[msgno]->deleted = h->deleted;
+	ctx->hdrs[msgno]->flagged = h->flagged;
+	ctx->hdrs[msgno]->replied = h->replied;
+	ctx->hdrs[msgno]->changed = h->changed;
+	ctx->hdrs[msgno]->received = h->received;
+	ctx->hdrs[msgno]->data = (void *) (h->data);
+
+	rewind (fp);
+	/* NOTE: if Date: header is missing, mutt_read_rfc822_header depends
+	 *   on h->received being set */
+	ctx->hdrs[msgno]->env = mutt_read_rfc822_header (fp, ctx->hdrs[msgno],
+          0, 0);
+	/* content built as a side-effect of mutt_read_rfc822_header */
+	ctx->hdrs[msgno]->content->length = h->content_length;
+
+	mx_update_context (ctx); /* increments ->msgcount */
+
+	/* h->data shouldn't be freed here, it is kept in ctx->headers */
+	safe_free ((void**) &h);
       }
     }
     while ((msgno + 1) >= fetchlast && mutt_strncmp (seq, buf, SEQLEN) != 0);
-
-    h->content_length = -bytes;
-    if (msg_parse_fetch (h, fetchbuf) == -1)
-    {
-      fclose (fp);
-      return -1;
-    }
-    
-    /* FIXME?: subtract the header length; the total message size will be
-       added to this */
 
     /* in case we get new mail while fetching the headers */
     if (((IMAP_DATA *) ctx->data)->status == IMAP_NEW_MAIL)
@@ -229,50 +167,11 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
         mx_alloc_memory (ctx);
       ((IMAP_DATA *) ctx->data)->status = 0;
     }
-
-    h->next = msg_new_header ();
-    h = h->next;
   }
 
-  rewind (fp);
-  h = h0;
-
-  /*
-   * Now that we have all the header information, we can tell mutt about
-   * it.
-   */
-  ploc=0;
-  for (msgno = msgbegin; msgno <= msgend;msgno++)
-  {
-    ctx->hdrs[ctx->msgcount] = mutt_new_header ();
-    ctx->hdrs[ctx->msgcount]->index = ctx->msgcount;
-
-    ploc = ftell (fp);
-    ctx->hdrs[msgno]->read = h->read;
-    ctx->hdrs[msgno]->old = h->old;
-    ctx->hdrs[msgno]->deleted = h->deleted;
-    ctx->hdrs[msgno]->flagged = h->flagged;
-    ctx->hdrs[msgno]->replied = h->replied;
-    ctx->hdrs[msgno]->changed = h->changed;
-    ctx->hdrs[msgno]->received = h->received;
-    ctx->hdrs[msgno]->data = (void *) (h->data);
-
-    /* NOTE: if Date: header is missing, mutt_read_rfc822_header depends
-     *   on h->received being set */
-    ctx->hdrs[msgno]->env = mutt_read_rfc822_header (fp, ctx->hdrs[msgno], 0, 0);
-    /* content built as a side-effect of mutt_read_rfc822_header */
-    ctx->hdrs[msgno]->content->length = h->content_length;
-
-    mx_update_context (ctx); /* increments ->msgcount */
-
-    h0 = h;
-    h = h->next;
-    /* hdata is freed later */
-    safe_free ((void **) &h0);
-  }
-  
   fclose(fp);
-  return (msgend);
+
+  return msgend;
 }
 
 int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
@@ -357,15 +256,15 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	    for (pos = 0; pos < bytes; )
 	    {
 	      len = mutt_socket_readln_d (buf, sizeof (buf), CTX_DATA->conn,
-                3);
+                IMAP_LOG_BODY);
 	      if (len < 0)
 		goto bail;
 	      pos += len;
 	      fputs (buf, msg->fp);
 	      fputs ("\n", msg->fp);
 	    }
-	    if (mutt_socket_readln_d (buf, sizeof (buf), CTX_DATA->conn, 3)
-                < 0)
+	    if (mutt_socket_readln_d (buf, sizeof (buf), CTX_DATA->conn,
+                IMAP_LOG_BODY) < 0)
 	      goto bail;
 	    pc = buf;
 	  }
@@ -716,6 +615,63 @@ void imap_free_header_data (void** data)
   safe_free (data);
 }
 
+/* msg_fetch_header: import IMAP FETCH response into an IMAP_HEADER.
+ *   Expects string beginning with * n FETCH.
+ *   Returns:
+ *      0 on success
+ *     -1 if the string is not a fetch response
+ *     -2 if the string is a corrupt fetch response */
+static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf, FILE* fp)
+{
+  long bytes;
+  int rc = -1; /* default now is that string isn't FETCH response*/
+
+  if (buf[0] != '*')
+    return rc;
+  
+  /* skip to message number */
+  buf = imap_next_word (buf);
+  h->number = atoi (buf);
+
+  /* find FETCH tag */
+  buf = imap_next_word (buf);
+  if (mutt_strncasecmp ("FETCH", buf, 5))
+    return rc;
+
+  rc = -2; /* we've got a FETCH response, for better or worse */
+  if (!(buf = strchr (buf, '(')))
+    return rc;
+  buf++;
+
+  /* FIXME: current implementation - call msg_parse_fetch - if it returns -2,
+   *   read header lines and call it again. Silly. */
+  if (msg_parse_fetch (h, buf) != -2)
+    return rc;
+  
+  if (imap_get_literal_count (buf, &bytes) < 0)
+    return rc;
+  imap_read_bytes (fp, CTX_DATA->conn, bytes);
+
+  /* we may have other fields of the FETCH _after_ the literal
+   * (eg Domino puts FLAGS here). Nothing wrong with that, either.
+   * This all has to go - we should accept literals and nonliterals
+   * interchangeably at any time. */
+  if (mutt_socket_readln (buf, sizeof (buf), CTX_DATA->conn)
+      < 0)
+    return rc;
+
+  if (msg_parse_fetch (h, buf) == -1)
+    return rc;
+
+  rc = 0; /* success */
+  
+  /* subtract headers from message size - unfortunately only the subset of
+   * headers we've requested. */
+  h->content_length -= bytes;
+
+  return rc;
+}
+
 /* msg_new_header: allocate and initialise a new IMAP_HEADER structure */
 static IMAP_HEADER* msg_new_header (void)
 {
@@ -763,7 +719,7 @@ static int msg_parse_fetch (IMAP_HEADER *h, char *s)
   char *ptmp;
 
   if (!s)
-    return (-1);
+    return -1;
 
   while (*s)
   {
@@ -809,7 +765,13 @@ static int msg_parse_fetch (IMAP_HEADER *h, char *s)
       while (isdigit (*s))
         *ptmp++ = *s++;
       *ptmp = 0;
-      h->content_length += atoi (tmp);
+      h->content_length = atoi (tmp);
+    }
+    else if (!mutt_strncasecmp ("BODY", s, 4) ||
+      !mutt_strncasecmp ("RFC822.HEADER", s, 13))
+    {
+      /* handle above, in msg_fetch_header */
+      return -2;
     }
     else if (*s == ')')
       s++; /* end of request */
@@ -817,7 +779,7 @@ static int msg_parse_fetch (IMAP_HEADER *h, char *s)
     {
       /* got something i don't understand */
       imap_error ("msg_parse_fetch", s);
-      return (-1);
+      return -1;
     }
   }
 

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ typedef struct imap_header_data
 
 /* Linked list to hold header information while downloading message
  * headers */
-typedef struct imap_header
+typedef struct
 {
   unsigned int read : 1;
   unsigned int old : 1;
@@ -46,7 +46,6 @@ typedef struct imap_header
 
   time_t received;
   long content_length;
-  struct imap_header *next;
 } IMAP_HEADER;
 
 /* -- macros -- */
