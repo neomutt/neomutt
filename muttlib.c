@@ -1224,7 +1224,12 @@ void state_mark_attach (STATE *s)
 void state_attach_puts (const char *t, STATE *s)
 {
   state_mark_attach (s);
-  state_puts (t, s);
+  while (*t)
+  {
+    state_putc (*t, s);
+    if (*t++ == '\n' && *t)
+      state_mark_attach (s);
+  }
 }
 
 void mutt_display_sanitize (char *s)
