@@ -577,7 +577,7 @@ struct option_t MuttVars[] = {
   { "forw_quote",	DT_SYN,  R_NONE, UL "forward_quote", 0 },
   /*
   */
-  { "from",		DT_ADDR, R_NONE, UL &From, 0 },
+  { "from",		DT_ADDR, R_NONE, UL &From, UL 0 },
   /*
   ** .pp
   ** When set, this variable contains a default from address.  It

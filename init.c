@@ -633,6 +633,7 @@ static void mutt_set_default (struct option_t *p)
       if (!p->init && *((ADDRESS **) p->data))
       {
 	char tmp[HUGE_STRING];
+	*tmp = '\0';
 	rfc822_write_address (tmp, sizeof (tmp), *((ADDRESS **) p->data));
 	p->init = (unsigned long) safe_strdup (tmp);
       }
