@@ -131,6 +131,8 @@ static void show_version (void)
   printf ("System: %s %s", uts.sysname, uts.release);
 #endif
 
+  printf (" (%s)", uts.machine);
+
 #ifdef NCURSES_VERSION
   printf (" [using ncurses %s]", NCURSES_VERSION);
 #elif defined(USE_SLANG_CURSES)
