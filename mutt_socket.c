@@ -264,7 +264,7 @@ static int socket_connect (int fd, struct sockaddr* sa)
   {
       save_errno = errno;
       dprint (2, (debugfile, "Connection failed. errno: %d...\n", errno));
-      SigInt = 0;	/* reset in case we caugh SIGINTR while in connect() */
+      SigInt = 0;	/* reset in case we caught SIGINTR while in connect() */
   }
 
   if (ConnectTimeout > 0)
@@ -380,9 +380,9 @@ int raw_socket_open (CONNECTION* conn)
     memcpy (&sin.sin_addr, he->h_addr_list[i], he->h_length);
     fd = socket (PF_INET, SOCK_STREAM, IPPROTO_IP);
 
-    if (fd > 0)
+    if (fd >= 0)
     {
-      if ((rc = socket_connect (fd, (struct sockaddr*) &sin) == 0))
+      if ((rc = socket_connect (fd, (struct sockaddr*) &sin)) == 0)
       {
 	conn->fd = fd;
 	break;
