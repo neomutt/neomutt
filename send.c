@@ -1435,7 +1435,7 @@ main_loop:
       clear_content = msg->content;
   
       if ((crypt_get_keys (msg, &pgpkeylist) == -1) ||
-          mutt_protect (msg, pgpkeylist) == -1)
+          mutt_protect (msg, cur, pgpkeylist) == -1)
       {
         msg->content = mutt_remove_multipart (msg->content);
         
@@ -1516,7 +1516,7 @@ main_loop:
 	  /* this means writing only the main part */
 	  msg->content = clear_content->parts;
 
-	  if (mutt_protect (msg, pgpkeylist) == -1)
+	  if (mutt_protect (msg, cur, pgpkeylist) == -1)
 	  {
 	    /* we can't do much about it at this point, so
 	     * fallback to saving the whole thing to fcc

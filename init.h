@@ -1409,6 +1409,23 @@ struct option_t MuttVars[] = {
   ** \fBdeprecated\fP.
   ** (PGP only)
   */
+  { "pgp_auto_traditional", DT_BOOL, R_NONE, OPTPGPAUTOTRAD, M_NO },
+  /*
+  ** .pp
+  ** This option causes Mutt to generate an old-style PGP encrypted or
+  ** signed message when replying to an old-style message, and a
+  ** PGP/MIME message when replying to a PGP/MIME message.  Note that
+  ** this option is only meaningful when using
+  ** ``$$crypt_replyencrypt'', ``$$crypt_replysign'', or
+  ** ``$$crypt_replysignencrypted''.
+  ** .pp
+  ** Note that PGP/MIME will be used automatically for messages which have
+  ** a character set different from us-ascii, or which consist of more than
+  ** a single MIME part.
+  ** .pp
+  ** This option overrides ``$$pgp_create_traditional''
+  ** (PGP only)
+  */
 
   /* XXX Default values! */
   

@@ -158,7 +158,7 @@ int crypt_valid_passphrase(int flags)
 
 
 
-int mutt_protect (HEADER *msg, char *keylist)
+int mutt_protect (HEADER *msg, HEADER *cur, char *keylist)
 {
   BODY *pbody = NULL, *tmp_pbody = NULL;
   BODY *tmp_smime_pbody = NULL;
@@ -178,10 +178,21 @@ int mutt_protect (HEADER *msg, char *keylist)
     if ((msg->content->type == TYPETEXT) &&
 	!ascii_strcasecmp (msg->content->subtype, "plain"))
     {
-      if ((i = query_quadoption (OPT_PGPTRADITIONAL, _("Create an inline PGP message?"))) == -1)
-	return -1;
-      else if (i == M_YES)
-	traditional = 1;
+      if (cur && cur->security && option (OPTPGPAUTOTRAD)
+	  && (option (OPTCRYPTREPLYENCRYPT)
+	      || option (OPTCRYPTREPLYSIGN)
+	      || option (OPTCRYPTREPLYSIGNENCRYPTED)))
+	{
+	  if(mutt_is_application_pgp(cur->content))
+	    traditional = 1;
+	}
+      else
+	{
+	  if ((i = query_quadoption (OPT_PGPTRADITIONAL, _("Create a traditional (inline) PGP message?"))) == -1)
+	    return -1;
+	  else if (i == M_YES)
+	    traditional = 1;
+	}
     }
     if (traditional)
     {

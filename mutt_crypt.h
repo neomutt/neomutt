@@ -101,7 +101,7 @@ typedef struct pgp_keyinfo *pgp_key_t;
 
 /* Some prototypes -- old crypt.h. */
 
-int mutt_protect (HEADER *, char *);
+int mutt_protect (HEADER *, HEADER *, char *);
 
 int mutt_is_multipart_encrypted (BODY *);
 
