@@ -1,3 +1,14 @@
+2004-02-07 21:36:41  David Yitzchak Cohen  <lists+mutt_devs@bigfatdave.com>  (roessler)
+
+	* init.c, muttlib.c: Looking at the code, the problem is pretty
+	obvious.  A recent patch to init.c (the one that was supposed
+	to prevent Mutt from silently failing to read nonexistant RC
+	files, IIRC) changed source_rc() to stat(2) the RC "file" before
+	trying to mutt_open_read() it.	There's only one problem here:
+	source_rc() has no way of knowing whether or not its "file"
+	is a file or a command.  I'm attaching a patch that fixes the
+	problem in what I believe is the right way.
+
 2004-02-05 14:17:25  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* menu.c: Back out the patch for #1697.
