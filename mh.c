@@ -715,13 +715,13 @@ static int maildir_sync_message (CONTEXT *ctx, int msgno)
   return (0);
 }
 
-int mh_sync_mailbox (CONTEXT * ctx)
+int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
 {
   char path[_POSIX_PATH_MAX], tmp[_POSIX_PATH_MAX];
   int i, j;
 
-  if (mh_check_mailbox(ctx, NULL) != 0)
-    return -1;
+  if ((i = mh_check_mailbox(ctx, index_hint)) != 0)
+    return i;
 
   for (i = 0; i < ctx->msgcount; i++)
   {

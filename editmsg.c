@@ -77,7 +77,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
 
   rc = mutt_append_message (&tmpctx, ctx, cur, 0, CH_NOLEN | CH_NOSTATUS); oerrno = errno;
 
-  mx_close_mailbox (&tmpctx);
+  mx_close_mailbox (&tmpctx, NULL);
 
   if (rc == -1)
   {
@@ -149,7 +149,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
   if (msg == NULL)
   {
     mutt_error (_("Can't append to folder: %s"), strerror (errno));
-    mx_close_mailbox (&tmpctx);
+    mx_close_mailbox (&tmpctx, NULL);
     goto bail;
   }
 
@@ -162,7 +162,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
   rc = mx_commit_message (msg, &tmpctx);
   mx_close_message (&msg);
   
-  mx_close_mailbox (&tmpctx);
+  mx_close_mailbox (&tmpctx, NULL);
   
   bail:
   if (fp) fclose (fp);

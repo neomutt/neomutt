@@ -46,7 +46,7 @@ WHERE short DefaultMagic INITVAL (M_MBOX);
 #define KENDRA_SEP "\001\001\001\001\001\001\001\001\001\001\001\001\001\001\001\001\001\001\001\001\n"
 #define MAXLOCKATTEMPT 5
 
-int mbox_sync_mailbox (CONTEXT *);
+int mbox_sync_mailbox (CONTEXT *, int *);
 int mbox_open_mailbox (CONTEXT *);
 int mbox_check_mailbox (CONTEXT *, int *);
 int mbox_close_mailbox (CONTEXT *);
@@ -56,7 +56,7 @@ int mmdf_parse_mailbox (CONTEXT *);
 void mbox_unlock_mailbox (CONTEXT *);
 
 int mh_read_dir (CONTEXT *, const char *);
-int mh_sync_mailbox (CONTEXT *);
+int mh_sync_mailbox (CONTEXT *, int *);
 int mh_check_mailbox (CONTEXT *, int *);
 int mh_parse_sequences (CONTEXT *, const char *);
 

@@ -737,7 +737,7 @@ int imap_select_mailbox (CONTEXT* ctx, const char* path)
     return -1;
   }
 
-  if (imap_sync_mailbox (ctx, 0) < 0)
+  if (imap_sync_mailbox (ctx, 0, NULL) < 0)
     return -1;
 
   idata = CTX_DATA;
@@ -957,7 +957,7 @@ int imap_make_msg_set (char* buf, size_t buflen, CONTEXT* ctx, int flag,
  *   expunge: 0 or 1 - do expunge? 
  */
 
-int imap_sync_mailbox (CONTEXT* ctx, int expunge)
+int imap_sync_mailbox (CONTEXT* ctx, int expunge, int *index_hint)
 {
   char buf[HUGE_STRING];
   char flags[LONG_STRING];
@@ -977,7 +977,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
 				 * expects the context to be changed.
 				 */
 
-  if ((rc = imap_check_mailbox (ctx, NULL)) != 0)
+  if ((rc = imap_check_mailbox (ctx, index_hint)) != 0)
     return rc;
 
   /* if we are expunging anyway, we can do deleted messages very quickly... */

@@ -254,7 +254,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
   if (! PostContext->msgcount)
   {
     PostCount = 0;
-    mx_close_mailbox (PostContext);
+    mx_close_mailbox (PostContext, NULL);
 #ifdef USE_IMAP
   if (need_reopen)
     ctx = mx_open_mailbox (curpath, 0, PostContext);
@@ -272,7 +272,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
   }
   else if ((h = select_msg ()) == NULL)
   {
-    mx_close_mailbox (PostContext);
+    mx_close_mailbox (PostContext, NULL);
 #ifdef USE_IMAP
   if (need_reopen)
     ctx = mx_open_mailbox (curpath, 0, PostContext);
@@ -303,7 +303,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
   /* avoid the "purge deleted messages" prompt */
   opt_delete = quadoption (OPT_DELETE);
   set_quadoption (OPT_DELETE, M_YES);
-  mx_close_mailbox (PostContext);
+  mx_close_mailbox (PostContext, NULL);
   set_quadoption (OPT_DELETE, opt_delete);
 
 #ifdef USE_IMAP

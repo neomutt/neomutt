@@ -869,7 +869,7 @@ static ADDRESS *set_reverse_name (ENVELOPE *env)
   {
     tmp = rfc822_cpy_adr_real (tmp);
     if (!option (OPTREVREAL))
-      safe_free (&tmp->personal);
+      FREE (&tmp->personal);
     if (!tmp->personal)
       tmp->personal = safe_strdup (Realname);
   }

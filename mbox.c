@@ -662,11 +662,12 @@ int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
  *	0	success
  *	-1	failure
  */
-int mbox_sync_mailbox (CONTEXT *ctx)
+int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
 {
   char tempfile[_POSIX_PATH_MAX];
   char buf[32];
   int i, j, save_sort = SORT_ORDER;
+  int rc = -1;
   int need_sort = 0; /* flag to resort mailbox if new mail arrives */
   int first;	/* first message to be written */
   long offset;	/* location in mailbox to write changed messages */
@@ -703,10 +704,11 @@ int mbox_sync_mailbox (CONTEXT *ctx)
   }
 
   /* Check to make sure that the file hasn't changed on disk */
-  if ((i = mbox_check_mailbox (ctx, NULL)) == M_NEW_MAIL ||  i == M_REOPENED)
+  if ((i = mbox_check_mailbox (ctx, index_hint)) == M_NEW_MAIL ||  i == M_REOPENED)
   {
     /* new mail arrived, or mailbox reopened */
     need_sort = i;
+    rc = i;
     goto bail;
   }
   else if (i < 0)
@@ -957,9 +959,7 @@ int mbox_sync_mailbox (CONTEXT *ctx)
 
 bail:  /* Come here in case of disaster */
 
-  /* Disadvantage of using "goto" */
-  if (fp)
-    fclose (fp);
+  safe_fclose (&fp);
 
   /* this is ok to call even if we haven't locked anything */
   mbox_unlock_mailbox (ctx);
@@ -982,7 +982,7 @@ bail:  /* Come here in case of disaster */
     mutt_sort_headers (ctx, (need_sort == M_REOPENED));
   }
 
-  return (-1);
+  return rc;
 }
 
 /* close a mailbox opened in write-mode */

@@ -1959,7 +1959,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
     if ((tempfp = safe_fopen (tempfile, "w+")) == NULL)
     {
       mutt_perror (tempfile);
-      mx_close_mailbox (&f);
+      mx_close_mailbox (&f, NULL);
       return (-1);
     }
   }
@@ -1967,7 +1967,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
   hdr->read = !post; /* make sure to put it in the `cur' directory (maildir) */
   if ((msg = mx_open_new_message (&f, hdr, M_ADD_FROM)) == NULL)
   {
-    mx_close_mailbox (&f);
+    mx_close_mailbox (&f, NULL);
     return (-1);
   }
 
@@ -2056,7 +2056,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
       unlink (tempfile);
       mx_commit_message (msg, &f);	/* XXX - really? */
       mx_close_message (&msg);
-      mx_close_mailbox (&f);
+      mx_close_mailbox (&f, NULL);
       return -1;
     }
 
@@ -2085,7 +2085,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
   if (mx_commit_message (msg, &f) != 0)
     r = -1;
   mx_close_message (&msg);
-  mx_close_mailbox (&f);
+  mx_close_mailbox (&f, NULL);
 
   return r;
 }

@@ -703,7 +703,7 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
 }
 
 /* save changes to disk */
-static int sync_mailbox (CONTEXT *ctx)
+static int sync_mailbox (CONTEXT *ctx, int *index_hint)
 {
 #ifdef BUFFY_SIZE
   BUFFY *tmp = NULL;
@@ -717,7 +717,7 @@ static int sync_mailbox (CONTEXT *ctx)
   {
     case M_MBOX:
     case M_MMDF:
-      rc = mbox_sync_mailbox (ctx);
+      rc = mbox_sync_mailbox (ctx, index_hint);
 #ifdef BUFFY_SIZE
       tmp = mutt_find_mailbox (ctx->path);
 #endif
@@ -725,13 +725,13 @@ static int sync_mailbox (CONTEXT *ctx)
       
     case M_MH:
     case M_MAILDIR:
-      rc = mh_sync_mailbox (ctx);
+      rc = mh_sync_mailbox (ctx, index_hint);
       break;
       
 #ifdef USE_IMAP
     case M_IMAP:
       /* extra argument means EXPUNGE */
-      rc = imap_sync_mailbox (ctx, 1);
+      rc = imap_sync_mailbox (ctx, 1, index_hint);
       break;
 #endif /* USE_IMAP */
   }
@@ -749,9 +749,10 @@ static int sync_mailbox (CONTEXT *ctx)
 }
 
 /* save changes and close mailbox */
-int mx_close_mailbox (CONTEXT *ctx)
+int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
 {
   int i, move_messages = 0, purge = 1, read_msgs = 0;
+  int check;
   int isSpool = 0;
   CONTEXT f;
   char mbox[_POSIX_PATH_MAX];
@@ -871,13 +872,13 @@ int mx_close_mailbox (CONTEXT *ctx)
 	  }
 	  else
 	  {
-	    mx_close_mailbox (&f);
+	    mx_close_mailbox (&f, NULL);
 	    return -1;
 	  }
 	}
       }
     
-      mx_close_mailbox (&f);
+      mx_close_mailbox (&f, NULL);
     }
     
   }
@@ -892,8 +893,8 @@ int mx_close_mailbox (CONTEXT *ctx)
   /* allow IMAP to preserve the deleted flag across sessions */
   if (ctx->magic == M_IMAP)
   {
-    if (imap_sync_mailbox (ctx, purge) != 0)
-      return -1;
+    if ((check = imap_sync_mailbox (ctx, purge, index_hint)) != 0)
+      return check;
   }
   else
 #endif
@@ -907,8 +908,8 @@ int mx_close_mailbox (CONTEXT *ctx)
 
     if (ctx->changed || ctx->deleted)
     {
-      if (sync_mailbox (ctx) != 0)
-        return -1;
+      if ((check = sync_mailbox (ctx, index_hint)) != 0)
+	return check;
     }
   }
 
@@ -1013,7 +1014,7 @@ void mx_update_tables(CONTEXT *ctx, int committing)
  *	0		success
  *	-1		error
  */
-int mx_sync_mailbox (CONTEXT *ctx)
+int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
 {
   int rc, i;
   int purge = 1;
@@ -1069,10 +1070,10 @@ int mx_sync_mailbox (CONTEXT *ctx)
 
 #ifdef USE_IMAP
   if (ctx->magic == M_IMAP)
-    rc = imap_sync_mailbox (ctx, purge);
+    rc = imap_sync_mailbox (ctx, purge, index_hint);
   else
 #endif
-    rc = sync_mailbox (ctx);
+    rc = sync_mailbox (ctx, index_hint);
   if (rc == 0)
   {
 #ifdef USE_IMAP

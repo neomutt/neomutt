@@ -669,7 +669,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
 	  if (!ctx->msgcount)
 	  {
-	    mx_close_mailbox (ctx);
+	    mx_close_mailbox (ctx, NULL);
 	    safe_free ((void **) &ctx);
 	    mutt_error _("No messages in that folder.");
 	    break;
@@ -720,7 +720,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  menu->redraw |= REDRAW_FULL;
 
 	  if (close == OP_QUIT) 
-	    mx_close_mailbox (Context);
+	    mx_close_mailbox (Context, NULL);
 	  else
 	    mx_fastclose_mailbox (Context);
 	  safe_free ((void **) &Context);

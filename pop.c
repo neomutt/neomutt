@@ -317,7 +317,7 @@ void mutt_fetchPopMail (void)
       err = 1;
     mx_close_message (&msg);
   }
-  mx_close_mailbox (&ctx);
+  mx_close_mailbox (&ctx, NULL);
 
   if (err)
   {

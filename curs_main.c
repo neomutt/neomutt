@@ -240,6 +240,113 @@ static int mx_toggle_write (CONTEXT *ctx)
   return 0;
 }
 
+static void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
+			  int oldcount, int index_hint)
+{
+  /* store pointers to the newly added messages */
+  HEADER  **save_new = NULL;
+  int j;
+  
+  /* take note of the current message */
+  if (oldcount)
+  {
+    if (menu->current < Context->vcount)
+      menu->oldcurrent = index_hint;
+    else
+      oldcount = 0; /* invalid message number! */
+  }
+  
+  /* We are in a limited view. Check if the new message(s) satisfy
+   * the limit criteria. If they do, set their virtual msgno so that
+   * they will be visible in the limited view */
+  if (Context->pattern)
+  {
+#define THIS_BODY Context->hdrs[j]->content
+    if (oldcount || check == M_REOPENED)
+    {
+      for (j = (check == M_REOPENED) ? 0 : oldcount; j < Context->msgcount; j++)
+      {
+	if (mutt_pattern_exec (Context->limit_pattern,
+			       M_MATCH_FULL_ADDRESS, 
+			       Context, Context->hdrs[j]))
+	{
+	  Context->hdrs[j]->virtual = Context->vcount;
+	  Context->v2r[Context->vcount] = j;
+	  Context->hdrs[j]->limited = 1;
+	  Context->vcount++;
+	  Context->vsize += THIS_BODY->length + THIS_BODY->offset - THIS_BODY->hdr_offset;
+	}
+      }
+    }
+#undef THIS_BODY
+  }
+    
+  /* save the list of new messages */
+  if (oldcount && check != M_REOPENED
+      && ((Sort & SORT_MASK) == SORT_THREADS))
+  {
+    save_new = (HEADER **) safe_malloc (sizeof (HEADER *) * (Context->msgcount - oldcount));
+    for (j = oldcount; j < Context->msgcount; j++)
+      save_new[j-oldcount] = Context->hdrs[j];
+  }
+  
+  /* if the mailbox was reopened, need to rethread from scratch */
+  mutt_sort_headers (Context, (check == M_REOPENED));
+  
+  /* uncollapse threads with new mail */
+  if ((Sort & SORT_MASK) == SORT_THREADS)
+  {
+    if (check == M_REOPENED)
+    {
+      HEADER *h;
+      
+      h = Context->tree;
+      Context->collapsed = 0;
+      
+      while (h)
+      {
+	mutt_uncollapse_thread (Context, h);
+	h = h->next;
+      }
+      mutt_set_virtual (Context);
+    }
+    else if (oldcount)
+    {
+      for (j = 0; j < Context->msgcount - oldcount; j++)
+      {
+	int k;
+	
+	for (k = 0; k < Context->msgcount; k++)
+	{
+	  HEADER *h = Context->hdrs[k];
+	  if (h == save_new[j] && (!Context->pattern || h->limited))
+	    mutt_uncollapse_thread (Context, h);
+	}
+      }
+      FREE (&save_new);
+      mutt_set_virtual (Context);
+    }
+  }
+  
+  menu->current = -1;
+  if (oldcount)
+  {
+    /* restore the current message to the message it was pointing to */
+    for (j = 0; j < Context->vcount; j++)
+    {
+      if (Context->hdrs[Context->v2r[j]]->index == menu->oldcurrent)
+      {
+	menu->current = j;
+	break;
+      }
+    }
+  }
+  
+  if (menu->current < 0)
+    menu->current = ci_first_message ();
+  
+}
+
 static void resort_index (MUTTMENU *menu)
 {
   int i;
@@ -289,7 +396,6 @@ int mutt_index_menu (void)
   int do_buffy_notify = 1;
   int close = 0; /* did we OP_QUIT or OP_EXIT out of this menu? */
   int attach_msg = option(OPTATTACHMSG);
-  int check_lock = 0;
   
   menu = mutt_new_menu ();
   menu->menu = MENU_MAIN;
@@ -331,7 +437,7 @@ int mutt_index_menu (void)
       
       index_hint = (Context->vcount) ? CURHDR->index : 0;
 
-      if ((check = mx_check_mailbox (Context, &index_hint, check_lock)) < 0)
+      if ((check = mx_check_mailbox (Context, &index_hint, 0)) < 0)
       {
 	if (!Context->path)
 	{
@@ -344,103 +450,8 @@ int mutt_index_menu (void)
       }
       else if (check == M_NEW_MAIL || check == M_REOPENED)
       {
-	/* store pointers to the newly added messages */
-	HEADER  **save_new = NULL;
-
-	/* take note of the current message */
-	if (oldcount)
-	{
-	  if (menu->current < Context->vcount)
-	    menu->oldcurrent = index_hint;
-	  else
-	    oldcount = 0; /* invalid message number! */
-	}
-
-	/* We are in a limited view. Check if the new message(s) satisfy
-	 * the limit criteria. If they do, set their virtual msgno so that
-	 * they will be visible in the limited view */
-        if (Context->pattern)
-	{
-#define THIS_BODY Context->hdrs[j]->content
-	  if (oldcount || check == M_REOPENED)
-	    for (j = (check == M_REOPENED) ? 0 : oldcount; j < Context->msgcount; j++)
-	  {
-            if (mutt_pattern_exec (Context->limit_pattern,
-	                           M_MATCH_FULL_ADDRESS, 
-				    Context, Context->hdrs[j]))
-            {
-		Context->hdrs[j]->virtual = Context->vcount;
-		Context->v2r[Context->vcount] = j;
-		Context->hdrs[j]->limited = 1;
-		Context->vcount++;
-		Context->vsize += THIS_BODY->length + THIS_BODY->offset - THIS_BODY->hdr_offset;
-            }
-	  }
-#undef THIS_BODY
-        }
-
-	/* save the list of new messages */
-	if (oldcount && check != M_REOPENED
-	    && ((Sort & SORT_MASK) == SORT_THREADS))
-	{
-	  save_new = (HEADER **) safe_malloc (sizeof (HEADER *) * (Context->msgcount - oldcount));
-	  for (j = oldcount; j < Context->msgcount; j++)
-	    save_new[j-oldcount] = Context->hdrs[j];
-        }
-
-	/* if the mailbox was reopened, need to rethread from scratch */
-	mutt_sort_headers (Context, (check == M_REOPENED));
-
-	/* uncollapse threads with new mail */
-	if ((Sort & SORT_MASK) == SORT_THREADS)
-	{
-	  if (check == M_REOPENED)
-	  {
-	    HEADER *h;
-
-	    h = Context->tree;
-	    Context->collapsed = 0;
-
-	    while (h)
-	    {
-	      mutt_uncollapse_thread (Context, h);
-	      h = h->next;
-	    }
-	    mutt_set_virtual (Context);
-	  }
-	  else if (oldcount)
-	  {
-	    for (j = 0; j < Context->msgcount - oldcount; j++)
-	    {
-	      int k;
-	      
-	      for (k = 0; k < Context->msgcount; k++)
-	      {
-		HEADER *h = Context->hdrs[k];
-		if (h == save_new[j] && (!Context->pattern || h->limited))
-		  mutt_uncollapse_thread (Context, h);
-	      }
-	    }
-	    FREE (&save_new);
-	    mutt_set_virtual (Context);
-	  }
-	}
-
-	menu->current = -1;
-	if (oldcount)
-	{
-	  /* restore the current message to the message it was pointing to */
-	  for (j = 0; j < Context->vcount; j++)
-	    if (Context->hdrs[Context->v2r[j]]->index == menu->oldcurrent)
-	    {
-	      menu->current = j;
-	      break;
-	    }
-	}
-
-	if (menu->current < 0)
-	  menu->current = ci_first_message ();
-
+	update_index (menu, Context, check, oldcount, index_hint);
+	
 	/* notify the user of new mail */
 	if (check == M_REOPENED)
 	  mutt_error _("Mailbox was externally modified.  Flags may be wrong.");
@@ -452,10 +463,10 @@ int mutt_index_menu (void)
 	}
 	/* avoid the message being overwritten by buffy */
 	do_buffy_notify = 0;
-
+	
 	menu->redraw = REDRAW_FULL;
 	menu->max = Context->vcount;
-
+	
 	set_option (OPTSEARCHINVALID);
       }
     }
@@ -464,8 +475,6 @@ int mutt_index_menu (void)
     imap_disallow_reopen (Context);
 #endif
 
-    check_lock = 0;
-    
     if (!attach_msg)
     {
      /* check for new mail in the incoming folders */
@@ -760,16 +769,26 @@ int mutt_index_menu (void)
 	}
 
 	if (query_quadoption (OPT_QUIT, _("Quit Mutt?")) == M_YES)
-	{ 
+	{
+	  int check;
+	  
 #ifdef USE_IMAP
           /* logout gracefully from the IMAP server */
           if (Context && Context->magic == M_IMAP)
             imap_set_logout (Context);
 #endif
-	  if (!Context || mx_close_mailbox (Context) == 0)
+	  oldcount = Context->msgcount;
+
+	  if (!Context || (check = mx_close_mailbox (Context, &index_hint)) == 0)
 	    done = 1;
 	  else
+	  {
+	    if (check == M_NEW_MAIL || check == M_REOPENED)
+	      update_index (menu, Context, check, oldcount, index_hint);
+
 	    menu->redraw = REDRAW_FULL; /* new mail arrived? */
+	    set_option (OPTSEARCHINVALID);
+	  }
 	}
 	break;
 
@@ -806,15 +825,13 @@ int mutt_index_menu (void)
 
       case OP_MAIN_SYNC_FOLDER:
 
-        check_lock = 1;	/* call mx_check_mailbox() with locking the 
-			 * nex time
-			 */
-
 	CHECK_MSGCOUNT;
 	CHECK_READONLY;
 	{
 	  int oldvcount = Context->vcount;
+	  int oldcount  = Context->msgcount;
 	  int dcount = 0;
+	  int check;
 
 	  /* calculate the number of messages _above_ the cursor,
 	   * so we can keep the cursor on the current message
@@ -824,14 +841,18 @@ int mutt_index_menu (void)
 	    if (Context->hdrs[Context->v2r[j]]->deleted)
 	      dcount++;
 	  }
-	  if (mx_sync_mailbox (Context) == 0)
+
+	  if ((check = mx_sync_mailbox (Context, &index_hint)) == 0)
 	  {
 	    if (Context->vcount != oldvcount)
 	      menu->current -= dcount;
 	    set_option (OPTSEARCHINVALID);
 	  }
-	  
-	  /* do a sanity check even if mx_sync_mailbox failed.
+	  else if (check == M_NEW_MAIL || check == M_REOPENED)
+	    update_index (menu, Context, check, oldcount, index_hint);
+
+	  /* 
+	   * do a sanity check even if mx_sync_mailbox failed.
 	   */
 
 	  if (menu->current < 0 || menu->current >= Context->vcount)
@@ -927,10 +948,17 @@ int mutt_index_menu (void)
 
         if (Context)
         {
-	  mutt_str_replace (&LastFolder, Context->path);
+	  int check;
 
-	  if (mx_close_mailbox (Context) != 0)
+	  mutt_str_replace (&LastFolder, Context->path);
+	  oldcount = Context->msgcount;
+
+	  if ((check = mx_close_mailbox (Context, &index_hint)) != 0)
 	  {
+	    if (check == M_NEW_MAIL || check == M_REOPENED)
+	      update_index (menu, Context, check, oldcount, index_hint);
+		
+	    set_option (OPTSEARCHINVALID);
 	    menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 	    break;
 	  }
