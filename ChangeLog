@@ -1,3 +1,9 @@
+2004-04-13 08:02:12  David Shaw  <dshaw@jabberwocky.com>  (roessler)
+
+	* crypt.c, init.h, mutt.h: Rename pgp_mime_ask to pgp_mime_auto;
+	change the default; change the error message given if that
+	variable is set to "no."
+
 2004-04-12 21:43:33  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* lib.c, attach.c: Don't open a file for writing that we have
