@@ -12,6 +12,7 @@ mutt_cv_version=`cat $srcdir/VERSION`
 
 AM_INIT_AUTOMAKE(mutt, $mutt_cv_version)
 
+ifdef([AC_LIBOBJ], , [define([AC_LIBOBJ], [LIB[]OBJS="$LIBOBJS $1.o"])])
 
 ALL_LINGUAS="de ru it es uk fr pl nl cs id sk ko el zh_TW zh_CN pt_BR eo gl sv da lt tr ja hu et ca"
 
@@ -339,8 +340,7 @@ SNPRINTFOBJS=""
 AC_CHECK_FUNCS(snprintf, , [mutt_cv_snprintf=yes])
 AC_CHECK_FUNCS(vsnprintf, , [mutt_cv_snprintf=yes])
 if test $mutt_cv_snprintf = yes; then
-#        AC_LIBOBJ(snprintf)
-        LIBOBJS="$LIBOBJS snprintf.o"
+        AC_LIBOBJ(snprintf)
 fi
 
 dnl SCO uses chsize() instead of ftruncate()
@@ -372,8 +372,7 @@ fi
 
 if test $mutt_cv_regex = yes; then
         AC_DEFINE(USE_GNU_REGEX,1,[ Define if you want to use the included regex.c. ])
-###     AC_LIBOBJ(regex)
-        LIBOBJS="$LIBOBJS regex.o"
+        AC_LIBOBJ(regex)
 fi
 
 
