@@ -514,8 +514,10 @@ void mutt_generate_boundary (PARAMETER **parm)
 /* analyze the contents of a file to determine which MIME encoding to use */
 CONTENT *mutt_get_content_info (const char *fname, BODY *b)
 {
+  char send_charset[SHORT_STRING];
   CONTENT *info;
   FILE *fp;
+  FGETCONV *fc;
   int ch, from=0, whitespace=0, dot=0, linelen=0;
 
   if(b && !fname) fname = b->filename;
@@ -527,8 +529,13 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
     return (NULL);
   }
 
+  if (b != NULL && b->type == TYPETEXT && (!b->noconv))
+    fc = fgetconv_open (fp, Charset, mutt_get_send_charset (send_charset, sizeof (send_charset), b, 1));
+  else
+    fc = fgetconv_open (fp, 0, 0);
+
   info = safe_calloc (1, sizeof (CONTENT));
-  while ((ch = fgetc (fp)) != EOF)
+  while ((ch = fgetconv (fc)) != EOF)
   {
     linelen++;
     if (ch == '\n')
@@ -605,6 +612,7 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
     if (linelen > 1) dot = 0;
     if (ch != ' ' && ch != '\t') whitespace = 0;
   }
+  fgetconv_close (fc);
   fclose (fp);
   return (info);
 }
@@ -841,7 +849,7 @@ static const char *get_text_charset (char *d, size_t dlen, BODY *b, CONTENT *inf
     p = "unknown-8bit";
   else if (info->hibin || !strcasecmp (chsname, "utf-7"))
     p = chsname;
-  else if (info->lobin && !strcasecmp (chsname, "iso-2022-jp"))
+  else if (info->lobin && !strncasecmp (chsname, "iso-2022-jp", 11))
     p = chsname;
   else
     p = "us-ascii";
@@ -853,9 +861,12 @@ static const char *get_text_charset (char *d, size_t dlen, BODY *b, CONTENT *inf
 /* determine which Content-Transfer-Encoding to use */
 static void mutt_set_encoding (BODY *b, CONTENT *info)
 {
+  char send_charset[SHORT_STRING];
+
   if (b->type == TYPETEXT)
   {
-    if (info->lobin || info->linemax > 990 || (info->from && option (OPTENCODEFROM)))
+    char *chsname = mutt_get_send_charset (send_charset, sizeof (send_charset), b, 1);
+    if ((info->lobin && strncasecmp (chsname, "iso-2022-jp", 11)) || info->linemax > 990 || (info->from && option (OPTENCODEFROM)))
       b->encoding = ENCQUOTEDPRINTABLE;
     else if (info->hibin)
       b->encoding = option (OPTALLOW8BIT) ? ENC8BIT : ENCQUOTEDPRINTABLE;
@@ -1049,9 +1060,6 @@ BODY *mutt_make_file_attach (const char *path)
   char buf[SHORT_STRING];
   char chsbuf[SHORT_STRING];
   int n;
-  
-  if ((info = mutt_get_content_info (path, NULL)) == NULL)
-    return NULL;
 
   att = mutt_new_body ();
   att->filename = safe_strdup (path);
@@ -1065,6 +1073,9 @@ BODY *mutt_make_file_attach (const char *path)
     att->type = n;
     att->subtype = safe_strdup (buf);
   }
+
+  if ((info = mutt_get_content_info (path, att)) == NULL)
+    return NULL;
 
   if (!att->subtype)
   {
