@@ -875,6 +875,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** .dl
   ** .dt %a .dd address of the author
+  ** .dt %A .dd reply-to address (if present; otherwise: address of author)
   ** .dt %b .dd filename of the original message folder (think mailBox)
   ** .dt %B .dd the list to which the letter was sent, or else the folder name (%b).
   ** .dt %c .dd number of characters (bytes) in the message

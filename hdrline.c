@@ -205,6 +205,7 @@ int mutt_user_is_recipient (HEADER *h)
 }
 
 /* %a = address of author
+ * %A = reply-to address (if present; otherwise: address of author
  * %b = filename of the originating folder
  * %B = the list to which the letter was sent
  * %c = size of message in bytes
@@ -267,6 +268,14 @@ hdr_format_str (char *dest,
   dest[0] = 0;
   switch (op)
   {
+    case 'A':
+      if(hdr->env->reply_to && hdr->env->reply_to->mailbox)
+      {
+	mutt_format_s (dest, destlen, prefix, hdr->env->reply_to->mailbox);
+	break;
+      }
+      /* fall through if 'A' returns nothing */
+
     case 'a':
       if(hdr->env->from && hdr->env->from->mailbox)
       {
