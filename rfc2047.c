@@ -37,8 +37,8 @@ static void q_encode_string (char *d, size_t dlen, const unsigned char *s)
   char *wptr = d;
 
   snprintf (charset, sizeof (charset), "=?%s?Q?",
-	    strcasecmp ("us-ascii", NONULL(Charset)) == 0 ? "unknown-8bit" : NONULL(Charset));
-  cslen = strlen (charset);
+	    mutt_strcasecmp ("us-ascii", Charset) == 0 ? "unknown-8bit" : NONULL(Charset));
+  cslen = mutt_strlen (charset);
 
   strcpy (wptr, charset);
   wptr += cslen;
@@ -113,7 +113,7 @@ static void b_encode_string (char *d, size_t dlen, const unsigned char *s)
   int wordlen;
 
   snprintf (charset, sizeof (charset), "=?%s?B?", NONULL(Charset));
-  cslen = strlen (charset);
+  cslen = mutt_strlen (charset);
   strcpy (wptr, charset);
   wptr += cslen;
   wordlen = cslen;
@@ -190,13 +190,13 @@ void rfc2047_encode_string (char *d, size_t dlen, const unsigned char *s)
     return;
   }
 
-  if (strcasecmp("us-ascii", NONULL(Charset)) == 0 ||
-      strncasecmp("iso-8859", NONULL(Charset), 8) == 0)
+  if (mutt_strcasecmp("us-ascii", Charset) == 0 ||
+      mutt_strncasecmp("iso-8859", Charset, 8) == 0)
     encoder = q_encode_string;
   else
   {
     /* figure out which encoding generates the most compact representation */
-    len = strlen ((char *) s);
+    len = mutt_strlen ((char *) s);
     if ((count * 2) + len <= (4 * len) / 3)
       encoder = q_encode_string;
     else
@@ -205,14 +205,14 @@ void rfc2047_encode_string (char *d, size_t dlen, const unsigned char *s)
 
   /* Hack to pull the Re: and Fwd: out of the encoded word for better
      handling by agents which do not support RFC2047.  */
-  if (!strncasecmp ("re: ", (char *) s, 4))
+  if (!mutt_strncasecmp ("re: ", (char *) s, 4))
   {
     strncpy (d, (char *) s, 4);
     d += 4;
     dlen -= 4;
     s += 4;
   }
-  else if (!strncasecmp ("fwd: ", (char *) s, 5))
+  else if (!mutt_strncasecmp ("fwd: ", (char *) s, 5))
   {
     strncpy (d, (char *) s, 5);
     d += 5;
@@ -254,7 +254,7 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
     switch (count)
     {
       case 2:
-	if (strcasecmp (pp, NONULL(Charset)) != 0)
+	if (mutt_strcasecmp (pp, Charset) != 0)
         {
 	  filter = 1;
 	  charset = pp;
@@ -388,7 +388,7 @@ void rfc2047_decode (char *d, const char *s, size_t dlen)
     rfc2047_decode_word (d, p, dlen);
     found_encoded = 1;
     s = q + 2;
-    n = strlen (d);
+    n = mutt_strlen (d);
     dlen -= n;
     d += n;
   }
@@ -400,7 +400,7 @@ void rfc2047_decode_adrlist (ADDRESS *a)
   while (a)
   {
     if (a->personal && strstr (a->personal, "=?") != NULL)
-      rfc2047_decode (a->personal, a->personal, strlen (a->personal) + 1);
+      rfc2047_decode (a->personal, a->personal, mutt_strlen (a->personal) + 1);
     a = a->next;
   }
 }

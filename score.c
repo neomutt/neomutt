@@ -87,7 +87,7 @@ int mutt_parse_score (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   /* look for an existing entry and update the value, else add it to the end
      of the list */
   for (ptr = Score, last = NULL; ptr; last = ptr, ptr = ptr->next)
-    if (strcmp (pattern, ptr->str) == 0)
+    if (mutt_strcmp (pattern, ptr->str) == 0)
       break;
   if (!ptr)
   {
@@ -143,7 +143,7 @@ int mutt_parse_unscore (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   while (MoreArgs (s))
   {
     mutt_extract_token (buf, s, 0);
-    if (!strcmp ("*", buf->data))
+    if (!mutt_strcmp ("*", buf->data))
     {
       for (tmp = Score; tmp; )
       {
@@ -158,7 +158,7 @@ int mutt_parse_unscore (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     {
       for (tmp = Score; tmp; last = tmp, tmp = tmp->next)
       {
-	if (!strcmp (buf->data, tmp->str))
+	if (!mutt_strcmp (buf->data, tmp->str))
 	{
 	  if (last)
 	    last->next = tmp->next;

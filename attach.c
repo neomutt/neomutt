@@ -256,7 +256,7 @@ int mutt_edit_attachment (BODY *a)
   else if (a->type == TYPETEXT)
   {
     /* On text, default to editor */
-    mutt_edit_file ((!Editor || strcmp ("builtin", Editor) == 0) ? 
+    mutt_edit_file ((!Editor || mutt_strcmp ("builtin", Editor) == 0) ? 
 		    NONULL(Visual) : NONULL(Editor), newfile);
   }
   else
@@ -284,10 +284,10 @@ int mutt_is_autoview (char *type)
 
   while (t)
   {
-    i = strlen (t->data) - 1;
+    i = mutt_strlen (t->data) - 1;
     if ((i > 0 && t->data[i-1] == '/' && t->data[i] == '*' && 
-	  strncasecmp (type, t->data, i) == 0) ||
-	  strcasecmp (type, t->data) == 0)
+	  mutt_strncasecmp (type, t->data, i) == 0) ||
+	  mutt_strcasecmp (type, t->data) == 0)
       return 1;
     t = t->next;
   }
@@ -359,7 +359,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag)
     if (rfc1524_expand_filename (entry->nametemplate, fname,
 				 tempfile, sizeof (tempfile)))
     {
-      if (fp == NULL && strcmp(tempfile, a->filename))
+      if (fp == NULL && mutt_strcmp(tempfile, a->filename))
       {
 	/* send case: the file is already there */
 	if (safe_symlink (a->filename, tempfile) == -1)
@@ -859,8 +859,8 @@ int mutt_print_attachment (FILE *fp, BODY *a)
     return (1);
   }
 
-  if (!strcasecmp ("text/plain", a->subtype) ||
-      !strcasecmp ("application/postscript", a->subtype))
+  if (!mutt_strcasecmp ("text/plain", a->subtype) ||
+      !mutt_strcasecmp ("application/postscript", a->subtype))
   {
     return (mutt_pipe_attachment (fp, a, NONULL(PrintCmd), NULL));
   }

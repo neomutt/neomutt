@@ -110,7 +110,7 @@ const char *pgp_pkalg_to_mic(const char *alg)
   
   for(i = 0; pktomic[i].pkalg; i++)
   {
-    if(!strcasecmp(pktomic[i].pkalg, alg))
+    if(!mutt_strcasecmp(pktomic[i].pkalg, alg))
       break;
   }
   

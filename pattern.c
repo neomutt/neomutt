@@ -207,7 +207,7 @@ msg_search (CONTEXT *ctx, regex_t *rx, char *buf, size_t blen, int op, int msgno
 	match = 1;
 	break;
       }
-      lng -= strlen (buf);
+      lng -= mutt_strlen (buf);
     }
     
     mx_close_message (&msg);
@@ -560,7 +560,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 
   memset (&ps, 0, sizeof (ps));
   ps.dptr = s;
-  ps.dsize = strlen (s);
+  ps.dsize = mutt_strlen (s);
 
   while (*ps.dptr)
   {
@@ -878,24 +878,24 @@ void mutt_check_simple (char *s, size_t len, const char *simple)
   if (!strchr (s, '~')) /* yup, so spoof a real request */
   {
     /* convert old tokens into the new format */
-    if (strcasecmp ("all", s) == 0 ||
-	!strcmp ("^", s) || !strcmp (".", s)) /* ~A is more efficient */
+    if (mutt_strcasecmp ("all", s) == 0 ||
+	!mutt_strcmp ("^", s) || !mutt_strcmp (".", s)) /* ~A is more efficient */
       strfcpy (s, "~A", len);
-    else if (strcasecmp ("del", s) == 0)
+    else if (mutt_strcasecmp ("del", s) == 0)
       strfcpy (s, "~D", len);
-    else if (strcasecmp ("flag", s) == 0)
+    else if (mutt_strcasecmp ("flag", s) == 0)
       strfcpy (s, "~F", len);
-    else if (strcasecmp ("new", s) == 0)
+    else if (mutt_strcasecmp ("new", s) == 0)
       strfcpy (s, "~N", len);
-    else if (strcasecmp ("old", s) == 0)
+    else if (mutt_strcasecmp ("old", s) == 0)
       strfcpy (s, "~O", len);
-    else if (strcasecmp ("repl", s) == 0)
+    else if (mutt_strcasecmp ("repl", s) == 0)
       strfcpy (s, "~Q", len);
-    else if (strcasecmp ("read", s) == 0)
+    else if (mutt_strcasecmp ("read", s) == 0)
       strfcpy (s, "~R", len);
-    else if (strcasecmp ("tag", s) == 0)
+    else if (mutt_strcasecmp ("tag", s) == 0)
       strfcpy (s, "~T", len);
-    else if (strcasecmp ("unread", s) == 0)
+    else if (mutt_strcasecmp ("unread", s) == 0)
       strfcpy (s, "~U", len);
     else
     {
@@ -999,7 +999,7 @@ int mutt_pattern_func (int op, char *prompt)
 
       Context->vcount = Context->msgcount;
     }
-    else if (strncmp (buf, "~A", 2) != 0)
+    else if (mutt_strncmp (buf, "~A", 2) != 0)
     {
       Context->pattern = simple;
       simple = NULL; /* don't clobber it */
@@ -1039,7 +1039,7 @@ int mutt_search_command (int cur, int op)
     strfcpy (temp, buf, sizeof (temp));
     mutt_check_simple (temp, sizeof (temp), NONULL (SimpleSearch));
 
-    if (!SearchPattern || strcmp (temp, LastSearchExpn))
+    if (!SearchPattern || mutt_strcmp (temp, LastSearchExpn))
     {
       set_option (OPTSEARCHINVALID);
       strfcpy (LastSearch, buf, sizeof (LastSearch));

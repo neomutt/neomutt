@@ -77,7 +77,7 @@ static void maildir_parse_flags(HEADER *h, const char *path)
   h->read = 0;
   h->replied = 0;
   
-  if ((p = strrchr (path, ':')) != NULL && strncmp (p + 1, "2,", 2) == 0)
+  if ((p = strrchr (path, ':')) != NULL && mutt_strncmp (p + 1, "2,", 2) == 0)
   {
     p += 3;
     while (*p)
@@ -227,7 +227,7 @@ static int maildir_parse_dir(CONTEXT *ctx, struct maildir ***last,
   if(subdir)
   {
     snprintf(buf, sizeof(buf), "%s/%s", ctx->path, subdir);
-    is_old = (strcmp("cur", subdir) == 0) && option(OPTMARKOLD);
+    is_old = (mutt_strcmp("cur", subdir) == 0) && option(OPTMARKOLD);
   }
   else
     strfcpy(buf, ctx->path, sizeof(buf));
@@ -451,7 +451,7 @@ static int maildir_sync_message (CONTEXT *ctx, int msgno)
   snprintf (fullpath, sizeof (fullpath), "%s/%s", ctx->path, partpath);
   snprintf (oldpath, sizeof (oldpath), "%s/%s", ctx->path, h->path);
 
-  if (strcmp (fullpath, oldpath) == 0 && !h->attach_del)
+  if (mutt_strcmp (fullpath, oldpath) == 0 && !h->attach_del)
   {
     /* message hasn't really changed */
     return 0;

@@ -29,7 +29,7 @@ int getdnsdomainname (char *s, size_t l)
   {
     p = tmp;
     while (ISSPACE (*p)) p++;
-    if (strncmp ("domain", p, 6) == 0 || strncmp ("search", p, 6) == 0)
+    if (mutt_strncmp ("domain", p, 6) == 0 || mutt_strncmp ("search", p, 6) == 0)
     {
       p += 6;
       while (ISSPACE (*p)) p++;

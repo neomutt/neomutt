@@ -78,7 +78,7 @@ mutt_compile_help (char *buf, size_t buflen, int menu, struct mapping_t *items)
       buflen -= 2;
     }
     mutt_make_help (pbuf, buflen, _(items[i].name), menu, items[i].value);
-    len = strlen (pbuf);
+    len = mutt_strlen (pbuf);
     pbuf += len;
     buflen -= len;
   }
@@ -176,12 +176,12 @@ static void format_line (FILE *f, int ismacro,
   {
     col_a = 12 + (COLS > 83 ? (COLS - 80) >> 2 : 0);
     col_b = 19 + (COLS > 43 ? (COLS - 16) >> 2 : 0);
-    col = pad (f, strlen(t1), col_a);
+    col = pad (f, mutt_strlen(t1), col_a);
   }
 
   if (ismacro > 0)
   {
-    if (!strcmp (Pager, "builtin"))
+    if (!mutt_strcmp (Pager, "builtin"))
       fputs ("_\010", f);
     fputs ("M ", f);
     col += 2;
@@ -189,7 +189,7 @@ static void format_line (FILE *f, int ismacro,
     if (!split)
     {
       col += print_macro (f, col_b - col - 4, &t2);
-      if (strlen (t2) > col_b - col)
+      if (mutt_strlen (t2) > col_b - col)
 	t2 = "...";
     }
   }
@@ -215,7 +215,7 @@ static void format_line (FILE *f, int ismacro,
       {
 	SKIPWS(t3);
 
-	if ((n = strlen (t3)) > COLS - col)
+	if ((n = mutt_strlen (t3)) > COLS - col)
 	{
 	  n = COLS - col;
 	  for (col_a = n; col_a > 0 && t3[col_a] != ' '; col_a--) ;
@@ -228,7 +228,7 @@ static void format_line (FILE *f, int ismacro,
 
       if (*t3)
       {
-        if (strcmp (Pager, "builtin"))
+        if (mutt_strcmp (Pager, "builtin"))
 	{
 	  fputc ('\n', f);
 	  n = 0;

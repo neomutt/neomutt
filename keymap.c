@@ -231,8 +231,8 @@ static int get_op (struct binding_t *bindings, const char *start, size_t len)
 
   for (i = 0; bindings[i].name; i++)
   {
-    if (!strncasecmp (start, bindings[i].name, len) &&   
-	strlen (bindings[i].name) == len)
+    if (!mutt_strncasecmp (start, bindings[i].name, len) &&   
+	mutt_strlen (bindings[i].name) == len)
       return bindings[i].op;
   }
 
@@ -254,7 +254,7 @@ static char *get_func (struct binding_t *bindings, int op)
 
 static void push_string (char *s)
 {
-  char *pp, *p = s + strlen (s) - 1;
+  char *pp, *p = s + mutt_strlen (s) - 1;
   size_t l;
   int i, op = OP_NULL;
 
@@ -271,7 +271,7 @@ static void push_string (char *s)
 	l = p - pp + 1;
 	for (i = 0; KeyNames[i].name; i++)
 	{
-	  if (!strncasecmp (pp, KeyNames[i].name, l))
+	  if (!mutt_strncasecmp (pp, KeyNames[i].name, l))
 	    break;
 	}
 	if (KeyNames[i].name)
@@ -495,7 +495,7 @@ int km_expand_key (char *s, size_t len, struct keymap_t *map)
   FOREVER
   {
     strfcpy (s, km_keyname (map->keys[p]), len);
-    len -= (l = strlen (s));
+    len -= (l = mutt_strlen (s));
 
     if (++p >= map->len || !len)
       return (1);
@@ -690,7 +690,7 @@ try_bind (char *key, int menu, char *func, struct binding_t *bindings)
   int i;
   
   for (i = 0; bindings[i].name; i++)
-    if (strcmp (func, bindings[i].name) == 0)
+    if (mutt_strcmp (func, bindings[i].name) == 0)
     {
       km_bindkey (key, menu, bindings[i].op);
       return (0);
@@ -751,7 +751,7 @@ int mutt_parse_bind (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     strfcpy (err->data, _("bind: too many arguments"), err->dsize);
     r = -1;
   }
-  else if (strcasecmp ("noop", buf->data) == 0)
+  else if (mutt_strcasecmp ("noop", buf->data) == 0)
     km_bindkey (key, menu, OP_NULL); /* the `unbind' command */
   else
   {
@@ -840,9 +840,9 @@ int mutt_parse_exec (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 	&& CurrentMenu != MENU_PAGER)
       bindings = OpGeneric;
     
-    ops[nops] = get_op (bindings, command, strlen(command));
+    ops[nops] = get_op (bindings, command, mutt_strlen(command));
     if (ops[nops] == OP_NULL && CurrentMenu != MENU_PAGER)
-      ops[nops] = get_op (OpGeneric, command, strlen(command));
+      ops[nops] = get_op (OpGeneric, command, mutt_strlen(command));
     
     if (ops[nops] == OP_NULL)
     {

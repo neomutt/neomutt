@@ -207,10 +207,10 @@ static int rfc1524_mailcap_parse (BODY *a,
 
       /* check type */
       ch = get_field (buf);
-      if (strcasecmp (buf, type) &&
-	  (strncasecmp (buf, type, btlen) ||
+      if (mutt_strcasecmp (buf, type) &&
+	  (mutt_strncasecmp (buf, type, btlen) ||
 	   (buf[btlen] != 0 &&			/* implicit wild */
-	    strcmp (buf + btlen, "/*"))))	/* wildsubtype */
+	    mutt_strcmp (buf + btlen, "/*"))))	/* wildsubtype */
 	continue;
 
       /* next field is the viewcommand */
@@ -232,53 +232,53 @@ static int rfc1524_mailcap_parse (BODY *a,
 	ch = get_field (ch);
 	dprint (2, (debugfile, "field: %s\n", field));
 
-	if (!strcasecmp (field, "needsterminal"))
+	if (!mutt_strcasecmp (field, "needsterminal"))
 	{
 	  if (entry)
 	    entry->needsterminal = TRUE;
 	}
-	else if (!strcasecmp (field, "copiousoutput"))
+	else if (!mutt_strcasecmp (field, "copiousoutput"))
 	{
 	  copiousoutput = TRUE;
 	  if (entry)
 	    entry->copiousoutput = TRUE;
 	}
-	else if (!strncasecmp (field, "composetyped", 12))
+	else if (!mutt_strncasecmp (field, "composetyped", 12))
 	{
 	  /* this compare most occur before compose to match correctly */
 	  if (get_field_text (field + 12, entry ? &entry->composetypecommand : NULL,
 			      type, filename, line))
 	    composecommand = TRUE;
 	}
-	else if (!strncasecmp (field, "compose", 7))
+	else if (!mutt_strncasecmp (field, "compose", 7))
 	{
 	  if (get_field_text (field + 7, entry ? &entry->composecommand : NULL,
 			      type, filename, line))
 	    composecommand = TRUE;
 	}
-	else if (!strncasecmp (field, "print", 5))
+	else if (!mutt_strncasecmp (field, "print", 5))
 	{
 	  if (get_field_text (field + 5, entry ? &entry->printcommand : NULL,
 			      type, filename, line))
 	    printcommand = TRUE;
 	}
-	else if (!strncasecmp (field, "edit", 4))
+	else if (!mutt_strncasecmp (field, "edit", 4))
 	{
 	  if (get_field_text (field + 4, entry ? &entry->editcommand : NULL,
 			      type, filename, line))
 	    editcommand = TRUE;
 	}
-	else if (!strncasecmp (field, "nametemplate", 12))
+	else if (!mutt_strncasecmp (field, "nametemplate", 12))
 	{
 	  get_field_text (field + 12, entry ? &entry->nametemplate : NULL,
 			  type, filename, line);
 	}
-	else if (!strncasecmp (field, "x-convert", 9))
+	else if (!mutt_strncasecmp (field, "x-convert", 9))
 	{
 	  get_field_text (field + 9, entry ? &entry->convert : NULL,
 			  type, filename, line);
 	}
-	else if (!strncasecmp (field, "test", 4))
+	else if (!mutt_strncasecmp (field, "test", 4))
 	{
 	  /* 
 	   * This routine executes the given test command to determine
@@ -290,7 +290,7 @@ static int rfc1524_mailcap_parse (BODY *a,
 	  if (get_field_text (field + 4, &test_command, type, filename, line)
 	      && test_command)
 	  {
-	    len = strlen (test_command) + STRING;
+	    len = mutt_strlen (test_command) + STRING;
 	    safe_realloc ((void **) &test_command, len);
 	    rfc1524_expand_command (a, NULL, type, test_command, len);
 	    if (mutt_system (test_command))
@@ -451,7 +451,7 @@ void mutt_adv_mktemp (char *s, size_t l)
     if (period != NULL)
     {
       *period = '.';
-      sl = strlen(s);
+      sl = mutt_strlen(s);
       strfcpy(s + sl, period, l - sl);
     }
   }
@@ -548,7 +548,7 @@ int rfc1524_expand_filename (char *nametemplate,
       
       rmatch = 1;
 
-      for(r = 0, j = strlen(oldfile) - 1, k = strlen(nametemplate) - 1 ;
+      for(r = 0, j = mutt_strlen(oldfile) - 1, k = mutt_strlen(nametemplate) - 1 ;
 	  j >= (lmatch ? i : 0) && k >= i + 2;
 	  j--, k--)
       {

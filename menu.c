@@ -79,7 +79,7 @@ static void print_enriched_string (int attr, unsigned char *s, int do_color)
 void menu_pad_string (char *s, size_t l)
 {
 #if !defined(HAVE_BKGDSET) && !defined (USE_SLANG_CURSES)
-  int n = strlen (s);
+  int n = mutt_strlen (s);
 #endif
   int shift = option (OPTARROWCURSOR) ? 3 : 0;
   

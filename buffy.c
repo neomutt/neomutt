@@ -64,13 +64,13 @@ int fseek_last_message (FILE * f)
   while ((pos -= bytes_read) >= 0)
   {
     /* we save in the buffer at the end the first 7 chars from the last read */
-    strncpy (buffer + BUFSIZ, buffer, 5+2); /* 2 == 2 * strlen(CRLF) */
+    strncpy (buffer + BUFSIZ, buffer, 5+2); /* 2 == 2 * mutt_strlen(CRLF) */
     fseek (f, pos, SEEK_SET);
     bytes_read = fread (buffer, sizeof (char), bytes_read, f);
     if (bytes_read == -1)
       return -1;
     for (i = bytes_read; --i >= 0;)
-      if (!strncmp (buffer + i, "\n\nFrom ", strlen ("\n\nFrom ")))
+      if (!mutt_strncmp (buffer + i, "\n\nFrom ", mutt_strlen ("\n\nFrom ")))
       {				/* found it - go to the beginning of the From */
 	fseek (f, pos + i + 2, SEEK_SET);
 	return 0;
@@ -79,7 +79,7 @@ int fseek_last_message (FILE * f)
   }
 
   /* here we are at the beginning of the file */
-  if (!strncmp ("From ", buffer, 5))
+  if (!mutt_strncmp ("From ", buffer, 5))
   {
     fseek (f, 0, 0);
     return (0);
@@ -177,7 +177,7 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
     /* simple check to avoid duplicates */
     for (tmp = &Incoming; *tmp; tmp = &((*tmp)->next))
     {
-      if (strcmp (buf, (*tmp)->path) == 0)
+      if (mutt_strcmp (buf, (*tmp)->path) == 0)
 	break;
     }
 
@@ -413,7 +413,7 @@ void mutt_buffy (char *s)
     count = 0;
     while (count < 3)
     {
-      if (strcmp (s, tmp->path) == 0)
+      if (mutt_strcmp (s, tmp->path) == 0)
 	count++;
       else if (count && tmp->new)
 	break;

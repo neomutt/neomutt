@@ -66,7 +66,7 @@ be_snarf_data (FILE *f, char **buf, int *bufmax, int *buflen, int offset,
   if (prefix)
   {
     strfcpy (tmp, NONULL(Prefix), sizeof (tmp));
-    tmplen = strlen (tmp);
+    tmplen = mutt_strlen (tmp);
     p = tmp + tmplen;
     tmplen = sizeof (tmp) - tmplen;
   }
@@ -75,7 +75,7 @@ be_snarf_data (FILE *f, char **buf, int *bufmax, int *buflen, int offset,
   while (bytes > 0)
   {
     if (fgets (p, tmplen - 1, f) == NULL) break;
-    bytes -= strlen (p);
+    bytes -= mutt_strlen (p);
     if (*bufmax == *buflen)
       safe_realloc ((void **)&buf, sizeof (char *) * (*bufmax += 25));
     buf[(*buflen)++] = safe_strdup (tmp);
@@ -327,7 +327,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
     if (EscChar && tmp[0] == EscChar[0] && tmp[1] != EscChar[0])
     {
       /* remove trailing whitespace from the line */
-      p = tmp + strlen (tmp) - 1;
+      p = tmp + mutt_strlen (tmp) - 1;
       while (p >= tmp && ISSPACE (*p))
 	*p-- = 0;
 
@@ -359,8 +359,8 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 	    if (!*p && cur)
  	    {
 	      /* include the current message */
-	      p = tmp + strlen (tmp) + 1;
-	      snprintf (tmp + strlen (tmp), sizeof (tmp) - strlen (tmp), " %d",
+	      p = tmp + mutt_strlen (tmp) + 1;
+	      snprintf (tmp + mutt_strlen (tmp), sizeof (tmp) - mutt_strlen (tmp), " %d",
 								cur->msgno + 1);
 	    }
 	    buf = be_include_messages (p, buf, &bufmax, &buflen,
@@ -404,7 +404,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 	  {
 	    buflen--;
 	    strfcpy (tmp, buf[buflen], sizeof (tmp));
-	    tmp[strlen (tmp)-1] = 0;
+	    tmp[mutt_strlen (tmp)-1] = 0;
 	    FREE (&buf[buflen]);
 	    buf[buflen] = NULL;
 	    continue;
@@ -443,7 +443,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 	  break;
       }
     }
-    else if (strcmp (".", tmp) == 0)
+    else if (mutt_strcmp (".", tmp) == 0)
       done = 1;
     else
     {

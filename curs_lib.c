@@ -87,7 +87,7 @@ event_t mutt_getch (void)
 int mutt_get_field (/* const */ char *field, char *buf, size_t buflen, int complete)
 {
   int ret;
-  int len = strlen (field); /* in case field==buffer */
+  int len = mutt_strlen (field); /* in case field==buffer */
 
   do
   {
@@ -107,7 +107,7 @@ int mutt_get_password (char *msg, char *buf, size_t buflen)
 
   CLEARLINE (LINES-1);
   addstr (msg);
-  rc = mutt_enter_string ((unsigned char *) buf, buflen, LINES - 1, strlen (msg), M_PASS);
+  rc = mutt_enter_string ((unsigned char *) buf, buflen, LINES - 1, mutt_strlen (msg), M_PASS);
   CLEARLINE (LINES-1);
   return (rc);
 }
@@ -296,7 +296,7 @@ int mutt_do_pager (const char *banner,
 {
   int rc;
   
-  if (!Pager || strcmp (Pager, "builtin") == 0)
+  if (!Pager || mutt_strcmp (Pager, "builtin") == 0)
     rc = mutt_pager (banner, tempfile, do_color, info);
   else
   {
@@ -338,7 +338,7 @@ int mutt_enter_fname (const char *prompt, char *buf, size_t blen, int *redraw, i
   }
   else
   {
-    char *pc = safe_malloc (strlen (prompt) + 3);
+    char *pc = safe_malloc (mutt_strlen (prompt) + 3);
 
     sprintf (pc, "%s: ", prompt);
     mutt_ungetch (ch.op ? 0 : ch.ch, ch.op ? ch.op : 0);
@@ -419,7 +419,7 @@ int mutt_multi_choice (char *prompt, char *letters)
       else if (ch.ch <= '9' && ch.ch > '0')
       {
 	choice = ch.ch - '0';
-	if (choice <= strlen (letters))
+	if (choice <= mutt_strlen (letters))
 	  break;
       }
     }

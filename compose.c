@@ -191,8 +191,8 @@ static int pgp_send_menu (int bits, int *redraw)
 
       if(mutt_get_field (_("MIC algorithm: "), input_micalg, sizeof(input_micalg), 0) == 0)
       {
-	if(strcasecmp(input_micalg, "pgp-md5") && strcasecmp(input_micalg, "pgp-sha1")
-	   && strcasecmp(input_micalg, "pgp-rmd160"))
+	if(mutt_strcasecmp(input_micalg, "pgp-md5") && mutt_strcasecmp(input_micalg, "pgp-sha1")
+	   && mutt_strcasecmp(input_micalg, "pgp-rmd160"))
 	{
 	  mutt_error _("Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160");
 	}
@@ -446,7 +446,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	MAYBE_REDRAW (menu->redraw);
 	break;
       case OP_COMPOSE_EDIT_MESSAGE:
-	if (Editor && (strcmp ("builtin", Editor) != 0) && !option (OPTEDITHDRS))
+	if (Editor && (mutt_strcmp ("builtin", Editor) != 0) && !option (OPTEDITHDRS))
 	{
 	  mutt_edit_file (Editor, msg->content->filename);
 	  mutt_update_encoding (msg->content);
@@ -458,7 +458,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	if (op == OP_COMPOSE_EDIT_HEADERS ||
 	    (op == OP_COMPOSE_EDIT_MESSAGE && option (OPTEDITHDRS)))
 	{
-	  mutt_edit_headers ((!Editor || strcmp ("builtin", Editor) == 0) ? NONULL(Visual) : NONULL(Editor),
+	  mutt_edit_headers ((!Editor || mutt_strcmp ("builtin", Editor) == 0) ? NONULL(Visual) : NONULL(Editor),
 			     msg->content->filename, msg, fcc, fcclen);
 	}
 	else
@@ -789,7 +789,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
       case OP_COMPOSE_EDIT_FILE:
 	CHECK_COUNT;
-	mutt_edit_file ((!Editor || strcmp ("builtin", Editor) == 0) ? NONULL(Visual) : NONULL(Editor),
+	mutt_edit_file ((!Editor || mutt_strcmp ("builtin", Editor) == 0) ? NONULL(Visual) : NONULL(Editor),
 			idx[menu->current]->content->filename);
 	mutt_update_encoding (idx[menu->current]->content);
 	menu->redraw = REDRAW_CURRENT;

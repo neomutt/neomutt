@@ -102,10 +102,10 @@ static int pgp_compare (const void *a, const void *b)
   pgp_key_t *s = (pgp_key_t *) a;
   pgp_key_t *t = (pgp_key_t *) b;
 
-  if((r = strcasecmp (s->a->addr, t->a->addr)) != 0)
+  if((r = mutt_strcasecmp (s->a->addr, t->a->addr)) != 0)
     return r;
   else
-    return strcasecmp(pgp_keyid(s->k), pgp_keyid(t->k));
+    return mutt_strcasecmp(pgp_keyid(s->k), pgp_keyid(t->k));
 }
 
 static KEYINFO *pgp_select_key (struct pgp_vinfo *pgp,
@@ -191,7 +191,7 @@ static KEYINFO *pgp_select_key (struct pgp_vinfo *pgp,
 
   strfcpy (buf, _("PGP keys matching "), sizeof (buf));
   if (p)
-    strfcpy (buf, p->mailbox, sizeof (buf) - strlen (buf));
+    strfcpy (buf, p->mailbox, sizeof (buf) - mutt_strlen (buf));
   else
     strcat (buf, s);
   menu->title = buf;
@@ -301,7 +301,7 @@ char *pgp_ask_for_key (struct pgp_vinfo *pgp, KEYINFO *db, char *tag, char *what
   {
 
     for (l = id_defaults; l; l = l->next)
-      if (!strcasecmp (whatfor, NONULL(l->what)))
+      if (!mutt_strcasecmp (whatfor, l->what))
       {
 	strcpy (resp, NONULL(l->dflt));
 	break;
@@ -480,14 +480,14 @@ KEYINFO *ki_getkeybyaddr (struct pgp_vinfo *pgp,
       for(p = r; p && weak_association; p = p->next) 
       {
 	if ((p->mailbox && a->mailbox &&
-	     strcasecmp (p->mailbox, a->mailbox) == 0) ||
+	     mutt_strcasecmp (p->mailbox, a->mailbox) == 0) ||
 	    (a->personal && p->personal &&
-	     strcasecmp (a->personal, p->personal) == 0))
+	     mutt_strcasecmp (a->personal, p->personal) == 0))
 	{
 	  match = 1;
 
 	  if(((u->trust & 0x03) == 3) &&
-	     (p->mailbox && a->mailbox && !strcasecmp(p->mailbox, a->mailbox)))
+	     (p->mailbox && a->mailbox && !mutt_strcasecmp(p->mailbox, a->mailbox)))
 	    weak_association = 0;
 	}
       }
@@ -558,10 +558,10 @@ KEYINFO *ki_getkeybystr (struct pgp_vinfo *pgp,
     for(; a ; a = a->next) 
     {
 
-      if (!*p || strcasecmp (p, pgp_keyid(k)) == 0 ||
-	  (!strncasecmp(p, "0x", 2) && !strcasecmp(p+2, pgp_keyid(k))) ||
-	  (option(OPTPGPLONGIDS) && !strncasecmp(p, "0x", 2) &&
-	   !strcasecmp(p+2, k->keyid+8)) ||
+      if (!*p || mutt_strcasecmp (p, pgp_keyid(k)) == 0 ||
+	  (!mutt_strncasecmp(p, "0x", 2) && !mutt_strcasecmp(p+2, pgp_keyid(k))) ||
+	  (option(OPTPGPLONGIDS) && !mutt_strncasecmp(p, "0x", 2) &&
+	   !mutt_strcasecmp(p+2, k->keyid+8)) ||
 	  mutt_stristr(((PGPUID *)a->data)->addr,p))
       {
 	t = mutt_new_list ();

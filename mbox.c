@@ -116,7 +116,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
     if (fgets (buf, sizeof (buf) - 1, ctx->fp) == NULL)
       break;
 
-    if (strcmp (buf, ctx->magic == M_MMDF ? MMDF_SEP : KENDRA_SEP) == 0)
+    if (mutt_strcmp (buf, ctx->magic == M_MMDF ? MMDF_SEP : KENDRA_SEP) == 0)
     {
       loc = ftell (ctx->fp);
 
@@ -159,7 +159,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
 	{
 	  if (fseek (ctx->fp, tmploc, SEEK_SET) != 0 ||
 	      fgets (buf, sizeof (buf) - 1, ctx->fp) == NULL ||
-	      strcmp (ctx->magic == M_MMDF ? MMDF_SEP : KENDRA_SEP, buf) != 0)
+	      mutt_strcmp (ctx->magic == M_MMDF ? MMDF_SEP : KENDRA_SEP, buf) != 0)
 	  {
 	    if (fseek (ctx->fp, loc, SEEK_SET) != 0)
 	      dprint (1, (debugfile, "mmdf_parse_mailbox: fseek() failed\n"));
@@ -180,7 +180,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
 	  if (fgets (buf, sizeof (buf) - 1, ctx->fp) == NULL)
 	    break;
 	  lines++;
-	} while (strcmp (buf, ctx->magic == M_MMDF ? MMDF_SEP : KENDRA_SEP) != 0);
+	} while (mutt_strcmp (buf, ctx->magic == M_MMDF ? MMDF_SEP : KENDRA_SEP) != 0);
 
 	hdr->lines = lines;
 	hdr->content->length = loc - hdr->content->offset;
@@ -306,7 +306,7 @@ int mbox_parse_mailbox (CONTEXT *ctx)
 	   */
 	  if (fseek (ctx->fp, tmploc, SEEK_SET) != 0 ||
 	      fgets (buf, sizeof (buf), ctx->fp) == NULL ||
-	      strncmp ("From ", buf, 5) != 0)
+	      mutt_strncmp ("From ", buf, 5) != 0)
 	  {
 	    dprint (1, (debugfile, "mbox_parse_mailbox: bad content-length in message %d (cl=%ld)\n", curhdr->index, curhdr->content->length));
 	    dprint (1, (debugfile, "\tLINE: %s", buf));
@@ -592,9 +592,9 @@ int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
 	dprint (1, (debugfile, "mbox_check_mailbox: fseek() failed\n"));
       if (fgets (buffer, sizeof (buffer), ctx->fp) != NULL)
       {
-	if ((ctx->magic == M_MBOX && strncmp ("From ", buffer, 5) == 0) ||
-	    (ctx->magic == M_MMDF && strcmp (MMDF_SEP, buffer) == 0) ||
-	    (ctx->magic == M_KENDRA && strcmp(KENDRA_SEP, buffer) == 0))
+	if ((ctx->magic == M_MBOX && mutt_strncmp ("From ", buffer, 5) == 0) ||
+	    (ctx->magic == M_MMDF && mutt_strcmp (MMDF_SEP, buffer) == 0) ||
+	    (ctx->magic == M_KENDRA && mutt_strcmp(KENDRA_SEP, buffer) == 0))
 	{
 	  if (fseek (ctx->fp, ctx->size, SEEK_SET) != 0)
 	    dprint (1, (debugfile, "mbox_check_mailbox: fseek() failed\n"));
@@ -749,9 +749,9 @@ int mbox_sync_mailbox (CONTEXT *ctx)
    * sure we seek to the correct location
    */
   if (ctx->magic == M_MMDF)
-    offset -= strlen (MMDF_SEP);
+    offset -= mutt_strlen (MMDF_SEP);
   else if (ctx->magic == M_KENDRA)
-    offset -= strlen(KENDRA_SEP);
+    offset -= mutt_strlen(KENDRA_SEP);
   
   /* allocate space for the new offsets */
   newOffset = safe_calloc (ctx->msgcount - first, sizeof (struct m_update_t));
@@ -836,9 +836,9 @@ int mbox_sync_mailbox (CONTEXT *ctx)
   if (fseek (ctx->fp, offset, SEEK_SET) != 0 ||  /* seek the append location */
       /* do a sanity check to make sure the mailbox looks ok */
       fgets (buf, sizeof (buf), ctx->fp) == NULL ||
-      (ctx->magic == M_MBOX && strncmp ("From ", buf, 5) != 0) ||
-      (ctx->magic == M_MMDF && strcmp (MMDF_SEP, buf) != 0) ||
-      (ctx->magic == M_KENDRA && strcmp (KENDRA_SEP, buf) != 0))
+      (ctx->magic == M_MBOX && mutt_strncmp ("From ", buf, 5) != 0) ||
+      (ctx->magic == M_MMDF && mutt_strcmp (MMDF_SEP, buf) != 0) ||
+      (ctx->magic == M_KENDRA && mutt_strcmp (KENDRA_SEP, buf) != 0))
   {
     dprint (1, (debugfile, "mbox_sync_mailbox: message not in expected position."));
     dprint (1, (debugfile, "\tLINE: %s\n", buf));

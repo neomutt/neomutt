@@ -78,7 +78,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
       if (nl && buf[0] != ' ' && buf[0] != '\t')
       {
 	ignore = 1;
-	if (!from && strncmp ("From ", buf, 5) == 0)
+	if (!from && mutt_strncmp ("From ", buf, 5) == 0)
 	{
 	  if ((flags & CH_FROM) == 0)
 	    continue;
@@ -88,12 +88,12 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
 	  break; /* end of header */
 
 	if ((flags & (CH_UPDATE | CH_XMIT | CH_NOSTATUS)) &&
-	    (strncasecmp ("Status:", buf, 7) == 0 ||
-	     strncasecmp ("X-Status:", buf, 9) == 0))
+	    (mutt_strncasecmp ("Status:", buf, 7) == 0 ||
+	     mutt_strncasecmp ("X-Status:", buf, 9) == 0))
 	  continue;
 	if ((flags & (CH_UPDATE_LEN | CH_XMIT)) &&
-	    (strncasecmp ("Content-Length:", buf, 15) == 0 ||
-	     strncasecmp ("Lines:", buf, 6) == 0))
+	    (mutt_strncasecmp ("Content-Length:", buf, 15) == 0 ||
+	     mutt_strncasecmp ("Lines:", buf, 6) == 0))
 	  continue;
 	ignore = 0;
       }
@@ -138,7 +138,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
     if (nl && buf[0] != ' ' && buf[0] != '\t')
     {
       ignore = 1;
-      if (!from && strncmp ("From ", buf, 5) == 0)
+      if (!from && mutt_strncmp ("From ", buf, 5) == 0)
       {
 	if ((flags & CH_FROM) == 0)
 	  continue;
@@ -152,18 +152,18 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
 	  !mutt_matches_ignore (buf, UnIgnore))
 	continue;
       if ((flags & (CH_UPDATE | CH_XMIT | CH_NOSTATUS)) &&
-	  (strncasecmp ("Status:", buf, 7) == 0 ||
-	   strncasecmp ("X-Status:", buf, 9) == 0))
+	  (mutt_strncasecmp ("Status:", buf, 7) == 0 ||
+	   mutt_strncasecmp ("X-Status:", buf, 9) == 0))
 	continue;
       if ((flags & (CH_UPDATE_LEN | CH_XMIT)) &&
-	  (strncasecmp ("Content-Length:", buf, 15) == 0 ||
-	   strncasecmp ("Lines:", buf, 6) == 0))
+	  (mutt_strncasecmp ("Content-Length:", buf, 15) == 0 ||
+	   mutt_strncasecmp ("Lines:", buf, 6) == 0))
 	continue;
       if ((flags & CH_MIME) &&
-	  ((strncasecmp ("content-", buf, 8) == 0 &&
-	    (strncasecmp ("transfer-encoding:", buf + 8, 18) == 0 ||
-	     strncasecmp ("type:", buf + 8, 5) == 0)) ||
-	   strncasecmp ("mime-version:", buf, 13) == 0))
+	  ((mutt_strncasecmp ("content-", buf, 8) == 0 &&
+	    (mutt_strncasecmp ("transfer-encoding:", buf + 8, 18) == 0 ||
+	     mutt_strncasecmp ("type:", buf + 8, 5) == 0)) ||
+	   mutt_strncasecmp ("mime-version:", buf, 13) == 0))
 	continue;
 
       /* Find x -- the array entry where this header is to be saved */
@@ -171,7 +171,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
       {
 	for (t = HeaderOrderList, x = 0 ; (t) ; t = t->next, x++)
 	{
-	  if (!strncasecmp (buf, t->data, strlen (t->data)))
+	  if (!mutt_strncasecmp (buf, t->data, mutt_strlen (t->data)))
 	  {
 	    dprint(2, (debugfile, "Reorder: %s matches %s", t->data, buf));
 	    break;
@@ -190,7 +190,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
       else
       {
 	safe_realloc ((void **) &headers[x],
-		      strlen (headers[x]) + strlen (buf) + sizeof (char));
+		      mutt_strlen (headers[x]) + mutt_strlen (buf) + sizeof (char));
 	strcat (headers[x], buf);
       }
     }
@@ -202,7 +202,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
     if (headers[x])
     {
       if (flags & CH_DECODE)
-	rfc2047_decode (headers[x], headers[x], strlen (headers[x]));
+	rfc2047_decode (headers[x], headers[x], mutt_strlen (headers[x]));
 
       /* We couldn't do the prefixing when reading because RFC 2047
        * decoding may have concatenated lines.
@@ -546,7 +546,7 @@ static BODY *new_deleted_body ()
   char date[SHORT_STRING];
 
   mutt_make_date (date, sizeof (date));
-  date[strlen (date) - 1] = 0; /* cut off ending newline character */
+  date[mutt_strlen (date) - 1] = 0; /* cut off ending newline character */
 
   p->attribute = safe_strdup ("access-type");
   p->value = safe_strdup ("x-mutt-deleted");

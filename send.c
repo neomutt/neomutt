@@ -62,7 +62,7 @@ static int mutt_addrcmp (ADDRESS *a, ADDRESS *b)
 {
   if (!a->mailbox || !b->mailbox)
     return 0;
-  if (strcasecmp (a->mailbox, b->mailbox))
+  if (mutt_strcasecmp (a->mailbox, b->mailbox))
     return 0;
   return 1;
 }
@@ -217,7 +217,7 @@ static int edit_envelope (ENVELOPE *en)
     buf[0] = 0;
     for (; uh; uh = uh->next)
     {
-      if (strncasecmp ("subject:", uh->data, 8) == 0)
+      if (mutt_strncasecmp ("subject:", uh->data, 8) == 0)
       {
 	p = uh->data + 8;
 	SKIPWS (p);
@@ -244,11 +244,11 @@ static void process_user_recips (ENVELOPE *env)
 
   for (; uh; uh = uh->next)
   {
-    if (strncasecmp ("to:", uh->data, 3) == 0)
+    if (mutt_strncasecmp ("to:", uh->data, 3) == 0)
       env->to = rfc822_parse_adrlist (env->to, uh->data + 3);
-    else if (strncasecmp ("cc:", uh->data, 3) == 0)
+    else if (mutt_strncasecmp ("cc:", uh->data, 3) == 0)
       env->cc = rfc822_parse_adrlist (env->cc, uh->data + 3);
-    else if (strncasecmp ("bcc:", uh->data, 4) == 0)
+    else if (mutt_strncasecmp ("bcc:", uh->data, 4) == 0)
       env->bcc = rfc822_parse_adrlist (env->bcc, uh->data + 4);
   }
 }
@@ -264,21 +264,21 @@ static void process_user_header (ENVELOPE *env)
 
   for (; uh; uh = uh->next)
   {
-    if (strncasecmp ("from:", uh->data, 5) == 0)
+    if (mutt_strncasecmp ("from:", uh->data, 5) == 0)
     {
       /* User has specified a default From: address.  Remove default address */
       rfc822_free_address (&env->from);
       env->from = rfc822_parse_adrlist (env->from, uh->data + 5);
     }
-    else if (strncasecmp ("reply-to:", uh->data, 9) == 0)
+    else if (mutt_strncasecmp ("reply-to:", uh->data, 9) == 0)
     {
       rfc822_free_address (&env->reply_to);
       env->reply_to = rfc822_parse_adrlist (env->reply_to, uh->data + 9);
     }
-    else if (strncasecmp ("to:", uh->data, 3) != 0 &&
-	     strncasecmp ("cc:", uh->data, 3) != 0 &&
-	     strncasecmp ("bcc:", uh->data, 4) != 0 &&
-	     strncasecmp ("subject:", uh->data, 8) != 0)
+    else if (mutt_strncasecmp ("to:", uh->data, 3) != 0 &&
+	     mutt_strncasecmp ("cc:", uh->data, 3) != 0 &&
+	     mutt_strncasecmp ("bcc:", uh->data, 4) != 0 &&
+	     mutt_strncasecmp ("subject:", uh->data, 8) != 0)
     {
       if (last)
       {
@@ -556,7 +556,7 @@ envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
 
     if (curenv->real_subj)
     {
-      env->subject = safe_malloc (strlen (curenv->real_subj) + 5);
+      env->subject = safe_malloc (mutt_strlen (curenv->real_subj) + 5);
       sprintf (env->subject, "Re: %s", curenv->real_subj);
     }
     else
@@ -776,7 +776,7 @@ static ADDRESS *mutt_default_from (void)
 
   if (option (OPTUSEDOMAIN))
   {
-    adr->mailbox = safe_malloc (strlen (NONULL(Username)) + strlen (NONULL(fqdn)) + 2);
+    adr->mailbox = safe_malloc (mutt_strlen (Username) + mutt_strlen (fqdn) + 2);
     sprintf (adr->mailbox, "%s@%s", NONULL(Username), NONULL(fqdn));
   }
   else
@@ -1027,7 +1027,7 @@ ci_send_message (int flags,		/* send mode */
     if (generate_body (tempfp, msg, flags, ctx, cur) == -1)
       goto cleanup;
 
-    if (! (flags & (SENDMAILX | SENDKEY)) && Editor && strcmp (Editor, "builtin") != 0)
+    if (! (flags & (SENDMAILX | SENDKEY)) && Editor && mutt_strcmp (Editor, "builtin") != 0)
       append_signature (tempfp);
   }
   /* wait until now to set the real name portion of our return address so
@@ -1079,7 +1079,7 @@ ci_send_message (int flags,		/* send mode */
     {
       if (mutt_needs_mailcap (msg->content))
 	mutt_edit_attachment (msg->content);
-      else if (!Editor || strcmp ("builtin", Editor) == 0)
+      else if (!Editor || mutt_strcmp ("builtin", Editor) == 0)
 	mutt_builtin_editor (msg->content->filename, msg, cur);
       else if (option (OPTEDITHDRS))
 	mutt_edit_headers (Editor, msg->content->filename, msg, fcc, sizeof (fcc));
@@ -1223,7 +1223,7 @@ main_loop:
 
   /* save a copy of the message, if necessary. */
   mutt_expand_path (fcc, sizeof (fcc));
-  if (*fcc && strcmp ("/dev/null", fcc) != 0)
+  if (*fcc && mutt_strcmp ("/dev/null", fcc) != 0)
   {
     BODY *tmpbody = msg->content;
 #ifdef _PGPPATH
@@ -1235,8 +1235,8 @@ main_loop:
     if (!option (OPTFCCATTACH) && msg->content->type == TYPEMULTIPART)
     {
 #ifdef _PGPPATH
-      if (strcmp (msg->content->subtype, "encrypted") == 0 ||
-	  strcmp (msg->content->subtype, "signed") == 0)
+      if (mutt_strcmp (msg->content->subtype, "encrypted") == 0 ||
+	  mutt_strcmp (msg->content->subtype, "signed") == 0)
       {
 	if (save_content->type == TYPEMULTIPART)
 	{

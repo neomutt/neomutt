@@ -69,7 +69,7 @@ static int is_mmnoask (const char *buf)
 
   if ((p = getenv ("MM_NOASK")) != NULL && *p)
   {
-    if (strcmp (p, "1") == 0)
+    if (mutt_strcmp (p, "1") == 0)
       return (1);
 
     strfcpy (tmp, p, sizeof (tmp));
@@ -81,19 +81,19 @@ static int is_mmnoask (const char *buf)
       {
 	if (*(q+1) == '*')
 	{
-	  if (strncasecmp (buf, p, q-p) == 0)
+	  if (mutt_strncasecmp (buf, p, q-p) == 0)
 	    return (1);
 	}
 	else
 	{
-	  if (strcasecmp (buf, p) == 0)
+	  if (mutt_strcasecmp (buf, p) == 0)
 	    return (1);
 	}
       }
       else
       {
-	lng = strlen (p);
-	if (buf[lng] == '/' && strncasecmp (buf, p, lng) == 0)
+	lng = mutt_strlen (p);
+	if (buf[lng] == '/' && mutt_strncasecmp (buf, p, lng) == 0)
 	  return (1);
       }
 
@@ -178,7 +178,7 @@ int mutt_display_message (HEADER *cur)
     return (0);
   }
 
-  if (!Pager || strcmp (Pager, "builtin") == 0)
+  if (!Pager || mutt_strcmp (Pager, "builtin") == 0)
     builtin = 1;
   else
   {
@@ -622,7 +622,7 @@ int mutt_save_message (HEADER *h, int delete, int decode, int decrypt, int *redr
   /* This is an undocumented feature of ELM pointed out to me by Felix von
    * Leitner <leitner@prz.fu-berlin.de>
    */
-  if (strcmp (buf, ".") == 0)
+  if (mutt_strcmp (buf, ".") == 0)
     strfcpy (buf, LastSaveFolder, sizeof (buf));
   else
     strfcpy (LastSaveFolder, buf, sizeof (LastSaveFolder));

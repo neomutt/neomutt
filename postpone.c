@@ -230,7 +230,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
 
   for (tmp = hdr->env->userhdrs; tmp; )
   {
-    if (strncasecmp ("X-Mutt-References:", tmp->data, 18) == 0)
+    if (mutt_strncasecmp ("X-Mutt-References:", tmp->data, 18) == 0)
     {
       if (ctx)
       {
@@ -253,7 +253,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
       if (*cur)
 	code |= SENDREPLY;
     }
-    else if (strncasecmp ("X-Mutt-Fcc:", tmp->data, 11) == 0)
+    else if (mutt_strncasecmp ("X-Mutt-Fcc:", tmp->data, 11) == 0)
     {
       p = tmp->data + 11;
       SKIPWS (p);
@@ -274,7 +274,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
 
 
 #ifdef _PGPPATH
-    else if (strncmp ("Pgp:", tmp->data, 4) == 0)
+    else if (mutt_strncmp ("Pgp:", tmp->data, 4) == 0)
     {
       hdr->pgp = mutt_parse_pgp_hdr (tmp->data+4, 1);
        
@@ -412,7 +412,7 @@ int mutt_prepare_edit_message (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr)
       hdr->content->parts = mutt_parse_multipart (msg->fp, 
 	       mutt_get_parameter ("boundary", hdr->content->parameter),
 	       hdr->content->offset + hdr->content->length,
-	       strcasecmp ("digest", hdr->content->subtype) == 0);
+	       mutt_strcasecmp ("digest", hdr->content->subtype) == 0);
     }
     else
       hdr->content->parts = mutt_parse_messageRFC822 (msg->fp, hdr->content);

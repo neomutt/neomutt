@@ -29,7 +29,7 @@ ADDRESS *mutt_lookup_alias (const char *s)
   ALIAS *t = Aliases;
 
   for (; t; t = t->next)
-    if (!strcasecmp (s, t->name))
+    if (!mutt_strcasecmp (s, t->name))
       return (t->addr);
   return (NULL);   /* no such alias */
 }
@@ -52,7 +52,7 @@ static ADDRESS *mutt_expand_aliases_r (ADDRESS *a, LIST **expn)
         i = 0;
         for (u = *expn; u; u = u->next)
 	{
-	  if (strcmp (a->mailbox, u->data) == 0) /* alias already found */
+	  if (mutt_strcmp (a->mailbox, u->data) == 0) /* alias already found */
 	  {
 	    dprint (1, (debugfile, "mutt_expand_aliases_r(): loop in alias found for '%s'\n", a->mailbox));
 	    i = 1;
@@ -287,7 +287,7 @@ ADDRESS *alias_reverse_lookup (ADDRESS *a)
     for (ap = t->addr; ap; ap = ap->next)
     {
       if (!ap->group && ap->mailbox &&
-	  strcasecmp (ap->mailbox, a->mailbox) == 0)
+	  mutt_strcasecmp (ap->mailbox, a->mailbox) == 0)
 	return ap;
     }
   }
@@ -315,7 +315,7 @@ int mutt_alias_complete (char *s, size_t buflen)
     if (a->name && strstr (a->name, s) == a->name)
     {
       if (!bestname[0]) /* init */
-	strfcpy (bestname, a->name, min (strlen (a->name) + 1, sizeof (bestname)));
+	strfcpy (bestname, a->name, min (mutt_strlen (a->name) + 1, sizeof (bestname)));
       else
       {
 	for (i = 0 ; a->name[i] && a->name[i] == bestname[i] ; i++)
@@ -334,7 +334,7 @@ int mutt_alias_complete (char *s, size_t buflen)
   }
   else
   {
-    if (strcmp (bestname, s) == 0) /* add anything to the completion? */
+    if (mutt_strcmp (bestname, s) == 0) /* add anything to the completion? */
     {
       /* build alias list and show it */
       a = Aliases;
@@ -369,7 +369,7 @@ int mutt_alias_complete (char *s, size_t buflen)
       return 0;
     }
     else /* we are adding something to the completion */
-      strfcpy (s, bestname, strlen (bestname) + 1);
+      strfcpy (s, bestname, mutt_strlen (bestname) + 1);
   }
 
   return 1;
@@ -380,7 +380,7 @@ static int string_is_address(const char *str, const char *u, const char *d)
   char buf[LONG_STRING];
   
   snprintf(buf, sizeof(buf), "%s@%s", NONULL(u), NONULL(d));
-  if (strcasecmp(str, buf) == 0)
+  if (mutt_strcasecmp(str, buf) == 0)
     return 1;
   
   return 0;
@@ -395,7 +395,7 @@ int mutt_addr_is_user (ADDRESS *addr)
   if (!addr->mailbox)
     return 0;
 
-  if (strcasecmp (addr->mailbox, NONULL(Username)) == 0)
+  if (mutt_strcasecmp (addr->mailbox, Username) == 0)
     return 1;
   if(string_is_address(addr->mailbox, Username, Hostname))
     return 1;

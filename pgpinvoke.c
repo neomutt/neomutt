@@ -471,7 +471,7 @@ pid_t pgp_gpg_invoke_decrypt(struct pgp_vinfo *pgp,
 static char *gpg_digalg(void)
 {
   static char digalg[STRING];
-  if(PgpSignMicalg && !strncasecmp(PgpSignMicalg, "pgp-", 4))
+  if(PgpSignMicalg && !mutt_strncasecmp(PgpSignMicalg, "pgp-", 4))
     strfcpy(digalg, PgpSignMicalg + 4, sizeof(digalg));
   else
   {
@@ -593,7 +593,7 @@ pid_t pgp_gpg_invoke_verify_key(struct pgp_vinfo *pgp,
 
   snprintf(cmd, sizeof(cmd),
 	   "%sm --no-verbose --batch --fingerprint --check-sigs %s%s",
-	   NONULL(binary), (strlen(id)==8 || strlen(id)==16)? "0x":"", id );
+	   NONULL(binary), (mutt_strlen(id)==8 || mutt_strlen(id)==16)? "0x":"", id );
   
   FREE(&binary);
   

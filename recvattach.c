@@ -78,7 +78,7 @@ void mutt_update_tree (ATTACHPTR **idx, short idxlen)
 
     if (idx[x]->tree)
     {
-      if (strcmp (idx[x]->tree, buf) != 0)
+      if (mutt_strcmp (idx[x]->tree, buf) != 0)
       {
 	safe_free ((void **) &idx[x]->tree);
 	idx[x]->tree = safe_strdup (buf);
@@ -262,7 +262,7 @@ int mutt_is_message_type (int type, const char *subtype)
     return 0;
 
   subtype = NONULL(subtype);
-  return (strcasecmp (subtype, "rfc822") == 0 || strcasecmp (subtype, "news") == 0);
+  return (mutt_strcasecmp (subtype, "rfc822") == 0 || mutt_strcasecmp (subtype, "news") == 0);
 }
 
 static int mutt_query_save_attachment (FILE *fp, BODY *body, HEADER *hdr)
@@ -494,8 +494,8 @@ static int can_print (BODY *top, int tag)
     {
       if (!rfc1524_mailcap_lookup (top, type, NULL, M_PRINT))
       {
-	if (strcasecmp ("text/plain", top->subtype) &&
-	    strcasecmp ("application/postscript", top->subtype))
+	if (mutt_strcasecmp ("text/plain", top->subtype) &&
+	    mutt_strcasecmp ("application/postscript", top->subtype))
 	{
 	  if (!mutt_can_decode (top))
 	  {
@@ -525,8 +525,8 @@ static void print_attachment_list (FILE *fp, int tag, BODY *top)
       snprintf (type, sizeof (type), "%s/%s", TYPE (top), top->subtype);
       if (!option (OPTATTACHSPLIT) && !rfc1524_mailcap_lookup (top, type, NULL, M_PRINT))
       {
-	if (!strcasecmp ("text/plain", top->subtype) ||
-	    !strcasecmp ("application/postscript", top->subtype))
+	if (!mutt_strcasecmp ("text/plain", top->subtype) ||
+	    !mutt_strcasecmp ("application/postscript", top->subtype))
 	  pipe_attachment (fp, top);
 	else if (mutt_can_decode (top))
 	{

@@ -54,7 +54,7 @@ static void canonical_charset(char *dest, size_t dlen, const char *name)
 {
   int i;
   
-  if(!strncasecmp(name, "x-", 2))
+  if(!mutt_strncasecmp(name, "x-", 2))
     name = name + 2;
   
   for(i = 0; name[i] && i < dlen - 1; i++)
@@ -85,7 +85,7 @@ static CHARSET *load_charset(const char *name)
   if(fgets(buffer, sizeof(buffer), fp) == NULL)
     goto bail;
   
-  if(strcmp(buffer, CHARSET_MAGIC) != 0)
+  if(mutt_strcmp(buffer, CHARSET_MAGIC) != 0)
     goto bail;
 
   chs->map  = safe_malloc(sizeof(CHARSET_MAP));
@@ -212,7 +212,7 @@ CHARSET_MAP *mutt_get_translation(const char *_from, const char *_to)
     to = to_canon;
   
   /* quick check for the identity mapping */
-  if((from == to) || ((*from == *to) && !strcmp(from, to)))
+  if((from == to) || ((*from == *to) && !mutt_strcmp(from, to)))
     return NULL;
   
   snprintf(key, sizeof(key), "%s %s", from, to);
@@ -260,7 +260,7 @@ int mutt_is_utf8(const char *s)
     return 0;
 
   canonical_charset(buffer, sizeof(buffer), s);
-  return !strcmp(buffer, "utf-8");
+  return !mutt_strcmp(buffer, "utf-8");
 }
   
 /* macros for the various bit maps we need */

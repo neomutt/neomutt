@@ -40,7 +40,7 @@ int mutt_is_mail_list (ADDRESS *addr)
   if (addr->mailbox)
   {
     for (p = MailLists; p; p = p->next)
-      if (strncasecmp (addr->mailbox, p->data, strlen (p->data)) == 0)
+      if (mutt_strncasecmp (addr->mailbox, p->data, mutt_strlen (p->data)) == 0)
 	return 1;
   }
   return 0;
@@ -545,7 +545,7 @@ hdr_format_str (char *dest,
     case 'T':
       snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
       snprintf (dest, destlen, fmt,
-		(Tochars && ((i = mutt_user_is_recipient (hdr))) < strlen (Tochars)) ? Tochars[i] : ' ');
+		(Tochars && ((i = mutt_user_is_recipient (hdr))) < mutt_strlen (Tochars)) ? Tochars[i] : ' ');
       break;
 
     case 'u':
@@ -606,7 +606,7 @@ hdr_format_str (char *dest,
 		hdr->deleted ? 'D' : (hdr->attach_del ? 'd' : ch),
 		hdr->tagged ? '*' :
 		(hdr->flagged ? '!' :
-		 (Tochars && ((i = mutt_user_is_recipient (hdr)) < strlen (Tochars)) ? Tochars[i] : ' ')));
+		 (Tochars && ((i = mutt_user_is_recipient (hdr)) < mutt_strlen (Tochars)) ? Tochars[i] : ' ')));
       snprintf (dest, destlen, fmt, buf2);
       break;
 

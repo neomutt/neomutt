@@ -69,13 +69,13 @@ static KEYINFO *parse_pub_line( char *buf, int *is_subkey )
 
 	switch( field ) {
 	  case 1: /* record type */
-	    if( !strcmp(p,"pub") )
+	    if( !mutt_strcmp(p,"pub") )
 		;
-	    else if( !strcmp(p,"sub") )
+	    else if( !mutt_strcmp(p,"sub") )
 		*is_subkey = 1;
-	    else if( !strcmp(p,"sec") )
+	    else if( !mutt_strcmp(p,"sec") )
 		;
-	    else if( !strcmp(p,"ssb") )
+	    else if( !mutt_strcmp(p,"ssb") )
 		*is_subkey = 1;
 	    else
 		return NULL;

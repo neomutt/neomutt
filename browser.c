@@ -85,7 +85,7 @@ static int browser_compare_subject (const void *a, const void *b)
   struct folder_file *pa = (struct folder_file *) a;
   struct folder_file *pb = (struct folder_file *) b;
 
-  int r = strcmp (pa->name, pb->name);
+  int r = mutt_strcmp (pa->name, pb->name);
 
   return ((BrowserSort & SORT_REVERSE) ? -r : r);
 }
@@ -358,10 +358,10 @@ static int examine_directory (MUTTMENU *menu, struct browser_state *state,
 
   while ((de = readdir (dp)) != NULL)
   {
-    if (strcmp (de->d_name, ".") == 0)
+    if (mutt_strcmp (de->d_name, ".") == 0)
       continue;    /* we don't need . */
     
-    if (prefix && *prefix && strncmp (prefix, de->d_name, strlen (prefix)) != 0)
+    if (prefix && *prefix && mutt_strncmp (prefix, de->d_name, mutt_strlen (prefix)) != 0)
       continue;
     if (!((regexec (Mask.rx, de->d_name, 0, NULL, 0) == 0) ^ Mask.not))
       continue;
@@ -375,7 +375,7 @@ static int examine_directory (MUTTMENU *menu, struct browser_state *state,
       continue;
     
     tmp = Incoming;
-    while (tmp && strcmp (buffer, NONULL(tmp->path)))
+    while (tmp && mutt_strcmp (buffer, tmp->path))
       tmp = tmp->next;
     add_folder (menu, state, de->d_name, &s, (tmp) ? tmp->new : 0);
   }
@@ -472,7 +472,7 @@ void mutt_select_file (char *f, size_t flen, int buffy)
   if (*f)
   {
     mutt_expand_path (f, flen);
-    for (i = strlen (f) - 1; i > 0 && f[i] != '/' ; i--);
+    for (i = mutt_strlen (f) - 1; i > 0 && f[i] != '/' ; i--);
     if (i > 0)
     {
       if (f[0] == '/')
@@ -559,9 +559,9 @@ void mutt_select_file (char *f, size_t flen, int buffy)
 	    /* save the old directory */
 	    strfcpy (OldLastDir, LastDir, sizeof (OldLastDir));
 
-	    if (strcmp (state.entry[menu->current].name, "..") == 0)
+	    if (mutt_strcmp (state.entry[menu->current].name, "..") == 0)
 	    {
-	      if (strcmp ("..", LastDir + strlen (LastDir) - 2) == 0)
+	      if (mutt_strcmp ("..", LastDir + mutt_strlen (LastDir) - 2) == 0)
 		strcat (LastDir, "/..");
 	      else
 	      {
@@ -584,7 +584,7 @@ void mutt_select_file (char *f, size_t flen, int buffy)
 	      mutt_expand_path (LastDir, sizeof (LastDir));
 	    }
 	    else
-	      sprintf (LastDir + strlen (LastDir), "/%s",
+	      sprintf (LastDir + mutt_strlen (LastDir), "/%s",
 		       state.entry[menu->current].name);
 
 	    destroy_state (&state);
@@ -636,7 +636,7 @@ void mutt_select_file (char *f, size_t flen, int buffy)
 
 	strfcpy (buf, LastDir, sizeof (buf));
 	{/* add '/' at the end of the directory name */
-	int len=strlen(LastDir);
+	int len=mutt_strlen(LastDir);
 	if (sizeof (buf) > len)
 	  buf[len]='/';
 	}

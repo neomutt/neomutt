@@ -77,7 +77,7 @@ int mutt_socket_read_line_d (char *buf, size_t buflen, CONNECTION *conn)
 int mutt_socket_write (CONNECTION *conn, const char *buf)
 {
   dprint (1,(debugfile,"mutt_socket_write():%s", buf));
-  return (write (conn->fd, buf, strlen (buf)));
+  return (write (conn->fd, buf, mutt_strlen (buf)));
 }
 
 CONNECTION *mutt_socket_select_connection (char *host, int port, int flags)
@@ -89,7 +89,7 @@ CONNECTION *mutt_socket_select_connection (char *host, int port, int flags)
     conn = Connections;
     while (conn)
     {
-      if (!strcmp (host, conn->server) && (port == conn->port))
+      if (!mutt_strcmp (host, conn->server) && (port == conn->port))
 	return conn;
       conn = conn->next;
     }

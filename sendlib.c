@@ -125,7 +125,7 @@ static void encode_quoted (FILE * fin, FILE *fout, int istext)
   while ((c = fgetc (fin)) != EOF)
   {
     /* Escape lines that begin with "the message separator". */
-    if (linelen == 5 && !strncmp ("From ", line, 5))
+    if (linelen == 5 && !mutt_strncmp ("From ", line, 5))
     {
       strfcpy (line, "=46rom ", sizeof (line));
       linelen = 7;
@@ -391,7 +391,7 @@ int mutt_write_mime_header (BODY *a, FILE *f)
 
   if (a->parameter)
   {
-    len = 25 + strlen (a->subtype); /* approximate len. of content-type */
+    len = 25 + mutt_strlen (a->subtype); /* approximate len. of content-type */
 
     for(p = a->parameter; p; p = p->next)
     {
@@ -404,7 +404,7 @@ int mutt_write_mime_header (BODY *a, FILE *f)
       buffer[0] = 0;
       rfc822_cat (buffer, sizeof (buffer), p->value, MimeSpecials);
 
-      tmplen = strlen (buffer) + strlen (p->attribute) + 1;
+      tmplen = mutt_strlen (buffer) + mutt_strlen (p->attribute) + 1;
 
       if (len + tmplen + 2 > 76)
       {
@@ -494,7 +494,7 @@ int mutt_write_mime_body (BODY *a, FILE *f)
 
 #ifdef _PGPPATH
   /* This is pretty gross, but it's the best solution for now... */
-  if (a->type == TYPEAPPLICATION && strcmp (a->subtype, "pgp-encrypted") == 0)
+  if (a->type == TYPEAPPLICATION && mutt_strcmp (a->subtype, "pgp-encrypted") == 0)
   {
     fputs ("Version: 1\n", f);
     return 0;
@@ -667,7 +667,7 @@ static int lookup_mime_type (char *d, const char *s)
   *d = 0;
   cur_n = TYPEOTHER;
   cur_sze = 0;
-  szf = strlen (s);
+  szf = mutt_strlen (s);
 
   for (count = 0 ; count < 3 ; count++)
   {
@@ -711,9 +711,9 @@ static int lookup_mime_type (char *d, const char *s)
 	/* cycle through the file extensions */
 	while ((p = strtok (p, " \t\n")))
 	{
-	  sze = strlen (p);
+	  sze = mutt_strlen (p);
 	  if ((sze > cur_sze) && (szf >= sze) &&
-	      strcasecmp (s + szf - sze, p) == 0 &&
+	      mutt_strcasecmp (s + szf - sze, p) == 0 &&
 	      (szf == sze || s[szf - sze - 1] == '.'))
 	  {
 	    char *dc;
@@ -750,7 +750,7 @@ static char *set_text_charset (CONTENT *info)
 
   /* if charset is unknown assume low bytes are ascii compatible */
 
-  if ((Charset == NULL || strcasecmp (Charset, "us-ascii") == 0)
+  if ((Charset == NULL || mutt_strcasecmp (Charset, "us-ascii") == 0)
       && info->hibin)
     return ("unknown-8bit");
 
@@ -848,7 +848,7 @@ static void transform_to_7bit (BODY *a, FILE *fpin)
 
       transform_to_7bit (a->parts, fpin);
     } 
-    else if (a->type == TYPEMESSAGE && strcasecmp (a->subtype, "delivery-status"))
+    else if (a->type == TYPEMESSAGE && mutt_strcasecmp (a->subtype, "delivery-status"))
     {
       mutt_message_to_7bit (a, fpin);
     }
@@ -1190,7 +1190,7 @@ void mutt_write_address_list (ADDRESS *adr, FILE *fp, int linelen)
     adr->next = NULL;
     buf[0] = 0;
     rfc822_write_address (buf, sizeof (buf), adr);
-    len = strlen (buf);
+    len = mutt_strlen (buf);
     if (count && linelen + len > 74)
     {
       if (count)
@@ -1381,7 +1381,7 @@ static void encode_headers (LIST *h)
       *p++ = 0;
       SKIPWS (p);
       snprintf (tmp, sizeof (tmp), "%s: ", h->data);
-      len = strlen (tmp);
+      len = mutt_strlen (tmp);
       rfc2047_encode_string (tmp + len, sizeof (tmp) - len, (unsigned char *) p);
       safe_free ((void **) &h->data);
       h->data = safe_strdup (tmp);
@@ -1721,8 +1721,8 @@ mutt_invoke_sendmail (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc, /* recips */
    string. */
 char *mutt_append_string (char *a, const char *b)
 {
-  size_t la = strlen (a);
-  safe_realloc ((void **) &a, la + strlen (b) + 1);
+  size_t la = mutt_strlen (a);
+  safe_realloc ((void **) &a, la + mutt_strlen (b) + 1);
   strcpy (a + la, b);
   return (a);
 }
@@ -1751,7 +1751,7 @@ char *mutt_quote_string (const char *s)
   char *r, *pr;
   size_t rlen;
 
-  rlen = strlen (s) + 3;
+  rlen = mutt_strlen (s) + 3;
   pr = r = (char *) safe_malloc (rlen);
   *pr++ = '"';
   while (*s)
@@ -1868,7 +1868,7 @@ ADDRESS *mutt_remove_duplicates (ADDRESS *addr)
     tmp = top;
     do {
       if (addr->mailbox && tmp->mailbox &&
-	  !strcasecmp (addr->mailbox, tmp->mailbox))
+	  !mutt_strcasecmp (addr->mailbox, tmp->mailbox))
       {
 	/* duplicate address, just ignore it */
 	tmp = addr;

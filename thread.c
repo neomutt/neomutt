@@ -292,7 +292,7 @@ static HEADER *find_subject (CONTEXT *ctx, HEADER *cur)
 	  cur->date_sent >= tmp->date_sent &&
 	  (!last || (last->date_sent <= tmp->date_sent)) &&
 	  tmp->env->real_subj &&
-	  strcmp (env->real_subj, tmp->env->real_subj) == 0)
+	  mutt_strcmp (env->real_subj, tmp->env->real_subj) == 0)
       {
 	last = tmp; /* best match so far */
       }
@@ -443,14 +443,14 @@ static void move_descendants (HEADER **tree, HEADER *cur, sort_t *usefunc)
   {
     /* only need to look at the last reference */
     if (tmp->env->references &&
-	strcmp (tmp->env->references->data, cur->env->message_id) == 0)
+	mutt_strcmp (tmp->env->references->data, cur->env->message_id) == 0)
     {
       /* remove message from current location */
       unlink_message (tree, tmp);
 
       tmp->parent = cur;
       if (cur->env->real_subj && tmp->env->real_subj)
-	tmp->subject_changed = strcmp (tmp->env->real_subj, cur->env->real_subj) ? 1 : 0;
+	tmp->subject_changed = mutt_strcmp (tmp->env->real_subj, cur->env->real_subj) ? 1 : 0;
       else
 	tmp->subject_changed = (cur->env->real_subj || tmp->env->real_subj) ? 1 : 0;
       tmp->fake_thread = 0; /* real reference */
@@ -541,7 +541,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
       {
 	CUR->parent = tmp;
 	if (CUR->env->real_subj && tmp->env->real_subj)
-	  CUR->subject_changed = strcmp (tmp->env->real_subj, CUR->env->real_subj) ? 1 : 0;
+	  CUR->subject_changed = mutt_strcmp (tmp->env->real_subj, CUR->env->real_subj) ? 1 : 0;
 	else
 	  CUR->subject_changed = (CUR->env->real_subj || tmp->env->real_subj) ? 1 : 0;
       }

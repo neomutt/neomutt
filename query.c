@@ -108,7 +108,7 @@ static QUERY *run_query (char *s, int quiet)
     p = strtok(buf, "\t\n");
     if (p)
     {
-      l = strlen (p);
+      l = mutt_strlen (p);
       if (l > SecondColumn)
 	SecondColumn = l;
 	
@@ -116,7 +116,7 @@ static QUERY *run_query (char *s, int quiet)
       p = strtok(NULL, "\t\n");
       if (p)
       {
-	l = strlen (p);
+	l = mutt_strlen (p);
 	if (l > FirstColumn)
 	  FirstColumn = l;
 	cur->name = safe_strdup (p);
@@ -432,14 +432,14 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 	  {
 	    tagged = 1;
 	    rfc822_write_address (buf, buflen, result_to_addr(QueryTable[i].data));
-	    curpos = strlen (buf);
+	    curpos = mutt_strlen (buf);
 	  }
 	  else if (curpos + 2 < buflen)
 	  {
 	    strcat (buf, ", ");
 	    rfc822_write_address ((char *) buf + curpos + 1, buflen - curpos - 1,
 				  result_to_addr(QueryTable[i].data));
-	    curpos = strlen (buf);
+	    curpos = mutt_strlen (buf);
 	  }
 	}
       }

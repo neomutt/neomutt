@@ -551,7 +551,7 @@ int main (int argc, char **argv)
 
     if (infile)
     {
-      if (strcmp ("-", infile) == 0)
+      if (mutt_strcmp ("-", infile) == 0)
 	fin = stdin;
       else
       {

@@ -485,7 +485,7 @@ void rfc822_qualify (ADDRESS *addr, const char *host)
   for (; addr; addr = addr->next)
     if (!addr->group && addr->mailbox && strchr (addr->mailbox, '@') == NULL)
     {
-      p = safe_malloc (strlen (addr->mailbox) + strlen (host) + 2);
+      p = safe_malloc (mutt_strlen (addr->mailbox) + mutt_strlen (host) + 2);
       sprintf (p, "%s@%s", addr->mailbox, host);
       safe_free ((void **) &addr->mailbox);
       addr->mailbox = p;
@@ -536,7 +536,7 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr)
     if (!buflen)
       goto done;
     strfcpy (pbuf, addr->val, buflen);
-    len = strlen (pbuf);
+    len = mutt_strlen (pbuf);
     pbuf += len;
     buflen -= len;
     if (addr->group)
@@ -583,7 +583,7 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr)
       if (!buflen)
 	goto done;
       strfcpy (pbuf, addr->personal, buflen);
-      len = strlen (pbuf);
+      len = mutt_strlen (pbuf);
       pbuf += len;
       buflen -= len;
     }
@@ -607,7 +607,7 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr)
     if (!buflen)
       goto done;
     strfcpy (pbuf, addr->mailbox, buflen);
-    len = strlen (pbuf);
+    len = mutt_strlen (pbuf);
     pbuf += len;
     buflen -= len;
 
@@ -648,7 +648,7 @@ done:
 void rfc822_write_address (char *buf, size_t buflen, ADDRESS *addr)
 {
   char *pbuf = buf;
-  size_t len = strlen (buf);
+  size_t len = mutt_strlen (buf);
   
   buflen--; /* save room for the terminal nul */
 
@@ -677,7 +677,7 @@ void rfc822_write_address (char *buf, size_t buflen, ADDRESS *addr)
 
     /* this should be safe since we always have at least 1 char passed into
        the above call, which means `pbuf' should always be nul terminated */
-    len = strlen (pbuf);
+    len = mutt_strlen (pbuf);
     pbuf += len;
     buflen -= len;
 

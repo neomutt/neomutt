@@ -170,7 +170,7 @@ static int imap_parse_fetch (IMAP_HEADER_INFO *h, char *s)
     switch (state)
     {
       case 0:
-	if (strncasecmp ("FLAGS", s, 5) == 0)
+	if (mutt_strncasecmp ("FLAGS", s, 5) == 0)
 	{
 	  s += 5;
 	  SKIPWS (s);
@@ -186,7 +186,7 @@ static int imap_parse_fetch (IMAP_HEADER_INFO *h, char *s)
 	  s++;
 	  state = 1;
 	}
-	else if (strncasecmp ("INTERNALDATE", s, 12) == 0)
+	else if (mutt_strncasecmp ("INTERNALDATE", s, 12) == 0)
 	{
 	  s += 12;
 	  SKIPWS (s);
@@ -205,7 +205,7 @@ static int imap_parse_fetch (IMAP_HEADER_INFO *h, char *s)
 	  *ptmp = 0;
 	  h->received = imap_parse_date (tmp);
 	}
-	else if (strncasecmp ("RFC822.SIZE", s, 11) == 0)
+	else if (mutt_strncasecmp ("RFC822.SIZE", s, 11) == 0)
 	{
 	  s += 11;
 	  SKIPWS (s);
@@ -230,22 +230,22 @@ static int imap_parse_fetch (IMAP_HEADER_INFO *h, char *s)
 	  s++;
 	  state = 0;
 	}
-	else if (strncasecmp ("\\deleted", s, 8) == 0)
+	else if (mutt_strncasecmp ("\\deleted", s, 8) == 0)
 	{
 	  s += 8;
 	  h->deleted = 1;
 	}
-	else if (strncasecmp ("\\flagged", s, 8) == 0)
+	else if (mutt_strncasecmp ("\\flagged", s, 8) == 0)
 	{
 	  s += 8;
 	  h->flagged = 1;
 	}
-	else if (strncasecmp ("\\answered", s, 9) == 0)
+	else if (mutt_strncasecmp ("\\answered", s, 9) == 0)
 	{
 	  s += 9;
 	  h->replied = 1;
 	}
-	else if (strncasecmp ("\\seen", s, 5) == 0)
+	else if (mutt_strncasecmp ("\\seen", s, 5) == 0)
 	{
 	  s += 5;
 	  h->read = 1;
@@ -318,7 +318,7 @@ static int imap_code (const char *s)
 {
   s += SEQLEN;
   SKIPWS (s);
-  return (strncasecmp ("OK", s, 2) == 0);
+  return (mutt_strncasecmp ("OK", s, 2) == 0);
 }
 
 static char *imap_next_word (char *s)
@@ -341,7 +341,7 @@ static int imap_handle_untagged (CONTEXT *ctx, char *s)
     pn = s;
     s = imap_next_word (s);
 
-    if (strncasecmp ("EXISTS", s, 6) == 0)
+    if (mutt_strncasecmp ("EXISTS", s, 6) == 0)
     {
       /* new mail arrived */
       count = atoi (pn);
@@ -364,12 +364,12 @@ static int imap_handle_untagged (CONTEXT *ctx, char *s)
 	CTX_DATA->newMailCount = count;
       }
     }
-    else if (strncasecmp ("EXPUNGE", s, 7) == 0)
+    else if (mutt_strncasecmp ("EXPUNGE", s, 7) == 0)
     {
        CTX_DATA->status = IMAP_EXPUNGE;
     }
   }
-  else if (strncasecmp ("BYE", s, 3) == 0)
+  else if (mutt_strncasecmp ("BYE", s, 3) == 0)
   {
     /* server shut down our connection */
     s += 3;
@@ -455,7 +455,7 @@ static int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
 	h->number = atoi (pc);
 	dprint (1, (debugfile, "fetching message %d\n", h->number));
         pc = imap_next_word (pc);
-        if (strncasecmp ("FETCH", pc, 5) == 0)
+        if (mutt_strncasecmp ("FETCH", pc, 5) == 0)
         {
           if (!(pc = strchr (pc, '(')))
           {
@@ -496,7 +496,7 @@ static int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
           return (-1);
       }
     }
-    while ((msgno + 1) >= fetchlast && strncmp (seq, buf, SEQLEN) != 0);
+    while ((msgno + 1) >= fetchlast && mutt_strncmp (seq, buf, SEQLEN) != 0);
 
     h->content_length = -bytes;
     if (imap_parse_fetch (h, fetchbuf) == -1)
@@ -644,14 +644,14 @@ static int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint)
 	*pc++ = 0;
 	n = atoi (pn);
 	SKIPWS (pc);
-	if (strncasecmp ("EXISTS", pc, 6) == 0)
+	if (mutt_strncasecmp ("EXISTS", pc, 6) == 0)
 	  count = n;
       }
       else if (imap_handle_untagged (ctx, buf) != 0)
 	return (-1);
     }
   }
-  while (strncmp (seq, buf, strlen (seq)) != 0);
+  while (mutt_strncmp (seq, buf, mutt_strlen (seq)) != 0);
 
   ctx->hdrmax = count;
   ctx->hdrs = safe_malloc (count * sizeof (HEADER *));
@@ -761,7 +761,7 @@ static int imap_exec (char *buf, size_t buflen,
     if (buf[0] == '*' && imap_handle_untagged (ctx, buf) != 0)
       return (-1);
   }
-  while (strncmp (buf, seq, SEQLEN) != 0);
+  while (mutt_strncmp (buf, seq, SEQLEN) != 0);
 
   if (!ctx->closing && 
       (CTX_DATA->status == IMAP_NEW_MAIL || CTX_DATA->status == IMAP_EXPUNGE))
@@ -877,7 +877,7 @@ static int imap_open_connection (CONTEXT *ctx, CONNECTION *conn)
     return (-1);
   }
 
-  if (strncmp ("* OK", buf, 4) == 0)
+  if (mutt_strncmp ("* OK", buf, 4) == 0)
   {
     int r = 1;
 
@@ -941,7 +941,7 @@ static int imap_open_connection (CONTEXT *ctx, CONNECTION *conn)
       }
     }
   }
-  else if (strncmp ("* PREAUTH", buf, 9) != 0)
+  else if (mutt_strncmp ("* PREAUTH", buf, 9) != 0)
   {
     imap_error ("imap_open_connection()", buf);
     close (conn->fd);
@@ -1006,14 +1006,14 @@ int imap_open_mailbox (CONTEXT *ctx)
 	*pc++ = 0;
 	n = atoi (pn);
 	SKIPWS (pc);
-	if (strncasecmp ("EXISTS", pc, 6) == 0)
+	if (mutt_strncasecmp ("EXISTS", pc, 6) == 0)
 	  count = n;
       }
       else if (imap_handle_untagged (ctx, buf) != 0)
 	return (-1);
     }
   }
-  while (strncmp (seq, buf, strlen (seq)) != 0);
+  while (mutt_strncmp (seq, buf, mutt_strlen (seq)) != 0);
 
   ctx->hdrmax = count;
   ctx->hdrs = safe_malloc (count * sizeof (HEADER *));
@@ -1157,7 +1157,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
       pc = buf;
       pc = imap_next_word (pc);
       pc = imap_next_word (pc);
-      if (strncasecmp ("FETCH", pc, 5) == 0)
+      if (mutt_strncasecmp ("FETCH", pc, 5) == 0)
       {
 	if (!(pc = strchr (buf, '{')))
 	{
@@ -1196,7 +1196,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	return (-1);
     }
   }
-  while (strncmp (buf, seq, SEQLEN) != 0)
+  while (mutt_strncmp (buf, seq, SEQLEN) != 0)
     ;
 
   mutt_clear_error();
@@ -1260,7 +1260,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
       fclose (fp);
     }
   }
-  while ((strncmp (buf, seq, SEQLEN) != 0) && (buf[0] != '+'));
+  while ((mutt_strncmp (buf, seq, SEQLEN) != 0) && (buf[0] != '+'));
 
   if (buf[0] != '+')
   {
@@ -1305,7 +1305,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
     if (buf[0] == '*' && imap_handle_untagged (ctx, buf) != 0)
       return (-1);
   }
-  while (strncmp (buf, seq, SEQLEN) != 0);
+  while (mutt_strncmp (buf, seq, SEQLEN) != 0);
 
   if (!imap_code (buf))
   {
@@ -1341,7 +1341,7 @@ int imap_close_connection (CONTEXT *ctx)
       if (mutt_socket_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
 	break;
     }
-    while (strncmp (seq, buf, SEQLEN) != 0);
+    while (mutt_strncmp (seq, buf, SEQLEN) != 0);
     mutt_clear_error ();
   }
   close (CTX_DATA->conn->fd);
@@ -1522,10 +1522,10 @@ int imap_buffy_check (char *path)
     if (buf[0] == '*') 
     {
       s = imap_next_word (buf);
-      if (strncasecmp ("STATUS", s, 6) == 0)
+      if (mutt_strncasecmp ("STATUS", s, 6) == 0)
       {
 	s = imap_next_word (s);
-	if (strncmp (mbox, s, strlen (mbox)) == 0)
+	if (mutt_strncmp (mbox, s, mutt_strlen (mbox)) == 0)
 	{
 	  s = imap_next_word (s);
 	  s = imap_next_word (s);
@@ -1547,7 +1547,7 @@ int imap_buffy_check (char *path)
       }
     }
   }
-  while ((strncmp (buf, seq, SEQLEN) != 0));
+  while ((mutt_strncmp (buf, seq, SEQLEN) != 0));
 
   conn->uses--;
 

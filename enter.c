@@ -88,7 +88,7 @@ int mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
       if (redraw == M_REDRAW_INIT)
       {
 	/* full redraw */
-	lastchar = curpos = strlen ((char *) buf);
+	lastchar = curpos = mutt_strlen ((char *) buf);
 	begin = lastchar - width;
       }
       if (begin < 0)
@@ -321,7 +321,7 @@ int mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 	  {
 	    buf[curpos] = 0;
 	    for (j = curpos - 1; j >= 0 && buf[j] != ' '; j--);
-	    if (strcmp (tempbuf, (char *) buf) == 0)
+	    if (mutt_strcmp (tempbuf, (char *) buf) == 0)
 	    {
 	      mutt_select_file ((char *) buf + j + 1, buflen - j - 1, 0);
 	      set_option (OPTNEEDREDRAW);
@@ -373,7 +373,7 @@ int mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 	    buf[curpos] = 0;
 
 	    /* see if the path has changed from the last time */
-	    if (strcmp (tempbuf, (char *) buf) == 0)
+	    if (mutt_strcmp (tempbuf, (char *) buf) == 0)
 	    {
 	      mutt_select_file ((char *) buf, buflen, 0);
 	      set_option (OPTNEEDREDRAW);

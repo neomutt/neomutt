@@ -48,8 +48,8 @@ int mutt_complete (char *s)
     if ((p = strrchr (s, '/')))
     {
       *p++ = 0;
-      sprintf (exp_dirpart + strlen (exp_dirpart), "/%s", s+1);
-      sprintf (dirpart + strlen (dirpart), "%s/", s+1);
+      sprintf (exp_dirpart + mutt_strlen (exp_dirpart), "/%s", s+1);
+      sprintf (dirpart + mutt_strlen (dirpart), "%s/", s+1);
       strfcpy (filepart, p, sizeof (filepart));
     }
     else
@@ -100,11 +100,11 @@ int mutt_complete (char *s)
    * special case to handle when there is no filepart yet.  find the first
    * file/directory which is not ``.'' or ``..''
    */
-  if ((len = strlen (filepart)) == 0)
+  if ((len = mutt_strlen (filepart)) == 0)
   {
     while ((de = readdir (dirp)) != NULL)
     {
-      if (strcmp (".", de->d_name) != 0 && strcmp ("..", de->d_name) != 0)
+      if (mutt_strcmp (".", de->d_name) != 0 && mutt_strcmp ("..", de->d_name) != 0)
       {
 	strfcpy (filepart, de->d_name, sizeof (filepart));
 	init++;
@@ -115,7 +115,7 @@ int mutt_complete (char *s)
 
   while ((de = readdir (dirp)) != NULL)
   {
-    if (strncmp (de->d_name, filepart, len) == 0)
+    if (mutt_strncmp (de->d_name, filepart, len) == 0)
     {
       if (init)
       {
@@ -156,7 +156,7 @@ int mutt_complete (char *s)
   if (dirpart[0])
   {
     strcpy (s, dirpart);
-    if (strcmp ("/", dirpart) != 0 && dirpart[0] != '=' && dirpart[0] != '+')
+    if (mutt_strcmp ("/", dirpart) != 0 && dirpart[0] != '=' && dirpart[0] != '+')
       strcat (s, "/");
     strcat (s, filepart);
   }

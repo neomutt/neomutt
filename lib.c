@@ -164,7 +164,7 @@ int mutt_matches_ignore (const char *s, LIST *t)
 {
   for (; t; t = t->next)
   {
-    if (!strncasecmp (s, t->data, strlen (t->data)) || *t->data == '*')
+    if (!mutt_strncasecmp (s, t->data, mutt_strlen (t->data)) || *t->data == '*')
       return 1;
   }
   return 0;
@@ -343,7 +343,7 @@ char *safe_strdup (const char *s)
   size_t l;
 
   if (!s || !*s) return 0;
-  l = strlen (s) + 1;
+  l = mutt_strlen (s) + 1;
   p = (char *)safe_malloc (l);
   memcpy (p, s, l);
   return (p);
@@ -379,7 +379,7 @@ int mutt_copy_bytes (FILE *in, FILE *out, size_t size)
 char *mutt_get_parameter (const char *s, PARAMETER *p)
 {
   for (; p; p = p->next)
-    if (strcasecmp (s, p->attribute) == 0)
+    if (mutt_strcasecmp (s, p->attribute) == 0)
       return (p->value);
 
   return NULL;
@@ -392,9 +392,9 @@ int mutt_needs_mailcap (BODY *m)
   {
     case TYPETEXT:
 
-      if (!strcasecmp ("plain", m->subtype) ||
-	  !strcasecmp ("rfc822-headers", m->subtype) ||
-	  !strcasecmp ("enriched", m->subtype))
+      if (!mutt_strcasecmp ("plain", m->subtype) ||
+	  !mutt_strcasecmp ("rfc822-headers", m->subtype) ||
+	  !mutt_strcasecmp ("enriched", m->subtype))
 	return 0;
       break;
 
@@ -424,7 +424,7 @@ int mutt_is_text_type (int t, char *s)
 
   if (t == TYPEMESSAGE)
   {
-    if (!strcasecmp ("delivery-status", s))
+    if (!mutt_strcasecmp ("delivery-status", s))
       return 1;
   }
 
@@ -433,7 +433,7 @@ int mutt_is_text_type (int t, char *s)
 #ifdef _PGPPATH
   if (t == TYPEAPPLICATION)
   {
-    if (!strcasecmp ("pgp-keys", s))
+    if (!mutt_strcasecmp ("pgp-keys", s))
       return 1;
   }
 #endif /* _PGPPATH */
@@ -492,20 +492,6 @@ char *mutt_strlower (char *s)
   return (s);
 }
 
-/* strcmp() allowing NULL pointers */
-int mutt_strcmp (const char *s1, const char *s2)
-{
-  if (s1 != NULL)
-  {
-    if (s2 != NULL)
-      return strcmp (s1, s2);
-    else
-      return (1);
-  }
-  else
-    return ((s2 == NULL) ? 0 : -1);
-}
-
 void mutt_free_alias (ALIAS **p)
 {
   ALIAS *t;
@@ -544,12 +530,12 @@ void mutt_pretty_mailbox (char *s)
   }
   *q = 0;
 
-  if (strncmp (s, NONULL (Maildir), (len = strlen (NONULL (Maildir)))) == 0 && s[len] == '/')
+  if (mutt_strncmp (s, Maildir, (len = mutt_strlen (Maildir))) == 0 && s[len] == '/')
   {
     *s++ = '=';
     strcpy (s, s + len);
   }
-  else if (strncmp (s, NONULL(Homedir), (len = strlen (NONULL(Homedir)))) == 0 &&
+  else if (mutt_strncmp (s, Homedir, (len = mutt_strlen (Homedir))) == 0 &&
 	   s[len] == '/')
   {
     *s++ = '~';
@@ -609,7 +595,7 @@ void mutt_expand_fmt (char *dest, size_t destlen, const char *fmt, const char *s
   size_t slen;
   int found = 0;
 
-  slen = strlen (src);
+  slen = mutt_strlen (src);
   
   while ((p = strchr (p, '%')) != NULL)
   {
@@ -778,7 +764,7 @@ void mutt_remove_trailing_ws (char *s)
 {
   char *p;
 
-  for (p = s + strlen (s) - 1 ; p >= s && ISSPACE (*p) ; p--)
+  for (p = s + mutt_strlen (s) - 1 ; p >= s && ISSPACE (*p) ; p--)
     *p = 0;
 }
 
@@ -1011,7 +997,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	{
 	  count -= wlen; /* how many chars left on this line */
 	  mutt_FormatString (buf, sizeof (buf), src, callback, data, flags);
-	  len = strlen (buf);
+	  len = mutt_strlen (buf);
 	  if (count > len)
 	  {
 	    count -= len; /* how many chars to pad */
@@ -1046,7 +1032,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	/* use callback function to handle this case */
 	src = callback (buf, sizeof (buf), ch, src, prefix, ifstring, elsestring, data, flags);
 
-	if ((len = strlen (buf)) + wlen > destlen)
+	if ((len = mutt_strlen (buf)) + wlen > destlen)
 	  len = (destlen - wlen > 0) ? (destlen - wlen) : 0;
 	memcpy (wptr, buf, len);
 	wptr += len;
@@ -1107,7 +1093,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 FILE *mutt_open_read (const char *path, pid_t *thepid)
 {
   FILE *f;
-  int len = strlen (path);
+  int len = mutt_strlen (path);
 
   if (path[len - 1] == '|')
   {
@@ -1236,4 +1222,31 @@ void state_prefix_putc(char c, STATE *s)
 
   if(c == '\n')
     state_set_prefix(s);
+}
+
+/* NULL-pointer aware string comparison functions */
+
+int mutt_strcmp(const char *a, const char *b)
+{
+  return strcmp(NONULL(a), NONULL(b));
+}
+
+int mutt_strcasecmp(const char *a, const char *b)
+{
+  return strcasecmp(NONULL(a), NONULL(b));
+}
+
+int mutt_strncmp(const char *a, const char *b, size_t l)
+{
+  return strncmp(NONULL(a), NONULL(b), l);
+}
+
+int mutt_strncasecmp(const char *a, const char *b, size_t l)
+{
+  return strncasecmp(NONULL(a), NONULL(b), l);
+}
+
+size_t mutt_strlen(const char *a)
+{
+  return strlen(NONULL(a));
 }

@@ -163,12 +163,12 @@ struct pgp_vinfo *pgp_get_vinfo(enum pgp_ops op)
     }
   }
   
-  if (!strcasecmp(version, "default"))
+  if (!mutt_strcasecmp(version, "default"))
     version = PgpDefaultVersion;
   
   for(i = 0; pgp_vinfo[i].name; i++)
   {
-    if(!strcasecmp(pgp_vinfo[i].name, version))
+    if(!mutt_strcasecmp(pgp_vinfo[i].name, version))
       return &pgp_vinfo[i];
   }
 
@@ -209,7 +209,7 @@ static void pgp_current_time (STATE *s)
 
   t = time (NULL);
   strfcpy (p, asctime (localtime (&t)), sizeof (p));
-  p[strlen (p) - 1] = 0; /* kill the newline */
+  p[mutt_strlen (p) - 1] = 0; /* kill the newline */
   state_puts (p, s);
 
   state_puts (") --]\n", s);
@@ -243,23 +243,23 @@ void application_pgp_handler (BODY *m, STATE *s)
     if (fgets (buf, sizeof (buf) - 1, s->fpin) == NULL)
       break;
     offset = ftell (s->fpin);
-    bytes -= (offset - last_pos); /* don't rely on strlen(buf) */
+    bytes -= (offset - last_pos); /* don't rely on mutt_strlen(buf) */
     last_pos = offset;
 
-    if (strncmp ("-----BEGIN PGP ", buf, 15) == 0)
+    if (mutt_strncmp ("-----BEGIN PGP ", buf, 15) == 0)
     {
       clearsign = 0;
       start_pos = last_pos;
 
-      if (strcmp ("MESSAGE-----\n", buf + 15) == 0)
+      if (mutt_strcmp ("MESSAGE-----\n", buf + 15) == 0)
         needpass = 1;
-      else if (strcmp ("SIGNED MESSAGE-----\n", buf + 15) == 0)
+      else if (mutt_strcmp ("SIGNED MESSAGE-----\n", buf + 15) == 0)
       {
 	clearsign = 1;
         needpass = 0;
       }
       else if (!option(OPTDONTHANDLEPGPKEYS) &&
-	       strcmp ("PUBLIC KEY BLOCK-----\n", buf + 15) == 0) 
+	       mutt_strcmp ("PUBLIC KEY BLOCK-----\n", buf + 15) == 0) 
       {
         needpass = 0;
         pgp_keyblock =1;
@@ -296,14 +296,14 @@ void application_pgp_handler (BODY *m, STATE *s)
 	while (bytes > 0 && fgets (buf, sizeof (buf) - 1, s->fpin) != NULL)
 	{
 	  offset = ftell (s->fpin);
-	  bytes -= (offset - last_pos); /* don't rely on strlen(buf) */
+	  bytes -= (offset - last_pos); /* don't rely on mutt_strlen(buf) */
 	  last_pos = offset;
 	  
 	  fputs (buf, tmpfp);
-	  if ((needpass && strcmp ("-----END PGP MESSAGE-----\n", buf) == 0) ||
+	  if ((needpass && mutt_strcmp ("-----END PGP MESSAGE-----\n", buf) == 0) ||
 	      (!needpass 
-             && (strcmp ("-----END PGP SIGNATURE-----\n", buf) == 0
-                 || strcmp ("-----END PGP PUBLIC KEY BLOCK-----\n",buf) == 0)))
+             && (mutt_strcmp ("-----END PGP SIGNATURE-----\n", buf) == 0
+                 || mutt_strcmp ("-----END PGP PUBLIC KEY BLOCK-----\n",buf) == 0)))
 	    break;
 	}
 
@@ -410,7 +410,7 @@ void application_pgp_handler (BODY *m, STATE *s)
 
 	  if(complete)
 	  {
-	    if (!strcmp(buf, "-----BEGIN PGP SIGNATURE-----\n"))
+	    if (!mutt_strcmp(buf, "-----BEGIN PGP SIGNATURE-----\n"))
 	      break;
 	    
 	    if(armor_header)
@@ -438,7 +438,7 @@ void application_pgp_handler (BODY *m, STATE *s)
 	  complete = strchr(buf, '\n') != NULL;
 	}
 	
-	if (complete && !strcmp(buf, "-----BEGIN PGP SIGNATURE-----\n"))
+	if (complete && !mutt_strcmp(buf, "-----BEGIN PGP SIGNATURE-----\n"))
 	{
 	  while(bytes > 0 && fgets(buf, sizeof(buf) - 1, s->fpin) != NULL)
 	  {
@@ -446,7 +446,7 @@ void application_pgp_handler (BODY *m, STATE *s)
 	    bytes -= (offset - last_pos);
 	    last_pos = offset;
 	    
-	    if(complete && !strcmp(buf, "-----END PGP SIGNATURE-----\n"))
+	    if(complete && !mutt_strcmp(buf, "-----END PGP SIGNATURE-----\n"))
 	      break;
 	    
 	    complete = strchr(buf, '\n') != NULL;
@@ -485,9 +485,9 @@ int mutt_is_multipart_signed(BODY *b)
   char *p;
   
   if(!b || b->type != TYPEMULTIPART ||
-     !b->subtype || strcasecmp(b->subtype, "signed") ||
+     !b->subtype || mutt_strcasecmp(b->subtype, "signed") ||
      !(p = mutt_get_parameter("protocol", b->parameter)) ||
-     strcasecmp(p, "application/pgp-signature"))
+     mutt_strcasecmp(p, "application/pgp-signature"))
     return 0;
 
   return PGPSIGN;
@@ -499,9 +499,9 @@ int mutt_is_multipart_encrypted(BODY *b)
   char *p;
   
   if(!b || b->type != TYPEMULTIPART ||
-     !b->subtype || strcasecmp(b->subtype, "encrypted") ||
+     !b->subtype || mutt_strcasecmp(b->subtype, "encrypted") ||
      !(p = mutt_get_parameter("protocol", b->parameter)) ||
-     strcasecmp(p, "application/pgp-encrypted")) 
+     mutt_strcasecmp(p, "application/pgp-encrypted")) 
     return 0;
   
   return PGPENCRYPT;
@@ -514,26 +514,26 @@ int mutt_is_application_pgp(BODY *m)
   
   if (m->type == TYPEAPPLICATION)
   {
-    if (!strcasecmp (m->subtype, "pgp") || !strcasecmp (m->subtype, "x-pgp-message"))
+    if (!mutt_strcasecmp (m->subtype, "pgp") || !mutt_strcasecmp (m->subtype, "x-pgp-message"))
     {
       if ((p = mutt_get_parameter ("x-action", m->parameter))
-	  && (!strcasecmp (p, "sign") || !strcasecmp (p, "signclear")))
+	  && (!mutt_strcasecmp (p, "sign") || !mutt_strcasecmp (p, "signclear")))
 	t |= PGPSIGN;
       else if((p = mutt_get_parameter ("format", m->parameter))
-	      && !strcasecmp(p, "keys-only"))
+	      && !mutt_strcasecmp(p, "keys-only"))
 	t |= PGPKEY;
 
       if ((p = mutt_get_parameter ("format", m->parameter)) && 
-	  !strcasecmp (p, "keys-only"))
+	  !mutt_strcasecmp (p, "keys-only"))
 	t |= PGPKEY;
 
       if(!t) t |= PGPENCRYPT;  /* not necessarily correct, but... */
     }
 
-    if (!strcasecmp (m->subtype, "pgp-signed"))
+    if (!mutt_strcasecmp (m->subtype, "pgp-signed"))
       t |= PGPSIGN;
 
-    if (!strcasecmp (m->subtype, "pgp-keys"))
+    if (!mutt_strcasecmp (m->subtype, "pgp-keys"))
       t |= PGPKEY;
   }
   return t;
@@ -588,7 +588,7 @@ void pgp_signed_handler (BODY *a, STATE *s)
    * multipart/signed body.
    */
   if (a && a->next && a->next->type == TYPEAPPLICATION && a->next->subtype &&
-      strcasecmp (a->next->subtype, "pgp-signature") == 0)
+      mutt_strcasecmp (a->next->subtype, "pgp-signature") == 0)
   {
     if (s->flags & M_DISPLAY)
     {
@@ -877,7 +877,7 @@ BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout)
    */
   while (fgets (buf, sizeof (buf) - 1, pgpout) != NULL)
   {
-    len = strlen (buf);
+    len = mutt_strlen (buf);
     if (len > 1 && buf[len - 2] == '\r')
       strcpy (buf + len - 2, "\n");
     fputs (buf, fpout);
@@ -911,7 +911,7 @@ BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout)
     if (tattach->type == TYPEMULTIPART)
     {
       fseek (fpout, tattach->offset, 0);
-      tattach->parts = mutt_parse_multipart (fpout, mutt_get_parameter ("boundary", tattach->parameter), tattach->offset + tattach->length, strcasecmp ("digest", tattach->subtype) == 0);
+      tattach->parts = mutt_parse_multipart (fpout, mutt_get_parameter ("boundary", tattach->parameter), tattach->offset + tattach->length, mutt_strcasecmp ("digest", tattach->subtype) == 0);
     }
     else if (tattach->type == TYPEMESSAGE)
     {
@@ -960,9 +960,9 @@ void pgp_encrypted_handler (BODY *a, STATE *s)
 
   a = a->parts;
   if (!a || a->type != TYPEAPPLICATION || !a->subtype || 
-      strcasecmp ("pgp-encrypted", a->subtype) != 0 ||
+      mutt_strcasecmp ("pgp-encrypted", a->subtype) != 0 ||
       !a->next || a->next->type != TYPEAPPLICATION || !a->next->subtype ||
-      strcasecmp ("octet-stream", a->next->subtype) != 0)
+      mutt_strcasecmp ("octet-stream", a->next->subtype) != 0)
   {
     if (s->flags & M_DISPLAY)
       state_puts (_("[-- Error: malformed PGP/MIME message! --]\n\n"), s);
@@ -1023,7 +1023,7 @@ static void convert_to_7bit (BODY *a)
 	convert_to_7bit (a->parts);
     } 
     else if (a->type == TYPEMESSAGE
-	     && strcasecmp(a->subtype, "delivery-status"))
+	     && mutt_strcasecmp(a->subtype, "delivery-status"))
     {
       if(a->encoding != ENC7BIT)
 	mutt_message_to_7bit(a, NULL);
@@ -1095,9 +1095,9 @@ static BODY *pgp_sign_message (BODY *a)
    */
   while (fgets (buffer, sizeof (buffer) - 1, pgpout) != NULL)
   {
-    if (strcmp ("-----BEGIN PGP MESSAGE-----\n", buffer) == 0)
+    if (mutt_strcmp ("-----BEGIN PGP MESSAGE-----\n", buffer) == 0)
       fputs ("-----BEGIN PGP SIGNATURE-----\n", fp);
-    else if (strcmp("-----END PGP MESSAGE-----\n", buffer) == 0)
+    else if (mutt_strcmp("-----END PGP MESSAGE-----\n", buffer) == 0)
       fputs ("-----END PGP SIGNATURE-----\n", fp);
     else
       fputs (buffer, fp);
@@ -1232,11 +1232,11 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
     else
       key = pgp_keyid(k_info);
 
-    keylist_size += strlen (key) + 4;
+    keylist_size += mutt_strlen (key) + 4;
     safe_realloc ((void **)&keylist, keylist_size);
     sprintf (keylist + keylist_used, "%s0x%s", keylist_used ? " " : "",
 	     key);
-    keylist_used = strlen (keylist);
+    keylist_used = mutt_strlen (keylist);
   }
   rfc822_free_address (&tmp);
   pgp_close_keydb (&db);

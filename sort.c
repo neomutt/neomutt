@@ -79,7 +79,7 @@ int compare_subject (const void *a, const void *b)
   else if (!(*pb)->env->real_subj)
     rc = 1;
   else
-    rc = strcasecmp ((*pa)->env->real_subj, (*pb)->env->real_subj);
+    rc = mutt_strcasecmp ((*pa)->env->real_subj, (*pb)->env->real_subj);
   AUXSORT(rc,a,b);
   return (SORTCODE (rc));
 }
@@ -110,7 +110,7 @@ int compare_to (const void *a, const void *b)
 
   fa = mutt_get_name ((*ppa)->env->to);
   fb = mutt_get_name ((*ppb)->env->to);
-  result = strcasecmp (fa, fb);
+  result = mutt_strcasecmp (fa, fb);
   AUXSORT(result,a,b);
   return (SORTCODE (result));
 }
@@ -124,7 +124,7 @@ int compare_from (const void *a, const void *b)
 
   fa = mutt_get_name ((*ppa)->env->from);
   fb = mutt_get_name ((*ppb)->env->from);
-  result = strcasecmp (fa, fb);
+  result = mutt_strcasecmp (fa, fb);
   AUXSORT(result,a,b);
   return (SORTCODE (result));
 }

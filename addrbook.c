@@ -93,7 +93,7 @@ static int alias_SortAlias (const void *a, const void *b)
 {
   ALIAS *pa = *(ALIAS **) a;
   ALIAS *pb = *(ALIAS **) b;
-  int r = strcasecmp (pa->name, pb->name);
+  int r = mutt_strcasecmp (pa->name, pb->name);
 
   return (RSORT (r));
 }
@@ -107,14 +107,14 @@ static int alias_SortAddress (const void *a, const void *b)
   if (pa->personal)
   { 
     if (pb->personal)
-      r = strcasecmp (pa->personal, pb->personal);
+      r = mutt_strcasecmp (pa->personal, pb->personal);
     else
       r = 1;
   }
   else if (pb->personal)
     r = -1;
   else
-    r = strcasecmp (pa->mailbox, pb->mailbox);
+    r = mutt_strcasecmp (pa->mailbox, pb->mailbox);
   return (RSORT (r));
 }
 

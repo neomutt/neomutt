@@ -114,14 +114,14 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   {
     if (ptr->type == data &&
 	ptr->rx.not == not &&
-	!strcmp (pattern.data, ptr->rx.pattern))
+	!mutt_strcmp (pattern.data, ptr->rx.pattern))
     {
       if (data & (M_FOLDERHOOK | M_SENDHOOK))
       {
 	/* folder-hook and send-hook allow multiple commands with the same
 	   pattern, so if we've already seen this pattern/command pair, just
 	   ignore it instead of creating a duplicate */
-	if (!strcmp (ptr->command, command.data))
+	if (!mutt_strcmp (ptr->command, command.data))
 	{
 	  FREE (&command.data);
 	  FREE (&pattern.data);

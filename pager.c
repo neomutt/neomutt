@@ -407,7 +407,7 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
     {
       /* case 1: check the top level nodes */
 
-      if (strncmp (qptr, q_list->prefix, length) == 0)
+      if (mutt_strncmp (qptr, q_list->prefix, length) == 0)
       {
 	if (length == q_list->length)
 	  return q_list;	/* same prefix: return the current class */
@@ -501,7 +501,7 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
       /* case 2: try subclassing the current top level node */
       
       /* tmp != NULL means we already found a shorter prefix at case 1 */
-      if (tmp == NULL && strncmp (qptr, q_list->prefix, q_list->length) == 0)
+      if (tmp == NULL && mutt_strncmp (qptr, q_list->prefix, q_list->length) == 0)
       {
 	/* ok, it's a subclass somewhere on this branch */
 
@@ -516,7 +516,7 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 	{
 	  if (length <= q_list->length)
 	  {
-	    if (strncmp (tail_qptr, (q_list->prefix) + offset, tail_lng) == 0)
+	    if (mutt_strncmp (tail_qptr, (q_list->prefix) + offset, tail_lng) == 0)
 	    {
 	      /* same prefix: return the current class */
 	      if (length == q_list->length)
@@ -604,7 +604,7 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 	  else
 	  {
 	    /* longer than the current prefix: try subclassing it */
-	    if (tmp == NULL && strncmp (tail_qptr, (q_list->prefix) + offset,
+	    if (tmp == NULL && mutt_strncmp (tail_qptr, (q_list->prefix) + offset,
 			  q_list->length - offset) == 0)
 	    {
 	      /* still a subclass: go down one level */
@@ -720,9 +720,9 @@ resolve_types (char *buf, struct line_t *lineInfo, int n, int last,
       }
     }
   }
-  else if (strncmp ("[-- ", buf, 4) == 0)
+  else if (mutt_strncmp ("[-- ", buf, 4) == 0)
     lineInfo[n].type = MT_COLOR_ATTACHMENT;
-  else if (strcmp ("-- \n", buf) == 0 || strcmp ("-- \r\n", buf) == 0)
+  else if (mutt_strcmp ("-- \n", buf) == 0 || mutt_strcmp ("-- \r\n", buf) == 0)
   {
     i = n + 1;
 

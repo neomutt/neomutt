@@ -131,7 +131,7 @@ void mutt_fetchPopMail (void)
   if (getLine (s, buffer, sizeof (buffer)) == -1)
     goto fail;
 
-  if (strncmp (buffer, "+OK", 3) != 0)
+  if (mutt_strncmp (buffer, "+OK", 3) != 0)
   {
     mutt_remove_trailing_ws (buffer);
     mutt_error (buffer);
@@ -139,12 +139,12 @@ void mutt_fetchPopMail (void)
   }
 
   snprintf (buffer, sizeof(buffer), "user %s\r\n", PopUser);
-  write (s, buffer, strlen (buffer));
+  write (s, buffer, mutt_strlen (buffer));
 
   if (getLine (s, buffer, sizeof (buffer)) == -1)
     goto fail;
 
-  if (strncmp (buffer, "+OK", 3) != 0)
+  if (mutt_strncmp (buffer, "+OK", 3) != 0)
   {
     mutt_remove_trailing_ws (buffer);
     mutt_error (buffer);
@@ -152,15 +152,15 @@ void mutt_fetchPopMail (void)
   }
   
   snprintf (buffer, sizeof(buffer), "pass %s\r\n", NONULL(PopPass));
-  write (s, buffer, strlen (buffer));
+  write (s, buffer, mutt_strlen (buffer));
   
   if (getLine (s, buffer, sizeof (buffer)) == -1)
     goto fail;
 
-  if (strncmp (buffer, "+OK", 3) != 0)
+  if (mutt_strncmp (buffer, "+OK", 3) != 0)
   {
     if(PopPass)
-      memset(PopPass, 0, strlen(PopPass));
+      memset(PopPass, 0, mutt_strlen(PopPass));
     
     safe_free((void **) &PopPass); /* void the given password */
     mutt_remove_trailing_ws (buffer);
@@ -174,7 +174,7 @@ void mutt_fetchPopMail (void)
   if (getLine (s, buffer, sizeof (buffer)) == -1)
     goto fail;
 
-  if (strncmp (buffer, "+OK", 3) != 0)
+  if (mutt_strncmp (buffer, "+OK", 3) != 0)
   {
     mutt_remove_trailing_ws (buffer);
     mutt_error (buffer);
@@ -199,7 +199,7 @@ void mutt_fetchPopMail (void)
     if (getLine (s, buffer, sizeof (buffer)) == -1)
       goto fail;
     
-    if (strncmp (buffer, "+OK", 3) == 0)
+    if (mutt_strncmp (buffer, "+OK", 3) == 0)
       sscanf (buffer, "+OK %d", &last);
     else
       /* ignore an error here and assume all messages are new */
@@ -214,7 +214,7 @@ void mutt_fetchPopMail (void)
   for (i = last + 1 ; i <= msgs ; i++)
   {
     snprintf (buffer, sizeof(buffer), "retr %d\r\n", i);
-    write (s, buffer, strlen (buffer));
+    write (s, buffer, mutt_strlen (buffer));
 
     if (getLine (s, buffer, sizeof (buffer)) == -1)
     {
@@ -222,7 +222,7 @@ void mutt_fetchPopMail (void)
       goto fail;
     }
 
-    if (strncmp (buffer, "+OK", 3) != 0)
+    if (mutt_strncmp (buffer, "+OK", 3) != 0)
     {
       mutt_remove_trailing_ws (buffer);
       mutt_error (buffer);
@@ -251,7 +251,7 @@ void mutt_fetchPopMail (void)
       /* check to see if we got a full line */
       if (buffer[chunk-2] == '\r' && buffer[chunk-1] == '\n')
       {
-	if (strcmp(".\r\n", buffer) == 0)
+	if (mutt_strcmp(".\r\n", buffer) == 0)
 	{
 	  /* end of message */
 	  break;
@@ -290,11 +290,11 @@ void mutt_fetchPopMail (void)
     {
       /* delete the message on the server */
       snprintf (buffer, sizeof(buffer), "dele %d\r\n", i);
-      write (s, buffer, strlen (buffer));
+      write (s, buffer, mutt_strlen (buffer));
 
       /* eat the server response */
       getLine (s, buffer, sizeof (buffer));
-      if (strncmp (buffer, "+OK", 3) != 0)
+      if (mutt_strncmp (buffer, "+OK", 3) != 0)
       {
 	err = 1;
         mutt_remove_trailing_ws (buffer);
