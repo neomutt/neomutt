@@ -933,9 +933,9 @@ int maildir_open_new_message (MESSAGE * msg, CONTEXT * dest, HEADER * hdr)
 
   FOREVER
   {
-    snprintf (path, _POSIX_PATH_MAX, "%s/tmp/%s.%ld.%d_%d.%s%s",
-	      dest->path, subdir, time (NULL), getpid (), Counter++,
-	      NONULL (Hostname), suffix);
+    snprintf (path, _POSIX_PATH_MAX, "%s/tmp/%s.%ld.%u_%d.%s%s",
+	      dest->path, subdir, time (NULL), (unsigned int)getpid (),
+	      Counter++, NONULL (Hostname), suffix);
 
     dprint (2, (debugfile, "maildir_open_new_message (): Trying %s.\n",
 		path));
@@ -1014,8 +1014,9 @@ int maildir_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr)
   /* construct a new file name. */
   FOREVER
   {
-    snprintf (path, _POSIX_PATH_MAX, "%s/%ld.%d_%d.%s%s", subdir,
-	      time (NULL), getpid (), Counter++, NONULL (Hostname), suffix);
+    snprintf (path, _POSIX_PATH_MAX, "%s/%ld.%u_%d.%s%s", subdir,
+	      time (NULL), (unsigned int)getpid (), Counter++, 
+	      NONULL (Hostname), suffix);
     snprintf (full, _POSIX_PATH_MAX, "%s/%s", ctx->path, path);
 
     dprint (2, (debugfile, "maildir_commit_message (): renaming %s to %s.\n",

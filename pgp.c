@@ -244,7 +244,9 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 
   char body_charset[STRING];
   mutt_get_body_charset (body_charset, sizeof (body_charset), m);
-  
+
+  rc = 0;	/* silence false compiler warning if (s->flags & M_DISPLAY) */
+
   fseek (s->fpin, m->offset, 0);
   last_pos = m->offset;
   
