@@ -211,8 +211,6 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
 	  k->numalg = atoi (p);
 	  k->algorithm = pgp_pkalgbytype (atoi (p));
 	}
-
-	k->flags |= pgp_get_abilities (atoi (p));
 	break;
       }
       case 5:			/* 16 hex digits with the long keyid. */
@@ -285,13 +283,20 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
 	
 	while(*p)
 	  {
-	    if(*p=='D')
+	    switch(*p++)
 	      {
+	      case 'D':
 		flags |= KEYFLAG_DISABLED;
 		break;
-	      }
 
-	    p++;
+	      case 'e':
+		flags |= KEYFLAG_CANENCRYPT;
+		break;
+
+	      case 's':
+		flags |= KEYFLAG_CANSIGN;
+		break;
+	      }
 	  }
 
         if (!is_uid && !(*is_subkey && option (OPTPGPIGNORESUB)))

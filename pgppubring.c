@@ -926,6 +926,11 @@ static void pgpring_dump_keyblock (pgp_key_t p)
 	
 	print_userid (uid->addr);
 	printf ("::");
+
+	if(pgp_canencrypt(p->numalg))
+	  putchar ('e');
+	if(pgp_cansign(p->numalg))
+	  putchar ('s');
 	if (p->flags & KEYFLAG_DISABLED)
 	  putchar ('D');
 	printf (":\n");
