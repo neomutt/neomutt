@@ -945,7 +945,9 @@ BODY *pgp_sign_message (BODY *a)
     fputs (buffer, stdout);
   }
 
-  mutt_wait_filter (thepid);
+  if(mutt_wait_filter (thepid) && option(OPTPGPCHECKEXIT))
+    empty=1;
+
   fclose (pgperr);
   fclose (pgpout);
   unlink (signedfile);
@@ -1128,7 +1130,7 @@ BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
   FILE *pgpin, *pgperr, *fpout, *fptmp;
   BODY *t;
   int err = 0;
-  int empty;
+  int empty = 0;
   pid_t thepid;
   
   mutt_mktemp (tempfile);
@@ -1183,12 +1185,15 @@ BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
   }
   fclose(pgpin);
   
-  mutt_wait_filter (thepid);
+  if(mutt_wait_filter (thepid) && option(OPTPGPCHECKEXIT))
+    empty=1;
+
   unlink(pgpinfile);
   
   fflush (fpout);
   rewind (fpout);
-  empty = (fgetc (fpout) == EOF);
+  if(!empty)
+    empty = (fgetc (fpout) == EOF);
   fclose (fpout);
 
   fflush (pgperr);
@@ -1254,7 +1259,7 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
   FILE *pgpout = NULL, *pgperr = NULL, *pgpin = NULL;
   FILE *fp;
 
-  int empty;
+  int empty = 0;
   int err;
 
   char buff[STRING];
@@ -1351,7 +1356,8 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
     fprintf (pgpin, "%s\n", PgpPass);
   fclose (pgpin);
 
-  mutt_wait_filter (thepid);
+  if(mutt_wait_filter (thepid) && option(OPTPGPCHECKEXIT))
+    empty=1;
 
   mutt_unlink (pgpinfile);
 
@@ -1361,7 +1367,8 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
   rewind (pgpout);
   rewind (pgperr);
   
-  empty = (fgetc (pgpout) == EOF);
+  if(!empty)
+    empty = (fgetc (pgpout) == EOF);
   fclose (pgpout);
   
   err = 0;

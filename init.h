@@ -1335,6 +1335,14 @@ struct option_t MuttVars[] = {
   ** even for bad signatures.
   ** (PGP only)
   */ 
+  { "pgp_check_exit",	DT_BOOL, R_NONE, OPTPGPCHECKEXIT, 1 },
+  /*
+  ** .pp
+  ** If set, mutt will check the exit code of the PGP subprocess when
+  ** signing or encrypting.  A non-zero exit code means that the
+  ** subprocess failed.
+  ** (PGP only)
+  */
   { "pgp_long_ids",	DT_BOOL, R_NONE, OPTPGPLONGIDS, 0 },
   /*
   ** .pp
