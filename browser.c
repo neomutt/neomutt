@@ -172,7 +172,7 @@ folder_format_str (char *dest, size_t destlen, char op, const char *src,
       }
       break;
     case 'f':
-      strncpy (fn, folder->name, sizeof(fn) - 1);
+      strfcpy (fn, folder->name, sizeof(fn));
       if (folder->f != NULL)
       {
 	strcat (fn, S_ISLNK (folder->f->st_mode) ? "@" : 
