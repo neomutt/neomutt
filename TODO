@@ -4,6 +4,10 @@ Problems are listed in approximate order of priority.
 - character set support: We should have a global cache of
   character to file name mappings.
 
+- When displaying MIME headers, rfc 2047 decoding is applied (which
+  should not happen), and rfc 2231 decoding is not applied (which
+  should happen).
+
 - Help formatting could be revamped a bit.
 
 - re-add support for .mh_sequences files
@@ -52,4 +56,5 @@ Problems are listed in approximate order of priority.
 - handle message/external-body in some fashion
 
 - handle message/partial reconstruction
+
 $Id$

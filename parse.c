@@ -21,7 +21,7 @@
 #include "mailbox.h"
 #include "mime.h"
 #include "rfc2047.h"
-
+#include "rfc2231.h"
 
 
 #ifdef _PGPPATH
@@ -138,11 +138,14 @@ static PARAMETER *parse_parameters (const char *s)
   const char *p;
   size_t i;
 
+  dprint (2, (debugfile, "parse_parameters: `%s'\n", s));
+  
   while (*s)
   {
     if ((p = strpbrk (s, "=;")) == NULL)
     {
       dprint(1, (debugfile, "parse_parameters: malformed parameter: %s\n", s));
+      rfc2231_decode_parameters (&head);
       return (head); /* just bail out now */
     }
 
@@ -192,6 +195,8 @@ static PARAMETER *parse_parameters (const char *s)
 
       new->value = safe_strdup (buffer);
 
+      dprint (2, (debugfile, "parse_parameter: `%s' = `%s'\n", new->attribute, new->value));
+      
       /* Add this parameter to the list */
       if (head)
       {
@@ -221,6 +226,7 @@ static PARAMETER *parse_parameters (const char *s)
     while (*s == ';'); /* skip empty parameters */
   }    
 
+  rfc2231_decode_parameters (&head);
   return (head);
 }
 

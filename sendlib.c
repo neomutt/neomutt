@@ -19,6 +19,7 @@
 #include "mutt.h"
 #include "mutt_curses.h"
 #include "rfc2047.h"
+#include "rfc2231.h"
 #include "mx.h"
 #include "mime.h"
 #include "mailbox.h"
@@ -348,10 +349,12 @@ int mutt_write_mime_header (BODY *a, FILE *f)
 {
   PARAMETER *p;
   char buffer[STRING];
+  char tmp[STRING];
   char *t;
   char *fn;
   int len;
   int tmplen;
+  int encode;
   
   fprintf (f, "Content-Type: %s/%s", TYPE (a), a->subtype);
 
@@ -368,7 +371,8 @@ int mutt_write_mime_header (BODY *a, FILE *f)
       fputc (';', f);
 
       buffer[0] = 0;
-      rfc822_cat (buffer, sizeof (buffer), p->value, MimeSpecials);
+      encode = rfc2231_encode (tmp, sizeof (tmp), (unsigned char *) p->value);
+      rfc822_cat (buffer, sizeof (buffer), tmp, MimeSpecials);
 
       tmplen = mutt_strlen (buffer) + mutt_strlen (p->attribute) + 1;
 
@@ -383,7 +387,7 @@ int mutt_write_mime_header (BODY *a, FILE *f)
 	len += tmplen + 1;
       }
 
-      fprintf (f, "%s=%s", p->attribute, buffer);
+      fprintf (f, "%s%s=%s", p->attribute, encode ? "*" : "", buffer);
 
     }
   }
@@ -409,8 +413,9 @@ int mutt_write_mime_header (BODY *a, FILE *f)
 	t = fn;
       
       buffer[0] = 0;
-      rfc822_cat (buffer, sizeof (buffer), t, MimeSpecials);
-      fprintf (f, "; filename=%s", buffer);
+      encode = rfc2231_encode (tmp, sizeof (tmp), (unsigned char *) t);
+      rfc822_cat (buffer, sizeof (buffer), tmp, MimeSpecials);
+      fprintf (f, "; filename%s=%s", encode ? "*" : "", buffer);
     }
 
     fputc ('\n', f);

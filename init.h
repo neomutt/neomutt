@@ -256,6 +256,7 @@ struct option_t MuttVars[] = {
   { "resolve",		DT_BOOL, R_NONE, OPTRESOLVE, 1 },
   { "reverse_alias",	DT_BOOL, R_BOTH, OPTREVALIAS, 0 },
   { "reverse_name",	DT_BOOL, R_BOTH, OPTREVNAME, 0 },
+  { "rfc2047_parameters", DT_BOOL, R_NONE, OPTRFC2047PARAMS, 0 },
   { "save_address",	DT_BOOL, R_NONE, OPTSAVEADDRESS, 0 },
   { "save_empty",	DT_BOOL, R_NONE, OPTSAVEEMPTY, 1 },
   { "save_name",	DT_BOOL, R_NONE, OPTSAVENAME, 0 },
