@@ -1242,7 +1242,12 @@ int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
   char path[_POSIX_PATH_MAX], tmp[_POSIX_PATH_MAX];
   int i, j;
 
-  if ((i = mh_check_mailbox (ctx, index_hint)) != 0)
+  if (ctx->magic == M_MH)
+    i = mh_check_mailbox (ctx, index_hint);
+  else 
+    i = maildir_check_mailbox (ctx, index_hint);
+      
+  if (i != 0)
     return i;
 
   for (i = 0; i < ctx->msgcount; i++)
