@@ -776,8 +776,10 @@ int mutt_save_message (HEADER *h, int delete,
   if (!mutt_save_confirm (buf, &st))
     return -1;
 
+#if defined(HAVE_PGP) || defined(HAVE_SMIME)
   if (need_passphrase && (decode || decrypt) && !crypt_valid_passphrase(app))
     return -1;
+#endif
   
   mutt_message (_("Copying to %s..."), buf);
   
@@ -934,8 +936,8 @@ void mutt_edit_content_type (HEADER *h, BODY *b, FILE *fp)
       h->security  = 0;
 
     h->security |= crypt_query (b);
-#endif
   }
+#endif
 }
 
 
