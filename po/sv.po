@@ -1436,9 +1436,8 @@ msgid "view attachment as text"
 msgstr "visa bilaga som text"
 
 #: keymap_alldefs.h:8
-#, fuzzy
 msgid "Toggle display of subparts"
-msgstr "toggla huruvida citerad text ska visas"
+msgstr "Toggla visning av delar"
 
 #: keymap_alldefs.h:9
 msgid "move to the bottom of the page"
@@ -1762,7 +1761,7 @@ msgstr "toggla ett meddelandes flagga för betydelse"
 
 #: keymap_alldefs.h:90
 msgid "forward a message with comments"
-msgstr "vidarebordra ett meddelande med kommentarer"
+msgstr "vidarebefordra ett meddelande med kommentarer"
 
 #: keymap_alldefs.h:91
 msgid "select the current entry"
@@ -1821,9 +1820,8 @@ msgid "delete messages matching a pattern"
 msgstr "släng bort meddelanden som passar ett mönster"
 
 #: keymap_alldefs.h:105
-#, fuzzy
 msgid "force retrieval of mail from IMAP server"
-msgstr "hämta brev från en POP-server"
+msgstr "tvinga hämtning av brev från en IMAP-server"
 
 #: keymap_alldefs.h:106
 msgid "retrieve mail from POP server"
@@ -2570,9 +2568,9 @@ msgid "Unable to get certificate from peer"
 msgstr "Kan inte hämta certifikat från 'peer'"
 
 #: mutt_ssl.c:245
-#, fuzzy, c-format
+#, c-format
 msgid "SSL connection using %s (%s)"
-msgstr "Ansluter (SSL) med hjälp av %s"
+msgstr "Ansluter (SSL) med hjälp av %s (%s)"
 
 #: mutt_ssl.c:275
 msgid "Unknown"
@@ -3346,9 +3344,8 @@ msgid "Attachments"
 msgstr "Bilagor"
 
 #: recvattach.c:919
-#, fuzzy
 msgid "There are no subparts to show!"
-msgstr "Det finns inga bilagor."
+msgstr "Det finns inga delar att visa!"
 
 #: recvattach.c:967
 msgid "Can't delete attachment from POP server."
@@ -3382,9 +3379,8 @@ msgid "Can't open temporary file %s."
 msgstr "Kan inte skapa tillfällig fil %s."
 
 #: recvcmd.c:398
-#, fuzzy
 msgid "Forward as attachments?"
-msgstr "visa MIME-bilagor"
+msgstr "Vidarebefordra som bilagor?"
 
 #: recvcmd.c:412
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
@@ -3543,13 +3539,12 @@ msgid "Could not include all requested messages!"
 msgstr "Kunde inte inkludera alla begärda meddelanden!"
 
 #: send.c:739
-#, fuzzy
 msgid "Forward as attachment?"
-msgstr "Skriv ut bilaga?"
+msgstr "Vidarebefordra som bilaga?"
 
 #: send.c:743
 msgid "Preparing forwarded message..."
-msgstr "Förbereder vidarebordrat meddelande..."
+msgstr "Förbereder vidarebefordrat meddelande..."
 
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
