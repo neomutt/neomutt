@@ -359,6 +359,22 @@ struct option_t MuttVars[] = {
   ** will be saved for later references.  Also see ``$$record'',
   ** ``$$save_name'', ``$$force_name'' and ``$fcc-hook''.
   */
+  { "crypt_autopgp",	DT_BOOL, R_NONE, OPTCRYPTAUTOPGP, 1 },
+  /*
+  ** .pp
+  ** This variable controls whether or not mutt may automatically enable
+  ** PGP encryption/signing for messages.  See also ``$$crypt_autoencrypt'',
+  ** ``$$crypt_replyencrypt'',
+  ** ``$$crypt_autosign'', ``$$crypt_replysign'' and ``$$smime_is_default''.
+  */
+  { "crypt_autosmime",	DT_BOOL, R_NONE, OPTCRYPTAUTOSMIME, 1 },
+  /*
+  ** .pp
+  ** This variable controls whether or not mutt may automatically enable
+  ** S/MIME encryption/signing for messages. See also ``$$crypt_autoencrypt'',
+  ** ``$$crypt_replyencrypt'',
+  ** ``$$crypt_autosign'', ``$$crypt_replysign'' and ``$$smime_is_default''.
+  */
   { "date_format",	DT_STR,	 R_BOTH, UL &DateFmt, UL "!%a, %b %d, %Y at %I:%M:%S%p %Z" },
   /*
   ** .pp
@@ -1199,7 +1215,7 @@ struct option_t MuttVars[] = {
   ** Setting this variable will cause Mutt to always attempt to
   ** cryptographically sign outgoing messages.  This can be overridden
   ** by use of the \fIpgp-menu\fP, when signing is not required or
-  ** encryption is requested as well. IF ``$$smime_is_default'' is set,
+  ** encryption is requested as well. If ``$$smime_is_default'' is set,
   ** then OpenSSL is used instead to create S/MIME messages and settings can
   ** be overridden by use of the \fIsmime-menu\fP.
   ** (Crypto only)
@@ -1287,7 +1303,7 @@ struct option_t MuttVars[] = {
   ** operations. To override and to use OpenSSL instead this must be set.
   ** However, this has no effect while replying, since mutt will automatically 
   ** select the same application that was used to sign/encrypt the original
-  ** message.
+  ** message.  (Note that this variable can be overridden by unsetting $$crypt_autosmime.)
   ** (S/MIME only)
   */
   { "smime_ask_cert_label",	DT_BOOL, R_NONE, OPTASKCERTLABEL, 1 },

@@ -1250,36 +1250,50 @@ ci_send_message (int flags,		/* send mode */
 	msg->security |= ENCRYPT;
       if (option (OPTCRYPTREPLYSIGN) && cur && (cur->security & SIGN))
 	msg->security |= SIGN;
-      if (option (OPTCRYPTREPLYSIGNENCRYPTED) && cur && cur->security & ENCRYPT)
+      if (option (OPTCRYPTREPLYSIGNENCRYPTED) && cur && (cur->security & ENCRYPT))
 	msg->security |= SIGN;
     }      
 
-    if (WithCrypto && msg->security && cur)
+    if (WithCrypto && msg->security)
     {
-      if ((WithCrypto & APPLICATION_SMIME)
-          && ((cur->security & APPLICATION_SMIME)
-              || option (OPTSMIMEISDEFAULT)))
-        msg->security |= APPLICATION_SMIME;
-
-      if ((WithCrypto & APPLICATION_PGP) && (cur->security & APPLICATION_PGP))
+      /* 
+       * When reypling / forwarding, use the original message's
+       * crypto system.  According to the documentation,
+       * smime_is_default should be disregarded here.
+       * 
+       * Problem: At least with forwarding, this doesn't really
+       * make much sense. Should we have an option to completely
+       * disable individual mechanisms at run-time?
+       */
+      if (cur)
       {
-	msg->security &= ~APPLICATION_SMIME;
-        msg->security |= APPLICATION_PGP;
+	if ((WithCrypto & APPLICATION_PGP) && option (OPTCRYPTAUTOPGP) 
+	    && (cur->security & APPLICATION_PGP))
+	  msg->security |= APPLICATION_PGP;
+	else if ((WithCrypto & APPLICATION_SMIME) && option (OPTCRYPTAUTOSMIME)
+		 && (cur->security & APPLICATION_SMIME))
+	  msg->security |= APPLICATION_SMIME;
       }
-      if ((WithCrypto & APPLICATION_SMIME)
-          && !(cur->security & (APPLICATION_PGP|APPLICATION_SMIME)))
-	msg->security |= APPLICATION_PGP;
-    }
-    else if ((WithCrypto & APPLICATION_PGP) && msg->security)
-    {
-      msg->security |= APPLICATION_PGP;
-      if ((WithCrypto & APPLICATION_SMIME) && option (OPTSMIMEISDEFAULT))
+      
+      /*
+       * No crypto mechanism selected? Use availability + smime_is_default
+       * for the decision. 
+       */
+      if (!(msg->security & (APPLICATION_SMIME | APPLICATION_PGP)))
       {
-        msg->security |= APPLICATION_SMIME;
-        msg->security &= ~APPLICATION_PGP;
+	if ((WithCrypto & APPLICATION_SMIME) && option (OPTCRYPTAUTOSMIME) 
+	    && option (OPTSMIMEISDEFAULT))
+	  msg->security |= APPLICATION_SMIME;
+	else if ((WithCrypto & APPLICATION_PGP) && option (OPTCRYPTAUTOPGP))
+	  msg->security |= APPLICATION_PGP;
+	else if ((WithCrypto & APPLICATION_SMIME) && option (OPTCRYPTAUTOSMIME))
+	  msg->security |= APPLICATION_SMIME;
       }
     }
-
+    
+    /* No permissible mechanisms found.  Don't sign or encrypt. */
+    if (!(msg->security & (APPLICATION_SMIME|APPLICATION_PGP)))
+      msg->security = 0;
   }
   /* wait until now to set the real name portion of our return address so
      that $realname can be set in a send-hook */
