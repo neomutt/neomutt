@@ -1,5 +1,3 @@
-# $Id$
-
 ## Process this file with automake to produce Makefile.in
 ## Use aclocal -I m4; automake --foreign
 
@@ -100,9 +98,10 @@ install-exec-local:
 		rm -f $(DESTDIR)$(bindir)/mutt.dotlock ;		\
 		ln -sf $(DESTDIR)$(bindir)/mutt_dotlock $(DESTDIR)$(bindir)/mutt.dotlock ; \
 	fi
-	if test -f $(bindir)/mutt_dotlock && test x@DOTLOCK_GROUP@ != x ; then \
-		chgrp @DOTLOCK_GROUP@ $(DESTDIR)$(bindir)/mutt_dotlock ; \
-		chmod @DOTLOCK_PERMISSION@  $(DESTDIR)$(bindir)/mutt_dotlock ; \
+	if test -f $(DESTDIR)$(bindir)/mutt_dotlock && test x@DOTLOCK_GROUP@ != x ; then \
+		chgrp @DOTLOCK_GROUP@ $(DESTDIR)$(bindir)/mutt_dotlock && \
+		chmod @DOTLOCK_PERMISSION@ $(DESTDIR)$(bindir)/mutt_dotlock || \
+		{ echo "Can't fix mutt_dotlock's permissions!" >&2 ; exit 1 ; } \
 	fi
 
 install-data-local: Muttrc
