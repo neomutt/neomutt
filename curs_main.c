@@ -957,7 +957,7 @@ int mutt_index_menu (void)
 	}
 
 	menu->menu = MENU_PAGER;
-/* 	menu->oldcurrent = menu->current;  */
+ 	menu->oldcurrent = menu->current;
 	continue;
 
       case OP_EXIT:
