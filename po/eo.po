@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3.23.1\n"
-"POT-Creation-Date: 2002-01-18 12:44+0100\n"
+"POT-Creation-Date: 2002-01-22 13:12+0100\n"
 "PO-Revision-Date: 2002-01-20 16:52+0000\n"
 "Last-Translator: Edmund GRIMLEY EVANS <edmundo@rano.org>\n"
 "Language-Team: eo <eo@li.org>\n"
@@ -40,7 +40,7 @@ msgid "Select"
 msgstr "Elekto"
 
 #. __STRCAT_CHECKED__
-#: addrbook.c:35 browser.c:43 compose.c:93 curs_main.c:404 mutt_ssl.c:625
+#: addrbook.c:35 browser.c:43 compose.c:93 curs_main.c:404 mutt_ssl.c:627
 #: pager.c:1534 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Helpo"
@@ -2709,58 +2709,58 @@ msgstr "Atestilo de servilo estas eksvalidiøinta"
 msgid "This certificate belongs to:"
 msgstr "Æi tiu atestilo apartenas al:"
 
-#: mutt_ssl.c:589
+#: mutt_ssl.c:590
 msgid "This certificate was issued by:"
 msgstr "Æi tiu atestilo estis eldonita de:"
 
-#: mutt_ssl.c:599
+#: mutt_ssl.c:601
 msgid "This certificate is valid"
 msgstr "Æi tiu atestilo estis valida"
 
-#: mutt_ssl.c:600
+#: mutt_ssl.c:602
 #, c-format
 msgid "   from %s"
 msgstr "     de %s"
 
-#: mutt_ssl.c:602
+#: mutt_ssl.c:604
 #, c-format
 msgid "     to %s"
 msgstr "     al %s"
 
-#: mutt_ssl.c:608
+#: mutt_ssl.c:610
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "Fingrospuro: %s"
 
-#: mutt_ssl.c:610
+#: mutt_ssl.c:612
 msgid "SSL Certificate check"
 msgstr "Kontrolo de SSL-atestilo"
 
-#: mutt_ssl.c:613
+#: mutt_ssl.c:615
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(m)alakcepti, akcepti (u)nufoje, (a)kcepti æiam"
 
-#: mutt_ssl.c:614
+#: mutt_ssl.c:616
 msgid "roa"
 msgstr "mua"
 
-#: mutt_ssl.c:618
+#: mutt_ssl.c:620
 msgid "(r)eject, accept (o)nce"
 msgstr "(m)alakcepti, akcepti (u)nufoje"
 
-#: mutt_ssl.c:619
+#: mutt_ssl.c:621
 msgid "ro"
 msgstr "mu"
 
-#: mutt_ssl.c:623 pgpkey.c:510
+#: mutt_ssl.c:625 pgpkey.c:510
 msgid "Exit  "
 msgstr "Eliri  "
 
-#: mutt_ssl.c:649
+#: mutt_ssl.c:651
 msgid "Warning: Couldn't save certificate"
 msgstr "Averto: Ne povis skribi atestilon"
 
-#: mutt_ssl.c:654
+#: mutt_ssl.c:656
 msgid "Certificate saved"
 msgstr "Atestilo skribita"
 

@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt 1.4\n"
-"POT-Creation-Date: 2002-01-18 12:44+0100\n"
+"POT-Creation-Date: 2002-01-22 13:12+0100\n"
 "PO-Revision-Date: 2001-06-08 19:44+02:00\n"
 "Last-Translator: Boris Wesslowski <Boris@Wesslowski.com>\n"
 "Language-Team: -\n"
@@ -39,7 +39,7 @@ msgid "Select"
 msgstr "Seleccionar"
 
 #. __STRCAT_CHECKED__
-#: addrbook.c:35 browser.c:43 compose.c:93 curs_main.c:404 mutt_ssl.c:625
+#: addrbook.c:35 browser.c:43 compose.c:93 curs_main.c:404 mutt_ssl.c:627
 #: pager.c:1534 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Ayuda"
@@ -2726,58 +2726,58 @@ msgstr "Certificado del servidor ha expirado"
 msgid "This certificate belongs to:"
 msgstr "Este certificado pertenece a:"
 
-#: mutt_ssl.c:589
+#: mutt_ssl.c:590
 msgid "This certificate was issued by:"
 msgstr "Este certificado fue producido por:"
 
-#: mutt_ssl.c:599
+#: mutt_ssl.c:601
 msgid "This certificate is valid"
 msgstr "Este certificado es válido"
 
-#: mutt_ssl.c:600
+#: mutt_ssl.c:602
 #, c-format
 msgid "   from %s"
 msgstr "   de %s"
 
-#: mutt_ssl.c:602
+#: mutt_ssl.c:604
 #, c-format
 msgid "     to %s"
 msgstr "     a %s"
 
-#: mutt_ssl.c:608
+#: mutt_ssl.c:610
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "Huella: %s"
 
-#: mutt_ssl.c:610
+#: mutt_ssl.c:612
 msgid "SSL Certificate check"
 msgstr "Prueba del certificado SSL"
 
-#: mutt_ssl.c:613
+#: mutt_ssl.c:615
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)echazar, aceptar (u)na vez, (a)ceptar siempre"
 
-#: mutt_ssl.c:614
+#: mutt_ssl.c:616
 msgid "roa"
 msgstr "rua"
 
-#: mutt_ssl.c:618
+#: mutt_ssl.c:620
 msgid "(r)eject, accept (o)nce"
 msgstr "(r)echazar, aceptar (u)na vez"
 
-#: mutt_ssl.c:619
+#: mutt_ssl.c:621
 msgid "ro"
 msgstr "ru"
 
-#: mutt_ssl.c:623 pgpkey.c:510
+#: mutt_ssl.c:625 pgpkey.c:510
 msgid "Exit  "
 msgstr "Salir  "
 
-#: mutt_ssl.c:649
+#: mutt_ssl.c:651
 msgid "Warning: Couldn't save certificate"
 msgstr "Advertencia: no se pudo guardar el certificado"
 
-#: mutt_ssl.c:654
+#: mutt_ssl.c:656
 msgid "Certificate saved"
 msgstr "El certificado fue guardado"
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.2\n"
-"POT-Creation-Date: 2002-01-18 12:44+0100\n"
+"POT-Creation-Date: 2002-01-22 13:12+0100\n"
 "PO-Revision-Date: 1999-12-20 20:41+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -41,7 +41,7 @@ msgid "Select"
 msgstr "Ñ¡Ôñ"
 
 #. __STRCAT_CHECKED__
-#: addrbook.c:35 browser.c:43 compose.c:93 curs_main.c:404 mutt_ssl.c:625
+#: addrbook.c:35 browser.c:43 compose.c:93 curs_main.c:404 mutt_ssl.c:627
 #: pager.c:1534 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "°ïÖú"
@@ -2774,58 +2774,58 @@ msgstr ""
 msgid "This certificate belongs to:"
 msgstr ""
 
-#: mutt_ssl.c:589
+#: mutt_ssl.c:590
 msgid "This certificate was issued by:"
 msgstr ""
 
-#: mutt_ssl.c:599
+#: mutt_ssl.c:601
 msgid "This certificate is valid"
-msgstr ""
-
-#: mutt_ssl.c:600
-#, c-format
-msgid "   from %s"
 msgstr ""
 
 #: mutt_ssl.c:602
 #, c-format
+msgid "   from %s"
+msgstr ""
+
+#: mutt_ssl.c:604
+#, c-format
 msgid "     to %s"
 msgstr ""
 
-#: mutt_ssl.c:608
+#: mutt_ssl.c:610
 #, c-format
 msgid "Fingerprint: %s"
 msgstr ""
 
-#: mutt_ssl.c:610
+#: mutt_ssl.c:612
 msgid "SSL Certificate check"
 msgstr ""
 
-#: mutt_ssl.c:613
+#: mutt_ssl.c:615
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr ""
 
-#: mutt_ssl.c:614
+#: mutt_ssl.c:616
 msgid "roa"
 msgstr ""
 
-#: mutt_ssl.c:618
+#: mutt_ssl.c:620
 msgid "(r)eject, accept (o)nce"
 msgstr ""
 
-#: mutt_ssl.c:619
+#: mutt_ssl.c:621
 msgid "ro"
 msgstr ""
 
-#: mutt_ssl.c:623 pgpkey.c:510
+#: mutt_ssl.c:625 pgpkey.c:510
 msgid "Exit  "
 msgstr "Àë¿ª  "
 
-#: mutt_ssl.c:649
+#: mutt_ssl.c:651
 msgid "Warning: Couldn't save certificate"
 msgstr ""
 
-#: mutt_ssl.c:654
+#: mutt_ssl.c:656
 msgid "Certificate saved"
 msgstr ""
 

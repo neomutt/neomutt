@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.3.25i\n"
-"POT-Creation-Date: 2002-01-18 12:44+0100\n"
+"POT-Creation-Date: 2002-01-22 13:12+0100\n"
 "PO-Revision-Date: 2002-01-15 21:57+300\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Im Eunjea <eunjea@kldp.org>\n"
@@ -43,7 +43,7 @@ msgid "Select"
 msgstr "선택"
 
 #. __STRCAT_CHECKED__
-#: addrbook.c:35 browser.c:43 compose.c:93 curs_main.c:404 mutt_ssl.c:625
+#: addrbook.c:35 browser.c:43 compose.c:93 curs_main.c:404 mutt_ssl.c:627
 #: pager.c:1534 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "도움말"
@@ -2703,58 +2703,58 @@ msgstr "서버 인증서가 만기됨"
 msgid "This certificate belongs to:"
 msgstr "이 인증서는 다음에 속함:"
 
-#: mutt_ssl.c:589
+#: mutt_ssl.c:590
 msgid "This certificate was issued by:"
 msgstr "이 인증서의 발행인은:"
 
-#: mutt_ssl.c:599
+#: mutt_ssl.c:601
 msgid "This certificate is valid"
 msgstr "이 인증서는 유효함"
 
-#: mutt_ssl.c:600
+#: mutt_ssl.c:602
 #, c-format
 msgid "   from %s"
 msgstr ""
 
-#: mutt_ssl.c:602
+#: mutt_ssl.c:604
 #, c-format
 msgid "     to %s"
 msgstr ""
 
-#: mutt_ssl.c:608
+#: mutt_ssl.c:610
 #, c-format
 msgid "Fingerprint: %s"
 msgstr ""
 
-#: mutt_ssl.c:610
+#: mutt_ssl.c:612
 msgid "SSL Certificate check"
 msgstr "SSL 인증서 검사"
 
-#: mutt_ssl.c:613
+#: mutt_ssl.c:615
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "거부(r), 이번만 허가(o), 언제나 허가(a)"
 
-#: mutt_ssl.c:614
+#: mutt_ssl.c:616
 msgid "roa"
 msgstr "roa"
 
-#: mutt_ssl.c:618
+#: mutt_ssl.c:620
 msgid "(r)eject, accept (o)nce"
 msgstr "거부(r), 이번만 허가(o)"
 
-#: mutt_ssl.c:619
+#: mutt_ssl.c:621
 msgid "ro"
 msgstr "ro"
 
-#: mutt_ssl.c:623 pgpkey.c:510
+#: mutt_ssl.c:625 pgpkey.c:510
 msgid "Exit  "
 msgstr "끝내기  "
 
-#: mutt_ssl.c:649
+#: mutt_ssl.c:651
 msgid "Warning: Couldn't save certificate"
 msgstr "경고: 인증서를 저장하지 못함"
 
-#: mutt_ssl.c:654
+#: mutt_ssl.c:656
 msgid "Certificate saved"
 msgstr "인증서 저장됨"
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.3.22.1\n"
-"POT-Creation-Date: 2002-01-18 12:44+0100\n"
+"POT-Creation-Date: 2002-01-22 13:12+0100\n"
 "PO-Revision-Date: 2001-09-03 12:25+0300\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "MIME-Version: 1.0\n"
@@ -40,7 +40,7 @@ msgid "Select"
 msgstr "Виб╕р"
 
 #. __STRCAT_CHECKED__
-#: addrbook.c:35 browser.c:43 compose.c:93 curs_main.c:404 mutt_ssl.c:625
+#: addrbook.c:35 browser.c:43 compose.c:93 curs_main.c:404 mutt_ssl.c:627
 #: pager.c:1534 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "П╕дказка"
@@ -2683,58 +2683,58 @@ msgstr "Сертиф╕кат серверу видалено за давн╕стю"
 msgid "This certificate belongs to:"
 msgstr "Цей сертиф╕кат належить:"
 
-#: mutt_ssl.c:589
+#: mutt_ssl.c:590
 msgid "This certificate was issued by:"
 msgstr "Цей сертиф╕кат видано:"
 
-#: mutt_ssl.c:599
+#: mutt_ssl.c:601
 msgid "This certificate is valid"
 msgstr "Цей сертиф╕кат д╕йсний"
 
-#: mutt_ssl.c:600
+#: mutt_ssl.c:602
 #, c-format
 msgid "   from %s"
 msgstr "   в╕д %s"
 
-#: mutt_ssl.c:602
+#: mutt_ssl.c:604
 #, c-format
 msgid "     to %s"
 msgstr "     до %s"
 
-#: mutt_ssl.c:608
+#: mutt_ssl.c:610
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "В╕дбиток: %s"
 
-#: mutt_ssl.c:610
+#: mutt_ssl.c:612
 msgid "SSL Certificate check"
 msgstr "Перев╕рка сертиф╕кату SSL"
 
-#: mutt_ssl.c:613
+#: mutt_ssl.c:615
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)не приймати, прийняти (o)одноразово або (a)завжди"
 
-#: mutt_ssl.c:614
+#: mutt_ssl.c:616
 msgid "roa"
 msgstr ""
 
-#: mutt_ssl.c:618
+#: mutt_ssl.c:620
 msgid "(r)eject, accept (o)nce"
 msgstr "(r)не приймати, (o)прийняти одноразово"
 
-#: mutt_ssl.c:619
+#: mutt_ssl.c:621
 msgid "ro"
 msgstr ""
 
-#: mutt_ssl.c:623 pgpkey.c:510
+#: mutt_ssl.c:625 pgpkey.c:510
 msgid "Exit  "
 msgstr "Вих╕д  "
 
-#: mutt_ssl.c:649
+#: mutt_ssl.c:651
 msgid "Warning: Couldn't save certificate"
 msgstr "Попередження: неможливо зберегти сертиф╕кат"
 
-#: mutt_ssl.c:654
+#: mutt_ssl.c:656
 msgid "Certificate saved"
 msgstr "Сертиф╕кат збережено"
 
