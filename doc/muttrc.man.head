@@ -75,13 +75,19 @@ like sh and bash: Prepend the name of the environment by a dollar
 \fBalias\fP defines an alias \fIkey\fP for the given addresses.
 \fBunalias\fP removes the alias corresponding to the given \fIkey\fP or
 all aliases when \(lq\fB*\fP\(rq is used as an argument.
-.TP
+.PP
+.nf
 \fBalternative_order\fP \fItype\fP[\fB/\fP\fIsubtype\fP] [ ... ]
-This command permits you to define an order of preference which is
+\fBunalternative_order\fP [\fB * \fP | \fItype\fP/\fIsubtype\fP] [...]
+.fi
+.IP
+\fBalternative_order\fP command permits you to define an order of preference which is
 used by mutt to determine which part of a
 \fBmultipart/alternative\fP body to display.
 A subtype of \(lq\fB*\fP\(rq matches any subtype, as does an empty
-subtype.
+subtype.   \fBunalternative_order\fP removes entries from the
+ordered list or deletes the entire list when \(lq\fB*\fP\(rq is used
+as an argument.
 .PP
 .nf
 \fBauto_view\fP \fItype\fP[\fB/\fP\fIsubtype\fP] [ ... ]
