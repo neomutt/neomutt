@@ -1,3 +1,4 @@
+static char rcsid[]="$Id$";
 /* intl-compat.c - Stub functions to call gettext functions from GNU gettext
    Library.
    Copyright (C) 1995 Software Foundation, Inc.

@@ -1,3 +1,4 @@
+static char rcsid[]="$Id$";
 
 
 /*	Copyright (C) 1995, 1996 Tom Lord

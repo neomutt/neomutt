@@ -1,3 +1,4 @@
+/* $Id$ */
 /* Message catalogs for internationalization.
    Copyright (C) 1995, 1996, 1997, 1998 Free Software Foundation, Inc.
 

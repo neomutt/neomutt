@@ -1,5 +1,7 @@
 # Translation file for PGP 2.6.3(i)n.
 
+# $Id$
+
 # ------------------------------------------------------------------
 # Character set:  ISO-Latin/1 (ISO 8859/1)
 # Date revised:   7 October 1997
@@ -3256,3 +3258,4 @@ muttde: "\n\nSORGFÄLTIG LESEN:  Wie hast Du die Identität des Nutzers geprüft ?\
 	1) Keine Überprüfung des wirklichen Namens des Nutzers.\n\
 	2) Einige Bemühungen, die Person mit diesem Namen zu identifizieren.\n\
 	3) Große Identifizierungsaufwendungen, Ausweis, direkter Kontakt...\n"
+$Id$

@@ -109,3 +109,4 @@ Major changes since 0.91.1
 - the <Tab> key on the command-line now completes commands and variable
   names. The longest non-ambiguous part is put on the command-line.
   Entering additional text and using <Tab> will perform completion again.
+$Id$

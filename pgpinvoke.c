@@ -1,3 +1,4 @@
+static char rcsid[]="$Id$";
 /*
  * Copyright (C) 1997-1998 Thomas Roessler <roessler@guug.de>
  * 

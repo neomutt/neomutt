@@ -1,3 +1,4 @@
+static char rcsid[]="$Id$";
 /* Handle list of needed message catalogs
    Copyright (C) 1995, 1996, 1997 Free Software Foundation, Inc.
    Contributed by Ulrich Drepper <drepper@gnu.ai.mit.edu>, 1995.

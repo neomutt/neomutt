@@ -2,6 +2,8 @@
 # Key bindings similar to those of MUSH
 #
 
+# $Id$
+
 bind index . display-message
 bind index t display-message
 macro index n j\n

@@ -22,3 +22,4 @@ after applying patches may help:
 After doing so, simply type "make"; the dependencies should take
 care of the necessary other re-building (this may quite well include
 a re-running of ./configure).
+$Id$

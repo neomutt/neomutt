@@ -1,3 +1,4 @@
+/* $Id$ */
 /*
  * Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>
  *

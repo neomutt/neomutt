@@ -1,3 +1,4 @@
+static char rcsid[]="$Id$";
 /* Compatibility code for gettext-using-catgets interface.
    Copyright (C) 1995, 1997 Free Software Foundation, Inc.
 

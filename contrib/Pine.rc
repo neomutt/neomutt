@@ -3,6 +3,10 @@
 # similar to those of PINE 3.95.
 #
 
+#
+# $Id$
+#
+
 bind index v display-message
 bind index p previous-undeleted
 bind index n next-undeleted

@@ -1,3 +1,4 @@
+/* $Id$ */
 BODY *mutt_parse_multipart (FILE *, const char *, long, int);
 BODY *mutt_parse_messageRFC822 (FILE *, BODY *);
 BODY *mutt_read_mime_header (FILE *, int);

@@ -1,3 +1,4 @@
+/* $Id$ */
 /* Header describing internals of gettext library
    Copyright (C) 1995, 1996, 1997, 1998 Free Software Foundation, Inc.
    Written by Ulrich Drepper <drepper@gnu.ai.mit.edu>, 1995.

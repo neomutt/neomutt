@@ -1,3 +1,4 @@
+static char rcsid[]="$Id$";
 /* Implementation of gettext(3) function.
    Copyright (C) 1995, 1997 Free Software Foundation, Inc.
 

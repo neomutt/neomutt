@@ -51,3 +51,4 @@ Style Guide
   setting with the global Muttrc file.
 
 - try to keep mutt as portable as possible.
+$Id$

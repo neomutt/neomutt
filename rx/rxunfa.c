@@ -1,3 +1,4 @@
+static char rcsid[]="$Id$";
 /* classes: src_files */
 
 /*	Copyright (C) 1995, 1996 Tom Lord

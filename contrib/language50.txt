@@ -1,5 +1,7 @@
 #This file contains the strings used by PGP.
 
+# $Id$
+
 [DIFFERENT_EXES]
 us=\
 PGP is now invoked from different executables for different operations:\n\n\
@@ -1337,3 +1339,4 @@ us="Certifying key no longer\n"
 
 [PGPERR_KEYDB_OBJECT_DELETED]
 us="Object has been deleted\n"
+$Id$

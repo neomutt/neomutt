@@ -1,3 +1,4 @@
+static char rcsid[]="$Id$";
 /* Implementation of the bindtextdomain(3) function
    Copyright (C) 1995, 1996, 1997, 1998 Free Software Foundation, Inc.
 

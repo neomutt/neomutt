@@ -1,3 +1,5 @@
+# $Id$
+
 text/html; netscape -remote 'openURL(%s)'
 image/gif; xv %s
 image/jpg; xv %s

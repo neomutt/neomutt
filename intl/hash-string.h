@@ -1,3 +1,4 @@
+/* $Id$ */
 /* Implements a string hashing function.
    Copyright (C) 1995, 1997 Free Software Foundation, Inc.
 

@@ -2,6 +2,10 @@
 # System configuration file for Mutt
 #
 
+#
+# $Id$
+#
+
 # default list of header fields to weed when displaying
 #
 ignore "from " received content- mime-version status x-status message-id

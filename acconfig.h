@@ -1,3 +1,5 @@
+/* $Id$ */
+
 /* Is this the international version? */
 #undef SUBVERSION
 

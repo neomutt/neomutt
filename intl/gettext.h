@@ -1,3 +1,4 @@
+/* $Id$ */
 /* Internal header for GNU gettext internationalization functions.
    Copyright (C) 1995, 1997 Free Software Foundation, Inc.
 

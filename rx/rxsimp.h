@@ -1,3 +1,4 @@
+/* $Id$ */
 /* classes: h_files */
 
 #ifndef RXSIMPH
