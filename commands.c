@@ -139,8 +139,10 @@ int mutt_display_message (HEADER *cur)
   {
     pager_t info;
 
+#ifdef _PGPPATH
     if (cur->pgp & PGPGOODSIGN)
       mutt_message _("PGP signature successfully verified.");
+#endif
 
     /* Invoke the builtin pager */
     memset (&info, 0, sizeof (pager_t));
