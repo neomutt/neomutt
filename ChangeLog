@@ -1,3 +1,8 @@
+2003-03-07 08:18:06  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* mutt_idna.c: It seems like libidn doesn't like to translate
+	NULL pointers.
+
 2003-03-07 07:52:49  Jim Mock  <mij@soupnazi.org>  (roessler)
 
 	* globals.h: globals.h is looking for crypt.h instead of
