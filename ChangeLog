@@ -1,3 +1,7 @@
+2003-07-15 11:39:31  Brendan Cully  <brendan@kublai.com>  (roessler)
+
+	* configure.in, .cvsignore: autoconf 2.5 compatibility.
+
 2003-07-14 12:40:03  Hugo Haas  <hugo@larve.net>  (roessler)
 
 	* send.c: Fix #1520.
