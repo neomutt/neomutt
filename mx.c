@@ -1059,14 +1059,15 @@ void mx_update_tables(CONTEXT *ctx, int committing)
 	  this_body->hdr_offset;
       }
 
-      if(committing)
+      if (committing)
 	ctx->hdrs[j]->changed = 0;
-      else
+      else if (ctx->hdrs[j]->changed)
+	ctx->changed++;
+      
+      if (!committing || (ctx->magic == M_MAILDIR && option (OPTMAILDIRTRASH)))
       {
 	if (ctx->hdrs[j]->deleted)
 	  ctx->deleted++;
-	if (ctx->hdrs[j]->changed)
-	  ctx->changed++;
       }
 
       if (ctx->hdrs[j]->tagged)
