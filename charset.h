@@ -31,6 +31,8 @@ typedef struct
 } 
 CHARSET;
 
+#define mutt_unicode_char(cm,ch) (!cm ? -1 : (*cm)[ch])
+
 CHARSET *mutt_get_charset(const char *);
 CHARSET_MAP *mutt_get_translation(const char *, const char *);
 

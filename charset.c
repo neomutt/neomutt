@@ -147,6 +147,9 @@ CHARSET *mutt_get_charset(const char *name)
   char buffer[SHORT_STRING];
   char *real_charset;
   
+  if (!name || !*name)
+    return (NULL);
+
   init_charsets();
   canonical_charset(buffer, sizeof(buffer), name);
 

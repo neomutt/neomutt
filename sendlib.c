@@ -23,6 +23,7 @@
 #include "mime.h"
 #include "mailbox.h"
 #include "copy.h"
+#include "charset.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -516,6 +517,7 @@ static CONTENT *mutt_get_content_info (const char *fname)
 {
   CONTENT *info;
   FILE *fp;
+  CHARSET_MAP *cm;
   int ch, from=0, whitespace=0, dot=0, linelen=0;
 
   if ((fp = fopen (fname, "r")) == NULL)
@@ -523,6 +525,12 @@ static CONTENT *mutt_get_content_info (const char *fname)
     dprint (1, (debugfile, "mutt_get_content_info: %s: %s (errno %d).\n",
 		fname, strerror (errno), errno));
     return (NULL);
+  }
+
+  {
+    CHARSET *cs;
+
+    cm = (cs = mutt_get_charset(Charset)) ? cs->map : 0;
   }
 
   info = safe_calloc (1, sizeof (CONTENT));
@@ -597,6 +605,8 @@ static CONTENT *mutt_get_content_info (const char *fname)
       if (ch == ' ') whitespace++;
       info->ascii++;
     }
+    if (cm && mutt_unicode_char (cm, ch) & -128)
+      info->nonasc = 1;
     if (linelen > 1) dot = 0;
     if (ch != ' ' && ch != '\t') whitespace = 0;
   }
@@ -698,16 +708,18 @@ static int lookup_mime_type (char *d, const char *s)
 
 static char *set_text_charset (CONTENT *info)
 {
-  if (strcasecmp (NONULL (Charset), "us-ascii") == 0)
-  {
-    if (info->hibin != 0)
-      return "unknown-8bit";
-  }
-  else if (info->hibin == 0)
-    return "us-ascii";
+  CHARSET *cs;
 
-  /* if no charset is given, provide a reasonable default */
-  return (Charset ? Charset : "us-ascii");
+  /* if charset is unknown assume low bytes are ascii compatible */
+
+  if ((Charset == NULL || strcasecmp (Charset, "us-ascii") == 0)
+      && info->hibin)
+    return ("unknown-8bit");
+
+  if (((cs = mutt_get_charset (Charset)) && cs->map) ? info->nonasc : info->hibin)
+    return (Charset);
+
+  return ("us-ascii");
 }
 
 void mutt_message_to_7bit (BODY *a, FILE *fp)
