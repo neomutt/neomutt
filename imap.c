@@ -64,7 +64,8 @@ enum
   IMAP_NEW_MAIL,
   IMAP_EXPUNGE,
   IMAP_BYE,
-  IMAP_OK_FAIL
+  IMAP_OK_FAIL,
+  IMAP_REOPENED
 };
 
 /* Capabilities */
@@ -136,6 +137,7 @@ typedef struct
   /* This data is specific to a CONNECTION to an IMAP server */
   short status;
   short state;
+  short check_status;
   char delim;
   unsigned char capabilities[(CAPMAX + 7)/8];
   CONNECTION *conn;
@@ -1048,10 +1050,12 @@ static int imap_exec (char *buf, size_t buflen, IMAP_DATA *idata,
 
       count = imap_read_headers (idata->selected_ctx, 
 	  idata->selected_ctx->msgcount, count - 1) + 1;
+      idata->check_status = IMAP_NEW_MAIL;
     }
     else
     {
       imap_reopen_mailbox (idata->selected_ctx, NULL);
+      idata->check_status = IMAP_REOPENED;
     }
 
     idata->status = 0;
@@ -1984,13 +1988,19 @@ void imap_fastclose_mailbox (CONTEXT *ctx)
   }
 }
 
-/* use the NOOP command to poll for new mail */
+/* use the NOOP command to poll for new mail
+ *
+ * return values:
+ *	M_REOPENED	mailbox has been reopened
+ *	M_NEW_MAIL	new mail has arrived!
+ *	0		no change
+ *	-1		error
+ */
 int imap_check_mailbox (CONTEXT *ctx, int *index_hint)
 {
   char seq[8];
   char buf[LONG_STRING];
   static time_t checktime=0;
-  int msgcount = ctx->msgcount;
 
   if (ImapCheckTime)
   {
@@ -1999,6 +2009,7 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint)
     checktime=k;
   }
 
+  CTX_DATA->check_status = 0;
   imap_make_sequence (seq, sizeof (seq));
   snprintf (buf, sizeof (buf), "%s NOOP\r\n", seq);
   if (imap_exec (buf, sizeof (buf), CTX_DATA, seq, buf, 0) != 0)
@@ -2007,7 +2018,11 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint)
     return (-1);
   }
 
-  return (msgcount != ctx->msgcount);
+  if (CTX_DATA->check_status == IMAP_NEW_MAIL)
+    return M_NEW_MAIL;
+  if (CTX_DATA->check_status == IMAP_REOPENED)
+    return M_REOPENED;
+  return 0;
 }
 
 int imap_buffy_check (char *path)
