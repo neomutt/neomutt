@@ -31,7 +31,7 @@ mutt_SOURCES = $(BUILT_SOURCES) \
 	url.c ascii.c mutt_idna.c crypt-mod.c crypt-mod.h
 
 mutt_LDADD = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAP) $(MUTTLIBS) \
-	$(INTLLIBS) $(LIBICONV) 
+	$(INTLLIBS) $(LIBICONV)  $(LIBGPGME_LIBS)
 
 mutt_DEPENDENCIES = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAPDEPS) \
 	$(INTLDEPS)
@@ -53,7 +53,7 @@ DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 	-DBINDIR=\"$(bindir)\" -DMUTTLOCALEDIR=\"$(datadir)/locale\" \
 	-DHAVE_CONFIG_H=1
 
-INCLUDES=-I. -I$(top_srcdir) $(IMAP_INCLUDES) -Iintl
+INCLUDES=-I. -I$(top_srcdir) $(IMAP_INCLUDES) $(LIBGPGME_CFLAGS) -Iintl
 
 CPPFLAGS=@CPPFLAGS@ -I$(includedir)
 
@@ -63,7 +63,8 @@ EXTRA_mutt_SOURCES = account.c md5c.c mutt_sasl.c mutt_socket.c mutt_ssl.c \
 	pgplib.c sha1.c pgpmicalg.c gnupgparse.c resize.c dotlock.c remailer.c \
 	browser.h mbyte.h remailer.h url.h mutt_ssl_nss.c \
 	crypt-mod-pgp-classic.c crypt-mod-smime-classic.c \
-	pgppacket.c mutt_idna.h hcache.c mutt_ssl_gnutls.c
+	pgppacket.c mutt_idna.h hcache.c mutt_ssl_gnutls.c \
+	crypt-gpgme.c crypt-mod-pgp-gpgme.c crypt-mod-smime-gpgme.c
 
 EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO \
 	configure acconfig.h account.h \

@@ -400,10 +400,19 @@ struct binding_t OpPgp[] = {
   { NULL,		0,				NULL }
 };
 
-/* Don't know an useful key binding yet. But. just in case, adding this already */
+
+
+/* When using the GPGME based backend we have some useful functions
+   for the SMIME menu.  */
 struct binding_t OpSmime[] = {
+#ifdef CRYPT_BACKEND_GPGME
+  { "verify-key",    OP_VERIFY_KEY,             "c" },
+  { "view-name",     OP_VIEW_ID,	        "%" },
+#endif
   { NULL,	0,	NULL }
 };
+
+
 
 #ifdef MIXMASTER
 struct binding_t OpMix[] = {
