@@ -1,3 +1,22 @@
+2002/12/09 17:44:54  Thomas Roessler <roessler@does-not-exist.org>
+
+	* PATCHES: Ups.
+
+2002/12/09 17:44:28  Michael Elkins <me@sigpipe.org>
+
+	* OPS, PATCHES, curs_main.c, functions.h, keymap.c, keymap.h,
+	menu.c: This patch adds two features to mutt:
+
+	- you can now specify the octal code of a key in a bind or
+	  macro function, using the syntax <NNN>.  Eg, bind index
+	  <541> show-version This allows you to bind to a function
+	  key for which Mutt doesn't have a friendly name associated
+	  with it.
+
+	- adds a what-key function which allows you to press a key
+	  and have mutt show you the decimal/octal value.  (not
+	  bound to anything by default)
+
 2002/12/09 16:07:24  Toomas Soome <tsoome@muhv.pri.ee>
 
 	* po/et.po: update.
