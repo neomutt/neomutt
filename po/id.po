@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.95.4i-1\n"
-"POT-Creation-Date: 1999-04-02 15:40-0600\n"
+"POT-Creation-Date: 1999-03-30 22:55+0200\n"
 "PO-Revision-Date: 1999-04-02 15:40-0600\n"
 "Last-Translator: Ronny Haryanto <giant@canada.com>\n"
 "Language-Team: Indonesia <id@li.org>\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 7bit\n"
 
-#: addrbook.c:31 browser.c:53 pager.c:1368 postpone.c:32 query.c:43
+#: addrbook.c:31 browser.c:41 pager.c:1375 postpone.c:32 query.c:43
 #: recvattach.c:47
 msgid "Exit"
 msgstr "Keluar"
@@ -22,16 +22,16 @@ msgstr "Keluar"
 msgid "Select"
 msgstr "Pilih"
 
-#: addrbook.c:33 browser.c:56 compose.c:83 curs_main.c:259 pager.c:1465
-#: pgpkey.c:180 postpone.c:35 query.c:48 recvattach.c:51
+#: addrbook.c:33 browser.c:44 compose.c:90 curs_main.c:259 pager.c:1472
+#: pgpkey.c:448 postpone.c:35 query.c:48 recvattach.c:51
 msgid "Help"
 msgstr "Bantuan"
 
-#: addrbook.c:131
+#: addrbook.c:120
 msgid "You have no aliases!"
 msgstr "Anda tidak punya kumpulan alias!"
 
-#: addrbook.c:143
+#: addrbook.c:131
 msgid "Aliases"
 msgstr "Kumpulan alias"
 
@@ -57,7 +57,7 @@ msgstr "Nama lengkap: "
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] Sudah betul?"
 
-#: alias.c:254 recvattach.c:344 recvattach.c:401
+#: alias.c:254 recvattach.c:374 recvattach.c:431
 msgid "Save to file: "
 msgstr "Simpan ke file: "
 
@@ -65,7 +65,7 @@ msgstr "Simpan ke file: "
 msgid "Alias added."
 msgstr "Alias telah ditambahkan."
 
-#: attach.c:111 attach.c:234 attach.c:425 attach.c:869
+#: attach.c:111 attach.c:238 attach.c:430 attach.c:881
 msgid "Can't match nametemplate, continue?"
 msgstr "Tidak cocok dengan nametemplate, lanjutkan?"
 
@@ -74,113 +74,131 @@ msgstr "Tidak cocok dengan nametemplate, lanjutkan?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "'compose' di file mailcap membutuhkan %%s"
 
-#: attach.c:137
+#: attach.c:131 attach.c:256 commands.c:155 compose.c:1170 curs_lib.c:128
+#: curs_lib.c:323
+#, fuzzy, c-format
+msgid "Error running \"%s\"!"
+msgstr "Gagal menguraikan alamat!"
+
+#: attach.c:141
 msgid "Failure to open file to parse headers."
 msgstr "Gagal membuka file untuk menge-parse headers."
 
-#: attach.c:168
+#: attach.c:172
 msgid "Failure to open file to strip headers."
 msgstr "Gagal membuka file untuk menghapus headers."
 
-#: attach.c:186
+#: attach.c:190
 #, c-format
 msgid "No mailcap compose entry for %s, creating empty file."
-msgstr "'compose' di file mailcap tidak ditemukan untuk %s, membuat file kosong."
+msgstr ""
+"'compose' di file mailcap tidak ditemukan untuk %s, membuat file kosong."
 
 #. For now, editing requires a file, no piping
-#: attach.c:246
+#: attach.c:250
 msgid "Mailcap Edit entry requires %%s"
 msgstr "'Edit' di file mailcap membutuhkan %%s"
 
-#: attach.c:264
+#: attach.c:269
 #, c-format
 msgid "No mailcap edit entry for %s"
 msgstr "'Edit' di file mailcap tidak ditemukan untuk %s"
 
-#: attach.c:391
+#: attach.c:396
 msgid "No matching mailcap entry found.  Viewing as text."
 msgstr "Tidak ada jenis yang cocok di file mailcap. Ditampilkan sebagai teks."
 
-#: attach.c:404
+#: attach.c:409
 msgid "MIME type not defined.  Cannot view attachment."
 msgstr "Jenis MIME tidak didefinisikan. Tidak bisa melihat lampiran."
 
-#: attach.c:494
+#: attach.c:499
 msgid "Cannot create filter"
 msgstr "Tidak bisa membuat filter"
 
-#: attach.c:696 recvattach.c:375
+#: attach.c:701 recvattach.c:405
 msgid "Attachment saved."
 msgstr "Lampiran telah disimpan."
 
-#: attach.c:751
+#: attach.c:756
 msgid "Write fault!"
 msgstr "Gagal menulis!"
 
-#: attach.c:953
+#: attach.c:965
 msgid "I don't know how to print that!"
 msgstr "Saya tidak tahu bagaimana mencetak itu!"
 
-#: browser.c:54
+#: browser.c:42
 msgid "Chdir"
 msgstr "Pindah dir"
 
-#: browser.c:55
+#: browser.c:43
 msgid "Mask"
 msgstr "Mask"
 
-#: browser.c:344 browser.c:671
+#: browser.c:336 browser.c:825
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s bukan direktori."
 
-#: browser.c:449
+#: browser.c:444
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Kotak surat [%d]"
 
-#: browser.c:454
+#: browser.c:451
+#, fuzzy, c-format
+msgid "Subscribed [%s], File mask: %s"
+msgstr "Direktori [%s], File mask: %s"
+
+#: browser.c:455
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Direktori [%s], File mask: %s"
 
-#: browser.c:538 browser.c:728 browser.c:811
+#: browser.c:466
+#, fuzzy
+msgid "Can't attach a directory!"
+msgstr "Tidak bisa menampilkan sebuah direktori"
+
+#: browser.c:583 browser.c:882 browser.c:975
 msgid "No files match the file mask"
 msgstr "Tidak ada file yang sesuai dengan mask"
 
-#: browser.c:645
+#: browser.c:784
 msgid "Chdir to: "
 msgstr "Pindah dir ke: "
 
-#: browser.c:664 browser.c:721
+#: browser.c:818 browser.c:875
 msgid "Error scanning directory."
 msgstr "Gagal membaca direktori."
 
-#: browser.c:682
+#: browser.c:836
 msgid "File Mask: "
 msgstr "File Mask: "
 
-#: browser.c:744
+#: browser.c:898
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
-msgstr "Urut terbalik berdasarkan (t)anggal, (a)bjad, (u)kuran atau (n)ggak diurut? "
+msgstr ""
+"Urut terbalik berdasarkan (t)anggal, (a)bjad, (u)kuran atau (n)ggak diurut? "
 
-#: browser.c:745
+#: browser.c:899
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Urut berdasarkan (t)anggal, (a)bjad, (u)kuran atau (n)ggak diurut? "
 
-#: browser.c:746
+#: browser.c:900
 msgid "dazn"
 msgstr "taun"
 
-#: browser.c:798
+#: browser.c:962
 msgid "New file name: "
 msgstr "Nama file baru: "
 
-#: browser.c:819
+#: browser.c:983
 msgid "Can't view a directory"
 msgstr "Tidak bisa menampilkan sebuah direktori"
 
-#: browser.c:837
+#: browser.c:1001
 msgid "Error trying to view file"
 msgstr "Gagal menampilkan file"
 
@@ -189,61 +207,75 @@ msgstr "Gagal menampilkan file"
 msgid "New mail in %s."
 msgstr "Surat baru di %s."
 
-#: color.c:306
+#: charset.c:970
+msgid "We can't currently handle utf-8 at this point."
+msgstr ""
+
+#: charset.c:976 charset.c:983
+#, fuzzy, c-format
+msgid "Can't open %s: %s."
+msgstr "Tidak bisa stat: %s"
+
+#: charset.c:1013
+#, c-format
+msgid "Error while recoding %s. See %s for recovering your data."
+msgstr ""
+
+#: color.c:315
 #, c-format
 msgid "%s: color not supported by term"
 msgstr "%s: warna tidak didukung oleh term"
 
-#: color.c:312
+#: color.c:321
 #, c-format
 msgid "%s: no such color"
 msgstr "%s: tidak ada warna begitu"
 
-#: color.c:358 color.c:549 color.c:560
+#: color.c:367 color.c:558 color.c:569
 #, c-format
 msgid "%s: no such object"
 msgstr "%s: tidak ada objek begitu"
 
-#: color.c:365
+#: color.c:374
 #, c-format
 msgid "%s: command valid only for index object"
 msgstr "%s: perintah hanya untuk objek indeks"
 
-#: color.c:373
+#: color.c:382
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: parameternya kurang"
 
-#: color.c:537
+#: color.c:546
 msgid "Missing arguments."
 msgstr "Parameter tidak ditemukan"
 
-#: color.c:576 color.c:587
+#: color.c:585 color.c:596
 msgid "color: too few arguments"
 msgstr "color: parameternya kurang"
 
-#: color.c:610
+#: color.c:619
 msgid "mono: too few arguments"
 msgstr "mono: parameternya kurang"
 
-#: color.c:630
+#: color.c:639
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s: tidak ada atribut begitu"
 
-#: color.c:670 hook.c:61 hook.c:69 keymap.c:680
+#: color.c:679 hook.c:61 hook.c:69 keymap.c:688
 msgid "too few arguments"
 msgstr "parameternya kurang"
 
-#: color.c:679 hook.c:75
+#: color.c:688 hook.c:75
 msgid "too many arguments"
 msgstr "parameternya terlalu banyak"
 
-#: color.c:693
+#: color.c:702
 msgid "default colors not supported"
 msgstr "warna default tidak didukung"
 
-#: commands.c:87 commands.c:95 pgpkey.c:220
+#: commands.c:87 commands.c:95 pgpkey.c:489 send.c:1219
 msgid "Invoking PGP..."
 msgstr "Menjalankan PGP..."
 
@@ -256,165 +288,165 @@ msgstr "Periksa tandatangan PGP?"
 msgid "Could not create temporary file!"
 msgstr "Tidak bisa membuat file sementara!"
 
-#: commands.c:158
+#: commands.c:162
 msgid "Command: "
 msgstr "Perintah: "
 
-#: commands.c:176 recvattach.c:680
+#: commands.c:180 recvattach.c:710
 msgid "Bounce message to: "
 msgstr "Tembuskan surat ke: "
 
-#: commands.c:178 recvattach.c:682
+#: commands.c:182 recvattach.c:712
 msgid "Bounce tagged messages to: "
 msgstr "Tembuskan surat yang telah ditandai ke: "
 
-#: commands.c:193
+#: commands.c:197
 msgid "Error parsing address!"
 msgstr "Gagal menguraikan alamat!"
 
-#: commands.c:203
+#: commands.c:207
 #, c-format
 msgid "Bounce message to %s"
 msgstr "Tembuskan surat ke %s"
 
-#: commands.c:203
+#: commands.c:207
 #, c-format
 msgid "Bounce messages to %s"
 msgstr "Tembuskan surat-surat ke %"
 
-#: commands.c:214
+#: commands.c:218
 msgid "Message bounced."
 msgstr "Surat telah ditembuskan."
 
-#: commands.c:214
+#: commands.c:218
 msgid "Messages bounced."
 msgstr "Surat-surat telah ditembuskan."
 
-#: commands.c:234
+#: commands.c:239
 msgid "Pipe to command: "
 msgstr "Pipe ke perintah: "
 
-#: commands.c:334
+#: commands.c:339
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
-"Urut terbalik "
-"tan(g)gal/d(a)ri/t(e)rima/(s)ubj/(k)e/(t)hread/(n)ggak urut/(u)kuran/n(i)lai? "
+"Urut terbalik tan(g)gal/d(a)ri/t(e)rima/(s)ubj/(k)e/(t)hread/(n)ggak "
+"urut/(u)kuran/n(i)lai? "
 
-#: commands.c:335
+#: commands.c:340
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
-"Urut "
-"tan(g)gal/d(a)ri/t(e)rima/(s)ubj/(k)e/(t)hread/(n)ggak urut/(u)kuran/n(i)lai? "
+"Urut tan(g)gal/d(a)ri/t(e)rima/(s)ubj/(k)e/(t)hread/(n)ggak "
+"urut/(u)kuran/n(i)lai? "
 
-#: commands.c:336
+#: commands.c:341
 msgid "dfrsotuzc"
 msgstr "gaesktnui"
 
-#: commands.c:389
+#: commands.c:394
 msgid "Shell command: "
 msgstr "Perintah shell: "
 
-#: commands.c:505
+#: commands.c:510
 #, c-format
 msgid "%s%s to mailbox"
 msgstr "%s%s ke kotak surat"
 
-#: commands.c:506
+#: commands.c:511
 msgid "Decode-save"
 msgstr "Decode-simpan"
 
-#: commands.c:506
+#: commands.c:511
 msgid "Decode-copy"
 msgstr "Decode-copy"
 
-#: commands.c:507
+#: commands.c:512
 msgid "Decrypt-save"
 msgstr "Decrypt-simpan"
 
-#: commands.c:507
+#: commands.c:512
 msgid "Decrypt-copy"
 msgstr "Decrypt-copy"
 
-#: commands.c:508 curs_main.c:255 recvattach.c:48
+#: commands.c:513 curs_main.c:255 recvattach.c:48
 msgid "Save"
 msgstr "Simpan"
 
-#: commands.c:508
+#: commands.c:513
 msgid "Copy"
 msgstr "Copy"
 
-#: commands.c:508
+#: commands.c:513
 msgid " tagged"
 msgstr " telah ditandai"
 
-#: commands.c:577
+#: commands.c:582
 #, c-format
 msgid "Copying to %s..."
 msgstr "Sedang meng-copy ke %s..."
 
-#: commands.c:649
+#: commands.c:654
 msgid "Print message?"
 msgstr "Cetak surat?"
 
-#: commands.c:649
+#: commands.c:654
 msgid "Print tagged messages?"
 msgstr "Cetak surat-surat yang ditandai?"
 
-#: commands.c:676
+#: commands.c:681
 msgid "Message printed"
 msgstr "Surat telah dicetak"
 
-#: commands.c:676
+#: commands.c:681
 msgid "Messages printed"
 msgstr "Surat-surat telah dicetak"
 
-#: compose.c:76
+#: compose.c:83
 msgid "Send"
 msgstr "Kirim"
 
-#: compose.c:77
+#: compose.c:84
 msgid "Abort"
 msgstr "Batal"
 
-#: compose.c:81 compose.c:538
+#: compose.c:88 compose.c:605
 msgid "Attach file"
 msgstr "Lampirkan file"
 
-#: compose.c:82
+#: compose.c:89
 msgid "Descrip"
 msgstr "Ket"
 
-#: compose.c:103
+#: compose.c:110
 msgid "Sign, Encrypt"
 msgstr "Tandatangan, Acak"
 
-#: compose.c:105
+#: compose.c:112
 msgid "Encrypt"
 msgstr "Acak"
 
-#: compose.c:107
+#: compose.c:114
 msgid "Sign"
 msgstr "Tandatangan"
 
-#: compose.c:109
+#: compose.c:116
 msgid "Clear"
 msgstr "Polos"
 
-#: compose.c:116
+#: compose.c:123
 msgid " sign as: "
 msgstr " tandatangan sebagai: "
 
-#: compose.c:116
+#: compose.c:123
 msgid "<default>"
 msgstr "<default>"
 
-#: compose.c:117 compose.c:191
+#: compose.c:124 compose.c:184
 msgid "MIC algorithm: "
 msgstr "Algoritma MIC: "
 
-#: compose.c:132
+#: compose.c:137
 msgid ""
 "(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget "
 "it? "
@@ -422,146 +454,193 @@ msgstr ""
 "(a)cak, (t)andatangan, tandatangan (s)bg, ke(d)uanya, pilih alg (m)ic, "
 "(b)atal? "
 
-#: compose.c:133
+#: compose.c:138
 msgid "esabmf"
 msgstr "atsdmb"
 
-#: compose.c:150
-msgid "Can't open your secret key ring!"
-msgstr "Tidak bisa membuka kumpulan kunci rahasia Anda!"
-
-#: compose.c:155
+#: compose.c:152
 msgid "Sign as: "
 msgstr "Tandatangani sebagai: "
 
-#: compose.c:175
+#: compose.c:166
 msgid "An unkown PGP version was defined for signing."
 msgstr "Versi PGP untuk tandatangan tak dikenal"
 
-#: compose.c:185
+#: compose.c:178
 msgid "This doesn't make sense if you don't want to sign the message."
 msgstr "Ini tidak masuk akal jika anda tidak mau tandatangani suratnya."
 
-#: compose.c:196
+#: compose.c:189
 msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
 msgstr "Algoritma MIC yang dikenali adalah: pgp-md5, pgp-sha1, pgp-rmd160"
 
-#: compose.c:232
+#: compose.c:257
 #, c-format
 msgid "%s [#%d] no longer exists!"
 msgstr "%s [#%d] sudah tidak ada!"
 
-#: compose.c:240
+#: compose.c:265
 #, c-format
 msgid "%s [#%d] modified. Update encoding?"
 msgstr "%s [#%d] telah diubah. Update encoding?"
 
-#: compose.c:281
-msgid "===== Attachments ====="
-msgstr "=-=-= Lampiran-lampiran =-=-="
+#: compose.c:309
+#, fuzzy
+msgid "-- Attachments"
+msgstr "Lampiran"
 
-#: compose.c:319
+#: compose.c:352
 msgid "You may not delete the only attachment."
 msgstr "Tidak bisa menghapus satu-satunya lampiran."
 
-#: compose.c:393
+#: compose.c:395
+msgid "Can't change character set for non-text attachments!"
+msgstr ""
+
+#: compose.c:401
+msgid "Enter character set: "
+msgstr ""
+
+#: compose.c:408
+msgid "UTF-8 encoding attachments has not yet been implemented."
+msgstr ""
+
+#: compose.c:414
+#, c-format
+msgid "Character set %s is unknown."
+msgstr ""
+
+#: compose.c:460
 msgid "Compose"
 msgstr "Tulis surat"
 
-#: compose.c:543
+#: compose.c:614
 msgid "Open mailbox to attach message from"
 msgstr "Buka kotak surat untuk mengambil lampiran"
 
-#: compose.c:582
+#: compose.c:648
 msgid "No messages in that folder."
 msgstr "Tidak ada surat di kotak tersebut."
 
-#: compose.c:589
+#: compose.c:655
 msgid "Tag the messages you want to attach!"
 msgstr "Tandai surat-surat yang mau dilampirkan!"
 
-#: compose.c:624 compose.c:644
+#: compose.c:687
+msgid "Attaching selected files..."
+msgstr ""
+
+#: compose.c:698
+#, fuzzy, c-format
+msgid "Unable to attach %s!"
+msgstr "Tidak bisa dilampirkan!"
+
+#: compose.c:722
 msgid "Unable to attach!"
 msgstr "Tidak bisa dilampirkan!"
 
-#: compose.c:780
+#: compose.c:773
+msgid "Recoding only affects text attachments."
+msgstr ""
+
+#: compose.c:778
+msgid "We currently can't encode to utf-8."
+msgstr ""
+
+#: compose.c:783
+msgid "The current attachment won't be converted."
+msgstr ""
+
+#: compose.c:785
+msgid "The current attachment will be converted."
+msgstr ""
+
+#: compose.c:798
+msgid "Recoding only affetcs text attachments."
+msgstr ""
+
+#: compose.c:814
+msgid "Recoding successful."
+msgstr ""
+
+#: compose.c:921
 msgid "Invalid encoding."
 msgstr "Encoding tidak betul."
 
-#: compose.c:795
+#: compose.c:942
 msgid "Save a copy of this message?"
 msgstr "Simpan salinan dari surat ini?"
 
-#: compose.c:842
+#: compose.c:996
 msgid "Rename to: "
 msgstr "Ganti nama ke: "
 
-#: compose.c:847
+#: compose.c:1001
 #, c-format
 msgid "Can't stat: %s"
 msgstr "Tidak bisa stat: %s"
 
-#: compose.c:874
+#: compose.c:1028
 msgid "New file: "
 msgstr "File baru: "
 
-#: compose.c:887
+#: compose.c:1041
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type harus dalam format jenis-dasar/sub-jenis"
 
-#: compose.c:893
+#: compose.c:1047
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Content-Type %s tak dikenali"
 
-#: compose.c:906
+#: compose.c:1060
 #, c-format
 msgid "Can't create file %s"
 msgstr "Tidak bisa membuat file %s"
 
-#: compose.c:914
+#: compose.c:1068
 msgid "What we have here is a failure to make an attachment"
 msgstr "Gagal membuat lampiran, nih..."
 
-#: compose.c:977
+#: compose.c:1131
 msgid "Postpone this message?"
 msgstr "Tunda surat ini?"
 
-#: compose.c:1029
+#: compose.c:1185
 msgid "Write message to mailbox"
 msgstr "Simpan surat ke kotak surat"
 
-#: compose.c:1033
+#: compose.c:1189
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Menyimpan surat ke %s ..."
 
-#: compose.c:1044
+#: compose.c:1200
 msgid "Message written."
 msgstr "Surat telah disimpan."
 
-#: curs_lib.c:135
+#: curs_lib.c:136
 msgid "yes"
 msgstr "ya"
 
-#: curs_lib.c:136
+#: curs_lib.c:137
 msgid "no"
 msgstr "nggak"
 
 #. restore blocking operation
-#: curs_lib.c:175
+#: curs_lib.c:176
 msgid "Exit Mutt?"
 msgstr "Keluar dari Mutt?"
 
-#: curs_lib.c:275
+#: curs_lib.c:276
 msgid "unknown error"
 msgstr "eh..eh.. napa nih?"
 
-#: curs_lib.c:295
+#: curs_lib.c:296
 msgid "Press any key to continue..."
 msgstr "Tekan sembarang tombol untuk lanjut..."
 
-#: curs_lib.c:333
+#: curs_lib.c:339
 msgid " ('?' for list): "
 msgstr " ('?' utk lihat daftar): "
 
@@ -581,7 +660,7 @@ msgstr "Perubahan ke folder tidak akan dilakukan."
 msgid "Quit"
 msgstr "Keluar"
 
-#: curs_main.c:253 pager.c:1375 postpone.c:33
+#: curs_main.c:253 pager.c:1382 postpone.c:33
 msgid "Del"
 msgstr "Hapus"
 
@@ -593,7 +672,7 @@ msgstr "Nggak jadi hapus"
 msgid "Mail"
 msgstr "Surat"
 
-#: curs_main.c:257 pager.c:1376
+#: curs_main.c:257 pager.c:1383
 msgid "Reply"
 msgstr "Balas"
 
@@ -604,8 +683,8 @@ msgstr "Grup"
 #: curs_main.c:429
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr ""
-"Kotak surat diobok-obok oleh program lain. "
-"Tanda-tanda surat mungkin tidak tepat."
+"Kotak surat diobok-obok oleh program lain. Tanda-tanda surat mungkin tidak "
+"tepat."
 
 #: curs_main.c:432
 msgid "New mail in this mailbox."
@@ -677,7 +756,7 @@ msgstr "Buka kotak surat"
 msgid "Open mailbox in read-only mode"
 msgstr "Buka kotak surat dengan mode read-only"
 
-#: curs_main.c:892 mx.c:429 mx.c:570
+#: curs_main.c:892 mx.c:428 mx.c:569
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s bukan kotak surat."
@@ -698,11 +777,11 @@ msgstr "Tidak ada surat yang tidak jadi dihapus."
 msgid "You are on the first message."
 msgstr "Anda sudah di surat yang pertama."
 
-#: curs_main.c:1128 pattern.c:1108
+#: curs_main.c:1128 pattern.c:1109
 msgid "Search wrapped to top."
 msgstr "Pencarian kembali ke atas."
 
-#: curs_main.c:1137 pattern.c:1119
+#: curs_main.c:1137 pattern.c:1120
 msgid "Search wrapped to bottom."
 msgstr "Pencarian kembali ke bawah."
 
@@ -718,19 +797,19 @@ msgstr "Tidak ada surat yang belum dibaca"
 msgid " in this limited view"
 msgstr " di tampilan terbatas ini"
 
-#: curs_main.c:1281
+#: curs_main.c:1295
 msgid "No more threads."
 msgstr "Tidak ada thread lagi."
 
-#: curs_main.c:1283
+#: curs_main.c:1297
 msgid "You are on the first thread."
 msgstr "Anda di thread yang pertama."
 
-#: curs_main.c:1336
+#: curs_main.c:1350
 msgid "Thread contains unread messages."
 msgstr "Thread berisi surat yang belum dibaca."
 
-#: curs_main.c:1349 flags.c:219 thread.c:651
+#: curs_main.c:1363 flags.c:219 thread.c:661
 msgid "Threading is not enabled."
 msgstr "Tidak disetting untuk melakukan threading."
 
@@ -820,66 +899,66 @@ msgstr "Tandai"
 msgid "Clear flag"
 msgstr "Batal ditandai"
 
-#: handler.c:127
+#: handler.c:107
 msgid "[-- Error: unexpected end of file! --]\n"
 msgstr "[-- Error: akhir file tak diduga! --]\n"
 
 #. didn't find anything that we could display!
-#: handler.c:953
+#: handler.c:901
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr ""
-"[-- Error: Tidak ada bagian Multipart/Alternative yg bisa ditampilkan! "
-"--]\n"
+"[-- Error: Tidak ada bagian Multipart/Alternative yg bisa ditampilkan! --]\n"
 
-#: handler.c:1070
+#: handler.c:1018
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- Lampiran #%d"
 
-#: handler.c:1081
+#: handler.c:1029
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Jenis: %s/%s, Encoding: %s, Ukuran: %s --]\n"
 
-#: handler.c:1140
+#: handler.c:1088
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Tampil-otomatis dengan %s --]\n"
 
-#: handler.c:1141
+#: handler.c:1089
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Menjalankan perintah tampil-otomatis: %s"
 
-#: handler.c:1178 handler.c:1196
+#: handler.c:1126 handler.c:1144
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Stderr dari tampil-otomatis %s --]\n"
 
-#: handler.c:1228
+#: handler.c:1176
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr "[-- Error:  message/external-body tidak punya parameter access-type --]\n"
+msgstr ""
+"[-- Error:  message/external-body tidak punya parameter access-type --]\n"
 
-#: handler.c:1245
+#: handler.c:1193
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- Lampiran %s/%s ini "
 
-#: handler.c:1252
+#: handler.c:1200
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(ukuran %s bytes) "
 
-#: handler.c:1254
+#: handler.c:1202
 msgid "has been deleted --]\n"
 msgstr "telah dihapus --]\n"
 
-#: handler.c:1257
+#: handler.c:1205
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- pada %s --]\n"
 
-#: handler.c:1267
+#: handler.c:1215
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -890,7 +969,7 @@ msgstr ""
 "[-- dan sumber luar yang dimaksud sudah --]\n"
 "[-- kadaluwarsa. --]\n"
 
-#: handler.c:1281
+#: handler.c:1229
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -899,33 +978,33 @@ msgstr ""
 "[-- Lampiran %s/%s ini tidak disertakan, --]\n"
 "[-- dan access-type %s tidak didukung --]\n"
 
-#: handler.c:1378
+#: handler.c:1326
 msgid "Error: multipart/signed has no protocol."
 msgstr "Error: multipart/signed tidak punya protokol."
 
-#: handler.c:1390
+#: handler.c:1339
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Error: multipart/encrypted tidak punya parameter protokol!"
 
-#: handler.c:1432
+#: handler.c:1381
 msgid "Unable to open temporary file!"
 msgstr "Tidak bisa membuka file sementara!"
 
-#: handler.c:1491
+#: handler.c:1440
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s tidak didukung "
 
-#: handler.c:1496
+#: handler.c:1445
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(gunakan '%s' untuk melihat bagian ini)"
 
-#: handler.c:1498
+#: handler.c:1447
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(tombol untuk 'view-attachments' belum ditentukan!)"
 
-#: headers.c:202
+#: headers.c:164
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: tidak bisa melampirkan file"
@@ -963,7 +1042,7 @@ msgstr ""
 msgid "Help for %s"
 msgstr "Bantuan utk %s"
 
-#: imap.c:116
+#: imap.c:205
 #, c-format
 msgid "imap_error(): unexpected response in %s: %s\n"
 msgstr "imap_error(): respons tak terduga di %s: %s\n"
@@ -971,81 +1050,108 @@ msgstr "imap_error(): respons tak terduga di %s: %s\n"
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
 #.
-#: imap.c:372
+#: imap.c:528
 msgid "Fatal error.  Message count is out of sync!"
 msgstr "Fatal error. Jumlah surat kacau!"
 
-#: imap.c:448
+#: imap.c:661
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Mengambil headers surat-surat... [%d/%d]"
 
-#: imap.c:646 mbox.c:1003
-msgid "Reopening mailbox..."
+#. Unable to fetch headers for lower versions
+#: imap.c:688
+msgid "Unable to fetch headers from this IMAP server version."
+msgstr ""
+
+#: imap.c:880
+#, fuzzy, c-format
+msgid "Reopening mailbox... %s"
 msgstr "Membuka kembali kotak surat..."
 
-#: imap.c:890
-#, c-format
-msgid "Connecting to %s..."
-msgstr "Menghubungi %s..."
+#: imap.c:1230
+msgid "This IMAP server is ancient. Mutt does not work with it."
+msgstr ""
 
-#: imap.c:913
+#: imap.c:1251
 msgid "IMAP Username: "
 msgstr "IMAP Username: "
 
-#: imap.c:926
+#: imap.c:1264
 #, c-format
 msgid "Password for %s@%s: "
 msgstr "Password utk %s@%s: "
 
-#: imap.c:939
+#: imap.c:1277
 msgid "Logging in..."
 msgstr "Sedang login..."
 
 #. Login failed, try again
-#: imap.c:952
+#: imap.c:1290
 msgid "Login failed."
 msgstr "Login gagal."
 
-#: imap.c:1009
+#: imap.c:1401
 #, c-format
 msgid "Selecting %s..."
 msgstr "Memilih %s..."
 
-#: imap.c:1109 lib.c:1206
+#. STATUS not supported
+#. * The thing to do seems to be:
+#. *  - Open a *new* IMAP session, select, and then close it. Report the
+#. * error if the mailbox did not exist.
+#: imap.c:1550
+msgid "Unable to append to IMAP mailboxes at this server"
+msgstr ""
+
+#: imap.c:1560 lib.c:1210
 #, c-format
 msgid "Create %s?"
 msgstr "Buat %s?"
 
-#: imap.c:1158
+#: imap.c:1612
 msgid "Fetching message..."
 msgstr "Mengambil surat..."
 
-#: imap.c:1277
+#: imap.c:1734
 msgid "Sending APPEND command ..."
 msgstr "Mengirim perintah APPEND ..."
 
-#: imap.c:1317
+#: imap.c:1773
 msgid "Uploading message ..."
 msgstr "Mengirim surat ..."
 
-#: imap.c:1372
+#: imap.c:1828
 msgid "Closing connection to IMAP server..."
 msgstr "Menutup hubungan ke server IMAP..."
 
-#: imap.c:1402
+#: imap.c:1859
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Menyimpan tanda-tanda status surat... [%d/%d]"
 
-#: imap.c:1428
+#: imap.c:1891
 msgid "Expunging messages from server..."
 msgstr "Menghapus surat-surat di server..."
 
 #. tell the server to commit changes
-#: imap.c:1479
+#: imap.c:1922
 msgid "Closing mailbox..."
 msgstr "Menutup kotak surat..."
+
+#: imap.c:2497
+msgid "Contacted server, getting folder list..."
+msgstr ""
+
+#: imap.c:2549
+#, fuzzy, c-format
+msgid "Subscribing to %s..."
+msgstr "Sedang meng-copy ke %s..."
+
+#: imap.c:2551
+#, fuzzy, c-format
+msgid "Unsubscribing to %s..."
+msgstr "Menghubungi %s..."
 
 #: init.c:432
 msgid "alias: no address"
@@ -1103,97 +1209,97 @@ msgstr "%s: jenis kotak surat tidak dikenali"
 msgid "%s: invalid value"
 msgstr "%s: nilai tidak betul"
 
-#: init.c:1056
+#: init.c:1061
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: jenis tidak dikenali"
 
-#: init.c:1105
+#: init.c:1110
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Error di %s, baris %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1116
+#: init.c:1121
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: errors di %s"
 
-#: init.c:1126
+#: init.c:1131
 #, c-format
 msgid "source: error at %s"
 msgstr "source: error pada %s"
 
-#: init.c:1131
+#: init.c:1136
 msgid "source: too many arguments"
 msgstr "source: parameter terlalu banyak"
 
-#: init.c:1182
+#: init.c:1187
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: perintah tidak dikenali"
 
-#: init.c:1514
+#: init.c:1524
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Error di baris perintah: %s\n"
 
-#: init.c:1557
+#: init.c:1567
 msgid "unable to determine home directory"
 msgstr "tidak bisa menentukan home direktori"
 
-#: init.c:1565
+#: init.c:1575
 msgid "unable to determine username"
 msgstr "tidak bisa menentukan username"
 
-#: keymap.c:433
+#: keymap.c:435
 msgid "Macro loop detected."
 msgstr "Loop macro terdeteksi."
 
-#: keymap.c:619 keymap.c:627
+#: keymap.c:627 keymap.c:635
 msgid "Key is not bound."
 msgstr "Tombol itu tidak ditentukan untuk apa."
 
-#: keymap.c:631
+#: keymap.c:639
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Tombol itu tidak ditentukan untuk apa. Tekan '%s' utk bantuan."
 
-#: keymap.c:642
+#: keymap.c:650
 msgid "push: too many arguments"
 msgstr "push: parameter terlalu banyak"
 
-#: keymap.c:663
+#: keymap.c:671
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: tidak ada menu begitu"
 
-#: keymap.c:672
+#: keymap.c:680
 msgid "null key sequence"
 msgstr "urutan tombol kosong"
 
-#: keymap.c:750
+#: keymap.c:762
 msgid "bind: too many arguments"
 msgstr "bind: parameter terlalu banyak"
 
-#: keymap.c:765
+#: keymap.c:777
 #, c-format
 msgid "%s: no such function in map"
 msgstr "%s: tidak ada fungsi begitu di map"
 
-#: keymap.c:788
+#: keymap.c:800
 msgid "macro: empty key sequence"
 msgstr "macro: urutan tombol kosong"
 
-#: keymap.c:799
+#: keymap.c:811
 msgid "macro: too many arguments"
 msgstr "macro: parameter terlalu banyak"
 
-#: keymap.c:829
+#: keymap.c:841
 msgid "exec: too few arguments"
 msgstr "exec: parameter terlalu banyak"
 
-#: keymap.c:849
+#: keymap.c:861
 #, c-format
 msgid "%s: no such command"
 msgstr "%s: tidak ada perintah begitu"
@@ -1231,665 +1337,719 @@ msgid "display the currently selected file's name"
 msgstr "tampilkan nama file yang sedang dipilih"
 
 #: keymap_defs.h:13
+msgid "subscribe to current mailbox (IMAP Only)"
+msgstr ""
+
+#: keymap_defs.h:14
+msgid "unsubscribe to current mailbox (IMAP Only)"
+msgstr ""
+
+#: keymap_defs.h:15
+msgid "toggle view all/subscribed mailboxes (IMAP Only)"
+msgstr ""
+
+#: keymap_defs.h:16
 msgid "change directories"
 msgstr "pindah direktori"
 
-#: keymap_defs.h:14
+#: keymap_defs.h:17
 msgid "check mailboxes for new mail"
 msgstr "periksa kotak surat apakah ada surat baru"
 
-#: keymap_defs.h:15
+#: keymap_defs.h:18
 msgid "attach a file(s) to this message"
 msgstr "lampirkan file ke surat ini"
 
-#: keymap_defs.h:16
+#: keymap_defs.h:19
 msgid "attach message(s) to this message"
 msgstr "lampirkan surat lain ke surat ini"
 
-#: keymap_defs.h:17
+#: keymap_defs.h:20
+msgid "change an attachment's character set"
+msgstr ""
+
+#: keymap_defs.h:21
 msgid "edit the BCC list"
 msgstr "edit daftar BCC"
 
-#: keymap_defs.h:18
+#: keymap_defs.h:22
 msgid "edit the CC list"
 msgstr "edit daftar CC"
 
-#: keymap_defs.h:19
+#: keymap_defs.h:23
 msgid "edit attachment description"
 msgstr "edit keterangan lampiran"
 
-#: keymap_defs.h:20
+#: keymap_defs.h:24
 msgid "edit attachment transfer-encoding"
 msgstr "edit transfer-encoding dari lampiran"
 
-#: keymap_defs.h:21
+#: keymap_defs.h:25
 msgid "enter a file to save a copy of this message in"
 msgstr "masukkan nama file di mana salinan surat ini mau disimpan"
 
-#: keymap_defs.h:22
+#: keymap_defs.h:26
 msgid "edit the file to be attached"
 msgstr "edit file yang akan dilampirkan"
 
-#: keymap_defs.h:23
+#: keymap_defs.h:27
 msgid "edit the from field"
 msgstr "edit kolom From"
 
-#: keymap_defs.h:24
+#: keymap_defs.h:28
 msgid "edit the message with headers"
 msgstr "edit surat berikut dengan headers"
 
-#: keymap_defs.h:25
+#: keymap_defs.h:29
 msgid "edit the message"
 msgstr "edit surat"
 
-#: keymap_defs.h:26
+#: keymap_defs.h:30
 msgid "edit attachment using mailcap entry"
 msgstr "edit lampiran berdasarkan mailcap"
 
-#: keymap_defs.h:27
+#: keymap_defs.h:31
 msgid "edit the Reply-To field"
 msgstr "edit kolom Reply-To"
 
-#: keymap_defs.h:28
+#: keymap_defs.h:32
 msgid "edit the subject of this message"
 msgstr "edit subjek dari surat ini"
 
-#: keymap_defs.h:29
+#: keymap_defs.h:33
 msgid "edit the TO list"
 msgstr "edit daftar TO"
 
-#: keymap_defs.h:30
+#: keymap_defs.h:34
 msgid "edit attachment type"
 msgstr "edit jenis lampiran"
 
-#: keymap_defs.h:31
+#: keymap_defs.h:35
 msgid "get a temporary copy of an attachment"
 msgstr "ambil salinan sementara dari lampiran"
 
-#: keymap_defs.h:32
+#: keymap_defs.h:36
 msgid "run ispell on the message"
 msgstr "jalankan ispell ke surat"
 
-#: keymap_defs.h:33
+#: keymap_defs.h:37
 msgid "compose new attachment using mailcap entry"
 msgstr "buat lampiran berdasarkan mailcap"
 
-#: keymap_defs.h:34
+#: keymap_defs.h:38
+msgid "toggle recoding of this attachment"
+msgstr ""
+
+#: keymap_defs.h:39
+msgid "recode this attachment to/from the local charset"
+msgstr ""
+
+#: keymap_defs.h:40
 msgid "save this message to send later"
 msgstr "simpan surat ini untuk dikirim nanti"
 
-#: keymap_defs.h:35
+#: keymap_defs.h:41
 msgid "rename/move an attached file"
 msgstr "ganti nama/pindahkan file lampiran"
 
-#: keymap_defs.h:36
+#: keymap_defs.h:42
 msgid "send the message"
 msgstr "kirim suratnya"
 
-#: keymap_defs.h:37
+#: keymap_defs.h:43
 msgid "toggle whether to delete file after sending it"
 msgstr "hapus atau tidak setelah suratnya dikirim"
 
-#: keymap_defs.h:38
+#: keymap_defs.h:44
 msgid "update an attachment's encoding info"
 msgstr "betulkan encoding info dari lampiran"
 
-#: keymap_defs.h:39
+#: keymap_defs.h:45
 msgid "write the message to a folder"
 msgstr "simpan surat ke sebuah folder"
 
-#: keymap_defs.h:40
+#: keymap_defs.h:46
 msgid "copy a message to a file/mailbox"
 msgstr "simpan surat ke file/kotak surat"
 
-#: keymap_defs.h:41
+#: keymap_defs.h:47
 msgid "create an alias from a message sender"
 msgstr "buat alias dari pengirim surat"
 
-#: keymap_defs.h:42
+#: keymap_defs.h:48
 msgid "move entry to bottom of screen"
 msgstr "pindahkan entry ke akhir layar"
 
-#: keymap_defs.h:43
+#: keymap_defs.h:49
 msgid "move entry to middle of screen"
 msgstr "pindahkan entry ke tengah layar"
 
-#: keymap_defs.h:44
+#: keymap_defs.h:50
 msgid "move entry to top of screen"
 msgstr "pindahkan entry ke awal layar"
 
-#: keymap_defs.h:45
+#: keymap_defs.h:51
 msgid "make decoded (text/plain) copy"
 msgstr "buat salinan (text/plain) yang sudah di-decode"
 
-#: keymap_defs.h:46
+#: keymap_defs.h:52
 msgid "make decoded copy (text/plain) and delete"
 msgstr "buat salinan (text/plain) yang sudah di-decode dan hapus"
 
-#: keymap_defs.h:47
+#: keymap_defs.h:53
 msgid "delete the current entry"
 msgstr "hapus entry"
 
-#: keymap_defs.h:48
+#: keymap_defs.h:54
 msgid "delete all messages in subthread"
 msgstr "hapus semua surat di subthread"
 
-#: keymap_defs.h:49
+#: keymap_defs.h:55
 msgid "delete all messages in thread"
 msgstr "hapus semua surat di thread"
 
-#: keymap_defs.h:50
+#: keymap_defs.h:56
 msgid "display full address of sender"
 msgstr "tampilkan alamat lengkap pengirim"
 
-#: keymap_defs.h:51
+#: keymap_defs.h:57
 msgid "display message with full headers"
 msgstr "tampilkan surat berikut semua headers"
 
-#: keymap_defs.h:52
+#: keymap_defs.h:58
 msgid "display a message"
 msgstr "tampilkan surat"
 
-#: keymap_defs.h:53
+#: keymap_defs.h:59
 msgid "edit the current message for resending"
 msgstr "edit surat untuk dikirim ulang"
 
-#: keymap_defs.h:54
+#: keymap_defs.h:60
 msgid "delete the char in front of the cursor"
 msgstr "hapus karakter di depan kursor"
 
-#: keymap_defs.h:55
+#: keymap_defs.h:61
 msgid "move the cursor one character to the left"
 msgstr "pindahkan kursor satu karakter ke kanan"
 
-#: keymap_defs.h:56
+#: keymap_defs.h:62
 msgid "jump to the beginning of the line"
 msgstr "ke awal baris"
 
-#: keymap_defs.h:57
+#: keymap_defs.h:63
 msgid "cycle among incoming mailboxes"
 msgstr "cycle antara kotak surat yang menerima surat"
 
-#: keymap_defs.h:58
+#: keymap_defs.h:64
 msgid "complete filename or alias"
 msgstr "lengkapi nama file atau alias"
 
-#: keymap_defs.h:59
+#: keymap_defs.h:65
 msgid "complete address with query"
 msgstr "lengkapi alamat dengan query"
 
-#: keymap_defs.h:60
+#: keymap_defs.h:66
 msgid "delete the char under the cursor"
 msgstr "hapus karakter di bawah kursor"
 
-#: keymap_defs.h:61
+#: keymap_defs.h:67
 msgid "jump to the end of the line"
 msgstr "ke akhir baris"
 
-#: keymap_defs.h:62
+#: keymap_defs.h:68
 msgid "move the cursor one character to the right"
 msgstr "pindahkan kursor satu karakter ke kanan"
 
-#: keymap_defs.h:63 keymap_defs.h:64
+#: keymap_defs.h:69 keymap_defs.h:70
 msgid "scroll up through the history list"
 msgstr "yang diisi sebelumnya (history-prev)"
 
-#: keymap_defs.h:65
+#: keymap_defs.h:71
 msgid "delete chars from cursor to end of line"
 msgstr "hapus dari kursor sampai akhir baris"
 
-#: keymap_defs.h:66
+#: keymap_defs.h:72
 msgid "delete all chars on the line"
 msgstr "hapus baris"
 
-#: keymap_defs.h:67
+#: keymap_defs.h:73
 msgid "delete the word in front of the cursor"
 msgstr "hapus kata di depan kursor"
 
-#: keymap_defs.h:68
+#: keymap_defs.h:74
 msgid "quote the next typed key"
 msgstr "kutip tombol yang akan ditekan berikut"
 
-#: keymap_defs.h:69
+#: keymap_defs.h:75
 msgid "enter a muttrc command"
 msgstr "menjalankan perintah muttrc"
 
-#: keymap_defs.h:70
+#: keymap_defs.h:76
 msgid "enter a file mask"
 msgstr "menentukan file mask"
 
-#: keymap_defs.h:71
+#: keymap_defs.h:77
 msgid "exit this menu"
 msgstr "keluar dari menu ini"
 
-#: keymap_defs.h:72
+#: keymap_defs.h:78
 msgid "filter attachment through a shell command"
 msgstr "mem-filter lampiran melalui perintah shell"
 
-#: keymap_defs.h:73
+#: keymap_defs.h:79
 msgid "move to the first entry"
 msgstr "ke entry pertama"
 
-#: keymap_defs.h:74
+#: keymap_defs.h:80
 msgid "toggle a message's 'important' flag"
 msgstr "menandai surat penting atau tidak ('important' flag)"
 
-#: keymap_defs.h:75
+#: keymap_defs.h:81
 msgid "forward a message with comments"
 msgstr "forward surat dengan komentar"
 
-#: keymap_defs.h:76
+#: keymap_defs.h:82
 msgid "select the current entry"
 msgstr "pilih entry"
 
-#: keymap_defs.h:77
+#: keymap_defs.h:83
 msgid "reply to all recipients"
 msgstr "balas ke semua penerima"
 
-#: keymap_defs.h:78
+#: keymap_defs.h:84
 msgid "scroll down 1/2 page"
 msgstr "geser ke bawah setengah layar"
 
-#: keymap_defs.h:79
+#: keymap_defs.h:85
 msgid "scroll up 1/2 page"
 msgstr "geser ke atas setengah layar"
 
-#: keymap_defs.h:80
+#: keymap_defs.h:86
 msgid "this screen"
 msgstr "layar ini"
 
-#: keymap_defs.h:81
+#: keymap_defs.h:87
 msgid "jump to an index number"
 msgstr "ke nomer indeks"
 
-#: keymap_defs.h:82
+#: keymap_defs.h:88
 msgid "move to the last entry"
 msgstr "ke entry terakhir"
 
-#: keymap_defs.h:83
+#: keymap_defs.h:89
 msgid "reply to specified mailing list"
 msgstr "balas ke mailing list yang disebut"
 
-#: keymap_defs.h:84
+#: keymap_defs.h:90
 msgid "execute a macro"
 msgstr "menjalankan macro"
 
-#: keymap_defs.h:85
+#: keymap_defs.h:91
 msgid "compose a new mail message"
 msgstr "menulis surat baru"
 
-#: keymap_defs.h:86
+#: keymap_defs.h:92
 msgid "open a different folder"
 msgstr "membuka folder lain"
 
-#: keymap_defs.h:87
+#: keymap_defs.h:93
 msgid "open a different folder in read only mode"
 msgstr "membuka folder lain dengan mode read-only"
 
-#: keymap_defs.h:88
+#: keymap_defs.h:94
 msgid "clear a status flag from a message"
 msgstr "bersihkan suatu tanda status pada surat"
 
-#: keymap_defs.h:89
+#: keymap_defs.h:95
 msgid "delete messages matching a pattern"
 msgstr "hapus surat yang cocok dengan suatu kriteria"
 
-#: keymap_defs.h:90
+#: keymap_defs.h:96
 msgid "retrieve mail from POP server"
 msgstr "mengambil surat dari server POP"
 
-#: keymap_defs.h:91
+#: keymap_defs.h:97
 msgid "move to the first message"
 msgstr "ke surat pertama"
 
-#: keymap_defs.h:92
+#: keymap_defs.h:98
 msgid "move to the last message"
 msgstr "ke surat terakhir"
 
-#: keymap_defs.h:93
+#: keymap_defs.h:99
 msgid "show only messages matching a pattern"
 msgstr "hanya tunjukkan surat yang cocok dengan suatu kriteria"
 
-#: keymap_defs.h:94
+#: keymap_defs.h:100
 msgid "jump to the next new message"
 msgstr "ke surat berikutnya yang baru"
 
-#: keymap_defs.h:95
+#: keymap_defs.h:101
 msgid "jump to the next subthread"
 msgstr "ke subthread berikutnya"
 
-#: keymap_defs.h:96
+#: keymap_defs.h:102
 msgid "jump to the next thread"
 msgstr "ke thread berikutnya"
 
-#: keymap_defs.h:97
+#: keymap_defs.h:103
 msgid "move to the next undeleted message"
 msgstr "ke surat berikutnya yang tidak dihapus"
 
-#: keymap_defs.h:98
+#: keymap_defs.h:104
 msgid "jump to the next unread message"
 msgstr "ke surat berikutnya yang belum dibaca"
 
-#: keymap_defs.h:99
+#: keymap_defs.h:105
 msgid "jump to previous thread"
 msgstr "ke thread sebelumnya"
 
-#: keymap_defs.h:100
+#: keymap_defs.h:106
 msgid "jump to previous subthread"
 msgstr "ke subthread sebelumnya"
 
-#: keymap_defs.h:101
+#: keymap_defs.h:107
 msgid "move to the last undelete message"
 msgstr "ke surat terakhir yang tidak dihapus"
 
-#: keymap_defs.h:102
+#: keymap_defs.h:108
 msgid "jump to the previous new message"
 msgstr "ke surat sebelumnya yang baru"
 
-#: keymap_defs.h:103
+#: keymap_defs.h:109
 msgid "jump to the previous unread message"
 msgstr "ke surat sebelumnya yang belum dibaca"
 
-#: keymap_defs.h:104
+#: keymap_defs.h:110
 msgid "mark the current thread as read"
 msgstr "tandai thread 'sudah dibaca'"
 
-#: keymap_defs.h:105
+#: keymap_defs.h:111
 msgid "mark the current subthread as read"
 msgstr "tandai subthread 'sudah dibaca'"
 
-#: keymap_defs.h:106
+#: keymap_defs.h:112
 msgid "set a status flag on a message"
 msgstr "tandai status dari surat"
 
-#: keymap_defs.h:107
+#: keymap_defs.h:113
 msgid "save changes to mailbox"
 msgstr "simpan perubahan ke kotak surat"
 
-#: keymap_defs.h:108
+#: keymap_defs.h:114
 msgid "tag messages matching a pattern"
 msgstr "tandai surat-surat yang cocok dengan kriteria"
 
-#: keymap_defs.h:109
+#: keymap_defs.h:115
 msgid "undelete messages matching a pattern"
 msgstr "tidak jadi menghapus surat-surat yang cocok dengan kriteria"
 
-#: keymap_defs.h:110
+#: keymap_defs.h:116
 msgid "untag messages matching a pattern"
 msgstr "tidak jadi menandai surat-surat yang cocok dengan kriteria"
 
-#: keymap_defs.h:111
+#: keymap_defs.h:117
 msgid "move to the middle of the page"
 msgstr "ke tengah halaman"
 
-#: keymap_defs.h:112
+#: keymap_defs.h:118
 msgid "move to the next entry"
 msgstr "ke entry berikutnya"
 
-#: keymap_defs.h:113
+#: keymap_defs.h:119
 msgid "scroll down one line"
 msgstr "geser ke bawah satu baris"
 
-#: keymap_defs.h:114
+#: keymap_defs.h:120
 msgid "move to the next page"
 msgstr "ke halaman berikutnya"
 
-#: keymap_defs.h:115
+#: keymap_defs.h:121
 msgid "jump to the bottom of the message"
 msgstr "ke akhir surat"
 
-#: keymap_defs.h:116
+#: keymap_defs.h:122
 msgid "return to the main-menu"
 msgstr "kembali ke menu utama"
 
-#: keymap_defs.h:117
+#: keymap_defs.h:123
 msgid "toggle display of quoted text"
 msgstr "tampilkan atau tidak teks yang dikutip"
 
-#: keymap_defs.h:118
+#: keymap_defs.h:124
 msgid "skip beyond quoted text"
 msgstr "lompati setelah teks yang dikutip"
 
-#: keymap_defs.h:119
+#: keymap_defs.h:125
 msgid "jump to the top of the message"
 msgstr "ke awal surat"
 
-#: keymap_defs.h:120
+#: keymap_defs.h:126
 msgid "pipe message/attachment to a shell command"
 msgstr "pipe surat/lampiran ke perintah shell"
 
-#: keymap_defs.h:121
+#: keymap_defs.h:127
 msgid "move to the previous entry"
 msgstr "ke entry sebelumnya"
 
-#: keymap_defs.h:122
+#: keymap_defs.h:128
 msgid "scroll up one line"
 msgstr "geser ke atas satu baris"
 
-#: keymap_defs.h:123
+#: keymap_defs.h:129
 msgid "move to the previous page"
 msgstr "ke halaman sebelumnya"
 
-#: keymap_defs.h:124
+#: keymap_defs.h:130
 msgid "print the current entry"
 msgstr "cetak entry"
 
-#: keymap_defs.h:125
+#: keymap_defs.h:131
 msgid "query external program for addresses"
 msgstr "gunakan program lain untuk mencari alamat"
 
-#: keymap_defs.h:126
+#: keymap_defs.h:132
 msgid "append new query results to current results"
 msgstr "tambahkan hasil pencarian baru ke hasil yang sudah ada"
 
-#: keymap_defs.h:127
+#: keymap_defs.h:133
 msgid "save changes to mailbox and quit"
 msgstr "simpan perubahan ke kotak surat dan keluar"
 
-#: keymap_defs.h:128
+#: keymap_defs.h:134
 msgid "recall a postponed message"
 msgstr "lanjutkan surat yang ditunda"
 
-#: keymap_defs.h:129
+#: keymap_defs.h:135
 msgid "clear and redraw the screen"
 msgstr "bersihkan layar dan redraw"
 
-#: keymap_defs.h:130
+#: keymap_defs.h:136
 msgid "{internal}"
 msgstr "{jerohan}"
 
-#: keymap_defs.h:131
+#: keymap_defs.h:137
 msgid "reply to a message"
 msgstr "balas surat"
 
-#: keymap_defs.h:132
+#: keymap_defs.h:138
 msgid "save message/attachment to a file"
 msgstr "simpan surat/lampiran ke suatu file"
 
-#: keymap_defs.h:133
+#: keymap_defs.h:139
 msgid "search for a regular expression"
 msgstr "cari dengan regular expression"
 
-#: keymap_defs.h:134
+#: keymap_defs.h:140
 msgid "search backwards for a regular expression"
 msgstr "cari mundur dengan regular expression"
 
-#: keymap_defs.h:135
+#: keymap_defs.h:141
 msgid "search for next match"
 msgstr "cari yang cocok berikutnya"
 
-#: keymap_defs.h:136
+#: keymap_defs.h:142
 msgid "search for next match in opposite direction"
 msgstr "cari mundur yang cocok berikutnya"
 
-#: keymap_defs.h:137
+#: keymap_defs.h:143
 msgid "toggle search pattern coloring"
 msgstr "diwarnai atau tidak jika ketemu"
 
-#: keymap_defs.h:138
+#: keymap_defs.h:144
 msgid "invoke a command in a subshell"
 msgstr "jalankan perintah di subshell"
 
-#: keymap_defs.h:139
+#: keymap_defs.h:145
 msgid "sort messages"
 msgstr "urutkan surat-surat"
 
-#: keymap_defs.h:140
+#: keymap_defs.h:146
 msgid "sort messages in reverse order"
 msgstr "urutkan terbalik surat-surat"
 
-#: keymap_defs.h:141
+#: keymap_defs.h:147
 msgid "tag the current entry"
 msgstr "tandai entry"
 
-#: keymap_defs.h:142
+#: keymap_defs.h:148
 msgid "apply next function to tagged messages"
 msgstr "terapkan fungsi berikutnya ke surat-surat yang ditandai"
 
-#: keymap_defs.h:143
+#: keymap_defs.h:149
 msgid "tag the current subthread"
 msgstr "tandai subthread"
 
-#: keymap_defs.h:144
+#: keymap_defs.h:150
 msgid "tag the current thread"
 msgstr "tandai thread"
 
-#: keymap_defs.h:145
+#: keymap_defs.h:151
 msgid "toggle a message's 'new' flag"
 msgstr "tandai atau tidak sebuah surat 'baru'"
 
-#: keymap_defs.h:146
+#: keymap_defs.h:152
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "apakah kotak surat akan ditulis ulang"
 
-#: keymap_defs.h:147
-msgid "toggle wether to browse mailboxes or all files"
+#: keymap_defs.h:153
+#, fuzzy
+msgid "toggle whether to browse mailboxes or all files"
 msgstr "apakah menjelajahi kotak-kotak surat saja atau semua file"
 
-#: keymap_defs.h:148
+#: keymap_defs.h:154
 msgid "move to the top of the page"
 msgstr "ke awal halaman"
 
-#: keymap_defs.h:149
+#: keymap_defs.h:155
 msgid "undelete the current entry"
 msgstr "tidak jadi hapus entry"
 
-#: keymap_defs.h:150
+#: keymap_defs.h:156
 msgid "undelete all messages in thread"
 msgstr "tidak jadi hapus semua surat di thread"
 
-#: keymap_defs.h:151
+#: keymap_defs.h:157
 msgid "undelete all messages in subthread"
 msgstr "tidak jadi hapus semua surat di subthread"
 
-#: keymap_defs.h:152
+#: keymap_defs.h:158
 msgid "show the Mutt version number and date"
 msgstr "tunjukkan versi dan tanggal dari Mutt"
 
-#: keymap_defs.h:153
+#: keymap_defs.h:159
 msgid "view attachment using mailcap entry if necessary"
 msgstr "tampilkan lampiran berdasarkan mailcap jika perlu"
 
-#: keymap_defs.h:154
+#: keymap_defs.h:160
 msgid "show MIME attachments"
 msgstr "tampilkan lampiran MIME"
 
-#: keymap_defs.h:155
+#: keymap_defs.h:161
 msgid "show currently active limit pattern"
 msgstr "tampilkan kriteria batas yang aktif"
 
-#: keymap_defs.h:156
+#: keymap_defs.h:162
 msgid "collapse/uncollapse current thread"
 msgstr "collapse/uncollapse thread"
 
-#: keymap_defs.h:157
+#: keymap_defs.h:163
 msgid "collapse/uncollapse all threads"
 msgstr "collapse/uncollapse semua thread"
 
-#: keymap_defs.h:158
+#: keymap_defs.h:164
 msgid "attach a PGP public key"
 msgstr "lampirkan PGP public key"
 
-#: keymap_defs.h:159
+#: keymap_defs.h:165
 msgid "show PGP options"
 msgstr "tunjukan options PGP"
 
-#: keymap_defs.h:160
+#: keymap_defs.h:166
 msgid "extract PGP public keys"
 msgstr "ambil PGP public keys"
 
-#: keymap_defs.h:161
+#: keymap_defs.h:167
 msgid "wipe PGP passphrase from memory"
 msgstr "hapus PGP passphrase dari memory"
 
-#: keymap_defs.h:162
+#: keymap_defs.h:168
 msgid "mail a PGP public key"
 msgstr "kirim PGP public key lewat surat"
 
-#: keymap_defs.h:163
+#: keymap_defs.h:169
 msgid "verify a PGP public key"
 msgstr "periksa PGP public key"
 
-#: keymap_defs.h:164
+#: keymap_defs.h:170
 msgid "view the key's user id"
 msgstr "tampilkan user ID dari key"
 
-#: keymap_defs.h:165
+#: keymap_defs.h:171
 msgid "make decrypted copy and delete"
 msgstr "buat salinan yang sudah di-decrypt dan hapus"
 
-#: keymap_defs.h:166
+#: keymap_defs.h:172
 msgid "make decrypted copy"
 msgstr "buat salinan yang sudah di-decrypt"
 
-#: lib.c:276 lib.c:291 lib.c:322
+#: keymap_defs.h:173
+msgid "Accept the chain constructed"
+msgstr ""
+
+#: keymap_defs.h:174
+msgid "Append a remailer to the chain"
+msgstr ""
+
+#: keymap_defs.h:175
+msgid "Insert a remailer into the chain"
+msgstr ""
+
+#: keymap_defs.h:176
+#, fuzzy
+msgid "Delete a remailer from the chain"
+msgstr "hapus baris"
+
+#: keymap_defs.h:177
+msgid "Select the previous element of the chain"
+msgstr ""
+
+#: keymap_defs.h:178
+msgid "Select the next element of the chain"
+msgstr ""
+
+#: keymap_defs.h:179
+msgid "send the message through a mixmaster remailer chain"
+msgstr ""
+
+#: lib.c:280 lib.c:295 lib.c:326
 msgid "Out of memory!"
 msgstr "Buset, memory abis!"
 
-#: lib.c:781
+#: lib.c:785
 msgid "File is a directory, save under it?"
 msgstr "File ini adalah direktori, simpan di dalamnya?"
 
-#: lib.c:786
+#: lib.c:790
 msgid "File under directory: "
 msgstr "File di direktori: "
 
-#: lib.c:798
+#: lib.c:802
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "File sudah ada, (t)impa, t(a)mbah, atau (b)atal?"
 
-#: lib.c:798
+#: lib.c:802
 msgid "oac"
 msgstr "tab"
 
-#: lib.c:1182
+#: lib.c:1186
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s bukan kotak surat!"
 
-#: lib.c:1188
+#: lib.c:1192
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Tambahkan surat-surat ke %s?"
 
-#: main.c:39
+#: main.c:40
 msgid "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 msgstr "Untuk menghubungi developersnya, kirim email ke <mutt-dev@mutt.org>.\n"
 
-#: main.c:42
+#: main.c:43
 msgid ""
-"Copyright (C) 1996-8 Michael R. Elkins and others.\n"
+"Copyright (C) 1996-9 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
 
-#: main.c:48
+#: main.c:49
 msgid ""
-"Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>\n"
-"Copyright (C) 1997-8 Thomas Roessler <roessler@guug.de>\n"
-"Copyright (C) 1998   Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1998   Ruslan Ermilov <ru@ucb.crimea.ua>\n"
+"Copyright (C) 1996-9 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Copyright (C) 1996-9 Brandon Long <blong@fiction.net>\n"
+"Copyright (C) 1997-9 Thomas Roessler <roessler@guug.de>\n"
+"Copyright (C) 1998-9 Werner Koch <wk@isil.d.shuttle.de>\n"
 "\n"
 "Lots of others not mentioned here contributed lots of code,\n"
 "fixes, and suggestions.\n"
@@ -1909,7 +2069,7 @@ msgid ""
 "    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n"
 msgstr ""
 
-#: main.c:73
+#: main.c:74
 msgid ""
 "\n"
 "SHA1 implementation Copyright (C) 1995-7 Eric A. Young <eay@cryptsoft.com>\n"
@@ -1925,7 +2085,7 @@ msgid ""
 "    along with this program; if not, write to the program's developers.\n"
 msgstr ""
 
-#: main.c:99
+#: main.c:100
 msgid ""
 "usage: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
 "]\n"
@@ -1983,39 +2143,39 @@ msgstr ""
 "  -Z\t\tbuka folder pertama dg surat baru, langsung keluar jika tidak ada\n"
 "  -h\t\tpesan ini"
 
-#: main.c:151
+#: main.c:152
 msgid ""
 "\n"
 "Compile options:"
 msgstr ""
 
-#: main.c:305
+#: main.c:306
 msgid "Error initializing terminal."
 msgstr "Gagal menginisialisasi terminal."
 
-#: main.c:403
+#: main.c:405
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr ""
 
-#: main.c:405
+#: main.c:407
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG tidak digunakan sewaktu compile. Cuek.\n"
 
-#: main.c:543
+#: main.c:545
 msgid "No recipients specified.\n"
 msgstr "Tidak ada penerima yang disebutkan.\n"
 
-#: main.c:616
+#: main.c:618
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: tidak bisa melampirkan file.\n"
 
-#: main.c:636
+#: main.c:638
 msgid "No mailbox with new mail."
 msgstr "Tidak ada kotak surat dengan surat baru."
 
-#: main.c:670
+#: main.c:672
 msgid "Mailbox is empty."
 msgstr "Kotak surat kosong."
 
@@ -2045,7 +2205,8 @@ msgstr "Tidak bisa mengunci kotak surat!"
 #.
 #: mbox.c:738
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr "sync: mbox dirubah, tapi tidak ada surat yang berubah! (laporkan bug ini)"
+msgstr ""
+"sync: mbox dirubah, tapi tidak ada surat yang berubah! (laporkan bug ini)"
 
 #: mbox.c:767
 msgid "Writing messages... %d (%d%%)"
@@ -2060,76 +2221,80 @@ msgstr "Gagal menulis! Sebagian dari kotak surat disimpan ke %s"
 msgid "Could not reopen mailbox!"
 msgstr "Tidak bisa membuka kembali mailbox!"
 
-#: menu.c:308
+#: mbox.c:1003
+msgid "Reopening mailbox..."
+msgstr "Membuka kembali kotak surat..."
+
+#: menu.c:312
 msgid "Jump to: "
 msgstr "Ke: "
 
-#: menu.c:317
+#: menu.c:321
 msgid "Invalid index number."
 msgstr "Nomer indeks tidak betul."
 
-#: menu.c:321 menu.c:339 menu.c:375 menu.c:416 menu.c:432 menu.c:443
-#: menu.c:454 menu.c:496 menu.c:507 menu.c:520 menu.c:533 menu.c:812
+#: menu.c:325 menu.c:343 menu.c:379 menu.c:420 menu.c:436 menu.c:447
+#: menu.c:458 menu.c:500 menu.c:511 menu.c:524 menu.c:537 menu.c:823
 msgid "No entries."
 msgstr "Tidak ada entry."
 
-#: menu.c:336
+#: menu.c:340
 msgid "You cannot scroll down farther."
 msgstr "Sudah tidak bisa geser lagi. Jebol nanti."
 
-#: menu.c:352
+#: menu.c:356
 msgid "You cannot scroll up farther."
 msgstr "Sudah tidak bisa geser lagi. Jebol nanti."
 
-#: menu.c:372
+#: menu.c:376
 msgid "You are on the last page."
 msgstr "Anda di halaman terakhir."
 
-#: menu.c:394
+#: menu.c:398
 msgid "You are on the first page."
 msgstr "Anda di halaman pertama."
 
-#: menu.c:473
+#: menu.c:477
 msgid "First entry is shown."
 msgstr "Entry pertama sudah ditampilkan."
 
-#: menu.c:493
+#: menu.c:497
 msgid "Last entry is shown."
 msgstr "Entry terakhir sudah ditampilkan."
 
-#: menu.c:544
+#: menu.c:548
 msgid "You are on the last entry."
 msgstr "Anda di entry terakhir."
 
-#: menu.c:555
+#: menu.c:559
 msgid "You are on the first entry."
 msgstr "Anda di entry pertama."
 
-#: menu.c:595 pattern.c:1054
+#: menu.c:608 pattern.c:1055
 msgid "Search for: "
 msgstr "Cari: "
 
-#: menu.c:596
+#: menu.c:609
 msgid "Reverse search for: "
 msgstr "Cari mundur: "
 
-#: menu.c:607 pattern.c:1087
+#: menu.c:620 pattern.c:1088
 msgid "No search pattern."
 msgstr "Tidak ada kriteria pencarian."
 
-#: menu.c:637 pager.c:1828 pager.c:1844 pager.c:1931 pattern.c:1152
+#: menu.c:650 pager.c:1835 pager.c:1851 pager.c:1938 pattern.c:1153
 msgid "Not found."
 msgstr "Tidak ketemu."
 
-#: menu.c:688
+#: menu.c:701
 msgid "No tagged entries."
 msgstr "Tidak ada entry yang ditandai."
 
-#: menu.c:776
+#: menu.c:789
 msgid "Search is not implemented for this menu."
 msgstr "Pencarian tidak bisa dilakukan untuk menu ini."
 
-#: menu.c:815
+#: menu.c:826
 msgid "Tagging is not supported."
 msgstr "Penandaan tidak didukung."
 
@@ -2138,143 +2303,143 @@ msgstr "Penandaan tidak didukung."
 msgid "Reading %s... %d"
 msgstr "Membaca %s... %d"
 
-#: mx.c:115
+#: mx.c:114
 #, c-format
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Jumlah lock terlalu banyak, hapus lock untuk %s?"
 
-#: mx.c:126
+#: mx.c:125
 #, c-format
 msgid "Can't dotlock %s.\n"
 msgstr "Tidak bisa men-dotlock %s.\n"
 
-#: mx.c:184
+#: mx.c:183
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Terlalu lama menunggu waktu mencoba fcntl lock!"
 
-#: mx.c:190
+#: mx.c:189
 #, c-format
 msgid "Waiting for fcntl lock... %d"
 msgstr "Menunggu fcntl lock... %d"
 
-#: mx.c:218
+#: mx.c:217
 msgid "Timeout exceeded while attempting flock lock!"
 msgstr "Terlalu lama menunggu waktu mencoba flock!"
 
-#: mx.c:225
+#: mx.c:224
 #, c-format
 msgid "Waiting for flock attempt... %d"
 msgstr "Menunggu flock... %d"
 
-#: mx.c:595
+#: mx.c:594
 #, c-format
 msgid "Reading %s..."
 msgstr "Membaca %s..."
 
-#: mx.c:685
+#: mx.c:684
 #, c-format
 msgid "Writing %s..."
 msgstr "Menulis %s..."
 
-#: mx.c:711
+#: mx.c:710
 #, c-format
 msgid "Could not synchronize mailbox %s!"
 msgstr "Tidak bisa mensinkronisasi kotak surat %s!"
 
-#: mx.c:775
+#: mx.c:774
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Pindahkan surat-surat yang sudah dibaca ke %s?"
 
-#: mx.c:784 mx.c:979
+#: mx.c:783 mx.c:982
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Benar-benar hapus %d surat yang ditandai akan dihapus?"
 
-#: mx.c:784 mx.c:979
+#: mx.c:783 mx.c:982
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Benar-benar hapus %d surat yang ditandai akan dihapus?"
 
-#: mx.c:804
+#: mx.c:807
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Pindahkan surat-surat yang sudah dibaca ke %s..."
 
-#: mx.c:827 mx.c:970
+#: mx.c:830 mx.c:973
 msgid "Mailbox is unchanged."
 msgstr "Kotak surat tidak berubah."
 
-#: mx.c:846
+#: mx.c:849
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d disimpan, %d dipindahkan, %d dihapus."
 
-#: mx.c:849 mx.c:995
+#: mx.c:852 mx.c:998
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d disimpan, %d dihapus."
 
-#: mx.c:955
+#: mx.c:958
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr "Tekan '%s' untuk mengeset bisa/tidak menulis"
 
-#: mx.c:957
+#: mx.c:960
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Gunakan 'toggle-write' supaya bisa menulis lagi!"
 
-#: mx.c:959
+#: mx.c:962
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Kotak surat ditandai tidak boleh ditulisi. %s"
 
-#: mx.c:964
+#: mx.c:967
 msgid "Mailbox is read-only."
 msgstr "Kotak surat hanya bisa dibaca."
 
-#: pager.c:1369
+#: pager.c:1376
 msgid "PrevPg"
 msgstr ""
 
-#: pager.c:1370
+#: pager.c:1377
 msgid "NextPg"
 msgstr ""
 
-#: pager.c:1374
+#: pager.c:1381
 msgid "View Attachm."
 msgstr "Lihat Lampiran"
 
-#: pager.c:1377
+#: pager.c:1384
 msgid "Next"
 msgstr ""
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1740 pager.c:1771 pager.c:1800 pager.c:2019
+#: pager.c:1747 pager.c:1778 pager.c:1807 pager.c:2026
 msgid "Bottom of message is shown."
 msgstr "Sudah paling bawah."
 
-#: pager.c:1756 pager.c:1778 pager.c:1789
+#: pager.c:1763 pager.c:1785 pager.c:1796
 msgid "Top of message is shown."
 msgstr "Sudah paling atas."
 
-#: pager.c:1862
+#: pager.c:1869
 msgid "Reverse search: "
 msgstr "Cari mundur: "
 
-#: pager.c:1863
+#: pager.c:1870
 msgid "Search: "
 msgstr "Cari: "
 
-#: pager.c:1957
+#: pager.c:1964
 msgid "Help is currently being shown."
 msgstr "Bantuan sudah ditampilkan."
 
-#: pager.c:1986
+#: pager.c:1993
 msgid "No more quoted text."
 msgstr "Tidak ada lagi teks kutipan."
 
-#: pager.c:1999
+#: pager.c:2006
 msgid "No more unquoted text after quoted text."
 msgstr "Tidak ada lagi teks yang tidak dikutp setelah teks kutipan."
 
@@ -2282,79 +2447,79 @@ msgstr "Tidak ada lagi teks yang tidak dikutp setelah teks kutipan."
 msgid "multipart message has no boundary parameter!"
 msgstr "surat multi bagian tidak punya parameter batas!"
 
-#: pattern.c:235
+#: pattern.c:236
 #, c-format
 msgid "Error in expression: %s"
 msgstr ""
 
-#: pattern.c:332
+#: pattern.c:333
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "Tidak tanggal: %s"
 
-#: pattern.c:346
+#: pattern.c:347
 #, c-format
 msgid "Invalid month: %s"
 msgstr "Tidak ada bulan: %s"
 
-#: pattern.c:400
+#: pattern.c:401
 msgid "error in expression"
 msgstr ""
 
-#: pattern.c:585 pattern.c:693
+#: pattern.c:586 pattern.c:694
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "error pada kriteria pada: %s"
 
-#: pattern.c:633
+#: pattern.c:634
 #, c-format
 msgid "%c: invalid command"
 msgstr "%c: tidak ada perintah begitu"
 
-#: pattern.c:639
+#: pattern.c:640
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: tidak didukung pada mode ini"
 
-#: pattern.c:652
+#: pattern.c:653
 msgid "missing parameter"
 msgstr "parameter tidak ada"
 
-#: pattern.c:668
+#: pattern.c:669
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "tanda kurung tidak klop: %s"
 
-#: pattern.c:700
+#: pattern.c:701
 msgid "empty pattern"
 msgstr "kriteria kosong"
 
-#: pattern.c:879
+#: pattern.c:880
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "error: %d tidak dikenali (laporkan error ini)."
 
-#: pattern.c:944 pattern.c:1073
+#: pattern.c:945 pattern.c:1074
 msgid "Compiling search pattern..."
 msgstr "Menyusun kriteria pencarian..."
 
-#: pattern.c:958
+#: pattern.c:959
 msgid "Executing command on matching messages..."
 msgstr "Menjalankan perintah terhadap surat-surat yang cocok..."
 
-#: pattern.c:1021
+#: pattern.c:1022
 msgid "No messages matched criteria."
 msgstr "Tidak ada surat yang memenuhi kriteria."
 
-#: pattern.c:1111
+#: pattern.c:1112
 msgid "Search hit bottom without finding match"
 msgstr "Sudah dicari sampe bawah, tapi tidak ketemu"
 
-#: pattern.c:1122
+#: pattern.c:1123
 msgid "Search hit top without finding match"
 msgstr "Sudah dicari sampe atas, tapi tidak ketemu"
 
-#: pattern.c:1144
+#: pattern.c:1145
 msgid "Search interrupted."
 msgstr "Pencarian dibatalkan."
 
@@ -2429,7 +2594,7 @@ msgstr ""
 "[-- Error: tidak tahu dimana surat PGP dimulai! --]\n"
 "\n"
 
-#: pgp.c:669 pgp.c:894
+#: pgp.c:668 pgp.c:974
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -2437,38 +2602,56 @@ msgstr ""
 "[-- Akhir keluaran PGP --]\n"
 "\n"
 
-#. Now display the signed body
-#: pgp.c:676
+#: pgp.c:720
 msgid ""
-"[-- The following data is PGP/MIME signed --]\n"
+"[-- Error: Inconsistant multipart/signed structure! --]\n"
+"\n"
+msgstr ""
+
+#: pgp.c:728
+#, fuzzy, c-format
+msgid ""
+"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"\n"
+msgstr "Error: multipart/signed tidak punya protokol."
+
+#: pgp.c:749
+#, c-format
+msgid ""
+"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"\n"
+msgstr ""
+
+#. Now display the signed body
+#: pgp.c:757
+#, fuzzy
+msgid ""
+"[-- The following data is signed --]\n"
 "\n"
 msgstr ""
 "[-- Data berikut ini ditandatangani dg PGP/MIME --]\n"
 "\n"
 
-#: pgp.c:682
+#: pgp.c:763
+msgid ""
+"[-- Warning: Can't find any signatures. --]\n"
+"\n"
+msgstr ""
+
+#: pgp.c:769
+#, fuzzy
 msgid ""
 "\n"
-"[-- End of PGP/MIME signed data --]\n"
+"[-- End of signed data --]\n"
 msgstr ""
 "\n"
 "[-- Akhir data yang ditandatangani dg PGP/MIME --]\n"
 
-#: pgp.c:687
-msgid ""
-"[-- Error: this message does not comply with the PGP/MIME specification! "
-"--]\n"
-"\n"
-msgstr ""
-"[-- Error: surat ini tidak menuruti aturan spesifikasi PGP/MIME! "
-"--]\n"
-"\n"
-
-#: pgp.c:801
+#: pgp.c:881
 msgid "Internal error. Inform <roessler@guug.de>."
 msgstr "Internal error. Hubungi <roessler@guug.de>."
 
-#: pgp.c:865
+#: pgp.c:945
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -2476,7 +2659,7 @@ msgstr ""
 "[-- Error: tidak bisa membuat subproses PGP! --]\n"
 "\n"
 
-#: pgp.c:958
+#: pgp.c:1038
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -2484,11 +2667,12 @@ msgstr ""
 "[-- Error: surat PGP/MIME tidak dalam format yg betul! --]\n"
 "\n"
 
-#: pgp.c:971
-msgid "[-- Error: create temporary file! --]\n"
+#: pgp.c:1051
+#, fuzzy
+msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Error: tidak bisa membuat file sementara! --]\n"
 
-#: pgp.c:980
+#: pgp.c:1060
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -2496,150 +2680,167 @@ msgstr ""
 "[-- Data berikut di-encrypt dgn PGP/MIME --]\n"
 "\n"
 
-#: pgp.c:988
+#: pgp.c:1068
+#, fuzzy
 msgid ""
 "\n"
-"[-- Akhir data yg di-encrypt dgn PGP/MIME --]\n"
+"[-- End of PGP/MIME encrypted data --]\n"
 msgstr ""
+"\n"
+"[-- Akhir data yang ditandatangani dg PGP/MIME --]\n"
 
-#: pgp.c:1070
+#: pgp.c:1152
 msgid "Can't open PGP subprocess!"
 msgstr "Tidak bisa membuka subproses PGP!"
 
-#: pgp.c:1194
+#: pgp.c:1273
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Gunakan keyID = '%s' untuk %s?"
 
-#: pgp.c:1200
+#: pgp.c:1280
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Masukkan keyID untuk %s: "
 
-#: pgpkey.c:173
+#: pgpkey.c:441
 msgid "Exit  "
 msgstr "Keluar  "
 
-#: pgpkey.c:175
+#: pgpkey.c:443
 msgid "Select  "
 msgstr "Pilih  "
 
-#: pgpkey.c:178
+#: pgpkey.c:446
 msgid "Check key  "
 msgstr "Cek key  "
 
-#: pgpkey.c:191
+#: pgpkey.c:458
 msgid "PGP keys matching "
 msgstr "PGP keys yg cocok "
 
-#: pgpkey.c:210 pgpkey.c:387
+#: pgpkey.c:479 pgpkey.c:682
 msgid "Can't open /dev/null"
 msgstr "Tidak bisa membuka /dev/null"
 
-#: pgpkey.c:216 pgpkey.c:381
+#: pgpkey.c:485 pgpkey.c:675
 msgid "Can't create temporary file"
 msgstr "Tidak bisa membuat file sementara"
 
-#: pgpkey.c:226 pgpkey.c:398
+#: pgpkey.c:495 pgpkey.c:696
 msgid "Can't create filter"
 msgstr "Tidak bisa membuat filter"
 
-#: pgpkey.c:236
+#: pgpkey.c:505
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr ""
 
-#: pgpkey.c:257
+#: pgpkey.c:531
+msgid "This key can't be used: expired/disabled/revoked."
+msgstr ""
+
+#: pgpkey.c:545
 msgid "This ID's trust level is undefined."
 msgstr "Tingkat kepercayaan dari ID ini tidak diketahui."
 
-#: pgpkey.c:258
+#: pgpkey.c:548
 msgid "This ID is not trusted."
 msgstr "ID ini tidak dipercaya."
 
-#: pgpkey.c:259
+#: pgpkey.c:551
 msgid "This ID is only marginally trusted."
 msgstr "ID ini tidak dipercaya sepenuhnya."
 
-#: pgpkey.c:262
+#: pgpkey.c:555
 #, c-format
 msgid "%s Do you really want to use it?"
 msgstr "%s Anda yakin mau menggunakannya?"
 
-#: pgpkey.c:369
+#: pgpkey.c:660
 msgid "Please enter the key ID: "
 msgstr "Masukkan key ID: "
 
-#: pgpkey.c:416
+#: pgpkey.c:690
+#, fuzzy
+msgid "Invoking pgp..."
+msgstr "Menjalankan PGP..."
+
+#: pgpkey.c:714
 #, c-format
 msgid "PGP Key 0x%s."
 msgstr ""
 
-#: pgppubring.c:58
-msgid "reserved"
-msgstr ""
-
-#: pgppubring.c:59
-msgid "Encrypted Session Key"
-msgstr ""
-
-#: pgppubring.c:60
-msgid "Signature Packet"
-msgstr ""
-
-#: pgppubring.c:61
-msgid "Conventionally Encrypted Session Key Packet"
-msgstr ""
-
-#: pgppubring.c:62
-msgid "One-Pass Signature Packet"
+#: pgpkey.c:760 pgpkey.c:877
+#, c-format
+msgid "Looking for keys matching \"%s\"..."
 msgstr ""
 
 #: pgppubring.c:63
-msgid "Secret Key Packet"
+msgid "reserved"
 msgstr ""
 
 #: pgppubring.c:64
-msgid "Public Key Packet"
+msgid "Encrypted Session Key"
 msgstr ""
 
 #: pgppubring.c:65
-msgid "Secret Subkey Packet"
+msgid "Signature Packet"
 msgstr ""
 
 #: pgppubring.c:66
-msgid "Compressed Data Packet"
+msgid "Conventionally Encrypted Session Key Packet"
 msgstr ""
 
 #: pgppubring.c:67
-msgid "Symmetrically Encrypted Data Packet"
+msgid "One-Pass Signature Packet"
 msgstr ""
 
 #: pgppubring.c:68
-msgid "Marker Packet"
+msgid "Secret Key Packet"
 msgstr ""
 
 #: pgppubring.c:69
-msgid "Literal Data Packet"
+msgid "Public Key Packet"
 msgstr ""
 
 #: pgppubring.c:70
-msgid "Trust Packet"
+msgid "Secret Subkey Packet"
 msgstr ""
 
 #: pgppubring.c:71
-msgid "Name Packet"
+msgid "Compressed Data Packet"
 msgstr ""
 
 #: pgppubring.c:72
-msgid "Subkey Packet"
+msgid "Symmetrically Encrypted Data Packet"
 msgstr ""
 
 #: pgppubring.c:73
-msgid "Reserved"
+msgid "Marker Packet"
 msgstr ""
 
 #: pgppubring.c:74
+msgid "Literal Data Packet"
+msgstr ""
+
+#: pgppubring.c:75
+msgid "Trust Packet"
+msgstr ""
+
+#: pgppubring.c:76
+msgid "Name Packet"
+msgstr ""
+
+#: pgppubring.c:77
+msgid "Subkey Packet"
+msgstr ""
+
+#: pgppubring.c:78
+msgid "Reserved"
+msgstr ""
+
+#: pgppubring.c:79
 msgid "Comment Packet"
 msgstr ""
 
@@ -2704,7 +2905,7 @@ msgstr "Surat-surat tertunda"
 msgid "No postponed messages."
 msgstr "Tidak ada surat yg ditunda."
 
-#: postpone.c:338 postpone.c:358 postpone.c:367
+#: postpone.c:363 postpone.c:383 postpone.c:392
 msgid "Illegal PGP header"
 msgstr "PGP header tidak betul"
 
@@ -2750,84 +2951,84 @@ msgstr ""
 msgid "Print"
 msgstr "Cetak"
 
-#: recvattach.c:372
+#: recvattach.c:402
 msgid "Saving..."
 msgstr "Menyimpan..."
 
-#: recvattach.c:435
+#: recvattach.c:465
 msgid "Attachment saved"
 msgstr "Lampiran telah disimpan"
 
-#: recvattach.c:447
+#: recvattach.c:477
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "PERHATIAN! Anda akan menimpa %s, lanjut?"
 
-#: recvattach.c:465
+#: recvattach.c:495
 msgid "Attachment filtered."
 msgstr "Lampiran telah difilter."
 
-#: recvattach.c:531
+#: recvattach.c:561
 msgid "Filter through: "
 msgstr "Filter melalui: "
 
-#: recvattach.c:531
+#: recvattach.c:561
 msgid "Pipe to: "
 msgstr "Pipe ke: "
 
-#: recvattach.c:566
+#: recvattach.c:596
 #, c-format
 msgid "I dont know how to print %s attachments!"
 msgstr "Saya tidak tahu bagaimana mencetak lampiran %s!"
 
-#: recvattach.c:629
+#: recvattach.c:659
 msgid "Print tagged attachment(s)?"
 msgstr "Cetak lampiran yang ditandai?"
 
-#: recvattach.c:629
+#: recvattach.c:659
 msgid "Print attachment?"
 msgstr "Cetak lampiran?"
 
-#: recvattach.c:657
+#: recvattach.c:687
 msgid "You may only bounce message/rfc822 parts."
 msgstr "Anda hanya bisa menembuskan bagian-bagian message/rfc822."
 
-#: recvattach.c:693
+#: recvattach.c:723
 #, c-format
 msgid "Bounce messages to %s...?"
 msgstr "Tembuskan surat-surat ke %s...?"
 
-#: recvattach.c:694
+#: recvattach.c:724
 #, c-format
 msgid "Bounce message to %s...?"
 msgstr "Tembuskan surat ke %s...?"
 
-#: recvattach.c:919
+#: recvattach.c:976
 msgid "Attachments"
 msgstr "Lampiran"
 
-#: recvattach.c:976
+#: recvattach.c:1033
 msgid "Deletion of attachments from PGP messages is unsupported."
 msgstr "Penghapusan lampiran dari surat PGP tidak didukung."
 
-#: recvattach.c:996 recvattach.c:1013
+#: recvattach.c:1053 recvattach.c:1070
 msgid "Only deletion of multipart attachments is supported."
 msgstr "Hanya penghapusan lampiran dari surat multi bagian yang didukung."
 
-#: recvattach.c:1063
+#: recvattach.c:1120
 msgid "This operation is not currently supported for PGP messages."
 msgstr "Operasi ini belum didukung untuk surat-surat PGP."
 
-#: rfc1524.c:176
+#: rfc1524.c:160
 #, c-format
 msgid "Improperly formated entry for type %s in \"%s\" line %d"
 msgstr "Entry utk jenis %s di '%s' baris %d tidak diformat dengan benar"
 
-#: rfc1524.c:408
+#: rfc1524.c:392
 msgid "No mailcap path specified"
 msgstr "Path untuk mailcap tidak diketahui"
 
-#: rfc1524.c:434
+#: rfc1524.c:418
 #, c-format
 msgid "mailcap entry for type %s not found"
 msgstr "entry mailcap untuk jenis %s tidak ditemukan"
@@ -2840,20 +3041,25 @@ msgstr "score: parameternya kurang"
 msgid "score: too many arguments"
 msgstr "score: parameternya terlalu banyak"
 
-#: send.c:229
+#: send.c:232
 msgid "No subject, abort?"
 msgstr "Tidak ada subjek, batal?"
 
-#: send.c:231
+#: send.c:234
 msgid "No subject, aborting."
 msgstr "Tidak ada subjek, batal."
+
+#: send.c:401
+#, fuzzy, c-format
+msgid "Follow-up to %s%s?"
+msgstr "Balas ke %s%s?"
 
 #. There are quite a few mailing lists which set the Reply-To:
 #. * header field to the list address, which makes it quite impossible
 #. * to send a message to only the sender of the message.  This
 #. * provides a way to do that.
 #.
-#: send.c:434
+#: send.c:444
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "Balas ke %s%s?"
@@ -2861,119 +3067,128 @@ msgstr "Balas ke %s%s?"
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
 #.
-#: send.c:518
+#: send.c:528
 msgid "No tagged messages are visible!"
 msgstr "Tidak ada surat yang ditandai yang kelihatan!"
 
-#: send.c:543
+#: send.c:553
 msgid "No mailing lists found!"
 msgstr "Tidak ada mailing list yang ditemukan!"
 
-#: send.c:630
+#: send.c:640
 msgid "Include message in reply?"
 msgstr "Sertakan surat asli di surat balasan?"
 
-#: send.c:644
+#: send.c:654
 msgid "Could not include all requested messages!"
 msgstr "Tidak bisa menyertakan semua surat yang diminta!"
 
-#: send.c:657
+#: send.c:667
 msgid "Forward MIME encapsulated?"
 msgstr "Forward dalam MIME?"
 
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:868
+#: send.c:890
 msgid "Recall postponed message?"
 msgstr "Lanjutkan surat yang ditunda sebelumnya?"
 
-#: send.c:1100
+#: send.c:1124
 msgid "Abort unmodified message?"
 msgstr "Batalkan surat yang tidak diubah?"
 
-#: send.c:1102
+#: send.c:1126
 msgid "Aborted unmodified message."
 msgstr "Surat yang tidak diubah dibatalkan."
 
 #. abort
-#: send.c:1141
+#: send.c:1165
 msgid "Mail not sent."
 msgstr "Surat tidak dikirim."
 
-#: send.c:1154
+#: send.c:1178
 msgid "Message postponed."
 msgstr "Surat ditunda."
 
-#: send.c:1163
+#: send.c:1187
 msgid "No recipients are specified!"
 msgstr "Tidak ada penerima yang disebutkan!"
 
-#: send.c:1168
+#: send.c:1192
 msgid "No recipients were specified."
 msgstr "Tidak ada penerima yang disebutkan."
 
-#: send.c:1174
+#: send.c:1198
 msgid "No subject, abort sending?"
 msgstr "Tidak ada subjek, batalkan pengiriman?"
 
-#: send.c:1178
+#: send.c:1202
 msgid "No subject specified."
 msgstr "Tidak ada subjek."
 
-#: send.c:1217
+#: send.c:1243
 msgid "Message edited. Really send?"
 msgstr "Surat telah di-edit. Yakin mau dikirim?"
 
-#: send.c:1223
+#: send.c:1249
 msgid "Sending message..."
 msgstr "Mengirim surat..."
 
-#: send.c:1325
+#: send.c:1361
 msgid "Could not send the message."
 msgstr "Tidak bisa mengirim surat."
 
-#: send.c:1331
+#: send.c:1366
 msgid "Mail sent."
 msgstr "Surat telah dikirim."
 
-#: sendlib.c:476
+#: send.c:1366
+msgid "Sending in background."
+msgstr ""
+
+#: sendlib.c:440
 msgid "No boundary parameter found! [report this error]"
 msgstr "Tidak ada parameter batas yang bisa ditemukan! [laporkan error ini]"
 
-#: sendlib.c:510
+#: sendlib.c:474
 #, c-format
 msgid "%s no longer exists!"
 msgstr "%s tidak ada lagi!"
 
-#: sendlib.c:778
+#: sendlib.c:713
 #, c-format
 msgid "Could not open %s"
 msgstr "Tidak bisa membuka %s"
 
-#: sendlib.c:1684
-#, c-format
-msgid "Error sending message, child exited %d (%s).\n"
+#: sendlib.c:1680
+#, fuzzy, c-format
+msgid "Error sending message, child exited %d (%s)."
 msgstr "Error dalam pengiriman surat, proses anak mengembalikan %d (%s).\n"
 
 #: sendlib.c:1686
-#, c-format
-msgid "Saved output of child process to %s.\n"
-msgstr "Keluaran dari proses anak telah disimpan ke %s.\n"
+msgid "Output of the delivery process"
+msgstr ""
 
-#: sendlib.c:1690
-msgid "Error sending message."
-msgstr "Error dalam pengiriman surat."
+#: signal.c:39
+#, fuzzy, c-format
+msgid "%s...  Exiting.\n"
+msgstr "%s tertangkap... Keluar.\n"
 
-#: signal.c:38 signal.c:41
+#: signal.c:42
 #, c-format
 msgid "Caught %s...  Exiting.\n"
 msgstr "%s tertangkap... Keluar.\n"
 
-#: signal.c:43
+#: signal.c:44
 #, c-format
 msgid "Caught signal %d...  Exiting.\n"
 msgstr "Sinyal %d tertangkap... Keluar.\n"
+
+#: socket.c:130
+#, c-format
+msgid "Connecting to %s..."
+msgstr "Menghubungi %s..."
 
 #: sort.c:198
 msgid "Sorting mailbox..."
@@ -2986,3 +3201,23 @@ msgstr "Tidak bisa menemukan fungsi pengurutan! [laporkan bug ini]"
 #: status.c:101
 msgid "(no mailbox)"
 msgstr "(tidak ada kotak surat)"
+
+#~ msgid "Can't open your secret key ring!"
+#~ msgstr "Tidak bisa membuka kumpulan kunci rahasia Anda!"
+
+#~ msgid "===== Attachments ====="
+#~ msgstr "=-=-= Lampiran-lampiran =-=-="
+
+#~ msgid ""
+#~ "[-- Error: this message does not comply with the PGP/MIME specification! "
+#~ "--]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- Error: surat ini tidak menuruti aturan spesifikasi PGP/MIME! --]\n"
+#~ "\n"
+
+#~ msgid "Saved output of child process to %s.\n"
+#~ msgstr "Keluaran dari proses anak telah disimpan ke %s.\n"
+
+#~ msgid "Error sending message."
+#~ msgstr "Error dalam pengiriman surat."

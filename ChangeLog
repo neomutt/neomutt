@@ -1,3 +1,164 @@
+Mon Apr 12 21:02:35 1999  Thomas Roessler  <roessler@guug.de>
+
+	* recvattach.c: more multipart/alternative handling.
+
+	* recvattach.c: Change multipart handling when receiving messages.
+
+	* compose.c: Clean-up, from Vikas.
+
+Mon Apr 12 21:02:35 1999  Thomas Roessler  <roessler@guug.de>
+
+	* recvattach.c: more multipart/alternative handling.
+
+	* recvattach.c: Change multipart handling when receiving messages.
+
+	* compose.c: Clean-up, from Vikas.
+
+	* parse.c: typo.
+
+	* parse.c:
+	us-ascii is the default character set for text attachments we receive.
+
+	* compose.c, sendlib.c:
+	Fix default character set setting when attaching text files.
+
+	* imap.c:
+	Fix an IMAP quoting problem.  Essentially from Randall Nortman
+	<rnortman@computer.org>.
+
+	* po/sk.po, po/id.po, configure.in: new languages: id, sk.
+
+	* po/id.po, po/sk.po, configure.in: New translations: id, sk.
+
+Wed Mar 31 06:35:03 1999  Thomas Roessler  <roessler@guug.de>
+
+	* charset.c: Stupid error.
+
+	* charset.c, charset.h: Another small charset optimization.
+
+	* charset.h, handler.c, charset.c:
+	A couple of optimizations, most notably for the special case of a
+	non-prefix state.
+
+Tue Mar 30 23:50:33 1999  Thomas Roessler  <roessler@guug.de>
+
+	* charset.c, charset.h, handler.c:
+	This patch removes at least some of the horrible utf-8 kluges in
+	charset.c.  The new DECODER framework is currently only used in
+	handler.c, and there in a horribly inefficient manner.  We should
+	use greater blocks of data, which would be much more efficient than
+	what we are currently doing.
+
+	Most of the other charset-related code still uses the old
+	mutt_display_char() &friends interface, which is actually ok as long
+	as you don't try to handle multibyte character sets.
+
+	The most notable change should be the one to mutt_get_translation():
+	It will delay the loading and parsing of character set information
+	files until it's really needed, catching a huge amount of standard
+	cases.  As a side effect, this will make "iso tagged as ascii"
+	"work" again, as long as both sides use the same iso character set.
+
+	* send.c:
+	resort headers when forward-decoding them with weed switched on.
+
+	* pager.c: Fix a pager failure for long messages. From Liviu.
+
+	* pager.c:
+	Fix pager failure for long messages, changing two shorts to ints.
+	From Liviu Daia.
+
+	* recvattach.c:
+	Add some user feedback to attachment forwarding.  From Vikas.
+
+Thu Mar 25 19:46:52 1999  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.in, init.h, pgpkey.c, sort.h, Muttrc.in, init.c:
+	Roland's sort_keys patch.
+
+Wed Mar 24 20:35:38 1999  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.in, Muttrc.in, recvattach.c:
+	Vikas' latest version of attachment forwarding.
+
+	* recvattach.c: patch-0.96.1.vikas.forward_attachment.2
+
+	* main.c:
+	Only exit with "no recipients specified", when $auto_edit is set.
+
+Tue Mar 23 20:21:50 1999  Thomas Roessler  <roessler@guug.de>
+
+	* postpone.c, recvattach.c, init.h, mutt.h:
+	Vikas' forward_attachment patch.
+
+Mon Mar 22 16:00:39 1999  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.in, pgppubring.c, gnupgparse.c, pgp.h, pgpkey.c:
+	PGP key creation time fix by Roland Rosenfeld.
+
+Wed Mar 17 14:45:10 1999  Thomas Roessler  <roessler@guug.de>
+
+	* recvattach.c: Vikas' attach_tag patch.
+
+Tue Mar 16 21:42:06 1999  Thomas Roessler  <roessler@guug.de>
+
+	* thread.c, configure.in: bug fixes.
+
+	* thread.c: Detect thread loops.
+
+Mon Mar 15 15:32:19 1999  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.in, copy.c, init.h, mutt.h, sendlib.c:
+	Add $bounce_delivered.
+
+	* edit.c: another digital unix compile problem.
+
+	* main.c: _Fix_ the compile problems, don't install new ones.
+
+	* send.c: Cleanly handle fcc when the user unsets it and the message is
+	postponed.
+
+	* main.c: Fix compilation problems under digital unix.
+
+	* configure.in: Fix sendmail autodetection.
+
+	* color.c: Fix colorN, N > 7 for Slang's curses emulation. From Vikas.
+
+Tue Mar  9 13:34:52 1999  Thomas Roessler  <roessler@guug.de>
+
+	* menu.c: another menu.c fix from Kim DeVaughn.
+
+	* send.c, menu.c, handler.c: Fixes.
+
+	* send.c, menu.c, handler.c:
+	handler.c: Properly handle message/external-body expiry.
+	menu.c: Small fix from Liviu.
+	send.c: Honor confirm_create for FCCs.
+	cvs: ----------------------------------------------------------------------
+
+Thu Mar  4 08:00:38 1999  Thomas Roessler  <roessler@guug.de>
+
+	* Makefile.am: post-postrelease commit.
+
+Wed Mar  3 20:06:33 1999  Thomas Roessler  <roessler@guug.de>
+
+	* rfc2047.c: ups.
+
+	* po/uk.po, po/ru.po, po/pl.po, po/nl.po, po/it.po, po/fr.po, po/es.po, po/de.po, po/cs.po, ChangeLog:
+	releasing 0.95.4.
+
+	* sendlib.c, rfc2047.c, reldate.h, curs_main.c, VERSION, ChangeLog:
+	releasing 0.96.1.
+
+	* reldate.h, regex.c, VERSION, Makefile.am, ChangeLog:
+	release preparations; back-port a couple of things from unstable.
+
+	* curs_main.c: Vikas' resort_index.3.
+
+	* sendlib.c, imap.c, from.c, curs_main.c:
+	from.c: Backport from unstable.
+	others: latest imap related patches.
+
 Wed Mar  3 19:44:24 1999  Thomas Roessler  <roessler@guug.de>
 
 	* reldate.h, regex.c, VERSION, Makefile.am, ChangeLog:
