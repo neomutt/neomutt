@@ -620,8 +620,9 @@ void km_init (void)
 
   km_bindkey ("<enter>", MENU_PAGER, OP_NEXT_LINE);
   
-  km_bindkey ("<return>", MENU_ALIAS, OP_TAG);
-  km_bindkey ("<enter>",  MENU_ALIAS, OP_TAG);
+  km_bindkey ("<return>", MENU_ALIAS, OP_GENERIC_SELECT_ENTRY);
+  km_bindkey ("<enter>",  MENU_ALIAS, OP_GENERIC_SELECT_ENTRY);
+  km_bindkey ("<space>", MENU_ALIAS, OP_TAG);
 
   km_bindkey ("<enter>", MENU_ATTACH, OP_VIEW_ATTACH);
   km_bindkey ("<enter>", MENU_COMPOSE, OP_VIEW_ATTACH);
