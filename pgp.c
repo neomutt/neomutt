@@ -146,12 +146,44 @@ static void pgp_current_time (STATE *s)
 }
 
 
+/* copy PGP output messages and look for signs of a good signature */
+
+static int pgp_copy_checksig (FILE *fpin, FILE *fpout)
+{
+  int rv = -1;
+
+  if (PgpGoodSign.pattern)
+  {
+    char *line = NULL;
+    int lineno = 0;
+    size_t linelen;
+    
+    while ((line = mutt_read_line (line, &linelen, fpin, &lineno)) != NULL)
+    {
+      if (regexec (PgpGoodSign.rx, line, 0, NULL, 0) == 0)
+	rv = 0;
+      
+      fputs (line, fpout);
+      fputc ('\n', fpout);
+    }
+    safe_free ((void **) &line);
+  }
+  else
+  {
+    mutt_copy_stream (fpin, fpout);
+    rv = 1;
+  }
+
+  return rv;
+}
+
+
 /* Support for the Application/PGP Content Type. */
 
 void pgp_application_pgp_handler (BODY *m, STATE *s)
 {
   int needpass = -1, pgp_keyblock = 0;
-  int clearsign = 0;
+  int clearsign = 0, rv;
   long start_pos = 0;
   long bytes, last_pos, offset;
   char buf[HUGE_STRING];
@@ -256,18 +288,20 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 	  fputc ('\n', pgpin);
 	}
 
-	fclose (pgpin);
+	safe_fclose (&pgpin);
 	
 	if (s->flags & M_DISPLAY)
 	  pgp_current_time (s);
 	
-	mutt_wait_filter (thepid);
+	rv = mutt_wait_filter (thepid);
 
 	mutt_unlink(tmpfname);
 	
 	if (s->flags & M_DISPLAY)
-	  mutt_copy_stream(pgperr, s->fpout);
-	fclose (pgperr);
+	  if (pgp_copy_checksig (pgperr, s->fpout) == 0 && clearsign && rv == 0)
+	    m->goodsig = 1;
+
+	safe_fclose (&pgperr);
 	
 	if (s->flags & M_DISPLAY)
 	  state_puts (_("\n[-- End of PGP output --]\n\n"), s);
@@ -304,9 +338,8 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
       
       if(pgpout)
       {
-	fclose (pgpout);
-	pgpout = NULL;
-	mutt_unlink(outfile);
+	safe_fclose (&pgpout);
+	mutt_unlink (outfile);
       }
 
       /* decode clearsign stuff */
@@ -536,21 +569,22 @@ int pgp_query (BODY *m)
 {
   int t = 0;
 
-  t |= mutt_is_application_pgp(m);
-  
-  /* Check for PGP/MIME messages. */
-  if (m->type == TYPEMULTIPART)
+  t |= mutt_is_application_pgp (m);
+
+  if ((t & PGPSIGN) && m->goodsig)
+    t |= PGPGOODSIGN;
+  else if (m->type == TYPEMULTIPART)
   {
     if (mutt_is_multipart_signed(m))
       t |= PGPSIGN;
     else if (mutt_is_multipart_encrypted(m))
       t |= PGPENCRYPT;
 
-    if ((mutt_is_multipart_signed (m) || mutt_is_multipart_encrypted (m)) 
-	&& m->goodsig)
+    if (m->goodsig && 
+	(mutt_is_multipart_signed (m) || mutt_is_multipart_encrypted (m)))
       t |= PGPGOODSIGN;
   }
-
+  
   if (m->type == TYPEMULTIPART || m->type == TYPEMESSAGE)
   {
     BODY *p;
@@ -619,6 +653,7 @@ static int pgp_write_signed(BODY *a, STATE *s, const char *tempfile)
   return 0;
 }
 
+
 static int pgp_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
 {
   char sigfile[_POSIX_PATH_MAX], pgperrfile[_POSIX_PATH_MAX];
@@ -652,33 +687,15 @@ static int pgp_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
 				   -1, -1, fileno(pgperr),
 				   tempfile, sigfile)) != -1)
   {
-    if (PgpGoodSign.pattern)
-    {
-      char *line = NULL;
-      int lineno = 0;
-      size_t linelen;
-
-      while ((line = mutt_read_line (line, &linelen, pgpout, &lineno)) != NULL)
-      {
-	if (regexec (PgpGoodSign.rx, line, 0, NULL, 0) == 0)
-	  badsig = 0;
-
-	fputs (line, s->fpout);
-	fputc ('\n', s->fpout);
-      }
-      safe_free ((void **) &line);
-    }
-    else
-    {
-      mutt_copy_stream(pgpout, s->fpout);
+    if (pgp_copy_checksig (pgpout, s->fpout) >= 0)
       badsig = 0;
-    }
-
-    fclose (pgpout);
-    fflush(pgperr);
-    rewind(pgperr);
-    mutt_copy_stream(pgperr, s->fpout);
-    fclose(pgperr);
+    
+    
+    safe_fclose (&pgpout);
+    fflush (pgperr);
+    rewind (pgperr);
+    mutt_copy_stream (pgperr, s->fpout);
+    safe_fclose (&pgperr);
     
     if (mutt_wait_filter (thepid))
       badsig = -1;
