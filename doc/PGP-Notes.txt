@@ -33,6 +33,12 @@ Frequently Asked Questions and Tips
 Q: "People are sending PGP messages which mutt doesn't
     recognize.  What can I do?"
 
+The new way is to leave headers alone and use mutt's
+check-traditional-pgp function, which can detect PGP messages at
+run-time, and adjust content-types.
+
+The old way is to configure your mail filter so it fixes headers:
+
 Add the following lines to your ~/.procmailrc (you are
 using procmail, aren't you?):
 
@@ -94,30 +100,41 @@ Q: "I don't like that PGP/MIME stuff, but want to use the
     old way of PGP-signing my mails.  Can't you include
     that with mutt?"
 
-No.  Application/pgp is not really suited to a world with
-MIME, non-textual body parts and similar things.  Anyway,
-if you really want to generate these old-style
-attachments, include the following macro in your ~/.muttrc
-(line breaks for readability, this is actually one line):
+The old answer to this question used to be this:
+
+  No.  Application/pgp is not really suited to a world with MIME,
+  non-textual body parts and similar things.  Anyway, if you really
+  want to generate these old-style attachments, include the
+  following macro in your ~/.muttrc (line breaks for readability,
+  this is actually one line):
 
   macro compose S "Fpgp +verbose=0 -fast
   	+clearsig=on\ny^T^Uapplication/pgp; format=text;
 	x-action=sign\n"
 
 
+There's a new answer, though: Set the $pgp_create_traditional
+configuration variable (it's a quad-option) to something different
+from "no" (that's the default).  Mutt will then try to use
+application/pgp whereever it makes sense.  In particular, it does
+not make any sense with multiparts, or non-ASCII or non-text bodies.
+In all other cases, PGP/MIME is used unconditionally.
+
+Note that application/pgp is still strongly deprecated.
+
+
 
 Q: "I don't like all the ^Gs and various other verbosity
     PGP is presenting me with."
 
-Roland Rosenfeld <roland@spinnaker.rhein.de> has found a
-quite elegant solution to this problem: PGP has some
-pretty good foreign language support.  So we just
-introduce a language called "mutt" which contains empty
-strings for the messages we don't want to see.  To use
-this, copy either language.txt or language50.txt
-(depending on what PGP version you are using) to your
-$PGPPATH.  Make sure the PGP command formats pass "+language=pgp" to
-all the PGP binaries (but not to pgpring!).
+Roland Rosenfeld <roland@spinnaker.rhein.de> has found a quite
+elegant solution to this problem: PGP has some pretty good foreign
+language support.  So we just introduce a language called "mutt"
+which contains empty strings for the messages we don't want to see.
+To use this, copy either language.txt or language50.txt (depending
+on what PGP version you are using) to your $PGPPATH.  Make sure the
+PGP command formats pass "+language=pgp" to all the PGP binaries
+(but not to pgpring!).
 
 For PGP 2.6, a German version called "muttde" is available
 as well.
@@ -169,8 +186,8 @@ Command line options:
 
 2. pgpewrap
 
-This is a little shell script which does some command line munging:
-The first argument is a command to be executed.  When pgpewrap
+This is a little C program which does some command line munging: The
+first argument is a command to be executed.  When pgpewrap
 encounters a "--" (dash-dash) argument, it will interpret the next
 argument as a prefix which is put in front of all following
 arguments.
