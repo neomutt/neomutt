@@ -5,9 +5,9 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.0-current-20020417\n"
-"POT-Creation-Date: 2002-04-17 17:43+0200\n"
-"PO-Revision-Date: 2002-04-17 17:50+0200\n"
+"Project-Id-Version: Mutt 1.5.0-current-20020426\n"
+"POT-Creation-Date: 2002-04-26 11:53+0200\n"
+"PO-Revision-Date: 2002-04-26 11:57+0200\n"
 "Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -2011,7 +2011,11 @@ msgstr "déplacer le curseur d'un caractère vers la droite"
 msgid "move the cursor to the end of the word"
 msgstr "déplacer le curseur à la fin du mot"
 
-#: keymap_alldefs.h:73 keymap_alldefs.h:74
+#: keymap_alldefs.h:73
+msgid "scroll down through the history list"
+msgstr "redescendre dans l'historique"
+
+#: keymap_alldefs.h:74
 msgid "scroll up through the history list"
 msgstr "remonter dans l'historique"
 
@@ -2788,7 +2792,7 @@ msgstr "Vous êtes sur la première entrée."
 msgid "Search for: "
 msgstr "Rechercher : "
 
-#: menu.c:713
+#: menu.c:713 pattern.c:1248
 msgid "Reverse search for: "
 msgstr "Rechercher en arrière : "
 
@@ -3507,7 +3511,7 @@ msgstr "Récupération de la liste des messages..."
 msgid "Can't write message to temporary file!"
 msgstr "Impossible d'écrire le message dans le fichier temporaire !"
 
-#: pop.c:521 pop.c:585
+#: pop.c:521 pop.c:586
 msgid "Checking for new messages..."
 msgstr "Recherche de nouveaux messages..."
 
@@ -3515,31 +3519,31 @@ msgstr "Recherche de nouveaux messages..."
 msgid "POP host is not defined."
 msgstr "Le serveur POP n'est pas défini."
 
-#: pop.c:613
+#: pop.c:614
 msgid "No new mail in POP mailbox."
 msgstr "Aucun nouveau message dans la boîte aux lettres POP."
 
-#: pop.c:620
+#: pop.c:621
 msgid "Delete messages from server?"
 msgstr "Effacer les messages sur le serveur ?"
 
 # , c-format
-#: pop.c:622
+#: pop.c:623
 #, c-format
 msgid "Reading new messages (%d bytes)..."
 msgstr "Lecture de nouveaux messages (%d octets)..."
 
-#: pop.c:664
+#: pop.c:665
 msgid "Error while writing mailbox!"
 msgstr "Erreur à l'écriture de la boîte aux lettres !"
 
 # , c-format
-#: pop.c:668
+#: pop.c:669
 #, c-format
 msgid "%s [%d of %d messages read]"
 msgstr "%s [%d messages lus sur %d]"
 
-#: pop.c:691 pop_lib.c:274
+#: pop.c:692 pop_lib.c:276
 msgid "Server closed connection!"
 msgstr "Le serveur a fermé la connexion !"
 
@@ -3565,16 +3569,16 @@ msgstr "Impossible de laisser les messages sur le serveur."
 msgid "Error connecting to server: %s"
 msgstr "Erreur de connexion au serveur : %s"
 
-#: pop_lib.c:288
+#: pop_lib.c:290
 msgid "Closing connection to POP server..."
 msgstr "Fermeture de la connexion au serveur POP..."
 
 # , c-format
-#: pop_lib.c:453
+#: pop_lib.c:455
 msgid "Verifying message indexes..."
 msgstr "Vérification des index des messages..."
 
-#: pop_lib.c:477
+#: pop_lib.c:479
 msgid "Connection lost. Reconnect to POP server?"
 msgstr "Connexion perdue. Se reconnecter au serveur POP ?"
 
@@ -3673,23 +3677,27 @@ msgstr "Imprimer l(es) attachement(s) marqué(s) ?"
 msgid "Print attachment?"
 msgstr "Imprimer l'attachement ?"
 
-#: recvattach.c:911
+#: recvattach.c:906
+msgid "Can't decrypt encrypted message!"
+msgstr "Impossible de déchiffrer le message chiffré !"
+
+#: recvattach.c:920
 msgid "Attachments"
 msgstr "Attachements"
 
-#: recvattach.c:947
+#: recvattach.c:956
 msgid "There are no subparts to show!"
 msgstr "Il n'y a pas de sous-parties à montrer !"
 
-#: recvattach.c:1011
+#: recvattach.c:1020
 msgid "Can't delete attachment from POP server."
 msgstr "Impossible d'effacer l'attachement depuis le serveur POP."
 
-#: recvattach.c:1022
+#: recvattach.c:1031
 msgid "Deletion of attachments from encrypted messages is unsupported."
 msgstr "L'effacement d'attachements des messages chiffrés n'est pas supporté."
 
-#: recvattach.c:1042 recvattach.c:1059
+#: recvattach.c:1051 recvattach.c:1068
 msgid "Only deletion of multipart attachments is supported."
 msgstr "Seul l'effacement d'attachements multipart est supporté."
 
@@ -3969,12 +3977,12 @@ msgid "Could not open %s"
 msgstr "Impossible d'ouvrir %s"
 
 # , c-format
-#: sendlib.c:2069
+#: sendlib.c:2071
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Erreur en envoyant le message, fils terminé avec le code %d (%s)."
 
-#: sendlib.c:2075
+#: sendlib.c:2077
 msgid "Output of the delivery process"
 msgstr "Sortie du processus de livraison"
 
