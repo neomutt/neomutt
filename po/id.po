@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.4i\n"
+"Project-Id-Version: 1.3.5i\n"
 "POT-Creation-Date: 2000-07-07 00:40+0200\n"
-"PO-Revision-Date: 2000-07-02 23:40-0600\n"
+"PO-Revision-Date: 2000-07-10 13:30-0500\n"
 "Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
 "Language-Team: Indonesia <i18n@linux.or.id>\n"
 "MIME-Version: 1.0\n"
@@ -1352,14 +1352,12 @@ msgid "Copying message %d to %s..."
 msgstr "Menyalin surat %d ke %s..."
 
 #: imap/socket.c:163
-#, fuzzy, c-format
 msgid "Closing connection to %s..."
-msgstr "Menutup hubungan ke server IMAP..."
+msgstr "Menutup hubungan ke %s..."
 
 #: imap/socket.c:265
-#, fuzzy, c-format
 msgid "Could not find the host \"%s\""
-msgstr "Alamat tidak ditemukan untuk %s."
+msgstr "Tidak dapat menemukan host \"%s\""
 
 #: imap/socket.c:271
 #, c-format
@@ -1367,9 +1365,8 @@ msgid "Connecting to %s..."
 msgstr "Menghubungi %s..."
 
 #: imap/socket.c:291
-#, fuzzy
 msgid "IMAP Preconnect command failed"
-msgstr "perintah pra-koneksi gagal"
+msgstr "Perintah pra-koneksi IMAP gagal"
 
 #: imap/util.c:62
 msgid "Continue?"
@@ -2276,7 +2273,6 @@ msgstr ""
 "dengan beberapa persyaratan; baca 'mutt -vv' utk jelasnya.\n"
 
 #: main.c:50
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
@@ -2309,6 +2305,7 @@ msgstr ""
 "Hak Cipta (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
 "Hak Cipta (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
 "Hak Cipta (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 2000      Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "Dan banyak lagi yang tidak dapat disebutkan di sini satu per satu telah\n"
 "menyumbangkan banyak kode, perbaikan dan saran.\n"
@@ -2345,6 +2342,21 @@ msgid ""
 "    You should have received a copy of the full distribution terms\n"
 "    along with this program; if not, write to the program's developers.\n"
 msgstr ""
+"\n"
+"Implementasi SHA1 Hak Cipta (C) 1995-1997 Eric A. Young "
+"<eay@cryptsoft.com>\n"
+"\n"
+"    Pendistribusian ulang dan penggunaan dalam bentuk sumber dan biner\n"
+"    dengan maupun tanpa perubahan, diperbolehkan dengan syarat-syarat\n"
+"    tertentu.\n"
+"\n"
+"    Implementasi SHA1 adalah APA ADANYA, dan TIDAK diberikan jaminan\n"
+"    dalam bentuk apapun, baik eksplisit maupun terimplikasi, termasuk\n"
+"    tapi tidak terbatas kepada jaminan perdagangan dan ketepatgunaan.\n"
+"\n"
+"    Anda semestinya sudah menerima sebuah salinan dari persyaratan lengkap\n"
+"    pendistribusian ulang bersama program ini; jika tidak, hubungi\n"
+"    para pembuat program ini.\n"
 
 #: main.c:104
 msgid ""
