@@ -215,6 +215,7 @@ int mutt_compose_attachment (BODY *a);
 int mutt_decode_save_attachment (FILE *, BODY *, char *, int, int);
 int mutt_display_message (HEADER *h);
 int mutt_edit_attachment(BODY *);
+int mutt_parent_message (CONTEXT *, HEADER *);
 int mutt_prepare_edit_message(CONTEXT *, HEADER *, HEADER *);
 #define mutt_enter_fname(A,B,C,D,E) _mutt_enter_fname(A,B,C,D,E,0,NULL,NULL)
 int _mutt_enter_fname (const char *, char *, size_t, int *, int, int, char ***, int *);

@@ -1310,6 +1310,23 @@ int mutt_index_menu (void)
 	  menu->redraw = REDRAW_MOTION;
 	break;
 
+      case OP_MAIN_PARENT_MESSAGE:
+
+	CHECK_MSGCOUNT;
+
+	if ((menu->current = mutt_parent_message (Context, CURHDR)) < 0)
+	{
+	  menu->current = menu->oldcurrent;
+	}
+	else if (menu->menu == MENU_PAGER)
+        {
+          op = OP_DISPLAY_MESSAGE;
+          continue;
+        }
+        else
+          menu->redraw = REDRAW_MOTION;
+	break;
+
       case OP_MAIN_SET_FLAG:
       case OP_MAIN_CLEAR_FLAG:
 

@@ -705,6 +705,30 @@ int _mutt_aside_thread (HEADER *hdr, short dir, short subthreads)
   return (tmp->virtual);
 }
 
+int mutt_parent_message (CONTEXT *ctx, HEADER *hdr)
+{
+  if ((Sort & SORT_MASK) != SORT_THREADS)
+  {
+    mutt_error _("Threading is not enabled.");
+    return (hdr->virtual);
+  }
+  if (hdr->parent)
+  {
+    while ((hdr = hdr->parent))
+    {
+      if (!ctx->pattern || hdr->limited)
+	return (hdr->virtual);
+    }
+    mutt_error _("Parent message is not visible in limited view");
+    return -1;
+  }
+  else
+  {
+    mutt_error _("Parent message is not available.");
+    return -1;
+  }
+}
+
 void mutt_set_virtual (CONTEXT *ctx)
 {
   int i;

@@ -127,7 +127,7 @@ struct binding_t OpMain[] = {
   { "previous-new",		OP_MAIN_PREV_NEW,		"\033\t" },
   { "next-unread",		OP_MAIN_NEXT_UNREAD,		NULL },
   { "previous-unread",		OP_MAIN_PREV_UNREAD,		NULL },
-
+  { "parent-message",		OP_MAIN_PARENT_MESSAGE,		"P" },
 
 
 #ifdef _PGPPATH
@@ -210,7 +210,7 @@ struct binding_t OpPager[] = {
   { "half-up",		OP_HALF_UP,			NULL },
   { "half-down",	OP_HALF_DOWN,			NULL },
   { "previous-line",	OP_PREV_LINE,			NULL },
-
+  { "parent-message",	OP_MAIN_PARENT_MESSAGE,		"P" },
 
 
 

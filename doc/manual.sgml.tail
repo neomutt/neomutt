@@ -80,6 +80,7 @@ next-subthread         ESC n   jump to the next subthread
 next-thread               ^N   jump to the next thread
 next-undeleted             j   move to the next undeleted message
 next-unread        not bound   jump to the next unread message
+parent-message             P   jump to parent message in thread
 pipe-message               |   pipe message/attachment to a shell command
 previous-new         ESC TAB   jump to the previous new message
 previous-page              Z   move to the previous page
@@ -151,6 +152,7 @@ next-subthread         ESC n   jump to the next subthread
 next-thread               ^N   jump to the next thread
 next-undeleted             j   move to the next undeleted message
 next-unread        not bound   jump to the next unread message
+parent-message             P   jump to parent message in thread
 pipe-message               |   pipe message/attachment to a shell command
 previous-line      BackSpace   scroll up one line
 previous-entry             K   move to the previous entry

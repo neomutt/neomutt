@@ -304,6 +304,7 @@ ESC r   read-subthread          mark the current subthread as read
 ESC t   tag-thread              toggle the tag on the current thread
 ESC v	collapse-thread		toggle collapse for the current thread
 ESC V	collapse-all		toggle collapse for all threads
+P       parent-message          jump to parent message in thread
 </verb></tscreen>
 
 <bf/Note:/ Collapsing a thread displays only the first message
