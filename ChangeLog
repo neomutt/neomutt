@@ -1,5 +1,10 @@
-2003-08-02 11:01:09  Horvath Szabolcs  <horvaths@fi.inf.elte.hu>
-(roessler)
+2003-08-05 13:55:47  Brendan Cully  <brendan@kublai.com>  (roessler)
+
+	* attach.c, buffy.c, commands.c, copy.c, editmsg.c, init.c,
+	mbox.c, mx.c, mx.h, sendlib.c: This patch removes the Kendra
+	format from mutt.  (The support was broken anyways.)
+
+2003-08-02 11:01:09  Horvath Szabolcs  <horvaths@fi.inf.elte.hu>  (roessler)
 
 	* po/hu.po: update
 
