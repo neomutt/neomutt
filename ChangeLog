@@ -1,3 +1,7 @@
+2004-01-04 09:59:42  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* init.h: Fix #1738; documentation issue re $from, $use_from.
+
 2004-01-04 09:52:55  Michael Elkins  <me@sigpipe.org>  (roessler)
 
 	* hook.c, send.c: Fix #1724, cannot use ~h pattern match with
