@@ -382,25 +382,36 @@ void mutt_curs_set (int cursor)
 int mutt_multi_choice (char *prompt, char *letters)
 {
   event_t ch;
-  int choice = 0;
+  int choice;
   char *p;
 
   mvaddstr (LINES - 1, 0, prompt);
   clrtoeol ();
-  while (!choice)
+  FOREVER
   {
     mutt_refresh ();
     ch  = mutt_getch ();
     if (ch.ch == -1)
+    {
       choice = -1;
+      break;
+    }
     else
     {
       p = strchr (letters, ch.ch);
       if (p)
+      {
 	choice = p - letters + 1;
-      else
-	BEEP ();
+	break;
+      }
+      else if (ch.ch <= '9' && ch.ch > '0')
+      {
+	choice = ch.ch - '0';
+	if (choice <= strlen (letters))
+	  break;
+      }
     }
+    BEEP ();
   }
   CLEARLINE (LINES - 1);
   mutt_refresh ();
