@@ -1,3 +1,144 @@
+Thu Jun  3 20:13:22 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/pl.po, po/ko.po, po/fr.po, po/de.po, po/cs.po: Latest chagnes.
+
+	* doc/PGP-Notes.txt, contrib/pgp2.rc, contrib/pgp5.rc, pgppubring.c:
+	Hardwire some mechanisms for finding secret and public key-rings.
+	This way, we need to hard-wire less stuff in the various
+	configuration files, making the use of PGP with mutt a bit simpler
+	again.
+
+	* contrib/pgp2.rc: Another little fix.
+
+	* contrib/pgp2.rc:
+	ups, wrong order of arguments when verifying signatures.
+
+	* doc/PGP-Notes.txt: Document the new PGP configuration interface.
+
+	* contrib/gpg.rc, contrib/pgp2.rc, contrib/pgp5.rc, pgp.c, pgp.h, pgpewrap, pgpinvoke.c, pgpkey.c, pgplib.c, pgplib.h, pgppubring.c, Makefile.am, compose.c, configure.in, gnupgparse.c, init.c, init.h, mutt.h:
+	Experimental: New PGP invocation interface. The invocations are done
+	through formats, so all this should fit more cleanly into mutt now.
+
+Wed Jun  2 18:52:19 1999  Thomas Roessler  <roessler@guug.de>
+
+	* Makefile.am, extlib.c, init.c, lib.c, lib.h, mutt.h, muttlib.c, protos.h:
+	Major cutting & pasting: We now have a "real" library in lib.c which
+	can be linked against external programs without much effort.
+
+	* po/ko.po, po/pl.po, po/es.po, po/it.po, po/de.po: various updates.
+
+Tue Jun  1 14:52:09 1999  Thomas Roessler  <roessler@guug.de>
+
+	* flags.c, mh.c, curs_main.c:
+	Back-porting the maildir fixes from 0.96.2.
+
+Mon May 31 16:11:32 1999  Thomas Roessler  <roessler@guug.de>
+
+	* VERSION: Preparing pre-release for 0.95.6.
+
+	* po/uk.po, po/sk.po, po/ru.po, po/pl.po, po/nl.po, po/ko.po, po/it.po, po/id.po, po/fr.po, po/es.po, po/de.po, po/cs.po:
+	translation updates
+
+	* hook.c, pattern.c, pgp.c, send.c: Backporting fixes from unstable.
+
+	* pattern.c, pgp.c, send.c, hook.c: Minor bug-fixes.
+
+Fri May 21 15:55:27 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/ko.po: Adding the Korean translation.
+
+	* configure.in, po/ko.po: Korean translation.
+
+Tue May 18 19:22:55 1999  Thomas Roessler  <roessler@guug.de>
+
+	* imap.c: Latest IMAP fixes from Brandon.
+
+	* imap.c:
+	The current code wasn't asking for the capabilities of the server in
+	the case where the user is using PREAUTH.
+
+	* imap.c:
+	The current IMAP code wasn't asking for the capabilities of the
+	server in the case where the user is using PREAUTH.
+
+Sun May 16 06:26:11 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/it.po: New IT translation.
+
+	* pgpkey.c:
+	Add a couple of token delimiters when constructing hints.  This way,
+	addresses like "Chr. xyz" <xyz@foo.bar.baz> will match key IDs like
+	xyz <xyz@bar>.
+
+	* handler.c: Fix base64 decoding.
+
+Thu May  6 08:29:17 1999  Thomas Roessler  <roessler@guug.de>
+
+	* curs_main.c, flags.c, mh.c: Fixing more maildir cursor problems.
+
+Wed May  5 20:33:57 1999  Thomas Roessler  <roessler@guug.de>
+
+	* imap.c: The latest IMAP fixes.
+
+	* imap.c: Fixing imap_check_mailbox().  From Brandon Long.
+
+	* imap.c: Mutt would lose user-set "N" flags.
+
+Mon May  3 16:17:29 1999  Thomas Roessler  <roessler@guug.de>
+
+	* gnupgparse.c: gnupg gives reasonable trust values now.
+
+	* po/uk.po, po/sk.po, po/ru.po, po/pl.po, po/nl.po, po/it.po, po/id.po, po/fr.po, po/es.po, po/de.po, po/cs.po, keymap.c, menu.c, send.c:
+	Various fixes from last week.
+
+	* keymap.c, menu.c, pgpkey.c, send.c: Various fixes.
+
+Fri Apr 23 09:01:42 1999  Thomas Roessler  <roessler@guug.de>
+
+	* reldate.h: ups, this should also be updated for 0.95.5 final.
+
+	* ChangeLog: preparing the final 0.95.5.
+
+	* po/uk.po, po/sk.po, po/ru.po, po/pl.po, po/nl.po, po/it.po, po/id.po, po/fr.po, po/es.po, po/de.po, po/cs.po:
+	New translations and typo fixes.
+
+	* OPS: Fix a documentation typo.
+
+	* po/de.po: translation fixes from Roland and Gero.
+
+Thu Apr 22 10:21:41 1999  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.in: Document %_.
+
+	* menu.c: Fix redraws.  Back-port from unstable.
+
+	* lib.c: Add "_" as an expando option.
+
+	* imap.h, init.h, mutt.h, mutt_socket.h, socket.c, imap.c:
+	IMAP update from Brandon Long.
+
+	* send.c: Fix FCC-related SNAFU in the ci_send_message() spaghetti.
+
+Tue Apr 20 19:26:28 1999  Thomas Roessler  <roessler@guug.de>
+
+	* sendlib.c: [stable] fix timezone snafu.
+
+	* sendlib.c: Fix a time zone snafu.
+
+	* po/ru.po, po/sk.po, po/uk.po, po/fr.po, po/id.po, po/it.po, po/nl.po, po/pl.po, po/cs.po, po/de.po, po/es.po, VERSION, reldate.h, ChangeLog:
+	Preparing 0.96.2.
+
+	* po/uk.po, po/sk.po, po/ru.po, po/pl.po, po/nl.po, po/id.po, po/it.po, po/fr.po, po/es.po, po/de.po, po/cs.po, VERSION, reldate.h, ChangeLog:
+	preparing 0.95.5
+
+Mon Apr 12 21:02:35 1999  Thomas Roessler  <roessler@guug.de>
+
+	* recvattach.c: more multipart/alternative handling.
+
+	* recvattach.c: Change multipart handling when receiving messages.
+
+	* compose.c: Clean-up, from Vikas.
+
 Mon Apr 12 21:02:35 1999  Thomas Roessler  <roessler@guug.de>
 
 	* recvattach.c: more multipart/alternative handling.

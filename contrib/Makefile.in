@@ -20,8 +20,9 @@ VPATH=@srcdir@
 
 subdir=contrib
 
-DISTFILES=Mush.rc Pine.rc Makefile.in language.txt language50.txt \
-	patch.slang-1.2.2.keypad.1 sample.muttrc  sample.mailcap
+DISTFILES=Mush.rc Pine.rc Makefile.in language.txt language50.txt 	\
+	patch.slang-1.2.2.keypad.1 sample.muttrc  sample.mailcap	\
+	pgp2.rc pgp5.rc gpg.rc
 
 install all clean distclean:
 
