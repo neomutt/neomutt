@@ -566,8 +566,8 @@ struct option_t MuttVars[] = {
   ** .pp
   ** When set, mutt will skip the host name part of ``$hostname'' variable
   ** when adding the domain part to addresses.  This variable does not
-  ** affect the generation, and it will not lead to the cut-off of first-
-  ** level domains.
+  ** affect the generation of Message-IDs, and it will not lead to the 
+  ** cut-off of first-level domains.
   */
   { "history",		DT_NUM,	 R_NONE, UL &HistSize, 10 },
   /*
