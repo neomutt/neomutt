@@ -728,7 +728,7 @@ void rfc2047_decode (char **pd)
   const char *s = *pd;
   size_t dlen;
 
-  if (!*s || !s)
+  if (!s || !*s)
     return;
 
   dlen = 4 * strlen (s); /* should be enough */

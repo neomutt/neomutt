@@ -86,14 +86,28 @@ to ``configure'' to help it out, or change the default behavior:
 --enable-imap
 	enable IMAP support
 
+--with-gss[=PFX]
+	Enable GSSAPI authentication to IMAP servers. This should work with
+	both MIT and Heimdal GSSAPI implementations - others haven't been
+	tested. Note that the Cyrus SASL library also supports GSSAPI,
+	and may be able to encrypt your session with it - you should use
+	SASL instead if you can.
+
 --with-ssl[=PFX]
-	enable SSL support with IMAP. SSL support requires you to have
-	OpenSSL headers and libraries properly installed before
+	enable SSL support with IMAP and POP. SSL support requires you to
+	have OpenSSL headers and libraries properly installed before
 	compiling.  If the OpenSSL headers and libraries are not in the
 	default system pats you can use the optional PFX argument to
 	define the root directory of your installation.  The libraries
 	are then expected to be found in PFX/lib and headers in
 	PFX/include/openssl.
+
+--with-sasl[=PFX]
+	Use the Cyrus SASL library for IMAP or POP authentication. This
+	library provides generic support for several authentication methods,
+	and more may be added by the system administrator without recompiling
+	mutt. SASL may also be able to encrypt your mail session even if
+	SSL is not available.
 
 --disable-nls
 	This switch disables mutt's native language support.

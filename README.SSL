@@ -5,7 +5,7 @@ Compilation
 -----------
 If you want to have SSL support in mutt, you need to install OpenSSL
 (http://www.openssl.org) libraries and headers before compiling.
-OpenSSL versions 0.9.3 and 0.9.4 have been tested.
+OpenSSL versions 0.9.3 through 0.9.6a have been tested.
 
 For SSL support to be enabled, you need to run the ``configure''
 script with ``--enable-imap --with-ssl[=PFX]'' parameters.  If the
@@ -19,17 +19,20 @@ PFX/include/openssl.
 Usage
 -----
 IMAP/SSL folders can be accessed just like normal IMAP folders, but you
-will also have to add '/ssl' before the closing curly brace. 
+will also have to add '/ssl' before the closing curly brace. Or you can
+use IMAP url notation, where the methods is called imaps.
 
 For example:
 	mailboxes {localhost/ssl}inbox
 	mailboxes {localhost:994/ssl}inbox
-
+or
+	mailboxes imaps://localhost/inbox
+	mailboxes imaps://localhost:994/inbox
 
 If you get errors about lack of entropy, it means that Mutt was unable
 to find a source of random data to initialize SSL library with. Should
 this happen, you need to generate the data yourself and save it in a
-file pointed by $SslEntropyFile or $RANDFILE (environment) variables or
+file pointed by $entropy_file or $RANDFILE (environment) variables or
 in ~/.rnd.
 
 One way to generate random data would be to run a command which
@@ -41,7 +44,7 @@ calculating the MD5-sum from the output and saving it in a file.
 ** is run so don't put anything you can't afford to lose in that file.
 
 The files Mutt will try to use to initialize SSL library with are files
-pointed by $SslEntropyFile and $RANDFILE (or ~/.rnd if unset.) If your
+pointed by $entropy_file and $RANDFILE (or ~/.rnd if unset.) If your
 OpenSSL is version 0.9.5 or later, the previous files can also be EGD
 sockets (see http://www.lothar.com/tech/crypto/ for more information
 about Entropy Gathering Daemon) and in addition sockets in the following
