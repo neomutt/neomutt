@@ -56,6 +56,8 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
   IMAP_HEADER *h, *h0;
   const char *want_headers = "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE IN-REPLY-TO REPLY-TO LINES";
   int using_body_peek = 0;
+  int c;
+  
   fetchlast = 0;
 
   /* define search string */
@@ -255,6 +257,15 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
     h = h->next;
     /* hdata is freed later */
     safe_free ((void **) &h0);
+
+    /* 
+     * skip over additional \n characters - Courier IMAP seems to
+     * put them here.
+     */
+    
+    while ((c = fgetc (fp)) == '\n')
+      ;
+    ungetc (c, fp);
   }
   
   fclose(fp);
