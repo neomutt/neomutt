@@ -20,7 +20,7 @@
 .TH mutt 1 "July 2000" Unix "User Manuals"
 .SH NAME
 .PP
-muttbug \- report a bug in mutt
+muttbug \- Report a bug in mutt.
 .SH SYNOPSIS
 .PP
 .B muttbug
@@ -42,7 +42,8 @@ will give you a description which severity level is appropriate or
 not.
 .PP
 Then, you are asked for the location of a core dump (normally named
-\(lqcore\(rq which may have been left over by a crash of your mutt.
+.BR core )
+which may have been left over by a crash of your mutt.
 You can just type \(lqno\(rq here, or you can enter the path leading 
 to a core dump.
 .B muttbug
@@ -163,6 +164,12 @@ environment variable is unset.  If
 is unset, 
 .BR vi (1)
 will be used to edit the bug report.
+.SH
+FILES
+.PP
+.IP "core"
+If present, this file may contain a post-mortem memory dump of mutt.
+It will be inspected using the debugger installed on your system.
 .SH 
 SEE ALSO
 .PP
