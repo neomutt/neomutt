@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt\n"
 "POT-Creation-Date: 2000-03-13 19:41+0100\n"
-"PO-Revision-Date: 2000-02-27 13:37+01:00\n"
+"PO-Revision-Date: 2000-03-14 12:09+01:00\n"
 "Last-Translator: Boris Wesslowski <Boris@Wesslowski.com>\n"
 "Language-Team: -\n"
 "MIME-Version: 1.0\n"
@@ -234,9 +234,9 @@ msgid "Can't open %s: %s."
 msgstr "No se pudo abrir %s: %s."
 
 #: charset.c:1147
-#, fuzzy, c-format
+#, c-format
 msgid "Error while recoding %s. Leave it unchanged."
-msgstr "Error al recodificar %s. Vea %s para recuperar sus datos."
+msgstr "Error al recodificar %s. Déjelo sin cambios."
 
 #: charset.c:1153
 #, c-format
@@ -620,7 +620,7 @@ msgstr "No se pudo creal el archivo %s"
 
 #: compose.c:1026
 msgid "What we have here is a failure to make an attachment"
-msgstr "Lo que tenemos aquí es una falla al producir el archivo a adjuntar"
+msgstr "Lo que tenemos aquí es un fallo al producir el archivo a adjuntar"
 
 #: compose.c:1087
 msgid "Postpone this message?"
@@ -1073,7 +1073,7 @@ msgstr "%s: imposible adjuntar archivo"
 
 #: help.c:273
 msgid "ERROR: please report this bug"
-msgstr "ERROR: por favor reporte esta falla"
+msgstr "ERROR: por favor reporte este fallo"
 
 #: help.c:315
 msgid "<UNKNOWN>"
@@ -1158,9 +1158,8 @@ msgstr "El login falló."
 
 #. now begin login
 #: imap/auth_gss.c:74
-#, fuzzy
 msgid "Authenticating (GSSAPI)..."
-msgstr "Verificando autentidad (CRAM-MD5)..."
+msgstr "Verificando autentidad (GSSAPI)..."
 
 #: imap/browse.c:93
 msgid "Getting namespaces..."
@@ -2448,8 +2447,7 @@ msgstr "¡Imposible bloquear buzón!"
 #.
 #: mbox.c:747
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr ""
-"sync: buzón modificado, pero sin mensajes modificados (reporte este error)"
+msgstr "sync: ¡buzón modificado, pero sin mensajes modificados! (reporte este error)"
 
 #: mbox.c:776
 msgid "Writing messages... %d (%d%%)"
