@@ -1501,7 +1501,7 @@ of all score entries.
 
 <sect1>Spam detection<label id="spam">
 <p>
-Usage: <tt/spam/ <em/pattern/ <em/format/
+Usage: <tt/spam/ <em/pattern/ <em/format/<newline>
 Usage: <tt/nospam/ <em/pattern/
 
 Mutt has generalized support for external spam-scoring filters.
