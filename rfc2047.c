@@ -43,6 +43,8 @@
 
 #define HSPACE(x) ((x) == '\0' || (x) == ' ' || (x) == '\t')
 
+#define CONTINUATION_BYTE(c) (((c) & 0xc0) == 0x80)
+
 extern char RFC822Specials[];
 
 typedef size_t (*encoder_t) (char *, const char *, size_t,
@@ -328,7 +330,7 @@ static size_t choose_block (char *d, size_t dlen, int col,
     if (!nn && col + *wlen <= ENCWORD_LEN_MAX + 1)
       break;
     nn = (nn ? nn : n) - 1;
-    while ((d[nn] & 0xc0) == 0x80)
+    while (CONTINUATION_BYTE(d[nn]))
       --nn;
     assert (d + nn >= d);
     if (!nn)
@@ -429,7 +431,7 @@ static int rfc2047_encode (const char *d, size_t dlen, int col,
   {
     if (!HSPACE(*(t0-1)))
       continue;
-    for (t = t0 + 1; t < u + ulen && (*t & 0xc0) == 0x80; t++)
+    for (t = t0 + 1; t < u + ulen && CONTINUATION_BYTE(*t); t++)
       ;
     if (!try_block (t0, t - t0, icode, tocode, &encoder, &wlen) &&
 	col + (t0 - u) + wlen <= ENCWORD_LEN_MAX + 1)
@@ -441,7 +443,7 @@ static int rfc2047_encode (const char *d, size_t dlen, int col,
   {
     if (!HSPACE(*t1))
       continue;
-    for (t = t1 - 1; (*t & 0xc0) == 0x80; t--)
+    for (t = t1 - 1; CONTINUATION_BYTE(*t); t--)
       ;
     if (!try_block (t, t1 - t, icode, tocode, &encoder, &wlen) &&
 	1 + wlen + (u + ulen - t1) <= ENCWORD_LEN_MAX + 1)
@@ -468,7 +470,7 @@ static int rfc2047_encode (const char *d, size_t dlen, int col,
       /* See if we can fit the us-ascii suffix, too. */
       if (col + wlen + (u + ulen - t1) <= ENCWORD_LEN_MAX + 1)
 	break;
-      for (n = t1 - t - 1; (t[n] & 0xc0) == 0x80; n--)
+      for (n = t1 - t - 1; CONTINUATION_BYTE(t[n]); n--)
 	;
       assert (t + n >= t);
       if (!n)
