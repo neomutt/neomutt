@@ -200,7 +200,7 @@ void mutt_set_langinfo_charset (void)
   mutt_canonical_charset (buff2, sizeof (buff2), buff);
   
   /* finally, set $charset */
-  if (!(Charset = safe_strdup (buff)))
+  if (!(Charset = safe_strdup (buff2)))
     Charset = safe_strdup ("iso-8859-1");
 }
 
@@ -223,7 +223,7 @@ void mutt_canonical_charset (char *dest, size_t dlen, const char *name)
   if (!mutt_strncasecmp (name, "iso8859", 7) && name[7] != '-')
     snprintf (scratch, sizeof (scratch), "iso_8859-%s", name + 7);
   else if (!mutt_strncasecmp (name, "iso8859-", 8))
-    snprintf (scratch, sizeof (scratch), "iso8859-%s", name + 8);
+    snprintf (scratch, sizeof (scratch), "iso_8859-%s", name + 8);
   else
     strfcpy (scratch, NONULL(name), sizeof (scratch));
 
