@@ -6,9 +6,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.5.2\n"
-"POT-Creation-Date: 2003-03-19 23:37+0100\n"
-"PO-Revision-Date: 2002-12-07 01:40+0900\n"
+"Project-Id-Version: 1.5.4\n"
+"POT-Creation-Date: 2003-03-20 22:34+0900\n"
+"PO-Revision-Date: 2003-03-20 22:40+0900\n"
 "Last-Translator: Tamotsu TAKAHASHI <tamo@momonga-linux.org>\n"
 "Language-Team: mutt-j <mutt-j@ribbon.or.jp>\n"
 "MIME-Version: 1.0\n"
@@ -77,7 +77,7 @@ msgstr "アドレス: "
 #: alias.c:289 send.c:201
 #, c-format
 msgid "Error: '%s' is a bad IDN."
-msgstr ""
+msgstr "エラー: '%s' は不正な IDN."
 
 #: alias.c:301
 msgid "Personal name: "
@@ -244,7 +244,7 @@ msgstr "整列: (d)日付,(a)ABC順,(z)サイズ,(n)整列しない?"
 
 #: browser.c:1049
 msgid "dazn"
-msgstr ""
+msgstr "dazn"
 
 #: browser.c:1115
 msgid "New file name: "
@@ -372,7 +372,7 @@ msgstr "アドレス解析エラー!"
 #: commands.c:260 recvcmd.c:162
 #, c-format
 msgid "Bad IDN: '%s'"
-msgstr ""
+msgstr "不正な IDN: '%s'"
 
 #: commands.c:271 recvcmd.c:176
 #, c-format
@@ -385,14 +385,12 @@ msgid "Bounce messages to %s"
 msgstr "%s へメッセージ再送"
 
 #: commands.c:287 recvcmd.c:192
-#, fuzzy
 msgid "Message not bounced."
-msgstr "メッセージを再送した。"
+msgstr "メッセージは再送されなかった。"
 
 #: commands.c:287 recvcmd.c:192
-#, fuzzy
 msgid "Messages not bounced."
-msgstr "メッセージを再送した。"
+msgstr "メッセージは再送されなかった。"
 
 #: commands.c:297 recvcmd.c:211
 msgid "Message bounced."
@@ -451,7 +449,7 @@ msgstr "整列 d)時/f)送者/r)着順/s)題/o)宛先/t)スレ/u)無/z)サイズ/c)得点?:"
 
 #: commands.c:499
 msgid "dfrsotuzc"
-msgstr ""
+msgstr "dfrsotuzc"
 
 #: commands.c:552
 msgid "Shell command: "
@@ -573,7 +571,7 @@ msgstr "PGP (e)暗号化,(s)署名,(a)..として署名,(b)両者,(f)解除?"
 
 #: compose.c:166
 msgid "esabf"
-msgstr ""
+msgstr "esabf"
 
 #. sign (a)s
 #: compose.c:179 compose.c:264
@@ -588,7 +586,7 @@ msgstr ""
 
 #: compose.c:223
 msgid "eswabf"
-msgstr ""
+msgstr "eswabf"
 
 #: compose.c:231
 msgid ""
@@ -597,7 +595,7 @@ msgstr "1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, (f)解除? "
 
 #: compose.c:233
 msgid "12345f"
-msgstr ""
+msgstr "12345f"
 
 #: compose.c:341
 #, c-format
@@ -616,7 +614,7 @@ msgstr "-- 添付ファイル"
 #: compose.c:422
 #, c-format
 msgid "Warning: '%s' is a bad IDN."
-msgstr ""
+msgstr "警告: '%s' は不正な IDN."
 
 #: compose.c:445
 msgid "You may not delete the only attachment."
@@ -625,7 +623,7 @@ msgstr "唯一の添付ファイルを削除してはいけない。"
 #: compose.c:711 send.c:1433
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
-msgstr ""
+msgstr "\"%s\" 中に不正な IDN: '%s'"
 
 #: compose.c:799
 msgid "Attaching selected files..."
@@ -751,9 +749,8 @@ msgid "Enter SMIME passphrase:"
 msgstr "S/MIME パスフレーズ入力:"
 
 #: crypt.c:192
-#, fuzzy
 msgid "Create a traditional (inline) PGP message?"
-msgstr "インライン PGP メッセージを作成?"
+msgstr "伝統的な (インラインの) PGP メッセージを作成?"
 
 #: crypt.c:200 pgpkey.c:559 postpone.c:538
 msgid "Invoking PGP..."
@@ -825,11 +822,11 @@ msgstr ""
 
 #: curs_lib.c:155
 msgid "yes"
-msgstr ""
+msgstr "yes"
 
 #: curs_lib.c:156
 msgid "no"
-msgstr ""
+msgstr "no"
 
 #. restore blocking operation
 #: curs_lib.c:252
@@ -1119,7 +1116,7 @@ msgstr "メッセージに内容が一行もない。\n"
 #: edit.c:440
 #, c-format
 msgid "Bad IDN in %s: '%s'\n"
-msgstr ""
+msgstr "%s 中に不正な IDN: '%s'\n"
 
 #: edit.c:458
 #, c-format
@@ -1555,7 +1552,7 @@ msgstr "alias (別名): アドレスがない"
 #: init.c:536
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr ""
+msgstr "警告: 不正な IDN '%s' がエイリアス '%s' 中にある。\n"
 
 #: init.c:599
 msgid "invalid header field"
@@ -1705,14 +1702,13 @@ msgid "%s: no such function"
 msgstr "%s という機能はない"
 
 #: keymap.c:909
-#, fuzzy
 msgid "Enter keys (^G to abort): "
-msgstr "%s の鍵 ID 入力: "
+msgstr "キーを押すと開始 (終了は ^G): "
 
 #: keymap.c:914
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr ""
+msgstr "文字 = %s, 8進 = %o, 10進 = %d"
 
 #: keymap_alldefs.h:5
 msgid "null operation"
@@ -2143,9 +2139,8 @@ msgid "jump to the next new message"
 msgstr "次の新着メッセージに移動"
 
 #: keymap_alldefs.h:112
-#, fuzzy
 msgid "jump to the next new or unread message"
-msgstr "次の未読メッセージへ移動"
+msgstr "次の新着または未読のメッセージへ移動"
 
 #: keymap_alldefs.h:113
 msgid "jump to the next subthread"
@@ -2184,9 +2179,8 @@ msgid "jump to the previous new message"
 msgstr "前の新着メッセージに移動"
 
 #: keymap_alldefs.h:122
-#, fuzzy
 msgid "jump to the previous new or unread message"
-msgstr "前の未読メッセージに移動"
+msgstr "前の新着または未読メッセージに移動"
 
 #: keymap_alldefs.h:123
 msgid "jump to the previous unread message"
@@ -2399,7 +2393,7 @@ msgstr "MIME 添付ファイルを表示"
 
 #: keymap_alldefs.h:175
 msgid "display the keycode for a key press"
-msgstr ""
+msgstr "次に押すキーのコードを表示"
 
 #: keymap_alldefs.h:176
 msgid "show currently active limit pattern"
@@ -2813,7 +2807,7 @@ msgstr "ファイルが存在、(o)上書き (a)追加 (c)中止?"
 
 #: muttlib.c:856
 msgid "oac"
-msgstr ""
+msgstr "oac"
 
 #: muttlib.c:1144
 msgid "Can't save message to POP mailbox."
@@ -2850,7 +2844,7 @@ msgstr "%s への交信エラー (%s)。"
 #: mutt_socket.c:418 mutt_socket.c:475
 #, c-format
 msgid "Bad IDN \"%s\"."
-msgstr ""
+msgstr "不正な IDN \"%s\"."
 
 #: mutt_socket.c:425 mutt_socket.c:482
 #, c-format
@@ -2969,7 +2963,7 @@ msgstr "(r)拒否 (o)今回のみ承認 (a)いつでも承認"
 
 #: mutt_ssl.c:616
 msgid "roa"
-msgstr ""
+msgstr "roa"
 
 #: mutt_ssl.c:620
 msgid "(r)eject, accept (o)nce"
@@ -2977,7 +2971,7 @@ msgstr "(r)拒否 (o)今回のみ承認"
 
 #: mutt_ssl.c:621
 msgid "ro"
-msgstr ""
+msgstr "ro"
 
 #: mutt_ssl.c:625 pgpkey.c:510 smime.c:410
 msgid "Exit  "
@@ -3287,9 +3281,8 @@ msgstr ""
 "\n"
 
 #: pgp.c:662
-#, fuzzy
 msgid "Internal error. Inform <roessler@does-not-exist.org>."
-msgstr "内部エラー。<roessler@guug.de>に報告せよ。"
+msgstr "内部エラー。<roessler@does-not-exist.org> に報告せよ。"
 
 #: pgp.c:722
 msgid ""
@@ -3346,9 +3339,8 @@ msgid "Fetching PGP key..."
 msgstr "PGP 鍵を取得中..."
 
 #: pgpkey.c:486
-#, fuzzy
 msgid "All matching keys are expired, revoked, or disabled."
-msgstr "一致した鍵はすべて期限切れか廃棄済みとしてマークされている。"
+msgstr "一致した鍵はすべて期限切れか廃棄済み、または使用禁止。"
 
 #. __STRCAT_CHECKED__
 #: pgpkey.c:512 smime.c:412
@@ -3643,14 +3635,12 @@ msgid "You may only bounce message/rfc822 parts."
 msgstr "message/rfc822 パートのみ再送してもよい。"
 
 #: recvcmd.c:213
-#, fuzzy
 msgid "Error bouncing message!"
-msgstr "メッセージ送信エラー。"
+msgstr "メッセージ再送エラー!"
 
 #: recvcmd.c:213
-#, fuzzy
 msgid "Error bouncing messages!"
-msgstr "メッセージ送信エラー。"
+msgstr "メッセージ再送エラー!"
 
 #: recvcmd.c:413
 #, c-format
@@ -3915,7 +3905,7 @@ msgstr "配信プロセスの出力"
 #: sendlib.c:2264
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
-msgstr ""
+msgstr "不正な IDN %s を resent-from の準備中に発見。"
 
 #: signal.c:39
 #, c-format
