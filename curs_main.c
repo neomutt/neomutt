@@ -359,7 +359,7 @@ int mutt_index_menu (void)
 	/* save the list of new messages */
 	if (oldcount && check != M_REOPENED)
 	{
-	  save_new = (void **) safe_malloc (sizeof (HEADER *) * (Context->msgcount - oldcount));
+	  save_new = (HEADER **) safe_malloc (sizeof (HEADER *) * (Context->msgcount - oldcount));
 	  for (j = oldcount; j < Context->msgcount; j++)
 	    save_new[j-oldcount] = Context->hdrs[j];
         }
