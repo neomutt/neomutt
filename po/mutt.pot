@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-15 03:08+0200\n"
+"POT-Creation-Date: 1998-10-15 03:32+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -467,63 +467,63 @@ msgstr ""
 msgid "Unable to attach!"
 msgstr ""
 
-#: compose.c:818
-msgid "This encoding is deprecated.  Really use it?"
-msgstr ""
-
-#: compose.c:826
+#: compose.c:820 compose.c:834
 msgid "Invalid encoding."
 msgstr ""
 
-#: compose.c:841
+#: compose.c:825
+msgid "This encoding is deprecated.  Really use it?"
+msgstr ""
+
+#: compose.c:849
 msgid "Save a copy of this message?"
 msgstr ""
 
-#: compose.c:886
+#: compose.c:894
 msgid "Rename to: "
 msgstr ""
 
-#: compose.c:891
+#: compose.c:899
 #, c-format
 msgid "Can't stat: %s"
 msgstr ""
 
-#: compose.c:918
+#: compose.c:926
 msgid "New file: "
 msgstr ""
 
-#: compose.c:931
+#: compose.c:939
 msgid "Content-Type is of the form base/sub"
 msgstr ""
 
-#: compose.c:937
+#: compose.c:945
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr ""
 
-#: compose.c:950
+#: compose.c:958
 #, c-format
 msgid "Can't create file %s"
 msgstr ""
 
-#: compose.c:958
+#: compose.c:966
 msgid "What we have here is a failure to make an attachment"
 msgstr ""
 
-#: compose.c:1030
+#: compose.c:1038
 msgid "Postpone this message?"
 msgstr ""
 
-#: compose.c:1077
+#: compose.c:1085
 msgid "Write message to mailbox"
 msgstr ""
 
-#: compose.c:1081
+#: compose.c:1089
 #, c-format
 msgid "Writing message to %s ..."
 msgstr ""
 
-#: compose.c:1092
+#: compose.c:1100
 msgid "Message written."
 msgstr ""
 
@@ -2746,31 +2746,31 @@ msgstr ""
 msgid "Mail sent."
 msgstr ""
 
-#: sendlib.c:469
+#: sendlib.c:473
 msgid "No boundary parameter found! [report this error]"
 msgstr ""
 
-#: sendlib.c:503
+#: sendlib.c:507
 #, c-format
 msgid "%s no longer exists!"
 msgstr ""
 
-#: sendlib.c:767
+#: sendlib.c:773
 #, c-format
 msgid "Could not open %s"
 msgstr ""
 
-#: sendlib.c:1695
+#: sendlib.c:1701
 #, c-format
 msgid "Error sending message, child exited %d (%s).\n"
 msgstr ""
 
-#: sendlib.c:1697
+#: sendlib.c:1703
 #, c-format
 msgid "Saved output of child process to %s.\n"
 msgstr ""
 
-#: sendlib.c:1701
+#: sendlib.c:1707
 msgid "Error sending message."
 msgstr ""
 

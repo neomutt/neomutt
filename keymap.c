@@ -66,7 +66,9 @@ static struct mapping_t KeyNames[] = {
   { "<Insert>",	KEY_IC },
   { "<Home>",	KEY_HOME },
   { "<End>",	KEY_END },
+#ifdef KEY_ENTER
   { "<Enter>",	KEY_ENTER },
+#endif
   { "<Return>",	M_ENTER_C },
   { "<Esc>",	'\033' },
   { "<Tab>",	'\t' },
@@ -481,7 +483,6 @@ int km_expand_key (char *s, size_t len, struct keymap_t *map)
       return (1);
 
     s += l;
-    *(s++) = ' ';
   }
 
   /* not reached */
@@ -596,10 +597,22 @@ void km_error_key (int menu)
   if(!(key = km_find_func(menu, OP_HELP)))
     key = km_find_func(MENU_GENERIC, OP_HELP);
   
-  if(km_expand_key(buf, sizeof(buf), key))
-    mutt_error (_("Key is not bound.  Press '%s' for help."), buf);
-  else
-    mutt_error _("Key is not bound.  See the manual.");
+  if(!(km_expand_key(buf, sizeof(buf), key)))
+  {
+    mutt_error _("Key is not bound.");
+    return;
+  }
+
+  /* make sure the key is really the help key in this menu */
+  push_string (buf);
+  if (km_dokey (menu) != OP_HELP)
+  {
+    mutt_error _("Key is not bound.");
+    return;
+  }
+
+  mutt_error (_("Key is not bound.  Press '%s' for help."), buf);
+  return;
 }
 
 int mutt_parse_push (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)

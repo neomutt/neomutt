@@ -315,6 +315,8 @@ static void encode_base64 (FILE * fin, FILE *fout, int istext)
   fputc('\n', fout);
 }
 
+#ifdef PERMIT_DEPRECATED_UUENCODED_MESSAGES
+
 #define UUENC(c) ((c) ? ((c) & 077) + ' ' : '`')
 
 static void encode_uuenc (FILE * fin, FILE * fout)
@@ -373,6 +375,8 @@ static void encode_uuenc (FILE * fin, FILE * fout)
   fputc(ch, fout);
   fputc('\n', fout);
 }
+
+#endif
 
 int mutt_write_mime_header (BODY *a, FILE *f)
 {
@@ -508,6 +512,7 @@ int mutt_write_mime_body (BODY *a, FILE *f)
     encode_quoted (fpin, f, mutt_is_text_type (a->type, a->subtype));
   else if (a->encoding == ENCBASE64)
     encode_base64 (fpin, f, mutt_is_text_type (a->type, a->subtype));
+#ifdef PERMIT_DEPRECATED_UUENCODED_MESSAGES
   else if (a->encoding == ENCUUENCODED)
   {
     /* Strip off the leading path... */
@@ -519,6 +524,7 @@ int mutt_write_mime_body (BODY *a, FILE *f)
     encode_uuenc (fpin, f);
     fprintf (f, "end\n");
   }
+#endif
   else
     mutt_copy_stream (fpin, f);
   fclose (fpin);
