@@ -404,13 +404,19 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int group)
   }
   else if (env->reply_to)
   {
-    if (option (OPTIGNORELISTREPLYTO) &&
+    if (mutt_addrcmp (env->from, env->reply_to) || 
+	(option (OPTIGNORELISTREPLYTO) &&
 	mutt_is_mail_list (env->reply_to) &&
 	(mutt_addrsrc (env->reply_to, env->to) ||
-	mutt_addrsrc (env->reply_to, env->cc)))
+	mutt_addrsrc (env->reply_to, env->cc))))
     {
       /* If the Reply-To: address is a mailing list, assume that it was
        * put there by the mailing list, and use the From: address
+       * 
+       * We also take the from header if our correspondant has a reply-to
+       * header which is identical to the electronic mail address given
+       * in his From header.
+       * 
        */
       rfc822_append (to, env->from);
     }
