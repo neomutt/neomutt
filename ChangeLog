@@ -1,4 +1,6 @@
-2002-12-17 13:01:26  Thomas Roessler  <roessler@does-not-exist.org>
+2002-12-17 13:04:29  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* .cvsignore: Ignore some more files.
 
 	* Makefile.am, mkjtags.c: Remve that jed tags generator.  I don't
 	use it anyway.
