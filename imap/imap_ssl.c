@@ -284,7 +284,69 @@ static void x509_fingerprint (char *s, int l, X509 * cert)
   }
 }
 
-static int check_certificate_file (X509 *peercert)
+static char *asn1time_to_string (ASN1_UTCTIME *tm)
+{
+  static char buf[64];
+  BIO *bio;
+
+  strncpy (buf, _("[invalid date]"), sizeof (buf));
+  
+  bio = BIO_new (BIO_s_mem());
+  if (bio)
+  {
+    if (ASN1_TIME_print (bio, tm))
+      (void) BIO_read (bio, buf, sizeof (buf));
+    BIO_free (bio);
+  }
+
+  return buf;
+}
+
+static int check_certificate_by_signer (X509 *peercert)
+{
+  X509_STORE_CTX xsc;
+  X509_STORE *ctx;
+  int pass;
+
+  ctx = X509_STORE_new ();
+  if (ctx == NULL) return 0;
+
+  if (option (OPTSSLSYSTEMCERTS) && !X509_STORE_set_default_paths (ctx))
+  {
+    dprint (2, (debugfile, "X509_STORE_set_default_paths failed\n"));
+    X509_STORE_free (ctx);
+    return 0;
+  }
+
+  if (!X509_STORE_load_locations (ctx, SslCertFile, NULL))
+  {
+    dprint (2, (debugfile, "X509_STORE_load_locations failed\n"));
+    X509_STORE_free (ctx);
+    return 0;
+  }
+
+  X509_STORE_CTX_init (&xsc, ctx, peercert, NULL);
+
+  pass = (X509_verify_cert (&xsc) > 0);
+#ifdef DEBUG
+  if (! pass)
+  {
+    char buf[SHORT_STRING];
+    int err;
+
+    err = X509_STORE_CTX_get_error (&xsc);
+    snprintf (buf, sizeof (buf), "%s (%d)", 
+	X509_verify_cert_error_string(err), err);
+    dprint (2, (debugfile, "X509_verify_cert: %s\n", buf));
+  }
+#endif
+  X509_STORE_CTX_cleanup (&xsc);
+  X509_STORE_free (ctx);
+
+  return pass;
+}
+
+static int check_certificate_by_digest (X509 *peercert)
 {
   unsigned char peermd[EVP_MAX_MD_SIZE];
   unsigned int peermdlen;
@@ -292,27 +354,53 @@ static int check_certificate_file (X509 *peercert)
   int pass = 0;
   FILE *fp;
 
-  if (!X509_digest (peercert, EVP_sha1(), peermd, &peermdlen))
+  /* expiration check */
+  if (X509_cmp_current_time (X509_get_notBefore (peercert)) >= 0)
+  {
+    dprint (2, (debugfile, "Server certificate is not yet valid\n"));
+    mutt_error (_("Server certificate is not yet valid"));
+    sleep (2);
     return 0;
-  
+  }
+  if (X509_cmp_current_time (X509_get_notAfter (peercert)) <= 0)
+  {
+    dprint (2, (debugfile, "Server certificate has expired"));
+    mutt_error (_("Server certificate has expired"));
+    sleep (2);
+    return 0;
+  }
+
   if ((fp = fopen (SslCertFile, "rt")) == NULL)
     return 0;
 
+  if (!X509_digest (peercert, EVP_sha1(), peermd, &peermdlen))
+  {
+    fclose (fp);
+    return 0;
+  }
+  
   while ((cert = READ_X509_KEY (fp, &cert)) != NULL)
   {
     unsigned char md[EVP_MAX_MD_SIZE];
     unsigned int mdlen;
 
+    /* Avoid CPU-intensive digest calculation if the certificates are
+     * not even remotely equal.
+     */
+    if (X509_subject_name_cmp (cert, peercert) != 0 ||
+	X509_issuer_name_cmp (cert, peercert) != 0)
+      continue;
+
     if (!X509_digest (cert, EVP_sha1(), md, &mdlen) || peermdlen != mdlen)
       continue;
     
-    if (memcmp(peermd, md, mdlen) == 0)
-    {
-      X509_free (cert);
-      pass = 1;
-      break;
-    }
+    if (memcmp(peermd, md, mdlen) != 0)
+      continue;
+
+    pass = 1;
+    break;
   }
+  X509_free (cert);
   fclose (fp);
 
   return pass;
@@ -325,41 +413,61 @@ static int ssl_check_certificate (sslsockdata * data)
   char helpstr[SHORT_STRING];
   char buf[SHORT_STRING];
   MUTTMENU *menu;
-  int done, i;
+  int done, row, i;
   FILE *fp;
-  char *line = NULL, *c;
+  char *name = NULL, *c;
+
+  if (check_certificate_by_signer (data->cert))
+  {
+    dprint (1, (debugfile, "ssl_check_certificate: signer check passed\n"));
+    return 1;
+  }
 
   /* automatic check from user's database */
-  if (SslCertFile && check_certificate_file (data->cert))
+  if (SslCertFile && check_certificate_by_digest (data->cert))
+  {
+    dprint (1, (debugfile, "ssl_check_certificate: digest check passed\n"));
     return 1;
+  }
 
+  /* interactive check from user */
   menu = mutt_new_menu ();
-  menu->max = 15;
+  menu->max = 19;
   menu->dialog = (char **) safe_calloc (1, menu->max * sizeof (char *));
   for (i = 0; i < menu->max; i++)
     menu->dialog[i] = (char *) safe_calloc (1, SHORT_STRING * sizeof (char));
 
-  strncpy (menu->dialog[0], _("This certificate belongs to:"), SHORT_STRING);
-  line = X509_NAME_oneline (X509_get_subject_name (data->cert),
+  row = 0;
+  strncpy (menu->dialog[row++], _("This certificate belongs to:"), SHORT_STRING);
+  name = X509_NAME_oneline (X509_get_subject_name (data->cert),
 			    buf, sizeof (buf));
-  for (i = 1; i <= 5; i++)
+  for (i = 0; i < 5; i++)
   {
-    c = x509_get_part (line, part[i - 1]);
-    snprintf (menu->dialog[i], SHORT_STRING, "   %s", c);
+    c = x509_get_part (name, part[i]);
+    snprintf (menu->dialog[row++], SHORT_STRING, "   %s", c);
   }
 
-  strncpy (menu->dialog[7], _("This certificate was issued by:"), SHORT_STRING);
-  line = X509_NAME_oneline (X509_get_subject_name (data->cert),
+  row++;
+  strncpy (menu->dialog[row++], _("This certificate was issued by:"), SHORT_STRING);
+  name = X509_NAME_oneline (X509_get_subject_name (data->cert),
 			    buf, sizeof (buf));
-  for (i = 8; i <= 12; i++)
+  for (i = 0; i < 5; i++)
   {
-    c = x509_get_part (line, part[i - 8]);
-    snprintf (menu->dialog[i], SHORT_STRING, "   %s", c);
+    c = x509_get_part (name, part[i]);
+    snprintf (menu->dialog[row++], SHORT_STRING, "   %s", c);
   }
 
+  row++;
+  snprintf (menu->dialog[row++], SHORT_STRING, _("This certificate is valid"));
+  snprintf (menu->dialog[row++], SHORT_STRING, _("   from %s"), 
+      asn1time_to_string (X509_get_notBefore (data->cert)));
+  snprintf (menu->dialog[row++], SHORT_STRING, _("     to %s"), 
+      asn1time_to_string (X509_get_notAfter (data->cert)));
+
+  row++;
   buf[0] = '\0';
   x509_fingerprint (buf, sizeof (buf), data->cert);
-  snprintf (menu->dialog[14], SHORT_STRING, _("Fingerprint: %s"), buf);
+  snprintf (menu->dialog[row++], SHORT_STRING, _("Fingerprint: %s"), buf);
 
   menu->title = _("SSL Certificate check");
   if (SslCertFile)
