@@ -153,23 +153,24 @@ install-data-local: Muttrc
 # used manually.
 
 pclean:
-	cat /dev/null > PATCHES
+	cat /dev/null > $(top_srcdir)/PATCHES
 
 check-security:
-	./check_sec.sh
+	(cd $(top_srcdir) && ./check_sec.sh)
 
 commit-real:
-	cvs commit
+	(cd $(top_srcdir) && cvs commit)
 
 commit-changelog:
-	cvs commit -m "# changelog commit" ChangeLog
+	(cd $(top_srcdir) && cvs commit -m "# changelog commit" ChangeLog)
 
 commit: pclean check-security commit-real changelog commit-changelog
 
 changelog:
-	cvs update ChangeLog
-	sh ./mkchangelog.sh | fmt -c | cat  - ChangeLog > ChangeLog.$$$$ && mv ChangeLog.$$$$ ChangeLog
-	$${VISUAL:-vi} ChangeLog
+	(cd $(top_srcdir); \
+	cvs update ChangeLog; \
+	sh ./mkchangelog.sh | fmt -c | cat  - ChangeLog > ChangeLog.$$$$ && mv ChangeLog.$$$$ ChangeLog; \
+	$${VISUAL:-vi} ChangeLog)
 
 ChangeLog: changelog
 
