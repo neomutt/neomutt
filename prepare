@@ -1,15 +1,24 @@
 #!/bin/sh --
 
-if aclocal -I m4 && autoheader && (cd m4 && make -f Makefile.am.in ) && automake --foreign && autoconf && ./configure $@
+am()
+{
+  find -name Makefile.am | while read f ; do
+    automake --foreign `dirname $f`/`basename $f .am` || return 1
+  done
+  return 0
+}
+
+if aclocal -I m4 && autoheader && (cd m4 && make -f Makefile.am.in ) \
+  && am && autoconf && ./configure $@
 then
-	echo
-	echo "The mutt source code was successfully prepared."
-	echo "Type make && make install to build and install mutt."
-	echo
+  echo
+  echo "The mutt source code was successfully prepared."
+  echo "Type make && make install to build and install mutt."
+  echo
 else
-	echo
-	echo "Some part of the preparation process failed."
-	echo "Please refer to doc/devel-notes.txt for details."
-	echo
-	exit 1
+  echo
+  echo "Some part of the preparation process failed."
+  echo "Please refer to doc/devel-notes.txt for details."
+  echo
+  exit 1
 fi
