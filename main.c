@@ -33,6 +33,10 @@ static char rcsid[]="$Id$";
 #include <sys/stat.h>
 #include <sys/utsname.h>
 
+#ifdef HAVE_GETOPT_H
+#include <getopt.h>
+#endif
+
 const char ReachingUs[] = N_("\
 To contact the developers, please mail to <mutt-dev@mutt.org>.\n");
 

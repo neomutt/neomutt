@@ -180,7 +180,7 @@ main ()
 
 AC_HEADER_STDC
 
-AC_CHECK_HEADERS(stdarg.h sys/ioctl.h sysexits.h)
+AC_CHECK_HEADERS(stdarg.h sys/ioctl.h sysexits.h getopt.h)
 
 AC_TYPE_SIGNAL
 

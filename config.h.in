@@ -275,6 +275,9 @@
 /* Define if you have the <argz.h> header file.  */
 #undef HAVE_ARGZ_H
 
+/* Define if you have the <getopt.h> header file.  */
+#undef HAVE_GETOPT_H
+
 /* Define if you have the <limits.h> header file.  */
 #undef HAVE_LIMITS_H
 

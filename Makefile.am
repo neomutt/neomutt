@@ -37,6 +37,10 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO acconfig.h attach.h \
 
 BUILT_SOURCES = mutt_dotlock.c keymap_defs.h
 
+mutt_dotlock_SOURCES = mutt_dotlock.c
+mutt_dotlock_LDADD = @SNPRINTFOBJS@
+mutt_dotlock_DEPENDENCIES = @SNPRINTFOBJS@ @LIBOBJS@ $(INTLDEPS)
+
 mutt_dotlock.c: dotlock.c
 	cp dotlock.c mutt_dotlock.c
 

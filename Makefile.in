@@ -137,6 +137,10 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO acconfig.h attach.h \
 
 BUILT_SOURCES = mutt_dotlock.c keymap_defs.h
 
+mutt_dotlock_SOURCES = mutt_dotlock.c
+mutt_dotlock_LDADD = @SNPRINTFOBJS@
+mutt_dotlock_DEPENDENCIES = @SNPRINTFOBJS@ @LIBOBJS@ $(INTLDEPS)
+
 CLEANFILES = mutt_dotlock.c
 
 LDADD = @LIBOBJS@ @INTLLIBS@
@@ -153,10 +157,7 @@ PROGRAMS =  $(bin_PROGRAMS)
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
-mutt_dotlock_SOURCES = mutt_dotlock.c
 mutt_dotlock_OBJECTS =  mutt_dotlock.o
-mutt_dotlock_LDADD = $(LDADD)
-mutt_dotlock_DEPENDENCIES =  @LIBOBJS@
 mutt_dotlock_LDFLAGS = 
 mutt_OBJECTS =  addrbook.o alias.o attach.o browser.o buffy.o color.o \
 commands.o complete.o compose.o copy.o curs_lib.o curs_main.o date.o \
@@ -196,8 +197,8 @@ DEP_FILES =  .deps/addrbook.P .deps/alias.P .deps/attach.P \
 .deps/sha1dgst.P .deps/signal.P .deps/snprintf.P .deps/socket.P \
 .deps/sort.P .deps/status.P .deps/strcasecmp.P .deps/system.P \
 .deps/thread.P
-SOURCES = mutt_dotlock.c $(mutt_SOURCES) $(EXTRA_mutt_SOURCES)
-OBJECTS = mutt_dotlock.o $(mutt_OBJECTS)
+SOURCES = $(mutt_dotlock_SOURCES) $(mutt_SOURCES) $(EXTRA_mutt_SOURCES)
+OBJECTS = $(mutt_dotlock_OBJECTS) $(mutt_OBJECTS)
 
 all: all-recursive-am all-am
 
