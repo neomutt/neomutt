@@ -594,14 +594,12 @@ int imap_wait_keepalive (pid_t pid)
 
   sigaction (SIGALRM, &act, &oldalrm);
 
-  /* RFC 2060 specifies a minimum of 30 minutes before disconnect when in
-   * the AUTHENTICATED state. We'll poll at half that. */
-  alarm (900);
+  alarm (ImapKeepalive);
   while (waitpid (pid, &rc, 0) < 0 && errno == EINTR)
   {
     alarm (0); /* cancel a possibly pending alarm */
     imap_keepalive ();
-    alarm (900);
+    alarm (ImapKeepalive);
   }
 
   alarm (0);	/* cancel a possibly pending alarm */

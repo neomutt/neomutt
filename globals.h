@@ -149,6 +149,9 @@ WHERE short WriteInc;
 WHERE short ScoreThresholdDelete;
 WHERE short ScoreThresholdRead;
 WHERE short ScoreThresholdFlag;
+#ifdef USE_IMAP
+WHERE short ImapKeepalive;
+#endif
 
 /* flags for received signals */
 WHERE SIG_ATOMIC_VOLATILE_T SigAlrm INITVAL (0);
