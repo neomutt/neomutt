@@ -1,3 +1,34 @@
+Sat Jan  2 09:35:09 1999  Thomas Roessler  <roessler@guug.de>
+
+	* protos.h, parse.c, handler.c: mutt_parse_date () shouldn't
+	  modify its argument.  Problem noted by Byrial Jensen.
+
+	* lib.c: Fix safe_symlink to correctly handle relative paths.
+
+Fri Jan  1 09:43:15 1999  Thomas Roessler  <roessler@guug.de>
+
+	* sendlib.c: New Year's time zone handling patch from Manish
+	  Singh <yosh@gimp.org>.
+
+Thu Dec 31 09:45:46 1998  Thomas Roessler  <roessler@guug.de>
+
+	* curs_main.c: The attached patch moves code for sorting the
+	  index and restoring the current message from
+	  mutt_index_menu() to a new function. It saves code
+	  duplication.
+
+Wed Dec 30 07:58:40 1998  Thomas Roessler  <roessler@guug.de>
+
+	* pgp.c, main.c: Localize some more messages.  From Michael Sobolev.
+
+Tue Dec 29 16:29:03 1998  Thomas Roessler  <roessler@guug.de>
+
+	* mbox.c, ChangeLog: Use sizeof instead of strlen for some
+	  fixed strings.
+
+	* mh.c: Take setting the index_hint out of the main loop of
+	  mh_check_mailbox().
+
 Mon Dec 28 14:59:04 1998  Thomas Roessler  <roessler@guug.de>
 
 	* attach.c: Fix a segmentation fault when viewing

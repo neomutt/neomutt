@@ -1156,7 +1156,7 @@ char *mutt_make_date (char *s, size_t len)
   if (yday != 0)
   {
     if (yday > 1 || yday < -1)
-      yday /= -yday;
+      yday /= - abs (yday);
 
     tz += yday * 24 * 60; /* GMT is next or previous day! */
   }
