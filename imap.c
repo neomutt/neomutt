@@ -1639,7 +1639,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   mutt_socket_write (CTX_DATA->conn, buf);
   do
   {
-    if (mutt_socket_read_line (buf, sizeof (buf), CTX_DATA->conn) < 0)
+    if (mutt_socket_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
     {
       return (-1);
     }
@@ -1651,19 +1651,35 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
       pc = imap_next_word (pc);
       if (mutt_strncasecmp ("FETCH", pc, 5) == 0)
       {
-        if (get_literal_count(buf, &bytes) < 0)
+	while (*pc)
 	{
-	  imap_error ("imap_fetch_message()", buf);
-	  return (-1);
-	}
-	for (pos = 0; pos < bytes; )
-	{
-	  len = mutt_socket_read_line (buf, sizeof (buf), CTX_DATA->conn);
-	  if (len < 0)
-	    return (-1);
-	  pos += len;
-	  fputs (buf, msg->fp);
-	  fputs ("\n", msg->fp);
+	  pc = imap_next_word (pc);
+	  if (pc[0] == '(')
+	    pc++;
+	  dprint (2, (debugfile, "Found FETCH word %s\n", pc));
+	  if (strncasecmp ("RFC822", pc, 6) == 0)
+	  {
+	    pc = imap_next_word (pc);
+	    if (get_literal_count(pc, &bytes) < 0)
+	    {
+	      imap_error ("imap_fetch_message()", buf);
+	      return (-1);
+	    }
+	    for (pos = 0; pos < bytes; )
+	    {
+	      len = mutt_socket_read_line (buf, sizeof (buf), CTX_DATA->conn);
+	      if (len < 0)
+		return (-1);
+	      pos += len;
+	      fputs (buf, msg->fp);
+	      fputs ("\n", msg->fp);
+	    }
+	    if (mutt_socket_read_line (buf, sizeof (buf), CTX_DATA->conn) < 0)
+	    {
+	      return (-1);
+	    }
+	    pc = buf;
+	  }
 	}
       }
       else if (imap_handle_untagged (CTX_DATA, buf) != 0)
