@@ -1,3 +1,8 @@
+2004-07-14 04:36:27  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
+
+	* copy.c, copy.h, handler.c, init.h, mutt.h, send.c:
+	$include_onlyfirst, again.
+
 2004-07-14 04:34:07  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* copy.c, copy.h, handler.c, init.h, mutt.h, send.c: Fix a cvs
