@@ -644,7 +644,7 @@ TimeZones[] =
  * This routine assumes that `h' has been initialized to 0.  the `timezone'
  * field is optional, defaulting to +0000 if missing.
  */
-static time_t parse_date (char *s, HEADER *h)
+time_t mutt_parse_date (char *s, HEADER *h)
 {
   int count = 0;
   char *t;
@@ -976,14 +976,14 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs)
 	  safe_free((void **)&e->date);
 	  e->date = safe_strdup(p);
 	  if (hdr)
-	    hdr->date_sent = parse_date (p, hdr);
+	    hdr->date_sent = mutt_parse_date (p, hdr);
 	  matched = 1;
 	}
 	break;
 
       case 'e':
 	if (!strcasecmp ("xpires", line + 1) &&
-	    hdr && parse_date (p, hdr) < time (NULL))
+	    hdr && mutt_parse_date (p, NULL) < time (NULL))
 	  hdr->expired = 1;
 	break;
 
@@ -1071,7 +1071,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs)
 	    char *d = strchr (p, ';');
 
 	    if (d)
-	      hdr->received = parse_date (d + 1, NULL);
+	      hdr->received = mutt_parse_date (d + 1, NULL);
 	  }
 	}
 	break;
