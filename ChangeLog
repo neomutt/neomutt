@@ -1,3 +1,9 @@
+2003-07-04 16:57:56  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* init.h, muttlib.c: Add a ':' flag to % expandos.  This will
+	make sure that any dots are converted into underscores.  (_
+	is already used for lowercasing the result of an expando.)
+
 2003-06-04 14:01:39  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* muttlib.c: Don't colorize empty lines generated with
