@@ -68,7 +68,11 @@ static int iptostring(const struct sockaddr *addr, socklen_t addrlen,
     if(!addr || !out) return SASL_BADPARAM;
 
     getnameinfo(addr, addrlen, hbuf, sizeof(hbuf), pbuf, sizeof(pbuf),
-                NI_NUMERICHOST | NI_WITHSCOPEID | NI_NUMERICSERV);
+                NI_NUMERICHOST |
+#ifdef NI_WITHSCOPEID
+		NI_WITHSCOPEID |
+#endif
+		NI_NUMERICSERV);
 
     if(outlen < strlen(hbuf) + strlen(pbuf) + 2)
         return SASL_BUFOVER;
