@@ -928,7 +928,7 @@ void pgp_extract_keys_from_attachment_list (FILE *fp, int tag, BODY *top)
   unset_option(OPTDONTHANDLEPGPKEYS);
 }
 
-BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout)
+BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout, BODY *p)
 {
   char buf[LONG_STRING];
   FILE *pgpin, *pgpout, *pgperr, *pgptmp;
@@ -997,7 +997,8 @@ BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout)
   {
     fflush (pgperr);
     rewind (pgperr);
-    mutt_copy_stream (pgperr, s->fpout);
+    if (pgp_copy_checksig (pgperr, s->fpout) == 0 && p)
+      p->goodsig = 1;
     state_puts (_("[-- End of PGP output --]\n\n"), s);
   }
   fclose (pgperr);
@@ -1024,6 +1025,7 @@ int pgp_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
 {
   char tempfile[_POSIX_PATH_MAX];
   STATE s;
+  BODY *p = b;
   
   if(!mutt_is_multipart_encrypted(b))
     return -1;
@@ -1043,7 +1045,7 @@ int pgp_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
   }
   unlink (tempfile);
 
-  *cur = pgp_decrypt_part (b, &s, *fpout);
+  *cur = pgp_decrypt_part (b, &s, *fpout, p);
 
   rewind (*fpout);
   return (0);
@@ -1054,7 +1056,8 @@ void pgp_encrypted_handler (BODY *a, STATE *s)
   char tempfile[_POSIX_PATH_MAX];
   FILE *fpout, *fpin;
   BODY *tattach;
-
+  BODY *p = a;
+  
   a = a->parts;
   if (!a || a->type != TYPEAPPLICATION || !a->subtype || 
       mutt_strcasecmp ("pgp-encrypted", a->subtype) != 0 ||
@@ -1081,7 +1084,7 @@ void pgp_encrypted_handler (BODY *a, STATE *s)
 
   if (s->flags & M_DISPLAY) pgp_current_time (s);
 
-  if ((tattach = pgp_decrypt_part (a, s, fpout)) != NULL)
+  if ((tattach = pgp_decrypt_part (a, s, fpout, p)) != NULL)
   {
     if (s->flags & M_DISPLAY)
       state_puts (_("[-- The following data is PGP/MIME encrypted --]\n\n"), s);
@@ -1099,7 +1102,7 @@ void pgp_encrypted_handler (BODY *a, STATE *s)
      */
     
     if (mutt_is_multipart_signed (tattach) && !tattach->next)
-      a->goodsig = tattach->goodsig;
+      p->goodsig |= tattach->goodsig;
     
     if (s->flags & M_DISPLAY)
       state_puts (_("\n[-- End of PGP/MIME encrypted data --]\n"), s);
