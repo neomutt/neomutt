@@ -1,3 +1,136 @@
+Sun Oct 11 22:11:00 1998  Thomas Roessler  <roessler@guug.de>
+
+	* doc/Makefile.in, contrib/Makefile.in:
+	Makefile clean-up as suggested by Marco d'Itri.
+
+	* doc/dotlock.man.in, doc/Makefile.in:
+	Install dotlock's manual page under the correct name.
+
+Thu Oct  8 13:22:16 1998  Thomas Roessler  <roessler@guug.de>
+
+	* README: Reference some of the new doc files.
+
+	* doc/Makefile.in: Some more changes to the installation process.
+
+	* doc/Makefile.in:
+	Fix the uninstall target; add some magic to build and install the
+	HTML version of the manual if we can.
+
+	* doc/applying-patches.txt, doc/devel-notes.txt, doc/PGP-Notes.txt, doc/Makefile.in:
+	Some more documentation; install the html version of the manual if
+	it's there.
+
+	* doc/manual.sgml:
+	The manual was wrong on the default binding for extract-keys.
+
+Wed Oct  7 22:19:27 1998  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml, pop.c, mutt.h, init.h, Muttrc.in:
+	POP3 LAST support.  From Jason Lavoie <jason@mint.net> by way of
+	Michael Elkins.
+
+	* po/mutt.pot, po/cat-id-tbl.c: Clean-up commit.
+
+	* gnupgparse.c:
+	Redirect stdin and stderr to /dev/null when invoking gpgm for
+	listing key IDs.
+
+	* socket.c, mutt_socket.h, imap.c:
+	First fix of the IMAP expunge handling.  From Brandon Long.
+
+	* keymap.c, curs_lib.c: Fix macro functions for the pager menu.
+
+	* keymap.c:
+	The attached patch fixes a minor inconsistency between the display
+	of special key-names in the help screen and their actual usage. The
+	help screen now shows the special keys exactly as you
+	would/could/should use them in the muttrc/command-line. (From: Vikas
+	Agnihotri <VikasA@att.com>)
+
+	* keymap.c: Fix the error message for unbound keys.  From Vikas.
+
+	* charsets/Makefile.in: s/make/$(MAKE)/
+
+	* charsets/Makefile.in:
+	UnixWare needs our own version of strcasecmp/strncasecmp.
+
+	* browser.c:
+	Clean up behind an aborted sort-by prompt on the file browser.  From
+	Vikas.
+
+	* hdrline.c:
+	The attached patch fixes a minor bug in $index_format's %B and %b
+	where they didnt respect the given prefix. In addition, the manual
+	says that %B is supposed to fall back to %b if the message is not
+	sent to a known mailing list. The code was not doing that.  (From:
+	Vikas Agnihotri <VikasA@att.com>, noted on comp.mail.mutt by
+	unny@rz114s0.rz.uni-karlsruhe.de (Vladimir Klebanov)).
+
+	* doc/PGP-Notes.txt:
+	pgp_language is obsolete.  Noted by Heiko Schlichting.
+
+Tue Oct  6 15:10:53 1998  Thomas Roessler  <roessler@guug.de>
+
+	* keymap.c: Macro function fixes.
+
+	* curs_lib.c: With slang, ERR != -1.
+
+	* po/mutt.pot, po/de.po: Message fix.
+
+	* attach.c: Fix another pipe-related hang in mutt_view_attachment().
+
+Mon Oct  5 21:37:15 1998  Thomas Roessler  <roessler@guug.de>
+
+	* configure, aclocal.m4: Another fix to libintl detection.
+
+	* keymap.c, curs_lib.c: macro_function.2-3, from Vikas.
+
+	* handler.c: File descriptor leak alert.
+
+	* handler.c:
+	Avoid a hang due to blocking pipe writes in the auto view code.
+
+	* keymap.c, curs_main.c, curs_lib.c:
+	Make exec grok >= 1 parameters; fix double ops problem in
+	index_menu().
+
+	* po/ru.po, po/mutt.pot, po/de.po, po/cat-id-tbl.c:
+	L10n changes corresponding to the macro-function patch.
+
+	* flags.c, compose.c: Some fixes to the macro-function patch.
+
+	* po/ru.po: Adding the Russian Localization.
+
+	* recvattach.c, query.c, protos.h, postpone.c, pgpkey.c, pager.c, mutt_curses.h, mutt.h, menu.c, keymap.c, init.h, init.c, globals.h, flags.c, enter.c, curs_main.c, curs_lib.c, configure.in, configure, compose.c, commands.c, browser.c, addrbook.c, aclocal.m4:
+	Vikas' macro_function patch.
+
+	* charsets/gen_charsets:
+	I'm told that some systems don't like "#!/bin/sh" at the beginning
+	of a script, but need "#! /bin/sh".
+
+Sun Oct  4 15:02:32 1998  Thomas Roessler  <roessler@guug.de>
+
+	* charsets/gen_charsets, configure.in, configure:
+	Fixing some make-related problems noted by Petri Kaukasoina
+	<kaukasoi-mutt@elektroni.ee.tut.fi>.
+
+	* po/mutt.pot, send.c: Fix group-reply's behaviour.
+
+	* doc/Attic/style-guide, doc/devel-notes.txt:
+	Replace style-guide by some more general notes on mutt development.
+
+	* Makefile.in: Propagate fixes from Makefile.am.
+
+	* ChangeLog: Preparing 0.94.10.
+
+	* rx/Makefile.in: subdir=rx was missing here.
+
+	* po/mutt.pot, po/de.po: Noise.
+
+	* configure.in, configure, Makefile.am:
+	More fixes to the build process.  This version was tested to build
+	cleanly under SuSE Linux and IRIX.
+
 Sun Oct  4 09:26:36 1998  Thomas Roessler  <roessler@guug.de>
 
 	* rx/Makefile.in: subdir=rx was missing here.

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 1998-10-05 20:37+0200\n"
+"POT-Creation-Date: 1998-10-08 15:23+0200\n"
 "PO-Revision-Date: 1998-10-05 00:14+0300\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "Language-Team: Mutt-dev <mutt-dev@mutt.org>\n"
@@ -61,7 +61,7 @@ msgstr "Записать в файл: "
 msgid "Alias added."
 msgstr "Алиас сохранён."
 
-#: attach.c:111 attach.c:234 attach.c:366 attach.c:813
+#: attach.c:111 attach.c:234 attach.c:366 attach.c:807
 msgid "Can't match nametemplate, continue?"
 msgstr "Нет подходящего имени, продолжить?"
 
@@ -101,19 +101,19 @@ msgstr "Нет подходящей записи в mailcap. Отображается как текст."
 msgid "MIME type not defined.  Cannot view attachment."
 msgstr "Тип MIME не определён. Присоединение не отображаемо."
 
-#: attach.c:436
+#: attach.c:435
 msgid "Cannot create filter"
 msgstr "Нельзя создать фильтр"
 
-#: attach.c:642 recvattach.c:312
+#: attach.c:636 recvattach.c:312
 msgid "Attachment saved."
 msgstr "Присоединение сохранено."
 
-#: attach.c:695
+#: attach.c:689
 msgid "Write fault!"
 msgstr "Ошибка записи!"
 
-#: attach.c:897
+#: attach.c:891
 msgid "I don't know how to print that!"
 msgstr "Не знаю, как это печатать!"
 
@@ -140,7 +140,7 @@ msgstr "Почтовые ящики [%d]"
 msgid "Directory [%s], File mask: %s"
 msgstr "Каталог [%s], шаблон файлов: %s"
 
-#: browser.c:537 browser.c:730 browser.c:825
+#: browser.c:537 browser.c:730 browser.c:830
 msgid "No files match the file mask"
 msgstr "Нет файлов, соответствующих шаблону"
 
@@ -165,15 +165,15 @@ msgstr ""
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Сортировка по дате(d), алфавиту(a), размеру(z) или без неё(n)? "
 
-#: browser.c:811
+#: browser.c:816
 msgid "New file name: "
 msgstr "Новое имя файла: "
 
-#: browser.c:833
+#: browser.c:838
 msgid "Can't view a directory"
 msgstr "Нельзя просмотреть каталог"
 
-#: browser.c:851
+#: browser.c:856
 msgid "Error trying to view file"
 msgstr "Ошибка попытки просмотра файла"
 
@@ -224,11 +224,11 @@ msgstr "mono: слишком мало аргументов"
 msgid "%s: no such attribute"
 msgstr "Атрибут '%s' не существует"
 
-#: color.c:662 hook.c:61 hook.c:69 keymap.c:651
+#: color.c:662 hook.c:61 hook.c:69 keymap.c:649
 msgid "too few arguments"
 msgstr "слишком мало аргументов"
 
-#: color.c:671 hook.c:75 keymap.c:808
+#: color.c:671 hook.c:75
 msgid "too many arguments"
 msgstr "слишком много аргументов"
 
@@ -588,126 +588,126 @@ msgstr "Почтовый ящик изменён другой программой. Флаги могут быть неверны."
 msgid "New mail in this mailbox."
 msgstr "Новая почта в этом почтовом ящике."
 
-#: curs_main.c:513
+#: curs_main.c:525
 msgid "No mailbox is open."
 msgstr "Нет открытого почтового ящика."
 
-#: curs_main.c:519
+#: curs_main.c:531
 msgid "No tagged messages."
 msgstr "Нет отмеченных сообщений."
 
-#: curs_main.c:599
+#: curs_main.c:611
 msgid "Jump to message: "
 msgstr "Перейти к сообщению: "
 
-#: curs_main.c:605
+#: curs_main.c:617
 msgid "Argument must be a message number."
 msgstr "Аргумент должен быть номером сообщения."
 
-#: curs_main.c:638
+#: curs_main.c:650
 msgid "That message is not visible."
 msgstr "Это сообщение невидимо."
 
-#: curs_main.c:641
+#: curs_main.c:653
 msgid "Invalid message number."
 msgstr "Неверный номер сообщения."
 
-#: curs_main.c:654
+#: curs_main.c:666
 msgid "Delete messages matching: "
 msgstr "Удалить сообщения, соответствующие: "
 
-#: curs_main.c:676
+#: curs_main.c:688
 msgid "No limit pattern is in effect."
 msgstr ""
 
 #. i18n: ask for a limit to apply
-#: curs_main.c:681
+#: curs_main.c:693
 #, c-format
 msgid "Limit: %s"
 msgstr "Предел: %s"
 
-#: curs_main.c:690
+#: curs_main.c:702
 msgid "Limit to messages matching: "
 msgstr "Предел к сообщениям, соответствующим: "
 
-#: curs_main.c:720
+#: curs_main.c:732
 msgid "Quit Mutt?"
 msgstr "Выйти из Mutt?"
 
-#: curs_main.c:831
+#: curs_main.c:843
 msgid "Tag messages matching: "
 msgstr "Отметить сообщения, соответствующие:  "
 
-#: curs_main.c:839
+#: curs_main.c:851
 msgid "Undelete messages matching: "
 msgstr "Отменить удаление сообщений, соответствующих: "
 
-#: curs_main.c:846
+#: curs_main.c:858
 msgid "Untag messages matching: "
 msgstr "Отменить отметку сообщений, соответствующих: "
 
-#: curs_main.c:864
+#: curs_main.c:876
 msgid "Open mailbox"
 msgstr "Открыть почтовый ящик"
 
-#: curs_main.c:866
+#: curs_main.c:878
 msgid "Open mailbox in read-only mode"
 msgstr "Открыть почтовый ящик только для чтения"
 
-#: curs_main.c:882 mx.c:420 mx.c:561
+#: curs_main.c:894 mx.c:420 mx.c:561
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s не является почтовым ящиком."
 
-#: curs_main.c:978
+#: curs_main.c:990
 msgid "Exit Mutt without saving?"
 msgstr "Выйти из Mutt без сохранения?"
 
-#: curs_main.c:988 curs_main.c:1012
+#: curs_main.c:1000 curs_main.c:1024
 msgid "You are on the last message."
 msgstr "Это последнее сообщение."
 
-#: curs_main.c:995 curs_main.c:1037
+#: curs_main.c:1007 curs_main.c:1049
 msgid "No undeleted messages."
 msgstr "Нет неудалённых сообщений."
 
-#: curs_main.c:1030 curs_main.c:1053
+#: curs_main.c:1042 curs_main.c:1065
 msgid "You are on the first message."
 msgstr "Это первое сообщение."
 
-#: curs_main.c:1126 pattern.c:1074
+#: curs_main.c:1138 pattern.c:1074
 msgid "Search wrapped to top."
 msgstr "Поиск перенесён в начало."
 
-#: curs_main.c:1135 pattern.c:1085
+#: curs_main.c:1147 pattern.c:1085
 msgid "Search wrapped to bottom."
 msgstr "Поиск перенесён в конец."
 
-#: curs_main.c:1161
+#: curs_main.c:1173
 msgid "No new messages"
 msgstr "Нет новых сообщений"
 
-#: curs_main.c:1161
+#: curs_main.c:1173
 msgid "No unread messages"
 msgstr "Нет непрочитанных сообщений"
 
-#: curs_main.c:1162
+#: curs_main.c:1174
 msgid " in this limited view"
 msgstr " в этом ограниченном обзоре"
 
-#: curs_main.c:1272
+#: curs_main.c:1284
 msgid "No more threads."
 msgstr "Нет больше ниток."
 
-#: curs_main.c:1274
+#: curs_main.c:1286
 msgid "You are on the first thread."
 msgstr "Это первая нитка."
 
-#: curs_main.c:1327
+#: curs_main.c:1339
 msgid "Thread contains unread messages."
 msgstr "Нитка содержит непрочитанные сообщения."
 
-#: curs_main.c:1340 flags.c:217 thread.c:628
+#: curs_main.c:1352 flags.c:217 thread.c:628
 msgid "Threading is not enabled."
 msgstr "Сшивание недоступно."
 
@@ -831,34 +831,34 @@ msgstr "[-- Авто-просмотр средствами %s --]\n"
 msgid "Invoking autoview command: %s"
 msgstr "Вызов команды авто-просмотра: %s"
 
-#: handler.c:1115 handler.c:1138
+#: handler.c:1118 handler.c:1141
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Вывод сообщения об ошибке авто-просмотра %s --]\n"
 
-#: handler.c:1239
+#: handler.c:1246
 msgid "Error: multipart/signed has no protocol."
 msgstr "Ошибка: сообщение с подписью без протокола."
 
-#: handler.c:1251
+#: handler.c:1258
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Ошибка: зашифрованное сообщение без параметра протокола!"
 
-#: handler.c:1293
+#: handler.c:1300
 msgid "Unable to open temporary file!"
 msgstr "Нельзя открыть временный файл!"
 
-#: handler.c:1352
+#: handler.c:1359
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s не поддерживается "
 
-#: handler.c:1357
+#: handler.c:1364
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(используйте '%s' для просмотра)"
 
-#: handler.c:1359
+#: handler.c:1366
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(нужно назначить 'view-attachments' на клавишу!)"
 
@@ -900,7 +900,7 @@ msgstr ""
 msgid "Help for %s"
 msgstr "Подсказка для %s"
 
-#: imap.c:100
+#: imap.c:102
 #, c-format
 msgid "imap_error(): unexpected response in %s: %s\n"
 msgstr "imap_error(): неожиданный отклик в %s: %s\n"
@@ -908,76 +908,76 @@ msgstr "imap_error(): неожиданный отклик в %s: %s\n"
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
 #.
-#: imap.c:353
+#: imap.c:354
 msgid "Fatal error.  Message count is out of sync!"
 msgstr "Фатальная ошибка. Счётчик сообщений вне синхронизации!"
 
-#: imap.c:428
+#: imap.c:424
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Получение заголовков сообщений... [%d/%d]"
 
-#: imap.c:662
+#: imap.c:622 mbox.c:925
+msgid "Reopening mailbox..."
+msgstr "Повторное открытие почтового ящика..."
+
+#: imap.c:857
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Соединение с %s..."
 
-#: imap.c:681
+#: imap.c:876
 msgid "IMAP Username: "
 msgstr "Пользователь IMAP: "
 
-#: imap.c:694
+#: imap.c:889
 #, c-format
 msgid "Password for %s@%s: "
 msgstr "Пароль %s@%s: "
 
-#: imap.c:707
+#: imap.c:902
 msgid "Logging in..."
 msgstr "Регистрация..."
 
-#: imap.c:759
+#: imap.c:957
 #, c-format
 msgid "Selecting %s..."
 msgstr "Выбор %s..."
 
-#: imap.c:854 lib.c:1164
+#: imap.c:1053 lib.c:1164
 #, c-format
 msgid "Create %s?"
 msgstr "Создать %s?"
 
-#: imap.c:898
+#: imap.c:1097
 msgid "Fetching message..."
 msgstr "Получение сообщения..."
 
-#: imap.c:1006
+#: imap.c:1205
 msgid "Sending APPEND command ..."
 msgstr "Посылка команды APPEND ..."
 
-#: imap.c:1044
+#: imap.c:1244
 msgid "Uploading message ..."
 msgstr "Отправка сообщения ..."
 
-#: imap.c:1099
+#: imap.c:1299
 msgid "Closing connection to IMAP server..."
 msgstr "Закрытие соединения с IMAP сервером..."
 
-#: imap.c:1128
+#: imap.c:1329
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Сохранение статуса сообщения... [%d/%d]"
 
-#: imap.c:1154
+#: imap.c:1355
 msgid "Expunging messages from server..."
 msgstr ""
 
 #. tell the server to commit changes
-#: imap.c:1205
+#: imap.c:1406
 msgid "Closing mailbox..."
 msgstr "Закрытие почтового ящика..."
-
-#: imap.c:1306
-msgid "BUG! Untagged IMAP Response during BUFFY Check"
-msgstr ""
 
 #: init.c:432
 msgid "alias: no address"
@@ -1083,54 +1083,54 @@ msgstr "нельзя определить домашний каталог"
 msgid "unable to determine username"
 msgstr "нельзя определить имя пользователя"
 
-#: keymap.c:406
+#: keymap.c:413
 msgid "Macro loop detected."
 msgstr "Обнаружен циклический макрос."
 
-#: keymap.c:601
+#: keymap.c:599
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Клавиша не назначена. Нажмите '%s' для подсказки."
 
-#: keymap.c:603
+#: keymap.c:601
 msgid "Key is not bound.  See the manual."
 msgstr "Клавиша не назначена. Смотрите руководство."
 
-#: keymap.c:613
+#: keymap.c:611
 msgid "push: too many arguments"
 msgstr "push: слишком много аргументов"
 
-#: keymap.c:634
+#: keymap.c:632
 #, c-format
 msgid "%s: no such menu"
 msgstr "меню '%s' отсутствует"
 
-#: keymap.c:643
+#: keymap.c:641
 msgid "null key sequence"
 msgstr "пустая последовательность"
 
-#: keymap.c:721
+#: keymap.c:719
 msgid "bind: too many arguments"
 msgstr "bind: слишком много аргументов"
 
-#: keymap.c:736
+#: keymap.c:734
 #, c-format
 msgid "%s: no such function in map"
 msgstr "функции '%s' нет в карте"
 
-#: keymap.c:759
+#: keymap.c:757
 msgid "macro: empty key sequence"
 msgstr "macro: пустая последовательность"
 
-#: keymap.c:770
+#: keymap.c:768
 msgid "macro: too many arguments"
 msgstr "macro: слишком много аргументов"
 
-#: keymap.c:799
+#: keymap.c:798
 msgid "exec: too few arguments"
 msgstr "Слишком мало аргументов в '%s'"
 
-#: keymap.c:822
+#: keymap.c:818
 #, c-format
 msgid "%s: no such command"
 msgstr "меню '%s' отсутствует"
@@ -1980,10 +1980,6 @@ msgstr "Сбой записи! Часть почтового ящика сохранёна в %s"
 msgid "Could not reopen mailbox!"
 msgstr "Не удаётся открыть почтовый ящик снова!"
 
-#: mbox.c:925
-msgid "Reopening mailbox..."
-msgstr "Повторное открытие почтового ящика..."
-
 #: menu.c:297
 msgid "Jump to: "
 msgstr "Перейти к: "
@@ -2544,7 +2540,7 @@ msgstr "Не удаётся найти адрес хоста %s."
 msgid "Connecting to %s"
 msgstr "Соединение с %s"
 
-#: pop.c:166 pop.c:317
+#: pop.c:166 pop.c:331
 msgid "Server closed connection!"
 msgstr "Сервер оборвал связь!"
 
@@ -2552,20 +2548,20 @@ msgstr "Сервер оборвал связь!"
 msgid "No new mail in POP mailbox."
 msgstr "В POP ящике нет новой почты."
 
-#: pop.c:195
+#: pop.c:209
 #, c-format
 msgid "Reading %d new message (%d bytes)..."
 msgstr "Чтение %d нового сообщения (%d байт)..."
 
-#: pop.c:231
+#: pop.c:245
 msgid "Error reading message!"
 msgstr "Ошибка чтения сообщения!"
 
-#: pop.c:267
+#: pop.c:281
 msgid "Error while writing mailbox!"
 msgstr "Ошибка при записи почтового ящика!"
 
-#: pop.c:291
+#: pop.c:305
 #, c-format
 msgid "%s [%d messages read]"
 msgstr "%s [%d сообщений прочитано]"

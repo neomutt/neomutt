@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-05 20:37+0200\n"
+"POT-Creation-Date: 1998-10-08 15:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,7 +62,7 @@ msgstr "Speichern in Datei: "
 msgid "Alias added."
 msgstr "Adresse eingetragen."
 
-#: attach.c:111 attach.c:234 attach.c:366 attach.c:813
+#: attach.c:111 attach.c:234 attach.c:366 attach.c:807
 msgid "Can't match nametemplate, continue?"
 msgstr "Namensmuster kann nicht erfüllt werden, fortfahren?"
 
@@ -103,19 +103,19 @@ msgstr "Es gibt keinen passenden Mailcap-Eintrag, Anzeige als Text."
 msgid "MIME type not defined.  Cannot view attachment."
 msgstr "Undefinierter MIME-Typ, kann Anhang nicht anzeigen."
 
-#: attach.c:436
+#: attach.c:435
 msgid "Cannot create filter"
 msgstr "Kann Filter nicht erzeugen."
 
-#: attach.c:642 recvattach.c:312
+#: attach.c:636 recvattach.c:312
 msgid "Attachment saved."
 msgstr "Anhang gespeichert."
 
-#: attach.c:695
+#: attach.c:689
 msgid "Write fault!"
 msgstr "Schreibfehler!"
 
-#: attach.c:897
+#: attach.c:891
 msgid "I don't know how to print that!"
 msgstr "Ich weiß nicht, wie man dies druckt."
 
@@ -142,7 +142,7 @@ msgstr "Mailbox-Dateien [%d]"
 msgid "Directory [%s], File mask: %s"
 msgstr "Verzeichnis [%s], Dateimaske: %s"
 
-#: browser.c:537 browser.c:730 browser.c:825
+#: browser.c:537 browser.c:730 browser.c:830
 msgid "No files match the file mask"
 msgstr "Es gibt keine zur Maske passenden Dateien."
 
@@ -167,15 +167,15 @@ msgstr ""
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Sortiere nach (D)atum, (a)lphabetisch, (z) Größe oder (n)icht?"
 
-#: browser.c:811
+#: browser.c:816
 msgid "New file name: "
 msgstr "Neuer Dateiname: "
 
-#: browser.c:833
+#: browser.c:838
 msgid "Can't view a directory"
 msgstr "Verzeichnisse können nicht angezeigt werden."
 
-#: browser.c:851
+#: browser.c:856
 msgid "Error trying to view file"
 msgstr "Fehler."
 
@@ -226,11 +226,11 @@ msgstr "mono: Zu wenige Parameter."
 msgid "%s: no such attribute"
 msgstr "%s: Attribut unbekannt."
 
-#: color.c:662 hook.c:61 hook.c:69 keymap.c:651
+#: color.c:662 hook.c:61 hook.c:69 keymap.c:649
 msgid "too few arguments"
 msgstr "Zu wenige Parameter."
 
-#: color.c:671 hook.c:75 keymap.c:808
+#: color.c:671 hook.c:75
 msgid "too many arguments"
 msgstr "Zu viele Parameter."
 
@@ -591,126 +591,126 @@ msgstr "Mailbox wurde modifiziert."
 msgid "New mail in this mailbox."
 msgstr "Neue Nachrichten in dieser Mailbox."
 
-#: curs_main.c:513
+#: curs_main.c:525
 msgid "No mailbox is open."
 msgstr "Keine Mailbox offen."
 
-#: curs_main.c:519
+#: curs_main.c:531
 msgid "No tagged messages."
 msgstr "Keine markierten Nachrichten"
 
-#: curs_main.c:599
+#: curs_main.c:611
 msgid "Jump to message: "
 msgstr "Springe zu Nachricht: "
 
-#: curs_main.c:605
+#: curs_main.c:617
 msgid "Argument must be a message number."
 msgstr "Argument muß eine Nachrichtennummer sein."
 
-#: curs_main.c:638
+#: curs_main.c:650
 msgid "That message is not visible."
 msgstr "Diese Nachricht ist nicht sichtbar."
 
-#: curs_main.c:641
+#: curs_main.c:653
 msgid "Invalid message number."
 msgstr "Ungültige Nachrichtennummer."
 
-#: curs_main.c:654
+#: curs_main.c:666
 msgid "Delete messages matching: "
 msgstr "Lösche Nachrichten nach Muster: "
 
-#: curs_main.c:676
+#: curs_main.c:688
 msgid "No limit pattern is in effect."
 msgstr "Zur Zeit ist kein Muster aktiv."
 
 #. i18n: ask for a limit to apply
-#: curs_main.c:681
+#: curs_main.c:693
 #, c-format
 msgid "Limit: %s"
 msgstr "Begrenze: %s"
 
-#: curs_main.c:690
+#: curs_main.c:702
 msgid "Limit to messages matching: "
 msgstr "Begrenze auf Nachrichten nach Muster: "
 
-#: curs_main.c:720
+#: curs_main.c:732
 msgid "Quit Mutt?"
 msgstr "Mutt verlassen?"
 
-#: curs_main.c:831
+#: curs_main.c:843
 msgid "Tag messages matching: "
 msgstr "Markiere Nachrichten nach Muster: "
 
-#: curs_main.c:839
+#: curs_main.c:851
 msgid "Undelete messages matching: "
 msgstr "Entferne Löschmarkierung nach Muster: "
 
-#: curs_main.c:846
+#: curs_main.c:858
 msgid "Untag messages matching: "
 msgstr "Entferne Markierung nach Muster: "
 
-#: curs_main.c:864
+#: curs_main.c:876
 msgid "Open mailbox"
 msgstr "Öffne Mailbox"
 
-#: curs_main.c:866
+#: curs_main.c:878
 msgid "Open mailbox in read-only mode"
 msgstr "Öffne Mailbox im nur-Lesen-Modus"
 
-#: curs_main.c:882 mx.c:420 mx.c:561
+#: curs_main.c:894 mx.c:420 mx.c:561
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s ist keine Mailbox."
 
-#: curs_main.c:978
+#: curs_main.c:990
 msgid "Exit Mutt without saving?"
 msgstr "Mutt verlassen, ohne Änderungen zu speichern?"
 
-#: curs_main.c:988 curs_main.c:1012
+#: curs_main.c:1000 curs_main.c:1024
 msgid "You are on the last message."
 msgstr "Sie sind bereits auf der letzten Nachricht."
 
-#: curs_main.c:995 curs_main.c:1037
+#: curs_main.c:1007 curs_main.c:1049
 msgid "No undeleted messages."
 msgstr "Alle Nachrichten gelöscht."
 
-#: curs_main.c:1030 curs_main.c:1053
+#: curs_main.c:1042 curs_main.c:1065
 msgid "You are on the first message."
 msgstr "Sie sind bereits auf der ersten Nachricht."
 
-#: curs_main.c:1126 pattern.c:1074
+#: curs_main.c:1138 pattern.c:1074
 msgid "Search wrapped to top."
 msgstr "Suche von vorne begonnen."
 
-#: curs_main.c:1135 pattern.c:1085
+#: curs_main.c:1147 pattern.c:1085
 msgid "Search wrapped to bottom."
 msgstr "Suche von hinten begonnen."
 
-#: curs_main.c:1161
+#: curs_main.c:1173
 msgid "No new messages"
 msgstr "Keine neuen Nachrichten"
 
-#: curs_main.c:1161
+#: curs_main.c:1173
 msgid "No unread messages"
 msgstr "Keine ungelesenen Nachrichten"
 
-#: curs_main.c:1162
+#: curs_main.c:1174
 msgid " in this limited view"
 msgstr " in dieser begrenzeten Ansicht"
 
-#: curs_main.c:1272
+#: curs_main.c:1284
 msgid "No more threads."
 msgstr "Keine weiteren Diskussionsfäden."
 
-#: curs_main.c:1274
+#: curs_main.c:1286
 msgid "You are on the first thread."
 msgstr "Sie haben bereits den ersten Diskussionsfaden ausgewählt."
 
-#: curs_main.c:1327
+#: curs_main.c:1339
 msgid "Thread contains unread messages."
 msgstr "Diskussionsfaden enthält ungelesene Nachrichten."
 
-#: curs_main.c:1340 flags.c:217 thread.c:628
+#: curs_main.c:1352 flags.c:217 thread.c:628
 msgid "Threading is not enabled."
 msgstr "Darstellung von Diskussionsfäden ist nicht eingeschaltet."
 
@@ -835,34 +835,34 @@ msgstr "[-- Automatische Anzeige mittels %s --]\n"
 msgid "Invoking autoview command: %s"
 msgstr "Rufe Kommando auf: %s"
 
-#: handler.c:1115 handler.c:1138
+#: handler.c:1118 handler.c:1141
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Fehlerausgabe von %s --]\n"
 
-#: handler.c:1239
+#: handler.c:1246
 msgid "Error: multipart/signed has no protocol."
 msgstr "Fehler: multipart/signed ohne protocol-Parameter."
 
-#: handler.c:1251
+#: handler.c:1258
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Fehler: multiparT/encrypted ohne 'protocol'-Parameter!"
 
-#: handler.c:1293
+#: handler.c:1300
 msgid "Unable to open temporary file!"
 msgstr "Konnte Temporärdatei nicht öffnen!"
 
-#: handler.c:1352
+#: handler.c:1359
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s wird nicht unterstützt "
 
-#: handler.c:1357
+#: handler.c:1364
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(benutzen Sie '%s', um diesen Teil anzuzeigen)"
 
-#: handler.c:1359
+#: handler.c:1366
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(benötige Tastaturbindung für 'view-attachments'!)"
 
@@ -904,7 +904,7 @@ msgstr ""
 msgid "Help for %s"
 msgstr "Hilfe für %s"
 
-#: imap.c:100
+#: imap.c:102
 #, c-format
 msgid "imap_error(): unexpected response in %s: %s\n"
 msgstr ""
@@ -912,75 +912,75 @@ msgstr ""
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
 #.
-#: imap.c:353
+#: imap.c:354
 msgid "Fatal error.  Message count is out of sync!"
 msgstr ""
 
-#: imap.c:428
+#: imap.c:424
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr ""
 
-#: imap.c:662
+#: imap.c:622 mbox.c:925
+msgid "Reopening mailbox..."
+msgstr "Öffne Mailbox erneut..."
+
+#: imap.c:857
 #, c-format
 msgid "Connecting to %s..."
 msgstr ""
 
-#: imap.c:681
+#: imap.c:876
 msgid "IMAP Username: "
 msgstr ""
 
-#: imap.c:694
+#: imap.c:889
 #, c-format
 msgid "Password for %s@%s: "
 msgstr ""
 
-#: imap.c:707
+#: imap.c:902
 msgid "Logging in..."
 msgstr ""
 
-#: imap.c:759
+#: imap.c:957
 #, c-format
 msgid "Selecting %s..."
 msgstr ""
 
-#: imap.c:854 lib.c:1164
+#: imap.c:1053 lib.c:1164
 #, c-format
 msgid "Create %s?"
 msgstr ""
 
-#: imap.c:898
+#: imap.c:1097
 msgid "Fetching message..."
 msgstr ""
 
-#: imap.c:1006
+#: imap.c:1205
 msgid "Sending APPEND command ..."
 msgstr ""
 
-#: imap.c:1044
+#: imap.c:1244
 msgid "Uploading message ..."
 msgstr ""
 
-#: imap.c:1099
+#: imap.c:1299
 msgid "Closing connection to IMAP server..."
 msgstr ""
 
-#: imap.c:1128
+#: imap.c:1329
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr ""
 
-#: imap.c:1154
+#: imap.c:1355
 msgid "Expunging messages from server..."
 msgstr ""
 
 #. tell the server to commit changes
-#: imap.c:1205
+#: imap.c:1406
 msgid "Closing mailbox..."
-msgstr ""
-
-#: imap.c:1306
-msgid "BUG! Untagged IMAP Response during BUFFY Check"
 msgstr ""
 
 #: init.c:432
@@ -1087,54 +1087,54 @@ msgstr "Kann Home-Verzeichnis nicht bestimmen"
 msgid "unable to determine username"
 msgstr "Kann Nutzernamen nicht bestimmen"
 
-#: keymap.c:406
+#: keymap.c:413
 msgid "Macro loop detected."
 msgstr "Makro-Schleife!"
 
-#: keymap.c:601
+#: keymap.c:599
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Taste ist nicht gebunden.  Drücken Sie '%s' für Hilfe."
 
-#: keymap.c:603
+#: keymap.c:601
 msgid "Key is not bound.  See the manual."
 msgstr "Taste ist nicht gebunden.  Konsultieren Sie das Handbuch."
 
-#: keymap.c:613
+#: keymap.c:611
 msgid "push: too many arguments"
 msgstr "push: Zu viele Argumente"
 
-#: keymap.c:634
+#: keymap.c:632
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: Menü unbekannt."
 
-#: keymap.c:643
+#: keymap.c:641
 msgid "null key sequence"
 msgstr "Leere Tastenfolge"
 
-#: keymap.c:721
+#: keymap.c:719
 msgid "bind: too many arguments"
 msgstr "bind: Zu viele Argumente"
 
-#: keymap.c:736
+#: keymap.c:734
 #, c-format
 msgid "%s: no such function in map"
 msgstr "%s: Funktion unbekannt"
 
-#: keymap.c:759
+#: keymap.c:757
 msgid "macro: empty key sequence"
 msgstr "macro: Leere Tastenfolge"
 
-#: keymap.c:770
+#: keymap.c:768
 msgid "macro: too many arguments"
 msgstr "macro: Zu viele Paramter"
 
-#: keymap.c:799
+#: keymap.c:798
 msgid "exec: too few arguments"
 msgstr "%s: Zu wenige Parameter."
 
-#: keymap.c:822
+#: keymap.c:818
 #, c-format
 msgid "%s: no such command"
 msgstr "%s: Menü unbekannt."
@@ -1959,10 +1959,6 @@ msgstr "Konnte nicht schreiben! Speichere Teil-Mailbox in %s"
 msgid "Could not reopen mailbox!"
 msgstr "Konnte Mailbox nicht erneut öffnen!"
 
-#: mbox.c:925
-msgid "Reopening mailbox..."
-msgstr "Öffne Mailbox erneut..."
-
 #: menu.c:297
 msgid "Jump to: "
 msgstr "Springe zu: "
@@ -2522,7 +2518,7 @@ msgstr "Kann %s keine Adresse zuordnen."
 msgid "Connecting to %s"
 msgstr "Verbinde zu %s"
 
-#: pop.c:166 pop.c:317
+#: pop.c:166 pop.c:331
 msgid "Server closed connection!"
 msgstr "Server hat Verbindung geschlossen!"
 
@@ -2530,20 +2526,20 @@ msgstr "Server hat Verbindung geschlossen!"
 msgid "No new mail in POP mailbox."
 msgstr "Keine neuen Nachrichten auf dem POP-Server."
 
-#: pop.c:195
+#: pop.c:209
 #, c-format
 msgid "Reading %d new message (%d bytes)..."
 msgstr ""
 
-#: pop.c:231
+#: pop.c:245
 msgid "Error reading message!"
 msgstr "Kann Nachricht nicht lesen!"
 
-#: pop.c:267
+#: pop.c:281
 msgid "Error while writing mailbox!"
 msgstr "Fehler beim Versuch, die Mailbox zum schreiben!"
 
-#: pop.c:291
+#: pop.c:305
 #, c-format
 msgid "%s [%d messages read]"
 msgstr "%s [%d Nachrichten gelesen]"

@@ -734,7 +734,7 @@ fi
 
 PACKAGE=mutt
 
-VERSION=0.94.10
+VERSION=0.94.11
 
 if test "`cd $srcdir && pwd`" != "`pwd`" && test -f $srcdir/config.status; then
   { echo "configure: error: source directory already configured; run "make distclean" there first" 1>&2; exit 1; }
@@ -817,7 +817,7 @@ fi
 
 
 
-ALL_LINGUAS="de ru"
+ALL_LINGUAS="de ru it"
 
 
 # Make sure we can run config.sub.
