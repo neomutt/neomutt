@@ -1485,7 +1485,7 @@ int mx_commit_message (MESSAGE *msg, CONTEXT *ctx)
   }
   
   if (r == 0 && (ctx->magic == M_MBOX || ctx->magic == M_MMDF || ctx->magic == M_KENDRA)
-      && fflush (msg->fp) == EOF)
+      && (fflush (msg->fp) == EOF || fsync (fileno (msg->fp)) == -1))
   {
     mutt_perror _("Can't write message");
     r = -1;
