@@ -169,7 +169,8 @@ static int qp_decode_triple (char *s, char *d)
   return -1;
 }
 
-static void qp_decode_line (char *dest, char *src, size_t *l)
+static void qp_decode_line (char *dest, char *src, size_t *l,
+			    int last)
 {
   char *d, *s;
   char c;
@@ -199,7 +200,7 @@ static void qp_decode_line (char *dest, char *src, size_t *l)
     }
   }
 
-  if (!soft)
+  if (!soft && last == '\n')
     *d++ = '\n';
   
   *d = '\0';
@@ -237,13 +238,17 @@ void mutt_decode_quoted (STATE *s, long len, int istext, iconv_t cd)
   size_t l = 0;
   size_t l2;
   size_t l3;
-
+  
+  int last;
+  
   if (istext)
     state_set_prefix(s);
 
   while (len > 0)
   {
-    if (fgets (line, sizeof (line), s->fpin) == NULL)
+    last = 0;
+    
+    if (fgets (line, MIN (sizeof (line), len + 1), s->fpin) == NULL)
       break;
 
     len -= (l2 = strlen (line));
@@ -254,15 +259,15 @@ void mutt_decode_quoted (STATE *s, long len, int istext, iconv_t cd)
      * i.e. garbage.
      */
 
-    if (l2 && line[l2 - 1] != '\n')
-      while (len > 0 && fgetc (s->fpin) != '\n')
+    if (l2 && (last = line[l2 - 1]) != '\n')
+      while (len > 0 && (last = fgetc (s->fpin)) != '\n')
 	len--;
 
     /* 
      * decode and do character set conversion
      */
     
-    qp_decode_line (decline + l, line, &l3);
+    qp_decode_line (decline + l, line, &l3, last);
     l += l3;
     convert_to_state (cd, decline, &l, s);
   }
