@@ -842,7 +842,7 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 	}
 	case SP_START_TAB:
 	{
-	  fputs ("\n.IP\n.DS\n.sp\n.ft RR\n.nf\n", out);
+	  fputs ("\n.IP\n.DS\n.sp\n.ft CR\n.nf\n", out);
 	  docstat |= D_TAB | D_NL;
 	  break;
 	}
