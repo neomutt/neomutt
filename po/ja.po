@@ -1106,17 +1106,17 @@ msgstr "%s のヘルプ"
 
 #: hook.c:243
 msgid "unhook: Can't do unhook * from within a hook."
-msgstr ""
+msgstr "unhook: hook 中に unhook * を行なえず."
 
 #: hook.c:255
 #, c-format
 msgid "unhook: unknown hook type: %s"
-msgstr "フックできない: %s は不明なフックタイプ"
+msgstr "unhook: %s は不明なフックタイプ"
 
 #: hook.c:261
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s."
-msgstr "unhock: %s 内の %s を削除できず."
+msgstr "unhook: %2$s 中に %1$s を削除できず."
 
 #: imap/auth_anon.c:39
 msgid "Authenticating (anonymous)..."
