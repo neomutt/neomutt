@@ -144,6 +144,7 @@ const char *mutt_make_version (void);
 const char *mutt_fqdn(short);
 
 void mutt_account_hook (const char* url);
+void mutt_add_to_reference_headers (ENVELOPE *env, ENVELOPE *curenv, LIST ***pp, LIST ***qq);
 void mutt_adv_mktemp (char *, size_t);
 void mutt_alias_menu (char *, size_t, ALIAS *);
 void mutt_allow_interrupt (int);

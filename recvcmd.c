@@ -709,23 +709,17 @@ attach_reply_envelope_defaults (ENVELOPE *env, ATTACHPTR **idx, short idxlen,
   
   mutt_fix_reply_recipients (env);
   mutt_make_misc_reply_headers (env, Context, curhdr, curenv);
-  
+
   if (parent)
-    env->references = mutt_make_references (curenv);
+    mutt_add_to_reference_headers (env, curenv, NULL, NULL);
   else
   {
-    LIST **p;
-
-    env->references = NULL;
-    p = &env->references;
-
+    LIST **p = NULL, **q = NULL;
+    
     for (i = 0; i < idxlen; i++)
     {
       if (idx[i]->content->tagged)
-      {
-	while (*p) p = &(*p)->next;
-	*p = mutt_make_references (idx[i]->content->hdr->env);
-      }
+	mutt_add_to_reference_headers (env, idx[i]->content, &p, &q);
     }
   }
   

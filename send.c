@@ -599,46 +599,53 @@ void mutt_make_misc_reply_headers (ENVELOPE *env, CONTEXT *ctx,
   
 }
 
+void mutt_add_to_reference_headers (ENVELOPE *env, ENVELOPE *curenv, LIST ***pp, LIST ***qq)
+{
+  LIST **p = NULL, **q = NULL;
+
+  if (pp) p = *pp;
+  if (qq) q = *qq;
+  
+  if (!p) p = &env->references;
+  if (!q) q = &env->in_reply_to;
+  
+  while (*p) p = &(*p)->next;
+  while (*q) q = &(*q)->next;
+  
+  *p = mutt_make_references (curenv);
+  
+  if (curenv->message_id)
+  {
+    *q = mutt_new_list();
+    (*q)->data = safe_strdup (curenv->message_id);
+  }
+  
+  if (pp) *pp = p;
+  if (qq) *qq = q;
+  
+}
+
 static void 
 mutt_make_reference_headers (ENVELOPE *curenv, ENVELOPE *env, CONTEXT *ctx)
 {
-  HEADER *h;
-  LIST **p, **q;
-  int i;
+  env->references = NULL;
+  env->in_reply_to = NULL;
   
   if (!curenv)
   {
-    env->references = NULL;
-    env->in_reply_to = NULL;
-    p = &env->references;
-    q = &env->in_reply_to;
+    HEADER *h;
+    LIST **p = NULL, **q = NULL;
+    int i;
     
     for(i = 0; i < ctx->vcount; i++)
     {
-      while (*p) p = &(*p)->next;
-      while (*q) q = &(*q)->next;
-      
       h = ctx->hdrs[ctx->v2r[i]];
       if (h->tagged)
-      {
-	*p = mutt_make_references (h->env);
-	if (h->env->message_id)
-	{
-	  *q = mutt_new_list ();
-	  (*q)->data = safe_strdup (h->env->message_id);
-	}
-      }
+	mutt_add_to_reference_headers (env, h->env, &p, &q);
     }
   }
   else
-  {
-    env->references = mutt_make_references (curenv);
-    if (curenv->message_id)
-    {
-      env->in_reply_to = mutt_new_list ();
-      env->in_reply_to->data = safe_strdup (curenv->message_id);
-    }
-  }
+    mutt_add_to_reference_headers (env, curenv, NULL, NULL);
 }
 
 static int
