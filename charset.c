@@ -387,6 +387,9 @@ int mutt_convert_string (char *s, size_t len, const char *from, const char *to)
   iconv_t cd;
   const char *repls[] = { "\357\277\275", "?", 0 };
 
+  if (!s || !*s)
+    return 0;
+
   if (to && from && (cd = mutt_iconv_open (to, from)) != (iconv_t)-1) 
   {
     int n;
