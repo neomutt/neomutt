@@ -1,3 +1,12 @@
+2003-04-14 09:09:53  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* init.h, mutt.h, send.c: Fix the PGP / S/MIME selection mess
+	in send.c.  This patch adds two new configuration variables,
+	$crypt_autopgp and $crypt_autsmime.  Both are set to "yes"
+	by default.  By turning them off, you can disable the automatic
+	selection of one or both mechanisms.  (Useful when your mutt is
+	PGP- and S/MIME enabled, but you only use, say S/MIME.)
+
 2003-04-11 15:15:04  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* send.c: Backing out the previous change. It was nonsense.
