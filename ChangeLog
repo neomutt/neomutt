@@ -1,3 +1,7 @@
+2005-01-28 14:09:08  René Clerc  <rene@clerc.nl>  (roessler)
+
+	* po/nl.po: update
+
 2005-01-28 13:17:22  Werner Koch  <wk@gnupg.org>  (roessler)
 
 	* Makefile.am, configure.in, crypt-gpgme.c, crypt-gpgme.h,
