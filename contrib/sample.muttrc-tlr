@@ -1,0 +1,234 @@
+# -*-muttrc-*-
+
+#
+# Mutt configuration file of Thomas Roessler <roessler@guug.de>.
+#
+# Use and distribute freely.
+#
+# Note: This file doesn't contain any personal customization, i.e.,
+# using it won't make you send messages with my name in the header.
+#
+# Things to change: You probably want to change the "priv.rc" source
+# command in the end of this file.  Also, it's likely you want to have 
+# a look at the the $editor and $tmpdir variables.
+#
+
+#
+# MIME settings
+#
+
+auto_view application/ms-tnef text/x-vcard
+auto_view application/x-chess application/x-lotus-notes
+auto_view text/html application/x-gzip application/x-gunzip 
+auto_view application/rtf application/x-rath
+
+alternative_order text/enriched text/plain text
+
+#
+# Key bindings
+#
+
+#
+# A few of these may resemble Pine.  ups.
+#
+
+bind	alias	" "		tag-entry
+bind	alias	\n		select-entry
+bind	alias	\r		select-entry
+
+bind	attach	i		exit
+bind	attach	n		next-entry
+bind	attach	p		previous-entry
+bind	attach 	" "		select-entry
+
+bind	browser	<end>		last-entry
+bind	browser	<home>		first-entry
+
+bind	editor	"\e<backspace>" kill-word
+bind	editor	"\e<delete>"	kill-word
+bind	editor	"\e\t"		complete-query
+
+bind	generic	"\CV"		next-page
+bind	generic	"\Ca"		first-entry
+bind	generic	"\Ce"		last-entry
+bind	generic	"\eV"		previous-page
+bind	generic	"\ev"		previous-page
+bind	generic	+		tag-entry
+bind	generic	^		first-entry
+bind	generic	a		tag-prefix
+bind	generic $		last-entry
+bind	generic q		exit
+
+bind	index	";"		limit
+bind	index	"\Ce"   	last-entry	# override edit-type
+bind	index	"\eV"		previous-page	# override collapse-something
+bind	index	"\eq"		query
+bind	index	$		last-entry
+bind	index	*		flag-message
+bind	index	<delete>	delete-message
+bind	index	<end>		last-entry
+bind	index	<home>		first-entry
+bind	index	J		next-entry
+bind	index	K		previous-entry
+bind	index	Q		quit
+bind	index	R		group-reply
+bind	index	\em		recall-message
+bind	index	a		tag-prefix
+bind	index	m		mail
+bind	index	p		previous-entry
+bind	index	t		create-alias
+bind	index	x		sync-mailbox
+bind	index	y		print-message
+bind	index 	n		next-entry
+bind	index   "\ev"		previous-page
+
+bind	pager	"\Cn"		next-line
+bind	pager	"\Cp"		previous-line
+bind	pager	+		next-page
+bind	pager	<delete>	delete-message
+bind	pager	<down>		next-line
+bind	pager	<end>		bottom
+bind	pager	<home>		top
+bind	pager	<up>		previous-line
+bind	pager	G		group-reply
+bind	pager	R		group-reply
+bind	pager	\em		recall-message
+bind	pager	t		display-toggle-weed # like slrn
+bind	pager	y		print-message
+
+bind	query	i		exit
+
+
+# emulate the old URL-browser key bindings.
+
+macro	pager	"\Cb"	"| urlview -\n"
+macro	index	"\Cb"	"| urlview -\n"
+
+# permit limiting from the pager.
+
+macro   pager	";"	"<exit><limit>"
+
+# emulate the old POP-feature bindings
+
+macro 	index	G	"!fetchmail\n"	
+macro 	pager	G	"!fetchmail\n"
+
+macro   compose "\ee"   "Fpgp -eatf " 
+
+
+#
+# Colors
+#
+
+# This is a tiny hack, so I can get different
+# color schemes on the console and under X11.
+
+source ~/.mutt/colors.`if [ "$TERM" = "linux" ] ; then echo linux ; else echo default ; fi`
+
+mono  index bold ~F
+
+#
+# The header weed list
+#
+
+ignore delivered-to
+ignore content- errors-to in-reply-to mime-version
+ignore lines precedence status
+ignore nntp-posting-host path old-return-path received references
+ignore priority >received >>received
+ignore resent- return-path xref path
+ignore x400 importance sensitivity autoforward original-encoded-information
+ignore x-
+
+unignore x-spam x-url x-mailer
+
+#
+# Various settings
+#
+
+set   abort_nosubject=no		# Let me send messages with an empty subject
+set   abort_unmodified=no		# Let me send empty messages
+set   alias_file=~/.mutt/aliases	# Where to store aliases
+unset allow_8bit			# Produce correct MIME
+unset arrow_cursor			# Use the bar cursor
+set   askcc				# Ask me about CCs
+set   charset=iso-8859-1		# The local character set
+set   confirmcreate			# Ask me about creating new files
+unset confirmappend			# Don't ask me about appending to files
+set   delete=yes			# Don't ask me whether or not I meant to delete messages
+set   edit_hdrs				# I want to edit the headers.
+set   editor="/usr/local/jed/bin/jed %s -f 'mail_mode();'"	
+ 					# Invoke jed with mail_mode.  This may
+	                                # or may not work for you.
+unset envelope_from			# Don't set messages' envelope-from header.
+set   fcc_clear				# Store local copies of messages in the clear.
+set   folder=~/Mail			# Where my mail folders go
+set   followup_to			# Create Mail-Followup-To headers.
+unset force_name			# Don't create save folders which don't exist.
+set   forward_decode			# Decode messages when forwarding.
+set   forward_decrypt			# Decrypt messages when forwarding.
+set   nohelp				# No help line.
+set   include=yes			# Always include a copy when replying.
+set   mark_old				# Distinguish between seen (but unread) and new messages
+set   mbox=+mbox			# The (unused) mbox file.
+unset metoo	 			# Remove me from CC headers.
+set   mime_fwd=ask-no			# Ask me whether or not to create a MIME-encapsulated forward
+set   move=no				# Don't use mbox
+set   pager_stop			# Don't fall through to the next message in the pager
+set   pager_index_lines=0		# The pager index is ugly.
+set   pgp_replyencrypt			# Encrypt when replying to encrypted messages.
+set   pgp_replysignencrypted		# Sign when replying to encrypted messages.
+set   pgp_replysign			# Sign when replying to signed messages.
+set   pgp_timeout=3600			# Forget the PGP passphrase after an hour.
+set   pipe_decode			# Decode messages I pipe to commands, typically to patch(1).
+set   postponed=~/.mutt/postponed	# Where to put postponed messages
+set   print=ask-no			# Don't waste paper
+set   print_cmd="enscript -2 -r -G"	# Two columns, landscape, fancy header.
+set   quit=yes				# Don't ask me whether or not I want to quit.
+set   quote_regexp="^ *[a-zA-Z]*[>|][>:|]*"	# Recognize quotes in the pager.
+set   read_inc=50			# Progress indicator when reading folders.
+set   recall=ask-no			# When I say "compose", ask me whether I want to continue
+					# composing a postponed message.
+set   record="+archive/now"		# Put copies of most outgoing messages to ~/Mail/archive/now
+set   reply_to=ask-yes			# Ask me whether I want to honor users' reply-to headers.
+set   reverse_alias			# Use aliases to display real names on the index.
+set   save_name				# Save copies by name.  Together with $record and $save_name,
+					# this means that when a folder exists, copies of outgoing 
+					# messages are written to ~/Mail/<name>, otherwise they go to
+					# ~/Mail/archive/now
+set   signature=~/.signature		# Silly signature
+set   sig_dashes			# Add dashes above my signature
+set   smart_wrap			# Try to be smart when wrapping around lines in the pager
+set   sort=threads			# sort by threads,
+set   sort_aux=date			# then by date
+unset strict_threads	 		# don't be strict about threads
+set   suspend=no			# Don't suspend - I usually run mutt like this: "xterm -e mutt"
+set   tilde				# Indicate empty lines in the pager.
+set   tmpdir=~/.tmp			# Temporary files aren't stored in public places.
+unset use_domain			# Don't append a domain to addresses.
+set   write_inc=50			# Progress indicator when writing folders.
+set   query_command="lbdbq %s"		# Use the Little Brother's Database with the external
+					# query feature.
+set   sendmail_wait=-1			# Put sendmail (i.e., postfix) to the background.
+set   encode_from			# "From " in the beginning of a line triggers quoted-printable
+set   nowait_key			# Return immediately from external programs
+set   forw_format="[fwd] %s (from: %a)"	# A different subject for forwarded messages
+set   nobeep				# Shut up. ;-)
+set   reply_regexp="^((re([\\[0-9\\]+])*|aw):[ \t]*)+[ \t]*"	# A regular expression to detect replies
+set   header				# Include the message header when replying.
+set   ignore_list_reply_to		# Ignore Reply-To headers pointing to mailing lists.
+set   index_format="%4C %Z %[%b %d] %-15.15L (%4c) %s"	# Somewhat different index format, which works
+					# nicely with maildir folders.
+set   rfc2047_parameters		# Sometimes, I get mails which use a bogus encoding for
+					# MIME parameters.  Setting this shouldn't harm.
+
+# PGP command configuration
+source ~/.mutt/pgp2.rc
+
+
+# source non-public stuff, (hooks, alternates, ...)
+source ~/.mutt/priv.rc
+
+# source aliases
+source ~/.mutt/aliases
+
