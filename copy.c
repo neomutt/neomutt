@@ -297,6 +297,10 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
     rfc822_cat(buffer, sizeof(buffer), Charset, MimeSpecials);
     fputs(buffer, out);
     fputc('\n', out);
+    
+    if (ferror (out) != 0 || feof (out) != 0)
+      return -1;
+    
   }
 
   if (flags & CH_UPDATE)
@@ -362,6 +366,9 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
       return (-1);
   }
 
+  if (ferror (out) || feof (out))
+    return -1;
+  
   return (0);
 }
 
@@ -453,7 +460,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
 	new_lines = 0;
       else
 	fprintf (fpout, "Lines: %d\n\n", new_lines);
-      if (ferror (fpout))
+      if (ferror (fpout) || feof (fpout))
 	return -1;
       new_offset = ftell (fpout);
 
@@ -583,7 +590,12 @@ mutt_copy_message (FILE *fpout, CONTEXT *src, HEADER *hdr, int flags,
   
   if ((msg = mx_open_message (src, hdr->msgno)) == NULL)
     return -1;
-  r = _mutt_copy_message (fpout, msg->fp, hdr, hdr->content, flags, chflags);
+  if ((r = _mutt_copy_message (fpout, msg->fp, hdr, hdr->content, flags, chflags)) == 0 
+      && (ferror (fpout) || feof (fpout)))
+  {
+    dprint (1, (debugfile, "_mutt_copy_message failed to detect EOF!\n"));
+    r = -1;
+  }
   mx_close_message (&msg);
   return r;
 }
