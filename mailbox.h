@@ -33,7 +33,8 @@ enum
 {
   M_NEW_MAIL = 1,	/* new mail received in mailbox */
   M_LOCKED,		/* couldn't lock the mailbox */
-  M_REOPENED		/* mailbox was reopened */
+  M_REOPENED,		/* mailbox was reopened */
+  M_FLAGS               /* nondestructive flags change (IMAP) */
 };
 
 typedef struct

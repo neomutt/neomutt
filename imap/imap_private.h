@@ -50,9 +50,10 @@
 #define SEQLEN 5
 
 #define IMAP_REOPEN_ALLOW     (1<<0)
-#define IMAP_EXPUNGE_PENDING  (1<<1)
-#define IMAP_NEWMAIL_PENDING  (1<<2)
-#define IMAP_EXPUNGE_EXPECTED (1<<3)
+#define IMAP_EXPUNGE_EXPECTED (1<<1)
+#define IMAP_EXPUNGE_PENDING  (1<<2)
+#define IMAP_NEWMAIL_PENDING  (1<<3)
+#define IMAP_FLAGS_PENDING    (1<<4)
 
 /* imap_exec flags (see imap_exec) */
 #define IMAP_CMD_FAIL_OK (1<<0)
@@ -205,6 +206,7 @@ int imap_authenticate (IMAP_DATA* idata);
 /* command.c */
 int imap_cmd_start (IMAP_DATA* idata, const char* cmd);
 int imap_cmd_step (IMAP_DATA* idata);
+void imap_cmd_finish (IMAP_DATA* idata);
 int imap_code (const char* s);
 int imap_exec (IMAP_DATA* idata, const char* cmd, int flags);
 
@@ -212,6 +214,7 @@ int imap_exec (IMAP_DATA* idata, const char* cmd, int flags);
 void imap_add_keywords (char* s, HEADER* keywords, LIST* mailbox_flags, size_t slen);
 void imap_free_header_data (void** data);
 int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend);
+char* imap_set_flags (IMAP_DATA* idata, HEADER* h, char* s);
 
 /* util.c */
 int imap_continue (const char* msg, const char* resp);

@@ -652,7 +652,7 @@ int imap_open_mailbox (CONTEXT* ctx)
   ctx->msgcount = 0;
   count = imap_read_headers (idata, 0, count - 1) + 1;
 
-  dprint (1, (debugfile, "imap_open_mailbox(): msgcount is %d\n", ctx->msgcount));
+  dprint (2, (debugfile, "imap_open_mailbox: msgcount is %d\n", ctx->msgcount));
   FREE (&mx.mbox);
   return 0;
 
@@ -1076,6 +1076,7 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint)
 
   IMAP_DATA* idata;
   time_t now;
+  int result = 0;
 
   idata = (IMAP_DATA*) ctx->data;
 
@@ -1087,19 +1088,21 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint)
     if (imap_exec (idata, "NOOP", 0) != 0)
       return -1;
   }
-    
-  if (idata->check_status & IMAP_NEWMAIL_PENDING)
-  {
-    idata->check_status &= ~IMAP_NEWMAIL_PENDING;
-    return M_NEW_MAIL;
-  }
-  if (idata->check_status & IMAP_EXPUNGE_PENDING)
-  {
-    idata->check_status &= ~IMAP_EXPUNGE_PENDING;
-    return M_REOPENED;
-  }
 
-  return 0;
+  /* We call this even when we haven't run NOOP in case we have pending
+   * changes to process, since we can reopen here. */
+  imap_cmd_finish (idata);
+
+  if (idata->check_status & IMAP_NEWMAIL_PENDING)
+    result = M_NEW_MAIL;
+  else if (idata->check_status & IMAP_EXPUNGE_PENDING)
+    result = M_REOPENED;
+  else if (idata->check_status & IMAP_FLAGS_PENDING)
+    result = M_FLAGS;
+
+  idata->check_status = 0;
+
+  return result;
 }
 
 /* returns count of recent messages if new = 1, else count of total messages.

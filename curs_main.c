@@ -461,19 +461,21 @@ int mutt_index_menu (void)
 
 	set_option (OPTSEARCHINVALID);
       }
-      else if (check == M_NEW_MAIL || check == M_REOPENED)
+      else if (check == M_NEW_MAIL || check == M_REOPENED || check == M_FLAGS)
       {
 	update_index (menu, Context, check, oldcount, index_hint);
 	
 	/* notify the user of new mail */
 	if (check == M_REOPENED)
 	  mutt_error _("Mailbox was externally modified.  Flags may be wrong.");
-	else
+	else if (check == M_NEW_MAIL)
 	{
 	  mutt_message _("New mail in this mailbox.");
 	  if (option (OPTBEEPNEW))
 	    beep ();
-	}
+	} else if (check == M_FLAGS)
+	  mutt_message _("Mailbox was externally modified.");
+
 	/* avoid the message being overwritten by buffy */
 	do_buffy_notify = 0;
 	

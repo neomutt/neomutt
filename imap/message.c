@@ -58,7 +58,6 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 
   ctx = idata->ctx;
 
-  /* define search string */
   if (mutt_bit_isset (idata->capabilities,IMAP4REV1))
   {
     snprintf (hdrreq, sizeof (hdrreq), "BODY.PEEK[HEADER.FIELDS (%s)]", 
@@ -302,48 +301,8 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	else if ((ascii_strncasecmp ("FLAGS", pc, 5) == 0) &&
 		 !ctx->hdrs[msgno]->changed)
 	{
-	  IMAP_HEADER newh;
-	  unsigned char readonly;
-
-	  h = ctx->hdrs[msgno];
-
-	  memset (&newh, 0, sizeof (newh));
-	  newh.data = safe_calloc (1, sizeof (IMAP_HEADER_DATA));
-
-	  dprint (2, (debugfile, "imap_fetch_message: parsing FLAGS\n"));
-	  if ((pc = msg_parse_flags (&newh, pc)) == NULL)
+	  if ((pc = imap_set_flags (idata, ctx->hdrs[msgno], pc)) == NULL)
 	    goto bail;
-	      
-	  /* this is less efficient than the code which used to be here,
-	   * but (1) this is only invoked when fetching messages, and (2)
-	   * this way, we can make sure that side effects of flag changes
-	   * are taken account of the proper way.
-	   */
-
-	  /* YAUH (yet another ugly hack): temporarily set context to
-	   * read-write even if it's read-only, so *server* updates of
-	   * flags can be processed by mutt_set_flag. ctx->changed must
-	   * be restored afterwards */
-	  readonly = ctx->readonly;
-	  ctx->readonly = 0;
-	    
-	  mutt_set_flag (ctx, h, M_NEW, 
-			 !(newh.read || newh.old || h->read || h->old));
-	  mutt_set_flag (ctx, h, M_OLD, newh.old);
-	  mutt_set_flag (ctx, h, M_READ, h->read || newh.read);
-	  mutt_set_flag (ctx, h, M_DELETE, h->deleted || newh.deleted);
-	  mutt_set_flag (ctx, h, M_FLAG, h->flagged || newh.flagged);
-	  mutt_set_flag (ctx, h, M_REPLIED, h->replied || newh.replied);
-
-	  /* this message is now definitively *not* changed (mutt_set_flag
-	   * marks things changed as a side-effect) */
-	  h->changed = 0;
-	  ctx->changed &= ~readonly;
-	  ctx->readonly = readonly;
-
-	  mutt_free_list (&(HEADER_DATA(h)->keywords));
-	  HEADER_DATA(h)->keywords = newh.data->keywords;
-	  FREE(&newh.data);
 	}
       }
     }
@@ -694,6 +653,51 @@ void imap_free_header_data (void** data)
   safe_free (data);
 }
 
+/* imap_set_flags: fill out the message header according to the flags from
+ *   the server. Expects a flags line of the form "FLAGS (flag flag ...)" */
+char* imap_set_flags (IMAP_DATA* idata, HEADER* h, char* s)
+{
+  CONTEXT* ctx = idata->ctx;
+  IMAP_HEADER newh;
+  unsigned char readonly;
+
+  memset (&newh, 0, sizeof (newh));
+  newh.data = safe_calloc (1, sizeof (IMAP_HEADER_DATA));
+
+  dprint (2, (debugfile, "imap_fetch_message: parsing FLAGS\n"));
+  if ((s = msg_parse_flags (&newh, s)) == NULL)
+  {
+    FREE (&newh.data);
+    return NULL;
+  }
+  
+  /* YAUH (yet another ugly hack): temporarily set context to
+   * read-write even if it's read-only, so *server* updates of
+   * flags can be processed by mutt_set_flag. ctx->changed must
+   * be restored afterwards */
+  readonly = ctx->readonly;
+  ctx->readonly = 0;
+	    
+  mutt_set_flag (ctx, h, M_NEW, !(newh.read || newh.old));
+  mutt_set_flag (ctx, h, M_OLD, newh.old);
+  mutt_set_flag (ctx, h, M_READ, newh.read);
+  mutt_set_flag (ctx, h, M_DELETE, newh.deleted);
+  mutt_set_flag (ctx, h, M_FLAG, newh.flagged);
+  mutt_set_flag (ctx, h, M_REPLIED, newh.replied);
+
+  /* this message is now definitively *not* changed (mutt_set_flag
+   * marks things changed as a side-effect) */
+  h->changed = 0;
+  ctx->changed &= ~readonly;
+  ctx->readonly = readonly;
+
+  mutt_free_list (&(HEADER_DATA(h)->keywords));
+  HEADER_DATA(h)->keywords = newh.data->keywords;
+  FREE(&newh.data);
+
+  return s;
+}
+
 /* msg_fetch_header: import IMAP FETCH response into an IMAP_HEADER.
  *   Expects string beginning with * n FETCH.
  *   Returns:
@@ -846,8 +850,7 @@ static int msg_parse_fetch (IMAP_HEADER *h, char *s)
   return 0;
 }
 
-/* msg_parse_flags: fill out the message header according to the flags from the
- *   server. Expects a flags line of the form "FLAGS (flag flag ...)" */
+/* msg_parse_flags: read a FLAGS token into an IMAP_HEADER */
 static char* msg_parse_flags (IMAP_HEADER* h, char* s)
 {
   int recent = 0;

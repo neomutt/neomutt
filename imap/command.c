@@ -32,12 +32,12 @@
 #define IMAP_CMD_BUFSIZE 512
 
 /* forward declarations */
-static void cmd_finish (IMAP_DATA* idata);
 static void cmd_handle_fatal (IMAP_DATA* idata);
 static int cmd_handle_untagged (IMAP_DATA* idata);
 static void cmd_make_sequence (IMAP_DATA* idata);
 static void cmd_parse_capabilities (IMAP_DATA* idata, char* s);
-static void cmd_parse_expunge (IMAP_DATA* idata, char* s);
+static void cmd_parse_expunge (IMAP_DATA* idata, const char* s);
+static void cmd_parse_fetch (IMAP_DATA* idata, char* s);
 static void cmd_parse_myrights (IMAP_DATA* idata, char* s);
 
 static char *Capabilities[] = {
@@ -148,7 +148,7 @@ int imap_cmd_step (IMAP_DATA* idata)
   /* tagged completion code */
   if (!mutt_strncmp (cmd->buf, cmd->seq, SEQLEN))
   {
-    cmd_finish (idata);
+    imap_cmd_finish (idata);
     return imap_code (cmd->buf) ? IMAP_CMD_OK : IMAP_CMD_NO;
   }
 
@@ -229,16 +229,16 @@ int imap_cmd_running (IMAP_DATA* idata)
   return 0;
 }
 
-/* cmd_finish: When the caller has finished reading command responses,
- *   it must call this routine to perform cleanup (eg fetch new mail if
- *   detected, do expunge). Called automatically by imap_cmd_step */
-static void cmd_finish (IMAP_DATA* idata)
+/* imap_cmd_finish: Attempts to perform cleanup (eg fetch new mail if
+ *   detected, do expunge). Called automatically by imap_cmd_step, but
+ *   may be called at any time. Called by imap_check_mailbox just before
+ *   the index is refreshed, for instance. */
+void imap_cmd_finish (IMAP_DATA* idata)
 {
   if (!(idata->state == IMAP_SELECTED) || idata->ctx->closing)
     return;
   
-  if ((idata->reopen & IMAP_REOPEN_ALLOW) &&
-      (idata->reopen & (IMAP_EXPUNGE_PENDING|IMAP_NEWMAIL_PENDING)))
+  if (idata->reopen & IMAP_REOPEN_ALLOW)
   {
     int count = idata->newMailCount;
 
@@ -247,16 +247,16 @@ static void cmd_finish (IMAP_DATA* idata)
 	&& count > idata->ctx->msgcount)
     {
       /* read new mail messages */
-      dprint (2, (debugfile, "cmd_finish: Fetching new mail\n"));
+      dprint (2, (debugfile, "imap_cmd_finish: Fetching new mail\n"));
       /* check_status: curs_main uses imap_check_mailbox to detect
        *   whether the index needs updating */
       idata->check_status = IMAP_NEWMAIL_PENDING;
       idata->reopen &= ~IMAP_NEWMAIL_PENDING;
       count = imap_read_headers (idata, idata->ctx->msgcount, count-1)+1;
     }
-    else
+    else if (idata->reopen & IMAP_EXPUNGE_PENDING)
     {
-      dprint (2, (debugfile, "cmd_finish: Expunging mailbox\n"));
+      dprint (2, (debugfile, "imap_cmd_finish: Expunging mailbox\n"));
       imap_expunge_mailbox (idata);
       /* Detect whether we've gotten unexpected EXPUNGE messages */
       if (idata->reopen & IMAP_EXPUNGE_PENDING &&
@@ -334,9 +334,11 @@ static int cmd_handle_untagged (IMAP_DATA* idata)
 	idata->newMailCount = count;
       }
     }
+    /* pn vs. s: need initial seqno */
     else if (ascii_strncasecmp ("EXPUNGE", s, 7) == 0)
-      /* pn vs. s: need initial seqno */
       cmd_parse_expunge (idata, pn);
+    else if (ascii_strncasecmp ("FETCH", s, 5) == 0)
+      cmd_parse_fetch (idata, pn);
   }
   else if (ascii_strncasecmp ("CAPABILITY", s, 10) == 0)
     cmd_parse_capabilities (idata, s);
@@ -407,7 +409,7 @@ static void cmd_parse_capabilities (IMAP_DATA* idata, char* s)
 
 /* cmd_parse_expunge: mark headers with new sequence ID and mark idata to
  *   be reopened at our earliest convenience */
-static void cmd_parse_expunge (IMAP_DATA* idata, char* s)
+static void cmd_parse_expunge (IMAP_DATA* idata, const char* s)
 {
   int expno, cur;
   HEADER* h;
@@ -431,6 +433,65 @@ static void cmd_parse_expunge (IMAP_DATA* idata, char* s)
   }
 
   idata->reopen |= IMAP_EXPUNGE_PENDING;
+}
+
+/* cmd_parse_fetch: Load fetch response into IMAP_DATA. Currently only
+ *   handles unanticipated FETCH responses, and only FLAGS data. We get
+ *   these if another client has changed flags for a mailbox we've selected.
+ *   Of course, a lot of code here duplicates code in message.c. */
+static void cmd_parse_fetch (IMAP_DATA* idata, char* s)
+{
+  int msgno, cur;
+  HEADER* h = NULL;
+
+  dprint (2, (debugfile, "Handling FETCH\n"));
+
+  msgno = atoi (s);
+  
+  /* see cmd_parse_expunge */
+  for (cur = 0; cur < idata->ctx->msgcount; cur++)
+  {
+    h = idata->ctx->hdrs[cur];
+    
+    if (h->active && h->index+1 == msgno)
+    {
+      dprint (2, (debugfile, "Message UID %d updated\n", HEADER_DATA(h)->uid));
+      break;
+    }
+
+    h = NULL;
+  }
+  
+  if (!h)
+  {
+    dprint (1, (debugfile, "FETCH response ignored for this message\n"));
+    return;
+  }
+  
+  /* skip FETCH */
+  s = imap_next_word (s);
+  s = imap_next_word (s);
+
+  if (*s != '(')
+  {
+    dprint (1, (debugfile, "Malformed FETCH response"));
+    return;
+  }
+  s++;
+
+  if (ascii_strncasecmp ("FLAGS", s, 5) != 0)
+  {
+    dprint (2, (debugfile, "Only handle FLAGS updates\n"));
+    return;
+  }
+
+  /* If server flags could conflict with mutt's flags, reopen the mailbox. */
+  if (h->changed)
+    idata->reopen |= IMAP_EXPUNGE_PENDING;
+  else {
+    imap_set_flags (idata, h, s);
+    idata->check_status = IMAP_FLAGS_PENDING;
+  }
 }
 
 /* cmd_parse_myrights: set rights bits according to MYRIGHTS response */
