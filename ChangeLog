@@ -1,3 +1,31 @@
+2004-03-21 16:02:10  Ivan Vilata i Balaguer  <ivan@selidor.net>  (roessler)
+
+	* po/ca.po: update
+
+2004-02-12 08:51:07  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* po/uk.po, po/zh_CN.po, po/zh_TW.po, po/sk.po, po/sv.po,
+	po/tr.po, po/pt_BR.po, po/ru.po, po/nl.po, po/pl.po, po/ja.po,
+	po/ko.po, po/lt.po, po/id.po, po/it.po, po/gl.po, po/hu.po,
+	po/es.po, po/et.po, po/fr.po, po/el.po, po/eo.po, po/da.po,
+	po/de.po, VERSION, po/bg.po, po/ca.po, po/cs.po, reldate.h,
+	ChangeLog: automatic post-release commit for mutt-1.4.2.1
+
+	* Makefile.am: (stable) Include regex.c and snprintf.c with
+	the distribution.
+
+2004-02-11 14:03:38  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* po/zh_TW.po, po/uk.po, po/zh_CN.po, po/tr.po, po/sv.po,
+	po/ru.po, po/sk.po, po/pt_BR.po, po/pl.po, po/nl.po, po/ko.po,
+	po/lt.po, po/ja.po, po/it.po, po/id.po, po/hu.po, po/gl.po,
+	po/et.po, po/fr.po, po/eo.po, po/es.po, po/el.po, po/de.po,
+	po/cs.po, po/da.po, po/ca.po, VERSION, po/bg.po, reldate.h,
+	ChangeLog: automatic post-release commit for mutt-1.4.2
+
+	* configure.in, menu.c: Backport an old bug fix, and make sure
+	configure can be created on recent systems.
+
 2004-02-11 08:20:25  Mads Martin Joergensen  <mmj@suse.de>  (roessler)
 
 	* init.c: Fix some warnings.
