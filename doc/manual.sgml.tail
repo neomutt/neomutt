@@ -354,6 +354,6 @@ Ken Weinert <htmlurl url="mailto:kenw@ihs.com" name="&lt;kenw@ihs.com&gt;">
 <sect1>About this document
 <p>
 This document was written in SGML, and then rendered using the
-<htmlurl url="http://pobox.com/~cg/sgmltools/" name="sgml-tools"> package.
+<htmlurl url="http://www.sgml-tools.org/" name="sgml-tools"> package.
 
 </article>
