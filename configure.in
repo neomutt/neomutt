@@ -685,7 +685,12 @@ AC_ARG_WITH(idn, [  --with-idn=[PFX]		Use GNU libidn for domain names],
 		 ]
 )
 
-AC_CHECK_LIB(idn, idna_to_ascii_from_utf8)
+if test "x$with_idn" != "xno"; then
+   AC_CHECK_LIB(idn, stringprep_check_version)
+   AC_CHECK_FUNCS(idna_to_unicode_utf8_from_utf8 idna_to_unicode_8z8z)
+   AC_CHECK_FUNCS(idna_to_ascii_from_utf8 idna_to_ascii_8z)
+   AC_CHECK_FUNCS(idna_to_ascii_lz idna_to_ascii_from_locale)
+fi
 
 if test "$need_md5" = "yes"
 then

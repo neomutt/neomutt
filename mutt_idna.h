@@ -40,4 +40,18 @@ int mutt_env_to_idna (ENVELOPE *, char **, char **);
 
 const char *mutt_addr_for_display (ADDRESS *a);
 
+/* Work around incompatibilities in the libidn API */
+
+#ifdef HAVE_LIBIDN
+# if (!defined(HAVE_IDNA_TO_ASCII_8Z) && defined(HAVE_IDNA_TO_ASCII_FROM_UTF8))
+#  define idna_to_ascii_8z(a,b,c) idna_to_ascii_from_utf8(a,b,(c)&1,((c)&2)?1:0)
+# endif
+# if (!defined(HAVE_IDNA_TO_ASCII_LZ) && defined(HAVE_IDNA_TO_ASCII_FROM_LOCALE))
+#  define idna_to_ascii_lz(a,b,c) idna_to_ascii_from_locale(a,b,(c)&1,((c)&2)?1:0)
+# endif
+# if (!defined(HAVE_IDNA_TO_UNICODE_8Z8Z) && defined(HAVE_IDNA_TO_UNICODE_UTF8_FROM_UTF8))
+#  define idna_to_unicode_8z8z(a,b,c) idna_to_unicode_utf8_from_utf8(a,b,(c)&1,((c)&2)?1:0)
+# endif
+#endif
+
 #endif

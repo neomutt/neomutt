@@ -26,9 +26,7 @@
 # include "mutt_ssl.h"
 #endif
 
-#ifdef HAVE_LIBIDN
-#include <idna.h>
-#endif
+#include "mutt_idna.h"
 
 #include <unistd.h>
 #include <netinet/in.h>
@@ -413,7 +411,7 @@ int raw_socket_open (CONNECTION* conn)
   snprintf (port, sizeof (port), "%d", conn->account.port);
   
 # ifdef HAVE_LIBIDN
-  if (idna_to_ascii_from_locale (conn->account.host, &host_idna, 1, 0) != IDNA_SUCCESS)
+  if (idna_to_ascii_lz (conn->account.host, &host_idna, 1) != IDNA_SUCCESS)
   {
     mutt_error (_("Bad IDN \"%s\"."), conn->account.host);
     return -1;
@@ -470,7 +468,7 @@ int raw_socket_open (CONNECTION* conn)
   sin.sin_family = AF_INET;
 
 # ifdef HAVE_LIBIDN
-  if (idna_to_ascii_from_locale (conn->account.host, &host_idna, 1, 0) != IDNA_SUCCESS)
+  if (idna_to_ascii_lz (conn->account.host, &host_idna, 1) != IDNA_SUCCESS)
   {
     mutt_error (_("Bad IDN \"%s\"."), conn->account.host);
     return -1;
