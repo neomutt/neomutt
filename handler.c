@@ -891,12 +891,7 @@ void text_enriched_handler (BODY *a, STATE *s)
  * 
  */
 
-/* 
- * Personally, I'd prefer something around 70 here.  However,
- * we don't want to unnecessarily distort the design of entirely
- * valid messages which actually use the 79 columns.
- */
-#define FLOWED_MAX 79
+#define FLOWED_MAX 77
 
 static void flowed_quote (STATE *s, int level)
 {
@@ -976,9 +971,9 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
   if (s->prefix)
     add = 1;
   
-  if ((flowed_max = FLOWED_MAX) > COLS)
-    flowed_max = COLS - 1;
-  
+  if ((flowed_max = FLOWED_MAX) > COLS - 3)
+    flowed_max = COLS - 3;
+
   while (bytes > 0 && fgets (line, sizeof (line), s->fpin))
   {
     bytes        -= strlen (line);
