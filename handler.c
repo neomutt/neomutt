@@ -183,7 +183,7 @@ static void qp_decode_line (char *dest, char *src, size_t *l)
   if (*src)
   {
     s = src + strlen(src) - 1;
-    while (s != src && ISSPACE(*s))
+    while (s >= src && ISSPACE(*s))
       s--;
     *(++s) = '\0';
   }
