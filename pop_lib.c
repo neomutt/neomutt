@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000-2002 Vsevolod Volkov <vvv@mutt.org.ua>
+ * Copyright (C) 2000-2003 Vsevolod Volkov <vvv@mutt.org.ua>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -20,6 +20,9 @@
 #include "mx.h"
 #include "url.h"
 #include "pop.h"
+#ifdef USE_SSL
+# include "mutt_ssl.h"
+#endif
 
 #include <string.h>
 #include <unistd.h>
@@ -85,10 +88,14 @@ static int fetch_capa (char *line, void *data)
 
   if (!ascii_strncasecmp (line, "SASL", 4))
   {
+    FREE (&pop_data->auth_list);
     c = line + 4;
     SKIPWS (c);
     pop_data->auth_list = safe_strdup (c);
   }
+
+  else if (!ascii_strncasecmp (line, "STLS", 4))
+    pop_data->cmd_stls = 1;
 
   else if (!ascii_strncasecmp (line, "USER", 4))
     pop_data->cmd_user = 1;
@@ -129,43 +136,46 @@ static int fetch_auth (char *line, void *data)
  * -1 - conection lost,
  * -2 - execution error.
 */
-static int pop_capabilities (POP_DATA *pop_data)
+static int pop_capabilities (POP_DATA *pop_data, int mode)
 {
   char buf[LONG_STRING];
-  char *msg = NULL;
 
+  /* don't check capabilities on reconnect */
   if (pop_data->capabilities)
     return 0;
 
-  pop_data->cmd_capa = 0;
-  pop_data->cmd_user = 0;
-  pop_data->cmd_uidl = 0;
-  pop_data->cmd_top = 0;
-  pop_data->resp_codes = 0;
-  pop_data->expire = 1;
-  pop_data->login_delay = 0;
-  FREE (&pop_data->auth_list);
-
-  strfcpy (buf, "CAPA\r\n", sizeof (buf));
-  switch (pop_fetch_data (pop_data, buf, NULL, fetch_capa, pop_data))
+  /* init capabilities */
+  if (mode == 0)
   {
-    case 0:
-    {
-      pop_data->cmd_capa = 1;
-
-      if (!pop_data->expire)
-	msg = _("Unable to leave messages on server.");
-      if (!pop_data->cmd_top)
-	msg = _("Command TOP is not supported by server.");
-      if (!pop_data->cmd_uidl)
-	msg = _("Command UIDL is not supported by server.");
-      break;
-    }
-    case -1:
-      return -1;
+    pop_data->cmd_capa = 0;
+    pop_data->cmd_stls = 0;
+    pop_data->cmd_user = 0;
+    pop_data->cmd_uidl = 0;
+    pop_data->cmd_top = 0;
+    pop_data->resp_codes = 0;
+    pop_data->expire = 1;
+    pop_data->login_delay = 0;
+    FREE (&pop_data->auth_list);
   }
 
-  if (!pop_data->cmd_capa)
+  /* Execute CAPA command */
+  if (mode == 0 || pop_data->cmd_capa)
+  {
+    strfcpy (buf, "CAPA\r\n", sizeof (buf));
+    switch (pop_fetch_data (pop_data, buf, NULL, fetch_capa, pop_data))
+    {
+      case 0:
+      {
+	pop_data->cmd_capa = 1;
+	break;
+      }
+      case -1:
+	return -1;
+    }
+  }
+
+  /* CAPA not supported, use defaults */
+  if (mode == 0 && !pop_data->cmd_capa)
   {
     pop_data->cmd_user = 2;
     pop_data->cmd_uidl = 2;
@@ -176,13 +186,24 @@ static int pop_capabilities (POP_DATA *pop_data)
       return -1;
   }
 
-  if (msg)
+  /* Check capabilities */
+  if (mode == 2)
   {
-    mutt_error (msg);
-    return -2;
-  }
+    char *msg = NULL;
 
-  pop_data->capabilities = 1;
+    if (!pop_data->expire)
+      msg = _("Unable to leave messages on server.");
+    if (!pop_data->cmd_top)
+      msg = _("Command TOP is not supported by server.");
+    if (!pop_data->cmd_uidl)
+      msg = _("Command UIDL is not supported by server.");
+    if (msg && pop_data->cmd_capa)
+    {
+      mutt_error (msg);
+      return -2;
+    }
+    pop_data->capabilities = 1;
+  }
 
   return 0;
 }
@@ -240,7 +261,7 @@ int pop_open_connection (POP_DATA *pop_data)
     return ret;
   }
 
-  ret = pop_capabilities (pop_data);
+  ret = pop_capabilities (pop_data, 0);
   if (ret == -1)
     goto err_conn;
   if (ret == -2)
@@ -249,6 +270,53 @@ int pop_open_connection (POP_DATA *pop_data)
     return -2;
   }
 
+#if defined(USE_SSL) && !defined(USE_NSS)
+  /* Attempt STLS if available and desired. */
+  if (pop_data->cmd_stls && !pop_data->conn->ssf)
+  {
+    if (pop_data->use_stls == 0)
+    {
+      ret = query_quadoption (OPT_SSLSTARTTLS,
+	    _("Secure connection with TLS?"));
+      if (ret == -1)
+	return -2;
+      pop_data->use_stls = 1;
+      if (ret == M_YES)
+	pop_data->use_stls = 2;
+    }
+    if (pop_data->use_stls == 2)
+    {
+      strfcpy (buf, "STLS\r\n", sizeof (buf));
+      ret = pop_query (pop_data, buf, sizeof (buf));
+      if (ret == -1)
+	goto err_conn;
+      if (ret != 0)
+      {
+	mutt_error ("%s", pop_data->err_msg);
+	mutt_sleep (2);
+      }
+      else if (mutt_ssl_starttls (pop_data->conn))
+      {
+	mutt_error (_("Could not negotiate TLS connection"));
+	mutt_sleep (2);
+	return -2;
+      }
+      else
+      {
+	/* recheck capabilities after STLS completes */
+	ret = pop_capabilities (pop_data, 1);
+	if (ret == -1)
+	  goto err_conn;
+	if (ret == -2)
+	{
+	  mutt_sleep (2);
+	  return -2;
+	}
+      }
+    }
+  }
+#endif
+
   ret = pop_authenticate (pop_data);
   if (ret == -1)
     goto err_conn;
@@ -256,6 +324,16 @@ int pop_open_connection (POP_DATA *pop_data)
     mutt_clear_error ();
   if (ret != 0)
     return ret;
+
+  /* recheck capabilities after authentication */
+  ret = pop_capabilities (pop_data, 2);
+  if (ret == -1)
+    goto err_conn;
+  if (ret == -2)
+  {
+    mutt_sleep (2);
+    return -2;
+  }
 
   /* get total size of mailbox */
   strfcpy (buf, "STAT\r\n", sizeof (buf));

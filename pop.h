@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000-2001 Vsevolod Volkov <vvv@mutt.org.ua>
+ * Copyright (C) 2000-2003 Vsevolod Volkov <vvv@mutt.org.ua>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -59,7 +59,9 @@ typedef struct
   CONNECTION *conn;
   unsigned int status : 2;
   unsigned int capabilities : 1;
+  unsigned int use_stls : 2;
   unsigned int cmd_capa : 1;	/* optional command CAPA */
+  unsigned int cmd_stls : 1;	/* optional command STLS */
   unsigned int cmd_user : 2;	/* optional command USER */
   unsigned int cmd_uidl : 2;	/* optional command UIDL */
   unsigned int cmd_top : 2;	/* optional command TOP */
