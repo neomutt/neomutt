@@ -397,6 +397,10 @@ int mx_get_magic (const char *path)
     snprintf (tmp, sizeof (tmp), "%s/.mew-cache", path);
     if (access (tmp, F_OK) == 0)
       return (M_MH);
+    
+    snprintf (tmp, sizeof (tmp), "%s/.sylpheed_cache", path);
+    if (access (tmp, F_OK) == 0)
+      return (M_MH);
 
     /* 
      * ok, this isn't an mh folder, but mh mode can be used to read
