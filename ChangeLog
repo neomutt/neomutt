@@ -1,3 +1,9 @@
+2003-09-19 12:56:49  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* send.c: Change abort_unmodified so it doesn't abort a message
+	that has an attachment.  Catches the "send a file from the
+	command line, quickly" case.
+
 2003-09-11 16:59:54  Brendan Cully  <brendan@kublai.com>  (roessler)
 
 	* mutt_sasl.c: This trivial patch closes #1516 (NI_WITHSCOPEID
