@@ -2,7 +2,8 @@
 # Ulrich Drepper <drepper@cygnus.com>, 1995.
 
 #
-# Slightly modified by Thomas Roessler <roessler@guug.de>
+# Slightly modified by Thomas Roessler <roessler@does-not-exist.org>
+# Updated to gettext-0.10.38 by Edmund Grimley Evans <edmundo@rano.org>
 #
 
 # This file can be copied and used freely without restrictions.  It can
