@@ -17,7 +17,7 @@
 .\"     along with this program; if not, write to the Free Software
 .\"     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
 .\"
-.TH mutt 1 "February 2000" Unix "User Manuals"
+.TH mutt 1 "July 2000" Unix "User Manuals"
 .SH NAME
 .PP
 mutt \- The Mutt Mail User Agent
@@ -144,6 +144,12 @@ suspend/resume does not work under Ultrix.
 .PP
 The help line for the index menu is not updated if you change the bindings
 for one of the functions listed while Mutt is running.
+.PP
+For a more up-to-date list of bugs, please visit the mutt project's
+bug tracking system under http://bugs.guug.de/.  If you wish to
+report a bug, please use the 
+.B muttbug
+program.
 .SH NO WARRANTIES
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
