@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3\n"
-"POT-Creation-Date: 2001-11-08 23:41+0100\n"
+"POT-Creation-Date: 2001-11-29 10:43+0100\n"
 "PO-Revision-Date: 2001-04-22 22:05+0200\n"
 "Last-Translator: Roberto Suarez Soto <ask4it@bigfoot.com>\n"
 "Language-Team: Galician <trasno@ceu.fi.udc.es>\n"
@@ -23,12 +23,12 @@ msgstr "Nome de usuario en %s: "
 msgid "Password for %s@%s: "
 msgstr "Contrasinal para %s@%s: "
 
-#: addrbook.c:31 browser.c:40 pager.c:1422 postpone.c:37 query.c:43
+#: addrbook.c:31 browser.c:40 pager.c:1427 postpone.c:37 query.c:43
 #: recvattach.c:57
 msgid "Exit"
 msgstr "Saír"
 
-#: addrbook.c:32 curs_main.c:398 pager.c:1429 postpone.c:38
+#: addrbook.c:32 curs_main.c:398 pager.c:1434 postpone.c:38
 msgid "Del"
 msgstr "Borrar"
 
@@ -42,7 +42,7 @@ msgstr "Seleccionar"
 
 #. __STRCAT_CHECKED__
 #: addrbook.c:35 browser.c:43 compose.c:93 curs_main.c:404 mutt_ssl.c:628
-#: pager.c:1521 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
+#: pager.c:1526 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Axuda"
 
@@ -140,7 +140,7 @@ msgstr "Tipo MIME non definido. Non se pode ver-lo ficheiro adxunto."
 msgid "Cannot create filter"
 msgstr "Non se puido crea-lo filtro"
 
-#: attach.c:629 attach.c:661 attach.c:943 attach.c:1001 handler.c:1539
+#: attach.c:629 attach.c:661 attach.c:943 attach.c:1001 handler.c:1544
 #: pgpkey.c:566 pgpkey.c:755
 msgid "Can't create filter"
 msgstr "Non podo crea-lo filtro"
@@ -730,7 +730,7 @@ msgstr "Gardar"
 msgid "Mail"
 msgstr "Nova"
 
-#: curs_main.c:402 pager.c:1430
+#: curs_main.c:402 pager.c:1435
 msgid "Reply"
 msgstr "Responder"
 
@@ -854,7 +854,7 @@ msgstr "Non hai mensaxes sen ler"
 msgid " in this limited view"
 msgstr " nesta vista limitada"
 
-#: curs_main.c:1331 pager.c:2283
+#: curs_main.c:1331 pager.c:2288
 #, fuzzy
 msgid "Can't change 'important' flag on POP server."
 msgstr "Non é posible editar unha mensaxe no servidor POP."
@@ -867,8 +867,8 @@ msgstr "Non hai máis fíos"
 msgid "You are on the first thread."
 msgstr "Está no primeiro fío"
 
-#: curs_main.c:1509 curs_main.c:1541 flags.c:249 thread.c:904 thread.c:959
-#: thread.c:1014
+#: curs_main.c:1509 curs_main.c:1541 flags.c:249 thread.c:901 thread.c:956
+#: thread.c:1011
 msgid "Threading is not enabled."
 msgstr "Enfiamento non habilitado."
 
@@ -999,113 +999,114 @@ msgstr "Pór indicador"
 msgid "Clear flag"
 msgstr "Limpar indicador"
 
-#: handler.c:1320
+#: handler.c:1325
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr ""
 "[-- Erro: ¡Non foi posible amosar ningunha parte de Multipart/"
 "Alternative!--]\n"
 
-#: handler.c:1438
+#: handler.c:1443
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- Adxunto #%d"
 
-#: handler.c:1450
+#: handler.c:1455
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Tipo: %s/%s, Codificación: %s, Tamaño: %s --]\n"
 
-#: handler.c:1510
+#: handler.c:1515
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Automostra usando %s --]\n"
 
-#: handler.c:1511
+#: handler.c:1516
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Chamando ó comando de automostra: %s"
 
-#: handler.c:1543
+#: handler.c:1548
 #, fuzzy, c-format
 msgid "[-- Can't run %s. --]\n"
 msgstr "[-- o %s --]\n"
 
-#: handler.c:1561 handler.c:1582
+#: handler.c:1566 handler.c:1587
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Automostra da stderr de %s --]\n"
 
-#: handler.c:1619
+#: handler.c:1624
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr "[-- Erro: mensaxe/corpo externo non ten parámetro \"access-type\"--]\n"
 
-#: handler.c:1638
+#: handler.c:1643
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- Este adxunto %s/%s "
 
-#: handler.c:1645
+#: handler.c:1650
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(tamaño %s bytes) "
 
-#: handler.c:1647
+#: handler.c:1652
 msgid "has been deleted --]\n"
 msgstr "foi borrado --]\n"
 
-#: handler.c:1652
+#: handler.c:1657
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- o %s --]\n"
 
-#: handler.c:1657
+#: handler.c:1662
 #, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- nome: %s --]\n"
 
-#: handler.c:1670 handler.c:1686
+#: handler.c:1675 handler.c:1691
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
 msgstr "[-- Este adxunto %s/%s "
 
-#: handler.c:1672
-msgid "[-- and the indicated external source has --]\n"
+#: handler.c:1677
+#, fuzzy
+msgid ""
+"[-- and the indicated external source has --]\n"
+"[-- expired. --]\n"
 msgstr ""
+"[-- Este adxunto %s/%s non está incluido --]\n"
+"[-- e a fonte externa indicada expirou--]\n"
 
-#: handler.c:1673
-msgid "[-- expired. --]\n"
-msgstr ""
-
-#: handler.c:1690
+#: handler.c:1695
 #, fuzzy, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- Este adxunto %s/%s non está incluido, --]\n"
 "[-- e o \"access-type\" %s indicado non está soportado --]\n"
 
-#: handler.c:1807
+#: handler.c:1812
 msgid "Error: multipart/signed has no protocol."
 msgstr "Erro: multipart/signed non ten protocolo."
 
-#: handler.c:1820
+#: handler.c:1825
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Erro: ¡multipart/encrypted non ten parámetro de protocolo!"
 
-#: handler.c:1867
+#: handler.c:1872
 msgid "Unable to open temporary file!"
 msgstr "¡Non foi posible abri-lo ficheiro temporal!"
 
-#: handler.c:1927
+#: handler.c:1932
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s non está soportado "
 
-#: handler.c:1932
+#: handler.c:1937
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(use '%s' para ver esta parte)"
 
-#: handler.c:1934
+#: handler.c:1939
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(cómpre que 'view-attachments' esté vinculado a unha tecla!)"
 
@@ -2581,7 +2582,7 @@ msgstr "Búsqueda inversa de: "
 msgid "No search pattern."
 msgstr "Non hai patrón de búsqueda."
 
-#: menu.c:749 pager.c:1900 pager.c:1916 pager.c:2004 pattern.c:1331
+#: menu.c:749 pager.c:1905 pager.c:1921 pager.c:2009 pattern.c:1331
 msgid "Not found."
 msgstr "Non se atopou."
 
@@ -2902,48 +2903,48 @@ msgstr "Non foi posible escribi-la mensaxe"
 msgid "Not available in this menu."
 msgstr "Non dispoñible neste menú."
 
-#: pager.c:1423
+#: pager.c:1428
 msgid "PrevPg"
 msgstr "PáxAnt"
 
-#: pager.c:1424
+#: pager.c:1429
 msgid "NextPg"
 msgstr "SegPáx"
 
-#: pager.c:1428
+#: pager.c:1433
 msgid "View Attachm."
 msgstr "Ver adxunto"
 
-#: pager.c:1431
+#: pager.c:1436
 msgid "Next"
 msgstr "Seguinte"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1809 pager.c:1840 pager.c:1872 pager.c:2092
+#: pager.c:1814 pager.c:1845 pager.c:1877 pager.c:2097
 msgid "Bottom of message is shown."
 msgstr "Amosase o final da mensaxe."
 
-#: pager.c:1825 pager.c:1847 pager.c:1854 pager.c:1861
+#: pager.c:1830 pager.c:1852 pager.c:1859 pager.c:1866
 msgid "Top of message is shown."
 msgstr "Amosase o principio da mensaxe."
 
-#: pager.c:1934
+#: pager.c:1939
 msgid "Reverse search: "
 msgstr "Búsqueda inversa: "
 
-#: pager.c:1935
+#: pager.c:1940
 msgid "Search: "
 msgstr "Búsqueda: "
 
-#: pager.c:2030
+#: pager.c:2035
 msgid "Help is currently being shown."
 msgstr "Estase a amosa-la axuda"
 
-#: pager.c:2059
+#: pager.c:2064
 msgid "No more quoted text."
 msgstr "Non hai máis texto citado."
 
-#: pager.c:2072
+#: pager.c:2077
 msgid "No more unquoted text after quoted text."
 msgstr "Non hai máis texto sen citar despois do texto citado."
 
@@ -3606,12 +3607,12 @@ msgstr ""
 "Por favor, use un valor correcto da variable 'hostname' cando use o "
 "mixmaster."
 
-#: remailer.c:765
+#: remailer.c:768
 #, c-format
 msgid "Error sending message, child exited %d.\n"
 msgstr "Erro enviando mensaxe, o proceso fillo saíu con %d.\n"
 
-#: remailer.c:769
+#: remailer.c:772
 msgid "Error sending message."
 msgstr "Erro enviando a mensaxe."
 
@@ -3790,7 +3791,7 @@ msgstr "Atrapado sinal %d... Saíndo.\n"
 msgid "Sorting mailbox..."
 msgstr "Ordeando buzón..."
 
-#: sort.c:235
+#: sort.c:238
 msgid "Could not find sorting function! [report this bug]"
 msgstr "¡Non foi atopada unha función de ordeación! [informe deste fallo]"
 
@@ -3798,12 +3799,12 @@ msgstr "¡Non foi atopada unha función de ordeación! [informe deste fallo]"
 msgid "(no mailbox)"
 msgstr "(non hai buzón)"
 
-#: thread.c:971
+#: thread.c:968
 #, fuzzy
 msgid "Parent message is not visible in this limited view."
 msgstr "A mensaxe pai non é visible na vista limitada."
 
-#: thread.c:977
+#: thread.c:974
 msgid "Parent message is not available."
 msgstr "A mensaxe pai non é accesible."
 
@@ -3821,14 +3822,6 @@ msgstr "A mensaxe pai non é accesible."
 
 #~ msgid "Copy"
 #~ msgstr "Copiar"
-
-#~ msgid ""
-#~ "[-- This %s/%s attachment is not included, --]\n"
-#~ "[-- and the indicated external source has --]\n"
-#~ "[-- expired. --]\n"
-#~ msgstr ""
-#~ "[-- Este adxunto %s/%s non está incluido --]\n"
-#~ "[-- e a fonte externa indicada expirou--]\n"
 
 #~ msgid "%s [%s]\n"
 #~ msgstr "%s [%s]\n"

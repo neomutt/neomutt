@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3.23.1\n"
-"POT-Creation-Date: 2001-11-08 23:41+0100\n"
+"POT-Creation-Date: 2001-11-29 10:43+0100\n"
 "PO-Revision-Date: 2001-11-09 20:51+0000\n"
 "Last-Translator: Edmund GRIMLEY EVANS <edmundo@rano.org>\n"
 "Language-Team: eo <eo@li.org>\n"
@@ -22,12 +22,12 @@ msgstr "Uzantonomo æe %s: "
 msgid "Password for %s@%s: "
 msgstr "Pasvorto por %s@%s: "
 
-#: addrbook.c:31 browser.c:40 pager.c:1422 postpone.c:37 query.c:43
+#: addrbook.c:31 browser.c:40 pager.c:1427 postpone.c:37 query.c:43
 #: recvattach.c:57
 msgid "Exit"
 msgstr "Fino"
 
-#: addrbook.c:32 curs_main.c:398 pager.c:1429 postpone.c:38
+#: addrbook.c:32 curs_main.c:398 pager.c:1434 postpone.c:38
 msgid "Del"
 msgstr "Forviþi"
 
@@ -41,7 +41,7 @@ msgstr "Elekto"
 
 #. __STRCAT_CHECKED__
 #: addrbook.c:35 browser.c:43 compose.c:93 curs_main.c:404 mutt_ssl.c:628
-#: pager.c:1521 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
+#: pager.c:1526 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Helpo"
 
@@ -137,7 +137,7 @@ msgstr "MIME-speco ne difinita. Ne povas vidigi parton."
 msgid "Cannot create filter"
 msgstr "Ne povas krei filtrilon."
 
-#: attach.c:629 attach.c:661 attach.c:943 attach.c:1001 handler.c:1539
+#: attach.c:629 attach.c:661 attach.c:943 attach.c:1001 handler.c:1544
 #: pgpkey.c:566 pgpkey.c:755
 msgid "Can't create filter"
 msgstr "Ne povas krei filtrilon"
@@ -725,7 +725,7 @@ msgstr "Skribi"
 msgid "Mail"
 msgstr "Nova mesaøo"
 
-#: curs_main.c:402 pager.c:1430
+#: curs_main.c:402 pager.c:1435
 msgid "Reply"
 msgstr "Respondi"
 
@@ -848,7 +848,7 @@ msgstr "Mankas nelegitaj mesaøoj"
 msgid " in this limited view"
 msgstr " en æi tiu limigita rigardo"
 
-#: curs_main.c:1331 pager.c:2283
+#: curs_main.c:1331 pager.c:2288
 msgid "Can't change 'important' flag on POP server."
 msgstr "Ne povas þanøi la flagon 'important' æe POP-servilo."
 
@@ -860,8 +860,8 @@ msgstr "Ne restas fadenoj."
 msgid "You are on the first thread."
 msgstr "Vi estas æe la unua fadeno."
 
-#: curs_main.c:1509 curs_main.c:1541 flags.c:249 thread.c:904 thread.c:959
-#: thread.c:1014
+#: curs_main.c:1509 curs_main.c:1541 flags.c:249 thread.c:901 thread.c:956
+#: thread.c:1011
 msgid "Threading is not enabled."
 msgstr "Fadenoj ne estas þaltitaj."
 
@@ -992,109 +992,108 @@ msgstr "Þalti flagon"
 msgid "Clear flag"
 msgstr "Malþalti flagon"
 
-#: handler.c:1320
+#: handler.c:1325
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr "[-- Eraro: Neniu parto de Multipart/Alternative estis montrebla! --]\n"
 
-#: handler.c:1438
+#: handler.c:1443
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- Parto #%d"
 
-#: handler.c:1450
+#: handler.c:1455
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Speco: %s/%s, Kodado: %s, Grando: %s --]\n"
 
-#: handler.c:1510
+#: handler.c:1515
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Aýtomata vidigo per %s --]\n"
 
-#: handler.c:1511
+#: handler.c:1516
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Alvokas aýtomatan vidigon per: %s"
 
-#: handler.c:1543
+#: handler.c:1548
 #, c-format
 msgid "[-- Can't run %s. --]\n"
 msgstr "[-- Ne povas ruli %s. --]\n"
 
-#: handler.c:1561 handler.c:1582
+#: handler.c:1566 handler.c:1587
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Erareligo de %s --]\n"
 
-#: handler.c:1619
+#: handler.c:1624
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr "[-- Eraro: parto message/external ne havas parametro access-type --]\n"
 
-#: handler.c:1638
+#: handler.c:1643
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- Æi tiu %s/%s-parto "
 
-#: handler.c:1645
+#: handler.c:1650
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(grando %s bitokoj) "
 
-#: handler.c:1647
+#: handler.c:1652
 msgid "has been deleted --]\n"
 msgstr "estas forviþita --]\n"
 
-#: handler.c:1652
+#: handler.c:1657
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- je %s --]\n"
 
-#: handler.c:1657
+#: handler.c:1662
 #, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- nomo: %s --]\n"
 
-#: handler.c:1670 handler.c:1686
+#: handler.c:1675 handler.c:1691
 #, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
 msgstr "[-- Æi tiu %s/%s-parto ne estas inkluzivita, --]\n"
 
-#: handler.c:1672
-msgid "[-- and the indicated external source has --]\n"
+#: handler.c:1677
+#, fuzzy
+msgid ""
+"[-- and the indicated external source has --]\n"
+"[-- expired. --]\n"
 msgstr "[-- kaj la indikita ekstera fonto --]\n"
 
-#: handler.c:1673
-msgid "[-- expired. --]\n"
-msgstr "[-- eksvalidiøis. --]\n"
-
-#: handler.c:1690
+#: handler.c:1695
 #, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr "[-- kaj Mutt ne kapablas je la indikita alirmaniero %s. --]\n"
 
-#: handler.c:1807
+#: handler.c:1812
 msgid "Error: multipart/signed has no protocol."
 msgstr "Eraro: multipart/signed ne havas parametron protocol!"
 
-#: handler.c:1820
+#: handler.c:1825
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Eraro: multipart/encrypted ne havas parametron protocol!"
 
-#: handler.c:1867
+#: handler.c:1872
 msgid "Unable to open temporary file!"
 msgstr "Ne povas malfermi dumtempan dosieron!"
 
-#: handler.c:1927
+#: handler.c:1932
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s ne estas konata "
 
-#: handler.c:1932
+#: handler.c:1937
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(uzu '%s' por vidigi æi tiun parton)"
 
-#: handler.c:1934
+#: handler.c:1939
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(bezonas klavodifinon por 'view-attachments'!)"
 
@@ -2554,7 +2553,7 @@ msgstr "Inversa seræo pri: "
 msgid "No search pattern."
 msgstr "Mankas seræþablono."
 
-#: menu.c:749 pager.c:1900 pager.c:1916 pager.c:2004 pattern.c:1331
+#: menu.c:749 pager.c:1905 pager.c:1921 pager.c:2009 pattern.c:1331
 msgid "Not found."
 msgstr "Ne trovita."
 
@@ -2874,48 +2873,48 @@ msgstr "Ne povas skribi mesaøon"
 msgid "Not available in this menu."
 msgstr "Ne disponata en æi tiu menuo."
 
-#: pager.c:1423
+#: pager.c:1428
 msgid "PrevPg"
 msgstr "AntPø"
 
-#: pager.c:1424
+#: pager.c:1429
 msgid "NextPg"
 msgstr "SekvPø"
 
-#: pager.c:1428
+#: pager.c:1433
 msgid "View Attachm."
 msgstr "Vidi Partojn"
 
-#: pager.c:1431
+#: pager.c:1436
 msgid "Next"
 msgstr "Sekva"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1809 pager.c:1840 pager.c:1872 pager.c:2092
+#: pager.c:1814 pager.c:1845 pager.c:1877 pager.c:2097
 msgid "Bottom of message is shown."
 msgstr "Fino de mesaøo estas montrita."
 
-#: pager.c:1825 pager.c:1847 pager.c:1854 pager.c:1861
+#: pager.c:1830 pager.c:1852 pager.c:1859 pager.c:1866
 msgid "Top of message is shown."
 msgstr "Vi estas æe la komenco de la mesaøo"
 
-#: pager.c:1934
+#: pager.c:1939
 msgid "Reverse search: "
 msgstr "Inversa seræo: "
 
-#: pager.c:1935
+#: pager.c:1940
 msgid "Search: "
 msgstr "Seræo: "
 
-#: pager.c:2030
+#: pager.c:2035
 msgid "Help is currently being shown."
 msgstr "Helpo estas nun montrata."
 
-#: pager.c:2059
+#: pager.c:2064
 msgid "No more quoted text."
 msgstr "Ne plu da citita teksto."
 
-#: pager.c:2072
+#: pager.c:2077
 msgid "No more unquoted text after quoted text."
 msgstr "Ne plu da necitita teksto post citita teksto."
 
@@ -3560,12 +3559,12 @@ msgid ""
 "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr "Bonvolu doni øustan valoron al \"hostname\", kiam vi uzas mixmaster!"
 
-#: remailer.c:765
+#: remailer.c:768
 #, c-format
 msgid "Error sending message, child exited %d.\n"
 msgstr "Eraro dum sendado de mesaøo; ido finis per %d.\n"
 
-#: remailer.c:769
+#: remailer.c:772
 msgid "Error sending message."
 msgstr "Eraro dum sendado de mesaøo."
 
@@ -3744,7 +3743,7 @@ msgstr "Ricevis signalon %d ... Eliras.\n"
 msgid "Sorting mailbox..."
 msgstr "Ordigas poþtfakon ..."
 
-#: sort.c:235
+#: sort.c:238
 msgid "Could not find sorting function! [report this bug]"
 msgstr "Ne povis trovi ordigfunkcion! (Raportu æi tiun cimon.)"
 
@@ -3752,13 +3751,16 @@ msgstr "Ne povis trovi ordigfunkcion! (Raportu æi tiun cimon.)"
 msgid "(no mailbox)"
 msgstr "(mankas poþtfako)"
 
-#: thread.c:971
+#: thread.c:968
 msgid "Parent message is not visible in this limited view."
 msgstr "Patra mesaøo ne estas videbla en æi tiu limigita rigardo."
 
-#: thread.c:977
+#: thread.c:974
 msgid "Parent message is not available."
 msgstr "Patra mesaøo ne estas havebla."
+
+#~ msgid "[-- expired. --]\n"
+#~ msgstr "[-- eksvalidiøis. --]\n"
 
 #~ msgid "Decode-save"
 #~ msgstr "Malkodita skribi"

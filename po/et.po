@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt 1.3.23.2\n"
-"POT-Creation-Date: 2001-11-08 23:42+0100\n"
+"POT-Creation-Date: 2001-11-29 10:43+0100\n"
 "PO-Revision-Date: 2001-11-16 15:14+0200\n"
 "Last-Translator: Toomas Soome <tsoome@ut.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
@@ -23,12 +23,12 @@ msgstr "Kasutajanimi serveril %s: "
 msgid "Password for %s@%s: "
 msgstr "%s@%s parool: "
 
-#: addrbook.c:31 browser.c:40 pager.c:1422 postpone.c:37 query.c:43
+#: addrbook.c:31 browser.c:40 pager.c:1427 postpone.c:37 query.c:43
 #: recvattach.c:57
 msgid "Exit"
 msgstr "Välju"
 
-#: addrbook.c:32 curs_main.c:398 pager.c:1429 postpone.c:38
+#: addrbook.c:32 curs_main.c:398 pager.c:1434 postpone.c:38
 msgid "Del"
 msgstr "Kustuta"
 
@@ -42,7 +42,7 @@ msgstr "Vali"
 
 #. __STRCAT_CHECKED__
 #: addrbook.c:35 browser.c:43 compose.c:93 curs_main.c:404 mutt_ssl.c:628
-#: pager.c:1521 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
+#: pager.c:1526 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Appi"
 
@@ -136,7 +136,7 @@ msgstr "MIME tüüp ei ole defineeritud. Lisa ei saa vaadata."
 msgid "Cannot create filter"
 msgstr "Filtri loomine ebaõnnestus"
 
-#: attach.c:629 attach.c:661 attach.c:943 attach.c:1001 handler.c:1539
+#: attach.c:629 attach.c:661 attach.c:943 attach.c:1001 handler.c:1544
 #: pgpkey.c:566 pgpkey.c:755
 msgid "Can't create filter"
 msgstr "Ei õnnestu luua filtrit"
@@ -723,7 +723,7 @@ msgstr "Salvesta"
 msgid "Mail"
 msgstr "Kiri"
 
-#: curs_main.c:402 pager.c:1430
+#: curs_main.c:402 pager.c:1435
 msgid "Reply"
 msgstr "Vasta"
 
@@ -846,7 +846,7 @@ msgstr "Lugemata teateid pole"
 msgid " in this limited view"
 msgstr " selles piiratud vaates"
 
-#: curs_main.c:1331 pager.c:2283
+#: curs_main.c:1331 pager.c:2288
 msgid "Can't change 'important' flag on POP server."
 msgstr "POP serveril ei saa muuta lippu 'important' (tähtis)."
 
@@ -858,8 +858,8 @@ msgstr "Rohkem teemasid pole."
 msgid "You are on the first thread."
 msgstr "Te olete esimesel teemal."
 
-#: curs_main.c:1509 curs_main.c:1541 flags.c:249 thread.c:904 thread.c:959
-#: thread.c:1014
+#: curs_main.c:1509 curs_main.c:1541 flags.c:249 thread.c:901 thread.c:956
+#: thread.c:1011
 msgid "Threading is not enabled."
 msgstr "Teemad ei ole lubatud."
 
@@ -990,109 +990,108 @@ msgstr "Sea lipp"
 msgid "Clear flag"
 msgstr "Eemalda lipp"
 
-#: handler.c:1320
+#: handler.c:1325
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr "[-- Viga:  Multipart/Alternative osasid ei saa näidata! --]\n"
 
-#: handler.c:1438
+#: handler.c:1443
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- Lisa #%d"
 
-#: handler.c:1450
+#: handler.c:1455
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Tüüp: %s/%s, Kodeering: %s, Maht: %s --]\n"
 
-#: handler.c:1510
+#: handler.c:1515
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Autovaade kasutades %s --]\n"
 
-#: handler.c:1511
+#: handler.c:1516
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Käivitan autovaate käskluse: %s"
 
-#: handler.c:1543
+#: handler.c:1548
 #, c-format
 msgid "[-- Can't run %s. --]\n"
 msgstr "[-- %s ei saa käivitada.--]\n"
 
-#: handler.c:1561 handler.c:1582
+#: handler.c:1566 handler.c:1587
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Autovaate %s stderr --]\n"
 
-#: handler.c:1619
+#: handler.c:1624
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr "[-- Viga: message/external-body juurdepääsu parameeter puudub --]\n"
 
-#: handler.c:1638
+#: handler.c:1643
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- See %s/%s lisa "
 
-#: handler.c:1645
+#: handler.c:1650
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(maht %s baiti) "
 
-#: handler.c:1647
+#: handler.c:1652
 msgid "has been deleted --]\n"
 msgstr "on kustutatud --]\n"
 
-#: handler.c:1652
+#: handler.c:1657
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- %s --]\n"
 
-#: handler.c:1657
+#: handler.c:1662
 #, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- nimi: %s --]\n"
 
-#: handler.c:1670 handler.c:1686
+#: handler.c:1675 handler.c:1691
 #, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
 msgstr "[-- Seda %s/%s lisa ei ole kaasatud, --]\n"
 
-#: handler.c:1672
-msgid "[-- and the indicated external source has --]\n"
+#: handler.c:1677
+#, fuzzy
+msgid ""
+"[-- and the indicated external source has --]\n"
+"[-- expired. --]\n"
 msgstr "[-- ja näidatud väline allikas on --]\n"
 
-#: handler.c:1673
-msgid "[-- expired. --]\n"
-msgstr "[-- aegunud. --]\n"
-
-#: handler.c:1690
+#: handler.c:1695
 #, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr "[-- ja näidatud juurdepääsu tüüpi %s ei toetata --]\n"
 
-#: handler.c:1807
+#: handler.c:1812
 msgid "Error: multipart/signed has no protocol."
 msgstr "Viga: multipart/signed teatel puudub protokoll."
 
-#: handler.c:1820
+#: handler.c:1825
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Viga: multipart/encrypted teatel puudub protokolli parameeter!"
 
-#: handler.c:1867
+#: handler.c:1872
 msgid "Unable to open temporary file!"
 msgstr "Ajutise faili avamine ebaõnnestus!"
 
-#: handler.c:1927
+#: handler.c:1932
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s ei toetata "
 
-#: handler.c:1932
+#: handler.c:1937
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(selle osa vaatamiseks kasutage '%s')"
 
-#: handler.c:1934
+#: handler.c:1939
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "('view-attachments' peab olema klahviga seotud!)"
 
@@ -2263,8 +2262,8 @@ msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please use the flea(1) utility.\n"
 msgstr ""
-"Arendajatega kontakteerumiseks saatke palun kiri aadressil "
-"<mutt-dev@mutt.org>.\n"
+"Arendajatega kontakteerumiseks saatke palun kiri aadressil <mutt-dev@mutt."
+"org>.\n"
 "Veast teatamiseks kasutage palun käsku flea(1).\n"
 
 #: main.c:44
@@ -2331,10 +2330,10 @@ msgstr ""
 
 #: main.c:88
 msgid ""
-"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
-"]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
-"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
+"<file> ]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
+"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2361,8 +2360,8 @@ msgid ""
 msgstr ""
 "kasutage: mutt [ -nRyzZ ] [ -e <käsk> ] [ -F <fail> ] [ -m <tüüp> ]\n"
 "               [ -f <fail> ]\n"
-"          mutt [ -nx ] [ -e <käsk> ] [ -a <fail> ] [ -F <fail> ] [ -H <fail> "
-"]\n"
+"          mutt [ -nx ] [ -e <käsk> ] [ -a <fail> ] [ -F <fail> ] [ -H "
+"<fail> ]\n"
 "               [ -i <fail> ] [ -s <teema> ] [ -b <aadr> ] [ -c <aadr> ]\n"
 "               <aadr> [ ... ]\n"
 "          mutt [ -n ] [ -e <käsk> ] [ -F <fail> ] -p\n"
@@ -2553,7 +2552,7 @@ msgstr "Otsi tagurpidi: "
 msgid "No search pattern."
 msgstr "Otsingumuster puudub."
 
-#: menu.c:749 pager.c:1900 pager.c:1916 pager.c:2004 pattern.c:1331
+#: menu.c:749 pager.c:1905 pager.c:1921 pager.c:2009 pattern.c:1331
 msgid "Not found."
 msgstr "Ei leitud."
 
@@ -2873,48 +2872,48 @@ msgstr "Teadet ei õnnestu kirjutada"
 msgid "Not available in this menu."
 msgstr "Ei ole selles menüüs kasutatav."
 
-#: pager.c:1423
+#: pager.c:1428
 msgid "PrevPg"
 msgstr "EelmLk"
 
-#: pager.c:1424
+#: pager.c:1429
 msgid "NextPg"
 msgstr "JärgmLm"
 
-#: pager.c:1428
+#: pager.c:1433
 msgid "View Attachm."
 msgstr "Vaata lisa"
 
-#: pager.c:1431
+#: pager.c:1436
 msgid "Next"
 msgstr "Järgm."
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1809 pager.c:1840 pager.c:1872 pager.c:2092
+#: pager.c:1814 pager.c:1845 pager.c:1877 pager.c:2097
 msgid "Bottom of message is shown."
 msgstr "Teate lõpp on näidatud."
 
-#: pager.c:1825 pager.c:1847 pager.c:1854 pager.c:1861
+#: pager.c:1830 pager.c:1852 pager.c:1859 pager.c:1866
 msgid "Top of message is shown."
 msgstr "Teate algus on näidatud."
 
-#: pager.c:1934
+#: pager.c:1939
 msgid "Reverse search: "
 msgstr "tagurpidi otsing: "
 
-#: pager.c:1935
+#: pager.c:1940
 msgid "Search: "
 msgstr "Otsing: "
 
-#: pager.c:2030
+#: pager.c:2035
 msgid "Help is currently being shown."
 msgstr "Te loete praegu abiinfot."
 
-#: pager.c:2059
+#: pager.c:2064
 msgid "No more quoted text."
 msgstr "Rohkem tsiteetitud teksti pole."
 
-#: pager.c:2072
+#: pager.c:2077
 msgid "No more unquoted text after quoted text."
 msgstr "Tsiteeritud teksiti järel rohkem teksti ei ole."
 
@@ -3564,12 +3563,12 @@ msgid ""
 msgstr ""
 "Mixmaster kasutamisel omistage palun hostname muutujale korrektne väärtus!"
 
-#: remailer.c:765
+#: remailer.c:768
 #, c-format
 msgid "Error sending message, child exited %d.\n"
 msgstr "Viga teate saatmisel, alamprotsess lõpetas koodiga %d.\n"
 
-#: remailer.c:769
+#: remailer.c:772
 msgid "Error sending message."
 msgstr "Viga teate saatmisel."
 
@@ -3748,7 +3747,7 @@ msgstr "Sain signaali %d...  Väljun.\n"
 msgid "Sorting mailbox..."
 msgstr "Järjestan teateid..."
 
-#: sort.c:235
+#: sort.c:238
 msgid "Could not find sorting function! [report this bug]"
 msgstr "Ei leia järjestamisfunktsiooni! [teatage sellest veast]"
 
@@ -3756,10 +3755,13 @@ msgstr "Ei leia järjestamisfunktsiooni! [teatage sellest veast]"
 msgid "(no mailbox)"
 msgstr "(pole postkast)"
 
-#: thread.c:971
+#: thread.c:968
 msgid "Parent message is not visible in this limited view."
 msgstr "Vanem teade ei ole selles piiratud vaates nähtav."
 
-#: thread.c:977
+#: thread.c:974
 msgid "Parent message is not available."
 msgstr "Vanem teade ei ole kättesaadav."
+
+#~ msgid "[-- expired. --]\n"
+#~ msgstr "[-- aegunud. --]\n"

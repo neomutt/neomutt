@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.2\n"
-"POT-Creation-Date: 2001-11-08 23:41+0100\n"
+"POT-Creation-Date: 2001-11-29 10:43+0100\n"
 "PO-Revision-Date: 2000-03-09 07:40+0900\n"
 "Last-Translator: Byeong-Chan Kim <redhands@linux.sarag.net>\n"
 "Language-Team: Korean <ko@li.org>\n"
@@ -23,12 +23,12 @@ msgstr "이름 바꾸기: "
 msgid "Password for %s@%s: "
 msgstr "%s@%s의 패스워드: "
 
-#: addrbook.c:31 browser.c:40 pager.c:1422 postpone.c:37 query.c:43
+#: addrbook.c:31 browser.c:40 pager.c:1427 postpone.c:37 query.c:43
 #: recvattach.c:57
 msgid "Exit"
 msgstr "종료"
 
-#: addrbook.c:32 curs_main.c:398 pager.c:1429 postpone.c:38
+#: addrbook.c:32 curs_main.c:398 pager.c:1434 postpone.c:38
 msgid "Del"
 msgstr "삭제"
 
@@ -42,7 +42,7 @@ msgstr "선택"
 
 #. __STRCAT_CHECKED__
 #: addrbook.c:35 browser.c:43 compose.c:93 curs_main.c:404 mutt_ssl.c:628
-#: pager.c:1521 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
+#: pager.c:1526 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "도움말"
 
@@ -136,7 +136,7 @@ msgstr "MIME 종류가 확실치 않음. 첨부물을 볼 수 없음."
 msgid "Cannot create filter"
 msgstr "필터를 만들 수 없음"
 
-#: attach.c:629 attach.c:661 attach.c:943 attach.c:1001 handler.c:1539
+#: attach.c:629 attach.c:661 attach.c:943 attach.c:1001 handler.c:1544
 #: pgpkey.c:566 pgpkey.c:755
 msgid "Can't create filter"
 msgstr "필터를 생성할 수 없음"
@@ -733,7 +733,7 @@ msgstr "저장"
 msgid "Mail"
 msgstr "편지"
 
-#: curs_main.c:402 pager.c:1430
+#: curs_main.c:402 pager.c:1435
 msgid "Reply"
 msgstr "답장"
 
@@ -857,7 +857,7 @@ msgstr "읽지 않은 메세지 없음"
 msgid " in this limited view"
 msgstr ""
 
-#: curs_main.c:1331 pager.c:2283
+#: curs_main.c:1331 pager.c:2288
 #, fuzzy
 msgid "Can't change 'important' flag on POP server."
 msgstr "서버의 메세지 삭제 중..."
@@ -870,8 +870,8 @@ msgstr "더 이상 글타래 없음."
 msgid "You are on the first thread."
 msgstr "처음 글타래입니다.."
 
-#: curs_main.c:1509 curs_main.c:1541 flags.c:249 thread.c:904 thread.c:959
-#: thread.c:1014
+#: curs_main.c:1509 curs_main.c:1541 flags.c:249 thread.c:901 thread.c:956
+#: thread.c:1011
 msgid "Threading is not enabled."
 msgstr "글타래를 사용하지 않음."
 
@@ -1002,111 +1002,112 @@ msgstr "플래그 설정"
 msgid "Clear flag"
 msgstr "플래그 지움"
 
-#: handler.c:1320
+#: handler.c:1325
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr "[-- 오류:  Multipart/Alternative 부분을 보여줄 수 없음! --]\n"
 
-#: handler.c:1438
+#: handler.c:1443
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- 첨부물 #%d"
 
-#: handler.c:1450
+#: handler.c:1455
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- 종류: %s/%s, 부호화방식: %s, 크기: %s --]\n"
 
-#: handler.c:1510
+#: handler.c:1515
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- %s를 사용한 자동 보기 --]\n"
 
-#: handler.c:1511
+#: handler.c:1516
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "자동 보기 명령어 실행: %s"
 
-#: handler.c:1543
+#: handler.c:1548
 #, fuzzy, c-format
 msgid "[-- Can't run %s. --]\n"
 msgstr "[-- %s에 --]\n"
 
-#: handler.c:1561 handler.c:1582
+#: handler.c:1566 handler.c:1587
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- %s 자동 보기 표준 에러 --]\n"
 
-#: handler.c:1619
+#: handler.c:1624
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr "[-- 오류: message/external-body에 access-type 인자가 없음 --]\n"
 
-#: handler.c:1638
+#: handler.c:1643
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[ -- %s/%s 첨부물 "
 
-#: handler.c:1645
+#: handler.c:1650
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(크기: %s 바이트) "
 
-#: handler.c:1647
+#: handler.c:1652
 msgid "has been deleted --]\n"
 msgstr "삭제 되었음 --]\n"
 
-#: handler.c:1652
+#: handler.c:1657
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- %s에 --]\n"
 
-#: handler.c:1657
+#: handler.c:1662
 #, fuzzy, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- %s에 --]\n"
 
-#: handler.c:1670 handler.c:1686
+#: handler.c:1675 handler.c:1691
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
 msgstr "[ -- %s/%s 첨부물 "
 
-#: handler.c:1672
-msgid "[-- and the indicated external source has --]\n"
+#: handler.c:1677
+#, fuzzy
+msgid ""
+"[-- and the indicated external source has --]\n"
+"[-- expired. --]\n"
 msgstr ""
+"[-- %s/%s 첨부물이 포함되지 않음, --]\n"
+"[-- 지정된 외부 소스가 만기됨 --]\n"
 
-#: handler.c:1673
-msgid "[-- expired. --]\n"
-msgstr ""
-
-#: handler.c:1690
+#: handler.c:1695
 #, fuzzy, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- %s/%s 첨부물이 포함되지 않음, --]\n"
 "[-- 지정된 access-type %s는 지원되지 않음 --]\n"
 
-#: handler.c:1807
+#: handler.c:1812
 msgid "Error: multipart/signed has no protocol."
 msgstr "오류: 프로토콜에 없는 multipart/signed."
 
-#: handler.c:1820
+#: handler.c:1825
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "오류: 프로토콜 매개 변수에 없는 multipart/encrypted"
 
-#: handler.c:1867
+#: handler.c:1872
 msgid "Unable to open temporary file!"
 msgstr "임시 파일을 열 수 없음!"
 
-#: handler.c:1927
+#: handler.c:1932
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- '%s/%s'는 지원되지 않음 "
 
-#: handler.c:1932
+#: handler.c:1937
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "('%s' 키로 현재 부분 보기)"
 
-#: handler.c:1934
+#: handler.c:1939
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "('view-attachments' 글쇠 정의가 필요함!)"
 
@@ -2594,7 +2595,7 @@ msgstr "거꾸로 찾아보기: "
 msgid "No search pattern."
 msgstr "패턴을 찾을 수 없음."
 
-#: menu.c:749 pager.c:1900 pager.c:1916 pager.c:2004 pattern.c:1331
+#: menu.c:749 pager.c:1905 pager.c:1921 pager.c:2009 pattern.c:1331
 msgid "Not found."
 msgstr "찾을 수 없음."
 
@@ -2920,48 +2921,48 @@ msgstr "메시지를 쓰지 못함"
 msgid "Not available in this menu."
 msgstr "이 메뉴에선 유효하지 않음 않음."
 
-#: pager.c:1423
+#: pager.c:1428
 msgid "PrevPg"
 msgstr "이전장"
 
-#: pager.c:1424
+#: pager.c:1429
 msgid "NextPg"
 msgstr "다음장"
 
-#: pager.c:1428
+#: pager.c:1433
 msgid "View Attachm."
 msgstr "첨부물보기"
 
-#: pager.c:1431
+#: pager.c:1436
 msgid "Next"
 msgstr "다음"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1809 pager.c:1840 pager.c:1872 pager.c:2092
+#: pager.c:1814 pager.c:1845 pager.c:1877 pager.c:2097
 msgid "Bottom of message is shown."
 msgstr "메세지의 끝입니다."
 
-#: pager.c:1825 pager.c:1847 pager.c:1854 pager.c:1861
+#: pager.c:1830 pager.c:1852 pager.c:1859 pager.c:1866
 msgid "Top of message is shown."
 msgstr "메세지의 처음입니다."
 
-#: pager.c:1934
+#: pager.c:1939
 msgid "Reverse search: "
 msgstr "거꾸로 찾기: "
 
-#: pager.c:1935
+#: pager.c:1940
 msgid "Search: "
 msgstr "찾기: "
 
-#: pager.c:2030
+#: pager.c:2035
 msgid "Help is currently being shown."
 msgstr "현재 도움말을 보고 있습니다."
 
-#: pager.c:2059
+#: pager.c:2064
 msgid "No more quoted text."
 msgstr "더 이상의 인용문 없음."
 
-#: pager.c:2072
+#: pager.c:2077
 msgid "No more unquoted text after quoted text."
 msgstr "인용문 이후에 더 이상의 비 인용문 없음."
 
@@ -3642,12 +3643,12 @@ msgid ""
 "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr ""
 
-#: remailer.c:765
+#: remailer.c:768
 #, c-format
 msgid "Error sending message, child exited %d.\n"
 msgstr "메세지 보내는 중 오류, 자식이 종료됨 %d.\n"
 
-#: remailer.c:769
+#: remailer.c:772
 msgid "Error sending message."
 msgstr "메세지 보내는 중 오류."
 
@@ -3827,7 +3828,7 @@ msgstr "%d 신호 발견... 종료함.\n"
 msgid "Sorting mailbox..."
 msgstr "편지함 정렬 중..."
 
-#: sort.c:235
+#: sort.c:238
 msgid "Could not find sorting function! [report this bug]"
 msgstr "정렬 함수 찾을 수 없음! [버그 보고 바람]"
 
@@ -3835,12 +3836,12 @@ msgstr "정렬 함수 찾을 수 없음! [버그 보고 바람]"
 msgid "(no mailbox)"
 msgstr "(편지함 없음)"
 
-#: thread.c:971
+#: thread.c:968
 #, fuzzy
 msgid "Parent message is not visible in this limited view."
 msgstr "부모 메세지는 볼 수 없는 상태임."
 
-#: thread.c:977
+#: thread.c:974
 msgid "Parent message is not available."
 msgstr "부모 메세지가 존재하지 않음."
 
@@ -3858,14 +3859,6 @@ msgstr "부모 메세지가 존재하지 않음."
 
 #~ msgid "Copy"
 #~ msgstr "복사"
-
-#~ msgid ""
-#~ "[-- This %s/%s attachment is not included, --]\n"
-#~ "[-- and the indicated external source has --]\n"
-#~ "[-- expired. --]\n"
-#~ msgstr ""
-#~ "[-- %s/%s 첨부물이 포함되지 않음, --]\n"
-#~ "[-- 지정된 외부 소스가 만기됨 --]\n"
 
 #~ msgid "%s [%s]\n"
 #~ msgstr "%s [%s]\n"

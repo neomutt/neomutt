@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3.21\n"
-"POT-Creation-Date: 2001-11-08 23:41+0100\n"
+"POT-Creation-Date: 2001-11-29 10:43+0100\n"
 "PO-Revision-Date: 2001-08-23 00:42+02:00\n"
 "Last-Translator: Jörgen Tegnér <teg@post.netlink.se>\n"
 "Language-Team: Swedish <mutt-po@mutt.org>\n"
@@ -20,12 +20,12 @@ msgstr "Användarnamn på %s: "
 msgid "Password for %s@%s: "
 msgstr "Lösenord för %s@%s: "
 
-#: addrbook.c:31 browser.c:40 pager.c:1422 postpone.c:37 query.c:43
+#: addrbook.c:31 browser.c:40 pager.c:1427 postpone.c:37 query.c:43
 #: recvattach.c:57
 msgid "Exit"
 msgstr "Avsluta"
 
-#: addrbook.c:32 curs_main.c:398 pager.c:1429 postpone.c:38
+#: addrbook.c:32 curs_main.c:398 pager.c:1434 postpone.c:38
 msgid "Del"
 msgstr "Ta bort"
 
@@ -39,7 +39,7 @@ msgstr "Välj"
 
 #. __STRCAT_CHECKED__
 #: addrbook.c:35 browser.c:43 compose.c:93 curs_main.c:404 mutt_ssl.c:628
-#: pager.c:1521 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
+#: pager.c:1526 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Hjälp"
 
@@ -133,7 +133,7 @@ msgstr "MIME-typ är inte definierad. Kan inte visa bilaga."
 msgid "Cannot create filter"
 msgstr "Kan inte skapa filter"
 
-#: attach.c:629 attach.c:661 attach.c:943 attach.c:1001 handler.c:1539
+#: attach.c:629 attach.c:661 attach.c:943 attach.c:1001 handler.c:1544
 #: pgpkey.c:566 pgpkey.c:755
 msgid "Can't create filter"
 msgstr "Kan inte skapa filter"
@@ -719,7 +719,7 @@ msgstr "Spara"
 msgid "Mail"
 msgstr "Brev"
 
-#: curs_main.c:402 pager.c:1430
+#: curs_main.c:402 pager.c:1435
 msgid "Reply"
 msgstr "Svara"
 
@@ -842,7 +842,7 @@ msgstr "Inga olästa meddelanden"
 msgid " in this limited view"
 msgstr " i den här begränsade vyn"
 
-#: curs_main.c:1331 pager.c:2283
+#: curs_main.c:1331 pager.c:2288
 #, fuzzy
 msgid "Can't change 'important' flag on POP server."
 msgstr "Kan inte ändra meddelande på POP-servern."
@@ -855,8 +855,8 @@ msgstr "Inga fler trådar."
 msgid "You are on the first thread."
 msgstr "Du ser den första tråden."
 
-#: curs_main.c:1509 curs_main.c:1541 flags.c:249 thread.c:904 thread.c:959
-#: thread.c:1014
+#: curs_main.c:1509 curs_main.c:1541 flags.c:249 thread.c:901 thread.c:956
+#: thread.c:1011
 msgid "Threading is not enabled."
 msgstr "Trådning är inte aktiverad."
 
@@ -987,111 +987,113 @@ msgstr "Sätt flagga"
 msgid "Clear flag"
 msgstr "Ta bort flagga"
 
-#: handler.c:1320
+#: handler.c:1325
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr "[-- Fel : Kan inte visa någon del av 'Multipart/Alternative'! --]\n"
 
-#: handler.c:1438
+#: handler.c:1443
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- Bilaga #%d"
 
-#: handler.c:1450
+#: handler.c:1455
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Typ: %s/%s, Kodning: %s, Storlek: %s --]\n"
 
-#: handler.c:1510
+#: handler.c:1515
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Automatisk visning med %s --]\n"
 
-#: handler.c:1511
+#: handler.c:1516
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Startar kommando för automatisk visning: %s"
 
-#: handler.c:1543
+#: handler.c:1548
 #, c-format
 msgid "[-- Can't run %s. --]\n"
 msgstr "[-- Kan inte köra %s. --]\n"
 
-#: handler.c:1561 handler.c:1582
+#: handler.c:1566 handler.c:1587
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Automatisk visning av standard fel gällande %s --]\n"
 
-#: handler.c:1619
+#: handler.c:1624
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr "[-- Fel: 'message/external-body' har ingen parameter för åtkomst --]\n"
 
-#: handler.c:1638
+#: handler.c:1643
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- Den här %s/%s bilagan "
 
-#: handler.c:1645
+#: handler.c:1650
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(storlek %s byte)"
 
-#: handler.c:1647
+#: handler.c:1652
 msgid "has been deleted --]\n"
 msgstr "har raderats --]\n"
 
-#: handler.c:1652
+#: handler.c:1657
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- på %s --]\n"
 
-#: handler.c:1657
+#: handler.c:1662
 #, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- namn: %s --]\n"
 
-#: handler.c:1670 handler.c:1686
+#: handler.c:1675 handler.c:1691
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
 msgstr "[-- Den här %s/%s bilagan "
 
-#: handler.c:1672
-msgid "[-- and the indicated external source has --]\n"
+#: handler.c:1677
+#, fuzzy
+msgid ""
+"[-- and the indicated external source has --]\n"
+"[-- expired. --]\n"
 msgstr ""
+"[-- Den här %s/%s bilagan är inte inkluderad, --]\n"
+"[-- och den angivna externa källan är --]\n"
+"[-- utgången. --]\n"
 
-#: handler.c:1673
-msgid "[-- expired. --]\n"
-msgstr ""
-
-#: handler.c:1690
+#: handler.c:1695
 #, fuzzy, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- Den här %s/%s bilagan är inte inkluderad, --]\n"
 "[-- och den angivna åtkomsttypen %s stöds inte --]\n"
 
-#: handler.c:1807
+#: handler.c:1812
 msgid "Error: multipart/signed has no protocol."
 msgstr "Fel: 'multipart/signed' saknar protokoll."
 
-#: handler.c:1820
+#: handler.c:1825
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Fel: 'multipart/encrypted' saknar parameter för protokoll!"
 
-#: handler.c:1867
+#: handler.c:1872
 msgid "Unable to open temporary file!"
 msgstr "Kunde inte öppna tillfällig fil!"
 
-#: handler.c:1927
+#: handler.c:1932
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s stöds inte "
 
-#: handler.c:1932
+#: handler.c:1937
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(använd '%s' för att visa den här delen)"
 
-#: handler.c:1934
+#: handler.c:1939
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "('view-attachments' måste knytas till tangent!)"
 
@@ -2565,7 +2567,7 @@ msgstr "Leta efter i omvänd ordning: "
 msgid "No search pattern."
 msgstr "Inget mönster för sökning."
 
-#: menu.c:749 pager.c:1900 pager.c:1916 pager.c:2004 pattern.c:1331
+#: menu.c:749 pager.c:1905 pager.c:1921 pager.c:2009 pattern.c:1331
 msgid "Not found."
 msgstr "Hittades inte."
 
@@ -2885,48 +2887,48 @@ msgstr "Kan inte skriva meddelandet"
 msgid "Not available in this menu."
 msgstr "Finns inte i den här menyn."
 
-#: pager.c:1423
+#: pager.c:1428
 msgid "PrevPg"
 msgstr "Föreg. sida"
 
-#: pager.c:1424
+#: pager.c:1429
 msgid "NextPg"
 msgstr "Nästa sida"
 
-#: pager.c:1428
+#: pager.c:1433
 msgid "View Attachm."
 msgstr "Visa bilaga"
 
-#: pager.c:1431
+#: pager.c:1436
 msgid "Next"
 msgstr "Nästa"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1809 pager.c:1840 pager.c:1872 pager.c:2092
+#: pager.c:1814 pager.c:1845 pager.c:1877 pager.c:2097
 msgid "Bottom of message is shown."
 msgstr "Slutet av meddelande visas."
 
-#: pager.c:1825 pager.c:1847 pager.c:1854 pager.c:1861
+#: pager.c:1830 pager.c:1852 pager.c:1859 pager.c:1866
 msgid "Top of message is shown."
 msgstr "Början av meddelande visas."
 
-#: pager.c:1934
+#: pager.c:1939
 msgid "Reverse search: "
 msgstr "Sök i omvänd ordning: "
 
-#: pager.c:1935
+#: pager.c:1940
 msgid "Search: "
 msgstr "Sök: "
 
-#: pager.c:2030
+#: pager.c:2035
 msgid "Help is currently being shown."
 msgstr "Hjälp visas just nu."
 
-#: pager.c:2059
+#: pager.c:2064
 msgid "No more quoted text."
 msgstr "ingen mer citerad text."
 
-#: pager.c:2072
+#: pager.c:2077
 msgid "No more unquoted text after quoted text."
 msgstr "Ingen mer ociterad text efter citerad text."
 
@@ -3588,12 +3590,12 @@ msgstr ""
 "Sätt variabeln 'hostname' till ett passande värde vid användande av "
 "mixmaster!"
 
-#: remailer.c:765
+#: remailer.c:768
 #, c-format
 msgid "Error sending message, child exited %d.\n"
 msgstr "Fel vid sändning av meddelande, delprocess returnerade %d.\n"
 
-#: remailer.c:769
+#: remailer.c:772
 msgid "Error sending message."
 msgstr "Fel när meddelande sändes."
 
@@ -3772,7 +3774,7 @@ msgstr "Fångade signal %d...  Avslutar.\n"
 msgid "Sorting mailbox..."
 msgstr "Sorterar brevlåda..."
 
-#: sort.c:235
+#: sort.c:238
 msgid "Could not find sorting function! [report this bug]"
 msgstr ""
 "Kunde inte hitta sorteringsfunktion! [Var vänlig rapportera det här felet]"
@@ -3781,12 +3783,12 @@ msgstr ""
 msgid "(no mailbox)"
 msgstr "(ingen brevlåda)"
 
-#: thread.c:971
+#: thread.c:968
 #, fuzzy
 msgid "Parent message is not visible in this limited view."
 msgstr "Första meddelandet är inte synligt med begränsad vy"
 
-#: thread.c:977
+#: thread.c:974
 msgid "Parent message is not available."
 msgstr "Första meddelandet är inte tillgängligt."
 
@@ -3804,15 +3806,6 @@ msgstr "Första meddelandet är inte tillgängligt."
 
 #~ msgid "Copy"
 #~ msgstr "Kopiera"
-
-#~ msgid ""
-#~ "[-- This %s/%s attachment is not included, --]\n"
-#~ "[-- and the indicated external source has --]\n"
-#~ "[-- expired. --]\n"
-#~ msgstr ""
-#~ "[-- Den här %s/%s bilagan är inte inkluderad, --]\n"
-#~ "[-- och den angivna externa källan är --]\n"
-#~ "[-- utgången. --]\n"
 
 #~ msgid "%s [%s]\n"
 #~ msgstr "%s [%s]\n"

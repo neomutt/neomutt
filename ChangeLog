@@ -1,3 +1,66 @@
+Wed Nov 28 10:30:36 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/id.po: update
+
+Mon Nov 26 19:16:52 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* PATCHES: PATCHES should be _empty_ in the CVS version.  Ups.
+
+	* mbyte.c, PATCHES:
+	patch-1.3.23.2.tt.wcwidth_ja.1.  Fix wcwidth_ja(), from Takizawa
+	Takashi <taki@luna.email.ne.jp>.
+
+	* handler.c, muttlib.c:
+	patch-1.3.23.2.bj.state_attach_puts.1, from Byrial Jensen.  This
+	patch is supposed to make one message more friendly to translators.
+
+	* po/et.po, po/ja.po, po/pl.po, po/ru.po, po/da.po, po/de.po: updates.
+
+Wed Nov 21 13:58:42 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* handler.c: Use $wrapmargin in the format=flowed handler, too.
+
+	* pager.c, globals.h, init.h:
+	Add a $wrapmargin configuration variable to fine-tune
+
+Mon Nov 19 10:41:32 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* hash.c: Fix #868, #876.  Work-around from Len Lattanzi
+	<len@mss.migration.com>.
+
+	* hdrline.c, protos.h, thread.c:
+	Fix mutt_messages_in_thread().  From Daniel Eisenbud.
+	(patch-1.3.23.2-de-new_threads.2-3.gz).
+
+Thu Nov 15 18:53:23 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* remailer.c:
+	Should be slightly better than a mixmaster patch suggested by Stefan
+	Karrmann <sk@mathematik.uni-ulm.de>.  (UNTESTED!)
+
+Mon Nov 12 09:53:54 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* sort.c, thread.c: patch-1.3.23.2-de-new_threads.2
+
+Sat Nov 10 08:14:52 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/eo.po, po/fr.po: update
+
+Fri Nov  9 09:28:55 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* mh.c: Add some NONULL's (#863)
+
+	* Makefile.am: Distribute patchlist.sh.  Ups.
+
+Thu Nov  8 22:42:45 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/uk.po, po/zh_CN.po, po/zh_TW.po, po/sk.po, po/sv.po, po/tr.po, po/pt_BR.po, po/ru.po, po/nl.po, po/pl.po, po/id.po, po/it.po, po/ja.po, po/ko.po, po/lt.po, po/gl.po, po/hu.po, po/et.po, po/fr.po, po/cs.po, po/da.po, po/de.po, po/el.po, po/eo.po, po/es.po, reldate.h, VERSION, ChangeLog:
+	automatic post-release commit for mutt-1.3.23.2
+
+	* pager.c, init.h, mutt.h:
+	Add an $allow_ansi option.  Suggested and (mostly) implemented by
+	Mike Schiraldi.
+
 Thu Nov  8 17:35:14 2001  Thomas Roessler  <roessler@does-not-exist.org>
 
 	* pager.c, init.h, mutt.h:
