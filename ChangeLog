@@ -1,3 +1,12 @@
+2004-08-30 20:05:40  Brendan Cully  <brendan@kublai.com>  (roessler)
+
+	* globals.h, init.h, mutt_sasl.c, mutt_ssl.c: Here's a patch
+	to allow mutt to use SSL client certificates to authenticate
+	itself. To use, set ssl_client_cert to the path to your
+	certificate file (containing both the certificate and the private
+	key). It works with the SASL EXTERNAL authentication mechanism,
+	so you'll need to have SASL enabled as well.
+
 2004-08-30 20:03:35  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
 
 	* init.c: Fix a memory leak in the generic spam detection code.
