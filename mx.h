@@ -61,7 +61,7 @@ void mbox_unlock_mailbox (CONTEXT *);
 int mh_read_dir (CONTEXT *, const char *);
 int mh_sync_mailbox (CONTEXT *, int *);
 int mh_check_mailbox (CONTEXT *, int *);
-int mh_parse_sequences (CONTEXT *, const char *);
+int mh_buffy (const char *);
 
 int maildir_read_dir (CONTEXT *);
 

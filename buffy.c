@@ -336,12 +336,8 @@ int mutt_buffy_check (int force)
 	break;
 
       case M_MAILDIR:
-      case M_MH:
 
-	if(tmp->magic == M_MAILDIR)
-	  snprintf (path, sizeof (path), "%s/new", tmp->path);
-	else
-	  strfcpy (path, tmp->path, sizeof(path));
+	snprintf (path, sizeof (path), "%s/new", tmp->path);
 	if ((dirp = opendir (path)) == NULL)
 	{
 	  tmp->magic = 0;
@@ -360,6 +356,10 @@ int mutt_buffy_check (int force)
 	closedir (dirp);
 	break;
 
+      case M_MH:
+	tmp->new = mh_buffy (tmp->path);
+	break;
+	
 #ifdef USE_IMAP
       case M_IMAP:
 	if ((tmp->new = imap_mailbox_check (tmp->path, 1)) > 0)

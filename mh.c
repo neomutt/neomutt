@@ -120,7 +120,7 @@ static void mh_read_token (char *t, int *first, int *last)
     *first = *last = atoi (t);
 }
 
-static void mh_read_sequences (struct mh_sequences *mhs, char *path)
+static void mh_read_sequences (struct mh_sequences *mhs, const char *path)
 {
   FILE *fp;
   int line = 1;
@@ -161,6 +161,20 @@ static void mh_read_sequences (struct mh_sequences *mhs, char *path)
 
   safe_free ((void **) &buff);
   safe_fclose (&fp);
+}
+
+int mh_buffy (const char *path)
+{
+  int i, r = 0;
+  struct mh_sequences mhs;
+  memset (&mhs, 0, sizeof (mhs));
+  
+  mh_read_sequences (&mhs, path);
+  for (i = 0; !r && i <= mhs.max; i++)
+    if (mhs_check (&mhs, i) & MH_SEQ_UNSEEN)
+      r = 1;
+  mhs_free_sequences (&mhs);
+  return r;
 }
 
 static int mh_mkstemp (CONTEXT *dest, FILE **fp, char **tgt)
