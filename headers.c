@@ -70,7 +70,8 @@ void mutt_edit_headers (const char *editor,
     return;
   }
 
-  mtime = st.st_mtime;
+  mtime = mutt_decrease_mtime (path, &st);
+
   mutt_edit_file (editor, path);
   stat (path, &st);
   if (mtime == st.st_mtime)

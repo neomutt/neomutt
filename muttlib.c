@@ -40,6 +40,9 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <time.h>
+#include <sys/types.h>
+#include <utime.h>
 
 BODY *mutt_new_body (void)
 {
@@ -1254,4 +1257,30 @@ void mutt_buffer_add (BUFFER* buf, const char* s, size_t len)
   memcpy (buf->dptr, s, len);
   buf->dptr += len;
   *(buf->dptr) = '\0';
+}
+
+/* Decrease a file's modification time by 1 second */
+
+time_t mutt_decrease_mtime (const char *f, struct stat *st)
+{
+  struct utimbuf utim;
+  struct stat _st;
+  time_t mtime;
+  
+  if (!st)
+  {
+    if (stat (f, &_st) == -1)
+      return -1;
+    st = &_st;
+  }
+
+  if ((mtime = st->st_mtime) == time (NULL))
+  {
+    mtime -= 1;
+    utim.actime = mtime;
+    utim.modtime = mtime;
+    utime (f, &utim);
+  }
+  
+  return mtime;
 }

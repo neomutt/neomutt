@@ -1276,22 +1276,8 @@ ci_send_message (int flags,		/* send mode */
   else if (! (flags & SENDBATCH))
   {
     struct stat st;
-    time_t mtime;
-    struct utimbuf utim;
-
-    stat (msg->content->filename, &st);
-    mtime = st.st_mtime;
-    if (mtime == time (NULL))
-    {
-      /* Decrease the file's modification time by 1 second so we are sure
-       * to find out if the `editor' program changes it in less than 1 second.
-       */
-      mtime -= 1;
-      utim.actime = mtime;
-      utim.modtime = mtime;
-      utime (msg->content->filename, &utim);
-    }
-
+    time_t mtime = mutt_decrease_mtime (msg->content->filename, NULL);
+    
     mutt_update_encoding (msg->content);
 
     /* If the this isn't a text message, look for a mailcap edit command */
