@@ -1767,6 +1767,8 @@ void mutt_init (int skip_sys_rc, LIST *commands)
 
   if ((p = getenv ("MAIL")))
     Spoolfile = safe_strdup (p);
+  else if ((p = getenv ("MAILDIR")))
+    Spoolfile = safe_strdup (p);
   else
   {
 #ifdef HOMESPOOL
