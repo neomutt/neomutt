@@ -1,4 +1,6 @@
-2005-01-27 18:21:51  Marco d'Itri  <md@Linux.IT>  (roessler)
+2005-01-27 18:22:59  Marco d'Itri  <md@Linux.IT>  (roessler)
+
+	* smime_keys.pl: Add some sanity checks to smime_keys.pl.
 
 	* contrib/gpg.rc: A gpg command line contains both --verbose
 	and --no-verbose, remove the first.
