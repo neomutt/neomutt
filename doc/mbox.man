@@ -1,0 +1,189 @@
+'\" t
+.\" -*-nroff-*-
+.\"
+.\"
+.\"     Copyright (C) 2000 Thomas Roessler <roessler@does-not-exist.org>
+.\" 
+.\"	This document is in the public domain and may be distributed and
+.\"	changed arbitrarily.
+.\"
+.TH mbox 5 "August 2000" Unix "User Manuals"
+.SH NAME
+.PP
+mbox \- Format for mail message storage.
+.SH DESCRIPTION
+.PP
+This document describes the format traditionally used by Unix hosts
+to store mail messages locally.  
+.B mbox
+files typically reside in the system's mail spool, under various
+names in users'
+.B Mail
+directories, and under the name
+.B mbox
+in users' home directories.
+.PP
+An 
+.B mbox
+is a text file containing an arbitrary number of e-mail messages.
+Each message consists of a postmark, followed by an e-mail message
+formatted according to RFC 822.  The file format is line-oriented.
+Lines are separated by line feed characters (ASCII 10).
+.PP
+A postmark line consists of the four characters "From", followed by
+a space character, followed by the message's envelope sender
+address, followed by whitespace, and followed by a time stamp. The
+sender address is expected to be an
+.B addrspec
+as defined in appendix D of RFC 822.
+.PP
+The date is expected to be formatted according to the following
+syntax (represented in the augmented Backus-Naur formalism used by
+RFC 822):
+.PP
+.TS
+lll.
+mbox-date	 =	weekday month day time [ timezone ] year
+weekday	 =	"Mon" / "Tue" / "Wed" / "Thu" / "Fri" 
+		/ "Sat" / "Sun"
+month	 =	"Jan" / "Feb" / "Mar" / "Apr" / "May"
+		/ "Jun" / "Jul" / "Aug" / "Sep" 
+		/ "Oct" / "Nov" / "Dec"
+day	 =	1*2DIGIT
+time	 =	1*2DIGIT : 1*2DIGIT [ : 1*2DIGIT ]
+timezone	 =	( "+" / "-" ) 4DIGIT
+year	 =	( 4DIGIT / 2DIGIT )
+.TE
+.PP
+For compatibility reasons with legacy software, two-digit years
+greater than or equal to 70 should be interpreted as the years
+1970+, while two-digit years less than 70 should be interpreted as
+the years 2000-2069.
+.PP
+Software reading files in this format should also be prepared to
+accept to encounter non-numeric timezone information such as "CET
+DST" for Central European Time, dailight saving time.
+.PP
+Example:
+.IP "" 1
+From roessler@does-not-exist.org Fri Jun 23 02:56:55 2000
+.PP
+In order to avoid mis-interpretation of lines in message bodies
+which begin with the four characters "From", followed by a space
+character, the character ">" is commonly prepended in front of such
+lines.
+.SH
+LOCKING
+.PP
+Since 
+.B mbox
+files are frequently accessed by multiple programs in parallel, 
+.B mbox
+files should generally not be accessed without locking.
+.PP
+Three different locking mechanisms (and combinations thereof) are in
+general use:
+.IP "\(bu"
+.BR fcntl (2) 
+locking is mostly used on recent, POSIX-compliant systems.  Use of
+this locking method is, in particular, advisable if 
+.B mbox
+files are accessed through the Network File System (NFS), since it
+seems the only way to reliably invalidate NFS clients' caches.
+.IP "\(bu"
+.BR flock (2)
+locking is mostly used on BSD-based systems.
+.IP "\(bu"
+Dotlocking is used on all kinds of systems.  In order to lock an
+.B mbox
+file named
+.IR folder ,
+an application first creates a temporary file with a unique
+name in the directory in which the 
+.I folder
+resides.  The application then tries to use the
+.BR link (2)
+system call to create a hard link named
+.IB folder .lock
+to the temporary file.  The success of the
+.BR link (2)
+system call should be additionally verified using
+.BR stat (2)
+calls.  If the link has succeeded, the mail folder is considered
+dotlocked.  The temporary file can then safely be unlinked.
+.PP
+In order to release the lock, an application just unlinks the
+.IB folder .lock
+file.
+.PP
+If multiple methods are combined, implementors should make sure to
+use the non-blocking variants of the
+.BR fcntl (2)
+and 
+.BR flock (2)
+sytem calls in order to avoid deadlocks.
+.PP
+If multiple methods are combined, an
+.B mbox
+file must not be considered to have been successfully locked before
+all individual locks were obtained.  When one of the individual
+locking methods fails, an application should release all locks it
+acquired successfully, and restart the entire locking procedure from
+the beginning, after a suitable delay.
+.PP
+The locking mechanism used on a particular system is a matter of
+local policy, and should be consistently used by all applications
+installed on the system which access 
+.B mbox
+files. Failure to do so may result in loss of e-mail data, and in
+corrupted
+.B mbox
+files.
+.SH
+FILES
+.IP "/var/spool/mail/\fIuser\fP"
+.IR user 's
+incoming mail folder.
+.IP "~\fIuser\fP/mbox"
+.IR user 's
+archived mail messages, in his home directory.
+.IP "~\fIuser\fP/Mail/"
+A directory in
+.IR user 's
+home directory which is commonly used to hold 
+.B mbox
+format folders.
+.SH
+SEE ALSO
+.PP
+.BR elm (1),
+.BR fcntl (2), 
+.BR flock (2), 
+.BR link (2),
+.BR local (8), 
+.BR mail (1), 
+.BR maildir (5), 
+.BR mail.local (8), 
+.BR mutt (1),
+.BR mutt_dotlock (1), 
+.BR pine (1),
+.BR procmail (1),
+.BR sendmail (8)
+.PP
+D. Crocker, Standard for the format of ARPA Internet text messages,
+RFC 822
+.PP
+M. R. Horton, UUCP mail interchange format standard, RFC 976
+.SH
+AUTHOR
+.PP
+The present document was written by Thomas Roessler
+<roessler@does-not-exist.org>. 
+.SH
+HISTORY
+.PP
+The
+.B mbox
+format occured in Version 6 AT&T Unix.
+.PP
+A variant of this format was documented in RFC 976.
