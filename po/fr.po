@@ -6,9 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.5.0-current-20020426\n"
-"POT-Creation-Date: 2002-04-26 11:53+0200\n"
+"POT-Creation-Date: 2002-05-02 01:23+0200\n"
 "PO-Revision-Date: 2002-04-26 11:57+0200\n"
-"Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre <vincent@vinc17.org>\n"
+"Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre "
+"<vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
@@ -4125,7 +4126,7 @@ msgstr "[-- Les données suivantes sont chiffrées avec S/MIME --]\n"
 msgid "[-- The following data is S/MIME signed --]\n"
 msgstr "[-- Les données suivantes sont signées avec S/MIME --]\n"
 
-#: smime.c:1884
+#: smime.c:1887
 msgid ""
 "\n"
 "[-- End of S/MIME encrypted data. --]\n"
@@ -4133,7 +4134,7 @@ msgstr ""
 "\n"
 "[-- Fin des données chiffrées avec S/MIME. --]\n"
 
-#: smime.c:1886
+#: smime.c:1889
 msgid ""
 "\n"
 "[-- End of S/MIME signed data. --]\n"
