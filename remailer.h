@@ -34,7 +34,7 @@
 
 /* Mixmaster's maximum chain length.  Don't change this. */
 
-#define MAXMIXES 20
+#define MAXMIXES 19
 
 struct type2
 {
