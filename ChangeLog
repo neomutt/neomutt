@@ -1,4 +1,6 @@
-2002-12-09 18:59:33  Thomas Roessler  <roessler@does-not-exist.org>
+2002-12-09 19:06:40  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* Makefile.am: Minor formatting fix.
 
 	* cvslog2changelog.pl: Change the ChangeLog format as
 	suggested by Martin Michlmayer.
