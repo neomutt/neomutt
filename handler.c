@@ -882,7 +882,7 @@ void text_enriched_handler (BODY *a, STATE *s)
   FREE (&(stte.param));
 }                                                                              
 
-#define FLOWED_MAX 78
+#define FLOWED_MAX 77
 
 static void flowed_quote (STATE *s, int level)
 {
@@ -898,6 +898,8 @@ static void flowed_quote (STATE *s, int level)
   
   for (i = 0; i < level; i++)
     state_putc ('>', s);
+  if ((s->flags & M_DISPLAY) && level)
+    state_putc (' ', s);
 }
 
 static void flowed_stuff (STATE *s, const char *cont, int level)
@@ -934,14 +936,15 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
   
   if (s->prefix)
     add = 1;
-
+  
   if ((flowed_max = FLOWED_MAX) > COLS)
     flowed_max = COLS - 2;
   
   while (bytes > 0 && fgets (line, sizeof (line), s->fpin))
   {
-    bytes -= strlen (line);
-    tail = NULL;
+    bytes        -= strlen (line);
+    tail          = NULL;
+    actually_wrap = 0;  /* (really?) */
     
     if ((t = strrchr (line, '\r')) || (t = strrchr (line, '\n')))
       *t = '\0';
