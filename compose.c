@@ -572,8 +572,9 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	}
 	/* fall through */
       case OP_COMPOSE_EDIT_HEADERS:
-	if (op == OP_COMPOSE_EDIT_HEADERS ||
-	    (op == OP_COMPOSE_EDIT_MESSAGE && option (OPTEDITHDRS)))
+	if (mutt_strcmp ("builtin", Editor) != 0 &&
+	    (op == OP_COMPOSE_EDIT_HEADERS ||
+	    (op == OP_COMPOSE_EDIT_MESSAGE && option (OPTEDITHDRS))))
 	{
 	  char *tag = NULL, *err = NULL;
 	  mutt_env_to_local (msg->env);
