@@ -275,7 +275,7 @@ if test $mutt_cv_regex = no ; then
 	AC_TRY_RUN([
 #include <unistd.h>
 #include <regex.h>
-main() { regex_t blah ; return regcomp(&blah, "foo.*bar", REG_NOSUB) || regexec (&blah, "foobar", 0, NULL, 0); }],
+main() { regex_t blah ; regmatch_t p; p.rm_eo = p.rm_eo; return regcomp(&blah, "foo.*bar", REG_NOSUB) || regexec (&blah, "foobar", 0, NULL, 0); }],
 	mutt_cv_regex_broken=no, mutt_cv_regex_broken=yes, mutt_cv_regex_broken=yes)
 	AC_MSG_RESULT([$mutt_cv_regex_broken])
 	if test $mutt_cv_regex_broken = yes ; then
