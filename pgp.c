@@ -319,20 +319,20 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 	  
 	  safe_fclose (&pgpin);
 
-	  rv = mutt_wait_filter (thepid);
-
 	  if (s->flags & M_DISPLAY)
 	  {
 	    crypt_current_time (s, "PGP");
 	    rc = pgp_copy_checksig (pgperr, s->fpout);
-	    if (rc == 0) have_any_sigs = 1;
-	    if (rc || rv) maybe_goodsig = 0;
 	  }
 	  
 	  safe_fclose (&pgperr);
+	  rv = mutt_wait_filter (thepid);
 	  
 	  if (s->flags & M_DISPLAY)
 	  {
+	    if (rc == 0) have_any_sigs = 1;
+	    if (rc || rv) maybe_goodsig = 0;
+
 	    state_putc ('\n', s);
 	    state_attach_puts (_("[-- End of PGP output --]\n\n"), s);
 	  }
