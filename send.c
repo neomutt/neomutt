@@ -1268,7 +1268,7 @@ ci_send_message (int flags,		/* send mode */
       }
       if ((WithCrypto & APPLICATION_SMIME)
           && !(cur->security & (APPLICATION_PGP|APPLICATION_SMIME)))
-	msg->security |= APPLICATION_SMIME;
+	msg->security |= APPLICATION_PGP;
     }
     else if ((WithCrypto & APPLICATION_PGP) && msg->security)
     {
