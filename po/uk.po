@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.3.12\n"
-"POT-Creation-Date: 2001-02-12 18:52+0100\n"
+"POT-Creation-Date: 2001-02-27 11:50+0100\n"
 "PO-Revision-Date: 2000-11-18 16:04+0200\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "Language-Team: Ukrainian <uk@ua>\n"
@@ -33,7 +33,7 @@ msgid "Select"
 msgstr "Виб╕р"
 
 #. __STRCAT_CHECKED__
-#: addrbook.c:33 browser.c:43 compose.c:92 curs_main.c:380 mutt_ssl.c:531
+#: addrbook.c:33 browser.c:43 compose.c:92 curs_main.c:380 mutt_ssl.c:617
 #: pager.c:1460 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "П╕дказка"
@@ -76,7 +76,7 @@ msgstr "Внести до файлу: "
 msgid "Alias added."
 msgstr "Псевдон╕м додано."
 
-#: attach.c:111 attach.c:238 attach.c:431 attach.c:889
+#: attach.c:111 attach.c:238 attach.c:431 attach.c:890
 msgid "Can't match nametemplate, continue?"
 msgstr "Нема╓ в╕дпов╕дного ╕мен╕, дал╕?"
 
@@ -134,7 +134,7 @@ msgstr "Додаток записано."
 msgid "Write fault!"
 msgstr "Зб╕й запису!"
 
-#: attach.c:973
+#: attach.c:974
 msgid "I don't know how to print that!"
 msgstr "Не знаю, як це друкувати!"
 
@@ -278,11 +278,11 @@ msgstr "mono: дуже мало аргумент╕в"
 msgid "%s: no such attribute"
 msgstr "%s: такого атр╕буту нема╓"
 
-#: color.c:690 hook.c:61 hook.c:69 keymap.c:697
+#: color.c:690 hook.c:62 hook.c:70 keymap.c:697
 msgid "too few arguments"
 msgstr "дуже мало аргумент╕в"
 
-#: color.c:699 hook.c:75
+#: color.c:699 hook.c:76
 msgid "too many arguments"
 msgstr "дуже багато аргумент╕в"
 
@@ -295,7 +295,7 @@ msgstr "кол╕р default не п╕дтриму╓ться"
 msgid "Verify PGP signature?"
 msgstr "Перев╕рити п╕дпис PGP?"
 
-#: commands.c:105 pgp.c:1566 pgpkey.c:491 postpone.c:517
+#: commands.c:105 pgp.c:1659 pgpkey.c:491 postpone.c:517
 msgid "Invoking PGP..."
 msgstr "Виклик PGP..."
 
@@ -654,11 +654,11 @@ msgstr "Нема╓ в╕дкрито╖ поштово╖ скриньки."
 msgid "There are no messages."
 msgstr "Жодного пов╕домлення нема╓."
 
-#: curs_main.c:61 mx.c:1109 pager.c:62 recvattach.c:47
+#: curs_main.c:61 mx.c:1122 pager.c:62 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "Поштова скринька в╕дкрита т╕льки для читання"
 
-#: curs_main.c:62 pager.c:63 recvattach.c:813
+#: curs_main.c:62 pager.c:63 recvattach.c:817
 msgid "Function not permitted in attach-message mode."
 msgstr "Функц╕ю не дозволено в режим╕ додавання пов╕домлення."
 
@@ -768,7 +768,7 @@ msgstr "В╕дкрити скриньку в режим╕ лише для читання"
 msgid "Open mailbox"
 msgstr "В╕дкрити скриньку"
 
-#: curs_main.c:963 mx.c:491 mx.c:637
+#: curs_main.c:963 mx.c:504 mx.c:650
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s не ╓ поштовою скринькою."
@@ -1090,7 +1090,7 @@ msgstr ""
 msgid "Help for %s"
 msgstr "П╕дказка до %s"
 
-#: hook.c:245
+#: hook.c:246
 #, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook: нев╕домий тип hook: %s"
@@ -1124,19 +1124,19 @@ msgstr "Помилка аутентиф╕кац╕╖ GSSAPI."
 msgid "LOGIN disabled on this server."
 msgstr "LOGIN недоступен на цьому сервер╕."
 
-#: imap/auth_login.c:43 pop_auth.c:232
+#: imap/auth_login.c:43 pop_auth.c:229
 msgid "Logging in..."
 msgstr "Ре╓страц╕я..."
 
-#: imap/auth_login.c:63 pop_auth.c:275
+#: imap/auth_login.c:63 pop_auth.c:272
 msgid "Login failed."
 msgstr "Помилка ре╓страц╕╖."
 
-#: imap/auth_sasl.c:86 pop_auth.c:79
+#: imap/auth_sasl.c:86 pop_auth.c:76
 msgid "Authenticating (SASL)..."
 msgstr "Аутентиф╕кац╕я (SASL)..."
 
-#: imap/auth_sasl.c:164 pop_auth.c:157
+#: imap/auth_sasl.c:164 pop_auth.c:154
 msgid "SASL authentication failed."
 msgstr "Помилка аутентиф╕кац╕╖ SASL."
 
@@ -1148,75 +1148,79 @@ msgstr "Отримання простору ╕мен..."
 msgid "Getting folder list..."
 msgstr "Отримання перел╕ку скриньок..."
 
-#: imap/browse.c:264
+#: imap/browse.c:266
 msgid "Create mailbox: "
 msgstr "Створити скриньку: "
 
-#: imap/browse.c:270
+#: imap/browse.c:272
 msgid "Mailbox created."
 msgstr "Поштову скриньку створено."
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
 #.
-#: imap/command.c:312
+#: imap/command.c:316
 msgid "Fatal error.  Message count is out of sync!"
 msgstr "Фатальна помилка. Л╕чильник лист╕в неможливо с╕нхрон╕зувати!"
 
-#: imap/imap.c:89
+#: imap/imap.c:136
 #, c-format
 msgid "Closing connection to %s..."
 msgstr "Закриття з'╓днання з %s..."
 
-#: imap/imap.c:247
+#: imap/imap.c:294
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "Цей сервер IMAP надто давн╕й. Mutt не може працювати з ним."
 
-#: imap/imap.c:315
+#: imap/imap.c:363
 #, fuzzy, c-format
 msgid "Connection to %s failed."
 msgstr "З'╓днання з %s..."
 
-#: imap/imap.c:453
+#: imap/imap.c:383
+msgid "Secure connection with TLS?"
+msgstr ""
+
+#: imap/imap.c:535
 #, c-format
 msgid "Selecting %s..."
 msgstr "Виб╕р %s..."
 
 #. STATUS not supported
-#: imap/imap.c:623
+#: imap/imap.c:705
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Неможливо додавати до скриньок IMAP на цьому сервер╕"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:632 imap/message.c:579 muttlib.c:1144
+#: imap/imap.c:714 imap/message.c:595 muttlib.c:1155
 #, c-format
 msgid "Create %s?"
 msgstr "Створити %s?"
 
-#: imap/imap.c:668
+#: imap/imap.c:750
 msgid "Closing connection to IMAP server..."
 msgstr "Закриття з'╓днання з сервером IMAP..."
 
-#: imap/imap.c:831 pop.c:458
+#: imap/imap.c:913 pop.c:458
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Маркування %d нових пов╕домлень видаленими..."
 
-#: imap/imap.c:850
+#: imap/imap.c:932
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Збереження флаг╕в статусу листа... [%d/%d]"
 
-#: imap/imap.c:907
+#: imap/imap.c:989
 msgid "Expunging messages from server..."
 msgstr "Видалення пов╕домлень з серверу..."
 
-#: imap/imap.c:1183
+#: imap/imap.c:1269
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "П╕дписування до %s..."
 
-#: imap/imap.c:1185
+#: imap/imap.c:1271
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "В╕дписування в╕д %s..."
@@ -1226,38 +1230,38 @@ msgstr "В╕дписування в╕д %s..."
 msgid "Unable to fetch headers from this IMAP server version."
 msgstr "З серверу IMAP ц╕╓╖ верс╕╖ отримати заголовки неможливо."
 
-#: imap/message.c:92 pop.c:209
+#: imap/message.c:93 pop.c:209
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Отримання заголовк╕в лист╕в... [%d/%d]"
 
-#: imap/message.c:237 pop.c:336
+#: imap/message.c:239 pop.c:336
 msgid "Fetching message..."
 msgstr "Отримання листа..."
 
-#: imap/message.c:276 pop.c:373
+#: imap/message.c:278 pop.c:373
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Некоректний номер пов╕домлення. Спробуйте в╕дкрити скриньку ще раз."
 
-#: imap/message.c:468
+#: imap/message.c:484
 msgid "Uploading message ..."
 msgstr "В╕дправлення листа..."
 
-#: imap/message.c:557
+#: imap/message.c:573
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Коп╕ювання %d лист╕в до %s..."
 
-#: imap/message.c:561
+#: imap/message.c:577
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Коп╕ювання %d листа до %s..."
 
-#: imap/util.c:43
+#: imap/util.c:190
 msgid "Continue?"
 msgstr "Дал╕?"
 
-#: imap/util.c:49
+#: imap/util.c:196
 #, c-format
 msgid "%s [%s]\n"
 msgstr ""
@@ -2128,30 +2132,34 @@ msgid "make decrypted copy"
 msgstr "зробити розшифровану коп╕ю"
 
 #: keymap_alldefs.h:184
+msgid "check for classic pgp"
+msgstr ""
+
+#: keymap_alldefs.h:185
 msgid "Accept the chain constructed"
 msgstr "Прийняти скоструйований ланцюжок"
 
-#: keymap_alldefs.h:185
+#: keymap_alldefs.h:186
 msgid "Append a remailer to the chain"
 msgstr "Додати remailer до ланцюжку"
 
-#: keymap_alldefs.h:186
+#: keymap_alldefs.h:187
 msgid "Insert a remailer into the chain"
 msgstr "Вставити remailer в ланцюжок"
 
-#: keymap_alldefs.h:187
+#: keymap_alldefs.h:188
 msgid "Delete a remailer from the chain"
 msgstr "Видалити remailer з ланцюжку"
 
-#: keymap_alldefs.h:188
+#: keymap_alldefs.h:189
 msgid "Select the previous element of the chain"
 msgstr "Вибрати попередн╕й елемент ланцюжку"
 
-#: keymap_alldefs.h:189
+#: keymap_alldefs.h:190
 msgid "Select the next element of the chain"
 msgstr "Вибрати наступний елемент ланцюжку"
 
-#: keymap_alldefs.h:190
+#: keymap_alldefs.h:191
 msgid "send the message through a mixmaster remailer chain"
 msgstr "в╕д╕слати лист через ланку mixmaster remailer"
 
@@ -2440,32 +2448,32 @@ msgstr "Вид╕лення не п╕дтриму╓ться."
 msgid "Reading %s... %d"
 msgstr "Читання %s... %d"
 
-#: muttlib.c:807
+#: muttlib.c:818
 msgid "File is a directory, save under it?"
 msgstr "Файл ╓ каталогом, зберегти у ньому?"
 
-#: muttlib.c:812
+#: muttlib.c:823
 msgid "File under directory: "
 msgstr "Файл у каталоз╕: "
 
-#: muttlib.c:824
+#: muttlib.c:835
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Файл ╕сну╓, (o)переписати, (a)додати до нього чи (c)в╕дмовити?"
 
-#: muttlib.c:824
+#: muttlib.c:835
 msgid "oac"
 msgstr ""
 
-#: muttlib.c:1111
+#: muttlib.c:1122
 msgid "Can't save message to POP mailbox."
 msgstr "Неможливо записати лист до скриньки POP."
 
-#: muttlib.c:1120
+#: muttlib.c:1131
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s не ╓ поштовою скринькою!"
 
-#: muttlib.c:1126
+#: muttlib.c:1137
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Додати листи до %s?"
@@ -2498,109 +2506,109 @@ msgstr "З'╓днання з %s..."
 msgid "Could not connect to %s (%s)."
 msgstr "Не вийшло з'╓днатися з %s (%s)."
 
-#: mutt_ssl.c:117
+#: mutt_ssl.c:172
 msgid "Failed to find enough entropy on your system"
 msgstr "Не вдалося знайти достятньо ентроп╕╖ на ваш╕й систем╕"
 
-#: mutt_ssl.c:132
+#: mutt_ssl.c:196
 #, c-format
 msgid "Filling entropy pool: %s...\n"
 msgstr "Заповнення пулу ентроп╕╖: %s...\n"
 
-#: mutt_ssl.c:140
+#: mutt_ssl.c:204
 #, c-format
 msgid "%s has insecure permissions!"
 msgstr "%s ма╓ несекретн╕ права доступу!"
 
-#: mutt_ssl.c:159
+#: mutt_ssl.c:223
 msgid "SSL disabled due the lack of entropy"
 msgstr "SSL недосяжне завдяки втрат╕ ентроп╕╖"
 
-#: mutt_ssl.c:246
+#: mutt_ssl.c:335
 msgid "Unable to get certificate from peer"
 msgstr "Неможливо отримати сертиф╕кат"
 
-#: mutt_ssl.c:257
+#: mutt_ssl.c:343
 #, fuzzy, c-format
 msgid "SSL connection using %s (%s)"
 msgstr "З'╓днання SSL з використанням %s"
 
-#: mutt_ssl.c:287
+#: mutt_ssl.c:373
 msgid "Unknown"
 msgstr "Нев╕доме"
 
-#: mutt_ssl.c:312
+#: mutt_ssl.c:398
 msgid "[unable to calculate]"
 msgstr "[неможливо обчислити]"
 
-#: mutt_ssl.c:330
+#: mutt_ssl.c:416
 msgid "[invalid date]"
 msgstr "[помилкова дата]"
 
-#: mutt_ssl.c:405
+#: mutt_ssl.c:491
 msgid "Server certificate is not yet valid"
 msgstr "Сертиф╕кат серверу ще не д╕йсний"
 
-#: mutt_ssl.c:412
+#: mutt_ssl.c:498
 msgid "Server certificate has expired"
 msgstr "Сертиф╕кат серверу видалено за давн╕стю"
 
-#: mutt_ssl.c:485
+#: mutt_ssl.c:571
 msgid "This certificate belongs to:"
 msgstr "Цей сертиф╕кат належить:"
 
-#: mutt_ssl.c:495
+#: mutt_ssl.c:581
 msgid "This certificate was issued by:"
 msgstr "Цей сертиф╕кат видано:"
 
-#: mutt_ssl.c:505
+#: mutt_ssl.c:591
 msgid "This certificate is valid"
 msgstr "Цей сертиф╕кат д╕йсний"
 
-#: mutt_ssl.c:506
+#: mutt_ssl.c:592
 #, c-format
 msgid "   from %s"
 msgstr "   в╕д %s"
 
-#: mutt_ssl.c:508
+#: mutt_ssl.c:594
 #, c-format
 msgid "     to %s"
 msgstr "     до %s"
 
-#: mutt_ssl.c:514
+#: mutt_ssl.c:600
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "В╕дбиток: %s"
 
-#: mutt_ssl.c:516
+#: mutt_ssl.c:602
 msgid "SSL Certificate check"
 msgstr "Перев╕рка сертиф╕кату SSL"
 
-#: mutt_ssl.c:519
+#: mutt_ssl.c:605
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)не приймати, прийняти (o)одноразово або (a)завжди"
 
-#: mutt_ssl.c:520
+#: mutt_ssl.c:606
 msgid "roa"
 msgstr ""
 
-#: mutt_ssl.c:524
+#: mutt_ssl.c:610
 msgid "(r)eject, accept (o)nce"
 msgstr "(r)не приймати, (o)прийняти одноразово"
 
-#: mutt_ssl.c:525
+#: mutt_ssl.c:611
 msgid "ro"
 msgstr ""
 
-#: mutt_ssl.c:529 pgpkey.c:442
+#: mutt_ssl.c:615 pgpkey.c:442
 msgid "Exit  "
 msgstr "Вих╕д  "
 
-#: mutt_ssl.c:554
+#: mutt_ssl.c:640
 msgid "Warning: Couldn't save certificate"
 msgstr "Попередження: неможливо зберегти сертиф╕кат"
 
-#: mutt_ssl.c:556
+#: mutt_ssl.c:642
 msgid "Certificate saved"
 msgstr "Сертиф╕кат збережено"
 
@@ -2632,79 +2640,79 @@ msgstr "Вичерпано час спроби блокування через flock"
 msgid "Waiting for flock attempt... %d"
 msgstr "Чекання блокування через flock... %d"
 
-#: mx.c:574
+#: mx.c:587
 #, c-format
 msgid "Couldn't lock %s\n"
 msgstr "Не вийшло заблокувати %s\n"
 
-#: mx.c:662
+#: mx.c:675
 #, c-format
 msgid "Reading %s..."
 msgstr "Читання %s..."
 
-#: mx.c:761
+#: mx.c:774
 #, c-format
 msgid "Writing %s..."
 msgstr "Запис %s..."
 
-#: mx.c:794
+#: mx.c:807
 #, c-format
 msgid "Could not synchronize mailbox %s!"
 msgstr "Не вийшло с╕нхрон╕зувати поштову скриньку %s!"
 
-#: mx.c:859
+#: mx.c:872
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Перенести читан╕ листи до %s?"
 
-#: mx.c:871 mx.c:1124
+#: mx.c:884 mx.c:1137
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Знищити %d видалений лист?"
 
-#: mx.c:871 mx.c:1124
+#: mx.c:884 mx.c:1137
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Знищити %d видалених лист╕в?"
 
-#: mx.c:895
+#: mx.c:908
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Перенос читаних лист╕в до %s..."
 
-#: mx.c:953 mx.c:1115
+#: mx.c:966 mx.c:1128
 msgid "Mailbox is unchanged."
 msgstr "Поштову скриньку не зм╕нено."
 
-#: mx.c:989
+#: mx.c:1002
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d збережено, %d перенесено, %d знищено."
 
-#: mx.c:992 mx.c:1162
+#: mx.c:1005 mx.c:1175
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d збережено, %d знищено."
 
-#: mx.c:1100
+#: mx.c:1113
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr "Натисн╕ть '%s' для зм╕ни можливост╕ запису"
 
-#: mx.c:1102
+#: mx.c:1115
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Зроб╕ть 'toggle-write' для вв╕мкнення запису!"
 
-#: mx.c:1104
+#: mx.c:1117
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Скриньку пом╕чено незм╕нюваною. %s"
 
-#: mx.c:1159
+#: mx.c:1172
 msgid "Mailbox checkpointed."
 msgstr "Поштову скриньку перев╕рено."
 
-#: mx.c:1459
+#: mx.c:1472
 msgid "Can't write message"
 msgstr "Неможливо записати лист"
 
@@ -2856,11 +2864,11 @@ msgstr "Кодову фразу PGP забуто."
 msgid "[-- PGP output follows (current time: %c) --]\n"
 msgstr "[-- текст на виход╕ PGP (час: %c) --]\n"
 
-#: pgp.c:246
+#: pgp.c:283
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
 msgstr "[-- Помилка: неможливо створити п╕дпроцес PGP! --]\n"
 
-#: pgp.c:273
+#: pgp.c:312
 msgid ""
 "\n"
 "[-- End of PGP output --]\n"
@@ -2870,7 +2878,7 @@ msgstr ""
 "[-- К╕нець тексту на виход╕ PGP --]\n"
 "\n"
 
-#: pgp.c:279
+#: pgp.c:318
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -2878,11 +2886,11 @@ msgstr ""
 "[-- Початок пов╕домлення PGP --]\n"
 "\n"
 
-#: pgp.c:281
+#: pgp.c:320
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- Початок блоку в╕дкритого ключа PGP --]\n"
 
-#: pgp.c:283
+#: pgp.c:322
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -2890,7 +2898,7 @@ msgstr ""
 "[-- Початок пов╕домлення з PGP п╕дписом --]\n"
 "\n"
 
-#: pgp.c:385
+#: pgp.c:423
 msgid ""
 "\n"
 "[-- END PGP MESSAGE --]\n"
@@ -2899,11 +2907,11 @@ msgstr ""
 "[-- К╕нець пов╕домлення PGP --]\n"
 "\n"
 
-#: pgp.c:387
+#: pgp.c:425
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- К╕нець блоку в╕дкритого ключа PGP --]\n"
 
-#: pgp.c:389
+#: pgp.c:427
 msgid ""
 "\n"
 "[-- END PGP SIGNED MESSAGE --]\n"
@@ -2911,7 +2919,7 @@ msgstr ""
 "\n"
 "[-- К╕нець пов╕домлення з PGP п╕дписом --]\n"
 
-#: pgp.c:402
+#: pgp.c:442
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -2919,7 +2927,7 @@ msgstr ""
 "[-- Помилка: не вийшло знайти початок пов╕домлення PGP! --]\n"
 "\n"
 
-#: pgp.c:617 pgp.c:908
+#: pgp.c:710 pgp.c:1001
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -2927,7 +2935,7 @@ msgstr ""
 "[-- К╕нець тексту на виход╕ PGP --]\n"
 "\n"
 
-#: pgp.c:665
+#: pgp.c:758
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
 "\n"
@@ -2935,7 +2943,7 @@ msgstr ""
 "[-- Помилка: несум╕сна структура multipart/signed! --]\n"
 "\n"
 
-#: pgp.c:673
+#: pgp.c:766
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -2944,7 +2952,7 @@ msgstr ""
 "[-- Помилка: нев╕домий протокол multipart/signed %s! --]\n"
 "\n"
 
-#: pgp.c:697
+#: pgp.c:790
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -2954,7 +2962,7 @@ msgstr ""
 "\n"
 
 #. Now display the signed body
-#: pgp.c:707
+#: pgp.c:800
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -2962,7 +2970,7 @@ msgstr ""
 "[-- Наступн╕ дан╕ п╕дписано --]\n"
 "\n"
 
-#: pgp.c:713
+#: pgp.c:806
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -2970,7 +2978,7 @@ msgstr ""
 "[-- Попередження: неможливо знайти жодного п╕дпису. --]\n"
 "\n"
 
-#: pgp.c:719
+#: pgp.c:812
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -2978,11 +2986,11 @@ msgstr ""
 "\n"
 "[-- К╕нець п╕дписаних даних --]\n"
 
-#: pgp.c:819
+#: pgp.c:912
 msgid "Internal error. Inform <roessler@guug.de>."
 msgstr "Внутр╕шня помилка. Пов╕домьте <roessler@guug.de>."
 
-#: pgp.c:879
+#: pgp.c:972
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -2990,7 +2998,7 @@ msgstr ""
 "[-- Помилка: не вийшло створити п╕дпроцес PGP! --]\n"
 "\n"
 
-#: pgp.c:972
+#: pgp.c:1065
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -2998,11 +3006,11 @@ msgstr ""
 "[-- Помилка: несформований лист PGP/MIME! --]\n"
 "\n"
 
-#: pgp.c:985
+#: pgp.c:1078
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Помилка: не вийшло створити тимчасовий файл! --]\n"
 
-#: pgp.c:994
+#: pgp.c:1087
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -3010,7 +3018,7 @@ msgstr ""
 "[-- Наступн╕ дан╕ зашифровано PGP/MIME --]\n"
 "\n"
 
-#: pgp.c:1012
+#: pgp.c:1105
 msgid ""
 "\n"
 "[-- End of PGP/MIME encrypted data --]\n"
@@ -3018,25 +3026,25 @@ msgstr ""
 "\n"
 "[-- К╕нець даних, зашифрованих PGP/MIME --]\n"
 
-#: pgp.c:1092
+#: pgp.c:1185
 msgid "Can't open PGP subprocess!"
 msgstr "Неможливо в╕дкрити п╕дпроцесс PGP!"
 
-#: pgp.c:1219
+#: pgp.c:1312
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Використовувати keyID = \"%s\" для %s?"
 
-#: pgp.c:1246
+#: pgp.c:1339
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Введ╕ть keyID для %s: "
 
-#: pgp.c:1456
+#: pgp.c:1549
 msgid "Can't invoke PGP"
 msgstr "Не вийшло викликати PGP"
 
-#: pgp.c:1560
+#: pgp.c:1653
 msgid "Create an application/pgp message?"
 msgstr "Створити application/pgp лист?"
 
@@ -3174,19 +3182,19 @@ msgstr "%s [%d з %d лист╕в прочитано]"
 msgid "Server closed connection!"
 msgstr "Сервер закрив з'╓днання!"
 
-#: pop_auth.c:193
+#: pop_auth.c:190
 msgid "Authenticating (APOP)..."
 msgstr "Аутентиф╕кац╕я (APOP)..."
 
-#: pop_auth.c:217
+#: pop_auth.c:214
 msgid "APOP authentication failed."
 msgstr "Помилка аутентиф╕кац╕╖ APOP."
 
-#: pop_auth.c:252
+#: pop_auth.c:249
 msgid "Command USER is not supported by server."
 msgstr "Команда USER не п╕дтриму╓ться сервером."
 
-#: pop_auth.c:359
+#: pop_auth.c:356
 msgid "Authentication method is unknown."
 msgstr "Нев╕домий метод аутентиф╕кац╕╖."
 
@@ -3239,20 +3247,20 @@ msgstr "Пошук"
 msgid "Waiting for response..."
 msgstr "Чекайте в╕дпов╕д╕..."
 
-#: query.c:191 query.c:216
+#: query.c:210 query.c:235
 msgid "Query command not defined."
 msgstr "Команду запиту не визначено."
 
-#: query.c:243
+#: query.c:262
 msgid "Query"
 msgstr "Запит"
 
 #. Prompt for Query
-#: query.c:256 query.c:284
+#: query.c:275 query.c:303
 msgid "Query: "
 msgstr "Запит:"
 
-#: query.c:267 query.c:293
+#: query.c:286 query.c:312
 #, c-format
 msgid "Query '%s'"
 msgstr "Запит '%s'"
@@ -3299,24 +3307,24 @@ msgstr "Друкувати вид╕лен╕ додатки?"
 msgid "Print attachment?"
 msgstr "Друкувати додаток?"
 
-#: recvattach.c:882
+#: recvattach.c:886
 msgid "Attachments"
 msgstr "Додатки"
 
-#: recvattach.c:919
+#: recvattach.c:922
 #, fuzzy
 msgid "There are no subparts to show!"
 msgstr "Додатк╕в нема╓."
 
-#: recvattach.c:967
+#: recvattach.c:983
 msgid "Can't delete attachment from POP server."
 msgstr "Неможливо видалити додаток з сервера POP."
 
-#: recvattach.c:978
+#: recvattach.c:994
 msgid "Deletion of attachments from PGP messages is unsupported."
 msgstr "Видалення додатк╕в з лист╕в з PGP не п╕дтриму╓ться."
 
-#: recvattach.c:998 recvattach.c:1015
+#: recvattach.c:1014 recvattach.c:1031
 msgid "Only deletion of multipart attachments is supported."
 msgstr "П╕дтриму╓ться т╕льки видалення в багаточастинних листах."
 
@@ -3572,17 +3580,17 @@ msgstr "Нема╓ параметру меж╕! [спов╕ст╕ть про цю помилку]"
 msgid "%s no longer exists!"
 msgstr "%s б╕льше не ╕сну╓!"
 
-#: sendlib.c:1049
+#: sendlib.c:1057
 #, c-format
 msgid "Could not open %s"
 msgstr "Не вийшло в╕дкрити %s"
 
-#: sendlib.c:1967
+#: sendlib.c:1981
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Помилка в╕дправки, код повернення %d (%s)."
 
-#: sendlib.c:1973
+#: sendlib.c:1987
 msgid "Output of the delivery process"
 msgstr "Вих╕д процесу доставки"
 

@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt-1.3.15i\n"
-"POT-Creation-Date: 2001-02-12 18:52+0100\n"
+"POT-Creation-Date: 2001-02-27 11:50+0100\n"
 "PO-Revision-Date: 2001-02-14 12:00+0200\n"
 "Last-Translator: Φάνης Δοκιανάκης <madf@hellug.gr>\n"
 "Language-Team: Greek <el@li.org>\n"
@@ -42,7 +42,7 @@ msgstr "Επιλέξτε"
 
 #
 #. __STRCAT_CHECKED__
-#: addrbook.c:33 browser.c:43 compose.c:92 curs_main.c:380 mutt_ssl.c:531
+#: addrbook.c:33 browser.c:43 compose.c:92 curs_main.c:380 mutt_ssl.c:617
 #: pager.c:1460 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Βοήθεια"
@@ -95,7 +95,7 @@ msgid "Alias added."
 msgstr "Το ψευδώνυμο προστέθηκε."
 
 #
-#: attach.c:111 attach.c:238 attach.c:431 attach.c:889
+#: attach.c:111 attach.c:238 attach.c:431 attach.c:890
 msgid "Can't match nametemplate, continue?"
 msgstr "Αδυναμία ταιριάσματος του nametemplate, να συνεχίσω;"
 
@@ -166,7 +166,7 @@ msgid "Write fault!"
 msgstr "Σφάλμα εγγραφής!"
 
 #
-#: attach.c:973
+#: attach.c:974
 msgid "I don't know how to print that!"
 msgstr "Δεν γνωρίζω πώς να το τυπώσω αυτό!"
 
@@ -346,12 +346,12 @@ msgid "%s: no such attribute"
 msgstr "%s: δεν υπάρχει τέτοια ιδιότητα"
 
 #
-#: color.c:690 hook.c:61 hook.c:69 keymap.c:697
+#: color.c:690 hook.c:62 hook.c:70 keymap.c:697
 msgid "too few arguments"
 msgstr "πολύ λίγα ορίσματα"
 
 #
-#: color.c:699 hook.c:75
+#: color.c:699 hook.c:76
 msgid "too many arguments"
 msgstr "πάρα πολλά ορίσματα"
 
@@ -369,7 +369,7 @@ msgstr "Επιβεβαίωση της PGP ψηφιακής υπογραφής;"
 
 #
 # commands.c:87 commands.c:95 pgp.c:1373 pgpkey.c:220
-#: commands.c:105 pgp.c:1566 pgpkey.c:491 postpone.c:517
+#: commands.c:105 pgp.c:1659 pgpkey.c:491 postpone.c:517
 msgid "Invoking PGP..."
 msgstr "Κλήση του PGP..."
 
@@ -811,12 +811,12 @@ msgid "There are no messages."
 msgstr "Δεν υπάρχουν μηνύματα."
 
 #
-#: curs_main.c:61 mx.c:1109 pager.c:62 recvattach.c:47
+#: curs_main.c:61 mx.c:1122 pager.c:62 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "Το γραμματοκιβώτιο είναι μόνο για ανάγνωση."
 
 #
-#: curs_main.c:62 pager.c:63 recvattach.c:813
+#: curs_main.c:62 pager.c:63 recvattach.c:817
 msgid "Function not permitted in attach-message mode."
 msgstr "Η λειτουργία απαγορεύεται στην κατάσταση προσάρτηση-μηνύματος."
 
@@ -955,7 +955,7 @@ msgid "Open mailbox"
 msgstr "Ανοίξτε το γραμματοκιβώτιο"
 
 #
-#: curs_main.c:963 mx.c:491 mx.c:637
+#: curs_main.c:963 mx.c:504 mx.c:650
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "Το %s δεν είναι γραμματοκιβώτιο."
@@ -1339,7 +1339,7 @@ msgid "Help for %s"
 msgstr "Βοήθεια για το %s"
 
 #
-#: hook.c:245
+#: hook.c:246
 #, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook: άγνωστος τύπος hook: %s"
@@ -1374,20 +1374,20 @@ msgid "LOGIN disabled on this server."
 msgstr "Το LOGIN απενεργοποιήθηκε σε αυτόν τον διακομιστή."
 
 #
-#: imap/auth_login.c:43 pop_auth.c:232
+#: imap/auth_login.c:43 pop_auth.c:229
 msgid "Logging in..."
 msgstr "Είσοδος στο σύστημα..."
 
 #
-#: imap/auth_login.c:63 pop_auth.c:275
+#: imap/auth_login.c:63 pop_auth.c:272
 msgid "Login failed."
 msgstr "Απέτυχε η είσοδος στο σύστημα."
 
-#: imap/auth_sasl.c:86 pop_auth.c:79
+#: imap/auth_sasl.c:86 pop_auth.c:76
 msgid "Authenticating (SASL)..."
 msgstr "Αυθεντικοποίηση (SASL)..."
 
-#: imap/auth_sasl.c:164 pop_auth.c:157
+#: imap/auth_sasl.c:164 pop_auth.c:154
 msgid "SASL authentication failed."
 msgstr "Αυθεντικοποίηση SASL απέτυχε."
 
@@ -1401,12 +1401,12 @@ msgid "Getting folder list..."
 msgstr "Λήψη λίστας φακέλων..."
 
 #
-#: imap/browse.c:264
+#: imap/browse.c:266
 msgid "Create mailbox: "
 msgstr "Δημιουργία γραμματοκιβωτίου: "
 
 #
-#: imap/browse.c:270
+#: imap/browse.c:272
 msgid "Mailbox created."
 msgstr "Το γραμματοκιβώτιο δημιουργήθηκε."
 
@@ -1414,77 +1414,81 @@ msgstr "Το γραμματοκιβώτιο δημιουργήθηκε."
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
 #.
-#: imap/command.c:312
+#: imap/command.c:316
 msgid "Fatal error.  Message count is out of sync!"
 msgstr "Μοιραίο σφάλμα. Ο αριθμός των μηνυμάτων δεν είναι σε συμφωνία!"
 
 #
-#: imap/imap.c:89
+#: imap/imap.c:136
 #, c-format
 msgid "Closing connection to %s..."
 msgstr "Κλείσιμο σύνδεσης στο στο %s..."
 
 #
-#: imap/imap.c:247
+#: imap/imap.c:294
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr ""
 "Αυτός ο εξυπηρετητής IMAP είναι αρχαίος. Το Mutt δεν είναι συμβατό με αυτόν."
 
 #
-#: imap/imap.c:315
+#: imap/imap.c:363
 #, c-format
 msgid "Connection to %s failed."
 msgstr "Η σύνδεση στο %s απέτυχε."
 
+#: imap/imap.c:383
+msgid "Secure connection with TLS?"
+msgstr ""
+
 #
-#: imap/imap.c:453
+#: imap/imap.c:535
 #, c-format
 msgid "Selecting %s..."
 msgstr "Επιλογή %s..."
 
 #
 #. STATUS not supported
-#: imap/imap.c:623
+#: imap/imap.c:705
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Αδυναμία στην πρόσθηκη στα γραμμ/τια IMAP σε αυτόν τον εξυπηρετητή"
 
 #
 #. command failed cause folder doesn't exist
-#: imap/imap.c:632 imap/message.c:579 muttlib.c:1144
+#: imap/imap.c:714 imap/message.c:595 muttlib.c:1155
 #, c-format
 msgid "Create %s?"
 msgstr "Δημιουργία του %s;"
 
 #
-#: imap/imap.c:668
+#: imap/imap.c:750
 msgid "Closing connection to IMAP server..."
 msgstr "Κλείσιμο σύνδεσης στον εξυπηρετητή IMAP..."
 
 #
-#: imap/imap.c:831 pop.c:458
+#: imap/imap.c:913 pop.c:458
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Σημείωση %d διαγραφθέντων μηνυμάτων..."
 
 #
-#: imap/imap.c:850
+#: imap/imap.c:932
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Αποθήκευση σημαιών κατάστασης μηνύματος... [%d/%d]"
 
 #
-#: imap/imap.c:907
+#: imap/imap.c:989
 msgid "Expunging messages from server..."
 msgstr "Διαγραφή μηνυμάτων από τον εξυπηρετητή..."
 
 #
-#: imap/imap.c:1183
+#: imap/imap.c:1269
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Εγγραφή στο %s..."
 
 #
-#: imap/imap.c:1185
+#: imap/imap.c:1271
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Διαγραφή στο %s..."
@@ -1496,43 +1500,43 @@ msgid "Unable to fetch headers from this IMAP server version."
 msgstr "Αδυναμία λήψης επικεφαλίδων από αυτή την έκδοση του εξυπηρετητή IMAP."
 
 #
-#: imap/message.c:92 pop.c:209
+#: imap/message.c:93 pop.c:209
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Λήψη επικεφαλίδων από τα μηνύματα... [%d/%d]"
 
 #
-#: imap/message.c:237 pop.c:336
+#: imap/message.c:239 pop.c:336
 msgid "Fetching message..."
 msgstr "Λήψη μηνύματος..."
 
-#: imap/message.c:276 pop.c:373
+#: imap/message.c:278 pop.c:373
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Ο δείκτης του μηνύματος είναι άκυρος. Ξανανοίξτε το γραμματοκιβώτιο."
 
 #
-#: imap/message.c:468
+#: imap/message.c:484
 msgid "Uploading message ..."
 msgstr "Ανέβασμα μηνύματος ..."
 
 #
-#: imap/message.c:557
+#: imap/message.c:573
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Αντιγραφή %d μηνυμάτων στο %s..."
 
 #
-#: imap/message.c:561
+#: imap/message.c:577
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Αντιγραφή μηνύματος %d στο %s ..."
 
 #
-#: imap/util.c:43
+#: imap/util.c:190
 msgid "Continue?"
 msgstr "Συνέχεια;"
 
-#: imap/util.c:49
+#: imap/util.c:196
 #, c-format
 msgid "%s [%s]\n"
 msgstr "%s [%s]\n"
@@ -2610,31 +2614,35 @@ msgid "make decrypted copy"
 msgstr "δημιουργία αποκρυπτογραφημένου αντιγράφου"
 
 #: keymap_alldefs.h:184
+msgid "check for classic pgp"
+msgstr ""
+
+#: keymap_alldefs.h:185
 msgid "Accept the chain constructed"
 msgstr "Αποδοχή της κατασκευασμένης αλυσίδας"
 
-#: keymap_alldefs.h:185
+#: keymap_alldefs.h:186
 msgid "Append a remailer to the chain"
 msgstr "Προσάρτηση ενός επαναποστολέα στην αλυσίδα"
 
-#: keymap_alldefs.h:186
+#: keymap_alldefs.h:187
 msgid "Insert a remailer into the chain"
 msgstr "Προσθήκη ενός επαναποστολέα στην αλυσίδα"
 
 #
-#: keymap_alldefs.h:187
+#: keymap_alldefs.h:188
 msgid "Delete a remailer from the chain"
 msgstr "Διαγραφή ενός επαναποστολέα από την αλυσίδα"
 
-#: keymap_alldefs.h:188
+#: keymap_alldefs.h:189
 msgid "Select the previous element of the chain"
 msgstr "Επιλογή του προηγούμενου στοιχείου της αλυσίδας"
 
-#: keymap_alldefs.h:189
+#: keymap_alldefs.h:190
 msgid "Select the next element of the chain"
 msgstr "Επιλογή του επόμενου στοιχείου της αλυσίδας"
 
-#: keymap_alldefs.h:190
+#: keymap_alldefs.h:191
 msgid "send the message through a mixmaster remailer chain"
 msgstr "αποστολή του μηνύματος μέσω μιας αλυσίδας απαναποστολέων Mixmaster"
 
@@ -3008,35 +3016,35 @@ msgstr "Σημειώσεις δεν υποστηρίζονται."
 msgid "Reading %s... %d"
 msgstr "Ανάγνωση %s... %d"
 
-#: muttlib.c:807
+#: muttlib.c:818
 msgid "File is a directory, save under it?"
 msgstr "Το αρχείο είναι φάκελος, αποθήκευση υπό αυτού;"
 
-#: muttlib.c:812
+#: muttlib.c:823
 msgid "File under directory: "
 msgstr "Αρχείο υπό φάκελο:"
 
-#: muttlib.c:824
+#: muttlib.c:835
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Το αρχείο υπάρχει, (o)διαγραφή του υπάρχοντος, (a)πρόσθεση, (c)άκυρο;"
 
-#: muttlib.c:824
+#: muttlib.c:835
 msgid "oac"
 msgstr "oac"
 
 #
-#: muttlib.c:1111
+#: muttlib.c:1122
 msgid "Can't save message to POP mailbox."
 msgstr "Αδυναμία εγγραφής του μηνύματος στο POP γραμματοκιβώτιο."
 
 #
-#: muttlib.c:1120
+#: muttlib.c:1131
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "Το %s δεν είναι γραμματοκιβώτιο!"
 
 #
-#: muttlib.c:1126
+#: muttlib.c:1137
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Πρόσθεση μηνυμάτων στο %s;"
@@ -3073,115 +3081,115 @@ msgstr "Σύνδεση στο %s..."
 msgid "Could not connect to %s (%s)."
 msgstr "Αδυναμία σύνδεσης στο %s (%s)."
 
-#: mutt_ssl.c:117
+#: mutt_ssl.c:172
 msgid "Failed to find enough entropy on your system"
 msgstr "Αποτυχία στην εύρεση αρκετής εντροπίας στο σύστημα σας"
 
-#: mutt_ssl.c:132
+#: mutt_ssl.c:196
 #, c-format
 msgid "Filling entropy pool: %s...\n"
 msgstr "Αποθήκευση εντροπίας: %s...\n"
 
-#: mutt_ssl.c:140
+#: mutt_ssl.c:204
 #, c-format
 msgid "%s has insecure permissions!"
 msgstr "Το %s έχει ανασφαλή δικαιώματα!"
 
-#: mutt_ssl.c:159
+#: mutt_ssl.c:223
 msgid "SSL disabled due the lack of entropy"
 msgstr "Το SSL απενεργοποιήθηκε λόγω λήψης εντροπίας"
 
 #
-#: mutt_ssl.c:246
+#: mutt_ssl.c:335
 msgid "Unable to get certificate from peer"
 msgstr "Αδυναμια στη λήψη πιστοποιητικού από το ταίρι"
 
 #
-#: mutt_ssl.c:257
+#: mutt_ssl.c:343
 #, c-format
 msgid "SSL connection using %s (%s)"
 msgstr "Σύνδεση SSL χρησιμοποιόντας το %s (%s)"
 
 #
-#: mutt_ssl.c:287
+#: mutt_ssl.c:373
 msgid "Unknown"
 msgstr "Άγνωστο"
 
 #
-#: mutt_ssl.c:312
+#: mutt_ssl.c:398
 msgid "[unable to calculate]"
 msgstr "[αδυναμία υπολογισμού]"
 
 #
-#: mutt_ssl.c:330
+#: mutt_ssl.c:416
 msgid "[invalid date]"
 msgstr "[μη έγκυρη ημερομηνία]"
 
-#: mutt_ssl.c:405
+#: mutt_ssl.c:491
 msgid "Server certificate is not yet valid"
 msgstr "Η πιστοποίηση του διακομιστή δεν είναι ακόμα έγκυρη"
 
-#: mutt_ssl.c:412
+#: mutt_ssl.c:498
 msgid "Server certificate has expired"
 msgstr "Το πιστοποιητικό του διακομιστή έληξε"
 
-#: mutt_ssl.c:485
+#: mutt_ssl.c:571
 msgid "This certificate belongs to:"
 msgstr "Αυτό το πιστοποιητικό ανήκει στο:"
 
-#: mutt_ssl.c:495
+#: mutt_ssl.c:581
 msgid "This certificate was issued by:"
 msgstr "Αυτό το πιστοποιητικό εκδόθηκε από το:"
 
-#: mutt_ssl.c:505
+#: mutt_ssl.c:591
 msgid "This certificate is valid"
 msgstr "Αυτό το πιστοποιητικό είναι έγκυρο"
 
-#: mutt_ssl.c:506
+#: mutt_ssl.c:592
 #, c-format
 msgid "   from %s"
 msgstr "   από  %s"
 
-#: mutt_ssl.c:508
+#: mutt_ssl.c:594
 #, c-format
 msgid "     to %s"
 msgstr "    προς %s"
 
-#: mutt_ssl.c:514
+#: mutt_ssl.c:600
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "Αποτύπωμα: %s"
 
-#: mutt_ssl.c:516
+#: mutt_ssl.c:602
 msgid "SSL Certificate check"
 msgstr "Έλεγχος Πιστοποιητικού SSL"
 
-#: mutt_ssl.c:519
+#: mutt_ssl.c:605
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)απόρριψη, (o)αποδοχή μια φορά, (a)αποδοχή πάντα"
 
-#: mutt_ssl.c:520
+#: mutt_ssl.c:606
 msgid "roa"
 msgstr "roa"
 
-#: mutt_ssl.c:524
+#: mutt_ssl.c:610
 msgid "(r)eject, accept (o)nce"
 msgstr "(r)απόρριψη, (o)αποδοχή μια φορά"
 
-#: mutt_ssl.c:525
+#: mutt_ssl.c:611
 msgid "ro"
 msgstr "ro"
 
 #
-#: mutt_ssl.c:529 pgpkey.c:442
+#: mutt_ssl.c:615 pgpkey.c:442
 msgid "Exit  "
 msgstr "Έξοδος "
 
-#: mutt_ssl.c:554
+#: mutt_ssl.c:640
 msgid "Warning: Couldn't save certificate"
 msgstr "Προειδοποίηση: Αδυναμία αποθήκευσης πιστοποιητικού"
 
-#: mutt_ssl.c:556
+#: mutt_ssl.c:642
 msgid "Certificate saved"
 msgstr "Το πιστοποιητικό αποθηκεύτηκε"
 
@@ -3220,94 +3228,94 @@ msgid "Waiting for flock attempt... %d"
 msgstr "Αναμονή για προσπάθεια flock... %d"
 
 #
-#: mx.c:574
+#: mx.c:587
 #, c-format
 msgid "Couldn't lock %s\n"
 msgstr "Αδυναμία κλειδώματος του %s\n"
 
 #
-#: mx.c:662
+#: mx.c:675
 #, c-format
 msgid "Reading %s..."
 msgstr "Ανάγνωση %s..."
 
 #
-#: mx.c:761
+#: mx.c:774
 #, c-format
 msgid "Writing %s..."
 msgstr "Εγγραφή %s..."
 
 #
-#: mx.c:794
+#: mx.c:807
 #, c-format
 msgid "Could not synchronize mailbox %s!"
 msgstr "Αδυναμία συγχρονισμού του γραμματοκιβωτίου %s!"
 
 #
-#: mx.c:859
+#: mx.c:872
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Μετακίνηση αναγνωσμένων μηνυμάτων στο %s;"
 
 #
-#: mx.c:871 mx.c:1124
+#: mx.c:884 mx.c:1137
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Καθαρισμός %d διεγραμμένου μηνήματος;"
 
 #
-#: mx.c:871 mx.c:1124
+#: mx.c:884 mx.c:1137
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Καθαρισμός %d διεγραμμένων μηνυμάτων;"
 
 #
-#: mx.c:895
+#: mx.c:908
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Μετακίνηση αναγνωσμένων μηνυμάτων στο %s..."
 
 #
-#: mx.c:953 mx.c:1115
+#: mx.c:966 mx.c:1128
 msgid "Mailbox is unchanged."
 msgstr "Δεν έγινε αλλαγή στο γραμματοκιβώτιο "
 
 #
-#: mx.c:989
+#: mx.c:1002
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d κρατήθηκαν, %d μετακινήθηκαν, %d διαγράφθηκαν."
 
 #
-#: mx.c:992 mx.c:1162
+#: mx.c:1005 mx.c:1175
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d κρατήθηκαν, %d διαγράφθηκαν."
 
 #
-#: mx.c:1100
+#: mx.c:1113
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr "Πατήστε '%s' για να ενεργοποιήσετε την εγγραφή!"
 
 #
-#: mx.c:1102
+#: mx.c:1115
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Χρησιμοποιήστε το 'toggle-write' για να ενεργοποιήσετε την εγγραφή!"
 
 #
-#: mx.c:1104
+#: mx.c:1117
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Το γραμματοκιβώτιο είναι σημειωμένο μη εγγράψιμο. %s"
 
 #
-#: mx.c:1159
+#: mx.c:1172
 msgid "Mailbox checkpointed."
 msgstr "Το γραμματοκιβώτιου σημειώθηκε."
 
 #
-#: mx.c:1459
+#: mx.c:1472
 msgid "Can't write message"
 msgstr "Αδυναμία εγγραφής του μηνύματος"
 
@@ -3497,13 +3505,13 @@ msgid "[-- PGP output follows (current time: %c) --]\n"
 msgstr "[-- Ακολουθεί έξοδος του PGP (τρέχουσα ώρα: %c) --]\n"
 
 #
-#: pgp.c:246
+#: pgp.c:283
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
 msgstr "[-- Σφάλμα: αδυναμία στη δημιουργία υποδιεργασίας PGP! --]\n"
 
 #
 # pgp.c:347
-#: pgp.c:273
+#: pgp.c:312
 msgid ""
 "\n"
 "[-- End of PGP output --]\n"
@@ -3515,7 +3523,7 @@ msgstr ""
 
 #
 # pgp.c:353
-#: pgp.c:279
+#: pgp.c:318
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -3525,13 +3533,13 @@ msgstr ""
 
 #
 # pgp.c:355
-#: pgp.c:281
+#: pgp.c:320
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- ΕΝΑΡΞΗ ΟΜΑΔΑΣ ΔΗΜΟΣΙΩΝ ΚΛΕΙΔΙΩΝ PGP --]\n"
 
 #
 # pgp.c:357
-#: pgp.c:283
+#: pgp.c:322
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -3541,7 +3549,7 @@ msgstr ""
 
 #
 # pgp.c:459
-#: pgp.c:385
+#: pgp.c:423
 msgid ""
 "\n"
 "[-- END PGP MESSAGE --]\n"
@@ -3551,13 +3559,13 @@ msgstr ""
 
 #
 # pgp.c:461
-#: pgp.c:387
+#: pgp.c:425
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- ΤΕΛΟΣ ΟΜΑΔΑΣ ΔΗΜΟΣΙΩΝ ΚΛΕΙΔΙΩΝ PGP --]\n"
 
 #
 # pgp.c:463
-#: pgp.c:389
+#: pgp.c:427
 msgid ""
 "\n"
 "[-- END PGP SIGNED MESSAGE --]\n"
@@ -3566,7 +3574,7 @@ msgstr ""
 "[-- ΤΕΛΟΣ ΥΠΟΓΕΓΡΑΜΜΕΝΟΥ PGP ΜΗΝΥΜΑΤΟΣ --]\n"
 
 #
-#: pgp.c:402
+#: pgp.c:442
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -3576,7 +3584,7 @@ msgstr ""
 
 #
 # pgp.c:669 pgp.c:894
-#: pgp.c:617 pgp.c:908
+#: pgp.c:710 pgp.c:1001
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -3584,7 +3592,7 @@ msgstr ""
 "[-- Τέλος της εξόδου PGP --]\n"
 "\n"
 
-#: pgp.c:665
+#: pgp.c:758
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
 "\n"
@@ -3594,7 +3602,7 @@ msgstr ""
 
 #
 # handler.c:1378
-#: pgp.c:673
+#: pgp.c:766
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -3603,7 +3611,7 @@ msgstr ""
 "[-- Σφάλμα: Άγνωστο πολυμερές/υπογεγραμμένο πρωτόκολλο %s! --]\n"
 "\n"
 
-#: pgp.c:697
+#: pgp.c:790
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -3615,7 +3623,7 @@ msgstr ""
 #
 # pgp.c:676
 #. Now display the signed body
-#: pgp.c:707
+#: pgp.c:800
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -3623,7 +3631,7 @@ msgstr ""
 "[-- Τα επόμενα δεδομένα είναι υπογεγραμμένα --]\n"
 "\n"
 
-#: pgp.c:713
+#: pgp.c:806
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -3633,7 +3641,7 @@ msgstr ""
 
 #
 # pgp.c:682
-#: pgp.c:719
+#: pgp.c:812
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -3643,13 +3651,13 @@ msgstr ""
 
 #
 # pgp.c:801
-#: pgp.c:819
+#: pgp.c:912
 msgid "Internal error. Inform <roessler@guug.de>."
 msgstr "Εσωτερικό σφάλμα. Πληροφορήστε <roessler@guug.de>."
 
 #
 # pgp.c:865
-#: pgp.c:879
+#: pgp.c:972
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -3659,7 +3667,7 @@ msgstr ""
 
 #
 # pgp.c:958
-#: pgp.c:972
+#: pgp.c:1065
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -3668,13 +3676,13 @@ msgstr ""
 "\n"
 
 #
-#: pgp.c:985
+#: pgp.c:1078
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Σφάλμα: δε μπορώ να δημιουργήσω προσωρινό αρχείο! --]\n"
 
 #
 # pgp.c:980
-#: pgp.c:994
+#: pgp.c:1087
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -3684,7 +3692,7 @@ msgstr ""
 
 #
 # pgp.c:988
-#: pgp.c:1012
+#: pgp.c:1105
 msgid ""
 "\n"
 "[-- End of PGP/MIME encrypted data --]\n"
@@ -3694,30 +3702,30 @@ msgstr ""
 
 #
 # pgp.c:1070
-#: pgp.c:1092
+#: pgp.c:1185
 msgid "Can't open PGP subprocess!"
 msgstr "Αδυναμία ανοίγματος υποδιεργασίας PGP!"
 
 #
 # pgp.c:1194
-#: pgp.c:1219
+#: pgp.c:1312
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Να χρησιμοποιηθεί keyID = \"%s\" για το %s;"
 
 #
 # pgp.c:1200
-#: pgp.c:1246
+#: pgp.c:1339
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Εισηγάγετε keyID για το %s: "
 
-#: pgp.c:1456
+#: pgp.c:1549
 msgid "Can't invoke PGP"
 msgstr "Αδυναμία κλήσης του PGP"
 
 #
-#: pgp.c:1560
+#: pgp.c:1653
 msgid "Create an application/pgp message?"
 msgstr "Δημιουργεί ένα application/pgp μήνυμα;"
 
@@ -3894,20 +3902,20 @@ msgstr "%s [%d από %d μηνύματα διαβάστηκαν]"
 msgid "Server closed connection!"
 msgstr "Η σύνδεση με τον εξυπηρετητή έκλεισε!"
 
-#: pop_auth.c:193
+#: pop_auth.c:190
 msgid "Authenticating (APOP)..."
 msgstr "Αυθεντικοποίηση (APOP)..."
 
-#: pop_auth.c:217
+#: pop_auth.c:214
 msgid "APOP authentication failed."
 msgstr "Αυθεντικοποίηση APOP απέτυχε."
 
 #
-#: pop_auth.c:252
+#: pop_auth.c:249
 msgid "Command USER is not supported by server."
 msgstr "Η εντολή USER δεν υποστηρίζετε από το διακομιστή."
 
-#: pop_auth.c:359
+#: pop_auth.c:356
 msgid "Authentication method is unknown."
 msgstr "Άγνωστη μέθοδος αυθεντικοποίησης."
 
@@ -3974,23 +3982,23 @@ msgid "Waiting for response..."
 msgstr "Αναμονή απάντησης..."
 
 #
-#: query.c:191 query.c:216
+#: query.c:210 query.c:235
 msgid "Query command not defined."
 msgstr "Η εντολή ερωτήσεως δεν καθορίστηκε."
 
 #
-#: query.c:243
+#: query.c:262
 msgid "Query"
 msgstr "Ερώτηση"
 
 #
 #. Prompt for Query
-#: query.c:256 query.c:284
+#: query.c:275 query.c:303
 msgid "Query: "
 msgstr "Ερώτηση: "
 
 #
-#: query.c:267 query.c:293
+#: query.c:286 query.c:312
 #, c-format
 msgid "Query '%s'"
 msgstr "Ερώτηση '%s'"
@@ -4048,27 +4056,27 @@ msgid "Print attachment?"
 msgstr "Εκτύπωση προσαρτήσεων;"
 
 #
-#: recvattach.c:882
+#: recvattach.c:886
 msgid "Attachments"
 msgstr "Προσαρτήσεις"
 
 #
-#: recvattach.c:919
+#: recvattach.c:922
 msgid "There are no subparts to show!"
 msgstr "Δεν υπάρχουν επιμέρους τμήματα για να εμφανιστούν."
 
 #
-#: recvattach.c:967
+#: recvattach.c:983
 msgid "Can't delete attachment from POP server."
 msgstr "Αδυναμία διαγραφής προσάρτησης από τον εξυπηρετητή POP."
 
 #
-#: recvattach.c:978
+#: recvattach.c:994
 msgid "Deletion of attachments from PGP messages is unsupported."
 msgstr "Η διαγραφή προσαρτήσεων από μηνύματα PGP δεν υποστηρίζεται."
 
 #
-#: recvattach.c:998 recvattach.c:1015
+#: recvattach.c:1014 recvattach.c:1031
 msgid "Only deletion of multipart attachments is supported."
 msgstr "Μόνο η διαγραφή πολυμερών προσαρτήσεων υποστηρίζεται."
 
@@ -4374,19 +4382,19 @@ msgid "%s no longer exists!"
 msgstr "Το %s δεν υπάρχει πια!"
 
 #
-#: sendlib.c:1049
+#: sendlib.c:1057
 #, c-format
 msgid "Could not open %s"
 msgstr "Αδυναμία ανοίγματος του %s"
 
 #
-#: sendlib.c:1967
+#: sendlib.c:1981
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Σφάλμα κατά την αποστολή μηνύματος, τερματισμός θυγατρικής με %d (%s)."
 
 #
-#: sendlib.c:1973
+#: sendlib.c:1987
 msgid "Output of the delivery process"
 msgstr "Έξοδος της διεργασίας αποστολής"
 
@@ -4433,4 +4441,3 @@ msgstr "Το τρέχων μήνυμα δεν είναι ορατό στην περιορισμένη όψη"
 #: thread.c:719
 msgid "Parent message is not available."
 msgstr "Το τρέχων μήνυμα δεν είναι διαθέσιμο."
-

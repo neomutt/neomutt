@@ -1,3 +1,126 @@
+Mon Feb 26 16:35:39 2001  Thomas Roessler  <roessler@guug.de>
+
+	* pgp.c:
+	Fix behaviour with multiple signed blocks inside one application/pgp.
+
+	* pgp.c:
+	Add out-of-band signature status signalling for application/pgp with
+	clearsig.
+
+Fri Feb 23 09:13:55 2001  Thomas Roessler  <roessler@guug.de>
+
+	* imap/imap.c, mutt_ssl.c, po/ru.po: update.
+
+	* url.h: Ports are unsigned short, not short.
+
+	* po/de.po: Update.
+
+Wed Feb 21 17:02:18 2001  Thomas Roessler  <roessler@guug.de>
+
+	* po/fr.po: update.
+
+	* po/pl.po, po/sv.po: updates.
+
+Tue Feb 20 19:05:17 2001  Thomas Roessler  <roessler@guug.de>
+
+	* imap/auth_gss.c, imap/message.c: More IMAP patches from Brendan.
+
+	* sendlib.c:
+	lookup_mime_type() could overflow.  This is, however, harmless,
+	because it only works on data from local configuration files which
+	are either under the control of the user or under the control of
+	root.
+
+Mon Feb 19 18:21:53 2001  Thomas Roessler  <roessler@guug.de>
+
+	* imap/command.c: Improved error handling.
+
+	* po/de.po: There is no such thing as a "Text Anhang" in German.
+
+	* imap/imap.c, imap/imap.h, hook.c, mailbox.h, mx.c:
+	Brendan Cully's generic access() wrapper which know about IMAP.
+
+	* po/el.po: Update.
+
+Fri Feb 16 00:42:57 2001  Thomas Roessler  <roessler@guug.de>
+
+	* imap/BUGS, imap/message.c: Bugfix.  From B.C.
+
+	* imap/message.c: Fix #378.  From Brendan Cully.
+
+	* imap/imap.c: Support for \HasNoChildren.  From Brendan Cully.
+
+Thu Feb 15 16:37:27 2001  Thomas Roessler  <roessler@guug.de>
+
+	* imap/browse.c, imap/imap.c, imap/imap.h, imap/util.c, acconfig.h, configure.in, globals.h, init.h, mutt.h, muttlib.c, mutt_sasl.c, pop_auth.c, url.c:
+	Brendan Cully's latest STARTTLS patch.
+
+	* po/ja.po, configure.in: Adding ja.po.
+
+	* charset.c:
+	Fix iconv-hook.  It would segfault with x-unknown and other
+	problematic cases.
+
+	* init.h:
+	Fix the documentation of pgp_verify_sig.  It's ask-yes, not ask.
+
+Wed Feb 14 23:58:28 2001  Thomas Roessler  <roessler@guug.de>
+
+	* INSTALL: Add a comment about the sample iconv-hook files.
+
+	* doc/instdoc.sh.in, doc/Makefile.in, doc/manual.sgml.head, doc/muttrc.man.head, doc/muttrc.man.tail, contrib/iconv/iconv.aix-3.2.5.rc, contrib/iconv/iconv.aix-4.1.5.rc, contrib/iconv/iconv.aix-4.2.0.rc, contrib/iconv/iconv.aix-4.3.2.rc, contrib/iconv/iconv.freebsd-3.3.rc, contrib/iconv/iconv.glibc-2.1.3.rc, contrib/iconv/iconv.glibc-2.1.90.rc, contrib/iconv/iconv.hpux-10.01.rc, contrib/iconv/iconv.hpux-10.20.rc, contrib/iconv/iconv.hpux-11.00.rc, contrib/iconv/iconv.irix-6.5.rc, contrib/iconv/iconv.osf1-4.0a.rc, contrib/iconv/iconv.osf1-4.0d.rc, contrib/iconv/iconv.solaris-2.4.rc, contrib/iconv/iconv.solaris-2.5.1.rc, contrib/iconv/iconv.solaris-2.6-cjk.rc, contrib/iconv/iconv.solaris-2.6.rc, contrib/iconv/iconv.solaris-2.7.rc, contrib/iconv/make.sh, contrib/iconv/README, contrib/Makefile.in, mutt.h, protos.h, charset.c, configure.in, hook.c, init.h:
+	iconv-hook.
+
+	* imap/auth.c, imap/imap.c, imap/message.c, acconfig.h, configure.in, mutt_sasl.c, mutt_socket.h, mutt_ssl.c, mutt_ssl.h:
+	STARTTLS patch from Brendan Cully.
+
+	* rfc2047.c, sendlib.c:
+	Minor charset fixes.  Users can now give any character set names in
+
+Tue Feb 13 23:42:29 2001  Thomas Roessler  <roessler@guug.de>
+
+	* charset.c: Some more strange character set aliaes.
+
+	* charset.c: Add more possibly-interesting character set names.
+
+	* charset.c:
+	While I'm on it, fix a warning and remove some weired code by proper
+	use of ctype functions.
+
+	* imap/utf7.c, charset.c, charset.h, gettext.c, gnupgparse.c, handler.c, rfc2047.c, rfc2231.c, sendlib.c:
+	Change charset-hook's behaviour.
+
+	* po/id.po: update.
+
+	* po/de.po: Fix some typos.  From Björn Jacke.
+
+	* recvattach.c:
+	A little fix for those who don't have PGP installed. ;-)
+
+	* commands.c, curs_main.c, functions.h, OPS.PGP, pgp.c, pgp.h, protos.h, recvattach.c:
+	Add a function check-traditional-pgp which can be used to handle
+	old-style PGP messages and/or parts more easily.
+
+	* query.c: Match all fields when searching on the query menu.
+
+	* attach.c:
+	Fix #470:  multipart- and message-type attachments weren't handled
+	correctly.
+
+Mon Feb 12 20:42:40 2001  Thomas Roessler  <roessler@guug.de>
+
+	* curs_lib.c: Fix '?' in the file name dialogue.  Fixes #468, #465.
+
+	* po/sv.po, po/tr.po, po/uk.po, po/zh_CN.GB2312.po, po/zh_TW.Big5.po, po/pl.po, po/pt_BR.po, po/ru.po, po/sk.po, po/eo.po, po/es.po, po/fr.po, po/gl.po, po/id.po, po/it.po, po/ko.po, po/lt.po, po/nl.po, po/cs.po, po/da.po, po/de.po, po/el.po, reldate.h, VERSION, ChangeLog:
+	automatic post-release commit for mutt-1.3.15
+
+	* NEWS: Tell users about some of the new features.
+
+	* pgppacket.c: Don't free(NULL).
+
+	* mutt.h, pgp.c, pgp.h, pgplib.c, pgplib.h, pgpmicalg.c, pgppacket.c, pgppacket.h, pgppubring.c, postpone.c, protos.h, send.c, sendlib.c, compose.c, configure.in, gnupgparse.c, init.h, Makefile.am:
+	Auto-detect the micalg used with PGP/MIME signatures.
+
 Mon Feb 12 17:48:25 2001  Thomas Roessler  <roessler@guug.de>
 
 	* NEWS: Tell users about some of the new features.

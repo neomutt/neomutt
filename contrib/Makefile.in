@@ -63,11 +63,11 @@ dist distdir: Makefile $(DISTFILES)
 			|| cp -p $(srcdir)/$$file $(distdir); 	\
 	done
 	mkdir -p $(distdir)/iconv
-	for file in $(ICONV_DISTFILES) ; do
+	for file in $(ICONV_DISTFILES) ; do					\
 		ln $(srcdir)/iconv/$$file $(distdir)/iconv 2> /dev/null 	\
 			|| cp -p $(srcdir)/iconv/$$file $(distdir)/iconv; 	\
 	done
-	for file in $(srcdir)/iconv/*.rc ; do
+	for file in $(srcdir)/iconv/*.rc ; do					\
 		ln $$file $(distdir)/iconv 2> /dev/null				\
 			|| cp -p $$file $(distdir)/iconv ;			\
 	done

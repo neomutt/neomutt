@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt 1.3.14i\n"
-"POT-Creation-Date: 2001-02-12 18:52+0100\n"
+"POT-Creation-Date: 2001-02-27 11:50+0100\n"
 "PO-Revision-Date: 2001-02-01 17:15+0200\n"
 "Last-Translator: Fatih Demir <kabalak@gmx.net>\n"
 "Language-Team: GNOME Turk <gnome-turk@gnome.org>\n"
@@ -35,7 +35,7 @@ msgid "Select"
 msgstr "Seç  "
 
 #. __STRCAT_CHECKED__
-#: addrbook.c:33 browser.c:43 compose.c:92 curs_main.c:380 mutt_ssl.c:531
+#: addrbook.c:33 browser.c:43 compose.c:92 curs_main.c:380 mutt_ssl.c:617
 #: pager.c:1460 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr ""
@@ -82,7 +82,7 @@ msgstr "Yeni dosya: "
 msgid "Alias added."
 msgstr "alias: adres yok"
 
-#: attach.c:111 attach.c:238 attach.c:431 attach.c:889
+#: attach.c:111 attach.c:238 attach.c:431 attach.c:890
 msgid "Can't match nametemplate, continue?"
 msgstr ""
 
@@ -141,7 +141,7 @@ msgstr "Eklenti kaydedildi."
 msgid "Write fault!"
 msgstr "Yazma hatasý!"
 
-#: attach.c:973
+#: attach.c:974
 msgid "I don't know how to print that!"
 msgstr "Bunu nasýl yazdýracaðýmý bilinmiyor!"
 
@@ -285,11 +285,11 @@ msgstr "siyah-beyaz : eksik argüman"
 msgid "%s: no such attribute"
 msgstr "böyle bir ayar yok : %s"
 
-#: color.c:690 hook.c:61 hook.c:69 keymap.c:697
+#: color.c:690 hook.c:62 hook.c:70 keymap.c:697
 msgid "too few arguments"
 msgstr "çok az seçenek"
 
-#: color.c:699 hook.c:75
+#: color.c:699 hook.c:76
 msgid "too many arguments"
 msgstr "çok fazla seçenek"
 
@@ -302,7 +302,7 @@ msgstr "varsayýlan renkler desteklenmiyor"
 msgid "Verify PGP signature?"
 msgstr "PGP imzasý doðrulansýn mý?"
 
-#: commands.c:105 pgp.c:1566 pgpkey.c:491 postpone.c:517
+#: commands.c:105 pgp.c:1659 pgpkey.c:491 postpone.c:517
 msgid "Invoking PGP..."
 msgstr "PGP'yi çaðýrýlýyor..."
 
@@ -668,11 +668,11 @@ msgstr "Hiç bir eposta kutusu açýk deðil."
 msgid "There are no messages."
 msgstr "Ileti yok."
 
-#: curs_main.c:61 mx.c:1109 pager.c:62 recvattach.c:47
+#: curs_main.c:61 mx.c:1122 pager.c:62 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "eposta kutusu salt-okunur."
 
-#: curs_main.c:62 pager.c:63 recvattach.c:813
+#: curs_main.c:62 pager.c:63 recvattach.c:817
 msgid "Function not permitted in attach-message mode."
 msgstr "Iþlev ileti ekleme mödüsünde yasaktýr."
 
@@ -782,7 +782,7 @@ msgstr "Eposta kutusunu salt-okunur aç"
 msgid "Open mailbox"
 msgstr "eposta kutusunu aç"
 
-#: curs_main.c:963 mx.c:491 mx.c:637
+#: curs_main.c:963 mx.c:504 mx.c:650
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s bir eposta kutusu deðildir!"
@@ -1100,7 +1100,7 @@ msgstr ""
 msgid "Help for %s"
 msgstr "%s yardýmý"
 
-#: hook.c:245
+#: hook.c:246
 #, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr ""
@@ -1134,19 +1134,19 @@ msgstr "GSSAPI doðrulamasý baþarýsýz oldu."
 msgid "LOGIN disabled on this server."
 msgstr "Bu sunucuda LOGIN kapalýdýr."
 
-#: imap/auth_login.c:43 pop_auth.c:232
+#: imap/auth_login.c:43 pop_auth.c:229
 msgid "Logging in..."
 msgstr "Giriþ yapýlýyor..."
 
-#: imap/auth_login.c:63 pop_auth.c:275
+#: imap/auth_login.c:63 pop_auth.c:272
 msgid "Login failed."
 msgstr "Giriþ baþærýsýz oldu."
 
-#: imap/auth_sasl.c:86 pop_auth.c:79
+#: imap/auth_sasl.c:86 pop_auth.c:76
 msgid "Authenticating (SASL)..."
 msgstr "Doðrulanýyor (SASL)..."
 
-#: imap/auth_sasl.c:164 pop_auth.c:157
+#: imap/auth_sasl.c:164 pop_auth.c:154
 msgid "SASL authentication failed."
 msgstr "SASL doðrulamasý baþarasýz oldu."
 
@@ -1158,75 +1158,79 @@ msgstr "Isim yüzeyleri alýnýyor..."
 msgid "Getting folder list..."
 msgstr "Dizin listesi alýnýyor..."
 
-#: imap/browse.c:264
+#: imap/browse.c:266
 msgid "Create mailbox: "
 msgstr "Eposta kutusunu yarat:"
 
-#: imap/browse.c:270
+#: imap/browse.c:272
 msgid "Mailbox created."
 msgstr "Eposta kutusu yaratýldý."
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
 #.
-#: imap/command.c:312
+#: imap/command.c:316
 msgid "Fatal error.  Message count is out of sync!"
 msgstr "Aðýr hata. Ileti sayýlarý karýþtý!"
 
-#: imap/imap.c:89
+#: imap/imap.c:136
 #, c-format
 msgid "Closing connection to %s..."
 msgstr "Baðlantý %s kapatýlýyor..."
 
-#: imap/imap.c:247
+#: imap/imap.c:294
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "Bu IMAP sunucusu çok eski. Mutt bu sunucuyla çalýþmaz."
 
-#: imap/imap.c:315
+#: imap/imap.c:363
 #, fuzzy, c-format
 msgid "Connection to %s failed."
 msgstr "%s'e baðlanýlýyor..."
 
-#: imap/imap.c:453
+#: imap/imap.c:383
+msgid "Secure connection with TLS?"
+msgstr ""
+
+#: imap/imap.c:535
 #, c-format
 msgid "Selecting %s..."
 msgstr "%s seçiliyor..."
 
 #. STATUS not supported
-#: imap/imap.c:623
+#: imap/imap.c:705
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Bu sunucudaki IMAP eposta kutularýna ileti eklenemiyor"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:632 imap/message.c:579 muttlib.c:1144
+#: imap/imap.c:714 imap/message.c:595 muttlib.c:1155
 #, c-format
 msgid "Create %s?"
 msgstr "%s yaratýlsýn mý?"
 
-#: imap/imap.c:668
+#: imap/imap.c:750
 msgid "Closing connection to IMAP server..."
 msgstr "IMAP sunucusuna varolan baðlantý kapatýlýyor..."
 
-#: imap/imap.c:831 pop.c:458
+#: imap/imap.c:913 pop.c:458
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "%d ileti silinmek için iþaretlenmiþ..."
 
-#: imap/imap.c:850
+#: imap/imap.c:932
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Ileti durum iþaretleri kaydediliyor... [%d/%d]"
 
-#: imap/imap.c:907
+#: imap/imap.c:989
 msgid "Expunging messages from server..."
 msgstr "Iletileri sunucudan sil..."
 
-#: imap/imap.c:1183
+#: imap/imap.c:1269
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "%s'e abone olunuyor..."
 
-#: imap/imap.c:1185
+#: imap/imap.c:1271
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "%s'deki abonelik feshediliyor..."
@@ -1236,38 +1240,38 @@ msgstr "%s'deki abonelik feshediliyor..."
 msgid "Unable to fetch headers from this IMAP server version."
 msgstr "Bu IMAP sunucu neslinden baþlýklarý alýnamýyor."
 
-#: imap/message.c:92 pop.c:209
+#: imap/message.c:93 pop.c:209
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Ileti baþlýklarýný alýnýyor... [%d/%d]"
 
-#: imap/message.c:237 pop.c:336
+#: imap/message.c:239 pop.c:336
 msgid "Fetching message..."
 msgstr "Ileti alýnýyor..."
 
-#: imap/message.c:276 pop.c:373
+#: imap/message.c:278 pop.c:373
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Ileti sayýsý yanlýþtýr. Eposta kutusu yeniden açilmasý denenebilir."
 
-#: imap/message.c:468
+#: imap/message.c:484
 msgid "Uploading message ..."
 msgstr "Ileti yükleniyor..."
 
-#: imap/message.c:557
+#: imap/message.c:573
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "%d ileti %s'e kopyalanýyor..."
 
-#: imap/message.c:561
+#: imap/message.c:577
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "%d ileti %s'e kopyalanýyor..."
 
-#: imap/util.c:43
+#: imap/util.c:190
 msgid "Continue?"
 msgstr "Devam edilsin mi?"
 
-#: imap/util.c:49
+#: imap/util.c:196
 #, c-format
 msgid "%s [%s]\n"
 msgstr "%s [%s]\n"
@@ -2136,30 +2140,34 @@ msgid "make decrypted copy"
 msgstr ""
 
 #: keymap_alldefs.h:184
-msgid "Accept the chain constructed"
+msgid "check for classic pgp"
 msgstr ""
 
 #: keymap_alldefs.h:185
-msgid "Append a remailer to the chain"
+msgid "Accept the chain constructed"
 msgstr ""
 
 #: keymap_alldefs.h:186
-msgid "Insert a remailer into the chain"
+msgid "Append a remailer to the chain"
 msgstr ""
 
 #: keymap_alldefs.h:187
-msgid "Delete a remailer from the chain"
+msgid "Insert a remailer into the chain"
 msgstr ""
 
 #: keymap_alldefs.h:188
-msgid "Select the previous element of the chain"
+msgid "Delete a remailer from the chain"
 msgstr ""
 
 #: keymap_alldefs.h:189
-msgid "Select the next element of the chain"
+msgid "Select the previous element of the chain"
 msgstr ""
 
 #: keymap_alldefs.h:190
+msgid "Select the next element of the chain"
+msgstr ""
+
+#: keymap_alldefs.h:191
 msgid "send the message through a mixmaster remailer chain"
 msgstr ""
 
@@ -2453,32 +2461,32 @@ msgstr "Iþaretleme desteklenmiyor."
 msgid "Reading %s... %d"
 msgstr "%s okunuyor... %d"
 
-#: muttlib.c:807
+#: muttlib.c:818
 msgid "File is a directory, save under it?"
 msgstr "Dosya bir dizin, dizin altýnda kaydedilsin mi?"
 
-#: muttlib.c:812
+#: muttlib.c:823
 msgid "File under directory: "
 msgstr "Dosyayý dizin altýnda kaydet: "
 
-#: muttlib.c:824
+#: muttlib.c:835
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Dosya zaten var, ü(s)tüne yaz, (e)kle yoksa i(p)tal mý?"
 
-#: muttlib.c:824
+#: muttlib.c:835
 msgid "oac"
 msgstr "sep"
 
-#: muttlib.c:1111
+#: muttlib.c:1122
 msgid "Can't save message to POP mailbox."
 msgstr "Ileti POP eposta kutusuna kaydedilmiyor."
 
-#: muttlib.c:1120
+#: muttlib.c:1131
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s bir eposta kutusu deðil!"
 
-#: muttlib.c:1126
+#: muttlib.c:1137
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Iletiler %s'e eklensin mi?"
@@ -2511,109 +2519,109 @@ msgstr "%s'e baðlanýlýyor..."
 msgid "Could not connect to %s (%s)."
 msgstr "%s (%s)'e baðlanýlýnamadý."
 
-#: mutt_ssl.c:117
+#: mutt_ssl.c:172
 msgid "Failed to find enough entropy on your system"
 msgstr ""
 
-#: mutt_ssl.c:132
+#: mutt_ssl.c:196
 #, c-format
 msgid "Filling entropy pool: %s...\n"
 msgstr ""
 
-#: mutt_ssl.c:140
+#: mutt_ssl.c:204
 #, c-format
 msgid "%s has insecure permissions!"
 msgstr "%s güvenilir eriþim haklarýna sahip deðildir"
 
-#: mutt_ssl.c:159
+#: mutt_ssl.c:223
 msgid "SSL disabled due the lack of entropy"
 msgstr ""
 
-#: mutt_ssl.c:246
+#: mutt_ssl.c:335
 msgid "Unable to get certificate from peer"
 msgstr ""
 
-#: mutt_ssl.c:257
+#: mutt_ssl.c:343
 #, c-format
 msgid "SSL connection using %s (%s)"
 msgstr "%s (%s) kullanarak SSL baðlantýsý kuruluyor"
 
-#: mutt_ssl.c:287
+#: mutt_ssl.c:373
 msgid "Unknown"
 msgstr "Bilinmiyor"
 
-#: mutt_ssl.c:312
+#: mutt_ssl.c:398
 msgid "[unable to calculate]"
 msgstr "[hesaplanamýyor]"
 
-#: mutt_ssl.c:330
+#: mutt_ssl.c:416
 msgid "[invalid date]"
 msgstr "[geçersiz tarih]"
 
-#: mutt_ssl.c:405
+#: mutt_ssl.c:491
 msgid "Server certificate is not yet valid"
 msgstr "Sunucu sertifikasý daha geçerli deðildir"
 
-#: mutt_ssl.c:412
+#: mutt_ssl.c:498
 msgid "Server certificate has expired"
 msgstr "Sunucu sertifikasýnýn süresi bitmiþtir"
 
-#: mutt_ssl.c:485
+#: mutt_ssl.c:571
 msgid "This certificate belongs to:"
 msgstr "Sertifikanýn sahibi kuruluþ:"
 
-#: mutt_ssl.c:495
+#: mutt_ssl.c:581
 msgid "This certificate was issued by:"
 msgstr "Sertifikayý veren kuruluþ:"
 
-#: mutt_ssl.c:505
+#: mutt_ssl.c:591
 msgid "This certificate is valid"
 msgstr "Bu sertifika geçerlidir"
 
-#: mutt_ssl.c:506
+#: mutt_ssl.c:592
 #, c-format
 msgid "   from %s"
 msgstr "   %s'den"
 
-#: mutt_ssl.c:508
+#: mutt_ssl.c:594
 #, c-format
 msgid "     to %s"
 msgstr "     %s'e"
 
-#: mutt_ssl.c:514
+#: mutt_ssl.c:600
 #, c-format
 msgid "Fingerprint: %s"
 msgstr ""
 
-#: mutt_ssl.c:516
+#: mutt_ssl.c:602
 msgid "SSL Certificate check"
 msgstr "SSL sertifika doðrulamasý"
 
-#: mutt_ssl.c:519
+#: mutt_ssl.c:605
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)ed'et, (s)adece bu defa , (h)erzaman kabul et"
 
-#: mutt_ssl.c:520
+#: mutt_ssl.c:606
 msgid "roa"
 msgstr "rsh"
 
-#: mutt_ssl.c:524
+#: mutt_ssl.c:610
 msgid "(r)eject, accept (o)nce"
 msgstr "(r)ed'et, (s)adece bu defalýðýna kabul et"
 
-#: mutt_ssl.c:525
+#: mutt_ssl.c:611
 msgid "ro"
 msgstr "rs"
 
-#: mutt_ssl.c:529 pgpkey.c:442
+#: mutt_ssl.c:615 pgpkey.c:442
 msgid "Exit  "
 msgstr "Çýk  "
 
-#: mutt_ssl.c:554
+#: mutt_ssl.c:640
 msgid "Warning: Couldn't save certificate"
 msgstr "Ikaz: Sertifika kaydedilemedi"
 
-#: mutt_ssl.c:556
+#: mutt_ssl.c:642
 msgid "Certificate saved"
 msgstr "Sertifika kaydedildi"
 
@@ -2645,79 +2653,79 @@ msgstr ""
 msgid "Waiting for flock attempt... %d"
 msgstr ""
 
-#: mx.c:574
+#: mx.c:587
 #, c-format
 msgid "Couldn't lock %s\n"
 msgstr ""
 
-#: mx.c:662
+#: mx.c:675
 #, c-format
 msgid "Reading %s..."
 msgstr "%s okunuyor..."
 
-#: mx.c:761
+#: mx.c:774
 #, c-format
 msgid "Writing %s..."
 msgstr "%s yazýlýyor..."
 
-#: mx.c:794
+#: mx.c:807
 #, c-format
 msgid "Could not synchronize mailbox %s!"
 msgstr "Eposta kutusu %s'yi eþitlenemedi!"
 
-#: mx.c:859
+#: mx.c:872
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Okunan iletiler %s'e taþýnsýn mý?"
 
-#: mx.c:871 mx.c:1124
+#: mx.c:884 mx.c:1137
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Silmek için iþaretlenmiþ %d ileti silinsin mi?"
 
-#: mx.c:871 mx.c:1124
+#: mx.c:884 mx.c:1137
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Silmek için iþaretlenmiþ %d ileti silinsin mi?"
 
-#: mx.c:895
+#: mx.c:908
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Okunan iletiler %s'e taþýnýyor..."
 
-#: mx.c:953 mx.c:1115
+#: mx.c:966 mx.c:1128
 msgid "Mailbox is unchanged."
 msgstr "eposta kutusu deðiþtirilmedi."
 
-#: mx.c:989
+#: mx.c:1002
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d kaldý, %d taþýndý, %d silindi."
 
-#: mx.c:992 mx.c:1162
+#: mx.c:1005 mx.c:1175
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d kaldý, %d silindi."
 
-#: mx.c:1100
+#: mx.c:1113
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Yazabilir yapmak icýn '%s'e basýlýr"
 
-#: mx.c:1102
+#: mx.c:1115
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "'toggle-write' ile yeniden yazýlabilir yapabilinir!"
 
-#: mx.c:1104
+#: mx.c:1117
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "eposta kutusu yazýlamayabilir yapýldý. %s"
 
-#: mx.c:1159
+#: mx.c:1172
 msgid "Mailbox checkpointed."
 msgstr "Eposta kutusu kontrol edildi."
 
-#: mx.c:1459
+#: mx.c:1472
 msgid "Can't write message"
 msgstr "Iletiyi yazamadým"
 
@@ -2869,11 +2877,11 @@ msgstr "PGP parolasý unutuldu."
 msgid "[-- PGP output follows (current time: %c) --]\n"
 msgstr "[-- PGP geri verisi (geçerli zaman: %c) --]\n"
 
-#: pgp.c:246
+#: pgp.c:283
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
 msgstr "[-- Hata: PGP altiþlemi yaratýlamadý! --]\n"
 
-#: pgp.c:273
+#: pgp.c:312
 msgid ""
 "\n"
 "[-- End of PGP output --]\n"
@@ -2883,7 +2891,7 @@ msgstr ""
 "[-- PGP geri veri sonu --]\n"
 "\n"
 
-#: pgp.c:279
+#: pgp.c:318
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -2891,11 +2899,11 @@ msgstr ""
 "[-- PGP ILETISI BAÞI --]\n"
 "\n"
 
-#: pgp.c:281
+#: pgp.c:320
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP RESMI ANAHTAR BÖLÜMÜ BAÞI --]\n"
 
-#: pgp.c:283
+#: pgp.c:322
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -2903,7 +2911,7 @@ msgstr ""
 "[-- PGP IMZALANMIÞ ILETI BAÞI --]\n"
 "\n"
 
-#: pgp.c:385
+#: pgp.c:423
 msgid ""
 "\n"
 "[-- END PGP MESSAGE --]\n"
@@ -2911,11 +2919,11 @@ msgstr ""
 "\n"
 "[-- PGP ILETI SONU --]\n"
 
-#: pgp.c:387
+#: pgp.c:425
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP RESMI ANAHTAR BÖLÜMÜ SONU --]\n"
 
-#: pgp.c:389
+#: pgp.c:427
 msgid ""
 "\n"
 "[-- END PGP SIGNED MESSAGE --]\n"
@@ -2923,7 +2931,7 @@ msgstr ""
 "\n"
 "[-- PGP IMZALANMIÞ ILETI SONU --]\n"
 
-#: pgp.c:402
+#: pgp.c:442
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -2931,7 +2939,7 @@ msgstr ""
 "[-- Hata: PGP iletisinin baþýný bulamadým! --]\n"
 "\n"
 
-#: pgp.c:617 pgp.c:908
+#: pgp.c:710 pgp.c:1001
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -2939,7 +2947,7 @@ msgstr ""
 "[-- PGP geri verisi sonu --]\n"
 "\n"
 
-#: pgp.c:665
+#: pgp.c:758
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
 "\n"
@@ -2947,7 +2955,7 @@ msgstr ""
 "[-- Hata: Hatalý multipart/signed þekili! --]\n"
 "\n"
 
-#: pgp.c:673
+#: pgp.c:766
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -2956,7 +2964,7 @@ msgstr ""
 "[-- Hata: Bilinmeyen multipart/signed protokolu %s! --]\n"
 "\n"
 
-#: pgp.c:697
+#: pgp.c:790
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -2966,7 +2974,7 @@ msgstr ""
 "\n"
 
 #. Now display the signed body
-#: pgp.c:707
+#: pgp.c:800
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -2974,7 +2982,7 @@ msgstr ""
 "[-- Bu bilgi imzalanmýþtýr --]\n"
 "\n"
 
-#: pgp.c:713
+#: pgp.c:806
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -2982,7 +2990,7 @@ msgstr ""
 "[-- Ikaz: Hiç bir imza bulunmamýþtýr. --]\n"
 "\n"
 
-#: pgp.c:719
+#: pgp.c:812
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -2990,11 +2998,11 @@ msgstr ""
 "\n"
 "[-- Imzalanmýþ bilginin sonu --]\n"
 
-#: pgp.c:819
+#: pgp.c:912
 msgid "Internal error. Inform <roessler@guug.de>."
 msgstr "Iç hata. Thomas R. <roessler@guug.de>'ye haber ver."
 
-#: pgp.c:879
+#: pgp.c:972
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -3002,7 +3010,7 @@ msgstr ""
 "[-- Hata: PGP altiþlemini yaratamadým! --]\n"
 "\n"
 
-#: pgp.c:972
+#: pgp.c:1065
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -3010,11 +3018,11 @@ msgstr ""
 "[-- Hata: Hatalý PGP/MIME iletisi! --]\n"
 "\n"
 
-#: pgp.c:985
+#: pgp.c:1078
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Hata: geçici dosya yaratýlamýyor! --]\n"
 
-#: pgp.c:994
+#: pgp.c:1087
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -3022,7 +3030,7 @@ msgstr ""
 "[-- Bu bilgi PGP/MIME ile þifrelenmiþtir --]\n"
 "\n"
 
-#: pgp.c:1012
+#: pgp.c:1105
 msgid ""
 "\n"
 "[-- End of PGP/MIME encrypted data --]\n"
@@ -3030,25 +3038,25 @@ msgstr ""
 "\n"
 "[-- PGP/MIME ile þifrelenmiþ bilgi sonu --]\n"
 
-#: pgp.c:1092
+#: pgp.c:1185
 msgid "Can't open PGP subprocess!"
 msgstr "PGP altiþlemi açýlamýyor!"
 
-#: pgp.c:1219
+#: pgp.c:1312
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "%s için anahtar numara = \"%s\" kullanýlsýn mý?"
 
-#: pgp.c:1246
+#: pgp.c:1339
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "%s için anahtar numarasýný belirleyin: "
 
-#: pgp.c:1456
+#: pgp.c:1549
 msgid "Can't invoke PGP"
 msgstr "PGP çalýþtýrýlamýyor"
 
-#: pgp.c:1560
+#: pgp.c:1653
 msgid "Create an application/pgp message?"
 msgstr "application/pgp iletisi yaratýlsýn mý?"
 
@@ -3186,19 +3194,19 @@ msgstr "%1$s [ %3$d iletiden %2$d ileti okundu]"
 msgid "Server closed connection!"
 msgstr "Sunucu baðlantýyý kesti!"
 
-#: pop_auth.c:193
+#: pop_auth.c:190
 msgid "Authenticating (APOP)..."
 msgstr "Doðrulanýyor (APOP)..."
 
-#: pop_auth.c:217
+#: pop_auth.c:214
 msgid "APOP authentication failed."
 msgstr "APOP doðrulamasý baþarýsýz oldu."
 
-#: pop_auth.c:252
+#: pop_auth.c:249
 msgid "Command USER is not supported by server."
 msgstr "Sunucu USER komutasýný desteklemiyor."
 
-#: pop_auth.c:359
+#: pop_auth.c:356
 msgid "Authentication method is unknown."
 msgstr "Doðrulama metodu bilinmiyor."
 
@@ -3251,20 +3259,20 @@ msgstr "Ara"
 msgid "Waiting for response..."
 msgstr "Cevap bekleniyor..."
 
-#: query.c:191 query.c:216
+#: query.c:210 query.c:235
 msgid "Query command not defined."
 msgstr "Sorgulama komutasý belirlenmedi."
 
-#: query.c:243
+#: query.c:262
 msgid "Query"
 msgstr "Sorgula"
 
 #. Prompt for Query
-#: query.c:256 query.c:284
+#: query.c:275 query.c:303
 msgid "Query: "
 msgstr "Sorgulama: "
 
-#: query.c:267 query.c:293
+#: query.c:286 query.c:312
 #, c-format
 msgid "Query '%s'"
 msgstr "Sorgulama '%s'"
@@ -3311,23 +3319,23 @@ msgstr "Iþaretli ileti(leri) yazýlsýn mý?"
 msgid "Print attachment?"
 msgstr "Eklenti yazdýrýlsýn mý?"
 
-#: recvattach.c:882
+#: recvattach.c:886
 msgid "Attachments"
 msgstr "Eklentiler"
 
-#: recvattach.c:919
+#: recvattach.c:922
 msgid "There are no subparts to show!"
 msgstr "Gösterilecek altbölümler yok!"
 
-#: recvattach.c:967
+#: recvattach.c:983
 msgid "Can't delete attachment from POP server."
 msgstr "Eklenti POP sunucusundan silinemiyor."
 
-#: recvattach.c:978
+#: recvattach.c:994
 msgid "Deletion of attachments from PGP messages is unsupported."
 msgstr "PGP iletilerinin eklentilerinin silinmesi desteklenmiyor."
 
-#: recvattach.c:998 recvattach.c:1015
+#: recvattach.c:1014 recvattach.c:1031
 msgid "Only deletion of multipart attachments is supported."
 msgstr ""
 "Sadece birden fazla bölümden oluþan eklentilerin silinmesi destekleniyor."
@@ -3583,17 +3591,17 @@ msgstr "Sýnýrlandýrma verisi bulunamadý! [bu hata rapor edilmesi gerek]"
 msgid "%s no longer exists!"
 msgstr "%s daha yok!"
 
-#: sendlib.c:1049
+#: sendlib.c:1057
 #, c-format
 msgid "Could not open %s"
 msgstr "%s açýlanamadý"
 
-#: sendlib.c:1967
+#: sendlib.c:1981
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Ileti gönderilirken hata oldu, altiþlem %d ile iptal bitirildi (%s)."
 
-#: sendlib.c:1973
+#: sendlib.c:1987
 msgid "Output of the delivery process"
 msgstr "Gönderme iþleminin geri verisi"
 
