@@ -1254,6 +1254,8 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
  * 		$weed option, honor the header weed list for user headers.
  * 	        Used for recall-message.
  * 
+ * Returns:     newly allocated envelope structure.  You should free it by
+ *              mutt_free_envelope() when envelope stay unneeded.
  */
 ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
 				   short weed)
