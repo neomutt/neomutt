@@ -198,7 +198,7 @@ void mutt_query_exit (void)
   if (mutt_yesorno (_("Exit Mutt?"), 1) == 1)
   {
     endwin ();
-    exit (0);
+    exit (1);
   }
   mutt_clear_error();
   mutt_curs_set (-1);
