@@ -1292,7 +1292,7 @@ from a send-hook.
 
 <sect1>Change settings before formatting a message<label id="message-hook">
 <p>
-Usage: <tt/display-hook/ &lsqb;!&rsqb;<em/pattern/ <em/command/
+Usage: <tt/message-hook/ &lsqb;!&rsqb;<em/pattern/ <em/command/
 
 This command can be used to execute arbitrary configuration commands
 before viewing or formatting a message based upon information about the message.
@@ -1305,8 +1305,8 @@ information on the exact format of <em/pattern/.
 
 Example:
 <tscreen><verb>
-display-hook ~a 'set pager=builtin'
-display-hook '~f freshmeat-news' 'set pager="less \"+/^  subject: .*\""'
+message-hook ~a 'set pager=builtin'
+message-hook '~f freshmeat-news' 'set pager="less \"+/^  subject: .*\""'
 </verb></tscreen>
 
 <sect1>Choosing the PGP key of the recipient<label id="pgp-hook">
@@ -1764,7 +1764,7 @@ configuration option/command.  See
 <itemize>
 <item><ref id="folder-hook" name="folder-hook">
 <item><ref id="send-hook" name="send-hook">
-<item><ref id="display-hook" name="display-hook">
+<item><ref id="message-hook" name="message-hook">
 <item><ref id="save-hook" name="save-hook">
 <item><ref id="mbox-hook" name="mbox-hook">
 <item><ref id="fcc-hook" name="fcc-hook">
@@ -1775,7 +1775,7 @@ for specific details on each type of <em/hook/ available.
 <sect2>Message Matching in Hooks<label id="pattern_hook">
 <p>
 Hooks that act upon messages (<tt/send-hook, save-hook, fcc-hook,
-display-hook/) are evaluated in a slightly different manner.  For the other
+message-hook/) are evaluated in a slightly different manner.  For the other
 types of hooks, a <ref id="regexp" name="regular expression"> is
 sufficient.  But in dealing with messages a finer grain of control is
 needed for matching since for different purposes you want to match
@@ -2684,7 +2684,7 @@ The following are the commands understood by mutt.
 <item>
 <tt><ref id="color" name="color"></tt> <em/object/ <em/foreground/ <em/background/ &lsqb; <em/regexp/ &rsqb;
 <item>
-<tt><ref id="display-hook" name="display-hook"></tt> <em/pattern/ <em/command/
+<tt><ref id="message-hook" name="message-hook"></tt> <em/pattern/ <em/command/
 <item>
 <tt><ref id="folder-hook" name="folder-hook"></tt> <em/pattern/ <em/command/
 <item>
