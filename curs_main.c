@@ -516,7 +516,7 @@ int mutt_index_menu (void)
 
     if (menu->menu == MENU_MAIN)
     {
-      if (Context)
+      if (Context && Context->hdrs)
       {
 	menu_check_recenter (menu);
 
@@ -1565,7 +1565,7 @@ int mutt_index_menu (void)
 
       case OP_CREATE_ALIAS:
 
-	mutt_create_alias (Context && Context->vcount ? CURHDR->env : NULL, NULL);
+        mutt_create_alias (Context && Context->vcount ? CURHDR->env : NULL, NULL);
 	MAYBE_REDRAW (menu->redraw);
         menu->redraw |= REDRAW_CURRENT;
 	break;
