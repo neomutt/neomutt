@@ -39,7 +39,7 @@
  * is impossible to unget function keys in SLang, so roll our own input
  * buffering routines.
  */
-static size_t UngetCount = 0;
+size_t UngetCount = 0;
 static size_t UngetBufLen = 0;
 static event_t *KeyEvent;
 

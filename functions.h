@@ -51,6 +51,8 @@ struct binding_t OpGeneric[] = {
   { "half-down", 	OP_HALF_DOWN,		"]" },
   { "help",		OP_HELP,		"?" },
   { "tag-prefix",	OP_TAG_PREFIX,		";" },
+  { "tag-prefix-cond",	OP_TAG_PREFIX_COND,	NULL },
+  { "end-cond",		OP_END_COND,		NULL },
   { "shell-escape",	OP_SHELL_ESCAPE,	"!" },
   { "select-entry",	OP_GENERIC_SELECT_ENTRY,M_ENTER_S },
   { "search",		OP_SEARCH,		"/" },

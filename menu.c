@@ -30,6 +30,8 @@
 
 extern int Charset_is_utf8; /* FIXME: bad modularisation */
 
+extern size_t UngetCount;
+
 static void print_enriched_string (int attr, unsigned char *s, int do_color)
 {
   wchar_t wc;
@@ -870,6 +872,28 @@ int mutt_menuLoop (MUTTMENU *menu)
 	i = -1;
       }
     }
+    if (i == OP_TAG_PREFIX_COND)
+    {
+      if (menu->tagged)
+      {
+	mvaddstr (LINES - 1, 0, "Tag-");
+	clrtoeol ();
+	i = km_dokey (menu->menu);
+	menu->tagprefix = 1;
+	CLEARLINE (LINES - 1);
+      }
+      else 
+      {
+	event_t tmp;
+	while(UngetCount>0)
+	{
+	  tmp=mutt_getch();
+	  if(tmp.op==OP_END_COND)break;
+	}
+	mutt_message _("Nothing to do.");
+	i = -1;
+      }
+    }
     else if (menu->tagged && option (OPTAUTOTAG))
       menu->tagprefix = 1;
     else
@@ -1030,6 +1054,9 @@ int mutt_menuLoop (MUTTMENU *menu)
 
       case OP_NULL:
 	km_error_key (menu->menu);
+	break;
+
+      case OP_END_COND:
 	break;
 
       default:

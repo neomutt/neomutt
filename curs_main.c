@@ -101,6 +101,7 @@ static const char *No_visible = N_("No visible messages.");
 #define UNREAD(h) mutt_thread_contains_unread (Context, h)
 
 extern const char *ReleaseDate;
+extern size_t UngetCount;
 
 void index_make_entry (char *s, size_t l, MUTTMENU *menu, int num)
 {
@@ -631,6 +632,40 @@ int mutt_index_menu (void)
       }
       else if (option (OPTAUTOTAG) && Context && Context->tagged)
 	tag = 1;
+
+      if (op == OP_TAG_PREFIX_COND)
+      {
+	if (!Context)
+	{
+	  mutt_error _("No mailbox is open.");
+	  continue;
+	}
+
+	if (!Context->tagged)
+	{
+	  event_t tmp;
+	  while(UngetCount>0)
+	  {
+	    tmp=mutt_getch();
+	    if(tmp.op==OP_END_COND)break;
+	  }
+	  mutt_message  _("Nothing to do.");
+	  continue;
+	}
+	tag = 1;
+
+	/* give visual indication that the next command is a tag- command */
+	mvaddstr (LINES - 1, 0, "tag-");
+	clrtoeol ();
+
+	/* get the real command */
+	if ((op = km_dokey (MENU_MAIN)) == OP_TAG_PREFIX)
+	{
+	  /* abort tag sequence */
+	  CLEARLINE (LINES-1);
+	  continue;
+	}
+      }
 
       mutt_clear_error ();
     }
@@ -2024,6 +2059,9 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 	if (CURHDR->attach_del)
 	  Context->changed = 1;
 	menu->redraw = REDRAW_FULL;
+	break;
+
+      case OP_END_COND:
 	break;
 
       case OP_WHAT_KEY:
