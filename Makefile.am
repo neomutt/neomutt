@@ -81,6 +81,8 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO \
 	ChangeLog.old mkchangelog.sh cvslog2changelog.pl mutt_idna.h \
 	snprintf.c regex.c
 
+EXTRA_SCRIPTS = smime_keys
+
 mutt_dotlock_SOURCES = mutt_dotlock.c
 mutt_dotlock_LDADD = @LIBOBJS@
 mutt_dotlock_DEPENDENCIES = @LIBOBJS@
