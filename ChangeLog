@@ -1,4 +1,8 @@
-2005-02-12 19:35:36  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
+2005-02-12 19:38:14  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
+
+	* doc/manual.sgml.head, doc/manual.sgml.tail, init.h, main.c:
+	Trivial documentation fixes (TAKAHASHI Tamotsu, Brendan Cully,
+	Paul Walker, Derek Martin).
 
 	* editmsg.c: Partially fix debian bug #275060 (editing a message
 	in a mbox loses its flags).
