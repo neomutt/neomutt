@@ -196,7 +196,7 @@ pgp_key_t crypt_pgp_ask_for_key (char *tag, char *whatfor,
 /* Check for a traditional PGP message in body B. */
 int crypt_pgp_check_traditional (FILE *fp, BODY *b, int tagged_only)
 {
-#ifdef BFNC_PGP_CHECK_TRADITIONAL
+#ifdef BNFC_PGP_CHECK_TRADITIONAL
   return BNFC_PGP_CHECK_TRADITIONAL (fp, b, tagged_only);
 #else
   return 0; /* no */
