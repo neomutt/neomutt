@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2000-1 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -29,17 +29,27 @@ typedef enum
   IMAP_AUTH_UNAVAIL
 } imap_auth_res_t;
 
-typedef imap_auth_res_t (*imap_auth_t)(IMAP_DATA* idata);
+
+typedef struct
+{
+  /* do authentication, using named method or any available if method is NULL */
+  imap_auth_res_t (*authenticate) (IMAP_DATA* idata, const char* method);
+  /* name of authentication method supported, NULL means variable. If this
+   * is not null, authenticate may ignore the second parameter. */
+  const char* method;
+} imap_auth_t;
 
 /* external authenticator prototypes */
-imap_auth_res_t imap_auth_anon (IMAP_DATA* idata);
-imap_auth_res_t imap_auth_cram_md5 (IMAP_DATA* idata);
-imap_auth_res_t imap_auth_login (IMAP_DATA* idata);
+#ifndef USE_SASL
+imap_auth_res_t imap_auth_anon (IMAP_DATA* idata, const char* method);
+imap_auth_res_t imap_auth_cram_md5 (IMAP_DATA* idata, const char* method);
+#endif
+imap_auth_res_t imap_auth_login (IMAP_DATA* idata, const char* method);
 #ifdef USE_GSS
-imap_auth_res_t imap_auth_gss (IMAP_DATA* idata);
+imap_auth_res_t imap_auth_gss (IMAP_DATA* idata, const char* method);
 #endif
 #ifdef USE_SASL
-imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata);
+imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method);
 #endif
 
 #endif /* _IMAP_AUTH_H */

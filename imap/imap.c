@@ -386,7 +386,7 @@ int imap_open_connection (IMAP_DATA* idata)
 	{
 	  if (mutt_ssl_starttls (idata->conn))
 	  {
-	    mutt_error ("Could not negotiate TLS connection");
+	    mutt_error (_("Could not negotiate TLS connection"));
 	    mutt_sleep (1);
 	    goto bail;
 	  }

@@ -31,7 +31,7 @@ static void hmac_md5 (const char* password, char* challenge,
   unsigned char* response);
 
 /* imap_auth_cram_md5: AUTH=CRAM-MD5 support. */
-imap_auth_res_t imap_auth_cram_md5 (IMAP_DATA* idata)
+imap_auth_res_t imap_auth_cram_md5 (IMAP_DATA* idata, const char* method)
 {
   char ibuf[LONG_STRING*2], obuf[LONG_STRING];
   unsigned char hmac_response[MD5_DIGEST_LEN];

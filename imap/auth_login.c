@@ -23,7 +23,7 @@
 #include "auth.h"
 
 /* imap_auth_login: Plain LOGIN support */
-imap_auth_res_t imap_auth_login (IMAP_DATA* idata)
+imap_auth_res_t imap_auth_login (IMAP_DATA* idata, const char* method)
 {
   char q_user[SHORT_STRING], q_pass[SHORT_STRING];
   char buf[STRING];

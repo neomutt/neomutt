@@ -23,7 +23,7 @@
 #include "auth.h"
 
 /* this is basically a stripped-down version of the cram-md5 method. */
-imap_auth_res_t imap_auth_anon (IMAP_DATA* idata)
+imap_auth_res_t imap_auth_anon (IMAP_DATA* idata, const char* method)
 {
   int rc;
 
