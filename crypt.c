@@ -63,12 +63,18 @@ void crypt_current_time(STATE *s, char *app_name)
   time_t t;
   char p[STRING], tmp[STRING];
 
-  t = time(NULL);
-  setlocale (LC_TIME, "");
-  snprintf (tmp, sizeof (tmp), _("[-- %s output follows(current time: %%c) --]\n"), NONULL(app_name));
-  strftime (p, sizeof (p), tmp, localtime (&t));
-  setlocale (LC_TIME, "C");
-  state_attach_puts (p, s);
+  if (option (OPTCRYPTTIMESTAMP))
+  {
+    t = time(NULL);
+    setlocale (LC_TIME, "");
+    strftime (p, sizeof (p), _(" (current time: %c)"), localtime (&t));
+    setlocale (LC_TIME, "C");
+  }
+  else
+    *p = '\0';
+
+  snprintf (tmp, sizeof (tmp), _("[-- %s output follows%s --]\n"), NONULL(app_name), p);
+  state_attach_puts (tmp, s);
 }
 
 

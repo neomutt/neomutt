@@ -1222,6 +1222,14 @@ struct option_t MuttVars[] = {
   ** noted in ``$$crypt_replysign'', that mutt is not able to find out
   ** whether an encrypted message is also signed.
   */
+  { "crypt_timestamp", DT_BOOL, R_NONE, OPTCRYPTTIMESTAMP, 1 },
+  /*
+  ** .pp
+  ** If set, mutt will include a time stamp in the lines surrounding
+  ** PGP or S/MIME output, so spoofing such lines is more difficult.
+  ** If you are using colors to mark these lines, and rely on these,
+  ** you may unset this setting.
+  */
 #ifdef HAVE_PGP
   { "pgp_verify_sig",   DT_SYN,  R_NONE, UL "crypt_verify_sig", 0},
 #endif
