@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-12 17:44+0200\n"
+"POT-Creation-Date: 1998-10-12 19:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1861,33 +1861,33 @@ msgid ""
 "  -h\t\tthis help message"
 msgstr ""
 
-#: main.c:297
+#: main.c:298
 msgid "Error initializing terminal."
 msgstr ""
 
-#: main.c:393
+#: main.c:394
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr ""
 
-#: main.c:395
+#: main.c:396
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr ""
 
-#: main.c:533
+#: main.c:534
 msgid "No recipients specified.\n"
 msgstr ""
 
-#: main.c:606
+#: main.c:607
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr ""
 
-#: main.c:626
+#: main.c:627
 msgid "No mailbox with new mail."
 msgstr ""
 
-#: main.c:660
+#: main.c:661
 msgid "Mailbox is empty."
 msgstr ""
 
@@ -2743,22 +2743,22 @@ msgstr ""
 msgid "%s no longer exists!"
 msgstr ""
 
-#: sendlib.c:692
+#: sendlib.c:695
 #, c-format
 msgid "Could not open %s"
 msgstr ""
 
-#: sendlib.c:1619
+#: sendlib.c:1622
 #, c-format
 msgid "Error sending message, child exited %d (%s).\n"
 msgstr ""
 
-#: sendlib.c:1621
+#: sendlib.c:1624
 #, c-format
 msgid "Saved output of child process to %s.\n"
 msgstr ""
 
-#: sendlib.c:1625
+#: sendlib.c:1628
 msgid "Error sending message."
 msgstr ""
 
