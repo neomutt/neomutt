@@ -38,17 +38,6 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 	if (!h->deleted)
 	{
 	  h->deleted = 1;
-	  if (ctx->magic == M_MAILDIR && option(OPTMAILDIRTRASH))
-	  {
-	      /* As with the IMAP comment below, we need to mark the
-	       * message and mailbox as changed, because deleting a message
-	       * just changes its status on disk without actually deleting
-	       * it.  Without this, the 'T' flag would never get set when
-	       * the maildir box is synched.
-	       */
-	      h->changed  = 1;
-	      if (upd_ctx) ctx->changed = 1;
-	  }
 	  if (upd_ctx) ctx->deleted++;
 #ifdef USE_IMAP
           /* deleted messages aren't treated as changed elsewhere so that the
@@ -65,17 +54,6 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
       {
 	h->deleted = 0;
 	if (upd_ctx) ctx->deleted--;
-	  if (ctx->magic == M_MAILDIR && option(OPTMAILDIRTRASH))
-	  {
-	      /* As with the IMAP comment below, we need to mark the
-	       * message and mailbox as changed, because deleting a message
-	       * just changes its status on disk without actually deleting
-	       * it.  Without this, the 'T' flag would never get set when
-	       * the maildir box is synched.
-	       */
-	      h->changed  = 1;
-	      if (upd_ctx) ctx->changed = 1;
-	  }
 #ifdef USE_IMAP
         /* see my comment above */
 	if (ctx->magic == M_IMAP) 
@@ -84,6 +62,16 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 	  if (upd_ctx) ctx->changed = 1;
 	}
 #endif
+	/* 
+	 * If the user undeletes a message which is marked as
+	 * "trash" in the maildir folder on disk, the folder has
+	 * been changed, and is marked accordingly.  However, we do
+	 * _not_ mark the message itself changed, because trashing
+	 * is checked in specific code in the maildir folder
+	 * driver. 
+	 */
+	if (ctx->magic == M_MAILDIR && upd_ctx && h->trash)
+	  ctx->changed = 1;
       }
       break;
 

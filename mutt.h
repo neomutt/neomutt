@@ -614,22 +614,26 @@ typedef struct header
   unsigned int pgp : 4;
 #endif
 
-  unsigned int mime : 1;    /* has a Mime-Version header? */
-  unsigned int flagged : 1; /* marked important? */
+  unsigned int mime : 1;    		/* has a Mime-Version header? */
+  unsigned int flagged : 1; 		/* marked important? */
   unsigned int tagged : 1;
   unsigned int deleted : 1;
   unsigned int changed : 1;
-  unsigned int attach_del : 1; /* has an attachment marked for deletion */
+  unsigned int attach_del : 1; 		/* has an attachment marked for deletion */
   unsigned int old : 1;
   unsigned int read : 1;
-  unsigned int expired : 1; /* already expired? */
-  unsigned int superseded : 1; /* got superseded? */
+  unsigned int expired : 1; 		/* already expired? */
+  unsigned int superseded : 1; 		/* got superseded? */
   unsigned int replied : 1;
-  unsigned int subject_changed : 1; /* used for threading */
-  unsigned int threaded : 1;	    /* used for threading */
-  unsigned int display_subject : 1; /* used for threading */
-  unsigned int recip_valid : 1;  /* is_recipient is valid */
-  unsigned int active : 1;	    /* message is not to be removed */
+  unsigned int subject_changed : 1; 	/* used for threading */
+  unsigned int threaded : 1;	    	/* used for threading */
+  unsigned int display_subject : 1; 	/* used for threading */
+  unsigned int recip_valid : 1;  	/* is_recipient is valid */
+  unsigned int active : 1;	    	/* message is not to be removed */
+  unsigned int trash : 1;		/* message is marked as trashed on disk.
+					 * This flag is used by the maildir_trash
+					 * option.
+					 */
   
   /* timezone of the sender of this message */
   unsigned int zhours : 5;
@@ -641,27 +645,27 @@ typedef struct header
   unsigned int matched : 1;
 
   /* the following are used to support collapsing threads  */
-  unsigned int collapsed : 1; /* is this message part of a collapsed thread? */
-  unsigned int limited : 1;   /* is this message in a limited view?  */
-  size_t num_hidden;          /* number of hidden messages in this view */
+  unsigned int collapsed : 1; 	/* is this message part of a collapsed thread? */
+  unsigned int limited : 1;   	/* is this message in a limited view?  */
+  size_t num_hidden;          	/* number of hidden messages in this view */
 
-  short recipient;	/* user_is_recipient()'s return value, cached */
+  short recipient;		/* user_is_recipient()'s return value, cached */
   
-  int pair; /* color-pair to use when displaying in the index */
+  int pair; 			/* color-pair to use when displaying in the index */
 
-  time_t date_sent;     /* time when the message was sent (UTC) */
-  time_t received;      /* time when the message was placed in the mailbox */
-  long offset;          /* where in the stream does this message begin? */
-  int lines;		/* how many lines in the body of this message? */
-  int index;		/* the absolute (unsorted) message number */
-  int msgno;		/* number displayed to the user */
-  int virtual;		/* virtual message number */
+  time_t date_sent;     	/* time when the message was sent (UTC) */
+  time_t received;      	/* time when the message was placed in the mailbox */
+  long offset;          	/* where in the stream does this message begin? */
+  int lines;			/* how many lines in the body of this message? */
+  int index;			/* the absolute (unsorted) message number */
+  int msgno;			/* number displayed to the user */
+  int virtual;			/* virtual message number */
   int score;
-  ENVELOPE *env;	/* envelope information */
-  BODY *content;	/* list of MIME parts */
+  ENVELOPE *env;		/* envelope information */
+  BODY *content;		/* list of MIME parts */
   char *path;
   
-  char *tree;            /* character string to print thread tree */
+  char *tree;           	/* character string to print thread tree */
   struct thread *thread;
 
 #ifdef MIXMASTER
@@ -669,11 +673,11 @@ typedef struct header
 #endif
 
 #ifdef USE_POP
-  int refno;		/* message number on server */
+  int refno;			/* message number on server */
 #endif
 
 #if defined USE_POP || defined USE_IMAP
-  void *data;            /* driver-specific data */
+  void *data;            	/* driver-specific data */
 #endif
 } HEADER;
 

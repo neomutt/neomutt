@@ -96,12 +96,18 @@ static short mhs_set (struct mh_sequences *mhs, int i, short f)
   return mhs->flags[i];
 }
 
+#if 0
+
+/* unused */
+
 static short mhs_unset (struct mh_sequences *mhs, int i, short f)
 {
   mhs_alloc (mhs, i);
   mhs->flags[i] &= ~f;
   return mhs->flags[i];
 }
+
+#endif
 
 static void mh_read_token (char *t, int *first, int *last)
 {
@@ -504,7 +510,7 @@ static void maildir_parse_flags(HEADER *h, const char *path)
 	break;
 
 	case 'T': /* trashed */
-
+	h->trash   = 1;
 	h->deleted = 1;
 	break;
       }
@@ -1137,6 +1143,9 @@ static int maildir_sync_message (CONTEXT *ctx, int msgno)
       /* message hasn't really changed */
       return 0;
     }
+
+    /* record that the message is possibly marked as trashed on disk */
+    h->trash = h->deleted;
     
     if (rename (oldpath, fullpath) != 0)
     {
@@ -1175,7 +1184,9 @@ int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
 	  
       }
     }
-    else if (ctx->hdrs[i]->changed || ctx->hdrs[i]->attach_del)
+    else if (ctx->hdrs[i]->changed || ctx->hdrs[i]->attach_del ||
+	     (ctx->magic == M_MAILDIR  && (option (OPTMAILDIRTRASH) || ctx->hdrs[i]->trash) 
+	      && (ctx->hdrs[i]->deleted != ctx->hdrs[i]->trash)))
     {
       if (ctx->magic == M_MAILDIR)
       {

@@ -880,7 +880,11 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
     }
   }
 
-  if (ctx->deleted)
+  /* 
+   * There is no point in asking whether or not to purge if we are
+   * just marking messages as "trash".
+   */
+  if (ctx->deleted && !(ctx->magic == M_MAILDIR && option (OPTMAILDIRTRASH)))
   {
     snprintf (buf, sizeof (buf), ctx->deleted == 1
 	     ? _("Purge %d deleted message?") : _("Purge %d deleted messages?"),
