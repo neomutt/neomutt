@@ -1,3 +1,7 @@
+2003-12-29 11:44:35  Alain Bench  <veronatif@free.fr>  (roessler)
+
+	* commands.c: Fix #844.
+
 2003-12-29 11:37:41  Patrick Welche  <prlw1@newn.cam.ac.uk>  (roessler)
 
 	* m4/gssapi.m4, mutt_sasl.c: A while ago I posted a similar
