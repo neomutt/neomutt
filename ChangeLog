@@ -1,8 +1,8 @@
-2002/12/09 18:03:55  David Shaw <dshaw@jabberwocky.com>
+2002/12/09 18:05:54  David Shaw <dshaw@jabberwocky.com>
 
-	* parse.c: Reduce the meaning of the mark_old option so it
-	only controls whether new messages are marked as old when
-	leaving the mailbox.
+	* mh.c, parse.c: Reduce the meaning of the mark_old option
+	so it only controls whether new messages are marked as old
+	when leaving the mailbox.
 
 2002/12/09 17:54:25  Jesus Climent <jesus.climent@hispalinux.es>
 
