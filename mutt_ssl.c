@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>
+ * Copyright (C) 1999-2001 Tommi Komulainen <Tommi.Komulainen@iki.fi>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -215,8 +215,15 @@ int ssl_socket_open (CONNECTION * conn)
   data->ssl = SSL_new (data->ctx);
   SSL_set_fd (data->ssl, conn->fd);
 
-  if ((err = SSL_connect (data->ssl)) < 0)
+  if ((err = SSL_connect (data->ssl)) != 1)
   {
+    unsigned long e;
+    SSL_load_error_strings();
+    while ((e = ERR_get_error()) != 0)
+    {
+      mutt_error ("%s", ERR_reason_error_string(e));
+      sleep (1);
+    }
     ssl_socket_close (conn);
     return -1;
   }
@@ -235,7 +242,8 @@ int ssl_socket_open (CONNECTION * conn)
     return -1;
   }
 
-  mutt_message (_("SSL connection using %s"), SSL_get_cipher (data->ssl));
+  mutt_message (_("SSL connection using %s (%s)"), 
+    SSL_get_cipher_version (data->ssl), SSL_get_cipher_name (data->ssl));
   sleep (1);
 
   return 0;
