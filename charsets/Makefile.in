@@ -26,6 +26,7 @@ top_srcdir=@top_srcdir@
 VPATH=@srcdir@
 @SET_MAKE@
 INSTALL=@INSTALL@
+LIBOBJS=@LIBOBJS@
 
 subdir=charsets
 distdir=@distdir@
@@ -34,8 +35,12 @@ DISTFILES = parse_i18n.c Makefile.in charsets.list charsets.alias gen_charsets
 
 all: charsets.list
 
-parse_i18n: parse_i18n.o
-	$(CC) -o parse_i18n parse_i18n.o
+parse_i18n: parse_i18n.o $(LIBOBJS)
+	$(CC) -o parse_i18n parse_i18n.o $(LIBOBJS)
+
+strcasecmp.o:
+	make -C .. strcasecmp.o
+	cp ../strcasecmp.o ./
 
 clean:
 	-rm -f *.o *~ core parse_i18n
