@@ -905,4 +905,5 @@ AC_OUTPUT(Makefile intl/Makefile m4/Makefile dnl
 	po/Makefile.in doc/Makefile contrib/Makefile dnl
 	muttbug.sh dnl
 	imap/Makefile dnl
-	Muttrc.head)
+	Muttrc.head dnl
+	doc/instdoc.sh)

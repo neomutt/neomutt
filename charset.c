@@ -195,10 +195,11 @@ PreferredMIMENames[] =
   { "PCK",		"Shift_JIS"	},
   { "ko_KR-euc",	"euc-kr"	},
   { "zh_TW-big5",	"big5"		},
-  
-  
-  
-  
+
+  /* seems to be common on some systems */
+
+  { "sjis",		"Shift_JIS"	},
+
   
   /* End of aliases.  Please keep this line last. */
   
@@ -306,6 +307,8 @@ iconv_t mutt_iconv_open (const char *tocode, const char *fromcode, int flags)
   char fromcode1[SHORT_STRING];
   char *tmp;
 
+  iconv_t cd;
+  
   mutt_canonical_charset (tocode1, sizeof (tocode1), tocode);
   if ((flags & M_ICONV_HOOK_TO) && (tmp = mutt_charset_hook (tocode1)))
     mutt_canonical_charset (tocode1, sizeof (tocode1), tmp);
@@ -314,7 +317,10 @@ iconv_t mutt_iconv_open (const char *tocode, const char *fromcode, int flags)
   if ((flags & M_ICONV_HOOK_FROM) && (tmp = mutt_charset_hook (fromcode1)))
     mutt_canonical_charset (fromcode1, sizeof (fromcode1), tmp);
 
-  return iconv_open (tocode1, fromcode1);
+  if ((cd = iconv_open (tocode1, fromcode1)) != (iconv_t) -1)
+    return cd;
+  /* else */
+  return iconv_open (mutt_iconv_hook (tocode1), mutt_iconv_hook (fromcode1));
 }
 
 

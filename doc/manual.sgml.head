@@ -918,10 +918,17 @@ sequence.
 <sect1>Defining aliases for character sets <label id="charset-hook">
 <p>
 Usage: <tt/charset-hook/ <em/alias/ <em/charset/
+Usage: <tt/iconv-hook/ <em/charset/ <em/local-charset/
 
-This command defines an alias for a character set.  This is useful
-to properly display messages which are tagged with a character set
-name not known to mutt.
+The <tt/charset-hook/ command defines an alias for a character set.
+This is useful to properly display messages which are tagged with a
+character set name not known to mutt.
+
+The <tt/iconv-hook/ command defines a system-specific name for a
+character set.  This is helpful when your systems character
+conversion library insists on using strange, system-specific names
+for character sets.
+
 
 <sect1>Setting variables based upon mailbox<label id="folder-hook">
 <p>

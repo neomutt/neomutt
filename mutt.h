@@ -137,9 +137,10 @@ typedef enum
 #define M_FCCHOOK	(1<<3)
 #define M_SAVEHOOK	(1<<4)
 #define M_CHARSETHOOK	(1<<5)
-#define M_MESSAGEHOOK	(1<<6)
+#define M_ICONVHOOK 	(1<<6)
+#define M_MESSAGEHOOK	(1<<7)
 #ifdef HAVE_PGP
-#define M_PGPHOOK	(1<<7)
+#define M_PGPHOOK	(1<<8)
 #endif
 
 /* tree characters for linearize_tree and print_enriched_string */

@@ -1,0 +1,25 @@
+#!/bin/sh --
+
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+bindir=@bindir@
+libdir=@libdir@
+mandir=@mandir@
+sharedir=@sharedir@
+srcdir=@srcdir@
+docdir=@docdir@
+includedir=@includedir@
+top_srcdir=@top_srcdir@
+top_builddir=..
+
+SOURCE="$1"
+TARGET="$2"
+
+
+rm -f "$TARGET"
+
+sed -e "s;/usr/local/bin/;$bindir/;g" 	 	\
+    -e "s;/usr/local/doc/mutt/;$docdir/;g" 	\
+    "$SOURCE" > $TARGET
+
+chmod 644 "$TARGET"

@@ -1,0 +1,9 @@
+iconv-hook EUC-CN eucCN
+iconv-hook EUC-JP eucJP
+iconv-hook EUC-KR eucKR
+iconv-hook EUC-TW eucTW
+iconv-hook ISO-8859-1 ISO8859-1
+iconv-hook ISO-8859-2 ISO8859-2
+iconv-hook ISO-8859-5 ISO8859-5
+iconv-hook ISO-8859-7 ISO8859-7
+iconv-hook ISO-8859-9 ISO8859-9

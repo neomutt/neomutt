@@ -28,6 +28,8 @@ DISTFILES= Makefile.in language.txt language50.txt  \
 	patch.slang-1.2.2.keypad.1	\
 	$(SAMPLES)
 
+ICONV_DISTFILES=README make.sh
+
 all clean:
 
 distclean:
@@ -36,9 +38,12 @@ distclean:
 check:
 
 install:
-	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(docdir)/samples
+	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(docdir)/samples $(DESTDIR)$(docdir)/samples/iconv
 	for f in $(SAMPLES) ; do \
 		$(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir)/samples ;	\
+	done
+	for f in $(srcdir)/iconv/*.rc ; do					\
+		$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir)/samples/iconv	  ;	\
 	done
 
 # Nothing needs to be done - uninstall in doc removes samples as well.
@@ -57,4 +62,12 @@ dist distdir: Makefile $(DISTFILES)
 		ln $(srcdir)/$$file $(distdir) 2> /dev/null 	\
 			|| cp -p $(srcdir)/$$file $(distdir); 	\
 	done
-			
+	mkdir -p $(distdir)/iconv
+	for file in $(ICONV_DISTFILES) ; do
+		ln $(srcdir)/iconv/$$file $(distdir)/iconv 2> /dev/null 	\
+			|| cp -p $(srcdir)/iconv/$$file $(distdir)/iconv; 	\
+	done
+	for file in $(srcdir)/iconv/*.rc ; do
+		ln $$file $(distdir)/iconv 2> /dev/null				\
+			|| cp -p $$file $(distdir)/iconv ;			\
+	done

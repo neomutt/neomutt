@@ -68,16 +68,16 @@ try-html: ../makedoc
 try-txt: ../makedoc
 	test -f manual.txt || $(MAKE) manual.txt || cp $(srcdir)/manual.txt ./
 
-install: all
+install: all instdoc
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man1
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man5
-	$(INSTALL) -m 644 $(srcdir)/mutt.man $(DESTDIR)$(mandir)/man1/mutt.1
-	$(INSTALL) -m 644 $(srcdir)/muttbug.man	$(DESTDIR)$(mandir)/man1/flea.1
+	./instdoc $(srcdir)/mutt.man $(DESTDIR)$(mandir)/man1/mutt.1
+	./instdoc $(srcdir)/muttbug.man $(DESTDIR)$(mandir)/man1/flea.1
 	echo ".so $(mandir)/man1/flea.1" > $(DESTDIR)$(mandir)/man1/muttbug.1
-	$(INSTALL) -m 644 $(srcdir)/dotlock.man \
+	./instdoc $(srcdir)/dotlock.man \
 		$(DESTDIR)$(mandir)/man1/mutt_dotlock.1
-	$(INSTALL) -m 644 muttrc.man $(DESTDIR)$(mandir)/man5/muttrc.5
-	$(INSTALL) -m 644 $(srcdir)/mbox.man $(DESTDIR)$(mandir)/man5/mbox.5
+	./instdoc muttrc.man $(DESTDIR)$(mandir)/man5/muttrc.5
+	./instdoc $(srcdir)/mbox.man $(DESTDIR)$(mandir)/man5/mbox.5
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(docdir)
 	for f in $(srcdir_DOCFILES) ; do \
 		$(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir) ; \
@@ -123,6 +123,10 @@ distclean: clean
 	rm -f Makefile
 
 Makefile: Makefile.in ../config.status
+	cd .. \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+instdoc.sh: instdoc.sh.in ../config.status
 	cd .. \
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 

@@ -1,0 +1,11 @@
+iconv-hook EUC-CN gb2312
+iconv-hook EUC-JP eucJP
+iconv-hook EUC-KR 5601
+iconv-hook EUC-TW cns11643
+iconv-hook ISO-8859-1 ISO8859-1
+iconv-hook ISO-8859-2 ISO8859-2
+iconv-hook ISO-8859-4 ISO8859-4
+iconv-hook ISO-8859-5 ISO8859-5
+iconv-hook ISO-8859-7 ISO8859-7
+iconv-hook ISO-8859-9 ISO8859-9
+iconv-hook Shift_JIS PCK

@@ -111,6 +111,19 @@ This command defines an alias for a character set.  This is useful
 to properly display messages which are tagged with a character set
 name not known to mutt.
 .TP
+\fBiconv-hook\fP \fIcharset\fP \fIlocal-charset\fP
+This command defines a system-specific name for a character set.
+This is useful when your system's 
+.BR iconv (3)
+implementation does not understand MIME character set names (such as 
+.BR iso-8859-1 ),
+but instead insists on being fed with implementation-specific
+character set names (such as
+.BR 8859-1 ).
+In this specific case, you'd put this into your configuration file:
+.IP
+.B "iconv-hook iso-8859-1 8859-1"
+.TP
 \fBmessage-hook\fP [\fB!\fP]\fIpattern\fP \fIcommand\fP
 Before mutt displays (or formats for replying or forwarding) a
 message which matches the given \fIpattern\fP (or, when it is

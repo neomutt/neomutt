@@ -1,0 +1,15 @@
+This directory contains sample collections of iconv-hooks for
+various platforms.  The files have been auto-generated from the
+source code of Bruno Haible's libiconv implementation, version 1.5.1.
+
+libiconv is available from <http://clisp.cons.org/~haible/packages-libiconv.html>.
+
+If you want to re-generate the files from a newer version of
+libiconv, just type:
+
+	rm -f *.rc
+	./make.sh <top-level iconv directory>
+
+Note, however, that make.sh isn't guaranteed to run on any system
+but the one used for generating these files.
+

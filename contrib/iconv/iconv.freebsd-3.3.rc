@@ -1,0 +1,6 @@
+iconv-hook ASCII <error>
+iconv-hook CP866 <error>
+iconv-hook ISO-8859-15 <error>
+iconv-hook ISO-8859-1 <error>
+iconv-hook ISO-8859-2 <error>
+iconv-hook KOI8-R <error>

@@ -1,0 +1,3 @@
+iconv-hook ISO-8859-1 ISO8859-1
+iconv-hook ISO-8859-7 ISO8859-7
+iconv-hook ISO-8859-9 ISO8859-9

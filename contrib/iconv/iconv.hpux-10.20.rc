@@ -1,0 +1,15 @@
+iconv-hook HP-ARABIC8 arabic8
+iconv-hook HP-GREEK8 greek8
+iconv-hook HP-HEBREW8 hebrew8
+iconv-hook HP-ROMAN8 roman8
+iconv-hook HP-TURKISH8 turkish8
+iconv-hook ISO-8859-15 iso885915
+iconv-hook ISO-8859-1 iso88591
+iconv-hook ISO-8859-2 iso88592
+iconv-hook ISO-8859-5 iso88595
+iconv-hook ISO-8859-6 iso88596
+iconv-hook ISO-8859-7 iso88597
+iconv-hook ISO-8859-8 iso88598
+iconv-hook ISO-8859-9 iso88599
+iconv-hook TIS-620 tis620
+iconv-hook UTF-8 utf8

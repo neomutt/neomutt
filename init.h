@@ -2285,6 +2285,7 @@ struct command_t Commands[] = {
   { "fcc-save-hook",	mutt_parse_hook,	M_FCCHOOK | M_SAVEHOOK },
   { "folder-hook",	mutt_parse_hook,	M_FOLDERHOOK },
   { "hdr_order",	parse_list,		UL &HeaderOrderList },
+  { "iconv-hook",	mutt_parse_hook,	M_ICONVHOOK }, 
   { "ignore",		parse_ignore,		0 },
   { "lists",		parse_list,		UL &MailLists },
   { "macro",		mutt_parse_macro,	0 },

@@ -1,6 +1,8 @@
 .\" -*-nroff-*-
 .SH SEE ALSO
 .PP
+.BR iconv (1),
+.BR iconv (3),
 .BR mailcap (5),
 .BR maildir (5),
 .BR mbox (5),

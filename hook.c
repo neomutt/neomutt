@@ -157,7 +157,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 #ifdef M_PGPHOOK
     if ((rc = REGCOMP (rx, NONULL(pattern.data), ((data & (M_PGPHOOK|M_CHARSETHOOK)) ? REG_ICASE : 0))) != 0)
 #else
-    if ((rc = REGCOMP (rx, NONULL(pattern.data), (data & M_CHARSETHOOK) ? REG_ICASE : 0)) != 0)
+    if ((rc = REGCOMP (rx, NONULL(pattern.data), (data & (M_CHARSETHOOK|M_ICONVHOOK)) ? REG_ICASE : 0)) != 0)
 #endif /* HAVE_PGP */
     {
       regerror (rc, rx, err->data, err->dsize);
@@ -410,6 +410,11 @@ static char *_mutt_string_hook (const char *match, int hook)
 char *mutt_charset_hook (const char *chs)
 {
   return _mutt_string_hook (chs, M_CHARSETHOOK);
+}
+
+char *mutt_iconv_hook (const char *chs)
+{
+  return _mutt_string_hook (chs, M_ICONVHOOK);
 }
 
 #ifdef HAVE_PGP
