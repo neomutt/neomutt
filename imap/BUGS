@@ -19,12 +19,6 @@ In no particular order:
   Tommi Komulainen's keepalive patch for edit sessions may work for you,
   though. Committed to CVS late November 1999, I think.
 
-* Sometimes hdr->env seems to be NULL, according to other users' core
-  files. I haven't been able to reproduce this, and am not sure how
-  to track it down. But it's very naughty indeed. It appears to be the
-  result of spurious mx_close_mailbox calls handling the untagged
-  BYE response.
-
 * Mutt is uninterruptible during socket calls. We should handle SIGINT.
 
 * Server copy currently doesn't take into account uncommitted changes in
@@ -37,4 +31,4 @@ In no particular order:
 * The mutt_pretty routines don't work well when the delimiter isn't '/'.
 
 Brendan Cully <brendan@kublai.com>
-Updated 20000719
+Updated 20000731

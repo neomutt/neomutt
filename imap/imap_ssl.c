@@ -190,7 +190,6 @@ int ssl_socket_read (CONNECTION * conn)
 int ssl_socket_write (CONNECTION * conn, const char *buf)
 {
   sslsockdata *data = conn->sockdata;
-  dprint (1, (debugfile, "ssl_socket_write():%s", buf));
   return SSL_write (data->ssl, buf, mutt_strlen (buf));
 }
 

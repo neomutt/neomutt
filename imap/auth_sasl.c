@@ -70,7 +70,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
     rc = sasl_client_start (saslconn, idata->capstr, NULL, NULL, &pc, &olen,
       &mech);
 
-  client_start = (pc != NULL);
+  client_start = (olen > 0);
 
   if (rc != SASL_OK && rc != SASL_CONTINUE)
   {
@@ -92,29 +92,42 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
       goto bail;
 
     if (!mutt_strncmp (buf, "+ ", 2))
+    {
       if (sasl_decode64 (buf+2, strlen (buf+2), buf, &len) != SASL_OK)
       {
 	dprint (1, (debugfile, "imap_auth_sasl: error base64-decoding server response.\n"));
 	goto bail;
       }
+    }
+    else if ((buf[0] == '*'))
+    {
+      if (imap_handle_untagged (idata, buf))
+	goto bail;
+      else continue;
+    }
 
     if (!client_start)
       rc = sasl_client_step (saslconn, buf, len, NULL, &pc, &olen);
-    client_start = 0;
+    else
+      client_start = 0;
 
-    if (olen)
+    /* send out response, or line break if none needed */
+    if (olen && sasl_encode64 (pc, olen, buf, sizeof (buf), &olen) != SASL_OK)
     {
-      /* send out response, or line break if none needed */
-      if (sasl_encode64 (pc, olen, buf, sizeof (buf), &olen) != SASL_OK)
-      {
-	dprint (1, (debugfile, "imap_auth_sasl: error base64-encoding client response.\n"));
-	goto bail;
-      }
-      
+      dprint (1, (debugfile, "imap_auth_sasl: error base64-encoding client response.\n"));
+      goto bail;
+    }
+
+    if (olen || rc == SASL_CONTINUE)
+    {
       strfcpy (buf + olen, "\r\n", sizeof (buf) - olen);
       mutt_socket_write (idata->conn, buf);
     }
   }
+
+  while (mutt_strncmp (buf, idata->seq, SEQLEN))
+    if (mutt_socket_readln (buf, sizeof (buf), idata->conn) < 0)
+      goto bail;
 
   if (rc != SASL_OK)
     goto bail;

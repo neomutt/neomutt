@@ -168,6 +168,7 @@ int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes)
       return -1;
     }
 
+#if 1
     if (r == 1 && c != '\n')
       fputc ('\r', fp);
 
@@ -178,7 +179,7 @@ int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes)
     }
     else
       r = 0;
-    
+#endif
     fputc (c, fp);
 #ifdef DEBUG
     if (debuglevel >= IMAP_LOG_LTRL)

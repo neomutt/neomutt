@@ -25,7 +25,7 @@
 
 #include <sasl.h>
 
-static sasl_callback_t mutt_sasl_callbacks[3];
+static sasl_callback_t mutt_sasl_callbacks[4];
 
 /* callbacks */
 static int mutt_sasl_cb_log (void* context, int priority, const char* message);
@@ -81,6 +81,11 @@ sasl_callback_t* mutt_sasl_get_callbacks (ACCOUNT* account)
   callback->context = account;
   callback++;
 
+  callback->id = SASL_CB_USER;
+  callback->proc = mutt_sasl_cb_authname;
+  callback->context = account;
+  callback++;
+
   callback->id = SASL_CB_PASS;
   callback->proc = mutt_sasl_cb_pass;
   callback->context = account;
@@ -101,7 +106,8 @@ static int mutt_sasl_cb_log (void* context, int priority, const char* message)
   return SASL_OK;
 }
 
-/* mutt_sasl_cb_authname: callback to retrieve authname from ACCOUNT */
+/* mutt_sasl_cb_authname: callback to retrieve authname or user (mutt
+ *   doesn't distinguish, even if some SASL plugins do) from ACCOUNT */
 static int mutt_sasl_cb_authname (void* context, int id, const char** result,
   unsigned* len)
 {
@@ -114,7 +120,8 @@ static int mutt_sasl_cb_authname (void* context, int id, const char** result,
   if (!account)
     return SASL_BADPARAM;
 
-  dprint (2, (debugfile, "mutt_sasl_cb_authname: getting user for %s:%u\n",
+  dprint (2, (debugfile, "mutt_sasl_cb_authname: getting %s for %s:%u\n",
+	      id == SASL_CB_AUTHNAME ? "authname" : "user",
 	      account->host, account->port));
 
   if (mutt_account_getuser (account))
