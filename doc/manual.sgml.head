@@ -881,9 +881,11 @@ Usage: <tt/bind/ <em/map/ <em/key/ <em/function/
 This command allows you to change the default key bindings (operation
 invoked when pressing a key).
 
-<em/map/ specifies in which menu the binding belongs.  The currently
-defined maps are:
+<em/map/ specifies in which menu the binding belongs.  Multiple maps may
+be specified by separating them with commas (no additional whitespace is
+allowed). The currently defined maps are:
 
+<label id="maps">
 <descrip>
 <tag/generic/
 This is not a real menu, but is used as a fallback for all of the other
@@ -1018,6 +1020,11 @@ actions.  When you press <em/key/ in menu <em/menu/, Mutt will behave as if
 you had typed <em/sequence/.  So if you have a common sequence of commands
 you type, you can create a macro to execute those commands with a single
 key.
+
+<em/menu/ is the <ref id="maps" name="map"> which the macro will be bound.
+Multiple maps may be specified by separating multiple menu arguments by
+commas. Whitespace may not be used in between the menu arguments and the
+commas separating them.
 
 <em/key/ and <em/sequence/ are expanded by the same rules as the <ref
 id="bind" name="key bindings">.  There are some additions however.  The

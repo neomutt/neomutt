@@ -688,38 +688,53 @@ int mutt_parse_push (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   return (r);
 }
 
-/* expects to see: <menu-string> <key-string> */
-char *parse_keymap (int *menu, BUFFER *s, BUFFER *err)
+/* expects to see: <menu-string>,<menu-string>,... <key-string> */
+static char *parse_keymap (int *menu, BUFFER *s, int maxmenus, int *nummenus, BUFFER *err)
 {
   BUFFER buf;
+  int i=0;
+  char *p, *q;
 
   memset (&buf, 0, sizeof (buf));
 
   /* menu name */
   mutt_extract_token (&buf, s, 0);
+  p = buf.data;
   if (MoreArgs (s))
   {
-    if ((*menu = mutt_check_menu (buf.data)) == -1)
+    while (i < maxmenus)
     {
-      snprintf (err->data, err->dsize, _("%s: no such menu"), buf.data);
-    }
-    else
-    {
-      /* key sequence */
-      mutt_extract_token (&buf, s, 0);
+      q = strchr(p,',');
+      if (q)
+        *q = '\0';
 
-      if (!*buf.data)
+      if ((menu[i] = mutt_check_menu (p)) == -1)
       {
-	strfcpy (err->data, _("null key sequence"), err->dsize);
+         snprintf (err->data, err->dsize, _("%s: no such menu"), p);
+         goto error;
       }
-      else if (MoreArgs (s))
-	return (buf.data);
+      ++i;
+      if (q)
+        p = q+1;
+      else
+        break;
     }
+    *nummenus=i;
+    /* key sequence */
+    mutt_extract_token (&buf, s, 0);
+
+    if (!*buf.data)
+    {
+      strfcpy (err->data, _("null key sequence"), err->dsize);
+    }
+    else if (MoreArgs (s))
+      return (buf.data);
   }
   else
   {
     strfcpy (err->data, _("too few arguments"), err->dsize);
   }
+error:
   FREE (&buf.data);
   return (NULL);
 }
@@ -780,9 +795,10 @@ int mutt_parse_bind (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
   struct binding_t *bindings = NULL;
   char *key;
-  int menu, r = 0;
+  int menu[sizeof(Menus)/sizeof(struct mapping_t)-1], r = 0, nummenus, i;
 
-  if ((key = parse_keymap (&menu, s, err)) == NULL)
+  if ((key = parse_keymap (menu, s, sizeof (menu)/sizeof (menu[0]),
+			   &nummenus, err)) == NULL)
     return (-1);
 
   /* function to execute */
@@ -793,19 +809,28 @@ int mutt_parse_bind (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     r = -1;
   }
   else if (ascii_strcasecmp ("noop", buf->data) == 0)
-    km_bindkey (key, menu, OP_NULL); /* the `unbind' command */
+  {
+    for (i = 0; i < nummenus; ++i)
+    {
+      km_bindkey (key, menu[i], OP_NULL); /* the `unbind' command */
+    }
+  }
   else
   {
-    /* First check the "generic" list of commands */
-    if (menu == MENU_PAGER || menu == MENU_EDITOR || menu == MENU_GENERIC ||
-	try_bind (key, menu, buf->data, OpGeneric) != 0)
+    for (i = 0; i < nummenus; ++i)
     {
-      /* Now check the menu-specific list of commands (if they exist) */
-      bindings = km_get_table (menu);
-      if (bindings && try_bind (key, menu, buf->data, bindings) != 0)
+      /* First check the "generic" list of commands */
+      if (menu[i] == MENU_PAGER || menu[i] == MENU_EDITOR ||
+      menu[i] == MENU_GENERIC ||
+	  try_bind (key, menu[i], buf->data, OpGeneric) != 0)
       {
-	snprintf (err->data, err->dsize, _("%s: no such function in map"), buf->data);
-	r = -1;
+        /* Now check the menu-specific list of commands (if they exist) */
+        bindings = km_get_table (menu[i]);
+        if (bindings && try_bind (key, menu[i], buf->data, bindings) != 0)
+        {
+          snprintf (err->data, err->dsize, _("%s: no such function in map"), buf->data);
+          r = -1;
+        }
       }
     }
   }
@@ -816,11 +841,11 @@ int mutt_parse_bind (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 /* macro <menu> <key> <macro> <description> */
 int mutt_parse_macro (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  int menu, r = -1;
+  int menu[sizeof(Menus)/sizeof(struct mapping_t)-1], r = -1, nummenus, i;
   char *seq = NULL;
   char *key;
 
-  if ((key = parse_keymap (&menu, s, err)) == NULL)
+  if ((key = parse_keymap (menu, s, sizeof (menu) / sizeof (menu[0]), &nummenus, err)) == NULL)
     return (-1);
 
   mutt_extract_token (buf, s, M_TOKEN_CONDENSE);
@@ -842,16 +867,22 @@ int mutt_parse_macro (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
       }
       else
       {
-	km_bind (key, menu, OP_MACRO, seq, buf->data);
-	r = 0;
+        for (i = 0; i < nummenus; ++i)
+        {
+          km_bind (key, menu[i], OP_MACRO, seq, buf->data);
+          r = 0;
+        }
       }
 
       FREE (&seq);
     }
     else
     {
-      km_bind (key, menu, OP_MACRO, buf->data, NULL);
-      r = 0;
+      for (i = 0; i < nummenus; ++i)
+      {
+        km_bind (key, menu[i], OP_MACRO, buf->data, NULL);
+        r = 0;
+      }
     }
   }
   FREE (&key);

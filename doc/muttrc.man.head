@@ -125,9 +125,10 @@ the file name, and not use a
 entry given for the original MIME type.  For instance, you may add
 the \fBapplication/octet-stream\fP MIME type to this list.
 .TP
-\fBbind\fP \fImap\fP \fIkey\fP \fIfunction\fP
-This command binds the given \fIkey\fP for the given \fImap\fP to
-the given \fIfunction\fP.
+\fBbind\fP \fImap1,map2,...\fP \fIkey\fP \fIfunction\fP
+This command binds the given \fIkey\fP for the given \fImap\fP or maps
+to the given \fIfunction\fP. Multiple maps may be specified by
+separating them with commas (no whitespace is allowed).
 .IP
 Valid maps are:
 .BR generic ", " alias ", " attach ", " 
@@ -179,7 +180,8 @@ executed in the order given in the configuration file.
 .TP
 \fBmacro\fP \fImap\fP \fIkey\fP \fIsequence\fP [ \fIdescription\fP ]
 This command binds the given \fIsequence\fP of keys to the given
-\fIkey\fP in the given \fImap\fP.  For valid maps, see \fBbind\fP.
+\fIkey\fP in the given \fImap\fP or maps.  For valid maps, see \fBbind\fP. To
+specify multipe maps, put only a comma between the maps.
 .PP
 .nf
 \fBcolor\fP \fIobject\fP \fIforeground\fP \fIbackground\fP [ \fI regexp\fP ]
