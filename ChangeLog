@@ -1,3 +1,82 @@
+Tue May 23 08:15:02 2000  Thomas Roessler  <roessler@guug.de>
+
+	* contrib/gpg.rc: Make this work on QNX.
+
+	* contrib/gpg.rc:
+	Change suggested by Sam Roberts <sroberts@uniserve.com> to make this
+	work on QNX.
+
+Mon May 22 16:15:35 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/pl.po: update
+
+	* rfc2047.c: Fix a stupid segmentation fault.
+
+	* lib.c: cosmetics.
+
+	* rfc2047.c: Fix a memory leak.
+
+	* charset.c, lib.c, lib.h, protos.h: Add mutt_str_adjust ().
+
+	* parse.c: Fix a possible cause for heap corruption.
+
+	* po/de.po: update.
+
+	* charset.c, gettext.c: Make mutt_gettext () a bit more compact.
+
+Sun May 21 18:45:15 2000  Thomas Roessler  <roessler@guug.de>
+
+	* mbyte.h: Small fix from EGE.
+
+	* sendlib.c:
+	Some fixes so ISO-2022-JP* works with mutt.  Mostly from TAKIZAWA
+	Takashi <taki@luna.email.ne.jp>.
+
+	* muttlib.c: Comment a bit of code.
+
+Sat May 20 18:16:18 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/fr.po: update.
+
+	* charset.c, charset.h, curs_lib.c, rfc2047.c, rfc2231.c:
+	String conversion patch from EGE.
+
+	* doc/manual.sgml.head, hook.c:
+	Second version of Byrial's display-hook patch.
+
+	* po/uk.po, po/zh_TW.Big5.po, po/fr.po, po/gl.po, po/id.po, po/it.po, po/ko.po, po/nl.po, po/pl.po, po/pt_BR.po, po/ru.po, po/sk.po, po/sv.po, ChangeLog, VERSION, po/cs.po, po/da.po, po/de.po, po/el.po, po/eo.po, po/es.po, reldate.h:
+	automatic post-release commit for mutt-1.3.1
+
+	* doc/muttrc.man.head: Document display-hook in the manual page.
+
+	* commands.c, hook.c, init.h, mutt.h, protos.h, send.c:
+	Add a display-hook command.  From Byrial Jensen.
+
+	* alias.c, browser.c, init.c, lib.c, mutt.h, muttlib.c, protos.h:
+	Add mutt_gecos_name function which centrally handles the GECOS
+	processing.
+
+	* imap/imap.c:
+	Shut up some warnings.  We may have to think about mutt_stristr again.
+
+	* configure.in:
+	Verify that regmatch_t has offsets, and not only pointers.  From Sam
+	Roberts <sroberts@uniserve.com>.
+
+	* configure.in:
+	Don't look for curses in /usr/5lib any more - this broke things for
+	some people.
+
+	* configure.in:
+	Don't look for the curses library in /usr/5lib any more.  This broke
+	things for some people.
+
+	* sendlib.c:
+	Real fix for the pointer problem noted by Heiko Schlichting.
+
+	* sendlib.c:
+	Fix a "string on stack returned" bug found by Heiko Schlichting.
+
 Sat May 20 07:53:50 2000  Thomas Roessler  <roessler@guug.de>
 
 	* doc/muttrc.man.head: Document display-hook in the manual page.

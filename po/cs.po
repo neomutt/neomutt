@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.11i\n"
-"POT-Creation-Date: 2000-05-20 10:07+0200\n"
+"POT-Creation-Date: 2000-05-23 19:16+0200\n"
 "PO-Revision-Date: 2000-04-03 22:20+0200\n"
 "Last-Translator: Jiøí Pavlovský <pavlovsk@ff.cuni.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
@@ -1316,7 +1316,7 @@ msgid "Help for %s"
 msgstr "Nápovìda pro %s"
 
 #
-#: hook.c:243
+#: hook.c:245
 #, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook hook %s není znám"
@@ -1422,7 +1422,7 @@ msgstr "Ke schránkám na tomto IMAP serveru nelze pøipojovat."
 
 #
 #. command failed cause folder doesn't exist
-#: imap/imap.c:809 imap/message.c:640 muttlib.c:1093
+#: imap/imap.c:809 imap/message.c:640 muttlib.c:1100
 #, c-format
 msgid "Create %s?"
 msgstr "Vytvoøit %s?"
@@ -3083,30 +3083,30 @@ msgstr "Oznaèování není podporováno."
 msgid "Reading %s... %d"
 msgstr "Ètu %s... %d"
 
-#: muttlib.c:764
+#: muttlib.c:771
 msgid "File is a directory, save under it?"
 msgstr "Soubor je adresáøem. Ulo¾it do nìj?"
 
-#: muttlib.c:769
+#: muttlib.c:776
 msgid "File under directory: "
 msgstr "Zadejte jméno souboru: "
 
-#: muttlib.c:781
+#: muttlib.c:788
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Soubor ji¾ existuje: (p)øepsat, pø(i)pojit èi (z)ru¹it?"
 
-#: muttlib.c:781
+#: muttlib.c:788
 msgid "oac"
 msgstr "piz"
 
 #
-#: muttlib.c:1069
+#: muttlib.c:1076
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s není schránkou!"
 
 #
-#: muttlib.c:1075
+#: muttlib.c:1082
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Pøipojit zprávy do %s?"
@@ -3299,7 +3299,7 @@ msgid "No more unquoted text after quoted text."
 msgstr "Za citovaným textem ji¾ nenásleduje ¾ádný bì¾ný text."
 
 #
-#: parse.c:566
+#: parse.c:565
 msgid "multipart message has no boundary parameter!"
 msgstr "Zpráva o více èástech nemá urèeny hranice!"
 
@@ -4200,18 +4200,18 @@ msgid "%s no longer exists!"
 msgstr "%s ji¾ neexistuje!"
 
 #
-#: sendlib.c:719
+#: sendlib.c:727
 #, c-format
 msgid "Could not open %s"
 msgstr "%s nelze otevøít"
 
 #
-#: sendlib.c:1686
+#: sendlib.c:1697
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Chyba pøi zasílání zprávy, potomek ukonèen %d (%s)."
 
-#: sendlib.c:1692
+#: sendlib.c:1703
 msgid "Output of the delivery process"
 msgstr "Výstup doruèovacího programu"
 

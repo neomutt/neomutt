@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.0i\n"
-"POT-Creation-Date: 2000-05-20 10:07+0200\n"
+"POT-Creation-Date: 2000-05-23 19:16+0200\n"
 "PO-Revision-Date: 1999-10-27 14:05+0200\n"
 "Last-Translator: Roberto Suarez Soto <ask4it@bigfoot.com>\n"
 "Language-Team: Galician <gpul-traduccion@ceu.fi.udc.es>\n"
@@ -1108,7 +1108,7 @@ msgstr ""
 msgid "Help for %s"
 msgstr "Axuda sobre %s"
 
-#: hook.c:243
+#: hook.c:245
 #, fuzzy, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "%s: tipo descoñecido"
@@ -1204,7 +1204,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Non é posible engadir ós buzóns IMAP deste servidor"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:809 imap/message.c:640 muttlib.c:1093
+#: imap/imap.c:809 imap/message.c:640 muttlib.c:1100
 #, c-format
 msgid "Create %s?"
 msgstr "¿Crear %s?"
@@ -2611,28 +2611,28 @@ msgstr "O marcado non está soportado."
 msgid "Reading %s... %d"
 msgstr "Lendo %s... %d"
 
-#: muttlib.c:764
+#: muttlib.c:771
 msgid "File is a directory, save under it?"
 msgstr "O ficheiro é un directorio, ¿gardar nel?"
 
-#: muttlib.c:769
+#: muttlib.c:776
 msgid "File under directory: "
 msgstr "Ficheiro no directorio: "
 
-#: muttlib.c:781
+#: muttlib.c:788
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "O ficheiro existe, ¿(s)obreescribir, (e)ngadir ou (c)ancelar?"
 
-#: muttlib.c:781
+#: muttlib.c:788
 msgid "oac"
 msgstr "sec"
 
-#: muttlib.c:1069
+#: muttlib.c:1076
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "¡%s non é un buzón!"
 
-#: muttlib.c:1075
+#: muttlib.c:1082
 #, c-format
 msgid "Append messages to %s?"
 msgstr "¿engadir mensaxes a %s?"
@@ -2793,7 +2793,7 @@ msgstr "Non hai máis texto citado."
 msgid "No more unquoted text after quoted text."
 msgstr "Non hai máis texto sen citar despois do texto citado."
 
-#: parse.c:566
+#: parse.c:565
 msgid "multipart message has no boundary parameter!"
 msgstr "¡A mensaxe multiparte non ten parámetro \"boundary\"!"
 
@@ -3557,17 +3557,17 @@ msgstr "¡Non se atopout parámetro \"boundary\"! [informe deste erro]"
 msgid "%s no longer exists!"
 msgstr "¡Xa non existe %s!"
 
-#: sendlib.c:719
+#: sendlib.c:727
 #, c-format
 msgid "Could not open %s"
 msgstr "Non foi posible abrir %s"
 
-#: sendlib.c:1686
+#: sendlib.c:1697
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Erro enviando mensaxe, o proceso fillo saíu con %d (%s)."
 
-#: sendlib.c:1692
+#: sendlib.c:1703
 msgid "Output of the delivery process"
 msgstr "Saída do proceso de distribución"
 

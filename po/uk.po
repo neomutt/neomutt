@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 2000-05-20 10:07+0200\n"
+"POT-Creation-Date: 2000-05-23 19:16+0200\n"
 "PO-Revision-Date: 2000-03-17 12:12+0200\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "Language-Team: Ukrainian <uk@ua>\n"
@@ -1090,7 +1090,7 @@ msgstr ""
 msgid "Help for %s"
 msgstr "П╕дказка до %s"
 
-#: hook.c:243
+#: hook.c:245
 #, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook: нев╕домий тип hook: %s"
@@ -1185,7 +1185,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Неможливо додавати до скриньок IMAP на цьому сервер╕"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:809 imap/message.c:640 muttlib.c:1093
+#: imap/imap.c:809 imap/message.c:640 muttlib.c:1100
 #, c-format
 msgid "Create %s?"
 msgstr "Створити %s?"
@@ -2530,28 +2530,28 @@ msgstr "Вид╕лення не п╕дтриму╓ться."
 msgid "Reading %s... %d"
 msgstr "Читання %s... %d"
 
-#: muttlib.c:764
+#: muttlib.c:771
 msgid "File is a directory, save under it?"
 msgstr "Файл ╓ каталогом, зберегти у ньому?"
 
-#: muttlib.c:769
+#: muttlib.c:776
 msgid "File under directory: "
 msgstr "Файл у каталоз╕: "
 
-#: muttlib.c:781
+#: muttlib.c:788
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Файл ╕сну╓, (o)переписати, (a)додати до нього чи (c)в╕дмовити?"
 
-#: muttlib.c:781
+#: muttlib.c:788
 msgid "oac"
 msgstr ""
 
-#: muttlib.c:1069
+#: muttlib.c:1076
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s не ╓ поштовою скринькою!"
 
-#: muttlib.c:1075
+#: muttlib.c:1082
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Додати листи до %s?"
@@ -2710,7 +2710,7 @@ msgstr "Цитованого тексту б╕льш нема╓."
 msgid "No more unquoted text after quoted text."
 msgstr "П╕сля цитованого тексту н╕чого нема╓."
 
-#: parse.c:566
+#: parse.c:565
 msgid "multipart message has no boundary parameter!"
 msgstr "Багаточастинний лист не ма╓ параметру меж╕!"
 
@@ -3472,17 +3472,17 @@ msgstr "Нема╓ параметру меж╕! [спов╕ст╕ть про цю помилку]"
 msgid "%s no longer exists!"
 msgstr "%s б╕льше не ╕сну╓!"
 
-#: sendlib.c:719
+#: sendlib.c:727
 #, c-format
 msgid "Could not open %s"
 msgstr "Не вийшло в╕дкрити %s"
 
-#: sendlib.c:1686
+#: sendlib.c:1697
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Помилка в╕дправки, код повернення %d (%s)."
 
-#: sendlib.c:1692
+#: sendlib.c:1703
 msgid "Output of the delivery process"
 msgstr "Вих╕д процесу доставки"
 
