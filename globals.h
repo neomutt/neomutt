@@ -236,5 +236,5 @@ extern const char *Months[];
 #include "mutt_regex.h"
 #include "buffy.h"
 #include "sort.h"
-#include "crypt.h"
+#include "mutt_crypt.h"
 #endif /* MAIN_C */
