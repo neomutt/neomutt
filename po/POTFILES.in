@@ -22,7 +22,7 @@ flags.c
 #from.c
 #getdomain.c
 #gnupgparse.c
-#handler.c
+handler.c
 #hash.c
 #hdrline.c
 headers.c

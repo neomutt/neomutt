@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-01 16:56+0200\n"
+"POT-Creation-Date: 1998-10-01 17:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -729,6 +729,66 @@ msgstr ""
 #: flags.c:255
 #, c-format
 msgid "Clear %s flag"
+msgstr ""
+
+#: handler.c:126
+msgid "[-- Error: unexpected end of file! --]\n"
+msgstr ""
+
+#. didn't find anything that we could display!
+#: handler.c:878
+msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
+msgstr ""
+
+#: handler.c:993
+#, c-format
+msgid "[-- Attachment #%d"
+msgstr ""
+
+#: handler.c:1006
+#, c-format
+msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
+msgstr ""
+
+#: handler.c:1072
+#, c-format
+msgid "[-- Autoview using %s --]\n"
+msgstr ""
+
+#: handler.c:1074
+#, c-format
+msgid "Invoking autoview command: %s"
+msgstr ""
+
+#: handler.c:1111 handler.c:1134
+#, c-format
+msgid "[-- Autoview stderr of %s --]\n"
+msgstr ""
+
+#: handler.c:1235
+msgid "Error: multipart/signed has no protocol."
+msgstr ""
+
+#: handler.c:1247
+msgid "Error: multipart/encrypted has no protocol parameter!"
+msgstr ""
+
+#: handler.c:1289
+msgid "Unable to open temporary file!"
+msgstr ""
+
+#: handler.c:1348
+#, c-format
+msgid "[-- %s/%s is unsupported "
+msgstr ""
+
+#: handler.c:1353
+#, c-format
+msgid "(use '%s' to view this part)"
+msgstr ""
+
+#: handler.c:1355
+msgid "(need 'view-attachments' bound to key!)"
 msgstr ""
 
 #: headers.c:201

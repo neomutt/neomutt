@@ -6,10 +6,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-01 16:56+0200\n"
+"POT-Creation-Date: 1998-10-01 17:06+0200\n"
 "PO-Revision-Date: 1998-10-01 10:20 MET DST\n"
-"Last-Translator: Thomas Roessler <roessler@guug.de>Language-Team: mutt-dev "
-"<mutt-dev@mutt.org>MIME-Version: 1.0\n"
+"Last-Translator: Thomas Roessler <roessler@guug.de>\n"
+"Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
+"MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
@@ -752,6 +753,69 @@ msgstr "Setze %s-Indikator"
 #, c-format
 msgid "Clear %s flag"
 msgstr "Entferne %s-Indikator"
+
+#
+#: handler.c:126
+msgid "[-- Error: unexpected end of file! --]\n"
+msgstr "[-- Fehler: Unerwartetes Dateiende! --]\n"
+
+#. didn't find anything that we could display!
+#: handler.c:878
+msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
+msgstr ""
+"[-- Fehler: Konnte keinen der multipart/alternative-Teile anzeigen! --]\n"
+
+#: handler.c:993
+#, c-format
+msgid "[-- Attachment #%d"
+msgstr "[-- Anhang #%d"
+
+#: handler.c:1006
+#, c-format
+msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
+msgstr "[-- Typ: %s/%s, Codierung: %s, Größe: %s --]\n"
+
+#: handler.c:1072
+#, fuzzy, c-format
+msgid "[-- Autoview using %s --]\n"
+msgstr "[- Automatische Anzeige mittels %s --]\n"
+
+#: handler.c:1074
+#, c-format
+msgid "Invoking autoview command: %s"
+msgstr "In Kommando einspeisen: "
+
+#: handler.c:1111 handler.c:1134
+#, c-format
+msgid "[-- Autoview stderr of %s --]\n"
+msgstr "[-- Fehlerausgame von %s --]\n"
+
+#: handler.c:1235
+msgid "Error: multipart/signed has no protocol."
+msgstr "Fehler: multipart/signed ohne protocol-Parameter."
+
+#: handler.c:1247
+msgid "Error: multipart/encrypted has no protocol parameter!"
+msgstr "Fehler: multiparT/encrypted ohne 'protocol'-Parameter!"
+
+#
+#: handler.c:1289
+msgid "Unable to open temporary file!"
+msgstr "Konnte Temporärdatei nicht öffnen!"
+
+#: handler.c:1348
+#, c-format
+msgid "[-- %s/%s is unsupported "
+msgstr "[-- %s/%s wird nicht unterstützt "
+
+#: handler.c:1353
+#, c-format
+msgid "(use '%s' to view this part)"
+msgstr "(benutzen Sie '%s', um diesen Teil anzuzeigen)"
+
+#: handler.c:1355
+msgid "(need 'view-attachments' bound to key!)"
+msgstr "(benötige Tastaturbindung für 'view-attachments'!)"
 
 #: headers.c:201
 #, c-format
