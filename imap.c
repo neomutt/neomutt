@@ -757,8 +757,7 @@ int imap_open_mailbox (CONTEXT *ctx)
   conn->uses++;
 
   mutt_message ("Selecting %s...", CTX_DATA->mailbox);
-  strncpy (buf, CTX_DATA->mailbox, sizeof (buf));
-  imap_quote_string (buf, sizeof (buf));
+  imap_quote_string(buf, sizeof(buf), CTX_DATA->mailbox);
   imap_make_sequence (seq, sizeof (seq));
   snprintf (bufout, sizeof (bufout), "%s SELECT %s\r\n", seq, buf);
   mutt_socket_write (CTX_DATA->conn, bufout);
@@ -805,8 +804,7 @@ static int imap_create_mailbox (CONTEXT *ctx)
   char buf[LONG_STRING], mbox[LONG_STRING];
 
   imap_make_sequence (seq, sizeof (seq));
-  strncpy (mbox, CTX_DATA->mailbox, sizeof (mbox));
-  imap_quote_string (mbox, sizeof (mbox));
+  imap_quote_string (mbox, sizeof (mbox), CTX_DATA->mailbox);
   snprintf (buf, sizeof (buf), "%s CREATE %s\r\n", seq, mbox);
       
   if (imap_exec (buf, sizeof (buf), ctx, seq, buf, 0) != 0)
@@ -845,8 +843,7 @@ int imap_open_mailbox_append (CONTEXT *ctx)
 
   /* check mailbox existance */
 
-  strncpy (mbox, CTX_DATA->mailbox, sizeof (mbox));
-  imap_quote_string (mbox, sizeof (mbox));
+  imap_quote_string (mbox, sizeof (mbox), CTX_DATA->mailbox);
   imap_make_sequence (seq, sizeof (seq));
   snprintf (buf, sizeof (buf), "%s STATUS %s (UIDVALIDITY)\r\n", seq, mbox);
       
