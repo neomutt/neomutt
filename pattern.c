@@ -960,7 +960,7 @@ int mutt_pattern_func (int op, char *prompt, HEADER *hdr)
   return 0;
 }
 
-int mutt_search_command (int cur, int op)
+int mutt_search_command (CONTEXT *ctx, int cur, int op)
 {
   int i, j;
   char buf[STRING];
@@ -1011,8 +1011,8 @@ int mutt_search_command (int cur, int op)
 
   if (option (OPTSEARCHINVALID))
   {
-    for (i = 0; i < Context->msgcount; i++)
-      Context->hdrs[i]->searched = 0;
+    for (i = 0; i < ctx->msgcount; i++)
+      ctx->hdrs[i]->searched = 0;
     unset_option (OPTSEARCHINVALID);
   }
 
@@ -1020,9 +1020,9 @@ int mutt_search_command (int cur, int op)
   if (op == OP_SEARCH_OPPOSITE)
     incr = -incr;
 
-  for (i = cur + incr, j = 0 ; j != Context->vcount; j++)
+  for (i = cur + incr, j = 0 ; j != ctx->vcount; j++)
   {
-    if (i > Context->vcount - 1)
+    if (i > ctx->vcount - 1)
     {
       i = 0;
       if (option (OPTWRAPSEARCH))
@@ -1035,7 +1035,7 @@ int mutt_search_command (int cur, int op)
     }
     else if (i < 0)
     {
-      i = Context->vcount - 1;
+      i = ctx->vcount - 1;
       if (option (OPTWRAPSEARCH))
         mutt_message ("Search wrapped to bottom.");
       else 
@@ -1045,7 +1045,7 @@ int mutt_search_command (int cur, int op)
       }
     }
 
-    h = Context->hdrs[Context->v2r[i]];
+    h = ctx->hdrs[ctx->v2r[i]];
     if (h->searched)
     {
       /* if we've already evaulated this message, use the cached value */
@@ -1056,7 +1056,7 @@ int mutt_search_command (int cur, int op)
     {
       /* remember that we've already searched this message */
       h->searched = 1;
-      if ((h->matched = (mutt_pattern_exec (SearchPattern, M_MATCH_FULL_ADDRESS, Context, h) > 0)))
+      if ((h->matched = (mutt_pattern_exec (SearchPattern, M_MATCH_FULL_ADDRESS, ctx, h) > 0)))
 	return i;
     }
 

@@ -68,17 +68,12 @@ alias_format_str (char *dest, size_t destlen, char op, const char *src,
 
 int alias_search (MUTTMENU *m, regex_t *re, int n)
 {
-  int i, match = 0;
   char s[LONG_STRING];
   int slen = sizeof(s);
 
-  for (i=0; i < m->max; i++)
-  {
-   mutt_FormatString (s, slen, NONULL (AliasFmt), alias_format_str,
-                      (unsigned long) ((ALIAS **) m->data)[n], 0);
-   if ((match = regexec (re, s, 0, NULL, 0))) return match;
-  }
-  return (0);
+  mutt_FormatString (s, slen, NONULL (AliasFmt), alias_format_str,
+                    (unsigned long) ((ALIAS **) m->data)[n], 0);
+  return regexec (re, s, 0, NULL, 0);
 }
 
 

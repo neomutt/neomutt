@@ -416,10 +416,12 @@ static HEADER *select_msg (CONTEXT *ctx)
   MUTTMENU *menu;
   int i, done=0, r=-1;
   char helpstr[SHORT_STRING];
-  char title[SHORT_STRING];
+  char title[SHORT_STRING], from_folder[SHORT_STRING];
 
-  snprintf(title, sizeof (title), "Messages to attach from folder %s",
-	   ctx->path);
+  strfcpy(from_folder, ctx->path, sizeof (from_folder));
+  mutt_pretty_mailbox (from_folder);
+  snprintf(title, sizeof (title), "Attach messages from folder: %s", 
+                                   from_folder);
 
   menu = mutt_new_menu ();
   menu->make_entry = attach_msg_make_entry;
@@ -427,6 +429,7 @@ static HEADER *select_msg (CONTEXT *ctx)
   menu->max = ctx->msgcount;
   menu->title = title;
   menu->data = ctx;
+  menu->search = (int (*)(MUTTMENU *, regex_t *, int)) -1;
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_GENERIC,
 				  AttachMsgHelp);
 

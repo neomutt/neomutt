@@ -219,7 +219,7 @@ int mutt_print_attachment (FILE *, BODY *);
 int mutt_query_complete (char *, size_t);
 int mutt_save_attachment (FILE *, BODY *, char *, int);
 int mutt_save_message (HEADER *, int, int, int *);
-int mutt_search_command (int, int);
+int mutt_search_command (CONTEXT *, int, int);
 int mutt_send_menu (HEADER *, char *, size_t, HEADER *);
 int mutt_send_message (HEADER *, const char *);
 int mutt_strcmp (const char *, const char *);
