@@ -176,6 +176,7 @@ struct binding_t OpPager[] = {
   { "previous-thread",	OP_MAIN_PREV_THREAD,		"\020" },
   { "previous-subthread",OP_MAIN_PREV_SUBTHREAD,	"\033p" },
   { "quit",		OP_QUIT,			"Q" },
+  { "exit",		OP_EXIT,			"q" },
   { "reply",		OP_REPLY,			"r" },
   { "recall-message",	OP_RECALL_MESSAGE,		"R" },
   { "read-thread",	OP_MAIN_READ_THREAD,		"\022" },
