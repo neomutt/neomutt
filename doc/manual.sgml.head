@@ -807,7 +807,7 @@ line is parsed.  Note that since initialization files are line oriented, only
 the first line of output from the Unix command will be substituted.
 
 UNIX environments can be accessed like the way it is done in shells like
-sh and bash: Prepend the name of the environment by a ``$dollar;''.  For
+sh and bash: Prepend the name of the environment by a ``&dollar;''.  For
 example,
 <tscreen><verb>
 set record=+sent_on_$HOSTNAME
