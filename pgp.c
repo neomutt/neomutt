@@ -584,16 +584,16 @@ int pgp_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
     if (pgp_copy_checksig  (pgperr, s->fpout) >= 0)
       badsig = 0;
 
-    safe_fclose (&pgperr);
-    
     if ((rv = mutt_wait_filter (thepid)))
       badsig = -1;
     
      dprint (1, (debugfile, "pgp_verify_one: mutt_wait_filter returned %d.\n", rv));
   }
-  
+
+  safe_fclose (&pgperr);
+
   state_attach_puts (_("[-- End of PGP output --]\n\n"), s);
-  
+
   mutt_unlink (sigfile);
   mutt_unlink (pgperrfile);
 
