@@ -661,7 +661,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Specifies the password for your IMAP account.  If unset, Mutt will
-  * prompt you for your password when you invoke the fetch-mail function.
+  ** prompt you for your password when you invoke the fetch-mail function.
   ** \fBWarning\fP: you should only use this option when you are on a
   ** fairly secure machine, because the superuser can read your muttrc even
   ** if you are the only one who can read the file.

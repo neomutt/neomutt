@@ -589,6 +589,7 @@ static int sgml_fputc (int c, FILE *out)
     case '"': return fputs ("&dquot;", out);
     case '[': return fputs ("&lsqb;", out);
     case ']': return fputs ("&rsqb;", out);
+    case '~': return fputs ("&tilde;", out);
     default:  return fputc (c, out);
   }
 }
