@@ -69,6 +69,7 @@ int imap_auth_gss (IMAP_DATA* idata, const char* user)
     dprint (2, (debugfile, "Couldn't get service name for [%s]\n", buf1));
     return -1;
   }
+#ifdef DEBUG	
   else if (debuglevel >= 2)
   {
     maj_stat = gss_display_name (&min_stat, target_name, &request_buf,
@@ -77,7 +78,7 @@ int imap_auth_gss (IMAP_DATA* idata, const char* user)
       (char*) request_buf.value));
     maj_stat = gss_release_buffer (&min_stat, &request_buf);
   }
-
+#endif
   /* now begin login */
   mutt_message _("Authenticating (GSSAPI)...");
   imap_make_sequence (seq, sizeof (seq));
