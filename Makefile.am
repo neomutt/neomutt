@@ -108,8 +108,10 @@ Makefile: $(BUILT_SOURCES)
 keymap_defs.h: $(OPS) $(srcdir)/gen_defs
 	$(srcdir)/gen_defs $(OPS) > keymap_defs.h
 
-keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.PGP $(srcdir)/OPS.MIX $(srcdir)/gen_defs
-	$(srcdir)/gen_defs $(srcdir)/OPS $(srcdir)/OPS.PGP $(srcdir)/OPS.MIX > keymap_alldefs.h
+keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.PGP $(srcdir)/OPS.MIX $(srcdir)/OPS.CRYPT $(srcdir)/OPS.SMIME $(srcdir)/gen_defs
+	$(srcdir)/gen_defs $(srcdir)/OPS $(srcdir)/OPS.PGP \
+		$(srcdir)/OPS.MIX $(srcdir)/OPS.CRYPT $(srcdir)/OPS.SMIME \
+			> keymap_alldefs.h
 
 reldate:
 	echo 'const char *ReleaseDate = "'`date +%Y-%m-%d`'";' > $(srcdir)/reldate.h

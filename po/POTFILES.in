@@ -59,6 +59,7 @@ score.c
 send.c
 sendlib.c
 signal.c
+smime.c
 sort.c
 status.c
 thread.c
