@@ -280,11 +280,14 @@ parse_route_addr (const char *s,
   if ((s = parse_address (s, token, &tokenlen, sizeof (token) - 1, comment, commentlen, commentmax, addr)) == NULL)
     return NULL;
 
-  if (*s != '>' || !addr->mailbox)
+  if (*s != '>')
   {
     RFC822Error = ERR_BAD_ROUTE_ADDR;
     return NULL;
   }
+
+  if (!addr->mailbox)
+    addr->mailbox = safe_strdup ("@");
 
   s++;
   return s;
@@ -621,8 +624,16 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr)
   {
     if (!buflen)
       goto done;
-    strfcpy (pbuf, addr->mailbox, buflen);
-    len = mutt_strlen (pbuf);
+    if (ascii_strcmp (addr->mailbox, "@"))
+    {
+      strfcpy (pbuf, addr->mailbox, buflen);
+      len = mutt_strlen (pbuf);
+    }
+    else
+    {
+      *pbuf = '\0';
+      len = 0;
+    }
     pbuf += len;
     buflen -= len;
 
