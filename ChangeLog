@@ -1,3 +1,11 @@
+2005-02-01 03:36:39  Brendan Cully  <brendan@kublai.com>  (brendan)
+                                 
+	* protos.h: Pull config.h out of protos.h, add to top of every
+	IMAP C file. This should probably be done to every C file, but the
+	results need testing in case  some files depend on the current
+	(broken) includes. This should at least fix the off_t 4/8 bytes
+	bug I introduced yesterday.
+                                 
 2005-01-31 02:40:14  Brendan Cully  <brendan@kublai.com>  (brendan)
                                  
 	* acconfig.h, configure.in, hcache.c, protos.h: Begin removing
