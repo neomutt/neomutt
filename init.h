@@ -410,6 +410,16 @@ struct option_t MuttVars[] = {
   ** Useful to avoid the tampering certain mail delivery and transport
   ** agents tend to do with messages.
   */
+  { "envelope_from", 	DT_BOOL, R_NONE, OPTENVFROM, 0 },
+  /*
+  ** .pp
+  ** When \fIset\fP, mutt will try to derive the message's \fIenvelope\fP
+  ** sender from the "From:" header.  Note that this information is passed 
+  ** to sendmail command using the "-f" command line switch, so don't set this
+  ** option if you are using that switch in $$sendmail yourself,
+  ** or if the sendmail on your machine doesn't support that command
+  ** line switch.
+  */
   { "escape",		DT_STR,	 R_NONE, UL &EscChar, UL "~" },
   /*
   ** .pp

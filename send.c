@@ -898,8 +898,8 @@ static int send_message (HEADER *msg)
     return mix_send_message (msg->chain, tempfile);
 #endif
 
-  i = mutt_invoke_sendmail (msg->env->to, msg->env->cc, msg->env->bcc,
-		       tempfile, (msg->content->encoding == ENC8BIT));
+  i = mutt_invoke_sendmail (msg->env->from, msg->env->to, msg->env->cc, 
+			    msg->env->bcc, tempfile, (msg->content->encoding == ENC8BIT));
   return (i);
 }
 

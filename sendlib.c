@@ -1629,7 +1629,8 @@ strsysexit(int e)
 
 
 int
-mutt_invoke_sendmail (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc, /* recips */
+mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
+		 ADDRESS *to, ADDRESS *cc, ADDRESS *bcc, /* recips */
 		 const char *msg, /* file containing message */
 		 int eightbit) /* message contains 8bit chars */
 {
@@ -1660,8 +1661,15 @@ mutt_invoke_sendmail (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc, /* recips */
     ps = NULL;
     i++;
   }
+
   if (eightbit && option (OPTUSE8BITMIME))
     args = add_option (args, &argslen, &argsmax, "-B8BITMIME");
+
+  if (option (OPTENVFROM) && from && !from->next)
+  {
+    args = add_option (args, &argslen, &argsmax, "-f");
+    args = add_args   (args, &argslen, &argsmax, from);
+  }
   if (DsnNotify)
   {
     args = add_option (args, &argslen, &argsmax, "-N");
@@ -1850,7 +1858,8 @@ static void _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *
     mutt_copy_bytes (fp, f, h->content->length);
     fclose (f);
 
-    mutt_invoke_sendmail (to, NULL, NULL, tempfile, h->content->encoding == ENC8BIT);
+    mutt_invoke_sendmail (NULL, to, NULL, NULL, tempfile, 
+			  h->content->encoding == ENC8BIT);
   }
 
   if (msg)
