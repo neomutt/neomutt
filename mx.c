@@ -957,8 +957,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
         {
 	  if (mutt_append_message (&f, ctx, ctx->hdrs[i], 0, CH_UPDATE_LEN) == 0)
 	  {
-	    ctx->hdrs[i]->deleted = 1;
-	    ctx->deleted++;
+	    mutt_set_flag (ctx, ctx->hdrs[i], M_DELETE, 1);
 	  }
 	  else
 	  {
