@@ -242,120 +242,75 @@ static void encode_quoted (FILE * fin, FILE *fout, int istext)
   }
 }
 
+static char b64_buffer[3];
+static short b64_num;
+static short b64_linelen;
+
+static void b64_flush(FILE *fout)
+{
+  short i;
+
+  if(!b64_num)
+    return;
+
+  if(b64_linelen >= 72)
+  {
+    fputc('\n', fout);
+    b64_linelen = 0;
+  }
+  
+  for(i = b64_num; i < 3; i++)
+    b64_buffer[i] = '\0';
+  
+  fputc(B64Chars[(b64_buffer[0] >> 2) & 0x3f], fout); 
+  b64_linelen++;
+  fputc(B64Chars[((b64_buffer[0] & 0x3) << 4) | ((b64_buffer[1] >> 4) & 0xf) ], fout);
+  b64_linelen++;
+  
+  if(b64_num > 1)
+  {
+    fputc(B64Chars[((b64_buffer[1] & 0xf) << 2) | ((b64_buffer[2] >> 6) & 0x3) ], fout);
+    b64_linelen++;
+    if(b64_num > 2)
+    {
+      fputc(B64Chars[b64_buffer[2] & 0x3f], fout);
+      b64_linelen++;
+    }
+  }
+  
+  while(b64_linelen % 4)
+  {
+    fputc('=', fout);
+    b64_linelen++;
+  }
+  
+  b64_num = 0;
+}
+    
+  
+static void b64_putc(char c, FILE *fout)
+{
+  if(b64_num == 3)
+    b64_flush(fout);
+  
+  b64_buffer[b64_num++] = c;
+}
+  
+  
 static void encode_base64 (FILE * fin, FILE *fout, int istext)
 {
-  int c1, c2, c3, ch;
-  int insert_newline = 0;
-  int linelen = 0;
-
-  FOREVER
-  {
-    if (istext)
-    {
-      if (insert_newline)
-      {
-        c1 = '\n';
-        insert_newline = 0;
+  int ch, ch1 = EOF;
   
-        c2 = fgetc(fin);
-        if (c2 == '\n')
-	{
-          c2 = '\r';
-          c3 = '\n';
-        }
-        else
-	{
-          c3 = fgetc(fin);
-          if (c3 == '\n')
-	  {
-            c3 = '\r';
-            insert_newline = 1;
-          }
-        }
-      }
-      else
-      {
-        c1 = fgetc(fin);
-        if (c1 == '\n')
-	{
-          c1 = '\r';
-          c2 = '\n';
-          c3 = fgetc(fin);
-          if (c3 == '\n')
-	  {
-            c3 = '\r';
-            insert_newline = 1;
-          }
-        }
-        else
-	{
-          c2 = fgetc(fin);
-          if (c2 == '\n')
-	  {
-            c2 = '\r';
-            c3 = '\n';
-          }
-          else
-	  {
-            c3 = fgetc(fin);
-            if (c3 == '\n')
-	    {
-              c3 = '\r';
-              insert_newline = 1;
-            }
-          }
-        }
-      }
-    }
-    else /* !istext */
-    {
-      if ((c1 = fgetc(fin)) == EOF)
-        break;
-      c2 = fgetc(fin);
-      c3 = fgetc(fin);
-    }
-
-    if (linelen + 4 >= 76)
-    {
-      fputc('\n', fout);
-      linelen = 0;
-    }
-
-    ch = c1 >> 2;
-    fputc (B64Chars[ch], fout);
-
-    if (c2 != EOF)
-    {
-      ch = ((c1 & 0x3) << 4) | (c2 >> 4);
-      fputc (B64Chars[ch], fout);
-    }
-    else
-    {
-      ch = (c1 & 0x3) << 4;
-      fputc (B64Chars[ch], fout);
-      fputs("==", fout);
-      break;
-    }
-
-    if (c3 != EOF)
-    {
-      ch = ((c2 & 0xf) << 2) | (c3 >> 6);
-      fputc (B64Chars[ch], fout);
-    }
-    else
-    {
-      ch = (c2 & 0xf) << 2;
-      fputc(B64Chars[ch], fout);
-      fputc('=', fout);
-      break;
-    }
-
-    ch = c3 & 0x3f;
-    fputc(B64Chars[ch], fout);
-
-    linelen += 4;
+  b64_num = 0;
+  
+  while((ch = fgetc(fin)) != EOF)
+  {
+    if(istext && ch == '\n' && ch1 != '\r')
+      b64_putc('\r', fout);
+    b64_putc(ch, fout);
+    ch1 = ch;
   }
-
+  b64_flush(fout);
   fputc('\n', fout);
 }
 
