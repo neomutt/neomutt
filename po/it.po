@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutt-0.93i\n"
 "POT-Creation-Date: 1998-11-10 22:03+0100\n"
-"PO-Revision-Date: 1998-10-21 23:34+02:00\n"
+"PO-Revision-Date: 1998-11-11 15:50+01:00\n"
 "Last-Translator: Marco d'Itri <md@linux.it>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
@@ -176,7 +176,7 @@ msgstr "Ordino per (d)ata, (a)lfabetico, dimensioni(z) o (n)ulla? "
 
 #: browser.c:745
 msgid "dazn"
-msgstr ""
+msgstr "dazn"
 
 #: browser.c:797
 msgid "New file name: "
@@ -319,7 +319,7 @@ msgstr ""
 
 #: commands.c:403
 msgid "dfrsotuzc"
-msgstr ""
+msgstr "dfrsotuzc"
 
 #: commands.c:456
 msgid "Shell command: "
@@ -432,7 +432,7 @@ msgstr ""
 
 #: compose.c:134
 msgid "esabmf"
-msgstr ""
+msgstr "esabmf"
 
 #: compose.c:151
 msgid "Can't open your secret key ring!"
@@ -465,9 +465,8 @@ msgid "%s [#%d] modified. Update encoding?"
 msgstr "%s [#%d] è stato modificato. Aggiorno la codifica?"
 
 #: compose.c:282
-#, fuzzy
 msgid "===== Attachments ====="
-msgstr "Allegati"
+msgstr "===== Allegati ====="
 
 #: compose.c:320
 msgid "You may not delete the only attachment."
@@ -875,17 +874,17 @@ msgstr "[-- Stderr dell'autoview di %s --]\n"
 
 #: handler.c:1250
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr ""
+msgstr "[-- Errore: message/external-body non ha un parametro access-type --]\n"
 
 #: handler.c:1270
 #, c-format
 msgid "[-- This %s/%s attachment is deleted --]\n"
-msgstr ""
+msgstr "[-- Questo allegato %s/%s è stato cancellato --]\n"
 
 #: handler.c:1273
-#, fuzzy, c-format
+#, c-format
 msgid "[-- on %s --]\n"
-msgstr "[-- Visualizza automaticamente con %s --]\n"
+msgstr "[-- su %s --]\n"
 
 #: handler.c:1284
 #, c-format
@@ -893,6 +892,8 @@ msgid ""
 "[-- This %s/%s attachment is not included --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
+"[-- Questo allegato %s/%s non è incluso --]\n"
+"[-- e il l'access-type %s indicato non è gestito --]\n"
 
 #: handler.c:1381
 msgid "Error: multipart/signed has no protocol."
@@ -999,9 +1000,8 @@ msgstr "Faccio il login..."
 
 #. Login failed, try again
 #: imap.c:928
-#, fuzzy
 msgid "Login failed."
-msgstr "Faccio il login..."
+msgstr "Login fallito."
 
 #: imap.c:985
 #, c-format
@@ -1697,7 +1697,7 @@ msgstr "cancella e ridisegna lo schermo"
 
 #: keymap_defs.h:130
 msgid "{internal}"
-msgstr ""
+msgstr "{internal}"
 
 #: keymap_defs.h:131
 msgid "reply to a message"
@@ -1870,7 +1870,6 @@ msgid "Append messages to %s?"
 msgstr "Accodo i messaggi a %s?"
 
 #: main.c:40
-#, fuzzy
 msgid "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 msgstr ""
 "Per favore invia segnalazioni di bug solo con il Debian bug tracking "
@@ -2374,31 +2373,27 @@ msgstr ""
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
-msgstr ""
+msgstr "[ -- INIZIO DEL MESSAGGIO DI PGP --]\n"
 
 #: pgp.c:356
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
-msgstr ""
+msgstr "[-- INIZIO DEL BLOCCO DELLA CHIAVE PUBBLICA --]\n"
 
 #: pgp.c:358
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
-msgstr ""
+msgstr "[-- INIZIO DEL MESSAGGIO FIRMATO CON PGP --]\n"
 
 #: pgp.c:460
-#, fuzzy
 msgid ""
 "\n"
 "[-- END PGP MESSAGE --]\n"
-msgstr ""
-"\n"
-"[-- Fine dell'output di PGP --]\n"
-"\n"
+msgstr "\n[-- FINE DEL MESSAGGIO DI PGP --]\n"
 
 #: pgp.c:462
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
-msgstr ""
+msgstr "FINE DEL BLOCCO DELLA CHIAVE PUBBLICA\n"
 
 #: pgp.c:477
 msgid ""
@@ -2657,7 +2652,7 @@ msgid "Reading %d new message (%d bytes)..."
 msgstr "Leggo %d nuovi messaggi (%d byte)..."
 
 #: pop.c:211
-#, fuzzy, c-format
+#, c-format
 msgid "Reading %d new messages (%d bytes)..."
 msgstr "Leggo %d nuovi messaggi (%d byte)..."
 
@@ -2961,10 +2956,3 @@ msgstr "Could not find sorting function! [segnala questo bug]"
 #: status.c:102
 msgid "(no mailbox)"
 msgstr "(nessuna mailbox)"
-
-#~ msgid "Confused when attempting to delete attachment, h & m can't be NULL"
-#~ msgstr ""
-#~ "Mi sono confuso cancellando l'allegato, h & m non possono essere NULL"
-
-#~ msgid "Deleting non-multipart messages not yet supported"
-#~ msgstr "La cancellazione di messaggi non multipart non è ancora gestita"
