@@ -1,3 +1,9 @@
+2003-07-04 17:07:22  Nicolas Rachinsky  <nr@rachinsky.de>  (roessler)
+
+	* OPS, curs_lib.c, curs_main.c, functions.h, menu.c: Introduce
+	tag-prefix-cond and end-cond.  This makes simple conditional
+	execution of parts of macros possible.
+
 2003-07-04 17:03:51  Bruno Postle  <bruno@postle.net>  (roessler)
 
 	* curs_main.c, pattern.c: Display an empty index when no messages
