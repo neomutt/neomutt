@@ -243,7 +243,7 @@ fi
 
 if test $mutt_cv_regex = yes; then
 	AC_DEFINE(USE_GNU_REGEX)
-	LIBOBJS="$LIBOBJS regex.c"
+	LIBOBJS="$LIBOBJS regex.o"
 fi
 
 

@@ -64,7 +64,7 @@ msgstr "Adres toegevoegd."
 
 #: attach.c:112 attach.c:235 attach.c:367 attach.c:806
 msgid "Can't match nametemplate, continue?"
-msgstr "Naamschema kan niet worden ingevuld, doorgaan?"
+msgstr "Naamsjabloon kan niet worden ingevuld, doorgaan?"
 
 #. For now, editing requires a file, no piping
 #: attach.c:124
@@ -73,7 +73,7 @@ msgstr "\"compose\"-entry in mailcap vereist %%s."
 
 #: attach.c:138
 msgid "Failure to open file to parse headers."
-msgstr "Kan bestand niet openen om header te onderzoeken."
+msgstr "Kan bestand niet openen om header te lezen."
 
 #: attach.c:169
 msgid "Failure to open file to strip headers."
@@ -105,7 +105,7 @@ msgstr "MIME type is niet gedefinieerd. Kan bijlage niet weergeven."
 
 #: attach.c:436
 msgid "Cannot create filter"
-msgstr "Filter kan niet worden aangelegd."
+msgstr "Filter kan niet worden aangemaakt."
 
 #: attach.c:638 recvattach.c:374
 msgid "Attachment saved."
@@ -113,11 +113,11 @@ msgstr "Bijlage opgeslagen."
 
 #: attach.c:691
 msgid "Write fault!"
-msgstr "Schrijffout!"
+msgstr "Fout bij schrijven!"
 
 #: attach.c:890
 msgid "I don't know how to print that!"
-msgstr "Ik weet niet hoe dit afgerukt moet worden!"
+msgstr "Ik weet niet hoe dit afgedrukt moet worden!"
 
 #: browser.c:55
 msgid "Chdir"
@@ -290,7 +290,7 @@ msgstr "Bericht doorgestuurd."
 
 #: commands.c:281
 msgid "Messages bounced."
-msgstr "Bericht doorgestuurd."
+msgstr "Berichten doorgestuurd."
 
 #: commands.c:301
 msgid "Pipe to command: "
@@ -378,7 +378,7 @@ msgstr "Afbreken"
 
 #: compose.c:82 compose.c:539
 msgid "Attach file"
-msgstr "Toevoegen"
+msgstr "Bijvoegen"
 
 #: compose.c:83
 msgid "Descrip"
@@ -386,7 +386,7 @@ msgstr "Omschr."
 
 #: compose.c:104
 msgid "Sign, Encrypt"
-msgstr "Ondertekenen, versleutelen"
+msgstr "Ondertekenen, Versleutelen"
 
 #: compose.c:106
 msgid "Encrypt"
@@ -463,7 +463,7 @@ msgstr "Een bericht bestaat uit minimaal een gedeelte!"
 
 #: compose.c:394
 msgid "Compose"
-msgstr "Bericht samenstellen"
+msgstr "Bericht schrijven"
 
 #: compose.c:544
 msgid "Open mailbox to attach message from"
@@ -475,11 +475,11 @@ msgstr "Geen berichten in deze mailbox."
 
 #: compose.c:590
 msgid "Tag the messages you want to attach!"
-msgstr "Selecteer de berichten die U wilt toevoegen"
+msgstr "Selecteer de berichten die u wilt bijvoegen"
 
 #: compose.c:625 compose.c:645
 msgid "Unable to attach!"
-msgstr "Kan niet toevoegen!"
+msgstr "Kan niet bijvoegen!"
 
 #: compose.c:763
 msgid "Invalid encoding."
@@ -487,7 +487,7 @@ msgstr "Ongeldige codering."
 
 #: compose.c:778
 msgid "Save a copy of this message?"
-msgstr "Een copie van dit bericht maken?"
+msgstr "Een kopie van dit bericht maken?"
 
 #: compose.c:823
 msgid "Rename to: "
@@ -504,7 +504,7 @@ msgstr "Nieuw bestand: "
 
 #: compose.c:868
 msgid "Content-Type is of the form base/sub"
-msgstr "Content-Type is van de vorm Basis/ondertype."
+msgstr "Content-Type is van de vorm basis/subtype."
 
 #: compose.c:874
 #, c-format
@@ -514,7 +514,7 @@ msgstr "Onbekende Content-Type %s."
 #: compose.c:887
 #, c-format
 msgid "Can't create file %s"
-msgstr "Kan bestand %s nicht aanleggen."
+msgstr "Kan bestand %s niet aanmaken."
 
 #: compose.c:895
 msgid "What we have here is a failure to make an attachment"
@@ -548,7 +548,7 @@ msgstr "nee"
 #. restore blocking operation
 #: curs_lib.c:175
 msgid "Exit Mutt?"
-msgstr "Mutt verlaten?"
+msgstr "Mutt afsluiten?"
 
 #: curs_lib.c:262
 msgid "unknown error"
@@ -564,7 +564,7 @@ msgstr " ('?' voor een overzicht): "
 
 #: curs_main.c:215
 msgid "Cannot toggle write on a readonly mailbox!"
-msgstr "Kan niet schrijven in een readonly mailbox!"
+msgstr "Kan niet schrijven in een scrijfbeveiligde mailbox!"
 
 #: curs_main.c:222
 msgid "Changes to folder will be written on folder exit."
@@ -650,7 +650,7 @@ msgstr "Limiteer berichten volgens patroon: "
 
 #: curs_main.c:715
 msgid "Quit Mutt?"
-msgstr "Mutt verlaten?"
+msgstr "Mutt afsluiten?"
 
 #: curs_main.c:826
 msgid "Tag messages matching: "
@@ -670,7 +670,7 @@ msgstr "Open mailbox"
 
 #: curs_main.c:861
 msgid "Open mailbox in read-only mode"
-msgstr "Open mailbox in read-only mode"
+msgstr "Open mailbox in schrijfbeveiligde modus"
 
 #: curs_main.c:877 mx.c:423 mx.c:564
 #, c-format
@@ -995,7 +995,7 @@ msgstr "IMAP-gebruikersnaam: "
 #: imap.c:901
 #, c-format
 msgid "Password for %s@%s: "
-msgstr "Paswoord voor %s@%s: "
+msgstr "Wachtwoord voor %s@%s: "
 
 #: imap.c:914
 msgid "Logging in..."
@@ -1165,12 +1165,12 @@ msgstr "Toets is niet in gebruik. Toets '%s' voor hulp."
 
 #: keymap.c:643
 msgid "push: too many arguments"
-msgstr "push: te veel argumenten"
+msgstr "push: Te veel argumenten"
 
 #: keymap.c:664
 #, c-format
 msgid "%s: no such menu"
-msgstr "%s: menu onbekend."
+msgstr "%s: Menu onbekend."
 
 #: keymap.c:673
 msgid "null key sequence"
@@ -1272,7 +1272,7 @@ msgstr "Kopieer bericht in bestand"
 
 #: keymap_defs.h:22
 msgid "edit the file to be attached"
-msgstr "Bewerk het toe te voegen bestand"
+msgstr "Bewerk het bij te voegen bestand"
 
 #: keymap_defs.h:23
 msgid "edit the from field"
@@ -1328,7 +1328,7 @@ msgstr "Hernoem/verplaats een toegevoegd bestand"
 
 #: keymap_defs.h:36
 msgid "send the message"
-msgstr "Verstuur bericht"
+msgstr "Verstuur het bericht"
 
 #: keymap_defs.h:37
 msgid "toggle whether to delete file after sending it"
@@ -1524,7 +1524,7 @@ msgstr "Maak nieuw bericht aan"
 
 #: keymap_defs.h:86
 msgid "open a different folder"
-msgstr "open een andere mailbox"
+msgstr "Open een andere mailbox"
 
 #: keymap_defs.h:87
 msgid "open a different folder in read only mode"
@@ -1540,7 +1540,7 @@ msgstr "Verwijder berichten volgens patroon"
 
 #: keymap_defs.h:90
 msgid "retrieve mail from POP server"
-msgstr "haal mail vanaf POP-server"
+msgstr "Haal mail vanaf POP-server"
 
 #: keymap_defs.h:91
 msgid "move to the first message"
@@ -1712,11 +1712,11 @@ msgstr "Sla bericht/bijlage op in een bestand"
 
 #: keymap_defs.h:133
 msgid "search for a regular expression"
-msgstr "Zoek volgens een reguliere expressie"
+msgstr "Zoek naar een reguliere expressie"
 
 #: keymap_defs.h:134
 msgid "search backwards for a regular expression"
-msgstr "Zoek achteruit volgens een reguliere expressie"
+msgstr "Zoek achteruit naar een reguliere expressie"
 
 #: keymap_defs.h:135
 msgid "search for next match"
@@ -1760,7 +1760,7 @@ msgstr "Markeer de huidige thread"
 
 #: keymap_defs.h:145
 msgid "toggle a message's 'new' flag"
-msgstr "Zet / wis de 'nieuw'-vlag van een bericht"
+msgstr "Zet / wis de 'nieuw'-markering van een bericht"
 
 #: keymap_defs.h:146
 msgid "toggle whether the mailbox will be rewritten"
@@ -1812,7 +1812,7 @@ msgstr "comprimeer/expandeer alle threads"
 
 #: keymap_defs.h:158
 msgid "attach a PGP public key"
-msgstr "Voeg een PGP public key toe"
+msgstr "Voeg een PGP publieke sleutel toe"
 
 #: keymap_defs.h:159
 msgid "show PGP options"
@@ -1820,23 +1820,23 @@ msgstr "Geef PGP-opties weer"
 
 #: keymap_defs.h:160
 msgid "extract PGP public keys"
-msgstr "Extraheer PGP public keys"
+msgstr "Extraheer PGP publieke sleutels"
 
 #: keymap_defs.h:161
 msgid "wipe PGP passphrase from memory"
-msgstr "Verwijder PGP-passphrase uit geheugen"
+msgstr "Verwijder PGP-wachtwoord uit geheugen"
 
 #: keymap_defs.h:162
 msgid "mail a PGP public key"
-msgstr "Mail een PGP public key"
+msgstr "Mail een PGP publieke sleutel"
 
 #: keymap_defs.h:163
 msgid "verify a PGP public key"
-msgstr "Controleer een PGP public key"
+msgstr "Controleer een PGP publieke sleutel"
 
 #: keymap_defs.h:164
 msgid "view the key's user id"
-msgstr "Geef User-ID van een key weer"
+msgstr "Geef User-ID van een sleutel weer"
 
 #: keymap_defs.h:165
 msgid "make decrypted copy and delete"
@@ -1976,7 +1976,7 @@ msgstr "Geen ontvangers opgegeven.\n"
 #: main.c:617
 #, c-format
 msgid "%s: unable to attach file.\n"
-msgstr "%s: kan bestand niet toevoegen.\n"
+msgstr "%s: kan bestand niet bijvoegen.\n"
 
 #: main.c:637
 msgid "No mailbox with new mail."
@@ -2021,7 +2021,7 @@ msgstr "Berichten worden opgeslagen ... %d (%d%%)"
 #: mbox.c:889
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
-msgstr "Konnte nicht schreiben! Speichere Teil-Mailbox in %s"
+msgstr "Opslaan mislukt! Deel-mailbox opgeslagen als %s"
 
 #: mbox.c:941
 msgid "Could not reopen mailbox!"
@@ -2062,7 +2062,7 @@ msgstr "Het eerste item wordt weergegeven."
 
 #: menu.c:494
 msgid "Last entry is shown."
-msgstr "Der letzte Eintrag wird angezeigt."
+msgstr "Het laatste item wordt weergegeven."
 
 #: menu.c:545
 msgid "You are on the last entry."
@@ -2176,7 +2176,7 @@ msgstr "%d bewaard, %d gewist."
 #: mx.c:931
 #, c-format
 msgid " Press '%s' to toggle write"
-msgstr "Druk '%s' om schrijfmode aan c.q. uit te schakelen"
+msgstr "Druk '%s' om schrijfmode aan / uit te schakelen"
 
 #: mx.c:933
 msgid "Use 'toggle-write' to re-enable write!"
@@ -2272,7 +2272,7 @@ msgstr "%c: Ongeldig commando"
 #: pattern.c:638
 #, c-format
 msgid "%c: not supported in this mode"
-msgstr "%c: Niet ondersteund in deze mode"
+msgstr "%c: Niet ondersteund in deze modus"
 
 #: pattern.c:651
 msgid "missing parameter"
@@ -2318,11 +2318,11 @@ msgstr "Zoeken onderbroken."
 
 #: pgp.c:131
 msgid "Enter PGP passphrase:"
-msgstr "Geef PGP-Mantra in:"
+msgstr "Geef PGP-wachtwoord in:"
 
 #: pgp.c:147
 msgid "PGP passphrase forgotten."
-msgstr "PGP-Mantra is vergeten."
+msgstr "PGP-wachtwoord is vergeten."
 
 #: pgp.c:175
 #, c-format
@@ -2335,7 +2335,7 @@ msgstr "[-- PGP uitvoer volgt (Huidige tijd: "
 
 #: pgp.c:321
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
-msgstr "[-- Fout: Kan geen PGP-proces aanleggen! --]\n"
+msgstr "[-- Fout: Kan geen PGP-proces starten! --]\n"
 
 #: pgp.c:348
 msgid ""
@@ -2384,7 +2384,7 @@ msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
 msgstr ""
-"[-- Fout: Kon begin van PGP-message niet vinden! --]\n"
+"[-- Fout: Kon begin van PGP-bericht niet vinden! --]\n"
 "\n"
 
 #: pgp.c:670 pgp.c:895
@@ -2429,7 +2429,7 @@ msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
 msgstr ""
-"[-- Fout: Kon PGP-subproces niet aanmaken! --]\n"
+"[-- Fout: Kon PGP-subproces niet starten! --]\n"
 "\n"
 
 #: pgp.c:959
@@ -2442,7 +2442,7 @@ msgstr ""
 
 #: pgp.c:972
 msgid "[-- Error: could not create temporary file! --]\n"
-msgstr "[-- Fout: Kon geen tijdelijk bestand aanleggen! --]\n"
+msgstr "[-- Fout: Kon geen tijdelijk bestand aanmaken! --]\n"
 
 #: pgp.c:981
 msgid ""
@@ -2462,7 +2462,7 @@ msgstr ""
 
 #: pgp.c:1071
 msgid "Can't open PGP subprocess!"
-msgstr "Kan PGP-Subprozes niet aanmaken!"
+msgstr "Kan PGP-Subproces niet starten!"
 
 #: pgp.c:1195
 #, c-format
@@ -2497,11 +2497,11 @@ msgstr "Kan /dev/null niet openen"
 
 #: pgpkey.c:217 pgpkey.c:382
 msgid "Can't create temporary file"
-msgstr "Kan tijdelijk bestand niet aanleggen"
+msgstr "Kan tijdelijk bestand niet aanmaken"
 
 #: pgpkey.c:227 pgpkey.c:399
 msgid "Can't create filter"
-msgstr "Kan filter niet aanleggen"
+msgstr "Kan filter niet aanmaken"
 
 #: pgpkey.c:237
 #, c-format
@@ -2518,7 +2518,7 @@ msgstr "Dit ID is niet vertrouwd."
 
 #: pgpkey.c:260
 msgid "This ID is only marginally trusted."
-msgstr "Diese Zuordnung ist nur begrenzt vertrauenswürdig."
+msgstr "Dit ID is slechts marginaal vertrouwd."
 
 #: pgpkey.c:263
 #, c-format
@@ -2608,11 +2608,11 @@ msgstr "POP-Paswoord:"
 
 #: pop.c:92
 msgid "POP host is not defined."
-msgstr "Er is geen POP-host gespecificeerd."
+msgstr "Er is geen POP-server gespecificeerd."
 
 #: pop.c:98
 msgid "No POP username is defined."
-msgstr "Er is geen POP username gespecificeerd."
+msgstr "Er is geen POP-gebruikersnaam gespecificeerd."
 
 #: pop.c:115
 #, c-format
@@ -2681,7 +2681,7 @@ msgstr "Zoeken"
 
 #: query.c:92
 msgid "Waiting for response..."
-msgstr "Wacht op antwoord.."
+msgstr "Wacht op antwoord..."
 
 #: query.c:193 query.c:218
 msgid "Query command not defined."
@@ -2720,7 +2720,7 @@ msgstr "Bijlage opgeslagen."
 #: recvattach.c:444
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
-msgstr "Waarschuwing! Bestand %s bestaat al. Doorgaan?"
+msgstr "Waarschuwing! Bestand %s bestaat al. Overschrijven?"
 
 #: recvattach.c:462
 msgid "Attachment filtered."
@@ -2815,7 +2815,7 @@ msgstr "Geen onderwerp. operatie afgebroken."
 #: send.c:433
 #, c-format
 msgid "Reply to %s%s?"
-msgstr "Reageren naar %s%s?"
+msgstr "Reactie sturen naar %s%s?"
 
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
@@ -2923,12 +2923,12 @@ msgstr "Fout opgetreden tijdens het verzenden van het bericht."
 #: signal.c:39 signal.c:42
 #, c-format
 msgid "Caught %s...  Exiting.\n"
-msgstr "Signal %s....\n"
+msgstr "Signaal %s....\n"
 
 #: signal.c:44
 #, c-format
 msgid "Caught signal %d...  Exiting.\n"
-msgstr "Signal %d....\n"
+msgstr "Signaal %d....\n"
 
 #: sort.c:199
 msgid "Sorting mailbox..."
@@ -2943,10 +2943,10 @@ msgid "(no mailbox)"
 msgstr "(geen Mailbox)"
 
 #~ msgid "This encoding is deprecated.  Really use it?"
-#~ msgstr "Diese Codierung sollte nicht genutzt werden.  Trotzdem setzen?"
+#~ msgstr "Deze codering zou u eigenlijk niet moeten gebruiken. Toch doen?"
 
 #~ msgid "Confused when attempting to delete attachment, h & m can't be NULL"
-#~ msgstr "Interner Fehler."
+#~ msgstr "Interne fout."
 
 #~ msgid "Deleting non-multipart messages not yet supported"
-#~ msgstr "Nur Teile von multipart-Nachrichten können gelöscht werden."
+#~ msgstr "Alleen delen van multipart berichten kunnen gewist worden."
