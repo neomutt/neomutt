@@ -121,7 +121,7 @@ static int imap_auth_gss (IMAP_DATA* idata, const char* user)
   dprint (2, (debugfile, "Attempting GSS login...\n"));
 
   /* get an IMAP service ticket for the server */
-  snprintf (buf1, sizeof (buf1), "imap@%s", idata->conn->server);
+  snprintf (buf1, sizeof (buf1), "imap@%s", idata->conn->mx.host);
   request_buf.value = buf1;
   request_buf.length = strlen (buf1) + 1;
   maj_stat = gss_import_name (&min_stat, &request_buf, gss_nt_service_name,
@@ -477,17 +477,22 @@ int imap_authenticate (IMAP_DATA *idata, CONNECTION *conn)
 
   while (r != 0)
   {
-    if (!ImapUser)
+    if (! (conn->mx.flags & M_IMAP_USER))
     {
-      strfcpy (user, NONULL(Username), sizeof (user));
-      if (mutt_get_field (_("IMAP Username: "), user, sizeof (user), 0) != 0)
+      if (!ImapUser)
       {
-	user[0] = 0;
-	return (-1);
+	strfcpy (user, NONULL(Username), sizeof (user));
+	if (mutt_get_field (_("IMAP Username: "), user, sizeof (user), 0) != 0)
+	{
+	  user[0] = 0;
+	  return (-1);
+	}
       }
+      else
+	strfcpy (user, ImapUser, sizeof (user));
     }
     else
-      strfcpy (user, ImapUser, sizeof (user));
+      strfcpy (user, conn->mx.user, sizeof (user));
 
     if (!user[0])
     {
@@ -519,16 +524,21 @@ int imap_authenticate (IMAP_DATA *idata, CONNECTION *conn)
     /* attempt CRAM-MD5 if available */
     if (mutt_bit_isset (idata->capabilities, ACRAM_MD5))
     {
-      if (!ImapCRAMKey)
+      if (!(conn->mx.flags & M_IMAP_CRAM))
       {
-        ckey[0] = '\0';
-        snprintf (buf, sizeof (buf), _("CRAM key for %s@%s: "), user,
-          conn->server);
-        if (mutt_get_field (buf, ckey, sizeof (ckey), M_PASS) != 0)
-          return -1;
+	if (!ImapCRAMKey)
+	{
+	  ckey[0] = '\0';
+	  snprintf (buf, sizeof (buf), _("CRAM key for %s@%s: "), user,
+		    conn->mx.host);
+	  if (mutt_get_field (buf, ckey, sizeof (ckey), M_PASS) != 0)
+	    return -1;
+	}
+	else
+	  strfcpy (ckey, ImapCRAMKey, sizeof (ckey));
       }
       else
-        strfcpy (ckey, ImapCRAMKey, sizeof (ckey));
+        strfcpy (ckey, conn->mx.pass, sizeof (ckey));
 
       if (*ckey)
       {
@@ -536,9 +546,16 @@ int imap_authenticate (IMAP_DATA *idata, CONNECTION *conn)
 	{
 	  mutt_error _("CRAM-MD5 authentication failed.");
 	  sleep (1);
+	  if (!(conn->mx.flags & M_IMAP_CRAM))
+	    FREE (&ImapCRAMKey);
+	  conn->mx.flags &= ~M_IMAP_CRAM;
 	}
 	else
+	{
+	  strfcpy (conn->mx.pass, ckey, sizeof (conn->mx.pass));
+	  conn->mx.flags |= M_IMAP_CRAM;
 	  return 0;
+	}
       }
       else
       {
@@ -549,18 +566,23 @@ int imap_authenticate (IMAP_DATA *idata, CONNECTION *conn)
     else
       dprint (2, (debugfile, "CRAM-MD5 authentication is not available\n"));
         
-    if (!ImapPass)
+    if (! (conn->mx.flags & M_IMAP_PASS))
     {
-      pass[0]=0;
-      snprintf (buf, sizeof (buf), _("Password for %s@%s: "), user, conn->server);
-      if (mutt_get_field (buf, pass, sizeof (pass), M_PASS) != 0 ||
-	  !pass[0])
+      if (!ImapPass)
       {
-	return (-1);
+	pass[0]=0;
+	snprintf (buf, sizeof (buf), _("Password for %s@%s: "), user, conn->mx.host);
+	if (mutt_get_field (buf, pass, sizeof (pass), M_PASS) != 0 ||
+	    !pass[0])
+	{
+	  return (-1);
+	}
       }
+      else
+	strfcpy (pass, ImapPass, sizeof (pass));
     }
     else
-      strfcpy (pass, ImapPass, sizeof (pass));
+      strfcpy (pass, conn->mx.pass, sizeof (pass));
 
     imap_quote_string (q_user, sizeof (q_user), user);
     imap_quote_string (q_pass, sizeof (q_pass), pass);
@@ -580,17 +602,22 @@ int imap_authenticate (IMAP_DATA *idata, CONNECTION *conn)
       mutt_error _("Login failed.");
       sleep (1);
 
-      FREE (&ImapUser);
-      FREE (&ImapPass);
+      if (!(conn->mx.flags & M_IMAP_USER))
+	FREE (&ImapUser);
+      if (!(conn->mx.flags & M_IMAP_PASS))
+	FREE (&ImapPass);
+      conn->mx.flags &= ~M_IMAP_PASS;
     }
     else
     {
       /* If they have a successful login, we may as well cache the 
        * user/password. */
-      if (!ImapUser)
-	ImapUser = safe_strdup (user);
-      if (!ImapPass)
-	ImapPass = safe_strdup (pass);
+      if (!(conn->mx.flags & M_IMAP_USER))
+	strfcpy (conn->mx.user, user, sizeof (conn->mx.user));
+      if (!(conn->mx.flags & M_IMAP_PASS))
+	strfcpy (conn->mx.pass, pass, sizeof (conn->mx.pass));
+      
+      conn->mx.flags |= (M_IMAP_USER | M_IMAP_PASS);
     }
   }
   return 0;

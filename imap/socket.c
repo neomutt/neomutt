@@ -18,7 +18,9 @@
 
 #include "mutt.h"
 #include "globals.h"
+#include "imap.h"
 #include "imap_socket.h"
+#include "imap_private.h"
 #ifdef USE_SSL
 #include "imap_ssl.h"
 #endif
@@ -97,20 +99,29 @@ int mutt_socket_read_line_d (char *buf, size_t buflen, CONNECTION *conn)
   return r;
 }
 
-CONNECTION *mutt_socket_select_connection (char *host, int port, int flags)
+static int imap_user_match (const IMAP_MBOX *m1, const IMAP_MBOX *m2)
+{
+  const char *user = ImapUser ? ImapUser : NONULL (Username);
+
+  if (m1->flags & m2->flags & M_IMAP_USER)
+    return (!strcmp (m1->user, m2->user));
+  if (m1->flags & M_IMAP_USER)
+    return (!strcmp (m1->user, user));
+  if (m2->flags & M_IMAP_USER)
+    return (!strcmp (m2->user, user));
+  return 1;
+}
+
+CONNECTION *mutt_socket_select_connection (const IMAP_MBOX *mx, int newconn)
 {
   CONNECTION *conn;
 
-#ifdef USE_SSL
-  if (flags != M_NEW_SOCKET && flags != M_NEW_SSL_SOCKET)
-#else
-  if (flags != M_NEW_SOCKET)
-#endif
+  if (! newconn)
   {
     conn = Connections;
     while (conn)
     {
-      if (!mutt_strcmp (host, conn->server) && (port == conn->port))
+      if (!mutt_strcmp (mx->host, conn->mx.host) && (mx->port == conn->mx.port) && imap_user_match (mx, &conn->mx))
 	return conn;
       conn = conn->next;
     }
@@ -119,14 +130,14 @@ CONNECTION *mutt_socket_select_connection (char *host, int port, int flags)
   conn->bufpos = 0;
   conn->available = 0;
   conn->uses = 0;
-  conn->server = safe_strdup (host);
+  memcpy (&conn->mx, mx, sizeof (conn->mx));
+  conn->mx.mbox = 0;
   conn->preconnect = safe_strdup (ImapPreconnect); 
-  conn->port = port;
   conn->next = Connections;
   Connections = conn;
 
 #ifdef USE_SSL
-  if (flags == M_NEW_SSL_SOCKET) 
+  if (mx->socktype == M_NEW_SSL_SOCKET) 
   {
       conn->read = ssl_socket_read;
       conn->write = ssl_socket_write;
@@ -195,16 +206,16 @@ int raw_socket_open (CONNECTION *conn)
   int first_try_without_preconnect = TRUE; 
 
   memset (&sin, 0, sizeof (sin));
-  sin.sin_port = htons (conn->port);
+  sin.sin_port = htons (conn->mx.port);
   sin.sin_family = AF_INET;
-  if ((he = gethostbyname (conn->server)) == NULL)
+  if ((he = gethostbyname (conn->mx.host)) == NULL)
   {
-    mutt_perror (conn->server);
+    mutt_perror (conn->mx.host);
     return (-1);
   }
   memcpy (&sin.sin_addr, he->h_addr_list[0], he->h_length);
 
-  mutt_message (_("Connecting to %s..."), conn->server); 
+  mutt_message (_("Connecting to %s..."), conn->mx.host); 
 
   if (do_preconnect && first_try_without_preconnect)
   {
@@ -217,7 +228,7 @@ int raw_socket_open (CONNECTION *conn)
   {
     int ret;
 
-    dprint (1,(debugfile,"Preconnect to server %s:\n", conn->server));
+    dprint (1,(debugfile,"Preconnect to server %s:\n", conn->mx.host));
     dprint (1,(debugfile,"\t%s\n", conn->preconnect));
     /* Execute preconnect command */
     ret = mutt_system (conn->preconnect) < 0;

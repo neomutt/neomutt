@@ -32,6 +32,12 @@
 
 #define SEQLEN 5
 
+#define M_IMAP_USER (1<<0)
+#define M_IMAP_PORT (1<<1)
+#define M_IMAP_TYPE (1<<2)
+#define M_IMAP_PASS (1<<3)
+#define M_IMAP_CRAM (1<<4)
+
 enum
 {
   IMAP_FATAL = 1,

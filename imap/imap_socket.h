@@ -22,9 +22,8 @@
 
 typedef struct _connection
 {
-  char *server;
+  IMAP_MBOX mx;
   char *preconnect; /* Actually specific to server, not connection */
-  int port;
   int uses;
   int fd;
   char inbuf[LONG_STRING];
@@ -45,7 +44,7 @@ int mutt_socket_readchar (CONNECTION *conn, char *c);
 int mutt_socket_read_line (char *buf, size_t buflen, CONNECTION *conn);
 int mutt_socket_read_line_d (char *buf, size_t buflen, CONNECTION *conn);
 int mutt_socket_write (CONNECTION *conn, const char *buf);
-CONNECTION *mutt_socket_select_connection (char *host, int port, int flags);
+CONNECTION *mutt_socket_select_connection (const IMAP_MBOX *mx, int newconn);
 int mutt_socket_open_connection (CONNECTION *conn);
 int mutt_socket_close_connection (CONNECTION *conn);
 

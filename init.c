@@ -30,6 +30,7 @@
 
 
 #ifdef USE_SSL
+#include "imap.h"
 #include "imap_socket.h"
 #include "imap_ssl.h"
 #endif

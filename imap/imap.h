@@ -22,6 +22,19 @@
 #include "browser.h"
 #include "mailbox.h"
 
+typedef struct
+{
+  char user[32];
+  char pass[32];
+  char host[128];
+  int port;
+  char type[16];
+  int socktype;
+  char *mbox;
+  int flags;
+} IMAP_MBOX;
+
+
 /* imap.c */
 int imap_check_mailbox (CONTEXT *ctx, int *index_hint);
 int imap_create_mailbox (CONTEXT* idata, char* mailbox);
@@ -47,9 +60,8 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete);
 int imap_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno);
 
 /* util.c */
-int imap_parse_path (char* path, char* host, size_t hlen, int* port,
-  int *socktype, char** mbox);
-void imap_qualify_path (char* dest, size_t len, const char* host, int port,
+int imap_parse_path (const char* path, IMAP_MBOX *mx);
+void imap_qualify_path (char* dest, size_t len, const IMAP_MBOX *mx,
   const char* path, const char* name);
 
 int imap_wait_keepalive (pid_t pid);

@@ -24,6 +24,7 @@
 #include <string.h>
 
 #include "mutt.h"
+#include "imap.h"
 #include "imap_socket.h"
 #include "mutt_menu.h"
 #include "mutt_curses.h"

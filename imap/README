@@ -26,3 +26,4 @@ New features vs. the stable distribution:
 * Preserve message keywords
 * Preserve deleted messages if you don't choose to expunge them
 * Delete mailboxes (from the browser)
+* Multiple IMAP usernames

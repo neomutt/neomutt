@@ -396,19 +396,17 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
 {
   FILE *fp;
   char buf[LONG_STRING];
-  char host[SHORT_STRING];
   char mbox[LONG_STRING];
   char mailbox[LONG_STRING]; 
   char seq[16];
-  char *pc;
-  int port;
   size_t len;
   int c, last;
+  IMAP_MBOX mx;
 
-  if (imap_parse_path (ctx->path, host, sizeof (host), &port, NULL, &pc))
+  if (imap_parse_path (ctx->path, &mx))
     return (-1);
 
-  imap_fix_path (CTX_DATA, pc, mailbox, sizeof (mailbox));
+  imap_fix_path (CTX_DATA, mx.mbox, mailbox, sizeof (mailbox));
   
   if ((fp = fopen (msg->path, "r")) == NULL)
   {
@@ -521,27 +519,25 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   char buf[HUGE_STRING];
   char cmd[LONG_STRING];
   char mbox[LONG_STRING];
-  char host[SHORT_STRING];
-  int port;
-  char* pc;
   int rc;
   int n;
+  IMAP_MBOX mx;
 
-  if (imap_parse_path (dest, host, sizeof (host), &port, NULL, &pc))
+  if (imap_parse_path (dest, &mx))
   {
     dprint (1, (debugfile, "imap_copy_message: bad destination %s\n", dest));
     return -1;
   }
 
   /* check that the save-to folder is on the same server */
-  if (mutt_socket_select_connection (host, port, 0) != CTX_DATA->conn)
+  if (mutt_socket_select_connection (&mx, 0) != CTX_DATA->conn)
   {
     dprint (3, (debugfile, "imap_copy_message: %s not same server as %s\n",
       dest, ctx->path));
     return 1;
   }
 
-  imap_fix_path (CTX_DATA, pc, cmd, sizeof (cmd));
+  imap_fix_path (CTX_DATA, mx.mbox, cmd, sizeof (cmd));
 
   /* Null HEADER* means copy tagged messages */
   if (!h)

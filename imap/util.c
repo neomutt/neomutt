@@ -126,97 +126,95 @@ char *imap_next_word (char *s)
 
 /* imap_parse_path: given an IMAP mailbox name, return host, port
  *   and a path IMAP servers will recognise. */
-int imap_parse_path (char* path, char* host, size_t hlen, int* port, 
-  int *socktype, char** mbox)
+int imap_parse_path (const char *path, IMAP_MBOX *mx)
 {
+  char tmp[128];
+  char *c;
   int n;
-  char *pc;
-  char *pt;
-
-  /* set default port */
-  if (port)
-    *port = 0;
-  if (socktype)
-    *socktype = M_NEW_SOCKET;
-  pc = path;
-  if (*pc != '{')
+  
+  mx->type[0] = '\0';
+  if (sscanf (path, "{%128[^}]}", tmp) != 1) 
+  {
     return -1;
-  pc++;
-  /* skip over the entire host, but copy in only what we have room for */
-  for (n = 0; *pc && *pc != '}' && *pc != ':' && *pc != '/'; pc++)
-    if (n+1 < hlen)
-      host[n++] = *pc;
-  if (hlen)
-    host[n] = 0;
+  }
+  mx->mbox = strchr (path, '}') + 1;
+  
+  /* Defaults */
+  mx->flags = 0;
+  mx->port = IMAP_PORT;
+  mx->socktype = M_NEW_SOCKET;
 
-  /* catch NULL hosts, unless we're deliberately not parsing them */
-  if (hlen && !*host)
+  if ((c = strrchr (tmp, '@')))
+  {
+    *c = '\0';
+    strfcpy (mx->user, tmp, sizeof (mx->user));
+    strfcpy (tmp, c+1, sizeof (tmp));
+    mx->flags |= M_IMAP_USER;
+  }
+  
+  if ((n = sscanf (tmp, "%128[^:/]%128s", mx->host, tmp)) < 1)
   {
     dprint (1, (debugfile, "imap_parse_path: NULL host in %s\n", path));
     return -1;
   }
-  if (!*pc)
-    return -1;
-  if (*pc == ':')
-  {
-    char c;
-    pc++;
-    pt = pc;
-    while (*pc && *pc != '}' && *pc != '/') pc++;
-    if (!*pc)
-      return -1;
-    c = *pc;
-    *pc = '\0';
-    if (port)
-      *port = atoi (pt);
-    if (port && !*port)
+  
+  if (n > 1) {
+    if (sscanf (tmp, ":%d%128s", &mx->port, tmp) >= 1)
+      mx->flags |= M_IMAP_PORT;
+    if (sscanf (tmp, "/%s", mx->type) == 1)
     {
-      dprint (1, (debugfile, "imap_parse_path: bad port in %s\n", path));
-      return -1;
-    }
-    *pc = c;
-  }
-  if (*pc == '/') 
-  {
-    pc++;
-    pt = pc;
-    while (*pc && *pc != '}') pc++;
-    if (!*pc)
-      return (-1);
-    *pc = '\0';
 #ifdef USE_SSL
-    if (!strcmp (pt, "ssl"))
-    {
-      if (socktype)
-	*socktype = M_NEW_SSL_SOCKET;
-      if (port && !*port)
-	*port = IMAP_SSL_PORT;
-    } else
+      if (!strcmp (mx->type, "ssl"))
+      {
+	if (! (mx->flags & M_IMAP_PORT))
+	  mx->port = IMAP_SSL_PORT;
+	mx->socktype = M_NEW_SSL_SOCKET;
+	mx->flags |= M_IMAP_TYPE;
+      }
+      else
 #endif
-      return (-1);
-    *pc = '}';
+      {
+	dprint (1, (debugfile, "imap_parse_path: Unknown connection type in %s\n", path));
+	return (-1);
+      }
+    }
   }
-  pc++;
   
-  if (port && !*port)
-    *port = IMAP_PORT;
-  
-  *mbox = pc;
   return 0;
 }
+
 
 /* imap_qualify_path: make an absolute IMAP folder target, given host, port
  *   and relative path. Use this and maybe it will be easy to convert to
  *   IMAP URLs */
-void imap_qualify_path (char* dest, size_t len, const char* host, int port,
+void imap_qualify_path (char *dest, size_t len, const IMAP_MBOX *mx,
   const char* path, const char* name)
 {
-  if (port == IMAP_PORT)
-    snprintf (dest, len, "{%s}%s%s", host, NONULL (path), NONULL (name));
-  else
-    snprintf (dest, len, "{%s:%d}%s%s", host, port, NONULL (path),
-      NONULL (name));
+  char tmp[128];
+  
+  strcpy (dest, "{");
+  if ((mx->flags & M_IMAP_USER) && (!ImapUser || strcmp (mx->user, ImapUser)))
+  {
+    snprintf (tmp, sizeof (tmp), "%s@", mx->user);
+    strncat (dest, tmp, len);
+  }
+  strncat (dest, mx->host, len);
+  if (mx->flags & M_IMAP_PORT)
+  {
+    snprintf (tmp, sizeof (tmp), ":%d", mx->port);
+    strncat (dest, tmp, len);
+  }
+#ifdef USE_SSL
+  if (mx->flags & M_IMAP_TYPE)
+  {
+    snprintf (tmp, sizeof (tmp), "/%s", mx->type);
+    strncat (dest, tmp, len);
+  }
+#endif
+  snprintf (tmp, sizeof (tmp), "}%s%s", NONULL (path), NONULL (name));
+  strncat (dest, tmp, len);
 }
+
 
 /* imap_quote_string: quote string according to IMAP rules:
  *   surround string with quotes, escape " and \ with \ */

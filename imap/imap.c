@@ -537,21 +537,18 @@ int imap_open_mailbox (CONTEXT *ctx)
   IMAP_DATA *idata;
   char buf[LONG_STRING];
   char bufout[LONG_STRING];
-  char host[SHORT_STRING];
   char seq[16];
-  char *pc = NULL;
   int count = 0;
   int n;
-  int port;
-  int socktype;
-
-  if (imap_parse_path (ctx->path, host, sizeof (host), &port, &socktype, &pc))
+  IMAP_MBOX mx;
+  
+  if (imap_parse_path (ctx->path, &mx))
   {
     mutt_error ("%s is an invalid IMAP path", ctx->path);
     return -1;
   }
 
-  conn = mutt_socket_select_connection (host, port, 0);
+  conn = mutt_socket_select_connection (&mx, 0);
   idata = CONN_DATA;
 
   if (!idata || (idata->state != IMAP_AUTHENTICATED))
@@ -562,7 +559,7 @@ int imap_open_mailbox (CONTEXT *ctx)
       /* We need to create a new connection, the current one isn't useful */
       idata = safe_calloc (1, sizeof (IMAP_DATA));
 
-      conn = mutt_socket_select_connection (host, port, socktype);
+      conn = mutt_socket_select_connection (&mx, 1);
       conn->data = idata;
       idata->conn = conn;
     }
@@ -572,10 +569,10 @@ int imap_open_mailbox (CONTEXT *ctx)
   ctx->data = (void *) idata;
 
   /* Clean up path and replace the one in the ctx */
-  imap_fix_path (idata, pc, buf, sizeof (buf));
+  imap_fix_path (idata, mx.mbox, buf, sizeof (buf));
   FREE(&(idata->selected_mailbox));
   idata->selected_mailbox = safe_strdup (buf);
-  imap_qualify_path (buf, sizeof (buf), host, port, idata->selected_mailbox,
+  imap_qualify_path (buf, sizeof (buf), &mx, idata->selected_mailbox,
     NULL);
 
   FREE (&(ctx->path));
@@ -597,6 +594,8 @@ int imap_open_mailbox (CONTEXT *ctx)
 
   do
   {
+    char *pc;
+    
     if (mutt_socket_read_line_d (buf, sizeof (buf), conn) < 0)
       break;
 
@@ -712,18 +711,16 @@ int imap_select_mailbox (CONTEXT* ctx, const char* path)
 {
   IMAP_DATA* idata;
   CONNECTION* conn;
-  char host[SHORT_STRING];
-  int port;
   char curpath[LONG_STRING];
-  char* mbox = NULL;
+  IMAP_MBOX mx;
 
   strfcpy (curpath, path, sizeof (curpath));
   /* check that the target folder makes sense */
-  if (imap_parse_path (curpath, host, sizeof (host), &port, NULL, &mbox))
+  if (imap_parse_path (curpath, &mx))
     return -1;
 
   /* and that it's on the same server as the current folder */
-  conn = mutt_socket_select_connection (host, port, 0);
+  conn = mutt_socket_select_connection (&mx, 0);
   if (!CTX_DATA || !CONN_DATA || (CTX_DATA->conn != CONN_DATA->conn))
   {
     dprint(2, (debugfile,
@@ -747,20 +744,17 @@ int imap_open_mailbox_append (CONTEXT *ctx)
 {
   CONNECTION *conn;
   IMAP_DATA *idata;
-  char host[SHORT_STRING];
   char buf[LONG_STRING], mbox[LONG_STRING];
   char mailbox[LONG_STRING];
-  char *pc;
   int r;
-  int port;
-  int socktype;
+  IMAP_MBOX mx;
 
-  if (imap_parse_path (ctx->path, host, sizeof (host), &port, &socktype, &pc))
+  if (imap_parse_path (ctx->path, &mx))
     return (-1);
 
   ctx->magic = M_IMAP;
 
-  conn = mutt_socket_select_connection (host, port, 0);
+  conn = mutt_socket_select_connection (&mx, 0);
   idata = CONN_DATA;
 
   if (!idata || (idata->state == IMAP_DISCONNECTED))
@@ -779,7 +773,7 @@ int imap_open_mailbox_append (CONTEXT *ctx)
 
   /* check mailbox existance */
 
-  imap_fix_path (idata, pc, mailbox, sizeof (mailbox));
+  imap_fix_path (idata, mx.mbox, mailbox, sizeof (mailbox));
 
   imap_quote_string (mbox, sizeof (mbox), mailbox);
 				
@@ -1167,20 +1161,18 @@ int imap_mailbox_check (char *path, int new)
 {
   CONNECTION *conn;
   IMAP_DATA *idata;
-  char host[SHORT_STRING];
   char buf[LONG_STRING];
   char mbox[LONG_STRING];
   char mbox_unquoted[LONG_STRING];
   char seq[8];
   char *s;
-  char *pc;
   int msgcount = 0;
-  int port;
-
-  if (imap_parse_path (path, host, sizeof (host), &port, NULL, &pc))
+  IMAP_MBOX mx;
+  
+  if (imap_parse_path (path, &mx))
     return -1;
 
-  conn = mutt_socket_select_connection (host, port, 0);
+  conn = mutt_socket_select_connection (&mx, 0);
   idata = CONN_DATA;
 
   if (!idata || (idata->state == IMAP_DISCONNECTED))
@@ -1200,10 +1192,10 @@ int imap_mailbox_check (char *path, int new)
       return -1;
   }
 
-  imap_fix_path (idata, pc, buf, sizeof (buf));
+  imap_fix_path (idata, mx.mbox, buf, sizeof (buf));
   /* Update the path, if it fits */
-  if (strlen (buf) < strlen (pc))
-      strcpy (pc, buf);
+  if (strlen (buf) < strlen (mx.mbox))
+      strcpy (mx.mbox, buf);
 
   imap_make_sequence (seq, sizeof (seq));		
   imap_quote_string (mbox, sizeof(mbox), buf);
@@ -1358,14 +1350,12 @@ int imap_subscribe (char *path, int subscribe)
   IMAP_DATA *idata;
   char buf[LONG_STRING];
   char mbox[LONG_STRING];
-  char host[SHORT_STRING];
-  char *ipath = NULL;
-  int port;
+  IMAP_MBOX mx;
 
-  if (imap_parse_path (path, host, sizeof (host), &port, NULL, &ipath))
+  if (imap_parse_path (path, &mx))
     return (-1);
 
-  conn = mutt_socket_select_connection (host, port, 0);
+  conn = mutt_socket_select_connection (&mx, 0);
   idata = CONN_DATA;
 
   if (!idata || (idata->state == IMAP_DISCONNECTED))
@@ -1381,7 +1371,7 @@ int imap_subscribe (char *path, int subscribe)
       return -1;
   }
 
-  imap_fix_path (idata, ipath, buf, sizeof (buf));
+  imap_fix_path (idata, mx.mbox, buf, sizeof (buf));
   if (subscribe)
     mutt_message (_("Subscribing to %s..."), buf);
   else
@@ -1402,12 +1392,9 @@ int imap_subscribe (char *path, int subscribe)
 int imap_complete(char* dest, size_t dlen, char* path) {
   CONNECTION* conn;
   IMAP_DATA* idata;
-  char host[SHORT_STRING];
-  int port;
   char list[LONG_STRING];
   char buf[LONG_STRING];
   char seq[16];
-  char* mbox = NULL;
   char* list_word = NULL;
   int noselect, noinferiors;
   char delim;
@@ -1415,15 +1402,16 @@ int imap_complete(char* dest, size_t dlen, char* path) {
   int clen, matchlen = 0;
   int completions = 0;
   int pos = 0;
+  IMAP_MBOX mx;
 
   /* verify passed in path is an IMAP path */
-  if (imap_parse_path (path, host, sizeof(host), &port, NULL, &mbox))
+  if (imap_parse_path (path, &mx))
   {
     dprint(2, (debugfile, "imap_complete: bad path %s\n", path));
     return -1;
   }
 
-  conn = mutt_socket_select_connection (host, port, 0);
+  conn = mutt_socket_select_connection (&mx, 0);
   idata = CONN_DATA;
 
   /* don't open a new socket just for completion */
@@ -1436,8 +1424,8 @@ int imap_complete(char* dest, size_t dlen, char* path) {
 
   /* reformat path for IMAP list, and append wildcard */
   /* don't use INBOX in place of "" */
-  if (mbox[0])
-    imap_fix_path (idata, mbox, list, sizeof(list));
+  if (mx.mbox[0])
+    imap_fix_path (idata, mx.mbox, list, sizeof(list));
   else
     list[0] = '\0';
 
@@ -1448,7 +1436,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
   mutt_socket_write (conn, buf);
 
   /* and see what the results are */
-  strfcpy (completion, mbox, sizeof(completion));
+  strfcpy (completion, mx.mbox, sizeof(completion));
   do
   {
     if (imap_parse_list_response(conn, buf, sizeof(buf), &list_word,
@@ -1492,7 +1480,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
   if (completions)
   {
     /* reformat output */
-    imap_qualify_path (dest, dlen, host, port, completion, NULL);
+    imap_qualify_path (dest, dlen, &mx, completion, NULL);
     mutt_pretty_mailbox (dest);
 
     return 0;

@@ -43,11 +43,8 @@ int imap_init_browse (char *path, struct browser_state *state)
   char buf[LONG_STRING];
   char nsbuf[LONG_STRING];
   char mbox[LONG_STRING];
-  char host[SHORT_STRING];
-  int port;
   char list_cmd[5];
   char seq[16];
-  char *ipath = NULL;
   IMAP_NAMESPACE_INFO nsi[16];
   int home_namespace = 0;
   int n;
@@ -59,8 +56,9 @@ int imap_init_browse (char *path, struct browser_state *state)
   short showparents = 0;
   int noselect;
   int noinferiors;
+  IMAP_MBOX mx;
 
-  if (imap_parse_path (path, host, sizeof (host), &port, NULL, &ipath))
+  if (imap_parse_path (path, &mx))
   {
     mutt_error ("%s is an invalid IMAP path", path);
     return -1;
@@ -68,7 +66,7 @@ int imap_init_browse (char *path, struct browser_state *state)
 
   strfcpy (list_cmd, option (OPTIMAPLSUB) ? "LSUB" : "LIST", sizeof (list_cmd));
 
-  conn = mutt_socket_select_connection (host, port, 0);
+  conn = mutt_socket_select_connection (&mx, 0);
   idata = CONN_DATA;
 
   if (!idata || (idata->state == IMAP_DISCONNECTED))
@@ -84,11 +82,11 @@ int imap_init_browse (char *path, struct browser_state *state)
       return (-1);
   }
 
-  if (ipath[0] == '\0')
+  if (mx.mbox[0] == '\0')
   {
     home_namespace = 1;
     mbox[0] = 0;		/* Do not replace "" with "INBOX" here */
-    ipath = ImapHomeNamespace;
+    mx.mbox = ImapHomeNamespace;
     nns = 0;
     if (mutt_bit_isset(idata->capabilities,NAMESPACE))
     {
@@ -98,13 +96,13 @@ int imap_init_browse (char *path, struct browser_state *state)
       if (verify_namespace (conn, nsi, nns) != 0)
 	return (-1);
     }
-    if (!ipath)		/* Any explicitly set imap_home_namespace wins */
+    if (!mx.mbox)		/* Any explicitly set imap_home_namespace wins */
     { 
       for (i = 0; i < nns; i++)
 	if (nsi[i].listable &&
 	    (nsi[i].type == IMAP_NS_PERSONAL || nsi[i].type == IMAP_NS_SHARED))
 	{
-	  ipath = nsi->prefix;
+	  mx.mbox = nsi->prefix;
 	  nsi->home_namespace = 1;
 	  break;
 	}
@@ -113,9 +111,9 @@ int imap_init_browse (char *path, struct browser_state *state)
 
   mutt_message _("Contacted server, getting folder list...");
 
-  if (ipath && ipath[0] != '\0')
+  if (mx.mbox && mx.mbox[0] != '\0')
   {
-    imap_fix_path (idata, ipath, mbox, sizeof (mbox));
+    imap_fix_path (idata, mx.mbox, mbox, sizeof (mbox));
     n = mutt_strlen (mbox);
 
     dprint (3, (debugfile, "imap_init_browse: mbox: %s\n", mbox));
@@ -153,7 +151,7 @@ int imap_init_browse (char *path, struct browser_state *state)
     if (mbox[n-1] == idata->delim)
     {
       showparents = 1;
-      imap_qualify_path (buf, sizeof (buf), host, port, mbox, NULL);
+      imap_qualify_path (buf, sizeof (buf), &mx, mbox, NULL);
       state->folder = safe_strdup (buf);
       n--;
     }
@@ -182,7 +180,7 @@ int imap_init_browse (char *path, struct browser_state *state)
         mbox[n++] = ctmp;
         ctmp = mbox[n];
         mbox[n] = '\0';
-        imap_qualify_path (buf, sizeof (buf), host, port, mbox, NULL);
+        imap_qualify_path (buf, sizeof (buf), &mx, mbox, NULL);
         state->folder = safe_strdup (buf);
       }
       mbox[n] = ctmp;
@@ -197,7 +195,7 @@ int imap_init_browse (char *path, struct browser_state *state)
         imap_add_folder (idata->delim, relpath, 1, 0, state, 1); 
       if (!state->folder)
       {
-        imap_qualify_path (buf, sizeof (buf), host, port, relpath, NULL);
+        imap_qualify_path (buf, sizeof (buf), &mx, relpath, NULL);
         state->folder = safe_strdup (buf);
       }
     }
@@ -206,7 +204,7 @@ int imap_init_browse (char *path, struct browser_state *state)
   /* no namespace, no folder: set folder to host only */
   if (!state->folder)
   {
-    imap_qualify_path (buf, sizeof (buf), host, port, NULL, NULL);
+    imap_qualify_path (buf, sizeof (buf), &mx, NULL, NULL);
     state->folder = safe_strdup (buf);
   }
 
@@ -248,14 +246,12 @@ static int add_list_result (CONNECTION *conn, const char *seq, const char *cmd,
 {
   IMAP_DATA *idata = CONN_DATA;
   char buf[LONG_STRING];
-  char host[SHORT_STRING];
-  int port;
-  char *curfolder;
   char *name;
   int noselect;
   int noinferiors;
+  IMAP_MBOX mx;
 
-  if (imap_parse_path (state->folder, host, sizeof (host), &port, NULL, &curfolder))
+  if (imap_parse_path (state->folder, &mx))
   {
     dprint (2, (debugfile,
       "add_list_result: current folder %s makes no sense\n", state->folder));
@@ -277,7 +273,7 @@ static int add_list_result (CONNECTION *conn, const char *seq, const char *cmd,
       if (isparent)
         noselect = 1;
       /* prune current folder from output */
-      if (isparent || strncmp (name, curfolder, strlen (name)))
+      if (isparent || strncmp (name, mx.mbox, strlen (name)))
         imap_add_folder (idata->delim, name, noselect, noinferiors, state,
           isparent);
     }
@@ -294,12 +290,10 @@ static void imap_add_folder (char delim, char *folder, int noselect,
 {
   char tmp[LONG_STRING];
   char relpath[LONG_STRING];
-  char host[SHORT_STRING];
-  int port;
-  char *curfolder;
   int flen = strlen (folder);
+  IMAP_MBOX mx;
 
-  if (imap_parse_path (state->folder, host, sizeof (host), &port, NULL, &curfolder))
+  if (imap_parse_path (state->folder, &mx))
     return;
 
   imap_unquote_string (folder);
@@ -320,8 +314,8 @@ static void imap_add_folder (char delim, char *folder, int noselect,
   if (isparent)
     strfcpy (relpath, "../", sizeof (relpath));
   /* strip current folder from target, to render a relative path */
-  else if (!strncmp (curfolder, folder, strlen (curfolder)))
-    strfcpy (relpath, folder + strlen (curfolder), sizeof (relpath));
+  else if (!strncmp (mx.mbox, folder, strlen (mx.mbox)))
+    strfcpy (relpath, folder + strlen (mx.mbox), sizeof (relpath));
   else
     strfcpy (relpath, folder, sizeof (relpath));
 
@@ -333,7 +327,7 @@ static void imap_add_folder (char delim, char *folder, int noselect,
 
   if (!noselect)
   {
-    imap_qualify_path (tmp, sizeof (tmp), host, port, folder, NULL);
+    imap_qualify_path (tmp, sizeof (tmp), &mx, folder, NULL);
     (state->entry)[state->entrylen].name = safe_strdup (tmp);
 
     (state->entry)[state->entrylen].desc = safe_strdup (relpath);
@@ -349,7 +343,7 @@ static void imap_add_folder (char delim, char *folder, int noselect,
     trailing_delim[1] = '\0';
     trailing_delim[0] = (flen && folder[flen - 1] != delim) ? delim : '\0';
 
-    imap_qualify_path (tmp, sizeof (tmp), host, port, folder, trailing_delim);
+    imap_qualify_path (tmp, sizeof (tmp), &mx, folder, trailing_delim);
     (state->entry)[state->entrylen].name = safe_strdup (tmp);
 
     if (!isparent && (strlen (relpath) < sizeof (relpath) - 2))

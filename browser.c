@@ -808,16 +808,15 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 	else
         {
 	  char msg[LONG_STRING];
-	  char* mbox;
+	  IMAP_MBOX mx;
 	  int nentry = menu->current;
 	  
-	  imap_parse_path (state.entry[nentry].name, NULL, 0, NULL,
-            NULL, &mbox);
+	  imap_parse_path (state.entry[nentry].name, &mx);
 	  snprintf (msg, sizeof (msg), _("Really delete mailbox \"%s\"?"),
-            mbox);
+            mx.mbox);
 	  if (mutt_yesorno (msg, M_NO) == M_YES)
           {
-	    if (!imap_delete_mailbox (Context, mbox))
+	    if (!imap_delete_mailbox (Context, mx.mbox))
             {
 	      /* free the mailbox from the browser */
 	      safe_free ((void **) &((state.entry)[nentry].name));
