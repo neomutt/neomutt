@@ -1,4 +1,6 @@
-2005-01-11 11:09:15  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+2005-01-11 12:15:13  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* doc/manual.sgml.head, doc/muttrc.man.head: Document send2-hook.
 
 	* send.c: send2-hook should also be executed after the first
 	time the message is edited by the user.
