@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt-1.1.12i \n"
+"Project-Id-Version: Mutt-1.3.3i \n"
 "POT-Creation-Date: 2000-06-09 13:39+0200\n"
-"PO-Revision-Date: 2000-04-26 10:26+02:00\n"
-"Last-Translator: Morten Bo Johansen <mojo@image.dk>\n"
+"PO-Revision-Date: 2000-06-17 19:08+02:00\n"
+"Last-Translator: Byrial Jensen <byrial@image.dk>, Morten Bo Johansen <mojo@image.dk> \n"
 "Language-Team: Danish <da@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
@@ -313,9 +313,8 @@ msgid "PGP signature successfully verified."
 msgstr "PGP-underskrift klarede efterprøvning"
 
 #: commands.c:149
-#, fuzzy
 msgid "PGP signature could NOT be verified."
-msgstr "PGP-underskrift klarede efterprøvning"
+msgstr "PGP-underskrift klarede IKKE efterprøvning"
 
 #: commands.c:172
 msgid "Command: "
@@ -1012,9 +1011,9 @@ msgid "[-- on %s --]\n"
 msgstr "[-- den %s --]\n"
 
 #: handler.c:1253
-#, fuzzy, c-format
+#, c-format
 msgid "[-- name: %s --]\n"
-msgstr "[-- den %s --]\n"
+msgstr "[-- navn %s --]\n"
 
 #: handler.c:1264
 #, c-format
@@ -1261,18 +1260,16 @@ msgid "[unable to calculate]"
 msgstr "[kan ikke beregne]"
 
 #: imap/imap_ssl.c:292
-#, fuzzy
 msgid "[invalid date]"
-msgstr "%s: Ugyldig værdi"
+msgstr "[ugyldig dato]"
 
 #: imap/imap_ssl.c:361
 msgid "Server certificate is not yet valid"
-msgstr ""
+msgstr "Tjener-certifikat er endnu ikke gyldigt"
 
 #: imap/imap_ssl.c:368
-#, fuzzy
 msgid "Server certificate has expired"
-msgstr "Dette certifikat er udstedt af:"
+msgstr "Tjener-certifikat er udløbet"
 
 #: imap/imap_ssl.c:441
 msgid "This certificate belongs to:"
@@ -1283,19 +1280,18 @@ msgid "This certificate was issued by:"
 msgstr "Dette certifikat er udstedt af:"
 
 #: imap/imap_ssl.c:461
-#, fuzzy
 msgid "This certificate is valid"
-msgstr "Dette certifikat er udstedt af:"
+msgstr "Dette certifikat er gyldigt"
 
 #: imap/imap_ssl.c:462
 #, c-format
 msgid "   from %s"
-msgstr ""
+msgstr "   fra %s"
 
 #: imap/imap_ssl.c:464
 #, c-format
 msgid "     to %s"
-msgstr ""
+msgstr "     til %s"
 
 #: imap/imap_ssl.c:470
 #, c-format
@@ -1772,9 +1768,8 @@ msgid "move the cursor one character to the left"
 msgstr "flyt markøren et tegn til venstre"
 
 #: keymap_alldefs.h:64
-#, fuzzy
 msgid "move the cursor to the beginning of the word"
-msgstr "gå til begyndelsen af linje"
+msgstr "flyt markøren til begyndelse af ord"
 
 #: keymap_alldefs.h:65
 msgid "jump to the beginning of the line"
@@ -1805,9 +1800,8 @@ msgid "move the cursor one character to the right"
 msgstr "flyt markøren et tegn til højre"
 
 #: keymap_alldefs.h:72
-#, fuzzy
 msgid "move the cursor to the end of the word"
-msgstr "flyt markøren et tegn til højre"
+msgstr "flyt markøren til slutning af ord"
 
 #: keymap_alldefs.h:73 keymap_alldefs.h:74
 msgid "scroll up through the history list"
@@ -1818,9 +1812,8 @@ msgid "delete chars from cursor to end of line"
 msgstr "slet alle tegn til linjeafslutning"
 
 #: keymap_alldefs.h:76
-#, fuzzy
 msgid "delete chars from the cursor to the end of the word"
-msgstr "slet alle tegn til linjeafslutning"
+msgstr "slet resten af ord fra markørens position"
 
 #: keymap_alldefs.h:77
 msgid "delete all chars on the line"
@@ -1836,7 +1829,7 @@ msgstr "citér den næste taste"
 
 #: keymap_alldefs.h:80
 msgid "transpose character under cursor with previous"
-msgstr ""
+msgstr "udskift tegn under markøren med forrige"
 
 #: keymap_alldefs.h:81
 msgid "enter a muttrc command"
@@ -2373,7 +2366,6 @@ msgstr ""
 "     program distribueres. Hvis ikke, så skriv til programmets udviklere.\n"
 
 #: main.c:103
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
 "]\n"
@@ -2403,7 +2395,8 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"usage: mutt [ -nRzZ ] [ -e <kmd> ] [ -F <fil> ] [ -m <type> ] [ -f <fil> ]\n"
+"anvendelse: mutt [ -nRzZ ] [ -e <kmd> ] [ -F <fil> ] [ -m <type> ] [ -f "
+"<fil> ]\n"
 "       mutt [ -nx ] [ -e <kmd> ] [ -a <fil> ] [ -F <fil> ] [ -H <fil> ] [ -i "
 "<fil> ] [ -s <emne> ] [ -b <adr> ] [ -c <adr> ] <adr> [ ... ]\n"
 "       mutt [ -n ] [ -e <kmd> ] [ -F <fil> ] -p\n"
@@ -2878,9 +2871,9 @@ msgid "PGP passphrase forgotten."
 msgstr "Har glemt PGP-løsen."
 
 #: pgp.c:142
-#, fuzzy, c-format
+#, c-format
 msgid "[-- PGP output follows (current time: %c) --]\n"
-msgstr "[-- PGP-uddata følger (aktuelt tidspunkt: "
+msgstr "[-- PGP-uddata følger (aktuelt tidspunkt: %c) --]\n"
 
 #: pgp.c:246
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
@@ -3169,9 +3162,8 @@ msgid "No new mail in POP mailbox."
 msgstr "Ingen nye breve på POP-tjeneren."
 
 #: pop.c:209
-#, fuzzy
 msgid "Delete messages from server?"
-msgstr "Sletter breve på tjener ..."
+msgstr "Slet breve på tjener?"
 
 #: pop.c:212
 #, c-format
@@ -3594,15 +3586,3 @@ msgstr "Forrige brev i tråden er ikke synlig i afgrænset visning"
 #: thread.c:717
 msgid "Parent message is not available."
 msgstr "Forrige brev i tråden er ikke tilgængelig."
-
-#~ msgid "Compose"
-#~ msgstr "Skriv nyt brev"
-
-#~ msgid "We can't currently handle utf-8 at this point."
-#~ msgstr "UTF-8 understøttes ikke for øjeblikket."
-
-#~ msgid "UTF-8 encoding attachments has not yet been implemented."
-#~ msgstr "UTF-8-kodning af dele af brevet er endnu ikke indarbejdet."
-
-#~ msgid "We currently can't encode to utf-8."
-#~ msgstr "Indkodning til UTF-8 er ikke muligt endnu"
