@@ -106,7 +106,6 @@ static pgp_key_t *parse_pub_line (char *buf, int *is_subkey, pgp_key_t *k)
 	  /* produce "undefined trust" as long as gnupg doesn't
 	   * have a proper trust model.
 	   */
-#if 0
 	  case 'n':
 	    trust = 1;
 	    break;
@@ -119,7 +118,6 @@ static pgp_key_t *parse_pub_line (char *buf, int *is_subkey, pgp_key_t *k)
 	  case 'u':
 	    trust = 3;
 	    break;
-#endif	  
 	}
 	break;
       }
