@@ -1,3 +1,66 @@
+Thu Dec 17 16:17:43 1998  Thomas Roessler  <roessler@guug.de>
+
+	* INSTALL: I've been told that the FreeBSD shell has been
+	fixed meanwhile. Additionally, add the note from Vikas on
+	patching Solaris to get mutt work properly on that system.
+
+	* mh.c: Fix attachment deletion for maildir/mh folders.
+	This may fix other mh-related problems, too.
+
+	* charsets/Makefile.in: Some installs aren't able to cope
+	with multiple files at once.
+
+	* curs_lib.c: Don't even try to clear the status line when
+	not in curses mode.
+
+Wed Dec 16 13:23:06 1998  Thomas Roessler  <roessler@guug.de>
+
+	* imap.c: Two lines were in reverse order.  Noted by Daniel
+	Eisenbud.
+
+	* thread.c: Give Daniel Eisenbud a "lock" on this file.
+
+	* pager.c: Fix "$resolve" behaviour for OP_TAG and
+	OP_TOGGLE_NEW from the pager.
+
+	* curs_lib.c: SLang-related fixes to mutt_endwin().
+
+	* compose.c: Permit the user to set the typical MIME
+	parameters used with application/pgp messages.
+
+	* color.c: Fix a segfault noted by Stephan Hack.  (Fix noted
+	by Vikas.)
+
+	* configure.in: Make the sendmail check compatible with
+	newer autoconf versions. Noted by Lars Hecking.
+
+Sun Dec 13 08:10:13 1998  Thomas Roessler  <roessler@guug.de>
+
+	* mx.c, curs_main.c: Don't dump core when closing a NULL
+	context.  Fixes the "exit from no-mailbox mode" bug.
+
+Sat Dec 12 10:14:43 1998  Thomas Roessler  <roessler@guug.de>
+
+	* po/uk.po, po/ru.po, po/it.po, po/fr.po, po/es.po, po/de.po:
+	Post-release commit.
+
+	* hook.c, curs_main.c: More _PGPPATH and us dist related fixes.
+
+	* mutt.h: Don't define M_PGPHOOK unless _PGPPATH has been defined.
+
+	* pager.c: Another reap.pl-related fix.
+
+	* Makefile.am: The us-dist target was screwed.
+
+	* charsets/parse_i18n.c, charsets/gen_charsets, charsets/Makefile.in, thread.c, system.c, strcasecmp.c, status.c, stamp-h.in, sort.h, sort.c, socket.c, snprintf.c, signal.c, sha_locl.h, sha1dgst.c, sha.h, sendlib.c, send.c, score.c, rfc822.h, rfc822.c, rfc2047.h, rfc2047.c, rfc1524.h, rfc1524.c, resize.c, reldate.h, recvattach.c, reap.pl, query.c, protos.h, prepare, postpone.c, pop.c, pgppubring.c, pgpkey.c, pgpinvoke.c, pgp.h, pgp.c, pattern.c, parse.h, parse.c, pager.h, pager.c, mx.h, mx.c, mutt_socket.h, mutt_regex.h, mutt_menu.h, mutt_curses.h, mutt.h, mkinstalldirs, missing, mime.types, mime.h, mh.c, menu.c, mbox.c, mapping.h, main.c, mailbox.h, lib.c, keymap.h, keymap.c, install-sh, init.h, init.c, imap.h, imap.c, hook.c, history.h, history.c, help.c, headers.c, hdrline.c, hash.h, hash.c, handler.c, gnupgparse.c, globals.h, getdomain.c, gen_defs, functions.h, from.c, flags.c, filter.c, enter.c, edit.c, dotlock.h, dotlock.c, date.c, curs_main.c, curs_lib.c, copy.h, copy.c, configure.in, config.sub, config.guess, compose.c, complete.c, commands.c, color.c, charset.h, charset.c, buffy.h, buffy.c, browser.c, attach.h, attach.c, alias.c, addrbook.c, acconfig.h, VERSION, TODO, README, OPS.PGP, OPS, NEWS, Muttrc.in, Makefile.am, INSTALL, GPL, ChangeLog, COPYRIGHT, ABOUT-NLS:
+	*** empty log message ***
+
+	* po/uk.po, po/ru.po, po/it.po, po/fr.po, po/es.po, po/de.po, reldate.h, VERSION, ChangeLog:
+	Release-commit for 0.95i.
+
+	* hash.c: Use a better hash function.  Contributed by Stefan Langerman
+	<lfalse@paul.rutgers.edu> to mutt-users.
+
 Sat Dec 12 06:58:18 1998  Thomas Roessler  <roessler@guug.de>
 
 	* hash.c: Use a better hash function.  Contributed by Stefan
