@@ -50,10 +50,6 @@
 #include <errno.h>
 #include <sys/wait.h>
 
-#ifdef HAVE_LANGINFO_CODESET
-#include <langinfo.h>
-#endif
-
 void toggle_quadoption (int opt)
 {
   int n = opt/4;
@@ -1814,7 +1810,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   }
 
 #ifdef HAVE_LANGINFO_CODESET
-  Charset = safe_strdup (nl_langinfo (CODESET));
+  mutt_set_langinfo_charset ();
 #else
   Charset = safe_strdup ("iso-8859-1");
 #endif

@@ -66,4 +66,8 @@ FGETCONV *fgetconv_open (FILE *, const char *, const char *);
 int fgetconv (FGETCONV *);
 void fgetconv_close (FGETCONV *);
 
+#ifdef HAVE_LANGINFO_CODESET
+void mutt_set_langinfo_charset (void);
+#endif
+
 #endif /* _CHARSET_H */

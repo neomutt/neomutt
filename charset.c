@@ -35,9 +35,61 @@
 #include "charset.h"
 
 #ifndef EILSEQ
-#define EILSEQ EINVAL
+# define EILSEQ EINVAL
 #endif
 
+#ifdef HAVE_LANGINFO_CODESET
+# include <langinfo.h>
+
+/* 
+ * Try to convert nl_langinfo's return value to something we can
+ * use for MIME's purposes.
+ *
+ * Note that the algorithm used here is quite different from the
+ * one in mutt_canonical_charset. 
+ */
+
+void mutt_set_langinfo_charset (void)
+{
+  char buff[LONG_STRING];
+  char buff2[LONG_STRING];
+  char *s, *d, *cp;
+  
+  strfcpy (buff, nl_langinfo (CODESET), sizeof (buff));
+  strfcpy (buff2, buff, sizeof (buff2));
+  
+  /* compactify the character set name returned */
+  for (d = s = buff; *s; s++)
+  {
+    if (!strstr ("-_.", *s))
+      *d++ = *s;
+  }
+  *d = '\0';
+  
+  /* look for common prefixes which may have been done wrong */
+  if (!strncasecmp (buff, "iso8859", 7))
+  {
+    snprintf (buff2, sizeof (buff2), "iso-8859-%s", buff + 7);
+    if ((cp = strchr (buff2, ':')))	/* strip :yyyy suffixes */
+      *cp = '\0';
+  }
+  else if (!strncasecmp (buff, "koi8", 4))
+  {
+    snprintf (buff2, sizeof (buff2), "koi8-%s", buff + 4);
+  }
+  else if (!strncasecmp (buff, "windows", 7))
+  {
+    snprintf (buff2, sizeof (buff2), "windows-%s" buff + 7);
+  }
+
+  /* fix the spelling */
+  mutt_canonical_charset (buff, sizeof (buff), buff2);
+  
+  /* finally, set $charset */
+  Charset = safe_strdup (buff);
+}
+
+#endif
 
 void mutt_canonical_charset (char *dest, size_t dlen, const char *name)
 {
