@@ -169,6 +169,10 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
     mutt_extract_token (path, s, 0);
     strfcpy (buf, path->data, sizeof (buf));
     mutt_expand_path (buf, sizeof (buf));
+
+    /* Skip empty tokens. */
+    if(!*buf) continue;
+
     /* simple check to avoid duplicates */
     for (tmp = &Incoming; *tmp; tmp = &((*tmp)->next))
     {
