@@ -367,7 +367,7 @@ struct option_t MuttVars[] = {
   ** for deletion.  This applies when you either explicitly delete a message,
   ** or when you save it to another folder.
   */
-  { "display_filter",	DT_PATH, R_PAGER, UL &DisplayFilter, "" },
+  { "display_filter",	DT_PATH, R_PAGER, UL &DisplayFilter, UL "" },
   /*
   ** .pp
   ** When set, specifies a command used to filter messages.  When a message

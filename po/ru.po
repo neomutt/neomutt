@@ -1267,7 +1267,7 @@ msgstr "[ошибка вычислений]"
 
 #: imap/imap_ssl.c:292
 msgid "[invalid date]"
-msgstr [недопустимая дата]"
+msgstr "[недопустимая дата]"
 
 #: imap/imap_ssl.c:361
 msgid "Server certificate is not yet valid"

@@ -66,7 +66,7 @@ int mutt_display_message (HEADER *cur)
   int cmflags = M_CM_DECODE | M_CM_DISPLAY | M_CM_CHARCONV;
   FILE *fpout = NULL;
   FILE *fpfilterout = NULL;
-  pid_t filterpid;
+  pid_t filterpid = -1;
   int res;
 
   snprintf (buf, sizeof (buf), "%s/%s", TYPE (cur->content),
