@@ -1865,7 +1865,7 @@ path.
 <item>! -- refers to your <ref id="spoolfile" name="&dollar;spool"> (incoming) mailbox
 <item>&gt; -- refers to your <ref id="mbox" name="&dollar;mbox"> file
 <item>&lt; -- refers to your <ref id="record" name="&dollar;record"> file
-<item>- -- refers to the file you've last visited
+<item>- or !! -- refers to the file you've last visited
 <item>&tilde; -- refers to your home directory
 <item>= or + -- refers to your <ref id="folder" name="&dollar;folder"> directory
 <item>@<em/alias/ -- refers to the <ref id="save-hook" 
