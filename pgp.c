@@ -151,6 +151,8 @@ static int pgp_copy_checksig (FILE *fpin, FILE *fpout)
 	dprint (2, (debugfile, "pgp_copy_checksig: \"%s\" doesn't match regexp.\n",
 		    line));
       
+      if (strncmp (line, "[GNUPG:] ", 9) == 0)
+	continue;
       fputs (line, fpout);
       fputc ('\n', fpout);
     }
