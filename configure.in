@@ -377,21 +377,31 @@ mutt_cv_charmaps=/usr/share/i18n/charmaps
 AC_ARG_WITH(charmaps, [--with-charmaps=PATH	specify where on the system mutt can find character set definitions],
 	[mutt_cv_charmaps=$withval])
 
+mutt_cv_fake_charmaps=yes
+
 AC_MSG_CHECKING(whether character set definitions on your system are usable)
 if test ! -f $mutt_cv_charmaps/ISO_10646 ; then
 	AC_MSG_RESULT(no)
 	mutt_cv_charmaps=$mutt_cv_sharedir/charmaps
 	echo "Mutt will expect character map definitions under $mutt_cv_charmaps." >&AC_FD_MSG
-	if test -d $srcdir/charmaps ; then
+	if test \( -d $srcdir/charmaps \) -a \( -d $srcdir/charmaps/maps \) ; then
 		echo "We will install the included character set definitions." >&AC_FD_MSG
 		mutt_cv_add_subdirs="charmaps"
+		mutt_cv_fake_charmaps=no
 	else
 		mutt_cv_add_subdirs=""
-		echo "If you want character set support, read INSTALL".
+		echo "If you want character set support, read INSTALL". >& AC_FD_MSG
         fi
 else
 	AC_MSG_RESULT(yes)
 fi
+
+if test \( "$mutt_cv_fake_charmaps" = "yes" \) -a \( ! -d $srcdir/charmaps \); then
+	echo "Creating fake charmaps subdirectory." >&AC_FD_MSG
+	mkdir $srcdir/charmaps
+	touch $srcdir/charmaps/Makefile.in
+fi
+
 
 AC_DEFINE_UNQUOTED(CHARMAPS_DIR, "$mutt_cv_charmaps")
 charmaps=$mutt_cv_charmaps
@@ -505,12 +515,5 @@ MUTTLOCALEDIR=$mutt_cv_prefix/$DATADIRNAME/locale
 AC_SUBST(MUTTLOCALEDIR)
 AC_DEFINE_UNQUOTED(MUTTLOCALEDIR, "$MUTTLOCALEDIR")
 
-output="Makefile intl/Makefile m4/Makefile po/Makefile.in 	\
-	doc/Makefile contrib/Makefile"
-
-if test -d $srcdir/charmaps ; then
-	output="$output charmaps/Makefile"
-fi
-
-AC_OUTPUT($output)
+AC_OUTPUT(Makefile intl/Makefile m4/Makefile po/Makefile.in doc/Makefile contrib/Makefile charmaps/Makefile)
 

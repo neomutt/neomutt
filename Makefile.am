@@ -120,10 +120,6 @@ changelog:
 dist-hook:
 	-for file in $(BUILT_SOURCES) ; do rm -f $(distdir)/$$file ; done
 	-rm -f $(distdir)/config.h
-	touch $(distdir)/'$$output.in'
-
-utput.in:
-	touch utput.in
 
 us-distdir: distdir dist-hook
 	mv $(distdir) $(distdir)-us
