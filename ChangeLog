@@ -1,3 +1,8 @@
+2004-01-05 11:55:14  Robert Schiele  <robert.schiele@t-online.de>  (roessler)
+
+	* mutt_sasl.c: Back out part of the previous SASL/IPv6 patch
+	due to portability issues.
+
 2004-01-04 10:55:20  René Clerc  <rene@clerc.nl>  (roessler)
 
 	* init.h: Fix hide_missing / hide_limited documentation.
