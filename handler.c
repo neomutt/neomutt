@@ -1098,8 +1098,7 @@ void autoview_handler (BODY *a, STATE *s)
       fflush(fpin);
       rewind(fpin);
       thepid = mutt_create_filter_fd (command, NULL, &fpout, &fperr,
-				      dup(fileno(fpin)), -1, -1);
-      fclose(fpin);
+				      fileno(fpin), -1, -1);
     }
 
     if (s->prefix)
@@ -1151,7 +1150,9 @@ void autoview_handler (BODY *a, STATE *s)
     fclose (fpout);
     fclose (fperr);
     mutt_wait_filter (thepid);
-    if(!piped)
+    if(piped)
+      fclose(fpin);
+    else
       mutt_unlink (tempfile);
 
     if (s->flags & M_DISPLAY) 
