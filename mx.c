@@ -78,14 +78,14 @@ static int invoke_dotlock (const char *path, int flags, int retry)
   mutt_quote_filename (f, sizeof (f), path);
   
   snprintf (cmd, sizeof (cmd),
-	   "%s %s%s%s%s%s%s",
-	   DOTLOCK,
-	   flags & DL_FL_TRY ? "-t " : "",
-	   flags & DL_FL_UNLOCK ? "-u " : "",
-	   flags & DL_FL_USEPRIV ? "-p " : "",
-	   flags & DL_FL_FORCE ? "-f " : "",
-	   flags & DL_FL_RETRY ? r : "",
-	   f);
+	    "%s %s%s%s%s%s%s",
+	    NONULL (MuttDotlock),
+	    flags & DL_FL_TRY ? "-t " : "",
+	    flags & DL_FL_UNLOCK ? "-u " : "",
+	    flags & DL_FL_USEPRIV ? "-p " : "",
+	    flags & DL_FL_FORCE ? "-f " : "",
+	    flags & DL_FL_RETRY ? r : "",
+	    f);
   
   return mutt_system (cmd);
 }

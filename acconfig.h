@@ -26,6 +26,9 @@
 /* use dotlocking to lock mailboxes? */
 #undef USE_DOTLOCK
 
+/* use an external dotlocking program? */
+#undef DL_STANDALONE
+
 /* use flock() to lock mailboxes? */
 #undef USE_FLOCK
 
@@ -140,3 +143,4 @@
 
 /* Where are the character set definitions located? */
 #undef CHARMAPS_DIR
+

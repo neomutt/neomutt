@@ -95,6 +95,9 @@ struct option_t MuttVars[] = {
   { "date_format",	DT_STR,	 R_BOTH, UL &DateFmt, UL "!%a, %b %d, %Y at %I:%M:%S%p %Z" },
   { "default_hook",	DT_STR,	 R_NONE, UL &DefaultHook, UL "~f %s !~P | (~P ~C %s)" },
   { "delete",		DT_QUAD, R_NONE, OPT_DELETE, M_ASKYES },
+#if defined(DL_STANDALONE) && defined(USE_DOTLOCK)
+  { "dotlock_program",  DT_PATH, R_NONE, UL &MuttDotlock, UL BINDIR "/mutt_dotlock" },
+#endif
   { "dsn_notify",	DT_STR,	 R_NONE, UL &DsnNotify, UL "" },
   { "dsn_return",	DT_STR,	 R_NONE, UL &DsnReturn, UL "" },
   { "edit_headers",	DT_BOOL, R_NONE, OPTEDITHDRS, 0 },

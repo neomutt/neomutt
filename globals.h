@@ -22,6 +22,10 @@ WHERE CONTEXT *Context;
 
 WHERE char Errorbuf[SHORT_STRING];
 
+#if defined(DL_STANDALONE) && defined(USE_DOTLOCK)
+WHERE char *MuttDotlock;
+#endif
+
 WHERE char *AliasFile;
 WHERE char *AliasFmt;
 WHERE char *AttachSep;
