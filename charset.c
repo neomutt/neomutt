@@ -212,13 +212,13 @@ void mutt_canonical_charset (char *dest, size_t dlen, const char *name)
   char scratch[LONG_STRING];
 
   /* catch some common iso-8859-something misspellings */
-  if (!strncasecmp (name, "iso8859", 7) && name[7] != '-')
+  if (!mutt_strncasecmp (name, "iso8859", 7) && name[7] != '-')
     snprintf (scratch, sizeof (scratch), "iso_8859-%s", name + 8);
   else
-    strfcpy (scratch, name, sizeof (scratch));
+    strfcpy (scratch, NONULL(name), sizeof (scratch));
 
   for (i = 0; PreferredMIMENames[i].key; i++)
-    if (!strcasecmp (scratch, PreferredMIMENames[i].key))
+    if (!mutt_strcasecmp (scratch, PreferredMIMENames[i].key))
     {
       strfcpy (dest, PreferredMIMENames[i].pref, dlen);
       return;
