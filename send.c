@@ -951,14 +951,12 @@ static int send_message (HEADER *msg)
 static void encode_descriptions (BODY *b, short recurse)
 {
   BODY *t;
-  char tmp[LONG_STRING];
 
   for (t = b; t; t = t->next)
   {
     if (t->description)
     {
-      rfc2047_encode_string (tmp, sizeof (tmp), (unsigned char *) t->description);
-      mutt_str_replace (&t->description, tmp);
+      rfc2047_encode_string (&t->description);
     }
     if (recurse && t->parts)
       encode_descriptions (t->parts, recurse);

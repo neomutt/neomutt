@@ -920,7 +920,10 @@ char *mutt_get_send_charset (char *d, size_t dlen, BODY *b, short f)
   if (!p || (f && (!mutt_strcasecmp (p, "us-ascii") || !mutt_strcasecmp (p, "unknown-8bit"))))
   {
     if (SendCharset && *SendCharset)
-      p = SendCharset;
+    {
+      p = strrchr (SendCharset, ':');
+      p = p ? p + 1 : SendCharset;
+    }
     else if (Charset)
       p = Charset;
   }
@@ -1366,9 +1369,8 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
 
 static void encode_headers (LIST *h)
 {
-  char tmp[LONG_STRING];
+  char *tmp;
   char *p;
-  size_t len;
 
   for (; h; h = h->next)
   {
@@ -1376,10 +1378,13 @@ static void encode_headers (LIST *h)
     {
       *p++ = 0;
       SKIPWS (p);
-      snprintf (tmp, sizeof (tmp), "%s: ", h->data);
-      len = mutt_strlen (tmp);
-      rfc2047_encode_string (tmp + len, sizeof (tmp) - len, (unsigned char *) p);
-      mutt_str_replace (&h->data, tmp);
+      tmp = strdup (p);
+      rfc2047_encode_string (&tmp);
+      safe_realloc ((void **) &h->data, 
+		    strlen (h->data) + 2 + strlen (tmp) + 1);
+      strcat (h->data, ": ");
+      strcat (h->data, tmp);
+      free (tmp);
     }
   }
 }
@@ -1813,9 +1818,7 @@ void mutt_prepare_envelope (ENVELOPE *env, int final)
 
   if (env->subject)
   {
-    rfc2047_encode_string (buffer, sizeof (buffer) - 1,
-			   (unsigned char *) env->subject);
-    mutt_str_replace (&env->subject, buffer);
+    rfc2047_encode_string (&env->subject);
   }
   encode_headers (env->userhdrs);
 }
