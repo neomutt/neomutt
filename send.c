@@ -1135,7 +1135,7 @@ ci_send_message (int flags,		/* send mode */
   /* specify a default fcc.  if we are in batchmode, only save a copy of
    * the message if the value of $copy is yes or ask-yes */
 
-  if (!fcc[0] && (!(flags & SENDBATCH) || (quadoption (OPT_COPY) & 0x1)))
+  if (!fcc[0] && !(flags & SENDPOSTPONED) && (!(flags & SENDBATCH) || (quadoption (OPT_COPY) & 0x1)))
   {
     /* set the default FCC */
     if (!msg->env->from)
