@@ -1,3 +1,8 @@
+2004-08-30 19:52:03  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
+
+	* muttlib.c, protos.h: This wipes duplicated code, which I
+	introduced a while ago.
+
 2004-08-30 19:47:47  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
 
 	* po/ja.po: update
