@@ -101,17 +101,17 @@ int mutt_is_application_smime (BODY *m)
   char *t=NULL;
   int len, complain=0;
 
-  if (m->type & TYPEAPPLICATION && m->subtype)
+  if ((m->type & TYPEAPPLICATION) && m->subtype)
   {
     /* S/MIME MIME types don't need x- anymore, see RFC2311 */
-    if (!mutt_strcasecmp (m->subtype, "x-pkcs7-mime") ||
-	!mutt_strcasecmp (m->subtype, "pkcs7-mime"))
+    if (!ascii_strcasecmp (m->subtype, "x-pkcs7-mime") ||
+	!ascii_strcasecmp (m->subtype, "pkcs7-mime"))
     {
       if ((t = mutt_get_parameter ("smime-type", m->parameter)))
       {
-	if (!mutt_strcasecmp (t, "enveloped-data"))
+	if (!ascii_strcasecmp (t, "enveloped-data"))
 	  return SMIMEENCRYPT;
-	else if (!mutt_strcasecmp (t, "signed-data"))
+	else if (!ascii_strcasecmp (t, "signed-data"))
 	  return (SMIMESIGN|SMIMEOPAQUE);
 	else return 0;
       }
@@ -119,18 +119,19 @@ int mutt_is_application_smime (BODY *m)
        * Content-Description: S/MIME Encrypted Message
        * instead of Content-Type parameter
        */
-      if (!mutt_strcasecmp (m->description, "S/MIME Encrypted Message"))
+      if (!ascii_strcasecmp (m->description, "S/MIME Encrypted Message"))
 	return SMIMEENCRYPT;
       complain = 1;
     }
-    else if (mutt_strcasecmp (m->subtype, "octet-stream"))
+    else if (ascii_strcasecmp (m->subtype, "octet-stream"))
       return 0;
 
     t = mutt_get_parameter ("name", m->parameter);
 
     if (!t) t = m->d_filename;
     if (!t) t = m->filename;
-    if (!t) {
+    if (!t) 
+    {
       if (complain)
 	mutt_message (_("S/MIME messages with no hints on content are unsupported."));
       return 0;
@@ -142,7 +143,7 @@ int mutt_is_application_smime (BODY *m)
     if (len > 0 && *(t+len) == '.')
     {
       len++;
-      if (!mutt_strcasecmp ((t+len), "p7m"))
+      if (!ascii_strcasecmp ((t+len), "p7m"))
 #if 0
        return SMIMEENCRYPT;
 #else
@@ -150,7 +151,7 @@ int mutt_is_application_smime (BODY *m)
          it's required for compatibility with Outlook */
        return (SMIMESIGN|SMIMEOPAQUE);
 #endif
-      else if (!mutt_strcasecmp ((t+len), "p7s"))
+      else if (!ascii_strcasecmp ((t+len), "p7s"))
 	return (SMIMESIGN|SMIMEOPAQUE);
     }
   }
