@@ -447,6 +447,12 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
     goto fail;
   }
 
+  /* currently we set the \Seen flag on all messages, but probably we
+   * should scan the message Status header for flag info. Since we're
+   * already rereading the whole file for length it isn't any more
+   * expensive (it'd be nice if we had the file size passed in already
+   * by the code that writes the file, but that's a lot of changes.
+   * Ideally we'd have a HEADER structure with flag info here... */
   for (last = EOF, len = 0; (c = fgetc(fp)) != EOF; last = c)
   {
     if(c == '\n' && last != '\r')
@@ -457,7 +463,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   rewind (fp);
   
   imap_munge_mbox_name (mbox, sizeof (mbox), mailbox);
-  snprintf (buf, sizeof (buf), "APPEND %s {%d}", mbox, len);
+  snprintf (buf, sizeof (buf), "APPEND %s (\\Seen) {%d}", mbox, len);
 
   imap_cmd_start (idata, buf);
 
