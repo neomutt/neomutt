@@ -33,7 +33,7 @@
  * SLcurses_waddnstr() can't take a "const char *", so this is only
  * declared "static" (sigh)
  */
-static char EditorHelp[] = N_("\
+static char* EditorHelp = N_("\
 ~~		insert a line begining with a single ~\n\
 ~b users	add users to the Bcc: field\n\
 ~c users	add users to the Cc: field\n\
