@@ -1,3 +1,24 @@
+Wed Sep  1 07:47:40 1999  Thomas Roessler  <roessler@guug.de>
+
+	* mx.c: Don't clear the error line whenever dotlocking a file.
+
+	* mx.h: adding a prototype.
+
+	* curs_main.c, mailbox.h, mx.c:
+	When the user synchronizes a mail folder, do a thorough check.
+
+Tue Aug 31 20:26:33 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/uk.po, po/zh_TW.Big5.po, po/ru.po, po/sk.po, po/ko.po, po/nl.po, po/pl.po, po/id.po, po/it.po, po/es.po, po/fr.po, VERSION, po/cs.po, po/de.po, po/el.po, reldate.h, Makefile.am, ChangeLog:
+	automatic post-release commit for mutt-0.96.6
+
+	* po/zh_TW.Big5.po, po/uk.po, po/sk.po, po/ru.po, po/pl.po, po/nl.po, po/ko.po, po/it.po, po/id.po, po/fr.po, po/es.po, po/el.po, po/de.po, po/cs.po, VERSION, reldate.h, ChangeLog:
+	post-release commit for 1.0pre2.
+
+	* doc/manual.sgml.tail, doc/manual.sgml.head, protos.h, thread.c, OPS, curs_main.c, functions.h:
+	Adding a <parent-message> function. From Roland Rosenfeld
+	<roland@spinnaker.rhein.de>.
+
 Tue Aug 31 19:51:34 1999  Thomas Roessler  <roessler@guug.de>
 
 	* po/zh_TW.Big5.po, po/uk.po, po/sk.po, po/ru.po, po/pl.po, po/nl.po, po/ko.po, po/it.po, po/id.po, po/fr.po, po/es.po, po/el.po, po/de.po, po/cs.po, VERSION, reldate.h, ChangeLog:
