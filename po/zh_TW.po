@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3.22.1\n"
-"POT-Creation-Date: 2002-12-09 14:26+0100\n"
+"POT-Creation-Date: 2002-12-17 11:35+0100\n"
 "PO-Revision-Date: 2001-09-06 18:25+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -47,11 +47,11 @@ msgstr "選擇"
 msgid "Help"
 msgstr "求助"
 
-#: addrbook.c:140
+#: addrbook.c:139
 msgid "You have no aliases!"
 msgstr "您沒有別名資料！"
 
-#: addrbook.c:151
+#: addrbook.c:150
 msgid "Aliases"
 msgstr "別名"
 
@@ -166,7 +166,7 @@ msgstr "改變目錄"
 msgid "Mask"
 msgstr "遮罩"
 
-#: browser.c:377 browser.c:965
+#: browser.c:377 browser.c:964
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s 不是一個目錄"
@@ -190,64 +190,64 @@ msgstr "目錄 [%s], 檔案遮罩: %s"
 msgid "Can't attach a directory!"
 msgstr "無法附帶目錄！"
 
-#: browser.c:651 browser.c:1032 browser.c:1129
+#: browser.c:651 browser.c:1031 browser.c:1128
 msgid "No files match the file mask"
 msgstr "沒有檔案與檔案遮罩相符"
 
-#: browser.c:857
+#: browser.c:856
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "只有 IMAP 郵箱才支援製造功能"
 
-#: browser.c:877
+#: browser.c:876
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "只有 IMAP 郵箱才支援刪除功能"
 
-#: browser.c:885
+#: browser.c:884
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "真的要刪除 \"%s\" 郵箱？"
 
-#: browser.c:899
+#: browser.c:898
 msgid "Mailbox deleted."
 msgstr "郵箱已刪除。"
 
-#: browser.c:905
+#: browser.c:904
 msgid "Mailbox not deleted."
 msgstr "郵箱未被刪除。"
 
-#: browser.c:924
+#: browser.c:923
 msgid "Chdir to: "
 msgstr "改變目錄到："
 
-#: browser.c:958 browser.c:1025
+#: browser.c:957 browser.c:1024
 msgid "Error scanning directory."
 msgstr "無法掃描目錄。"
 
-#: browser.c:976
+#: browser.c:975
 msgid "File Mask: "
 msgstr "檔案遮罩："
 
-#: browser.c:1048
+#: browser.c:1047
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "反向排序 (1)日期, (2)字元, (3)大小 或 (4)不排序 ? "
 
-#: browser.c:1049
+#: browser.c:1048
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "依照 (1)日期 (2)字元 (3)大小 來排序，或(4)不排序 ? "
 
-#: browser.c:1050
+#: browser.c:1049
 msgid "dazn"
 msgstr "1234"
 
-#: browser.c:1116
+#: browser.c:1115
 msgid "New file name: "
 msgstr "新檔名："
 
-#: browser.c:1147
+#: browser.c:1146
 msgid "Can't view a directory"
 msgstr "無法顯示目錄"
 
-#: browser.c:1165
+#: browser.c:1163
 msgid "Error trying to view file"
 msgstr "無法試著顯示檔案"
 
@@ -298,7 +298,7 @@ msgstr "單色：太少引數"
 msgid "%s: no such attribute"
 msgstr "%s：沒有這個屬性"
 
-#: color.c:690 hook.c:64 hook.c:72 keymap.c:708
+#: color.c:690 hook.c:64 hook.c:72 keymap.c:726
 msgid "too few arguments"
 msgstr "太少參數"
 
@@ -978,49 +978,49 @@ msgstr "沒有要反刪除的信件。"
 msgid "You are on the first message."
 msgstr "您已經在第一封信了。"
 
-#: curs_main.c:1283 pattern.c:1301
+#: curs_main.c:1286 pattern.c:1301
 msgid "Search wrapped to top."
 msgstr "搜尋至開頭。"
 
-#: curs_main.c:1292 pattern.c:1312
+#: curs_main.c:1295 pattern.c:1312
 msgid "Search wrapped to bottom."
 msgstr "搜尋至結尾。"
 
-#: curs_main.c:1325
+#: curs_main.c:1339
 msgid "No new messages"
 msgstr "沒有新信件"
 
-#: curs_main.c:1325
+#: curs_main.c:1339
 msgid "No unread messages"
 msgstr "沒有尚未讀取的信件"
 
-#: curs_main.c:1326
+#: curs_main.c:1340
 msgid " in this limited view"
 msgstr " 在這限定的瀏覽中"
 
-#: curs_main.c:1347 pager.c:2334
+#: curs_main.c:1361 pager.c:2332
 #, fuzzy
 msgid "Can't change 'important' flag on POP server."
 msgstr "無法編輯 POP 伺服器上的信件。"
 
-#: curs_main.c:1462
+#: curs_main.c:1476
 msgid "No more threads."
 msgstr "沒有更多的序列"
 
-#: curs_main.c:1464
+#: curs_main.c:1478
 msgid "You are on the first thread."
 msgstr "您已經在第一個序列上。"
 
-#: curs_main.c:1525 curs_main.c:1557 flags.c:237 thread.c:1012 thread.c:1067
+#: curs_main.c:1539 curs_main.c:1571 flags.c:237 thread.c:1012 thread.c:1067
 #: thread.c:1122
 msgid "Threading is not enabled."
 msgstr "序列功能尚未啟動。"
 
-#: curs_main.c:1543
+#: curs_main.c:1557
 msgid "Thread contains unread messages."
 msgstr "序列中有尚未讀取的信件。"
 
-#: curs_main.c:1721
+#: curs_main.c:1735
 msgid "Can't edit message on POP server."
 msgstr "無法編輯 POP 伺服器上的信件。"
 
@@ -1433,7 +1433,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "無法附加在這個伺服器上的 IMAP 信箱"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:729 imap/message.c:600 muttlib.c:1193
+#: imap/imap.c:729 imap/message.c:600 muttlib.c:1200
 #, c-format
 msgid "Create %s?"
 msgstr "建立 %s？"
@@ -1623,54 +1623,54 @@ msgstr "無法決定 home 目錄"
 msgid "unable to determine username"
 msgstr "無法決定使用者名稱"
 
-#: keymap.c:440
+#: keymap.c:458
 msgid "Macro loop detected."
 msgstr "檢測到巨集中有迴圈。"
 
-#: keymap.c:647 keymap.c:655
+#: keymap.c:665 keymap.c:673
 msgid "Key is not bound."
 msgstr "這個鍵還未被定義功能。"
 
-#: keymap.c:659
+#: keymap.c:677
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "這個鍵還未被定義功能。 按 '%s' 以取得說明。"
 
-#: keymap.c:670
+#: keymap.c:688
 msgid "push: too many arguments"
 msgstr "push：太多引數"
 
-#: keymap.c:691
+#: keymap.c:709
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s：沒有這個選單"
 
-#: keymap.c:700
+#: keymap.c:718
 msgid "null key sequence"
 msgstr "空的鍵值序列"
 
-#: keymap.c:784
+#: keymap.c:802
 msgid "bind: too many arguments"
 msgstr "bind：太多引數"
 
-#: keymap.c:799
+#: keymap.c:817
 #, c-format
 msgid "%s: no such function in map"
 msgstr "%s：在對映表中沒有這樣的功能"
 
-#: keymap.c:822
+#: keymap.c:840
 msgid "macro: empty key sequence"
 msgstr "macro：空的鍵值序列"
 
-#: keymap.c:833
+#: keymap.c:851
 msgid "macro: too many arguments"
 msgstr "macro：引數太多"
 
-#: keymap.c:863
+#: keymap.c:881
 msgid "exec: no arguments"
 msgstr "exec：沒有引數"
 
-#: keymap.c:883
+#: keymap.c:901
 #, c-format
 msgid "%s: no such function"
 msgstr "%s：沒有這個功能"
@@ -2106,332 +2106,346 @@ msgid "jump to the next new message"
 msgstr "跳到下一封新的信件"
 
 #: keymap_alldefs.h:112
+#, fuzzy
+msgid "jump to the next new or unread message"
+msgstr "跳到下一個未讀取的信件"
+
+#: keymap_alldefs.h:113
 msgid "jump to the next subthread"
 msgstr "跳到下一個子序列"
 
-#: keymap_alldefs.h:113
+#: keymap_alldefs.h:114
 msgid "jump to the next thread"
 msgstr "跳到下一個序列"
 
-#: keymap_alldefs.h:114
+#: keymap_alldefs.h:115
 msgid "move to the next undeleted message"
 msgstr "移動到下一個未刪除的信件"
 
-#: keymap_alldefs.h:115
+#: keymap_alldefs.h:116
 msgid "jump to the next unread message"
 msgstr "跳到下一個未讀取的信件"
 
-#: keymap_alldefs.h:116
+#: keymap_alldefs.h:117
 msgid "jump to parent message in thread"
 msgstr "跳到這個序列的主信件"
 
-#: keymap_alldefs.h:117
+#: keymap_alldefs.h:118
 msgid "jump to previous thread"
 msgstr "跳到上一個序列"
 
-#: keymap_alldefs.h:118
+#: keymap_alldefs.h:119
 msgid "jump to previous subthread"
 msgstr "跳到上一個子序列"
 
-#: keymap_alldefs.h:119
+#: keymap_alldefs.h:120
 msgid "move to the previous undeleted message"
 msgstr "移動到上一個未刪除的信件"
 
-#: keymap_alldefs.h:120
+#: keymap_alldefs.h:121
 msgid "jump to the previous new message"
 msgstr "跳到上一個新的信件"
 
-#: keymap_alldefs.h:121
+#: keymap_alldefs.h:122
+#, fuzzy
+msgid "jump to the previous new or unread message"
+msgstr "跳到上一個未讀取的信件"
+
+#: keymap_alldefs.h:123
 msgid "jump to the previous unread message"
 msgstr "跳到上一個未讀取的信件"
 
-#: keymap_alldefs.h:122
+#: keymap_alldefs.h:124
 msgid "mark the current thread as read"
 msgstr "標記現在的序列為已讀取"
 
-#: keymap_alldefs.h:123
+#: keymap_alldefs.h:125
 msgid "mark the current subthread as read"
 msgstr "標記現在的子序列為已讀取"
 
-#: keymap_alldefs.h:124
+#: keymap_alldefs.h:126
 msgid "set a status flag on a message"
 msgstr "設定某一封信件的狀態旗標"
 
-#: keymap_alldefs.h:125
+#: keymap_alldefs.h:127
 msgid "save changes to mailbox"
 msgstr "儲存變動到信箱"
 
-#: keymap_alldefs.h:126
+#: keymap_alldefs.h:128
 msgid "tag messages matching a pattern"
 msgstr "標記符合某個格式的信件"
 
-#: keymap_alldefs.h:127
+#: keymap_alldefs.h:129
 msgid "undelete messages matching a pattern"
 msgstr "反刪除符合某個格式的信件"
 
-#: keymap_alldefs.h:128
+#: keymap_alldefs.h:130
 msgid "untag messages matching a pattern"
 msgstr "反標記符合某個格式的信件"
 
-#: keymap_alldefs.h:129
+#: keymap_alldefs.h:131
 msgid "move to the middle of the page"
 msgstr "移動到本頁的中間"
 
-#: keymap_alldefs.h:130
+#: keymap_alldefs.h:132
 msgid "move to the next entry"
 msgstr "移動到下一項資料"
 
-#: keymap_alldefs.h:131
+#: keymap_alldefs.h:133
 msgid "scroll down one line"
 msgstr "向下捲動一行"
 
-#: keymap_alldefs.h:132
+#: keymap_alldefs.h:134
 msgid "move to the next page"
 msgstr "移到下一頁"
 
-#: keymap_alldefs.h:133
+#: keymap_alldefs.h:135
 msgid "jump to the bottom of the message"
 msgstr "跳到信件的最後面"
 
-#: keymap_alldefs.h:134
+#: keymap_alldefs.h:136
 msgid "toggle display of quoted text"
 msgstr "切換引言顯示"
 
-#: keymap_alldefs.h:135
+#: keymap_alldefs.h:137
 msgid "skip beyond quoted text"
 msgstr "跳過引言"
 
-#: keymap_alldefs.h:136
+#: keymap_alldefs.h:138
 msgid "jump to the top of the message"
 msgstr "跳到信件的最上面"
 
-#: keymap_alldefs.h:137
+#: keymap_alldefs.h:139
 msgid "pipe message/attachment to a shell command"
 msgstr "輸出導向 訊息/附件 至命令解譯器"
 
-#: keymap_alldefs.h:138
+#: keymap_alldefs.h:140
 msgid "move to the previous entry"
 msgstr "移到上一項資料"
 
-#: keymap_alldefs.h:139
+#: keymap_alldefs.h:141
 msgid "scroll up one line"
 msgstr "向上捲動一行"
 
-#: keymap_alldefs.h:140
+#: keymap_alldefs.h:142
 msgid "move to the previous page"
 msgstr "移到上一頁"
 
-#: keymap_alldefs.h:141
+#: keymap_alldefs.h:143
 msgid "print the current entry"
 msgstr "列印現在的資料"
 
-#: keymap_alldefs.h:142
+#: keymap_alldefs.h:144
 msgid "query external program for addresses"
 msgstr "利用外部應用程式查詢地址"
 
-#: keymap_alldefs.h:143
+#: keymap_alldefs.h:145
 msgid "append new query results to current results"
 msgstr "附加新的查詢結果至現今的查詢結果"
 
-#: keymap_alldefs.h:144
+#: keymap_alldefs.h:146
 msgid "save changes to mailbox and quit"
 msgstr "儲存變動過的資料到信箱並且離開"
 
-#: keymap_alldefs.h:145
+#: keymap_alldefs.h:147
 msgid "recall a postponed message"
 msgstr "重新叫出一封被延遲寄出的信件"
 
-#: keymap_alldefs.h:146
+#: keymap_alldefs.h:148
 msgid "clear and redraw the screen"
 msgstr "清除並重新繪製畫面"
 
-#: keymap_alldefs.h:147
+#: keymap_alldefs.h:149
 msgid "{internal}"
 msgstr "{內部的}"
 
-#: keymap_alldefs.h:148
+#: keymap_alldefs.h:150
 msgid "reply to a message"
 msgstr "回覆一封信件"
 
-#: keymap_alldefs.h:149
+#: keymap_alldefs.h:151
 msgid "use the current message as a template for a new one"
 msgstr "用這封信件作為新信件的範本"
 
-#: keymap_alldefs.h:150
+#: keymap_alldefs.h:152
 msgid "save message/attachment to a file"
 msgstr "儲存信件/附件到某個檔案"
 
-#: keymap_alldefs.h:151
+#: keymap_alldefs.h:153
 msgid "search for a regular expression"
 msgstr "用正規表示式尋找"
 
-#: keymap_alldefs.h:152
+#: keymap_alldefs.h:154
 msgid "search backwards for a regular expression"
 msgstr "向後搜尋一個正規表示式"
 
-#: keymap_alldefs.h:153
+#: keymap_alldefs.h:155
 msgid "search for next match"
 msgstr "尋找下一個符合的資料"
 
-#: keymap_alldefs.h:154
+#: keymap_alldefs.h:156
 msgid "search for next match in opposite direction"
 msgstr "返方向搜尋下一個符合的資料"
 
-#: keymap_alldefs.h:155
+#: keymap_alldefs.h:157
 msgid "toggle search pattern coloring"
 msgstr "切換搜尋格式的顏色"
 
-#: keymap_alldefs.h:156
+#: keymap_alldefs.h:158
 msgid "invoke a command in a subshell"
 msgstr "在子 shell 執行指令"
 
-#: keymap_alldefs.h:157
+#: keymap_alldefs.h:159
 msgid "sort messages"
 msgstr "信件排序"
 
-#: keymap_alldefs.h:158
+#: keymap_alldefs.h:160
 msgid "sort messages in reverse order"
 msgstr "以相反的次序來做訊息排序"
 
-#: keymap_alldefs.h:159
+#: keymap_alldefs.h:161
 msgid "tag the current entry"
 msgstr "標記現在的記錄"
 
-#: keymap_alldefs.h:160
+#: keymap_alldefs.h:162
 msgid "apply next function to tagged messages"
 msgstr "應用下一個功能到已標記的訊息"
 
-#: keymap_alldefs.h:161
+#: keymap_alldefs.h:163
 msgid "tag the current subthread"
 msgstr "標記目前的子序列"
 
-#: keymap_alldefs.h:162
+#: keymap_alldefs.h:164
 msgid "tag the current thread"
 msgstr "標記目前的序列"
 
-#: keymap_alldefs.h:163
+#: keymap_alldefs.h:165
 msgid "toggle a message's 'new' flag"
 msgstr "切換信件的 'new' 旗標"
 
-#: keymap_alldefs.h:164
+#: keymap_alldefs.h:166
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "切換是否重新寫入郵箱中"
 
-#: keymap_alldefs.h:165
+#: keymap_alldefs.h:167
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "切換瀏覽郵箱抑或所有的檔案"
 
-#: keymap_alldefs.h:166
+#: keymap_alldefs.h:168
 msgid "move to the top of the page"
 msgstr "移到頁首"
 
-#: keymap_alldefs.h:167
+#: keymap_alldefs.h:169
 msgid "undelete the current entry"
 msgstr "取消刪除所在的記錄"
 
-#: keymap_alldefs.h:168
+#: keymap_alldefs.h:170
 msgid "undelete all messages in thread"
 msgstr "取消刪除序列中的所有信件"
 
-#: keymap_alldefs.h:169
+#: keymap_alldefs.h:171
 msgid "undelete all messages in subthread"
 msgstr "取消刪除子序列中的所有信件"
 
-#: keymap_alldefs.h:170
+#: keymap_alldefs.h:172
 msgid "show the Mutt version number and date"
 msgstr "顯示 Mutt 的版本號碼與日期"
 
-#: keymap_alldefs.h:171
+#: keymap_alldefs.h:173
 msgid "view attachment using mailcap entry if necessary"
 msgstr "如果需要的話使用 mailcap 瀏覽附件"
 
-#: keymap_alldefs.h:172
+#: keymap_alldefs.h:174
 msgid "show MIME attachments"
 msgstr "顯示 MIME 附件"
 
-#: keymap_alldefs.h:173
+#: keymap_alldefs.h:175
+msgid "display the keycode for a key press"
+msgstr ""
+
+#: keymap_alldefs.h:176
 msgid "show currently active limit pattern"
 msgstr "顯示目前有作用的限制樣式"
 
-#: keymap_alldefs.h:174
+#: keymap_alldefs.h:177
 msgid "collapse/uncollapse current thread"
 msgstr "打開/關閉 目前的序列"
 
-#: keymap_alldefs.h:175
+#: keymap_alldefs.h:178
 msgid "collapse/uncollapse all threads"
 msgstr "打開/關閉 所有的序列"
 
-#: keymap_alldefs.h:176
+#: keymap_alldefs.h:179
 msgid "attach a PGP public key"
 msgstr "附帶一把 PGP 公共鑰匙"
 
-#: keymap_alldefs.h:177
+#: keymap_alldefs.h:180
 msgid "show PGP options"
 msgstr "顯示 PGP 選項"
 
-#: keymap_alldefs.h:178
+#: keymap_alldefs.h:181
 msgid "mail a PGP public key"
 msgstr "寄出 PGP 公共鑰匙"
 
-#: keymap_alldefs.h:179
+#: keymap_alldefs.h:182
 msgid "verify a PGP public key"
 msgstr "檢驗 PGP 公共鑰匙"
 
-#: keymap_alldefs.h:180
+#: keymap_alldefs.h:183
 msgid "view the key's user id"
 msgstr "檢閱這把鑰匙的使用者 id"
 
-#: keymap_alldefs.h:181
+#: keymap_alldefs.h:184
 msgid "check for classic pgp"
 msgstr "檢查古老的pgp格式"
 
-#: keymap_alldefs.h:182
+#: keymap_alldefs.h:185
 msgid "Accept the chain constructed"
 msgstr "同意已建好的鏈結"
 
-#: keymap_alldefs.h:183
+#: keymap_alldefs.h:186
 msgid "Append a remailer to the chain"
 msgstr "在鏈結的後面加上郵件轉接器"
 
-#: keymap_alldefs.h:184
+#: keymap_alldefs.h:187
 msgid "Insert a remailer into the chain"
 msgstr "在鏈結中加入郵件轉接器"
 
-#: keymap_alldefs.h:185
+#: keymap_alldefs.h:188
 msgid "Delete a remailer from the chain"
 msgstr "從鏈結中刪除郵件轉接器"
 
-#: keymap_alldefs.h:186
+#: keymap_alldefs.h:189
 msgid "Select the previous element of the chain"
 msgstr "選擇鏈結裏對上一個部份"
 
-#: keymap_alldefs.h:187
+#: keymap_alldefs.h:190
 msgid "Select the next element of the chain"
 msgstr "選擇鏈結裏跟著的一個部份"
 
-#: keymap_alldefs.h:188
+#: keymap_alldefs.h:191
 msgid "send the message through a mixmaster remailer chain"
 msgstr "利用 mixmaster 郵件轉接器把郵件寄出"
 
-#: keymap_alldefs.h:189
+#: keymap_alldefs.h:192
 msgid "make decrypted copy and delete"
 msgstr "製作解密的拷貝並且刪除之"
 
-#: keymap_alldefs.h:190
+#: keymap_alldefs.h:193
 msgid "make decrypted copy"
 msgstr "製作一份解密的拷貝"
 
-#: keymap_alldefs.h:191
+#: keymap_alldefs.h:194
 #, fuzzy
 msgid "wipe passphrase(s) from memory"
 msgstr "清除記憶體中的 PGP 通行密碼"
 
-#: keymap_alldefs.h:192
+#: keymap_alldefs.h:195
 #, fuzzy
 msgid "extract supported public keys"
 msgstr "擷取 PGP 公共鑰匙"
 
-#: keymap_alldefs.h:193
+#: keymap_alldefs.h:196
 #, fuzzy
 msgid "show S/MIME options"
 msgstr "顯示 PGP 選項"
@@ -2466,7 +2480,7 @@ msgstr ""
 msgid ""
 "Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2002 Thomas Roessler <roessler@guug.de>\n"
+"Copyright (C) 1997-2002 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Copyright (C) 1998-2002 Werner Koch <wk@isil.d.shuttle.de>\n"
 "Copyright (C) 1999-2002 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
@@ -2739,7 +2753,7 @@ msgstr "返向搜尋："
 msgid "No search pattern."
 msgstr "沒有搜尋格式。"
 
-#: menu.c:753 pager.c:1929 pager.c:1945 pager.c:2055 pattern.c:1345
+#: menu.c:753 pager.c:1929 pager.c:1945 pager.c:2053 pattern.c:1345
 msgid "Not found."
 msgstr "沒有找到。"
 
@@ -2768,32 +2782,32 @@ msgstr "讀取 %s… %d"
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr ""
 
-#: muttlib.c:855
+#: muttlib.c:862
 msgid "File is a directory, save under it?"
 msgstr "檔案是一個目錄, 儲存在它下面 ?"
 
-#: muttlib.c:860
+#: muttlib.c:867
 msgid "File under directory: "
 msgstr "在目錄底下的檔案："
 
-#: muttlib.c:872
+#: muttlib.c:879
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "檔案已經存在, (1)覆蓋, (2)附加, 或是 (3)取消 ?"
 
-#: muttlib.c:872
+#: muttlib.c:879
 msgid "oac"
 msgstr "123"
 
-#: muttlib.c:1160
+#: muttlib.c:1167
 msgid "Can't save message to POP mailbox."
 msgstr "無法將信件存到信箱。"
 
-#: muttlib.c:1169
+#: muttlib.c:1176
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s 不是信箱！"
 
-#: muttlib.c:1175
+#: muttlib.c:1182
 #, c-format
 msgid "Append messages to %s?"
 msgstr "附加信件到 %s ?"
@@ -3082,7 +3096,7 @@ msgid "Next"
 msgstr "下一個"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1837 pager.c:1868 pager.c:1900 pager.c:2143
+#: pager.c:1837 pager.c:1868 pager.c:1900 pager.c:2141
 msgid "Bottom of message is shown."
 msgstr "現正顯示最下面的信件。"
 
@@ -3098,15 +3112,15 @@ msgstr "反向搜尋："
 msgid "Search: "
 msgstr "搜尋："
 
-#: pager.c:2081
+#: pager.c:2079
 msgid "Help is currently being shown."
 msgstr "現正顯示說明文件。"
 
-#: pager.c:2110
+#: pager.c:2108
 msgid "No more quoted text."
 msgstr "不能有再多的引言。"
 
-#: pager.c:2123
+#: pager.c:2121
 msgid "No more unquoted text after quoted text."
 msgstr "在引言後有過多的非引言文字。"
 
@@ -3259,7 +3273,8 @@ msgstr ""
 "\n"
 
 #: pgp.c:703
-msgid "Internal error. Inform <roessler@guug.de>."
+#, fuzzy
+msgid "Internal error. Inform <roessler@does-not-exist.org>."
 msgstr "內部錯誤。聯絡 <rosessler@guug.de>。"
 
 #: pgp.c:763
@@ -3301,17 +3316,17 @@ msgstr ""
 msgid "Can't open PGP subprocess!"
 msgstr "無法開啟 PGP 子程序！"
 
-#: pgp.c:1078
+#: pgp.c:1092
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "要為 %2$s 使用鑰匙 ID = \"%1$s\"？"
 
-#: pgp.c:1105 smime.c:719 smime.c:846
+#: pgp.c:1126 smime.c:719 smime.c:846
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "請輸入 %s 的鑰匙 ID："
 
-#: pgp.c:1354
+#: pgp.c:1376
 msgid "Can't invoke PGP"
 msgstr "不能執行 PGP"
 
@@ -3532,20 +3547,20 @@ msgstr "搜尋"
 msgid "Waiting for response..."
 msgstr "等待回應中…"
 
-#: query.c:225 query.c:250
+#: query.c:228 query.c:253
 msgid "Query command not defined."
 msgstr "查詢指令尚未定義。"
 
-#: query.c:277
+#: query.c:280
 msgid "Query"
 msgstr "查詢"
 
 #. Prompt for Query
-#: query.c:290 query.c:315
+#: query.c:293 query.c:318
 msgid "Query: "
 msgstr "查詢："
 
-#: query.c:298 query.c:324
+#: query.c:301 query.c:327
 #, c-format
 msgid "Query '%s'"
 msgstr "查詢 '%s'"
@@ -3805,7 +3820,7 @@ msgstr "準備轉寄信件…"
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:1059
+#: send.c:1060
 msgid "Recall postponed message?"
 msgstr "要叫出被延遲的信件?"
 
@@ -3847,19 +3862,19 @@ msgstr "沒有信件標題，要中斷寄信的工作?"
 msgid "No subject specified."
 msgstr "沒有指定標題。"
 
-#: send.c:1498
+#: send.c:1504
 msgid "Sending message..."
 msgstr "正在寄出信件…"
 
-#: send.c:1646
+#: send.c:1652
 msgid "Could not send the message."
 msgstr "無法寄出信件。"
 
-#: send.c:1651
+#: send.c:1657
 msgid "Mail sent."
 msgstr "信件已經寄出。"
 
-#: send.c:1651
+#: send.c:1657
 msgid "Sending in background."
 msgstr "正在背景作業中傳送。"
 

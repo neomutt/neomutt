@@ -46,8 +46,7 @@ TAG="mutt-`echo $VERSION | tr . -`-rel"
 
 echo 'const char *ReleaseDate = "'`date +%Y-%m-%d`'";' > reldate.h
 
-rcs2log | cat - ChangeLog > ChangeLog.$$ && mv ChangeLog.$$ ChangeLog
-${VISUAL} ChangeLog
+make changelog 
 
 # now, prepare the distribution tar balls
 
@@ -57,7 +56,7 @@ touch configure.in
 make config.status
 ./config.status
 make update-doc
-make
+make changelog
 
 # build them
 
@@ -69,6 +68,7 @@ mv mutt-${VERSION}.tar.gz mutt-${VERSION}i.tar.gz
 # commit and tag the release
 
 cvs commit -m "automatic post-release commit for mutt-${VERSION}"
+make changelog changelog-commit
 cvs tag ${TAG}
 
 # build the diff between the two releases
