@@ -1391,6 +1391,8 @@ messages:
 ~e EXPR         message which contains EXPR in the ``Sender'' field
 ~F              flagged messages
 ~f USER         messages originating from USER
+~g              PGP signed messages
+~G              PGP encrypted messages
 ~h EXPR         messages which contain EXPR in the message header
 ~i ID           message which match ID in the ``Message-ID'' field
 ~L EXPR         message is either originated or received by EXPR

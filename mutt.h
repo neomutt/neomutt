@@ -179,7 +179,11 @@ enum
   M_PERSONAL_RECIP,
   M_PERSONAL_FROM,
   M_ADDRESS,
-
+#ifdef _PGPPATH
+  M_PGP_SIGN,
+  M_PGP_ENCRYPT,
+#endif
+  
   /* Options for Mailcap lookup */
   M_EDIT,
   M_COMPOSE,

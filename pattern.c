@@ -60,6 +60,10 @@ Flags[] =
   { 'E', M_EXPIRED,		0,		NULL },
   { 'f', M_FROM,		0,		eat_regexp },
   { 'F', M_FLAG,		0,		NULL },
+#ifdef _PGPPATH
+  { 'g', M_PGP_SIGN, 0, NULL },
+  { 'G', M_PGP_ENCRYPT, 0, NULL },
+#endif
   { 'h', M_HEADER,		M_FULL_MSG,	eat_regexp },
   { 'i', M_ID,			0,		eat_regexp },
   { 'L', M_ADDRESS,		0,		eat_regexp },
@@ -819,6 +823,14 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
     case M_PERSONAL_FROM:
       return (pat->not ^ (match_user (h->env->from)));
       break;
+#ifdef _PGPPATH
+  case M_PGP_SIGN:
+     return (pat->not ^ (h->pgp & PGPSIGN));
+     break;
+  case M_PGP_ENCRYPT:
+     return (pat->not ^ (h->pgp & PGPENCRYPT));
+     break;
+#endif
   }
   mutt_error ("error: unknown op %d (report this error).", pat->op);
   return (-1);
