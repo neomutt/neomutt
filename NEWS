@@ -35,6 +35,37 @@ Major changes since 1.2
   
   This restores the original behaviour.
 
+  IMAP changes
+  ------------
+
+- $imap_preconnect has been renamed to $preconnect, since the POP
+  driver now uses this feature too.
+
+- $imap_checkinterval has been retired. You use $mail_check to control
+  how often your mailboxes are polled. Note that the default setting of
+  $mail_check (5 seconds) makes mutt sluggish if you have more than a
+  couple of IMAP mailboxes defined. Also note that mutt polls the current
+  IMAP mailbox for new mail no more often than $timeout seconds, and its
+  default may also surprise you.
+
+  IMAP features added
+  -------------------
+
+- Mutt now has SASL authentication and encryption support.
+
+- A new variable $imap_authenticators has been added, which gives you
+  control of which methods mutt will attempt to use to authenticate
+  with your IMAP server.
+
+- Mutt also support IPv6.
+
+- Mutt now supports TLS. If your server does too, it will be negotiated
+  for you depending on the $ssl_starttls variable.
+
+- Mutt also supports a "tunnel driver", which means you can use an SSH
+  pipe to connect to an IMAP server. See the documentation for $tunnel.
+
+- A boatload of performance enhancements and bug fixes.
 
 Major changes since 1.1
 -----------------------
