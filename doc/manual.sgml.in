@@ -968,12 +968,13 @@ Mutt has a few nice features for <ref id="using_lists" name="handling mailing
 lists">.  In order to take advantage of them, you must specify which addresses
 belong to mailing lists.
 
-It is important to note that you should <bf/never/ specify the domain name
-(the part after the ``@'') with the lists command.  You should only
-specify the ``mailbox'' portion of the address (the part before the ``@'').
-For example, if you've subscribed to the Mutt mailing list, you will receive
-mail addressed to <em/mutt-users@mutt.org/.  So, to tell Mutt that this is a
-mailing list, you would add ``lists mutt-users'' to your initialization file.
+Specify as much of the address as you need to to remove ambiguity.  For
+example, if you've subscribed to the Mutt mailing list, you will receive mail
+addresssed to <em/mutt-users@mutt.org/.  So, to tell Mutt that this is a
+mailing list, you could add ``lists mutt-users'' to your initialization file.
+If you also happen to get mail from someone whose address is
+<em/mutt-users@example.com/. you could use ``lists mutt-users@mutt.org'' to
+match only mail from the actual list.
 
 The ``unlists'' command is to remove a token from the list of mailing-lists.
 Use ``unlists *'' to remove all tokens.
