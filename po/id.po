@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.22.1i\n"
+"Project-Id-Version: 1.3.23.2i\n"
 "POT-Creation-Date: 2001-11-08 23:41+0100\n"
-"PO-Revision-Date: 2001-09-14 13:14+0700\n"
+"PO-Revision-Date: 2001-11-28 10:38+0700\n"
 "Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
 "Language-Team: Indonesia <i18n@linux.or.id>\n"
 "MIME-Version: 1.0\n"
@@ -429,34 +429,34 @@ msgid "Shell command: "
 msgstr "Perintah shell: "
 
 #: commands.c:647
-#, fuzzy, c-format
+#, c-format
 msgid "Decode-save%s to mailbox"
-msgstr "%s%s ke kotak surat"
+msgstr "Urai-simpan%s ke kotak surat"
 
 #: commands.c:648
-#, fuzzy, c-format
+#, c-format
 msgid "Decode-copy%s to mailbox"
-msgstr "%s%s ke kotak surat"
+msgstr "Urai-salin%s ke kotak surat"
 
 #: commands.c:649
-#, fuzzy, c-format
+#, c-format
 msgid "Decrypt-save%s to mailbox"
-msgstr "%s%s ke kotak surat"
+msgstr "Dekripsi-simpan%s ke kotak surat"
 
 #: commands.c:650
-#, fuzzy, c-format
+#, c-format
 msgid "Decrypt-copy%s to mailbox"
-msgstr "%s%s ke kotak surat"
+msgstr "Dekripsi-salin%s ke kotak surat"
 
 #: commands.c:651
-#, fuzzy, c-format
+#, c-format
 msgid "Save%s to mailbox"
-msgstr "%s%s ke kotak surat"
+msgstr "Simpan%s ke kotak surat"
 
 #: commands.c:651
-#, fuzzy, c-format
+#, c-format
 msgid "Copy%s to mailbox"
-msgstr "%s%s ke kotak surat"
+msgstr "Salin%s ke kotak surat"
 
 #: commands.c:652
 msgid " tagged"
@@ -614,9 +614,9 @@ msgid "Rename to: "
 msgstr "Ganti nama ke: "
 
 #: compose.c:987 editmsg.c:96 sendlib.c:902
-#, fuzzy, c-format
+#, c-format
 msgid "Can't stat %s: %s"
-msgstr "Tidak bisa stat: %s"
+msgstr "Tidak bisa stat %s: %s"
 
 #: compose.c:1013
 msgid "New file: "
@@ -852,9 +852,8 @@ msgid " in this limited view"
 msgstr " di tampilan terbatas ini"
 
 #: curs_main.c:1331 pager.c:2283
-#, fuzzy
 msgid "Can't change 'important' flag on POP server."
-msgstr "Tidak bisa menyunting pesan di server POP"
+msgstr "Tidak bisa mengubah tanda 'penting' di server POP."
 
 #: curs_main.c:1446
 msgid "No more threads."
@@ -1061,24 +1060,22 @@ msgid "[-- name: %s --]\n"
 msgstr "[-- nama: %s --]\n"
 
 #: handler.c:1670 handler.c:1686
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
-msgstr "[-- Lampiran %s/%s ini "
+msgstr "[-- Lampiran %s/%s ini tidak disertakan, --]\n"
 
 #: handler.c:1672
 msgid "[-- and the indicated external source has --]\n"
-msgstr ""
+msgstr "-- dan sumber eksternal yg disebutkan telah --]\n"
 
 #: handler.c:1673
 msgid "[-- expired. --]\n"
-msgstr ""
+msgstr "[-- kadaluwarsa. --]\n"
 
 #: handler.c:1690
-#, fuzzy, c-format
+#, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
-msgstr ""
-"[-- Lampiran %s/%s ini tidak disertakan, --]\n"
-"[-- dan access-type %s tidak didukung --]\n"
+msgstr "[-- dan tipe akses %s tsb tidak didukung --]\n"
 
 #: handler.c:1807
 msgid "Error: multipart/signed has no protocol."
@@ -1210,7 +1207,7 @@ msgstr "Authentikasi SASL gagal."
 #: imap/browse.c:64 imap/imap.c:504
 #, c-format
 msgid "%s is an invalid IMAP path"
-msgstr ""
+msgstr "%s bukan path IMAP yang valid"
 
 #: imap/browse.c:81
 msgid "Getting namespaces..."
@@ -1221,9 +1218,8 @@ msgid "Getting folder list..."
 msgstr "Mengambil daftar kotak surat..."
 
 #: imap/browse.c:219
-#, fuzzy
 msgid "No such folder"
-msgstr "%s: tidak ada warna begitu"
+msgstr "Tidak ada folder itu"
 
 #: imap/browse.c:277
 msgid "Create mailbox: "
@@ -1309,16 +1305,15 @@ msgstr "Menghapus surat-surat di server..."
 
 #: imap/imap.c:1031
 msgid "imap_sync_mailbox: EXPUNGE failed"
-msgstr ""
+msgstr "imap_sync_mailbox: EXPUNGE (hapus) gagal"
 
 #: imap/imap.c:1065
 msgid "CLOSE failed"
 msgstr "CLOSE (penutupan) gagal."
 
 #: imap/imap.c:1313
-#, fuzzy
 msgid "Bad mailbox name"
-msgstr "Membuat kotak surat: "
+msgstr "Nama kotak surat yg buruk"
 
 #: imap/imap.c:1325
 #, c-format
@@ -2679,16 +2674,16 @@ msgstr "SSL tidak dapat digunakan karena kekurangan entropy"
 
 #: mutt_ssl.c:318
 msgid "I/O error"
-msgstr ""
+msgstr "Kesalahan I/O"
 
 #: mutt_ssl.c:321
 msgid "unspecified protocol error"
-msgstr ""
+msgstr "kesalahan protokol tak terdefinisikan"
 
 #: mutt_ssl.c:327
-#, fuzzy, c-format
+#, c-format
 msgid "SSL failed: %s"
-msgstr "Login gagal: %s"
+msgstr "SSL gagal: %s"
 
 #: mutt_ssl.c:336
 msgid "Unable to get certificate from peer"
@@ -3063,22 +3058,16 @@ msgstr ""
 "\n"
 
 #: pgp.c:456
-#, fuzzy
 msgid "[-- END PGP MESSAGE --]\n"
-msgstr ""
-"\n"
-"[-- AKHIR SURAT PGP --]\n"
+msgstr "[-- AKHIR PESAN PGP --]\n"
 
 #: pgp.c:458
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- AKHIR PGP PUBLIC KEY BLOCK --]\n"
 
 #: pgp.c:460
-#, fuzzy
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
-msgstr ""
-"\n"
-"[-- AKHIR SURAT DG TANDATANGAN PGP --]\n"
+msgstr "[-- AKHIR PESAN DG TANDATANGAN PGP --]\n"
 
 #: pgp.c:475
 msgid ""
@@ -3132,11 +3121,8 @@ msgstr ""
 "\n"
 
 #: pgp.c:861
-#, fuzzy
 msgid "[-- End of signed data --]\n"
-msgstr ""
-"\n"
-"[-- Akhir data yang ditandatangani --]\n"
+msgstr "[-- Akhir data yang ditandatangani --]\n"
 
 #: pgp.c:962
 msgid "Internal error. Inform <roessler@guug.de>."
@@ -3167,15 +3153,12 @@ msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
 msgstr ""
-"[-- Data berikut di-encrypt dgn PGP/MIME --]\n"
+"[-- Data berikut dienkripsi dg PGP/MIME --]\n"
 "\n"
 
 #: pgp.c:1160
-#, fuzzy
 msgid "[-- End of PGP/MIME encrypted data --]\n"
-msgstr ""
-"\n"
-"[-- Akhir data yang diacak dg PGP/MIME --]\n"
+msgstr "[-- Akhir data yang dienkripsi dg PGP/MIME --]\n"
 
 #: pgp.c:1241
 msgid "Can't open PGP subprocess!"
@@ -3298,7 +3281,7 @@ msgstr "Perintah UIDL tidak didukung oleh server."
 #: pop.c:246 pop.c:562
 #, c-format
 msgid "%s is an invalid POP path"
-msgstr ""
+msgstr "%s bukan path POP yang valid"
 
 #: pop.c:277
 msgid "Fetching list of messages..."
@@ -3737,9 +3720,9 @@ msgid "%s no longer exists!"
 msgstr "%s tidak ada lagi!"
 
 #: sendlib.c:908
-#, fuzzy, c-format
+#, c-format
 msgid "%s isn't a regular file."
-msgstr "%s bukan kotak surat."
+msgstr "%s bukan file biasa."
 
 #: sendlib.c:1077
 #, c-format
@@ -3783,9 +3766,8 @@ msgid "(no mailbox)"
 msgstr "(tidak ada kotak surat)"
 
 #: thread.c:971
-#, fuzzy
 msgid "Parent message is not visible in this limited view."
-msgstr "Surat induk tidak bisa dilihat di tampilan terbatas."
+msgstr "Surat induk tidak bisa dilihat di tampilan terbatas ini."
 
 #: thread.c:977
 msgid "Parent message is not available."
