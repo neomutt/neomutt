@@ -61,8 +61,8 @@ greater than or equal to 70 should be interpreted as the years
 the years 2000-2069.
 .PP
 Software reading files in this format should also be prepared to
-accept to encounter non-numeric timezone information such as "CET
-DST" for Central European Time, dailight saving time.
+accept non-numeric timezone information such as "CET DST" for
+Central European Time, dailight saving time.
 .PP
 Example:
 .IP "" 1
@@ -111,7 +111,7 @@ system call should be additionally verified using
 .BR stat (2)
 calls.  If the link has succeeded, the mail folder is considered
 dotlocked.  The temporary file can then safely be unlinked.
-.PP
+.IP ""
 In order to release the lock, an application just unlinks the
 .IB folder .lock
 file.
