@@ -1,3 +1,8 @@
+2003-11-12 13:49:32  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* configure.in, mutt_idna.c, mutt_idna.h, mutt_socket.c: Fix
+	IDN API incompatibility problems.
+
 2003-11-12 11:47:46  duvall@emufarm.org  (roessler)
 
 	* configure.in: Fix 1515, 1693.
