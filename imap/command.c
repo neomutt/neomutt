@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2002 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -135,18 +135,18 @@ int imap_cmd_step (IMAP_DATA* idata)
   }
   
   /* handle untagged messages. The caller still gets its shot afterwards. */
-  if (!strncmp (cmd->buf, "* ", 2) &&
+  if (!ascii_strncmp (cmd->buf, "* ", 2) &&
       cmd_handle_untagged (idata))
     return IMAP_CMD_BAD;
 
   /* server demands a continuation response from us */
-  if (!strncmp (cmd->buf, "+ ", 2))
+  if (!ascii_strncmp (cmd->buf, "+ ", 2))
   {
     return IMAP_CMD_RESPOND;
   }
 
   /* tagged completion code */
-  if (!mutt_strncmp (cmd->buf, cmd->seq, SEQLEN))
+  if (!ascii_strncmp (cmd->buf, cmd->seq, SEQLEN))
   {
     imap_cmd_finish (idata);
     return imap_code (cmd->buf) ? IMAP_CMD_OK : IMAP_CMD_NO;

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2002 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -591,7 +591,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   if (rc == -2)
   {
     /* bail out if command failed for reasons other than nonexistent target */
-    if (strncmp (imap_get_qualifier (idata->cmd.buf), "[TRYCREATE]", 11))
+    if (ascii_strncasecmp (imap_get_qualifier (idata->cmd.buf), "[TRYCREATE]", 11))
     {
       imap_error ("imap_copy_messages", idata->cmd.buf);
       goto fail;

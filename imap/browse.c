@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2002 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -125,7 +125,7 @@ int imap_browse (char* path, struct browser_state* state)
           }
         }
       }
-      while (mutt_strncmp (idata->cmd.buf, idata->cmd.seq, SEQLEN));
+      while (ascii_strncmp (idata->cmd.buf, idata->cmd.seq, SEQLEN));
     }
 
     /* if we're descending a folder, mark it as current in browser_state */
@@ -335,7 +335,7 @@ static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
           isparent);
     }
   }
-  while ((mutt_strncmp (idata->cmd.buf, idata->cmd.seq, SEQLEN) != 0));
+  while ((ascii_strncmp (idata->cmd.buf, idata->cmd.seq, SEQLEN) != 0));
 
   FREE (&mx.mbox);
   return 0;
@@ -439,7 +439,7 @@ static int browse_get_namespace (IMAP_DATA* idata, char* nsbuf, int nsblen,
       for (type = IMAP_NS_PERSONAL; *s; type++)
       {
 	s = imap_next_word (s);
-	if (*s && strncmp (s, "NIL", 3))
+	if (ascii_strncasecmp (s, "NIL", 3))
 	{
 	  s++;
 	  while (*s && *s != ')')
@@ -545,7 +545,7 @@ static int browse_verify_namespace (IMAP_DATA* idata,
 	return -1;
       nsi->listable |= (name != NULL);
     }
-    while ((mutt_strncmp (idata->cmd.buf, idata->cmd.seq, SEQLEN) != 0));
+    while ((ascii_strncmp (idata->cmd.buf, idata->cmd.seq, SEQLEN) != 0));
   }
 
   return 0;

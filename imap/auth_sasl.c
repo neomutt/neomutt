@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000-1 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2000-2 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -62,7 +62,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
 
     if (mutt_bit_isset (idata->capabilities, AUTH_ANON) &&
 	(!idata->conn->account.user[0] ||
-	 !mutt_strncmp (idata->conn->account.user, "anonymous", 9)))
+	 !ascii_strncmp (idata->conn->account.user, "anonymous", 9)))
       rc = sasl_client_start (saslconn, "AUTH=ANONYMOUS", NULL, NULL, &pc, &olen,
 			      &mech);
   }

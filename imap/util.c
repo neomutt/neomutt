@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2002 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -152,7 +152,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
 	mx->account.flags |= M_ACCT_PORT;
       if (sscanf (tmp, "/%s", tmp) == 1)
       {
-	if (!strncmp (tmp, "ssl", 3))
+	if (!ascii_strncmp (tmp, "ssl", 3))
 	  mx->account.flags |= M_ACCT_SSL;
 	else
 	{

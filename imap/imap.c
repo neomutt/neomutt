@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2002 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -378,7 +378,7 @@ int imap_open_connection (IMAP_DATA* idata)
   if (imap_cmd_step (idata) != IMAP_CMD_CONTINUE)
     goto bail;
 
-  if (mutt_strncmp ("* OK", idata->cmd.buf, 4) == 0)
+  if (ascii_strncasecmp ("* OK", idata->cmd.buf, 4) == 0)
   {
     /* TODO: Parse new tagged CAPABILITY data (* OK [CAPABILITY...]) */
     if (imap_check_capabilities (idata))
@@ -419,7 +419,7 @@ int imap_open_connection (IMAP_DATA* idata)
       dprint (2, (debugfile, "Communication encrypted at %d bits\n",
 	idata->conn->ssf));
   }
-  else if (mutt_strncmp ("* PREAUTH", idata->cmd.buf, 9) == 0)
+  else if (ascii_strncasecmp ("* PREAUTH", idata->cmd.buf, 9) == 0)
   {
     if (imap_check_capabilities (idata) != 0)
       goto bail;
@@ -613,7 +613,7 @@ int imap_open_mailbox (CONTEXT* ctx)
     goto fail;
 
   /* check for READ-ONLY notification */
-  if (!strncmp (imap_get_qualifier (idata->cmd.buf), "[READ-ONLY]", 11))
+  if (!ascii_strncasecmp (imap_get_qualifier (idata->cmd.buf), "[READ-ONLY]", 11))
   {
     dprint (2, (debugfile, "Mailbox is read-only.\n"));
     ctx->readonly = 1;
@@ -1183,7 +1183,7 @@ int imap_mailbox_check (char* path, int new)
    */
 
   if (mutt_strcmp (mbox_unquoted, idata->mailbox) == 0
-      || (mutt_strcasecmp (mbox_unquoted, "INBOX") == 0
+      || (ascii_strcasecmp (mbox_unquoted, "INBOX") == 0
 	  && mutt_strcasecmp (mbox_unquoted, idata->mailbox) == 0))
   {
     strfcpy (buf, "NOOP", sizeof (buf));
@@ -1289,7 +1289,7 @@ int imap_parse_list_response(IMAP_DATA* idata, char **name, int *noselect,
       return 0;
     s = imap_next_word (s); /* delim */
     /* Reset the delimiter, this can change */
-    if (strncmp (s, "NIL", 3))
+    if (ascii_strncmp (s, "NIL", 3))
     {
       if (s && s[0] == '\"' && s[1] && s[2] == '\"')
 	*delim = s[1];
@@ -1434,7 +1434,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
       completions++;
     }
   }
-  while (mutt_strncmp(idata->cmd.seq, idata->cmd.buf, SEQLEN));
+  while (ascii_strncmp(idata->cmd.seq, idata->cmd.buf, SEQLEN));
 
   if (completions)
   {
