@@ -1,19 +1,22 @@
 /*
- * Copyright (C) 1997 Thomas Roessler <roessler@guug.de>
+ * Copyright (C) 1997-1999 Thomas Roessler <roessler@guug.de>
  * 
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ *     This program is free software; you can redistribute it
+ *     and/or modify it under the terms of the GNU General Public
+ *     License as published by the Free Software Foundation; either
+ *     version 2 of the License, or (at your option) any later
+ *     version.
  * 
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ *     This program is distributed in the hope that it will be
+ *     useful, but WITHOUT ANY WARRANTY; without even the implied
+ *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ *     PURPOSE.  See the GNU General Public License for more
+ *     details.
  * 
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *     You should have received a copy of the GNU General Public
+ *     License along with this program; if not, write to the Free
+ *     Software Foundation, Inc., 675 Mass Ave, Cambridge, MA
+ *     02139, USA.
  */ 
 
 
@@ -519,7 +522,6 @@ static KEYINFO *pgp_parse_pgp3_key(unsigned char *buff, size_t l)
   }
   
   p->keyid = safe_strdup((char *)scratch);
-
   
   return p;
 }
@@ -528,6 +530,8 @@ static KEYINFO *pgp_parse_keyinfo(unsigned char *buff, size_t l)
 {
   if(!buff || l < 2)
     return NULL;
+
+  dprint (5, (debugfile, " version: %d ", buff[1]));
   
   switch(buff[1])
   {
@@ -754,11 +758,21 @@ static KEYINFO *pgp_read_keyring(const char *fname)
       case PT_SUBKEY:
       case PT_SUBSECKEY:
       {
+	switch (pt)
+	{
+	  case PT_SECKEY: dprint (5, (debugfile, "PT_SECKEY: ")); break;
+	  case PT_PUBKEY: dprint (5, (debugfile, "PT_PUBKEY: ")); break;
+	  case PT_SUBKEY: dprint (5, (debugfile, "PT_SUBKEY: ")); break;
+	  case PT_SUBSECKEY: dprint (5, (debugfile, "PT_SUBSECKEY: ")); break;
+	}
+
 	if(p)
 	  end = &(p->next);
 	
 	if(!(*end = p = pgp_parse_keyinfo(buff, l)))
 	   break;
+
+	dprint (5, (debugfile, " key-id: %s ", p->keyid));
 	
 	addr = &p->address;
 
@@ -775,30 +789,44 @@ static KEYINFO *pgp_read_keyring(const char *fname)
       
       case PT_SIG:
       {
+	dprint (5, (debugfile, "PT_SIG\n"));
 	pgp_parse_sig(buff, l, p);
 	break;
       }
       case PT_TRUST:
       {
+	dprint (5, (debugfile, "PT_TRUST: "));
 	if(last_pt == PT_SECKEY || last_pt == PT_PUBKEY ||
 	   last_pt == PT_SUBKEY || last_pt == PT_SUBSECKEY)
 	{
 	  if(buff[1] & 0x20)
+	  {
+	    dprint (5, (debugfile, " disabling %s\n", p->keyid));
 	    p->flags |= KEYFLAG_DISABLED;
+	  }
 	}
 	else if(last_pt == PT_NAME)
+	{
 	  uid->trust = buff[1];
+	  dprint  (5, (debugfile, " setting trust for \"%s\" to %d.\n",
+		       uid->addr, uid->trust));
+	}
 	break;
       }
       case PT_NAME:
       {
 	char *chr;
+
+	dprint (5, (debugfile, "PT_NAME: "));
 	
 	if(!addr) break;
 	
 	chr = safe_malloc(l);
 	memcpy(chr, buff + 1, l - 1);
 	chr[l-1] = '\0';
+	
+	dprint (5, (debugfile, "\"%s\"\n", chr));
+	
 	mutt_decode_utf8_string(chr, chs);
 	*addr = mutt_new_list();
 	(*addr)->data = safe_malloc(sizeof(PGPUID));
@@ -821,6 +849,29 @@ static KEYINFO *pgp_read_keyring(const char *fname)
     }
   }
   fclose(fp);
+  
+#ifdef DEBUG
+  if (debuglevel >= 4)
+  {
+    KEYINFO *dbp;
+    LIST *lp;
+
+    fprintf (debugfile, "\n\npgp_read_keyring: START KEYRING DUMP.\n");
+    
+    for (dbp = db; dbp; dbp = dbp->next)
+    {
+      fprintf (debugfile, "%s [len=%d, flags=%d]\n", dbp->keyid, dbp->keylen, dbp->flags);
+      for (lp = dbp->address; lp; lp=lp->next)
+      {
+	fprintf (debugfile, "  %s [%d]\n", ((PGPUID *)lp->data)->addr,
+		 ((PGPUID *)lp->data)->trust);
+      }
+    }
+    
+    fprintf (debugfile, "\nEND KEYRING DUMP.\n\n");
+  }
+#endif
+  
   return db;
 }
 

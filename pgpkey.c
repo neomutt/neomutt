@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1996,1997 Michael R. Elkins <me@cs.hmc.edu>
- * Copyright (c) 1998 Thomas Roessler <roessler@guug.de>
+ * Copyright (c) 1998,1999 Thomas Roessler <roessler@guug.de>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -456,13 +456,27 @@ KEYINFO *ki_getkeybyaddr (struct pgp_vinfo *pgp,
   int did_main_key;
   PGPUID *u;
   
+  dprint (5, (debugfile, "ki_getkeybyaddr: looking for %s <%s>.",
+	      a->personal, a->mailbox));
+
+  
   for ( ; k ; k = k->next)
   {
-    if(k->flags & (KEYFLAG_REVOKED | KEYFLAG_EXPIRED | KEYFLAG_DISABLED)) 
+    dprint (5, (debugfile, "  looking at key: %s\n",
+		pgp_keyid (k)));
+    
+    if(k->flags & (KEYFLAG_REVOKED | KEYFLAG_EXPIRED | KEYFLAG_DISABLED))
+    {
+      dprint (5, (debugfile, "  key disabled/revoked/expired\n"));
       continue;
+    }
     
     if(abilities && !(k->flags & abilities))
+    {
+      dprint (5, (debugfile, "  insufficient abilities: Has %x, want %x\n",
+		  k->flags, abilities));
       continue;
+    }
     
     q = k->address;
     did_main_key = 0;
@@ -475,6 +489,7 @@ KEYINFO *ki_getkeybyaddr (struct pgp_vinfo *pgp,
     {
       u = (PGPUID *) q->data;
       r = rfc822_parse_adrlist(NULL, u->addr);
+
       
       for(p = r; p && weak_association; p = p->next) 
       {
@@ -556,19 +571,23 @@ KEYINFO *ki_getkeybystr (struct pgp_vinfo *pgp,
     
     for(; a ; a = a->next) 
     {
-
+      dprint (5, (debugfile, "ki_getkeybystr: matching \"%s\" against key %s, \"%s\": ",
+		  p, pgp_keyid (k), ((PGPUID *)a->data)->addr));
       if (!*p || mutt_strcasecmp (p, pgp_keyid(k)) == 0 ||
 	  (!mutt_strncasecmp(p, "0x", 2) && !mutt_strcasecmp(p+2, pgp_keyid(k))) ||
 	  (option(OPTPGPLONGIDS) && !mutt_strncasecmp(p, "0x", 2) &&
 	   !mutt_strcasecmp(p+2, k->keyid+8)) ||
 	  mutt_stristr(((PGPUID *)a->data)->addr,p))
       {
+	dprint (5, (debugfile, "match.\n"));
 	t = mutt_new_list ();
 	t->data = (void *)k;
 	t->next = l;
 	l = t;
 	break;
       }
+      else
+	dprint (5, (debugfile, "no match.\n"));
     }
     
     if(!did_main_key && k->flags & KEYFLAG_SUBKEY && k->mainkey)
