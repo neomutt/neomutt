@@ -888,7 +888,7 @@ static int grok_ansi(unsigned char *buf, int pos, ansi_attr *a)
     x++;
 
   /* Character Attributes */
-  if (a != NULL && buf[x] == 'm')
+  if (option (OPTALLOWANSI) && a != NULL && buf[x] == 'm')
   {
     if (pos == x)
     {

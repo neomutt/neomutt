@@ -148,6 +148,17 @@ struct option_t MuttVars[] = {
   ** Controls whether 8-bit data is converted to 7-bit using either Quoted-
   ** Printable or Base64 encoding when sending mail.
   */
+  { "allow_ansi",      DT_BOOL, R_NONE, OPTALLOWANSI, 0 },
+  /*
+  ** .pp
+  ** Controls whether ANSI color codes in messages (and color tags in 
+  ** rich text messages) are to be interpreted.
+  ** Messages containing these codes are rare, but if this option is set,
+  ** their text will be colored accordingly. Note that this may override
+  ** your color choices, and even present a security problem, since a
+  ** message could include a line like "[-- PGP output follows ..." and
+  ** give it the same color as your attachment color.
+  */
   { "alternates",	DT_RX,	 R_BOTH, UL &Alternates, 0 },
   /*
   ** .pp
