@@ -152,8 +152,21 @@ us-dist: us-distdir
 actual-dist: dist us-dist
 	mv $(distdir).tar.gz $(distdir)i.tar.gz
 	mv $(distdir)-us.tar.gz $(distdir).tar.gz
-	pgp -sb $(distdir)i.tar.gz && chmod 644 $(distdir)i.tar.gz.asc
-	pgp -sb $(distdir).tar.gz && chmod 644 $(distdir).tar.gz.asc
+	##
+	## This part is maintainer-only.
+	##
+	if test $HOSTNAME = sobolev && test $LOGNAME = roessler ; then
+		pgp -sb $(distdir)i.tar.gz && chmod 644 $(distdir)i.tar.gz.asc
+		pgp -sb $(distdir).tar.gz && chmod 644 $(distdir).tar.gz.asc
+		if ! ssh-add -l | grep -q roessler@guug.de ; then
+			ssh-add
+		fi
+		scp $(distdir){,i}.tar.gz{,asc}	sigtrap.guug.de:/home/ftp/pub/mutt/devel/
+		mutt -s "[Announce] $(distdir) is out" mutt-announce@mutt.org
+		cvs commit -m "automatic post-release commit for $(distdir)"
+		cvs tag $(distdir)-rel
+		cvs update
+	fi
 
 bump-version:
 	awk -F . '{printf("%d.%d.%d\n", $$1, $$2, $$3 + 1);}' VERSION > _VERSION.$$$$  \
