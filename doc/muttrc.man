@@ -1171,6 +1171,75 @@ list.
 
 
 .TP
+.B imap_checkinterval
+.nf
+Type: number
+Default: 0
+.fi
+.IP
+This variable configures how often (in seconds) IMAP should look for
+new mail.
+
+
+.TP
+.B imap_list_subscribed
+.nf
+Type: boolean
+Default: no
+.fi
+.IP
+This variable configures whether IMAP folder browsing will look for
+only subscribed folders or all folders.  This can be toggled in the
+IMAP browser with the \fItoggle-subscribed\fP command.
+
+
+.TP
+.B imap_user
+.nf
+Type: string
+Default: \(lq\(rq
+.fi
+.IP
+Your login name on the IMAP server.
+.IP
+This variable defaults to your user name on the local machine.
+
+
+.TP
+.B imap_pass
+.nf
+Type: string
+Default: \(lq\(rq
+.fi
+.IP
+Specifies the password for your IMAP account.  If unset, Mutt will
+prompt you for your password when you invoke the fetch-mail function.
+\fBWarning\fP: you should only use this option when you are on a
+fairly secure machine, because the superuser can read your muttrc even
+if you are the only one who can read the file.
+
+
+.TP
+.B imap_passive
+.nf
+Type: boolean
+Default: yes
+.fi
+.IP
+When set, mutt will not open new IMAP connections to check for new
+mail.  Mutt will only check for new mail over existing IMAP
+connections.  This is useful if you don't want to be prompted to
+user/password pairs on mutt invocation, or if opening the connection
+is slow.
+
+
+.TP
+.B imap_home_namespace
+.nf
+Type: string
+Default: \(lq\(rq
+.fi
+.TP
 .B implicit_autoview
 .nf
 Type: boolean
@@ -1300,7 +1369,7 @@ See also: \(lqto_chars\(rq.
 .B ispell
 .nf
 Type: path
-Default: \(lqispell\(rq
+Default: \(lq/usr/bin/ispell\(rq
 .fi
 .IP
 How to invoke ispell (GNU's spell-checking software).
@@ -2088,6 +2157,71 @@ Default: \(lq\\n\(rq
 .IP
 The separator to add between messages when piping a list of tagged
 messages to an external Unix command.
+
+
+.TP
+.B pop_delete
+.nf
+Type: boolean
+Default: no
+.fi
+.IP
+If set, Mutt will delete successfully downloaded messages from the POP
+server when using the fetch-mail function.  When unset, Mutt will
+download messages but also leave them on the POP server.
+
+
+.TP
+.B pop_host
+.nf
+Type: string
+Default: \(lq\(rq
+.fi
+.IP
+The name or address of your POP3 server.
+
+
+.TP
+.B pop_port
+.nf
+Type: number
+Default: 110
+.fi
+.IP
+This variable specifies which port your POP server is listening on.
+
+
+.TP
+.B pop_last
+.nf
+Type: boolean
+Default: no
+.fi
+.IP
+If this variable is set, mutt will try to use the \(rqLAST\(rq POP command
+for retrieving only unread messages from the POP server.
+
+
+.TP
+.B pop_user
+.nf
+Type: string
+Default: \(lq\(rq
+.fi
+.IP
+Your login name on the POP3 server.
+.IP
+Defaults to your login name on the local system.
+
+
+.TP
+.B pop_pass
+.nf
+Type: string
+Default: \(lq\(rq
+.fi
+.IP
+Your password on the POP3 server.
 
 
 .TP

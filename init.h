@@ -73,6 +73,23 @@ struct option_t
 #define ISPELL "ispell"
 #endif
 
+/* build complete documentation */
+
+#ifdef _MAKEDOC
+# ifndef USE_IMAP
+#  define USE_IMAP
+# endif
+# ifndef MIXMASTER
+#  define MIXMASTER "mixmaster"
+# endif
+# ifndef _PGPPATH
+#  define _PGPPATH
+# endif
+# ifndef USE_POP
+#  define USE_POP
+# endif
+#endif
+
 struct option_t MuttVars[] = {
   /*++*/
   { "abort_nosubject",	DT_QUAD, R_NONE, OPT_SUBJECT, M_ASKYES },
