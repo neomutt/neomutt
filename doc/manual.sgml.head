@@ -1130,12 +1130,11 @@ you to specify header fields which you don't normally want to see.
 
 You do not need to specify the full header field name.  For example,
 ``ignore content-'' will ignore all header fields that begin with the pattern
-``content-''.
+``content-''. ``ignore *'' will ignore all headers.
 
 To remove a previously added token from the list, use the ``unignore'' command.
-Note that if you do ``ignore x-'' it is not possible to ``unignore x-mailer,''
-for example.  The ``unignore'' command does <bf/not/ make Mutt display headers
-with the given pattern.
+The ``unignore'' command will make Mutt display headers with the given pattern.
+For example, if you do ``ignore x-'' it is possible to ``unignore x-mailer''.
 
 ``unignore *'' will remove all tokens from the ignore list.
 
