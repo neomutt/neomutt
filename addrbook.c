@@ -74,12 +74,12 @@ alias_format_str (char *dest, size_t destlen, char op, const char *src,
   return (src);
 }
 
-void alias_entry (char *s, size_t slen, MUTTMENU *m, int num)
+static void alias_entry (char *s, size_t slen, MUTTMENU *m, int num)
 {
   mutt_FormatString (s, slen, NONULL (AliasFmt), alias_format_str, (unsigned long) ((ALIAS **) m->data)[num], M_FORMAT_ARROWCURSOR);
 }
 
-int alias_tag (MUTTMENU *menu, int n, int m)
+static int alias_tag (MUTTMENU *menu, int n, int m)
 {
   ALIAS *cur = ((ALIAS **) menu->data)[n];
   int ot = cur->tagged;

@@ -461,12 +461,12 @@ static int examine_mailboxes (MUTTMENU *menu, struct browser_state *state)
   return 0;
 }
 
-int select_file_search (MUTTMENU *menu, regex_t *re, int n)
+static int select_file_search (MUTTMENU *menu, regex_t *re, int n)
 {
   return (regexec (re, ((struct folder_file *) menu->data)[n].name, 0, NULL, 0));
 }
 
-void folder_entry (char *s, size_t slen, MUTTMENU *menu, int num)
+static void folder_entry (char *s, size_t slen, MUTTMENU *menu, int num)
 {
   FOLDER folder;
 
@@ -511,7 +511,7 @@ static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
   menu->redraw = REDRAW_FULL;
 }
 
-int file_tag (MUTTMENU *menu, int n, int m)
+static int file_tag (MUTTMENU *menu, int n, int m)
 {
   struct folder_file *ff = &(((struct folder_file *)menu->data)[n]);
   int ot;

@@ -323,7 +323,7 @@ static void pipe_set_flags (int decode, int print, int *cmflags, int *chflags)
   
 }
 
-void pipe_msg (HEADER *h, FILE *fp, int decode, int print)
+static void pipe_msg (HEADER *h, FILE *fp, int decode, int print)
 {
   int cmflags = 0;
   int chflags = CH_FROM;

@@ -402,7 +402,7 @@ static unsigned long cum_attachs_size (MUTTMENU *menu)
 }
 
 /* prototype for use below */
-void compose_status_line (char *buf, size_t buflen, MUTTMENU *menu, 
+static void compose_status_line (char *buf, size_t buflen, MUTTMENU *menu, 
       const char *p);
 
 /*
@@ -468,7 +468,7 @@ compose_format_str (char *buf, size_t buflen, char op, const char *src,
   return (src);
 }
 
-void compose_status_line (char *buf, size_t buflen, MUTTMENU *menu, 
+static void compose_status_line (char *buf, size_t buflen, MUTTMENU *menu, 
       const char *p)
 {
   mutt_FormatString (buf, buflen, p, compose_format_str, 

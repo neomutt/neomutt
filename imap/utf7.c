@@ -18,6 +18,7 @@
 
 #include "mutt.h"
 #include "charset.h"
+#include "imap_private.h"
 
 static int Index_64[128] = {
     -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
