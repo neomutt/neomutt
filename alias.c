@@ -573,7 +573,10 @@ int mutt_addr_is_user (ADDRESS *addr)
   if (mutt_match_rx_list (addr->mailbox, Alternates))
   {
     dprint (5, (debugfile, "mail_addr_is_user: yes, %s matched by alternates.\n", addr->mailbox));
-    return 1;
+    if (mutt_match_rx_list (addr->mailbox, UnAlternates))
+      dprint (5, (debugfile, "mail_addr_is_user: but, %s matched by unalternates.\n", addr->mailbox));
+    else
+      return 1;
   }
   
   dprint (5, (debugfile, "mail_addr_is_user: no, all failed.\n"));

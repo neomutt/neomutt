@@ -2865,6 +2865,7 @@ static int parse_spam_list (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unlist (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_rx_unlist (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 
+static int parse_lists (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unlists (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_alias (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unalias (BUFFER *, BUFFER *, unsigned long, BUFFER *);
@@ -2875,6 +2876,7 @@ static int parse_set (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_my_hdr (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unmy_hdr (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_subscribe (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+static int parse_unsubscribe (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 
 static int parse_alternates (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unalternates (BUFFER *, BUFFER *, unsigned long, BUFFER *);
@@ -2884,11 +2886,12 @@ struct command_t
   char *name;
   int (*func) (BUFFER *, BUFFER *, unsigned long, BUFFER *);
   unsigned long data;
+  unsigned long data1;
 };
 
 struct command_t Commands[] = {
-  { "alternates",	parse_alternates,	UL &Alternates },
-  { "unalternates",	parse_unalternates,	UL &Alternates },
+  { "alternates",	parse_alternates,	0 },
+  { "unalternates",	parse_unalternates,	0 },
 #ifdef USE_SOCKET
   { "account-hook",     mutt_parse_hook,        M_ACCOUNTHOOK },
 #endif
@@ -2910,7 +2913,7 @@ struct command_t Commands[] = {
   { "iconv-hook",	mutt_parse_hook,	M_ICONVHOOK }, 
 #endif
   { "ignore",		parse_ignore,		0 },
-  { "lists",		parse_rx_list,		UL &MailLists },
+  { "lists",		parse_lists,		0 },
   { "macro",		mutt_parse_macro,	0 },
   { "mailboxes",	mutt_parse_mailboxes,	M_MAILBOXES },
   { "unmailboxes",	mutt_parse_mailboxes,	M_UNMAILBOXES },
@@ -2946,6 +2949,6 @@ struct command_t Commands[] = {
   { "unmy_hdr",		parse_unmy_hdr,		0 },
   { "unscore",		mutt_parse_unscore,	0 },
   { "unset",		parse_set,		M_SET_UNSET },
-  { "unsubscribe",	parse_rx_unlist,	UL &SubscribedLists },
+  { "unsubscribe",	parse_unsubscribe,	0 },
   { NULL }
 };

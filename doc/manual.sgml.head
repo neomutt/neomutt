@@ -1191,8 +1191,18 @@ purpose of the <tt/alternates/ command: It takes a list of regular
 expressions, each of which can identify an address under which you
 receive e-mail.
 
-To remove a regular expression from this list, use the
-<tt/unalternates/ command.
+The <tt/unalternates/ command can be used to write exceptions to
+<tt/alternates/ patterns. If an address matches something in an
+<tt/alternates/ command, but you nonetheless do not think it is
+from you, you can list a more precise pattern under an <tt/unalternates/
+command.
+
+To remove a regular expression from the <tt/alternates/ list, use the
+<tt/unalternates/ command with exactly the same <em/regexp/.
+Likewise, if the <em/regexp/ for a <tt/alternates/ command matches
+an entry on the <tt/unalternates/ list, that <tt/unalternates/
+entry will be removed. If the <em/regexp/ for <tt/unalternates/
+is ``*'', <em/all entries/ on <tt/alternates/ will be removed.
 
 <sect1>Mailing lists<label id="lists">
 <p>
