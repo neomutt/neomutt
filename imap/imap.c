@@ -1308,8 +1308,12 @@ int imap_subscribe (char *path, int subscribe)
   char mbox[LONG_STRING];
   IMAP_MBOX mx;
 
-  if (imap_parse_path (path, &mx))
+  if (!mx_is_imap (path) || imap_parse_path (path, &mx))
+  {
+    mutt_error ("Bad mailbox name");
     return -1;
+  }
+  
 
   if (!(idata = imap_conn_find (&(mx.account), 0)))
     goto fail;

@@ -214,6 +214,12 @@ int imap_browse (char* path, struct browser_state* state)
   if (browse_add_list_result (idata, buf, state, 0))
     goto fail;
 
+  if (!state->entrylen)
+  {
+    mutt_error _("No such folder");
+    goto fail;
+  }
+
   mutt_clear_error ();
 
   qsort(&(state->entry[nsup]),state->entrylen-nsup,sizeof(state->entry[0]),
