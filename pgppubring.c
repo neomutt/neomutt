@@ -772,7 +772,7 @@ static void print_userid (const char *id)
   }
 }
 
-static void dump_signatures (pgp_sig_t *sig)
+static void pgpring_dump_signatures (pgp_sig_t *sig)
 {
   for (; sig; sig = sig->next)
   {
@@ -801,7 +801,6 @@ static char gnupg_trustletter (int t)
 static void pgpring_dump_keyblock (pgp_key_t *p)
 {
   pgp_uid_t *uid;
-  pgp_sig_t *sig;
   short first;
   struct tm *tp;
   time_t t;
@@ -859,12 +858,8 @@ static void pgpring_dump_keyblock (pgp_key_t *p)
       
       if (dump_signatures)
       {
-	if (first)
-	  dump_signatures (p->sigs);
-	
-	dump_signatures (uid->sigs);
-      }
-       
+	if (first) pgpring_dump_signatures (p->sigs);
+	pgpring_dump_signatures (uid->sigs);
       }
     }
   }
