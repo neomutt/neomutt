@@ -1,4 +1,25 @@
-Mon Dec 21 11:27:25 1998  Thomas Roessler  <roessler@guug.de>
+Mon Dec 28 14:59:04 1998  Thomas Roessler  <roessler@guug.de>
+
+	* attach.c: Fix a segmentation fault when viewing
+	  message/rfc822 attachments from the compose screen.
+
+Wed Dec 23 15:57:00 1998  Thomas Roessler  <roessler@guug.de>
+
+	* pattern.c: A slightly modified version of Vikas'
+	  pattern_match patch.  This changes the semantics of the
+	  pattern-something functions so they only apply to
+	  _visible_ messages.  (With the exception of limit: In this
+	  case, the user can add another pattern if he wants to
+	  limit further, or he can give an entirely new pattern.)
+
+Tue Dec 22 18:07:19 1998  Thomas Roessler  <roessler@guug.de>
+
+	* sendlib.c: Fix MIME forwarding.  From Vikas.
+
+Mon Dec 21 12:38:57 1998  Thomas Roessler  <roessler@guug.de>
+
+	* mx.c, mh.c, mbox.c, imap.c, charset.c: Adjust some
+	  hash-related parameters.
 
 	* mx.c, mh.c, mbox.c: Mail folder synchronization-related fixes:
 
@@ -20,34 +41,35 @@ Mon Dec 21 11:27:25 1998  Thomas Roessler  <roessler@guug.de>
 	* configure.in: Register the polish translation.
 
 	* doc/manual.sgml.in: Fixes to the forwarding chapter.  From
-	O'Shaughnessy Evans <shaug@gstis.net>.
+	  O'Shaughnessy Evans <shaug@gstis.net>.
 
 	* m4/README, m4/Makefile.am.in: Here is a small patch to
-	simplify m4/Makefile.am.in. This came out of a suggestion I
-	made to Jim Meyering (maintainer of GNU fileutils, where I
-	snarfed the code from :).  (From: Lars Hecking
-	<lhecking@nmrc.ucc.ie>)
+	  simplify m4/Makefile.am.in. This came out of a suggestion
+	  I made to Jim Meyering (maintainer of GNU fileutils, where
+	  I snarfed the code from :).  (From: Lars Hecking
+	  <lhecking@nmrc.ucc.ie>)
 
 Fri Dec 18 10:22:59 1998  Thomas Roessler  <roessler@guug.de>
 
-	* mh.c: Catch an error condition when synchronizing mh messages.
+	* mh.c: Catch an error condition when synchronizing mh
+	  messages.
 
 	* po/de.po: Fix a format which had %s instead of %d.
 
 Thu Dec 17 18:39:48 1998  Thomas Roessler  <roessler@guug.de>
 
 	* INSTALL: I've been told that the FreeBSD shell has been
-	fixed meanwhile. Additionally, add the note from Vikas on
-	patching Solaris to get mutt work properly on that system.
+	  fixed meanwhile. Additionally, add the note from Vikas on
+	  patching Solaris to get mutt work properly on that system.
 
-	* mh.c: Fix attachment deletion for maildir/mh folders.
-	This may fix other mh-related problems, too.
+	* mh.c: Fix attachment deletion for maildir/mh folders. This
+	  may fix other mh-related problems, too.
 
 	* charsets/Makefile.in: Some installs aren't able to cope
-	with multiple files at once.
+	  with multiple files at once.
 
 	* curs_lib.c: Don't even try to clear the status line when
-	not in curses mode.
+	  not in curses mode.
 
 Wed Dec 16 13:23:06 1998  Thomas Roessler  <roessler@guug.de>
 

@@ -753,9 +753,9 @@ int mbox_sync_mailbox (CONTEXT *ctx)
    * sure we seek to the correct location
    */
   if (ctx->magic == M_MMDF)
-    offset -= mutt_strlen (MMDF_SEP);
+    offset -= (sizeof MMDF_SEP - 1);
   else if (ctx->magic == M_KENDRA)
-    offset -= mutt_strlen(KENDRA_SEP);
+    offset -= (sizeof KENDRA_SEP - 1);
   
   /* allocate space for the new offsets */
   newOffset = safe_calloc (ctx->msgcount - first, sizeof (struct m_update_t));
