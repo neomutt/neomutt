@@ -1836,7 +1836,9 @@ struct option_t MuttVars[] = {
   ** the rest of sort_aux as an ordering.  For instance, set sort_aux=last-
   ** date-received would mean that if a new message is received in a
   ** thread, that thread becomes the last one displayed (or the first, if
-  ** you have set sort=reverse-threads.)
+  ** you have set sort=reverse-threads.) Note: For reversed ``$$sort''
+  ** order $$sort_aux is reversed again (which is not the right thing to do,
+  ** but kept to not break any existing configuration setting).
   */
   { "sort_browser",	DT_SORT|DT_SORT_BROWSER, R_NONE, UL &BrowserSort, SORT_SUBJECT },
   /*

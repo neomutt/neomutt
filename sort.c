@@ -218,7 +218,10 @@ void mutt_sort_headers (CONTEXT *ctx, int init)
        subthreads need to be resorted */
     if (option (OPTSORTSUBTHREADS))
     {
+      i = Sort;
+      Sort = SortAux;
       ctx->tree = mutt_sort_subthreads (ctx->tree, mutt_get_sort_func (SortAux));
+      Sort = i;
       unset_option (OPTSORTSUBTHREADS);
     }
     mutt_sort_threads (ctx, init);
@@ -232,11 +235,6 @@ void mutt_sort_headers (CONTEXT *ctx, int init)
   }
   else 
     qsort ((void *) ctx->hdrs, ctx->msgcount, sizeof (HEADER *), sortfunc);
-
-  /* the threading function find_reference() needs to know how the mailbox
-   * is currently sorted in memory in order to speed things up a bit
-   */
-  ctx->revsort = (Sort & SORT_REVERSE) ? 1 : 0;
 
   /* adjust the virtual message numbers */
   ctx->vcount = 0;
