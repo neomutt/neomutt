@@ -161,6 +161,3 @@ while : ; do
 	esac
 done
 
-echo
-( echo "For more information on the bug tracking system, please refer" ;
-  echo "to http://bugs.guug.de/." ) | fmt
