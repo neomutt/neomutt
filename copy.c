@@ -827,6 +827,13 @@ static int address_header_decode (char **h)
       l = 7;
       break;
     }
+    case 't':
+    {
+      if (ascii_strncasecmp (s, "to:", 3))
+	return 0;
+      l = 3;
+      break;
+    }
     case 'm':
     {
       if (ascii_strncasecmp (s, "mail-followup-to:", 17))

@@ -18,6 +18,7 @@
 
 #include "mutt.h"
 #include "sort.h"
+#include "mutt_idna.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -96,7 +97,7 @@ char *mutt_get_name (ADDRESS *a)
     else if (a->personal)
       return a->personal;
     else if (a->mailbox)
-      return (a->mailbox);
+      return (mutt_addr_for_display (a));
   }
   /* don't return NULL to avoid segfault when printing/comparing */
   return ("");
