@@ -576,7 +576,8 @@ static int ssl_check_certificate (sslsockdata * data)
     menu->dialog[i] = (char *) safe_calloc (1, SHORT_STRING * sizeof (char));
 
   row = 0;
-  strfcpy (menu->dialog[row++], _("This certificate belongs to:"), SHORT_STRING);
+  strfcpy (menu->dialog[row], _("This certificate belongs to:"), SHORT_STRING);
+  row++;
   name = X509_NAME_oneline (X509_get_subject_name (data->cert),
 			    buf, sizeof (buf));
   for (i = 0; i < 5; i++)
@@ -586,7 +587,8 @@ static int ssl_check_certificate (sslsockdata * data)
   }
 
   row++;
-  strfcpy (menu->dialog[row++], _("This certificate was issued by:"), SHORT_STRING);
+  strfcpy (menu->dialog[row], _("This certificate was issued by:"), SHORT_STRING);
+  row++;
   name = X509_NAME_oneline (X509_get_issuer_name (data->cert),
 			    buf, sizeof (buf));
   for (i = 0; i < 5; i++)
