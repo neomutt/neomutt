@@ -1127,10 +1127,10 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint)
    * changes to process, since we can reopen here. */
   imap_cmd_finish (idata);
 
-  if (idata->check_status & IMAP_NEWMAIL_PENDING)
-    result = M_NEW_MAIL;
-  else if (idata->check_status & IMAP_EXPUNGE_PENDING)
+  if (idata->check_status & IMAP_EXPUNGE_PENDING)
     result = M_REOPENED;
+  else if (idata->check_status & IMAP_NEWMAIL_PENDING)
+    result = M_NEW_MAIL;
   else if (idata->check_status & IMAP_FLAGS_PENDING)
     result = M_FLAGS;
 
