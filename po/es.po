@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt\n"
-"POT-Creation-Date: 1998-10-28 17:40+0100\n"
+"POT-Creation-Date: 1998-10-28 22:43+0100\n"
 "PO-Revision-Date: 1998-10-27 21:50+0200\n"
 "Last-Translator: Boris Wesslowski <Boris@Wesslowski.com>\n"
 
@@ -537,11 +537,11 @@ msgstr "Guardando mensaje en %s ..."
 msgid "Message written."
 msgstr "Mensaje guardado."
 
-#: copy.c:570
+#: copy.c:573
 msgid "Confused when attempting to delete attachment, h & m can't be NULL"
 msgstr "Error interno."
 
-#: copy.c:585
+#: copy.c:583
 msgid "Deleting non-multipart messages not yet supported"
 msgstr "Sólo partes de mensajes muliparte pueden ser suprimidos"
 
@@ -558,15 +558,15 @@ msgstr "no"
 msgid "Exit Mutt?"
 msgstr "Salir de Mutt?"
 
-#: curs_lib.c:250
+#: curs_lib.c:262
 msgid "unknown error"
 msgstr "error desconocido"
 
-#: curs_lib.c:270
+#: curs_lib.c:282
 msgid "Press any key to continue..."
 msgstr "Presione una tecla para continuar..."
 
-#: curs_lib.c:308
+#: curs_lib.c:320
 msgid " ('?' for list): "
 msgstr " ('?' para lista): "
 
@@ -2759,7 +2759,7 @@ msgstr "Sin asunto, cancelando."
 #. * to send a message to only the sender of the message.  This
 #. * provides a way to do that.
 #.
-#: send.c:431
+#: send.c:432
 #, c-format
 msgid "Reply to %s?"
 msgstr "Contestar a %s?"
@@ -2767,75 +2767,75 @@ msgstr "Contestar a %s?"
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
 #.
-#: send.c:514
+#: send.c:515
 msgid "No tagged messages are visible!"
 msgstr "No hay mensajes marcados visibles!"
 
-#: send.c:539
+#: send.c:540
 msgid "No mailing lists found!"
 msgstr "Ninguna lista de correo encontrada!"
 
-#: send.c:626
+#: send.c:627
 msgid "Include message in reply?"
 msgstr "Incluir mensaje en respuesta?"
 
-#: send.c:640
+#: send.c:641
 msgid "Could not include all requested messages!"
 msgstr "No se pudieron incluir todos los mensajes!"
 
-#: send.c:653
+#: send.c:654
 msgid "Forward MIME encapsulated?"
 msgstr ""
 
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:864
+#: send.c:865
 msgid "Recall postponed message?"
 msgstr ""
 
-#: send.c:1096
+#: send.c:1097
 msgid "Abort unmodified message?"
 msgstr "Cancelar mensaje sin cambios?"
 
-#: send.c:1098
+#: send.c:1099
 msgid "Aborted unmodified message."
 msgstr "Mensaje sin cambios cancelado."
 
 #. abort
-#: send.c:1137
+#: send.c:1138
 msgid "Mail not sent."
 msgstr "Correo no fue mandado."
 
-#: send.c:1150
+#: send.c:1151
 msgid "Message postponed."
 msgstr "Mensaje pospuesto."
 
-#: send.c:1159
+#: send.c:1160
 msgid "No recipients are specified!"
 msgstr "No hay destinatario!"
 
-#: send.c:1164
+#: send.c:1165
 msgid "No recipients were specified."
 msgstr "No hay destinatario!"
 
-#: send.c:1170
+#: send.c:1171
 msgid "No subject, abort sending?"
 msgstr "Falta el asunto, cancelar?"
 
-#: send.c:1174
+#: send.c:1175
 msgid "No subject specified."
 msgstr "Asunto no fue especificado."
 
-#: send.c:1213
+#: send.c:1214
 msgid "Message edited. Really send?"
 msgstr "Mensaje editado. Mandar realmente?"
 
-#: send.c:1219
+#: send.c:1220
 msgid "Sending message..."
 msgstr "Mandando mensaje..."
 
-#: send.c:1319
+#: send.c:1320
 msgid "Mail sent."
 msgstr "Correo mandado."
 
