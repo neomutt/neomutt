@@ -23,6 +23,7 @@
 #include "history.h"
 #include "keymap.h"
 #include "mbyte.h"
+#include "charset.h"
 
 
 #ifdef HAVE_PGP

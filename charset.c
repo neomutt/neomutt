@@ -61,7 +61,7 @@ void mutt_set_langinfo_charset (void)
   /* compactify the character set name returned */
   for (d = s = buff; *s; s++)
   {
-    if (!strstr ("-_.", *s))
+    if (!strchr ("-_.", *s))
       *d++ = *s;
   }
   *d = '\0';
@@ -79,7 +79,7 @@ void mutt_set_langinfo_charset (void)
   }
   else if (!strncasecmp (buff, "windows", 7))
   {
-    snprintf (buff2, sizeof (buff2), "windows-%s" buff + 7);
+    snprintf (buff2, sizeof (buff2), "windows-%s", buff + 7);
   }
 
   /* fix the spelling */
