@@ -375,12 +375,12 @@ int imap_wait_keepalive (pid_t pid)
 
 void imap_allow_reopen (CONTEXT *ctx)
 {
-  if (ctx->magic == M_IMAP && CTX_DATA->selected_ctx == ctx)
+  if (ctx && ctx->magic == M_IMAP && CTX_DATA->selected_ctx == ctx)
     CTX_DATA->reopen |= IMAP_REOPEN_ALLOW;
 }
 
 void imap_disallow_reopen (CONTEXT *ctx)
 {
-  if (ctx->magic == M_IMAP && CTX_DATA->selected_ctx == ctx)
+  if (ctx && ctx->magic == M_IMAP && CTX_DATA->selected_ctx == ctx)
     CTX_DATA->reopen &= ~IMAP_REOPEN_ALLOW;
 }
