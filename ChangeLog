@@ -1,3 +1,9 @@
+2005-02-28 14:37:09  Udo Schweigert  <mutt@cert.siemens.de>  (roessler)
+
+	* smime.c: As pointed out in a separate thread, here is a patch
+	which fixes the problem of a failing openssl after interactively
+	selecting a recipient's key.
+
 2005-02-27 03:18:23  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/message.c: Turn brain back on before committing patches
