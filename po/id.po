@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.8i\n"
+"Project-Id-Version: 1.3.10i\n"
 "POT-Creation-Date: 2000-10-11 12:45+0200\n"
-"PO-Revision-Date: 2000-09-01 12:22-0500\n"
+"PO-Revision-Date: 2000-10-14 18:56-0500\n"
 "Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
 "Language-Team: Indonesia <i18n@linux.or.id>\n"
 "MIME-Version: 1.0\n"
@@ -834,9 +834,8 @@ msgid "Thread contains unread messages."
 msgstr "Thread berisi surat yang belum dibaca."
 
 #: curs_main.c:1614
-#, fuzzy
 msgid "Can't edit message on POP server."
-msgstr "Hapus surat-surat dari server?"
+msgstr "Tidak bisa menyunting pesan di server POP"
 
 #.
 #. * SLcurses_waddnstr() can't take a "const char *", so this is only
@@ -2472,9 +2471,8 @@ msgid "oac"
 msgstr "tab"
 
 #: muttlib.c:1111
-#, fuzzy
 msgid "Can't save message to POP mailbox."
-msgstr "Simpan surat ke kotak surat"
+msgstr "Tidak bisa menyimpan pesan ke kotak surat POP"
 
 #: muttlib.c:1120
 #, c-format
@@ -2510,9 +2508,8 @@ msgid "Connecting to %s..."
 msgstr "Menghubungi %s..."
 
 #: mutt_socket.c:398
-#, fuzzy, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "Tidak bisa membuka %s"
+msgstr "Tidak bisa berhubungan ke %s (%s)"
 
 #: mutt_ssl.c:105
 msgid "Failed to find enough entropy on your system"
@@ -3128,29 +3125,24 @@ msgid "Looking for keys matching \"%s\"..."
 msgstr "Mencari kunci yg cocok dengan \"%s\"..."
 
 #: pop.c:89 pop_lib.c:158
-#, fuzzy
 msgid "Command TOP is not supported by server."
-msgstr "Penandaan tidak didukung."
+msgstr "Perintah TOP tidak didukung oleh server."
 
 #: pop.c:116
-#, fuzzy
 msgid "Can't write header to temporary file!"
-msgstr "Tidak bisa membuat file sementara"
+msgstr "Tidak bisa menulis header ke file sementara!"
 
 #: pop.c:197 pop_lib.c:160
-#, fuzzy
 msgid "Command UIDL is not supported by server."
-msgstr "Penandaan tidak didukung."
+msgstr "Perintah UIDL tidak didukung oleh server."
 
 #: pop.c:270
-#, fuzzy
 msgid "Fetching list of messages..."
-msgstr "Mengambil surat..."
+msgstr "Mengambil daftar surat..."
 
 #: pop.c:407
-#, fuzzy
 msgid "Can't write message to temporary file!"
-msgstr "Tidak bisa membuat file sementara"
+msgstr "Tidak bisa menulis pesan ke file sementara!"
 
 #: pop.c:510 pop.c:564
 msgid "Checking for new messages..."
@@ -3187,49 +3179,41 @@ msgid "Server closed connection!"
 msgstr "Server menutup hubungan!"
 
 #: pop_auth.c:193
-#, fuzzy
 msgid "Authenticating (APOP)..."
-msgstr "Mengauthentikasi (GSSAPI)..."
+msgstr "Mengauthentikasi (APOP)..."
 
 #: pop_auth.c:217
-#, fuzzy
 msgid "APOP authentication failed."
-msgstr "Authentikasi GSSAPI gagal."
+msgstr "Authentikasi APOP gagal."
 
 #: pop_auth.c:252
-#, fuzzy
 msgid "Command USER is not supported by server."
-msgstr "Penandaan tidak didukung."
+msgstr "Perintah USER tidak didukung oleh server."
 
 #: pop_auth.c:359
-#, fuzzy
 msgid "Authentication method is unknown."
-msgstr "Authentikasi SASL gagal."
+msgstr "Metode otentikasi tidak diketahui."
 
 #: pop_lib.c:156
-#, fuzzy
 msgid "Unable to leave messages on server."
-msgstr "Hapus surat-surat dari server?"
+msgstr "Tidak bisa meninggalkan surat-surat di server."
 
 #: pop_lib.c:203
-#, fuzzy, c-format
+#, c-format
 msgid "Error connecting to server: %s"
-msgstr "Menghubungi %s"
+msgstr "Kesalahan waktu menghubungi ke server: %s"
 
 #: pop_lib.c:286
-#, fuzzy
 msgid "Closing connection to POP server..."
-msgstr "Menutup hubungan ke server IMAP..."
+msgstr "Menutup hubungan ke server POP..."
 
 #: pop_lib.c:445
-#, fuzzy
 msgid "Verifying message indexes..."
-msgstr "Menyimpan surat ke %s ..."
+msgstr "Memverifikasi indeks surat..."
 
 #: pop_lib.c:469
-#, fuzzy
 msgid "Connection lost. Reconnect to POP server?"
-msgstr "Menutup hubungan ke server IMAP..."
+msgstr "Hubungan terputus. Hubungi kembali server POP?"
 
 #: postpone.c:165
 msgid "Postponed Messages"
@@ -3324,9 +3308,8 @@ msgid "Attachments"
 msgstr "Lampiran"
 
 #: recvattach.c:882
-#, fuzzy
 msgid "Can't delete attachment from POP server."
-msgstr "mengambil surat dari server POP"
+msgstr "Tidak bisa menghapus lampiran dari server POP."
 
 #: recvattach.c:893
 msgid "Deletion of attachments from PGP messages is unsupported."
