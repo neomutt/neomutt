@@ -1,3 +1,125 @@
+Wed Mar 29 20:03:32 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/message.c: Fix access to read-only folders via IMAP.
+
+	* po/de.po, doc/Makefile.in, doc/manual.sgml.head, init.c, thread.c:
+	Various little patches from Gero Treuner.
+
+	* imap/Makefile.am, Makefile.am: Build diff from Brendan Cully.
+
+Tue Mar 28 10:09:19 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/Makefile.in.in, po/POTFILES.in, Makefile.am:
+	A patch from Tommi Komulainen (and Lars Hecking) for building
+	outside the source directory.
+
+Mon Mar 27 23:56:35 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/auth_gss.c, imap/imap_ssl.c, acconfig.h, configure.in:
+	NetBSD portability patches from Brendan Cully.
+
+Sat Mar 25 18:22:09 2000  Thomas Roessler  <roessler@guug.de>
+
+	* keymap.c:
+	Timeout occasionally in menus, with the notable exception of the
+	editor.  This is needed to avoid some more IMAP timeouts.
+	[patch-1.1.9.tlr.timeout.1]
+
+Thu Mar 23 12:21:10 2000  Thomas Roessler  <roessler@guug.de>
+
+	* remailer.c: Little fix for the remailer menu.
+
+	* configure.in:
+	Fix Kerberos configuration.  From David Champion <dgc@uchicago.edu>.
+
+Wed Mar 22 08:24:45 2000  Thomas Roessler  <roessler@guug.de>
+
+	* mutt.h, sort.c, init.h: Sorting fix from Gero Treuner.
+
+Tue Mar 21 22:01:42 2000  Thomas Roessler  <roessler@guug.de>
+
+	* configure.in:
+	Fix charmap configuration.  This was broken in configure.in,v 2.54.
+
+Mon Mar 20 10:32:18 2000  Thomas Roessler  <roessler@guug.de>
+
+	* muttlib.c:
+	Fix the "!!" shortcut for the last folder.  Noted by Byrial Jensen.
+
+	* po/da.po, po/eo.po: update
+
+	* configure.in, Attic/Muttrc.head, Muttrc.head.in:
+	Put Muttrc.head under autoconf control - we need to substitute
+	@docdir@ for the <f1> macro to work.
+
+Sun Mar 19 09:19:30 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/nl.po: Fix some sloppiness errors.  From Brendan Cully.
+
+Fri Mar 17 08:26:22 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/nl.po: update
+
+	* rfc2047.c, sendlib.c: Don't override iso-2022-jp with us-ascii.
+
+Thu Mar 16 10:01:43 2000  Thomas Roessler  <roessler@guug.de>
+
+	* commands.c, init.h, mutt.h: Add the $print_decode option.
+
+	* po/ru.po, po/sv.po: updates
+
+	* po/it.po: update.
+
+	* editmsg.c:
+	Use Editor with a fall-back to visual when editing messages.
+
+	* muttlib.c: Localization nit from Byrial Jensen.
+
+	* doc/manual.sgml.head, init.h:
+	Documentation fixes from Mikko Hänninen.
+
+Wed Mar 15 23:25:47 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/imap_ssl.c, imap/imap_ssl.h, imap/socket.c, README.SSL, configure.in, init.h:
+	Fix entropy gathering in the IMAP SSL support.  From Tommi Komulainen.
+
+	* Makefile.am: Add a dependency for keymap_defs.h.  Hope it works now.
+
+	* po/da.po: update
+
+Tue Mar 14 21:05:00 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/pl.po, po/cs.po: updates.
+
+	* configure.in: Fix a charmap configuration flaw.  From Gero Treuner.
+
+	* doc/Makefile.in:
+	Install all the documentation.  Problem noted and fix supplied by
+	Gero Treuner.
+
+	* po/es.po: Update from Boris Wesslowski.
+
+	* base64.c: Add the original fetchmail copyright notice.
+
+	* contrib/Makefile.in, contrib/pgp6.rc:
+	More nits: Include a sample configuration file for using mutt with
+	pgp6, and install and actually distribute Tin.rc.
+
+Mon Mar 13 22:36:56 2000  Thomas Roessler  <roessler@guug.de>
+
+	* makedoc.c, send.c, charset.h, init.h:
+	Various nits, noted by Gero Treuner.
+
+	* po/uk.po, po/zh_TW.Big5.po, po/sk.po, po/sv.po, po/pt_BR.po, po/ru.po, po/pl.po, po/id.po, po/it.po, po/ko.po, po/nl.po, po/gl.po, po/es.po, po/fr.po, po/eo.po, po/el.po, po/da.po, po/de.po, po/cs.po, reldate.h, VERSION, ChangeLog:
+	automatic post-release commit for mutt-1.1.9
+
+	* build-release: change code for going on-line.
+
+	* po/uk.po, po/zh_TW.Big5.po, po/sk.po, po/sv.po, po/pl.po, po/pt_BR.po, po/ru.po, po/ko.po, po/nl.po, po/gl.po, po/id.po, po/it.po, po/eo.po, po/es.po, po/fr.po, po/el.po, po/de.po, po/cs.po, po/da.po:
+	make update-po.
+
+	* po/sv.po, po/fr.po: updates.
+
 Mon Mar 13 18:37:17 2000  Thomas Roessler  <roessler@guug.de>
 
 	* build-release: change code for going on-line.
