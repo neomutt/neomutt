@@ -1,3 +1,7 @@
+2002-12-11 15:51:57  Vincent Lefevre  <vincent@vinc17.org>
+
+	* po/fr.po: update.
+
 2002-12-11 15:20:21  Thomas Roessler  <roessler@does-not-exist.org>
 
 	* browser.c, complete.c, hook.c, init.c, lib.c, lib.h: Herbert
