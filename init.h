@@ -2146,6 +2146,7 @@ struct option_t MuttVars[] = {
   ** generated unless the user explicitly sets one using the ``$my_hdr''
   ** command.
   */
+#ifdef HAVE_GETADDRINFO
   { "use_ipv6",		DT_BOOL, R_NONE, OPTUSEIPV6, 1},
   /*
   ** .pp
@@ -2153,6 +2154,7 @@ struct option_t MuttVars[] = {
   ** contact.  If this option is unset, Mutt will restrict itself to IPv4 addresses.
   ** Normally, the default should work.
   */
+#endif /* HAVE_GETADDRINFO */
   { "user_agent",	DT_BOOL, R_NONE, OPTXMAILER, 1},
   /*
   ** .pp
