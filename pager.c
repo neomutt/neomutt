@@ -1385,7 +1385,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 {
   static char searchbuf[STRING];
   char buffer[LONG_STRING];
-  char helpstr[SHORT_STRING];
+  char helpstr[SHORT_STRING*2];
   int maxLine, lastLine = 0;
   struct line_t *lineInfo;
   struct q_class_t *QuoteList = NULL;
