@@ -75,7 +75,7 @@ static void state_maybe_utf8_putc(STATE *s, char c, int is_utf8, CHARSET *chs, C
 void mutt_decode_xbit (STATE *s, BODY *b, int istext)
 {
   long len = b->length;
-  int c;
+  int c, ch;
   
   if (istext)
   {
@@ -93,7 +93,20 @@ void mutt_decode_xbit (STATE *s, BODY *b, int istext)
       state_puts(s->prefix, s);
     
     while ((c = fgetc(s->fpin)) != EOF && len--)
+    {
+      if(c == '\r' && len)
+      {
+	if((ch = fgetc(s->fpin)) == '\n')
+	{
+	  c = ch;
+	  len--;
+	}
+	else 
+	  ungetc(ch, s->fpin);
+      }
+	
       state_maybe_utf8_putc(s, c, is_utf8, chs, map);
+    }
     
     if(is_utf8)
       state_fput_utf8(s, '\0', chs);
