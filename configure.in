@@ -374,26 +374,24 @@ fi
 AC_SUBST(DOTLOCK_TARGET)
 
 
+AC_MSG_CHECKING(where to put architecture-dependent files)
 AC_ARG_WITH(libdir, [  --with-libdir=PATH         Specify where to put arch dependent files],
 	[mutt_cv_libdir=$withval],
-	[ AC_CACHE_CHECK(where to put architecture-dependent files,
-		       mutt_cv_libdir,
-		[      mutt_cv_libdir="${mutt_cv_prefix}/lib/mutt" ])
-	])
+	[mutt_cv_libdir="${mutt_cv_prefix}/lib/mutt"])
+AC_MSG_RESULT($mutt_cv_libdir)
 
 libdir=$mutt_cv_libdir
 AC_SUBST(libdir)
 
+AC_MSG_CHECKING(where to put architecture-independent data files)
 AC_ARG_WITH(sharedir, [  --with-sharedir=PATH       Specify where to put arch independent files],
 	[mutt_cv_sharedir=$withval],
-	[ AC_CACHE_CHECK(where to put architecture-independent data files,
-		       mutt_cv_sharedir,
-		[if test -d ${mutt_cv_prefix}/share; then
-			mutt_cv_sharedir="${mutt_cv_prefix}/share/mutt"
-		else
-			mutt_cv_sharedir="$libdir"
-		fi])
-	])
+	[if test -d ${mutt_cv_prefix}/share; then
+		mutt_cv_sharedir="${mutt_cv_prefix}/share/mutt"
+	else
+		mutt_cv_sharedir="$libdir"
+	fi])
+AC_MSG_RESULT($mutt_cv_sharedir)
 
 sharedir=$mutt_cv_sharedir
 AC_SUBST(sharedir)
@@ -503,17 +501,11 @@ else
   AC_DEFINE(ICONV_NONTRANS, 0)
 fi
 
+AC_MSG_CHECKING(where to put the documentation)
 AC_ARG_WITH(docdir, [  --with-docdir=PATH         Specify where to put the documentation],
 	[mutt_cv_docdir=$withval],
-	[ AC_CACHE_CHECK(where to put the documentation,
-		       mutt_cv_docdir,
-		[if test x$prefix = xNONE; then
-			mutt_cv_prefix=$ac_default_prefix
-		else
-			mutt_cv_prefix=$prefix
-		fi
-		mutt_cv_docdir=$mutt_cv_prefix/doc/mutt])
-	])
+	[mutt_cv_docdir="$mutt_cv_prefix/doc/mutt"])
+AC_MSG_RESULT($mutt_cv_docdir)
 
 docdir=$mutt_cv_docdir
 AC_SUBST(docdir)
