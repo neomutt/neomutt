@@ -852,6 +852,9 @@ static const char *get_text_charset (BODY *b, CONTENT *info)
   if (info->hibin || !strcasecmp (chsname, "utf-7"))
     return (chsname);
 
+  if (info->lobin && !strcasecmp (chsname, "iso-2022-jp"))
+    return (chsname);
+  
   return ("us-ascii");
 }
 

@@ -41,7 +41,7 @@ static void q_encode_string (char *d,
   for(t = s; *t && !hibit; t++)
     if(*t & 0x80) hibit = 1;
 
-  if(hibit)
+  if(hibit || !mutt_strcasecmp (send_charset, "iso-2022-jp"))
   {
     snprintf (charset, sizeof (charset), "=?%s?Q?",
 	      mutt_strcasecmp ("us-ascii", send_charset) == 0 ? "unknown-8bit" : NONULL(send_charset));
