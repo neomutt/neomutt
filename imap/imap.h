@@ -52,4 +52,6 @@ int imap_parse_path (char* path, char* host, size_t hlen, int* port,
 void imap_qualify_path (char* dest, size_t len, const char* host, int port,
   const char* path, const char* name);
 
+int imap_wait_keepalive (pid_t pid);
+
 #endif

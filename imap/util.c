@@ -26,6 +26,12 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <signal.h>
+
+#include <errno.h>
+
 /* imap_continue: display a message and ask the user if she wants to
  *   go on. */
 int imap_continue (const char* msg, const char* resp)
@@ -299,3 +305,54 @@ int imap_wordcasecmp(const char *a, const char *b)
 
   return mutt_strcasecmp(a, tmp);
 }
+
+/* imap keepalive: use buffy to poll a remote imap folder
+ * while waiting for an external process
+ */
+
+static RETSIGTYPE alrm_handler (int sig)
+{
+  /* empty */
+}
+
+int imap_wait_keepalive (pid_t pid)
+{
+  struct sigaction oldalrm;
+  struct sigaction act;
+  int rc;
+
+  short imap_passive = option (OPTIMAPPASSIVE);
+  
+  set_option (OPTIMAPPASSIVE);
+  set_option (OPTKEEPQUIET);
+
+  sigemptyset (&act.sa_mask);
+  act.sa_handler = alrm_handler;
+#ifdef SA_INTERRUPT
+  act.sa_flags = SA_INTERRUPT;
+#else
+  act.sa_flags = 0;
+#endif
+
+  sigaction (SIGALRM, &act, &oldalrm);
+
+  alarm (ImapCheckTimeout > 0 ? ImapCheckTimeout : 60);
+  while (waitpid (pid, &rc, 0) < 0 && errno == EINTR)
+  {
+    alarm (0);
+
+    if (!option (OPTMSGERR))
+      mutt_buffy_check (0);
+
+    alarm (ImapCheckTimeout > 0 ? ImapCheckTimeout : 60);
+  }
+
+  sigaction (SIGALRM, &oldalrm, NULL);
+
+  unset_option (OPTKEEPQUIET);
+  if (!imap_passive)
+    unset_option (OPTIMAPPASSIVE);
+
+  return rc;
+}
+
