@@ -3890,11 +3890,12 @@ Default: date-sent
 Specifies how to sort messages in the <em/index/ menu.  Valid values are
 
 <itemize>
-<item>date-sent
+<item>date or date-sent
 <item>date-received
 <item>from
 <item>mailbox-order (unsorted)
 <item>score
+<item>size
 <item>subject
 <item>threads
 <item>to
@@ -3910,11 +3911,12 @@ Default: alias
 
 Specifies how the entries in the `alias' menu are sorted.  The following are
 legal values:
-<verb>
-alias           sort alphabetically by alias name
-address         sort alphabetically by email address
-unsorted        leave in order specified in .muttrc
-</verb>
+
+<itemize>
+<item>address (sort alphabetically by email address)
+<item>alias (sort alphabetically by alias name)
+<item>unsorted (leave in order specified in .muttrc)
+</itemize>
 
 <sect2>sort&lowbar;aux<label id="sort_aux">
 <p>
@@ -3941,8 +3943,10 @@ Specifies how to sort entries in the file browser.  By default, the entries
 are sorted alphabetically.  Valid values:
 
 <itemize>
-<item>date
 <item>alpha (alphabetically)
+<item>date
+<item>size
+<item>unsorted
 </itemize>
 
 You may optionally use the <tt/reverse-/ prefix to specify reverse sorting
