@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -213,8 +213,7 @@ int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint)
   mutt_message (_("Reopening mailbox... %s"), CTX_DATA->selected_mailbox);
   imap_quote_string (buf, sizeof (buf), CTX_DATA->selected_mailbox);
   imap_make_sequence (seq, sizeof (seq));
-  snprintf (bufout, sizeof (bufout), "%s %s %s\r\n", seq,
-    ctx->readonly ? "EXAMINE" : "SELECT", buf);
+  snprintf (bufout, sizeof (bufout), "%s STATUS %s (MESSAGES)\r\n", seq, buf);
   mutt_socket_write (CTX_DATA->conn, bufout);
 
   do
@@ -226,39 +225,36 @@ int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint)
     {
       pc = buf + 2;
 
-      if (isdigit (*pc))
+      if (!mutt_strncasecmp ("STATUS", pc, 6) &&
+	  (pc = mutt_stristr (pc, "MESSAGES")))
       {
-	char *pn = pc;
+	char* pn;
+	
+	/* skip "MESSAGES" */
+	pc += 8;
+	SKIPWS (pc);
+	pn = pc;
 
 	while (*pc && isdigit (*pc))
 	  pc++;
 	*pc++ = 0;
 	n = atoi (pn);
-	SKIPWS (pc);
-	if (mutt_strncasecmp ("EXISTS", pc, 6) == 0)
-	  count = n;
+	count = n;
       }
       else if (imap_handle_untagged (CTX_DATA, buf) != 0)
-	return (-1);
+	return -1;
     }
   }
   while (mutt_strncmp (seq, buf, mutt_strlen (seq)) != 0);
-  /* check for READ-ONLY notification */
-  if (!strncmp (imap_get_qualifier (buf), "[READ-ONLY]", 11))
-  {
-    dprint (2, (debugfile, "Mailbox is read-only.\n"));
-    ctx->readonly = 1;
-  }
 
   if (!imap_code (buf))
   {
     char *s;
     s = imap_next_word (buf); /* skip seq */
     s = imap_next_word (s); /* Skip response */
-    CTX_DATA->state = IMAP_AUTHENTICATED;
     mutt_error (s);
     sleep (1);
-    return (-1);
+    return -1;
   }
 
   ctx->hdrmax = count;
