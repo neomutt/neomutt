@@ -2090,7 +2090,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 
       case OP_DISPLAY_ADDRESS:
 	CHECK_MODE(IsHeader (extra));
-	mutt_display_address (extra->hdr->env->from);
+	mutt_display_address (extra->hdr->env);
 	break;
 
       case OP_ENTER_COMMAND:

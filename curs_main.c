@@ -1482,7 +1482,7 @@ int mutt_index_menu (void)
       case OP_DISPLAY_ADDRESS:
 
 	CHECK_MSGCOUNT;
-	mutt_display_address (CURHDR->env->from);
+	mutt_display_address (CURHDR->env);
 	break;
 
       case OP_ENTER_COMMAND:

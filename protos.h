@@ -70,6 +70,7 @@ void set_quadoption (int, int);
 int query_quadoption (int, const char *);
 int quadoption (int);
 
+ADDRESS *mutt_get_address (ENVELOPE *, char **);
 ADDRESS *mutt_lookup_alias (const char *s);
 ADDRESS *mutt_remove_duplicates (ADDRESS *);
 ADDRESS *mutt_expand_aliases (ADDRESS *);
@@ -132,7 +133,7 @@ void mutt_clear_error (void);
 void mutt_create_alias (ENVELOPE *, ADDRESS *);
 void mutt_decode_attachment (BODY *, STATE *);
 void mutt_default_save (char *, size_t, HEADER *);
-void mutt_display_address (ADDRESS *);
+void mutt_display_address (ENVELOPE *);
 void mutt_edit_file (const char *, const char *);
 void mutt_edit_headers (const char *, const char *, HEADER *, char *, size_t);
 void mutt_curses_error (const char *, ...);

@@ -152,6 +152,40 @@ static void write_safe_address (FILE *fp, char *s)
   }
 }
 
+ADDRESS *mutt_get_address (ENVELOPE *env, char **pfxp)
+{
+  ADDRESS *adr;
+  char *pfx = NULL;
+
+  if (mutt_addr_is_user (env->from))
+  {
+    if (env->to && !mutt_is_mail_list (env->to))
+    {
+      pfx = "To";
+      adr = env->to;
+    }
+    else
+    {
+      pfx = "Cc";
+      adr = env->cc;
+    }
+  }
+  else if (env->reply_to && !mutt_is_mail_list (env->reply_to))
+  {
+    pfx = "Reply-To";
+    adr = env->reply_to;
+  }
+  else
+  {
+    adr = env->from;
+    pfx = "From";
+  }
+
+  if (pfxp) *pfxp = pfx;
+
+  return adr;
+}
+
 void mutt_create_alias (ENVELOPE *cur, ADDRESS *iadr)
 {
   ALIAS *new, *t;
@@ -161,18 +195,7 @@ void mutt_create_alias (ENVELOPE *cur, ADDRESS *iadr)
 
   if (cur)
   {
-    if (mutt_addr_is_user (cur->from))
-    {
-      if (cur->to && !mutt_is_mail_list (cur->to))
-	adr = cur->to;
-      else
-	adr = cur->cc;
-    }
-    else if (cur->reply_to && !mutt_is_mail_list (cur->reply_to))
-      adr = cur->reply_to;
-    else
-      adr = cur->from;
-
+    adr = mutt_get_address (cur, NULL);
   }
   else if (iadr)
   {
