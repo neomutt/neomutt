@@ -85,7 +85,7 @@ void snd_entry (char *b, size_t blen, MUTTMENU *menu, int num)
 
 static int pgp_send_menu (int bits)
 {
-  int c;
+  event_t ch;
   char *p;
   char *micalg = NULL;
   char input_signas[SHORT_STRING];
@@ -99,9 +99,12 @@ static int pgp_send_menu (int bits)
   do
   {
     mutt_refresh ();
-    if ((c = mutt_getch ()) == ERR)
+    
+    ch  = mutt_getch();
+    if (ch.ch == EOF)
       break;
-    if (c == 'a')
+
+    if (ch.ch == 'a')
     {
       unset_option(OPTPGPCHECKTRUST);
       
@@ -136,7 +139,7 @@ static int pgp_send_menu (int bits)
 	mutt_error _("An unkown PGP version was defined for signing.");
       }
     }
-    else if (c == 'm')
+    else if (ch.ch == 'm')
     {
       if(!(bits & PGPSIGN))
 	mutt_error _("This doesn't make sense if you don't want to sign the message.");
@@ -160,21 +163,21 @@ static int pgp_send_menu (int bits)
 	}
       }
     }
-    else if (c == 'e')
+    else if (ch.ch == 'e')
       bits |= PGPENCRYPT;
-    else if (c == 's')
+    else if (ch.ch == 's')
       bits |= PGPSIGN;
-    else if (c == 'b')
+    else if (ch.ch == 'b')
       bits = PGPENCRYPT | PGPSIGN;
-    else if (c == 'f')
+    else if (ch.ch == 'f')
       bits = 0;
     else
     {
       BEEP ();
-      c = 0;
+      ch.ch = 0;
     }
   }
-  while (c == 0);
+  while (ch.ch == 0);
   CLEARLINE (LINES-1);
   mutt_refresh ();
   return (bits);

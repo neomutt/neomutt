@@ -252,7 +252,7 @@ int mutt_change_flag (HEADER *h, int bf)
   int i, flag;
   event_t event;
 
-  mvprintw (LINES - 1, 0, "%s flag? (D/N/O/r/*/!): ", bf ? _("Set") : _("Clear"));
+  mvprintw (LINES - 1, 0, "%s? (D/N/O/r/*/!): ", bf ? _("Set flag") : _("Clear flag"));
   clrtoeol ();
 
   event = mutt_getch();
