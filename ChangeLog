@@ -1,3 +1,7 @@
+2004-01-12 19:59:38  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* crypt.c: Retainable PGP signatures were broken badly.  #1757.
+
 2004-01-05 11:55:14  Robert Schiele  <robert.schiele@t-online.de>  (roessler)
 
 	* mutt_sasl.c: Back out part of the previous SASL/IPv6 patch
