@@ -284,6 +284,39 @@ static void x509_fingerprint (char *s, int l, X509 * cert)
   }
 }
 
+static int check_certificate_file (X509 *peercert)
+{
+  unsigned char peermd[EVP_MAX_MD_SIZE];
+  unsigned int peermdlen;
+  X509 *cert = NULL;
+  int pass = 0;
+  FILE *fp;
+
+  if (!X509_digest (peercert, EVP_sha1(), peermd, &peermdlen))
+    return 0;
+  
+  if ((fp = fopen (SslCertFile, "rt")) == NULL)
+    return 0;
+
+  while ((cert = READ_X509_KEY (fp, &cert)) != NULL)
+  {
+    unsigned char md[EVP_MAX_MD_SIZE];
+    unsigned int mdlen;
+
+    if (!X509_digest (cert, EVP_sha1(), md, &mdlen) || peermdlen != mdlen)
+      continue;
+    
+    if (memcmp(peermd, md, mdlen) == 0)
+    {
+      X509_free (cert);
+      pass = 1;
+      break;
+    }
+  }
+  fclose (fp);
+
+  return pass;
+}
 
 static int ssl_check_certificate (sslsockdata * data)
 {
@@ -297,23 +330,8 @@ static int ssl_check_certificate (sslsockdata * data)
   char *line = NULL, *c;
 
   /* automatic check from user's database */
-  if ((fp = fopen (SslCertFile, "rt")))
-  {
-    EVP_PKEY *peer = X509_get_pubkey (data->cert);
-    X509 *savedkey = NULL;
-    int pass = 0;
-    while ((savedkey = READ_X509_KEY (fp, &savedkey)))
-    {
-      if (X509_verify (savedkey, peer))
-      {
-	pass = 1;
-	break;
-      }
-    }
-    fclose (fp);
-    if (pass)
-      return 1;
-  }
+  if (SslCertFile && check_certificate_file (data->cert))
+    return 1;
 
   menu = mutt_new_menu ();
   menu->max = 15;
