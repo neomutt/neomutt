@@ -2399,7 +2399,7 @@ struct option_t MuttVars[] = {
   ** order $$sort_aux is reversed again (which is not the right thing to do,
   ** but kept to not break any existing configuration setting).
   */
-  { "sort_browser",	DT_SORT|DT_SORT_BROWSER, R_NONE, UL &BrowserSort, SORT_SUBJECT },
+  { "sort_browser",	DT_SORT|DT_SORT_BROWSER, R_NONE, UL &BrowserSort, SORT_ALPHA },
   /*
   ** .pp
   ** Specifies how to sort entries in the file browser.  By default, the
