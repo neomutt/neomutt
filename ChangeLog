@@ -1,3 +1,17 @@
+Tue May  7 15:42:37 IST 2002  Lars Hecking  <lhecking@nmrc.ie>
+
+	* INSTALL: Document new --disable-iconv configure option.
+
+	* charset.h: Conditionalise inclusion of iconv.h. Define iconv_t
+	if not found by configure. Define ICONV_CONST and declare iconv
+	functions if not found by configure.
+
+	* configure.in: New --disable-iconv configure option. Warn instead
+	error if iconv not found. New tests for iconv.h and iconv_t.
+
+	* sendlib.c(convert_file_to): Allow compilation without system
+	iconv and return -1 if no iconv available.
+
 Wed May  1 23:21:10 2002  Thomas Roessler  <roessler@does-not-exist.org>
 
 	* smime.c: From: Thomas Roessler <roessler@does-not-exist.org>

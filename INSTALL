@@ -237,7 +237,7 @@ into your system's global Muttrc, which normally resides in /etc or
 /usr/local/etc.
 
 
-If you really want to, you can configure Mutt --without-iconv, but
+If you really want to, you can configure Mutt --disable-iconv, but
 there will then be no character set conversion.
 
 

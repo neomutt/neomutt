@@ -19,7 +19,20 @@
 #ifndef _CHARSET_H
 #define _CHARSET_H
 
+#ifdef HAVE_ICONV_H
 #include <iconv.h>
+#endif
+
+#ifndef HAVE_ICONV_T_DEF
+typedef void *iconv_t;
+#endif
+
+#ifndef HAVE_ICONV
+#define ICONV_CONST /**/
+iconv_t iconv_open (const char *, const char *);
+size_t iconv (iconv_t, ICONV_CONST char **, size_t *, char **, size_t *);
+int iconv_close (iconv_t);
+#endif
 
 int mutt_convert_string (char **, const char *, const char *, int);
 
