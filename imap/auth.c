@@ -170,9 +170,19 @@ static int imap_auth_gss (IMAP_DATA* idata, const char* user)
   do
   {
     /* build token */
-    maj_stat = gss_init_sec_context (&min_stat, GSS_C_NO_CREDENTIAL, &context,
-      target_name, NULL, 0, 0, NULL, sec_token, NULL, &send_token,
-      (unsigned int*) &cflags, NULL);
+    maj_stat = gss_init_sec_context (&min_stat, 
+				     GSS_C_NO_CREDENTIAL, 
+				     &context,
+				     target_name, 
+				     GSS_C_NO_OID,
+				     GSS_C_MUTUAL_FLAG | GSS_C_SEQUENCE_FLAG,
+				     0, 
+				     GSS_C_NO_CHANNEL_BINDINGS, 
+				     sec_token, 
+				     NULL, 
+				     &send_token,
+				     (unsigned int*) &cflags, 
+				     NULL);
     if (maj_stat != GSS_S_COMPLETE && maj_stat != GSS_S_CONTINUE_NEEDED)
     {
       dprint (1, (debugfile, "Error exchanging credentials\n"));
@@ -227,6 +237,7 @@ static int imap_auth_gss (IMAP_DATA* idata, const char* user)
     dprint (2, (debugfile, "Couldn't unwrap security level data\n"));
     gss_release_buffer (&min_stat, &send_token);
 
+    mutt_socket_write(idata->conn, "*\r\n");
     return -1;
   }
   dprint (2, (debugfile, "Credential exchange complete\n"));
@@ -238,6 +249,7 @@ static int imap_auth_gss (IMAP_DATA* idata, const char* user)
     dprint (2, (debugfile, "Server requires integrity or privace\n"));
     gss_release_buffer (&min_stat, &send_token);
 
+    mutt_socket_write(idata->conn, "*\r\n");
     return -1;
   }
 
@@ -265,6 +277,7 @@ static int imap_auth_gss (IMAP_DATA* idata, const char* user)
   {
     dprint (2, (debugfile, "Error creating login request\n"));
 
+    mutt_socket_write(idata->conn, "*\r\n");
     return -1;
   }
 
@@ -278,6 +291,7 @@ static int imap_auth_gss (IMAP_DATA* idata, const char* user)
   {
     dprint (1, (debugfile, "Error receiving server response.\n"));
 
+    mutt_socket_write(idata->conn, "*\r\n");
     return -1;
   }
   if (imap_code (buf1))
