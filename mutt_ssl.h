@@ -24,7 +24,7 @@
 extern char *SslCertFile;
 extern char *SslEntropyFile;
 
-int mutt_ssl_get_ssf (CONNECTION* conn);
+int mutt_ssl_starttls (CONNECTION* conn);
 
 extern int ssl_socket_setup (CONNECTION *conn);
 

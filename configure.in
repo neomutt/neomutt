@@ -558,6 +558,10 @@ dnl -- end socket dependencies --
 
 if test "$need_socket" = "yes"
 then
+	AC_MSG_CHECKING([for socklen_t])
+	AC_EGREP_HEADER(socklen_t, sys/socket.h, AC_MSG_RESULT([yes]),
+		AC_MSG_RESULT([no])
+		AC_DEFINE(socklen_t, int*))
 	AC_CHECK_FUNC(gethostent, , AC_CHECK_LIB(nsl, gethostent))
 	AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(socket, setsockopt))
 	AC_CHECK_FUNCS(getaddrinfo)
@@ -630,7 +634,7 @@ AC_ARG_WITH(gss,    [    --with-gss[=DIR]         Compile in GSSAPI authenticati
 ])
 AM_CONDITIONAL(USE_GSS, test x$need_gss = xyes)
 
-AC_ARG_WITH(ssl, [    --with-ssl[=PFX]         Compile in SSL socket support for POP/IMAP],
+AC_ARG_WITH(ssl, [  --with-ssl[=PFX]           Compile in SSL support for POP/IMAP],
 [	if test "$with_ssl" != "no"
 	then
 	  if test "$need_socket" != "yes"; then
@@ -664,7 +668,7 @@ AC_ARG_WITH(ssl, [    --with-ssl[=PFX]         Compile in SSL socket support for
 AM_CONDITIONAL(USE_SSL, test x$need_ssl = xyes)
 
 dnl SSL support via NSS
-AC_ARG_WITH(nss, [    --with-nss[=PFX]	Compile in SSL socket support for POP/IMAP via NSS],
+AC_ARG_WITH(nss, [  --with-nss[=PFX]           Compile in SSL support for POP/IMAP via NSS],
 [	if test "$with_nss" != no
 	then
 	  if test "$need_socket" != "yes"; then

@@ -29,6 +29,9 @@
 #include "browser.h"
 #include "message.h"
 #include "imap_private.h"
+#ifdef USE_SSL
+# include "mutt_ssl.h"
+#endif
 
 #include <unistd.h>
 #include <ctype.h>
@@ -309,6 +312,7 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
 int imap_open_connection (IMAP_DATA* idata)
 {
   char buf[LONG_STRING];
+  int rc;
 
   if (mutt_socket_open (idata->conn) < 0)
   {
@@ -324,8 +328,36 @@ int imap_open_connection (IMAP_DATA* idata)
 
   if (mutt_strncmp ("* OK", idata->cmd.buf, 4) == 0)
   {
-    if (imap_check_capabilities (idata) || imap_authenticate (idata))
+    /* TODO: Parse new tagged CAPABILITY data (* OK [CAPABILITY...]) */
+    if (imap_check_capabilities (idata))
       goto bail;
+#if defined(USE_SSL) && !defined(USE_NSS)
+    /* Attempt STARTTLS if available. TODO: make STARTTLS configurable. */
+    if (mutt_bit_isset (idata->capabilities, STARTTLS))
+    {
+      if ((rc = imap_exec (idata, "STARTTLS", IMAP_CMD_FAIL_OK)) == -1)
+	goto bail;
+      if (rc != -2)
+      {
+	if (mutt_ssl_starttls (idata->conn))
+        {
+	  dprint (1, (debugfile, "imap_open_connection: STARTTLS failed\n"));
+	  goto bail;
+	}
+	else
+	{
+	  /* RFC 2595 demands we recheck CAPABILITY after TLS is negotiated. */
+	  if (imap_exec (idata, "CAPABILITY", 0))
+	    goto bail;
+	}
+      }
+    }
+#endif    
+    if (imap_authenticate (idata))
+      goto bail;
+    if (idata->conn->ssf)
+      dprint (2, (debugfile, "Communication encrypted at %d bits\n",
+	idata->conn->ssf));
   }
   else if (mutt_strncmp ("* PREAUTH", idata->cmd.buf, 9) == 0)
   {

@@ -48,7 +48,7 @@ int imap_authenticate (IMAP_DATA* idata)
   imap_auth_t* authenticator = imap_authenticators;
   int r = -1;
 
-  while (authenticator)
+  while (*authenticator)
   {
     if ((r = (*authenticator)(idata)) != IMAP_AUTH_UNAVAIL)
       return r;

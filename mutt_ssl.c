@@ -68,19 +68,70 @@ typedef struct _sslsockdata
 }
 sslsockdata;
 
-/* mutt_ssl_get_ssf: Return bit strength of connection encryption. SASL
- *   uses this to determine how much additional protection to provide,
- *   if necessary. */
-int mutt_ssl_get_ssf (CONNECTION* conn)
+/* local prototypes */
+int ssl_init (void);
+static int add_entropy (const char *file);
+static int ssl_check_certificate (sslsockdata * data);
+static int ssl_socket_read (CONNECTION * conn);
+static int ssl_socket_write (CONNECTION* conn, const char* buf, size_t len);
+static int ssl_socket_open (CONNECTION * conn);
+static int ssl_socket_close (CONNECTION * conn);
+int ssl_negotiate (sslsockdata*);
+
+/* mutt_ssl_starttls: Negotiate TLS over an already opened connection.
+ *   TODO: Merge this code better with ssl_socket_open. */
+int mutt_ssl_starttls (CONNECTION* conn)
 {
-  sslsockdata* ssldata = (sslsockdata*) conn->sockdata;
+  sslsockdata* ssldata;
   int maxbits;
 
-  return SSL_CIPHER_get_bits (SSL_get_current_cipher (ssldata->ssl), &maxbits);
+  if (ssl_init())
+    goto bail;
+
+  ssldata = (sslsockdata*) safe_calloc (1, sizeof (sslsockdata));
+  /* the ssl_use_xxx protocol options don't apply. We must use TLS in TLS. */
+  if (! (ssldata->ctx = SSL_CTX_new (TLSv1_client_method ())))
+  {
+    dprint (1, (debugfile, "mutt_ssl_starttls: Error allocating SSL_CTX\n"));
+    goto bail_ssldata;
+  }
+
+  if (! (ssldata->ssl = SSL_new (ssldata->ctx)))
+  {
+    dprint (1, (debugfile, "mutt_ssl_starttls: Error allocating SSL\n"));
+    goto bail_ctx;
+  }
+
+  if (SSL_set_fd (ssldata->ssl, conn->fd) != 1)
+  {
+    dprint (1, (debugfile, "mutt_ssl_starttls: Error setting fd\n"));
+    goto bail_ssl;
+  }
+
+  if (ssl_negotiate (ssldata))
+    goto bail_ssl;
+
+  /* hmm. watch out if we're starting TLS over any method other than raw. */
+  conn->sockdata = ssldata;
+  conn->read = ssl_socket_read;
+  conn->write = ssl_socket_write;
+  conn->close = ssl_socket_close;
+
+  conn->ssf = SSL_CIPHER_get_bits (SSL_get_current_cipher (ssldata->ssl),
+    &maxbits);
+
+  return 0;
+
+ bail_ssl:
+  FREE (&ssldata->ssl);
+ bail_ctx:
+  FREE (&ssldata->ctx);
+ bail_ssldata:
+  FREE (&ssldata);
+ bail:
+  return -1;
 }
 
-
-static int add_entropy (const char *file);
 /* 
  * OpenSSL library needs to be fed with sufficient entropy. On systems
  * with /dev/urandom, this is done transparently by the library itself,
@@ -94,29 +145,42 @@ static int add_entropy (const char *file);
 int ssl_init (void)
 {
   char path[_POSIX_PATH_MAX];
+  static unsigned char init_complete = 0;
 
-  if (HAVE_ENTROPY()) return 0;
+  if (init_complete)
+    return 0;
+
+  if (! HAVE_ENTROPY())
+  {
+    /* load entropy from files */
+    add_entropy (SslEntropyFile);
+    add_entropy (RAND_file_name (path, sizeof (path)));
   
- /* load entropy from files */
-  add_entropy (SslEntropyFile);
-  add_entropy (RAND_file_name (path, sizeof (path)));
-  
-   /* load entropy from egd sockets */
+    /* load entropy from egd sockets */
 #ifdef HAVE_RAND_EGD
-  add_entropy (getenv ("EGDSOCKET"));
-  snprintf (path, sizeof(path), "%s/.entropy", NONULL(Homedir));
-  add_entropy (path);
-  add_entropy ("/tmp/entropy");
+    add_entropy (getenv ("EGDSOCKET"));
+    snprintf (path, sizeof(path), "%s/.entropy", NONULL(Homedir));
+    add_entropy (path);
+    add_entropy ("/tmp/entropy");
 #endif
 
-  /* shuffle $RANDFILE (or ~/.rnd if unset) */
-  RAND_write_file (RAND_file_name (path, sizeof (path)));
-  mutt_clear_error ();
-  if (HAVE_ENTROPY()) return 0;
+    /* shuffle $RANDFILE (or ~/.rnd if unset) */
+    RAND_write_file (RAND_file_name (path, sizeof (path)));
+    mutt_clear_error ();
+    if (! HAVE_ENTROPY())
+    {
+      mutt_error (_("Failed to find enough entropy on your system"));
+      sleep (2);
+      return -1;
+    }
+  }
 
-  mutt_error (_("Failed to find enough entropy on your system"));
-  sleep (2);
-  return -1;
+  /* I don't think you can do this just before reading the error. The call
+   * itself might clobber the last SSL error. */
+  SSL_load_error_strings();
+  SSL_library_init();
+  init_complete = 1;
+  return 0;
 }
 
 static int add_entropy (const char *file)
@@ -161,12 +225,6 @@ static int ssl_socket_open_err (CONNECTION *conn)
   return -1;
 }
 
-static int ssl_check_certificate (sslsockdata * data);
-
-static int ssl_socket_read (CONNECTION * conn);
-static int ssl_socket_write (CONNECTION* conn, const char* buf, size_t len);
-static int ssl_socket_open (CONNECTION * conn);
-static int ssl_socket_close (CONNECTION * conn);
 
 int ssl_socket_setup (CONNECTION * conn)
 {
@@ -199,7 +257,7 @@ int ssl_socket_write (CONNECTION* conn, const char* buf, size_t len)
 int ssl_socket_open (CONNECTION * conn)
 {
   sslsockdata *data;
-  int err;
+  int maxbits;
 
   if (raw_socket_open (conn) < 0)
     return -1;
@@ -207,7 +265,6 @@ int ssl_socket_open (CONNECTION * conn)
   data = (sslsockdata *) safe_calloc (1, sizeof (sslsockdata));
   conn->sockdata = data;
 
-  SSL_library_init();
   data->ctx = SSL_CTX_new (SSLv23_client_method ());
 
   /* disable SSL protocols as needed */
@@ -227,35 +284,46 @@ int ssl_socket_open (CONNECTION * conn)
   data->ssl = SSL_new (data->ctx);
   SSL_set_fd (data->ssl, conn->fd);
 
-  if ((err = SSL_connect (data->ssl)) != 1)
+  if (ssl_negotiate(data))
   {
-    unsigned long e;
-    SSL_load_error_strings();
-    while ((e = ERR_get_error()) != 0)
-    {
-      mutt_error ("%s", ERR_reason_error_string(e));
-      sleep (1);
-    }
     ssl_socket_close (conn);
     return -1;
   }
+  
+  conn->ssf = SSL_CIPHER_get_bits (SSL_get_current_cipher (data->ssl),
+    &maxbits);
 
-  data->cert = SSL_get_peer_certificate (data->ssl);
-  if (!data->cert)
+  return 0;
+}
+
+/* ssl_negotiate: After SSL state has been initialised, attempt to negotiate
+ *   SSL over the wire, including certificate checks. */
+int ssl_negotiate (sslsockdata* ssldata)
+{
+  if (SSL_connect (ssldata->ssl) != 1)
+  {
+    unsigned long e;
+    while ((e = ERR_get_error()) != 0)
+    {
+      mutt_error ("SSL failed: %s", ERR_reason_error_string(e));
+      sleep (1);
+    }
+    return -1;
+  }
+
+  ssldata->cert = SSL_get_peer_certificate (ssldata->ssl);
+  if (!ssldata->cert)
   {
     mutt_error (_("Unable to get certificate from peer"));
     sleep (1);
     return -1;
   }
 
-  if (!ssl_check_certificate (data))
-  {
-    ssl_socket_close (conn);
+  if (!ssl_check_certificate (ssldata))
     return -1;
-  }
 
   mutt_message (_("SSL connection using %s (%s)"), 
-    SSL_get_cipher_version (data->ssl), SSL_get_cipher_name (data->ssl));
+    SSL_get_cipher_version (ssldata->ssl), SSL_get_cipher_name (ssldata->ssl));
   sleep (1);
 
   return 0;

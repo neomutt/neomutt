@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1998 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -31,12 +31,15 @@
 typedef struct _connection
 {
   ACCOUNT account;
+  /* security strength factor, in bits */
+  unsigned int ssf;
+  void *data;
+
   char inbuf[LONG_STRING];
   int bufpos;
 
   int fd;
   int available;
-  void *data;
 
   struct _connection *next;
 

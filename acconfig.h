@@ -36,6 +36,9 @@
  */
 #undef NFS_ATTRIBUTE_HACK
 
+/* Define to `int*' if <unistd.h> doesn't have it. */
+#undef socklen_t
+
 /* Include code for socket support. Set automatically if you enable pop or
  * IMAP */
 #undef USE_SOCKET

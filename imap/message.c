@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -89,8 +89,9 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 
   for (msgno = msgbegin; msgno <= msgend ; msgno++)
   {
-    mutt_message (_("Fetching message headers... [%d/%d]"), msgno + 1,
-      msgend + 1);
+    if (ReadInc && (!msgno || ((msgno+1) % ReadInc == 0)))
+      mutt_message (_("Fetching message headers... [%d/%d]"), msgno + 1,
+        msgend + 1);
 
     if (msgno + 1 > fetchlast)
     {

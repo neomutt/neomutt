@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2000-1 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -21,14 +21,11 @@
 #include "mutt.h"
 #include "account.h"
 #include "mutt_sasl.h"
-#ifdef USE_SSL
-# include "mutt_ssl.h"
-#endif
 #include "mutt_socket.h"
 
 #include <sasl.h>
+#include <sys/socket.h>
 #include <netinet/in.h>
-#include <netdb.h>
 
 /* arbitrary. SASL will probably use a smaller buffer anyway. OTOH it's
  * been a while since I've had access to an SASL server which negotiated
@@ -129,11 +126,11 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
     socklen_t size;
 
     size = sizeof (local);
-    if (getsockname (conn->fd, &local, &size))
+    if (getsockname (conn->fd, (struct sockaddr*) &local, &size))
       return -1;
 
     size = sizeof(remote);
-    if (getpeername(conn->fd, &remote, &size))
+    if (getpeername(conn->fd, (struct sockaddr*) &remote, &size))
       return -1;
 
 #ifdef SASL_IP_LOCAL
@@ -178,7 +175,7 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
   if (conn->account.flags & M_ACCT_SSL)
   {
     memset (&extprops, 0, sizeof (extprops));
-    extprops.ssf = mutt_ssl_get_ssf (conn);
+    extprops.ssf = conn->ssf;
     dprint (2, (debugfile, "External SSF: %d\n", extprops.ssf));
     if (sasl_setprop (*saslconn, SASL_SSF_EXTERNAL, &extprops) != SASL_OK)
     {
@@ -271,9 +268,11 @@ void mutt_sasl_setup_conn (CONNECTION* conn, sasl_conn_t* saslconn)
   sasldata->saslconn = saslconn;
   /* get ssf so we know whether we have to (en|de)code read/write */
   sasl_getprop (saslconn, SASL_SSF, (void**) &sasldata->ssf);
-  dprint (2, (debugfile, "SASL protection strength: %u\n", *sasldata->ssf));
+  dprint (3, (debugfile, "SASL protection strength: %u\n", *sasldata->ssf));
+  /* Add SASL SSF to transport SSF */
+  conn->ssf += *sasldata->ssf;
   sasl_getprop (saslconn, SASL_MAXOUTBUF, (void**) &sasldata->pbufsize);
-  dprint (2, (debugfile, "SASL protection buffer size: %u\n", *sasldata->pbufsize));
+  dprint (3, (debugfile, "SASL protection buffer size: %u\n", *sasldata->pbufsize));
 
   /* clear input buffer */
   sasldata->buf = NULL;
