@@ -1,4 +1,6 @@
-2003-04-08 21:41:39  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+2003-04-08 22:32:56  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* lib.c: Avoid a division by zero.
 
 	* color.c: Make sure has_colors() is only invoked when OPTNOCURSES
 	is unset.  This fixes a segmentation fault on RH 8.0 which was
