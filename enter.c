@@ -416,9 +416,12 @@ int mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 	case OP_EDITOR_QUOTE_CHAR:
 	  ADDCH (LastKey);
 	  event = mutt_getch ();
-	  LastKey = event.ch;
-	  move (y, x + curpos - begin);
-	  goto self_insert;
+	  if(event.ch != -1)
+	  {
+	    LastKey = event.ch;
+	    move (y, x + curpos - begin);
+	    goto self_insert;
+	  }
 
 	default:
 	  BEEP ();
