@@ -302,11 +302,10 @@ static void show_version (void)
 	"-BUFFY_SIZE "
 #endif
 #ifdef EXACT_ADDRESS
-	"+"
+	"+EXACT_ADDRESS  "
 #else
-	"-"
+	"-EXACT_ADDRESS  "
 #endif
-	"EXACT_ADDRESS  "
 
 #ifdef SUN_ATTACHMENT
 	"+SUN_ATTACHMENT  "
@@ -317,11 +316,10 @@ static void show_version (void)
 	"\n"
 	
 #ifdef ENABLE_NLS
-	"+"
+	"+ENABLE_NLS  "
 #else
-	"-"
+	"-ENABLE_NLS  "
 #endif
-	"ENABLE_NLS  "
 
 #ifdef LOCALES_HACK
 	"+LOCALES_HACK  "
@@ -363,11 +361,17 @@ static void show_version (void)
 #endif
 
 #if HAVE_GETSID
-	"+HAVE_GETSID"
+	"+HAVE_GETSID  "
 #else
-	"-HAVE_GETSID"
+	"-HAVE_GETSID  "
 #endif
-	
+
+#if HAVE_GETADDRINFO
+	"+HAVE_GETADDRINFO  "
+#else
+	"-HAVE_GETADDRINFO  "
+#endif
+
 	);
 
 #ifdef ISPELL
