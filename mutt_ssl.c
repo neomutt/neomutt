@@ -16,8 +16,9 @@
  *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
  */
 
-/* for SSL NO_* defines */
-#include "config.h"
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include <openssl/ssl.h>
 #include <openssl/x509.h>

@@ -39,6 +39,10 @@
  * 
  */
 
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include "mutt.h"
 #include "mime.h"
 

@@ -20,7 +20,9 @@
     This is a crytpo module wrapping the gpgme based smime code.
  */
 
-#include <config.h>
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #ifdef CRYPT_BACKEND_GPGME
 

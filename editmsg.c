@@ -21,6 +21,10 @@
 
 /* simple, editor-based message editing */
 
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include "mutt.h"
 #include "copy.h"
 #include "mailbox.h"

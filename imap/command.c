@@ -21,7 +21,7 @@
 /* command.c: routines for sending commands to an IMAP server and parsing
  *  responses */
 
-#ifdef HAVE_CONFIG_H
+#if HAVE_CONFIG_H
 # include "config.h"
 #endif
 

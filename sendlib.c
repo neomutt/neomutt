@@ -18,6 +18,10 @@
 
 #define _SENDLIB_C 1
 
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include "mutt.h"
 #include "mutt_curses.h"
 #include "rfc2047.h"

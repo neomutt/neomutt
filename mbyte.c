@@ -20,6 +20,10 @@
  * Japanese support by TAKIZAWA Takashi <taki@luna.email.ne.jp>.
  */
 
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include "mutt.h"
 #include "mbyte.h"
 #include "charset.h"

@@ -20,6 +20,10 @@
     This is a crytpo module wrapping the classic smime code.
  */
 
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include "crypt-mod.h"
 #include "smime.h"
 

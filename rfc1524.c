@@ -26,6 +26,10 @@
  * rfc1524.
  */
 
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include "mutt.h"
 #include "rfc1524.h"
 
