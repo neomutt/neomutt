@@ -344,7 +344,7 @@ int main(int argc, const char *argv[])
        && (basedir ? 0 : strlen(basedir) + 1) 
           + strlen(m->charset) + 1 < sizeof(buffer))
     {
-      sprintf(buffer, "%s%s%s", basedir ? basedir : "", basedir ? "/" : "",
+      snprintf(buffer, sizeof(buffer), "%s%s%s", basedir ? basedir : "", basedir ? "/" : "",
 	       m->charset);
       
       if((fp = fopen(buffer, "w")))

@@ -15,8 +15,8 @@ mutt_SOURCES =	addrbook.c alias.c attach.c browser.c buffy.c color.c \
 	rfc1524.c rfc2047.c score.c send.c sendlib.c signal.c sort.c \
 	status.c system.c thread.c charset.c history.c lib.c
 
-mutt_LDADD = @MUTT_LIB_OBJECTS@ $(INTLLIBS)
-mutt_DEPENDENCIES = @MUTT_LIB_OBJECTS@ $(INTLDEPS)
+mutt_LDADD = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(INTLLIBS) 
+mutt_DEPENDENCIES = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(INTLDEPS)
 
 DEFS=-DSHAREDIR=\"$(sharedir)\" -DSYSCONFDIR=\"$(sysconfdir)\"
 INCLUDES=-I. 
@@ -26,7 +26,7 @@ non_us_sources = pgp.c pgpinvoke.c pgpkey.c pgppubring.c sha1dgst.c \
 	doc/language.txt doc/language50.txt OPS.PGP doc/PGP-Notes
 
 EXTRA_mutt_SOURCES = pgp.c pgpinvoke.c pgpkey.c pgppubring.c sha1dgst.c \
-	gnupgparse.c resize.c snprintf.c dotlock.c pop.c imap.c socket.c
+	gnupgparse.c resize.c dotlock.c pop.c imap.c socket.c
 
 EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO acconfig.h attach.h \
 	buffy.h charset.h config.h copy.h dotlock.h functions.h gen_defs \
@@ -38,8 +38,8 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO acconfig.h attach.h \
 BUILT_SOURCES = mutt_dotlock.c keymap_defs.h
 
 mutt_dotlock_SOURCES = mutt_dotlock.c
-mutt_dotlock_LDADD = @SNPRINTFOBJS@
-mutt_dotlock_DEPENDENCIES = @SNPRINTFOBJS@ @LIBOBJS@ $(INTLDEPS)
+mutt_dotlock_LDADD = @LIBOBJS@
+mutt_dotlock_DEPENDENCIES = @LIBOBJS@
 
 mutt_dotlock.c: dotlock.c
 	cp dotlock.c mutt_dotlock.c

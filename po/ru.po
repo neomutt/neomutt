@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 1998-10-14 00:57+0200\n"
+"POT-Creation-Date: 1998-10-14 11:34+0200\n"
 "PO-Revision-Date: 1998-10-12 21:14+0300\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "Language-Team: Mutt-dev <mutt-dev@mutt.org>\n"
@@ -1814,11 +1814,11 @@ msgstr "%s - это не почтовый ящик!"
 msgid "Append messages to %s?"
 msgstr "Добавить сообщения к %s?"
 
-#: main.c:36
+#: main.c:40
 msgid "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 msgstr "Для общения с разработчиками пишите на адрес <mutt-dev@mutt.org>.\n"
 
-#: main.c:39
+#: main.c:43
 msgid ""
 "Copyright (C) 1996-8 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
@@ -1826,7 +1826,7 @@ msgid ""
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
 
-#: main.c:45
+#: main.c:49
 msgid ""
 "Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1997-8 Thomas Roessler <roessler@guug.de>\n"
@@ -1848,7 +1848,7 @@ msgid ""
 "    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n"
 msgstr ""
 
-#: main.c:67
+#: main.c:71
 msgid ""
 "\n"
 "SHA1 implementation Copyright (C) 1995-7 Eric A. Young <eay@cryptsoft.com>\n"
@@ -1864,7 +1864,7 @@ msgid ""
 "    along with this program; if not, write to the program's developers.\n"
 msgstr ""
 
-#: main.c:93
+#: main.c:97
 msgid ""
 "usage: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
 "]\n"
@@ -1922,33 +1922,33 @@ msgstr ""
 "  -Z\t\tоткрыть первую папку с новым сообщением, иначе сразу выйти\n"
 "  -h\t\tэта подсказка"
 
-#: main.c:299
+#: main.c:303
 msgid "Error initializing terminal."
 msgstr "Ошибка инициализации терминала."
 
-#: main.c:395
+#: main.c:399
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Отладка с уровнем %d.\n"
 
-#: main.c:397
+#: main.c:401
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG не определён при компиляции, игнорируется.\n"
 
-#: main.c:535
+#: main.c:539
 msgid "No recipients specified.\n"
 msgstr "Не указано получателей.\n"
 
-#: main.c:608
+#: main.c:612
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: файл нельзя присоединить.\n"
 
-#: main.c:628
+#: main.c:632
 msgid "No mailbox with new mail."
 msgstr "Нет почтовых ящиков с новой почтой."
 
-#: main.c:662
+#: main.c:666
 msgid "Mailbox is empty."
 msgstr "Почтовый ящик совершенно пуст."
 

@@ -39,9 +39,9 @@ all: charsets.list
 parse_i18n: parse_i18n.o $(LIBOBJS)
 	$(CC) -o parse_i18n parse_i18n.o $(LIBOBJS)
 
-strcasecmp.o:
-	cd .. && $(MAKE) strcasecmp.o
-	cp ../strcasecmp.o ./
+strcasecmp.o $(LIBOBJS):
+	cd .. && $(MAKE) $(LIBOBJS)
+	for f in $(LIBOBJS) ; do ln ../$$f ./ || cp ../$$f ./ ; done
 
 clean:
 	-rm -f *.o *~ core parse_i18n
