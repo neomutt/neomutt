@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.3.19\n"
-"POT-Creation-Date: 2001-06-07 10:55+0200\n"
+"POT-Creation-Date: 2001-06-07 11:00+0200\n"
 "PO-Revision-Date: 2001-05-07 14:17+0900\n"
 "Last-Translator: oota toshiya <oota@ppd.fc.nec.co.jp>\n"
 "Language-Team: mutt-j <mutt-j@ns.ribbon.or.jp>\n"

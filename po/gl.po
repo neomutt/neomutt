@@ -1,22 +1,22 @@
 # GALICIAN TRANSLATION OF MUTT
 # Copyright (C) 1999 Roberto Suarez Soto <ask4it@bigfoot.com>
-# Roberto Suarez Soto <ask4it@bigfoot.com>, 1999.
+# Roberto Suarez Soto <ask4it@bigfoot.com>, 1999-2001.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.0i\n"
-"POT-Creation-Date: 2001-06-07 10:55+0200\n"
-"PO-Revision-Date: 1999-10-27 14:05+0200\n"
+"Project-Id-Version: Mutt 1.3\n"
+"POT-Creation-Date: 2001-06-07 11:00+0200\n"
+"PO-Revision-Date: 2001-04-22 22:05+0200\n"
 "Last-Translator: Roberto Suarez Soto <ask4it@bigfoot.com>\n"
-"Language-Team: Galician <gpul-traduccion@ceu.fi.udc.es>\n"
+"Language-Team: Galician <trasno@ceu.fi.udc.es>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
 #: account.c:144
-#, fuzzy, c-format
+#, c-format
 msgid "Username at %s: "
-msgstr "Cambiar nome a: "
+msgstr "Nome de usuario en %s: "
 
 #: account.c:172
 #, c-format
@@ -166,9 +166,9 @@ msgid "Mailboxes [%d]"
 msgstr "Buzóns [%d]"
 
 #: browser.c:500
-#, fuzzy, c-format
+#, c-format
 msgid "Subscribed [%s], File mask: %s"
-msgstr "Directorio [%s], máscara de ficheiro: %s"
+msgstr "Subscrito [%s], máscara de ficheiro: %s"
 
 #: browser.c:504
 #, c-format
@@ -176,38 +176,33 @@ msgid "Directory [%s], File mask: %s"
 msgstr "Directorio [%s], máscara de ficheiro: %s"
 
 #: browser.c:515
-#, fuzzy
 msgid "Can't attach a directory!"
-msgstr "Non é posible ver un directorio"
+msgstr "Non é posible adxuntar un directorio"
 
 #: browser.c:643 browser.c:1024 browser.c:1117
 msgid "No files match the file mask"
 msgstr "Non hai ficheiros que coincidan coa máscara"
 
 #: browser.c:849
-#, fuzzy
 msgid "Create is only supported for IMAP mailboxes"
-msgstr "Esta operación non está soportada actualmente para mensaxes PGP."
+msgstr "A operación 'Crear' está soportada só en buzóns IMAP"
 
 #: browser.c:869
-#, fuzzy
 msgid "Delete is only supported for IMAP mailboxes"
-msgstr "Esta operación non está soportada actualmente para mensaxes PGP."
+msgstr "A operación 'Borrar' está soportada só en buzóns IMAP"
 
 #: browser.c:877
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
-msgstr ""
+msgstr "¿Seguro de borra-lo buzón \"%s\"?"
 
 #: browser.c:891
-#, fuzzy
 msgid "Mailbox deleted."
-msgstr "Bucle de macro detectado."
+msgstr "Buzón borrado."
 
 #: browser.c:897
-#, fuzzy
 msgid "Mailbox not deleted."
-msgstr "Mensaxe non enviada."
+msgstr "Buzón non borrado."
 
 #: browser.c:916
 msgid "Chdir to: "
@@ -318,22 +313,20 @@ msgid "Could not create temporary file!"
 msgstr "¡Non foi posible crear o ficheiro temporal!"
 
 #: commands.c:126
-#, fuzzy
 msgid "Cannot create display filter"
-msgstr "Non se puido crea-lo filtro"
+msgstr "Non foi posible crea-lo filtro de visualización"
 
 #: commands.c:146
-#, fuzzy
 msgid "Could not copy message"
-msgstr "Non foi posible envia-la mensaxe."
+msgstr "Non foi posible copia-la mensaxe."
 
 #: commands.c:168
 msgid "PGP signature successfully verified."
-msgstr ""
+msgstr "Sinatura PGP verificada con éxito."
 
 #: commands.c:169
 msgid "PGP signature could NOT be verified."
-msgstr ""
+msgstr "Non foi posible verifica-la sinatura PGP."
 
 #: commands.c:192
 msgid "Command: "
@@ -379,9 +372,8 @@ msgid "Pipe to command: "
 msgstr "Canalizar ó comando: "
 
 #: commands.c:430
-#, fuzzy
 msgid "No printing command has been defined."
-msgstr "cambiar entre buzóns de entrada"
+msgstr "Non foi definido ningún comando de impresión."
 
 #: commands.c:435
 msgid "Print message?"
@@ -400,14 +392,12 @@ msgid "Messages printed"
 msgstr "Mensaxes impresas"
 
 #: commands.c:445
-#, fuzzy
 msgid "Message could not be printed"
-msgstr "Mensaxe impresa"
+msgstr "Non foi posible imprimi-la mensaxe"
 
 #: commands.c:446
-#, fuzzy
 msgid "Messages could not be printed"
-msgstr "Mensaxes impresas"
+msgstr "Non foi posible imprimi-las mensaxes"
 
 #: commands.c:455
 msgid ""
@@ -472,14 +462,14 @@ msgid "Convert to %s upon sending?"
 msgstr ""
 
 #: commands.c:844
-#, fuzzy, c-format
+#, c-format
 msgid "Content-Type changed to %s."
-msgstr "Conectando con %s..."
+msgstr "Tipo de contido cambiado a %s..."
 
 #: commands.c:846
 #, fuzzy, c-format
 msgid "Character set changed to %s; %s."
-msgstr "Conectando con %s..."
+msgstr "O xogo de caracteres foi cambiado a %s."
 
 #: commands.c:848
 msgid "not converting"
@@ -535,16 +525,12 @@ msgid "<default>"
 msgstr "<por defecto>"
 
 #: compose.c:132
-#, fuzzy
 msgid "(e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
-msgstr ""
-"(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, seleccionar algoritmo (m)icou "
-"(o)lvidar "
+msgstr "¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas ou (o)lvidar? "
 
 #: compose.c:133
-#, fuzzy
 msgid "esabf"
-msgstr "efcamo"
+msgstr "efcao"
 
 #: compose.c:147
 msgid "Sign as: "
@@ -561,9 +547,8 @@ msgid "%s [#%d] modified. Update encoding?"
 msgstr "%s [#%d] modificado. ¿Actualizar codificación?"
 
 #: compose.c:280
-#, fuzzy
 msgid "-- Attachments"
-msgstr "Adxuntos"
+msgstr "-- Adxuntos"
 
 #: compose.c:324
 msgid "You may not delete the only attachment."
@@ -571,12 +556,12 @@ msgstr "Non podes borra-lo único adxunto."
 
 #: compose.c:673
 msgid "Attaching selected files..."
-msgstr ""
+msgstr "Adxuntando ficheiros seleccionados ..."
 
 #: compose.c:684
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to attach %s!"
-msgstr "¡Non foi posible adxuntar!"
+msgstr "¡Non foi posible adxuntar %s!"
 
 #: compose.c:702
 msgid "Open mailbox to attach message from"
@@ -596,15 +581,15 @@ msgstr "¡Non foi posible adxuntar!"
 
 #: compose.c:828
 msgid "Recoding only affects text attachments."
-msgstr ""
+msgstr "A recodificación só afecta ós adxuntos de texto."
 
 #: compose.c:833
 msgid "The current attachment won't be converted."
-msgstr ""
+msgstr "O adxunto actual non será convertido."
 
 #: compose.c:835
 msgid "The current attachment will be converted."
-msgstr ""
+msgstr "O adxunto actual será convertido"
 
 #: compose.c:906
 msgid "Invalid encoding."
@@ -879,9 +864,8 @@ msgid "Thread contains unread messages."
 msgstr "O fío contén mensaxes sen ler."
 
 #: curs_main.c:1667
-#, fuzzy
 msgid "Can't edit message on POP server."
-msgstr "Borrando mensaxes do servidor..."
+msgstr "Non é posible editar unha mensaxe no servidor POP."
 
 #.
 #. * SLcurses_waddnstr() can't take a "const char *", so this is only
@@ -962,39 +946,37 @@ msgid "%s: unknown editor command (~? for help)\n"
 msgstr "%s: comando de editor descoñecido (~? para axuda)\n"
 
 #: editmsg.c:74
-#, fuzzy, c-format
+#, c-format
 msgid "could not create temporary folder: %s"
-msgstr "¡Non foi posible crear o ficheiro temporal!"
+msgstr "Non foi posible crea-la carpeta temporal: %s"
 
 #: editmsg.c:84
-#, fuzzy, c-format
+#, c-format
 msgid "could not write temporary mail folder: %s"
-msgstr "¡Non foi posible crear o ficheiro temporal!"
+msgstr "Non foi posible crea-lo buzón temporal: %s"
 
 #: editmsg.c:102
-#, fuzzy
 msgid "Message file is empty!"
-msgstr "O buzón está valeiro."
+msgstr "¡A mensaxe está valeira!"
 
 #: editmsg.c:109
-#, fuzzy
 msgid "Message not modified!"
-msgstr "Mensaxe impresa"
+msgstr "Mensaxe non modificada."
 
 #: editmsg.c:117
-#, fuzzy, c-format
+#, c-format
 msgid "Can't open message file: %s"
-msgstr "Non fun capaz de crea-lo ficheiro %s"
+msgstr "Non foi posible abri-lo ficheiro da mensaxe: %s"
 
 #: editmsg.c:124 editmsg.c:152
-#, fuzzy, c-format
+#, c-format
 msgid "Can't append to folder: %s"
-msgstr "Non fun capaz de crea-lo ficheiro %s"
+msgstr "Non foi posible engadir á carpeta: %s"
 
 #: editmsg.c:183
-#, fuzzy, c-format
+#, c-format
 msgid "Error. Preserving temporary file: %s"
-msgstr "Non podo crea-lo ficheiro temporal"
+msgstr "Erro. Conservando ficheiro temporal: %s"
 
 #: flags.c:288
 msgid "Set flag"
@@ -1065,9 +1047,9 @@ msgid "[-- on %s --]\n"
 msgstr "[-- o %s --]\n"
 
 #: handler.c:1618
-#, fuzzy, c-format
+#, c-format
 msgid "[-- name: %s --]\n"
-msgstr "[-- o %s --]\n"
+msgstr "[-- nome: %s --]\n"
 
 #: handler.c:1629
 #, c-format
@@ -1154,50 +1136,51 @@ msgstr "Axuda sobre %s"
 
 #: hook.c:243
 msgid "unhook: Can't do unhook * from within a hook."
-msgstr ""
+msgstr "unhook: Non é posible facer 'unhook *' dentro doutro hook."
 
 #: hook.c:255
-#, fuzzy, c-format
+#, c-format
 msgid "unhook: unknown hook type: %s"
-msgstr "%s: tipo descoñecido"
+msgstr "unhook: tipo descoñecido: %s"
 
 #: hook.c:261
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s."
-msgstr ""
+msgstr "unhook: non é posible borrar un %s dende dentro dun %s"
 
 #: imap/auth.c:104
+#, fuzzy
 msgid "No authenticators available"
-msgstr ""
+msgstr "Autenticación SASL fallida."
 
 #: imap/auth_anon.c:39
 msgid "Authenticating (anonymous)..."
-msgstr ""
+msgstr "Autenticando como anónimo ..."
 
 #: imap/auth_anon.c:69
 msgid "Anonymous authentication failed."
-msgstr ""
+msgstr "Autenticación anónima fallida."
 
 #: imap/auth_cram.c:44
 msgid "Authenticating (CRAM-MD5)..."
-msgstr ""
+msgstr "Autenticando (CRAM-MD5)..."
 
 #: imap/auth_cram.c:124
 msgid "CRAM-MD5 authentication failed."
-msgstr ""
+msgstr "Autenticación CRAM-MD5 fallida."
 
 #. now begin login
 #: imap/auth_gss.c:104
 msgid "Authenticating (GSSAPI)..."
-msgstr ""
+msgstr "Autenticando (GSSAPI)..."
 
 #: imap/auth_gss.c:267
 msgid "GSSAPI authentication failed."
-msgstr ""
+msgstr "Autenticación GSSAPI fallida."
 
 #: imap/auth_login.c:34
 msgid "LOGIN disabled on this server."
-msgstr ""
+msgstr "LOGIN deshabilitado neste servidor."
 
 #: imap/auth_login.c:43 pop_auth.c:229
 msgid "Logging in..."
@@ -1209,25 +1192,23 @@ msgstr "O login fallou."
 
 #: imap/auth_sasl.c:96 pop_auth.c:76
 msgid "Authenticating (SASL)..."
-msgstr ""
+msgstr "Autenticando (SASL)..."
 
 #: imap/auth_sasl.c:177 pop_auth.c:154
 msgid "SASL authentication failed."
-msgstr ""
+msgstr "Autenticación SASL fallida."
 
 #: imap/browse.c:81
-#, fuzzy
 msgid "Getting namespaces..."
-msgstr "Recollendo mensaxe..."
+msgstr "Recollendo entornos de nomes..."
 
 #: imap/browse.c:90
 msgid "Getting folder list..."
-msgstr ""
+msgstr "Recollendo lista de carpetas..."
 
 #: imap/browse.c:271
-#, fuzzy
 msgid "Create mailbox: "
-msgstr "Abrir buzón"
+msgstr "Crear buzón:"
 
 #: imap/browse.c:276
 #, fuzzy
@@ -1235,14 +1216,13 @@ msgid "Mailbox must have a name."
 msgstr "O buzón non cambiou."
 
 #: imap/browse.c:284
-#, fuzzy
 msgid "Mailbox created."
-msgstr "Bucle de macro detectado."
+msgstr "Buzón creado."
 
 #: imap/command.c:289
 #, fuzzy
 msgid "Mailbox closed"
-msgstr "Bucle de macro detectado."
+msgstr "Buzón borrado."
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
@@ -1252,17 +1232,17 @@ msgid "Fatal error.  Message count is out of sync!"
 msgstr "Erro fatal. ¡A conta de mensaxes non está sincronizada!"
 
 #: imap/imap.c:135
-#, fuzzy, c-format
+#, c-format
 msgid "Closing connection to %s..."
-msgstr "Pechando conexión ó servidor IMAP..."
+msgstr "Pechando conexión con %s..."
 
 #: imap/imap.c:295
 msgid "This IMAP server is ancient. Mutt does not work with it."
-msgstr "Este servidor IMAP é antigo. Mutt non traballa con el."
+msgstr "Este servidor IMAP é moi vello. Mutt non traballa con el."
 
 #: imap/imap.c:380
 msgid "Secure connection with TLS?"
-msgstr ""
+msgstr "¿Usar conexión segura con TLS?"
 
 #: imap/imap.c:389
 msgid "Could not negotiate TLS connection"
@@ -1289,9 +1269,9 @@ msgid "Closing connection to IMAP server..."
 msgstr "Pechando conexión ó servidor IMAP..."
 
 #: imap/imap.c:912 pop.c:458
-#, fuzzy, c-format
+#, c-format
 msgid "Marking %d messages deleted..."
-msgstr "Lendo %d novas mensaxes (%d bytes)..."
+msgstr "Marcando %d mensaxes borradas ..."
 
 #: imap/imap.c:931
 #, c-format
@@ -1308,14 +1288,14 @@ msgid "CLOSE failed"
 msgstr "O login fallou."
 
 #: imap/imap.c:1299
-#, fuzzy, c-format
+#, c-format
 msgid "Subscribing to %s..."
-msgstr "Copiando a %s..."
+msgstr "Subscribindo a %s..."
 
 #: imap/imap.c:1301
-#, fuzzy, c-format
+#, c-format
 msgid "Unsubscribing to %s..."
-msgstr "Conectando con %s..."
+msgstr "Borrando a subscripción con %s..."
 
 #. Unable to fetch headers for lower versions
 #: imap/message.c:73
@@ -1333,31 +1313,30 @@ msgstr "Recollendo mensaxe..."
 
 #: imap/message.c:282 pop.c:373
 msgid "The message index is incorrect. Try reopening the mailbox."
-msgstr ""
+msgstr "O índice de mensaxes é incorrecto. Tente reabri-lo buzón."
 
 #: imap/message.c:455
 msgid "Uploading message ..."
 msgstr "Enviando mensaxe ..."
 
 #: imap/message.c:562
-#, fuzzy, c-format
+#, c-format
 msgid "Copying %d messages to %s..."
-msgstr "Movendo mensaxes lidas a %s..."
+msgstr "Copiando %d mensaxes a %s..."
 
 #: imap/message.c:566
-#, fuzzy, c-format
+#, c-format
 msgid "Copying message %d to %s..."
-msgstr "Escribindo mensaxe a %s..."
+msgstr "Copiando mensaxe %d a %s..."
 
 #: imap/util.c:238
-#, fuzzy
 msgid "Continue?"
-msgstr "(seguir)\n"
+msgstr "¿Seguir?"
 
 #: imap/util.c:244
 #, c-format
 msgid "%s [%s]\n"
-msgstr ""
+msgstr "%s [%s]\n"
 
 #: init.c:490
 msgid "alias: no address"
@@ -1373,9 +1352,9 @@ msgid "%s: unknown sorting method"
 msgstr "%s: método de ordeación descoñecido"
 
 #: init.c:748
-#, fuzzy, c-format
+#, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
-msgstr "mutt_restore_default: erro en regexp: %s\n"
+msgstr "mutt_restore_default(%s): erro en regexp: %s\n"
 
 #: init.c:809
 #, c-format
@@ -1429,7 +1408,7 @@ msgstr "source: erros en %s"
 #: init.c:1255
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
-msgstr ""
+msgstr "source: a lectura foi abortada por haber demasiados erros in %s"
 
 #: init.c:1269
 #, c-format
@@ -1523,9 +1502,8 @@ msgid "view attachment as text"
 msgstr "ver adxunto como texto"
 
 #: keymap_alldefs.h:8
-#, fuzzy
 msgid "Toggle display of subparts"
-msgstr "cambiar a visualización do texto citado"
+msgstr "Cambia-la visualización das subpartes"
 
 #: keymap_alldefs.h:9
 msgid "move to the bottom of the page"
@@ -1548,19 +1526,16 @@ msgid "display the currently selected file's name"
 msgstr "ve-lo nome do ficheiro seleccioado actualmente"
 
 #: keymap_alldefs.h:14
-#, fuzzy
 msgid "subscribe to current mailbox (IMAP only)"
-msgstr "borra-la entrada actual"
+msgstr "subscribir ó buzón actual (só IMAP)"
 
 #: keymap_alldefs.h:15
-#, fuzzy
 msgid "unsubscribe to current mailbox (IMAP only)"
-msgstr "borra-la entrada actual"
+msgstr "borra-la subscripción ó buzón actual (só IMAP)"
 
 #: keymap_alldefs.h:16
-#, fuzzy
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
-msgstr "borra-la entrada actual"
+msgstr "cambiar entre ver todos e ver só os buzóns subscritos (só IMAP)"
 
 #: keymap_alldefs.h:17
 msgid "change directories"
@@ -1631,14 +1606,12 @@ msgid "edit the TO list"
 msgstr "edita-a lista do Para"
 
 #: keymap_alldefs.h:34
-#, fuzzy
 msgid "create a new mailbox (IMAP only)"
-msgstr "borra-la entrada actual"
+msgstr "crear un novo buzón (só IMAP)"
 
 #: keymap_alldefs.h:35
-#, fuzzy
 msgid "edit attachment content type"
-msgstr "edita-lo tipo do adxunto"
+msgstr "edita-lo tipo de contido do adxunto"
 
 #: keymap_alldefs.h:36
 msgid "get a temporary copy of an attachment"
@@ -1654,7 +1627,7 @@ msgstr "compór novo adxunto usando a entrada mailcap"
 
 #: keymap_alldefs.h:39
 msgid "toggle recoding of this attachment"
-msgstr ""
+msgstr "cambia-la recodificación deste adxunto"
 
 #: keymap_alldefs.h:40
 msgid "save this message to send later"
@@ -1670,7 +1643,7 @@ msgstr "envia-la mensaxe"
 
 #: keymap_alldefs.h:43
 msgid "toggle disposition between inline/attachment"
-msgstr ""
+msgstr "cambia-la disposición entre interior/adxunto"
 
 #: keymap_alldefs.h:44
 msgid "toggle whether to delete file after sending it"
@@ -1717,9 +1690,8 @@ msgid "delete the current entry"
 msgstr "borra-la entrada actual"
 
 #: keymap_alldefs.h:55
-#, fuzzy
 msgid "delete the current mailbox (IMAP only)"
-msgstr "borra-la entrada actual"
+msgstr "borra-lo buzón actual (só IMAP)"
 
 #: keymap_alldefs.h:56
 msgid "delete all messages in subthread"
@@ -1734,18 +1706,16 @@ msgid "display full address of sender"
 msgstr "amosa-lo enderezo completo do remitente"
 
 #: keymap_alldefs.h:59
-#, fuzzy
 msgid "display message and toggle header weeding"
-msgstr "amosa-la mensaxe con tódalas cabeceiras"
+msgstr "amosa-la mensaxe e cambia-lo filtrado de cabeceiras"
 
 #: keymap_alldefs.h:60
 msgid "display a message"
 msgstr "amosar unha mensaxe"
 
 #: keymap_alldefs.h:61
-#, fuzzy
 msgid "edit the raw message"
-msgstr "edita-la mensaxe"
+msgstr "edita-la mensaxe en cru"
 
 #: keymap_alldefs.h:62
 msgid "delete the char in front of the cursor"
@@ -1756,9 +1726,8 @@ msgid "move the cursor one character to the left"
 msgstr "move-lo cursor un carácter á esquerda"
 
 #: keymap_alldefs.h:64
-#, fuzzy
 msgid "move the cursor to the beginning of the word"
-msgstr "saltar ó comezo de liña"
+msgstr "move-lo cursor ó comezo da palabra"
 
 #: keymap_alldefs.h:65
 msgid "jump to the beginning of the line"
@@ -1789,9 +1758,8 @@ msgid "move the cursor one character to the right"
 msgstr "move-lo cursor un carácter á dereita"
 
 #: keymap_alldefs.h:72
-#, fuzzy
 msgid "move the cursor to the end of the word"
-msgstr "move-lo cursor un carácter á dereita"
+msgstr "move-lo cursor ó final da palabra"
 
 #: keymap_alldefs.h:73 keymap_alldefs.h:74
 msgid "scroll up through the history list"
@@ -1802,9 +1770,8 @@ msgid "delete chars from cursor to end of line"
 msgstr "borra-los caracteres dende o cursor ata o fin da liña"
 
 #: keymap_alldefs.h:76
-#, fuzzy
 msgid "delete chars from the cursor to the end of the word"
-msgstr "borra-los caracteres dende o cursor ata o fin da liña"
+msgstr "borra-los caracteres dende o cursor ata o fin da palabra"
 
 #: keymap_alldefs.h:77
 msgid "delete all chars on the line"
@@ -1820,20 +1787,19 @@ msgstr "cita-la vindeira tecla pulsada"
 
 #: keymap_alldefs.h:80
 msgid "transpose character under cursor with previous"
-msgstr ""
+msgstr "intercambia-lo caracter baixo o cursor có anterior"
 
 #: keymap_alldefs.h:81
 msgid "capitalize the word"
-msgstr ""
+msgstr "pasa-la primeira letra da palabra a maiúsculas"
 
 #: keymap_alldefs.h:82
-#, fuzzy
 msgid "convert the word to lower case"
-msgstr "mover ó final da páxina"
+msgstr "converti-la palabra a minúsculas"
 
 #: keymap_alldefs.h:83
 msgid "convert the word to upper case"
-msgstr ""
+msgstr "converti-la palabra a maiúsculas"
 
 #: keymap_alldefs.h:84
 msgid "enter a muttrc command"
@@ -1920,9 +1886,8 @@ msgid "delete messages matching a pattern"
 msgstr "borrar mensaxes coincidentes cun patrón"
 
 #: keymap_alldefs.h:105
-#, fuzzy
 msgid "force retrieval of mail from IMAP server"
-msgstr "recoller correo dun servidor POP"
+msgstr "forza-la recollida de correo desde un servidor IMAP"
 
 #: keymap_alldefs.h:106
 msgid "retrieve mail from POP server"
@@ -1961,9 +1926,8 @@ msgid "jump to the next unread message"
 msgstr "saltar á vindeira mensaxe recuperada"
 
 #: keymap_alldefs.h:115
-#, fuzzy
 msgid "jump to parent message in thread"
-msgstr "recuperar tódalas mensaxes en fío"
+msgstr "saltar á mensaxe pai no fío"
 
 #: keymap_alldefs.h:116
 msgid "jump to previous thread"
@@ -1974,9 +1938,8 @@ msgid "jump to previous subthread"
 msgstr "saltar ó subfío anterior"
 
 #: keymap_alldefs.h:118
-#, fuzzy
 msgid "move to the previous undeleted message"
-msgstr "moverse á vindeira mensaxe recuperada"
+msgstr "moverse á anterior mensaxe recuperada"
 
 #: keymap_alldefs.h:119
 msgid "jump to the previous new message"
@@ -2095,9 +2058,8 @@ msgid "reply to a message"
 msgstr "responder a unha mensaxe"
 
 #: keymap_alldefs.h:148
-#, fuzzy
 msgid "use the current message as a template for a new one"
-msgstr "edita-la mensaxe actual para reenviala"
+msgstr "usa-la mensaxe actual como patrón para unha nova"
 
 #: keymap_alldefs.h:149
 msgid "save message/attachment to a file"
@@ -2241,56 +2203,50 @@ msgstr "facer unha copia desencriptada"
 
 #: keymap_alldefs.h:184
 msgid "check for classic pgp"
-msgstr ""
+msgstr "verificar para pgp clásico"
 
 #: keymap_alldefs.h:185
 msgid "Accept the chain constructed"
-msgstr ""
+msgstr "Acepta-la cadea construida"
 
 #: keymap_alldefs.h:186
-#, fuzzy
 msgid "Append a remailer to the chain"
-msgstr "borrar tódolos caracteres da liña"
+msgstr "Engadir un remailer á cadea"
 
 #: keymap_alldefs.h:187
-#, fuzzy
 msgid "Insert a remailer into the chain"
-msgstr "borrar tódolos caracteres da liña"
+msgstr "Insertar un remailer na cadea"
 
 #: keymap_alldefs.h:188
-#, fuzzy
 msgid "Delete a remailer from the chain"
-msgstr "borrar tódolos caracteres da liña"
+msgstr "Borrar un remailer da cadea"
 
 #: keymap_alldefs.h:189
-#, fuzzy
 msgid "Select the previous element of the chain"
-msgstr "borrar tódolos caracteres da liña"
+msgstr "Selecciona-lo anterior elemento da cadea"
 
 #: keymap_alldefs.h:190
-#, fuzzy
 msgid "Select the next element of the chain"
-msgstr "borrar tódolos caracteres da liña"
+msgstr "Selecciona-lo vindeiro elemento da cadea"
 
 #: keymap_alldefs.h:191
 msgid "send the message through a mixmaster remailer chain"
-msgstr ""
+msgstr "envia-la mensaxe a través dunha cadea de remailers mixmaster"
 
 #: lib.c:59 lib.c:74 lib.c:105
 msgid "Out of memory!"
 msgstr "¡Memoria agotada!"
 
 #: main.c:41
-#, fuzzy
 msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please use the flea(1) utility.\n"
 msgstr ""
 "Para pórse en contacto cós desenvolvedores, manda unha mensaxe a "
 "<mutt-dev@mutt.org>.\n"
+"Para informar dun fallo, use a utilidade flea(1).\n"
 
 #: main.c:45
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2001 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
@@ -2304,7 +2260,6 @@ msgstr ""
 "baixo certas condicións; escriba `mutt -vv' para ve-losdetalles.\n"
 
 #: main.c:51
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
@@ -2331,10 +2286,13 @@ msgid ""
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 msgstr ""
-"Copyright (C) 1996-9 Michael R. Elkins <me@cs.hmc.edu>\n"
-"Copyright (C) 1997-9 Thomas Roessler <roessler@guug.de>\n"
-"Copyright (C) 1998-9 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1998-9 Ruslan Ermilov <ru@ucb.crimea.ua>\n"
+"Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Copyright (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
+"Copyright (C) 1997-2001 Thomas Roessler <roessler@guug.de>\n"
+"Copyright (C) 1998-2001 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2001 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 2000-2001 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "Moita xente non mencionada aquí colaborou con unha morea de código,\n"
 "amaños, e suxerencias.\n"
@@ -2344,12 +2302,16 @@ msgstr ""
 "    publicada pola Free Software Foundation; tanto a versión 2 da\n"
 "    licencia, ou (ó seu gusto) outra versión posterior.\n"
 "\n"
+"    Este programa é distribuido na esperanza de que sexa útil,\n"
+"    mais SEN GARANTÍA DE NINGÚN TIPO; incluso sen a garantía implícita\n"
+"    de MERCANTIBILIDADE ou AXEITAMENTE PARA ALGÚN PROPÓSITO PARTICULAR.\n"
+"    Mire a Licencia General de GNU para máis información.\n"
+"\n"
 "    Debería haber recibido unha copia da Licencia Pública Xeral de GNU\n"
 "    xunto deste programa; se non foi así, escriba á Free Software\n"
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 
 #: main.c:88
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
 "]\n"
@@ -2434,12 +2396,12 @@ msgstr ""
 #: main.c:632
 #, c-format
 msgid "%s does not exist. Create it?"
-msgstr ""
+msgstr "%s non existe. ¿Desexa crealo?"
 
 #: main.c:636
-#, fuzzy, c-format
+#, c-format
 msgid "Can't create %s: %s."
-msgstr "Non fun capaz de crea-lo ficheiro %s"
+msgstr "Non foi posible crear %s: %s."
 
 #: main.c:681
 msgid "No recipients specified.\n"
@@ -2455,9 +2417,8 @@ msgid "No mailbox with new mail."
 msgstr "Non hai buzóns con novo correo."
 
 #: main.c:796
-#, fuzzy
 msgid "No incoming mailboxes defined."
-msgstr "cambiar entre buzóns de entrada"
+msgstr "Non se definiron buzóns para correo entrante."
 
 #: main.c:827
 msgid "Mailbox is empty."
@@ -2580,9 +2541,8 @@ msgid "Search is not implemented for this menu."
 msgstr "A búsqueda non está implementada neste menú."
 
 #: menu.c:950
-#, fuzzy
 msgid "Jumping is not implemented for dialogs."
-msgstr "A búsqueda non está implementada neste menú."
+msgstr "O salto non está implementado nos diálogos."
 
 #: menu.c:985
 msgid "Tagging is not supported."
@@ -2610,9 +2570,8 @@ msgid "oac"
 msgstr "sec"
 
 #: muttlib.c:1136
-#, fuzzy
 msgid "Can't save message to POP mailbox."
-msgstr "Escribir mensaxe ó buzón"
+msgstr "Non foi posible garda-la mensaxe no buzón POP."
 
 #: muttlib.c:1145
 #, c-format
@@ -2627,30 +2586,30 @@ msgstr "¿engadir mensaxes a %s?"
 #: mutt_socket.c:84 mutt_socket.c:140
 #, fuzzy, c-format
 msgid "Connection to %s closed"
-msgstr "Conectando con %s..."
+msgstr "Fallou a conexión con %s."
 
 #: mutt_socket.c:250
 msgid "SSL is unavailable."
-msgstr ""
+msgstr "SSL non está accesible."
 
 #: mutt_socket.c:281
 msgid "Preconnect command failed."
-msgstr ""
+msgstr "O comando de preconexión fallou."
 
 #: mutt_socket.c:352 mutt_socket.c:366
 #, fuzzy, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Conectando con %s"
+msgstr "Erro ó conectar có servidor: %s"
 
 #: mutt_socket.c:400 mutt_socket.c:441
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "Copiando a %s..."
+msgstr "Buscando %s..."
 
 #: mutt_socket.c:405 mutt_socket.c:445
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "Non foi posible atopa-lo enderezo do servidor %s."
+msgstr "Non foi posible atopa-lo servidor \"%s\""
 
 #: mutt_socket.c:409 mutt_socket.c:450
 #, c-format
@@ -2658,108 +2617,103 @@ msgid "Connecting to %s..."
 msgstr "Conectando con %s..."
 
 #: mutt_socket.c:473
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "Non foi posible abrir %s"
+msgstr "Non foi posible conectar con %s (%s)"
 
 #: mutt_ssl.c:172
 msgid "Failed to find enough entropy on your system"
-msgstr ""
+msgstr "Non hai entropía abondo no seu sistema"
 
 #: mutt_ssl.c:196
 #, c-format
 msgid "Filling entropy pool: %s...\n"
-msgstr ""
+msgstr "Enchendo pozo de entropía: %s...\n"
 
 #: mutt_ssl.c:204
 #, c-format
 msgid "%s has insecure permissions!"
-msgstr ""
+msgstr "%s ten permisos inseguros."
 
 #: mutt_ssl.c:223
 msgid "SSL disabled due the lack of entropy"
-msgstr ""
+msgstr "SSL foi deshabilitado debido á falta de entropía."
 
 #: mutt_ssl.c:335
-#, fuzzy
 msgid "Unable to get certificate from peer"
-msgstr "non foi posible determina-lo directorio \"home\""
+msgstr "Non foi posible obter un certificado do outro extremo"
 
 #: mutt_ssl.c:343
-#, fuzzy, c-format
+#, c-format
 msgid "SSL connection using %s (%s)"
-msgstr "Conectando con %s"
+msgstr "Conectando mediante SSL usando %s (%s)"
 
 #: mutt_ssl.c:371
-#, fuzzy
 msgid "Unknown"
-msgstr "erro descoñecido"
+msgstr "Descoñecido"
 
 #: mutt_ssl.c:396
-#, fuzzy
 msgid "[unable to calculate]"
-msgstr "%s: non foi posible adxuntar ficheiro"
+msgstr "[imposible calcular]"
 
 #: mutt_ssl.c:414
-#, fuzzy
 msgid "[invalid date]"
-msgstr "%s: valor inválido"
+msgstr "[ data incorrecta ]"
 
 #: mutt_ssl.c:489
 msgid "Server certificate is not yet valid"
-msgstr ""
+msgstr "O certificado do servidor non é aínda válido"
 
 #: mutt_ssl.c:496
 msgid "Server certificate has expired"
-msgstr ""
+msgstr "O certificado do servidor expirou"
 
 #: mutt_ssl.c:569
 msgid "This certificate belongs to:"
-msgstr ""
+msgstr "Este certificado pertence a:"
 
 #: mutt_ssl.c:579
 msgid "This certificate was issued by:"
-msgstr ""
+msgstr "Este certificado foi emitido por:"
 
 #: mutt_ssl.c:589
 msgid "This certificate is valid"
-msgstr ""
+msgstr "Este certificado é válido"
 
 #: mutt_ssl.c:590
 #, c-format
 msgid "   from %s"
-msgstr ""
+msgstr "   de %s"
 
 #: mutt_ssl.c:592
 #, c-format
 msgid "     to %s"
-msgstr ""
+msgstr "     a %s"
 
 #: mutt_ssl.c:598
 #, c-format
 msgid "Fingerprint: %s"
-msgstr ""
+msgstr "Fingerprint: %s"
 
 #: mutt_ssl.c:600
 msgid "SSL Certificate check"
-msgstr ""
+msgstr "Comprobación do certificado SSL"
 
 #: mutt_ssl.c:603
 msgid "(r)eject, accept (o)nce, (a)ccept always"
-msgstr ""
+msgstr "(r)exeitar, aceptar (e)sta vez, (a)ceptar sempre"
 
 #: mutt_ssl.c:604
-#, fuzzy
 msgid "roa"
-msgstr "sec"
+msgstr "rea"
 
 #: mutt_ssl.c:608
 msgid "(r)eject, accept (o)nce"
-msgstr ""
+msgstr "(r)exeitar, aceptar (e)sta vez"
 
 #: mutt_ssl.c:609
 msgid "ro"
-msgstr ""
+msgstr "re"
 
 #: mutt_ssl.c:613 pgpkey.c:510
 msgid "Exit  "
@@ -2767,11 +2721,11 @@ msgstr "Saír  "
 
 #: mutt_ssl.c:639
 msgid "Warning: Couldn't save certificate"
-msgstr ""
+msgstr "Atención: non foi posible garda-lo certificado"
 
 #: mutt_ssl.c:644
 msgid "Certificate saved"
-msgstr ""
+msgstr "Certificado gardado"
 
 #: mx.c:118
 #, c-format
@@ -2802,9 +2756,9 @@ msgid "Waiting for flock attempt... %d"
 msgstr "Agardando polo intento de flock... %d"
 
 #: mx.c:587
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't lock %s\n"
-msgstr "Non se pode bloquear %s.\n"
+msgstr "Non foi posible bloquear %s.\n"
 
 #: mx.c:675
 #, c-format
@@ -2870,14 +2824,12 @@ msgid "Mailbox is marked unwritable. %s"
 msgstr "O buzón está marcado como non escribible. %s"
 
 #: mx.c:1172
-#, fuzzy
 msgid "Mailbox checkpointed."
-msgstr "Bucle de macro detectado."
+msgstr "Buzón marcado para comprobación."
 
 #: mx.c:1472
-#, fuzzy
 msgid "Can't write message"
-msgstr "edita-la mensaxe"
+msgstr "Non foi posible escribi-la mensaxe"
 
 #
 #: pager.c:61
@@ -2950,9 +2902,9 @@ msgstr "Mes inválido: %s"
 
 #. getDate has its own error message, don't overwrite it here
 #: pattern.c:527
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid relative date: %s"
-msgstr "Mes inválido: %s"
+msgstr "Data relativa incorrecta: %s"
 
 #: pattern.c:541
 msgid "error in expression"
@@ -3024,9 +2976,9 @@ msgid "PGP passphrase forgotten."
 msgstr "Contrasinal PGP esquecido."
 
 #: pgp.c:142
-#, fuzzy, c-format
+#, c-format
 msgid "[-- PGP output follows (current time: %c) --]\n"
-msgstr "[-- Saída PGP a continuación (hora actual: "
+msgstr "[-- Saída PGP a continuación (hora actual: %c) --]\n"
 
 #: pgp.c:352
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
@@ -3097,18 +3049,17 @@ msgid ""
 msgstr "[-- Fin da saída PGP --]\n"
 
 #: pgp.c:776
-#, fuzzy
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
 "\n"
-msgstr "Erro: multipart/signed non ten protocolo."
+msgstr "[-- Erro: estructura multiparte/asinada inconsistente --]\n"
 
 #: pgp.c:784
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
 "\n"
-msgstr "Erro: multipart/signed non ten protocolo."
+msgstr "[-- Erro: protocolo multiparte/asinado %s descoñecido --]\n"
 
 #: pgp.c:808
 #, c-format
@@ -3116,15 +3067,16 @@ msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
 "\n"
 msgstr ""
+"[-- Atención: non é posible verificar sinaturas %s/%s --]\n"
+"\n"
 
 #. Now display the signed body
 #: pgp.c:818
-#, fuzzy
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
 msgstr ""
-"[-- Os datos a continuación están firmados con PGP/MIME --]\n"
+"[-- Os datos a continuación están asinados --]\n"
 "\n"
 
 #: pgp.c:824
@@ -3132,15 +3084,16 @@ msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
 msgstr ""
+"[-- Atención: non se atoparon sinaturas. --]\n"
+"\n"
 
 #: pgp.c:830
-#, fuzzy
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
 msgstr ""
 "\n"
-"[-- Fin dos datos firmados con PGP/MIME --]\n"
+"[-- Fin dos datos asinados --]\n"
 
 #: pgp.c:930
 msgid "Internal error. Inform <roessler@guug.de>."
@@ -3198,21 +3151,19 @@ msgstr "Introduza keyID para %s: "
 
 #: pgp.c:1568
 msgid "Can't invoke PGP"
-msgstr ""
+msgstr "Non foi posible invocar ó PGP"
 
 #: pgp.c:1672
-#, fuzzy
 msgid "Create an application/pgp message?"
-msgstr "crear un alias do remitente dunha mensaxe"
+msgstr "¿Crear unha mensaxe aplicación/pgp?"
 
 #: pgpinvoke.c:301
-#, fuzzy
 msgid "Fetching PGP key..."
-msgstr "Recollendo mensaxe..."
+msgstr "Recollendo chave PGP..."
 
 #: pgpkey.c:486
 msgid "All matching keys are marked expired/revoked."
-msgstr ""
+msgstr "Tódalas chaves coincidintes están marcadas como expiradas/revocadas."
 
 #. __STRCAT_CHECKED__
 #: pgpkey.c:512
@@ -3225,14 +3176,14 @@ msgid "Check key  "
 msgstr "Comprobar chave  "
 
 #: pgpkey.c:528
-#, fuzzy, c-format
+#, c-format
 msgid "PGP keys matching <%s>."
-msgstr "Chaves PGP coincidintes con "
+msgstr "Chaves PGP coincidintes con <%s>."
 
 #: pgpkey.c:530
-#, fuzzy, c-format
+#, c-format
 msgid "PGP keys matching \"%s\"."
-msgstr "Chaves PGP coincidintes con "
+msgstr "Chaves PGP coincidintes con \"%s\""
 
 #: pgpkey.c:549 pgpkey.c:741
 msgid "Can't open /dev/null"
@@ -3249,11 +3200,11 @@ msgstr "Key ID: 0x%s"
 
 #: pgpkey.c:596
 msgid "This key can't be used: expired/disabled/revoked."
-msgstr ""
+msgstr "Esta chave non pode ser usada: expirada/deshabilitada/revocada."
 
 #: pgpkey.c:608
 msgid "This ID is expired/disabled/revoked"
-msgstr ""
+msgstr "Este ID expirou/foi deshabilitado/foi revocado"
 
 #: pgpkey.c:612
 msgid "This ID's trust level is undefined."
@@ -3268,58 +3219,51 @@ msgid "This ID is only marginally trusted."
 msgstr "Este ID é de confianza marxinal."
 
 #: pgpkey.c:622
-#, fuzzy, c-format
+#, c-format
 msgid "%s Do you really want to use the key?"
-msgstr "%s ¿Está seguro de querer usalo?"
+msgstr "%s ¿Está seguro de querer usa-la chave?"
 
 #: pgpkey.c:720
 msgid "Please enter the key ID: "
 msgstr "Introduza o key ID: "
 
 #: pgpkey.c:748
-#, fuzzy
 msgid "Invoking pgp..."
 msgstr "Chamando ó PGP..."
 
 #: pgpkey.c:773
-#, fuzzy, c-format
+#, c-format
 msgid "PGP Key %s."
-msgstr "Chave PGP 0x%s."
+msgstr "Chave PGP %s."
 
 #: pgpkey.c:835 pgpkey.c:953
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
-msgstr ""
+msgstr "Buscando chaves que coincidan con \"%s\"..."
 
 #: pop.c:89 pop_lib.c:159
-#, fuzzy
 msgid "Command TOP is not supported by server."
-msgstr "O marcado non está soportado."
+msgstr "O comando TOP non está soportado polo servidor."
 
 #: pop.c:116
-#, fuzzy
 msgid "Can't write header to temporary file!"
-msgstr "Non podo crea-lo ficheiro temporal"
+msgstr "Non foi posible escribi-la cabeceira ó ficheiro temporal"
 
 #: pop.c:197 pop_lib.c:161
-#, fuzzy
 msgid "Command UIDL is not supported by server."
-msgstr "O marcado non está soportado."
+msgstr "O comando UIDL non está soportado polo servidor."
 
 #: pop.c:270
-#, fuzzy
 msgid "Fetching list of messages..."
-msgstr "Recollendo mensaxe..."
+msgstr "Recollendo a lista de mensaxes..."
 
 #: pop.c:407
-#, fuzzy
 msgid "Can't write message to temporary file!"
-msgstr "Non podo crea-lo ficheiro temporal"
+msgstr "Non foi posible escribi-la mensaxe ó ficheiro temporal"
 
 #: pop.c:510 pop.c:564
-#, fuzzy
 msgid "Checking for new messages..."
-msgstr "Enviando mensaxe ..."
+msgstr "Buscando novas mensaxes..."
 
 #: pop.c:538
 msgid "POP host is not defined."
@@ -3330,23 +3274,22 @@ msgid "No new mail in POP mailbox."
 msgstr "Non hai novo correo no buzón POP."
 
 #: pop.c:599
-#, fuzzy
 msgid "Delete messages from server?"
-msgstr "Borrando mensaxes do servidor..."
+msgstr "¿Borra-las mensaxes do servidor?"
 
 #: pop.c:601
-#, fuzzy, c-format
+#, c-format
 msgid "Reading new messages (%d bytes)..."
-msgstr "Lendo %d novas mensaxes (%d bytes)..."
+msgstr "Lendo novas mensaxes (%d bytes)..."
 
 #: pop.c:643
 msgid "Error while writing mailbox!"
 msgstr "¡Erro cando se estaba a escribi-lo buzón!"
 
 #: pop.c:647
-#, fuzzy, c-format
+#, c-format
 msgid "%s [%d of %d messages read]"
-msgstr "%s [%d mensaxes lidas]"
+msgstr "%s [%d de %d mensaxes lidas]"
 
 #: pop.c:670 pop_lib.c:274
 msgid "Server closed connection!"
@@ -3354,45 +3297,40 @@ msgstr "¡O servidor pechou a conexión!"
 
 #: pop_auth.c:190
 msgid "Authenticating (APOP)..."
-msgstr ""
+msgstr "Autenticando (APOP)..."
 
 #: pop_auth.c:214
 msgid "APOP authentication failed."
-msgstr ""
+msgstr "Autenticación APOP fallida."
 
 #: pop_auth.c:249
-#, fuzzy
 msgid "Command USER is not supported by server."
-msgstr "O marcado non está soportado."
+msgstr "O comando USER non está soportado polo servidor."
 
 #: pop_auth.c:356
 msgid "Authentication method is unknown."
-msgstr ""
+msgstr "O método de autenticación é descoñecido."
 
 #: pop_lib.c:157
-#, fuzzy
 msgid "Unable to leave messages on server."
-msgstr "Borrando mensaxes do servidor..."
+msgstr "Non foi posible deixa-las mensaxes no servidor."
 
 #: pop_lib.c:204
-#, fuzzy, c-format
+#, c-format
 msgid "Error connecting to server: %s"
-msgstr "Conectando con %s"
+msgstr "Erro ó conectar có servidor: %s"
 
 #: pop_lib.c:288
-#, fuzzy
 msgid "Closing connection to POP server..."
-msgstr "Pechando conexión ó servidor IMAP..."
+msgstr "Pechando conexión có servidor POP..."
 
 #: pop_lib.c:453
-#, fuzzy
 msgid "Verifying message indexes..."
-msgstr "Escribindo mensaxe a %s..."
+msgstr "Verificando os índices de mensaxes..."
 
 #: pop_lib.c:477
-#, fuzzy
 msgid "Connection lost. Reconnect to POP server?"
-msgstr "Pechando conexión ó servidor IMAP..."
+msgstr "Perdeuse a conexión. ¿Volver a conectar ó servidor POP?"
 
 #: postpone.c:165
 msgid "Postponed Messages"
@@ -3488,14 +3426,12 @@ msgstr "Adxuntos"
 
 #
 #: recvattach.c:922
-#, fuzzy
 msgid "There are no subparts to show!"
-msgstr "Non hai ficheiros adxuntos."
+msgstr "Non hai subpartes que amosar."
 
 #: recvattach.c:983
-#, fuzzy
 msgid "Can't delete attachment from POP server."
-msgstr "recoller correo dun servidor POP"
+msgstr "Non é posible borrar un adxunto do servidor POP."
 
 #: recvattach.c:994
 msgid "Deletion of attachments from PGP messages is unsupported."
@@ -3520,32 +3456,32 @@ msgid "Bounce messages to %s...?"
 msgstr "¿Rebotar mensaxes a %s...?"
 
 #: recvcmd.c:374
-#, fuzzy, c-format
+#, c-format
 msgid "Can't open temporary file %s."
-msgstr "Non podo crea-lo ficheiro temporal"
+msgstr "Non foi posible abri-lo ficheiro temporal %s."
 
 #: recvcmd.c:405
-#, fuzzy
 msgid "Forward as attachments?"
-msgstr "amosar adxuntos MIME"
+msgstr "¿Reenviar mensaxes coma adxuntos?"
 
 #: recvcmd.c:419
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
 msgstr ""
+"Non foi posible decodificar tódolos adxuntos marcados.\n"
+"¿Remitir con MIME os outros?"
 
 #: recvcmd.c:544
 msgid "Forward MIME encapsulated?"
 msgstr "¿Facer \"forward\" con encapsulamento MIME?"
 
 #: recvcmd.c:552 recvcmd.c:808
-#, fuzzy, c-format
+#, c-format
 msgid "Can't create %s."
-msgstr "Non fun capaz de crea-lo ficheiro %s"
+msgstr "Non foi posible crear %s"
 
 #: recvcmd.c:685
-#, fuzzy
 msgid "Can't find any tagged messages."
-msgstr "aplica-la vindeira función ás mensaxes marcadas"
+msgstr "Non foi posible atopar ningunha mensaxe marcada."
 
 #: recvcmd.c:706 send.c:691
 msgid "No mailing lists found!"
@@ -3554,70 +3490,70 @@ msgstr "¡Non se atoparon listas de correo!"
 #: recvcmd.c:787
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr ""
+"Non foi posible decodificar tódolos adxuntos marcados.\n"
+"¿Remitir con MIME os outros?"
 
 #: remailer.c:480
-#, fuzzy
 msgid "Append"
-msgstr "Enviar"
+msgstr "Engadir"
 
 #: remailer.c:481
 msgid "Insert"
-msgstr ""
+msgstr "Insertar"
 
 #: remailer.c:482
-#, fuzzy
 msgid "Delete"
-msgstr "Seleccionar"
+msgstr "Borrar"
 
 #: remailer.c:484
 msgid "OK"
-msgstr ""
+msgstr "Ok"
 
 #: remailer.c:512
 msgid "Can't get mixmaster's type2.list!"
-msgstr ""
+msgstr "Non foi posible recolle-lo 'type2.list' do mixmaster."
 
 #: remailer.c:538
-#, fuzzy
 msgid "Select a remailer chain."
-msgstr "borrar tódolos caracteres da liña"
+msgstr "Seleccionar unha cadea de remailers."
 
 #: remailer.c:598
 #, c-format
 msgid "Error: %s can't be used as the final remailer of a chain."
-msgstr ""
+msgstr "Erro: %s non pode ser usado como remailer final dunha cadea."
 
 #: remailer.c:628
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."
-msgstr ""
+msgstr "As cadeas mixmaster están limitadas a %d elementos."
 
 #: remailer.c:651
 msgid "The remailer chain is already empty."
-msgstr ""
+msgstr "A cadea de remailers xa está valeira."
 
 #: remailer.c:661
-#, fuzzy
 msgid "You already have the first chain element selected."
-msgstr "Está na primeira mensaxe."
+msgstr "O primeiro elemento da cadea xa está seleccionado."
 
 #: remailer.c:671
 msgid "You already have the last chain element selected."
-msgstr ""
+msgstr "O derradeiro elemento da cadea xa está seleccionado."
 
 #: remailer.c:710
 msgid "Mixmaster doesn't accept Cc or Bcc headers."
-msgstr ""
+msgstr "O mixmaster non acepta cabeceiras Cc ou Bcc."
 
 #: remailer.c:734
 msgid ""
 "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr ""
+"Por favor, use un valor correcto da variable 'hostname' cando use o "
+"mixmaster."
 
 #: remailer.c:765
-#, fuzzy, c-format
+#, c-format
 msgid "Error sending message, child exited %d.\n"
-msgstr "Erro enviando mensaxe, o proceso fillo saíu con %d (%s)."
+msgstr "Erro enviando mensaxe, o proceso fillo saíu con %d.\n"
 
 #: remailer.c:769
 msgid "Error sending message."
@@ -3654,7 +3590,7 @@ msgid "No subject, aborting."
 msgstr "Non hai tema, cancelando."
 
 #: send.c:436
-#, fuzzy, c-format
+#, c-format
 msgid "Follow-up to %s%s?"
 msgstr "¿Responder a %s%s?"
 
@@ -3680,23 +3616,20 @@ msgid "Include message in reply?"
 msgstr "¿Inclui-la mensaxe na resposta?"
 
 #: send.c:723
-#, fuzzy
 msgid "Including quoted message..."
-msgstr "Enviando mensaxe..."
+msgstr "Incluindo mensaxe citada..."
 
 #: send.c:733
 msgid "Could not include all requested messages!"
 msgstr "¡Non foi posible incluir tódalas mensaxes requeridas!"
 
 #: send.c:747
-#, fuzzy
 msgid "Forward as attachment?"
-msgstr "¿Imprimir adxunto?"
+msgstr "¿Remitir como adxunto?"
 
 #: send.c:751
-#, fuzzy
 msgid "Preparing forwarded message..."
-msgstr "Enviando mensaxe ..."
+msgstr "Preparando mensaxe remitida ..."
 
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
@@ -3805,14 +3738,20 @@ msgid "(no mailbox)"
 msgstr "(non hai buzón)"
 
 #: thread.c:737
-#, fuzzy
 msgid "Parent message is not visible in limited view"
-msgstr "Esa mensaxe non é visible."
+msgstr "A mensaxe pai non é visible na vista limitada."
 
 #: thread.c:742
-#, fuzzy
 msgid "Parent message is not available."
-msgstr "Esa mensaxe non é visible."
+msgstr "A mensaxe pai non é accesible."
+
+#, fuzzy
+#~ msgid "Creating mailboxes is not yet supported."
+#~ msgstr "O marcado non está soportado."
+
+#, fuzzy
+#~ msgid "Can't open %s: %s."
+#~ msgstr "Non foi atopado: %s"
 
 #~ msgid "MIC algorithm: "
 #~ msgstr "Algoritmo MIC: "
@@ -3823,6 +3762,25 @@ msgstr "Esa mensaxe non é visible."
 #~ msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
 #~ msgstr ""
 #~ "Algoritmo MIC descoñecido, os válidos son: pgp-md5, pgp-sha1, pgp-rmd160"
+
+#~ msgid "[-- Error: unexpected end of file! --]\n"
+#~ msgstr "[-- Erro: ¡fin de ficheiro inesperado! --]\n"
+
+#~ msgid "IMAP Username: "
+#~ msgstr "Usuario IMAP: "
+
+#, fuzzy
+#~ msgid "CRAM key for %s@%s: "
+#~ msgstr "Introduza keyID para %s: "
+
+#~ msgid "Reopening mailbox... %s"
+#~ msgstr "Reabrindo buzón... %s"
+
+#~ msgid "Closing mailbox..."
+#~ msgstr "Pechando buzón..."
+
+#~ msgid "Sending APPEND command ..."
+#~ msgstr "Enviando comando APPEND..."
 
 #, fuzzy
 #~ msgid ""
@@ -3850,13 +3808,11 @@ msgstr "Esa mensaxe non é visible."
 #~ "    comercialización e adaptación a un propósito particular SON\n"
 #~ "    DESCARGADAS.\n"
 
-#, fuzzy
-#~ msgid "POP Username: "
-#~ msgstr "Usuario IMAP: "
+#~ msgid "POP Password: "
+#~ msgstr "Contrasinal POP: "
 
-#, fuzzy
-#~ msgid "Login failed: %s"
-#~ msgstr "O login fallou."
+#~ msgid "No POP username is defined."
+#~ msgstr "Non foi definido nome de usuario POP."
 
 #, fuzzy
 #~ msgid "Reading new message (%d bytes)..."
@@ -3869,44 +3825,8 @@ msgstr "Esa mensaxe non é visible."
 #~ msgid "%s [%d message read]"
 #~ msgstr "%s [%d mensaxes lidas]"
 
-#, fuzzy
-#~ msgid "Creating mailboxes is not yet supported."
-#~ msgstr "O marcado non está soportado."
-
-#~ msgid "Reopening mailbox... %s"
-#~ msgstr "Reabrindo buzón... %s"
-
-#~ msgid "Closing mailbox..."
-#~ msgstr "Pechando buzón..."
-
-#~ msgid "IMAP Username: "
-#~ msgstr "Usuario IMAP: "
-
-#, fuzzy
-#~ msgid "CRAM key for %s@%s: "
-#~ msgstr "Introduza keyID para %s: "
-
-#~ msgid "[-- Error: unexpected end of file! --]\n"
-#~ msgstr "[-- Erro: ¡fin de ficheiro inesperado! --]\n"
-
-#~ msgid "Sending APPEND command ..."
-#~ msgstr "Enviando comando APPEND..."
-
-#~ msgid "POP Password: "
-#~ msgstr "Contrasinal POP: "
-
-#~ msgid "No POP username is defined."
-#~ msgstr "Non foi definido nome de usuario POP."
-
-#~ msgid "Could not find address for host %s."
-#~ msgstr "Non foi posible atopa-lo enderezo do servidor %s."
-
 #~ msgid "Attachment saved"
 #~ msgstr "Adxunto gardado"
-
-#, fuzzy
-#~ msgid "Can't open %s: %s."
-#~ msgstr "Non foi atopado: %s"
 
 #~ msgid "Compose"
 #~ msgstr "Compór"

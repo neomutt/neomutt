@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.3.17i\n"
-"POT-Creation-Date: 2001-06-07 10:55+0200\n"
+"POT-Creation-Date: 2001-06-07 11:00+0200\n"
 "PO-Revision-Date: 2001-04-13 18:03+0000\n"
 "Last-Translator: Szabolcs Horváth <horvaths@fi.inf.elte.hu>\n"
 "Language-Team: LME Magyaritasok Lista <magyar@lists.linux.hu>\n"
