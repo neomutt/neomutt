@@ -3009,11 +3009,11 @@ msgstr "(keine Mailbox)"
 #. now begin login
 #: imap/auth.c:143
 msgid "Authenticating (GSSAPI)..."
-msgstr ""
+msgstr "Authentifiziere (GSSAPI)..."
 
 #: imap/auth.c:322
 msgid "Authenticating (CRAM-MD5)..."
-msgstr ""
+msgstr "Authentifiziere (CRAM-MD5)..."
 
 #: imap/auth.c:430
 msgid "IMAP Username: "
@@ -3021,16 +3021,16 @@ msgstr "IMAP-Nutzername: "
 
 #: imap/auth.c:446
 msgid "GSSAPI authentication failed."
-msgstr ""
+msgstr "GSSAPI Authentifizierung fehlgeschlagen."
 
 #: imap/auth.c:462
-#, fuzzy, c-format
+#, c-format
 msgid "CRAM key for %s@%s: "
-msgstr "KeyID für %s: "
+msgstr "IMAP CRAM Schlüssel für %s@%s: "
 
 #: imap/auth.c:476
 msgid "CRAM-MD5 authentication failed."
-msgstr ""
+msgstr "CRAM-MD5 Authentifizierung fehlgeschlagen."
 
 #: imap/auth.c:488
 #, c-format
