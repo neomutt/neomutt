@@ -468,20 +468,20 @@ static void cmd_parse_fetch (IMAP_DATA* idata, char* s)
 
   msgno = atoi (s);
   
-       if (msgno < idata->ctx->msgcount)
+  if (msgno <= idata->ctx->msgcount)
   /* see cmd_parse_expunge */
-  for (cur = 0; cur < idata->ctx->msgcount; cur++)
-  {
-    h = idata->ctx->hdrs[cur];
-    
-    if (h->active && h->index+1 == msgno)
+    for (cur = 0; cur < idata->ctx->msgcount; cur++)
     {
-      dprint (2, (debugfile, "Message UID %d updated\n", HEADER_DATA(h)->uid));
-      break;
+      h = idata->ctx->hdrs[cur];
+      
+      if (h->active && h->index+1 == msgno)
+      {
+	dprint (2, (debugfile, "Message UID %d updated\n", HEADER_DATA(h)->uid));
+	break;
+      }
+      
+      h = NULL;
     }
-
-    h = NULL;
-  }
   
   if (!h)
   {
