@@ -458,11 +458,11 @@ int mutt_index_menu (void)
 
 	set_option (OPTSEARCHINVALID);
       }
-      
-#ifdef USE_IMAP
-      imap_disallow_reopen (Context);
-#endif
     }
+
+#ifdef USE_IMAP
+    imap_disallow_reopen (Context);
+#endif
 
     check_lock = 0;
     

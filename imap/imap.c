@@ -954,7 +954,9 @@ int imap_make_msg_set (char* buf, size_t buflen, CONTEXT* ctx, int flag,
 /* update the IMAP server to reflect message changes done within mutt.
  * Arguments
  *   ctx: the current context
- *   expunge: 0 or 1 - do expunge? */
+ *   expunge: 0 or 1 - do expunge? 
+ */
+
 int imap_sync_mailbox (CONTEXT* ctx, int expunge)
 {
   char buf[HUGE_STRING];
@@ -963,13 +965,21 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
   int deleted;
   int n;
   int err_continue = M_NO;	/* continue on error? */
+  int rc;
 
   if (CTX_DATA->state != IMAP_SELECTED)
   {
     dprint (2, (debugfile, "imap_sync_mailbox: no mailbox selected\n"));
     return -1;
   }
-  
+
+  imap_allow_reopen (ctx);	/* This function is only called when the calling code
+				 * expects the context to be changed.
+				 */
+
+  if ((rc = imap_check_mailbox (ctx, NULL)) != 0)
+    return rc;
+
   /* if we are expunging anyway, we can do deleted messages very quickly... */
   if (expunge && mutt_bit_isset (CTX_DATA->rights, IMAP_ACL_DELETE))
   {
@@ -1087,9 +1097,6 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
     }
   }
 
-  /* clear IMAP_REOPEN_PENDING, which may have been set during exec */
-  CTX_DATA->reopen &= ~IMAP_REOPEN_PENDING;
-
   return 0;
 }
 
@@ -1100,6 +1107,8 @@ void imap_fastclose_mailbox (CONTEXT *ctx)
   /* Check to see if the mailbox is actually open */
   if (!ctx->data)
     return;
+
+  CTX_DATA->reopen &= IMAP_REOPEN_ALLOW;
 
   if ((CTX_DATA->state == IMAP_SELECTED) && (ctx == CTX_DATA->selected_ctx))
     CTX_DATA->state = IMAP_AUTHENTICATED;
@@ -1145,27 +1154,37 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint)
 {
   char buf[LONG_STRING];
   static time_t checktime=0;
+  time_t t;
 
+  /* 
+   * gcc thinks it has to warn about uninitialized use
+   * of t.  This is wrong.
+   */
+  
   if (ImapCheckTimeout)
-  {
-    time_t k=time(NULL);
-    if (k-checktime < ImapCheckTimeout)
-      return 0;
-    checktime=k;
+  { 
+    t = time(NULL);
+    t -= checktime;
   }
 
-  CTX_DATA->check_status = 0;
-  if (imap_exec (buf, sizeof (buf), CTX_DATA, "NOOP", 0) != 0)
+  if ((ImapCheckTimeout && t >= ImapCheckTimeout)
+      || ((CTX_DATA->reopen & IMAP_REOPEN_ALLOW) && (CTX_DATA->reopen & ~IMAP_REOPEN_ALLOW)))
   {
-    imap_error ("imap_check_mailbox()", buf);
-    return -1;
+    if (ImapCheckTimeout) checktime += t;
+
+    CTX_DATA->check_status = 0;
+    if (imap_exec (buf, sizeof (buf), CTX_DATA, "NOOP", 0) != 0)
+    {
+      imap_error ("imap_check_mailbox()", buf);
+      return -1;
+    }
+    
+    if (CTX_DATA->check_status == IMAP_NEW_MAIL)
+      return M_NEW_MAIL;
+    if (CTX_DATA->check_status == IMAP_REOPENED)
+      return M_REOPENED;
   }
-
-  if (CTX_DATA->check_status == IMAP_NEW_MAIL)
-    return M_NEW_MAIL;
-  if (CTX_DATA->check_status == IMAP_REOPENED)
-    return M_REOPENED;
-
+  
   return 0;
 }
 

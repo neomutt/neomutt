@@ -892,7 +892,7 @@ int mx_close_mailbox (CONTEXT *ctx)
   /* allow IMAP to preserve the deleted flag across sessions */
   if (ctx->magic == M_IMAP)
   {
-    if (imap_sync_mailbox (ctx, purge) == -1)
+    if (imap_sync_mailbox (ctx, purge) != 0)
       return -1;
   }
   else
@@ -1072,7 +1072,7 @@ int mx_sync_mailbox (CONTEXT *ctx)
     rc = imap_sync_mailbox (ctx, purge);
   else
 #endif
-  rc = sync_mailbox (ctx);
+    rc = sync_mailbox (ctx);
   if (rc == 0)
   {
 #ifdef USE_IMAP
