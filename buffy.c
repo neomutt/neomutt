@@ -304,7 +304,12 @@ int mutt_buffy_check (int force)
 #endif
 	) ? mutt_strcmp (tmp->path, Context->path) :
 #endif
-	(sb.st_dev != contex_sb.st_dev || sb.st_ino != contex_sb.st_ino)))
+	 (sb.st_dev != contex_sb.st_dev || sb.st_ino != contex_sb.st_ino)
+#if defined USE_IMAP || defined USE_POP	 
+	    )
+#endif
+	)
+	
     {
       switch (tmp->magic)
       {
