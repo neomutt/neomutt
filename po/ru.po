@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.2i\n"
-"POT-Creation-Date: 2000-02-08 10:59+0100\n"
+"POT-Creation-Date: 2000-02-15 09:44+0100\n"
 "PO-Revision-Date: 2000-01-14 21:11 +0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=koi8-r\n"
@@ -75,7 +75,7 @@ msgstr "Не удалось разобрать имя. Продолжить?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Указанный в mailcap способ создания требует %%s"
 
-#: attach.c:131 attach.c:256 commands.c:169 compose.c:1127 curs_lib.c:135
+#: attach.c:131 attach.c:256 commands.c:169 compose.c:1126 curs_lib.c:135
 #: curs_lib.c:331
 #, c-format
 msgid "Error running \"%s\"!"
@@ -136,92 +136,92 @@ msgstr "Перейти в: "
 msgid "Mask"
 msgstr "Маска"
 
-#: browser.c:367 browser.c:897
+#: browser.c:369 browser.c:908
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s не является каталогом."
 
-#: browser.c:478
+#: browser.c:480
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Почтовых ящиков [%d]"
 
-#: browser.c:485
+#: browser.c:487
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Подписан [%s]: Маска файла: %s"
 
-#: browser.c:489
+#: browser.c:491
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Каталог [%s], маска файла: %s"
 
-#: browser.c:500
+#: browser.c:502
 msgid "Can't attach a directory!"
 msgstr "Каталог присоединить невозможно!"
 
-#: browser.c:618 browser.c:964 browser.c:1057
+#: browser.c:620 browser.c:975 browser.c:1068
 msgid "No files match the file mask"
 msgstr "Нет файлов, удовлетворяющих данной маске"
 
-#: browser.c:805
+#: browser.c:816
 msgid "Creating mailboxes is not yet supported."
 msgstr "Создание почтовых ящиков еще не поддерживается."
 
-#: browser.c:810
+#: browser.c:821
 #, fuzzy
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Удаление поддерживается только для IMAP-ящиков"
 
-#: browser.c:818
+#: browser.c:829
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Вы уверены, что хотите удалить почтовый ящик \"%s\"?"
 
-#: browser.c:832
+#: browser.c:843
 msgid "Mailbox deleted."
 msgstr "Почтовый ящик удален."
 
-#: browser.c:838
+#: browser.c:849
 msgid "Mailbox not deleted."
 msgstr "Почтовый ящик не удален."
 
-#: browser.c:856
+#: browser.c:867
 msgid "Chdir to: "
 msgstr "Перейти в: "
 
-#: browser.c:890 browser.c:957
+#: browser.c:901 browser.c:968
 msgid "Error scanning directory."
 msgstr "Ошибка просмотра каталога."
 
-#: browser.c:908
+#: browser.c:919
 msgid "File Mask: "
 msgstr "Маска файла: "
 
 # original translate: msgstr "Обратный порядок по (д)ате, (и)мени, (р)азмеру или (н)е cортировать?"
-#: browser.c:980
+#: browser.c:991
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr ""
 
 # original translate: msgstr "Упорядочить по (д)ате, (и)мени, (р)азмеру или (н)е сортировать?"
-#: browser.c:981
+#: browser.c:992
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr ""
 
 # original translate: msgstr "дирн"
-#: browser.c:982
+#: browser.c:993
 msgid "dazn"
 msgstr ""
 
-#: browser.c:1044
+#: browser.c:1055
 msgid "New file name: "
 msgstr "Новое имя файла: "
 
-#: browser.c:1065
+#: browser.c:1086
 msgid "Can't view a directory"
 msgstr "Не удалось просмотреть каталог"
 
-#: browser.c:1083
+#: browser.c:1104
 msgid "Error trying to view file"
 msgstr "Ошибка при попытке просмотра файла"
 
@@ -630,20 +630,20 @@ msgstr "Не удалось создать файл %s"
 msgid "What we have here is a failure to make an attachment"
 msgstr "Не удалось создать вложение"
 
-#: compose.c:1088
+#: compose.c:1087
 msgid "Postpone this message?"
 msgstr "Отложить это сообщение?"
 
-#: compose.c:1142
+#: compose.c:1141
 msgid "Write message to mailbox"
 msgstr "Записать сообщение в почтовый ящик"
 
-#: compose.c:1145
+#: compose.c:1144
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Сообщение записывается в %s..."
 
-#: compose.c:1154
+#: compose.c:1153
 msgid "Message written."
 msgstr "Сообщение записано."
 
@@ -682,7 +682,7 @@ msgstr "Нет открытого почтового ящика."
 msgid "There are no messages."
 msgstr "Сообщений нет."
 
-#: curs_main.c:57 mx.c:1033 pager.c:58 recvattach.c:47
+#: curs_main.c:57 mx.c:1053 pager.c:58 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "Почтовый ящик немодифицируем."
 
@@ -1118,55 +1118,55 @@ msgstr ""
 msgid "Help for %s"
 msgstr "Справка для %s"
 
-#. now begin login
-#: imap/auth.c:144
-msgid "Authenticating (GSSAPI)..."
-msgstr ""
+#: hook.c:243
+#, fuzzy, c-format
+msgid "unhook: unknown hook type: %s"
+msgstr "%s: неизвестный тип"
 
-#: imap/auth.c:337
+#: imap/auth.c:104
 msgid "Authenticating (CRAM-MD5)..."
 msgstr ""
 
-#: imap/auth.c:424
+#: imap/auth.c:191
 msgid "Authenticating (anonymous)..."
 msgstr ""
 
-#: imap/auth.c:499
+#: imap/auth.c:266
 msgid "IMAP Username: "
 msgstr "Имя пользователя IMAP: "
 
-#: imap/auth.c:515
+#: imap/auth.c:282
 msgid "Anonymous authentication not supported."
 msgstr ""
 
-#: imap/auth.c:528
+#: imap/auth.c:295
 msgid "GSSAPI authentication failed."
 msgstr ""
 
-#: imap/auth.c:546
+#: imap/auth.c:313
 #, c-format
 msgid "CRAM key for %s@%s: "
 msgstr ""
 
-#: imap/auth.c:561
+#: imap/auth.c:328
 msgid "CRAM-MD5 authentication failed."
 msgstr ""
 
-#: imap/auth.c:576
+#: imap/auth.c:343
 msgid "Skipping CRAM-MD5 authentication."
 msgstr ""
 
-#: imap/auth.c:588
+#: imap/auth.c:355
 #, c-format
 msgid "Password for %s@%s: "
 msgstr "Пароль для %s@%s: "
 
-#: imap/auth.c:604
+#: imap/auth.c:371
 msgid "Logging in..."
 msgstr "Регистрация..."
 
 #. Login failed, try again
-#: imap/auth.c:616
+#: imap/auth.c:383
 msgid "Login failed."
 msgstr "Регистрация не удалась."
 
@@ -1232,12 +1232,12 @@ msgstr "Закрытие почтового ящика..."
 msgid "Expunging messages from server..."
 msgstr "Удаление сообщений с сервера..."
 
-#: imap/imap.c:1379
+#: imap/imap.c:1387
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Подписываюсь на %s..."
 
-#: imap/imap.c:1381
+#: imap/imap.c:1389
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Отписываюсь от %s..."
@@ -2419,43 +2419,43 @@ msgstr ""
 "\n"
 "Параметры компиляции:"
 
-#: main.c:323
+#: main.c:297
 msgid "Error initializing terminal."
 msgstr "Ошибка инициализации терминала."
 
-#: main.c:422
+#: main.c:396
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Отладка на уровне %d.\n"
 
-#: main.c:424
+#: main.c:398
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "Символ DEBUG не был определен при компиляции.  Игноруется.\n"
 
-#: main.c:543
+#: main.c:517
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s не существует. Создать его?"
 
-#: main.c:547
+#: main.c:521
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Не удалось создать %s: %s"
 
-#: main.c:586
+#: main.c:560
 msgid "No recipients specified.\n"
 msgstr "Адресаты не указаны.\n"
 
-#: main.c:659
+#: main.c:633
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: не удалось вложить файл.\n"
 
-#: main.c:679
+#: main.c:653
 msgid "No mailbox with new mail."
 msgstr "Нет почтовых ящиков с новой почтой."
 
-#: main.c:713
+#: main.c:687
 msgid "Mailbox is empty."
 msgstr "Почтовый ящик пуст."
 
@@ -2664,58 +2664,58 @@ msgstr "Пишется %s..."
 msgid "Could not synchronize mailbox %s!"
 msgstr "Не удалось синхронизировать почтовый ящик %s!"
 
-#: mx.c:826
+#: mx.c:823
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Переместить прочитанные сообщения в %s?"
 
-#: mx.c:835 mx.c:1048
+#: mx.c:832 mx.c:1068
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Вычистить %d удаленное сообщение?"
 
-#: mx.c:835 mx.c:1048
+#: mx.c:832 mx.c:1068
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Вычистить %d удаленных сообщений?"
 
-#: mx.c:859
+#: mx.c:853
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Прочитанные сообщения перемещяются в %s..."
 
-#: mx.c:882 mx.c:1039
+#: mx.c:904 mx.c:1059
 msgid "Mailbox is unchanged."
 msgstr "Почтовый ящик не изменился."
 
-#: mx.c:894 mx.c:1078
-#, c-format
-msgid "%d kept."
-msgstr "%d оставлено."
-
-#: mx.c:913
+#: mx.c:934
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d оставлено, %d перемещено, %d удалено."
 
-#: mx.c:916 mx.c:1081
+#: mx.c:937 mx.c:1101
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d оставлено, %d удалено."
 
-#: mx.c:1024
+#: mx.c:1044
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Используйте '%s' для разрешения/запрещения записи"
 
-#: mx.c:1026
+#: mx.c:1046
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Используйте 'toggle-write' для разрешения записи!"
 
-#: mx.c:1028
+#: mx.c:1048
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Почтовый ящик помечен как переписываемый. %s"
+
+#: mx.c:1098
+#, c-format
+msgid "%d kept."
+msgstr "%d оставлено."
 
 #: pager.c:57
 msgid "Not available in this menu."
@@ -3534,12 +3534,12 @@ msgstr "%s больше не существует!"
 msgid "Could not open %s"
 msgstr "Не удалось открыть %s"
 
-#: sendlib.c:1701
+#: sendlib.c:1702
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Не удалось послать сообщение, процесс-потомок вернул %d (%s)."
 
-#: sendlib.c:1707
+#: sendlib.c:1708
 msgid "Output of the delivery process"
 msgstr ""
 

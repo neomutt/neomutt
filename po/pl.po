@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt-1.1.2i\n"
-"POT-Creation-Date: 2000-02-08 10:59+0100\n"
+"POT-Creation-Date: 2000-02-15 09:44+0100\n"
 "PO-Revision-Date: 2000-01-19 18:30+0200\n"
 "Last-Translator: Pawe³ Dziekoñski <pdziekonski@mml.ch.pwr.wroc.pl>\n"
 "Language-Team: POLISH <pl@li.org>\n"
@@ -78,7 +78,7 @@ msgstr "Nie pasuj±cy szablon nazwy, kontynuowaæ?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Pole \"compose\" w pliku 'mailcap' wymaga %%s"
 
-#: attach.c:131 attach.c:256 commands.c:169 compose.c:1127 curs_lib.c:135
+#: attach.c:131 attach.c:256 commands.c:169 compose.c:1126 curs_lib.c:135
 #: curs_lib.c:331
 #, c-format
 msgid "Error running \"%s\"!"
@@ -140,92 +140,92 @@ msgstr "Zmieñ katalog"
 msgid "Mask"
 msgstr "Wzorzec"
 
-#: browser.c:367 browser.c:897
+#: browser.c:369 browser.c:908
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s nie jest katalogiem."
 
-#: browser.c:478
+#: browser.c:480
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Skrzynki [%d]"
 
-#: browser.c:485
+#: browser.c:487
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Zapisane [%s], wzorzec nazw plików: %s"
 
-#: browser.c:489
+#: browser.c:491
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Katalog [%s], wzorzec nazw plików: %s"
 
-#: browser.c:500
+#: browser.c:502
 msgid "Can't attach a directory!"
 msgstr "Za³±cznikiem nie mo¿e zostaæ katalog!"
 
-#: browser.c:618 browser.c:964 browser.c:1057
+#: browser.c:620 browser.c:975 browser.c:1068
 msgid "No files match the file mask"
 msgstr "¯aden plik nie pasuje do maski"
 
-#: browser.c:805
+#: browser.c:816
 #, fuzzy
 msgid "Creating mailboxes is not yet supported."
 msgstr "Zaznaczanie nie jest obs³ugiwane."
 
-#: browser.c:810
+#: browser.c:821
 #, fuzzy
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Ten rodzaj operacji nie jest na razie wykonalny na listach PGP."
 
-#: browser.c:818
+#: browser.c:829
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr ""
 
-#: browser.c:832
+#: browser.c:843
 #, fuzzy
 msgid "Mailbox deleted."
 msgstr "Wykryto pêtlê w makrze."
 
-#: browser.c:838
+#: browser.c:849
 #, fuzzy
 msgid "Mailbox not deleted."
 msgstr "List nie zosta³ wys³any."
 
-#: browser.c:856
+#: browser.c:867
 msgid "Chdir to: "
 msgstr "Zmieñ katalog na: "
 
-#: browser.c:890 browser.c:957
+#: browser.c:901 browser.c:968
 msgid "Error scanning directory."
 msgstr "B³±d przegl±dania katalogu."
 
-#: browser.c:908
+#: browser.c:919
 msgid "File Mask: "
 msgstr "Wzorzec nazw plików: "
 
-#: browser.c:980
+#: browser.c:991
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Sortowanie odwrotne wg (d)aty, (a)lfabetu, (w)ielko¶ci, ¿ad(n)e?"
 
-#: browser.c:981
+#: browser.c:992
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Sortowanie wg (d)aty, (a)lfabetu, (w)ielko¶ci, ¿ad(n)e?"
 
-#: browser.c:982
+#: browser.c:993
 msgid "dazn"
 msgstr "dawn"
 
-#: browser.c:1044
+#: browser.c:1055
 msgid "New file name: "
 msgstr "Nazwa nowego pliku: "
 
-#: browser.c:1065
+#: browser.c:1086
 msgid "Can't view a directory"
 msgstr "Nie mo¿na przegl±daæ tego katalogu"
 
-#: browser.c:1083
+#: browser.c:1104
 msgid "Error trying to view file"
 msgstr "B³±d podczas próby przegl±dania pliku"
 
@@ -628,20 +628,20 @@ msgstr "Nie mo¿na utworzyæ %s"
 msgid "What we have here is a failure to make an attachment"
 msgstr "Mamy tu b³±d tworzenia za³±cznika"
 
-#: compose.c:1088
+#: compose.c:1087
 msgid "Postpone this message?"
 msgstr "Zachowaæ ten list do pó¼niejszej obróbki i ewentualnej wysy³ki?"
 
-#: compose.c:1142
+#: compose.c:1141
 msgid "Write message to mailbox"
 msgstr "Zapisz list do skrzynki"
 
-#: compose.c:1145
+#: compose.c:1144
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Zapisywanie listu do %s ..."
 
-#: compose.c:1154
+#: compose.c:1153
 msgid "Message written."
 msgstr "List zapisany."
 
@@ -678,7 +678,7 @@ msgstr "Nie otwarto ¿adnej skrzynki."
 msgid "There are no messages."
 msgstr "Brak listów."
 
-#: curs_main.c:57 mx.c:1033 pager.c:58 recvattach.c:47
+#: curs_main.c:57 mx.c:1053 pager.c:58 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "Skrzynka jest tylko do odczytu."
 
@@ -1113,57 +1113,57 @@ msgstr ""
 msgid "Help for %s"
 msgstr "Pomoc dla menu %s"
 
-#. now begin login
-#: imap/auth.c:144
-msgid "Authenticating (GSSAPI)..."
-msgstr "Uwierzytelnianie (GSSAPI)..."
+#: hook.c:243
+#, fuzzy, c-format
+msgid "unhook: unknown hook type: %s"
+msgstr "%s: nieprawid³owy typ"
 
-#: imap/auth.c:337
+#: imap/auth.c:104
 msgid "Authenticating (CRAM-MD5)..."
 msgstr "Uwierzytelnianie (CRAM-MD5)..."
 
-#: imap/auth.c:424
+#: imap/auth.c:191
 #, fuzzy
 msgid "Authenticating (anonymous)..."
 msgstr "Uwierzytelnianie (GSSAPI)..."
 
-#: imap/auth.c:499
+#: imap/auth.c:266
 msgid "IMAP Username: "
 msgstr "Nazwa u¿ytkownika na serwerze IMAP: "
 
-#: imap/auth.c:515
+#: imap/auth.c:282
 msgid "Anonymous authentication not supported."
 msgstr ""
 
-#: imap/auth.c:528
+#: imap/auth.c:295
 msgid "GSSAPI authentication failed."
 msgstr "Uwierzytelnianie GSSAPI nie powiod³o siê."
 
-#: imap/auth.c:546
+#: imap/auth.c:313
 #, c-format
 msgid "CRAM key for %s@%s: "
 msgstr "Klucz CRAM dla %s@%s: "
 
-#: imap/auth.c:561
+#: imap/auth.c:328
 msgid "CRAM-MD5 authentication failed."
 msgstr "Uwierzytelnianie CRAM-MD5 nie powiod³o siê."
 
-#: imap/auth.c:576
+#: imap/auth.c:343
 #, fuzzy
 msgid "Skipping CRAM-MD5 authentication."
 msgstr "Uwierzytelnianie CRAM-MD5 nie powiod³o siê."
 
-#: imap/auth.c:588
+#: imap/auth.c:355
 #, c-format
 msgid "Password for %s@%s: "
 msgstr "Has³o dla %s@%s: "
 
-#: imap/auth.c:604
+#: imap/auth.c:371
 msgid "Logging in..."
 msgstr "Logowanie..."
 
 #. Login failed, try again
-#: imap/auth.c:616
+#: imap/auth.c:383
 msgid "Login failed."
 msgstr "Zalogowanie nie powiod³o siê."
 
@@ -1228,12 +1228,12 @@ msgstr "Zamykanie skrzynki..."
 msgid "Expunging messages from server..."
 msgstr "Kasowanie listów na serwerze... "
 
-#: imap/imap.c:1379
+#: imap/imap.c:1387
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Subskrybowanie %s..."
 
-#: imap/imap.c:1381
+#: imap/imap.c:1389
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Odsubskrybowanie %s..."
@@ -2409,43 +2409,43 @@ msgstr ""
 "\n"
 "Parametry kompilacji:"
 
-#: main.c:323
+#: main.c:297
 msgid "Error initializing terminal."
 msgstr "B³±d inicjalizacji terminala."
 
-#: main.c:422
+#: main.c:396
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Diagnostyka b³êdów na poziomie %d.\n"
 
-#: main.c:424
+#: main.c:398
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "Diagnostyka b³êdów nie zosta³a wkompilowane. Zignorowano.\n"
 
-#: main.c:543
+#: main.c:517
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s nie istnieje. Utworzyæ?"
 
-#: main.c:547
+#: main.c:521
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Nie mo¿na utworzyæ %s: %s."
 
-#: main.c:586
+#: main.c:560
 msgid "No recipients specified.\n"
 msgstr "Nie wskazano adresatów listu.\n"
 
-#: main.c:659
+#: main.c:633
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: nie mo¿na do³±czyæ pliku.\n"
 
-#: main.c:679
+#: main.c:653
 msgid "No mailbox with new mail."
 msgstr "Brak foldera z now± poczt±."
 
-#: main.c:713
+#: main.c:687
 msgid "Mailbox is empty."
 msgstr "Folder poczty jest pusty."
 
@@ -2653,58 +2653,58 @@ msgstr "Zapisywanie %s..."
 msgid "Could not synchronize mailbox %s!"
 msgstr "Synchronizacja skrzynki %s nie powod³a siê!"
 
-#: mx.c:826
+#: mx.c:823
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Przenie¶æ przeczytane listy do %s?"
 
-#: mx.c:835 mx.c:1048
+#: mx.c:832 mx.c:1068
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Usun±æ NIEODWO£ALNIE %d zaznaczony list?"
 
-#: mx.c:835 mx.c:1048
+#: mx.c:832 mx.c:1068
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Usun±æ NIEODWO£ALNIE %d zaznaczone listy?"
 
-#: mx.c:859
+#: mx.c:853
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Przenoszenie przeczytanych listów do %s..."
 
-#: mx.c:882 mx.c:1039
+#: mx.c:904 mx.c:1059
 msgid "Mailbox is unchanged."
 msgstr "Skrzynka pozosta³a nie zmieniona."
 
-#: mx.c:894 mx.c:1078
-#, c-format
-msgid "%d kept."
-msgstr ""
-
-#: mx.c:913
+#: mx.c:934
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d zapisano, %d przeniesiono, %d usuniêto."
 
-#: mx.c:916 mx.c:1081
+#: mx.c:937 mx.c:1101
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d zapisano, %d usuniêto."
 
-#: mx.c:1024
+#: mx.c:1044
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Naci¶nij '%s' aby zezwoliæ na zapisanie"
 
-#: mx.c:1026
+#: mx.c:1046
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "U¿yj 'toggle-write' by ponownie w³±czyæ zapisanie!"
 
-#: mx.c:1028
+#: mx.c:1048
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Skrzynka jest oznaczona jako niezapisywalna. %s"
+
+#: mx.c:1098
+#, c-format
+msgid "%d kept."
+msgstr ""
 
 #: pager.c:57
 msgid "Not available in this menu."
@@ -3523,12 +3523,12 @@ msgstr "%s ju¿ nie istnieje!"
 msgid "Could not open %s"
 msgstr "Nie mo¿na otworzyæ %s"
 
-#: sendlib.c:1701
+#: sendlib.c:1702
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "B³±d podczas wysy³ania listu, proces potomny opu¶ci³ %d (%s)."
 
-#: sendlib.c:1707
+#: sendlib.c:1708
 msgid "Output of the delivery process"
 msgstr "Wynik procesu dostarczania"
 
@@ -3568,6 +3568,9 @@ msgstr ""
 #: thread.c:727
 msgid "Parent message is not available."
 msgstr "Pierwszy list tego w±tku nie jest dostêpny."
+
+#~ msgid "Authenticating (GSSAPI)..."
+#~ msgstr "Uwierzytelnianie (GSSAPI)..."
 
 #~ msgid "Recoding only affetcs text attachments."
 #~ msgstr "Tylko tekstowe za³±czniki mo¿na przekodowaæ."

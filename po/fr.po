@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.3\n"
-"POT-Creation-Date: 2000-02-08 10:59+0100\n"
+"POT-Creation-Date: 2000-02-15 09:44+0100\n"
 "PO-Revision-Date: 2000-02-09 13:38+0100\n"
 "Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
@@ -77,7 +77,7 @@ msgstr "Ne correspond pas au nametemplate, continuer ?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "L'entrée compose du fichier mailcap nécessite %%s"
 
-#: attach.c:131 attach.c:256 commands.c:169 compose.c:1127 curs_lib.c:135
+#: attach.c:131 attach.c:256 commands.c:169 compose.c:1126 curs_lib.c:135
 #: curs_lib.c:331
 #, c-format
 msgid "Error running \"%s\"!"
@@ -141,91 +141,91 @@ msgid "Mask"
 msgstr "Masque"
 
 # , c-format
-#: browser.c:367 browser.c:897
+#: browser.c:369 browser.c:908
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s n'est pas un répertoire."
 
 # , c-format
-#: browser.c:478
+#: browser.c:480
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Boîtes aux lettres [%d]"
 
 # , c-format
-#: browser.c:485
+#: browser.c:487
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Abonné [%s], masque de fichier : %s"
 
 # , c-format
-#: browser.c:489
+#: browser.c:491
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Répertoire [%s], masque de fichier : %s"
 
-#: browser.c:500
+#: browser.c:502
 msgid "Can't attach a directory!"
 msgstr "Impossible d'attacher un répertoire !"
 
-#: browser.c:618 browser.c:964 browser.c:1057
+#: browser.c:620 browser.c:975 browser.c:1068
 msgid "No files match the file mask"
 msgstr "Aucun fichier ne correspond au masque"
 
-#: browser.c:805
+#: browser.c:816
 msgid "Creating mailboxes is not yet supported."
 msgstr "La création de boîtes aux lettres n'est pas encore supportée."
 
-#: browser.c:810
+#: browser.c:821
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "La suppression n'est supportée que pour les boîtes aux lettres IMAP."
 
-#: browser.c:818
+#: browser.c:829
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Voulez-vous vraiment supprimer la boîte aux lettres \"%s\" ?"
 
-#: browser.c:832
+#: browser.c:843
 msgid "Mailbox deleted."
 msgstr "Boîte aux lettres supprimée."
 
-#: browser.c:838
+#: browser.c:849
 msgid "Mailbox not deleted."
 msgstr "Boîte aux lettres non supprimée."
 
-#: browser.c:856
+#: browser.c:867
 msgid "Chdir to: "
 msgstr "Changement de répertoire vers : "
 
-#: browser.c:890 browser.c:957
+#: browser.c:901 browser.c:968
 msgid "Error scanning directory."
 msgstr "Erreur de lecture du répertoire."
 
-#: browser.c:908
+#: browser.c:919
 msgid "File Mask: "
 msgstr "Masque de fichier : "
 
-#: browser.c:980
+#: browser.c:991
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Tri inverse par (d)ate, (a)lphabétique, (t)aille ou (n)e pas trier ? "
 
-#: browser.c:981
+#: browser.c:992
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Tri par (d)ate, (a)lphabétique, (t)aille ou (n)e pas trier ? "
 
-#: browser.c:982
+#: browser.c:993
 msgid "dazn"
 msgstr "datn"
 
-#: browser.c:1044
+#: browser.c:1055
 msgid "New file name: "
 msgstr "Nouveau nom de fichier : "
 
-#: browser.c:1065
+#: browser.c:1086
 msgid "Can't view a directory"
 msgstr "Impossible de visualiser un répertoire"
 
-#: browser.c:1083
+#: browser.c:1104
 msgid "Error trying to view file"
 msgstr "Erreur en essayant de visualiser le fichier"
 
@@ -646,21 +646,21 @@ msgstr "Impossible de créer le fichier %s"
 msgid "What we have here is a failure to make an attachment"
 msgstr "Nous sommes en présence d'un échec de fabrication d'un attachement"
 
-#: compose.c:1088
+#: compose.c:1087
 msgid "Postpone this message?"
 msgstr "Ajourner ce message ?"
 
-#: compose.c:1142
+#: compose.c:1141
 msgid "Write message to mailbox"
 msgstr "Enregistrer le message dans la boîte aux lettres"
 
 # , c-format
-#: compose.c:1145
+#: compose.c:1144
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Écriture du message dans %s ..."
 
-#: compose.c:1154
+#: compose.c:1153
 msgid "Message written."
 msgstr "Message écrit."
 
@@ -697,7 +697,7 @@ msgstr "Aucune boîte aux lettres n'est ouverte."
 msgid "There are no messages."
 msgstr "Il n'y a pas de messages."
 
-#: curs_main.c:57 mx.c:1033 pager.c:58 recvattach.c:47
+#: curs_main.c:57 mx.c:1053 pager.c:58 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "La boîte aux lettres est en lecture seule."
 
@@ -1156,57 +1156,58 @@ msgstr ""
 msgid "Help for %s"
 msgstr "Aide pour %s"
 
-#. now begin login
-#: imap/auth.c:144
-msgid "Authenticating (GSSAPI)..."
-msgstr "Authentification (GSSAPI)..."
+# , c-format
+#: hook.c:243
+#, fuzzy, c-format
+msgid "unhook: unknown hook type: %s"
+msgstr "%s : type inconnu"
 
-#: imap/auth.c:337
+#: imap/auth.c:104
 msgid "Authenticating (CRAM-MD5)..."
 msgstr "Authentification (CRAM-MD5)..."
 
-#: imap/auth.c:424
+#: imap/auth.c:191
 msgid "Authenticating (anonymous)..."
 msgstr "Authentification (anonyme)..."
 
-#: imap/auth.c:499
+#: imap/auth.c:266
 msgid "IMAP Username: "
 msgstr "Nom d'utilisateur IMAP : "
 
-#: imap/auth.c:515
+#: imap/auth.c:282
 msgid "Anonymous authentication not supported."
 msgstr "L'authentification anonyme n'est pas supportée."
 
-#: imap/auth.c:528
+#: imap/auth.c:295
 msgid "GSSAPI authentication failed."
 msgstr "L'authentification GSSAPI a échoué."
 
 # , c-format
-#: imap/auth.c:546
+#: imap/auth.c:313
 #, c-format
 msgid "CRAM key for %s@%s: "
 msgstr "Clé CRAM pour %s@%s : "
 
-#: imap/auth.c:561
+#: imap/auth.c:328
 msgid "CRAM-MD5 authentication failed."
 msgstr "L'authentification CRAM-MD5 a échoué."
 
-#: imap/auth.c:576
+#: imap/auth.c:343
 msgid "Skipping CRAM-MD5 authentication."
 msgstr "On passe sur l'authentification CRAM-MD5."
 
 # , c-format
-#: imap/auth.c:588
+#: imap/auth.c:355
 #, c-format
 msgid "Password for %s@%s: "
 msgstr "Mot de passe pour %s@%s : "
 
-#: imap/auth.c:604
+#: imap/auth.c:371
 msgid "Logging in..."
 msgstr "Connexion..."
 
 #. Login failed, try again
-#: imap/auth.c:616
+#: imap/auth.c:383
 msgid "Login failed."
 msgstr "La connexion a échoué."
 
@@ -1276,13 +1277,13 @@ msgid "Expunging messages from server..."
 msgstr "Effacement des messages sur le serveur..."
 
 # , c-format
-#: imap/imap.c:1379
+#: imap/imap.c:1387
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Abonnement à %s..."
 
 # , c-format
-#: imap/imap.c:1381
+#: imap/imap.c:1389
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Désabonnement de %s..."
@@ -2472,46 +2473,46 @@ msgstr ""
 "\n"
 "Options de compilation :"
 
-#: main.c:323
+#: main.c:297
 msgid "Error initializing terminal."
 msgstr "Erreur d'initialisation du terminal."
 
 # , c-format
-#: main.c:422
+#: main.c:396
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Débuggage au niveau %d.\n"
 
-#: main.c:424
+#: main.c:398
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG n'a pas été défini à la compilation. Ignoré.\n"
 
-#: main.c:543
+#: main.c:517
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s n'existe pas. Le créer ?"
 
 # , c-format
-#: main.c:547
+#: main.c:521
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Impossible de créer %s : %s."
 
-#: main.c:586
+#: main.c:560
 msgid "No recipients specified.\n"
 msgstr "Pas de destinataire spécifié.\n"
 
 # , c-format
-#: main.c:659
+#: main.c:633
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s : impossible d'attacher le fichier.\n"
 
-#: main.c:679
+#: main.c:653
 msgid "No mailbox with new mail."
 msgstr "Pas de boîte aux lettres avec des nouveaux messages."
 
-#: main.c:713
+#: main.c:687
 msgid "Mailbox is empty."
 msgstr "La boîte aux lettres est vide."
 
@@ -2728,65 +2729,65 @@ msgid "Could not synchronize mailbox %s!"
 msgstr "Impossible de synchroniser la boîte aux lettres %s !"
 
 # , c-format
-#: mx.c:826
+#: mx.c:823
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Déplacer les messages lus dans %s ?"
 
 # , c-format
-#: mx.c:835 mx.c:1048
+#: mx.c:832 mx.c:1068
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Effacer %d message(s) marqué(s) à effacer ?"
 
 # , c-format
-#: mx.c:835 mx.c:1048
+#: mx.c:832 mx.c:1068
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Effacer %d message(s) marqué(s) à effacer ?"
 
 # , c-format
-#: mx.c:859
+#: mx.c:853
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Déplacement des messages lus dans %s..."
 
-#: mx.c:882 mx.c:1039
+#: mx.c:904 mx.c:1059
 msgid "Mailbox is unchanged."
 msgstr "La boîte aux lettres est inchangée."
 
-#: mx.c:894 mx.c:1078
-#, c-format
-msgid "%d kept."
-msgstr "%d gardés."
-
 # , c-format
-#: mx.c:913
+#: mx.c:934
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d gardé(s), %d déplacé(s), %d effacé(s)."
 
 # , c-format
-#: mx.c:916 mx.c:1081
+#: mx.c:937 mx.c:1101
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d gardé(s), %d effacé(s)."
 
 # , c-format
-#: mx.c:1024
+#: mx.c:1044
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Appuyez sur '%s' pour inverser l'écriture autorisée"
 
-#: mx.c:1026
+#: mx.c:1046
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Utilisez 'toggle-write' pour réautoriser l'écriture !"
 
 # , c-format
-#: mx.c:1028
+#: mx.c:1048
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "La boîte aux lettres est protégée contre l'écriture. %s"
+
+#: mx.c:1098
+#, c-format
+msgid "%d kept."
+msgstr "%d gardés."
 
 #: pager.c:57
 msgid "Not available in this menu."
@@ -3636,12 +3637,12 @@ msgid "Could not open %s"
 msgstr "Impossible d'ouvrir %s"
 
 # , c-format
-#: sendlib.c:1701
+#: sendlib.c:1702
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Erreur en envoyant le message, fils terminé avec le code %d (%s)."
 
-#: sendlib.c:1707
+#: sendlib.c:1708
 msgid "Output of the delivery process"
 msgstr "Sortie du processus de livraison"
 
@@ -3682,6 +3683,9 @@ msgstr "Le message père n'est pas visible en vue limitée"
 #: thread.c:727
 msgid "Parent message is not available."
 msgstr "Le message père n'est pas disponible."
+
+#~ msgid "Authenticating (GSSAPI)..."
+#~ msgstr "Authentification (GSSAPI)..."
 
 #~ msgid "Recoding only affetcs text attachments."
 #~ msgstr "Le recodage affecte uniquement les attachements textuels."

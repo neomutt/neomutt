@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.0i\n"
-"POT-Creation-Date: 2000-02-08 10:59+0100\n"
+"POT-Creation-Date: 2000-02-15 09:44+0100\n"
 "PO-Revision-Date: 1999-10-27 14:05+0200\n"
 "Last-Translator: Roberto Suarez Soto <ask4it@bigfoot.com>\n"
 "Language-Team: Galician <gpul-traduccion@ceu.fi.udc.es>\n"
@@ -74,7 +74,7 @@ msgstr "Non se puido atopa-lo nome, ¿continuar?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "A entrada \"compose\" no ficheiro Mailcap require %%s"
 
-#: attach.c:131 attach.c:256 commands.c:169 compose.c:1127 curs_lib.c:135
+#: attach.c:131 attach.c:256 commands.c:169 compose.c:1126 curs_lib.c:135
 #: curs_lib.c:331
 #, c-format
 msgid "Error running \"%s\"!"
@@ -139,93 +139,93 @@ msgstr "Directorio"
 msgid "Mask"
 msgstr "Máscara"
 
-#: browser.c:367 browser.c:897
+#: browser.c:369 browser.c:908
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s non é un directorio."
 
-#: browser.c:478
+#: browser.c:480
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Buzóns [%d]"
 
-#: browser.c:485
+#: browser.c:487
 #, fuzzy, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Directorio [%s], máscara de ficheiro: %s"
 
-#: browser.c:489
+#: browser.c:491
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Directorio [%s], máscara de ficheiro: %s"
 
-#: browser.c:500
+#: browser.c:502
 #, fuzzy
 msgid "Can't attach a directory!"
 msgstr "Non é posible ver un directorio"
 
-#: browser.c:618 browser.c:964 browser.c:1057
+#: browser.c:620 browser.c:975 browser.c:1068
 msgid "No files match the file mask"
 msgstr "Non hai ficheiros que coincidan coa máscara"
 
-#: browser.c:805
+#: browser.c:816
 #, fuzzy
 msgid "Creating mailboxes is not yet supported."
 msgstr "O marcado non está soportado."
 
-#: browser.c:810
+#: browser.c:821
 #, fuzzy
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Esta operación non está soportada actualmente para mensaxes PGP."
 
-#: browser.c:818
+#: browser.c:829
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr ""
 
-#: browser.c:832
+#: browser.c:843
 #, fuzzy
 msgid "Mailbox deleted."
 msgstr "Bucle de macro detectado."
 
-#: browser.c:838
+#: browser.c:849
 #, fuzzy
 msgid "Mailbox not deleted."
 msgstr "Mensaxe non enviada."
 
-#: browser.c:856
+#: browser.c:867
 msgid "Chdir to: "
 msgstr "Cambiar directorio a: "
 
-#: browser.c:890 browser.c:957
+#: browser.c:901 browser.c:968
 msgid "Error scanning directory."
 msgstr "Erro lendo directorio."
 
-#: browser.c:908
+#: browser.c:919
 msgid "File Mask: "
 msgstr "Máscara de ficheiro: "
 
-#: browser.c:980
+#: browser.c:991
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "¿Ordear inversamente por (d)ata, (a)lfabeto, (t)amaño ou (s)en orden?"
 
-#: browser.c:981
+#: browser.c:992
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "¿Ordear por (d)ata, (a)lfabeto, (t)amaño ou (s)en orden?"
 
-#: browser.c:982
+#: browser.c:993
 msgid "dazn"
 msgstr "dats"
 
-#: browser.c:1044
+#: browser.c:1055
 msgid "New file name: "
 msgstr "Novo nome de ficheiro: "
 
-#: browser.c:1065
+#: browser.c:1086
 msgid "Can't view a directory"
 msgstr "Non é posible ver un directorio"
 
-#: browser.c:1083
+#: browser.c:1104
 msgid "Error trying to view file"
 msgstr "Erro intentando ver ficheiro"
 
@@ -628,20 +628,20 @@ msgstr "Non fun capaz de crea-lo ficheiro %s"
 msgid "What we have here is a failure to make an attachment"
 msgstr "O que temos aquí é un fallo ó face-lo adxunto"
 
-#: compose.c:1088
+#: compose.c:1087
 msgid "Postpone this message?"
 msgstr "¿Pospór esta mensaxe?"
 
-#: compose.c:1142
+#: compose.c:1141
 msgid "Write message to mailbox"
 msgstr "Escribir mensaxe ó buzón"
 
-#: compose.c:1145
+#: compose.c:1144
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Escribindo mensaxe a %s..."
 
-#: compose.c:1154
+#: compose.c:1153
 msgid "Message written."
 msgstr "Mensaxe escrita."
 
@@ -679,7 +679,7 @@ msgstr "Non hai buzóns abertos."
 msgid "There are no messages."
 msgstr "Non hai mensaxes."
 
-#: curs_main.c:57 mx.c:1033 pager.c:58 recvattach.c:47
+#: curs_main.c:57 mx.c:1053 pager.c:58 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "O buzón é de só lectura."
 
@@ -1114,55 +1114,55 @@ msgstr ""
 msgid "Help for %s"
 msgstr "Axuda sobre %s"
 
-#. now begin login
-#: imap/auth.c:144
-msgid "Authenticating (GSSAPI)..."
-msgstr ""
+#: hook.c:243
+#, fuzzy, c-format
+msgid "unhook: unknown hook type: %s"
+msgstr "%s: tipo descoñecido"
 
-#: imap/auth.c:337
+#: imap/auth.c:104
 msgid "Authenticating (CRAM-MD5)..."
 msgstr ""
 
-#: imap/auth.c:424
+#: imap/auth.c:191
 msgid "Authenticating (anonymous)..."
 msgstr ""
 
-#: imap/auth.c:499
+#: imap/auth.c:266
 msgid "IMAP Username: "
 msgstr "Usuario IMAP: "
 
-#: imap/auth.c:515
+#: imap/auth.c:282
 msgid "Anonymous authentication not supported."
 msgstr ""
 
-#: imap/auth.c:528
+#: imap/auth.c:295
 msgid "GSSAPI authentication failed."
 msgstr ""
 
-#: imap/auth.c:546
+#: imap/auth.c:313
 #, fuzzy, c-format
 msgid "CRAM key for %s@%s: "
 msgstr "Introduza keyID para %s: "
 
-#: imap/auth.c:561
+#: imap/auth.c:328
 msgid "CRAM-MD5 authentication failed."
 msgstr ""
 
-#: imap/auth.c:576
+#: imap/auth.c:343
 msgid "Skipping CRAM-MD5 authentication."
 msgstr ""
 
-#: imap/auth.c:588
+#: imap/auth.c:355
 #, c-format
 msgid "Password for %s@%s: "
 msgstr "Contrasinal para %s@%s: "
 
-#: imap/auth.c:604
+#: imap/auth.c:371
 msgid "Logging in..."
 msgstr "Comezando secuencia de login ..."
 
 #. Login failed, try again
-#: imap/auth.c:616
+#: imap/auth.c:383
 msgid "Login failed."
 msgstr "O login fallou."
 
@@ -1227,12 +1227,12 @@ msgstr "Pechando buzón..."
 msgid "Expunging messages from server..."
 msgstr "Borrando mensaxes do servidor..."
 
-#: imap/imap.c:1379
+#: imap/imap.c:1387
 #, fuzzy, c-format
 msgid "Subscribing to %s..."
 msgstr "Copiando a %s..."
 
-#: imap/imap.c:1381
+#: imap/imap.c:1389
 #, fuzzy, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Conectando con %s..."
@@ -2394,44 +2394,44 @@ msgstr ""
 "\n"
 "Opcións de compilación:"
 
-#: main.c:323
+#: main.c:297
 msgid "Error initializing terminal."
 msgstr "Error iniciando terminal."
 
-#: main.c:422
+#: main.c:396
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Depurando a nivel %d.\n"
 
-#: main.c:424
+#: main.c:398
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr ""
 "A opción \"DEBUG\" non foi especificada durante a compilación. Ignorado.\n"
 
-#: main.c:543
+#: main.c:517
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr ""
 
-#: main.c:547
+#: main.c:521
 #, fuzzy, c-format
 msgid "Can't create %s: %s."
 msgstr "Non fun capaz de crea-lo ficheiro %s"
 
-#: main.c:586
+#: main.c:560
 msgid "No recipients specified.\n"
 msgstr "Non foi especificado ningún destinatario.\n"
 
-#: main.c:659
+#: main.c:633
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: non foi posible adxuntar ficheiro.\n"
 
-#: main.c:679
+#: main.c:653
 msgid "No mailbox with new mail."
 msgstr "Non hai buzóns con novo correo."
 
-#: main.c:713
+#: main.c:687
 msgid "Mailbox is empty."
 msgstr "O buzón está valeiro."
 
@@ -2639,58 +2639,58 @@ msgstr "Escribindo %s..."
 msgid "Could not synchronize mailbox %s!"
 msgstr "¡Non foi posible sincroniza-lo buzón %s!"
 
-#: mx.c:826
+#: mx.c:823
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "¿Mover mensaxes lidas a %s?"
 
-#: mx.c:835 mx.c:1048
+#: mx.c:832 mx.c:1068
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "¿Purgar %d mensaxe marcada como borrada?"
 
-#: mx.c:835 mx.c:1048
+#: mx.c:832 mx.c:1068
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "¿Purgar %d mensaxes marcadas como borradas?"
 
-#: mx.c:859
+#: mx.c:853
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Movendo mensaxes lidas a %s..."
 
-#: mx.c:882 mx.c:1039
+#: mx.c:904 mx.c:1059
 msgid "Mailbox is unchanged."
 msgstr "O buzón non cambiou."
 
-#: mx.c:894 mx.c:1078
-#, c-format
-msgid "%d kept."
-msgstr ""
-
-#: mx.c:913
+#: mx.c:934
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d conservados, %d movidos, %d borrados."
 
-#: mx.c:916 mx.c:1081
+#: mx.c:937 mx.c:1101
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d conservados, %d borrados."
 
-#: mx.c:1024
+#: mx.c:1044
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Pulse '%s' para cambiar a modo escritura"
 
-#: mx.c:1026
+#: mx.c:1046
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "¡Use 'toggle-write' para restablece-lo modo escritura!"
 
-#: mx.c:1028
+#: mx.c:1048
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "O buzón está marcado como non escribible. %s"
+
+#: mx.c:1098
+#, c-format
+msgid "%d kept."
+msgstr ""
 
 #
 #: pager.c:57
@@ -3506,12 +3506,12 @@ msgstr "¡Xa non existe %s!"
 msgid "Could not open %s"
 msgstr "Non foi posible abrir %s"
 
-#: sendlib.c:1701
+#: sendlib.c:1702
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Erro enviando mensaxe, o proceso fillo saíu con %d (%s)."
 
-#: sendlib.c:1707
+#: sendlib.c:1708
 msgid "Output of the delivery process"
 msgstr "Saída do proceso de distribución"
 

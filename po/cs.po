@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.95.3i\n"
-"POT-Creation-Date: 2000-02-08 10:59+0100\n"
+"POT-Creation-Date: 2000-02-15 09:44+0100\n"
 "PO-Revision-Date: 1999-02-13 01:12+0100\n"
 "Last-Translator: Jiøí Pavlovský <pavlovsk@ff.cuni.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
@@ -74,7 +74,7 @@ msgstr "Shodu pro jmenný vzor nelze nalézt, pokraèovat?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Polo¾ka mailcapu 'compose' vy¾aduje %%s."
 
-#: attach.c:131 attach.c:256 commands.c:169 compose.c:1127 curs_lib.c:135
+#: attach.c:131 attach.c:256 commands.c:169 compose.c:1126 curs_lib.c:135
 #: curs_lib.c:331
 #, fuzzy, c-format
 msgid "Error running \"%s\"!"
@@ -135,93 +135,93 @@ msgstr "Zmìnit adresáø"
 msgid "Mask"
 msgstr "Maska"
 
-#: browser.c:367 browser.c:897
+#: browser.c:369 browser.c:908
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s není adresáøem."
 
-#: browser.c:478
+#: browser.c:480
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Schránky [%d]"
 
-#: browser.c:485
+#: browser.c:487
 #, fuzzy, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Adresáø [%s], Souborová maska: %s"
 
-#: browser.c:489
+#: browser.c:491
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Adresáø [%s], Souborová maska: %s"
 
-#: browser.c:500
+#: browser.c:502
 #, fuzzy
 msgid "Can't attach a directory!"
 msgstr "Adresáø nelze zobrazit"
 
-#: browser.c:618 browser.c:964 browser.c:1057
+#: browser.c:620 browser.c:975 browser.c:1068
 msgid "No files match the file mask"
 msgstr "Souborové masce nevyhovuje ¾ádný soubor."
 
-#: browser.c:805
+#: browser.c:816
 #, fuzzy
 msgid "Creating mailboxes is not yet supported."
 msgstr "Oznaèování není podporováno."
 
-#: browser.c:810
+#: browser.c:821
 #, fuzzy
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Tento pøíkaz není u PGP zpráv podporován."
 
-#: browser.c:818
+#: browser.c:829
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr ""
 
-#: browser.c:832
+#: browser.c:843
 #, fuzzy
 msgid "Mailbox deleted."
 msgstr "Detekována smyèka v makru."
 
-#: browser.c:838
+#: browser.c:849
 #, fuzzy
 msgid "Mailbox not deleted."
 msgstr "Zpráva nebyla odeslána."
 
-#: browser.c:856
+#: browser.c:867
 msgid "Chdir to: "
 msgstr "Nastavit pracovní adresáø na: "
 
-#: browser.c:890 browser.c:957
+#: browser.c:901 browser.c:968
 msgid "Error scanning directory."
 msgstr "Chyba pøi naèítání adresáøe."
 
-#: browser.c:908
+#: browser.c:919
 msgid "File Mask: "
 msgstr "Souborová maska: "
 
-#: browser.c:980
+#: browser.c:991
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Obrácené øazení dle (d)ata, (p)ísmena, (v)elikosti èi (n)eøadit?"
 
-#: browser.c:981
+#: browser.c:992
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Øadit dle (d)ata, (p)ísmena, (v)elikosti èi (n)eøadit?"
 
-#: browser.c:982
+#: browser.c:993
 msgid "dazn"
 msgstr "dpvn"
 
-#: browser.c:1044
+#: browser.c:1055
 msgid "New file name: "
 msgstr "Nové jméno souboru: "
 
-#: browser.c:1065
+#: browser.c:1086
 msgid "Can't view a directory"
 msgstr "Adresáø nelze zobrazit"
 
-#: browser.c:1083
+#: browser.c:1104
 msgid "Error trying to view file"
 msgstr "Chyba pøi zobrazování souboru"
 
@@ -627,20 +627,20 @@ msgstr "Soubor %s nelze vytvoøit."
 msgid "What we have here is a failure to make an attachment"
 msgstr "Vytvoøení pøílohy se nezdaøilo."
 
-#: compose.c:1088
+#: compose.c:1087
 msgid "Postpone this message?"
 msgstr "Odlo¾it tuto zprávu?"
 
-#: compose.c:1142
+#: compose.c:1141
 msgid "Write message to mailbox"
 msgstr "Ulo¾it zprávu do schránky"
 
-#: compose.c:1145
+#: compose.c:1144
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Ukládám zprávu do %s ..."
 
-#: compose.c:1154
+#: compose.c:1153
 msgid "Message written."
 msgstr "Zpráva ulo¾ena."
 
@@ -678,7 +678,7 @@ msgstr "®ádná schránka není otevøena."
 msgid "There are no messages."
 msgstr "Vlákno obsahuje nepøeètené zprávy."
 
-#: curs_main.c:57 mx.c:1033 pager.c:58 recvattach.c:47
+#: curs_main.c:57 mx.c:1053 pager.c:58 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "Ze schránky je mo¾né pouze èíst."
 
@@ -1115,55 +1115,55 @@ msgstr ""
 msgid "Help for %s"
 msgstr "Pomoc pro %s"
 
-#. now begin login
-#: imap/auth.c:144
-msgid "Authenticating (GSSAPI)..."
-msgstr ""
+#: hook.c:243
+#, fuzzy, c-format
+msgid "unhook: unknown hook type: %s"
+msgstr "neznámý typ %s"
 
-#: imap/auth.c:337
+#: imap/auth.c:104
 msgid "Authenticating (CRAM-MD5)..."
 msgstr ""
 
-#: imap/auth.c:424
+#: imap/auth.c:191
 msgid "Authenticating (anonymous)..."
 msgstr ""
 
-#: imap/auth.c:499
+#: imap/auth.c:266
 msgid "IMAP Username: "
 msgstr "U¾ivatelské jméno na IMAP serveru: "
 
-#: imap/auth.c:515
+#: imap/auth.c:282
 msgid "Anonymous authentication not supported."
 msgstr ""
 
-#: imap/auth.c:528
+#: imap/auth.c:295
 msgid "GSSAPI authentication failed."
 msgstr ""
 
-#: imap/auth.c:546
+#: imap/auth.c:313
 #, fuzzy, c-format
 msgid "CRAM key for %s@%s: "
 msgstr "Zadejte ID klíèe pro %s: "
 
-#: imap/auth.c:561
+#: imap/auth.c:328
 msgid "CRAM-MD5 authentication failed."
 msgstr ""
 
-#: imap/auth.c:576
+#: imap/auth.c:343
 msgid "Skipping CRAM-MD5 authentication."
 msgstr ""
 
-#: imap/auth.c:588
+#: imap/auth.c:355
 #, c-format
 msgid "Password for %s@%s: "
 msgstr "Heslo pro %s@%s: "
 
-#: imap/auth.c:604
+#: imap/auth.c:371
 msgid "Logging in..."
 msgstr "Probíhá pøihla¹ování..."
 
 #. Login failed, try again
-#: imap/auth.c:616
+#: imap/auth.c:383
 msgid "Login failed."
 msgstr "Pøihlá¹ení se nezdaøilo."
 
@@ -1228,12 +1228,12 @@ msgstr "Uzavírám schránku..."
 msgid "Expunging messages from server..."
 msgstr "Odstraòuji zprávy ze serveru..."
 
-#: imap/imap.c:1379
+#: imap/imap.c:1387
 #, fuzzy, c-format
 msgid "Subscribing to %s..."
 msgstr "Kopíruji do %s..."
 
-#: imap/imap.c:1381
+#: imap/imap.c:1389
 #, fuzzy, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Pøipojuji se k %s..."
@@ -2419,43 +2419,43 @@ msgstr ""
 "\n"
 "Pøelo¾eno s volbami:"
 
-#: main.c:323
+#: main.c:297
 msgid "Error initializing terminal."
 msgstr "Chyba pøi inicializaci terminálu."
 
-#: main.c:422
+#: main.c:396
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Ùroveò ladìní je %d.\n"
 
-#: main.c:424
+#: main.c:398
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "pøi pøekladu programu nebylo 'DEBUG' definováno. Ignoruji.\n"
 
-#: main.c:543
+#: main.c:517
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr ""
 
-#: main.c:547
+#: main.c:521
 #, fuzzy, c-format
 msgid "Can't create %s: %s."
 msgstr "Soubor %s nelze vytvoøit."
 
-#: main.c:586
+#: main.c:560
 msgid "No recipients specified.\n"
 msgstr "Nejsou specifikováni ¾ádní pøíjemci.\n"
 
-#: main.c:659
+#: main.c:633
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "Soubor %s nelze pøipojit.\n"
 
-#: main.c:679
+#: main.c:653
 msgid "No mailbox with new mail."
 msgstr "V ¾ádné schránce není nová po¹ta."
 
-#: main.c:713
+#: main.c:687
 msgid "Mailbox is empty."
 msgstr "Schránka je prázdná."
 
@@ -2663,58 +2663,58 @@ msgstr "Ukládám %s..."
 msgid "Could not synchronize mailbox %s!"
 msgstr "Schránku %s nelze synchronizovat!"
 
-#: mx.c:826
+#: mx.c:823
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Pøesunout pøeètené zprávy do %s?"
 
-#: mx.c:835 mx.c:1048
+#: mx.c:832 mx.c:1068
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Zahodit smazané zprávy (%d)?"
 
-#: mx.c:835 mx.c:1048
+#: mx.c:832 mx.c:1068
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Zahodit smazané zprávy (%d)?"
 
-#: mx.c:859
+#: mx.c:853
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Pøesunuji pøeètené zprávy do %s..."
 
-#: mx.c:882 mx.c:1039
+#: mx.c:904 mx.c:1059
 msgid "Mailbox is unchanged."
 msgstr "Obsah schránky nebyl zmìnìn."
 
-#: mx.c:894 mx.c:1078
-#, c-format
-msgid "%d kept."
-msgstr ""
-
-#: mx.c:913
+#: mx.c:934
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "ponecháno: %d, pøesunuto: %d, smazáno: %d"
 
-#: mx.c:916 mx.c:1081
+#: mx.c:937 mx.c:1101
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "ponecháno: %d, smazáno: %d"
 
-#: mx.c:1024
+#: mx.c:1044
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Stisknìte `%s' pro zapnutí zápisu"
 
-#: mx.c:1026
+#: mx.c:1046
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Pou¾ijte 'toggle-write' pro zapnutí zápisu!"
 
-#: mx.c:1028
+#: mx.c:1048
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Schránka má vypnut zápis. %s"
+
+#: mx.c:1098
+#, c-format
+msgid "%d kept."
+msgstr ""
 
 #: pager.c:57
 #, fuzzy
@@ -3537,12 +3537,12 @@ msgstr "%s ji¾ neexistuje!"
 msgid "Could not open %s"
 msgstr "%s nelze otevøít"
 
-#: sendlib.c:1701
+#: sendlib.c:1702
 #, fuzzy, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Chyba pøi zasílání zprávy, potomek ukonèen %d (%s).\n"
 
-#: sendlib.c:1707
+#: sendlib.c:1708
 msgid "Output of the delivery process"
 msgstr ""
 

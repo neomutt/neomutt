@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.2\n"
-"POT-Creation-Date: 2000-02-08 10:59+0100\n"
+"POT-Creation-Date: 2000-02-15 09:44+0100\n"
 "PO-Revision-Date: 2000-01-20 06:25+0900\n"
 "Last-Translator: Byeong-Chan Kim <redhands@linux.sarag.net>\n"
 "Language-Team: Korean <ko@li.org>\n"
@@ -74,7 +74,7 @@ msgstr "이름 보기판과 맞지 않음. 계속할까요?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Mailcap 작성 항목은 %%s가 필요함"
 
-#: attach.c:131 attach.c:256 commands.c:169 compose.c:1127 curs_lib.c:135
+#: attach.c:131 attach.c:256 commands.c:169 compose.c:1126 curs_lib.c:135
 #: curs_lib.c:331
 #, c-format
 msgid "Error running \"%s\"!"
@@ -135,89 +135,89 @@ msgstr "디렉토리 이동"
 msgid "Mask"
 msgstr "매스크"
 
-#: browser.c:367 browser.c:897
+#: browser.c:369 browser.c:908
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s는 디렉토리가 아닙니다."
 
-#: browser.c:478
+#: browser.c:480
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "편지함 [%d]"
 
-#: browser.c:485
+#: browser.c:487
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "가입 [%s], 파일 매스크: %s"
 
-#: browser.c:489
+#: browser.c:491
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "디렉토리 [%s], 파일 매스크: %s"
 
-#: browser.c:500
+#: browser.c:502
 msgid "Can't attach a directory!"
 msgstr "디렉토리를 첨부할 수 없음!"
 
-#: browser.c:618 browser.c:964 browser.c:1057
+#: browser.c:620 browser.c:975 browser.c:1068
 msgid "No files match the file mask"
 msgstr "파일 매스크와 일치하는 파일 없음."
 
-#: browser.c:805
+#: browser.c:816
 msgid "Creating mailboxes is not yet supported."
 msgstr "매일함 생성을 지원치 않음."
 
-#: browser.c:810
+#: browser.c:821
 #, fuzzy
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "삭제는 IMAP 메일함에서만 지원됨"
 
-#: browser.c:818
+#: browser.c:829
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "\"%s\" 매일함을 지울까요?"
 
-#: browser.c:832
+#: browser.c:843
 msgid "Mailbox deleted."
 msgstr "매일함 삭제됨."
 
-#: browser.c:838
+#: browser.c:849
 msgid "Mailbox not deleted."
 msgstr "보내지 삭제되지 않음."
 
-#: browser.c:856
+#: browser.c:867
 msgid "Chdir to: "
 msgstr "이동할 디렉토리: "
 
-#: browser.c:890 browser.c:957
+#: browser.c:901 browser.c:968
 msgid "Error scanning directory."
 msgstr "디렉토리 검사중 오류."
 
-#: browser.c:908
+#: browser.c:919
 msgid "File Mask: "
 msgstr "파일 매스크: "
 
-#: browser.c:980
+#: browser.c:991
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "역정렬 방법 날짜(d), 낱말(a), 크기(z) 또는 안함(n)?"
 
-#: browser.c:981
+#: browser.c:992
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "정렬 방법 날짜(d), 글자(a), 크기(z) 또는 안함(n)?"
 
-#: browser.c:982
+#: browser.c:993
 msgid "dazn"
 msgstr "dazn"
 
-#: browser.c:1044
+#: browser.c:1055
 msgid "New file name: "
 msgstr "새 파일 이름: "
 
-#: browser.c:1065
+#: browser.c:1086
 msgid "Can't view a directory"
 msgstr "디렉토리를 볼 수 없음"
 
-#: browser.c:1083
+#: browser.c:1104
 msgid "Error trying to view file"
 msgstr "파일 보기 시도 중 오류"
 
@@ -617,20 +617,20 @@ msgstr "%s 파일을 만들 수 없음"
 msgid "What we have here is a failure to make an attachment"
 msgstr "여기에 있는 것들은 첨부 과정에서 실패한 것들입니다."
 
-#: compose.c:1088
+#: compose.c:1087
 msgid "Postpone this message?"
 msgstr "이 메세지를 나중에 보낼까요?"
 
-#: compose.c:1142
+#: compose.c:1141
 msgid "Write message to mailbox"
 msgstr "편지함에 메세지 쓰기"
 
-#: compose.c:1145
+#: compose.c:1144
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "%s에 메세지 쓰는중..."
 
-#: compose.c:1154
+#: compose.c:1153
 msgid "Message written."
 msgstr "메세지가 작성됨."
 
@@ -667,7 +667,7 @@ msgstr "열린 편지함이 없음."
 msgid "There are no messages."
 msgstr "메세지가 없습니다."
 
-#: curs_main.c:57 mx.c:1033 pager.c:58 recvattach.c:47
+#: curs_main.c:57 mx.c:1053 pager.c:58 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "읽기 전용 편지함."
 
@@ -1096,55 +1096,55 @@ msgstr ""
 msgid "Help for %s"
 msgstr "%s 도움말"
 
-#. now begin login
-#: imap/auth.c:144
-msgid "Authenticating (GSSAPI)..."
-msgstr "인증 중 (GSSAPI)..."
+#: hook.c:243
+#, fuzzy, c-format
+msgid "unhook: unknown hook type: %s"
+msgstr "%s: 알 수 없는 형식"
 
-#: imap/auth.c:337
+#: imap/auth.c:104
 msgid "Authenticating (CRAM-MD5)..."
 msgstr "인증 중 (CRAM-MD5)..."
 
-#: imap/auth.c:424
+#: imap/auth.c:191
 msgid "Authenticating (anonymous)..."
 msgstr "인증 중 (무명씨)..."
 
-#: imap/auth.c:499
+#: imap/auth.c:266
 msgid "IMAP Username: "
 msgstr "IMAP 사용자명: "
 
-#: imap/auth.c:515
+#: imap/auth.c:282
 msgid "Anonymous authentication not supported."
 msgstr "무명씨 인증을 지원하지 않음."
 
-#: imap/auth.c:528
+#: imap/auth.c:295
 msgid "GSSAPI authentication failed."
 msgstr "GSSAPI 인증에 실패함."
 
-#: imap/auth.c:546
+#: imap/auth.c:313
 #, c-format
 msgid "CRAM key for %s@%s: "
 msgstr "%s@%s의 CRAM 키 입력: "
 
-#: imap/auth.c:561
+#: imap/auth.c:328
 msgid "CRAM-MD5 authentication failed."
 msgstr "CRAM-MD5 인증에 실패함."
 
-#: imap/auth.c:576
+#: imap/auth.c:343
 msgid "Skipping CRAM-MD5 authentication."
 msgstr "CRAM-MD5 인증을 생략함."
 
-#: imap/auth.c:588
+#: imap/auth.c:355
 #, c-format
 msgid "Password for %s@%s: "
 msgstr "%s@%s의 패스워드: "
 
-#: imap/auth.c:604
+#: imap/auth.c:371
 msgid "Logging in..."
 msgstr "접속 중..."
 
 #. Login failed, try again
-#: imap/auth.c:616
+#: imap/auth.c:383
 msgid "Login failed."
 msgstr "접속 실패."
 
@@ -1209,12 +1209,12 @@ msgstr "편지함 닫는 중..."
 msgid "Expunging messages from server..."
 msgstr "서버의 메세지 삭제 중..."
 
-#: imap/imap.c:1379
+#: imap/imap.c:1387
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "%s에 구독 중..."
 
-#: imap/imap.c:1381
+#: imap/imap.c:1389
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "%s에 구독 해제 중..."
@@ -2372,43 +2372,43 @@ msgstr ""
 "\n"
 "컴파일 선택사항:"
 
-#: main.c:323
+#: main.c:297
 msgid "Error initializing terminal."
 msgstr "터미널 초기화 오류."
 
-#: main.c:422
+#: main.c:396
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "디버깅 레벨 %d.\n"
 
-#: main.c:424
+#: main.c:398
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG가 컴파일시 정의되지 않음. 무시함\n"
 
-#: main.c:543
+#: main.c:517
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s가 존재치 않음. 만들까요?"
 
-#: main.c:547
+#: main.c:521
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "%s를 만들 수 없음: %s."
 
-#: main.c:586
+#: main.c:560
 msgid "No recipients specified.\n"
 msgstr "수신자가 지정되지 않음.\n"
 
-#: main.c:659
+#: main.c:633
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: 파일을 첨부할 수 없음.\n"
 
-#: main.c:679
+#: main.c:653
 msgid "No mailbox with new mail."
 msgstr "새로운 편지가 도착한 편지함 없음."
 
-#: main.c:713
+#: main.c:687
 msgid "Mailbox is empty."
 msgstr "편지함이 비었음"
 
@@ -2613,58 +2613,58 @@ msgstr "%s 쓰는 중..."
 msgid "Could not synchronize mailbox %s!"
 msgstr "%s 편지함을 동기화 시킬 수 없음!"
 
-#: mx.c:826
+#: mx.c:823
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "읽은 메세지를 %s로 옮길까요?"
 
-#: mx.c:835 mx.c:1048
+#: mx.c:832 mx.c:1068
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "삭제된 메세지(%d)를 없앨까요?"
 
-#: mx.c:835 mx.c:1048
+#: mx.c:832 mx.c:1068
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "삭제된 메세지(%d)들을 없앨까요?"
 
-#: mx.c:859
+#: mx.c:853
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "읽은 메세지를 %s로 옮기는 중..."
 
-#: mx.c:882 mx.c:1039
+#: mx.c:904 mx.c:1059
 msgid "Mailbox is unchanged."
 msgstr "편지함이 변경되지 않음."
 
-#: mx.c:894 mx.c:1078
-#, c-format
-msgid "%d kept."
-msgstr "%d개 보조됨."
-
-#: mx.c:913
+#: mx.c:934
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d개 보관, %d개 이동, %d개 삭제"
 
-#: mx.c:916 mx.c:1081
+#: mx.c:937 mx.c:1101
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d개 보관, %d개 삭제"
 
-#: mx.c:1024
+#: mx.c:1044
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " 쓰기 상태 바꾸기; `%s'를 누르세요"
 
-#: mx.c:1026
+#: mx.c:1046
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "'toggle-write'를 사용해 쓰기를 허가합니다!"
 
-#: mx.c:1028
+#: mx.c:1048
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "편지함이 쓰기 불가능으로 표기되었음. %s"
+
+#: mx.c:1098
+#, c-format
+msgid "%d kept."
+msgstr "%d개 보조됨."
 
 #: pager.c:57
 msgid "Not available in this menu."
@@ -3481,12 +3481,12 @@ msgstr "%s가 더 이상 존재치 않음!"
 msgid "Could not open %s"
 msgstr "%s를 열 수 없음"
 
-#: sendlib.c:1701
+#: sendlib.c:1702
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "메세지를 보내는 중 오류, 자식 종료 %d (%s)."
 
-#: sendlib.c:1707
+#: sendlib.c:1708
 msgid "Output of the delivery process"
 msgstr ""
 
@@ -3524,6 +3524,9 @@ msgstr "부모 메세지는 볼 수 없는 상태임."
 #: thread.c:727
 msgid "Parent message is not available."
 msgstr "부모 메세지가 존재하지 않음."
+
+#~ msgid "Authenticating (GSSAPI)..."
+#~ msgstr "인증 중 (GSSAPI)..."
 
 #, fuzzy
 #~ msgid "PGP keys matching "

@@ -1,3 +1,91 @@
+Tue Feb 15 08:59:41 2000  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.head:
+	Add improved documentation for the "push" command, and macros.  From
+	Byrial Jensen, based on a patch by Mikko Hanninen.
+
+	* functions.h: Fix the <exit> function on the pager.
+
+	* doc/manual.sgml.head, doc/muttrc.man.head, hook.c, init.c, init.h, protos.h:
+	Byrial Jensen's unhook command patch.
+
+	* doc/Makefile.in:
+	Remove superfluous empty lines from the text version of the manual.
+
+	* OPS:
+	Change the documentation string for OP_MAIN_PREV_UNDELETED - it may
+	be confusing.
+
+	* functions.h, keymap.c: More OP_EXIT fixes.
+
+	* OPS, functions.h, keymap.c, pager.c:
+	Remove the OP_PAGER_EXIT opcode, and change it to OP_EXIT.
+
+	* doc/manual.sgml.head: Add more documentation for subscribe and lists.
+
+Mon Feb 14 20:51:37 2000  Thomas Roessler  <roessler@guug.de>
+
+	* init.h: Fix documentation for $followup_to.
+
+	* po/de.po:
+	Fix the fixes.  Folks, when submitting changes to the .po files,
+	please try a "make" in the po subdirectory afterwards.
+
+	* po/it.po: New Italian translation from Marco d'Itri.
+
+	* imap/imap.c, imap/Makefile.am, imap/auth.c, imap/auth_gss.c, imap/browse.c, doc/manual.sgml.head, mx.c, .cvsignore, Makefile.am, browser.c, browser.h, configure.in:
+	Brendan Cully's patch from <20000212185021.A7365@xanadu.kublai.com>.
+
+	* po/de.po: Fixes from Roland Rosenfeld.
+
+	* attach.c, compose.c:
+	Fix a couple of random perror() calls and related problems.
+
+	* sendlib.c: Fix encoding for text/* attachments with long lines.
+
+Fri Feb 11 09:04:22 2000  Thomas Roessler  <roessler@guug.de>
+
+	* contrib/Pine.rc: Fix bug #23.
+
+	* init.h, makedoc.c:
+	Fix minor documentation problems noted by Marius Gedminas
+	<mgedmin@takas.lt>.
+
+Thu Feb 10 19:46:13 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/message.c, pager.c, parse.c, pattern.c, pgp.c, pgp.h, pgpkey.c, pgplib.h, postpone.c, protos.h, recvattach.c, send.c, sendlib.c, sort.h, functions.h, globals.h, handler.c, hdrline.c, headers.c, hook.c, init.c, init.h, keymap.c, keymap.h, main.c, mutt.h, muttlib.c, mx.c, Makefile.am, acconfig.h, attach.c, commands.c, compose.c, configure.in, copy.c, copy.h, curs_main.c:
+	PGP-cleanup patch from Roland Rosenfeld.  Thanks!
+
+	* muttbug.sh.in:
+	${prefix} should be defined, as it may be used by autoconf.
+
+Wed Feb  9 18:28:45 2000  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.head: Fix a minor typo.  From Mikko Hänninen.
+
+	* muttbug.sh.in: Mostly Debian-related fixes from Roland Rosenfeld.
+
+	* main.c: Small translation-related fix from Roland.
+
+	* po/fr.po: Update from Vincent Lefevre.
+
+	* pgpewrap:
+	Portability patch to make pgpewrap work under HP/UX.  From David
+	Ellement <ellement@sdd.hp.com>.
+
+	* doc/Makefile.in, doc/manual.sgml.head, doc/manual.sgml.tail, init.h:
+	Documentation changes from Roland Rosenfeld.
+
+Tue Feb  8 20:55:33 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/zh_TW.Big5.po, po/sk.po, po/sv.po, po/uk.po, po/ru.po, po/ko.po, po/nl.po, po/pl.po, po/fr.po, po/gl.po, po/id.po, po/it.po, po/de.po, po/el.po, po/eo.po, po/es.po, build-release, po/cs.po, reldate.h, Makefile.am, VERSION, ChangeLog:
+	automatic post-release commit for mutt-1.1.3
+
+	* build-release:
+	Don't build US releases.  RedHat and Caldera don't object, Debian
+	uses the international version anyways, and SuSE (1) sits in Germany
+	and (2) doesn't react.
+
 Tue Feb  8 20:34:51 2000  Thomas Roessler  <roessler@guug.de>
 
 	* build-release:

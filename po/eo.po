@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1\n"
-"POT-Creation-Date: 2000-02-08 10:59+0100\n"
+"POT-Creation-Date: 2000-02-15 09:44+0100\n"
 "PO-Revision-Date: 2000-02-07 22:44+00:00\n"
 "Last-Translator: Edmund GRIMLEY EVANS <edmundo@rano.org>\n"
 "Language-Team: eo <eo@li.org>\n"
@@ -73,7 +73,7 @@ msgstr "Nomþamblono ne estas plenumebla. Æu daýrigi?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "\"compose\" en Mailcap-dosiero postulas %%s"
 
-#: attach.c:131 attach.c:256 commands.c:169 compose.c:1127 curs_lib.c:135
+#: attach.c:131 attach.c:256 commands.c:169 compose.c:1126 curs_lib.c:135
 #: curs_lib.c:331
 #, c-format
 msgid "Error running \"%s\"!"
@@ -136,88 +136,88 @@ msgstr "Listo"
 msgid "Mask"
 msgstr "Masko"
 
-#: browser.c:367 browser.c:897
+#: browser.c:369 browser.c:908
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s ne estas dosierujo."
 
-#: browser.c:478
+#: browser.c:480
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Poþtfakoj [%d]"
 
-#: browser.c:485
+#: browser.c:487
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Abonita [%s], Dosieromasko: %s"
 
-#: browser.c:489
+#: browser.c:491
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Dosierujo [%s], Dosieromasko: %s"
 
-#: browser.c:500
+#: browser.c:502
 msgid "Can't attach a directory!"
 msgstr "Ne povas aldoni dosierujon!"
 
-#: browser.c:618 browser.c:964 browser.c:1057
+#: browser.c:620 browser.c:975 browser.c:1068
 msgid "No files match the file mask"
 msgstr "Neniu dosiero kongruas kun la dosieromasko"
 
-#: browser.c:805
+#: browser.c:816
 msgid "Creating mailboxes is not yet supported."
 msgstr "Kreado de poþtfakoj ankoraý ne funkcias."
 
-#: browser.c:810
+#: browser.c:821
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Forviþado funkcias nur æe IMAP-poþtfakoj"
 
-#: browser.c:818
+#: browser.c:829
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Æu vere forviþi la poþtfakon \"%s\"?"
 
-#: browser.c:832
+#: browser.c:843
 msgid "Mailbox deleted."
 msgstr "Poþtfako forviþita."
 
-#: browser.c:838
+#: browser.c:849
 msgid "Mailbox not deleted."
 msgstr "Poþtfako ne forviþita."
 
-#: browser.c:856
+#: browser.c:867
 msgid "Chdir to: "
 msgstr "Iri al la dosierujo: "
 
-#: browser.c:890 browser.c:957
+#: browser.c:901 browser.c:968
 msgid "Error scanning directory."
 msgstr "Eraro dum legado de dosierujo."
 
-#: browser.c:908
+#: browser.c:919
 msgid "File Mask: "
 msgstr "Dosieromasko: "
 
-#: browser.c:980
+#: browser.c:991
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Inversa ordigo laý (d)ato, (a)lfabete, (g)rando, aý (n)e ordigu? "
 
-#: browser.c:981
+#: browser.c:992
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Ordigo laý (d)ato, (a)lfabete, (g)rando, aý (n)e ordigu? "
 
-#: browser.c:982
+#: browser.c:993
 msgid "dazn"
 msgstr "dagn"
 
-#: browser.c:1044
+#: browser.c:1055
 msgid "New file name: "
 msgstr "Nova dosieronomo: "
 
-#: browser.c:1065
+#: browser.c:1086
 msgid "Can't view a directory"
 msgstr "Ne povas rigardi dosierujon"
 
-#: browser.c:1083
+#: browser.c:1104
 msgid "Error trying to view file"
 msgstr "Eraro dum vidigo de dosiero"
 
@@ -620,20 +620,20 @@ msgstr "Ne povas krei dosieron %s"
 msgid "What we have here is a failure to make an attachment"
 msgstr "Oni malsukcesis krei aldona¼on"
 
-#: compose.c:1088
+#: compose.c:1087
 msgid "Postpone this message?"
 msgstr "Æu prokrasti æi tiun mesaøon?"
 
-#: compose.c:1142
+#: compose.c:1141
 msgid "Write message to mailbox"
 msgstr "Skribi mesaøon al poþtfako"
 
-#: compose.c:1145
+#: compose.c:1144
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Skribas mesaøon al %s ..."
 
-#: compose.c:1154
+#: compose.c:1153
 msgid "Message written."
 msgstr "Mesaøo skribita."
 
@@ -670,7 +670,7 @@ msgstr "Neniu poþtfako estas malfermita."
 msgid "There are no messages."
 msgstr "Ne estas mesaøoj."
 
-#: curs_main.c:57 mx.c:1033 pager.c:58 recvattach.c:47
+#: curs_main.c:57 mx.c:1053 pager.c:58 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "Poþtfako estas nurlega."
 
@@ -1101,55 +1101,55 @@ msgstr ""
 msgid "Help for %s"
 msgstr "Helpo por %s"
 
-#. now begin login
-#: imap/auth.c:144
-msgid "Authenticating (GSSAPI)..."
-msgstr "Rajtiøas (GSSAPI) ..."
+#: hook.c:243
+#, fuzzy, c-format
+msgid "unhook: unknown hook type: %s"
+msgstr "%s: nekonata speco"
 
-#: imap/auth.c:337
+#: imap/auth.c:104
 msgid "Authenticating (CRAM-MD5)..."
 msgstr "Rajtiøas (CRAM-MD5) ..."
 
-#: imap/auth.c:424
+#: imap/auth.c:191
 msgid "Authenticating (anonymous)..."
 msgstr "Rajtiøas (anonime) ..."
 
-#: imap/auth.c:499
+#: imap/auth.c:266
 msgid "IMAP Username: "
 msgstr "IMAP-uzantonomo: "
 
-#: imap/auth.c:515
+#: imap/auth.c:282
 msgid "Anonymous authentication not supported."
 msgstr "Anonima rajtiøo ne funkcias."
 
-#: imap/auth.c:528
+#: imap/auth.c:295
 msgid "GSSAPI authentication failed."
 msgstr "GSSAPI-rajtiøo malsukcesis."
 
-#: imap/auth.c:546
+#: imap/auth.c:313
 #, c-format
 msgid "CRAM key for %s@%s: "
 msgstr "CRAM-þlosilo por %s@%s: "
 
-#: imap/auth.c:561
+#: imap/auth.c:328
 msgid "CRAM-MD5 authentication failed."
 msgstr "CRAM-MD4-rajtiøo malsukcesis."
 
-#: imap/auth.c:576
+#: imap/auth.c:343
 msgid "Skipping CRAM-MD5 authentication."
 msgstr "Preteriras CRAM-MD5-rajtiøon."
 
-#: imap/auth.c:588
+#: imap/auth.c:355
 #, c-format
 msgid "Password for %s@%s: "
 msgstr "Pasvorto por %s@%s: "
 
-#: imap/auth.c:604
+#: imap/auth.c:371
 msgid "Logging in..."
 msgstr "Salutas ..."
 
 #. Login failed, try again
-#: imap/auth.c:616
+#: imap/auth.c:383
 msgid "Login failed."
 msgstr "Saluto malsukcesis."
 
@@ -1214,12 +1214,12 @@ msgstr "Fermas poþtfakon ..."
 msgid "Expunging messages from server..."
 msgstr "Forviþas mesaøojn de la servilo ..."
 
-#: imap/imap.c:1379
+#: imap/imap.c:1387
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Abonas %s ..."
 
-#: imap/imap.c:1381
+#: imap/imap.c:1389
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Malabonas %s ..."
@@ -2373,43 +2373,43 @@ msgstr ""
 "\n"
 "Parametroj de la traduka¼o:"
 
-#: main.c:323
+#: main.c:297
 msgid "Error initializing terminal."
 msgstr "Eraro dum startigo de la terminalo."
 
-#: main.c:422
+#: main.c:396
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Sencimigo æe la nivelo %d.\n"
 
-#: main.c:424
+#: main.c:398
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG ne estis difinita por la tradukado. Ignoras.\n"
 
-#: main.c:543
+#: main.c:517
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s ne ekzistas. Æu krei øin?"
 
-#: main.c:547
+#: main.c:521
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Ne povas krei %s: %s."
 
-#: main.c:586
+#: main.c:560
 msgid "No recipients specified.\n"
 msgstr "Nenia ricevonto specifita.\n"
 
-#: main.c:659
+#: main.c:633
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: ne povas aldoni dosieron.\n"
 
-#: main.c:679
+#: main.c:653
 msgid "No mailbox with new mail."
 msgstr "Mankas poþtfako kun nova poþto."
 
-#: main.c:713
+#: main.c:687
 msgid "Mailbox is empty."
 msgstr "Poþtfako estas malplena."
 
@@ -2615,58 +2615,58 @@ msgstr "Skribas %s ..."
 msgid "Could not synchronize mailbox %s!"
 msgstr "Ne povis aktualigi la poþtfakon %s!"
 
-#: mx.c:826
+#: mx.c:823
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Æu movi legitajn mesaøojn al %s?"
 
-#: mx.c:835 mx.c:1048
+#: mx.c:832 mx.c:1068
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Æu forpurigi %d forviþitan mesaøon?"
 
-#: mx.c:835 mx.c:1048
+#: mx.c:832 mx.c:1068
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Æu forpurigi %d forviþitajn mesaøojn?"
 
-#: mx.c:859
+#: mx.c:853
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Movas legitajn mesaøojn al %s ..."
 
-#: mx.c:882 mx.c:1039
+#: mx.c:904 mx.c:1059
 msgid "Mailbox is unchanged."
 msgstr "Poþtfako estas neþanøita."
 
-#: mx.c:894 mx.c:1078
-#, c-format
-msgid "%d kept."
-msgstr "%d retenite."
-
-#: mx.c:913
+#: mx.c:934
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d retenite, %d movite, %d forviþite."
 
-#: mx.c:916 mx.c:1081
+#: mx.c:937 mx.c:1101
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d retenite, %d forviþite."
 
-#: mx.c:1024
+#: mx.c:1044
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Premu '%s' por (mal)þalti skribon"
 
-#: mx.c:1026
+#: mx.c:1046
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Uzu 'toggle-write' por reebligi skribon!"
 
-#: mx.c:1028
+#: mx.c:1048
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Poþtfako estas markita kiel neskribebla. %s"
+
+#: mx.c:1098
+#, c-format
+msgid "%d kept."
+msgstr "%d retenite."
 
 #: pager.c:57
 msgid "Not available in this menu."
@@ -3476,12 +3476,12 @@ msgstr "%s ne plu ekzistas!"
 msgid "Could not open %s"
 msgstr "Ne povas malfermi %s"
 
-#: sendlib.c:1701
+#: sendlib.c:1702
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Eraro dum sendado de mesaøo; ido finis per %d (%s)."
 
-#: sendlib.c:1707
+#: sendlib.c:1708
 msgid "Output of the delivery process"
 msgstr "Eligo de la liverprocezo"
 
@@ -3519,3 +3519,6 @@ msgstr "Patra mesaøo ne estas videbla en limigita rigardo"
 #: thread.c:727
 msgid "Parent message is not available."
 msgstr "Patra mesaøo ne estas havebla."
+
+#~ msgid "Authenticating (GSSAPI)..."
+#~ msgstr "Rajtiøas (GSSAPI) ..."

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt-1.1.2i\n"
-"POT-Creation-Date: 2000-02-08 10:59+0100\n"
+"POT-Creation-Date: 2000-02-15 09:44+0100\n"
 "PO-Revision-Date: 2000-01-19 12:00+0200\n"
 "Last-Translator: Φάνης Δοκιανάκης <madf@hellug.gr>\n"
 "Language-Team: Greek <el@li.org>\n"
@@ -91,7 +91,7 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "Η καταχώρηση στοιχείων του mailcap χρειάζεται το %%s"
 
 #
-#: attach.c:131 attach.c:256 commands.c:169 compose.c:1127 curs_lib.c:135
+#: attach.c:131 attach.c:256 commands.c:169 compose.c:1126 curs_lib.c:135
 #: curs_lib.c:331
 #, c-format
 msgid "Error running \"%s\"!"
@@ -166,113 +166,113 @@ msgid "Mask"
 msgstr "Μάσκα"
 
 #
-#: browser.c:367 browser.c:897
+#: browser.c:369 browser.c:908
 #, c-format
 msgid "%s is not a directory."
 msgstr "Το %s δεν είναι κατάλογος."
 
 #
-#: browser.c:478
+#: browser.c:480
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Γραμματοκιβώτια [%d]"
 
 #
-#: browser.c:485
+#: browser.c:487
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Εγγεγραμμένα [%s], Μάσκα αρχείου: %s"
 
 #
-#: browser.c:489
+#: browser.c:491
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Κατάλογος [%s], Μάσκα αρχείου: %s"
 
 #
-#: browser.c:500
+#: browser.c:502
 msgid "Can't attach a directory!"
 msgstr "Αδυναμία προσάρτησης ενός κατάλογου"
 
 #
-#: browser.c:618 browser.c:964 browser.c:1057
+#: browser.c:620 browser.c:975 browser.c:1068
 msgid "No files match the file mask"
 msgstr "Κανένα αρχείο δε ταιριάζει με τη μάσκα αρχείου"
 
 #
-#: browser.c:805
+#: browser.c:816
 #, fuzzy
 msgid "Creating mailboxes is not yet supported."
 msgstr "Σημειώσεις δεν υποστηρίζονται."
 
 #
 # recvattach.c:1065
-#: browser.c:810
+#: browser.c:821
 #, fuzzy
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Αυτή η λειτουργία δεν υποστηρίζεται προς το παρόν για μηνύματα PGP."
 
-#: browser.c:818
+#: browser.c:829
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr ""
 
 #
-#: browser.c:832
+#: browser.c:843
 #, fuzzy
 msgid "Mailbox deleted."
 msgstr "Εντοπίστηκε βρόγχος μακροεντολής."
 
 #
-#: browser.c:838
+#: browser.c:849
 #, fuzzy
 msgid "Mailbox not deleted."
 msgstr "Το γράμμα δεν εστάλη."
 
 #
-#: browser.c:856
+#: browser.c:867
 msgid "Chdir to: "
 msgstr "Αλλαγή καταλόγου σε:"
 
 #
-#: browser.c:890 browser.c:957
+#: browser.c:901 browser.c:968
 msgid "Error scanning directory."
 msgstr "Σφάλμα κατά τη διερεύνηση του καταλόγου."
 
 #
-#: browser.c:908
+#: browser.c:919
 msgid "File Mask: "
 msgstr "Μάσκα αρχείου: "
 
 #
-#: browser.c:980
+#: browser.c:991
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr ""
 "Ανάστροφη ταξινόμηση κατά (d)ημερομηνία, (a)αλφαβητικά, (z)μέγεθος ή "
 "(n)άκυρο;"
 
 #
-#: browser.c:981
+#: browser.c:992
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Ταξινόμηση κατά (d)ημερομηνία, (a)αλφαβητικά, (z)μέγεθος ή (n)άκυρο;"
 
 #
-#: browser.c:982
+#: browser.c:993
 msgid "dazn"
 msgstr "dazn"
 
 #
-#: browser.c:1044
+#: browser.c:1055
 msgid "New file name: "
 msgstr "Νέο όνομα αρχείου: "
 
 #
-#: browser.c:1065
+#: browser.c:1086
 msgid "Can't view a directory"
 msgstr "Αδυναμία ανάγνωσης ενός κατάλογου"
 
 #
-#: browser.c:1083
+#: browser.c:1104
 msgid "Error trying to view file"
 msgstr "Σφάλμα κατά την εμφάνιση αρχείου"
 
@@ -764,23 +764,23 @@ msgid "What we have here is a failure to make an attachment"
 msgstr "Αποτυχία κατά την δημιουργία προσάρτησης"
 
 #
-#: compose.c:1088
+#: compose.c:1087
 msgid "Postpone this message?"
 msgstr "Να αναβληθεί η ταχυδρόμηση αυτού του μήνυματος;"
 
 #
-#: compose.c:1142
+#: compose.c:1141
 msgid "Write message to mailbox"
 msgstr "Εγγραφή τους μήνυματος στο γραμματοκιβώτιο"
 
 #
-#: compose.c:1145
+#: compose.c:1144
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Εγγραφή μηνύματος στο %s ..."
 
 #
-#: compose.c:1154
+#: compose.c:1153
 msgid "Message written."
 msgstr "Το μήνυμα γράφτηκε."
 
@@ -826,7 +826,7 @@ msgid "There are no messages."
 msgstr "Δεν υπάρχουν μηνύματα."
 
 #
-#: curs_main.c:57 mx.c:1033 pager.c:58 recvattach.c:47
+#: curs_main.c:57 mx.c:1053 pager.c:58 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "Το γραμματοκιβώτιο είναι για μόνο-ανάγνωση."
 
@@ -1349,63 +1349,64 @@ msgstr ""
 msgid "Help for %s"
 msgstr "Βοήθεια για το %s"
 
-#. now begin login
-#: imap/auth.c:144
-msgid "Authenticating (GSSAPI)..."
-msgstr "Αυθεντικοποίηση (GSSAPI)..."
+#
+#: hook.c:243
+#, fuzzy, c-format
+msgid "unhook: unknown hook type: %s"
+msgstr "%s: άγνωστος τύπος"
 
-#: imap/auth.c:337
+#: imap/auth.c:104
 msgid "Authenticating (CRAM-MD5)..."
 msgstr "Αυθεντικοποίηση (CRAM-MD5)..."
 
-#: imap/auth.c:424
+#: imap/auth.c:191
 #, fuzzy
 msgid "Authenticating (anonymous)..."
 msgstr "Αυθεντικοποίηση (GSSAPI)..."
 
 #
-#: imap/auth.c:499
+#: imap/auth.c:266
 msgid "IMAP Username: "
 msgstr "Όνομα χρήστη IMAP: "
 
-#: imap/auth.c:515
+#: imap/auth.c:282
 msgid "Anonymous authentication not supported."
 msgstr ""
 
-#: imap/auth.c:528
+#: imap/auth.c:295
 msgid "GSSAPI authentication failed."
 msgstr "Αυθεντικοποίηση GSSAPI απέτυχε."
 
 #
 # pgp.c:1200
-#: imap/auth.c:546
+#: imap/auth.c:313
 #, c-format
 msgid "CRAM key for %s@%s: "
 msgstr "Κλειδί CRAM για το %s@%s: "
 
-#: imap/auth.c:561
+#: imap/auth.c:328
 msgid "CRAM-MD5 authentication failed."
 msgstr "Αυθεντικοποίηση CRAM-MD5 απέτυχε."
 
-#: imap/auth.c:576
+#: imap/auth.c:343
 #, fuzzy
 msgid "Skipping CRAM-MD5 authentication."
 msgstr "Αυθεντικοποίηση CRAM-MD5 απέτυχε."
 
 #
-#: imap/auth.c:588
+#: imap/auth.c:355
 #, c-format
 msgid "Password for %s@%s: "
 msgstr "Συνθηματικό για το %s@%s: "
 
 #
-#: imap/auth.c:604
+#: imap/auth.c:371
 msgid "Logging in..."
 msgstr "Είσοδος στο σύστημα..."
 
 #
 #. Login failed, try again
-#: imap/auth.c:616
+#: imap/auth.c:383
 msgid "Login failed."
 msgstr "Απέτυχε η είσοδος στο σύστημα."
 
@@ -1483,13 +1484,13 @@ msgid "Expunging messages from server..."
 msgstr "Διαγραφή μηνυμάτων από τον εξυπηρετητή..."
 
 #
-#: imap/imap.c:1379
+#: imap/imap.c:1387
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Εγγραφή στο %s..."
 
 #
-#: imap/imap.c:1381
+#: imap/imap.c:1389
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Διαγραφή στο %s..."
@@ -2897,50 +2898,50 @@ msgstr ""
 "Παράμετροι μεταγλώττισης:"
 
 #
-#: main.c:323
+#: main.c:297
 msgid "Error initializing terminal."
 msgstr "Λάθος κατά την αρχικοποίηση του τερματικού."
 
 #
-#: main.c:422
+#: main.c:396
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Αποσφαλμάτωση στο επίπεδο %d.\n"
 
 #
-#: main.c:424
+#: main.c:398
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "Το DEBUG δεν ορίστηκε κατά την διάρκεια του compile. Αγνοήθηκε.\n"
 
-#: main.c:543
+#: main.c:517
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "Το %s δεν υπάρχει. Δημιουργία;"
 
 #
-#: main.c:547
+#: main.c:521
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Αδυναμία δημιουργίας του %s: %s."
 
 #
-#: main.c:586
+#: main.c:560
 msgid "No recipients specified.\n"
 msgstr "Δεν έχουν οριστεί παραλήπτες.\n"
 
 #
-#: main.c:659
+#: main.c:633
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: δε μπορώ να προσαρτήσω το αρχείο.\n"
 
 #
-#: main.c:679
+#: main.c:653
 msgid "No mailbox with new mail."
 msgstr "Δεν υπάρχει νέα αλληλογραφία σε κανένα γραμματοκιβώτιο."
 
 #
-#: main.c:713
+#: main.c:687
 msgid "Mailbox is empty."
 msgstr "Το γραμματοκιβώτιο είναι άδειο."
 
@@ -3191,67 +3192,67 @@ msgid "Could not synchronize mailbox %s!"
 msgstr "Δεν μπορώ να συγχρονίσω το γραμματοκιβώτιο %s!"
 
 #
-#: mx.c:826
+#: mx.c:823
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Μετακίνηση αναγνωσμένων μηνυμάτων στο %s;"
 
 #
-#: mx.c:835 mx.c:1048
+#: mx.c:832 mx.c:1068
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Καθαρισμός %d διεγραμμένου μηνήματος;"
 
 #
-#: mx.c:835 mx.c:1048
+#: mx.c:832 mx.c:1068
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Καθαρισμός %d διεγραμμένων μηνυμάτων;"
 
 #
-#: mx.c:859
+#: mx.c:853
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Μετακίνηση αναγνωσμένων μηνυμάτων στο %s..."
 
 #
-#: mx.c:882 mx.c:1039
+#: mx.c:904 mx.c:1059
 msgid "Mailbox is unchanged."
 msgstr "Δεν έγινε αλλαγή στο γραμματοκιβώτιο "
 
-#: mx.c:894 mx.c:1078
-#, c-format
-msgid "%d kept."
-msgstr ""
-
 #
-#: mx.c:913
+#: mx.c:934
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d κρατήθηκαν, %d μετακινήθηκαν, %d διαγράφθηκαν."
 
 #
-#: mx.c:916 mx.c:1081
+#: mx.c:937 mx.c:1101
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d κρατήθηκαν, %d διαγράφθηκαν."
 
 #
-#: mx.c:1024
+#: mx.c:1044
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr "Πατήστε '%s' για να ενεργοποιήσετε την εγγραφή!"
 
 #
-#: mx.c:1026
+#: mx.c:1046
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Χρησιμοποιήστε το 'toggle-write' για να ενεργοποιήσετε την εγγραφή!"
 
 #
-#: mx.c:1028
+#: mx.c:1048
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Το γραμματοκιβώτιο είναι σημειωμένο μη εγγράψιμο. %s"
+
+#: mx.c:1098
+#, c-format
+msgid "%d kept."
+msgstr ""
 
 #
 #: pager.c:57
@@ -4258,13 +4259,13 @@ msgid "Could not open %s"
 msgstr "Αδυναμία ανοίγματος του %s"
 
 #
-#: sendlib.c:1701
+#: sendlib.c:1702
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Σφάλμα κατά την αποστολή μηνύματος, τερματισμός διεργασίας με %d (%s)."
 
 #
-#: sendlib.c:1707
+#: sendlib.c:1708
 msgid "Output of the delivery process"
 msgstr "Έξοδος της διεργασίας αποστολής"
 
@@ -4311,6 +4312,9 @@ msgstr "Το τρέχων μήνυμα δεν είναι ορατό στην περιορισμένη όψη"
 #: thread.c:727
 msgid "Parent message is not available."
 msgstr "Το τρέχων μήνυμα δεν είναι διαθέσιμο."
+
+#~ msgid "Authenticating (GSSAPI)..."
+#~ msgstr "Αυθεντικοποίηση (GSSAPI)..."
 
 #~ msgid "Recoding only affetcs text attachments."
 #~ msgstr "Η επανακωδικοποίηση επιρρεάζει μόνο της προσαρτήσεις κειμένου."
