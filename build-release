@@ -1,0 +1,87 @@
+#!/bin/sh --
+
+#
+# Build a mutt release.
+#
+# This used to be part of the main Makefile, but is better handled
+# by a shell script.
+#
+# Note that this script won't work for you.  I'm including it with 
+# the distribution for the sake of completeness.
+#
+# Thomas Roessler <roessler@guug.de> Mon,  8 Nov 1999 22:32:41 +0100
+#
+
+set -e
+
+devel="devel/"	# uncomment for the stable branch
+
+# update the source
+
+cvs update
+
+# bump the version number, and calculate the tags
+
+rm -f VERSION 
+cvs update VERSION 
+OVERSION="`cat VERSION`" 
+OTAG="mutt-`echo $OVERSION | tr . -`-rel" 
+
+echo $OVERSION | awk -F . '{printf("%d.%d.%d\n", $$1, $$2, $$3 + 1);}' > VERSION 
+${VISUAL} VERSION
+
+VERSION="`cat VERSION`" 
+TAG="mutt-`echo $VERSION | tr . -`-rel" 
+
+echo 'const char *ReleaseDate = "'`date +%Y-%m-%d`'";' > reldate.h
+
+rcs2log | cat - ChangeLog > ChangeLog.$$ && mv ChangeLog.$$ ChangeLog
+${VISUAL} ChangeLog
+
+# now, prepare the distribution tar balls
+
+touch configure.in
+make config.status
+./config.status
+make update-doc
+
+# build them
+
+make us-dist
+make dist
+mv mutt-${VERSION}.tar.gz mutt-${VERSION}i.tar.gz
+mv mutt-${VERSION}-us.tar.gz mutt-${VERSION}.tar.gz
+
+# commit and tag the release
+
+cvs commit -m "automatic post-release commit for mutt-${VERSION}"
+cvs tag ${TAG}
+
+# build the diff between the two releases
+
+cvs rdiff -u -r ${OTAG} -r ${TAG} | gzip -9 \
+	> diff-${OVERSION}i-${VERSION}i.gz
+
+# sign the various files
+
+DISTFILES="mutt-${VERSION}.tar.gz mutt-${VERSION}i.tar.gz diff-${OVERSION}i-${VERSION}i.gz"
+
+for f in $DISTFILES; do
+	pgp -sb $f
+	chmod 644 $f.asc
+done
+
+# upload the source
+
+echo pon
+for f in $DISTFILES ; do
+	echo scp $f sigtrap.guug.de:/home/ftp/pub/mutt/${devel}
+done
+
+$HOME/bin/upload-cvs
+cvs update
+
+# Finally, announce the new mutt to the public
+
+mutt -s "[Announce] mutt-${VERSION} is out" mutt-dev@mutt.org
+

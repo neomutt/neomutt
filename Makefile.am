@@ -152,58 +152,8 @@ us-dist: us-distdir
 	GZIP=$(GZIP) $(TAR) chozf $(distdir)-us.tar.gz $(distdir)-us
 	-rm -rf $(distdir)-us
 
-test-tlr:
-	test $$HOSTNAME = sobolev && test $$LOGNAME = roessler
-
-actual-dist: update-doc
-	# Note: We can't put these into the dependencies line, since
-	# make will over-optimize some of the distdir targets.
-	$(MAKE) us-dist
-	$(MAKE) dist
-	mv $(distdir).tar.gz $(distdir)i.tar.gz
-	mv $(distdir)-us.tar.gz $(distdir).tar.gz
-	$(MAKE) do-sign
-	$(MAKE) do-upload
-
-do-sign: test-tlr
-	pgp -sb $(distdir)i.tar.gz && chmod 644 $(distdir)i.tar.gz.asc
-	pgp -sb $(distdir).tar.gz && chmod 644 $(distdir).tar.gz.asc
-
-do-upload: test-tlr
-	if ! ssh-add -l | grep -q roessler@ ; then  \
-		ssh-add ; \
-	fi
-	@echo "Please connect to the Net and press any key."
-	@read dummy
-	scp $(distdir){,i}.tar.gz{,.asc}			\
-		sigtrap.guug.de:/home/ftp/pub/mutt/devel/ 	\
-		|| echo "UPLOAD FAILED.  Please upload manually!"
-	( cd $(srcdir) && cvs commit -m "automatic post-release commit for $(distdir)" )
-	cvs tag `echo $(distdir)-rel | tr . -`
-	cvs rdiff -u -r `cat $(srcdir)/LAST_TAG`  \
-			-r `echo $(distdir)-rel | tr . -` \
-			> $(srcdir)/diff-`cat $(srcdir)/OVERSION`-`cat $(srcdir)/VERSION`
-	gzip -9 $(srcdir)/diff-`cat $(srcdir)/OVERSION`-`cat $(srcdir)/VERSION`
-	echo $(distdir)-rel | tr . - > $(srcdir)/LAST_TAG
-	( cd $(srcdir) && cvs commit -m "automatically committing updated build information" LAST_TAG )
-	cvs update
-	$$HOME/bin/upload-mutt
-	mutt -s "[Announce] $(distdir) is out" mutt-dev@mutt.org
-
-bump-version: test-tlr
-	-rm -f $(srcdir)/VERSION
-	( cd $(srcdir) && cvs update VERSION )
-	( cd $(srcdir) && cp VERSION OVERSION && \
-	   cvs commit -m "automatically committing updated build information" OVERSION )
-	awk -F . '{printf("%d.%d.%d\n", $$1, $$2, $$3 + 1);}' $(srcdir)/VERSION > _VERSION.$$$$  \
-		&& mv _VERSION.$$$$ $(srcdir)/VERSION
-	$(VISUAL) $(srcdir)/VERSION
-
-mutt-dist: bump-version reldate changelog
-	touch $(srcdir)/configure.in
-	$(MAKE) config.status
-	./config.status
-	$(MAKE) actual-dist
+mutt-dist:
+	(cd $(srcdir) && ./build-release )
 
 update-doc: stamp-doc-rc
 	(cd doc && $(MAKE) update-doc)

@@ -1,11 +1,15 @@
-Sun Nov  7 22:52:40 1999  Thomas Roessler  <roessler@guug.de>
+Mon Nov  8 21:08:07 1999  Thomas Roessler  <roessler@guug.de>
 
-	* sendlib.c:
-	short-cut utf-7 as a 7bit character set.  Currently, utf-7 may be
-	overridden by us-ascii.
+	NOTICE: You'll find a version 1.1.1.1 in the logs, and in
+	the CVS tags.  This version is identical to 1.1.1, and
+	exculsively serves the purpose to test some improvements to
+	the release build process.
 
-	* protos.h, recvattach.c, recvcmd.c, rfc1524.c, rfc1524.h, send.c, sendlib.c, attach.c, attach.h, browser.c, commands.c, compose.c, curs_main.c, functions.h, init.h, mutt.h, muttlib.c, pager.c, pager.h, postpone.c, Makefile.am:
-	Rewriting lots of the recvattach code.
+	* LAST_TAG, Makefile.am, OVERSION:
+	Preparing some improvements to the build process.
+
+	* po/de.po, reldate.h, VERSION, ChangeLog:
+	automatic post-release commit for mutt-1.1.1
 
 Sun Nov  7 22:52:40 1999  Thomas Roessler  <roessler@guug.de>
 
