@@ -33,7 +33,9 @@ case "$host" in
 	;;
 esac
 
-AC_PATH_PROG(SENDMAIL, sendmail, no, $PATH:/usr/sbin:/usr/lib)
+ac_aux_path_sendmail=/usr/sbin:/usr/lib   
+AC_PATH_PROG(SENDMAIL, sendmail, no, $PATH:$ac_aux_path_sendmail)
+
 AC_DEFINE_UNQUOTED(SENDMAIL, "$ac_cv_path_SENDMAIL")
 
 OPS='$(srcdir)/OPS'
