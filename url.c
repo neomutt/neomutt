@@ -117,7 +117,7 @@ static char *ciss_parse_userhost (ciss_url_t *ciss, char *src)
   if ((path = strchr (src, '/')))
     *path++ = '\0';
   
-  if ((t = strchr (src, '@')))
+  if ((t = strrchr (src, '@')))
   {
     *t = '\0';
     if ((p = strchr (src, ':')))
