@@ -33,7 +33,6 @@
 
 #ifdef HAVE_LANGINFO_YESEXPR
 #include <langinfo.h>
-#include <regex.h>
 #endif
 
 /* not possible to unget more than one char under some curses libs, and it
