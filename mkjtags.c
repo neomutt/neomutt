@@ -68,8 +68,11 @@ void doit (const char *fname, char *prefix, int crlf_pending)
   {
     l = strlen (buffer);
 
-    if (*buffer == '\f' && !crlf_pending)
-      fputs (buffer, stdout);
+    if (*buffer == '\f')
+    {
+      if (!crlf_pending)
+	fputs (buffer, stdout);
+    }
     else if (crlf_pending && l > 9 && !strcmp (buffer + l - 9, ",include\n"))
     {
       if ((cp = strrchr (buffer, ',')))
