@@ -1,3 +1,17 @@
+2003-07-29 10:11:05  Edmund GRIMLEY EVANS  <edmundo@rano.org>  (roessler)
+
+	* pager.c: It seems that Solaris has an incorrect implementation
+	of mbrtowc: when there is an encoding error and mbrtowc returns
+	(size_t)(-1) no value should be stored in *pwc (the first
+	argument), as I understand it, but here mbrtowc is storing 8
+	when presented with the bytes "\xc8\x4d".
+
+	However, relying on mbrtowc not to store anything in *pwc when
+	there is an error is a bit silly; it makes sense to look at
+	the return value. So, the following patch should be applied if
+	Pawel can confirm that it fixes the problem. I've tested it and
+	it worked for me with glibc's mbrtowc.
+
 2003-07-24 18:40:50  Vincent Lefevre  <vincent@vinc17.org>  (roessler)
 
 	* alias.c, copy.c, handler.c, imap/command.c, imap/imap.c,
