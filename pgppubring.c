@@ -44,12 +44,10 @@
 #include <time.h>
 #ifdef HAVE_GETOPT_H
 # include <getopt.h>
-#else
-# ifndef HAVE_GETOPT_DECL
+#endif
+
 extern char *optarg;
 extern int optind;
-# endif
-#endif
 
 #include "sha.h"
 #include "lib.h"

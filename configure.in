@@ -225,18 +225,6 @@ AC_REPLACE_FUNCS(strcasecmp)
 AC_CHECK_FUNC(getopt)
 if test $ac_cv_func_getopt = yes; then
 	AC_CHECK_HEADERS(getopt.h)
-	if test $ac_cv_header_getopt_h = no; then
-		AC_MSG_CHECKING(for getopt declaration in stdio.h)
-		AC_EGREP_HEADER(getopt,stdio.h,dnl
-			[ AC_DEFINE(HAVE_GETOPT_DECL)
-			  AC_MSG_RESULT(yes) ],dnl
-			AC_MSG_RESULT(no)
-			AC_MSG_CHECKING(for getopt declaration in stdlib.h)
-			AC_EGREP_HEADER(getopt,stdlib.h,dnl
-				[ AC_DEFINE(HAVE_GETOPT_DECL)
-				  AC_MSG_RESULT(yes) ],dnl
-				AC_MSG_RESULT(no)))
-	fi
 fi
 
 mutt_cv_snprintf=no
