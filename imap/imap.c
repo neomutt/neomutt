@@ -251,8 +251,8 @@ int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint)
   ctx->id_hash = hash_create (1031);
   ctx->subj_hash = hash_create (1031);
 
-  mutt_message (_("Reopening mailbox... %s"), CTX_DATA->selected_mailbox);
-  imap_munge_mbox_name (buf, sizeof (buf), CTX_DATA->selected_mailbox);
+  mutt_message (_("Reopening mailbox... %s"), CTX_DATA->mailbox);
+  imap_munge_mbox_name (buf, sizeof (buf), CTX_DATA->mailbox);
   snprintf (bufout, sizeof (bufout), "STATUS %s (MESSAGES)", buf);
 
   imap_cmd_start (CTX_DATA, bufout);
@@ -429,7 +429,7 @@ static int imap_check_acl (IMAP_DATA *idata)
   char buf[LONG_STRING];
   char mbox[LONG_STRING];
 
-  imap_munge_mbox_name (mbox, sizeof(mbox), idata->selected_mailbox);
+  imap_munge_mbox_name (mbox, sizeof(mbox), idata->mailbox);
   snprintf (buf, sizeof (buf), "MYRIGHTS %s", mbox);
   if (imap_exec (buf, sizeof (buf), idata, buf, 0) != 0)
   {
@@ -456,6 +456,57 @@ static int imap_check_capabilities (IMAP_DATA *idata)
     return -1;
   }
   return 0;
+}
+
+/* imap_conn_find: Find an open IMAP connection matching account, or open
+ *   a new one if none can be found. */
+IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
+{
+  CONNECTION* conn;
+  IMAP_DATA* idata;
+  ACCOUNT* creds;
+
+  conn = mutt_conn_find (NULL, account);
+  /* if opening a new UNSELECTED connection, preserve existing creds */
+  creds = &(conn->account);
+
+  /* make sure this connection is not in SELECTED state, if neccessary */
+  if (flags & M_IMAP_CONN_NOSELECT)
+    while (conn->data && ((IMAP_DATA*) conn->data)->state == IMAP_SELECTED)
+    {
+      conn = mutt_conn_find (conn, account);
+      memcpy (&(conn->account), creds, sizeof (ACCOUNT));
+    }
+  
+  
+  idata = (IMAP_DATA*) conn->data;
+
+  /* don't open a new connection if one isn't wanted */
+  if (flags & M_IMAP_CONN_NONEW)
+    if (!idata || idata->state == IMAP_DISCONNECTED)
+    {
+      mutt_socket_free (conn);
+
+      return NULL;
+    }
+  
+  if (!idata)
+  {
+    /* The current connection is a new connection */
+    idata = safe_calloc (1, sizeof (IMAP_DATA));
+    conn->data = idata;
+    idata->conn = conn;
+  }
+  if (idata->state == IMAP_DISCONNECTED)
+    if (imap_open_connection (idata) != 0)
+    {
+      FREE (&idata);
+      mutt_socket_free (conn);
+
+      return NULL;
+    }
+  
+  return idata;
 }
 
 int imap_open_connection (IMAP_DATA* idata)
@@ -581,44 +632,31 @@ int imap_open_mailbox (CONTEXT* ctx)
     return -1;
   }
 
-  conn = mutt_socket_find (&(mx.account), 0);
-  idata = (IMAP_DATA*) conn->data;
+  /* we require a connection which isn't currently in IMAP_SELECTED state */
+  if (!(idata = imap_conn_find (&(mx.account), M_IMAP_CONN_NOSELECT)))
+    return -1;
+  conn = idata->conn;
 
-  if (!idata || (idata->state != IMAP_AUTHENTICATED))
-  {
-    if (!idata || (idata->state == IMAP_SELECTED) ||
-        (idata->state == IMAP_CONNECTED))
-    {
-      /* We need to create a new connection, the current one isn't useful */
-      idata = safe_calloc (1, sizeof (IMAP_DATA));
-
-      conn = mutt_socket_find (&(mx.account), 1);
-      conn->data = idata;
-      idata->conn = conn;
-    }
-    if (imap_open_connection (idata))
-      return -1;
-  }
+  /* once again the context is new */
   ctx->data = (void *) idata;
 
   /* Clean up path and replace the one in the ctx */
   imap_fix_path (idata, mx.mbox, buf, sizeof (buf));
-  FREE(&(idata->selected_mailbox));
-  idata->selected_mailbox = safe_strdup (buf);
-  imap_qualify_path (buf, sizeof (buf), &mx, idata->selected_mailbox,
-    NULL);
+  FREE(&(idata->mailbox));
+  idata->mailbox = safe_strdup (buf);
+  imap_qualify_path (buf, sizeof (buf), &mx, idata->mailbox, NULL);
 
   FREE (&(ctx->path));
   ctx->path = safe_strdup (buf);
 
-  idata->selected_ctx = ctx;
+  idata->ctx = ctx;
 
   /* clear status, ACL */
   idata->status = 0;
   memset (idata->rights, 0, (RIGHTSMAX+7)/8);
 
-  mutt_message (_("Selecting %s..."), idata->selected_mailbox);
-  imap_munge_mbox_name (buf, sizeof(buf), idata->selected_mailbox);
+  mutt_message (_("Selecting %s..."), idata->mailbox);
+  imap_munge_mbox_name (buf, sizeof(buf), idata->mailbox);
   snprintf (bufout, sizeof (bufout), "%s %s",
     ctx->readonly ? "EXAMINE" : "SELECT", buf);
 
@@ -759,23 +797,14 @@ int imap_open_mailbox_append (CONTEXT *ctx)
   if (imap_parse_path (ctx->path, &mx))
     return -1;
 
+  /* in APPEND mode, we appear to hijack an existing IMAP connection -
+   * ctx is brand new and mostly empty */
+
+  if (!(idata = imap_conn_find (&(mx.account), 0)))
+    return -1;
+  conn = idata->conn;
+
   ctx->magic = M_IMAP;
-
-  conn = mutt_socket_find (&(mx.account), 0);
-  idata = (IMAP_DATA*) conn->data;
-
-  if (!idata || (idata->state == IMAP_DISCONNECTED))
-  {
-    if (!idata)
-    {
-      /* The current connection is a new connection */
-      idata = safe_calloc (1, sizeof (IMAP_DATA));
-      conn->data = idata;
-      idata->conn = conn;
-    }
-    if (imap_open_connection (idata))
-      return -1;
-  }
   ctx->data = (void *) idata;
 
   /* check mailbox existance */
@@ -785,15 +814,11 @@ int imap_open_mailbox_append (CONTEXT *ctx)
   imap_munge_mbox_name (mbox, sizeof (mbox), mailbox);
 				
   if (mutt_bit_isset(idata->capabilities,IMAP4REV1))
-  {
     snprintf (buf, sizeof (buf), "STATUS %s (UIDVALIDITY)", mbox);
-  }
   else if (mutt_bit_isset(idata->capabilities,STATUS))
-  { 
     /* We have no idea what the other guy wants. UW imapd 8.3 wants this
      * (but it does not work if another mailbox is selected) */
     snprintf (buf, sizeof (buf), "STATUS %s (UID-VALIDITY)", mbox);
-  }
   else
   {
     /* STATUS not supported */
@@ -954,8 +979,9 @@ int imap_make_msg_set (char* buf, size_t buflen, CONTEXT* ctx, int flag,
  *   expunge: 0 or 1 - do expunge? 
  */
 
-int imap_sync_mailbox (CONTEXT* ctx, int expunge, int *index_hint)
+int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
 {
+  IMAP_DATA* idata;
   char buf[HUGE_STRING];
   char flags[LONG_STRING];
   char tmp[LONG_STRING];
@@ -964,21 +990,30 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int *index_hint)
   int err_continue = M_NO;	/* continue on error? */
   int rc;
 
-  if (CTX_DATA->state != IMAP_SELECTED)
+  idata = (IMAP_DATA*) ctx->data;
+
+  if (idata->state != IMAP_SELECTED)
   {
     dprint (2, (debugfile, "imap_sync_mailbox: no mailbox selected\n"));
     return -1;
   }
 
-  imap_allow_reopen (ctx);	/* This function is only called when the calling code
-				 * expects the context to be changed.
-				 */
+  /* CLOSE purges deleted messages. If we don't want to purge them, we must
+   * tell imap_close_mailbox not to issue the CLOSE command */
+  if (expunge)
+    idata->noclose = 0;
+  else
+    idata->noclose = 1;
+
+  /* This function is only called when the calling code	expects the context
+   * to be changed. */
+  imap_allow_reopen (ctx);	
 
   if ((rc = imap_check_mailbox (ctx, index_hint)) != 0)
     return rc;
 
   /* if we are expunging anyway, we can do deleted messages very quickly... */
-  if (expunge && mutt_bit_isset (CTX_DATA->rights, IMAP_ACL_DELETE))
+  if (expunge && mutt_bit_isset (idata->rights, IMAP_ACL_DELETE))
   {
     deleted = imap_make_msg_set (buf, sizeof (buf), ctx, M_DELETE, 1);
 
@@ -987,7 +1022,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int *index_hint)
     {
       mutt_message (_("Marking %d messages deleted..."), deleted);
       snprintf (tmp, sizeof (tmp), "STORE %s +FLAGS.SILENT (\\Deleted)", buf);
-      if (imap_exec (buf, sizeof (buf), CTX_DATA, tmp, 0) != 0)
+      if (imap_exec (buf, sizeof (buf), idata, tmp, 0) != 0)
         /* continue, let regular store try before giving up */
         dprint(2, (debugfile, "imap_sync_mailbox: fast delete failed\n"));
       else
@@ -1017,8 +1052,8 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int *index_hint)
         flags);
 
       /* now make sure we don't lose custom tags */
-      if (mutt_bit_isset (CTX_DATA->rights, IMAP_ACL_WRITE))
-        imap_add_keywords (flags, ctx->hdrs[n], CTX_DATA->flags);
+      if (mutt_bit_isset (idata->rights, IMAP_ACL_WRITE))
+        imap_add_keywords (flags, ctx->hdrs[n], idata->flags);
       
       mutt_remove_trailing_ws (flags);
       
@@ -1042,7 +1077,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int *index_hint)
 
       /* after all this it's still possible to have no flags, if you
        * have no ACL rights */
-      if (*flags && (imap_exec (buf, sizeof (buf), CTX_DATA, buf, 0) != 0) &&
+      if (*flags && (imap_exec (buf, sizeof (buf), idata, buf, 0) != 0) &&
         (err_continue != M_YES))
       {
         err_continue = imap_continue ("imap_sync_mailbox: STORE failed", buf);
@@ -1055,30 +1090,19 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int *index_hint)
   }
   ctx->changed = 0;
 
-  if (expunge == 1)
+  /* We must send an EXPUNGE command if we're not closing. */
+  if (expunge && !(ctx->closing) &&
+      mutt_bit_isset(idata->rights, IMAP_ACL_DELETE))
   {
-    /* expunge is implicit if closing */
-    if (ctx->closing)
+    mutt_message _("Expunging messages from server...");
+    /* FIXME: these status changes seem dubious */
+    idata->status = IMAP_EXPUNGE;
+    if (imap_exec (buf, sizeof (buf), CTX_DATA, "EXPUNGE", 0) != 0)
     {
-      mutt_message _("Closing mailbox...");
-      if (imap_exec (buf, sizeof (buf), CTX_DATA, "CLOSE", 0) != 0)
-      {
-        imap_error ("imap_sync_mailbox: CLOSE failed", buf);
-        return -1;
-      }
-      /* state is set in imap_fastclose_mailbox */
+      imap_error ("imap_sync_mailbox: EXPUNGE failed", buf);
+      return -1;
     }
-    else if (mutt_bit_isset(CTX_DATA->rights, IMAP_ACL_DELETE))
-    {
-      mutt_message _("Expunging messages from server...");
-      CTX_DATA->status = IMAP_EXPUNGE;
-      if (imap_exec (buf, sizeof (buf), CTX_DATA, "EXPUNGE", 0) != 0)
-      {
-        imap_error ("imap_sync_mailbox: EXPUNGE failed", buf);
-        return -1;
-      }
-      CTX_DATA->status = 0;
-    }
+    idata->status = 0;
   }
 
   for (n = 0; n < IMAP_CACHE_LEN; n++)
@@ -1093,20 +1117,31 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int *index_hint)
   return 0;
 }
 
-void imap_fastclose_mailbox (CONTEXT *ctx)
+/* imap_close_mailbox: issue close command if neccessary, reset IMAP_DATA */
+void imap_close_mailbox (CONTEXT* ctx)
 {
+  IMAP_DATA* idata;
+  char buf[LONG_STRING];
   int i;
 
+  idata = (IMAP_DATA*) ctx->data;
   /* Check to see if the mailbox is actually open */
-  if (!ctx->data)
+  if (!idata)
     return;
 
-  CTX_DATA->reopen &= IMAP_REOPEN_ALLOW;
+  idata->reopen &= IMAP_REOPEN_ALLOW;
 
-  if ((CTX_DATA->state == IMAP_SELECTED) && (ctx == CTX_DATA->selected_ctx))
+  if ((idata->state == IMAP_SELECTED) && (ctx == idata->ctx))
   {
-    CTX_DATA->state = IMAP_AUTHENTICATED;
-    FREE (&(CTX_DATA->selected_mailbox));
+    if (!(idata->noclose))
+    {
+      mutt_message _("Closing mailbox...");
+      if (imap_exec (buf, sizeof (buf), idata, "CLOSE", 0) != 0)
+        imap_error ("CLOSE failed", buf);
+    }
+    
+    idata->state = IMAP_AUTHENTICATED;
+    FREE (&(idata->mailbox));
   }
 
   /* free IMAP part of headers */
@@ -1115,10 +1150,10 @@ void imap_fastclose_mailbox (CONTEXT *ctx)
 
   for (i = 0; i < IMAP_CACHE_LEN; i++)
   {
-    if (CTX_DATA->cache[i].path)
+    if (idata->cache[i].path)
     {
-      unlink (CTX_DATA->cache[i].path);
-      safe_free ((void **) &CTX_DATA->cache[i].path);
+      unlink (idata->cache[i].path);
+      safe_free ((void **) &idata->cache[i].path);
     }
   }
 }
@@ -1184,30 +1219,19 @@ int imap_mailbox_check (char* path, int new)
   char mbox_unquoted[LONG_STRING];
   char *s;
   int msgcount = 0;
+  int connflags = 0;
   IMAP_MBOX mx;
   
   if (imap_parse_path (path, &mx))
     return -1;
 
-  conn = mutt_socket_find (&(mx.account), 0);
-  idata = (IMAP_DATA*) conn->data;
+  /* If imap_passive is set, don't open a connection to check for new mail */
+  if (option (OPTIMAPPASSIVE))
+    connflags &= M_IMAP_CONN_NONEW;
 
-  if (!idata || (idata->state == IMAP_DISCONNECTED))
-  {
-    /* If passive is selected, then we don't open connections to check
-     * for new mail */
-    if (option (OPTIMAPPASSIVE))
-      return -1;
-    if (!idata)
-    {
-      /* The current connection is a new connection */
-      idata = safe_calloc (1, sizeof (IMAP_DATA));
-      conn->data = idata;
-      idata->conn = conn;
-    }
-    if (imap_open_connection (idata))
-      return -1;
-  }
+  if (!(idata = imap_conn_find (&(mx.account), connflags)))
+    return -1;
+  conn = idata->conn;
 
   imap_fix_path (idata, mx.mbox, buf, sizeof (buf));
   /* Update the path, if it fits */
@@ -1221,9 +1245,9 @@ int imap_mailbox_check (char* path, int new)
    * command on a mailbox that you have selected 
    */
 
-  if (mutt_strcmp (mbox_unquoted, idata->selected_mailbox) == 0
+  if (mutt_strcmp (mbox_unquoted, idata->mailbox) == 0
       || (mutt_strcasecmp (mbox_unquoted, "INBOX") == 0
-	  && mutt_strcasecmp (mbox_unquoted, idata->selected_mailbox) == 0))
+	  && mutt_strcasecmp (mbox_unquoted, idata->mailbox) == 0))
   {
     strfcpy (buf, "NOOP", sizeof (buf));
   }
@@ -1373,21 +1397,10 @@ int imap_subscribe (char *path, int subscribe)
   if (imap_parse_path (path, &mx))
     return -1;
 
-  conn = mutt_socket_find (&(mx.account), 0);
-  idata = (IMAP_DATA*) conn->data;
-
-  if (!idata || (idata->state == IMAP_DISCONNECTED))
-  {
-    if (!idata)
-    {
-      /* The current connection is a new connection */
-      idata = safe_calloc (1, sizeof (IMAP_DATA));
-      conn->data = idata;
-      idata->conn = conn;
-    }
-    if (imap_open_connection (idata))
-      return -1;
-  }
+  if (!(idata = imap_conn_find (&(mx.account), 0)))
+    return -1;
+  
+  conn = idata->conn;
 
   imap_fix_path (idata, mx.mbox, buf, sizeof (buf));
   if (subscribe)
@@ -1428,16 +1441,10 @@ int imap_complete(char* dest, size_t dlen, char* path) {
     return -1;
   }
 
-  conn = mutt_socket_find (&(mx.account), 0);
-  idata = (IMAP_DATA*) conn->data;
-
   /* don't open a new socket just for completion */
-  if (!idata)
-  {
-    dprint (2, (debugfile,
-      "imap_complete: refusing to open new connection for %s", path));
+  if (!(idata = imap_conn_find (&(mx.account), M_IMAP_CONN_NONEW)))
     return -1;
-  }
+  conn = idata->conn;
 
   /* reformat path for IMAP list, and append wildcard */
   /* don't use INBOX in place of "" */

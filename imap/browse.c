@@ -65,21 +65,9 @@ int imap_browse (char* path, struct browser_state* state)
 
   strfcpy (list_cmd, option (OPTIMAPLSUB) ? "LSUB" : "LIST", sizeof (list_cmd));
 
-  conn = mutt_socket_find (&(mx.account), 0);
-  idata = (IMAP_DATA*) conn->data;
-
-  if (!idata || (idata->state == IMAP_DISCONNECTED))
-  {
-    if (!idata)
-    {
-      /* The current connection is a new connection */
-      idata = safe_calloc (1, sizeof (IMAP_DATA));
-      conn->data = idata;
-      idata->conn = conn;
-    }
-    if (imap_open_connection (idata))
-      return -1;
-  }
+  if (!(idata = imap_conn_find (&(mx.account), 0)))
+    return -1;
+  conn = idata->conn;
 
   if (mx.mbox[0] == '\0')
   {

@@ -61,7 +61,7 @@ int mutt_socket_write_d (CONNECTION *conn, const char *buf, int dbg);
 /* stupid hack for imap_logout_all */
 CONNECTION* mutt_socket_head (void);
 void mutt_socket_free (CONNECTION* conn);
-CONNECTION* mutt_socket_find (const ACCOUNT* mx, int newconn);
+CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account);
 
 int raw_socket_read (CONNECTION *conn);
 int raw_socket_write (CONNECTION *conn, const char *buf);

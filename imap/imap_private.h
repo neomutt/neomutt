@@ -51,8 +51,7 @@ enum
   IMAP_NEW_MAIL,
   IMAP_EXPUNGE,
   IMAP_BYE,
-  IMAP_REOPENED,
-  IMAP_LOGOUT
+  IMAP_REOPENED
 };
 
 enum
@@ -116,6 +115,10 @@ enum
   CAPMAX
 };
 
+/* imap_conn_find flags */
+#define M_IMAP_CONN_NONEW    (1<<0)
+#define M_IMAP_CONN_NOSELECT (1<<1)
+
 /* -- data structures -- */
 typedef struct
 {
@@ -138,21 +141,22 @@ typedef struct
 typedef struct
 {
   /* This data is specific to a CONNECTION to an IMAP server */
-  short status;
-  short state;
-  short check_status;
+  CONNECTION *conn;
+  unsigned char state;
+  unsigned char status;
+  unsigned char check_status;
   unsigned char capabilities[(CAPMAX + 7)/8];
   char seq[SEQLEN+1];
-  CONNECTION *conn;
 
   /* The following data is all specific to the currently SELECTED mbox */
   char delim;
-  CONTEXT *selected_ctx;
-  char *selected_mailbox;
+  CONTEXT *ctx;
+  char *mailbox;
+  unsigned char reopen;
   unsigned char rights[(RIGHTSMAX + 7)/8];
   unsigned int newMailCount;
   IMAP_CACHE cache[IMAP_CACHE_LEN];
-  short reopen;
+  int noclose : 1;
   
   /* all folder flags - system flags AND keywords */
   LIST *flags;
@@ -166,6 +170,7 @@ typedef struct
 int imap_make_msg_set (char* buf, size_t buflen, CONTEXT* ctx, int flag,
   int changed);
 int imap_open_connection (IMAP_DATA* idata);
+IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags);
 time_t imap_parse_date (char* s);
 int imap_parse_list_response(IMAP_DATA* idata, char* buf, int buflen,
   char** name, int* noselect, int* noinferiors, char* delim);

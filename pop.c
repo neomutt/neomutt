@@ -137,7 +137,7 @@ void mutt_fetchPopMail (void)
   account.port = PopPort;
   account.type = M_ACCT_TYPE_POP;
   account.flags = 0;
-  conn = mutt_socket_find (&account, 0);
+  conn = mutt_conn_find (NULL, &account);
   if (mutt_socket_open (conn) < 0)
     return;
 

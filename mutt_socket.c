@@ -145,19 +145,22 @@ void mutt_socket_free (CONNECTION* conn)
   }
 }
 
-CONNECTION* mutt_socket_find (const ACCOUNT* account, int newconn)
+/* mutt_conn_find: find a connection off the list of connections whose
+ *   account matches account. If newconn is true, don't reuse one, but add
+ *   it to the list. If start is not null, only search for connections after
+ *   the given connection (allows higher level socket code to make more
+ *   fine-grained searches than account info - eg in IMAP we may wish
+ *   to find a connection which is not in IMAP_SELECTED state) */
+CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account)
 {
   CONNECTION* conn;
 
-  if (! newconn)
+  conn = start ? start->next : Connections;
+  while (conn)
   {
-    conn = Connections;
-    while (conn)
-    {
-      if (mutt_account_match (account, &(conn->account)))
-	return conn;
-      conn = conn->next;
-    }
+    if (mutt_account_match (account, &(conn->account)))
+      return conn;
+    conn = conn->next;
   }
 
   conn = socket_new_conn ();

@@ -63,7 +63,7 @@ void imap_cmd_start (IMAP_DATA* idata, const char* cmd)
  *   detected, do expunge) */
 void imap_cmd_finish (IMAP_DATA* idata)
 {
-  if (!(idata->state == IMAP_SELECTED) || idata->selected_ctx->closing)
+  if (!(idata->state == IMAP_SELECTED) || idata->ctx->closing)
   {
     idata->status = 0;
     mutt_clear_error ();
@@ -79,19 +79,18 @@ void imap_cmd_finish (IMAP_DATA* idata)
 
     if (!(idata->reopen & IMAP_REOPEN_PENDING) &&
 	((idata->status == IMAP_NEW_MAIL) || (idata->reopen & IMAP_NEWMAIL_PENDING))  
-	&& count > idata->selected_ctx->msgcount)
+	&& count > idata->ctx->msgcount)
     {
       /* read new mail messages */
       dprint (1, (debugfile, "imap_cmd_finish: fetching new mail\n"));
 
-      count = imap_read_headers (idata->selected_ctx, 
-        idata->selected_ctx->msgcount, count - 1) + 1;
+      count = imap_read_headers (idata->ctx, idata->ctx->msgcount, count-1)+1;
       idata->check_status = IMAP_NEW_MAIL;
       idata->reopen &= ~IMAP_NEWMAIL_PENDING;
     }
     else
     {
-      imap_reopen_mailbox (idata->selected_ctx, NULL);
+      imap_reopen_mailbox (idata->ctx, NULL);
       idata->check_status = IMAP_REOPENED;
       idata->reopen &= ~(IMAP_REOPEN_PENDING|IMAP_NEWMAIL_PENDING);
     }
@@ -197,20 +196,19 @@ int imap_handle_untagged (IMAP_DATA *idata, char *s)
       /* new mail arrived */
       count = atoi (pn);
 
-      if ( (idata->status != IMAP_EXPUNGE) && 
-      	count < idata->selected_ctx->msgcount)
+      if ( (idata->status != IMAP_EXPUNGE) && count < idata->ctx->msgcount)
       {
 	/* something is wrong because the server reported fewer messages
 	 * than we previously saw
 	 */
 	mutt_error _("Fatal error.  Message count is out of sync!");
 	idata->status = IMAP_FATAL;
-	mx_fastclose_mailbox (idata->selected_ctx);
+	mx_fastclose_mailbox (idata->ctx);
 	return -1;
       }
       /* at least the InterChange server sends EXISTS messages freely,
        * even when there is no new mail */
-      else if (count == idata->selected_ctx->msgcount)
+      else if (count == idata->ctx->msgcount)
 	dprint (3, (debugfile,
           "imap_handle_untagged: superfluous EXISTS message.\n"));
       else
@@ -219,7 +217,7 @@ int imap_handle_untagged (IMAP_DATA *idata, char *s)
         {
           dprint (2, (debugfile,
             "imap_handle_untagged: New mail in %s - %d messages total.\n",
-            idata->selected_mailbox, count));
+            idata->mailbox, count));
 	  idata->status = IMAP_NEW_MAIL;
         }
 	idata->newMailCount = count;
@@ -240,7 +238,7 @@ int imap_handle_untagged (IMAP_DATA *idata, char *s)
     mutt_error ("%s", s);
     idata->status = IMAP_BYE;
     if (idata->state == IMAP_SELECTED)
-      mx_fastclose_mailbox (idata->selected_ctx);
+      mx_fastclose_mailbox (idata->ctx);
     mutt_socket_close (idata->conn);
     idata->state = IMAP_DISCONNECTED;
 

@@ -353,8 +353,7 @@ void imap_keepalive (void)
 {
   CONTEXT *ctx = Context;
   
-  if (ctx == NULL || ctx->magic != M_IMAP ||
-      CTX_DATA->selected_ctx != ctx)
+  if (ctx == NULL || ctx->magic != M_IMAP || CTX_DATA->ctx != ctx)
     return;
 
   imap_check_mailbox (ctx, NULL);
@@ -408,12 +407,12 @@ int imap_wait_keepalive (pid_t pid)
 
 void imap_allow_reopen (CONTEXT *ctx)
 {
-  if (ctx && ctx->magic == M_IMAP && CTX_DATA->selected_ctx == ctx)
+  if (ctx && ctx->magic == M_IMAP && CTX_DATA->ctx == ctx)
     CTX_DATA->reopen |= IMAP_REOPEN_ALLOW;
 }
 
 void imap_disallow_reopen (CONTEXT *ctx)
 {
-  if (ctx && ctx->magic == M_IMAP && CTX_DATA->selected_ctx == ctx)
+  if (ctx && ctx->magic == M_IMAP && CTX_DATA->ctx == ctx)
     CTX_DATA->reopen &= ~IMAP_REOPEN_ALLOW;
 }

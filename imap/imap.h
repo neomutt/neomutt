@@ -38,7 +38,7 @@ int imap_delete_mailbox (CONTEXT* idata, char* mailbox);
 int imap_open_mailbox (CONTEXT *ctx);
 int imap_open_mailbox_append (CONTEXT *ctx);
 int imap_sync_mailbox (CONTEXT *ctx, int expunge, int *index_hint);
-void imap_fastclose_mailbox (CONTEXT *ctx);
+void imap_close_mailbox (CONTEXT *ctx);
 int imap_buffy_check (char *path);
 int imap_mailbox_check (char *path, int new);
 int imap_subscribe (char *path, int subscribe);

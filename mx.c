@@ -684,7 +684,7 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
   
 #ifdef USE_IMAP
   if (ctx->magic == M_IMAP)
-    imap_fastclose_mailbox (ctx);
+    imap_close_mailbox (ctx);
 #endif /* USE_IMAP */
   if (ctx->subj_hash)
     hash_destroy (&ctx->subj_hash, NULL);
