@@ -1,3 +1,7 @@
+2003-10-04 16:41:04  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* menu.c: Fix #1656.
+
 2003-09-29 16:34:32  René Clerc  <rene@clerc.nl>  (roessler)
 
 	* doc/muttrc.man.head: Fix typo.
