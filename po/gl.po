@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.0i\n"
-"POT-Creation-Date: 2000-02-22 18:03+0100\n"
+"POT-Creation-Date: 2000-02-23 11:36+0100\n"
 "PO-Revision-Date: 1999-10-27 14:05+0200\n"
 "Last-Translator: Roberto Suarez Soto <ask4it@bigfoot.com>\n"
 "Language-Team: Galician <gpul-traduccion@ceu.fi.udc.es>\n"
@@ -679,7 +679,7 @@ msgstr "Non hai buzóns abertos."
 msgid "There are no messages."
 msgstr "Non hai mensaxes."
 
-#: curs_main.c:57 mx.c:1053 pager.c:58 recvattach.c:47
+#: curs_main.c:57 mx.c:1035 pager.c:58 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "O buzón é de só lectura."
 
@@ -794,7 +794,7 @@ msgstr "Abrir buzón en modo de só lectura"
 msgid "Open mailbox"
 msgstr "Abrir buzón"
 
-#: curs_main.c:915 mx.c:471 mx.c:617
+#: curs_main.c:915 mx.c:454 mx.c:600
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s non é un buzón."
@@ -1927,8 +1927,9 @@ msgid "jump to previous subthread"
 msgstr "saltar ó subfío anterior"
 
 #: keymap_alldefs.h:110
-msgid "move to the last undelete message"
-msgstr "moverse á última mensaxe recuperada"
+#, fuzzy
+msgid "move to the previous undeleted message"
+msgstr "moverse á vindeira mensaxe recuperada"
 
 #: keymap_alldefs.h:111
 msgid "jump to the previous new message"
@@ -1991,240 +1992,236 @@ msgid "jump to the bottom of the message"
 msgstr "saltar ó final da mensaxe"
 
 #: keymap_alldefs.h:126
-msgid "return to the main-menu"
-msgstr "voltar ó menú principal"
-
-#: keymap_alldefs.h:127
 msgid "toggle display of quoted text"
 msgstr "cambiar a visualización do texto citado"
 
-#: keymap_alldefs.h:128
+#: keymap_alldefs.h:127
 msgid "skip beyond quoted text"
 msgstr "saltar o texto citado"
 
-#: keymap_alldefs.h:129
+#: keymap_alldefs.h:128
 msgid "jump to the top of the message"
 msgstr "saltar ó comezo da mensaxe"
 
-#: keymap_alldefs.h:130
+#: keymap_alldefs.h:129
 msgid "pipe message/attachment to a shell command"
 msgstr "canalizar mensaxe/adxunto a un comando de shell"
 
-#: keymap_alldefs.h:131
+#: keymap_alldefs.h:130
 msgid "move to the previous entry"
 msgstr "moverse á entrada anterior"
 
-#: keymap_alldefs.h:132
+#: keymap_alldefs.h:131
 msgid "scroll up one line"
 msgstr "retroceder unha liña"
 
-#: keymap_alldefs.h:133
+#: keymap_alldefs.h:132
 msgid "move to the previous page"
 msgstr "moverse á vindeira páxina"
 
-#: keymap_alldefs.h:134
+#: keymap_alldefs.h:133
 msgid "print the current entry"
 msgstr "imprimi-la entrada actual"
 
-#: keymap_alldefs.h:135
+#: keymap_alldefs.h:134
 msgid "query external program for addresses"
 msgstr "consultar o enderezo a un programa externo"
 
-#: keymap_alldefs.h:136
+#: keymap_alldefs.h:135
 msgid "append new query results to current results"
 msgstr "engadir os resultados da nova consulta ós resultados actuais"
 
-#: keymap_alldefs.h:137
+#: keymap_alldefs.h:136
 msgid "save changes to mailbox and quit"
 msgstr "gardar cambios ó buzón e saír"
 
-#: keymap_alldefs.h:138
+#: keymap_alldefs.h:137
 msgid "recall a postponed message"
 msgstr "reeditar unha mensaxe posposta"
 
-#: keymap_alldefs.h:139
+#: keymap_alldefs.h:138
 msgid "clear and redraw the screen"
 msgstr "limpar e redibuxa-la pantalla"
 
-#: keymap_alldefs.h:140
+#: keymap_alldefs.h:139
 msgid "{internal}"
 msgstr "{interno}"
 
-#: keymap_alldefs.h:141
+#: keymap_alldefs.h:140
 msgid "reply to a message"
 msgstr "responder a unha mensaxe"
 
-#: keymap_alldefs.h:142
+#: keymap_alldefs.h:141
 #, fuzzy
 msgid "use the current message as a template for a new one"
 msgstr "edita-la mensaxe actual para reenviala"
 
-#: keymap_alldefs.h:143
+#: keymap_alldefs.h:142
 msgid "save message/attachment to a file"
 msgstr "gardar mensaxe/adxunto a un ficheiro"
 
-#: keymap_alldefs.h:144
+#: keymap_alldefs.h:143
 msgid "search for a regular expression"
 msgstr "buscar unha expresión regular"
 
-#: keymap_alldefs.h:145
+#: keymap_alldefs.h:144
 msgid "search backwards for a regular expression"
 msgstr "buscar unha expresión regular cara atrás"
 
-#: keymap_alldefs.h:146
+#: keymap_alldefs.h:145
 msgid "search for next match"
 msgstr "busca-la vindeira coincidencia"
 
-#: keymap_alldefs.h:147
+#: keymap_alldefs.h:146
 msgid "search for next match in opposite direction"
 msgstr "busca-la vindeira coincidencia en dirección oposta"
 
-#: keymap_alldefs.h:148
+#: keymap_alldefs.h:147
 msgid "toggle search pattern coloring"
 msgstr "cambia-la coloración do patrón de búsqueda"
 
-#: keymap_alldefs.h:149
+#: keymap_alldefs.h:148
 msgid "invoke a command in a subshell"
 msgstr "chamar a un comando nun subshell"
 
-#: keymap_alldefs.h:150
+#: keymap_alldefs.h:149
 msgid "sort messages"
 msgstr "ordear mensaxes"
 
-#: keymap_alldefs.h:151
+#: keymap_alldefs.h:150
 msgid "sort messages in reverse order"
 msgstr "ordear mensaxes en orden inverso"
 
-#: keymap_alldefs.h:152
+#: keymap_alldefs.h:151
 msgid "tag the current entry"
 msgstr "marca-la entrada actual"
 
-#: keymap_alldefs.h:153
+#: keymap_alldefs.h:152
 msgid "apply next function to tagged messages"
 msgstr "aplica-la vindeira función ás mensaxes marcadas"
 
-#: keymap_alldefs.h:154
+#: keymap_alldefs.h:153
 msgid "tag the current subthread"
 msgstr "marca-lo subfío actual"
 
-#: keymap_alldefs.h:155
+#: keymap_alldefs.h:154
 msgid "tag the current thread"
 msgstr "marca-lo fío actual"
 
-#: keymap_alldefs.h:156
+#: keymap_alldefs.h:155
 msgid "toggle a message's 'new' flag"
 msgstr "cambia-lo indicador de 'novo' dunha mensaxe"
 
-#: keymap_alldefs.h:157
+#: keymap_alldefs.h:156
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "cambia-la opción de reescribir/non-reescribi-lo buzón"
 
-#: keymap_alldefs.h:158
+#: keymap_alldefs.h:157
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "cambia-la opción de ver buzóns/tódolos ficheiros"
 
-#: keymap_alldefs.h:159
+#: keymap_alldefs.h:158
 msgid "move to the top of the page"
 msgstr "moverse ó comezo da páxina"
 
-#: keymap_alldefs.h:160
+#: keymap_alldefs.h:159
 msgid "undelete the current entry"
 msgstr "recupera-la entrada actual"
 
-#: keymap_alldefs.h:161
+#: keymap_alldefs.h:160
 msgid "undelete all messages in thread"
 msgstr "recuperar tódalas mensaxes en fío"
 
-#: keymap_alldefs.h:162
+#: keymap_alldefs.h:161
 msgid "undelete all messages in subthread"
 msgstr "recuperar tódalas mensaxes en subfío"
 
-#: keymap_alldefs.h:163
+#: keymap_alldefs.h:162
 msgid "show the Mutt version number and date"
 msgstr "amosa-lo número e data de versión de Mutt"
 
-#: keymap_alldefs.h:164
+#: keymap_alldefs.h:163
 msgid "view attachment using mailcap entry if necessary"
 msgstr "ver adxunto usando a entrada de mailcap se cómpre"
 
-#: keymap_alldefs.h:165
+#: keymap_alldefs.h:164
 msgid "show MIME attachments"
 msgstr "amosar adxuntos MIME"
 
-#: keymap_alldefs.h:166
+#: keymap_alldefs.h:165
 msgid "show currently active limit pattern"
 msgstr "amosar o patrón limitante actual"
 
-#: keymap_alldefs.h:167
+#: keymap_alldefs.h:166
 msgid "collapse/uncollapse current thread"
 msgstr "colapsar/expandir fío actual"
 
-#: keymap_alldefs.h:168
+#: keymap_alldefs.h:167
 msgid "collapse/uncollapse all threads"
 msgstr "colapsar/expandir tódolos fíos"
 
-#: keymap_alldefs.h:169
+#: keymap_alldefs.h:168
 msgid "attach a PGP public key"
 msgstr "adxuntar unha chave pública PGP"
 
-#: keymap_alldefs.h:170
+#: keymap_alldefs.h:169
 msgid "show PGP options"
 msgstr "amosa-las opcións PGP"
 
-#: keymap_alldefs.h:171
+#: keymap_alldefs.h:170
 msgid "extract PGP public keys"
 msgstr "extraer chaves públicas PGP"
 
-#: keymap_alldefs.h:172
+#: keymap_alldefs.h:171
 msgid "wipe PGP passphrase from memory"
 msgstr "borra-lo contrasinal PGP de memoria"
 
-#: keymap_alldefs.h:173
+#: keymap_alldefs.h:172
 msgid "mail a PGP public key"
 msgstr "enviar por correo unha chave pública PGP"
 
-#: keymap_alldefs.h:174
+#: keymap_alldefs.h:173
 msgid "verify a PGP public key"
 msgstr "verificar unha chave pública PGP"
 
-#: keymap_alldefs.h:175
+#: keymap_alldefs.h:174
 msgid "view the key's user id"
 msgstr "ve-la identificación de usuario da chave"
 
-#: keymap_alldefs.h:176
+#: keymap_alldefs.h:175
 msgid "make decrypted copy and delete"
 msgstr "facer unha copia desencriptada e borrar"
 
-#: keymap_alldefs.h:177
+#: keymap_alldefs.h:176
 msgid "make decrypted copy"
 msgstr "facer unha copia desencriptada"
 
-#: keymap_alldefs.h:178
+#: keymap_alldefs.h:177
 msgid "Accept the chain constructed"
 msgstr ""
 
-#: keymap_alldefs.h:179
+#: keymap_alldefs.h:178
 msgid "Append a remailer to the chain"
 msgstr ""
 
-#: keymap_alldefs.h:180
+#: keymap_alldefs.h:179
 msgid "Insert a remailer into the chain"
 msgstr ""
 
-#: keymap_alldefs.h:181
+#: keymap_alldefs.h:180
 #, fuzzy
 msgid "Delete a remailer from the chain"
 msgstr "borrar tódolos caracteres da liña"
 
-#: keymap_alldefs.h:182
+#: keymap_alldefs.h:181
 msgid "Select the previous element of the chain"
 msgstr ""
 
-#: keymap_alldefs.h:183
+#: keymap_alldefs.h:182
 msgid "Select the next element of the chain"
 msgstr ""
 
-#: keymap_alldefs.h:184
+#: keymap_alldefs.h:183
 msgid "send the message through a mixmaster remailer chain"
 msgstr ""
 
@@ -2619,80 +2616,80 @@ msgstr "¡Tempo de espera excedido cando se tentaba face-lo bloqueo flock!"
 msgid "Waiting for flock attempt... %d"
 msgstr "Agardando polo intento de flock... %d"
 
-#: mx.c:554
+#: mx.c:537
 #, fuzzy, c-format
 msgid "Couldn't lock %s\n"
 msgstr "Non se pode bloquear %s.\n"
 
-#: mx.c:642
+#: mx.c:625
 #, c-format
 msgid "Reading %s..."
 msgstr "Lendo %s..."
 
-#: mx.c:732
+#: mx.c:714
 #, c-format
 msgid "Writing %s..."
 msgstr "Escribindo %s..."
 
-#: mx.c:759
+#: mx.c:741
 #, c-format
 msgid "Could not synchronize mailbox %s!"
 msgstr "¡Non foi posible sincroniza-lo buzón %s!"
 
-#: mx.c:823
+#: mx.c:805
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "¿Mover mensaxes lidas a %s?"
 
-#: mx.c:832 mx.c:1068
+#: mx.c:814 mx.c:1050
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "¿Purgar %d mensaxe marcada como borrada?"
 
-#: mx.c:832 mx.c:1068
+#: mx.c:814 mx.c:1050
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "¿Purgar %d mensaxes marcadas como borradas?"
 
-#: mx.c:853
+#: mx.c:835
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Movendo mensaxes lidas a %s..."
 
-#: mx.c:904 mx.c:1059
+#: mx.c:886 mx.c:1041
 msgid "Mailbox is unchanged."
 msgstr "O buzón non cambiou."
 
-#: mx.c:934
+#: mx.c:916
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d conservados, %d movidos, %d borrados."
 
-#: mx.c:937 mx.c:1101
+#: mx.c:919 mx.c:1083
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d conservados, %d borrados."
 
-#: mx.c:1044
+#: mx.c:1026
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Pulse '%s' para cambiar a modo escritura"
 
-#: mx.c:1046
+#: mx.c:1028
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "¡Use 'toggle-write' para restablece-lo modo escritura!"
 
-#: mx.c:1048
+#: mx.c:1030
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "O buzón está marcado como non escribible. %s"
 
-#: mx.c:1098
+#: mx.c:1080
 #, c-format
 msgid "%d kept."
 msgstr ""
 
-#: mx.c:1380
+#: mx.c:1362
 #, fuzzy
 msgid "Can't write message"
 msgstr "edita-la mensaxe"
@@ -3556,6 +3553,12 @@ msgstr "Esa mensaxe non é visible."
 #, fuzzy
 msgid "Parent message is not available."
 msgstr "Esa mensaxe non é visible."
+
+#~ msgid "move to the last undelete message"
+#~ msgstr "moverse á última mensaxe recuperada"
+
+#~ msgid "return to the main-menu"
+#~ msgstr "voltar ó menú principal"
 
 #~ msgid "ignoring empty header field: %s"
 #~ msgstr "ignorando campo de cabeceira valeiro: %s"

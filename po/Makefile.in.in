@@ -84,7 +84,8 @@ all: all-@USE_NLS@
 all-yes: cat-id-tbl.c $(CATALOGS)
 all-no:
 
-../keymap_alldefs.h: 
+.PHONY: ../keymap_alldefs.h
+../keymap_alldefs.h:
 	cd .. && $(MAKE) keymap_alldefs.h
 
 $(srcdir)/$(PACKAGE).pot: $(POTFILES)

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.2\n"
-"POT-Creation-Date: 2000-02-22 18:03+0100\n"
+"POT-Creation-Date: 2000-02-23 11:36+0100\n"
 "PO-Revision-Date: 2000-02-18 10:47+0900\n"
 "Last-Translator: Byeong-Chan Kim <redhands@linux.sarag.net>\n"
 "Language-Team: Korean <ko@li.org>\n"
@@ -666,7 +666,7 @@ msgstr "¿­¸° ÆíÁöÇÔÀÌ ¾øÀ½."
 msgid "There are no messages."
 msgstr "¸Ş¼¼Áö°¡ ¾ø½À´Ï´Ù."
 
-#: curs_main.c:57 mx.c:1053 pager.c:58 recvattach.c:47
+#: curs_main.c:57 mx.c:1035 pager.c:58 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "ÀĞ±â Àü¿ë ÆíÁöÇÔ."
 
@@ -782,7 +782,7 @@ msgstr "ÀĞ±â Àü¿ëÀ¸·Î ÆíÁöÇÔ ¿­±â"
 msgid "Open mailbox"
 msgstr "ÆíÁöÇÔ ¿­±â"
 
-#: curs_main.c:915 mx.c:471 mx.c:617
+#: curs_main.c:915 mx.c:454 mx.c:600
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s´Â ÆíÁöÇÔÀÌ ¾Æ´Ô."
@@ -1902,8 +1902,9 @@ msgid "jump to previous subthread"
 msgstr "ÀÌÀü ºÎ¼Ó ±ÛÅ¸·¡·Î ÀÌµ¿"
 
 #: keymap_alldefs.h:110
-msgid "move to the last undelete message"
-msgstr "»èÁ¦µÇÁö ¾ÊÀº ¸¶Áö¸· ¸Ş½ÃÁö·Î ÀÌµ¿"
+#, fuzzy
+msgid "move to the previous undeleted message"
+msgstr "»èÁ¦µÇÁö ¾ÊÀº ´ÙÀ½ ¸Ş¼¼Áö·Î ÀÌµ¿"
 
 #: keymap_alldefs.h:111
 msgid "jump to the previous new message"
@@ -1966,240 +1967,236 @@ msgid "jump to the bottom of the message"
 msgstr "¸Ş¼¼Áö ¸¶Áö¸·À¸·Î ÀÌµ¿"
 
 #: keymap_alldefs.h:126
-msgid "return to the main-menu"
-msgstr "ÁÖ ¸Ş´º·Î µ¹¾Æ°¨"
-
-#: keymap_alldefs.h:127
 msgid "toggle display of quoted text"
 msgstr "ÀÎ¿ë¹®ÀÇ È­¸éÇ¥½Ã »óÅÂ ¹Ù²Ù±â"
 
-#: keymap_alldefs.h:128
+#: keymap_alldefs.h:127
 msgid "skip beyond quoted text"
 msgstr "ÀÎ¿ë¹® ´ÙÀ½À¸·Î ³Ñ¾î°¡±â"
 
-#: keymap_alldefs.h:129
+#: keymap_alldefs.h:128
 msgid "jump to the top of the message"
 msgstr "¸Ş¼¼Áö Ã³À½À¸·Î ÀÌµ¿"
 
-#: keymap_alldefs.h:130
+#: keymap_alldefs.h:129
 msgid "pipe message/attachment to a shell command"
 msgstr "¸Ş¼¼Áö/Ã·ºÎ¹°À» ½© ¸í·ÉÀ¸·Î ¿¬°áÇÏ±â"
 
-#: keymap_alldefs.h:131
+#: keymap_alldefs.h:130
 msgid "move to the previous entry"
 msgstr "ÀÌÀü Ç×¸ñÀ¸·Î ÀÌµ¿"
 
-#: keymap_alldefs.h:132
+#: keymap_alldefs.h:131
 msgid "scroll up one line"
 msgstr "ÇÑÁÙ¾¿ ¿Ã¸®±â"
 
-#: keymap_alldefs.h:133
+#: keymap_alldefs.h:132
 msgid "move to the previous page"
 msgstr "ÀÌÀü ÆäÀÌÁö·Î ÀÌµ¿"
 
-#: keymap_alldefs.h:134
+#: keymap_alldefs.h:133
 msgid "print the current entry"
 msgstr "ÇöÀç Ç×¸ñ Ãâ·Â"
 
-#: keymap_alldefs.h:135
+#: keymap_alldefs.h:134
 msgid "query external program for addresses"
 msgstr ""
 
-#: keymap_alldefs.h:136
+#: keymap_alldefs.h:135
 msgid "append new query results to current results"
 msgstr "ÇöÀç °á°ú¿¡ »õ °Ë»ö °á°ú ºÙÀÌ±â"
 
-#: keymap_alldefs.h:137
+#: keymap_alldefs.h:136
 msgid "save changes to mailbox and quit"
 msgstr "ÆíÁöÇÔ¿¡ º¯°æ »çÇ× ÀúÀå ÈÄ ³¡³»±â"
 
-#: keymap_alldefs.h:138
+#: keymap_alldefs.h:137
 msgid "recall a postponed message"
 msgstr "¹ß¼Û ¿¬±âÇÑ ¸Ş¼¼Áö ´Ù½Ã ºÎ¸£±â"
 
 # vyèistit dle slovníku z www.inf.upol.cz/~michlv
 # To snad ale bylo my¹leno pro zcela jinı kontext?!
-#: keymap_alldefs.h:139
+#: keymap_alldefs.h:138
 msgid "clear and redraw the screen"
 msgstr "È­¸é Á¤¸®ÇÏ°í ´Ù½Ã ±×¸®±â"
 
-#: keymap_alldefs.h:140
+#: keymap_alldefs.h:139
 msgid "{internal}"
 msgstr "{³»ºÎÀÇ}"
 
-#: keymap_alldefs.h:141
+#: keymap_alldefs.h:140
 msgid "reply to a message"
 msgstr "¸Ş¼¼Áö¿¡ ´äÀåÇÏ±â"
 
-#: keymap_alldefs.h:142
+#: keymap_alldefs.h:141
 msgid "use the current message as a template for a new one"
 msgstr "ÇöÀç ¸Ş¼¼Áö¸¦ »õ ¸Ş¼¼ÁöÀÇ ÅÛÇÃ·¹ÀÌÆ®·Î »ç¿ëÇÔ"
 
-#: keymap_alldefs.h:143
+#: keymap_alldefs.h:142
 msgid "save message/attachment to a file"
 msgstr "¸Ş¼¼Áö/Ã·ºÎ¹° ÆÄÀÏ·Î ÀúÀå"
 
-#: keymap_alldefs.h:144
+#: keymap_alldefs.h:143
 msgid "search for a regular expression"
 msgstr "Á¤±Ô Ç¥Çö½ÄÀ» ÀÌ¿ëÇØ °Ë»ö"
 
-#: keymap_alldefs.h:145
+#: keymap_alldefs.h:144
 msgid "search backwards for a regular expression"
 msgstr "Á¤±Ô Ç¥Çö½ÄÀ» ÀÌ¿ëÇØ ¿ª¼ø °Ë»ö"
 
-#: keymap_alldefs.h:146
+#: keymap_alldefs.h:145
 msgid "search for next match"
 msgstr "´ÙÀ½ Ã£±â"
 
-#: keymap_alldefs.h:147
+#: keymap_alldefs.h:146
 msgid "search for next match in opposite direction"
 msgstr "¿ª¼øÀ¸·Î Ã£±â"
 
-#: keymap_alldefs.h:148
+#: keymap_alldefs.h:147
 msgid "toggle search pattern coloring"
 msgstr "°Ë»ö ÆĞÅÏ ÄÃ·¯¸µ ¼±ÅÃ"
 
-#: keymap_alldefs.h:149
+#: keymap_alldefs.h:148
 msgid "invoke a command in a subshell"
 msgstr "ÇÏºÎ ½© ½ÇÇà"
 
-#: keymap_alldefs.h:150
+#: keymap_alldefs.h:149
 msgid "sort messages"
 msgstr "¸Ş¼¼Áö Á¤·Ä"
 
-#: keymap_alldefs.h:151
+#: keymap_alldefs.h:150
 msgid "sort messages in reverse order"
 msgstr "¸Ş¼¼Áö ¿ª¼ø Á¤·Ä"
 
-#: keymap_alldefs.h:152
+#: keymap_alldefs.h:151
 msgid "tag the current entry"
 msgstr "ÇöÀç Ç×¸ñ¿¡ ÅÂ±× ºÙÀÓ"
 
-#: keymap_alldefs.h:153
+#: keymap_alldefs.h:152
 msgid "apply next function to tagged messages"
 msgstr "´ÙÀ½ ±â´ÉÀ» ÅÂ±×°¡ ºÙÀº ¸Ş¼¼Áö¿¡ Àû¿ë"
 
-#: keymap_alldefs.h:154
+#: keymap_alldefs.h:153
 msgid "tag the current subthread"
 msgstr "ÇöÀç ºÎ¼Ó ±ÛÅ¸·¡¿¡ ÅÂ±× ºÙÀÓ"
 
-#: keymap_alldefs.h:155
+#: keymap_alldefs.h:154
 msgid "tag the current thread"
 msgstr "ÇöÀç ±ÛÅ¸·¡¿¡ ÅÂ±× ºÙÀÓ"
 
-#: keymap_alldefs.h:156
+#: keymap_alldefs.h:155
 msgid "toggle a message's 'new' flag"
 msgstr "¸Ş¼¼ÁöÀÇ '»õ ±Û' ÇÃ·¡±× »óÅÂ ¹Ù²Ş"
 
-#: keymap_alldefs.h:157
+#: keymap_alldefs.h:156
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "ÆíÁöÇÔÀ» ´Ù½Ã ¾µ °ÍÀÎÁö ¼±ÅÃ"
 
-#: keymap_alldefs.h:158
+#: keymap_alldefs.h:157
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "¸ŞÀÏ ¹Ú½º¸¦ º¼Áö ¸ğµç ÆÄÀÏÀ» º¼Áö ¼±ÅÃ"
 
-#: keymap_alldefs.h:159
+#: keymap_alldefs.h:158
 msgid "move to the top of the page"
 msgstr "Ã¹ ÆäÀÌÁö·Î ÀÌµ¿"
 
-#: keymap_alldefs.h:160
+#: keymap_alldefs.h:159
 msgid "undelete the current entry"
 msgstr "ÇöÀç Ç×¸ñ º¹±¸"
 
-#: keymap_alldefs.h:161
+#: keymap_alldefs.h:160
 msgid "undelete all messages in thread"
 msgstr "±ÛÅ¸·¡ÀÇ ¸ğµç ¸Ş¼¼Áö º¹±¸ÇÏ±â"
 
-#: keymap_alldefs.h:162
+#: keymap_alldefs.h:161
 msgid "undelete all messages in subthread"
 msgstr "ºÎ¼Ó ±ÛÅ¸·¡ÀÇ ¸ğµç ¸Ş¼¼Áö º¹±¸ÇÏ±â"
 
-#: keymap_alldefs.h:163
+#: keymap_alldefs.h:162
 msgid "show the Mutt version number and date"
 msgstr "MuttÀÇ ¹öÁ¯ ¹øÈ£¿Í Á¦ÀÛÀÏÀ» º¸¿©ÁÜ"
 
-#: keymap_alldefs.h:164
+#: keymap_alldefs.h:163
 msgid "view attachment using mailcap entry if necessary"
 msgstr "ÇÊ¿äÇÏ´Ù¸é mailcap Ç×¸ñÀ» »ç¿ëÇØ Ã·ºÎ¹°À» º¸¿©ÁÜ"
 
-#: keymap_alldefs.h:165
+#: keymap_alldefs.h:164
 msgid "show MIME attachments"
 msgstr "MIME Ã·ºÎ¹° º¸¿©ÁÜ"
 
-#: keymap_alldefs.h:166
+#: keymap_alldefs.h:165
 msgid "show currently active limit pattern"
 msgstr "ÇöÀç »ç¿ë ÁßÀÎ ¹üÀ§ ÆĞÅÏÀ» º¸¿©ÁÜ"
 
-#: keymap_alldefs.h:167
+#: keymap_alldefs.h:166
 msgid "collapse/uncollapse current thread"
 msgstr "ÇöÀç ±ÛÅ¸·¡ Æì±â/Á¢±â"
 
-#: keymap_alldefs.h:168
+#: keymap_alldefs.h:167
 msgid "collapse/uncollapse all threads"
 msgstr "¸ğµç ±ÛÅ¸·¡µé Æì±â/Á¢±â"
 
-#: keymap_alldefs.h:169
+#: keymap_alldefs.h:168
 msgid "attach a PGP public key"
 msgstr "PGP °ø°³ ¿­¼è ºÙÀÓ"
 
-#: keymap_alldefs.h:170
+#: keymap_alldefs.h:169
 msgid "show PGP options"
 msgstr "PGP ¿É¼Ç º¸¿©ÁÜ"
 
-#: keymap_alldefs.h:171
+#: keymap_alldefs.h:170
 msgid "extract PGP public keys"
 msgstr "PGP °ø°³ ¿­¼è ÃßÃâ"
 
-#: keymap_alldefs.h:172
+#: keymap_alldefs.h:171
 msgid "wipe PGP passphrase from memory"
 msgstr "¸Ş¸ğ¸®¿¡¼­ PGP ¾ÏÈ£ ¹®±¸ Áö¿ò"
 
-#: keymap_alldefs.h:173
+#: keymap_alldefs.h:172
 msgid "mail a PGP public key"
 msgstr "PGP °ø°³ ¿­¼è ¹ß¼Û"
 
-#: keymap_alldefs.h:174
+#: keymap_alldefs.h:173
 msgid "verify a PGP public key"
 msgstr "PGP °ø°³ ¿­¼è È®ÀÎ"
 
-#: keymap_alldefs.h:175
+#: keymap_alldefs.h:174
 msgid "view the key's user id"
 msgstr "¿­¼èÀÇ »ç¿ëÀÚ ID º¸±â"
 
-#: keymap_alldefs.h:176
+#: keymap_alldefs.h:175
 msgid "make decrypted copy and delete"
 msgstr "º¹È£È­ »çº» ¸¸µç ÈÄ »èÁ¦ÇÏ±â"
 
-#: keymap_alldefs.h:177
+#: keymap_alldefs.h:176
 msgid "make decrypted copy"
 msgstr "º¹È£È­ »çº» ¸¸µé±â"
 
-#: keymap_alldefs.h:178
+#: keymap_alldefs.h:177
 msgid "Accept the chain constructed"
 msgstr "Ã¼ÀÎ ±¸Á¶¸¦ Çã°¡ÇÔ"
 
-#: keymap_alldefs.h:179
+#: keymap_alldefs.h:178
 msgid "Append a remailer to the chain"
 msgstr "Ã¼ÀÎ¿¡ ¸®¸ŞÀÏ·¯ Ã·°¡"
 
-#: keymap_alldefs.h:180
+#: keymap_alldefs.h:179
 msgid "Insert a remailer into the chain"
 msgstr "Ã¼ÀÎ¿¡ ¸®¸ŞÀÏ·¯ »ğÀÔ"
 
-#: keymap_alldefs.h:181
+#: keymap_alldefs.h:180
 msgid "Delete a remailer from the chain"
 msgstr "Ã¼ÀÎ¿¡¼­ ¸®¸ŞÀÏ·¯ »èÁ¦"
 
-#: keymap_alldefs.h:182
+#: keymap_alldefs.h:181
 msgid "Select the previous element of the chain"
 msgstr ""
 
-#: keymap_alldefs.h:183
+#: keymap_alldefs.h:182
 msgid "Select the next element of the chain"
 msgstr ""
 
-#: keymap_alldefs.h:184
+#: keymap_alldefs.h:183
 msgid "send the message through a mixmaster remailer chain"
 msgstr ""
 
@@ -2581,80 +2578,80 @@ msgstr "flock Àá±İ ½Ãµµ Áß ½Ã°£ Á¦ÇÑÀ» ÃÊ°úÇÔ!"
 msgid "Waiting for flock attempt... %d"
 msgstr "flock ½Ãµµ¸¦ ±â´Ù¸®´Â Áß... %d"
 
-#: mx.c:554
+#: mx.c:537
 #, c-format
 msgid "Couldn't lock %s\n"
 msgstr "%s¸¦ Àá±Û ¼ö ¾øÀ½.\n"
 
-#: mx.c:642
+#: mx.c:625
 #, c-format
 msgid "Reading %s..."
 msgstr "%s ÀĞ´Â Áß..."
 
-#: mx.c:732
+#: mx.c:714
 #, c-format
 msgid "Writing %s..."
 msgstr "%s ¾²´Â Áß..."
 
-#: mx.c:759
+#: mx.c:741
 #, c-format
 msgid "Could not synchronize mailbox %s!"
 msgstr "%s ÆíÁöÇÔÀ» µ¿±âÈ­ ½ÃÅ³ ¼ö ¾øÀ½!"
 
-#: mx.c:823
+#: mx.c:805
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "ÀĞÀº ¸Ş¼¼Áö¸¦ %s·Î ¿Å±æ±î¿ä?"
 
-#: mx.c:832 mx.c:1068
+#: mx.c:814 mx.c:1050
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "»èÁ¦µÈ ¸Ş¼¼Áö(%d)¸¦ ¾ø¾Ù±î¿ä?"
 
-#: mx.c:832 mx.c:1068
+#: mx.c:814 mx.c:1050
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "»èÁ¦µÈ ¸Ş¼¼Áö(%d)µéÀ» ¾ø¾Ù±î¿ä?"
 
-#: mx.c:853
+#: mx.c:835
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "ÀĞÀº ¸Ş¼¼Áö¸¦ %s·Î ¿Å±â´Â Áß..."
 
-#: mx.c:904 mx.c:1059
+#: mx.c:886 mx.c:1041
 msgid "Mailbox is unchanged."
 msgstr "ÆíÁöÇÔÀÌ º¯°æµÇÁö ¾ÊÀ½."
 
-#: mx.c:934
+#: mx.c:916
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d°³ º¸°ü, %d°³ ÀÌµ¿, %d°³ »èÁ¦"
 
-#: mx.c:937 mx.c:1101
+#: mx.c:919 mx.c:1083
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d°³ º¸°ü, %d°³ »èÁ¦"
 
-#: mx.c:1044
+#: mx.c:1026
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " ¾²±â »óÅÂ ¹Ù²Ù±â; `%s'¸¦ ´©¸£¼¼¿ä"
 
-#: mx.c:1046
+#: mx.c:1028
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "'toggle-write'¸¦ »ç¿ëÇØ ¾²±â¸¦ Çã°¡ÇÕ´Ï´Ù!"
 
-#: mx.c:1048
+#: mx.c:1030
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "ÆíÁöÇÔÀÌ ¾²±â ºÒ°¡´ÉÀ¸·Î Ç¥±âµÇ¾úÀ½. %s"
 
-#: mx.c:1098
+#: mx.c:1080
 #, c-format
 msgid "%d kept."
 msgstr "%d°³ º¸Á¶µÊ."
 
-#: mx.c:1380
+#: mx.c:1362
 msgid "Can't write message"
 msgstr "¸Ş½ÃÁö¸¦ ¾²Áö ¸øÇÔ"
 
@@ -3511,3 +3508,9 @@ msgstr "ºÎ¸ğ ¸Ş¼¼Áö´Â º¼ ¼ö ¾ø´Â »óÅÂÀÓ."
 #: thread.c:727
 msgid "Parent message is not available."
 msgstr "ºÎ¸ğ ¸Ş¼¼Áö°¡ Á¸ÀçÇÏÁö ¾ÊÀ½."
+
+#~ msgid "move to the last undelete message"
+#~ msgstr "»èÁ¦µÇÁö ¾ÊÀº ¸¶Áö¸· ¸Ş½ÃÁö·Î ÀÌµ¿"
+
+#~ msgid "return to the main-menu"
+#~ msgstr "ÁÖ ¸Ş´º·Î µ¹¾Æ°¨"

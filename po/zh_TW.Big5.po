@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.2\n"
-"POT-Creation-Date: 2000-02-22 18:03+0100\n"
+"POT-Creation-Date: 2000-02-23 11:36+0100\n"
 "PO-Revision-Date: 1999-12-20 20:41+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -671,7 +671,7 @@ msgstr "沒有已開啟信箱。"
 msgid "There are no messages."
 msgstr "沒有信件。"
 
-#: curs_main.c:57 mx.c:1053 pager.c:58 recvattach.c:47
+#: curs_main.c:57 mx.c:1035 pager.c:58 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "信箱是唯讀的。"
 
@@ -785,7 +785,7 @@ msgstr "用唯讀模式開啟信箱"
 msgid "Open mailbox"
 msgstr "開啟信箱"
 
-#: curs_main.c:915 mx.c:471 mx.c:617
+#: curs_main.c:915 mx.c:454 mx.c:600
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s 不是信箱。"
@@ -1919,8 +1919,9 @@ msgid "jump to previous subthread"
 msgstr "跳到上一個子序列"
 
 #: keymap_alldefs.h:110
-msgid "move to the last undelete message"
-msgstr "移動到最後一封未刪除的信件"
+#, fuzzy
+msgid "move to the previous undeleted message"
+msgstr "移動到下一個未刪除的信件"
 
 #: keymap_alldefs.h:111
 msgid "jump to the previous new message"
@@ -1983,239 +1984,235 @@ msgid "jump to the bottom of the message"
 msgstr "跳到信件的最後面"
 
 #: keymap_alldefs.h:126
-msgid "return to the main-menu"
-msgstr "回到主選單"
-
-#: keymap_alldefs.h:127
 msgid "toggle display of quoted text"
 msgstr "切換引言顯示"
 
-#: keymap_alldefs.h:128
+#: keymap_alldefs.h:127
 msgid "skip beyond quoted text"
 msgstr "跳過引言"
 
-#: keymap_alldefs.h:129
+#: keymap_alldefs.h:128
 msgid "jump to the top of the message"
 msgstr "跳到信件的最上面"
 
-#: keymap_alldefs.h:130
+#: keymap_alldefs.h:129
 msgid "pipe message/attachment to a shell command"
 msgstr "輸出導向 訊息/附件 至命令解譯器"
 
-#: keymap_alldefs.h:131
+#: keymap_alldefs.h:130
 msgid "move to the previous entry"
 msgstr "移到上一項資料"
 
-#: keymap_alldefs.h:132
+#: keymap_alldefs.h:131
 msgid "scroll up one line"
 msgstr "向上捲動一行"
 
-#: keymap_alldefs.h:133
+#: keymap_alldefs.h:132
 msgid "move to the previous page"
 msgstr "移到上一頁"
 
-#: keymap_alldefs.h:134
+#: keymap_alldefs.h:133
 msgid "print the current entry"
 msgstr "列印現在的資料"
 
-#: keymap_alldefs.h:135
+#: keymap_alldefs.h:134
 msgid "query external program for addresses"
 msgstr "利用外部應用程式查詢地址"
 
-#: keymap_alldefs.h:136
+#: keymap_alldefs.h:135
 msgid "append new query results to current results"
 msgstr "附加新的查詢結果至現今的查詢結果"
 
-#: keymap_alldefs.h:137
+#: keymap_alldefs.h:136
 msgid "save changes to mailbox and quit"
 msgstr "儲存變動過的資料到信箱並且離開"
 
-#: keymap_alldefs.h:138
+#: keymap_alldefs.h:137
 msgid "recall a postponed message"
 msgstr "重新叫出一封被延遲寄出的信件"
 
-#: keymap_alldefs.h:139
+#: keymap_alldefs.h:138
 msgid "clear and redraw the screen"
 msgstr "清除並重新繪製畫面"
 
-#: keymap_alldefs.h:140
+#: keymap_alldefs.h:139
 msgid "{internal}"
 msgstr "{內部的}"
 
-#: keymap_alldefs.h:141
+#: keymap_alldefs.h:140
 msgid "reply to a message"
 msgstr "回覆一封信件"
 
-#: keymap_alldefs.h:142
+#: keymap_alldefs.h:141
 msgid "use the current message as a template for a new one"
 msgstr "用這封信件作為新信件的範本"
 
-#: keymap_alldefs.h:143
+#: keymap_alldefs.h:142
 msgid "save message/attachment to a file"
 msgstr "儲存信件/附件到某個檔案"
 
-#: keymap_alldefs.h:144
+#: keymap_alldefs.h:143
 msgid "search for a regular expression"
 msgstr "用正規表示式尋找"
 
-#: keymap_alldefs.h:145
+#: keymap_alldefs.h:144
 msgid "search backwards for a regular expression"
 msgstr "向後搜尋一個正規表示式"
 
-#: keymap_alldefs.h:146
+#: keymap_alldefs.h:145
 msgid "search for next match"
 msgstr "尋找下一個符合的資料"
 
-#: keymap_alldefs.h:147
+#: keymap_alldefs.h:146
 msgid "search for next match in opposite direction"
 msgstr "返方向搜尋下一個符合的資料"
 
-#: keymap_alldefs.h:148
+#: keymap_alldefs.h:147
 msgid "toggle search pattern coloring"
 msgstr "切換搜尋格式的顏色"
 
-#: keymap_alldefs.h:149
+#: keymap_alldefs.h:148
 msgid "invoke a command in a subshell"
 msgstr "在子 shell 執行指令"
 
-#: keymap_alldefs.h:150
+#: keymap_alldefs.h:149
 msgid "sort messages"
 msgstr "信件排序"
 
-#: keymap_alldefs.h:151
+#: keymap_alldefs.h:150
 msgid "sort messages in reverse order"
 msgstr "以相反的次序來做訊息排序"
 
-#: keymap_alldefs.h:152
+#: keymap_alldefs.h:151
 msgid "tag the current entry"
 msgstr "標記現在的記錄"
 
-#: keymap_alldefs.h:153
+#: keymap_alldefs.h:152
 msgid "apply next function to tagged messages"
 msgstr "應用下一個功\能到已標記的訊息"
 
-#: keymap_alldefs.h:154
+#: keymap_alldefs.h:153
 msgid "tag the current subthread"
 msgstr "標記目前的子序列"
 
-#: keymap_alldefs.h:155
+#: keymap_alldefs.h:154
 msgid "tag the current thread"
 msgstr "標記目前的序列"
 
-#: keymap_alldefs.h:156
+#: keymap_alldefs.h:155
 msgid "toggle a message's 'new' flag"
 msgstr "切換將訊息切換為 'new' 旗標"
 
-#: keymap_alldefs.h:157
+#: keymap_alldefs.h:156
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "切換是否重新寫入郵筒中"
 
-#: keymap_alldefs.h:158
+#: keymap_alldefs.h:157
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "切換是否瀏覽郵筒或所有的檔案"
 
-#: keymap_alldefs.h:159
+#: keymap_alldefs.h:158
 msgid "move to the top of the page"
 msgstr "移到頁首"
 
-#: keymap_alldefs.h:160
+#: keymap_alldefs.h:159
 msgid "undelete the current entry"
 msgstr "反刪除現在的記錄"
 
-#: keymap_alldefs.h:161
+#: keymap_alldefs.h:160
 msgid "undelete all messages in thread"
 msgstr "反刪除這個序列中的所有信件"
 
-#: keymap_alldefs.h:162
+#: keymap_alldefs.h:161
 msgid "undelete all messages in subthread"
 msgstr "反刪除這個子序列中的所有信件"
 
-#: keymap_alldefs.h:163
+#: keymap_alldefs.h:162
 msgid "show the Mutt version number and date"
 msgstr "顯示 Mutt 的版本號碼與日期"
 
-#: keymap_alldefs.h:164
+#: keymap_alldefs.h:163
 msgid "view attachment using mailcap entry if necessary"
 msgstr "如果需要的話使用 mailcap 瀏覽附件"
 
-#: keymap_alldefs.h:165
+#: keymap_alldefs.h:164
 msgid "show MIME attachments"
 msgstr "顯示 MIME 附件"
 
-#: keymap_alldefs.h:166
+#: keymap_alldefs.h:165
 msgid "show currently active limit pattern"
 msgstr "顯示目前有作用的限制樣式"
 
-#: keymap_alldefs.h:167
+#: keymap_alldefs.h:166
 msgid "collapse/uncollapse current thread"
 msgstr "打開/關閉 目前的序列"
 
-#: keymap_alldefs.h:168
+#: keymap_alldefs.h:167
 msgid "collapse/uncollapse all threads"
 msgstr "打開/關閉 所有的序列"
 
-#: keymap_alldefs.h:169
+#: keymap_alldefs.h:168
 msgid "attach a PGP public key"
 msgstr "附帶一把 PGP 公共鑰匙"
 
-#: keymap_alldefs.h:170
+#: keymap_alldefs.h:169
 msgid "show PGP options"
 msgstr "顯示 PGP 選項"
 
-#: keymap_alldefs.h:171
+#: keymap_alldefs.h:170
 msgid "extract PGP public keys"
 msgstr "擷取 PGP 公共鑰匙"
 
-#: keymap_alldefs.h:172
+#: keymap_alldefs.h:171
 msgid "wipe PGP passphrase from memory"
 msgstr "清除記憶體中的 PGP 通行密碼"
 
-#: keymap_alldefs.h:173
+#: keymap_alldefs.h:172
 msgid "mail a PGP public key"
 msgstr "寄出 PGP 公共鑰匙"
 
-#: keymap_alldefs.h:174
+#: keymap_alldefs.h:173
 msgid "verify a PGP public key"
 msgstr "檢驗 PGP 公共鑰匙"
 
-#: keymap_alldefs.h:175
+#: keymap_alldefs.h:174
 msgid "view the key's user id"
 msgstr "檢閱\這把鑰匙的使用者 id"
 
-#: keymap_alldefs.h:176
+#: keymap_alldefs.h:175
 msgid "make decrypted copy and delete"
 msgstr "製作解密的拷貝並且刪除之"
 
-#: keymap_alldefs.h:177
+#: keymap_alldefs.h:176
 msgid "make decrypted copy"
 msgstr "製作一份解密的拷貝"
 
-#: keymap_alldefs.h:178
+#: keymap_alldefs.h:177
 msgid "Accept the chain constructed"
 msgstr ""
 
-#: keymap_alldefs.h:179
+#: keymap_alldefs.h:178
 msgid "Append a remailer to the chain"
 msgstr ""
 
-#: keymap_alldefs.h:180
+#: keymap_alldefs.h:179
 msgid "Insert a remailer into the chain"
 msgstr ""
 
-#: keymap_alldefs.h:181
+#: keymap_alldefs.h:180
 #, fuzzy
 msgid "Delete a remailer from the chain"
 msgstr "刪除某行上所有的字母"
 
-#: keymap_alldefs.h:182
+#: keymap_alldefs.h:181
 msgid "Select the previous element of the chain"
 msgstr ""
 
-#: keymap_alldefs.h:183
+#: keymap_alldefs.h:182
 msgid "Select the next element of the chain"
 msgstr ""
 
-#: keymap_alldefs.h:184
+#: keymap_alldefs.h:183
 msgid "send the message through a mixmaster remailer chain"
 msgstr ""
 
@@ -2607,80 +2604,80 @@ msgstr "嘗試 flock 時超過時間！"
 msgid "Waiting for flock attempt... %d"
 msgstr "正在等待 flock 執行成功\… %d"
 
-#: mx.c:554
+#: mx.c:537
 #, c-format
 msgid "Couldn't lock %s\n"
 msgstr "無法鎖住 %s。\n"
 
-#: mx.c:642
+#: mx.c:625
 #, c-format
 msgid "Reading %s..."
 msgstr "讀取 %s 中…"
 
-#: mx.c:732
+#: mx.c:714
 #, c-format
 msgid "Writing %s..."
 msgstr "寫入 %s 中…"
 
-#: mx.c:759
+#: mx.c:741
 #, c-format
 msgid "Could not synchronize mailbox %s!"
 msgstr "無法與 %s 信箱同步！"
 
-#: mx.c:823
+#: mx.c:805
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "搬移已讀取的信件到 %s？"
 
-#: mx.c:832 mx.c:1068
+#: mx.c:814 mx.c:1050
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "清除 %d 封已經被刪除的信件？"
 
-#: mx.c:832 mx.c:1068
+#: mx.c:814 mx.c:1050
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "清除 %d 封已被刪除的信件？"
 
-#: mx.c:853
+#: mx.c:835
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "正在搬移已經讀取的信件到 %s …"
 
-#: mx.c:904 mx.c:1059
+#: mx.c:886 mx.c:1041
 msgid "Mailbox is unchanged."
 msgstr "信箱沒有改變。"
 
-#: mx.c:934
+#: mx.c:916
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d 封信件被保留, %d 封信件被搬移, %d 封信件被刪除。"
 
-#: mx.c:937 mx.c:1101
+#: mx.c:919 mx.c:1083
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d 封信件被保留, %d 封信件被刪除。"
 
-#: mx.c:1044
+#: mx.c:1026
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " 請按下 '%s' 來切換寫入模式"
 
-#: mx.c:1046
+#: mx.c:1028
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "請使用 'toggle-write' 來重新啟動寫入功\能!"
 
-#: mx.c:1048
+#: mx.c:1030
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "信箱被標記成為無法寫入的. %s"
 
-#: mx.c:1098
+#: mx.c:1080
 #, c-format
 msgid "%d kept."
 msgstr "%d 保留了。"
 
-#: mx.c:1380
+#: mx.c:1362
 #, fuzzy
 msgid "Can't write message"
 msgstr "編輯信件內容"
@@ -3545,6 +3542,12 @@ msgstr "在限制閱\覽模式下無法顯示主信件。"
 #: thread.c:727
 msgid "Parent message is not available."
 msgstr "主信件不存在。"
+
+#~ msgid "move to the last undelete message"
+#~ msgstr "移動到最後一封未刪除的信件"
+
+#~ msgid "return to the main-menu"
+#~ msgstr "回到主選單"
 
 #~ msgid "ignoring empty header field: %s"
 #~ msgstr "不理會空的標頭欄位：%s"

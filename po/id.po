@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.2i\n"
-"POT-Creation-Date: 2000-02-22 18:03+0100\n"
+"POT-Creation-Date: 2000-02-23 11:36+0100\n"
 "PO-Revision-Date: 2000-01-30 12:40-0600\n"
 "Last-Translator: Ronny Haryanto <ronny-muttpo@haryan.to>\n"
 "Language-Team: Indonesia <i18n@linux.or.id>\n"
@@ -672,7 +672,7 @@ msgstr "Tidak ada kotak surat yang terbuka."
 msgid "There are no messages."
 msgstr "Tidak ada surat."
 
-#: curs_main.c:57 mx.c:1053 pager.c:58 recvattach.c:47
+#: curs_main.c:57 mx.c:1035 pager.c:58 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "Kotak surat hanya bisa dibaca."
 
@@ -788,7 +788,7 @@ msgstr "Buka kotak surat dengan mode read-only"
 msgid "Open mailbox"
 msgstr "Buka kotak surat"
 
-#: curs_main.c:915 mx.c:471 mx.c:617
+#: curs_main.c:915 mx.c:454 mx.c:600
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s bukan kotak surat."
@@ -1919,8 +1919,9 @@ msgid "jump to previous subthread"
 msgstr "ke subthread sebelumnya"
 
 #: keymap_alldefs.h:110
-msgid "move to the last undelete message"
-msgstr "ke surat terakhir yang tidak dihapus"
+#, fuzzy
+msgid "move to the previous undeleted message"
+msgstr "ke surat berikutnya yang tidak dihapus"
 
 #: keymap_alldefs.h:111
 msgid "jump to the previous new message"
@@ -1983,239 +1984,235 @@ msgid "jump to the bottom of the message"
 msgstr "ke akhir surat"
 
 #: keymap_alldefs.h:126
-msgid "return to the main-menu"
-msgstr "kembali ke menu utama"
-
-#: keymap_alldefs.h:127
 msgid "toggle display of quoted text"
 msgstr "tampilkan atau tidak teks yang dikutip"
 
-#: keymap_alldefs.h:128
+#: keymap_alldefs.h:127
 msgid "skip beyond quoted text"
 msgstr "lompati setelah teks yang dikutip"
 
-#: keymap_alldefs.h:129
+#: keymap_alldefs.h:128
 msgid "jump to the top of the message"
 msgstr "ke awal surat"
 
-#: keymap_alldefs.h:130
+#: keymap_alldefs.h:129
 msgid "pipe message/attachment to a shell command"
 msgstr "pipe surat/lampiran ke perintah shell"
 
-#: keymap_alldefs.h:131
+#: keymap_alldefs.h:130
 msgid "move to the previous entry"
 msgstr "ke entry sebelumnya"
 
-#: keymap_alldefs.h:132
+#: keymap_alldefs.h:131
 msgid "scroll up one line"
 msgstr "geser ke atas satu baris"
 
-#: keymap_alldefs.h:133
+#: keymap_alldefs.h:132
 msgid "move to the previous page"
 msgstr "ke halaman sebelumnya"
 
-#: keymap_alldefs.h:134
+#: keymap_alldefs.h:133
 msgid "print the current entry"
 msgstr "cetak entry"
 
-#: keymap_alldefs.h:135
+#: keymap_alldefs.h:134
 msgid "query external program for addresses"
 msgstr "gunakan program lain untuk mencari alamat"
 
-#: keymap_alldefs.h:136
+#: keymap_alldefs.h:135
 msgid "append new query results to current results"
 msgstr "tambahkan hasil pencarian baru ke hasil yang sudah ada"
 
-#: keymap_alldefs.h:137
+#: keymap_alldefs.h:136
 msgid "save changes to mailbox and quit"
 msgstr "simpan perubahan ke kotak surat dan keluar"
 
-#: keymap_alldefs.h:138
+#: keymap_alldefs.h:137
 msgid "recall a postponed message"
 msgstr "lanjutkan surat yang ditunda"
 
-#: keymap_alldefs.h:139
+#: keymap_alldefs.h:138
 msgid "clear and redraw the screen"
 msgstr "bersihkan layar dan redraw"
 
-#: keymap_alldefs.h:140
+#: keymap_alldefs.h:139
 msgid "{internal}"
 msgstr "{jerohan}"
 
-#: keymap_alldefs.h:141
+#: keymap_alldefs.h:140
 msgid "reply to a message"
 msgstr "balas surat"
 
-#: keymap_alldefs.h:142
+#: keymap_alldefs.h:141
 msgid "use the current message as a template for a new one"
 msgstr "gunakan surat sebagai template"
 
-#: keymap_alldefs.h:143
+#: keymap_alldefs.h:142
 msgid "save message/attachment to a file"
 msgstr "simpan surat/lampiran ke suatu file"
 
-#: keymap_alldefs.h:144
+#: keymap_alldefs.h:143
 msgid "search for a regular expression"
 msgstr "cari dengan regular expression"
 
-#: keymap_alldefs.h:145
+#: keymap_alldefs.h:144
 msgid "search backwards for a regular expression"
 msgstr "cari mundur dengan regular expression"
 
-#: keymap_alldefs.h:146
+#: keymap_alldefs.h:145
 msgid "search for next match"
 msgstr "cari yang cocok berikutnya"
 
-#: keymap_alldefs.h:147
+#: keymap_alldefs.h:146
 msgid "search for next match in opposite direction"
 msgstr "cari mundur yang cocok berikutnya"
 
-#: keymap_alldefs.h:148
+#: keymap_alldefs.h:147
 msgid "toggle search pattern coloring"
 msgstr "diwarnai atau tidak jika ketemu"
 
-#: keymap_alldefs.h:149
+#: keymap_alldefs.h:148
 msgid "invoke a command in a subshell"
 msgstr "jalankan perintah di subshell"
 
-#: keymap_alldefs.h:150
+#: keymap_alldefs.h:149
 msgid "sort messages"
 msgstr "urutkan surat-surat"
 
-#: keymap_alldefs.h:151
+#: keymap_alldefs.h:150
 msgid "sort messages in reverse order"
 msgstr "urutkan terbalik surat-surat"
 
-#: keymap_alldefs.h:152
+#: keymap_alldefs.h:151
 msgid "tag the current entry"
 msgstr "tandai entry"
 
-#: keymap_alldefs.h:153
+#: keymap_alldefs.h:152
 msgid "apply next function to tagged messages"
 msgstr "terapkan fungsi berikutnya ke surat-surat yang ditandai"
 
-#: keymap_alldefs.h:154
+#: keymap_alldefs.h:153
 msgid "tag the current subthread"
 msgstr "tandai subthread"
 
-#: keymap_alldefs.h:155
+#: keymap_alldefs.h:154
 msgid "tag the current thread"
 msgstr "tandai thread"
 
-#: keymap_alldefs.h:156
+#: keymap_alldefs.h:155
 msgid "toggle a message's 'new' flag"
 msgstr "tandai atau tidak sebuah surat 'baru'"
 
-#: keymap_alldefs.h:157
+#: keymap_alldefs.h:156
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "apakah kotak surat akan ditulis ulang"
 
-#: keymap_alldefs.h:158
+#: keymap_alldefs.h:157
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "apakah menjelajahi kotak-kotak surat saja atau semua file"
 
-#: keymap_alldefs.h:159
+#: keymap_alldefs.h:158
 msgid "move to the top of the page"
 msgstr "ke awal halaman"
 
-#: keymap_alldefs.h:160
+#: keymap_alldefs.h:159
 msgid "undelete the current entry"
 msgstr "tidak jadi hapus entry"
 
-#: keymap_alldefs.h:161
+#: keymap_alldefs.h:160
 msgid "undelete all messages in thread"
 msgstr "tidak jadi hapus semua surat di thread"
 
-#: keymap_alldefs.h:162
+#: keymap_alldefs.h:161
 msgid "undelete all messages in subthread"
 msgstr "tidak jadi hapus semua surat di subthread"
 
-#: keymap_alldefs.h:163
+#: keymap_alldefs.h:162
 msgid "show the Mutt version number and date"
 msgstr "tunjukkan versi dan tanggal dari Mutt"
 
-#: keymap_alldefs.h:164
+#: keymap_alldefs.h:163
 msgid "view attachment using mailcap entry if necessary"
 msgstr "tampilkan lampiran berdasarkan mailcap jika perlu"
 
-#: keymap_alldefs.h:165
+#: keymap_alldefs.h:164
 msgid "show MIME attachments"
 msgstr "tampilkan lampiran MIME"
 
-#: keymap_alldefs.h:166
+#: keymap_alldefs.h:165
 msgid "show currently active limit pattern"
 msgstr "tampilkan kriteria batas yang aktif"
 
-#: keymap_alldefs.h:167
+#: keymap_alldefs.h:166
 msgid "collapse/uncollapse current thread"
 msgstr "collapse/uncollapse thread"
 
-#: keymap_alldefs.h:168
+#: keymap_alldefs.h:167
 msgid "collapse/uncollapse all threads"
 msgstr "collapse/uncollapse semua thread"
 
-#: keymap_alldefs.h:169
+#: keymap_alldefs.h:168
 msgid "attach a PGP public key"
 msgstr "lampirkan PGP public key"
 
-#: keymap_alldefs.h:170
+#: keymap_alldefs.h:169
 msgid "show PGP options"
 msgstr "tunjukan options PGP"
 
-#: keymap_alldefs.h:171
+#: keymap_alldefs.h:170
 msgid "extract PGP public keys"
 msgstr "ambil PGP public keys"
 
-#: keymap_alldefs.h:172
+#: keymap_alldefs.h:171
 msgid "wipe PGP passphrase from memory"
 msgstr "hapus PGP passphrase dari memory"
 
-#: keymap_alldefs.h:173
+#: keymap_alldefs.h:172
 msgid "mail a PGP public key"
 msgstr "kirim PGP public key lewat surat"
 
-#: keymap_alldefs.h:174
+#: keymap_alldefs.h:173
 msgid "verify a PGP public key"
 msgstr "periksa PGP public key"
 
-#: keymap_alldefs.h:175
+#: keymap_alldefs.h:174
 msgid "view the key's user id"
 msgstr "tampilkan user ID dari key"
 
-#: keymap_alldefs.h:176
+#: keymap_alldefs.h:175
 msgid "make decrypted copy and delete"
 msgstr "buat salinan yang sudah di-decrypt dan hapus"
 
-#: keymap_alldefs.h:177
+#: keymap_alldefs.h:176
 msgid "make decrypted copy"
 msgstr "buat salinan yang sudah di-decrypt"
 
-#: keymap_alldefs.h:178
+#: keymap_alldefs.h:177
 msgid "Accept the chain constructed"
 msgstr ""
 
-#: keymap_alldefs.h:179
+#: keymap_alldefs.h:178
 msgid "Append a remailer to the chain"
 msgstr ""
 
-#: keymap_alldefs.h:180
+#: keymap_alldefs.h:179
 msgid "Insert a remailer into the chain"
 msgstr ""
 
-#: keymap_alldefs.h:181
+#: keymap_alldefs.h:180
 #, fuzzy
 msgid "Delete a remailer from the chain"
 msgstr "hapus baris"
 
-#: keymap_alldefs.h:182
+#: keymap_alldefs.h:181
 msgid "Select the previous element of the chain"
 msgstr ""
 
-#: keymap_alldefs.h:183
+#: keymap_alldefs.h:182
 msgid "Select the next element of the chain"
 msgstr ""
 
-#: keymap_alldefs.h:184
+#: keymap_alldefs.h:183
 msgid "send the message through a mixmaster remailer chain"
 msgstr ""
 
@@ -2598,80 +2595,80 @@ msgstr "Terlalu lama menunggu waktu mencoba flock!"
 msgid "Waiting for flock attempt... %d"
 msgstr "Menunggu flock... %d"
 
-#: mx.c:554
+#: mx.c:537
 #, c-format
 msgid "Couldn't lock %s\n"
 msgstr "Tidak bisa mengunci %s\n"
 
-#: mx.c:642
+#: mx.c:625
 #, c-format
 msgid "Reading %s..."
 msgstr "Membaca %s..."
 
-#: mx.c:732
+#: mx.c:714
 #, c-format
 msgid "Writing %s..."
 msgstr "Menulis %s..."
 
-#: mx.c:759
+#: mx.c:741
 #, c-format
 msgid "Could not synchronize mailbox %s!"
 msgstr "Tidak bisa mensinkronisasi kotak surat %s!"
 
-#: mx.c:823
+#: mx.c:805
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Pindahkan surat-surat yang sudah dibaca ke %s?"
 
-#: mx.c:832 mx.c:1068
+#: mx.c:814 mx.c:1050
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Benar-benar hapus %d surat yang ditandai akan dihapus?"
 
-#: mx.c:832 mx.c:1068
+#: mx.c:814 mx.c:1050
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Benar-benar hapus %d surat yang ditandai akan dihapus?"
 
-#: mx.c:853
+#: mx.c:835
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Pindahkan surat-surat yang sudah dibaca ke %s..."
 
-#: mx.c:904 mx.c:1059
+#: mx.c:886 mx.c:1041
 msgid "Mailbox is unchanged."
 msgstr "Kotak surat tidak berubah."
 
-#: mx.c:934
+#: mx.c:916
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d disimpan, %d dipindahkan, %d dihapus."
 
-#: mx.c:937 mx.c:1101
+#: mx.c:919 mx.c:1083
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d disimpan, %d dihapus."
 
-#: mx.c:1044
+#: mx.c:1026
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr "Tekan '%s' untuk mengeset bisa/tidak menulis"
 
-#: mx.c:1046
+#: mx.c:1028
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Gunakan 'toggle-write' supaya bisa menulis lagi!"
 
-#: mx.c:1048
+#: mx.c:1030
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Kotak surat ditandai tidak boleh ditulisi. %s"
 
-#: mx.c:1098
+#: mx.c:1080
 #, c-format
 msgid "%d kept."
 msgstr "%d disimpan."
 
-#: mx.c:1380
+#: mx.c:1362
 #, fuzzy
 msgid "Can't write message"
 msgstr "edit surat"
@@ -3534,6 +3531,12 @@ msgstr "Surat induk tidak bisa dilihat di tampilan terbatas."
 #: thread.c:727
 msgid "Parent message is not available."
 msgstr "Surat induk tidak ada."
+
+#~ msgid "move to the last undelete message"
+#~ msgstr "ke surat terakhir yang tidak dihapus"
+
+#~ msgid "return to the main-menu"
+#~ msgstr "kembali ke menu utama"
 
 #~ msgid "ignoring empty header field: %s"
 #~ msgstr "mengacuhkan kolom header kosong: %s"

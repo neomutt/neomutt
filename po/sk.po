@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.95.6i\n"
-"POT-Creation-Date: 2000-02-22 18:03+0100\n"
+"POT-Creation-Date: 2000-02-23 11:36+0100\n"
 "PO-Revision-Date: 1999-07-29 00:00+0100\n"
 "Last-Translator: Miroslav Vasko <vasko@ies.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -676,7 +676,7 @@ msgstr "Nie je otvorená ¾iadna schránka."
 msgid "There are no messages."
 msgstr "Vlákno obsahuje neèítané správy."
 
-#: curs_main.c:57 mx.c:1053 pager.c:58 recvattach.c:47
+#: curs_main.c:57 mx.c:1035 pager.c:58 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "Schránka je iba na èítanie."
 
@@ -791,7 +791,7 @@ msgstr "Otvor schránku iba na èítanie"
 msgid "Open mailbox"
 msgstr "Otvor schránku"
 
-#: curs_main.c:915 mx.c:471 mx.c:617
+#: curs_main.c:915 mx.c:454 mx.c:600
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s nie je schránka"
@@ -1924,8 +1924,9 @@ msgid "jump to previous subthread"
 msgstr "skoèi» na predchádzajúce podvlákno"
 
 #: keymap_alldefs.h:110
-msgid "move to the last undelete message"
-msgstr "presunú» sa na poslednú odmazanú správu"
+#, fuzzy
+msgid "move to the previous undeleted message"
+msgstr "presunú» sa na nasledujúcu odmazanú správu"
 
 #: keymap_alldefs.h:111
 msgid "jump to the previous new message"
@@ -1988,244 +1989,240 @@ msgid "jump to the bottom of the message"
 msgstr "skoèi» na koniec správy"
 
 #: keymap_alldefs.h:126
-msgid "return to the main-menu"
-msgstr "vráti» sa do hlavného menu"
-
-#: keymap_alldefs.h:127
 msgid "toggle display of quoted text"
 msgstr "prepnú» zobrazovanie citovaného textu"
 
-#: keymap_alldefs.h:128
+#: keymap_alldefs.h:127
 msgid "skip beyond quoted text"
 msgstr "preskoèi» za citovaný text"
 
-#: keymap_alldefs.h:129
+#: keymap_alldefs.h:128
 msgid "jump to the top of the message"
 msgstr "skoèi» na zaèiatok správy"
 
-#: keymap_alldefs.h:130
+#: keymap_alldefs.h:129
 msgid "pipe message/attachment to a shell command"
 msgstr "zre»azi» výstup do príkazu shell-u"
 
-#: keymap_alldefs.h:131
+#: keymap_alldefs.h:130
 msgid "move to the previous entry"
 msgstr "presunú» sa na predchádzajúcu polo¾ku"
 
-#: keymap_alldefs.h:132
+#: keymap_alldefs.h:131
 msgid "scroll up one line"
 msgstr "rolova» o riadok hore"
 
-#: keymap_alldefs.h:133
+#: keymap_alldefs.h:132
 msgid "move to the previous page"
 msgstr "presunú» sa na predchádzajúcu stránku"
 
-#: keymap_alldefs.h:134
+#: keymap_alldefs.h:133
 msgid "print the current entry"
 msgstr "tlaèi» aktuálnu polo¾ku"
 
-#: keymap_alldefs.h:135
+#: keymap_alldefs.h:134
 msgid "query external program for addresses"
 msgstr "opýta» sa externého programu na adresy"
 
-#: keymap_alldefs.h:136
+#: keymap_alldefs.h:135
 msgid "append new query results to current results"
 msgstr "prida» nové výsledky opýtania k teraj¹ím"
 
-#: keymap_alldefs.h:137
+#: keymap_alldefs.h:136
 msgid "save changes to mailbox and quit"
 msgstr "ulo¾i» zmeny v schránke a ukonèi»"
 
-#: keymap_alldefs.h:138
+#: keymap_alldefs.h:137
 msgid "recall a postponed message"
 msgstr "vyvola» odlo¾enú správu"
 
-#: keymap_alldefs.h:139
+#: keymap_alldefs.h:138
 msgid "clear and redraw the screen"
 msgstr "vymaza» a prekresli» obrazovku"
 
-#: keymap_alldefs.h:140
+#: keymap_alldefs.h:139
 msgid "{internal}"
 msgstr "{interné}"
 
-#: keymap_alldefs.h:141
+#: keymap_alldefs.h:140
 msgid "reply to a message"
 msgstr "odpoveda» na správu"
 
-#: keymap_alldefs.h:142
+#: keymap_alldefs.h:141
 #, fuzzy
 msgid "use the current message as a template for a new one"
 msgstr "upravi» správu na znovu-odoslanie"
 
-#: keymap_alldefs.h:143
+#: keymap_alldefs.h:142
 msgid "save message/attachment to a file"
 msgstr "ulo¾i» správu/prílohu do súboru"
 
-#: keymap_alldefs.h:144
+#: keymap_alldefs.h:143
 msgid "search for a regular expression"
 msgstr "hµada» podµa regulérneho výrazu"
 
-#: keymap_alldefs.h:145
+#: keymap_alldefs.h:144
 msgid "search backwards for a regular expression"
 msgstr "hµada» podµa regulérneho výrazu dozadu"
 
-#: keymap_alldefs.h:146
+#: keymap_alldefs.h:145
 msgid "search for next match"
 msgstr "hµada» ïaµ¹í výskyt"
 
-#: keymap_alldefs.h:147
+#: keymap_alldefs.h:146
 msgid "search for next match in opposite direction"
 msgstr "hµada» ïaµ¹í výskyt v opaènom smere"
 
-#: keymap_alldefs.h:148
+#: keymap_alldefs.h:147
 msgid "toggle search pattern coloring"
 msgstr "prepnú» farby hµadaného výrazu"
 
-#: keymap_alldefs.h:149
+#: keymap_alldefs.h:148
 msgid "invoke a command in a subshell"
 msgstr "vyvola» príkaz v podriadenom shell-e"
 
-#: keymap_alldefs.h:150
+#: keymap_alldefs.h:149
 msgid "sort messages"
 msgstr "triedi» správy"
 
-#: keymap_alldefs.h:151
+#: keymap_alldefs.h:150
 msgid "sort messages in reverse order"
 msgstr "triedi» správy v opaènom poradí"
 
-#: keymap_alldefs.h:152
+#: keymap_alldefs.h:151
 msgid "tag the current entry"
 msgstr "oznaèi» aktuálnu polo¾ku"
 
-#: keymap_alldefs.h:153
+#: keymap_alldefs.h:152
 msgid "apply next function to tagged messages"
 msgstr "pou¾i» ïaµ¹iu funkciu na oznaèené správy"
 
-#: keymap_alldefs.h:154
+#: keymap_alldefs.h:153
 msgid "tag the current subthread"
 msgstr "oznaèi» aktuálne podvlákno"
 
-#: keymap_alldefs.h:155
+#: keymap_alldefs.h:154
 msgid "tag the current thread"
 msgstr "oznaèi» akuálne vlákno"
 
-#: keymap_alldefs.h:156
+#: keymap_alldefs.h:155
 msgid "toggle a message's 'new' flag"
 msgstr "prepnú» príznak 'nová' na správe"
 
-#: keymap_alldefs.h:157
+#: keymap_alldefs.h:156
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "prepnú» príznak mo¾nosti prepísania schránky"
 
-#: keymap_alldefs.h:158
+#: keymap_alldefs.h:157
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "prepnú», èi prezera» schránky alebo v¹etky súbory"
 
-#: keymap_alldefs.h:159
+#: keymap_alldefs.h:158
 msgid "move to the top of the page"
 msgstr "presunú» sa na zaèiatok stránky"
 
-#: keymap_alldefs.h:160
+#: keymap_alldefs.h:159
 msgid "undelete the current entry"
 msgstr "odmaza» aktuálnu polo¾ku"
 
-#: keymap_alldefs.h:161
+#: keymap_alldefs.h:160
 msgid "undelete all messages in thread"
 msgstr "odmaza» v¹etky správy vo vlákne"
 
-#: keymap_alldefs.h:162
+#: keymap_alldefs.h:161
 msgid "undelete all messages in subthread"
 msgstr "odmaza» v¹etky správy v podvlákne"
 
-#: keymap_alldefs.h:163
+#: keymap_alldefs.h:162
 msgid "show the Mutt version number and date"
 msgstr "zobrazi» verziu a dátum vytvorenia Mutt"
 
-#: keymap_alldefs.h:164
+#: keymap_alldefs.h:163
 msgid "view attachment using mailcap entry if necessary"
 msgstr "zobrazi» prílohu pou¾ijúc polo¾ku mailcap-u, ak je to nevyhnutné"
 
-#: keymap_alldefs.h:165
+#: keymap_alldefs.h:164
 msgid "show MIME attachments"
 msgstr "zobrazi» prílohy MIME"
 
-#: keymap_alldefs.h:166
+#: keymap_alldefs.h:165
 msgid "show currently active limit pattern"
 msgstr "zobrazi» práve aktívny limitovací vzor"
 
-#: keymap_alldefs.h:167
+#: keymap_alldefs.h:166
 msgid "collapse/uncollapse current thread"
 msgstr "zabaµ/rozbaµ aktuálne vlákno"
 
-#: keymap_alldefs.h:168
+#: keymap_alldefs.h:167
 msgid "collapse/uncollapse all threads"
 msgstr "zabaµ/rozbaµ v¹etky vlákna"
 
-#: keymap_alldefs.h:169
+#: keymap_alldefs.h:168
 msgid "attach a PGP public key"
 msgstr "prida» verejný kµúè PGP"
 
-#: keymap_alldefs.h:170
+#: keymap_alldefs.h:169
 msgid "show PGP options"
 msgstr "zobrazi» mo¾nosti PGP"
 
-#: keymap_alldefs.h:171
+#: keymap_alldefs.h:170
 msgid "extract PGP public keys"
 msgstr "extrahuj verejné kµúèe PGP"
 
-#: keymap_alldefs.h:172
+#: keymap_alldefs.h:171
 msgid "wipe PGP passphrase from memory"
 msgstr "vyma¾ frázu hesla PGP z pamäte"
 
-#: keymap_alldefs.h:173
+#: keymap_alldefs.h:172
 msgid "mail a PGP public key"
 msgstr "posla» verejný kµúè PGP po¹tou"
 
-#: keymap_alldefs.h:174
+#: keymap_alldefs.h:173
 msgid "verify a PGP public key"
 msgstr "overi» verejný kµúè PGP"
 
-#: keymap_alldefs.h:175
+#: keymap_alldefs.h:174
 msgid "view the key's user id"
 msgstr "zobrazi» ID pou¾ívateµa tohoto kµúèu"
 
-#: keymap_alldefs.h:176
+#: keymap_alldefs.h:175
 msgid "make decrypted copy and delete"
 msgstr "urobi» de¹ifrovanú kópiu a vymaza»"
 
-#: keymap_alldefs.h:177
+#: keymap_alldefs.h:176
 msgid "make decrypted copy"
 msgstr "urobi» de¹ifrovanú kópiu"
 
-#: keymap_alldefs.h:178
+#: keymap_alldefs.h:177
 msgid "Accept the chain constructed"
 msgstr ""
 
-#: keymap_alldefs.h:179
+#: keymap_alldefs.h:178
 #, fuzzy
 msgid "Append a remailer to the chain"
 msgstr "zmaza» v¹etky znaky v riadku"
 
-#: keymap_alldefs.h:180
+#: keymap_alldefs.h:179
 #, fuzzy
 msgid "Insert a remailer into the chain"
 msgstr "zmaza» v¹etky znaky v riadku"
 
-#: keymap_alldefs.h:181
+#: keymap_alldefs.h:180
 #, fuzzy
 msgid "Delete a remailer from the chain"
 msgstr "zmaza» v¹etky znaky v riadku"
 
-#: keymap_alldefs.h:182
+#: keymap_alldefs.h:181
 #, fuzzy
 msgid "Select the previous element of the chain"
 msgstr "zmaza» v¹etky znaky v riadku"
 
-#: keymap_alldefs.h:183
+#: keymap_alldefs.h:182
 #, fuzzy
 msgid "Select the next element of the chain"
 msgstr "zmaza» v¹etky znaky v riadku"
 
-#: keymap_alldefs.h:184
+#: keymap_alldefs.h:183
 msgid "send the message through a mixmaster remailer chain"
 msgstr ""
 
@@ -2623,80 +2620,80 @@ msgstr "Vypr¹al èas na uzamknutie celého súboru!"
 msgid "Waiting for flock attempt... %d"
 msgstr "Èakám na uzamknutie súboru... %d"
 
-#: mx.c:554
+#: mx.c:537
 #, fuzzy, c-format
 msgid "Couldn't lock %s\n"
 msgstr "Nemo¾no zisti» stav: %s.\n"
 
-#: mx.c:642
+#: mx.c:625
 #, c-format
 msgid "Reading %s..."
 msgstr "Èítam %s..."
 
-#: mx.c:732
+#: mx.c:714
 #, c-format
 msgid "Writing %s..."
 msgstr "Zapisujem %s..."
 
-#: mx.c:759
+#: mx.c:741
 #, c-format
 msgid "Could not synchronize mailbox %s!"
 msgstr "Nemo¾no zosynchronizova» schránku %s!"
 
-#: mx.c:823
+#: mx.c:805
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Presunú» preèítané správy do %s?"
 
-#: mx.c:832 mx.c:1068
+#: mx.c:814 mx.c:1050
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Odstráni» %d zmazané správy?"
 
-#: mx.c:832 mx.c:1068
+#: mx.c:814 mx.c:1050
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Odstráni» %d zmazaných správ?"
 
-#: mx.c:853
+#: mx.c:835
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Presúvam preèítané správy do %s..."
 
-#: mx.c:904 mx.c:1059
+#: mx.c:886 mx.c:1041
 msgid "Mailbox is unchanged."
 msgstr "Schránka nie je zmenená."
 
-#: mx.c:934
+#: mx.c:916
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d ostalo, %d presunutých, %d vymazaných."
 
-#: mx.c:937 mx.c:1101
+#: mx.c:919 mx.c:1083
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d ostalo, %d vymazaných."
 
-#: mx.c:1044
+#: mx.c:1026
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Stlaète '%s' na prepnutie zápisu"
 
-#: mx.c:1046
+#: mx.c:1028
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Pou¾ite 'prepnú»-zápis' na povolenie zápisu!"
 
-#: mx.c:1048
+#: mx.c:1030
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Schránka je oznaèená len na èítanie. %s"
 
-#: mx.c:1098
+#: mx.c:1080
 #, c-format
 msgid "%d kept."
 msgstr ""
 
-#: mx.c:1380
+#: mx.c:1362
 #, fuzzy
 msgid "Can't write message"
 msgstr "upravi» správu"
@@ -3562,6 +3559,12 @@ msgstr "Táto správa nie je viditeµná."
 #, fuzzy
 msgid "Parent message is not available."
 msgstr "Táto správa nie je viditeµná."
+
+#~ msgid "move to the last undelete message"
+#~ msgstr "presunú» sa na poslednú odmazanú správu"
+
+#~ msgid "return to the main-menu"
+#~ msgstr "vráti» sa do hlavného menu"
 
 #~ msgid "ignoring empty header field: %s"
 #~ msgstr "ignorujem prázdnu polo¾ku hlavièky: %s"
