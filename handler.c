@@ -240,10 +240,10 @@ void mutt_decode_quoted (STATE *s, long len, int istext, iconv_t cd)
   char line[STRING];
   char decline[2*STRING];
   size_t l = 0;
-  size_t l2;
+  size_t linelen;	/* number of input bytes in `line' */
   size_t l3;
   
-  int last;
+  int last;	/* store the last character in the input line */
   
   if (istext)
     state_set_prefix(s);
@@ -252,25 +252,26 @@ void mutt_decode_quoted (STATE *s, long len, int istext, iconv_t cd)
   {
     last = 0;
     
-    if (fgets (line, MIN (sizeof (line), len + 1), s->fpin) == NULL)
+    /*
+     * its ok to use a fixed since buffer for input, even if the line turns
+     * out to be longer than this.  we will just dynamically grow the output
+     * buffer and process the line in chunks.  this really shouldn't happen
+     * according the MIME spec, since Q-P encoded lines are at most 76
+     * characters, but we should be liberal about what we expect.
+     */
+    if (fgets (line, MIN ((ssize_t)sizeof (line), len + 1), s->fpin) == NULL)
       break;
 
-    len -= (l2 = strlen (line));
+    linelen = strlen(line);
+    len -= linelen;
 
-    /* 
-     * Skip over pending input data until end of line - at this
-     * point, the only thing we may see is trailing whitespace,
-     * i.e. garbage.
+    /*
+     * inspect the last character we read so we can tell if we got the
+     * entire line.
      */
+    last = linelen ? line[linelen - 1] : 0;
 
-    if (l2 && (last = line[l2 - 1]) != '\n')
-      while (len > 0 && (last = fgetc (s->fpin)) != '\n')
-	len--;
-
-    /* 
-     * decode and do character set conversion
-     */
-    
+    /* decode and do character set conversion */
     qp_decode_line (decline + l, line, &l3, last);
     l += l3;
     mutt_convert_to_state (cd, decline, &l, s);
