@@ -1004,7 +1004,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
       continue;
     }
     if (k == 0)
-      k = wctomb (0, wc);
+      k = 1;
 
     /* Handle backspace */
     special = 0;
