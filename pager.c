@@ -1085,10 +1085,10 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
 
       while ((wc1 = 0, mbstate1 = mbstate,
 	      k1 = k + mbrtowc (&wc1, (char *)buf+ch+k, cnt-ch-k, &mbstate1),
-	      wc1 == '\b') &&
+	      k1 - k > 0 && wc1 == '\b') &&
 	     (wc1 = 0,
 	      k2 = mbrtowc (&wc1, (char *)buf+ch+k1, cnt-ch-k1, &mbstate1),
-	      IsWPrint (wc1)))
+	      k2 > 0 && IsWPrint (wc1)))
       {
 	if (wc == wc1)
 	{
