@@ -1,3 +1,7 @@
+2003-08-11 14:05:13  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* doc/muttrc.man.head: Fix a formatting bug.
+
 2003-08-05 13:55:47  Brendan Cully  <brendan@kublai.com>  (roessler)
 
 	* attach.c, buffy.c, commands.c, copy.c, editmsg.c, init.c,
