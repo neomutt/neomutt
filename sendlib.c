@@ -1272,7 +1272,8 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
 {
   char buffer[LONG_STRING];
   LIST *tmp = env->userhdrs;
-
+  short want_xmailer = (mode == 0 && !privacy && option (OPTXMAILER));
+  
   if (mode == 0 && !privacy)
     fputs (mutt_make_date (buffer, sizeof(buffer)), fp);
 
@@ -1350,17 +1351,20 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
     mutt_write_mime_header (attach, fp);
   }
 
-  if (mode == 0 && !privacy && option (OPTXMAILER))
-  {
-    /* Add a vanity header */
-    fprintf (fp, "User-Agent: Mutt/%s\n", MUTT_VERSION);
-  }
-
   /* Add any user defined headers */
   for (; tmp; tmp = tmp->next)
   {
     fputs (tmp->data, fp);
     fputc ('\n', fp);
+    if (want_xmailer && (!strncasecmp (tmp->data, "x-mailer:", 9) ||
+			 !strncasecmp (tmp->data, "user-agent:", 11)))
+      want_xmailer = 0;
+  }
+
+  if (want_xmailer)
+  {
+    /* Add a vanity header */
+    fprintf (fp, "User-Agent: Mutt/%s\n", MUTT_VERSION);
   }
 
   return (ferror (fp) == 0 ? 0 : -1);
