@@ -23,8 +23,13 @@
 #include "imap_private.h"
 #include "auth.h"
 
+#ifdef USE_SASL2
+#include <sasl/sasl.h>
+#include <sasl/saslutil.h>
+#else
 #include <sasl.h>
 #include <saslutil.h>
+#endif
 
 /* imap_auth_sasl: Default authenticator if available. */
 imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
@@ -34,7 +39,11 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
   int rc, irc;
   char buf[LONG_STRING];
   const char* mech;
+#ifdef USE_SASL2
+  const char *pc = NULL;
+#else
   char* pc = NULL;
+#endif
   unsigned int len, olen;
   unsigned char client_start;
 
@@ -63,15 +72,25 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
     if (mutt_bit_isset (idata->capabilities, AUTH_ANON) &&
 	(!idata->conn->account.user[0] ||
 	 !ascii_strncmp (idata->conn->account.user, "anonymous", 9)))
+#ifdef USE_SASL2
+      rc = sasl_client_start (saslconn, "AUTH=ANONYMOUS", NULL, &pc, &olen, 
+                              &mech);
+#else
       rc = sasl_client_start (saslconn, "AUTH=ANONYMOUS", NULL, NULL, &pc, &olen,
 			      &mech);
+#endif
   }
   
   if (rc != SASL_OK && rc != SASL_CONTINUE)
     do
     {
+#ifdef USE_SASL2
+      rc = sasl_client_start (saslconn, method, &interaction,
+        &pc, &olen, &mech);
+#else
       rc = sasl_client_start (saslconn, method, NULL, &interaction,
         &pc, &olen, &mech);
+#endif
       if (rc == SASL_INTERACT)
 	mutt_sasl_interact (interaction);
     }
@@ -108,7 +127,11 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
 
     if (irc == IMAP_CMD_RESPOND)
     {
+#ifdef USE_SASL2
+      if (sasl_decode64 (idata->cmd.buf+2, strlen (idata->cmd.buf+2), buf, LONG_STRING-1,
+#else
       if (sasl_decode64 (idata->cmd.buf+2, strlen (idata->cmd.buf+2), buf,
+#endif
 			 &len) != SASL_OK)
       {
 	dprint (1, (debugfile, "imap_auth_sasl: error base64-decoding server response.\n"));
@@ -140,7 +163,9 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
 
       /* sasl_client_st(art|ep) allocate pc with malloc, expect me to 
        * free it */
+#ifndef USE_SASL2
       FREE (&pc);
+#endif
     }
     
     if (olen || rc == SASL_CONTINUE)
