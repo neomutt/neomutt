@@ -33,11 +33,6 @@
 #include <pwd.h>
 #include <grp.h>
 
-/* HP-UX and ConvexOS don't have this macro */
-#ifndef S_ISLNK
-#define S_ISLNK(x) (((x) & S_IFMT) == S_IFLNK ? 1 : 0)
-#endif
-
 struct folder_file
 {
   mode_t mode;

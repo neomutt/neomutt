@@ -323,6 +323,11 @@ void mutt_pattern_free (pattern_t **pat);
 #define DRAND (double)rand
 #endif /* HAVE_SRAND48 */
 
+/* HP-UX, ConvexOS and UNIXware don't have this macro */
+#ifndef S_ISLNK
+#define S_ISLNK(x) (((x) & S_IFMT) == S_IFLNK ? 1 : 0)
+#endif
+
 int getdnsdomainname (char *, size_t);
 
 /* According to SCO support, this is how to detect SCO */

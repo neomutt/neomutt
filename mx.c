@@ -54,10 +54,6 @@
 #include <utime.h>
 #endif
 
-/* HP-UX and ConvexOS don't have this macro */
-#ifndef S_ISLNK
-#define S_ISLNK(x) (((x) & S_IFMT) == S_IFLNK ? 1 : 0)
-#endif
 
 #define mutt_is_spool(s)  (strcmp (NONULL(Spoolfile), s) == 0)
 
