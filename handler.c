@@ -182,16 +182,6 @@ static void qp_decode_line (char *dest, char *src, size_t *l,
   int kind;
   int soft = 0;
 
-  /* chop trailing whitespace */
-
-  if (*src)
-  {
-    s = src + strlen(src) - 1;
-    while (s >= src && ISSPACE(*s))
-      s--;
-    *(++s) = '\0';
-  }
-
   /* decode the line */
   
   for (d = dest, s = src; *s;)
@@ -240,10 +230,10 @@ void mutt_decode_quoted (STATE *s, long len, int istext, iconv_t cd)
   char line[STRING];
   char decline[2*STRING];
   size_t l = 0;
-  size_t linelen;	/* number of input bytes in `line' */
+  size_t linelen;      /* number of input bytes in `line' */
   size_t l3;
   
-  int last;	/* store the last character in the input line */
+  int last;    /* store the last character in the input line */
   
   if (istext)
     state_set_prefix(s);
@@ -253,11 +243,11 @@ void mutt_decode_quoted (STATE *s, long len, int istext, iconv_t cd)
     last = 0;
     
     /*
-     * its ok to use a fixed since buffer for input, even if the line turns
-     * out to be longer than this.  we will just dynamically grow the output
-     * buffer and process the line in chunks.  this really shouldn't happen
-     * according the MIME spec, since Q-P encoded lines are at most 76
-     * characters, but we should be liberal about what we expect.
+     * It's ok to use a fixed size buffer for input, even if the line turns
+     * out to be longer than this.  Just process the line in chunks.  This
+     * really shouldn't happen according the MIME spec, since Q-P encoded
+     * lines are at most 76 characters, but we should be liberal about what
+     * we accept.
      */
     if (fgets (line, MIN ((ssize_t)sizeof (line), len + 1), s->fpin) == NULL)
       break;
@@ -270,6 +260,14 @@ void mutt_decode_quoted (STATE *s, long len, int istext, iconv_t cd)
      * entire line.
      */
     last = linelen ? line[linelen - 1] : 0;
+
+    /* chop trailing whitespace if we got the full line */
+    if (last == '\n')
+    {
+      while (linelen > 0 && ISSPACE (line[linelen-1]))
+       linelen--;
+      line[linelen]=0;
+    }
 
     /* decode and do character set conversion */
     qp_decode_line (decline + l, line, &l3, last);
