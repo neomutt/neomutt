@@ -1,3 +1,63 @@
+Tue Feb 29 22:34:07 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/zh_TW.Big5.po, po/sv.po, po/uk.po, po/sk.po, po/ru.po,
+	po/pt_BR.po, po/nl.po, po/pl.po, po/ko.po, po/gl.po,
+	po/id.po, po/it.po, po/es.po, po/fr.po, po/el.po, po/eo.po,
+	po/cs.po, po/de.po: Some updates; make update-po.
+
+	* charset.c: Add error checking to the recode-attachment
+	code.  From "Andrew W. Nosenko" <awn@bcs.zp.ua>.
+
+	* configure.in:
+	Replace --enable-ssl by --with-ssl.  From Tommi Komulainen.
+
+	* imap/imap.c, mx.c, curs_main.c:
+	More IMAP folder update hacks.  Brendan says it works.
+
+Mon Feb 28 18:06:35 2000  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.head: Martin Michlmayr told me about a typo.
+
+	* imap/imap.h, imap/util.c, menu.c, pager.c:
+	New IMAP keep-alive code.  This should work from all menus, and it
+	should always poll the current folder.
+
+	* menu.c, pager.c: Do IMAP keep-alive polls from all menus.
+
+	* curs_main.c, pager.c:
+	Don't do Context updates from the background, part 2.
+
+	* imap/imap.h, imap/imap_private.h, imap/util.c, imap/command.c, imap/imap.c:
+	Don't do Context updates from the background.
+
+Sun Feb 27 08:49:34 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/POTFILES.in:
+	imap/auth_gss.c was missing.  Noted by "Andrew W. Nosenko"
+	<awn@bcs.zp.ua>.
+
+Sat Feb 26 18:14:24 2000  Thomas Roessler  <roessler@guug.de>
+
+	* Makefile.am:
+	muttbug is a script, not a program.  Tell automake about this.
+
+	* mx.c: Don't use an uninitialized string for error reporting.
+
+	* imap/browse.c: Fix a segmentation fault.  Patch from Brendan Cully.
+
+Fri Feb 25 08:57:05 2000  Thomas Roessler  <roessler@guug.de>
+
+	* .cvsignore: ignore muttbug{,.sh}
+
+	* Makefile.am: Tell users about README.UPGRADE.
+
+Thu Feb 24 21:34:10 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/zh_TW.Big5.po, po/sk.po, po/sv.po, po/uk.po, po/ru.po, po/pt_BR.po, po/pl.po, po/ko.po, po/nl.po, po/fr.po, po/gl.po, po/id.po, po/it.po, po/es.po, po/cs.po, po/de.po, po/el.po, po/eo.po, reldate.h, ChangeLog, VERSION:
+	automatic post-release commit for mutt-1.1.5
+
+	* main.c: Fix #52, from Mikko.Hanninen@iki.fi.
+
 Thu Feb 24 21:25:49 2000  Thomas Roessler  <roessler@guug.de>
 
 	* main.c: Fix #52, from Mikko.Hanninen@iki.fi.
