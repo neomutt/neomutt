@@ -517,6 +517,17 @@ BODY *mutt_parse_multipart (FILE *fp, const char *boundary, long end_off, int di
       else if (buffer[2 + blen] == 0)
       {
 	new = mutt_read_mime_header (fp, digest);
+	
+	/*
+	 * Consistency checking - catch
+	 * bad attachment end boundaries
+	 */
+	
+	if(new->offset > end_off)
+	{
+	  mutt_free_body(&new);
+	  break;
+	}
 	if (head)
 	{
 	  last->next = new;
