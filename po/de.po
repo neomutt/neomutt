@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.14\n"
+"Project-Id-Version: 1.3.15\n"
 "POT-Creation-Date: 2001-02-12 18:52+0100\n"
-"PO-Revision-Date: 2001-01-28 10:45+01:00\n"
+"PO-Revision-Date: 2001-02-22 14:51+01:00\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -499,15 +499,12 @@ msgid "<default>"
 msgstr "<Voreinstellung>"
 
 #: compose.c:132
-#, fuzzy
 msgid "(e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
-msgstr ""
-"(v)erschl., (s)ign., sign. (a)ls, (b)eides, (m)ic auswählen, (k)ein PGP"
+msgstr "(v)erschl., (s)ign., sign. (a)ls, (b)eides, (k)ein PGP"
 
 #: compose.c:133
-#, fuzzy
 msgid "esabf"
-msgstr "vsabmk"
+msgstr "vsabk"
 
 #: compose.c:147
 msgid "Sign as: "
@@ -1179,9 +1176,9 @@ msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "Dieser IMAP-Server ist veraltet und wird nicht von Mutt unterstützt."
 
 #: imap/imap.c:315
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s failed."
-msgstr "Verbinde zu %s..."
+msgstr "Verbindung zu %s fehlgeschlagen."
 
 #: imap/imap.c:453
 #, c-format
@@ -2818,9 +2815,9 @@ msgstr "Ungültiger Monat: %s"
 
 #. getDate has its own error message, don't overwrite it here
 #: pattern.c:527
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid relative date: %s"
-msgstr "Ungültiger Monat: %s"
+msgstr "Ungültiges relatives Datum: %s"
 
 #: pattern.c:541
 msgid "error in expression"
