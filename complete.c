@@ -48,19 +48,23 @@ int mutt_complete (char *s, size_t slen)
   dprint (2, (debugfile, "mutt_complete: completing %s\n", s));
 
   /* we can use '/' as a delimiter, imap_complete rewrites it */
-  if (*s == '=' || *s == '+')
+  if (*s == '=' || *s == '+' || *s == '!')
   {
+    if (*s == '!')
+      p = Spoolfile;
+    else
+      p = Maildir;
     if (s[1])
     {
-      /* don't append '/' if Maildir is {host} only */
-      if (mx_is_imap (NONULL (Maildir)) && Maildir[strlen (Maildir)-1] == '}')
-        snprintf (imap_path, sizeof (imap_path), "%s%s", Maildir, s+1);
+      /* don't append '/' if Maildir/Spoolfile is {host} only */
+      if (mx_is_imap (NONULL (p)) && p[strlen (p)-1] == '}')
+        snprintf (imap_path, sizeof (imap_path), "%s%s", p, s+1);
       else
-        snprintf (imap_path, sizeof (imap_path), "%s/%s", NONULL (Maildir),
+        snprintf (imap_path, sizeof (imap_path), "%s/%s", NONULL (p),
           s+1);
     }
     else
-      strfcpy (imap_path, NONULL(Maildir), sizeof(imap_path));
+      strfcpy (imap_path, NONULL(p), sizeof(imap_path));
   }
   else
     strfcpy (imap_path, s, sizeof(imap_path));
@@ -69,11 +73,14 @@ int mutt_complete (char *s, size_t slen)
     return imap_complete (s, slen, imap_path);
 #endif
   
-  if (*s == '=' || *s == '+')
+  if (*s == '=' || *s == '+' || *s == '!')
   {
     dirpart[0] = *s;
     dirpart[1] = 0;
-    strfcpy (exp_dirpart, NONULL (Maildir), sizeof (exp_dirpart));
+    if (*s == '!')
+      strfcpy (exp_dirpart, NONULL (Spoolfile), sizeof (exp_dirpart));
+    else
+      strfcpy (exp_dirpart, NONULL (Maildir), sizeof (exp_dirpart));
     if ((p = strrchr (s, '/')))
     {
       *p++ = 0;
