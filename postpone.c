@@ -535,7 +535,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   }
 
   safe_free ((void **) &newhdr->env->message_id);
-  safe_free ((void **) &newhdr->env->mail_followup_to);
+  safe_free ((void **) &newhdr->env->mail_followup_to); /* really? */
 
 #ifdef HAVE_PGP
   /* decrypt pgp/mime encoded messages */
@@ -623,7 +623,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 
     if (mutt_is_text_type (b->type, b->subtype))
       b->noconv = 1;
-      
+
     mutt_stamp_attachment (b);
 
     mutt_free_body (&b->parts);

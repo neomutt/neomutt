@@ -847,8 +847,10 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
 {
   CONTENT *info;
   CONTENT_STATE state;
-  FILE *fp;
+  FILE *fp = NULL;
   char *fromcode, *tocode;
+  char buffer[100];
+  size_t r;
 
   if(b && !fname) fname = b->filename;
   
@@ -871,22 +873,20 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
     {
       if (!chs)
 	mutt_set_parameter ("charset", tocode, &b->parameter);
-      free (fromcode);
-      free (tocode);
+      safe_free (&fromcode);
+      safe_free (&tocode);
+      safe_fclose (&fp);
       return info;
     }
   }
 
-  {
-    char buffer[100];
-    size_t r;
+  rewind (fp);
+  while ((r = fread (buffer, 1, sizeof(buffer), fp)))
+    update_content_info (info, &state, buffer, r);
+  update_content_info (info, &state, 0, 0);
 
-    rewind (fp);
-    while ((r = fread (buffer, 1, sizeof(buffer), fp)))
-      update_content_info (info, &state, buffer, r);
-    update_content_info (info, &state, 0, 0);
-  }
-
+  safe_fclose (&fp);
+  
   if (b != NULL && b->type == TYPETEXT && (!b->noconv))
     mutt_set_parameter ("charset",
 			info->hibin ? "unknown-8bit" : "us-ascii",
