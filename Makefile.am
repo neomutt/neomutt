@@ -70,7 +70,8 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO configure acconfig.h account.h \
 	sort.h mime.types VERSION prepare _regex.h OPS.MIX	\
 	README.SECURITY remailer.c remailer.h browser.h \
 	mbyte.h	lib.h extlib.c pgpewrap pgplib.h Muttrc.head Muttrc \
-	makedoc.c stamp-doc-rc README.SSL README.UPGRADE checktypes.c
+	makedoc.c stamp-doc-rc README.SSL README.UPGRADE checktypes.c \
+	muttbug
 
 mutt_dotlock_SOURCES = mutt_dotlock.c
 mutt_dotlock_LDADD = @LIBOBJS@
