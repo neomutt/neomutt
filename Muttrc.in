@@ -129,6 +129,7 @@ macro pager   <f1> "!less @docdir@/manual.txt\n" "Show Mutt documentation"
 # set realname=""
 # set recall=ask-yes
 # set record=""
+# unset reply_self
 # set reply_to=ask-yes
 # set resolve
 # unset reverse_alias

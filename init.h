@@ -234,6 +234,7 @@ struct option_t MuttVars[] = {
   { "realname",		DT_STR,	 R_BOTH, UL &Realname, 0 },
   { "recall",		DT_QUAD, R_NONE, OPT_RECALL, M_ASKYES },
   { "record",		DT_PATH, R_NONE, UL &Outbox, UL "" },
+  { "reply_self",	DT_BOOL, R_NONE, OPTREPLYSELF, 0 },
   { "reply_to",		DT_QUAD, R_NONE, OPT_REPLYTO, M_ASKYES },
   { "resolve",		DT_BOOL, R_NONE, OPTRESOLVE, 1 },
   { "reverse_alias",	DT_BOOL, R_BOTH, OPTREVALIAS, 0 },

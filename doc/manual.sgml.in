@@ -3142,9 +3142,7 @@ Type: boolean<newline>
 Default: unset
 
 If unset, Mutt will remove your address from the list of recipients when
-replying to a message.  If you are replying to a message sent by you,
-Mutt will also assume that you want to reply to the recipients of that
-message rather than to yourself.
+replying to a message.  
 
 <sect2>menu&lowbar;scroll<label id="menu_scroll">
 <p>
@@ -3734,6 +3732,15 @@ Default: "^(re|aw):&lsqb; &bsol;t&rsqb;*"
 A regular expression used to recognize reply messages when threading and
 replying. The default value corresponds to the English "Re:" and the
 German "Aw:".
+
+<sect2>reply&lowbar;self<label id="reply_self">
+<p>
+Type: boolean<newline>
+Default: unset
+
+If unset and you are replying to a message sent by you, Mutt will
+assume that you want to reply to the recipients of that message rather
+than to yourself.
 
 <sect2>reply&lowbar;to<label id="reply_to">
 <p>
