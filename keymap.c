@@ -67,6 +67,9 @@ static struct mapping_t KeyNames[] = {
   { "<End>",	KEY_END },
   { "<Enter>",	KEY_ENTER },
   { "<Return>",	M_ENTER_C },
+  { "<Esc>",	'\033' },
+  { "<Tab>",	'\t' },
+  { "<Space>",	' ' },
   { NULL,	0 }
 };
 
@@ -431,24 +434,11 @@ static void create_bindings (struct binding_t *map, int menu)
 
 char *km_keyname (int c)
 {
-  static char buf[5];
+  static char buf[10];
   char *p;
 
   if ((p = mutt_getnamebyvalue (c, KeyNames)))
     return p;
-
-  switch (c)
-  {
-    case '\033':
-      return "ESC";
-    case ' ':
-      return "SPC";
-    case '\n':
-    case '\r':
-      return "RET";
-    case '\t':
-      return "TAB";
-  }
 
   if (c < 256 && c > -128 && iscntrl ((unsigned char) c))
   {
@@ -465,7 +455,7 @@ char *km_keyname (int c)
       snprintf (buf, sizeof (buf), "\\%d%d%d", c >> 6, (c >> 3) & 7, c & 7);
   }
   else if (c >= KEY_F0 && c < KEY_F(256)) /* this maximum is just a guess */
-    sprintf (buf, "F%d", c - KEY_F0);
+    sprintf (buf, "<F%d>", c - KEY_F0);
   else if (IsPrint (c))
     snprintf (buf, sizeof (buf), "%c", (unsigned char) c);
   else
