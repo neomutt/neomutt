@@ -134,7 +134,8 @@ static void redraw_crypt_lines (HEADER *msg)
     addstr (_("Clear"));
 
   if ((WithCrypto & APPLICATION_PGP))
-    if ((msg->security & (ENCRYPT | SIGN)))
+    if ((msg->security & APPLICATION_PGP) 
+	&& (msg->security & (ENCRYPT | SIGN)))
     {
       if ((msg->security & INLINE))
 	addstr (_(" (inline)"));
