@@ -2793,10 +2793,6 @@ text/html;      lynx %s
 # This version would convert the text/html to text/plain
 text/html;      lynx -dump %s; copiousoutput
 
-# enriched.sh converts text/enriched to text/html and then uses 
-# lynx -dump to convert it to text/plain
-text/enriched;  enriched.sh ; copiousoutput
-
 # I use enscript to print text in two columns to a page
 text/*;         more %s; print=enscript -2Gr %s
 
@@ -2833,14 +2829,13 @@ content-types that you wish to view automatically.
 
 For instance, if you set auto&lowbar;view to:
 <tscreen><verb>
-auto_view text/html text/enriched application/x-gunzip application/postscript image/gif application/x-tar-gz
+auto_view text/html application/x-gunzip application/postscript image/gif application/x-tar-gz
 </verb></tscreen>
 
 Mutt could use the following mailcap entries to automatically view
 attachments of these types.
 <tscreen><verb>
 text/html;      lynx -dump %s; copiousoutput; nametemplate=%s.html
-text/enriched;  enriched.sh  ; copiousoutput
 image/*;        anytopnm %s | pnmscale -xsize 80 -ysize 50 | ppmtopgm | pgmtopbm | pbmtoascii ; copiousoutput
 application/x-gunzip;   gzcat; copiousoutput
 application/x-tar-gz; gunzip -c %s | tar -tf - ; copiousoutput
