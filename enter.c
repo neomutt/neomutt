@@ -329,7 +329,7 @@ int mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 	    buf[curpos] = 0;
 	    if (curpos)
 	    {
-	      for (j = curpos - 1 ; j >= 0 && buf[j] != ' ' && buf[j] != ',' ; j--);
+	      for (j = curpos - 1 ; j >= 0 && buf[j] != ',' ; j--);
 	      if (mutt_alias_complete ((char *) buf + j + 1, buflen - j - 1))
 	      {
 		redraw = M_REDRAW_INIT;
@@ -384,7 +384,7 @@ int mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 	    buf[curpos] = 0;
 	    if (curpos)
 	    {
-	      for (j = curpos - 1 ; j >= 0 && buf[j] != ' ' && buf[j] != ',' ; j--);
+	      for (j = curpos - 1 ; j >= 0 && buf[j] != ',' ; j--);
 	      mutt_query_complete ((char *) buf + j + 1, buflen - j - 1);
 	    }
 	    else
