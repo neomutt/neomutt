@@ -1253,7 +1253,10 @@ signatures based upon the recipients.
 
 <bf/Note:/ the send-hook's are only executed ONCE after getting the initial
 list of recipients.  Adding a recipient after replying or editing the
-message will NOT cause any send-hook to be executed.
+message will NOT cause any send-hook to be executed.  Also note that
+my_hdr commands which modify recipient headers, or the message's
+subject, don't have any effect on the current message when executed
+from a send-hook.
 
 <sect1>Choosing the PGP key of the recipient<label id="pgp-hook">
 <p>
