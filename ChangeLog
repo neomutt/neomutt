@@ -1,3 +1,8 @@
+2005-01-26 14:32:06  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* status.c: The last Context->pattern fix was still crap.
+	Ooooops. (Thanks Ralf.)
+
 2005-01-26 13:36:44  Thomas Glanzmann <sithglan@stud.uni-erlangen.de>  (roessler)
 
 	* Makefile.am, configure.in, globals.h, hcache.c, imap/imap.c,
