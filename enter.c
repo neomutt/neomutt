@@ -116,7 +116,7 @@ static void replace_part (ENTER_STATE *state, size_t from, char *buf)
   if (state->curpos + savelen > state->wbuflen)
   {
     state->wbuflen = state->curpos + savelen;
-    safe_realloc ((void **) state->wbuf, state->wbuflen * sizeof (wchar_t));
+    safe_realloc ((void **) &state->wbuf, state->wbuflen * sizeof (wchar_t));
   }
 
   /* Restore suffix */
@@ -508,9 +508,9 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	    /* invoke the query-menu to get more addresses */
 	    if (state->curpos)
 	    {
-	      for (i = state->curpos; i && buf[i - 1] != ','; i--)
+	      for (i = state->curpos; i && state->wbuf[i - 1] != ','; i--)
 		;
-	      for (; i < state->curpos && buf[i] == ' '; i++)
+	      for (; i < state->curpos && state->wbuf[i] == ' '; i++)
 		;
 	      my_wcstombs (buf, buflen, state->wbuf + i, state->curpos - i);
 	      mutt_query_complete (buf, buflen);
