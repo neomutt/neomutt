@@ -739,7 +739,7 @@ void mutt_select_file (char *f, size_t flen, int buffy)
       case OP_SORT_REVERSE:
 
 	{
-	  int reverse = 0;
+	  int reverse = 0, done = 0;
 	  event_t ch;
 
 	  move (LINES - 1, 0);
@@ -755,35 +755,40 @@ void mutt_select_file (char *f, size_t flen, int buffy)
 	  FOREVER
 	  {
 	    ch = mutt_getch();
-	    if (ch.ch == EOF || ch.ch == 'a' || ch.ch == 'd' || ch.ch == 'z' || ch.ch == 'n')
+	    if (ch.ch == 'a' || ch.ch == 'd' || ch.ch == 'z' || ch.ch == 'n')
 	      break;
 
-	    if (ch.ch == ERR || CI_is_return (ch.ch))
+	    if (ch.ch == -1 || CI_is_return (ch.ch))
+	    {
+	      done = 1;
+	      CLEARLINE (LINES - 1);
 	      break;
+	    }
 	    else
 	      BEEP ();
 	  }
 
-	  if (ch.ch != EOF)
+	  /* nothing to be done */
+	  if (done)
+	    break;
+
+	  switch (ch.ch)
 	  {
-	    switch (ch.ch)
-	    {
-	      case 'a': 
-	        BrowserSort = reverse | SORT_SUBJECT;
-		break;
-	      case 'd':
-	        BrowserSort = reverse | SORT_DATE;
-		break;
-	      case 'z': 
-	        BrowserSort = reverse | SORT_SIZE;
-		break;
-	      case 'n': 
-	        BrowserSort = SORT_ORDER;
-		break;
-	    }
-	    browser_sort (&state);
-	    menu->redraw = REDRAW_FULL;
+	    case 'a': 
+	      BrowserSort = reverse | SORT_SUBJECT;
+	      break;
+	    case 'd':
+	      BrowserSort = reverse | SORT_DATE;
+	      break;
+	    case 'z': 
+	      BrowserSort = reverse | SORT_SIZE;
+	      break;
+	    case 'n': 
+	      BrowserSort = SORT_ORDER;
+	      break;
 	  }
+	  browser_sort (&state);
+	  menu->redraw = REDRAW_FULL;
 	}
 
 	break;
