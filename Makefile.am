@@ -15,7 +15,8 @@ endif
 BUILT_SOURCES = keymap_defs.h
 
 bin_PROGRAMS = mutt @DOTLOCK_TARGET@ @PGPAUX_TARGET@
-mutt_SOURCES =	addrbook.c alias.c attach.c browser.c buffy.c color.c \
+mutt_SOURCES = $(BUILT_SOURCES) \
+	addrbook.c alias.c attach.c browser.c buffy.c color.c \
 	commands.c complete.c compose.c copy.c curs_lib.c curs_main.c date.c \
 	edit.c enter.c flags.c init.c filter.c from.c getdomain.c \
 	handler.c hash.c hdrline.c headers.c help.c hook.c keymap.c \
@@ -24,8 +25,7 @@ mutt_SOURCES =	addrbook.c alias.c attach.c browser.c buffy.c color.c \
 	rfc822.c rfc1524.c rfc2047.c rfc2231.c \
 	score.c send.c sendlib.c signal.c sort.c \
 	status.c system.c thread.c charset.c history.c lib.c \
-	muttlib.c \
-	$(BUILT_SOURCES)
+	muttlib.c
 
 mutt_LDADD = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(INTLLIBS) 
 mutt_DEPENDENCIES = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(INTLDEPS)
