@@ -178,6 +178,7 @@ int imap_parse_list_response(CONNECTION* conn, char* buf, int buflen,
   char** name, int* noselect, int* noinferiors, char* delim);
 int imap_read_bytes (FILE* fp, CONNECTION* conn, long bytes);
 int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint);
+void imap_logout (CONNECTION* conn);
 
 /* auth.c */
 int imap_authenticate (IMAP_DATA *idata, CONNECTION *conn);

@@ -151,8 +151,6 @@ CONNECTION* mutt_socket_find (const IMAP_MBOX* mx, int newconn)
 void imap_logout_all (void) 
 {
   CONNECTION* conn;
-  char buf[SHORT_STRING];
-  char seq[SEQLEN+1];
   
   conn = Connections;
 
@@ -163,17 +161,8 @@ void imap_logout_all (void)
       mutt_message (_("Closing connection to %s..."),
 		    conn->mx.host);
       
-      imap_make_sequence (seq, sizeof (seq));
-      snprintf (buf, sizeof (buf), "%s LOGOUT\r\n", seq);
-
-      mutt_socket_write (conn, buf);
-
-      do
-      {
-	if (mutt_socket_readln (buf, sizeof (buf), conn) < 0)
-	  break;
-      }
-      while (mutt_strncmp (buf, seq, SEQLEN) != 0);
+      imap_logout (conn);
+      
       mutt_clear_error ();
 
       mutt_socket_close (conn);

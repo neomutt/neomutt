@@ -816,25 +816,30 @@ int imap_open_mailbox_append (CONTEXT *ctx)
   return 0;
 }
 
-int imap_close_connection (CONTEXT *ctx)
+void imap_logout (CONNECTION *conn)
 {
   char buf[LONG_STRING];
   char seq[8];
 
+  imap_make_sequence (seq, sizeof (seq));
+  snprintf (buf, sizeof (buf), "%s LOGOUT\r\n", seq);
+  mutt_socket_write (conn, buf);
+  do
+  {
+    if (mutt_socket_readln (buf, sizeof (buf), conn) < 0)
+      break;
+  }
+  while (mutt_strncmp (seq, buf, SEQLEN) != 0);
+}
+
+int imap_close_connection (CONTEXT *ctx)
+{
   dprint (1, (debugfile, "imap_close_connection(): closing connection\n"));
   /* if the server didn't shut down on us, close the connection gracefully */
   if (CTX_DATA->status != IMAP_BYE)
   {
     mutt_message _("Closing connection to IMAP server...");
-    imap_make_sequence (seq, sizeof (seq));
-    snprintf (buf, sizeof (buf), "%s LOGOUT\r\n", seq);
-    mutt_socket_write (CTX_DATA->conn, buf);
-    do
-    {
-      if (mutt_socket_readln (buf, sizeof (buf), CTX_DATA->conn) < 0)
-	break;
-    }
-    while (mutt_strncmp (seq, buf, SEQLEN) != 0);
+    imap_logout (CTX_DATA->conn);
     mutt_clear_error ();
   }
   mutt_socket_close (CTX_DATA->conn);
