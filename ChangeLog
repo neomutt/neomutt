@@ -1,3 +1,10 @@
+2003-04-02 08:40:50  Gary Johnson  <garyjohn@spk.agilent.com>  (roessler)
+
+	* curs_main.c: Here is the patch to fix the bug I reported
+	earlier in this thread, that sometimes when changing folders,
+	mutt would generate an error message and stop the further
+	processing of folder-hooks.
+
 2003-04-02 08:38:13  Vincent Lefevre  <vincent@vinc17.org>  (roessler)
 
 	* po/fr.po: update
