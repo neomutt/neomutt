@@ -34,6 +34,10 @@
 #include "pgp.h"
 #endif
 
+#ifdef HAVE_SMIME
+#include "smime.h"
+#endif
+
 
 
 #include <ctype.h>
@@ -835,8 +839,9 @@ void mutt_view_attachments (HEADER *hdr)
 
 
 
-#ifdef HAVE_PGP
-  int pgp = 0;
+
+#if defined(HAVE_PGP) || defined(HAVE_SMIME)
+  int secured = 0;
 #endif
 
 
@@ -862,24 +867,40 @@ void mutt_view_attachments (HEADER *hdr)
 
 
 
-#ifdef HAVE_PGP
-  if((hdr->pgp & PGPENCRYPT) && !pgp_valid_passphrase())
+#if defined(HAVE_PGP) || defined(HAVE_SMIME)
+  if (hdr->security & ENCRYPT)
   {
-    mx_close_message (&msg);
-    return;
-  }
-  
-  if ((hdr->pgp & PGPENCRYPT) && mutt_is_multipart_encrypted(hdr->content))
-  {
-    if (pgp_decrypt_mime (msg->fp, &fp, hdr->content, &cur))
+    if (!crypt_valid_passphrase(hdr->security))
     {
       mx_close_message (&msg);
       return;
     }
-    pgp = 1;
+#ifdef HAVE_SMIME
+    if (hdr->security & APPLICATION_SMIME)
+    {
+      if (hdr->env->to)
+	  smime_getkeys (hdr->env->to->mailbox);
+
+      if (mutt_is_application_smime(hdr->content))
+	secured = ! smime_decrypt_mime (msg->fp, &fp, hdr->content, &cur);
+    }
+#endif  
+#ifdef HAVE_PGP
+    if (hdr->security & APPLICATION_PGP)
+    {
+      if (mutt_is_multipart_encrypted(hdr->content))
+	secured = !pgp_decrypt_mime (msg->fp, &fp, hdr->content, &cur);
+    }
+#endif
+
+    if (!secured)
+    {
+      mx_close_message (&msg);
+      return;
+    }
   }
   else
-#endif /* HAVE_PGP */
+#endif /* HAVE_SMIME || HAVVE_PGP */
   {
     fp = msg->fp;
     cur = hdr->content;
@@ -934,11 +955,14 @@ void mutt_view_attachments (HEADER *hdr)
         break;
       
 
-#ifdef HAVE_PGP
+#if defined(HAVE_PGP) || defined(HAVE_SMIME)
       case OP_FORGET_PASSPHRASE:
-        mutt_forget_passphrase ();
+        crypt_forget_passphrase ();
         break;
+#endif
       
+
+#ifdef HAVE_PGP
       case OP_EXTRACT_KEYS:
         pgp_extract_keys_from_attachment_list (fp, menu->tagprefix, 
 		  menu->tagprefix ? cur : idx[menu->current]->content);
@@ -949,7 +973,7 @@ void mutt_view_attachments (HEADER *hdr)
         if (pgp_check_traditional (fp, menu->tagprefix ? cur : idx[menu->current]->content,
 				   menu->tagprefix))
         {
-	  hdr->pgp = pgp_query (cur);
+	  hdr->security = crypt_query (cur);
 	  menu->redraw = REDRAW_FULL;
 	}
         break;
@@ -991,11 +1015,11 @@ void mutt_view_attachments (HEADER *hdr)
 
 
 
-#ifdef HAVE_PGP
-        if (hdr->pgp)
+#if defined(HAVE_PGP) || defined(HAVE_SMIME)
+        if (hdr->security)
         {
 	  mutt_message _(
-	    "Deletion of attachments from PGP messages is unsupported.");
+	    "Deletion of attachments from encrypted messages is unsupported.");
 	}
         else
 #endif
@@ -1126,13 +1150,14 @@ void mutt_view_attachments (HEADER *hdr)
 
 
 
-#ifdef HAVE_PGP
-	if (pgp)
+
+#if defined(HAVE_PGP) || defined(HAVE_SMIME)
+        if (secured)
 	{
 	  fclose (fp);
 	  mutt_free_body (&cur);
 	}
-#endif /* HAVE_PGP */
+#endif /* HAVE_PGP || HAVE_SMIME */
 
 
 

@@ -58,11 +58,10 @@ enum
   HDR_MIX,
 #endif
 
-#ifdef HAVE_PGP
-  HDR_PGP,
-  HDR_PGPSIGINFO,
+#if defined(HAVE_PGP) || defined(HAVE_SMIME)
+  HDR_CRYPT,
+  HDR_CRYPTINFO,
 #endif
-  
 
   HDR_ATTACH  = (HDR_FCC + 5) /* where to start printing the attachments */
 };
@@ -103,79 +102,203 @@ static void snd_entry (char *b, size_t blen, MUTTMENU *menu, int num)
 
 
 
+#ifdef HAVE_SMIME
+#include "smime.h"
+#endif
+
 #ifdef HAVE_PGP
 #include "pgp.h"
+#endif
 
-static void redraw_pgp_lines (int pgp)
+#if defined(HAVE_PGP) || defined(HAVE_SMIME)
+
+static void redraw_crypt_lines (HEADER *msg)
 {
-  mvaddstr (HDR_PGP, 0,     "     PGP: ");
-  if ((pgp & (PGPENCRYPT | PGPSIGN)) == (PGPENCRYPT | PGPSIGN))
+#ifdef HAVE_SMIME
+  int off = 0;
+#endif
+
+#if defined(HAVE_PGP) && defined(HAVE_SMIME)
+  if (!msg->security)
+    mvaddstr (HDR_CRYPT, 0,     "Security: ");
+  else if (msg->security & APPLICATION_SMIME)
+    mvaddstr (HDR_CRYPT, 0,     "  S/MIME: ");
+  else if (msg->security & APPLICATION_PGP)
+    mvaddstr (HDR_CRYPT, 0,     "     PGP: ");
+#else
+#ifdef HAVE_SMIME
+  mvaddstr (HDR_CRYPT, 0,     "  S/MIME: ");
+#endif
+#ifdef HAVE_PGP
+  mvaddstr (HDR_CRYPT, 0,     "     PGP: ");
+#endif
+#endif
+
+
+  if ((msg->security & (ENCRYPT | SIGN)) == (ENCRYPT | SIGN))
     addstr (_("Sign, Encrypt"));
-  else if (pgp & PGPENCRYPT)
+  else if (msg->security & ENCRYPT)
     addstr (_("Encrypt"));
-  else if (pgp & PGPSIGN)
+  else if (msg->security & SIGN)
     addstr (_("Sign"));
   else
     addstr (_("Clear"));
   clrtoeol ();
 
-  move (HDR_PGPSIGINFO, 0);
+  move (HDR_CRYPTINFO, 0);
   clrtoeol ();
-  if (pgp & PGPSIGN)
+#ifdef HAVE_PGP
+  if (msg->security & APPLICATION_PGP  && msg->security & SIGN)
     printw ("%s%s", _(" sign as: "), PgpSignAs ? PgpSignAs : _("<default>"));
+#endif
+#ifdef HAVE_SMIME
+  if (msg->security & APPLICATION_SMIME  && msg->security & SIGN) {
+      printw ("%s%s", _(" sign as: "), SmimeSignAs ? SmimeSignAs : _("<default>"));
+  }
+  if (msg->security & APPLICATION_SMIME  && (msg->security & ENCRYPT)) {
+      mvprintw (HDR_CRYPTINFO, 40, "%s%s", _("Encrypt with: "),
+		NONULL(SmimeCryptAlg));
+      off = 20;
+  }
+#endif
 }
+#endif  /* defined(HAVE_PGP) || defined(HAVE_SMIME) */
 
-static int pgp_send_menu (int bits, int *redraw)
+
+
+#ifdef HAVE_PGP
+static int pgp_send_menu (HEADER *msg, int *redraw)
 {
   pgp_key_t *p;
   char input_signas[SHORT_STRING];
 
-  switch (mutt_multi_choice (_("(e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "),
+  switch (mutt_multi_choice (_("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "),
 			     _("esabf")))
   {
   case 1: /* (e)ncrypt */
-    bits |= PGPENCRYPT;
+    msg->security |= PGPENCRYPT;
     break;
 
   case 2: /* (s)ign */
-    bits |= PGPSIGN;
+    msg->security |= PGPSIGN;
     break;
 
   case 3: /* sign (a)s */
 
     unset_option(OPTPGPCHECKTRUST);
 
-    if ((p = pgp_ask_for_key (_("Sign as: "), NULL, KEYFLAG_CANSIGN, PGP_SECRING)))
+    if ((p = pgp_ask_for_key (_("Sign as: "), NULL, KEYFLAG_CANSIGN, PGP_PUBRING)))
     {
       snprintf (input_signas, sizeof (input_signas), "0x%s", pgp_keyid (p));
       mutt_str_replace (&PgpSignAs, input_signas);
       pgp_free_key (&p);
       
-      bits |= PGPSIGN;
+      msg->security |= PGPSIGN;
 	
       pgp_void_passphrase ();	/* probably need a different passphrase */
     }
     else
     {
-      bits &= ~PGPSIGN;
+      msg->security &= ~PGPSIGN;
     }
 
     *redraw = REDRAW_FULL;
     break;
 
   case 4: /* (b)oth */
-    bits = PGPENCRYPT | PGPSIGN;
+    msg->security = PGPENCRYPT | PGPSIGN;
     break;
 
   case 5: /* (f)orget it */
-    bits = 0;
+    msg->security = 0;
     break;
   }
-  if (!*redraw)
-    redraw_pgp_lines (bits);
-  return (bits);
+
+  if(*redraw)
+      redraw_crypt_lines (msg);
+  return (msg->security);
 }
 #endif /* HAVE_PGP */
+
+
+
+#ifdef HAVE_SMIME
+
+static int smime_send_menu (HEADER *msg, int *redraw)
+{
+    char *p;
+
+  switch (mutt_multi_choice (_("S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (f)orget it? "),
+			     _("ewsabf")))
+  {
+  case 1: /* (e)ncrypt */
+    msg->security |= SMIMEENCRYPT;
+    break;
+
+  case 2: /* encrypt (w)ith */
+    msg->security |= SMIMEENCRYPT;
+    switch (mutt_multi_choice (_("1: DES, 2: Tripple-DES, 3: RC2-40,"
+				 " 4: RC2-64, 5: RC2-128, or (f)orget it? "),
+			       _("12345f"))) {
+    case 1:
+	mutt_str_replace (&SmimeCryptAlg, "des");
+	break;
+    case 2:
+	mutt_str_replace (&SmimeCryptAlg, "des3");
+	break;
+    case 3:
+	mutt_str_replace (&SmimeCryptAlg, "rc2-40");
+	break;
+    case 4:
+	mutt_str_replace (&SmimeCryptAlg, "rc2-64");
+	break;
+    case 5:
+	mutt_str_replace (&SmimeCryptAlg, "rc2-128");
+	break;
+    case 6: /* forget it */
+	break;
+    }
+    break;
+
+  case 3: /* (s)ign */
+      
+    if(!SmimeSignAs)
+	mutt_message("Can\'t sign: No key specified. use sign(as).");
+    else
+	msg->security |= SMIMESIGN;
+    break;
+
+  case 4: /* sign (a)s */
+
+    if ((p = smime_ask_for_key (_("Sign as: "), NULL, 0))) {
+      p[mutt_strlen (p)-1] = '\0';
+      mutt_str_replace (&SmimeSignAs, p);
+	
+      msg->security |= SMIMESIGN;
+
+      /* probably need a different passphrase */
+      smime_void_passphrase ();
+    }
+    else
+      msg->security &= ~SMIMESIGN;
+
+    *redraw = REDRAW_FULL;
+    break;
+
+  case 5: /* (b)oth */
+    msg->security = SMIMEENCRYPT | SMIMESIGN;
+    break;
+
+  case 6: /* (f)orget it */
+    msg->security = 0;
+    break;
+  }
+
+  if(*redraw)
+      redraw_crypt_lines (msg);
+  return (msg->security);
+}
+#endif /* HAVE_SMIME */
 
 #ifdef MIXMASTER
 
@@ -269,9 +392,10 @@ static void draw_envelope (HEADER *msg, char *fcc)
 
 
 
-#ifdef HAVE_PGP
-  redraw_pgp_lines (msg->pgp);
-#endif /* HAVE_PGP */
+#if defined(HAVE_PGP) || defined(HAVE_SMIME)
+  redraw_crypt_lines (msg);
+#endif /* HAVE_PGP || HAVE_SMIE */
+
 
 #ifdef MIXMASTER
   redraw_mix_line (msg->chain);
@@ -1190,15 +1314,53 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 #ifdef HAVE_PGP
       case OP_COMPOSE_PGP_MENU:
 
-	msg->pgp = pgp_send_menu (msg->pgp, &menu->redraw);
+#ifdef HAVE_SMIME
+	if (msg->security & APPLICATION_SMIME)
+	{
+	  if (mutt_yesorno (_("S/MIME already selected. Clear & continue ? "),
+			     M_YES) == M_NO)
+	  {
+	    mutt_clear_error ();
+	    break;
+	  }
+	  msg->security = 0;
+	}
+#endif /* HAVE_SMIME */
+	msg->security = pgp_send_menu (msg, &menu->redraw);
+	redraw_crypt_lines (msg);
 	break;
+#endif /* HAVE_PGP */
 
+
+#if defined(HAVE_PGP) || defined(HAVE_SMIME)
       case OP_FORGET_PASSPHRASE:
 
-	mutt_forget_passphrase ();
+	crypt_forget_passphrase ();
 	break;
 
-#endif /* HAVE_PGP */
+#endif /* HAVE_(PGP||SMIME) */
+
+
+#ifdef HAVE_SMIME
+      case OP_COMPOSE_SMIME_MENU:
+
+#ifdef HAVE_PGP
+	if (msg->security & APPLICATION_PGP)
+	{
+	  if (mutt_yesorno (_("PGP already selected. Clear & continue ? "),
+			      M_YES) == M_NO)
+	  {
+	     mutt_clear_error ();
+	     break;
+	  }
+	  msg->security = 0;
+	}
+#endif /* HAVE_pgp */
+	msg->security = smime_send_menu(msg, &menu->redraw);
+	redraw_crypt_lines (msg);
+	break;
+
+#endif /* HAVE_SMIME */
 
 
 #ifdef MIXMASTER

@@ -134,8 +134,8 @@ char *mutt_gen_msgid (void);
 char *mutt_get_body_charset (char *, size_t, BODY *);
 char *mutt_get_name (ADDRESS *);
 char *mutt_get_parameter (const char *, PARAMETER *);
-#ifdef HAVE_PGP
-char *mutt_pgp_hook (ADDRESS *);
+#if defined(HAVE_PGP) || defined(HAVE_SMIME)
+char *mutt_crypt_hook (ADDRESS *);
 #endif /* HAVE_PGP */
 char *mutt_make_date (char *, size_t);
 

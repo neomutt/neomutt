@@ -1,0 +1,76 @@
+From raldi@research.netsol.com Thu Jan 24 18:33:03 2002
+Date: Thu, 24 Jan 2002 11:44:40 -0500
+From: Mike Schiraldi <raldi@research.netsol.com>
+To: Thomas Roessler <roessler@does-not-exist.org>
+Subject: Re: Where's the S/MIME patch? ;-)
+User-Agent: Mutt/1.3.27i
+Mime-Version: 1.0
+
+I wanted to test this patch off CVS, but with or without the patch, i
+couldn't get autoconf/automake/aclocal/configure to work. 
+
+
+Files:
+
+smime.patch   -- the S/MIME patch
+smime_keys.pl -- the perl script
+smime.rc      -- a bunch of commands you'll need to source into your .muttrc
+
+ca-bundle.crt -- a collection of root certificates
+
+color.patch   -- the color patch
+color.rc      -- the muttrc commands it uses
+
+Okay, here's what you do:
+
+Apply smime.patch. 
+
+Build.
+
+Get yourself a certificate (You can get one for free from www.thawte.com, or
+i could buy you a VeriSign certificate, or you could go to one of our
+competitors). The way this process works, the certificate will be installed
+"into" your web browser.
+
+Assuming you're using Mozilla on Linux, follow the instructions at
+www.verisignlabs.com/Projects/smime_docs/linux.html to export the
+certificate into a file called cert.p12.
+
+Run smime_keys.pl add_p12 cert.p12
+
+    * When the script asks for the "Import password", enter the one you
+      provided when you exported the certificate.
+
+    * When it asks for a "PEM pass phrase", make up a new password. Every
+      time you sign or decrypt a message, mutt will ask for the PEM pass
+      phrase.
+
+    * Finally, when the script asks for a label, enter an easy-to-remember
+      name for the certificate, such as "me". The script output will include
+      a line like:
+
+      added private key: /home/raldi/.smime/keys/12345678.0 for raldi@verisignlabs.com
+
+      The number is your keyid. You will need this number in the next step.
+
+Put your keyid into smime.muttrc's smime_sign_as line.
+
+Source smime.muttrc into your .muttrc
+
+
+You probably want to import the trusted roots in ca-bundle.crt. Use
+"smime_keys.pl add_root" to do so. That makes you trust anything that was
+ultimately signed by one of them.
+
+To try out the color patch, just apply it and source the color.rc. You can
+see the results in any folder with signed messages.
+
+
+-- 
+Mike Schiraldi
+VeriSign Applied Research
+
+
+
+
+

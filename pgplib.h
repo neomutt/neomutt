@@ -19,10 +19,12 @@
 
 #ifdef HAVE_PGP
 
-#define PGPENCRYPT  (1 << 0)
-#define PGPSIGN     (1 << 1)
-#define PGPKEY      (1 << 2)
-#define PGPGOODSIGN (1 << 3)
+#define APPLICATION_PGP  (1 << 5)
+
+#define PGPENCRYPT  (APPLICATION_PGP | ENCRYPT)
+#define PGPSIGN     (APPLICATION_PGP | SIGN)
+#define PGPGOODSIGN (APPLICATION_PGP | GOODSIGN)
+#define PGPKEY      (APPLICATION_PGP | (1 << 3))
 
 #define KEYFLAG_CANSIGN 		(1 <<  0)
 #define KEYFLAG_CANENCRYPT 		(1 <<  1)

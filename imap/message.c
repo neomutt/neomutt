@@ -378,9 +378,9 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   h->content->length = ftell (msg->fp) - h->content->offset;
 
   /* This needs to be done in case this is a multipart message */
-#ifdef HAVE_PGP
-  h->pgp = pgp_query (h->content);
-#endif /* HAVE_PGP */
+#if defined(HAVE_PGP) || defined(HAVE_SMIME)
+  h->security = crypt_query (h->content);
+#endif
 
   mutt_clear_error();
   rewind (msg->fp);

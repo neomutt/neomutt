@@ -79,6 +79,24 @@ else
                 OPS="$OPS \$(srcdir)/OPS.PGP"
         fi
 
+ 	AC_ARG_ENABLE(smime, [  --disable-smime              Disable SMIME support],
+ 	[	if test x$enableval = xno ; then
+ 			have_smime=no
+ 		fi
+ 	])
+ 
+ 	if test x$have_smime != xno ; then
+ 		AC_DEFINE(HAVE_SMIME,1,[ Define if you want S/MIME support. ])
+ 		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS smime.o "
+ 		OPS="$OPS \$(srcdir)/OPS.SMIME"
+		SMIMEAUX_TARGET="smime_keys"
+ 	fi
+  
+ 	if test x$HAVE_SMIME != xno -o x$HAVE_PGP != xno ; then
+ 		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS crypt.o "
+ 		OPS="$OPS \$(srcdir)/OPS.CRYPT"
+ 	fi
+ 
         AC_ARG_WITH(mixmaster, [  --with-mixmaster[=PATH]    Include Mixmaster support],
                 [if test -x "$withval" ; then
                         MIXMASTER="$withval"
@@ -95,6 +113,7 @@ fi
 AC_SUBST(OPS)
 
 AC_SUBST(PGPAUX_TARGET)
+AC_SUBST(SMIMEAUX_TARGET)
 
 AC_DEFINE_UNQUOTED(SUBVERSION,"$SUBVERSION",[ Is this the international version? ])
 AC_SUBST(SUBVERSION)

@@ -32,6 +32,10 @@
 #include "pgp.h"
 #endif
 
+#ifdef HAVE_SMIME
+#include "smime.h"
+#endif
+
 #include <ctype.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -413,10 +417,11 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
   int unlink_tempfile = 0;
   
   is_message = mutt_is_message_type(a->type, a->subtype);
-#ifdef HAVE_PGP
-  if (is_message && a->hdr && (a->hdr->pgp & PGPENCRYPT) && !pgp_valid_passphrase())
+#if defined(HAVE_PGP) || defined(HAVE_SMIME)
+  if (is_message && a->hdr && (a->hdr->security & ENCRYPT) &&
+      !crypt_valid_passphrase(a->hdr->security))
     return (rc);
-#endif /* HAVE_PGP */
+#endif /* HAVE_PGP || HAVE_SMIME */
   use_mailcap = (flag == M_MAILCAP ||
 		(flag == M_REGULAR && mutt_needs_mailcap (a)));
   snprintf (type, sizeof (type), "%s/%s", TYPE (a), a->subtype);

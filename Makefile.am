@@ -15,7 +15,7 @@ bin_SCRIPTS = muttbug flea
 
 BUILT_SOURCES = keymap_defs.h patchlist.c
 
-bin_PROGRAMS = mutt @DOTLOCK_TARGET@ @PGPAUX_TARGET@
+bin_PROGRAMS = mutt @DOTLOCK_TARGET@ @PGPAUX_TARGET@ @SMIMEAUX_TARGET@
 mutt_SOURCES = $(BUILT_SOURCES) \
 	addrbook.c alias.c attach.c base64.c browser.c buffy.c color.c \
 	commands.c complete.c compose.c copy.c curs_lib.c curs_main.c date.c \
@@ -56,20 +56,14 @@ INCLUDES=-I. -I$(top_srcdir) $(IMAP_INCLUDES) -Iintl
 
 CPPFLAGS=@CPPFLAGS@ -I$(includedir)
 
-non_us_sources = pgp.c pgpinvoke.c pgpkey.c pgplib.c sha1.c \
-	pgpmicalg.c gnupgparse.c sha1.h \
-	doc/language.txt doc/language50.txt OPS.PGP doc/PGP-Notes.txt \
-	OPS.MIX remailer.c remailer.h pgpewrap.c	\
-	contrib/pgp2.rc contrib/pgp5.rc contrib/gpg.rc \
-	mutt_ssl.c mutt_ssl.h README.SSL mutt_ssl_nss.c \
-	pgppacket.c pgppacket.h
 
 EXTRA_mutt_SOURCES = account.c md5c.c mutt_sasl.c mutt_socket.c mutt_ssl.c \
-	mutt_tunnel.c pop.c pop_auth.c pop_lib.c pgp.c pgpinvoke.c pgpkey.c \
+	mutt_tunnel.c pop.c pop_auth.c pop_lib.c crypt.c smime.c pgp.c pgpinvoke.c pgpkey.c \
 	pgplib.c sha1.c pgpmicalg.c gnupgparse.c resize.c dotlock.c remailer.c \
 	browser.h mbyte.h remailer.h url.h mutt_ssl_nss.c pgppacket.c 
 
-EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO configure acconfig.h account.h \
+EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO \
+	configure acconfig.h account.h \
 	attach.h buffy.h charset.h copy.h dotlock.h functions.h gen_defs \
 	globals.h hash.h history.h init.h keymap.h \
 	mailbox.h mapping.h md5.h mime.h mutt.h mutt_curses.h mutt_menu.h \
@@ -77,8 +71,8 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO configure acconfig.h account.h \
 	mx.h pager.h pgp.h pop.h protos.h reldate.h rfc1524.h rfc2047.h \
 	rfc2231.h rfc822.h sha1.h sort.h mime.types VERSION prepare \
 	_regex.h OPS.MIX README.SECURITY remailer.c remailer.h browser.h \
-	mbyte.h	lib.h extlib.c pgpewrap.c pgplib.h Muttrc.head Muttrc \
-	makedoc.c stamp-doc-rc README.SSL \
+	mbyte.h	lib.h extlib.c pgpewrap.c smime_keys.pl pgplib.h Muttrc.head Muttrc \
+	makedoc.c stamp-doc-rc README.SSL crypt.h \
 	muttbug pgppacket.h depcomp ascii.h BEWARE PATCHES patchlist.sh
 
 mutt_dotlock_SOURCES = mutt_dotlock.c
@@ -104,6 +98,10 @@ OPS=@OPS@
 flea:	muttbug.sh
 	cp muttbug.sh flea
 	chmod +x flea
+
+smime_keys: smime_keys.pl
+	cp smime_keys.pl smime_keys
+	chmod +x smime_keys
 
 Makefile: $(BUILT_SOURCES)
 
@@ -155,27 +153,6 @@ changelog:
 
 dist-hook:
 	-for file in $(BUILT_SOURCES) ; do rm -f $(distdir)/$$file ; done
-
-us-distdir: distdir dist-hook
-	mv $(distdir) $(distdir)-us
-	find $(distdir)-us -type f -print | while read f ; do 		\
-		cp $$f `dirname $$f`/_`basename $$f`.$$$$ &&   		\
-		rm $$f && mv `dirname $$f`/_`basename $$f`.$$$$ $$f ;	\
-	done
-
-
-us-dist: us-distdir
-	for file in $(distdir)-us/*.c $(distdir)-us/*.h ; do \
-		$(srcdir)/reap.pl HAVE_PGP < $$file | $(srcdir)/reap.pl MIXMASTER | $(srcdir)/reap.pl USE_SSL > $$file.n && rm $$file && mv $$file.n $$file ; \
-	done
-	for file in $(non_us_sources) ; do \
-		echo "/* This file is only available in the international mutt version */" \
-			> $(distdir)-us/$$file ; \
-	done
-	echo "This version of mutt may be exported from the US.">  $(distdir)-us/EXPORTABLE
-	-chmod -R a+r $(distdir)-us
-	GZIP=$(GZIP) $(TAR) chozf $(distdir)-us.tar.gz $(distdir)-us
-	-rm -rf $(distdir)-us
 
 mutt-dist:
 	(cd $(srcdir) && ./build-release )

@@ -197,4 +197,7 @@ extern const char *Months[];
 #ifdef HAVE_PGP
 #include "pgp.h"
 #endif
+#ifdef HAVE_SMIME
+#include "smime.h"
+#endif
 #endif /* MAIN_C */

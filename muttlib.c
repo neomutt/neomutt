@@ -28,10 +28,14 @@
 
 #ifdef USE_IMAP
 #include "imap.h"
-#endif
+ #endif
 
 #ifdef HAVE_PGP
 #include "pgp.h"
+#endif
+
+#ifdef HAVE_SMIME
+#include "smime.h"
 #endif
 
 #include <string.h>
@@ -594,8 +598,13 @@ int mutt_needs_mailcap (BODY *m)
     case TYPEAPPLICATION:
       if(mutt_is_application_pgp(m))
 	return 0;
-      break;
 #endif /* HAVE_PGP */
+
+#ifdef HAVE_SMIME
+      if(mutt_is_application_smime(m))
+	return 0;
+      break;
+#endif /* HAVE_SMIME */
 
 
     case TYPEMULTIPART:

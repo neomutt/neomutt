@@ -27,6 +27,10 @@
 #include "pgp.h"
 #endif
 
+#ifdef HAVE_SMIME
+#include "smime.h"
+#endif
+
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -527,23 +531,36 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
     if (flags & M_CM_CHARCONV)
       s.flags |= M_CHARCONV;
     
-#ifdef HAVE_PGP
+#if defined(HAVE_PGP) || defined(HAVE_SMIME)
     if (flags & M_CM_VERIFY)
       s.flags |= M_VERIFY;
 #endif
 
     mutt_body_handler (body, &s);
   }
-#ifdef HAVE_PGP
-  else if ((flags & M_CM_DECODE_PGP) && (hdr->pgp & PGPENCRYPT) &&
-      hdr->content->type == TYPEMULTIPART)
+#if defined(HAVE_PGP) || defined(HAVE_SMIME)
+  else if ((flags & M_CM_DECODE_CRYPT) && (hdr->security & ENCRYPT))
   {
     BODY *cur;
     FILE *fp;
 
-    if (pgp_decrypt_mime (fpin, &fp, hdr->content, &cur))
-      return (-1);
-    fputs ("Mime-Version: 1.0\n", fpout);
+#ifdef HAVE_PGP
+    if ((flags & M_CM_DECODE_PGP) && (hdr->security & APPLICATION_PGP) &&
+	hdr->content->type == TYPEMULTIPART)
+    {
+      if (pgp_decrypt_mime (fpin, &fp, hdr->content, &cur))
+	return (-1);
+      fputs ("Mime-Version: 1.0\n", fpout);
+    }
+#endif
+#ifdef HAVE_SMIME
+    if ((flags & M_CM_DECODE_SMIME) && (hdr->security & APPLICATION_SMIME)
+	     && hdr->content->type == TYPEAPPLICATION)
+    {
+      if (smime_decrypt_mime (fpin, &fp, hdr->content, &cur))
+	return (-1);
+    }
+#endif
     mutt_write_mime_header (cur, fpout);
     fputc ('\n', fpout);
 

@@ -31,6 +31,11 @@
 #endif
 
 
+#ifdef HAVE_SMIME
+#include "smime.h"
+#endif
+
+
 #if defined(USE_SSL) || defined(USE_NSS)
 #include "mutt_ssl.h"
 #endif

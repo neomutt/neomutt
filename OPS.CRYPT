@@ -1,0 +1,4 @@
+OP_DECRYPT_SAVE "make decrypted copy and delete"
+OP_DECRYPT_COPY "make decrypted copy"
+OP_FORGET_PASSPHRASE "wipe passphrase(s) from memory"
+OP_EXTRACT_KEYS "extract supported public keys"

@@ -38,6 +38,10 @@
 #include "pgp.h"
 #endif
 
+#ifdef HAVE_SMIME
+#include "smime.h"
+#endif
+
 
 
 
@@ -2383,7 +2387,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	redraw = REDRAW_FULL;
 	break;
 
-#ifdef HAVE_PGP      
+#if defined(HAVE_PGP) || defined(HAVE_SMIME)
       case OP_DECRYPT_SAVE:
 #endif
       case OP_SAVE:
@@ -2396,22 +2400,22 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       case OP_COPY_MESSAGE:
       case OP_DECODE_SAVE:
       case OP_DECODE_COPY:
-#ifdef HAVE_PGP
+#if defined(HAVE_PGP) || defined(HAVE_SMIME)
       case OP_DECRYPT_COPY:
 #endif
 	CHECK_MODE(IsHeader (extra));
 	if (mutt_save_message (extra->hdr,
-#ifdef HAVE_PGP
+#if defined(HAVE_PGP) || defined(HAVE_SMIME)
 			       (ch == OP_DECRYPT_SAVE) ||
 #endif			       
 			       (ch == OP_SAVE) || (ch == OP_DECODE_SAVE),
 			       (ch == OP_DECODE_SAVE) || (ch == OP_DECODE_COPY),
-#ifdef HAVE_PGP
+#if defined(HAVE_PGP) || defined(HAVE_SMIME)
 			       (ch == OP_DECRYPT_SAVE) || (ch == OP_DECRYPT_COPY) ||
 #endif
 			       0,
 			       &redraw) == 0 && (ch == OP_SAVE || ch == OP_DECODE_SAVE
-#ifdef HAVE_PGP
+#if defined(HAVE_PGP) || defined(HAVE_SMIME)
 						 || ch == OP_DECRYPT_SAVE
 #endif
 						 ))
@@ -2517,23 +2521,26 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 
 
 #ifdef HAVE_PGP
-      case OP_FORGET_PASSPHRASE:
-	mutt_forget_passphrase ();
-	break;
-
       case OP_MAIL_KEY:
 	CHECK_MODE(IsHeader(extra));
         CHECK_ATTACH;
 	ci_send_message (SENDKEY, NULL, NULL, extra->ctx, extra->hdr);
 	redraw = REDRAW_FULL;
 	break;
-      
+#endif /* HAVE_PGP || HAVE_SMIME */
+
+
+#if defined(HAVE_PGP) || defined(HAVE_SMIME)
+      case OP_FORGET_PASSPHRASE:
+	crypt_forget_passphrase ();
+	break;
+
       case OP_EXTRACT_KEYS:
         CHECK_MODE(IsHeader(extra));
-        pgp_extract_keys_from_messages(extra->hdr);
+	crypt_extract_keys_from_messages(extra->hdr);
         redraw = REDRAW_FULL;
         break;
-#endif /* HAVE_PGP */
+#endif /* HAVE_PGP || HAVE_SMIME */
 
 
 
