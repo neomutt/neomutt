@@ -912,13 +912,27 @@ static void flowed_quote (STATE *s, int level)
     state_putc (' ', s);
 }
 
-static void flowed_stuff (STATE *s, const char *cont, int level)
+static int flowed_maybe_quoted (char *cont)
 {
+  return regexec ((regex_t *) QuoteRegexp.rx, cont, 0, NULL, 0) == 0;
+}
+
+static void flowed_stuff (STATE *s, char *cont, int level)
+{
+  if (!option (OPTTEXTFLOWED) && !(s->flags & M_DISPLAY))
+    return;
+
   if (s->flags & M_DISPLAY)
-    return;
-  if (!option (OPTTEXTFLOWED))
-    return;
-  if ((*cont == ' ') || (*cont == '>') || (!level && !mutt_strncmp (cont, "From ", 5)))
+  {
+    /* 
+     * Hack: If we are in the beginning of the line and there is 
+     * some text on the line which looks like it's quoted, turn off 
+     * ANSI colors, so quote coloring doesn't affect this line. 
+     */
+    if (*cont && !level && flowed_maybe_quoted (cont))
+      state_puts ("\033[0;m",s);
+  }
+  else if ((*cont == ' ') || (*cont == '>') || (!level && !mutt_strncmp (cont, "From ", 5)))
     state_putc (' ', s);
 }
 
@@ -1014,11 +1028,16 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
 
     if (last_full)
     {
-      /* we are in the beginning of a new line */
+      /* 
+       * We are in the beginning of a new line. Determine quote level
+       * and indentation prefix 
+       */
       for (quoted = 0; line[quoted] == '>'; quoted++)
 	;
       
       cont = line + quoted;
+      
+      /* undo space stuffing */
       if (*cont == ' ')
 	cont++;
 
@@ -1029,12 +1048,13 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
     {
       /* 
        * This is just the tail of some over-long line. Keep
-       * indentation and quote levels.
+       * indentation and quote levels.  Don't unstuff.
        */
       cont = line;
     }
 
     /* If we have a change in quoting depth, wrap. */
+
     if (col && last_quoted != quoted && last_quoted >= 0)
     {
       state_putc ('\n', s);
@@ -1078,7 +1098,7 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
 	}
       }
 
-      /* We might be desperate.  Get me a new line, and retry. */
+      /* We seem to be desperate.  Get me a new line, and retry. */
       if (!tail && (quoted + add + col + mutt_strlen (cont) > flowed_max) && col)
       {
 	state_putc ('\n', s);
@@ -1095,19 +1115,23 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
       }
 
       /* 
-       * If we are in the beginning of an output line, 
-       * do quoting and stuffing. 
+       * If we are in the beginning of an output line, do quoting
+       * and stuffing. 
+       * 
+       * We have to temporarily assemble the line since display
+       * stuffing (i.e., turning off quote coloring) may depend on
+       * the line's actual content.  You never know what people put
+       * into their regular expressions. 
        */
       if (!col)
       {
+	char tmp[LONG_STRING];
+	snprintf (tmp, sizeof (tmp), "%s%s", indent, cont);
+
 	flowed_quote (s, quoted);
-	if (*indent)
-	{
-	  flowed_stuff (s, indent, quoted + add);
-	  state_puts (indent, s);
-	}
-	else 
-	  flowed_stuff (s, cont, quoted + add);
+	flowed_stuff (s, tmp, quoted + add);
+
+	state_puts (indent, s);
       }
 
       /* output the text */
