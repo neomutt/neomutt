@@ -11,11 +11,11 @@ endif
 
 SUBDIRS = m4 po intl doc contrib $(IMAP_SUBDIR)
 
-bin_SCRIPTS = muttbug flea
+bin_SCRIPTS = muttbug flea @SMIMEAUX_TARGET@
 
 BUILT_SOURCES = keymap_defs.h patchlist.c
 
-bin_PROGRAMS = mutt @DOTLOCK_TARGET@ @PGPAUX_TARGET@ @SMIMEAUX_TARGET@
+bin_PROGRAMS = mutt @DOTLOCK_TARGET@ @PGPAUX_TARGET@
 mutt_SOURCES = $(BUILT_SOURCES) \
 	addrbook.c alias.c attach.c base64.c browser.c buffy.c color.c \
         crypt.c cryptglue.c \
