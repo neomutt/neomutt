@@ -1590,7 +1590,14 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** When this variable is set, Mutt will decode RFC-2047-encoded MIME 
-  ** parameters.  Note that this use of RFC 2047's encoding is explicitly,
+  ** parameters. You want to set this variable when mutt suggests you
+  ** to save attachments to files named like this: 
+  ** =?iso-8859-1?Q?file=5F=E4=5F991116=2Ezip?=
+  ** .pp
+  ** When this variable is set interactively, the change doesn't have
+  ** the desired effect before you have changed folders.
+  ** .pp
+  ** Note that this use of RFC 2047's encoding is explicitly,
   ** prohibited by the standard, but nevertheless encountered in the
   ** wild.
   ** Also note that setting this parameter will \fInot\fP have the effect 
