@@ -634,7 +634,7 @@ self_insert:
 	rv = 0; 
 	goto bye;
       }
-      else if ((ch < ' ' || IsWPrint (ch))) /* why? */
+      else if (ch && (ch < ' ' || IsWPrint (ch))) /* why? */
       {
 	if (state->lastchar >= state->wbuflen)
 	{
