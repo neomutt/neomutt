@@ -630,8 +630,11 @@ mutt_make_reference_headers (ENVELOPE *curenv, ENVELOPE *env, CONTEXT *ctx)
   else
   {
     env->references = mutt_make_references (curenv);
-    env->in_reply_to = mutt_new_list ();
-    env->in_reply_to->data = safe_strdup (curenv->message_id);
+    if (curenv->message_id)
+    {
+      env->in_reply_to = mutt_new_list ();
+      env->in_reply_to->data = safe_strdup (curenv->message_id);
+    }
   }
 }
 
