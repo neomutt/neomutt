@@ -198,16 +198,9 @@ main ()
 	LIBS="$LIBS $MUTTLIBS"
 	CF_CHECK_FUNCDECLS([#include <curses.h>], start_color typeahead bkgdset curs_set meta use_default_colors resizeterm)
 	if test "$ac_cv_func_decl_start_color" = yes; then
-		AC_DEFINE(HAVE_START_COLOR)
 		AC_DEFINE(HAVE_COLOR)
 	fi
-	test "$ac_cv_func_decl_typeahead" = yes && AC_DEFINE(HAVE_TYPEAHEAD)
-	test "$ac_cv_func_decl_bkgdset" = yes && AC_DEFINE(HAVE_BKGDSET)
-	test "$ac_cv_func_decl_curs_set" = yes && AC_DEFINE(HAVE_CURS_SET)
-	test "$ac_cv_func_decl_meta" = yes && AC_DEFINE(HAVE_META)
-	test "$ac_cv_func_decl_use_default_colors" = yes && AC_DEFINE(HAVE_USE_DEFAULT_COLORS)
 	if test "$ac_cv_func_decl_resizeterm" = yes; then
-		AC_DEFINE(HAVE_RESIZETERM)
 		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS resize.o"
 	fi
 	LIBS="$old_LIBS"

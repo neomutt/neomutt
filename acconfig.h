@@ -150,6 +150,7 @@
 /* define when your system has the setrlimit function */
 #undef HAVE_SETRLIMIT
 
+@BOTTOM@
 /* Define if you have start_color, as a function or macro.  */
 #undef HAVE_START_COLOR
 
