@@ -1474,6 +1474,7 @@ static void start_debug (void)
   if ((debugfile = safe_fopen(buf, "w")) != NULL)
   {
     t = time (0);
+    setbuf (debugfile, NULL); /* don't buffer the debugging output! */
     fprintf (debugfile, "Mutt %s started at %s.\nDebugging at level %d.\n\n",
 	     MUTT_VERSION, asctime (localtime (&t)), debuglevel);
   }
