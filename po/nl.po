@@ -1,9 +1,9 @@
 # $Id$
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.4\n"
+"Project-Id-Version: Mutt 1.5.5.1\n"
 "POT-Creation-Date: 2003-11-05 21:05+0100\n"
-"PO-Revision-Date: 2003-03-21\n"
+"PO-Revision-Date: 2003-11-06\n"
 "Last-Translator: René Clerc <rene@clerc.nl>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -563,7 +563,7 @@ msgstr "Versleutelen met: "
 
 #: compose.c:165
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
-msgstr "PGP (v)ersleutel, (o)ndertekenen, ondert. (a)ls, (b)eide, (g)een? "
+msgstr "PGP (v)ersleutel, (o)ndertekenen, ondert. (a)ls, (b)eiden, (g)een? "
 
 #: compose.c:166
 msgid "esabf"
@@ -578,7 +578,7 @@ msgstr "Ondertekenen als: "
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (f)orget it? "
 msgstr ""
-"S/MIME (v)ersleutel, (o)ndert, ondert (a)ls, (b)eide, (m)ic selecteren, (g)"
+"S/MIME (v)ersleutel, (o)ndert, ondert (a)ls, (b)eiden, (m)ic selecteren, (g)"
 "een? "
 
 #: compose.c:228
@@ -2837,13 +2837,12 @@ msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): kan bestandstijd niet zetten"
 
 #: muttlib.c:835
-#, fuzzy
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
-msgstr "Bestand is een directory, daarin opslaan?"
+msgstr "Bestand is een directory, daarin opslaan? [(j)a, (n)ee, (a)llen]"
 
 #: muttlib.c:835
 msgid "yna"
-msgstr ""
+msgstr "jna"
 
 #: muttlib.c:851
 msgid "File is a directory, save under it?"
