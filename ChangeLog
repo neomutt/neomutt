@@ -1,3 +1,8 @@
+2005-02-11 01:19:15  Brendan Cully  <brendan@kublai.com>  (brendan)
+                                 
+	* globals.h, init.h: Only enable ssl_client_cert for openssl
+	(spotted by Adeodato).
+                                 
 2005-02-09 09:05:38  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* pattern.c: Don't crash in mutt_pattern_exec when h->env is NULL.
