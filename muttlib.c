@@ -401,14 +401,14 @@ char *_mutt_expand_path (char *s, size_t slen, int rx)
       
       case '>':
       {
-	strfcpy (p, Inbox, sizeof (p));
+	strfcpy (p, NONULL(Inbox), sizeof (p));
 	tail = s + 1;
       }
       break;
       
       case '<':
       {
-	strfcpy (p, Outbox, sizeof (p));
+	strfcpy (p, NONULL(Outbox), sizeof (p));
 	tail = s + 1;
       }
       break;
@@ -417,12 +417,12 @@ char *_mutt_expand_path (char *s, size_t slen, int rx)
       {
 	if (*(s+1) == '!')
 	{
-	  strfcpy (p, LastFolder, sizeof (p));
+	  strfcpy (p, NONULL(LastFolder), sizeof (p));
 	  tail = s + 2;
 	}
 	else 
 	{
-	  strfcpy (p, Spoolfile, sizeof (p));
+	  strfcpy (p, NONULL(Spoolfile), sizeof (p));
 	  tail = s + 1;
 	}
       }
@@ -430,7 +430,7 @@ char *_mutt_expand_path (char *s, size_t slen, int rx)
       
       case '-':
       {
-	strfcpy (p, LastFolder, sizeof (p));
+	strfcpy (p, NONULL(LastFolder), sizeof (p));
 	tail = s + 1;
       }
       break;
