@@ -109,6 +109,7 @@ static void mix_add_entry (REMAILER ***type2_list, REMAILER *entry,
   }
   
   (*type2_list)[(*used)++] = entry;
+  if (entry) entry->num = *used;
 }
 
 static REMAILER *mix_new_remailer (void)
@@ -364,15 +365,84 @@ static const char *mix_format_caps (REMAILER *r)
   
   return capbuff;
 }
-  
+
+/*
+ * Format an entry for the remailer menu.
+ * 
+ * %n	number
+ * %c	capabilities
+ * %s	short name
+ * %a	address
+ *
+ */
+
+static const char *mix_entry_fmt (char *dest,
+				  size_t destlen,
+				  char op,
+				  const char *src,
+				  const char *prefix,
+				  const char *ifstring,
+				  const char *elsestring,
+				  unsigned long data,
+				  format_flag flags)
+{
+  char fmt[16];
+  REMAILER *remailer = (REMAILER *) data;
+  int optional = (flags & M_FORMAT_OPTIONAL);
+
+  switch (op)
+  {
+    case 'n':
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
+	snprintf (dest, destlen, fmt, remailer->num);
+      }
+      break;
+    case 'c':
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+	snprintf (dest, destlen, fmt, mix_format_caps(remailer));
+      }
+      break;
+    case 's':
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+	snprintf (dest, destlen, fmt, NONULL(remailer->shortname));
+      }
+      else if (!remailer->shortname)
+        optional = 0;
+      break;
+    case 'a':
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+	snprintf (dest, destlen, fmt, NONULL(remailer->addr));
+      }
+      else if (!remailer->addr)
+        optional = 0;
+      break;
+    
+    default:
+      *dest = '\0';
+  }
+
+  if (optional)
+    mutt_FormatString (dest, destlen, ifstring, mutt_attach_fmt, data, 0);
+  else if (flags & M_FORMAT_OPTIONAL)
+    mutt_FormatString (dest, destlen, elsestring, mutt_attach_fmt, data, 0);
+  return (src);
+}
+
+
   
 static void mix_entry (char *b, size_t blen, MUTTMENU *menu, int num)
 {
   REMAILER **type2_list = (REMAILER **) menu->data;
-  snprintf (b, blen, "%4d %s    %-16s %s",
-	    num + 1, mix_format_caps (type2_list[num]),
-	    NONULL (type2_list[num]->shortname),
-	    NONULL (type2_list[num]->addr));
+  mutt_FormatString (b, blen, NONULL (MixEntryFormat), mix_entry_fmt,
+		     (unsigned long) type2_list[num], M_FORMAT_ARROWCURSOR);
 }
 
 static int mix_search (MUTTMENU *m, regex_t *re, int n)

@@ -38,6 +38,7 @@
 
 struct type2
 {
+  int num;
   char *shortname;
   char *addr;
   char *ver;

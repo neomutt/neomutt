@@ -153,6 +153,7 @@ struct option_t MuttVars[] = {
 
 
 #ifdef MIXMASTER
+  { "mix_entry_format", DT_STR,  R_NONE, UL &MixEntryFormat, UL "%4n %c %-16s %a" },
   { "mixmaster",	DT_PATH, R_NONE, UL &Mixmaster, UL MIXMASTER },
 #endif
 

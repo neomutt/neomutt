@@ -55,6 +55,7 @@ WHERE char *MsgFmt;
 
 #ifdef MIXMASTER
 WHERE char *Mixmaster;
+WHERE char *MixEntryFormat;
 #endif
 
 WHERE char *Muttrc INITVAL (NULL);
