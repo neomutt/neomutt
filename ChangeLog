@@ -1,3 +1,10 @@
+2003-07-14 12:17:43  Brendan Cully  <brendan@kublai.com>  (roessler)
+
+	* account.c, curs_lib.c, enter.c, keymap.c, keymap.h, mutt.h,
+	mutt_curses.h: The attached patch prevents mutt from reading the
+	push buffer when asking for passwords. This is a proper fix for
+	bug 1312. I think it's uncontroversial.
+
 2003-07-04 17:15:34  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* imap/auth_sasl.c: Increase a buffer's size.
