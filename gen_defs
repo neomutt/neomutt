@@ -31,3 +31,5 @@ for mode in help defs; do
 		echo ''
 	fi
 done
+
+exit 0
