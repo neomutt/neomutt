@@ -178,6 +178,11 @@ Solaris 2.4
 	Color does not work right with Solaris curses.  You will have to
 	compile with either ncurses or slang to get working color support.
 
+Solaris 2.6
+
+	There are reports that mutt behaves strangely when linked
+	with the system regexp library.  Please use the --with-rx
+	switch when configuring on this platform.
 
 Linux
 
