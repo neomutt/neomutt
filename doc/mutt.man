@@ -133,6 +133,9 @@ System mapping between MIME types and file extensions.
 The privileged dotlocking program.
 .SH BUGS
 .PP
+None.  Mutts have fleas, not bugs.
+.SH FLEAS
+.PP
 Suspend/resume while editing a file with an external editor does not work
 under SunOS 4.x if you use the curses lib in /usr/5lib.  It \fIdoes\fP work
 with the S-Lang library, however.
@@ -145,11 +148,11 @@ suspend/resume does not work under Ultrix.
 The help line for the index menu is not updated if you change the bindings
 for one of the functions listed while Mutt is running.
 .PP
-For a more up-to-date list of bugs, please visit the mutt project's
-bug tracking system under http://bugs.guug.de/.  To report a bug,
-please use the
-.BR muttbug (1)
-program.
+For a more up-to-date list of bugs, errm, fleas, please visit the
+mutt project's bug tracking system under http://bugs.guug.de/.  To
+report a bug, please use the
+.BR flea (1)
+program.  (Mutts tend to have fleas rather than bugs.)
 .SH NO WARRANTIES
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -157,7 +160,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 .SH SEE ALSO
 .PP
-.BR muttbug (1),
+.BR flea (1),
 .BR muttrc (5),
 .BR curses (3),
 .BR mutt_dotlock (1),

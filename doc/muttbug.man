@@ -20,33 +20,36 @@
 .TH mutt 1 "July 2000" Unix "User Manuals"
 .SH NAME
 .PP
-muttbug \- Report a bug in mutt.
+flea \- Report a bug (or rather a flea) in mutt.
 .SH SYNOPSIS
 .PP
-.B muttbug
+.B flea
 .SH DESCRIPTION
 .PP
-.B muttbug
+.B flea
 is a shell script which helps you to submit a bug report against the 
 .BR mutt (1)
 mail user agent.
 .PP
-If you invoke muttbug, you'll first be prompted for a short
+If you invoke 
+.BR flea , 
+you'll first be prompted for a short
 description of the problem you experience.  This will be used as the
 bug report's subject line, so it should be concise, but informative.
 .PP
 You are then asked to assign an initial severity level to the
 problem you observe; 
-.B muttbug
+.B flea
 will give you a description which severity level is appropriate or
 not.
 .PP
 Then, you are asked for the location of a core dump (normally named
 .BR core )
-which may have been left over by a crash of your mutt.
+which may have been left over by a crash of your 
+.BR mutt (1).
 You can just type \(lqno\(rq here, or you can enter the path leading 
 to a core dump.
-.B muttbug
+.B flea
 will try to use either
 .BR sdb (1),
 .BR dbx (1),
@@ -64,8 +67,10 @@ reference configuration makes it incredibly easier to track down a
 problem.
 .PP
 If you are using Debian GNU/Linux,
-.B muttbug
-will now check whether or not mutt has been installed as a Debian
+.B flea
+will now check whether or not 
+.B mutt
+has been installed as a Debian
 package on your system, and suggest to file the bug against the
 .BR mutt (1)
 and Debian bug tracking systems.  This option was added since the 
@@ -95,21 +100,24 @@ command, output from
 .BR mutt (1)
 itself, and your system's 
 .BR mutt (1)
-configuration files.  Yoy may wish to browse through this part of
+configuration files.  You may wish to browse through this part of
 the bug report form in order to avoid leaking confidential
 information to the public.
 .PP
 If you leave the editor, 
-.B muttbug
-will give you the option to view, re-edit, submit, or abandon your
-bug report.
+.B flea
+will give you the option to review, re-edit, submit, or abandon your
+bug report.  If you decide to submit it, a mail message containing
+your report will be sent to <submit@bugs.guug.de>.  You'll receive a
+copy of this message.
 .PP
-While your bug report is being processed, you will receive various
-e-mail messages from the bug tracking system informing you about
-what's going on: Once your bug report has been entered into the bug
-tracking system, it will be assigned a unique serial number about
-which you are informed via e-mail.  If you wish to submit additional
-information about the bug, you can just send it to the address
+While your bug report is being processed by the bug tracking system,
+you will receive various e-mail messages from the bug tracking
+system informing you about what's going on: Once your bug report has
+been entered into the bug tracking system, it will be assigned a
+unique serial number about which you are informed via e-mail.  If
+you wish to submit additional information about the bug, you can
+just send it to the address
 .BR \fIserial\fP@bugs.guug.de .
 .PP
 Later, you will most likely receive questions from the developers
@@ -128,7 +136,7 @@ http://bugs.guug.de/
 .SH
 ENVIRONMENT
 .PP
-.B muttbug
+.B flea
 will use the following environment variables:
 .IP "EMAIL"
 Your electronic mail address.  Will be used to set the bug report's
@@ -187,6 +195,6 @@ The mutt bug tracking system: http://bugs.guug.de/
 .SH
 AUTHOR
 .PP
-.B muttbug
+.B flea
 and this manual page were written by Thomas Roessler
 <roessler@guug.de>.

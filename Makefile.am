@@ -12,9 +12,9 @@ endif
 SUBDIRS = m4 po intl doc contrib $(IMAP_SUBDIR)
 
 if NEEDS_PGPEWRAP
-bin_SCRIPTS = pgpewrap muttbug
+bin_SCRIPTS = pgpewrap muttbug flea
 else
-bin_SCRIPTS = muttbug
+bin_SCRIPTS = muttbug flea
 endif
 
 BUILT_SOURCES = keymap_defs.h types.h
@@ -92,9 +92,9 @@ LDADD = @LIBOBJS@ @INTLLIBS@
 
 OPS=@OPS@
 
-muttbug: muttbug.sh
-	cp muttbug.sh muttbug
-	chmod +x muttbug
+flea:	muttbug.sh
+	cp muttbug.sh flea
+	chmod +x flea
 
 Makefile: $(BUILT_SOURCES)
 
