@@ -32,24 +32,43 @@
 #define IMAP_CMD_BUFSIZE 512
 
 /* forward declarations */
+static void cmd_finish (IMAP_DATA* idata);
+static void cmd_handle_fatal (IMAP_DATA* idata);
+static int cmd_handle_untagged (IMAP_DATA* idata);
 static void cmd_make_sequence (char* buf, size_t buflen);
 static void cmd_parse_capabilities (IMAP_DATA* idata, char* s);
 static void cmd_parse_expunge (IMAP_DATA* idata, char* s);
 static void cmd_parse_myrights (IMAP_DATA* idata, char* s);
 
-static char *Capabilities[] = {"IMAP4", "IMAP4rev1", "STATUS", "ACL", 
-  "NAMESPACE", "AUTH=CRAM-MD5", "AUTH=KERBEROS_V4", "AUTH=GSSAPI", 
-  "AUTH=LOGIN", "AUTH-LOGIN", "AUTH=PLAIN", "AUTH=SKEY", "IDLE", 
-  "LOGIN-REFERRALS", "MAILBOX-REFERRALS", "QUOTA", "SCAN", "SORT", 
-  "THREAD=ORDEREDSUBJECT", "UIDPLUS", "AUTH=ANONYMOUS", NULL};
+static char *Capabilities[] = {
+  "IMAP4",
+  "IMAP4rev1",
+  "STATUS",
+  "ACL", 
+  "NAMESPACE",
+  "AUTH=CRAM-MD5",
+  "AUTH=GSSAPI",
+  "AUTH=ANONYMOUS",
+  "STARTTLS",
+  "LOGINDISABLED",
+
+  NULL
+};
 
 /* imap_cmd_start: Given an IMAP command, send it to the server.
  *   Currently a minor convenience, but helps to route all IMAP commands
  *   through a single interface. */
-void imap_cmd_start (IMAP_DATA* idata, const char* cmd)
+int imap_cmd_start (IMAP_DATA* idata, const char* cmd)
 {
   char* out;
   int outlen;
+  int rc = 0;
+
+  if (idata->status == IMAP_FATAL)
+  {
+    cmd_handle_fatal (idata);
+    return IMAP_CMD_FAIL;
+  }
 
   cmd_make_sequence (idata->seq, sizeof (idata->seq));
   /* seq, space, cmd, \r\n\0 */
@@ -57,19 +76,27 @@ void imap_cmd_start (IMAP_DATA* idata, const char* cmd)
   out = (char*) safe_malloc (outlen);
   snprintf (out, outlen, "%s %s\r\n", idata->seq, cmd);
 
-  mutt_socket_write (idata->conn, out);
+  rc = mutt_socket_write (idata->conn, out);
 
-  safe_free ((void**) &out);
+  FREE (&out);
+
+  return (rc < 0) ? IMAP_CMD_FAIL : 0;
 }
 
-/* imap_cmd_resp: Reads server responses from an IMAP command, detects
+/* imap_cmd_step: Reads server responses from an IMAP command, detects
  *   tagged completion response, handles untagged messages, can read
  *   arbitrarily large strings (using malloc, so don't make it _too_
  *   large!). */
-int imap_cmd_resp (IMAP_DATA* idata)
+int imap_cmd_step (IMAP_DATA* idata)
 {
   unsigned int len = 0;
   int c;
+
+  if (idata->status == IMAP_FATAL)
+  {
+    cmd_handle_fatal (idata);
+    return IMAP_CMD_FAIL;
+  }
 
   /* read into buffer, expanding buffer as necessary until we have a full
    * line */
@@ -79,15 +106,14 @@ int imap_cmd_resp (IMAP_DATA* idata)
     {
       safe_realloc ((void**) &idata->buf, idata->blen + IMAP_CMD_BUFSIZE);
       idata->blen = idata->blen + IMAP_CMD_BUFSIZE;
-      dprint (3, (debugfile, "imap_cmd_resp: grew buffer to %u bytes\n", idata->blen));
+      dprint (3, (debugfile, "imap_cmd_step: grew buffer to %u bytes\n", idata->blen));
     }
 
     if ((c = mutt_socket_readln (idata->buf + len, idata->blen - len,
       idata->conn)) < 0)
     {
-      dprint (1, (debugfile, "imap_cmd_resp: Error while reading server response, closing connection.\n"));
+      dprint (1, (debugfile, "imap_cmd_step: Error while reading server response, closing connection.\n"));
       mutt_socket_close (idata->conn);
-      idata->state = IMAP_DISCONNECTED;
       idata->status = IMAP_FATAL;
       return IMAP_CMD_FAIL;
     }
@@ -104,12 +130,12 @@ int imap_cmd_resp (IMAP_DATA* idata)
   {
     safe_realloc ((void**) &idata->buf, IMAP_CMD_BUFSIZE);
     idata->blen = IMAP_CMD_BUFSIZE;
-    dprint (3, (debugfile, "imap_cmd_resp: shrank buffer to %u bytes\n", idata->blen));
+    dprint (3, (debugfile, "imap_cmd_step: shrank buffer to %u bytes\n", idata->blen));
   }
   
   /* handle untagged messages. The caller still gets its shot afterwards. */
   if (!strncmp (idata->buf, "* ", 2) &&
-      imap_handle_untagged (idata, idata->buf))
+      cmd_handle_untagged (idata))
     return IMAP_CMD_FAIL;
 
   /* server demands a continuation response from us */
@@ -119,57 +145,11 @@ int imap_cmd_resp (IMAP_DATA* idata)
   /* tagged completion code */
   if (!mutt_strncmp (idata->buf, idata->seq, SEQLEN))
   {
-    imap_cmd_finish (idata);
+    cmd_finish (idata);
     return IMAP_CMD_DONE;
   }
 
   return IMAP_CMD_CONTINUE;
-}
-
-/* imap_cmd_finish: When the caller has finished reading command responses,
- *   it must call this routine to perform cleanup (eg fetch new mail if
- *   detected, do expunge) */
-void imap_cmd_finish (IMAP_DATA* idata)
-{
-  if (!(idata->state == IMAP_SELECTED) || idata->ctx->closing)
-  {
-    idata->status = 0;
-    mutt_clear_error ();
-    return;
-  }
-  
-  if ((idata->status == IMAP_NEW_MAIL || 
-       (idata->reopen & (IMAP_EXPUNGE_PENDING|IMAP_NEWMAIL_PENDING)))
-      && (idata->reopen & IMAP_REOPEN_ALLOW))
-  {
-    int count = idata->newMailCount;
-
-    if (!(idata->reopen & IMAP_EXPUNGE_PENDING) &&
-	((idata->status == IMAP_NEW_MAIL) || (idata->reopen & IMAP_NEWMAIL_PENDING))  
-	&& count > idata->ctx->msgcount)
-    {
-      /* read new mail messages */
-      dprint (1, (debugfile, "imap_cmd_finish: fetching new mail\n"));
-
-      count = imap_read_headers (idata->ctx, idata->ctx->msgcount, count-1)+1;
-      idata->check_status = IMAP_NEW_MAIL;
-      idata->reopen &= ~IMAP_NEWMAIL_PENDING;
-    }
-    else
-    {
-      imap_expunge_mailbox (idata);
-      idata->check_status = IMAP_REOPENED;
-      idata->reopen &= ~(IMAP_EXPUNGE_PENDING|IMAP_NEWMAIL_PENDING);
-    }
-
-  }
-  else if (!(idata->reopen & IMAP_REOPEN_ALLOW))
-  {
-    if (idata->status == IMAP_NEW_MAIL)
-      idata->reopen |= IMAP_NEWMAIL_PENDING;
-  }
-
-  idata->status = 0;
 }
 
 /* imap_code: returns 1 if the command result was OK, or 0 if NO or BAD */
@@ -194,6 +174,12 @@ int imap_exec (IMAP_DATA* idata, const char* cmd, int flags)
   int outlen;
   int rc;
 
+  if (idata->status == IMAP_FATAL)
+  {
+    cmd_handle_fatal (idata);
+    return -1;
+  }
+
   /* create sequence for command */
   cmd_make_sequence (idata->seq, sizeof (idata->seq));
   /* seq, space, cmd, \r\n\0 */
@@ -201,13 +187,15 @@ int imap_exec (IMAP_DATA* idata, const char* cmd, int flags)
   out = (char*) safe_malloc (outlen);
   snprintf (out, outlen, "%s %s\r\n", idata->seq, cmd);
 
-  mutt_socket_write_d (idata->conn, out,
+  rc = mutt_socket_write_d (idata->conn, out,
     flags & IMAP_CMD_PASS ? IMAP_LOG_PASS : IMAP_LOG_CMD);
-
   safe_free ((void**) &out);
 
+  if (rc < 0)
+    return -1;
+
   do
-    rc = imap_cmd_resp (idata);
+    rc = imap_cmd_step (idata);
   while (rc == IMAP_CMD_CONTINUE);
 
   if (rc != IMAP_CMD_DONE)
@@ -232,13 +220,62 @@ int imap_exec (IMAP_DATA* idata, const char* cmd, int flags)
   return 0;
 }
 
-/* imap_handle_untagged: fallback parser for otherwise unhandled messages. */
-int imap_handle_untagged (IMAP_DATA* idata, char* s)
+/* cmd_finish: When the caller has finished reading command responses,
+ *   it must call this routine to perform cleanup (eg fetch new mail if
+ *   detected, do expunge). Called automatically by imap_cmd_step */
+static void cmd_finish (IMAP_DATA* idata)
 {
-  char *pn;
+  if (!(idata->state == IMAP_SELECTED) || idata->ctx->closing)
+  {
+    mutt_clear_error ();
+    return;
+  }
+  
+  if ((idata->reopen & IMAP_REOPEN_ALLOW) &&
+      (idata->reopen & (IMAP_EXPUNGE_PENDING|IMAP_NEWMAIL_PENDING)))
+  {
+    int count = idata->newMailCount;
+
+    if (!(idata->reopen & IMAP_EXPUNGE_PENDING) &&
+	(idata->reopen & IMAP_NEWMAIL_PENDING)
+	&& count > idata->ctx->msgcount)
+    {
+      /* read new mail messages */
+      dprint (2, (debugfile, "cmd_finish: Fetching new mail\n"));
+      count = imap_read_headers (idata, idata->ctx->msgcount, count-1)+1;
+      /* check_status: curs_main uses imap_check_mailbox to detect
+       *   whether the index needs updating */
+      idata->check_status = IMAP_NEWMAIL_PENDING;
+      idata->reopen &= ~IMAP_NEWMAIL_PENDING;
+    }
+    else
+    {
+      dprint (2, (debugfile, "cmd_finish: Expunging mailbox\n"));
+      imap_expunge_mailbox (idata);
+      idata->reopen &= ~(IMAP_EXPUNGE_PENDING|IMAP_NEWMAIL_PENDING);
+    }
+  }
+
+  idata->status = 0;
+}
+
+/* cmd_handle_fatal: when IMAP_DATA is in fatal state, do what we can */
+static void cmd_handle_fatal (IMAP_DATA* idata)
+{
+  if ((idata->state == IMAP_SELECTED) &&
+      (idata->reopen & IMAP_REOPEN_ALLOW) &&
+      !idata->ctx->closing)
+    mx_fastclose_mailbox (idata->ctx);
+}
+
+/* cmd_handle_untagged: fallback parser for otherwise unhandled messages. */
+static int cmd_handle_untagged (IMAP_DATA* idata)
+{
+  char* s;
+  char* pn;
   int count;
 
-  s = imap_next_word (s);
+  s = imap_next_word (idata->buf);
 
   if ((idata->state == IMAP_SELECTED) && isdigit (*s))
   {
@@ -263,22 +300,21 @@ int imap_handle_untagged (IMAP_DATA* idata, char* s)
 	 */
 	mutt_error _("Fatal error.  Message count is out of sync!");
 	idata->status = IMAP_FATAL;
-	mx_fastclose_mailbox (idata->ctx);
 	return -1;
       }
       /* at least the InterChange server sends EXISTS messages freely,
        * even when there is no new mail */
       else if (count == idata->ctx->msgcount)
 	dprint (3, (debugfile,
-          "imap_handle_untagged: superfluous EXISTS message.\n"));
+          "cmd_handle_untagged: superfluous EXISTS message.\n"));
       else
       {
 	if (!(idata->reopen & IMAP_EXPUNGE_PENDING))
         {
           dprint (2, (debugfile,
-            "imap_handle_untagged: New mail in %s - %d messages total.\n",
+            "cmd_handle_untagged: New mail in %s - %d messages total.\n",
             idata->mailbox, count));
-	  idata->status = IMAP_NEW_MAIL;
+	  idata->reopen |= IMAP_NEWMAIL_PENDING;
         }
 	idata->newMailCount = count;
       }

@@ -54,7 +54,6 @@
 enum
 {
   IMAP_FATAL = 1,
-  IMAP_NEW_MAIL,
   IMAP_BYE,
   IMAP_REOPENED
 };
@@ -92,7 +91,7 @@ enum
   RIGHTSMAX
 };
 
-/* Capabilities */
+/* Capabilities we are interested in */
 enum
 {
   IMAP4 = 0,
@@ -101,21 +100,10 @@ enum
   ACL,				/* RFC 2086: IMAP4 ACL extension */
   NAMESPACE,                   	/* RFC 2342: IMAP4 Namespace */
   ACRAM_MD5,			/* RFC 2195: CRAM-MD5 authentication */
-  AKERBEROS_V4,			/* AUTH=KERBEROS_V4 */
   AGSSAPI,			/* RFC 1731: GSSAPI authentication */
-  /* From here down, we don't care */
-  ALOGIN,			/* AUTH=LOGIN */
-  AUTH_LOGIN,			/* AUTH-LOGIN */
-  APLAIN,			/* AUTH=PLAIN */
-  ASKEY,			/* AUTH=SKEY */
-  IDLE,				/* RFC 2177: IMAP4 IDLE command */
-  LOGIN_REFERRALS,		/* LOGIN-REFERRALS */
-  MAILBOX_REFERRALS,		/* MAILBOX-REFERRALS */
-  SCAN,
-  SORT,
-  TORDEREDSUBJECT,		/* THREAD=ORDEREDSUBJECT */
-  UIDPLUS,			/* RFC 2859: IMAP4 UIDPLUS extension */
   AUTH_ANON,			/* AUTH=ANONYMOUS */
+  STARTTLS,			/* RFC 2595: STARTTLS */
+  LOGINDISABLED,		/*           LOGINDISABLED */
 
   CAPMAX
 };
@@ -149,7 +137,6 @@ typedef struct
   CONNECTION *conn;
   unsigned char state;
   unsigned char status;
-  unsigned char check_status;
   unsigned char capabilities[(CAPMAX + 7)/8];
   char seq[SEQLEN+1];
   /* command input buffer */
@@ -169,6 +156,7 @@ typedef struct
   char delim;
   CONTEXT *ctx;
   char *mailbox;
+  unsigned short check_status;
   unsigned char reopen;
   unsigned char rights[(RIGHTSMAX + 7)/8];
   unsigned int newMailCount;
@@ -193,24 +181,21 @@ int imap_parse_list_response(IMAP_DATA* idata, char** name, int* noselect,
   int* noinferiors, char* delim);
 int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes);
 void imap_expunge_mailbox (IMAP_DATA* idata);
-int imap_reopen_mailbox (IMAP_DATA* idata);
 void imap_logout (IMAP_DATA* idata);
 
 /* auth.c */
 int imap_authenticate (IMAP_DATA* idata);
 
 /* command.c */
-void imap_cmd_start (IMAP_DATA* idata, const char* cmd);
-int imap_cmd_resp (IMAP_DATA* idata);
-void imap_cmd_finish (IMAP_DATA* idata);
+int imap_cmd_start (IMAP_DATA* idata, const char* cmd);
+int imap_cmd_step (IMAP_DATA* idata);
 int imap_code (const char* s);
 int imap_exec (IMAP_DATA* idata, const char* cmd, int flags);
-int imap_handle_untagged (IMAP_DATA* idata, char* s);
 
 /* message.c */
 void imap_add_keywords (char* s, HEADER* keywords, LIST* mailbox_flags);
 void imap_free_header_data (void** data);
-int imap_read_headers (CONTEXT* ctx, int msgbegin, int msgend);
+int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend);
 
 /* util.c */
 int imap_continue (const char* msg, const char* resp);

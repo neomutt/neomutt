@@ -347,7 +347,7 @@ static int browse_get_namespace (IMAP_DATA* idata, char* nsbuf, int nsblen,
   
   do 
   {
-    if ((rc = imap_cmd_resp (idata)) != IMAP_CMD_CONTINUE)
+    if ((rc = imap_cmd_step (idata)) != IMAP_CMD_CONTINUE)
       break;
 
     s = imap_next_word (idata->buf);

@@ -90,7 +90,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
 
   /* expect a null continuation response ("+") */
   do
-    rc = imap_cmd_resp (idata);
+    rc = imap_cmd_step (idata);
   while (rc == IMAP_CMD_CONTINUE);
 
   if (rc != IMAP_CMD_RESPOND)
@@ -127,7 +127,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
       /* end authentication attempt */
       mutt_socket_write (idata->conn, "*\r\n");
       do
-	rc = imap_cmd_resp (idata);
+	rc = imap_cmd_step (idata);
       while (rc == IMAP_CMD_CONTINUE);
       goto bail;
     }
@@ -142,7 +142,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
     if (maj_stat == GSS_S_CONTINUE_NEEDED)
     {
       do
-	rc = imap_cmd_resp (idata);
+	rc = imap_cmd_step (idata);
       while (rc == IMAP_CMD_CONTINUE);
 
       if (rc != IMAP_CMD_RESPOND)
@@ -163,7 +163,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
 
   /* get security flags and buffer size */
   do
-    rc = imap_cmd_resp (idata);
+    rc = imap_cmd_step (idata);
   while (rc == IMAP_CMD_CONTINUE);
 
   if (rc != IMAP_CMD_RESPOND)
@@ -230,7 +230,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
 
   /* Joy of victory or agony of defeat? */
   do
-    rc = imap_cmd_resp (idata);
+    rc = imap_cmd_step (idata);
   while (rc == IMAP_CMD_CONTINUE);
   if (rc != IMAP_CMD_DONE)
   {

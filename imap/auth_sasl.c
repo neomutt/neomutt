@@ -98,7 +98,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
   while (rc == SASL_CONTINUE)
   {
     do
-      irc = imap_cmd_resp (idata);
+      irc = imap_cmd_step (idata);
     while (irc == IMAP_CMD_CONTINUE);
 
     if (irc == IMAP_CMD_FAIL)
@@ -147,7 +147,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
   }
 
   while (irc != IMAP_CMD_DONE)
-    if ((irc = imap_cmd_resp (idata)) != IMAP_CMD_CONTINUE)
+    if ((irc = imap_cmd_step (idata)) != IMAP_CMD_CONTINUE)
       break;
 
   if (rc != SASL_OK)

@@ -41,7 +41,7 @@ imap_auth_res_t imap_auth_anon (IMAP_DATA* idata)
   imap_cmd_start (idata, "AUTHENTICATE ANONYMOUS");
 
   do
-    rc = imap_cmd_resp (idata);
+    rc = imap_cmd_step (idata);
   while (rc == IMAP_CMD_CONTINUE);
 
   if (rc != IMAP_CMD_RESPOND)
@@ -53,7 +53,7 @@ imap_auth_res_t imap_auth_anon (IMAP_DATA* idata)
   mutt_socket_write (idata->conn, "ZHVtbXkK\r\n"); /* base64 ("dummy") */
 
   do
-    rc = imap_cmd_resp (idata);
+    rc = imap_cmd_step (idata);
   while (rc == IMAP_CMD_CONTINUE);
   
   if (rc != IMAP_CMD_DONE)

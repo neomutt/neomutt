@@ -231,210 +231,6 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
   mutt_sort_headers (idata->ctx, 1);
 }
 
-#if 0
-/* imap_reopen_mailbox: Reopen an imap mailbox.  This is used when the
- * server sends an EXPUNGE message, indicating that some messages may have
- * been deleted. This is a heavy handed approach, as it reparses all of the
- * headers, but it should guarantee correctness.  Later, we might implement
- * something to actually only remove the messages that are marked
- * EXPUNGE.
- */
-int imap_reopen_mailbox (IMAP_DATA* idata)
-{
-  HEADER **old_hdrs;
-  CONTEXT* ctx;
-  int old_msgcount;
-  char buf[LONG_STRING];
-  char bufout[LONG_STRING];
-  char *pc = NULL;
-  int count = 0;
-  int msg_mod = 0;
-  int n;
-  int i, j;
-  int index_hint_set;
-
-  ctx = idata->ctx;
-
-  ctx->quiet = 1;
-
-  if (Sort != SORT_ORDER)
-  {
-    short old_sort;
-
-    old_sort = Sort;
-    Sort = SORT_ORDER;
-    mutt_sort_headers (ctx, 1);
-    Sort = old_sort;
-  }
-
-  old_hdrs = NULL;
-  old_msgcount = 0;
-
-  /* simulate a close */
-  hash_destroy (&ctx->id_hash, NULL);
-  hash_destroy (&ctx->subj_hash, NULL);
-  safe_free ((void **) &ctx->v2r);
-  if (ctx->readonly)
-  {
-    for (i = 0; i < ctx->msgcount; i++)
-      mutt_free_header (&(ctx->hdrs[i])); /* nothing to do! */
-    safe_free ((void **) &ctx->hdrs);
-  }
-  else
-  {
-    /* save the old headers */
-    old_msgcount = ctx->msgcount;
-    old_hdrs = ctx->hdrs;
-    ctx->hdrs = NULL;
-  }
-
-  ctx->hdrmax = 0;      /* force allocation of new headers */
-  ctx->msgcount = 0;
-  ctx->vcount = 0;
-  ctx->tagged = 0;
-  ctx->deleted = 0;
-  ctx->new = 0;
-  ctx->unread = 0;
-  ctx->flagged = 0;
-  ctx->changed = 0;
-  ctx->id_hash = hash_create (1031);
-  ctx->subj_hash = hash_create (1031);
-
-  mutt_message (_("Reopening mailbox... %s"), CTX_DATA->mailbox);
-  imap_munge_mbox_name (buf, sizeof (buf), CTX_DATA->mailbox);
-  snprintf (bufout, sizeof (bufout), "STATUS %s (MESSAGES)", buf);
-
-  imap_cmd_start (CTX_DATA, bufout);
-
-  do
-  {
-    if (mutt_socket_readln (buf, sizeof (buf), CTX_DATA->conn) < 0)
-      break;
-
-    if (buf[0] == '*')
-    {
-      pc = buf + 2;
-
-      if (!mutt_strncasecmp ("STATUS", pc, 6) &&
-	  (pc = (char *) mutt_stristr (pc, "MESSAGES")))
-      {
-	char* pn;
-	
-	/* skip "MESSAGES" */
-	pc += 8;
-	SKIPWS (pc);
-	pn = pc;
-
-	while (*pc && isdigit (*pc))
-	  pc++;
-	*pc++ = 0;
-	n = atoi (pn);
-	count = n;
-      }
-      else if (imap_handle_untagged (CTX_DATA, buf) != 0)
-	return -1;
-    }
-  }
-  while (mutt_strncmp (CTX_DATA->seq, buf, mutt_strlen (CTX_DATA->seq)) != 0);
-
-  if (!imap_code (buf))
-  {
-    char *s;
-    s = imap_next_word (buf); /* skip seq */
-    s = imap_next_word (s); /* Skip response */
-    mutt_error ("%s", s);
-    sleep (1);
-    return -1;
-  }
-
-  ctx->hdrmax = count;
-  ctx->hdrs = safe_malloc (count * sizeof (HEADER *));
-  ctx->v2r = safe_malloc (count * sizeof (int));
-  ctx->msgcount = 0;
-  count = imap_read_headers (ctx, 0, count - 1) + 1;
-
-  index_hint_set = 1;
-
-  if (!ctx->readonly)
-  {
-    for (i = 0; i < ctx->msgcount; i++)
-    {
-      int found = 0;
-
-      /* some messages have been deleted, and new  messages have been
-       * appended at the end; the heuristic is that old messages have then
-       * "advanced" towards the beginning of the folder, so we begin the
-       * search at index "i"
-       */
-      for (j = i; j < old_msgcount; j++)
-      {
-	if (old_hdrs[j] == NULL)
-	  continue;
-	if (mbox_strict_cmp_headers (ctx->hdrs[i], old_hdrs[j]))
-	{
-	  found = 1;
-	  break;
-	}
-      }
-      if (!found)
-      {
-	for (j = 0; j < i && j < old_msgcount; j++)
-	{
-	  if (old_hdrs[j] == NULL)
-	    continue;
-	  if (mbox_strict_cmp_headers (ctx->hdrs[i], old_hdrs[j]))
-	  {
-	    found = 1;
-	    break;
-	  }
-	}
-      }
-      if (found)
-      {
-	/* this is best done here */
-/*
-	if (!index_hint_set && *index_hint == j)
-	  *index_hint = i;
-*/
-
-	if (old_hdrs[j]->changed)
-	{
-	  /* Only update the flags if the old header was changed;
-	   * otherwise, the header may have been modified
-	   * externally, and we don't want to lose _those_ changes 
-	   */
-	  
-	  mutt_set_flag (ctx, ctx->hdrs[i], M_FLAG, old_hdrs[j]->flagged);
-	  mutt_set_flag (ctx, ctx->hdrs[i], M_REPLIED, old_hdrs[j]->replied);
-	  mutt_set_flag (ctx, ctx->hdrs[i], M_OLD, old_hdrs[j]->old);
-	  mutt_set_flag (ctx, ctx->hdrs[i], M_READ, old_hdrs[j]->read);
-	}
-	mutt_set_flag (ctx, ctx->hdrs[i], M_DELETE, old_hdrs[j]->deleted);
-	mutt_set_flag (ctx, ctx->hdrs[i], M_TAG, old_hdrs[j]->tagged);
-
-	/* we don't need this header any more */
-	mutt_free_header (&(old_hdrs[j]));
-      }
-    }
-
-    /* free the remaining old headers */
-    for (j = 0; j < old_msgcount; j++)
-    {
-      if (old_hdrs[j])
-      {
-	mutt_free_header (&(old_hdrs[j]));
-	msg_mod = 1;
-      }
-    }
-    safe_free ((void **) &old_hdrs);
-  }
-
-  ctx->quiet = 0;
-
-  return 0;
-}
-#endif
-
 static int imap_get_delim (IMAP_DATA *idata)
 {
   char *s;
@@ -448,7 +244,7 @@ static int imap_get_delim (IMAP_DATA *idata)
 
   do 
   {
-    if ((rc = imap_cmd_resp (idata)) != IMAP_CMD_CONTINUE)
+    if ((rc = imap_cmd_step (idata)) != IMAP_CMD_CONTINUE)
       break;
 
     s = imap_next_word (idata->buf);
@@ -572,7 +368,7 @@ int imap_open_connection (IMAP_DATA* idata)
 
   idata->state = IMAP_CONNECTED;
 
-  if (imap_cmd_resp (idata) != IMAP_CMD_CONTINUE)
+  if (imap_cmd_step (idata) != IMAP_CMD_CONTINUE)
     goto bail;
 
   if (mutt_strncmp ("* OK", idata->buf, 4) == 0)
@@ -685,6 +481,9 @@ int imap_open_mailbox (CONTEXT* ctx)
   /* once again the context is new */
   ctx->data = idata;
 
+  if (idata->status == IMAP_FATAL)
+    return -1;
+
   /* Clean up path and replace the one in the ctx */
   imap_fix_path (idata, mx.mbox, buf, sizeof (buf));
   FREE(&(idata->mailbox));
@@ -713,7 +512,7 @@ int imap_open_mailbox (CONTEXT* ctx)
   {
     char *pc;
     
-    if ((rc = imap_cmd_resp (idata)) != IMAP_CMD_CONTINUE)
+    if ((rc = imap_cmd_step (idata)) != IMAP_CMD_CONTINUE)
       break;
 
     pc = idata->buf + 2;
@@ -722,7 +521,7 @@ int imap_open_mailbox (CONTEXT* ctx)
     {
       /* imap_handle_untagged will have picked up the EXISTS message and
        * set the NEW_MAIL flag. We clear it here. */
-      idata->status = 0;
+      idata->reopen &= ~IMAP_NEWMAIL_PENDING;
       count = idata->newMailCount;
       idata->newMailCount = 0;
     }
@@ -821,7 +620,7 @@ int imap_open_mailbox (CONTEXT* ctx)
   ctx->hdrs = safe_malloc (count * sizeof (HEADER *));
   ctx->v2r = safe_malloc (count * sizeof (int));
   ctx->msgcount = 0;
-  count = imap_read_headers (ctx, 0, count - 1) + 1;
+  count = imap_read_headers (idata, 0, count - 1) + 1;
 
   dprint (1, (debugfile, "imap_open_mailbox(): msgcount is %d\n", ctx->msgcount));
   return 0;
@@ -894,7 +693,7 @@ void imap_logout (IMAP_DATA* idata)
    * receive a bye response (so it doesn't freak out and close the conn) */
   idata->status = IMAP_BYE;
   imap_cmd_start (idata, "LOGOUT");
-  while (imap_cmd_resp (idata) == IMAP_CMD_CONTINUE)
+  while (imap_cmd_step (idata) == IMAP_CMD_CONTINUE)
     ;
 }
 
@@ -1167,7 +966,9 @@ void imap_close_mailbox (CONTEXT* ctx)
 
   idata->reopen &= IMAP_REOPEN_ALLOW;
 
-  if ((idata->state == IMAP_SELECTED) && (ctx == idata->ctx))
+  if ((idata->status != IMAP_FATAL) &&
+      (idata->state == IMAP_SELECTED) &&
+      (ctx == idata->ctx))
   {
     if (!(idata->noclose) && imap_exec (idata, "CLOSE", 0))
       imap_error ("CLOSE failed", idata->buf);
@@ -1193,7 +994,7 @@ void imap_close_mailbox (CONTEXT* ctx)
 /* use the NOOP command to poll for new mail
  *
  * return values:
- *	M_REOPENED	mailbox has been reopened
+ *	M_REOPENED	mailbox has been externally modified
  *	M_NEW_MAIL	new mail has arrived!
  *	0		no change
  *	-1		error
@@ -1224,17 +1025,20 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint)
   {
     if (ImapCheckTimeout) checktime += t;
 
-    idata->check_status = 0;
     if (imap_exec (idata, "NOOP", 0) != 0)
     {
       imap_error ("imap_check_mailbox", idata->buf);
       return -1;
     }
     
-    if (idata->check_status == IMAP_NEW_MAIL)
+    if (idata->check_status & IMAP_NEWMAIL_PENDING)
+    {
+      idata->check_status &= ~IMAP_NEWMAIL_PENDING;
       return M_NEW_MAIL;
-    if (idata->check_status == IMAP_REOPENED)
-      return M_REOPENED;
+    }
+    
+    /* TODO: we should be able to detect external changes and return
+     *   M_REOPENED here. */
   }
   
   return 0;
@@ -1305,7 +1109,7 @@ int imap_mailbox_check (char* path, int new)
 
   do 
   {
-    if ((rc = imap_cmd_resp (idata)) != IMAP_CMD_CONTINUE)
+    if ((rc = imap_cmd_step (idata)) != IMAP_CMD_CONTINUE)
       break;
 
     s = imap_next_word (idata->buf);
@@ -1352,7 +1156,7 @@ int imap_parse_list_response(IMAP_DATA* idata, char **name, int *noselect,
 
   *name = NULL;
 
-  rc = imap_cmd_resp (idata);
+  rc = imap_cmd_step (idata);
   if (rc == IMAP_CMD_DONE)
     return 0;
   if (rc != IMAP_CMD_CONTINUE)
@@ -1400,7 +1204,7 @@ int imap_parse_list_response(IMAP_DATA* idata, char **name, int *noselect,
     { 
       if (imap_get_literal_count(idata->buf, &bytes) < 0)
 	return -1;
-      if (imap_cmd_resp (idata) != IMAP_CMD_CONTINUE)
+      if (imap_cmd_step (idata) != IMAP_CMD_CONTINUE)
 	return -1;
       *name = idata->buf;
     }

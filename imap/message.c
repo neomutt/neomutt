@@ -43,9 +43,9 @@ static char* msg_parse_flags (IMAP_HEADER* h, char* s);
  * msgno of the last message read. It will return a value other than
  * msgend if mail comes in while downloading headers (in theory).
  */
-int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
+int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 {
-  IMAP_DATA* idata;
+  CONTEXT* ctx;
   char buf[LONG_STRING];
   char hdrreq[STRING];
   FILE *fp;
@@ -56,8 +56,8 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
   int fetchlast = 0;
   const char *want_headers = "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE IN-REPLY-TO REPLY-TO LINES X-LABEL";
 
-  idata = (IMAP_DATA*) ctx->data;
-  
+  ctx = idata->ctx;
+
   /* define search string */
   if (mutt_bit_isset (idata->capabilities,IMAP4REV1))
   {
@@ -84,8 +84,8 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
   unlink (tempfile);
 
   /* make sure context has room to hold the mailbox */
-  while ((msgend) >= ctx->hdrmax)
-    mx_alloc_memory (ctx);
+  while ((msgend) >= idata->ctx->hdrmax)
+    mx_alloc_memory (idata->ctx);
 
   for (msgno = msgbegin; msgno <= msgend ; msgno++)
   {
@@ -123,11 +123,11 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
     {
       mfhrc = 0;
 
-      rc = imap_cmd_resp (idata);
+      rc = imap_cmd_step (idata);
       if (rc != IMAP_CMD_CONTINUE)
 	break;
 
-      if ((mfhrc = msg_fetch_header (ctx, &h, idata->buf, fp)) == -1)
+      if ((mfhrc = msg_fetch_header (idata->ctx, &h, idata->buf, fp)) == -1)
 	continue;
       else if (mfhrc < 0)
 	break;
@@ -175,12 +175,12 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
     /* h.data shouldn't be freed here, it is kept in ctx->headers */
 
     /* in case we get new mail while fetching the headers */
-    if (idata->status == IMAP_NEW_MAIL)
+    if (idata->reopen & IMAP_NEWMAIL_PENDING)
     {
       msgend = idata->newMailCount - 1;
       while ((msgend) >= ctx->hdrmax)
 	mx_alloc_memory (ctx);
-      idata->status = 0;
+      idata->status &= ~IMAP_NEWMAIL_PENDING;
     }
   }
 
@@ -247,7 +247,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   imap_cmd_start (idata, buf);
   do
   {
-    if ((rc = imap_cmd_resp (idata)) != IMAP_CMD_CONTINUE)
+    if ((rc = imap_cmd_step (idata)) != IMAP_CMD_CONTINUE)
       break;
 
     pc = idata->buf;
@@ -279,7 +279,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	  if (imap_read_literal (msg->fp, idata, bytes) < 0)
 	    goto bail;
 	  /* pick up trailing line */
-	  if ((rc = imap_cmd_resp (idata)) != IMAP_CMD_CONTINUE)
+	  if ((rc = imap_cmd_step (idata)) != IMAP_CMD_CONTINUE)
 	    goto bail;
 	  pc = idata->buf;
 
@@ -423,7 +423,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   imap_cmd_start (idata, buf);
 
   do
-    rc = imap_cmd_resp (idata);
+    rc = imap_cmd_step (idata);
   while (rc == IMAP_CMD_CONTINUE);
 
   if (rc != IMAP_CMD_RESPOND)
@@ -461,7 +461,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   fclose (fp);
 
   do
-    rc = imap_cmd_resp (idata);
+    rc = imap_cmd_step (idata);
   while (rc == IMAP_CMD_CONTINUE);
 
   if (!imap_code (idata->buf))
@@ -663,7 +663,7 @@ static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf, FILE* fp)
    * (eg Domino puts FLAGS here). Nothing wrong with that, either.
    * This all has to go - we should accept literals and nonliterals
    * interchangeably at any time. */
-  if (imap_cmd_resp (idata) != IMAP_CMD_CONTINUE)
+  if (imap_cmd_step (idata) != IMAP_CMD_CONTINUE)
     return -2;
   
   if (msg_parse_fetch (h, idata->buf) == -1)

@@ -29,6 +29,12 @@ imap_auth_res_t imap_auth_login (IMAP_DATA* idata)
   char buf[STRING];
   int rc;
 
+  if (mutt_bit_isset (idata->capabilities, LOGINDISABLED))
+  {
+    mutt_message _("LOGIN disabled on this server.");
+    return IMAP_AUTH_UNAVAIL;
+  }
+
   if (mutt_account_getuser (&idata->conn->account))
     return IMAP_AUTH_FAILURE;
   if (mutt_account_getpass (&idata->conn->account))

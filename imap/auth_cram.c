@@ -58,7 +58,7 @@ imap_auth_res_t imap_auth_cram_md5 (IMAP_DATA* idata)
    * correspond to that of an RFC 822 'msg-id' [RFC822] as described in [POP3].
    */
   do
-    rc = imap_cmd_resp (idata);
+    rc = imap_cmd_step (idata);
   while (rc == IMAP_CMD_CONTINUE);
   
   if (rc != IMAP_CMD_RESPOND)
@@ -103,7 +103,7 @@ imap_auth_res_t imap_auth_cram_md5 (IMAP_DATA* idata)
   mutt_socket_write (idata->conn, ibuf);
 
   do
-    rc = imap_cmd_resp (idata);
+    rc = imap_cmd_step (idata);
   while (rc == IMAP_CMD_CONTINUE);
 
   if (rc != IMAP_CMD_DONE)
