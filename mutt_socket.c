@@ -340,7 +340,7 @@ int raw_socket_open (CONNECTION* conn)
     fd = socket (cur->ai_family, cur->ai_socktype, cur->ai_protocol);
     if (fd >= 0)
     {
-      if ((rc = socket_connect (fd, res->ai_addr)) == 0)
+      if ((rc = socket_connect (fd, cur->ai_addr)) == 0)
       {
 	conn->fd = fd;
 	break;
