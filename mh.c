@@ -792,8 +792,14 @@ int maildir_open_new_message (MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
   char suffix[16];
   char subdir[16];
 
+  short deleted = hdr->deleted;
+  hdr->deleted = 0;
+
   maildir_flags (suffix, sizeof (suffix), hdr);
-		 
+
+  hdr->deleted = deleted;
+
+  
   if (hdr && (hdr->read || hdr->old))
     strfcpy (subdir, "cur", sizeof (subdir));
   else
