@@ -16,9 +16,12 @@
  *     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */ 
 
-#ifndef _MAKEDOC
-#include "sort.h"
+#ifdef _MAKEDOC
+# include "config.h"
+#else
+# include "sort.h"
 #endif
+
 #include "buffy.h"
 
 #ifndef _MAKEDOC

@@ -33,7 +33,7 @@ DEFS=-DSHAREDIR=\"$(sharedir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 	-DBINDIR=\"$(bindir)\" -DHAVE_CONFIG_H=1
 INCLUDES=-I. -I$(includedir) -I$(top_srcdir)
 
-MAKEDOC_CPP=$(CPP) $(INCLUDES) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C -include ../config.h
+MAKEDOC_CPP=$(CPP) $(INCLUDES) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C 
 
 DISTFILES = Makefile.in dotlock.man  	\
 	mutt.man			\
