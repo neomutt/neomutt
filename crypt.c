@@ -306,22 +306,24 @@ int mutt_is_multipart_signed (BODY *b)
   char *p;
 
   if (!b || !(b->type == TYPEMULTIPART) ||
-      !b->subtype || mutt_strcasecmp(b->subtype, "signed"))
+      !b->subtype || ascii_strcasecmp(b->subtype, "signed"))
     return 0;
 
   if (!(p = mutt_get_parameter("protocol", b->parameter)))
     return 0;
 
-  if (!(mutt_strcasecmp (p, "multipart/mixed")))
+  if (!(ascii_strcasecmp (p, "multipart/mixed")))
     return SIGN;
 
 #ifdef HAVE_PGP
-  if (!(mutt_strcasecmp (p, "application/pgp-signature")))
+  if (!(ascii_strcasecmp (p, "application/pgp-signature")))
     return PGPSIGN;
 #endif
     
 #ifdef HAVE_SMIME
-  if (!(mutt_strcasecmp(p, "application/x-pkcs7-signature")))
+  if (!(ascii_strcasecmp (p, "application/x-pkcs7-signature")))
+    return SMIMESIGN;
+  if (!(ascii_strcasecmp (p, "application/pkcs7-signature")))
     return SMIMESIGN;
 #endif
 
