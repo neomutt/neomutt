@@ -1,10 +1,5 @@
 In no particular order:
 
-19991028: The code to refetch message flags while fetching messages so they
-  don't have to be stored on close seems to have been broken. I am suspicious
-  of the changes to use mutt_flag_set globally instead of tuning them
-  manually...
-
 * Mutt doesn't handle timeouts or dropped connections gracefully. You
   may see occasional segfaults. Solving this cleanly requires some major
   architectural updates. Until that happens, I recommend you keep
@@ -48,4 +43,4 @@ In no particular order:
 * The mutt_pretty routines don't work well when the delimiter isn't '/'.
 
 Brendan Cully <brendan@kublai.com>
-Updated 19991028
+Updated 19991030

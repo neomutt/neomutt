@@ -345,6 +345,10 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	    mutt_set_flag (ctx, h, M_FLAG, h->flagged || newh->flagged);
 	    mutt_set_flag (ctx, h, M_REPLIED, h->replied || newh->replied);
 
+            /* this message is now definitively *not* changed (mutt_set_flag
+             * marks things changed as a side-effect) */
+            h->changed = 0;
+
             mutt_free_list (&(HEADER_DATA(h)->keywords));
             HEADER_DATA(h)->keywords = newh->data->keywords;
             safe_free ((void**) &newh);
@@ -352,14 +356,13 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	}
       }
       else if (imap_handle_untagged (CTX_DATA, buf) != 0)
-	return (-1);
+	return -1;
     }
   }
-  while (mutt_strncmp (buf, seq, SEQLEN) != 0)
-    ;
+  while (mutt_strncmp (buf, seq, SEQLEN) != 0);
 
   if (!imap_code (buf))
-    return (-1);
+    return -1;
 
   /* Update the header information.  Previously, we only downloaded a
    * portion of the headers, those required for the main display.
