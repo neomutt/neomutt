@@ -470,19 +470,17 @@ int mutt_parse_pgp_hdr (char *p, int set_signas)
 }
 #endif /* _PGPPATH */
 
-
-/* make sure a body tree is detached from the corresponding header */
-
-static void forget_header_pointers (BODY *b)
+static void free_body_list (BODY **bp)
 {
-  for (; b; b = b->next)
+  BODY *c;
+  
+  for (; *bp; *bp = c)
   {
-    if (b->type == TYPEMESSAGE && b->hdr)
-      b->hdr = NULL;
-
-    forget_header_pointers (b->parts);
+    c = (*bp)->next;
+    mutt_free_body (bp);
   }
 }
+
 
 int mutt_prepare_template (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 			       short weed)
@@ -493,13 +491,16 @@ int mutt_prepare_template (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   BODY *b;
   LIST *p, **q;
 
+  FILE *bfp;
+  
   if ((msg = mx_open_message (ctx, hdr->msgno)) == NULL)
     return (-1);
 
   /* parse the message header */
   fseek (msg->fp, hdr->offset, 0);
   newhdr->env = mutt_read_rfc822_header (msg->fp, newhdr, 1, weed);
-
+  mutt_free_body (&newhdr->content);
+  
   /* weed user-agent, x-mailer - we don't want them here */
   p = newhdr->env->userhdrs; 
   q = &newhdr->env->userhdrs;
@@ -519,34 +520,56 @@ int mutt_prepare_template (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   }
 
   safe_free ((void **) &newhdr->env->message_id);
+  safe_free ((void **) &newhdr->env->mail_followup_to);
 
   /* make sure we parse the message */
   mutt_parse_part (msg->fp, hdr->content);
 
-  /* copy the MIME structure */
-  b = mutt_new_body ();
-  memcpy (b, hdr->content, sizeof (BODY));
-  hdr->content->parts = NULL;
-
-  /* detach the temporary MIME structure from the message. */
-  b->xtype = safe_strdup (b->xtype);
-  b->subtype = safe_strdup (b->subtype);
-  b->form_name = safe_strdup (b->form_name);
-  b->filename = safe_strdup (b->filename);
-  b->d_filename = safe_strdup (b->d_filename);
-
-  forget_header_pointers (b);
-
-  /* copy parameters */
-  for (par = b->parameter, ppar = &b->parameter; par; ppar = &(*ppar)->next, par = par->next)
+#ifdef _PGPPATH
+  /* decrypt pgp/mime encoded messages */
+  if ((hdr->pgp | PGPENCRYPT) && mutt_is_multipart_encrypted (hdr->content))
   {
-    *ppar = mutt_new_parameter ();
-    (*ppar)->attribute = safe_strdup (par->attribute);
-    (*ppar)->value = safe_strdup (par->value);
+    newhdr->pgp |= PGPENCRYPT;
+    if (!pgp_valid_passphrase())
+      goto err;
+
+    mutt_message _("Invoking PGP...");
+    if (pgp_decrypt_mime (msg->fp, &bfp, hdr->content, &b) == -1)
+    {
+ err:
+      mx_close_message (&msg);
+      mutt_free_envelope (&newhdr->env);
+      return -1;
+    }
+    mutt_clear_error ();
+  }
+  else
+#endif
+  {
+    /* copy the MIME structure */
+    b = mutt_new_body ();
+    memcpy (b, hdr->content, sizeof (BODY));
+    hdr->content->parts = NULL;
+    
+    /* detach the temporary MIME structure from the message. */
+    b->xtype = safe_strdup (b->xtype);
+    b->subtype = safe_strdup (b->subtype);
+    b->form_name = safe_strdup (b->form_name);
+    b->filename = safe_strdup (b->filename);
+    b->d_filename = safe_strdup (b->d_filename);
+    
+    /* copy parameters */
+    for (par = b->parameter, ppar = &b->parameter; par; ppar = &(*ppar)->next, par = par->next)
+    {
+      *ppar = mutt_new_parameter ();
+      (*ppar)->attribute = safe_strdup (par->attribute);
+      (*ppar)->value = safe_strdup (par->value);
+    }
+    
+    bfp = msg->fp;
   }
 
 #ifdef _PGPPATH
-  
   /* 
    * remove a potential multipart/signed layer - useful when
    * resending messages 
@@ -581,18 +604,20 @@ int mutt_prepare_template (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   {
     file[0] = '\0';
     if (b->filename)
+    {
       strfcpy (file, b->filename, sizeof (file));
+      b->d_filename = safe_strdup (b->filename);
+    }
     else
       /* avoid Content-Disposition: header with temporary filename */
       b->use_disp = 0;
 
     mutt_adv_mktemp (file, sizeof(file));
-    if (mutt_save_attachment (msg->fp, b, file, 0, NULL) == -1)
+    if (mutt_save_attachment (bfp, b, file, 0, NULL) == -1)
     {
       mutt_free_envelope (&newhdr->env);
-      /* XXX hack around problem with mutt_free_body */ 
-      newhdr->content = mutt_make_multipart (newhdr->content); 
-      mutt_free_body (&newhdr->content);
+      free_body_list (&newhdr->content);
+      if (bfp != msg->fp) fclose (bfp);
       mx_close_message (&msg);
       return -1;
     }
@@ -605,10 +630,13 @@ int mutt_prepare_template (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
       b->noconv = 1;
       
     mutt_stamp_attachment (b);
+
     mutt_free_body (&b->parts);
+    if (b->hdr) b->hdr->content = NULL; /* avoid dangling pointer */
   }
 
   /* that's it. */
+  if (bfp != msg->fp) fclose (bfp);
   mx_close_message (&msg);
 
   return 0;
