@@ -120,7 +120,7 @@ int crypt_valid_passphrase(int flags)
     if (pgp_use_gpg_agent())
     {
       *PgpPass = 0;
-      return 0; /* handled by gpg-agent */
+      return 1; /* handled by gpg-agent */
     }
 
     if (now < PgpExptime) return 1; /* just use the cached copy. */
