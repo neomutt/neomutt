@@ -1,3 +1,11 @@
+2002-12-18 17:29:56  Sahil Tandon  <sahil@brandeis.edu>
+
+	* init.h: I found a small typo in the manual, specifically
+	at this[1] URL.  The description of the smart_wrap variable reads:
+	"Controls the display of lines longer then the screen width in the
+	internal pager."  The word _then_ should be _than_ if I'm not
+	mistaken.
+
 2002-12-18 10:26:35  Thomas Roessler  <roessler@does-not-exist.org>
 
 	* po/ja.po, po/ko.po, po/lt.po, po/nl.po, po/pl.po, po/pt_BR.po,
