@@ -292,7 +292,6 @@ struct binding_t OpCompose[] = {
   { "edit-to",		OP_COMPOSE_EDIT_TO,		"t" },
   { "edit-type",	OP_EDIT_TYPE,			"\024" },
   { "write-fcc",	OP_COMPOSE_WRITE_MESSAGE,	"w" },
-  { "recode-attachment",OP_COMPOSE_RECODE,		NULL },
   { "toggle-unlink",	OP_COMPOSE_TOGGLE_UNLINK,	"u" },
   { "toggle-recode",    OP_COMPOSE_TOGGLE_RECODE,	NULL },
   { "update-encoding",	OP_COMPOSE_UPDATE_ENCODING,	"U" },

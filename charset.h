@@ -21,40 +21,6 @@
 
 #include <iconv.h>
 
-#define DECODER_BUFFSIZE 4096
-
-struct decoder_buff
-{
-  size_t size, used;
-  char buff[DECODER_BUFFSIZE];
-};
-
-typedef struct decoder
-{
-  /*short src_is_utf8;*/
-  short just_take_id;
-  short forced;
-  char *outrepl;
-
-  /* conversion descriptor */
-  iconv_t cd;
-
-  /* the buffers */
-  struct decoder_buff in;
-  struct decoder_buff out;
-  struct decoder_buff *_in;
-} 
-DECODER;
-
-DECODER *mutt_open_decoder (const char *, const char *);
-void mutt_decoder_push (DECODER *, void *, size_t, size_t *);
-void mutt_decoder_pop (DECODER *, void *, size_t, size_t *);
-void mutt_decoder_pop_to_state (DECODER *, STATE *);
-void mutt_free_decoder (DECODER **);
-int mutt_decoder_push_one (DECODER *, char);
-
-int mutt_recode_file (const char *, const char *, const char *);
-
 int mutt_convert_string (char **, const char *, const char *);
 
 iconv_t mutt_iconv_open (const char *, const char *);

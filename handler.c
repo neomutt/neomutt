@@ -38,6 +38,9 @@
 #endif
 
 
+#define BUFI_SIZE 1000
+#define BUFO_SIZE 2000
+
 
 typedef void handler_f (BODY *, STATE *);
 typedef handler_f *handler_t;
@@ -64,11 +67,60 @@ int Index_64[128] = {
     41,42,43,44, 45,46,47,48, 49,50,51,-1, -1,-1,-1,-1
 };
 
-void mutt_decode_xbit (STATE *s, BODY *b, int istext, DECODER *dec)
+static void state_prefix_put (const char *d, size_t dlen, STATE *s)
+{
+  if (s->prefix)
+    while (dlen--)
+      state_prefix_putc (*d++, s);
+  else
+    fwrite (d, dlen, 1, s->fpout);
+}
+
+static void convert_to_state(iconv_t cd, char *bufi, size_t *l, STATE *s)
+{
+  char bufo[BUFO_SIZE];
+  const char *ib;
+  char *ob;
+  size_t ibl, obl;
+
+  if (!bufi)
+  {
+    if (cd != (iconv_t)(-1))
+    {
+      ob = bufo, obl = sizeof (bufo);
+      iconv (cd, 0, 0, &ob, &obl);
+      if (ob != bufo)
+	state_prefix_put (bufo, ob - bufo, s);
+    }
+    return;
+  }
+
+  if (cd == (iconv_t)(-1))
+  {
+    state_prefix_put (bufi, *l, s);
+    *l = 0;
+    return;
+  }
+
+  ib = bufi, ibl = *l;
+  for (;;)
+  {
+    ob = bufo, obl = sizeof (bufo);
+    mutt_iconv (cd, &ib, &ibl, &ob, &obl, 0, "?");
+    if (ob == bufo)
+      break;
+    state_prefix_put (bufo, ob - bufo, s);
+  }
+  memmove (bufi, ib, ibl);
+  *l = ibl;
+}
+
+void mutt_decode_xbit (STATE *s, BODY *b, int istext, iconv_t cd)
 {
   long len = b->length;
   int c, ch;
-  int l = 0;
+  char bufi[BUFI_SIZE];
+  size_t l = 0;
 
   if (istext)
   {
@@ -87,16 +139,13 @@ void mutt_decode_xbit (STATE *s, BODY *b, int istext, DECODER *dec)
 	  ungetc(ch, s->fpin);
       }
 
-      mutt_decoder_push_one (dec, c);
-      if (l++ == 1024)
-      {
-	mutt_decoder_pop_to_state (dec, s);
-	l = 0;
-      }
+      bufi[l++] = c;
+      if (l == sizeof (bufi))
+	convert_to_state (cd, bufi, &l, s);
     }
 
-    mutt_decoder_push (dec, NULL, 0, NULL);
-    mutt_decoder_pop_to_state (dec, s);
+    convert_to_state (cd, bufi, &l, s);
+    convert_to_state (cd, 0, 0, s);
 
     state_reset_prefix (s);
   }
@@ -116,11 +165,12 @@ static int handler_state_fgetc(STATE *s)
   return ch;
 }
 
-void mutt_decode_quoted (STATE *s, BODY *b, int istext, DECODER *dec)
+void mutt_decode_quoted (STATE *s, BODY *b, int istext, iconv_t cd)
 {
   long len = b->length;
   int ch;
-  int l = 0;
+  char bufi[BUFI_SIZE];
+  size_t l = 0;
 
   state_set_prefix(s);
 
@@ -179,26 +229,24 @@ void mutt_decode_quoted (STATE *s, BODY *b, int istext, DECODER *dec)
 
     if(ch != EOF)
     {
-      mutt_decoder_push_one (dec, ch);
-      if (l++ == 1024)
-      {
-	mutt_decoder_pop_to_state (dec, s);
-	l = 0;
-      }
+      bufi[l++] = ch;
+      if (l == sizeof (bufi))
+	convert_to_state (cd, bufi, &l, s);
     }
   }
 
-  mutt_decoder_push (dec, NULL, 0, NULL);
-  mutt_decoder_pop_to_state (dec, s);
+  convert_to_state (cd, bufi, &l, s);
+  convert_to_state (cd, 0, 0, s);
   
   state_reset_prefix(s);
 }
 
-void mutt_decode_base64 (STATE *s, BODY *b, int istext, DECODER *dec)
+void mutt_decode_base64 (STATE *s, BODY *b, int istext, iconv_t cd)
 {
   long len = b->length;
   char buf[5];
   int c1, c2, c3, c4, ch, cr = 0, i;
+  char bufi[BUFI_SIZE];
   size_t l = 0;
 
   buf[4] = 0;
@@ -226,14 +274,14 @@ void mutt_decode_base64 (STATE *s, BODY *b, int istext, DECODER *dec)
     ch = (c1 << 2) | (c2 >> 4);
 
     if (cr && ch != '\n') 
-      mutt_decoder_push_one (dec, '\r');
+      bufi[l++] = '\r';
 
     cr = 0;
       
     if (istext && ch == '\r')
       cr = 1;
     else
-      mutt_decoder_push_one (dec, ch);
+      bufi[l++] = ch;
 
     if (buf[2] == '=')
       break;
@@ -241,39 +289,36 @@ void mutt_decode_base64 (STATE *s, BODY *b, int istext, DECODER *dec)
     ch = ((c2 & 0xf) << 4) | (c3 >> 2);
 
     if (cr && ch != '\n')
-      mutt_decoder_push_one (dec, '\r');
+      bufi[l++] = '\r';
 
     cr = 0;
 
     if (istext && ch == '\r')
       cr = 1;
     else
-      mutt_decoder_push_one (dec, ch);
+      bufi[l++] = ch;
 
     if (buf[3] == '=') break;
     c4 = base64val (buf[3]);
     ch = ((c3 & 0x3) << 6) | c4;
 
     if (cr && ch != '\n')
-      mutt_decoder_push_one (dec, '\r');
+      bufi[l++] = '\r';
     cr = 0;
 
     if (istext && ch == '\r')
       cr = 1;
     else
-      mutt_decoder_push_one (dec, ch);
+      bufi[l++] = ch;
     
-    if ((l += 3) >= 1024)
-    {
-      mutt_decoder_pop_to_state (dec, s);
-      l = 0;
-    }
+    if (l + 8 >= sizeof (bufi))
+      convert_to_state (cd, bufi, &l, s);
   }
 
-  if (cr) mutt_decoder_push_one (dec, '\r');
-  
-  mutt_decoder_push (dec, NULL, 0, NULL);
-  mutt_decoder_pop_to_state (dec, s);
+  if (cr) bufi[l++] = '\r';
+
+  convert_to_state (cd, bufi, &l, s);
+  convert_to_state (cd, 0, 0, s);
 
   state_reset_prefix(s);
 }
@@ -285,12 +330,14 @@ unsigned char decode_byte (char ch)
   return ch - 32;
 }
 
-void mutt_decode_uuencoded (STATE *s, BODY *b, int istext, DECODER *dec)
+void mutt_decode_uuencoded (STATE *s, BODY *b, int istext, iconv_t cd)
 {
   char tmps[SHORT_STRING];
   char linelen, c, l, out;
   char *pt;
   long len = b->length;
+  char bufi[BUFI_SIZE];
+  size_t k;
 
   if(istext)
     state_set_prefix(s);
@@ -320,18 +367,18 @@ void mutt_decode_uuencoded (STATE *s, BODY *b, int istext, DECODER *dec)
 	out = decode_byte (*pt) << l;
 	pt++;
 	out |= (decode_byte (*pt) >> (6 - l));
-	mutt_decoder_push_one (dec, out);
+	bufi[k++] = out;
 	c++;
 	if (c == linelen)
 	  break;
       }
-      mutt_decoder_pop_to_state (dec, s);
+      convert_to_state (cd, bufi, &k, s);
       pt++;
     }
   }
 
-  mutt_decoder_push (dec, NULL, 0, NULL);
-  mutt_decoder_pop_to_state (dec, s);
+  convert_to_state (cd, bufi, &k, s);
+  convert_to_state (cd, 0, 0, s);
   
   state_reset_prefix(s);
 }
@@ -1287,33 +1334,35 @@ static void external_body_handler (BODY *b, STATE *s)
 
 void mutt_decode_attachment (BODY *b, STATE *s)
 {
-  char *charset = mutt_get_parameter ("charset", b->parameter);
   int istext = mutt_is_text_type (b->type, b->subtype);
-  DECODER *dec;
+  iconv_t cd = (iconv_t)(-1);
 
   if (istext && s->flags & M_CHARCONV)
-    dec = mutt_open_decoder (charset, Charset);
-  else
-    dec = mutt_open_decoder (NULL, NULL);
+  {
+    char *charset = mutt_get_parameter ("charset", b->parameter);
+    if (charset)
+      cd = mutt_iconv_open (Charset, charset);
+  }
 
   fseek (s->fpin, b->offset, 0);
   switch (b->encoding)
   {
     case ENCQUOTEDPRINTABLE:
-      mutt_decode_quoted (s, b, istext, dec);
+      mutt_decode_quoted (s, b, istext, cd);
       break;
     case ENCBASE64:
-      mutt_decode_base64 (s, b, istext, dec);
+      mutt_decode_base64 (s, b, istext, cd);
       break;
     case ENCUUENCODED:
-      mutt_decode_uuencoded (s, b, istext, dec);
+      mutt_decode_uuencoded (s, b, istext, cd);
       break;
     default:
-      mutt_decode_xbit (s, b, istext, dec);
+      mutt_decode_xbit (s, b, istext, cd);
       break;
   }
 
-  mutt_free_decoder (&dec);
+  if (cd != (iconv_t)(-1))
+    iconv_close (cd);
 }
 
 void mutt_body_handler (BODY *b, STATE *s)

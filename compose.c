@@ -892,38 +892,6 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	menu->redraw = REDRAW_CURRENT;
         break;
       }
-
-      case OP_COMPOSE_RECODE:
-      {
-	const char *chs;
-	int rv;
-
-        CHECK_COUNT;
-        if (!mutt_is_text_type (CURRENT->type, CURRENT->subtype))
-        {
-	  mutt_error (_("Recoding only affects text attachments."));
-	  break;
-	}
-
-	if (!(chs = mutt_get_parameter ("charset", CURRENT->parameter)))
-	  chs = SendCharset;
-
-        if (CURRENT->noconv)
-	  rv = mutt_recode_file (CURRENT->filename, chs, Charset);
-	else
-	  rv = mutt_recode_file (CURRENT->filename, Charset, chs);
-
-	mutt_update_encoding (CURRENT);
-	
-	if (rv == 0)
-	{
-	  mutt_message (_("Recoding successful."));
-	  CURRENT->noconv = !CURRENT->noconv;
-	}
-
-	menu->redraw = REDRAW_CURRENT;
-	break;
-      }
 #undef CURRENT
 
       case OP_COMPOSE_EDIT_DESCRIPTION:
