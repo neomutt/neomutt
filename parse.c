@@ -441,8 +441,7 @@ BODY *mutt_read_mime_header (FILE *fp, int digest)
         mutt_set_parameter ("content-lines", safe_strdup (c), &(p->parameter));
       else if (!mutt_strcasecmp ("data-description", line + 6))
       {
-        safe_free ((void **) &p->description);
-        p->description = safe_strdup (c);
+	mutt_str_replace (&p->description, c);
         rfc2047_decode (&p->description);
       }
     }
@@ -1261,8 +1260,8 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
       }
       else
 	last = e->userhdrs = mutt_new_list ();
-      rfc2047_decode (&line);
       last->data = safe_strdup (line);
+      rfc2047_decode (&last->data);
     }
   }
 
