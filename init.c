@@ -226,6 +226,13 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
 
       /* if we got output, make a new string consiting of the shell ouptput
 	 plus whatever else was left on the original line */
+      /* BUT: If this is inside a quoted string, directly add output to 
+       * the token */
+      if (expn.data && qc)
+      {
+	mutt_buffer_addstr (dest, expn.data);
+	FREE (&expn.data);
+      }
       if (expn.data)
       {
 	expnlen = mutt_strlen (expn.data);
