@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -2690,6 +2690,7 @@ struct command_t Commands[] = {
   { "crypt-hook",	mutt_parse_hook,	M_CRYPTHOOK },
 #endif /* HAVE_PGP */
   { "push",		mutt_parse_push,	0 },
+  { "reply-hook",	mutt_parse_hook,	M_REPLYHOOK },
   { "reset",		parse_set,		M_SET_RESET },
   { "save-hook",	mutt_parse_hook,	M_SAVEHOOK },
   { "score",		mutt_parse_score,	0 },

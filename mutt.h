@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -144,6 +144,7 @@ typedef enum
 #define M_CRYPTHOOK	(1<<8)
 #endif
 #define M_ACCOUNTHOOK	(1<<9)
+#define M_REPLYHOOK	(1<<10)
 
 /* tree characters for linearize_tree and print_enriched_string */
 #define M_TREE_LLCORNER		1

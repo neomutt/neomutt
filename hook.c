@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>, and others
+ * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>, and others
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -65,7 +65,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     goto error;
   }
 
-  mutt_extract_token (&command, s, (data & (M_FOLDERHOOK | M_SENDHOOK | M_ACCOUNTHOOK)) ?  M_TOKEN_SPACE : 0);
+  mutt_extract_token (&command, s, (data & (M_FOLDERHOOK | M_SENDHOOK | M_ACCOUNTHOOK | M_REPLYHOOK)) ?  M_TOKEN_SPACE : 0);
 
   if (!command.data)
   {
@@ -118,7 +118,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 	ptr->rx.not == not &&
 	!mutt_strcmp (pattern.data, ptr->rx.pattern))
     {
-      if (data & (M_FOLDERHOOK | M_SENDHOOK | M_MESSAGEHOOK | M_ACCOUNTHOOK))
+      if (data & (M_FOLDERHOOK | M_SENDHOOK | M_MESSAGEHOOK | M_ACCOUNTHOOK | M_REPLYHOOK))
       {
 	/* these hooks allow multiple commands with the same
 	 * pattern, so if we've already seen this pattern/command pair, just
@@ -147,10 +147,10 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
       break;
   }
 
-  if (data & (M_SENDHOOK | M_SAVEHOOK | M_FCCHOOK | M_MESSAGEHOOK))
+  if (data & (M_SENDHOOK | M_SAVEHOOK | M_FCCHOOK | M_MESSAGEHOOK | M_REPLYHOOK))
   {
     if ((pat = mutt_pattern_comp (pattern.data,
-	   (data & (M_SENDHOOK | M_FCCHOOK)) ? 0 : M_FULL_MSG,
+	   (data & (M_SENDHOOK | M_REPLYHOOK | M_FCCHOOK)) ? 0 : M_FULL_MSG,
 				  err)) == NULL)
       goto error;
   }

@@ -1192,6 +1192,19 @@ ci_send_message (int flags,		/* send mode */
       killfrom = 1;
     }
 
+    if ((flags & SENDREPLY) && cur)
+    {
+      /* change setting based upon message we are replying to */
+      mutt_message_hook (NULL, cur, M_REPLYHOOK);
+
+      /*
+       * set the replied flag for the message we are generating so that the
+       * user can use ~Q in a send-hook to know when reply-hook's are also
+       * being used.
+       */
+      msg->replied = 1;
+    }
+
     /* change settings based upon recipients */
     
     mutt_message_hook (NULL, msg, M_SENDHOOK);
