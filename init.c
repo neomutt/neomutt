@@ -498,21 +498,19 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
   ALIAS *tmp = Aliases;
   ALIAS *last = NULL;
-  char *p;
-  size_t len;
 
-  if ((p = strpbrk (s->dptr, " \t")) == NULL)
+  if (!MoreArgs (s))
   {
     strfcpy (err->data, _("alias: no address"), err->dsize);
     return (-1);
   }
 
-  len = p - s->dptr;
+  mutt_extract_token (buf, s, 0);
 
   /* check to see if an alias with this name already exists */
   for (; tmp; tmp = tmp->next)
   {
-    if (!mutt_strncasecmp (tmp->name, s->dptr, len) && *(tmp->name + len) == 0)
+    if (!mutt_strcasecmp (tmp->name, buf->data))
       break;
     last = tmp;
   }
@@ -522,9 +520,7 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     /* create a new alias */
     tmp = (ALIAS *) safe_calloc (1, sizeof (ALIAS));
     tmp->self = tmp;
-    tmp->name = safe_malloc (len + 1);
-    memcpy (tmp->name, s->dptr, len);
-    tmp->name[len] = 0;
+    tmp->name = safe_strdup (buf->data);
     /* give the main addressbook code a chance */
     if (CurrentMenu == MENU_ALIAS)
       set_option (OPTMENUCALLER);
@@ -536,7 +532,6 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     if (CurrentMenu == MENU_ALIAS)
       set_option (OPTFORCEREDRAWINDEX);
   }
-  s->dptr = p;
 
   mutt_extract_token (buf, s, M_TOKEN_QUOTE | M_TOKEN_SPACE | M_TOKEN_SEMICOLON);
   tmp->addr = mutt_parse_adrlist (tmp->addr, buf->data);

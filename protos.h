@@ -242,6 +242,7 @@ int mutt_buffy_notify (void);
 int mutt_builtin_editor (const char *, HEADER *, HEADER *);
 int mutt_can_decode (BODY *);
 int mutt_change_flag (HEADER *, int);
+int mutt_check_alias_name (const char *, char *);
 int mutt_check_encoding (const char *);
 int mutt_check_key (const char *);
 int mutt_check_menu (const char *);

@@ -21,6 +21,7 @@
 #include "mutt_curses.h"
 
 #include <string.h>
+#include <ctype.h>
 
 ADDRESS *mutt_lookup_alias (const char *s)
 {
@@ -209,6 +210,7 @@ void mutt_create_alias (ENVELOPE *cur, ADDRESS *iadr)
 {
   ALIAS *new, *t;
   char buf[LONG_STRING], prompt[SHORT_STRING], *pc;
+  char fixed[LONG_STRING];
   FILE *rc;
   ADDRESS *adr = NULL;
 
@@ -229,7 +231,11 @@ void mutt_create_alias (ENVELOPE *cur, ADDRESS *iadr)
   }
   else
     buf[0] = '\0';
+
+  /* Don't suggest a bad alias name in the event of a strange local part. */
+  mutt_check_alias_name (buf, buf);
   
+retry_name:
   /* add a new alias */
   if (mutt_get_field (_("Alias as: "), buf, sizeof (buf), 0) != 0 || !buf[0])
     return;
@@ -240,7 +246,19 @@ void mutt_create_alias (ENVELOPE *cur, ADDRESS *iadr)
     mutt_error _("You already have an alias defined with that name!");
     return;
   }
-
+  
+  if (mutt_check_alias_name (buf, fixed))
+  {
+    switch (mutt_yesorno (_("Warning: This alias name may not work.  Fix it?"), 1))
+    {
+      case 1:  
+      	strfcpy (buf, fixed, sizeof (buf));
+	goto retry_name;
+      case -1: 
+	return;
+    }
+  }
+  
   new       = safe_calloc (1, sizeof (ALIAS));
   new->self = new;
   new->name = safe_strdup (buf);
@@ -299,9 +317,13 @@ void mutt_create_alias (ENVELOPE *cur, ADDRESS *iadr)
   mutt_expand_path (buf, sizeof (buf));
   if ((rc = fopen (buf, "a")))
   {
+    if (mutt_check_alias_name (new->name, NULL))
+      mutt_quote_filename (buf, sizeof (buf), new->name);
+    else
+      strfcpy (buf, new->name, sizeof (buf));
+    fprintf (rc, "alias %s ", buf);
     buf[0] = 0;
     rfc822_write_address (buf, sizeof (buf), new->addr);
-    fprintf (rc, "alias %s ", new->name);
     write_safe_address (rc, buf);
     fputc ('\n', rc);
     fclose (rc);
@@ -309,6 +331,40 @@ void mutt_create_alias (ENVELOPE *cur, ADDRESS *iadr)
   }
   else
     mutt_perror (buf);
+}
+
+/* 
+ * Sanity-check an alias name:  Only characters which are non-special to both
+ * the RFC 822 and the mutt configuration parser are permitted.
+ */
+
+static int check_alias_name_char (char c)
+{
+  return (c == '-' || c == '_' || c == '+' || c == '=' || c == '.' ||
+	  isalnum (c));
+}
+
+int mutt_check_alias_name (const char *s, char *d)
+{
+  int rv = 0;
+  for (; *s; s++) 
+  {
+    if (!check_alias_name_char (*s))
+    {
+      if (!d)
+	return -1;
+      else
+      {
+	*d++ = '_';
+	rv = -1;
+      }
+    }
+    else if (d)
+      *d++ = *s;
+  }
+  if (d)
+    *d++ = *s;
+  return rv;
 }
 
 /*
