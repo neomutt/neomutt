@@ -153,7 +153,7 @@ static pgp_key_t *parse_pub_line (char *buf, int *is_subkey, pgp_key_t *k)
 	else
 	  return NULL;
 	
-	if (!is_uid)
+	if (!(is_uid || (*is_subkey && option (OPTPGPIGNORESUB))))
 	  k = safe_calloc (sizeof (pgp_key_t), 1);
 
 	break;
@@ -194,7 +194,8 @@ static pgp_key_t *parse_pub_line (char *buf, int *is_subkey, pgp_key_t *k)
 	
 	dprint (2, (debugfile, "key len: %s\n", p));
 	
-	k->keylen = atoi (p);	/* fixme: add validation checks */
+	if (!(*is_subkey && option (OPTPGPIGNORESUB)))
+	  k->keylen = atoi (p);	/* fixme: add validation checks */
 	break;
       }
       case 4:			/* pubkey algo */
@@ -202,8 +203,12 @@ static pgp_key_t *parse_pub_line (char *buf, int *is_subkey, pgp_key_t *k)
 	
 	dprint (2, (debugfile, "pubkey algorithm: %s\n", p));
 	
-	k->numalg = atoi (p);
-	k->algorithm = pgp_pkalgbytype (atoi (p));
+	if (!(*is_subkey && option (OPTPGPIGNORESUB)))
+	{
+	  k->numalg = atoi (p);
+	  k->algorithm = pgp_pkalgbytype (atoi (p));
+	}
+
 	k->flags |= pgp_get_abilities (atoi (p));
 	break;
       }
@@ -212,7 +217,7 @@ static pgp_key_t *parse_pub_line (char *buf, int *is_subkey, pgp_key_t *k)
 	dprint (2, (debugfile, "key id: %s\n", p));
 	
 	/* We really should do a check here */
-	k->keyid = safe_strdup (p);
+	mutt_str_replace (&k->keyid, p);
 	break;
 
       }
@@ -333,7 +338,6 @@ pgp_key_t *pgp_get_candidates (pgp_ring_t keyring, LIST * hints)
   mutt_wait_filter (thepid);
 
   close (devnull);
-
   return db;
 }
 

@@ -1067,6 +1067,13 @@ struct option_t MuttVars[] = {
   ** \fIpgp-menu\fP, when encryption is not required or signing is
   ** requested as well.
   */
+  { "pgp_ignore_subkeys", DT_BOOL, R_NONE, OPTPGPIGNORESUB, 1},
+  /*
+  ** .pp
+  ** Setting this variable will cause Mutt to ignore OpenPGP subkeys. Instead,
+  ** the principal key will inherit the subkeys' capabilities.  Unset this
+  ** if you want to play interesting key selection games.
+  */
   { "pgp_entry_format", DT_STR,  R_NONE, UL &PgpEntryFormat, UL "%4n %t%f %4l/0x%k %-4a %2c %u" },
   /*
   ** .pp
