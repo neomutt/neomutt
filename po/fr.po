@@ -5,9 +5,9 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.3-20021219\n"
-"POT-Creation-Date: 2002-12-18 11:26+0100\n"
-"PO-Revision-Date: 2002-12-19 06:08+0100\n"
+"Project-Id-Version: Mutt 1.5.3-20021221\n"
+"POT-Creation-Date: 2002-12-21 23:51+0100\n"
+"PO-Revision-Date: 2002-12-21 23:54+0100\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -1003,48 +1003,48 @@ msgstr "Pas de message non effacé."
 msgid "You are on the first message."
 msgstr "Vous êtes sur le premier message."
 
-#: curs_main.c:1286 pattern.c:1301
+#: curs_main.c:1290 pattern.c:1301
 msgid "Search wrapped to top."
 msgstr "La recherche est repartie du début."
 
-#: curs_main.c:1295 pattern.c:1312
+#: curs_main.c:1299 pattern.c:1312
 msgid "Search wrapped to bottom."
 msgstr "La recherche est repartie de la fin."
 
-#: curs_main.c:1339
+#: curs_main.c:1340
 msgid "No new messages"
 msgstr "Pas de nouveaux messages"
 
-#: curs_main.c:1339
+#: curs_main.c:1340
 msgid "No unread messages"
 msgstr "Pas de messages non lus"
 
-#: curs_main.c:1340
+#: curs_main.c:1341
 msgid " in this limited view"
 msgstr " dans cette vue limitée"
 
-#: curs_main.c:1361 pager.c:2332
+#: curs_main.c:1362 pager.c:2332
 msgid "Can't change 'important' flag on POP server."
 msgstr "Impossible de changer l'indicateur 'important' sur le serveur POP."
 
-#: curs_main.c:1476
+#: curs_main.c:1477
 msgid "No more threads."
 msgstr "Pas d'autres discussions."
 
-#: curs_main.c:1478
+#: curs_main.c:1479
 msgid "You are on the first thread."
 msgstr "Vous êtes sur la première discussion."
 
-#: curs_main.c:1539 curs_main.c:1571 flags.c:237 thread.c:1012 thread.c:1067
+#: curs_main.c:1540 curs_main.c:1572 flags.c:237 thread.c:1012 thread.c:1067
 #: thread.c:1122
 msgid "Threading is not enabled."
 msgstr "L'affichage des discussions n'est pas activé."
 
-#: curs_main.c:1557
+#: curs_main.c:1558
 msgid "Thread contains unread messages."
 msgstr "Cette discussion contient des messages non-lus."
 
-#: curs_main.c:1735
+#: curs_main.c:1736
 msgid "Can't edit message on POP server."
 msgstr "Impossible d'éditer le message sur le serveur POP."
 
@@ -3449,8 +3449,8 @@ msgid "Fetching PGP key..."
 msgstr "Récupération de la clé PGP..."
 
 #: pgpkey.c:486
-msgid "All matching keys are marked expired/revoked."
-msgstr "Toutes les clés correspondantes sont marquées expirées/annulées."
+msgid "All matching keys are expired, revoked, or disabled."
+msgstr "Toutes les clés correspondantes sont expirées, annulées, ou désactivées."
 
 #. __STRCAT_CHECKED__
 #: pgpkey.c:512 smime.c:477
@@ -3526,7 +3526,7 @@ msgstr "Appel de pgp..."
 msgid "PGP Key %s."
 msgstr "Clé PGP %s."
 
-#: pgpkey.c:835 pgpkey.c:953
+#: pgpkey.c:835 pgpkey.c:951
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Recherche des clés correspondant à \"%s\"..."
