@@ -85,7 +85,7 @@ all-yes: cat-id-tbl.c $(CATALOGS)
 all-no:
 
 $(top_srcdir)/keymap_defs.h: 
-	$(MAKE) -C $(top_srcdir) keymap_defs.h
+	cd $(top_srcdir) && $(MAKE) keymap_defs.h
 
 $(srcdir)/$(PACKAGE).pot: $(POTFILES)
 	$(XGETTEXT) --default-domain=$(PACKAGE) --directory=$(top_srcdir) \
