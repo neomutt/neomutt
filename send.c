@@ -857,7 +857,7 @@ ci_send_message (int flags,		/* send mode */
   char *signmic = NULL;
 #endif
 
-  if (!flags && quadoption (OPT_RECALL) != M_NO && mutt_num_postponed ())
+  if (!flags && !msg && quadoption (OPT_RECALL) != M_NO && mutt_num_postponed ())
   {
     /* If the user is composing a new message, check to see if there
      * are any postponed messages first.
