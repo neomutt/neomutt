@@ -2091,7 +2091,8 @@ void mutt_unprepare_envelope (ENVELOPE *env)
   rfc2047_decode (&env->subject);
 }
 
-static void _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *resent_from)
+static void _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *resent_from,
+				  ADDRESS *env_from)
 {
   int i;
   FILE *f;
@@ -2102,7 +2103,7 @@ static void _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *
   {
     for (i=0; i<Context->msgcount; i++)
       if (Context->hdrs[i]->tagged)
-	_mutt_bounce_message (fp, Context->hdrs[i], to, resent_from);
+	_mutt_bounce_message (fp, Context->hdrs[i], to, resent_from, env_from);
     return;
   }
 
@@ -2129,7 +2130,7 @@ static void _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *
     mutt_copy_bytes (fp, f, h->content->length);
     fclose (f);
 
-    mutt_invoke_sendmail (NULL, to, NULL, NULL, tempfile, 
+    mutt_invoke_sendmail (env_from, to, NULL, NULL, tempfile,
 			  h->content->encoding == ENC8BIT);
   }
 
@@ -2152,9 +2153,10 @@ void mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to)
   rfc2047_encode_adrlist (from);
   
   rfc822_write_address (resent_from, sizeof (resent_from), from);
+
+  _mutt_bounce_message (fp, h, to, resent_from, from);
+
   rfc822_free_address (&from);
-  
-  _mutt_bounce_message (fp, h, to, resent_from);
 }
 
 
