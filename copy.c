@@ -175,7 +175,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
 	{
 	  if (!mutt_strncasecmp (buf, t->data, mutt_strlen (t->data)))
 	  {
-	    dprint(2, (debugfile, "Reorder: %s matches %s", t->data, buf));
+	    dprint(2, (debugfile, "Reorder: %s matches %s\n", t->data, buf));
 	    break;
 	  }
 	}
@@ -186,6 +186,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
 
     if (!ignore)
     {
+      dprint (2, (debugfile, "Reorder: x = %d; hdr_count = %d\n", x, hdr_count));
       /* Save the header in headers[x] */
       if (!headers[x])
 	headers[x] = safe_strdup (buf);
