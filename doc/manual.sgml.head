@@ -926,12 +926,23 @@ you type, you can create a macro to execute those commands with a single
 key.
 
 <em/key/ and <em/sequence/ are expanded by the same rules as the <ref
-id="bind" name="key bindings">, with the addition that control
-characters in <em/sequence/ can also be specified as <em/&circ;x/.  In
-order to get a caret (``&circ;'') you need to use <em/&circ;&circ;/.
+id="bind" name="key bindings">.  There are some additions however.  The
+first is that control characters in <em/sequence/ can also be specified
+as <em/&circ;x/.  In order to get a caret (`&circ;'') you need to use
+<em/&circ;&circ;/.  Secondly, to specify a certain key such as <em/up/
+or to invoke a function directly, you can use the format
+<em/&lt;key name&gt;/ and <em/&lt;function name&gt;/.  For a listing of key
+names see the section on <ref id="bind" name="key bindings">.  Functions
+are listed in the <ref id="functions" name="function reference">.
 
-Optionally you can specify a descriptive text, which is shown in the
-help screens.
+The advantage with using function names directly is that the macros will
+work regardless of the current key bindings, so they are not dependent on
+the user having particular key definitions.  This makes them more robust
+and portable, and also facilitates defining of macros in files used by more
+than one user (eg. the system Muttrc).
+
+Optionally you can specify a descriptive text after <em/sequence/,
+which is shown in the help screens.
 
 <bf/Note:/ Macro definitions (if any) listed in the help screen(s), are
 silently truncated at the screen width, and are not wrapped.   
@@ -1286,9 +1297,11 @@ a certain recipient.
 <p>
 Usage: <tt/push/ <em/string/
 
-This command adds the named string to the keyboard buffer.  You may
-use it to automatically run a sequence of commands at startup, or when
-entering certain folders.
+This command adds the named string to the keyboard buffer. The string may
+contain control characters, key names and function names like the sequence
+string in the <ref id="macro" name="macro"> command. You may use it to
+automatically run a sequence of commands at startup, or when entering
+certain folders.
 
 <sect1>Message Scoring
 <p>
