@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-13 23:47+0200\n"
+"POT-Creation-Date: 1998-10-14 00:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -260,97 +260,107 @@ msgstr "Konnte Temporärdatei nicht anzeigen!"
 msgid "Command: "
 msgstr "Kommando: "
 
-#: commands.c:258
+#: commands.c:243 recvattach.c:616
+#, fuzzy
+msgid "Bounce message to: "
+msgstr "Nachricht weiterleiten an: "
+
+#: commands.c:245 recvattach.c:618
+#, fuzzy
+msgid "Bounce tagged messages to: "
+msgstr "Markierte Nachrichten weiterleiten an: "
+
+#: commands.c:260
 msgid "Error parsing address!"
 msgstr "Unverständliche Adresse!"
 
-#: commands.c:268
+#: commands.c:270
 #, c-format
 msgid "Bounce message to %s"
 msgstr "Nachricht an %s weiterleiten"
 
-#: commands.c:268
+#: commands.c:270
 #, c-format
 msgid "Bounce messages to %s"
 msgstr "Nachrichten an %s weiterleiten"
 
-#: commands.c:279
+#: commands.c:281
 msgid "Message bounced."
 msgstr "Nachricht weitergeleitet."
 
-#: commands.c:279
+#: commands.c:281
 msgid "Messages bounced."
 msgstr "Nachrichten weitergeleitet."
 
-#: commands.c:299
+#: commands.c:301
 msgid "Pipe to command: "
 msgstr "In Kommando einspeisen: "
 
-#: commands.c:404
+#: commands.c:406
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 
-#: commands.c:405
+#: commands.c:407
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 
-#: commands.c:460
+#: commands.c:462
 msgid "Shell command: "
 msgstr "Shell-Kommando: "
 
-#: commands.c:576
+#: commands.c:578
 #, c-format
 msgid "%s%s to mailbox"
 msgstr "%s%s in Mailbox"
 
-#: commands.c:577
+#: commands.c:579
 msgid "Decode-save"
 msgstr "Decodiert speichern"
 
-#: commands.c:577
+#: commands.c:579
 msgid "Decode-copy"
 msgstr "Decodiert kopieren"
 
-#: commands.c:578
+#: commands.c:580
 msgid "Decrypt-save"
 msgstr "Entschlüsselt speichern"
 
-#: commands.c:578
+#: commands.c:580
 msgid "Decrypt-copy"
 msgstr "Entschlüsselt kopieren"
 
-#: commands.c:579 curs_main.c:231 recvattach.c:49
+#: commands.c:581 curs_main.c:231 recvattach.c:49
 msgid "Save"
 msgstr "Speichern"
 
-#: commands.c:579
+#: commands.c:581
 msgid "Copy"
 msgstr "Kopieren"
 
-#: commands.c:579
+#: commands.c:581
 msgid " tagged"
 msgstr " ausgewählt"
 
-#: commands.c:648
+#: commands.c:650
 #, c-format
 msgid "Copying to %s..."
 msgstr "Kopiere nach %s..."
 
-#: commands.c:720
+#: commands.c:722
 msgid "Print message?"
 msgstr "Nachricht drucken?"
 
-#: commands.c:720
+#: commands.c:722
 msgid "Print tagged messages?"
 msgstr "Ausgewählte Nachrichten drucken?"
 
-#: commands.c:747
+#: commands.c:749
 msgid "Message printed"
 msgstr "Nachricht gedruckt"
 
-#: commands.c:747
+#: commands.c:749
 msgid "Messages printed"
 msgstr "Nachrichten gedruckt"
 
@@ -1744,6 +1754,42 @@ msgstr "Kollabiere/expandiere aktuellen Diskussionsfaden"
 msgid "collapse/uncollapse all threads"
 msgstr "Kollabiere/expandiere alle Diskussionsfäden"
 
+#: keymap_defs.h:157
+msgid "attach a PGP public key"
+msgstr "Hänge öffentlichen PGP-Schlüssel an"
+
+#: keymap_defs.h:158
+msgid "show PGP options"
+msgstr "Zeige PGP-Optionen"
+
+#: keymap_defs.h:159
+msgid "extract PGP public keys"
+msgstr "Extrahiere öffentliche PGP-Schlüssel"
+
+#: keymap_defs.h:160
+msgid "wipe PGP passphrase from memory"
+msgstr "Entferne PGP-Mantra aus Speicher"
+
+#: keymap_defs.h:161
+msgid "mail a PGP public key"
+msgstr "Verschicke öffentlichen PGP-Schlüssel"
+
+#: keymap_defs.h:162
+msgid "verify a PGP public key"
+msgstr "Verifiziere öffentlichen PGP-Schlüssel"
+
+#: keymap_defs.h:163
+msgid "view the key's user id"
+msgstr "Zeige Nutzer-ID zu Schlüssel an"
+
+#: keymap_defs.h:164
+msgid "make decrypted copy and delete"
+msgstr "Erzeuge dechiffrierte Kopie und lösche"
+
+#: keymap_defs.h:165
+msgid "make decrypted copy"
+msgstr "Erzeuge dechiffrierte Kopie"
+
 #: lib.c:276 lib.c:291 lib.c:322
 msgid "Out of memory!"
 msgstr "Kein Speicher!"
@@ -2605,29 +2651,29 @@ msgstr "Drucke Anhang?"
 msgid "You may only bounce message/rfc822 parts."
 msgstr "Sie können nur message/rfc822-Anhänge erneut versenden."
 
-#: recvattach.c:626
+#: recvattach.c:629
 #, c-format
 msgid "Bounce messages to %s...?"
 msgstr "Nachrichten an %s... erneut versenden?"
 
-#: recvattach.c:627
+#: recvattach.c:630
 #, c-format
 msgid "Bounce message to %s...?"
 msgstr "Nachricht an %s... erneut versenden?"
 
-#: recvattach.c:852
+#: recvattach.c:855
 msgid "Attachments"
 msgstr "Anhänge"
 
-#: recvattach.c:907
+#: recvattach.c:910
 msgid "Only deletion of multipart attachments is supported."
 msgstr "Kann nur aus mehrteiligen Anhängen löschen."
 
-#: recvattach.c:915
+#: recvattach.c:918
 msgid "Deletion of attachments from PGP messages is unsupported."
 msgstr "Kann keine Anhänge aus PGP-Nachrichten löschen."
 
-#: recvattach.c:991
+#: recvattach.c:994
 msgid "This operation is not currently supported for PGP messages."
 msgstr "Diese Funktion wird nicht für PGP-Nachrichten unterstützt."
 
@@ -2795,30 +2841,3 @@ msgstr ""
 #: status.c:102
 msgid "(no mailbox)"
 msgstr "(keine Mailbox)"
-
-#~ msgid "attach a PGP public key"
-#~ msgstr "Hänge öffentlichen PGP-Schlüssel an"
-
-#~ msgid "show PGP options"
-#~ msgstr "Zeige PGP-Optionen"
-
-#~ msgid "extract PGP public keys"
-#~ msgstr "Extrahiere öffentliche PGP-Schlüssel"
-
-#~ msgid "wipe PGP passphrase from memory"
-#~ msgstr "Entferne PGP-Mantra aus Speicher"
-
-#~ msgid "mail a PGP public key"
-#~ msgstr "Verschicke öffentlichen PGP-Schlüssel"
-
-#~ msgid "verify a PGP public key"
-#~ msgstr "Verifiziere öffentlichen PGP-Schlüssel"
-
-#~ msgid "view the key's user id"
-#~ msgstr "Zeige Nutzer-ID zu Schlüssel an"
-
-#~ msgid "make decrypted copy and delete"
-#~ msgstr "Erzeuge dechiffrierte Kopie und lösche"
-
-#~ msgid "make decrypted copy"
-#~ msgstr "Erzeuge dechiffrierte Kopie"

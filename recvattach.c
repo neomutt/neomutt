@@ -611,9 +611,12 @@ static void query_bounce_attachment (int tag, BODY *top, HEADER *hdr)
   int rc;
 
   buf[0] = 0;
-  /* FIXME i18n */
-  snprintf (prompt, sizeof (prompt), "Bounce %smessage%s to: ",
-	    tag ? "tagged " : "", tag ? "s" : "");
+
+  if(!tag)
+    strfcpy(prompt, _("Bounce message to: "), sizeof(prompt));
+  else
+    strfcpy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
+
   rc = mutt_get_field (prompt, buf, sizeof (buf), M_ALIAS);
 
   if (rc || !buf[0])

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-14 00:07+0200\n"
+"POT-Creation-Date: 1998-10-14 00:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -261,97 +261,105 @@ msgstr ""
 msgid "Command: "
 msgstr ""
 
-#: commands.c:258
+#: commands.c:243 recvattach.c:616
+msgid "Bounce message to: "
+msgstr ""
+
+#: commands.c:245 recvattach.c:618
+msgid "Bounce tagged messages to: "
+msgstr ""
+
+#: commands.c:260
 msgid "Error parsing address!"
 msgstr ""
 
-#: commands.c:268
+#: commands.c:270
 #, c-format
 msgid "Bounce message to %s"
 msgstr ""
 
-#: commands.c:268
+#: commands.c:270
 #, c-format
 msgid "Bounce messages to %s"
 msgstr ""
 
-#: commands.c:279
+#: commands.c:281
 msgid "Message bounced."
 msgstr ""
 
-#: commands.c:279
+#: commands.c:281
 msgid "Messages bounced."
 msgstr ""
 
-#: commands.c:299
+#: commands.c:301
 msgid "Pipe to command: "
 msgstr ""
 
-#: commands.c:404
+#: commands.c:406
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 
-#: commands.c:405
+#: commands.c:407
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 
-#: commands.c:460
+#: commands.c:462
 msgid "Shell command: "
 msgstr ""
 
-#: commands.c:576
+#: commands.c:578
 #, c-format
 msgid "%s%s to mailbox"
 msgstr ""
 
-#: commands.c:577
+#: commands.c:579
 msgid "Decode-save"
 msgstr ""
 
-#: commands.c:577
+#: commands.c:579
 msgid "Decode-copy"
 msgstr ""
 
-#: commands.c:578
+#: commands.c:580
 msgid "Decrypt-save"
 msgstr ""
 
-#: commands.c:578
+#: commands.c:580
 msgid "Decrypt-copy"
 msgstr ""
 
-#: commands.c:579 curs_main.c:231 recvattach.c:49
+#: commands.c:581 curs_main.c:231 recvattach.c:49
 msgid "Save"
 msgstr ""
 
-#: commands.c:579
+#: commands.c:581
 msgid "Copy"
 msgstr ""
 
-#: commands.c:579
+#: commands.c:581
 msgid " tagged"
 msgstr ""
 
-#: commands.c:648
+#: commands.c:650
 #, c-format
 msgid "Copying to %s..."
 msgstr ""
 
-#: commands.c:720
+#: commands.c:722
 msgid "Print message?"
 msgstr ""
 
-#: commands.c:720
+#: commands.c:722
 msgid "Print tagged messages?"
 msgstr ""
 
-#: commands.c:747
+#: commands.c:749
 msgid "Message printed"
 msgstr ""
 
-#: commands.c:747
+#: commands.c:749
 msgid "Messages printed"
 msgstr ""
 
@@ -2593,29 +2601,29 @@ msgstr ""
 msgid "You may only bounce message/rfc822 parts."
 msgstr ""
 
-#: recvattach.c:626
+#: recvattach.c:629
 #, c-format
 msgid "Bounce messages to %s...?"
 msgstr ""
 
-#: recvattach.c:627
+#: recvattach.c:630
 #, c-format
 msgid "Bounce message to %s...?"
 msgstr ""
 
-#: recvattach.c:852
+#: recvattach.c:855
 msgid "Attachments"
 msgstr ""
 
-#: recvattach.c:907
+#: recvattach.c:910
 msgid "Only deletion of multipart attachments is supported."
 msgstr ""
 
-#: recvattach.c:915
+#: recvattach.c:918
 msgid "Deletion of attachments from PGP messages is unsupported."
 msgstr ""
 
-#: recvattach.c:991
+#: recvattach.c:994
 msgid "This operation is not currently supported for PGP messages."
 msgstr ""
 

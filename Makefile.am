@@ -19,7 +19,7 @@ mutt_LDADD = @MUTT_LIB_OBJECTS@ $(INTLLIBS)
 mutt_DEPENDENCIES = @MUTT_LIB_OBJECTS@ $(INTLDEPS)
 
 DEFS=-DSHAREDIR=\"$(sharedir)\" -DSYSCONFDIR=\"$(sysconfdir)\"
-INCLUDES="-I./"
+INCLUDES=-I. 
 
 non_us_sources = pgp.c pgpinvoke.c pgpkey.c pgppubring.c sha1dgst.c \
 	gnupgparse.c sha.h sha_locl.h \

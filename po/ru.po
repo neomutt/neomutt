@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 1998-10-13 23:47+0200\n"
+"POT-Creation-Date: 1998-10-14 00:51+0200\n"
 "PO-Revision-Date: 1998-10-12 21:14+0300\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "Language-Team: Mutt-dev <mutt-dev@mutt.org>\n"
@@ -260,97 +260,107 @@ msgstr "Не удалось создать временный файл!"
 msgid "Command: "
 msgstr "Команда: "
 
-#: commands.c:258
+#: commands.c:243 recvattach.c:616
+#, fuzzy
+msgid "Bounce message to: "
+msgstr "Переправить сообщение %s"
+
+#: commands.c:245 recvattach.c:618
+#, fuzzy
+msgid "Bounce tagged messages to: "
+msgstr "Переправить сообщения %s"
+
+#: commands.c:260
 msgid "Error parsing address!"
 msgstr "Ошибка разбора адреса!"
 
-#: commands.c:268
+#: commands.c:270
 #, c-format
 msgid "Bounce message to %s"
 msgstr "Переправить сообщение %s"
 
-#: commands.c:268
+#: commands.c:270
 #, c-format
 msgid "Bounce messages to %s"
 msgstr "Переправить сообщения %s"
 
-#: commands.c:279
+#: commands.c:281
 msgid "Message bounced."
 msgstr "Сообщение переправлено."
 
-#: commands.c:279
+#: commands.c:281
 msgid "Messages bounced."
 msgstr "Сообщения переправлены."
 
-#: commands.c:299
+#: commands.c:301
 msgid "Pipe to command: "
 msgstr "Отправить к конвейер: "
 
-#: commands.c:404
+#: commands.c:406
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 
-#: commands.c:405
+#: commands.c:407
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 
-#: commands.c:460
+#: commands.c:462
 msgid "Shell command: "
 msgstr "Команда shell: "
 
-#: commands.c:576
+#: commands.c:578
 #, c-format
 msgid "%s%s to mailbox"
 msgstr "%s%s в почтовый ящик"
 
-#: commands.c:577
+#: commands.c:579
 msgid "Decode-save"
 msgstr "Раскод. и удал."
 
-#: commands.c:577
+#: commands.c:579
 msgid "Decode-copy"
 msgstr "Раскодировать"
 
-#: commands.c:578
+#: commands.c:580
 msgid "Decrypt-save"
 msgstr "Расшифр. и удал."
 
-#: commands.c:578
+#: commands.c:580
 msgid "Decrypt-copy"
 msgstr "Расшифровать"
 
-#: commands.c:579 curs_main.c:231 recvattach.c:49
+#: commands.c:581 curs_main.c:231 recvattach.c:49
 msgid "Save"
 msgstr "Сохр."
 
-#: commands.c:579
+#: commands.c:581
 msgid "Copy"
 msgstr "Копиров."
 
-#: commands.c:579
+#: commands.c:581
 msgid " tagged"
 msgstr " отмеченное"
 
-#: commands.c:648
+#: commands.c:650
 #, c-format
 msgid "Copying to %s..."
 msgstr "Копируется в %s..."
 
-#: commands.c:720
+#: commands.c:722
 msgid "Print message?"
 msgstr "Печатать сообщение?"
 
-#: commands.c:720
+#: commands.c:722
 msgid "Print tagged messages?"
 msgstr "Печатать отмеченные сообщения?"
 
-#: commands.c:747
+#: commands.c:749
 msgid "Message printed"
 msgstr "Сообщение напечатано"
 
-#: commands.c:747
+#: commands.c:749
 msgid "Messages printed"
 msgstr "Сообщения напечатаны"
 
@@ -1742,6 +1752,42 @@ msgstr "свернуть/развернуть текущую нитку"
 msgid "collapse/uncollapse all threads"
 msgstr "свернуть/развернуть все нитки"
 
+#: keymap_defs.h:157
+msgid "attach a PGP public key"
+msgstr "присоединить публичный ключ PGP"
+
+#: keymap_defs.h:158
+msgid "show PGP options"
+msgstr "показать параметры PGP"
+
+#: keymap_defs.h:159
+msgid "extract PGP public keys"
+msgstr "распаковать публичные ключи PGP"
+
+#: keymap_defs.h:160
+msgid "wipe PGP passphrase from memory"
+msgstr "вычистить пароль PGP из памяти"
+
+#: keymap_defs.h:161
+msgid "mail a PGP public key"
+msgstr "отослать публичный ключ PGP"
+
+#: keymap_defs.h:162
+msgid "verify a PGP public key"
+msgstr "проверить публичный ключ PGP"
+
+#: keymap_defs.h:163
+msgid "view the key's user id"
+msgstr "показать идентификатор пользователя ключа"
+
+#: keymap_defs.h:164
+msgid "make decrypted copy and delete"
+msgstr "расшифровать и удалить"
+
+#: keymap_defs.h:165
+msgid "make decrypted copy"
+msgstr "расшифровать"
+
 #: lib.c:276 lib.c:291 lib.c:322
 msgid "Out of memory!"
 msgstr "Мало памяти!"
@@ -2629,29 +2675,29 @@ msgstr "Печатать присоединение?"
 msgid "You may only bounce message/rfc822 parts."
 msgstr "Можно переправлять только message/rfc822 части."
 
-#: recvattach.c:626
+#: recvattach.c:629
 #, c-format
 msgid "Bounce messages to %s...?"
 msgstr "Переправить сообщения %s...?"
 
-#: recvattach.c:627
+#: recvattach.c:630
 #, c-format
 msgid "Bounce message to %s...?"
 msgstr "Переправить сообщение %s...?"
 
-#: recvattach.c:852
+#: recvattach.c:855
 msgid "Attachments"
 msgstr "Присоединения"
 
-#: recvattach.c:907
+#: recvattach.c:910
 msgid "Only deletion of multipart attachments is supported."
 msgstr "Поддерживается только удаление в многочастных сообщениях."
 
-#: recvattach.c:915
+#: recvattach.c:918
 msgid "Deletion of attachments from PGP messages is unsupported."
 msgstr "Удаление присоединений в сообщениях PGP не поддерживается."
 
-#: recvattach.c:991
+#: recvattach.c:994
 msgid "This operation is not currently supported for PGP messages."
 msgstr "Для сообщений PGP эта операция сейчас не поддерживается."
 
@@ -2819,30 +2865,3 @@ msgstr ""
 #: status.c:102
 msgid "(no mailbox)"
 msgstr "(почтового ящика нет)"
-
-#~ msgid "attach a PGP public key"
-#~ msgstr "присоединить публичный ключ PGP"
-
-#~ msgid "show PGP options"
-#~ msgstr "показать параметры PGP"
-
-#~ msgid "extract PGP public keys"
-#~ msgstr "распаковать публичные ключи PGP"
-
-#~ msgid "wipe PGP passphrase from memory"
-#~ msgstr "вычистить пароль PGP из памяти"
-
-#~ msgid "mail a PGP public key"
-#~ msgstr "отослать публичный ключ PGP"
-
-#~ msgid "verify a PGP public key"
-#~ msgstr "проверить публичный ключ PGP"
-
-#~ msgid "view the key's user id"
-#~ msgstr "показать идентификатор пользователя ключа"
-
-#~ msgid "make decrypted copy and delete"
-#~ msgstr "расшифровать и удалить"
-
-#~ msgid "make decrypted copy"
-#~ msgstr "расшифровать"

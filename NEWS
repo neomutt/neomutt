@@ -82,5 +82,10 @@ Major changes since 0.93
 
 - Bug fixes of all kinds.  Look at the ChangeLog file for details.
 
+- The configuration files now go to a directory determined by the
+  --sysconfdir parameter to the configure script.  The default is
+  ${prefix}/etc.  (The install target of the top-level Makefile will
+  take care of your old site-global configuration file and
+  automagically move it to the new place.)
 
 $Id$

@@ -239,9 +239,11 @@ void ci_bounce_message (HEADER *h, int *redraw)
   ADDRESS *adr = NULL;
   int rc;
 
-  /* FIXME i18n */
-  snprintf (prompt, sizeof(prompt), "Bounce %smessage%s to: ",
-	    h ? "" : "tagged ", h ? "" : "s");
+  if(h)
+    strfcpy(prompt, _("Bounce message to: "), sizeof(prompt));
+  else
+    strfcpy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
+  
   rc = mutt_get_field (prompt, buf, sizeof (buf), M_ALIAS);
 
   if (option (OPTNEEDREDRAW))

@@ -1,2 +1,1 @@
-/* $Id$ */
-const char *ReleaseDate = "1998-10-12";
+const char *ReleaseDate = "1998-10-14";

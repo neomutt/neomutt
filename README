@@ -6,10 +6,11 @@ Installation instructions are detailed in ``INSTALL''.
 The user manual is in doc/manual.txt.  A list of major changes since
 the last public version can be found under NEWS.
 
-PGP users should read doc/PGP-Notes.txt. 
+PGP users should read doc/PGP-Notes.txt.
 
 Before you start hacking on mutt, read doc/devel-notes.txt.  Before
-applying patches to mutt, read doc/applying-patches.txt.
+applying patches to mutt, read doc/applying-patches.txt.  Please,
+read these files, as they will save you from asking FAQs.
 
 For more information, see the Mutt home page:
 
