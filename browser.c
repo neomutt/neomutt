@@ -631,6 +631,11 @@ void mutt_select_file (char *f, size_t flen, int buffy)
 	mutt_menuDestroy (&menu);
 	return;
 
+      case OP_BROWSER_TELL:
+        if(state.entrylen)
+	  mutt_message(state.entry[menu->current].name);
+        break;
+      
       case OP_CHANGE_DIRECTORY:
 
 	strfcpy (buf, LastDir, sizeof (buf));

@@ -359,6 +359,7 @@ struct binding_t OpPost[] = {
 /* The file browser */
 struct binding_t OpBrowser[] = {
   { "change-dir",	OP_CHANGE_DIRECTORY,	"c" },
+  { "display-filename",	OP_BROWSER_TELL,	"@" },
   { "enter-mask",	OP_ENTER_MASK,		"m" },
   { "sort",		OP_SORT,		"o" },
   { "sort-reverse",	OP_SORT_REVERSE,	"O" },
