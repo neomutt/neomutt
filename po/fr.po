@@ -5,9 +5,9 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.3.4\n"
+"Project-Id-Version: Mutt 1.3.5\n"
 "POT-Creation-Date: 2000-07-07 00:40+0200\n"
-"PO-Revision-Date: 2000-06-19 23:55+0200\n"
+"PO-Revision-Date: 2000-07-07 12:05+0200\n"
 "Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
@@ -1419,15 +1419,15 @@ msgid "Copying message %d to %s..."
 msgstr "Copie du message %d dans %s..."
 
 #: imap/socket.c:163
-#, fuzzy, c-format
+#, c-format
 msgid "Closing connection to %s..."
-msgstr "Fermeture de la connexion au serveur IMAP..."
+msgstr "Fermeture de la connexion à %s..."
 
 # , c-format
 #: imap/socket.c:265
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "Impossible de trouver l'adresse de la machine %s."
+msgstr "Impossible de trouver la machine \"%s\""
 
 # , c-format
 #: imap/socket.c:271
@@ -1436,9 +1436,8 @@ msgid "Connecting to %s..."
 msgstr "Connexion à %s..."
 
 #: imap/socket.c:291
-#, fuzzy
 msgid "IMAP Preconnect command failed"
-msgstr "la commande preconnect a échoué"
+msgstr "La commande IMAP Preconnect a échoué"
 
 #: imap/util.c:62
 msgid "Continue?"
@@ -2366,7 +2365,6 @@ msgstr ""
 "sous certaines conditions ; tapez `mutt -vv' pour les détails.\n"
 
 #: main.c:50
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
@@ -2399,6 +2397,7 @@ msgstr ""
 "Copyright (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
 "Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 2000      Edmnud Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "De nombreuses autres personnes non mentionnées ici ont fourni\n"
 "beaucoup de code, des corrections et des suggestions.\n"
