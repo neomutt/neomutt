@@ -129,7 +129,7 @@ static const char *pgp_entry_fmt (char *dest,
   pgp_entry_t *entry;
   pgp_uid_t *uid;
   pgp_key_t *key, *pkey;
-  int kflags;
+  int kflags = 0;
   int optional = (flags & M_FORMAT_OPTIONAL);
 
   entry = (pgp_entry_t *) data;
@@ -138,13 +138,10 @@ static const char *pgp_entry_fmt (char *dest,
   pkey  = pgp_principal_key (key);
 
   if (isupper (op))
-  {
     key = pkey;
-    kflags = pkey->flags;
-  }
-  else
-    /* a subkey inherits the principal key's usage restrictions. */
-    kflags = key->flags | (pkey->flags & KEYFLAG_RESTRICTIONS);
+
+  kflags = key->flags | (pkey->flags & KEYFLAG_RESTRICTIONS)
+    | uid->flags;
   
   switch (tolower (op))
   {
@@ -304,8 +301,8 @@ static int _pgp_compare_address (const void *a, const void *b)
   if ((r = mutt_strcasecmp ((*s)->addr, (*t)->addr)))
     return r > 0;
   else
-    return (mutt_strcasecmp (pgp_keyid ((*s)->parent),
-			     pgp_keyid ((*t)->parent)) > 0);
+    return (mutt_strcasecmp (_pgp_keyid ((*s)->parent),
+			     _pgp_keyid ((*t)->parent)) > 0);
 }
 
 static int pgp_compare_address (const void *a, const void *b)
@@ -323,8 +320,8 @@ static int _pgp_compare_keyid (const void *a, const void *b)
   pgp_uid_t **s = (pgp_uid_t **) a;
   pgp_uid_t **t = (pgp_uid_t **) b;
 
-  if ((r = mutt_strcasecmp (pgp_keyid ((*s)->parent), 
-			    pgp_keyid ((*t)->parent))))
+  if ((r = mutt_strcasecmp (_pgp_keyid ((*s)->parent), 
+			    _pgp_keyid ((*t)->parent))))
     return r > 0;
   else
     return (mutt_strcasecmp ((*s)->addr, (*t)->addr)) > 0;
@@ -371,14 +368,55 @@ static int _pgp_compare_trust (const void *a, const void *b)
     return r < 0;
   if ((r = mutt_strcasecmp ((*s)->addr, (*t)->addr)))
     return r > 0;
-  return (mutt_strcasecmp (pgp_keyid ((*s)->parent), 
-			   pgp_keyid ((*t)->parent))) > 0;
+  return (mutt_strcasecmp (_pgp_keyid ((*s)->parent), 
+			   _pgp_keyid ((*t)->parent))) > 0;
 }
 
 static int pgp_compare_trust (const void *a, const void *b)
 {
   return ((PgpSortKeys & SORT_REVERSE) ? !_pgp_compare_trust (a, b)
 				       : _pgp_compare_trust (a, b));
+}
+
+static int pgp_id_is_valid (pgp_uid_t *uid)
+{
+  pgp_key_t *pk = pgp_principal_key (uid->parent);
+
+  if (uid->parent->flags & KEYFLAG_CANTUSE)
+    return 0;
+  if (pk->flags & KEYFLAG_CANTUSE)
+    return 0;
+  if (uid->flags & KEYFLAG_CANTUSE)
+    return 0;
+  if ((uid->trust & 0x03) < 3)
+    return 0;
+  /* else */
+  return 1;
+}
+
+
+#define PGP_KV_VALID  1
+#define PGP_KV_ADDR   2
+#define PGP_KV_STRING 4
+
+#define PGP_KV_MATCH (PGP_KV_ADDR|PGP_KV_STRING)
+
+static int pgp_id_matches_addr (ADDRESS *addr, ADDRESS *u_addr, pgp_uid_t *uid)
+{
+  int rv = 0;
+  
+  if (pgp_id_is_valid (uid))
+    rv |= PGP_KV_VALID;
+
+  if (addr->mailbox && u_addr->mailbox
+      && mutt_strcasecmp (addr->mailbox, u_addr->mailbox) == 0)
+    rv |= PGP_KV_ADDR;
+    
+  if (addr->personal && u_addr->personal
+      && mutt_strcasecmp (addr->personal, u_addr->personal) == 0)
+    rv |= PGP_KV_STRING;
+  
+  return rv;
 }
 
 static pgp_key_t *pgp_select_key (pgp_key_t *keys,
@@ -396,28 +434,27 @@ static pgp_key_t *pgp_select_key (pgp_key_t *keys,
   pgp_uid_t *a;
   int (*f) (const void *, const void *);
 
-  for (i = 0, kp = keys; kp; kp = kp->next)
-  {
-    if (!option (OPTPGPSHOWUNUSABLE) && (kp->flags & KEYFLAG_CANTUSE))
-      continue;
-    
-    for (a = kp->address; a; i++, a = a->next)
-      ;
-  }
-
-  if (i == 0)
-    return NULL;
-
-  keymax = i;
-  KeyTable = safe_malloc (sizeof (pgp_key_t *) * i);
+  keymax = 5;
+  KeyTable = safe_malloc (sizeof (pgp_key_t *) * keymax);
 
   for (i = 0, kp = keys; kp; kp = kp->next)
   {
     if (!option (OPTPGPSHOWUNUSABLE) && (kp->flags & KEYFLAG_CANTUSE))
       continue;
 	
-    for (a = kp->address; a; i++, a = a->next)
-      KeyTable[i] = a;
+    for (a = kp->address; a; a = a->next)
+    {
+      if (!option (OPTPGPSHOWUNUSABLE) && (a->flags & KEYFLAG_CANTUSE))
+	continue;
+      
+      if (i == keymax)
+      {
+	keymax += 5;
+	safe_realloc ((void **) &KeyTable, sizeof (pgp_key_t *) * keymax);
+      }
+      
+      KeyTable[i++] = a;
+    }
   }
 
   switch (PgpSortKeys & SORT_MASK)
@@ -450,7 +487,7 @@ static pgp_key_t *pgp_select_key (pgp_key_t *keys,
   strcat (helpstr, buf);	/* __STRCAT_CHECKED__ */
 
   menu = mutt_new_menu ();
-  menu->max = keymax;
+  menu->max = i;
   menu->make_entry = pgp_entry;
   menu->menu = MENU_PGP;
   menu->help = helpstr;
@@ -537,25 +574,27 @@ static pgp_key_t *pgp_select_key (pgp_key_t *keys,
       }
       
       if (option (OPTPGPCHECKTRUST) &&
-	  (KeyTable[menu->current]->trust & 0x03) < 3)
+	  !pgp_id_is_valid (KeyTable[menu->current]))
       {
 	char *s = "";
 	char buff[LONG_STRING];
-
-	switch (KeyTable[menu->current]->trust & 0x03)
+	
+	if (KeyTable[menu->current]->flags & KEYFLAG_CANTUSE)
+	  s = N_("This ID is expired/disabled/revoked");
+	else switch (KeyTable[menu->current]->trust & 0x03)
 	{
-	case 0:
-	  s = N_("This ID's trust level is undefined.");
-	  break;
-	case 1:
-	  s = N_("This ID is not trusted.");
-	  break;
-	case 2:
-	  s = N_("This ID is only marginally trusted.");
-	  break;
+	  case 0:
+	    s = N_("This ID's trust level is undefined.");
+	    break;
+	  case 1:
+	    s = N_("This ID is not trusted.");
+	    break;
+	  case 2:
+	    s = N_("This ID is only marginally trusted.");
+	    break;
 	}
 
-	snprintf (buff, sizeof (buff), _("%s Do you really want to use it?"),
+	snprintf (buff, sizeof (buff), _("%s Do you really want to use the key?"),
 		  _(s));
 
 	if (mutt_yesorno (buff, 0) != 1)
@@ -739,12 +778,12 @@ pgp_key_t *pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring)
   ADDRESS *r, *p;
   LIST *hints = NULL;
   int weak = 0;
-  int weak_association, kflags;
+  int weak_association;
   int match;
-  pgp_uid_t *q;
-  pgp_key_t *keys, *k, *kn, *pk;
+  pgp_key_t *keys, *k, *kn;
   pgp_key_t *matches = NULL;
   pgp_key_t **last = &matches;
+  pgp_uid_t *q;
   
   if (a && a->mailbox)
     hints = pgp_add_string_to_hints (hints, a->mailbox);
@@ -777,41 +816,27 @@ pgp_key_t *pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring)
       continue;
     }
 
-    pk = pgp_principal_key (k);
-    kflags = k->flags | pk->flags;
-    
-    q = k->address;
     weak_association = 1;
     match = 0;
 
-    for (; q; q = q->next)
+    for (q = k->address; q; q = q->next)
     {
       r = rfc822_parse_adrlist (NULL, q->addr);
 
-
       for (p = r; p && weak_association; p = p->next)
       {
-	if ((p->mailbox && a->mailbox &&
-	     mutt_strcasecmp (p->mailbox, a->mailbox) == 0) ||
-	    (a->personal && p->personal &&
-	     mutt_strcasecmp (a->personal, p->personal) == 0))
-	{
+	int validity = pgp_id_matches_addr (a, p, q);
+	if (validity & PGP_KV_MATCH)
 	  match = 1;
-
-	  if (((q->trust & 0x03) == 3) &&
-	      (!(kflags & KEYFLAG_CANTUSE)) &&
-	      (p->mailbox && a->mailbox &&
-	       !mutt_strcasecmp (p->mailbox, a->mailbox)))
-	  {
-	    weak_association = 0;
-	  }
-	}
+	if ((validity & PGP_KV_ADDR) && (validity & PGP_KV_VALID))
+	  weak_association = 0;
       }
+
       rfc822_free_address (&r);
     }
 
     if (match && weak_association)
-	weak = 1;
+      weak = 1;
     
     if (match)
     {

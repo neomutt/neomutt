@@ -58,6 +58,7 @@ typedef struct pgp_uid
 {
   char *addr;
   short trust;
+  int flags;
   struct pgp_keyinfo *parent;
   struct pgp_uid *next;
 }

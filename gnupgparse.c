@@ -119,6 +119,7 @@ static pgp_key_t *parse_pub_line (char *buf, int *is_subkey, pgp_key_t *k)
   int field = 0, is_uid = 0;
   char *pend, *p;
   int trust = 0;
+  int flags = 0;
 
   *is_subkey = 0;
   if (!*buf)
@@ -160,19 +161,18 @@ static pgp_key_t *parse_pub_line (char *buf, int *is_subkey, pgp_key_t *k)
       }
       case 2:			/* trust info */
       {
-
 	dprint (2, (debugfile, "trust info: %s\n", p));
 	
 	switch (*p)
 	{				/* look only at the first letter */
 	  case 'e':
-	    k->flags |= KEYFLAG_EXPIRED;
+	    flags |= KEYFLAG_EXPIRED;
 	    break;
 	  case 'r':
-	    k->flags |= KEYFLAG_REVOKED;
+	    flags |= KEYFLAG_REVOKED;
 	    break;
 	  case 'd':
-	    k->flags |= KEYFLAG_DISABLED;
+	    flags |= KEYFLAG_DISABLED;
 	    break;
 	  case 'n':
 	    trust = 1;
@@ -187,6 +187,10 @@ static pgp_key_t *parse_pub_line (char *buf, int *is_subkey, pgp_key_t *k)
 	    trust = 3;
 	    break;
 	}
+
+        if (!is_uid && !(*is_subkey && option (OPTPGPIGNORESUB)))
+	  k->flags |= flags;
+
 	break;
       }
       case 3:			/* key length  */
@@ -263,6 +267,7 @@ static pgp_key_t *parse_pub_line (char *buf, int *is_subkey, pgp_key_t *k)
 	fix_uid (p);
 	uid->addr = safe_strdup (p);
 	uid->trust = trust;
+	uid->flags |= flags;
 	uid->parent = k;
 	uid->next = k->address;
 	k->address = uid;
@@ -275,6 +280,8 @@ static pgp_key_t *parse_pub_line (char *buf, int *is_subkey, pgp_key_t *k)
 	break;
       }
       case 11:			/* signature class  */
+        break;
+      case 12:			/* key capabilities */
         break;
       default:
         break;
@@ -341,6 +348,7 @@ pgp_key_t *pgp_get_candidates (pgp_ring_t keyring, LIST * hints)
   mutt_wait_filter (thepid);
 
   close (devnull);
+  
   return db;
 }
 
