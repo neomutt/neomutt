@@ -1,4 +1,59 @@
-Tue Oct 13 22:53:36 1998  Thomas Roessler  <roessler@guug.de>
+Thu Oct 15 16:11:47 1998  Thomas Roessler  <roessler@guug.de>
+
+	* po/ru.po, po/mutt.pot, po/cat-id-tbl.c, sendlib.c,
+	compose.c: Don't ever permit the user to generate uuencoded
+	messages with mutt.
+
+	* keymap.c: A slightly modified version of Vikas'
+	help_unbound patch.
+
+	* po/mutt.pot, sendlib.c, protos.h, postpone.c, parse.h,
+	parse.c, mh.c, mbox.c, main.c, imap.c, headers.c, buffy.c:
+	Fixing a memory hog which was introduced by the edit-message
+	patch.
+
+Wed Oct 14 22:58:04 1998  Thomas Roessler  <roessler@guug.de>
+
+	* po/ru.po, po/mutt.pot, po/de.po, po/cat-id-tbl.c, compose.c:
+	Warn the user before sending out uuencoded attachments.
+
+	* handler.c: Fix prefix and utf8 issues in the uudecoder.
+
+	* sendlib.c, parse.c, mime.h, handler.c, globals.h, config.h.in:
+	Thinking about this once again, ok folks, here comes x-uuencode
+	support.
+
+	* handler.c: typo.
+
+	* handler.c:
+	When Charset is utf-8 (not recommended!), don't active utf8
+	translation in the various handler routines.
+
+	* Makefile.in, Makefile.am:
+	Add -I$(includedir) to the C preprocessor flags.  Per request of
+	Clint Olsen.
+
+	* po/ru.po, po/de.po, charsets/parse_i18n.c, charsets/Makefile.in, configure.in, configure, config.h.in, Makefile.in, Makefile.am:
+	More build process clean-up.
+
+	* po/mutt.pot, po/Makefile.in.in, charsets/Makefile.in, config.h.in, Makefile.in:
+	Removing some instances of gnu-make specific command line parameters.
+
+	* doc/manual.sgml.in: Document the match-all feature.
+
+	* po/mutt.pot, main.c, dotlock.c, configure.in, configure, config.h.in, Makefile.in, Makefile.am:
+	Various build fixes.
+
+	* color.c: Adding some necessary ifdefs to color.c, From
+	Irving_Wolfe@wolfe.net.
+
+Tue Oct 13 23:37:05 1998  Thomas Roessler  <roessler@guug.de>
+
+	* po/ru.po, po/de.po: Checkpoint commit.  This gets boring.
+
+	* NEWS: Merging Vikas' NEWS file into the distributed one.
+
+	* po/mutt.pot, config.h.in, Makefile.in, ChangeLog: Preparing 0.94.12.
 
 	* po/ru.po, po/mutt.pot, po/de.po, po/cat-id-tbl.c,
 	reldate.h, recvattach.c, configure.in, configure,
