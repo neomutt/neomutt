@@ -51,6 +51,7 @@ top-page                   H   move to the top of the page
 bounce-message             b   remail a message to another user
 change-folder              c   open a different folder
 change-folder-readonly ESC c   open a different folder in read only mode
+check-traditional-pgp  ESC P   check for classic pgp
 clear-flag                 W   clear a status flag from a message
 copy-message               C   copy a message to a file/mailbox
 create-alias               a   create an alias from a message sender
@@ -122,6 +123,7 @@ bottom             not bound   jump to the bottom of the message
 bounce-message             b   remail a message to another user
 change-folder              c   open a different folder
 change-folder-readonly ESC c   open a different folder in read only mode
+check-traditional-pgp  ESC P   check for classic pgp
 copy-message               C   copy a message to a file/mailbox
 create-alias               a   create an alias from a message sender
 decode-copy            ESC C   decode a message and copy it to a file/mailbox
