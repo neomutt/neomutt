@@ -771,7 +771,7 @@ static int imap_create_mailbox (CONTEXT *ctx)
       
   if (imap_exec (buf, sizeof (buf), ctx, seq, buf, 0) != 0)
   {
-    imap_error ("imap_sync_mailbox()", buf);
+    imap_error ("imap_create_mailbox()", buf);
     return (-1);
   }
   return 0;
