@@ -1048,6 +1048,12 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 
         mutt_sleep (0);
       
+	/* Set CurrentMenu to MENU_MAIN before executing any folder
+	 * hooks so that all the index menu functions are available to
+	 * the exec command.
+	 */
+
+	CurrentMenu = MENU_MAIN;
 	mutt_folder_hook (buf);
 
 	if ((Context = mx_open_mailbox (buf, 
