@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutt-1.1.9\n"
 "POT-Creation-Date: 2000-04-22 20:34+0200\n"
-"PO-Revision-Date: 2000-03-15 19:33+01:00\n"
+"PO-Revision-Date: 2000-04-24 20:39+02:00\n"
 "Last-Translator: Marco d'Itri <md@linux.it>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
@@ -1246,15 +1246,15 @@ msgstr "Mi deiscrivo da %s..."
 
 #: imap/imap_ssl.c:85
 msgid "Filling entropy pool"
-msgstr ""
+msgstr "Riempimento del pool di entropia"
 
 #: imap/imap_ssl.c:117
 msgid "Failed to find enough entropy on your system"
-msgstr ""
+msgstr "Impossibile trovare abbastanza entropia nel sistema"
 
 #: imap/imap_ssl.c:124
 msgid "SSL disabled due the lack of entropy"
-msgstr ""
+msgstr "SSL disabilitato a causa della mancanza di entropia"
 
 #: imap/imap_ssl.c:204
 msgid "Unable to get certificate from peer"
@@ -1438,7 +1438,7 @@ msgstr "source: errori in %s"
 #: init.c:1214
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
-msgstr ""
+msgstr "source: lettura terminata a causa di troppi errori in %s"
 
 #: init.c:1228
 #, c-format
