@@ -382,7 +382,7 @@ sub add_entry ($$$$$) {
 sub add_certificate ($$$$;$) {
     my $filename = shift or die;
     my $hashvalue = shift or die;
-    my $add_to_index = shift or die;
+    my $add_to_index = shift;
     my $label = shift or die;
     my $issuer_hash = shift;
 
