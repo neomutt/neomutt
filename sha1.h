@@ -10,10 +10,14 @@
 # define _SHA1_H
 
 #include "config.h"
-#ifdef HAVE_STDINT_H
-#  include <stdint.h>
+
+#include <sys/types.h>
+#if HAVE_INTTYPES_H
+# include <inttypes.h>
 #else
-#  include <sys/types.h>
+# if HAVE_STDINT_H
+#  include <stdint.h>
+# endif
 #endif
 
 #ifndef HAVE_UINT32_T

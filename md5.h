@@ -28,10 +28,13 @@ documentation and/or software.
 
 #include "config.h"
 
-#ifdef HAVE_STDINT_H
-#  include <stdint.h>
+#include <sys/types.h>
+#if HAVE_INTTYPES_H
+# include <inttypes.h>
 #else
-#  include <sys/types.h>
+# if HAVE_STDINT_H
+#  include <stdint.h>
+# endif
 #endif
 
 /* POINTER defines a generic pointer type */
