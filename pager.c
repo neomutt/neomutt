@@ -978,7 +978,10 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
   int col = option (OPTMARKERS) ? (*lineInfo)[n].continuation : 0;
   int ch, vch, k, special = 0, t;
   wchar_t wc;
-  mbstate_t mbstate = 0; /* FIXME: this should come from lineInfo */
+  mbstate_t mbstate;
+
+  /* FIXME: this should come from lineInfo */
+  memset(&mbstate, 0, sizeof(mbstate));
 
   for (ch = 0, vch = 0; ch < cnt; ch += k, vch += k)
   {

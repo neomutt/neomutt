@@ -843,12 +843,13 @@ size_t iconv (iconv_t _cd, const char **inbuf, size_t *inbytesleft,
   }
   else if (cd && !cd->chs_from && cd->chs_to && !unicode_init ())
   {
-    mbstate_t mbstate = 0;
+    mbstate_t mbstate;
     unsigned int wc;
     int k;
     char c;
     CHARDESC *d;
 
+    memset(&mbstate, 0, sizeof(mbstate));
     n = 0;
     while (ibl && obl)
     {

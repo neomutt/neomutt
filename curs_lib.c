@@ -470,7 +470,7 @@ int mutt_addwch (wchar_t wc)
   char buf[6]; /* FIXME */
   int n;
 
-  n = mutt_wctomb (buf, wc);
+  n = wctomb (buf, wc);
   if (n == -1)
     return n;
   else

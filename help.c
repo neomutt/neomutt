@@ -92,16 +92,16 @@ static int print_macro (FILE *f, int maxwidth, const char **macro)
 
   for (;;)
   {
-    if ((k = mutt_mbtowc (&wc, *macro, -1)) <= 0)
+    if ((k = mbtowc (&wc, *macro, -1)) <= 0)
       break;
-    if ((w = mutt_wcwidth (wc)) >= 0)
+    if ((w = wcwidth (wc)) >= 0)
     {
       if (w > n)
 	break;
       n -= w;
       {
 	char tb[7];
-	int m = mutt_wctomb (tb, wc);
+	int m = wctomb (tb, wc);
 	if (0 < m && m < 7)
 	  tb[m] = '\0', fprintf (f, "%s", tb);
       }

@@ -1,15 +1,9 @@
 
-/*
- * This file provides functions that are just like the C library ones,
- * except that they behave according to mutt's Charset instead of
- * according to the locale.
- */
-
-#include <errno.h>
-
 #include "mutt.h"
 #include "mbyte.h"
 #include "charset.h"
+
+#include <errno.h>
 
 #ifndef EILSEQ
 #define EILSEQ EINVAL
@@ -22,10 +16,12 @@ void mutt_set_charset (char *charset)
   Charset_is_utf8 = mutt_is_utf8 (charset);
 }
 
+#ifndef HAVE_WC_FUNCS
+
 int wctomb (char *s, wchar_t wc)
 {
   if (Charset_is_utf8)
-    return mutt_wctoutf8(s, wc);
+    return mutt_wctoutf8 (s, wc);
   else if (wc < 0x100)
   {
     if (s)
@@ -38,17 +34,53 @@ int wctomb (char *s, wchar_t wc)
 
 int mbtowc (wchar_t *pwc, const char *s, size_t n)
 {
-  mbstate_t state = 0;
-  int result = mbrtowc (pwc, s, n, &state);
+  mbstate_t state;
+  int result;
+  memset(&state, 0, sizeof(state));
+  result = mbrtowc (pwc, s, n, &state);
   if (result >= 0)
     return result;
   else
     return -1;
 }
 
-size_t utf8rtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *ps)
+size_t mbrtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *ps)
 {
-  static mbstate_t mbstate = 0;
+  static mbstate_t mbstate;
+
+  if (!ps)
+    ps = &mbstate;
+
+  if (Charset_is_utf8)
+    return utf8rtowc (pwc, s, n, ps);
+  else
+  {
+    if (!s)
+    {
+      memset(ps, 0, sizeof(*ps));
+      return 0;
+    }
+    if (!n)
+      return (size_t)-2;
+    if (pwc)
+      *pwc = (wchar_t)(unsigned char)*s;
+    return (*s != 0);
+  }
+}
+
+int iswprint (wint_t wc)
+{
+  return ((0x20 <= wc && wc < 0x7f) || 0xa0 <= wc);
+}
+
+#endif /* HAVE_MBYTE */
+
+#if !defined(HAVE_MBYTE) || !defined(HAVE_ICONV)
+
+size_t utf8rtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *_ps)
+{
+  static wchar_t mbstate;
+  wchar_t *ps = (wchar_t *)_ps;
   size_t k = 1;
   unsigned char c;
   wchar_t wc;
@@ -132,34 +164,7 @@ size_t utf8rtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *ps)
   return (size_t)-2;
 }
 
-size_t mbrtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *ps)
-{
-  static mbstate_t mbstate = 0;
-
-  if (!ps)
-    ps = &mbstate;
-
-  if (Charset_is_utf8)
-    return utf8rtowc (pwc, s, n, ps);
-  else
-  {
-    if (!s)
-    {
-      *ps = 0;
-      return 0;
-    }
-    if (!n)
-      return (size_t)-2;
-    if (pwc)
-      *pwc = (wchar_t)(unsigned char)*s;
-    return (*s != 0);
-  }
-}
-
-int iswprint (wchar_t wc)
-{
-  return ((0x20 <= wc && wc < 0x7f) || 0xa0 <= wc);
-}
+#endif /* !defined(HAVE_MBYTE) || !defined(HAVE_ICONV) */
 
 wchar_t replacement_char ()
 {

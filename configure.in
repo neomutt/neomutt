@@ -708,6 +708,22 @@ if test "$mutt_cv_wchar_t" = no; then
 	AC_DEFINE(wchar_t, int)
 fi
 
+AC_CACHE_CHECK([for wint_t], mutt_cv_wint_t,
+	AC_TRY_COMPILE([
+#include <stddef.h>
+#include <stdlib.h>
+#ifdef HAVE_WCHAR_H
+#include <wchar.h>
+#endif
+int main() { wint_t wc; return 0; }
+			],
+			mutt_cv_wint_t=yes,
+			mutt_cv_wint_t=no))
+
+if test "$mutt_cv_wint_t" = no; then
+	AC_DEFINE(wint_t, int)
+fi
+
 AC_CACHE_CHECK([for mbstate_t], mutt_cv_mbstate_t,
 	AC_TRY_COMPILE([
 #include <stddef.h>
@@ -715,7 +731,7 @@ AC_CACHE_CHECK([for mbstate_t], mutt_cv_mbstate_t,
 #ifdef HAVE_WCHAR_H
 #include <wchar.h>
 #endif
-int main() { mbstate_t wc; return 0; }
+int main() { mbstate_t s; return 0; }
 			],
 			mutt_cv_mbstate_t=yes,
 			mutt_cv_mbstate_t=no))

@@ -28,6 +28,9 @@
 #include <limits.h>
 #include <stdarg.h>
 #include <signal.h>
+#ifdef HAVE_WCHAR_H
+#include <wchar.h>
+#endif
 
 #ifndef _POSIX_PATH_MAX
 #include <posix1_lim.h>

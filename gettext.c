@@ -61,26 +61,18 @@ char *mutt_gettext (const char *message)
     if (t != po_charset &&
 	(!t || !po_charset || strcmp (t, po_charset)))
     {
-      free (po_charset);
+      safe_free ((void **) &po_charset);
       po_charset = t;
       change_cd = 1;
     }
     else
-      free (t);
+      safe_free ((void **) &t);
   }
 
   if (message_charset != Charset &&
       (!message_charset || !Charset || strcmp (message_charset, Charset)))
   {
-    free (message_charset);
-    if (Charset)
-    {
-      int n = strlen (Charset);
-      message_charset = safe_malloc (n+1);
-      memcpy (message_charset, Charset, n+1);
-    }
-    else
-      message_charset = 0;
+    mutt_str_replace (&message_charset, Charset);
     outrepl = mutt_is_utf8 (message_charset) ? "\357\277\275" : "?";
     change_cd = 1;
   }

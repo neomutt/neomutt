@@ -6,11 +6,10 @@
  * Markus Kuhn -- 2000-02-08 -- public domain
  */
 
-#if 0 /* original */
-#include <wchar.h>
-#else /* Mutt */
+#include "mutt.h"
 #include "mbyte.h"
-#endif
+
+#ifndef HAVE_WC_FUNCS
 
 /* These functions define the column width of an ISO 10646 character
  * as follows:
@@ -117,6 +116,7 @@ int wcwidth(wchar_t ucs)
      (ucs >= 0xffe0 && ucs <= 0xffe6));
 }
 
+#endif /* HAVE_WCWIDTH */
 
 #if 0 /* original */
 int wcswidth(const wchar_t *pwcs, size_t n)

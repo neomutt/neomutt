@@ -179,3 +179,17 @@
  * This define will have value `sig_atomic_t' or `volatile sig_atomic_t'
  * accordingly. */
 #undef SIG_ATOMIC_VOLATILE_T
+
+/* Define to 'int' if system headers don't define. */
+#undef wchar_t
+
+/* Define to 'int' if system headers don't define. */
+#undef wint_t
+
+/* Define to 'int' if system headers don't define. */
+#undef mbstate_t
+
+/* Define if we are using the system's wchar_t functions. */
+#undef HAVE_WC_FUNCS
+
+  
