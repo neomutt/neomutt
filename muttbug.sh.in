@@ -30,6 +30,8 @@
 SUBMIT="submit@bugs.guug.de"
 DEBIAN_SUBMIT="submit@bugs.debian.org"
 
+prefix=@prefix@
+
 DEBUGGER=@DEBUGGER@
 SENDMAIL=@SENDMAIL@
 sysconfdir=@sysconfdir@
