@@ -885,34 +885,34 @@ invoked when pressing a key).
 defined maps are:
 
 <descrip>
-<tag/generic
+<tag/generic/
 This is not a real menu, but is used as a fallback for all of the other
 menus except for the pager and editor modes.  If a key is not defined in
 another menu, Mutt will look for a binding to use in this menu.  This allows
 you to bind a key to a certain function in multiple menus instead of having
 multiple bind statements to accomplish the same task.
-<tag/alias
+<tag/alias/
 The alias menu is the list of your personal aliases as defined in your
 muttrc.  It is the mapping from a short alias name to the full email
 address(es) of the recipient(s).
-<tag/attach
+<tag/attach/
 The attachment menu is used to access the attachments on received messages.
-<tag/browser
+<tag/browser/
 The browser is used for both browsing the local directory structure, and for
 listing all of your incoming mailboxes.
-<tag/editor
+<tag/editor/
 The editor is the line-based editor the user enters text data.
-<tag/index
+<tag/index/
 The index is the list of messages contained in a mailbox.
-<tag/compose
+<tag/compose/
 The compose menu is the screen used when sending a new message.
-<tag/pager
+<tag/pager/
 The pager is the mode used to display message/attachment data, and help
 listings.
-<tag/pgp
+<tag/pgp/
 The pgp menu is used to select the OpenPGP keys used for encrypting outgoing
 messages.
-<tag/postpone
+<tag/postpone/
 The postpone menu is similar to the index menu, except is used when
 recalling a message the user was composing, but saved until later.
 </descrip>
