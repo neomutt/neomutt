@@ -1,3 +1,8 @@
+2005-01-15 08:01:35  Brendan Cully <brendan@kublai.com>  (brendan)
+
+	* Makefile.am: Update commit targets to work when
+	builddir != srcdir.
+
 2005-01-15 07:36:37  Adeodato Simó <asp16@alu.ua.es>  (brendan)
 
 	* init.h: Document the interaction between $reverse_name and
