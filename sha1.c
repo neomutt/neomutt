@@ -18,20 +18,18 @@
 #define SHA1HANDSOFF
 
 #include <string.h>
-#include <sys/types.h>	/* for u_int*_t */
 
 #include "sha1.h"
-#include "types.h"
 
 #define rol(value, bits) (((value) << (bits)) | ((value) >> (32 - (bits))))
 
 /* blk0() and blk() perform the initial expand. */
 /* I got the idea of expanding during the round function from SSLeay */
-#ifdef M_LITTLE_ENDIAN
-# define blk0(i) (block->l[i] = (rol(block->l[i],24)&0xFF00FF00) \
-		    |(rol(block->l[i],8)&0x00FF00FF))
-#else
+#ifdef WORDS_BIGENDIAN
 #  define blk0(i) block->l[i]
+#else
+#  define blk0(i) (block->l[i] = (rol(block->l[i],24)&0xFF00FF00) \
+		    |(rol(block->l[i],8)&0x00FF00FF))
 #endif
 
 #define blk(i) (block->l[i&15] = rol(block->l[(i+13)&15]^block->l[(i+8)&15] \
@@ -47,12 +45,12 @@
 
 /* Hash a single 512-bit block. This is the core of the algorithm. */
 
-void SHA1Transform(UINT4 state[5], const unsigned char buffer[64])
+void SHA1Transform(uint32_t state[5], const unsigned char buffer[64])
 {
-UINT4 a, b, c, d, e;
+uint32_t a, b, c, d, e;
 typedef union {
     unsigned char c[64];
-    UINT4 l[16];
+    uint32_t l[16];
 } CHAR64LONG16;
 #ifdef SHA1HANDSOFF
 CHAR64LONG16 block[1];  /* use array to appear as a pointer */
@@ -122,10 +120,10 @@ void SHA1Init(SHA1_CTX* context)
 
 /* Run your data through this. */
 
-void SHA1Update(SHA1_CTX* context, const unsigned char* data, UINT4 len)
+void SHA1Update(SHA1_CTX* context, const unsigned char* data, uint32_t len)
 {
-UINT4 i;
-UINT4 j;
+uint32_t i;
+uint32_t j;
 
     j = context->count[0];
     if ((context->count[0] += len << 3) < j)
@@ -163,7 +161,7 @@ unsigned char c;
 
     for (i = 0; i < 2; i++)
     {
-	UINT4 t = context->count[i];
+	uint32_t t = context->count[i];
 	int j;
 
 	for (j = 0; j < 4; t >>= 8, j++)

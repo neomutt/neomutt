@@ -2,7 +2,7 @@
 ## Use aclocal -I m4; automake --foreign
 
 AUTOMAKE_OPTIONS = foreign
-EXTRA_PROGRAMS = mutt_dotlock pgpring makedoc checktypes
+EXTRA_PROGRAMS = mutt_dotlock pgpring makedoc
 
 if BUILD_IMAP
 IMAP_SUBDIR = imap
@@ -17,7 +17,7 @@ else
 bin_SCRIPTS = muttbug flea
 endif
 
-BUILT_SOURCES = keymap_defs.h types.h
+BUILT_SOURCES = keymap_defs.h
 
 bin_PROGRAMS = mutt @DOTLOCK_TARGET@ @PGPAUX_TARGET@
 mutt_SOURCES = $(BUILT_SOURCES) \
@@ -42,11 +42,6 @@ mutt_DEPENDENCIES = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAPDEPS) \
 makedoc_SOURCES = makedoc.c
 makedoc_LDADD =
 makedoc_DEPENDENCIES = 
-
-checktypes_SOURCES = checktypes.c
-checktypes_LDADD =
-checktypes_DEPENDENCIES = 
-
 
 # $(makedoc_OBJECTS): $(makedoc_SOURCES)
 # 	$(HOST_CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) -c $<
@@ -86,7 +81,7 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO configure acconfig.h account.h \
 	rfc822.h sha1.h sort.h mime.types VERSION prepare \
 	_regex.h OPS.MIX README.SECURITY remailer.c remailer.h browser.h \
 	mbyte.h	lib.h extlib.c pgpewrap pgplib.h Muttrc.head Muttrc \
-	makedoc.c stamp-doc-rc README.SSL README.UPGRADE checktypes.c \
+	makedoc.c stamp-doc-rc README.SSL README.UPGRADE \
 	muttbug pgppacket.h depcomp ascii.h BEWARE
 
 mutt_dotlock_SOURCES = mutt_dotlock.c
@@ -101,7 +96,7 @@ mutt_dotlock.c: dotlock.c
 	cp $(srcdir)/dotlock.c mutt_dotlock.c
 
 CLEANFILES = mutt_dotlock.c stamp-doc-rc makedoc \
-	keymap_alldefs.h keymap_defs.h types.h
+	keymap_alldefs.h keymap_defs.h
 
 ACLOCAL_AMFLAGS = -I m4
 
@@ -114,9 +109,6 @@ flea:	muttbug.sh
 	chmod +x flea
 
 Makefile: $(BUILT_SOURCES)
-
-types.h: checktypes
-	./checktypes > types.h
 
 keymap_defs.h: $(OPS) $(srcdir)/gen_defs
 	$(srcdir)/gen_defs $(OPS) > keymap_defs.h

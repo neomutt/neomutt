@@ -237,7 +237,27 @@ fi
 
 AC_DECL_SYS_SIGLIST
 
-dnl need this for DEC alpha
+dnl For MD5 and SHA1 on 64-bit systems
+AC_C_BIGENDIAN
+AC_CHECK_HEADERS(stdint.h)
+dnl This is the method autoconf-2.50's new AC_CHECK_TYPE macro uses.
+dnl We need to be backwards compatible to autoconf 2.13, though. -lh
+AC_MSG_CHECKING(for uint32_t)
+AC_TRY_COMPILE([
+#include <sys/types.h>
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif],
+[if ((uint32_t *) 0)
+  return 0;
+if (sizeof (uint32_t))
+  return 0;
+],[
+    AC_DEFINE(HAVE_UINT32_T, 1, [ Define if you have the uint32_t type. ])
+    AC_MSG_RESULT(yes)
+  ], AC_MSG_RESULT(no)
+)
+AC_CHECK_SIZEOF(int)
 AC_CHECK_SIZEOF(long)
 
 AC_TYPE_PID_T

@@ -9,17 +9,30 @@
 #ifndef _SHA1_H
 # define _SHA1_H
 
-# include "types.h"
+#include "config.h"
+#ifdef HAVE_STDINT_H
+#  include <stdint.h>
+#else
+#  include <sys/types.h>
+#endif
+
+#ifndef HAVE_UINT32_T
+#  if SIZEOF_INT == 4
+typedef unsigned int uint32_t;
+#  elif SIZEOF_LONG == 4
+typedef unsigned long uint32_t;
+#  endif
+#endif
 
 typedef struct {
-  UINT4 state[5];
-  UINT4 count[2];
+  uint32_t state[5];
+  uint32_t count[2];
   unsigned char buffer[64];
 } SHA1_CTX;
 
-void SHA1Transform(UINT4 state[5], const unsigned char buffer[64]);
+void SHA1Transform(uint32_t state[5], const unsigned char buffer[64]);
 void SHA1Init(SHA1_CTX* context);
-void SHA1Update(SHA1_CTX* context, const unsigned char* data, UINT4 len);
+void SHA1Update(SHA1_CTX* context, const unsigned char* data, uint32_t len);
 void SHA1Final(unsigned char digest[20], SHA1_CTX* context);
 
 # define SHA1_Transform SHA1Transform

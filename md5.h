@@ -26,26 +26,29 @@ documentation and/or software.
 #ifndef MD5_H
 #define MD5_H 1
 
+#include "config.h"
+
+#ifdef HAVE_STDINT_H
+#  include <stdint.h>
+#else
+#  include <sys/types.h>
+#endif
 
 /* POINTER defines a generic pointer type */
 typedef unsigned char *POINTER;
 
-#include "types.h"
-
-#if 0
-
-/* UINT2 defines a two byte word */
-typedef unsigned short int UINT2;
-
-/* UINT4 defines a four byte word */
-typedef unsigned long int UINT4;
-
+#ifndef HAVE_UINT32_T
+#  if SIZEOF_INT == 4
+typedef unsigned int uint32_t;
+#  elif SIZEOF_LONG == 4
+typedef unsigned long int uint32_t;
+#  endif
 #endif
 
 /* MD5 context. */
 typedef struct {
-  UINT4 state[4];                                   /* state (ABCD) */
-  UINT4 count[2];        /* number of bits, modulo 2^64 (lsb first) */
+  uint32_t state[4];                                   /* state (ABCD) */
+  uint32_t count[2];        /* number of bits, modulo 2^64 (lsb first) */
   unsigned char buffer[64];                         /* input buffer */
 } MD5_CTX;
 
