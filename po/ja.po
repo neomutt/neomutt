@@ -6,9 +6,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.5.1\n"
+"Project-Id-Version: 1.5.2\n"
 "POT-Creation-Date: 2002-12-06 12:10+0100\n"
-"PO-Revision-Date: 2002-10-25 19:40+0900\n"
+"PO-Revision-Date: 2002-12-07 01:40+0900\n"
 "Last-Translator: Tamotsu TAKAHASHI <tamo@momonga-linux.org>\n"
 "Language-Team: mutt-j <mutt-j@ribbon.or.jp>\n"
 "MIME-Version: 1.0\n"
@@ -68,7 +68,7 @@ msgstr "すでにこの名前の別名がある!"
 
 #: alias.c:252
 msgid "Warning: This alias name may not work.  Fix it?"
-msgstr ""
+msgstr "警告: この別名は正常に動作しないかもしれない。修正?"
 
 #: alias.c:273
 msgid "Address: "
@@ -2471,7 +2471,6 @@ msgid ""
 msgstr ""
 
 #: main.c:88
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -2511,6 +2510,8 @@ msgstr ""
 "             [-f <ファイル>]\n"
 "        mutt [-nR] [-e <コマンド>] [-F <ファイル>] -Q <問い合わせ> \n"
 "             [-Q <問い合わせ> ]\n"
+"        mutt [-nR] [-e <コマンド>] [-F <ファイル>] -A <別名> \n"
+"             [-A <別名> ]\n"
 "        mutt [-nx] [-e <コマンド>] [-a <ファイル>] [-F <ファイル>] \n"
 "             [-H <ファイル>] [-i <ファイル>] [-s <題名>] [-b <アドレス>] \n"
 "             [-c <アドレス>] <アドレス> [ ... ]\n"
@@ -2518,6 +2519,7 @@ msgstr ""
 "        mutt -v[v]\n"
 "\n"
 "オプション:\n"
+"  -A <別名>\t指定した別名の展開\n"
 "  -a <ファイル>\tメッセージにファイルを添付\n"
 "  -b <アドレス>\tblind carbon-copy (BCC) アドレスの指定\n"
 "  -c <アドレス>\tcarbon-copy (CC) アドレスの指定\n"
@@ -2730,7 +2732,7 @@ msgstr "%s から読み出し中... %d"
 
 #: mh.c:1019
 msgid "maildir_commit_message(): unable to set time on file"
-msgstr ""
+msgstr "maildir_commit_message(): ファイルに時刻を設定できない"
 
 #: muttlib.c:854
 msgid "File is a directory, save under it?"
