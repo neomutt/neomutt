@@ -63,7 +63,7 @@ EXTRA_mutt_SOURCES = account.c md5c.c mutt_sasl.c mutt_socket.c mutt_ssl.c \
 	pgplib.c sha1.c pgpmicalg.c gnupgparse.c resize.c dotlock.c remailer.c \
 	browser.h mbyte.h remailer.h url.h mutt_ssl_nss.c \
 	crypt-mod-pgp-classic.c crypt-mod-smime-classic.c \
-	pgppacket.c mutt_idna.h hcache.c
+	pgppacket.c mutt_idna.h hcache.c mutt_ssl_gnutls.c
 
 EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO \
 	configure acconfig.h account.h \
