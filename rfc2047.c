@@ -87,6 +87,7 @@ static size_t convert_string (const char *f, size_t flen,
 char *mutt_choose_charset (const char *fromcode, const char *charsets,
 		      char *u, size_t ulen, char **d, size_t *dlen)
 {
+  char canonical_buff[LONG_STRING];
   char *e = 0, *tocode = 0;
   size_t elen = 0, bestn = 0;
   const char *p, *q;
@@ -142,6 +143,9 @@ char *mutt_choose_charset (const char *fromcode, const char *charsets,
       *d = e;
     if (dlen)
       *dlen = elen;
+    
+    mutt_canonical_charset (canonical_buff, sizeof (canonical_buff), tocode);
+    mutt_str_replace (&tocode, canonical_buff);
   }
   return tocode;
 }

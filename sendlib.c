@@ -680,14 +680,11 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
   if (cd1 == (iconv_t)(-1))
     return -1;
 
-  cd = safe_malloc (ncodes * sizeof (iconv_t));
-  score = safe_malloc (ncodes * sizeof (size_t));
-  states = safe_malloc (ncodes * sizeof (CONTENT_STATE));
-  infos = safe_malloc (ncodes * sizeof (CONTENT));
+  cd     = safe_malloc (ncodes * sizeof (iconv_t));
+  score  = safe_calloc (1, ncodes * sizeof (size_t));
+  states = safe_calloc (1, ncodes * sizeof (CONTENT_STATE));
+  infos  = safe_calloc (1, ncodes * sizeof (CONTENT));
 
-  memset (score, 0, ncodes * sizeof (size_t));
-  memset (states, 0, ncodes * sizeof (CONTENT_STATE));
-  memset (infos, 0, ncodes * sizeof (CONTENT));
   for (i = 0; i < ncodes; i++)
     if (strcasecmp (tocodes[i], "UTF-8"))
       cd[i] = mutt_iconv_open (tocodes[i], "UTF-8", 0);
@@ -912,7 +909,7 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
       if (!chs)
       {
 	mutt_canonical_charset (chsbuf, sizeof (chsbuf), tocode);
-	mutt_set_parameter ("charset", tocode, &b->parameter);
+	mutt_set_parameter ("charset", chsbuf, &b->parameter);
       }
       safe_free ((void **) &tocode);
       safe_fclose (&fp);
