@@ -1249,8 +1249,9 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
   char pgpoutfile[_POSIX_PATH_MAX];
   char pgperrfile[_POSIX_PATH_MAX];
   char pgpinfile[_POSIX_PATH_MAX];
-
-  char from_charset[STRING];
+  
+  char body_charset[STRING];
+  char *from_charset;
   const char *send_charset;
   
   FILE *pgpout = NULL, *pgperr = NULL, *pgpin = NULL;
@@ -1287,12 +1288,14 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
    * we have to convert from that to utf-8.  If noconv is not set,
    * we have to convert from $charset to utf-8.
    */
-  if (a->noconv)
-    mutt_get_body_charset (from_charset, sizeof (from_charset), a);
-  else
-    strfcpy (from_charset, NONULL(Charset), sizeof (from_charset));
   
-  if (!mutt_is_us_ascii (from_charset))
+  mutt_get_body_charset (body_charset, sizeof (body_charset), a);
+  if (a->noconv)
+    from_charset = body_charset;
+  else 
+    from_charset = Charset;
+    
+  if (!mutt_is_us_ascii (body_charset))
   {
     int c;
     FGETCONV *fc;
@@ -1302,7 +1305,7 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
     else
       send_charset = "utf-8";
     
-    fc = fgetconv_open (fp, Charset, "utf-8", M_ICONV_HOOK_FROM);
+    fc = fgetconv_open (fp, from_charset, "utf-8", M_ICONV_HOOK_FROM);
     while ((c = fgetconv (fc)) != EOF)
       fputc (c, pgpin);
     
@@ -1408,6 +1411,7 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
   b->unlink   = 1;
 
   b->noconv = 1;
+  b->use_disp = 0;
   
   if (!(flags & ENCRYPT))
     b->encoding = a->encoding;
