@@ -489,6 +489,8 @@ static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
   if (menu->top > menu->current)
     menu->top = 0;
 
+  menu->tagged = 0;
+  
   if (buffy)
     snprintf (title, titlelen, _("Mailboxes [%d]"), mutt_buffy_check (0));
   else
