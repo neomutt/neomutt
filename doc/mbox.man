@@ -50,7 +50,7 @@ month	 =	"Jan" / "Feb" / "Mar" / "Apr" / "May"
 		/ "Jun" / "Jul" / "Aug" / "Sep" 
 		/ "Oct" / "Nov" / "Dec"
 day	 =	1*2DIGIT
-time	 =	1*2DIGIT : 1*2DIGIT [ : 1*2DIGIT ]
+time	 =	1*2DIGIT ":" 1*2DIGIT [ ":" 1*2DIGIT ]
 timezone	 =	( "+" / "-" ) 4DIGIT
 year	 =	( 4DIGIT / 2DIGIT )
 .TE
