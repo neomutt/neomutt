@@ -2297,7 +2297,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	if (option (OPTRESOLVE))
 	{
 	  ch = -1;
-	  rc = OP_MAIN_NEXT_UNDELETED;
+	  rc = OP_NEXT_ENTRY;
 	}
 	break;
 
@@ -2314,7 +2314,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	if (option (OPTRESOLVE))
 	{
 	  ch = -1;
-	  rc = OP_NEXT_ENTRY;
+	  rc = OP_MAIN_NEXT_UNDELETED;
 	}
 	break;
 
