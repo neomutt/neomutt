@@ -1,3 +1,125 @@
+Tue Aug 31 19:51:34 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/zh_TW.Big5.po, po/uk.po, po/sk.po, po/ru.po, po/pl.po, po/nl.po, po/ko.po, po/it.po, po/id.po, po/fr.po, po/es.po, po/el.po, po/de.po, po/cs.po, VERSION, reldate.h, ChangeLog:
+	post-release commit for 1.0pre2.
+
+	* doc/manual.sgml.tail, doc/manual.sgml.head, protos.h, thread.c, OPS, curs_main.c, functions.h:
+	Adding a <parent-message> function. From Roland Rosenfeld
+	<roland@spinnaker.rhein.de>.
+
+Tue Aug 31 19:11:57 1999  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.tail, doc/manual.sgml.head, protos.h, thread.c, OPS, curs_main.c, functions.h:
+	Adding a <parent-message> function. From Roland Rosenfeld
+	<roland@spinnaker.rhein.de>.
+
+	* curs_lib.c:
+	Fix possible signedness problem with localized y/n responses.
+
+	* po/ru.po:
+	New russian translation.  From Michael Sobolev <mss@transas.com>.
+
+	* Attic/imap.c: [stable] fix IMAP caching.
+
+Mon Aug 30 16:10:45 1999  Thomas Roessler  <roessler@guug.de>
+
+	* configure.in, imap/imap.c, main.c: Properly handle IMAP cache files.
+
+	* mh.c: cosmetics.
+
+	* mh.c: [stable] Back-port various fixes from unstable.
+
+	* mh.c: Avoid a memory and temporary file leak.
+
+	* mx.c, Attic/imap.c, buffy.c, configure.in:
+	[stable] back-port of various IMAP-related fixes.  From Brendan
+	Cully <brendan@kublai.com>.
+
+Fri Aug 27 07:41:44 1999  Thomas Roessler  <roessler@guug.de>
+
+	* TODO: some notes on generic limiting.
+
+Thu Aug 26 20:26:56 1999  Thomas Roessler  <roessler@guug.de>
+
+	* keymap.c:
+	Change alias menu key bindings to something more reasonable.
+
+	* imap/TODO: Adding a TODO list.
+
+	* doc/manual.sgml.tail:
+	Fix the sgml-tools url.  Noted by Heiko Schlichting.
+
+	* doc/Attic/manual.sgml.in:
+	Fix the URL to the sgml-tools package.  Noted by Heiko Schlichting.
+
+	* mh.c: Fixing a somewhat hypothetical error condition.
+
+	* curs_main.c, keymap.c, pager.c, recvattach.c: IRIX fixes.
+
+	* keymap.c, main.c, pager.c, recvattach.c, curs_main.c, edit.c:
+	Various fixes to make mutt compile on IRIX.  Additionally, we
+	introduce default bindings for the <enter> key which is used by xwsh
+	for "return".  Suggested by Heiko Schlichting
+	<heiko@cis.fu-berlin.de>.
+
+Wed Aug 25 06:33:37 1999  Thomas Roessler  <roessler@guug.de>
+
+	* configure.in: We need ranlib even when we don't use IMAP.
+
+	* compose.c:
+	Trivial patch to make attach-message work for IMAP folders.
+
+Tue Aug 24 21:27:20 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/de.po: Updates from Roland Rosenfeld.
+
+	* Makefile.am: Automake clean-up.  From Lars Hecking.
+
+	* po/id.po: Updates.
+
+	* doc/Makefile.in: build muttrc.man before installing it.
+
+	* reldate.h, Makefile.am, VERSION, ChangeLog:
+	automatic post-release commit for mutt-0.96.5
+
+	* po/zh_TW.Big5.po, po/uk.po, po/sk.po, po/ru.po, po/pl.po, po/nl.po, po/ko.po, po/it.po, po/id.po, po/fr.po, po/es.po, po/el.po, po/de.po, po/cs.po, NEWS, VERSION, reldate.h, ChangeLog:
+	release-commit 1.0pre1.
+
+	* Makefile.am: Still more bugs in the release-building process.
+
+	* Makefile.am: *grrrr*  typos.
+
+	* po/sk.po, po/uk.po, po/zh_TW.Big5.po, po/ru.po, po/nl.po, po/pl.po, po/fr.po, po/id.po, po/it.po, po/ko.po, po/cs.po, po/de.po, po/el.po, po/es.po, ChangeLog:
+	translation update.
+
+	* Makefile.am: Some of the targets were broken.
+
+	* Makefile.am: Another tidbit.
+
+	* Makefile.am:
+	Still more build-process stuff. Let's see whether this automatically
+	builds 0.96.5.
+
+	* doc/Attic/manual.sgml, doc/Attic/muttrc.man, Attic/Muttrc:
+	Remove some auto-built files from the repository.
+
+	* Makefile.am: Further distribution process fixes.
+
+	* po/POTFILES.in:
+	Make translations fit together with actual source tree.
+
+	* doc/Makefile.in, Attic/Muttrc, ChangeLog, Makefile.am:
+	More fixes to the distribution-building process; check-point commit
+	for documentation and ChangeLog.
+
+	* doc/Attic/manual.sgml, doc/Attic/muttrc.man, doc/Makefile.in:
+	Various experimental changes to automate the distribution-building
+	process; documentation update.
+
+	* Makefile.am:
+	Various experimental changes to automate the distribution-building
+	process.
+
 Tue Aug 24 16:20:55 1999  Thomas Roessler  <roessler@guug.de>
 
 	* Makefile.am: Still more bugs in the release-building process.

@@ -100,7 +100,7 @@ install-exec-local:
 		chmod @DOTLOCK_PERMISSION@  $(DESTDIR)$(bindir)/mutt_dotlock ; \
 	fi
 
-install-data-local:
+install-data-local: Muttrc
 	$(srcdir)/mkinstalldirs $(DESTDIR)$(sharedir)
 	$(srcdir)/mkinstalldirs $(DESTDIR)$(sysconfdir)
 	-if [ -f $(DESTDIR)$(sharedir)/Muttrc ] ; then \
@@ -151,7 +151,7 @@ us-dist: us-distdir
 test-tlr:
 	test $$HOSTNAME = sobolev && test $$LOGNAME = roessler
 
-actual-dist:
+actual-dist: update-doc
 	# Note: We can't put these into the dependencies line, since
 	# make will over-optimize some of the distdir targets.
 	$(MAKE) us-dist
@@ -180,16 +180,22 @@ do-upload: test-tlr
 	$$HOME/bin/upload-mutt
 	mutt -s "[Announce] $(distdir) is out" mutt-dev@mutt.org
 
-bump-version:
-	awk -F . '{printf("%d.%d.%d\n", $$1, $$2, $$3 + 1);}' VERSION > _VERSION.$$$$  \
-		&& mv _VERSION.$$$$ VERSION
+bump-version: test-tlr
+	-rm -f $(srcdir)/VERSION
+	( cd $(srcdir) && cvs update VERSION )
+	awk -F . '{printf("%d.%d.%d\n", $$1, $$2, $$3 + 1);}' $(srcdir)/VERSION > _VERSION.$$$$  \
+		&& mv _VERSION.$$$$ $(srcdir)/VERSION
 
-mutt-dist: bump-version reldate update-doc changelog
+mutt-dist: bump-version reldate changelog
 	touch $(srcdir)/configure.in
+	$(MAKE) config.status
+	./config.status
 	$(MAKE) actual-dist
 
 update-doc: stamp-doc-rc
 	(cd doc && make update-doc)
+
+Muttrc: stamp-doc-rc
 
 stamp-doc-rc: $(srcdir)/init.h makedoc Muttrc.head
 	cpp $(INCLUDES) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C \
