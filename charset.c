@@ -190,7 +190,7 @@ UNICODE_MAP *mutt_get_translation(const char *_from, const char *_to)
 
 int mutt_display_char(int ch, UNICODE_MAP *map)
 {
-  if (!map || (ch < 0) || (ch > 255))
+  if (!map || (ch <= 0) || (ch > 255))
     return ch;
 
   return (*map)[ch];
