@@ -276,11 +276,61 @@ int mutt_edit_attachment (BODY *a)
   return rc;
 }
 
+
+/* for compatibility with metamail */
+static int is_mmnoask (const char *buf)
+{
+  char tmp[LONG_STRING], *p, *q;
+  int lng;
+
+  if ((p = getenv ("MM_NOASK")) != NULL && *p)
+  {
+    if (mutt_strcmp (p, "1") == 0)
+      return (1);
+
+    strfcpy (tmp, p, sizeof (tmp));
+    p = tmp;
+
+    while ((p = strtok (p, ",")) != NULL)
+    {
+      if ((q = strrchr (p, '/')) != NULL)
+      {
+	if (*(q+1) == '*')
+	{
+	  if (mutt_strncasecmp (buf, p, q-p) == 0)
+	    return (1);
+	}
+	else
+	{
+	  if (mutt_strcasecmp (buf, p) == 0)
+	    return (1);
+	}
+      }
+      else
+      {
+	lng = mutt_strlen (p);
+	if (buf[lng] == '/' && mutt_strncasecmp (buf, p, lng) == 0)
+	  return (1);
+      }
+
+      p = NULL;
+    }
+  }
+
+  return (0);
+}
+
 int mutt_is_autoview (char *type)
 {
   LIST *t = AutoViewList;
   int i;
 
+  if (option (OPTIMPLICITAUTOVIEW))
+    return 1;
+
+  if (is_mmnoask (type))
+    return 1;
+  
   while (t)
   {
     i = mutt_strlen (t->data) - 1;

@@ -60,49 +60,6 @@ extern char *ReleaseDate;
 /* The folder the user last saved to.  Used by ci_save_message() */
 static char LastSaveFolder[_POSIX_PATH_MAX] = "";
 
-/* for compatibility with metamail */
-static int is_mmnoask (const char *buf)
-{
-  char tmp[LONG_STRING], *p, *q;
-  int lng;
-
-  if ((p = getenv ("MM_NOASK")) != NULL && *p)
-  {
-    if (mutt_strcmp (p, "1") == 0)
-      return (1);
-
-    strfcpy (tmp, p, sizeof (tmp));
-    p = tmp;
-
-    while ((p = strtok (p, ",")) != NULL)
-    {
-      if ((q = strrchr (p, '/')) != NULL)
-      {
-	if (*(q+1) == '*')
-	{
-	  if (mutt_strncasecmp (buf, p, q-p) == 0)
-	    return (1);
-	}
-	else
-	{
-	  if (mutt_strcasecmp (buf, p) == 0)
-	    return (1);
-	}
-      }
-      else
-      {
-	lng = mutt_strlen (p);
-	if (buf[lng] == '/' && mutt_strncasecmp (buf, p, lng) == 0)
-	  return (1);
-      }
-
-      p = NULL;
-    }
-  }
-
-  return (0);
-}
-
 int mutt_display_message (HEADER *cur)
 {
   char tempfile[_POSIX_PATH_MAX], buf[LONG_STRING];
@@ -112,29 +69,6 @@ int mutt_display_message (HEADER *cur)
 
   snprintf (buf, sizeof (buf), "%s/%s", TYPE (cur->content),
 	    cur->content->subtype);
-
-  if (cur->mailcap && !mutt_is_autoview (buf))
-  {
-    if (is_mmnoask (buf))
-      rc = M_YES;
-    else
-      rc = query_quadoption (OPT_USEMAILCAP, 
-			_("Display message using mailcap?"));
-    if (rc < 0)
-      return 0;
-    else if (rc == M_YES)
-    {
-      MESSAGE *msg;
-
-      if ((msg = mx_open_message (Context, cur->msgno)) != NULL)
-      {
-	mutt_view_attachment (msg->fp, cur->content, M_REGULAR);
-	mx_close_message (&msg);
-	mutt_set_flag (Context, cur, M_READ, 1);
-      }
-      return 0;
-    }
-  }
 
   mutt_parse_mime_message (Context, cur);
 

@@ -246,7 +246,6 @@ enum
   OPT_VERIFYSIG, /* verify PGP signatures */
 #endif
 
-  OPT_USEMAILCAP,
   OPT_PRINT,
   OPT_INCLUDE,
   OPT_DELETE,
@@ -302,6 +301,7 @@ enum
   OPTHELP,
   OPTHIDDENHOST,
   OPTIGNORELISTREPLYTO,
+  OPTIMPLICITAUTOVIEW,
   OPTMARKERS,
   OPTMARKOLD,
   OPTMENUSCROLL,	/* scroll menu instead of implicit next-page */
@@ -520,7 +520,6 @@ typedef struct header
 #endif
 
   unsigned int mime : 1;    /* has a Mime-Version header? */
-  unsigned int mailcap : 1; /* requires mailcap to display? */
   unsigned int flagged : 1; /* marked important? */
   unsigned int tagged : 1;
   unsigned int deleted : 1;

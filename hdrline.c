@@ -595,13 +595,11 @@ hdr_format_str (char *dest,
       break;
 
     case 'Z':
-      if (hdr->mailcap)
-	ch = 'M';
-
-
+    
+      ch = ' ';
 
 #ifdef _PGPPATH
-      else if (hdr->pgp & PGPENCRYPT)
+      if (hdr->pgp & PGPENCRYPT)
       	ch = 'P';
       else if (hdr->pgp & PGPSIGN)
         ch = 'S';
@@ -609,10 +607,6 @@ hdr_format_str (char *dest,
         ch = 'K';
 #endif
 
-
-
-      else
-	ch = ' ';
       snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
       snprintf (buf2, sizeof (buf2),
 		"%c%c%c", (THREAD_NEW ? 'n' : (THREAD_OLD ? 'o' : 
