@@ -1831,6 +1831,13 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
 	if (dup (1) < 0)
 	  _exit (S_ERR);
       }
+      else 
+      {
+	if (open ("/dev/null", O_WRONLY | O_APPEND) < 0)	/* stdout */
+	  _exit (S_ERR);
+	if (open ("/dev/null", O_RDWR | O_APPEND) < 0)		/* stderr */
+	  _exit (S_ERR);
+      }
 
       execv (path, args);
       _exit (S_ERR);
