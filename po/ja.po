@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.5.4\n"
-"POT-Creation-Date: 2003-09-01 21:16+0900\n"
+"POT-Creation-Date: 2003-11-05 10:48+0100\n"
 "PO-Revision-Date: 2003-09-01 21:30+0900\n"
 "Last-Translator: Tamotsu TAKAHASHI <tamo@momonga-linux.org>\n"
 "Language-Team: mutt-j <mutt-j@ribbon.or.jp>\n"
@@ -25,16 +25,16 @@ msgstr "%s のユーザ名: "
 msgid "Password for %s@%s: "
 msgstr "%s@%s のパスワード: "
 
-#: addrbook.c:33 browser.c:40 pager.c:1445 postpone.c:38 query.c:44
+#: addrbook.c:33 browser.c:40 pager.c:1445 postpone.c:39 query.c:44
 #: recvattach.c:50
 msgid "Exit"
 msgstr "戻る"
 
-#: addrbook.c:34 curs_main.c:398 pager.c:1452 postpone.c:39
+#: addrbook.c:34 curs_main.c:398 pager.c:1452 postpone.c:40
 msgid "Del"
 msgstr "削除"
 
-#: addrbook.c:35 curs_main.c:399 postpone.c:40
+#: addrbook.c:35 curs_main.c:399 postpone.c:41
 msgid "Undel"
 msgstr "削除を解除"
 
@@ -44,7 +44,7 @@ msgstr "選択"
 
 #. __STRCAT_CHECKED__
 #: addrbook.c:37 browser.c:43 compose.c:91 curs_main.c:404 mutt_ssl.c:627
-#: pager.c:1544 pgpkey.c:517 postpone.c:41 query.c:49 recvattach.c:54
+#: pager.c:1544 pgpkey.c:517 postpone.c:42 query.c:49 recvattach.c:54
 #: smime.c:415
 msgid "Help"
 msgstr "ヘルプ"
@@ -88,7 +88,8 @@ msgstr "個人名: "
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] 了解?"
 
-#: alias.c:327 recvattach.c:382 recvattach.c:436
+#: alias.c:327 recvattach.c:390 recvattach.c:413 recvattach.c:426
+#: recvattach.c:439 recvattach.c:467
 msgid "Save to file: "
 msgstr "保存するファイル: "
 
@@ -106,7 +107,7 @@ msgstr "名前のテンプレートに一致させられない。続行?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Mailcap 編集エントリに %%s が必要"
 
-#: attach.c:128 attach.c:253 commands.c:209 compose.c:1288 curs_lib.c:149
+#: attach.c:128 attach.c:253 commands.c:209 compose.c:1275 curs_lib.c:149
 #: curs_lib.c:395
 #, c-format
 msgid "Error running \"%s\"!"
@@ -152,10 +153,6 @@ msgstr "フィルタを作成できない"
 #: pgpkey.c:566 pgpkey.c:755
 msgid "Can't create filter"
 msgstr "フィルタを作成できない"
-
-#: attach.c:773 recvattach.c:410 recvattach.c:470
-msgid "Attachment saved."
-msgstr "添付ファイルを保存した。"
 
 #: attach.c:824
 msgid "Write fault!"
@@ -529,7 +526,7 @@ msgstr "送信"
 msgid "Abort"
 msgstr "中止"
 
-#: compose.c:89 compose.c:793
+#: compose.c:89 compose.c:787
 msgid "Attach file"
 msgstr "ファイル添付"
 
@@ -620,109 +617,109 @@ msgstr "警告: '%s' は不正な IDN."
 msgid "You may not delete the only attachment."
 msgstr "唯一の添付ファイルを削除してはいけない。"
 
-#: compose.c:721 send.c:1449
+#: compose.c:722 send.c:1449
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "\"%s\" 中に不正な IDN: '%s'"
 
-#: compose.c:809
+#: compose.c:803
 msgid "Attaching selected files..."
 msgstr "選択されたファイルを添付中..."
 
-#: compose.c:820
+#: compose.c:814
 #, c-format
 msgid "Unable to attach %s!"
 msgstr "%s は添付できない!"
 
-#: compose.c:838
+#: compose.c:832
 msgid "Open mailbox to attach message from"
 msgstr "中のメッセージを添付するためにメールボックスをオープン"
 
-#: compose.c:876
+#: compose.c:870
 msgid "No messages in that folder."
 msgstr "そのフォルダにはメッセージがない。"
 
-#: compose.c:885
+#: compose.c:879
 msgid "Tag the messages you want to attach!"
 msgstr "添付したいメッセージにタグを付けよ!"
 
-#: compose.c:917
+#: compose.c:911
 msgid "Unable to attach!"
 msgstr "添付できない!"
 
-#: compose.c:964
+#: compose.c:958
 msgid "Recoding only affects text attachments."
 msgstr "コード変換はテキスト型添付ファイルにのみ有効。"
 
-#: compose.c:969
+#: compose.c:963
 msgid "The current attachment won't be converted."
 msgstr "現在の添付ファイルは変換されない。"
 
-#: compose.c:971
+#: compose.c:965
 msgid "The current attachment will be converted."
 msgstr "現在の添付ファイルは変換される。"
 
-#: compose.c:1042
+#: compose.c:1036
 msgid "Invalid encoding."
 msgstr "不正なエンコード法。"
 
-#: compose.c:1063
+#: compose.c:1057
 msgid "Save a copy of this message?"
 msgstr "このメッセージのコピーを保存?"
 
-#: compose.c:1116
+#: compose.c:1110
 msgid "Rename to: "
 msgstr "リネーム (移動) 先: "
 
-#: compose.c:1121 editmsg.c:110 sendlib.c:910
+#: compose.c:1115 editmsg.c:110 sendlib.c:910
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "%s を属性調査できない: %s"
 
-#: compose.c:1147
+#: compose.c:1141
 msgid "New file: "
 msgstr "新規ファイル: "
 
-#: compose.c:1160
+#: compose.c:1154
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type は base/sub という形式にすること"
 
-#: compose.c:1166
+#: compose.c:1160
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "%s は不明な Content-Type"
 
-#: compose.c:1179
+#: compose.c:1173
 #, c-format
 msgid "Can't create file %s"
 msgstr "ファイル %s を作成できない"
 
-#: compose.c:1187
+#: compose.c:1181
 msgid "What we have here is a failure to make an attachment"
 msgstr "つまり添付ファイルの作成に失敗したということだ"
 
-#: compose.c:1249
+#: compose.c:1236
 msgid "Postpone this message?"
 msgstr "このメッセージを書きかけで保留?"
 
-#: compose.c:1306
+#: compose.c:1293
 msgid "Write message to mailbox"
 msgstr "メッセージをメールボックスに書き込む"
 
-#: compose.c:1309
+#: compose.c:1296
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "メッセージを %s に書き込み中..."
 
-#: compose.c:1318
+#: compose.c:1305
 msgid "Message written."
 msgstr "メッセージは書き込まれた。"
 
-#: compose.c:1330
+#: compose.c:1317
 msgid "S/MIME already selected. Clear & continue ? "
 msgstr "S/MIME が既に選択されている。解除して継続?"
 
-#: compose.c:1355
+#: compose.c:1342
 msgid "PGP already selected. Clear & continue ? "
 msgstr "PGP が既に選択されている。解除して継続?"
 
@@ -752,7 +749,7 @@ msgstr "S/MIME パスフレーズ入力:"
 msgid "Create a traditional (inline) PGP message?"
 msgstr "伝統的な (インラインの) PGP メッセージを作成?"
 
-#: crypt.c:200 pgpkey.c:559 postpone.c:538
+#: crypt.c:200 pgpkey.c:559 postpone.c:547
 msgid "Invoking PGP..."
 msgstr "PGP 起動中..."
 
@@ -857,7 +854,7 @@ msgstr "メッセージがない。"
 msgid "Mailbox is read-only."
 msgstr "メールボックスは読み出し専用。"
 
-#: curs_main.c:50 pager.c:55 recvattach.c:816
+#: curs_main.c:50 pager.c:55 recvattach.c:869
 msgid "Function not permitted in attach-message mode."
 msgstr "この機能はメッセージ添付モードでは許可されていない。"
 
@@ -914,7 +911,7 @@ msgstr "メールボックスが外部から変更された。"
 msgid "No tagged messages."
 msgstr "タグ付きメッセージがない。"
 
-#: curs_main.c:653 menu.c:893
+#: curs_main.c:653 menu.c:890
 msgid "Nothing to do."
 msgstr "何もしない。"
 
@@ -1030,8 +1027,8 @@ msgstr "もうスレッドがない。"
 msgid "You are on the first thread."
 msgstr "すでに最初のスレッド。"
 
-#: curs_main.c:1597 curs_main.c:1629 flags.c:289 thread.c:1012 thread.c:1067
-#: thread.c:1122
+#: curs_main.c:1597 curs_main.c:1629 flags.c:289 thread.c:1011 thread.c:1066
+#: thread.c:1121
 msgid "Threading is not enabled."
 msgstr "スレッド表示が有効になっていない。"
 
@@ -1337,7 +1334,7 @@ msgstr "unhook: %s は不明なフックタイプ"
 msgid "unhook: Can't delete a %s from within a %s."
 msgstr "unhook: %s を %s 内から削除できない。"
 
-#: imap/auth.c:104 pop_auth.c:412
+#: imap/auth.c:104 pop_auth.c:411
 msgid "No authenticators available"
 msgstr "利用できる認証処理がない"
 
@@ -1370,11 +1367,11 @@ msgstr "GSSAPI 認証に失敗した。"
 msgid "LOGIN disabled on this server."
 msgstr "LOGIN はこのサーバでは無効になっている"
 
-#: imap/auth_login.c:43 pop_auth.c:245
+#: imap/auth_login.c:43 pop_auth.c:244
 msgid "Logging in..."
 msgstr "ログイン中..."
 
-#: imap/auth_login.c:63 pop_auth.c:288
+#: imap/auth_login.c:63 pop_auth.c:287
 msgid "Login failed."
 msgstr "ログインに失敗した。"
 
@@ -1383,7 +1380,7 @@ msgstr "ログインに失敗した。"
 msgid "Authenticating (%s)..."
 msgstr "認証中 (%s)..."
 
-#: imap/auth_sasl.c:199 pop_auth.c:173
+#: imap/auth_sasl.c:199 pop_auth.c:172
 msgid "SASL authentication failed."
 msgstr "SASL 認証に失敗した。"
 
@@ -1464,7 +1461,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "このサーバの IMAP メールボックスには追加できない"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:752 imap/message.c:600 muttlib.c:1181
+#: imap/imap.c:752 imap/message.c:600 muttlib.c:1206
 #, c-format
 msgid "Create %s?"
 msgstr "%s を作成?"
@@ -2507,7 +2504,7 @@ msgstr "S/MIME オプションを表示"
 msgid "Integer overflow -- can't allocate memory!"
 msgstr "桁あふれ -- メモリを割り当てられない!"
 
-#: lib.c:67 lib.c:82 lib.c:113
+#: lib.c:67 lib.c:82 lib.c:114
 msgid "Out of memory!"
 msgstr "メモリ不足!"
 
@@ -2743,7 +2740,7 @@ msgid "Invalid index number."
 msgstr "不正なインデックス番号。"
 
 #: menu.c:420 menu.c:438 menu.c:474 menu.c:515 menu.c:531 menu.c:542
-#: menu.c:553 menu.c:595 menu.c:606 menu.c:619 menu.c:632 menu.c:1030
+#: menu.c:553 menu.c:595 menu.c:606 menu.c:619 menu.c:632 menu.c:1027
 msgid "No entries."
 msgstr "エントリがない。"
 
@@ -2795,57 +2792,66 @@ msgstr "検索パターンがない。"
 msgid "Not found."
 msgstr "見つからなかった。"
 
-#: menu.c:871
+#: menu.c:879
 msgid "No tagged entries."
 msgstr "タグ付きエントリがない。"
 
-#: menu.c:987
+#: menu.c:984
 msgid "Search is not implemented for this menu."
 msgstr "このメニューでは検索機能が実装されていない。"
 
-#: menu.c:992
+#: menu.c:989
 msgid "Jumping is not implemented for dialogs."
 msgstr "ジャンプ機能はダイアログでは実装されていない。"
 
-#: menu.c:1033
+#: menu.c:1030
 msgid "Tagging is not supported."
 msgstr "タグ付け機能がサポートされていない。"
 
-#: mh.c:656
+#: mh.c:655
 #, c-format
 msgid "Reading %s... %d"
 msgstr "%s から読み出し中... %d"
 
-#: mh.c:1042
+#: mh.c:1041
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): ファイルに時刻を設定できない"
 
-#: muttlib.c:831
+#: muttlib.c:835
+#, fuzzy
+msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
+msgstr "ファイルはディレクトリである。その配下に保存?"
+
+#: muttlib.c:835
+msgid "yna"
+msgstr ""
+
+#: muttlib.c:851
 msgid "File is a directory, save under it?"
 msgstr "ファイルはディレクトリである。その配下に保存?"
 
-#: muttlib.c:836
+#: muttlib.c:857
 msgid "File under directory: "
 msgstr "ディレクトリ配下のファイル: "
 
-#: muttlib.c:848
+#: muttlib.c:869
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "ファイルが存在、(o)上書き (a)追加 (c)中止?"
 
-#: muttlib.c:848
+#: muttlib.c:869
 msgid "oac"
 msgstr "oac"
 
-#: muttlib.c:1148
+#: muttlib.c:1171
 msgid "Can't save message to POP mailbox."
 msgstr "POP メールボックスにはメッセージを保存できない"
 
-#: muttlib.c:1157
+#: muttlib.c:1180
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s はメールボックスではない!"
 
-#: muttlib.c:1163
+#: muttlib.c:1186
 #, c-format
 msgid "Append messages to %s?"
 msgstr "%s にメッセージを追加?"
@@ -3512,15 +3518,15 @@ msgstr "サーバが接続を切った!"
 msgid "Authenticating (SASL)..."
 msgstr "認証中 (SASL)..."
 
-#: pop_auth.c:206
+#: pop_auth.c:205
 msgid "Authenticating (APOP)..."
 msgstr "認証中 (APOP)..."
 
-#: pop_auth.c:230
+#: pop_auth.c:229
 msgid "APOP authentication failed."
 msgstr "APOP 認証に失敗した。"
 
-#: pop_auth.c:265
+#: pop_auth.c:264
 msgid "Command USER is not supported by server."
 msgstr "コマンド USER はサーバがサポートしていない。"
 
@@ -3545,23 +3551,23 @@ msgstr "メッセージ索引検証中..."
 msgid "Connection lost. Reconnect to POP server?"
 msgstr "接続が切れた。POP サーバに再接続?"
 
-#: postpone.c:161
+#: postpone.c:163
 msgid "Postponed Messages"
 msgstr "書きかけのメッセージ"
 
-#: postpone.c:234 postpone.c:243
+#: postpone.c:243 postpone.c:252
 msgid "No postponed messages."
 msgstr "書きかけメッセージがない。"
 
-#: postpone.c:429 postpone.c:450 postpone.c:479
+#: postpone.c:438 postpone.c:459 postpone.c:488
 msgid "Illegal PGP header"
 msgstr "不正な PGP ヘッダ"
 
-#: postpone.c:470
+#: postpone.c:479
 msgid "Illegal S/MIME header"
 msgstr "不正な S/MIME ヘッダ"
 
-#: postpone.c:545
+#: postpone.c:554
 msgid "Decryption failed."
 msgstr "復号化に失敗した。"
 
@@ -3581,20 +3587,20 @@ msgstr "検索"
 msgid "Waiting for response..."
 msgstr "応答待ち..."
 
-#: query.c:231 query.c:258
+#: query.c:231 query.c:259
 msgid "Query command not defined."
 msgstr "問い合わせコマンドは定義されていない。"
 
-#: query.c:285
+#: query.c:286
 msgid "Query"
 msgstr "問い合わせ"
 
 #. Prompt for Query
-#: query.c:298 query.c:323
+#: query.c:299 query.c:324
 msgid "Query: "
 msgstr "問い合わせ: "
 
-#: query.c:306 query.c:332
+#: query.c:307 query.c:333
 #, c-format
 msgid "Query '%s'"
 msgstr "問い合わせ '%s'"
@@ -3607,61 +3613,65 @@ msgstr "パイプ"
 msgid "Print"
 msgstr "印刷"
 
-#: recvattach.c:407
+#: recvattach.c:431
 msgid "Saving..."
 msgstr "保存中..."
 
-#: recvattach.c:482
+#: recvattach.c:434 recvattach.c:523
+msgid "Attachment saved."
+msgstr "添付ファイルを保存した。"
+
+#: recvattach.c:535
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "警告! %s を上書きしようとしている。継続?"
 
-#: recvattach.c:500
+#: recvattach.c:553
 msgid "Attachment filtered."
 msgstr "添付ファイルはコマンドを通してある。"
 
-#: recvattach.c:567
+#: recvattach.c:620
 msgid "Filter through: "
 msgstr "表示のために通過させるコマンド: "
 
-#: recvattach.c:567
+#: recvattach.c:620
 msgid "Pipe to: "
 msgstr "パイプするコマンド: "
 
-#: recvattach.c:602
+#: recvattach.c:655
 #, c-format
 msgid "I dont know how to print %s attachments!"
 msgstr "どのように添付ファイル %s を印刷するか不明!"
 
-#: recvattach.c:667
+#: recvattach.c:720
 msgid "Print tagged attachment(s)?"
 msgstr "タグ付き添付ファイルを印刷?"
 
-#: recvattach.c:667
+#: recvattach.c:720
 msgid "Print attachment?"
 msgstr "添付ファイルを印刷?"
 
-#: recvattach.c:885
+#: recvattach.c:938
 msgid "Can't decrypt encrypted message!"
 msgstr "暗号化メッセージを復号化できない!"
 
-#: recvattach.c:898
+#: recvattach.c:951
 msgid "Attachments"
 msgstr "添付ファイル"
 
-#: recvattach.c:934
+#: recvattach.c:987
 msgid "There are no subparts to show!"
 msgstr "表示すべき副パートがない!"
 
-#: recvattach.c:995
+#: recvattach.c:1048
 msgid "Can't delete attachment from POP server."
 msgstr "POP サーバから添付ファイルを削除できない。"
 
-#: recvattach.c:1003
+#: recvattach.c:1056
 msgid "Deletion of attachments from encrypted messages is unsupported."
 msgstr "暗号化メッセージからの添付ファイルの削除はサポートされていない。"
 
-#: recvattach.c:1022 recvattach.c:1039
+#: recvattach.c:1075 recvattach.c:1092
 msgid "Only deletion of multipart attachments is supported."
 msgstr "マルチパート添付ファイルの削除のみサポートされている。"
 
@@ -3928,16 +3938,16 @@ msgstr "%s は標準ファイルではない。"
 msgid "Could not open %s"
 msgstr "%s をオープンできなかった"
 
-#: sendlib.c:2054
+#: sendlib.c:2053
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "メッセージ送信エラー。子プロセスが %d (%s) で終了した。"
 
-#: sendlib.c:2060
+#: sendlib.c:2059
 msgid "Output of the delivery process"
 msgstr "配信プロセスの出力"
 
-#: sendlib.c:2264
+#: sendlib.c:2263
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
 msgstr "不正な IDN %s を resent-from の準備中に発見。"
@@ -4097,11 +4107,11 @@ msgstr "整列機能が見つからなかった! [このバグを報告せよ]"
 msgid "(no mailbox)"
 msgstr "(メールボックスがない)"
 
-#: thread.c:1079
+#: thread.c:1078
 msgid "Parent message is not visible in this limited view."
 msgstr "親メッセージはこの制限された表示範囲では不可視。"
 
-#: thread.c:1085
+#: thread.c:1084
 msgid "Parent message is not available."
 msgstr "親メッセージが利用できない。"
 

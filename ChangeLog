@@ -1,3 +1,7 @@
+2003-11-05 09:27:43  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* build-release: Use gpg for signing releases.
+
 2003-11-03 10:30:58  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* attach.c: Fix a logic flaw in attachment saving.
