@@ -1,3 +1,4 @@
+account.c
 addrbook.c
 alias.c
 attach.c
@@ -17,7 +18,11 @@ headers.c
 help.c
 hook.c
 imap/auth.c
+imap/auth_anon.c
+imap/auth_cram.c
 imap/auth_gss.c
+imap/auth_login.c
+imap/auth_sasl.c
 imap/browse.c
 imap/command.c
 imap/imap.c
@@ -28,7 +33,6 @@ init.c
 keymap.c
 keymap_alldefs.h
 lib.c
-lib.h
 main.c
 mbox.c
 menu.c
@@ -37,7 +41,6 @@ muttlib.c
 mutt_socket.c
 mx.c
 pager.c
-pager.h
 parse.c
 pattern.c
 pgp.c
