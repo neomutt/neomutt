@@ -1,7 +1,6 @@
 /*
  * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
  * Copyright (C) 2000 Edmund Grimley Evans <edmundo@rano.org>
- * Copyright (C) 2000 Thomas Roessler <roessler@does-not-exist.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -25,8 +24,6 @@
 #include "history.h"
 
 #include <string.h>
-
-#include "mbyte.h"
 
 /* redraw flags for mutt_enter_string() */
 enum
@@ -102,30 +99,29 @@ size_t my_mbstowcs (wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf)
 }
 
 /*
- * Replace part of the wchar_t buffer, from FROM to TO, by BUF.
+ * Replace part of the wchar_t buffer, from FROM to CURPOS, by BUF.
  */
 
-static void replace_part (wchar_t **pwbuf, size_t *pwbuflen,
-			  size_t from, size_t *to, size_t *end, char *buf)
+static void replace_part (ENTER_STATE *state, size_t from, char *buf)
 {
   /* Save the suffix */
-  size_t savelen = *end - *to;
+  size_t savelen = state->lastchar - state->curpos;
   wchar_t *savebuf = safe_malloc (savelen * sizeof (wchar_t));
-  memcpy (savebuf, *pwbuf + *to, savelen * sizeof (wchar_t));
+  memcpy (savebuf, state->wbuf + state->curpos, savelen * sizeof (wchar_t));
 
   /* Convert to wide characters */
-  *to = my_mbstowcs (pwbuf, pwbuflen, from, buf);
+  state->curpos = my_mbstowcs (&state->wbuf, &state->wbuflen, from, buf);
 
   /* Make space for suffix */
-  if (*to + savelen > *pwbuflen)
+  if (state->curpos + savelen > state->wbuflen)
   {
-    *pwbuflen = *to + savelen;
-    safe_realloc ((void **) pwbuf, *pwbuflen * sizeof (wchar_t));
+    state->wbuflen = state->curpos + savelen;
+    safe_realloc ((void **) state->wbuf, state->wbuflen * sizeof (wchar_t));
   }
 
   /* Restore suffix */
-  memcpy (*pwbuf + *to, savebuf, savelen * sizeof (wchar_t));
-  *end = *to + savelen;
+  memcpy (state->wbuf + state->curpos, savebuf, savelen * sizeof (wchar_t));
+  state->lastchar = state->curpos + savelen;
 
   free (savebuf);
 }
@@ -232,15 +228,13 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
       {
 	case OP_EDITOR_HISTORY_UP:
 	  state->curpos = state->lastchar;
-	  replace_part (&state->wbuf, &state->wbuflen, 0, &state->curpos, &state->lastchar,
-			mutt_history_prev (hclass));
+	  replace_part (state, 0, mutt_history_prev (hclass));
 	  redraw = M_REDRAW_INIT;
 	  break;
 
 	case OP_EDITOR_HISTORY_DOWN:
 	  state->curpos = state->lastchar;
-	  replace_part (&state->wbuf, &state->wbuflen, 0, &state->curpos, &state->lastchar,
-			mutt_history_prev (hclass));
+	  replace_part (state, 0, mutt_history_prev (hclass));
 	  redraw = M_REDRAW_INIT;
 	  break;
 
@@ -254,7 +248,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	      --i;
 	    if (i)
 	      --i;
-	    memmove(state->wbuf + i, state->wbuf + state->curpos, (state->lastchar - state->curpos) * sizeof (*state->wbuf));
+	    memmove (state->wbuf + i, state->wbuf + state->curpos, (state->lastchar - state->curpos) * sizeof (wchar_t));
 	    state->lastchar -= state->curpos - i;
 	    state->curpos = i;
 	  }
@@ -305,9 +299,9 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	  else
 	  {
 	    while (state->curpos && iswspace (state->wbuf[state->curpos - 1]))
-	      state->curpos--;
+	      --state->curpos;
 	    while (state->curpos && !iswspace (state->wbuf[state->curpos - 1]))
-	      state->curpos--;
+	      --state->curpos;
 	  }
 	  break;
 
@@ -332,9 +326,9 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	    break;
 	  }
 	  while (state->curpos && !iswspace (state->wbuf[state->curpos]))
-	    state->curpos--;
+	    --state->curpos;
 	  while (state->curpos < state->lastchar && iswspace (state->wbuf[state->curpos]))
-	    state->curpos--;
+	    ++state->curpos;
 	  while (state->curpos < state->lastchar && !iswspace (state->wbuf[state->curpos]))
 	  {
 	    if (ch == OP_EDITOR_DOWNCASE_WORD)
@@ -361,77 +355,47 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	      ++i;
 	    while (i < state->lastchar && !wcwidth (state->wbuf[i]))
 	      ++i;
-	    memmove(state->wbuf + state->curpos, state->wbuf + i, (state->lastchar - i) * sizeof (*state->wbuf));
+	    memmove (state->wbuf + state->curpos, state->wbuf + i, (state->lastchar - i) * sizeof (wchar_t));
 	    state->lastchar -= i - state->curpos;
 	  }
 	  break;
 
-	case OP_EDITOR_TRANSPOSE_CHARS:
-	{
-	  int idx;
-	  wchar_t wc;
-	  
-	  idx = state->curpos;
-	  if (idx == 0)
-	    idx = 1;
-	  if (idx == state->lastchar)
-	    idx = state->curpos - 1;
-	  if (idx == 0)
-	  {
-	    BEEP();
-	    break;
-	  }
-	  
-	  wc = state->wbuf[idx];
-	  state->wbuf[idx] = state->wbuf[idx-1];
-	  state->wbuf[idx-1] = wc;
-	  
-	  break;
-	}
-
 	case OP_EDITOR_KILL_WORD:
-	{
-	  int j, k;
-	    
 	  /* delete to begining of word */
 	  if (state->curpos != 0)
 	  {
-	    j = state->curpos;
-	    while (j > 0 && iswspace (state->wbuf[j - 1]))
-	      j--;
-	    if (j > 0)
+	    i = state->curpos;
+	    while (i && iswspace (state->wbuf[i - 1]))
+	      --i;
+	    if (i)
 	    {
-	      if (iswalnum (state->wbuf[j - 1]))
+	      if (iswalnum (state->wbuf[i - 1]))
 	      {
-		for (j--; j > 0 && iswalnum (state->wbuf[j - 1]); j--)
+		for (--i; i && iswalnum (state->wbuf[i - 1]); i--)
 		  ;
 	      }
 	      else
-		j--;
+		--i;
 	    }
-	    k = state->curpos;
-	    state->curpos = j;
-	    while (k < state->lastchar)
-	      state->wbuf[j++] = state->wbuf[k++];
-	    state->lastchar = j;
+	    memmove (state->wbuf + i, state->wbuf + state->curpos,
+		     (state->lastchar - state->curpos) * sizeof (wchar_t));
+	    state->lastchar += i - state->curpos;
+	    state->curpos = i;
 	  }
 	  break;
-	}
 
 	case OP_EDITOR_KILL_EOW:
-	{
-	  int j, k;
 	  /* delete to end of word */
-	  for (j = state->curpos; j < state->lastchar && iswspace (state->wbuf[j]); j++)
+	  for (i = state->curpos;
+	       i < state->lastchar && iswspace (state->wbuf[i]); i++)
 	    ;
-	  for (          ; j < state->lastchar && !iswspace (state->wbuf[j]); j++)
+	  for (; i < state->lastchar && !iswspace (state->wbuf[i]); i++)
 	    ;
-	  for (k = state->curpos; j < state->lastchar; j++, k++)
-	    state->wbuf[k] = state->wbuf[j];
-	  state->lastchar = k;
+	  memmove (state->wbuf + state->curpos, state->wbuf + i,
+		   (state->lastchar - i) * sizeof (wchar_t));
+	  state->lastchar += state->curpos - i;
 	  break;
-	}
-	
+
 	case OP_EDITOR_BUFFY_CYCLE:
 	  if (flags & M_EFILE)
 	  {
@@ -453,24 +417,24 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	      ;
 	    my_wcstombs (buf, buflen, state->wbuf + i, state->curpos - i);
 	    if (tempbuf && templen == state->lastchar - i &&
-		!memcmp (tempbuf, state->wbuf + i, (state->lastchar - i) * sizeof (*state->wbuf)))
+		!memcmp (tempbuf, state->wbuf + i, (state->lastchar - i) * sizeof (wchar_t)))
 	    {
 	      mutt_select_file (buf, buflen, 0);
 	      set_option (OPTNEEDREDRAW);
 	      if (*buf)
-		replace_part (&state->wbuf, &state->wbuflen, i, &state->curpos, &state->lastchar, buf);
+		replace_part (state, i, buf);
 	      rv = 1; 
 	      goto bye;
 	    }
 	    if (!mutt_complete (buf, buflen))
 	    {
 	      templen = state->lastchar - i;
-	      safe_realloc ((void **) &tempbuf, templen * sizeof (*state->wbuf));
+	      safe_realloc ((void **) &tempbuf, templen * sizeof (wchar_t));
 	    }
 	    else
 	      BEEP ();
 
-	    replace_part (&state->wbuf, &state->wbuflen, i, &state->curpos, &state->lastchar, buf);
+	    replace_part (state, i, buf);
 	  }
 	  else if (flags & M_ALIAS)
 	  {
@@ -481,7 +445,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	      ;
 	    my_wcstombs (buf, buflen, state->wbuf + i, state->curpos - i);
 	    r = mutt_alias_complete (buf, buflen);
-	    replace_part (&state->wbuf, &state->wbuflen, i, &state->curpos, &state->lastchar, buf);
+	    replace_part (state, i, buf);
 	    if (!r)
 	    {
 	      rv = 1;
@@ -498,7 +462,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	      tabs = 0;
 	    else if (!mutt_command_complete (buf, buflen, i, tabs))
 	      BEEP ();
-	    replace_part (&state->wbuf, &state->wbuflen, 0, &state->curpos, &state->lastchar, buf);
+	    replace_part (state, 0, buf);
 	  }
 	  else if (flags & (M_FILE | M_EFILE))
 	  {
@@ -506,7 +470,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 
 	    /* see if the path has changed from the last time */
 	    if (tempbuf && templen == state->lastchar &&
-		!memcmp (tempbuf, state->wbuf, state->lastchar * sizeof (*state->wbuf)))
+		!memcmp (tempbuf, state->wbuf, state->lastchar * sizeof (wchar_t)))
 	    {
 	      _mutt_select_file (buf, buflen, 0, multiple, files, numfiles);
 	      set_option (OPTNEEDREDRAW);
@@ -527,12 +491,12 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	    if (!mutt_complete (buf, buflen))
 	    {
 	      templen = state->lastchar;
-	      safe_realloc ((void **) &tempbuf, templen * sizeof (*state->wbuf));
-	      memcpy (tempbuf, state->wbuf, templen * sizeof (*state->wbuf));
+	      safe_realloc ((void **) &tempbuf, templen * sizeof (wchar_t));
+	      memcpy (tempbuf, state->wbuf, templen * sizeof (wchar_t));
 	    }
 	    else
 	      BEEP (); /* let the user know that nothing matched */
-	    replace_part (&state->wbuf, &state->wbuflen, 0, &state->curpos, &state->lastchar, buf);
+	    replace_part (state, 0, buf);
 	  }
 	  else
 	    goto self_insert;
@@ -550,13 +514,13 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 		;
 	      my_wcstombs (buf, buflen, state->wbuf + i, state->curpos - i);
 	      mutt_query_complete (buf, buflen);
-	      replace_part (&state->wbuf, &state->wbuflen, i, &state->curpos, &state->lastchar, buf);
+	      replace_part (state, i, buf);
 	    }
 	    else
 	    {
 	      my_wcstombs (buf, buflen, state->wbuf, state->curpos);
 	      mutt_query_menu (buf, buflen);
-	      replace_part (&state->wbuf, &state->wbuflen, 0, &state->curpos, &state->lastchar, buf);
+	      replace_part (state, 0, buf);
 	    }
 	    rv = 1; 
 	    goto bye;
@@ -575,6 +539,24 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	      goto self_insert;
 	    }
 	  }
+
+	case OP_EDITOR_TRANSPOSE_CHARS:
+	  if (state->lastchar < 2)
+	    BEEP ();
+	  else
+	{
+	    wchar_t t;
+
+	    if (state->curpos == 0)
+	      state->curpos = 2;
+	    else if (state->curpos < state->lastchar)
+	      ++state->curpos;
+
+	    t = state->wbuf[state->curpos - 2];
+	    state->wbuf[state->curpos - 2] = state->wbuf[state->curpos - 1];
+	    state->wbuf[state->curpos - 1] = t;
+	  }
+	  break;
 
 	default:
 	  BEEP ();
@@ -620,9 +602,9 @@ self_insert:
 	if (state->lastchar >= state->wbuflen)
 	{
 	  state->wbuflen = state->lastchar + 20;
-	  safe_realloc ((void **) &state->wbuf, state->wbuflen * sizeof (*state->wbuf));
+	  safe_realloc ((void **) &state->wbuf, state->wbuflen * sizeof (wchar_t));
 	}
-	memmove (state->wbuf + state->curpos + 1, state->wbuf + state->curpos, (state->lastchar - state->curpos) * sizeof (*state->wbuf));
+	memmove (state->wbuf + state->curpos + 1, state->wbuf + state->curpos, (state->lastchar - state->curpos) * sizeof (wchar_t));
 	state->wbuf[state->curpos++] = ch;
 	state->lastchar++;
       }
@@ -653,5 +635,4 @@ void mutt_free_enter_state (ENTER_STATE **esp)
  * very narrow screen might crash it
  * sort out the input side
  * unprintable chars
- * config tests for iswspace, towupper, towlower
  */

@@ -33,7 +33,10 @@
 #include <stdarg.h>
 #include <signal.h>
 #ifdef HAVE_WCHAR_H
-#include <wchar.h>
+# include <wchar.h>
+#endif
+#if defined(HAVE_WCTYPE_H) && defined(HAVE_WC_FUNCS)
+# include <wctype.h>
 #endif
 
 #ifndef _POSIX_PATH_MAX

@@ -246,6 +246,81 @@ int iswprint (wint_t wc)
     return (0 <= wc && wc < 256) ? IsPrint (wc) : 0;
 }
 
+int iswspace (wint_t wc)
+{
+  if (Charset_is_utf8 || charset_is_ja)
+    return (9 <= wc && wc <= 13) || wc == 32;
+  else
+    return (0 <= wc && wc < 256) ? isspace (wc) : 0;
+}
+
+static wint_t towupper_ucs (wint_t x)
+{
+  /* Only works for x < 0x130 */
+  if ((0x60 < x && x < 0x7b) || (0xe0 <= x && x < 0xff && x != 0xf7))
+    return x - 32;
+  else if (0x100 <= x && x < 0x130)
+    return x & ~1;
+  else if (x == 0xb5)
+    return 0x39c;
+  else if (x == 0xff)
+    return 0x178;
+  else
+    return x;
+}
+
+static wint_t towlower_ucs (wint_t x)
+{
+  /* Only works for x < 0x130 */
+  if ((0x40 < x && x < 0x5b) || (0xc0 <= x && x < 0xdf && x != 0xd7))
+    return x + 32;
+  else if (0x100 <= x && x < 0x130)
+    return x | 1;
+  else
+    return x;
+}
+
+static int iswalnum_ucs (wint_t wc)
+{
+  /* Only works for x < 0x220 */
+  if (wc >= 0x100)
+    return 1;
+  else if (wc < 0x30)
+    return 0;
+  else if (wc < 0x3a)
+    return 1;
+  else if (wc < 0xa0)
+    return (0x40 < (wc & ~0x20) && (wc & ~0x20) < 0x5b);
+  else if (wc < 0xc0)
+    return (wc == 0xaa || wc == 0xb5 || wc == 0xba);
+  else
+    return !(wc == 0xd7 || wc == 0xf7);
+}
+
+wint_t towupper (wint_t wc)
+{
+  if (Charset_is_utf8 || charset_is_ja)
+    return towupper_ucs (wc);
+  else
+    return (0 <= wc && wc < 256) ? toupper (wc) : wc;
+}
+
+wint_t towlower (wint_t wc)
+{
+  if (Charset_is_utf8 || charset_is_ja)
+    return towlower_ucs (wc);
+  else
+    return (0 <= wc && wc < 256) ? tolower (wc) : wc;
+}
+
+int iswalnum (wint_t wc)
+{
+  if (Charset_is_utf8 || charset_is_ja)
+    return iswalnum_ucs (wc);
+  else
+    return (0 <= wc && wc < 256) ? isalnum (wc) : 0;
+}
+
 /*
  * l10n for Japanese:
  *   Symbols, Greek and Cyrillic in JIS X 0208, Japanese Kanji

@@ -16,6 +16,10 @@
 size_t wcrtomb (char *s, wchar_t wc, mbstate_t *ps);
 size_t mbrtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *ps);
 int iswprint (wint_t wc);
+int iswspace (wint_t wc);
+int iswalnum (wint_t wc);
+wint_t towupper (wint_t wc);
+wint_t towlower (wint_t wc);
 int wcwidth (wchar_t wc);
 # endif /* !HAVE_WC_FUNCS */
 
