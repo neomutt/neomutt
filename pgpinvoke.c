@@ -418,7 +418,7 @@ pid_t pgp_gpg_invoke_decode(struct pgp_vinfo *pgp,
   char *_fname  = mutt_quote_filename(fname);
   
   snprintf(cmd, sizeof(cmd),
-	   "%s%s --no-verbose --batch --status-fd 2 -o - %s",
+	   "%s%s --no-verbose --batch  -o - %s",
 	   NONULL(binary), need_passphrase? " --passphrase-fd 0":"",
 	   _fname);
 
@@ -438,7 +438,7 @@ pid_t pgp_gpg_invoke_verify(struct pgp_vinfo *pgp,
   char *_sig	= mutt_quote_filename(sigfile);
   
   snprintf(cmd, sizeof(cmd),
-	   "%s --no-verbose --batch --status-fd 2 -o - "
+	   "%s --no-verbose --batch  -o - "
 	   "--verify %s %s",
 	   NONULL(binary), _sig, _sign);
 
@@ -458,7 +458,7 @@ pid_t pgp_gpg_invoke_decrypt(struct pgp_vinfo *pgp,
   char *_fname  = mutt_quote_filename(fname);
   
   snprintf(cmd, sizeof(cmd),
-	   "%s --passphrase-fd 0 --no-verbose --batch --status-fd 2 -o - "
+	   "%s --passphrase-fd 0 --no-verbose --batch  -o - "
 	   "--decrypt %s",
 	   NONULL(binary), _fname);
 
@@ -495,7 +495,7 @@ pid_t pgp_gpg_invoke_sign(struct pgp_vinfo *pgp,
   char *_fname  = mutt_quote_filename(fname);
   
   snprintf(cmd, sizeof(cmd),
-	   "%s --no-verbose --batch --status-fd 2 -o - "
+	   "%s --no-verbose --batch  -o - "
 	   "--passphrase-fd 0 --digest-algo %s "
 	   "--detach-sign --textmode --armor %s%s %s",
 	   NONULL(binary),
@@ -524,7 +524,7 @@ pid_t pgp_gpg_invoke_encrypt(struct pgp_vinfo *pgp,
   char *_fname  = mutt_quote_filename(fname);
   
   snprintf(cmd, sizeof(cmd),
-	   "%s%s --no-verbose -v --batch --status-fd 2 -o - "
+	   "%s%s --no-verbose -v --batch  -o - "
 	   "--digest-algo %s "
 	   "--encrypt%s --textmode --armor --always-trust %s%s",
 	   NONULL(binary),

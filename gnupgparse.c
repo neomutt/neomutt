@@ -168,7 +168,7 @@ static KEYINFO *read_ring(struct pgp_vinfo *pgp, int secret )
     if((devnull = open("/dev/null", O_RDWR)) == -1)
         return NULL;
   
-    thepid = gpg_invoke_list_keys(pgp, NULL, &fp, NULL, devnull, -1, devnull,
+    thepid = gpg_invoke_list_keys(pgp, NULL, &fp, NULL, -1, -1, devnull,
 							NULL, secret);
     if( thepid == -1 )
     {
