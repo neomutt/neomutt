@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt-0.94.17\n"
-"POT-Creation-Date: 1998-12-10 12:09+0100\n"
+"POT-Creation-Date: 1998-12-11 19:27+0100\n"
 "PO-Revision-Date: 1998-11-19 15:54+01:00\n"
 "Last-Translator: Marco d'Itri <md@linux.it>\n"
 "Language-Team: none\n"
@@ -1887,8 +1887,7 @@ msgstr "Accodo i messaggi a %s?"
 
 #: main.c:40
 msgid "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
-msgstr ""
-"Per contattare gli sviluppatori scrivi a <mutt-dev@mutt.org>.\n"
+msgstr "Per contattare gli sviluppatori scrivi a <mutt-dev@mutt.org>.\n"
 
 #: main.c:43
 msgid ""
@@ -2279,7 +2278,7 @@ msgstr "Non c'è altro testo citato."
 msgid "No more unquoted text after quoted text."
 msgstr "Non c'è altro testo non citato dopo quello citato."
 
-#: parse.c:500
+#: parse.c:502
 msgid "multipart message has no boundary parameter!"
 msgstr "il messaggio multipart non ha il parametro boundary!"
 

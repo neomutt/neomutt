@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt\n"
-"POT-Creation-Date: 1998-12-10 12:09+0100\n"
+"POT-Creation-Date: 1998-12-11 19:27+0100\n"
 "PO-Revision-Date: 1998-10-29 19:25+0100\n"
 "Last-Translator: Boris Wesslowski <Boris@Wesslowski.com>\n"
 
@@ -2230,7 +2230,7 @@ msgstr "No hay mas texto citado."
 msgid "No more unquoted text after quoted text."
 msgstr "No hay mas texto bajo texto citado."
 
-#: parse.c:500
+#: parse.c:502
 msgid "multipart message has no boundary parameter!"
 msgstr "¡mensaje multiparte no tiene parámetro límite!"
 

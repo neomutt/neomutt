@@ -6,15 +6,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 0.94.14i\n"
-"POT-Creation-Date: 1998-10-04 09:54+0200\n"
+"POT-Creation-Date: 1998-12-11 19:27+0100\n"
 "PO-Revision-Date: 1998-12-11 09:06+0100\n"
-"Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre <Vincent.Lefevre@ens-lyon.fr>\n"
+"Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre "
+"<Vincent.Lefevre@ens-lyon.fr>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: addrbook.c:32 browser.c:54 pager.c:1369 postpone.c:33 query.c:44 recvattach.c:48
+#: addrbook.c:32 browser.c:54 pager.c:1369 postpone.c:33 query.c:44
+#: recvattach.c:48
 msgid "Exit"
 msgstr "Quitter"
 
@@ -22,7 +24,8 @@ msgstr "Quitter"
 msgid "Select"
 msgstr "Sélectionner"
 
-#: addrbook.c:34 browser.c:57 compose.c:84 curs_main.c:241 pager.c:1466 pgpkey.c:181 postpone.c:36 query.c:49 recvattach.c:52
+#: addrbook.c:34 browser.c:57 compose.c:84 curs_main.c:241 pager.c:1466
+#: pgpkey.c:181 postpone.c:36 query.c:49 recvattach.c:52
 msgid "Help"
 msgstr "Aide"
 
@@ -53,6 +56,7 @@ msgstr "Nom de la personne : "
 
 # , c-format
 #: alias.c:238
+#, c-format
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] Accepter ?"
 
@@ -83,6 +87,7 @@ msgstr "Échec d'ouverture du fichier pour enlever les en-têtes."
 
 # , c-format
 #: attach.c:187
+#, c-format
 msgid "No mailcap compose entry for %s, creating empty file."
 msgstr "Pas d'entrée compose pour %s dans mailcap, création d'un fichier vide."
 
@@ -93,6 +98,7 @@ msgstr "L'entrée Edit du fichier mailcap nécessite %%s"
 
 # , c-format
 #: attach.c:265
+#, c-format
 msgid "No mailcap edit entry for %s"
 msgstr "Pas d'entrée edit pour %s dans mailcap"
 
@@ -130,16 +136,19 @@ msgstr "Masque"
 
 # , c-format
 #: browser.c:345 browser.c:672
+#, c-format
 msgid "%s is not a directory."
 msgstr "%s n'est pas un répertoire."
 
 # , c-format
 #: browser.c:450
+#, c-format
 msgid "Mailboxes [%d]"
 msgstr "Boîtes aux lettres [%d]"
 
 # , c-format
 #: browser.c:455
+#, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Répertoire [%s], masque de fichier : %s"
 
@@ -185,31 +194,37 @@ msgstr "Erreur en essayant de visualiser le fichier"
 
 # , c-format
 #: buffy.c:364
+#, c-format
 msgid "New mail in %s."
 msgstr "Nouveau(x) message(s) dans %s."
 
 # , c-format
 #: color.c:307
+#, c-format
 msgid "%s: color not supported by term"
 msgstr "%s : couleur non disponible sur ce terminal"
 
 # , c-format
 #: color.c:313
+#, c-format
 msgid "%s: no such color"
 msgstr "%s : cette couleur n'existe pas"
 
 # , c-format
 #: color.c:359 color.c:550 color.c:561
+#, c-format
 msgid "%s: no such object"
 msgstr "%s : cet objet n'existe pas"
 
 # , c-format
 #: color.c:366
+#, c-format
 msgid "%s: command valid only for index object"
 msgstr "%s : commande uniquement valide pour l'objet index"
 
 # , c-format
 #: color.c:374
+#, c-format
 msgid "%s: too few arguments"
 msgstr "%s : pas assez d'arguments"
 
@@ -227,6 +242,7 @@ msgstr "mono : pas assez d'arguments"
 
 # , c-format
 #: color.c:631
+#, c-format
 msgid "%s: no such attribute"
 msgstr "%s : attribut inexistant"
 
@@ -277,11 +293,13 @@ msgstr "Erreur de décodage de l'adresse !"
 
 # , c-format
 #: commands.c:270
+#, c-format
 msgid "Bounce message to %s"
 msgstr "Renvoyer le message à %s"
 
 # , c-format
 #: commands.c:270
+#, c-format
 msgid "Bounce messages to %s"
 msgstr "Renvoyer les messages à %s"
 
@@ -298,12 +316,17 @@ msgid "Pipe to command: "
 msgstr "Passer à la commande : "
 
 #: commands.c:401
-msgid "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
-msgstr "Tri inv (d)ate/(a)uteur/(r)eçu/(o)bj/de(s)t/d(i)sc/(n)on/(t)aille/s(c)ore ? : "
+msgid ""
+"Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
+msgstr ""
+"Tri inv (d)ate/(a)uteur/(r)eçu/(o)bj/de(s)t/d(i)sc/(n)on/(t)aille/s(c)ore ? "
+": "
 
 #: commands.c:402
-msgid "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
-msgstr "Tri (d)ate/(a)uteur/(r)eçu/(o)bj/de(s)t/d(i)sc/(n)on/(t)aille/s(c)ore ? : "
+msgid ""
+"Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
+msgstr ""
+"Tri (d)ate/(a)uteur/(r)eçu/(o)bj/de(s)t/d(i)sc/(n)on/(t)aille/s(c)ore ? : "
 
 #: commands.c:403
 msgid "dfrsotuzc"
@@ -315,6 +338,7 @@ msgstr "Commande shell : "
 
 # , c-format
 #: commands.c:572
+#, c-format
 msgid "%s%s to mailbox"
 msgstr "%s%s vers une boîte aux lettres"
 
@@ -348,6 +372,7 @@ msgstr " les messages marqués"
 
 # , c-format
 #: commands.c:644
+#, c-format
 msgid "Copying to %s..."
 msgstr "Copie vers %s..."
 
@@ -412,8 +437,12 @@ msgid "MIC algorithm: "
 msgstr "Algorithme MIC : "
 
 #: compose.c:133
-msgid "(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget it? "
-msgstr "(c)hiffrer, (s)igner, (e)n tant que, les (d)eux, select algo (m)ic, (a)nnul ? "
+msgid ""
+"(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget "
+"it? "
+msgstr ""
+"(c)hiffrer, (s)igner, (e)n tant que, les (d)eux, select algo (m)ic, (a)nnul "
+"? "
 
 #: compose.c:134
 msgid "esabmf"
@@ -437,15 +466,18 @@ msgstr "Ceci n'a aucun sens si vous ne voulez pas signer le message."
 
 #: compose.c:197
 msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
-msgstr "Algorithme MIC inconnu, algorithmes valides : pgp-md5, pgp-sha1, pgp-rmd160"
+msgstr ""
+"Algorithme MIC inconnu, algorithmes valides : pgp-md5, pgp-sha1, pgp-rmd160"
 
 # , c-format
 #: compose.c:233
+#, c-format
 msgid "%s [#%d] no longer exists!"
 msgstr "%s [#%d] n'existe plus !"
 
 # , c-format
 #: compose.c:241
+#, c-format
 msgid "%s [#%d] modified. Update encoding?"
 msgstr "%s [#%d] modifié. Mise à jour du codage ?"
 
@@ -491,6 +523,7 @@ msgstr "Renommer en : "
 
 # , c-format
 #: compose.c:828
+#, c-format
 msgid "Can't stat: %s"
 msgstr "Impossible d'obtenir le statut du fichier : %s"
 
@@ -504,11 +537,13 @@ msgstr "Content-Type est de la forme base/sous"
 
 # , c-format
 #: compose.c:874
+#, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Content-Type %s inconnu"
 
 # , c-format
 #: compose.c:887
+#, c-format
 msgid "Can't create file %s"
 msgstr "Impossible de créer le fichier %s"
 
@@ -526,6 +561,7 @@ msgstr "Enregistrer le message dans la boîte aux lettres"
 
 # , c-format
 #: compose.c:1014
+#, c-format
 msgid "Writing message to %s ..."
 msgstr "Écriture du message dans %s ..."
 
@@ -560,7 +596,8 @@ msgstr " ('?' pour avoir la liste) : "
 
 #: curs_main.c:215
 msgid "Cannot toggle write on a readonly mailbox!"
-msgstr "Impossible de rendre inscriptible une boîte aux lettres en lecture seule !"
+msgstr ""
+"Impossible de rendre inscriptible une boîte aux lettres en lecture seule !"
 
 #: curs_main.c:222
 msgid "Changes to folder will be written on folder exit."
@@ -596,7 +633,8 @@ msgstr "Groupe"
 
 #: curs_main.c:405
 msgid "Mailbox was externally modified.  Flags may be wrong."
-msgstr "Boîte aux lettres modifiée extérieurement. Les indicateurs peuvent être faux."
+msgstr ""
+"Boîte aux lettres modifiée extérieurement. Les indicateurs peuvent être faux."
 
 #: curs_main.c:408
 msgid "New mail in this mailbox."
@@ -637,6 +675,7 @@ msgstr "Aucun motif de limite n'est en vigueur."
 # , c-format
 #. i18n: ask for a limit to apply
 #: curs_main.c:676
+#, c-format
 msgid "Limit: %s"
 msgstr "Limite : %s"
 
@@ -670,6 +709,7 @@ msgstr "Ouvre la boîte aux lettres en lecture seule"
 
 # , c-format
 #: curs_main.c:877 mx.c:423 mx.c:564
+#, c-format
 msgid "%s is not a mailbox."
 msgstr "%s n'est pas une boîte aux lettres."
 
@@ -775,6 +815,7 @@ msgstr ""
 
 # , c-format
 #: edit.c:179
+#, c-format
 msgid "%d: invalid message number.\n"
 msgstr "%d : numéro de message invalide.\n"
 
@@ -804,6 +845,7 @@ msgstr "Pas de lignes dans le message.\n"
 
 # , c-format
 #: edit.c:442
+#, c-format
 msgid "%s: unknown editor command (~? for help)\n"
 msgstr "%s : commande d'éditeur inconnue (~? pour l'aide)\n"
 
@@ -824,44 +866,54 @@ msgstr "[-- Erreur : fin de fichier inattendue ! --]\n"
 #. didn't find anything that we could display!
 #: handler.c:954
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr "[-- Erreur : Aucune partie du Multipart/Alternative n'a pu être affichée ! --]\n"
+msgstr ""
+"[-- Erreur : Aucune partie du Multipart/Alternative n'a pu être affichée ! "
+"--]\n"
 
 # , c-format
 #: handler.c:1071
+#, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- Attachement #%d"
 
 # , c-format
 #: handler.c:1082
+#, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Type : %s/%s, Codage : %s, Taille : %s --]\n"
 
 # , c-format
 #: handler.c:1141
+#, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Visualisation automatique en utilisant %s --]\n"
 
 # , c-format
 #: handler.c:1142
+#, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Invocation de la commande de visualisation automatique : %s"
 
 # , c-format
 #: handler.c:1179 handler.c:1197
+#, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Visualisation automatique stderr de %s --]\n"
 
 #: handler.c:1229
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr "[-- Erreur : message/external-body n'a pas de paramètre access-type --]\n"
+msgstr ""
+"[-- Erreur : message/external-body n'a pas de paramètre access-type --]\n"
 
 # , c-format
 #: handler.c:1252
+#, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- Cet attachement %s/%s "
 
 # , c-format
 #: handler.c:1259
+#, c-format
 msgid "(size %s bytes) "
 msgstr "(taille %s octets) "
 
@@ -871,11 +923,13 @@ msgstr "a été effacé --]\n"
 
 # , c-format
 #: handler.c:1264
+#, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- le %s --]\n"
 
 # , c-format
 #: handler.c:1274
+#, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated external source has --]\n"
@@ -887,6 +941,7 @@ msgstr ""
 
 # , c-format
 #: handler.c:1288
+#, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
@@ -908,11 +963,13 @@ msgstr "Impossible d'ouvrir le fichier temporaire !"
 
 # , c-format
 #: handler.c:1498
+#, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s n'est pas disponible "
 
 # , c-format
 #: handler.c:1503
+#, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(utilisez '%s' pour voir cette partie)"
 
@@ -922,6 +979,7 @@ msgstr "(la fonction 'view-attachments' doit être affectée à une touche !)"
 
 # , c-format
 #: headers.c:202
+#, c-format
 msgid "%s: unable to attach file"
 msgstr "%s : impossible d'attacher le fichier"
 
@@ -955,11 +1013,13 @@ msgstr ""
 
 # , c-format
 #: help.c:340
+#, c-format
 msgid "Help for %s"
 msgstr "Aide pour %s"
 
 # , c-format
 #: imap.c:103
+#, c-format
 msgid "imap_error(): unexpected response in %s: %s\n"
 msgstr "imap_error() : réponse inattendue dans %s : %s\n"
 
@@ -972,6 +1032,7 @@ msgstr "Erreur fatale. Le nombre de messages ne correspond pas !"
 
 # , c-format
 #: imap.c:425
+#, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Récupération des en-têtes du message... [%d/%d]"
 
@@ -981,6 +1042,7 @@ msgstr "Réouverture de la boîte aux lettres..."
 
 # , c-format
 #: imap.c:865
+#, c-format
 msgid "Connecting to %s..."
 msgstr "Connexion à %s..."
 
@@ -990,6 +1052,7 @@ msgstr "Nom d'utilisateur IMAP : "
 
 # , c-format
 #: imap.c:901
+#, c-format
 msgid "Password for %s@%s: "
 msgstr "Mot de passe pour %s@%s : "
 
@@ -1004,11 +1067,13 @@ msgstr "La connexion a échoué."
 
 # , c-format
 #: imap.c:984
+#, c-format
 msgid "Selecting %s..."
 msgstr "Sélection de %s..."
 
 # , c-format
 #: imap.c:1083 lib.c:1177
+#, c-format
 msgid "Create %s?"
 msgstr "Créer %s ?"
 
@@ -1030,6 +1095,7 @@ msgstr "Fermeture de la connexion au serveur IMAP..."
 
 # , c-format
 #: imap.c:1364
+#, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Sauvegarde des indicateurs de statut du message... [%d/%d]"
 
@@ -1052,21 +1118,25 @@ msgstr "en-tête invalide"
 
 # , c-format
 #: init.c:535
+#, c-format
 msgid "ignoring empty header field: %s"
 msgstr "En-tête vide ignoré : %s"
 
 # , c-format
 #: init.c:587
+#, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s : méthode de tri inconnue"
 
 # , c-format
 #: init.c:660
+#, c-format
 msgid "mutt_restore_default: error in regexp: %s\n"
 msgstr "mutt_restore_default : erreur dans l'expression rationnelle : %s\n"
 
 # , c-format
 #: init.c:720
+#, c-format
 msgid "%s: unknown variable"
 msgstr "%s : variable inconnue"
 
@@ -1080,47 +1150,56 @@ msgstr "cette valeur est illégale avec reset"
 
 # , c-format
 #: init.c:752
+#, c-format
 msgid "%s is a boolean var!"
 msgstr "%s est une variable booléenne !"
 
 # , c-format
 #: init.c:759
+#, c-format
 msgid "%s is set"
 msgstr "%s est positionné"
 
 # , c-format
 #: init.c:759
+#, c-format
 msgid "%s is unset"
 msgstr "%s n'est pas positionné"
 
 # , c-format
 #: init.c:933
+#, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s : type de boîte aux lettres invalide"
 
 # , c-format
 #: init.c:992
+#, c-format
 msgid "%s: invalid value"
 msgstr "%s : valeur invalide"
 
 # , c-format
 #: init.c:1042
+#, c-format
 msgid "%s: unknown type"
 msgstr "%s : type inconnu"
 
 # , c-format
 #: init.c:1091
+#, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Erreur dans %s, ligne %d : %s"
 
 # , c-format
 #. the muttrc source keyword
 #: init.c:1102
+#, c-format
 msgid "source: errors in %s"
 msgstr "source : erreurs à %s"
 
 # , c-format
 #: init.c:1112
+#, c-format
 msgid "source: error at %s"
 msgstr "source : erreur à %s"
 
@@ -1130,11 +1209,13 @@ msgstr "source : trop d'arguments"
 
 # , c-format
 #: init.c:1168
+#, c-format
 msgid "%s: unknown command"
 msgstr "%s : commande inconnue"
 
 # , c-format
 #: init.c:1497
+#, c-format
 msgid "Error in command line: %s\n"
 msgstr "Erreur dans la ligne de commande : %s\n"
 
@@ -1156,6 +1237,7 @@ msgstr "Cette touche n'est pas affectée."
 
 # , c-format
 #: keymap.c:632
+#, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Cette touche n'est pas affectée. Tapez '%s' pour avoir l'aide."
 
@@ -1165,6 +1247,7 @@ msgstr "push : trop d'arguments"
 
 # , c-format
 #: keymap.c:664
+#, c-format
 msgid "%s: no such menu"
 msgstr "%s : menu inexistant"
 
@@ -1178,6 +1261,7 @@ msgstr "bind : trop d'arguments"
 
 # , c-format
 #: keymap.c:766
+#, c-format
 msgid "%s: no such function in map"
 msgstr "%s : cette fonction n'existe pas dans la table"
 
@@ -1195,6 +1279,7 @@ msgstr "exec : pas assez d'arguments"
 
 # , c-format
 #: keymap.c:850
+#, c-format
 msgid "%s: no such command"
 msgstr "%s : cette commande n'existe pas"
 
@@ -1204,7 +1289,8 @@ msgstr "opération nulle"
 
 #: keymap_defs.h:6
 msgid "force viewing of attachment using mailcap"
-msgstr "forcer la visualisation d'un attachment en utilisant le fichier mailcap"
+msgstr ""
+"forcer la visualisation d'un attachment en utilisant le fichier mailcap"
 
 #: keymap_defs.h:7
 msgid "view attachment as text"
@@ -1860,17 +1946,20 @@ msgstr "Le fichier existe, écraser ?"
 
 # , c-format
 #: lib.c:1153
+#, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s n'est pas une boîte aux lettres !"
 
 # , c-format
 #: lib.c:1159
+#, c-format
 msgid "Append messages to %s?"
 msgstr "Ajouter les messages à %s ?"
 
 #: main.c:40
 msgid "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
-msgstr "Pour contacter les développeurs, veuillez écrire à <mutt-dev@mutt.org>.\n"
+msgstr ""
+"Pour contacter les développeurs, veuillez écrire à <mutt-dev@mutt.org>.\n"
 
 #: main.c:43
 msgid ""
@@ -1880,7 +1969,8 @@ msgid ""
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
 "Copyright (C) 1996-8 Michael R. Elkins et autres.\n"
-"Mutt ne fournit ABSOLUMENT AUCUNE GARANTIE ; pour les détails tapez `mutt -vv'.\n"
+"Mutt ne fournit ABSOLUMENT AUCUNE GARANTIE ; pour les détails tapez `mutt "
+"-vv'.\n"
 "Mutt est un logiciel libre, et vous êtes libre de le redistribuer\n"
 "sous certaines conditions ; tapez `mutt -vv' pour les détails.\n"
 
@@ -1918,7 +2008,8 @@ msgstr ""
 "\n"
 "    Ce programme est un logiciel libre ; vous pouvez le redistribuer et/ou\n"
 "    le modifier sous les termes de la GNU General Public License telle que\n"
-"    publiée par la Free Software Foundation ; que ce soit la version 2 de la\n"
+"    publiée par la Free Software Foundation ; que ce soit la version 2 de "
+"la\n"
 "    licence, ou (selon votre choix) une version plus récente.\n"
 "\n"
 "    Ce programme est distribué avec l'espoir qu'il soit utile,\n"
@@ -1956,14 +2047,17 @@ msgstr ""
 "    implicites de qualité marchande ou d'adéquation à un besoin particulier\n"
 "    EST DÉMENTIE.\n"
 "\n"
-"    Vous devez avoir reçu un exemplaire des termes de la distribution complète\n"
+"    Vous devez avoir reçu un exemplaire des termes de la distribution "
+"complète\n"
 "    avec ce programme ; si ce n'est pas le cas, écrivez aux développeurs du\n"
 "    programme.\n"
 
 #: main.c:100
 msgid ""
-"usage: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> ]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"usage: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
+"]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
+"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -1988,8 +2082,10 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"usage : mutt [ -nRzZ ] [ -e <cmd> ] [ -F <fich> ] [ -m <type> ] [ -f <fich> ]\n"
-"        mutt [ -nx ] [ -e <cmd> ] [ -a <fich> ] [ -F <fich> ] [ -H <fich> ] [ -i <fich> ] [ -s <obj> ] [ -b <adr> ] [ -c <adr> ] <adr> [ ... ]\n"
+"usage : mutt [ -nRzZ ] [ -e <cmd> ] [ -F <fich> ] [ -m <type> ] [ -f <fich> "
+"]\n"
+"        mutt [ -nx ] [ -e <cmd> ] [ -a <fich> ] [ -F <fich> ] [ -H <fich> ] "
+"[ -i <fich> ] [ -s <obj> ] [ -b <adr> ] [ -c <adr> ] <adr> [ ... ]\n"
 "        mutt [ -n ] [ -e <cmd> ] [ -F <fich> ] -p\n"
 "        mutt -v[v]\n"
 "\n"
@@ -2009,9 +2105,12 @@ msgstr ""
 "  -s <obj>\tspécifie un objet (entre guillemets s'il contient des espaces)\n"
 "  -v\t\taffiche la version et les définitions de compilation\n"
 "  -x\t\tsimule le mode d'envoi mailx\n"
-"  -y\t\tsélectionne une boîte aux lettres spécifiée dans votre liste `mailboxes'\n"
-"  -z\t\tquitte immédiatement s'il n'y a aucun nouveau message dans la boîte aux lettres\n"
-"  -Z\t\touvre le premier dossier contenant un nouveau message, quitte immédiatement s'il n'y en a pas\n"
+"  -y\t\tsélectionne une boîte aux lettres spécifiée dans votre liste "
+"`mailboxes'\n"
+"  -z\t\tquitte immédiatement s'il n'y a aucun nouveau message dans la boîte "
+"aux lettres\n"
+"  -Z\t\touvre le premier dossier contenant un nouveau message, quitte "
+"immédiatement s'il n'y en a pas\n"
 "  -h\t\tce message d'aide"
 
 #: main.c:306
@@ -2020,6 +2119,7 @@ msgstr "Erreur d'initialisation du terminal."
 
 # , c-format
 #: main.c:402
+#, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Débuggage au niveau %d.\n"
 
@@ -2033,6 +2133,7 @@ msgstr "Pas de destinataire spécifié.\n"
 
 # , c-format
 #: main.c:615
+#, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s : impossible d'attacher le fichier.\n"
 
@@ -2078,6 +2179,7 @@ msgstr "Écriture des messages... %d (%d%%)"
 
 # , c-format
 #: mbox.c:889
+#, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Erreur d'écriture !  Boîte aux lettres partielle sauvée dans %s"
 
@@ -2093,7 +2195,8 @@ msgstr "Aller à : "
 msgid "Invalid index number."
 msgstr "Numéro d'index invalide."
 
-#: menu.c:322 menu.c:340 menu.c:376 menu.c:417 menu.c:433 menu.c:444 menu.c:455 menu.c:497 menu.c:508 menu.c:521 menu.c:534 menu.c:813
+#: menu.c:322 menu.c:340 menu.c:376 menu.c:417 menu.c:433 menu.c:444
+#: menu.c:455 menu.c:497 menu.c:508 menu.c:521 menu.c:534 menu.c:813
 msgid "No entries."
 msgstr "Pas d'entrées."
 
@@ -2159,11 +2262,13 @@ msgstr "Le marquage n'est pas supporté."
 
 # , c-format
 #: mh.c:194
+#, c-format
 msgid "Reading %s... %d"
 msgstr "Lecture de %s... %d"
 
 # , c-format
 #: mx.c:114
+#, c-format
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Nombre d'essais de verrouillage dépassé, enlever le verrou pour %s ?"
 
@@ -2173,6 +2278,7 @@ msgstr "Délai dépassé lors de la tentative de verrouillage fcntl !"
 
 # , c-format
 #: mx.c:184
+#, c-format
 msgid "Waiting for fcntl lock... %d"
 msgstr "Attente du verrouillage fcntl... %d"
 
@@ -2182,36 +2288,43 @@ msgstr "Délai dépassé lors de la tentative de verrouillage flock !"
 
 # , c-format
 #: mx.c:219
+#, c-format
 msgid "Waiting for flock attempt... %d"
 msgstr "Attente de la tentative de flock... %d"
 
 # , c-format
 #: mx.c:589
+#, c-format
 msgid "Reading %s..."
 msgstr "Lecture de %s..."
 
 # , c-format
 #: mx.c:676
+#, c-format
 msgid "Writing %s..."
 msgstr "Écriture de %s..."
 
 # , c-format
 #: mx.c:758
+#, c-format
 msgid "Move read messages to %s?"
 msgstr "Déplacer les messages lus dans %s ?"
 
 # , c-format
 #: mx.c:767 mx.c:955
+#, c-format
 msgid "Purge %d deleted message?"
 msgstr "Effacer %d message(s) marqué(s) à effacer ?"
 
 # , c-format
 #: mx.c:767 mx.c:955
+#, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Effacer %d message(s) marqué(s) à effacer ?"
 
 # , c-format
 #: mx.c:787
+#, c-format
 msgid "Moving read messages to %s..."
 msgstr "Déplacement des messages lus dans %s..."
 
@@ -2221,16 +2334,19 @@ msgstr "La boîte aux lettres est inchangée."
 
 # , c-format
 #: mx.c:822
+#, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d gardé(s), %d déplacé(s), %d effacé(s)."
 
 # , c-format
 #: mx.c:825 mx.c:971
+#, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d gardé(s), %d effacé(s)."
 
 # , c-format
 #: mx.c:931
+#, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Appuyez sur '%s' pour inverser l'écriture autorisée"
 
@@ -2240,6 +2356,7 @@ msgstr "Utilisez 'toggle-write' pour réautoriser l'écriture !"
 
 # , c-format
 #: mx.c:935
+#, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "La boîte aux lettres est protégée contre l'écriture. %s"
 
@@ -2292,22 +2409,25 @@ msgstr "Il n'y a plus de texte cité."
 msgid "No more unquoted text after quoted text."
 msgstr "Il n'y a plus de texte non cité après le texte cité."
 
-#: parse.c:500
+#: parse.c:502
 msgid "multipart message has no boundary parameter!"
 msgstr "le message multipart n'a pas de paramètre boundary !"
 
 # , c-format
 #: pattern.c:235
+#, c-format
 msgid "Error in expression: %s"
 msgstr "Erreur dans l'expression : %s"
 
 # , c-format
 #: pattern.c:331
+#, c-format
 msgid "Invalid day of month: %s"
 msgstr "Quantième invalide : %s"
 
 # , c-format
 #: pattern.c:345
+#, c-format
 msgid "Invalid month: %s"
 msgstr "Mois invalide : %s"
 
@@ -2317,16 +2437,19 @@ msgstr "erreur dans l'expression"
 
 # , c-format
 #: pattern.c:584 pattern.c:692
+#, c-format
 msgid "error in pattern at: %s"
 msgstr "erreur dans le motif à : %s"
 
 # , c-format
 #: pattern.c:632
+#, c-format
 msgid "%c: invalid command"
 msgstr "%c : commande invalide"
 
 # , c-format
 #: pattern.c:638
+#, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c : non supporté dans ce mode"
 
@@ -2336,6 +2459,7 @@ msgstr "paramètre manquant"
 
 # , c-format
 #: pattern.c:667
+#, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "parenthésage incorrect : %s"
 
@@ -2345,6 +2469,7 @@ msgstr "motif vide"
 
 # , c-format
 #: pattern.c:876
+#, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "erreur : opération inconnue %d (signalez cette erreur)."
 
@@ -2382,6 +2507,7 @@ msgstr "Phrase de passe PGP oubliée."
 
 # , c-format
 #: pgp.c:175
+#, c-format
 msgid "Unknown PGP version \"%s\"."
 msgstr "Version de PGP \"%s\" inconnue."
 
@@ -2470,10 +2596,12 @@ msgstr ""
 
 #: pgp.c:688
 msgid ""
-"[-- Error: this message does not comply with the PGP/MIME specification! --]\n"
+"[-- Error: this message does not comply with the PGP/MIME specification! "
+"--]\n"
 "\n"
 msgstr ""
-"[-- Erreur : ce message n'est pas conforme à la spécification PGP/MIME ! --]\n"
+"[-- Erreur : ce message n'est pas conforme à la spécification PGP/MIME ! "
+"--]\n"
 "\n"
 
 #: pgp.c:802
@@ -2522,11 +2650,13 @@ msgstr "Impossible d'ouvrir le sous-processus PGP"
 
 # , c-format
 #: pgp.c:1195
+#, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Utiliser keyID = \"%s\" pour %s ?"
 
 # , c-format
 #: pgp.c:1201
+#, c-format
 msgid "Enter keyID for %s: "
 msgstr "Entrez keyID pour %s : "
 
@@ -2560,6 +2690,7 @@ msgstr "Impossible de créer le filtre"
 
 # , c-format
 #: pgpkey.c:237
+#, c-format
 msgid "Key ID: 0x%s"
 msgstr "ID clé : 0x%s"
 
@@ -2577,6 +2708,7 @@ msgstr "Cet ID n'est que peu digne de confiance."
 
 # , c-format
 #: pgpkey.c:263
+#, c-format
 msgid "%s Do you really want to use it?"
 msgstr "%s Voulez-vous vraiment l'utiliser ?"
 
@@ -2586,6 +2718,7 @@ msgstr "Veuillez entrer l'ID clé : "
 
 # , c-format
 #: pgpkey.c:417
+#, c-format
 msgid "PGP Key 0x%s."
 msgstr "Clé PGP 0x%s."
 
@@ -2671,11 +2804,13 @@ msgstr "Le nom d'utilisateur POP n'est pas défini."
 
 # , c-format
 #: pop.c:115
+#, c-format
 msgid "Could not find address for host %s."
 msgstr "Impossible de trouver l'adresse de la machine %s."
 
 # , c-format
 #: pop.c:123
+#, c-format
 msgid "Connecting to %s"
 msgstr "Connexion à %s"
 
@@ -2689,11 +2824,13 @@ msgstr "Aucun nouveau message dans la boîte aux lettres POP."
 
 # , c-format
 #: pop.c:210
+#, c-format
 msgid "Reading %d new message (%d bytes)..."
 msgstr "Lecture de %d nouveau(x) message(s) (%d octets)..."
 
 # , c-format
 #: pop.c:211
+#, c-format
 msgid "Reading %d new messages (%d bytes)..."
 msgstr "Lecture de %d nouveaux messages (%d octets)..."
 
@@ -2707,6 +2844,7 @@ msgstr "Erreur à l'écriture de la boîte aux lettres !"
 
 # , c-format
 #: pop.c:306
+#, c-format
 msgid "%s [%d messages read]"
 msgstr "%s [%d messages lus]"
 
@@ -2753,6 +2891,7 @@ msgstr "Requête : "
 
 # , c-format
 #: query.c:269 query.c:295
+#, c-format
 msgid "Query '%s'"
 msgstr "Requête '%s'"
 
@@ -2774,6 +2913,7 @@ msgstr "Attachement sauvé"
 
 # , c-format
 #: recvattach.c:444
+#, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "ATTENTION !  Vous allez écraser %s, continuer ?"
 
@@ -2791,6 +2931,7 @@ msgstr "Passer à la commande : "
 
 # , c-format
 #: recvattach.c:563
+#, c-format
 msgid "I dont know how to print %s attachments!"
 msgstr "Je ne sais pas comment imprimer %s attachements !"
 
@@ -2808,11 +2949,13 @@ msgstr "Vous ne pouvez renvoyer que des parties message/rfc822."
 
 # , c-format
 #: recvattach.c:690
+#, c-format
 msgid "Bounce messages to %s...?"
 msgstr "Renvoyer les messages à %s... ?"
 
 # , c-format
 #: recvattach.c:691
+#, c-format
 msgid "Bounce message to %s...?"
 msgstr "Renvoyer le message à %s... ?"
 
@@ -2830,10 +2973,12 @@ msgstr "Seul l'effacement d'attachements multipart est supporté."
 
 #: recvattach.c:1060
 msgid "This operation is not currently supported for PGP messages."
-msgstr "Cette opération n'est pas actuellement supportée pour les messages PGP."
+msgstr ""
+"Cette opération n'est pas actuellement supportée pour les messages PGP."
 
 # , c-format
 #: rfc1524.c:158
+#, c-format
 msgid "Improperly formated entry for type %s in \"%s\" line %d"
 msgstr "Entrée incorrectement formatée pour le type %s dans \"%s\" ligne %d"
 
@@ -2843,6 +2988,7 @@ msgstr "Pas de chemin mailcap spécifié"
 
 # , c-format
 #: rfc1524.c:416
+#, c-format
 msgid "mailcap entry for type %s not found"
 msgstr "Entrée mailcap pour le type %s non trouvée"
 
@@ -2869,6 +3015,7 @@ msgstr "Pas de sujet, abandon."
 #. * provides a way to do that.
 #.
 #: send.c:433
+#, c-format
 msgid "Reply to %s%s?"
 msgstr "Répondre à %s%s ?"
 
@@ -2953,21 +3100,25 @@ msgstr "Pas de paramètre boundary trouvé !  [signalez cette erreur]"
 
 # , c-format
 #: sendlib.c:509
+#, c-format
 msgid "%s no longer exists!"
 msgstr "%s n'existe plus !"
 
 # , c-format
 #: sendlib.c:777
+#, c-format
 msgid "Could not open %s"
 msgstr "Impossible d'ouvrir %s"
 
 # , c-format
 #: sendlib.c:1690
+#, c-format
 msgid "Error sending message, child exited %d (%s).\n"
 msgstr "Erreur en envoyant le message, fils terminé avec le code %d (%s).\n"
 
 # , c-format
 #: sendlib.c:1692
+#, c-format
 msgid "Saved output of child process to %s.\n"
 msgstr "Sortie du processus fils sauvée dans %s.\n"
 
@@ -2977,11 +3128,13 @@ msgstr "Erreur en envoyant le message."
 
 # , c-format
 #: signal.c:39 signal.c:42
+#, c-format
 msgid "Caught %s...  Exiting.\n"
 msgstr "Erreur %s... On quitte.\n"
 
 # , c-format
 #: signal.c:44
+#, c-format
 msgid "Caught signal %d...  Exiting.\n"
 msgstr "Signal %d... On quitte.\n"
 
