@@ -207,7 +207,7 @@ echo
 
 if test "$DEBIAN" = "yes" ; then
 	echo "Obtaining Debian-specific information..." > /dev/tty
-	bug -p -s dummy mutt |                                 \
+	bug -p -s dummy mutt < /dev/null |                     \
 		sed -n -e "/^-- System Information/,/^---/p" | \
 		grep -v '^---'
 fi
