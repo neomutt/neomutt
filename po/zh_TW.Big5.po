@@ -1713,16 +1713,15 @@ msgstr "把遊標上的字母與前一個字交換"
 
 #: keymap_alldefs.h:80
 msgid "capitalize the word"
-msgstr ""
+msgstr "把字的第一個字母變成大寫"
 
 #: keymap_alldefs.h:81
-#, fuzzy
 msgid "convert the word to lower case"
-msgstr "移到本頁的最後面"
+msgstr "把整個字變成小寫"
 
 #: keymap_alldefs.h:82
 msgid "convert the word to upper case"
-msgstr ""
+msgstr "把整個字變成大寫"
 
 #: keymap_alldefs.h:83
 msgid "enter a muttrc command"
@@ -2517,10 +2516,12 @@ msgid "Could not connect to %s (%s)."
 msgstr "無法連線到 %s (%s)。"
 
 #: mutt_ssl.c:105
+# Don't know how to translate this
 msgid "Failed to find enough entropy on your system"
 msgstr ""
 
 #: mutt_ssl.c:120
+# Don't know how to translate this
 #, c-format
 msgid "Filling entropy pool: %s...\n"
 msgstr ""
@@ -2531,6 +2532,7 @@ msgid "%s has insecure permissions!"
 msgstr "%s 的權限不安全！"
 
 #: mutt_ssl.c:147
+# Don't know how to translate this
 msgid "SSL disabled due the lack of entropy"
 msgstr ""
 
@@ -2719,6 +2721,7 @@ msgid "Mailbox is marked unwritable. %s"
 msgstr "信箱被標記成為無法寫入的. %s"
 
 #: mx.c:1159
+# Don't know how to translate this
 msgid "Mailbox checkpointed."
 msgstr ""
 
