@@ -33,6 +33,7 @@
 #include <sys/wait.h>
 #include <signal.h>
 #include <netdb.h>
+#include <netinet/in.h>
 
 #include <errno.h>
 
