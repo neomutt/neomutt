@@ -1288,6 +1288,25 @@ my_hdr commands which modify recipient headers, or the message's
 subject, don't have any effect on the current message when executed
 from a send-hook.
 
+<sect1>Change settings before wieving a message<label id="display-hook">
+<p>
+Usage: <tt/display-hook/ &lsqb;!&rsqb;<em/pattern/ <em/command/
+
+This command can be used to execute arbitrary configuration commands
+before viewing a message based upon information about the message.
+<em/command/ is executed if the <em/pattern/ matches the message to be
+displayed. When multiple matches occur, commands are executed in the order
+they are specified in the muttrc.
+
+See <ref id="pattern_hook" name="Message Matching in Hooks"> for
+information on the exact format of <em/pattern/.
+
+Example:
+<tscreen><verb>
+display-hook ~a 'set pager=builtin'
+display-hook '~f freshmeat-news' 'set pager="less \"+/^  subject: .*\""'
+</verb></tscreen>
+
 <sect1>Choosing the PGP key of the recipient<label id="pgp-hook">
 <p>
 Usage: <tt/pgp-hook/ <em/pattern/ <em/keyid/
@@ -1743,6 +1762,7 @@ configuration option/command.  See
 <itemize>
 <item><ref id="folder-hook" name="folder-hook">
 <item><ref id="send-hook" name="send-hook">
+<item><ref id="display-hook" name="display-hook">
 <item><ref id="save-hook" name="save-hook">
 <item><ref id="mbox-hook" name="mbox-hook">
 <item><ref id="fcc-hook" name="fcc-hook">
@@ -1752,11 +1772,12 @@ for specific details on each type of <em/hook/ available.
 
 <sect2>Message Matching in Hooks<label id="pattern_hook">
 <p>
-Hooks that act upon messages (<tt/send-hook, save-hook, fcc-hook/) are
-evaluated in a slightly different manner.  For the other types of hooks, a
-<ref id="regexp" name="regular expression"> is sufficient.  But in dealing
-with messages a finer grain of control is needed for matching since for
-different purposes you want to match different criteria.
+Hooks that act upon messages (<tt/send-hook, save-hook, fcc-hook,
+display-hook/) are evaluated in a slightly different manner.  For the other
+types of hooks, a <ref id="regexp" name="regular expression"> is
+sufficient.  But in dealing with messages a finer grain of control is
+needed for matching since for different purposes you want to match
+different criteria.
 
 Mutt allows the use of the <ref id="pattern" name="search pattern">
 language for matching messages in hook commands.  This works in exactly the
@@ -2660,6 +2681,8 @@ The following are the commands understood by mutt.
 <tt><ref id="bind" name="bind"></tt> <em/map/ <em/key/ <em/function/
 <item>
 <tt><ref id="color" name="color"></tt> <em/object/ <em/foreground/ <em/background/ &lsqb; <em/regexp/ &rsqb;
+<item>
+<tt><ref id="display-hook" name="display-hook"></tt> <em/pattern/ <em/command/
 <item>
 <tt><ref id="folder-hook" name="folder-hook"></tt> <em/pattern/ <em/command/
 <item>

@@ -146,7 +146,9 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 
   if (data & (M_SENDHOOK | M_SAVEHOOK | M_FCCHOOK | M_DISPLAYHOOK))
   {
-    if ((pat = mutt_pattern_comp (pattern.data, (data & (M_SENDHOOK | M_FCCHOOK)) ? 0 : M_FULL_MSG, err)) == NULL)
+    if ((pat = mutt_pattern_comp (pattern.data,
+	   (data & (M_SENDHOOK | M_FCCHOOK | M_DISPLAYHOOK)) ? 0 : M_FULL_MSG,
+				  err)) == NULL)
       goto error;
   }
   else
