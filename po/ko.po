@@ -2,13 +2,13 @@
 # Copyright (C) 1998 Free Software Foundation, Inc.
 # Sang-Jin Hwang,ı <accel@linux.mdworld.com>, 1998, 1999.
 # Byeong-Chan Kim <redhands@linux.sarag.net>, 2000.
-# Im Eunjea <eunjea@kldp.org>, 2002.
+# Im Eunjea <eunjea@kldp.org>, 2002, 2003.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.5.1i\n"
 "POT-Creation-Date: 2003-03-19 23:37+0100\n"
-"PO-Revision-Date: 2002-05-02 19:15+300\n"
+"PO-Revision-Date: 2003-08-26 23:46+300\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Im Eunjea <eunjea@kldp.org>\n"
 "MIME-Version: 1.0\n"
@@ -68,7 +68,7 @@ msgstr "°°Àº ÀÌ¸§ÀÇ º°ÄªÀÌ ÀÌ¹Ì ÀÖÀ½!"
 
 #: alias.c:254
 msgid "Warning: This alias name may not work.  Fix it?"
-msgstr ""
+msgstr "°æ°í: ÀÌ ¾Ë¸®¾Æ½º´Â ÀÛµ¿ÇÏÁö ¾Ê½À´Ï´Ù. °íÄ¥±î¿ä?"
 
 #: alias.c:279
 msgid "Address: "
@@ -77,7 +77,7 @@ msgstr "ÁÖ¼Ò: "
 #: alias.c:289 send.c:201
 #, c-format
 msgid "Error: '%s' is a bad IDN."
-msgstr ""
+msgstr "¿À·ù: '%s'´Â Àß¸øµÈ IDN."
 
 #: alias.c:301
 msgid "Personal name: "
@@ -259,9 +259,8 @@ msgid "Error trying to view file"
 msgstr "ÆÄÀÏ º¸±â ½Ãµµ Áß ¿À·ù"
 
 #: buffy.c:443
-#, fuzzy
 msgid "New mail in "
-msgstr "%s¿¡ »õ ¸ŞÀÏ µµÂø."
+msgstr "»õ ¸ŞÀÏ µµÂø "
 
 #: color.c:322
 #, c-format
@@ -373,7 +372,7 @@ msgstr "ÁÖ¼Ò ºĞ¼® Áß ¿À·ù!"
 #: commands.c:260 recvcmd.c:162
 #, c-format
 msgid "Bad IDN: '%s'"
-msgstr ""
+msgstr "Àß¸øµÈ IDN: '%s'"
 
 #: commands.c:271 recvcmd.c:176
 #, c-format
@@ -386,14 +385,12 @@ msgid "Bounce messages to %s"
 msgstr "%s¿¡°Ô ¸ŞÀÏ Àü´Ş"
 
 #: commands.c:287 recvcmd.c:192
-#, fuzzy
 msgid "Message not bounced."
-msgstr "¸ŞÀÏÀÌ Àü´ŞµÊ."
+msgstr "¸ŞÀÏÀÌ Àü´Ş µÇÁö ¾ÊÀ½."
 
 #: commands.c:287 recvcmd.c:192
-#, fuzzy
 msgid "Messages not bounced."
-msgstr "¸ŞÀÏµéÀÌ Àü´ŞµÊ."
+msgstr "¸ŞÀÏµéÀÌ Àü´Ş µÇÁö ¾ÊÀ½."
 
 #: commands.c:297 recvcmd.c:211
 msgid "Message bounced."
@@ -588,15 +585,14 @@ msgid ""
 msgstr "S/MIME ¾ÏÈ£È­(e), ¼­¸í(s), ¹æ½Ä(w), »ç¿ë ¼­¸í(a), µÑ ´Ù(b), Ãë¼Ò(f)? "
 
 #: compose.c:223
-#, fuzzy
 msgid "eswabf"
-msgstr "esabf"
+msgstr "eswabf"
 
 #: compose.c:231
-#, fuzzy
 msgid ""
 "1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, or (f)orget it? "
-msgstr "1: DES, 2: Tripple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, Ãë¼Ò(f)? "
+msgstr 
+"1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, Ãë¼Ò(f)? "
 
 #: compose.c:233
 msgid "12345f"
@@ -619,7 +615,7 @@ msgstr "-- Ã·ºÎ¹°"
 #: compose.c:422
 #, c-format
 msgid "Warning: '%s' is a bad IDN."
-msgstr ""
+msgstr "°æ°í: '%s' Àß¸øµÈ IDN."
 
 #: compose.c:445
 msgid "You may not delete the only attachment."
@@ -628,7 +624,7 @@ msgstr "Ã·ºÎ¹°¸¸À» »èÁ¦ÇÒ ¼ö´Â ¾ø½À´Ï´Ù."
 #: compose.c:711 send.c:1433
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
-msgstr ""
+msgstr "Àß¸øµÈ IDN \"%s\": '%s'"
 
 #: compose.c:799
 msgid "Attaching selected files..."
@@ -754,9 +750,8 @@ msgid "Enter SMIME passphrase:"
 msgstr "SMIME ¾ÏÈ£ ¹®±¸ ÀÔ·Â:"
 
 #: crypt.c:192
-#, fuzzy
 msgid "Create a traditional (inline) PGP message?"
-msgstr "inline PGP ¸Ş¼¼Áö¸¦ ¸¸µé±î¿ä?"
+msgstr "±¸½Ä inline PGP ¸Ş¼¼Áö¸¦ ¸¸µé±î¿ä?"
 
 #: crypt.c:200 pgpkey.c:559 postpone.c:538
 msgid "Invoking PGP..."
@@ -1118,7 +1113,7 @@ msgstr "¸Ş¼¼Áö¿¡ ³»¿ë ¾øÀ½.\n"
 #: edit.c:440
 #, c-format
 msgid "Bad IDN in %s: '%s'\n"
-msgstr ""
+msgstr "Àß¸øµÈ IDN %s: '%s'\n"
 
 #: edit.c:458
 #, c-format
@@ -1136,9 +1131,9 @@ msgid "could not write temporary mail folder: %s"
 msgstr "ÀÓ½Ã ¸ŞÀÏ Æú´õ¸¦ ¾µ ¼ö ¾øÀ½: %s"
 
 #: editmsg.c:101
-#, fuzzy, c-format
+#, c-format
 msgid "could not truncate temporary mail folder: %s"
-msgstr "ÀÓ½Ã ¸ŞÀÏ Æú´õ¸¦ ¾µ ¼ö ¾øÀ½: %s"
+msgstr "ÀÓ½Ã ¸ŞÀÏ Æú´õ¸¦ »èÁ¦ ÇÒ ¼ö ¾øÀ½: %s"
 
 #: editmsg.c:116
 msgid "Message file is empty!"
@@ -1505,7 +1500,7 @@ msgstr "ÀÌ ¹öÁ¯ÀÇ IAMP ¼­¹ö¿¡¼­ Çì´õ¸¦ °¡Á®¿Ã ¼ö ¾ø½À´Ï´Ù."
 #: imap/message.c:84
 #, c-format
 msgid "Could not create temporary file %s"
-msgstr "ÀÓ½ÃÆÄÀÏÀ» ¸¸µé ¼ö ¾øÀ½!"
+msgstr "ÀÓ½Ã ÆÄÀÏ %s¸¦ ¸¸µé ¼ö ¾øÀ½!"
 
 #: imap/message.c:101 pop.c:206
 #, c-format
@@ -1545,7 +1540,7 @@ msgstr "º°Äª: ÁÖ¼Ò ¾øÀ½"
 #: init.c:536
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr ""
+msgstr "°æ°í: Àß¸øµÈ IDN '%s' ¾Ë¸®¾Æ½º '%s'.\n"
 
 #: init.c:599
 msgid "invalid header field"
@@ -1559,7 +1554,7 @@ msgstr "%s: ¾Ë ¼ö ¾ø´Â Á¤·Ä ¹æ¹ı"
 #: init.c:764
 #, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
-msgstr "mutt_restore_default: Á¤±ÔÇ¥Çö½Ä ¿À·ù: %s\n"
+msgstr "mutt_restore_default(%s): Á¤±ÔÇ¥Çö½Ä ¿À·ù: %s\n"
 
 #: init.c:829
 #, c-format
@@ -1695,14 +1690,13 @@ msgid "%s: no such function"
 msgstr "%s: ±×·± ±â´É ¾øÀ½"
 
 #: keymap.c:909
-#, fuzzy
 msgid "Enter keys (^G to abort): "
-msgstr "%sÀÇ keyID ÀÔ·Â: "
+msgstr "Å° ÀÔ·Â (^G Ãë¼Ò): "
 
 #: keymap.c:914
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr ""
+msgstr "Char = %s, Octal = %o, Decimal = %d"
 
 #: keymap_alldefs.h:5
 msgid "null operation"
@@ -1753,9 +1747,8 @@ msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "¸ğµç/°¡ÀÔµÈ ¸ŞÀÏÇÔ º¸±â ¼±ÅÃ (IMAP¸¸ Áö¿ø)"
 
 #: keymap_alldefs.h:17
-#, fuzzy
 msgid "list mailboxes with new mail"
-msgstr "»õ ¸ŞÀÏÀÌ µµÂøÇÑ ¸ŞÀÏÇÔ ¾øÀ½."
+msgstr "»õ ¸ŞÀÏÀÌ µµÂøÇÑ ¸ŞÀÏÇÔ ¸ñ·Ï."
 
 #: keymap_alldefs.h:18
 msgid "change directories"
@@ -2134,9 +2127,8 @@ msgid "jump to the next new message"
 msgstr "´ÙÀ½ »õ ¸ŞÀÏ·Î ÀÌµ¿"
 
 #: keymap_alldefs.h:112
-#, fuzzy
 msgid "jump to the next new or unread message"
-msgstr "ÀĞÁö ¾ÊÀº ´ÙÀ½ ¸ŞÀÏ·Î ÀÌµ¿"
+msgstr "ÀĞÁö ¾ÊÀº ´ÙÀ½ ¸ŞÀÏ/»õ ¸ŞÀÏ·Î ÀÌµ¿"
 
 #: keymap_alldefs.h:113
 msgid "jump to the next subthread"
@@ -2175,9 +2167,8 @@ msgid "jump to the previous new message"
 msgstr "ÀÌÀü »õ ¸ŞÀÏ·Î ÀÌµ¿"
 
 #: keymap_alldefs.h:122
-#, fuzzy
 msgid "jump to the previous new or unread message"
-msgstr "ÀĞÁö ¾ÊÀº ÀÌÀü ¸ŞÀÏ·Î ÀÌµ¿"
+msgstr "ÀĞÁö ¾ÊÀº ÀÌÀü ¸ŞÀÏ/»õ ¸ŞÀÏ·Î ÀÌµ¿"
 
 #: keymap_alldefs.h:123
 msgid "jump to the previous unread message"
@@ -2488,20 +2479,18 @@ msgstr ""
 "¹ö±× º¸°í´Â flea(1) À¯Æ¿¸®Æ¼¸¦ »ç¿ëÇØ ÁÖ½Ê½Ã¿À.\n"
 
 #: main.c:50
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2002 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2000 Michael R. Elkins ¿Ü.\n"
+"Copyright (C) 1996-2002 Michael R. Elkins ¿Ü.\n"
 "MuttÀº ¾î¶°ÇÑ Ã¥ÀÓµµ ÁöÁö ¾Ê½À´Ï´Ù; ÀÚ¼¼ÇÑ »çÇ×Àº 'mutt -vv'¸¦ È®ÀÎÇÏ½Ã±â\n"
 "¹Ù¶ø´Ï´Ù. MuttÀº °ø°³ ¼ÒÇÁÆ®¿ş¾îÀÌ¸ç, ÀÏÁ¤ »çÇ×¸¸ ÁöÅ²´Ù¸é ¿©·¯ºĞ²²¼­ ÀÚÀ¯\n"
 "·ÎÀÌ Àç¹èÆ÷ÇÒ ¼ö ÀÖ½À´Ï´Ù. ÀÚ¼¼ÇÑ »çÇ×Àº 'mutt -vv'·Î È®ÀÎÇÏ½Ã±â ¹Ù¶ø´Ï´Ù.\n"
 
 #: main.c:56
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -2528,13 +2517,13 @@ msgid ""
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 msgstr ""
-"Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
-"Copyright (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2001 Thomas Roessler <roessler@guug.de>\n"
-"Copyright (C) 1998-2001 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>\n"
-"Copyright (C) 1999-2001 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-"Copyright (C) 2000-2001 Edmund Grimley Evans <edmundo@rano.org>\n"
+"Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>\n"
+"Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
+"Copyright (C) 1997-2002 Thomas Roessler <roessler@does-not-exist.org>\n"
+"Copyright (C) 1998-2002 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1999-2002 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "¿©±â¿¡ ¾ğ±ŞµÇÁö ¾ÊÀº ¸¹Àº ºĞµé²²¼­ ¼Ò½º ÄÚµå, ¼öÁ¤, ±×¸®°í\n"
 "±â´ÉÁ¦¾È¿¡ ¸¹Àº µµ¿òÀ» ÁÖ¼Ì½À´Ï´Ù.\n"
@@ -2555,7 +2544,6 @@ msgstr ""
 "02111, USA.\n"
 
 #: main.c:94
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -2595,12 +2583,15 @@ msgstr ""
 "> ]\n"
 "       mutt [ -nR ] [ -e <¸í·É¾î> ] [ -F <ÆÄÀÏ> ] -Q <Äõ¸®> [ -Q <Äõ¸®> ] "
 "[...]\n"
+"       mutt [ -nR ] [ -e <¸í·É¾î> ] [ -F <ÆÄÀÏ> ] -A <¾Ë¸®¾Æ½º> [ -A <¾Ë¸®¾Æ½º> ] "
+"[...]\n"
 "       mutt [ -nx ] [ -e <¸í·É¾î> ] [ -a <ÆÄÀÏ> ] [ -F <ÆÄÀÏ> ] [ -H <ÆÄÀÏ"
 "> ] [ -i <ÆÄÀÏ> ] [ -s <Á¦¸ñ> ] [ -b <ÁÖ¼Ò> ] [ -c <ÁÖ¼Ò> ] <ÁÖ¼Ò> [ ... ]\n"
 "       mutt [ -n ] [ -e <¸í·É¾î> ] [ -F <ÆÄÀÏ> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
 "¼±ÅÃ»çÇ×:\n"
+"  -A <¾Ë¸®¾Æ½º>\tÁÖ¾îÁø ¾Ë¸®¾Æ½º È®Àå\n"
 "  -a <ÆÄÀÏ>\t¸ŞÀÏ¿¡ ÆÄÀÏ Ã·ºÎ\n"
 "  -b <ÁÖ¼Ò>\tBCC ÁÖ¼Ò ÁöÁ¤\n"
 "  -c <ÁÖ¼Ò>\tCC ÁÖ¼Ò ÁöÁ¤\n"
@@ -2812,7 +2803,7 @@ msgstr "%s ÀĞ´Â Áß... %d"
 
 #: mh.c:1042
 msgid "maildir_commit_message(): unable to set time on file"
-msgstr ""
+msgstr "maildir_commit_message(): ÆÄÀÏ ½Ã°£À» ¼³Á¤ÇÒ ¼ö ¾øÀ½"
 
 #: muttlib.c:839
 msgid "File is a directory, save under it?"
@@ -2865,7 +2856,7 @@ msgstr "%s (%s) ¿À·ù"
 #: mutt_socket.c:418 mutt_socket.c:475
 #, c-format
 msgid "Bad IDN \"%s\"."
-msgstr ""
+msgstr "Àß¸øµÈ IDN \"%s\"."
 
 #: mutt_socket.c:425 mutt_socket.c:482
 #, c-format
@@ -2962,17 +2953,17 @@ msgstr "ÀÌ ÀÎÁõ¼­´Â À¯È¿ÇÔ"
 #: mutt_ssl.c:602
 #, c-format
 msgid "   from %s"
-msgstr ""
+msgstr "   from %s"
 
 #: mutt_ssl.c:604
 #, c-format
 msgid "     to %s"
-msgstr ""
+msgstr "     to %s"
 
 #: mutt_ssl.c:610
 #, c-format
 msgid "Fingerprint: %s"
-msgstr ""
+msgstr "Fingerprint: %s"
 
 #: mutt_ssl.c:612
 msgid "SSL Certificate check"
@@ -3302,9 +3293,8 @@ msgstr ""
 "\n"
 
 #: pgp.c:662
-#, fuzzy
 msgid "Internal error. Inform <roessler@does-not-exist.org>."
-msgstr "³»ºÎ ¿À·ù. <roessler@guug.de>¿¡°Ô ¾Ë·ÁÁÖ½Ê½Ã¿ä."
+msgstr "³»ºÎ ¿À·ù. <roessler@does-not-exist.org>¿¡°Ô ¾Ë·ÁÁÖ½Ê½Ã¿ä."
 
 #: pgp.c:722
 msgid ""
@@ -3361,9 +3351,8 @@ msgid "Fetching PGP key..."
 msgstr "PGP ¿­¼è °¡Á®¿À´Â Áß..."
 
 #: pgpkey.c:486
-#, fuzzy
 msgid "All matching keys are expired, revoked, or disabled."
-msgstr "¸ğµç Å°°¡ ¸¸±â/Ãë¼Ò Ç¥½ÃµÇ¾î ÀÖ½À´Ï´Ù."
+msgstr "¸ğµç Å°°¡ ¸¸±â/Ãë¼Ò/»ç¿ë ºÒ°¡ ÀÔ´Ï´Ù."
 
 #. __STRCAT_CHECKED__
 #: pgpkey.c:512 smime.c:412
@@ -3494,7 +3483,7 @@ msgstr "¸ŞÀÏÇÔ¿¡ ¾²´Â Áß ¿À·ù!"
 #: pop.c:661
 #, c-format
 msgid "%s [%d of %d messages read]"
-msgstr "%s [%2$d°³ Áß %1$d°³ÀÇ ¸ŞÀÏ ÀĞÀ½]"
+msgstr "%s [%d - %d ¸ŞÀÏ ÀĞÀ½]"
 
 #: pop.c:684 pop_lib.c:278
 msgid "Server closed connection!"
@@ -3550,9 +3539,8 @@ msgid "Illegal S/MIME header"
 msgstr "Àß¸øµÈ S/MIME Çì´õ"
 
 #: postpone.c:545
-#, fuzzy
 msgid "Decryption failed."
-msgstr "Á¢¼Ó ½ÇÆĞ."
+msgstr "ÇØµ¶ ½ÇÆĞ."
 
 #: query.c:46
 msgid "New Query"
@@ -3659,14 +3647,12 @@ msgid "You may only bounce message/rfc822 parts."
 msgstr "message/rfc822 ºÎºĞ¸¸ Àü´ŞÇÒ ¼ö ÀÖ½À´Ï´Ù."
 
 #: recvcmd.c:213
-#, fuzzy
 msgid "Error bouncing message!"
-msgstr "¸ŞÀÏ º¸³»´Â Áß ¿À·ù."
+msgstr "¸ŞÀÏ ¹Ù¿î½ºÁß ¿À·ù!"
 
 #: recvcmd.c:213
-#, fuzzy
 msgid "Error bouncing messages!"
-msgstr "¸ŞÀÏ º¸³»´Â Áß ¿À·ù."
+msgstr "¸ŞÀÏ ¹Ù¿î½ºÁß ¿À·ù!"
 
 #: recvcmd.c:413
 #, c-format
@@ -3846,9 +3832,8 @@ msgid "Recall postponed message?"
 msgstr "¹ß¼Û ¿¬±âµÈ ¸ŞÀÏÀ» ´Ù½Ã ºÎ¸¦±î¿ä?"
 
 #: send.c:1318
-#, fuzzy
 msgid "Edit forwarded message?"
-msgstr "¸ŞÀÏ Æ÷¿öµùÀ» ÁØºñ Áß..."
+msgstr "Æ÷¿öµùµÈ ¸ŞÀÏÀ» ¼öÁ¤ÇÒ±î¿ä?"
 
 #: send.c:1341
 msgid "Abort unmodified message?"
@@ -3930,7 +3915,7 @@ msgstr "¹è´Ş ÇÁ·Î¼¼½ºÀÇ Ãâ·Â"
 #: sendlib.c:2264
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
-msgstr ""
+msgstr "resent-fromÀ» ÁØºñÇÏ´Â µ¿¾È Àß¸øµÈ IDN %s"
 
 #: signal.c:39
 #, c-format
@@ -4097,15 +4082,3 @@ msgstr "Á¦ÇÑµÈ º¸±â·Î ºÎ¸ğ ¸ŞÀÏÀº º¸ÀÌÁö ¾Ê´Â »óÅÂÀÓ."
 #: thread.c:1085
 msgid "Parent message is not available."
 msgstr "ºÎ¸ğ ¸ŞÀÏÀÌ Á¸ÀçÇÏÁö ¾ÊÀ½."
-
-#~ msgid "Invoking OpenSSL..."
-#~ msgstr "OpenSSLÀ» ±¸µ¿ÇÕ´Ï´Ù..."
-
-#~ msgid "Bounce message to %s...?"
-#~ msgstr "%s¿¡°Ô ¸ŞÀÏÀ» Àü´ŞÇÒ±î¿ä?"
-
-#~ msgid "Bounce messages to %s...?"
-#~ msgstr "%s¿¡°Ô ¸ŞÀÏÀ» Àü´ŞÇÒ±î¿ä?"
-
-#~ msgid "ewsabf"
-#~ msgstr "ewsabf"
