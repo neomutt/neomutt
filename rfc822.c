@@ -204,6 +204,8 @@ parse_mailboxdomain (const char *s, const char *nonspecial,
   return s;
 }
 
+  
+
 static const char *
 parse_address (const char *s,
                char *token, size_t *tokenlen, size_t tokenmax,
@@ -229,7 +231,7 @@ parse_address (const char *s,
 
   token[*tokenlen] = 0;
   addr->mailbox = safe_strdup (token);
-
+  
   if (*commentlen && !addr->personal)
   {
     comment[*commentlen] = 0;
@@ -487,6 +489,37 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
   return top;
 }
 
+static short
+rewrite_uucp (char *dest, char *src, size_t destlen)
+{
+  char *domain, *user, *tmp;
+  short quoted, quoted_string;
+
+  if (!src || !*src)
+    return -1;
+
+  for (user = tmp = src, domain = NULL, quoted = quoted_string = 0; *tmp; tmp++)
+  {
+    switch (*tmp)
+    {
+      case '"':		if (!quoted) quoted_string ^= 1; quoted = 0; break;
+      case '@': 	return -1;
+      case '\\': 	quoted ^= 1; break;
+      case '!': 	if (!quoted && !quoted_string) { domain = user; user = tmp + 1; }
+      default:  	quoted = 0; break;
+    }
+  }
+  
+  if (domain == NULL)
+    return -1;
+
+  if (destlen <= tmp - domain)
+    return -1;
+
+  snprintf (dest, tmp - domain + 1, "%s@%s", user, domain);
+  return 0;
+}
+
 void rfc822_qualify (ADDRESS *addr, const char *host)
 {
   char *p;
@@ -615,7 +648,9 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr)
   {
     if (!buflen)
       goto done;
-    strfcpy (pbuf, addr->mailbox, buflen);
+    if (!option (OPTREWRITEUUCP) || 
+	rewrite_uucp (pbuf, addr->mailbox, buflen) == -1)
+      strfcpy (pbuf, addr->mailbox, buflen);
     len = mutt_strlen (pbuf);
     pbuf += len;
     buflen -= len;
