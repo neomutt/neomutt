@@ -234,8 +234,6 @@ int dotlock_invoke (const char *path, int flags, int retry)
   
   r = dotlock_dispatch (path);
   
- bail:
-  
   fchdir (currdir);
   close (currdir);
   
