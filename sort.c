@@ -207,6 +207,14 @@ void mutt_sort_headers (CONTEXT *ctx, int init)
   }
   unset_option (OPTNEEDRESCORE);
 
+  if (option (OPTRESORTINIT))
+  {
+    unset_option (OPTRESORTINIT);
+    init = 1;
+  }
+
+  if (init && ctx->tree)
+    mutt_clear_threads (ctx);
 
   if ((Sort & SORT_MASK) == SORT_THREADS)
   {
@@ -221,11 +229,6 @@ void mutt_sort_headers (CONTEXT *ctx, int init)
 	ctx->tree = mutt_sort_subthreads (ctx->tree, 1);
       Sort = i;
       unset_option (OPTSORTSUBTHREADS);
-    }
-    if (option (OPTRESORTINIT))
-    {
-      unset_option (OPTRESORTINIT);
-      init = 1;
     }
     mutt_sort_threads (ctx, init);
   }

@@ -655,10 +655,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
     init = 1;
 
   if (init)
-  {
-    mutt_clear_threads (ctx);
     ctx->thread_hash = hash_create (ctx->msgcount * 2);
-  }
 
   /* we want a quick way to see if things are actually attached to the top of the
    * thread tree or if they're just dangling, so we attach everything to a top
