@@ -121,6 +121,7 @@ struct option_t MuttVars[] = {
   { "help",		DT_BOOL, R_BOTH, OPTHELP, 1 },
   { "hidden_host",	DT_BOOL, R_NONE, OPTHIDDENHOST, 0 },
   { "history",		DT_NUM,	 R_NONE, UL &HistSize, 10 },
+  { "honor_followup_to", DT_QUAD, R_NONE, OPT_MFUPTO, M_YES },
   { "hostname",		DT_STR,	 R_NONE, UL &Fqdn, 0 },
 #ifdef USE_IMAP
   { "imap_checkinterval", 	DT_NUM,	 R_NONE, UL &ImapCheckTime, 0 },

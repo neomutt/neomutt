@@ -398,8 +398,15 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int group)
 
   if (group && env->mail_followup_to)
   {
-    rfc822_append (to, env->mail_followup_to);
-    return 0;
+    snprintf (prompt, sizeof (prompt), _("Follow-up to %s%s?"),
+	      env->mail_followup_to->mailbox,
+	      env->mail_followup_to->next ? "..." : "");
+
+    if (query_quadoption (OPT_MFUPTO, prompt) == M_YES)
+    {
+      rfc822_append (to, env->mail_followup_to);
+      return 0;
+    }
   }
 
   if (!option(OPTREPLYSELF) && mutt_addr_is_user (env->from))
@@ -725,7 +732,8 @@ void mutt_set_followup_to (ENVELOPE *e)
   ADDRESS *t = NULL;
 
   /* only generate the Mail-Followup-To if the user has requested it, and
-     it hasn't already been set */
+   * it hasn't already been set
+   */
   if (option (OPTFOLLOWUPTO) && !e->mail_followup_to)
   {
     if (mutt_is_list_recipient (0, e->to, e->cc))
