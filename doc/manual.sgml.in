@@ -1638,7 +1638,7 @@ set query_command = "mutt_ldap_query.pl '%s'"
 </verb></tscreen>
 
 The wrapper script should accept the query on the command-line.  It
-should return a one line message, than each matching response on a
+should return a one line message, then each matching response on a
 single line, each line containing a tab separated address then name then
 some other optional information.  On error, or if there are no matching
 addresses, return a non-zero exit code and a one line error message.
