@@ -1,3 +1,7 @@
+2005-02-13 09:53:07  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* Makefile.am: Include crypt-gpgme.h with the distribution.
+
 2005-02-13 00:25:37  Brendan Cully  <brendan@kublai.com>  (brendan)
                                  
 	* configure.in, m4/gettext.m4, m4/iconv.m4: Use AC_HELP_STRING to
