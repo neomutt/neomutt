@@ -192,4 +192,7 @@
 /* Define if we are using the system's wchar_t functions. */
 #undef HAVE_WC_FUNCS
 
+/* Define if you have <langinfo.h> and nl_langinfo(CODESET). */
+#undef HAVE_LANGINFO_CODESET
+
   

@@ -780,6 +780,15 @@ if test $wc_funcs = yes; then
 	AC_DEFINE(HAVE_WC_FUNCS)
 fi
 
+AC_CACHE_CHECK([for nl_langinfo and CODESET], mutt_cv_langinfo_codeset,
+  [AC_TRY_LINK([#include <langinfo.h>],
+    [char* cs = nl_langinfo(CODESET);],
+    mutt_cv_langinfo_codeset=yes,
+    mutt_cv_langinfo_codeset=no)])
+if test $mutt_cv_langinfo_codeset = yes; then
+  AC_DEFINE(HAVE_LANGINFO_CODESET)
+fi
+
 AC_OUTPUT(Makefile intl/Makefile m4/Makefile dnl
 	po/Makefile.in doc/Makefile contrib/Makefile dnl
 	muttbug.sh dnl

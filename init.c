@@ -51,6 +51,10 @@
 #include <errno.h>
 #include <sys/wait.h>
 
+#ifdef HAVE_LANGINFO_CODESET
+#include <langinfo.h>
+#endif
+
 void toggle_quadoption (int opt)
 {
   int n = opt/4;
@@ -919,7 +923,8 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
         else if (DTYPE (MuttVars[idx].type) == DT_STR)
         {
 	  *((char **) MuttVars[idx].data) = safe_strdup (tmp->data);
-	  mutt_set_charset (Charset);
+	  if (mutt_strcmp (MuttVars[idx].option, "charset") == 0)
+	    mutt_set_charset (Charset);
         }
         else
         {
@@ -1809,6 +1814,15 @@ void mutt_init (int skip_sys_rc, LIST *commands)
     FREE (&token.data);
   }
 
+#ifdef HAVE_LANGINFO_CODESET
+  Charset = safe_strdup (nl_langinfo (CODESET));
+#else
+  Charset = safe_strdup ("iso-8859-1");
+#endif
+
+  mutt_set_charset (Charset);
+  
+  
   /* Set standard defaults */
   for (i = 0; MuttVars[i].option; i++)
   {
@@ -1817,6 +1831,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   }
 
   CurrentMenu = MENU_MAIN;
+
 
 #ifndef LOCALES_HACK
   /* Do we have a locale definition? */

@@ -261,7 +261,7 @@ struct option_t MuttVars[] = {
   ** When this variable is set, mutt will include Delivered-To headers when
   ** bouncing messages.  Postfix users may wish to unset this variable.
   */
-  { "charset",		DT_STR,	 R_NONE, UL &Charset, UL "iso-8859-1" },
+  { "charset",		DT_STR,	 R_NONE, UL &Charset, UL 0 },
   /*
   ** .pp
   ** Character set your terminal uses to display and enter textual data.
