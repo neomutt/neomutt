@@ -950,8 +950,7 @@ static int flowed_visual_strlen (char *l, int i)
   {
     j++;
     if (*l == '\t')
-      for (; (i + j) % 8; j++)
-	;
+      j += 8 - ((i + j) % 8);
   }
   
   return j;
