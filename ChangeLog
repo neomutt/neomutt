@@ -1,4 +1,6 @@
-2004-07-14 04:36:27  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
+2004-07-14 04:50:19  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
+
+	* init.h, sort.h: Hack to fix $sort_browser documentation.
 
 	* copy.c, copy.h, handler.c, init.h, mutt.h, send.c:
 	$include_onlyfirst, again.
