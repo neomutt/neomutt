@@ -71,7 +71,7 @@ msgstr "[%s = %s] でよいか?"
 
 #: alias.c:296 recvattach.c:387 recvattach.c:441
 msgid "Save to file: "
-msgstr "セーブするファイル: "
+msgstr "保存するファイル: "
 
 #: alias.c:307
 msgid "Alias added."
@@ -405,7 +405,7 @@ msgstr "シェルコマンド: "
 #: commands.c:631
 #, c-format
 msgid "%s%s to mailbox"
-msgstr "メールボックスに%2sしますか%1s"
+msgstr "メールボックスに%2$s%1$s"
 
 #: commands.c:632
 msgid "Decode-save"
@@ -433,7 +433,7 @@ msgstr "コピー"
 
 #: commands.c:634
 msgid " tagged"
-msgstr " タグの付いた"
+msgstr "タグ付きメッセージを"
 
 #: commands.c:702
 #, c-format
@@ -640,7 +640,7 @@ msgstr "何かキーを押せば続きが..."
 
 #: curs_lib.c:404
 msgid " ('?' for list): "
-msgstr "('?' で一覧)"
+msgstr "('?' で一覧): "
 
 #: curs_main.c:59 curs_main.c:572
 msgid "No mailbox is open."
@@ -1246,7 +1246,7 @@ msgstr "メッセージをアップロード中..."
 #: imap/message.c:573
 #, c-format
 msgid "Copying %d messages to %s..."
-msgstr "%s に %d メッセージをコピー中..."
+msgstr "%d メッセージを %s にコピー中..."
 
 #: imap/message.c:577
 #, c-format
@@ -1495,7 +1495,7 @@ msgstr "添付ファイルのcontent-trasfer-encodingを編集"
 
 #: keymap_alldefs.h:25
 msgid "enter a file to save a copy of this message in"
-msgstr "このメッセージのコピーをセーブするファイル名を入力"
+msgstr "このメッセージのコピーを保存するファイル名を入力"
 
 #: keymap_alldefs.h:26
 msgid "edit the file to be attached"
@@ -1887,7 +1887,7 @@ msgstr "メッセージのステータス・フラグをセット"
 
 #: keymap_alldefs.h:124
 msgid "save changes to mailbox"
-msgstr "変更をメールボックスにセーブ"
+msgstr "変更をメールボックスに保存"
 
 #: keymap_alldefs.h:125
 msgid "tag messages matching a pattern"
