@@ -1,3 +1,21 @@
+2003-05-13 12:43:45  David Shaw  <dshaw@jabberwocky.com>  (roessler)
+
+	* gnupgparse.c, pgppubring.c: Currently, mutt uses the OpenPGP key
+	algorithm to determine the capabilities of the key.  For example,
+	in mutt, a key of type 1 (RSA) can both encrypt & sign.  This is
+	not correct as per OpenPGP, however, where the capabilities of
+	the key are determined by both the algorithm and key capability
+	flags that are set on the key.	This can lead to user confusion
+	when their RSA encrypt-only or sign-only key is listed for both
+	signing and encryption in mutt.
+
+	GnuPG lists these flags in key listings, so it is easy to take
+	advantage of them.  Here is a patch to use the flags, as well
+	as provide the flags in pgpring.  Note that the pgp+pgpring
+	users won't see any change since the flags there are based on
+	the key algorithm as they are now, but the GnuPG users will see
+	an improvement.
+
 2003-05-12 16:21:26  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* enter.c: Fix alias completion when the alias is entered as
