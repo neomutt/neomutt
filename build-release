@@ -59,7 +59,7 @@ cvs tag ${TAG}
 
 # build the diff between the two releases
 
-cvs rdiff -u -r ${OTAG} -r ${TAG} | gzip -9 \
+cvs rdiff -u -r ${OTAG} -r ${TAG} mutt | gzip -9 \
 	> diff-${OVERSION}i-${VERSION}i.gz
 
 # sign the various files
