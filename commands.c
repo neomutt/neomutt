@@ -260,6 +260,8 @@ void ci_bounce_message (HEADER *h, int *redraw)
   /*
    * This is the printing width of "...? ([y=yes]/n=no): ?" plus 2
    * for good measure. This is not ideal. FIXME.
+   * 
+   * While you fix this, please go to recvcmd.c, and do the same thing there.
    */
   snprintf (prompt, sizeof (prompt) - 4,
            (h ? _("Bounce message to %s") : _("Bounce messages to %s")), buf);

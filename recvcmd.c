@@ -146,13 +146,27 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
       || buf[0] == '\0')
     return;
 
-  adr = rfc822_parse_adrlist (adr, buf);
+  if (!(adr = rfc822_parse_adrlist (adr, buf)))
+  {
+    mutt_error _("Error parsing address!");
+    return;
+  }
+
   adr = mutt_expand_aliases (adr);
   buf[0] = 0;
   rfc822_write_address (buf, sizeof (buf), adr);
 
-  snprintf (prompt, sizeof (prompt), 
+#define extra_space (15+7+2)
+  /*
+   * See commands.c.
+   */
+  snprintf (prompt, sizeof (prompt) - 4, 
 	    cur ? _("Bounce message to %s...?") :  _("Bounce messages to %s...?"), buf);
+
+  mutt_format_string (prompt, sizeof (prompt) - 4,
+		      0, COLS-extra_space, 0, 0,
+		      prompt, sizeof (prompt), 0);
+  strcat (prompt, "...?");	/* __STRCAT_CHECKED__ */
 
   if (mutt_yesorno (prompt, M_YES) != M_YES)
     goto bail;
