@@ -552,10 +552,8 @@ void mutt_pretty_size (char *s, size_t len, long n)
 {
   if (n == 0)
     strfcpy (s, "0K", len);
-  else if (n < 103)
-    strfcpy (s, "0.1K", len);
   else if (n < 10189) /* 0.1K - 9.9K */
-    snprintf (s, len, "%3.1fK", n / 1024.0);
+    snprintf (s, len, "%3.1fK", (n < 103) ? 0.1 : n / 1024.0);
   else if (n < 1023949) /* 10K - 999K */
   {
     /* 51 is magic which causes 10189/10240 to be rounded up to 10 */
