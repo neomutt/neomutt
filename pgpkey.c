@@ -434,18 +434,26 @@ static pgp_key_t *pgp_select_key (pgp_key_t *keys,
   pgp_uid_t *a;
   int (*f) (const void *, const void *);
 
-  keymax = 5;
-  KeyTable = safe_malloc (sizeof (pgp_key_t *) * keymax);
+  int unsuable = 0;
+
+  keymax = 0;
+  KeyTable = NULL;
 
   for (i = 0, kp = keys; kp; kp = kp->next)
   {
     if (!option (OPTPGPSHOWUNUSABLE) && (kp->flags & KEYFLAG_CANTUSE))
+    {
+      unusable = 1;
       continue;
-	
+    }
+
     for (a = kp->address; a; a = a->next)
     {
       if (!option (OPTPGPSHOWUNUSABLE) && (a->flags & KEYFLAG_CANTUSE))
+      {
+	unusable = 1;
 	continue;
+      }
       
       if (i == keymax)
       {
@@ -455,6 +463,12 @@ static pgp_key_t *pgp_select_key (pgp_key_t *keys,
       
       KeyTable[i++] = a;
     }
+  }
+
+  if (!i && unusable)
+  {
+    mutt_error _("All matching keys are marked expired/revoked.");
+    return NULL;
   }
 
   switch (PgpSortKeys & SORT_MASK)
