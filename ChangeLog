@@ -1,3 +1,7 @@
+2003-11-10 10:37:10  Vincent Lefevre  <vincent@vinc17.org>  (roessler)
+
+	* po/fr.po: update
+
 2003-11-09 21:41:28  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* mh.c: Fix #1692.
