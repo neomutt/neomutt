@@ -37,3 +37,54 @@ smime_sign_as line, replacing the keyid with your own.
 - You probably want to import the trusted roots in
 contrib/ca-bundle.crt. Use "smime_keys.pl add_root" to do so. That makes you
 trust anything that was ultimately signed by one of them.
+
+
+
+Other notes
+
+Key management is done in a way similar to OpenSSL's CA directory. Private
+keys and certificates are stored in different directories, as OpenSSL
+expects either to be supplied in a (distinct) file. Each directory contains
+an unsorted file named '.index' wherin each line has several fields:
+mailbox, keyid, label, id of the intermediate certificate and keyflags.
+
+    * Keyid is a hashvalue derived from the subject field of a certificate
+      and supplied by OpenSSL.
+
+    * The mailbox address is derived from either From or Sender field of the
+      message, and matched with the email field of the certificate. Non
+      matching address pairs get rejected, as get certificates not
+      containing a mailbox address at all. (These are security issues, that
+      perhaps should be configurable.)
+
+    * Label is set by the perl script (it will ask you to supply one), when
+      you add your keypair to the database. So are the remaining two fields.
+
+    * keyflags are set with certificate verification option of the perl
+      script. It may take as value one of the following: i: invalid
+      (verification failed), r: revoked, e: expired, u: unverified, v:
+      successfully verified and finally t: trusted, in case it was
+      successfully verified and you chose to trust the certificate (the
+      script will ask you). Mutt will not use invalid, revoked or expired
+      certificates for signing or encryption. It will ask for confirmation
+      before using unverified certificates, and finally it will issue a
+      warning before using successfully verified but untrusted certificates.
+
+The purpose fields of a certificate do not get verified yet, also there is
+no real check if the given file is a certificate at all.
+
+Key retrieval is done obviously by searching the index file for a given
+mailbox. If none is found, the user is presented a list of available keys
+and asked to select one of those.
+
+The certificate and key directories specified in muttrc have to exist. Mutt
+will not create them. If you wish to sign messages yourself, note that this
+mutt does not address any PKCS10 or PKCS12 issues (yet?); that is, you have
+to get a valid certficate outside of mutt. (See above)
+
+
+
+A certificate can be viewed by adding the following to your ~/.mailcap:
+
+application/x-pkcs7-signature;openssl pkcs7 -in %s -inform der -noout \
+-print_certs -text | less; needsterminal
