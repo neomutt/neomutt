@@ -576,6 +576,7 @@ typedef struct pattern_t
 {
   short op;
   short not;
+  short alladdr;
   int min;
   int max;
   struct pattern_t *next;
