@@ -580,20 +580,22 @@ envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
       env->subject = safe_strdup ("Re: your mail");
 
     /* add the In-Reply-To field */
-    snprintf (buffer, sizeof (buffer), "In-Reply-To: %s", 
-	      cur->env->message_id);
-
-    tmp = env->userhdrs;
-    while (tmp && tmp->next)
-      tmp = tmp->next;
-    if (tmp)
+    if (InReplyTo)
     {
-      tmp->next = mutt_new_list ();
-      tmp = tmp->next;
+      strfcpy (buffer, "In-Reply-To: ", sizeof (buffer));
+      mutt_make_string (buffer + 13, sizeof (buffer) - 13, InReplyTo, ctx, cur);
+      tmp = env->userhdrs;
+      while (tmp && tmp->next)
+	tmp = tmp->next;
+      if (tmp)
+      {
+	tmp->next = mutt_new_list ();
+	tmp = tmp->next;
+      }
+      else
+	tmp = env->userhdrs = mutt_new_list ();
+      tmp->data = safe_strdup (buffer);
     }
-    else
-      tmp = env->userhdrs = mutt_new_list ();
-    tmp->data = safe_strdup (buffer);
 
     if(tag)
     {

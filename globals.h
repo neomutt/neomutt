@@ -53,6 +53,7 @@ WHERE char *ImapPass INITVAL (NULL);
 WHERE short ImapCheckTimeout;
 WHERE char *ImapHomeNamespace INITVAL (NULL);
 #endif
+WHERE char *InReplyTo;
 WHERE char *Inbox;
 WHERE char *Ispell;
 WHERE char *Locale;

@@ -686,6 +686,17 @@ struct option_t MuttVars[] = {
   ** message to which you are replying.  You are strongly encouraged not to
   ** change this value, as it tends to agitate the more fanatical netizens.
   */
+  { "in_reply_to",	DT_STR,	 R_NONE, UL &InReplyTo, UL "%i; from %a on %{!%a, %b %d, %Y at %I:%M:%S%p %Z}" },
+  /*
+  ** .pp
+  ** This specifies the format of the \fIIn-Reply-To\fP header field
+  ** added when replying to a message.  For a ful llisting of
+  ** defined escape sequences, ese the section on $$index_format.
+  ** .pp
+  ** \fBNote:\fP Don't use any sequences in this format string which
+  ** may include 8-bit characters.  Using such escape sequences may
+  ** lead to bad headers.
+  */
   { "indent_str",	DT_SYN,  R_NONE, UL "indent_string", 0 },
   /*
   */
