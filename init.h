@@ -852,6 +852,13 @@ struct option_t MuttVars[] = {
   ** .pp
   ** How to invoke ispell (GNU's spell-checking software).
   */
+  { "keep_flagged", DT_BOOL, R_NONE, OPTKEEPFLAGGED, 0 },
+  /*
+  ** .pp
+  ** If set, read messages marked as flagged will not be moved
+  ** from your spool mailbox to your ``$$mbox'' mailbox, or as a result of
+  ** a ``$mbox-hook'' command.
+  */
   { "locale",		DT_STR,  R_BOTH, UL &Locale, UL "C" },
   /*
   ** .pp

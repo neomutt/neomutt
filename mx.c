@@ -847,7 +847,8 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
 
   for (i = 0; i < ctx->msgcount; i++)
   {
-    if (!ctx->hdrs[i]->deleted && ctx->hdrs[i]->read)
+    if (!ctx->hdrs[i]->deleted && ctx->hdrs[i]->read 
+        && !(ctx->hdrs[i]->flagged && option (OPTKEEPFLAGGED)))
       read_msgs++;
   }
 
@@ -915,7 +916,8 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
     {
       /* tag messages for moving, and clear old tags, if any */
       for (i = 0; i < ctx->msgcount; i++)
-	if (ctx->hdrs[i]->read && !ctx->hdrs[i]->deleted)
+	if (ctx->hdrs[i]->read && !ctx->hdrs[i]->deleted
+            && !(ctx->hdrs[i]->flagged && option (OPTKEEPFLAGGED))) 
 	  ctx->hdrs[i]->tagged = 1;
 	else
 	  ctx->hdrs[i]->tagged = 0;
@@ -941,7 +943,8 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
 
       for (i = 0; i < ctx->msgcount; i++)
       {
-	if (ctx->hdrs[i]->read && !ctx->hdrs[i]->deleted)
+	if (ctx->hdrs[i]->read && !ctx->hdrs[i]->deleted
+            && !(ctx->hdrs[i]->flagged && option (OPTKEEPFLAGGED)))
         {
 	  if (mutt_append_message (&f, ctx, ctx->hdrs[i], 0, CH_UPDATE_LEN) == 0)
 	  {
