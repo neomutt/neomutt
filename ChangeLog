@@ -1,3 +1,25 @@
+2005-02-03 17:01:44  Brendan Cully  <brendan@kublai.com>  (brendan)
+                                 
+	* pgpkey.c, pgplib.c, pgpmicalg.c, pgppacket.c, pgppubring.c,
+	pop.c, pop_auth.c, pop_lib.c, postpone.c, query.c, recvattach.c,
+	recvcmd.c, regex.c, remailer.c, resize.c, rfc1524.c, rfc2047.c,
+	rfc2231.c, rfc822.c, score.c, send.c, sendlib.c, sha1.c, signal.c,
+	smime.c, snprintf.c, sort.c, status.c, system.c, thread.c, url.c,
+	utf8.c, wcwidth.c, crypt-mod-pgp-classic.c, crypt-mod-pgp-gpgme.c,
+	crypt-mod-smime-classic.c, crypt-mod-smime-gpgme.c, crypt-mod.c,
+	crypt.c, cryptglue.c, curs_lib.c, curs_main.c, date.c, dotlock.c,
+	edit.c, editmsg.c, enter.c, extlib.c, filter.c, flags.c, from.c,
+	getdomain.c, gnupgparse.c, handler.c, hash.c, hdrline.c,
+	headers.c, help.c, history.c, hook.c, init.c, keymap.c, lib.c,
+	main.c, makedoc.c, mbox.c, mbyte.c, md5c.c, menu.c, mh.c, mutt.h,
+	mutt_idna.c, mutt_sasl.c, mutt_socket.c, mutt_ssl.c,
+	mutt_ssl_gnutls.c, mutt_ssl_nss.c, mutt_tunnel.c, muttlib.c, mx.c,
+	pager.c, parse.c, pattern.c, pgp.c, pgpinvoke.c, account.c,
+	addrbook.c, alias.c, ascii.c, attach.c, base64.c, browser.c,
+	buffy.c, charset.c, color.c, commands.c, complete.c, compose.c,
+	copy.c, crypt-gpgme.c: Add config.h to the top of every C file
+	that could possibly want it.  Remove it from mutt.h
+                                 
 2005-02-01 03:36:39  Brendan Cully  <brendan@kublai.com>  (brendan)
                                  
 	* protos.h: Pull config.h out of protos.h, add to top of every
