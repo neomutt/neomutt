@@ -1,12 +1,12 @@
-# Ronny Haryanto <ronny-mutt-po-file@haryan.to>, 1999, 2000, 2001.
+# Ronny Haryanto <ronny-mutt-po-file@haryan.to>, 1999-2002
 #
 # http://i18n.linux.or.id
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.23.2i\n"
+"Project-Id-Version: 1.3.27i\n"
 "POT-Creation-Date: 2002-01-22 13:12+0100\n"
-"PO-Revision-Date: 2001-11-28 10:38+0700\n"
+"PO-Revision-Date: 2002-01-23 09:38+0700\n"
 "Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
 "Language-Team: Indonesia <i18n@linux.or.id>\n"
 "MIME-Version: 1.0\n"
@@ -1065,11 +1065,12 @@ msgid "[-- This %s/%s attachment is not included, --]\n"
 msgstr "[-- Lampiran %s/%s ini tidak disertakan, --]\n"
 
 #: handler.c:1682
-#, fuzzy
 msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
-msgstr "-- dan sumber eksternal yg disebutkan telah --]\n"
+msgstr ""
+"[-- dan sumber eksternal yg disebutkan telah --]\n"
+"[-- kadaluwarsa. --]\n"
 
 #: handler.c:1700
 #, c-format
@@ -3227,23 +3228,20 @@ msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Kunci ini tidak dapat digunakan: kadaluwarsa/disabled/dicabut."
 
 #: pgpkey.c:608
-#, fuzzy
 msgid "ID is expired/disabled/revoked."
-msgstr "ID ini telah kadaluwarsa/disabled/dicabut."
+msgstr "ID telah kadaluwarsa/disabled/dicabut."
 
 #: pgpkey.c:612
 msgid "ID has undefined validity."
-msgstr ""
+msgstr "Validitas ID tidak terdifinisikan."
 
 #: pgpkey.c:615
-#, fuzzy
 msgid "ID is not valid."
-msgstr "ID ini tidak valid."
+msgstr "ID tidak valid."
 
 #: pgpkey.c:618
-#, fuzzy
 msgid "ID is only marginally valid."
-msgstr "ID ini hanya valid secara marginal."
+msgstr "ID hanya valid secara marginal."
 
 #: pgpkey.c:622
 #, c-format
