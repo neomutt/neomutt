@@ -1370,13 +1370,6 @@ static void maildir_update_flags (CONTEXT *ctx, HEADER *o, HEADER *n)
   mutt_set_flag (ctx, o, M_READ, n->read);
   mutt_set_flag (ctx, o, M_OLD, n->old);
 
-  /* Currently, this only plays a role with maildir. */
-  if (ctx->magic == M_MAILDIR)
-  {
-    mutt_set_flag (ctx, o, M_DELETE, n->deleted);
-    o->trash = n->trash;
-  }
-
   /* mutt_set_flag() will set this, but we don't need to
    * sync the changes we made because we just updated the
    * context to match the current on-disk state of the
@@ -1488,6 +1481,10 @@ int maildir_check_mailbox (CONTEXT * ctx, int *index_hint)
        */
       if (!ctx->hdrs[i]->changed)
 	maildir_update_flags (ctx, ctx->hdrs[i], p->h);
+
+      if (ctx->hdrs[i]->deleted == ctx->hdrs[i]->trash)
+	ctx->hdrs[i]->deleted = p->h->deleted;
+      ctx->hdrs[i]->trash = p->h->trash;
 
       /* this is a duplicate of an existing header, so remove it */
       mutt_free_header (&p->h);
