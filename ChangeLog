@@ -1,3 +1,8 @@
+2004-04-12 19:34:45  Holger Weiss  <lists@jhweiss.de>  (roessler)
+
+	* doc/manual.sgml.head, doc/muttrc.man.head, mutt.h, pattern.c:
+	Unreferenced messages pattern: ~$
+
 2004-04-12 19:20:13  Paul WALKER  <paul.walker@st.com>  (roessler)
 
 	* mutt_sasl.c: SASL2 needs errno.h.
