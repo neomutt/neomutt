@@ -248,8 +248,6 @@ static void show_version (void)
 #else
 	"-BUFFY_SIZE "
 #endif
-	);
-  puts (
 #ifdef EXACT_ADDRESS
 	"+"
 #else
