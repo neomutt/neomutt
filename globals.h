@@ -118,7 +118,8 @@ WHERE short Timeout;
 WHERE short WriteInc;
 
 /* vector to store received signals */
-WHERE short Signals INITVAL (0);
+/* hopefully it's an integer type... */
+WHERE volatile sig_atomic_t Signals INITVAL (0);
 
 WHERE int CurrentMenu;
 

@@ -124,7 +124,8 @@ void mutt_edit_file (const char *editor, const char *data)
   
   endwin ();
   mutt_expand_file_fmt (cmd, sizeof (cmd), editor, data);
-  mutt_system (cmd);
+  if (mutt_system (cmd) == -1)
+    mutt_error (_("Error running \"%s\"!"), cmd);
   keypad (stdscr, TRUE);
   clearok (stdscr, TRUE);
 }
@@ -317,9 +318,14 @@ int mutt_do_pager (const char *banner,
     
     endwin ();
     mutt_expand_file_fmt (cmd, sizeof(cmd), Pager, tempfile);
-    mutt_system (cmd);
+    if (mutt_system (cmd) == -1)
+    {
+      mutt_error (_("Error running \"%s\"!"), cmd);
+      rc = -1;
+    }
+    else
+      rc = 0;
     mutt_unlink (tempfile);
-    rc = 0;
   }
 
   return rc;

@@ -28,50 +28,64 @@ int _mutt_system (const char *cmd, int flags)
 {
   int rc = -1;
   struct sigaction act;
-  struct sigaction oldcont;
   struct sigaction oldtstp;
-  struct sigaction oldint;
-  struct sigaction oldquit;
-  struct sigaction oldchld;
+  struct sigaction oldcont;
   sigset_t set;
   pid_t thepid;
 
-  /* must block SIGCHLD and ignore SIGINT and SIGQUIT */
+  if (!cmd || !*cmd)
+    return (0);
 
-  act.sa_handler = SIG_IGN;
-  act.sa_flags = 0;
-  sigemptyset (&(act.sa_mask));
-  sigaction (SIGINT, &act, &oldint);
-  sigaction (SIGQUIT, &act, &oldquit);
+  /* must ignore SIGINT and SIGQUIT */
+
+  mutt_block_signals_system ();
+
+  /* also don't want to be stopped right now */
   if (flags & M_DETACH_PROCESS)
   {
-    act.sa_flags = SA_NOCLDSTOP;
-    sigaction (SIGCHLD, &act, &oldchld);
-    act.sa_flags = 0;
+    sigemptyset (&set);
+    sigaddset (&set, SIGTSTP);
+    sigprocmask (SIG_BLOCK, &set, NULL);
   }
   else
   {
-    sigemptyset (&set);
-    sigaddset (&set, SIGCHLD);
-    sigprocmask (SIG_BLOCK, &set, NULL);
+    act.sa_handler = SIG_DFL;
+    /* we want to restart the waitpid() below */
+#ifdef SA_RESTART
+    act.sa_flags = SA_RESTART;
+#endif
+    sigemptyset (&act.sa_mask);
+    sigaction (SIGTSTP, &act, &oldtstp);
+    sigaction (SIGCONT, &act, &oldcont);
   }
-
-  act.sa_handler = SIG_DFL;
-  sigaction (SIGTSTP, &act, &oldtstp);
-  sigaction (SIGCONT, &act, &oldcont);
 
   if ((thepid = fork ()) == 0)
   {
-    /* reset signals for the child */
-    sigaction (SIGINT, &act, NULL);
-    sigaction (SIGQUIT, &act, NULL);
+    act.sa_flags = 0;
 
     if (flags & M_DETACH_PROCESS)
     {
+      int fd;
+
+      /* give up controlling terminal */
       setsid ();
+
       switch (fork ())
       {
 	case 0:
+#if defined(OPEN_MAX)
+	  for (fd = 0; fd < OPEN_MAX; fd++)
+	    close (fd);
+#elif defined(_POSIX_OPEN_MAX)
+	  for (fd = 0; fd < _POSIX_OPEN_MAX; fd++)
+	    close (fd);
+#else
+	  close (0);
+	  close (1);
+	  close (2);
+#endif
+	  chdir ("/");
+	  act.sa_handler = SIG_DFL;
 	  sigaction (SIGCHLD, &act, NULL);
 	  break;
 
@@ -82,30 +96,34 @@ int _mutt_system (const char *cmd, int flags)
 	  _exit (0);
       }
     }
-    else
-      sigprocmask (SIG_UNBLOCK, &set, NULL);
+
+    /* reset signals for the child; not really needed, but... */
+    mutt_unblock_signals_system (0);
+    act.sa_handler = SIG_DFL;
+    act.sa_flags = 0;
+    sigemptyset (&act.sa_mask);
+    sigaction (SIGTERM, &act, NULL);
+    sigaction (SIGTSTP, &act, NULL);
+    sigaction (SIGCONT, &act, NULL);
 
     execl (EXECSHELL, "sh", "-c", cmd, NULL);
     _exit (127); /* execl error */
   }
   else if (thepid != -1)
   {
-    /* wait for the child process to finish */
+    /* wait for the (first) child process to finish */
     waitpid (thepid, &rc, 0);
   }
-
-  /* reset SIGINT, SIGQUIT and SIGCHLD */
-  sigaction (SIGINT, &oldint, NULL);
-  sigaction (SIGQUIT, &oldquit, NULL);
-  if (flags & M_DETACH_PROCESS)
-    sigaction (SIGCHLD, &oldchld, NULL);
-  else
-    sigprocmask (SIG_UNBLOCK, &set, NULL);
 
   sigaction (SIGCONT, &oldcont, NULL);
   sigaction (SIGTSTP, &oldtstp, NULL);
 
-  rc = WIFEXITED (rc) ? WEXITSTATUS (rc) : -1;
+  /* reset SIGINT, SIGQUIT and SIGCHLD */
+  mutt_unblock_signals_system (1);
+  if (flags & M_DETACH_PROCESS)
+    sigprocmask (SIG_UNBLOCK, &set, NULL);
+
+  rc = (thepid != -1) ? (WIFEXITED (rc) ? WEXITSTATUS (rc) : -1) : -1;
 
   return (rc);
 }

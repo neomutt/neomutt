@@ -832,7 +832,7 @@ static int send_message (HEADER *msg)
 
   i = mutt_invoke_sendmail (msg->env->to, msg->env->cc, msg->env->bcc,
 		       tempfile, (msg->content->encoding == ENC8BIT));
-  return (i ? -1 : 0);
+  return (i);
 }
 
 /* rfc2047 encode the content-descriptions */
@@ -1327,7 +1327,7 @@ full_fcc:
   }
 #endif /* _PGPPATH */
 
-  if (send_message (msg) == -1)
+  if ((i = send_message (msg)) == -1)
   {
     if (!(flags & SENDBATCH))
     {
@@ -1340,9 +1340,8 @@ full_fcc:
       goto cleanup;
     }
   }
-
-  if (!option (OPTNOCURSES) && ! (flags & SENDMAILX))
-    mutt_message _("Mail sent.");
+  else if (!option (OPTNOCURSES) && ! (flags & SENDMAILX))
+    mutt_message (i == 0 ? _("Mail sent.") : _("Sending in background."));
 
   if (flags & SENDREPLY)
   {

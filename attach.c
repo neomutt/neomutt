@@ -124,9 +124,13 @@ int mutt_compose_attachment (BODY *a)
       }
       else
       {
+	int r;
+
 	endwin ();
-	mutt_system (command);
-	if (entry->composetypecommand)
+	if ((r = mutt_system (command)) == -1)
+	  mutt_error (_("Error running \"%s\"!"), command);
+	
+	if (r != -1 && entry->composetypecommand)
 	{
 	  BODY *b;
 	  FILE *fp, *tfp;
@@ -248,7 +252,8 @@ int mutt_edit_attachment (BODY *a)
       else
       {
 	endwin ();
-	mutt_system (command);
+	if (mutt_system (command) == -1)
+	  mutt_error (_("Error running \"%s\"!"), command);
       }
     }
   }

@@ -22,20 +22,19 @@
 #include <signal.h>
 #include <string.h>
 #include <sys/wait.h>
+#include <errno.h>
 
 static sigset_t Sigset;
+static sigset_t SigsetSys;
 static int IsEndwin = 0;
 
-static pid_t *PidList = NULL;
-static int PidListLen = 0;
-
 /* Attempt to catch "ordinary" signals and shut down gracefully. */
-RETSIGTYPE mutt_exit_handler (int sig)
+RETSIGTYPE exit_handler (int sig)
 {
   curs_set (1);
   endwin (); /* just to be safe */
 #if SYS_SIGLIST_DECLARED
-  printf(_("Caught %s...  Exiting.\n"), sys_siglist[sig]);
+  printf(_("%s...  Exiting.\n"), sys_siglist[sig]);
 #else
 #if (__sun__ && __svr4__)
   printf(_("Caught %s...  Exiting.\n"), _sys_siglist[sig]);
@@ -46,55 +45,19 @@ RETSIGTYPE mutt_exit_handler (int sig)
   exit (0);
 }
 
-static void reap_children (void)
+RETSIGTYPE chld_handler (int sig)
 {
-  int i, flag;
-
-  /* at this point we don't know which child died */
-  for (i = 0; i < PidListLen; i++)
-  {
-    if (PidList[i])
-    {
-      /* try to reap child "i" */
-      flag = 0;
-      while (waitpid (PidList[i], NULL, WNOHANG) > 0)
-        flag = 1;
-      /* remove child from list if reaped */
-      if (flag)
-        PidList[i] = 0;
-      /* don't break here */
-    }
-  }
-}
-
-void mutt_add_child_pid (pid_t pid)
-{
-  int i;
-
-  for (i = 0; i < PidListLen; i++)
-  {
-    if (PidList[i] == 0)
-    {
-      PidList[i] = pid;
-      break;
-    }
-  }
-  if (i >= PidListLen)
-  {
-    /* quite a few children around... */
-    safe_realloc ((void **) &PidList, (PidListLen += 2) * sizeof (pid_t));
-    PidList[i++] = pid;
-    for (; i < PidListLen; i++)
-      PidList[i] = 0;
-  }
+  /* empty */
 }
 
 RETSIGTYPE sighandler (int sig)
 {
+  int save_errno = errno;
+
   switch (sig)
   {
     case SIGTSTP: /* user requested a suspend */
-      if(!option(OPTSUSPEND))
+      if (!option (OPTSUSPEND))
         break;
       IsEndwin = isendwin ();
       curs_set (1);
@@ -113,14 +76,13 @@ RETSIGTYPE sighandler (int sig)
       Signals |= S_SIGWINCH;
       break;
 #endif
+
     case SIGINT:
       Signals |= S_INTERRUPT;
       break;
 
-    case SIGCHLD:
-      reap_children ();
-      break;
   }
+  errno = save_errno;
 }
 
 #ifdef USE_SLANG_CURSES
@@ -134,40 +96,42 @@ void mutt_signal_init (void)
 {
   struct sigaction act;
 
-  memset (&act, 0, sizeof (struct sigaction));
-
+  sigemptyset (&act.sa_mask);
+  act.sa_flags = 0;
   act.sa_handler = SIG_IGN;
   sigaction (SIGPIPE, &act, NULL);
 
-  act.sa_handler = mutt_exit_handler;
+  act.sa_handler = exit_handler;
   sigaction (SIGTERM, &act, NULL);
   sigaction (SIGHUP, &act, NULL);
+  sigaction (SIGQUIT, &act, NULL);
 
-  act.sa_handler = sighandler;
-#ifdef SA_INTERRUPT
-  /* POSIX.1 uses SA_RESTART, but SunOS 4.x uses this instead */
-  act.sa_flags = SA_INTERRUPT;
+  /* we want to avoid race conditions */
+  sigaddset (&act.sa_mask, SIGTSTP);
+  sigaddset (&act.sa_mask, SIGINT);
+#if defined (USE_SLANG_CURSES) || defined (HAVE_RESIZETERM)
+  sigaddset (&act.sa_mask, SIGWINCH);
 #endif
-  sigaction (SIGCONT, &act, NULL);
-  sigaction (SIGINT, &act, NULL);
 
-  /* SIGTSTP is the one signal in which we want to restart a system call if it
-   * was interrupted in progress.  This is especially important if we are in
-   * the middle of a system() call, like if the user is editing a message.
-   * Otherwise, the system() will exit when SIGCONT is received and Mutt will
-   * resume even though the subprocess may not be finished.
-   */
+  /* we also don't want to mess with interrupted system calls */
 #ifdef SA_RESTART
   act.sa_flags = SA_RESTART;
-#else
-  act.sa_flags = 0;
 #endif
-  sigaction (SIGTSTP, &act, NULL);
 
+  act.sa_handler = sighandler;
+  sigaction (SIGCONT, &act, NULL);
+  sigaction (SIGTSTP, &act, NULL);
+  sigaction (SIGINT, &act, NULL);
 #if defined (USE_SLANG_CURSES) || defined (HAVE_RESIZETERM)
   sigaction (SIGWINCH, &act, NULL);
 #endif
 
+  /* POSIX doesn't allow us to ignore SIGCHLD,
+   * so we just install a dummy handler for it
+   */
+  act.sa_handler = chld_handler;
+  /* don't need to block any other signals here */
+  sigemptyset (&act.sa_mask);
   /* we don't want to mess with stopped children */
   act.sa_flags |= SA_NOCLDSTOP;
   sigaction (SIGCHLD, &act, NULL);
@@ -190,11 +154,13 @@ void mutt_block_signals (void)
   if (!option (OPTSIGNALSBLOCKED))
   {
     sigemptyset (&Sigset);
-    sigaddset (&Sigset, SIGINT);
-    sigaddset (&Sigset, SIGWINCH);
-    sigaddset (&Sigset, SIGHUP);
     sigaddset (&Sigset, SIGTERM);
+    sigaddset (&Sigset, SIGHUP);
     sigaddset (&Sigset, SIGTSTP);
+    sigaddset (&Sigset, SIGINT);
+#if defined (USE_SLANG_CURSES) || defined (HAVE_RESIZETERM)
+    sigaddset (&Sigset, SIGWINCH);
+#endif
     sigprocmask (SIG_BLOCK, &Sigset, 0);
     set_option (OPTSIGNALSBLOCKED);
   }
@@ -214,15 +180,17 @@ void mutt_block_signals_system (void)
 {
   struct sigaction sa;
 
-  if (! option (OPTSIGNALSBLOCKED))
+  if (! option (OPTSYSSIGNALSBLOCKED))
   {
+    /* POSIX: ignore SIGINT and SIGQUIT & block SIGCHLD  before exec */
     sa.sa_handler = SIG_IGN;
     sa.sa_flags = 0;
     sigaction (SIGINT, &sa, NULL);
     sigaction (SIGQUIT, &sa, NULL);
-    sigemptyset (&Sigset);
-    sigaddset (&Sigset, SIGCHLD);
-    sigprocmask (SIG_BLOCK, &Sigset, 0);
+
+    sigemptyset (&SigsetSys);
+    sigaddset (&SigsetSys, SIGCHLD);
+    sigprocmask (SIG_BLOCK, &SigsetSys, 0);
     set_option (OPTSIGNALSBLOCKED);
   }
 }
@@ -231,15 +199,36 @@ void mutt_unblock_signals_system (int catch)
 {
   struct sigaction sa;
 
-  if (option (OPTSIGNALSBLOCKED))
+  if (option (OPTSYSSIGNALSBLOCKED))
   {
+    sigprocmask (SIG_UNBLOCK, &SigsetSys, NULL);
+    sigemptyset (&sa.sa_mask);
     sa.sa_flags = 0;
-    sa.sa_handler = mutt_exit_handler;
-    sigaction (SIGQUIT, &sa, NULL);
     if (catch)
+    {
+      sa.sa_handler = exit_handler;
+      sigaction (SIGQUIT, &sa, NULL);
+
+      /* we want to avoid race conditions */
+      sigaddset (&sa.sa_mask, SIGTSTP);
+      sigaddset (&sa.sa_mask, SIGINT);
+#if defined (USE_SLANG_CURSES) || defined (HAVE_RESIZETERM)
+      sigaddset (&sa.sa_mask, SIGWINCH);
+#endif
+      /* we also don't want to mess with interrupted system calls */
+#ifdef SA_RESTART
+      sa.sa_flags = SA_RESTART;
+#endif
       sa.sa_handler = sighandler;
-    sigaction (SIGINT, &sa, NULL);
-    sigprocmask (SIG_UNBLOCK, &Sigset, NULL);
+      sigaction (SIGINT, &sa, NULL);
+    }
+    else
+    {
+      sa.sa_handler = SIG_DFL;
+      sigaction (SIGQUIT, &sa, NULL);
+      sigaction (SIGINT, &sa, NULL);
+    }
+
     unset_option (OPTSIGNALSBLOCKED);
   }
 }

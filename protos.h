@@ -130,7 +130,6 @@ char *mutt_substrdup (const char *, const char *);
 
 const char *mutt_fqdn(short);
 
-void mutt_add_child_pid (pid_t);
 void mutt_alias_menu (char *, size_t, ALIAS *);
 void mutt_block_signals (void);
 void mutt_block_signals_system (void);

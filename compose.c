@@ -1166,8 +1166,10 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
       case OP_COMPOSE_ISPELL:
 	endwin ();
 	snprintf (buf, sizeof (buf), "%s -x %s", NONULL(Ispell), msg->content->filename);
-	mutt_system (buf);
-        mutt_update_encoding(msg->content);
+	if (mutt_system (buf) == -1)
+	  mutt_error (_("Error running \"%s\"!"), buf);
+	else
+	  mutt_update_encoding (msg->content);
 	break;
 
       case OP_COMPOSE_WRITE_MESSAGE:

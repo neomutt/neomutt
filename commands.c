@@ -147,13 +147,17 @@ int mutt_display_message (HEADER *cur)
   }
   else
   {
+    int r;
+
     endwin ();
     snprintf (buf, sizeof (buf), "%s %s", NONULL(Pager), tempfile);
-    mutt_system (buf);
+    if ((r = mutt_system (buf)) == -1)
+      mutt_error (_("Error running \"%s\"!"), buf);
     unlink (tempfile);
     keypad (stdscr, TRUE);
-    mutt_set_flag (Context, cur, M_READ, 1);
-    if (option (OPTPROMPTAFTER))
+    if (r != -1)
+      mutt_set_flag (Context, cur, M_READ, 1);
+    if (r != -1 && option (OPTPROMPTAFTER))
     {
       mutt_ungetch (mutt_any_key_to_continue _("Command: "), 0);
       rc = km_dokey (MENU_PAGER);

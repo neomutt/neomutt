@@ -23,6 +23,7 @@
 #include "mime.h"
 #include "mailbox.h"
 #include "copy.h"
+#include "pager.h"
 #include "charset.h"
 
 #include <string.h>
@@ -49,47 +50,48 @@ static struct sysexits
 sysexits_h[] = 
 {
 #ifdef EX_USAGE
-  { EX_USAGE, "The command was used incorrectly." },
+  { 0xff & EX_USAGE, "The command was used incorrectly." },
 #endif
 #ifdef EX_DATAERR
-  { EX_DATAERR, "The input data was incorrect." },
+  { 0xff & EX_DATAERR, "The input data was incorrect." },
 #endif
 #ifdef EX_NOINPUT
-  { EX_NOINPUT, "No input." },
+  { 0xff & EX_NOINPUT, "No input." },
 #endif
 #ifdef EX_NOUSER
-  { EX_NOUSER, "No such user." },
+  { 0xff & EX_NOUSER, "No such user." },
 #endif
 #ifdef EX_NOHOST
-  { EX_NOHOST, "Host not found." },
+  { 0xff & EX_NOHOST, "Host not found." },
 #endif
 #ifdef EX_UNAVAILABLE
-  { EX_UNAVAILABLE, "Service unavailable." },
+  { 0xff & EX_UNAVAILABLE, "Service unavailable." },
 #endif
 #ifdef EX_SOFTWARE
-  { EX_SOFTWARE, "Software error." },
+  { 0xff & EX_SOFTWARE, "Software error." },
 #endif
 #ifdef EX_OSERR
-  { EX_OSERR, "Operating system error." },
+  { 0xff & EX_OSERR, "Operating system error." },
 #endif
 #ifdef EX_OSFILE
-  { EX_OSFILE, "System file is missing." },
+  { 0xff & EX_OSFILE, "System file is missing." },
 #endif
 #ifdef EX_CANTCREAT
-  { EX_CANTCREAT, "Can't create output." },
+  { 0xff & EX_CANTCREAT, "Can't create output." },
 #endif
 #ifdef EX_IOERR
-  { EX_IOERR, "I/O error." },
+  { 0xff & EX_IOERR, "I/O error." },
 #endif
 #ifdef EX_TEMPFAIL
-  { EX_TEMPFAIL, "Temporary failure." },
+  { 0xff & EX_TEMPFAIL, "Temporary failure." },
 #endif
 #ifdef EX_PROTOCOL
-  { EX_PROTOCOL, "Protocol error." },
+  { 0xff & EX_PROTOCOL, "Protocol error." },
 #endif
 #ifdef EX_NOPERM
-  { EX_NOPERM, "Permission denied." },
+  { 0xff & EX_NOPERM, "Permission denied." },
 #endif
+  { S_ERR, "Exec error." },
   { -1, NULL}
 };
       
@@ -1429,17 +1431,18 @@ static RETSIGTYPE alarm_handler (int sig)
 static int
 send_msg (const char *path, char **args, const char *msg, char **tempfile)
 {
-  int fd, st, w = 0, err = 0;
+  sigset_t set;
+  int fd, st;
   pid_t pid;
-  struct sigaction act, oldint, oldquit, oldalrm;
 
-  memset (&act, 0, sizeof (struct sigaction));
-  sigemptyset (&(act.sa_mask));
-  act.sa_handler = SIG_IGN;
-  sigaction (SIGINT, &act, &oldint);
-  sigaction (SIGQUIT, &act, &oldquit);
+  mutt_block_signals_system ();
 
-  if (SendmailWait)
+  sigemptyset (&set);
+  /* we also don't want to be stopped right now */
+  sigaddset (&set, SIGTSTP);
+  sigprocmask (SIG_BLOCK, &set, NULL);
+
+  if (SendmailWait >= 0)
   {
     char tmp[_POSIX_PATH_MAX];
 
@@ -1449,135 +1452,119 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
 
   if ((pid = fork ()) == 0)
   {
-    /* reset signals for the child */
-    act.sa_handler = SIG_DFL;
-    /* we need SA_RESTART for the open() below */
-#ifdef SA_RESTART
-    act.sa_flags = SA_NOCLDSTOP | SA_RESTART;
-#else
-    act.sa_flags = SA_NOCLDSTOP;
-#endif
-    sigaction (SIGCHLD, &act, NULL);
-    act.sa_flags = 0;
-    sigaction (SIGINT, &act, NULL);
-    sigaction (SIGQUIT, &act, NULL);
+    struct sigaction act, oldalrm;
 
-    /* if it is possible that we will deliver in the background, then we have
-       to detach the child from this process group or it will die when the
-       parent process exists, causing the mail to not get delivered.  The
-       problem here is that any error messages will get lost... */
-    if (SendmailWait)
-      setsid ();
+    /* we want the delivery to continue even after the main process dies,
+     * so we put ourselves into another session right away
+     */
+    setsid ();
+  
+    /* next we close all open files */
+#if defined(OPEN_MAX)
+    for (fd = 0; fd < OPEN_MAX; fd++)
+      close (fd);
+#elif defined(_POSIX_OPEN_MAX)
+    for (fd = 0; fd < _POSIX_OPEN_MAX; fd++)
+      close (fd);
+#else
+    close (0);
+    close (1);
+    close (2);
+#endif
+
+    /* now the second fork() */
     if ((pid = fork ()) == 0)
     {
-      fd = open (msg, O_RDONLY, 0);
-      if (fd < 0)
-	_exit (127);
-      dup2 (fd, 0);
-      close (fd);
-      if (SendmailWait)
+      /* "msg" will be opened as stdin */
+      if (open (msg, O_RDONLY, 0) < 0)
       {
-	/* write stdout to a tempfile */
-	w = open (*tempfile, O_WRONLY | O_CREAT | O_EXCL, 0600);
-	if (w < 0)
-	  _exit (errno);
-	dup2 (w, 1);
-	close (w);
+	unlink (msg);
+	_exit (S_ERR);
       }
-      sigaction (SIGCHLD, &act, NULL);
-      execv (path, args);
       unlink (msg);
-      _exit (127);
+
+      if (SendmailWait >= 0)
+      {
+	/* *tempfile will be opened as stdout */
+	if (open (*tempfile, O_WRONLY | O_APPEND | O_CREAT | O_EXCL, 0600) < 0)
+	  _exit (errno);
+	/* redirect stderr to *tempfile too */
+	if (dup (1) < 0)
+	  _exit (errno);
+      }
+
+      execv (path, args);
+      _exit (S_ERR);
     }
     else if (pid == -1)
     {
       unlink (msg);
-      _exit (errno);
+      safe_free ((void **) tempfile);
+      _exit (S_ERR);
     }
+
+    /* SendmailWait > 0: interrupt waitpid() after SendmailWait seconds
+     * SendmailWait = 0: wait forever
+     * SendmailWait < 0: don't wait
+     */
+    if (SendmailWait > 0)
+    {
+      Signals &= ~S_ALARM;
+      act.sa_handler = alarm_handler;
+#ifdef SA_INTERRUPT
+      /* need to make sure waitpid() is interrupted on SIGALRM */
+      act.sa_flags = SA_INTERRUPT;
+#else
+      act.sa_flags = 0;
+#endif
+      sigemptyset (&act.sa_mask);
+      sigaddset (&act.sa_mask, SIGTSTP);
+      sigaddset (&act.sa_mask, SIGINT);
+#if defined (USE_SLANG_CURSES) || defined (HAVE_RESIZETERM)
+      sigaddset (&act.sa_mask, SIGWINCH);
+#endif
+      sigaction (SIGALRM, &act, &oldalrm);
+      alarm (SendmailWait);
+    }
+    else if (SendmailWait < 0)
+      _exit (0xff & EX_OK);
 
     if (waitpid (pid, &st, 0) > 0)
     {
-      st = WIFEXITED (st) ? WEXITSTATUS (st) : 127;
-      if (st == (EX_OK & 0xff) && SendmailWait)
+      st = WIFEXITED (st) ? WEXITSTATUS (st) : S_ERR;
+      if (SendmailWait && st == (0xff & EX_OK))
+      {
 	unlink (*tempfile); /* no longer needed */
+	safe_free ((void **) tempfile);
+      }
     }
     else
     {
-      st = 127;
-      if (SendmailWait)
+      st = (SendmailWait > 0 && errno == EINTR && (Signals & S_ALARM)) ?
+	      S_BKG : S_ERR;
+      if (SendmailWait > 0)
+      {
 	unlink (*tempfile);
+	safe_free ((void **) tempfile);
+      }
     }
-    unlink (msg);
-    _exit (st);
-  }
-  /* SendmailWait > 0: SIGALRM will interrupt wait() after alrm seconds
-     SendmailWait = 0: wait forever
-     SendmailWait < 0: don't wait */
-  if (SendmailWait > 0)
-  {
-    Signals &= ~S_ALARM;
-    act.sa_handler = alarm_handler;
-#ifdef SA_INTERRUPT
-    /* need to make sure the waitpid() is interrupted on SIGALRM */
-    act.sa_flags = SA_INTERRUPT;
-#else
-    act.sa_flags = 0;
-#endif
-    sigaction (SIGALRM, &act, &oldalrm);
-    alarm (SendmailWait);
-  }
-  if (SendmailWait >= 0)
-  {
-    w = waitpid (pid, &st, 0);
-    err = errno; /* save error since it might be clobbered by another
-		    system call before we check the value */
-    dprint (1, (debugfile, "send_msg(): waitpid returned %d (%s)\n", w,
-	    (w < 0 ? strerror (errno) : "OK")));
-  }
-  if (SendmailWait > 0)
-  {
+
+    /* reset alarm; not really needed, but... */
     alarm (0);
     sigaction (SIGALRM, &oldalrm, NULL);
+    
+    _exit (st);
   }
-  if (SendmailWait < 0 || ((Signals & S_ALARM) && w < 0 && err == EINTR))
-  {
-    /* add to list of children pids to reap */
-    mutt_add_child_pid (pid);
-    /* since there is no way for the user to be notified of error in this case,
-       remove the temp file now */
-    unlink (*tempfile);
-    FREE (tempfile);
-#ifdef DEBUG
-    if (Signals & S_ALARM)
-      dprint (1, (debugfile, "send_msg(): received SIGALRM\n"));
-    dprint (1, (debugfile, "send_msg(): putting sendmail in the background\n"));
-#endif
-    st = EX_OK & 0xff;
-  }
-  else if (w < 0)
-  {
-    /* if err==EINTR, alarm interrupt, child status unknown,
-       otherwise, there was an error invoking the child */
-    st = (err == EINTR) ? (EX_OK & 0xff) : 127;
-  }
+
+  sigprocmask (SIG_UNBLOCK, &set, NULL);
+
+  if (pid != -1 && waitpid (pid, &st, 0) > 0)
+    st = WIFEXITED (st) ? WEXITSTATUS (st) : S_ERR; /* return child status */
   else
-  {
-#ifdef DEBUG
-    if (WIFEXITED (st))
-    {
-      dprint (1, (debugfile, "send_msg(): child exited %d\n", WEXITSTATUS (st)));
-    }
-    else
-    {
-      dprint (1, (debugfile, "send_msg(): child did not exit\n"));
-    }
-#endif /* DEBUG */
-    st = WIFEXITED (st) ? WEXITSTATUS (st) : -1; /* return child status */
-  }
-  sigaction (SIGINT, &oldint, NULL);
-  sigaction (SIGQUIT, &oldquit, NULL);
-  /* restore errno so that the caller can build an error message */
-  errno = err;
+    st = S_ERR;	/* error */
+
+  mutt_unblock_signals_system (1);
+
   return (st);
 }
 
@@ -1675,26 +1662,39 @@ mutt_invoke_sendmail (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc, /* recips */
   
   args[argslen++] = NULL;
 
-  if (!option (OPTNOCURSES))
-    endwin ();
   if ((i = send_msg (path, args, msg, &childout)) != (EX_OK & 0xff))
   {
-    const char *e = strsysexit(i);
-
-    fprintf (stderr, _("Error sending message, child exited %d (%s).\n"), i, NONULL (e));
-    if (childout)
-      fprintf (stderr, _("Saved output of child process to %s.\n"), childout);
-    if (!option (OPTNOCURSES))
+    if (i == S_BKG)
+      mutt_message (_("Delivery continued in background."));
+    else
     {
-      mutt_any_key_to_continue (NULL);
-      mutt_error _("Error sending message.");
+      const char *e = strsysexit (i);
+
+      e = strsysexit (i);
+      mutt_error (_("Error sending message, child exited %d (%s)."), i, NONULL (e));
+      if (childout)
+      {
+	struct stat st;
+	
+	if (stat (childout, &st) == 0 && st.st_size > 0)
+	  mutt_do_pager (_("Output of the delivery process"), childout, 0, NULL);
+      }
     }
   }
+  else
+    unlink (childout);
+
   FREE (&childout);
   FREE (&path);
   FREE (&s);
   FREE (&args);
 
+  if (i == (EX_OK & 0xff))
+    i = 0;
+  else if (i == S_BKG)
+    i = 1;
+  else
+    i = -1;
   return (i);
 }
 
