@@ -445,7 +445,7 @@ AC_ARG_ENABLE(imap, [  --enable-imap              Enable IMAP support],
  	AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(socket, setsockopt))
  	AC_CHECK_FUNC(gethostent, , AC_CHECK_LIB(nsl, gethostent))
 	LIBIMAP="-Limap -limap"
-	LIBIMAPDEPS="\$(srcdir)/imap/imap.h \$(srcdir)/imap/libimap.a"
+	LIBIMAPDEPS="\$(srcdir)/imap/imap.h imap/libimap.a"
 	CPPFLAGS="$CPPFLAGS -I\$(srcdir)/imap"
 	need_imap="yes"
 ])

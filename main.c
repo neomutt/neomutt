@@ -197,6 +197,12 @@ static void show_version (void)
         "-USE_IMAP  "
 #endif
 
+#ifdef USE_GSS
+	"+USE_GSS  "
+#else
+	"-USE_GSS  "
+#endif
+
 #ifdef USE_POP
 	"+USE_POP  "
 #else
