@@ -525,23 +525,27 @@ int imap_authenticate (IMAP_DATA *idata, CONNECTION *conn)
         ckey[0] = '\0';
         snprintf (buf, sizeof (buf), _("CRAM key for %s@%s: "), user,
           conn->server);
-        if (mutt_get_field (buf, ckey, sizeof (ckey), M_PASS) != 0 ||
-          !ckey[0])
+        if (mutt_get_field (buf, ckey, sizeof (ckey), M_PASS) != 0)
           return -1;
-        else
-          /* strip CR */
-          ckey[strlen (ckey)] = '\0';
       }
       else
         strfcpy (ckey, ImapCRAMKey, sizeof (ckey));
 
-      if ((r = imap_auth_cram_md5 (idata, user, ckey)))
+      if (*ckey)
       {
-        mutt_error _("CRAM-MD5 authentication failed.");
-        sleep (1);
+	if ((r = imap_auth_cram_md5 (idata, user, ckey)))
+	{
+	  mutt_error _("CRAM-MD5 authentication failed.");
+	  sleep (1);
+	}
+	else
+	  return 0;
       }
       else
-        return 0;
+      {
+	mutt_message _("Skipping CRAM-MD5 authentication.");
+	sleep (1);
+      }
     }
     else
       dprint (2, (debugfile, "CRAM-MD5 authentication is not available\n"));
