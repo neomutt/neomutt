@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt-1.1.8 \n"
-"POT-Creation-Date: 2000-03-02 13:53+0100\n"
+"POT-Creation-Date: 2000-03-13 19:34+0100\n"
 "PO-Revision-Date: 2000-03-07 20:34+01:00\n"
 "Last-Translator: Morten Bo Johansen <mojo@image.dk>\n"
 "Language-Team: Danish <da@li.org>\n"
@@ -256,7 +256,7 @@ msgstr "%s: farve er ikke understøttet af terminal."
 msgid "%s: no such color"
 msgstr "%s: ukendt farve."
 
-#: color.c:374 color.c:565 color.c:576
+#: color.c:374 color.c:569 color.c:580
 #, c-format
 msgid "%s: no such object"
 msgstr "%s: ukendt objekt."
@@ -271,32 +271,32 @@ msgstr "%s: kommandoen kan kun bruges på et indeks-objekt."
 msgid "%s: too few arguments"
 msgstr "%s: for få parametre."
 
-#: color.c:553
+#: color.c:557
 msgid "Missing arguments."
 msgstr "Manglende parameter."
 
-#: color.c:592 color.c:603
+#: color.c:596 color.c:607
 msgid "color: too few arguments"
 msgstr "color: for få parametre."
 
-#: color.c:626
+#: color.c:630
 msgid "mono: too few arguments"
 msgstr "mono: for få parametre."
 
-#: color.c:646
+#: color.c:650
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s: ukendt attribut"
 
-#: color.c:686 hook.c:61 hook.c:69 keymap.c:697
+#: color.c:690 hook.c:61 hook.c:69 keymap.c:697
 msgid "too few arguments"
 msgstr "for få parametre."
 
-#: color.c:695 hook.c:75
+#: color.c:699 hook.c:75
 msgid "too many arguments"
 msgstr "for mange parametre."
 
-#: color.c:711
+#: color.c:715
 msgid "default colors not supported"
 msgstr "standard-farver er ikke understøttet."
 
@@ -969,61 +969,61 @@ msgid "[-- Error: unexpected end of file! --]\n"
 msgstr "[-- Fejl: uventet afslutning på fil! --]\n"
 
 #. didn't find anything that we could display!
-#: handler.c:956
+#: handler.c:947
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr ""
 "[-- Fejl: Kunne ikke vise nogen del af \"Multipart/Alternative\"! --]\n"
 
-#: handler.c:1073
+#: handler.c:1064
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- Brevdel #%d"
 
-#: handler.c:1084
+#: handler.c:1075
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Typ: %s/%s, Indkodning: %s, Størrelse: %s --]\n"
 
-#: handler.c:1143
+#: handler.c:1134
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Autovisning ved brug af %s --]\n"
 
-#: handler.c:1144
+#: handler.c:1135
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Starter autovisning kommando: %s"
 
-#: handler.c:1181 handler.c:1199
+#: handler.c:1172 handler.c:1190
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Fejl fra autovisningfejl af %s --]\n"
 
-#: handler.c:1231
+#: handler.c:1222
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr ""
 "[-- Fejl: \"message/external-body\" har ingen \"access-type\"-parameter --]\n"
 
-#: handler.c:1248
+#: handler.c:1239
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- Denne %s/%s-del "
 
-#: handler.c:1255
+#: handler.c:1246
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(på %s bytes) "
 
-#: handler.c:1257
+#: handler.c:1248
 msgid "has been deleted --]\n"
 msgstr "er blevet slettet --]\n"
 
-#: handler.c:1260
+#: handler.c:1251
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- den %s --]\n"
 
-#: handler.c:1270
+#: handler.c:1261
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -1033,7 +1033,7 @@ msgstr ""
 "[-- Dette %s/%s-bilag er ikke vedlagt, --]\n"
 "[-- og det angivne eksterne kilde er forældet --]\n"
 
-#: handler.c:1284
+#: handler.c:1275
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -1042,29 +1042,29 @@ msgstr ""
 "[-- Disse %s/%s-bilag er ikke vedlagt, --]\n"
 "[-- og den angivne \"access-type\" %s er ikke understøttet --]\n"
 
-#: handler.c:1392
+#: handler.c:1383
 msgid "Error: multipart/signed has no protocol."
 msgstr "Fejl: \"multipart/signed\" har ingen \"protocol\"-parameter."
 
-#: handler.c:1405
+#: handler.c:1396
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Fejl: \"multipart/encrypted\" har ingen \"protocol\"-parameter!"
 
-#: handler.c:1447
+#: handler.c:1438
 msgid "Unable to open temporary file!"
 msgstr "Kan ikke åbne midlertidig fil!"
 
-#: handler.c:1506
+#: handler.c:1497
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s er ikke understøttet "
 
-#: handler.c:1511
+#: handler.c:1502
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(brug '%s' for vise denne brevdel)"
 
-#: handler.c:1513
+#: handler.c:1504
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "('view-attachments' må tildeles en taste!)"
 
@@ -1201,7 +1201,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Kunne ikke føje til IMAP-brevbakker på denne tjener."
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:813 imap/message.c:598 muttlib.c:980
+#: imap/imap.c:813 imap/message.c:615 muttlib.c:980
 #, c-format
 msgid "Create %s?"
 msgstr "Opret %s?"
@@ -1310,24 +1310,24 @@ msgstr "Kan ikke hente brevhoveder fra denne version IMAP-tjener."
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Henter brevhoveder ... [%d/%d]"
 
-#: imap/message.c:276
+#: imap/message.c:293
 msgid "Fetching message..."
 msgstr "Henter brev ..."
 
-#: imap/message.c:453
+#: imap/message.c:470
 msgid "Sending APPEND command ..."
 msgstr "Sender APPEND-kommando ..."
 
-#: imap/message.c:492
+#: imap/message.c:509
 msgid "Uploading message ..."
 msgstr "Uploader brev ..."
 
-#: imap/message.c:577
+#: imap/message.c:594
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Kopierer %d breve til %s..."
 
-#: imap/message.c:581
+#: imap/message.c:598
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Kopierer brev %d til %s..."
@@ -3001,7 +3001,7 @@ msgstr "Kan ikke starte PGP"
 msgid "Create an application/pgp message?"
 msgstr "Lav et \"application/pgp\"-brev?"
 
-#: pgpinvoke.c:297
+#: pgpinvoke.c:300
 msgid "Fetching PGP key..."
 msgstr "Henter PGP-nøgle..."
 
@@ -3437,39 +3437,39 @@ msgstr "Annullerede uændret brev."
 msgid "Mail not sent."
 msgstr "Brev ikke sendt."
 
-#: send.c:1333
+#: send.c:1338
 msgid "Message postponed."
 msgstr "Brev tilbageholdt."
 
-#: send.c:1342
+#: send.c:1347
 msgid "No recipients are specified!"
 msgstr "Ingen modtagere er anført!"
 
-#: send.c:1347
+#: send.c:1352
 msgid "No recipients were specified."
 msgstr "Ingen modtagere blev anført."
 
-#: send.c:1353
+#: send.c:1358
 msgid "No subject, abort sending?"
 msgstr "Intet emne, undlad at sende?"
 
-#: send.c:1357
+#: send.c:1362
 msgid "No subject specified."
 msgstr "Intet emne er angivet."
 
-#: send.c:1404
+#: send.c:1409
 msgid "Sending message..."
 msgstr "Sender brev ..."
 
-#: send.c:1529
+#: send.c:1536
 msgid "Could not send the message."
 msgstr "Kunne ikke sende brevet."
 
-#: send.c:1534
+#: send.c:1541
 msgid "Mail sent."
 msgstr "Brev sendt."
 
-#: send.c:1534
+#: send.c:1541
 msgid "Sending in background."
 msgstr "Sender i baggrunden."
 

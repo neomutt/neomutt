@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.2\n"
-"POT-Creation-Date: 2000-03-04 13:51+0100\n"
+"POT-Creation-Date: 2000-03-13 19:34+0100\n"
 "PO-Revision-Date: 1999-12-20 20:41+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -254,7 +254,7 @@ msgstr "%s：終端機無法顯示色彩"
 msgid "%s: no such color"
 msgstr "%s：沒有這種顏色"
 
-#: color.c:374 color.c:565 color.c:576
+#: color.c:374 color.c:569 color.c:580
 #, c-format
 msgid "%s: no such object"
 msgstr "%s：沒有這個物件"
@@ -269,32 +269,32 @@ msgstr "%s：命令只提供索引物件"
 msgid "%s: too few arguments"
 msgstr "%s：太少參數"
 
-#: color.c:553
+#: color.c:557
 msgid "Missing arguments."
 msgstr "缺少參數。"
 
-#: color.c:592 color.c:603
+#: color.c:596 color.c:607
 msgid "color: too few arguments"
 msgstr "色彩：太少引數"
 
-#: color.c:626
+#: color.c:630
 msgid "mono: too few arguments"
 msgstr "單色：太少引數"
 
-#: color.c:646
+#: color.c:650
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s：沒有這個屬性"
 
-#: color.c:686 hook.c:61 hook.c:69 keymap.c:697
+#: color.c:690 hook.c:61 hook.c:69 keymap.c:697
 msgid "too few arguments"
 msgstr "太少參數"
 
-#: color.c:695 hook.c:75
+#: color.c:699 hook.c:75
 msgid "too many arguments"
 msgstr "太多參數"
 
-#: color.c:711
+#: color.c:715
 msgid "default colors not supported"
 msgstr "不支援預設的色彩"
 
@@ -973,59 +973,59 @@ msgid "[-- Error: unexpected end of file! --]\n"
 msgstr "[-- 錯誤：突發的檔尾！ --]\n"
 
 #. didn't find anything that we could display!
-#: handler.c:956
+#: handler.c:947
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr "[-- 錯誤： 無法顯示 Multipart/Alternative！ --]\n"
 
-#: handler.c:1073
+#: handler.c:1064
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- 附件 #%d"
 
-#: handler.c:1084
+#: handler.c:1075
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- 形態:  %s%s, 編碼: %s, 大小: %s --]\n"
 
-#: handler.c:1143
+#: handler.c:1134
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- 使用 %s 自動顯示 --]\n"
 
-#: handler.c:1144
+#: handler.c:1135
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "執行自動顯示指令：%s"
 
-#: handler.c:1181 handler.c:1199
+#: handler.c:1172 handler.c:1190
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- 自動顯示的 %s 的 stderr 內容 --]\n"
 
-#: handler.c:1231
+#: handler.c:1222
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr "[-- 錯誤: message/external-body 沒有存取類型的參數 --]\n"
 
-#: handler.c:1248
+#: handler.c:1239
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- %s/%s 附件 "
 
-#: handler.c:1255
+#: handler.c:1246
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(%s 位元組) "
 
-#: handler.c:1257
+#: handler.c:1248
 msgid "has been deleted --]\n"
 msgstr "已經被刪除了 --]\n"
 
-#: handler.c:1260
+#: handler.c:1251
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- 在 %s --]\n"
 
-#: handler.c:1270
+#: handler.c:1261
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -1036,7 +1036,7 @@ msgstr ""
 "[-- 並且被指示的外部原始檔已 --]\n"
 "[-- 過期。 --]\n"
 
-#: handler.c:1284
+#: handler.c:1275
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -1045,29 +1045,29 @@ msgstr ""
 "[-- %s/%s 附件無法被附上, --]\n"
 "[-- 並且被指示的存取類型 %s 不被支援 --]\n"
 
-#: handler.c:1392
+#: handler.c:1383
 msgid "Error: multipart/signed has no protocol."
 msgstr "錯誤：multipart/signed 沒有通訊協定。"
 
-#: handler.c:1405
+#: handler.c:1396
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "錯誤：multipart/encrypted 沒有任何通訊協定參數！"
 
-#: handler.c:1447
+#: handler.c:1438
 msgid "Unable to open temporary file!"
 msgstr "無法開啟暫存檔！"
 
-#: handler.c:1506
+#: handler.c:1497
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s 尚未支援 "
 
-#: handler.c:1511
+#: handler.c:1502
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "（使用 '%s' 來顯示這部份）"
 
-#: handler.c:1513
+#: handler.c:1504
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "（需要定義一個鍵給 'view-attachments' l瀏覽附件)！)"
 
@@ -1206,7 +1206,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "無法附加在這個伺服器上的 IMAP 信箱"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:813 imap/message.c:598 muttlib.c:980
+#: imap/imap.c:813 imap/message.c:615 muttlib.c:980
 #, c-format
 msgid "Create %s?"
 msgstr "建立 %s？"
@@ -1318,26 +1318,26 @@ msgstr "無法取回使用這個 IMAP 伺服器版本的郵件的標頭。"
 msgid "Fetching message headers... [%d/%d]"
 msgstr "正在取回信件標頭… [%d/%d]"
 
-#: imap/message.c:276
+#: imap/message.c:293
 #, fuzzy
 msgid "Fetching message..."
 msgstr "寄出信件中…"
 
-#: imap/message.c:453
+#: imap/message.c:470
 msgid "Sending APPEND command ..."
 msgstr "正在送出 APPEND 命令…"
 
-#: imap/message.c:492
+#: imap/message.c:509
 #, fuzzy
 msgid "Uploading message ..."
 msgstr "寄出信件中…"
 
-#: imap/message.c:577
+#: imap/message.c:594
 #, fuzzy, c-format
 msgid "Copying %d messages to %s..."
 msgstr "正在搬移已經讀取的信件到 %s …"
 
-#: imap/message.c:581
+#: imap/message.c:598
 #, fuzzy, c-format
 msgid "Copying message %d to %s..."
 msgstr "寫入信件到 %s …"
@@ -3022,7 +3022,7 @@ msgstr "不能執行 PGP"
 msgid "Create an application/pgp message?"
 msgstr "建立一封 application/pgp 的信件？"
 
-#: pgpinvoke.c:297
+#: pgpinvoke.c:300
 msgid "Fetching PGP key..."
 msgstr "拿取 PGP 鑰匙中…"
 
@@ -3463,39 +3463,39 @@ msgstr "中斷沒有修改過的信件"
 msgid "Mail not sent."
 msgstr "信件沒有寄出。"
 
-#: send.c:1333
+#: send.c:1338
 msgid "Message postponed."
 msgstr "信件被延遲寄出。"
 
-#: send.c:1342
+#: send.c:1347
 msgid "No recipients are specified!"
 msgstr "沒有指定接受者！"
 
-#: send.c:1347
+#: send.c:1352
 msgid "No recipients were specified."
 msgstr "沒有指定接受者。"
 
-#: send.c:1353
+#: send.c:1358
 msgid "No subject, abort sending?"
 msgstr "沒有信件標題，要中斷寄信的工作?"
 
-#: send.c:1357
+#: send.c:1362
 msgid "No subject specified."
 msgstr "沒有指定標題。"
 
-#: send.c:1404
+#: send.c:1409
 msgid "Sending message..."
 msgstr "寄出信件中…"
 
-#: send.c:1529
+#: send.c:1536
 msgid "Could not send the message."
 msgstr "無法寄出信件。"
 
-#: send.c:1534
+#: send.c:1541
 msgid "Mail sent."
 msgstr "信件已經寄出。"
 
-#: send.c:1534
+#: send.c:1541
 msgid "Sending in background."
 msgstr "正在背景作業中傳送。"
 

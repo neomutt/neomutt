@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.2\n"
-"POT-Creation-Date: 2000-03-09 07:23+0900\n"
+"POT-Creation-Date: 2000-03-13 19:34+0100\n"
 "PO-Revision-Date: 2000-03-09 07:40+0900\n"
 "Last-Translator: Byeong-Chan Kim <redhands@linux.sarag.net>\n"
 "Language-Team: Korean <ko@li.org>\n"
@@ -967,59 +967,59 @@ msgid "[-- Error: unexpected end of file! --]\n"
 msgstr "[-- 오류: 예상치 못한 파일의 끝! --]\n"
 
 #. didn't find anything that we could display!
-#: handler.c:956
+#: handler.c:947
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr "[-- 오류:  Multipart/Alternative 부분을 보여줄 수 없음! --]\n"
 
-#: handler.c:1073
+#: handler.c:1064
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- 첨부물 #%d"
 
-#: handler.c:1084
+#: handler.c:1075
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- 종류: %s/%s, 부호화방식: %s, 크기: %s --]\n"
 
-#: handler.c:1143
+#: handler.c:1134
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- %s를 사용한 자동 보기 --]\n"
 
-#: handler.c:1144
+#: handler.c:1135
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "자동 보기 명령어 실행: %s"
 
-#: handler.c:1181 handler.c:1199
+#: handler.c:1172 handler.c:1190
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- %s 자동 보기 표준 에러 --]\n"
 
-#: handler.c:1231
+#: handler.c:1222
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr "[-- 오류: message/external-body에 access-type 인자가 없음 --]\n"
 
-#: handler.c:1248
+#: handler.c:1239
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[ -- %s/%s 첨부물 "
 
-#: handler.c:1255
+#: handler.c:1246
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(크기: %s 바이트) "
 
-#: handler.c:1257
+#: handler.c:1248
 msgid "has been deleted --]\n"
 msgstr "삭제 되었음 --]\n"
 
-#: handler.c:1260
+#: handler.c:1251
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- %s에 --]\n"
 
-#: handler.c:1270
+#: handler.c:1261
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -1029,7 +1029,7 @@ msgstr ""
 "[-- %s/%s 첨부물이 포함되지 않음, --]\n"
 "[-- 지정된 외부 소스가 만기됨 --]\n"
 
-#: handler.c:1284
+#: handler.c:1275
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -1038,29 +1038,29 @@ msgstr ""
 "[-- %s/%s 첨부물이 포함되지 않음, --]\n"
 "[-- 지정된 access-type %s는 지원되지 않음 --]\n"
 
-#: handler.c:1392
+#: handler.c:1383
 msgid "Error: multipart/signed has no protocol."
 msgstr "오류: 프로토콜에 없는 multipart/signed."
 
-#: handler.c:1405
+#: handler.c:1396
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "오류: 프로토콜 매개 변수에 없는 multipart/encrypted"
 
-#: handler.c:1447
+#: handler.c:1438
 msgid "Unable to open temporary file!"
 msgstr "임시 파일을 열 수 없음!"
 
-#: handler.c:1506
+#: handler.c:1497
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- '%s/%s'는 지원되지 않음 "
 
-#: handler.c:1511
+#: handler.c:1502
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "('%s' 키로 현재 부분 보기)"
 
-#: handler.c:1513
+#: handler.c:1504
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "('view-attachments' 글쇠 정의가 필요함!)"
 
@@ -1197,7 +1197,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "서버의 IMAP 편지함에 추가할 수 없음"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:813 imap/message.c:598 muttlib.c:980
+#: imap/imap.c:813 imap/message.c:615 muttlib.c:980
 #, c-format
 msgid "Create %s?"
 msgstr "%s를 만들까요?"
@@ -1306,24 +1306,24 @@ msgstr "현재 버젼의 IAMP 서버에서 헤더를 가져올 수 없습니다."
 msgid "Fetching message headers... [%d/%d]"
 msgstr "메세지 헤더 가져오는 중... [%d/%d]"
 
-#: imap/message.c:276
+#: imap/message.c:293
 msgid "Fetching message..."
 msgstr "메세지 가져오는 중..."
 
-#: imap/message.c:453
+#: imap/message.c:470
 msgid "Sending APPEND command ..."
 msgstr "APPEND 명령 보내는 중..."
 
-#: imap/message.c:492
+#: imap/message.c:509
 msgid "Uploading message ..."
 msgstr "메세지 올리는 중..."
 
-#: imap/message.c:577
+#: imap/message.c:594
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "%d개의 메시지를 %s로 복사 중..."
 
-#: imap/message.c:581
+#: imap/message.c:598
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "메시지 %d를 %s로 복사 중..."
@@ -2991,7 +2991,7 @@ msgstr "PGP를 실행하지 못함"
 msgid "Create an application/pgp message?"
 msgstr "application/pgp 메세지를 만들까요?"
 
-#: pgpinvoke.c:297
+#: pgpinvoke.c:300
 msgid "Fetching PGP key..."
 msgstr "PGP 키 가져오는 중..."
 

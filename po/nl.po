@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-03-04 13:51+0100\n"
+"POT-Creation-Date: 2000-03-13 19:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -258,7 +258,7 @@ msgstr "%s: Terminal ondersteunt geen kleur"
 msgid "%s: no such color"
 msgstr "%s: Onbekende kleur."
 
-#: color.c:374 color.c:565 color.c:576
+#: color.c:374 color.c:569 color.c:580
 #, c-format
 msgid "%s: no such object"
 msgstr "%s: Object onbekend."
@@ -273,32 +273,32 @@ msgstr "%s: Commando alleen geldig voor index-objecten"
 msgid "%s: too few arguments"
 msgstr "%s: Te weinig argumenten."
 
-#: color.c:553
+#: color.c:557
 msgid "Missing arguments."
 msgstr "Argumenten afwezig."
 
-#: color.c:592 color.c:603
+#: color.c:596 color.c:607
 msgid "color: too few arguments"
 msgstr "color: Te weinig argumenten."
 
-#: color.c:626
+#: color.c:630
 msgid "mono: too few arguments"
 msgstr "mono: Te weinig argumenten."
 
-#: color.c:646
+#: color.c:650
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s: Attribuut onbekend"
 
-#: color.c:686 hook.c:61 hook.c:69 keymap.c:697
+#: color.c:690 hook.c:61 hook.c:69 keymap.c:697
 msgid "too few arguments"
 msgstr "Te weinig argumenten"
 
-#: color.c:695 hook.c:75
+#: color.c:699 hook.c:75
 msgid "too many arguments"
 msgstr "Te veel argumenten"
 
-#: color.c:711
+#: color.c:715
 msgid "default colors not supported"
 msgstr "standaard kleuren niet ondersteund"
 
@@ -975,60 +975,60 @@ msgid "[-- Error: unexpected end of file! --]\n"
 msgstr "[-- Fout: Onverwacht einde van het bestand! --]\n"
 
 #. didn't find anything that we could display!
-#: handler.c:956
+#: handler.c:947
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr ""
 "[-- Fout : Kon geen enkel Multipart/Alternative-gedeelte weergeven! --]\n"
 
-#: handler.c:1073
+#: handler.c:1064
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- Bijlage #%d"
 
-#: handler.c:1084
+#: handler.c:1075
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Type: %s/%s, Codering: %s, Grootte: %s --]\n"
 
-#: handler.c:1143
+#: handler.c:1134
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Automatische weergave met %s --]\n"
 
-#: handler.c:1144
+#: handler.c:1135
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Commando wordt aangeroepen: %s"
 
-#: handler.c:1181 handler.c:1199
+#: handler.c:1172 handler.c:1190
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Foutenuitvoer van %s --]\n"
 
-#: handler.c:1231
+#: handler.c:1222
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr "[-- Fout: message/external-body heeft geen access-type paramter --]\n"
 
-#: handler.c:1248
+#: handler.c:1239
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- Deze %s/%s-bijlage "
 
-#: handler.c:1255
+#: handler.c:1246
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(grootte %s bytes)"
 
-#: handler.c:1257
+#: handler.c:1248
 msgid "has been deleted --]\n"
 msgstr "werd gewist --]\n"
 
-#: handler.c:1260
+#: handler.c:1251
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- op %s --]\n"
 
-#: handler.c:1270
+#: handler.c:1261
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -1039,7 +1039,7 @@ msgstr ""
 "[-- opgenomen, en de aangegeven externe bron --]\n"
 "[-- bestaat niet meer --]\n"
 
-#: handler.c:1284
+#: handler.c:1275
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -1049,29 +1049,29 @@ msgstr ""
 "[-- opgenomen, en het aangegeven access-type %s is --]\n"
 "[-- niet ondersteund --]\n"
 
-#: handler.c:1392
+#: handler.c:1383
 msgid "Error: multipart/signed has no protocol."
 msgstr "Fout: multipart/signed zonder \"protocol\"-parameter."
 
-#: handler.c:1405
+#: handler.c:1396
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Fout: multipart/encrypted zonder \"protocol\"-parameter!"
 
-#: handler.c:1447
+#: handler.c:1438
 msgid "Unable to open temporary file!"
 msgstr "Tijdelijk bestand kon niet worden geopend!"
 
-#: handler.c:1506
+#: handler.c:1497
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s is niet ondersteund "
 
-#: handler.c:1511
+#: handler.c:1502
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(gebruik '%s', om dit gedeelte weer te geven)"
 
-#: handler.c:1513
+#: handler.c:1504
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "('view-attachments' moet aan een toets gekoppeld zijn!)"
 
@@ -1209,7 +1209,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr ""
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:813 imap/message.c:598 muttlib.c:980
+#: imap/imap.c:813 imap/message.c:615 muttlib.c:980
 #, c-format
 msgid "Create %s?"
 msgstr "%s aanmaken?"
@@ -1321,24 +1321,24 @@ msgstr ""
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Headers worden gelezen... [%d/%d]"
 
-#: imap/message.c:276
+#: imap/message.c:293
 msgid "Fetching message..."
 msgstr "Bericht wordt gelezen..."
 
-#: imap/message.c:453
+#: imap/message.c:470
 msgid "Sending APPEND command ..."
 msgstr "APPEND-commando wordt verstuurd..."
 
-#: imap/message.c:492
+#: imap/message.c:509
 msgid "Uploading message ..."
 msgstr "Bericht wordt verstuurd ..."
 
-#: imap/message.c:577
+#: imap/message.c:594
 #, fuzzy, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Gelezen berichten worden naar %s verplaatst..."
 
-#: imap/message.c:581
+#: imap/message.c:598
 #, fuzzy, c-format
 msgid "Copying message %d to %s..."
 msgstr "Bericht wordt opgeslagen in %s ..."
@@ -2965,7 +2965,7 @@ msgstr ""
 msgid "Create an application/pgp message?"
 msgstr "Maak een afkorting van de afzender"
 
-#: pgpinvoke.c:297
+#: pgpinvoke.c:300
 #, fuzzy
 msgid "Fetching PGP key..."
 msgstr "Bericht wordt gelezen..."
@@ -3410,40 +3410,40 @@ msgstr "Bericht werd niet veranderd. Operatie afgebroken."
 msgid "Mail not sent."
 msgstr "Bericht niet verstuurd."
 
-#: send.c:1333
+#: send.c:1338
 msgid "Message postponed."
 msgstr "Bericht uitgesteld."
 
-#: send.c:1342
+#: send.c:1347
 msgid "No recipients are specified!"
 msgstr "Er zijn geen geadresseerden opgegeven!"
 
-#: send.c:1347
+#: send.c:1352
 msgid "No recipients were specified."
 msgstr "Er werden geen geadresseerden opgegeven!"
 
-#: send.c:1353
+#: send.c:1358
 msgid "No subject, abort sending?"
 msgstr "Geen onderwerp. Versturen afbreken?"
 
-#: send.c:1357
+#: send.c:1362
 msgid "No subject specified."
 msgstr "Geen onderwerp."
 
-#: send.c:1404
+#: send.c:1409
 msgid "Sending message..."
 msgstr "Verstuur bericht..."
 
-#: send.c:1529
+#: send.c:1536
 #, fuzzy
 msgid "Could not send the message."
 msgstr "Verstuur het bericht"
 
-#: send.c:1534
+#: send.c:1541
 msgid "Mail sent."
 msgstr "Bericht verstuurd."
 
-#: send.c:1534
+#: send.c:1541
 msgid "Sending in background."
 msgstr ""
 

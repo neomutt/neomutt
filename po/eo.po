@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1\n"
-"POT-Creation-Date: 2000-03-04 13:51+0100\n"
+"POT-Creation-Date: 2000-03-13 19:34+0100\n"
 "PO-Revision-Date: 2000-03-01 17:10+00:00\n"
 "Last-Translator: Edmund GRIMLEY EVANS <edmundo@rano.org>\n"
 "Language-Team: eo <eo@li.org>\n"
@@ -255,7 +255,7 @@ msgstr "%s: terminalo ne kapablas je koloro"
 msgid "%s: no such color"
 msgstr "%s: koloro ne ekzistas"
 
-#: color.c:374 color.c:565 color.c:576
+#: color.c:374 color.c:569 color.c:580
 #, c-format
 msgid "%s: no such object"
 msgstr "%s: objekto ne ekzistas"
@@ -270,32 +270,32 @@ msgstr "%s: komando validas nur por indeksobjekto"
 msgid "%s: too few arguments"
 msgstr "%s: Nesufiæe da argumentoj"
 
-#: color.c:553
+#: color.c:557
 msgid "Missing arguments."
 msgstr "Mankas argumentoj"
 
-#: color.c:592 color.c:603
+#: color.c:596 color.c:607
 msgid "color: too few arguments"
 msgstr "color: nesufiæe da argumentoj"
 
-#: color.c:626
+#: color.c:630
 msgid "mono: too few arguments"
 msgstr "mono: nesufiæe da argumentoj"
 
-#: color.c:646
+#: color.c:650
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s: nekonata trajto"
 
-#: color.c:686 hook.c:61 hook.c:69 keymap.c:697
+#: color.c:690 hook.c:61 hook.c:69 keymap.c:697
 msgid "too few arguments"
 msgstr "nesufiæe da argumentoj"
 
-#: color.c:695 hook.c:75
+#: color.c:699 hook.c:75
 msgid "too many arguments"
 msgstr "tro da argumentoj"
 
-#: color.c:711
+#: color.c:715
 msgid "default colors not supported"
 msgstr "implicitaj koloroj ne funkcias"
 
@@ -970,59 +970,59 @@ msgid "[-- Error: unexpected end of file! --]\n"
 msgstr "[-- Eraro: neatendita fino de dosiero! --]\n"
 
 #. didn't find anything that we could display!
-#: handler.c:956
+#: handler.c:947
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr "[-- Eraro: Neniu parto de Multipart/Alternative estis montrebla! --]\n"
 
-#: handler.c:1073
+#: handler.c:1064
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- Parto #%d"
 
-#: handler.c:1084
+#: handler.c:1075
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Speco: %s/%s, Kodado: %s, Grando: %s --]\n"
 
-#: handler.c:1143
+#: handler.c:1134
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Aýtomata vidigo per %s --]\n"
 
-#: handler.c:1144
+#: handler.c:1135
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Alvokas aýtomatan vidigon per: %s"
 
-#: handler.c:1181 handler.c:1199
+#: handler.c:1172 handler.c:1190
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Erareligo de %s --]\n"
 
-#: handler.c:1231
+#: handler.c:1222
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr "[-- Eraro: parto message/external ne havas parametro access-type --]\n"
 
-#: handler.c:1248
+#: handler.c:1239
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- Æi tiu %s/%s-parto "
 
-#: handler.c:1255
+#: handler.c:1246
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(grando %s bitokoj) "
 
-#: handler.c:1257
+#: handler.c:1248
 msgid "has been deleted --]\n"
 msgstr "estas forviþita --]\n"
 
-#: handler.c:1260
+#: handler.c:1251
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- je %s --]\n"
 
-#: handler.c:1270
+#: handler.c:1261
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -1033,7 +1033,7 @@ msgstr ""
 "[-- kaj la indikita ekstera fonto estas --]\n"
 "[-- eksvalidiøinta. --]\n"
 
-#: handler.c:1284
+#: handler.c:1275
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -1042,29 +1042,29 @@ msgstr ""
 "[-- Æi tiu %s/%s-parto ne estas inkluzivita, --]\n"
 "[-- kaj Mutt ne kapablas je la indikita alirmaniero %s. --]\n"
 
-#: handler.c:1392
+#: handler.c:1383
 msgid "Error: multipart/signed has no protocol."
 msgstr "Eraro: multipart/signed ne havas parametron protocol!"
 
-#: handler.c:1405
+#: handler.c:1396
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Eraro: multipart/encrypted ne havas parametron protocol!"
 
-#: handler.c:1447
+#: handler.c:1438
 msgid "Unable to open temporary file!"
 msgstr "Ne povas malfermi dumtempan dosieron!"
 
-#: handler.c:1506
+#: handler.c:1497
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s ne estas konata "
 
-#: handler.c:1511
+#: handler.c:1502
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(uzu '%s' por vidigi æi tiun parton)"
 
-#: handler.c:1513
+#: handler.c:1504
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(bezonas klavodifinon por 'view-attachments'!)"
 
@@ -1201,7 +1201,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Ne povas aldoni al IMAP-poþtfako æe æi tiu servilo"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:813 imap/message.c:598 muttlib.c:980
+#: imap/imap.c:813 imap/message.c:615 muttlib.c:980
 #, c-format
 msgid "Create %s?"
 msgstr "Æu krei %s?"
@@ -1310,24 +1310,24 @@ msgstr "Ne povas preni æapojn de æi tiu versio de IMAP-servilo."
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Prenas mesaøoæapojn ... [%d/%d]"
 
-#: imap/message.c:276
+#: imap/message.c:293
 msgid "Fetching message..."
 msgstr "Prenas mesaøon ..."
 
-#: imap/message.c:453
+#: imap/message.c:470
 msgid "Sending APPEND command ..."
 msgstr "Sendas la komandon APPEND ..."
 
-#: imap/message.c:492
+#: imap/message.c:509
 msgid "Uploading message ..."
 msgstr "Alþutas mesaøon ..."
 
-#: imap/message.c:577
+#: imap/message.c:594
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Kopias %d mesaøojn al %s ..."
 
-#: imap/message.c:581
+#: imap/message.c:598
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Kopias mesaøon %d al %s ..."
@@ -3003,7 +3003,7 @@ msgstr "Ne povas alvoki PGP"
 msgid "Create an application/pgp message?"
 msgstr "Æu krei application/pgp-mesaøon?"
 
-#: pgpinvoke.c:297
+#: pgpinvoke.c:300
 msgid "Fetching PGP key..."
 msgstr "Prenas PGP-þlosilon ..."
 
@@ -3439,39 +3439,39 @@ msgstr "Nemodifita mesaøon nuligita"
 msgid "Mail not sent."
 msgstr "Mesaøo ne sendita."
 
-#: send.c:1333
+#: send.c:1338
 msgid "Message postponed."
 msgstr "Mesaøo prokrastita."
 
-#: send.c:1342
+#: send.c:1347
 msgid "No recipients are specified!"
 msgstr "Neniu ricevanto estas specifita!"
 
-#: send.c:1347
+#: send.c:1352
 msgid "No recipients were specified."
 msgstr "Neniuj ricevantoj estis specifitaj."
 
-#: send.c:1353
+#: send.c:1358
 msgid "No subject, abort sending?"
 msgstr "Mankas temlinio; æu haltigi sendon?"
 
-#: send.c:1357
+#: send.c:1362
 msgid "No subject specified."
 msgstr "Temlinio ne specifita."
 
-#: send.c:1404
+#: send.c:1409
 msgid "Sending message..."
 msgstr "Sendas mesaøon ..."
 
-#: send.c:1529
+#: send.c:1536
 msgid "Could not send the message."
 msgstr "Ne povis sendi la mesaøon."
 
-#: send.c:1534
+#: send.c:1541
 msgid "Mail sent."
 msgstr "Mesaøo sendita."
 
-#: send.c:1534
+#: send.c:1541
 msgid "Sending in background."
 msgstr "Sendas en fono."
 

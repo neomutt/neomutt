@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.95.6i\n"
-"POT-Creation-Date: 2000-03-04 13:51+0100\n"
+"POT-Creation-Date: 2000-03-13 19:34+0100\n"
 "PO-Revision-Date: 1999-07-29 00:00+0100\n"
 "Last-Translator: Miroslav Vasko <vasko@ies.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -259,7 +259,7 @@ msgstr "%s: terminál túto farbu nepodporuje"
 msgid "%s: no such color"
 msgstr "%s: nenájdená farba"
 
-#: color.c:374 color.c:565 color.c:576
+#: color.c:374 color.c:569 color.c:580
 #, c-format
 msgid "%s: no such object"
 msgstr "%s: nenájdený objekt"
@@ -274,32 +274,32 @@ msgstr "%s: príkaz je platný iba pre indexovaný objekt"
 msgid "%s: too few arguments"
 msgstr "%s: príli¹ málo parametrov"
 
-#: color.c:553
+#: color.c:557
 msgid "Missing arguments."
 msgstr "Chýbajúce parametre."
 
-#: color.c:592 color.c:603
+#: color.c:596 color.c:607
 msgid "color: too few arguments"
 msgstr "farba: príli¹ málo parametrov"
 
-#: color.c:626
+#: color.c:630
 msgid "mono: too few arguments"
 msgstr "mono: príli¹ málo parametrov"
 
-#: color.c:646
+#: color.c:650
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s: vlastnos» nenájdená"
 
-#: color.c:686 hook.c:61 hook.c:69 keymap.c:697
+#: color.c:690 hook.c:61 hook.c:69 keymap.c:697
 msgid "too few arguments"
 msgstr "príli¹ málo argumentov"
 
-#: color.c:695 hook.c:75
+#: color.c:699 hook.c:75
 msgid "too many arguments"
 msgstr "príli¹ veµa argumentov"
 
-#: color.c:711
+#: color.c:715
 msgid "default colors not supported"
 msgstr "¹tandardné farby nepodporované"
 
@@ -979,60 +979,60 @@ msgid "[-- Error: unexpected end of file! --]\n"
 msgstr "[-- Chyba: neoèakávaný koniec súboru! --]\n"
 
 #. didn't find anything that we could display!
-#: handler.c:956
+#: handler.c:947
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr "[-- Chyba: Nemo¾no zobrazi» ¾iadnu èas» z Multipart/Alternative! --]\n"
 
-#: handler.c:1073
+#: handler.c:1064
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- Príloha #%d"
 
-#: handler.c:1084
+#: handler.c:1075
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Typ: %s/%s, Kódovanie: %s, Veµkos»: %s --]\n"
 
-#: handler.c:1143
+#: handler.c:1134
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Autoprezeranie pou¾itím %s --]\n"
 
-#: handler.c:1144
+#: handler.c:1135
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Vyvolávam príkaz na automatické prezeranie: %s"
 
-#: handler.c:1181 handler.c:1199
+#: handler.c:1172 handler.c:1190
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Chyba pri automatickom prezeraní (stderr) %s --]\n"
 
-#: handler.c:1231
+#: handler.c:1222
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr ""
 "[-- Chyba: message/external-body nemá vyplnený parameter access-type --]\n"
 
-#: handler.c:1248
+#: handler.c:1239
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- Príloha %s/%s "
 
-#: handler.c:1255
+#: handler.c:1246
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(veµkos» %s bytov) "
 
-#: handler.c:1257
+#: handler.c:1248
 msgid "has been deleted --]\n"
 msgstr "bola zmazaná --]\n"
 
-#: handler.c:1260
+#: handler.c:1251
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- na %s --]\n"
 
-#: handler.c:1270
+#: handler.c:1261
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -1043,7 +1043,7 @@ msgstr ""
 "[-- a oznaèenému externému zdroju --]\n"
 "[-- vypr¹ala platnos». --]\n"
 
-#: handler.c:1284
+#: handler.c:1275
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -1052,29 +1052,29 @@ msgstr ""
 "[-- Príloha %s/%s nie je vlo¾ená v správe, --]\n"
 "[-- a oznaèený typ prístupu %s nie je podporovaný --]\n"
 
-#: handler.c:1392
+#: handler.c:1383
 msgid "Error: multipart/signed has no protocol."
 msgstr "Chyba: multipart/signed nemá protokol."
 
-#: handler.c:1405
+#: handler.c:1396
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Chyba: multipart/encrypted nemá vyplnený parameter protokolu!"
 
-#: handler.c:1447
+#: handler.c:1438
 msgid "Unable to open temporary file!"
 msgstr "Nemo¾no otvori» doèasný súbor!"
 
-#: handler.c:1506
+#: handler.c:1497
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s nie je podporovaný "
 
-#: handler.c:1511
+#: handler.c:1502
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(pou¾ite '%s' na prezeranie tejto èasti)"
 
-#: handler.c:1513
+#: handler.c:1504
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(potrebujem 'view-attachments' priradené na klávesu!)"
 
@@ -1212,7 +1212,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Nemo¾no pridáva» k IMAP schránkam na tomto serveri"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:813 imap/message.c:598 muttlib.c:980
+#: imap/imap.c:813 imap/message.c:615 muttlib.c:980
 #, c-format
 msgid "Create %s?"
 msgstr "Vytvori» %s?"
@@ -1325,24 +1325,24 @@ msgstr "Nemo¾no získa» hlavièky z tejto verzie IMAP serveru."
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Vyvolávam hlavièky správ... [%d/%d]"
 
-#: imap/message.c:276
+#: imap/message.c:293
 msgid "Fetching message..."
 msgstr "Vyvolávam správu..."
 
-#: imap/message.c:453
+#: imap/message.c:470
 msgid "Sending APPEND command ..."
 msgstr "Posielam príkaz APPEND..."
 
-#: imap/message.c:492
+#: imap/message.c:509
 msgid "Uploading message ..."
 msgstr "Odsúvam správu ..."
 
-#: imap/message.c:577
+#: imap/message.c:594
 #, fuzzy, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Presúvam preèítané správy do %s..."
 
-#: imap/message.c:581
+#: imap/message.c:598
 #, fuzzy, c-format
 msgid "Copying message %d to %s..."
 msgstr "Zapisujem správu do %s ..."
@@ -3034,7 +3034,7 @@ msgstr ""
 msgid "Create an application/pgp message?"
 msgstr "vytvori» zástupcu z odosielateµa správy"
 
-#: pgpinvoke.c:297
+#: pgpinvoke.c:300
 #, fuzzy
 msgid "Fetching PGP key..."
 msgstr "Vyvolávam správu..."
@@ -3479,39 +3479,39 @@ msgstr "Nezmenená správa bola zru¹ená."
 msgid "Mail not sent."
 msgstr "Po¹ta nebola odoslaná."
 
-#: send.c:1333
+#: send.c:1338
 msgid "Message postponed."
 msgstr "Správa bola odlo¾ená."
 
-#: send.c:1342
+#: send.c:1347
 msgid "No recipients are specified!"
 msgstr "Nie sú uvedení ¾iadni príjemcovia!"
 
-#: send.c:1347
+#: send.c:1352
 msgid "No recipients were specified."
 msgstr "Neboli uvedení ¾iadni príjemcovia!"
 
-#: send.c:1353
+#: send.c:1358
 msgid "No subject, abort sending?"
 msgstr "®iadny predmet, zru¹i» posielanie?"
 
-#: send.c:1357
+#: send.c:1362
 msgid "No subject specified."
 msgstr "Nebol uvedený predmet."
 
-#: send.c:1404
+#: send.c:1409
 msgid "Sending message..."
 msgstr "Posielam správu..."
 
-#: send.c:1529
+#: send.c:1536
 msgid "Could not send the message."
 msgstr "Nemo¾no posla» správu."
 
-#: send.c:1534
+#: send.c:1541
 msgid "Mail sent."
 msgstr "Správa bola odoslaná."
 
-#: send.c:1534
+#: send.c:1541
 msgid "Sending in background."
 msgstr ""
 

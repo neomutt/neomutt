@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt-1.1.3\n"
-"POT-Creation-Date: 2000-03-04 13:51+0100\n"
+"POT-Creation-Date: 2000-03-13 19:34+0100\n"
 "PO-Revision-Date: 2000-02-13 19:31+01:00\n"
 "Last-Translator: Marco d'Itri <md@linux.it>\n"
 "Language-Team: none\n"
@@ -260,7 +260,7 @@ msgstr "%s: il colore non è gestito dal terminale"
 msgid "%s: no such color"
 msgstr "%s: colore inesistente"
 
-#: color.c:374 color.c:565 color.c:576
+#: color.c:374 color.c:569 color.c:580
 #, c-format
 msgid "%s: no such object"
 msgstr "%s: oggetto inesistente"
@@ -275,32 +275,32 @@ msgstr "%s: comando valido solo per l'oggetto index"
 msgid "%s: too few arguments"
 msgstr "%s: troppo pochi argomenti"
 
-#: color.c:553
+#: color.c:557
 msgid "Missing arguments."
 msgstr "Mancano dei parametri."
 
-#: color.c:592 color.c:603
+#: color.c:596 color.c:607
 msgid "color: too few arguments"
 msgstr "color: troppo pochi argomenti"
 
-#: color.c:626
+#: color.c:630
 msgid "mono: too few arguments"
 msgstr "mono: troppo pochi argomenti"
 
-#: color.c:646
+#: color.c:650
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s: attributo inesistente"
 
-#: color.c:686 hook.c:61 hook.c:69 keymap.c:697
+#: color.c:690 hook.c:61 hook.c:69 keymap.c:697
 msgid "too few arguments"
 msgstr "troppo pochi argomenti"
 
-#: color.c:695 hook.c:75
+#: color.c:699 hook.c:75
 msgid "too many arguments"
 msgstr "troppi argomenti"
 
-#: color.c:711
+#: color.c:715
 msgid "default colors not supported"
 msgstr "i colori predefiniti non sono gestiti"
 
@@ -974,62 +974,62 @@ msgid "[-- Error: unexpected end of file! --]\n"
 msgstr "[-- Errore: fine del file inaspettata! --]\n"
 
 #. didn't find anything that we could display!
-#: handler.c:956
+#: handler.c:947
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr ""
 "[-- Errore: impossibile visualizzare ogni parte di multipart/alternative! "
 "--]\n"
 
-#: handler.c:1073
+#: handler.c:1064
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- Allegato #%d"
 
-#: handler.c:1084
+#: handler.c:1075
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Tipo: %s/%s, Codifica: %s, Dimensioni: %s --]\n"
 
-#: handler.c:1143
+#: handler.c:1134
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Visualizza automaticamente con %s --]\n"
 
-#: handler.c:1144
+#: handler.c:1135
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Richiamo il comando di autovisualizzazione: %s"
 
-#: handler.c:1181 handler.c:1199
+#: handler.c:1172 handler.c:1190
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Stderr dell'autoview di %s --]\n"
 
-#: handler.c:1231
+#: handler.c:1222
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr ""
 "[-- Errore: message/external-body non ha un parametro access-type --]\n"
 
-#: handler.c:1248
+#: handler.c:1239
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- Questo allegato %s/%s "
 
-#: handler.c:1255
+#: handler.c:1246
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(dimensioni %s byte) "
 
-#: handler.c:1257
+#: handler.c:1248
 msgid "has been deleted --]\n"
 msgstr "è stato cancellato -- ]\n"
 
-#: handler.c:1260
+#: handler.c:1251
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- su %s --]\n"
 
-#: handler.c:1270
+#: handler.c:1261
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -1039,7 +1039,7 @@ msgstr ""
 "[-- Questo allegato %s/%s non è incluso --]\n"
 "[-- e l'origine esterna indicata è scaduta. --]\n"
 
-#: handler.c:1284
+#: handler.c:1275
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -1048,29 +1048,29 @@ msgstr ""
 "[-- Questo allegato %s/%s non è incluso --]\n"
 "[-- e il l'access-type %s indicato non è gestito --]\n"
 
-#: handler.c:1392
+#: handler.c:1383
 msgid "Error: multipart/signed has no protocol."
 msgstr "Errore: multipart/signed non ha protocollo."
 
-#: handler.c:1405
+#: handler.c:1396
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Errore: multipart/encrypted non ha il parametro protocol!"
 
-#: handler.c:1447
+#: handler.c:1438
 msgid "Unable to open temporary file!"
 msgstr "Impossibile aprire il file temporaneo!"
 
-#: handler.c:1506
+#: handler.c:1497
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s non è gestito "
 
-#: handler.c:1511
+#: handler.c:1502
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(usa '%s' per vederlo)"
 
-#: handler.c:1513
+#: handler.c:1504
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "('view-attachments' deve essere assegnato a un tasto!)"
 
@@ -1209,7 +1209,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Impossibile accodare alle mailbox IMAP di questo server"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:813 imap/message.c:598 muttlib.c:980
+#: imap/imap.c:813 imap/message.c:615 muttlib.c:980
 #, c-format
 msgid "Create %s?"
 msgstr "Creo %s?"
@@ -1318,24 +1318,24 @@ msgstr "Impossibile scaricare gli header da questa versione del server IMAP."
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Prendo gli header dei messaggi... [%d/%d]"
 
-#: imap/message.c:276
+#: imap/message.c:293
 msgid "Fetching message..."
 msgstr "Prendo il messaggio..."
 
-#: imap/message.c:453
+#: imap/message.c:470
 msgid "Sending APPEND command ..."
 msgstr "Mando il comando APPEND ..."
 
-#: imap/message.c:492
+#: imap/message.c:509
 msgid "Uploading message ..."
 msgstr "Mando il messaggio ..."
 
-#: imap/message.c:577
+#: imap/message.c:594
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Copio %d messaggi in %s..."
 
-#: imap/message.c:581
+#: imap/message.c:598
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Copio il messaggio %d in %s ..."
@@ -2969,7 +2969,7 @@ msgstr "Impossibile eseguire PGP"
 msgid "Create an application/pgp message?"
 msgstr "Creo un messaggio application/pgp?"
 
-#: pgpinvoke.c:297
+#: pgpinvoke.c:300
 msgid "Fetching PGP key..."
 msgstr "Prendo la chiave PGP..."
 
@@ -3408,39 +3408,39 @@ msgstr "Ho abbandonato il messaggio non modificato."
 msgid "Mail not sent."
 msgstr "Il messaggio non è stato spedito."
 
-#: send.c:1333
+#: send.c:1338
 msgid "Message postponed."
 msgstr "Il messaggio è stato rimandato."
 
-#: send.c:1342
+#: send.c:1347
 msgid "No recipients are specified!"
 msgstr "Non sono stati specificati destinatari!"
 
-#: send.c:1347
+#: send.c:1352
 msgid "No recipients were specified."
 msgstr "Non sono stati specificati destinatari."
 
-#: send.c:1353
+#: send.c:1358
 msgid "No subject, abort sending?"
 msgstr "Nessun soggetto, abbandono l'invio?"
 
-#: send.c:1357
+#: send.c:1362
 msgid "No subject specified."
 msgstr "Non è stato specificato un soggetto."
 
-#: send.c:1404
+#: send.c:1409
 msgid "Sending message..."
 msgstr "Spedisco il messaggio..."
 
-#: send.c:1529
+#: send.c:1536
 msgid "Could not send the message."
 msgstr "Impossibile spedire il messaggio"
 
-#: send.c:1534
+#: send.c:1541
 msgid "Mail sent."
 msgstr "Messaggio spedito."
 
-#: send.c:1534
+#: send.c:1541
 msgid "Sending in background."
 msgstr "Invio in background."
 
