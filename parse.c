@@ -309,7 +309,7 @@ void mutt_parse_content_type (char *s, BODY *ct)
   /* Default character set for text types. */
   if (ct->type == TYPETEXT)
   {
-    if (!(pc = mutt_get_parameter ("charset", &ct->parameter)))
+    if (!(pc = mutt_get_parameter ("charset", ct->parameter)))
       mutt_set_parameter ("charset", "us-ascii", &ct->parameter);
   }
 
