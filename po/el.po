@@ -1,14 +1,15 @@
-# Υποστήριξη Ελληνικών για το Mutt.
-# Copyright (C) 2000 Free Software Foundation, Inc.
+# Hellenic support for mutt by
+#
 # Φάνης Δοκιανάκης <madf@hellug.gr>, 2000.
 # Νίκος Μαυρογιαννόπουλος <nmav@hellug.gr>
 # Σίμος Ξενιτέλλης <S.Xenitellis@rhbnc.ac.uk>
 #
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt-1.3.8i\n"
+"Project-Id-Version: Mutt-1.3.10i\n"
 "POT-Creation-Date: 2000-10-11 12:45+0200\n"
-"PO-Revision-Date: 2000-09-04 12:00+0200\n"
+"PO-Revision-Date: 2000-10-15 12:00+0200\n"
 "Last-Translator: Φάνης Δοκιανάκης <madf@hellug.gr>\n"
 "Language-Team: Greek <el@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1030,9 +1031,8 @@ msgstr "Η συζήτηση περιέχει μη αναγνωσμένα μηνύματα."
 
 #
 #: curs_main.c:1614
-#, fuzzy
 msgid "Can't edit message on POP server."
-msgstr "Διαγραφή μηνυμάτων από τον εξυπηρετητή?"
+msgstr "Αδυναμία επεξεργασίας μηνύματος στο διακομιστή POP."
 
 #
 #.
@@ -3001,9 +3001,8 @@ msgstr "oac"
 
 #
 #: muttlib.c:1111
-#, fuzzy
 msgid "Can't save message to POP mailbox."
-msgstr "Εγγραφή τους μήνυματος στο γραμματοκιβώτιο"
+msgstr "Αδυναμία εγγραφής του μηνύματος στο POP γραμματοκιβώτιο."
 
 #
 #: muttlib.c:1120
@@ -3045,9 +3044,9 @@ msgstr "Σύνδεση στο %s..."
 
 #
 #: mutt_socket.c:398
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "Αδυναμία ανοίγματος του %s"
+msgstr "Αδυναμία σύνδεσης στο %s (%s)."
 
 #: mutt_ssl.c:105
 msgid "Failed to find enough entropy on your system"
@@ -3796,33 +3795,28 @@ msgstr "Εύρεση όμοιων κλειδιών \"%s\"..."
 
 #
 #: pop.c:89 pop_lib.c:158
-#, fuzzy
 msgid "Command TOP is not supported by server."
-msgstr "Σημειώσεις δεν υποστηρίζονται."
+msgstr "Η εντολή TOP δεν υποστηρίζετε από το διακομιστή."
 
 #
 #: pop.c:116
-#, fuzzy
 msgid "Can't write header to temporary file!"
-msgstr "Δεν μπορώ να δημιουργήσω προσωρινό αρχείο"
+msgstr "Αδυναμία εγγραφής επικεφαλίδας στο προσωρινό αρχείο!"
 
 #
 #: pop.c:197 pop_lib.c:160
-#, fuzzy
 msgid "Command UIDL is not supported by server."
-msgstr "Σημειώσεις δεν υποστηρίζονται."
+msgstr "Η εντολή UIDL δεν υποστηρίζετε από το διακομιστή."
 
 #
 #: pop.c:270
-#, fuzzy
 msgid "Fetching list of messages..."
-msgstr "Λήψη μηνύματος..."
+msgstr "Λήψη λίστας μηνυμάτων..."
 
 #
 #: pop.c:407
-#, fuzzy
 msgid "Can't write message to temporary file!"
-msgstr "Δεν μπορώ να δημιουργήσω προσωρινό αρχείο"
+msgstr "Αδυναμία εγγραφής μηνύματος στο προσωρινό αρχείο!"
 
 #
 #: pop.c:510 pop.c:564
@@ -3867,55 +3861,47 @@ msgid "Server closed connection!"
 msgstr "Η σύνδεση με τον εξυπηρετητή έκλεισε!"
 
 #: pop_auth.c:193
-#, fuzzy
 msgid "Authenticating (APOP)..."
-msgstr "Αυθεντικοποίηση (GSSAPI)..."
+msgstr "Αυθεντικοποίηση (APOP)..."
 
 #: pop_auth.c:217
-#, fuzzy
 msgid "APOP authentication failed."
-msgstr "Αυθεντικοποίηση GSSAPI απέτυχε."
+msgstr "Αυθεντικοποίηση APOP απέτυχε."
 
 #
 #: pop_auth.c:252
-#, fuzzy
 msgid "Command USER is not supported by server."
-msgstr "Σημειώσεις δεν υποστηρίζονται."
+msgstr "Η εντολή USER δεν υποστηρίζετε από το διακομιστή."
 
 #: pop_auth.c:359
-#, fuzzy
 msgid "Authentication method is unknown."
-msgstr "Αυθεντικοποίηση SASL απέτυχε."
+msgstr "Άγνωστη μέθοδος αυθεντικοποίησης."
 
 #
 #: pop_lib.c:156
-#, fuzzy
 msgid "Unable to leave messages on server."
-msgstr "Διαγραφή μηνυμάτων από τον εξυπηρετητή?"
+msgstr "Αδυναμία άφεσης των μηνυμάτων στον εξυπηρετητή."
 
 #
 #: pop_lib.c:203
-#, fuzzy, c-format
+#, c-format
 msgid "Error connecting to server: %s"
-msgstr "Κλείσιμο σύνδεσης στον εξυπηρετητή IMAP..."
+msgstr "Σφάλμα κατα τη σύνδεση στο διακομιστή: %s"
 
 #
 #: pop_lib.c:286
-#, fuzzy
 msgid "Closing connection to POP server..."
 msgstr "Κλείσιμο σύνδεσης στον εξυπηρετητή IMAP..."
 
 #
 #: pop_lib.c:445
-#, fuzzy
 msgid "Verifying message indexes..."
-msgstr "Εγγραφή μηνύματος στο %s ..."
+msgstr "Επιβεβαίωση των ευρετηρίων μηνυμάτων..."
 
 #
 #: pop_lib.c:469
-#, fuzzy
 msgid "Connection lost. Reconnect to POP server?"
-msgstr "Κλείσιμο σύνδεσης στον εξυπηρετητή IMAP..."
+msgstr "Απώλεια σύνδεσης. Επανασύνδεση στο διακομιστή POP?"
 
 #
 #: postpone.c:165
@@ -4034,9 +4020,8 @@ msgstr "Προσαρτήσεις"
 
 #
 #: recvattach.c:882
-#, fuzzy
 msgid "Can't delete attachment from POP server."
-msgstr "παραλαβή αλληλογραφίας από το εξυπηρετητή POP"
+msgstr "Αδυναμία διαγραφής προσάρτησης από τον εξυπηρετητή POP."
 
 #
 #: recvattach.c:893
@@ -4399,56 +4384,3 @@ msgstr "Το τρέχων μήνυμα δεν είναι ορατό στην περιορισμένη όψη"
 #: thread.c:717
 msgid "Parent message is not available."
 msgstr "Το τρέχων μήνυμα δεν είναι διαθέσιμο."
-
-#
-# main.c:73
-#~ msgid ""
-#~ "\n"
-#~ "SHA1 implementation Copyright (C) 1995-1997 Eric A. Young "
-#~ "<eay@cryptsoft.com>\n"
-#~ "\n"
-#~ "    Redistribution and use in source and binary forms, with or without\n"
-#~ "    modification, are permitted under certain conditions.\n"
-#~ "\n"
-#~ "    The SHA1 implementation comes AS IS, and ANY EXPRESS OR IMPLIED\n"
-#~ "    WARRANTIES, including, but not limited to, the implied warranties of\n"
-#~ "    merchantability and fitness for a particular purpose ARE DISCLAIMED.\n"
-#~ "\n"
-#~ "    You should have received a copy of the full distribution terms\n"
-#~ "    along with this program; if not, write to the program's developers.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Εκπλήρωση SHA1 Copyright (C) 1995-1997 Eric A. Young\n"
-#~ "\n"
-#~ "    Επαναδιανόμη και χρήση σε πηγαία και δυαδική, με ή χωρίς\n"
-#~ "    τροποποιήσεις, επιτρέπονται υπό συγκεκριμένους όρους.\n"
-#~ "\n"
-#~ "    Η εκπλήρωση SHA1 έρχεται ΟΠΩΣ ΕΙΝΑΙ, και ΚΑΘΕ ΡΗΤΕΣ Η ΥΠΟΝΟΟΥΜΕΝΕΣ \n"
-#~ "    ΕΓΓΥΗΣΕΙΣ, συμπεριλαμβανομένες, αλλά όχι περιορισμένες σε αυτές, τις\n"
-#~ "    υπονοούμενες εγγυήσεις εμπορευσιμότητας και αρμοδιότητος για ένα ειδικό\n"
-#~ "    λόγο ΑΠΟΡΡΙΠΤΟΝΤΑΙ.\n"
-#~ "\n"
-#~ "    Θα πρέπει να έχετε λάβει ένα αντίγραφο με τους όρους της πλήρης "
-#~ "διανομής\n"
-#~ "    με το πρόγραμμα αυτό, εάν όχι, γράψτε στους developers του "
-#~ "προγράμματος.\n"
-
-#
-#~ msgid "POP Username: "
-#~ msgstr "Όνομα χρήστη POP: "
-
-#
-#~ msgid "Login failed: %s"
-#~ msgstr "Απέτυχε η είσοδος στο σύστημα: %s"
-
-#
-#~ msgid "Reading new message (%d bytes)..."
-#~ msgstr "Ανάγνωση νέου μηνύματος (%d bytes)..."
-
-#
-#~ msgid "Error reading message!"
-#~ msgstr "Σφάλμα κατά την ανάγνωση του μηνύματος!"
-
-#
-#~ msgid "%s [%d message read]"
-#~ msgstr "%s [%d μηνύματα διαβάστηκαν]"
