@@ -26,6 +26,10 @@
 # include "mutt_ssl.h"
 #endif
 
+#ifdef HAVE_LIBIDN
+#include <idna.h>
+#endif
+
 #include <unistd.h>
 #include <netinet/in.h>
 #include <netdb.h>
@@ -385,6 +389,8 @@ int raw_socket_open (CONNECTION* conn)
   int rc;
   int fd;
 
+  char *host_idna = NULL;
+  
 #ifdef HAVE_GETADDRINFO
 /* --- IPv4/6 --- */
 
@@ -406,9 +412,25 @@ int raw_socket_open (CONNECTION* conn)
 
   snprintf (port, sizeof (port), "%d", conn->account.port);
   
+# ifdef HAVE_LIBIDN
+  if (idna_to_ascii_from_locale (conn->account.host, &host_idna, 0, 1) != IDNA_SUCCESS)
+  {
+    mutt_error (_("Bad IDN \"%s\"."), conn->account.host);
+    return -1;
+  }
+# else
+  host_idna = conn->account.host;
+# endif
+
   mutt_message (_("Looking up %s..."), conn->account.host);
 
-  rc = getaddrinfo (conn->account.host, port, &hints, &res);
+  
+  rc = getaddrinfo (host_idna, port, &hints, &res);
+
+# ifdef HAVE_LIBIDN
+  FREE (&host_idna);
+# endif
+
   if (rc)
   {
     mutt_error (_("Could not find the host \"%s\""), conn->account.host);
@@ -447,14 +469,27 @@ int raw_socket_open (CONNECTION* conn)
   sin.sin_port = htons (conn->account.port);
   sin.sin_family = AF_INET;
 
+# ifdef HAVE_LIBIDN
+  if (idna_to_ascii_from_locale (conn->account.host, &host_idna, 0, 1) != IDNA_SUCCESS)
+  {
+    mutt_error (_("Bad IDN \"%s\"."), conn->account.host);
+    return -1;
+  }
+# else
+  host_idna = conn->account.host;
+# endif
+
   mutt_message (_("Looking up %s..."), conn->account.host);
 
-  if ((he = gethostbyname (conn->account.host)) == NULL)
+  if ((he = gethostbyname (host_idna)) == NULL)
   {
+    FREE (&host_idna);
     mutt_error (_("Could not find the host \"%s\""), conn->account.host);
 	
     return -1;
   }
+  
+  FREE (&host_idna);
 
   mutt_message (_("Connecting to %s..."), conn->account.host); 
 
