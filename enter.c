@@ -332,48 +332,32 @@ int _mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 	  break;
 
 	case OP_EDITOR_CAPITALIZE_WORD:
+	case OP_EDITOR_UPCASE_WORD:
+	case OP_EDITOR_DOWNCASE_WORD:
 	  if (curpos == lastchar)
 	  {
 	    BEEP ();
 	    break;
 	  }
-	  while (curpos < lastchar && ISSPACE (buf[curpos]))
-	    curpos++;
-	  if (curpos < lastchar)
-	  {
-	    buf[curpos] = toupper (buf[curpos]);
-	    curpos++;
-	  }
-	  if (curpos == lastchar || ISSPACE (buf[curpos]))
-	  {	  
-	    if (!pass)
-	    {
-	      if (curpos >= begin + width)
-		begin = curpos - width / 2;
-	      else
-		move (y, x + curpos - begin);
-	      redraw = M_REDRAW_LINE;
-	    }
-	    break;
-	  }
-	  
-	  /* fall through */
-	case OP_EDITOR_UPCASE_WORD:
-	case OP_EDITOR_DOWNCASE_WORD:
-	  if (curpos == lastchar)
-	  {
-	    BEEP();
-	    break;
-	  }
+	  while (curpos > 0 && !ISSPACE (buf[curpos]))
+	    curpos--;
 	  while (curpos < lastchar && ISSPACE (buf[curpos]))
 	    curpos++;
 	  while (curpos < lastchar && !ISSPACE(buf[curpos]))
 	  {
-	    if (ch == OP_EDITOR_UPCASE_WORD)
-	      buf[curpos] = toupper (buf[curpos]);
-	    else /* DOWNCASE_WORD, CAPITALIZE_WORD */
-	      buf[curpos] = tolower (buf[curpos]);
+	    if (ch == OP_EDITOR_DOWNCASE_WORD)
+	    {
+	      if (isupper (buf[curpos]))
+		buf[curpos] = tolower (buf[curpos]);
+	    }
+	    else /* UPCASE_WORD, CAPITALIZE_WORD */
+	    {
+	      if (islower (buf[curpos]))
+		buf[curpos] = toupper (buf[curpos]);
+	    }
 	    curpos++;
+	    if (ch == OP_EDITOR_CAPITALIZE_WORD)
+	      ch = OP_EDITOR_DOWNCASE_WORD;
 	  }
 	  if (!pass)
 	  {
