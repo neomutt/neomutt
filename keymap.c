@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1996-2000,2002 Michael R. Elkins <me@cs.hmc.edu>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -78,6 +78,7 @@ static struct mapping_t KeyNames[] = {
   { "<Esc>",	'\033' },
   { "<Tab>",	'\t' },
   { "<Space>",	' ' },
+  { "<BackTab>", KEY_BTAB },
   { NULL,	0 }
 };
 
