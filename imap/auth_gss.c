@@ -29,6 +29,7 @@
 
 #ifdef HAVE_HEIMDAL
 #  include <gssapi.h>
+#  define gss_nt_service_name GSS_C_NT_HOSTBASED_SERVICE
 #else
 #  include <gssapi/gssapi.h>
 #  include <gssapi/gssapi_generic.h>
@@ -57,8 +58,6 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
   if (!mutt_bit_isset (idata->capabilities, AGSSAPI))
     return IMAP_AUTH_UNAVAIL;
 
-  mutt_message _("Authenticating (GSS)...");
-
   if (mutt_account_getuser (&idata->conn->account))
     return IMAP_AUTH_FAILURE;
   
@@ -71,7 +70,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
   if (maj_stat != GSS_S_COMPLETE)
   {
     dprint (2, (debugfile, "Couldn't get service name for [%s]\n", buf1));
-    goto bail;
+    return IMAP_AUTH_UNAVAIL;
   }
 #ifdef DEBUG	
   else if (debuglevel >= 2)
@@ -248,7 +247,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
   }
 
  bail:
-  mutt_error _("GSS authentication failed.");
+  mutt_error _("GSSAPI authentication failed.");
   sleep (2);
   return IMAP_AUTH_FAILURE;
 }

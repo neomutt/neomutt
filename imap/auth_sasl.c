@@ -34,7 +34,8 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
   char buf[LONG_STRING];
   const char* mech;
   char* pc;
-  unsigned int len;
+  unsigned int len, olen;
+  unsigned char client_start;
 
   if (mutt_sasl_start () != SASL_OK)
     return IMAP_AUTH_FAILURE;
@@ -50,8 +51,26 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
     return IMAP_AUTH_FAILURE;
   }
 
-  rc = sasl_client_start (saslconn, idata->capstr, NULL, NULL, &pc, &len,
-    &mech);
+  /* hack for SASL ANONYMOUS support:
+   * 1. Fetch username. If it's "" or "anonymous" then
+   * 2. attempt sasl_client_start with only "AUTH=ANONYMOUS" capability
+   * 3. if sasl_client_start fails, fall through... */
+  rc = SASL_FAIL;
+
+  if (mutt_account_getuser (&idata->conn->account))
+    return IMAP_AUTH_FAILURE;
+
+  if (mutt_bit_isset (idata->capabilities, AUTH_ANON) &&
+      (!idata->conn->account.user[0] ||
+       !mutt_strncmp (idata->conn->account.user, "anonymous", 9)))
+    rc = sasl_client_start (saslconn, "AUTH=ANONYMOUS", NULL, NULL, &pc, &olen,
+      &mech);
+
+  if (rc != SASL_OK && rc != SASL_CONTINUE)
+    rc = sasl_client_start (saslconn, idata->capstr, NULL, NULL, &pc, &olen,
+      &mech);
+
+  client_start = (pc != NULL);
 
   if (rc != SASL_OK && rc != SASL_CONTINUE)
   {
@@ -66,14 +85,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
   snprintf (buf, sizeof (buf), "AUTHENTICATE %s", mech);
   imap_cmd_start (idata, buf);
 
-  /* I believe IMAP requires a server response (even if empty) before the
-   * client can send data, so len should always be zero at this point */
-  if (len != 0)
-  {
-    dprint (1, (debugfile, "imap_auth_sasl: SASL produced invalid exchange!\n"));
-    goto bail;
-  }
-
+  /* looping protocol */
   while (rc == SASL_CONTINUE)
   {
     if (mutt_socket_readln (buf, sizeof (buf), idata->conn) < 0)
@@ -86,20 +98,22 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
 	goto bail;
       }
 
-    rc = sasl_client_step (saslconn, buf, len, NULL, &pc, &len);
+    if (!client_start)
+      rc = sasl_client_step (saslconn, buf, len, NULL, &pc, &olen);
+    client_start = 0;
 
-    if (rc != SASL_CONTINUE)
-      break;
-
-    /* send out response, or line break if none needed */
-    if (sasl_encode64 (pc, len, buf, sizeof (buf), &len) != SASL_OK)
+    if (olen)
     {
-      dprint (1, (debugfile, "imap_auth_sasl: error base64-encoding client response.\n"));
-      goto bail;
-    }
+      /* send out response, or line break if none needed */
+      if (sasl_encode64 (pc, olen, buf, sizeof (buf), &olen) != SASL_OK)
+      {
+	dprint (1, (debugfile, "imap_auth_sasl: error base64-encoding client response.\n"));
+	goto bail;
+      }
       
-    strfcpy (buf + len, "\r\n", sizeof (buf) - len);
-    mutt_socket_write (idata->conn, buf);
+      strfcpy (buf + olen, "\r\n", sizeof (buf) - olen);
+      mutt_socket_write (idata->conn, buf);
+    }
   }
 
   if (rc != SASL_OK)

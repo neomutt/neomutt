@@ -25,9 +25,10 @@
 #include "auth.h"
 
 static imap_auth_t imap_authenticators[] = {
-  imap_auth_anon,
 #ifdef USE_SASL
   imap_auth_sasl,
+#else
+  imap_auth_anon,
 #endif
 #ifdef USE_GSS
   imap_auth_gss,
