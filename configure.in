@@ -474,12 +474,12 @@ AC_ARG_WITH(gss,    [    --with-gss[=DIR]         Compile in GSSAPI authenticati
 	  fi
 
 	  saved_LIBS="$LIBS"
-	  AC_CHECK_LIB(krb5, krb5_init_context,,
+	  AC_CHECK_LIB(krb5, krb5_change_cache,,
 	    AC_MSG_ERROR([could not find libkrb5 which is needed for GSS authentication]))
-	  AC_CHECK_LIB(gssapi_krb5, gss_init_sec_context,,
+	  AC_CHECK_LIB(gssapi_krb5, g_order_init,,
 	    AC_MSG_ERROR([could not find libgssapi_krb5 which is needed for GSS authentication]), -lkrb5)
 	  LIBS="$saved_LIBS"
-	  MUTTLIBS="$MUTTLIBS -lgssapi_krb5 -lkrb5"
+	  MUTTLIBS="$MUTTLIBS -lgssapi_krb5 -lkrb5 -lcrypto -lcom_err"
 	  AC_DEFINE(USE_GSS)
           need_gss="yes"
 	fi
