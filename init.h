@@ -1398,7 +1398,7 @@ struct option_t MuttVars[] = {
   ** messages to an external Unix command.
   */
 #ifdef USE_POP
-  { "pop_delete",	DT_BOOL, R_NONE, OPTPOPDELETE, 0 },
+  { "pop_delete",	DT_QUAD, R_NONE, OPTPOPDELETE, M_ASKNO },
   /*
   ** .pp
   ** If set, Mutt will delete successfully downloaded messages from the POP

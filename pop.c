@@ -82,7 +82,7 @@ void mutt_fetchPopMail (void)
   struct hostent *he;
   char buffer[2048];
   char msgbuf[SHORT_STRING];
-  int s, i, last = 0, msgs, bytes, err = 0;
+  int s, i, delanswer, last = 0, msgs, bytes, err = 0;
   CONTEXT ctx;
   MESSAGE *msg = NULL;
 
@@ -204,7 +204,10 @@ void mutt_fetchPopMail (void)
       /* ignore an error here and assume all messages are new */
       last = 0;
   }
-  
+
+  if (msgs - last)
+    delanswer = query_quadoption(OPTPOPDELETE, _("Delete messages from server?"));
+
   snprintf (msgbuf, sizeof (msgbuf),
 	    msgs > 1 ? _("Reading new messages (%d bytes)...") :
 		    _("Reading new message (%d bytes)..."), bytes);
@@ -287,7 +290,7 @@ void mutt_fetchPopMail (void)
     if (err)
       break;
 
-    if (option (OPTPOPDELETE))
+    if (delanswer == M_YES)
     {
       /* delete the message on the server */
       snprintf (buffer, sizeof(buffer), "dele %d\r\n", i);
