@@ -519,10 +519,7 @@ AC_ARG_WITH(gss,    [    --with-gss[=DIR]         Compile in GSSAPI authenticati
   	  saved_LIBS="$LIBS"
           gss_type="none"
 
-          dnl MIT kerberos V support
-          dnl Note: older krb5 distributions use -lcrypto instead of
-          dnl -lk5crypto, which collides with OpenSSL. I punt and ignore
-          dnl it here.
+          dnl New MIT kerberos V support
           AC_CHECK_LIB(gssapi_krb5, gss_init_sec_context, [
             gss_type="MIT",
             MUTTLIBS="$MUTTLIBS -lgssapi_krb5 -lkrb5 -lk5crypto -lcom_err"
@@ -536,7 +533,21 @@ AC_ARG_WITH(gss,    [    --with-gss[=DIR]         Compile in GSSAPI authenticati
               MUTTLIBS="$MUTTLIBS -lgssapi -lkrb5 -ldes -lasn1 -lroken"
               MUTTLIBS="$MUTTLIBS -lcrypt -lcom_err"
               AC_DEFINE(HAVE_HEIMDAL)
-              ],, -lgssapi -lkrb5 -ldes -lasn1 -lroken -lcrypt -lcom_err)
+              ],, -lkrb5 -ldes -lasn1 -lroken -lcrypt -lcom_err)
+          fi
+
+	  dnl Old MIT Kerberos V
+	  dnl Note: older krb5 distributions use -lcrypto instead of
+	  dnl -lk5crypto, which collides with OpenSSL.  One way of dealing
+	  dnl with that is to extract all objects from krb5's libcrypto
+	  dnl and from openssl's libcrypto into the same directory, then
+	  dnl to create a new libcrypto from these.
+          if test x$gss_type = xnone
+          then
+            AC_CHECK_LIB(gssapi_krb5, g_order_init, [
+              gss_type="OldMIT",
+              MUTTLIBS="$MUTTLIBS -lgssapi_krb5 -lkrb5 -lcrypto -lcom_err"
+              ],, -lkrb5 -lcrypto -lcom_err)
           fi
 
           if test x$gss_type = xnone
