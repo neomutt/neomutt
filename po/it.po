@@ -2393,7 +2393,7 @@ msgstr ""
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
-msgstr "[ -- INIZIO DEL MESSAGGIO DI PGP --]\n"
+msgstr "[-- INIZIO DEL MESSAGGIO DI PGP --]\n"
 
 #: pgp.c:356
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
