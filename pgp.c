@@ -830,6 +830,10 @@ int pgp_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
   *cur = pgp_decrypt_part (b, &s, *fpout, p);
 
   rewind (*fpout);
+  
+  if (!*cur) 
+    return -1;
+  
   return (0);
 }
 
