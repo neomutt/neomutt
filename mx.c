@@ -1331,19 +1331,22 @@ int mx_commit_message (MESSAGE *msg, CONTEXT *ctx)
   {
     case M_MMDF:
     {
-      fputs (MMDF_SEP, msg->fp);
+      if (fputs (MMDF_SEP, msg->fp) == EOF)
+	r = -1;
       break;
     }
     
     case M_MBOX:
     {
-      fputc ('\n', msg->fp);
+      if (fputc ('\n', msg->fp) == EOF)
+	r = -1;
       break;
     }
 
     case M_KENDRA:
     {
-      fputs (KENDRA_SEP, msg->fp);
+      if (fputs (KENDRA_SEP, msg->fp) == EOF)
+	r = -1;
       break;
     }
 
@@ -1370,6 +1373,14 @@ int mx_commit_message (MESSAGE *msg, CONTEXT *ctx)
       break;
     }
   }
+  
+  if (r == 0 && (ctx->magic == M_MBOX || ctx->magic == M_MMDF || ctx->magic == M_KENDRA)
+      && fflush (msg->fp) == EOF)
+  {
+    mutt_perror _("Can't write message");
+    r = -1;
+  }
+ 
   return r;
 }
 

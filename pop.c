@@ -313,7 +313,8 @@ void mutt_fetchPopMail (void)
 
   if (msg)
   {
-    mx_commit_message (msg, &ctx);
+    if (mx_commit_message (msg, &ctx) != 0)
+      err = 1;
     mx_close_message (&msg);
   }
   mx_close_mailbox (&ctx);

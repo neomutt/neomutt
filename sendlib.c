@@ -2082,7 +2082,8 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
     r = mutt_write_mime_body (hdr->content, msg->fp);
   }
 
-  mx_commit_message (msg, &f);
+  if (mx_commit_message (msg, &f) != 0)
+    r = -1;
   mx_close_message (&msg);
   mx_close_mailbox (&f);
 
