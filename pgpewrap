@@ -8,7 +8,7 @@ die() {
 	exit 1
 }
 
-while shift 2> /dev/null && test -n "$1" ; do
+while test $# -gt 0 && shift && test -n "$1" ; do
 	if test "$1" = "--" ; then
 		shift || die
 		pfx="$1"
