@@ -1,0 +1,38 @@
+Date: Tue, 6 Nov 2001 20:10:13 +0100
+From: Thomas Roessler <roessler@does-not-exist.org>
+To: mutt-dev@mutt.org
+Subject: To those shipping patches
+Mail-Followup-To: mutt-dev@mutt.org
+
+We've repeatedly had bug reports in the recent past where it was 
+hard to see whether or not the problematic version of mutt had, say, 
+the compressed folders patch or the NNTP patch applied.
+
+From 1.3.23.2 on, I'll include the following mechanism to add a 
+patch identifier to mutt's version ID: There's a new file called 
+.PATCHES in the source tree, which will be _empty_ in the official 
+distribution.
+
+This file's format is one patch ID per line.  Patch IDs should be 
+short, and follow the format "<initials>.<patch-description>". An 
+example would be "vvv.nntp" for Vsevolod's NNTP patch, or 
+"rr.compress" for Roland Rosenfeld's compressed folder patch.
+
+In order to properly construct this file, please include the 
+following chunk with your patch, replacing <your-id-here> by your 
+patch ID.
+
+------------------------------snip------------------------------
+--- PATCHES~    Tue Nov  6 19:59:33 2001
++++ PATCHES     Tue Nov  6 19:59:42 2001
+@@ -1,0 +1 @@
++<your-id-here>
+------------------------------snip------------------------------
+
+The patch IDs will be used to construct mutt's version number as 
+displayed when mutt is run with the 'v' command line switch, and as 
+displayed on the User-Agent header.
+
+-- 
+Thomas Roessler                        http://log.does-not-exist.org/
+

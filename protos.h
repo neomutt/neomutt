@@ -139,6 +139,9 @@ char *mutt_pgp_hook (ADDRESS *);
 #endif /* HAVE_PGP */
 char *mutt_make_date (char *, size_t);
 
+const char *mutt_make_version (void);
+const char *mutt_make_patches (void);
+
 const char *mutt_fqdn(short);
 
 void mutt_account_hook (const char* url);

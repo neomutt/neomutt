@@ -24,7 +24,6 @@
 #include "keymap.h"
 #include "mailbox.h"
 #include "url.h"
-#include "reldate.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -83,7 +82,8 @@ void mutt_exit (int code)
 
 static void mutt_usage (void)
 {
-  printf ("Mutt %s (%s)\n", MUTT_VERSION, ReleaseDate);
+  puts (mutt_make_version ());
+
   puts _(
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> ]\n\
        mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n\
@@ -118,7 +118,7 @@ static void show_version (void)
 {
   struct utsname uts;
 
-  printf ("Mutt %s (%s)\n", MUTT_VERSION, ReleaseDate);
+  puts (mutt_make_version());
   puts (_(Notice));
 
   uname (&uts);
@@ -583,7 +583,7 @@ int main (int argc, char **argv)
       show_version ();
       break;
     default:
-      printf ("Mutt %s (%s)\n", MUTT_VERSION, ReleaseDate);
+      puts (mutt_make_version ());
       puts (_(Copyright));
       puts (_(ReachingUs));
       exit (0);

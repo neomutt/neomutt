@@ -13,7 +13,7 @@ SUBDIRS = m4 po intl doc contrib $(IMAP_SUBDIR)
 
 bin_SCRIPTS = muttbug flea
 
-BUILT_SOURCES = keymap_defs.h
+BUILT_SOURCES = keymap_defs.h patches.h
 
 bin_PROGRAMS = mutt @DOTLOCK_TARGET@ @PGPAUX_TARGET@
 mutt_SOURCES = $(BUILT_SOURCES) \
@@ -79,7 +79,7 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO configure acconfig.h account.h \
 	_regex.h OPS.MIX README.SECURITY remailer.c remailer.h browser.h \
 	mbyte.h	lib.h extlib.c pgpewrap.c pgplib.h Muttrc.head Muttrc \
 	makedoc.c stamp-doc-rc README.SSL \
-	muttbug pgppacket.h depcomp ascii.h BEWARE
+	muttbug pgppacket.h depcomp ascii.h BEWARE PATCHES
 
 mutt_dotlock_SOURCES = mutt_dotlock.c
 mutt_dotlock_LDADD = @LIBOBJS@
@@ -93,7 +93,7 @@ mutt_dotlock.c: dotlock.c
 	cp $(srcdir)/dotlock.c mutt_dotlock.c
 
 CLEANFILES = mutt_dotlock.c stamp-doc-rc makedoc \
-	keymap_alldefs.h keymap_defs.h
+	keymap_alldefs.h keymap_defs.h patches.h
 
 ACLOCAL_AMFLAGS = -I m4
 
@@ -115,6 +115,9 @@ keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.PGP $(srcdir)/OPS.MIX $(srcdir)/ge
 
 reldate:
 	echo 'const char *ReleaseDate = "'`date +%Y-%m-%d`'";' > $(srcdir)/reldate.h
+
+patches.h: $(srcdir)/PATCHES
+	echo "const char *Patches = \"`tr '\n' '+' < $< | sed -e 's/\+$$//'`\";" > $@
 
 install-exec-local:
 	if test -f $(DESTDIR)$(bindir)/mutt.dotlock && test -f $(DESTDIR)$(bindir)/mutt_dotlock ; then	\

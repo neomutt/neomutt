@@ -24,6 +24,9 @@
 #include "mx.h"
 #include "url.h"
 
+#include "reldate.h"
+#include "patches.h"
+
 #ifdef USE_IMAP
 #include "imap.h"
 #endif
@@ -1283,4 +1286,18 @@ time_t mutt_decrease_mtime (const char *f, struct stat *st)
   }
   
   return mtime;
+}
+
+const char *mutt_make_version (void)
+{
+  static char vstring[STRING];
+  const char *p = mutt_make_patches ();
+  snprintf (vstring, sizeof (vstring), "Mutt %s%s%s (%s)",
+	    MUTT_VERSION, *p ? "+" : "", p, ReleaseDate);
+  return vstring;
+}
+
+const char *mutt_make_patches (void)
+{
+  return Patches;
 }

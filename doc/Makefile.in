@@ -50,10 +50,11 @@ DISTFILES = Makefile.in dotlock.man  	\
 	manual.html			\
 	stamp-doc-sgml			\
 	stamp-doc-man			\
-	instdoc.sh.in
+	instdoc.sh.in			\
+	patch-notes.txt
 
 srcdir_DOCFILES = PGP-Notes.txt applying-patches.txt	\
-	devel-notes.txt
+	devel-notes.txt patch-notes.txt
 
 
 topsrcdir_DOCFILES = COPYRIGHT GPL INSTALL ChangeLog	\
