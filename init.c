@@ -614,6 +614,9 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 
   mutt_extract_token (buf, s, 0);
 
+  dprint (2, (debugfile, "parse_alias: First token is '%s'.\n",
+	      buf->data));
+  
   /* check to see if an alias with this name already exists */
   for (; tmp; tmp = tmp->next)
   {
@@ -641,6 +644,8 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   }
 
   mutt_extract_token (buf, s, M_TOKEN_QUOTE | M_TOKEN_SPACE | M_TOKEN_SEMICOLON);
+  dprint (2, (debugfile, "parse_alias: Second token is '%s'.\n",
+	      buf->data));
   tmp->addr = mutt_parse_adrlist (tmp->addr, buf->data);
   if (last)
     last->next = tmp;
@@ -652,6 +657,21 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 	      estr, tmp->name);
     return -1;
   }
+#ifdef DEBUG
+  if (debuglevel >= 2) 
+  {
+    ADDRESS *a;
+    for (a = tmp->addr; a; a = a->next)
+    {
+      if (!a->group)
+	dprint (2, (debugfile, "parse_alias:   %s\n",
+		    a->mailbox));
+      else
+	dprint (2, (debugfile, "parse_alias:   Group %s\n",
+		    a->mailbox));
+    }
+  }
+#endif
   return 0;
 }
 
@@ -1370,6 +1390,9 @@ static int source_rc (const char *rcfile, BUFFER *err)
   size_t buflen;
   pid_t pid;
 
+  dprint (2, (debugfile, "Reading configuration file '%s'.\n",
+	  rcfile));
+  
   if ((f = mutt_open_read (rcfile, &pid)) == NULL)
   {
     snprintf (err->data, err->dsize, "%s: %s", rcfile, strerror (errno));
