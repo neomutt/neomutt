@@ -203,7 +203,7 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
     return -1;
   }
   else 
-  if (iptostring((struct sockaddr *)&local, local.ss_len, iplocalport, IP_PORT_BUFLEN) != SASL_OK){
+  if (iptostring((struct sockaddr *)&local, size, iplocalport, IP_PORT_BUFLEN) != SASL_OK){
     dprint (1, (debugfile, "mutt_sasl_client_new: iptostring for local failed\n"));
     return -1;
   }
@@ -214,7 +214,7 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
     return -1;
   }
   else 
-  if (iptostring((struct sockaddr *)&remote, remote.ss_len, ipremoteport, IP_PORT_BUFLEN) != SASL_OK){
+  if (iptostring((struct sockaddr *)&remote, size, ipremoteport, IP_PORT_BUFLEN) != SASL_OK){
     dprint (1, (debugfile, "mutt_sasl_client_new: iptostring for remote failed\n"));
     return -1;
   }
