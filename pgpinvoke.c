@@ -331,12 +331,14 @@ pid_t pgp_invoke_list_keys (FILE **pgpin, FILE **pgpout, FILE **pgperr,
 {
   char uids[HUGE_STRING];
   char tmpuids[HUGE_STRING];
-
+  char quoted[HUGE_STRING];
+  
   *uids = '\0';
   
   for (; hints; hints = hints->next)
   {
-    snprintf (tmpuids, sizeof (tmpuids), "%s %s", uids, (char *) hints->data);
+    mutt_quote_filename (quoted, sizeof (quoted), (char *) hints->data);
+    snprintf (tmpuids, sizeof (tmpuids), "%s %s", uids, quoted);
     strcpy (uids, tmpuids);	/* __STRCPY_CHECKED__ */
   }
 
