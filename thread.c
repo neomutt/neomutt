@@ -749,6 +749,7 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
 
   if (flag & (M_THREAD_COLLAPSE | M_THREAD_UNCOLLAPSE))
   {
+    cur->pair = 0; /* force index entry's color to be re-evaluated */
     cur->collapsed = flag & M_THREAD_COLLAPSE;
     if (cur->virtual != -1)
     {
@@ -775,6 +776,7 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
   {
     if (flag & (M_THREAD_COLLAPSE | M_THREAD_UNCOLLAPSE))
     {
+      cur->pair = 0; /* force index entry's color to be re-evaluated */
       cur->collapsed = flag & M_THREAD_COLLAPSE;
       if (!roothdr && CHECK_LIMIT)
       {

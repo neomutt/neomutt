@@ -86,6 +86,7 @@ Flags[] =
   { 'T', M_TAG,			0,		NULL },
   { 't', M_TO,			0,		eat_regexp },
   { 'U', M_UNREAD,		0,		NULL },
+  { 'v', M_COLLAPSED,		0,		NULL },
   { 'x', M_REFERENCE,		0,		eat_regexp },
   { 'z', M_SIZE,		0,		eat_range },
   { 0 }
@@ -863,6 +864,8 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
       return (pat->not ^ match_user (pat->alladdr, h->env->to, h->env->cc));
     case M_PERSONAL_FROM:
       return (pat->not ^ match_user (pat->alladdr, h->env->from, NULL));
+    case M_COLLAPSED:
+      return (pat->not ^ h->collapsed);
 #ifdef _PGPPATH
    case M_PGP_SIGN:
      return (pat->not ^ (h->pgp & PGPSIGN));

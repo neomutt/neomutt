@@ -193,6 +193,7 @@ enum
   M_OR,
   M_TO,
   M_CC,
+  M_COLLAPSED,
   M_SUBJECT,
   M_FROM,
   M_DATE,
