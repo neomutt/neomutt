@@ -1,3 +1,16 @@
+2003-04-02 09:05:19  Bjoern Jacke  <muttbug@j3e.de>  (roessler)
+
+	* smime_keys.pl: - add a missing filehandle closure - some
+	cleanups of unused/bogous code
+
+2003-04-02 08:47:28  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* contrib/Makefile.in, contrib/colors.default,
+	contrib/colors.linux: sample.muttrc-tlr would try to include
+	my color configurations, which weren't distrubted.  Fix
+	that. (Bug noted while helping someone else to configure
+	mutt during a conference.)
+
 2003-04-02 08:43:24  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* contrib/sample.muttrc: Fix sample.muttrc.  (Error noted by
