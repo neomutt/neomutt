@@ -671,9 +671,8 @@ void mutt_pretty_mailbox (char *s)
     if (!strncmp (p, "//", 2))
       q = strchr (p+2, '/');
     if (!q)
-      q = p;
-    else
-      p = q;
+      q = strchr (p, '\0');
+    p = q;
   }
   
   /* first attempt to collapse the pathname */
