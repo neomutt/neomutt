@@ -646,7 +646,6 @@ typedef struct
   unsigned int readonly : 1;    /* don't allow changes to the mailbox */
   unsigned int dontwrite : 1;   /* dont write the mailbox on close */
   unsigned int append : 1;	/* mailbox is opened in append mode */
-  unsigned int setgid : 1;
   unsigned int quiet : 1;	/* inhibit status messages? */
   unsigned int revsort : 1;	/* mailbox sorted in reverse? */
   unsigned int collapsed : 1;   /* are all threads collapsed? */

@@ -37,7 +37,9 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-#define CHECK_COUNT if (idxlen == 0) { mutt_error _("There are no attachments."); break; }
+static const char* There_are_no_attachments = N_("There are no attachments.");
+
+#define CHECK_COUNT if (idxlen == 0) { mutt_error _(There_are_no_attachments); break; }
 
 
 
