@@ -1878,6 +1878,11 @@ Conversely, when group-replying to a message which has a
 name="&dollar;honor&lowbar;followup&lowbar;to"> configuration
 variable is set.
 
+Note that, when header editing is enabled, you can create a
+<tt/Mail-Followup-To/ header manually.  Mutt will only auto-generate
+this header if it doesn't exist when you send the message.
+
+
 The other method some mailing list admins use is to generate a
 ``Reply-To'' field which points back to the mailing list address rather
 than the author of the message.  This can create problems when trying
