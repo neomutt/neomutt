@@ -1,3 +1,10 @@
+2003-05-13 12:50:04  Juan Altmayer Pizzorno  <juan@altmayer.com>  (roessler)
+
+	* recvattach.c: view-attachments does not extract the message
+	within a x-pkcs7-mime if it's only signed, but not encrypted.
+	Such a message results, for example, from a decrypt-save if the
+	message was previously encrypted and signed.
+
 2003-05-13 12:45:35  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
 
 	* doc/manual.sgml.head: Fix an inconsistency between manual
