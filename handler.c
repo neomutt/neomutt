@@ -1694,6 +1694,8 @@ void mutt_body_handler (BODY *b, STATE *s)
   size_t tmplength = 0;
   char type[STRING];
 
+  int oflags = s->flags;
+  
   /* first determine which handler to use to process this part */
 
   snprintf (type, sizeof (type), "%s/%s", TYPE (b), b->subtype);
@@ -1702,7 +1704,10 @@ void mutt_body_handler (BODY *b, STATE *s)
     rfc1524_entry *entry = rfc1524_new_entry ();
 
     if (rfc1524_mailcap_lookup (b, type, entry, M_AUTOVIEW))
-      handler = autoview_handler;
+    {
+      handler   = autoview_handler;
+      s->flags &= ~M_CHARCONV;
+    }
     rfc1524_free_entry (&entry);
   }
   else if (b->type == TYPETEXT)
@@ -1814,7 +1819,7 @@ void mutt_body_handler (BODY *b, STATE *s)
 	if ((s->fpout = safe_fopen (tempfile, "w")) == NULL)
 	{
 	  mutt_error _("Unable to open temporary file!");
-	  return;
+	  goto bail;
 	}
 	/* decoding the attachment changes the size and offset, so save a copy
 	 * of the "real" values now, and restore them after processing
@@ -1883,4 +1888,7 @@ void mutt_body_handler (BODY *b, STATE *s)
     }
     fputs (" --]\n", s->fpout);
   }
+  
+  bail:
+  s->flags = oflags;
 }
