@@ -32,6 +32,50 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
+#ifdef USE_SASL2
+static int getnameinfo_err(int ret)
+{
+  int err;
+  dprint (1, (debugfile, "getnameinfo: "));
+  switch(ret)
+  {
+     case EAI_AGAIN:
+       dprint (1, (debugfile, "The name could not be resolved at this time.  Future attempts may succeed.\n"));
+       err=SASL_TRYAGAIN;
+       break;
+     case EAI_BADFLAGS:
+       dprint (1, (debugfile, "The flags had an invalid value.\n"));
+       err=SASL_BADPARAM;
+       break;
+     case EAI_FAIL:
+       dprint (1, (debugfile, "A non-recoverable error occurred.\n"));
+       err=SASL_FAIL;
+       break;
+     case EAI_FAMILY:
+       dprint (1, (debugfile, "The address family was not recognized or the address length was invalid for the specified family.\n"));
+       err=SASL_BADPROT;
+       break;
+     case EAI_MEMORY:
+       dprint (1, (debugfile, "There was a memory allocation failure.\n"));
+       err=SASL_NOMEM;
+       break;
+     case EAI_NONAME:
+       dprint (1, (debugfile, "The name does not resolve for the supplied parameters.  NI_NAMEREQD is set and the host's name cannot be located, or both nodename and servname were null.\n"));
+       err=SASL_FAIL; /* no real equivalent */
+       break;
+     case EAI_SYSTEM:
+       dprint (1, (debugfile, "A system error occurred.  The error code can be found in errno(%d,%s)).\n",errno,strerror(errno)));
+       err=SASL_FAIL; /* no real equivalent */
+       break;
+     default:
+       dprint (1, (debugfile, "Unknown error %d\n",ret));
+       err=SASL_FAIL; /* no real equivalent */
+       break;
+  }
+  return err;
+}
+#endif
+
 /* arbitrary. SASL will probably use a smaller buffer anyway. OTOH it's
  * been a while since I've had access to an SASL server which negotiated
  * a protection buffer. */ 
@@ -64,15 +108,18 @@ static int mutt_sasl_conn_write (CONNECTION* conn, const char* buf,
 static int iptostring(const struct sockaddr *addr, socklen_t addrlen,
                      char *out, unsigned outlen) {
     char hbuf[NI_MAXHOST], pbuf[NI_MAXSERV];
+    int ret;
     
     if(!addr || !out) return SASL_BADPARAM;
 
-    getnameinfo(addr, addrlen, hbuf, sizeof(hbuf), pbuf, sizeof(pbuf),
-                NI_NUMERICHOST |
+    ret=getnameinfo(addr, addrlen, hbuf, sizeof(hbuf), pbuf, sizeof(pbuf),
+                   NI_NUMERICHOST |
 #ifdef NI_WITHSCOPEID
-		NI_WITHSCOPEID |
+		   NI_WITHSCOPEID |
 #endif
-		NI_NUMERICSERV);
+		   NI_NUMERICSERV);
+    if(ret)
+      return getnameinfo_err(ret);
 
     if(outlen < strlen(hbuf) + strlen(pbuf) + 2)
         return SASL_BUFOVER;
@@ -124,7 +171,7 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
 {
   sasl_security_properties_t secprops;
 #ifdef USE_SASL2
-  struct sockaddr local, remote;
+  struct sockaddr_storage local, remote;
   socklen_t size;
   char iplocalport[IP_PORT_BUFLEN], ipremoteport[IP_PORT_BUFLEN];
 #else
@@ -151,23 +198,23 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
 
 #ifdef USE_SASL2
   size = sizeof (local);
-  if (getsockname (conn->fd, &local, &size)){
+  if (getsockname (conn->fd, (struct sockaddr *)&local, &size)){
     dprint (1, (debugfile, "mutt_sasl_client_new: getsockname for local failed\n"));
     return -1;
   }
   else 
-  if (iptostring(&local, size, iplocalport, IP_PORT_BUFLEN) != SASL_OK){
+  if (iptostring((struct sockaddr *)&local, local.ss_len, iplocalport, IP_PORT_BUFLEN) != SASL_OK){
     dprint (1, (debugfile, "mutt_sasl_client_new: iptostring for local failed\n"));
     return -1;
   }
   
   size = sizeof (remote);
-  if (getpeername (conn->fd, &remote, &size)){
+  if (getpeername (conn->fd, (struct sockaddr *)&remote, &size)){
     dprint (1, (debugfile, "mutt_sasl_client_new: getsockname for remote failed\n"));
     return -1;
   }
   else 
-  if (iptostring(&remote, size, ipremoteport, IP_PORT_BUFLEN) != SASL_OK){
+  if (iptostring((struct sockaddr *)&remote, remote.ss_len, ipremoteport, IP_PORT_BUFLEN) != SASL_OK){
     dprint (1, (debugfile, "mutt_sasl_client_new: iptostring for remote failed\n"));
     return -1;
   }

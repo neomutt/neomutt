@@ -6,7 +6,7 @@ dnl Search for a GSSAPI implementation in the standard locations plus PREFIX,
 dnl if it is set and not "yes".
 dnl Defines GSSAPI_CFLAGS and GSSAPI_LIBS if found.
 dnl Defines GSSAPI_IMPL to "Heimdal", "MIT", or "OldMIT", or "none" if not found
-AC_DEFUN(MUTT_AM_PATH_GSSAPI,
+AC_DEFUN([MUTT_AM_PATH_GSSAPI],
 [
   GSSAPI_PREFIX=[$]$1
   GSSAPI_IMPL="none"
