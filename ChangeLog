@@ -1,7 +1,19 @@
+2005-01-31 02:40:14  Brendan Cully  <brendan@kublai.com>  (brendan)
+                                 
+	* acconfig.h, configure.in, hcache.c, protos.h: Begin removing
+	deprecated autoconf 2.13 backward compatibility code. Add
+	AC_CHECK_TYPES macros for uin32/64 types, use uint64_t instead of
+	long long in hcache code.
+                                 
+2005-01-29 19:15:07  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
+                                 
+     * hcache.c: - make hcache.c conform to mutt codingstyle
+     - use $Id$ CVS keyword instead of %K% BitKeeper keyword
+                                 
 2005-01-29 19:15:07  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
 
-	* hcache.c: - make hcache.c conform to mutt codingstyle - use $Id$
-	CVS keyword instead of %K% BitKeeper keyword
+	* hcache.c: - make hcache.c conform to mutt codingstyle - use
+	Id CVS keyword instead of %K% BitKeeper keyword
 
 2005-01-28 16:40:33  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
