@@ -400,6 +400,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
     switch (op = mutt_menuLoop (menu))
     {
       case OP_REDRAW:
+	menu_redraw_status (menu);
 	draw_envelope (msg, fcc);
 	menu->offset = HDR_ATTACH;
 	menu->pagelen = LINES - HDR_ATTACH - 2;

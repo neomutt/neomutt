@@ -125,6 +125,17 @@ void menu_redraw_full (MUTTMENU *menu)
   menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 }
 
+void menu_redraw_status (MUTTMENU *menu)
+{
+  char buf[STRING];
+
+  snprintf (buf, sizeof (buf), M_MODEFMT, menu->title);
+  SETCOLOR (MT_COLOR_STATUS);
+  mvprintw (option (OPTSTATUSONTOP) ? 0 : LINES - 2, 0, "%-*.*s", COLS, COLS, buf);
+  SETCOLOR (MT_COLOR_NORMAL);
+  menu->redraw &= ~REDRAW_STATUS;
+}
+
 void menu_redraw_index (MUTTMENU *menu)
 {
   char buf[STRING];
@@ -631,7 +642,6 @@ static int menu_search (MUTTMENU *menu, int op)
 int mutt_menuLoop (MUTTMENU *menu)
 {
   int i = OP_NULL;
-  char buf[STRING];
 
   FOREVER
   {
@@ -648,14 +658,7 @@ int mutt_menuLoop (MUTTMENU *menu)
     menu_check_recenter (menu);
 
     if (menu->redraw & REDRAW_STATUS)
-    {
-      snprintf (buf, sizeof (buf), M_MODEFMT, menu->title);
-      SETCOLOR (MT_COLOR_STATUS);
-      mvprintw (option (OPTSTATUSONTOP) ? 0 : LINES - 2, 0, "%-*.*s", COLS, COLS, buf);
-      SETCOLOR (MT_COLOR_NORMAL);
-      menu->redraw &= ~REDRAW_STATUS;
-    }
-
+      menu_redraw_status (menu);
     if (menu->redraw & REDRAW_INDEX)
       menu_redraw_index (menu);
     else if (menu->redraw & (REDRAW_MOTION | REDRAW_MOTION_RESYNCH))

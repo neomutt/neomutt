@@ -72,6 +72,7 @@ typedef struct menu_t
 void menu_jump (MUTTMENU *);
 void menu_redraw_full (MUTTMENU *);
 void menu_redraw_index (MUTTMENU *);
+void menu_redraw_status (MUTTMENU *);
 void menu_redraw_motion (MUTTMENU *);
 void menu_redraw_current (MUTTMENU *);
 void menu_first_entry (MUTTMENU *);
