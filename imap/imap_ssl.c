@@ -30,6 +30,7 @@
 
 #include "mutt.h"
 #include "imap.h"
+#include "imap_private.h"
 #include "imap_socket.h"
 #include "mutt_menu.h"
 #include "mutt_curses.h"
@@ -117,6 +118,14 @@ int ssl_init (void)
   mutt_error (_("Failed to find enough entropy on your system"));
   sleep (2);
   return -1;
+}
+
+void imap_set_ssl (IMAP_MBOX *mx)
+{
+  if (! (mx->flags & M_IMAP_PORT))
+    mx->port = IMAP_SSL_PORT;
+  mx->socktype = M_NEW_SSL_SOCKET;
+  mx->flags |= M_IMAP_TYPE;
 }
 
 static int ssl_socket_open_err (CONNECTION *conn)

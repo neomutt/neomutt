@@ -640,6 +640,14 @@ struct option_t MuttVars[] = {
   ** This variable configures how often (in seconds) IMAP should look for
   ** new mail.
   */
+# ifdef USE_SSL
+  { "imap_force_ssl",		DT_BOOL, R_NONE, OPTIMAPFORCESSL, 0 },
+  /*
+  ** .pp
+  ** If this variable is set, Mutt will always use SSL when
+  ** connecting to IMAP servers.
+  */
+# endif
   { "imap_list_subscribed",	DT_BOOL, R_NONE, OPTIMAPLSUB, 0 },
   /*
   ** .pp

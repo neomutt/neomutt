@@ -23,5 +23,6 @@ extern char *SslCertFile;
 extern char *SslEntropyFile;
 
 extern int ssl_socket_setup (CONNECTION *conn);
+extern void imap_set_ssl (IMAP_MBOX *mx);
 
 #endif

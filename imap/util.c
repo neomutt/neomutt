@@ -171,12 +171,7 @@ int imap_parse_path (const char *path, IMAP_MBOX *mx)
     {
 #ifdef USE_SSL
       if (!strcmp (mx->type, "ssl"))
-      {
-	if (! (mx->flags & M_IMAP_PORT))
-	  mx->port = IMAP_SSL_PORT;
-	mx->socktype = M_NEW_SSL_SOCKET;
-	mx->flags |= M_IMAP_TYPE;
-      }
+	imap_set_ssl (mx);
       else
 #endif
       {
@@ -184,8 +179,12 @@ int imap_parse_path (const char *path, IMAP_MBOX *mx)
 	return (-1);
       }
     }
+#ifdef USE_SSL
+    else if (option (OPTIMAPFORCESSL))
+      imap_set_ssl (mx);
+#endif
   }
-  
+
   return 0;
 }
 
