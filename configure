@@ -557,7 +557,7 @@ fi
 
 
 
-VERSION=0.94.6
+VERSION=0.94.7
 SUBVERSION=''
 
 ac_aux_dir=

@@ -1,3 +1,85 @@
+Fri Sep 18 05:40:24 1998  Thomas Roessler  <roessler@guug.de>
+
+	* protos.h, init.c, enter.c:
+	Applying the third generation of command completion patches.
+
+Wed Sep 16 20:08:25 1998  Thomas Roessler  <roessler@guug.de>
+
+	* curs_lib.c:
+	Attached is a minor fix to mutt_getch in curs_lib.c - as of 0.93.2i,
+	if +'metakey' and 'timeout' were both set, mutt_getch was returning
+	an ESC rather than -1, which resulted in 'key not bound' messages
+	every 'timeout' seconds.  (From: Tim Walberg <walberg@cig.mot.com>)
+
+	* copy.c:
+	[patch-0.94.6i.oe.dprint2.1] Fix a segmentation fault when running
+	in -d2 mode.
+
+	* keymap.c: Use <fN> for function keys as well as for other special
+	keys.  Additionally, this patch makes it possible to use
+	all special keys inside a key _sequence_.
+
+	* sendlib.c, mutt.h, curs_main.c, compose.c:
+	Introduce the OPTUSEHEADERDATE pseudo-option to control
+	mutt_write_rfc822_header()'s behaviour for the purposes of
+	the edit_message feature.
+
+	* init.c: When parsing aliases, don't consider ';' a token
+	delimiter.
+
+Tue Sep 15 21:41:51 1998  Thomas Roessler  <roessler@guug.de>
+
+	* init.c: Undoing Vikas' complete patch and applying
+	patch-0.94.6i.jmy.cycle_complete.1 instead.
+
+	* handler.c: _Really_ fix CRLF handling.
+
+	* charset.c: Fix the crlf handling.
+
+	* pgppubring.c: UTF8-decode PGP user ID packets.
+
+	* rfc2047.c, mutt.h, lib.c, handler.c, charset.h, charset.c:
+	Adding basic UTF-8 support.
+
+	* copy.c: When using mutt_copy_header with CH_TXTPLAIN, generate a
+	content-type _with_ a character set parameter.
+
+	* Makefile.in: Correcting a typo in the clean target.
+
+	* charsets/parse_i18n.c, charsets/gen_charsets, charsets/Makefile.in, handler.c, charset.h, charset.c:
+	Add charset alias support and fix various errors in the
+	character set code.
+
+	* charset.c: Fix mutt_display_char to map '\0' to itself regardless of
+	the translation table we use.
+
+	* charsets/Makefile.in, charsets/gen_charsets, charsets/parse_i18n.c, Attic/gen-charset.c, configure.in, configure, charset.h, charset.c, Makefile.in:
+	Generate the character set tables from i18n files.
+
+	* imap.c: Finally fix imap_quote_string().
+
+	* compose.c: [patch-0.94.6i.gt.arrow.1] Add M_ARROWCURSOR on the
+	compose menu.
+
+Mon Sep 14 21:33:34 1998  Thomas Roessler  <roessler@guug.de>
+
+	* imap.c: Fix IMAP quoting.
+
+	* Muttrc.in: Speling corection for Muttrc.in.
+
+	* init.c: [patch-0.94.6.vikas.complete.1] Fix a completion-related
+	buffer overflow.
+
+Sun Sep 13 15:29:54 1998  Thomas Roessler  <roessler@guug.de>
+
+	* reldate.h, configure.in, configure, ChangeLog: Preparing 0.94.6i.
+
+	* sendlib.c, rfc2047.c, recvattach.c, hash.h, Attic/gen-charset.c, handler.c, configure.in, configure, commands.c, charset.h, charset.c, Makefile.in:
+	This patch adds on-demand loading of character set tables,
+	changes the default location of $SHAREDIR, and fixes some
+	compilation problems occuring on machines without PGP
+	installed.
+
 Sun Sep 13 15:27:03 1998  Thomas Roessler  <roessler@guug.de>
 
 	* sendlib.c, rfc2047.c, recvattach.c, hash.h,
