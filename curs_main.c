@@ -1267,15 +1267,18 @@ int mutt_index_menu (void)
       case OP_MAIN_NEXT_UNREAD:
       case OP_MAIN_PREV_NEW:
       case OP_MAIN_PREV_UNREAD:
+      case OP_MAIN_NEXT_NEW_THEN_UNREAD:
+      case OP_MAIN_PREV_NEW_THEN_UNREAD:
 
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
+      next_unread_again:
 	i = menu->current;
 	menu->current = -1;
 	for (j = 0; j != Context->vcount; j++)
 	{
 #define CURHDRi Context->hdrs[Context->v2r[i]] 
-	  if (op == OP_MAIN_NEXT_NEW || op == OP_MAIN_NEXT_UNREAD)
+	  if (op == OP_MAIN_NEXT_NEW || op == OP_MAIN_NEXT_UNREAD || op == OP_MAIN_NEXT_NEW_THEN_UNREAD)
 	  {
 	    i++;
 	    if (i > Context->vcount - 1)
@@ -1302,7 +1305,8 @@ int mutt_index_menu (void)
 	      menu->current = i;
 	      break;
 	    }
-	    if ((op == OP_MAIN_NEXT_NEW || op == OP_MAIN_PREV_NEW) &&
+	    if ((op == OP_MAIN_NEXT_NEW || op == OP_MAIN_PREV_NEW || 
+		 op == OP_MAIN_NEXT_NEW_THEN_UNREAD || op == OP_MAIN_PREV_NEW_THEN_UNREAD) &&
 		UNREAD (CURHDRi) == 1)
 	    {
 	      menu->current = i;
@@ -1322,6 +1326,16 @@ int mutt_index_menu (void)
 	if (menu->current == -1)
 	{
 	  menu->current = menu->oldcurrent;
+	  if (op == OP_MAIN_NEXT_NEW_THEN_UNREAD) 
+	  {
+	    op = OP_MAIN_NEXT_UNREAD;
+	    goto next_unread_again;
+	  }
+	  if (op == OP_MAIN_PREV_NEW_THEN_UNREAD)
+	  {
+	    op = OP_MAIN_PREV_UNREAD;
+	    goto next_unread_again;
+	  }
 	  mutt_error ("%s%s.", (op == OP_MAIN_NEXT_NEW || op == OP_MAIN_PREV_NEW) ? _("No new messages") : _("No unread messages"),
 		      Context->pattern ? _(" in this limited view") : "");
 	}
