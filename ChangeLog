@@ -1,3 +1,12 @@
+2005-01-26 12:21:46  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* status.c: Really fix it.  Thanks to Ralf for noting the
+	typo in my earlier commit.
+	
+	* status.c: A variant of
+	<http://marc.theaimsgroup.com/?l=mutt-dev&m=110053165002362&w=2>.
+	Spotted by Ralf Wildenhues <wildenhues@ins.uni-bonn.de>.
+
 2005-01-17 02:24:49  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* cvslog2changelog.pl: cvs log emits a timezone after the
