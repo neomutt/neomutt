@@ -126,7 +126,7 @@ macro pager \cb |urlview\n 'call urlview to extract URLs out of a message'
 # set shell=""
 # set sig_dashes
 # set signature="~/.signature"
-# set simpple_search="~f %s | ~s %s"
+# set simple_search="~f %s | ~s %s"
 # set smart_wrap
 # set sort=date-sent
 # set sort_alias=alias
