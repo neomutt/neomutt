@@ -87,7 +87,7 @@ int mutt_complete (char *s, size_t slen)
       *p++ = 0;
       snprintf (buf, sizeof (buf), "%s/%s", exp_dirpart, s+1);
       strfcpy (exp_dirpart, buf, sizeof (exp_dirpart));
-      snprintf (buf, sizeof (buf), "%s/%s", dirpart, s+1);
+      snprintf (buf, sizeof (buf), "%s%s/", dirpart, s+1);
       strfcpy (dirpart, buf, sizeof (dirpart));
       strfcpy (filepart, p, sizeof (filepart));
     }
