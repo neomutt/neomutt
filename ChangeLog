@@ -1,3 +1,8 @@
+2005-02-27 03:18:23  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/message.c: Turn brain back on before committing patches
+	(that modification I made to APPEND was bogus).
+
 2005-02-27 02:44:45  Dan Hopper  <ku4nf@austin.rr.com>  (brendan)
 
 	* imap/message.c: Don't lose N flag when uploading a message to an
