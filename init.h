@@ -1485,11 +1485,11 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Since there is no pubring/secring as with PGP, mutt has to handle
-  ** storage ad retrieval of keys by itself. This is very basic right now,
+  ** storage ad retrieval of keys/certs by itself. This is very basic right now,
   ** and stores keys and certificates in two different directories, both
-  ** named as the hash-value retrieved from OpenSSl. There is an index file
-  ** which contains mailbox-address keyid pai, and which can be manually
-  ** edited.
+  ** named as the hash-value retrieved from OpenSSL. There is an index file
+  ** which contains mailbox-address keyid pair, and which can be manually
+  ** edited. This one points to the location of the private keys.
   */
   { "smime_ca_location",	DT_PATH, R_NONE, UL &SmimeCALocation, 0 },
   /*
@@ -1505,12 +1505,12 @@ struct option_t MuttVars[] = {
   ** and stores keys and certificates in two different directories, both
   ** named as the hash-value retrieved from OpenSSl. There is an index file
   ** which contains mailbox-address keyid pai, and which can be manually
-  ** edited.
+  ** edited. This one points to the location of the certificates.
   */
   { "smime_decrypt_command", 	DT_STR, R_NONE, UL &SmimeDecryptCommand, 0},
   /*
   ** .pp
-  ** This format strings specifies a command which is used to decrypt
+  ** This format string specifies a command which is used to decrypt
   ** application/x-pkcs7-mime attachments.
   ** .pp
   ** The OpenSSL command formats have their own set of printf-like sequences
@@ -1528,7 +1528,7 @@ struct option_t MuttVars[] = {
   ** . 		"-CApath $$smime_ca_location" or "-CAfile $$smime_ca_location".
   ** .de
   ** .pp
-  ** For examples on how to configure these formats, see the smime.rc
+  ** For examples on how to configure these formats, see the smime.rc in
   ** the samples/ subdirectory which has been installed on your system
   ** alongside the documentation.
   */
@@ -1565,7 +1565,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** This command is used to extract PKCS7 structures of S/MIME signatures,
-  ** in Order to extract the public X509 certificate(s).
+  ** in order to extract the public X509 certificate(s).
   */
   { "smime_get_cert_command", 	DT_STR, R_NONE, UL &SmimeGetCertCommand, 0},
   /*
@@ -1575,28 +1575,34 @@ struct option_t MuttVars[] = {
   { "smime_get_signer_cert_command", 	DT_STR, R_NONE, UL &SmimeGetSignerCertCommand, 0},
   /*
   ** .pp
-  ** This command is used to extract only the signers X509 certificate from a S/MIME signature,
-  ** so that the certificate's owner may get compared to the email's from field.
+  ** This command is used to extract only the signers X509 certificate from a S/MIME
+  **  signature, so that the certificate's owner may get compared to the email's 
+  ** 'From'-field.
   */
   { "smime_hash_cert_command", 	DT_STR, R_NONE, UL &SmimeHashCertCommand, 0},
   /*
   ** .pp
   ** This command is used to calculate a hash value used for storing
-  ** X509 certificates.
+  ** X509 certificates. (The value is derived from the cert's subject field)
+  */
+  { "smime_fingerprint_cert_command", 	DT_STR, R_NONE, UL &SmimeFingerprintCertCommand, 0},
+  /*
+  ** .pp
+  ** This command returns a md5-fingerprint of the certificate.
+  ** That way, certificates with an identical subject field can get compared.
   */
   { "smime_get_cert_email_command", 	DT_STR, R_NONE, UL &SmimeGetCertEmailCommand, 0},
   /*
   ** .pp
-  ** This command is used to extract the mail address used for storing
-  ** X509 certificates, abd for verification purposes (to see if the
-  ** certifacate was issued for the sender's mailbox.
+  ** This command is used to extract the mail address(es) used for storing
+  ** X509 certificates, and for verification purposes (to check, wether the
+  ** certifacate was issued for the sender's mailbox).
   */
   { "smime_sign_as",		DT_STR,	 R_NONE, UL &SmimeSignAs, 0 },
   /*
   ** .pp
   ** This is the default key-pair to use vor signing. This must be set to the
-  ** keyid (the hash-value, OpenSSL generates) to work properly (key handling
-  ** is very limited right now.)
+  ** keyid (the hash-value that OpenSSL generates) to work properly
   */
 #endif /* HAVE_SMIME */
   

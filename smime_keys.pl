@@ -1,6 +1,6 @@
 #! /usr/bin/perl -w
 
-# Copyright (C) 2001 Oliver Ehli <elmy@acm.org>
+# Copyright (C) 2001,2002 Oliver Ehli <elmy@acm.org>
 # Copyright (C) 2001 Mike Schiraldi <raldi@research.netsol.com>
 #
 #     This program is free software; you can redistribute it and/or modify
@@ -107,8 +107,10 @@ elsif( @ARGV == 2 and $ARGV[0] eq "add_p12") {
     handle_pem(@pem);
 }
 elsif(@ARGV == 4 and $ARGV[0] eq "add_chain") {
+    my $mailbox;
     my $cmd = "openssl x509 -noout -hash -in $ARGV[2]";
     my $cert_hash = `$cmd`;
+
     $? and die "'$cmd' returned $?";
     
     $cmd = "openssl x509 -noout -hash -in $ARGV[3]";
@@ -121,9 +123,12 @@ elsif(@ARGV == 4 and $ARGV[0] eq "add_chain") {
     my $label = query_label;
     
     add_certificate($ARGV[3], \$issuer_hash, 0, $label); 
-    my $mailbox = &add_certificate($ARGV[2], \$cert_hash, 1, $label, $issuer_hash);
+    my @mailbox = &add_certificate($ARGV[2], \$cert_hash, 1, $label, $issuer_hash);
     
-    add_key($ARGV[1], $cert_hash, $mailbox, $label);
+    foreach $mailbox (@mailbox) {
+      chomp($mailbox);
+      add_key($ARGV[1], $cert_hash, $mailbox, $label);
+    }
 }
 elsif((@ARGV == 2 or @ARGV == 3) and $ARGV[0] eq "verify") {
     verify_cert($ARGV[1], $ARGV[2]);
@@ -264,8 +269,8 @@ sub list_certs () {
       print "$fields[1]: Issued for: $fields[0] \"$fields[2]\" $keyflags{$fields[4]}\n";
     }
 
-    (my $subject_in, my $email_in, my $issuer_in, my $date1_in, my $date2_in) =
-      `openssl x509 -subject -email -issuer -dates -noout -in $certificates_path/$fields[1]`;
+    (my $subject_in, my $issuer_in, my $date1_in, my $date2_in) =
+      `openssl x509 -subject -issuer -dates -noout -in $certificates_path/$fields[1]`;
 
     my @subject = split(/\//, $subject_in);
     while(@subject) {
@@ -379,6 +384,7 @@ sub add_certificate ($$$$;$) {
     my $issuer_hash = shift;
 
     my $iter = 0;
+    my @mailbox;
     my $mailbox;
 
     while(-e "$certificates_path/$$hashvalue.$iter") {
@@ -404,20 +410,22 @@ sub add_certificate ($$$$;$) {
 
         if ($add_to_index) {
 	    my $cmd = "openssl x509 -in $filename -email -noout";
-	    $mailbox = `$cmd`;
+	    @mailbox = `$cmd`;
 	    $? and die "'$cmd' returned $?";
 
-	    chomp($mailbox);
-	    add_entry($mailbox, $$hashvalue, 1, $label, $issuer_hash);
+	    foreach $mailbox (@mailbox) {
+	      chomp($mailbox);
+	      add_entry($mailbox, $$hashvalue, 1, $label, $issuer_hash);
 
-            print "added certificate: $certificates_path/$$hashvalue for $mailbox.\n";
+	      print "added certificate: $certificates_path/$$hashvalue for $mailbox.\n";
+	    }
         }
         else {
             print "added certificate: $certificates_path/$$hashvalue.\n";
         }
     }
 
-    return $mailbox;
+    return @mailbox;
 }
 
 
@@ -430,10 +438,11 @@ sub add_key ($$$$) {
     unless (-e "$private_keys_path/$hashvalue") {
         my $cmd = "cp $file $private_keys_path/$hashvalue";
 	system $cmd and die "$cmd returned $!";
-	print "added private key: " .
-	      "$private_keys_path/$hashvalue for $mailbox\n";
-	add_entry($mailbox, $hashvalue, 0, $label, "");
     }    
+
+    add_entry($mailbox, $hashvalue, 0, $label, "");
+    print "added private key: " .
+      "$private_keys_path/$hashvalue for $mailbox\n";
 } 
 
 
@@ -514,6 +523,8 @@ sub handle_pem (@) {
     my $root_cert;
     my $key;
     my $certificate;
+    my $intermediate;
+    my @mailbox;
     my $mailbox;
 
     @pem_contents = &parse_pem(@_);
@@ -526,7 +537,7 @@ sub handle_pem (@) {
         }
         $iter++;
     }
-    ($key > $#pem_contents>>2) and die("Couldn't find private key!");
+    ($iter > $#pem_contents>>2) and die("Couldn't find private key!");
 
     $pem_contents[($key<<2)+1] or die("Attribute 'localKeyID' wasn't set.");
 
@@ -539,7 +550,7 @@ sub handle_pem (@) {
         }
         $iter++;
     }
-    ($certificate > $#pem_contents>>2) and die("Couldn't find matching certificate!");
+    ($iter > $#pem_contents>>2) and die("Couldn't find matching certificate!");
 
     my $cmd = "cp cert_tmp.$key tmp_key";
     system $cmd and die "'$cmd' returned $?";
@@ -562,13 +573,15 @@ sub handle_pem (@) {
         }
         $iter++;
     }
-    ($root_cert > $#pem_contents>>2) and die("Couldn't identify root certificate!");
+    ($iter > $#pem_contents>>2) and die("Couldn't identify root certificate!");
 
     # what's left are intermediate certificates.
     $iter = 0;
 
     unlink "tmp_issuer_cert";
 
+    # needs to be set, so we can check it later
+    $intermediate = $root_cert;
     while($iter <= $#pem_contents>>2) {
         if ($iter == $key or $iter == $certificate or $iter == $root_cert) {
             $iter++; 
@@ -578,7 +591,15 @@ sub handle_pem (@) {
         my $cmd = "cat cert_tmp.$iter >> tmp_issuer_cert";
         system $cmd and die "'$cmd' returned $?";
 
+	# although there may be many, just need to know if there was any
+	$intermediate = $iter;
+
         $iter++;
+    }
+
+    # no intermediate certificates ? use root-cert instead
+    if($intermediate == $root_cert) {
+      $cmd = "cp cert_tmp.$root_cert tmp_issuer_cert";
     }
 
     my $label = query_label;
@@ -596,8 +617,11 @@ sub handle_pem (@) {
     # Note: $cert_hash will be changed to reflect the correct filename
     #       within add_cert() ONLY, so these _have_ to get called first..
     add_certificate("tmp_issuer_cert", \$issuer_hash, 0, $label);
-    $mailbox = &add_certificate("tmp_certificate", \$cert_hash, 1, $label, $issuer_hash); 
-    add_key("tmp_key", $cert_hash, $mailbox, $label);
+    @mailbox = &add_certificate("tmp_certificate", \$cert_hash, 1, $label, $issuer_hash); 
+    foreach $mailbox (@mailbox) {
+      chomp($mailbox);
+      add_key("tmp_key", $cert_hash, $mailbox, $label);
+    }
     
     unlink <cert_tmp.*>;
     unlink <tmp_*>;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2001 Oliver Ehli <elmy@acm.org>
+ * Copyright (C) 2001,2002 Oliver Ehli <elmy@acm.org>
  * Copyright (C) 2002 Mike Schiraldi <raldi@research.netsol.com>
  *
  *     This program is free software; you can redistribute it and/or modify
@@ -856,12 +856,13 @@ char *smime_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
 
 
 
-static int smime_check_cert_email (char *certificate, char *mailbox)
+static int smime_handle_cert_email (char *certificate, char *mailbox,
+				   int copy, char ***buffer, int *num)
 {
   FILE *fpout = NULL, *fperr = NULL;
   char tmpfname[_POSIX_PATH_MAX];
   char email[STRING];
-  int ret = -1;
+  int ret = -1, count = 0;
   pid_t thepid;
 
   mutt_mktemp (tmpfname);
@@ -902,14 +903,14 @@ static int smime_check_cert_email (char *certificate, char *mailbox)
 
   while ((fgets (email, sizeof (email), fpout)))
   {
-    *(email+mutt_strlen(email)-1) = '\0';
-    if(mutt_strncasecmp (email, mailbox, mutt_strlen (mailbox))==0)
-    {
-      ret = 0;
-      break;
-    }
-    ret = 1;
+    *(email + mutt_strlen (email)-1) = '\0';
+    if(mutt_strncasecmp (email, mailbox, mutt_strlen (mailbox)) == 0)
+      ret=1;
+
+    ret = ret < 0 ? 0 : ret;
+    count++;
   }
+
   if (ret == -1)
   {
     mutt_copy_stream (fperr, stdout);
@@ -917,13 +918,30 @@ static int smime_check_cert_email (char *certificate, char *mailbox)
     mutt_error (_("Alert: No mailbox specified in certificate.\n"));
     ret = 1;
   }
-  else if (ret == 1)
+  else if (!ret)
   {
     mutt_endwin(NULL);
-    mutt_error (_("Alert: Certificate belongs to \"%s\".\n"
-                  "       But sender was \"%s\".\n"), email, mailbox);
+    mutt_error (_("Alert: Certificate does *NOT* belong to \"%s\".\n"), mailbox);
     ret = 1;
   }
+  else ret = 0;
+
+  if(copy && buffer && num)
+  {
+    (*num) = count;
+    *buffer =  safe_calloc(sizeof(char*), count);
+    count = 0;
+
+    rewind (fpout);
+    while ((fgets (email, sizeof (email), fpout)))
+    {
+      *(email + mutt_strlen (email) - 1) = '\0';
+      (*buffer)[count] = safe_calloc(1, mutt_strlen (email) + 1);
+      strncpy((*buffer)[count], email, mutt_strlen (email));
+      count++;
+    }
+  }
+  else if(copy) ret = 2;
 
   fclose (fpout);
   fclose (fperr);
@@ -1108,22 +1126,19 @@ static char *smime_extract_signer_certificate (char *infile)
 }
 
 
-/* Add a certificate and update index file. */
 
-static void smime_add_certificate (char *certificate, char *mailbox, short public)
+static int smime_compare_fingerprint (char *certificate, char *hashval, char *dest)
 {
-  FILE *fpin = NULL, *fpout = NULL, *fperr = NULL;
-  char tmpfname[_POSIX_PATH_MAX], dest[_POSIX_PATH_MAX];
-  char buf[LONG_STRING], hashval[STRING], *tmpKey;
-  struct stat info;
-  int i = 0;
+  FILE *fpout = NULL, *fperr = NULL;
+  char tmpfname[_POSIX_PATH_MAX];
+  char md5New[STRING], md5Old[STRING];
   pid_t thepid;
 
   mutt_mktemp (tmpfname);
   if ((fperr = safe_fopen (tmpfname, "w+")) == NULL)
   {
     mutt_perror (tmpfname);
-    return;
+    return -1;
   }
   mutt_unlink (tmpfname);
 
@@ -1132,7 +1147,96 @@ static void smime_add_certificate (char *certificate, char *mailbox, short publi
   {
     fclose (fperr);
     mutt_perror (tmpfname);
-    return;
+    return -1;
+  }
+  mutt_unlink (tmpfname);
+
+  /* fingerprint the certificate to add */
+  if ((thepid =  smime_invoke (NULL, NULL, NULL,
+			       -1, fileno (fpout), fileno (fperr),
+			       certificate, NULL, NULL, NULL, NULL, NULL,
+			       SmimeFingerprintCertCommand))== -1)
+  {
+    mutt_message (_("Error: unable to create OpenSSL subprocess!"));
+    fclose (fperr);
+    fclose (fpout);
+    return -1;
+  }
+
+  mutt_wait_filter (thepid);
+  
+  fflush (fpout);
+  rewind (fpout);
+  fflush (fperr);
+  rewind (fperr);
+
+  if (!(fgets (md5New, sizeof (md5New), fpout)))
+  {
+    mutt_copy_stream (fperr, stdout);
+    fclose (fpout);
+    fclose (fperr);
+    return -1;
+  }
+
+  /* fingerprint the certificate already installed */
+  if ((thepid =  smime_invoke (NULL, NULL, NULL,
+			       -1, fileno (fpout), fileno (fperr),
+			       dest, NULL, NULL, NULL, NULL, NULL,
+			       SmimeFingerprintCertCommand))== -1)
+  {
+    mutt_message (_("Error: unable to create OpenSSL subprocess!"));
+    fclose (fperr);
+    fclose (fpout);
+    return -1;
+  }
+
+  mutt_wait_filter (thepid);
+  
+  fflush (fpout);
+  rewind (fpout);
+  fflush (fperr);
+  rewind (fperr);
+
+  if (!(fgets (md5Old, sizeof (md5Old), fpout)))
+  {
+    mutt_copy_stream (fperr, stdout);
+    fclose (fpout);
+    fclose (fperr);
+    return -1;
+  }
+
+  fclose (fpout);
+  fclose (fperr);
+
+  return ((mutt_strcasecmp (md5Old, md5New) == 0));
+}
+
+
+/* Add a certificate and update index file. */
+
+static int smime_add_certificate (char *certificate, char *mailbox)
+{
+  FILE *fpin = NULL, *fpout = NULL, *fperr = NULL;
+  char tmpfname[_POSIX_PATH_MAX], dest[_POSIX_PATH_MAX];
+  char buf[LONG_STRING], hashval[STRING], *tmpKey;
+  struct stat info;
+  int i = 0, certExists=0;
+  pid_t thepid;
+
+  mutt_mktemp (tmpfname);
+  if ((fperr = safe_fopen (tmpfname, "w+")) == NULL)
+  {
+    mutt_perror (tmpfname);
+    return 1;
+  }
+  mutt_unlink (tmpfname);
+
+  mutt_mktemp (tmpfname);
+  if ((fpout = safe_fopen (tmpfname, "w+")) == NULL)
+  {
+    fclose (fperr);
+    mutt_perror (tmpfname);
+    return 1;
   }
   mutt_unlink (tmpfname);
 
@@ -1152,22 +1256,22 @@ static void smime_add_certificate (char *certificate, char *mailbox, short publi
     mutt_message (_("Error: unable to create OpenSSL subprocess!"));
     fclose (fperr);
     fclose (fpout);
-    return;
+    return 1;
   }
 
   mutt_wait_filter (thepid);
   
   fflush (fpout);
   rewind (fpout);
-  rewind (fperr);
   fflush (fperr);
+  rewind (fperr);
 
   if (!(fgets (hashval, sizeof (hashval), fpout)))
   {
     mutt_copy_stream (fperr, stdout);
     fclose (fpout);
     fclose (fperr);
-    return;
+    return 1;
   }
   fclose (fpout);
   fclose (fperr);
@@ -1181,56 +1285,63 @@ static void smime_add_certificate (char *certificate, char *mailbox, short publi
 
     if (stat (dest, &info))
       break;
-    else
-      i++;
+    else { /* check wether this certificate already exists. */
+      if((certExists = smime_compare_fingerprint (certificate, hashval, dest)) == 1)
+      {
+	break;
+      }
+      else
+      {
+	if(!certExists)
+	  i++;
+	else  /* some error: abort. */
+	  return 1;
+      }
+    }
   }
-    
-  if ((fpout = safe_fopen (dest, "w+")) == NULL)
+  
+  if(!certExists)
   {
-    mutt_perror (dest);
-    return;
-  }
+    if ((fpout = safe_fopen (dest, "w+")) == NULL)
+    {
+      mutt_perror (dest);
+      return 1;
+    }
 
-  if ((fpin = safe_fopen (certificate, "r")) == NULL)
-  {
-    mutt_perror (certificate);
-    fclose (fpout);
-    mutt_unlink (dest);
-    return;
-  }
+    if ((fpin = safe_fopen (certificate, "r")) == NULL)
+    {
+      mutt_perror (certificate);
+      fclose (fpout);
+      mutt_unlink (dest);
+      return 1;
+    }
     
-  mutt_copy_stream (fpin, fpout);
-  fclose (fpout);
-  fclose (fpin);
+    mutt_copy_stream (fpin, fpout);
+    fclose (fpout);
+    fclose (fpin);
+  }
 
 
   /*
     Now check if the mailbox is already found with the certificate's
-    hash value.
-
-    openssl uses md5 fingerprints to check wether two keys are identical.
-    I have to add that.
-    
+    hash value and/or md5 fingerprint.
   */
   
-  tmpKey = smime_get_field_from_db (mailbox, NULL, public, 0);
+  tmpKey = smime_get_field_from_db (mailbox, NULL, 1, 0); /* _always_ public! */
 
-  /* check if hash values are identical => same certificate ? */
+  /* check if hash is identical => same certificate! */
   /* perhaps we should ask for permission to overwrite ? */
   /* what about revoked certificates anyway ? */
-
-  /* reminder: openssl checks md5 - fingerprint for equality. add this. */
 
   if (tmpKey && !mutt_strncmp (tmpKey, hashval, mutt_strlen (hashval)))
   {
     mutt_message (_("Certificate \"%s\" exists for \"%s\"."), hashval, mailbox);
-    mutt_unlink (dest);
-    return;
+    return 0;
   }
     
-  /* append to index. */
+  /* doesn't exist or is a new one, so append to index. */
   snprintf (tmpfname, sizeof (tmpfname), "%s/.index",
-	    (public ? NONULL(SmimeCertificates) : NONULL(SmimeKeys)));
+	    NONULL(SmimeCertificates)); /* _always_ public: we don't add keys here */
   
   if (!stat (tmpfname, &info))
   {
@@ -1238,11 +1349,11 @@ static void smime_add_certificate (char *certificate, char *mailbox, short publi
     {
       mutt_perror (tmpfname);
       mutt_unlink (dest);
-      return;
+      return 1;
     }
     /*
        ? = unknown issuer, - = unassigned label,
-       u = undefined trust settings.
+       v = undefined trust settings (else we wouldn't have got that far).
     */
     snprintf (buf, sizeof (buf), "%s %s.%d - ? u\n", mailbox, hashval, i);
     fputs (buf, fpout);
@@ -1251,40 +1362,52 @@ static void smime_add_certificate (char *certificate, char *mailbox, short publi
     mutt_message (_("Successfully added certificate \"%s\" for \"%s\". "), hashval, mailbox);
   }
 
-  return;
+  return 0;
 }
 
 
 
 void smime_invoke_import (char *infile, char *mailbox)
 {
-  char *certfile = NULL;
-  int i;
+  char *certfile = NULL, **addrList=0;
+  int i, addrCount=0, ret = 0;
   certfile = smime_extract_signer_certificate(infile);
   
-  if (certfile == NULL)
+  if (certfile)
   { 
-    mutt_message _("Certificate *NOT* added.");
-    return;
-  }  
+    i = smime_handle_cert_email (certfile, mailbox, 1, &addrList, &addrCount);
   
-  i = smime_check_cert_email (certfile, mailbox);
+    mutt_unlink(certfile);
   
-  mutt_unlink(certfile);
-  
-  if (i)
-  {
-    mutt_message _("Certificate *NOT* added.");
-    return;
-  }
+    if (i)
+    {
+      mutt_message _("Certificate *NOT* added.");
+      return;
+    }
+    if ((certfile = smime_extract_certificate(infile)))
+    {
+      for (i = 0; i < addrCount; i++)
+      {
+	/* perhaps we shouldn't abort completley ? */
 
-  if ((certfile = smime_extract_certificate(infile)))
+	if(!ret)
+	  ret = smime_add_certificate (certfile, addrList[i]);
+
+	safe_free((void **)&(addrList[i]));
+      }
+      mutt_unlink (certfile);
+      safe_free((void **)&certfile);
+      safe_free((void **)&addrList);
+    }
+    if(!ret)
+      return;
+  }  
+
+  if(isendwin())
   {
-    smime_add_certificate (certfile, mailbox, 1);
-    mutt_unlink (certfile);
-    safe_free((void **)&certfile);
+    mutt_any_key_to_continue(NULL);
+    mutt_message _("Certificate *NOT* added.");
   }
-  
   return;
 }
 
@@ -1329,7 +1452,7 @@ int smime_verify_sender(HEADER *h)
     if ((certfile = smime_extract_signer_certificate(tempfname)))
     {
       mutt_unlink(tempfname);
-      if (smime_check_cert_email (certfile, mbox))
+      if (smime_handle_cert_email (certfile, mbox, 0, NULL, NULL))
 	mutt_any_key_to_continue(NULL);
       else
 	retval = 0;

@@ -45,6 +45,10 @@ set smime_get_signer_cert_command="openssl smime -verify -in %f -noverify -signe
 # above directory
 set smime_hash_cert_command="openssl x509 -in  %f -noout -hash"
 
+# This is used to get a md5-fingerprint of a certificate for purpose
+# of comparism
+set smime_fingerprint_cert_command="openssl x509 -in  %f -noout -fingerprint"
+
 # This is used to get the email address the certificate was issued to.
 set smime_get_cert_email_command="openssl x509 -in  %f -noout -email"
 

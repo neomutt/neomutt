@@ -43,6 +43,7 @@ WHERE char *SmimeGetSignerCertCommand;
 WHERE char *SmimePk7outCommand;
 WHERE char *SmimeGetCertCommand;
 WHERE char *SmimeHashCertCommand;
+WHERE char *SmimeFingerprintCertCommand;
 WHERE char *SmimeGetCertEmailCommand;
 
 
