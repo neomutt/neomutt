@@ -367,13 +367,10 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 	FGETCONV *fc;
 	int c;
 	rewind (pgpout);
+	state_set_prefix (s);
 	fc = fgetconv_open (pgpout, "utf-8", Charset, 0);
 	while ((c = fgetconv (fc)) != EOF)
-	{
-	  state_putc (c, s);
-	  if (c == '\n' && s->prefix)
-	    state_puts (s->prefix, s);
-	}
+	  state_prefix_putc (c, s);
 	fgetconv_close (&fc);
       }
 
@@ -1021,7 +1018,7 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
   ADDRESS **last = &tmp;
   ADDRESS *p, *q;
   int i;
-  pgp_key_t k_info, key;
+  pgp_key_t k_info = NULL, key = NULL;
 
   const char *fqdn = mutt_fqdn (1);
   
