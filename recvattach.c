@@ -820,9 +820,22 @@ static void reply_attachment_list (int op, int tag, HEADER *hdr, BODY *body)
   if (op == SENDFORWARD && option (OPTFORWATTACH))
   {
     HEADER *newhdr = mutt_new_header();
-    mutt_prepare_edit_message (ctx, newhdr, hn);
+    char buffer [LONG_STRING];
+
+    if (mutt_prepare_edit_message (ctx, newhdr, hn) < 0)
+    {
+      mutt_free_header (&newhdr);
+      return;
+    }
+
     mutt_free_envelope (&newhdr->env);
     newhdr->env = mutt_new_envelope();
+
+    /* set the default subject for the message. */
+    buffer[0] = 0;
+    mutt_make_string (buffer, sizeof (buffer), NONULL(ForwFmt), ctx, hn);
+    newhdr->env->subject = safe_strdup (buffer);
+
     ci_send_message (0, newhdr, NULL, ctx, NULL);
   }
   else
