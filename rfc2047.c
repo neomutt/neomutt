@@ -623,6 +623,40 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
   return (0);
 }
 
+/*
+ * Find the start and end of the first encoded word in the string.
+ * We use the grammar in section 2 of RFC 2047, but the "encoding"
+ * must be B or Q. Also, we don't require the encoded word to be
+ * separated by linear-white-space (section 5(1)).
+ */
+static const char *find_encoded_word (const char *s, const char **x)
+{
+  const char *p, *q;
+
+  q = s;
+  while ((p = strstr (q, "=?")))
+  {
+    for (q = p + 2;
+	 0x20 < *q && *q < 0x7f && !strchr ("()<>@,;:\"/[]?.=", *q);
+	 q++)
+      ;
+    if (q[0] != '?' || !strchr ("BbQq", q[1]) || q[2] != '?')
+      continue;
+    for (q = q + 3; 0x20 < *q && *q < 0x7f && *q != '?'; q++)
+      ;
+    if (q[0] != '?' || q[1] != '=')
+    {
+      --q;
+      continue;
+    }
+
+    *x = q + 2;
+    return p;
+  }
+
+  return 0;
+}
+
 /* try to decode anything that looks like a valid RFC2047 encoded
  * header field, ignoring RFC822 parsing rules
  */
@@ -638,15 +672,12 @@ void rfc2047_decode (char **pd)
   if (!*s)
     return;
 
-  dlen = MB_LEN_MAX * strlen (s); /* should be enough */
+  dlen = 4 * strlen (s); /* should be enough */
   d = d0 = safe_malloc (dlen + 1);
 
   while (*s && dlen > 0)
   {
-    if ((p = strstr (s, "=?")) == NULL ||
-	(q = strchr (p + 2, '?')) == NULL ||
-	(q = strchr (q + 1, '?')) == NULL ||
-	(q = strstr (q + 1, "?=")) == NULL)
+    if (!(p = find_encoded_word (s, &q)))
     {
       /* no encoded words */
       strncpy (d, s, dlen);
@@ -662,8 +693,7 @@ void rfc2047_decode (char **pd)
       {
 	if (n > dlen)
 	  n = dlen;
-	if (d != s)
-	  memcpy (d, s, n);
+	memcpy (d, s, n);
 	d += n;
 	dlen -= n;
       }
@@ -671,7 +701,7 @@ void rfc2047_decode (char **pd)
 
     rfc2047_decode_word (d, p, dlen);
     found_encoded = 1;
-    s = q + 2;
+    s = q;
     n = mutt_strlen (d);
     dlen -= n;
     d += n;
