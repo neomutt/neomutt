@@ -121,7 +121,7 @@ System definition for handing non-text MIME types.
 User's personal mapping between MIME types and file extensions.
 .IP "@sysconfdir@/mime.types"
 System mapping between MIME types and file extensions.
-.IP "@libdir@/dotlock"
+.IP "@bindir@/mutt_dotlock"
 The privileged dotlocking program.
 .SH BUGS
 .PP
