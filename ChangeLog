@@ -1,3 +1,8 @@
+2003-01-09 17:23:23  David Shaw  <dshaw@jabberwocky.com>  (roessler)
+
+	* curs_lib.c: A recent change causes all mutt_yesorno prompts
+	to come out as [yes]/yes or [no]/no.  Here's a fix.
+
 2003-01-05 22:16:02  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* smime_keys.pl: Error checking for the creation of the temporary
