@@ -922,6 +922,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
       /* copy the temp mailbox back into place starting at the first
        * change/deleted message
        */
+      mutt_message _("Committing changes...");
       i = mutt_copy_stream (fp, ctx->fp);
 
       if (ferror (ctx->fp))
