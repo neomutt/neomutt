@@ -277,6 +277,7 @@ void menu_check_recenter (MUTTMENU *menu)
   if (menu->max <= menu->pagelen)
   {
     menu->top = 0;
+    set_option (OPTNEEDREDRAW);
   }
   else if (menu->current >= menu->top + menu->pagelen)
   {
