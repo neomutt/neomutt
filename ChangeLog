@@ -1,3 +1,8 @@
+2003-02-19 21:31:19  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* parse.c: Fix a memory leak observed by Vineet Kumar
+	<mutt-dev@virtual.doorstop.net>.
+
 2003-02-13 09:55:02  David Shaw  <dshaw@jabberwocky.com>  (roessler)
 
 	* init.h: Here are some updates to the muttrc docs (spell check,
