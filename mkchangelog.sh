@@ -2,4 +2,4 @@
 
 TZ=GMT; export TZ
 date="`head -1 ChangeLog | awk '{print $1, $2}'`"
-cvs log -d ">$date" | perl ./cvslog2changelog.pl
+cvs -z9 log -d ">$date" | perl ./cvslog2changelog.pl
