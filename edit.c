@@ -79,6 +79,9 @@ be_snarf_data (FILE *f, char **buf, int *bufmax, int *buflen, int offset,
       safe_realloc ((void **)&buf, sizeof (char *) * (*bufmax += 25));
     buf[(*buflen)++] = safe_strdup (tmp);
   }
+  if (buf && *bufmax == *buflen) { /* Do not smash memory past buf */
+    safe_realloc ((void **)&buf, sizeof (char *) * (++*bufmax));
+  }
   if (buf) buf[*buflen] = NULL;
   return (buf);
 }
