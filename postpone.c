@@ -519,7 +519,6 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 {
   MESSAGE *msg = NULL;
   char file[_POSIX_PATH_MAX];
-  LIST *p, **q;
   BODY *b;
   FILE *bfp;
   

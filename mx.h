@@ -67,7 +67,7 @@ int mh_check_empty (const char *);
 
 int maildir_read_dir (CONTEXT *);
 int maildir_check_mailbox (CONTEXT *, int *);
-int maindir_check_empty (const char *);
+int maildir_check_empty (const char *);
 
 int maildir_commit_message (CONTEXT *, MESSAGE *, HEADER *);
 int mh_commit_message (CONTEXT *, MESSAGE *, HEADER *);
