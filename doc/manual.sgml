@@ -2725,11 +2725,23 @@ Type: boolean<newline>
 Default: set
 
 Controls the decoding of complex MIME messages into text/plain when
-forwarding a message and the message header is also RFC2047 decoded.
+forwarding a message.  The message header is also RFC2047 decoded.
 This variable is only used, if <ref id="mime_forward"
 name="mime&lowbar;forward"> is <em/unset/, otherwise <ref
-id="mime_forward_decode" name="mime&lowbar;forward&lowbar;decode"> is
-used instead.
+id="mime_forward_decode" name="mime&lowbar;forward&lowbar;decode">
+is used instead.
+
+<sect2>forward&lowbar;decrypt<label id="forward_decrypt">
+<p>
+Type: boolean<newline>
+Default: unset
+
+Controls the handling of encrypted messages when forwarding a
+message.  When set, the outer layer of encryption is stripped off.
+This variable is only used if <ref id="mime_forward"
+name="mime&lowbar;forward"> is <em/set/ and <ref
+id="mime_forward_decode" name="mime&lowbar;forward&lowbar;decode">
+is <em/unset/.
 
 <sect2>forward&lowbar;format<label id="forward_format">
 <p>
@@ -3043,6 +3055,16 @@ the high bit removed.  For example, if the key pressed has an ASCII value of
 0xf4, then this is treated as if the user had pressed ESC then ``x''.  This
 is because the result of removing the high bit from ``0xf4'' is ``0x74'',
 which is the ASCII character ``x''.
+
+<sect2>mh&lowbar;purge<label id="mh_purge">
+<p>
+Type: boolean<newline>
+Default: unset
+
+When unset, mutt will mimic mh's behaviour and rename deleted
+messages to <em/,&lt;old file name&gt;/ in mh folders instead of
+really deleting them.  If the variable is set, the message files
+will simply be deleted.
 
 <sect2>mime&lowbar;forward<label id="mime_forward">
 <p>
@@ -3763,6 +3785,15 @@ Controls the display of lines longer then the screen width in the
 internal pager. If set, long lines are wrapped at a word boundary.
 If unset, lines are simply wrapped at the screen edge. Also see the
 <ref id="markers" name="&dollar;markers"> variable.
+
+<sect2>smileys<label id="smileys">
+<p>
+Type: string<newline>
+Default: (&gt;From)|(:&lsqb;-^&rsqb;?&lsqb;&rsqb;&lsqb;)(&gt;&lt;}{|/DP&rsqb;)
+
+The <em/pager/ uses this variable to catch some common false
+positives of <ref id="quote_regexp" name="quote&lowbar;regexp">,
+most notably smileys in the beginning of a line
 
 <sect2>sort<label id="sort">
 <p>
