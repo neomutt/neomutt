@@ -122,14 +122,17 @@ static void browser_sort (struct browser_state *state)
   qsort (state->entry, state->entrylen, sizeof (struct folder_file), f);
 }
 
-static int link_is_dir (const char *path)
+static int link_is_dir (const char *folder, const char *path)
 {
   struct stat st;
-
-  if (stat (path, &st) == 0)
+  char fullpath[_POSIX_PATH_MAX];
+  
+  snprintf (fullpath, sizeof (fullpath), "%s/%s", folder, path);
+  
+  if (stat (fullpath, &st) == 0)
     return (S_ISDIR (st.st_mode));
   else
-    return (-1);
+    return 0;
 }
 
 static const char *
@@ -492,7 +495,7 @@ static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
 int file_tag (MUTTMENU *menu, int n)
 {
   struct folder_file *ff = &(((struct folder_file *)menu->data)[n]);
-  if (S_ISDIR (ff->mode) || (S_ISLNK (ff->mode) && link_is_dir (ff->name)))
+  if (S_ISDIR (ff->mode) || (S_ISLNK (ff->mode) && link_is_dir (LastDir, ff->name)))
   {
     mutt_error _("Can't attach a directory!");
     return 0;
@@ -618,7 +621,7 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 
         if (S_ISDIR (state.entry[menu->current].mode) ||
 	    (S_ISLNK (state.entry[menu->current].mode) &&
-	    link_is_dir (state.entry[menu->current].name)) 
+	    link_is_dir (LastDir, state.entry[menu->current].name)) 
 #ifdef USE_IMAP
 	    || state.entry[menu->current].notfolder
 #endif
@@ -843,10 +846,11 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 #ifdef USE_IMAP
 	if (!state.imap_browse)
 #endif
-	{/* add '/' at the end of the directory name */
-	int len=mutt_strlen(LastDir);
-	if (sizeof (buf) > len)
-	  buf[len]='/';
+	{
+	  /* add '/' at the end of the directory name */
+	  int len=mutt_strlen(LastDir);
+	  if (sizeof (buf) > len)
+	    buf[len]='/';
 	}
 
 	if (mutt_get_field (_("Chdir to: "), buf, sizeof (buf), M_FILE) == 0 &&
@@ -1057,7 +1061,7 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 
         if (S_ISDIR (state.entry[menu->current].mode) ||
 	    (S_ISLNK (state.entry[menu->current].mode) &&
-	    link_is_dir (state.entry[menu->current].name)))
+	    link_is_dir (LastDir, state.entry[menu->current].name)))
 	{
 	  mutt_error _("Can't view a directory");
 	  break;
