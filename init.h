@@ -1511,7 +1511,10 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Controls whether or not you are prompted to recall postponed messages
-  ** when composing a new message.  Also see ``$postponed''
+  ** when composing a new message.  Also see ``$$postponed''.
+  ** .pp
+  ** Setting this variable to ``yes'' is not generally useful, and thus not
+  ** recommended.
   */
   { "record",		DT_PATH, R_NONE, UL &Outbox, UL "" },
   /*
