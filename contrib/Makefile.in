@@ -21,11 +21,12 @@ VPATH=@srcdir@
 
 subdir=contrib
 
-DISTFILES=Mush.rc Pine.rc Tin.rc Makefile.in language.txt language50.txt  \
-	patch.slang-1.2.2.keypad.1 sample.muttrc  sample.mailcap	\
-	pgp2.rc pgp5.rc gpg.rc sample.muttrc-tlr
+SAMPLES=Mush.rc Pine.rc gpg.rc pgp2.rc pgp5.rc pgp6.rc Tin.rc \
+	sample.muttrc  sample.mailcap sample.muttrc-tlr
 
-SAMPLES=Mush.rc Pine.rc gpg.rc pgp2.rc pgp5.rc pgp6.rc Tin.rc
+DISTFILES= Makefile.in language.txt language50.txt  \
+	patch.slang-1.2.2.keypad.1	\
+	$(SAMPLES)
 
 all clean:
 
