@@ -525,6 +525,8 @@ then
 fi
 AM_CONDITIONAL(USE_GSS, test x$need_gss = xyes)
 
+dnl -- end imap dependencies --
+
 AC_ARG_WITH(ssl, [  --with-ssl[=PFX]           Compile in SSL support for POP/IMAP],
 [       if test "$with_ssl" != "no"
         then
@@ -577,8 +579,6 @@ AC_ARG_WITH(nss, [  --with-nss[=PFX]           Compile in SSL support for POP/IM
           need_ssl=yes
         fi
 ])
-
-dnl -- end imap dependencies --
 
 AC_ARG_WITH(sasl, [  --with-sasl[=PFX]          Use Cyrus SASL library for POP/IMAP authentication],
         [

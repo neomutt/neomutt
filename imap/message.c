@@ -145,7 +145,6 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       /* update context with message header */
       ctx->hdrs[msgno] = mutt_new_header ();
 
-      ctx->hdrs[msgno]->index = ctx->msgcount;
       ctx->hdrs[msgno]->index = h.sid - 1;
       if (h.sid != ctx->msgcount + 1)
 	dprint (1, (debugfile, "imap_read_headers: msgcount and sequence ID are inconsistent!"));

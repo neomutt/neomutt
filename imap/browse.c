@@ -439,7 +439,7 @@ static int browse_get_namespace (IMAP_DATA* idata, char* nsbuf, int nsblen,
       for (type = IMAP_NS_PERSONAL; *s; type++)
       {
 	s = imap_next_word (s);
-	if (ascii_strncasecmp (s, "NIL", 3))
+	if (*s && ascii_strncasecmp (s, "NIL", 3))
 	{
 	  s++;
 	  while (*s && *s != ')')
