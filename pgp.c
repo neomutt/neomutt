@@ -797,8 +797,10 @@ BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout, BODY *p)
   fflush (fpout);
   rewind (fpout);
   
-  if (feof (fpout))
+  if (fgetc (fpout) == EOF)
     return NULL;
+
+  rewind (fpout);
   
   if ((tattach = mutt_read_mime_header (fpout, 0)) != NULL)
   {
