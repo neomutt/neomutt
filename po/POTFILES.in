@@ -1,4 +1,3 @@
-# $Id$
 acconfig.h
 addrbook.c
 alias.c
@@ -36,8 +35,6 @@ help.c
 history.c
 history.h
 hook.c
-imap.c
-imap.h
 init.c
 init.h
 keymap.c
@@ -55,7 +52,6 @@ mutt.h
 mutt_curses.h
 mutt_menu.h
 mutt_regex.h
-mutt_socket.h
 mx.c
 mx.h
 pager.c
@@ -88,10 +84,18 @@ sha1dgst.c
 sha_locl.h
 signal.c
 snprintf.c
-socket.c
 sort.c
 sort.h
 status.c
 strcasecmp.c
 system.c
 thread.c
+imap/auth.c
+imap/browse.c
+imap/imap.c
+imap/imap.h
+imap/imap_private.h
+imap/imap_socket.h
+imap/md5.h
+imap/md5c.c
+imap/socket.c
