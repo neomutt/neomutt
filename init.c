@@ -1402,6 +1402,29 @@ int mutt_var_value_complete (char *buffer, size_t len, int pos)
 	snprintf(pt, dlen, "%s%s", tmp,  vals[quadoption (MuttVars[idx].data)]);
       else if (DTYPE (MuttVars[idx].type) == DT_NUM)
 	snprintf (pt, dlen, "%s%d", tmp, (*((short *) MuttVars[idx].data)));
+      else if (DTYPE (MuttVars[idx].type) == DT_SORT)
+      {
+	const struct mapping_t *map;
+	char *p;
+
+	switch (MuttVars[idx].type & DT_SUBTYPE_MASK)
+	{
+	  case DT_SORT_ALIAS:
+	    map = SortAliasMethods;
+	    break;
+	  case DT_SORT_BROWSER:
+	    map = SortBrowserMethods;
+	    break;
+	  default:
+	    map = SortMethods;
+	    break;
+	}
+	p = mutt_getnamebyvalue (*((short *) MuttVars[idx].data) & SORT_MASK, map);
+	snprintf (pt, dlen, "%s\"%s%s%s\"", tmp,
+		  (*((short *) MuttVars[idx].data) & SORT_REVERSE) ? "reverse-" : "",
+		  (*((short *) MuttVars[idx].data) & SORT_LAST) ? "last-" : "",
+		  p);
+      }
       else
 	return 0;
       return 1;
