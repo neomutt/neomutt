@@ -141,7 +141,9 @@ typedef enum
 #define M_SENDHOOK	(1<<2)
 #define M_FCCHOOK	(1<<3)
 #define M_SAVEHOOK	(1<<4)
+#ifdef _PGPPATH
 #define M_PGPHOOK	(1<<5)
+#endif
 
 /* tree characters for linearize_tree and print_enriched_string */
 #define M_TREE_LLCORNER		1
