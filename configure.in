@@ -217,8 +217,30 @@ AC_TYPE_SIGNAL
 
 AC_MSG_CHECKING(for sig_atomic_t in signal.h)
 AC_EGREP_HEADER(sig_atomic_t,signal.h,dnl
-  [ ac_cv_type_sig_atomic_t=yes; AC_MSG_RESULT(yes) ],dnl
-  AC_MSG_RESULT(no); AC_CHECK_TYPE(sig_atomic_t, int))
+  [
+    ac_cv_type_sig_atomic_t=yes;
+    AC_EGREP_HEADER(volatile.*sig_atomic_t,
+                    signal.h,
+                    [
+                        is_sig_atomic_t_volatile=yes;
+                        AC_MSG_RESULT([yes, volatile])
+                    ],
+                    [
+                        is_sig_atomic_t_volatile=no;
+                        AC_MSG_RESULT([yes, non volatile])
+                    ])
+  ],
+  [
+    AC_MSG_RESULT(no)
+    AC_CHECK_TYPE(sig_atomic_t, int)
+    is_sig_atomic_t_volatile=no
+  ])
+if test $is_sig_atomic_t_volatile = 'yes'
+then
+    AC_DEFINE(SIG_ATOMIC_VOLATILE_T, sig_atomic_t)
+else
+    AC_DEFINE(SIG_ATOMIC_VOLATILE_T, [volatile sig_atomic_t])
+fi
 
 AC_DECL_SYS_SIGLIST
 

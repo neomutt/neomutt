@@ -175,3 +175,7 @@
 /* Define if you have resizeterm, as a function or macro.  */
 #undef HAVE_RESIZETERM
 
+/* Some systems declare sig_atomic_t as volatile, smome others -- no.
+ * This define will have value `sig_atomic_t' or `volatile sig_atomic_t'
+ * accordingly. */
+#undef SIG_ATOMIC_VOLATILE_T
