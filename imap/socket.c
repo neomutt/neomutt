@@ -133,8 +133,7 @@ CONNECTION *mutt_socket_select_connection (const IMAP_MBOX *mx, int newconn)
     }
   }
   conn = (CONNECTION *) safe_calloc (1, sizeof (CONNECTION));
-  conn->bufpos = 0;
-  conn->available = 0;
+  conn->fd = -1;
   memcpy (&conn->mx, mx, sizeof (conn->mx));
   conn->mx.mbox = 0;
   conn->preconnect = safe_strdup (ImapPreconnect); 
@@ -171,7 +170,7 @@ void imap_logout_all (void)
   while (conn)
   {
     /* what's up here? the last connection doesn't seem to be used */
-    if (conn->fd)
+    if (conn->fd >= 0)
     {
       snprintf (buf, sizeof (buf), _("Closing connection to %s..."),
         conn->mx.host);
@@ -218,7 +217,7 @@ static int try_socket_and_connect (CONNECTION *conn, struct sockaddr_in sin,
 
   if (connect (conn->fd, (struct sockaddr *) &sin, sizeof (sin)) < 0)
   {
-    close (conn->fd);
+    raw_socket_close (conn);
     if (verbose) 
     {
       mutt_perror ("connect");
@@ -232,7 +231,9 @@ static int try_socket_and_connect (CONNECTION *conn, struct sockaddr_in sin,
 
 int raw_socket_close (CONNECTION *conn)
 {
-  return close (conn->fd);
+  /* Close the descriptor and set it to -1 if successful.
+   * Returns the error code from close */
+  return close (conn->fd) || !(conn->fd = -1);
 }
 
 int raw_socket_read (CONNECTION *conn)
