@@ -741,8 +741,8 @@ static void mutt_restore_default (struct option_t *p)
 	  }
 	  if (REGCOMP (pp->rx, s, flags) != 0)
 	  {
-	    fprintf (stderr, _("mutt_restore_default: error in regexp: %s\n"),
-		     pp->pattern);
+	    fprintf (stderr, _("mutt_restore_default(%s): error in regexp: %s\n"),
+		     p->option, pp->pattern);
 	    FREE (&pp->pattern);
 	    regfree (pp->rx);
 	    FREE (&pp->rx);
