@@ -216,8 +216,8 @@ static pgp_key_t *parse_pub_line (char *buf, int *is_subkey, pgp_key_t *k)
       {
 	dprint (2, (debugfile, "key id: %s\n", p));
 	
-	/* We really should do a check here */
-	mutt_str_replace (&k->keyid, p);
+	if (!(*is_subkey && option (OPTPGPIGNORESUB)))
+	  mutt_str_replace (&k->keyid, p);
 	break;
 
       }
