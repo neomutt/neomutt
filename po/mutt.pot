@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-14 11:34+0200\n"
+"POT-Creation-Date: 1998-10-15 00:54+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -467,59 +467,63 @@ msgstr ""
 msgid "Unable to attach!"
 msgstr ""
 
-#: compose.c:821
+#: compose.c:818
+msgid "This encoding is deprecated.  Really use it?"
+msgstr ""
+
+#: compose.c:826
 msgid "Invalid encoding."
 msgstr ""
 
-#: compose.c:836
+#: compose.c:841
 msgid "Save a copy of this message?"
 msgstr ""
 
-#: compose.c:881
+#: compose.c:886
 msgid "Rename to: "
 msgstr ""
 
-#: compose.c:886
+#: compose.c:891
 #, c-format
 msgid "Can't stat: %s"
 msgstr ""
 
-#: compose.c:913
+#: compose.c:918
 msgid "New file: "
 msgstr ""
 
-#: compose.c:926
+#: compose.c:931
 msgid "Content-Type is of the form base/sub"
 msgstr ""
 
-#: compose.c:932
+#: compose.c:937
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr ""
 
-#: compose.c:945
+#: compose.c:950
 #, c-format
 msgid "Can't create file %s"
 msgstr ""
 
-#: compose.c:953
+#: compose.c:958
 msgid "What we have here is a failure to make an attachment"
 msgstr ""
 
-#: compose.c:1025
+#: compose.c:1030
 msgid "Postpone this message?"
 msgstr ""
 
-#: compose.c:1072
+#: compose.c:1077
 msgid "Write message to mailbox"
 msgstr ""
 
-#: compose.c:1076
+#: compose.c:1081
 #, c-format
 msgid "Writing message to %s ..."
 msgstr ""
 
-#: compose.c:1087
+#: compose.c:1092
 msgid "Message written."
 msgstr ""
 
@@ -800,58 +804,58 @@ msgid "[-- Error: unexpected end of file! --]\n"
 msgstr ""
 
 #. didn't find anything that we could display!
-#: handler.c:883
+#: handler.c:949
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr ""
 
-#: handler.c:998
+#: handler.c:1067
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr ""
 
-#: handler.c:1011
+#: handler.c:1080
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr ""
 
-#: handler.c:1077
+#: handler.c:1147
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr ""
 
-#: handler.c:1079
+#: handler.c:1149
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr ""
 
-#: handler.c:1119 handler.c:1142
+#: handler.c:1189 handler.c:1212
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr ""
 
-#: handler.c:1247
+#: handler.c:1320
 msgid "Error: multipart/signed has no protocol."
 msgstr ""
 
-#: handler.c:1259
+#: handler.c:1332
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr ""
 
-#: handler.c:1301
+#: handler.c:1374
 msgid "Unable to open temporary file!"
 msgstr ""
 
-#: handler.c:1360
+#: handler.c:1433
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr ""
 
-#: handler.c:1365
+#: handler.c:1438
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr ""
 
-#: handler.c:1367
+#: handler.c:1440
 msgid "(need 'view-attachments' bound to key!)"
 msgstr ""
 
@@ -2144,7 +2148,7 @@ msgstr ""
 msgid "No more unquoted text after quoted text."
 msgstr ""
 
-#: parse.c:477
+#: parse.c:479
 msgid "multipart message has no boundary parameter!"
 msgstr ""
 
@@ -2742,31 +2746,31 @@ msgstr ""
 msgid "Mail sent."
 msgstr ""
 
-#: sendlib.c:409
+#: sendlib.c:469
 msgid "No boundary parameter found! [report this error]"
 msgstr ""
 
-#: sendlib.c:443
+#: sendlib.c:503
 #, c-format
 msgid "%s no longer exists!"
 msgstr ""
 
-#: sendlib.c:696
+#: sendlib.c:767
 #, c-format
 msgid "Could not open %s"
 msgstr ""
 
-#: sendlib.c:1623
+#: sendlib.c:1694
 #, c-format
 msgid "Error sending message, child exited %d (%s).\n"
 msgstr ""
 
-#: sendlib.c:1625
+#: sendlib.c:1696
 #, c-format
 msgid "Saved output of child process to %s.\n"
 msgstr ""
 
-#: sendlib.c:1629
+#: sendlib.c:1700
 msgid "Error sending message."
 msgstr ""
 

@@ -814,8 +814,13 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	{
 	  if ((i = mutt_check_encoding (buf)) != ENCOTHER)
 	  {
-	    idx[menu->current]->content->encoding = i;
-	    menu->redraw = REDRAW_CURRENT;
+	    if(i != ENCUUENCODED ||
+	      mutt_yesorno(_("This encoding is deprecated.  Really use it?"), 0) == M_YES)
+	    {
+	      idx[menu->current]->content->encoding = i;
+	      menu->redraw = REDRAW_CURRENT;
+	      mutt_clear_error();
+	    }
 	  }
 	  else
 	    mutt_error _("Invalid encoding.");
