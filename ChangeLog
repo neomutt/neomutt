@@ -1,3 +1,13 @@
+* ChangeLog: date: 2005-01-11 12:16:01 +0000;  author: roessler;  state: Exp;  lines: +3 -1
+                        # changelog commit
+                                 
+              Adeodato Simó  <asp16@alu.ua.es>  ()
+                                 
+* init.h: date: 2005-01-15 07:36:37 +0000;  author: brendan;  state: Exp;  lines: +4 -2
+                                 
+                 Sundry documentation nits fixed.
+            Debian #210679, #254294, #258621, #272579
+                                 
 2005-01-11 12:15:13  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* doc/manual.sgml.head, doc/muttrc.man.head: Document send2-hook.
