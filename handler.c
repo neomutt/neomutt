@@ -296,23 +296,38 @@ unsigned char decode_byte (char ch)
   return ch - 32;
 }
 
-void mutt_decode_uuencoded (STATE *s, long len, int istext)
+void mutt_decode_uuencoded (STATE *s, BODY *b, int istext)
 {
   char tmps[SHORT_STRING];
   char linelen, c, l, out;
   char *pt;
+  CHARSET_MAP *map = NULL;
+  CHARSET *chs = NULL;
+  char *charset = mutt_get_parameter("charset", b->parameter);
+  int is_utf8 = 0;
+  long len = b->length;
+  
+  if(istext && (is_utf8 = (mutt_is_utf8(charset) && !mutt_is_utf8(Charset))))
+    chs = mutt_get_charset(Charset);
+  else
+    map = mutt_get_translation(charset, Charset);
 
-  FOREVER
+  if(istext)
+    state_set_prefix(s);
+  
+  while(len > 0)
   {
     if ((fgets(tmps, sizeof(tmps), s->fpin)) == NULL)
       return;
+    len -= strlen(tmps);
     if ((!strncmp (tmps, "begin", 5)) && isspace (tmps[5]))
       break;
   }
-  FOREVER
+  while(len > 0)
   {
     if ((fgets(tmps, sizeof(tmps), s->fpin)) == NULL)
       return;
+    len -= strlen(tmps);
     if (!strncmp (tmps, "end", 3))
       break;
     pt = tmps;
@@ -325,7 +340,7 @@ void mutt_decode_uuencoded (STATE *s, long len, int istext)
 	out = decode_byte (*pt) << l;
 	pt++;
 	out |= (decode_byte (*pt) >> (6 - l));
-	state_putc(out, s);
+	state_maybe_utf8_putc(s, out, is_utf8, chs, map);
 	c++;
 	if (c == linelen)
 	  break;
@@ -333,6 +348,11 @@ void mutt_decode_uuencoded (STATE *s, long len, int istext)
       pt++;
     }
   }
+  
+  state_reset_prefix(s);
+  if(is_utf8)
+    state_fput_utf8(s, '\0', chs);
+  
 }
 
 /* ----------------------------------------------------------------------------
@@ -1224,7 +1244,7 @@ void mutt_decode_attachment (BODY *b, STATE *s)
       mutt_decode_base64 (s, b, mutt_is_text_type (b->type, b->subtype));
       break;
     case ENCUUENCODED:
-      mutt_decode_uuencoded (s, b->length, mutt_is_text_type (b->type, b->subtype));
+      mutt_decode_uuencoded (s, b, mutt_is_text_type (b->type, b->subtype));
       break;
     default:
       mutt_decode_xbit (s, b, mutt_is_text_type (b->type, b->subtype));
