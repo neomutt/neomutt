@@ -3,7 +3,7 @@
 am()
 {
   find -name Makefile.am -print | while read f ; do
-    automake --foreign `dirname $f`/`basename $f .am` || return 1
+    automake --foreign `dirname $f`/Makefile || return 1
   done
   return 0
 }
