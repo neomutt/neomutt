@@ -292,6 +292,17 @@ When composing a message matching \fIpattern\fP, \fIcommand\fP is
 executed.  When multiple \fBsend-hook\fPs match, they are executed
 in the order in which they occur in the configuration file.
 .TP
+\fBsend2-hook\fP [\fB!\fP]\fIpattern\fP \fIcommand\fP
+Whenever a message matching \fIpattern\fP is changed (either by
+editing it or by using the compose menu), \fIcommand\fP
+is executed. When multiple \fBsend2-hook\fPs match, they are
+executed in the order in which they occur in the configuration file.
+Possible applications include setting the $sendmail variable when a
+message's from header is changed.
+.IP
+\fBsend2-hook\fP execution is not triggered by use of
+\fBenter-command\fP from the compose menu.
+.TP
 \fBcrypt-hook\fP \fIpattern\fP \fIkey-id\fP
 The crypt-hook command provides a method by which you can
 specify the ID of the public key to be used when encrypting messages
