@@ -1,3 +1,8 @@
+2002/12/07 19:15:16  Thomas Roessler <roessler@does-not-exist.org>
+
+	* ChangeLog, Makefile.am, cvslog2changelog.pl: Automatically
+	update ChangeLog as part of the commit process.
+
 2002/12/07 14:15:01  Thomas Roessler <roessler@does-not-exist.org>
 
 	* doc/Makefile.in, ChangeLog, ChangeLog.old, Makefile.am,
