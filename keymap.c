@@ -352,10 +352,10 @@ int km_dokey (int menu)
       if ((func = get_func (bindings, tmp.op)))
 	return tmp.op;
 
-      if (menu == MENU_EDITOR)
+      if (menu == MENU_EDITOR && get_func (OpEditor, tmp.op))
 	return tmp.op;
 
-      if (CurrentMenu != MENU_PAGER)
+      if (menu != MENU_EDITOR && CurrentMenu != MENU_PAGER)
       {
 	/* check generic menu */
 	bindings = OpGeneric; 
@@ -823,8 +823,9 @@ int mutt_parse_exec (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
       mutt_error (_("%s: no such command"), command);
       return (-1);
     }
+    nops++;
   }
-  while(MoreArgs(s) && ++nops < sizeof(ops)/sizeof(ops[0]));
+  while(MoreArgs(s) && nops < sizeof(ops)/sizeof(ops[0]));
   
   while(nops)
     mutt_ungetch(0, ops[--nops]);
