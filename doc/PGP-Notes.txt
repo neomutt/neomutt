@@ -1,11 +1,6 @@
-		
-		
-		USING PGP FROM WITHIN MUTT
-		
-
-	    Thomas Roessler <roessler@guug.de>
-	       Fri Jul 10 10:57:50 MEST 1998
-
+Subject: Using PGP from within mutt
+From: Thomas Roessler <roessler@guug.de>
+Date: Thu,  8 Oct 1998 14:29:01 +0200
 
 While encryption, verification and signing of messages are
 done by an externally invoked PGP binary, the key
@@ -20,7 +15,6 @@ The current document contains a short description of the
 PGP related configuration options mutt permits you to set,
 and some frequently asked questions and tips with respect
 to using Mutt with PGP.
-
 
 PGP settings
 ------------

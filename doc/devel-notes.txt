@@ -1,5 +1,9 @@
-Developers' notes
-=================
+Subject: Developers' notes
+From: Thomas Roessler <roessler@guug.de>
+Date: Thu,  8 Oct 1998 14:29:48 +0200
+
+Required tools
+--------------
 
 If you are planning to hack on mutt, please subscribe to the
 mutt-dev mailinglist (mutt-dev@mutt.org, contact
@@ -15,17 +19,18 @@ You'll need several GNU development utilities for working on mutt:
 
 - autoheader
 
-- GNU make may be needed for the dependency tricks
-
 - The i18n stuff requires GNU gettext.  See intl/VERSION for the
   version we are currently relying on.  Please note that using
   gettext-0.10 will most probably not work - get the latest test
   release from alpha.gnu.org, it's the recommended version of
   gettext anyway.
 
+- GNU make may be needed for the dependency tricks
 
-Mutt Programming Style Guide
-============================
+
+
+Style Guide
+-----------
 
 - global functions should have the prefix "mutt_".  All
   other functions should be declared "static".
