@@ -1143,7 +1143,7 @@ int mutt_search_command (int cur, int op)
     if (SigInt)
     {
       mutt_error _("Search interrupted.");
-      SigInt;
+      SigInt = 0;
       return (-1);
     }
 
