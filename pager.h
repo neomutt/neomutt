@@ -25,4 +25,4 @@ typedef struct
 } pager_t;
 
 int mutt_do_pager (const char *, const char *, int, pager_t *);
-int mutt_pager (const char *, const char *, int, pager_t *, const char *);
+int mutt_pager (const char *, const char *, int, pager_t *);

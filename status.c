@@ -199,9 +199,9 @@ status_format_str (char *buf, size_t buflen, char op, const char *src,
       break;
 
     case 'r':
-      if (Context)
-	buf[0] = (Context->readonly || Context->dontwrite) ? StChars[2] :
-	  (Context->changed || Context->deleted) ? StChars[1] : StChars[0];
+      if (Context && StChars)	/* XXX */
+        buf[0] = option(OPTATTACHMSG) ? StChars[3] : ((Context->readonly || Context->dontwrite) ? StChars[2] :
+	  (Context->changed || Context->deleted) ? StChars[1] : StChars[0]);
       else
 	buf[0] = StChars[0];
       buf[1] = 0;

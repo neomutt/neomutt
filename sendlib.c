@@ -923,7 +923,7 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
 #ifdef _PGPPATH
   int pgp = hdr->pgp;
 #endif
-  
+
 #ifdef _PGPPATH
   if ((option(OPTMIMEFORWDECODE) || option(OPTFORWDECRYPT)) &&
       (hdr->pgp & PGPENCRYPT) && !pgp_valid_passphrase())

@@ -251,7 +251,7 @@ struct option_t MuttVars[] = {
   { "sort_browser",	DT_SORT|DT_SORT_BROWSER, R_NONE, UL &BrowserSort, SORT_SUBJECT },
   { "sort_re",		DT_BOOL, R_INDEX|R_RESORT_BOTH, OPTSORTRE, 1 },
   { "spoolfile",	DT_PATH, R_NONE, UL &Spoolfile, 0 },
-  { "status_chars",	DT_STR,	 R_BOTH, UL &StChars, UL "-*%" },
+  { "status_chars",	DT_STR,	 R_BOTH, UL &StChars, UL "-*%A" },
   { "status_format",	DT_STR,	 R_BOTH, UL &Status, UL "-%r-Mutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---" },
   { "status_on_top",	DT_BOOL, R_BOTH, OPTSTATUSONTOP, 0 },
   { "strict_threads",	DT_BOOL, R_RESORT|R_INDEX, OPTSTRICTTHREADS, 0 },

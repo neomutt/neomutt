@@ -277,7 +277,7 @@ int mutt_do_pager (const char *banner,
   int rc;
   
   if (!Pager || strcmp (Pager, "builtin") == 0)
-    rc = mutt_pager (banner, tempfile, do_color, info, "");
+    rc = mutt_pager (banner, tempfile, do_color, info);
   else
   {
     char cmd[STRING];

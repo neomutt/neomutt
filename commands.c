@@ -103,7 +103,7 @@ static int is_mmnoask (const char *buf)
   return (0);
 }
 
-int mutt_display_message (HEADER *cur, const char *attach_msg_status)
+int mutt_display_message (HEADER *cur)
 {
   char tempfile[_POSIX_PATH_MAX], buf[LONG_STRING];
   int rc = 0, builtin = 0;
@@ -208,7 +208,7 @@ int mutt_display_message (HEADER *cur, const char *attach_msg_status)
     memset (&info, 0, sizeof (pager_t));
     info.hdr = cur;
     info.ctx = Context;
-    rc = mutt_pager (NULL, tempfile, 1, &info, attach_msg_status);
+    rc = mutt_pager (NULL, tempfile, 1, &info);
   }
   else
   {

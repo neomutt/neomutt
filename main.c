@@ -627,7 +627,7 @@ int main (int argc, char **argv)
 
     if ((Context = mx_open_mailbox (folder, ((flags & M_RO) || option (OPTREADONLY)) ? M_READONLY : 0, NULL)) != NULL)
     {
-      int close = mutt_index_menu (0);
+      int close = mutt_index_menu ();
 
       if (Context)
       {

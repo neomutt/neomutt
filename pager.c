@@ -73,6 +73,13 @@
 				break; \
 			}
 
+#define CHECK_ATTACH if(option(OPTATTACHMSG)) \
+		     {\
+			mutt_flushinp (); \
+			mutt_error ("Function not permitted in attach-message mode."); \
+			break; \
+		     }
+
 struct q_class_t
 {
   int length;
@@ -1305,8 +1312,7 @@ upNLines (int nlines, struct line_t *info, int cur, int hiding)
    is there so that we can do operations on the current message without the
    need to pop back out to the main-menu.  */
 int 
-mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra,
-            const char *attach_msg_status /* invoked while attaching a message */)
+mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
 {
   static char searchbuf[STRING];
   char buffer[LONG_STRING];
@@ -1541,10 +1547,7 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra,
       menu_redraw_current (index);
 
       /* print out the index status bar */
-      if (*attach_msg_status)
-	 snprintf (buffer, sizeof (buffer), M_MODEFMT, attach_msg_status);
-      else
-	menu_status_line (buffer, sizeof (buffer), index, NONULL(Status));
+      menu_status_line (buffer, sizeof (buffer), index, NONULL(Status));
  
       move (indexoffset + (option (OPTSTATUSONTOP) ? 0 : (indexlen - 1)), 0);
       SETCOLOR (MT_COLOR_STATUS);
@@ -1921,7 +1924,8 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra,
 
       case OP_BOUNCE_MESSAGE:
 	CHECK_MODE(IsHeader (extra));
-	ci_bounce_message (extra->hdr, &redraw);
+        CHECK_ATTACH;
+        ci_bounce_message (extra->hdr, &redraw);
 	break;
 
       case OP_CREATE_ALIAS:
@@ -2076,36 +2080,42 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra,
 
       case OP_MAIL:
 	CHECK_MODE(IsHeader (extra));
+        CHECK_ATTACH;      
 	ci_send_message (0, NULL, NULL, NULL, NULL);
 	redraw = REDRAW_FULL;
 	break;
 
       case OP_REPLY:
 	CHECK_MODE(IsHeader (extra));
+        CHECK_ATTACH;      
 	ci_send_message (SENDREPLY, NULL, NULL, extra->ctx, extra->hdr);
 	redraw = REDRAW_FULL;
 	break;
 
       case OP_RECALL_MESSAGE:
 	CHECK_MODE(IsHeader (extra));
+        CHECK_ATTACH;
 	ci_send_message (SENDPOSTPONED, NULL, NULL, extra->ctx, extra->hdr);
 	redraw = REDRAW_FULL;
 	break;
 
       case OP_GROUP_REPLY:
 	CHECK_MODE(IsHeader (extra));
+        CHECK_ATTACH;
 	ci_send_message (SENDREPLY | SENDGROUPREPLY, NULL, NULL, extra->ctx, extra->hdr);
 	redraw = REDRAW_FULL;
 	break;
 
       case OP_LIST_REPLY:
 	CHECK_MODE(IsHeader (extra));
+        CHECK_ATTACH;
 	ci_send_message (SENDREPLY | SENDLISTREPLY, NULL, NULL, extra->ctx, extra->hdr);
 	redraw = REDRAW_FULL;
 	break;
 
       case OP_FORWARD_MESSAGE:
 	CHECK_MODE(IsHeader (extra));
+        CHECK_ATTACH;
 	ci_send_message (SENDFORWARD, NULL, NULL, extra->ctx, extra->hdr);
 	redraw = REDRAW_FULL;
 	break;
@@ -2245,6 +2255,7 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra,
 
       case OP_MAIL_KEY:
 	CHECK_MODE(IsHeader(extra));
+        CHECK_ATTACH;
 	ci_send_message (SENDKEY, NULL, NULL, extra->ctx, extra->hdr);
 	redraw = REDRAW_FULL;
 	break;

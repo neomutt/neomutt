@@ -333,6 +333,7 @@ enum
   OPTNEEDRESCORE,	/* (pseudo) set when the `score' command is used */
   OPTSORTCOLLAPSE,	/* (pseudo) used by mutt_sort_headers() */
   OPTUSEHEADERDATE,	/* (pseudo) used by edit-message */
+  OPTATTACHMSG,		/* (pseudo) used by attach-message */
   
 #ifdef _PGPPATH
   OPTPGPCHECKTRUST,	/* (pseudo) used by pgp_select_key () */

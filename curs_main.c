@@ -67,6 +67,13 @@
 				break; \
 			}
 
+#define CHECK_ATTACH if(option(OPTATTACHMSG)) \
+		     {\
+			mutt_flushinp (); \
+			mutt_error ("Function not permitted in attach-message mode."); \
+			break; \
+		     }
+
 #define CURHDR Context->hdrs[Context->v2r[menu->current]]
 #define OLDHDR Context->hdrs[Context->v2r[menu->oldcurrent]]
 #define UNREAD(h) mutt_thread_contains_unread (Context, h)
@@ -231,9 +238,9 @@ struct mapping_t IndexHelp[] = {
 /* This function handles the message index window as well as commands returned
  * from the pager (MENU_PAGER).
  */
-int mutt_index_menu (int attach_msg /* invoked while attaching a message */)
+int mutt_index_menu (void)
 {
-  char buf[LONG_STRING], attach_msg_status[LONG_STRING] = "", helpstr[SHORT_STRING];
+  char buf[LONG_STRING], helpstr[SHORT_STRING];
   int op = OP_NULL;                 /* function to execute */
   int done = 0;                /* controls when to exit the "event" loop */
   int i = 0, j;
@@ -246,6 +253,7 @@ int mutt_index_menu (int attach_msg /* invoked while attaching a message */)
   int index_hint;   /* used to restore cursor position */
   int do_buffy_notify = 1;
   int close = 0; /* did we OP_QUIT or OP_EXIT out of this menu? */
+  int attach_msg = option(OPTATTACHMSG);
 
   menu = mutt_new_menu ();
   menu->menu = MENU_MAIN;
@@ -446,19 +454,7 @@ int mutt_index_menu (int attach_msg /* invoked while attaching a message */)
 
       if (menu->redraw & REDRAW_STATUS) 
       {
-	if (attach_msg)
-	{
-	 char from_folder [STRING];
-	 strfcpy(from_folder, Context->path, sizeof (from_folder));
-	 mutt_pretty_mailbox (from_folder);
-	 snprintf (attach_msg_status, sizeof (attach_msg_status), 
-	           "Folder: %s Tagged messages will be attached upon exiting", 
-		   from_folder);
-	 snprintf (buf, sizeof (buf), M_MODEFMT, attach_msg_status);
-	}
-	else
-	 menu_status_line (buf, sizeof (buf), menu, NONULL (Status));
-
+	menu_status_line (buf, sizeof (buf), menu, NONULL (Status));
 	CLEARLINE (option (OPTSTATUSONTOP) ? 0 : LINES-2);
 	SETCOLOR (MT_COLOR_STATUS);
 	printw ("%-*.*s", COLS, COLS, buf);
@@ -651,6 +647,7 @@ int mutt_index_menu (int attach_msg /* invoked while attaching a message */)
 
 	CHECK_MSGCOUNT;
 	CHECK_READONLY;
+	CHECK_ATTACH;
 	mutt_pattern_func (M_DELETE, "Delete messages matching: ");
 	menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 	break;
@@ -658,6 +655,7 @@ int mutt_index_menu (int attach_msg /* invoked while attaching a message */)
 #ifdef USE_POP
       case OP_MAIN_FETCH_MAIL:
 
+	CHECK_ATTACH;
 	mutt_fetchPopMail ();
 	menu->redraw = REDRAW_FULL;
 	break;
@@ -938,7 +936,7 @@ int mutt_index_menu (int attach_msg /* invoked while attaching a message */)
 	    menu->current = mutt_thread_next_unread (Context, CURHDR);
 	}
  
-	if ((op = mutt_display_message (CURHDR, attach_msg_status)) == -1)
+	if ((op = mutt_display_message (CURHDR)) == -1)
 	{
 	  unset_option (OPTNEEDRESORT);
 	  break;
@@ -1386,6 +1384,7 @@ int mutt_index_menu (int attach_msg /* invoked while attaching a message */)
 
       case OP_BOUNCE_MESSAGE:
 
+	CHECK_ATTACH;
 	CHECK_MSGCOUNT;
 	ci_bounce_message (tag ? NULL : CURHDR, &menu->redraw);
 	break;
@@ -1397,6 +1396,7 @@ int mutt_index_menu (int attach_msg /* invoked while attaching a message */)
 	break;
 
       case OP_QUERY:
+	CHECK_ATTACH;
 	mutt_query_menu (NULL, 0);
 	MAYBE_REDRAW (menu->redraw);
 	break;
@@ -1485,6 +1485,7 @@ int mutt_index_menu (int attach_msg /* invoked while attaching a message */)
 
 	CHECK_MSGCOUNT;
 	CHECK_READONLY;
+	CHECK_ATTACH;
         
         set_option(OPTUSEHEADERDATE);
 	ci_send_message (SENDEDITMSG, NULL, NULL, Context, CURHDR);
@@ -1495,6 +1496,7 @@ int mutt_index_menu (int attach_msg /* invoked while attaching a message */)
       case OP_FORWARD_MESSAGE:
 
 	CHECK_MSGCOUNT;
+	CHECK_ATTACH;
 	ci_send_message (SENDFORWARD, NULL, NULL, Context, tag ? NULL : CURHDR);
 	menu->redraw = REDRAW_FULL;
 	break;
@@ -1513,12 +1515,14 @@ int mutt_index_menu (int attach_msg /* invoked while attaching a message */)
       case OP_GROUP_REPLY:
 
 	CHECK_MSGCOUNT;
+	CHECK_ATTACH;
 	ci_send_message (SENDREPLY|SENDGROUPREPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
 	menu->redraw = REDRAW_FULL;
 	break;
 
       case OP_LIST_REPLY:
 
+	CHECK_ATTACH;
 	CHECK_MSGCOUNT;
 	ci_send_message (SENDREPLY|SENDLISTREPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
 	menu->redraw = REDRAW_FULL;
@@ -1526,6 +1530,7 @@ int mutt_index_menu (int attach_msg /* invoked while attaching a message */)
 
       case OP_MAIL:
 
+	CHECK_ATTACH;
 	ci_send_message (0, NULL, NULL, NULL, NULL);
 	menu->redraw = REDRAW_FULL;
 	break;
@@ -1539,6 +1544,7 @@ int mutt_index_menu (int attach_msg /* invoked while attaching a message */)
 #ifdef _PGPPATH
       case OP_MAIL_KEY:
 	
+	CHECK_ATTACH;
 	ci_send_message (SENDKEY, NULL, NULL, NULL, NULL);
 	menu->redraw = REDRAW_FULL;
 	break;
@@ -1592,12 +1598,14 @@ int mutt_index_menu (int attach_msg /* invoked while attaching a message */)
 
       case OP_RECALL_MESSAGE:
 
+	CHECK_ATTACH;
 	ci_send_message (SENDPOSTPONED, NULL, NULL, Context, NULL);
 	menu->redraw = REDRAW_FULL;
 	break;
 
       case OP_REPLY:
 
+	CHECK_ATTACH;
 	CHECK_MSGCOUNT;
 	ci_send_message (SENDREPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
 	menu->redraw = REDRAW_FULL;

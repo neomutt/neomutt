@@ -778,6 +778,14 @@ mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, ATTACHPTR **idx)
     toggle_option (OPTWEED);
 }
 
+
+#define CHECK_ATTACH if(option(OPTATTACHMSG)) \
+		     {\
+			mutt_flushinp (); \
+			mutt_error ("Function not permitted in attach-message mode."); \
+			break; \
+		     }
+
 void mutt_view_attachments (HEADER *hdr)
 {
 
@@ -962,6 +970,7 @@ void mutt_view_attachments (HEADER *hdr)
        break;
 
       case OP_BOUNCE_MESSAGE:
+        CHECK_ATTACH;
 	query_bounce_attachment (menu->tagprefix, menu->tagprefix ? cur : idx[menu->current]->content, hdr);
 	break;
 
@@ -970,7 +979,7 @@ void mutt_view_attachments (HEADER *hdr)
       case OP_LIST_REPLY:
       case OP_FORWARD_MESSAGE:
 
-
+        CHECK_ATTACH;
 
 #ifdef _PGPPATH
 	if ((hdr->pgp & PGPENCRYPT) && hdr->content->type == TYPEMULTIPART)

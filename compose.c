@@ -650,7 +650,10 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  
 	  this = Context; /* remember current folder */
 	  Context = ctx;
-	  close = mutt_index_menu (1);
+	  set_option(OPTATTACHMSG);
+	  close = mutt_index_menu ();
+	  unset_option(OPTATTACHMSG);
+
 	  if (!Context)
 	  {
 	    /* go back to the folder we started from */
