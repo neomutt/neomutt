@@ -1,3 +1,197 @@
+Mon Oct 11 19:16:13 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/zh_TW.Big5.po: New Chinese Translation.
+
+	* dotlock.c: [stable] Use dotlock.c from unstable.
+
+Wed Oct  6 20:20:54 1999  Thomas Roessler  <roessler@guug.de>
+
+	* Makefile.am: Makefile.am fix for unstable.
+
+	* Makefile.am:
+	[stable] Check for mutt_dotlock in $(DESTDIR)$(bindir), not in
+	$(bindir). This should fix some Debian build problems.
+
+	* init.h: fix the $from documentation.  Noted by David DeSimone.
+
+Tue Oct  5 06:50:34 1999  Thomas Roessler  <roessler@guug.de>
+
+	* compose.c, mutt.h, recvattach.c: small fixes from Gero Treuner.
+
+	* mutt.h, recvattach.c, compose.c:
+	[stable] small fixes from Gero Treuner.
+
+Mon Oct  4 10:05:26 1999  Thomas Roessler  <roessler@guug.de>
+
+	* configure.in: [stable] add pt_BR to ALL_LINGUAS.
+
+	* configure.in: add pt_BR to ALL_LINGUAS.
+
+	* po/pt_BR.po: Brasilian translation.
+
+	* po/pt_BR.po:
+	file pt_BR.po was initially added on branch mutt-1-0-stable.
+
+	* imap/BUGS, imap/Makefile.am, imap/README, imap/auth.c, imap/imap.c, imap/util.c, .cvsignore, mx.c:
+	Some fixes from Brendan Cully.
+
+	* pgpewrap: pgpewrap spits out ugly error messages when used with ash.
+
+	* configure.in:
+	AM_C_PROTOTYPES seems to be too recent for the installed
+	automake/autoconf base.
+
+	* postpone.c: Remove some nonsense from the resend-message patches.
+
+	* postpone.c: Fix a memory leak.
+
+Thu Sep 30 22:05:28 1999  Thomas Roessler  <roessler@guug.de>
+
+	* imap/message.c, send.c, sendlib.c, OPS, buffy.c, curs_main.c, functions.h, headers.c, main.c, mbox.c, mh.c, mutt.h, parse.c, parse.h, postpone.c, protos.h, recvattach.c:
+	Add a resend-message function (similar to the _old_ edit-message),
+	and redo large parts of mutt_prepare_edit_message (now
+	mutt_prepare_template).
+
+	* main.c: unstable cosmetics.
+
+	* main.c: [stable] cosmetic change suggested by marco d'itri.
+
+	* po/es.po: New spanish translation from Boris Wesslowsky.
+
+	* imap/Makefile.am, makedoc.c: Build fixes from Lars Hecking.
+
+	* doc/Attic/manual.sgml.in, Attic/Muttrc.in, NEWS, globals.h, init.h, send.c:
+	[stable] Re-add in_reply_to, this time with the right default value.
+
+	* sendlib.c: [unstable] fix the duplicate x-mailer/uesr-agent problem.
+
+	* send.c, globals.h, init.h:
+	[unstable] Re-add in-reply-to.  This time with a suitable default. #-\
+
+Wed Sep 29 17:47:33 1999  Thomas Roessler  <roessler@guug.de>
+
+	* configure.in: More fixes from Lars Hecking.
+
+	* configure.in: Adding AC_PREREQ to configure.in.
+
+	* configure.in:
+	make sure the right software is used for building mutt. Patch
+	suggested by Lars Hecking and Will Fiveash.
+
+	* pgpinvoke.c:
+	don't leak /dev/null file descriptors.  From Roland Rosenfeld.
+
+	* curs_main.c: fix^2 for stable.
+
+	* curs_main.c: Fixing the fix - missing brackets.
+
+	* curs_main.c, parse.c:
+	[stable] Fix some memory leaks noted by purify running on behalf of
+	Daniel Eisenbud.
+
+	* curs_main.c, parse.c:
+	Fix some memory leaks noted by purify running on behalf of Daniel
+	Eisenbud.
+
+Tue Sep 28 18:55:31 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/ru.po:
+	Here goes an update for version 1.0-pre3i.  The main feature of this
+	translation is that one-letter answers to multiple choice questions are not
+	localized (Thomas, could you please add this as comment to the update in CVS?)
+
+	(From: Michael Sobolev.)
+
+	* sendlib.c: [stable] Include SPACE and HT with MIME specials.
+
+	* sendlib.c: [unstable] Include SPACE and HT with MimeSpecials.
+
+	* Makefile.am: Better solution for the makedoc build using automake.
+
+	* Makefile.am:
+	Some makes apparently have to be told about how to build makedoc.
+
+Mon Sep 27 17:55:14 1999  Thomas Roessler  <roessler@guug.de>
+
+	* copy.c:
+	A back-port from unstable had missed some parts which could lead to
+	message corruption with mh mail folders.
+
+	* po/it.po: new Italian translation from Marco d'Itri.
+
+	* po/pl.po: New polish translation.
+
+	* po/de.po: Translation fix from Roland Rosenfeld.
+
+	* doc/Attic/manual.sgml.in: Documentation fix from Roland Rosenfeld.
+
+Sat Sep 25 07:37:51 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/zh_TW.Big5.po, po/uk.po, po/sk.po, po/ru.po, po/pl.po, po/nl.po, po/ko.po, po/it.po, po/id.po, po/fr.po, po/es.po, po/el.po, po/de.po, po/cs.po:
+	post-release commit for 1.0pre3.
+
+	* VERSION, reldate.h, ChangeLog: pre-release commit for 1.0pre3.
+
+Fri Sep 24 17:51:55 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/uk.po, po/zh_TW.Big5.po, po/sk.po, po/pl.po, po/ru.po, po/it.po, po/ko.po, po/nl.po, po/fr.po, po/id.po, po/el.po, po/es.po, po/cs.po, po/de.po, ChangeLog, VERSION, reldate.h:
+	automatic post-release commit for mutt-0.96.7
+
+Thu Sep 23 21:13:55 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/el.po: New Greek tranlsation from Fanis <madf@geocities.com>.
+
+	* browser.c: [stable] Solaris snprintf vs. NULL pointers.
+
+	* browser.c:
+	Try not to pass NULL pointers to snprintf - the Solaris version
+	doesn't like them.  (Noted by Thomas.Parmelan@efrei.fr.)
+
+	* imap/imap_private.h, imap/socket.c, imap/util.c, imap/BUGS, imap/imap.c, buffy.c:
+	Brendan Cully's latest changes:
+
+	* includes all of my last patch, since it hasn't been committed yet.
+	* catches a couple segfault problems if Context is NULL.
+	* works harder to avoid sending null STORE FLAGS commands. May not
+	  be perfect yet, but also has extra debugging code.
+	* has the beginnings of a more interactive IMAP error handler.
+	  Doesn't do anything yet, I'm just including it because I want to
+	  get the rest of the patch out.
+
+	* doc/Makefile.in, Makefile.am:
+	Use $(MAKE) instead of make.  Noted by Ryan Murray
+	<rmurray@cyberhqz.com>.
+
+	* doc/Makefile.in, Makefile.am, configure.in, init.h:
+	A small portability fix related to makedoc.
+
+	* po/es.po: [stable] new spanish translation from Boris Wesslowski
+	<Boris.Wesslowski@StudBox.Uni-Stuttgart.DE>.
+
+	* alias.c: increase this limit for stable as well.
+
+	* handler.c:
+	[stable] Fix a buffer overflow and a bug helping with exploiting this
+	overflow in the text/enriched handler.
+
+	* handler.c:
+	Fix a buffer overflow and a bug helping with exploiting this
+	overflow in the text/enriched handler.
+
+	* imap/browse.c, doc/manual.sgml.head, curs_main.c: This small patch:
+
+	* catches a possible null-pointer dereference in mx_close_mailbox when
+	  logging out of the server.
+	* fixes IMAP tab-completion cosmetics (slightly broken with last
+	  Cyrus-compatibility updates)
+	* adds a bit to the IMAP part of the manual.
+
+	Brendan Cully <brendan@kublai.com>
+
+	* alias.c:
+	Increase a buffer to make larger group aliases possible.  The
+	current STRING buffer was far too small.
+
 Thu Sep 23 21:13:55 1999  Thomas Roessler  <roessler@guug.de>
 
 	* po/el.po: New Greek tranlsation from Fanis <madf@geocities.com>.

@@ -488,7 +488,8 @@ msgstr "No puede borrar la única pieza."
 
 #: compose.c:392
 msgid "Can't change character set for non-text attachments!"
-msgstr "¡No se pudo cambiar el mapa de caracteres para archivos adjuntos no-texto!"
+msgstr ""
+"¡No se pudo cambiar el mapa de caracteres para archivos adjuntos no-texto!"
 
 #: compose.c:398
 msgid "Enter character set: "
@@ -2530,40 +2531,52 @@ msgstr ""
 msgid ""
 "[-- Error: Inconsistant multipart/signed structure! --]\n"
 "\n"
-msgstr "[-- Error: ¡Estructura multipart/signed inconsistente! --]\n\n"
+msgstr ""
+"[-- Error: ¡Estructura multipart/signed inconsistente! --]\n"
+"\n"
 
 #: pgp.c:620
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
 "\n"
-msgstr "[-- Error: ¡Protocolo multipart/signed %s desconocido! --]\n\n"
+msgstr ""
+"[-- Error: ¡Protocolo multipart/signed %s desconocido! --]\n"
+"\n"
 
 #: pgp.c:644
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
 "\n"
-msgstr "[-- Advertencia: No se pudieron verificar %s/%s firmas. --]\n\n"
+msgstr ""
+"[-- Advertencia: No se pudieron verificar %s/%s firmas. --]\n"
+"\n"
 
 #. Now display the signed body
 #: pgp.c:654
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
-msgstr "[-- Los siguientes datos están firmados --]\n\n"
+msgstr ""
+"[-- Los siguientes datos están firmados --]\n"
+"\n"
 
 #: pgp.c:660
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
-msgstr "[-- Advertencia: No se pudieron encontrar firmas. --]\n\n"
+msgstr ""
+"[-- Advertencia: No se pudieron encontrar firmas. --]\n"
+"\n"
 
 #: pgp.c:666
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
-msgstr "\n[-- Fin de datos firmados --]\n"
+msgstr ""
+"\n"
+"[-- Fin de datos firmados --]\n"
 
 #: pgp.c:767
 msgid "Internal error. Inform <roessler@guug.de>."
@@ -3132,7 +3145,8 @@ msgstr "Consiguiendo cabeceras de mensajes... [%d/%d]"
 #. Unable to fetch headers for lower versions
 #: imap/imap.c:574
 msgid "Unable to fetch headers from this IMAP server version."
-msgstr "No se pueden recoger cabeceras de mensajes de esta versión de servidor IMAP."
+msgstr ""
+"No se pueden recoger cabeceras de mensajes de esta versión de servidor IMAP."
 
 #: imap/imap.c:766
 #, c-format
