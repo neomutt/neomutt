@@ -391,7 +391,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
 	phrase[phraselen] = 0;
 	add_addrspec (&top, &last, phrase, comment, &commentlen, sizeof (comment) - 1);
       }
-      else if (commentlen && !last->personal)
+      else if (commentlen && last && !last->personal)
       {
 	comment[commentlen] = 0;
 	last->personal = safe_strdup (comment);
