@@ -57,7 +57,7 @@ NONEXPORT=pgp.c pgp.h pgpinvoke.c pgpkey.c pgppubring.c sha.h sha1dgst.c \
 	gnupgparse.c sha_locl.h OPS.PGP doc/pgp-Notes.txt doc/language.txt \
 	doc/language50.txt
 
-all: mutt @DOTLOCK_TARGET@ gen-charset
+all: mutt @DOTLOCK_TARGET@ 
 
 mutt: keymap_defs.h $(OBJS) $(REGEX)
 	$(CC) -o mutt $(OBJS) $(REGEX) $(LDFLAGS) $(LIBS)
@@ -65,14 +65,11 @@ mutt: keymap_defs.h $(OBJS) $(REGEX)
 dotlock: dotlock.o @SNPRINTFOBJS@
 	$(CC) -o dotlock dotlock.o @SNPRINTFOBJS@
 
-gen-charset: gen-charset.o
-	$(CC) -o gen-charset gen-charset.o
-
 keymap_defs.h: Makefile $(OPS)
 	rm -f keymap_defs.h
 	$(srcdir)/gen_defs $(OPS) > keymap_defs.h
 
-install: mutt install.doc @DOTLOCK_INSTALL_TARGET@ gen-charset
+install: mutt install.doc @DOTLOCK_INSTALL_TARGET@
 	$(srcdir)/mkinstalldirs $(bindir)
 	-mv -f $(bindir)/mutt $(bindir)/mutt.old
 	$(INSTALL) -m 755 mutt $(bindir)
@@ -83,8 +80,7 @@ install: mutt install.doc @DOTLOCK_INSTALL_TARGET@ gen-charset
 	-if [ ! -f $(sharedir)/mime.types ]; then \
 		$(INSTALL) -m 644 $(srcdir)/mime.types $(sharedir); \
 	fi
-	$(srcdir)/mkinstalldirs $(sharedir)/charsets
-	./gen-charset $(sharedir)/charsets
+	( cd $(srcdir)/charsets && make install )
 
 install.dotlock: dotlock
 	$(srcdir)/mkinstalldirs $(bindir)
@@ -92,13 +88,13 @@ install.dotlock: dotlock
 	$(INSTALL) @DOTLOCK_GROUP@ -m @DOTLOCK_PERMISSION@ dotlock $(bindir)/mutt.dotlock
 
 install.doc: 
-	( cd $(srcdir)/doc &&  make install )
+	( cd $(srcdir)/doc &&  $(MAKE) install )
 
 uninstall: uninstall.doc
 	rm -f $(bindir)/mutt $(sharedir)/Muttrc $(bindir)/mutt.dotlock
 
 uninstall.doc:
-	( cd $(srcdir)/doc/ && make uninstall )
+	( cd $(srcdir)/doc/ && $(MAKE) uninstall )
 
 $(srcdir)/configure: $(srcdir)/configure.in
 	autoconf
@@ -127,6 +123,7 @@ clean-real:
 
 clean:
 	rm -f $(CLEANFILES)
+	(cd $(srcdir)/charsets && $(MAKE) $@
 
 veryclean:
 	rm -f $(VERYCLEANFILES)
@@ -134,6 +131,7 @@ veryclean:
 distclean:
 	(cd $(srcdir) && rm -f $(DISTCLEANFILES))
 	(cd $(srcdir)/doc && $(MAKE) $@)
+	(cd $(srcdir)/charsets && $(MAKE) $@)
 
 reldate:
 	rm -f $(srcdir)/reldate.h

@@ -91,7 +91,7 @@ static CHARSET *load_charset(const char *name)
 
   chs->map  = safe_malloc(sizeof(UNICODE_MAP));
   
-  for(i = 0; i < 128; i++)
+  for(i = 0; i < 256; i++)
   {
     if(fscanf(fp, "%i", &(*chs->map)[i]) != 1)
     {
@@ -110,8 +110,8 @@ static void init_charsets()
 {
   if(Charsets) return;
 
-  Charsets     = hash_create(16);
-  Translations = hash_create(32);
+  Charsets     = hash_create(128);
+  Translations = hash_create(256);
 }
 
 CHARSET *mutt_get_charset(const char *name)
@@ -134,11 +134,10 @@ static int translate_char(UNICODE_MAP *to, int ch)
   int i;
 
   if (ch == -1) return '?';
-  if (ch < 128) return ch;
-  for (i = 0; i < 128; i++)
+  for (i = 0; i < 256; i++)
   {
     if ((*to)[i] == ch) 
-      return (128 + i);
+      return i;
   }
   return '?';
 }
@@ -148,7 +147,7 @@ UNICODE_MAP *build_translation(UNICODE_MAP *from, UNICODE_MAP *to)
   int i;
   UNICODE_MAP *map = safe_malloc(sizeof(UNICODE_MAP));
 
-  for(i = 0; i < 128; i++)
+  for(i = 0; i < 256; i++)
     (*map)[i] = translate_char(to, (*from)[i]);
 
   return map;
@@ -191,10 +190,10 @@ UNICODE_MAP *mutt_get_translation(const char *_from, const char *_to)
 
 int mutt_display_char(int ch, UNICODE_MAP *map)
 {
-  if (!map || (ch < 128) || (ch > 255))
+  if (!map || (ch < 0) || (ch > 255))
     return ch;
-  
-  return (*map)[ch - 128];
+
+  return (*map)[ch];
 }
 
 int mutt_display_string(char *str, UNICODE_MAP *map)

@@ -433,4 +433,4 @@ AC_ARG_ENABLE(exact-address, [  --enable-exact-address     enable regeneration o
 		AC_DEFINE(EXACT_ADDRESS)
 	fi])
 
-AC_OUTPUT(Makefile rx/Makefile Muttrc doc/Makefile doc/dotlock.man doc/mutt.man)
+AC_OUTPUT(Makefile rx/Makefile Muttrc doc/Makefile doc/dotlock.man doc/mutt.man charsets/Makefile)

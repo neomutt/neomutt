@@ -19,17 +19,17 @@
 #ifndef _CHARSET_H
 #define _CHARSET_H
 
-typedef int UNICODE_MAP[128];
+#define CHARSET_MAGIC "Mutt Character Set Definition 1.1\n"
+
+#ifndef _GEN_CHARSETS
+
+typedef int UNICODE_MAP[256];
 
 typedef struct 
 {
   char *name;
   UNICODE_MAP *map;
 } CHARSET;
-
-#define CHARSET_MAGIC "Mutt Character Set Definition 1.0\n"
-
-#ifndef _GEN_CHARSETS
 
 CHARSET *mutt_get_charset(const char *);
 UNICODE_MAP *mutt_get_translation(const char *, const char *);
