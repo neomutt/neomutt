@@ -55,7 +55,7 @@ static char *read_rfc822_line (FILE *f, char *line, size_t *linelen)
       return (line);
     }
 
-    buf += mutt_strlen (buf) - 1;
+    buf += strlen (buf) - 1;
     if (*buf == '\n')
     {
       /* we did get a full line. remove trailing space */
@@ -1165,7 +1165,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs)
       }
       else
 	last = e->userhdrs = mutt_new_list ();
-      line[mutt_strlen (line)] = ':';
+      line[strlen (line)] = ':';
       last->data = safe_strdup (line);
     }
 

@@ -342,8 +342,9 @@ char *safe_strdup (const char *s)
   char *p;
   size_t l;
 
-  if (!s || !*s) return 0;
-  l = mutt_strlen (s) + 1;
+  if (!s || !*s)
+    return 0;
+  l = strlen (s) + 1;
   p = (char *)safe_malloc (l);
   memcpy (p, s, l);
   return (p);
@@ -1283,5 +1284,5 @@ int mutt_strncasecmp(const char *a, const char *b, size_t l)
 
 size_t mutt_strlen(const char *a)
 {
-  return strlen(NONULL(a));
+  return a ? strlen (a) : 0;
 }
