@@ -1,3 +1,7 @@
+2003-11-12 11:47:46  duvall@emufarm.org  (roessler)
+
+	* configure.in: Fix 1515, 1693.
+
 2003-11-12 11:40:27  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* mh.c, sort.c: Fix dangling pointer problems in threading code.
