@@ -146,25 +146,20 @@ typedef struct
 
 /* -- private IMAP functions -- */
 /* imap.c */
-int imap_code (const char *s);
-void imap_error (const char *where, const char *msg);
-int imap_exec (char *buf, size_t buflen, IMAP_DATA *idata,
-  const char *seq, const char *cmd, int flags);
-char *imap_fix_path (IMAP_DATA *idata, char *mailbox, char *path, 
-  size_t plen);
-int imap_get_literal_count (const char *buf, long *bytes);
-int imap_handle_untagged (IMAP_DATA *idata, char *s);
-void imap_make_sequence (char *buf, size_t buflen);
-char *imap_next_word (char *s);
-int imap_open_connection (IMAP_DATA *idata, CONNECTION *conn);
-time_t imap_parse_date (char *s);
-int imap_parse_list_response(CONNECTION *conn, char *buf, int buflen,
-  char **name, int *noselect, int *noinferiors, char *delim);
-int imap_read_bytes (FILE *fp, CONNECTION *conn, long bytes);
-void imap_quote_string (char *dest, size_t slen, const char *src);
-void imap_unquote_string (char *s);
+int imap_code (const char* s);
+int imap_create_mailbox (IMAP_DATA* idata, char* mailbox);
+int imap_exec (char* buf, size_t buflen, IMAP_DATA* idata, const char* cmd,
+  int flags);
+int imap_handle_untagged (IMAP_DATA* idata, char* s);
+int imap_make_msg_set (char* buf, size_t buflen, CONTEXT* ctx, int flag,
+  int changed);
+int imap_open_connection (IMAP_DATA* idata, CONNECTION* conn);
+time_t imap_parse_date (char* s);
+int imap_parse_list_response(CONNECTION* conn, char* buf, int buflen,
+  char** name, int* noselect, int* noinferiors, char* delim);
+int imap_read_bytes (FILE* fp, CONNECTION* conn, long bytes);
 
-/* imap_auth.c */
+/* auth.c */
 int imap_authenticate (IMAP_DATA *idata, CONNECTION *conn);
 
 /* message.c */
@@ -172,4 +167,13 @@ void imap_add_keywords (char* s, HEADER* keywords, LIST* mailbox_flags);
 void imap_free_header_data (void** data);
 int imap_read_headers (CONTEXT* ctx, int msgbegin, int msgend);
 
+/* util.c */
+void imap_error (const char* where, const char* msg);
+char* imap_fix_path (IMAP_DATA* idata, char* mailbox, char* path, 
+  size_t plen);
+int imap_get_literal_count (const char* buf, long* bytes);
+void imap_make_sequence (char *buf, size_t buflen);
+char* imap_next_word (char* s);
+void imap_quote_string (char* dest, size_t slen, const char* src);
+void imap_unquote_string (char* s);
 #endif

@@ -26,6 +26,10 @@
 #include "mx.h"
 #include "pager.h"
 
+#ifdef USE_IMAP
+#include "imap.h"
+#endif
+
 #ifdef BUFFY_SIZE
 #include "buffy.h"
 #endif
@@ -530,7 +534,8 @@ static void _mutt_save_message (HEADER *h, CONTEXT *ctx, int delete, int decode,
 }
 
 /* returns 0 if the copy/save was successful, or -1 on error/abort */
-int mutt_save_message (HEADER *h, int delete, int decode, int decrypt, int *redraw)
+int mutt_save_message (HEADER *h, int delete, 
+		       int decode, int decrypt, int *redraw)
 {
   int i, need_buffy_cleanup;
 #ifdef _PGPPATH
@@ -621,6 +626,22 @@ int mutt_save_message (HEADER *h, int delete, int decode, int decrypt, int *redr
   
   mutt_message (_("Copying to %s..."), buf);
   
+#ifdef USE_IMAP
+  if (Context->magic == M_IMAP && 
+      !(decode || decrypt) && mx_is_imap (buf))
+  {
+    switch (imap_copy_messages (Context, h, buf, delete))
+    {
+      /* success */
+      case 0: mutt_clear_error (); return 0;
+      /* non-fatal error: fall through to fetch/append */
+      case 1: break;
+      /* fatal error, abort */
+      case -1: return -1;
+    }
+  }
+#endif
+
   if (mx_open_mailbox (buf, M_APPEND, &ctx) != NULL)
   {
     if (h)

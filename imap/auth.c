@@ -418,7 +418,6 @@ int imap_authenticate (IMAP_DATA *idata, CONNECTION *conn)
   char user[SHORT_STRING], q_user[SHORT_STRING];
   char ckey[SHORT_STRING];
   char pass[SHORT_STRING], q_pass[SHORT_STRING];
-  char seq[16];
 
   int r = 1;
 
@@ -499,9 +498,8 @@ int imap_authenticate (IMAP_DATA *idata, CONNECTION *conn)
     imap_quote_string (q_pass, sizeof (q_pass), pass);
 
     mutt_message _("Logging in...");
-    imap_make_sequence (seq, sizeof (seq));
-    snprintf (buf, sizeof (buf), "%s LOGIN %s %s\r\n", seq, q_user, q_pass);
-    r = imap_exec (buf, sizeof (buf), idata, seq, buf, IMAP_OK_FAIL);
+    snprintf (buf, sizeof (buf), "LOGIN %s %s", q_user, q_pass);
+    r = imap_exec (buf, sizeof (buf), idata, buf, IMAP_OK_FAIL);
     if (r == -1)
     {
       /* connection or protocol problem */

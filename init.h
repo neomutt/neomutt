@@ -610,7 +610,7 @@ struct option_t MuttVars[] = {
   ** list.
   */
 #ifdef USE_IMAP
-  { "imap_checkinterval", 	DT_NUM,	 R_NONE, UL &ImapCheckTime, 0 },
+  { "imap_checkinterval", 	DT_NUM,	 R_NONE, UL &ImapCheckTimeout, 60 },
   /*
   ** .pp
   ** This variable configures how often (in seconds) IMAP should look for

@@ -507,6 +507,106 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   return 0;
 }
 
+/* imap_copy_messages: use server COPY command to copy messages to another
+ *   folder.
+ *   Return codes:
+ *      -1: error
+ *       0: success
+ *       1: non-fatal error - try fetch/append */
+int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
+{
+  char buf[LONG_STRING];
+  char cmd[LONG_STRING];
+  char mbox[LONG_STRING];
+  char host[SHORT_STRING];
+  int port;
+  char* pc;
+  int rc;
+  int n;
+
+  if (imap_parse_path (dest, host, sizeof (host), &port, &pc))
+  {
+    dprint (1, (debugfile, "imap_copy_message: bad destination %s\n", dest));
+    return -1;
+  }
+
+  /* check that the save-to folder is on the same server */
+  if (mutt_socket_select_connection (host, port, 0) != CTX_DATA->conn)
+  {
+    dprint (3, (debugfile, "imap_copy_message: %s not same server as %s\n",
+      dest, ctx->path));
+    return 1;
+  }
+
+  imap_fix_path (CTX_DATA, pc, cmd, sizeof (cmd));
+
+  /* Null HEADER* means copy tagged messages */
+  if (!h)
+  {
+    rc = imap_make_msg_set (buf, sizeof (buf), ctx, M_TAG, 0);
+    if (!rc)
+    {
+      dprint (1, (debugfile, "imap_copy_messages: No messages tagged\n"));
+      return -1;
+    }
+    mutt_message (_("Copying %d messages to %s..."), rc, cmd);
+  }
+  else
+  {
+    mutt_message (_("Copying message %d to %s..."), h->index+1, cmd);
+    snprintf (buf, sizeof (buf), "%d", h->index+1);
+  }
+
+  /* let's get it on */
+  strncpy (mbox, cmd, sizeof (mbox));
+  snprintf (cmd, sizeof (cmd), "COPY %s \"%s\"", buf, mbox);
+  rc = imap_exec (buf, sizeof (buf), CTX_DATA, cmd, IMAP_OK_FAIL);
+  if (rc == -2)
+  {
+    /* command failed because folder doesn't exist */
+    if (option (OPTCONFIRMCREATE))
+    {
+      snprintf (buf, sizeof (buf), _("Create %s?"), mbox);
+      if (mutt_yesorno (buf, 1) < 1)
+	return -1;
+      if (imap_create_mailbox (CTX_DATA, mbox) < 0)
+	return -1;
+    }
+    /* try again */
+    rc = imap_exec (buf, sizeof (buf), CTX_DATA, cmd, 0);
+  }
+  if (rc != 0)
+  {
+    imap_error ("imap_copy_messages", buf);
+    return -1;
+  }
+
+  /* cleanup */
+  if (delete)
+  {
+    if (!h)
+    {
+      for (n = 0; n < ctx->msgcount; n++)
+      {
+        if (ctx->hdrs[n]->tagged)
+        {
+          mutt_set_flag (ctx, ctx->hdrs[n], M_DELETE, 1);
+          if (option (OPTDELETEUNTAG))
+            mutt_set_flag (ctx, ctx->hdrs[n], M_TAG, 0);
+        }
+      }
+    }
+    else
+    {
+      mutt_set_flag (ctx, h, M_DELETE, 1);
+      if (option (OPTDELETEUNTAG))
+        mutt_set_flag (ctx, h, M_TAG, 0);
+    }
+  }
+
+  return 0;
+}
+
 /* imap_add_keywords: concatenate custom IMAP tags to list, if they
  *   appear in the folder flags list. Why wouldn't they? */
 void imap_add_keywords (char* s, HEADER* h, LIST* mailbox_flags)

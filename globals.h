@@ -50,7 +50,7 @@ WHERE char *Hostname;
 WHERE char *ImapUser INITVAL (NULL);
 WHERE char *ImapCRAMKey INITVAL (NULL);
 WHERE char *ImapPass INITVAL (NULL);
-WHERE short ImapCheckTime;
+WHERE short ImapCheckTimeout;
 WHERE char *ImapHomeNamespace INITVAL (NULL);
 #endif
 WHERE char *Inbox;

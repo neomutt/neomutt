@@ -232,10 +232,10 @@ int mutt_buffy_check (int force)
   static time_t last_imap_check = 0;
   int do_imap_check = 1;
 
-  if (ImapCheckTime)
+  if (ImapCheckTimeout)
   {
     time_t now = time (NULL);
-    if (!force && (now - last_imap_check < ImapCheckTime))
+    if (now - last_imap_check < ImapCheckTimeout)
       do_imap_check = 0;
     else
       last_imap_check = now;
@@ -348,11 +348,14 @@ int mutt_buffy_check (int force)
 
 #ifdef USE_IMAP
       case M_IMAP:
-        /* poll on do_imap_check, else return cached value */
-	if (do_imap_check)
+        /* poll on do_imap_check, else return cached value.
+         * If the check is forced (eg on mailbox open), check only current
+         * folder */
+	if (do_imap_check || (force && !mutt_strcmp (Context->path,
+          tmp->path)))
         {
           tmp->new = 0;
-          if (imap_buffy_check (tmp->path) > 0)
+          if (imap_mailbox_check (tmp->path, 1) > 0)
           {
             BuffyCount++;
             tmp->new = 1;

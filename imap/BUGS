@@ -1,5 +1,16 @@
 In no particular order:
 
+* Not really an IMAP bug, but postponed-message checking is done too often,
+  incurring needless network overhead.
+
+* Server copy won't be able to implement decode/decrypt options to
+  message saving. If people want this we'll have to add a new variable
+  which, when set, causes mutt to fetch, transform and append instead of
+  using server copy.
+
+* Server copy currently doesn't take into account uncommitted changes in
+  messages about to be copied. Sync first.
+
 * Mutt doesn't handle timeouts or dropped connections gracefully.
 
 * Have a hard time when the home namespace isn't default "".
@@ -11,4 +22,4 @@ In no particular order:
 * The mutt_pretty routines don't work well when the delimiter isn't '/'.
 
 Brendan Cully <brendan@kublai.com>
-Updated 19990906
+Updated 19990911

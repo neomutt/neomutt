@@ -28,10 +28,6 @@ IMAP enhancements, by priority:
   PRIORITY: [** ]
 
 [ -- speed -- ]
-* Implement server message COPY, instead of FETCH/APPEND.
-
-  PRIORITY: [** ]
-
 * Persistent caching of data. I think the nicest way to do this is to store
   local copies like IMAP does, with an invisible control message at the top,
   and extra invisible headers in the message (for UID/dirty bits). This does
@@ -49,7 +45,7 @@ IMAP enhancements, by priority:
   PRIORITY: [*  ]
 
 [ -- new features -- ]
-* Implement the received folder on IMAP. (Wait on COPY).
+* Implement the received folder on IMAP, now that COPY is done
 
   PRIORITY: [** ]
 
@@ -64,4 +60,4 @@ IMAP enhancements, by priority:
   PRIORITY: [** ]
 
 Brendan Cully <brendan@kublai.com>
-Updated: 19990906
+Updated: 19990911
