@@ -271,6 +271,7 @@ void imap_free_idata (IMAP_DATA** idata) {
  * in IMAP.  Additionally, the filesystem converts multiple hierarchy
  * delimiters into a single one, ie "///" is equal to "/".  IMAP servers
  * are not required to do this.
+ * Moreover, IMAP servers may dislike the path ending with the delimiter.
  */
 char *imap_fix_path (IMAP_DATA *idata, char *mailbox, char *path, 
     size_t plen)
@@ -297,6 +298,8 @@ char *imap_fix_path (IMAP_DATA *idata, char *mailbox, char *path,
     }
     x++;
   }
+  if (x && path[--x] != idata->delim)
+    x++;
   path[x] = '\0';
   return path;
 }
