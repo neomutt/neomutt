@@ -888,7 +888,9 @@ void text_enriched_handler (BODY *a, STATE *s)
 
 /*
  * An implementation of RFC 2646.
- * 
+ *
+ * NOTE: This still has to be made UTF-8 aware.
+ *
  */
 
 #define FLOWED_MAX 77
@@ -941,6 +943,20 @@ static char *flowed_skip_indent (char *prefix, char *cont)
   return cont;
 }
 
+static int flowed_visual_strlen (char *l, int i)
+{
+  int j;
+  for (j = 0; *l; l++)
+  {
+    j++;
+    if (*l == '\t')
+      for (; (i + j) % 8; j++)
+	;
+  }
+  
+  return j;
+}
+
 static void text_plain_flowed_handler (BODY *a, STATE *s)
 {
   char line[LONG_STRING];
@@ -950,12 +966,12 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
   int  last_quoted;
   int  full = 1;
   int  last_full;
-  int  col = 0;
+  int  col = 0, tmpcol;
 
+  int  i_add = 0;
   int  add = 0;
   int  soft = 0;
-  int  max;
-  int  l;
+  int  l, rl;
   
   int  flowed_max;
   int  bytes = a->length;
@@ -965,7 +981,7 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
   char *tail = NULL;
   char *lc = NULL;
   char *t;
-
+  
   *indent = '\0';
   
   if (s->prefix)
@@ -1039,7 +1055,8 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
 	cont++;
 
       /* If there is an indentation, record it. */
-      cont = flowed_skip_indent (indent, cont);
+      cont  = flowed_skip_indent (indent, cont);
+      i_add = flowed_visual_strlen (indent, quoted + add);
     }
     else
     {
@@ -1071,23 +1088,23 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
       /* try to find a point for word wrapping */
 
     retry_wrap:
-      l = mutt_strlen (cont);
-      if (quoted + add + col + l > flowed_max)
+      l  = flowed_visual_strlen (cont, quoted + i_add + add + col);
+      rl = mutt_strlen (cont);
+      if (quoted + i_add + add + col + l > flowed_max)
       {
 	actually_wrap = 1;
-	if ((max = flowed_max - quoted - add - col)
-	    > l)
-	  max = l;
 
-	for (t = cont + max; t > cont; t--)
+	for (tmpcol = quoted + i_add + add + col, t = cont;
+	     *t && tmpcol < flowed_max; t++)
 	{
 	  if (*t == ' ' || *t == '\t')
-	  {
 	    tail = t;
-	    break;
-	  }
+	  if (*t == '\t')
+	    tmpcol = (tmpcol & ~7) + 8;
+	  else
+	    tmpcol++;
 	}
-
+	
 	if (tail)
 	{
 	  *tail++ = '\0';
@@ -1096,7 +1113,7 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
       }
 
       /* We seem to be desperate.  Get me a new line, and retry. */
-      if (!tail && (quoted + add + col + mutt_strlen (cont) > flowed_max) && col)
+      if (!tail && (quoted + add + col + i_add + l > flowed_max) && col)
       {
 	state_putc ('\n', s);
 	col = 0;
@@ -1133,7 +1150,7 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
 
       /* output the text */
       state_puts (cont, s);
-      col += strlen (cont);
+      col += flowed_visual_strlen (cont, quoted + i_add + add + col);
       
       /* possibly indicate a soft line break */
       if (soft == 2)
