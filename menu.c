@@ -856,7 +856,7 @@ int mutt_menuLoop (MUTTMENU *menu)
       return i;
 		    
     i = km_dokey (menu->menu);
-    if (i == OP_TAG_PREFIX)
+    if (i == OP_TAG_PREFIX || i == OP_TAG_PREFIX_COND)
     {
       if (menu->tagged)
       {
@@ -866,23 +866,12 @@ int mutt_menuLoop (MUTTMENU *menu)
 	menu->tagprefix = 1;
 	CLEARLINE (LINES - 1);
       }
-      else 
+      else if (i == OP_TAG_PREFIX)
       {
 	mutt_error _("No tagged entries.");
 	i = -1;
       }
-    }
-    if (i == OP_TAG_PREFIX_COND)
-    {
-      if (menu->tagged)
-      {
-	mvaddstr (LINES - 1, 0, "Tag-");
-	clrtoeol ();
-	i = km_dokey (menu->menu);
-	menu->tagprefix = 1;
-	CLEARLINE (LINES - 1);
-      }
-      else 
+      else /* None tagged, OP_TAG_PREFIX_COND */
       {
 	event_t tmp;
 	while(UngetCount>0)
