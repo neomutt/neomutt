@@ -717,7 +717,7 @@ struct option_t MuttVars[] = {
   { "implicit_autoview", DT_BOOL,R_NONE, OPTIMPLICITAUTOVIEW, 0},
   /*
   ** .pp
-  ** If set to ``yes'', mutt will look for a a mailcap entry with the
+  ** If set to ``yes'', mutt will look for a mailcap entry with the
   ** copiousoutput flag set for \fIevery\fP MIME attachment it doesn't have
   ** an internal viewer defined for.  If such an entry is found, mutt will
   ** use the viewer defined in that entry to convert the body part to text
