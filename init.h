@@ -548,7 +548,13 @@ struct option_t MuttVars[] = {
   ** entry when expanding the alias.  By default the regular expression is set
   ** to "^[^,]*" which will return the string up to the first "," encountered.
   ** If the GECOS field contains a string like "lastname, firstname" then you
-  ** should set the gecos_regexp=".*".
+  ** should set the gecos_mask=".*".
+  ** .pp
+  ** This can be useful if you see the following behavior: you address a e-mail
+  ** to user ID stevef whose full name is Steve Franklin.  If mutt expands 
+  ** stevef to "Franklin" stevef@foo.bar then you should set the gecos_mask to
+  ** a regular expression that will match the whole name so mutt will expand
+  ** "Franklin" to "Franklin, Steve".
   */
   { "hdr_format",	DT_SYN,  R_NONE, UL "index_format", 0 },
   /*

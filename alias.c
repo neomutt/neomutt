@@ -90,7 +90,7 @@ static ADDRESS *mutt_expand_aliases_r (ADDRESS *a, LIST **expn)
 
            /* Use regular expression to parse Gecos field.  This result of the
             * parsing will be used as the personal ID string when the alias is
-            * expaned.
+            * expanded.
             */
 	  if (regexec (GecosMask.rx, pw->pw_gecos, 1, pat_match, 0) == 0)
 	  {
