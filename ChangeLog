@@ -1,3 +1,10 @@
+2003-07-22 12:56:38  dshaw@jabberwocky.com  (roessler)
+
+	* gnupgparse.c: When encrypting a message to a user that has more
+	than one subkey, at least one of which is revoked or expired,
+	mutt treats the entire key as unusable rather than just the
+	subkey(s) in question.
+
 2003-07-16 11:18:12  Brendan Cully  <brendan@kublai.com>  (roessler)
 
 	* account.c, account.h, imap/auth_sasl.c, imap/imap.c: I noticed
