@@ -1,12 +1,11 @@
-# -------------------------------------------------------
 # Copyright (C) 2000-2001 Free Software Foundation, Inc.
 # Fatih Demir <kabalak@gmx.net>, 2000-2001.
-#
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt 1.3.14i\n"
+"Project-Id-Version: mutt 1.3.17i\n"
 "POT-Creation-Date: 2001-03-28 15:10+0200\n"
-"PO-Revision-Date: 2001-02-01 17:15+0200\n"
+"PO-Revision-Date: 2001-04-05 16:28+0200\n"
 "Last-Translator: Fatih Demir <kabalak@gmx.net>\n"
 "Language-Team: GNOME Turk <gnome-turk@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -14,73 +13,67 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: account.c:144
-#, fuzzy, c-format
+#, c-format
 msgid "Username at %s: "
-msgstr "Adýný deðiþtir: "
+msgstr "%s'deki kullanýcý adý: "
 
 #: account.c:172
 #, c-format
 msgid "Password for %s@%s: "
-msgstr ""
+msgstr "%s@%s için parola: "
 
 #: addrbook.c:31 browser.c:40 pager.c:1363 postpone.c:37 query.c:43
 #: recvattach.c:57
-#, fuzzy
 msgid "Exit"
-msgstr "Çýk  "
+msgstr "Çýk"
 
 #: addrbook.c:32
-#, fuzzy
 msgid "Select"
-msgstr "Seç  "
+msgstr "Seç"
 
 #. __STRCAT_CHECKED__
 #: addrbook.c:33 browser.c:43 compose.c:92 curs_main.c:380 mutt_ssl.c:617
 #: pager.c:1460 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
-msgstr ""
+msgstr "Yardým"
 
 #: addrbook.c:120
 msgid "You have no aliases!"
-msgstr ""
+msgstr "Hýc bir lakabýn yok!"
 
 #: addrbook.c:131
 msgid "Aliases"
-msgstr ""
+msgstr "Lakaplar"
 
 #. add a new alias
 #: alias.c:234
-#, fuzzy
 msgid "Alias as: "
-msgstr "Farklý imzala: "
+msgstr "Farklý lakap yarat: "
 
 #: alias.c:240
 msgid "You already have an alias defined with that name!"
-msgstr ""
+msgstr "Bu isimli bir lakap zaten tanýmlanmýþ!"
 
 #: alias.c:254
 msgid "Address: "
-msgstr ""
+msgstr "Adres:"
 
 #: alias.c:270
-#, fuzzy
 msgid "Personal name: "
-msgstr "Yeni dosya ismi: "
+msgstr "Þahsi isim: "
 
 #: alias.c:279
 #, c-format
 msgid "[%s = %s] Accept?"
-msgstr ""
+msgstr "[ %s = %s] Kabul ediliyor mu?"
 
 #: alias.c:296 recvattach.c:387 recvattach.c:441
-#, fuzzy
 msgid "Save to file: "
-msgstr "Yeni dosya: "
+msgstr "Dosyaya kaydet: "
 
 #: alias.c:307
-#, fuzzy
 msgid "Alias added."
-msgstr "alias: adres yok"
+msgstr "Lakap eklendi."
 
 #: attach.c:111 attach.c:238 attach.c:431 attach.c:890
 msgid "Can't match nametemplate, continue?"
@@ -88,7 +81,6 @@ msgstr ""
 
 #. For now, editing requires a file, no piping
 #: attach.c:123
-#, fuzzy
 msgid "Mailcap compose entry requires %%s"
 msgstr "Mailcap düzenleme birimi %%s gerektiriyor"
 
@@ -397,16 +389,28 @@ msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 "Ters sýralama tipi: "
-"(t)arih/(g)önderen/(a)lan/(k)onu/gönder(i)len/k(o)num/dü(z)enmemiþ/(b)oyut/(p"
-")uan: "
+""
+""
+""
+""
+""
+"(t)arih/(g)önderen/(a)lan/(k)onu/gönder(i)len/k(o)num/dü(z)enmemiþ/(b)oyut/(p)uan: "
+""
 
 #: commands.c:443
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 "Sýralama tipi: "
-"(t)arih/(g)önderen/(a)lan/(k)onu/gönder(i)len/k(o)num/dü(z)enlenmemiþ/(b)oyut"
-"/(p)uan?"
+""
+""
+""
+""
+""
+""
+""
+""
+"(t)arih/(g)önderen/(a)lan/(k)onu/gönder(i)len/k(o)num/dü(z)enlenmemiþ/(b)oyut/(p)uan?"
 
 #: commands.c:444
 msgid "dfrsotuzc"
@@ -462,7 +466,7 @@ msgstr "Içerik tipi %s iye deðiþtirildi."
 #: commands.c:824
 #, c-format
 msgid "Character set changed to %s."
-msgstr ""
+msgstr "Karakter kümesi deðiþtirildi: %s"
 
 #: compose.c:40
 msgid "There are no attachments."
@@ -509,14 +513,12 @@ msgid "<default>"
 msgstr "<varsayýlan>"
 
 #: compose.c:132
-#, fuzzy
 msgid "(e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
 msgstr ""
-"þ(i)frele, i(m)zala, (f)arklý imzala, i(k)isi de, mi(c) algoritmini seç "
-"yoksa i(p)talmý?"
+"þ(i)frele, i(m)zala, (f)arklý imzala, i(k)isi de, mi(c) algoritmini seç yoksa "
+"i(p)talmý? "
 
 #: compose.c:133
-#, fuzzy
 msgid "esabf"
 msgstr "imfkcp"
 
@@ -843,10 +845,9 @@ msgstr "Konum okunmamýþ ileti içeriyor."
 msgid "Can't edit message on POP server."
 msgstr "Ileti POP sunucusunda deðiþtirilenemedi."
 
-#.
+#. 
 #. * SLcurses_waddnstr() can't take a "const char *", so this is only
 #. * declared "static" (sigh)
-#.
 #: edit.c:36
 msgid ""
 "~~\t\tinsert a line begining with a single ~\n"
@@ -1168,7 +1169,6 @@ msgstr "Eposta kutusu yaratýldý."
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
-#.
 #: imap/command.c:316
 msgid "Fatal error.  Message count is out of sync!"
 msgstr "Aðýr hata. Ileti sayýlarý karýþtý!"
@@ -1183,13 +1183,13 @@ msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "Bu IMAP sunucusu çok eski. Mutt bu sunucuyla çalýþmaz."
 
 #: imap/imap.c:363
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s failed."
-msgstr "%s'e baðlanýlýyor..."
+msgstr "%s'ye baðlanmak baþærýsýz oldu."
 
 #: imap/imap.c:383
 msgid "Secure connection with TLS?"
-msgstr ""
+msgstr "TLS ile güvenli baðlanýlsýn mý?"
 
 #: imap/imap.c:535
 #, c-format
@@ -1381,12 +1381,12 @@ msgstr ""
 
 #: keymap.c:636 keymap.c:644
 msgid "Key is not bound."
-msgstr ""
+msgstr "Tuþ ayarlanmamýþ."
 
 #: keymap.c:648
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
-msgstr ""
+msgstr "Tuþ ayarlanmamýþ. Yardým için lütfen '%s' basýnýz."
 
 #: keymap.c:659
 msgid "push: too many arguments"
@@ -1408,7 +1408,7 @@ msgstr "bind: çok fazla argüman"
 #: keymap.c:786
 #, c-format
 msgid "%s: no such function in map"
-msgstr ""
+msgstr "%s: haritada öyle bir iþlev yoktur"
 
 #: keymap.c:809
 msgid "macro: empty key sequence"
@@ -1921,11 +1921,11 @@ msgstr ""
 
 #: keymap_alldefs.h:129
 msgid "move to the next entry"
-msgstr ""
+msgstr "önümüzdeki birime geç"
 
 #: keymap_alldefs.h:130
 msgid "scroll down one line"
-msgstr ""
+msgstr "bir satýr aþaða in"
 
 #: keymap_alldefs.h:131
 msgid "move to the next page"
@@ -1953,11 +1953,11 @@ msgstr ""
 
 #: keymap_alldefs.h:137
 msgid "move to the previous entry"
-msgstr ""
+msgstr "önceki birime geç"
 
 #: keymap_alldefs.h:138
 msgid "scroll up one line"
-msgstr ""
+msgstr "bir satýr yukarý çýk"
 
 #: keymap_alldefs.h:139
 msgid "move to the previous page"
@@ -2025,15 +2025,15 @@ msgstr ""
 
 #: keymap_alldefs.h:155
 msgid "invoke a command in a subshell"
-msgstr ""
+msgstr "bir alt-kabukta bir komuta çalýþtýr"
 
 #: keymap_alldefs.h:156
 msgid "sort messages"
-msgstr ""
+msgstr "iletileri sýralandýr"
 
 #: keymap_alldefs.h:157
 msgid "sort messages in reverse order"
-msgstr ""
+msgstr "iletileri ters sýrala"
 
 #: keymap_alldefs.h:158
 msgid "tag the current entry"
@@ -2180,8 +2180,7 @@ msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please use the flea(1) utility.\n"
 msgstr ""
-"Yazarlara ulaþmak içim lütfen <mutt-dev@mutt.org> listesine eposta "
-"gönderin.\n"
+"Yazarlara ulaþmak içim lütfen <mutt-dev@mutt.org> listesine eposta gönderin.\n"
 "Bir hata raporunu göndermek için lütfen flea(1) uygulamasýný kullanýn.\n"
 
 #: main.c:45
@@ -2227,9 +2226,8 @@ msgstr ""
 #: main.c:88
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
-"]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
-"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"]\n       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
+"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2357,7 +2355,6 @@ msgstr "Eposta kutusunu kilitleyemedim!"
 #. this means ctx->changed or ctx->deleted was set, but no
 #. * messages were found to be changed or deleted.  This should
 #. * never happen, is we presume it is a bug in mutt.
-#.
 #: mbox.c:751
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr ""
@@ -2799,9 +2796,9 @@ msgstr "Geçersiz ay : %s"
 
 #. getDate has its own error message, don't overwrite it here
 #: pattern.c:527
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid relative date: %s"
-msgstr "Geçersiz ay : %s"
+msgstr "Geçersiz rölatif tarih: %s"
 
 #: pattern.c:541
 msgid "error in expression"
@@ -3493,7 +3490,6 @@ msgstr "%s%s iye cevap gönderilsin mi?"
 #. * header field to the list address, which makes it quite impossible
 #. * to send a message to only the sender of the message.  This
 #. * provides a way to do that.
-#.
 #: send.c:489
 #, c-format
 msgid "Reply to %s%s?"
@@ -3501,7 +3497,6 @@ msgstr "%s%s iye cevap verilsin mi?"
 
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
-#.
 #: send.c:641
 msgid "No tagged messages are visible!"
 msgstr "Hiç bir iþaretlenmiþ ileti gözükmüyor ki!"
@@ -3528,7 +3523,6 @@ msgstr "Iletilmiþ ileti hazýrlanýyor..."
 
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
-#.
 #: send.c:1040
 msgid "Recall postponed message?"
 msgstr "Kaydedilmiþ ileti açýlsýn mý?"
