@@ -143,7 +143,7 @@ static const char *pgp_entry_fmt (char *dest,
   kflags = key->flags | (pkey->flags & KEYFLAG_RESTRICTIONS)
     | uid->flags;
   
-  switch (tolower (op))
+  switch (ascii_tolower (op))
   {
     case '[':
 

@@ -161,7 +161,7 @@ int imap_code (const char *s)
 {
   s += SEQLEN;
   SKIPWS (s);
-  return (mutt_strncasecmp ("OK", s, 2) == 0);
+  return (ascii_strncasecmp ("OK", s, 2) == 0);
 }
 
 /* imap_exec: execute a command, and wait for the response from the server.
@@ -300,7 +300,7 @@ static int cmd_handle_untagged (IMAP_DATA* idata)
     /* EXISTS and EXPUNGE are always related to the SELECTED mailbox for the
      * connection, so update that one.
      */
-    if (mutt_strncasecmp ("EXISTS", s, 6) == 0)
+    if (ascii_strncasecmp ("EXISTS", s, 6) == 0)
     {
       dprint (2, (debugfile, "Handling EXISTS\n"));
 
@@ -334,15 +334,15 @@ static int cmd_handle_untagged (IMAP_DATA* idata)
 	idata->newMailCount = count;
       }
     }
-    else if (mutt_strncasecmp ("EXPUNGE", s, 7) == 0)
+    else if (ascii_strncasecmp ("EXPUNGE", s, 7) == 0)
       /* pn vs. s: need initial seqno */
       cmd_parse_expunge (idata, pn);
   }
-  else if (mutt_strncasecmp ("CAPABILITY", s, 10) == 0)
+  else if (ascii_strncasecmp ("CAPABILITY", s, 10) == 0)
     cmd_parse_capabilities (idata, s);
-  else if (mutt_strncasecmp ("MYRIGHTS", s, 8) == 0)
+  else if (ascii_strncasecmp ("MYRIGHTS", s, 8) == 0)
     cmd_parse_myrights (idata, s);
-  else if (mutt_strncasecmp ("BYE", s, 3) == 0)
+  else if (ascii_strncasecmp ("BYE", s, 3) == 0)
   {
     dprint (2, (debugfile, "Handling BYE\n"));
 
@@ -362,7 +362,7 @@ static int cmd_handle_untagged (IMAP_DATA* idata)
 
     return -1;
   }
-  else if (option (OPTIMAPSERVERNOISE) && (mutt_strncasecmp ("NO", s, 2) == 0))
+  else if (option (OPTIMAPSERVERNOISE) && (ascii_strncasecmp ("NO", s, 2) == 0))
   {
     dprint (2, (debugfile, "Handling untagged NO\n"));
 

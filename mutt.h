@@ -775,6 +775,7 @@ typedef struct
 void state_prefix_putc(char, STATE *);
 int  state_printf(STATE *, const char *, ...);
 
+#include "ascii.h"
 #include "protos.h"
 #include "lib.h"
 #include "globals.h"

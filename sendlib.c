@@ -377,7 +377,7 @@ int mutt_write_mime_header (BODY *a, FILE *f)
        * even when they aren't needed.
        */
 
-      if (!strcasecmp (p->attribute, "boundary") && !strcmp (buffer, tmp))
+      if (!ascii_strcasecmp (p->attribute, "boundary") && !strcmp (buffer, tmp))
 	snprintf (buffer, sizeof (buffer), "\"%s\"", tmp);
 
       safe_free ((void **)&tmp);
@@ -686,7 +686,7 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
   infos  = safe_calloc (1, ncodes * sizeof (CONTENT));
 
   for (i = 0; i < ncodes; i++)
-    if (strcasecmp (tocodes[i], "UTF-8"))
+    if (ascii_strcasecmp (tocodes[i], "UTF-8"))
       cd[i] = mutt_iconv_open (tocodes[i], "UTF-8", 0);
     else
       /* Special case for conversion to UTF-8 */
@@ -1001,7 +1001,7 @@ static int lookup_mime_type (BODY *att, const char *path)
 	{
 	  sze = mutt_strlen (p);
 	  if ((sze > cur_sze) && (szf >= sze) &&
-	      mutt_strcasecmp (path + szf - sze, p) == 0 &&
+	      (mutt_strcasecmp (path + szf - sze, p) == 0 || ascii_strcasecmp (path + szf - sze, p) == 0) &&
 	      (szf == sze || path[szf - sze - 1] == '.'))
 	  {
 	    /* get the content-type */
@@ -2216,7 +2216,7 @@ ADDRESS *mutt_remove_duplicates (ADDRESS *addr)
     tmp = top;
     do {
       if (addr->mailbox && tmp->mailbox &&
-	  !mutt_strcasecmp (addr->mailbox, tmp->mailbox))
+	  !ascii_strcasecmp (addr->mailbox, tmp->mailbox))
       {
 	/* duplicate address, just ignore it */
 	tmp = addr;

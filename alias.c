@@ -328,7 +328,7 @@ ADDRESS *alias_reverse_lookup (ADDRESS *a)
     for (ap = t->addr; ap; ap = ap->next)
     {
       if (!ap->group && ap->mailbox &&
-	  mutt_strcasecmp (ap->mailbox, a->mailbox) == 0)
+	  ascii_strcasecmp (ap->mailbox, a->mailbox) == 0)
 	return ap;
     }
   }
@@ -422,7 +422,7 @@ static int string_is_address(const char *str, const char *u, const char *d)
   char buf[LONG_STRING];
   
   snprintf(buf, sizeof(buf), "%s@%s", NONULL(u), NONULL(d));
-  if (mutt_strcasecmp(str, buf) == 0)
+  if (ascii_strcasecmp(str, buf) == 0)
     return 1;
   
   return 0;
@@ -437,7 +437,7 @@ int mutt_addr_is_user (ADDRESS *addr)
   if (!addr->mailbox)
     return 0;
 
-  if (mutt_strcasecmp (addr->mailbox, Username) == 0)
+  if (ascii_strcasecmp (addr->mailbox, Username) == 0)
     return 1;
   if (string_is_address(addr->mailbox, Username, Hostname))
     return 1;
@@ -446,7 +446,7 @@ int mutt_addr_is_user (ADDRESS *addr)
   if (string_is_address(addr->mailbox, Username, mutt_fqdn(1)))
     return 1;
 
-  if (From && !mutt_strcasecmp (From->mailbox, addr->mailbox))
+  if (From && !ascii_strcasecmp (From->mailbox, addr->mailbox))
     return 1;
 
   if (Alternates.pattern &&

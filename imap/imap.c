@@ -240,7 +240,7 @@ static int imap_get_delim (IMAP_DATA *idata)
       break;
 
     s = imap_next_word (idata->cmd.buf);
-    if (mutt_strncasecmp ("LIST", s, 4) == 0)
+    if (ascii_strncasecmp ("LIST", s, 4) == 0)
     {
       s = imap_next_word (s);
       s = imap_next_word (s);
@@ -442,7 +442,7 @@ static char* imap_get_flags (LIST** hflags, char* s)
   char ctmp;
 
   /* sanity-check string */
-  if (mutt_strncasecmp ("FLAGS", s, 5) != 0)
+  if (ascii_strncasecmp ("FLAGS", s, 5) != 0)
   {
     dprint (1, (debugfile, "imap_get_flags: not a FLAGS response: %s\n",
       s));
@@ -550,7 +550,7 @@ int imap_open_mailbox (CONTEXT* ctx)
 
     pc = idata->cmd.buf + 2;
     pc = imap_next_word (pc);
-    if (!mutt_strncasecmp ("EXISTS", pc, 6))
+    if (!ascii_strncasecmp ("EXISTS", pc, 6))
     {
       /* imap_handle_untagged will have picked up the EXISTS message and
        * set the NEW_MAIL flag. We clear it here. */
@@ -563,7 +563,7 @@ int imap_open_mailbox (CONTEXT* ctx)
 
     /* Obtain list of available flags here, may be overridden by a
      * PERMANENTFLAGS tag in the OK response */
-    if (mutt_strncasecmp ("FLAGS", pc, 5) == 0)
+    if (ascii_strncasecmp ("FLAGS", pc, 5) == 0)
     {
       /* don't override PERMANENTFLAGS */
       if (!idata->flags)
@@ -574,7 +574,7 @@ int imap_open_mailbox (CONTEXT* ctx)
       }
     }
     /* PERMANENTFLAGS are massaged to look like FLAGS, then override FLAGS */
-    else if (mutt_strncasecmp ("OK [PERMANENTFLAGS", pc, 18) == 0)
+    else if (ascii_strncasecmp ("OK [PERMANENTFLAGS", pc, 18) == 0)
     {
       dprint (2, (debugfile, "Getting mailbox PERMANENTFLAGS\n"));
       /* safe to call on NULL */
@@ -1143,7 +1143,7 @@ int imap_mailbox_check (char* path, int new)
       break;
 
     s = imap_next_word (idata->cmd.buf);
-    if (mutt_strncasecmp ("STATUS", s, 6) == 0)
+    if (ascii_strncasecmp ("STATUS", s, 6) == 0)
     {
       s = imap_next_word (s);
       /* The mailbox name may or may not be quoted here. We could try to 
@@ -1193,8 +1193,8 @@ int imap_parse_list_response(IMAP_DATA* idata, char **name, int *noselect,
     return -1;
 
   s = imap_next_word (idata->cmd.buf);
-  if ((mutt_strncasecmp ("LIST", s, 4) == 0) ||
-      (mutt_strncasecmp ("LSUB", s, 4) == 0))
+  if ((ascii_strncasecmp ("LIST", s, 4) == 0) ||
+      (ascii_strncasecmp ("LSUB", s, 4) == 0))
   {
     *noselect = 0;
     *noinferiors = 0;
@@ -1209,12 +1209,12 @@ int imap_parse_list_response(IMAP_DATA* idata, char **name, int *noselect,
       while (*ep && *ep != ')') ep++;
       do
       {
-	if (!strncasecmp (s, "\\NoSelect", 9))
+	if (!ascii_strncasecmp (s, "\\NoSelect", 9))
 	  *noselect = 1;
-	if (!strncasecmp (s, "\\NoInferiors", 12))
+	if (!ascii_strncasecmp (s, "\\NoInferiors", 12))
 	  *noinferiors = 1;
 	/* See draft-gahrns-imap-child-mailbox-?? */
-	if (!strncasecmp (s, "\\HasNoChildren", 14))
+	if (!ascii_strncasecmp (s, "\\HasNoChildren", 14))
 	  *noinferiors = 1;
 	if (*s != ')')
 	  s++;

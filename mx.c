@@ -452,15 +452,15 @@ int mx_get_magic (const char *path)
  */
 int mx_set_magic (const char *s)
 {
-  if (mutt_strcasecmp (s, "mbox") == 0)
+  if (ascii_strcasecmp (s, "mbox") == 0)
     DefaultMagic = M_MBOX;
-  else if (mutt_strcasecmp (s, "mmdf") == 0)
+  else if (ascii_strcasecmp (s, "mmdf") == 0)
     DefaultMagic = M_MMDF;
-  else if (mutt_strcasecmp (s, "mh") == 0)
+  else if (ascii_strcasecmp (s, "mh") == 0)
     DefaultMagic = M_MH;
-  else if (mutt_strcasecmp (s, "maildir") == 0)
+  else if (ascii_strcasecmp (s, "maildir") == 0)
     DefaultMagic = M_MAILDIR;
-  else if (mutt_strcasecmp (s, "kendra") == 0)
+  else if (ascii_strcasecmp (s, "kendra") == 0)
     DefaultMagic = M_KENDRA;
   else
     return (-1);

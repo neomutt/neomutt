@@ -123,7 +123,7 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
     }
 
     if (m->type == TYPEMULTIPART && m->parts
-	&& (compose || (parent_type == -1 && mutt_strcasecmp ("alternative", m->subtype)))
+	&& (compose || (parent_type == -1 && ascii_strcasecmp ("alternative", m->subtype)))
 #ifdef HAVE_PGP
 	&& !mutt_is_multipart_encrypted(m)
 #endif
@@ -365,7 +365,7 @@ int mutt_is_message_type (int type, const char *subtype)
     return 0;
 
   subtype = NONULL(subtype);
-  return (mutt_strcasecmp (subtype, "rfc822") == 0 || mutt_strcasecmp (subtype, "news") == 0);
+  return (ascii_strcasecmp (subtype, "rfc822") == 0 || ascii_strcasecmp (subtype, "news") == 0);
 }
 
 static int mutt_query_save_attachment (FILE *fp, BODY *body, HEADER *hdr)
@@ -599,8 +599,8 @@ static int can_print (BODY *top, int tag)
     {
       if (!rfc1524_mailcap_lookup (top, type, NULL, M_PRINT))
       {
-	if (mutt_strcasecmp ("text/plain", top->subtype) &&
-	    mutt_strcasecmp ("application/postscript", top->subtype))
+	if (ascii_strcasecmp ("text/plain", top->subtype) &&
+	    ascii_strcasecmp ("application/postscript", top->subtype))
 	{
 	  if (!mutt_can_decode (top))
 	  {
@@ -630,8 +630,8 @@ static void print_attachment_list (FILE *fp, int tag, BODY *top, STATE *state)
       snprintf (type, sizeof (type), "%s/%s", TYPE (top), top->subtype);
       if (!option (OPTATTACHSPLIT) && !rfc1524_mailcap_lookup (top, type, NULL, M_PRINT))
       {
-	if (!mutt_strcasecmp ("text/plain", top->subtype) ||
-	    !mutt_strcasecmp ("application/postscript", top->subtype))
+	if (!ascii_strcasecmp ("text/plain", top->subtype) ||
+	    !ascii_strcasecmp ("application/postscript", top->subtype))
 	  pipe_attachment (fp, top, state);
 	else if (mutt_can_decode (top))
 	{
@@ -793,7 +793,7 @@ static void attach_collapse (BODY *b, short collapse, short init, short just_one
   {
     i = init || b->collapsed;
     if (i && option (OPTDIGESTCOLLAPSE) && b->type == TYPEMULTIPART
-	&& !mutt_strcasecmp (b->subtype, "digest"))
+	&& !ascii_strcasecmp (b->subtype, "digest"))
       attach_collapse (b->parts, 1, 1, 0);
     else if (b->type == TYPEMULTIPART || mutt_is_message_type (b->type, b->subtype))
       attach_collapse (b->parts, collapse, i, 0);

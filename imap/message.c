@@ -263,22 +263,22 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
     pc = imap_next_word (pc);
     pc = imap_next_word (pc);
 
-    if (!mutt_strncasecmp ("FETCH", pc, 5))
+    if (!ascii_strncasecmp ("FETCH", pc, 5))
     {
       while (*pc)
       {
 	pc = imap_next_word (pc);
 	if (pc[0] == '(')
 	  pc++;
-	if (strncasecmp ("UID", pc, 3) == 0)
+	if (ascii_strncasecmp ("UID", pc, 3) == 0)
 	{
 	  pc = imap_next_word (pc);
 	  uid = atoi (pc);
 	  if (uid != HEADER_DATA(ctx->hdrs[msgno])->uid)
 	    mutt_error (_("The message index is incorrect. Try reopening the mailbox."));
 	}
-	else if ((strncasecmp ("RFC822", pc, 6) == 0) ||
-		 (strncasecmp ("BODY[]", pc, 6) == 0))
+	else if ((ascii_strncasecmp ("RFC822", pc, 6) == 0) ||
+		 (ascii_strncasecmp ("BODY[]", pc, 6) == 0))
 	{
 	  pc = imap_next_word (pc);
 	  if (imap_get_literal_count(pc, &bytes) < 0)
@@ -299,7 +299,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	 * change (eg from \Unseen to \Seen).
 	 * Uncommitted changes in mutt take precedence. If we decide to
 	 * incrementally update flags later, this won't stop us syncing */
-	else if ((strncasecmp ("FLAGS", pc, 5) == 0) &&
+	else if ((ascii_strncasecmp ("FLAGS", pc, 5) == 0) &&
 		 !ctx->hdrs[msgno]->changed)
 	{
 	  IMAP_HEADER newh;
@@ -693,7 +693,7 @@ static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf, FILE* fp)
 
   /* find FETCH tag */
   buf = imap_next_word (buf);
-  if (mutt_strncasecmp ("FETCH", buf, 5))
+  if (ascii_strncasecmp ("FETCH", buf, 5))
     return rc;
 
   rc = -2; /* we've got a FETCH response, for better or worse */
@@ -739,7 +739,7 @@ static int msg_has_flag (LIST* flag_list, const char* flag)
   flag_list = flag_list->next;
   while (flag_list)
   {
-    if (!mutt_strncasecmp (flag_list->data, flag, strlen (flag_list->data)))
+    if (!ascii_strncasecmp (flag_list->data, flag, strlen (flag_list->data)))
       return 1;
 
     flag_list = flag_list->next;
@@ -761,12 +761,12 @@ static int msg_parse_fetch (IMAP_HEADER *h, char *s)
   {
     SKIPWS (s);
 
-    if (mutt_strncasecmp ("FLAGS", s, 5) == 0)
+    if (ascii_strncasecmp ("FLAGS", s, 5) == 0)
     {
       if ((s = msg_parse_flags (h, s)) == NULL)
         return -1;
     }
-    else if (mutt_strncasecmp ("UID", s, 3) == 0)
+    else if (ascii_strncasecmp ("UID", s, 3) == 0)
     {
       s += 3;
       SKIPWS (s);
@@ -774,7 +774,7 @@ static int msg_parse_fetch (IMAP_HEADER *h, char *s)
 
       s = imap_next_word (s);
     }
-    else if (mutt_strncasecmp ("INTERNALDATE", s, 12) == 0)
+    else if (ascii_strncasecmp ("INTERNALDATE", s, 12) == 0)
     {
       s += 12;
       SKIPWS (s);
@@ -793,7 +793,7 @@ static int msg_parse_fetch (IMAP_HEADER *h, char *s)
       *ptmp = 0;
       h->received = imap_parse_date (tmp);
     }
-    else if (mutt_strncasecmp ("RFC822.SIZE", s, 11) == 0)
+    else if (ascii_strncasecmp ("RFC822.SIZE", s, 11) == 0)
     {
       s += 11;
       SKIPWS (s);
@@ -803,8 +803,8 @@ static int msg_parse_fetch (IMAP_HEADER *h, char *s)
       *ptmp = 0;
       h->content_length = atoi (tmp);
     }
-    else if (!mutt_strncasecmp ("BODY", s, 4) ||
-      !mutt_strncasecmp ("RFC822.HEADER", s, 13))
+    else if (!ascii_strncasecmp ("BODY", s, 4) ||
+      !ascii_strncasecmp ("RFC822.HEADER", s, 13))
     {
       /* handle above, in msg_fetch_header */
       return -2;
@@ -829,7 +829,7 @@ static char* msg_parse_flags (IMAP_HEADER* h, char* s)
   int recent = 0;
 
   /* sanity-check string */
-  if (mutt_strncasecmp ("FLAGS", s, 5) != 0)
+  if (ascii_strncasecmp ("FLAGS", s, 5) != 0)
   {
     dprint (1, (debugfile, "msg_parse_flags: not a FLAGS response: %s\n",
       s));
@@ -848,27 +848,27 @@ static char* msg_parse_flags (IMAP_HEADER* h, char* s)
   /* start parsing */
   while (*s && *s != ')')
   {
-    if (mutt_strncasecmp ("\\deleted", s, 8) == 0)
+    if (ascii_strncasecmp ("\\deleted", s, 8) == 0)
     {
       s += 8;
       h->deleted = 1;
     }
-    else if (mutt_strncasecmp ("\\flagged", s, 8) == 0)
+    else if (ascii_strncasecmp ("\\flagged", s, 8) == 0)
     {
       s += 8;
       h->flagged = 1;
     }
-    else if (mutt_strncasecmp ("\\answered", s, 9) == 0)
+    else if (ascii_strncasecmp ("\\answered", s, 9) == 0)
     {
       s += 9;
       h->replied = 1;
     }
-    else if (mutt_strncasecmp ("\\seen", s, 5) == 0)
+    else if (ascii_strncasecmp ("\\seen", s, 5) == 0)
     {
       s += 5;
       h->read = 1;
     }
-    else if (mutt_strncasecmp ("\\recent", s, 5) == 0)
+    else if (ascii_strncasecmp ("\\recent", s, 5) == 0)
     {
       s += 7;
       recent = 1;

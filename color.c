@@ -633,17 +633,17 @@ parse_attr_spec(BUFFER *buf, BUFFER *s, int *fg, int *bg, int *attr, BUFFER *err
 
   mutt_extract_token (buf, s, 0);
 
-  if (mutt_strcasecmp ("bold", buf->data) == 0)
+  if (ascii_strcasecmp ("bold", buf->data) == 0)
     *attr |= A_BOLD;
-  else if (mutt_strcasecmp ("underline", buf->data) == 0)
+  else if (ascii_strcasecmp ("underline", buf->data) == 0)
     *attr |= A_UNDERLINE;
-  else if (mutt_strcasecmp ("none", buf->data) == 0)
+  else if (ascii_strcasecmp ("none", buf->data) == 0)
     *attr = A_NORMAL;
-  else if (mutt_strcasecmp ("reverse", buf->data) == 0)
+  else if (ascii_strcasecmp ("reverse", buf->data) == 0)
     *attr |= A_REVERSE;
-  else if (mutt_strcasecmp ("standout", buf->data) == 0)
+  else if (ascii_strcasecmp ("standout", buf->data) == 0)
     *attr |= A_STANDOUT;
-  else if (mutt_strcasecmp ("normal", buf->data) == 0)
+  else if (ascii_strcasecmp ("normal", buf->data) == 0)
     *attr = A_NORMAL; /* needs use = instead of |= to clear other bits */
   else
   {

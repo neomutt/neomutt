@@ -272,7 +272,7 @@ int mutt_matches_ignore (const char *s, LIST *t)
 {
   for (; t; t = t->next)
   {
-    if (!mutt_strncasecmp (s, t->data, mutt_strlen (t->data)) || *t->data == '*')
+    if (!ascii_strncasecmp (s, t->data, mutt_strlen (t->data)) || *t->data == '*')
       return 1;
   }
   return 0;
@@ -509,7 +509,7 @@ char *mutt_gecos_name (char *dest, size_t destlen, struct passwd *pw)
 char *mutt_get_parameter (const char *s, PARAMETER *p)
 {
   for (; p; p = p->next)
-    if (mutt_strcasecmp (s, p->attribute) == 0)
+    if (ascii_strcasecmp (s, p->attribute) == 0)
       return (p->value);
 
   return NULL;
@@ -527,7 +527,7 @@ void mutt_set_parameter (const char *attribute, const char *value, PARAMETER **p
   
   for(q = *p; q; q = q->next)
   {
-    if (mutt_strcasecmp (attribute, q->attribute) == 0)
+    if (ascii_strcasecmp (attribute, q->attribute) == 0)
     {
       mutt_str_replace (&q->value, value);
       return;
@@ -547,7 +547,7 @@ void mutt_delete_parameter (const char *attribute, PARAMETER **p)
   
   for (q = *p; q; p = &q->next, q = q->next)
   {
-    if (mutt_strcasecmp (attribute, q->attribute) == 0)
+    if (ascii_strcasecmp (attribute, q->attribute) == 0)
     {
       *p = q->next;
       q->next = NULL;
@@ -564,9 +564,9 @@ int mutt_needs_mailcap (BODY *m)
   {
     case TYPETEXT:
 
-      if (!mutt_strcasecmp ("plain", m->subtype) ||
-	  !mutt_strcasecmp ("rfc822-headers", m->subtype) ||
-	  !mutt_strcasecmp ("enriched", m->subtype))
+      if (!ascii_strcasecmp ("plain", m->subtype) ||
+	  !ascii_strcasecmp ("rfc822-headers", m->subtype) ||
+	  !ascii_strcasecmp ("enriched", m->subtype))
 	return 0;
       break;
 
@@ -596,7 +596,7 @@ int mutt_is_text_type (int t, char *s)
 
   if (t == TYPEMESSAGE)
   {
-    if (!mutt_strcasecmp ("delivery-status", s))
+    if (!ascii_strcasecmp ("delivery-status", s))
       return 1;
   }
 
@@ -605,7 +605,7 @@ int mutt_is_text_type (int t, char *s)
 #ifdef HAVE_PGP
   if (t == TYPEAPPLICATION)
   {
-    if (!mutt_strcasecmp ("pgp-keys", s))
+    if (!ascii_strcasecmp ("pgp-keys", s))
       return 1;
   }
 #endif /* HAVE_PGP */

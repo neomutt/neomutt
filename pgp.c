@@ -519,10 +519,10 @@ int mutt_is_multipart_signed (BODY *b)
   char *p;
 
   if (!b || b->type != TYPEMULTIPART ||
-      !b->subtype || mutt_strcasecmp (b->subtype, "signed") ||
+      !b->subtype || ascii_strcasecmp (b->subtype, "signed") ||
       !(p = mutt_get_parameter ("protocol", b->parameter)) ||
-      (mutt_strcasecmp (p, "application/pgp-signature")
-      && mutt_strcasecmp (p, "multipart/mixed")))
+      (ascii_strcasecmp (p, "application/pgp-signature")
+      && ascii_strcasecmp (p, "multipart/mixed")))
     return 0;
 
   return PGPSIGN;
@@ -534,9 +534,9 @@ int mutt_is_multipart_encrypted (BODY *b)
   char *p;
   
   if (!b || b->type != TYPEMULTIPART ||
-      !b->subtype || mutt_strcasecmp (b->subtype, "encrypted") ||
+      !b->subtype || ascii_strcasecmp (b->subtype, "encrypted") ||
       !(p = mutt_get_parameter ("protocol", b->parameter)) ||
-      mutt_strcasecmp (p, "application/pgp-encrypted"))
+      ascii_strcasecmp (p, "application/pgp-encrypted"))
     return 0;
   
   return PGPENCRYPT;
@@ -549,23 +549,23 @@ int mutt_is_application_pgp (BODY *m)
   
   if (m->type == TYPEAPPLICATION)
   {
-    if (!mutt_strcasecmp (m->subtype, "pgp") || !mutt_strcasecmp (m->subtype, "x-pgp-message"))
+    if (!ascii_strcasecmp (m->subtype, "pgp") || !ascii_strcasecmp (m->subtype, "x-pgp-message"))
     {
       if ((p = mutt_get_parameter ("x-action", m->parameter))
-	  && (!mutt_strcasecmp (p, "sign") || !mutt_strcasecmp (p, "signclear")))
+	  && (!ascii_strcasecmp (p, "sign") || !ascii_strcasecmp (p, "signclear")))
 	t |= PGPSIGN;
 
       if ((p = mutt_get_parameter ("format", m->parameter)) && 
-	  !mutt_strcasecmp (p, "keys-only"))
+	  !ascii_strcasecmp (p, "keys-only"))
 	t |= PGPKEY;
 
       if(!t) t |= PGPENCRYPT;  /* not necessarily correct, but... */
     }
 
-    if (!mutt_strcasecmp (m->subtype, "pgp-signed"))
+    if (!ascii_strcasecmp (m->subtype, "pgp-signed"))
       t |= PGPSIGN;
 
-    if (!mutt_strcasecmp (m->subtype, "pgp-keys"))
+    if (!ascii_strcasecmp (m->subtype, "pgp-keys"))
       t |= PGPKEY;
   }
   return t;
@@ -756,15 +756,15 @@ void pgp_signed_handler (BODY *a, STATE *s)
   /* consistency check */
 
   if (!(a && a->next && a->next->type == protocol_major && 
-      !mutt_strcasecmp(a->next->subtype, protocol_minor)))
+      !ascii_strcasecmp(a->next->subtype, protocol_minor)))
   {
     state_puts(_("[-- Error: Inconsistent multipart/signed structure! --]\n\n"), s);
     mutt_body_handler (a, s);
     return;
   }
 
-  if(!(protocol_major == TYPEAPPLICATION && !mutt_strcasecmp(protocol_minor, "pgp-signature"))
-     && !(protocol_major == TYPEMULTIPART && !mutt_strcasecmp(protocol_minor, "mixed")))
+  if(!(protocol_major == TYPEAPPLICATION && !ascii_strcasecmp(protocol_minor, "pgp-signature"))
+     && !(protocol_major == TYPEMULTIPART && !ascii_strcasecmp(protocol_minor, "mixed")))
   {
     state_printf(s, _("[-- Error: Unknown multipart/signed protocol %s! --]\n\n"), protocol);
     mutt_body_handler (a, s);
@@ -784,7 +784,7 @@ void pgp_signed_handler (BODY *a, STATE *s)
 	for (i = 0; i < sigcnt; i++)
 	{
 	  if (signatures[i]->type == TYPEAPPLICATION 
-	      && !mutt_strcasecmp(signatures[i]->subtype, "pgp-signature"))
+	      && !ascii_strcasecmp(signatures[i]->subtype, "pgp-signature"))
 	  {
 	    if (pgp_verify_one (signatures[i], s, tempfile) != 0)
 	      goodsig = 0;
@@ -1063,9 +1063,9 @@ void pgp_encrypted_handler (BODY *a, STATE *s)
   
   a = a->parts;
   if (!a || a->type != TYPEAPPLICATION || !a->subtype || 
-      mutt_strcasecmp ("pgp-encrypted", a->subtype) != 0 ||
+      ascii_strcasecmp ("pgp-encrypted", a->subtype) != 0 ||
       !a->next || a->next->type != TYPEAPPLICATION || !a->next->subtype ||
-      mutt_strcasecmp ("octet-stream", a->next->subtype) != 0)
+      ascii_strcasecmp ("octet-stream", a->next->subtype) != 0)
   {
     if (s->flags & M_DISPLAY)
       state_puts (_("[-- Error: malformed PGP/MIME message! --]\n\n"), s);
@@ -1136,7 +1136,7 @@ static void convert_to_7bit (BODY *a)
 	convert_to_7bit (a->parts);
     } 
     else if (a->type == TYPEMESSAGE
-	     && mutt_strcasecmp(a->subtype, "delivery-status"))
+	     && ascii_strcasecmp(a->subtype, "delivery-status"))
     {
       if(a->encoding != ENC7BIT)
 	mutt_message_to_7bit(a, NULL);
@@ -1651,7 +1651,7 @@ int pgp_protect (HEADER *msg, char *pgpkeylist)
     return (-1);
 
   if ((msg->content->type == TYPETEXT) &&
-      !mutt_strcasecmp (msg->content->subtype, "plain") &&
+      !ascii_strcasecmp (msg->content->subtype, "plain") &&
       ((flags & PGPENCRYPT) || (msg->content->content && msg->content->content->hibin == 0)))
   {
     if ((i = query_quadoption (OPT_PGPTRADITIONAL, _("Create an application/pgp message?"))) == -1)

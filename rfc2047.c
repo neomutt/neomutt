@@ -276,7 +276,7 @@ static size_t try_block (const char *d, size_t dlen,
   len_q = len + (ob - buf1) + 2 * count;
 
   /* Apparently RFC 1468 says to use B encoding for iso-2022-jp. */
-  if (!strcasecmp (tocode, "ISO-2022-JP"))
+  if (!ascii_strcasecmp (tocode, "ISO-2022-JP"))
     len_q = ENCWORD_LEN_MAX + 1;
 
   if (len_b < len_q && len_b <= ENCWORD_LEN_MAX)

@@ -74,7 +74,7 @@ url_scheme_t url_check_scheme (const char *s)
   
   strfcpy (sbuf, s, t - s + 1);
   for (t = sbuf; *t; t++)
-    *t = tolower (*t);
+    *t = ascii_tolower (*t);
 
   if ((i = mutt_getvaluebyname (sbuf, UrlMap)) == -1)
     return U_UNKNOWN;
@@ -84,9 +84,9 @@ url_scheme_t url_check_scheme (const char *s)
 
 int url_parse_file (char *d, const char *src, size_t dl)
 {
-  if (strncasecmp (src, "file:", 5))
+  if (ascii_strncasecmp (src, "file:", 5))
     return -1;
-  else if (!strncasecmp (src, "file://", 7))	/* we don't support remote files */
+  else if (!ascii_strncasecmp (src, "file://", 7))	/* we don't support remote files */
     return -1;
   else
     strfcpy (d, src + 5, dl);
@@ -226,7 +226,7 @@ int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
     url_pct_decode (tag);
     url_pct_decode (value);
 
-    if (!strcasecmp (tag, "body"))
+    if (!ascii_strcasecmp (tag, "body"))
       mutt_str_replace (body, value);
     else 
     {

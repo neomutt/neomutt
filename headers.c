@@ -128,9 +128,9 @@ void mutt_edit_headers (const char *editor,
      * not, remove the references: field later so that we can generate a new
      * message based upon this one.
      */
-    if (mutt_strncasecmp ("in-reply-to:", cur->data, 12) == 0)
+    if (ascii_strncasecmp ("in-reply-to:", cur->data, 12) == 0)
       in_reply_to = 1;
-    else if (fcc && mutt_strncasecmp ("fcc:", cur->data, 4) == 0)
+    else if (fcc && ascii_strncasecmp ("fcc:", cur->data, 4) == 0)
     {
       p = cur->data + 4;
       SKIPWS (p);
@@ -141,7 +141,7 @@ void mutt_edit_headers (const char *editor,
       }
       keep = 0;
     }
-    else if (mutt_strncasecmp ("attach:", cur->data, 7) == 0)
+    else if (ascii_strncasecmp ("attach:", cur->data, 7) == 0)
     {
       BODY *body;
       BODY *parts;
@@ -177,7 +177,7 @@ void mutt_edit_headers (const char *editor,
 
 
 #ifdef HAVE_PGP
-    else if (mutt_strncasecmp ("pgp:", cur->data, 4) == 0)
+    else if (ascii_strncasecmp ("pgp:", cur->data, 4) == 0)
     {
       msg->pgp = mutt_parse_pgp_hdr (cur->data + 4, 0);
       keep = 0;

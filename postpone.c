@@ -283,7 +283,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
 
   for (tmp = hdr->env->userhdrs; tmp; )
   {
-    if (mutt_strncasecmp ("X-Mutt-References:", tmp->data, 18) == 0)
+    if (ascii_strncasecmp ("X-Mutt-References:", tmp->data, 18) == 0)
     {
       if (ctx)
       {
@@ -306,7 +306,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
       if (*cur)
 	code |= SENDREPLY;
     }
-    else if (mutt_strncasecmp ("X-Mutt-Fcc:", tmp->data, 11) == 0)
+    else if (ascii_strncasecmp ("X-Mutt-Fcc:", tmp->data, 11) == 0)
     {
       p = tmp->data + 11;
       SKIPWS (p);
@@ -490,7 +490,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 
   while (p)
   {
-    if (!strncasecmp (p->data, "x-mailer:", 9) || !strncasecmp (p->data, "user-agent:", 11))
+    if (!ascii_strncasecmp (p->data, "x-mailer:", 9) || !ascii_strncasecmp (p->data, "user-agent:", 11))
     {
       *q = p->next;
       p->next = NULL;
@@ -586,7 +586,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 
     if (b->type == TYPETEXT)
     {
-      if (!mutt_strcasecmp ("yes", mutt_get_parameter ("x-mutt-noconv", b->parameter)))
+      if (!ascii_strcasecmp ("yes", mutt_get_parameter ("x-mutt-noconv", b->parameter)))
 	b->noconv = 1;
       else
       {

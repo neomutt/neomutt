@@ -311,7 +311,7 @@ static void add_to_list (LIST **list, const char *str)
   /* check to make sure the item is not already on this list */
   for (last = *list; last; last = last->next)
   {
-    if (mutt_strcasecmp (str, last->data) == 0)
+    if (ascii_strcasecmp (str, last->data) == 0)
     {
       /* already on the list, so just ignore it */
       last = NULL;
@@ -347,7 +347,7 @@ static void remove_from_list (LIST **l, const char *str)
     last = NULL;
     while (p)
     {
-      if (mutt_strcasecmp (str, p->data) == 0)
+      if (ascii_strcasecmp (str, p->data) == 0)
       {
 	safe_free ((void **) &p->data);
 	if (last)
@@ -545,7 +545,7 @@ parse_unmy_hdr (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 
       while (tmp)
       {
-	if (mutt_strncasecmp (buf->data, tmp->data, l) == 0 && tmp->data[l] == ':')
+	if (ascii_strncasecmp (buf->data, tmp->data, l) == 0 && tmp->data[l] == ':')
 	{
 	  ptr = tmp;
 	  if (last)
@@ -587,7 +587,7 @@ static int parse_my_hdr (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err
     for (tmp = UserHeader; ; tmp = tmp->next)
     {
       /* see if there is already a field by this name */
-      if (mutt_strncasecmp (buf->data, tmp->data, keylen) == 0)
+      if (ascii_strncasecmp (buf->data, tmp->data, keylen) == 0)
       {
 	/* replace the old value */
 	safe_free ((void **) &tmp->data);
@@ -842,9 +842,9 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 
 	s->dptr++;
 	mutt_extract_token (tmp, s, 0);
-	if (mutt_strcasecmp ("yes", tmp->data) == 0)
+	if (ascii_strcasecmp ("yes", tmp->data) == 0)
 	  unset = inv = 0;
-	else if (mutt_strcasecmp ("no", tmp->data) == 0)
+	else if (ascii_strcasecmp ("no", tmp->data) == 0)
 	  unset = 1;
 	else
 	{
@@ -1122,13 +1122,13 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       {
 	s->dptr++;
 	mutt_extract_token (tmp, s, 0);
-	if (mutt_strcasecmp ("yes", tmp->data) == 0)
+	if (ascii_strcasecmp ("yes", tmp->data) == 0)
 	  set_quadoption (MuttVars[idx].data, M_YES);
-	else if (mutt_strcasecmp ("no", tmp->data) == 0)
+	else if (ascii_strcasecmp ("no", tmp->data) == 0)
 	  set_quadoption (MuttVars[idx].data, M_NO);
-	else if (mutt_strcasecmp ("ask-yes", tmp->data) == 0)
+	else if (ascii_strcasecmp ("ask-yes", tmp->data) == 0)
 	  set_quadoption (MuttVars[idx].data, M_ASKYES);
-	else if (mutt_strcasecmp ("ask-no", tmp->data) == 0)
+	else if (ascii_strcasecmp ("ask-no", tmp->data) == 0)
 	  set_quadoption (MuttVars[idx].data, M_ASKNO);
 	else
 	{
@@ -1631,7 +1631,7 @@ int mutt_getvaluebyname (const char *name, const struct mapping_t *map)
   int i;
 
   for (i = 0; map[i].name; i++)
-    if (mutt_strcasecmp (map[i].name, name) == 0)
+    if (ascii_strcasecmp (map[i].name, name) == 0)
       return (map[i].value);
   return (-1);
 }
@@ -1934,7 +1934,7 @@ int mutt_get_hook_type (const char *name)
   struct command_t *c;
 
   for (c = Commands ; c->name ; c++)
-    if (c->func == mutt_parse_hook && mutt_strcasecmp (c->name, name) == 0)
+    if (c->func == mutt_parse_hook && ascii_strcasecmp (c->name, name) == 0)
       return c->data;
   return 0;
 }

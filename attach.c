@@ -302,12 +302,12 @@ static int is_mmnoask (const char *buf)
       {
 	if (*(q+1) == '*')
 	{
-	  if (mutt_strncasecmp (buf, p, q-p) == 0)
+	  if (ascii_strncasecmp (buf, p, q-p) == 0)
 	    return (1);
 	}
 	else
 	{
-	  if (mutt_strcasecmp (buf, p) == 0)
+	  if (ascii_strcasecmp (buf, p) == 0)
 	    return (1);
 	}
       }
@@ -350,8 +350,8 @@ int mutt_is_autoview (BODY *b, const char *type)
   {
     i = mutt_strlen (t->data) - 1;
     if ((i > 0 && t->data[i-1] == '/' && t->data[i] == '*' && 
-	  mutt_strncasecmp (type, t->data, i) == 0) ||
-	  mutt_strcasecmp (type, t->data) == 0)
+	 ascii_strncasecmp (type, t->data, i) == 0) ||
+	ascii_strcasecmp (type, t->data) == 0)
       return 1;
   }
 
@@ -940,8 +940,8 @@ int mutt_print_attachment (FILE *fp, BODY *a)
     return (1);
   }
 
-  if (!mutt_strcasecmp ("text/plain", a->subtype) ||
-      !mutt_strcasecmp ("application/postscript", a->subtype))
+  if (!ascii_strcasecmp ("text/plain", a->subtype) ||
+      !ascii_strcasecmp ("application/postscript", a->subtype))
   {
     return (mutt_pipe_attachment (fp, a, NONULL(PrintCmd), NULL));
   }

@@ -29,7 +29,7 @@ int mutt_account_match (const ACCOUNT* a1, const ACCOUNT* a2)
 
   if (a1->type != a2->type)
     return 0;
-  if (mutt_strcasecmp (a1->host, a2->host))
+  if (ascii_strcasecmp (a1->host, a2->host))
     return 0;
   if (a1->port != a2->port)
     return 0;

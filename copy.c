@@ -84,12 +84,12 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
 	  break; /* end of header */
 
 	if ((flags & (CH_UPDATE | CH_XMIT | CH_NOSTATUS)) &&
-	    (mutt_strncasecmp ("Status:", buf, 7) == 0 ||
-	     mutt_strncasecmp ("X-Status:", buf, 9) == 0))
+	    (ascii_strncasecmp ("Status:", buf, 7) == 0 ||
+	     ascii_strncasecmp ("X-Status:", buf, 9) == 0))
 	  continue;
 	if ((flags & (CH_UPDATE_LEN | CH_XMIT | CH_NOLEN)) &&
-	    (mutt_strncasecmp ("Content-Length:", buf, 15) == 0 ||
-	     mutt_strncasecmp ("Lines:", buf, 6) == 0))
+	    (ascii_strncasecmp ("Content-Length:", buf, 15) == 0 ||
+	     ascii_strncasecmp ("Lines:", buf, 6) == 0))
 	  continue;
 	ignore = 0;
       }
@@ -151,21 +151,21 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
 	  !mutt_matches_ignore (buf, UnIgnore))
 	continue;
       if ((flags & CH_WEED_DELIVERED) &&
-	  mutt_strncasecmp ("Delivered-To:", buf, 13) == 0)
+	  ascii_strncasecmp ("Delivered-To:", buf, 13) == 0)
 	continue;
       if ((flags & (CH_UPDATE | CH_XMIT | CH_NOSTATUS)) &&
-	  (mutt_strncasecmp ("Status:", buf, 7) == 0 ||
-	   mutt_strncasecmp ("X-Status:", buf, 9) == 0))
+	  (ascii_strncasecmp ("Status:", buf, 7) == 0 ||
+	   ascii_strncasecmp ("X-Status:", buf, 9) == 0))
 	continue;
       if ((flags & (CH_UPDATE_LEN | CH_XMIT | CH_NOLEN)) &&
-	  (mutt_strncasecmp ("Content-Length:", buf, 15) == 0 ||
-	   mutt_strncasecmp ("Lines:", buf, 6) == 0))
+	  (ascii_strncasecmp ("Content-Length:", buf, 15) == 0 ||
+	   ascii_strncasecmp ("Lines:", buf, 6) == 0))
 	continue;
       if ((flags & CH_MIME) &&
-	  ((mutt_strncasecmp ("content-", buf, 8) == 0 &&
-	    (mutt_strncasecmp ("transfer-encoding:", buf + 8, 18) == 0 ||
-	     mutt_strncasecmp ("type:", buf + 8, 5) == 0)) ||
-	   mutt_strncasecmp ("mime-version:", buf, 13) == 0))
+	  ((ascii_strncasecmp ("content-", buf, 8) == 0 &&
+	    (ascii_strncasecmp ("transfer-encoding:", buf + 8, 18) == 0 ||
+	     ascii_strncasecmp ("type:", buf + 8, 5) == 0)) ||
+	   ascii_strncasecmp ("mime-version:", buf, 13) == 0))
 	continue;
 
       /* Find x -- the array entry where this header is to be saved */
@@ -173,7 +173,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
       {
 	for (t = HeaderOrderList, x = 0 ; (t) ; t = t->next, x++)
 	{
-	  if (!mutt_strncasecmp (buf, t->data, mutt_strlen (t->data)))
+	  if (!ascii_strncasecmp (buf, t->data, mutt_strlen (t->data)))
 	  {
 	    dprint(2, (debugfile, "Reorder: %s matches %s\n", t->data, buf));
 	    break;

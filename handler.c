@@ -687,7 +687,7 @@ static void enriched_set_flags (const char *tag, struct enriched_state *stte)
     tagptr++;
   
   for (i = 0, j = -1; EnrichedTags[i].tag_name; i++)
-    if (mutt_strcasecmp (EnrichedTags[i].tag_name,tagptr) == 0)
+    if (ascii_strcasecmp (EnrichedTags[i].tag_name,tagptr) == 0)
     {
       j = EnrichedTags[i].index;
       break;
@@ -705,35 +705,35 @@ static void enriched_set_flags (const char *tag, struct enriched_state *stte)
       if ((stte->s->flags & M_DISPLAY) && j == RICH_PARAM && stte->tag_level[RICH_COLOR])
       {
 	stte->param[stte->param_used] = '\0';
-	if (!mutt_strcasecmp(stte->param, "black"))
+	if (!ascii_strcasecmp(stte->param, "black"))
 	{
 	  enriched_puts("\033[30m", stte);
 	}
-	else if (!mutt_strcasecmp(stte->param, "red"))
+	else if (!ascii_strcasecmp(stte->param, "red"))
 	{
 	  enriched_puts("\033[31m", stte);
 	}
-	else if (!mutt_strcasecmp(stte->param, "green"))
+	else if (!ascii_strcasecmp(stte->param, "green"))
 	{
 	  enriched_puts("\033[32m", stte);
 	}
-	else if (!mutt_strcasecmp(stte->param, "yellow"))
+	else if (!ascii_strcasecmp(stte->param, "yellow"))
 	{
 	  enriched_puts("\033[33m", stte);
 	}
-	else if (!mutt_strcasecmp(stte->param, "blue"))
+	else if (!ascii_strcasecmp(stte->param, "blue"))
 	{
 	  enriched_puts("\033[34m", stte);
 	}
-	else if (!mutt_strcasecmp(stte->param, "magenta"))
+	else if (!ascii_strcasecmp(stte->param, "magenta"))
 	{
 	  enriched_puts("\033[35m", stte);
 	}
-	else if (!mutt_strcasecmp(stte->param, "cyan"))
+	else if (!ascii_strcasecmp(stte->param, "cyan"))
 	{
 	  enriched_puts("\033[36m", stte);
 	}
-	else if (!mutt_strcasecmp(stte->param, "white"))
+	else if (!ascii_strcasecmp(stte->param, "white"))
 	{
 	  enriched_puts("\033[37m", stte);
 	}
@@ -921,10 +921,10 @@ static void alternative_handler (BODY *a, STATE *s)
     while (b)
     {
       const char *bt = TYPE(b);
-      if (!mutt_strncasecmp (bt, t->data, btlen) && bt[btlen] == 0)
+      if (!ascii_strncasecmp (bt, t->data, btlen) && bt[btlen] == 0)
       {
 	/* the basetype matches */
-	if (wild || !mutt_strcasecmp (t->data + btlen + 1, b->subtype))
+	if (wild || !ascii_strcasecmp (t->data + btlen + 1, b->subtype))
 	{
 	  choice = b;
 	}
@@ -969,17 +969,17 @@ static void alternative_handler (BODY *a, STATE *s)
     {
       if (b->type == TYPETEXT)
       {
-	if (! mutt_strcasecmp ("plain", b->subtype) && type <= TXTPLAIN)
+	if (! ascii_strcasecmp ("plain", b->subtype) && type <= TXTPLAIN)
 	{
 	  choice = b;
 	  type = TXTPLAIN;
 	}
-	else if (! mutt_strcasecmp ("enriched", b->subtype) && type <= TXTENRICHED)
+	else if (! ascii_strcasecmp ("enriched", b->subtype) && type <= TXTENRICHED)
 	{
 	  choice = b;
 	  type = TXTENRICHED;
 	}
-	else if (! mutt_strcasecmp ("html", b->subtype) && type <= TXTHTML)
+	else if (! ascii_strcasecmp ("html", b->subtype) && type <= TXTHTML)
 	{
 	  choice = b;
 	  type = TXTHTML;
@@ -1075,8 +1075,8 @@ int mutt_can_decode (BODY *a)
 
 
 #ifdef HAVE_PGP
-    if (mutt_strcasecmp (a->subtype, "signed") == 0 ||
-	mutt_strcasecmp (a->subtype, "encrypted") == 0)
+    if (ascii_strcasecmp (a->subtype, "signed") == 0 ||
+	ascii_strcasecmp (a->subtype, "encrypted") == 0)
       return (1);
     else
 #endif
@@ -1124,7 +1124,7 @@ void multipart_handler (BODY *a, STATE *s)
     b->length = (long) st.st_size;
     b->parts = mutt_parse_multipart (s->fpin,
 		  mutt_get_parameter ("boundary", a->parameter),
-		  (long) st.st_size, mutt_strcasecmp ("digest", a->subtype) == 0);
+		  (long) st.st_size, ascii_strcasecmp ("digest", a->subtype) == 0);
   }
   else
     b = a;
@@ -1301,7 +1301,7 @@ static void external_body_handler (BODY *b, STATE *s)
   else
     expire = -1;
 
-  if (!mutt_strcasecmp (access_type, "x-mutt-deleted"))
+  if (!ascii_strcasecmp (access_type, "x-mutt-deleted"))
   {
     if (s->flags & M_DISPLAY)
     {
@@ -1414,25 +1414,25 @@ void mutt_body_handler (BODY *b, STATE *s)
   }
   else if (b->type == TYPETEXT)
   {
-    if (mutt_strcasecmp ("plain", b->subtype) == 0)
+    if (ascii_strcasecmp ("plain", b->subtype) == 0)
     {
       /* avoid copying this part twice since removing the transfer-encoding is
        * the only operation needed.
        */
       plaintext = 1;
     }
-    else if (mutt_strcasecmp ("enriched", b->subtype) == 0)
+    else if (ascii_strcasecmp ("enriched", b->subtype) == 0)
       handler = text_enriched_handler;
-    else if (mutt_strcasecmp ("rfc822-headers", b->subtype) == 0)
+    else if (ascii_strcasecmp ("rfc822-headers", b->subtype) == 0)
       plaintext = 1;
   }
   else if (b->type == TYPEMESSAGE)
   {
     if(mutt_is_message_type(b->type, b->subtype))
       handler = message_handler;
-    else if (!mutt_strcasecmp ("delivery-status", b->subtype))
+    else if (!ascii_strcasecmp ("delivery-status", b->subtype))
       plaintext = 1;
-    else if (!mutt_strcasecmp ("external-body", b->subtype))
+    else if (!ascii_strcasecmp ("external-body", b->subtype))
       handler = external_body_handler;
   }
   else if (b->type == TYPEMULTIPART)
@@ -1446,32 +1446,32 @@ void mutt_body_handler (BODY *b, STATE *s)
 
 
 
-    if (mutt_strcasecmp ("alternative", b->subtype) == 0)
+    if (ascii_strcasecmp ("alternative", b->subtype) == 0)
       handler = alternative_handler;
 
 
 
 #ifdef HAVE_PGP
-    else if (mutt_strcasecmp ("signed", b->subtype) == 0)
+    else if (ascii_strcasecmp ("signed", b->subtype) == 0)
     {
       p = mutt_get_parameter ("protocol", b->parameter);
 
       if (!p)
         mutt_error _("Error: multipart/signed has no protocol.");
-      else if (mutt_strcasecmp ("application/pgp-signature", p) == 0 ||
-	       mutt_strcasecmp ("multipart/mixed", p) == 0)
+      else if (ascii_strcasecmp ("application/pgp-signature", p) == 0 ||
+	       ascii_strcasecmp ("multipart/mixed", p) == 0)
       {
 	if (s->flags & M_VERIFY)
 	  handler = pgp_signed_handler;
       }
     }
-    else if (mutt_strcasecmp ("encrypted", b->subtype) == 0)
+    else if (ascii_strcasecmp ("encrypted", b->subtype) == 0)
     {
       p = mutt_get_parameter ("protocol", b->parameter);
 
       if (!p)
         mutt_error _("Error: multipart/encrypted has no protocol parameter!");
-      else if (mutt_strcasecmp ("application/pgp-encrypted", p) == 0)
+      else if (ascii_strcasecmp ("application/pgp-encrypted", p) == 0)
         handler = pgp_encrypted_handler;
     }
 #endif /* HAVE_PGP */

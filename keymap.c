@@ -98,7 +98,7 @@ static int parse_fkey(char *s)
   char *t;
   int n = 0;
 
-  if(s[0] != '<' || tolower(s[1]) != 'f')
+  if(s[0] != '<' || ascii_tolower(s[1]) != 'f')
     return -1;
 
   for(t = s + 2; *t && isdigit((unsigned char) *t); t++)
@@ -232,7 +232,7 @@ static int get_op (struct binding_t *bindings, const char *start, size_t len)
 
   for (i = 0; bindings[i].name; i++)
   {
-    if (!mutt_strncasecmp (start, bindings[i].name, len) &&   
+    if (!ascii_strncasecmp (start, bindings[i].name, len) &&   
 	mutt_strlen (bindings[i].name) == len)
       return bindings[i].op;
   }
@@ -279,7 +279,7 @@ static void push_string (char *s)
 	l = p - pp + 1;
 	for (i = 0; KeyNames[i].name; i++)
 	{
-	  if (!mutt_strncasecmp (pp, KeyNames[i].name, l))
+	  if (!ascii_strncasecmp (pp, KeyNames[i].name, l))
 	    break;
 	}
 	if (KeyNames[i].name)
@@ -771,7 +771,7 @@ int mutt_parse_bind (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     strfcpy (err->data, _("bind: too many arguments"), err->dsize);
     r = -1;
   }
-  else if (mutt_strcasecmp ("noop", buf->data) == 0)
+  else if (ascii_strcasecmp ("noop", buf->data) == 0)
     km_bindkey (key, menu, OP_NULL); /* the `unbind' command */
   else
   {

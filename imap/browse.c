@@ -414,7 +414,7 @@ static int browse_get_namespace (IMAP_DATA* idata, char* nsbuf, int nsblen,
       break;
 
     s = imap_next_word (idata->cmd.buf);
-    if (mutt_strncasecmp ("NAMESPACE", s, 9) == 0)
+    if (ascii_strncasecmp ("NAMESPACE", s, 9) == 0)
     {
       /* There are three sections to the response, User, Other, Shared,
        * and maybe more by extension */

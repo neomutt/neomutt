@@ -813,8 +813,8 @@ void mutt_edit_content_type (HEADER *h, BODY *b, FILE *fp)
 
   
   snprintf (tmp, sizeof (tmp), "%s/%s", TYPE (b), NONULL (b->subtype));
-  type_changed = mutt_strcasecmp (tmp, obuf);
-  charset_changed = mutt_strcasecmp (charset, mutt_get_parameter ("charset", b->parameter));
+  type_changed = ascii_strcasecmp (tmp, obuf);
+  charset_changed = ascii_strcasecmp (charset, mutt_get_parameter ("charset", b->parameter));
 
   /* if in send mode, check for conversion - current setting is default. */
 

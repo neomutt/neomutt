@@ -203,17 +203,17 @@ mutt_nss_bad_cert (void *arg, PRFileDesc * fd)
       i = SECFailure;
       break;
     }
-    else if (tolower (ch.ch) == 'r')
+    else if (ascii_tolower (ch.ch) == 'r')
     {
       i = SECFailure;
       break;
     }
-    else if (tolower (ch.ch) == 'o')
+    else if (ascii_tolower (ch.ch) == 'o')
     {
       i = SECSuccess;
       break;
     }
-    else if (tolower (ch.ch) == 'a')
+    else if (ascii_tolower (ch.ch) == 'a')
     {
       /* push this certificate onto the user's certificate store so it
        * automatically becomes valid next time we see it
