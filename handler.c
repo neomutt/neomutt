@@ -64,17 +64,17 @@ int Index_64[128] = {
     41,42,43,44, 45,46,47,48, 49,50,51,-1, -1,-1,-1,-1
 };
 
-void mutt_decode_xbit (STATE *s, BODY *b, int istext)
+void mutt_decode_xbit (STATE *s, BODY *b, int istext, DECODER *dec)
 {
   long len = b->length;
   int c, ch;
-  
+  char cc;
+  size_t l;
+
   if (istext)
   {
-    DECODER *dec = mutt_open_decoder (s, b, istext);
-
     state_set_prefix(s);
-    
+
     while ((c = fgetc(s->fpin)) != EOF && len--)
     {
       if(c == '\r' && len)
@@ -87,10 +87,16 @@ void mutt_decode_xbit (STATE *s, BODY *b, int istext)
 	else 
 	  ungetc(ch, s->fpin);
       }
-	
-      mutt_decoder_putc (dec, c);
+
+      cc = c;
+      mutt_decoder_push (dec, &cc, 1, &l);
+      mutt_decoder_pop_to_state (dec, s);
+      
     }
-    mutt_close_decoder (&dec);
+    
+    mutt_decoder_push (dec, NULL, 0, NULL);
+    mutt_decoder_pop_to_state (dec, s);
+
     state_reset_prefix (s);
   }
   else
@@ -109,14 +115,15 @@ static int handler_state_fgetc(STATE *s)
   return ch;
 }
 
-void mutt_decode_quoted (STATE *s, BODY *b, int istext)
+void mutt_decode_quoted (STATE *s, BODY *b, int istext, DECODER *dec)
 {
   long len = b->length;
   int ch;
-  DECODER *dec = mutt_open_decoder (s, b, istext);
-  
+  char cc;
+  size_t l;
+
   state_set_prefix(s);
-  
+
   while (len > 0)
   {
     if ((ch = handler_state_fgetc(s)) == EOF)
@@ -171,20 +178,27 @@ void mutt_decode_quoted (STATE *s, BODY *b, int istext)
     }
 
     if(ch != EOF)
-      mutt_decoder_putc (dec, ch);
+    {
+      cc = ch;
+      mutt_decoder_push (dec, &cc, 1, &l);
+      mutt_decoder_pop_to_state (dec, s);
+    }
   }
 
-  mutt_close_decoder (&dec);
+  mutt_decoder_push (dec, NULL, 0, NULL);
+  mutt_decoder_pop_to_state (dec, s);
+  
   state_reset_prefix(s);
 }
 
-void mutt_decode_base64 (STATE *s, BODY *b, int istext)
+void mutt_decode_base64 (STATE *s, BODY *b, int istext, DECODER *dec)
 {
   long len = b->length;
   char buf[5];
   int c1, c2, c3, c4, ch, cr = 0, i;
-  DECODER *dec = mutt_open_decoder (s, b, istext);
-  
+  char cc;
+  size_t l;
+
   buf[4] = 0;
 
   if (istext) state_set_prefix(s);
@@ -206,13 +220,19 @@ void mutt_decode_base64 (STATE *s, BODY *b, int istext)
     ch = (c1 << 2) | (c2 >> 4);
 
     if (cr && ch != '\n') 
-      mutt_decoder_putc (dec, '\r');
+    {
+      cc = '\r';
+      mutt_decoder_push (dec, &cc, 1, &l);
+    }
     cr = 0;
       
     if (istext && ch == '\r')
       cr = 1;
     else
-      mutt_decoder_putc (dec, ch);
+    {
+      cc = ch;
+      mutt_decoder_push (dec, &cc, 1, &l);
+    }
 
     if (buf[2] == '=')
       break;
@@ -220,29 +240,45 @@ void mutt_decode_base64 (STATE *s, BODY *b, int istext)
     ch = ((c2 & 0xf) << 4) | (c3 >> 2);
 
     if (cr && ch != '\n')
-      mutt_decoder_putc (dec, ch);
+    {
+      cc = ch;
+      mutt_decoder_push (dec, &cc, 1, &l);
+    }
 
     cr = 0;
 
     if (istext && ch == '\r')
       cr = 1;
     else
-      mutt_decoder_putc (dec, ch);
+    {
+      cc = ch;
+      mutt_decoder_push (dec, &cc, 1, &l);
+    }
 
     if (buf[3] == '=') break;
     c4 = base64val (buf[3]);
     ch = ((c3 & 0x3) << 6) | c4;
 
     if (cr && ch != '\n')
-      mutt_decoder_putc (dec, ch);
+    {
+      cc = ch;
+      mutt_decoder_push (dec, &cc, 1, &l);
+    }
     cr = 0;
 
     if (istext && ch == '\r')
       cr = 1;
     else
-      mutt_decoder_putc (dec, ch);
+    {
+      cc = ch;
+      mutt_decoder_push (dec, &cc, 1, &l);
+    }
+    
+    mutt_decoder_pop_to_state (dec, s);
   }
-  mutt_close_decoder (&dec);
+  mutt_decoder_push (dec, NULL, 0, NULL);
+  mutt_decoder_pop_to_state (dec, s);
+
   state_reset_prefix(s);
 }
 
@@ -253,13 +289,13 @@ unsigned char decode_byte (char ch)
   return ch - 32;
 }
 
-void mutt_decode_uuencoded (STATE *s, BODY *b, int istext)
+void mutt_decode_uuencoded (STATE *s, BODY *b, int istext, DECODER *dec)
 {
   char tmps[SHORT_STRING];
   char linelen, c, l, out;
   char *pt;
   long len = b->length;
-  DECODER *dec = mutt_open_decoder (s, b, istext);
+  size_t dummy;
   
   if(istext)
     state_set_prefix(s);
@@ -289,16 +325,19 @@ void mutt_decode_uuencoded (STATE *s, BODY *b, int istext)
 	out = decode_byte (*pt) << l;
 	pt++;
 	out |= (decode_byte (*pt) >> (6 - l));
-	mutt_decoder_putc (dec, out);
+	mutt_decoder_push (dec, &out, 1, &dummy);
 	c++;
 	if (c == linelen)
 	  break;
       }
+      mutt_decoder_pop_to_state (dec, s);
       pt++;
     }
   }
 
-  mutt_close_decoder (&dec);
+  mutt_decoder_push (dec, NULL, 0, NULL);
+  mutt_decoder_pop_to_state (dec, s);
+  
   state_reset_prefix(s);
 }
 
@@ -1238,22 +1277,33 @@ static void external_body_handler (BODY *b, STATE *s)
 
 void mutt_decode_attachment (BODY *b, STATE *s)
 {
+  char *charset = mutt_get_parameter ("charset", b->parameter);
+  int istext = mutt_is_text_type (b->type, b->subtype);
+  DECODER *dec;
+
+  if (istext && s->flags & M_CHARCONV)
+    dec = mutt_open_decoder (charset, Charset);
+  else
+    dec = mutt_open_decoder (NULL, NULL);
+
   fseek (s->fpin, b->offset, 0);
   switch (b->encoding)
   {
     case ENCQUOTEDPRINTABLE:
-      mutt_decode_quoted (s, b, mutt_is_text_type (b->type, b->subtype));
+      mutt_decode_quoted (s, b, istext, dec);
       break;
     case ENCBASE64:
-      mutt_decode_base64 (s, b, mutt_is_text_type (b->type, b->subtype));
+      mutt_decode_base64 (s, b, istext, dec);
       break;
     case ENCUUENCODED:
-      mutt_decode_uuencoded (s, b, mutt_is_text_type (b->type, b->subtype));
+      mutt_decode_uuencoded (s, b, istext, dec);
       break;
     default:
-      mutt_decode_xbit (s, b, mutt_is_text_type (b->type, b->subtype));
+      mutt_decode_xbit (s, b, istext, dec);
       break;
   }
+
+  mutt_free_decoder (&dec);
 }
 
 void mutt_body_handler (BODY *b, STATE *s)

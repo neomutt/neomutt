@@ -682,11 +682,20 @@ CHARSET_MAP *mutt_get_translation(const char *_from, const char *_to)
 
   if(!_from || !_to)
     return NULL;
-  
-  init_charsets();
 
   canonical_charset(from_canon, sizeof(from_canon), _from);
   canonical_charset(to_canon, sizeof(to_canon), _to);
+
+  /* quick check for some trivial cases.  Doing this before
+   * we actually call the initialization routine delays character
+   * set loading until it's _really_ needed.
+   */
+
+  if(!strcmp(from_canon, to_canon)
+     || (!strcmp (from_canon, "us-ascii") && !strncmp (to_canon, "iso-8859", 8)))
+    return NULL;
+
+  init_charsets();
 
   if(!CharsetAliases || !(from = hash_find(CharsetAliases, from_canon)))
     from = from_canon;
@@ -694,9 +703,9 @@ CHARSET_MAP *mutt_get_translation(const char *_from, const char *_to)
     to = to_canon;
   
   /* quick check for the identity mapping */
-  if((from == to) || ((*from == *to) && !mutt_strcmp(from, to)))
+  if((from == to) || !mutt_strcmp(from, to))
     return NULL;
-  
+
   snprintf(key, sizeof(key), "%s %s", from, to);
   if((map = hash_find(Translations, key)) == NULL)
   {
@@ -812,19 +821,24 @@ static char *utf_to_unicode(int *out, char *in)
 
 static CHARSET *Unicode = NULL;
 
+static int unicode_init (void)
+{
+  if (!Unicode)
+  {
+    if (load_charset ("ISO_10646", &Unicode, 1) == -1)
+      Unicode = NULL;
+  }
+  
+  return (Unicode == NULL ? -1 : 0);
+}
+
 void mutt_decode_utf8_string(char *str, CHARSET *chs)
 {
   char *s, *t;
   CHARDESC *cd;
   int ch;
 
-  /* Hack */
-  
-  if (!Unicode)
-  {
-    if (load_charset ("ISO_10646", &Unicode, 1) == -1)
-      Unicode = NULL;
-  }
+  (void) unicode_init ();
   
   for (s = t = str; *t; s++)
   {
@@ -844,128 +858,188 @@ void mutt_decode_utf8_string(char *str, CHARSET *chs)
   *s = '\0';
 }
 
-/* internal use only */
 
-struct utf8_state
-{
-  char *buffer;
-  size_t blen;
-  size_t bp;
-};
 
-static struct utf8_state *new_utf8_state (void)
-{
-  return safe_calloc (1, sizeof (struct utf8_state));
-}
 
-static void free_utf8_state (struct utf8_state **sp)
-{
-  if (!sp || !*sp) return;
-  safe_free ((void **) &(*sp)->buffer);
-  safe_free ((void **) sp);
-}
+/*************************************************************
+ * General decoder framework
+ */
 
-static void _state_utf8_flush(STATE *s, CHARSET *chs, struct utf8_state *sfu)
+
+
+#define MIN(a,b) (((a) <= (b)) ? (a): (b))
+
+DECODER *mutt_open_decoder (const char *src, const char *dest)
 {
-  char *t;
-  if(!sfu->buffer || !sfu->bp)
-    return;
-  
-  sfu->buffer[sfu->bp] = '\0';
-  
-  mutt_decode_utf8_string(sfu->buffer, chs);
-  for(t = sfu->buffer; *t; t++)
+  DECODER *d = safe_calloc (1, sizeof (DECODER));;
+
+  d->in.size = DECODER_BUFFSIZE;
+  d->out.size = DECODER_BUFFSIZE;
+
+  if (!src || !dest || mutt_is_utf8 (dest))
   {
-    /* This may lead to funny-looking output if 
-     * there are embedded CRs, NLs or similar things
-     * - but these would constitute illegal 
-     * UTF8 encoding anyways, so we don't care.
-     */
-
-    state_prefix_putc(*t, s);
+    d->just_take_id = 1;
+    return d;
   }
-  sfu->bp = 0;
-}
-    
-static void state_fput_utf8(STATE *st, char u, CHARSET *chs, struct utf8_state *sfu)
-{
-  if((u & 0x80) == 0 || (sfu->bp && (u & IIOOOOOO) != IOOOOOOO))
-    _state_utf8_flush(st, chs, sfu);
-     
-  if((u & 0x80) == 0)
+  
+  if (mutt_is_utf8 (src))
   {
-    if(u) state_prefix_putc(u, st);
-  }
-  else
-  {
-    if(sfu->bp + 1 >= sfu->blen)
+    if (!(d->chs = mutt_get_charset (dest)) || unicode_init () == -1)
     {
-      sfu->blen = (sfu->blen + 80) * 2;
-      safe_realloc((void **) &sfu->buffer, sfu->blen + 1);
+      d->just_take_id = 1;
+      return d;
     }
-    sfu->buffer[sfu->bp++] = u;
-  }
-}
-
-/* a nicer interface for decoding */
-
-DECODER *mutt_open_decoder (STATE *s, BODY *b, int istext)
-{
-  DECODER *dp = safe_calloc (1, sizeof (DECODER));
-  
-  dp->s = s;
-  
-  if (istext && (s->flags & M_CHARCONV))
-  {
-    char *charset = mutt_get_parameter ("charset", b->parameter);
-    dp->is_utf8 = mutt_is_utf8 (charset) && !mutt_is_utf8 (Charset);
     
-    if (dp->is_utf8)
-    {
-      dp->sfu = new_utf8_state ();
-      dp->chs = mutt_get_charset (Charset);
-    }
-    else
-      dp->map = mutt_get_translation (charset, Charset);
+    d->src_is_utf8 = 1;
+    return d;
   }
   
-  return dp;
+  if (!(d->chm = mutt_get_translation (src, dest)))
+    d->just_take_id = 1;
+  
+  return d;
 }
 
-void mutt_close_decoder (DECODER **dpp)
+void mutt_free_decoder (DECODER **dpp)
 {
-  if (!dpp || !*dpp)
-    return;
-  
-  if ((*dpp)->is_utf8)
-  {
-    _state_utf8_flush ((*dpp)->s, (*dpp)->chs, (*dpp)->sfu);
-    free_utf8_state (&(*dpp)->sfu);
-  }
-
   safe_free ((void **) dpp);
 }
 
-void mutt_decoder_putc (DECODER *dp, char c)
+static void _process_data (DECODER *, short);
+
+void mutt_decoder_push (DECODER *d, void *_buff, size_t blen, size_t *taken)
 {
-  if (dp->is_utf8)
-    state_fput_utf8 (dp->s, c, dp->chs, dp->sfu);
-  else
-    state_prefix_putc (mutt_display_char ((unsigned char) c, dp->map), dp->s);
+  if (!_buff || !blen)
+  {
+    _process_data (d, 1);
+    return;
+  }
+
+  if ((*taken = MIN(blen, d->in.size - d->in.used)))
+  {
+    memcpy (d->in.buff + d->in.used, _buff, *taken);
+    d->in.used += *taken;
+  }
 }
 
-/* FIXME: utf-8 support */
+
+void mutt_decoder_pop (DECODER *d, void *_buff, size_t blen, size_t *popped)
+{
+  unsigned char *buff = _buff;
+
+  _process_data (d, 0);
+  
+  if ((*popped = MIN (blen, d->out.used)))
+  {
+    memcpy (buff, d->out.buff, *popped);
+    memmove (d->out.buff, d->out.buff + *popped, d->out.used - *popped);
+    d->out.used -= *popped;
+  }
+}
+
+void mutt_decoder_pop_to_state (DECODER *d, STATE *s)
+{
+  char tmp[DECODER_BUFFSIZE];
+  size_t i, l;
+  
+  do 
+  {
+    mutt_decoder_pop (d, tmp, sizeof (tmp), &l);
+    for (i = 0; i < l; i++)
+      state_prefix_putc (tmp[i], s);
+  }
+  while (l > 0);
+}
+
+/* this is where things actually happen */
+
+static void _process_data_8bit (DECODER *d)
+{
+  size_t i;
+  
+  for (i = 0; i < d->in.used && d->out.used < d->out.size; i++)
+    d->out.buff[d->out.used++] = mutt_display_char (d->in.buff[i], d->chm);
+  
+  memmove (d->in.buff, d->in.buff + i, d->in.used - i);
+  d->in.used -= i;
+}
+
+static void _process_data_utf8 (DECODER *d)
+{
+  size_t i, j;
+  CHARDESC *cd;
+  
+  for (i = 0, j = 0; i < d->in.used && d->out.used < d->out.size;)
+  {
+    while (((d->in.buff[j] & 0x80) == 0) && (j < d->in.used) && (d->out.used < d->out.size))
+      d->out.buff[d->out.used++] = d->in.buff[j++];
+    i = j;
+
+    while ((d->in.buff[j] & 0x80) && j < d->in.used &&
+	   (d->forced || j + 6 < d->in.used) && d->out.used < d->out.size)
+    {
+      int ch;
+      char *c = utf_to_unicode (&ch, &d->in.buff[j]);
+      
+      j = c - d->in.buff;
+
+      if (0 <= ch && ch < 128)
+	d->out.buff[d->out.used] = ch;
+      else if ((cd = repr2descr (ch, Unicode)) && (ch = translate_character (d->chs, cd->symbol)) != -1)
+	d->out.buff[d->out.used] = ch;
+      else
+	d->out.buff[d->out.used] = '?';
+      
+      if(!d->out.buff[d->out.used]) 
+	d->out.buff[d->out.used] = '?';
+      
+      d->out.used++;
+    }
+    
+    i = j;
+    
+    if (d->in.buff[j] & 0x80)
+      break;
+  }
+
+  memmove (d->in.buff, d->in.buff + i, d->in.used - i);
+  d->in.used -= i;
+}
+
+static void _process_data (DECODER *d, short force)
+{
+  if (force) d->forced = 1;
+  
+  if (d->just_take_id)
+  {
+    size_t l = MIN (d->out.size - d->out.used, d->in.used);
+    memmove (d->out.buff + d->out.used, d->in.buff, l);
+    memmove (d->in.buff, d->in.buff + l, d->in.used - l);
+    d->in.used -= l;
+    d->out.used += l;
+  }
+  else if (d->src_is_utf8)
+    _process_data_utf8 (d);
+  else
+    _process_data_8bit (d);
+}
+
+/* This one is currently lacking utf-8 support */
 
 int mutt_recode_file (const char *fname, const char *src, const char *dest)
 {
   FILE *fp, *tmpfp;
   char tempfile[_POSIX_PATH_MAX];
+  char buffer[1024];
+  char tmp[1024];
   int c;
   int rv = -1;
-  
-  CHARSET_MAP *map;
 
-  if (mutt_is_utf8 (dest) ^ mutt_is_utf8(src))
+  size_t lf, lpu, lpo;
+  char *t;
+  DECODER *dec;
+
+  if (mutt_is_utf8 (dest) && !mutt_is_utf8 (src))
   {
     mutt_error (_("We can't currently handle utf-8 at this point."));
     return -1;
@@ -985,11 +1059,34 @@ int mutt_recode_file (const char *fname, const char *src, const char *dest)
     return -1;
   }
 
-  map = mutt_get_translation (src, dest);
+  dec = mutt_open_decoder (src, dest);
   
-  while ((c = fgetc (fp)) != EOF)
-    if (fputc (mutt_display_char ((unsigned char) c, map), tmpfp) == EOF)
-      goto bail;
+  while ((lf = fread (buffer, 1, sizeof (buffer), fp)) > 0)
+  {
+    for (t = buffer; lf; t += lpu)
+    {
+      mutt_decoder_push (dec, t, lf, &lpu);
+      lf -= lpu;
+      
+      do
+      {
+	mutt_decoder_pop (dec, tmp, sizeof (tmp), &lpo);
+	if (lpo)
+	  fwrite (tmp, lpo, 1, tmpfp);
+      } 
+      while (lpo);
+    }
+  }
+
+  mutt_decoder_push (dec, NULL, 0, NULL);
+  do 
+  {
+    mutt_decoder_pop (dec, tmp, sizeof (tmp), &lpo);
+    if (lpo) fwrite (tmp, lpo, 1, tmpfp);
+  }
+  while (lpo);
+
+  mutt_free_decoder (&dec);
 
   fclose (fp); fp = NULL;
   rewind (tmpfp);
