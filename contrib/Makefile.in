@@ -27,7 +27,10 @@ DISTFILES=Mush.rc Pine.rc Makefile.in language.txt language50.txt 	\
 
 SAMPLES=Mush.rc Pine.rc gpg.rc pgp2.rc pgp5.rc
 
-all clean distclean:
+all clean:
+
+distclean:
+	-rm -f Makefile
 
 install:
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)@docdir@/samples
@@ -35,8 +38,7 @@ install:
 		$(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)@docdir@/samples ;	\
 	done
 
-maintainer-clean:
-	-rm -f Makefile
+maintainer-clean: distclean
 
 Makefile: ../config.status Makefile.in
 	cd .. \

@@ -81,7 +81,7 @@ pgpring_DEPENDENCIES = @LIBOBJS@ $(INTLDEPS)
 mutt_dotlock.c: dotlock.c
 	cp $(srcdir)/dotlock.c mutt_dotlock.c
 
-CLEANFILES = mutt_dotlock.c stamp-doc-rc
+CLEANFILES = mutt_dotlock.c stamp-doc-rc makedoc
 
 ACLOCAL_AMFLAGS = -I m4
 
