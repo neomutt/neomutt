@@ -1,3 +1,8 @@
+2003-02-13 09:50:00  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* pgp.c: Fix #1444, Debian #178563.  The details of this problem
+	were tracked down by Steven Barker <steve@blckknght.org>.
+
 2003-01-31 00:15:03  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* init.h: Change the default for crypt_replyencrypt back to "yes".
