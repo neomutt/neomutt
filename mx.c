@@ -700,7 +700,8 @@ static int sync_mailbox (CONTEXT *ctx)
       
 #ifdef USE_IMAP
     case M_IMAP:
-      rc = imap_sync_mailbox (ctx);
+      /* extra argument means EXPUNGE */
+      rc = imap_sync_mailbox (ctx, M_YES);
       break;
 #endif /* USE_IMAP */
   }
@@ -787,7 +788,7 @@ int mx_close_mailbox (CONTEXT *ctx)
   }
 
 #ifdef USE_IMAP
-  /* IMAP doesn't support an OLD flag */
+  /* IMAP servers manage the OLD flag themselves */
   if (ctx->magic != M_IMAP)
 #endif
   if (option (OPTMARKOLD))

@@ -64,6 +64,9 @@ static void destroy_state (struct browser_state *state)
     safe_free ((void **) &((state->entry)[c].name));
     safe_free ((void **) &((state->entry)[c].desc));
   }
+#ifdef USE_IMAP
+  safe_free ((void **) &state->folder);
+#endif
   safe_free ((void **) &state->entry);
 }
 

@@ -40,6 +40,7 @@ struct browser_state
   short entrymax;  /* max entry */
 #ifdef USE_IMAP
   short imap_browse;
+  char *folder;
   int noselect : 1;
   int marked : 1;
   int unmarked : 1;
