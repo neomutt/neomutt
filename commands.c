@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 2000 Thomas Roessler <roessler@does-not-exist.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -255,7 +256,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
   mutt_message (h ? _("Message bounced.") : _("Messages bounced."));
 }
 
-static void pipe_print_set_flags (int decode, int *cmflags, int *chflags)
+static void pipe_set_flags (int decode, int *cmflags, int *chflags)
 {
   if (decode)
   {
@@ -270,35 +271,43 @@ static void pipe_print_set_flags (int decode, int *cmflags, int *chflags)
   }
 }
 
-void mutt_pipe_message_to_state (HEADER *h, STATE *s)
+void pipe_msg (HEADER *h, FILE *fp, int decode)
 {
   int cmflags = 0;
   int chflags = CH_FROM;
   
-  pipe_print_set_flags (option (OPTPIPEDECODE), &cmflags, &chflags);
+  pipe_set_flags (decode, &cmflags, &chflags);
+
+#ifdef HAVE_PGP
   
-  if (option (OPTPIPEDECODE))
+  if (decode && (h->pgp & PGPENCRYPT))
+  {
+    if (!pgp_valid_passphrase())
+      return;
+    endwin();
+  }
+  
+#endif
+
+  if (decode)
     mutt_parse_mime_message (Context, h);
 
-  mutt_copy_message (s->fpout, Context, h,
-		     cmflags, chflags);
+  mutt_copy_message (fp, Context, h, cmflags, chflags);
 }
 
-int mutt_pipe_message (HEADER *h)
+
+/* the following code is shared between printing and piping */
+
+static int _mutt_pipe_message (HEADER *h, char *cmd,
+			int decode,
+			int split,
+			char *sep)
 {
-  STATE s;
-  char buffer[LONG_STRING];
-  int i, rc = 0; 
+  
+  int i, rc = 0;
   pid_t thepid;
-
-  buffer[0] = 0;
-  if (mutt_get_field (_("Pipe to command: "), buffer, sizeof (buffer), M_CMD)
-      != 0 || !buffer[0])
-    return 0;
-  mutt_expand_path (buffer, sizeof (buffer));
-
-  memset (&s, 0, sizeof (s));
-
+  FILE *fpout;
+  
   endwin ();
   if (h)
   {
@@ -306,7 +315,7 @@ int mutt_pipe_message (HEADER *h)
     mutt_message_hook (Context, h, M_MESSAGEHOOK);
 
 #ifdef HAVE_PGP
-    if (option (OPTPIPEDECODE))
+    if (decode)
     {
       mutt_parse_mime_message (Context, h);
       if(h->pgp & PGPENCRYPT && !pgp_valid_passphrase())
@@ -315,11 +324,9 @@ int mutt_pipe_message (HEADER *h)
     endwin ();
 #endif
 
-
-
-    thepid = mutt_create_filter (buffer, &s.fpout, NULL, NULL);
-    mutt_pipe_message_to_state (h, &s);
-    fclose (s.fpout);
+    thepid = mutt_create_filter (cmd, &fpout, NULL, NULL);
+    pipe_msg (h, fpout, decode);
+    fclose (fpout);
     rc = mutt_wait_filter (thepid);
   }
   else
@@ -329,7 +336,7 @@ int mutt_pipe_message (HEADER *h)
 
 #ifdef HAVE_PGP
 
-    if(option(OPTPIPEDECODE))
+    if (decode)
     {
       for (i = 0; i < Context->vcount; i++)
 	if(Context->hdrs[Context->v2r[i]]->tagged)
@@ -343,9 +350,7 @@ int mutt_pipe_message (HEADER *h)
     }
 #endif
     
-
-
-    if (option (OPTPIPESPLIT))
+    if (split)
     {
       for (i = 0; i < Context->vcount; i++)
       {
@@ -353,12 +358,11 @@ int mutt_pipe_message (HEADER *h)
         {
 	  mutt_message_hook (Context, Context->hdrs[Context->v2r[i]], M_MESSAGEHOOK);
 	  endwin ();
-	  thepid = mutt_create_filter (buffer, &(s.fpout), NULL, NULL);
-          mutt_pipe_message_to_state (Context->hdrs[Context->v2r[i]], &s);
+	  thepid = mutt_create_filter (cmd, &fpout, NULL, NULL);
+          pipe_msg (Context->hdrs[Context->v2r[i]], fpout, decode);
           /* add the message separator */
-          if (PipeSep)
-	    state_puts (PipeSep, &s);
-	  fclose (s.fpout);
+          if (sep)  fputs (sep, fpout);
+	  fclose (fpout);
 	  if (mutt_wait_filter (thepid) != 0)
 	    rc = 1;
         }
@@ -367,19 +371,18 @@ int mutt_pipe_message (HEADER *h)
     else
     {
       endwin ();
-      thepid = mutt_create_filter (buffer, &(s.fpout), NULL, NULL);
+      thepid = mutt_create_filter (cmd, &fpout, NULL, NULL);
       for (i = 0; i < Context->vcount; i++)
       {
         if (Context->hdrs[Context->v2r[i]]->tagged)
         {
 	  mutt_message_hook (Context, Context->hdrs[Context->v2r[i]], M_MESSAGEHOOK);
-          mutt_pipe_message_to_state (Context->hdrs[Context->v2r[i]], &s);
+          pipe_msg (Context->hdrs[Context->v2r[i]], fpout, decode);
           /* add the message separator */
-          if (PipeSep)
-	    state_puts (PipeSep, &s);
+          if (sep) fputs (sep, fpout);
         }
       }
-      fclose (s.fpout);
+      fclose (fpout);
       if (mutt_wait_filter (thepid) != 0)
 	rc = 1;
     }
@@ -387,8 +390,49 @@ int mutt_pipe_message (HEADER *h)
 
   if (rc || option (OPTWAITKEY))
     mutt_any_key_to_continue (NULL);
-  return 1;
+  return rc;
 }
+
+void mutt_pipe_message (HEADER *h)
+{
+  char buffer[LONG_STRING];
+
+  buffer[0] = 0;
+  if (mutt_get_field (_("Pipe to command: "), buffer, sizeof (buffer), M_CMD)
+      != 0 || !buffer[0])
+    return;
+
+  mutt_expand_path (buffer, sizeof (buffer));
+  _mutt_pipe_message (h, buffer,
+		      option (OPTPIPEDECODE),
+		      option (OPTPIPESPLIT),
+		      PipeSep);
+}
+
+void mutt_print_message (HEADER *h)
+{
+
+  if (quadoption (OPT_PRINT) && (!PrintCmd || !*PrintCmd))
+  {
+    mutt_message (_("No printing command has been defined."));
+    return;
+  }
+  
+  if (query_quadoption (OPT_PRINT,
+			h ? _("Print message?") : _("Print tagged messages?"))
+		  	!= M_YES)
+    return;
+
+  if (_mutt_pipe_message (h, PrintCmd,
+			  option (OPTPRINTDECODE),
+			  option (OPTPRINTSPLIT),
+			  "\f") == 0)
+    mutt_message (h ? _("Message printed") : _("Messages printed"));
+  else
+    mutt_message (h ? _("Message could not be printed") :
+		  _("Messages could not be printed"));
+}
+
 
 int mutt_select_sort (int reverse)
 {
@@ -720,69 +764,6 @@ int mutt_save_message (HEADER *h, int delete,
   return -1;
 }
 
-/* XXX - merge this with mutt_pipe_message_to_state? */
-
-static void print_msg (FILE *fp, CONTEXT *ctx, HEADER *h)
-{
-  int cmflags = 0;
-  int chflags = CH_FROM;
-
-  pipe_print_set_flags (option (OPTPRINTDECODE), &cmflags, &chflags);
-
-#ifdef HAVE_PGP
-  if (option (OPTPRINTDECODE) && (h->pgp & PGPENCRYPT))
-  {
-    if (!pgp_valid_passphrase ())
-      return;
-    endwin ();
-  }
-#endif
-
-  if (option (OPTPRINTDECODE))
-    mutt_parse_mime_message (ctx, h);
-
-  mutt_copy_message (fp, ctx, h, cmflags, chflags);
-}
-
-void mutt_print_message (HEADER *h)
-{
-  int i, count = 0;
-  pid_t thepid;
-  FILE *fp;
-
-  
-  if (query_quadoption (OPT_PRINT,
-			h ? _("Print message?") : _("Print tagged messages?"))
-		  	!= M_YES)
-    return;
-  endwin ();
-  if ((thepid = mutt_create_filter (NONULL(PrintCmd), &fp, NULL, NULL)) == -1)
-    return;
-  if (h)
-  {
-    mutt_message_hook (Context, h, M_MESSAGEHOOK);
-    print_msg (fp, Context, h);
-    count++;
-  }
-  else
-  {
-    for (i = 0 ; i < Context->vcount ; i++)
-    {
-      if (Context->hdrs[Context->v2r[i]]->tagged)
-      {
-	mutt_message_hook (Context, Context->hdrs[Context->v2r[i]], M_MESSAGEHOOK);
-	print_msg (fp, Context, Context->hdrs[Context->v2r[i]]);
-	/* add a formfeed */
-	fputc ('\f', fp);
-	count++;
-      }
-    }
-  }
-  fclose (fp);
-  if (mutt_wait_filter (thepid) || option (OPTWAITKEY))
-    mutt_any_key_to_continue (NULL);
-  mutt_message ((count > 1) ? _("Message printed") : _("Messages printed"));
-}
 
 void mutt_version (void)
 {

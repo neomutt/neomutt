@@ -29,6 +29,7 @@
 #include "mutt_curses.h"
 #include "pgp.h"
 #include "mime.h"
+#include "copy.h"
 
 #include <sys/wait.h>
 #include <string.h>
@@ -723,8 +724,8 @@ void pgp_signed_handler (BODY *a, STATE *s)
 void pgp_extract_keys_from_messages (HEADER *h)
 {
   int i;
-  STATE s;
   char tempfname[_POSIX_PATH_MAX];
+  FILE *fpout;
 
   if (h)
   {
@@ -733,10 +734,8 @@ void pgp_extract_keys_from_messages (HEADER *h)
       return;
   }
 
-  memset (&s, 0, sizeof (STATE));
-  
   mutt_mktemp (tempfname);
-  if (!(s.fpout = safe_fopen (tempfname, "w")))
+  if (!(fpout = safe_fopen (tempfname, "w")))
   {
     mutt_perror (tempfname);
     return;
@@ -754,10 +753,11 @@ void pgp_extract_keys_from_messages (HEADER *h)
 	if (Context->hdrs[Context->v2r[i]]->pgp & PGPENCRYPT
 	   && !pgp_valid_passphrase())
 	{
-	  fclose (s.fpout);
+	  fclose (fpout);
 	  goto bailout;
 	}
-	mutt_pipe_message_to_state (Context->hdrs[Context->v2r[i]], &s);
+	mutt_copy_message (fpout, Context, Context->hdrs[Context->v2r[i]], 
+			   M_CM_DECODE|M_CM_CHARCONV, 0);
       }
     }
   } 
@@ -766,13 +766,13 @@ void pgp_extract_keys_from_messages (HEADER *h)
     mutt_parse_mime_message (Context, h);
     if (h->pgp & PGPENCRYPT && !pgp_valid_passphrase())
     {
-      fclose (s.fpout);
+      fclose (fpout);
       goto bailout;
     }
-    mutt_pipe_message_to_state (h, &s);
+    mutt_copy_message (fpout, Context, h, M_CM_DECODE|M_CM_CHARCONV, 0);
   }
       
-  fclose (s.fpout);
+  fclose (fpout);
   endwin ();
   pgp_invoke_import (tempfname);
   mutt_any_key_to_continue (NULL);

@@ -1525,6 +1525,19 @@ struct option_t MuttVars[] = {
   ** some advanced printer filter which is able to properly format
   ** e-mail messages for printing.
   */
+  { "print_split",	DT_BOOL, R_NONE, OPTPRINTSPLIT,  0 },
+  /*
+  ** .pp
+  ** Used in connection with the print-message command.  If this option
+  ** is set, the command sepcified by $$print_command is executed once for
+  ** each message which is to be printed.  If this option is unset, 
+  ** the command specified by $$print_command is executed only once, and
+  ** all the messages are concatenated, with a form feed as the message
+  ** separator.
+  ** .pp
+  ** Those who use the \fBenscript\fP(1) program's mail-printing mode will
+  ** most likely want to set this option.
+  */
   { "prompt_after",	DT_BOOL, R_NONE, OPTPROMPTAFTER, 1 },
   /*
   ** .pp
