@@ -1,11 +1,10 @@
 		
 		
-		
 		USING PGP FROM WITHIN MUTT
 		
 
 	    Thomas Roessler <roessler@guug.de>
-	       Fri Jun  5 12:28:52 CEST 1998
+	       Fri Jul 10 10:57:50 MEST 1998
 
 
 While encryption, verification and signing of messages are
@@ -175,3 +174,16 @@ $PGPPATH and add the following line to your muttrc:
 
 For PGP 2.6, a German version called "muttde" is available
 as well.
+
+
+
+Q: "Isn't there a security problem that mutt leaves the
+    passphrase in memory which will be dumped into core
+    files upon errors?"
+
+Yes, you may consider this a security problem.  To work
+around this, disable core dumps using resource limits.  On
+most systems, this will be the following instruction in
+your shell:
+
+	ulimit -c 0

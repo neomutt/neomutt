@@ -64,7 +64,7 @@ be_snarf_data (FILE *f, char **buf, int *bufmax, int *buflen, int offset,
   tmp[sizeof (tmp) - 1] = 0;
   if (prefix)
   {
-    strfcpy (tmp, Prefix, sizeof (tmp));
+    strfcpy (tmp, NONULL(Prefix), sizeof (tmp));
     tmplen = strlen (tmp);
     p = tmp + tmplen;
     tmplen = sizeof (tmp) - tmplen;
@@ -129,9 +129,9 @@ static int be_barf_file (const char *path, char **buf, int buflen)
 static void be_free_memory (char **buf, int buflen)
 {
   while (buflen-- > 0)
-    free (buf[buflen]);
+    FREE (&buf[buflen]);
   if (buf)
-    free (buf);
+    FREE (&buf);
 }
 
 static char **
@@ -323,7 +323,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
     }
     addch ('\n');
 
-    if (tmp[0] == EscChar[0] && tmp[1] != EscChar[0])
+    if (EscChar && tmp[0] == EscChar[0] && tmp[1] != EscChar[0])
     {
       /* remove trailing whitespace from the line */
       p = tmp + strlen (tmp) - 1;
@@ -364,7 +364,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 	    }
 	    buf = be_include_messages (p, buf, &bufmax, &buflen,
 				       (tolower (tmp[1]) == 'm'),
-				       (isupper (tmp[1])));
+				       (isupper ((unsigned char) tmp[1])));
 	  }
 	  else
 	    addstr ("No mailbox.\n");
@@ -382,7 +382,11 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 	  break;
 	case 'r':
 	  if (*p)
-	    buf = be_snarf_file (p, buf, &bufmax, &buflen, 1);
+          {
+	    strncpy(tmp, p, sizeof(tmp));
+	    mutt_expand_path(tmp, sizeof(tmp));
+	    buf = be_snarf_file (tmp, buf, &bufmax, &buflen, 1);
+          }
 	  else
 	    addstr ("missing filename.\n");
 	  break;
@@ -400,7 +404,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 	    buflen--;
 	    strfcpy (tmp, buf[buflen], sizeof (tmp));
 	    tmp[strlen (tmp)-1] = 0;
-	    free (buf[buflen]);
+	    FREE (&buf[buflen]);
 	    buf[buflen] = NULL;
 	    continue;
 	  }
@@ -417,9 +421,9 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 	    bufmax = buflen = 0;
 
 	    if (option (OPTEDITHDRS))
-	      mutt_edit_headers (Visual, path, msg, NULL, 0);
+	      mutt_edit_headers (NONULL(Visual), path, msg, NULL, 0);
 	    else
-	      mutt_edit_file (Visual, path);
+	      mutt_edit_file (NONULL(Visual), path);
 
 	    buf = be_snarf_file (path, buf, &bufmax, &buflen, 0);
 

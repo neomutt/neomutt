@@ -4,7 +4,7 @@
 
 <title>The Mutt E-Mail Client
 <author>by Michael Elkins <htmlurl url="mailto:me@cs.hmc.edu" name="&lt;me@cs.hmc.edu&gt;">
-<date>v0.92.2, 23 April 1998
+<date>v0.94.2, 31 July 1998
 <abstract>
 ``All mail clients suck.  This one just sucks less.'' -me, circa 1995
 </abstract>
@@ -19,21 +19,21 @@ groups of messages.
 
 <sect1>Mutt Home Page
 <p>
-<htmlurl url="http://www.cs.hmc.edu/~me/mutt/index.html"
-name="http://www.cs.hmc.edu/~me/mutt/index.html">
+<htmlurl url="http://www.mutt.org/"
+name="http://www.mutt.org/">
 
 <sect1>Mailing Lists
 <p>
 To subscribe to one of the following mailing lists, send a message with the
 word <em/subscribe/ in the subject to
-<tt/list-name/<em/-request/<tt/@cs.hmc.edu/.
+<tt/list-name/<em/-request/<tt/@mutt.org/.
 
 <itemize>
-<item><htmlurl url="mailto:mutt-announce-request@cs.hmc.edu"
-name="mutt-announce@cs.hmc.edu"> -- low traffic list for announcements
-<item><htmlurl url="mailto:mutt-users-request@cs.hmc.edu"
-name="mutt-users@cs.hmc.edu"> -- help, bug reports and feature requests
-<item><htmlurl url="mailto:mutt-dev-request@cs.hmc.edu" name="mutt-dev@cs.hmc.edu"> -- development mailing list
+<item><htmlurl url="mailto:mutt-announce-request@mutt.org"
+name="mutt-announce@mutt.org"> -- low traffic list for announcements
+<item><htmlurl url="mailto:mutt-users-request@mutt.org"
+name="mutt-users@mutt.org"> -- help, bug reports and feature requests
+<item><htmlurl url="mailto:mutt-dev-request@mutt.org" name="mutt-dev@mutt.org"> -- development mailing list
 </itemize>
 
 <bf/Note:/ all messages posted to <em/mutt-announce/ are automatically
@@ -43,8 +43,8 @@ lists.
 <sect1>Software Distribution Sites
 <p>
 <itemize>
-<item><htmlurl url="ftp://ftp.cs.hmc.edu/pub/me/mutt/"
-name="ftp://ftp.cs.hmc.edu/pub/me/mutt/">
+<item><htmlurl url="ftp://ftp.guug.de/pub/mutt/"
+name="ftp://ftp.guug.de/pub/mutt/">
 </itemize>
 
 <sect1>IRC
@@ -80,7 +80,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 This section is intended as a brief overview of how to use Mutt.  There are
 many other features which are described elsewhere in the manual.  There
 is even more information available in the Mutt FAQ and various web
-pages.  See the <htmlurl url="http://www.cs.hmc.edu/~me/mutt/"
+pages.  See the <htmlurl url="http://www.mutt.org/mutt/"
 name="Mutt Page"> for more details.
 
 The keybindings described in this section are the defaults as distributed.
@@ -98,14 +98,14 @@ Information is presented in menus, very similar to ELM.  Here is a table
 showing the common keys used to navigate menus in Mutt.
 
 <tscreen><verb>
-j or Down	next-entry	move to the next entry
-k or Up		previous-entry	move to the previous entry
-z or PageDn	page-down	go to the next page
-Z or PageUp	page-up		go to the previous page
-= or Home	first-entry	jump to the first entry
-* or End	last-entry	jump to the last entry
-q		quit		exit the current menu
-?		help		list all keybindings for the current menu
+j or Down       next-entry      move to the next entry
+k or Up         previous-entry  move to the previous entry
+z or PageDn     page-down       go to the next page
+Z or PageUp     page-up         go to the previous page
+= or Home       first-entry     jump to the first entry
+* or End        last-entry      jump to the last entry
+q               quit            exit the current menu
+?               help            list all keybindings for the current menu
 </verb></tscreen>
 
 <sect1>Editing Input Fields<label id="editing">
@@ -115,20 +115,20 @@ textual data such as email addresses or filenames.  The keys used to move
 around while editing are very similar to those of Emacs.
 
 <tscreen><verb>
-^A or <Home>	bol		move to the start of the line
-^B or <Left>	backward-char	move back one char
-^D or <Delete>	delete-char	delete the char under the cursor
-^E or <End>	eol		move to the end of the line
-^F or <Right>	forward-char	move forward one char
-^K		kill-eol	delete to the end of the line
-^U		kill-line	delete entire line
-^W		kill-word	kill the word in front of the cursor
-<Up>		history-up	recall previous string from history
-<Down>		history-down	recall next string from history
-<BackSpace>	backspace	kill the char in front of the cursor
-^G		n/a		abort
-<Tab>		n/a		complete filename (only when prompting for a file)
-<Return>	n/a		finish editing
+^A or <Home>    bol             move to the start of the line
+^B or <Left>    backward-char   move back one char
+^D or <Delete>  delete-char     delete the char under the cursor
+^E or <End>     eol             move to the end of the line
+^F or <Right>   forward-char    move forward one char
+^K              kill-eol        delete to the end of the line
+^U              kill-line       delete entire line
+^W              kill-word       kill the word in front of the cursor
+<Up>            history-up      recall previous string from history
+<Down>          history-down    recall next string from history
+<BackSpace>     backspace       kill the char in front of the cursor
+^G              n/a             abort
+<Tab>           n/a             complete filename (only when prompting for a file)
+<Return>        n/a             finish editing
 </verb></tscreen>
 
 You can remap the <em/editor/ functions using the <ref id="bind" name="bind">
@@ -152,34 +152,34 @@ modes.
 <p>
 
 <tscreen><verb>
-c		change to a different mailbox
-ESC c 		change to a folder in read-only mode
-C		copy the current message to another mailbox
-ESC C		decode a message and copy it to a folder
-ESC s		decode a message and save it to a folder
-D		delete messages matching a pattern
-d		delete the current message
-F		mark as important
-l		show messages matching a pattern
-N		mark message as new
-o		change the current sort method
-O		reverse sort the mailbox
-q		save changes and exit
-s		save-message
-t		toggle the tag on a message
-ESC t		toggle tag on entire message thread
-u		undelete-message
-v		view-attachments
-x		abort changes and exit
-<Return>	display-message
-<Tab>		jump to the next new message
-@		show the author's full e-mail address
-$		save changes to mailbox
-/		search
-ESC /		search-reverse
-^L		clear and redraw the screen
-^T		tag messages matching a pattern
-^U		undelete messages matching a pattern
+c               change to a different mailbox
+ESC c           change to a folder in read-only mode
+C               copy the current message to another mailbox
+ESC C           decode a message and copy it to a folder
+ESC s           decode a message and save it to a folder
+D               delete messages matching a pattern
+d               delete the current message
+F               mark as important
+l               show messages matching a pattern
+N               mark message as new
+o               change the current sort method
+O               reverse sort the mailbox
+q               save changes and exit
+s               save-message
+t               toggle the tag on a message
+ESC t           toggle tag on entire message thread
+u               undelete-message
+v               view-attachments
+x               abort changes and exit
+<Return>        display-message
+<Tab>           jump to the next new message
+@               show the author's full e-mail address
+$               save changes to mailbox
+/               search
+ESC /           search-reverse
+^L              clear and redraw the screen
+^T              tag messages matching a pattern
+^U              undelete messages matching a pattern
 </verb></tscreen>
 
 <sect3>Status Flags
@@ -191,16 +191,16 @@ Zero or more of the following ``flags'' may appear, which mean:
 
 <p>
 <tscreen><verb>
-D	message is deleted
-K	contains a PGP public key
-M	requires mailcap to view
-N	message is new
-O	message is old
-P	message is PGP encrypted
-r	message has been replied to
-S	message is PGP signed
-!	message is flagged
-*	message is tagged
+D       message is deleted
+K       contains a PGP public key
+M       requires mailcap to view
+N       message is new
+O       message is old
+P       message is PGP encrypted
+r       message has been replied to
+S       message is PGP signed
+!       message is flagged
+*       message is tagged
 </verb></tscreen>
 
 Some of the status flags can be turned on or off using
@@ -216,10 +216,10 @@ to.  They can be customized with the
 
 <p>
 <tscreen><verb>
-+	message is to you and you only
-T	message is to you, but also to or cc'ed to others
-C	message is cc'ed to you
-F	message is from you
++       message is to you and you only
+T       message is to you, but also to or cc'ed to others
+C       message is cc'ed to you
+F       message is from you
 </verb></tscreen>
 
 <sect2>The Pager
@@ -230,13 +230,13 @@ The pager is very similar to the Unix program <em/less/ though not nearly as
 featureful.
 
 <tscreen><verb>
-<Return>	go down one line
-<Space>		display the next page (or next message if at the end of a message)
--		go back to the previous page
-n		display the next message
-?		show keybindings
-/		search for a regular expression (pattern)
-\       	toggle search pattern coloring
+<Return>        go down one line
+<Space>         display the next page (or next message if at the end of a message)
+-               go back to the previous page
+n               display the next message
+?               show keybindings
+/               search for a regular expression (pattern)
+\               toggle search pattern coloring
 </verb></tscreen>
 
 In addition, many of the functions from the <em/index/ are available in
@@ -291,17 +291,17 @@ When the mailbox is <ref id="sort" name="sorted"> by <em/threads/, there are
 a few additional functions available in the <em/index/ and <em/pager/ modes.
 
 <tscreen><verb>
-^D	delete-thread		delete all messages in the current thread
-^U	undelete-thread		undelete all messages in the current thread
-^N	next-thread		jump to the start of the next thread
-^P	previous-thread		jump to the start of the previous thread
-^R	read-thread		mark the current thread as read
-ESC d	delete-subthread	delete all messages in the current subthread
-ESC u	undelete-subthread	undelete all messages in the current subthread
-ESC n	next-subthread		jump to the start of the next subthread
-ESC p	previous-subthread	jump to the start of the previous subthread
-ESC r	read-subthread		mark the current subthread as read
-ESC t	tag-thread		toggle the tag on the current thread
+^D      delete-thread           delete all messages in the current thread
+^U      undelete-thread         undelete all messages in the current thread
+^N      next-thread             jump to the start of the next thread
+^P      previous-thread         jump to the start of the previous thread
+^R      read-thread             mark the current thread as read
+ESC d   delete-subthread        delete all messages in the current subthread
+ESC u   undelete-subthread      undelete all messages in the current subthread
+ESC n   next-subthread          jump to the start of the next subthread
+ESC p   previous-subthread      jump to the start of the previous subthread
+ESC r   read-subthread          mark the current subthread as read
+ESC t   tag-thread              toggle the tag on the current thread
 </verb></tscreen>
 
 See also: <ref id="strict_threads" name="&dollar;strict&lowbar;threads">.
@@ -391,13 +391,13 @@ The following bindings are available in the <em/index/ for sending
 messages.
 
 <tscreen><verb>
-m	compose		compose a new message
-r	reply		reply to sender
-g	group-reply	reply to all recipients
-L	list-reply	reply to mailing list address
-f	forward		forward message
-b	bounce		bounce (remail) message
-ESC k	mail-key	mail a PGP public key to someone
+m       compose         compose a new message
+r       reply           reply to sender
+g       group-reply     reply to all recipients
+L       list-reply      reply to mailing list address
+f       forward         forward message
+b       bounce          bounce (remail) message
+ESC k   mail-key        mail a PGP public key to someone
 </verb></tscreen>
 
 Bouncing a message sends the message as is to the recipient you
@@ -434,21 +434,21 @@ Once you have finished editing the body of your mail message, you are
 returned to the <em/compose/ menu.  The following options are available:
 
 <tscreen><verb>
-a	attach-file		attach a file
-ESC k	attach-key		attach a PGP public key
-d	edit-description	edit description on attachment
-D	detach-file		detach a file
-T	edit-to			edit the To field
-c	edit-cc			edit the Cc field
-b	edit-bcc		edit the Bcc field
-y	send-message		send the message
-s	edit-subject		edit the Subject
-f	edit-fcc		specify an ``Fcc'' mailbox
-p	pgp-menu		select PGP options (``i'' version only)
-P	postpone-message	postpone this message until later
-q	quit			quit (abort) sending the message
-i	ispell			check spelling (if available on your system)
-^F	forget-passphrase	whipe PGP passphrase from memory
+a       attach-file             attach a file
+ESC k   attach-key              attach a PGP public key
+d       edit-description        edit description on attachment
+D       detach-file             detach a file
+T       edit-to                 edit the To field
+c       edit-cc                 edit the Cc field
+b       edit-bcc                edit the Bcc field
+y       send-message            send the message
+s       edit-subject            edit the Subject
+f       edit-fcc                specify an ``Fcc'' mailbox
+p       pgp-menu                select PGP options (``i'' version only)
+P       postpone-message        postpone this message until later
+q       quit                    quit (abort) sending the message
+i       ispell                  check spelling (if available on your system)
+^F      forget-passphrase       whipe PGP passphrase from memory
 </verb></tscreen>
 
 <sect2>Editing the message header<label id="edit_headers">
@@ -536,7 +536,7 @@ An initialization file consists of a series of <ref id="commands"
 name="commands">.  Each line of the file may contain one or more commands.
 When multiple commands are used, they must be separated by a semicolon (;).
 <tscreen><verb>
-	set realname='Mutt user' ; ignore x-
+set realname='Mutt user' ; ignore x-
 </verb></tscreen>
 The hash mark, or pound sign
 (``&num;''), is used as a ``comment'' character. You can use it to
@@ -582,8 +582,15 @@ The output of the Unix command ``uname -a'' will be substituted before the
 line is parsed.  Note that since initialization files are line oriented, only
 the first line of output from the Unix command will be substituted.
 
-For a complete list of the commands understood by mutt, see the
-<ref id="commands" name="command reference">.
+UNIX environments can be accessed like the way it is done in shells like
+sh and bash: Prepend the name of the environment by a ``$dollar;''.  For
+example,
+<tscreen><verb>
+set record=+sent_on_$HOSTNAME
+</verb></tscreen>
+
+The commands understood by mutt are explained in the next paragraphs.
+For a complete list, see the <ref id="commands" name="command reference">.
 
 <sect1>Defining/Using aliases<label id="alias">
 <p>
@@ -664,7 +671,6 @@ defined maps are:
 <item>compose
 <item>pager
 <item>pgp
-<item>url
 </itemize>
 
 <em/key/ is the key (or key sequence) you wish to bind.  To specify a
@@ -679,24 +685,24 @@ equivalent to <em/&bsol;c?/).
 In addition, <em/key/ may consist of:
 
 <tscreen><verb>
-\t		tab
-\r		carriage return
-\n		newline
-\e		escape
-up		up arrow
-down		down arrow
-left		left arrow
-right		right arrow
-pageup		Page Up
-pagedown	Page Down
-backspace	Backspace
-delete		Delete
-insert		Insert
-enter		Enter
-home		Home
-end		End
-f1		function key 1
-f10		function key 10
+\t              tab
+\r              carriage return
+\n              newline
+\e              escape
+<up>            up arrow
+<down>          down arrow
+<left>          left arrow
+<right>         right arrow
+<pageup>        Page Up
+<pagedown>      Page Down
+<backspace>     Backspace
+<delete>        Delete
+<insert>        Insert
+<enter>         Enter
+<home>          Home
+<end>           End
+f1              function key 1
+f10             function key 10
 </verb></tscreen>
 
 <em/key/ does not need to be enclosed in quotes unless it contains a
@@ -709,7 +715,7 @@ sequence.
 
 <sect1>Setting variables based upon mailbox<label id="folder-hook">
 <p>
-Usage: <tt/folder-hook/ &lsqb;!&rsqb;<em/pattern/ <em/command/
+Usage: <tt/folder-hook/ &lsqb;!&rsqb;<em/regexp/ <em/command/
 
 It is often desirable to change settings based on which mailbox you are
 reading.  The folder-hook command provides a method by which you can execute
@@ -742,7 +748,7 @@ folder-hook . set sort=date-sent
 
 <sect1>Keyboard macros<label id="macro">
 <p>
-Usage: <tt/macro/ <em/menu/ <em/key/ <em/sequence/
+Usage: <tt/macro/ <em/menu/ <em/key/ <em/sequence/ &lsqb; <em/description/ &rsqb;
 
 Macros are useful when you would like a single key to perform a series of
 actions.  When you press <em/key/ in menu <em/menu/, Mutt will behave as if
@@ -754,6 +760,9 @@ key.
 id="bind" name="key bindings">, with the addition that control
 characters in <em/sequence/ can also be specified as <em/&circ;x/.  In
 order to get a caret (``&circ;'') you need to use <em/&circ;&circ;/.
+
+Optionally you can specify a descriptive text, which is shown in the
+help screens.
 
 <bf/Note:/ Macro definitions (if any) listed in the help screen(s), are
 silently truncated at the screen width, and are not wrapped.   
@@ -889,11 +898,11 @@ Mutt has a few nice features for <ref id="using_lists" name="handling mailing
 lists">.  In order to take advantage of them, you must specify which addresses
 belong to mailing lists.
 
-It is important to note that you should <bf/never/ specify the domain name (
-the part after the ``@'') with the lists command.  You should only
+It is important to note that you should <bf/never/ specify the domain name
+(the part after the ``@'') with the lists command.  You should only
 specify the ``mailbox'' portion of the address (the part before the ``@'').
 For example, if you've subscribed to the Mutt mailing list, you will receive
-mail addressed to <em/mutt-users@cs.hmc.edu/.  So, to tell Mutt that this is a
+mail addressed to <em/mutt-users@mutt.org/.  So, to tell Mutt that this is a
 mailing list, you would add ``lists mutt-users'' to your initialization file.
 
 The ``unlists'' command is to remove a token from the list of mailing-lists.
@@ -986,13 +995,17 @@ Usage: <tt/hdr&lowbar;order/ <em/header1/ <em/header2/ <em/header3/
 With this command, you can specify an order in which mutt will attempt
 to present headers to you when viewing messages.
 
+``unhdr_order *'' will clear all previous headers from the order list,
+thus removing the header order effects set by the system-wide startup
+file.
+
 <tscreen><verb>
 hdr&lowbar;order From Date: From: To: Cc: Subject:
 </verb></tscreen>
 
 <sect1>Specify default save filename<label id="save-hook">
 <p>
-Usage: <tt/save-hook/ &lsqb;!&rsqb;<em/regexp/ <em/filename/
+Usage: <tt/save-hook/ &lsqb;!&rsqb;<em/pattern/ <em/filename/
 
 This command is used to override the default filename used when saving
 messages.  <em/filename/ will be used as the default filename if the message is
@@ -1000,7 +1013,7 @@ messages.  <em/filename/ will be used as the default filename if the message is
 message is addressed <em/to:/ something matching <em/regexp/.
 
 See <ref id="pattern_hook" name="matching messages"> for information on the
-exact format of <em/regexp/.
+exact format of <em/pattern/.
 
 Examples:
 
@@ -1013,7 +1026,7 @@ Also see the <ref id="fcc-save-hook" name="fcc-save-hook"> command.
 
 <sect1>Specify default Fcc: mailbox when composing<label id="fcc-hook">
 <p>
-Usage: <tt/fcc-hook/ &lsqb;!&rsqb;<em/regexp/ <em/mailbox/
+Usage: <tt/fcc-hook/ &lsqb;!&rsqb;<em/pattern/ <em/mailbox/
 
 This command is used to save outgoing mail in a mailbox other than
 <ref id="record" name="&dollar;record">.  Mutt searches the initial list of
@@ -1022,7 +1035,7 @@ as the default Fcc: mailbox.  If no match is found the message will be saved
 to <ref id="record" name="&dollar;record"> mailbox.
 
 See <ref id="pattern_hook" name="matching messages"> for information on the
-exact format of <em/regexp/.
+exact format of <em/pattern/.
 
 Example: <tt/fcc-hook aol.com&dollar; +spammers/
 
@@ -1033,23 +1046,23 @@ name="fcc-save-hook"> command.
 <sect1>Specify default save filename and default Fcc: mailbox at once<label
 id="fcc-save-hook">
 <p>
-Usage: <tt/fcc-save-hook/ &lsqb;!&rsqb;<em/regexp/ <em/mailbox/
+Usage: <tt/fcc-save-hook/ &lsqb;!&rsqb;<em/pattern/ <em/mailbox/
 
 This command is a shortcut, equivalent to doing both a <ref id="fcc-hook" name="fcc-hook">
 and a <ref id="save-hook" name="save-hook"> with its arguments.
 
 <sect1>Change settings based upon message recipients<label id="send-hook">
 <p>
-Usage: <tt/send-hook/ &lsqb;!&rsqb;<em/regexp/ <em/command/
+Usage: <tt/send-hook/ &lsqb;!&rsqb;<em/pattern/ <em/command/
 
 This command can be used to execute arbitrary configuration commands based
-upon recipients of the message.  <em/regexp/ is a regular expression
+upon recipients of the message.  <em/pattern/ is a regular expression
 matching the desired address.  <em/command/ is executed when <em/regexp/
 matches recipients of the message.  When multiple matches occur, commands are
 executed in the order they are specified in the muttrc.
 
 See <ref id="pattern_hook" name="matching messages"> for information on the
-exact format of <em/regexp/.
+exact format of <em/pattern/.
 
 Example: <tt/send-hook mutt &dquot;set mime&lowbar;forward signature=''&dquot;/
 
@@ -1062,6 +1075,18 @@ signatures based upon the recipients.
 <bf/Note:/ the send-hook's are only executed ONCE after getting the initial
 list of recipients.  Adding a recipient after replying or editing the
 message will NOT cause any send-hook to be executed.
+
+<sect1>Choosing the PGP key of the recipient<label id="pgp-hook">
+<p>
+Usage: <tt/pgp-hook/ <em/pattern/ <em/keyid/
+
+When encrypting messages with PGP, you may want to associate a certain
+PGP key with a given e-mail address automatically, either because the
+recipient's public key can't be deduced from the destination address,
+or because, for some reasons, you need to override the key Mutt would
+normally use.  The pgp-hook command provides a method by which you can
+specify the ID of the public key to be used when encrypting messages to
+a certain recipient.
 
 <sect1>Adding key sequences to the keyboard buffer<label id="push">
 <p>
@@ -1078,7 +1103,7 @@ Usage: <tt/unscore/ <em/pattern/ &lsqb; <em/pattern/ ... &rsqb;
 
 The <tt/score/ commands adds <em/value/ to a message's score if <em/pattern/
 matches it.  <em/pattern/ is a string in the format described in the <ref
-id="searching" name="searching"> section.  <em/value/ is a positive or
+id="pattern" name="patterns"> section.  <em/value/ is a positive or
 negative integer.  A message's final score is the sum total of all matching
 <tt/score/ entries.  However, you may optionally prefix <em/value/ with an
 equal sign (=) to cause evaluation to stop at a particular entry if there is
@@ -1159,25 +1184,23 @@ path of your home directory.
 
 If the filename ends with a vertical bar (|), then <em/filename/ is
 considered to be an executable program from which to read input (eg.
-<tt/source ~/bin/myscript|/.
+<tt/source ~/bin/myscript|/).
 
 <sect>Advanced Usage
 
-<sect1>Searching and Regular Expressions<label id="regex"> 
+<sect1>Regular Expressions<label id="regexp">
 <p>
-All text patterns for searching and matching in Mutt must be specified
-as regular expressions (regexp) in the ``POSIX extended'' syntax (which
+All string patterns in Mutt including those in more complex
+<ref id="pattern" name="patterns"> must be specified
+using regular expressions (regexp) in the ``POSIX extended'' syntax (which
 is more or less the syntax used by egrep and GNU awk).  For your
 convenience, we have included below a brief description of this syntax.
 
 The search is case sensitive if the pattern contains at least one upper
 case letter, and case insensitive otherwise. Note that ``&bsol;''
 must be quoted if used for a regular expression in an initialization
-command: ``&bsol;&bsol;''.  For more information, see the section on
-<ref id="searching" name="searching"> below.
+command: ``&bsol;&bsol;''.
 
-<sect2>Regular Expressions<label id="regexps">
-<p>
 A regular expression is a pattern that describes a set of strings.
 Regular expressions are constructed analogously to arithmetic
 expressions, by using various operators to combine smaller expressions.
@@ -1270,7 +1293,7 @@ of several repetition operators:
 <descrip>
 <tag/?/
 The preceding item is optional and matched at most once.
-<tag/&ast;/
+<tag/*/
 The preceding item will be matched zero or more times.
 <tag/+/
 The preceding item will be matched one or more times.
@@ -1322,48 +1345,54 @@ Matches the empty string at the end of a buffer.
 Please note however that these operators are not defined by POSIX, so
 they may or may not be available in stock libraries on various systems.
 
-<sect2>Searching<label id="searching">
+<sect1>Patterns<label id="pattern">
 <p>
 Many of Mutt's commands allow you to specify a pattern to match
 (limit, tag-pattern, delete-pattern, etc.).  There are several ways to select
 messages:
 
 <tscreen><verb>
-~A		all messages
-~b PATTERN	messages which contain PATTERN in the message body
-~c USER		messages carbon-copied to USER
-~C PATTERN	message is either to: or cc: PATTERN
-~D		deleted messages
-~d [MIN]-[MAX]	messages with ``date-sent'' in a Date range
-~E		expired messages
-~e PATTERN	message which contains PATTERN in the ``Sender'' field
-~F		flagged messages
-~f USER		messages originating from USER
-~h PATTERN	messages which contain PATTERN in the message header
-~i ID		message which match ID in the ``Message-ID'' field
-~L PATTERN	message is either originated or received by PATTERN
-~l		message is addressed to a known mailing list
-~m [MIN]-[MAX]	message in the range MIN to MAX
-~n [MIN]-[MAX]  messages with a score in the range MIN to MAX
-~N		new messages
-~O		old messages
-~p		message is addressed to you (consults $alternates)
-~P		message is from you (consults $alternates)
-~Q		messages which have been replied to
-~R		read messages
-~r [MIN]-[MAX]	messages with ``date-received'' in a Date range
-~S		superseded messages
-~s SUBJECT	messages having SUBJECT in the ``Subject'' field.
-~T		tagged messages
-~t USER		messages addressed to USER
-~U		unread messages
-~x PATTERN	messages which contain PATTERN in the `References' field
+~A              all messages
+~b EXPR         messages which contain EXPR in the message body
+~B EXPR         messages which contain EXPR in the whole message
+~c USER         messages carbon-copied to USER
+~C EXPR         message is either to: or cc: EXPR
+~D              deleted messages
+~d [MIN]-[MAX]  messages with ``date-sent'' in a Date range
+~E              expired messages
+~e EXPR         message which contains EXPR in the ``Sender'' field
+~F              flagged messages
+~f USER         messages originating from USER
+~h EXPR         messages which contain EXPR in the message header
+~i ID           message which match ID in the ``Message-ID'' field
+~L EXPR         message is either originated or received by EXPR
+~l              message is addressed to a known mailing list
+~m [MIN]-[MAX]  message in the range MIN to MAX *)
+~n [MIN]-[MAX]  messages with a score in the range MIN to MAX *)
+~N              new messages
+~O              old messages
+~p              message is addressed to you (consults $alternates)
+~P              message is from you (consults $alternates)
+~Q              messages which have been replied to
+~R              read messages
+~r [MIN]-[MAX]  messages with ``date-received'' in a Date range
+~S              superseded messages
+~s SUBJECT      messages having SUBJECT in the ``Subject'' field.
+~T              tagged messages
+~t USER         messages addressed to USER
+~U              unread messages
+~x EXPR         messages which contain EXPR in the `References' field
+~z [MIN]-[MAX]  messages with a size in the range MIN to MAX *)
 </verb></tscreen>
 
-Where PATTERN, USER, ID, and SUBJECT are 
-<ref id="regex" name="regular expressions">.
+Where EXPR, USER, ID, and SUBJECT are 
+<ref id="regexp" name="regular expressions">.
 
-<sect2>Complex Searches
+*) The forms <tt/&lt;&lsqb;MAX&rsqb;/, <tt/&gt;&lsqb;MIN&rsqb;/,
+<tt/&lsqb;MIN&rsqb;-/ and <tt/-&lsqb;MAX&rsqb;/
+are allowed, too.
+
+<sect2>Complex Patterns
 <p>
 
 Logical AND is performed by specifying more than one criterion.  For
@@ -1423,10 +1452,10 @@ be specified as:
 <em/offset/ is specified as a positive number with one of the following
 units:
 <verb>
-y	years
-m	months
-w	weeks
-d	days
+y       years
+m       months
+w       weeks
+d       days
 </verb>
 
 Example: to select messages less than 1 month old, you would use
@@ -1449,8 +1478,8 @@ a mailing list to a separate folder, or to delete all messages with a given
 subject.  To tag all messages matching a pattern, use the tag-pattern
 function, which is bound to ``control-T'' by default.  Or you can select
 individual messages by hand using the ``tag-message'' function, which is
-bound to ``t'' by default.  See <ref id="searching" name="searching"> for
-Mutt's searching syntax.
+bound to ``t'' by default.  See <ref id="pattern" name="patterns"> for
+Mutt's pattern matching syntax.
 
 Once you have tagged the desired messages, you can use the
 ``tag-prefix'' operator, which is the ``;'' (semicolon) key by default.
@@ -1466,7 +1495,8 @@ A <em/hook/ is a concept borrowed from the EMACS editor which allows you to
 execute arbitrary commands before performing some operation.  For example,
 you may wish to tailor your configuration based upon which mailbox you are
 reading, or to whom you are sending mail.  In the Mutt world, a <em/hook/
-consists of a <ref id="regex" name="regular expression"> along with a
+consists of a <ref id="regexp" name="regular expression"> or
+<ref id="pattern" name="pattern"> along with a
 configuration option/command.  See
 <itemize>
 <item><ref id="folder-hook" name="folder-hook">
@@ -1482,11 +1512,11 @@ for specific details on each type of <em/hook/ available.
 <p>
 Hooks that act upon messages (<tt/send-hook, save-hook, fcc-hook/) are
 evaluated in a slightly different manner.  For the other types of hooks, a
-<ref id="regex" name="regular expression">.  But in dealing with messages a
-finer grain of control is needed for matching since for different purposes
-you want to match different criteria.
+<ref id="regexp" name="regular expression"> is sufficient.  But in dealing
+with messages a finer grain of control is needed for matching since for
+different purposes you want to match different criteria.
 
-Mutt allows the use of the <ref id="searching" name="search pattern">
+Mutt allows the use of the <ref id="pattern" name="search pattern">
 language for matching messages in hook commands.  This works in exactly the
 same way as it would when <em/limiting/ or <em/searching/ the mailbox,
 except that you are restricted to those operators which match information
@@ -1504,8 +1534,8 @@ However, it is not required that you write the pattern to match using the
 full searching language.  You can still specify a simple <em/regular
 expression/ like the other hooks, in which case Mutt will translate your
 pattern into the full language, using the translation specified by the 
-<ref id="default_hook" name="&dollar;dfault&lowbar;hook"> variable.  The pattern
-is translated at the time the hook is declared, so the value of 
+<ref id="default_hook" name="&dollar;default&lowbar;hook"> variable.  The
+pattern is translated at the time the hook is declared, so the value of 
 <ref id="default_hook" name="&dollar;dfault&lowbar;hook"> that is in effect
 at that time will be used.
 
@@ -1530,9 +1560,9 @@ addresses, return a non-zero exit code and a one line error message.
 An example multiple response output:
 <tscreen><verb>
 Searching database ... 20 entries ... 3 matching:
-me@cs.hmc.edu	Michael Elkins	mutt dude
-blong@fiction.net	Brandon Long	mutt and more
-roessler@guug.de	Thomas Roessler	mutt pgp
+me@cs.hmc.edu           Michael Elkins  mutt dude
+blong@fiction.net       Brandon Long    mutt and more
+roessler@guug.de        Thomas Roessler mutt pgp
 </verb></tscreen>
 
 There are two mechanisms for accessing the query function of mutt.  One
@@ -1603,6 +1633,8 @@ path.
 <item>- -- refers to the file you've last visited
 <item>&tilde; -- refers to your home directory
 <item>= or + -- refers to your <ref id="folder" name="&dollar;folder"> directory
+<item>@<em/alias/ -- refers to the <ref id="save-hook" 
+name="default save folder"> as determined by the address of the alias
 </itemize>
 
 <sect1>Handling Mailing Lists<label id="using_lists">
@@ -1686,6 +1718,39 @@ point, Mutt runs exactly as if the mail had always been local.
 and it's rather limited.  If you need more functionality you
 should consider using a specialized program, such as <htmlurl
 url="http://www.ccil.org/~esr/fetchmail" name="fetchmail">
+
+<sect1>IMAP Support (OPTIONAL)
+<p>
+
+If Mutt was compiled with IMAP support (by running the <em/configure/
+script with the <em/--enable-imap/ flag), it has the ability to work
+with folders located on a remote imap server.
+
+You can access the remote inbox by selecting the folder
+<tt/{imapserver}inbox/, where <tt/imapserver/ is the name of the IMAP
+server and <tt/inbox/ is the special name for your spool mailbox on
+the IMAP server. If you want to access another mail folder at the IMAP
+server, you should use <tt>{imapserver}path/to/folder</tt> where
+<tt>path/to/folder</tt> is the path of the folder you want to access
+relative to your home directory.
+
+<bf/Note:/ The IMAP support is in a very early state and quite
+unstable at the moment. If you need a more stable way to access your
+IMAP folder, consider using a specialized program, such as <htmlurl
+url="http://www.ccil.org/~esr/fetchmail" name="fetchmail">.
+
+<sect1>Start a WWW Browser on URLs (EXTERNAL)<label id="urlview">
+<p>
+If a message contains URLs (<em/unified ressource locator/ = address in the
+WWW space like <em>http://www.mutt.org/</em>), it is efficient to get
+a menu with all the URLs and start a WWW browser on one of them.  This
+functionality is provided by the external urlview program which can be
+retrieved at <htmlurl url="ftp://ftp.cs.hmc.edu/pub/me/"
+name="ftp://ftp.cs.hmc.edu/pub/me/"> and the configuration commands:
+<tscreen><verb>
+macro index \cb |urlview\n
+macro pager \cb |urlview\n
+</verb></tscreen>
 
 <sect>Mutt's MIME Support
 <p>
@@ -1974,9 +2039,9 @@ attempting to print an <tt>image/gif</tt>, and you have the following
 entries in your mailcap file, Mutt will search for an entry with the
 print command:
 <tscreen><verb>
-image/*;	xv %s
-image/gif;	; print= anytopnm %s | pnmtops | lpr; \
-		nametemplate=%s.gif
+image/*;        xv %s
+image/gif;      ; print= anytopnm %s | pnmtops | lpr; \
+                nametemplate=%s.gif
 </verb></tscreen>
 Mutt will skip the <tt>image/*</tt> entry and use the <tt>image/gif</tt>
 entry with the print command.
@@ -1987,9 +2052,9 @@ automatically, the other to be viewed interactively from the attachment
 menu.  In addition, you can then use the test feature to determine which
 viewer to use interactively depending on your environment.
 <tscreen><verb>
-text/html;	netscape -remote 'openURL(%s)' ; test=RunningX
-text/html;	lynx %s; nametemplate=%s.html
-text/html;	lynx -dump %s; nametemplate=%s.html; copiousoutput
+text/html;      netscape -remote 'openURL(%s)' ; test=RunningX
+text/html;      lynx %s; nametemplate=%s.html
+text/html;      lynx -dump %s; nametemplate=%s.html; copiousoutput
 </verb></tscreen>
 For <ref id="auto_view" name="Autoview">, Mutt will choose the third
 entry because of the copiousoutput tag.  For interactive viewing, Mutt
@@ -2027,7 +2092,7 @@ Content-Type: text/plain; charset=iso-8859-1
 then Mutt will expand &percnt;{charset} to iso-8859-1.  The default metamail
 mailcap file uses this feature to test the charset to spawn an xterm
 using the right charset to view the message.
-<tag>&setmn;&percnt;</tag>
+<tag>&bsol;&percnt;</tag>
 This will be replaced by a &percnt;
 </descrip>
 Mutt does not currently support the &percnt;F and &percnt;n keywords
@@ -2039,11 +2104,11 @@ multipart messages, which is handled internally by Mutt.
 This mailcap file is fairly simple and standard:
 <code>
 # I'm always running X :)
-video/*;	xanim %s > /dev/null
-image/*;	xv %s > /dev/null
+video/*;        xanim %s > /dev/null
+image/*;        xv %s > /dev/null
 
 # I'm always running netscape (if my computer had more memory, maybe)
-text/html;	netscape -remote 'openURL(%s)'
+text/html;      netscape -remote 'openURL(%s)'
 </code>
 
 This mailcap file shows quite a number of examples:
@@ -2051,27 +2116,27 @@ This mailcap file shows quite a number of examples:
 <code>
 # Use xanim to view all videos   Xanim produces a header on startup,
 # send that to /dev/null so I don't see it
-video/*;	xanim %s > /dev/null
+video/*;        xanim %s > /dev/null
 
 # Send html to a running netscape by remote
-text/html;	netscape -remote 'openURL(%s)'; test=RunningNetscape
+text/html;      netscape -remote 'openURL(%s)'; test=RunningNetscape
 
 # If I'm not running netscape but I am running X, start netscape on the
 # object
-text/html;	netscape %s; test=RunningX
+text/html;      netscape %s; test=RunningX
 
 # Else use lynx to view it as text
-text/html;	lynx %s
+text/html;      lynx %s
 
 # This version would convert the text/html to text/plain
-text/html;	lynx -dump %s; copiousoutput
+text/html;      lynx -dump %s; copiousoutput
 
 # enriched.sh converts text/enriched to text/html and then uses 
 # lynx -dump to convert it to text/plain
-text/enriched;	enriched.sh ; copiousoutput
+text/enriched;  enriched.sh ; copiousoutput
 
 # I use enscript to print text in two columns to a page
-text/*;		more %s; print=enscript -2Gr %s
+text/*;         more %s; print=enscript -2Gr %s
 
 # Netscape adds a flag to tell itself to view jpegs internally
 image/jpeg;xv %s; x-mozilla-flags=internal
@@ -2080,7 +2145,7 @@ image/jpeg;xv %s; x-mozilla-flags=internal
 # In addition, this uses the \ to extend the line and set my editor
 # for images
 image/*;xv %s; test=RunningX; \
-	edit=xpaint %s
+        edit=xpaint %s
 
 # Convert images to text using the netpbm tools
 image/*;  (anytopnm %s | pnmscale -xysize 80 46 | ppmtopgm | pgmtopbm |
@@ -2119,6 +2184,7 @@ application/x-gunzip;   gzcat; copiousoutput
 application/x-tar-gz; gunzip -c %s | tar -tf - ; copiousoutput
 application/postscript; ps2ascii %s; copiousoutput
 </verb></tscreen>
+
 <sect1>MIME Multipart/Alternative<label id="alternative_order">
 <p>
 Mutt has some heuristics for determining which attachment of a
@@ -2144,24 +2210,24 @@ mailbox.  However, it is possible to read other mailboxes and
 to send messages from the command line as well.
 
 <tscreen><verb>
--a	attach a file to a message
--c	specify a carbon-copy (Cc) address
--e	specify a config command to be run after initilization files are read
--F	specify an alternate file to read initialization commands
--f	specify a mailbox to load
--h	print help on command line options
--H	specify a draft file from which to read a header and body
--i	specify a file to include in a message composition
--n	do not read the system Muttrc
--m	specify a default mailbox type
--p	recall a postponed message
--R	open mailbox in read-only mode
--s	specify a subject (enclose in quotes if it contains spaces)
--v	show version number and compile-time definitions
--x	simulate the mailx(1) compose mode
--y	show a menu containing the files specified by the mailboxes command
--z	exit immediately if there are no messages in the mailbox
--Z	open the first folder with new message,exit immediately if none
+-a      attach a file to a message
+-c      specify a carbon-copy (Cc) address
+-e      specify a config command to be run after initilization files are read
+-F      specify an alternate file to read initialization commands
+-f      specify a mailbox to load
+-h      print help on command line options
+-H      specify a draft file from which to read a header and body
+-i      specify a file to include in a message composition
+-n      do not read the system Muttrc
+-m      specify a default mailbox type
+-p      recall a postponed message
+-R      open mailbox in read-only mode
+-s      specify a subject (enclose in quotes if it contains spaces)
+-v      show version number and compile-time definitions
+-x      simulate the mailx(1) compose mode
+-y      show a menu containing the files specified by the mailboxes command
+-z      exit immediately if there are no messages in the mailbox
+-Z      open the first folder with new message,exit immediately if none
 </verb></tscreen>
 
 To read messages in a mailbox
@@ -2207,6 +2273,8 @@ The following are the commands understood by mutt.
 <tt><ref id="ignore" name="unignore"></tt> <em/pattern/ &lsqb; <em/pattern/ ... &rsqb;
 <item>
 <tt><ref id="hdr_order" name="hdr&lowbar;order"></tt> <em/header/ &lsqb; <em/header/ ... &rsqb;
+<item>
+<tt><ref id="hdr_order" name="unhdr&lowbar;order"></tt> <em/header/ &lsqb; <em/header/ ... &rsqb;
 <item>
 <tt><ref id="lists" name="lists"></tt> <em/address/ &lsqb; <em/address/ ... &rsqb; 
 <item>
@@ -2283,10 +2351,10 @@ Specifies the format of the data displayed for the `alias' menu.  The
 following printf(3)-style sequences are available.
 
 <verb>
-%a	alias name
-%n	index number
-%r	address which alias expands to
-%t	character which indicates if the alias is tagged for inclusion (*/ )
+%a      alias name
+%n      index number
+%r      address which alias expands to
+%t      character which indicates if the alias is tagged for inclusion (*/ )
 </verb>
 
 <sect2>allow&lowbar;8bit
@@ -2538,14 +2606,6 @@ Default: value of environment variable &dollar;VISUAL, &dollar;EDITOR, or &dquot
 
 This variable specifies which editor to use when composing messages.
 
-<sect2>empty&lowbar;to<label id="empty_to">
-<p>
-Type: string<newline>
-Default: undisclosed-recipients
-
-Specifies the text Mutt inserts in the <tt/To:/ header of a message you're
-sending, if the <tt/To:/ and <tt/Cc:/ fields are empty.
-
 <sect2>escape<label id="escape">
 <p>
 Type: string<newline>
@@ -2583,6 +2643,30 @@ beginning of a pathname will be expanded to the value of this variable.
 Note that if you change this variable from the default value you need to
 make sure that the assignment occurs <em/before/ you use `+' or `=' for any
 other variables since expansion takes place during the `set' command.
+
+<sect2>folder&lowbar;format<label id="folder_format">
+<p>
+Type: format string<newline>
+Default: &dquot;&percnt;N &percnt;F &percnt;2l &percnt;-8.8u &percnt;-8.8g &percnt;8s &percnt;d &percnt;f&dquot;
+
+This variable allows you to customize the file browser display to 
+your personal taste.  This string is similar to <ref id="index_format"
+name="&dollar;index&lowbar;format">, but has its own set of printf()-like
+sequences:
+
+<tscreen><verb>
+%d      date/time folder was last modified
+%f      filename
+%F      file permissions
+%g      group name (or numeric gid, if missing)
+%l      number of hard links
+%N      N if folder has new mail, blank otherwise
+%s      size in bytes
+%u      owner name (or numeric uid, if missing)
+
+%>X     right justify the rest of the string and pad with character "X"
+%|X     pad to the end of the line with character "X"
+</verb></tscreen>
 
 <sect2>followup&lowbar;to<label id="followup_to">
 <p>
@@ -2625,7 +2709,7 @@ used instead.
 <sect2>forward&lowbar;format<label id="forward_format">
 <p>
 Type: format string<newline>
-Default: "&lsqb;&percnt;a: &percnt;s&rsqb;"
+Default: &dquot;&lsqb;&percnt;a: &percnt;s&rsqb;&dquot
 
 This variable controls the default subject when forwarding a message.  It
 uses the same format sequences as the <ref id="index_format"
@@ -2639,61 +2723,6 @@ Default: unset
 When <em/set/ forwarded messages included in the main body of the message
 (when <ref id="mime_forward" name="mime&lowbar;forward"> is <em/unset/) will be
 quoted using <ref id="indent_string" name="indent&lowbar;string">.
-
-<sect2>index&lowbar;format<label id="index_format">
-<p>
-Type: format string<newline>
-Default: &dquot;&percnt;4C &percnt;Z &percnt;{&percnt;b &percnt;d} &percnt;-15.15L (&percnt;4l) &percnt;s&dquot;
-
-This variable allows you to customize the message index display to your
-personal taste.
-
-``Format strings'' are similar to the strings used in the ``C'' function
-<tt/printf/ to format output (see the man page for more detail).  The
-following sequences are defined in Mutt:
-
-<tscreen><verb>
-%a	address of the author
-%b	filename of the original message folder (think mailBox)
-%B	the list to which the letter was sent, or else the folder name (%b).
-%c	number of characters (bytes) in the message
-%C	current message number
-%d	date and time of the message in the format specified by
-	``date_format''
-%f	entire From: line (address + real name)
-%F	author name, or recipient name if the message is from you
-%i	message-id of the current message
-%l	number of lines in the message
-%L	list-from function
-%m	total number of message in the mailbox
-%N      message score
-%n	author's real name (or address if missing)
-%O	 (_O_riginal save folder)  Where mutt would formerly have stashed the
-	message: list name or recipient name if no list
-%s	subject of the message
-%S	status of the message (N/D/d/!/*/r)
-%t	`to:' field (recipients)
-%T	the appropriate character from the $to_chars string
-%u	user (login) name of the author
-%Z	message status flags
-
-%{fmt}	the date and time of the message is converted to sender's 
-	time zone, and ``fmt'' is expanded by the system call 
-	``strftime''; a leading bang disables locales
-%[fmt]	the date and time of the message is converted to the local
-	time zone, and ``fmt'' is expanded by the system call
-	``strftime''; a leading bang disables locales
-%(fmt)	the local date and time when the message was received.
-	``fmt'' is expanded by the system call ``strftime'';
-	a leading bang disables locales
-%<fmt>	the current local time. ``fmt'' is expanded by the system
-	call ``strftime''; a leading bang disables locales.
-
-%>X	right justify the rest of the string and pad with character "X"
-%|X	pad to the end of the line with character "X"
-</verb></tscreen>
-
-See also: <ref id="to_chars" name="&dollar;to&lowbar;chars">.
 
 <sect2>hdrs<label id="hdrs">
 <p>
@@ -2727,6 +2756,17 @@ may not be updated if a binding is changed while Mutt is running.  Since
 this variable is primarily aimed at new users, neither of these should
 present a major problem.
 
+<sect2>hidden&lowbar;host<label id="hidden_host">
+<p>
+Type: boolean<newline>
+Default: unset
+
+When set, mutt will skip the host name part of <ref
+id="hostname" name="hostname"> variable when adding the
+domain part to addresses.  This variable does not affect
+the generation, and it will not lead to the cut-off of
+first-level domains.
+
 <sect2>history<label id="history">
 <p>
 Type: number<newline>
@@ -2758,6 +2798,32 @@ to the list, and will ignore this field.  To direct a response to the
 mailing list when this option is set, use the <em/list-reply/ function;
 <em/group-reply/ will reply to both the sender and the list.
 
+<sect2>imap&lowbar;checkinterval<label id="imap_checkinterval">
+<p>
+Type: number<newline>
+Default: 0
+
+This variable configures how often (in seconds) IMAP should look for
+new mail.
+
+<sect2>imap&lowbar;pass<label id="imap_pass">
+<p>
+Type: string<newline>
+Default: unset
+
+Specifies the password for your IMAP account.  If unset, Mutt will prompt you
+for your password when you invoke the fetch-mail function. <bf/Warning/:
+you should only use this option when you are on a fairly secure machine,
+because the superuser can read your muttrc even if you are the only one who
+can read the file.
+
+<sect2>imap&lowbar;user<label id="imap_user">
+<p>
+Type: string<newline>
+Default: login name on local system
+
+Your login name on the IMAP server.
+
 <sect2>in&lowbar;reply&lowbar;to
 <p>
 Type: format string<newline>
@@ -2779,11 +2845,66 @@ included in your reply.
 <sect2>indent&lowbar;string<label id="indent_string">
 <p>
 Type: format string<newline>
-Default: "&gt; "
+Default: &dquot;&gt; &dquot;
 
 Specifies the string to prepend to each line of text quoted in a message to
 which you are replying.  You are strongly encouraged not to change this
 value, as it tends to agitate the more fanatical netizens.
+
+<sect2>index&lowbar;format<label id="index_format">
+<p>
+Type: format string<newline>
+Default: &dquot;&percnt;4C &percnt;Z &percnt;{&percnt;b &percnt;d} &percnt;-15.15L (&percnt;4l) &percnt;s&dquot;
+
+This variable allows you to customize the message index display to your
+personal taste.
+
+``Format strings'' are similar to the strings used in the ``C'' function
+<tt/printf/ to format output (see the man page for more detail).  The
+following sequences are defined in Mutt:
+
+<tscreen><verb>
+%a      address of the author
+%b      filename of the original message folder (think mailBox)
+%B      the list to which the letter was sent, or else the folder name (%b).
+%c      number of characters (bytes) in the message
+%C      current message number
+%d      date and time of the message in the format specified by
+        ``date_format''
+%f      entire From: line (address + real name)
+%F      author name, or recipient name if the message is from you
+%i      message-id of the current message
+%l      number of lines in the message
+%L      list-from function
+%m      total number of message in the mailbox
+%N      message score
+%n      author's real name (or address if missing)
+%O       (_O_riginal save folder)  Where mutt would formerly have stashed the
+        message: list name or recipient name if no list
+%s      subject of the message
+%S      status of the message (N/D/d/!/*/r)
+%t      `to:' field (recipients)
+%T      the appropriate character from the $to_chars string
+%u      user (login) name of the author
+%Z      message status flags
+
+%{fmt}  the date and time of the message is converted to sender's 
+        time zone, and ``fmt'' is expanded by the system call 
+        ``strftime''; a leading bang disables locales
+%[fmt]  the date and time of the message is converted to the local
+        time zone, and ``fmt'' is expanded by the system call
+        ``strftime''; a leading bang disables locales
+%(fmt)  the local date and time when the message was received.
+        ``fmt'' is expanded by the system call ``strftime'';
+        a leading bang disables locales
+%<fmt>  the current local time. ``fmt'' is expanded by the system
+        call ``strftime''; a leading bang disables locales.
+
+%>X     right justify the rest of the string and pad with character "X"
+%|X     pad to the end of the line with character "X"
+</verb></tscreen>
+
+See also: <ref id="to_chars" name="&dollar;to&lowbar;chars">.
 
 <sect2>ispell<label id="ispell">
 <p>
@@ -2808,9 +2929,17 @@ Default: &dollar;MAILCAPS or &tilde;/.mailcap:/usr/local/share/mailcap:/etc/mail
 This variable specifies which files to consult when attempting to display
 MIME bodies not directly supported by Mutt.
 
+<sect2>mail&lowbar;check<label id="mail_check">
+<p>
+Type: number<newline>
+Default: 5
+
+This variable configures how often (in seconds) mutt should look for
+new mail.
+
 <sect2>mark&lowbar;old
 <p>
-Type: Boolean<newline>
+Type: boolean<newline>
 Default: set
 
 Controls whether or not Mutt makes the distinction between <em/new/ messages
@@ -2832,10 +2961,15 @@ the <ref id="smart_wrap" name="&dollar;smart&lowbar;wrap"> variable.
 <sect2>mask<label id="mask">
 <p>
 Type: string<newline>
-Default: "^(&bsol;.&bsol;.&dollar;|&lsqb;^.&rsqb;)"
+Default: "!^&bsol;.&lsqb;^.&rsqb;"
 
-A regular expression used in the file browser. Files whose names don't
-match this mask will not be shown.
+A regular expression used in the file browser, optionally preceded by
+the <em/not/ operator ``!''. Files whose names don't match this mask
+will not be shown. The match is always case-sensitive.
+
+<bf/Note:/ if you need ``!'' at the beginning of the regular expression
+you should enclose it in paranthesis, in order to distinguish it from
+the logical <em/not/ operator for the expression.
 
 <sect2>mbox<label id="mbox">
 <p>
@@ -2875,7 +3009,7 @@ avoid many redraws).
 
 <sect2>meta&lowbar;key<label id="meta_key">
 <p>
-Type: Boolean<newline>
+Type: boolean<newline>
 Default: unset
 
 If set, forces Mutt to interpret keystrokes with the high bit (bit 8) set as
@@ -2887,13 +3021,14 @@ which is the ASCII character ``x''.
 
 <sect2>mime&lowbar;forward<label id="mime_forward">
 <p>
-Type: boolean<newline>
+Type: quadoption<newline>
 Default: unset
 
 When set, the message you are forwarding will be attached as a separate
 MIME part instead of included in the main body of the message.  This is
 useful for forwarding MIME messages so the receiver can properly view the
-message as it was delivered to you.
+message as it was delivered to you. If you like to switch between MIME
+and not MIME from mail to mail, set this variable to ask-no or ask-yes.
 
 Also see <ref id="forward_decode" name="forward&lowbar;decode"> and
 <ref id="mime_forward_decode"
@@ -2920,8 +3055,8 @@ result of a <ref id="mbox-hook" name="mbox-hook"> command.
 
 <sect2>message&lowbar;format<label id="message_format">
 <p>
-Type: string<newline>
-Default: &dquot&percnt;s&dquot;
+Type: format string<newline>
+Default: &dquot;&percnt;s&dquot;
 
 This is the string displayed in the <ref id="attach_menu"
 name="attachment"> menu for attachments of type <em>message/rfc822</em>.
@@ -3006,11 +3141,13 @@ when signing is not required or encryption is requested as well.
 <sect2>pgp&lowbar;default&lowbar;version<label id="pgp_default_version">
 <p>
 Type: string<newline>
-Default: pgp2 (or pgp5, if PGP 2.* is not installed)
+Default: pgp2 (or pgp5, if PGP 2.* is not installed, or gpg, if none
+of them is installed)
 
-Set this to pgp2 (PGP 2.*), or pgp5 (PGP 5.*) depending on the
-version, you are using primary. This variable is directly used, but it
-is the default for the variables <ref id="pgp_receive_version"
+Set this to pgp2 (PGP 2.*), pgp5 (PGP 5.*), or gpg (GNU privacy guard),
+depending on the version that you primarily use. This variable is
+not directly used, but it is the default for the variables <ref
+id="pgp_receive_version"
 name="&dollar;pgp&lowbar;receive&lowbar;version">, <ref
 id="pgp_send_version" name="&dollar;pgp&lowbar;send&lowbar;version">,
 and <ref id="pgp_key_version"
@@ -3023,18 +3160,26 @@ Default: set
 
 If set, the PGP <em/+encrypttoself/ flag is used when encrypting messages.
 
+<sect2>pgp&lowbar;gpg<label id="pgp_gpg">
+<p>
+Type: string<newline>
+Default: system dependent
+
+This variable allows you to override the compile time definition of
+where the gpg (GNU Privacy Guard) binary resides on your system.
+
 <sect2>pgp&lowbar;key&lowbar;version<label id="pgp_key_version">
 <p>
 Type: string<newline>
 Default: ``default''
 
-This variable determines, which PGP version used for key ring
+This variable determines which PGP version is used for key ring
 operations like extracting keys from messages and extracting keys from
 your keyring. If you set this to default, the default defined in <ref
 id="pgp_default_version"
 name="&dollar;pgp&lowbar;default&lowbar;version"> is used. Set this to
-pgp2 (PGP 2.*), or pgp5 (PGP 5.*) if you want a different PGP version
-for key operations.
+pgp2 (PGP 2.*), pgp5 (PGP 5.*), or gpg (GNU privacy guard) if you want
+to use a different PGP version for key operations.
 
 <sect2>pgp&lowbar;long&lowbar;ids<label id="pgp_long_ids">
 <p>
@@ -3048,12 +3193,12 @@ If set, use 64 bit PGP key IDs. Unset uses the normal 32 bit Key IDs.
 Type: string<newline>
 Default: ``default''
 
-This variable determines, which PGP version used for decrypting
+This variable determines which PGP version is used for decrypting
 messages and verifying signatures. If you set this to default, the
 default defined in <ref id="pgp_default_version"
 name="&dollar;pgp&lowbar;default&lowbar;version"> will be used. Set
-this to pgp2 (PGP 2.*), or pgp5 (PGP 5.*) if you want a different PGP
-version for receiving operations.
+this to pgp2 (PGP 2.*), pgp5 (PGP 5.*), or gpg (GNU privacy guard) if
+you want to use a different PGP version for receiving operations.
 
 <sect2>pgp&lowbar;replyencrypt<label id="pgp_replyencrypt">
 <p>
@@ -3077,12 +3222,12 @@ signed!
 Type: string<newline>
 Default: ``default''
 
-This variable determines, which PGP version used for composing new
+This variable determines which PGP version is used for composing new
 messages like encrypting and signing. If you set this to default, the
 default defined in <ref id="pgp_default_version"
 name="&dollar;pgp&lowbar;default&lowbar;version"> will be used. Set
-this to pgp2 (PGP 2.*), or pgp5 (PGP 5.*) if you want a different PGP
-version for sending operations.
+this to pgp2 (PGP 2.*), pgp5 (PGP 5.*), or gpg (GNU privacy guard) if
+you want to use a different PGP version for sending operations.
 
 <sect2>pgp&lowbar;sign&lowbar;as<label id="pgp_sign_as">
 <p>
@@ -3247,7 +3392,7 @@ The name or address of your POP3 server.
 Type: string<newline>
 Default: unset
 
-Specifies the password for you POP account.  If unset, Mutt will prompt you
+Specifies the password for your POP account.  If unset, Mutt will prompt you
 for your password when you invoke the fetch-mail function. <bf/Warning/:
 you should only use this option when you are on a fairly secure machine,
 because the superuser can read your muttrc even if you are the only one who
@@ -3517,8 +3662,8 @@ Type: string<newline>
 Default: /usr/lib/sendmail -oi -oem
 
 Specifies the program and arguments used to deliver mail sent by Mutt.
-Mutt expects that the specified program will read the message header for
-recipients.
+Mutt expects that the specified program interprets
+additional arguments as recipient addresses.
 
 <sect2>sendmail&lowbar;wait<label id="sendmail_wait">
 <p>
@@ -3531,9 +3676,9 @@ the background.
 
 Mutt interprets the value of this variable as follows:
 <verb>
->0	number of seconds to wait for sendmail to finish before continuing
-0	wait forever for sendmail to finish
-<0	always put sendmail in the background without waiting
+>0      number of seconds to wait for sendmail to finish before continuing
+0       wait forever for sendmail to finish
+<0      always put sendmail in the background without waiting
 </verb>
 
 Note that if you specify a value other than 0, the output of the child
@@ -3575,7 +3720,7 @@ Default: &dquot;&tilde;f &percnt;s | &tilde;s &percnt;s&dquot;
 
 Specifies how Mutt should expand a simple search into a real search pattern.
 A simple search is one that does not contain any of the <tt/&tilde;/
-operators.  See <ref id="searching" name="searching"> for more information
+operators.  See <ref id="pattern" name="patterns"> for more information
 on search patterns.
  
 For example, if you simply type <tt/joe/ at a search or limit prompt, Mutt
@@ -3623,9 +3768,9 @@ Default: alias
 Specifies how the entries in the `alias' menu are sorted.  The following are
 legal values:
 <verb>
-alias		sort alphabetically by alias name
-address		sort alphabetically by email address
-unsorted	leave in order specified in .muttrc
+alias           sort alphabetically by alias name
+address         sort alphabetically by email address
+unsorted        leave in order specified in .muttrc
 </verb>
 
 <sect2>sort&lowbar;aux<label id="sort_aux">
@@ -3710,29 +3855,29 @@ name="&dollar;index&lowbar;format">, but has its own set of printf()-like
 sequences:
 
 <tscreen><verb>
-%b	number of mailboxes with new mail *
-%d	number of deleted messages *
-%h	local hostname
-%f	the full pathname of the current mailbox
-%F	number of flagged messages *
-%l	size (in bytes) of the current mailbox *
-%L	size (in bytes) of the messages shown (i.e., which match the current limit) *
-%m	the number of messages in the mailbox *
-%M	the number of messages shown (i.e., which match the current limit) *
-%n	number of new messages in the mailbox *
-%o	number of old unread messages
-%p	number of postponed messages *
-%P	percentage of the way through the index
-%r	modified/read-only/won't-write indicator, according to $status_chars
-%s	current sorting mode ($sort)
-%S	current aux sorting method ($sort_aux)
-%t	number of tagged messages *
-%u	number of unread messages *
-%v	Mutt version string
-%V	currently active limit pattern, if any *
+%b      number of mailboxes with new mail *
+%d      number of deleted messages *
+%h      local hostname
+%f      the full pathname of the current mailbox
+%F      number of flagged messages *
+%l      size (in bytes) of the current mailbox *
+%L      size (in bytes) of the messages shown (i.e., which match the current limit) *
+%m      the number of messages in the mailbox *
+%M      the number of messages shown (i.e., which match the current limit) *
+%n      number of new messages in the mailbox *
+%o      number of old unread messages
+%p      number of postponed messages *
+%P      percentage of the way through the index
+%r      modified/read-only/won't-write indicator, according to $status_chars
+%s      current sorting mode ($sort)
+%S      current aux sorting method ($sort_aux)
+%t      number of tagged messages *
+%u      number of unread messages *
+%v      Mutt version string
+%V      currently active limit pattern, if any *
 
-%>X	right justify the rest of the string and pad with "X"
-%|X	pad to the end of the line with "X"
+%>X     right justify the rest of the string and pad with "X"
+%|X     pad to the end of the line with "X"
 
 * = can be optionally printed if nonzero
 </verb></tscreen>
@@ -3744,7 +3889,7 @@ meaningful.  To optionally print a string based upon one of the above
 sequences, the following construct is used
 
 <tscreen><verb>
-	%?<sequence_char>?<optional_string>?
+        %?<sequence_char>?<optional_string>?
 </verb></tscreen>
 
 where <em/sequence&lowbar;char/ is a character from the table above, and
@@ -3757,7 +3902,15 @@ Here is an example illustrating how to optionally print the number of new
 messages in a mailbox:
 
 <tscreen><verb>
-	%?n?%n new messages.?
+        %?n?%n new messages.?
+</verb></tscreen>
+
+Additionally you can switch between two strings, the first one, if a
+value is zero, the second one, if the value is nonzero, by using the
+following construct:
+
+<tscreen><verb>
+        %?<sequence_char>?<if_string>&<else_string>?
 </verb></tscreen>
 
 <sect2>status&lowbar;on&lowbar;top<label id="status_on_top">
@@ -3797,7 +3950,7 @@ Type: boolean<newline>
 Default: unset
 
 Affects the <em/&tilde;b/ and <em/&tilde;h/ search operations described
-in section <ref id="searching" name="Searching"> above.  If set, the
+in section <ref id="pattern" name="patterns"> above.  If set, the
 headers and attachments of messages to be searched are decoded before
 searching.  If unset, messages are searched as they appear in the
 folder.
@@ -3943,6 +4096,15 @@ When writing a mailbox, a message will be printed every
 a single message will be displayed before writing a mailbox.
 
 Also see the <ref id="read_inc" name="&dollar;read&lowbar;inc"> variable.
+
+<sect2>write&lowbar;bcc<label id="write_bcc">
+<p>
+Type: boolean<newline>
+Default: set
+
+Controls whether mutt writes out the Bcc header when
+preparing messages to be sent.  Exim users may wish to use
+this.
 
 <sect1>Functions<label id="functions">
 <p>
@@ -4119,7 +4281,7 @@ search-reverse         ESC /   search backwards for a regular expression
 search-toggle              \   toggle search pattern coloring
 shell-escape               !   invoke a command in a subshell
 show-version               V   show the Mutt version number and date
-skip-quoted                S   skip beyond quoted text		
+skip-quoted                S   skip beyond quoted text
 tag-message                t   tag a message
 toggle-quoted              T   toggle display of quoted text
 top                        ^   jump to the top of the message
@@ -4253,7 +4415,7 @@ quote-char                ^V   quote the next typed key
 
 <sect1>Acknowledgements
 <p>
-Kari Hurrta
+Kari Hurtta
 <htmlurl url="mailto:kari.hurtta@fmi.fi" name="&lt;kari.hurtta@fmi.fi&gt;">
 co-developed the original MIME parsing code back in the ELM-ME days.
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1998 Brandon Long <blong@fiction.net>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -16,11 +16,24 @@
  *     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */ 
 
-/* common protos for compose / attach menus */
+#ifndef _MUTT_SOCKET_H_
+#define _MUTT_SOCKET_H_ 1
 
-int mutt_tag_attach (MUTTMENU *menu, int n);
+typedef struct
+{
+  char *server;
+  int port;
+  int uses;
+  int fd;
+  char inbuf[LONG_STRING];
+  int bufpos;
+  int available;
+} CONNECTION;
 
-void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr);
-void mutt_pipe_attachment_list (FILE *fp, int tag, BODY *top, int filter);
-void mutt_print_attachment_list (FILE *fp, int tag, BODY *top);
-void mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, ATTACHPTR **idx);
+int mutt_socket_readchar (CONNECTION *conn, char *c);
+int mutt_socket_read_line (char *buf, size_t buflen, CONNECTION *conn);
+int mutt_socket_read_line_d (char *buf, size_t buflen, CONNECTION *conn);
+int mutt_socket_write (CONNECTION *conn, const char *buf);
+CONNECTION *mutt_socket_select_connection (char *host, int port, int flags);
+
+#endif /* _MUTT_SOCKET_H_ */

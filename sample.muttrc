@@ -288,6 +288,7 @@ mailboxes ! +mutt-dev +mutt-users +open-pgp +wmaker +hurricane +vim +ietf \
 #	hdr_order <hdr1> [ <hdr2> ... ]
 #
 
+unhdr_order *				# forget the previous settings
 hdr_order date from subject to cc
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

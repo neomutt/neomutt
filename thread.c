@@ -585,8 +585,44 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
   mutt_linearize_tree (ctx, 1);
 }
 
+static HEADER *find_virtual (HEADER *cur)
+{
+  HEADER *top;
+
+  if (cur->virtual >= 0)
+      return (cur);
+
+  top = cur;
+  if ((cur = cur->child) == NULL)
+    return (NULL);
+
+  FOREVER
+  {
+    if (cur->virtual >= 0)
+      return (cur);
+
+    if (cur->child)
+      cur = cur->child;
+    else if (cur->next)
+      cur = cur->next;
+    else
+    {
+      while (!cur->next)
+      {
+	cur = cur->parent;
+	if (cur == top)
+	  return (NULL);
+      }
+      cur = cur->next;
+    }
+    /* not reached */
+  }
+}
+
 int _mutt_aside_thread (HEADER *hdr, short dir, short subthreads)
 {
+  HEADER *tmp;
+
   if ((Sort & SORT_MASK) != SORT_THREADS)
   {
     mutt_error ("Threading is not enabled.");
@@ -600,7 +636,7 @@ int _mutt_aside_thread (HEADER *hdr, short dir, short subthreads)
   }
   else
   {
-    if (dir)
+    if ((dir != 0) ^ ((Sort & SORT_REVERSE) != 0))
     {
       while (!hdr->next && hdr->parent)
 	hdr = hdr->parent;
@@ -611,15 +647,27 @@ int _mutt_aside_thread (HEADER *hdr, short dir, short subthreads)
 	hdr = hdr->parent;
     }
   }
-  
-  hdr = (dir != 0) ^ ((Sort & SORT_REVERSE) != 0) ? hdr->next : hdr->prev;
-  if (hdr)
+
+  if ((dir != 0) ^ ((Sort & SORT_REVERSE) != 0))
   {
-    if (Sort & SORT_REVERSE)
-      return (hdr->next ? hdr->next->virtual + 1 : 0);
-    else
-      return (hdr->virtual);
+    do
+    { 
+	hdr = hdr->next;
+	if (!hdr)
+	  return (-1);
+	tmp = find_virtual (hdr);
+    } while (!tmp);
   }
   else
-    return (-1);
+  {
+    do
+    { 
+	hdr = hdr->prev;
+	if (!hdr)
+	  return (-1);
+	tmp = find_virtual (hdr);
+    } while (!tmp);
+  }
+
+  return (tmp->virtual);
 }

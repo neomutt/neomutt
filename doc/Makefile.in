@@ -19,14 +19,21 @@ CFLAGS=@CFLAGS@ -DSHAREDIR=\"$(sharedir)\" $(XCPPFLAGS)
 LDFLAGS=@LDFLAGS@
 
 
-all: manual.txt mutt.man manual.html
+all: mutt.man dotlock.man manual.txt manual.html
 
-install: mutt.man manual.txt
+install: dotlock.man mutt.man manual.txt
 	../mkinstalldirs $(mandir)/man1
 	$(INSTALL) -m 644 mutt.man $(mandir)/man1/mutt.1
+	$(INSTALL) -m 644 dotlock.man $(mandir)/man1/mutt.dotlock.1
 	../mkinstalldirs $(docdir)
 	$(INSTALL) -m 644 manual.txt $(docdir)
 	$(INSTALL) -m 644 PGP-Notes.txt $(docdir)
+
+mutt.man: mutt.man.in
+	(cd .. ; ./config.status)
+
+dotlock.man: dotlock.man.in
+	(cd .. ; ./config.status)
 
 uninstall:
 	-rm -f $(mandir)/man1/mutt.1 $(docdir)/manual.txt	\
@@ -38,8 +45,11 @@ manual.txt: manual.sgml
 manual.html: manual.sgml
 	sgml2html manual
 
-mutt.man: mutt.sgml
-	sgml2txt -man mutt
+clean: 
+	rm -f *~ *.html *.orig *.rej *.man
 
-clean clean-real distclean:
-	rm -f *~ *.html *.orig *.rej
+clean-real:
+	rm -f manual.txt
+
+distclean: clean
+	rm -f Makefile

@@ -18,6 +18,7 @@
 
 #include "mutt.h"
 #include "mutt_regex.h"
+#include "mutt_curses.h"
 
 #include <pwd.h>
 #include <string.h>
@@ -37,7 +38,8 @@ static ADDRESS *mutt_expand_aliases_r (ADDRESS *a, LIST **expn)
   ADDRESS *head = NULL, *last = NULL, *t, *w;
   LIST *u;
   char i;
-
+  const char *fqdn;
+  
   while (a)
   {
     if (!a->group && !a->personal && a->mailbox && strchr (a->mailbox, '@') == NULL)
@@ -90,8 +92,7 @@ static ADDRESS *mutt_expand_aliases_r (ADDRESS *a, LIST **expn)
 	    *p = 0;
 	  a->personal = safe_strdup (buffer);
 #ifdef EXACT_ADDRESS
-	  free (a->val);
-	  a->val = NULL;
+	  FREE (&a->val);
 #endif
 	}
       }
@@ -108,10 +109,10 @@ static ADDRESS *mutt_expand_aliases_r (ADDRESS *a, LIST **expn)
     last->next = NULL;
   }
 
-  if (option (OPTUSEDOMAIN) && Fqdn[0] != '@')
+  if (option (OPTUSEDOMAIN) && (fqdn = mutt_fqdn(1)))
   {
     /* now qualify all local addresses */
-    rfc822_qualify (head, Fqdn);
+    rfc822_qualify (head, fqdn);
   }
 
   return (head);
@@ -205,13 +206,19 @@ void mutt_create_alias (ENVELOPE *cur, ADDRESS *iadr)
   else
     buf[0] = 0;
 
-  if (mutt_get_field ("Address: ", buf, sizeof (buf), 0) != 0 || !buf[0])
+  do
   {
-    mutt_free_alias (&new);
-    return;
+    if (mutt_get_field ("Address: ", buf, sizeof (buf), 0) != 0 || !buf[0])
+    {
+      mutt_free_alias (&new);
+      return;
+    }
+    
+    if((new->addr = rfc822_parse_adrlist (new->addr, buf)) == NULL)
+      BEEP ();
   }
-  new->addr = rfc822_parse_adrlist (new->addr, buf);
-
+  while(new->addr == NULL);
+  
   if (adr && adr->personal && !mutt_is_mail_list (adr))
     strfcpy (buf, adr->personal, sizeof (buf));
   else
@@ -366,28 +373,39 @@ int mutt_alias_complete (char *s, size_t buflen)
   return 1;
 }
 
+static int string_is_address(const char *str, const char *u, const char *d)
+{
+  char buf[LONG_STRING];
+  
+  snprintf(buf, sizeof(buf), "%s@%s", NONULL(u), NONULL(d));
+  if (strcasecmp(str, buf) == 0)
+    return 1;
+  
+  return 0;
+}
+
 /* returns TRUE if the given address belongs to the user. */
 int mutt_addr_is_user (ADDRESS *addr)
 {
-  char buf[LONG_STRING];
-
   /* NULL address is assumed to be the user. */
   if (!addr)
     return 1;
   if (!addr->mailbox)
     return 0;
-  if (strcasecmp (addr->mailbox, Username) == 0)
+
+  if (strcasecmp (addr->mailbox, NONULL(Username)) == 0)
     return 1;
-  snprintf (buf, sizeof (buf), "%s@%s", Username, Hostname);
-  if (strcasecmp (addr->mailbox, buf) == 0)
+  if(string_is_address(addr->mailbox, Username, Hostname))
     return 1;
-  snprintf (buf, sizeof (buf), "%s@%s", Username, Fqdn);
-  if (strcasecmp (addr->mailbox, buf) == 0)
+  if(string_is_address(addr->mailbox, Username, mutt_fqdn(0)))
+    return 1;
+  if(string_is_address(addr->mailbox, Username, mutt_fqdn(1)))
     return 1;
 
   if (Alternates.pattern &&
       regexec (Alternates.rx, addr->mailbox, 0, NULL, 0) == 0)
     return 1;
+  
   return 0;
 }
 

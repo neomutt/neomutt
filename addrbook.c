@@ -18,6 +18,7 @@
 
 #include "mutt.h"
 #include "mutt_menu.h"
+#include "mapping.h"
 #include "sort.h"
 
 #include <string.h>

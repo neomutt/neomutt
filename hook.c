@@ -84,7 +84,11 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     memset (&pattern, 0, sizeof (pattern));
     pattern.data = safe_strdup (path);
   }
-  else if (DefaultHook)
+  else if (DefaultHook
+#ifdef _PGPPATH
+      && !(data & M_PGPHOOK)
+#endif /* _PGPPATH */
+      )
   {
     char tmp[HUGE_STRING];
 
@@ -148,7 +152,11 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   else
   {
     rx = safe_malloc (sizeof (regex_t));
+#ifdef _PGPPATH
+    if ((rc = REGCOMP (rx, pattern.data, ((data & M_PGPHOOK) ? REG_ICASE : 0))) != 0)
+#else
     if ((rc = REGCOMP (rx, pattern.data, 0)) != 0)
+#endif /* _PGPPATH */
     {
       regerror (rc, rx, err->data, err->dsize);
       regfree (rx);
@@ -188,6 +196,10 @@ void mutt_folder_hook (char *path)
   err.dsize = sizeof (buf);
   memset (&token, 0, sizeof (token));
   for (; tmp; tmp = tmp->next)
+  {
+    if(!tmp->command)
+      continue;
+
     if (tmp->type & M_FOLDERHOOK)
     {
       if ((regexec (tmp->rx.rx, path, 0, NULL, 0) == 0) ^ tmp->rx.not)
@@ -201,6 +213,7 @@ void mutt_folder_hook (char *path)
 	}
       }
     }
+  }
   FREE (&token.data);
 }
 
@@ -227,6 +240,10 @@ void mutt_send_hook (HEADER *hdr)
   err.dsize = sizeof (buf);
   memset (&token, 0, sizeof (token));
   for (hook = Hooks; hook; hook = hook->next)
+  {
+    if(!hook->command)
+      continue;
+
     if (hook->type & M_SENDHOOK)
       if ((mutt_pattern_exec (hook->pattern, 0, NULL, hdr) > 0) ^ hook->rx.not)
 	if (mutt_parse_rc_line (hook->command, &token, &err) != 0)
@@ -236,6 +253,7 @@ void mutt_send_hook (HEADER *hdr)
 	  sleep (1);
 	  return;
 	}
+  }
   FREE (&token.data);
 }
 
@@ -246,12 +264,17 @@ mutt_addr_hook (char *path, size_t pathlen, int type, CONTEXT *ctx, HEADER *hdr)
 
   /* determine if a matching hook exists */
   for (hook = Hooks; hook; hook = hook->next)
+  {
+    if(!hook->command)
+      continue;
+
     if (hook->type & type)
       if ((mutt_pattern_exec (hook->pattern, 0, ctx, hdr) > 0) ^ hook->rx.not)
       {
 	mutt_make_string (path, pathlen, hook->command, ctx, hdr);
 	return 0;
       }
+  }
 
   return -1;
 }
@@ -306,3 +329,19 @@ void mutt_select_fcc (char *path, size_t pathlen, HEADER *hdr)
   }
   mutt_pretty_mailbox (path);
 }
+
+#ifdef _PGPPATH
+char *mutt_pgp_hook (ADDRESS *adr)
+{
+  HOOK *tmp = Hooks;
+
+  for (; tmp; tmp = tmp->next)
+  {
+    if ((tmp->type & M_PGPHOOK) && ((adr->mailbox && 
+	 regexec (tmp->rx.rx, adr->mailbox, 0, NULL, 0) == 0) ^ tmp->rx.not))
+      return (tmp->command);
+  }
+  return (NULL);
+}
+#endif /* _PGPPATH */
+

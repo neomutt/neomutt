@@ -1,18 +1,38 @@
-README for mutt-0.90i
-=======================
+README for mutt-0.93i
+=====================
 
-Installation instructructions are detailed in ``INSTALL''.
+Installation instructions are detailed in ``INSTALL''.
 
-The user manual is in doc/manual.txt.
+The user manual is in doc/manual.txt.  A list of major
+changes since the last public version can be found under
+NEWS.
 
 PGP users please read doc/PGP-Notes.txt before proceeding.
 
-For more information, see the Mutt home page,
-http://www.cs.hmc.edu/~me/mutt/index.html.
+For more information, see the Mutt home page:
 
-The primary distribution point for Mutt is
-ftp://ftp.cs.hmc.edu/pub/me/mutt.  See the home page for
-mirror sites.
+ http://www.cs.hmc.edu/~me/mutt/index.html
 
-Michael Elkins <me@cs.hmc.edu>, January 22, 1998
-Thomas Roessler <roessler@guug.de>, February 3, 1998
+The primary distribution points for Mutt are:
+
+ ftp://riemann.iam.uni-bonn.de/pub/mutt/
+ ftp://ftp.guug.de/pub/mutt
+
+Mirror sites for the pgp-enabled version of mutt can be
+found at the following places:
+
+ ftp://ftp.gbnet.net/pub/mutt-international/
+ ftp://ftp.fu-berlin.de/pub/unix/mail/mutt/
+ ftp://pgp.rasip.fer.hr/pub/mutt/international/
+ ftp://ftp.gwdg.de/pub/unix/mail/mutt
+ ftp://ftp.iks-jena.de/pub/mitarb/lutz/crypt/software/pgp/mutt
+ ftp://ftp.lip6.fr/pub/unix/mail/mutt
+ ftp://ftp.arch.pwr.wroc.pl/pub/mutt/
+ ftp://ftp.uib.no/pub/mutt
+
+Mirror sites for the pgp-disabled version:
+
+ ftp://ftp.ewd.3com.com/pub/mutt/
+  
+
+Thomas Roessler <roessler@guug.de>, July 10, 1998

@@ -65,74 +65,127 @@ int Index_64[128] = {
 
 void mutt_decode_xbit (STATE *s, long len, int istext)
 {
-  int linelen;
-  char buffer[LONG_STRING];
-
+  int c;
+  int lbreak = 1;
+  
   if (istext)
   {
-    while (len > 0)
+    while ((c = fgetc(s->fpin)) != EOF && len--)
     {
-      if (fgets (buffer, LONG_STRING, s->fpin) == 0) return;
-      linelen = strlen (buffer);
-      len -= linelen;
-      if (linelen >= 2 && buffer[linelen-2] == '\r')
+      if(lbreak && s->prefix)
       {
-	buffer[linelen-2] = '\n';
-	buffer[linelen-1] = 0;
+	state_puts(s->prefix, s);
+	lbreak = 0;
       }
-      if (s->prefix) state_puts (s->prefix, s);
-      state_puts (buffer, s);
+	  
+      if (c == '\r' && len)
+      {
+	int ch;
+	
+	if((ch = fgetc(s->fpin)) != '\n')
+	  ungetc(ch, s->fpin);
+	else
+	{
+	  c = ch;
+	  len--;
+	}
+	
+      }
+      fputc(c, s->fpout);
+      if(c == '\n')
+	lbreak = 1;
     }
   }
   else
     mutt_copy_bytes (s->fpin, s->fpout, len);
 }
 
+static int handler_state_fgetc(STATE *s)
+{
+  int ch;
+  
+  if((ch = fgetc(s->fpin)) == EOF)
+  {
+    dprint(1, (debugfile, "handler_state_fgetc: unexpected EOF.\n"));
+    state_puts ("[-- Error: unexpected end of file! --]\n", s);
+  }
+  return ch;
+}
+
 void mutt_decode_quoted (STATE *s, long len, int istext)
 {
-  char *c, buffer[LONG_STRING];
-  int ch, soft = 0;
+  int ch, lbreak = 1;
 
   while (len > 0)
   {
-    if (fgets (buffer, LONG_STRING, s->fpin) == NULL)
-    {
-      dprint (1, (debugfile, "mutt_decode_quoted: unexpected EOF.\n"));
-      state_puts ("[-- Error: unexpected end of file! --]\n", s);
+    if ((ch = handler_state_fgetc(s)) == EOF)
       break;
-    }
-    c = buffer;
-    len -= strlen (buffer);
-    if (s->prefix && !soft) state_puts (s->prefix, s);
-    soft = 0;
-    while (*c)
+
+    len--;
+    
+    if (s->prefix && lbreak)
+      state_puts (s->prefix, s);
+    
+    lbreak = 0;
+    if (ch == '=')
     {
-      if (*c == '=')
+      int ch1, ch2;
+      
+      if(!len || (ch1 = handler_state_fgetc(s)) == EOF)
+	break;
+
+      len--;
+      
+      if (ch1 == '\n' || ch1 == '\r' || ch1 == ' ' || ch1 == '\t')
       {
-        if (c[1] == '\n' || c[1] == '\r' || c[1] == ' ' || c[1] == '\t')
+	/* Skip whitespace at the end of the line since MIME does not
+	 * allow for it
+	 */
+	if(ch1 != '\n')
 	{
-          /* Skip whitespace at the end of the line since MIME does not
-           * allow for it
-	   */
-          soft = 1;
-          break;
-        }
-        ch = hexval ((int) c[1]) << 4;
-        ch |= hexval ((int) c[2]);
-        state_putc (ch, s);
-        c += 3;
-      }
-      else if (istext && c[0] == '\r' && c[1] == '\n')
-      {
-        state_putc ('\n', s);
-        break;
+	  while(len && (ch1 = handler_state_fgetc(s)) != EOF)
+	  {
+	    len--;
+	    if(ch1 == '\n')
+	      break;
+	  }
+	}
+
+	if(ch1 == EOF)
+	  break;
+
+	ch = EOF;
+
       }
       else
       {
-        state_putc (*c, s);
-        c++;
+	if(!len || (ch2 = handler_state_fgetc(s)) == EOF)
+	  break;
+
+	len--;
+	
+        ch = hexval (ch1) << 4;
+        ch |= hexval (ch2);
       }
+    } /* ch == '=' */
+    else if (istext && ch == '\r')
+    {
+      int ch1;
+
+      if((ch1 =fgetc(s->fpin)) == '\n')
+      {
+	ch = ch1;
+	len--;
+      }
+      else
+	ungetc(ch1, s->fpin);
     }
+
+    if(ch != EOF)
+      state_putc (ch, s);
+
+    if(ch == '\n')
+      lbreak = 1;
   }
 }
 
@@ -157,8 +210,8 @@ void mutt_decode_base64 (STATE *s, long len, int istext)
     if (i != 4)
       return; /* didn't get a multiple of four chars! */
 
-    c1 = base64val ((int) buf[0]);
-    c2 = base64val ((int) buf[1]);
+    c1 = base64val (buf[0]);
+    c2 = base64val (buf[1]);
     ch = (c1 << 2) | (c2 >> 4);
 
     if (cr && ch != '\n') state_putc ('\r', s);
@@ -174,7 +227,7 @@ void mutt_decode_base64 (STATE *s, long len, int istext)
 
     if (buf[2] == '=')
       break;
-    c3 = base64val ((int) buf[2]);
+    c3 = base64val (buf[2]);
     ch = ((c2 & 0xf) << 4) | (c3 >> 2);
 
     if (cr && ch != '\n')
@@ -191,7 +244,7 @@ void mutt_decode_base64 (STATE *s, long len, int istext)
     }
 
     if (buf[3] == '=') break;
-    c4 = base64val ((int) buf[3]);
+    c4 = base64val (buf[3]);
     ch = ((c3 & 0x3) << 6) | c4;
 
     if (cr && ch != '\n')
@@ -655,6 +708,7 @@ void text_enriched_handler (BODY *a, STATE *s)
 
       case ST_EOF :
 	enriched_putc ('\0', &stte);
+        enriched_flush (&stte, 1);
 	state = DONE;
 	break;
 
@@ -665,10 +719,9 @@ void text_enriched_handler (BODY *a, STATE *s)
 
   state_putc ('\n', s); /* add a final newline */
 
-  if (stte.buffer)
-    free (stte.buffer);
-  free (stte.line);
-  free (stte.param);
+  FREE (&(stte.buffer));
+  FREE (&(stte.line));
+  FREE (&(stte.param));
 }                                                                              
 
 #define TXTPLAIN    1
@@ -700,14 +753,14 @@ void alternative_handler (BODY *a, STATE *s)
       if (!strchr(t->data, '/') || 
 	  (i > 0 && t->data[i-1] == '/' && t->data[i] == '*'))
       {
-	if (!strcasecmp(t->data, TYPE(b->type)))
+	if (!strcasecmp(t->data, TYPE(b)))
 	{
 	  choice = b;
 	}
       }
       else
       {
-	snprintf (buf, sizeof (buf), "%s/%s", TYPE (b->type), b->subtype);
+	snprintf (buf, sizeof (buf), "%s/%s", TYPE (b), b->subtype);
 	if (!strcasecmp(t->data, buf))
 	{
 	  choice = b;
@@ -724,7 +777,7 @@ void alternative_handler (BODY *a, STATE *s)
     b = a;
   while (b && !choice)
   {
-    snprintf (buf, sizeof (buf), "%s/%s", TYPE (b->type), b->subtype);
+    snprintf (buf, sizeof (buf), "%s/%s", TYPE (b), b->subtype);
     if (mutt_is_autoview (buf))
     {
       rfc1524_entry *entry = rfc1524_new_entry ();
@@ -844,7 +897,7 @@ int mutt_can_decode (BODY *a)
 {
   char type[STRING];
 
-  snprintf (type, sizeof (type), "%s/%s", TYPE (a->type), a->subtype);
+  snprintf (type, sizeof (type), "%s/%s", TYPE (a), a->subtype);
   if (mutt_is_autoview (type))
     return (rfc1524_mailcap_lookup (a, type, NULL, M_AUTOVIEW));
   else if (a->type == TYPETEXT)
@@ -932,7 +985,7 @@ void multipart_handler (BODY *a, STATE *s)
 
       snprintf (buffer, sizeof (buffer),
 		"[-- Type: %s/%s, Encoding: %s, Size: %s --]\n",
-	       TYPE (p->type), p->subtype, ENCODING (p->encoding), length);
+	       TYPE (p), p->subtype, ENCODING (p->encoding), length);
       state_puts (buffer, s);
       if (!option (OPTWEED))
       {
@@ -971,16 +1024,20 @@ void autoview_handler (BODY *a, STATE *s)
   char type[STRING];
   char command[LONG_STRING];
   char tempfile[_POSIX_PATH_MAX] = "";
+  char *fname;
   FILE *fpin = NULL;
   FILE *fpout = NULL;
   FILE *fperr = NULL;
   int piped = FALSE;
   pid_t thepid;
 
-  snprintf (type, sizeof (type), "%s/%s", TYPE (a->type), a->subtype);
+  snprintf (type, sizeof (type), "%s/%s", TYPE (a), a->subtype);
   rfc1524_mailcap_lookup (a, type, entry, M_AUTOVIEW);
 
-  rfc1524_expand_filename (entry->nametemplate, a->filename, tempfile, sizeof (tempfile));
+  fname = safe_strdup (a->filename);
+  mutt_sanitize_filename (fname);
+  rfc1524_expand_filename (entry->nametemplate, fname, tempfile, sizeof (tempfile));
+  FREE (&fname);
 
   if (entry->command)
   {
@@ -1104,7 +1161,7 @@ void mutt_body_handler (BODY *b, STATE *s)
 
   /* first determine which handler to use to process this part */
 
-  snprintf (type, sizeof (type), "%s/%s", TYPE (b->type), b->subtype);
+  snprintf (type, sizeof (type), "%s/%s", TYPE (b), b->subtype);
   if (mutt_is_autoview (type))
   {
     rfc1524_entry *entry = rfc1524_new_entry ();
@@ -1129,7 +1186,7 @@ void mutt_body_handler (BODY *b, STATE *s)
   }
   else if (b->type == TYPEMESSAGE)
   {
-    if (!strcasecmp ("rfc822", b->subtype) || !strcasecmp ("news", b->subtype))
+    if(mutt_is_message_type(b->type, b->subtype))
       handler = message_handler;
     else if (!strcasecmp ("delivery-status", b->subtype))
       plaintext = 1;
@@ -1275,7 +1332,7 @@ void mutt_body_handler (BODY *b, STATE *s)
   }
   else if (s->flags & M_DISPLAY)
   {
-    fprintf (s->fpout, "[-- %s/%s is unsupported ", TYPE (b->type), b->subtype);
+    fprintf (s->fpout, "[-- %s/%s is unsupported ", TYPE (b), b->subtype);
     if (!option (OPTVIEWATTACH))
     {
       if (km_expand_key (type, sizeof(type),

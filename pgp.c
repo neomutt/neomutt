@@ -1110,7 +1110,7 @@ BODY *pgp_sign_message (BODY *a)
  */
 char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
 {
-  char *key, *keylist = NULL;
+  char *key, *keyID, *keylist = NULL;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
   ADDRESS *tmp = NULL;
@@ -1145,9 +1145,17 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
 
   for (p = tmp; p ; p = p->next)
   {
-    if ((k_info = ki_getkeybyaddr (pgp, p, db, KEYFLAG_CANENCRYPT)) == NULL)
+    char buf[LONG_STRING];
+
+    k_info = NULL;
+    if ((keyID = mutt_pgp_hook (p)) != NULL)
     {
-      char buf[LONG_STRING];
+      snprintf (buf, sizeof (buf), "Use keyID = \"%s\" for %s?", keyID, p->mailbox);
+      if (mutt_yesorno (buf, M_YES) == M_YES)
+	k_info = ki_getkeybystr (pgp, keyID, db, KEYFLAG_CANENCRYPT);
+    }
+    if (k_info == NULL && (k_info = ki_getkeybyaddr (pgp, p, db, KEYFLAG_CANENCRYPT)) == NULL)
+    {
       snprintf (buf, sizeof (buf), "Enter keyID for %s: ", p->mailbox);
       
       if ((key = pgp_ask_for_key (pgp, db, buf, p->mailbox,

@@ -44,9 +44,11 @@ HASH *hash_create (int nelem)
    allow_dup    if nonzero, duplicate keys are allowed in the table */
 int hash_insert (HASH * table, const char *key, void *data, int allow_dup)
 {
-  struct hash_elem *ptr = malloc (sizeof (struct hash_elem));
-  int h = hash_string ((unsigned char *) key, table->nelem);
+  struct hash_elem *ptr;
+  int h;
 
+  ptr = (struct hash_elem *) safe_malloc (sizeof (struct hash_elem));
+  h = hash_string ((unsigned char *) key, table->nelem);
   ptr->key = key;
   ptr->data = data;
 
@@ -65,7 +67,7 @@ int hash_insert (HASH * table, const char *key, void *data, int allow_dup)
       r = strcmp (tmp->key, key);
       if (r == 0)
       {
-	free (ptr);
+	FREE (&ptr);
 	return (-1);
       }
       if (r > 0)
@@ -109,9 +111,7 @@ void hash_delete_hash (HASH * table, int hash, const char *key, const void *data
 	table->table[hash] = ptr->next;
       if (destroy)
 	destroy (ptr->data);
-      memset (ptr, 0, sizeof (struct hash_elem));
-      free (ptr);
-      ptr = 0;
+      FREE (&ptr);
       return;
     }
   }

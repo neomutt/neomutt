@@ -20,12 +20,14 @@
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "buffy.h"
+#include "mapping.h"
 #include "sort.h"
 #include "mailbox.h"
 
 #include <stdlib.h>
 #include <dirent.h>
 #include <string.h>
+#include <ctype.h>
 #include <unistd.h>
 #include <sys/stat.h>
 #include <pwd.h>
@@ -149,79 +151,135 @@ folder_format_str (char *dest, size_t destlen, char op, const char *src,
 		   const char *fmt, const char *ifstring, const char *elsestring,
 		   unsigned long data, format_flag flags)
 {
-  char fn[SHORT_STRING], tmp[SHORT_STRING], permission[10];
+  char fn[SHORT_STRING], tmp[SHORT_STRING], permission[11];
   char date[16], *t_fmt;
   time_t tnow;
   FOLDER *folder = (FOLDER *) data;
   struct passwd *pw;
   struct group *gr;
- 
+
   switch (op)
   {
     case 'd':
-      tnow = time (NULL);
-      t_fmt = tnow - folder->f->st_mtime < 31536000 ? "%b %d %H:%M" : "%b %d  %Y";
-      strftime (date, sizeof (date), t_fmt, localtime (&folder->f->st_mtime));
-      snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
-      snprintf (dest, destlen, tmp, date);
+      if (folder->f != NULL)
+      {
+	tnow = time (NULL);
+	t_fmt = tnow - folder->f->st_mtime < 31536000 ? "%b %d %H:%M" : "%b %d  %Y";
+	strftime (date, sizeof (date), t_fmt, localtime (&folder->f->st_mtime));
+	snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
+	snprintf (dest, destlen, tmp, date);
+      }
+      else
+      {
+	snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
+	snprintf (dest, destlen, tmp, "");
+      }
       break;
     case 'f':
       strncpy (fn, folder->name, sizeof(fn) - 1);
-      strcat (fn, S_ISLNK (folder->f->st_mode) ? "@" : 
-	      (S_ISDIR (folder->f->st_mode) ? "/" : 
-	       ((folder->f->st_mode & S_IXUSR) != 0 ? "*" : "")));
+      if (folder->f != NULL)
+      {
+	strcat (fn, S_ISLNK (folder->f->st_mode) ? "@" : 
+		(S_ISDIR (folder->f->st_mode) ? "/" : 
+		 ((folder->f->st_mode & S_IXUSR) != 0 ? "*" : "")));
+      }
       snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
       snprintf (dest, destlen, tmp, fn);
       break;
     case 'F':
-      sprintf (permission, "%c%c%c%c%c%c%c%c%c%c",
-	       S_ISDIR(folder->f->st_mode) ? 'd' : (S_ISLNK(folder->f->st_mode) ? 'l' : '-'),
-	       (folder->f->st_mode & S_IRUSR) != 0 ? 'r': '-',
-	       (folder->f->st_mode & S_IWUSR) != 0 ? 'w' : '-',
-	       (folder->f->st_mode & S_ISUID) != 0 ? 's' : (folder->f->st_mode & S_IXUSR) != 0 ? 'x': '-',
-	       (folder->f->st_mode & S_IRGRP) != 0 ? 'r' : '-',
-	       (folder->f->st_mode & S_IWGRP) != 0 ? 'w' : '-',
-	       (folder->f->st_mode & S_ISGID) != 0 ? 's' : (folder->f->st_mode & S_IXGRP) != 0 ? 'x': '-',
-	       (folder->f->st_mode & S_IROTH) != 0 ? 'r' : '-',
-	       (folder->f->st_mode & S_IWOTH) != 0 ? 'w' : '-',
-	       (folder->f->st_mode & S_ISVTX) != 0 ? 't' : (folder->f->st_mode & S_IXOTH) != 0 ? 'x': '-');
-      snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
-      snprintf (dest, destlen, tmp, permission);
-      break;
-    case 'g':
-      if ((gr = getgrgid (folder->f->st_gid)))
+      if (folder->f != NULL)
       {
+	sprintf (permission, "%c%c%c%c%c%c%c%c%c%c",
+		 S_ISDIR(folder->f->st_mode) ? 'd' : (S_ISLNK(folder->f->st_mode) ? 'l' : '-'),
+		 (folder->f->st_mode & S_IRUSR) != 0 ? 'r': '-',
+		 (folder->f->st_mode & S_IWUSR) != 0 ? 'w' : '-',
+		 (folder->f->st_mode & S_ISUID) != 0 ? 's' : (folder->f->st_mode & S_IXUSR) != 0 ? 'x': '-',
+		 (folder->f->st_mode & S_IRGRP) != 0 ? 'r' : '-',
+		 (folder->f->st_mode & S_IWGRP) != 0 ? 'w' : '-',
+		 (folder->f->st_mode & S_ISGID) != 0 ? 's' : (folder->f->st_mode & S_IXGRP) != 0 ? 'x': '-',
+		 (folder->f->st_mode & S_IROTH) != 0 ? 'r' : '-',
+		 (folder->f->st_mode & S_IWOTH) != 0 ? 'w' : '-',
+		 (folder->f->st_mode & S_ISVTX) != 0 ? 't' : (folder->f->st_mode & S_IXOTH) != 0 ? 'x': '-');
 	snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
-	snprintf (dest, destlen, tmp, gr->gr_name);
+	snprintf (dest, destlen, tmp, permission);
       }
       else
       {
-	snprintf (tmp, sizeof (tmp), "%%%sld", fmt);
-	snprintf (dest, destlen, tmp, folder->f->st_gid);
+#ifdef USE_IMAP
+	if (strchr(folder->name, '{'))
+	{
+	  snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
+	  snprintf (dest, destlen, tmp, "IMAP");
+	}                                        
+#endif
+      }
+      break;
+    case 'g':
+      if (folder->f != NULL)
+      {
+	if ((gr = getgrgid (folder->f->st_gid)))
+	{
+	  snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
+	  snprintf (dest, destlen, tmp, gr->gr_name);
+	}
+	else
+	{
+	  snprintf (tmp, sizeof (tmp), "%%%sld", fmt);
+	  snprintf (dest, destlen, tmp, folder->f->st_gid);
+	}
+      }
+      else
+      {
+	snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
+	snprintf (dest, destlen, tmp, "");
       }
       break;
     case 'l':
-      snprintf (tmp, sizeof (tmp), "%%%sd", fmt);
-      snprintf (dest, destlen, tmp, folder->f->st_nlink);
+      if (folder->f != NULL)
+      {
+	snprintf (tmp, sizeof (tmp), "%%%sd", fmt);
+	snprintf (dest, destlen, tmp, folder->f->st_nlink);
+      }
+      else
+      {
+	snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
+	snprintf (dest, destlen, tmp, "");
+      }
       break;
     case 'N':
       snprintf (tmp, sizeof (tmp), "%%%sc", fmt);
       snprintf (dest, destlen, tmp, folder->new ? 'N' : ' ');
       break;
     case 's':
-      snprintf (tmp, sizeof (tmp), "%%%sld", fmt);
-      snprintf (dest, destlen, tmp, (long) folder->f->st_size);
-      break;
-    case 'u':
-      if ((pw = getpwuid (folder->f->st_uid)))
+      if (folder->f != NULL)
       {
-	snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
-	snprintf (dest, destlen, tmp, pw->pw_name);
+	snprintf (tmp, sizeof (tmp), "%%%sld", fmt);
+	snprintf (dest, destlen, tmp, (long) folder->f->st_size);
       }
       else
       {
-	snprintf (tmp, sizeof (tmp), "%%%sld", fmt);
-	snprintf (dest, destlen, tmp, folder->f->st_uid);
+	snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
+	snprintf (dest, destlen, tmp, "");
+      }
+      break;
+    case 'u':
+      if (folder->f != NULL)
+      {
+	if ((pw = getpwuid (folder->f->st_uid)))
+	{
+	  snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
+	  snprintf (dest, destlen, tmp, pw->pw_name);
+	}
+	else
+	{
+	  snprintf (tmp, sizeof (tmp), "%%%sld", fmt);
+	  snprintf (dest, destlen, tmp, folder->f->st_uid);
+	}
+      }
+      else
+      {
+	snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
+	snprintf (dest, destlen, tmp, "");
       }
       break;
   }
@@ -237,7 +295,7 @@ static void add_folder (MUTTMENU *m, struct browser_state *state,
   folder.name = name;
   folder.f = s;
   folder.new = new;
-  mutt_FormatString (buffer, sizeof (buffer), FolderFormat, folder_format_str,
+  mutt_FormatString (buffer, sizeof (buffer), NONULL(FolderFormat), folder_format_str,
 		     (unsigned long) &folder, 0);
 
   if (state->entrylen == state->entrymax)
@@ -249,9 +307,12 @@ static void add_folder (MUTTMENU *m, struct browser_state *state,
       m->data = state->entry;
   }
 
+  if (s != NULL)
+  {
   (state->entry)[state->entrylen].mode = s->st_mode;
   (state->entry)[state->entrylen].mtime = s->st_mtime;
   (state->entry)[state->entrylen].size = s->st_size;
+  }
   (state->entry)[state->entrylen].name = safe_strdup (name);
   (state->entry)[state->entrylen].desc = safe_strdup (buffer);
 
@@ -305,7 +366,7 @@ static int examine_directory (MUTTMENU *menu, struct browser_state *state,
     
     if (prefix && *prefix && strncmp (prefix, de->d_name, strlen (prefix)) != 0)
       continue;
-    if (regexec (Mask.rx, de->d_name, 0, NULL, 0) != 0)
+    if (!((regexec (Mask.rx, de->d_name, 0, NULL, 0) == 0) ^ Mask.not))
       continue;
 
     snprintf (buffer, sizeof (buffer), "%s/%s", d, de->d_name);
@@ -317,7 +378,7 @@ static int examine_directory (MUTTMENU *menu, struct browser_state *state,
       continue;
     
     tmp = Incoming;
-    while (tmp && strcmp (buffer, tmp->path))
+    while (tmp && strcmp (buffer, NONULL(tmp->path)))
       tmp = tmp->next;
     add_folder (menu, state, de->d_name, &s, (tmp) ? tmp->new : 0);
   }
@@ -340,6 +401,13 @@ static int examine_mailboxes (MUTTMENU *menu, struct browser_state *state)
 
   do
   {
+#ifdef USE_IMAP
+    if (tmp->path[0] == '{')
+    {
+      add_folder (menu, state, tmp->path, NULL, tmp->new);
+      continue;
+    }
+#endif
     if (lstat (tmp->path, &s) == -1)
       continue;
 
@@ -347,7 +415,7 @@ static int examine_mailboxes (MUTTMENU *menu, struct browser_state *state)
 	(! S_ISLNK (s.st_mode)))
       continue;
     
-    strfcpy (buffer, tmp->path, sizeof (buffer));
+    strfcpy (buffer, NONULL(tmp->path), sizeof (buffer));
     mutt_pretty_mailbox (buffer);
 
     add_folder (menu, state, buffer, &s, tmp->new);
@@ -372,9 +440,13 @@ static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
 {
   char path[_POSIX_PATH_MAX];
 
-  menu->current = 0;
-  menu->top = 0;
   menu->max = state->entrylen;
+
+  if(menu->current >= menu->max)
+    menu->current = menu->max - 1;
+  if (menu->current < 0)
+    menu->current = 0;
+
   if (buffy)
     snprintf (title, titlelen, "Mailboxes [%d]", mutt_buffy_check (0));
   else
@@ -389,7 +461,7 @@ static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
 
 void mutt_select_file (char *f, size_t flen, int buffy)
 {
-  char buf[STRING];
+  char buf[_POSIX_PATH_MAX];
   char prefix[_POSIX_PATH_MAX] = "";
   char helpstr[SHORT_STRING];
   char title[STRING];
@@ -434,7 +506,7 @@ void mutt_select_file (char *f, size_t flen, int buffy)
     killPrefix = 1;
   }
   else if (!LastDir[0])
-    strfcpy (LastDir, Maildir, sizeof (LastDir));
+    strfcpy (LastDir, NONULL(Maildir), sizeof (LastDir));
 
   *f = 0;
 
@@ -531,10 +603,12 @@ void mutt_select_file (char *f, size_t flen, int buffy)
 	      strfcpy (LastDir, OldLastDir, sizeof (LastDir));
 	      if (examine_directory (menu, &state, LastDir, prefix) == -1)
 	      {
-		strfcpy (LastDir, Homedir, sizeof (LastDir));
+		strfcpy (LastDir, NONULL(Homedir), sizeof (LastDir));
 		return;
 	      }
 	    }
+	    menu->current = 0; 
+	    menu->top = 0; 
 	    init_menu (&state, menu, title, sizeof (title), buffy);
 	    break;
 	  }
@@ -559,6 +633,12 @@ void mutt_select_file (char *f, size_t flen, int buffy)
       case OP_CHANGE_DIRECTORY:
 
 	strfcpy (buf, LastDir, sizeof (buf));
+	{/* add '/' at the end of the directory name */
+	int len=strlen(LastDir);
+	if (sizeof (buf) > len)
+	  buf[len]='/';
+	}
+
 	if (mutt_get_field ("Chdir to: ", buf, sizeof (buf), M_FILE) == 0 &&
 	    buf[0])
 	{
@@ -571,7 +651,11 @@ void mutt_select_file (char *f, size_t flen, int buffy)
 	      strfcpy (LastDir, buf, sizeof (LastDir));
 	      destroy_state (&state);
 	      if (examine_directory (menu, &state, LastDir, prefix) == 0)
+	      {
+		menu->current = 0; 
+		menu->top = 0; 
 		init_menu (&state, menu, title, sizeof (title), buffy);
+	      }
 	      else
 	      {
 		mutt_error ("Error scanning directory.");
@@ -595,14 +679,22 @@ void mutt_select_file (char *f, size_t flen, int buffy)
 	if (mutt_get_field ("File Mask: ", buf, sizeof (buf), 0) == 0)
 	{
 	  regex_t *rx = (regex_t *) safe_malloc (sizeof (regex_t));
-	  int err;
+	  char *s = buf;
+	  int not = 0, err;
 
 	  buffy = 0;
 	  /* assume that the user wants to see everything */
 	  if (!buf[0])
 	    strfcpy (buf, ".", sizeof (buf));
+	  SKIPWS (s);
+	  if (*s == '!')
+	  {
+	    s++;
+	    SKIPWS (s);
+	    not = 1;
+	  }
 
-	  if ((err = REGCOMP (rx, buf, REG_NOSUB | mutt_which_case (buf))) != 0)
+	  if ((err = REGCOMP (rx, s, REG_NOSUB)) != 0)
 	  {
 	    regerror (err, rx, buf, sizeof (buf));
 	    regfree (rx);
@@ -616,6 +708,7 @@ void mutt_select_file (char *f, size_t flen, int buffy)
 	    safe_free ((void **) &Mask.rx);
 	    Mask.pattern = safe_strdup (buf);
 	    Mask.rx = rx;
+	    Mask.not = not;
 
 	    destroy_state (&state);
 	    if (examine_directory (menu, &state, LastDir, NULL) == 0)
@@ -627,6 +720,11 @@ void mutt_select_file (char *f, size_t flen, int buffy)
 	      return;
 	    }
 	    killPrefix = 0;
+	    if (!state.entrylen)
+	    {
+	      mutt_error ("No files match the file mask");
+	      break;
+	    }
 	  }
 	}
 	MAYBE_REDRAW (menu->redraw);
@@ -680,9 +778,10 @@ void mutt_select_file (char *f, size_t flen, int buffy)
 
 	break;
 
-      case OP_CHECK_NEW:
-
+      case OP_TOGGLE_MAILBOXES:
 	buffy = 1 - buffy;
+
+      case OP_CHECK_NEW:
 	destroy_state (&state);
 	prefix[0] = 0;
 	killPrefix = 0;
@@ -708,6 +807,38 @@ void mutt_select_file (char *f, size_t flen, int buffy)
 	}
 	MAYBE_REDRAW (menu->redraw);
 	break;
+
+      case OP_BROWSER_VIEW_FILE:
+	if (!state.entrylen)
+	{
+	  mutt_error ("No files match the file mask");
+	  break;
+	}
+
+        if (S_ISDIR (state.entry[menu->current].mode) ||
+	    (S_ISLNK (state.entry[menu->current].mode) &&
+	    link_is_dir (state.entry[menu->current].name)))
+	{
+	  mutt_error ("Can't view a directory");
+	  break;
+	} 
+	else
+	{
+	  BODY *b;
+	  char buf[_POSIX_PATH_MAX];
+
+	  snprintf (buf, sizeof (buf), "%s/%s", LastDir,
+		    state.entry[menu->current].name);
+	  b = mutt_make_file_attach (buf);
+	  if (b != NULL)
+	  {
+	    mutt_view_attachment (NULL, b, M_REGULAR);
+	    mutt_free_body (&b);
+	    menu->redraw = REDRAW_FULL;
+	  }
+	  else
+	    mutt_error ("Error trying to view file");
+	}
     }
   }
   /* not reached */

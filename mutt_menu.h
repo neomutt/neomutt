@@ -31,6 +31,8 @@
 #define REDRAW_FULL		(1<<5)
 #define REDRAW_BODY		(1<<6)
 
+#define M_MODEFMT "-- Mutt: %s"
+
 typedef struct menu_t
 {
   char *title;   /* the title of this menu */

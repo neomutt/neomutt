@@ -62,7 +62,9 @@ static int getPass (void)
   if (!PopPass)
   {
     char tmp[SHORT_STRING];
-    if (mutt_get_password ("POP Password: ", tmp, sizeof (tmp)) != 0)
+    tmp[0] = '\0';
+    if (mutt_get_password ("POP Password: ", tmp, sizeof (tmp)) != 0
+	|| *tmp == '\0')
       return 0;
     PopPass = safe_strdup (tmp);
   }
@@ -104,10 +106,10 @@ void mutt_fetchPopMail (void)
   sin.sin_family = AF_INET;
   sin.sin_port = htons (PopPort);
 
-  if ((n = inet_addr (PopHost)) == -1)
+  if ((n = inet_addr (NONULL(PopHost))) == -1)
   {
     /* Must be a DNS name */
-    if ((he = gethostbyname (PopHost)) == NULL)
+    if ((he = gethostbyname (NONULL(PopHost))) == NULL)
     {
       mutt_error ("Could not find address for host %s.", PopHost);
       return;
@@ -135,7 +137,7 @@ void mutt_fetchPopMail (void)
     goto finish;
   }
 
-  sprintf (buffer, "user %s\r\n", PopUser);
+  snprintf (buffer, sizeof(buffer), "user %s\r\n", PopUser);
   write (s, buffer, strlen (buffer));
 
   if (getLine (s, buffer, sizeof (buffer)) == -1)
@@ -148,7 +150,7 @@ void mutt_fetchPopMail (void)
     goto finish;
   }
   
-  sprintf (buffer, "pass %s\r\n", PopPass);
+  snprintf (buffer, sizeof(buffer), "pass %s\r\n", NONULL(PopPass));
   write (s, buffer, strlen (buffer));
   
   if (getLine (s, buffer, sizeof (buffer)) == -1)
@@ -156,7 +158,10 @@ void mutt_fetchPopMail (void)
 
   if (strncmp (buffer, "+OK", 3) != 0)
   {
-    PopPass[0] = 0; /* void the given password */
+    if(PopPass)
+      memset(PopPass, 0, strlen(PopPass));
+    
+    safe_free((void **) &PopPass); /* void the given password */
     mutt_remove_trailing_ws (buffer);
     mutt_error (buffer[0] ? buffer : "Server closed connection!");
     goto finish;
@@ -183,7 +188,7 @@ void mutt_fetchPopMail (void)
     goto finish;
   }
 
-  if (mx_open_mailbox (Spoolfile, M_APPEND, &ctx) == NULL)
+  if (mx_open_mailbox (NONULL(Spoolfile), M_APPEND, &ctx) == NULL)
     goto finish;
 
   snprintf (msgbuf, sizeof (msgbuf),
@@ -192,7 +197,7 @@ void mutt_fetchPopMail (void)
 
   for (i = 1 ; i <= msgs ; i++)
   {
-    sprintf (buffer, "retr %d\r\n", i);
+    snprintf (buffer, sizeof(buffer), "retr %d\r\n", i);
     write (s, buffer, strlen (buffer));
 
     if (getLine (s, buffer, sizeof (buffer)) == -1)
@@ -268,7 +273,7 @@ void mutt_fetchPopMail (void)
     if (option (OPTPOPDELETE))
     {
       /* delete the message on the server */
-      sprintf (buffer, "dele %d\r\n", i);
+      snprintf (buffer, sizeof(buffer), "dele %d\r\n", i);
       write (s, buffer, strlen (buffer));
 
       /* eat the server response */

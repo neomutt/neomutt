@@ -542,8 +542,6 @@ static KEYINFO *pgp_parse_keyinfo(unsigned char *buff, size_t l)
 static int pgp_parse_pgp2_sig(unsigned char *buff, size_t l, KEYINFO *p)
 {
   unsigned char sigtype;
-  unsigned char pkalg;
-  unsigned char hashalg;
   long sig_gen_time;
   unsigned long signerid;
   size_t j;
@@ -563,9 +561,6 @@ static int pgp_parse_pgp2_sig(unsigned char *buff, size_t l, KEYINFO *p)
   signerid = 0;
   for(i = 0; i < 4; i++)
     signerid = (signerid << 8) + buff[j++];
-  
-  pkalg = buff[j++];
-  hashalg = buff[j++];
   
   if(sigtype == 0x20 || sigtype == 0x28)
     p->flags |= KEYFLAG_REVOKED;
@@ -621,9 +616,9 @@ static int pgp_parse_pgp3_sig(unsigned char *buff, size_t l, KEYINFO *p)
 	if(!--ml) break;
       }
       
-      ml -= skl;
-      if(ml < 0)
+      if((int) ml - (int) skl < 0)
 	break;
+      ml -= skl;
       
       nextone = j + skl;
       skt = buff[j++];
@@ -795,6 +790,9 @@ static KEYINFO *pgp_read_keyring(const char *fname)
       case PT_NAME:
       {
 	char *chr;
+	
+	if(!addr) break;
+	
 	chr = safe_malloc(l);
 	memcpy(chr, buff + 1, l - 1);
 	chr[l-1] = '\0';
@@ -835,13 +833,21 @@ KEYINFO *pgp_read_secring(struct pgp_vinfo *pgp)
 void pgp_close_keydb (KEYINFO **ki)
 {
   KEYINFO *tmp, *k = *ki;
-  LIST *q;
+  PGPUID *uid;
+  LIST *p, *q;
   
   while (k)
   {
     if (k->keyid) safe_free ((void **)&k->keyid);
-    for(q = k->address; q; q = q-> next)
+    for(q = k->address; q; q = p)
+    {
+      uid = (PGPUID *) q->data;
+      p = q->next;
+
+      safe_free((void **)&uid->addr);
       safe_free((void **)&q->data);
+      safe_free((void **)&q);
+    }
     tmp = k;
     k = k->next;
     safe_free ((void **)&tmp);

@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1998 Thomas Roessler <roessler@guug.de>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -16,11 +17,27 @@
  *     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */ 
 
-/* common protos for compose / attach menus */
+#ifndef _DOTLOCK_H
+#define _DOTLOCK_H
 
-int mutt_tag_attach (MUTTMENU *menu, int n);
+/* exit values */
 
-void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr);
-void mutt_pipe_attachment_list (FILE *fp, int tag, BODY *top, int filter);
-void mutt_print_attachment_list (FILE *fp, int tag, BODY *top);
-void mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, ATTACHPTR **idx);
+#define DL_EX_OK	0	
+#define DL_EX_ERROR	1	
+#define DL_EX_EXIST	3	
+#define DL_EX_NEED_PRIVS 4
+#define DL_EX_IMPOSSIBLE 5
+
+/* flags */
+
+#define DL_FL_TRY	(1 << 0)
+#define DL_FL_UNLOCK	(1 << 1)
+#define DL_FL_USEPRIV	(1 << 2)
+#define DL_FL_FORCE	(1 << 3)
+#define DL_FL_RETRY	(1 << 4)
+
+#ifndef DL_STANDALONE
+int dotlock_invoke(const char *, int, int);
+#endif
+
+#endif

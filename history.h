@@ -16,11 +16,26 @@
  *     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */ 
 
-/* common protos for compose / attach menus */
+#ifndef _HISTORY_H
+#define _HISTORY_H
 
-int mutt_tag_attach (MUTTMENU *menu, int n);
+enum history_class
+{
+  HC_CMD,
+  HC_ALIAS,
+  HC_COMMAND,
+  HC_FILE,
+  HC_OTHER,
+  HC_LAST
+};
 
-void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr);
-void mutt_pipe_attachment_list (FILE *fp, int tag, BODY *top, int filter);
-void mutt_print_attachment_list (FILE *fp, int tag, BODY *top);
-void mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, ATTACHPTR **idx);
+#define HC_FIRST HC_CMD
+
+typedef enum history_class history_class_t;
+
+void mutt_init_history(void);
+void mutt_history_add(history_class_t, const char *);
+char *mutt_history_next(history_class_t);
+char *mutt_history_prev(history_class_t);
+
+#endif

@@ -18,6 +18,7 @@ systems:
 	MkLinux
 	NetBSD
 	QNX
+	SCO Unix 3.2v4/5
 	Solaris
 	SunOS
 	Ultrix
@@ -37,11 +38,12 @@ systems:
 Installation
 ============
 
-Installing Mutt is rather painless through the use of the GNU autoconf
-package.  Simply untar the Mutt distribution, and run the ``configure''
-script.  In most cases, it will automatically determine everything it needs
-to know in order to compile.  However, there are a few options to
-``configure'' to help it out, or change the default behavior:
+Installing Mutt is rather painless through the use of the GNU
+autoconf package.  Simply untar the Mutt distribution, and run the
+``configure'' script.  In most cases, it will automatically determine
+everything it needs to know in order to compile.  However, there are
+a few options to ``configure'' to help it out, or change the default
+behavior:
 
 --prefix=DIR
 	install Mutt in DIR instead of /usr/local
@@ -71,22 +73,19 @@ to know in order to compile.  However, there are a few options to
 --enable-pop
 	enable POP3 support
 
---enable-hidden-host
-	local hostname is not part of the FQDN.
-
 --with-rx
 	use GNU rx instead of local regexp routines.  Many systems don't
 	have the POSIX compliant regcomp/regexec/regfree routines, so this
 	provides a way to support them.
 
 --enable-flock
-	use flock() to lock files
+	use flock() to lock files.  
 
 --disable-fcntl
 	by default, Mutt uses fcntl() to lock files.  Over NFS this can
 	result in poor performance on read/write.  Note that using this
-	option could be dangerous if dotlocking is also disabled
-
+	option could be dangerous if dotlocking is also disabled.
+	
 --enable-nfs-fix
 	some implementations of NFS do not always write the
 	atime/mtime of small files.  This means that Mutt's ``mailboxes''
@@ -114,12 +113,17 @@ to know in order to compile.  However, there are a few options to
 	when you press '!'.  Only use this option to solve the above problem,
 	and only specify one of the above shells as its argument.
 
+	(If you encounter this problem with your platform's native
+	Bourne shell, please send a short report to mutt-dev@cs.hmc.edu,
+	so a short note on this topic can be added to the Platform notes
+	section below.)
+
 --enable-exact-address
 	By default, Mutt will rewrite all addresses in the form
 		Personal Name <user@host.domain>
 	regardless of the input.  By enabling this option, Mutt will write
 	addresses in the same form they are parsed.  NOTE: this requires
-	significantly more memory
+	significantly more memory.
 
 Once ``configure'' has completed, simply type ``make install.''
 
@@ -129,8 +133,17 @@ A_NORMAL or KEY_MIN, then you probably don't have a SysV compliant curses
 library.  You should install either ncurses or S-Lang (see above), and then
 run the ``configure'' script again.
 
+
 Platform Notes
 ==============
+
+All platforms
+
+	There is a bug in most (if not all) S-Lang versions which
+	prevents the Meta key from working with mutt.  A patch can be
+	found in the file patch.slang-1.2.2.keypad.1 in this mutt
+	distribution.
+
 
 Solaris 2.4
 
@@ -142,3 +155,34 @@ Solaris 2.4
 	Color does not work right with Solaris curses.  You will have to
 	compile with either ncurses or slang to get working color support.
 
+
+Linux
+
+	On recent Linux systems, flock() and fcntl() locks don't mix.  If
+	you use the --enable-flock switch on such systems, be sure to
+	give the --disable-fcntl argument as well.
+
+	The Linux libc 5.4.45 disables locale support in programs running
+	setgid mail.  You'll need to use the configure switch
+	"--enable-locales-fix".  If you're using a non-iso-8859 font, you
+	lose.  This is not an issue on glibc (libc 6) based systems.
+
+
+Digital Unix (OSF/1)
+
+	Don't try "--with-rx", because you won't be able to match
+	anything (using system's regex functions seems to work fine
+	though).
+
+	Also, the system curses library is said to be badly broken.  Use
+	GNU ncurses or SLang instead.
+
+
+FreeBSD 3.0
+
+	/bin/sh is broken on this platform.  You need the
+	"--with-exec-shell" configuration switch here; ksh
+	and bash are reported to be fine.
+
+	This may also be an issue with earlier FreeBSD
+	versions.

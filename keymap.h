@@ -25,13 +25,15 @@
 /* type for key storage, the rest of mutt works fine with int type */
 typedef short keycode_t;
 
-void km_bindkey (char *, int, int, char *);
+void km_bind (char *, int, int, char *, char *);
+void km_bindkey (char *, int, int);
 int km_dokey (int);
 
 /* entry in the keymap tree */
 struct keymap_t
 {
   char *macro;           /* macro expansion (op == OP_MACRO) */
+  char *descr;           /* description of a macro for the help menu */
   struct keymap_t *next; /* next key in map */
   short op;              /* operation to perform */
   short eq;              /* number of leading keys equal to next entry */

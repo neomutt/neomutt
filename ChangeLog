@@ -1,1806 +1,899 @@
-Changes since 0.88
-------------------
+Mon Aug 24 09:24:28 1998  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.txt, doc/manual.sgml: Documenting $hidden_host.
+
+	* thread.c, curs_main.c: Fix "previous-subthread"
+	in reverse-threads mode, allow next-(sub)thread
+	and previous-(sub)thread to work in limited mode.
+	(From: Liviu Daia)
+
+Sun Aug 23 10:05:41 1998  Thomas Roessler  <roessler@guug.de>
+
+	* sendlib.c, send.c, protos.h, mutt.h, main.c,
+	init.h, init.c, configure.in, configure,
+	config.h.in, alias.c, acconfig.h, INSTALL:
+	[patch-0.94.3i.tlr.hidden_host.1] Replace the
+	--enable-hidden-host configure switch by a
+	configuration variable $hidden_host which can be
+	changed at run-time. This variable will _not_
+	affect the generation of message-IDs since we'll
+	get into uniqueness problems if we just use the
+	domain here.
+
+	Needs to be documented.
+
+	* doc/manual.txt: Committing the latest manual
+	changes.
+
+	* Attic/socket.c, imap.c:
+	[patch-0.94.3.bl.imap_buffy.1-2] Fixing the
+	buffered read stuff.
+
+	* Attic/mutt_socket.h: Ups, this one was missing
+	from Brandon's IMAP patch.
+
+Sat Aug 22 14:24:18 1998  Thomas Roessler  <roessler@guug.de>
+
+	* help.c: [patch-0.94.3i.gt.beautify_help.1.gz]
+	General help beautification.  From Gero Treuner.
+
+	* doc/manual.sgml, keymap.h, keymap.c, help.c,
+	Muttrc.in: [patch-0.94.3i.gt.description.1]
+	Introduce macro descriptions.
+
+	* doc/manual.sgml, init.h, init.c, browser.c: Add
+	a negation operator "!" to $mask's syntax (as in
+	the *-hooks).  From Liviu.
+
+	* recvattach.c: Make Vikas' attach_split and
+	Brandon's other_type patches fit together.
+
+	* recvattach.c, mutt.h, init.h, globals.h,
+	compose.c: [patch-0.94.3.vikas.attach_split.3]
+	Re-introduce attach_split.
+
+	* Attic/socket.c: [patch-0.94.3.bl.imap_buffy.1]
+	Adding Brandon's IMAP buffy support.
+
+	* mx.c, mutt.h, mailbox.h, imap.h, imap.c,
+	curs_lib.c, configure.in, configure, buffy.c,
+	browser.c, Attic/BUGS:
+	[patch-0.94.3.bl.imap_buffy.1] Adding Brandon's
+	IMAP buffy support.
+
+Fri Aug 21 08:17:09 1998  Thomas Roessler  <roessler@guug.de>
+
+	* browser.c: Enter the file browser, type a mask
+	which doesn't match any file in the current
+	directory, clean the mask. Segfault.  Fix from
+	Liviu Daia.
+
+Thu Aug 20 22:32:46 1998  Thomas Roessler  <roessler@guug.de>
+
+	* sendlib.c, recvattach.c, parse.c, mutt.h,
+	mime.h, lib.c, handler.c, globals.h, compose.c,
+	commands.c, attach.c, Attic/BUGS:
+	[patch-0.94.3.bl.other_types.1] This patch adds
+	support for the model MIME type.  Additionally,
+	along the lines of "strict in what you generate,
+	accepting in what you receive", this patch will
+	keep the name of major mime types it doesn't
+	recognize (instead of using x-unknown).
+
+	* compose.c, Attic/BUGS:
+	[patch-0.94.3i.jmy.attachmessage-fix.1] This patch
+	fixes a bug in the allocation of space for new
+	pointers to the attachments, it would make mutt
+	seg-fault when attaching 5 or more messages at the
+	same time. (From: Jimmy Mäkelä
+	<jmy@flashback.net>)
+
+	* handler.c: [SECURITY] mutt_sanitize_filename()
+	should be called when creating temporary files for
+	autoview.  (From: Liviu Daia.)
+
+	* sendlib.c, send.c, attach.c: Try this: set
+	$mime_forward, forward a PGP-encrypted message,
+	then in the "compose" menu try to view the
+	forwarded message. If you didn't enter a
+	passphrase before, Mutt won't ask for it either.
+	(From: Liviu Daia)
+
+	* sendlib.c, attach.c: When you forward a message
+	with $mime_forward set, or when you attach a
+	message with the "attach-message" command from the
+	"compose" menu, there is a memory leak.  The real
+	reason for this leak is that multipart attachments
+	are not supported in the "compose" menu, so you
+	need to go through quite a few contortions in
+	order to handle message/rfc822 attachments.
+	Consequently, the patch below is just an ugly
+	hack.  (From: Liviu Daia)
 
-- [patch-0.88.me.buffy_zero.1] 0 length mbox and MMDF mailboxes should never
-  be marked as having new mail in them
+Sun Aug 16 06:22:51 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.88.me.enter_string.1] rewrote ci_enter_string() to remove
-  duplicated redraw code, and renamed to mutt_enter_string()
+	* rfc822.c: Bringing 128-byte strings to "STRING".
 
-- [patch-0.88.ld.ctx_changed.1] fixed problem with setting the changed flag
-  for the mailbox when recovering from an externally modified mailbox
+	* sendlib.c: Use add_option, not add_arg, for
+	strings such as "--".
 
-- [patch-0.88.pk.signed.1] fixed comparison between short and unsigned short
-  in the pager
+	* sendlib.c: Pass an "--" argument to sendmail
+	before the address arguments, so addresses with a
+	leading dash don't lead to problems. (From Liviu.)
 
-- [patch-0.88.me.set_no.1] makes "unset no<var>" equivalent to "set <var>"
+	* sendlib.c, rfc822.c, rfc1524.c, parse.c, mx.c,
+	main.c, lib.c, keymap.c, hash.c, handler.c,
+	edit.c, curs_lib.c, alias.c: Replacing a bunch of
+	free() and malloc() calls by safe_free() and
+	safe_malloc().  (From Liviu.)
 
-- [patch-0.88.me.state_flag] removes the OPTVERIFYSIG pseudo-option and
-  replaces it with a "flags" member in the STATE structure
+Sat Aug 15 18:27:45 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.88.me.short] use 'int' instead of 'unsigned short' for message
-  numbers to allow mutt to read mailboxes larger than 65535 messages
+	* imap.c: read() can't read buffers larger than
+	SSIZE_MAX.
 
-- [patch-0.88.me.hold.1] removed the $hold variable.  the same functionality
-  is provided by "set nomove"
+	* hook.c: [patch-0.94.3i.tlr.empty_hook.1] Ignore
+	empty hooks instead of segfaulting.
 
-- [patch-0.88.me.buffy_notify.1] move the notification of new mail out of
-  mutt_buffy_check() into a separate routine
+	* protos.h, init.c, Attic/history.h:
+	[patch-0.94.3i.tlr.history.1] Adding history class
+	support.
 
-- [patch-0.88.me.empty_fields.1] skip processing of empty header fields in
-  _mutt_read_rfc822_header()
+	* Attic/history.c: [patch-0.94.3i.tlr.history.1]
+	Adding history class support.
 
-- [patch-0.88.me.var_table.1] use the .data field instead of .bit for
-  storing the option for DT_BOOL and DT_QUAD vars
+	* enter.c, TODO, Makefile.in:
+	[patch-0.94.3i.tlr.history.1] Adding history class
+	support.
 
-- [patch-0.88.me.rx_not.1] regexps in the *-hook commands can now optionally
-  be prefixed with a "!" (exclamation point) to indicate that the hook
-  should be executed when the target does NOT match the following pattern
+	* sendlib.c:
+	[patch-0.94.3i.tlr.attach_msg_fmt.1-2] When
+	generating a message/rfc822 type attachment, parse
+	its header so that the attachment format routines
+	can properly display the default description.
 
-- [patch-0.88.me.sig.2] removes the $local_site, $remote_sig and $local_sig
-  variables.  the same functionality is provided by using a send-hook to set
-  the $signature variable:
-  	send-hook	.		set signature=~/.sig-local
-	send-hook	!hmc\\.edu	set signature=~/.sig-remote
+	* init.h: Change attach_format's default to limit
+	the attachment description's length.
 
-- [patch-0.88.me.from.1] honor $reverse_name even when $use_from is unset
+Thu Aug 13 22:09:16 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.88.bj.status_color.1] removed hack needed to reset the background
-  color before the buffy_notify patch
+	* pgppubring.c: Fixing another memory leak in the
+	pubring parser.
 
-- [patch-0.88.me.parse_param.2] whitespace after a MIME content-type
-  parameter was not stripped (eg.  "charset =us-ascii" would result in the
-  parameter "charset " in the structure)
+	* recvattach.c, Attic/BUGS:
+	[patch-0.94.3i.tlr.attach_msg_fmt.1] When parsing
+	the "%d" format option in the attachment format,
+	use the message format as a fall-back if no
+	explicit description is provided.  This fixes the
+	following bug:
 
-Changes since 0.88.1
---------------------
+	  set mime_forward. Forward any mesage. The
+	  compose menu will show the description as
+	  "Forwarded message from ...." which is fine.
+	  Pressing 'd' to edit the description brings up
+	  the above string for editing.
 
-- split up mutt.h into several smaller files with groups of related data
-  in order to reduce the dependencies on mutt.h
+	  Now hit Enter on the message/rfc822 attachment
+	  to view it. Quit out of the pager.
 
-- removed the $point_new variable
+	  The description field has now changed to the
+	  Subject: of the forwarded message. Pressing 'd'
+	  still brings up the 'Forwarded message from....'
+	  string.
 
-- the .not member of the REGEXP struct was not initialized for the *-hook
-  commands, thus causing them not to work properly
+	(Noted by Vikas.)
 
-- removed bogus ! handling code in the DT_RX variables
+	* doc/manual.txt, doc/manual.sgml, sendlib.c,
+	mutt.h, init.h: [patch-0.94.3i.tlr.write_bcc.1]
+	This patch adds an option $write_bcc which
+	controls whether the Bcc header is written out or
+	not.  This can be used to work around broken MTA's
+	(Exim seems to leave Bcc headers in).
 
-- [patch-0.88.ld.magic.1] fix to return type MBOX for the default magic 
-  for zero length files if $mbox_type is something other than "mbox" or 
-  "mmdf"
+	The problem was noted independently by Peter
+	Radcliffe <pir@pir.net> and by Dave Holland
+	<dave@zenda.demon.co.uk> (Debian Bug #25687).
 
-Changes since 0.88.2
---------------------
+	* pgppubring.c: [patch-0.94.3i.tlr.pubring_leak.1]
+	Fixing a memory leak. Bug noted by Liviu Daia.
 
-- [patch-0.88.2.kd.buffy_pop.2] support for --enable-buffy-size and
-  --enable-pop were broken after the reorganization of mutt.h
+	* reldate.h: 0.94.3i.
 
-- [patch-0.88.2.me.ignore_rx.1] removes the ignore and unignore commands and
-  replaces them with the $ignore and $unignore variables, which are regular
-  expressions used for matching lines to weed/show
+	* configure.in, configure, ChangeLog: Preparing
+	0.94.3i.
 
-- [patch-0.88.2.me.followup.1] adds support for the Mail-Reply-To: and
-  Mail-Followup-To: header fields
+	* compose.c: indentation cosmetics.
 
-- [patch-0.88.me.hdrline.1] fixed segfault with %t in $hdr_format if neither
-  the to: or cc: field exists
+	* compose.c: Update menu->data when OP_COMPOSE_EDIT_HDRS is called.
+	From Vikas.
 
-- [patch-0.88.me.abort_subject.1] print error message if
-  $abort_nosubject=yes and the user deletes the default subject and tries to
-  send instead of just silently ignoring the send
+	* compose.c: Update the encoding after using ispell from the compose
+	menu.  From Vikas.
 
-- [patch-0.88.me.long_re.1] increased the max length for regexp's in
-  send-hook's to be 256 chars
+	* sendlib.c, send.c, protos.h, pgppubring.c,
+	pattern.c, lib.c, curs_main.c, compose.c,
+	attach.c: Various nits from Liviu; encoding fixes.
 
-- [patch-0.88.bj.isprint.1] treat chars >= 0xa0 as printable
+	* rfc822.c: Fixing a buffer overflow in rfc822_cat().  tmplen could
+	underflow.
 
-- [patch-0.88.me.half_page.1] adds the half-up and half-down functions to
-  the index and generic key maps.  scrolls the page 1/2 screen up or down
+Wed Aug 12 11:50:59 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.88.me.useraddr.1] $alternates would not be consulted when the
-  address to be matches was not fully qualified
+	* init.c: Yet another memory leak fix from Liviu.
 
-- [patch-0.88.me.from_quote.1] add support for messages separators in mbox
-  mailboxes where the mailbox part of the return-path is a quoted-string
-  eg:  From "michael elkins"@cs.hmc.edu Sat Nov 22 15:55:07 PST 1997
+	* rfc2047.c: Fixing a stupid buffer overflow plus some flawed logic.
 
-- [patch-0.88.me.mx.1] moved code for adding the From_ line to new messages
-  in mbox/mmdf mailboxes to mx_open_new_message(), and removes the
-  postponed_mail() func from send.c in favor of mutt_num_postponed()
+	* functions.h, compose.c, OPS:
+	Adding an update-encoding function to the compose menu.
+	This is useful if the user has externally modified an
+	attachment and _wants_ to adjust the encoding afterwards.
+	Also, this patch fixes some redraw-related problems in the
+	compose menu.
 
-- [patch-0.88.2.me.post_err.1] abort exiting the compose menu if there was a
-  problem writing the message to the $postponed mailbox
+	* sendlib.c, mutt.h, compose.c, Attic/BUGS:
+	When changing or deleting attachments, the compose menu
+	now notices this and complains or asks accordingly.
+	Partially from Vikas.
 
-- [patch-0.88.2.me.find_lists.1] if the to: list was missing, the cc: list
-  was not searched for mailing lists when doing a list-reply
+Tue Aug 11 08:14:38 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.88.2.me.buffy_notify.1] makes mutt keep track of the number of
-  mailboxes for which the user has not been notified of new mail so that
-  mutt_buffy_notify() can exit immediately without traversing the mailbox
-  list if there are no pending notifications
+	* Attic/BUGS: Yet another outstanding bug.
 
-- [patch-0.88.2.bugfix.mtsirkin.buffy_size.1] fixed some bugs with the
-  buffy_size pacth
+	* doc/manual.txt: This now contains the latest changes to manual.sgml.
 
-Changes since 0.88.3
---------------------
+	* sendlib.c, rfc2047.c, rfc1524.c, pgppubring.c, pager.c, hdrline.c:
+	Fixing various nits noted by Liviu and his colleagues.
 
-- undid previous patch-0.88.2.me.ignore_rx.1 which changed `ignore' and
-  `unignore' to regexp vars instead of commands
+Mon Aug 10 15:30:02 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.88.3.me.attach_file.2] with $edit_hdrs set, files can be attached
-  to the message by placing `Attach: <filename>' in the message header while
-  editing the message
+	* sendlib.c: This patches makes the message-id persistant when
+	postponing messages.  (From: Janos Farkas)
 
-- [patch-0.88.3.me.find_lists.1] fixed bug in the list-reply function
+	* doc/manual.sgml, sample.muttrc, lib.c, init.h:
+	This patch introduces "unhdr_order" to reset the hdr_order
+	command's effect.  (From: Janos Farkas)
 
-- [patch-0.88.3.me.followup.1] the mail-followup-to: field should be set for
-  all types of messages, not just group-reply
+	* color.c: Drop the free_rx parameter from muitt_free_color_line(),
+	as it's always 1.
 
-- [patch-0.88.3.pk.fccdate.1] the date in fcc:'s to mbox/mmdf mailboxes was
-  incorrect
+	* color.c: Adding mutt_free_color_line() and replacing varous
+	"manual" free()s of color lines by calls to this function.
 
-- [patch-0.88.3.bugfix.mtsirkin.buffy_size.1] fixed some more bugs in the
-  buffy_size handling
+	* bind.c: Removing bind.c.  Pointed out by Gero Treuner
+	<gero@faveve.uni-stuttgart.de>.
 
-- [patch-0.88.3.me.menu.1] adds the $menu_scroll which causes mutt not to do
-  an implicit next-page when doing a next-message on the last message
-  displayed on the screen, and adds the current-top, current-middle,
-  current-bottom functions to reposition the current message at the top,
-  middle and bottom of the screen, respectively
+Sun Aug  9 18:43:45 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.88.3.me.buffy.1] avoid the double-stat() in mutt_buffy_check() by
-  saving the magic in the BUFFY struct
+	* color.c: With SLang, init_pair is (void), so we must not check its
+	return value.
 
-- [patch-0.88.3.me.buffy_config.1] the interval that mutt will check for new
-  mail in the `mailboxes' list is now configurable via the $mail_check
-  variable (default: 3 seconds)
+	* color.c: Restructuring color.c.  This patch fixes the "default"
+	problem from 0.94.2i and makes the code more
+	comprehensible than that version and more consie than
+	0.94.1i.
 
-- [patch-0.88.3.me.hook.1] fixed the !-handling in the *-hook commands to
-  allow specification of ! (shortcut for $spoolfile) in folder-hook by
-  placing quotes around it (eg., folder-hook '!' set signature=~/.signature)
+Sat Aug  8 21:40:12 1998  Thomas Roessler  <roessler@guug.de>
 
-Changes since 0.88.4
---------------------
+	* rfc2047.c: Fixing the "=?" detection in rfc2047_encode_string().  Bug
+	noted by David Jeske <jeske@home.chat.net>.
 
-- changed default value of $move to `no'
+	* compose.c: If you press t to add a recipient in the compose menu,
+	then press tab, q, and aborts with ctrl-g, mutt won't
+	redraw the menu.  Noted by Jimmy Mäkelä
+	<jmy@flashback.net>.
 
-- [patch-0.88.4.me.from.1] fixed problem with duplicate From_ lines when
-  saving from mbox/mmdf mailboxes
+	* alias.c: Entering an un-parsable address when creating an alias
+	would make mutt segfault.  Noted by brian moore
+	<bem@cmc.net>.
 
-- [patch-0.88.4.thread.1] modified threading algorithm such that the entire
-  mailbox does not need to be rethreaded when new mail arrives or when
-  switching among the different sorting methods
+	* browser.c: If you press tab in the file-browser to see the inboxes
+	and the current row is greater than the inbox-screens
+	max-rows then the screen gets garbled.
+	(From: Jimmy Mäkelä <jmy@flashback.net>)
 
-- [patch-0.88.4.de.buffy_stuff.1] removed code for testing newly created
-  mailboxes based upon the magic type
+	* doc/manual.txt, doc/manual.sgml: I made the manual more up to date:
 
-- [patch-0.884.de.buffy_new_folder.1] adds support for detecting created
-  buffy mailboxes
+	* new version
+	* new mailing list and home page addresses
+	* made the terminology a bit more consistent regarding
+	  'pattern' and 'regular expression'
+	* added a note about expanding UNIX environments
+	* added a note about <, >, in range patterns like ~m
+	* added a note about the urlview program
+	* changed tables to not use tabs, because it doesn't work
+	  right in my favourite web browsers lynx and netscape
 
-- [patch-0.88.4.speedup.mtsirkin.buffy_size.1] speeds up startup time with
-  the --enable-buffy-size configure option
+	(From: Gero Treuner <gero@faveve.uni-stuttgart.de>)
 
-Changes since 0.88.5
---------------------
+	* pattern.c: This patch makes pattern ranges more logical. Before '~m
+	<5' would show message 1-5, with this patch it shows 1-4.
+	Inclusive ranges is still avaible if you use '~m -5'.
+	(From: Jimmy Mäkelä <jmy@flashback.net>)
 
-- [patch-0.88.5.bugfix.mtsirkin.buffy_size.1] fix bug in buffy_size
+	* init.c: Various improvements to the mutt_command_complete
+	function.  From Stephen Hack <shack@rsn.hp.com>.
 
-- [patch-0.88.5.de.pop_var.1] remove unneeded variable
+	* browser.c: If you specify 'mailboxes ""' mutt will seg-fault. (From:
+	Jimmy Mäkelä <jmy@flashback.net>)
 
-- [patch-0.88.5.me.thread.2] fix segfault on sync
+	* color.c: Fixing a memory leak.  Thanks, Liviu.
 
-- [patch-0.88.5.me.rx.1] a path may now be specified with --with-rx
+	* commands.c: When printing a message, headers are now sorted according
+	to hdr_order.  From Liviu.
 
-- [patch-0.88.5.de.aliasnull.1] fixed segfault when creating an alias while
-  in limited view
+	* browser.c: Fixing an off-by-one buffer overflow in browser.c.  Noted
+	by Liviu.
 
-- [patch-0.88.5.me.hook.1] fixed a bug which caused *-hook's with the same
-  regexp to be ignored
+	* lib.c, attach.c: This patch adds some more "safe" characters to
+	mutt_sanitize_filename and fixes its usage in
+	mutt_view_attachment().  (From: Liviu Daia
+	<daia@stoilow.imar.ro>)
 
-- [patch-0.88.5.me.followup.1] the Mail-Followup-To: field was not rfc2047
-  encoded
+	* status.c, sort.h, sendlib.c, send.c, query.c, protos.h, postpone.c, pager.h, pager.c, mutt_menu.h, menu.c, main.c, init.c, headers.c, functions.h, curs_main.c, curs_lib.c, compose.c, commands.c, browser.c, addrbook.c, OPS:
+	Adding the attach message patch.  From Vikas Agnihotri
+	<VikasA@att.com>.
 
-- [patch-0.88.5.me.menu.2] fixed some miscellaneous redraw problems related
-  to the menu movement commands
+	* Makefile.in: There is no "compile" rule for dotlock in the Makefile.
+	(From: Dan Nelson <dnelson@emsphone.com>)
 
-- [patch-0.88.4.me.str_sub.2] moves handling of backquotes (``) in muttrc
-  commands to mutt_extract_token() so that they are only evaluated in
-  appropriate places
+	* imap.c: Thispatch to imap.c allows the user to specify a port
+	number in the folder name in the general form
+	{hostname:portnum}foldername. (From: Andy Sloane
+	<andude@guildsoftware.com>)
 
-- [patch-0.88.5.me.generic_menu.2] created the `generic' keymap which the
-  other menus (except for pager and editor) default to if a key is not found
-  in the menu specific keymap
+	* imap.c: imap_close_connection() was being called even though the
+	client was using mulitple mailboxes over the same
+	connection.  (From: Brandon Long <blong@fiction.net>)
 
-- [patch-0.88.5.nit.mtsirkin.buffy_time.1] disable the utime() call when
-  BUFFY_SIZE is enabled
 
-- [patch-0.88.5.me.mx_cleanup.1] separates append code out of
-  mx_open_mailbox() into mx_open_mailbox_append() for better code
-  readability.
+Fri Jul 31 08:17:50 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.88.5.me.pattern.2] rewrite of searching/limiting code to
-  pre-compile the search pattern
+	* rfc1524.c: Changing an sprintf to an snprintf (which it was meant to
+	be.)
 
-Changes since 0.88.6
---------------------
+	* protos.h: mutt_sanitize_filename takes char *, not const char *.
 
-- [patch-0.88.6.bigfix.init.mtsirkin.1] fixed variable type problem
+	* protos.h, lib.c, attach.c:
+	Introducing mutt_sanitize_filename().  The code is similar
+	to patch-0.91.1i.tlr.rfc1524_sanitize.1 and to Peter
+	Holzer's patch against 0.91.
 
-- [patch-0.88.6.jf.followup.1] fix off by 1 error in parsing of the
-  mail-followup-to: field
+	* rfc1524.h, rfc1524.c, postpone.c, attach.c:
+	Avoid possible buffer overflows in mutt_adv_mktemp().
 
-- [patch-0.88.6.me.backtic.2] backtics were not handled in the alias and
-  my_hdr commands
+	* sendlib.c: Interpret sysexits-style exit values from sendmail.
 
-- [patch-0.88.6.me.bindings.1] added missing J and K bindings for the index
-  menu
+	* configure.in, configure, config.h.in, acconfig.h:
+	Check for sysexits.h.
 
-- [patch-0.88.6.me.pattern.2] fixed bugs in the search pattern compiler
+Thu Jul 30 09:30:38 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.88.6.de.sortbug.1] fixed coredump when resorting when new mail
-  arrives in an empty box
+	* edit.c: When reading in files, be_snarf_file() wouldn't recognize
+	'~' as the user's home directory.
 
-- [patch-0.88.6.de.in_reply_to.1] increased length of buffer used to store
-  the message-id from the in-reply-to: header field
+Wed Jul 29 10:54:09 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.88.6.bl.doc_nits.1] updated docs on the alias expansion
+	* README, Changes: Finalizing 0.93.2i.
 
-- [patch-0.88.6.de.remove_search_body.1] removes the search-body function
-  from the index menu now that the same feature is supported with the
-  rewritten search functions
+	* configure.in, configure: Bumping to 0.93.2(i).
 
-- [patch-0.88.6.de.search-body-doc.1] removes documentation references for
-  the search-body command
+	* parse.c: Fixing a buffer overflow in parse.c which presented a
+	serious security thread.  Noted by Paul Boehm
+	<paul@boehm.org>.
 
-- [patch-0.88.6.nit.pattern.mtsirkin.1] fixed compiler warning about const
-  being ignored
+Tue Jul 28 08:21:49 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.88.6.me.help_unbound.1] unbound functions are now displayed in
-  the help menus
+	* Attic/patch.slang-1.2.2.keypad.1: Adding a patch for a SLang bug.
 
-- [patch-0.88.6.me.received.1] if no From_ line is found, parse the first
-  Received: header field to get the local delivery date instead of using the
-  file modification time
+	* INSTALL: Adding a patch for a SLang bug.
 
-- [patch-0.88.6.kd.half_up.1] fixed bug in half-up function
+	* mx.c: Doing 'mutt -f NoSuchFile' just flickers the screen and
+	silently exits. Earlier (0.92.14 at least), it used to
+	spit out the error 'NoSuchFile: no such file or directory
+	(errno = 2)'.  (Noted and tracked down by Vikas Agnihotri
+	<VikasA@att.com>)
 
-- fixed the eat_regexp() function to use _mutt_extract_token() so that
-  things like \n and \t get expanded
+	* color.c: The index cache should be updated even without color
+	support.
 
-- extended _mutt_extract_token() to be able to be used in eat_regexp()
-  by adding the option not to reap quotes, and to recognize the logic
-  operators for the pattern matching
+Mon Jul 27 13:39:39 1998  Thomas Roessler  <roessler@guug.de>
 
-Changes since 0.88.7
---------------------
+	* Attic/BUGS: Adding a notice about some more nits.
 
-- changed handling of \ to not be interpreted inside of single quotes
+	* main.c: Change the error reporting mail address from
+	<mutt-dev@cs.hmc.edu> to <mutt-dev@mutt.org>.
 
-- runs of quotes in muttrc commands are now supported, so that
-  the following are equivalent:
-  	michael\ elkins
-	michael' 'elkins
-	"michael"' 'elkins
+	* protos.h, init.h, color.c:
+	This patch fixes index "color" patterns when using a
+	non-color capable curses library.  While working on color
+	support, I've thrown together the mutt_parse_color() and
+	mutt_parse_mono() functions as they are sharing most of
+	their code.  Additionally, a new directive called "unmono"
+	is introduced.  The implementation consists in adding a
+	flag and very few lines of code (plus ifdefs) to
+	mutt_parse_uncolor().
 
-- fixed backtic handling so that the output is considered as separate tokens
-  unless, so that you may do:  mailboxes `echo ~/Mail/Lists/*`
+	* snprintf.c, rfc1524.h, rfc1524.c, date.c:
+	Fixing some minor nits: missing #includes in date.c and
+	snprintf.c, and a not-so-nice declaration of
+	rfc1524_new_entry().  Noted by Digital cc and gcc.
 
-- "ignore from_" is no longer supported, you should use
-	ignore "From "
+Fri Jul 24 08:12:46 1998  Thomas Roessler  <roessler@guug.de>
 
-- created new menu function menu_check_recenter() in menu.c which is
-  responsible for checking if the current message has moved off the current
-  displayed range and recenters if needed
+	* copy.c, attach.c:
+	Fiddling around with message/rfc822 attachments once again.
 
-- removed support for old-style Mutt postponed mailboxes which used the
-  X-Mutt-Attachment: header field
+Thu Jul 23 20:57:50 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.88.7.me.alias.1] fix segfault on recursive aliases
+	* status.c, sendlib.c, send.c, rfc2047.c, pop.c, pager.c, mx.c, mh.c, mbox.c, lib.c, init.c, imap.c, edit.c, curs_lib.c, compose.c, commands.c, color.c, browser.c, attach.c, alias.c:
+	Guard lots of global (char *) variable deferences against
+	NULL pointers.
 
-- [patch-0.88.7.me.attach_desc.1] allow optional specification of the
-  attachment description after the filename in the 'Attach:' header field
-  with $edit_hdrs
+	* copy.c, attach.c:
+	Yet another patch about saving message/rfc822 attachments.
 
-- [patch-0.88.7.me.help.1] fixed display of unbound functions in help to
-  crossref between the generic and menu specific keymaps so that functions
-  which are bound do not show up as unbound
+	* main.c, send.c: Fixing potential NULL pointer deferences.
 
-- [patch-0.88.7.me.pager_search.1] regexps should be compiled with
-  REG_NEWLINE
+Wed Jul 22 22:47:57 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.88.7.me.rx.1] use macro REGCOMP() instead of directly calling
-  regcomp()
+	* recvattach.c: Another fix from Liviu.
 
-- [patch-0.88.7.me.parse.1] received: parsing did not work, and copying a
-  message to =postponed and recalling it resulted in some duplicate fields
-  in the header
+	* recvattach.c, from.c, attach.c:
+	Another patch from liviu to fix the message/rfc822
+	behaviour.
 
-- [patch-0.88.6.kd.help_length.1] shortened descriptions of several help
-  strings
+	* recvattach.c, mx.c, attach.c:
+	This patch fixes the saving of message/rfc822 attachments
+	to mail folders.  Additionally, it fixes an outstanding
+	bug with From_ lines being written to MH folders.
 
-- [patch-0.88.7.de.pattern.1] fixed off by one errors in selecting ranges of
-  messages
+	(From: Liviu Daia <daia@stoilow.imar.ro>)
 
-- [patch-0.88.7.kd.half_down.1] fixed half-down op to mimic the next-page op
-  where if there is no next page, the pointer is moved to the last entry in
-  the menu instead of printing an error
+	* menu.c, functions.h, browser.c, OPS:
+	1. When I hit 'c' (change dir) in browser, it gives me the
+	   directory, but without the final '/', so I have to add
+	   '/' to add a subdirectory name. This patch fixes it.
 
-- added a sleep() call after the info about the state of the mailbox after a
-  sync operation so that the user has time to read it before the message
-  about sorting pops up
+	2. check-new now will recheck mailbox folders for new
+	   mail.
 
-Changes since 0.88.8
---------------------
+	3. added a function toggle-mailboxes which toggles in
+	   browser between mailboxes view and directory view.
+	   (bound to TAB by default).
 
-- [patch-0.88.8.me.no_url.1, patch-0.88.8.no_url.1-2] the url menu and all
-  referecnes to it has been removed.  equivalent functionality can be
-  obtained by using the external program
-  ftp://ftp.cs.hmc.edu/pub/me/urlview-0.3.tar.gz and the following macro:
-  	macro index \cb |urlview\n
+	(From: "Michael S. Tsirkin" <mtsirkin@iil.intel.com>)
 
-- [patch-0.88.8.me.refresh.1] patch to avoid calls to refresh() in the
-  middle of executing macros
+	* send.c: Correct an error message in send.c.
+	(From: Byrial Jensen <byrial@post3.tele.dk>)
 
-- [patch-0.88.8.me.nested_quote.1] fixed problem with nested quotes in
-  muttrc commands
+	* sendlib.c, recvattach.c, protos.h, postpone.c,
+	pager.c, mx.c, mutt.h, lib.c, keymap.c, handler.c,
+	compose.c, commands.c, attach.h, attach.c:
 
-- [patch-0.88.8.me.tag_thread.1] adds the tag-thread (ESC-t) function
+	These changes fix some of the bugs which were
+	recently reported to mutt-dev.  To be more specific,
+	message-type attachments are saved to mail folders
+	from the receive attachment menu, some of the
+	sending code has been made more robust against
+	disappearing attachments, and "tag" is rebound to
+	"T" on the compose menu.
 
-- [patch-0.88.me.reply_self.1] change handling of $metoo so that it will
-  leave the user's address on the to: line if it is the only address in the
-  list
+	(Some part of this patch comes from Vikas Agnihotri
+	<VikasA@att.com>.)
 
-- [patch-0.88.me.decode_copy.1] removes the $forw_decode, $decode_format
-  variables, the decode-save and decode-copy functions, and rewrite of the
-  attachment handling functions to be much simpler
+	* send.c: Avoid a potential segmentation fault when
+	trying to postpone, but Postponed equals NULL.
 
-- [patch-0.88.8.me.thread.1] fixed segfault on thread resort when new mail
-  arrives is a message in the mailbox has no message-id: field
+	* Attic/BUGS: This file is intended to contain known
+	bugs which still have to be fixed.
 
-- mutt would dump core if given a bad date for the ~d search pattern
+	* doc/manual.txt:
+	Committing the changes previously made to manual.sgml.
 
-- [patch-0.88.8i.de.fast_forward.1] skip prompt for subject when forwarding
-  if $fast_reply is set
+	* imap.c: Include Message-ID and Reply-To headers
+	when fetching a message's headers from an IMAP
+	server. (From: Andy Sloane <andude@incarnate.net>)
 
-- fixed compilation error on systems without support for color related to
-  the color quoting support (SunOS 4.1.x)
+Tue Jul 21 07:54:03 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.88.8-bugfix.buffy_size.mtsirkin.2] fixed a bug in buffy_size
-  support
+	* recvattach.c:
+	The old behaviour of the %d (for description) specifier is
+	recreated by this patch.
+	(From: Byrial Jensen <byrial@post3.tele.dk>)
 
-- [patch-0.88.8.kd.help_length.1] fix to truncate macro descriptions in the
-  help menu at the screen edge, and updated docs with new short function
-  descriptions
+	* protos.h, lib.c, attach.c:
+	You should never _ever_ do something like this:
 
-- increased size of buffer used to store regepxs for the *-hook commands
-  from SHORT_STRING to STRING
+	       [process A]  ---[piped write until EOF]---> [process B]
+	       [process A]  <---[piped read until EOF]--- [process B]
 
-Changes since 0.88.9
---------------------
+	Basically, what happens is something like this: A
+	feeds data to B; B processes the data, and feeds it
+	to the pipe until the pipe buffer is full; at this
+	point, A writes to its pipe until its buffer is full
+	too, and if it still has more data to write, that's
+	it, it never gets to the read part to flush B's
+	buffer --- both processes are blocked on write.
 
-- [patch-0.88.8-bugfix.buffy_size.mtsirkin.1] missed patch from previous
-  buffy_size fix
+	This patch fixes such a situation in the compose menu.
 
-- [patch-0.89.9.bl.fcc_fix.1] body of message was not written out for fcc
-  and postponement
+	(From: Liviu Daia <daia@stoilow.imar.ro>)
 
-- [patch-0.88.9i.me.copy.1] created unified functions to copying/appending
-  messages.  adds $forw_decode, $forw_quote, decode-save and decode-copy
+Mon Jul 20 21:01:05 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.88.9.me.refresh.1] use mutt_refresh() instead of refresh() in
-  mutt_enter_string()
+	* reap.pl: Perl lies in /usr/bin on my machines.
 
-- with $edit_hdrs, if you delete the in-reply-to: field Mutt will
-  automatically remove the References: field as well
+	* pop.c: It seems that if you don't enter any
+	password at all when prompted for the POP password,
+	Mutt will die with a segmentation fault also. (Bug
+	reported by Steve Mayer <smayer@rtd.com> via the
+	Debian bug tracking system, fix from Thomas
+	Roessler.)
 
-- mutt_query_exit() should call timeout(-1) so the prompt doesn't abort.
+	* postpone.c: When you send a message which have
+	been postponed before sending, then all its
+	attachments (if there are more than one) will have a
+	content-disposition header which includes a
+	filename, even if there isn't a real filename but
+	only random choosen temporary one. (From: Byrial
+	Jensen <byrial@post3.tele.dk>)
 
-- [patch-0.88.9.me.fcc.1] removed the fcc-hook command
+Sat Jul 18 09:18:31 1998  Thomas Roessler  <roessler@guug.de>
 
-- the return value of mutt_send_message() was not checked so if sending mail
-  failed for some reason (like a full $tmpdir or error invoking $sendmail),
-  Mutt would incorrectly report that the mail had been sent
+	* recvattach.c: "Set mime_forward, and forward a
+	message --- Mutt will segfault." The obvious fix for
+	this is to check for aptr->content->hdr in
+	mutt_attach_fmt() before invoking
+	_mutt_make_string().  Anyway, I suspect that the
+	real fix may involve something like parsing the
+	rfc822 attachment in question.
 
-- [patch-0.88.9.me.pseudo_thread.1] fixed problem with rethreading messages
-  with no real reference when new mail arrives
+	* sendlib.c: Postponing messages behaves funny when the $postponed
+	folder is in Maildir format; I traced this down to the
+	fact that postponed messages are saved in "cur" while
+	mutt_num_postponed() is looking at "new".
+	(From: Liviu Daia <daia@stoilow.imar.ro>)
 
-- [patch-0.88.9i.kd.first_entry.1] fixed segfault on first-entry function if
-  there are no entries in the menu
+Fri Jul 17 08:37:02 1998  Thomas Roessler  <roessler@guug.de>
 
-- added a section to the doc describing the features of $edit_hdrs (fcc:,
-  attach: and references-magic)
+	* compose.c: Removing the old snd_entry() code.
 
-- [patch-0.88.bj.browser.1] fixed some problems with the file browser
+	* doc/manual.sgml, protos.h, pgp.c, mutt.h, init.h, hook.c:
+	When sending encrypted messages, it may arrive that Mutt
+	can't determine the PGP key of the recipient (presumably
+	because her address has changed, but she hasn't updated
+	her PGP key yet). In this situation it's convenient to be
+	able to associate a keyID with an address automatically.
+	The attached patch is an attempt to implement this idea
+	using a "pgp-hook". (From: Liviu Daia <daia@stoilow.imar.ro>).
 
-Changes since 0.88.10
----------------------
+	* recvattach.c: Removing the old attach_entry() code.
 
-- return is now bound to `tag-entry' for the alias menu
+	* recvattach.c, protos.h, mutt.h, init.h, globals.h, compose.c:
+	This patch adds a string variable $attach_format which
+	controls the look of the compose and attach menus.
+	Unfortunately, I was not able to make things so that it
+	would look exactly the same as the hardcoded versions, so
+	the default format is a bit different, but I think it is
+	quite usable.  (From Michael Elkins <me@cs.hmc.edu>).
 
-- configure --with-homespool is now equivalent to --with-homespool=mailbox
+	* functions.h, browser.c, OPS:
+	This patch allows you to view files from the browser
+	window, useful if you are searching for a file to attach
+	to your message. It uses the standard mailcap stuff (and
+	the lookup mime types) to use the correct "viewer" for the
+	file.  (From Brandon Long <blong@fiction.net>)
 
-- [patch-0.88.10.me.invoke_sendmail.1] remove check for return value of
-  invoke_sendmail() since mutt_system() always returns -1 on some systems
+	* doc/Attic/dotlock.man.in, doc/Makefile.in, configure.in, configure, Makefile.in:
+	Dotlock-related changes: We call it mutt.dotlock to avoid
+	conflicts with certain NFS versions' dotlocking utilities
+	(pointed out by Liviu Daia).  Additionally, we need to
+	compile it as an external utility on systems which don't
+	have an fchdir(2) system call.
 
-- [patch-0.88.10.me.push_refresh.1] fixed bug with mailbox parsing status
-  not being displayed if the user has a `push' command in their muttrc or in
-  a folder-hook
+Thu Jul 16 16:39:53 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.88.10.de.thread-commands.1] cleans up the subthread operations
+	* mx.c: Fixing a small typographic error.
 
-- [patch-0.88.10i.de.sort_case.1] sorting by subject/author should be case
-  insensitive
+	* mx.c: Mutt doesn't retry locking if it doesn't succeed at once.
+	The code in mx_lock_file is supposed to retry but it
+	doesn't work because of a mistake in operator precedence.
+	(From: Petri Kaukasoina <kaukasoi@elektroni.ee.tut.fi>)
 
-- [patch-0.88.10.me.pipe_attach.2] piping attachments did not work
+	* Attic/dotlock.c:
+	The dotlock.c file tries to include <posix1_lim.h> if
+	_POSIX_PATH_MAX isn't defined but it doesn't include
+	<limits.h>, where this symbol should be defined.  (From
+	Marc.Baudoin@solsoft.com)
 
-- [patch-0.88.10.kd.doc_nit.1] fixed doc bug wrt $forw_quote
+	* send.c: When several messages are tagged and the user applies
+	reply, group-reply, or list-reply to these messages, the
+	reply's references and in-reply-to headers are constructed
+	from the tagged message which comes last in the current
+	index.  This patch constructs the references header from
+	_all_ messages' message-id and references headers. (tlr)
 
-- manual.html readded to the `all' target in doc/makefile
+	* reldate.h, configure.in, configure, Changes, ChangeLog:
+	Preparing mutt 0.94.
 
-Changes since 0.88.11
----------------------
+	* imap.c: "My two remaining issues are the speed at which it
+	downloads the headers, and support of PREAUTH. I'm
+	enclosing a patch (to stock mutt-0.92.13i) which addresses
+	these issues." (From Brian Marcotte
+	<marcotte@panix7.panix.com>)
 
-- changed default binding of pipe-entry to `|' in the compose menu
+	* color.c: This patch fixes two problems reported on mutt-users.
 
-- changed default binding of filter-entry to `F' in the compose menu
+	(1) the error message about "default colors not supported"
+	when not using a color xterm should not be printed.  The
+	existing code did not check the value of has_colors() in
+	conjunction with use_default_colors()
 
-- auto_view was not used when decoding messages with $pipe_decode set
+	(2) mutt would crash when sending mail in batch mode
+	because use_default_colors() could be used without doing
+	an initscr()
 
-- piping messages did not use the new mutt_copy_message() function
+	(From Michael Elkins.)
 
-- use AC_REPLACE_FUNCS for check of strcasecmp() instead of AC_CHECK_FUNCS
+Wed Jul 15 17:15:46 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.88.11.me.copy_header.1] fixed problem when message header is
-  terminated by CRLF instead of just LF
+	* mx.h, mx.c, main.c, Attic/dotlock.h,
+	Attic/dotlock.c, configure.in, configure,
+	Makefile.in: Finalizing the external dotlock
+	support: If group mail privileges are needed, the
+	dotlock is compiled as a separate program.  If
+	there is no need for privileges, it remains a
+	module which is compiled into mutt. Also, there is
+	no more need for the SLang buffer overflow
+	work-around in main().  We drop it, but let mutt
+	bail out instead if it's installed setgid
+	something.
 
-- [patch-0.88.11.de.reverse_name.1] $reverse_name should override a default
-  `my_hdr' command
+	* doc/Attic/dotlock.man.in, Attic/dotlock.c:
+	Fix the race condition in dotlock.c.
 
-Changes since 0.88.12
----------------------
+	* doc/Attic/mutt.man.in:
+	Putting the manual page under autoconf control.
 
-- [patch-0.88.12.me.broswer.1] fixed bug in status line for generic menu
-  code, and added entry numbers so that `jump' can be used effectively in
-  the file browser
+	* doc/Attic/mutt.man.in:
+	file mutt.man.in was initially added on branch mutt-0-94.
 
-- [patch-0.88.12.me.attach_reply.1] fixed segfault when replying to a single
-  message/rfc822 attachment
+	* doc/mutt.man: Putting the manual page under autoconf control.
 
-- [patch-0.88.12.kd.alias_redraw.1] fixed redraw bug when exiting the alias
-  menu
+	* doc/Attic/dotlock.man.in:
+	Adding external dotlocking.  For bugs, see the manual page
+	and the comments in dotlock.c.
 
-- [patch-0.88.12.kd.help_wrap.2] fixed display of long macros in the help
-  display
+	* doc/Attic/dotlock.man.in:
+	file dotlock.man.in was initially added on branch mutt-0-94.
 
-- [patch-0.88.12.kd.resort.1] cause a resort on ':set sort=xxx'
+	* doc/Makefile.in, protos.h, mx.c, mbox.c, main.c, globals.h, Attic/dotlock.h:
+	Adding external dotlocking.  For bugs, see the manual page
+	and the comments in dotlock.c.
 
-- fixed bug where it was impossible to search for strings with any of
-  !, ~ or | in them
+	* Attic/dotlock.h:
+	file dotlock.h was initially added on branch mutt-0-94.
 
-- removed prototype for mutt_new_address() in rfc822.h since it is a macro
+	* Attic/dotlock.c:
+	Adding external dotlocking.  For bugs, see the manual page
+	and the comments in dotlock.c.
 
-- added doc blurb for $forw_decode
+	* Attic/dotlock.c:
+	file dotlock.c was initially added on branch mutt-0-94.
 
-- optimized loop for marking messages as `old' by checking if OPTMARKOLD is
-  set before entering the loop
+	* configure.in, configure, Makefile.in:
+	Adding external dotlocking.  For bugs, see the manual page
+	and the comments in dotlock.c.
 
-- $timeout should only affect the first keystroke of a multi-key command in
-  the `index' menu
+	* doc/mutt.man: More roff fixes.
 
-Changes since 0.88.13
----------------------
+	* doc/mutt.man: More groff fixes.
 
-- [patch-0.88.13.me.date.1] fixed problems with the date (~d) pattern
-  matching code
+Tue Jul 14 16:01:07 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.88.13.me.send.2] fixed some deficiencies in replying to tagged
-  messages
+	* reldate.h, configure.in, configure, Changes, ChangeLog:
+	Preparing mutt 0.93.1i.
 
-- fixed segfault when downloading POP3 mail
+	* rfc2047.c, mime.h, handler.c: More unsigned fixes.
 
-- [patch-0.88.13.me.cache.1] fixed problem with search cache when status
-  flags on messages change
+	* pattern.c, parse.c:
+	Changing (int) casts in is* arguments to (unsigned char).
 
-- [patch-0.88.13.me.fcc_hook.1] restored the fcc-hook command
+	* rfc2047.c: Removing a superfluous (unsigned char) cast in an IsPrint
+	argument.
 
+Mon Jul 13 10:50:39 1998  Thomas Roessler  <roessler@guug.de>
 
-PGP related changes since 0.88.13i
-----------------------------------
+	* doc/mutt.sgml, doc/mutt.man, doc/Makefile.in:
+	Since manual page generation seems to be broken in the
+	SGML-tools package, we remove the SGML version of mutt.man
+	and make the troff source the master copy.  Suggested by
+	Roland Rosenfeld <roland@luv.rhein.de> who also provided
+	the corrected mutt.man file.
 
-- [patch-0.88.13i.tlr.pgp3_fingerprint.1] Code clean-up
-  with respect to PGP version 3 fingerprints.
+Sun Jul 12 13:15:31 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.88.13i.tlr.pgp_invoke.1] New PGP invocation
-  code which enables PGP 5 to check signatures and will
-  make the integration of other PGP implementations with
-  mutt easier.
+	* protos.h: Replace calloc by safe_calloc in new_pattern.
 
-Changes since 0.88.15
----------------------
+Sat Jul 11 05:10:29 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.88.14i.ds.flagdoc.1] fixed the description of the flags in
-  $hdr_format in the manual
+	* doc/manual.txt, doc/manual.sgml: Key bindings documentation.
 
-- messages were not included in replies in the non-PGP version of Mutt
+Fri Jul 10 17:58:26 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.88.15.me.reply_attach.1] fixed segfault when using replying to an
-  attachment from the `attach' menu
+	* NEWS: s/fwd_decode/forward_decode/ (Noted by Lars Hecking)
 
-- [patch-0.88.15.me.followup.1] fixed bug in generation of the
-  mail-followup-to: field
+	* pop.c: tmp[] wasn't initialized when asking for the POP password.
 
-- [patch-0.88.15.me.ret_val.1] fixed some unchecked return values from
-  mx_open_new_message() and mx_append()
+	* buffy.c: On SunOS 4.1, one must include unistd.h in order to
+	declare SEEK_END.  (Fabrice Noilhan)
 
+	* mutt.h: include <posix1_lim.h> if limits.h doesn't defile
+	_POSIX_PATH_MAX.
 
-PGP related changes since 0.88.14i
-----------------------------------
+	* Changes, ChangeLog: *** empty log message ***
 
-- [patch-0.88.14i.tlr.pgp_cleanup.1] Random clean-up
+	* doc/PGP-Notes.txt: Adding a notice about core dumps.
 
-- [patch-0.88.14i.tlr.pgp_flags.2] Display key
-  capabilities as ls(1) style flags on the key selection
-  menu.
+	* reldate.h, README, INSTALL: Preparing 0.93i.
 
-- [patch-0.88.14i.tlr.pgp_invoke.1] Fix a typo in
-  pgpinvoke.c.
+	* handler.c: Fix text/enriched decoding: if there's a tag mismatch in
+	the last paragraph in the attachment, the whole paragraph
+	wouldn't be displayed.
 
-- [patch-0.88.14i.tlr.pgp_long_ids.1] Introduces a
-  pgp_long_ids option.  If set, 64 Bit Key IDs will be
-  passed to PGP.
-  
-- [patch-0.88.14i.tlr.pgp_sendkey.1] Fixes a segmentation
-  fault when sending PGP keys.
+Thu Jul  9 19:51:36 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.88.14i.tlr.pgp_tempfiles.2] Cleans up a
-  temporary file leak in the PGP code.
+	* configure.in, configure, Attic/config.sub:
+	Use CC -Ae -D_HPUX_SOURCE on HP/UX.
 
-Changes since 0.89
-------------------
+	* Attic/config.sub:
+	file config.sub was initially added on branch mutt-0-93.
 
-- [patch-0.89i.de.no_subj.1] fixed possible coredump on NULL subject
+	* Attic/config.guess: Use CC -Ae -D_HPUX_SOURCE on HP/UX.
 
-- [patch-0.89i.tlr.snprintf.1] added unsigned hexadecimal support to the
-  supplied snprintf() routine
+	* Attic/config.guess:
+	file config.guess was initially added on branch mutt-0-93.
 
-- [patch-0.89.bl.rfc1524_ws.1] fixed problem with whitespace in mailcap
-  entries
+	* INSTALL: Use CC -Ae -D_HPUX_SOURCE on HP/UX.
 
-- [patch-0.89.bj.slang10config.1] fixed configure script to work with
-  slang-1.0 beta
+Wed Jul  8 21:59:43 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.89.bugfix.buffycheck.mtsirkin.1] fixed bug with buffy
-  notification not being updated when entering a mailbox
+	* snprintf.c, pattern.c, parse.c, mx.c, mh.c, lib.c, keymap.c, init.c, from.c, edit.c, curs_main.c:
+	Changing (int) casts in is* arguments to (unsigned char)
+	casts to avoid mis-casting of signed chars.  (From Michael
+	Elkins.)
 
-- when compiling with slang, set ESCDELAY to 300 because the default is too
-  fast for slow terminals (this is what ncurses uses by default)
+Tue Jul  7 09:22:40 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.88.13i.de.buffy_notify.1] fixed problem with new mail
-  notification in the current mailbox being clobbered by notifications in
-  other mailboxes
+	* rfc822.c: Change one int to size_t in rfc822.c.
 
-- truncated the ChangeLog to entries after version 0.88
+	* rfc822.c: Fix the parsing of route addresses a la RFC 822.  Patch
+	from Michael Elkins.
 
-- [patch-0.88.14.tlr.msg_7bit.1] fixed problem with $mime_fwd
+	* snprintf.c, sendlib.c, pattern.c, parse.c, mx.c, mh.c, lib.c, keymap.c, init.c, from.c, edit.c, curs_main.c:
+	Cast the arguments of the is* functions to int.  Patch
+	from Michael Elkins.
 
-- [patch-0.89.bj.set_followup_to.1] the user's address was added to the
-  mail-followup-to field if $metoo is set
+Thu Jul  2 21:15:18 1998  Thomas Roessler  <roessler@guug.de>
 
-PGP related changes since 0.89i
--------------------------------
+	* hdrline.c:
+	Using the correct version of O'Shaughnessy Evans' %O patch.
 
-- [patch-0.89i.tlr.pgp_sigvrfy.1] When verifying PGP/MIME
-  signatures, the LF -> CRLF could fail under certain
-  circumstances.
+	* configure.in, configure, Changes, ChangeLog: Preparig 0.92.14i
 
-- [tlr] Some long -> unsigned long changes in the pgp code
-  which are more of an aesthetical nature.
+	* doc/manual.txt, doc/manual.sgml: s/&setmn;/&bsol;/
 
-- [tlr] The default of the $pgp_strict_enc variable has
-  been changed to "set".
+	* hdrline.c: Adding the %O expansion.
 
-- [tlr] pgp-Notes.txt has been somewhat extended.
+	* doc/manual.sgml: Applying the various manual_nits patches.
 
-Changes since 0.89.1
---------------------
+Wed Jul  1 17:01:50 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.89i.me.pointer.1] fix to use `unsigned long' instead of `void *'
-  for arguments where the data may be either an integer or a pointer.  this
-  was needed for 64bit systems where `sizeof(void*)!=sizeof(int)'
+	* curs_main.c: Fixing a reverse-threading problem.
 
-- [patch-0.89i.me.pattern_hook.4] the pattern matching language can now be
-  used in send-hook, save-hook and fcc-hook instead of a single regular
-  expression
+	* imap.c: Fixing an imap-related segmentation fault.
 
-- [patch-0.89.bl.alter_weed.1] improves the mutlipart/alternative handler to
-  use auto_view, and adds viewing of MIME headers for attachments with
-  'display-headers'
+Tue Jun 30 06:38:02 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.89.1.sec.expires_hdr.1] added support for the Expires: field.
-  auto-deletion of expiried messages is controlled with $expires
+	* reldate.h, Changes, ChangeLog:
+	These are the last tiny bits of preparing 0.92.13i.
 
-- [patch-0.89.1i.co.mailx.1] added feedback for the `~r' command in mailx
-  mode
+	* configure.in, configure, TODO, README, NEWS:
+	Updating some of the documentation for 0.93.
 
-- [patch-0.89.r.buf.1] buffer for backtic expansion of `mailboxes' was not
-  long enough
+	* doc/Attic/NEWS: *** empty log message ***
 
-- [patch-0.89.1i.de.mail_followup_to-leak.1] fixed memory leak in freeing
-  the mail-followup-to: field from the ENVELOPE struct
+	* doc/Attic/NEWS: file NEWS was initially added on branch mutt-0-93.
 
-- [patch-0.89.1i.de.list-reply-leak.1] fixed memory leak in the list-reply
-  function
+	* doc/manual.txt: Incorporate the recent changes to manual.sgml.
 
-- [patch-0.89.1i.de.send-menu-leak.1] fixed memory leak when attaching files
-  to messages
+	* main.c: Work around a buffer overflow in SLang.  (This is the same
+	bug which is fixed by 0.91.2i.)
 
-- [patch-0.89.1i.de.remove_user.1] fixed bug in removing the user's address
-  from the list if it is the only recipient
+Fri Jun 26 10:31:28 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.89.1i.de.pattern-regexp-leak.1] fixed memory leak with regular
-  expression compiled by mutt_pattern_comp() were never free()d
+	* doc/manual.sgml, send.c, init.h, globals.h, Muttrc.in:
+	Removing $empty_to.
 
-- [patch-0.89.1i.de.beep_new.1] adds the $beep_new variable to control
-  whether or not mutt will beep when new mail arrives
+Thu Jun 25 22:31:46 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.89i.de.fcc-save-hook.1] adds new command `fcc-save-hook' which
-  creates a hook for use with either fcc-hook or save-hook
+	* hdrline.c: Moved a break statement where it belongs.
 
-- [patch-0.89.1i.de.buffy_sanity.1] fixes a problem with the buffy code
+	* mx.c: Fix an imap-related typo.
 
-- restored blank line between the "----- Forwarded message from..." line and
-  the text of the message
+	* handler.c: Don't generate non-terminated last lines when quoting
+	8bit-"encoded" text-plain body parts.
 
-- [patch-0.89.1i.de.tag-subthread.1] adds the `tag-subthread' command to the
-  pager
+	* Makefile.in: Don't use GNU make specific features.
 
-PGP related changes since 0.89.1i
----------------------------------
+Sun Jun 21 07:13:03 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.89i.dme.attach-key.1], [patch-0.89i.dme.extract-key.1] Fixes to
-  the PGP 5 invocation code.
+	* doc/mutt.man, doc/Makefile.in, reldate.h, configure.in, configure, Changes, ChangeLog:
+	Bumping the release to 0.92.12i.
 
-- [patch-0.89.1i.tlr.pgp_extract.2] Fixes various problems with the PGP
-  code and attachment menu, in particular with respect to extracting keys.
+Sat Jun 20 06:12:38 1998  Thomas Roessler  <roessler@guug.de>
 
-Changes since 0.90
---------------------
+	* doc/manual.txt: *** empty log message ***
 
-- [patch-0.90.me.sort.2] $sort_aux is now used for all primary sorting
-  methods
+	* handler.c: Fixing the quoted-printable decoder.
 
-- [patch-0.90i.me.pattern.1] extended date matching language (~d) to accept
-  relative dates offset from the current date
+	* handler.c, copy.c: Make mutt handle messages containing null bytes.
 
-- [patch-0.90.me.thread_hash.3] modified threading algorithm to use hash
-  tables instead of a linear search
+	* doc/manual.sgml: documenting alias-path
 
-- [patch-0.90i.de.difftime.1] remove use of difftime() since it is not
-  portable
+Fri Jun 19 12:52:16 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.89.1i.de-bj.buffy_sanity.1-2] cleanup of the buffy check routine
+	* sendlib.c, send.c, protos.h, postpone.c, pattern.c, menu.c, main.c, headers.c, functions.h, curs_main.c, compose.c, OPS:
+	Removing the Attach-Menu feature for the next release
+	version.
 
-- [patch-0.90.me.addr_pattern.1] fixed some problems with the address
-  matching routines which caused problems for the send-hook and fcc-hook
-  commands
+Thu Jun 18 20:37:59 1998  Thomas Roessler  <roessler@guug.de>
 
-- the size of the temp buffer used to expand regexps into patterns in
-  mutt_check_simple() was too short (SHORT_STRING) to handle the
-  patterns for send-hook, save-hook and fcc-hook, so it was increased to
-  LONG_STRING (1024) bytes
+	* protos.h, lib.c, alias.c:
+	Bradon long's alias_path patch, for the sake of Elm
+	compatibility.
 
-- [patch-0.90.me.safe_path.1] fixed segfault when trying to save a message
-  with no recipients
+Tue Jun 16 20:59:20 1998  Thomas Roessler  <roessler@guug.de>
 
-- [patch-0.89i.de.index-percentage.1] adds `%P' to $status_format to display
-  the percentage of the menu already seen (similar to the way the pager
-  works)
+	* mx.c: Avoid pointless error messages from mx_get_magic() when
+	called from an mx_open_mailbox_append() on a non-existing
+	mailbox.
 
-- [patch-0.89.1i.bj.pager-redraw-clenaup.1] fixed some redraw problems in
-  the pager with $pager_index_lines set
+	* doc/manual.txt, doc/Makefile.in, configure.in, configure, Makefile.in:
+	Have "make install" install manual.txt as well.
 
-- [patch-0.89.1i.fp.filter.1] screen was not updated when filtering an
-  attachment an the the cte changed
+	* doc/Attic/makefile, doc/Makefile.in:
+	Putting Makefile under autoconf control.
 
-PGP related changes since 0.90i
--------------------------------
+	* main.c: Switch the error reporting address from mutt-users to
+	mutt-dev.
 
-- [patch-0.90i.tlr.pgp_attach_keys.1] Fixes a core dump on
-  the compose menu when attaching PGP public keys.
+	* reldate.h, configure.in, configure, Changes, ChangeLog:
+	Bump the version to 0.92.11i.
 
-- [patch-0.90i.tlr.pgp_encrflags.1] There were several
-  points in the code where a message's pgp flag was
-  evaluated the wrong way (namely, ...->pgp == PGPENCRYPT
-  instead of ... & PGPENCR).
+	* imap.h: Check in a proper version of imap.h.
 
-Changes since 0.90.1
---------------------
+	* color.c: Fix the "unknown color" bug reported by Vikas.
 
-- [patch-0.90.1i.tlr.hdrignore.1] fixed bug with weeding headers with the
-  CH_MIME bit set in mutt_copy_hdr()
+	* mx.c: Remove a spurious #include "imap.h" from mx.c.
 
-- [patch-0.90.1i.de.buffy-cleanup.1] cleaned up buffy to remove some
-  duplicated code and share some common global information
+	* doc/style-guide: Add a note about the global Muttrc to style-guide.
 
-- [patch-0.90.1i.arl.fcc-save.1] fixed some typos in the manual wrt to the
-  fcc-save-hook command
+	* configure.in, Muttrc.in, configure, Attic/Muttrc, Makefile.in:
+	The global Muttrc contains a list of default settings
+	which can be used as a starting-point for the user's own
+	configuration.
 
-- expansion of environment variables in mutt_extract_token() did not accept
-  underscore (_) as a valid value in variable names
+	* pgppubring.c, pgp.h, gnupgparse.c:
+	Removing some duplicate code from gnupgparse.c and
+	pgppubring.c.
 
-- fixed possible segfault in mutt_extract_token() if the result of a backtic
-  expansion was longer than the buffer used to store the expanded version of
-  the string
+	* pgpinvoke.c, gnupgparse.c:
+	Include part of Werner Koch's latest GPG patches.
 
-- expansion of backtics is now option and controlled by whether or not the
-  `expn' argument in non-NULL.  this is needed by eat_regexp() where we
-  don't want backtic expansion
+	* Changes: *** empty log message ***
 
-- the ->personal member of the address was not matched in match_adrlist()
-
-- [patch-0.90.1.me.hash.1] fixed bug in hash_delete_hash() where the wrong
-  entry could be deleted when the key matched, but had a different data
-  pointer even if the data pointer was specified in the call 
-
-- changed default expansion for save-hook to '~f %s' and fcc/send-hook to
-  '~t %s | ~c %s'
-
-- the current search pattern was not invalidated if $simple_search changed
-  while in the middle of a search
-
-- [patch-0.90.1i.dme.nit-to_chars.1] fixed bug in docs wrt to $to_chars
-
-- added documentation for the `pattern_hook' patch
-
-- [patch-0.90.1.me.sort_to.1] adds support for sorting by the to: field with
-  `set sort=to'
-
-Changes since 0.90.2
---------------------
-
-- [patch-0.90.2i.de.toggle-quoted-redraw.1] fixed redraw problem with the
-  toggle-quoted function
-
-- [patch-0.90.2.de.buffy_check.1] fixed problem with -Z option
-
-- [patch-0.90.2.de.buffy_times.1] fixed problem of buffy reporting new mail
-  when saving messags from within mutt
-
-- [patch-0.90.1i.bj.in-reply-to-decode.1] fix to rfc2047 decode the
-  in-reply-to field before extracting the message-id
-
-- [patch-0.90.2.me.resort.1] fix to resort mailbox with $sort_aux or
-  $strict_threads changes
-
-- [patch-0.90.2.de.pretty_size.1] fixed rounding error which could cause the
-  display to be more than 4 chars
-
-- [patch-0.90.2.me.score.3] adds scoring support
-
-- [patch-0.90.2i.jg.pipe_from.1] the `From ' line was missing when piping a
-  message
-
-- [patch-0.89.1i.bj.skip_quoted.1] adds a `skip-quoted' (default: S)
-  function to the pager
-
-- tag-prefix was broken in the generic menu code when $auto_tag was unset
-
-- fixed bug in mutt_extract_token() wrt expanding backtics (``)
-
-- [patch-90.2i.tlr.addrbook.1] fixes address book so that select-entry
-  returns the current or tagged messages and exits
-
-- ESCDELAY default for slang is used again instead of setting it to 300ms
-
-- added `~R' to match references in the mutt_pattern_comp()
-
-PGP related changes since 0.90.2i
----------------------------------
-
-- [patch-0.90.2i.tlr.pgp-disptrust.1]  The trust status of
-  a key-user id relation is always displayed on the key
-  selection menu.
-
-- [patch-0.90.2i.tlr.pgp-subkeys.1] Subkeys are always
-  referred to using the principal key's numerical user ID.
-  This seems to be necessary to make PGP 5.0 extract them
-  properly.
-
-- The bit count for DSA keys is now displayed correctly.
-
-- A new option pgp_language (default: "en") is introduced.
-  This can be used to achieve an effect similar to the
-  alt_pgp patch.  See doc/pgp-Notes.txt for details.  A
-  big Thank You to Roland Rosenfeld for this idea!
-
-Changes since 0.90.3
---------------------
-
-- [patch-0.90.3.me.sort.1] fixed several bug relating to sorting by to or
-  score
-
-- %s in $status_format no longer includes $sort_aux, use %S to get the
-  $sort_aux value if desired (default value for $status_format now uses
-  (%s/%S) to mimic the old behavior)
-
-- [patch-0.90.3i.tlr.addrbook.1] fixed bug selecting the first alias in the
-  address book display
-
-- fixed bug in create-alias where mutt would dump core on a message with a
-  malformed address
-
-- parse_date() now always returns -1 on error
-
-- mailbox was not rethreaded when $sort_re changes
-
-- [patch-0.90.3.de.I_DECL.1] changes a few remaining variables in init.h to
-  the new I_DECL format
-
-- since most of the pattern matching commands were `envelope' types, changed
-  the semantics so that header and body matching are only done if the
-  M_FULL_MSG flag is set with mutt_pattern_comp()
-
-- backslash quoting did not work for the folder-hook and send-hook commands
-
-- use mutt_mktime() instead of mktime() in is_from()
-
-- [patch-0.90.3i.bj.skip-quoted.2] fixed bug in the skip-quoted function
-
-- [patch-0.90.3i.me.attach_pager.1] allows use of save/pipe/next/prev while
-  viewing attachments from the attach or compose menus
-
-- mutt_gen_msgid() changed to use getpid() so that unique id's are created
-  when mutt is invoked quickly in batch mode
-
-- Mutt now reports an error if the file specified by the `-F' command line
-  option does not exist
-
-- [jkj@sco.com] adds the $meta_key boolean option to case 8bit input to be
-  delivered as ESC + the char with the hi bit stripped
-
-- [patch-0.90.3i.me.editor_ext.1] improved line editor to be able to handle
-  unprintable control chars and to be able to bind the completion character
-
-- [patch-0.90.2i.bj.copy_hdr.2] rewrite of mutt_copy_hdr() to do reordering
-  in a single pass and to correctly unwrap fields for rfc2047 decoding
-
-- moved mutt_copy_hdr() to copy.c, and mutt_print_message() to commands.c
-  and eliminated print.c
-
-- `mutt -v' now displays the release date along with the version number.
-  the release date is also displayed with the `display-version' function
-
-
-PGP related changes since 0.90.3i
----------------------------------
-
-- [patch-0.90.3i.tlr.pgpkeyssort.1] If two keys have the
-  same User ID (i.e., mail address), use the numerical key
-  ID as the second sorting criteria for the key selection
-  menu.
-
-- [patch-0.90.3i.doc_pgp.1] Documentation for the PGP
-  support.  (By Roland Rosenfeld
-  <roland@spinnaker.rhein.de>).
-
-Changes since 0.90.4
---------------------
-
-- [patch-0.90.4i.bj.show_version.1] reduce code size required to print
-  compile time options
-
-- fix so that specifying more than two -v's on the command line always
-  prints the copyright statement instead of ignoring them
-
-- [patch-0.90.4.me.veryclean.1] adds a `veryclean' target to the Makefile to
-  remove files created by `configure'
-
-- the `inv' prefix now works for quadoptions
-
-- [patch-0.90.4.me.editor.1] adds `quote-char' function, and displays
-  control chars with the `markers' color, fixes bug in `buffy-cycle'
-
-- [patch-0.90.4i.me.unscore.1] adds the `unscore' command
-
-- [patch-0.89.1i.bj.tag-save.1] fixed bug in tag-save command
-
-- [patch-0.90.4i.me.help.1] added mutt_compile_help() to generate help
-  strings from `struct mapping_t'
-
-- [patch-0.90.4i.bj.hdr_fmt_recv.1] adds the %(fmt) to $hdr_format to
-  display the received time of a message
-
-- [patch-0.90.4i.bj.compose-disp-hdrs.3] fixes bug wrt to header weeding
-  with display-headers in the compose menu
-
-- [patch-0.90.4i.bjdeme.time.1] fixed calculation of local timezone and
-  added speedup when parsing mbox/mmdf mailbox and calculating the received
-  time from the `From ' line
-
-- added `flag' argument to mutt_pattern_exec() so that the
-  M_MATCH_FULL_ADDRESS option could be passed so that searching will match
-  the real name while the *-hook commands will not
-
-
-PGP related changes since 0.90.3i
----------------------------------
-
-- [patch-0.90.3i.tlr.pgpkeyssort.1] If two keys have the
-  same User ID (i.e., mail address), use the numerical key
-  ID as the second sorting criteria for the key selection
-  menu.
-
-- [patch-0.90.3i.doc_pgp.1] Documentation for the PGP
-  support.  (By Roland Rosenfeld
-  <roland@spinnaker.rhein.de>).
-Changes since 0.90.5
---------------------
-
-- [patch-0.90.5i.me.new_addr.1] replaces rfc822 address parser and related
-  data structures
-
-- [patch-0.90.5.bj.parse-speedup.new_addr-2] rewrite of
-  mutt_read_rfc822_line() and mutt_read_rfc822_header() to be more efficient
-
-- [patch-0.90.5i.me.hash_ext.1] added support for unique keys in the hash
-  table, and optional argument to the destroy functions to free the
-  associated data
-
-- [patch-0.90.5i.me.alias_sort.1] the sorting method and alias menu format
-  are now configurable via $alias_sort and $alias_format, respectively
-
-- [tlr] mx_open_mailbox() did not correctly free the created CONTEXT struct
-  upon failure
-
-- created function mutt_version() to display Mutt's version number
-
-- [patch-0.90.5i.rc.exactcompile.1] fixed warning about unused function when
-  compiling with `#undef EXACT_ADDRESS' in rfc822.c
-
-- [patch-0.90.5.sec.expires_new.1] adds ~S and ~E to match superceded and
-  expired messages
-
-- [patch-0.90.5.me.decode_followup.1] addresses in mail-followup-to: were
-  not rfc2047 decoded
-
-- [patch-0.90.5.bj.manual-nits.1] adds missing docs relating $status_format 
-
-Changes since 0.90.6
---------------------
-
-- [patch-0.90.6.me.unwrap_line.1] fixed bug in read_rfc822_line() wrt to
-  unwrapping folded lines
-
-- [patch-0.90.6.co.exactadd.1] fixed botched #ifdef in rfc822.c when
-  compiling with EXACT_ADDRESS
-
-- [patch-0.90.6i.jg.supersedes.2] changed `supercedes' to `supersedes' as
-  described in the current mailext I-D
-
-- added blurb on `--enable-exact-address' to the INSTALL file
-
-- fixed bug where messages with invalid dates showed up as being sent on Dec
-  31, 1969
-
-- added '-e' command line option to specify a config command to be run
-  _after_ parsing of initialization files
-  (eg.  mutt -e 'set edit_hdrs' mutt-dev)
-
-- added `edit-from' function to the `compose' menu (the From: field is now
-  also displayed)
-
-- added real bounds checking to rfc2047_encode_string() and friends
-
-- [tlr] fixed several bugs in the rfc2047 `Q' encoding (tabs were not
-  encoded, chars with hex value less than 0x10 were not padded with 0, =? in
-  a string was not encoded)
-
-- [patch-0.90.6.bugfix.locktimeout.1] added optional timeout to the locking
-  code so that the check for new mail will not to acquire a lock wait while
-  large mail is being delivered
-
-- [fvl] mutt_get_name() would segfault if a NULL address was passed in
-
-- [patch-0.90.6i.de.old-unread.1] adds %o and %u to $status_format to allow
-  display the number of `old' and `unread' messages
-
-- [patch-0.90.6.co.fwd.1] adds a blank line before the `---End of forwarded
-  message' line
-
-- the confirmation prompt for bounce-message will now only display the
-  address without the personal name to conserve space
-
-- [vl] arg to isspace() was not cast to `unsigned char' in rfc822.c
-
-- updated the pattern matching functions to add the following operators:
-	~p		matches personal mail (finds $alternates in to: or cc:)
-	~l		matches mail addressed to `lists'
-	~L<pattern>	finds <pattern> in to:, cc:, from: or sender:
-	~C<pattern>	finds <pattern> in to: or cc:
-
-
-PGP related changes since 0.90.6
---------------------------------
-
-- [patch-0.90.5i.rs.pgp_hdr.1] Preserve a message's PGP
-  settings when postponing
-
-Changes since 0.90.7
---------------------
-
-- included state.h, list.h, send.h in mutt.h and removed the others from the
-  distribution
-
-- [patch-0.90.7.me.default_from.1]
-
-- [patch-0.90.7i.de.limit.1] full name in addresses was not matched for `limit'
-
-- [patch-0.90.6.bugfix.locktimeout.1-2] changed `timeout' to `retry' in the
-  locking code since the former was misleading
-
-- [patch-0.90.7i.jg.help_line.1] offset of attachment was not calculated
-  correctly in the compose menu, cause the help line to be overwritten
-
-- fixed memory leak in rfc822_parse_address() when a parse error occurs (the
-  previously parsed address list was not returned and not freed)
-
-- [patch-0.90.7.me.vsnprintf.1] fixed bug where existence of snprintf()
-  assumed the existence of vsnprintf()
-
-- create-alias suggested the full email address as the default alias name
-  instead of just the mailbox portion
-
-- documented the `score' and `unscore' commands, and added %N to the
-  $hdr_format description
-
-- [patch-0.90.7i.bj.fgets_nit.1] size of buffer passed to fgets() was
-  incorrect
-
-- [patch-0.90.7i.bj.read_line.1] create common function mutt_read_line() for
-  reading lines which may contain a backslash on the end to wrap to the next
-  line
-
-- [patch-0.90.7i.bj.source_rc.1] makes source_rc() use the new
-  mutt_read_line() function
-
-- [patch-0.90.7.bugfix.buffycheck.mtsirkin.1] fixed another problem with
-  buffy
-
-- [patch-0.90.7.me.group_addr.1] fixed segfault when $use_domain is set and
-  you try to send to a group mailbox address
-
-- you can now use `mono <object> normal' to set to normal attribute
-
-- [patch-0.90.7i.de.hook.2] adds the $default_hook variable to control the
-  expansion of `simple' patterns in the send-hook, fcc-hook and save-hook
-  commands
-
-- it was not possible to use the $hdr_format sequences in $indent_str when
-  the switch to the new mutt_copy_message() and mutt_copy_hdr()
-
-- new common function km_get_table() which retrives the mapping of function
-  names based upon the MENU_* value
-
-- [patch-0.90.7i.bj.mailcap_parse.1] rewrote the mailcap parsing routines to
-  fix some bugs and be more efficient
-
-- [mac@eecg.utoronto.ca] added the `search-opposite' to search for the
-  current pattern in the opposite direction from the last search
-
-
-Changes since 0.90.8
---------------------
-
-- [patch-0.90.8.bj.display_loop.1] toggle of header weeding in the attach
-  and compose menus did not work
-
-- [patch-0.90.8.bj.manual_nit.1] documentation for displaying recieve date
-  in $hdr_format was missing
-
-- [patch-0.90.8.bj.pager_compile_help.1] pager did not use new function
-  mutt_compile_help()
-
-- [patch-0.90.8.bj.rename_file.1] changes mutt_rename_file() return codes
-  to be consistent with rename()
-
-- [patch-0.90.8.me.search.1] was not possible to bind the search functions
-  in the pager
-
-- [patch-0.90.8.me.time.1] fixed bug with the `~d >N' pattern
-
-- [patch-0.90.8.bj.reading_attachments.1] switching between viewing
-  attachments without returing to the attach menu was broken
-
-- [patch-0.90.8.bj.SKIPWS.1] removed unnecessary check for \0 in the
-  SKIPWS() macro
-
-- dest->fp was used directly in mx_open_new_message() where it should have
-  used msg->fp
-
-- `shell-escape' was moved to the generic keymap so that all menus can make
-  use of the function
-
-- added documentation on the `search-opposite' function
-
-- [patch-0.90.8i.tlr.rfc1524_fclose.1] fixed bug where fclose() could be
-  called with a NULL argument
-
-
-PGP related changes since 0.90.7
---------------------------------
-
-- [patch-0.90.7i.bj.pgp_hdr.1] Fixes some nits in
-  conection with the pgp_hdr patch.
-
-- [patch-0.90.7i.rs.pgp_hdr_doc.1] Adds documentation for
-  the pgp_hdr patche's effects.
-
-- [patch-0.90.7i.tlr.pgp_keysel.1] Fixes uniqueness
-  problems with the pgp key selection code.
-
-- [patch-0.90.8i.rr.pgp_get_table.1] The help function
-  wouldn't work on the PGP key selection menu.
-
-- [patch-0.90.8i.tlr.pgp_asymm.1] This patch replaces the
-  pgp_version variable by three variables:
-  pgp_receive_version, pgp_send_version, pgp_key_version.
-
-- [patch-0.90.8i.tlr.pgp_micalg.1] This patch enables the
-  user to generate correct "micalg" parameters when
-  composing PGP/MIME signed messages.
-
-Changes since 0.90.9
---------------------
-
-- [patch-0.90.9.me.personal_hook.1] fixed bug where ~P in send-hook patterns
-  did not work
-
-- [patch-0.90.9i.tlr.mutt_add_list.1] mutt_add_list() could create memory
-  which was unitialized to 0
-
-- [patch-0.90.9.me.group_alias.1] fixed bug where group address names were
-  expanded if a matching alias was found
-
-- definition of SKIPWS() in rfc822.c changed to match that in protos.h
-
-- [patch-0.90.9.josh.write_percent.1] the %-done is now shown when writing
-  out mbox/mmdf mailboxes just as is done for reading
-
-- body of message was not quoted with $indent_str if $forw_quote was set,
-  but $forw_decode is unset
-
-- changed initial value of $default_hook to "~f %s !~P | (~P ~C %s)"
-
-
-PGP related changes since 0.90.9i
----------------------------------
-
-- [patch-0.90.9i.tlr.pgppath.1] Properly check whether
-  PGPV2PATH and PGPV3PATH are defined in init.c.
-
-- [patch-0.90.9i.rr.pgp_key_version.1] Fixes a typo in the
-  pgp_key_version entry in init.h.
-
-- configure.in has been fixed so that _PGPPATH is not
-  defined unless at least one version of PGP exists on the
-  system.
-
-- A +nobatchinvalidkeys=off parameter has been added to
-  the pgpe invocation in pgpinvoke.c.
-Changes since 0.90.10
----------------------
-
-- added check for empty string arguments to the bind and macro commands
-
-- moved bit fields in CONTEXT and BODY structs to the end of the struct def
-  since there were not enough bits to fit into a 32-bit word
-
-- split include_message() into include_forward() and include_reply() since
-  little code was shared for the two cases
-
-- $forw_decode no longer controls weeding of the header when replying and
-  $headers is set
-
-- added doc blurb for $mime_fwd on the effects of decoding when this
-  variable is unset
-
-- [patch-0.90.10.me.unread.1] fixed error in calculation of unread messages
-  when the `new' bit is cleared from a message
-
-- fixed y2k problem in ~d pattern
-
-- an error was reported in the ~d pattern if using the open-ended form (eg.
-  1/1/98-) and any more text followed the pattern
-
-
-PGP related changes since 0.90.10i
-----------------------------------
-
-- mutt -v now correctly displays the various PGPPATH
-  variables.
-Changes since 0.90.11
----------------------
-
-- [patch-0.89.1i.bj.enriched.1] fixed buffer overflow in the text/enriched
-  handler
-
-- [patch-0.90.10.bl.sort_alias.1] adds the `unsorted' method for $sort_alias
-
-- [patch-0.90.10i.co.reply_regexp.1] changed initial value for $reply_regexp
-  to catch the `Re[2]:' style
-
-- changed check for new mail in MH-style mailboxes to consider messages new
-  if mtime >= atime
-
-- forwarded messages with $mime_fwd set are no longer forced to 7-bits when
-  not using PGP
-
-- updated the NEWS file with comments from the dev list
-
-- [patch-0.90.11i.de.stdin.2] fixed bugs with using stdin for -i or -H
-  command line arguments
-
-- [patch-0.90.11i.de.safe_fopen.1] changed many instances of fopen() to
-  safe_fopen() to avoid tempfile race conditions
-
-- the generic menu code did not print "Tag-" when using tag-prefix
-
-- [0.90.11-vikas.doc_nit] fixed bug with use of &gt; in the description of
-  $status_format
-
-- [patch-0.90.11i.ds.man_tilde_nit.1] fixed use of ~ where &tilde; should
-  have been used in manual
-
-- [patch-0.90.11i.rr.date_received.1] the parser table for ~r in the pattern
-  language used eat_regexp() instead of eat_date()
-
-- [patch-0.90.11i.me.attach_reply] fixes reply/forward of (tagged)
-  attachments from the attach menu
-
-- [patch-0.90.11.bj.make_string.1] fixes display of control chars and other
-  non-printable chars in the $*_format variables
-
-- [patch-0.90.11i.tlr.cdisp.2] fixes message_to_7bit() to not destroy the
-  existing content-disposition `filename' information
-
-- fixed bug in rfc822 parser where quoted-pair was not accepted in the
-  `mailbox' or `domain' tokens
-
-
-PGP related changes since 0.90.11i
-----------------------------------
-
-- [patch-0.90.11i.roro.doc.1.gz] Added some more PGP
-  documentation.  Spelling and grammar corrections from
-  native speakers are welcome!
-Changes since 0.90.12
----------------------
-
-- [patch-0.90.11i.me.boundary.1] mutt_write_mime_body() did not use
-  mutt_get_parameter() to fetch the MIME boundary
-
-- [patch-0.90.12i.tlr.recall.1] fixed segfault when attempting to recall
-  postponed messages
-
-- [patch-0.90.12i.rr.hdrline.1] fixed misapplied patch for the make_string
-  support
-
-- fixed error message on nonexistant file specified with -i or -H
-
-- [patch-0.90.12.me.safe_fopen.1] safe_fopen should not be used when it is
-  desirable for the specified file to be overwritten
-
-
-PGP related changes since 0.90.12i
-----------------------------------
-
-- [patch-0.90.12i.maj.pgp_extract_keys_nit.1] Correct the
-  behaviour when typing C-K in an empty folder.
-Changes since 0.90.13
----------------------
-
-- [patch-0.90.13i.de.enter_fname.1] buffy-cycle should act like complete
-  when in the save/copy message prompts
-
-- [patch-0.90.13i.rr.normalize_time.1] mutt_normalize_time() didn't handle
-  the case where a date rolled over to the previous year when selecting by
-  number of months in the past
-
-Changes since 0.91
-------------------
-
-- fixed bug in rfc822_parse_adrlist() where it would segfault on a bad address
-  which contained only a comment
-
-- [patch-0.90.12i.tlr.recall.1] fixed segfault when attempting to recall a
-  postponed message which was a reply to another message
-
-- [patch-0.91.me.exit_main.1] fixes collision in function name for "exit" in
-  the "generic" and "index" keymaps
-
-- corrected documentation on $hdrs which erroneously stated that user defined
-  headers are never included in batch mode sending
-
-Changes since 0.91.1
---------------------
-
-- [patch-0.91i.me.dyn_str.2] changes global string variables to `char *'
-  instead of fixed size arrays, and moves defaults for variables to the
-  MuttVars[] array
-
-- [patch-0.91.me.format_string.1] creates common function
-  mutt_FormatString() for handling %-substituted strings in a generic manner
-
-- [patch-0.91.vikas.limit_size.4] adds %L to $hdr_format to display the
-  total size of all visible messages when limited
-
-- [patch-0.91.me.followup.1] Adds boolean $followup_to to control
-  generatation of the Mail-Followup-To field.  Also allows user to edit this
-  field and not have it overwritten.
-
-- [patch-0.91i.me.sendmail.1] Removes $sendmail_bounce.  Mutt now passes all
-  recipients on the command line for normal sending.
-
-- [patch-0.90.10i.bj.current_time.1] adds sequence %<fmt> to $hdr_format to
-  display the current time using strftime(fmt)
-
-- [patch-0.90.10.bl.alternative_order.1] allows user specification of the
-  order in which to choose types from multipart/alternative messages
-
-- [my_hdr-subject-patch2] allows specification of a default subject (if none is
-  given using the `my_hdr' command
-
-- [patch-0.91i.as.revname.1] makes $reverse_name look at from: if the message
-  you are replying to is from you
-
-- added new operator ~B to pattern matching language which matches a regexp
-  anywhere in a message (more efficient than ~h %s | ~b %s).
-
-- changed the `source' command to use mutt_open_read() instead of fopen() so
-  that you can read from the output of a script (eg. "source
-  ~/bin/mutt_commands|").
-
-- fixed typos in the description of `forget-passphrase' in the manual
-
-- the -e option was not document in either the man page nor the manual
-
-- [patch-0.91.bl.composetyped.1] adds support for creating non-text body
-  parts from within the compose menu
-
-- $reverse_name is now handled before send-hook so that user's can match on
-  the from field with ~f
-
-- [patch-0.91i.de.threadlimit.1] allows drawing of thread trees while in
-  limited display
-
-- [mutt-0.89i-quadopt_mimefwd.patch] turns $mime_fwd into a quad-option
-
-- [patch-0.91i.jmy.folder_format.1] the display of the `browser' menu is now
-  configurable via the $folder_format variable
-
-- [patch-0.91i.jmy.pattern-size.1] adds ~z operator to the pattern matching
-  function to match by size
-
-- rfc822.c now uses some functions from mutt proper (safe_strdup and
-  mutt_substrdup) instead of attempting to be a self-contained library
-
-
-PGP related changes since 0.91.1
---------------------------------
-
-- [patch-0.91.1i.tlr.pgp_obsolete_vars.1] Removes the
-  obsolete pgp_v3_* variables.
-Changes since 0.92
-------------------
-
-- [patch-0.91.me.reuse_hook.1] the result portion of those hooks which can
-  have only a single matching pattern (ie. send-hook) were not updated if the
-  same pattern was specified with a different result.
-
-- [patch-0.92.me.empty_pop_str.1] fixes core when fetching POP3 mail if any
-  of the $pop_* string variables were empty
-
-- [patch-0.92.me.empty_route.1]
-
-- [patch-0.92.me.regexp_case.1] REG_ICASE was not set for regexp variable
-  defaults in mutt_restore_default()
-
-- [patch-0.92.de.threadlimitfix.1] fixes small bug in the threadlimit code
-  which could cause extra work to be done when not needed
-
-- [patch-0.92.me.format_pad.1] fixed segfault when the value of
-  $status_format is wider than the screen
-
-- [patch-0.92.me.draft_path.1] the paths for neither -i nor -H were being
-  expanded before use
-
-- [patch-0.92.vikas.nits]
-  1. %M in $status_format was getting truncated after 3 digits because of a
-     tiny mistake in mu
-  2. The ~z pattern matching has a small nit at the boundaries where
-     ~z<1024 matches Content-length: 1024 as well. I just changed the inclusive
-     ranges ( <= and >= ) to exclusive ranges ( < and > ) in pattern.c
-  3. Added a line about the new %L format specifier for $status_format
-
-
-PGP related changes since 0.92
-------------------------------
-
-- No more (char *) deferences of (char **) in pgp_invoke.c.
-Changes since 0.92.1
---------------------
-
-- [0.92.1.me.format_pad.1] fixed another problem with the result of
-  subtracting two size_t's and the result being negative
-
-- [0.92.1.me.batch_copy.1] $copy was ignored when sending mail in batch mode
-
-- [patch-0.92.1.josh.sort_re-tilde.1] reset default values of $sort_re and
-  $tilde to their 0.91.1 values.
-
-- [patch-0.92.me.func_macro.1] changes function key names to use <> around
-  then (eg.  <PageUp>) and allows them to be used in macros as well
-  (eg.  macro index Y *<PageUp>)
-
-- [patch-0.92.1i.rr.reset.2] adds the `reset' command and the `&' prefix to
-  `set' to allow resetting variables to the default value
-
-- changed the %g (group) and %u (userid) sequences of $folder_format to
-  print the gid and uid, respectively, if they can't be resolved to names,
-  instead of diplaying "(null)"
-
-- [patch-0.92.1i.me.sendmail_wait.2] adds $sendmail_wait which specifies the
-  number of seconds to wait for sendmail to finish before background it
-
-- [patch-0.92.1.co.bounce.2] fixes problem with the bounce-message
-  confirmation prompt
-
-- [patch-0.92.1.bl.attach_del.2] adds the ability to delete attachments
-
-- [patch-0.92.1i.jg.default_opts.2] changed var defaults to match what is in
-  the manual
-
-- [patch-0.92.1i.rr.no_signature.1] fixed segfault with
-	set signature=''
-  when composing mail
-
-- [patch-0.92.1i.rr.manual_nits.1] fixed some spelling errors in the manual
-
-- [mutt-0.91.1a.patch (partial)] if KEY_RESIZE is defined, mutt_getch() will
-  ignore it (generated by ncurses 4.2 on SIGWINCH)
-
-- [patch-0.92.1.bl.query.1] adds support for querying an external database
-  for email addresses
-
-
-PGP related changes since 0.92.1i
----------------------------------
-
-- [patch-0.92.1i.wn.verify_sig-pgp_timeout.1] Make the
-  verify_sig and pgp_timeout defaults consistent between
-  init.h and the manual.
-
-- [patch-0.92.1i.tlr.pgp_keysel.1] Fix a segmentation
-  fault in the key selection code.
-
-- [patch-0.92.1i.tlr.pgpsign.1] The PGP signing code works
-  again.
-
-- Changed $verify_sig to $pgp_verify_sig.
-Changes since 0.92.2
---------------------
-
-- [patch-0.92.2i.tlr.sendlib_args.1] fixes segfault when sending mail
-
-- [patch-0.92.2.me.reverse_name.1] fixed problem with $reverse_name altering
-  the HEADER struct for the message being replied to.
-
-- [patch-0.92.2.sort_flag.1] fixed problem with `score' command not updating
-  the score when $sort or $sort_aux was not `score'
-
-- [patch-0.92.2i.me.sendmail.1] adds debugging info to the send_msg()
-  command
-
-- [patch-0.92.2i.dme.generic-op_jump.1] fixed missing binding for 3-9 to
-  `jump' in the generic keymap
-
-- [patch-0.92.2.me.sort_alias.1] fixed problems with $sort_alias not working
-
-- [patch-0.92.2i.me.msg_search.1] fixed bugs in the ~h, ~B and ~b search
-  patterns
-
-- [patch-0.92.2i.me.postpone.1] x-mutt-references was not removed when
-  recalling a postponed reply when no mailbox is open
-
-- included <unistd.h> for def of SEEK_SET in copy.c (SunOS 4.1.4)
-
-- [patch.sendlib.2] fixes signal handling in send_msg(), and fixes leftover
-  temporary files after sending the message
-
-- [patch-0.91.1i.aw.purgeprompt.1] the prompt for $delete now shows how many
-  messages will be purged
-
-- [patch-0.92.1i.jg.empty_to.1] makes the string used for the group mailbox
-  name when there are no to: or cc: recipients configurable via the
-  $empty_to variable
-
-- moved mutt_signal_init() before initscr() in start_curses() so that
-  ncurses 4.2 will not attempt to install its on SIGWINCH handler
-
-
-PGP related changes since 0.92.2i
----------------------------------
-
-- White space problems around "#ifdef _PGPPATH" should be
-  fixed now.
-
-- The .spec file for RedHat is gone.
-Changes since 0.92.3
---------------------
-
-- alarm() was not actually set to put sendmail in the background when
-  $sendmail_wait > 0
-
-- [patch-0.92.3.de.threadlimitfix.1]
-
-- [patch-0.92.3.josh.delete_format.1] changes default for $delete_format
-
-- [patch-0.92.3.me.var_syn.1] renames some variables and creats a synonym
-  data type
-
-- [patch-0.92.3.vikas.sort_alias] fixed bug with `set sort_alias=unsorted'
-
-- [patch-0.92.3i.de.hashtable-leak.1] fixed memory leak when destroying
-  hash tables
-
-- [de] fixed memory leak in init.c where the value of $alias_file was not
-  free()d before assigning the default from the default muttrc to use
-
-- [patch-0.92.3i.tlr.keymaps.1] fixed missing keybindings for the `jump'
-  command
-
-- fixed typo "Purpge" in mx_close_mailbox()
-
-- [patch-0.91.1.ldm.ignore_list_reply_to] fixed bug with handling of
-  $ignore_list_reply_to
-
-- fixed signal initialization to call before initscr() for ncurses and after
-  initscr() for slang
-
-- [patch-0.92.3.vikas.alias_search] makes searching in the alias menu
-  WYSIWYG
-
-- fixed memory leak in parse_route_addr() when the route-addr portion of an
-  address was unable to be parsed
-
-- [patch-0.92.3i.tlr.query_real.1]
-
-- [patch-0.92.3.color_index.7] adds the ability to color lines in the index
-  using the searching language
-
-
-PGP related changes since 0.92.3i
----------------------------------
-
-- [patch-0.92.3i.tlr.keymaps.1] Add some lost keymap
-  bindings for the generic menu.
-
-- [patch-0.92.3i.tlr.pgp_default_version.1] The default
-  value of $pgp_default_version is now set correctly.
-
-- [patch-0.92.3.bl.pgp_attach_del.1] Handle PGP/MIME
-  messages correctly when deleting attachments.
-
-- [patch-0.92.3i.rr.postpone_pgp.1] Corrects some bugs
-  with respect to postponing PGP signed messages.
-Changes since 0.92.4
---------------------
-
-- [patch-0.92.4.josh.empty_querycmd.2] fixed segfault on $query_command
-  being set to ''
-
-- [recv.diff] the warning from filter-attachment was not cleared when you
-  answer no or abort
-
-- [patch-0.92.4i.rr.mime_forward_decode.1] splits $forward_decode into
-  $forward_decode and $mime_forward_decode
-
-- [patch-0.92.1.optional_list.2] makes the %L in $header_format an optional
-  string using the %?L?...? syntax
-
-- [patch-0.92.4.me.savehook.1] makes it possible to use ~b and ~h in
-  save-hook commands
-
-- [patch-0.92.4i.me.token.2] upgrades the muttrc parser to use dynamic
-  buffer allocation, and allows multiple commands on a single line separated
-  by semicolons
-
-- the bcc: field is again output to the $sendmail program, and is assumed
-  that the MTA will take care of removing it
-
-- fixed memory leak in parse_route_addr()
-
-
-PGP related changes since 0.92.3i
----------------------------------
-
-- [patch-0.92.3i.tlr.keymaps.1] Add some lost keymap
-  bindings for the generic menu.
-
-- [patch-0.92.3i.tlr.pgp_default_version.1] The default
-  value of $pgp_default_version is now set correctly.
-
-- [patch-0.92.3.bl.pgp_attach_del.1] Handle PGP/MIME
-  messages correctly when deleting attachments.
-
-- [patch-0.92.3i.rr.postpone_pgp.1] Corrects some bugs
-  with respect to postponing PGP signed messages.
-Changes since 0.92.5
---------------------
-
-- [patch-0.92.4i.de.parse_date.1] better recovery from badly formatted
-  timezones
-
-- [patch-0.92.5.de.Muttrc-memleak.1] fixed memory leak when using the -F
-  command line option
-
-- [patch-0.92.5i.bj.pgp_bitfield.1]
-
-- [patch-0.92.5i.jg.empty_to_doc.1] adds documentation for the $empty_to
-  variable
-
-- [patch-0.92.5i.rr.ask_quit.1] new variable $quit which controls the prompt
-  for exiting mutt
-
-- [patch-0.92.5.vikas.color_index.7-10] fixed bugs in the `uncolor' command
-
-- fixed coredump if $to_chars is set to ''
-
-- [patch-0.92.5.vikas.wrap_search] new variable $wrap_search which controls
-  whether or not searches wrap around the first or last message
-
-- [patch-0.92.4i.dj.addr_hook_patterns.3] the mailbox specified in a
-  save-hook is now %-expanded using $header_format
-
-- the default save mailbox no longer looks at defined `lists'.  to get the
-  old behavior, use
-  	save-hook ~l %B
-
-- optional strings in format strings have been extended to allow for an
-  `else' clause.  the new syntax is:
-  	%?<testchar>?<if-string>&<else-string>?
-  or if no `else' clause is desired (backwards compatibility):
-  	%?<testchar>?<if-string>?
-
-- [patch-0.92.5.bj.interrupt_search.1] allows interruption of `search' using
-  the shell's interupt (SIGINT) character
-
-- [patch-0.92.5i.jg.attach_split_sep.1] removed useless code and docs
-  relating to $attach_split and $attach_sep
-
-- [patch-0.92.5.vikas.toggle_write] if the mailbox is read-only and the
-  user attempts to sync, a more informative error message is now displayed
-
-
-Changes since 0.92.6
---------------------
-
-- [patch-0.92.6.vikas.limit_new.3] adds support for new mail delivery while
-  a limit is in effect
-
-- [patch-0.92.6.vikas.wrap_search.2] adds docs for $wrap_search
-
-- [patch-0.92.6i.de.quit.1] changes the default for $quit to `yes'
-
-- [patch-0.92.6.me.rfc822.1] fixed buffer overrun error in
-  rfc822_write_address_real()
-
-- [mutt-0.92.6i-mhsupport.patch]
-
-- [patch-0.92.6i.de.reopen_unread.1]
-
-- consolidated common code for editing address lists in edit_envelope()
-
-- changed parse_alias() to use mutt_parse_adrlist() instead of
-  rfc822_parse_adrlist() so that you can have simple aliases like:
-  	alias group bob joe
-  with no commas (mailx compatibility)
-
-Changes since 0.92.7
---------------------
-
-- [patch-0.92.7.handler.empty_cc_bcc.1] fixed bug in edit_envelope() which
-  caused the message to be aborted if the cc or bcc field was empty
-
-- buffer used to store the error message in mutt_pattern_comp() called
-  sizeof() on the wrong variable
-
-- renamed $header_format to $index_format ($hdr_format is still accepted)
-
-- [patch-0.92.7.vikas.postpone.1] fixed typo for binding the `postpone'
-  menu, and changes the menu to use $index_format for display of postponed
-  messages
-
-- mutt_error() is now a function pointer which either has the value of
-  mutt_curses_error() or mutt_nocurses_error() which simplifies the muttrc
-  parsing code
-
-- "source '~/bin/myscript|'" was fixed so that it works correctly
-
-- [patch-0.92.7.me.mh_sync.1] fixed bug where syncing mh mailboxes silently
-  failed
-
-- [patch-0.92.7.me.pattern.1] fixes bug with mismatched backtics in the
-  pattern language
-
-- mutt_default_from() no longer sets the "real name" portion of the return
-  address so that it can be delayed until after execution of send-hook
-  commands
-
-
-PGP-related changes since 0.92.6i
----------------------------------
-
-- [patch-0.92.6i.tlr.pgp_longids.1] Correct the
-  calculation of 64 bit "v4" key IDs.
-
-Changes since 0.92.8
---------------------
-
-- [patch-0.90.12i.jmydaes.command-complete.1] Command completion
-
-- [patch-0.92.8.mtsirkin.attach-viewer.1] When viewing
-  attachments, fall back to the attachment's file name if
-  no description is available.
-
-- [patch-0.92.8i.ds.attachmsg.1] Attach messages from the compose menu.
-
-- [patch-0.92.8i.tlr.make_string_context.1] Fix a
-  segmentation fault when invoking mutt -p from the
-  command line.
-
-- [patch-0.92.8i.tlr.mh_sequences.1] Don't generate
-  .mh_sequences files for maildir folders.
-
-- fix a NULL pointer deference in hdrline.c
-
-- [patch-0.92.8i.jmy.hook-bugfix.1] Fix a segmentation
-  fault in the send-hook code.
-
-- [patch-0.92.8i.tlr.addrbook.1] Untag all aliases before
-  entering the address-book menu.
-
-- Enforce a non-NULL QueryCmd in the beginning of
-  mutt_query_complete() and mutt_query_menu().
-
-- Make all query.c functions except mutt_query_complete()
-  and mutt_query_menu() static.
-
-- The latest IMAP patch from Andy Sloane has been added.
-
-PGP related Changes since 0.92.8i
----------------------------------
-
-- [patch-0.92.8i.maj.MIC_alg.1] Properly initializes a
-  variable in the PGP part of the Compose menu.
-
-- [patch-0.92.8i.tlr.pgpkey_dflt.1] Avoid possible
-  segmentation faults when determining the default value
-  of the PGP key selection prompt.
-
-- [patch-0.92.8i.wk.opgp_5bytelength.1] Recognize
-  OpenPGP's public key algorithm #20 (i.e., ElGamal for
-  Signing and Encrypting).
-
-- Moved doc/pgp-Notes.txt to doc/PGP-Notes.txt, and
-  updated that part of the documentation.
-
-
-Changes since 0.92.9i
----------------------
-
-Tue Jun 16 00:22:28 1998  Thomas Roessler  <roessler@guug.de>
+	* configure.in, configure, Changes, ChangeLog: Preparing 0.92.10i.
 
 	* doc/PGP-Notes.txt: Including Roland's new procmail recipe.
 
@@ -1811,14 +904,3 @@ Mon Jun 15 15:19:49 1998  Thomas Roessler  <roessler@guug.de>
 
 	* mx.c, main.c, mailbox.h, imap.c, commands.c: Brandon's IMAP patch.
 
-Mon Jun  8 20:05:54 1998  Thomas Roessler  <roessler@guug.de>
-
-	* recvattach.c, pgppubring.c, pgpkey.c,
-	pgpinvoke.c, pgp.h, pgp.c, main.c, init.h,
-	gnupgparse.c, init.c, configure.in, configure,
-	config.h.in, compose.c, acconfig.h, Makefile.in:
-	GPG support, first take.
-
-	* hdrline.c: Fixing the %a format.
-
-	* hdrline.c: Fixing a segmentation fault in the hdr_line code.

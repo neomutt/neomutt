@@ -20,6 +20,7 @@
 #include "mutt_menu.h"
 #include "mutt_curses.h"
 #include "keymap.h"
+#include "history.h"
 
 #include <termios.h>
 #include <sys/types.h>
@@ -33,89 +34,6 @@
 /* macro to print control chars in reverse-video */
 #define ADDCH(x) addch (IsPrint (x) ? x : (ColorDefs[MT_COLOR_MARKERS] | (x + '@')))
 
-/* global vars used for the string-history routines */
-static char **Hist = NULL;
-static short HistCur = 0;
-static short HistLast = 0;
-
-void mutt_init_history (void)
-{
-  int i;
-  static int OldSize = 0;
-  
-  if (Hist)
-  {
-    for (i = 0 ; i < OldSize ; i ++)
-      safe_free ((void **) &Hist[i]);
-    safe_free ((void **) &Hist);
-  }
-  
-  if (HistSize)
-    Hist = safe_calloc (HistSize, sizeof (char *));
-  HistCur = 0;
-  HistLast = 0;
-  OldSize = HistSize;
-}
-
-static void sh_add (char *s)
-{
-  int prev;
-
-  if (!HistSize)
-    return; /* disabled */
-
-  if (*s)
-  {
-    prev = HistLast - 1;
-    if (prev < 0) prev = HistSize - 1;
-    if (!Hist[prev] || strcmp (Hist[prev], s) != 0)
-    {
-      safe_free ((void **) &Hist[HistLast]);
-      Hist[HistLast++] = safe_strdup (s);
-      if (HistLast > HistSize - 1)
-	HistLast = 0;
-    }
-  }
-  HistCur = HistLast; /* reset to the last entry */
-}
-
-static char *sh_next (void)
-{
-  int next;
-
-  if (!HistSize)
-    return (""); /* disabled */
-
-  next = HistCur + 1;
-  if (next > HistLast - 1)
-    next = 0;
-  if (Hist[next])
-    HistCur = next;
-  return (Hist[HistCur] ? Hist[HistCur] : "");
-}
-
-static char *sh_prev (void)
-{
-  int prev;
-
-  if (!HistSize)
-    return (""); /* disabled */
-
-  prev = HistCur - 1;
-  if (prev < 0)
-  {
-    prev = HistLast - 1;
-    if (prev < 0)
-    {
-      prev = HistSize - 1;
-      while (prev > 0 && Hist[prev] == NULL)
-	prev--;
-    }
-  }
-  if (Hist[prev])
-    HistCur = prev;
-  return (Hist[HistCur] ? Hist[HistCur] : "");
-}
 
 /* redraw flags for mutt_enter_string() */
 enum
@@ -145,6 +63,16 @@ int mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
   int first = 1;
   int j;
   char tempbuf[_POSIX_PATH_MAX] = "";
+  history_class_t hclass;
+  
+  if(flags & (M_FILE | M_EFILE))
+    hclass = HC_FILE;
+  else if(flags & M_CMD)
+    hclass = HC_CMD;
+  else if(flags & M_ALIAS)
+    hclass = HC_ALIAS;
+  else 
+    hclass = HC_OTHER;
 
   FOREVER
   {
@@ -197,14 +125,14 @@ int mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 	case OP_EDITOR_HISTORY_UP:
 	  if (!pass)
 	  {
-	    strfcpy ((char *) buf, sh_prev (), buflen);
+	    strfcpy ((char *) buf, mutt_history_prev (hclass), buflen);
 	    redraw = M_REDRAW_INIT;
 	  }
 	  break;
 	case OP_EDITOR_HISTORY_DOWN:
 	  if (!pass)
 	  {
-	    strfcpy ((char *) buf, sh_next (), buflen);
+	    strfcpy ((char *) buf, mutt_history_next (hclass), buflen);
 	    redraw = M_REDRAW_INIT;
 	  }
 	  break;
@@ -433,7 +361,7 @@ int mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 	      if (buf[0])
 	      {
 		mutt_pretty_mailbox ((char *) buf);
-		sh_add ((char *) buf);
+		mutt_history_add (hclass, (char *) buf);
 		return (0);
 	      }
 	      return (-1);
@@ -500,7 +428,7 @@ self_insert:
       {
 	buf[lastchar] = 0;
 	if (!pass)
-	  sh_add ((char *) buf);
+	  mutt_history_add (hclass, (char *) buf);
 	return (0);
       }
       else if ((ch < ' ' || IsPrint (ch)) && (lastchar + 1 < buflen))

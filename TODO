@@ -1,49 +1,132 @@
-- Other than multipart/mixed and PGP/MIME, Mutt should allow the user to
-  specify what to do with other types of multipart messages (i.e., so a user
-  can deal with S/MIME messages reasonably)
+This list tries to cover the open problems we have with
+mutt.  It's compiled from the old BUGS and TODO files in
+the distribution, from recent mutt-dev postings, and from
+other messages relating to problems and/or wishes with
+mutt.
+
+I'm listing the problems in approximate order of priority.
+
+- Fix the "unexpected EXPUNGE" IMAP bug.
+
+- Ask IMAP servers for hierarchy separators. (-> Brandon's
+  note from Aug 18)
+
+- Apply proper quoting when sending imap "ASTRING"s.  (->
+  John Prevost wrote something on this on Aug 19).
+
+  
+- When using EXACT_ADDRESS, the following memory leak may
+  occur (insure++ output):
+
+| [rfc822.c:400] **LEAK_ASSIGN**
+| >>         last->val = mutt_substrdup (begin, s);
+| 
+|   Memory leaked due to pointer reassignment: (void *) malloc(siz)
+| 
+|   Lost block : 0x082e7da0 thru 0x082e7db6 (23 bytes)
+|                (void *) malloc(siz), allocated at:
+|                      safe_malloc()  lib.c, 283
+|                   mutt_substrdup()  lib.c, 861
+|             rfc822_parse_adrlist()  rfc822.c, 377
+|          mutt_read_rfc822_header()  parse.c, 1112
+|               mbox_parse_mailbox()  mbox.c, 272
+|                mbox_open_mailbox()  mbox.c, 390
+|                  mx_open_mailbox()  mx.c, 598
+|                  mutt_index_menu()  curs_main.c, 874
+| 
+|   Stack trace where the error occurred:
+|             rfc822_parse_adrlist()  rfc822.c, 400
+|          mutt_read_rfc822_header()  parse.c, 1112
+|               mbox_parse_mailbox()  mbox.c, 272
+|                mbox_open_mailbox()  mbox.c, 390
+|                  mx_open_mailbox()  mx.c, 598
+|                  mutt_index_menu()  curs_main.c, 874
+|                             main()  main.c, 635
+| 
+| ************************** INSURE SUMMARY ************************* v4.1 **
+| *   Program      : mutt                                                   *
+| *   Arguments    :                                                        *
+| *   Directory    : /home/olga/Mail                                        *
+| *   Compiled on  : Aug 18, 1998  19:52:01                                 *
+| *   Run on       : Aug 18, 1998  19:57:08                                 *
+| *   Elapsed time : 00:04:26                                               *
+| *   Malloc HWM   : 855,258 bytes (835K)                                   *
+| ***************************************************************************
+| 
+| PROBLEM SUMMARY - by type
+| ===============
+| 
+|           Problem                Reported      Suppressed
+|           -------------------------------------------------
+|           LEAK_ASSIGN                  1                1
+|           RETURN_FAILURE               0               70
+|           USER_ERROR                   0               24
+|           -------------------------------------------------
+|           TOTAL                        1               95
+|           -------------------------------------------------
+| 
+| PROBLEM SUMMARY - by location
+| ===============
+| 
+| LEAK_ASSIGN: Memory leaked due to pointer reassignment, 1 unique occurrence
+|          2 at rfc822.c, 400
+| 
+  
+- In the "attachment" menu, assume this:
+
+	1 [text/plain, 7bit, 1.1K]           <no description>
+	2 [message/rfc822, 7bit, 6.1K]       A test message
+	3 [text/plain, 7bit, 0.1K]           |-><no description>
+	4 [message/rfc822, base64, 2.5K]     |-><no description>
+	5 [message/rfc822, base64, 2.7K]     `-><no description>
+
+  (please note the "message/rfc822" attachments encoded as
+  Base64; that's illegal, but Sun's Mailtool sends that
+  kind of messages); then go to, say, attachment "4",
+  delete it, and go to the main menu; you won't be able to
+  quit the mailbox (ok, 'x' works, but 'q' doesn't).
+
+  The problem here lies in the fact that mutt uses mailbox
+  handling functions to access message/rfc822 type
+  attachments.  We'd need to perform an additional
+  decoding step before using these functions to fix this
+  bug.
+
+  Please note that mutt's just assuming RFC-compliant mail
+  here.  Fixing this stuff may become a PITA.
+
+
+
+- mailbox resync code for mh and maildir mailboxes.  This
+  will most probably help to fix the following problems:
+
+  In maildir folders, the cursor will jump to an
+  unpredictible message when new mail arrives.
+
+  When accessing maildir folders with two mutts in
+  parallel, messages which have been marked read (and thus
+  moved to the cur/ subdirectory) by one of the mutts
+  can't be read from the other one.
+
+
+- Re-visit nametemplate support.  Currently, we use
+  symbolic links in our temporary directory for this.
+
+
+- BODY struct should probably have a pointer to its
+  corresponding HEADER struct.  this is needed for
+  mh/maildir mailboxes so the correct pathname can be
+  found.  Or perhaps all we need is a .hdr member of the
+  STATE struct so that all of the MIME handlers can look
+  up the corresponding HEADERs if need be?
 
 - option to not include attachments in replies
 
 - handle message/external-body in some fashion
 
 - handle message/partial reconstruction
-
-- not possible to view the header of a single part message which contains
-  something that requires a mailcap entry to view
-
-- need to clean up the error recovery when running out of space when syncing
-  a mbox/mmdf mailbox
-
-- BODY struct should probably have a pointer to its corresponding HEADER
-  struct.  this is needed for mh/maildir mailboxes so the correct pathname
-  can be found.  Or perhaps all we need is a .hdr member of the STATE struct
-  so that all of the MIME handlers can look up the corresponding HEADERs if
-  need be?
-
-- mailbox resync code for mh and maildir mailboxes
-
-- fold long user-defined header fields
-
-- history classes
-
-- document honored environment variables
-
-- add -v flag to pass to sendmail...
-
-- ordered tag
-
-- rfc822 parser needs to do something with the @host1@host2: portion of the
-  route-addr
-
-- command completion for `enter-command'
-
-- new forward command to include first attachment in the editor and attach
-  other attachments to the message
-
-- adjust the names of *adr() and *adrlist() and calling routines for
-  consistency
-
-- mbox-hook entries should override $move?
-
-- add a preserved flag to messages
-
+  
+- not possible to view the header of a single part message
+  which contains something that requires a mailcap entry to
+  view
+  

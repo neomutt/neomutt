@@ -45,6 +45,10 @@ int mutt_is_mail_list (ADDRESS *addr)
   return 0;
 }
 
+/* Search for a mailing list in the list of addresses pointed to by adr.
+ * If one is found, print pfx and the name of the list into buf, then
+ * return 1.  Otherwise, simply return 0.
+ */
 static int
 check_for_mailing_list (ADDRESS *adr, char *pfx, char *buf, int buflen)
 {
@@ -59,6 +63,26 @@ check_for_mailing_list (ADDRESS *adr, char *pfx, char *buf, int buflen)
   }
   return 0;
 }
+
+/* Search for a mailing list in the list of addresses pointed to by adr.
+ * If one is found, print the address of the list into buf, then return 1.
+ * Otherwise, simply return 0.
+ */
+static int
+check_for_mailing_list_addr (ADDRESS *adr, char *buf, int buflen)
+{
+  for (; adr; adr = adr->next)
+  {
+    if (mutt_is_mail_list (adr))
+    {
+      if (buf && buflen)
+	snprintf (buf, buflen, "%s", adr->mailbox);
+      return 1;
+    }
+  }
+  return 0;
+}
+
 
 static int first_mailing_list (char *buf, size_t buflen, ADDRESS *a)
 {
@@ -93,6 +117,30 @@ static void make_from (ENVELOPE *hdr, char *buf, size_t len, int do_lists)
     snprintf (buf, len, "Cc %s", mutt_get_name (hdr->cc));
   else if (hdr->from)
     strfcpy (buf, mutt_get_name (hdr->from), len);
+  else
+    *buf = 0;
+}
+
+static void make_from_addr (ENVELOPE *hdr, char *buf, size_t len, int do_lists)
+{
+  int me;
+
+  me = mutt_addr_is_user (hdr->from);
+
+  if (do_lists || me)
+  {
+    if (check_for_mailing_list_addr (hdr->to, buf, len))
+      return;
+    if (check_for_mailing_list_addr (hdr->cc, buf, len))
+      return;
+  }
+
+  if (me && hdr->to)
+    snprintf (buf, len, "%s", hdr->to->mailbox);
+  else if (me && hdr->cc)
+    snprintf (buf, len, "%s", hdr->cc->mailbox);
+  else if (hdr->from)
+    strfcpy (buf, hdr->from->mailbox, len);
   else
     *buf = 0;
 }
@@ -145,6 +193,7 @@ static int user_is_recipient (ENVELOPE *hdr)
  * %m = number of messages in the mailbox
  * %n = name of author
  * %N = score
+ * %O = like %L, except using address instead of name
  * %s = subject
  * %S = short message status (e.g., N/O/D/!/r/-)
  * %t = `to:' field (recipients)
@@ -206,11 +255,11 @@ hdr_format_str (char *dest,
 	  strfcpy (dest, p + 1, destlen);
 	else
 	  strfcpy (dest, ctx->path, destlen);
-	break;
       }
       else 
 	strfcpy(dest, "(null)", destlen);
-
+      break;
+    
     case 'c':
       mutt_pretty_size (buf2, sizeof (buf2), (long) hdr->content->length);
       snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
@@ -259,7 +308,7 @@ hdr_format_str (char *dest,
 	    {
 	      if (len >= 5)
 	      {
-		sprintf (p, "%c%02d%02d", hdr->zoccident ? '-' : '+',
+		sprintf (p, "%c%02u%02u", hdr->zoccident ? '-' : '+',
 			 hdr->zhours, hdr->zminutes);
 		p += 5;
 		len -= 5;
@@ -378,6 +427,22 @@ hdr_format_str (char *dest,
     case 'N':
       snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
       snprintf (dest, destlen, fmt, hdr->score);
+      break;
+
+    case 'O':
+      if (!optional)
+      {
+	make_from_addr (hdr->env, buf2, sizeof (buf2), 1);
+	if (!option (OPTSAVEADDRESS) && (p = strpbrk (buf2, "%@")))
+	  *p = 0;
+	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+	snprintf (dest, destlen, fmt, buf2);
+      }
+      else if (!check_for_mailing_list_addr (hdr->env->to, NULL, 0) &&
+	       !check_for_mailing_list_addr (hdr->env->cc, NULL, 0))
+      {
+	optional = 0;
+      }
       break;
 
     case 's':

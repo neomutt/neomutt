@@ -21,6 +21,7 @@
 #include "mx.h"
 #include "mailbox.h"
 #include "globals.h"
+#include "mutt_socket.h"
 
 #include <unistd.h>
 #include <netinet/in.h>
@@ -47,30 +48,18 @@ enum
   IMAP_NEW_MAIL,
   IMAP_EXPUNGE,
   IMAP_BYE,
-  IMAP_OK_FAIL,
-  IMAP_OPEN_NEW
+  IMAP_OK_FAIL
 };
 
 typedef struct
 {
-  char *server;
-  int uses;
-  int fd;
-  char inbuf[LONG_STRING];
-  int bufpos;
-  int available;
-} CONNECTION;
-
-typedef struct
-{
-  int index;
+  unsigned int index;
   char *path;
 } IMAP_CACHE;
 
 typedef struct
 {
   short status;
-  unsigned short sequence;
   unsigned short newMailCount;
   char *mailbox;
   short xxx;
@@ -80,92 +69,35 @@ typedef struct
 
 #define CTX_DATA ((IMAP_DATA *) ctx->data)
 
-static CONNECTION *Connections = NULL;
-static int NumConnections = 0;
-
-/* simple read buffering to speed things up. */
-static int imap_readchar (CONNECTION *conn, char *c)
+/* Linked list to hold header information while downloading message
+ * headers
+ */
+typedef struct imap_header_info
 {
-  if (conn->bufpos >= conn->available)
-  {
-    conn->available = read (conn->fd, conn->inbuf, sizeof(LONG_STRING));
-    conn->bufpos = 0;
-    if (conn->available <= 0)
-      return conn->available; /* returns 0 for EOF or -1 for other error */
-  }
-  *c = conn->inbuf[conn->bufpos];
-  conn->bufpos++;
-  return 1;
+  unsigned int read : 1;
+  unsigned int old : 1;
+  unsigned int deleted : 1;
+  unsigned int flagged : 1;
+  unsigned int replied : 1;
+  unsigned int changed : 1;
+
+  time_t received;
+  long content_length;
+  struct imap_header_info *next;
+} IMAP_HEADER_INFO;
+
+
+static void imap_make_sequence (char *buf, size_t buflen)
+{
+  static int sequence = 0;
+  
+  snprintf (buf, buflen, "a%04d", sequence++);
 }
 
-static int imap_read_line (char *buf, size_t buflen, CONNECTION *conn)
-{
-  char ch;
-  int i;
-
-  for (i = 0; i < buflen; i++)
-  {
-    if (imap_readchar (conn, &ch) != 1)
-      return (-1);
-    if (ch == '\n')
-      break;
-    buf[i] = ch;
-  }
-  buf[i-1] = 0;
-  return (i + 1);
-}
-
-static int imap_read_line_d (char *buf, size_t buflen, CONNECTION *conn)
-{
-  int r = imap_read_line (buf, buflen, conn);
-  dprint (1,(debugfile,"imap_read_line_d():%s\n", buf));
-  return r;
-}
-
-static void imap_make_sequence (char *buf, size_t buflen, CONTEXT *ctx)
-{
-  snprintf (buf, buflen, "a%04d", CTX_DATA->sequence++);
-}
-
-static int imap_write (CONNECTION *conn, const char *buf)
-{
-  dprint (1,(debugfile,"imap_write():%s", buf));
-  return (write (conn->fd, buf, strlen (buf)));
-}
 
 static void imap_error (const char *where, const char *msg)
 {
-  dprint (1, (debugfile, "imap_error(): unexpected response in %s: %s\n", where, msg));
-}
-
-static CONNECTION *imap_select_connection (char *host, int flags)
-{
-  int x;
-
-  if (flags != IMAP_OPEN_NEW)
-  {
-    for (x = 0; x < NumConnections; x++)
-    {
-      if (!strcmp (host, Connections[x].server))
-	return &Connections[x];
-    }
-  }
-  if (NumConnections == 0)
-  {
-    NumConnections = 1;
-    Connections = (CONNECTION *) safe_malloc (sizeof (CONNECTION));
-  }
-  else
-  {
-    NumConnections++;
-    safe_realloc ((void *)Connections, sizeof (CONNECTION) * NumConnections);
-  }
-  Connections[NumConnections - 1].bufpos = 0;
-  Connections[NumConnections - 1].available = 0;
-  Connections[NumConnections - 1].uses = 0;
-  Connections[NumConnections - 1].server = safe_strdup (host);
-
-  return &Connections[NumConnections - 1];
+  mutt_error ("imap_error(): unexpected response in %s: %s\n", where, msg);
 }
 
 /* date is of the form: DD-MMM-YYYY HH:MM:SS +ZZzz */
@@ -216,7 +148,7 @@ static time_t imap_parse_date (char *s)
   return (mutt_mktime (&t, 0) + tz);
 }
 
-static int imap_parse_fetch (HEADER *h, char *s)
+static int imap_parse_fetch (IMAP_HEADER_INFO *h, char *s)
 {
   char tmp[SHORT_STRING];
   char *ptmp;
@@ -278,11 +210,11 @@ static int imap_parse_fetch (HEADER *h, char *s)
 	  while (isdigit (*s))
 	    *ptmp++ = *s++;
 	  *ptmp = 0;
-	  h->content->length += atoi (tmp);
+	  h->content_length += atoi (tmp);
 	}
 	else if (*s == ')')
 	  s++; /* end of request */
-	else
+	else if (*s)
 	{
 	  /* got something i don't understand */
 	  imap_error ("imap_parse_fetch()", s);
@@ -334,7 +266,7 @@ static int imap_read_bytes (FILE *fp, CONNECTION *conn, long bytes)
 
   for (pos = 0; pos < bytes; )
   {
-    len = imap_read_line (buf, sizeof (buf), conn);
+    len = mutt_socket_read_line (buf, sizeof (buf), conn);
     if (len < 0)
       return (-1);
     pos += len;
@@ -426,102 +358,168 @@ static int imap_handle_untagged (CONTEXT *ctx, char *s)
   return 0;
 }
 
-static int imap_read_header (CONTEXT *ctx, int msgno)
+/*
+ * Changed to read many headers instead of just one. It will return the
+ * msgno of the last message read. It will return a value other than
+ * msgend if mail comes in while downloading headers (in theory).
+ */
+static int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
 {
-  char buf[LONG_STRING];
+  char buf[LONG_STRING],fetchbuf[LONG_STRING];
   FILE *fp;
   char tempfile[_POSIX_PATH_MAX];
   char seq[8];
-  char *pc;
+  char *pc,*fpc,*hdr;
   char *pn;
+  long ploc;
   long bytes = 0;
+  int msgno,fetchlast;
+  IMAP_HEADER_INFO *h0,*h,*htemp;
 
-  ctx->hdrs[ctx->msgcount]->index = ctx->msgcount;
+  fetchlast = 0;
 
+  /*
+   * We now download all of the headers into one file. This should be
+   * faster on most systems.
+   */
   mutt_mktemp (tempfile);
   if (!(fp = safe_fopen (tempfile, "w+")))
   {
     return (-1);
   }
 
-  imap_make_sequence (seq, sizeof (seq), ctx);
-  snprintf (buf, sizeof (buf), "%s FETCH %d RFC822.HEADER\r\n", seq, msgno + 1);
-  imap_write (CTX_DATA->conn, buf);
-
-  do
+  h0=safe_malloc(sizeof(IMAP_HEADER_INFO));
+  h=h0;
+  for (msgno=msgbegin; msgno <= msgend ; msgno++)
   {
-    if (imap_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
+    snprintf (buf, sizeof (buf), "Fetching message headers... [%d/%d]", 
+      msgno + 1, msgend + 1);
+    mutt_message (buf);
+
+    if (msgno + 1 > fetchlast)
     {
+      imap_make_sequence (seq, sizeof (seq));
+      /*
+       * Make one request for everything. This makes fetching headers an
+       * order of magnitude faster if you have a large mailbox.
+       *
+       * If we get more messages while doing this, we make another
+       * request for all the new messages.
+       */
+      snprintf (buf, sizeof (buf), "%s FETCH %d:%d (FLAGS INTERNALDATE RFC822.SIZE BODY.PEEK[HEADER.FIELDS (DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE IN-REPLY-TO REPLY-TO)])\r\n", seq, msgno + 1, msgend + 1);
+      mutt_socket_write (CTX_DATA->conn, buf);
+      fetchlast = msgend + 1;
+    }
+
+    do
+    {
+      if (mutt_socket_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
+      {
+        return (-1);
+      }
+
+      if (buf[0] == '*')
+      {
+        pc = buf;
+        pc = imap_next_word (pc);
+        pc = imap_next_word (pc);
+        if (strncasecmp ("FETCH", pc, 5) == 0)
+        {
+          if (!(pc = strchr (pc, '(')))
+          {
+            imap_error ("imap_read_headers()", buf);
+            return (-1);
+          }
+          pc++;
+          fpc=fetchbuf;
+          while (*pc != '\0' && *pc != ')')
+          {
+            hdr=strstr(pc,"BODY");
+            strncpy(fpc,pc,hdr-pc);
+            fpc += hdr-pc;
+            *fpc = '\0';
+            pc=hdr;
+            /* get some number of bytes */
+            if (!(pc = strchr (pc, '{')))
+            {
+              imap_error ("imap_read_headers()", buf);
+              return (-1);
+            }
+            pc++;
+            pn = pc;
+            while (isdigit (*pc))
+              pc++;
+            *pc = 0;
+            bytes = atoi (pn);
+
+            imap_read_bytes (fp, CTX_DATA->conn, bytes);
+            if (mutt_socket_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
+            {
+              return (-1);
+            }
+            pc = buf;
+          }
+        }
+        else if (imap_handle_untagged (ctx, buf) != 0)
+          return (-1);
+      }
+    }
+    while ((msgno + 1) >= fetchlast && strncmp (seq, buf, SEQLEN) != 0);
+
+    h->content_length = -bytes;
+    if (imap_parse_fetch (h, fetchbuf) == -1)
       return (-1);
-    }
 
-    if (buf[0] == '*')
+    /* subtract the header length; the total message size will be
+       added to this */
+
+    /* in case we get new mail while fetching the headers */
+    if (((IMAP_DATA *) ctx->data)->status == IMAP_NEW_MAIL)
     {
-      pc = buf;
-      pc = imap_next_word (pc);
-      pc = imap_next_word (pc);
-      if (strncasecmp ("FETCH", pc, 5) == 0)
-      {
-	if (!(pc = strchr (pc, '{')))
-	{
-	  imap_error ("imap_read_header()", buf);
-	  return (-1);
-	}
-	pc++;
-	pn = pc;
-	while (isdigit (*pc))
-	  pc++;
-	*pc = 0;
-	bytes = atoi (pn);
-
-	imap_read_bytes (fp, CTX_DATA->conn, bytes);
-      }
-      else if (imap_handle_untagged (ctx, buf) != 0)
-	  return (-1);
+      msgend = ((IMAP_DATA *) ctx->data)->newMailCount - 1;
+      while ((msgend + 1) > ctx->hdrmax)
+        mx_alloc_memory (ctx);
+      ((IMAP_DATA *) ctx->data)->status = 0;
     }
+
+    h->next=safe_malloc(sizeof(IMAP_HEADER_INFO));
+    h=h->next;
   }
-  while (strncmp (seq, buf, SEQLEN) != 0);
 
-  rewind (fp);
-  ctx->hdrs[msgno]->env = mutt_read_rfc822_header (fp, ctx->hdrs[msgno]);
+  rewind(fp);
+  h=h0;
 
-/* subtract the header length; the total message size will be added to this */
-  ctx->hdrs[msgno]->content->length = -bytes;
-
-  fclose (fp);
-  unlink (tempfile);
-
-  /* get the status of this message */
-  imap_make_sequence (seq, sizeof (seq), ctx);
-  snprintf (buf, sizeof (buf), "%s FETCH %d FAST\r\n", seq, msgno + 1);
-  imap_write (CTX_DATA->conn, buf);
-  do
+  /*
+   * Now that we have all the header information, we can tell mutt about
+   * it.
+   */
+  ploc=0;
+  for (msgno = msgbegin; msgno <= msgend;msgno++)
   {
-    if (imap_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
-      break;
-    if (buf[0] == '*')
-    {
-      pc = buf;
-      pc = imap_next_word (pc);
-      pc = imap_next_word (pc);
-      if (strncasecmp ("FETCH", pc, 5) == 0)
-      {
-	if (!(pc = strchr (pc, '(')))
-	{
-	  imap_error ("imap_read_header()", buf);
-	  return (-1);
-	}
-	if (imap_parse_fetch (ctx->hdrs[msgno], pc + 1) != 0)
-	  return (-1);
-      }
-      else if (imap_handle_untagged (ctx, buf) != 0)
-	return (-1);
-    }
-  }
-  while (strncmp (seq, buf, SEQLEN) != 0)
-    ;
+    ctx->hdrs[ctx->msgcount] = mutt_new_header ();
+    ctx->hdrs[ctx->msgcount]->index = ctx->msgcount;
 
-  return 0;
+    ctx->hdrs[msgno]->env = mutt_read_rfc822_header (fp, ctx->hdrs[msgno]);
+    ploc=ftell(fp);
+    ctx->hdrs[msgno]->read = h->read;
+    ctx->hdrs[msgno]->old = h->old;
+    ctx->hdrs[msgno]->deleted = h->deleted;
+    ctx->hdrs[msgno]->flagged = h->flagged;
+    ctx->hdrs[msgno]->replied = h->replied;
+    ctx->hdrs[msgno]->changed = h->changed;
+    ctx->hdrs[msgno]->received = h->received;
+    ctx->hdrs[msgno]->content->length = h->content_length;
+
+    mx_update_context(ctx); /* increments ->msgcount */
+
+    htemp=h;
+    h=h->next;
+    safe_free((void **) &htemp);
+  }
+  fclose(fp);
+  unlink(tempfile);
+
+  return (msgend);
 }
 
 static int imap_exec (char *buf, size_t buflen,
@@ -529,11 +527,11 @@ static int imap_exec (char *buf, size_t buflen,
 {
   int count;
 
-  imap_write (CTX_DATA->conn, cmd);
+  mutt_socket_write (CTX_DATA->conn, cmd);
 
   do
   {
-    if (imap_read_line_d (buf, buflen, CTX_DATA->conn) < 0)
+    if (mutt_socket_read_line_d (buf, buflen, CTX_DATA->conn) < 0)
       return (-1);
 
     if (buf[0] == '*' && imap_handle_untagged (ctx, buf) != 0)
@@ -546,7 +544,6 @@ static int imap_exec (char *buf, size_t buflen,
     /* read new mail messages */
 
     dprint (1, (debugfile, "imap_exec(): new mail detected\n"));
-    mutt_message ("Fetching headers for new mail...");
 
     CTX_DATA->status = 0;
 
@@ -554,23 +551,7 @@ static int imap_exec (char *buf, size_t buflen,
     while (count > ctx->hdrmax)
       mx_alloc_memory (ctx);
 
-    while (ctx->msgcount < count)
-    {
-      ctx->hdrs[ctx->msgcount] = mutt_new_header ();
-      imap_read_header (ctx, ctx->msgcount);
-      mx_update_context (ctx); /* incremements ->msgcount */
-      
-      /* check to make sure that new mail hasn't arrived in the middle of
-       * checking for new mail (sigh)
-       */
-      if (CTX_DATA->status == IMAP_NEW_MAIL)
-      {
-	count = CTX_DATA->newMailCount;
-	while (count > ctx->hdrmax)
-	  mx_alloc_memory (ctx);
-	CTX_DATA->status = 0;
-      }
-    }
+    count=imap_read_headers (ctx, ctx->msgcount, count - 1) + 1;
 
     mutt_clear_error ();
   }
@@ -593,8 +574,30 @@ static int imap_exec (char *buf, size_t buflen,
   return 0;
 }
 
+static int imap_parse_path (char *path, char *host, size_t hlen, char **mbox)
+{
+  int n;
+  char *pc;
+
+  pc = path;
+  if (*pc != '{')
+    return (-1);
+  pc++;
+  n = 0;
+  while (*pc && *pc != '}' && (n < hlen-1))
+    host[n++] = *pc++;
+  host[n] = 0;
+  if (!*pc)
+    return (-1);
+  pc++;
+
+  *mbox = pc;
+  return 0;
+}
+
 static int imap_open_connection (CONTEXT *ctx, CONNECTION *conn)
 {
+  char *portnum, *hostname;
   struct sockaddr_in sin;
   struct hostent *he;
   char buf[LONG_STRING];
@@ -602,40 +605,19 @@ static int imap_open_connection (CONTEXT *ctx, CONNECTION *conn)
   char pass[SHORT_STRING];
   char seq[16];
 
-  if (!ImapUser)
-  {
-    strfcpy (user, Username, sizeof (user));
-    if (mutt_get_field ("IMAP Username: ", user, sizeof (user), 0) != 0 ||
-        !user[0])
-    {
-      user[0] = 0;
-      return (-1);
-    }
-  }
-  else
-    strfcpy (user, ImapUser, sizeof (user));
-
-  if (!ImapPass)
-  {
-    pass[0]=0;
-    snprintf (buf, sizeof (buf), "Password for %s@%s: ", user, conn->server);
-    if (mutt_get_field (buf, pass, sizeof (pass), M_PASS) != 0 ||
-        !pass[0])
-    {
-      return (-1);
-    }
-  }
-  else
-    strfcpy (pass, ImapPass, sizeof (pass));
-
   memset (&sin, 0, sizeof (sin));
-  sin.sin_port = htons (IMAP_PORT);
+  hostname = safe_strdup(conn->server);
+  portnum = strrchr(hostname, ':');
+  if(portnum) { *portnum=0; portnum++; }
+  sin.sin_port = htons (portnum ? atoi(portnum) : IMAP_PORT);
   sin.sin_family = AF_INET;
-  if ((he = gethostbyname (conn->server)) == NULL)
+  if ((he = gethostbyname (hostname)) == NULL)
   {
+    safe_free((void*)&hostname);
     mutt_perror (conn->server);
     return (-1);
   }
+  safe_free((void*)&hostname);
   memcpy (&sin.sin_addr, he->h_addr_list[0], he->h_length);
 
   if ((conn->fd = socket (AF_INET, SOCK_STREAM, IPPROTO_IP)) < 0)
@@ -652,34 +634,60 @@ static int imap_open_connection (CONTEXT *ctx, CONNECTION *conn)
     close (conn->fd);
   }
 
-  if (imap_read_line_d (buf, sizeof (buf), conn) < 0)
+  if (mutt_socket_read_line_d (buf, sizeof (buf), conn) < 0)
   {
     close (conn->fd);
     return (-1);
   }
 
-  if (strncmp ("* OK", buf, 4) != 0)
+  if (strncmp ("* OK", buf, 4) == 0)
+  {
+    if (!ImapUser)
+    {
+      strfcpy (user, NONULL(Username), sizeof (user));
+      if (mutt_get_field ("IMAP Username: ", user, sizeof (user), 0) != 0 ||
+	  !user[0])
+      {
+	user[0] = 0;
+	return (-1);
+      }
+    }
+    else
+      strfcpy (user, ImapUser, sizeof (user));
+
+    if (!ImapPass)
+    {
+      pass[0]=0;
+      snprintf (buf, sizeof (buf), "Password for %s@%s: ", user, conn->server);
+      if (mutt_get_field (buf, pass, sizeof (pass), M_PASS) != 0 ||
+	  !pass[0])
+      {
+	return (-1);
+      }
+    }
+    else
+      strfcpy (pass, ImapPass, sizeof (pass));
+
+    mutt_message ("Logging in...");
+    imap_make_sequence (seq, sizeof (seq));
+    snprintf (buf, sizeof (buf), "%s LOGIN %s %s\r\n", seq, user, pass);
+    if (imap_exec (buf, sizeof (buf), ctx, seq, buf, 0) != 0)
+      {
+	imap_error ("imap_open_connection()", buf);
+	return (-1);
+      }
+    /* If they have a successful login, we may as well cache the user/password. */
+    if (!ImapUser)
+      ImapUser = safe_strdup (user);
+    if (!ImapPass)
+      ImapPass = safe_strdup (pass);
+  }
+  else if (strncmp ("* PREAUTH", buf, 9) != 0)
   {
     imap_error ("imap_open_connection()", buf);
     close (conn->fd);
     return (-1);
   }
-
-  mutt_message ("Logging in...");
-  /* sequence numbers are currently context dependent, so just make one
-   * up for this first access to the server */
-  strcpy (seq, "l0000");
-  snprintf (buf, sizeof (buf), "%s LOGIN %s %s\r\n", seq, user, pass);
-  if (imap_exec (buf, sizeof (buf), ctx, seq, buf, 0) != 0)
-  {
-    imap_error ("imap_open_connection()", buf);
-    return (-1);
-  }
-  /* If they have a successful login, we may as well cache the user/password. */
-  if (!ImapUser)
-    ImapUser = safe_strdup (user);
-  if (!ImapPass)
-    ImapPass = safe_strdup (pass);
 
   return 0;
 }
@@ -691,29 +699,20 @@ int imap_open_mailbox (CONTEXT *ctx)
   char bufout[LONG_STRING];
   char host[SHORT_STRING];
   char seq[16];
+  char *pc = NULL;
   int count = 0;
   int n;
-  char *pc;
+
+  if (imap_parse_path (ctx->path, host, sizeof (host), &pc))
+    return (-1);
 
   /* create IMAP-specific state struct */
   ctx->data = safe_malloc (sizeof (IMAP_DATA));
   memset (ctx->data, 0, sizeof (IMAP_DATA));
 
-  pc = ctx->path;
-  if (*pc != '{')
-    return (-1);
-  pc++;
-  n = 0;
-  while (*pc && *pc != '}')
-    host[n++] = *pc++;
-  host[n] = 0;
-  if (!*pc)
-    return (-1);
-  pc++;
-
   CTX_DATA->mailbox = safe_strdup (pc);
 
-  conn = imap_select_connection (host, IMAP_OPEN_NEW);
+  conn = mutt_socket_select_connection (host, IMAP_PORT, M_NEW_SOCKET);
   CTX_DATA->conn = conn;
 
   if (conn->uses == 0)
@@ -722,13 +721,13 @@ int imap_open_mailbox (CONTEXT *ctx)
   conn->uses++;
 
   mutt_message ("Selecting %s...", CTX_DATA->mailbox);
-  imap_make_sequence (seq, sizeof (seq), ctx);
+  imap_make_sequence (seq, sizeof (seq));
   snprintf (bufout, sizeof (bufout), "%s SELECT %s\r\n", seq, CTX_DATA->mailbox);
-  imap_write (CTX_DATA->conn, bufout);
+  mutt_socket_write (CTX_DATA->conn, bufout);
 
   do
   {
-    if (imap_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
+    if (mutt_socket_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
       break;
 
     if (buf[0] == '*')
@@ -756,32 +755,8 @@ int imap_open_mailbox (CONTEXT *ctx)
   ctx->hdrmax = count;
   ctx->hdrs = safe_malloc (count * sizeof (HEADER *));
   ctx->v2r = safe_malloc (count * sizeof (int));
-  for (ctx->msgcount = 0; ctx->msgcount < count; )
-  {
-    snprintf (buf, sizeof (buf), "Fetching message headers... [%d/%d]", 
-      ctx->msgcount + 1, count);
-    mutt_message (buf);
-    ctx->hdrs[ctx->msgcount] = mutt_new_header ();
-
-    /* `count' can get modified if new mail arrives while fetching the
-     * header for this message
-     */
-    if (imap_read_header (ctx, ctx->msgcount) != 0)
-    {
-      mx_fastclose_mailbox (ctx);
-      return (-1);
-    }
-    mx_update_context (ctx); /* increments ->msgcount */
-
-    /* in case we get new mail while fetching the headers */
-    if (CTX_DATA->status == IMAP_NEW_MAIL)
-    {
-      count = CTX_DATA->newMailCount;
-      while (count > ctx->hdrmax)
-	mx_alloc_memory (ctx);
-      CTX_DATA->status = 0;
-    }
-  }
+  ctx->msgcount = 0;
+  count=imap_read_headers (ctx, 0, count - 1) + 1;
 
   return 0;
 }
@@ -791,7 +766,7 @@ static int imap_create_mailbox (CONTEXT *ctx)
   char seq[8];
   char buf[LONG_STRING];
 
-  imap_make_sequence (seq, sizeof (seq), ctx);
+  imap_make_sequence (seq, sizeof (seq));
   snprintf (buf, sizeof (buf), "%s CREATE %s\r\n", seq, CTX_DATA->mailbox);
       
   if (imap_exec (buf, sizeof (buf), ctx, seq, buf, 0) != 0)
@@ -808,28 +783,19 @@ int imap_open_mailbox_append (CONTEXT *ctx)
   char host[SHORT_STRING];
   char buf[LONG_STRING];
   char seq[16];
-  int n;
   char *pc;
+
+  if (imap_parse_path (ctx->path, host, sizeof (host), &pc))
+    return (-1);
 
   /* create IMAP-specific state struct */
   ctx->data = safe_malloc (sizeof (IMAP_DATA));
   memset (ctx->data, 0, sizeof (IMAP_DATA));
-
-  pc = ctx->path;
-  if (*pc != '{')
-    return (-1);
-  pc++;
-  n = 0;
-  while (*pc && *pc != '}')
-    host[n++] = *pc++;
-  host[n] = 0;
-  if (!*pc)
-    return (-1);
-  pc++;
+  ctx->magic = M_IMAP;
 
   CTX_DATA->mailbox = pc;
 
-  conn = imap_select_connection (host, 0);
+  conn = mutt_socket_select_connection (host, IMAP_PORT, 0);
   CTX_DATA->conn = conn;
 
   if (conn->uses == 0)
@@ -839,7 +805,7 @@ int imap_open_mailbox_append (CONTEXT *ctx)
 
   /* check mailbox existance */
 
-  imap_make_sequence (seq, sizeof (seq), ctx);
+  imap_make_sequence (seq, sizeof (seq));
   snprintf (buf, sizeof (buf), "%s STATUS %s (UIDVALIDITY)\r\n", seq, 
       CTX_DATA->mailbox);
       
@@ -865,6 +831,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   char *pc;
   char *pn;
   long bytes;
+  int pos,len,onbody=0;
   IMAP_CACHE *cache;
 
   /* see if we already have the message in our cache */
@@ -886,7 +853,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
     {
       /* clear the previous entry */
       unlink (cache->path);
-      free (cache->path);
+      FREE (&cache->path);
     }
   }
 
@@ -901,13 +868,13 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
     return (-1);
   }
 
-  imap_make_sequence (seq, sizeof (seq), ctx);
+  imap_make_sequence (seq, sizeof (seq));
   snprintf (buf, sizeof (buf), "%s FETCH %d RFC822\r\n", seq,
 	    ctx->hdrs[msgno]->index + 1);
-  imap_write (CTX_DATA->conn, buf);
+  mutt_socket_write (CTX_DATA->conn, buf);
   do
   {
-    if (imap_read_line (buf, sizeof (buf), CTX_DATA->conn) < 0)
+    if (mutt_socket_read_line (buf, sizeof (buf), CTX_DATA->conn) < 0)
     {
       return (-1);
     }
@@ -930,7 +897,25 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	  pc++;
 	*pc = 0;
 	bytes = atoi (pn);
-	imap_read_bytes (msg->fp, CTX_DATA->conn, bytes);
+	for (pos = 0; pos < bytes; )
+	{
+	  len = mutt_socket_read_line (buf, sizeof (buf), CTX_DATA->conn);
+	  if (len < 0)
+	    return (-1);
+	  pos += len;
+	  fputs (buf, msg->fp);
+	  fputs ("\n", msg->fp);
+	  if (! onbody && len == 2)
+	  {
+	    /*
+	     * This is the first time we really know how long the full
+	     * header is. We must set it now, or mutt will not display
+	     * the message properly
+	     */
+	    ctx->hdrs[msgno]->content->offset=ftell(msg->fp);
+	    onbody=1;
+	  }
+	}
       }
       else if (imap_handle_untagged (ctx, buf) != 0)
 	return (-1);
@@ -947,35 +932,47 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   return 0;
 }
 
+static void
+flush_buffer(char *buf, size_t *len, CONNECTION *conn)
+{
+  buf[*len] = '\0';
+  mutt_socket_write(conn, buf);
+  *len = 0;
+}
+
 int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
 {
   FILE *fp;
-  struct stat s;
   char seq[8];
   char buf[LONG_STRING];
-
-  if (stat (msg->path, &s) == -1)
+  size_t len;
+  int c, last;
+  
+  if ((fp = fopen (msg->path, "r")) == NULL)
   {
     mutt_perror (msg->path);
     return (-1);
   }
 
-  if ((fp = safe_fopen (msg->path, "r")) == NULL)
+  for(last = EOF, len = 0; (c = fgetc(fp)) != EOF; last = c)
   {
-    mutt_perror (msg->path);
-    return (-1);
-  }
+    if(c == '\n' && last != '\r')
+      len++;
 
+    len++;
+  }
+  rewind(fp);
+  
   mutt_message ("Sending APPEND command ...");
-  imap_make_sequence (seq, sizeof (seq), ctx);
+  imap_make_sequence (seq, sizeof (seq));
   snprintf (buf, sizeof (buf), "%s APPEND %s {%d}\r\n", seq, 
-      CTX_DATA->mailbox, s.st_size);
+      CTX_DATA->mailbox, len);
 
-  imap_write (CTX_DATA->conn, buf);
+  mutt_socket_write (CTX_DATA->conn, buf);
 
   do 
   {
-    if (imap_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
+    if (mutt_socket_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
     {
       fclose (fp);
       return (-1);
@@ -1005,16 +1002,28 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   }
 
   mutt_message ("Uploading message ...");
-  while (fgets (buf, sizeof (buf), fp) != NULL)
+
+  for(last = EOF, len = 0; (c = fgetc(fp)) != EOF; last = c)
   {
-    imap_write (CTX_DATA->conn, buf);
+    if(c == '\n' && last != '\r')
+      buf[len++] = '\r';
+
+    buf[len++] = c;
+
+    if(len > sizeof(buf) - 3)
+      flush_buffer(buf, &len, CTX_DATA->conn);
   }
-  imap_write (CTX_DATA->conn, "\r\n");
+  
+  if(len)
+    flush_buffer(buf, &len, CTX_DATA->conn);
+
+    
+  mutt_socket_write (CTX_DATA->conn, "\r\n");
   fclose (fp);
 
   do
   {
-    if (imap_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
+    if (mutt_socket_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
       return (-1);
 
     if (buf[0] == '*' && imap_handle_untagged (ctx, buf) != 0)
@@ -1043,23 +1052,24 @@ int imap_close_connection (CONTEXT *ctx)
   char buf[LONG_STRING];
   char seq[8];
 
+  dprint (1, (debugfile, "imap_close_connection(): closing connection\n"));
   /* if the server didn't shut down on us, close the connection gracefully */
   if (CTX_DATA->status != IMAP_BYE)
   {
     mutt_message ("Closing connection to IMAP server...");
-    imap_make_sequence (seq, sizeof (seq), ctx);
+    imap_make_sequence (seq, sizeof (seq));
     snprintf (buf, sizeof (buf), "%s LOGOUT\r\n", seq);
-    imap_write (CTX_DATA->conn, buf);
+    mutt_socket_write (CTX_DATA->conn, buf);
     do
     {
-      if (imap_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
+      if (mutt_socket_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
 	break;
     }
     while (strncmp (seq, buf, SEQLEN) != 0);
     mutt_clear_error ();
   }
   close (CTX_DATA->conn->fd);
-  CTX_DATA->conn->uses--;
+  CTX_DATA->conn->uses = 0;
   return 0;
 }
 
@@ -1090,7 +1100,7 @@ int imap_sync_mailbox (CONTEXT *ctx)
       mutt_remove_trailing_ws (tmp);
 
       if (!*tmp) continue; /* imapd doesn't like empty flags. */
-      imap_make_sequence (seq, sizeof (seq), ctx);
+      imap_make_sequence (seq, sizeof (seq));
       snprintf (buf, sizeof (buf), "%s STORE %d FLAGS.SILENT (%s)\r\n", seq, 
       	ctx->hdrs[n]->index + 1, tmp);
       if (imap_exec (buf, sizeof (buf), ctx, seq, buf, 0) != 0)
@@ -1103,7 +1113,7 @@ int imap_sync_mailbox (CONTEXT *ctx)
 
   mutt_message ("Expunging messages from server...");
   CTX_DATA->status = IMAP_EXPUNGE;
-  imap_make_sequence (seq, sizeof (seq), ctx);
+  imap_make_sequence (seq, sizeof (seq));
   snprintf (buf, sizeof (buf), "%s EXPUNGE\r\n", seq);
   if (imap_exec (buf, sizeof (buf), ctx, seq, buf, 0) != 0)
   {
@@ -1131,7 +1141,9 @@ void imap_fastclose_mailbox (CONTEXT *ctx)
   /* Check to see if the mailbox is actually open */
   if (!ctx->data)
     return;
-  imap_close_connection (ctx);
+  CTX_DATA->conn->uses--;
+  if ((CTX_DATA->conn->uses == 0) || (CTX_DATA->status == IMAP_BYE))
+    imap_close_connection (ctx);
   for (i = 0; i < IMAP_CACHE_LEN; i++)
   {
     if (CTX_DATA->cache[i].path)
@@ -1151,7 +1163,7 @@ int imap_close_mailbox (CONTEXT *ctx)
 
   /* tell the server to commit changes */
   mutt_message ("Closing mailbox...");
-  imap_make_sequence (seq, sizeof (seq), ctx);
+  imap_make_sequence (seq, sizeof (seq));
   snprintf (buf, sizeof (buf), "%s CLOSE\r\n", seq);
   if (imap_exec (buf, sizeof (buf), ctx, seq, buf, 0) != 0)
   {
@@ -1176,7 +1188,7 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint)
     checktime=k;
   }
 
-  imap_make_sequence (seq, sizeof (seq), ctx);
+  imap_make_sequence (seq, sizeof (seq));
   snprintf (buf, sizeof (buf), "%s NOOP\r\n", seq);
   if (imap_exec (buf, sizeof (buf), ctx, seq, buf, 0) != 0)
   {
@@ -1185,4 +1197,79 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint)
   }
 
   return (msgcount != ctx->msgcount);
+}
+
+int imap_buffy_check (char *path)
+{
+  CONNECTION *conn;
+  char host[SHORT_STRING];
+  char buf[LONG_STRING];
+  char seq[8];
+  char *mbox;
+  char *s;
+  char recent = FALSE;
+
+  if (imap_parse_path (path, host, sizeof (host), &mbox))
+    return -1;
+
+  conn = mutt_socket_select_connection (host, IMAP_PORT, 0);
+
+  /* Currently, we don't open a connection to check, but we'll check
+   * over an existing connection */
+  if (conn->uses == 0)
+      return (-1);
+  conn->uses++;
+
+  imap_make_sequence (seq, sizeof (seq));
+  snprintf (buf, sizeof (buf), "%s STATUS %s (RECENT)\r\n", seq, mbox);
+
+  mutt_socket_write (conn, buf);
+
+  do 
+  {
+    if (mutt_socket_read_line_d (buf, sizeof (buf), conn) < 0)
+    {
+      return (-1);
+    }
+
+    /* BUG: We don't handle other untagged messages here.  This is
+     * actually because of a more general problem in that this
+     * connection is being used for a different mailbox, and all
+     * untagged messages we don't handle here (ie, STATUS) need to be
+     * sent to imap_handle_untagged() but with the CONTEXT of the
+     * currently selected mailbox.  The same is broken in the APPEND
+     * stuff above.
+     */
+/*    if (buf[0] == '*' && imap_handle_untagged (ctx, buf) != 0) */
+    if (buf[0] == '*')
+    {
+      s = imap_next_word (buf);
+      if (strncasecmp ("STATUS", s, 6) == 0)
+      {
+	s = imap_next_word (s);
+	if (strncmp (mbox, s, strlen (mbox)) == 0)
+	{
+	  s = imap_next_word (s);
+	  s = imap_next_word (s);
+	  if (isdigit (*s))
+	  {
+	    if (*s != '0')
+	    {
+	      dprint (1, (debugfile, "New mail in %s\n", path));
+	      recent = TRUE;
+	    }
+	  }
+	}
+      }
+      else
+      {
+	mutt_error ("BUG! Untagged IMAP Response during BUFFY Check");
+      }
+    }
+  }
+  while ((strncmp (buf, seq, SEQLEN) != 0));
+
+  conn->uses--;
+
+  return recent;
 }

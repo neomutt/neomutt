@@ -40,60 +40,6 @@ struct m_update_t
   long body;
 };
 
-#ifdef USE_DOTLOCK
-/*
- * Determine whether or not to use a dotlock to lock the indicated file.
- * On some systems, the spool directory is not world-writable.  If it is
- * group-writable, we might need to be setgid() to write the lock.  If not
- * group-writable, then we assume that fcntl() locking is enough and skip
- * the dotlocking.
- *
- * return values:
- *	2	need to be setgid to dotlock
- *	1	can use a dotlock
- *	0	don't use a dotlock
- *	-1	error
- */
-static int can_dotlock (const char *path)
-{
-  char tmp[_POSIX_PATH_MAX];
-  char *p;
-#ifdef USE_SETGID
-  struct stat sb;
-#endif
-
-  strfcpy (tmp, path, sizeof (tmp));
-  if ((p = strrchr (tmp, '/')))
-    *p = 0;
-  else
-    strfcpy (tmp, ".", sizeof (tmp)); /* use current directory */
-
-  if (access (tmp, W_OK) == 0) return 1;
-
-#ifdef USE_SETGID
-  if (stat (tmp, &sb) == 0)
-  {
-    if ((sb.st_mode & S_IWGRP) == S_IWGRP)
-    {
-      /* can dotlock, but need to be setgid */
-      if (sb.st_gid == MailGid)
-	return (2);
-      else
-      {
-	mutt_error ("Need to be running setgid %d to lock mailbox!", sb.st_gid);
-	return (-1);
-      }
-    }
-  }
-#endif
-
-  if (mutt_yesorno ("Can't dotlock mailbox, continue anyway?", 0) == 1)
-    return 0;
-
-  return (-1);
-}
-#endif
-
 /* parameters:
  * ctx - context to lock
  * excl - exclusive lock?
@@ -101,35 +47,14 @@ static int can_dotlock (const char *path)
  */
 int mbox_lock_mailbox (CONTEXT *ctx, int excl, int retry)
 {
-  int r = 0;
+  int r;
 
-#ifdef USE_DOTLOCK
-  r = can_dotlock (ctx->path);
+  /* XXX - Currently, we force dotlocking.
+   * Use dotlock -t here.
+   */
 
-  if (r == -1)
-    return (-1);
-#ifdef USE_SETGID
-  else if (r == 2)
-  {
-    /* need to be setgid to lock the mailbox */
-    if (SETEGID (MailGid) != 0)
-    {
-      mutt_perror ("setegid");
-      return (-1);
-    }
-
-    ctx->setgid = 1;
-  }
-#endif /* USE_SETGID */
-#endif /* USE_DOTLOCK */
-
-  if ((r = mx_lock_file (ctx->path, fileno (ctx->fp), excl, r, retry)) == 0)
+  if ((r = mx_lock_file (ctx->path, fileno (ctx->fp), excl, 1, retry)) == 0)
     ctx->locked = 1;
-
-#ifdef USE_SETGID
-  if (ctx->setgid)
-    SETEGID (UserGid);
-#endif
 
   return (r);
 }
@@ -140,21 +65,8 @@ void mbox_unlock_mailbox (CONTEXT *ctx)
   {
     fflush (ctx->fp);
 
-#ifdef USE_SETGID
-    if (ctx->setgid)
-      SETEGID (MailGid);
-#endif /* USE_SETGID */
-
     mx_unlock_file (ctx->path, fileno (ctx->fp));
     ctx->locked = 0;
-
-#ifdef USE_SETGID
-    if (ctx->setgid)
-    {
-      SETEGID (UserGid);
-      ctx->setgid = 0;
-    }
-#endif
   }
 }
 
@@ -915,7 +827,7 @@ int mbox_sync_mailbox (CONTEXT *ctx)
     char savefile[_POSIX_PATH_MAX];
     
     snprintf (savefile, sizeof (savefile), "%s/mutt.%s-%s-%d",
-	      NONULL (Tempdir), Username, Hostname, getpid ());
+	      NONULL (Tempdir), NONULL(Username), NONULL(Hostname), getpid ());
     rename (tempfile, savefile);
     mutt_unblock_signals ();
     mx_fastclose_mailbox (ctx);
@@ -987,21 +899,7 @@ bail:  /* Come here in case of disaster */
 /* close a mailbox opened in write-mode */
 int mbox_close_mailbox (CONTEXT *ctx)
 {
-#ifdef USE_SETGID
-  if (ctx->setgid)
-    SETEGID (MailGid);
-#endif
-
   mx_unlock_file (ctx->path, fileno (ctx->fp));
-
-#ifdef USE_SETGID
-  if (ctx->setgid)
-  {
-    SETEGID (UserGid);
-    ctx->setgid = 0;
-  }
-#endif
-
   mutt_unblock_signals ();
   mx_fastclose_mailbox (ctx);
   return 0;

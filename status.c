@@ -20,6 +20,7 @@
 #include "mutt_menu.h"
 #include "mutt_curses.h"
 #include "sort.h"
+#include "mapping.h"
 
 #include <string.h>
 #include <ctype.h>
@@ -86,7 +87,7 @@ status_format_str (char *buf, size_t buflen, char op, const char *src,
 
     case 'h':
       snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
-      snprintf (buf, buflen, fmt, Hostname);
+      snprintf (buf, buflen, fmt, NONULL(Hostname));
       break;
 
     case 'f':

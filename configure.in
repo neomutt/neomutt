@@ -1,8 +1,10 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(mutt.h)
 AC_CONFIG_HEADER(config.h)
-VERSION=0.92.11
+VERSION=0.94.4
 SUBVERSION=''
+
+AC_CANONICAL_HOST
 
 AC_MSG_CHECKING(for prefix)
 if test x$prefix = xNONE; then
@@ -15,6 +17,14 @@ AC_MSG_RESULT($mutt_cv_prefix)
 AC_PROG_CC
 AC_PROG_MAKE_SET
 AC_PROG_INSTALL
+
+case "$host" in
+*-*-hpux*)
+	if test -z "$GCC" ; then
+		CFLAGS="$CFLAGS -Ae -D_HPUX_SOURCE"
+	fi
+	;;
+esac
 
 AC_PATH_PROG(SENDMAIL, sendmail, no, `echo $PATH | sed "s/:/ /"` /usr/sbin /usr/lib)
 AC_DEFINE_UNQUOTED(SENDMAIL, "$ac_cv_path_SENDMAIL")
@@ -164,7 +174,7 @@ main ()
 
 AC_HEADER_STDC
 
-AC_CHECK_HEADERS(stdarg.h sys/ioctl.h)
+AC_CHECK_HEADERS(stdarg.h sys/ioctl.h sysexits.h)
 
 AC_TYPE_SIGNAL
 
@@ -180,17 +190,24 @@ AC_CHECK_FUNCS(setegid srand48 strerror)
 AC_REPLACE_FUNCS(strcasecmp)
 
 mutt_cv_snprintf=no
+SNPRINTFOBJS=""
 AC_CHECK_FUNC(snprintf, [AC_DEFINE(HAVE_SNPRINTF)], [mutt_cv_snprintf=yes])
 AC_CHECK_FUNC(vsnprintf, [AC_DEFINE(HAVE_VSNPRINTF)], [mutt_cv_snprintf=yes])
 if test $mutt_cv_snprintf = yes; then
 	LIBOBJS="$LIBOBJS snprintf.o"
+	SNPRINTFOBJS="snprintf.o"
 fi
+AC_SUBST(SNPRINTFOBJS)
 
 dnl SCO uses chsize() instead of ftruncate()
 AC_CHECK_FUNCS(ftruncate, break, [AC_CHECK_LIB(x, chsize)])
 
 dnl SCO has strftime() in libintl
 AC_CHECK_FUNCS(strftime, break, [AC_CHECK_LIB(intl, strftime)])
+
+dnl AIX may not have fchdir()
+AC_CHECK_FUNCS(fchdir, [AC_DEFINE(HAVE_FCHDIR)], [mutt_cv_fchdir=no])
+
 
 mutt_cv_regex=yes
 AC_ARG_WITH(rx, [  --with-rx[=DIR]            Use GNU rx ],
@@ -284,28 +301,52 @@ int main (int argc, char **argv)
 	fi
 fi
 
+if test "x$mutt_cv_setgid" = "xyes" || test "x$mutt_cv_fchdir" = "xno"
+then
+	CPPFLAGS="$CPPFLAGS -DDL_STANDALONE"
+	DOTLOCK_TARGET="dotlock"
+	DOTLOCK_INSTALL_TARGET="install.dotlock"
+else
+	LIBOBJS="$LIBOBJS dotlock.o"
+fi
+
+AC_SUBST(DOTLOCK_TARGET)
+AC_SUBST(DOTLOCK_INSTALL_TARGET)
+
+
+
+AC_ARG_WITH(libdir, [  --with-libdir=PATH       specify where to put arch dependent files],
+	[mutt_cv_libdir=$withval],
+	[ AC_CACHE_CHECK(where to put architecture-dependent files,
+		       mutt_cv_libdir,
+		[if test -d ${mutt_cv_prefix}/lib/misc; then
+			mutt_cv_libdir="${mutt_cv_prefix}/lib/misc"
+		else
+			mutt_cv_libdir="${mutt_cv_prefix}/lib"
+		fi])
+	])
+
+libdir=$mutt_cv_libdir
+AC_SUBST(libdir)
+
 AC_ARG_WITH(sharedir, [  --with-sharedir=PATH       specify where to put arch independent files],
 	[mutt_cv_sharedir=$withval],
 	[ AC_CACHE_CHECK(where to put architecture-independent data files,
 		       mutt_cv_sharedir,
-		[if test x$prefix = xNONE; then
-			mutt_cv_prefix=$ac_default_prefix
-		else
-			mutt_cv_prefix=$prefix
-		fi
-		if test -d ${mutt_cv_prefix}/share; then
+		[if test -d ${mutt_cv_prefix}/share; then
 			if test -d ${mutt_cv_prefix}/share/misc; then
-				mutt_cv_sharedir='${prefix}/share/misc'
+				mutt_cv_sharedir="${mutt_cv_prefix}/share/misc"
 			else
-				mutt_cv_sharedir='${prefix}/share'
+				mutt_cv_sharedir="${mutt_cv_prefix}/share"
 			fi
 		else
-			mutt_cv_sharedir='${libdir}'
+			mutt_cv_sharedir="$libdir"
 		fi])
 	])
 
 sharedir=$mutt_cv_sharedir
 AC_SUBST(sharedir)
+
 
 AC_ARG_WITH(docdir, [  --with-docdir=PATH       specify where to put the documentation],
 	[mutt_cv_docdir=$withval],
@@ -324,21 +365,19 @@ AC_SUBST(docdir)
 
 
 if test x$mutt_cv_setgid = xyes; then
-	MUTT_GROUP='-g mail'
-	MUTT_PERMISSION=2755
+	DOTLOCK_GROUP='-g mail'
+	DOTLOCK_PERMISSION=2755
 else
-	MUTT_GROUP=''
-	MUTT_PERMISSION=755
+	DOTLOCK_GROUP=''
+	DOTLOCK_PERMISSION=755
 fi
-AC_SUBST(MUTT_GROUP)
-AC_SUBST(MUTT_PERMISSION)
+AC_SUBST(DOTLOCK_GROUP)
+AC_SUBST(DOTLOCK_PERMISSION)
 
 AC_ARG_WITH(domain, [  --with-domain=DOMAIN       Specify your DNS domain name ],
 	[if test $withval != yes; then
 		AC_DEFINE_UNQUOTED(DOMAIN, "$withval")
 	fi])
-
-AC_ARG_ENABLE(hidden-host, [  --enable-hidden-host       Only use the domain name for local addresses], AC_DEFINE(HIDDEN_HOST))
 
 AC_ARG_ENABLE(pop, [  --enable-pop               Enable POP3 support],
 [	AC_DEFINE(USE_POP)
@@ -351,7 +390,7 @@ AC_ARG_ENABLE(imap, [  --enable-imap              Enable IMAP support],
 [	AC_DEFINE(USE_IMAP)
 	AC_CHECK_LIB(socket, socket)
 	AC_CHECK_LIB(nsl, gethostbyname)
-	LIBOBJS="$LIBOBJS imap.o"
+	LIBOBJS="$LIBOBJS imap.o socket.o"
 ])
 
 AC_ARG_ENABLE(flock, [  --enable-flock             Use flock() to lock files],
@@ -402,4 +441,4 @@ AC_ARG_ENABLE(exact-address, [  --enable-exact-address     enable regeneration o
 		AC_DEFINE(EXACT_ADDRESS)
 	fi])
 
-AC_OUTPUT(Makefile rx/Makefile Muttrc doc/Makefile)
+AC_OUTPUT(Makefile rx/Makefile Muttrc doc/Makefile doc/dotlock.man doc/mutt.man)

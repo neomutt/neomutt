@@ -1,79 +1,111 @@
-Announcing Mutt 0.91
-====================
+Major changes since 0.91.1
+--------------------------
 
-NOTE: PLEASE read the following list of changes carefully, especially the
-first couple entries related to changes in variables/commands and see the
-manual before posting questions.  Taking a little time to read this notice
-will significantly reduce the amount of confusion as to why some things
-might seem broken at first.
-
-Major changes since 0.89.1:
-
-- The matching for the send-hook, save-hook and fcc-hook commands has been
-  extended so that it understands Mutt's matching language (used for
-  searching and limits).  You may still use a "simple" regular expression,
-  but Mutt will expand that with the value of $default_hook (similar to
-  $simple_search).  Additionally, all hooks are now executed in the order
-  they appear in your .muttrc instead of first doing `to', then `cc'.
-
-- new config command `score' which allows you to assign a numerical value to
-  a message based upon header information (similar to scoring in slrn).  the
-  score can be displed in $hdr_format with %N, you can sort by `score' and
-  you can match messages with a certain score (or range) with the `~n'
-  operator
-
-- new variable $beep_new which causes Mutt to beep when new mail is
-  delivered to a mailbox specified by the `mailboxes' command
-
-- new sort method `to' for sorting by who messages are addressed to
-
-- new variable $meta_key which causes Mutt to interpet keystrokes with the
-  hi bit set as ESC plus the key with the hi bit stripped (eg.  ALT-x will
-  get interpetted as "\ex")
-
-- new variable $sort_alias which controls the order the aliases appear in
-  the menu (may be either "alias" or "address")
-
-- new variable $alias_format to control the way the aliases are displayed in
-  the alias menu
+- additional format for $hdr_format
+  	%L	displays the total size of all visible messages in a
+		limited view
+	%<fmt>	displays current time using strftime(fmt)
 
 - additional operators to the pattern matching lanauge:
-	~S		superseded messages
-	~E		expired messages
-	~p		personal mail (finds $alternates in to: or cc:)
-	~P		mail from you (finds $alternates in from: or sender:)
-	~l		list mail (finds `lists' in to: or cc:)
-	~L<pattern>	finds <pattern> in to:, cc:, from: or sender:
-	~C<pattern>	finds <pattern> in to: or cc:
+	~B<pattern>	finds pattern anywhere in the message (more
+			efficient than ~h %s | ~b %s
+	~z<size>	finds messages of size <size>
+			E.g. 
+			 ~z<10k #finds messages smaller than 10KB
+			 ~z>10k #finds messages larger than 10KB
+			 ~z10k  #finds messages exactly 10KB in length
+			 
 
-- additional formats for $hdr_format
-	%N	displays the message score
-	%(fmt)	displayes the message's received time using strftime()
+- the $hdr_format variable is renamed to $index_format
+  $hdr_format is still accepted for backwards compatibility
 
-- additional formats for $status_format
-	%P	percentage of menu seen
-	%S	current value of $sort_aux (%s no longer displays $sort_aux)
-	%o	number of old messages
-	%u	number of unread messages
+- new variable $folder_format to display entries in the 'browser' menu.
 
-- new configure option `--enable-exact-address' which causes Mutt to rewrite
-  addresses in the same format they were parsed instead of rewriting them in
-  the form `Name <user@host>'
+- new variable $followup_to to control generation of Mail-Followup-To
+  field. You can edit this field and Mutt will not overwrite it.
 
-- new command line argument `-e' which allows you to specify configuration
-  commands to be executed *after* your .muttrc is parsed
-  (eg.  mutt -e 'set edit_hdrs' mutt-dev)
+- new variable $sendmail_wait
 
-- you can now use `mono <object> normal' to set to normal attribute
+  Specifies the number of seconds to wait for the ``sendmail'' process
+  to finish before giving up and putting delivery in the background.
 
-- new function `search-opposite' which searches for the current search
-  pattern in the opposition direction from the previous search
+  Mutt interprets the value of this variable as follows:
 
-Mutt's primary distribution point is ftp://ftp.cs.hmc.edu/pub/me/mutt.
-See the Mutt Home Page (http://www.cs.hmc.edu/~me/mutt/) for mirror sites.
+  >0      number of seconds to wait for sendmail to finish before continuing
+  0       wait forever for sendmail to finish
+  <0      always put sendmail in the background without waiting
 
-Bug reports should be sent to the Mutt User's Mailing List
-<mutt-users@cs.hmc.edu>.
+  Note that if you specify a value other than 0, the output of the child
+  process will be put in a temporary file.  If there is some error, you
+  will be informed as to where to find the output.
 
-Michael Elkins <me@cs.hmc.edu>
-April 10, 1998
+- Variable $sendmail_bounce has been removed. Mutt now passes all
+  recipients on the command line for normal sending. 
+
+- new variable $query_command
+  Adds support for querying an external database for email addresses.
+
+- The $forward_decode variable has been removed. This has been split into 2
+  variables
+
+  $forward_decode - used when $mime_fwd is not set
+  $mime_forward_decode - used when $mime_fwd is set
+
+- new variable $wrap_search. This controls whether searches wrap around the
+  end of the mailbox.
+  
+  When set, searches will wrap around the first (or last) message. When
+  unset, searches will not wrap
+
+
+- New command 'reset' to reset variables to their default compile-time
+  definitions. When used with special keyword 'all', all variables are
+  reset to their default values. When used with the 'set' command and the
+  variable name prefixed with '&', this has the same behaviour as the
+  'reset' command.
+
+  Eg. 
+   reset move
+   reset all
+   set &move
+   set &all
+
+- Function key names used in muttrc need to be enclosed in <>. 
+  Function keys can be used in macros also.
+  
+  Eg. 
+   macro index Y *<PageUp>
+   bind index <down> next-entry
+
+- You can now delete a message's attachments by pressing 'd' (delete-entry)
+  on the attachment in the attachment menu.
+  
+- You can now color index menu entries using the pattern matching language.
+  The 'uncolor' command resets the entry to its default color. The '*'
+  token can be used to reset all index entries to their default colors.
+  
+  Eg.
+    color index blue white ~fvikas
+    color index red white ~z>100k
+    uncolor index ~fvikas
+    uncolor index *
+    
+- mailboxes specified in save-hooks can be %-expanded using $header_format
+
+- the default save mailbox no longer looks at defined `lists'. To get the
+  old behaviour, use
+    save-hook ~l %B
+
+- optional strings in format strings have been extended to allow for an
+  `else' clause.  the new syntax is:
+        %?<testchar>?<if-string>&<else-string>?
+  or if no `else' clause is desired (backwards compatibility):
+        %?<testchar>?<if-string>?
+
+- If new mail is delivered to a folder when Mutt is displaying a limited
+  view of the folder, it is added to the limited view only if it satisfies
+  the current limit criteria.
+
+- the <Tab> key on the command-line now completes commands and variable
+  names. The longest non-ambiguous part is put on the command-line.
+  Entering additional text and using <Tab> will perform completion again.

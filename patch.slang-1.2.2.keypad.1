@@ -1,0 +1,76 @@
+diff -ur slang.old/src/slcurses.c slang/src/slcurses.c
+--- slang.old/src/slcurses.c	Fri Apr 24 09:16:46 1998
++++ slang/src/slcurses.c	Sat Jul  4 07:30:31 1998
+@@ -134,7 +134,10 @@
+ 	       }
+ 	     else if (ch == 0xFFFF) return ERR;
+ 	     SLang_ungetkey (ch);
+-	     return SLkp_getkey ();
++	     if ((ch = SLkp_getkey ()) != SL_KEY_ERR)
++	       return ch;
++	     else
++	       return SLang_getkey ();
+ 	  }
+ 	return SLang_getkey ();
+      }
+diff -ur slang.old/src/slkeymap.c slang/src/slkeymap.c
+--- slang.old/src/slkeymap.c	Fri Apr 24 09:16:47 1998
++++ slang/src/slkeymap.c	Sat Jul  4 07:41:42 1998
+@@ -343,6 +343,8 @@
+ 
+ SLang_Key_Type *SLang_do_key(SLKeyMap_List_Type *kml, int (*getkey)(void))
+ {
++   unsigned char SLang_Undo_Buffer [SL_MAX_INPUT_BUFFER_LEN];
++   int SLang_Undo_Len = 0;
+    register SLang_Key_Type *key, *next, *kmax;
+    unsigned int len;
+    unsigned char input_ch;
+@@ -356,6 +358,7 @@
+      return NULL;
+ 
+    input_ch = (unsigned char) SLang_Last_Key_Char;
++   SLang_Undo_Buffer [SLang_Undo_Len++] = input_ch;
+ 
+    key = (SLang_Key_Type *) &((kml->keymap)[input_ch]);
+ 
+@@ -372,7 +375,11 @@
+ 
+ 	key = kml->keymap + input_ch;
+ 	if (key->type == 0)
++	{
++	  if (getkey == (int (*)(void)) SLang_getkey)
++	    SLang_ungetkey_string (SLang_Undo_Buffer, SLang_Undo_Len);
+ 	  return NULL;
++	}
+      }
+ 
+    /* It appears to be a prefix character in a key sequence. */
+@@ -385,6 +392,7 @@
+      {
+ 	SLang_Key_TimeOut_Flag = 1;
+ 	SLang_Last_Key_Char = (*getkey)();
++	SLang_Undo_Buffer [SLang_Undo_Len++] = (unsigned char) SLang_Last_Key_Char;
+ 	SLang_Key_TimeOut_Flag = 0;
+ 
+ 	len++;
+@@ -458,6 +466,8 @@
+ 	kmax = next;
+      }
+ 
++   if (getkey == (int (*)(void)) SLang_getkey)
++     SLang_ungetkey_string (SLang_Undo_Buffer, SLang_Undo_Len);
+    return NULL;
+ }
+ 
+diff -ur slang.old/src/slkeypad.c slang/src/slkeypad.c
+--- slang.old/src/slkeypad.c	Fri Apr 24 09:16:47 1998
++++ slang/src/slkeypad.c	Sat Jul  4 07:30:31 1998
+@@ -110,7 +110,7 @@
+    key = SLang_do_key (Keymap_List, (int (*)(void)) SLang_getkey);
+    if ((key == NULL) || (key->type != SLKEY_F_KEYSYM))
+      {
+-	SLang_flush_input ();
++	/* SLang_flush_input (); */
+ 	return SL_KEY_ERR;
+      }
+ 

@@ -62,7 +62,8 @@ time_t is_from (const char *s, char *path, size_t pathlen)
   struct tm tm;
   int yr;
 
-  *path = 0;
+  if (path)
+    *path = 0;
 
   if (strncmp ("From ", s, 5) != 0)
     return 0;
@@ -102,11 +103,14 @@ time_t is_from (const char *s, char *path, size_t pathlen)
       if ((p = strchr (s, ' ')) == NULL)
 	return 0;
     }
-    len = (size_t) (p - s);
-    if (len + 1 > pathlen)
-      len = pathlen - 1;
-    memcpy (path, s, len);
-    path[len] = 0;
+    if (path)
+    {
+      len = (size_t) (p - s);
+      if (len + 1 > pathlen)
+	len = pathlen - 1;
+      memcpy (path, s, len);
+      path[len] = 0;
+    }
 
     s = p + 1;
     SKIPWS (s);
@@ -156,7 +160,7 @@ time_t is_from (const char *s, char *path, size_t pathlen)
   if (!*s) return 0;
 
   /* timezone? */
-  if (isalpha (*s) || *s == '+' || *s == '-')
+  if (isalpha ((unsigned char) *s) || *s == '+' || *s == '-')
   {
     s = next_word (s);
     if (!*s) return 0;
@@ -165,7 +169,7 @@ time_t is_from (const char *s, char *path, size_t pathlen)
      * some places have two timezone fields after the time, e.g.
      *      From xxxx@yyyyyyy.fr Wed Aug  2 00:39:12 MET DST 1995
      */
-    if (isalpha (*s))
+    if (isalpha ((unsigned char) *s))
     {
       s = next_word (s);
       if (!*s) return 0;

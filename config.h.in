@@ -60,9 +60,6 @@
 /* Where new mail is spooled */
 #undef MAILPATH
 
-/* Should I just use the domain name? (--enable-hidden-host) */
-#undef HIDDEN_HOST
-
 /* Where to find sendmail on your system */
 #undef SENDMAIL
 
@@ -121,6 +118,9 @@
 /* Does your system have the vsnprintf() call? */
 #undef HAVE_VSNPRINTF
 
+/* Does your system have the fchdir() call? */
+#undef HAVE_FCHDIR
+
 /* The number of bytes in a long.  */
 #undef SIZEOF_LONG
 
@@ -129,6 +129,9 @@
 
 /* Define if you have the curs_set function.  */
 #undef HAVE_CURS_SET
+
+/* Define if you have the fchdir function.  */
+#undef HAVE_FCHDIR
 
 /* Define if you have the ftruncate function.  */
 #undef HAVE_FTRUNCATE
@@ -171,6 +174,9 @@
 
 /* Define if you have the <sys/ioctl.h> header file.  */
 #undef HAVE_SYS_IOCTL_H
+
+/* Define if you have the <sysexits.h> header file.  */
+#undef HAVE_SYSEXITS_H
 
 /* Define if you have the intl library (-lintl).  */
 #undef HAVE_LIBINTL

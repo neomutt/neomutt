@@ -97,10 +97,10 @@ static int parsekeys (char *s, keycode_t *d, int max)
       s += strlen (s);
       *d = n;
     }
-    else if (tolower (*s) == 'f' && isdigit (s[1]))
+    else if (tolower (*s) == 'f' && isdigit ((unsigned char) s[1]))
     {
       n = 0;
-      for (s++; isdigit (*s) ; s++)
+      for (s++; isdigit ((unsigned char) *s) ; s++)
       {
 	n *= 10;
 	n += *s - '0';
@@ -122,7 +122,7 @@ static int parsekeys (char *s, keycode_t *d, int max)
 /* insert a key sequence into the specified map.  the map is sorted by ASCII
  * value (lowest to highest)
  */
-void km_bindkey (char *s, int menu, int op, char *macro)
+void km_bind (char *s, int menu, int op, char *macro, char *descr)
 {
   struct keymap_t *map, *tmp, *last = NULL, *next;
   keycode_t buf[MAX_SEQ];
@@ -133,6 +133,7 @@ void km_bindkey (char *s, int menu, int op, char *macro)
   map = allocKeys (len, buf);
   map->op = op;
   map->macro = safe_strdup (macro);
+  map->descr = safe_strdup (descr);
 
   tmp = Keymaps[menu];
 
@@ -145,10 +146,10 @@ void km_bindkey (char *s, int menu, int op, char *macro)
       {
 	len = tmp->eq;
 	next = tmp->next;
-	if (tmp->macro)
-	  free (tmp->macro);
-	free (tmp->keys);
-	free (tmp);
+	FREE (&tmp->macro);
+	FREE (&tmp->keys);
+	FREE (&tmp->descr);
+	FREE (&tmp);
 	tmp = next;
       }
       while (tmp && len >= pos);
@@ -181,6 +182,11 @@ void km_bindkey (char *s, int menu, int op, char *macro)
   }
   else
     Keymaps[menu] = map;
+}
+
+void km_bindkey (char *s, int menu, int op)
+{
+  km_bind (s, menu, op, NULL, NULL);
 }
 
 static void push_string (char *s)
@@ -292,7 +298,7 @@ static void create_bindings (struct binding_t *map, int menu)
 
   for (i = 0 ; map[i].name ; i++)
     if (map[i].seq)
-      km_bindkey (map[i].seq, menu, map[i].op, NULL);
+      km_bindkey (map[i].seq, menu, map[i].op);
 }
 
 char *km_keyname (int c)
@@ -395,68 +401,72 @@ void km_init (void)
   /* bindings for the line editor */
   create_bindings (OpEditor, MENU_EDITOR);
   
-  km_bindkey ("<up>", MENU_EDITOR, OP_EDITOR_HISTORY_UP, NULL);
-  km_bindkey ("<down>", MENU_EDITOR, OP_EDITOR_HISTORY_DOWN, NULL);
-  km_bindkey ("<left>", MENU_EDITOR, OP_EDITOR_BACKWARD_CHAR, NULL);
-  km_bindkey ("<right>", MENU_EDITOR, OP_EDITOR_FORWARD_CHAR, NULL);
-  km_bindkey ("<home>", MENU_EDITOR, OP_EDITOR_BOL, NULL);
-  km_bindkey ("<end>", MENU_EDITOR, OP_EDITOR_EOL, NULL);
-  km_bindkey ("<backspace>", MENU_EDITOR, OP_EDITOR_BACKSPACE, NULL);
-  km_bindkey ("<delete>", MENU_EDITOR, OP_EDITOR_BACKSPACE, NULL);
-  km_bindkey ("\177", MENU_EDITOR, OP_EDITOR_BACKSPACE, NULL);
+  km_bindkey ("<up>", MENU_EDITOR, OP_EDITOR_HISTORY_UP);
+  km_bindkey ("<down>", MENU_EDITOR, OP_EDITOR_HISTORY_DOWN);
+  km_bindkey ("<left>", MENU_EDITOR, OP_EDITOR_BACKWARD_CHAR);
+  km_bindkey ("<right>", MENU_EDITOR, OP_EDITOR_FORWARD_CHAR);
+  km_bindkey ("<home>", MENU_EDITOR, OP_EDITOR_BOL);
+  km_bindkey ("<end>", MENU_EDITOR, OP_EDITOR_EOL);
+  km_bindkey ("<backspace>", MENU_EDITOR, OP_EDITOR_BACKSPACE);
+  km_bindkey ("<delete>", MENU_EDITOR, OP_EDITOR_BACKSPACE);
+  km_bindkey ("\177", MENU_EDITOR, OP_EDITOR_BACKSPACE);
   
   /* generic menu keymap */
   create_bindings (OpGeneric, MENU_GENERIC);
   
-  km_bindkey ("<home>", MENU_GENERIC, OP_FIRST_ENTRY, NULL);
-  km_bindkey ("<end>", MENU_GENERIC, OP_LAST_ENTRY, NULL);
-  km_bindkey ("<pagedown>", MENU_GENERIC, OP_NEXT_PAGE, NULL);
-  km_bindkey ("<pageup>", MENU_GENERIC, OP_PREV_PAGE, NULL);
-  km_bindkey ("<right>", MENU_GENERIC, OP_NEXT_PAGE, NULL);
-  km_bindkey ("<left>", MENU_GENERIC, OP_PREV_PAGE, NULL);
-  km_bindkey ("<up>", MENU_GENERIC, OP_PREV_ENTRY, NULL);
-  km_bindkey ("<down>", MENU_GENERIC, OP_NEXT_ENTRY, NULL);
-  km_bindkey ("1", MENU_GENERIC, OP_JUMP, NULL);
-  km_bindkey ("2", MENU_GENERIC, OP_JUMP, NULL);
-  km_bindkey ("3", MENU_GENERIC, OP_JUMP, NULL);
-  km_bindkey ("4", MENU_GENERIC, OP_JUMP, NULL);
-  km_bindkey ("5", MENU_GENERIC, OP_JUMP, NULL);
-  km_bindkey ("6", MENU_GENERIC, OP_JUMP, NULL);
-  km_bindkey ("7", MENU_GENERIC, OP_JUMP, NULL);
-  km_bindkey ("8", MENU_GENERIC, OP_JUMP, NULL);
-  km_bindkey ("9", MENU_GENERIC, OP_JUMP, NULL);
+  km_bindkey ("<home>", MENU_GENERIC, OP_FIRST_ENTRY);
+  km_bindkey ("<end>", MENU_GENERIC, OP_LAST_ENTRY);
+  km_bindkey ("<pagedown>", MENU_GENERIC, OP_NEXT_PAGE);
+  km_bindkey ("<pageup>", MENU_GENERIC, OP_PREV_PAGE);
+  km_bindkey ("<right>", MENU_GENERIC, OP_NEXT_PAGE);
+  km_bindkey ("<left>", MENU_GENERIC, OP_PREV_PAGE);
+  km_bindkey ("<up>", MENU_GENERIC, OP_PREV_ENTRY);
+  km_bindkey ("<down>", MENU_GENERIC, OP_NEXT_ENTRY);
+  km_bindkey ("1", MENU_GENERIC, OP_JUMP);
+  km_bindkey ("2", MENU_GENERIC, OP_JUMP);
+  km_bindkey ("3", MENU_GENERIC, OP_JUMP);
+  km_bindkey ("4", MENU_GENERIC, OP_JUMP);
+  km_bindkey ("5", MENU_GENERIC, OP_JUMP);
+  km_bindkey ("6", MENU_GENERIC, OP_JUMP);
+  km_bindkey ("7", MENU_GENERIC, OP_JUMP);
+  km_bindkey ("8", MENU_GENERIC, OP_JUMP);
+  km_bindkey ("9", MENU_GENERIC, OP_JUMP);
 
   /* Miscellaneous extra bindings */
   
-  km_bindkey (" ", MENU_MAIN, OP_DISPLAY_MESSAGE, NULL);
-  km_bindkey ("<up>", MENU_MAIN, OP_MAIN_PREV_UNDELETED, NULL);
-  km_bindkey ("<down>", MENU_MAIN, OP_MAIN_NEXT_UNDELETED, NULL);
-  km_bindkey ("J", MENU_MAIN, OP_NEXT_ENTRY, NULL);
-  km_bindkey ("K", MENU_MAIN, OP_PREV_ENTRY, NULL);
-  km_bindkey ("x", MENU_MAIN, OP_EXIT, NULL);
+  km_bindkey (" ", MENU_MAIN, OP_DISPLAY_MESSAGE);
+  km_bindkey ("<up>", MENU_MAIN, OP_MAIN_PREV_UNDELETED);
+  km_bindkey ("<down>", MENU_MAIN, OP_MAIN_NEXT_UNDELETED);
+  km_bindkey ("J", MENU_MAIN, OP_NEXT_ENTRY);
+  km_bindkey ("K", MENU_MAIN, OP_PREV_ENTRY);
+  km_bindkey ("x", MENU_MAIN, OP_EXIT);
 
-  km_bindkey ("x", MENU_PAGER, OP_PAGER_EXIT, NULL);
-  km_bindkey ("q", MENU_PAGER, OP_PAGER_EXIT, NULL);
-  km_bindkey ("<backspace>", MENU_PAGER, OP_PREV_LINE, NULL);
-  km_bindkey ("<pagedown>", MENU_PAGER, OP_NEXT_PAGE, NULL);
-  km_bindkey ("<pageup>", MENU_PAGER, OP_PREV_PAGE, NULL);
-  km_bindkey ("<up>", MENU_PAGER, OP_MAIN_PREV_UNDELETED, NULL);
-  km_bindkey ("<right>", MENU_PAGER, OP_MAIN_NEXT_UNDELETED, NULL);
-  km_bindkey ("<down>", MENU_PAGER, OP_MAIN_NEXT_UNDELETED, NULL);
-  km_bindkey ("<left>", MENU_PAGER, OP_MAIN_PREV_UNDELETED, NULL);
-  km_bindkey ("<home>", MENU_PAGER, OP_PAGER_TOP, NULL);
-  km_bindkey ("<end>", MENU_PAGER, OP_PAGER_BOTTOM, NULL);
-  km_bindkey ("1", MENU_PAGER, OP_JUMP, NULL);
-  km_bindkey ("2", MENU_PAGER, OP_JUMP, NULL);
-  km_bindkey ("3", MENU_PAGER, OP_JUMP, NULL);
-  km_bindkey ("4", MENU_PAGER, OP_JUMP, NULL);
-  km_bindkey ("5", MENU_PAGER, OP_JUMP, NULL);
-  km_bindkey ("6", MENU_PAGER, OP_JUMP, NULL);
-  km_bindkey ("7", MENU_PAGER, OP_JUMP, NULL);
-  km_bindkey ("8", MENU_PAGER, OP_JUMP, NULL);
-  km_bindkey ("9", MENU_PAGER, OP_JUMP, NULL);
+  km_bindkey ("x", MENU_PAGER, OP_PAGER_EXIT);
+  km_bindkey ("q", MENU_PAGER, OP_PAGER_EXIT);
+  km_bindkey ("<backspace>", MENU_PAGER, OP_PREV_LINE);
+  km_bindkey ("<pagedown>", MENU_PAGER, OP_NEXT_PAGE);
+  km_bindkey ("<pageup>", MENU_PAGER, OP_PREV_PAGE);
+  km_bindkey ("<up>", MENU_PAGER, OP_MAIN_PREV_UNDELETED);
+  km_bindkey ("<right>", MENU_PAGER, OP_MAIN_NEXT_UNDELETED);
+  km_bindkey ("<down>", MENU_PAGER, OP_MAIN_NEXT_UNDELETED);
+  km_bindkey ("<left>", MENU_PAGER, OP_MAIN_PREV_UNDELETED);
+  km_bindkey ("<home>", MENU_PAGER, OP_PAGER_TOP);
+  km_bindkey ("<end>", MENU_PAGER, OP_PAGER_BOTTOM);
+  km_bindkey ("1", MENU_PAGER, OP_JUMP);
+  km_bindkey ("2", MENU_PAGER, OP_JUMP);
+  km_bindkey ("3", MENU_PAGER, OP_JUMP);
+  km_bindkey ("4", MENU_PAGER, OP_JUMP);
+  km_bindkey ("5", MENU_PAGER, OP_JUMP);
+  km_bindkey ("6", MENU_PAGER, OP_JUMP);
+  km_bindkey ("7", MENU_PAGER, OP_JUMP);
+  km_bindkey ("8", MENU_PAGER, OP_JUMP);
+  km_bindkey ("9", MENU_PAGER, OP_JUMP);
 
-  km_bindkey ("<return>", MENU_ALIAS, OP_TAG, NULL);
+  km_bindkey ("<return>", MENU_ALIAS, OP_TAG);
+
+  /* edit-to (default "t") hides generic tag-entry in Compose menu
+     This will bind tag-entry to  "T" in the Compose menu */
+  km_bindkey ("T", MENU_COMPOSE, OP_TAG);
 }
 
 void km_error_key (int menu)
@@ -528,7 +538,7 @@ try_bind (char *key, int menu, char *func, struct binding_t *bindings)
   for (i = 0; bindings[i].name; i++)
     if (strcmp (func, bindings[i].name) == 0)
     {
-      km_bindkey (key, menu, bindings[i].op, NULL);
+      km_bindkey (key, menu, bindings[i].op);
       return (0);
     }
   return (-1);
@@ -588,7 +598,7 @@ int mutt_parse_bind (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     r = -1;
   }
   else if (strcasecmp ("noop", buf->data) == 0)
-    km_bindkey (key, menu, OP_NULL, NULL); /* the `unbind' command */
+    km_bindkey (key, menu, OP_NULL); /* the `unbind' command */
   else
   {
     /* First check the "generic" list of commands */
@@ -608,10 +618,11 @@ int mutt_parse_bind (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   return (r);
 }
 
-/* macro <menu> <key> <macro> */
+/* macro <menu> <key> <macro> <description> */
 int mutt_parse_macro (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
   int menu, r = -1;
+  char *seq = NULL;
   char *key;
 
   if ((key = parse_keymap (&menu, s, err)) == NULL)
@@ -623,14 +634,30 @@ int mutt_parse_macro (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   {
     strfcpy (err->data, "macro: empty key sequence", err->dsize);
   }
-  else if (MoreArgs (s))
-  {
-    strfcpy (err->data, "macro: too many arguments", err->dsize);
-  }
   else
   {
-    km_bindkey (key, menu, OP_MACRO, buf->data);
-    r = 0;
+    if (MoreArgs (s))
+    {
+      seq = strdup (buf->data);
+      mutt_extract_token (buf, s, M_TOKEN_CONDENSE);
+
+      if (MoreArgs (s))
+      {
+	strfcpy (err->data, "macro: too many arguments", err->dsize);
+      }
+      else
+      {
+	km_bind (key, menu, OP_MACRO, seq, buf->data);
+	r = 0;
+      }
+
+      FREE (&seq);
+    }
+    else
+    {
+      km_bind (key, menu, OP_MACRO, buf->data, NULL);
+      r = 0;
+    }
   }
   FREE (&key);
   return (r);

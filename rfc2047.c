@@ -35,7 +35,7 @@ static void q_encode_string (char *d, size_t dlen, const unsigned char *s)
   char *wptr = d;
 
   snprintf (charset, sizeof (charset), "=?%s?Q?",
-	    strcasecmp ("us-ascii", charset) == 0 ? "unknown-8bit" : Charset);
+	    strcasecmp ("us-ascii", NONULL(Charset)) == 0 ? "unknown-8bit" : NONULL(Charset));
   cslen = strlen (charset);
 
   strcpy (wptr, charset);
@@ -110,7 +110,7 @@ static void b_encode_string (char *d, size_t dlen, const unsigned char *s)
   int cslen;
   int wordlen;
 
-  snprintf (charset, sizeof (charset), "=?%s?B?", Charset);
+  snprintf (charset, sizeof (charset), "=?%s?B?", NONULL(Charset));
   cslen = strlen (charset);
   strcpy (wptr, charset);
   wptr += cslen;
@@ -176,7 +176,7 @@ void rfc2047_encode_string (char *d, size_t dlen, const unsigned char *s)
   {
     if (*p & 0x80)
       count++;
-    else if (*p == '=' && *p == '?')
+    else if (*p == '=' && *(p+1) == '?')
     {
       count += 2;
       p++;
@@ -188,8 +188,8 @@ void rfc2047_encode_string (char *d, size_t dlen, const unsigned char *s)
     return;
   }
 
-  if (strcasecmp("us-ascii", Charset) == 0 ||
-      strncasecmp("iso-8859", Charset, 8) == 0)
+  if (strcasecmp("us-ascii", NONULL(Charset)) == 0 ||
+      strncasecmp("iso-8859", NONULL(Charset), 8) == 0)
     encoder = q_encode_string;
   else
   {
@@ -251,7 +251,7 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
     switch (count)
     {
       case 2:
-	if (strcasecmp (pp, Charset) != 0)
+	if (strcasecmp (pp, NONULL(Charset)) != 0)
 	  filter = 1;
 	break;
       case 3:
@@ -291,14 +291,14 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
 	{
 	  while (*pp && len > 0)
 	  {
-	    c1 = Index_64[(int) pp[0]];
-	    c2 = Index_64[(int) pp[1]];
+	    c1 = base64val(pp[0]);
+	    c2 = base64val(pp[1]);
 	    *pd++ = (c1 << 2) | ((c2 >> 4) & 0x3);
 	    if (--len == 0) break;
 	    
 	    if (pp[2] == '=') break;
 
-	    c3 = Index_64[(int) pp[2]];
+	    c3 = base64val(pp[2]);
 	    *pd++ = ((c2 & 0xf) << 4) | ((c3 >> 2) & 0xf);
 	    if (--len == 0)
 	      break;
@@ -306,7 +306,7 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
 	    if (pp[3] == '=')
 	      break;
 
-	    c4 = Index_64[(int) pp[3]];   
+	    c4 = base64val(pp[3]);
 	    *pd++ = ((c3 & 0x3) << 6) | c4;
 	    if (--len == 0)
 	      break;
@@ -325,7 +325,7 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
     pd = d;
     while (*pd)
     {
-      if (!IsPrint ((unsigned char) *pd))
+      if (!IsPrint (*pd))
 	*pd = '?';
       pd++;
     }

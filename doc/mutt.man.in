@@ -1,259 +1,151 @@
-.if n .ds Q \&"
-.if t .ds Q ``
-.if n .ds U \&"
-.if t .ds U ''
-.TH "Mutt" 1 
-.tr \&
-.nr bi 0
-.nr ll 0
-.nr el 0
-.de DS
-..
-.de DE
-..
-.de Pp
-.ie \\n(ll>0 \{\
-.ie \\n(bi=1 \{\
-.nr bi 0
-.if \\n(t\\n(ll=0 \{.IP \\(bu\}
-.if \\n(t\\n(ll=1 \{.IP \\n+(e\\n(el.\}
-.\}
-.el .sp 
-.\}
-.el \{\
-.ie \\nh=1 \{\
-.LP
-.nr h 0
-.\}
-.el .PP 
-.\}
-..
+.\" -*-nroff-*-
+.\"
+.\"
+.\"     Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>
+.\" 
+.\"     This program is free software; you can redistribute it and/or modify
+.\"     it under the terms of the GNU General Public License as published by
+.\"     the Free Software Foundation; either version 2 of the License, or
+.\"     (at your option) any later version.
+.\" 
+.\"     This program is distributed in the hope that it will be useful,
+.\"     but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\"     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\"     GNU General Public License for more details.
+.\" 
+.\"     You should have received a copy of the GNU General Public License
+.\"     along with this program; if not, write to the Free Software
+.\"     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+.\"
+.TH mutt 1 "JULY 1998" Unix "User Manuals"
 .SH NAME
-
-.Pp
-mutt - The Mutt Mail User Agent
-.Pp
+.PP
+mutt \- The Mutt Mail User Agent
 .SH SYNOPSIS
-
-.Pp
-mutt [ -hnpRvxyzZ ]
-[ -a \fIfile\fP ]
-[ -b \fIaddress\fP ]
-[ -c \fIaddress\fP ]
-[ -e \fIcommand\fP ]
-[ -f \fImailbox\fP ]
-[ -F \fImuttrc\fP ]
-[ -H \fIdraftfile\fP ]
-[ -i \fIinclude\fP ]
-[ -m \fItype\fP ]
-[ -s \fIsubject\fP ]
-[ \fIaddress\fP ... ]
-.Pp
+.PP
+.B mutt 
+[-hnpRvxyzZ]
+[-a \fIfile\fP]
+[-b \fIaddress\fP]
+[-c \fIaddress\fP]
+[-e \fIcommand\fP]
+[-f \fImailbox\fP]
+[-F \fImuttrc\fP]
+[-H \fIdraftfile\fP]
+[-i \fIinclude\fP]
+[-m \fItype\fP]
+[-s \fIsubject\fP]
 .SH DESCRIPTION
-
-.Pp
+.PP
 Mutt is a small but very powerful text based program for reading electronic
 mail under unix operating systems, including support color terminals, MIME,
 and a threaded sorting mode.
-.Pp
 .SH OPTIONS
-
-.Pp
-.nr ll +1
-.nr t\n(ll 2
-.if \n(ll>1 .RS
+.PP
 .IP "-a \fIfile\fP"
-.nr bi 1
-.Pp
 Attach a file to your message using MIME.
 .IP "-b \fIaddress\fP"
-.nr bi 1
-.Pp
 Specify a blind-carbon-copy (BCC) recipient
 .IP "-c \fIaddress\fP"
-.nr bi 1
-.Pp
 Specify a carbon-copy (CC) recipient
 .IP "-e \fIcommand\fP"
-.nr bi 1
-.Pp
 Specify a configuration command to be run after processing of initialization
 files.
 .IP "-f \fImailbox\fP"
-.nr bi 1
-.Pp
 Specify which mailbox to load.
 .IP "-F \fImuttrc\fP"
-.nr bi 1
-.Pp
 Specify an initialization file to read instead of ~/.muttrc
 .IP "-h"
-.nr bi 1
-.Pp
 Display help.
 .IP "-H \fIdraft\fP"
-.nr bi 1
-.Pp
 Specify a draft file which contains header and body to use to send a
 message.
 .IP "-i \fIinclude\fP"
-.nr bi 1
-.Pp
 Specify a file to include into the body of a message.
-.IP "-m \fItype\fP "
-.nr bi 1
-.Pp
+.IP "-m \fItype\fP       "
 specify a default mailbox type
 .IP "-n"
-.nr bi 1
-.Pp
 Causes Mutt to bypass the system configuration file.
 .IP "-p"
-.nr bi 1
-.Pp
 Resume a postponed message.
 .IP "-R"
-.nr bi 1
-.Pp
 Open a mailbox in \fIread-only\fP mode.
 .IP "-s \fIsubject\fP"
-.nr bi 1
-.Pp
 Specify the subject of the message.
 .IP "-v"
-.nr bi 1
-.Pp
 Display the Mutt version number and compile-time definitions.
 .IP "-x"
-.nr bi 1
-.Pp
 Emulate the mailx compose mode.
 .IP "-y"
-.nr bi 1
-.Pp
 Start Mutt with a listing of all mailboxes specified by the \fImailboxes\fP
 command.
 .IP "-z"
-.nr bi 1
-.Pp
 When used with -f, causes Mutt not to start if there are no messages in the
 mailbox.
 .IP "-Z"
-.nr bi 1
-.Pp
 Causes Mutt to open the first mailbox specified by the \fImailboxes\fP
 command which contains new mail.
-.if \n(ll>1 .RE
-.nr ll -1
-.Pp
 .SH ENVIRONMENT
-
-.Pp
-.nr ll +1
-.nr t\n(ll 2
-.if \n(ll>1 .RS
+.PP
 .IP "EDITOR"
-.nr bi 1
-.Pp
 Editor to invoke when composing a message.
 .IP "HOME"
-.nr bi 1
-.Pp
 Full path of the user's home directory.
 .IP "MAIL"
-.nr bi 1
-.Pp
 Full path of the user's spool mailbox.
 .IP "MAILCAPS"
-.nr bi 1
-.Pp
 Path to search for mailcap files.
 .IP "MM_NOASK"
-.nr bi 1
-.Pp
 If this variable is set, mailcap are always used without prompting first.
 .IP "PGPPATH"
-.nr bi 1
-.Pp
 Directory in which the user's PGP public keyring can be found.
 .IP "TMPDIR"
-.nr bi 1
-.Pp
 Directory in which temporary files are created.
 .IP "REPLYTO"
-.nr bi 1
-.Pp
 Default Reply-To address.
 .IP "VISUAL"
-.nr bi 1
-.Pp
 Editor to invoke when the ~v command is given in the builtin editor.
-.if \n(ll>1 .RE
-.nr ll -1
-.Pp
 .SH FILES
-
-.Pp
-.nr ll +1
-.nr t\n(ll 2
-.if \n(ll>1 .RS
+.PP
 .IP "~/.muttrc"
-.nr bi 1
-.Pp
 User configuration file.
-.IP "/usr/local/share/Muttrc"
-.nr bi 1
-.Pp
+.IP "@sharedir@/Muttrc"
 System-wide configuration file.
 .IP "/tmp/muttXXXXXX"
-.nr bi 1
-.Pp
 Temporary files created by Mutt.
 .IP "~/.mailcap"
-.nr bi 1
-.Pp
 User definition for handling non-text MIME types.
-.IP "/usr/local/share/mailcap"
-.nr bi 1
-.Pp
+.IP "@sharedir@/mailcap"
 System definition for handing non-text MIME types.
 .IP "~/.mime.types"
-.nr bi 1
-.Pp
 User's personal mapping between MIME types and file extensions.
-.IP "/usr/local/share/mime.types"
-.nr bi 1
-.Pp
+.IP "@sharedir@/mime.types"
 System mapping between MIME types and file extensions.
-.Pp
-.if \n(ll>1 .RE
-.nr ll -1
-.Pp
+.IP "@libdir@/dotlock"
+The privileged dotlocking program.
 .SH BUGS
-
-.Pp
-suspend/resume while editing a file with an external editor does not work
+.PP
+Suspend/resume while editing a file with an external editor does not work
 under SunOS 4.x if you use the curses lib in /usr/5lib.  It \fIdoes\fP work
 with the S-Lang library, however.
-.Pp
+.PP
 Resizing the screen while using an external pager causes Mutt to go haywire
 on some systems.
-.Pp
+.PP
 suspend/resume does not work under Ultrix.
-.Pp
+.PP
 The help line for the index menu is not updated if you change the bindings
 for one of the functions listed while Mutt is running.
-.Pp
 .SH SEE ALSO
-
-.Pp
-curses(3), ncurses(3), sendmail(1), smail(1), mailcap(5)
-.Pp
+.PP
+.BR curses (3),
+.BR dotlock (1),
+.BR ncurses (3),
+.BR sendmail (1),
+.BR smail (1),
+.BR mailcap (5)
+.PP
 Mutt Home Page: http://www.cs.hmc.edu/~me/mutt/
-.Pp
 .SH AUTHOR
-
-.Pp
 Michael Elkins <me@cs.hmc.edu>
-.Pp
-http://www.cs.hmc.edu/~me
+http://www.cs.hmc.edu/~me/

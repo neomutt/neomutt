@@ -415,18 +415,19 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
     fseek (fpin, body->offset, 0);
     if (flags & M_CM_PREFIX)
     {
-      char buf[LONG_STRING];
+      int c;
       size_t bytes = body->length;
-
-      buf[sizeof (buf) - 1] = 0;
-      while (bytes > 0)
+      
+      fputs(prefix, fpout);
+      
+      while((c = fgetc(fpin)) != EOF && bytes--)
       {
-	if (fgets (buf, sizeof (buf) - 1, fpin) == NULL)
-	  break;
-	bytes -= strlen (buf);
-	fputs (prefix, fpout);
-	fputs (buf, fpout);
-      }
+	fputc(c, fpout);
+	if(c == '\n')
+	{
+	  fputs(prefix, fpout);
+	}
+      } 
     }
     else
     {

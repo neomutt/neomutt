@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl
+#!/usr/bin/perl
 #
 # A small script to strip out any "illegal" PGP code to make sure it is
 # safe for International export.

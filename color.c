@@ -94,6 +94,40 @@ static struct mapping_t Fields[] =
 
 #define COLOR_QUOTE_INIT	8
 
+static COLOR_LINE *mutt_new_color_line (void)
+{
+  COLOR_LINE *p = safe_calloc (1, sizeof (COLOR_LINE));
+
+  p->fg = p->bg = -1;
+  
+  return (p);
+}
+
+static void mutt_free_color_line(COLOR_LINE **l, 
+				 int free_colors)
+{
+  COLOR_LINE *tmp;
+ 
+  if(!l || !*l)
+    return;
+
+  tmp = *l;
+
+#ifdef HAVE_COLOR
+  if(free_colors && tmp->fg != -1 && tmp->bg != -1)
+    mutt_free_color(tmp->fg, tmp->bg);
+#endif
+
+  /* we should really introduce a container
+   * type for regular expressions.
+   */
+  
+  regfree(&tmp->rx);
+  mutt_pattern_free(&tmp->color_pattern);
+  safe_free((void **)&tmp->pattern);
+  safe_free((void **)l);
+}
+
 void ci_start_color (void)
 {
   memset (ColorDefs, A_NORMAL, sizeof (int) * MT_COLOR_MAX);
@@ -198,7 +232,7 @@ int mutt_alloc_color (int fg, int bg)
     bg = -1;
 #endif
 
-  init_pair (i, fg, bg);
+  init_pair(i, fg, bg);
 
   dprint(1,(debugfile,"mutt_alloc_color(): Color pairs used so far: %d\n",
                        UserColors));
@@ -247,20 +281,169 @@ void mutt_free_color (int fg, int bg)
 
 #endif /* HAVE_COLOR */
 
-static COLOR_LINE *mutt_new_color_line (void)
-{
-  COLOR_LINE *p = safe_calloc (1, sizeof (COLOR_LINE));
 
-  return (p);
+#ifdef HAVE_COLOR
+
+static int
+parse_color_name (const char *s, int *col, int *attr, int brite, BUFFER *err)
+{
+  char *eptr;
+
+  if (strncasecmp (s, "bright", 6) == 0)
+  {
+    *attr |= brite;
+    s += 6;
+  }
+
+  /* allow aliases for xterm color resources */
+  if (strncasecmp (s, "color", 5) == 0)
+  {
+    s += 5;
+    *col = strtol (s, &eptr, 10);
+    if (!*s || *eptr || *col < 0 ||
+	(*col >= COLORS && !option(OPTNOCURSES) && has_colors()))
+    {
+      snprintf (err->data, err->dsize, "%s: color not supported by term", s);
+      return (-1);
+    }
+  }
+  else if ((*col = mutt_getvaluebyname (s, Colors)) == -1)
+  {
+    snprintf (err->data, err->dsize, "%s: no such color", s);
+    return (-1);
+  }
+
+  return 0;
 }
 
-static int add_pattern (COLOR_LINE **top, const char *s, int sensitive,
-			int fg, int bg, int attr, BUFFER *err,
-			/* is_index used to store compiled pattern
-			   only for `index' color object 
-			   when called from mutt_parse_color() */
-			int is_index)
+#endif
+
+
+/* usage: uncolor index pattern [pattern...]
+ * 	  unmono  index pattern [pattern...]
+ */
+
+static int 
+_mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err, 
+			 short parse_uncolor);
+
+
+#ifdef HAVE_COLOR
+
+int mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data,
+			BUFFER *err)
 {
+  return _mutt_parse_uncolor(buf, s, data, err, 1);
+}
+
+#endif
+
+int mutt_parse_unmono (BUFFER *buf, BUFFER *s, unsigned long data,
+		       BUFFER *err)
+{
+  return _mutt_parse_uncolor(buf, s, data, err, 0);
+}
+
+static int 
+_mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err, 
+			 short parse_uncolor)
+{
+  int object = 0, do_cache = 0;
+  COLOR_LINE *tmp, *last = NULL;
+
+  mutt_extract_token (buf, s, 0);
+
+  if ((object = mutt_getvaluebyname (buf->data, Fields)) == -1)
+  {
+    snprintf (err->data, err->dsize, "%s: no such object", buf->data);
+    return (-1);
+  }
+
+  if (strncmp (buf->data, "index", 5) != 0)
+  {
+    snprintf (err->data, err->dsize,
+	      "%s: command valid only for index object", 
+	      parse_uncolor ? "uncolor" : "unmono");
+    return (-1);
+  }
+  
+  if (!MoreArgs (s))
+  {
+    snprintf (err->data, err->dsize,
+	      "%s: too few arguments", parse_uncolor ? "uncolor" : "unmono");
+    return (-1);
+  }
+
+  if(
+#ifdef HAVE_COLOR
+     (parse_uncolor && !has_colors())
+     || (!parse_uncolor && has_colors())
+#else
+     parse_uncolor
+#endif
+     )
+  {
+    return 0;
+  }
+     
+  
+  do
+  {
+    mutt_extract_token (buf, s, 0);
+    if (!strcmp ("*", buf->data))
+    {
+      for (tmp = ColorIndexList; tmp; )
+      {
+        if (!do_cache)
+	  do_cache = 1;
+	last = tmp;
+	tmp = tmp->next;
+	mutt_free_color_line(&last, parse_uncolor);
+      }
+      ColorIndexList = NULL;
+    }
+    else
+    {
+      for (last = NULL, tmp = ColorIndexList; tmp; last = tmp, tmp = tmp->next)
+      {
+	if (!strcmp (buf->data, tmp->pattern))
+	{
+          if (!do_cache)
+	    do_cache = 1;
+	  dprint(1,(debugfile,"Freeing pattern \"%s\" from ColorIndexList\n",
+	                       tmp->pattern));
+	  if (last)
+	    last->next = tmp->next;
+	  else
+	    ColorIndexList = tmp->next;
+	  mutt_free_color_line(&tmp, parse_uncolor);
+	  break;
+	}
+      }
+    }
+  }
+  while (MoreArgs (s));
+
+
+  if (do_cache && !option (OPTNOCURSES))
+  {
+    mutt_cache_index_colors (Context);
+    set_option (OPTFORCEREDRAWINDEX);
+  }
+  return (0);
+}
+
+
+static int 
+add_pattern (COLOR_LINE **top, const char *s, int sensitive,
+	     int fg, int bg, int attr, BUFFER *err,
+	     int is_index)
+{
+
+  /* is_index used to store compiled pattern
+   * only for `index' color object 
+   * when called from mutt_parse_color() */
+
   COLOR_LINE *tmp = *top;
 
   while (tmp)
@@ -305,23 +488,29 @@ static int add_pattern (COLOR_LINE **top, const char *s, int sensitive,
     if ((r = REGCOMP (&tmp->rx, s, (sensitive ? mutt_which_case (s) : REG_ICASE))) != 0)
     {
       regerror (r, &tmp->rx, err->data, err->dsize);
-      regfree (&tmp->rx);
-      safe_free ((void **) &tmp);
+      mutt_free_color_line(&tmp, 1);
       return (-1);
     }
     tmp->next = *top;
     tmp->pattern = safe_strdup (s);
 #ifdef HAVE_COLOR
-    tmp->fg = fg;
-    tmp->bg = bg;
-    attr |= mutt_alloc_color (fg, bg);
-    if (is_index) 
+    if(fg != -1 && bg != -1)
     {
-      strcpy(buf,tmp->pattern);
-      mutt_check_simple (buf, sizeof (buf), SimpleSearch);
-      tmp->color_pattern = mutt_pattern_comp (buf, M_FULL_MSG, err);
+      tmp->fg = fg;
+      tmp->bg = bg;
+      attr |= mutt_alloc_color (fg, bg);
     }
 #endif
+    if (is_index) 
+    {
+      strfcpy(buf, tmp->pattern, sizeof(buf));
+      mutt_check_simple (buf, sizeof (buf), NONULL(SimpleSearch));
+      if((tmp->color_pattern = mutt_pattern_comp (buf, M_FULL_MSG, err)) == NULL)
+      {
+	mutt_free_color_line(&tmp, 1);
+	return -1;
+      }
+    }
     tmp->pair = attr;
     *top = tmp;
   }
@@ -329,292 +518,84 @@ static int add_pattern (COLOR_LINE **top, const char *s, int sensitive,
   return 0;
 }
 
-#ifdef HAVE_COLOR
-
 static int
-parse_color_name (const char *s, int *col, int *attr, int brite, BUFFER *err)
+parse_object(BUFFER *buf, BUFFER *s, int *o, int *ql, BUFFER *err)
 {
+  int q_level = 0;
   char *eptr;
-
-  if (strncasecmp (s, "bright", 6) == 0)
+  
+  if(!MoreArgs(s))
   {
-    *attr |= brite;
-    s += 6;
+    strfcpy(err->data, "Missing arguments.", err->dsize);
+    return -1;
   }
-
-  /* allow aliases for xterm color resources */
-  if (strncasecmp (s, "color", 5) == 0)
+  
+  mutt_extract_token(buf, s, 0);
+  if(!strncmp(buf->data, "quoted", 6))
   {
-    s += 5;
-    *col = strtol (s, &eptr, 10);
-    if (!*s || *eptr || *col < 0 ||
-	(*col >= COLORS && !option(OPTNOCURSES) && has_colors()))
+    if(buf->data[6])
     {
-      snprintf (err->data, err->dsize, "%s: color not supported by term", s);
-      return (-1);
+      *ql = strtol(buf->data + 6, &eptr, 10);
+      if(*eptr || q_level < 0)
+      {
+	snprintf(err->data, err->dsize, "%s: no such object", buf->data);
+	return -1;
+      }
     }
+    else
+      *ql = 0;
+    
+    *o = MT_COLOR_QUOTED;
   }
-  else if ((*col = mutt_getvaluebyname (s, Colors)) == -1)
+  else if ((*o = mutt_getvaluebyname (buf->data, Fields)) == -1)
   {
-    snprintf (err->data, err->dsize, "%s: no such color", s);
+    snprintf (err->data, err->dsize, "%s: no such object", buf->data);
     return (-1);
   }
-
-#ifdef HAVE_USE_DEFAULT_COLORS
-  if (*col == COLOR_DEFAULT && use_default_colors () != OK)
-  {
-    strfcpy (err->data, "default colors not supported", err->dsize);
-    return (-1);
-  }
-#endif
 
   return 0;
 }
 
-/* usage: uncolor index pattern [pattern...] */
-int mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+typedef int (*parser_callback_t)(BUFFER *, BUFFER *, int *, int *, int *, BUFFER *);
+
+#ifdef HAVE_COLOR
+
+static int
+parse_color_pair(BUFFER *buf, BUFFER *s, int *fg, int *bg, int *attr, BUFFER *err)
 {
-  int object = 0, do_cache = 0;
-  COLOR_LINE *tmp, *last = NULL;
+  if (! MoreArgs (s))
+  {
+    strfcpy (err->data, "color: too few arguments", err->dsize);
+    return (-1);
+  }
 
   mutt_extract_token (buf, s, 0);
 
-  if ((object = mutt_getvaluebyname (buf->data, Fields)) == -1)
-  {
-    snprintf (err->data, err->dsize, "%s: no such object", buf->data);
+  if (parse_color_name (buf->data, fg, attr, A_BOLD, err) != 0)
     return (-1);
-  }
 
-  if (strncmp (buf->data, "index", 5) != 0)
+  if (! MoreArgs (s))
   {
-   strfcpy (err->data, "uncolor: command valid only for index object", err->dsize);
-   return (-1);
-  }
-
-  if (!MoreArgs (s))
-  {
-    strfcpy (err->data, "uncolor: too few arguments", err->dsize);
+    strfcpy (err->data, "color: too few arguments", err->dsize);
     return (-1);
-  }
-
-  while (MoreArgs (s))
-  {
-    mutt_extract_token (buf, s, 0);
-    if (!strcmp ("*", buf->data))
-    {
-      for (tmp = ColorIndexList; tmp; )
-      {
-        if (!do_cache)
-	  do_cache = 1;
-	last = tmp;
-	tmp = tmp->next;
-	mutt_pattern_free (&last->color_pattern);
-	mutt_free_color(last->fg,last->bg);
-	safe_free ((void **) &last);
-      }
-      ColorIndexList = NULL;
-    }
-    else
-    {
-      for (last = NULL, tmp = ColorIndexList; tmp; last = tmp, tmp = tmp->next)
-      {
-	if (!strcmp (buf->data, tmp->pattern))
-	{
-          if (!do_cache)
-	    do_cache = 1;
-	  dprint(1,(debugfile,"Freeing pattern \"%s\" from ColorIndexList\n",
-	                       tmp->pattern));
-	  if (last)
-	    last->next = tmp->next;
-	  else
-	    ColorIndexList = tmp->next;
-	  mutt_pattern_free (&tmp->color_pattern);
-	  mutt_free_color(tmp->fg,tmp->bg);
-	  safe_free ((void **) &tmp);
-	  break;
-	}
-      }
-    }
   }
   
-  if (do_cache && !option (OPTNOCURSES) && has_colors ()) 
-  {
-   mutt_cache_index_colors (Context);
-   set_option (OPTFORCEREDRAWINDEX);
-  }
+  mutt_extract_token (buf, s, 0);
 
-  return (0);
+  if (parse_color_name (buf->data, bg, attr, A_BLINK, err) != 0)
+    return (-1);
+  
+  return 0;
 }
 
-/* usage: color <object> <fg> <bg> [ <regexp> ] */
-int mutt_parse_color (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
-{
-  int object = 0, bold = 0, fg = 0, bg = 0, q_level = 0;
-  int r = 0;
-  char *eptr;
-
-  mutt_extract_token (buf, s, 0);
-  if (!strncmp (buf->data, "quoted", 6))
-  {
-    if (buf->data[6])
-    {
-      q_level = strtol (buf->data + 6, &eptr, 10);
-      if (*eptr || q_level < 0)
-      {
-	snprintf (err->data, err->dsize, "%s: no such object", buf->data);
-	return (-1);
-      }
-    }
-    object = MT_COLOR_QUOTED;
-  }
-  else if ((object = mutt_getvaluebyname (buf->data, Fields)) == -1)
-  {
-    snprintf (err->data, err->dsize, "%s: no such object", buf->data);
-    return (-1);
-  }
-
-  /* first color */
-  if (! MoreArgs (s))
-  {
-    strfcpy (err->data, "color: too few arguments", err->dsize);
-    return (-1);
-  }
-  mutt_extract_token (buf, s, 0);
-
-  if (parse_color_name (buf->data, &fg, &bold, A_BOLD, err) != 0)
-    return (-1);
-
-  /* second color */
-  if (! MoreArgs (s))
-  {
-    strfcpy (err->data, "color: too few arguments", err->dsize);
-    return (-1);
-  }
-  mutt_extract_token (buf, s, 0);
-
-  /* A_BLINK turns the background color brite on some terms */
-  if (parse_color_name (buf->data, &bg, &bold, A_BLINK, err) != 0)
-    return (-1);
-
-  if (object == MT_COLOR_HEADER || object == MT_COLOR_BODY || object == MT_COLOR_INDEX)
-  {
-    if (! MoreArgs (s))
-    {
-      strfcpy (err->data, "color: too few arguments", err->dsize);
-      return (-1);
-    }
-
-    mutt_extract_token (buf, s, 0);
-    if (MoreArgs (s))
-    {
-      strfcpy (err->data, "color: too many arguments", err->dsize);
-      return (-1);
-    }
-
-    /* don't parse curses command if we're not using the screen */
-    /* ignore color commands if we're running on a mono terminal */
-    if (option (OPTNOCURSES) || !has_colors ())
-    {
-      return 0;
-    }
-
-    if (object == MT_COLOR_HEADER)
-      r = add_pattern (&ColorHdrList, buf->data, 0, fg, bg, bold, err,0);
-    else if (object == MT_COLOR_BODY)
-      r = add_pattern (&ColorBodyList, buf->data, 1, fg, bg, bold, err, 0);
-    else if (object == MT_COLOR_INDEX)
-    {
-      pattern_t *pat;
-      char tempbuf[LONG_STRING];
-
-      strfcpy (tempbuf, buf->data, sizeof (tempbuf));
-      mutt_check_simple (tempbuf, sizeof (tempbuf), SimpleSearch);
-      if ((pat = mutt_pattern_comp (tempbuf, M_FULL_MSG, err)) == NULL)
-      {
-	mutt_pattern_free (&pat);
-	return (-1);
-      }
-      r = add_pattern (&ColorIndexList, buf->data, 1, fg, bg, bold, err, 1);
-      mutt_cache_index_colors(Context);
-      set_option (OPTFORCEREDRAWINDEX);
-    }
-  }
-  else
-  {
-    /* don't parse curses command if we're not using the screen */
-    /* ignore color commands if we're running on a mono terminal */
-    if (option (OPTNOCURSES) || !has_colors ())
-    {
-      return 0;
-    }
-
-    if (object == MT_COLOR_QUOTED)
-    {
-      if (q_level >= ColorQuoteSize)
-      {
-	safe_realloc ((void **) &ColorQuote, (ColorQuoteSize += 2) * sizeof (int));
-	ColorQuote[ColorQuoteSize-2] = ColorDefs[MT_COLOR_QUOTED];
-	ColorQuote[ColorQuoteSize-1] = ColorDefs[MT_COLOR_QUOTED];
-      }
-      if (q_level >= ColorQuoteUsed)
-	ColorQuoteUsed = q_level + 1;
-      if (q_level == 0)
-      {
-	ColorDefs[MT_COLOR_QUOTED] = bold | mutt_alloc_color (fg, bg);
-
-	ColorQuote[0] = ColorDefs[MT_COLOR_QUOTED];
-	for (q_level = 1; q_level < ColorQuoteUsed; q_level++)
-	{
-	  if (ColorQuote[q_level] == A_NORMAL)
-	    ColorQuote[q_level] = ColorDefs[MT_COLOR_QUOTED];
-	}
-      }
-      else
-	ColorQuote[q_level] = bold | mutt_alloc_color (fg, bg);
-    }
-    else
-      ColorDefs[object] = bold | mutt_alloc_color (fg, bg);
-  }
-
-#ifdef HAVE_BKGDSET
-  if (object == MT_COLOR_NORMAL)
-    BKGDSET (MT_COLOR_NORMAL);
 #endif
 
-  return (r);
-}
-
-#endif /* HAVE_COLOR */
-
-/*
- * command: mono <object> <attribute>
- *
- * set attribute for an object when using a terminal with no color support
- */
-int mutt_parse_mono (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+static int
+parse_attr_spec(BUFFER *buf, BUFFER *s, int *fg, int *bg, int *attr, BUFFER *err)
 {
-  int r = 0, object, q_level = 0, attr = A_NORMAL;
-  char *eptr;
-
-  mutt_extract_token (buf, s, 0);
-  if (strncmp (buf->data, "quoted", 6) == 0)
-  {
-    if (buf->data[6])
-    {
-      q_level = strtol (buf->data + 6, &eptr, 10);
-      if (*eptr || q_level < 0)
-      {
-	snprintf (err->data, err->dsize, "%s: no such object", buf->data);
-	return (-1);
-      }
-    }
-    object = MT_COLOR_QUOTED;
-  }
-  else if ((object = mutt_getvaluebyname (buf->data, Fields)) == -1)
-  {
-    snprintf (err->data, err->dsize, "%s: no such object", buf->data);
-    return (-1);
-  }
+  
+  if(fg) *fg = -1; 
+  if(bg) *bg = -1;
 
   if (! MoreArgs (s))
   {
@@ -625,108 +606,156 @@ int mutt_parse_mono (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   mutt_extract_token (buf, s, 0);
 
   if (strcasecmp ("bold", buf->data) == 0)
-    attr |= A_BOLD;
+    *attr |= A_BOLD;
   else if (strcasecmp ("underline", buf->data) == 0)
-    attr |= A_UNDERLINE;
+    *attr |= A_UNDERLINE;
   else if (strcasecmp ("none", buf->data) == 0)
-    attr = A_NORMAL;
+    *attr = A_NORMAL;
   else if (strcasecmp ("reverse", buf->data) == 0)
-    attr |= A_REVERSE;
+    *attr |= A_REVERSE;
   else if (strcasecmp ("standout", buf->data) == 0)
-    attr |= A_STANDOUT;
+    *attr |= A_STANDOUT;
   else if (strcasecmp ("normal", buf->data) == 0)
-    attr = A_NORMAL; /* needs use = instead of |= to clear other bits */
+    *attr = A_NORMAL; /* needs use = instead of |= to clear other bits */
   else
   {
     snprintf (err->data, err->dsize, "%s: no such attribute", buf->data);
     return (-1);
   }
+  
+  return 0;
+}
 
+static int fgbgattr_to_color(int fg, int bg, int attr)
+{
+#ifdef HAVE_COLOR
+  if(fg != -1 && bg != -1)
+    return attr | mutt_alloc_color(fg, bg);
+  else
+#endif
+    return attr;
+}
+
+/* usage: color <object> <fg> <bg> [ <regexp> ] 
+ * 	  mono  <object> <attr> [ <regexp> ]
+ */
+
+static int 
+_mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err, 
+		   parser_callback_t callback, short dry_run)
+{
+  int object = 0, attr = 0, fg = 0, bg = 0, q_level = 0;
+  int r = 0;
+
+  if(parse_object(buf, s, &object, &q_level, err) == -1)
+    return -1;
+
+  if(callback(buf, s, &fg, &bg, &attr, err) == -1)
+    return -1;
+
+  /* extract a regular expression if needed */
+  
   if (object == MT_COLOR_HEADER || object == MT_COLOR_BODY || object == MT_COLOR_INDEX)
   {
-    if (! MoreArgs (s))
+    if (!MoreArgs (s))
     {
-      snprintf (err->data, err->dsize, "mono: missing regexp");
+      strfcpy (err->data, "too few arguments", err->dsize);
       return (-1);
     }
 
     mutt_extract_token (buf, s, 0);
-    if (MoreArgs (s))
-    {
-      strfcpy (err->data, "mono: too many arguments", err->dsize);
-      return (-1);
-    }
-
-    /* if we have color, ignore the mono commands */
-    if (option (OPTNOCURSES)
-#ifdef HAVE_COLOR
-	|| has_colors ()
-#endif
-       )
-    {
-      return 0;
-    }
-
-    if (object == MT_COLOR_HEADER)
-      r = add_pattern (&ColorHdrList, buf->data, 0, -1, -1, attr, err, 0);
-    else if (object == MT_COLOR_BODY)
-      r = add_pattern (&ColorBodyList, buf->data, 1, -1, -1, attr, err, 0);
-    else if (object == MT_COLOR_INDEX)
-    {
-      pattern_t *pat;
-      char tempbuf[LONG_STRING];
-
-      strfcpy (tempbuf, buf->data, sizeof (tempbuf));
-      mutt_check_simple (tempbuf, sizeof (tempbuf), SimpleSearch);
-      if ((pat = mutt_pattern_comp (tempbuf, M_FULL_MSG, err)) == NULL)
-      {
-	mutt_pattern_free (&pat);
-	return (-1);
-      }
-      r = add_pattern (&ColorIndexList, buf->data, 1, -1, -1, attr, err, 1);
-      mutt_cache_index_colors (Context);
-      set_option (OPTFORCEREDRAWINDEX);
-    }
   }
-  else
+   
+  if (MoreArgs (s))
   {
-    /* if we have color, ignore the mono commands */
-    if (option (OPTNOCURSES)
+    strfcpy (err->data, "too many arguments", err->dsize);
+    return (-1);
+  }
+  
+  /* dry run? */
+  
+  if(dry_run) return 0;
+
+  
 #ifdef HAVE_COLOR
-	|| has_colors ()
+# ifdef HAVE_USE_DEFAULT_COLORS
+  if (has_colors() && use_default_colors () != OK 
+      && (fg == COLOR_DEFAULT || bg == COLOR_DEFAULT))
+  {
+    strfcpy (err->data, "default colors not supported", err->dsize);
+    return (-1);
+  }
+# endif /* HAVE_USE_DEFAULT_COLORS */
 #endif
-       )
+  
+  if (object == MT_COLOR_HEADER)
+    r = add_pattern (&ColorHdrList, buf->data, 0, fg, bg, attr, err,0);
+  else if (object == MT_COLOR_BODY)
+    r = add_pattern (&ColorBodyList, buf->data, 1, fg, bg, attr, err, 0);
+  else if (object == MT_COLOR_INDEX)
+  {
+    r = add_pattern (&ColorIndexList, buf->data, 1, fg, bg, attr, err, 1);
+    mutt_cache_index_colors(Context);
+    set_option (OPTFORCEREDRAWINDEX);
+  }
+  else if (object == MT_COLOR_QUOTED)
+  {
+    if (q_level >= ColorQuoteSize)
     {
-      return 0;
+      safe_realloc ((void **) &ColorQuote, (ColorQuoteSize += 2) * sizeof (int));
+      ColorQuote[ColorQuoteSize-2] = ColorDefs[MT_COLOR_QUOTED];
+      ColorQuote[ColorQuoteSize-1] = ColorDefs[MT_COLOR_QUOTED];
     }
-
-    if (object == MT_COLOR_QUOTED)
+    if (q_level >= ColorQuoteUsed)
+      ColorQuoteUsed = q_level + 1;
+    if (q_level == 0)
     {
-      if (q_level >= ColorQuoteSize)
+      ColorDefs[MT_COLOR_QUOTED] = fgbgattr_to_color(fg, bg, attr);
+      
+      ColorQuote[0] = ColorDefs[MT_COLOR_QUOTED];
+      for (q_level = 1; q_level < ColorQuoteUsed; q_level++)
       {
-	safe_realloc ((void **) &ColorQuote, (ColorQuoteSize += 2) * sizeof (int));
-	ColorQuote[ColorQuoteSize-2] = ColorDefs[MT_COLOR_QUOTED];
-	ColorQuote[ColorQuoteSize-1] = ColorDefs[MT_COLOR_QUOTED];
+	if (ColorQuote[q_level] == A_NORMAL)
+	  ColorQuote[q_level] = ColorDefs[MT_COLOR_QUOTED];
       }
-      if (q_level >= ColorQuoteUsed)
-	ColorQuoteUsed = q_level + 1;
-      if (q_level == 0)
-      {
-	ColorDefs[MT_COLOR_QUOTED] = attr;
-
-	ColorQuote[0] = ColorDefs[MT_COLOR_QUOTED];
-	for (q_level = 1; q_level < ColorQuoteUsed; q_level++)
-	{
-	  if (ColorQuote[q_level] == A_NORMAL)
-	    ColorQuote[q_level] = ColorDefs[MT_COLOR_QUOTED];
-	}
-      }
-      else
-	ColorQuote[q_level] = attr;
     }
     else
-      ColorDefs[object] = attr;
+      ColorQuote[q_level] = fgbgattr_to_color(fg, bg, attr);
   }
+  else
+    ColorDefs[object] = fgbgattr_to_color(fg, bg, attr);
+
+#ifdef HAVE_COLOR
+# ifdef HAVE_BKGDSET
+  if (object == MT_COLOR_NORMAL && has_colors())
+    BKGDSET (MT_COLOR_NORMAL);
+# endif
+#endif
 
   return (r);
 }
+
+#ifdef HAVE_COLOR
+
+int mutt_parse_color(BUFFER *buff, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  int dry_run = 0;
+  
+  if(option(OPTNOCURSES) || !has_colors())
+    dry_run = 1;
+  
+  return _mutt_parse_color(buff, s, err, parse_color_pair, dry_run);
+}
+
+#endif
+
+int mutt_parse_mono(BUFFER *buff, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  int dry_run = 0;
+  
+  if(option(OPTNOCURSES) || has_colors())
+    dry_run = 1;
+  
+  return _mutt_parse_color(buff, s, err, parse_attr_spec, dry_run);
+}
+

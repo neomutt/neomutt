@@ -307,6 +307,7 @@ struct binding_t OpAttach[] = {
 
 struct binding_t OpCompose[] = {
   { "attach-file",	OP_COMPOSE_ATTACH_FILE,		"a" },
+  { "attach-message",	OP_COMPOSE_ATTACH_MESSAGE,	"A" },
   { "edit-bcc",		OP_COMPOSE_EDIT_BCC,		"b" },
   { "edit-cc",		OP_COMPOSE_EDIT_CC,		"c" },
   { "copy-file",	OP_SAVE,			"C" },
@@ -332,6 +333,7 @@ struct binding_t OpCompose[] = {
   { "edit-to",		OP_COMPOSE_EDIT_TO,		"t" },
   { "edit-type",	OP_COMPOSE_EDIT_TYPE,		"\024" },
   { "toggle-unlink",	OP_COMPOSE_TOGGLE_UNLINK,	"u" },
+  { "update-encoding",	OP_COMPOSE_UPDATE_ENCODING,	"U" },
   { "view-attach",	OP_VIEW_ATTACH,			M_ENTER_S },
   { "send-message",	OP_COMPOSE_SEND_MESSAGE,	"y" },
   { "pipe-entry",	OP_PIPE,			"|" },
@@ -358,7 +360,9 @@ struct binding_t OpBrowser[] = {
   { "sort",		OP_SORT,		"o" },
   { "sort-reverse",	OP_SORT_REVERSE,	"O" },
   { "select-new",	OP_BROWSER_NEW_FILE,	"N" },
-  { "check-new",	OP_CHECK_NEW,		"\t" },
+  { "check-new",	OP_CHECK_NEW,		NULL },
+  { "toggle-mailboxes", OP_TOGGLE_MAILBOXES, 	"\t" },
+  { "view-file",	OP_BROWSER_VIEW_FILE,	" " },
   { NULL,		0,			NULL }
 };
 

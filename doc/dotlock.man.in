@@ -1,0 +1,144 @@
+.\" -*-nroff-*-
+.\"
+.\"
+.\"     Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>
+.\"	Copyright (C) 1998 Thomas Roessler <roessler@guug.de>
+.\" 
+.\"     This program is free software; you can redistribute it and/or modify
+.\"     it under the terms of the GNU General Public License as published by
+.\"     the Free Software Foundation; either version 2 of the License, or
+.\"     (at your option) any later version.
+.\" 
+.\"     This program is distributed in the hope that it will be useful,
+.\"     but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\"     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\"     GNU General Public License for more details.
+.\" 
+.\"     You should have received a copy of the GNU General Public License
+.\"     along with this program; if not, write to the Free Software
+.\"     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+.\"
+.TH dotlock 1 "JULY 1998" Unix "User Manuals"
+.SH NAME
+.PP
+mutt.dotlock \- Lock mail spool files.
+.SH SYNOPSIS
+.PP
+.B mutt.dotlock 
+[-t|-f|-u] [-p] [-r \fIretries\fP] \fIfile\fP
+.SH DESCRIPTION
+.PP
+.B dotlock
+implements the traditional mail spool file locking method:
+To lock \fIfile\fP, a file named \fIfile\fP.lock is
+created. The program operates with group mail privileges
+if necessary.
+.SH OPTIONS
+.PP
+.IP "-t"
+Just try.
+.B dotlock
+won't actually lock a file, but inform the invoking
+process if it's at all possible to lock \fIfile\fP.
+.IP "-f"
+Force the lock.  If another process holds a lock on
+\fIfile\fP longer than a certain amount of time, 
+.B dotlock
+will break that lock by removing the lockfile.
+.IP "-u"
+Unlock.
+.B dotlock 
+will remove \fIfile\fP.lock.
+.IP "-p"
+Use privileges.  If given this option, 
+.B dotlock
+will operate with group mail privileges when creating and
+deleting lock files.
+.IP "-r \fIretries\fP"
+This command line option tells 
+.B dotlock 
+to try locking
+\fIretries\fP times before giving up or (if invoked with
+the 
+.B -f
+command line option) break a lock.  The default value is 5.
+.B dotlock
+waits one second between successive locking attempts.  
+.SH FILES
+.PP
+.IP "\fIfile\fP.lock"
+The lock file 
+.B dotlock
+generates.
+.SH SEE ALSO
+.PP
+.BR fcntl (2),
+.BR flock (2),
+.BR lockfile (1),
+.BR mutt (1)
+.SH DIAGNOSTICS
+.PP
+.B dotlock
+gives all diagnostics in its return values:
+.TP
+.B "0 \- DL_EX_OK"
+The program was successful.
+.TP 
+.B "1 \- DL_EX_ERROR"
+An unspecified error such as bad command line parameters,
+lack of system memory and the like has occured.
+.TP 
+.B "3 \- DL_EX_EXIST"
+The 
+user wants to lock a file which has been locked by
+another process already.  If 
+.B dotlock
+is invoked with the
+.B -f 
+command line option, 
+.B dotlock
+won't generate this error, but break other processes'
+locks.
+.TP 
+.B "4 \- DL_EX_NEED_RPIVS"
+This return value only occurs if 
+.B dotlock 
+has been invoked
+with the 
+.B -t
+command line option.  It means that
+.B dotlock
+will have to use its group mail privileges to lock
+\fIfile\fP.
+.TP
+.B "5 \- DL_EX_IMPOSSIBLE"
+This return value only occurs if
+.B dotlock
+has been invoked with the
+.B -t
+command line option.  It means that
+.B dotlock 
+is unable to lock \fIfile\fP even with group mail
+privileges.
+.SH NOTES
+.PP
+.B dotlock
+tries to implement an NFS-safe dotlocking method which was
+borrowed from 
+.B lockfile
+(1).  
+.PP
+If the user can't open \fIfile\fP for reading with his
+normal privileges, dotlock will return the
+.B DL_EX_ERROR
+exit value to avoid certain attacks against other users'
+spool files. The code carefully avoids race conditions
+when checking permissions; for details of all this see the
+comments in dotlock.c.
+.SH HISTORY
+.PP
+.B dotlock
+is part of the Mutt mail user agent package.  It has been
+created to avoid running mutt with group mail privileges.
+.SH AUTHOR
+Thomas Roessler <roessler@guug.de>

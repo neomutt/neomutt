@@ -245,8 +245,7 @@ int mutt_check_mime_type (const char *s)
 static void parse_content_type (char *s, BODY *ct)
 {
   char *pc;
-  char buffer[SHORT_STRING];
-  short i = 0;
+  char *subtype;
 
   safe_free((void **)&ct->subtype);
   mutt_free_parameter(&ct->parameter);
@@ -265,20 +264,22 @@ static void parse_content_type (char *s, BODY *ct)
   }
   
   /* Now get the subtype */
-  if ((pc = strchr(s, '/')))
+  if ((subtype = strchr(s, '/')))
   {
-    *pc++ = 0;
-    while (*pc && !ISSPACE (*pc) && *pc != ';')
-    {
-      buffer[i++] = *pc;
-      pc++;
-    }
-    buffer[i] = 0;
-    ct->subtype = safe_strdup (buffer);
+    *subtype++ = '\0';
+    for(pc = subtype; *pc && !ISSPACE(*pc) && *pc != ';'; pc++)
+      ;
+    *pc = '\0';
+    ct->subtype = safe_strdup (subtype);
   }
 
   /* Finally, get the major type */
   ct->type = mutt_check_mime_type (s);
+
+  if (ct->type == TYPEOTHER)
+  {
+    ct->xtype = safe_strdup (s);
+  }
 
   if (ct->subtype == NULL)
   {
@@ -293,6 +294,8 @@ static void parse_content_type (char *s, BODY *ct)
       ct->subtype = safe_strdup ("rfc822");
     else if (ct->type == TYPEOTHER)
     {
+      char buffer[SHORT_STRING];
+
       ct->type = TYPEAPPLICATION;
       snprintf (buffer, sizeof (buffer), "x-%s", s);
       ct->subtype = safe_strdup (buffer);
@@ -300,6 +303,7 @@ static void parse_content_type (char *s, BODY *ct)
     else
       ct->subtype = safe_strdup ("x-unknown");
   }
+
 }
 
 static void parse_content_disposition (char *s, BODY *ct)
@@ -394,7 +398,7 @@ BODY *mutt_read_mime_header (FILE *fp, int digest)
   else if (p->type == TYPEMESSAGE && !p->subtype)
     p->subtype = safe_strdup ("rfc822");
 
-  free (line);
+  FREE (&line);
 
   return (p);
 }
@@ -665,7 +669,7 @@ static time_t parse_date (char *s, HEADER *h)
     switch (count)
     {
       case 0: /* day of the month */
-	if (!isdigit (*t))
+	if (!isdigit ((unsigned char) *t))
 	  return (-1);
 	tm.tm_mday = atoi (t);
 	if (tm.tm_mday > 31)
@@ -708,8 +712,8 @@ static time_t parse_date (char *s, HEADER *h)
 	if (*ptz == '+' || *ptz == '-')
 	{
 	  if (ptz[1] && ptz[2] && ptz[3] && ptz[4]
-	      && isdigit (ptz[1]) && isdigit (ptz[2])
-	      && isdigit (ptz[3]) && isdigit (ptz[4]))
+	      && isdigit ((unsigned char) ptz[1]) && isdigit ((unsigned char) ptz[2])
+	      && isdigit ((unsigned char) ptz[3]) && isdigit ((unsigned char) ptz[4]))
 	  {
 	    zhours = (ptz[1] - '0') * 10 + (ptz[2] - '0');
 	    zminutes = (ptz[3] - '0') * 10 + (ptz[4] - '0');
@@ -1167,7 +1171,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr)
     loc = ftell (f);
   }
 
-  free (line);
+  FREE (&line);
 
   if (hdr)
   {

@@ -37,6 +37,10 @@
 #include "buffy.h"
 #endif
 
+#ifdef USE_DOTLOCK
+#include "dotlock.h"
+#endif
+
 #include <dirent.h>
 #include <fcntl.h>
 #include <sys/file.h>
@@ -55,156 +59,74 @@
 #define S_ISLNK(x) (((x) & S_IFMT) == S_IFLNK ? 1 : 0)
 #endif
 
-#define mutt_is_spool(s)  (strcmp (Spoolfile, s) == 0)
-
-#define MAXLOCKATTEMPT 5
+#define mutt_is_spool(s)  (strcmp (NONULL(Spoolfile), s) == 0)
 
 #ifdef USE_DOTLOCK
 /* parameters: 
  * path - file to lock
  * retry - should retry if unable to lock?
  */
+
+#ifdef DL_STANDALONE
+
+static int invoke_dotlock(const char *path, int flags, int retry)
+{
+  char cmd[LONG_STRING + _POSIX_PATH_MAX];
+  char r[SHORT_STRING];
+  
+  if(flags & DL_FL_RETRY)
+    snprintf(r, sizeof(r), "-r %d ", retry ? MAXLOCKATTEMPT : 0);
+  
+  snprintf(cmd, sizeof(cmd),
+	   "%s %s%s%s%s%s%s",
+	   DOTLOCK,
+	   flags & DL_FL_TRY ? "-t " : "",
+	   flags & DL_FL_UNLOCK ? "-u " : "",
+	   flags & DL_FL_USEPRIV ? "-p " : "",
+	   flags & DL_FL_FORCE ? "-f " : "",
+	   flags & DL_FL_RETRY ? r : "",
+	   path);
+
+  return mutt_system(cmd);
+}
+
+#else 
+
+#define invoke_dotlock dotlock_invoke
+
+#endif
+
 static int dotlock_file (const char *path, int retry)
 {
-  const char *pathptr = path;
-  char lockfile[_POSIX_PATH_MAX];
-  char nfslockfile[_POSIX_PATH_MAX];
-  char realpath[_POSIX_PATH_MAX];
-  struct stat sb;
-  size_t prev_size = 0;
-  int count = 0;
-  int attempt = 0;
-  int fd;
+  int r;
+  int flags = DL_FL_USEPRIV | DL_FL_RETRY;
+  
+  if(retry) retry = 1;
 
-  /* if the file is a symlink, find the real file to which it refers */
-  FOREVER
+retry_lock:
+  mutt_clear_error();
+  if((r = invoke_dotlock(path, flags, retry)) == DL_EX_EXIST)
   {
-    dprint(2,(debugfile,"dotlock_file(): locking %s\n", pathptr));
+    char msg[LONG_STRING];
 
-    if (lstat (pathptr, &sb) != 0)
+    snprintf(msg, sizeof(msg), "Lock count exceeded, remove lock for %s?",
+	     path);
+    if(retry && mutt_yesorno(msg, 1) == 1)
     {
-      mutt_perror (pathptr);
-      return (-1);
+      flags |= DL_FL_FORCE;
+      retry--;
+      goto retry_lock;
     }
-
-    if (S_ISLNK (sb.st_mode))
-    {
-      char linkfile[_POSIX_PATH_MAX];
-      char linkpath[_POSIX_PATH_MAX];
-
-      if ((count = readlink (pathptr, linkfile, sizeof (linkfile))) == -1)
-      {
-	mutt_perror (path);
-	return (-1);
-      }
-      linkfile[count] = 0; /* readlink() does not NUL terminate the string! */
-      mutt_expand_link (linkpath, pathptr, linkfile);
-      strfcpy (realpath, linkpath, sizeof (realpath));
-      pathptr = realpath;
-    }
-    else
-      break;
   }
-
-  snprintf (nfslockfile, sizeof (nfslockfile), "%s.%s.%d", pathptr, Hostname, (int) getpid ());
-  snprintf (lockfile, sizeof (lockfile), "%s.lock", pathptr);
-  unlink (nfslockfile);
-
-  while ((fd = open (nfslockfile, O_WRONLY | O_EXCL | O_CREAT, 0)) < 0)
-    if (errno != EAGAIN)
-    {
-      mutt_perror ("cannot open NFS lock file!");
-      return (-1);
-    }
-
-  close (fd);
-
-  count = 0;
-  FOREVER
-  {
-    link (nfslockfile, lockfile);
-    if (stat (nfslockfile, &sb) != 0)
-    {
-      mutt_perror ("stat");
-      return (-1);
-    }
-
-    if (sb.st_nlink == 2)
-      break;
-    
-    if (stat (path, &sb) != 0)
-      sb.st_size = 0;
-
-    if (count == 0)
-      prev_size = sb.st_size;
-
-    /* only try to remove the lock if the file is not changing */
-    if (prev_size == sb.st_size && ++count >= retry ? MAXLOCKATTEMPT : 0)
-    {
-      if (retry && mutt_yesorno ("Lock count exceeded, remove lock?", 1) == 1)
-      {
-	unlink (lockfile);
-	count = 0;
-	attempt = 0;
-	continue;
-      }
-      else
-	return (-1);
-    }
-
-    prev_size = sb.st_size;
-
-    mutt_message ("Waiting for lock attempt #%d...", ++attempt);
-    sleep (1);
-  }
-
-  unlink (nfslockfile);
-
-  return 0;
+  return (r == DL_EX_OK ? 0 : -1);
 }
 
 static int undotlock_file (const char *path)
 {
-  const char *pathptr = path;
-  char lockfile[_POSIX_PATH_MAX];
-  char realpath[_POSIX_PATH_MAX];
-  struct stat sb;
-  int n;
-
-  FOREVER
-  {
-    dprint (2,(debugfile,"undotlock: unlocking %s\n",path));
-
-    if (lstat (pathptr, &sb) != 0)
-    {
-      mutt_perror (pathptr);
-      return (-1);
-    }
-
-    if (S_ISLNK (sb.st_mode))
-    {
-      char linkfile[_POSIX_PATH_MAX];
-      char linkpath[_POSIX_PATH_MAX];
-
-      if ((n = readlink (pathptr, linkfile, sizeof (linkfile))) == -1)
-      {
-	mutt_perror (pathptr);
-	return (-1);
-      }
-      linkfile[n] = 0; /* readlink() does not NUL terminate the string! */
-      mutt_expand_link (linkpath, pathptr, linkfile);
-      strfcpy (realpath, linkpath, sizeof (realpath));
-      pathptr = realpath;
-      continue;
-    }
-    else
-      break;
-  }
-
-  snprintf (lockfile, sizeof (lockfile), "%s.lock", pathptr);
-  unlink (lockfile);
-  return 0;
+  return (invoke_dotlock(path, DL_FL_USEPRIV | DL_FL_UNLOCK, 0) == DL_EX_OK ? 
+	  0 : -1);
 }
+
 #endif /* USE_DOTLOCK */
 
 /* Args:
@@ -248,7 +170,7 @@ int mx_lock_file (const char *path, int fd, int excl, int dot, int timeout)
       prev_sb = sb;
 
     /* only unlock file if it is unchanged */
-    if (prev_sb.st_size == sb.st_size && ++count >= timeout?MAXLOCKATTEMPT:0)
+    if (prev_sb.st_size == sb.st_size && ++count >= (timeout?MAXLOCKATTEMPT:0))
     {
       if (timeout)
 	mutt_error ("Timeout exceeded while attempting fcntl lock!");
@@ -282,7 +204,7 @@ int mx_lock_file (const char *path, int fd, int excl, int dot, int timeout)
       prev_sb=sb;
 
     /* only unlock file if it is unchanged */
-    if (prev_sb.st_size == sb.st_size && ++count >= timeout?MAXLOCKATTEMPT:0)
+    if (prev_sb.st_size == sb.st_size && ++count >= (timeout?MAXLOCKATTEMPT:0))
     {
       if (timeout)
 	mutt_error ("Timeout exceeded while attempting flock lock!");
@@ -370,7 +292,7 @@ FILE *mx_open_file_lock (const char *path, const char *mode)
 
 #ifdef USE_IMAP
 
-static int mx_is_imap(const char *p)
+int mx_is_imap(const char *p)
 {
   return p && (*p == '{');
 }
@@ -393,7 +315,6 @@ int mx_get_magic (const char *path)
   {
     dprint (1, (debugfile, "mx_get_magic(): unable to stat %s: %s (errno %d).\n",
 		path, strerror (errno), errno));
-    mutt_perror (path);
     return (-1);
   }
 
@@ -483,7 +404,7 @@ static int mx_open_mailbox_append (CONTEXT *ctx)
 
 #ifdef USE_IMAP
   
-  if(mx_is_imap(ctx))  
+  if(mx_is_imap(ctx->path))  
     return imap_open_mailbox_append (ctx);
 
 #endif
@@ -632,19 +553,22 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
     return ctx;
   }
 
-  switch (ctx->magic = mx_get_magic (path))
+  ctx->magic = mx_get_magic (path);
+  
+  if(ctx->magic == 0)
+    mutt_error ("%s is not a mailbox.", path);
+
+  if(ctx->magic == -1)
+    mutt_perror(path);
+  
+  if(ctx->magic <= 0)
   {
-    case 0:
-      mutt_error ("%s is not a mailbox.", path);
-      /* fall through */
-
-    case -1:
-      mx_fastclose_mailbox (ctx);
-      if (!pctx)
-	free (ctx);
-      return (NULL);
+    mx_fastclose_mailbox (ctx);
+    if (!pctx)
+      FREE (&ctx);
+    return (NULL);
   }
-
+  
   /* if the user has a `push' command in their .muttrc, or in a folder-hook,
    * it will cause the progress messages not to be displayed because
    * mutt_refresh() will think we are in the middle of a macro.  so set a
@@ -817,7 +741,7 @@ int mx_close_mailbox (CONTEXT *ctx)
     }
     else
     {
-      strfcpy (mbox, Inbox, sizeof (mbox));
+      strfcpy (mbox, NONULL(Inbox), sizeof (mbox));
       isSpool = mutt_is_spool (ctx->path) && !mutt_is_spool (mbox);
     }
     mutt_expand_path (mbox, sizeof (mbox));
@@ -895,7 +819,7 @@ int mx_close_mailbox (CONTEXT *ctx)
 
   if (ctx->msgcount == ctx->deleted &&
       (ctx->magic == M_MMDF || ctx->magic == M_MBOX) &&
-      strcmp (ctx->path, Spoolfile) != 0 && !option (OPTSAVEEMPTY))
+      !mutt_is_spool(ctx->path) && !option (OPTSAVEEMPTY))
     unlink (ctx->path);
 
   mx_fastclose_mailbox (ctx);
@@ -963,7 +887,7 @@ int mx_sync_mailbox (CONTEXT *ctx)
 
     if (ctx->msgcount == ctx->deleted &&
 	(ctx->magic == M_MBOX || ctx->magic == M_MMDF) &&
-	strcmp (ctx->path, Spoolfile) != 0 && !option (OPTSAVEEMPTY))
+	!mutt_is_spool(ctx->path) && !option (OPTSAVEEMPTY))
     {
       unlink (ctx->path);
       mx_fastclose_mailbox (ctx);
@@ -1056,7 +980,7 @@ int mh_open_new_message (MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
       cp = de->d_name;
       while (*cp)
       {
-	if (!isdigit (*cp))
+	if (!isdigit ((unsigned char) *cp))
 	  break;
 	cp++;
       }
@@ -1162,7 +1086,7 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
     if (dest->magic == M_MMDF)
       fputs (MMDF_SEP, msg->fp);
 
-    if ((msg->magic != M_MAILDIR) && (msg->magic != M_IMAP) && 
+    if ((msg->magic != M_MAILDIR) && ((msg->magic != M_MH) && msg->magic != M_IMAP) && 
 	(flags & M_ADD_FROM))
     {
       if (hdr)
@@ -1181,7 +1105,7 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
       else
 	t = time (NULL);
 
-      fprintf (msg->fp, "From %s %s", p ? p->mailbox : Username, ctime (&t));
+      fprintf (msg->fp, "From %s %s", p ? p->mailbox : NONULL(Username), ctime (&t));
     }
   }
   else
@@ -1417,8 +1341,7 @@ MESSAGE *mx_open_message (CONTEXT *ctx, int msgno)
 	  mutt_perror (path);
 	  dprint (1, (debugfile, "mx_open_message: fopen: %s: %s (errno %d).\n",
 		      path, strerror (errno), errno));
-	  free (msg);
-	  msg = NULL;
+	  FREE (&msg);
 	}
       }
       break;
@@ -1426,17 +1349,14 @@ MESSAGE *mx_open_message (CONTEXT *ctx, int msgno)
 #ifdef USE_IMAP
     case M_IMAP:
       if (imap_fetch_message (msg, ctx, msgno) != 0)
-      {
-	free (msg);
-	msg = NULL;
-      }
+	FREE (&msg);
       break;
 #endif /* USE_IMAP */
 
     default:
 
       dprint (1, (debugfile, "mx_open_message(): function not implemented for mailbox type %d.\n", ctx->magic));
-      safe_free ((void **) &msg);
+      FREE (&msg);
       break;
   }
   return (msg);
@@ -1483,8 +1403,7 @@ int mx_close_message (MESSAGE **msg)
       break;
   }
 
-  free (*msg);
-  *msg = NULL;
+  FREE (msg);
   return (r);
 }
 

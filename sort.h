@@ -16,8 +16,6 @@
  *     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */ 
 
-#include "mapping.h"
-
 #define SORT_DATE	1   /* the date the mail was sent. */
 #define SORT_SIZE	2
 #define SORT_SUBJECT	3

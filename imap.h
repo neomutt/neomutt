@@ -26,5 +26,6 @@ extern int imap_open_mailbox (CONTEXT *ctx);
 extern int imap_open_mailbox_append (CONTEXT *ctx);
 extern int imap_sync_mailbox (CONTEXT *ctx);
 extern void imap_fastclose_mailbox (CONTEXT *ctx);
+extern int imap_buffy_check (char *path);
 
 #endif
