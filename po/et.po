@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt 1.2.5\n"
+"Project-Id-Version: mutt 1.3.19\n"
 "POT-Creation-Date: 2001-06-07 22:11+0200\n"
-"PO-Revision-Date: 2001-05-18 23:11+02:00\n"
+"PO-Revision-Date: 2001-06-08 20:15+02:00\n"
 "Last-Translator: Toomas Soome <tsoome@ut.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -14,9 +14,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8-bit\n"
 
 #: account.c:144
-#, fuzzy, c-format
+#, c-format
 msgid "Username at %s: "
-msgstr "Uus nimi: "
+msgstr "Kasutajanimi serveril %s: "
 
 #: account.c:172
 #, c-format
@@ -180,9 +180,8 @@ msgid "No files match the file mask"
 msgstr "Maskile vastavaid faile ei ole"
 
 #: browser.c:849
-#, fuzzy
 msgid "Create is only supported for IMAP mailboxes"
-msgstr "Kustutada saab ainult IMAP postkaste"
+msgstr "Luua saab ainult IMAP postkaste"
 
 #: browser.c:869
 msgid "Delete is only supported for IMAP mailboxes"
@@ -311,23 +310,20 @@ msgid "Could not create temporary file!"
 msgstr "Ei õnnestu luua ajutist faili!"
 
 #: commands.c:126
-#, fuzzy
 msgid "Cannot create display filter"
 msgstr "Filtri loomine ebaõnnestus"
 
 #: commands.c:146
-#, fuzzy
 msgid "Could not copy message"
-msgstr "Teadet ei õnnestu saata."
+msgstr "Teadet ei õnnestu kopeerida."
 
 #: commands.c:168
 msgid "PGP signature successfully verified."
 msgstr "PGP allkiri on edukalt kontrollitud."
 
 #: commands.c:169
-#, fuzzy
 msgid "PGP signature could NOT be verified."
-msgstr "PGP allkiri on edukalt kontrollitud."
+msgstr "PGP allkirja EI ÕNNESTU kontrollida."
 
 #: commands.c:192
 msgid "Command: "
@@ -364,18 +360,16 @@ msgid "Messages bounced."
 msgstr "Teated on peegeldatud."
 
 #: commands.c:329 commands.c:368 commands.c:385
-#, fuzzy
 msgid "Can't create filter process"
-msgstr "Ei õnnestu luua filtrit"
+msgstr "Filterprotsessi loomine ebaõnnestus"
 
 #: commands.c:414
 msgid "Pipe to command: "
 msgstr "Toruga käsule: "
 
 #: commands.c:430
-#, fuzzy
 msgid "No printing command has been defined."
-msgstr "Sissetulevate kirjade postkaste ei ole määratud."
+msgstr "Trükkimise käsklust ei ole defineeritud."
 
 #: commands.c:435
 msgid "Print message?"
@@ -394,14 +388,12 @@ msgid "Messages printed"
 msgstr "Teated on trükitud"
 
 #: commands.c:445
-#, fuzzy
 msgid "Message could not be printed"
-msgstr "Teade on trükitud"
+msgstr "Teadet ei saa trükkida"
 
 #: commands.c:446
-#, fuzzy
 msgid "Messages could not be printed"
-msgstr "Teated on trükitud"
+msgstr "Teateid ei saa trükkida"
 
 #: commands.c:455
 msgid ""
@@ -464,25 +456,25 @@ msgstr "Kopeerin kausta %s..."
 #: commands.c:836
 #, c-format
 msgid "Convert to %s upon sending?"
-msgstr ""
+msgstr "Teisendan saatmisel kooditabelisse %s?"
 
 #: commands.c:844
-#, fuzzy, c-format
+#, c-format
 msgid "Content-Type changed to %s."
-msgstr "Ühendus serverisse %s..."
+msgstr "Sisu tüübiks on nüüd %s."
 
 #: commands.c:846
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; %s."
-msgstr "Kooditabel %s on tundmatu."
+msgstr "Kooditabeliks on nüüd %s; %s."
 
 #: commands.c:848
 msgid "not converting"
-msgstr ""
+msgstr "ei teisenda"
 
 #: commands.c:848
 msgid "converting"
-msgstr ""
+msgstr "teisendan"
 
 #: compose.c:40
 msgid "There are no attachments."
@@ -529,15 +521,12 @@ msgid "<default>"
 msgstr "<vaikimisi>"
 
 #: compose.c:132
-#, fuzzy
 msgid "(e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
-msgstr ""
-"(k)rüpti, (a)llkiri, allk. ku(i), (m)õlemad, vali mi(c) algoritm, (u)nusta? "
+msgstr "(k)rüpti, (a)llkiri, allk. ku(i), (m)õlemad või (u)nusta? "
 
 #: compose.c:133
-#, fuzzy
 msgid "esabf"
-msgstr "kaimcu"
+msgstr "kaimu"
 
 #: compose.c:147
 msgid "Sign as: "
@@ -696,9 +685,8 @@ msgid "Function not permitted in attach-message mode."
 msgstr "Funktsioon ei ole teate lisamise moodis lubatud."
 
 #: curs_main.c:63
-#, fuzzy
 msgid "No visible messages."
-msgstr "Uusi teateid pole"
+msgstr "Nähtavaid teateid pole."
 
 #: curs_main.c:238
 msgid "Cannot toggle write on a readonly mailbox!"
@@ -745,9 +733,8 @@ msgid "New mail in this mailbox."
 msgstr "Selles postkastis on uus kiri."
 
 #: curs_main.c:477
-#, fuzzy
 msgid "Mailbox was externally modified."
-msgstr "Postkasti on väliselt muudetud. Lipud võivad olla valed."
+msgstr "Postkasti on väliselt muudetud."
 
 #: curs_main.c:589
 msgid "No tagged messages."
@@ -869,9 +856,8 @@ msgid "Thread contains unread messages."
 msgstr "Teema sisaldab lugemata teateid."
 
 #: curs_main.c:1667
-#, fuzzy
 msgid "Can't edit message on POP server."
-msgstr "Teadet ei õnnestu kirjutada"
+msgstr "POP serveril ei saa teadet toimetada."
 
 #.
 #. * SLcurses_waddnstr() can't take a "const char *", so this is only
@@ -1018,9 +1004,9 @@ msgid "Invoking autoview command: %s"
 msgstr "Käivitan autovaate käskluse: %s"
 
 #: handler.c:1520
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Can't run %s. --]\n"
-msgstr "[-- %s --]\n"
+msgstr "[-- %s ei saa käivitada.--]\n"
 
 #: handler.c:1535 handler.c:1553
 #, c-format
@@ -1051,9 +1037,9 @@ msgid "[-- on %s --]\n"
 msgstr "[-- %s --]\n"
 
 #: handler.c:1618
-#, fuzzy, c-format
+#, c-format
 msgid "[-- name: %s --]\n"
-msgstr "[-- %s --]\n"
+msgstr "[-- nimi: %s --]\n"
 
 #: handler.c:1629
 #, c-format
@@ -1140,7 +1126,7 @@ msgstr "%s abiinfo"
 
 #: hook.c:243
 msgid "unhook: Can't do unhook * from within a hook."
-msgstr ""
+msgstr "unhook: seose sees ei saa unhook * kasutada."
 
 #: hook.c:255
 #, c-format
@@ -1150,21 +1136,19 @@ msgstr "unhook: tundmatu seose tüüp: %s"
 #: hook.c:261
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s."
-msgstr ""
+msgstr "unhook: %s ei saa %s seest kustutada."
 
 #: imap/auth.c:104
-#, fuzzy
 msgid "No authenticators available"
-msgstr "GSSAPI autentimine ebaõnnestus."
+msgstr "Autentikaatoreid pole"
 
 #: imap/auth_anon.c:39
 msgid "Authenticating (anonymous)..."
 msgstr "Autentimine (anonüümne)..."
 
 #: imap/auth_anon.c:69
-#, fuzzy
 msgid "Anonymous authentication failed."
-msgstr "Anonüümset autentimist ei toetata."
+msgstr "Anonüümne autentimine ebaõnnestus."
 
 #: imap/auth_cram.c:44
 msgid "Authenticating (CRAM-MD5)..."
@@ -1185,7 +1169,7 @@ msgstr "GSSAPI autentimine ebaõnnestus."
 
 #: imap/auth_login.c:34
 msgid "LOGIN disabled on this server."
-msgstr ""
+msgstr "LOGIN on sellel serveril blokeeritud."
 
 #: imap/auth_login.c:43 pop_auth.c:229
 msgid "Logging in..."
@@ -1196,14 +1180,12 @@ msgid "Login failed."
 msgstr "Meldimine ebaõnnestus."
 
 #: imap/auth_sasl.c:96 pop_auth.c:76
-#, fuzzy
 msgid "Authenticating (SASL)..."
-msgstr "Autentimine (GSSAPI)..."
+msgstr "Autentimine (SASL)..."
 
 #: imap/auth_sasl.c:177 pop_auth.c:154
-#, fuzzy
 msgid "SASL authentication failed."
-msgstr "GSSAPI autentimine ebaõnnestus."
+msgstr "SASL autentimine ebaõnnestus."
 
 #: imap/browse.c:81
 msgid "Getting namespaces..."
@@ -1214,24 +1196,20 @@ msgid "Getting folder list..."
 msgstr "Laen kaustade nimekirja..."
 
 #: imap/browse.c:271
-#, fuzzy
 msgid "Create mailbox: "
-msgstr "Avan postkasti"
+msgstr "Loon postkasti"
 
 #: imap/browse.c:276
-#, fuzzy
 msgid "Mailbox must have a name."
-msgstr "Postkasti ei muudetud."
+msgstr "Postkastil peab olema nimi."
 
 #: imap/browse.c:284
-#, fuzzy
 msgid "Mailbox created."
-msgstr "Postkast on kustutatud."
+msgstr "Postkast on loodud."
 
 #: imap/command.c:289
-#, fuzzy
 msgid "Mailbox closed"
-msgstr "Postkast on kustutatud."
+msgstr "Postkast on suletud."
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
@@ -1241,22 +1219,21 @@ msgid "Fatal error.  Message count is out of sync!"
 msgstr "Fataalne viga. Teadete arv ei ole sünkroonis!"
 
 #: imap/imap.c:135
-#, fuzzy, c-format
+#, c-format
 msgid "Closing connection to %s..."
-msgstr "Sulen ühenduse IMAP serveriga..."
+msgstr "Sulen ühendust serveriga %s..."
 
 #: imap/imap.c:295
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "See IMAP server on iganenud. Mutt ei tööta sellega."
 
 #: imap/imap.c:380
-#, fuzzy
 msgid "Secure connection with TLS?"
-msgstr "SSL ühendus kasutades %s"
+msgstr "Turvan ühenduse TLS protokolliga?"
 
 #: imap/imap.c:389
 msgid "Could not negotiate TLS connection"
-msgstr ""
+msgstr "TLS ühendust ei õnnestu kokku leppida"
 
 #: imap/imap.c:533
 #, c-format
@@ -1293,9 +1270,8 @@ msgid "Expunging messages from server..."
 msgstr "Kustutan serveril teateid..."
 
 #: imap/imap.c:1043
-#, fuzzy
 msgid "CLOSE failed"
-msgstr "Meldimine ebaõnnestus."
+msgstr "CLOSE ebaõnnestus."
 
 #: imap/imap.c:1299
 #, c-format
@@ -1323,7 +1299,7 @@ msgstr "Laen teadet..."
 
 #: imap/message.c:282 pop.c:373
 msgid "The message index is incorrect. Try reopening the mailbox."
-msgstr ""
+msgstr "Teadete indeks on vigane. Proovige postkasti uuesti avada."
 
 #: imap/message.c:455
 msgid "Uploading message ..."
@@ -1362,9 +1338,9 @@ msgid "%s: unknown sorting method"
 msgstr "%s: tundmatu järjestamise meetod"
 
 #: init.c:748
-#, fuzzy, c-format
+#, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
-msgstr "mutt_restore_default: vigane regexp: %s\n"
+msgstr "mutt_restore_default(%s): vigane regexp: %s\n"
 
 #: init.c:809
 #, c-format
@@ -1512,9 +1488,8 @@ msgid "view attachment as text"
 msgstr "vaata lisa tekstina"
 
 #: keymap_alldefs.h:8
-#, fuzzy
 msgid "Toggle display of subparts"
-msgstr "lülita tsiteeritud teksti näitamist"
+msgstr "Lülita osade näitamist"
 
 #: keymap_alldefs.h:9
 msgid "move to the bottom of the page"
@@ -1737,9 +1712,8 @@ msgid "move the cursor one character to the left"
 msgstr "liiguta kursorit sümbol vasakule"
 
 #: keymap_alldefs.h:64
-#, fuzzy
 msgid "move the cursor to the beginning of the word"
-msgstr "hüppa rea algusse"
+msgstr "tõsta kursor sõna algusse"
 
 #: keymap_alldefs.h:65
 msgid "jump to the beginning of the line"
@@ -1770,9 +1744,8 @@ msgid "move the cursor one character to the right"
 msgstr "liiguta kursorit sümbol paremale"
 
 #: keymap_alldefs.h:72
-#, fuzzy
 msgid "move the cursor to the end of the word"
-msgstr "liiguta kursorit sümbol paremale"
+msgstr "tõsta kursor sõna lõppu"
 
 #: keymap_alldefs.h:73 keymap_alldefs.h:74
 msgid "scroll up through the history list"
@@ -1783,9 +1756,8 @@ msgid "delete chars from cursor to end of line"
 msgstr "kustuta sümbolid kursorist realõpuni"
 
 #: keymap_alldefs.h:76
-#, fuzzy
 msgid "delete chars from the cursor to the end of the word"
-msgstr "kustuta sümbolid kursorist realõpuni"
+msgstr "kustuta sümbolid kursorist sõna lõpuni"
 
 #: keymap_alldefs.h:77
 msgid "delete all chars on the line"
@@ -1801,20 +1773,19 @@ msgstr "kvoodi järgmine klahvivajutus"
 
 #: keymap_alldefs.h:80
 msgid "transpose character under cursor with previous"
-msgstr ""
+msgstr "vaheta kursori all olev sümbol kursorile eelnevaga"
 
 #: keymap_alldefs.h:81
 msgid "capitalize the word"
-msgstr ""
+msgstr "sõna algab suurtähega"
 
 #: keymap_alldefs.h:82
-#, fuzzy
 msgid "convert the word to lower case"
-msgstr "liigu lehe lõppu"
+msgstr "teisenda tähed sõnas väiketähtedeks"
 
 #: keymap_alldefs.h:83
 msgid "convert the word to upper case"
-msgstr ""
+msgstr "teisenda tähed sõnas suurtähtedeks"
 
 #: keymap_alldefs.h:84
 msgid "enter a muttrc command"
@@ -1901,9 +1872,8 @@ msgid "delete messages matching a pattern"
 msgstr "kustuta mustrile vastavad teated"
 
 #: keymap_alldefs.h:105
-#, fuzzy
 msgid "force retrieval of mail from IMAP server"
-msgstr "lae kiri POP serverilt"
+msgstr "lae kiri IMAP serverilt"
 
 #: keymap_alldefs.h:106
 msgid "retrieve mail from POP server"
@@ -2219,7 +2189,7 @@ msgstr "loo avateksti koopia"
 
 #: keymap_alldefs.h:184
 msgid "check for classic pgp"
-msgstr ""
+msgstr "kontrolli klassikalise pgp olemasolu"
 
 #: keymap_alldefs.h:185
 msgid "Accept the chain constructed"
@@ -2254,30 +2224,26 @@ msgid "Out of memory!"
 msgstr "Mälu on otsas!"
 
 #: main.c:41
-#, fuzzy
 msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please use the flea(1) utility.\n"
 msgstr ""
-"Arendajatega kontakteerumiseks saatke palun kiri aadressil "
-"<mutt-dev@mutt.org>.\n"
-"Vea teatamiseks kasutage muttbug käsku.\n"
+"Arendajatega kontakteerumiseks saatke palun kiri aadressil <mutt-dev@mutt.org>.\n"
+"Veast teatamiseks kasutage palun käsku flea(1).\n"
 
 #: main.c:45
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2001 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Autoriõigus (C) 1996-2000 Michael R. Elkins ja teised.\n"
+"Autoriõigus (C) 1996-2001 Michael R. Elkins ja teised.\n"
 "Mutt ei paku MITTE MINGISUGUSEID GARANTIISID; detailid käsuga `mutt -vv'.\n"
 "Mutt on vaba tarkvara ja te võite seda teatud tingimustel levitada;\n"
 "detailsemat infot saate käsuga `mutt -vv'.\n"
 
 #: main.c:51
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
@@ -2304,12 +2270,12 @@ msgid ""
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 msgstr ""
-"Autoriõigus (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
-"Autoriõigus (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
-"Autoriõigus (C) 1997-2000 Thomas Roessler <roessler@guug.de>\n"
-"Autoriõigus (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Autoriõigus (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
-"Autoriõigus (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Autoriõigus (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Autoriõigus (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
+"Autoriõigus (C) 1997-2001 Thomas Roessler <roessler@guug.de>\n"
+"Autoriõigus (C) 1998-2001 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Autoriõigus (C) 1999-2001 Brendan Cully <brendan@kublai.com>\n"
+"Autoriõigus (C) 1999-2001 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
 "\n"
 "Paljud siin mainimata inimesed on saatnud koodi, parandusi ja soovitusi.\n"
 "\n"
@@ -2328,7 +2294,6 @@ msgstr ""
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 
 #: main.c:88
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
 "]\n"
@@ -2358,10 +2323,9 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"kasutage: mutt [ -nRzZ ] [ -e <käsk> ] [ -F <fail> ] [ -m <tüüp> ]\n"
+"kasutage: mutt [ -nRyzZ ] [ -e <käsk> ] [ -F <fail> ] [ -m <tüüp> ]\n"
 "               [ -f <fail> ]\n"
-"          mutt [ -nx ] [ -e <käsk> ] [ -a <fail> ] [ -F <fail> ] [ -H <fail> "
-"]\n"
+"          mutt [ -nx ] [ -e <käsk> ] [ -a <fail> ] [ -F <fail> ] [ -H <fail> ]\n"
 "               [ -i <fail> ] [ -s <teema> ] [ -b <aadr> ] [ -c <aadr> ]\n"
 "               <aadr> [ ... ]\n"
 "          mutt [ -n ] [ -e <käsk> ] [ -F <fail> ] -p\n"
@@ -2585,9 +2549,8 @@ msgid "oac"
 msgstr "klt"
 
 #: muttlib.c:1136
-#, fuzzy
 msgid "Can't save message to POP mailbox."
-msgstr "Kirjuta teade postkasti"
+msgstr "Teadet ei saa POP postkasti salvestada."
 
 #: muttlib.c:1145
 #, c-format
@@ -2600,33 +2563,32 @@ msgid "Append messages to %s?"
 msgstr "Lisan teated kausta %s?"
 
 #: mutt_socket.c:84 mutt_socket.c:140
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s closed"
-msgstr "Loon ühendust serveriga %s"
+msgstr "Ühendus serveriga %s suleti"
 
 #: mutt_socket.c:250
 msgid "SSL is unavailable."
-msgstr ""
+msgstr "SSL ei ole kasutatav."
 
 #: mutt_socket.c:281
-#, fuzzy
 msgid "Preconnect command failed."
-msgstr "preconnect käsklus ebaõnnestus"
+msgstr "Preconnect käsklus ebaõnnestus"
 
 #: mutt_socket.c:352 mutt_socket.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Viga faili vaatamisel"
+msgstr "Viga serveriga %s suhtlemisel (%s)"
 
 #: mutt_socket.c:400 mutt_socket.c:441
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "Kopeerin kausta %s..."
+msgstr "Otsin serverit %s..."
 
 #: mutt_socket.c:405 mutt_socket.c:445
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "Ei leia masina %s aadressi."
+msgstr "Ei leia masina \"%s\" aadressi"
 
 #: mutt_socket.c:409 mutt_socket.c:450
 #, c-format
@@ -2634,23 +2596,23 @@ msgid "Connecting to %s..."
 msgstr "Ühendus serverisse %s..."
 
 #: mutt_socket.c:473
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "%s ei saa avada"
+msgstr "Serveriga %s ei õnnestu ühendust luua (%s)."
 
 #: mutt_ssl.c:172
 msgid "Failed to find enough entropy on your system"
 msgstr "Teie süsteemis ei ole piisavalt entroopiat"
 
 #: mutt_ssl.c:196
-#, fuzzy, c-format
+#, c-format
 msgid "Filling entropy pool: %s...\n"
-msgstr "Kogun entroopiat"
+msgstr "Kogun entroopiat: %s...\n"
 
 #: mutt_ssl.c:204
 #, c-format
 msgid "%s has insecure permissions!"
-msgstr ""
+msgstr "%s omab ebaturvalisi õigusi!"
 
 #: mutt_ssl.c:223
 msgid "SSL disabled due the lack of entropy"
@@ -2661,9 +2623,9 @@ msgid "Unable to get certificate from peer"
 msgstr "Ei õnnestu saada partneri sertifikaati"
 
 #: mutt_ssl.c:343
-#, fuzzy, c-format
+#, c-format
 msgid "SSL connection using %s (%s)"
-msgstr "SSL ühendus kasutades %s"
+msgstr "SSL ühendus kasutades %s (%s)"
 
 #: mutt_ssl.c:371
 msgid "Unknown"
@@ -2841,9 +2803,8 @@ msgid "Mailbox is marked unwritable. %s"
 msgstr "Postkast on märgitud mittekirjutatavaks. %s"
 
 #: mx.c:1172
-#, fuzzy
 msgid "Mailbox checkpointed."
-msgstr "Postkast on kustutatud."
+msgstr "Postkast on kontrollitud."
 
 #: mx.c:1472
 msgid "Can't write message"
@@ -2919,9 +2880,9 @@ msgstr "Vigane kuu: %s"
 
 #. getDate has its own error message, don't overwrite it here
 #: pattern.c:527
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid relative date: %s"
-msgstr "Vigane kuu: %s"
+msgstr "Vigane suhteline kuupäev: %s"
 
 #: pattern.c:541
 msgid "error in expression"
@@ -2993,9 +2954,9 @@ msgid "PGP passphrase forgotten."
 msgstr "PGP parool on unustatud."
 
 #: pgp.c:142
-#, fuzzy, c-format
+#, c-format
 msgid "[-- PGP output follows (current time: %c) --]\n"
-msgstr "[-- järgneb PGP väljund (praegune aeg: "
+msgstr "[-- järgneb PGP väljund (praegune aeg: %c) --]\n"
 
 #: pgp.c:352
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
@@ -3185,9 +3146,8 @@ msgid "Fetching PGP key..."
 msgstr "Laen PGP võtit..."
 
 #: pgpkey.c:486
-#, fuzzy
 msgid "All matching keys are marked expired/revoked."
-msgstr "Seda võtit ei saa kasutada: aegunud/blokeeritud/tühistatud."
+msgstr "Kõik sobivad võtmed on märgitud aegunuks/tühistatuks."
 
 #. __STRCAT_CHECKED__
 #: pgpkey.c:512
@@ -3227,9 +3187,8 @@ msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Seda võtit ei saa kasutada: aegunud/blokeeritud/tühistatud."
 
 #: pgpkey.c:608
-#, fuzzy
 msgid "This ID is expired/disabled/revoked"
-msgstr "Seda võtit ei saa kasutada: aegunud/blokeeritud/tühistatud."
+msgstr "See ID on aegunud/blokeeritud/tühistatud"
 
 #: pgpkey.c:612
 msgid "This ID's trust level is undefined."
@@ -3244,9 +3203,9 @@ msgid "This ID is only marginally trusted."
 msgstr "Seda kasutajat ei usaldata eriti."
 
 #: pgpkey.c:622
-#, fuzzy, c-format
+#, c-format
 msgid "%s Do you really want to use the key?"
-msgstr "%s Kas te soovitse seda tõesti kasutada?"
+msgstr "%s Kas te soovite seda võtit tõesti kasutada?"
 
 #: pgpkey.c:720
 msgid "Please enter the key ID: "
@@ -3267,34 +3226,28 @@ msgid "Looking for keys matching \"%s\"..."
 msgstr "Otsin võtmeid, mis sisaldavad \"%s\"..."
 
 #: pop.c:89 pop_lib.c:159
-#, fuzzy
 msgid "Command TOP is not supported by server."
-msgstr "Märkimist ei toetata."
+msgstr "Server ei toeta käsklust TOP."
 
 #: pop.c:116
-#, fuzzy
 msgid "Can't write header to temporary file!"
-msgstr "Ei õnnestu avada ajutist faili"
+msgstr "Päist ei õnnestu ajutissse faili kirjutada!"
 
 #: pop.c:197 pop_lib.c:161
-#, fuzzy
 msgid "Command UIDL is not supported by server."
-msgstr "Märkimist ei toetata."
+msgstr "Server ei toeta UIDL käsklust."
 
 #: pop.c:270
-#, fuzzy
 msgid "Fetching list of messages..."
-msgstr "Laen teadet..."
+msgstr "Laen teadete nimekirja..."
 
 #: pop.c:407
-#, fuzzy
 msgid "Can't write message to temporary file!"
-msgstr "Ei õnnestu avada ajutist faili"
+msgstr "Teadet ei õnnestu ajutisse faili kirjutada!"
 
 #: pop.c:510 pop.c:564
-#, fuzzy
 msgid "Checking for new messages..."
-msgstr "Valmistan edastatavat teadet..."
+msgstr "Kontrollin, kas on uusi teateid..."
 
 #: pop.c:538
 msgid "POP host is not defined."
@@ -3305,9 +3258,8 @@ msgid "No new mail in POP mailbox."
 msgstr "Uusi teateid POP postkastis pole."
 
 #: pop.c:599
-#, fuzzy
 msgid "Delete messages from server?"
-msgstr "Kustutan serveril teateid..."
+msgstr "Kustutan teated serverist?"
 
 #: pop.c:601
 #, c-format
@@ -3328,48 +3280,41 @@ msgid "Server closed connection!"
 msgstr "Server sulges ühenduse!"
 
 #: pop_auth.c:190
-#, fuzzy
 msgid "Authenticating (APOP)..."
-msgstr "Autentimine (GSSAPI)..."
+msgstr "Autentimine (APOP)..."
 
 #: pop_auth.c:214
-#, fuzzy
 msgid "APOP authentication failed."
-msgstr "GSSAPI autentimine ebaõnnestus."
+msgstr "APOP autentimine ebaõnnestus."
 
 #: pop_auth.c:249
-#, fuzzy
 msgid "Command USER is not supported by server."
-msgstr "Märkimist ei toetata."
+msgstr "Server ei toeta käsklust USER."
 
 #: pop_auth.c:356
 msgid "Authentication method is unknown."
-msgstr ""
+msgstr "Tundmatu autentimise meetod."
 
 #: pop_lib.c:157
-#, fuzzy
 msgid "Unable to leave messages on server."
-msgstr "taasta kõik alamteema teated"
+msgstr "Teateid ei õnnestu sererile jätta."
 
 #: pop_lib.c:204
-#, fuzzy, c-format
+#, c-format
 msgid "Error connecting to server: %s"
-msgstr "Loon ühendust serveriga %s"
+msgstr "Viga serveriga ühenduse loomisel: %s"
 
 #: pop_lib.c:288
-#, fuzzy
 msgid "Closing connection to POP server..."
-msgstr "Sulen ühenduse IMAP serveriga..."
+msgstr "Sulen ühenduse POP serveriga..."
 
 #: pop_lib.c:453
-#, fuzzy
 msgid "Verifying message indexes..."
-msgstr "Kirjutan teate faili %s ..."
+msgstr "Kontrollin teadete indekseid ..."
 
 #: pop_lib.c:477
-#, fuzzy
 msgid "Connection lost. Reconnect to POP server?"
-msgstr "Sulen ühenduse IMAP serveriga..."
+msgstr "Ühendus katkes. Taastan ühenduse POP serveriga?"
 
 #: postpone.c:165
 msgid "Postponed Messages"
@@ -3464,14 +3409,12 @@ msgid "Attachments"
 msgstr "Lisad"
 
 #: recvattach.c:922
-#, fuzzy
 msgid "There are no subparts to show!"
-msgstr "Lisasid ei ole."
+msgstr "Osasid, mida näidata, ei ole!"
 
 #: recvattach.c:983
-#, fuzzy
 msgid "Can't delete attachment from POP server."
-msgstr "lae kiri POP serverilt"
+msgstr "Lisasid ei saa POP serverilt kustutada."
 
 #: recvattach.c:994
 msgid "Deletion of attachments from PGP messages is unsupported."
@@ -3501,9 +3444,8 @@ msgid "Can't open temporary file %s."
 msgstr "Ajutist faili %s ei saa avada."
 
 #: recvcmd.c:405
-#, fuzzy
 msgid "Forward as attachments?"
-msgstr "näita MIME lisasid"
+msgstr "Edasta lisadena?"
 
 #: recvcmd.c:419
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
@@ -3662,9 +3604,8 @@ msgid "Could not include all requested messages!"
 msgstr "Kõiki soovitud teateid ei õnnestu kaasata!"
 
 #: send.c:747
-#, fuzzy
 msgid "Forward as attachment?"
-msgstr "Trükin lisa?"
+msgstr "Edasta lisadena?"
 
 #: send.c:751
 msgid "Preparing forwarded message..."
@@ -3783,122 +3724,3 @@ msgstr "Vanem teade ei ole piiratud vaates nähtav"
 #: thread.c:742
 msgid "Parent message is not available."
 msgstr "Vanem teade ei ole kättesaadav."
-
-#~ msgid "Creating mailboxes is not yet supported."
-#~ msgstr "Postkastide loomine ei ole veel võimalik."
-
-#~ msgid "We can't currently handle utf-8 at this point."
-#~ msgstr "UTF-8 kodeeringut me hetkel ei toeta."
-
-#~ msgid "Can't open %s: %s."
-#~ msgstr "%s ei saa avada: %s."
-
-#~ msgid "Error while recoding %s. Leave it unchanged."
-#~ msgstr "Viga %s ümberkodeerimisel. Jätan muutmata."
-
-#~ msgid "Error while recoding %s. See %s for recovering your data."
-#~ msgstr "Viga %s ümberkodeerimisel. Andmete taastamiseks vaadake %s."
-
-#~ msgid "MIC algorithm: "
-#~ msgstr "MIC algoritm: "
-
-#~ msgid "This doesn't make sense if you don't want to sign the message."
-#~ msgstr "Sel pole mõtet, kui te ei soovi teadet allkirjastada."
-
-#~ msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
-#~ msgstr "Tundmatu MIC algoritm, lubatud on: pgp-md5, pgp-sha1, pgp-rmd160"
-
-#~ msgid "Can't change character set for non-text attachments!"
-#~ msgstr "Mitte-tekstilise lisa kooditabelit ei saa muuta!"
-
-#~ msgid "Enter character set: "
-#~ msgstr "Sisestage kooditabel: "
-
-#~ msgid "UTF-8 encoding attachments has not yet been implemented."
-#~ msgstr "UTF-8 kodeeritud lisasid ei ole realiseeritud."
-
-#~ msgid "Compose"
-#~ msgstr "Kirjuta"
-
-#~ msgid "We currently can't encode to utf-8."
-#~ msgstr "Praegu ei saa UTF-8 tabelisse kodeerida."
-
-#~ msgid "Recoding successful."
-#~ msgstr "Ümberkodeerimine oli edukas."
-
-#~ msgid "[-- Error: unexpected end of file! --]\n"
-#~ msgstr "[-- Viga: ootamatu faililõpp! --]\n"
-
-#~ msgid "IMAP Username: "
-#~ msgstr "IMAP Kasutaja: "
-
-#~ msgid "CRAM key for %s@%s: "
-#~ msgstr "%s@%s CRAM võti: "
-
-#~ msgid "Skipping CRAM-MD5 authentication."
-#~ msgstr "Jätan CRAM-MD5 autentimise vahele."
-
-#~ msgid "Reopening mailbox... %s"
-#~ msgstr "Avan postkasti uuesti... %s"
-
-#~ msgid "Closing mailbox..."
-#~ msgstr "Sulen postkasti..."
-
-#~ msgid "Sending APPEND command ..."
-#~ msgstr "Saadan APPEND käsu ..."
-
-#~ msgid "change an attachment's character set"
-#~ msgstr "muuda lisade kooditabelit"
-
-#~ msgid "recode this attachment to/from the local charset"
-#~ msgstr "kodeeri see lisa kohalikust/kohalikku kooditabelisse"
-
-#~ msgid ""
-#~ "\n"
-#~ "SHA1 implementation Copyright (C) 1995-1997 Eric A. Young "
-#~ "<eay@cryptsoft.com>\n"
-#~ "\n"
-#~ "    Redistribution and use in source and binary forms, with or without\n"
-#~ "    modification, are permitted under certain conditions.\n"
-#~ "\n"
-#~ "    The SHA1 implementation comes AS IS, and ANY EXPRESS OR IMPLIED\n"
-#~ "    WARRANTIES, including, but not limited to, the implied warranties of\n"
-#~ "    merchantability and fitness for a particular purpose ARE DISCLAIMED.\n"
-#~ "\n"
-#~ "    You should have received a copy of the full distribution terms\n"
-#~ "    along with this program; if not, write to the program's developers.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "SHA1 implementation Copyright (C) 1995-1997 Eric A. Young "
-#~ "<eay@cryptsoft.com>\n"
-#~ "\n"
-#~ "    Redistribution and use in source and binary forms, with or without\n"
-#~ "    modification, are permitted under certain conditions.\n"
-#~ "\n"
-#~ "    The SHA1 implementation comes AS IS, and ANY EXPRESS OR IMPLIED\n"
-#~ "    WARRANTIES, including, but not limited to, the implied warranties of\n"
-#~ "    merchantability and fitness for a particular purpose ARE DISCLAIMED.\n"
-#~ "\n"
-#~ "    You should have received a copy of the full distribution terms\n"
-#~ "    along with this program; if not, write to the program's developers.\n"
-
-#~ msgid "%d kept."
-#~ msgstr "%d säilitatud."
-
-#~ msgid "POP Password: "
-#~ msgstr "POP Parool: "
-
-#~ msgid "No POP username is defined."
-#~ msgstr "POP kasutajanime ei ole määratud."
-
-#~ msgid "Reading new message (%d bytes)..."
-#~ msgstr "Loen uut teadet (%d baiti)..."
-
-#~ msgid "Error reading message!"
-#~ msgstr "Viga teate lugemisel!"
-
-#~ msgid "%s [%d message read]"
-#~ msgstr "%s [%d teade loetud]"
-
-#~ msgid "Attachment saved"
-#~ msgstr "Lisa on salvestatud"

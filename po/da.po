@@ -5,11 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt-1.3.18i \n"
+"Project-Id-Version: Mutt-1.3.19\n"
 "POT-Creation-Date: 2001-06-07 22:11+0200\n"
-"PO-Revision-Date: 2001-05-08 18:32+02:00\n"
-"Last-Translator: Byrial Jensen <byrial@image.dk>, Morten Bo Johansen "
-"<mojo@image.dk> \n"
+"PO-Revision-Date: 2001-06-10 22:19+02:00\n"
+"Last-Translator: Byrial Jensen <byrial@image.dk>, Morten Bo Johansen <mojo@image.dk> \n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
@@ -361,9 +360,8 @@ msgid "Messages bounced."
 msgstr "Brevene er gensendt."
 
 #: commands.c:329 commands.c:368 commands.c:385
-#, fuzzy
 msgid "Can't create filter process"
-msgstr "Kan ikke oprette filter"
+msgstr "Kan ikke oprette filterproces"
 
 #: commands.c:414
 msgid "Pipe to command: "
@@ -688,9 +686,8 @@ msgid "Function not permitted in attach-message mode."
 msgstr "Funktionen er ikke tilladt ved vedlægning af bilag."
 
 #: curs_main.c:63
-#, fuzzy
 msgid "No visible messages."
-msgstr "Ingen nye breve"
+msgstr "Ingen synlige breve."
 
 #: curs_main.c:238
 msgid "Cannot toggle write on a readonly mailbox!"
@@ -737,9 +734,8 @@ msgid "New mail in this mailbox."
 msgstr "Ny(e) brev(e) i denne brevbakke."
 
 #: curs_main.c:477
-#, fuzzy
 msgid "Mailbox was externally modified."
-msgstr "Brevbakke ændret udefra. Status-indikatorer kan være forkerte."
+msgstr "Brevbakke ændret udefra."
 
 #: curs_main.c:589
 msgid "No tagged messages."
@@ -1010,9 +1006,9 @@ msgid "Invoking autoview command: %s"
 msgstr "Starter autovisning kommando: %s"
 
 #: handler.c:1520
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Can't run %s. --]\n"
-msgstr "[-- den %s --]\n"
+msgstr "[-- Kan ikke køre %s --]\n"
 
 #: handler.c:1535 handler.c:1553
 #, c-format
@@ -1146,9 +1142,8 @@ msgid "unhook: Can't delete a %s from within a %s."
 msgstr "unhook: Kan ikke slette en %s inde fra en %s."
 
 #: imap/auth.c:104
-#, fuzzy
 msgid "No authenticators available"
-msgstr "SASL-godkendelse slog fejl."
+msgstr "Ingen godkendelsesmetode kan bruges."
 
 #: imap/auth_anon.c:39
 msgid "Authenticating (anonymous)..."
@@ -1208,18 +1203,16 @@ msgid "Create mailbox: "
 msgstr "Opret brevbakke: "
 
 #: imap/browse.c:276
-#, fuzzy
 msgid "Mailbox must have a name."
-msgstr "Brevbakken er uændret."
+msgstr "Brevbakken skal have et navn."
 
 #: imap/browse.c:284
 msgid "Mailbox created."
 msgstr "Brevbakke oprettet."
 
 #: imap/command.c:289
-#, fuzzy
 msgid "Mailbox closed"
-msgstr "Brevbakke slettet."
+msgstr "Brevbakke lukket"
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
@@ -1243,7 +1236,7 @@ msgstr "Sikker forbindelse med TLS?"
 
 #: imap/imap.c:389
 msgid "Could not negotiate TLS connection"
-msgstr ""
+msgstr "Kunne ikke opnå TLS-forbindelse"
 
 #: imap/imap.c:533
 #, c-format
@@ -1280,9 +1273,8 @@ msgid "Expunging messages from server..."
 msgstr "Sletter breve på server ..."
 
 #: imap/imap.c:1043
-#, fuzzy
 msgid "CLOSE failed"
-msgstr "Login slog fejl."
+msgstr "CLOSE slog fejl"
 
 #: imap/imap.c:1299
 #, c-format
@@ -2571,12 +2563,12 @@ msgstr "%s er ingen brevbakke"
 #: muttlib.c:1151
 #, c-format
 msgid "Append messages to %s?"
-msgstr "Tilføj breve til %s?"
+msgstr "Føj breve til %s?"
 
 #: mutt_socket.c:84 mutt_socket.c:140
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s closed"
-msgstr "Forbindelse til %s slog fejl."
+msgstr "Forbindelse til %s er lukket."
 
 #: mutt_socket.c:250
 msgid "SSL is unavailable."
@@ -2587,9 +2579,9 @@ msgid "Preconnect command failed."
 msgstr "\"preconnect\"-kommando slog fejl"
 
 #: mutt_socket.c:352 mutt_socket.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Fejl under forbindelse til server: %s"
+msgstr "Kommunikationsfejl med server %s (%s)"
 
 #: mutt_socket.c:400 mutt_socket.c:441
 #, c-format

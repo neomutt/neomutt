@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.15\n"
+"Project-Id-Version: 1.3.19\n"
 "POT-Creation-Date: 2001-06-07 22:11+0200\n"
-"PO-Revision-Date: 2001-02-27 19:27+01:00\n"
+"PO-Revision-Date: 2001-06-09 11:12+02:00\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -358,9 +358,8 @@ msgid "Messages bounced."
 msgstr "Nachrichten weitergeleitet."
 
 #: commands.c:329 commands.c:368 commands.c:385
-#, fuzzy
 msgid "Can't create filter process"
-msgstr "Kann Filter nicht erzeugen"
+msgstr "Kann Filterprozeß nicht erzeugen"
 
 #: commands.c:414
 msgid "Pipe to command: "
@@ -686,9 +685,8 @@ msgid "Function not permitted in attach-message mode."
 msgstr "Funktion steht beim Anhängen von Nachrichten nicht zur Verfügung."
 
 #: curs_main.c:63
-#, fuzzy
 msgid "No visible messages."
-msgstr "Keine neuen Nachrichten"
+msgstr "Keine sichtbaren Nachrichten."
 
 #: curs_main.c:238
 msgid "Cannot toggle write on a readonly mailbox!"
@@ -735,9 +733,8 @@ msgid "New mail in this mailbox."
 msgstr "Neue Nachrichten in dieser Mailbox."
 
 #: curs_main.c:477
-#, fuzzy
 msgid "Mailbox was externally modified."
-msgstr "Mailbox wurde verändert. Markierungen können veraltet sein."
+msgstr "Mailbox wurde von außen verändert."
 
 #: curs_main.c:589
 msgid "No tagged messages."
@@ -1009,9 +1006,9 @@ msgid "Invoking autoview command: %s"
 msgstr "Automatische Anzeige mittels: %s"
 
 #: handler.c:1520
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Can't run %s. --]\n"
-msgstr "[-- am %s --]\n"
+msgstr "[-- Kann %s nicht ausführen. --]\n"
 
 #: handler.c:1535 handler.c:1553
 #, c-format
@@ -1146,9 +1143,8 @@ msgid "unhook: Can't delete a %s from within a %s."
 msgstr "unhook: Kann kein %s innerhalb von %s löschen."
 
 #: imap/auth.c:104
-#, fuzzy
 msgid "No authenticators available"
-msgstr "SASL Authentifizierung fehlgeschlagen."
+msgstr "Keine Authentifizierung verfügbar"
 
 #: imap/auth_anon.c:39
 msgid "Authenticating (anonymous)..."
@@ -1208,18 +1204,16 @@ msgid "Create mailbox: "
 msgstr "Erzeuge Mailbox: "
 
 #: imap/browse.c:276
-#, fuzzy
 msgid "Mailbox must have a name."
-msgstr "Mailbox unverändert."
+msgstr "Mailbox muß einen Namen haben."
 
 #: imap/browse.c:284
 msgid "Mailbox created."
 msgstr "Mailbox erzeugt."
 
 #: imap/command.c:289
-#, fuzzy
 msgid "Mailbox closed"
-msgstr "Mailbox gelöscht."
+msgstr "Mailbox geschlossen"
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
@@ -1243,7 +1237,7 @@ msgstr "Sichere Verbindung mittels TLS?"
 
 #: imap/imap.c:389
 msgid "Could not negotiate TLS connection"
-msgstr ""
+msgstr "Konnte keine TLS-Verbindung realisieren"
 
 #: imap/imap.c:533
 #, c-format
@@ -1280,9 +1274,8 @@ msgid "Expunging messages from server..."
 msgstr "Lösche Nachrichten auf dem Server..."
 
 #: imap/imap.c:1043
-#, fuzzy
 msgid "CLOSE failed"
-msgstr "Anmeldung gescheitert..."
+msgstr "CLOSE fehlgeschlagen"
 
 #: imap/imap.c:1299
 #, c-format
@@ -2582,9 +2575,9 @@ msgid "Append messages to %s?"
 msgstr "Nachricht an %s anhängen?"
 
 #: mutt_socket.c:84 mutt_socket.c:140
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s closed"
-msgstr "Verbindung zu %s fehlgeschlagen."
+msgstr "Verbindung zu %s beendet"
 
 #: mutt_socket.c:250
 msgid "SSL is unavailable."
@@ -2595,9 +2588,9 @@ msgid "Preconnect command failed."
 msgstr "\"Preconnect\" Kommando fehlgeschlagen."
 
 #: mutt_socket.c:352 mutt_socket.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Fehler beim Verbinden mit dem Server: %s"
+msgstr "Fehler bei Verbindung mit %s (%s)"
 
 #: mutt_socket.c:400 mutt_socket.c:441
 #, c-format
