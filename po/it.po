@@ -2017,7 +2017,7 @@ msgstr "File nella directory: "
 
 #: lib.c:802
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
-msgstr "Il file esiste, lo sovrascrivo?"
+msgstr "Il file esiste, lo s(o)vrascrivo, (a)ccodo, or (c)ancello?"
 
 #: lib.c:802
 msgid "oac"
