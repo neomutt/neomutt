@@ -481,8 +481,7 @@ bail:
 
 static CHARDESC *repr2descr (int repr, CHARSET * cs)
 {
-  size_t a, b, c;
-  short found;
+  CHARDESC key;
 
   if (!cs || repr < 0)
     return NULL;
@@ -495,48 +494,9 @@ static CHARDESC *repr2descr (int repr, CHARSET * cs)
       return NULL;
   }
 
-  /* So we have a multibyte mapping, i.e., Unicode.  */
-
-  /* binary search for the proper description */
-  a = 0;
-  b = cs->u_symb - 1;
-  c = 0;  /* shut up the compiler. */
-  found = 0;
-
-  while (!found && b - a > 1)
-  {
-    c = (a + b) / 2;
-
-    if (cs->description[c]->repr == repr)
-    {
-      found = 1;
-      break;
-    }
-    else if (cs->description[c]->repr < repr)
-      a = c;
-    else if (cs->description[c]->repr > repr)
-      b = c;
-  }
-
-  if (!found)
-  {
-    if (cs->description[(c = a)]->repr == repr)
-      found = 1;
-    else if (cs->description[(c = b)]->repr == repr)
-      found = 1;
-  }
-    
-  if (found)
-  {
-    dprint (5, (debugfile, "repr2descr: %x -> { %x, %s }\n",
-		repr, cs->description[c]->repr, cs->description[c]->symbol));
-    return cs->description[c];
-  }
-  else
-    dprint (5, (debugfile, "Couldn't file a symbol for %x\n",
-		repr));
-
-  return NULL;
+  key.repr = repr;
+  return bsearch (&key, cs->description, cs->u_symb,
+		  sizeof (CHARDESC *), _cd_compar);
 }
 
 /* Build a translation table.  If a character cannot be
