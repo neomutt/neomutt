@@ -851,7 +851,7 @@ int imap_make_msg_set (IMAP_DATA* idata, BUFFER* buf, int flag, int changed)
     {
       if (HEADER_DATA (hdrs[n-1])->uid > setstart)
       {
-	snprintf (uid, sizeof (uid), ":%u", HEADER_DATA (hdrs[n])->uid);
+	snprintf (uid, sizeof (uid), ":%u", HEADER_DATA (hdrs[n-1])->uid);
 	mutt_buffer_addstr (buf, uid);
       }
       setstart = 0;
