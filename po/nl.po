@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2001-02-27 11:50+0100\n"
+"POT-Creation-Date: 2001-03-28 15:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Johan van Selst <johans@stack.nl>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -294,7 +294,7 @@ msgstr "standaard kleuren niet ondersteund"
 msgid "Verify PGP signature?"
 msgstr "PGP-handtekening controleren?"
 
-#: commands.c:105 pgp.c:1659 pgpkey.c:491 postpone.c:517
+#: commands.c:105 pgp.c:1657 pgpkey.c:491 postpone.c:517
 msgid "Invoking PGP..."
 msgstr "PGP wordt aangeroepen..."
 
@@ -639,7 +639,7 @@ msgstr "nee"
 msgid "Exit Mutt?"
 msgstr "Mutt afsluiten?"
 
-#: curs_lib.c:326 mutt_socket.c:399
+#: curs_lib.c:326 mutt_socket.c:404
 msgid "unknown error"
 msgstr "onbekende vaud."
 
@@ -2413,7 +2413,7 @@ msgstr "Zoek achteruit naar: "
 msgid "No search pattern."
 msgstr "Geen zoekpatroon."
 
-#: menu.c:743 pager.c:1837 pager.c:1853 pager.c:1941 pattern.c:1327
+#: menu.c:743 pager.c:1840 pager.c:1856 pager.c:1944 pattern.c:1327
 msgid "Not found."
 msgstr "Niet gevonden."
 
@@ -2478,22 +2478,22 @@ msgstr ""
 msgid "Preconnect command failed."
 msgstr "\"preconnect\" commando is mislukt"
 
-#: mutt_socket.c:326 mutt_socket.c:366
+#: mutt_socket.c:331 mutt_socket.c:371
 #, fuzzy, c-format
 msgid "Looking up %s..."
 msgstr "Kopieren naar %s..."
 
-#: mutt_socket.c:331 mutt_socket.c:370
+#: mutt_socket.c:336 mutt_socket.c:375
 #, fuzzy, c-format
 msgid "Could not find the host \"%s\""
 msgstr "Kan adres van server %s niet achterhalen."
 
-#: mutt_socket.c:335 mutt_socket.c:375
+#: mutt_socket.c:340 mutt_socket.c:380
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Bezig met verbinden met %s..."
 
-#: mutt_socket.c:398
+#: mutt_socket.c:403
 #, fuzzy, c-format
 msgid "Could not connect to %s (%s)."
 msgstr "Kan %s niet openen."
@@ -2733,31 +2733,31 @@ msgid "Next"
 msgstr "Volgend ber."
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1749 pager.c:1780 pager.c:1809 pager.c:2029
+#: pager.c:1749 pager.c:1780 pager.c:1812 pager.c:2032
 msgid "Bottom of message is shown."
 msgstr "Einde van bericht is weergegeven."
 
-#: pager.c:1765 pager.c:1787 pager.c:1798
+#: pager.c:1765 pager.c:1787 pager.c:1794 pager.c:1801
 msgid "Top of message is shown."
 msgstr "Begin van bericht is weergegeven."
 
-#: pager.c:1871
+#: pager.c:1874
 msgid "Reverse search: "
 msgstr "Achteruit zoeken: "
 
-#: pager.c:1872
+#: pager.c:1875
 msgid "Search: "
 msgstr "Zoeken: "
 
-#: pager.c:1967
+#: pager.c:1970
 msgid "Help is currently being shown."
 msgstr "Hulp wordt al weergegeven."
 
-#: pager.c:1996
+#: pager.c:1999
 msgid "No more quoted text."
 msgstr "Geen verdere geciteerde text."
 
-#: pager.c:2009
+#: pager.c:2012
 msgid "No more unquoted text after quoted text."
 msgstr "Geen verdere eigen text na geciteerde text."
 
@@ -3035,11 +3035,11 @@ msgstr "KeyID = \"%s\" gebruiken voor %s?"
 msgid "Enter keyID for %s: "
 msgstr "KeyID voor %s: "
 
-#: pgp.c:1549
+#: pgp.c:1547
 msgid "Can't invoke PGP"
 msgstr "Kan PGP niet aanroepen"
 
-#: pgp.c:1653
+#: pgp.c:1651
 msgid "Create an application/pgp message?"
 msgstr "Een application/pgp bericht aanmaken?"
 
@@ -3380,7 +3380,7 @@ msgstr "Kan bestand %s niet aanmaken."
 msgid "Can't find any tagged messages."
 msgstr "Kan geen geselecteerde berichten vinden."
 
-#: recvcmd.c:699 send.c:664
+#: recvcmd.c:699 send.c:666
 msgid "No mailing lists found!"
 msgstr "Geen mailing-lists gevonden!"
 
@@ -3482,7 +3482,7 @@ msgstr "Geen onderwerp, afbreken?"
 msgid "No subject, aborting."
 msgstr "Geen onderwerp. Operatie afgebroken."
 
-#: send.c:434
+#: send.c:436
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "Reactie sturen naar %s%s?"
@@ -3492,7 +3492,7 @@ msgstr "Reactie sturen naar %s%s?"
 #. * to send a message to only the sender of the message.  This
 #. * provides a way to do that.
 #.
-#: send.c:487
+#: send.c:489
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "Reactie sturen naar %s%s?"
@@ -3500,84 +3500,84 @@ msgstr "Reactie sturen naar %s%s?"
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
 #.
-#: send.c:639
+#: send.c:641
 msgid "No tagged messages are visible!"
 msgstr "Geen gemarkeerde berichten zichtbaar!"
 
-#: send.c:710
+#: send.c:712
 msgid "Include message in reply?"
 msgstr "Bericht in antwoord citeren?"
 
-#: send.c:715
+#: send.c:717
 msgid "Including quoted message..."
 msgstr "Geciteerde bericht wordt toegevoegd..."
 
-#: send.c:725
+#: send.c:727
 msgid "Could not include all requested messages!"
 msgstr "Kon niet alle berichten citeren!"
 
-#: send.c:739
+#: send.c:741
 #, fuzzy
 msgid "Forward as attachment?"
 msgstr "Bijlage afdrukken?"
 
-#: send.c:743
+#: send.c:745
 msgid "Preparing forwarded message..."
 msgstr "Voorbereiden door te sturen bericht..."
 
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:1038
+#: send.c:1040
 msgid "Recall postponed message?"
 msgstr "Uigesteld bericht hervatten?"
 
-#: send.c:1268
+#: send.c:1270
 msgid "Abort unmodified message?"
 msgstr "Uitgesteld bericht afbreken?"
 
-#: send.c:1270
+#: send.c:1272
 msgid "Aborted unmodified message."
 msgstr "Bericht werd niet veranderd. Operatie afgebroken."
 
 #. abort
-#: send.c:1311
+#: send.c:1313
 msgid "Mail not sent."
 msgstr "Bericht niet verstuurd."
 
-#: send.c:1337
+#: send.c:1339
 msgid "Message postponed."
 msgstr "Bericht uitgesteld."
 
-#: send.c:1346
+#: send.c:1348
 msgid "No recipients are specified!"
 msgstr "Er zijn geen geadresseerden opgegeven!"
 
-#: send.c:1351
+#: send.c:1353
 msgid "No recipients were specified."
 msgstr "Er werden geen geadresseerden opgegeven!"
 
-#: send.c:1357
+#: send.c:1359
 msgid "No subject, abort sending?"
 msgstr "Geen onderwerp. Versturen afbreken?"
 
-#: send.c:1361
+#: send.c:1363
 msgid "No subject specified."
 msgstr "Geen onderwerp."
 
-#: send.c:1408
+#: send.c:1410
 msgid "Sending message..."
 msgstr "Verstuur bericht..."
 
-#: send.c:1535
+#: send.c:1537
 msgid "Could not send the message."
 msgstr "Bericht kon niet verstuurd worden."
 
-#: send.c:1540
+#: send.c:1542
 msgid "Mail sent."
 msgstr "Bericht verstuurd."
 
-#: send.c:1540
+#: send.c:1542
 msgid "Sending in background."
 msgstr "Bericht wordt op de achtergrond verstuurd."
 

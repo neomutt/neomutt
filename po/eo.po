@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1\n"
-"POT-Creation-Date: 2001-03-04 12:39+0000\n"
+"POT-Creation-Date: 2001-03-28 15:10+0200\n"
 "PO-Revision-Date: 2001-03-04 13:05+00:00\n"
 "Last-Translator: Edmund GRIMLEY EVANS <edmundo@rano.org>\n"
 "Language-Team: eo <eo@li.org>\n"
@@ -296,7 +296,7 @@ msgstr "implicitaj koloroj ne funkcias"
 msgid "Verify PGP signature?"
 msgstr "Æu kontroli PGP-subskribon?"
 
-#: commands.c:105 pgp.c:1659 pgpkey.c:491 postpone.c:517
+#: commands.c:105 pgp.c:1657 pgpkey.c:491 postpone.c:517
 msgid "Invoking PGP..."
 msgstr "Alvokas PGP ..."
 
@@ -636,7 +636,7 @@ msgstr "ne"
 msgid "Exit Mutt?"
 msgstr "Æu eliri el Mutt?"
 
-#: curs_lib.c:326 mutt_socket.c:399
+#: curs_lib.c:326 mutt_socket.c:404
 msgid "unknown error"
 msgstr "nekonata eraro"
 
@@ -2452,7 +2452,7 @@ msgstr "Inversa seræo pri: "
 msgid "No search pattern."
 msgstr "Mankas seræþablono."
 
-#: menu.c:743 pager.c:1837 pager.c:1853 pager.c:1941 pattern.c:1327
+#: menu.c:743 pager.c:1840 pager.c:1856 pager.c:1944 pattern.c:1327
 msgid "Not found."
 msgstr "Ne trovita."
 
@@ -2515,22 +2515,22 @@ msgstr "SSL ne estas disponata."
 msgid "Preconnect command failed."
 msgstr "Antaýkonekta komando malsukcesis."
 
-#: mutt_socket.c:326 mutt_socket.c:366
+#: mutt_socket.c:331 mutt_socket.c:371
 #, c-format
 msgid "Looking up %s..."
 msgstr "Seræas pri %s ..."
 
-#: mutt_socket.c:331 mutt_socket.c:370
+#: mutt_socket.c:336 mutt_socket.c:375
 #, c-format
 msgid "Could not find the host \"%s\""
 msgstr "Ne povis trovi la servilon \"%s\""
 
-#: mutt_socket.c:335 mutt_socket.c:375
+#: mutt_socket.c:340 mutt_socket.c:380
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Konektiøas al %s ..."
 
-#: mutt_socket.c:398
+#: mutt_socket.c:403
 #, c-format
 msgid "Could not connect to %s (%s)."
 msgstr "Ne povis konektiøi al %s (%s)."
@@ -2766,31 +2766,31 @@ msgid "Next"
 msgstr "Sekva"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1749 pager.c:1780 pager.c:1809 pager.c:2029
+#: pager.c:1749 pager.c:1780 pager.c:1812 pager.c:2032
 msgid "Bottom of message is shown."
 msgstr "Fino de mesaøo estas montrita."
 
-#: pager.c:1765 pager.c:1787 pager.c:1798
+#: pager.c:1765 pager.c:1787 pager.c:1794 pager.c:1801
 msgid "Top of message is shown."
 msgstr "Vi estas æe la komenco de la mesaøo"
 
-#: pager.c:1871
+#: pager.c:1874
 msgid "Reverse search: "
 msgstr "Inversa seræo: "
 
-#: pager.c:1872
+#: pager.c:1875
 msgid "Search: "
 msgstr "Seræo: "
 
-#: pager.c:1967
+#: pager.c:1970
 msgid "Help is currently being shown."
 msgstr "Helpo estas nun montrata."
 
-#: pager.c:1996
+#: pager.c:1999
 msgid "No more quoted text."
 msgstr "Ne plu da citita teksto."
 
-#: pager.c:2009
+#: pager.c:2012
 msgid "No more unquoted text after quoted text."
 msgstr "Ne plu da necitita teksto post citita teksto."
 
@@ -3066,11 +3066,11 @@ msgstr "Æu uzi keyID = \"%s\" por %s?"
 msgid "Enter keyID for %s: "
 msgstr "Donu keyID por %s: "
 
-#: pgp.c:1549
+#: pgp.c:1547
 msgid "Can't invoke PGP"
 msgstr "Ne povas alvoki PGP"
 
-#: pgp.c:1653
+#: pgp.c:1651
 msgid "Create an application/pgp message?"
 msgstr "Æu krei application/pgp-mesaøon?"
 
@@ -3393,7 +3393,7 @@ msgstr "Ne povas krei %s."
 msgid "Can't find any tagged messages."
 msgstr "Ne povas trovi markitajn mesaøojn."
 
-#: recvcmd.c:699 send.c:664
+#: recvcmd.c:699 send.c:666
 msgid "No mailing lists found!"
 msgstr "Neniu dissendolisto trovita!"
 
@@ -3495,7 +3495,7 @@ msgstr "Mankas temlinio; æu nuligi?"
 msgid "No subject, aborting."
 msgstr "Mankas temlinio; eliras."
 
-#: send.c:434
+#: send.c:436
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "Æu respondi grupe al %s%s?"
@@ -3505,7 +3505,7 @@ msgstr "Æu respondi grupe al %s%s?"
 #. * to send a message to only the sender of the message.  This
 #. * provides a way to do that.
 #.
-#: send.c:487
+#: send.c:489
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "Æu respondi al %s%s?"
@@ -3513,83 +3513,83 @@ msgstr "Æu respondi al %s%s?"
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
 #.
-#: send.c:639
+#: send.c:641
 msgid "No tagged messages are visible!"
 msgstr "Neniuj markitaj mesaøoj estas videblaj!"
 
-#: send.c:710
+#: send.c:712
 msgid "Include message in reply?"
 msgstr "Æu inkluzivi mesaøon en respondo?"
 
-#: send.c:715
+#: send.c:717
 msgid "Including quoted message..."
 msgstr "Inkluzivas cititan mesaøon ..."
 
-#: send.c:725
+#: send.c:727
 msgid "Could not include all requested messages!"
 msgstr "Ne povis inkluzivi æiujn petitajn mesaøojn!"
 
-#: send.c:739
+#: send.c:741
 msgid "Forward as attachment?"
 msgstr "Æu plusendi kiel kunsenda¼on?"
 
-#: send.c:743
+#: send.c:745
 msgid "Preparing forwarded message..."
 msgstr "Pretigas plusenditan mesaøon ..."
 
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:1038
+#: send.c:1040
 msgid "Recall postponed message?"
 msgstr "Æu revoki prokrastitan mesaøon?"
 
-#: send.c:1268
+#: send.c:1270
 msgid "Abort unmodified message?"
 msgstr "Æu nuligi nemodifitan mesaøon?"
 
-#: send.c:1270
+#: send.c:1272
 msgid "Aborted unmodified message."
 msgstr "Nemodifita mesaøon nuligita"
 
 #. abort
-#: send.c:1311
+#: send.c:1313
 msgid "Mail not sent."
 msgstr "Mesaøo ne sendita."
 
-#: send.c:1337
+#: send.c:1339
 msgid "Message postponed."
 msgstr "Mesaøo prokrastita."
 
-#: send.c:1346
+#: send.c:1348
 msgid "No recipients are specified!"
 msgstr "Neniu ricevanto estas specifita!"
 
-#: send.c:1351
+#: send.c:1353
 msgid "No recipients were specified."
 msgstr "Neniuj ricevantoj estis specifitaj."
 
-#: send.c:1357
+#: send.c:1359
 msgid "No subject, abort sending?"
 msgstr "Mankas temlinio; æu haltigi sendon?"
 
-#: send.c:1361
+#: send.c:1363
 msgid "No subject specified."
 msgstr "Temlinio ne specifita."
 
-#: send.c:1408
+#: send.c:1410
 msgid "Sending message..."
 msgstr "Sendas mesaøon ..."
 
-#: send.c:1535
+#: send.c:1537
 msgid "Could not send the message."
 msgstr "Ne povis sendi la mesaøon."
 
-#: send.c:1540
+#: send.c:1542
 msgid "Mail sent."
 msgstr "Mesaøo sendita."
 
-#: send.c:1540
+#: send.c:1542
 msgid "Sending in background."
 msgstr "Sendas en fono."
 

@@ -1,3 +1,81 @@
+Wed Mar 28 12:00:38 2001  Thomas Roessler  <roessler@guug.de>
+
+	* po/pl.po: update.
+
+Fri Mar 23 12:30:17 2001  Thomas Roessler  <roessler@guug.de>
+
+	* send.c: handle my_hdr message-id: correctly.
+
+Tue Mar 20 17:28:55 2001  Thomas Roessler  <roessler@guug.de>
+
+	* pgp.c: Fix Content-Disposition of PGP/MIME messages.  The second part
+	should get a file name for convenience, not the first one.
+
+	* po/ja.po: Update from Oota Toshiya <oota@ppd.fc.nec.co.jp>.
+
+	* mbyte.c: Fix a bug in mbrtowc_iconv().  From TAKIZAWA Takashi
+	<taki@luna.email.ne.jp>.
+
+Mon Mar 12 11:54:38 2001  Thomas Roessler  <roessler@guug.de>
+
+	* po/ru.po: update from Vsevolod.
+
+Thu Mar  8 16:48:50 2001  Thomas Roessler  <roessler@guug.de>
+
+	* pager.c:
+	Cosmetic change for OP_PAGER_TOP, suggested by Mike Schiraldi
+	<raldi@research.netsol.com>.
+
+Mon Mar  5 20:52:04 2001  Thomas Roessler  <roessler@guug.de>
+
+	* init.h: Fix use_ipv6.
+
+	* po/ja.po: update.
+
+Sun Mar  4 14:25:07 2001  Thomas Roessler  <roessler@guug.de>
+
+	* po/eo.po: update.
+
+	* pgppacket.c:
+	Fix the interpretation of new-style packet lengths.  This is a
+	really bad bug.
+
+	* init.h, mutt.h, mutt_socket.c:
+	Make it possible to enable ipv6 at run time.
+
+Sat Mar  3 18:17:23 2001  Thomas Roessler  <roessler@guug.de>
+
+	* mutt_ssl.c: Fix a typo concerning OpenSSL version numbers.
+
+Thu Mar  1 10:18:04 2001  Thomas Roessler  <roessler@guug.de>
+
+	* po/fr.po: update.
+
+	* po/de.po, po/id.po: updates.
+
+	* imap/imap.c: Don't engage STARTTLS when already in SSL mode.
+
+Tue Feb 27 16:59:45 2001  Thomas Roessler  <roessler@guug.de>
+
+	* depcomp, Makefile.am, missing:
+	Adding files for users of automake-cvs.  From Lars Hecking.
+
+	* configure.in: Simplifications from Lars Hecking.
+
+	* doc/Makefile.in: Distribute instdoc.sh.in.
+
+	* po/zh_CN.GB2312.po, po/zh_TW.Big5.po, po/ru.po, po/sk.po, po/sv.po, po/tr.po, po/uk.po, po/ko.po, po/lt.po, po/nl.po, po/pl.po, po/pt_BR.po, po/id.po, po/it.po, po/ja.po, po/es.po, po/fr.po, po/gl.po, po/el.po, po/eo.po, po/da.po, po/de.po, contrib/Makefile.in, po/cs.po, reldate.h, VERSION, ChangeLog:
+	automatic post-release commit for mutt-1.3.16
+
+Mon Feb 26 16:35:39 2001  Thomas Roessler  <roessler@guug.de>
+
+	* pgp.c:
+	Fix behaviour with multiple signed blocks inside one application/pgp.
+
+	* pgp.c:
+	Add out-of-band signature status signalling for application/pgp with
+	clearsig.
+
 Mon Feb 26 16:35:39 2001  Thomas Roessler  <roessler@guug.de>
 
 	* pgp.c:

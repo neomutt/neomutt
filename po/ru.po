@@ -11,7 +11,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt-1.3.16i\n"
-"POT-Creation-Date: 2001-02-27 11:50+0100\n"
+"POT-Creation-Date: 2001-03-28 15:10+0200\n"
 "PO-Revision-Date: 2001-03-04 11:30+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=koi8-r\n"
@@ -300,7 +300,7 @@ msgstr "цвета по умолчанию не поддерживаются"
 msgid "Verify PGP signature?"
 msgstr "Проверить PGP-подпись?"
 
-#: commands.c:105 pgp.c:1659 pgpkey.c:491 postpone.c:517
+#: commands.c:105 pgp.c:1657 pgpkey.c:491 postpone.c:517
 msgid "Invoking PGP..."
 msgstr "Запускается программа PGP..."
 
@@ -640,7 +640,7 @@ msgstr "нет"
 msgid "Exit Mutt?"
 msgstr "Завершить работу с Mutt?"
 
-#: curs_lib.c:326 mutt_socket.c:399
+#: curs_lib.c:326 mutt_socket.c:404
 msgid "unknown error"
 msgstr "неизвестная ошибка"
 
@@ -2481,7 +2481,7 @@ msgstr "Обратный поиск: "
 msgid "No search pattern."
 msgstr "Нет образца поиска."
 
-#: menu.c:743 pager.c:1837 pager.c:1853 pager.c:1941 pattern.c:1327
+#: menu.c:743 pager.c:1840 pager.c:1856 pager.c:1944 pattern.c:1327
 msgid "Not found."
 msgstr "Не найдено."
 
@@ -2544,22 +2544,22 @@ msgstr "SSL-протокол недоступен."
 msgid "Preconnect command failed."
 msgstr "Предварительное соединение не установлено."
 
-#: mutt_socket.c:326 mutt_socket.c:366
+#: mutt_socket.c:331 mutt_socket.c:371
 #, c-format
 msgid "Looking up %s..."
 msgstr "Определяется адрес сервера %s..."
 
-#: mutt_socket.c:331 mutt_socket.c:370
+#: mutt_socket.c:336 mutt_socket.c:375
 #, c-format
 msgid "Could not find the host \"%s\""
 msgstr "Не удалось определить адрес сервера \"%s\""
 
-#: mutt_socket.c:335 mutt_socket.c:375
+#: mutt_socket.c:340 mutt_socket.c:380
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Устанавливается соединение с %s..."
 
-#: mutt_socket.c:398
+#: mutt_socket.c:403
 #, c-format
 msgid "Could not connect to %s (%s)."
 msgstr "Не удалось установить соединение с %s (%s)."
@@ -2795,31 +2795,31 @@ msgid "Next"
 msgstr "Следующий"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1749 pager.c:1780 pager.c:1809 pager.c:2029
+#: pager.c:1749 pager.c:1780 pager.c:1812 pager.c:2032
 msgid "Bottom of message is shown."
 msgstr "Последняя строка сообщения уже на экране."
 
-#: pager.c:1765 pager.c:1787 pager.c:1798
+#: pager.c:1765 pager.c:1787 pager.c:1794 pager.c:1801
 msgid "Top of message is shown."
 msgstr "Первая строка сообщения уже на экране."
 
-#: pager.c:1871
+#: pager.c:1874
 msgid "Reverse search: "
 msgstr "Обратный поиск: "
 
-#: pager.c:1872
+#: pager.c:1875
 msgid "Search: "
 msgstr "Поиск: "
 
-#: pager.c:1967
+#: pager.c:1970
 msgid "Help is currently being shown."
 msgstr "Подсказка уже перед вами."
 
-#: pager.c:1996
+#: pager.c:1999
 msgid "No more quoted text."
 msgstr "Нет больше цитируемого текста."
 
-#: pager.c:2009
+#: pager.c:2012
 msgid "No more unquoted text after quoted text."
 msgstr "За цитируемым текстом больше нет основного текста."
 
@@ -3097,11 +3097,11 @@ msgstr "Использовать ключ \"%s\" для %s?"
 msgid "Enter keyID for %s: "
 msgstr "Введите идентификатор ключа для %s: "
 
-#: pgp.c:1549
+#: pgp.c:1547
 msgid "Can't invoke PGP"
 msgstr "Не удалось запустить программу PGP"
 
-#: pgp.c:1653
+#: pgp.c:1651
 msgid "Create an application/pgp message?"
 msgstr "Создать сообщение типа application/pgp?"
 
@@ -3425,7 +3425,7 @@ msgstr "Не удалось создать %s."
 msgid "Can't find any tagged messages."
 msgstr "Помеченные сообщения отсутствуют."
 
-#: recvcmd.c:699 send.c:664
+#: recvcmd.c:699 send.c:666
 msgid "No mailing lists found!"
 msgstr "Списков рассылки не найдено!"
 
@@ -3528,7 +3528,7 @@ msgstr "Нет темы письма, отказаться?"
 msgid "No subject, aborting."
 msgstr "Нет темы письма, отказ."
 
-#: send.c:434
+#: send.c:436
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "Отвечать по %s%s?"
@@ -3538,7 +3538,7 @@ msgstr "Отвечать по %s%s?"
 #. * to send a message to only the sender of the message.  This
 #. * provides a way to do that.
 #.
-#: send.c:487
+#: send.c:489
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "Отвечать по %s%s?"
@@ -3546,83 +3546,83 @@ msgstr "Отвечать по %s%s?"
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
 #.
-#: send.c:639
+#: send.c:641
 msgid "No tagged messages are visible!"
 msgstr "Ни одно из помеченных сообщений не является видимым!"
 
-#: send.c:710
+#: send.c:712
 msgid "Include message in reply?"
 msgstr "Вставить сообщение в ответ?"
 
-#: send.c:715
+#: send.c:717
 msgid "Including quoted message..."
 msgstr "Включается цитируемое сообщение..."
 
-#: send.c:725
+#: send.c:727
 msgid "Could not include all requested messages!"
 msgstr "Не удалось вставить все затребованные сообщения!"
 
-#: send.c:739
+#: send.c:741
 msgid "Forward as attachment?"
 msgstr "Переслать как вложение?"
 
-#: send.c:743
+#: send.c:745
 msgid "Preparing forwarded message..."
 msgstr "Подготовка пересылаемого сообщения..."
 
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:1038
+#: send.c:1040
 msgid "Recall postponed message?"
 msgstr "Продолжить отложенное сообщение?"
 
-#: send.c:1268
+#: send.c:1270
 msgid "Abort unmodified message?"
 msgstr "Отказаться от неизмененного сообщения?"
 
-#: send.c:1270
+#: send.c:1272
 msgid "Aborted unmodified message."
 msgstr "Сообщение не изменилось, отказ."
 
 #. abort
-#: send.c:1311
+#: send.c:1313
 msgid "Mail not sent."
 msgstr "Письмо не отправлено."
 
-#: send.c:1337
+#: send.c:1339
 msgid "Message postponed."
 msgstr "Сообщение отложено."
 
-#: send.c:1346
+#: send.c:1348
 msgid "No recipients are specified!"
 msgstr "Не указано ни одного адресата!"
 
-#: send.c:1351
+#: send.c:1353
 msgid "No recipients were specified."
 msgstr "Не было указано ни одного адресата."
 
-#: send.c:1357
+#: send.c:1359
 msgid "No subject, abort sending?"
 msgstr "Нет темы сообщения, прервать отправку?"
 
-#: send.c:1361
+#: send.c:1363
 msgid "No subject specified."
 msgstr "Тема сообщения не указана."
 
-#: send.c:1408
+#: send.c:1410
 msgid "Sending message..."
 msgstr "Сообщение отправляется..."
 
-#: send.c:1535
+#: send.c:1537
 msgid "Could not send the message."
 msgstr "Сообщение отправить не удалось."
 
-#: send.c:1540
+#: send.c:1542
 msgid "Mail sent."
 msgstr "Сообщение отправлено."
 
-#: send.c:1540
+#: send.c:1542
 msgid "Sending in background."
 msgstr "Сообщение отправляется в фоновом режиме."
 
