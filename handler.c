@@ -1047,7 +1047,6 @@ int mutt_can_decode (BODY *a)
 void multipart_handler (BODY *a, STATE *s)
 {
   BODY *b, *p;
-  char buffer[STRING];
   char length[5];
   struct stat st;
   int count;
@@ -1069,8 +1068,7 @@ void multipart_handler (BODY *a, STATE *s)
   {
     if (s->flags & M_DISPLAY)
     {
-      snprintf (buffer, sizeof (buffer), _("[-- Attachment #%d"), count);
-      state_puts (buffer, s);
+      state_printf (s, _("[-- Attachment #%d"), count);
       if (p->description || p->filename || p->form_name)
       {
 	state_puts (": ", s);
@@ -1080,11 +1078,9 @@ void multipart_handler (BODY *a, STATE *s)
       state_puts (" --]\n", s);
 
       mutt_pretty_size (length, sizeof (length), p->length);
-
-      snprintf (buffer, sizeof (buffer),
-		_("[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"),
-	       TYPE (p), p->subtype, ENCODING (p->encoding), length);
-      state_puts (buffer, s);
+      
+      state_printf (s, _("[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"),
+		    TYPE (p), p->subtype, ENCODING (p->encoding), length);
       if (!option (OPTWEED))
       {
 	fseek (s->fpin, p->hdr_offset, 0);
@@ -1096,16 +1092,11 @@ void multipart_handler (BODY *a, STATE *s)
     else
     {
       if (p->description && mutt_can_decode (p))
-      {
-	state_puts ("Content-Description: ", s);
-	state_puts (p->description, s);
-	state_putc ('\n', s);
-      }
+	state_printf (s, "Content-Description: %s\n", p->description);
+
       if (p->form_name)
-      {
-	state_puts (p->form_name, s);
-	state_puts (": \n", s);
-      }
+	state_printf(s, "%s: \n", p->form_name);
+
     }
     mutt_body_handler (p, s);
     state_putc ('\n', s);
@@ -1147,10 +1138,7 @@ void autoview_handler (BODY *a, STATE *s)
 
     if (s->flags & M_DISPLAY)
     {
-      char mesg[STRING];
-
-      snprintf (mesg, sizeof (buffer), _("[-- Autoview using %s --]\n"), command);
-      state_puts (mesg, s);
+      state_printf (s, _("[-- Autoview using %s --]\n"), command);
       mutt_message(_("Invoking autoview command: %s"),command);
     }
 
@@ -1188,13 +1176,8 @@ void autoview_handler (BODY *a, STATE *s)
       if (fgets (buffer, sizeof(buffer), fperr)) 
       {
 	if (s->flags & M_DISPLAY) 
-	{
-	  char mesg[STRING];
+	  state_printf (s, _("[-- Autoview stderr of %s --]\n"), command);
 
-	  snprintf (mesg, sizeof (buffer), _("[-- Autoview stderr of %s --]\n"), 
-	      command);
-	  state_puts (mesg, s);
-	}
 	state_puts (s->prefix, s);
 	state_puts (buffer, s);
 	while (fgets (buffer, sizeof(buffer), fperr) != NULL)
@@ -1211,13 +1194,9 @@ void autoview_handler (BODY *a, STATE *s)
       if (fgets (buffer, sizeof(buffer), fperr))
       {
 	if (s->flags & M_DISPLAY)
-	{
-	  char mesg[STRING];
-
-	  snprintf (mesg, sizeof (buffer), _("[-- Autoview stderr of %s --]\n"), 
-	      command);
-	  state_puts (mesg, s);
-	}
+	  state_printf (s, _("[-- Autoview stderr of %s --]\n"), 
+			command);
+	
 	state_puts (buffer, s);
 	mutt_copy_stream (fperr, s->fpout);
       }
@@ -1491,7 +1470,7 @@ void mutt_body_handler (BODY *b, STATE *s)
   }
   else if (s->flags & M_DISPLAY)
   {
-    fprintf (s->fpout, _("[-- %s/%s is unsupported "), TYPE (b), b->subtype);
+    state_printf (s, _("[-- %s/%s is unsupported "), TYPE (b), b->subtype);
     if (!option (OPTVIEWATTACH))
     {
       if (km_expand_key (type, sizeof(type),

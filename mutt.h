@@ -671,6 +671,7 @@ typedef struct
 #define state_putc(x,y) fputc(x,(y)->fpout)
 
 void state_prefix_putc(char, STATE *);
+int  state_printf(STATE *, const char *, ...);
 
 #include "protos.h"
 #include "globals.h"

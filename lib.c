@@ -1224,6 +1224,18 @@ void state_prefix_putc(char c, STATE *s)
     state_set_prefix(s);
 }
 
+int state_printf(STATE *s, const char *fmt, ...)
+{
+  int rv;
+  va_list ap;
+
+  va_start (ap, fmt);
+  rv = vfprintf(s->fpout, fmt, ap);
+  va_end(ap);
+  
+  return rv;
+}
+
 /* NULL-pointer aware string comparison functions */
 
 int mutt_strcmp(const char *a, const char *b)
