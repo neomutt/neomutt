@@ -29,16 +29,12 @@ static const char rcsid[]="$Id$";
 #include "sort.h"
 
 #include <sys/stat.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-
 #include <dirent.h>
 #include <limits.h>
 #include <unistd.h>
 #include <ctype.h>
 #include <errno.h>
 #include <string.h>
-#include <fcntl.h>
 
 struct maildir
 {
@@ -172,18 +168,10 @@ static int maildir_parse_entry(CONTEXT *ctx, struct maildir ***last,
   HEADER *h;
   char buf[_POSIX_PATH_MAX];
 
-#ifndef HAVE_FCHDIR
-
   if(subdir)
     snprintf(buf, sizeof(buf), "%s/%s/%s", ctx->path, subdir, fname);
   else
     snprintf(buf, sizeof(buf), "%s/%s", ctx->path, fname);
-
-#else
-
-  strfcpy(buf, fname, sizeof(buf));
-
-#endif
   
   if((h = maildir_parse_message(ctx->magic, buf, is_old)) != NULL)
   {
@@ -235,10 +223,7 @@ static int maildir_parse_dir(CONTEXT *ctx, struct maildir ***last,
   struct dirent *de;
   char buf[_POSIX_PATH_MAX];
   int is_old = 0;
-#ifdef HAVE_FCHDIR
-  int fd;
-#endif
-
+  
   if(subdir)
   {
     snprintf(buf, sizeof(buf), "%s/%s", ctx->path, subdir);
@@ -246,25 +231,9 @@ static int maildir_parse_dir(CONTEXT *ctx, struct maildir ***last,
   }
   else
     strfcpy(buf, ctx->path, sizeof(buf));
-
-#ifdef HAVE_FCHDIR
-
-  if((fd = open(".", 0)) == -1)
-    return -1;
   
-  if((chdir(buf) == -1) || ((dirp = opendir(".")) == NULL))
-  {
-    fchdir(fd);
-    close(fd);
-    return -1;
-  }
-  
-#else
-
   if((dirp = opendir(buf)) == NULL)
     return -1;
-
-#endif
 
   while ((de = readdir (dirp)) != NULL)
   {
@@ -279,8 +248,6 @@ static int maildir_parse_dir(CONTEXT *ctx, struct maildir ***last,
   }
 
   closedir(dirp);
-  fchdir(fd);
-  close(fd);
   return 0;
 }
 
