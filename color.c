@@ -392,7 +392,7 @@ _mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err,
 
   if(
 #ifdef HAVE_COLOR
-     (parse_uncolor && !has_colors())
+     (parse_uncolor && !option(OPTNOCURSES) && !has_colors())
      || (!parse_uncolor && has_colors())
 #else
      parse_uncolor
