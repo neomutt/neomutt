@@ -237,7 +237,7 @@ static int smime_send_menu (HEADER *msg, int *redraw)
 
   case 2: /* encrypt (w)ith */
     msg->security |= SMIMEENCRYPT;
-    switch (mutt_multi_choice (_("1: DES, 2: Tripple-DES, 3: RC2-40,"
+    switch (mutt_multi_choice (_("1: DES, 2: Triple-DES, 3: RC2-40,"
 				 " 4: RC2-64, 5: RC2-128, or (f)orget it? "),
 			       _("12345f"))) {
     case 1:
