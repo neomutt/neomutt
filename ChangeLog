@@ -1,3 +1,112 @@
+Sat Jan 27 13:41:11 2001  Thomas Roessler  <roessler@guug.de>
+
+	* recvattach.c: More improvements to the recvattach collapsing.
+
+	* mutt.h, pager.c, pager.h, protos.h, recvattach.c, attach.c, attach.h, compose.c, functions.h, init.h, OPS:
+	Add collapsing to the receive-attach menu, and improve digest
+	handling that way.
+
+Thu Jan 25 12:04:46 2001  Thomas Roessler  <roessler@guug.de>
+
+	* po/cs.po: Fixes from Björn Jacke <bjacke@suse.de>.
+
+	* contrib/pgp6.rc: A nit from Björn Jacke <bjacke@suse.de>.
+
+Mon Jan 22 11:04:56 2001  Thomas Roessler  <roessler@guug.de>
+
+	* mutt_ssl.c: patch-1.3.13.tk.ssl.connect.1
+
+Thu Jan 18 11:27:56 2001  Thomas Roessler  <roessler@guug.de>
+
+	* complete.c:
+	Completion fix.  From Aaron Schrab <aaron+mutt@schrab.com>.
+
+Wed Jan 17 08:53:12 2001  Thomas Roessler  <roessler@guug.de>
+
+	* rfc822.c:
+	This one-line diff should fix the behaviour of the address parser
+	when encountering loose dots in addresses.
+
+	* imap/auth_sasl.c:
+	Try to catch mysterious failures of the SASL library instead of
+	hanging.  From Brendan Cully.
+
+Mon Jan 15 10:40:50 2001  Thomas Roessler  <roessler@guug.de>
+
+	* copy.c: Some debugging helpers.
+
+	* send.c:
+	Use safe_fclose() where a NULL pointer may be passed to fclose().
+
+	* pattern.c:
+	Make ~m usable in $simple_search.  From <David.Good@stratasource.com>.
+
+Wed Jan 10 19:36:43 2001  Thomas Roessler  <roessler@guug.de>
+
+	* recvcmd.c, send.c:
+	Make some messages about mime-forwarding more comprehensible to
+	normal users.
+
+Mon Jan  8 23:09:32 2001  Thomas Roessler  <roessler@guug.de>
+
+	* imap/auth_sasl.c, imap/utf7.c, imap/util.c, charset.c, charset.h, check_sec.sh, dotlock.c, enter.c, gnupgparse.c, keymap.c, lib.c, mutt_sasl.c, parse.c, pgp.c, pgppubring.c, pop_auth.c, regex.c, rfc2047.c, rfc2231.c, rfc822.c, sendlib.c, strdup.c:
+	Let check_sec.sh check for use of the unsafe malloc, realloc, free,
+	and strdup routines.  While we are on it, plug some memory leaks and
+	make some code understandable.
+
+	* intl/cat-compat.c, imap/auth_cram.c, imap/auth_gss.c, imap/imap.c, imap/imap_private.h, imap/message.c, base64.c, browser.c, check_sec.sh, commands.c, complete.c, copy.c, curs_lib.c, edit.c, handler.c, init.c, lib.c, pager.c, pgp.c, pgpkey.c, pop_lib.c, protos.h, query.c, rfc2231.c, rfc822.c, send.c, sendlib.c, snprintf.c:
+	Fix and/or check more fishy code.
+
+	* intl/cat-compat.c, imap/auth_cram.c, imap/auth_gss.c, browser.c, buffy.c, check_sec.sh, curs_main.c, enter.c, init.c, main.c, makedoc.c, mkjtags.c, mutt_sasl.c, pgp.c, pgpinvoke.c, pgpkey.c, pop.c, protos.h, regex.c, rfc2231.c, sendlib.c:
+	Going through possible security problems with a fine comb.  If you
+	want to help, check out the current source, and run check_sec.sh.
+
+	* attach.c, build-release, check_sec.sh, edit.c, pgpkey.c:
+	Some automated security checks concerning fopen() calls.
+
+Thu Jan  4 05:39:31 2001  Thomas Roessler  <roessler@guug.de>
+
+	* gettext.c: Don't use debugfile unless DEBUG is #defined.
+
+Wed Jan  3 13:39:48 2001  Thomas Roessler  <roessler@guug.de>
+
+	* enter.c, mbyte.c: More wide-char patches from EGE.
+
+	* enter.c: Don't accept '\0' as keyboard input.
+
+	* imap/auth_sasl.c:
+	Set SASL_IP_{LOCAL,REMOTE} properties - needed for krb4 support;
+	from yak@MIT.EDU.
+
+	* enter.c: Try to fix nonprintable character input.
+
+	* enter.c: Extend the editor so it supports unprintable characters.
+
+Tue Jan  2 16:34:26 2001  Thomas Roessler  <roessler@guug.de>
+
+	* enter.c: Make my_wcstombs more robust.  From EGE.
+
+	* main.c: Only show mailboxes with -y.  From devenish@arcme.uwa.edu.au.
+
+	* account.h: Fix password input.  From Vsevolod Volkov.
+
+Sun Dec 31 15:30:52 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/ru.po, pop_lib.c: Missing patches from VVV.
+
+	* imap/imap.c, curs_main.c, functions.h, globals.h, OPS:
+	Experimental patch to add an imap-fetch-mail function.
+
+	* mutt.h, protos.h, browser.c, curs_lib.c, enter.c, main.c:
+	Make browser behaviour more consistent with expectations.
+
+	* po/zh_CN.GB2312.po, po/zh_TW.Big5.po, po/sk.po, po/sv.po, po/uk.po, po/pt_BR.po, po/ru.po, po/lt.po, po/nl.po, po/pl.po, po/it.po, po/ko.po, po/id.po, po/es.po, po/fr.po, po/gl.po, po/eo.po, po/da.po, po/de.po, po/el.po, po/cs.po, reldate.h, VERSION, ChangeLog:
+	automatic post-release commit for mutt-1.3.13
+
+Sat Dec 30 10:28:16 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/pl.po: update.
+
 Sat Dec 30 10:28:16 2000  Thomas Roessler  <roessler@guug.de>
 
 	* po/pl.po: update.

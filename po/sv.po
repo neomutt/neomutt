@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3.12\n"
-"POT-Creation-Date: 2000-12-31 11:13+0100\n"
+"POT-Creation-Date: 2001-01-27 14:49+0100\n"
 "PO-Revision-Date: 2000-12-02 19:32+01:00\n"
 "Last-Translator: Jörgen Tegnér <teg@post.netlink.se>\n"
 "Language-Team: \n"
@@ -29,7 +29,8 @@ msgstr "Avsluta"
 msgid "Select"
 msgstr "Välj"
 
-#: addrbook.c:33 browser.c:43 compose.c:92 curs_main.c:380 mutt_ssl.c:511
+#. __STRCAT_CHECKED__
+#: addrbook.c:33 browser.c:43 compose.c:92 curs_main.c:380 mutt_ssl.c:519
 #: pager.c:1462 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Hjälp"
@@ -64,7 +65,7 @@ msgstr "Namn: "
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] Godkänn?"
 
-#: alias.c:296 recvattach.c:381 recvattach.c:435
+#: alias.c:296 recvattach.c:387 recvattach.c:441
 msgid "Save to file: "
 msgstr "Spara i fil: "
 
@@ -81,7 +82,7 @@ msgstr "Kan inte para ihop namnmall, fortsätt?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "'compose' i 'mailcap' kräver %%s"
 
-#: attach.c:131 attach.c:256 commands.c:185 compose.c:1179 curs_lib.c:145
+#: attach.c:131 attach.c:256 commands.c:185 compose.c:1180 curs_lib.c:145
 #: curs_lib.c:374
 #, c-format
 msgid "Error running \"%s\"!"
@@ -122,7 +123,7 @@ msgstr "MIME-typ är inte definierad. Kan inte visa bilaga."
 msgid "Cannot create filter"
 msgstr "Kan inte skapa filter"
 
-#: attach.c:707 recvattach.c:409 recvattach.c:469
+#: attach.c:707 recvattach.c:415 recvattach.c:475
 msgid "Attachment saved."
 msgstr "Bilaga sparad."
 
@@ -142,88 +143,88 @@ msgstr "Ändra katalog"
 msgid "Mask"
 msgstr "Mask"
 
-#: browser.c:374 browser.c:943
+#: browser.c:375 browser.c:957
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s är inte en katalog."
 
-#: browser.c:492
+#: browser.c:493
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Brevlådor [%d]"
 
-#: browser.c:499
+#: browser.c:500
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Prenumererar på [%s], filmask: %s"
 
-#: browser.c:503
+#: browser.c:504
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Katalog [%s], filmask: %s"
 
-#: browser.c:514
+#: browser.c:515
 msgid "Can't attach a directory!"
 msgstr "Kan inte bifoga en katalog!"
 
-#: browser.c:632 browser.c:1010 browser.c:1103
+#: browser.c:643 browser.c:1024 browser.c:1117
 msgid "No files match the file mask"
 msgstr "Ingen fil passar med filmasken"
 
-#: browser.c:835
+#: browser.c:849
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "Endast brevlådor av IMAP-typ kan skapas"
 
-#: browser.c:855
+#: browser.c:869
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Endast brevlådor av IMAP-typ kan tas bort"
 
-#: browser.c:863
+#: browser.c:877
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Ta bort brevlådan '%s'?"
 
-#: browser.c:877
+#: browser.c:891
 msgid "Mailbox deleted."
 msgstr "Brevlådan har tagits bort."
 
-#: browser.c:883
+#: browser.c:897
 msgid "Mailbox not deleted."
 msgstr "Brevlådan togs inte bort."
 
-#: browser.c:902
+#: browser.c:916
 msgid "Chdir to: "
 msgstr "Ändra katalog till: "
 
-#: browser.c:936 browser.c:1003
+#: browser.c:950 browser.c:1017
 msgid "Error scanning directory."
 msgstr "Ett fel uppstod när katalogen skulle läsas."
 
-#: browser.c:954
+#: browser.c:968
 msgid "File Mask: "
 msgstr "Filmask: "
 
-#: browser.c:1026
+#: browser.c:1040
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Sortera omvänt efter (d)atum, (a)lpha, (s)torlek eller i(n)te alls? "
 
-#: browser.c:1027
+#: browser.c:1041
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Sortera efter (d)atum, (a)lpha, (s)torlek eller i(n)te alls? "
 
-#: browser.c:1028
+#: browser.c:1042
 msgid "dazn"
 msgstr "dasn"
 
-#: browser.c:1090
+#: browser.c:1104
 msgid "New file name: "
 msgstr "Nytt filnamn: "
 
-#: browser.c:1121
+#: browser.c:1135
 msgid "Can't view a directory"
 msgstr "Kan inte visa katalogen"
 
-#: browser.c:1139
+#: browser.c:1153
 msgid "Error trying to view file"
 msgstr "Ett fel uppstod när filen skulle visas"
 
@@ -461,7 +462,7 @@ msgstr "Skicka"
 msgid "Abort"
 msgstr "Avbryt"
 
-#: compose.c:90 compose.c:683
+#: compose.c:90 compose.c:684
 msgid "Attach file"
 msgstr "Bifoga fil"
 
@@ -540,96 +541,96 @@ msgstr "-- Bilagor"
 msgid "You may not delete the only attachment."
 msgstr "Du kan inte ta bort den sista bilagan."
 
-#: compose.c:699
+#: compose.c:700
 msgid "Attaching selected files..."
 msgstr "Bifogar valda filer..."
 
-#: compose.c:710
+#: compose.c:711
 #, c-format
 msgid "Unable to attach %s!"
 msgstr "Kunde inte bifoga %s!"
 
-#: compose.c:728
+#: compose.c:729
 msgid "Open mailbox to attach message from"
 msgstr "Öppna brevlåda att bifoga meddelande från"
 
-#: compose.c:766
+#: compose.c:767
 msgid "No messages in that folder."
 msgstr "Inga meddelanden i den foldern."
 
-#: compose.c:775
+#: compose.c:776
 msgid "Tag the messages you want to attach!"
 msgstr "Märk de meddelanden som du vill bifoga!"
 
-#: compose.c:807
+#: compose.c:808
 msgid "Unable to attach!"
 msgstr "Kunde inte bifoga!"
 
-#: compose.c:854
+#: compose.c:855
 msgid "Recoding only affects text attachments."
 msgstr "Kodar endast om berörda textbilagor."
 
-#: compose.c:859
+#: compose.c:860
 msgid "The current attachment won't be converted."
 msgstr "Den aktiva bilagan kommer inte att bli konverterad."
 
-#: compose.c:861
+#: compose.c:862
 msgid "The current attachment will be converted."
 msgstr "Den aktiva bilagan kommer att bli konverterad."
 
-#: compose.c:932
+#: compose.c:933
 msgid "Invalid encoding."
 msgstr "Ogiltig kodning."
 
-#: compose.c:953
+#: compose.c:954
 msgid "Save a copy of this message?"
 msgstr "Spara en kopia av meddelandet?"
 
-#: compose.c:1007
+#: compose.c:1008
 msgid "Rename to: "
 msgstr "Byt namn till: "
 
-#: compose.c:1012 editmsg.c:96
+#: compose.c:1013 editmsg.c:96
 #, c-format
 msgid "Can't stat: %s"
 msgstr "Kan inte ta status på filen %s"
 
-#: compose.c:1038
+#: compose.c:1039
 msgid "New file: "
 msgstr "Ny fil: "
 
-#: compose.c:1051
+#: compose.c:1052
 msgid "Content-Type is of the form base/sub"
 msgstr "'Content-Type' har formen bas/undertyp"
 
-#: compose.c:1057
+#: compose.c:1058
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Okänd 'Content-Type' %s"
 
-#: compose.c:1070
+#: compose.c:1071
 #, c-format
 msgid "Can't create file %s"
 msgstr "Kan inte skapa filen %s"
 
-#: compose.c:1078
+#: compose.c:1079
 msgid "What we have here is a failure to make an attachment"
 msgstr "Vad vi har här är en oförmåga att skapa en bilaga"
 
-#: compose.c:1140
+#: compose.c:1141
 msgid "Postpone this message?"
 msgstr "Skjut upp meddelandet?"
 
-#: compose.c:1197
+#: compose.c:1198
 msgid "Write message to mailbox"
 msgstr "Skriv meddelandet till brevlåda"
 
-#: compose.c:1200
+#: compose.c:1201
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Skriver meddelandet till %s ..."
 
-#: compose.c:1209
+#: compose.c:1210
 msgid "Message written."
 msgstr "Meddelandet skrevs."
 
@@ -670,7 +671,7 @@ msgstr "Inga meddelanden."
 msgid "Mailbox is read-only."
 msgstr "Brevlådan kan endast läsas."
 
-#: curs_main.c:62 pager.c:63 recvattach.c:767
+#: curs_main.c:62 pager.c:63 recvattach.c:813
 msgid "Function not permitted in attach-message mode."
 msgstr "Otillåten funktion i läget 'bifoga-meddelande'."
 
@@ -772,72 +773,72 @@ msgstr "Återställ meddelanden som passar : "
 msgid "Untag messages matching: "
 msgstr "Avmarkera meddelanden som passar: "
 
-#: curs_main.c:939
+#: curs_main.c:945
 msgid "Open mailbox in read-only mode"
 msgstr "Öppna brevlåda i läsläge"
 
-#: curs_main.c:941
+#: curs_main.c:947
 msgid "Open mailbox"
 msgstr "Öppna brevlåda"
 
-#: curs_main.c:957 mx.c:491 mx.c:637
+#: curs_main.c:963 mx.c:491 mx.c:637
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s är inte en brevlåda."
 
-#: curs_main.c:1042
+#: curs_main.c:1048
 msgid "Exit Mutt without saving?"
 msgstr "Avsluta Mutt utan att spara?"
 
-#: curs_main.c:1074 curs_main.c:1098
+#: curs_main.c:1080 curs_main.c:1104
 msgid "You are on the last message."
 msgstr "Det här är det sista meddelandet i listan."
 
-#: curs_main.c:1081 curs_main.c:1123
+#: curs_main.c:1087 curs_main.c:1129
 msgid "No undeleted messages."
 msgstr "Inga återställda meddelanden."
 
-#: curs_main.c:1116 curs_main.c:1139
+#: curs_main.c:1122 curs_main.c:1145
 msgid "You are on the first message."
 msgstr "Det här är första meddelandet i listan."
 
-#: curs_main.c:1211 pattern.c:1126
+#: curs_main.c:1217 pattern.c:1139
 msgid "Search wrapped to top."
 msgstr "Sökning fortsatte i början."
 
-#: curs_main.c:1220 pattern.c:1137
+#: curs_main.c:1226 pattern.c:1150
 msgid "Search wrapped to bottom."
 msgstr "Sökning fortsatte i slutet."
 
-#: curs_main.c:1253
+#: curs_main.c:1259
 msgid "No new messages"
 msgstr "Inga nya meddelanden"
 
-#: curs_main.c:1253
+#: curs_main.c:1259
 msgid "No unread messages"
 msgstr "Inga olästa meddelanden"
 
-#: curs_main.c:1254
+#: curs_main.c:1260
 msgid " in this limited view"
 msgstr " i den här begränsade vyn"
 
-#: curs_main.c:1378
+#: curs_main.c:1384
 msgid "No more threads."
 msgstr "Inga fler trådar."
 
-#: curs_main.c:1380
+#: curs_main.c:1386
 msgid "You are on the first thread."
 msgstr "Du ser den första tråden."
 
-#: curs_main.c:1438 curs_main.c:1469 flags.c:250 thread.c:651 thread.c:702
+#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:651 thread.c:702
 msgid "Threading is not enabled."
 msgstr "Trådning är inte aktiverad."
 
-#: curs_main.c:1456
+#: curs_main.c:1462
 msgid "Thread contains unread messages."
 msgstr "Tråden har olästa meddelanden."
 
-#: curs_main.c:1622
+#: curs_main.c:1628
 msgid "Can't edit message on POP server."
 msgstr "Kan inte ändra meddelande på POP-servern."
 
@@ -1119,7 +1120,7 @@ msgstr "Anonym verifiering misslyckades."
 msgid "Authenticating (CRAM-MD5)..."
 msgstr "Verifierar (CRAM-MD5)..."
 
-#: imap/auth_cram.c:119
+#: imap/auth_cram.c:124
 msgid "CRAM-MD5 authentication failed."
 msgstr "Verifiering med CRAM-MD5 misslyckades."
 
@@ -1128,7 +1129,7 @@ msgstr "Verifiering med CRAM-MD5 misslyckades."
 msgid "Authenticating (GSSAPI)..."
 msgstr "Verifierar (GSSAPI)..."
 
-#: imap/auth_gss.c:261
+#: imap/auth_gss.c:262
 msgid "GSSAPI authentication failed."
 msgstr "Verifiering med GSSAPI misslyckades."
 
@@ -1144,11 +1145,11 @@ msgstr "Ansluter..."
 msgid "Login failed."
 msgstr "Anslutning misslyckades."
 
-#: imap/auth_sasl.c:91 pop_auth.c:79
+#: imap/auth_sasl.c:118 pop_auth.c:79
 msgid "Authenticating (SASL)..."
 msgstr "Verifierar (SASL)..."
 
-#: imap/auth_sasl.c:163 pop_auth.c:157
+#: imap/auth_sasl.c:196 pop_auth.c:157
 msgid "SASL authentication failed."
 msgstr "Verifiering med SASL misslyckades."
 
@@ -1220,12 +1221,12 @@ msgstr "Sparar statusflagga för meddelanden... [%d/%d]"
 msgid "Expunging messages from server..."
 msgstr "Tar bort meddelanden från server..."
 
-#: imap/imap.c:1228
+#: imap/imap.c:1227
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Prenumerera på %s..."
 
-#: imap/imap.c:1230
+#: imap/imap.c:1229
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Avslutar prenumeration på %s..."
@@ -1435,722 +1436,732 @@ msgid "view attachment as text"
 msgstr "visa bilaga som text"
 
 #: keymap_alldefs.h:8
+#, fuzzy
+msgid "Toggle display of subparts"
+msgstr "toggla huruvida citerad text ska visas"
+
+#: keymap_alldefs.h:9
 msgid "move to the bottom of the page"
 msgstr "flytta till slutet av sidan"
 
-#: keymap_alldefs.h:9
+#: keymap_alldefs.h:10
 msgid "remail a message to another user"
 msgstr "återsänd ett meddelande till en annan användare"
 
-#: keymap_alldefs.h:10
+#: keymap_alldefs.h:11
 msgid "select a new file in this directory"
 msgstr "välj en ny fil i den här katalogen"
 
-#: keymap_alldefs.h:11
+#: keymap_alldefs.h:12
 msgid "view file"
 msgstr "visa fil"
 
-#: keymap_alldefs.h:12
+#: keymap_alldefs.h:13
 msgid "display the currently selected file's name"
 msgstr "visa namnet på vald fil"
 
-#: keymap_alldefs.h:13
+#: keymap_alldefs.h:14
 msgid "subscribe to current mailbox (IMAP only)"
 msgstr "prenumerera på vald brevlåda (endast IMAP)"
 
-#: keymap_alldefs.h:14
+#: keymap_alldefs.h:15
 msgid "unsubscribe to current mailbox (IMAP only)"
 msgstr "avsluta prenumereration på vald brevlåda (endast IMAP)"
 
-#: keymap_alldefs.h:15
+#: keymap_alldefs.h:16
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "toggla vy av all prenumererade brevlådor (endast IMAP)"
 
-#: keymap_alldefs.h:16
+#: keymap_alldefs.h:17
 msgid "change directories"
 msgstr "byt katalog"
 
-#: keymap_alldefs.h:17
+#: keymap_alldefs.h:18
 msgid "check mailboxes for new mail"
 msgstr "sök efter nya brev i brevlådorna"
 
-#: keymap_alldefs.h:18
+#: keymap_alldefs.h:19
 msgid "attach a file(s) to this message"
 msgstr "bifoga en eller flera filer till det här meddelandet"
 
-#: keymap_alldefs.h:19
+#: keymap_alldefs.h:20
 msgid "attach message(s) to this message"
 msgstr "bifoga meddelande(n) till det här meddelandet"
 
-#: keymap_alldefs.h:20
+#: keymap_alldefs.h:21
 msgid "edit the BCC list"
 msgstr "ändra i BCC-listan"
 
-#: keymap_alldefs.h:21
+#: keymap_alldefs.h:22
 msgid "edit the CC list"
 msgstr "ändra i CC-listan"
 
-#: keymap_alldefs.h:22
+#: keymap_alldefs.h:23
 msgid "edit attachment description"
 msgstr "ändra beskrivning av bilaga"
 
-#: keymap_alldefs.h:23
+#: keymap_alldefs.h:24
 msgid "edit attachment transfer-encoding"
 msgstr "ändra transportkodning för bilagan"
 
-#: keymap_alldefs.h:24
+#: keymap_alldefs.h:25
 msgid "enter a file to save a copy of this message in"
 msgstr "ange filnamn att kopiera det här meddelandet till"
 
-#: keymap_alldefs.h:25
+#: keymap_alldefs.h:26
 msgid "edit the file to be attached"
 msgstr "ändra i filen som ska bifogas"
 
-#: keymap_alldefs.h:26
+#: keymap_alldefs.h:27
 msgid "edit the from field"
 msgstr "ändra avsändarfältet"
 
-#: keymap_alldefs.h:27
+#: keymap_alldefs.h:28
 msgid "edit the message with headers"
 msgstr "ändra i meddelandet, även brevhuvud"
 
-#: keymap_alldefs.h:28
+#: keymap_alldefs.h:29
 msgid "edit the message"
 msgstr "ändra i meddelandet"
 
-#: keymap_alldefs.h:29
+#: keymap_alldefs.h:30
 msgid "edit attachment using mailcap entry"
 msgstr "ändra i bilaga med hjälp av informationen i 'mailcap'"
 
-#: keymap_alldefs.h:30
+#: keymap_alldefs.h:31
 msgid "edit the Reply-To field"
 msgstr "ändra fältet Reply-To"
 
-#: keymap_alldefs.h:31
+#: keymap_alldefs.h:32
 msgid "edit the subject of this message"
 msgstr "ändra meddelandets ärende"
 
-#: keymap_alldefs.h:32
+#: keymap_alldefs.h:33
 msgid "edit the TO list"
 msgstr "ändra mottagares addresser"
 
-#: keymap_alldefs.h:33
+#: keymap_alldefs.h:34
 msgid "create a new mailbox (IMAP only)"
 msgstr "Skapa ny brevlåda (endast IMAP)"
 
-#: keymap_alldefs.h:34
+#: keymap_alldefs.h:35
 msgid "edit attachment content type"
 msgstr "ändra typ för bilaga"
 
-#: keymap_alldefs.h:35
+#: keymap_alldefs.h:36
 msgid "get a temporary copy of an attachment"
 msgstr "hämta en tillfällig kopia av en bilaga"
 
-#: keymap_alldefs.h:36
+#: keymap_alldefs.h:37
 msgid "run ispell on the message"
 msgstr "låt 'ispell' kontrollera meddelandet stavning"
 
-#: keymap_alldefs.h:37
+#: keymap_alldefs.h:38
 msgid "compose new attachment using mailcap entry"
 msgstr "skapa ny bilaga med hjälp av informationen i 'mailcap'"
 
-#: keymap_alldefs.h:38
+#: keymap_alldefs.h:39
 msgid "toggle recoding of this attachment"
 msgstr "toggla omkodning av den här bilagan"
 
-#: keymap_alldefs.h:39
+#: keymap_alldefs.h:40
 msgid "save this message to send later"
 msgstr "spara meddelandet för att skicka det senare"
 
-#: keymap_alldefs.h:40
+#: keymap_alldefs.h:41
 msgid "rename/move an attached file"
 msgstr "byt namn på/flytta bifogad fil"
 
-#: keymap_alldefs.h:41
+#: keymap_alldefs.h:42
 msgid "send the message"
 msgstr "skicka meddelandet"
 
-#: keymap_alldefs.h:42
+#: keymap_alldefs.h:43
 msgid "toggle disposition between inline/attachment"
 msgstr "skifta status mellan integrerat och bifogat"
 
-#: keymap_alldefs.h:43
+#: keymap_alldefs.h:44
 msgid "toggle whether to delete file after sending it"
 msgstr "toggla huruvida fil ska tas bort efter att den har sänts"
 
-#: keymap_alldefs.h:44
+#: keymap_alldefs.h:45
 msgid "update an attachment's encoding info"
 msgstr "uppdatera bilagans kodningsinformation"
 
-#: keymap_alldefs.h:45
+#: keymap_alldefs.h:46
 msgid "write the message to a folder"
 msgstr "skriv meddelandet till en mapp"
 
-#: keymap_alldefs.h:46
+#: keymap_alldefs.h:47
 msgid "copy a message to a file/mailbox"
 msgstr "kopiera ett meddelande till en fil/brevlåda"
 
-#: keymap_alldefs.h:47
+#: keymap_alldefs.h:48
 msgid "create an alias from a message sender"
 msgstr "skapa ett alias från ett meddelandes avsändare"
 
-#: keymap_alldefs.h:48
+#: keymap_alldefs.h:49
 msgid "move entry to bottom of screen"
 msgstr "flytta brev till slutet av skärmen"
 
-#: keymap_alldefs.h:49
+#: keymap_alldefs.h:50
 msgid "move entry to middle of screen"
 msgstr "flytta brev till mitten av skärmen"
 
-#: keymap_alldefs.h:50
+#: keymap_alldefs.h:51
 msgid "move entry to top of screen"
 msgstr "flytta brev till början av skärmen"
 
-#: keymap_alldefs.h:51
+#: keymap_alldefs.h:52
 msgid "make decoded (text/plain) copy"
 msgstr "skapa avkodad kopia (text/plain)"
 
-#: keymap_alldefs.h:52
+#: keymap_alldefs.h:53
 msgid "make decoded copy (text/plain) and delete"
 msgstr "skapa avkodad kopia (text/plain) och släng"
 
-#: keymap_alldefs.h:53
+#: keymap_alldefs.h:54
 msgid "delete the current entry"
 msgstr "släng bort aktivt meddelande"
 
-#: keymap_alldefs.h:54
+#: keymap_alldefs.h:55
 msgid "delete the current mailbox (IMAP only)"
 msgstr "ta bort aktiv brevlåda (endast för IMAP)"
 
-#: keymap_alldefs.h:55
+#: keymap_alldefs.h:56
 msgid "delete all messages in subthread"
 msgstr "släng bort alla meddelanden i undertråd"
 
-#: keymap_alldefs.h:56
+#: keymap_alldefs.h:57
 msgid "delete all messages in thread"
 msgstr "släng bort alla meddelanden i tråd"
 
-#: keymap_alldefs.h:57
+#: keymap_alldefs.h:58
 msgid "display full address of sender"
 msgstr "visa fullständing avsändaradress"
 
-#: keymap_alldefs.h:58
+#: keymap_alldefs.h:59
 msgid "display message and toggle header weeding"
 msgstr "visa meddelande och toggla rensning av brevhuvud"
 
-#: keymap_alldefs.h:59
+#: keymap_alldefs.h:60
 msgid "display a message"
 msgstr "visa ett meddelande"
 
-#: keymap_alldefs.h:60
+#: keymap_alldefs.h:61
 msgid "edit the raw message"
 msgstr "ändra i meddelandet"
 
-#: keymap_alldefs.h:61
+#: keymap_alldefs.h:62
 msgid "delete the char in front of the cursor"
 msgstr "ta bort tecknet före markören"
 
-#: keymap_alldefs.h:62
+#: keymap_alldefs.h:63
 msgid "move the cursor one character to the left"
 msgstr "flytta markören ett tecken till vänster"
 
-#: keymap_alldefs.h:63
+#: keymap_alldefs.h:64
 msgid "move the cursor to the beginning of the word"
 msgstr "flytta markören till början av ordet"
 
-#: keymap_alldefs.h:64
+#: keymap_alldefs.h:65
 msgid "jump to the beginning of the line"
 msgstr "gå till början av raden"
 
-#: keymap_alldefs.h:65
+#: keymap_alldefs.h:66
 msgid "cycle among incoming mailboxes"
 msgstr "rotera bland brevlådor"
 
-#: keymap_alldefs.h:66
+#: keymap_alldefs.h:67
 msgid "complete filename or alias"
 msgstr "komplettera filnamn eller alias"
 
-#: keymap_alldefs.h:67
+#: keymap_alldefs.h:68
 msgid "complete address with query"
 msgstr "komplettera adress med fråga"
 
-#: keymap_alldefs.h:68
+#: keymap_alldefs.h:69
 msgid "delete the char under the cursor"
 msgstr "ta bort tecknet under markören"
 
-#: keymap_alldefs.h:69
+#: keymap_alldefs.h:70
 msgid "jump to the end of the line"
 msgstr "gå till radens slut"
 
-#: keymap_alldefs.h:70
+#: keymap_alldefs.h:71
 msgid "move the cursor one character to the right"
 msgstr "flytta markören ett tecken åt höger"
 
-#: keymap_alldefs.h:71
+#: keymap_alldefs.h:72
 msgid "move the cursor to the end of the word"
 msgstr "flytta markören till slutet av ordet"
 
-#: keymap_alldefs.h:72 keymap_alldefs.h:73
+#: keymap_alldefs.h:73 keymap_alldefs.h:74
 msgid "scroll up through the history list"
 msgstr "rulla upp genom historielistan"
 
-#: keymap_alldefs.h:74
+#: keymap_alldefs.h:75
 msgid "delete chars from cursor to end of line"
 msgstr "ta bort tecknen mellan markören och radens slut"
 
-#: keymap_alldefs.h:75
+#: keymap_alldefs.h:76
 msgid "delete chars from the cursor to the end of the word"
 msgstr "ta bort tecknen mellan markören och ordets slut"
 
-#: keymap_alldefs.h:76
+#: keymap_alldefs.h:77
 msgid "delete all chars on the line"
 msgstr "ta bort alla tecken på raden"
 
-#: keymap_alldefs.h:77
+#: keymap_alldefs.h:78
 msgid "delete the word in front of the cursor"
 msgstr "ta bort ordet framför markören"
 
-#: keymap_alldefs.h:78
+#: keymap_alldefs.h:79
 msgid "quote the next typed key"
 msgstr "skriv efterföljande tangentkombination i klartext"
 
-#: keymap_alldefs.h:79
+#: keymap_alldefs.h:80
 msgid "transpose character under cursor with previous"
 msgstr "byt tecken under markören mot föregående tecken"
 
-#: keymap_alldefs.h:80
+#: keymap_alldefs.h:81
 msgid "capitalize the word"
 msgstr "skriv ordet med stor begynnelsebokstav"
 
-#: keymap_alldefs.h:81
+#: keymap_alldefs.h:82
 msgid "convert the word to lower case"
 msgstr "ändra ordet till gemener"
 
-#: keymap_alldefs.h:82
+#: keymap_alldefs.h:83
 msgid "convert the word to upper case"
 msgstr "ändra ordet till versaler"
 
-#: keymap_alldefs.h:83
+#: keymap_alldefs.h:84
 msgid "enter a muttrc command"
 msgstr "ge ett kommando med syntax som i muttrc"
 
-#: keymap_alldefs.h:84
+#: keymap_alldefs.h:85
 msgid "enter a file mask"
 msgstr "ge en mask för filnamn"
 
-#: keymap_alldefs.h:85
+#: keymap_alldefs.h:86
 msgid "exit this menu"
 msgstr "avsluta menyn"
 
-#: keymap_alldefs.h:86
+#: keymap_alldefs.h:87
 msgid "filter attachment through a shell command"
 msgstr "filtrera bilagan genom ett skalkommando"
 
-#: keymap_alldefs.h:87
+#: keymap_alldefs.h:88
 msgid "move to the first entry"
 msgstr "gå till första meddelandet"
 
-#: keymap_alldefs.h:88
+#: keymap_alldefs.h:89
 msgid "toggle a message's 'important' flag"
 msgstr "toggla ett meddelandes flagga för betydelse"
 
-#: keymap_alldefs.h:89
+#: keymap_alldefs.h:90
 msgid "forward a message with comments"
 msgstr "vidarebordra ett meddelande med kommentarer"
 
-#: keymap_alldefs.h:90
+#: keymap_alldefs.h:91
 msgid "select the current entry"
 msgstr "välj det aktiva meddelandet"
 
-#: keymap_alldefs.h:91
+#: keymap_alldefs.h:92
 msgid "reply to all recipients"
 msgstr "svara till alla mottagare"
 
-#: keymap_alldefs.h:92
+#: keymap_alldefs.h:93
 msgid "scroll down 1/2 page"
 msgstr "rulla ner en halv sida"
 
-#: keymap_alldefs.h:93
+#: keymap_alldefs.h:94
 msgid "scroll up 1/2 page"
 msgstr "rulla upp en halv sida"
 
-#: keymap_alldefs.h:94
+#: keymap_alldefs.h:95
 msgid "this screen"
 msgstr "den här skärmen"
 
-#: keymap_alldefs.h:95
+#: keymap_alldefs.h:96
 msgid "jump to an index number"
 msgstr "gå till index"
 
-#: keymap_alldefs.h:96
+#: keymap_alldefs.h:97
 msgid "move to the last entry"
 msgstr "gå till sista meddelandet"
 
-#: keymap_alldefs.h:97
+#: keymap_alldefs.h:98
 msgid "reply to specified mailing list"
 msgstr "svara till angiven sändlista"
 
-#: keymap_alldefs.h:98
+#: keymap_alldefs.h:99
 msgid "execute a macro"
 msgstr "kör ett makro"
 
-#: keymap_alldefs.h:99
+#: keymap_alldefs.h:100
 msgid "compose a new mail message"
 msgstr "skapa ett nytt brev"
 
-#: keymap_alldefs.h:100
+#: keymap_alldefs.h:101
 msgid "open a different folder"
 msgstr "öppna en annan brevlåda"
 
-#: keymap_alldefs.h:101
+#: keymap_alldefs.h:102
 msgid "open a different folder in read only mode"
 msgstr "öppna en annan brevlåda utan skrivåtkomst"
 
-#: keymap_alldefs.h:102
+#: keymap_alldefs.h:103
 msgid "clear a status flag from a message"
 msgstr "rensa en statusflagga från ett meddelande"
 
-#: keymap_alldefs.h:103
+#: keymap_alldefs.h:104
 msgid "delete messages matching a pattern"
 msgstr "släng bort meddelanden som passar ett mönster"
 
-#: keymap_alldefs.h:104
+#: keymap_alldefs.h:105
+#, fuzzy
+msgid "force retrieval of mail from IMAP server"
+msgstr "hämta brev från en POP-server"
+
+#: keymap_alldefs.h:106
 msgid "retrieve mail from POP server"
 msgstr "hämta brev från en POP-server"
 
-#: keymap_alldefs.h:105
+#: keymap_alldefs.h:107
 msgid "move to the first message"
 msgstr "flytta till första meddelandet"
 
-#: keymap_alldefs.h:106
+#: keymap_alldefs.h:108
 msgid "move to the last message"
 msgstr "flytta till sista meddelandet"
 
-#: keymap_alldefs.h:107
+#: keymap_alldefs.h:109
 msgid "show only messages matching a pattern"
 msgstr "visa endast meddelanden som passar ett mönster"
 
-#: keymap_alldefs.h:108
+#: keymap_alldefs.h:110
 msgid "jump to the next new message"
 msgstr "hoppa till nästa nya meddelande"
 
-#: keymap_alldefs.h:109
+#: keymap_alldefs.h:111
 msgid "jump to the next subthread"
 msgstr "hoppa till nästa undertråd"
 
-#: keymap_alldefs.h:110
+#: keymap_alldefs.h:112
 msgid "jump to the next thread"
 msgstr "hoppa till nästa tråd"
 
-#: keymap_alldefs.h:111
+#: keymap_alldefs.h:113
 msgid "move to the next undeleted message"
 msgstr "hoppa till nästa icke slängda meddelande"
 
-#: keymap_alldefs.h:112
+#: keymap_alldefs.h:114
 msgid "jump to the next unread message"
 msgstr "hoppa till nästa olästa meddelande"
 
-#: keymap_alldefs.h:113
+#: keymap_alldefs.h:115
 msgid "jump to parent message in thread"
 msgstr "gå till första meddelande i tråden"
 
-#: keymap_alldefs.h:114
+#: keymap_alldefs.h:116
 msgid "jump to previous thread"
 msgstr "hoppa till föregående tråd"
 
-#: keymap_alldefs.h:115
+#: keymap_alldefs.h:117
 msgid "jump to previous subthread"
 msgstr "hoppa till föregående undertråd"
 
-#: keymap_alldefs.h:116
+#: keymap_alldefs.h:118
 msgid "move to the previous undeleted message"
 msgstr "hoppa till föregående icke borttagna meddelande"
 
-#: keymap_alldefs.h:117
+#: keymap_alldefs.h:119
 msgid "jump to the previous new message"
 msgstr "hoppa till föregående nya meddelande"
 
-#: keymap_alldefs.h:118
+#: keymap_alldefs.h:120
 msgid "jump to the previous unread message"
 msgstr "hoppa till föregående olästa meddelande"
 
-#: keymap_alldefs.h:119
+#: keymap_alldefs.h:121
 msgid "mark the current thread as read"
 msgstr "märk aktiv tråd som läst"
 
-#: keymap_alldefs.h:120
+#: keymap_alldefs.h:122
 msgid "mark the current subthread as read"
 msgstr "märk aktiv undertråd som läst"
 
-#: keymap_alldefs.h:121
+#: keymap_alldefs.h:123
 msgid "set a status flag on a message"
 msgstr "sätt en statusflagga för ett meddelande"
 
-#: keymap_alldefs.h:122
+#: keymap_alldefs.h:124
 msgid "save changes to mailbox"
 msgstr "spara ändringar i brevlåda"
 
-#: keymap_alldefs.h:123
+#: keymap_alldefs.h:125
 msgid "tag messages matching a pattern"
 msgstr "märk meddelanden som passar ett mönster"
 
-#: keymap_alldefs.h:124
+#: keymap_alldefs.h:126
 msgid "undelete messages matching a pattern"
 msgstr "återställ meddelanden som passar ett mönster"
 
-#: keymap_alldefs.h:125
+#: keymap_alldefs.h:127
 msgid "untag messages matching a pattern"
 msgstr "avmarkera meddelanden som passar ett mönster"
 
-#: keymap_alldefs.h:126
+#: keymap_alldefs.h:128
 msgid "move to the middle of the page"
 msgstr "gå till mitten av sidan"
 
-#: keymap_alldefs.h:127
+#: keymap_alldefs.h:129
 msgid "move to the next entry"
 msgstr "gå till nästa brev"
 
-#: keymap_alldefs.h:128
+#: keymap_alldefs.h:130
 msgid "scroll down one line"
 msgstr "rulla ner en rad"
 
-#: keymap_alldefs.h:129
+#: keymap_alldefs.h:131
 msgid "move to the next page"
 msgstr "gå till nästa sida"
 
-#: keymap_alldefs.h:130
+#: keymap_alldefs.h:132
 msgid "jump to the bottom of the message"
 msgstr "hoppa till slutet av meddelandet"
 
-#: keymap_alldefs.h:131
+#: keymap_alldefs.h:133
 msgid "toggle display of quoted text"
 msgstr "toggla huruvida citerad text ska visas"
 
-#: keymap_alldefs.h:132
+#: keymap_alldefs.h:134
 msgid "skip beyond quoted text"
 msgstr "hoppa över citerad text"
 
-#: keymap_alldefs.h:133
+#: keymap_alldefs.h:135
 msgid "jump to the top of the message"
 msgstr "hoppa till början av meddelandet"
 
-#: keymap_alldefs.h:134
+#: keymap_alldefs.h:136
 msgid "pipe message/attachment to a shell command"
 msgstr "skicka meddelandet/bilagan till ett skalkommando"
 
-#: keymap_alldefs.h:135
+#: keymap_alldefs.h:137
 msgid "move to the previous entry"
 msgstr "gå till föregående brev"
 
-#: keymap_alldefs.h:136
+#: keymap_alldefs.h:138
 msgid "scroll up one line"
 msgstr "rulla upp en rad"
 
-#: keymap_alldefs.h:137
+#: keymap_alldefs.h:139
 msgid "move to the previous page"
 msgstr "gå till föregående sida"
 
-#: keymap_alldefs.h:138
+#: keymap_alldefs.h:140
 msgid "print the current entry"
 msgstr "skriv ut aktivt meddelande"
 
-#: keymap_alldefs.h:139
+#: keymap_alldefs.h:141
 msgid "query external program for addresses"
 msgstr "fråga ett externt program efter adresser"
 
-#: keymap_alldefs.h:140
+#: keymap_alldefs.h:142
 msgid "append new query results to current results"
 msgstr "lägg till resultat av ny fråga till aktivt resultat"
 
-#: keymap_alldefs.h:141
+#: keymap_alldefs.h:143
 msgid "save changes to mailbox and quit"
 msgstr "spara ändringar till brevlåda och avsluta"
 
-#: keymap_alldefs.h:142
+#: keymap_alldefs.h:144
 msgid "recall a postponed message"
 msgstr "återkalla ett uppskjutet meddelande"
 
-#: keymap_alldefs.h:143
+#: keymap_alldefs.h:145
 msgid "clear and redraw the screen"
 msgstr "rensa och rita om skärmen"
 
-#: keymap_alldefs.h:144
+#: keymap_alldefs.h:146
 msgid "{internal}"
 msgstr "{internt}"
 
-#: keymap_alldefs.h:145
+#: keymap_alldefs.h:147
 msgid "reply to a message"
 msgstr "svara på ett meddelande"
 
-#: keymap_alldefs.h:146
+#: keymap_alldefs.h:148
 msgid "use the current message as a template for a new one"
 msgstr "använd aktivt meddelande som mall för ett nytt"
 
-#: keymap_alldefs.h:147
+#: keymap_alldefs.h:149
 msgid "save message/attachment to a file"
 msgstr "spara meddelande/bilaga till fil"
 
-#: keymap_alldefs.h:148
+#: keymap_alldefs.h:150
 msgid "search for a regular expression"
 msgstr "leta efter ett reguljärt uttryck"
 
-#: keymap_alldefs.h:149
+#: keymap_alldefs.h:151
 msgid "search backwards for a regular expression"
 msgstr "leta bakåt efter ett reguljärt uttryck"
 
-#: keymap_alldefs.h:150
+#: keymap_alldefs.h:152
 msgid "search for next match"
 msgstr "leta efter nästa passning"
 
-#: keymap_alldefs.h:151
+#: keymap_alldefs.h:153
 msgid "search for next match in opposite direction"
 msgstr "leta efter nästa passning i omvänd ordning"
 
-#: keymap_alldefs.h:152
+#: keymap_alldefs.h:154
 msgid "toggle search pattern coloring"
 msgstr "toggla färg på sökmönster"
 
-#: keymap_alldefs.h:153
+#: keymap_alldefs.h:155
 msgid "invoke a command in a subshell"
 msgstr "starta ett kommando i ett underskal"
 
-#: keymap_alldefs.h:154
+#: keymap_alldefs.h:156
 msgid "sort messages"
 msgstr "sortera meddelanden"
 
-#: keymap_alldefs.h:155
+#: keymap_alldefs.h:157
 msgid "sort messages in reverse order"
 msgstr "sortera meddelanden i omvänd ordning"
 
-#: keymap_alldefs.h:156
+#: keymap_alldefs.h:158
 msgid "tag the current entry"
 msgstr "märk aktivt meddelande"
 
-#: keymap_alldefs.h:157
+#: keymap_alldefs.h:159
 msgid "apply next function to tagged messages"
 msgstr "använd nästa funktion på ett märkta meddelanden"
 
-#: keymap_alldefs.h:158
+#: keymap_alldefs.h:160
 msgid "tag the current subthread"
 msgstr "märk aktiv undertråd"
 
-#: keymap_alldefs.h:159
+#: keymap_alldefs.h:161
 msgid "tag the current thread"
 msgstr "märk aktiv tråd"
 
-#: keymap_alldefs.h:160
+#: keymap_alldefs.h:162
 msgid "toggle a message's 'new' flag"
 msgstr "toggla 'ny' för ett meddelande"
 
-#: keymap_alldefs.h:161
+#: keymap_alldefs.h:163
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "toggla huruvida en brevlåda ska skrivas om"
 
-#: keymap_alldefs.h:162
+#: keymap_alldefs.h:164
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "välj om alla filer skall visas eller bara brevlådor"
 
-#: keymap_alldefs.h:163
+#: keymap_alldefs.h:165
 msgid "move to the top of the page"
 msgstr "gå till början av sidan"
 
-#: keymap_alldefs.h:164
+#: keymap_alldefs.h:166
 msgid "undelete the current entry"
 msgstr "ta inte bort det aktuella meddelandet"
 
-#: keymap_alldefs.h:165
+#: keymap_alldefs.h:167
 msgid "undelete all messages in thread"
 msgstr "återställ all meddelanden i en tråd"
 
-#: keymap_alldefs.h:166
+#: keymap_alldefs.h:168
 msgid "undelete all messages in subthread"
 msgstr "återställ alla meddelanden i en undertråd"
 
-#: keymap_alldefs.h:167
+#: keymap_alldefs.h:169
 msgid "show the Mutt version number and date"
 msgstr "visa Mutts versionsnummer och datum"
 
-#: keymap_alldefs.h:168
+#: keymap_alldefs.h:170
 msgid "view attachment using mailcap entry if necessary"
 msgstr "visa bilaga med hjälp av informationen i 'mailcap' om nödvändigt"
 
-#: keymap_alldefs.h:169
+#: keymap_alldefs.h:171
 msgid "show MIME attachments"
 msgstr "visa MIME-bilagor"
 
-#: keymap_alldefs.h:170
+#: keymap_alldefs.h:172
 msgid "show currently active limit pattern"
 msgstr "visa aktivt begränsande mönster"
 
-#: keymap_alldefs.h:171
+#: keymap_alldefs.h:173
 msgid "collapse/uncollapse current thread"
 msgstr "komprimera/expandera aktiv tråd"
 
-#: keymap_alldefs.h:172
+#: keymap_alldefs.h:174
 msgid "collapse/uncollapse all threads"
 msgstr "komprimera/expandera alla trådar"
 
-#: keymap_alldefs.h:173
+#: keymap_alldefs.h:175
 msgid "attach a PGP public key"
 msgstr "bifoga an öppen nyckel (PGP)"
 
-#: keymap_alldefs.h:174
+#: keymap_alldefs.h:176
 msgid "show PGP options"
 msgstr "visa val för PGP"
 
-#: keymap_alldefs.h:175
+#: keymap_alldefs.h:177
 msgid "extract PGP public keys"
 msgstr "extrahera öppna nycklar (PGP)"
 
-#: keymap_alldefs.h:176
+#: keymap_alldefs.h:178
 msgid "wipe PGP passphrase from memory"
 msgstr "rensa lösenfras (PGP) från minnet."
 
-#: keymap_alldefs.h:177
+#: keymap_alldefs.h:179
 msgid "mail a PGP public key"
 msgstr "skicka en öppen nyckel (PGP)"
 
-#: keymap_alldefs.h:178
+#: keymap_alldefs.h:180
 msgid "verify a PGP public key"
 msgstr "verifiera en öppen nyckel (PGP)"
 
-#: keymap_alldefs.h:179
+#: keymap_alldefs.h:181
 msgid "view the key's user id"
 msgstr "visa nyckelns användaridentitet"
 
-#: keymap_alldefs.h:180
+#: keymap_alldefs.h:182
 msgid "make decrypted copy and delete"
 msgstr "skapa avkodad kopia och ta bort"
 
-#: keymap_alldefs.h:181
+#: keymap_alldefs.h:183
 msgid "make decrypted copy"
 msgstr "skapa avkrypterad kopia"
 
-#: keymap_alldefs.h:182
+#: keymap_alldefs.h:184
 msgid "Accept the chain constructed"
 msgstr "Godkänn den konstruerade kedjan"
 
-#: keymap_alldefs.h:183
+#: keymap_alldefs.h:185
 msgid "Append a remailer to the chain"
 msgstr "Lägg till en 'remailer' till kedjan"
 
-#: keymap_alldefs.h:184
+#: keymap_alldefs.h:186
 msgid "Insert a remailer into the chain"
 msgstr "Lägg in en 'remailer' i kedjan"
 
-#: keymap_alldefs.h:185
+#: keymap_alldefs.h:187
 msgid "Delete a remailer from the chain"
 msgstr "Ta bort en 'remailer' från kedjan"
 
-#: keymap_alldefs.h:186
+#: keymap_alldefs.h:188
 msgid "Select the previous element of the chain"
 msgstr "Välj föregående brev i kedjan"
 
-#: keymap_alldefs.h:187
+#: keymap_alldefs.h:189
 msgid "Select the next element of the chain"
 msgstr "Välj nästa brev i kedjan"
 
-#: keymap_alldefs.h:188
+#: keymap_alldefs.h:190
 msgid "send the message through a mixmaster remailer chain"
 msgstr "skicka meddelandet genom en återpostarkedja (mixmaster)"
 
@@ -2441,7 +2452,7 @@ msgstr "Du är på sista meddelandet."
 msgid "You are on the first entry."
 msgstr "Du är på första meddelandet."
 
-#: menu.c:702 pattern.c:1072
+#: menu.c:702 pattern.c:1085
 msgid "Search for: "
 msgstr "Leta efter: "
 
@@ -2449,11 +2460,11 @@ msgstr "Leta efter: "
 msgid "Reverse search for: "
 msgstr "Leta efter i omvänd ordning: "
 
-#: menu.c:713 pattern.c:1105
+#: menu.c:713 pattern.c:1118
 msgid "No search pattern."
 msgstr "Inget mönster för sökning."
 
-#: menu.c:743 pager.c:1839 pager.c:1855 pager.c:1943 pattern.c:1170
+#: menu.c:743 pager.c:1839 pager.c:1855 pager.c:1943 pattern.c:1183
 msgid "Not found."
 msgstr "Hittades inte."
 
@@ -2554,91 +2565,91 @@ msgstr "Rättigheterna för %s är inte säkra!"
 msgid "SSL disabled due the lack of entropy"
 msgstr "SSL avstängd på grund av brist på bra slumptal"
 
-#: mutt_ssl.c:227
+#: mutt_ssl.c:234
 msgid "Unable to get certificate from peer"
 msgstr "Kan inte hämta certifikat från 'peer'"
 
-#: mutt_ssl.c:238
-#, c-format
-msgid "SSL connection using %s"
+#: mutt_ssl.c:245
+#, fuzzy, c-format
+msgid "SSL connection using %s (%s)"
 msgstr "Ansluter (SSL) med hjälp av %s"
 
-#: mutt_ssl.c:267
+#: mutt_ssl.c:275
 msgid "Unknown"
 msgstr "Okänd"
 
-#: mutt_ssl.c:292
+#: mutt_ssl.c:300
 msgid "[unable to calculate]"
 msgstr "[kan inte beräkna]"
 
-#: mutt_ssl.c:310
+#: mutt_ssl.c:318
 msgid "[invalid date]"
 msgstr "[ogiltigt datum]"
 
-#: mutt_ssl.c:385
+#: mutt_ssl.c:393
 msgid "Server certificate is not yet valid"
 msgstr "Certifikatet är inte giltigt än"
 
-#: mutt_ssl.c:392
+#: mutt_ssl.c:400
 msgid "Server certificate has expired"
 msgstr "Certifikatet är inte längre giltigt"
 
-#: mutt_ssl.c:465
+#: mutt_ssl.c:473
 msgid "This certificate belongs to:"
 msgstr "Certifikatet tillhör:"
 
-#: mutt_ssl.c:475
+#: mutt_ssl.c:483
 msgid "This certificate was issued by:"
 msgstr "Certifikatet utfärdat av:"
 
-#: mutt_ssl.c:485
+#: mutt_ssl.c:493
 msgid "This certificate is valid"
 msgstr "Certifikatet är giltigt"
 
-#: mutt_ssl.c:486
+#: mutt_ssl.c:494
 #, c-format
 msgid "   from %s"
 msgstr "   från %s"
 
-#: mutt_ssl.c:488
+#: mutt_ssl.c:496
 #, c-format
 msgid "     to %s"
 msgstr "     till %s"
 
-#: mutt_ssl.c:494
+#: mutt_ssl.c:502
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "Fingeravtryck: %s"
 
-#: mutt_ssl.c:496
+#: mutt_ssl.c:504
 msgid "SSL Certificate check"
 msgstr "Kontroll av SSL-certifikat"
 
-#: mutt_ssl.c:499
+#: mutt_ssl.c:507
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(f)örkasta, (g)odkänn den här gången, godkänn (v)arje gång"
 
-#: mutt_ssl.c:500
+#: mutt_ssl.c:508
 msgid "roa"
 msgstr "fgv"
 
-#: mutt_ssl.c:504
+#: mutt_ssl.c:512
 msgid "(r)eject, accept (o)nce"
 msgstr "(f)örkasta, (g)odkänn den här gången"
 
-#: mutt_ssl.c:505
+#: mutt_ssl.c:513
 msgid "ro"
 msgstr "fg"
 
-#: mutt_ssl.c:509 pgpkey.c:442
+#: mutt_ssl.c:517 pgpkey.c:442
 msgid "Exit  "
 msgstr "Avsluta "
 
-#: mutt_ssl.c:534
+#: mutt_ssl.c:542
 msgid "Warning: Couldn't save certificate"
 msgstr "Varning: kunde inte spara certifikat"
 
-#: mutt_ssl.c:536
+#: mutt_ssl.c:544
 msgid "Certificate saved"
 msgstr "Certifikat sparat"
 
@@ -2795,7 +2806,7 @@ msgstr "ingen mer citerad text."
 msgid "No more unquoted text after quoted text."
 msgstr "Ingen mer ociterad text efter citerad text."
 
-#: parse.c:565
+#: parse.c:559
 msgid "multipart message has no boundary parameter!"
 msgstr "Avgränsande parameter saknas för flerpartsmeddelande!"
 
@@ -2804,74 +2815,74 @@ msgstr "Avgränsande parameter saknas för flerpartsmeddelande!"
 msgid "Error in expression: %s"
 msgstr "Fel i uttryck: %s"
 
-#: pattern.c:337
+#: pattern.c:350
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "Ogiltig dag i månaden: %s"
 
-#: pattern.c:351
+#: pattern.c:364
 #, c-format
 msgid "Invalid month: %s"
 msgstr "Ogiltig månad: %s"
 
-#: pattern.c:405
+#: pattern.c:418
 msgid "error in expression"
 msgstr "fel i uttryck"
 
-#: pattern.c:590 pattern.c:698
+#: pattern.c:603 pattern.c:711
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "fel i mönster vid: %s"
 
-#: pattern.c:638
+#: pattern.c:651
 #, c-format
 msgid "%c: invalid command"
 msgstr "%c: ogiltigt kommando"
 
-#: pattern.c:644
+#: pattern.c:657
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: stöds inte i det här läget"
 
-#: pattern.c:657
+#: pattern.c:670
 msgid "missing parameter"
 msgstr "parameter saknas"
 
-#: pattern.c:673
+#: pattern.c:686
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "parentes kan inte paras ihop: %s"
 
-#: pattern.c:705
+#: pattern.c:718
 msgid "empty pattern"
 msgstr "tomt mönster"
 
-#: pattern.c:897
+#: pattern.c:910
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "fel: okänd operation %d (var vänlig rappportera felet)."
 
-#: pattern.c:962 pattern.c:1091
+#: pattern.c:975 pattern.c:1104
 msgid "Compiling search pattern..."
 msgstr "Kompilerar sökmönster..."
 
-#: pattern.c:976
+#: pattern.c:989
 msgid "Executing command on matching messages..."
 msgstr "Kör kommando på passande meddelanden..."
 
-#: pattern.c:1039
+#: pattern.c:1052
 msgid "No messages matched criteria."
 msgstr "Inga meddelanden passade kriteriet."
 
-#: pattern.c:1129
+#: pattern.c:1142
 msgid "Search hit bottom without finding match"
 msgstr "Sökningen nådde slutet utan att hitta något"
 
-#: pattern.c:1140
+#: pattern.c:1153
 msgid "Search hit top without finding match"
 msgstr "Sökningen nådde början utan att hitta något"
 
-#: pattern.c:1162
+#: pattern.c:1175
 msgid "Search interrupted."
 msgstr "Sökningen avbröts."
 
@@ -3075,10 +3086,12 @@ msgstr "Skapa ett meddelande av typ 'application/pgp'?"
 msgid "Fetching PGP key..."
 msgstr "Hämtar nyckel för PGP..."
 
+#. __STRCAT_CHECKED__
 #: pgpkey.c:444
 msgid "Select  "
 msgstr "Välj  "
 
+#. __STRCAT_CHECKED__
 #: pgpkey.c:447
 msgid "Check key  "
 msgstr "Kontrollera nyckel "
@@ -3149,7 +3162,7 @@ msgstr "PGP-nyckel %s."
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Letar efter nycklar som passar \"%s\"..."
 
-#: pop.c:89 pop_lib.c:158
+#: pop.c:89 pop_lib.c:159
 msgid "Command TOP is not supported by server."
 msgstr "Kommandot TOP stöds inte av servern."
 
@@ -3157,7 +3170,7 @@ msgstr "Kommandot TOP stöds inte av servern."
 msgid "Can't write header to temporary file!"
 msgstr "Kan inte skriva brevhuvud till den tillfälliga filen!"
 
-#: pop.c:197 pop_lib.c:160
+#: pop.c:197 pop_lib.c:161
 msgid "Command UIDL is not supported by server."
 msgstr "Kommandot UIDL stöds inte av servern."
 
@@ -3199,7 +3212,7 @@ msgstr "Fel när brevlådan skrevs!"
 msgid "%s [%d of %d messages read]"
 msgstr "%s [%d utav %d meddelanden lästa]"
 
-#: pop.c:670 pop_lib.c:272
+#: pop.c:670 pop_lib.c:274
 msgid "Server closed connection!"
 msgstr "Servern stängde förbindelsen!"
 
@@ -3219,24 +3232,24 @@ msgstr "Kommandot USER stöds inte av servern."
 msgid "Authentication method is unknown."
 msgstr "Metod för verifiering är okänd."
 
-#: pop_lib.c:156
+#: pop_lib.c:157
 msgid "Unable to leave messages on server."
 msgstr "Kunde inte lämna meddelanden på server."
 
-#: pop_lib.c:203
+#: pop_lib.c:204
 #, c-format
 msgid "Error connecting to server: %s"
 msgstr "Ett fel uppstod när förbindelse till servern %s försöktes."
 
-#: pop_lib.c:286
+#: pop_lib.c:288
 msgid "Closing connection to POP server..."
 msgstr "Stänger förbindelse till POP-servern..."
 
-#: pop_lib.c:445
+#: pop_lib.c:453
 msgid "Verifying message indexes..."
 msgstr "Verifierar meddelandeindex..."
 
-#: pop_lib.c:469
+#: pop_lib.c:477
 msgid "Connection lost. Reconnect to POP server?"
 msgstr "Förbindelse tappades. Kontakta POP-servern igen?"
 
@@ -3294,53 +3307,58 @@ msgstr "Rör"
 msgid "Print"
 msgstr "Skriv ut"
 
-#: recvattach.c:406
+#: recvattach.c:412
 msgid "Saving..."
 msgstr "Sparar..."
 
-#: recvattach.c:481
+#: recvattach.c:487
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "VARNING! Du kommer att skriva över %s. Fortsätt?"
 
-#: recvattach.c:499
+#: recvattach.c:505
 msgid "Attachment filtered."
 msgstr "Bilaga filtrerad."
 
-#: recvattach.c:566
+#: recvattach.c:572
 msgid "Filter through: "
 msgstr "Filtrera genom: "
 
-#: recvattach.c:566
+#: recvattach.c:572
 msgid "Pipe to: "
 msgstr "Skicka genom rör till: "
 
-#: recvattach.c:601
+#: recvattach.c:607
 #, c-format
 msgid "I dont know how to print %s attachments!"
 msgstr "Vet inte hur en bilaga av typ %s ska skrivas ut!"
 
-#: recvattach.c:666
+#: recvattach.c:672
 msgid "Print tagged attachment(s)?"
 msgstr "Skriv ut märkta bilagor?"
 
-#: recvattach.c:666
+#: recvattach.c:672
 msgid "Print attachment?"
 msgstr "Skriv ut bilaga?"
 
-#: recvattach.c:835
+#: recvattach.c:882
 msgid "Attachments"
 msgstr "Bilagor"
 
-#: recvattach.c:904
+#: recvattach.c:919
+#, fuzzy
+msgid "There are no subparts to show!"
+msgstr "Det finns inga bilagor."
+
+#: recvattach.c:967
 msgid "Can't delete attachment from POP server."
 msgstr "Kan inte ta bort meddelanden från POP-servern."
 
-#: recvattach.c:915
+#: recvattach.c:978
 msgid "Deletion of attachments from PGP messages is unsupported."
 msgstr "Stöd saknas att ta bort bilagor från PGP-meddelanden."
 
-#: recvattach.c:935 recvattach.c:952
+#: recvattach.c:998 recvattach.c:1015
 msgid "Only deletion of multipart attachments is supported."
 msgstr "Endast multipart-bilagor kan tas bort."
 
@@ -3363,14 +3381,19 @@ msgstr "Återsänd meddelanden till %s...?"
 msgid "Can't open temporary file %s."
 msgstr "Kan inte skapa tillfällig fil %s."
 
-#: recvcmd.c:398 recvcmd.c:537 send.c:739
-msgid "Forward MIME encapsulated?"
-msgstr "Vidarebefordra som MIME-bilaga?"
+#: recvcmd.c:398
+#, fuzzy
+msgid "Forward as attachments?"
+msgstr "visa MIME-bilagor"
 
 #: recvcmd.c:412
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
 msgstr ""
 "Kan inte avkoda alla märkta bilagor. Vidarebefordra övriga som MIME-bilagor?"
+
+#: recvcmd.c:537
+msgid "Forward MIME encapsulated?"
+msgstr "Vidarebefordra som MIME-bilaga?"
 
 #: recvcmd.c:545 recvcmd.c:801
 #, c-format
@@ -3519,6 +3542,11 @@ msgstr "Inkluderar citerat meddelande..."
 msgid "Could not include all requested messages!"
 msgstr "Kunde inte inkludera alla begärda meddelanden!"
 
+#: send.c:739
+#, fuzzy
+msgid "Forward as attachment?"
+msgstr "Skriv ut bilaga?"
+
 #: send.c:743
 msgid "Preparing forwarded message..."
 msgstr "Förbereder vidarebordrat meddelande..."
@@ -3530,52 +3558,52 @@ msgstr "Förbereder vidarebordrat meddelande..."
 msgid "Recall postponed message?"
 msgstr "Återkalla uppskjutet meddelande?"
 
-#: send.c:1287
+#: send.c:1272
 msgid "Abort unmodified message?"
 msgstr "Meddelandet har inte ändrats. Avbryt?"
 
-#: send.c:1289
+#: send.c:1274
 msgid "Aborted unmodified message."
 msgstr "Meddelandet har inte ändrats. Avbröt."
 
 #. abort
-#: send.c:1330
+#: send.c:1315
 msgid "Mail not sent."
 msgstr "Brevet skickades inte."
 
-#: send.c:1356
+#: send.c:1341
 msgid "Message postponed."
 msgstr "Meddelande uppskjutet."
 
-#: send.c:1365
+#: send.c:1350
 msgid "No recipients are specified!"
 msgstr "Inga mottagare angivna!"
 
-#: send.c:1370
+#: send.c:1355
 msgid "No recipients were specified."
 msgstr "Inga mottagare angavs."
 
-#: send.c:1376
+#: send.c:1361
 msgid "No subject, abort sending?"
 msgstr "Ärende saknas, avbryt sändning?"
 
-#: send.c:1380
+#: send.c:1365
 msgid "No subject specified."
 msgstr "Ärende saknas."
 
-#: send.c:1427
+#: send.c:1412
 msgid "Sending message..."
 msgstr "Skickar meddelande..."
 
-#: send.c:1554
+#: send.c:1539
 msgid "Could not send the message."
 msgstr "Kunde inte skicka meddelandet."
 
-#: send.c:1559
+#: send.c:1544
 msgid "Mail sent."
 msgstr "Brevet har skickats."
 
-#: send.c:1559
+#: send.c:1544
 msgid "Sending in background."
 msgstr "Skickar i bakgrunden."
 
@@ -3588,17 +3616,17 @@ msgstr "Ingen begränsningsparameter funnen! [Rapportera det här felet]"
 msgid "%s no longer exists!"
 msgstr "%s finns inte längre!"
 
-#: sendlib.c:1054
+#: sendlib.c:1049
 #, c-format
 msgid "Could not open %s"
 msgstr "Kunde inte öppna %s"
 
-#: sendlib.c:1972
+#: sendlib.c:1967
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Fel vid sändning av meddelande, delprocess returnerade %d (%s)."
 
-#: sendlib.c:1978
+#: sendlib.c:1973
 msgid "Output of the delivery process"
 msgstr "Utdata från sändprogrammet"
 
