@@ -63,7 +63,7 @@ install-exec-local:
 		rm -f $(bindir)/mutt.dotlock ;		\
 		ln -sf $(bindir)/mutt_dotlock $(bindir)/mutt.dotlock ; \
 	fi
-	if test -f $(bindir)/mutt_dotlock && test x@DOTLOCK_PERMISSION@ != x ; then \
+	if test -f $(bindir)/mutt_dotlock && test x@DOTLOCK_GROUP@ != x ; then \
 		chgrp @DOTLOCK_GROUP@ $(bindir)/mutt_dotlock ; \
 		chmod @DOTLOCK_PERMISSION@  $(bindir)/mutt_dotlock ; \
 	fi
