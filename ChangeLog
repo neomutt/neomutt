@@ -1,13 +1,25 @@
-* ChangeLog: date: 2005-01-11 12:16:01 +0000;  author: roessler;  state: Exp;  lines: +3 -1
-                        # changelog commit
-                                 
-              Adeodato SimÃ³  <asp16@alu.ua.es>  ()
-                                 
-* init.h: date: 2005-01-15 07:36:37 +0000;  author: brendan;  state: Exp;  lines: +4 -2
-                                 
-                 Sundry documentation nits fixed.
-            Debian #210679, #254294, #258621, #272579
-                                 
+2005-01-15 07:36:37  Adeodato Simó <asp16@alu.ua.es>  (brendan)
+
+	* init.h: Document the interaction between $reverse_name and
+	the alternates. Debian #210679.
+
+	* doc/manual.sgml.head, doc/muttrc.man.head: Include reply-hook
+	in the reference section of the manual.
+	Debian 254294.
+
+	* doc/mutt.man: Small typo in the mutt.1 manpage: Qeury -> Query.
+	Debian #258621.
+
+	* doc/muttrc.man.head: Minor formatting issue in the muttrc.5
+	manpage.
+	Debian #272579.
+
+	* po/ca.po, po/sv.po: Minor corrections in these translations,
+	checked with their authors.
+
+	* po/de.po, po/it.po: Major translation updates forgotten in
+	mutt-po.
+
 2005-01-11 12:15:13  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* doc/manual.sgml.head, doc/muttrc.man.head: Document send2-hook.
