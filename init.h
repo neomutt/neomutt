@@ -531,6 +531,15 @@ struct option_t MuttVars[] = {
   ** can be overridden using my_hdr (including from send-hooks) and
   ** ``$reverse_name''.
   */
+  { "gecos_mask",	DT_RX,	 R_NONE, UL &GecosMask, UL "^[^,]*" },
+  /*
+  ** .pp
+  ** A regular expression used by mutt to parse the GECOS field of a password
+  ** entry when expanding the alias.  By default the regular expression is set
+  ** to "^[^,]*" which will return the string up to the first "," encountered.
+  ** If the GECOS field contains a string like "lastname, firstname" then you
+  ** should set the gecos_regexp=".*".
+  */
   { "hdr_format",	DT_SYN,  R_NONE, UL "index_format", 0 },
   /*
   */

@@ -83,14 +83,25 @@ static ADDRESS *mutt_expand_aliases_r (ADDRESS *a, LIST **expn)
       else
       {
 	struct passwd *pw = getpwnam (a->mailbox);
-	char buffer[256], *p;
 
 	if (pw)
 	{
-	  strfcpy (buffer, pw->pw_gecos, sizeof (buffer));
-	  if ((p = strchr (buffer, ',')))
-	    *p = 0;
-	  a->personal = safe_strdup (buffer);
+           regmatch_t pat_match[1];
+
+           /* Use regular expression to parse Gecos field.  This result of the
+            * parsing will be used as the personal ID string when the alias is
+            * expaned.
+            */
+	  if (regexec (GecosMask.rx, pw->pw_gecos, 1, pat_match, 0) == 0)
+	  {
+	    /* Malloc enough for the matching pattern + terminating NULL */
+	    a->personal = safe_malloc ((pat_match[0].rm_eo - 
+					pat_match[0].rm_so) + 1);
+	    
+	    strfcpy (a->personal, pw->pw_gecos + pat_match[0].rm_so, 
+		     pat_match[0].rm_eo - pat_match[0].rm_so + 1);
+	  }
+
 #ifdef EXACT_ADDRESS
 	  FREE (&a->val);
 #endif
