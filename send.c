@@ -340,7 +340,7 @@ static int include_forward (CONTEXT *ctx, HEADER *cur, FILE *out)
     cmflags |= M_CM_DECODE | M_CM_CHARCONV;
     if (option (OPTFORWWEEDHEADER))
     {
-      chflags |= CH_WEED;
+      chflags |= CH_WEED | CH_REORDER;
       cmflags |= M_CM_WEED;
     }
   }
