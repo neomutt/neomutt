@@ -859,7 +859,9 @@ void mutt_set_followup_to (ENVELOPE *e)
 
     if (e->mail_followup_to && !mutt_is_list_recipient (0, e->to, e->cc))
     {
-      if (e->from)
+      if (e->reply_to)
+	from = rfc822_cpy_adr (e->reply_to);
+      else if (e->from)
 	from = rfc822_cpy_adr (e->from);
       else
 	from = mutt_default_from ();
