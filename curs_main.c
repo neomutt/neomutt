@@ -284,7 +284,8 @@ int mutt_index_menu (void)
   int do_buffy_notify = 1;
   int close = 0; /* did we OP_QUIT or OP_EXIT out of this menu? */
   int attach_msg = option(OPTATTACHMSG);
-
+  int check_lock = 0;
+  
   menu = mutt_new_menu ();
   menu->menu = MENU_MAIN;
   menu->offset = 1;
@@ -320,7 +321,7 @@ int mutt_index_menu (void)
        */
       index_hint = (Context->vcount) ? CURHDR->index : 0;
 
-      if ((check = mx_check_mailbox (Context, &index_hint)) < 0)
+      if ((check = mx_check_mailbox (Context, &index_hint, check_lock)) < 0)
       {
 	if (!Context->path)
 	{
@@ -448,6 +449,8 @@ int mutt_index_menu (void)
       }
     }
 
+    check_lock = 0;
+    
     if (!attach_msg)
     {
      /* check for new mail in the incoming folders */
@@ -782,6 +785,10 @@ int mutt_index_menu (void)
 	break;
 
       case OP_MAIN_SYNC_FOLDER:
+
+        check_lock = 1;	/* call mx_check_mailbox() with locking the 
+			 * nex time
+			 */
 
 	CHECK_MSGCOUNT;
 	CHECK_READONLY;

@@ -1140,15 +1140,39 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
 }
 
 /* check for new mail */
-int mx_check_mailbox (CONTEXT *ctx, int *index_hint)
+int mx_check_mailbox (CONTEXT *ctx, int *index_hint, int lock)
 {
+  int rc;
+
   if (ctx)
   {
+    if (ctx->locked) lock = 0;
+
     switch (ctx->magic)
     {
       case M_MBOX:
       case M_MMDF:
-	return (mbox_check_mailbox (ctx, index_hint));
+
+	if (lock)
+	{
+	  mutt_block_signals ();
+	  if (mbox_lock_mailbox (ctx, 0, 0) == -1)
+	  {
+	    mutt_unblock_signals ();
+	    return M_LOCKED;
+	  }
+	}
+	
+	rc = mbox_check_mailbox (ctx, index_hint);
+
+	if (lock)
+	{
+	  mutt_unblock_signals ();
+	  mbox_unlock_mailbox (ctx);
+	}
+	
+	return rc;
+
 
       case M_MH:
       case M_MAILDIR:
