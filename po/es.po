@@ -1546,7 +1546,7 @@ msgstr "mutt_restore_default(%s): error en expresión regular: %s\n"
 #: init.c:831
 #, c-format
 msgid "%s: unknown variable"
-msgstr "%s: varibale desconocida"
+msgstr "%s: variable desconocida"
 
 #: init.c:840
 msgid "prefix is illegal with reset"
