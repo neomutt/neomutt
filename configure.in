@@ -395,6 +395,15 @@ AC_ARG_WITH(sharedir, [  --with-sharedir=PATH       Specify where to put arch in
 sharedir=$mutt_cv_sharedir
 AC_SUBST(sharedir)
 
+AC_ARG_WITH(iconv, [  --with-iconv=DIR           Where libiconv is installed ],
+       [if test $withval != yes; then
+               mutt_cv_iconv=$withval
+       fi
+       if test x$mutt_cv_iconv != x/usr; then
+               CPPFLAGS="$CPPFLAGS -I${mutt_cv_iconv}/include"
+               LDFLAGS="-L${mutt_cv_iconv}/lib $LDFLAGS"
+       fi])
+
 LIBICONV=
 AC_CACHE_CHECK(for iconv, mutt_cv_func_iconv,
     [ mutt_cv_func_iconv=no
