@@ -319,12 +319,15 @@ int imap_wait_keepalive (pid_t pid)
 {
   struct sigaction oldalrm;
   struct sigaction act;
+  sigset_t oldblocked;
   int rc;
 
   short imap_passive = option (OPTIMAPPASSIVE);
   
   set_option (OPTIMAPPASSIVE);
   set_option (OPTKEEPQUIET);
+
+  sigprocmask (SIG_BLOCK, NULL, &oldblocked);
 
   sigemptyset (&act.sa_mask);
   act.sa_handler = alrm_handler;
@@ -348,6 +351,7 @@ int imap_wait_keepalive (pid_t pid)
   }
 
   sigaction (SIGALRM, &oldalrm, NULL);
+  sigprocmask (SIG_BLOCK, &oldblocked, NULL);
 
   unset_option (OPTKEEPQUIET);
   if (!imap_passive)
