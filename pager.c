@@ -991,9 +991,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
       ch = grok_ansi (buf, ch+2, pa) + 1;
 
     k = mbrtowc (&wc, (char *)buf+ch, cnt-ch, &mbstate);
-    if (k == -2)
-      break;
-    if (k == -1)
+    if (k == -2 || k == -1)
     {
       if (col + 4 > COLS)
 	break;
