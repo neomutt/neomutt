@@ -185,8 +185,11 @@ int mutt_protect (HEADER *msg, char *keylist)
     }
 
     /* otherwise inline won't work...ask for revert */
-    if ((i = query_quadoption (OPT_PGPMIMEASK, _("Message can't be sent inline.  Revert to using PGP/MIME?"))) != M_YES)
-      return -1;
+    if ((i = query_quadoption (OPT_PGPMIMEAUTO, _("Message can't be sent inline.  Revert to using PGP/MIME?"))) != M_YES)
+      {
+	mutt_error _("Mail not sent.");
+	return -1;
+      }
 
     /* go ahead with PGP/MIME */
   }

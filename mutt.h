@@ -278,7 +278,7 @@ enum
   OPT_MIMEFWD,
   OPT_MIMEFWDREST,
   OPT_MOVE,
-  OPT_PGPMIMEASK,     /* ask to revert to PGP/MIME when inline fails */
+  OPT_PGPMIMEAUTO,     /* ask to revert to PGP/MIME when inline fails */
 #ifdef USE_POP
   OPT_POPDELETE,
   OPT_POPRECONNECT,

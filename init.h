@@ -1391,7 +1391,7 @@ struct option_t MuttVars[] = {
   ** which consist of more than a single MIME part.  Mutt can be
   ** configured to ask before sending PGP/MIME messages when inline
   ** (traditional) would not work.
-  ** See also: ``$$pgp_mime_ask''.
+  ** See also: ``$$pgp_mime_auto''.
   ** .pp
   ** Also note that using the old-style PGP message format is \fBstrongly\fP
   ** \fBdeprecated\fP.
@@ -1413,7 +1413,7 @@ struct option_t MuttVars[] = {
   ** which consist of more than a single MIME part.  Mutt can be
   ** configured to ask before sending PGP/MIME messages when inline
   ** (traditional) would not work.
-  ** See also: ``$$pgp_mime_ask''.
+  ** See also: ``$$pgp_mime_auto''.
   ** .pp
   ** Also note that using the old-style PGP message format is \fBstrongly\fP
   ** \fBdeprecated\fP.
@@ -1469,7 +1469,7 @@ struct option_t MuttVars[] = {
   ** `reverse-'.
   ** (PGP only)
   */
-  { "pgp_mime_ask", DT_QUAD, R_NONE, OPT_PGPMIMEASK, M_NO },
+  { "pgp_mime_auto", DT_QUAD, R_NONE, OPT_PGPMIMEAUTO, M_ASKYES },
   /*
   ** .pp
   ** This option controls whether Mutt will prompt you for
