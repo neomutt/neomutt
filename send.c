@@ -1458,6 +1458,16 @@ main_loop:
 
   encode_descriptions (msg->content, 1);
   
+  /*
+   * Make sure that clear_content and free_clear_content are
+   * properly initialized -- we may visit this particular place in
+   * the code multiple times, including after a failed call to
+   * mutt_protect().
+   */
+  
+  clear_content = NULL;
+  free_clear_content = 0;
+  
   if (WithCrypto)
   {
     if (msg->security)  
@@ -1470,8 +1480,7 @@ main_loop:
       {
         msg->content = mutt_remove_multipart (msg->content);
         
-        if (pgpkeylist)
-          FREE (&pgpkeylist);
+	FREE (&pgpkeylist);
         
         decode_descriptions (msg->content);
         goto main_loop;
