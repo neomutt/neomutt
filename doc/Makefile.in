@@ -103,7 +103,7 @@ uninstall:
 
 check:
 manual.txt: manual.sgml
-	if sgml2txt -c latin manual ; then \
+	if linuxdoc -B txt --pass='-P -c' manual ; then \
 		uniq < manual.txt | expand > _manual.txt ; \
 		rm manual.txt ; \
 		mv _manual.txt manual.txt ;\
