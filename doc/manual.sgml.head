@@ -1619,7 +1619,7 @@ sorting purposes:
 
 <descrip>
 <tag/Collating Symbols/
-A collating symbols is a multi-character collating element enclosed in
+A collating symbol is a multi-character collating element enclosed in
 ``&lsqb;.'' and ``.&rsqb;''.  For example, if ``ch'' is a collating
 element, then <bf/&lsqb;&lsqb;.ch.&rsqb;&rsqb;/ is a regexp that matches
 this collating element, while <bf/&lsqb;ch&rsqb;/ is a regexp that
