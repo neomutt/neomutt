@@ -400,7 +400,7 @@ AC_ARG_WITH(iconv, [  --with-iconv=DIR           Where libiconv is installed ],
        if test "$mutt_cv_iconv" != yes -a \
 		"$mutt_cv_iconv" != no -a \
 		"$mutt_cv_iconv" != /usr; then
-               CPPFLAGS="$CPPFLAGS -I${mutt_cv_iconv}/include"
+               CPPFLAGS="-I${mutt_cv_iconv}/include $CPPFLAGS"
                LDFLAGS="-L${mutt_cv_iconv}/lib $LDFLAGS"
        fi])
 
