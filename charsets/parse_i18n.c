@@ -21,6 +21,8 @@
 #include <string.h>
 #include <ctype.h>
 
+#define _GEN_CHARSETS
+
 #include "../charset.h"
 
 #if 0
@@ -339,10 +341,11 @@ int main(int argc, const char *argv[])
     
     fclose(fp);
     
-    if(m && m->charset && m->is_valid)
+    if(m && m->charset && m->is_valid 
+       && (basedir ? 0 : strlen(basedir) + 1) 
+          + strlen(m->charset) + 1 < sizeof(buffer))
     {
-      snprintf(buffer, sizeof(buffer), "%s%s%s",
-	       basedir ? basedir : "", basedir ? "/" : "",
+      sprintf(buffer, "%s%s%s", basedir ? basedir : "", basedir ? "/" : "",
 	       m->charset);
       
       if((fp = fopen(buffer, "w")))
