@@ -766,7 +766,7 @@ static void pgpring_find_candidates (char *ringfile, const char *hints[], int nh
     error_buf = safe_malloc (error_buf_len);
     snprintf (error_buf, error_buf_len, "fopen: %s", ringfile);
     perror (error_buf);
-    safe_free (&error_buf);
+    safe_free ((void **) &error_buf);
     return;
   }
 
