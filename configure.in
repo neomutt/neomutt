@@ -58,7 +58,7 @@ AC_SUBST(DEBUGGER)
 
 ac_aux_path_sendmail=/usr/sbin:/usr/lib
 AC_PATH_PROG(SENDMAIL, sendmail, /usr/sbin/sendmail, $PATH:$ac_aux_path_sendmail)
-AC_DEFINE_UNQUOTED(SENDMAIL, "$ac_cv_path_SENDMAIL")
+AC_DEFINE_UNQUOTED(SENDMAIL,"$ac_cv_path_SENDMAIL",[ Where to find sendmail on your system. ])
 
 OPS='$(srcdir)/OPS'
 if test -f $srcdir/EXPORTABLE ; then
@@ -68,12 +68,12 @@ else
 
         AC_ARG_ENABLE(pgp, [  --disable-pgp              Disable PGP support],
         [       if test x$enableval = xno ; then
-                        HAVE_PGP=no
+                        have_pgp=no
                 fi
         ])
 
-        if test x$HAVE_PGP != xno ; then
-                AC_DEFINE(HAVE_PGP)
+        if test x$have_pgp != xno ; then
+                AC_DEFINE(HAVE_PGP,1,[ Define if you want PGP support. ])
                 PGPAUX_TARGET="pgpring pgpewrap"
                 MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pgp.o pgpinvoke.o pgpkey.o pgplib.o gnupgparse.o pgpmicalg.o pgppacket.o"
                 OPS="$OPS \$(srcdir)/OPS.PGP"
@@ -87,7 +87,8 @@ else
                  fi
                  OPS="$OPS \$(srcdir)/OPS.MIX"
                  MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS remailer.o"
-                 AC_DEFINE_UNQUOTED(MIXMASTER, "$MIXMASTER")
+                 AC_DEFINE_UNQUOTED(MIXMASTER,"$MIXMASTER",
+                         [ Where to find mixmaster on your system. ])
                 ])
 
 fi
@@ -95,12 +96,12 @@ AC_SUBST(OPS)
 
 AC_SUBST(PGPAUX_TARGET)
 
-AC_DEFINE_UNQUOTED(SUBVERSION, "$SUBVERSION")
+AC_DEFINE_UNQUOTED(SUBVERSION,"$SUBVERSION",[ Is this the international version? ])
 AC_SUBST(SUBVERSION)
 
 AC_PATH_PROG(ISPELL, ispell, no)
 if test $ISPELL != no; then
-        AC_DEFINE_UNQUOTED(ISPELL, "$ISPELL")
+        AC_DEFINE_UNQUOTED(ISPELL,"$ISPELL",[ Where to find ispell on your system. ])
 fi
 
 AC_ARG_WITH(slang, [  --with-slang[=DIR]         Use S-Lang instead of ncurses],
@@ -154,8 +155,9 @@ main ()
         if test $mutt_cv_bsdish = yes; then
                 AC_CHECK_LIB(termlib, main)
         fi
-        AC_DEFINE(USE_SLANG_CURSES)
-        AC_DEFINE(HAVE_COLOR)
+        AC_DEFINE(USE_SLANG_CURSES,1,
+                [ Define if you compile with SLang instead of curses/ncurses. ])
+        AC_DEFINE(HAVE_COLOR,1,[ Define if your curses library supports color. ])
         MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS resize.o"
 
         dnl --- now that we've found it, check the link
@@ -198,7 +200,7 @@ main ()
         LIBS="$LIBS $MUTTLIBS"
         CF_CHECK_FUNCDECLS([#include <curses.h>], start_color typeahead bkgdset curs_set meta use_default_colors resizeterm)
         if test "$ac_cv_func_decl_start_color" = yes; then
-                AC_DEFINE(HAVE_COLOR)
+                AC_DEFINE(HAVE_COLOR,1,[ Define if your curses library supports color. ])
         fi
         if test "$ac_cv_func_decl_resizeterm" = yes; then
                 MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS resize.o"
@@ -265,7 +267,7 @@ AC_TRY_COMPILE([
 if (sizeof (uint32_t))
   return 0;
 ],[
-    AC_DEFINE(HAVE_UINT32_T, 1, [ Define if you have the uint32_t type. ])
+    AC_DEFINE(HAVE_UINT32_T,1,[ Define if you have the uint32_t type. ])
     AC_MSG_RESULT(yes)
   ], AC_MSG_RESULT(no)
 )
@@ -285,20 +287,20 @@ fi
 
 mutt_cv_snprintf=no
 SNPRINTFOBJS=""
-AC_CHECK_FUNC(snprintf, [AC_DEFINE(HAVE_SNPRINTF)], [mutt_cv_snprintf=yes])
-AC_CHECK_FUNC(vsnprintf, [AC_DEFINE(HAVE_VSNPRINTF)], [mutt_cv_snprintf=yes])
+AC_CHECK_FUNCS(snprintf, , [mutt_cv_snprintf=yes])
+AC_CHECK_FUNCS(vsnprintf, , [mutt_cv_snprintf=yes])
 if test $mutt_cv_snprintf = yes; then
         LIBOBJS="$LIBOBJS snprintf.o"
 fi
 
 dnl SCO uses chsize() instead of ftruncate()
-AC_CHECK_FUNCS(ftruncate, break, [AC_CHECK_LIB(x, chsize)])
+AC_CHECK_FUNCS(ftruncate, , [AC_CHECK_LIB(x, chsize)])
 
 dnl SCO has strftime() in libintl
-AC_CHECK_FUNCS(strftime, break, [AC_CHECK_LIB(intl, strftime)])
+AC_CHECK_FUNCS(strftime, , [AC_CHECK_LIB(intl, strftime)])
 
 dnl AIX may not have fchdir()
-AC_CHECK_FUNCS(fchdir, [AC_DEFINE(HAVE_FCHDIR)], [mutt_cv_fchdir=no])
+AC_CHECK_FUNCS(fchdir, , [mutt_cv_fchdir=no])
 
 AC_ARG_WITH(regex, [  --with-regex               Use the GNU regex library ],
         [mutt_cv_regex=yes],
@@ -319,7 +321,7 @@ main() { regex_t blah ; regmatch_t p; p.rm_eo = p.rm_eo; return regcomp(&blah, "
 fi
 
 if test $mutt_cv_regex = yes; then
-        AC_DEFINE(USE_GNU_REGEX)
+        AC_DEFINE(USE_GNU_REGEX,1,[ Define if you want to use the included regex.c. ])
         LIBOBJS="$LIBOBJS regex.o"
 fi
 
@@ -329,9 +331,9 @@ if test x$with_homespool != x; then
         if test $with_homespool = yes; then
                 with_homespool=mailbox
         fi
-        AC_DEFINE_UNQUOTED(MAILPATH, "$with_homespool")
+        AC_DEFINE_UNQUOTED(MAILPATH,"$with_homespool",[ Where new mail is spooled. ])
         AC_DEFINE(HOMESPOOL)
-        AC_DEFINE(USE_DOTLOCK)
+        AC_DEFINE(USE_DOTLOCK,1,[ Define to use dotlocking for mailboxes. ])
         mutt_cv_setgid=no
 else
         AC_ARG_WITH(mailpath, [  --with-mailpath=DIR        Directory where spool mailboxes are located],
@@ -351,7 +353,7 @@ else
         if test $mutt_cv_mailpath = no; then
                 AC_MSG_ERROR("Could not determine where new mail is stored.")
         fi
-        AC_DEFINE_UNQUOTED(MAILPATH, "$mutt_cv_mailpath")
+        AC_DEFINE_UNQUOTED(MAILPATH,"$mutt_cv_mailpath",[ Where new mail is spooled. ])
 
         AC_CACHE_CHECK(if $mutt_cv_mailpath is world writable, mutt_cv_worldwrite, [AC_TRY_RUN([#include <sys/types.h>
 #include <sys/stat.h>
@@ -367,7 +369,7 @@ int main (int argc, char **argv)
 
         mutt_cv_setgid=no
         if test $mutt_cv_worldwrite = yes; then
-                AC_DEFINE(USE_DOTLOCK)
+                AC_DEFINE(USE_DOTLOCK,1,[ Define to use dotlocking for mailboxes. ])
         else
 
                 AC_CACHE_CHECK(if $mutt_cv_mailpath is group writable, mutt_cv_groupwrite, [AC_TRY_RUN([#include <sys/types.h>
@@ -383,8 +385,8 @@ int main (int argc, char **argv)
 }], mutt_cv_groupwrite=yes, mutt_cv_groupwrite=no, mutt_cv_groupwrite=no)])
 
                 if test $mutt_cv_groupwrite = yes; then
-                        AC_DEFINE(USE_DOTLOCK)
-                        AC_DEFINE(USE_SETGID)
+                        AC_DEFINE(USE_DOTLOCK,1,[ Define to use dotlocking for mailboxes. ])
+                        AC_DEFINE(USE_SETGID,1,[ Define if mutt should run setgid "mail". ])
                         mutt_cv_setgid=yes
                 fi
         fi
@@ -396,7 +398,7 @@ AC_ARG_ENABLE(external_dotlock, [  --enable-external-dotlock  Force use of an ex
 if test "x$mutt_cv_setgid" = "xyes" || test "x$mutt_cv_fchdir" = "xno" \
         || test "x$mutt_cv_external_dotlock" = "xyes"
 then
-        AC_DEFINE(DL_STANDALONE)
+        AC_DEFINE(DL_STANDALONE,1,[ Define if you want to use an external dotlocking program. ])
         DOTLOCK_TARGET="mutt_dotlock"
 else
         MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS dotlock.o"
@@ -426,7 +428,7 @@ AC_SUBST(DOTLOCK_PERMISSION)
 
 AC_ARG_WITH(domain, [  --with-domain=DOMAIN       Specify your DNS domain name],
         [if test $withval != yes; then
-                AC_DEFINE_UNQUOTED(DOMAIN, "$withval")
+                AC_DEFINE_UNQUOTED(DOMAIN,"$withval",[ Define your domain name. ])
         fi])
 
 need_socket="no"
@@ -435,7 +437,7 @@ dnl -- socket dependencies --
 
 AC_ARG_ENABLE(pop,  [  --enable-pop               Enable POP3 support],
 [       if test x$enableval = xyes ; then
-                AC_DEFINE(USE_POP)
+                AC_DEFINE(USE_POP,1,[ Define if you want support for the POP3 protocol. ])
                 MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pop.o pop_lib.o pop_auth.o"
                 need_socket="yes"
                 need_md5="yes"
@@ -444,7 +446,7 @@ AC_ARG_ENABLE(pop,  [  --enable-pop               Enable POP3 support],
 
 AC_ARG_ENABLE(imap, [  --enable-imap              Enable IMAP support],
 [       if test x$enableval = xyes ; then
-                AC_DEFINE(USE_IMAP)
+                AC_DEFINE(USE_IMAP,1,[ Define if you want support for the IMAP protocol. ])
                 LIBIMAP="-Limap -limap"
                 LIBIMAPDEPS="\$(top_srcdir)/imap/imap.h imap/libimap.a"
                 need_imap="yes"
@@ -461,11 +463,13 @@ then
         AC_MSG_CHECKING([for socklen_t])
         AC_EGREP_HEADER(socklen_t, sys/socket.h, AC_MSG_RESULT([yes]),
                 AC_MSG_RESULT([no])
-                AC_DEFINE(socklen_t, int))
+                AC_DEFINE(socklen_t,int,
+                        [ Define to 'int' if <sys/socket.h> doesn't have it. ]))
         AC_CHECK_FUNC(gethostent, , AC_CHECK_LIB(nsl, gethostent))
         AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(socket, setsockopt))
         AC_CHECK_FUNCS(getaddrinfo)
-        AC_DEFINE(USE_SOCKET)
+        AC_DEFINE(USE_SOCKET,1,
+                [ Include code for socket support. Set automatically if you enable POP3 or IMAP ])
         MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS account.o mutt_socket.o mutt_tunnel.o"
 fi
 
@@ -487,11 +491,11 @@ then
     fi
     if test "$GSSAPI_IMPL" = "Heimdal"
     then
-      AC_DEFINE(HAVE_HEIMDAL, 1, [ Define if your GSSAPI implementation is Heimdal ])
+      AC_DEFINE(HAVE_HEIMDAL,1,[ Define if your GSSAPI implementation is Heimdal ])
     fi
     CPPFLAGS="$CPPFLAGS $GSSAPI_CFLAGS"
     MUTTLIBS="$MUTTLIBS $GSSAPI_LIBS"
-    AC_DEFINE(USE_GSS, 1, [ Define if you have GSSAPI libraries available ])
+    AC_DEFINE(USE_GSS,1,[ Define if you have GSSAPI libraries available ])
     need_gss="yes"
   else
     AC_MSG_WARN([GSS was requested but IMAP is not enabled])
@@ -518,16 +522,12 @@ AC_ARG_WITH(ssl, [  --with-ssl[=PFX]           Compile in SSL support for POP/IM
 
           AC_CHECK_FUNCS(RAND_status RAND_egd)
 
-          AC_DEFINE(USE_SSL)
+          AC_DEFINE(USE_SSL,1,[ Define if you want support for SSL. ])
           LIBS="$saved_LIBS"
           MUTTLIBS="$MUTTLIBS -lssl -lcrypto"
           MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl.o"
           need_ssl=yes
 
-          dnl Some systems avoid certain patent-encumbered SSL routines
-          AC_CHECK_HEADER(openssl/rc5.h,,AC_DEFINE(NO_RC5))
-          AC_CHECK_HEADER(openssl/idea.h,,AC_DEFINE(NO_IDEA))
-          AC_CHECK_HEADER(openssl/rsa.h,,AC_DEFINE(NO_RSA))
         fi
 ])
 AM_CONDITIONAL(USE_SSL, test x$need_ssl = xyes)
@@ -546,7 +546,7 @@ AC_ARG_WITH(nss, [  --with-nss[=PFX]           Compile in SSL support for POP/IM
            CPPFLAGS="$CPPFLAGS -I$withval/include -I$withval/public/security"
           fi
 
-          AC_DEFINE(USE_NSS)
+          AC_DEFINE(USE_NSS,1,[ Define if you want support for SSL via the NSS library. ])
           MUTTLIBS="$MUTTLIBS -lssl -lnss -lcertdb -lcerthi -lcryptohi"
           MUTTLIBS="$MUTTLIBS -lpk11wrap -lsoftoken -lsecutil -ldbm -lplds4 -lplc4 -lfreebl"
           MUTTLIBS="$MUTTLIBS -lnspr4"
@@ -581,7 +581,8 @@ AC_ARG_WITH(sasl, [  --with-sasl[=PFX]          Use Cyrus SASL library for POP/I
           MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_sasl.o"
           MUTTLIBS="$MUTTLIBS -lsasl"
           LIBS="$saved_LIBS"
-          AC_DEFINE(USE_SASL)
+          AC_DEFINE(USE_SASL,1,
+                  [ Define if want to use the Cyrus SASL library for POP/IMAP authentication. ])
           need_sasl=yes
           need_md5=no
         fi
@@ -597,13 +598,13 @@ dnl -- end socket --
 
 AC_ARG_ENABLE(debug, [  --enable-debug             Enable debugging support],
         [ if test x$enableval = xyes ; then
-                AC_DEFINE(DEBUG)
+                AC_DEFINE(DEBUG,1,[ Define to enable debugging info. ])
           fi
          ])
 
 AC_ARG_ENABLE(flock, [  --enable-flock             Use flock() to lock files],
         [if test $enableval = yes; then
-                AC_DEFINE(USE_FLOCK)
+                AC_DEFINE(USE_FLOCK,1, [ Define to use flock() to lock mailboxes. ])
         fi])
 
 mutt_cv_fcntl=yes
@@ -611,7 +612,7 @@ AC_ARG_ENABLE(fcntl, [  --disable-fcntl            Do NOT use fcntl() to lock fi
         [if test $enableval = no; then mutt_cv_fcntl=no; fi])
 
 if test $mutt_cv_fcntl = yes; then
-        AC_DEFINE(USE_FCNTL)
+        AC_DEFINE(USE_FCNTL,1, [ Define to use fcntl() to lock folders. ])
 fi
 
 mutt_cv_warnings=yes
@@ -631,17 +632,17 @@ AC_ARG_ENABLE(nfs-fix, [  --enable-nfs-fix           Work around an NFS with bro
 
 AC_ARG_ENABLE(buffy-size, [  --enable-buffy-size        Use file size attribute instead of access time ],
         [if test x$enableval = xyes; then
-                AC_DEFINE(BUFFY_SIZE)
+                AC_DEFINE(BUFFY_SIZE,1,[ Define to enable the "buffy_size" feature. ])
         fi])
 
 AC_ARG_ENABLE(mailtool, [  --enable-mailtool          Enable Sun mailtool attachments support ],
         [if test x$enableval = xyes; then
-                AC_DEFINE(SUN_ATTACHMENT)
+                AC_DEFINE(SUN_ATTACHMENT,1,[ Define to enable Sun mailtool attachments support. ])
         fi])
 
 AC_ARG_ENABLE(locales-fix, [  --enable-locales-fix       The result of isprint() is unreliable ],
         [if test x$enableval = xyes; then
-                AC_DEFINE(LOCALES_HACK)
+                AC_DEFINE(LOCALES_HACK,1,[ Define if the result of isprint() is unreliable. ])
         fi])
 
 AC_ARG_WITH(exec-shell, [  --with-exec-shell=SHELL    Specify alternate shell (ONLY if /bin/sh is broken)],
@@ -735,7 +736,8 @@ fi
 CPPFLAGS="$CPPFLAGS -I\$(top_srcdir)/intl"
 
 if test "$BUILD_INCLUDED_LIBINTL" = "yes"; then
-  AC_DEFINE(HAVE_BIND_TEXTDOMAIN_CODESET)
+  AC_DEFINE(HAVE_BIND_TEXTDOMAIN_CODESET,1,
+          [ Define if your gettext has bind_textdomain_codeset. ])
 else
   AC_CHECK_FUNCS(bind_textdomain_codeset)
 fi
@@ -757,7 +759,7 @@ AC_CACHE_CHECK([for wchar_t], mutt_cv_wchar_t,
                 mutt_cv_wchar_t=no))
 
 if test "$mutt_cv_wchar_t" = no; then
-        AC_DEFINE(wchar_t, int)
+        AC_DEFINE(wchar_t,int,[ Define to 'int' if system headers don't define. ])
 fi
 
 AC_CACHE_CHECK([for wint_t], mutt_cv_wint_t,
@@ -773,7 +775,7 @@ AC_CACHE_CHECK([for wint_t], mutt_cv_wint_t,
                 mutt_cv_wint_t=no))
 
 if test "$mutt_cv_wint_t" = no; then
-        AC_DEFINE(wint_t, int)
+        AC_DEFINE(wint_t,int,[ Define to 'int' if system headers don't define. ])
 fi
 
 AC_CHECK_HEADERS(wctype.h)
@@ -794,7 +796,7 @@ AC_CACHE_CHECK([for mbstate_t], mutt_cv_mbstate_t,
                 mutt_cv_mbstate_t=no))
 
 if test "$mutt_cv_mbstate_t" = no; then
-        AC_DEFINE(mbstate_t, int)
+        AC_DEFINE(mbstate_t,int,[ Define to 'int' if system headers don't define. ])
 fi
 
 wc_funcs=maybe
@@ -821,7 +823,7 @@ if test "$wc_funcs" != yes -a "$wc_funcs" != no; then
 fi
 
 if test $wc_funcs = yes; then
-        AC_DEFINE(HAVE_WC_FUNCS)
+        AC_DEFINE(HAVE_WC_FUNCS,1,[ Define if you are using the system's wchar_t functions. ])
 fi
 
 AC_CACHE_CHECK([for nl_langinfo and CODESET], mutt_cv_langinfo_codeset,
@@ -830,7 +832,7 @@ AC_CACHE_CHECK([for nl_langinfo and CODESET], mutt_cv_langinfo_codeset,
     mutt_cv_langinfo_codeset=yes,
     mutt_cv_langinfo_codeset=no)])
 if test $mutt_cv_langinfo_codeset = yes; then
-  AC_DEFINE(HAVE_LANGINFO_CODESET)
+  AC_DEFINE(HAVE_LANGINFO_CODESET,1,[ Define if you have <langinfo.h> and nl_langinfo(CODESET). ])
 fi
 
 AC_CACHE_CHECK([for nl_langinfo and YESEXPR], mutt_cv_langinfo_yesexpr,
@@ -839,7 +841,7 @@ AC_CACHE_CHECK([for nl_langinfo and YESEXPR], mutt_cv_langinfo_yesexpr,
     mutt_cv_langinfo_yesexpr=yes,
     mutt_cv_langinfo_yesexpr=no)])
 if test $mutt_cv_langinfo_yesexpr = yes; then
-  AC_DEFINE(HAVE_LANGINFO_YESEXPR)
+  AC_DEFINE(HAVE_LANGINFO_YESEXPR,1,[ Define if you have <langinfo.h> and nl_langinfo(YESEXPR). ])
 fi
 
 AC_OUTPUT(Makefile intl/Makefile m4/Makefile

@@ -1,63 +1,10 @@
 
-/* Is this the international version? */
-#undef SUBVERSION
-
-/* Enable debugging info */
-#define DEBUG
-
-/* What is your domain name? */
-#undef DOMAIN
-
-/* use dotlocking to lock mailboxes? */
-#undef USE_DOTLOCK
-
-/* use an external dotlocking program? */
-#undef DL_STANDALONE
-
-/* use flock() to lock mailboxes? */
-#undef USE_FLOCK
-
-/* Use fcntl() to lock folders? */
-#undef USE_FCNTL
-
 /*
  * Define if you have problems with mutt not detecting new/old mailboxes
  * over NFS.  Some NFS implementations incorrectly cache the attributes
  * of small files.
  */
 #undef NFS_ATTRIBUTE_HACK
-
-/* Define to `int' if <sys/socket.h> doesn't have it. */
-#undef socklen_t
-
-/* Include code for socket support. Set automatically if you enable pop or
- * IMAP */
-#undef USE_SOCKET
-
-/* Do you want support for the POP3 protocol? (--enable-pop) */
-#undef USE_POP
-
-/* Do you want support for the IMAP protocol? (--enable-imap) */
-#undef USE_IMAP
-
-/* Do you want to use the Cyrus SASL library for POP/IMAP authentication?
- * (--with-sasl) */
-#undef USE_SASL
-
-/* Do you want support for SSL? (--with-ssl) */
-#undef USE_SSL
-
-/* Do you want support for SSL via the NSS library? (--with-nss) */
-#undef USE_NSS
-
-/* Avoid SSL routines which used patent-encumbered RC5 algorithms */
-#undef NO_RC5
-
-/* Avoid SSL routines which used patent-encumbered IDEA algorithms */
-#undef NO_IDEA
-
-/* Avoid SSL routines which used patent-encumbered RSA algorithms */
-#undef NO_RSA
 
 /*
  * Is mail spooled to the user's home directory?  If defined, MAILPATH should
@@ -67,63 +14,12 @@
  */
 #undef HOMESPOOL
 
-/* Where new mail is spooled */
-#undef MAILPATH
-
-/* Where to find sendmail on your system */
-#undef SENDMAIL
-
-/* Do you want PGP support (--enable-pgp)? */
-#undef HAVE_PGP
-
-/* Where to find ispell on your system? */
-#undef ISPELL
-
-/* Should Mutt run setgid "mail" ? */
-#undef USE_SETGID
-
-/* Does your curses library support color? */
-#undef HAVE_COLOR
-
-/* Compiling with SLang instead of curses/ncurses? */
-#undef USE_SLANG_CURSES
-
 /* program to use for shell commands */
 #define EXECSHELL "/bin/sh"
-
-/* The "buffy_size" feature */
-#undef BUFFY_SIZE
-
-/* The Sun mailtool attachments support */
-#undef SUN_ATTACHMENT 
-
-/* The result of isprint() is unreliable? */
-#undef LOCALES_HACK
 
 /* Enable exact regeneration of email addresses as parsed?  NOTE: this requires
    significant more memory when defined. */
 #undef EXACT_ADDRESS
-
-/* Does your system have the snprintf() call? */
-#undef HAVE_SNPRINTF
-
-/* Does your system have the vsnprintf() call? */
-#undef HAVE_VSNPRINTF
-
-/* Does your system have the fchdir() call? */
-#undef HAVE_FCHDIR
-
-/* Define as 1 if you have catgets and don't want to use GNU gettext.  */
-#undef HAVE_CATGETS
-
-/* Does your gettext have bind_textdomain_codeset? */
-#undef HAVE_BIND_TEXTDOMAIN_CODESET
-
-/* Use the included regex.c? */
-#undef USE_GNU_REGEX
-
-/* Where's mixmaster located? */
-#undef MIXMASTER
 
 /* Define to `int' if <signal.h> doesn't define.  */
 #undef sig_atomic_t
@@ -150,31 +46,12 @@
 /* Define if you have resizeterm, as a function or macro.  */
 #undef HAVE_RESIZETERM
 
-/* Some systems declare sig_atomic_t as volatile, smome others -- no.
+/* Some systems declare sig_atomic_t as volatile, some others -- no.
  * This define will have value `sig_atomic_t' or `volatile sig_atomic_t'
  * accordingly. */
 #undef SIG_ATOMIC_VOLATILE_T
-
-/* Define to 'int' if system headers don't define. */
-#undef wchar_t
-
-/* Define to 'int' if system headers don't define. */
-#undef wint_t
-
-/* Define to 'int' if system headers don't define. */
-#undef mbstate_t
-
-/* Define if we are using the system's wchar_t functions. */
-#undef HAVE_WC_FUNCS
-
-/* Define if you have <langinfo.h> and nl_langinfo(CODESET). */
-#undef HAVE_LANGINFO_CODESET
-
-/* Define if you have <langinfo.h> and nl_langinfo(YESEXPR). */
-#undef HAVE_LANGINFO_YESEXPR
 
 /* Define as 1 if iconv() only converts exactly and we should treat
  * all return values other than (size_t)(-1) as equivalent. */
 #undef ICONV_NONTRANS
 
-  
