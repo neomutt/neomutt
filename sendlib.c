@@ -520,13 +520,25 @@ void mutt_generate_boundary (PARAMETER **parm)
   mutt_set_parameter ("boundary", rs, parm);
 }
 
-void update_content_info(CONTENT *info, char *d, size_t dlen)
+
+typedef struct
 {
-  int from = info->state.from;
-  int whitespace = info->state.whitespace;
-  int dot = info->state.dot;
-  int linelen = info->state.linelen;
-  int was_cr = info->state.was_cr;
+  int from;
+  int whitespace;
+  int dot;
+  int linelen;
+  int was_cr;
+}
+CONTENT_STATE;
+
+
+static void update_content_info(CONTENT *info, CONTENT_STATE *s, char *d, size_t dlen)
+{
+  int from = s->from;
+  int whitespace = s->whitespace;
+  int dot = s->dot;
+  int linelen = s->linelen;
+  int was_cr = s->was_cr;
 
   if (!d) /* This signals EOF */
   {
@@ -616,11 +628,11 @@ void update_content_info(CONTENT *info, char *d, size_t dlen)
     if (ch != ' ' && ch != '\t') whitespace = 0;
   }
 
-  info->state.from = from;
-  info->state.whitespace = whitespace;
-  info->state.dot = dot;
-  info->state.linelen = linelen;
-  info->state.was_cr = was_cr;
+  s->from = from;
+  s->whitespace = whitespace;
+  s->dot = dot;
+  s->linelen = linelen;
+  s->was_cr = was_cr;
 }
 
 /* Define as 1 if iconv sometimes returns -1(EILSEQ) instead of transcribing. */
@@ -651,6 +663,7 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
   size_t ibl, obl, ubl, ubl1, n, ret;
   int i;
   CONTENT *infos;
+  CONTENT_STATE *states;
   size_t *score;
 
   cd1 = iconv_open ("UTF-8", fromcode);
@@ -659,11 +672,15 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
 
   cd = safe_malloc (ncodes * sizeof (iconv_t));
   infos = safe_malloc (ncodes * sizeof (CONTENT));
+  states = safe_malloc (ncodes * sizeof (CONTENT_STATE));
+
   score = safe_malloc (ncodes * sizeof (size_t));
   for (i = 0; i < ncodes; i++)
     cd[i] = iconv_open (tocodes[i], "UTF-8");
+
   memset (infos, 0, ncodes * sizeof (CONTENT));
   memset (score, 0, ncodes * sizeof (size_t));
+  memset (states, 0, ncodes * sizeof (CONTENT_STATE));
 
   rewind (file);
   ibl = 0;
@@ -704,7 +721,7 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
 	else
 	{
 	  score[i] += n;
-	  update_content_info (&infos[i], bufo, ob - bufo);
+	  update_content_info (&infos[i], &states[i], bufo, ob - bufo);
 	}
       }
 
@@ -737,17 +754,19 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
     if (ret != (size_t)(-1))
     {
       memcpy (info, &infos[*tocode], sizeof(CONTENT));
-      update_content_info (info, 0, 0); /* EOF */
+      update_content_info (info, &states[*tocode], 0, 0); /* EOF */
     }
   }
 
   for (i = 0; i < ncodes; i++)
     if (cd[i] != (iconv_t)(-1))
       iconv_close (cd[i]);
+
   iconv_close (cd1);
-  free (cd);
-  free (infos);
-  free (score);
+  safe_free ((void **) &cd);
+  safe_free ((void **) &infos);
+  safe_free ((void **) &score);
+  safe_free ((void **) &states);
 
   return ret;
 }
@@ -827,6 +846,7 @@ static size_t convert_file_from_to (FILE *file,
 CONTENT *mutt_get_content_info (const char *fname, BODY *b)
 {
   CONTENT *info;
+  CONTENT_STATE state;
   FILE *fp;
   char *fromcode, *tocode;
 
@@ -840,7 +860,8 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
   }
 
   info = safe_calloc (1, sizeof (CONTENT));
-
+  memset (&state, 0, sizeof (state));
+  
   if (b != NULL && b->type == TYPETEXT && (!b->noconv))
   {
     char *chs = mutt_get_parameter ("charset", b->parameter);
@@ -862,8 +883,8 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
 
     rewind (fp);
     while ((r = fread (buffer, 1, sizeof(buffer), fp)))
-      update_content_info (info, buffer, r);
-    update_content_info (info, 0, 0);
+      update_content_info (info, &state, buffer, r);
+    update_content_info (info, &state, 0, 0);
   }
 
   if (b != NULL && b->type == TYPETEXT && (!b->noconv))
