@@ -149,7 +149,11 @@ static char *utf8_to_utf7 (const char *u8, size_t u8len, char **u7,
   int n, i, b = 0, k = 0;
   int base64 = 0;
 
-  p = buf = safe_malloc (u8len * 2 + 1);
+  /*
+   * In the worst case we convert 2 chars to 7 chars. For example:
+   * "\x10&\x10&..." -> "&ABA-&-&ABA-&-...".
+   */
+  p = buf = safe_malloc ((u8len / 2) * 7 + 6);
 
   while (u8len)
   {
