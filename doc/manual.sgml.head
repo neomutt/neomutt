@@ -568,7 +568,7 @@ Also see <ref id="edit_headers" name="edit&lowbar;headers">.
 <p>
 If you want to use PGP, you can specify 
 
-<tt/Pgp:/ &lsqb; <tt/E/ | <tt/S/ | <tt/S&lt;id/&gt; &rsqb; <newline>
+<tt/Pgp:/ &lsqb; <tt/E/ | <tt/S/ | <tt/S/<em/&lt;id&gt;/ &rsqb; <newline>
 
 ``E'' encrypts, ``S'' signs and
 ``S&lt;id&gt;'' signs with the given key, setting <ref
@@ -921,7 +921,7 @@ recalling a message the user was composing, but saved until later.
 control character, use the sequence <em/&bsol;Cx/, where <em/x/ is the
 letter of the control character (for example, to specify control-A use
 ``&bsol;Ca'').  Note that the case of <em/x/ as well as <em/&bsol;C/ is
-ignored, so that <em/&bsol;CA, &bsol;Ca, &bsol;cA/ and <em/&bsol;ca/ are all
+ignored, so that <em/&bsol;CA/, <em/&bsol;Ca/, <em/&bsol;cA/ and <em/&bsol;ca/ are all
 equivalent.  An alternative form is to specify the key as a three digit
 octal number prefixed with a ``&bsol;'' (for example <em/&bsol;177/ is
 equivalent to <em/&bsol;c?/).
@@ -1563,7 +1563,7 @@ path of your home directory.
 
 If the filename ends with a vertical bar (|), then <em/filename/ is
 considered to be an executable program from which to read input (eg.
-<tt/source ~/bin/myscript|/).
+<tt>source ~/bin/myscript|</tt>).
 
 <sect1>Removing hooks<label id="unhook">
 <p>
@@ -1861,8 +1861,9 @@ pattern language.  For example,
 ~f "me@(mutt\.org|cs\.hmc\.edu)"
 </verb></tscreen>
 
-Without the quotes, the parenthesis would truncate the regular expression
-to simply <em/me@/, which is probably not what you want.
+Without the quotes, the parenthesis wouldn't end.
+This would be seperated to two OR'd patterns: <em/&tilde;f me@(mutt\.org/
+and <em/cs\.hmc\.edu)/. They are never what you want.
 
 <sect2>Searching by Date
 <p>
@@ -2046,7 +2047,7 @@ There are two mechanisms for accessing the query function of mutt.  One
 is to do a query from the index menu using the query function (default: Q).
 This will prompt for a query, then bring up the query menu which will
 list the matching responses.  From the query menu, you can select
-addresses to create aliases, or to mail.  You can tag multiple messages
+addresses to create aliases, or to mail.  You can tag multiple addresses
 to mail, start a new query, or have a new query appended to the current
 responses.
 
@@ -2233,7 +2234,7 @@ You can also specify different username for each folder, ie:
 Polling for new mail is more expensive over POP3 than locally. For this
 reason the frequency at which Mutt will check for mail remotely can be
 controlled by the
-<ref id="pop&lowbar;checkinterval" name="&dollar;pop&lowbar;checkinterval">
+<ref id="pop_checkinterval" name="&dollar;pop&lowbar;checkinterval">
 variable, which defaults to every 60 seconds.
 
 If Mutt was compiled with SSL support (by running the <em/configure/
@@ -2290,12 +2291,12 @@ paths accordingly.
 When browsing folders on an IMAP server, you can toggle whether to look
 at only the folders you are subscribed to, or all folders with the
 <em/toggle-subscribed/ command.  See also the 
-<ref id="imap&lowbar;list&lowbar;subscribed"
+<ref id="imap_list_subscribed"
 name="&dollar;imap&lowbar;list&lowbar;subscribed"> variable.
 
 Polling for new mail on an IMAP server can cause noticeable delays. So, you'll
 want to carefully tune the
-<ref id="mail&lowbar;check" name="&dollar;mail&lowbar;check">
+<ref id="mail_check" name="&dollar;mail&lowbar;check">
 and
 <ref id="timeout" name="&dollar;timeout">
 variables. Personally I use
@@ -2356,15 +2357,15 @@ in the following order: SASL, ANONYMOUS, GSSAPI, CRAM-MD5, LOGIN.
 
 There are a few variables which control authentication: 
 <itemize>
-<item><ref id="imap&lowbar;user" name="&dollar;imap&lowbar;user"> - controls
+<item><ref id="imap_user" name="&dollar;imap&lowbar;user"> - controls
   the username under which you request authentication on the IMAP server,
   for all authenticators. This is overridden by an explicit username in
   the mailbox path (ie by using a mailbox name of the form
   <tt/{user@host}/).
-<item><ref id="imap&lowbar;pass" name="&dollar;imap&lowbar;pass"> - a
+<item><ref id="imap_pass" name="&dollar;imap&lowbar;pass"> - a
   password which you may preset, used by all authentication methods where
   a password is needed.
-<item><ref id="imap&lowbar;authenticators"
+<item><ref id="imap_authenticators"
   name="&dollar;imap&lowbar;authenticators"> - a colon-delimited list of IMAP
   authentication methods to try, in the order you wish to try them. If
   specified, this overrides mutt's default (attempt everything, in the order
@@ -2905,7 +2906,7 @@ associated with this extension will then be used to process the attachment
 according to the rules in the mailcap file and according to any other configuration
 options (such as auto&lowbar;view) specified.  Common usage would be:
 <tscreen><verb>
-mime-lookup application/octet-stream application/X-Lotus-Manuscript
+mime_lookup application/octet-stream application/X-Lotus-Manuscript
 </verb></tscreen>
 
 In addition, the unmime&lowbar;lookup command may be used to disable this feature
@@ -3011,9 +3012,9 @@ The following are the commands understood by mutt.
 <item>
 <tt><ref id="ignore" name="unignore"></tt> <em/pattern/ &lsqb; <em/pattern/ ... &rsqb;
 <item>
-<tt><ref id="lists" name="lists"></tt> <em/address/ &lsqb; <em/address/ ... &rsqb; 
+<tt><ref id="lists" name="lists"></tt> <em/regexp/ &lsqb; <em/regexp/ ... &rsqb; 
 <item>
-<tt><ref id="lists" name="unlists"></tt> <em/address/ &lsqb; <em/address/ ... &rsqb; 
+<tt><ref id="lists" name="unlists"></tt> <em/regexp/ &lsqb; <em/regexp/ ... &rsqb; 
 <item>
 <tt><ref id="macro" name="macro"></tt> <em/menu/ <em/key/ <em/sequence/ &lsqb; <em/description/ &rsqb; 
 <item>
@@ -3055,9 +3056,9 @@ The following are the commands understood by mutt.
 <item>
 <tt><ref id="source" name="source"></tt> <em/filename/
 <item>
-<tt><ref id="lists" name="subscribe"></tt> <em/address/ &lsqb; <em/address/ ... &rsqb; 
+<tt><ref id="lists" name="subscribe"></tt> <em/regexp/ &lsqb; <em/regexp/ ... &rsqb; 
 <item>
-<tt><ref id="lists" name="unsubscribe"></tt> <em/address/ &lsqb; <em/address/ ... &rsqb; 
+<tt><ref id="lists" name="unsubscribe"></tt> <em/regexp/ &lsqb; <em/regexp/ ... &rsqb; 
 <item>
 <tt><ref id="set" name="toggle"></tt> <em/variable/ &lsqb;<em/variable/ ... &rsqb;
 <item>

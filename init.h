@@ -192,7 +192,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** .dl
   ** .dt %C  .dd charset
-  ** .dt %c  .dd reqiures charset conversion (n or c)
+  ** .dt %c  .dd requires charset conversion (n or c)
   ** .dt %D  .dd deleted flag
   ** .dt %d  .dd description
   ** .dt %e  .dd MIME content-transfer-encoding
@@ -308,7 +308,7 @@ struct option_t MuttVars[] = {
   { "compose_format",	DT_STR,	 R_BOTH, UL &ComposeFormat, UL "-- Mutt: Compose  [Approx. msg size: %l   Atts: %a]%>-" },
   /*
   ** .pp
-  ** Controls the format of the status line displayed in the \fCompose\fP
+  ** Controls the format of the status line displayed in the \fICompose\fP
   ** menu.  This string is similar to ``$$status_format'', but has its own
   ** set of printf()-like sequences:
   ** .pp
@@ -422,8 +422,8 @@ struct option_t MuttVars[] = {
   { "digest_collapse",	DT_BOOL, R_NONE, OPTDIGESTCOLLAPSE, 1},
   /*
   ** .pp
-  ** If this option is \fIset\fP, mutt's revattach menu will not show the subparts of
-  ** individual messages in a digest.  To see these subparts, press 'v' on that menu.
+  ** If this option is \fIset\fP, mutt's received-attachments menu will not show the subparts of
+  ** individual messages in a multipart/digest.  To see these subparts, press 'v' on that menu.
   */
   { "display_filter",	DT_PATH, R_PAGER, UL &DisplayFilter, UL "" },
   /*
@@ -763,8 +763,8 @@ struct option_t MuttVars[] = {
   ** This is a colon-delimited list of authentication methods mutt may
   ** attempt to use to log in to an IMAP server, in the order mutt should
   ** try them.  Authentication methods are either 'login' or the right
-  ** side of an IMAP 'AUTH=xxx' capability string, eg 'digest-md5',
-  ** 'gssapi' or 'cram-md5'. This parameter is case-insensitive. If this
+  ** side of an IMAP 'AUTH=xxx' capability string, eg 'digest-md5', 'gssapi'
+  ** or 'cram-md5'. This parameter is case-insensitive. If this
   ** parameter is unset (the default) mutt will try all available methods,
   ** in order from most-secure to least-secure.
   ** .pp
@@ -1709,8 +1709,8 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** This command is used to extract only the signers X509 certificate from a S/MIME
-  **  signature, so that the certificate's owner may get compared to the email's 
-  ** 'From'-field.
+  ** signature, so that the certificate's owner may get compared to the
+  ** email's 'From'-field.
   ** (S/MIME only)
   */
   { "smime_import_cert_command", 	DT_STR, R_NONE, UL &SmimeImportCertCommand, 0},
