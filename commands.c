@@ -554,7 +554,10 @@ static void _mutt_save_message (HEADER *h, CONTEXT *ctx, int delete, int decode,
 /* returns 0 if the copy/save was successful, or -1 on error/abort */
 int mutt_save_message (HEADER *h, int delete, int decode, int decrypt, int *redraw)
 {
-  int i, need_buffy_cleanup, need_passphrase = 0;
+  int i, need_buffy_cleanup;
+#ifdef _PGPPATH
+  int need_passphrase = 0;
+#endif
   char prompt[SHORT_STRING], buf[_POSIX_PATH_MAX];
   CONTEXT ctx;
   struct stat st;
@@ -573,7 +576,9 @@ int mutt_save_message (HEADER *h, int delete, int decode, int decrypt, int *redr
   
   if (h)
   {
+#ifdef _PGPPATH
     need_passphrase = h->pgp & PGPENCRYPT;
+#endif
     mutt_default_save (buf, sizeof (buf), h);
   }
   else
@@ -592,7 +597,9 @@ int mutt_save_message (HEADER *h, int delete, int decode, int decrypt, int *redr
     if (h)
     {
       mutt_default_save (buf, sizeof (buf), h);
+#ifdef _PGPPATH
       need_passphrase |= h->pgp & PGPENCRYPT;
+#endif
       h = NULL;
     }
   }
@@ -629,8 +636,10 @@ int mutt_save_message (HEADER *h, int delete, int decode, int decrypt, int *redr
     return (-1);
   }
 
+#ifdef _PGPPATH
   if(need_passphrase && (decode || decrypt) && !pgp_valid_passphrase())
     return -1;
+#endif
   
   mutt_message ("Copying to %s...", buf);
   

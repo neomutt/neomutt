@@ -245,8 +245,8 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
   char *pp = p;
   char *pd = d;
   int enc = 0, filter = 0, count = 0, c1, c2, c3, c4;
-  char *charset;
-
+  char *charset = NULL;
+  
   while ((pp = strtok (pp, "?")) != NULL)
   {
     count++;
@@ -326,7 +326,7 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
   }
   if (filter)
   {
-    if (mutt_display_string(d, mutt_get_charset(charset), mutt_get_charset(Charset)) == -1)
+    if (mutt_display_string(d, mutt_get_translation(charset, Charset)) == -1)
     {
       pd = d;
       while (*pd)

@@ -57,7 +57,7 @@ NONEXPORT=pgp.c pgp.h pgpinvoke.c pgpkey.c pgppubring.c sha.h sha1dgst.c \
 	gnupgparse.c sha_locl.h OPS.PGP doc/pgp-Notes.txt doc/language.txt \
 	doc/language50.txt
 
-all: mutt @DOTLOCK_TARGET@
+all: mutt @DOTLOCK_TARGET@ gen-charset
 
 mutt: keymap_defs.h $(OBJS) $(REGEX)
 	$(CC) -o mutt $(OBJS) $(REGEX) $(LDFLAGS) $(LIBS)
@@ -65,11 +65,14 @@ mutt: keymap_defs.h $(OBJS) $(REGEX)
 dotlock: dotlock.o @SNPRINTFOBJS@
 	$(CC) -o dotlock dotlock.o @SNPRINTFOBJS@
 
+gen-charset: gen-charset.o
+	$(CC) -o gen-charset gen-charset.o
+
 keymap_defs.h: Makefile $(OPS)
 	rm -f keymap_defs.h
 	$(srcdir)/gen_defs $(OPS) > keymap_defs.h
 
-install: mutt install.doc @DOTLOCK_INSTALL_TARGET@
+install: mutt install.doc @DOTLOCK_INSTALL_TARGET@ gen-charset
 	$(srcdir)/mkinstalldirs $(bindir)
 	-mv -f $(bindir)/mutt $(bindir)/mutt.old
 	$(INSTALL) -m 755 mutt $(bindir)
@@ -80,6 +83,8 @@ install: mutt install.doc @DOTLOCK_INSTALL_TARGET@
 	-if [ ! -f $(sharedir)/mime.types ]; then \
 		$(INSTALL) -m 644 $(srcdir)/mime.types $(sharedir); \
 	fi
+	$(srcdir)/mkinstalldirs $(sharedir)/charsets
+	./gen-charset $(sharedir)/charsets
 
 install.dotlock: dotlock
 	$(srcdir)/mkinstalldirs $(bindir)

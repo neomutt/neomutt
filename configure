@@ -2626,11 +2626,7 @@ echo "configure:2626: checking where to put architecture-dependent files" >&5
 if eval "test \"`echo '$''{'mutt_cv_libdir'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
-  if test -d ${mutt_cv_prefix}/lib/misc; then
-			mutt_cv_libdir="${mutt_cv_prefix}/lib/misc"
-		else
-			mutt_cv_libdir="${mutt_cv_prefix}/lib"
-		fi
+        mutt_cv_libdir="${mutt_cv_prefix}/lib/mutt " 
 fi
 
 echo "$ac_t""$mutt_cv_libdir" 1>&6
@@ -2647,16 +2643,12 @@ if test "${with_sharedir+set}" = set; then
   mutt_cv_sharedir=$withval
 else
    echo $ac_n "checking where to put architecture-independent data files""... $ac_c" 1>&6
-echo "configure:2651: checking where to put architecture-independent data files" >&5
+echo "configure:2647: checking where to put architecture-independent data files" >&5
 if eval "test \"`echo '$''{'mutt_cv_sharedir'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   if test -d ${mutt_cv_prefix}/share; then
-			if test -d ${mutt_cv_prefix}/share/misc; then
-				mutt_cv_sharedir="${mutt_cv_prefix}/share/misc"
-			else
-				mutt_cv_sharedir="${mutt_cv_prefix}/share"
-			fi
+			mutt_cv_sharedir="${mutt_cv_prefix}/share/mutt"
 		else
 			mutt_cv_sharedir="$libdir"
 		fi
@@ -2677,7 +2669,7 @@ if test "${with_docdir+set}" = set; then
   mutt_cv_docdir=$withval
 else
    echo $ac_n "checking where to put the documentation""... $ac_c" 1>&6
-echo "configure:2681: checking where to put the documentation" >&5
+echo "configure:2673: checking where to put the documentation" >&5
 if eval "test \"`echo '$''{'mutt_cv_docdir'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -2728,7 +2720,7 @@ if test "${enable_pop+set}" = set; then
 EOF
 
 	echo $ac_n "checking for socket in -lsocket""... $ac_c" 1>&6
-echo "configure:2732: checking for socket in -lsocket" >&5
+echo "configure:2724: checking for socket in -lsocket" >&5
 ac_lib_var=`echo socket'_'socket | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -2736,7 +2728,7 @@ else
   ac_save_LIBS="$LIBS"
 LIBS="-lsocket  $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 2740 "configure"
+#line 2732 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -2747,7 +2739,7 @@ int main() {
 socket()
 ; return 0; }
 EOF
-if { (eval echo configure:2751: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+if { (eval echo configure:2743: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -2775,7 +2767,7 @@ else
 fi
 
 	echo $ac_n "checking for gethostbyname in -lnsl""... $ac_c" 1>&6
-echo "configure:2779: checking for gethostbyname in -lnsl" >&5
+echo "configure:2771: checking for gethostbyname in -lnsl" >&5
 ac_lib_var=`echo nsl'_'gethostbyname | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -2783,7 +2775,7 @@ else
   ac_save_LIBS="$LIBS"
 LIBS="-lnsl  $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 2787 "configure"
+#line 2779 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -2794,7 +2786,7 @@ int main() {
 gethostbyname()
 ; return 0; }
 EOF
-if { (eval echo configure:2798: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+if { (eval echo configure:2790: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -2834,7 +2826,7 @@ if test "${enable_imap+set}" = set; then
 EOF
 
 	echo $ac_n "checking for socket in -lsocket""... $ac_c" 1>&6
-echo "configure:2838: checking for socket in -lsocket" >&5
+echo "configure:2830: checking for socket in -lsocket" >&5
 ac_lib_var=`echo socket'_'socket | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -2842,7 +2834,7 @@ else
   ac_save_LIBS="$LIBS"
 LIBS="-lsocket  $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 2846 "configure"
+#line 2838 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -2853,7 +2845,7 @@ int main() {
 socket()
 ; return 0; }
 EOF
-if { (eval echo configure:2857: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+if { (eval echo configure:2849: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -2881,7 +2873,7 @@ else
 fi
 
 	echo $ac_n "checking for gethostbyname in -lnsl""... $ac_c" 1>&6
-echo "configure:2885: checking for gethostbyname in -lnsl" >&5
+echo "configure:2877: checking for gethostbyname in -lnsl" >&5
 ac_lib_var=`echo nsl'_'gethostbyname | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -2889,7 +2881,7 @@ else
   ac_save_LIBS="$LIBS"
 LIBS="-lnsl  $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 2893 "configure"
+#line 2885 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -2900,7 +2892,7 @@ int main() {
 gethostbyname()
 ; return 0; }
 EOF
-if { (eval echo configure:2904: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+if { (eval echo configure:2896: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else

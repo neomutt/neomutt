@@ -16,6 +16,9 @@
  *     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+#ifndef _HASH_H
+#define _HASH_H
+
 struct hash_elem
 {
   const char *key;
@@ -41,3 +44,5 @@ void *hash_find_hash (const HASH * table, int hash, const char *key);
 void hash_delete_hash (HASH * table, int hash, const char *key, const void *data,
 		       void (*destroy) (void *));
 void hash_destroy (HASH ** hash, void (*destroy) (void *));
+
+#endif

@@ -319,11 +319,7 @@ AC_ARG_WITH(libdir, [  --with-libdir=PATH       specify where to put arch depend
 	[mutt_cv_libdir=$withval],
 	[ AC_CACHE_CHECK(where to put architecture-dependent files,
 		       mutt_cv_libdir,
-		[if test -d ${mutt_cv_prefix}/lib/misc; then
-			mutt_cv_libdir="${mutt_cv_prefix}/lib/misc"
-		else
-			mutt_cv_libdir="${mutt_cv_prefix}/lib"
-		fi])
+		[      mutt_cv_libdir="${mutt_cv_prefix}/lib/mutt " ])
 	])
 
 libdir=$mutt_cv_libdir
@@ -334,11 +330,7 @@ AC_ARG_WITH(sharedir, [  --with-sharedir=PATH       specify where to put arch in
 	[ AC_CACHE_CHECK(where to put architecture-independent data files,
 		       mutt_cv_sharedir,
 		[if test -d ${mutt_cv_prefix}/share; then
-			if test -d ${mutt_cv_prefix}/share/misc; then
-				mutt_cv_sharedir="${mutt_cv_prefix}/share/misc"
-			else
-				mutt_cv_sharedir="${mutt_cv_prefix}/share"
-			fi
+			mutt_cv_sharedir="${mutt_cv_prefix}/share/mutt"
 		else
 			mutt_cv_sharedir="$libdir"
 		fi])

@@ -72,8 +72,9 @@ void mutt_decode_xbit (STATE *s, BODY *b, int istext)
   
   if (istext)
   {
-    CHARSET *body_charset = mutt_get_charset(mutt_get_parameter("charset", b->parameter));
-    CHARSET *display_charset = mutt_get_charset(Charset);
+    UNICODE_MAP *map;
+    
+    map = mutt_get_translation(mutt_get_parameter("charset", b->parameter), Charset);
 
     while ((c = fgetc(s->fpin)) != EOF && len--)
     {
@@ -96,7 +97,7 @@ void mutt_decode_xbit (STATE *s, BODY *b, int istext)
 	}
 	
       }
-      state_putc(mutt_display_char(c, body_charset, display_charset), s);
+      state_putc(mutt_display_char(c, map), s);
       if(c == '\n')
 	lbreak = 1;
     }
@@ -121,8 +122,7 @@ void mutt_decode_quoted (STATE *s, BODY *b, int istext)
 {
   long len = b->length;
   int ch, lbreak = 1;
-  CHARSET *body_charset = mutt_get_charset(mutt_get_parameter("charset", b->parameter));
-  CHARSET *display_charset = mutt_get_charset(Charset);
+  UNICODE_MAP *map = mutt_get_translation(mutt_get_parameter("charset", b->parameter), Charset);
 
   while (len > 0)
   {
@@ -190,7 +190,7 @@ void mutt_decode_quoted (STATE *s, BODY *b, int istext)
     }
 
     if(ch != EOF)
-      state_putc(istext ? mutt_display_char(ch, body_charset, display_charset) : ch, s);
+      state_putc(istext ? mutt_display_char(ch, map) : ch, s);
 
     if(ch == '\n')
       lbreak = 1;
@@ -202,8 +202,7 @@ void mutt_decode_base64 (STATE *s, BODY *b, int istext)
   long len = b->length;
   char buf[5];
   int c1, c2, c3, c4, ch, cr = 0, i;
-  CHARSET *body_charset = mutt_get_charset(mutt_get_parameter("charset", b->parameter));
-  CHARSET *display_charset = mutt_get_charset(Charset);
+  UNICODE_MAP *map = mutt_get_translation(mutt_get_parameter("charset", b->parameter), Charset);
 
   buf[4] = 0;
 
@@ -232,7 +231,7 @@ void mutt_decode_base64 (STATE *s, BODY *b, int istext)
       cr = 1;
     else
     {
-      state_putc(istext ? mutt_display_char(ch, body_charset, display_charset) : ch, s);
+      state_putc(istext ? mutt_display_char(ch, map) : ch, s);
       if (ch == '\n' && s->prefix) state_puts (s->prefix, s);
     }
 
@@ -249,7 +248,7 @@ void mutt_decode_base64 (STATE *s, BODY *b, int istext)
       cr = 1;
     else
     {
-      state_putc(istext ? mutt_display_char(ch, body_charset, display_charset) : ch, s);
+      state_putc(istext ? mutt_display_char(ch, map) : ch, s);
       if (ch == '\n' && s->prefix)
 	state_puts (s->prefix, s);
     }
@@ -266,7 +265,7 @@ void mutt_decode_base64 (STATE *s, BODY *b, int istext)
       cr = 1;
     else
     {
-      state_putc(istext ? mutt_display_char(ch, body_charset, display_charset) : ch, s);
+      state_putc(istext ? mutt_display_char(ch, map) : ch, s);
       if (ch == '\n' && s->prefix)
 	state_puts (s->prefix, s);
     }

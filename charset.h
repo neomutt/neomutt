@@ -27,8 +27,15 @@ typedef struct
   UNICODE_MAP *map;
 } CHARSET;
 
+#define CHARSET_MAGIC "Mutt Character Set Definition 1.0\n"
+
+#ifndef _GEN_CHARSETS
+
 CHARSET *mutt_get_charset(const char *);
-int mutt_display_char(int, CHARSET *, CHARSET *);
-int mutt_display_string(char *, CHARSET *, CHARSET *);
+UNICODE_MAP *mutt_get_translation(const char *, const char *);
+int mutt_display_char(int, UNICODE_MAP *);
+int mutt_display_string(char *, UNICODE_MAP *);
+
+#endif
 
 #endif /* _CHARSET_H */
