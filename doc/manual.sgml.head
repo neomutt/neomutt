@@ -1194,8 +1194,7 @@ messages.  <em/filename/ will be used as the default filename if the message is
 <em/From:/ an address matching <em/regexp/ or if you are the author and the
 message is addressed <em/to:/ something matching <em/regexp/.
 
-See <ref id="pattern_hook" name="matching messages"> for information on the
-exact format of <em/pattern/.
+See <ref id="pattern_hook" name="Message Matching in Hooks"> for information on the exact format of <em/pattern/.
 
 Examples:
 
@@ -1216,8 +1215,7 @@ message recipients for the first matching <em/regexp/ and uses <em/mailbox/
 as the default Fcc: mailbox.  If no match is found the message will be saved
 to <ref id="record" name="&dollar;record"> mailbox.
 
-See <ref id="pattern_hook" name="matching messages"> for information on the
-exact format of <em/pattern/.
+See <ref id="pattern_hook" name="Message Matching in Hooks"> for information on the exact format of <em/pattern/.
 
 Example: <tt/fcc-hook aol.com&dollar; +spammers/
 
@@ -1243,8 +1241,7 @@ matching the desired address.  <em/command/ is executed when <em/regexp/
 matches recipients of the message.  When multiple matches occur, commands are
 executed in the order they are specified in the muttrc.
 
-See <ref id="pattern_hook" name="matching messages"> for information on the
-exact format of <em/pattern/.
+See <ref id="pattern_hook" name="Message Matching in Hooks"> for information on the exact format of <em/pattern/.
 
 Example: <tt/send-hook mutt &dquot;set mime&lowbar;forward signature=''&dquot;/
 
