@@ -651,6 +651,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  this = Context; /* remember current folder */
 	  Context = ctx;
 	  set_option(OPTATTACHMSG);
+	  mutt_message ("Tag the messages you want to attach!");
 	  close = mutt_index_menu ();
 	  unset_option(OPTATTACHMSG);
 
