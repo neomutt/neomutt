@@ -1064,13 +1064,22 @@ unignore posted-to:
 Usage: <tt/&lsqb;un&rsqb;lists/ <em/address/ &lsqb; <em/address/ ... &rsqb;<newline>
 Usage: <tt/&lsqb;un&rsqb;subscribe/ <em/address/ &lsqb; <em/address/ ... &rsqb;
 
-Mutt has a few nice features for <ref id="using_lists" name="handling mailing
-lists">.  In order to take advantage of them, you must specify which addresses
-belong to mailing lists, and which mailing lists you are subscribed
-to.
+Mutt has a few nice features for <ref id="using_lists" name="handling
+mailing lists">.  In order to take advantage of them, you must
+specify which addresses belong to mailing lists, and which mailing
+lists you are subscribed to.  Once you have done this, the <ref
+id="list-reply" name="list-reply"> function will work for all known lists.
+Additionally, when you send a message to a subscribed list, mutt will
+add a Mail-Followup-To header to tell other users' mail user agents
+not to send copies of replies to your personal address.   Note that
+the mail-followup-to header is a non-standard extension which is not
+supported by all mail user agents.  Adding it is not bullet-proof against
+receiving personal CCs of list messages.  Also note that the generation
+of the mail-followup-to header is controlled by the <ref id="followup_to"
+name="followup_to"> configuration variable.
 
 More precisely, Mutt maintains lists of known and subscribed mailing
-lists.  Obviously, every subscribed mailing list is known.  To mark
+lists.  Every subscribed mailing list is known.  To mark
 a mailing list as known, use the ``lists'' command.  To mark it as
 subscribed, use ``subscribe''.
 
@@ -1081,7 +1090,8 @@ mailing list, you could add ``lists mutt-users'' to your
 initialization file.  To tell mutt that you are subscribed to it,
 add ``subscribe mutt-users'' to your initialization file.
 If you also happen to get mail from someone whose address is
-<em/mutt-users@example.com/, you could use ``lists mutt-users@mutt.org'' to
+<em/mutt-users@example.com/, you could use ``lists mutt-users@mutt.org'' 
+or ``subscribe mutt-users@mutt.org'' to
 match only mail from the actual list.
 
 The ``unlists'' command is used to remove a token from the list of
