@@ -170,19 +170,17 @@ static int user_is_recipient (HEADER *h)
     
     if (mutt_addr_is_user (hdr->from))
       h->recipient = 4;
-
-    if (user_in_addr (hdr->to))
+    else if (user_in_addr (hdr->to))
     {
       if (hdr->to->next || hdr->cc)
 	h->recipient = 2; /* non-unique recipient */
       else
 	h->recipient = 1; /* unique recipient */
     }
-    
-    if (user_in_addr (hdr->cc))
+    else if (user_in_addr (hdr->cc))
       h->recipient = 3;
-    
-    h->recipient = 0;
+    else
+      h->recipient = 0;
   }
   
   return h->recipient;
