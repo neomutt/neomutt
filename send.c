@@ -1224,7 +1224,7 @@ ci_send_message (int flags,		/* send mode */
       
 #ifdef HAVE_PGP
       if (msg->security)
-	msg->security |= APPLICATION_PGP;   // default is PGP
+	msg->security |= APPLICATION_PGP;   /* default is PGP */
 #endif
 
 #ifdef HAVE_SMIME
