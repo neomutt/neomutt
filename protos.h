@@ -143,7 +143,7 @@ void mutt_block_signals (void);
 void mutt_block_signals_system (void);
 void mutt_body_handler (BODY *, STATE *);
 void mutt_bounce_message (FILE *fp, HEADER *, ADDRESS *);
-void mutt_buffy (char *);
+void mutt_buffy (char *, size_t);
 void mutt_canonical_charset (char *, size_t, const char *);
 void mutt_check_rescore (CONTEXT *);
 void mutt_clear_error (void);

@@ -603,7 +603,7 @@ pgp_key_t *pgp_ask_for_key (char *tag, char *whatfor,
     for (l = id_defaults; l; l = l->next)
       if (!mutt_strcasecmp (whatfor, l->what))
       {
-	strcpy (resp, NONULL (l->dflt));
+	strfcpy (resp, NONULL (l->dflt), sizeof (resp));
 	break;
       }
   }

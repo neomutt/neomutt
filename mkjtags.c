@@ -77,7 +77,9 @@ void doit (const char *fname, char *prefix, int crlf_pending)
     {
       if ((cp = strrchr (buffer, ',')))
 	*cp = 0;
-      strcpy (tmpf, buffer);
+      strcpy (tmpf, buffer);	/* __STRCPY_CHECKED__ - this program isn't invoked
+				 * with unknown data anyway, so we don't care about
+				 * buffer overflows. */
       
       if ((cp = strrchr (buffer, '/')))
 	*cp = 0;

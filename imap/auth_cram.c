@@ -33,7 +33,7 @@ static void hmac_md5 (const char* password, char* challenge,
 /* imap_auth_cram_md5: AUTH=CRAM-MD5 support. */
 imap_auth_res_t imap_auth_cram_md5 (IMAP_DATA* idata)
 {
-  char ibuf[LONG_STRING], obuf[LONG_STRING];
+  char ibuf[LONG_STRING*4+10], obuf[LONG_STRING];
   unsigned char hmac_response[MD5_DIGEST_LEN];
   int len;
   int rc;
@@ -98,8 +98,12 @@ imap_auth_res_t imap_auth_cram_md5 (IMAP_DATA* idata)
     hmac_response[12], hmac_response[13], hmac_response[14], hmac_response[15]);
   dprint(2, (debugfile, "CRAM response: %s\n", obuf));
 
+  /* XXX - ibuf must be long enough to store the base64 encoding of obuf, 
+   * plus the additional debris
+   */
+  
   mutt_to_base64 ((unsigned char*) ibuf, (unsigned char*) obuf, strlen (obuf));
-  strcpy (ibuf + strlen (ibuf), "\r\n");
+  strcat (ibuf, "\r\n");	/* __STRCAT_CHECKED__ */
   mutt_socket_write (idata->conn, ibuf);
 
   do

@@ -542,10 +542,10 @@ void pop_fetch_mail (void)
   url = p = safe_calloc (strlen (PopHost) + 6, sizeof (char));
   if (url_check_scheme (PopHost) == U_UNKNOWN)
   {
-    strcpy (url, "pop://");
+    strcpy (url, "pop://");	/* __STRCPY_CHECKED__ */
     p = strchr (url, '\0');
   }
-  strcpy (p, PopHost);
+  strcpy (p, PopHost);		/* __STRCPY_CHECKED__ */
 
   if (pop_parse_path (url, &acct))
   {

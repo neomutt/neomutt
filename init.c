@@ -262,7 +262,7 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
 	tok->dsize = expnlen + mutt_strlen (tok->dptr) + 1;
 	ptr = safe_malloc (tok->dsize);
 	memcpy (ptr, expn.data, expnlen);
-	strcpy (ptr + expnlen, tok->dptr);
+	strcpy (ptr + expnlen, tok->dptr);	/* __STRCPY_CHECKED__ */
 	if (tok->destroy)
 	  FREE (&tok->data);
 	tok->data = ptr;

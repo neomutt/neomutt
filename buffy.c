@@ -424,7 +424,7 @@ int mutt_buffy_notify (void)
  * given a folder name, this routine gives the next incoming folder with new
  * new mail.
  */
-void mutt_buffy (char *s)
+void mutt_buffy (char *s, size_t slen)
 {
   int count;
   BUFFY *tmp = Incoming;
@@ -447,7 +447,7 @@ void mutt_buffy (char *s)
       mutt_buffy_check (1); /* buffy was wrong - resync things */
       break;
     }
-    strcpy (s, tmp->path);
+    strfcpy (s, tmp->path, slen);
     mutt_pretty_mailbox (s);
     break;
 
@@ -473,7 +473,7 @@ void mutt_buffy (char *s)
       mutt_buffy_check (1); /* buffy was wrong - resync things */
       break;
     }
-    strcpy (s, tmp->path);
+    strfcpy (s, tmp->path, slen);
     mutt_pretty_mailbox (s);
     break;
   }

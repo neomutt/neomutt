@@ -5721,7 +5721,7 @@ regerror (errcode, preg, errbuf, errbuf_size)
           errbuf[errbuf_size - 1] = 0;
         }
       else
-        strcpy (errbuf, msg);
+        strcpy (errbuf, msg);	/* __STRCPY_CHECKED__ */
     }
 
   return msg_size;

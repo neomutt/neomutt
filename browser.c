@@ -573,7 +573,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
     else
     {
       if (f[0] == '/')
-	strcpy (LastDir, "/");
+	strcpy (LastDir, "/");		/* __STRCPY_CHECKED__ */
       else
 	getcwd (LastDir, sizeof (LastDir));
     }

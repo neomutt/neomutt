@@ -337,7 +337,7 @@ pid_t pgp_invoke_list_keys (FILE **pgpin, FILE **pgpout, FILE **pgperr,
   for (; hints; hints = hints->next)
   {
     snprintf (tmpuids, sizeof (tmpuids), "%s %s", uids, (char *) hints->data);
-    strcpy (uids, tmpuids);
+    strcpy (uids, tmpuids);	/* __STRCPY_CHECKED__ */
   }
 
   return pgp_invoke (pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,

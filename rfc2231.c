@@ -281,7 +281,7 @@ static void rfc2231_join_continuations (PARAMETER **head,
       vl = strlen (par->value);
       
       safe_realloc ((void **) &value, l + vl + 1);
-      strcpy (value + l, par->value);
+      strcpy (value + l, par->value);	/* __STRCPY_CHECKED__ */
       l += vl;
 
       q = par->next;

@@ -892,7 +892,7 @@ BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout)
   {
     len = mutt_strlen (buf);
     if (len > 1 && buf[len - 2] == '\r')
-      strcpy (buf + len - 2, "\n");
+      strcpy (buf + len - 2, "\n");	/* __STRCPY_CHECKED__ */
     fputs (buf, fpout);
   }
 

@@ -136,7 +136,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
     mutt_to_base64 ((unsigned char*) buf1, send_token.value,
       send_token.length);
     gss_release_buffer (&min_stat, &send_token);
-    strcpy (buf1 + strlen (buf1), "\r\n");
+    strcat (buf1, "\r\n");
     mutt_socket_write (idata->conn, buf1);
 
     if (maj_stat == GSS_S_CONTINUE_NEEDED)

@@ -788,7 +788,7 @@ int main (int argc, char **argv)
 	exit (1);
       }
       folder[0] = 0;
-      mutt_buffy (folder);
+      mutt_buffy (folder, sizeof (folder));
     }
     else if (flags & M_SELECT)
     {

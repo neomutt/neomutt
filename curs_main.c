@@ -947,7 +947,7 @@ int mutt_index_menu (void)
           cp = _("Open mailbox");
 
 	buf[0] = '\0';
-	mutt_buffy (buf);
+	mutt_buffy (buf, sizeof (buf));
 
 	if (mutt_enter_fname (cp, buf, sizeof (buf), &menu->redraw, 1) == -1)
 	  break;
