@@ -345,9 +345,11 @@ int mutt_buffy_check (int force)
 	}
 	while ((de = readdir (dirp)) != NULL)
 	{
-	  if (*de->d_name != '.')
+	  char *p;
+	  if (*de->d_name != '.' && 
+	      (!(p = strstr (de->d_name, ":2,")) || !strchr (p + 3, 'T')))
 	  {
-	    /* one new message is enough */
+	    /* one new and undeleted message is enough */
 	    BuffyCount++;
 	    tmp->new = 1;
 	    break;
