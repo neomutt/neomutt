@@ -1752,6 +1752,25 @@ messages <em/before/ the given date will be selected.  If you omit the maximum
 date will be selected.  If you specify a single date with no dash (``-''),
 only messages sent on the given date will be selected. 
 
+<bf/Error Margins/.  You can add error margins to absolute dates.
+An error margin is a sign (+ or -), followed by a digit, followed by
+one of the following units:
+<verb>
+y	years
+m	months
+w	weeks
+d	days
+</verb>
+As a special case, you can replace the sign by a ``*'' character,
+which is equivalent to giving identical plus and minus error margins.
+
+Example: To select any messages two weeks around January 15, 2001,
+you'd use the following pattern: 
+<tscreen><verb> 
+Limit to messages matching: ~d 1/1/2001*2w
+</verb></tscreen>
+
+
 <bf/Relative/.  This type of date is relative to the current date, and may
 be specified as:
 <itemize>
@@ -1773,6 +1792,8 @@ Example: to select messages less than 1 month old, you would use
 <tscreen><verb>
 Limit to messages matching: ~d <1m
 </verb></tscreen>
+
+
 
 <bf/Note:/ all dates used when searching are relative to the
 <bf/local/ time zone, so unless you change the setting of your <ref

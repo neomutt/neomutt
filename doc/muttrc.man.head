@@ -18,7 +18,7 @@
 .\"     along with this program; if not, write to the Free Software
 .\"     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
 .\"
-.TH muttrc 5 "May 2000" Unix "User Manuals"
+.TH muttrc 5 "February 2001" Unix "User Manuals"
 .SH NAME
 .PP
 muttrc \- Configuration file for the Mutt Mail User Agent
@@ -385,6 +385,28 @@ a dash matches the date given and any later point of time.  Two
 dates, separated by a dash, match any date which lies in the given
 range of time.
 .PP
+You can also modify any absolute date by giving an error range.  An
+error range consists of one of the characters
+.BR + ,
+.BR - ,
+.BR * ,
+followed by a positive number, followed by one of the unit
+characters
+.BR y ,
+.BR m ,
+.BR w ", or"
+.BR d ,
+specifying a unit of years, months, weeks, or days.  
+.B +
+increases the maximum date matched by the given interval of time,
+.B - 
+decreases the minimum date matched by the given interval of time, and
+.B *
+increases the maximum date and decreases the minimum date matched by
+the given interval of time.  It is possible to give multiple error
+margins, which cumulate.  Example:
+.B "1/1/2001-1w+2w*3d"
+.PP
 You can also specify offsets relative to the current date.  An
 offset is specified as one of the characters
 .BR < ,
@@ -395,9 +417,7 @@ characters
 .BR y ,
 .BR m ,
 .BR w ", or"
-.BR d ,
-specifying a unit of years, months, weeks, or days.  An offset which
-begins with the character
+.BR d .
 .B >
 matches dates which are older than the specified amount of time, an
 offset which begins with the character
