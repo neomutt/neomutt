@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.0i\n"
-"POT-Creation-Date: 2000-02-24 22:31+0100\n"
+"POT-Creation-Date: 2000-02-29 23:32+0100\n"
 "PO-Revision-Date: 1999-10-27 14:05+0200\n"
 "Last-Translator: Roberto Suarez Soto <ask4it@bigfoot.com>\n"
 "Language-Team: Galician <gpul-traduccion@ceu.fi.udc.es>\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: addrbook.c:31 browser.c:41 pager.c:1382 postpone.c:37 query.c:43
+#: addrbook.c:31 browser.c:41 pager.c:1385 postpone.c:37 query.c:43
 #: recvattach.c:57
 msgid "Exit"
 msgstr "Saír"
@@ -23,7 +23,7 @@ msgid "Select"
 msgstr "Seleccionar"
 
 #: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:269 imap/imap_ssl.c:256
-#: pager.c:1480 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
+#: pager.c:1482 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Axuda"
 
@@ -234,16 +234,21 @@ msgstr "Erro intentando ver ficheiro"
 msgid "New mail in %s."
 msgstr "Novo correo en %s."
 
-#: charset.c:1065
+#: charset.c:1066
 msgid "We can't currently handle utf-8 at this point."
 msgstr ""
 
-#: charset.c:1071 charset.c:1078
+#: charset.c:1072 charset.c:1079
 #, fuzzy, c-format
 msgid "Can't open %s: %s."
 msgstr "Non foi atopado: %s"
 
-#: charset.c:1131
+#: charset.c:1148
+#, c-format
+msgid "Error while recoding %s. Leave it unchanged."
+msgstr ""
+
+#: charset.c:1154
 #, c-format
 msgid "Error while recoding %s. See %s for recovering your data."
 msgstr ""
@@ -670,7 +675,7 @@ msgstr "Pulsa calquera tecla para seguir..."
 msgid " ('?' for list): "
 msgstr "('?' para lista): "
 
-#: curs_main.c:55 curs_main.c:546
+#: curs_main.c:55 curs_main.c:555
 msgid "No mailbox is open."
 msgstr "Non hai buzóns abertos."
 
@@ -679,12 +684,12 @@ msgstr "Non hai buzóns abertos."
 msgid "There are no messages."
 msgstr "Non hai mensaxes."
 
-#: curs_main.c:57 mx.c:1035 pager.c:58 recvattach.c:47
+#: curs_main.c:57 mx.c:1035 pager.c:61 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "O buzón é de só lectura."
 
 #
-#: curs_main.c:58 pager.c:59 recvattach.c:764
+#: curs_main.c:58 pager.c:62 recvattach.c:764
 msgid "Function not permitted in attach-message mode."
 msgstr "Función non permitida no modo \"adxuntar-mensaxe\"."
 
@@ -704,7 +709,7 @@ msgstr "Os cambios á carpeta non serán gardados."
 msgid "Quit"
 msgstr "Saír"
 
-#: curs_main.c:263 pager.c:1389 postpone.c:38
+#: curs_main.c:263 pager.c:1392 postpone.c:38
 msgid "Del"
 msgstr "Borrar"
 
@@ -716,7 +721,7 @@ msgstr "Recuperar"
 msgid "Mail"
 msgstr "Nova"
 
-#: curs_main.c:267 pager.c:1390
+#: curs_main.c:267 pager.c:1393
 msgid "Reply"
 msgstr "Responder"
 
@@ -724,130 +729,130 @@ msgstr "Responder"
 msgid "Group"
 msgstr "Grupo"
 
-#: curs_main.c:441
+#: curs_main.c:446
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "O buzón foi modificado externamente. Os indicadores poden ser erróneos"
 
-#: curs_main.c:444 pager.c:1498
+#: curs_main.c:449
 msgid "New mail in this mailbox."
 msgstr "Novo correo neste buzón."
 
-#: curs_main.c:552
+#: curs_main.c:561
 msgid "No tagged messages."
 msgstr "Non hai mensaxes marcadas."
 
-#: curs_main.c:632
+#: curs_main.c:641
 msgid "Jump to message: "
 msgstr "Saltar á mensaxe: "
 
-#: curs_main.c:638
+#: curs_main.c:647
 msgid "Argument must be a message number."
 msgstr "O parámetro debe ser un número de mensaxe."
 
-#: curs_main.c:671
+#: curs_main.c:680
 msgid "That message is not visible."
 msgstr "Esa mensaxe non é visible."
 
-#: curs_main.c:674
+#: curs_main.c:683
 msgid "Invalid message number."
 msgstr "Número de mensaxe inválido."
 
-#: curs_main.c:687
+#: curs_main.c:696
 msgid "Delete messages matching: "
 msgstr "Borrar as mensaxes que coincidan con: "
 
-#: curs_main.c:709
+#: curs_main.c:718
 msgid "No limit pattern is in effect."
 msgstr "Non hai patrón limitante efectivo."
 
 #. i18n: ask for a limit to apply
-#: curs_main.c:714
+#: curs_main.c:723
 #, c-format
 msgid "Limit: %s"
 msgstr "Límite: %s"
 
-#: curs_main.c:723
+#: curs_main.c:732
 msgid "Limit to messages matching: "
 msgstr "Limitar ás mensaxes que coincidan con: "
 
-#: curs_main.c:753
+#: curs_main.c:762
 msgid "Quit Mutt?"
 msgstr "¿Saír de Mutt?"
 
-#: curs_main.c:864
+#: curs_main.c:873
 msgid "Tag messages matching: "
 msgstr "Marcar as mensaxes que coincidan con: "
 
-#: curs_main.c:872
+#: curs_main.c:881
 msgid "Undelete messages matching: "
 msgstr "Recuperar as mensaxes que coincidan con: "
 
-#: curs_main.c:879
+#: curs_main.c:888
 msgid "Untag messages matching: "
 msgstr "Desmarcar as mensaxes que coincidan con: "
 
-#: curs_main.c:897
+#: curs_main.c:906
 msgid "Open mailbox in read-only mode"
 msgstr "Abrir buzón en modo de só lectura"
 
-#: curs_main.c:899
+#: curs_main.c:908
 msgid "Open mailbox"
 msgstr "Abrir buzón"
 
-#: curs_main.c:915 mx.c:454 mx.c:600
+#: curs_main.c:924 mx.c:454 mx.c:600
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s non é un buzón."
 
-#: curs_main.c:993
+#: curs_main.c:1002
 msgid "Exit Mutt without saving?"
 msgstr "¿Saír de Mutt sen gardar?"
 
-#: curs_main.c:1029 curs_main.c:1053
+#: curs_main.c:1038 curs_main.c:1062
 msgid "You are on the last message."
 msgstr "Está na última mensaxe."
 
-#: curs_main.c:1036 curs_main.c:1078
+#: curs_main.c:1045 curs_main.c:1087
 msgid "No undeleted messages."
 msgstr "Non hai mensaxes recuperadas."
 
-#: curs_main.c:1071 curs_main.c:1094
+#: curs_main.c:1080 curs_main.c:1103
 msgid "You are on the first message."
 msgstr "Está na primeira mensaxe."
 
-#: curs_main.c:1166 pattern.c:1123
+#: curs_main.c:1175 pattern.c:1123
 msgid "Search wrapped to top."
 msgstr "A búsqueda volveu ó principio."
 
-#: curs_main.c:1175 pattern.c:1134
+#: curs_main.c:1184 pattern.c:1134
 msgid "Search wrapped to bottom."
 msgstr "A búsqueda volveu ó final."
 
-#: curs_main.c:1208
+#: curs_main.c:1217
 msgid "No new messages"
 msgstr "Non hai novas mensaxes"
 
-#: curs_main.c:1208
+#: curs_main.c:1217
 msgid "No unread messages"
 msgstr "Non hai mensaxes sen ler"
 
-#: curs_main.c:1209
+#: curs_main.c:1218
 msgid " in this limited view"
 msgstr " nesta vista limitada"
 
-#: curs_main.c:1333
+#: curs_main.c:1342
 msgid "No more threads."
 msgstr "Non hai máis fíos"
 
-#: curs_main.c:1335
+#: curs_main.c:1344
 msgid "You are on the first thread."
 msgstr "Está no primeiro fío"
 
-#: curs_main.c:1405
+#: curs_main.c:1414
 msgid "Thread contains unread messages."
 msgstr "O fío contén mensaxes sen ler."
 
-#: curs_main.c:1418 flags.c:228 thread.c:661 thread.c:712
+#: curs_main.c:1427 flags.c:228 thread.c:661 thread.c:712
 msgid "Threading is not enabled."
 msgstr "Enfiamento non habilitado."
 
@@ -1166,6 +1171,11 @@ msgstr "Comezando secuencia de login ..."
 msgid "Login failed."
 msgstr "O login fallou."
 
+#. now begin login
+#: imap/auth_gss.c:74
+msgid "Authenticating (GSSAPI)..."
+msgstr ""
+
 #: imap/browse.c:93
 #, fuzzy
 msgid "Getting namespaces..."
@@ -1178,7 +1188,7 @@ msgstr ""
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
 #.
-#: imap/command.c:165
+#: imap/command.c:184
 msgid "Fatal error.  Message count is out of sync!"
 msgstr "Erro fatal. ¡A conta de mensaxes non está sincronizada!"
 
@@ -1214,30 +1224,30 @@ msgstr "¿Crear %s?"
 msgid "Closing connection to IMAP server..."
 msgstr "Pechando conexión ó servidor IMAP..."
 
-#: imap/imap.c:981
+#: imap/imap.c:991
 #, fuzzy, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Lendo %d novas mensaxes (%d bytes)..."
 
-#: imap/imap.c:1001
+#: imap/imap.c:1011
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Gardando indicadores de estado da mensaxe... [%d/%d]"
 
-#: imap/imap.c:1060
+#: imap/imap.c:1070
 msgid "Closing mailbox..."
 msgstr "Pechando buzón..."
 
-#: imap/imap.c:1070
+#: imap/imap.c:1080
 msgid "Expunging messages from server..."
 msgstr "Borrando mensaxes do servidor..."
 
-#: imap/imap.c:1387
+#: imap/imap.c:1410
 #, fuzzy, c-format
 msgid "Subscribing to %s..."
 msgstr "Copiando a %s..."
 
-#: imap/imap.c:1389
+#: imap/imap.c:1412
 #, fuzzy, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Conectando con %s..."
@@ -1349,12 +1359,12 @@ msgstr "Conectando con %s..."
 msgid "preconnect command failed"
 msgstr ""
 
-#: imap/util.c:40
+#: imap/util.c:41
 #, fuzzy
 msgid "Continue?"
 msgstr "(seguir)\n"
 
-#: imap/util.c:46
+#: imap/util.c:47
 #, c-format
 msgid "%s [%s]\n"
 msgstr ""
@@ -2484,81 +2494,81 @@ msgstr "¡Non foi posible reabri-lo buzón!"
 msgid "Reopening mailbox..."
 msgstr "Reabrindo buzón..."
 
-#: menu.c:350
+#: menu.c:354
 msgid "Jump to: "
 msgstr "Saltar a: "
 
-#: menu.c:359
+#: menu.c:363
 msgid "Invalid index number."
 msgstr "Número de índice inválido."
 
-#: menu.c:363 menu.c:381 menu.c:417 menu.c:458 menu.c:474 menu.c:485
-#: menu.c:496 menu.c:538 menu.c:549 menu.c:562 menu.c:575 menu.c:933
+#: menu.c:367 menu.c:385 menu.c:421 menu.c:462 menu.c:478 menu.c:489
+#: menu.c:500 menu.c:542 menu.c:553 menu.c:566 menu.c:579 menu.c:941
 msgid "No entries."
 msgstr "Non hai entradas."
 
-#: menu.c:378
+#: menu.c:382
 msgid "You cannot scroll down farther."
 msgstr "Non é posible moverse máis abaixo."
 
-#: menu.c:394
+#: menu.c:398
 msgid "You cannot scroll up farther."
 msgstr "Non é posible moverse máis arriba."
 
-#: menu.c:414
+#: menu.c:418
 msgid "You are on the last page."
 msgstr "Está na derradeira páxina."
 
-#: menu.c:436
+#: menu.c:440
 msgid "You are on the first page."
 msgstr "Está na primeira páxina."
 
-#: menu.c:515
+#: menu.c:519
 msgid "First entry is shown."
 msgstr "Amosase a primeira entrada."
 
-#: menu.c:535
+#: menu.c:539
 msgid "Last entry is shown."
 msgstr "Amosase a derradeira entrada."
 
-#: menu.c:586
+#: menu.c:590
 msgid "You are on the last entry."
 msgstr "Está na derradeira entrada."
 
-#: menu.c:597
+#: menu.c:601
 msgid "You are on the first entry."
 msgstr "Está na primeira entrada."
 
-#: menu.c:657 pattern.c:1069
+#: menu.c:661 pattern.c:1069
 msgid "Search for: "
 msgstr "Búsqueda de: "
 
-#: menu.c:658
+#: menu.c:662
 msgid "Reverse search for: "
 msgstr "Búsqueda inversa de: "
 
-#: menu.c:668 pattern.c:1102
+#: menu.c:672 pattern.c:1102
 msgid "No search pattern."
 msgstr "Non hai patrón de búsqueda."
 
-#: menu.c:698 pager.c:1868 pager.c:1884 pager.c:1972 pattern.c:1167
+#: menu.c:702 pager.c:1857 pager.c:1873 pager.c:1961 pattern.c:1167
 msgid "Not found."
 msgstr "Non se atopou."
 
-#: menu.c:803
+#: menu.c:811
 msgid "No tagged entries."
 msgstr "Non hai entradas marcadas."
 
-#: menu.c:896
+#: menu.c:904
 msgid "Search is not implemented for this menu."
 msgstr "A búsqueda non está implementada neste menú."
 
-#: menu.c:901
+#: menu.c:909
 #, fuzzy
 msgid "Jumping is not implemented for dialogs."
 msgstr "A búsqueda non está implementada neste menú."
 
-#: menu.c:936
+#: menu.c:944
 msgid "Tagging is not supported."
 msgstr "O marcado non está soportado."
 
@@ -2700,52 +2710,52 @@ msgid "Can't write message"
 msgstr "edita-la mensaxe"
 
 #
-#: pager.c:57
+#: pager.c:60
 msgid "Not available in this menu."
 msgstr "Non dispoñible neste menú."
 
-#: pager.c:1383
+#: pager.c:1386
 msgid "PrevPg"
 msgstr "PáxAnt"
 
-#: pager.c:1384
+#: pager.c:1387
 msgid "NextPg"
 msgstr "SegPáx"
 
-#: pager.c:1388
+#: pager.c:1391
 msgid "View Attachm."
 msgstr "Ver adxunto"
 
-#: pager.c:1391
+#: pager.c:1394
 msgid "Next"
 msgstr "Seguinte"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1780 pager.c:1811 pager.c:1840 pager.c:2060
+#: pager.c:1769 pager.c:1800 pager.c:1829 pager.c:2049
 msgid "Bottom of message is shown."
 msgstr "Amosase o final da mensaxe."
 
-#: pager.c:1796 pager.c:1818 pager.c:1829
+#: pager.c:1785 pager.c:1807 pager.c:1818
 msgid "Top of message is shown."
 msgstr "Amosase o principio da mensaxe."
 
-#: pager.c:1902
+#: pager.c:1891
 msgid "Reverse search: "
 msgstr "Búsqueda inversa: "
 
-#: pager.c:1903
+#: pager.c:1892
 msgid "Search: "
 msgstr "Búsqueda: "
 
-#: pager.c:1998
+#: pager.c:1987
 msgid "Help is currently being shown."
 msgstr "Estase a amosa-la axuda"
 
-#: pager.c:2027
+#: pager.c:2016
 msgid "No more quoted text."
 msgstr "Non hai máis texto citado."
 
-#: pager.c:2040
+#: pager.c:2029
 msgid "No more unquoted text after quoted text."
 msgstr "Non hai máis texto sen citar despois do texto citado."
 

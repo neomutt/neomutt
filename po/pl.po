@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt-1.1.2i\n"
-"POT-Creation-Date: 2000-02-24 22:31+0100\n"
+"POT-Creation-Date: 2000-02-29 23:32+0100\n"
 "PO-Revision-Date: 2000-01-19 18:30+0200\n"
 "Last-Translator: Pawe³ Dziekoñski <pdziekonski@mml.ch.pwr.wroc.pl>\n"
 "Language-Team: POLISH <pl@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-2\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: addrbook.c:31 browser.c:41 pager.c:1382 postpone.c:37 query.c:43
+#: addrbook.c:31 browser.c:41 pager.c:1385 postpone.c:37 query.c:43
 #: recvattach.c:57
 msgid "Exit"
 msgstr "Wyj¶cie"
@@ -27,7 +27,7 @@ msgid "Select"
 msgstr "Wybierz"
 
 #: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:269 imap/imap_ssl.c:256
-#: pager.c:1480 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
+#: pager.c:1482 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Pomoc"
 
@@ -234,16 +234,21 @@ msgstr "B³±d podczas próby przegl±dania pliku"
 msgid "New mail in %s."
 msgstr "W skrzynce %s pojawi³a siê nowa poczta."
 
-#: charset.c:1065
+#: charset.c:1066
 msgid "We can't currently handle utf-8 at this point."
 msgstr "utf-8 nie jest, jak na razie, obs³ugiwany."
 
-#: charset.c:1071 charset.c:1078
+#: charset.c:1072 charset.c:1079
 #, c-format
 msgid "Can't open %s: %s."
 msgstr "Nie mo¿na otworzyæ %s: %s."
 
-#: charset.c:1131
+#: charset.c:1148
+#, fuzzy, c-format
+msgid "Error while recoding %s. Leave it unchanged."
+msgstr "B³±d przekodowywania %s. Zajrzyj do %s je¶li musisz odzyskaæ dane."
+
+#: charset.c:1154
 #, c-format
 msgid "Error while recoding %s. See %s for recovering your data."
 msgstr "B³±d przekodowywania %s. Zajrzyj do %s je¶li musisz odzyskaæ dane."
@@ -670,7 +675,7 @@ msgstr "Naci¶nij dowolny klawisz by kontynuowaæ..."
 msgid " ('?' for list): "
 msgstr " (przyci¶niêcie '?' wy¶wietla listê): "
 
-#: curs_main.c:55 curs_main.c:546
+#: curs_main.c:55 curs_main.c:555
 msgid "No mailbox is open."
 msgstr "Nie otwarto ¿adnej skrzynki."
 
@@ -678,11 +683,11 @@ msgstr "Nie otwarto ¿adnej skrzynki."
 msgid "There are no messages."
 msgstr "Brak listów."
 
-#: curs_main.c:57 mx.c:1035 pager.c:58 recvattach.c:47
+#: curs_main.c:57 mx.c:1035 pager.c:61 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "Skrzynka jest tylko do odczytu."
 
-#: curs_main.c:58 pager.c:59 recvattach.c:764
+#: curs_main.c:58 pager.c:62 recvattach.c:764
 msgid "Function not permitted in attach-message mode."
 msgstr "Funkcja niedostêpna w trybie za³±czania"
 
@@ -702,7 +707,7 @@ msgstr "Zmiany w folderze nie zostan± naniesione."
 msgid "Quit"
 msgstr "Wyjd¼"
 
-#: curs_main.c:263 pager.c:1389 postpone.c:38
+#: curs_main.c:263 pager.c:1392 postpone.c:38
 msgid "Del"
 msgstr "Usuñ"
 
@@ -714,7 +719,7 @@ msgstr "Odtwórz"
 msgid "Mail"
 msgstr "Wy¶lij"
 
-#: curs_main.c:267 pager.c:1390
+#: curs_main.c:267 pager.c:1393
 msgid "Reply"
 msgstr "Odpowiedz"
 
@@ -722,130 +727,130 @@ msgstr "Odpowiedz"
 msgid "Group"
 msgstr "Grupie"
 
-#: curs_main.c:441
+#: curs_main.c:446
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Skrzynka zosta³a zmodyfikowana z zewn±trz. Flagi mog± byæ nieaktualne."
 
-#: curs_main.c:444 pager.c:1498
+#: curs_main.c:449
 msgid "New mail in this mailbox."
 msgstr "Uwaga - w bie¿±cej skrzynce pojawi³a siê nowa poczta!"
 
-#: curs_main.c:552
+#: curs_main.c:561
 msgid "No tagged messages."
 msgstr "Brak zaznaczonych listów."
 
-#: curs_main.c:632
+#: curs_main.c:641
 msgid "Jump to message: "
 msgstr "Skocz do listu: "
 
-#: curs_main.c:638
+#: curs_main.c:647
 msgid "Argument must be a message number."
 msgstr "Argumentem musi byæ numer listu."
 
-#: curs_main.c:671
+#: curs_main.c:680
 msgid "That message is not visible."
 msgstr "Ten list nie jest widoczny."
 
-#: curs_main.c:674
+#: curs_main.c:683
 msgid "Invalid message number."
 msgstr "B³êdny numer listu."
 
-#: curs_main.c:687
+#: curs_main.c:696
 msgid "Delete messages matching: "
 msgstr "Usuñ listy pasuj±ce do wzorca: "
 
-#: curs_main.c:709
+#: curs_main.c:718
 msgid "No limit pattern is in effect."
 msgstr "Ograniczenie nie jest okre¶lone."
 
 #. i18n: ask for a limit to apply
-#: curs_main.c:714
+#: curs_main.c:723
 #, c-format
 msgid "Limit: %s"
 msgstr "Ograniczenie: %s"
 
-#: curs_main.c:723
+#: curs_main.c:732
 msgid "Limit to messages matching: "
 msgstr "Ogranicz do pasuj±cych listów: "
 
-#: curs_main.c:753
+#: curs_main.c:762
 msgid "Quit Mutt?"
 msgstr "Wyj¶æ z Mutta?"
 
-#: curs_main.c:864
+#: curs_main.c:873
 msgid "Tag messages matching: "
 msgstr "Zaznacz pasuj±ce listy: "
 
-#: curs_main.c:872
+#: curs_main.c:881
 msgid "Undelete messages matching: "
 msgstr "Odtwórz pasuj±ce listy: "
 
-#: curs_main.c:879
+#: curs_main.c:888
 msgid "Untag messages matching: "
 msgstr "Odznacz pasuj±ce listy: "
 
-#: curs_main.c:897
+#: curs_main.c:906
 msgid "Open mailbox in read-only mode"
 msgstr "Otwórz skrzynkê tylko do odczytu"
 
-#: curs_main.c:899
+#: curs_main.c:908
 msgid "Open mailbox"
 msgstr "Otwórz skrzynkê"
 
-#: curs_main.c:915 mx.c:454 mx.c:600
+#: curs_main.c:924 mx.c:454 mx.c:600
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s nie jest skrzynk±."
 
-#: curs_main.c:993
+#: curs_main.c:1002
 msgid "Exit Mutt without saving?"
 msgstr "Wyj¶æ z Mutta bez zapisywania zmian?"
 
-#: curs_main.c:1029 curs_main.c:1053
+#: curs_main.c:1038 curs_main.c:1062
 msgid "You are on the last message."
 msgstr "To jest ostatni list."
 
-#: curs_main.c:1036 curs_main.c:1078
+#: curs_main.c:1045 curs_main.c:1087
 msgid "No undeleted messages."
 msgstr "Brak odtworzonych listów."
 
-#: curs_main.c:1071 curs_main.c:1094
+#: curs_main.c:1080 curs_main.c:1103
 msgid "You are on the first message."
 msgstr "To jest pierwszy list."
 
-#: curs_main.c:1166 pattern.c:1123
+#: curs_main.c:1175 pattern.c:1123
 msgid "Search wrapped to top."
 msgstr "Kontynuacja poszukiwania od pocz±tku."
 
-#: curs_main.c:1175 pattern.c:1134
+#: curs_main.c:1184 pattern.c:1134
 msgid "Search wrapped to bottom."
 msgstr "Kontynuacja poszukiwania od koñca."
 
-#: curs_main.c:1208
+#: curs_main.c:1217
 msgid "No new messages"
 msgstr "Brak nowych listów"
 
-#: curs_main.c:1208
+#: curs_main.c:1217
 msgid "No unread messages"
 msgstr "Przeczytano ju¿ wszystkie listy"
 
-#: curs_main.c:1209
+#: curs_main.c:1218
 msgid " in this limited view"
 msgstr " w trybie ograniczonego przegl±dania"
 
-#: curs_main.c:1333
+#: curs_main.c:1342
 msgid "No more threads."
 msgstr "Nie ma wiêcej w±tków."
 
-#: curs_main.c:1335
+#: curs_main.c:1344
 msgid "You are on the first thread."
 msgstr "To pierwszy w±tek."
 
-#: curs_main.c:1405
+#: curs_main.c:1414
 msgid "Thread contains unread messages."
 msgstr "Watek zawiera nieprzeczytane listy."
 
-#: curs_main.c:1418 flags.c:228 thread.c:661 thread.c:712
+#: curs_main.c:1427 flags.c:228 thread.c:661 thread.c:712
 msgid "Threading is not enabled."
 msgstr "W±tkowanie nie zosta³o w³±czone."
 
@@ -1167,6 +1172,11 @@ msgstr "Logowanie..."
 msgid "Login failed."
 msgstr "Zalogowanie nie powiod³o siê."
 
+#. now begin login
+#: imap/auth_gss.c:74
+msgid "Authenticating (GSSAPI)..."
+msgstr "Uwierzytelnianie (GSSAPI)..."
+
 #: imap/browse.c:93
 #, fuzzy
 msgid "Getting namespaces..."
@@ -1180,7 +1190,7 @@ msgstr "Po³aczenie nawi±zane, pobieranie listy folderów..."
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
 #.
-#: imap/command.c:165
+#: imap/command.c:184
 msgid "Fatal error.  Message count is out of sync!"
 msgstr "B³±d krytyczny. Niezidentyfikowana ilo¶æ listów!"
 
@@ -1216,30 +1226,30 @@ msgstr "Utworzyæ %s?"
 msgid "Closing connection to IMAP server..."
 msgstr "Zamykanie po³±czenia z serwerem IMAP..."
 
-#: imap/imap.c:981
+#: imap/imap.c:991
 #, fuzzy, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Czytanie %d nowych listów (%d bajtów)..."
 
-#: imap/imap.c:1001
+#: imap/imap.c:1011
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Zapisywanie stanu flag listów... [%d/%d]"
 
-#: imap/imap.c:1060
+#: imap/imap.c:1070
 msgid "Closing mailbox..."
 msgstr "Zamykanie skrzynki..."
 
-#: imap/imap.c:1070
+#: imap/imap.c:1080
 msgid "Expunging messages from server..."
 msgstr "Kasowanie listów na serwerze... "
 
-#: imap/imap.c:1387
+#: imap/imap.c:1410
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Subskrybowanie %s..."
 
-#: imap/imap.c:1389
+#: imap/imap.c:1412
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Odsubskrybowanie %s..."
@@ -1350,12 +1360,12 @@ msgstr "£±czenie z %s..."
 msgid "preconnect command failed"
 msgstr ""
 
-#: imap/util.c:40
+#: imap/util.c:41
 #, fuzzy
 msgid "Continue?"
 msgstr "(kontynuuj)\n"
 
-#: imap/util.c:46
+#: imap/util.c:47
 #, c-format
 msgid "%s [%s]\n"
 msgstr ""
@@ -2499,81 +2509,81 @@ msgstr "Nie mo¿na ponownie otworzyæ foldera poczty!"
 msgid "Reopening mailbox..."
 msgstr "Ponowne otwieranie skrzynki..."
 
-#: menu.c:350
+#: menu.c:354
 msgid "Jump to: "
 msgstr "Przeskocz do: "
 
-#: menu.c:359
+#: menu.c:363
 msgid "Invalid index number."
 msgstr "Niew³a¶ciwy numer indeksu."
 
-#: menu.c:363 menu.c:381 menu.c:417 menu.c:458 menu.c:474 menu.c:485
-#: menu.c:496 menu.c:538 menu.c:549 menu.c:562 menu.c:575 menu.c:933
+#: menu.c:367 menu.c:385 menu.c:421 menu.c:462 menu.c:478 menu.c:489
+#: menu.c:500 menu.c:542 menu.c:553 menu.c:566 menu.c:579 menu.c:941
 msgid "No entries."
 msgstr "Brak pozycji."
 
-#: menu.c:378
+#: menu.c:382
 msgid "You cannot scroll down farther."
 msgstr "Nie mo¿na ni¿ej przewin±æ."
 
-#: menu.c:394
+#: menu.c:398
 msgid "You cannot scroll up farther."
 msgstr "Nie mo¿na wy¿ej przewin±æ."
 
-#: menu.c:414
+#: menu.c:418
 msgid "You are on the last page."
 msgstr "To jest ostatnia strona."
 
-#: menu.c:436
+#: menu.c:440
 msgid "You are on the first page."
 msgstr "To jest pierwsza strona."
 
-#: menu.c:515
+#: menu.c:519
 msgid "First entry is shown."
 msgstr "Pokazana jest pierwsza pozycja."
 
-#: menu.c:535
+#: menu.c:539
 msgid "Last entry is shown."
 msgstr "Pokazana jest ostatnia pozycja."
 
-#: menu.c:586
+#: menu.c:590
 msgid "You are on the last entry."
 msgstr "To jest ostatnia pozycja."
 
-#: menu.c:597
+#: menu.c:601
 msgid "You are on the first entry."
 msgstr "To jest pierwsza pozycja."
 
-#: menu.c:657 pattern.c:1069
+#: menu.c:661 pattern.c:1069
 msgid "Search for: "
 msgstr "Szukaj frazy: "
 
-#: menu.c:658
+#: menu.c:662
 msgid "Reverse search for: "
 msgstr "Szukaj frazy w przeciwnym kierunku: "
 
-#: menu.c:668 pattern.c:1102
+#: menu.c:672 pattern.c:1102
 msgid "No search pattern."
 msgstr "Nie ustalono wzorca poszukiwañ."
 
-#: menu.c:698 pager.c:1868 pager.c:1884 pager.c:1972 pattern.c:1167
+#: menu.c:702 pager.c:1857 pager.c:1873 pager.c:1961 pattern.c:1167
 msgid "Not found."
 msgstr "Nic nie znaleziono."
 
-#: menu.c:803
+#: menu.c:811
 msgid "No tagged entries."
 msgstr "Brak zaznaczonych pozycji listy."
 
-#: menu.c:896
+#: menu.c:904
 msgid "Search is not implemented for this menu."
 msgstr "Poszukiwanie nie jest mo¿liwe w tym menu."
 
-#: menu.c:901
+#: menu.c:909
 #, fuzzy
 msgid "Jumping is not implemented for dialogs."
 msgstr "Poszukiwanie nie jest mo¿liwe w tym menu."
 
-#: menu.c:936
+#: menu.c:944
 msgid "Tagging is not supported."
 msgstr "Zaznaczanie nie jest obs³ugiwane."
 
@@ -2714,52 +2724,52 @@ msgstr ""
 msgid "Can't write message"
 msgstr "edytuj tre¶æ listu"
 
-#: pager.c:57
+#: pager.c:60
 msgid "Not available in this menu."
 msgstr "Nie ma takiego polecenia w tym menu."
 
-#: pager.c:1383
+#: pager.c:1386
 msgid "PrevPg"
 msgstr "PoprzStr"
 
-#: pager.c:1384
+#: pager.c:1387
 msgid "NextPg"
 msgstr "NastStr"
 
-#: pager.c:1388
+#: pager.c:1391
 msgid "View Attachm."
 msgstr "Zobacz za³."
 
-#: pager.c:1391
+#: pager.c:1394
 msgid "Next"
 msgstr "Nastêpny"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1780 pager.c:1811 pager.c:1840 pager.c:2060
+#: pager.c:1769 pager.c:1800 pager.c:1829 pager.c:2049
 msgid "Bottom of message is shown."
 msgstr "Pokazany jest koniec listu."
 
-#: pager.c:1796 pager.c:1818 pager.c:1829
+#: pager.c:1785 pager.c:1807 pager.c:1818
 msgid "Top of message is shown."
 msgstr "Pokazany jest pocz±tek listu."
 
-#: pager.c:1902
+#: pager.c:1891
 msgid "Reverse search: "
 msgstr "Szukaj w przeciwnym kierunku: "
 
-#: pager.c:1903
+#: pager.c:1892
 msgid "Search: "
 msgstr "Szukaj: "
 
-#: pager.c:1998
+#: pager.c:1987
 msgid "Help is currently being shown."
 msgstr "Pomoc jest w³a¶nie wy¶wietlana."
 
-#: pager.c:2027
+#: pager.c:2016
 msgid "No more quoted text."
 msgstr "Nie ma wiêcej cytowanego tekstu."
 
-#: pager.c:2040
+#: pager.c:2029
 msgid "No more unquoted text after quoted text."
 msgstr "Brak tekstu za cytowanym fragmentem."
 
@@ -3585,9 +3595,6 @@ msgstr "Pierwszy list tego w±tku nie jest dostêpny."
 
 #~ msgid "ignoring empty header field: %s"
 #~ msgstr "ignorowanie pustego nag³ówka: %s"
-
-#~ msgid "Authenticating (GSSAPI)..."
-#~ msgstr "Uwierzytelnianie (GSSAPI)..."
 
 #~ msgid "Recoding only affetcs text attachments."
 #~ msgstr "Tylko tekstowe za³±czniki mo¿na przekodowaæ."

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt-1.1.3\n"
-"POT-Creation-Date: 2000-02-24 22:31+0100\n"
+"POT-Creation-Date: 2000-02-29 23:32+0100\n"
 "PO-Revision-Date: 2000-02-13 19:31+01:00\n"
 "Last-Translator: Marco d'Itri <md@linux.it>\n"
 "Language-Team: none\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: addrbook.c:31 browser.c:41 pager.c:1382 postpone.c:37 query.c:43
+#: addrbook.c:31 browser.c:41 pager.c:1385 postpone.c:37 query.c:43
 #: recvattach.c:57
 msgid "Exit"
 msgstr "Esci"
@@ -25,7 +25,7 @@ msgid "Select"
 msgstr "Seleziona"
 
 #: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:269 imap/imap_ssl.c:256
-#: pager.c:1480 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
+#: pager.c:1482 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Aiuto"
 
@@ -231,16 +231,21 @@ msgstr "C'è stato un errore nella visualizzazione del file"
 msgid "New mail in %s."
 msgstr "Nuova posta in %s."
 
-#: charset.c:1065
+#: charset.c:1066
 msgid "We can't currently handle utf-8 at this point."
 msgstr "Attualmente non possiamo gestire utf-8 a questo punto."
 
-#: charset.c:1071 charset.c:1078
+#: charset.c:1072 charset.c:1079
 #, c-format
 msgid "Can't open %s: %s."
 msgstr "Impossibile aprire %s: %s."
 
-#: charset.c:1131
+#: charset.c:1148
+#, fuzzy, c-format
+msgid "Error while recoding %s. Leave it unchanged."
+msgstr "Errore ricodificando %s. Guarda %s per recuperare i tuoi dati."
+
+#: charset.c:1154
 #, c-format
 msgid "Error while recoding %s. See %s for recovering your data."
 msgstr "Errore ricodificando %s. Guarda %s per recuperare i tuoi dati."
@@ -665,7 +670,7 @@ msgstr "Premi un tasto per continuare..."
 msgid " ('?' for list): "
 msgstr " ('?' per la lista): "
 
-#: curs_main.c:55 curs_main.c:546
+#: curs_main.c:55 curs_main.c:555
 msgid "No mailbox is open."
 msgstr "Nessuna mailbox aperta."
 
@@ -673,11 +678,11 @@ msgstr "Nessuna mailbox aperta."
 msgid "There are no messages."
 msgstr "Non ci sono messaggi."
 
-#: curs_main.c:57 mx.c:1035 pager.c:58 recvattach.c:47
+#: curs_main.c:57 mx.c:1035 pager.c:61 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "La mailbox è di sola lettura."
 
-#: curs_main.c:58 pager.c:59 recvattach.c:764
+#: curs_main.c:58 pager.c:62 recvattach.c:764
 msgid "Function not permitted in attach-message mode."
 msgstr "Funzione non permessa nella modalità attach-message."
 
@@ -697,7 +702,7 @@ msgstr "I cambiamenti al folder non saranno scritti."
 msgid "Quit"
 msgstr "Esci"
 
-#: curs_main.c:263 pager.c:1389 postpone.c:38
+#: curs_main.c:263 pager.c:1392 postpone.c:38
 msgid "Del"
 msgstr "Canc"
 
@@ -709,7 +714,7 @@ msgstr "DeCanc"
 msgid "Mail"
 msgstr "Mail"
 
-#: curs_main.c:267 pager.c:1390
+#: curs_main.c:267 pager.c:1393
 msgid "Reply"
 msgstr "Rispondi"
 
@@ -717,131 +722,131 @@ msgstr "Rispondi"
 msgid "Group"
 msgstr "Gruppo"
 
-#: curs_main.c:441
+#: curs_main.c:446
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr ""
 "La mailbox è stata modificata dall'esterno.  I flag possono essere sbagliati."
 
-#: curs_main.c:444 pager.c:1498
+#: curs_main.c:449
 msgid "New mail in this mailbox."
 msgstr "C'è nuova posta in questa mailbox."
 
-#: curs_main.c:552
+#: curs_main.c:561
 msgid "No tagged messages."
 msgstr "Nessun messaggio segnato."
 
-#: curs_main.c:632
+#: curs_main.c:641
 msgid "Jump to message: "
 msgstr "Salta al messaggio: "
 
-#: curs_main.c:638
+#: curs_main.c:647
 msgid "Argument must be a message number."
 msgstr "L'argomento deve essere il numero di un messaggio."
 
-#: curs_main.c:671
+#: curs_main.c:680
 msgid "That message is not visible."
 msgstr "Questo messaggio non è visibile."
 
-#: curs_main.c:674
+#: curs_main.c:683
 msgid "Invalid message number."
 msgstr "Numero del messaggio non valido."
 
-#: curs_main.c:687
+#: curs_main.c:696
 msgid "Delete messages matching: "
 msgstr "Cancella i messaggi corrispondenti a: "
 
-#: curs_main.c:709
+#: curs_main.c:718
 msgid "No limit pattern is in effect."
 msgstr "Non è attivo alcun modello limitatore."
 
 #. i18n: ask for a limit to apply
-#: curs_main.c:714
+#: curs_main.c:723
 #, c-format
 msgid "Limit: %s"
 msgstr "Limita: %s"
 
-#: curs_main.c:723
+#: curs_main.c:732
 msgid "Limit to messages matching: "
 msgstr "Limita ai messaggi corrispondenti a: "
 
-#: curs_main.c:753
+#: curs_main.c:762
 msgid "Quit Mutt?"
 msgstr "Esci da Mutt?"
 
-#: curs_main.c:864
+#: curs_main.c:873
 msgid "Tag messages matching: "
 msgstr "Segna i messaggi corrispondenti a: "
 
-#: curs_main.c:872
+#: curs_main.c:881
 msgid "Undelete messages matching: "
 msgstr "De-cancella i messaggi corrispondenti a: "
 
-#: curs_main.c:879
+#: curs_main.c:888
 msgid "Untag messages matching: "
 msgstr "Togli il segno ai messaggi corrispondenti a: "
 
-#: curs_main.c:897
+#: curs_main.c:906
 msgid "Open mailbox in read-only mode"
 msgstr "Apri la mailbox in sola lettura"
 
-#: curs_main.c:899
+#: curs_main.c:908
 msgid "Open mailbox"
 msgstr "Apri la mailbox"
 
-#: curs_main.c:915 mx.c:454 mx.c:600
+#: curs_main.c:924 mx.c:454 mx.c:600
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s non è una mailbox."
 
-#: curs_main.c:993
+#: curs_main.c:1002
 msgid "Exit Mutt without saving?"
 msgstr "Esci da Mutt senza salvare?"
 
-#: curs_main.c:1029 curs_main.c:1053
+#: curs_main.c:1038 curs_main.c:1062
 msgid "You are on the last message."
 msgstr "Sei all'ultimo messaggio."
 
-#: curs_main.c:1036 curs_main.c:1078
+#: curs_main.c:1045 curs_main.c:1087
 msgid "No undeleted messages."
 msgstr "Nessun messaggio da de-cancellare."
 
-#: curs_main.c:1071 curs_main.c:1094
+#: curs_main.c:1080 curs_main.c:1103
 msgid "You are on the first message."
 msgstr "Sei al primo messaggio."
 
-#: curs_main.c:1166 pattern.c:1123
+#: curs_main.c:1175 pattern.c:1123
 msgid "Search wrapped to top."
 msgstr "La ricerca è ritornata all'inizio."
 
-#: curs_main.c:1175 pattern.c:1134
+#: curs_main.c:1184 pattern.c:1134
 msgid "Search wrapped to bottom."
 msgstr "La ricerca è ritornata al fondo."
 
-#: curs_main.c:1208
+#: curs_main.c:1217
 msgid "No new messages"
 msgstr "Non ci sono nuovi messaggi"
 
-#: curs_main.c:1208
+#: curs_main.c:1217
 msgid "No unread messages"
 msgstr "Non ci sono messaggi non letti"
 
-#: curs_main.c:1209
+#: curs_main.c:1218
 msgid " in this limited view"
 msgstr " in questa visualizzazione limitata"
 
-#: curs_main.c:1333
+#: curs_main.c:1342
 msgid "No more threads."
 msgstr "Non ci sono altri thread."
 
-#: curs_main.c:1335
+#: curs_main.c:1344
 msgid "You are on the first thread."
 msgstr "Sei al primo thread."
 
-#: curs_main.c:1405
+#: curs_main.c:1414
 msgid "Thread contains unread messages."
 msgstr "Il thread contiene messaggi non letti."
 
-#: curs_main.c:1418 flags.c:228 thread.c:661 thread.c:712
+#: curs_main.c:1427 flags.c:228 thread.c:661 thread.c:712
 msgid "Threading is not enabled."
 msgstr "Il threading non è attivo."
 
@@ -1159,6 +1164,11 @@ msgstr "Faccio il login..."
 msgid "Login failed."
 msgstr "Login fallito."
 
+#. now begin login
+#: imap/auth_gss.c:74
+msgid "Authenticating (GSSAPI)..."
+msgstr "Autenticazione in corso (GSSAPI)..."
+
 #: imap/browse.c:93
 #, fuzzy
 msgid "Getting namespaces..."
@@ -1172,7 +1182,7 @@ msgstr "Connesso al server, scarico la lista dei folder..."
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
 #.
-#: imap/command.c:165
+#: imap/command.c:184
 msgid "Fatal error.  Message count is out of sync!"
 msgstr "Errore fatale. Il numero dei messaggi non è sincronizzato!"
 
@@ -1208,30 +1218,30 @@ msgstr "Creo %s?"
 msgid "Closing connection to IMAP server..."
 msgstr "Chiudo la connessione al server IMAP..."
 
-#: imap/imap.c:981
+#: imap/imap.c:991
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Segno cancellati %d messaggi..."
 
-#: imap/imap.c:1001
+#: imap/imap.c:1011
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Salvo i flag di stato dei messaggi... [%d/%d]"
 
-#: imap/imap.c:1060
+#: imap/imap.c:1070
 msgid "Closing mailbox..."
 msgstr "Chiudo la mailbox..."
 
-#: imap/imap.c:1070
+#: imap/imap.c:1080
 msgid "Expunging messages from server..."
 msgstr "Cancello i messaggi dal server..."
 
-#: imap/imap.c:1387
+#: imap/imap.c:1410
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Mi iscrivo a %s..."
 
-#: imap/imap.c:1389
+#: imap/imap.c:1412
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Mi deiscrivo da %s..."
@@ -1339,11 +1349,11 @@ msgstr "Mi connetto a %s..."
 msgid "preconnect command failed"
 msgstr "comando di preconnessione fallito"
 
-#: imap/util.c:40
+#: imap/util.c:41
 msgid "Continue?"
 msgstr "Continua?"
 
-#: imap/util.c:46
+#: imap/util.c:47
 #, c-format
 msgid "%s [%s]\n"
 msgstr "%s [%s]\n"
@@ -2431,80 +2441,80 @@ msgstr "Impossibile riaprire la mailbox!"
 msgid "Reopening mailbox..."
 msgstr "Riapro la mailbox..."
 
-#: menu.c:350
+#: menu.c:354
 msgid "Jump to: "
 msgstr "Salta a: "
 
-#: menu.c:359
+#: menu.c:363
 msgid "Invalid index number."
 msgstr "Numero dell'indice non valido."
 
-#: menu.c:363 menu.c:381 menu.c:417 menu.c:458 menu.c:474 menu.c:485
-#: menu.c:496 menu.c:538 menu.c:549 menu.c:562 menu.c:575 menu.c:933
+#: menu.c:367 menu.c:385 menu.c:421 menu.c:462 menu.c:478 menu.c:489
+#: menu.c:500 menu.c:542 menu.c:553 menu.c:566 menu.c:579 menu.c:941
 msgid "No entries."
 msgstr "Nessuna voce."
 
-#: menu.c:378
+#: menu.c:382
 msgid "You cannot scroll down farther."
 msgstr "Non puoi spostarti più in basso."
 
-#: menu.c:394
+#: menu.c:398
 msgid "You cannot scroll up farther."
 msgstr "Non puoi spostarti più in alto."
 
-#: menu.c:414
+#: menu.c:418
 msgid "You are on the last page."
 msgstr "Sei all'ultima pagina."
 
-#: menu.c:436
+#: menu.c:440
 msgid "You are on the first page."
 msgstr "Sei alla prima pagina."
 
-#: menu.c:515
+#: menu.c:519
 msgid "First entry is shown."
 msgstr "La prima voce è questa."
 
-#: menu.c:535
+#: menu.c:539
 msgid "Last entry is shown."
 msgstr "L'ultima voce è questa."
 
-#: menu.c:586
+#: menu.c:590
 msgid "You are on the last entry."
 msgstr "Sei all'ultima voce."
 
-#: menu.c:597
+#: menu.c:601
 msgid "You are on the first entry."
 msgstr "Sei alla prima voce."
 
-#: menu.c:657 pattern.c:1069
+#: menu.c:661 pattern.c:1069
 msgid "Search for: "
 msgstr "Cerca: "
 
-#: menu.c:658
+#: menu.c:662
 msgid "Reverse search for: "
 msgstr "Cerca all'indietro: "
 
-#: menu.c:668 pattern.c:1102
+#: menu.c:672 pattern.c:1102
 msgid "No search pattern."
 msgstr "Nessun modello di ricerca."
 
-#: menu.c:698 pager.c:1868 pager.c:1884 pager.c:1972 pattern.c:1167
+#: menu.c:702 pager.c:1857 pager.c:1873 pager.c:1961 pattern.c:1167
 msgid "Not found."
 msgstr "Non trovato."
 
-#: menu.c:803
+#: menu.c:811
 msgid "No tagged entries."
 msgstr "Nessuna voce segnata."
 
-#: menu.c:896
+#: menu.c:904
 msgid "Search is not implemented for this menu."
 msgstr "In questo menù la ricerca non è stata implementata."
 
-#: menu.c:901
+#: menu.c:909
 msgid "Jumping is not implemented for dialogs."
 msgstr "I salti non sono implementati per i dialog."
 
-#: menu.c:936
+#: menu.c:944
 msgid "Tagging is not supported."
 msgstr "Non è possibile segnare un messaggio."
 
@@ -2645,52 +2655,52 @@ msgstr "%d tenuti."
 msgid "Can't write message"
 msgstr "modifica il messaggio"
 
-#: pager.c:57
+#: pager.c:60
 msgid "Not available in this menu."
 msgstr "Non disponibile in questo menù."
 
-#: pager.c:1383
+#: pager.c:1386
 msgid "PrevPg"
 msgstr "PgPrec"
 
-#: pager.c:1384
+#: pager.c:1387
 msgid "NextPg"
 msgstr "PgSucc"
 
-#: pager.c:1388
+#: pager.c:1391
 msgid "View Attachm."
 msgstr "Vedi Allegato"
 
-#: pager.c:1391
+#: pager.c:1394
 msgid "Next"
 msgstr "Succ"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1780 pager.c:1811 pager.c:1840 pager.c:2060
+#: pager.c:1769 pager.c:1800 pager.c:1829 pager.c:2049
 msgid "Bottom of message is shown."
 msgstr "La fine del messaggio è questa."
 
-#: pager.c:1796 pager.c:1818 pager.c:1829
+#: pager.c:1785 pager.c:1807 pager.c:1818
 msgid "Top of message is shown."
 msgstr "L'inizio del messaggio è questo."
 
-#: pager.c:1902
+#: pager.c:1891
 msgid "Reverse search: "
 msgstr "Cerca all'indietro: "
 
-#: pager.c:1903
+#: pager.c:1892
 msgid "Search: "
 msgstr "Cerca: "
 
-#: pager.c:1998
+#: pager.c:1987
 msgid "Help is currently being shown."
 msgstr "L'help è questo."
 
-#: pager.c:2027
+#: pager.c:2016
 msgid "No more quoted text."
 msgstr "Non c'è altro testo citato."
 
-#: pager.c:2040
+#: pager.c:2029
 msgid "No more unquoted text after quoted text."
 msgstr "Non c'è altro testo non citato dopo quello citato."
 
@@ -3500,6 +3510,3 @@ msgstr "Il messaggio padre non è disponibile"
 
 #~ msgid "ignoring empty header field: %s"
 #~ msgstr "Ignoro il campo dell'header vuoto: %s"
-
-#~ msgid "Authenticating (GSSAPI)..."
-#~ msgstr "Autenticazione in corso (GSSAPI)..."

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.2\n"
-"POT-Creation-Date: 2000-02-24 22:31+0100\n"
+"POT-Creation-Date: 2000-02-29 23:32+0100\n"
 "PO-Revision-Date: 2000-02-18 10:47+0900\n"
 "Last-Translator: Byeong-Chan Kim <redhands@linux.sarag.net>\n"
 "Language-Team: Korean <ko@li.org>\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=EUC-KR\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: addrbook.c:31 browser.c:41 pager.c:1382 postpone.c:37 query.c:43
+#: addrbook.c:31 browser.c:41 pager.c:1385 postpone.c:37 query.c:43
 #: recvattach.c:57
 msgid "Exit"
 msgstr "종료"
@@ -23,7 +23,7 @@ msgid "Select"
 msgstr "선택"
 
 #: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:269 imap/imap_ssl.c:256
-#: pager.c:1480 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
+#: pager.c:1482 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "도움말"
 
@@ -225,16 +225,21 @@ msgstr "파일 보기 시도 중 오류"
 msgid "New mail in %s."
 msgstr "%s에 새 편지 도착."
 
-#: charset.c:1065
+#: charset.c:1066
 msgid "We can't currently handle utf-8 at this point."
 msgstr "히 항목에서는 아직 UTF-8을 제어할 수 없음."
 
-#: charset.c:1071 charset.c:1078
+#: charset.c:1072 charset.c:1079
 #, c-format
 msgid "Can't open %s: %s."
 msgstr "%s를 열 수 없음: %s"
 
-#: charset.c:1131
+#: charset.c:1148
+#, fuzzy, c-format
+msgid "Error while recoding %s. Leave it unchanged."
+msgstr "%s 기록 중 오류. 자료를 복구하려면 %s를 보세요."
+
+#: charset.c:1154
 #, c-format
 msgid "Error while recoding %s. See %s for recovering your data."
 msgstr "%s 기록 중 오류. 자료를 복구하려면 %s를 보세요."
@@ -658,7 +663,7 @@ msgstr "아무키나 누르면 계속합니다..."
 msgid " ('?' for list): "
 msgstr " (목록을 보려면 '?'): "
 
-#: curs_main.c:55 curs_main.c:546
+#: curs_main.c:55 curs_main.c:555
 msgid "No mailbox is open."
 msgstr "열린 편지함이 없음."
 
@@ -666,11 +671,11 @@ msgstr "열린 편지함이 없음."
 msgid "There are no messages."
 msgstr "메세지가 없습니다."
 
-#: curs_main.c:57 mx.c:1035 pager.c:58 recvattach.c:47
+#: curs_main.c:57 mx.c:1035 pager.c:61 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "읽기 전용 편지함."
 
-#: curs_main.c:58 pager.c:59 recvattach.c:764
+#: curs_main.c:58 pager.c:62 recvattach.c:764
 msgid "Function not permitted in attach-message mode."
 msgstr "메세지 첨부 모드에서 허가되지 않는 기능임."
 
@@ -690,7 +695,7 @@ msgstr "폴더에 변경 사항 기록 안됨."
 msgid "Quit"
 msgstr "종료"
 
-#: curs_main.c:263 pager.c:1389 postpone.c:38
+#: curs_main.c:263 pager.c:1392 postpone.c:38
 msgid "Del"
 msgstr "삭제"
 
@@ -704,7 +709,7 @@ msgstr "복구"
 msgid "Mail"
 msgstr "편지"
 
-#: curs_main.c:267 pager.c:1390
+#: curs_main.c:267 pager.c:1393
 msgid "Reply"
 msgstr "답장"
 
@@ -712,130 +717,130 @@ msgstr "답장"
 msgid "Group"
 msgstr "그룹"
 
-#: curs_main.c:441
+#: curs_main.c:446
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "외부에서 편지함이 변경됨. 플래그가 틀릴 수 있음"
 
-#: curs_main.c:444 pager.c:1498
+#: curs_main.c:449
 msgid "New mail in this mailbox."
 msgstr "현재 편지함에 새 편지 도착."
 
-#: curs_main.c:552
+#: curs_main.c:561
 msgid "No tagged messages."
 msgstr "태그가 붙은 메세지 없음."
 
-#: curs_main.c:632
+#: curs_main.c:641
 msgid "Jump to message: "
 msgstr "메세지 이동: "
 
-#: curs_main.c:638
+#: curs_main.c:647
 msgid "Argument must be a message number."
 msgstr "인수는 메세지 번호여야 함."
 
-#: curs_main.c:671
+#: curs_main.c:680
 msgid "That message is not visible."
 msgstr "이 메세지는 볼 수 없는 상태임."
 
-#: curs_main.c:674
+#: curs_main.c:683
 msgid "Invalid message number."
 msgstr "잘못된 문서 번호"
 
-#: curs_main.c:687
+#: curs_main.c:696
 msgid "Delete messages matching: "
 msgstr "일치하는 메세지 삭제: "
 
-#: curs_main.c:709
+#: curs_main.c:718
 msgid "No limit pattern is in effect."
 msgstr "현재 범위 패턴이 없습니다."
 
 #. i18n: ask for a limit to apply
-#: curs_main.c:714
+#: curs_main.c:723
 #, c-format
 msgid "Limit: %s"
 msgstr "범위: %s"
 
-#: curs_main.c:723
+#: curs_main.c:732
 msgid "Limit to messages matching: "
 msgstr "제한과 일치하는 메시지를 보여줌:"
 
-#: curs_main.c:753
+#: curs_main.c:762
 msgid "Quit Mutt?"
 msgstr "Mutt을 종료할까요?"
 
-#: curs_main.c:864
+#: curs_main.c:873
 msgid "Tag messages matching: "
 msgstr "일치하는 메세지에 태그 붙임: "
 
-#: curs_main.c:872
+#: curs_main.c:881
 msgid "Undelete messages matching: "
 msgstr "일치하는 메세지 복구: "
 
-#: curs_main.c:879
+#: curs_main.c:888
 msgid "Untag messages matching: "
 msgstr "일치하는 메세지에 태그 없앰: "
 
-#: curs_main.c:897
+#: curs_main.c:906
 msgid "Open mailbox in read-only mode"
 msgstr "읽기 전용으로 편지함 열기"
 
-#: curs_main.c:899
+#: curs_main.c:908
 msgid "Open mailbox"
 msgstr "편지함 열기"
 
-#: curs_main.c:915 mx.c:454 mx.c:600
+#: curs_main.c:924 mx.c:454 mx.c:600
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s는 편지함이 아님."
 
-#: curs_main.c:993
+#: curs_main.c:1002
 msgid "Exit Mutt without saving?"
 msgstr "저장하지 않고 Mutt을 끝낼까요?"
 
-#: curs_main.c:1029 curs_main.c:1053
+#: curs_main.c:1038 curs_main.c:1062
 msgid "You are on the last message."
 msgstr "마지막 메세지입니다."
 
-#: curs_main.c:1036 curs_main.c:1078
+#: curs_main.c:1045 curs_main.c:1087
 msgid "No undeleted messages."
 msgstr "복구된 메세지 없음."
 
-#: curs_main.c:1071 curs_main.c:1094
+#: curs_main.c:1080 curs_main.c:1103
 msgid "You are on the first message."
 msgstr "첫번째 메세지입니다."
 
-#: curs_main.c:1166 pattern.c:1123
+#: curs_main.c:1175 pattern.c:1123
 msgid "Search wrapped to top."
 msgstr "위로부터 다시 검색함."
 
-#: curs_main.c:1175 pattern.c:1134
+#: curs_main.c:1184 pattern.c:1134
 msgid "Search wrapped to bottom."
 msgstr "아래부터 다시 검색함."
 
-#: curs_main.c:1208
+#: curs_main.c:1217
 msgid "No new messages"
 msgstr "새로운 메세지 없음"
 
-#: curs_main.c:1208
+#: curs_main.c:1217
 msgid "No unread messages"
 msgstr "읽지 않은 메세지 없음"
 
-#: curs_main.c:1209
+#: curs_main.c:1218
 msgid " in this limited view"
 msgstr ""
 
-#: curs_main.c:1333
+#: curs_main.c:1342
 msgid "No more threads."
 msgstr "더 이상 글타래 없음."
 
-#: curs_main.c:1335
+#: curs_main.c:1344
 msgid "You are on the first thread."
 msgstr "처음 글타래입니다.."
 
-#: curs_main.c:1405
+#: curs_main.c:1414
 msgid "Thread contains unread messages."
 msgstr "글타래에 읽지 않은 메세지 있음."
 
-#: curs_main.c:1418 flags.c:228 thread.c:661 thread.c:712
+#: curs_main.c:1427 flags.c:228 thread.c:661 thread.c:712
 msgid "Threading is not enabled."
 msgstr "글타래를 사용하지 않음."
 
@@ -1149,6 +1154,12 @@ msgstr "접속 중..."
 msgid "Login failed."
 msgstr "접속 실패."
 
+#. now begin login
+#: imap/auth_gss.c:74
+#, fuzzy
+msgid "Authenticating (GSSAPI)..."
+msgstr "인증 중 (CRAM-MD5)..."
+
 #: imap/browse.c:93
 #, fuzzy
 msgid "Getting namespaces..."
@@ -1162,7 +1173,7 @@ msgstr "서버에 연결 됨, 폴더 목록 받는 중..."
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
 #.
-#: imap/command.c:165
+#: imap/command.c:184
 msgid "Fatal error.  Message count is out of sync!"
 msgstr "치명적 오류. 메시지 숫자가 동기되지 않음!"
 
@@ -1198,30 +1209,30 @@ msgstr "%s를 만들까요?"
 msgid "Closing connection to IMAP server..."
 msgstr "IMAP 서버 접속 닫는 중..."
 
-#: imap/imap.c:981
+#: imap/imap.c:991
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "표시된 %d개의 메세지를 삭제함..."
 
-#: imap/imap.c:1001
+#: imap/imap.c:1011
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "메세지 상태 플래그 저장... [%d/%d]"
 
-#: imap/imap.c:1060
+#: imap/imap.c:1070
 msgid "Closing mailbox..."
 msgstr "편지함 닫는 중..."
 
-#: imap/imap.c:1070
+#: imap/imap.c:1080
 msgid "Expunging messages from server..."
 msgstr "서버의 메세지 삭제 중..."
 
-#: imap/imap.c:1387
+#: imap/imap.c:1410
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "%s에 구독 중..."
 
-#: imap/imap.c:1389
+#: imap/imap.c:1412
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "%s에 구독 해제 중..."
@@ -1329,11 +1340,11 @@ msgstr "%s로 연결 중..."
 msgid "preconnect command failed"
 msgstr "preconnect 명령 실패"
 
-#: imap/util.c:40
+#: imap/util.c:41
 msgid "Continue?"
 msgstr "계속할까요?"
 
-#: imap/util.c:46
+#: imap/util.c:47
 #, c-format
 msgid "%s [%s]\n"
 msgstr "%s [%s]\n"
@@ -2447,80 +2458,80 @@ msgstr "편지함을 다시 열 수 없음!"
 msgid "Reopening mailbox..."
 msgstr "편지함을 다시 엽니다..."
 
-#: menu.c:350
+#: menu.c:354
 msgid "Jump to: "
 msgstr "이동할 위치: "
 
-#: menu.c:359
+#: menu.c:363
 msgid "Invalid index number."
 msgstr "잘못된 색인 번호."
 
-#: menu.c:363 menu.c:381 menu.c:417 menu.c:458 menu.c:474 menu.c:485
-#: menu.c:496 menu.c:538 menu.c:549 menu.c:562 menu.c:575 menu.c:933
+#: menu.c:367 menu.c:385 menu.c:421 menu.c:462 menu.c:478 menu.c:489
+#: menu.c:500 menu.c:542 menu.c:553 menu.c:566 menu.c:579 menu.c:941
 msgid "No entries."
 msgstr "항목이 없음."
 
-#: menu.c:378
+#: menu.c:382
 msgid "You cannot scroll down farther."
 msgstr "더 이상 내려갈 수 없음."
 
-#: menu.c:394
+#: menu.c:398
 msgid "You cannot scroll up farther."
 msgstr "더 이상 올라갈 수 없음."
 
-#: menu.c:414
+#: menu.c:418
 msgid "You are on the last page."
 msgstr "마지막 페이지입니다."
 
-#: menu.c:436
+#: menu.c:440
 msgid "You are on the first page."
 msgstr "첫번째 페이지입니다."
 
-#: menu.c:515
+#: menu.c:519
 msgid "First entry is shown."
 msgstr "첫번째 항목 보임."
 
-#: menu.c:535
+#: menu.c:539
 msgid "Last entry is shown."
 msgstr "마지막 항목 보임."
 
-#: menu.c:586
+#: menu.c:590
 msgid "You are on the last entry."
 msgstr "마지막 항목입니다."
 
-#: menu.c:597
+#: menu.c:601
 msgid "You are on the first entry."
 msgstr "첫번째 항목입니다."
 
-#: menu.c:657 pattern.c:1069
+#: menu.c:661 pattern.c:1069
 msgid "Search for: "
 msgstr "찾아보기: "
 
-#: menu.c:658
+#: menu.c:662
 msgid "Reverse search for: "
 msgstr "거꾸로 찾아보기: "
 
-#: menu.c:668 pattern.c:1102
+#: menu.c:672 pattern.c:1102
 msgid "No search pattern."
 msgstr "패턴을 찾을 수 없음."
 
-#: menu.c:698 pager.c:1868 pager.c:1884 pager.c:1972 pattern.c:1167
+#: menu.c:702 pager.c:1857 pager.c:1873 pager.c:1961 pattern.c:1167
 msgid "Not found."
 msgstr "찾을 수 없음."
 
-#: menu.c:803
+#: menu.c:811
 msgid "No tagged entries."
 msgstr "태그가 붙은 항목 없음."
 
-#: menu.c:896
+#: menu.c:904
 msgid "Search is not implemented for this menu."
 msgstr "이 메뉴에는 검색 기능이 없습니다."
 
-#: menu.c:901
+#: menu.c:909
 msgid "Jumping is not implemented for dialogs."
 msgstr "선택창에는 바로 가기 기능이 없습니다."
 
-#: menu.c:936
+#: menu.c:944
 msgid "Tagging is not supported."
 msgstr "태그를 붙이는 것을 지원치 않음."
 
@@ -2660,52 +2671,52 @@ msgstr "%d개 보조됨."
 msgid "Can't write message"
 msgstr "메시지를 쓰지 못함"
 
-#: pager.c:57
+#: pager.c:60
 msgid "Not available in this menu."
 msgstr "이 메뉴에선 유효하지 않음 않음."
 
-#: pager.c:1383
+#: pager.c:1386
 msgid "PrevPg"
 msgstr "이전장"
 
-#: pager.c:1384
+#: pager.c:1387
 msgid "NextPg"
 msgstr "다음장"
 
-#: pager.c:1388
+#: pager.c:1391
 msgid "View Attachm."
 msgstr "첨부물보기"
 
-#: pager.c:1391
+#: pager.c:1394
 msgid "Next"
 msgstr "다음"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1780 pager.c:1811 pager.c:1840 pager.c:2060
+#: pager.c:1769 pager.c:1800 pager.c:1829 pager.c:2049
 msgid "Bottom of message is shown."
 msgstr "메세지의 끝입니다."
 
-#: pager.c:1796 pager.c:1818 pager.c:1829
+#: pager.c:1785 pager.c:1807 pager.c:1818
 msgid "Top of message is shown."
 msgstr "메세지의 처음입니다."
 
-#: pager.c:1902
+#: pager.c:1891
 msgid "Reverse search: "
 msgstr "거꾸로 찾기: "
 
-#: pager.c:1903
+#: pager.c:1892
 msgid "Search: "
 msgstr "찾기: "
 
-#: pager.c:1998
+#: pager.c:1987
 msgid "Help is currently being shown."
 msgstr "현재 도움말을 보고 있습니다."
 
-#: pager.c:2027
+#: pager.c:2016
 msgid "No more quoted text."
 msgstr "더 이상의 인용문 없음."
 
-#: pager.c:2040
+#: pager.c:2029
 msgid "No more unquoted text after quoted text."
 msgstr "인용문 이후에 더 이상의 비 인용문 없음."
 
