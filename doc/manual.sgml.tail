@@ -304,20 +304,26 @@ verify-key                 c   verify a PGP public key
 <verb>
 backspace          BackSpace   delete the char in front of the cursor
 backward-char             ^B   move the cursor one character to the left
+backward-word          ESC b   move the cursor to the previous word
 bol                       ^A   jump to the beginning of the line
 buffy-cycle            Space   cycle among incoming mailboxes
+capitalize-word        ESC c   uppercase the first character in the word
 complete                 TAB   complete filename or alias
 complete-query            ^T   complete address with query
 delete-char               ^D   delete the char under the cursor
+downcase-word          ESC l   lowercase all characters in current word
 eol                       ^E   jump to the end of the line
 forward-char              ^F   move the cursor one character to the right
+forward-word           ESC f   move the cursor to the next word
 history-down       not bound   scroll up through the history list
 history-up         not bound   scroll up through the history list
 kill-eol                  ^K   delete chars from cursor to end of line
+kill-eow               ESC d   delete chars from cursor to end of word
 kill-line                 ^U   delete all chars on the line
 kill-word                 ^W   delete the word in front of the cursor
 quote-char                ^V   quote the next typed key
 transpose-chars    not bound   transpose character under cursor with previous
+upcase-word            ESC u   uppercase all characters in current word
 </verb>
 
 <sect>Miscellany
