@@ -1,3 +1,7 @@
+2002-12-13 11:00:44  René Clerc  <rene@clerc.nl>
+
+	* po/nl.po: update.
+
 2002-12-11 22:47:57  Thomas Roessler  <roessler@does-not-exist.org>
 
 	* muttlib.c, pgp.c, protos.h, send.c: Fix #1417; thanks to
