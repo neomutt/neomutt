@@ -65,6 +65,41 @@ echo "Please enter a one-line description of the problem you experience:"
 echo $n "> $c"
 read SUBJECT
 
+cat <<EOF  
+Which should be the severity for this bug report?
+
+       0) Feature request, or maybe a bug which is very difficult to
+       fix due to major design considerations.
+
+       1) The package fails to perform correctly on some conditions, or
+       in some systems, or fails to comply current policy documents. Most
+       bugs are in this category.
+
+       2) This bug makes the package unsuitable for a stable Debian release.
+       The package should be removed from a stable distribution if this
+       bug is not fixed.
+
+       3) Dangerous bug. Makes the package in question unusable by anyone or
+       mostly so, or causes data loss, or introduces a security hole allowing
+       access to the accounts of users who use the package.
+
+       4) Critical bug. Makes unrelated software on the system (or the whole
+       system) break, or causes serious data loss, or introduces a security
+       hole on systems where you install the package.
+
+EOF
+echo $n "Severity? [01234] $c"
+read severity
+case "$severity" in
+       0|[Ww]) severity=wishlist  ;;
+       2|[Ii]) severity=important ;;
+       3|[Gg]) severity=grave     ;;
+       4|[Cc]) severity=critical  ;;
+       *)   severity=normal    ;;
+esac
+
+
+
 echo $n "Do you want to include your personal mutt configuration files? [Y|n]$c"
 read personal
 case "$personal" in
@@ -108,12 +143,17 @@ test "$DPKG" = "yes" && SUBMIT="$SUBMIT, $DEBIAN_SUBMIT"
 
 exec > ${TEMPLATE}
 
+test "$EMAIL"        && echo "From: $EMAIL"
+test "$REPLYTO"      && echo "Reply-To: $REPLYTO"
+test "$ORGANIZATION" && echo "Organization: $ORGANIZATION"
+
 echo "Subject: mutt-$MUTTVERSION: $SUBJECT"
 echo "To: $SUBMIT"
-echo "Cc: $LOGNAME"
+echo "Cc: ${EMAIL-$LOGNAME}"
 echo
 echo "Package: mutt"
 echo "Version: $MUTTVERSION"
+echo "Severity: $severity"
 echo 
 echo "-- Please type your report below this line"
 echo
@@ -170,6 +210,8 @@ if test "$global" = "yes" ; then
 	fi
 fi
 
+test "$EMAIL" && EMAIL="-f $EMAIL"
+
 exec > /dev/tty
 
 cp $TEMPLATE $SCRATCH/mutt-bug.txt
@@ -177,19 +219,19 @@ cp $TEMPLATE $SCRATCH/mutt-bug.txt
 input="e"
 while : ; do
 	if test "$input" = "e" ; then
-		${VISUAL-vi} $SCRATCH/mutt-bug.txt
+		${VISUAL-${EDITOR-vi}} $SCRATCH/mutt-bug.txt
 		if cmp $SCRATCH/mutt-bug.txt ${TEMPLATE} > /dev/null ; then
 			echo "Warning: Bug report was not modified!"
 		fi
 	fi
 	
-	echo $n "Submit, Edit, Print, Quit? [S|e|p|q]$c"
+	echo $n "Submit, Edit, View, Quit? [S|e|v|q]$c"
 	read _input
-	input="`echo $_input | tr EPSQ epsq`"
+	input="`echo $_input | tr EVSQ evsq`"
 	case $input in
 	e*)	;;
-	p*)	${PAGER-more} $SCRATCH/mutt-bug.txt ;;
-	s*|"")	@SENDMAIL@ -t < $SCRATCH/mutt-bug.txt ; exit ;;
+	v*)	${PAGER-more} $SCRATCH/mutt-bug.txt ;;
+	s*|"")	@SENDMAIL@ $EMAIL -t < $SCRATCH/mutt-bug.txt ; exit ;;
 	q*)	exit
 	esac
 done
