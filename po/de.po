@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1999-09-02 13:20+0200\n"
+"POT-Creation-Date: 1999-10-22 14:38+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,7 @@ msgstr "Verlassen"
 msgid "Select"
 msgstr "Auswählen"
 
-#: addrbook.c:33 browser.c:44 compose.c:90 curs_main.c:264 pager.c:1476
+#: addrbook.c:33 browser.c:44 compose.c:92 curs_main.c:269 pager.c:1476
 #: pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Hilfe"
@@ -72,7 +72,7 @@ msgstr "Namensschema kann nicht erfüllt werden, fortfahren?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "\"compose\"-Eintrag in der Mailcap-Datei erfordert %%s."
 
-#: attach.c:132 attach.c:257 commands.c:165 compose.c:1166 curs_lib.c:128
+#: attach.c:132 attach.c:257 commands.c:169 compose.c:1169 curs_lib.c:128
 #: curs_lib.c:324
 #, c-format
 msgid "Error running \"%s\"!"
@@ -134,72 +134,72 @@ msgstr "Verzeichnis"
 msgid "Mask"
 msgstr "Maske"
 
-#: browser.c:363 browser.c:853
+#: browser.c:361 browser.c:851
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s ist kein Verzeichnis."
 
-#: browser.c:474
+#: browser.c:472
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Mailbox-Dateien [%d]"
 
-#: browser.c:481
+#: browser.c:479
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Abonniert [%s], Dateimaske: %s"
 
-#: browser.c:485
+#: browser.c:483
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Verzeichnis [%s], Dateimaske: %s"
 
-#: browser.c:496
+#: browser.c:494
 msgid "Can't attach a directory!"
 msgstr "Verzeichnisse können nicht angehängt werden."
 
-#: browser.c:613 browser.c:921 browser.c:1014
+#: browser.c:611 browser.c:919 browser.c:1012
 msgid "No files match the file mask"
 msgstr "Es gibt keine zur Maske passenden Dateien."
 
-#: browser.c:812
+#: browser.c:810
 msgid "Chdir to: "
 msgstr "Verzeichnis wechseln nach: "
 
-#: browser.c:846 browser.c:914
+#: browser.c:844 browser.c:912
 msgid "Error scanning directory."
 msgstr "Fehler beim Einlesen des Verzeichnisses."
 
-#: browser.c:864
+#: browser.c:862
 msgid "File Mask: "
 msgstr "Dateimaske: "
 
-#: browser.c:937
+#: browser.c:935
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr ""
 "Sortiere umgekehrt nach (D)atum, (a)lphabetisch, (G)röße, oder (n)icht? "
 
-#: browser.c:938
+#: browser.c:936
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Sortiere nach (D)atum, (a)lphabetisch, (G)röße oder (n)icht?"
 
-#: browser.c:939
+#: browser.c:937
 msgid "dazn"
 msgstr "dagn"
 
-#: browser.c:1001
+#: browser.c:999
 msgid "New file name: "
 msgstr "Neuer Dateiname: "
 
-#: browser.c:1022
+#: browser.c:1020
 msgid "Can't view a directory"
 msgstr "Verzeichnisse können nicht angezeigt werden."
 
-#: browser.c:1040
+#: browser.c:1038
 msgid "Error trying to view file"
 msgstr "Fehler."
 
-#: buffy.c:399
+#: buffy.c:400
 #, c-format
 msgid "New mail in %s."
 msgstr "Neue Nachrichten in %s."
@@ -273,345 +273,349 @@ msgid "default colors not supported"
 msgstr "Standard-Farben werden nicht unterstützt."
 
 #. find out whether or not the verify signature
-#: commands.c:90
+#: commands.c:94
 msgid "Verify PGP signature?"
 msgstr "PGP-Signatur überprüfen?"
 
-#: commands.c:102 pgp.c:1500 pgpkey.c:490
+#: commands.c:106 pgp.c:1508 pgpkey.c:490 postpone.c:536
 msgid "Invoking PGP..."
 msgstr "Rufe PGP auf..."
 
-#: commands.c:110 mbox.c:722
+#: commands.c:114 mbox.c:722
 msgid "Could not create temporary file!"
 msgstr "Konnte Temporärdatei nicht anzeigen!"
 
-#: commands.c:149
+#: commands.c:153
 msgid "PGP signature successfully verified."
 msgstr "PGP Unterschrift erfolgreich überprüft."
 
-#: commands.c:172
+#: commands.c:176
 msgid "Command: "
 msgstr "Kommando: "
 
-#: commands.c:190 recvattach.c:727
+#: commands.c:194 recvattach.c:727
 msgid "Bounce message to: "
 msgstr "Nachricht weiterleiten an: "
 
-#: commands.c:192 recvattach.c:729
+#: commands.c:196 recvattach.c:729
 msgid "Bounce tagged messages to: "
 msgstr "Markierte Nachrichten weiterleiten an: "
 
-#: commands.c:207
+#: commands.c:211
 msgid "Error parsing address!"
 msgstr "Unverständliche Adresse!"
 
-#: commands.c:217
+#: commands.c:221
 #, c-format
 msgid "Bounce message to %s"
 msgstr "Nachricht an %s weiterleiten"
 
-#: commands.c:217
+#: commands.c:221
 #, c-format
 msgid "Bounce messages to %s"
 msgstr "Nachrichten an %s weiterleiten"
 
-#: commands.c:228
+#: commands.c:232
 msgid "Message bounced."
 msgstr "Nachricht weitergeleitet."
 
-#: commands.c:228
+#: commands.c:232
 msgid "Messages bounced."
 msgstr "Nachrichten weitergeleitet."
 
-#: commands.c:263
+#: commands.c:267
 msgid "Pipe to command: "
 msgstr "In Kommando einspeisen: "
 
-#: commands.c:363
+#: commands.c:367
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 "Umgekehrt "
 "(D)at/(A)bs/Ei(n)g/(B)etr/(E)mpf/(F)aden/(u)nsort/(G)röße/Be(w)ert?: "
 
-#: commands.c:364
+#: commands.c:368
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 "Sortieren "
 "(D)at/(A)bs/Ei(n)g/(B)etr/(E)mpf/(F)aden/(u)nsort/(G)röße/Be(w)ert?: "
 
-#: commands.c:365
+#: commands.c:369
 msgid "dfrsotuzc"
 msgstr "danbefugw"
 
-#: commands.c:418
+#: commands.c:422
 msgid "Shell command: "
 msgstr "Shell-Kommando: "
 
-#: commands.c:550
+#: commands.c:555
 #, c-format
 msgid "%s%s to mailbox"
 msgstr "%s%s in Mailbox"
 
-#: commands.c:551
+#: commands.c:556
 msgid "Decode-save"
 msgstr "Decodiert speichern"
 
-#: commands.c:551
+#: commands.c:556
 msgid "Decode-copy"
 msgstr "Decodiert kopieren"
 
-#: commands.c:552
+#: commands.c:557
 msgid "Decrypt-save"
 msgstr "Entschlüsselt speichern"
 
-#: commands.c:552
+#: commands.c:557
 msgid "Decrypt-copy"
 msgstr "Entschlüsselt kopieren"
 
-#: commands.c:553 curs_main.c:260 recvattach.c:58
+#: commands.c:558 curs_main.c:265 recvattach.c:58
 msgid "Save"
 msgstr "Speichern"
 
-#: commands.c:553
+#: commands.c:558
 msgid "Copy"
 msgstr "Kopieren"
 
-#: commands.c:553
+#: commands.c:558
 msgid " tagged"
 msgstr " ausgewählt"
 
-#: commands.c:622
+#: commands.c:627
 #, c-format
 msgid "Copying to %s..."
 msgstr "Kopiere nach %s..."
 
-#: commands.c:698
+#: commands.c:719
 msgid "Print message?"
 msgstr "Nachricht drucken?"
 
-#: commands.c:698
+#: commands.c:719
 msgid "Print tagged messages?"
 msgstr "Ausgewählte Nachrichten drucken?"
 
-#: commands.c:725
+#: commands.c:746
 msgid "Message printed"
 msgstr "Nachricht gedruckt"
 
-#: commands.c:725
+#: commands.c:746
 msgid "Messages printed"
 msgstr "Nachrichten gedruckt"
 
-#: compose.c:83
+#: compose.c:40
+msgid "There are no attachments."
+msgstr "Es sind keine Anhänge vorhanden."
+
+#: compose.c:85
 msgid "Send"
 msgstr "Absenden"
 
-#: compose.c:84
+#: compose.c:86
 msgid "Abort"
 msgstr "Verwerfen"
 
-#: compose.c:88 compose.c:596
+#: compose.c:90 compose.c:598
 msgid "Attach file"
 msgstr "Datei anhängen"
 
-#: compose.c:89
+#: compose.c:91
 msgid "Descrip"
 msgstr "Beschr."
 
-#: compose.c:110
+#: compose.c:112
 msgid "Sign, Encrypt"
 msgstr "Signieren, Verschlüsseln"
 
-#: compose.c:112
+#: compose.c:114
 msgid "Encrypt"
 msgstr "Verschlüsseln"
 
-#: compose.c:114
+#: compose.c:116
 msgid "Sign"
 msgstr "Signieren"
 
-#: compose.c:116
+#: compose.c:118
 msgid "Clear"
 msgstr "Klartext"
 
-#: compose.c:123
+#: compose.c:125
 msgid " sign as: "
 msgstr " signiere als: "
 
-#: compose.c:123
+#: compose.c:125
 msgid "<default>"
 msgstr "<Voreinstellung>"
 
-#: compose.c:124 compose.c:181
+#: compose.c:126 compose.c:183
 msgid "MIC algorithm: "
 msgstr "MIC-Algorithmus: "
 
-#: compose.c:135
+#: compose.c:137
 msgid ""
 "(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget "
 "it? "
 msgstr ""
 "(v)erschl., (s)ign., sign. (a)ls, (b)eides, (m)ic auswählen, (k)ein PGP"
 
-#: compose.c:136
+#: compose.c:138
 msgid "esabmf"
 msgstr "vsabmk"
 
-#: compose.c:150
+#: compose.c:152
 msgid "Sign as: "
 msgstr "Signiere als: "
 
-#: compose.c:175
+#: compose.c:177
 msgid "This doesn't make sense if you don't want to sign the message."
 msgstr "Dies macht keinen Sinn, wenn Sie die Nachricht nicht signieren wollen."
 
-#: compose.c:186
+#: compose.c:188
 msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
 msgstr ""
 "Unbekannter MIC-Algorithmus.  Gültig sind: pgp-md5, pgp-sha1, pgp-rmd160"
 
-#: compose.c:254
+#: compose.c:256
 #, c-format
 msgid "%s [#%d] no longer exists!"
 msgstr "%s [#%d] existiert nicht mehr!"
 
-#: compose.c:262
+#: compose.c:264
 #, c-format
 msgid "%s [#%d] modified. Update encoding?"
 msgstr "%s [#%d] wurde modifiziert.  Codierung neu bestimmen?"
 
-#: compose.c:306
+#: compose.c:308
 msgid "-- Attachments"
 msgstr "-- Anhänge"
 
-#: compose.c:349
+#: compose.c:351
 msgid "You may not delete the only attachment."
 msgstr "Der einzige Nachrichtenteil kann nicht gelöscht werden."
 
-#: compose.c:392
+#: compose.c:394
 msgid "Can't change character set for non-text attachments!"
 msgstr "Kann Zeichensatz für Anhänge, die kein Text sind, nicht ändern!"
 
-#: compose.c:398
+#: compose.c:400
 msgid "Enter character set: "
 msgstr "Bitte Zeichensatz eingeben: "
 
-#: compose.c:405
+#: compose.c:407
 msgid "UTF-8 encoding attachments has not yet been implemented."
 msgstr "UTF-8 Codierung von Anhängen ist noch nicht implementiert."
 
-#: compose.c:411
+#: compose.c:413
 #, c-format
 msgid "Character set %s is unknown."
 msgstr "Zeichensatz %s is unbekannt."
 
-#: compose.c:455
+#: compose.c:457
 msgid "Compose"
 msgstr "Nachricht erstellen"
 
-#: compose.c:611
+#: compose.c:614
 msgid "Attaching selected files..."
 msgstr "Hänge ausgewählte Dateien an..."
 
-#: compose.c:622
+#: compose.c:625
 #, c-format
 msgid "Unable to attach %s!"
 msgstr "Kann %s nicht anhängen!"
 
-#: compose.c:640
+#: compose.c:643
 msgid "Open mailbox to attach message from"
 msgstr "Öffne Mailbox, um Nachricht anzuhängen"
 
-#: compose.c:675
+#: compose.c:678
 msgid "No messages in that folder."
 msgstr "Keine Nachrichten in diesem Ordner."
 
-#: compose.c:684
+#: compose.c:687
 msgid "Tag the messages you want to attach!"
 msgstr "Bitte markieren Sie die Nachrichten, die Sie anhängen wollen!"
 
-#: compose.c:716
+#: compose.c:719
 msgid "Unable to attach!"
 msgstr "Kann nicht anhängen!"
 
-#: compose.c:766
+#: compose.c:769
 msgid "Recoding only affects text attachments."
 msgstr "Änderen der Kodierung betrifft nur Text Anhänge."
 
-#: compose.c:771
+#: compose.c:774
 msgid "We currently can't encode to utf-8."
 msgstr "Wir können noch nicht UTF-8 kodieren."
 
-#: compose.c:776
+#: compose.c:779
 msgid "The current attachment won't be converted."
 msgstr "Der aktuelle Anhang wird nicht konvertiert werden."
 
-#: compose.c:778
+#: compose.c:781
 msgid "The current attachment will be converted."
 msgstr "Der aktuelle Anhang wird konvertiert werden."
 
-#: compose.c:791
+#: compose.c:794
 msgid "Recoding only affetcs text attachments."
 msgstr "Die Änderung der Kodierung betrifft nur Text Anhänge."
 
-#: compose.c:807
+#: compose.c:810
 msgid "Recoding successful."
 msgstr "Änderung der Kodierung war erfolgreich."
 
-#: compose.c:917
+#: compose.c:920
 msgid "Invalid encoding."
 msgstr "Ungültige Codierung."
 
-#: compose.c:938
+#: compose.c:941
 msgid "Save a copy of this message?"
 msgstr "Soll eine Kopie dieser Nachricht gespeichert werden?"
 
-#: compose.c:992
+#: compose.c:995
 msgid "Rename to: "
 msgstr "Umbenennen in: "
 
-#: compose.c:997
+#: compose.c:1000
 #, c-format
 msgid "Can't stat: %s"
 msgstr "Kann Verzeichniseintrag für Datei nicht lesen: %s"
 
-#: compose.c:1024
+#: compose.c:1027
 msgid "New file: "
 msgstr "Neue Datei: "
 
-#: compose.c:1037
+#: compose.c:1040
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type ist von der Form Basis/Untertyp."
 
-#: compose.c:1043
+#: compose.c:1046
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Unbekannter Content-Type %s."
 
-#: compose.c:1056
+#: compose.c:1059
 #, c-format
 msgid "Can't create file %s"
 msgstr "Kann Datei %s nicht anlegen."
 
-#: compose.c:1064
+#: compose.c:1067
 msgid "What we have here is a failure to make an attachment"
 msgstr "Anhang kann nicht erzeugt werden."
 
-#: compose.c:1127
+#: compose.c:1130
 msgid "Postpone this message?"
 msgstr "Nachricht zurückstellen?"
 
-#: compose.c:1181
+#: compose.c:1184
 msgid "Write message to mailbox"
 msgstr "Schreibe Nachricht in Mailbox."
 
-#: compose.c:1184
+#: compose.c:1187
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Schreibe Nachricht nach %s ..."
 
-#: compose.c:1193
+#: compose.c:1196
 msgid "Message written."
 msgstr "Nachricht geschrieben."
 
@@ -640,182 +644,182 @@ msgstr "Bitte drücken Sie eine Taste."
 msgid " ('?' for list): "
 msgstr " (für eine Liste '?' eingeben): "
 
-#: curs_main.c:50 curs_main.c:540
+#: curs_main.c:55 curs_main.c:546
 msgid "No mailbox is open."
 msgstr "Keine Mailbox ist geöffnet."
 
-#: curs_main.c:51
+#: curs_main.c:56
 msgid "There are no messages."
 msgstr "Es sind keine Nachrichten vorhanden."
 
-#: curs_main.c:52 mx.c:997 pager.c:55 recvattach.c:47
+#: curs_main.c:57 mx.c:1014 pager.c:55 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "Mailbox kann nur gelesen, nicht geschrieben werden."
 
-#: curs_main.c:53 pager.c:56
+#: curs_main.c:58 pager.c:56 recvattach.c:948
 msgid "Function not permitted in attach-message mode."
 msgstr "Funktion steht zun Anhängen von Nachrichten nicht zur Verfügung."
 
-#: curs_main.c:220
+#: curs_main.c:225
 msgid "Cannot toggle write on a readonly mailbox!"
 msgstr "Kann Schreib-Modus für eine Nur-Lesen-Mailbox nicht ändern!"
 
-#: curs_main.c:227
+#: curs_main.c:232
 msgid "Changes to folder will be written on folder exit."
 msgstr "Änderungen an dieser Mailbox werden beim Verlassen geschrieben."
 
-#: curs_main.c:232
+#: curs_main.c:237
 msgid "Changes to folder will not be written."
 msgstr "Änderungen an dieser Mailbox werden nicht geschrieben."
 
-#: curs_main.c:257
+#: curs_main.c:262
 msgid "Quit"
 msgstr "Ende"
 
-#: curs_main.c:258 pager.c:1386 postpone.c:38
+#: curs_main.c:263 pager.c:1386 postpone.c:38
 msgid "Del"
 msgstr "Lösch."
 
-#: curs_main.c:259 postpone.c:39
+#: curs_main.c:264 postpone.c:39
 msgid "Undel"
 msgstr "Behalten"
 
-#: curs_main.c:261 query.c:44
+#: curs_main.c:266 query.c:44
 msgid "Mail"
 msgstr "Senden"
 
-#: curs_main.c:262 pager.c:1387
+#: curs_main.c:267 pager.c:1387
 msgid "Reply"
 msgstr "Antw."
 
-#: curs_main.c:263
+#: curs_main.c:268
 msgid "Group"
 msgstr "Antw.alle"
 
-#: curs_main.c:435
+#: curs_main.c:441
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Mailbox wurde verändert. Markierungen können veraltet sein."
 
-#: curs_main.c:438
+#: curs_main.c:444
 msgid "New mail in this mailbox."
 msgstr "Neue Nachrichten in dieser Mailbox."
 
-#: curs_main.c:546
+#: curs_main.c:552
 msgid "No tagged messages."
 msgstr "Keine markierten Nachrichten."
 
-#: curs_main.c:626
+#: curs_main.c:632
 msgid "Jump to message: "
 msgstr "Springe zu Nachricht: "
 
-#: curs_main.c:632
+#: curs_main.c:638
 msgid "Argument must be a message number."
 msgstr "Argument muß eine Nachrichtennummer sein."
 
-#: curs_main.c:665
+#: curs_main.c:671
 msgid "That message is not visible."
 msgstr "Diese Nachricht ist nicht sichtbar."
 
-#: curs_main.c:668
+#: curs_main.c:674
 msgid "Invalid message number."
 msgstr "Ungültige Nachrichtennummer."
 
-#: curs_main.c:681
+#: curs_main.c:687
 msgid "Delete messages matching: "
 msgstr "Lösche Nachrichten nach Muster: "
 
-#: curs_main.c:703
+#: curs_main.c:709
 msgid "No limit pattern is in effect."
 msgstr "Zur Zeit ist kein Muster aktiv."
 
 #. i18n: ask for a limit to apply
-#: curs_main.c:708
+#: curs_main.c:714
 #, c-format
 msgid "Limit: %s"
 msgstr "Begrenze: %s"
 
-#: curs_main.c:717
+#: curs_main.c:723
 msgid "Limit to messages matching: "
 msgstr "Begrenze auf Nachrichten nach Muster: "
 
-#: curs_main.c:747
+#: curs_main.c:753
 msgid "Quit Mutt?"
 msgstr "Mutt beenden?"
 
-#: curs_main.c:853
+#: curs_main.c:864
 msgid "Tag messages matching: "
 msgstr "Markiere Nachrichten nach Muster: "
 
-#: curs_main.c:861
+#: curs_main.c:872
 msgid "Undelete messages matching: "
 msgstr "Entferne Löschmarkierung nach Muster: "
 
-#: curs_main.c:868
+#: curs_main.c:879
 msgid "Untag messages matching: "
 msgstr "Entferne Markierung nach Muster: "
 
-#: curs_main.c:886
+#: curs_main.c:897
 msgid "Open mailbox in read-only mode"
 msgstr "Öffne Mailbox im nur-Lesen-Modus"
 
-#: curs_main.c:888
+#: curs_main.c:899
 msgid "Open mailbox"
 msgstr "Öffne Mailbox"
 
-#: curs_main.c:904 mx.c:457 mx.c:598
+#: curs_main.c:915 mx.c:457 mx.c:598
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s ist keine Mailbox."
 
-#: curs_main.c:986
+#: curs_main.c:997
 msgid "Exit Mutt without saving?"
 msgstr "Mutt verlassen, ohne Änderungen zu speichern?"
 
-#: curs_main.c:1003 curs_main.c:1027
+#: curs_main.c:1018 curs_main.c:1042
 msgid "You are on the last message."
 msgstr "Sie sind bereits auf der letzten Nachricht."
 
-#: curs_main.c:1010 curs_main.c:1052
+#: curs_main.c:1025 curs_main.c:1067
 msgid "No undeleted messages."
 msgstr "Alle Nachrichten gelöscht."
 
-#: curs_main.c:1045 curs_main.c:1068
+#: curs_main.c:1060 curs_main.c:1083
 msgid "You are on the first message."
 msgstr "Sie sind bereits auf der ersten Nachricht."
 
-#: curs_main.c:1140 pattern.c:1109
+#: curs_main.c:1155 pattern.c:1112
 msgid "Search wrapped to top."
 msgstr "Suche von vorne begonnen."
 
-#: curs_main.c:1149 pattern.c:1120
+#: curs_main.c:1164 pattern.c:1123
 msgid "Search wrapped to bottom."
 msgstr "Suche von hinten begonnen."
 
-#: curs_main.c:1182
+#: curs_main.c:1197
 msgid "No new messages"
 msgstr "Keine neuen Nachrichten"
 
-#: curs_main.c:1182
+#: curs_main.c:1197
 msgid "No unread messages"
 msgstr "Keine ungelesenen Nachrichten"
 
-#: curs_main.c:1183
+#: curs_main.c:1198
 msgid " in this limited view"
 msgstr " in dieser begrenzten Ansicht."
 
-#: curs_main.c:1307
+#: curs_main.c:1322
 msgid "No more threads."
 msgstr "Keine weiteren Diskussionsfäden."
 
-#: curs_main.c:1309
+#: curs_main.c:1324
 msgid "You are on the first thread."
 msgstr "Sie haben bereits den ersten Diskussionsfaden ausgewählt."
 
-#: curs_main.c:1379
+#: curs_main.c:1394
 msgid "Thread contains unread messages."
 msgstr "Diskussionsfaden enthält ungelesene Nachrichten."
 
-#: curs_main.c:1392 flags.c:219 thread.c:661 thread.c:712
+#: curs_main.c:1407 flags.c:228 thread.c:661 thread.c:712
 msgid "Threading is not enabled."
 msgstr "Darstellung von Diskussionsfäden ist nicht eingeschaltet."
 
@@ -898,11 +902,11 @@ msgstr "Keine Zeilen in der Nachricht.\n"
 msgid "%s: unknown editor command (~? for help)\n"
 msgstr "%s: Unbekanntes Editor-Kommando (~? für Hilfestellung)\n"
 
-#: flags.c:257
+#: flags.c:266
 msgid "Set flag"
 msgstr "Setze Indikator"
 
-#: flags.c:257
+#: flags.c:266
 msgid "Clear flag"
 msgstr "Entferne Indikator"
 
@@ -911,61 +915,61 @@ msgid "[-- Error: unexpected end of file! --]\n"
 msgstr "[-- Fehler: Unerwartetes Dateiende! --]\n"
 
 #. didn't find anything that we could display!
-#: handler.c:944
+#: handler.c:956
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr ""
 "[-- Fehler: Konnte keinen der multipart/alternative-Teile anzeigen! --]\n"
 
-#: handler.c:1061
+#: handler.c:1073
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- Anhang #%d"
 
-#: handler.c:1072
+#: handler.c:1084
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Typ: %s/%s, Codierung: %s, Größe: %s --]\n"
 
-#: handler.c:1131
+#: handler.c:1143
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Automatische Anzeige mittels %s --]\n"
 
-#: handler.c:1132
+#: handler.c:1144
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Rufe Kommando auf: %s"
 
-#: handler.c:1169 handler.c:1187
+#: handler.c:1181 handler.c:1199
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Fehlerausgabe von %s --]\n"
 
-#: handler.c:1219
+#: handler.c:1231
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr ""
 "[-- Fehler: message/external-body hat keinen access-type Parameter --]\n"
 
-#: handler.c:1236
+#: handler.c:1248
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- Dieser %s/%s-Anhang "
 
-#: handler.c:1243
+#: handler.c:1255
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(Größe %s Byte) "
 
-#: handler.c:1245
+#: handler.c:1257
 msgid "has been deleted --]\n"
 msgstr "wurde gelöscht --]\n"
 
-#: handler.c:1248
+#: handler.c:1260
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- am %s --]\n"
 
-#: handler.c:1258
+#: handler.c:1270
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -976,7 +980,7 @@ msgstr ""
 "[-- enthalten, und die angegebene externe Quelle -- ]\n"
 "[-- existiert nicht mehr. --]\n"
 
-#: handler.c:1272
+#: handler.c:1284
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -986,29 +990,29 @@ msgstr ""
 "[-- enthalten, und die angegebene Zugangsmethode --]\n"
 "[-- %s wird nicht unterstützt. --]\n"
 
-#: handler.c:1380
+#: handler.c:1392
 msgid "Error: multipart/signed has no protocol."
 msgstr "Fehler: multipart/signed ohne \"protocol\"-Parameter."
 
-#: handler.c:1393
+#: handler.c:1405
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Fehler: multipart/encrypted ohne \"protocol\"-Parameter!"
 
-#: handler.c:1435
+#: handler.c:1447
 msgid "Unable to open temporary file!"
 msgstr "Konnte Temporärdatei nicht öffnen!"
 
-#: handler.c:1494
+#: handler.c:1506
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s wird nicht unterstützt "
 
-#: handler.c:1499
+#: handler.c:1511
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(benutzen Sie '%s', um diesen Teil anzuzeigen)"
 
-#: handler.c:1501
+#: handler.c:1513
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(benötige Tastaturbindung für 'view-attachments'!)"
 
@@ -1050,102 +1054,102 @@ msgstr ""
 msgid "Help for %s"
 msgstr "Hilfe für %s"
 
-#: init.c:476
+#: init.c:480
 msgid "alias: no address"
 msgstr "alias: Keine Adresse"
 
-#: init.c:570
+#: init.c:574
 msgid "invalid header field"
 msgstr "my_hdr: Ungültiges Kopf-Feld"
 
-#: init.c:578
+#: init.c:582
 #, c-format
 msgid "ignoring empty header field: %s"
 msgstr "my_hdr: Ignoriere leeres Kopf-Feld: %s"
 
-#: init.c:630
+#: init.c:634
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: Unbekannte Sortiermethode"
 
-#: init.c:710
+#: init.c:714
 #, c-format
 msgid "mutt_restore_default: error in regexp: %s\n"
 msgstr "mutt_restore_default: Fehler in regulärem Ausdruck: %s\n"
 
-#: init.c:770
+#: init.c:774
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: Unbekannte Variable."
 
-#: init.c:779
+#: init.c:783
 msgid "prefix is illegal with reset"
 msgstr "reset: Präfix ist nicht erlaubt."
 
-#: init.c:785
+#: init.c:789
 msgid "value is illegal with reset"
 msgstr "reset: Wertzuweisung ist nicht erlaubt."
 
-#: init.c:824
+#: init.c:828
 #, c-format
 msgid "%s is set"
 msgstr "%s ist gesetzt."
 
-#: init.c:824
+#: init.c:828
 #, c-format
 msgid "%s is unset"
 msgstr "%s ist nicht gesetzt."
 
-#: init.c:1019
+#: init.c:1023
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: Ungültiger Mailbox-Typ"
 
-#: init.c:1078
+#: init.c:1082
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: Ungültiger Wert"
 
-#: init.c:1133
+#: init.c:1137
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: Unbekannter Typ"
 
-#: init.c:1172
+#: init.c:1176
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Fehler in %s, Zeile %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1183
+#: init.c:1187
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: Fehler in %s"
 
-#: init.c:1193
+#: init.c:1197
 #, c-format
 msgid "source: error at %s"
 msgstr "source: Fehler bei %s"
 
-#: init.c:1198
+#: init.c:1202
 msgid "source: too many arguments"
 msgstr "source: Zu viele Argumente"
 
-#: init.c:1249
+#: init.c:1253
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: Unbekanntes Kommando"
 
-#: init.c:1606
+#: init.c:1610
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Fehler in Kommandozeile: %s\n"
 
-#: init.c:1649
+#: init.c:1653
 msgid "unable to determine home directory"
 msgstr "Kann Home-Verzeichnis nicht bestimmen."
 
-#: init.c:1657
+#: init.c:1661
 msgid "unable to determine username"
 msgstr "Kann Nutzernamen nicht bestimmen."
 
@@ -1734,170 +1738,174 @@ msgid "reply to a message"
 msgstr "Beantworte Nachricht"
 
 #: keymap_defs.h:139
+msgid "use the current message as a template for a new one"
+msgstr "Verwende aktuelle Nachricht als Vorlage für neue Nachricht"
+
+#: keymap_defs.h:140
 msgid "save message/attachment to a file"
 msgstr "Speichere Nachricht/Anhang in Datei"
 
-#: keymap_defs.h:140
+#: keymap_defs.h:141
 msgid "search for a regular expression"
 msgstr "Suche nach regulärem Ausdruck"
 
-#: keymap_defs.h:141
+#: keymap_defs.h:142
 msgid "search backwards for a regular expression"
 msgstr "Suche rückwärts nach regulärem Ausdruck"
 
-#: keymap_defs.h:142
+#: keymap_defs.h:143
 msgid "search for next match"
 msgstr "Suche nächsten Treffer"
 
-#: keymap_defs.h:143
+#: keymap_defs.h:144
 msgid "search for next match in opposite direction"
 msgstr "Suche nächsten Treffer in umgekehrter Richtung"
 
-#: keymap_defs.h:144
+#: keymap_defs.h:145
 msgid "toggle search pattern coloring"
 msgstr "Schalte Suchtreffer-Hervorhebung ein/aus"
 
-#: keymap_defs.h:145
+#: keymap_defs.h:146
 msgid "invoke a command in a subshell"
 msgstr "Rufe Kommando in Shell auf"
 
-#: keymap_defs.h:146
+#: keymap_defs.h:147
 msgid "sort messages"
 msgstr "Sortiere Nachrichten"
 
-#: keymap_defs.h:147
+#: keymap_defs.h:148
 msgid "sort messages in reverse order"
 msgstr "Sortiere Nachrichten in umgekehrter Reihenfolge"
 
-#: keymap_defs.h:148
+#: keymap_defs.h:149
 msgid "tag the current entry"
 msgstr "Markiere aktuellen Eintrag"
 
-#: keymap_defs.h:149
+#: keymap_defs.h:150
 msgid "apply next function to tagged messages"
 msgstr "Wende nächste Funktion auf markierte Nachrichten an"
 
-#: keymap_defs.h:150
+#: keymap_defs.h:151
 msgid "tag the current subthread"
 msgstr "Markiere aktuellen Diskussionsfadenteil"
 
-#: keymap_defs.h:151
+#: keymap_defs.h:152
 msgid "tag the current thread"
 msgstr "Markiere aktuellen Diskussionsfaden"
 
-#: keymap_defs.h:152
+#: keymap_defs.h:153
 msgid "toggle a message's 'new' flag"
 msgstr "Setze/entferne den \"neu\"-Indikator einer Nachricht"
 
-#: keymap_defs.h:153
+#: keymap_defs.h:154
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "Schalte Sichern von Änderungen ein/aus"
 
-#: keymap_defs.h:154
+#: keymap_defs.h:155
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "Schalte zwischen Mailboxen und allen Dateien um"
 
-#: keymap_defs.h:155
+#: keymap_defs.h:156
 msgid "move to the top of the page"
 msgstr "Springe zum Anfang der Seite"
 
-#: keymap_defs.h:156
+#: keymap_defs.h:157
 msgid "undelete the current entry"
 msgstr "Entferne Löschmarkierung vom aktuellen Eintrag"
 
-#: keymap_defs.h:157
+#: keymap_defs.h:158
 msgid "undelete all messages in thread"
 msgstr "Entferne Löschmarkierung von allen Nachrichten im Diskussionsfaden"
 
-#: keymap_defs.h:158
+#: keymap_defs.h:159
 msgid "undelete all messages in subthread"
 msgstr "Entferne Löschmarkierung von allen Nachrichten im Diskussionsfadenteil"
 
-#: keymap_defs.h:159
+#: keymap_defs.h:160
 msgid "show the Mutt version number and date"
 msgstr "Zeige Versionsnummer"
 
-#: keymap_defs.h:160
+#: keymap_defs.h:161
 msgid "view attachment using mailcap entry if necessary"
 msgstr "Zeige Anhang, wenn nötig via Mailcap"
 
-#: keymap_defs.h:161
+#: keymap_defs.h:162
 msgid "show MIME attachments"
 msgstr "Zeige MIME-Anhänge"
 
-#: keymap_defs.h:162
+#: keymap_defs.h:163
 msgid "show currently active limit pattern"
 msgstr "Zeige derzeit aktives Begrenzungsmuster"
 
-#: keymap_defs.h:163
+#: keymap_defs.h:164
 msgid "collapse/uncollapse current thread"
 msgstr "Kollabiere/expandiere aktuellen Diskussionsfaden"
 
-#: keymap_defs.h:164
+#: keymap_defs.h:165
 msgid "collapse/uncollapse all threads"
 msgstr "Kollabiere/expandiere alle Diskussionsfäden"
 
-#: keymap_defs.h:165
+#: keymap_defs.h:166
 msgid "attach a PGP public key"
 msgstr "Hänge öffentlichen PGP-Schlüssel an"
 
-#: keymap_defs.h:166
+#: keymap_defs.h:167
 msgid "show PGP options"
 msgstr "Zeige PGP-Optionen"
 
-#: keymap_defs.h:167
+#: keymap_defs.h:168
 msgid "extract PGP public keys"
 msgstr "Extrahiere öffentliche PGP-Schlüssel"
 
-#: keymap_defs.h:168
+#: keymap_defs.h:169
 msgid "wipe PGP passphrase from memory"
 msgstr "Entferne PGP-Mantra aus Speicher"
 
-#: keymap_defs.h:169
+#: keymap_defs.h:170
 msgid "mail a PGP public key"
 msgstr "Verschicke öffentlichen PGP-Schlüssel"
 
-#: keymap_defs.h:170
+#: keymap_defs.h:171
 msgid "verify a PGP public key"
 msgstr "Verifiziere öffentlichen PGP-Schlüssel"
 
-#: keymap_defs.h:171
+#: keymap_defs.h:172
 msgid "view the key's user id"
 msgstr "Zeige Nutzer-ID zu Schlüssel an"
 
-#: keymap_defs.h:172
+#: keymap_defs.h:173
 msgid "make decrypted copy and delete"
 msgstr "Erzeuge dechiffrierte Kopie und lösche"
 
-#: keymap_defs.h:173
+#: keymap_defs.h:174
 msgid "make decrypted copy"
 msgstr "Erzeuge dechiffrierte Kopie"
 
-#: keymap_defs.h:174
+#: keymap_defs.h:175
 msgid "Accept the chain constructed"
 msgstr "Akzeptiere die konstruierte Kette"
 
-#: keymap_defs.h:175
+#: keymap_defs.h:176
 msgid "Append a remailer to the chain"
 msgstr "Hänge einen Remailer an die Kette an"
 
-#: keymap_defs.h:176
+#: keymap_defs.h:177
 msgid "Insert a remailer into the chain"
 msgstr "Füge einen Remailer in die Kette ein"
 
-#: keymap_defs.h:177
+#: keymap_defs.h:178
 msgid "Delete a remailer from the chain"
 msgstr "Lösche einen Remailer aus der Kette"
 
-#: keymap_defs.h:178
+#: keymap_defs.h:179
 msgid "Select the previous element of the chain"
 msgstr "Wähle das vorhergehende Element der Kette aus"
 
-#: keymap_defs.h:179
+#: keymap_defs.h:180
 msgid "Select the next element of the chain"
 msgstr "Wähle das nächste Element der Kette aus"
 
-#: keymap_defs.h:180
+#: keymap_defs.h:181
 msgid "send the message through a mixmaster remailer chain"
 msgstr "Verschicke die Nachricht über eine Mixmaster Remailer Kette"
 
@@ -2025,43 +2033,43 @@ msgid ""
 "Compile options:"
 msgstr ""
 
-#: main.c:315
+#: main.c:316
 msgid "Error initializing terminal."
 msgstr "Kann Terminal nicht initialisieren."
 
-#: main.c:415
+#: main.c:416
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr ""
 
-#: main.c:417
+#: main.c:418
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG war beim Kompilieren nicht definiert.  Ignoriert.\n"
 
-#: main.c:536
+#: main.c:537
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s existiert nicht. Neu anlegen?"
 
-#: main.c:540
+#: main.c:541
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Kann %s nicht anlegen: %s."
 
-#: main.c:579
+#: main.c:580
 msgid "No recipients specified.\n"
 msgstr "Keine Empfänger angegeben.\n"
 
-#: main.c:652
+#: main.c:653
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: Kann Datei nicht anhängen.\n"
 
-#: main.c:672
+#: main.c:673
 msgid "No mailbox with new mail."
 msgstr "Keine Mailbox mit neuen Nachrichten."
 
-#: main.c:706
+#: main.c:707
 msgid "Mailbox is empty."
 msgstr "Mailbox ist leer."
 
@@ -2155,7 +2163,7 @@ msgstr "Sie sind auf dem letzten Eintrag."
 msgid "You are on the first entry."
 msgstr "Sie sind auf dem ersten Eintrag"
 
-#: menu.c:610 pattern.c:1055
+#: menu.c:610 pattern.c:1058
 msgid "Search for: "
 msgstr "Suche nach: "
 
@@ -2163,11 +2171,11 @@ msgstr "Suche nach: "
 msgid "Reverse search for: "
 msgstr "Suche rückwärts nach: "
 
-#: menu.c:622 pattern.c:1088
+#: menu.c:622 pattern.c:1091
 msgid "No search pattern."
 msgstr "Kein Suchmuster."
 
-#: menu.c:652 pager.c:1839 pager.c:1855 pager.c:1943 pattern.c:1153
+#: menu.c:652 pager.c:1839 pager.c:1855 pager.c:1943 pattern.c:1156
 msgid "Not found."
 msgstr "Nicht gefunden."
 
@@ -2231,50 +2239,55 @@ msgstr "Schreibe %s..."
 msgid "Could not synchronize mailbox %s!"
 msgstr "Kann Mailbox %s nicht synchronisieren!"
 
-#: mx.c:804
+#: mx.c:807
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Verschiebe gelesene Nachrichten nach %s?"
 
-#: mx.c:813 mx.c:1012
+#: mx.c:816 mx.c:1029
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Entferne %d als gelöscht markierte Nachrichten?"
 
-#: mx.c:813 mx.c:1012
+#: mx.c:816 mx.c:1029
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Entferne %d als gelöscht markierte Nachrichten?"
 
-#: mx.c:837
+#: mx.c:840
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Verschiebe gelesene Nachrichten nach %s..."
 
-#: mx.c:860 mx.c:1003
+#: mx.c:863 mx.c:1020
 msgid "Mailbox is unchanged."
 msgstr "Mailbox unverändert."
 
-#: mx.c:879
+#: mx.c:875 mx.c:1059
+#, c-format
+msgid "%d kept."
+msgstr "%d behalten."
+
+#: mx.c:894
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d behalten, %d verschoben, %d gelöscht."
 
-#: mx.c:882 mx.c:1028
+#: mx.c:897 mx.c:1062
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d behalten, %d gelöscht."
 
-#: mx.c:988
+#: mx.c:1005
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Drücken Sie '%s', um Schreib-Modus ein-/auszuschalten"
 
-#: mx.c:990
+#: mx.c:1007
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Benutzen Sie 'toggle-write', um Schreib-Modus zu reaktivieren"
 
-#: mx.c:992
+#: mx.c:1009
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Mailbox ist als unschreibbar markiert. %s"
@@ -2328,83 +2341,83 @@ msgstr "Kein weiterer zitierter Text."
 msgid "No more unquoted text after quoted text."
 msgstr "Kein weiterer eigener Text nach zitiertem Text"
 
-#: parse.c:516
+#: parse.c:518
 msgid "multipart message has no boundary parameter!"
 msgstr "Mehrteilige Nachricht hat keinen \"boundary\"-Parameter!"
 
-#: pattern.c:236
+#: pattern.c:239
 #, c-format
 msgid "Error in expression: %s"
 msgstr "Fehler in Ausdruck: %s"
 
-#: pattern.c:333
+#: pattern.c:336
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "Ungültiger Tag: %s"
 
-#: pattern.c:347
+#: pattern.c:350
 #, c-format
 msgid "Invalid month: %s"
 msgstr "Ungültiger Monat: %s"
 
-#: pattern.c:401
+#: pattern.c:404
 msgid "error in expression"
 msgstr "Fehler in Ausdruck."
 
-#: pattern.c:586 pattern.c:694
+#: pattern.c:589 pattern.c:697
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "Fehler in Muster bei: %s"
 
-#: pattern.c:634
+#: pattern.c:637
 #, c-format
 msgid "%c: invalid command"
 msgstr "%c: Ungültiges Kommando"
 
-#: pattern.c:640
+#: pattern.c:643
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: Wird in diesem Modus nicht unterstützt."
 
-#: pattern.c:653
+#: pattern.c:656
 msgid "missing parameter"
 msgstr "Fehlender Parameter"
 
-#: pattern.c:669
+#: pattern.c:672
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "Unpassende Klammern: %s"
 
-#: pattern.c:701
+#: pattern.c:704
 msgid "empty pattern"
 msgstr "Leeres Muster"
 
-#: pattern.c:880
+#: pattern.c:883
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr ""
 
-#: pattern.c:945 pattern.c:1074
+#: pattern.c:948 pattern.c:1077
 msgid "Compiling search pattern..."
 msgstr "Compiliere Suchmuster..."
 
-#: pattern.c:959
+#: pattern.c:962
 msgid "Executing command on matching messages..."
 msgstr "Führe Kommando aus..."
 
-#: pattern.c:1022
+#: pattern.c:1025
 msgid "No messages matched criteria."
 msgstr "Keine Nachrichten haben Kriterium erfüllt."
 
-#: pattern.c:1112
+#: pattern.c:1115
 msgid "Search hit bottom without finding match"
 msgstr "Suche hat Ende erreicht, ohne Treffer zu erzielen."
 
-#: pattern.c:1123
+#: pattern.c:1126
 msgid "Search hit top without finding match"
 msgstr "Suche hat Anfang erreicht, ohne Treffer zu erzielen."
 
-#: pattern.c:1145
+#: pattern.c:1148
 msgid "Search interrupted."
 msgstr "Suche unterbrochen."
 
@@ -2586,21 +2599,21 @@ msgstr ""
 msgid "Can't open PGP subprocess!"
 msgstr "Kann PGP-Subprozeß nicht erzeugen!"
 
-#: pgp.c:1164
+#: pgp.c:1165
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Benutze KeyID = \"%s\" für %s?"
 
-#: pgp.c:1184
+#: pgp.c:1192
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "KeyID für %s: "
 
-#: pgp.c:1390
+#: pgp.c:1398
 msgid "Can't invoke PGP"
 msgstr "Kann PGP nicht aufrufen"
 
-#: pgp.c:1494
+#: pgp.c:1502
 msgid "Create an application/pgp message?"
 msgstr "Erzeuge application/pgp Nachricht (statt RFC 2015)?"
 
@@ -2676,7 +2689,7 @@ msgstr "Rufe PGP auf..."
 msgid "PGP Key %s."
 msgstr "PGP Schlüssel %s."
 
-#: pgpkey.c:754 pgpkey.c:870
+#: pgpkey.c:756 pgpkey.c:872
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Suche nach Schlüsseln, die auf \"%s\" passen..."
@@ -2840,19 +2853,19 @@ msgstr "Nachrichten an %s... erneut versenden?"
 msgid "Bounce message to %s...?"
 msgstr "Nachricht an %s... erneut versenden?"
 
-#: recvattach.c:1015
+#: recvattach.c:1017
 msgid "Attachments"
 msgstr "Anhänge"
 
-#: recvattach.c:1075
+#: recvattach.c:1077
 msgid "Deletion of attachments from PGP messages is unsupported."
 msgstr "Kann keine Anhänge aus PGP-Nachrichten löschen."
 
-#: recvattach.c:1095 recvattach.c:1112
+#: recvattach.c:1097 recvattach.c:1114
 msgid "Only deletion of multipart attachments is supported."
 msgstr "Kann nur aus mehrteiligen Anhängen löschen."
 
-#: recvattach.c:1163
+#: recvattach.c:1165
 msgid "This operation is not currently supported for PGP messages."
 msgstr "Diese Funktion wird nicht für PGP-Nachrichten unterstützt."
 
@@ -2870,11 +2883,11 @@ msgstr "Kein Mailcap-Pfad definiert."
 msgid "mailcap entry for type %s not found"
 msgstr "Kann keinen Mailcap-Eintrag für %s finden."
 
-#: score.c:73
+#: score.c:71
 msgid "score: too few arguments"
 msgstr "score: Zu wenige Parameter."
 
-#: score.c:82
+#: score.c:80
 msgid "score: too many arguments"
 msgstr "score: Zu viele Parameter."
 
@@ -2912,79 +2925,79 @@ msgstr "Keine markierten Nachrichten sichtbar!"
 msgid "No mailing lists found!"
 msgstr "Keine Mailing-Listen gefunden!"
 
-#: send.c:641
+#: send.c:643
 msgid "Include message in reply?"
 msgstr "Nachricht in Antwort zitieren?"
 
-#: send.c:646
+#: send.c:648
 msgid "Including quoted message..."
 msgstr "Binde zitierte Nachricht ein..."
 
-#: send.c:656
+#: send.c:658
 msgid "Could not include all requested messages!"
 msgstr "Konnte nicht alle gewünschten Nachrichten zitieren!"
 
-#: send.c:670
+#: send.c:672
 msgid "Forward MIME encapsulated?"
 msgstr "Zum Weiterleiten in MIME-Anhang einpacken?"
 
-#: send.c:674
+#: send.c:676
 msgid "Preparing forwarded message..."
 msgstr "Bereite Nachricht zum Weiterleiten vor..."
 
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:909
+#: send.c:911
 msgid "Recall postponed message?"
 msgstr "Zurückgestellte Nachricht weiterbearbeiten?"
 
-#: send.c:1138
+#: send.c:1145
 msgid "Abort unmodified message?"
 msgstr "Unveränderte Nachricht verwerfen?"
 
-#: send.c:1140
+#: send.c:1147
 msgid "Aborted unmodified message."
 msgstr "Unveränderte Nachricht verworfen."
 
 #. abort
-#: send.c:1180
+#: send.c:1187
 msgid "Mail not sent."
 msgstr "Nachricht nicht verschickt."
 
-#: send.c:1193
+#: send.c:1207
 msgid "Message postponed."
 msgstr "Nachricht zurückgestellt."
 
-#: send.c:1202
+#: send.c:1216
 msgid "No recipients are specified!"
 msgstr "Es wurden keine Empfänger angegeben!"
 
-#: send.c:1207
+#: send.c:1221
 msgid "No recipients were specified."
 msgstr "Es wurden keine Empfänger angegeben!"
 
-#: send.c:1213
+#: send.c:1227
 msgid "No subject, abort sending?"
 msgstr "Kein Betreff, Versand abbrechen?"
 
-#: send.c:1217
+#: send.c:1231
 msgid "No subject specified."
 msgstr "Kein Betreff."
 
-#: send.c:1259
+#: send.c:1273
 msgid "Sending message..."
 msgstr "Verschicke Nachricht..."
 
-#: send.c:1364
+#: send.c:1378
 msgid "Could not send the message."
 msgstr "Konnte Nachricht nicht verschicken."
 
-#: send.c:1369
+#: send.c:1383
 msgid "Mail sent."
 msgstr "Nachricht verschickt."
 
-#: send.c:1369
+#: send.c:1383
 msgid "Sending in background."
 msgstr "Verschicke im Hintergrund."
 
@@ -3030,11 +3043,11 @@ msgstr "Signal %d... Abbruch.\n"
 msgid "Sorting mailbox..."
 msgstr "Sortiere Mailbox..."
 
-#: sort.c:226
+#: sort.c:227
 msgid "Could not find sorting function! [report this bug]"
 msgstr ""
 
-#: status.c:101
+#: status.c:102
 msgid "(no mailbox)"
 msgstr "(keine Mailbox)"
 
@@ -3047,42 +3060,54 @@ msgid "Parent message is not available."
 msgstr "Bezugsnachricht ist nicht verfügbar."
 
 #. now begin login
-#: imap/auth.c:143
+#: imap/auth.c:144
 msgid "Authenticating (GSSAPI)..."
 msgstr "Authentifiziere (GSSAPI)..."
 
-#: imap/auth.c:322
+#: imap/auth.c:323
 msgid "Authenticating (CRAM-MD5)..."
 msgstr "Authentifiziere (CRAM-MD5)..."
 
-#: imap/auth.c:430
+#: imap/auth.c:411
+msgid "Authenticating (anonymous)..."
+msgstr "Authentifiziere (anonymous)..."
+
+#: imap/auth.c:484
 msgid "IMAP Username: "
 msgstr "IMAP-Nutzername: "
 
-#: imap/auth.c:446
+#: imap/auth.c:497
+msgid "Anonymous authentication not supported."
+msgstr "Anonymous Authentifizierung nicht unterstützt."
+
+#: imap/auth.c:510
 msgid "GSSAPI authentication failed."
 msgstr "GSSAPI Authentifizierung fehlgeschlagen."
 
-#: imap/auth.c:462
+#: imap/auth.c:526
 #, c-format
 msgid "CRAM key for %s@%s: "
 msgstr "IMAP CRAM Schlüssel für %s@%s: "
 
-#: imap/auth.c:476
+#: imap/auth.c:538
 msgid "CRAM-MD5 authentication failed."
 msgstr "CRAM-MD5 Authentifizierung fehlgeschlagen."
 
-#: imap/auth.c:488
+#: imap/auth.c:546
+msgid "Skipping CRAM-MD5 authentication."
+msgstr "Überspringe CRAM-MD5 Authentifizierung."
+
+#: imap/auth.c:556
 #, c-format
 msgid "Password for %s@%s: "
 msgstr "Paßwort für %s@%s: "
 
-#: imap/auth.c:501
+#: imap/auth.c:569
 msgid "Logging in..."
 msgstr "Anmeldung..."
 
 #. Login failed, try again
-#: imap/auth.c:514
+#: imap/auth.c:581
 msgid "Login failed."
 msgstr "Anmeldung gescheitert..."
 
@@ -3090,39 +3115,23 @@ msgstr "Anmeldung gescheitert..."
 msgid "Contacted server, getting folder list..."
 msgstr "Kontaktiere Server, hole Liste der Ordner..."
 
-#: imap/imap.c:79
-#, c-format
-msgid "imap_error(): unexpected response in %s: %s\n"
-msgstr "imap_error(): Unerwartete Reaktion in %s: %s\n"
-
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
 #.
-#: imap/imap.c:414
+#: imap/imap.c:202
 msgid "Fatal error.  Message count is out of sync!"
 msgstr "Kritischer Fehler.  Nachrichtenzähler weicht ab!"
 
-#: imap/imap.c:547
-#, c-format
-msgid "Fetching message headers... [%d/%d]"
-msgstr "Hole Nachrichten-Köpfe... [%d/%d]"
-
-#. Unable to fetch headers for lower versions
-#: imap/imap.c:574
-msgid "Unable to fetch headers from this IMAP server version."
-msgstr ""
-"Kann von dieser Version des IMAP-Servers keine Nachrichtenköpfe erhalten."
-
-#: imap/imap.c:766
+#: imap/imap.c:349
 #, c-format
 msgid "Reopening mailbox... %s"
 msgstr "Öffne Mailbox erneut... %s"
 
-#: imap/imap.c:1133
+#: imap/imap.c:637
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "Veralteter IMAP-Server."
 
-#: imap/imap.c:1239
+#: imap/imap.c:803
 #, c-format
 msgid "Selecting %s..."
 msgstr "Wähle %s aus..."
@@ -3131,51 +3140,43 @@ msgstr "Wähle %s aus..."
 #. * The thing to do seems to be:
 #. *  - Open a *new* IMAP session, select, and then close it. Report the
 #. * error if the mailbox did not exist.
-#: imap/imap.c:1425
+#: imap/imap.c:1029
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Kann auf diesem IMAP-Server zu Mailboxen nichts hinzufügen."
 
-#: imap/imap.c:1435
+#: imap/imap.c:1039
 #, c-format
 msgid "Create %s?"
 msgstr "%s erstellen?"
 
-#: imap/imap.c:1487
-msgid "Fetching message..."
-msgstr "Hole Nachricht..."
-
-#: imap/imap.c:1624
-msgid "Sending APPEND command ..."
-msgstr "Sende APPEND-Kommando..."
-
-#: imap/imap.c:1663
-msgid "Uploading message ..."
-msgstr "Lade Nachrichten auf den Server..."
-
-#: imap/imap.c:1718
+#: imap/imap.c:1067
 msgid "Closing connection to IMAP server..."
 msgstr "Schließe Verbindung zu IMAP-Server..."
 
-#: imap/imap.c:1766
+#: imap/imap.c:1210
+#, c-format
+msgid "Marking %d messages for deletion..."
+msgstr "Markiere %d Nachrichten zum Löschen..."
+
+#: imap/imap.c:1230
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Speichere Nachrichten-Status-Indikatoren... [%d/%d]"
 
-#: imap/imap.c:1811
-msgid "Expunging messages from server..."
-msgstr "Lösche Nachrichten auf dem Server..."
-
-#. tell the server to commit changes
-#: imap/imap.c:1843
+#: imap/imap.c:1289
 msgid "Closing mailbox..."
 msgstr "Schließe Mailbox..."
 
-#: imap/imap.c:2157
+#: imap/imap.c:1299
+msgid "Expunging messages from server..."
+msgstr "Lösche Nachrichten auf dem Server..."
+
+#: imap/imap.c:1611
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Abonniere %s..."
 
-#: imap/imap.c:2159
+#: imap/imap.c:1613
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Beende Abonement von %s..."
@@ -3185,14 +3186,30 @@ msgstr "Beende Abonement von %s..."
 msgid "Connecting to %s..."
 msgstr "Verbinde zu %s..."
 
+#~ msgid "imap_error(): unexpected response in %s: %s\n"
+#~ msgstr "imap_error(): Unerwartete Reaktion in %s: %s\n"
+
+#~ msgid "Fetching message headers... [%d/%d]"
+#~ msgstr "Hole Nachrichten-Köpfe... [%d/%d]"
+
+#~ msgid "Unable to fetch headers from this IMAP server version."
+#~ msgstr ""
+#~ "Kann von dieser Version des IMAP-Servers keine Nachrichtenköpfe erhalten."
+
+#~ msgid "Fetching message..."
+#~ msgstr "Hole Nachricht..."
+
+#~ msgid "Sending APPEND command ..."
+#~ msgstr "Sende APPEND-Kommando..."
+
+#~ msgid "Uploading message ..."
+#~ msgstr "Lade Nachrichten auf den Server..."
+
 #~ msgid "An unkown PGP version was defined for signing."
 #~ msgstr "Eine unbekannte PGP-Version wurde zum Signieren eingetragen."
 
-#~ msgid "edit the current message for resending"
-#~ msgstr "Editiere die aktuelle Nachricht für Neuversand"
-
 #~ msgid "Message edited. Really send?"
-#~ msgstr "Nachricht verändert.  Wirklich abschicken?"
+#~ msgstr "Nachricht verändert. Wirklich abschicken?"
 
 #~ msgid "Can't open your secret key ring!"
 #~ msgstr "Kann geheimen Schlüsselbund nicht öffnen!"
@@ -3213,7 +3230,7 @@ msgstr "Verbinde zu %s..."
 #~ msgstr "uab"
 
 #~ msgid "%s is not a mailbox!"
-#~ msgstr "%s ist keine Mailbox"
+#~ msgstr "%s ist keine Mailbox!"
 
 #~ msgid "Append messages to %s?"
 #~ msgstr "Nachricht an %s anhängen?"
@@ -3297,9 +3314,3 @@ msgstr "Verbinde zu %s..."
 
 #~ msgid "This encoding is deprecated.  Really use it?"
 #~ msgstr "Diese Codierung sollte nicht genutzt werden.  Trotzdem setzen?"
-
-#~ msgid "Confused when attempting to delete attachment, h & m can't be NULL"
-#~ msgstr "Interner Fehler."
-
-#~ msgid "Deleting non-multipart messages not yet supported"
-#~ msgstr "Nur Teile von multipart-Nachrichten können gelöscht werden."
