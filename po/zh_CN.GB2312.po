@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.2\n"
-"POT-Creation-Date: 2000-11-01 14:13+0100\n"
+"POT-Creation-Date: 2000-11-27 12:33+0100\n"
 "PO-Revision-Date: 1999-12-20 20:41+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -84,8 +84,8 @@ msgstr "无法匹配名称模板，继续？"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Mailcap 编辑项目需要 %%s"
 
-#: attach.c:131 attach.c:256 commands.c:184 compose.c:1179 curs_lib.c:142
-#: curs_lib.c:371
+#: attach.c:131 attach.c:256 commands.c:185 compose.c:1179 curs_lib.c:141
+#: curs_lib.c:370
 #, c-format
 msgid "Error running \"%s\"!"
 msgstr "执行 \"%s\" 时发生错误！"
@@ -291,157 +291,172 @@ msgid "default colors not supported"
 msgstr "不支持预设的色彩"
 
 #. find out whether or not the verify signature
-#: commands.c:92
+#: commands.c:93
 msgid "Verify PGP signature?"
 msgstr "检查 PGP 签名?"
 
-#: commands.c:104 pgp.c:1566 pgpkey.c:491 postpone.c:522
+#: commands.c:105 pgp.c:1566 pgpkey.c:491 postpone.c:522
 msgid "Invoking PGP..."
 msgstr "启动 PGP…"
 
-#: commands.c:112 mbox.c:734
+#: commands.c:113 mbox.c:734
 msgid "Could not create temporary file!"
 msgstr "无法建立暂存档！"
 
-#: commands.c:125
+#: commands.c:126
 #, fuzzy
 msgid "Cannot create display filter"
 msgstr "无法建立过滤器"
 
-#: commands.c:145
+#: commands.c:146
 #, fuzzy
 msgid "Could not copy message"
 msgstr "无法寄出信件。"
 
-#: commands.c:167
+#: commands.c:168
 msgid "PGP signature successfully verified."
 msgstr "PGP 签名验证成功。"
 
-#: commands.c:168
+#: commands.c:169
 #, fuzzy
 msgid "PGP signature could NOT be verified."
 msgstr "PGP 签名验证成功。"
 
-#: commands.c:191
+#: commands.c:192
 msgid "Command: "
 msgstr "指令："
 
-#: commands.c:209 recvcmd.c:140
+#: commands.c:210 recvcmd.c:140
 msgid "Bounce message to: "
 msgstr "直接传送邮件到："
 
-#: commands.c:211 recvcmd.c:142
+#: commands.c:212 recvcmd.c:142
 msgid "Bounce tagged messages to: "
 msgstr "无法传送已标记的邮件至："
 
-#: commands.c:226
+#: commands.c:227
 msgid "Error parsing address!"
 msgstr "无法分析位址！"
 
-#: commands.c:241
+#: commands.c:242
 #, c-format
 msgid "Bounce message to %s"
 msgstr "把邮件直接传送至 %s"
 
-#: commands.c:241
+#: commands.c:242
 #, c-format
 msgid "Bounce messages to %s"
 msgstr "把邮件直接传送至 %s"
 
-#: commands.c:255
+#: commands.c:256
 msgid "Message bounced."
 msgstr "邮件已被传送。"
 
-#: commands.c:255
+#: commands.c:256
 msgid "Messages bounced."
 msgstr "邮件已传送。"
 
-#: commands.c:295
+#: commands.c:401
 msgid "Pipe to command: "
 msgstr "用管道输出至命令："
 
-#: commands.c:398
+#: commands.c:417
+#, fuzzy
+msgid "No printing command has been defined."
+msgstr "圈选进入的邮筒"
+
+#: commands.c:422
+msgid "Print message?"
+msgstr "打印信件？"
+
+#: commands.c:422
+msgid "Print tagged messages?"
+msgstr "打印已标记的信件？"
+
+#: commands.c:430
+msgid "Message printed"
+msgstr "信件已印出"
+
+#: commands.c:430
+msgid "Messages printed"
+msgstr "信件已印出"
+
+#: commands.c:432
+#, fuzzy
+msgid "Message could not be printed"
+msgstr "信件已印出"
+
+#: commands.c:433
+#, fuzzy
+msgid "Messages could not be printed"
+msgstr "信件已印出"
+
+#: commands.c:442
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 "反方向 "
 "d)日期,f)发信人,r)收信时间,s)标题,o)收信人,t)序列,u)不排,z)大小,c)分数:"
 
-#: commands.c:399
+#: commands.c:443
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 "排序 "
 "d)日期,f)发信人,r)收信时间,s)标题,o)收信人,t)序列,u)不排序,z)大小,c)分数:"
 
-#: commands.c:400
+#: commands.c:444
 msgid "dfrsotuzc"
 msgstr ""
 
-#: commands.c:453
+#: commands.c:497
 msgid "Shell command: "
 msgstr "Shell 指令："
 
-#: commands.c:587
+#: commands.c:631
 #, c-format
 msgid "%s%s to mailbox"
 msgstr "%s%s 到信箱"
 
-#: commands.c:588
+#: commands.c:632
 msgid "Decode-save"
 msgstr "解码并储存"
 
-#: commands.c:588
+#: commands.c:632
 msgid "Decode-copy"
 msgstr "解码并拷贝"
 
-#: commands.c:589
+#: commands.c:633
 msgid "Decrypt-save"
 msgstr "解密并储存"
 
-#: commands.c:589
+#: commands.c:633
 msgid "Decrypt-copy"
 msgstr "解密并拷贝"
 
-#: commands.c:590 curs_main.c:376 recvattach.c:58
+#: commands.c:634 curs_main.c:376 recvattach.c:58
 msgid "Save"
 msgstr "储存"
 
-#: commands.c:590
+#: commands.c:634
 msgid "Copy"
 msgstr "拷贝"
 
-#: commands.c:590
+#: commands.c:634
 msgid " tagged"
 msgstr " 已标记"
 
-#: commands.c:658
+#: commands.c:702
 #, c-format
 msgid "Copying to %s..."
 msgstr "拷贝到 %s…"
 
-#: commands.c:755
-msgid "Print message?"
-msgstr "打印信件？"
-
-#: commands.c:755
-msgid "Print tagged messages?"
-msgstr "打印已标记的信件？"
-
-#: commands.c:784
-msgid "Message printed"
-msgstr "信件已印出"
-
-#: commands.c:784
-msgid "Messages printed"
-msgstr "信件已印出"
-
-#: commands.c:841
+#: commands.c:822
 #, fuzzy, c-format
 msgid "Content-Type changed to %s."
 msgstr "正连接到 %s…"
 
-#: commands.c:843
+#: commands.c:824
 #, fuzzy, c-format
 msgid "Character set changed to %s."
 msgstr "不明的字符集 %s。"
@@ -630,29 +645,29 @@ msgid "Message written."
 msgstr "信件已写入。"
 
 # Don't translate this!!
-#: curs_lib.c:150
+#: curs_lib.c:149
 msgid "yes"
 msgstr ""
 
 # Don't translate this!!
-#: curs_lib.c:151
+#: curs_lib.c:150
 msgid "no"
 msgstr ""
 
 #. restore blocking operation
-#: curs_lib.c:233
+#: curs_lib.c:232
 msgid "Exit Mutt?"
 msgstr "离开 Mutt？"
 
-#: curs_lib.c:323 mutt_socket.c:399
+#: curs_lib.c:322 mutt_socket.c:399
 msgid "unknown error"
 msgstr "不明的错误"
 
-#: curs_lib.c:343
+#: curs_lib.c:342
 msgid "Press any key to continue..."
 msgstr "按下任何一个键继续…"
 
-#: curs_lib.c:387
+#: curs_lib.c:386
 msgid " ('?' for list): "
 msgstr " (用 '?' 显示列表)："
 
@@ -758,84 +773,84 @@ msgstr "限制只符合这样式的信件："
 msgid "Quit Mutt?"
 msgstr "离开 Mutt？"
 
-#: curs_main.c:898
+#: curs_main.c:856
 msgid "Tag messages matching: "
 msgstr "标记信件的条件："
 
-#: curs_main.c:906
+#: curs_main.c:864
 msgid "Undelete messages matching: "
 msgstr "反删除信件的条件："
 
-#: curs_main.c:913
+#: curs_main.c:871
 msgid "Untag messages matching: "
 msgstr "反标记信件的条件："
 
-#: curs_main.c:931
+#: curs_main.c:939
 msgid "Open mailbox in read-only mode"
 msgstr "用只读模式打开信箱"
 
-#: curs_main.c:933
+#: curs_main.c:941
 msgid "Open mailbox"
 msgstr "打开信箱"
 
-#: curs_main.c:949 mx.c:491 mx.c:637
+#: curs_main.c:957 mx.c:491 mx.c:637
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s 不是信箱。"
 
-#: curs_main.c:1034
+#: curs_main.c:1042
 msgid "Exit Mutt without saving?"
 msgstr "不储存便离开 Mutt 吗？"
 
-#: curs_main.c:1066 curs_main.c:1090
+#: curs_main.c:1074 curs_main.c:1098
 msgid "You are on the last message."
 msgstr "您已经在最后一封信了。"
 
-#: curs_main.c:1073 curs_main.c:1115
+#: curs_main.c:1081 curs_main.c:1123
 msgid "No undeleted messages."
 msgstr "没有要反删除的信件。"
 
-#: curs_main.c:1108 curs_main.c:1131
+#: curs_main.c:1116 curs_main.c:1139
 msgid "You are on the first message."
 msgstr "您已经在第一封信了。"
 
-#: curs_main.c:1203 pattern.c:1126
+#: curs_main.c:1211 pattern.c:1126
 msgid "Search wrapped to top."
 msgstr "搜寻至开头。"
 
-#: curs_main.c:1212 pattern.c:1137
+#: curs_main.c:1220 pattern.c:1137
 msgid "Search wrapped to bottom."
 msgstr "搜寻至结尾。"
 
-#: curs_main.c:1245
+#: curs_main.c:1253
 msgid "No new messages"
 msgstr "没有新信件"
 
-#: curs_main.c:1245
+#: curs_main.c:1253
 msgid "No unread messages"
 msgstr "没有尚未读取的信件"
 
-#: curs_main.c:1246
+#: curs_main.c:1254
 msgid " in this limited view"
 msgstr " 在这限定的浏览中"
 
-#: curs_main.c:1370
+#: curs_main.c:1378
 msgid "No more threads."
 msgstr "没有更多的序列"
 
-#: curs_main.c:1372
+#: curs_main.c:1380
 msgid "You are on the first thread."
 msgstr "您已经在第一个序列上。"
 
-#: curs_main.c:1430 curs_main.c:1461 flags.c:228 thread.c:651 thread.c:702
+#: curs_main.c:1438 curs_main.c:1469 flags.c:228 thread.c:651 thread.c:702
 msgid "Threading is not enabled."
 msgstr "序列功能尚未启动。"
 
-#: curs_main.c:1448
+#: curs_main.c:1456
 msgid "Thread contains unread messages."
 msgstr "序列中有尚未读取的信件。"
 
-#: curs_main.c:1614
+#: curs_main.c:1622
 #, fuzzy
 msgid "Can't edit message on POP server."
 msgstr "正在删除伺服器上的信件…"
@@ -1294,8 +1309,8 @@ msgid "%s: unknown sorting method"
 msgstr "%s：不明的排序方式"
 
 #: init.c:744
-#, c-format
-msgid "mutt_restore_default: error in regexp: %s\n"
+#, fuzzy, c-format
+msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_defualt：错误的正规表示式：%s\n"
 
 #: init.c:805
@@ -2322,44 +2337,44 @@ msgstr ""
 msgid "Error initializing terminal."
 msgstr "无法初始化终端机。"
 
-#: main.c:512
+#: main.c:513
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "除错模式在第 %d 层。\n"
 
-#: main.c:514
+#: main.c:515
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "在编译时候没有定义 DEBUG。放弃执行。\n"
 
-#: main.c:630
+#: main.c:632
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s 不存在。制造吗？"
 
-#: main.c:634
+#: main.c:636
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "无法建立 %s: %s."
 
-#: main.c:679
+#: main.c:681
 msgid "No recipients specified.\n"
 msgstr "没有指定接受者。\n"
 
-#: main.c:765
+#: main.c:767
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s：无法附带文件。\n"
 
-#: main.c:785
+#: main.c:787
 msgid "No mailbox with new mail."
 msgstr "没有信箱有新信件。"
 
-#: main.c:794
+#: main.c:796
 #, fuzzy
 msgid "No incoming mailboxes defined."
 msgstr "圈选进入的邮筒"
 
-#: main.c:825
+#: main.c:827
 msgid "Mailbox is empty."
 msgstr "信箱内空无一物。"
 
@@ -2895,24 +2910,24 @@ msgstr "已搜寻至开头，并没有发现任何符合"
 msgid "Search interrupted."
 msgstr "搜寻已被中断。"
 
-#: pgp.c:92
+#: pgp.c:93
 msgid "Enter PGP passphrase:"
 msgstr "请输入 PGP 通行密码："
 
-#: pgp.c:108
+#: pgp.c:109
 msgid "PGP passphrase forgotten."
 msgstr "已忘记 PGP 通行密码。"
 
-#: pgp.c:141
+#: pgp.c:142
 #, fuzzy, c-format
 msgid "[-- PGP output follows (current time: %c) --]\n"
 msgstr "[-- 以下为 PGP 输出的资料（现在时间： "
 
-#: pgp.c:245
+#: pgp.c:246
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
 msgstr "[-- 错误：无法建立 PGP 子程序！ --]\n"
 
-#: pgp.c:272
+#: pgp.c:273
 msgid ""
 "\n"
 "[-- End of PGP output --]\n"
@@ -2922,7 +2937,7 @@ msgstr ""
 "[-- PGP 输出的资料结束 --]\n"
 "\n"
 
-#: pgp.c:278
+#: pgp.c:279
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -2930,11 +2945,11 @@ msgstr ""
 "[-- PGP 信件开始 --]\n"
 "\n"
 
-#: pgp.c:280
+#: pgp.c:281
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP 公共钥匙区段开始 --]\n"
 
-#: pgp.c:282
+#: pgp.c:283
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -2942,7 +2957,7 @@ msgstr ""
 "[-- PGP 签名的信件开始 --]\n"
 "\n"
 
-#: pgp.c:384
+#: pgp.c:385
 msgid ""
 "\n"
 "[-- END PGP MESSAGE --]\n"
@@ -2950,11 +2965,11 @@ msgstr ""
 "\n"
 "[-- PGP 信件结束 --]\n"
 
-#: pgp.c:386
+#: pgp.c:387
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP 公共钥匙区段结束 --]\n"
 
-#: pgp.c:388
+#: pgp.c:389
 msgid ""
 "\n"
 "[-- END PGP SIGNED MESSAGE --]\n"
@@ -2962,7 +2977,7 @@ msgstr ""
 "\n"
 "[-- PGP 签名的信件结束 --]\n"
 
-#: pgp.c:401
+#: pgp.c:402
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -2970,7 +2985,7 @@ msgstr ""
 "[-- 错误：找不到 PGP 信件的开头！ --]\n"
 "\n"
 
-#: pgp.c:616 pgp.c:908
+#: pgp.c:617 pgp.c:908
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -2978,7 +2993,7 @@ msgstr ""
 "[-- PGP 输出部份结束 --]\n"
 "\n"
 
-#: pgp.c:664
+#: pgp.c:665
 #, fuzzy
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
@@ -2987,7 +3002,7 @@ msgstr ""
 "[-- 错误：不一致的 multipart/signed 结构！ --]\n"
 "\n"
 
-#: pgp.c:672
+#: pgp.c:673
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -2996,7 +3011,7 @@ msgstr ""
 "[-- 错误：不明的 multipart/signed 协定 %s！ --]\n"
 "\n"
 
-#: pgp.c:696
+#: pgp.c:697
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -3006,7 +3021,7 @@ msgstr ""
 "\n"
 
 #. Now display the signed body
-#: pgp.c:706
+#: pgp.c:707
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -3014,7 +3029,7 @@ msgstr ""
 "[-- 以下的资料已被签署 --]\n"
 "\n"
 
-#: pgp.c:712
+#: pgp.c:713
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -3022,7 +3037,7 @@ msgstr ""
 "[-- 警告：找不到任何的签名。 --]\n"
 "\n"
 
-#: pgp.c:718
+#: pgp.c:719
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -3485,12 +3500,12 @@ msgid ""
 "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr ""
 
-#: remailer.c:763
+#: remailer.c:765
 #, fuzzy, c-format
 msgid "Error sending message, child exited %d.\n"
 msgstr "寄送讯息出现错误，子程序已结束 %d (%s)。"
 
-#: remailer.c:767
+#: remailer.c:769
 msgid "Error sending message."
 msgstr "寄信途中发生错误。"
 
@@ -3569,52 +3584,52 @@ msgstr "准备转寄信件…"
 msgid "Recall postponed message?"
 msgstr "要叫出被延迟的信件?"
 
-#: send.c:1286
+#: send.c:1287
 msgid "Abort unmodified message?"
 msgstr "是否要中断未修改过的信件?"
 
-#: send.c:1288
+#: send.c:1289
 msgid "Aborted unmodified message."
 msgstr "中断没有修改过的信件"
 
 #. abort
-#: send.c:1329
+#: send.c:1330
 msgid "Mail not sent."
 msgstr "信件没有寄出。"
 
-#: send.c:1355
+#: send.c:1356
 msgid "Message postponed."
 msgstr "信件被延迟寄出。"
 
-#: send.c:1364
+#: send.c:1365
 msgid "No recipients are specified!"
 msgstr "没有指定接受者！"
 
-#: send.c:1369
+#: send.c:1370
 msgid "No recipients were specified."
 msgstr "没有指定接受者。"
 
-#: send.c:1375
+#: send.c:1376
 msgid "No subject, abort sending?"
 msgstr "没有信件标题，要中断寄信的工作?"
 
-#: send.c:1379
+#: send.c:1380
 msgid "No subject specified."
 msgstr "没有指定标题。"
 
-#: send.c:1426
+#: send.c:1427
 msgid "Sending message..."
 msgstr "寄出信件中…"
 
-#: send.c:1553
+#: send.c:1554
 msgid "Could not send the message."
 msgstr "无法寄出信件。"
 
-#: send.c:1558
+#: send.c:1559
 msgid "Mail sent."
 msgstr "信件已经寄出。"
 
-#: send.c:1558
+#: send.c:1559
 msgid "Sending in background."
 msgstr "正在后台传送。"
 
