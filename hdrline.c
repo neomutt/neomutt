@@ -226,7 +226,8 @@ hdr_format_str (char *dest,
   int optional = (flags & M_FORMAT_OPTIONAL);
   int threads = ((Sort & SORT_MASK) == SORT_THREADS);
   int is_index = (flags & M_FORMAT_INDEX);
-#define NEW (threads && hdr->collapsed && hdr->num_hidden > 1 && mutt_thread_contains_unread (ctx, hdr))
+#define NEW (threads && hdr->collapsed && hdr->num_hidden > 1 && mutt_thread_contains_unread (ctx, hdr) == 1)
+#define OLD (threads && hdr->collapsed && hdr->num_hidden > 1 && mutt_thread_contains_unread (ctx, hdr) == 2)
   size_t len;
 
   hdr = hfi->hdr;
@@ -545,9 +546,9 @@ hdr_format_str (char *dest,
 	ch = ' ';
       snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
       snprintf (buf2, sizeof (buf2),
-		"%c%c%c",
-		(hdr->read && (ctx && ctx->msgnotreadyet != hdr->msgno))
-		? (NEW ? 'n' : (hdr->replied ? 'r' : ' ')) : (hdr->old ? 'O' : (NEW ? 'n' : 'N')),
+		"%c%c%c", (NEW ? 'n' : (OLD ? 'o' : 
+		((hdr->read && (ctx && ctx->msgnotreadyet != hdr->msgno))
+		? (hdr->replied ? 'r' : ' ') : (hdr->old ? 'O' : 'N')))),
 		hdr->deleted ? 'D' : (hdr->attach_del ? 'd' : ch),
 		hdr->tagged ? '*' :
 		(hdr->flagged ? '!' :
@@ -567,6 +568,7 @@ hdr_format_str (char *dest,
 
   return (src);
 #undef NEW
+#undef OLD
 }
 
 void

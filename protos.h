@@ -50,7 +50,7 @@ int _mutt_aside_thread (HEADER *, short, short);
 #define mutt_uncollapse_thread(x,y) _mutt_traverse_thread (x,y,M_THREAD_UNCOLLAPSE)
 #define mutt_get_hidden(x,y)_mutt_traverse_thread (x,y,M_THREAD_GET_HIDDEN) 
 #define mutt_thread_contains_unread(x,y) _mutt_traverse_thread (x,y,M_THREAD_UNREAD)
-#define mutt_thread_next_new(x,y) _mutt_traverse_thread(x,y,M_THREAD_NEXT_NEW)
+#define mutt_thread_next_unread(x,y) _mutt_traverse_thread(x,y,M_THREAD_NEXT_UNREAD)
 int _mutt_traverse_thread (CONTEXT *ctx, HEADER *hdr, int flag);
 
 #define ISSPACE(c) isspace((unsigned char)c)

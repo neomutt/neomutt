@@ -699,7 +699,7 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
 {
   HEADER *roothdr = NULL, *top;
   int final, reverse = (Sort & SORT_REVERSE), minmsgno;
-  int num_hidden = 0, unread = 0;
+  int num_hidden = 0, new = 0, old = 0;
   int min_unread_msgno = INT_MAX, min_unread = cur->virtual;
 #define CHECK_LIMIT (!ctx->pattern || cur->limited)
 
@@ -718,7 +718,10 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
 
   if (!cur->read && CHECK_LIMIT)
   {
-    unread = 1;
+    if (cur->old)
+      old = 2;
+    else
+      new = 1;
     if (cur->msgno < min_unread_msgno)
     {
       min_unread = cur->virtual;
@@ -746,10 +749,10 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
     if (flag & (M_THREAD_COLLAPSE | M_THREAD_UNCOLLAPSE))
       return (final);
     else if (flag & M_THREAD_UNREAD)
-      return (unread);
+      return ((old && new) ? new : (old ? old : new));
     else if (flag & M_THREAD_GET_HIDDEN)
       return (num_hidden);
-    else if (flag & M_THREAD_NEXT_NEW)
+    else if (flag & M_THREAD_NEXT_UNREAD)
       return (min_unread);
   }
   
@@ -765,8 +768,7 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
 	  final = roothdr->virtual;
       }
 
-      if (reverse && (flag & M_THREAD_COLLAPSE) && (cur->msgno < minmsgno) 
-	  && CHECK_LIMIT)
+      if (reverse && (flag & M_THREAD_COLLAPSE) && (cur->msgno < minmsgno) && CHECK_LIMIT)
       {
 	minmsgno = cur->msgno;
 	final = cur->virtual;
@@ -787,7 +789,10 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
 
     if (!cur->read && CHECK_LIMIT)
     {
-      unread = 1;
+      if (cur->old)
+	old = 2;
+      else
+	new = 1;
       if (cur->msgno < min_unread_msgno)
       {
 	min_unread = cur->virtual;
@@ -824,10 +829,10 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
   if (flag & (M_THREAD_COLLAPSE | M_THREAD_UNCOLLAPSE))
     return (final);
   else if (flag & M_THREAD_UNREAD)
-    return (unread);
+    return ((old && new) ? new : (old ? old : new));
   else if (flag & M_THREAD_GET_HIDDEN)
     return (num_hidden+1);
-  else if (flag & M_THREAD_NEXT_NEW)
+  else if (flag & M_THREAD_NEXT_UNREAD)
     return (min_unread);
 
   return (0);

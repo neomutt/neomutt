@@ -929,12 +929,13 @@ int mutt_index_menu (int attach_msg /* invoked while attaching a message */)
 	  toggle_option (OPTWEED);
 
 	unset_option (OPTNEEDRESORT);
+
 	if ((Sort & SORT_MASK) == SORT_THREADS && CURHDR->collapsed)
 	{
 	  mutt_uncollapse_thread (Context, CURHDR);
 	  mutt_set_virtual (Context);
-	  if (option (OPTUNCOLLAPSEJUMPNEW))
-	    menu->current = mutt_thread_next_new (Context, CURHDR);
+	  if (option (OPTUNCOLLAPSEJUMP))
+	    menu->current = mutt_thread_next_unread (Context, CURHDR);
 	}
  
 	if ((op = mutt_display_message (CURHDR, attach_msg_status)) == -1)
@@ -1119,11 +1120,17 @@ int mutt_index_menu (int attach_msg /* invoked while attaching a message */)
 	    }
 	  }
 
-	  if ((!CUR->deleted && !CUR->read) ||
-	      (CUR->collapsed && !CUR->deleted && UNREAD (CUR)))
+	  if (CUR->collapsed)
 	  {
-	    if (op == OP_MAIN_NEXT_UNREAD || op == OP_MAIN_PREV_UNREAD ||
-		!CUR->old)
+	    if (op == OP_MAIN_NEXT_UNREAD || op == OP_MAIN_PREV_UNREAD || UNREAD(CUR) == 1)
+	    {
+	      menu->current = i;
+	      break;
+	    }
+	  }
+	  else if ((!CUR->deleted && !CUR->read))
+	  {
+	    if (op == OP_MAIN_NEXT_UNREAD || op == OP_MAIN_PREV_UNREAD || !CUR->old)
 	    {
 	      menu->current = i;
 	      break;
@@ -1290,10 +1297,10 @@ int mutt_index_menu (int attach_msg /* invoked while attaching a message */)
 	{
 	  menu->current = mutt_uncollapse_thread (Context, CURHDR);
 	  mutt_set_virtual (Context);
-	  if (option (OPTUNCOLLAPSEJUMPNEW))
-	    menu->current = mutt_thread_next_new (Context, CURHDR);
+	  if (option (OPTUNCOLLAPSEJUMP))
+	    menu->current = mutt_thread_next_unread (Context, CURHDR);
 	}
-	else if (option (OPTCOLLAPSENEW) || !UNREAD (CURHDR))
+	else if (option (OPTCOLLAPSEUNREAD) || !UNREAD (CURHDR))
 	{
 	  menu->current = mutt_collapse_thread (Context, CURHDR);
 	  mutt_set_virtual (Context);
@@ -1323,7 +1330,7 @@ int mutt_index_menu (int attach_msg /* invoked while attaching a message */)
 	  
 	  if (CURHDR->collapsed)
 	    final = mutt_uncollapse_thread (Context, CURHDR);
-	  else if (option (OPTCOLLAPSENEW) || !UNREAD (CURHDR))
+	  else if (option (OPTCOLLAPSEUNREAD) || !UNREAD (CURHDR))
 	    final = mutt_collapse_thread (Context, CURHDR);
 	  else
 	    final = CURHDR->virtual;
@@ -1338,7 +1345,7 @@ int mutt_index_menu (int attach_msg /* invoked while attaching a message */)
 	    {
 	      if (h->collapsed)
 		mutt_uncollapse_thread (Context, h);
-	      else if (option (OPTCOLLAPSENEW) || !UNREAD (h))
+	      else if (option (OPTCOLLAPSEUNREAD) || !UNREAD (h))
 		mutt_collapse_thread (Context, h);
 	    }
 	    h = h->next;
