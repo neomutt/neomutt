@@ -56,13 +56,13 @@ charmaps charsets.list: parse_i18n
 	cd $(srcdir) && sh ./gen_charsets
 
 install: charsets.list
-	$(srcdir)/../mkinstalldirs $(sharedir)/charsets
+	$(srcdir)/../mkinstalldirs $(DESTDIR)$(sharedir)/charsets
 	( cd $(srcdir) && $(INSTALL) \
-		-m 644 `cat charsets.list` $(sharedir)/charsets )
-	$(INSTALL) -m 644 charsets.alias $(sharedir)/charsets/charsets.alias.dist
-	test -f $(sharedir)/charsets/charsets.alias || 			\
-	  $(INSTALL) -m 644 $(sharedir)/charsets/charsets.alias.dist	\
-			$(sharedir)/charsets/charsets.alias
+		-m 644 `cat charsets.list` $(DESTDIR)$(sharedir)/charsets )
+	$(INSTALL) -m 644 charsets.alias $(DESTDIR)$(sharedir)/charsets/charsets.alias.dist
+	test -f $(DESTDIR)$(sharedir)/charsets/charsets.alias || 			\
+	  $(INSTALL) -m 644 $(DESTDIR)$(sharedir)/charsets/charsets.alias.dist	\
+	  	$(DESTDIR)$(sharedir)/charsets/charsets.alias
 
 Makefile: ../config.status Makefile.in
 	cd .. \

@@ -116,9 +116,9 @@ install-data: install-data-@USE_NLS@
 install-data-no: all
 install-data-yes: all
 	if test -r "$(MKINSTALLDIRS)"; then \
-	  $(MKINSTALLDIRS) $(datadir); \
+	  $(MKINSTALLDIRS) $(DESTDIR)$(datadir); \
 	else \
-	  $(SHELL) $(top_srcdir)/mkinstalldirs $(datadir); \
+	  $(SHELL) $(top_srcdir)/mkinstalldirs $(DESTDIR)$(datadir); \
 	fi
 	@catalogs='$(CATALOGS)'; \
 	for cat in $$catalogs; do \
@@ -130,27 +130,27 @@ install-data-yes: all
 	  lang=`echo $$cat | sed 's/\$(CATOBJEXT)$$//'`; \
 	  dir=$$destdir/$$lang/LC_MESSAGES; \
 	  if test -r "$(MKINSTALLDIRS)"; then \
-	    $(MKINSTALLDIRS) $$dir; \
+	    $(MKINSTALLDIRS) $(DESTDIR)$$dir; \
 	  else \
-	    $(SHELL) $(top_srcdir)/mkinstalldirs $$dir; \
+	    $(SHELL) $(top_srcdir)/mkinstalldirs $(DESTDIR)$$dir; \
 	  fi; \
 	  if test -r $$cat; then \
-	    $(INSTALL_DATA) $$cat $$dir/$(PACKAGE)$(INSTOBJEXT); \
-	    echo "installing $$cat as $$dir/$(PACKAGE)$(INSTOBJEXT)"; \
+	    $(INSTALL_DATA) $$cat $(DESTDIR)$$dir/$(PACKAGE)$(INSTOBJEXT); \
+	    echo "installing $$cat as $(DESTDIR)$$dir/$(PACKAGE)$(INSTOBJEXT)"; \
 	  else \
-	    $(INSTALL_DATA) $(srcdir)/$$cat $$dir/$(PACKAGE)$(INSTOBJEXT); \
+	    $(INSTALL_DATA) $(srcdir)/$$cat $(DESTDIR)$$dir/$(PACKAGE)$(INSTOBJEXT); \
 	    echo "installing $(srcdir)/$$cat as" \
-		 "$$dir/$(PACKAGE)$(INSTOBJEXT)"; \
+		 "$(DESTDIR)$$dir/$(PACKAGE)$(INSTOBJEXT)"; \
 	  fi; \
 	  if test -r $$cat.m; then \
-	    $(INSTALL_DATA) $$cat.m $$dir/$(PACKAGE)$(INSTOBJEXT).m; \
-	    echo "installing $$cat.m as $$dir/$(PACKAGE)$(INSTOBJEXT).m"; \
+	    $(INSTALL_DATA) $$cat.m $(DESTDIR)$$dir/$(PACKAGE)$(INSTOBJEXT).m; \
+	    echo "installing $$cat.m as $(DESTDIR)$$dir/$(PACKAGE)$(INSTOBJEXT).m"; \
 	  else \
 	    if test -r $(srcdir)/$$cat.m ; then \
 	      $(INSTALL_DATA) $(srcdir)/$$cat.m \
-		$$dir/$(PACKAGE)$(INSTOBJEXT).m; \
+		$(DESTDIR)$$dir/$(PACKAGE)$(INSTOBJEXT).m; \
 	      echo "installing $(srcdir)/$$cat as" \
-		   "$$dir/$(PACKAGE)$(INSTOBJEXT).m"; \
+		   "$(DESTDIR)$$dir/$(PACKAGE)$(INSTOBJEXT).m"; \
 	    else \
 	      true; \
 	    fi; \

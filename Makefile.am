@@ -63,27 +63,27 @@ reldate:
 	echo 'const char *ReleaseDate = "'`date +%Y-%m-%d`'";' > $(srcdir)/reldate.h
 
 install-exec-local:
-	if test -f $(bindir)/mutt.dotlock && test -f $(bindir)/mutt_dotlock ; then	\
-		rm -f $(bindir)/mutt.dotlock ;		\
-		ln -sf $(bindir)/mutt_dotlock $(bindir)/mutt.dotlock ; \
+	if test -f $(DESTDIR)$(bindir)/mutt.dotlock && test -f $(DESTDIR)$(bindir)/mutt_dotlock ; then	\
+		rm -f $(DESTDIR)$(bindir)/mutt.dotlock ;		\
+		ln -sf $(DESTDIR)$(bindir)/mutt_dotlock $(DESTDIR)$(bindir)/mutt.dotlock ; \
 	fi
 	if test -f $(bindir)/mutt_dotlock && test x@DOTLOCK_GROUP@ != x ; then \
-		chgrp @DOTLOCK_GROUP@ $(bindir)/mutt_dotlock ; \
-		chmod @DOTLOCK_PERMISSION@  $(bindir)/mutt_dotlock ; \
+		chgrp @DOTLOCK_GROUP@ $(DESTDIR)$(bindir)/mutt_dotlock ; \
+		chmod @DOTLOCK_PERMISSION@  $(DESTDIR)$(bindir)/mutt_dotlock ; \
 	fi
 
 install-data-local:
-	$(srcdir)/mkinstalldirs $(sharedir)
-	$(srcdir)/mkinstalldirs $(sysconfdir)
-	-if [ -f $(sharedir)/Muttrc ] ; then \
-		mv $(sharedir)/Muttrc $(sysconfdir) ; \
-	elif [ -f $(sharedir)/../Muttrc ] ; then \
-	 	mv $(sharedir)/../Muttrc $(sysconfdir) ; \
-	elif [ ! -f $(sysconfdir)/Muttrc ] ; then \
-		$(INSTALL) -m 644 $(srcdir)/Muttrc $(sysconfdir) ; \
+	$(srcdir)/mkinstalldirs $(DESTDIR)$(sharedir)
+	$(srcdir)/mkinstalldirs $(DESTDIR)$(sysconfdir)
+	-if [ -f $(DESTDIR)$(sharedir)/Muttrc ] ; then \
+		mv $(DESTDIR)$(sharedir)/Muttrc $(DESTDIR)$(sysconfdir) ; \
+	elif [ -f $(DESTDIR)$(sharedir)/../Muttrc ] ; then \
+	 	mv $(DESTDIR)$(sharedir)/../Muttrc $(DESTDIR)$(sysconfdir) ; \
+	elif [ ! -f $(DESTDIR)$(sysconfdir)/Muttrc ] ; then \
+		$(INSTALL) -m 644 $(srcdir)/Muttrc $(DESTDIR)$(sysconfdir) ; \
 	fi
-	-if [ ! -f $(sysconfdir)/mime.types ]; then \
-		$(INSTALL) -m 644 $(srcdir)/mime.types $(sysconfdir); \
+	-if [ ! -f $(DESTDIR)$(sysconfdir)/mime.types ]; then \
+		$(INSTALL) -m 644 $(srcdir)/mime.types $(DESTDIR)$(sysconfdir); \
 	fi
 
 

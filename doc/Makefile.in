@@ -60,25 +60,25 @@ try-txt:
 html: manual.html
 
 install: dotlock.man mutt.man all
-	$(top_srcdir)/mkinstalldirs $(mandir)/man1
-	$(INSTALL) -m 644 mutt.man $(mandir)/man1/mutt.1
-	$(INSTALL) -m 644 dotlock.man $(mandir)/man1/mutt_dotlock.1
-	$(top_srcdir)/mkinstalldirs $(docdir)
-	for f in $(DOCFILES) ; do $(INSTALL) -m 644 $$f $(docdir) ; done
-	for f in $(srcdir_DOCFILES) ; do $(INSTALL) -m 644 $(srcdir)/$$f $(docdir) ; done
-	for f in $(topsrcdir_DOCFILES) ; do $(INSTALL) -m 644 $(top_srcdir)/$$f $(docdir) ; done
+	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man1
+	$(INSTALL) -m 644 mutt.man $(DESTDIR)$(mandir)/man1/mutt.1
+	$(INSTALL) -m 644 dotlock.man $(DESTDIR)$(mandir)/man1/mutt_dotlock.1
+	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(docdir)
+	for f in $(DOCFILES) ; do $(INSTALL) -m 644 $$f $(DESTDIR)$(docdir) ; done
+	for f in $(srcdir_DOCFILES) ; do $(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir) ; done
+	for f in $(topsrcdir_DOCFILES) ; do $(INSTALL) -m 644 $(top_srcdir)/$$f $(DESTDIR)$(docdir) ; done
 	if [ -f manual.html ] ; then \
 		$(MAKE) install-html ; \
 	fi
 		
 install-html: html
-	$(top_srcdir)/mkinstalldirs $(docdir)/html
-	for f in manual*.html ; do $(INSTALL) -m 644 $$f $(docdir)/html ; done
+	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(docdir)/html
+	for f in manual*.html ; do $(INSTALL) -m 644 $$f $(DESTDIR)$(docdir)/html ; done
 
 
 uninstall:
-	-rm -f $(mandir)/man1/mutt.1
-	-rm -rf $(docdir)
+	-rm -f $(DESTDIR)$(mandir)/man1/mutt.1
+	-rm -rf $(DESTDIR)$(docdir)
 
 manual.txt: manual.sgml
 	sgml2txt -c latin manual
