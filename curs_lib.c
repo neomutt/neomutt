@@ -166,6 +166,7 @@ void mutt_query_exit (void)
     endwin ();
     exit (0);
   }
+  mutt_clear_error();
   mutt_curs_set (-1);
   Signals &= ~S_INTERRUPT;
 }
