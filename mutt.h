@@ -280,6 +280,12 @@ enum
 #define SENDKEY		(1<<7)
 #define SENDRESEND	(1<<8)
 
+/* flags to _mutt_select_file() */
+#define M_SEL_BUFFY	(1<<0)
+#define M_SEL_MULTI	(1<<1)
+#define M_SEL_FOLDER	(1<<2)
+
+
 /* boolean vars */
 enum
 {

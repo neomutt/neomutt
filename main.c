@@ -797,7 +797,7 @@ int main (int argc, char **argv)
 	exit (1);
       }
       folder[0] = 0;
-      mutt_select_file (folder, sizeof (folder), 1);
+      mutt_select_file (folder, sizeof (folder), M_SEL_FOLDER);
       if (!folder[0])
       {
 	mutt_endwin (NULL);

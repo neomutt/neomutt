@@ -403,7 +403,8 @@ int _mutt_enter_fname (const char *prompt, char *buf, size_t blen, int *redraw, 
   {
     mutt_refresh ();
     buf[0] = 0;
-    _mutt_select_file (buf, blen, 0, multiple, files, numfiles);
+    _mutt_select_file (buf, blen, M_SEL_FOLDER | (buffy ? M_SEL_BUFFY : 0) | (multiple ? M_SEL_MULTI : 0), 
+		       files, numfiles);
     *redraw = REDRAW_FULL;
   }
   else

@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
  * Copyright (C) 2000 Edmund Grimley Evans <edmundo@rano.org>
@@ -418,7 +419,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	    if (tempbuf && templen == state->lastchar - i &&
 		!memcmp (tempbuf, state->wbuf + i, (state->lastchar - i) * sizeof (wchar_t)))
 	    {
-	      mutt_select_file (buf, buflen, 0);
+	      mutt_select_file (buf, buflen, (flags & M_EFILE) ? M_SEL_FOLDER : 0);
 	      set_option (OPTNEEDREDRAW);
 	      if (*buf)
 		replace_part (state, i, buf);
@@ -471,7 +472,9 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	    if ((!tempbuf && !state->lastchar) || (tempbuf && templen == state->lastchar &&
 		!memcmp (tempbuf, state->wbuf, state->lastchar * sizeof (wchar_t))))
 	    {
-	      _mutt_select_file (buf, buflen, 0, multiple, files, numfiles);
+	      _mutt_select_file (buf, buflen, 
+				 ((flags & M_EFILE) ? M_SEL_FOLDER : 0) | (multiple ? M_SEL_MULTI : 0), 
+				 files, numfiles);
 	      set_option (OPTNEEDREDRAW);
 	      if (*buf)
 	      {

@@ -51,6 +51,7 @@ typedef struct folder_t
 } FOLDER;
 
 static char LastDir[_POSIX_PATH_MAX] = "";
+static char LastDirBackup[_POSIX_PATH_MAX] = "";
 
 /* Frees up the memory allocated for the local-global variables.  */
 static void destroy_state (struct browser_state *state)
@@ -518,8 +519,7 @@ int file_tag (MUTTMENU *menu, int n)
   return ((ff->tagged = !ff->tagged) ? 1 : -1);
 }
 
-void _mutt_select_file (char *f, size_t flen, int buffy,
-		       int multiple, char ***files, int *numfiles)
+void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *numfiles)
 {
   char buf[_POSIX_PATH_MAX];
   char prefix[_POSIX_PATH_MAX] = "";
@@ -529,8 +529,16 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
   MUTTMENU *menu;
   struct stat st;
   int i, killPrefix = 0;
+  int multiple = (flags & M_SEL_MULTI)  ? 1 : 0;
+  int folder   = (flags & M_SEL_FOLDER) ? 1 : 0;
+  int buffy    = (flags & M_SEL_BUFFY)  ? 1 : 0;
 
+  buffy = buffy && folder;
+  
   memset (&state, 0, sizeof (struct browser_state));
+
+  if (!folder)
+    strfcpy (LastDirBackup, LastDir, sizeof (LastDirBackup));
 
   if (*f)
   {
@@ -581,8 +589,11 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
   }
   else 
   {
-    if (!LastDir[0])
+    if (!folder)
+      getcwd (LastDir, sizeof (LastDir));
+    else if (!LastDir[0])
       strfcpy (LastDir, NONULL(Maildir), sizeof (LastDir));
+    
 #ifdef USE_IMAP
     if (!buffy && mx_is_imap (LastDir))
     {
@@ -598,14 +609,14 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
   if (buffy)
   {
     if (examine_mailboxes (NULL, &state) == -1)
-      return;
+      goto bail;
   }
   else
 #ifdef USE_IMAP
   if (!state.imap_browse)
 #endif
   if (examine_directory (NULL, &state, LastDir, prefix) == -1)
-    return;
+    goto bail;
 
   menu = mutt_new_menu ();
   menu->menu = MENU_FOLDER;
@@ -742,7 +753,7 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 	      if (examine_directory (menu, &state, LastDir, prefix) == -1)
 	      {
 		strfcpy (LastDir, NONULL(Homedir), sizeof (LastDir));
-		return;
+		goto bail;
 	      }
 	    }
 	    menu->current = 0; 
@@ -802,7 +813,7 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 
 	destroy_state (&state);
 	mutt_menuDestroy (&menu);
-	return;
+	goto bail;
 
       case OP_BROWSER_TELL:
         if(state.entrylen)
@@ -936,7 +947,7 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 		mutt_error _("Error scanning directory.");
 		destroy_state (&state);
 		mutt_menuDestroy (&menu);
-		return;
+		goto bail;
 	      }
 	    }
 	    else
@@ -1002,7 +1013,7 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 	    {
 	      mutt_error _("Error scanning directory.");
 	      mutt_menuDestroy (&menu);
-	      return;
+	      goto bail;
 	    }
 	    killPrefix = 0;
 	    if (!state.entrylen)
@@ -1068,7 +1079,7 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 	if (buffy)
 	{
 	  if (examine_mailboxes (menu, &state) == -1)
-	    return;
+	    goto bail;
 	}
 #ifdef USE_IMAP
 	else if (mx_is_imap (LastDir))
@@ -1080,7 +1091,7 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 	}
 #endif
 	else if (examine_directory (menu, &state, LastDir, prefix) == -1)
-	  return;
+	  goto bail;
 	init_menu (&state, menu, title, sizeof (title), buffy);
 	break;
 
@@ -1092,7 +1103,7 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 	  strfcpy (f, buf, flen);
 	  destroy_state (&state);
 	  mutt_menuDestroy (&menu);
-	  return;
+	  goto bail;
 	}
 	MAYBE_REDRAW (menu->redraw);
 	break;
@@ -1110,7 +1121,7 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 	  strfcpy (f, state.entry[menu->current].name, flen);
 	  destroy_state (&state);
 	  mutt_menuDestroy (&menu);
-	  return;
+	  goto bail;
 	}
 	else
 #endif
@@ -1140,5 +1151,10 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 	}
     }
   }
-  /* not reached */
+  
+  bail:
+  
+  if (!folder)
+    strfcpy (LastDir, LastDirBackup, sizeof (LastDir));
+  
 }
