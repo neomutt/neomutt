@@ -146,7 +146,7 @@ int imap_cmd_step (IMAP_DATA* idata)
   if (!mutt_strncmp (idata->buf, idata->seq, SEQLEN))
   {
     cmd_finish (idata);
-    return IMAP_CMD_DONE;
+    return imap_code (idata->buf) ? IMAP_CMD_DONE : IMAP_CMD_NO;
   }
 
   return IMAP_CMD_CONTINUE;

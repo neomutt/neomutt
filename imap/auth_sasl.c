@@ -101,7 +101,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
       irc = imap_cmd_step (idata);
     while (irc == IMAP_CMD_CONTINUE);
 
-    if (irc == IMAP_CMD_FAIL)
+    if (irc == IMAP_CMD_FAIL || irc == IMAP_CMD_NO)
       goto bail;
 
     if (irc == IMAP_CMD_RESPOND)

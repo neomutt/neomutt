@@ -22,6 +22,7 @@
 #include "mime.h"
 #include "mailbox.h"
 #include "mx.h"
+#include "url.h"
 
 #ifdef HAVE_PGP
 #include "pgp.h"
@@ -663,6 +664,18 @@ void mutt_pretty_mailbox (char *s)
   char *p = s, *q = s;
   size_t len;
 
+  /* if s is an url, only collapse path component */
+  if (url_check_scheme (s) != U_UNKNOWN)
+  {
+    p = strchr(s, ':')+1;
+    if (!strncmp (p, "//", 2))
+      q = strchr (p+2, '/');
+    if (!q)
+      q = p;
+    else
+      p = q;
+  }
+  
   /* first attempt to collapse the pathname */
   while (*p)
   {

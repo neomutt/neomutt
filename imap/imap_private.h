@@ -35,6 +35,7 @@
 /* IMAP command responses */
 #define IMAP_CMD_DONE     (0)
 #define IMAP_CMD_FAIL     (-1)
+#define IMAP_CMD_NO       (-2)
 #define IMAP_CMD_CONTINUE (1)
 #define IMAP_CMD_RESPOND  (2)
 
