@@ -581,7 +581,7 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
   struct maildir *md, *p;
   struct maildir **last;
   HASH *fnames;
-  int i, idx;
+  int i, deleted;
   
   if(!option (OPTCHECKNEW))
     return 0;
@@ -660,7 +660,7 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
     hash_insert(fnames, p->canon_fname, p, 0);
   }
 
-  if(index_hint) idx = *index_hint;
+  deleted = 0;
   
   for(i = 0; i < ctx->msgcount; i++)
   {
@@ -695,21 +695,20 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
       /* the message has disappeared by occult forces, correct
        * the index hint. 
        */
-      
-      if(modified && index_hint && (i <= *index_hint))
-	idx--;
+      if(modified && index_hint && (i < *index_hint))
+	deleted++;
     }
+
+    if(modified && index_hint && i == *index_hint)
+      *index_hint -= deleted;
   }
-    
+
   hash_destroy(&fnames, NULL);
     
   if(modified)
     mx_update_tables(ctx, 0);
 
   maildir_move_to_context(ctx, &md);
-  
-  if(index_hint)
-    *index_hint = idx;
   
   return modified ? M_REOPENED : have_new ? M_NEW_MAIL : 0;
 }
