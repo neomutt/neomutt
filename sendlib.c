@@ -1821,9 +1821,13 @@ void mutt_bounce_message (HEADER *h, ADDRESS *to)
     if ((f = safe_fopen (tempfile, "w")) != NULL)
     {
       const char *fqdn;
-
+      int ch_flags = CH_XMIT | CH_NONEWLINE;
+      
+      if (!option (OPTBOUNCEDELIVERED))
+	ch_flags |= CH_WEED_DELIVERED;
+      
       fseek (msg->fp, h->offset, 0);
-      mutt_copy_header (msg->fp, h, f, CH_XMIT | CH_NONEWLINE, NULL);
+      mutt_copy_header (msg->fp, h, f, ch_flags, NULL);
       fprintf (f, "Resent-From: %s", NONULL(Username));
       if((fqdn = mutt_fqdn(1)))
 	fprintf (f, "@%s", fqdn);

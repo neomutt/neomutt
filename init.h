@@ -85,6 +85,7 @@ struct option_t MuttVars[] = {
   { "auto_tag",		DT_BOOL, R_NONE, OPTAUTOTAG, 0 },
   { "beep",		DT_BOOL, R_NONE, OPTBEEP, 1 },
   { "beep_new",		DT_BOOL, R_NONE, OPTBEEPNEW, 0 },
+  { "bounce_delivered", DT_BOOL, R_NONE, OPTBOUNCEDELIVERED, 1 },
   { "charset",		DT_STR,	 R_NONE, UL &Charset, UL "iso-8859-1" },
   { "check_new",	DT_BOOL, R_NONE, OPTCHECKNEW, 1 },
   { "collapse_unread",	DT_BOOL, R_NONE, OPTCOLLAPSEUNREAD, 1 },

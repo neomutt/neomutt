@@ -2608,6 +2608,15 @@ When this variable is set, mutt will beep whenever it prints a
 message notifying you of new mail.  This is independent of the
 setting of the <ref id="beep" name="beep"> variable.
 
+<sect2>bounce&lowbar;delivered<label id="bounce_delivered">
+<p>
+Type boolean<newline>
+Default: set
+
+When this variable is set, mutt will include Delivered-To headers
+when bouncing messages.  Postfix users may wish to unset this
+variable.
+
 <sect2>charset<label id="charset">
 <p>
 Type: string<newline>

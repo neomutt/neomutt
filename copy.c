@@ -60,7 +60,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
   buf[0] = '\n';
   buf[1] = 0;
 
-  if ((flags & (CH_REORDER | CH_WEED | CH_MIME | CH_DECODE | CH_PREFIX)) == 0)
+  if ((flags & (CH_REORDER | CH_WEED | CH_MIME | CH_DECODE | CH_PREFIX | CH_WEED_DELIVERED)) == 0)
   {
     /* Without these flags to complicate things
      * we can do a more efficient line to line copying
@@ -148,6 +148,9 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
       if ((flags & CH_WEED) && 
 	  mutt_matches_ignore (buf, Ignore) &&
 	  !mutt_matches_ignore (buf, UnIgnore))
+	continue;
+      if ((flags & CH_WEED_DELIVERED) &&
+	  mutt_strncasecmp ("Delivered-To:", buf, 13) == 0)
 	continue;
       if ((flags & (CH_UPDATE | CH_XMIT | CH_NOSTATUS)) &&
 	  (mutt_strncasecmp ("Status:", buf, 7) == 0 ||
