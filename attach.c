@@ -896,6 +896,8 @@ int mutt_print_attachment (FILE *fp, BODY *a)
     rfc1524_entry *entry;
     int piped = FALSE;
 
+    dprint (2, (debugfile, "Using mailcap...\n"));
+    
     entry = rfc1524_new_entry ();
     rfc1524_mailcap_lookup (a, type, entry, M_PRINT);
     if (rfc1524_expand_filename (entry->nametemplate, a->filename,
@@ -964,8 +966,8 @@ int mutt_print_attachment (FILE *fp, BODY *a)
     return (1);
   }
 
-  if (!ascii_strcasecmp ("text/plain", a->subtype) ||
-      !ascii_strcasecmp ("application/postscript", a->subtype))
+  if (!ascii_strcasecmp ("text/plain", type) ||
+      !ascii_strcasecmp ("application/postscript", type))
   {
     return (mutt_pipe_attachment (fp, a, NONULL(PrintCmd), NULL));
   }
@@ -981,11 +983,17 @@ int mutt_print_attachment (FILE *fp, BODY *a)
     mutt_mktemp (newfile);
     if (mutt_decode_save_attachment (fp, a, newfile, 0, 0) == 0)
     {
+      
+      dprint (2, (debugfile, "successfully decoded %s type attachment to %s\n",
+		  type, newfile));
+      
       if ((ifp = fopen (newfile, "r")) == NULL)
       {
 	mutt_perror ("fopen");
 	goto bail0;
       }
+
+      dprint (2, (debugfile, "successfully opened %s read-only\n", newfile));
       
       mutt_endwin (NULL);
       if ((thepid = mutt_create_filter (NONULL(PrintCmd), &fpout, NULL, NULL)) < 0)
@@ -994,7 +1002,13 @@ int mutt_print_attachment (FILE *fp, BODY *a)
 	goto bail0;
       }
 
+      dprint (2, (debugfile, "Filter created.\n"));
+      
       mutt_copy_stream (ifp, fpout);
+
+      safe_fclose (&fpout);
+      safe_fclose (&ifp);
+
       if (mutt_wait_filter (thepid) != 0 || option (OPTWAITKEY))
 	mutt_any_key_to_continue (NULL);
       rc = 1;
