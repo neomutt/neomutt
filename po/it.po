@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt-0.93i\n"
-"POT-Creation-Date: 1998-10-19 10:54+0200\n"
+"POT-Creation-Date: 1998-10-20 22:27+0200\n"
 "PO-Revision-Date: 1998-10-14 15:23+02:00\n"
 "Last-Translator: Marco d'Itri <md@linux.it>\n"
 "Language-Team: none\n"
@@ -233,7 +233,7 @@ msgstr "mono: troppo pochi argomenti"
 msgid "%s: no such attribute"
 msgstr "%s: attributo inesistente"
 
-#: color.c:663 hook.c:62 hook.c:70 keymap.c:663
+#: color.c:663 hook.c:62 hook.c:70 keymap.c:664
 msgid "too few arguments"
 msgstr "troppo pochi argomenti"
 
@@ -1111,55 +1111,55 @@ msgstr "impossibile determinare la home directory"
 msgid "unable to determine username"
 msgstr "impossibile determinare l'username"
 
-#: keymap.c:416
+#: keymap.c:417
 msgid "Macro loop detected."
 msgstr "Individuato un loop di macro."
 
-#: keymap.c:602 keymap.c:610
+#: keymap.c:603 keymap.c:611
 #, fuzzy
 msgid "Key is not bound."
 msgstr "Il tasto non è assegnato.  Guarda il manuale."
 
-#: keymap.c:614
+#: keymap.c:615
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Il tasto non è assegnato.  Premi '%s' per l'aiuto."
 
-#: keymap.c:625
+#: keymap.c:626
 msgid "push: too many arguments"
 msgstr "push: troppi argomenti"
 
-#: keymap.c:646
+#: keymap.c:647
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: menù inesistente"
 
-#: keymap.c:655
+#: keymap.c:656
 msgid "null key sequence"
 msgstr "sequenza di tasti nulla"
 
-#: keymap.c:733
+#: keymap.c:734
 msgid "bind: too many arguments"
 msgstr "bind: troppi argomenti"
 
-#: keymap.c:748
+#: keymap.c:749
 #, c-format
 msgid "%s: no such function in map"
 msgstr "%s: la funzione non è nella mappa"
 
-#: keymap.c:771
+#: keymap.c:772
 msgid "macro: empty key sequence"
 msgstr "macro: sequenza di tasti nulla"
 
-#: keymap.c:782
+#: keymap.c:783
 msgid "macro: too many arguments"
 msgstr "macro: troppi argomenti"
 
-#: keymap.c:812
+#: keymap.c:813
 msgid "exec: too few arguments"
 msgstr "exec: troppo pochi argomenti"
 
-#: keymap.c:832
+#: keymap.c:833
 #, c-format
 msgid "%s: no such command"
 msgstr "%s: comando inesistente"

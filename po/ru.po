@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 1998-10-19 10:54+0200\n"
+"POT-Creation-Date: 1998-10-20 22:27+0200\n"
 "PO-Revision-Date: 1998-10-15 07:51+0300\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "Language-Team: Mutt-dev <mutt-dev@mutt.org>\n"
@@ -227,7 +227,7 @@ msgstr "mono: слишком мало аргументов"
 msgid "%s: no such attribute"
 msgstr "Атрибут '%s' не существует"
 
-#: color.c:663 hook.c:62 hook.c:70 keymap.c:663
+#: color.c:663 hook.c:62 hook.c:70 keymap.c:664
 msgid "too few arguments"
 msgstr "слишком мало аргументов"
 
@@ -1100,55 +1100,55 @@ msgstr "нельзя определить домашний каталог"
 msgid "unable to determine username"
 msgstr "нельзя определить имя пользователя"
 
-#: keymap.c:416
+#: keymap.c:417
 msgid "Macro loop detected."
 msgstr "Обнаружен циклический макрос."
 
-#: keymap.c:602 keymap.c:610
+#: keymap.c:603 keymap.c:611
 #, fuzzy
 msgid "Key is not bound."
 msgstr "Клавиша не назначена. Смотрите руководство."
 
-#: keymap.c:614
+#: keymap.c:615
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Клавиша не назначена. Нажмите '%s' для подсказки."
 
-#: keymap.c:625
+#: keymap.c:626
 msgid "push: too many arguments"
 msgstr "push: слишком много аргументов"
 
-#: keymap.c:646
+#: keymap.c:647
 #, c-format
 msgid "%s: no such menu"
 msgstr "меню '%s' отсутствует"
 
-#: keymap.c:655
+#: keymap.c:656
 msgid "null key sequence"
 msgstr "пустая последовательность"
 
-#: keymap.c:733
+#: keymap.c:734
 msgid "bind: too many arguments"
 msgstr "bind: слишком много аргументов"
 
-#: keymap.c:748
+#: keymap.c:749
 #, c-format
 msgid "%s: no such function in map"
 msgstr "функции '%s' нет в карте"
 
-#: keymap.c:771
+#: keymap.c:772
 msgid "macro: empty key sequence"
 msgstr "macro: пустая последовательность"
 
-#: keymap.c:782
+#: keymap.c:783
 msgid "macro: too many arguments"
 msgstr "macro: слишком много аргументов"
 
-#: keymap.c:812
+#: keymap.c:813
 msgid "exec: too few arguments"
 msgstr "exec: слишком мало аргументов"
 
-#: keymap.c:832
+#: keymap.c:833
 #, c-format
 msgid "%s: no such command"
 msgstr "команда '%s' отсутствует"

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-19 10:54+0200\n"
+"POT-Creation-Date: 1998-10-20 22:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -227,7 +227,7 @@ msgstr "mono: Zu wenige Parameter."
 msgid "%s: no such attribute"
 msgstr "%s: Attribut unbekannt."
 
-#: color.c:663 hook.c:62 hook.c:70 keymap.c:663
+#: color.c:663 hook.c:62 hook.c:70 keymap.c:664
 msgid "too few arguments"
 msgstr "Zu wenige Parameter."
 
@@ -1102,55 +1102,55 @@ msgstr "Kann Home-Verzeichnis nicht bestimmen"
 msgid "unable to determine username"
 msgstr "Kann Nutzernamen nicht bestimmen"
 
-#: keymap.c:416
+#: keymap.c:417
 msgid "Macro loop detected."
 msgstr "Makro-Schleife!"
 
-#: keymap.c:602 keymap.c:610
+#: keymap.c:603 keymap.c:611
 #, fuzzy
 msgid "Key is not bound."
 msgstr "Taste ist nicht gebunden.  Konsultieren Sie das Handbuch."
 
-#: keymap.c:614
+#: keymap.c:615
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Taste ist nicht gebunden.  Drücken Sie '%s' für Hilfe."
 
-#: keymap.c:625
+#: keymap.c:626
 msgid "push: too many arguments"
 msgstr "push: Zu viele Argumente"
 
-#: keymap.c:646
+#: keymap.c:647
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: Menü unbekannt."
 
-#: keymap.c:655
+#: keymap.c:656
 msgid "null key sequence"
 msgstr "Leere Tastenfolge"
 
-#: keymap.c:733
+#: keymap.c:734
 msgid "bind: too many arguments"
 msgstr "bind: Zu viele Argumente"
 
-#: keymap.c:748
+#: keymap.c:749
 #, c-format
 msgid "%s: no such function in map"
 msgstr "%s: Funktion unbekannt"
 
-#: keymap.c:771
+#: keymap.c:772
 msgid "macro: empty key sequence"
 msgstr "macro: Leere Tastenfolge"
 
-#: keymap.c:782
+#: keymap.c:783
 msgid "macro: too many arguments"
 msgstr "macro: Zu viele Paramter"
 
-#: keymap.c:812
+#: keymap.c:813
 msgid "exec: too few arguments"
 msgstr "%s: Zu wenige Parameter."
 
-#: keymap.c:832
+#: keymap.c:833
 #, c-format
 msgid "%s: no such command"
 msgstr "%s: Menü unbekannt."
