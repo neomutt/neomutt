@@ -779,6 +779,7 @@ void mutt_message_to_7bit (BODY *a, FILE *fp)
   }
   a->length = sb.st_size;
   mutt_free_body (&a->parts);
+  a->hdr->content = NULL;
 }
 
 static void transform_to_7bit (BODY *a, FILE *fpin)
