@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -150,7 +150,7 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
 	      fclose (fp);
               return -1;
             }
-            strncpy(fpc,pc,hdr-pc);
+            strncpy (fpc,pc,hdr-pc);
             fpc += hdr-pc;
             *fpc = '\0';
             pc=hdr;
@@ -162,14 +162,31 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
               return -1;
             }
             imap_read_bytes (fp, CTX_DATA->conn, bytes);
-            if (mutt_socket_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
+	    /* we may have other fields of the FETCH _after_ the literal
+	     * (eg Domino puts FLAGS here). Nothing wrong with that, either.
+	     * This all has to go - we should accept literals and nonliterals
+	     * interchangeably at any time. */
+	    if (mutt_socket_read_line_d (buf, sizeof (buf), CTX_DATA->conn)
+		< 0)
 	    {
 	      fclose (fp);
-              return -1;
+	      return -1;
 	    }
-	    
-            pc = buf;
-          }
+	    pc = buf;
+
+	    if (buf[0] == ' ')
+	    {
+	      /* skip space, closing parenthesis */
+	      strncpy (fpc, buf+1, strlen (buf)-2);
+	      fpc += strlen (buf)-2;
+	      *fpc = '\0';
+	      if (!(pc = strrchr (buf, ')')))
+	      {
+		dprint (2, (debugfile, "imap_read_headers: unterminated FETCH\n"));
+		pc = buf;
+	      }
+	    }
+	  }
         }
         else if (imap_handle_untagged (CTX_DATA, buf) != 0)
 	{
