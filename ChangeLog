@@ -1,4 +1,6 @@
-2002-12-11 09:16:25  Thomas Roessler  <roessler@does-not-exist.org>
+2002-12-11 10:31:29  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* muttbug.sh.in: Ask for the user's e-mail address.
 
 	* pager.c: Try to make search-next behave more closely to what
 	people are used to, again.  The behaviour introduced by this
