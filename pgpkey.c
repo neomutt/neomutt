@@ -26,6 +26,7 @@
 #include "mime.h"
 #include "pgp.h"
 #include "pager.h"
+#include "sort.h"
 
 #include <string.h>
 #include <ctype.h>
@@ -290,18 +291,92 @@ static void pgp_entry (char *s, size_t l, MUTTMENU * menu, int num)
   mutt_FormatString (s, l, NONULL (PgpEntryFormat), pgp_entry_fmt, 
 		     (unsigned long) &entry, M_FORMAT_ARROWCURSOR);
 }
-  
-static int pgp_compare (const void *a, const void *b)
+
+static int _pgp_compare_address (const void *a, const void *b)
 {
   int r;
 
   pgp_uid_t **s = (pgp_uid_t **) a;
   pgp_uid_t **t = (pgp_uid_t **) b;
 
-  if ((r = mutt_strcasecmp ((*s)->addr, (*t)->addr)) != 0)
-    return r;
+  if ((r = mutt_strcasecmp ((*s)->addr, (*t)->addr)))
+    return r > 0;
   else
-    return mutt_strcasecmp (pgp_keyid ((*s)->parent), pgp_keyid ((*t)->parent));
+    return (mutt_strcasecmp (pgp_keyid ((*s)->parent),
+			     pgp_keyid ((*t)->parent)) > 0);
+}
+
+static int pgp_compare_address (const void *a, const void *b)
+{
+  return ((PgpSortKeys & SORT_REVERSE) ? !_pgp_compare_address (a, b)
+				       : _pgp_compare_address (a, b));
+}
+
+
+
+static int _pgp_compare_keyid (const void *a, const void *b)
+{
+  int r;
+
+  pgp_uid_t **s = (pgp_uid_t **) a;
+  pgp_uid_t **t = (pgp_uid_t **) b;
+
+  if ((r = mutt_strcasecmp (pgp_keyid ((*s)->parent), 
+			    pgp_keyid ((*t)->parent))))
+    return r > 0;
+  else
+    return (mutt_strcasecmp ((*s)->addr, (*t)->addr)) > 0;
+}
+
+static int pgp_compare_keyid (const void *a, const void *b)
+{
+  return ((PgpSortKeys & SORT_REVERSE) ? !_pgp_compare_keyid (a, b)
+				       : _pgp_compare_keyid (a, b));
+}
+
+static int _pgp_compare_date (const void *a, const void *b)
+{
+  int r;
+  pgp_uid_t **s = (pgp_uid_t **) a;
+  pgp_uid_t **t = (pgp_uid_t **) b;
+
+  if ((r = ((*s)->parent->gen_time - (*t)->parent->gen_time)))
+    return r > 0;
+  return (mutt_strcasecmp ((*s)->addr, (*t)->addr)) > 0;
+}
+
+static int pgp_compare_date (const void *a, const void *b)
+{
+  return ((PgpSortKeys & SORT_REVERSE) ? !_pgp_compare_date (a, b)
+				       : _pgp_compare_date (a, b));
+}
+
+static int _pgp_compare_trust (const void *a, const void *b)
+{
+  int r;
+
+  pgp_uid_t **s = (pgp_uid_t **) a;
+  pgp_uid_t **t = (pgp_uid_t **) b;
+
+  if ((r = (((*s)->parent->flags & (KEYFLAG_RESTRICTIONS))
+	    - ((*t)->parent->flags & (KEYFLAG_RESTRICTIONS)))))
+    return r > 0;
+  if ((r = ((*s)->trust - (*t)->trust)))
+    return r < 0;
+  if ((r = ((*s)->parent->keylen - (*t)->parent->keylen)))
+    return r < 0;
+  if ((r = ((*s)->parent->gen_time - (*t)->parent->gen_time)))
+    return r < 0;
+  if ((r = mutt_strcasecmp ((*s)->addr, (*t)->addr)))
+    return r > 0;
+  return (mutt_strcasecmp (pgp_keyid ((*s)->parent), 
+			   pgp_keyid ((*t)->parent))) > 0;
+}
+
+static int pgp_compare_trust (const void *a, const void *b)
+{
+  return ((PgpSortKeys & SORT_REVERSE) ? !_pgp_compare_trust (a, b)
+				       : _pgp_compare_trust (a, b));
 }
 
 static pgp_key_t *pgp_select_key (struct pgp_vinfo *pgp,
@@ -318,6 +393,7 @@ static pgp_key_t *pgp_select_key (struct pgp_vinfo *pgp,
   pid_t thepid;
   pgp_key_t *kp;
   pgp_uid_t *a;
+  int (*f) (const void *, const void *);
 
   for (i = 0, kp = keys; kp; kp = kp->next)
   {
@@ -343,7 +419,23 @@ static pgp_key_t *pgp_select_key (struct pgp_vinfo *pgp,
       KeyTable[i] = a;
   }
 
-  qsort (KeyTable, i, sizeof (pgp_key_t *), pgp_compare);
+  switch (PgpSortKeys & SORT_MASK)
+  {
+    case SORT_DATE:
+      f = pgp_compare_date;
+      break;
+    case SORT_KEYID:
+      f = pgp_compare_keyid;
+      break;
+    case SORT_ADDRESS:
+      f = pgp_compare_address;
+      break;
+    case SORT_TRUST:
+    default:
+      f = pgp_compare_trust;
+      break;
+  }
+  qsort (KeyTable, i, sizeof (pgp_key_t *), f);
 
   helpstr[0] = 0;
   mutt_make_help (buf, sizeof (buf), _("Exit  "), MENU_PGP, OP_EXIT);

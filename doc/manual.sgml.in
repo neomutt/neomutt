@@ -4148,6 +4148,24 @@ are sorted alphabetically.  Valid values:
 You may optionally use the <tt/reverse-/ prefix to specify reverse sorting
 order (example: <tt/set sort_browser=reverse-date/).
 
+<sect2>pgp&lowbar;sort&lowbar;keys<label id="pgp_sort_keys">
+<p>
+Type: string<newline>
+Default: address
+
+Specifies how the entries in the `pgp keys' menu are sorted. The
+following are legal values:
+
+<itemize>
+<item>address (sort alphabetically by user id)
+<item>keyid (sort alphabetically by key id)
+<item>date (sort by key creation date)
+<item>trust (sort by the trust of the key).
+</itemize>
+
+If you prefer reverse order of the above values, prefix it with
+`reverse-'.
+
 <sect2>spoolfile<label id="spoolfile">
 <p>
 Type: string<newline>

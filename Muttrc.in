@@ -187,11 +187,13 @@ macro pager   <f1> "!less @docdir@/manual.txt\n" "Show Mutt documentation"
 # unset pgp_autosign
 # unset pgp_autoencrypt
 # set pgp_encryptself
+# set pgp_entry_format="%4n %t%f %4l/0x%k %-4a %2c %u"
 # unset pgp_long_ids
 # unset pgp_replyencrypt
 # unset pgp_replysign
 # set pgp_sign_as=""
 # set pgp_sign_micalg="pgp-md5"
+# set pgp_sort_keys=address
 # set pgp_strict_enc
 # set pgp_timeout=300
 # set pgp_verify_sig=yes

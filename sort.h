@@ -27,6 +27,8 @@
 #define SORT_SCORE	9
 #define SORT_ALIAS	10
 #define SORT_ADDRESS	11
+#define SORT_KEYID	12
+#define SORT_TRUST	13
 #define SORT_MASK	0xf
 #define SORT_REVERSE	(1<<4)
 #define SORT_LAST	(1<<5)
@@ -44,5 +46,8 @@ WHERE short BrowserSort INITVAL (SORT_SUBJECT);
 WHERE short Sort INITVAL (SORT_DATE);
 WHERE short SortAux INITVAL (SORT_DATE); /* auxiallary sorting method */
 WHERE short SortAlias INITVAL (SORT_ALIAS);
+#ifdef _PGPPATH
+WHERE short PgpSortKeys INITVAL (SORT_ADDRESS);
+#endif
 
 extern const struct mapping_t SortMethods[];

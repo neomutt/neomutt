@@ -1030,6 +1030,11 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	case DT_SORT_BROWSER:
 	  map = SortBrowserMethods;
 	  break;
+#ifdef _PGPPATH
+	case DT_SORT_KEYS:
+	  map = SortKeyMethods;
+	  break;
+#endif
 	default:
 	  map = SortMethods;
 	  break;
@@ -1432,6 +1437,11 @@ int mutt_var_value_complete (char *buffer, size_t len, int pos)
 	  case DT_SORT_BROWSER:
 	    map = SortBrowserMethods;
 	    break;
+#ifdef _PGPPATH
+	  case DT_SORT_KEYS:
+	    map = SortKeyMethods;
+	    break;
+#endif
 	  default:
 	    map = SortMethods;
 	    break;
