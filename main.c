@@ -1,6 +1,7 @@
 static const char rcsid[]="$Id$";
 /*
  * Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1999   Thomas Roessler <roessler@guug.de>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -41,16 +42,15 @@ const char ReachingUs[] = N_("\
 To contact the developers, please mail to <mutt-dev@mutt.org>.\n");
 
 const char Notice[] = N_("\
-Copyright (C) 1996-8 Michael R. Elkins and others.\n\
+Copyright (C) 1996-9 Michael R. Elkins and others.\n\
 Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n\
 Mutt is free software, and you are welcome to redistribute it\n\
 under certain conditions; type `mutt -vv' for details.\n");
 
 const char Copyright[] = N_("\
-Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>\n\
-Copyright (C) 1997-8 Thomas Roessler <roessler@guug.de>\n\
-Copyright (C) 1998   Werner Koch <wk@isil.d.shuttle.de>\n\
-Copyright (C) 1998   Ruslan Ermilov <ru@ucb.crimea.ua>\n\
+Copyright (C) 1996-9 Michael R. Elkins <me@cs.hmc.edu>\n\
+Copyright (C) 1997-9 Thomas Roessler <roessler@guug.de>\n\
+Copyright (C) 1998-9 Werner Koch <wk@isil.d.shuttle.de>\n\
 \n\
 Lots of others not mentioned here contributed lots of code,\n\
 fixes, and suggestions.\n\

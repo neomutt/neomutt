@@ -1,6 +1,6 @@
 /* $Id$ */
 /*
- * Copyright (C) 1998 Ruslan Ermilov <ru@ucb.crimea.ua>
+ * Copyright (C) 1999 Thomas Roessler <roessler@guug.de>
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -26,13 +26,34 @@
 
 typedef int CHARSET_MAP[256];
 
-typedef struct 
+typedef struct descr
 {
-  CHARSET_MAP *map;
-} 
+  char *symbol;
+  int repr;
+}
+CHARDESC;
+
+typedef struct
+{
+  char *charset;
+  char escape_char;
+  char comment_char;
+  short multbyte;
+  LIST *aliases;
+}
+CHARMAP;
+
+typedef struct
+{
+  size_t n_symb;
+  size_t u_symb;
+
+  short multbyte;
+  HASH *symb_to_repr;
+  CHARDESC **description;
+}
 CHARSET;
 
-#define mutt_unicode_char(cm,ch) (!cm ? -1 : (*cm)[ch])
 
 CHARSET *mutt_get_charset(const char *);
 CHARSET_MAP *mutt_get_translation(const char *, const char *);

@@ -1,148 +1,664 @@
 static const char rcsid[]="$Id$";
 /*
- * Copyright (C) 1998 Ruslan Ermilov <ru@ucb.crimea.ua>,
- *                    Thomas Roessler <roessler@guug.de>
+ * Copyright (C) 1999 Thomas Roessler <roessler@guug.de>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ *     This program is free software; you can redistribute it
+ *     and/or modify it under the terms of the GNU General Public
+ *     License as published by the Free Software Foundation; either
+ *     version 2 of the License, or (at your option) any later
+ *     version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ *     This program is distributed in the hope that it will be
+ *     useful, but WITHOUT ANY WARRANTY; without even the implied
+ *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ *     PURPOSE.  See the GNU General Public License for more
+ *     details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *     You should have received a copy of the GNU General Public
+ *     License along with this program; if not, write to the Free
+ *     Software Foundation, Inc., 675 Mass Ave, Cambridge, MA
+ *     02139, USA.
  */
+
+/*
+ * This module deals with POSIX.2 character set definition files.
+ */
+
+
+#include <string.h>
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <sys/types.h>
+#include <dirent.h>
+#include <unistd.h>
 
 #include "mutt.h"
 #include "charset.h"
 
-#include <string.h>
-#include <ctype.h>
+/* Where are character set definition files located? */
+
+#define CHARMAPS_DIR "/usr/share/i18n/charmaps"
+
+
+/* Define this if you want any dprint () statements in this code */
+
+#undef CHARSET_DEBUG
+
+#ifndef CHARSET_DEBUG
+# undef dprint
+# define dprint(a, b) (void) a
+#endif
+
+
+/* Module-global variables */
 
 static HASH *Translations = NULL;
 static HASH *Charsets = NULL;
 static HASH *CharsetAliases = NULL;
 
-static CHARSET *mutt_new_charset(void)
-{
-  CHARSET *chs;
-  
-  chs          = safe_malloc(sizeof(CHARSET));
-  chs->map     = NULL;
-  
-  return chs;
-}
+/* Function Prototypes */
 
-#if 0
+static CHARDESC *chardesc_new (void);
+static CHARDESC *repr2descr (int repr, CHARSET * cs);
 
-static void mutt_free_charset(CHARSET **chsp)
-{
-  CHARSET *chs = *chsp;
-  
-  safe_free((void **) &chs->map);
-  safe_free((void **) chsp);
-}
+static CHARMAP *charmap_new (void);
+static CHARMAP *parse_charmap_header (FILE * fp);
+static CHARSET *charset_new (size_t hash_size);
 
-#endif
+static CHARSET_MAP *build_translation (CHARSET * from, CHARSET * to);
 
-static void canonical_charset(char *dest, size_t dlen, const char *name)
+static char translate_character (CHARSET * to, const char *symbol);
+
+static int load_charset (const char *filename, CHARSET ** csp, short multbyte);
+static int parse_charmap_line (char *line, CHARMAP * m, CHARDESC ** descrp);
+static int _cd_compar (const void *a, const void *b);
+
+static void canonical_charset (char *dest, size_t dlen, const char *name);
+static void chardesc_free (CHARDESC ** cdp);
+static void charmap_free (CHARMAP ** cp);
+static void charset_free (CHARSET ** csp);
+static void fix_symbol (char *symbol, CHARMAP * m);
+
+static void canonical_charset (char *dest, size_t dlen, const char *name)
 {
   int i;
-  
-  if(!mutt_strncasecmp(name, "x-", 2))
+
+  if (!strncasecmp (name, "x-", 2))
     name = name + 2;
-  
-  for(i = 0; name[i] && i < dlen - 1; i++)
+
+  for (i = 0; name[i] && i < dlen - 1; i++)
   {
-    if(strchr("_/. ", name[i]))
+    if (strchr ("_/. ", name[i]))
       dest[i] = '-';
     else
-      dest[i] = tolower(name[i]);
+      dest[i] = tolower (name[i]);
   }
-  
+
   dest[i] = '\0';
 }
 
-static CHARSET *load_charset(const char *name)
+static CHARSET *charset_new (size_t hash_size)
 {
-  char path[_POSIX_PATH_MAX];
-  char buffer[SHORT_STRING];
-  CHARSET *chs;
-  FILE *fp = NULL;
-  int i;
+  CHARSET *cp = safe_malloc (sizeof (CHARSET));
+  short i;
 
-  chs = mutt_new_charset();
+  cp->n_symb = 256;
+  cp->u_symb = 0;
+  cp->multbyte = 1;
+  cp->symb_to_repr = hash_create (hash_size);
+  cp->description = safe_malloc (cp->n_symb * sizeof (CHARDESC *));
 
-  snprintf(path, sizeof(path), "%s/charsets/%s", SHAREDIR, name);
-  if((fp = fopen(path, "r")) == NULL)
-    goto bail;
-  
-  if(fgets(buffer, sizeof(buffer), fp) == NULL)
-    goto bail;
-  
-  if(mutt_strcmp(buffer, CHARSET_MAGIC) != 0)
-    goto bail;
+  for (i = 0; i < cp->n_symb; i++)
+    cp->description[i] = NULL;
 
-  chs->map  = safe_malloc(sizeof(CHARSET_MAP));
+  return cp;
+}
+
+static void charset_free (CHARSET ** csp)
+{
+  CHARSET *cs = *csp;
+  size_t i;
+
+  for (i = 0; i < cs->n_symb; i++)
+    chardesc_free (&cs->description[i]);
+
+  safe_free ((void **) &cs->description);
+
+  hash_destroy (&cs->symb_to_repr, NULL);
+  safe_free ((void **) csp);
+}
+
+static CHARMAP *charmap_new (void)
+{
+  CHARMAP *m = safe_malloc (sizeof (CHARMAP));
+
+  m->charset = NULL;
+  m->escape_char = '\\';
+  m->comment_char = '#';
+  m->multbyte = 1;
+  m->aliases = NULL;
   
-  for(i = 0; i < 256; i++)
+  return m;
+}
+
+static void charmap_free (CHARMAP ** cp)
+{
+  if (!cp || !*cp)
+    return;
+
+  mutt_free_list (&(*cp)->aliases);
+  safe_free ((void **) &(*cp)->charset);
+  safe_free ((void **) cp);
+
+  return;
+}
+
+static CHARDESC *chardesc_new (void)
+{
+  CHARDESC *p = safe_malloc (sizeof (CHARDESC));
+
+  p->symbol = NULL;
+  p->repr = -1;
+
+  return p;
+}
+
+static void chardesc_free (CHARDESC ** cdp)
+{
+  if (!cdp || !*cdp)
+    return;
+
+
+  safe_free ((void **) &(*cdp)->symbol);
+  safe_free ((void **) cdp);
+
+  return;
+}
+
+static CHARMAP *parse_charmap_header (FILE * fp)
+{
+  char buffer[1024];
+  char *t, *u;
+  CHARMAP *m = charmap_new ();
+
+  while (fgets (buffer, sizeof (buffer), fp))
   {
-    if(fscanf(fp, "%i", &(*chs->map)[i]) != 1)
+    if ((t = strchr (buffer, '\n')))
+      *t = '\0';
+    else
     {
-      safe_free((void **) &chs->map);
+      charmap_free (&m);
+      return NULL;
+    }
+
+    if (!strncmp (buffer, "CHARMAP", 7))
       break;
+
+    if (*buffer == m->comment_char)
+    {
+      if ((t = strtok (buffer + 1, "\t ")) && !strcasecmp (t, "alias"))
+      {
+	char _tmp[SHORT_STRING];
+	while ((t = strtok(NULL, "\t, ")))
+	{
+	  canonical_charset (_tmp, sizeof (_tmp), t);
+	  m->aliases = mutt_add_list (m->aliases, _tmp);
+	}
+      }
+      continue;
+    }
+
+    if (!(t = strtok (buffer, "\t ")))
+      continue;
+
+    if (!(u = strtok (NULL, "\t ")))
+    {
+      charmap_free (&m);
+      return NULL;
+    }
+
+    if (!strcmp (t, "<code_set_name>"))
+    {
+      safe_free ((void **) &m->charset);
+      canonical_charset (u, strlen (u) + 1, u);
+      m->charset = safe_strdup (u);
+    }
+    else if (!strcmp (t, "<comment_char>"))
+    {
+      m->comment_char = *u;
+    }
+    else if (!strcmp (t, "<escape_char>"))
+    {
+      m->escape_char = *u;
+    }
+    else if (!strcmp (t, "<mb_cur_max>"))
+    {
+      m->multbyte = strtol (u, NULL, 0);
     }
   }
 
-  bail:
-  
-  if(fp) fclose(fp);
-  return chs;
+  return m;
 }
 
-static HASH *load_charset_aliases(void)
+/* Properly handle escape characters within a symbol. */
+
+static void fix_symbol (char *symbol, CHARMAP * m)
 {
-  FILE *fp;
-  char buffer[LONG_STRING];
-  char *t;
-  HASH *charset_aliases;
+  char *s, *d;
+
+  for (s = symbol, d = symbol; *s; *d++ = *s++)
+  {
+    if (*s == m->escape_char)
+      s++;
+  }
+
+  *d = *s;
+}
+
+enum
+{
+  CL_DESCR,
+  CL_END,
+  CL_COMMENT,
+  CL_ERROR
+};
+
+static int parse_charmap_line (char *line, CHARMAP * m, CHARDESC ** descrp)
+{
+  char *t, *u;
+  short n;
+  CHARDESC *descr;
+
+  if (*line == m->comment_char)
+    return CL_COMMENT;
+
+  descr = *descrp = chardesc_new ();
+
+  if (!strncmp (line, "END CHARMAP", 11))
+  {
+    chardesc_free (descrp);
+    return CL_END;
+  }
+
+  for (t = line; *t && isspace (*t); t++)
+    ;
+
+  if (*t++ != '<')
+  {
+    chardesc_free (descrp);
+    return CL_ERROR;
+  }
+
+  for (u = t; *u && *u != '>'; u++)
+  {
+    if (*u == m->escape_char && u[1])
+      u++;
+  }
+
+  if (*u != '>')
+  {
+    chardesc_free (descrp);
+    return CL_ERROR;
+  }
+
+  *u++ = '\0';
+  descr->symbol = safe_strdup (t);
+  fix_symbol (descr->symbol, m);
+
+  for (t = u; *t && isspace (*t); t++)
+    ;
+
+  for (u = t; *u && !isspace (*u); u++)
+    ;
+
+  *u++ = 0;
+  descr->repr = 0;
+
+  for (n = 0; *t == m->escape_char && n < m->multbyte; n++)
+  {
+    switch (*++t)
+    {
+    case 'x':
+      descr->repr = descr->repr * 256 + strtol (++t, &t, 16);
+      break;
+    case 'd':
+      descr->repr = descr->repr * 256 + strtol (++t, &t, 10);
+      break;
+    case '0':
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+      descr->repr = descr->repr * 256 + strtol (t, &t, 8);
+      break;
+    default:
+      chardesc_free (descrp);
+      return CL_ERROR;
+    }
+  }
+
+  if (!n)
+  {
+    chardesc_free (descrp);
+    return CL_ERROR;
+  }
+
+  return CL_DESCR;
+}
+
+static int _cd_compar (const void *a, const void *b)
+{
+  const CHARDESC *ap, *bp;
+  int i;
+
+  ap = * (CHARDESC **) a;
+  bp = * (CHARDESC **) b;
+
+  i = ap->repr - bp->repr;
+
+  dprint (98, (debugfile, "_cd_compar: { %x, %s }, { %x, %s } -> %d\n",
+	       ap->repr, ap->symbol, bp->repr, bp->symbol, i));
   
-  sprintf(buffer, "%s/charsets/charsets.alias", SHAREDIR);
-  if(!(fp = fopen(buffer, "r")))
-     return NULL;
+  return i;
+}
+
+/*
+ * Load a character set description into memory.
+ * 
+ * The multibyte parameter tells us whether we are going
+ * to accept multibyte character sets.
+ */
+
+static int load_charset (const char *filename, CHARSET ** csp, short multbyte)
+{
+  CHARDESC *cd = NULL;
+  CHARSET *cs = NULL;
+  CHARMAP *m = NULL;
+  FILE *fp;
+  char buffer[1024];
+  int i;
+  int rv = -1;
+
+  cs = *csp = charset_new (multbyte ? 1031 : 257);
+
+  dprint (2, (debugfile, "load_charset: Trying to open: %s\n", filename));
+  
+  if ((fp = fopen (filename, "r")) == NULL)
+  {
+    char _filename[_POSIX_PATH_MAX];
+
+    snprintf (_filename, sizeof (_filename), "%s/%s", CHARMAPS_DIR, filename);
+    dprint (2, (debugfile, "load_charset: Trying to open: %s\n", _filename));
+    
+    if ((fp = fopen (_filename, "r")) == NULL)
+    {
+      dprint (2, (debugfile, "load_charset: Failed.\n"));
+      goto bail;
+    }
+  }
+      
+  if ((m = parse_charmap_header (fp)) == NULL)
+    goto bail;
+
+  /* Don't handle multibyte character sets unless explicitly requested
+   * to do so.
+   */
+
+  if (m->multbyte > 1 && !multbyte)
+  {
+    dprint (2, (debugfile, "load_charset: m->multbyte == %d\n",
+		(int) m->multbyte));
+    goto bail;
+  }
+
+  cs->multbyte = m->multbyte;
+
+  while (fgets (buffer, sizeof (buffer), fp) != NULL)
+  {
+    i = parse_charmap_line (buffer, m, &cd);
+
+    if (i == CL_END)
+      break;
+    else if (i == CL_DESCR)
+    {
+      dprint (5, (debugfile, "load_charset: Got character description: < %s > -> %x\n",
+		  cd->symbol, cd->repr));
+      hash_delete (cs->symb_to_repr, cd->symbol, NULL, NULL);
+      hash_insert (cs->symb_to_repr, cd->symbol, cd, 0);
+
+      if (!multbyte)
+      {
+	if (0 <= cd->repr && cd->repr < 256)
+	{
+	  if (cs->description[cd->repr])
+	    chardesc_free (&cs->description[cd->repr]);
+	  else
+	    cs->u_symb++;
+
+	  cs->description[cd->repr] = cd;
+	  cd = NULL;
+	}
+      }
+      else
+      {
+	if (cs->u_symb == cs->n_symb)
+	{
+	  size_t new_size = cs->n_symb + 256;
+	  size_t i;
+
+	  safe_realloc ((void **) &cs->description, new_size * sizeof (CHARDESC *));
+	  for (i = cs->u_symb; i < new_size; i++)
+	    cs->description[i] = NULL;
+	  cs->n_symb = new_size;
+	}
+
+	cs->description[cs->u_symb++] = cd;
+	cd = NULL;
+      }
+    }
+
+    chardesc_free (&cd);
+  }
+
+  if (multbyte)
+    qsort (cs->description, cs->u_symb, sizeof (CHARDESC *), _cd_compar);
+
+  rv = 0;
+
+bail:
+  charmap_free (&m);
+  if (fp)
+    fclose (fp);
+  if (rv)
+    charset_free (csp);
+
+  return rv;
+}
+
+static CHARDESC *repr2descr (int repr, CHARSET * cs)
+{
+  size_t a, b, c;
+  short found;
+
+  if (!cs || repr < 0)
+    return NULL;
+
+  if (cs->multbyte == 1)
+  {
+    if (repr < 256)
+      return cs->description[repr];
+    else
+      return NULL;
+  }
+
+  /* So we have a multibyte mapping, i.e., Unicode.  */
+
+  /* binary search for the proper description */
+  a = 0;
+  b = cs->u_symb - 1;
+  c = 0;  /* shut up the compiler. */
+  found = 0;
+
+  while (!found && b - a > 1)
+  {
+    c = (a + b) / 2;
+
+    if (cs->description[c]->repr == repr)
+    {
+      found = 1;
+      break;
+    }
+    else if (cs->description[c]->repr < repr)
+      a = c;
+    else if (cs->description[c]->repr > repr)
+      b = c;
+  }
+
+  if (!found)
+  {
+    if (cs->description[(c = a)]->repr == repr)
+      found = 1;
+    else if (cs->description[(c = b)]->repr == repr)
+      found = 1;
+  }
+    
+  if (found)
+  {
+    dprint (5, (debugfile, "repr2descr: %x -> { %x, %s }\n",
+		repr, cs->description[c]->repr, cs->description[c]->symbol));
+    return cs->description[c];
+  }
+  else
+    dprint (5, (debugfile, "Couldn't file a symbol for %x\n",
+		repr));
+
+  return NULL;
+}
+
+/* Build a translation table.  If a character cannot be
+ * translated correctly, we try to find an approximation
+ * from the portable charcter set.
+ *
+ * Note that this implies the assumption that the portable
+ * character set can be used without any conversion.
+ *
+ * Should be safe on POSIX systems.
+ */
+
+static char translate_character (CHARSET * to, const char *symbol)
+{
+  CHARDESC *cdt;
+
+  if ((cdt = hash_find (to->symb_to_repr, symbol)))
+    return (char) cdt->repr;
+  else
+    return *symbol;
+}
+
+static CHARSET_MAP *build_translation (CHARSET * from, CHARSET * to)
+{
+  int i;
+  CHARSET_MAP *map;
+  CHARDESC *cd;
+
+  /* This is for 8-bit character sets. */
+
+  if (!from || !to || from->multbyte > 1 || to->multbyte > 1)
+    return NULL;
+
+  map = safe_malloc (sizeof (CHARSET_MAP));
+  for (i = 0; i < 256; i++)
+  {
+    if (!(cd = repr2descr (i, from)))
+      (*map)[i] = '?';
+    else
+      (*map)[i] = translate_character (to, cd->symbol);
+  }
+
+  return map;
+}
+
+/* Currently, just scan the various charset definition files.
+ * On the long run, we should cache this stuff in a file.
+ */
+
+static HASH *load_charset_aliases (void)
+{
+  HASH *charset_aliases;
+  CHARMAP *m;
+  DIR *dp;
+  FILE *fp;
+  struct dirent *de;
+
+  if ((dp = opendir (CHARMAPS_DIR)) == NULL)
+    return NULL;
 
   charset_aliases = hash_create(127);
-  
-  while(fgets(buffer, sizeof(buffer), fp))
-  {
-    if((t = strchr(buffer, '\n')))
-      *t = '\0';
 
-    if(!(t = strchr(buffer, ' ')))
+  while ((de = readdir (dp)))
+  {
+    char fnbuff[_POSIX_PATH_MAX];
+
+    if (*de->d_name == '.')
+      continue;
+
+    snprintf (fnbuff, sizeof (fnbuff), "%s/%s", CHARMAPS_DIR, de->d_name);
+    dprint (2, (debugfile, "load_charset_aliases: Opening %s\n", fnbuff));
+    if ((fp = fopen (fnbuff, "r")) == NULL)
       continue;
     
-    *t++ = '\0';
-    hash_insert(charset_aliases, safe_strdup(buffer), safe_strdup(t), 1);
+    if ((m = parse_charmap_header (fp)) != NULL)
+    {
+      LIST *lp;
+      char buffer[LONG_STRING];
+      
+      canonical_charset (buffer, sizeof (buffer), de->d_name);
+      m->aliases = mutt_add_list (m->aliases, buffer);
+
+      if (m->charset)
+	m->aliases = mutt_add_list (m->aliases, m->charset);
+      
+      for (lp = m->aliases; lp; lp = lp->next)
+      {
+	if (lp->data)
+	{
+	  dprint (2, (debugfile, "load_charset_aliases: %s -> %s\n",
+		      lp->data, de->d_name));
+	  if (hash_find (charset_aliases, lp->data))
+	  {
+	    dprint (2, (debugfile, "load_charset_aliases: %s already mapped.\n",
+			lp->data));
+	  }
+	  else
+	    hash_insert (charset_aliases, safe_strdup (lp->data), safe_strdup (de->d_name), 0);
+	}
+      }
+
+      charmap_free (&m);
+    }
+    
+    fclose (fp);
   }
-  fclose(fp);
+    
+  closedir (dp);
   return charset_aliases;
 }
 
-static void init_charsets()
+static void init_charsets ()
 {
-  if(Charsets) return;
+  if (Charsets) return;
 
-  Charsets       = hash_create(127);
-  Translations   = hash_create(127);
-  CharsetAliases = load_charset_aliases();
+  Charsets       = hash_create (127);
+  Translations   = hash_create (127);
+  CharsetAliases = load_charset_aliases ();
 }
 
-CHARSET *mutt_get_charset(const char *name)
+CHARSET *mutt_get_charset (const char *name)
 {
   CHARSET *charset;
   char buffer[SHORT_STRING];
@@ -154,39 +670,22 @@ CHARSET *mutt_get_charset(const char *name)
   init_charsets();
   canonical_charset(buffer, sizeof(buffer), name);
 
+  dprint (2, (debugfile, "mutt_get_charset: Looking for %s\n", buffer));
+  
   if(!CharsetAliases || !(real_charset = hash_find(CharsetAliases, buffer)))
     real_charset = buffer;
 
-  if(!(charset = hash_find(Charsets, real_charset)))
+  dprint (2, (debugfile, "mutt_get_charset: maps to: %s\n", real_charset));
+  
+  if(!(charset = hash_find (Charsets, real_charset)))
   {
-    charset = load_charset(real_charset);
-    hash_insert(Charsets, safe_strdup(real_charset), charset, 1);
+    dprint (2, (debugfile, "mutt_get_charset: Need to load.\n"));
+    if (load_charset(real_charset, &charset, 0) == 0)
+      hash_insert(Charsets, safe_strdup(real_charset), charset, 1);
+    else
+      charset = NULL;
   }
   return charset;
-}
-
-static int translate_char(CHARSET_MAP *to, int ch)
-{
-  int i;
-
-  if (ch == -1) return '?';
-  for (i = 0; i < 256; i++)
-  {
-    if ((*to)[i] == ch) 
-      return i;
-  }
-  return '?';
-}
-
-CHARSET_MAP *build_translation(CHARSET_MAP *from, CHARSET_MAP *to)
-{
-  int i;
-  CHARSET_MAP *map = safe_malloc(sizeof(CHARSET_MAP));
-
-  for(i = 0; i < 256; i++)
-    (*map)[i] = translate_char(to, (*from)[i]);
-
-  return map;
 }
 
 CHARSET_MAP *mutt_get_translation(const char *_from, const char *_to)
@@ -221,11 +720,8 @@ CHARSET_MAP *mutt_get_translation(const char *_from, const char *_to)
     from_cs = mutt_get_charset(from);
     to_cs   = mutt_get_charset(to);
 
-    if(!from_cs->map || !to_cs->map)
-      return NULL;
-    
-    if((map = build_translation(from_cs->map, to_cs->map)))
-       hash_insert(Translations, safe_strdup(key), map, 1);
+    if((map = build_translation(from_cs, to_cs)))
+      hash_insert(Translations, safe_strdup(key), map, 1);
   }
   return map;
 }
@@ -331,35 +827,34 @@ static char *utf_to_unicode(int *out, char *in)
   return in + um->len;
 }
 
+static CHARSET *Unicode = NULL;
+
 void mutt_decode_utf8_string(char *str, CHARSET *chs)
 {
   char *s, *t;
-  int ch, i;
-  CHARSET_MAP *map = NULL;
+  CHARDESC *cd;
+  int ch;
+
+  /* Hack */
   
-  if(chs)
-    map = chs->map;
+  if (!Unicode)
+  {
+    if (load_charset ("ISO_10646", &Unicode, 1) == -1)
+      Unicode = NULL;
+  }
   
-  for( s = t = str; *t; s++)
+  for (s = t = str; *t; s++)
   {
     t = utf_to_unicode(&ch, t);
 
-    if(!map)
-    {
-      *s = (char) ch;
-    }
+    /* handle us-ascii characters directly */
+    if (0 <= ch && ch < 128)
+      *s = ch;
+    else if ((cd = repr2descr (ch, Unicode)) && (ch = translate_character (chs, cd->symbol)) != -1)
+      *s = ch;
     else
-    {
-      for(i = 0, *s = '\0'; i < 256; i++)
-      {
-	if((*map)[i] == ch)
-	{
-	  *s = i;
-	  break;
-	}
-      }
-    }
-      
+      *s = '?';
+
     if(!*s) *s = '?';
   }
   

@@ -470,4 +470,4 @@ MUTTLOCALEDIR=$mutt_cv_prefix/$DATADIRNAME/locale
 AC_SUBST(MUTTLOCALEDIR)
 AC_DEFINE_UNQUOTED(MUTTLOCALEDIR, "$MUTTLOCALEDIR")
 
-AC_OUTPUT(Makefile intl/Makefile m4/Makefile po/Makefile.in rx/Makefile Muttrc doc/Makefile doc/manual.sgml doc/dotlock.man doc/mutt.man charsets/Makefile contrib/Makefile)
+AC_OUTPUT(Makefile intl/Makefile m4/Makefile po/Makefile.in rx/Makefile Muttrc doc/Makefile doc/manual.sgml doc/dotlock.man doc/mutt.man contrib/Makefile)
