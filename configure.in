@@ -488,12 +488,12 @@ AC_ARG_WITH(gss,    [    --with-gss[=DIR]         Compile in GSSAPI authenticati
 AM_CONDITIONAL(USE_GSS, test x$need_gss = xyes)
 
 AC_ARG_WITH(ssl, [    --with-ssl[=PFX]         Compile in SSL socket support for IMAP],
-[	if test "$need_imap" != "yes"; then
-	   AC_MSG_ERROR([SSL support is only for IMAP, but IMAP is not enabled])
-	fi
-	
-	if test "$with_ssl" != "no"
+[	if test "$with_ssl" != "no"
 	then
+	  if test "$need_imap" != "yes"; then
+	   AC_MSG_ERROR([SSL support is only for IMAP, but IMAP is not enabled])
+	  fi
+
 	  if test "$with_ssl" != "yes"
 	  then
 	   LDFLAGS="$LDFLAGS -L$withval/lib"
