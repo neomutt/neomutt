@@ -1193,7 +1193,8 @@ struct option_t MuttVars[] = {
   { "pgp_verify_sig",	DT_QUAD, R_NONE, OPT_VERIFYSIG, M_YES },
   /*
   ** .pp
-  ** If ``yes'', always attempt to verify PGP/MIME signatures.  If ``ask'',
+  ** If ``yes'', always attempt to verify PGP/MIME signatures.  If ``ask-yes''
+  ** or ``ask-no'',
   ** ask whether or not to verify the signature.  If ``no'', never attempt
   ** to verify PGP/MIME signatures.
   */
