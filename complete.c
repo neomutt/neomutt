@@ -56,8 +56,8 @@ int mutt_complete (char *s, size_t slen)
       p = NONULL (Maildir);
     if (s[1])
     {
-      /* don't append '/' if Maildir/Spoolfile is {host} only */
-      if (mx_is_imap (NONULL (p)) && p[strlen (p)-1] == '}')
+      /* don't append '/' if Maildir/Spoolfile is imap://host/ only */
+      if (mx_is_imap (NONULL (p)) && p[strlen (p)-1] == '/')
         snprintf (imap_path, sizeof (imap_path), "%s%s", p, s+1);
       else
         snprintf (imap_path, sizeof (imap_path), "%s/%s", NONULL (p),
