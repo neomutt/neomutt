@@ -109,17 +109,17 @@ Editor to invoke when the ~v command is given in the builtin editor.
 .PP
 .IP "~/.muttrc"
 User configuration file.
-.IP "@sharedir@/Muttrc"
+.IP "@sysconfdir@/Muttrc"
 System-wide configuration file.
 .IP "/tmp/muttXXXXXX"
 Temporary files created by Mutt.
 .IP "~/.mailcap"
 User definition for handling non-text MIME types.
-.IP "@sharedir@/mailcap"
+.IP "@sysconfdir@/mailcap"
 System definition for handing non-text MIME types.
 .IP "~/.mime.types"
 User's personal mapping between MIME types and file extensions.
-.IP "@sharedir@/mime.types"
+.IP "@sysconfdir@/mime.types"
 System mapping between MIME types and file extensions.
 .IP "@libdir@/dotlock"
 The privileged dotlocking program.
