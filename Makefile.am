@@ -189,6 +189,7 @@ bump-version: test-tlr
 	( cd $(srcdir) && cvs update VERSION )
 	awk -F . '{printf("%d.%d.%d\n", $$1, $$2, $$3 + 1);}' $(srcdir)/VERSION > _VERSION.$$$$  \
 		&& mv _VERSION.$$$$ $(srcdir)/VERSION
+	$(VISUAL) $(srcdir)/VERSION
 
 mutt-dist: bump-version reldate changelog
 	touch $(srcdir)/configure.in

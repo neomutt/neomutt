@@ -1,3 +1,101 @@
+Fri Oct 22 07:52:22 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/zh_TW.Big5.po, po/uk.po, po/sk.po, po/pt_BR.po,
+	po/ru.po, po/pl.po, po/nl.po, po/ko.po, po/it.po, po/id.po,
+	po/fr.po, po/es.po, po/el.po, po/de.po, po/cs.po, NEWS,
+	VERSION, reldate.h, ChangeLog: post-release commit for one
+	dot zero.  (yes, really.)
+
+Thu Oct 21 08:07:22 1999  Thomas Roessler  <roessler@guug.de>
+
+	* compose.c: Another sprintf-vs-null issue.
+
+Wed Oct 20 14:51:57 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/id.po: new indonesian translation.
+
+	* imap/message.c:
+	Flags should only be modified using mutt_set_flag().  Everything
+	else leads to neglected side effects.  In this case, index colors,
+	searches and possibly other side effects were ignored when a message
+	which resides on an IMAP folder was read.
+
+	* imap/auth.c: Let the user skip CRAM-MD5 by entering an empty secret.
+
+	* po/id.po, po/el.po: translation updates.
+
+	* configure.in: Don't use GNU grep specific options.
+
+Tue Oct 19 15:34:04 1999  Thomas Roessler  <roessler@guug.de>
+
+	* imap/auth.c: Fix some sloppiness-induced, but harmless, nonsense.
+
+	* imap/imap_private.h, imap/auth.c, imap/imap.c:
+	Add AUTHENTICATE=ANONYMOUS support to the IMAP authentication
+	methods.  This is, for instance, needed to access the cyrus-related
+	mailing lists' archives at CMU.
+
+	* po/el.po: New greek translation.
+
+Mon Oct 18 09:13:42 1999  Thomas Roessler  <roessler@guug.de>
+
+	* pgp.c: Handle Ctrl-G on the pgp-hook prompt correctly.
+
+Sat Oct 16 15:19:29 1999  Thomas Roessler  <roessler@guug.de>
+
+	* Makefile.am: doc/PGP-Notes.txt vs. doc/PGP-Notes.
+
+	* Makefile.am: [stable] doc/PGP-Notes.txt has an extension. ups.
+
+	* send.c: [stable] Fix Debian bug #47408.
+
+	* send.c:
+	Fix Debian bug #47408: When the postponed folder is a maildir,
+	messages should only be written to the _new_ subdirectory.
+
+	* po/nl.po: New nl translation from Johan van Selst <johans@stack.nl>.
+
+	* po/cs.po:
+	New cs translation from Jiri Pavlovsky <pavlovsk@ff.cuni.cz>.
+
+	* po/zh_TW.Big5.po:
+	[stable] chinese translation fixes from Anthony Wong
+	<ypwong@debian.org>.
+
+	* init.h: scoring documentation fix.
+
+	* globals.h, init.h, mutt.h, mx.c, protos.h, score.c, sort.c:
+	Scoring improvements.
+
+Thu Oct 14 16:09:10 1999  Thomas Roessler  <roessler@guug.de>
+
+	* po/ru.po: New Russian tranlation for stable.
+
+	* contrib/gpg.rc: New gpg.rc from Roland Rosenfeld.
+
+	* po/fr.po: [stable] New french translation.
+
+	* po/de.po: [stable] Fixes to the German translation.
+
+	* pattern.c:
+	[stable] Fix a segmentation fault when attempting to search
+	pgp-encrypted messages.
+
+	* pattern.c:
+	Fix a segmentation fault when search PGP-encrypted messages.
+
+Mon Oct 11 20:26:41 1999  Thomas Roessler  <roessler@guug.de>
+
+	* VERSION, po/es.po, reldate.h, ChangeLog:
+	automatic post-release commit for mutt-0.96.8
+
+	* po/zh_TW.Big5.po, po/uk.po, po/sk.po, po/ru.po, po/pl.po, po/nl.po, po/ko.po, po/it.po, po/id.po, po/fr.po, po/es.po, po/el.po, po/de.po, po/cs.po, VERSION, reldate.h, ChangeLog:
+	post-release commit for 1.0pre4.
+
+	* po/zh_TW.Big5.po: New Chinese Translation.
+
+	* dotlock.c: [stable] Use dotlock.c from unstable.
+
 Mon Oct 11 19:16:13 1999  Thomas Roessler  <roessler@guug.de>
 
 	* po/zh_TW.Big5.po: New Chinese Translation.
