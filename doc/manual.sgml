@@ -310,7 +310,7 @@ ESC V	collapse-all		toggle collapse for all threads
 in the thread and hides the others. This is useful when threads
 contain so many messages that you can only see a handful of threads on
 the screen. See %M in <ref id="index_format"name="&dollar;index&lowbar;format">.
-For example, you could use "%?M?(#%03M)&(%4l)?" in <ref
+For example, you could use "&percnt;?M?(#&percnt;03M)&amp;(&percnt;4l)?" in <ref
 id="index_format"name="&dollar;index&lowbar;format"> to optionally
 display the number of hidden messages if the thread is collapsed.
 
