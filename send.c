@@ -26,6 +26,7 @@
 #include "mx.h"
 #include "mutt_crypt.h"
 #include "mutt_idna.h"
+#include "url.h"
 
 #include <ctype.h>
 #include <stdlib.h>
@@ -592,20 +593,23 @@ void mutt_make_forward_subject (ENVELOPE *env, CONTEXT *ctx, HEADER *cur)
 
   /* set the default subject for the message. */
   mutt_make_string (buffer, sizeof (buffer), NONULL(ForwFmt), ctx, cur);
-  env->subject = safe_strdup (buffer);
+  mutt_str_replace (&env->subject, buffer);
 }
 
 void mutt_make_misc_reply_headers (ENVELOPE *env, CONTEXT *ctx,
 				    HEADER *cur, ENVELOPE *curenv)
 {
+  /* This takes precedence over a subject that might have
+   * been taken from a List-Post header.  Is that correct?
+   */
   if (curenv->real_subj)
   {
+    FREE (&env->subject);
     env->subject = safe_malloc (mutt_strlen (curenv->real_subj) + 5);
     sprintf (env->subject, "Re: %s", curenv->real_subj);	/* __SPRINTF_CHECKED__ */
   }
-  else
+  else if (!env->subject)
     env->subject = safe_strdup ("Re: your mail");
-  
 }
 
 void mutt_add_to_reference_headers (ENVELOPE *env, ENVELOPE *curenv, LIST ***pp, LIST ***qq)
@@ -1098,6 +1102,16 @@ ci_send_message (int flags,		/* send mode */
       msg->env = mutt_new_envelope ();
   }
 
+  /* Parse and use an eventual list-post header */
+  if ((flags & SENDLISTREPLY) 
+      && cur && cur->env && cur->env->list_post) 
+  {
+    /* Use any list-post header as a template */
+    url_parse_mailto (msg->env, NULL, cur->env->list_post);
+    /* We don't let them set the sender's address. */
+    rfc822_free_address (&msg->env->from);
+  }
+  
   if (! (flags & (SENDKEY | SENDPOSTPONED | SENDRESEND)))
   {
     pbody = mutt_new_body ();

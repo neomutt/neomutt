@@ -235,7 +235,10 @@ int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
     url_pct_decode (value);
 
     if (!ascii_strcasecmp (tag, "body"))
-      mutt_str_replace (body, value);
+    {
+      if (body)
+	mutt_str_replace (body, value);
+    }
     else 
     {
       taglen = strlen (tag);

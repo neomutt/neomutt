@@ -23,6 +23,7 @@
 #include "rfc2047.h"
 #include "rfc2231.h"
 #include "mutt_crypt.h"
+#include "url.h"
 
 #include <string.h>
 #include <ctype.h>
@@ -1064,6 +1065,29 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
 	  hdr->lines = 0;
       }
 
+      matched = 1;
+    }
+    else if (!ascii_strcasecmp (line + 1, "ist-Post"))
+    {
+      /* RFC 2369.  FIXME: We should ignore whitespace, but don't. */
+      if (strncmp (p, "NO", 2))
+      {
+	char *beg, *end;
+	for (beg = strchr (p, '<'); beg; beg = strchr (end, ','))
+	{
+	  ++beg;
+	  if (!(end = strchr (beg, '>')))
+	    break;
+	  
+	  /* Take the first mailto URL */
+	  if (url_check_scheme (beg) == U_MAILTO)
+	  {
+	    FREE (&e->list_post);
+	    e->list_post = mutt_substrdup (beg, end);
+	    break;
+	  }
+	}
+      }
       matched = 1;
     }
     break;

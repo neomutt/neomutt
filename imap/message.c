@@ -55,7 +55,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   IMAP_HEADER h;
   int rc, mfhrc, oldmsgcount;
   int fetchlast = 0;
-  const char *want_headers = "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE CONTENT-DESCRIPTION IN-REPLY-TO REPLY-TO LINES X-LABEL";
+  const char *want_headers = "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE CONTENT-DESCRIPTION IN-REPLY-TO REPLY-TO LINES LIST-POST X-LABEL";
 
   ctx = idata->ctx;
 
