@@ -18,7 +18,7 @@ for mode in help defs; do
 			;;
 	esac
 	for i in $*; do
-		sed -e "$expr" < $i
+		sed -e '/^\/\*/d' -e "$expr" < $i
 	done
 	if test $mode = help; then
 		echo '	NULL'

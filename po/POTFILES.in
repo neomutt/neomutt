@@ -13,7 +13,6 @@ color.c
 commands.c
 complete.c
 compose.c
-config.h
 copy.c
 copy.h
 curs_lib.c

@@ -19,6 +19,11 @@ mutt_LDADD = @MUTT_LIB_OBJECTS@ $(INTLLIBS)
 mutt_DEPENDENCIES = @MUTT_LIB_OBJECTS@ $(INTLDEPS)
 
 DEFS=-DSHAREDIR=\"$(sharedir)\" -DSYSCONFDIR=\"$(sysconfdir)\"
+INCLUDES="-I./"
+
+non_us_sources = pgp.c pgpinvoke.c pgpkey.c pgppubring.c sha1dgst.c \
+	gnupgparse.c sha.h sha_locl.h \
+	doc/language.txt doc/language50.txt OPS.PGP doc/PGP-Notes
 
 EXTRA_mutt_SOURCES = pgp.c pgpinvoke.c pgpkey.c pgppubring.c sha1dgst.c \
 	gnupgparse.c resize.c snprintf.c dotlock.c pop.c imap.c socket.c
@@ -43,7 +48,7 @@ SUBDIRS = doc intl po rx contrib charsets
 
 OPS=$(srcdir)/OPS $(srcdir)/OPS.PGP
 
-keymap_defs.h: $(OPS)
+keymap_defs.h: $(OPS) $(srcdir)/gen_defs
 	$(srcdir)/gen_defs $(OPS) > keymap_defs.h
 
 reldate:
@@ -84,3 +89,19 @@ changelog:
 dist-hook:
 	-for file in $(BUILT_SOURCES) ; do rm -f $(distdir)/$$file ; done
 	-rm -f $(distdir)/config.h
+
+us-distdir: distdir dist-hook
+	mv $(distdir) $(distdir)-us
+
+us-dist: us-distdir
+	for file in $(distdir)-us/*.c $(distdir)-us/*.h ; do \
+		$(srcdir)/reap.pl < $$file > $$file.n && rm $$file && mv $$file.n $$file ; \
+	done
+	for file in $(non_us_sources) ; do \
+		echo "/* This file is only available in the international mutt version */" \
+			> $(distdir)-us/$$file ; \
+	done
+	echo "This version of mutt may be exported from the US.">  $(distdir)-us/EXPORTABLE
+	-chmod -R a+r $(distdir)-us
+	GZIP=$(GZIP) $(TAR) chozf $(distdir)-us.tar.gz $(distdir)-us
+	-rm -rf $(distdir)-us

@@ -34,17 +34,19 @@ AC_PATH_PROG(SENDMAIL, sendmail, no, `echo $PATH | sed "s/:/ /"` /usr/sbin /usr/
 AC_DEFINE_UNQUOTED(SENDMAIL, "$ac_cv_path_SENDMAIL")
 
 OPS='$(srcdir)/OPS'
-if test -f $srcdir/pgp.c; then
-	SUBVERSION=i
+if test -f $srcdir/EXPORTABLE ; then
+	SUBVERSION="us"
+else
+	SUBVERSION="i"
 	PGPPATH=no
-	
+
 	AC_PATH_PROG(GPG, gpg, no)
 	if test $GPG != no ; then
 		AC_DEFINE_UNQUOTED(_PGPGPGPATH, "$GPG")
 		PGPPATH="$GPG"
 		AC_DEFINE(HAVE_GPG)
 	fi
-	
+
 	AC_PATH_PROG(PGPK, pgpk, no)
 	if test $PGPK != no ; then
 		PGPK=`echo $PGPK | sed 's,.$,,'`
