@@ -4606,7 +4606,7 @@ mail                       m   compose a new mail message
 mail-key               ESC k   mail a PGP public key
 mark-as-new                N   toggle a message's 'new' flag
 next-line                RET   scroll down one line
-next-message               J   move to the next entry
+next-entry                 J   move to the next entry
 next-new                 TAB   jump to the next new message
 next-page                      move to the next page
 next-subthread         ESC n   jump to the next subthread
@@ -4615,7 +4615,7 @@ next-undeleted             j   move to the next undeleted message
 next-unread        not bound   jump to the next unread message
 pipe-message               |   pipe message/attachment to a shell command
 previous-line      BackSpace   scroll up one line
-previous-message           K   move to the previous entry
+previous-entry             K   move to the previous entry
 previous-new       not bound   jump to the previous new message
 previous-page              -   move to the previous page
 previous-subthread     ESC p   jump to previous subthread

@@ -147,6 +147,5 @@ for one of the functions listed while Mutt is running.
 .PP
 Mutt Home Page: http://www.mutt.org/
 .SH AUTHOR
-Michael Elkins <me@cs.hmc.edu>
-.PP
-To contact the current maintainers, send mail to mutt-dev@mutt.org.
+Michael Elkins, and others.  Use <mutt-dev@mutt.org> for contacting
+the developers.
