@@ -215,6 +215,26 @@ char *mutt_expand_path (char *s, size_t slen)
   }
   else if (*s == '=' || *s == '+')
     snprintf (p, sizeof (p), "%s/%s", NONULL (Maildir), s + 1);
+  else if (*s == '@')
+  {
+    /* elm compatibility, @ expands alias to user name */
+    HEADER *h;
+    ADDRESS *alias;
+
+    alias = mutt_lookup_alias (s + 1);
+    if (alias != NULL)
+    {
+      h = mutt_new_header();
+      h->env = mutt_new_envelope();
+      h->env->from = h->env->to = alias;
+      mutt_default_save (p, sizeof (p), h);
+      h->env->from = h->env->to = NULL;
+      mutt_free_header (&h);
+      /* Avoid infinite recursion if the resulting folder starts with '@' */
+      if (*p != '@')
+	mutt_expand_path (p, sizeof (p));
+    }
+  }
   else
   {
     if (*s == '>')

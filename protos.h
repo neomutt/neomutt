@@ -64,6 +64,7 @@ void set_quadoption (int, int);
 int query_quadoption (int, const char *);
 int quadoption (int);
 
+ADDRESS *mutt_lookup_alias (const char *s);
 ADDRESS *mutt_remove_duplicates (ADDRESS *);
 ADDRESS *mutt_expand_aliases (ADDRESS *);
 ADDRESS *mutt_parse_adrlist (ADDRESS *, const char *);

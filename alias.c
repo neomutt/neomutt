@@ -22,7 +22,7 @@
 #include <pwd.h>
 #include <string.h>
 
-static ADDRESS *lookup_alias (const char *s)
+ADDRESS *mutt_lookup_alias (const char *s)
 {
   ALIAS *t = Aliases;
 
@@ -42,7 +42,7 @@ static ADDRESS *mutt_expand_aliases_r (ADDRESS *a, LIST **expn)
   {
     if (!a->group && !a->personal && a->mailbox && strchr (a->mailbox, '@') == NULL)
     {
-      t = lookup_alias (a->mailbox);
+      t = mutt_lookup_alias (a->mailbox);
 
       if (t)
       {	
@@ -191,7 +191,7 @@ void mutt_create_alias (ENVELOPE *cur, ADDRESS *iadr)
     return;
 
   /* check to see if the user already has an alias defined */
-  if (lookup_alias (buf))
+  if (mutt_lookup_alias (buf))
   {
     mutt_error ("You already have an alias defined with that name!");
     return;
