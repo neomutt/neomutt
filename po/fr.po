@@ -5,11 +5,10 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.0-current-20020328\n"
-"POT-Creation-Date: 2002-03-28 14:08+0100\n"
-"PO-Revision-Date: 2002-03-28 14:13+0100\n"
-"Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre "
-"<vincent@vinc17.org>\n"
+"Project-Id-Version: Mutt 1.5.0-current-20020417\n"
+"POT-Creation-Date: 2002-04-17 17:43+0200\n"
+"PO-Revision-Date: 2002-04-17 17:50+0200\n"
+"Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
@@ -99,7 +98,7 @@ msgstr "Ne correspond pas au nametemplate, continuer ?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "L'entrée compose du fichier mailcap nécessite %%s"
 
-#: attach.c:135 attach.c:260 commands.c:223 compose.c:1278 curs_lib.c:145
+#: attach.c:135 attach.c:260 commands.c:229 compose.c:1278 curs_lib.c:145
 #: curs_lib.c:377
 #, c-format
 msgid "Error running \"%s\"!"
@@ -143,7 +142,7 @@ msgstr "Type MIME non défini. Impossible de visualiser l'attachement."
 msgid "Cannot create filter"
 msgstr "Impossible de créer le filtre"
 
-#: attach.c:670 attach.c:702 attach.c:989 attach.c:1047 handler.c:1561
+#: attach.c:670 attach.c:702 attach.c:989 attach.c:1047 handler.c:1562
 #: pgpkey.c:566 pgpkey.c:755
 msgid "Can't create filter"
 msgstr "Impossible de créer le filtre"
@@ -328,7 +327,7 @@ msgstr "La couleur default n'est pas disponible"
 msgid "Verify PGP signature?"
 msgstr "Vérifier la signature PGP ?"
 
-#: commands.c:117 crypt.c:192 pgpkey.c:559 postpone.c:576
+#: commands.c:117 crypt.c:192 pgpkey.c:559 postpone.c:558
 msgid "Invoking PGP..."
 msgstr "Appel de PGP..."
 
@@ -348,186 +347,186 @@ msgstr "Impossible de créer le filtre d'affichage"
 msgid "Could not copy message"
 msgstr "Impossible de copier le message"
 
-#: commands.c:194
+#: commands.c:200
 msgid "S/MIME signature successfully verified."
 msgstr "Signature S/MIME vérifiée avec succès."
 
-#: commands.c:196
+#: commands.c:202
 msgid "S/MIME certificate owner does not match sender."
 msgstr "Le propriétaire du certificat S/MIME ne correspond pas à l'expéditeur."
 
-#: commands.c:199
+#: commands.c:205
 msgid "S/MIME signature could NOT be verified."
 msgstr "La signature S/MIME n'a PAS pu être vérifiée."
 
-#: commands.c:206
+#: commands.c:212
 msgid "PGP signature successfully verified."
 msgstr "Signature PGP vérifiée avec succès."
 
-#: commands.c:207
+#: commands.c:213
 msgid "PGP signature could NOT be verified."
 msgstr "La signature PGP n'a PAS pu être vérifiée."
 
-#: commands.c:230
+#: commands.c:236
 msgid "Command: "
 msgstr "Commande : "
 
-#: commands.c:248 recvcmd.c:140
+#: commands.c:254 recvcmd.c:140
 msgid "Bounce message to: "
 msgstr "Renvoyer le message à : "
 
-#: commands.c:250 recvcmd.c:142
+#: commands.c:256 recvcmd.c:142
 msgid "Bounce tagged messages to: "
 msgstr "Renvoyer les messages marqués à : "
 
-#: commands.c:265
+#: commands.c:271
 msgid "Error parsing address!"
 msgstr "Erreur de décodage de l'adresse !"
 
 # , c-format
-#: commands.c:280
+#: commands.c:286
 #, c-format
 msgid "Bounce message to %s"
 msgstr "Renvoyer le message à %s"
 
 # , c-format
-#: commands.c:280
+#: commands.c:286
 #, c-format
 msgid "Bounce messages to %s"
 msgstr "Renvoyer les messages à %s"
 
-#: commands.c:294
+#: commands.c:300
 msgid "Message bounced."
 msgstr "Message renvoyé."
 
-#: commands.c:294
+#: commands.c:300
 msgid "Messages bounced."
 msgstr "Messages renvoyés."
 
-#: commands.c:376 commands.c:415 commands.c:432
+#: commands.c:382 commands.c:421 commands.c:438
 msgid "Can't create filter process"
 msgstr "Impossible de créer le processus filtrant"
 
-#: commands.c:461
+#: commands.c:467
 msgid "Pipe to command: "
 msgstr "Passer à la commande : "
 
-#: commands.c:478
+#: commands.c:484
 msgid "No printing command has been defined."
 msgstr "Aucune commande d'impression n'a été définie."
 
-#: commands.c:483
+#: commands.c:489
 msgid "Print message?"
 msgstr "Imprimer le message ?"
 
-#: commands.c:483
+#: commands.c:489
 msgid "Print tagged messages?"
 msgstr "Imprimer les messages marqués ?"
 
-#: commands.c:492
+#: commands.c:498
 msgid "Message printed"
 msgstr "Message imprimé"
 
-#: commands.c:492
+#: commands.c:498
 msgid "Messages printed"
 msgstr "Messages imprimés"
 
-#: commands.c:494
+#: commands.c:500
 msgid "Message could not be printed"
 msgstr "Le message n'a pas pu être imprimé"
 
-#: commands.c:495
+#: commands.c:501
 msgid "Messages could not be printed"
 msgstr "Les messages n'ont pas pu être imprimés"
 
-#: commands.c:504
+#: commands.c:510
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 "Tri inv (d)ate/(a)uteur/(r)eçu/(o)bj/de(s)t/d(i)sc/(n)on/(t)aille/s(c)"
 "ore ? : "
 
-#: commands.c:505
+#: commands.c:511
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 "Tri (d)ate/(a)uteur/(r)eçu/(o)bj/de(s)t/d(i)sc/(n)on/(t)aille/s(c)ore ? : "
 
-#: commands.c:506
+#: commands.c:512
 msgid "dfrsotuzc"
 msgstr "darosintc"
 
-#: commands.c:559
+#: commands.c:565
 msgid "Shell command: "
 msgstr "Commande shell : "
 
 # , c-format
-#: commands.c:701
+#: commands.c:707
 #, c-format
 msgid "Decode-save%s to mailbox"
 msgstr "Décoder-sauver%s vers une BAL"
 
 # , c-format
-#: commands.c:702
+#: commands.c:708
 #, c-format
 msgid "Decode-copy%s to mailbox"
 msgstr "Décoder-copier%s vers une BAL"
 
 # , c-format
-#: commands.c:703
+#: commands.c:709
 #, c-format
 msgid "Decrypt-save%s to mailbox"
 msgstr "Déchiffrer-sauver%s vers une BAL"
 
 # , c-format
-#: commands.c:704
+#: commands.c:710
 #, c-format
 msgid "Decrypt-copy%s to mailbox"
 msgstr "Déchiffrer-copier%s vers une BAL"
 
 # , c-format
-#: commands.c:705
+#: commands.c:711
 #, c-format
 msgid "Save%s to mailbox"
 msgstr "Sauver%s vers une BAL"
 
 # , c-format
-#: commands.c:705
+#: commands.c:711
 #, c-format
 msgid "Copy%s to mailbox"
 msgstr "Copier%s vers une BAL"
 
-#: commands.c:706
+#: commands.c:712
 msgid " tagged"
 msgstr " les messages marqués"
 
 # , c-format
-#: commands.c:776
+#: commands.c:782
 #, c-format
 msgid "Copying to %s..."
 msgstr "Copie vers %s..."
 
-#: commands.c:897
+#: commands.c:903
 #, c-format
 msgid "Convert to %s upon sending?"
 msgstr "Convertir en %s à l'envoi ?"
 
 # , c-format
-#: commands.c:905
+#: commands.c:911
 #, c-format
 msgid "Content-Type changed to %s."
 msgstr "Content-Type changé à %s."
 
-#: commands.c:907
+#: commands.c:913
 #, c-format
 msgid "Character set changed to %s; %s."
 msgstr "Jeu de caractères changé à %s ; %s."
 
-#: commands.c:909
+#: commands.c:915
 msgid "not converting"
 msgstr "pas de conversion"
 
-#: commands.c:909
+#: commands.c:915
 msgid "converting"
 msgstr "conversion"
 
@@ -1170,124 +1169,124 @@ msgstr "Positionner l'indicateur"
 msgid "Clear flag"
 msgstr "Effacer l'indicateur"
 
-#: handler.c:1334
+#: handler.c:1335
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr ""
 "[-- Erreur : Aucune partie du Multipart/Alternative n'a pu être affichée ! "
 "--]\n"
 
 # , c-format
-#: handler.c:1460
+#: handler.c:1461
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- Attachement #%d"
 
 # , c-format
-#: handler.c:1472
+#: handler.c:1473
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Type : %s/%s, Codage : %s, Taille : %s --]\n"
 
 # , c-format
-#: handler.c:1532
+#: handler.c:1533
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Visualisation automatique en utilisant %s --]\n"
 
 # , c-format
-#: handler.c:1533
+#: handler.c:1534
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Invocation de la commande de visualisation automatique : %s"
 
 # , c-format
-#: handler.c:1565
+#: handler.c:1566
 #, c-format
 msgid "[-- Can't run %s. --]\n"
 msgstr "[-- Impossible d'exécuter %s. --]\n"
 
 # , c-format
-#: handler.c:1583 handler.c:1604
+#: handler.c:1584 handler.c:1605
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Visualisation automatique stderr de %s --]\n"
 
-#: handler.c:1641
+#: handler.c:1642
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr ""
 "[-- Erreur : message/external-body n'a pas de paramètre access-type --]\n"
 
 # , c-format
-#: handler.c:1660
+#: handler.c:1661
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- Cet attachement %s/%s "
 
 # , c-format
-#: handler.c:1667
+#: handler.c:1668
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(taille %s octets) "
 
-#: handler.c:1669
+#: handler.c:1670
 msgid "has been deleted --]\n"
 msgstr "a été effacé --]\n"
 
 # , c-format
-#: handler.c:1674
+#: handler.c:1675
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- le %s --]\n"
 
 # , c-format
-#: handler.c:1679
+#: handler.c:1680
 #, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- nom: %s --]\n"
 
 # , c-format
-#: handler.c:1692 handler.c:1708
+#: handler.c:1693 handler.c:1709
 #, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
 msgstr "[-- Cet attachement %s/%s n'est pas inclus, --]\n"
 
-#: handler.c:1694
+#: handler.c:1695
 msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
 msgstr "[-- et la source externe indiquée a expiré. --]\n"
 
 # , c-format
-#: handler.c:1712
+#: handler.c:1713
 #, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr "[-- et l'access-type %s indiqué n'est pas supporté --]\n"
 
-#: handler.c:1834
+#: handler.c:1835
 msgid "Error: multipart/signed has no protocol."
 msgstr "Erreur : multipart/signed n'a pas de protocole."
 
-#: handler.c:1844
+#: handler.c:1845
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Erreur : multipart/encrypted n'a pas de paramètre de protocole !"
 
-#: handler.c:1898
+#: handler.c:1899
 msgid "Unable to open temporary file!"
 msgstr "Impossible d'ouvrir le fichier temporaire !"
 
 # , c-format
-#: handler.c:1958
+#: handler.c:1959
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s n'est pas disponible "
 
 # , c-format
-#: handler.c:1963
+#: handler.c:1964
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(utilisez '%s' pour voir cette partie)"
 
-#: handler.c:1965
+#: handler.c:1966
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(la fonction 'view-attachments' doit être affectée à une touche !)"
 
@@ -1425,14 +1424,14 @@ msgstr "La boîte aux lettres doit avoir un nom."
 msgid "Mailbox created."
 msgstr "Boîte aux lettres créée."
 
-#: imap/command.c:289
+#: imap/command.c:288
 msgid "Mailbox closed"
 msgstr "Boîte aux lettres fermée"
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
 #.
-#: imap/command.c:326
+#: imap/command.c:325
 msgid "Fatal error.  Message count is out of sync!"
 msgstr "Erreur fatale. Le nombre de messages ne correspond pas !"
 
@@ -1459,66 +1458,66 @@ msgstr "Impossible de négocier la connexion TLS"
 msgid "Selecting %s..."
 msgstr "Sélection de %s..."
 
-#: imap/imap.c:669
+#: imap/imap.c:667
 msgid "Error opening mailbox"
 msgstr "Erreur à l'ouverture de la boîte aux lettres"
 
 #. STATUS not supported
-#: imap/imap.c:722
+#: imap/imap.c:720
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Impossible d'ajouter aux boîtes aux lettres IMAP sur ce serveur"
 
 # , c-format
 #. command failed cause folder doesn't exist
-#: imap/imap.c:731 imap/message.c:599 muttlib.c:1192
+#: imap/imap.c:729 imap/message.c:600 muttlib.c:1192
 #, c-format
 msgid "Create %s?"
 msgstr "Créer %s ?"
 
-#: imap/imap.c:767
+#: imap/imap.c:765
 msgid "Closing connection to IMAP server..."
 msgstr "Fermeture de la connexion au serveur IMAP..."
 
 # , c-format
-#: imap/imap.c:930 pop.c:469
+#: imap/imap.c:928 pop.c:469
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Marquage de %d messages à effacer..."
 
-#: imap/imap.c:939
+#: imap/imap.c:937
 msgid "Expunge failed"
 msgstr "Expunge a échoué"
 
 # , c-format
-#: imap/imap.c:954
+#: imap/imap.c:952
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Sauvegarde des indicateurs de statut du message... [%d/%d]"
 
-#: imap/imap.c:1038
+#: imap/imap.c:1036
 msgid "Expunging messages from server..."
 msgstr "Effacement des messages sur le serveur..."
 
-#: imap/imap.c:1043
+#: imap/imap.c:1041
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE a échoué"
 
-#: imap/imap.c:1077
+#: imap/imap.c:1075
 msgid "CLOSE failed"
 msgstr "CLOSE a échoué"
 
-#: imap/imap.c:1325
+#: imap/imap.c:1324
 msgid "Bad mailbox name"
 msgstr "Mauvaise boîte aux lettres"
 
 # , c-format
-#: imap/imap.c:1337
+#: imap/imap.c:1336
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Abonnement à %s..."
 
 # , c-format
-#: imap/imap.c:1339
+#: imap/imap.c:1338
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Désabonnement de %s..."
@@ -1536,32 +1535,32 @@ msgid "Could not create temporary file %s"
 msgstr "Impossible de créer le fichier temporaire %s"
 
 # , c-format
-#: imap/message.c:97 pop.c:213
+#: imap/message.c:101 pop.c:213
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Récupération des en-têtes des messages... [%d/%d]"
 
-#: imap/message.c:249 pop.c:347
+#: imap/message.c:250 pop.c:347
 msgid "Fetching message..."
 msgstr "Récupération du message..."
 
-#: imap/message.c:292 pop.c:384
+#: imap/message.c:293 pop.c:384
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr ""
 "L'index du message est incorrect. Essayez de rouvrir la boîte aux lettres."
 
-#: imap/message.c:465
+#: imap/message.c:466
 msgid "Uploading message ..."
 msgstr "Chargement du message ..."
 
 # , c-format
-#: imap/message.c:575
+#: imap/message.c:576
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Copie de %d messages dans %s..."
 
 # , c-format
-#: imap/message.c:579
+#: imap/message.c:580
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Copie du message %d dans %s..."
@@ -2326,11 +2325,11 @@ msgstr "rechercher en arrière une expression rationnelle"
 
 #: keymap_alldefs.h:152
 msgid "search for next match"
-msgstr "rechercher le prochain mot"
+msgstr "rechercher la prochaine occurrence"
 
 #: keymap_alldefs.h:153
 msgid "search for next match in opposite direction"
-msgstr "rechercher le prochain mot dans la direction opposée"
+msgstr "rechercher la prochaine occurrence dans la direction opposée"
 
 #: keymap_alldefs.h:154
 msgid "toggle search pattern coloring"
@@ -2681,7 +2680,7 @@ msgstr "Pas de boîte aux lettres avec des nouveaux messages."
 msgid "No incoming mailboxes defined."
 msgstr "Pas de boîtes aux lettres recevant du courrier définies."
 
-#: main.c:852
+#: main.c:848
 msgid "Mailbox is empty."
 msgstr "La boîte aux lettres est vide."
 
@@ -3289,8 +3288,8 @@ msgid "PGP passphrase forgotten."
 msgstr "Phrase de passe PGP oubliée."
 
 #: pgp.c:304
-msgid "[-- Error: unable to create PGP subprocess! --]}n"
-msgstr "[-- Erreur : impossible de créer le sous-processus PGP ! --]}n"
+msgid "[-- Error: unable to create PGP subprocess! --]\n"
+msgstr "[-- Erreur : impossible de créer le sous-processus PGP ! --]\n"
 
 #: pgp.c:331 pgp.c:595 pgp.c:793
 msgid ""
@@ -3970,12 +3969,12 @@ msgid "Could not open %s"
 msgstr "Impossible d'ouvrir %s"
 
 # , c-format
-#: sendlib.c:2060
+#: sendlib.c:2069
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Erreur en envoyant le message, fils terminé avec le code %d (%s)."
 
-#: sendlib.c:2066
+#: sendlib.c:2075
 msgid "Output of the delivery process"
 msgstr "Sortie du processus de livraison"
 
