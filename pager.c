@@ -85,8 +85,8 @@ struct q_class_t
 struct syntax_t
 {
   int color;
-  short first;
-  short last;
+  int first;
+  int last;
 };
 
 struct line_t
