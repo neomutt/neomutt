@@ -513,7 +513,7 @@ typedef struct body
 				 */
   unsigned int tagged : 1;
   unsigned int deleted : 1;	/* attachment marked for deletion */
-
+  unsigned int noconv : 1;	/* don't do character set conversion */
 } BODY;
 
 typedef struct header
@@ -677,6 +677,7 @@ typedef struct
 
 #define M_PENDINGPREFIX (1<<2) /* prefix to write, but character must follow */
 #define M_WEED          (1<<3) /* weed headers even when not in display mode */
+#define M_CHARCONV	(1<<4) /* Do character set conversions */
 
 #define state_set_prefix(s) ((s)->flags |= M_PENDINGPREFIX)
 #define state_reset_prefix(s) ((s)->flags &= ~M_PENDINGPREFIX)

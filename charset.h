@@ -53,6 +53,19 @@ typedef struct
 }
 CHARSET;
 
+/* this one could be made a bit smaller with two levels
+ * of nested unions and structs.  It's not worth the effort.
+ */
+
+typedef struct decoder
+{
+  STATE *s;
+  short is_utf8;
+  CHARSET_MAP *map;
+  CHARSET *chs;
+  struct utf8_state *sfu;
+}
+DECODER;    
 
 CHARSET *mutt_get_charset(const char *);
 CHARSET_MAP *mutt_get_translation(const char *, const char *);
@@ -64,7 +77,10 @@ int mutt_is_utf8(const char *);
 
 void mutt_decode_utf8_string(char *, CHARSET *);
 
-void state_fput_utf8(STATE *, char, CHARSET *);
+DECODER *mutt_open_decoder (STATE *, BODY *, int);
+void mutt_close_decoder (DECODER **);
+
+void mutt_decoder_putc (DECODER *, char);
 
 #endif
 

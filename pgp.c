@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1996,1997 Michael R. Elkins <me@cs.hmc.edu>
- * Copyright (c) 1998 Thomas Roessler <roessler@guug.de>
+ * Copyright (c) 1998,1999 Thomas Roessler <roessler@guug.de>
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -479,35 +479,35 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 
 }
 
-int mutt_is_multipart_signed(BODY *b)
+int mutt_is_multipart_signed (BODY *b)
 {
   char *p;
 
-  if(!b || b->type != TYPEMULTIPART ||
-     !b->subtype || mutt_strcasecmp(b->subtype, "signed") ||
-     !(p = mutt_get_parameter("protocol", b->parameter)) ||
-     (mutt_strcasecmp(p, "application/pgp-signature")
-      && mutt_strcasecmp(p, "multipart/mixed")))
+  if (!b || b->type != TYPEMULTIPART ||
+      !b->subtype || mutt_strcasecmp (b->subtype, "signed") ||
+      !(p = mutt_get_parameter ("protocol", b->parameter)) ||
+      (mutt_strcasecmp (p, "application/pgp-signature")
+      && mutt_strcasecmp (p, "multipart/mixed")))
     return 0;
 
   return PGPSIGN;
 }
    
      
-int mutt_is_multipart_encrypted(BODY *b)
+int mutt_is_multipart_encrypted (BODY *b)
 {
   char *p;
   
-  if(!b || b->type != TYPEMULTIPART ||
-     !b->subtype || mutt_strcasecmp(b->subtype, "encrypted") ||
-     !(p = mutt_get_parameter("protocol", b->parameter)) ||
-     mutt_strcasecmp(p, "application/pgp-encrypted")) 
+  if (!b || b->type != TYPEMULTIPART ||
+      !b->subtype || mutt_strcasecmp (b->subtype, "encrypted") ||
+      !(p = mutt_get_parameter ("protocol", b->parameter)) ||
+      mutt_strcasecmp (p, "application/pgp-encrypted"))
     return 0;
   
   return PGPENCRYPT;
 }
 
-int mutt_is_application_pgp(BODY *m)
+int mutt_is_application_pgp (BODY *m)
 {
   int t = 0;
   char *p;

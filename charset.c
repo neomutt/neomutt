@@ -821,20 +821,37 @@ void mutt_decode_utf8_string(char *str, CHARSET *chs)
   *s = '\0';
 }
 
-static char *sfu_buffer = NULL;
-static size_t sfu_blen = 0;
-static size_t sfu_bp = 0;
+/* internal use only */
 
-static void _state_utf8_flush(STATE *s, CHARSET *chs)
+struct utf8_state
+{
+  char *buffer;
+  size_t blen;
+  size_t bp;
+};
+
+static struct utf8_state *new_utf8_state (void)
+{
+  return safe_calloc (sizeof (struct utf8_state), 1);
+}
+
+static void free_utf8_state (struct utf8_state **sp)
+{
+  if (!sp || !*sp) return;
+  safe_free ((void **) &(*sp)->buffer);
+  safe_free ((void **) sp);
+}
+
+static void _state_utf8_flush(STATE *s, CHARSET *chs, struct utf8_state *sfu)
 {
   char *t;
-  if(!sfu_buffer || !sfu_bp)
+  if(!sfu->buffer || !sfu->bp)
     return;
   
-  sfu_buffer[sfu_bp] = '\0';
+  sfu->buffer[sfu->bp] = '\0';
   
-  mutt_decode_utf8_string(sfu_buffer, chs);
-  for(t = sfu_buffer; *t; t++)
+  mutt_decode_utf8_string(sfu->buffer, chs);
+  for(t = sfu->buffer; *t; t++)
   {
     /* This may lead to funny-looking output if 
      * there are embedded CRs, NLs or similar things
@@ -844,13 +861,13 @@ static void _state_utf8_flush(STATE *s, CHARSET *chs)
 
     state_prefix_putc(*t, s);
   }
-  sfu_bp = 0;
+  sfu->bp = 0;
 }
     
-void state_fput_utf8(STATE *st, char u, CHARSET *chs)
+static void state_fput_utf8(STATE *st, char u, CHARSET *chs, struct utf8_state *sfu)
 {
-  if((u & 0x80) == 0 || (sfu_bp && (u & IIOOOOOO) != IOOOOOOO))
-    _state_utf8_flush(st, chs);
+  if((u & 0x80) == 0 || (sfu->bp && (u & IIOOOOOO) != IOOOOOOO))
+    _state_utf8_flush(st, chs, sfu);
      
   if((u & 0x80) == 0)
   {
@@ -858,12 +875,58 @@ void state_fput_utf8(STATE *st, char u, CHARSET *chs)
   }
   else
   {
-    if(sfu_bp + 1 >= sfu_blen)
+    if(sfu->bp + 1 >= sfu->blen)
     {
-      sfu_blen = (sfu_blen + 80) * 2;
-      safe_realloc((void **) &sfu_buffer, sfu_blen);
+      sfu->blen = (sfu->blen + 80) * 2;
+      safe_realloc((void **) &sfu->buffer, sfu->blen);
     }
-    sfu_buffer[sfu_bp++] = u;
+    sfu->buffer[sfu->bp++] = u;
   }
 }
 
+/* a nicer interface for decoding */
+
+DECODER *mutt_open_decoder (STATE *s, BODY *b, int istext)
+{
+  DECODER *dp = safe_calloc (sizeof (DECODER), 1);
+  
+  dp->s = s;
+  
+  if (istext && (s->flags & M_CHARCONV))
+  {
+    char *charset = mutt_get_parameter ("charset", b->parameter);
+    dp->is_utf8 = mutt_is_utf8 (charset) && !mutt_is_utf8 (Charset);
+    
+    if (dp->is_utf8)
+    {
+      dp->sfu = new_utf8_state ();
+      dp->chs = mutt_get_charset (Charset);
+    }
+    else
+      dp->map = mutt_get_translation (charset, Charset);
+  }
+  
+  return dp;
+}
+
+void mutt_close_decoder (DECODER **dpp)
+{
+  if (!dpp || !*dpp)
+    return;
+  
+  if ((*dpp)->is_utf8)
+  {
+    _state_utf8_flush ((*dpp)->s, (*dpp)->chs, (*dpp)->sfu);
+    free_utf8_state (&(*dpp)->sfu);
+  }
+
+  safe_free ((void **) dpp);
+}
+
+void mutt_decoder_putc (DECODER *dp, char c)
+{
+  if (dp->is_utf8)
+    state_fput_utf8 (dp->s, c, dp->chs, dp->sfu);
+  else
+    state_prefix_putc (mutt_display_char ((unsigned char) c, dp->map), dp->s);
+}

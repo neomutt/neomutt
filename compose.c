@@ -25,6 +25,7 @@
 #include "mapping.h"
 #include "mailbox.h"
 #include "sort.h"
+#include "charset.h"
 
 #ifdef MIXMASTER
 #include "remailer.h"
@@ -385,6 +386,36 @@ static void update_idx (MUTTMENU *menu, ATTACHPTR **idx, short idxlen)
   return;
 }
 
+static int change_attachment_charset (BODY *b)
+{
+  char buff[SHORT_STRING];
+
+  if (b->type != TYPETEXT)
+  {
+    mutt_error _("Can't change character set for non-text attachments!");
+    return 0;
+  }
+
+  mutt_get_send_charset (buff, sizeof(buff), b, 0);
+  
+  if (mutt_get_field (_("Enter character set: "), buff, sizeof(buff), 0) == -1)
+    return 0;
+    
+  if (mutt_is_utf8(buff))
+  {
+    mutt_error (_("UTF-8 encoding attachments has not yet been implemented."));
+    return 0;
+  }
+  
+  if (mutt_get_charset (buff) == NULL)
+  {
+    mutt_error (_("Character set %s is unknown."), buff);
+    return 0;
+  }
+  
+  mutt_set_body_charset (b, buff);
+  return REDRAW_CURRENT;
+}
 
 /* return values:
  *
@@ -725,6 +756,26 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  msg->content = idx[0]->content;
 	break;
 
+      case OP_COMPOSE_CHANGE_CHARSET:
+        CHECK_COUNT;
+        menu->redraw = change_attachment_charset(idx[menu->current]->content);
+        break;
+
+      case OP_COMPOSE_NORECODE:
+        CHECK_COUNT;
+        if (idx[menu->current]->content->type != TYPETEXT)
+        {
+	  mutt_error (_("Recoding only affects text/plain attachments."));
+	  break;
+	}
+        idx[menu->current]->content->noconv = !idx[menu->current]->content->noconv;
+        if (idx[menu->current]->content->noconv)
+	  mutt_message (_("The current attachment won't be converted."));
+        else
+	  mutt_message (_("The current attachment will be converted."));
+	menu->redraw = REDRAW_CURRENT;
+        break;
+      
       case OP_COMPOSE_EDIT_DESCRIPTION:
 	CHECK_COUNT;
 	strfcpy (buf,
@@ -865,8 +916,15 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
       case OP_COMPOSE_TOGGLE_UNLINK:
 	CHECK_COUNT;
 	idx[menu->current]->content->unlink = !idx[menu->current]->content->unlink;
-	if (option (OPTRESOLVE) && menu->current + 1 < menu->max)
+
+#if 0
+        /* OPTRESOLVE is otherwise ignored on this menu.
+	 * Where's the bug?
+	 */
+
+        if (option (OPTRESOLVE) && menu->current + 1 < menu->max)
 	  menu->current++;
+# endif
 	menu->redraw = REDRAW_INDEX;
 	break;
 
@@ -1112,6 +1170,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	break;
 
 #endif /* _PGPPATH */
+
 
 #ifdef MIXMASTER
       case OP_COMPOSE_MIX:

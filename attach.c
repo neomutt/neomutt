@@ -768,7 +768,7 @@ int mutt_decode_save_attachment (FILE *fp, BODY *m, char *path,
   HEADER *saved_hdr = NULL;
 
   memset (&s, 0, sizeof (s));
-  s.flags = displaying ? M_DISPLAY : 0;
+  s.flags = M_CHARCONV | (displaying ? M_DISPLAY : 0);
 
   if (flags == M_SAVE_APPEND)
     s.fpout = safe_fopen (path, "a");

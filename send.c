@@ -337,7 +337,7 @@ static int include_forward (CONTEXT *ctx, HEADER *cur, FILE *out)
   fputs (" -----\n\n", out);
   if (option (OPTFORWDECODE))
   {
-    cmflags |= M_CM_DECODE;
+    cmflags |= M_CM_DECODE | M_CM_CHARCONV;
     if (option (OPTFORWWEEDHEADER))
     {
       chflags |= CH_WEED;
@@ -355,7 +355,7 @@ static int include_forward (CONTEXT *ctx, HEADER *cur, FILE *out)
 static int include_reply (CONTEXT *ctx, HEADER *cur, FILE *out)
 {
   char buffer[STRING];
-  int flags = M_CM_PREFIX | M_CM_DECODE;
+  int flags = M_CM_PREFIX | M_CM_DECODE | M_CM_CHARCONV;
 
 
 

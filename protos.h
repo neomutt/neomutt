@@ -117,6 +117,7 @@ char *mutt_find_hook (int, const char *);
 char *mutt_gen_msgid (void);
 char *mutt_get_name (ADDRESS *);
 char *mutt_get_parameter (const char *, PARAMETER *);
+char *mutt_get_send_charset (char *, size_t, BODY *, short);
 #ifdef _PGPPATH
 char *mutt_pgp_hook (ADDRESS *);
 #endif /* _PGPPATH */
@@ -189,6 +190,7 @@ void _mutt_select_file (char *, size_t, int, int, char ***, int *);
 void mutt_send_hook (HEADER *);
 void mutt_set_flag (CONTEXT *, HEADER *, int, int);
 void mutt_set_followup_to (ENVELOPE *);
+void mutt_set_body_charset (BODY *, const char *);
 void mutt_shell_escape (void);
 void mutt_show_error (void);
 void mutt_signal_init (void);
