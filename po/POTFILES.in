@@ -1,3 +1,4 @@
+# $Id$
 acconfig.h
 addrbook.c
 alias.c
@@ -18,8 +19,6 @@ copy.h
 curs_lib.c
 curs_main.c
 date.c
-dotlock.c
-dotlock.h
 edit.c
 enter.c
 filter.c

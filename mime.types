@@ -1,6 +1,9 @@
+# $Id$
+
 #
 # sample mime.types
 #
+
 application/andrew-inset	ez
 application/excel		xls
 application/octet-stream	bin
