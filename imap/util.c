@@ -346,8 +346,22 @@ char* imap_get_qualifier (char* buf)
 /* imap_next_word: return index into string where next IMAP word begins */
 char *imap_next_word (char *s)
 {
-  while (*s && !ISSPACE (*s))
+  int quoted = 0;
+
+  while (*s) {
+    if (*s == '\\') {
+      s++;
+      if (*s)
+	s++;
+      continue;
+    }
+    if (*s == '\"')
+      quoted = quoted ? 0 : 1;
+    if (!quoted && ISSPACE (*s))
+      break;
     s++;
+  }
+
   SKIPWS (s);
   return s;
 }
