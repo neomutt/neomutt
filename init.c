@@ -1220,6 +1220,9 @@ int mutt_command_complete (char *buffer, size_t len, int pos, int numtabs)
 	return 1;
     }
 
+    if (Completed[0] == 0 && User_typed[0])
+      return 0;
+
      /* Num_matched will _always_ be atleast 1 since the initial
       * user-typed string is always stored */
     if (numtabs == 1 && Num_matched == 2)
@@ -1269,6 +1272,9 @@ int mutt_command_complete (char *buffer, size_t len, int pos, int numtabs)
       if (User_typed[0] == 0)
 	return 1;
     }
+
+    if (Completed[0] == 0 && User_typed[0])
+      return 0;
 
     /* Num_matched will _always_ be atleast 1 since the initial
      * user-typed string is always stored */
