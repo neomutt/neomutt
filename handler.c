@@ -320,7 +320,7 @@ void mutt_decode_uuencoded (STATE *s, BODY *b, int istext)
     if ((fgets(tmps, sizeof(tmps), s->fpin)) == NULL)
       return;
     len -= strlen(tmps);
-    if ((!strncmp (tmps, "begin", 5)) && isspace (tmps[5]))
+    if ((!strncmp (tmps, "begin", 5)) && ISSPACE (tmps[5]))
       break;
   }
   while(len > 0)

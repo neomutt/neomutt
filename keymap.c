@@ -477,7 +477,7 @@ int km_expand_key (char *s, size_t len, struct keymap_t *map)
   FOREVER
   {
     strfcpy (s, km_keyname (map->keys[p]), len);
-    len -= (1 + (l = strlen (s)));
+    len -= (l = strlen (s));
 
     if (++p >= map->len || !len)
       return (1);
