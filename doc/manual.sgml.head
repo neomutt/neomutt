@@ -1575,15 +1575,24 @@ priority than ``z''. Clearly, in general, sorting by spam tags is most
 effective when you can coerce your filter to give you a raw number. But
 in case you can't, mutt can still do something useful.
 
-Finally, the <tt/nospam/ command can be used to write exceptions to
-<tt/spam/ patterns. If a header pattern matches something in a <tt/spam/
-command, but you nonetheless do not want it to receive a spam tag,
-you can list a more precise pattern under a <tt/nospam/ command.
+The <tt/nospam/ command can be used to write exceptions to <tt/spam/
+patterns. If a header pattern matches something in a <tt/spam/ command,
+but you nonetheless do not want it to receive a spam tag, you can list a
+more precise pattern under a <tt/nospam/ command.
+
+If the <em/pattern/ given to <tt/nospam/ is exactly the same as the
+<em/pattern/ on an existing <tt/spam/ list entry, the effect will be to
+remove the entry from the spam list, instead of adding an exception.
+Likewise, if the <em/pattern/ for a <tt/spam/ command matches an entry
+on the <tt/nospam/ list, that <tt/nospam/ entry will be removed. If the
+<em/pattern/ for <tt/nospam/ is ``*'', <em/all entries on both lists/
+will be removed. This might be the default action if you use <tt/spam/
+and <tt/nospam/ in conjunction with a <tt/folder-hook/.
 
 You can have as many <tt/spam/ or <tt/nospam/ commands as you like.
 You can even do your own primitive spam detection within mutt -- for
-example, if you consider all mail from MAILER-DAEMON to be spam, you can
-use a <tt/spam/ command like this:
+example, if you consider all mail from <tt/MAILER-DAEMON/ to be spam,
+you can use a <tt/spam/ command like this:
 
 <tscreen><verb>
 spam "^From: .*MAILER-DAEMON"       "999"

@@ -316,6 +316,9 @@ enum
 #define M_SEL_MULTI	(1<<1)
 #define M_SEL_FOLDER	(1<<2)
 
+/* flags for parse_spam_list */
+#define M_SPAM          1
+#define M_NOSPAM        2
 
 /* boolean vars */
 enum

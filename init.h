@@ -2434,7 +2434,7 @@ struct option_t MuttVars[] = {
   ** the message whether or not this is the case, as long as the
   ** non-``$$reply_regexp'' parts of both messages are identical.
   */
-  { "spam_separator",   DT_STR, R_NONE, UL &SpamSep, UL 0 },
+  { "spam_separator",   DT_STR, R_NONE, UL &SpamSep, UL "," },
   /*
   ** .pp
   ** ``$spam_separator'' controls what happens when multiple spam headers
@@ -2860,8 +2860,8 @@ struct command_t Commands[] = {
   { "send-hook",	mutt_parse_hook,	M_SENDHOOK },
   { "set",		parse_set,		0 },
   { "source",		parse_source,		0 },
-  { "spam",		parse_spam_list,	UL &SpamList },
-  { "nospam",		parse_rx_list,		UL &NoSpamList },
+  { "spam",		parse_spam_list,	M_SPAM },
+  { "nospam",		parse_spam_list,	M_NOSPAM },
   { "subscribe",	parse_subscribe,	0 },
   { "toggle",		parse_set,		M_SET_INV },
   { "unalias",		parse_unalias,		0 },

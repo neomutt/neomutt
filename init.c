@@ -368,7 +368,7 @@ static int add_to_rx_list (RX_LIST **list, const char *s, int flags, BUFFER *err
 
 static int add_to_spam_list (SPAM_LIST **list, const char *pat, const char *templ, BUFFER *err)
 {
-  SPAM_LIST *t, *last = NULL;
+  SPAM_LIST *t = NULL, *last = NULL;
   REGEXP *rx;
   int n;
   const char *p;
@@ -387,49 +387,89 @@ static int add_to_spam_list (SPAM_LIST **list, const char *pat, const char *temp
   {
     if (ascii_strcasecmp (rx->pattern, last->rx->pattern) == 0)
     {
-      /* already on the list, so just ignore it */
-      last = NULL;
+      /* Already on the list. Formerly we just skipped this case, but
+       * now we're supporting removals, which means we're supporting
+       * re-adds conceptually. So we probably want this to imply a
+       * removal, then do an add. We can achieve the removal by freeing
+       * the template, and leaving t pointed at the current item.
+       */
+      t = last;
+      safe_free(&t->template);
       break;
     }
     if (!last->next)
       break;
   }
 
-  if (!*list || last)
+  /* If t is set, it's pointing into an extant SPAM_LIST* that we want to
+   * update. Otherwise we want to make a new one to link at the list's end.
+   */
+  if (!t)
   {
     t = mutt_new_spam_list();
     t->rx = rx;
-    t->template = safe_strdup(templ);
-
-    /* find highest match number in template string */
-    t->nmatch = 0;
-    for (p = templ; *p;)
-    {
-      if (*p == '%')
-      {
-	n = atoi(++p);
-	if (n > t->nmatch)
-	  t->nmatch = n;
-	while (*p && isdigit(*p))
-	  ++p;
-      }
-      else
-	++p;
-    }
-    t->nmatch++;		/* match 0 is always the whole expr */
-
     if (last)
-    {
       last->next = t;
-      last = last->next;
+    else
+      *list = t;
+  }
+
+  /* Now t is the SPAM_LIST* that we want to modify. It is prepared. */
+  t->template = safe_strdup(templ);
+
+  /* Find highest match number in template string */
+  t->nmatch = 0;
+  for (p = templ; *p;)
+  {
+    if (*p == '%')
+    {
+        n = atoi(++p);
+        if (n > t->nmatch)
+          t->nmatch = n;
+        while (*p && isdigit((int)*p))
+          ++p;
     }
     else
-      *list = last = t;
+        ++p;
   }
-  else /* duplicate */
-    mutt_free_regexp (&rx);
+  t->nmatch++;		/* match 0 is always the whole expr */
 
   return 0;
+}
+
+static int remove_from_spam_list (SPAM_LIST **list, const char *pat)
+{
+  SPAM_LIST *spam, *prev;
+  int nremoved = 0;
+
+  /* Being first is a special case. */
+  spam = *list;
+  if (spam->rx && !mutt_strcmp(spam->rx->pattern, pat))
+  {
+    *list = spam->next;
+    mutt_free_regexp(&spam->rx);
+    safe_free(&spam->template);
+    safe_free(&spam);
+    return 1;
+  }
+
+  prev = spam;
+  for (spam = prev->next; spam;)
+  {
+    if (!mutt_strcmp(spam->rx->pattern, pat))
+    {
+      prev->next = spam->next;
+      mutt_free_regexp(&spam->rx);
+      safe_free(&spam->template);
+      safe_free(&spam);
+      spam = prev->next;
+      ++nremoved;
+    }
+    else
+      spam = spam->next;
+  }
+
+  return nremoved;
 }
 
 
@@ -577,28 +617,70 @@ static int parse_spam_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *
 
   memset(&templ, 0, sizeof(templ));
 
+  /* Insist on at least one parameter */
   if (!MoreArgs(s))
   {
-    strfcpy(err->data, _("spam: no matching pattern"), err->dsize);
+    if (data == M_SPAM)
+      strfcpy(err->data, _("spam: no matching pattern"), err->dsize);
+    else
+      strfcpy(err->data, _("nospam: no matching pattern"), err->dsize);
     return -1;
   }
+
+  /* Extract the first token, a regexp */
   mutt_extract_token (buf, s, 0);
 
-  if (MoreArgs(s))
+  /* data should be either M_SPAM or M_NOSPAM. M_SPAM is for spam commands. */
+  if (data == M_SPAM)
   {
-    mutt_extract_token (&templ, s, 0);
-  }
-  else
-  {
-    templ.data = NULL;
-    templ.dsize = 0;
+    /* If there's a second parameter, it's a template for the spam tag. */
+    if (MoreArgs(s))
+    {
+      mutt_extract_token (&templ, s, 0);
+
+      /* Add to the spam list. */
+      if (add_to_spam_list (&SpamList, buf->data, templ.data, err) != 0)
+          return -1;
+    }
+
+    /* If not, try to remove from the nospam list. */
+    else
+    {
+      remove_from_rx_list(&NoSpamList, buf->data);
+    }
+
+    return 0;
   }
 
-  if (add_to_spam_list ((SPAM_LIST **) data, buf->data, templ.data, err) != 0)
+  /* M_NOSPAM is for nospam commands. */
+  else if (data == M_NOSPAM)
+  {
+    /* nospam only ever has one parameter. */
+
+    /* "*" is a special case. */
+    if (!mutt_strcmp(buf->data, "*"))
+    {
+      mutt_free_spam_list (&SpamList);
+      mutt_free_rx_list (&NoSpamList);
+      return 0;
+    }
+
+    /* If it's on the spam list, just remove it. */
+    if (remove_from_spam_list(&SpamList, buf->data) != 0)
+      return 0;
+
+    /* Otherwise, add it to the nospam list. */
+    if (add_to_rx_list (&NoSpamList, buf->data, REG_ICASE, err) != 0)
       return -1;
-  
-  return 0;
+
+    return 0;
+  }
+
+  /* This should not happen. */
+  strfcpy(err->data, "This is no good at all.", err->dsize);
+  return -1;
 }
+
 
 static int parse_unlist (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
