@@ -631,7 +631,7 @@ TimeZones[] =
   { "wst",   8,  0, 0, 0 }, /* Western Australia */
   { "jst",   9,  0, 0, 0 }, /* Japan */
 /*{ "cst",   9, 30, 0, 0 },*/ /* Australian Central Standard Time */
-  { "kst",  10,  0, 0, 0 }, /* Korea */
+  { "kst",   9,  0, 0, 0 }, /* Korea */
   { "nzst", 12,  0, 0, 0 }, /* New Zealand */
   { "nzdt", 13,  0, 0, 0 }, /* New Zealand DST */
   { NULL,    0,  0, 0, 0 }
