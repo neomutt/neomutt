@@ -1236,6 +1236,7 @@ ci_send_message (int flags,		/* send mode */
     }
   }
 
+  
   mutt_update_encoding (msg->content);
 
   if (! (flags & (SENDMAILX | SENDBATCH)))
@@ -1342,6 +1343,22 @@ main_loop:
   /* save a copy of the message, if necessary. */
 
   mutt_expand_path (fcc, sizeof (fcc));
+
+  
+  /* Don't save a copy when we are in batch-mode, and the FCC
+   * folder is on an IMAP server: This would involve possibly lots
+   * of user interaction, which is not available in batch mode. 
+   * 
+   * Note: A patch to fix the problems with the use of IMAP servers
+   * from non-curses mode is available from Brendan Cully.  However, 
+   * I'd like to think a bit more about this before including it.
+   */
+
+#ifdef USE_IMAP
+  if ((flags & SENDBATCH) && fcc[0] && mx_is_imap (fcc))
+    fcc[0] = '\0';
+#endif
+
   if (*fcc && mutt_strcmp ("/dev/null", fcc) != 0)
   {
     BODY *tmpbody = msg->content;
