@@ -156,3 +156,11 @@
 /* Define to `int' if <signal.h> doesn't define.  */
 #undef sig_atomic_t
 
+/* define when your system has sys/time.h */
+#undef HAVE_SYS_TIME_H
+
+/* define when your system has sys/resource.h */
+#undef HAVE_SYS_RESOURCE_H
+
+/* define when your system has the setrlimit function */
+#undef HAVE_SETRLIMIT

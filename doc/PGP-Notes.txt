@@ -124,18 +124,6 @@ as well.
 
 
 
-Q: "Isn't there a security problem that mutt leaves the
-    passphrase in memory which will be dumped into core
-    files upon errors?"
-
-Yes, you may consider this a security problem.  To work
-around this, disable core dumps using resource limits.  On
-most systems, this will be the following instruction in
-your shell:
-
-	ulimit -c 0
-
-
 
 
 

@@ -39,6 +39,14 @@
 #include <errno.h>
 #include <ctype.h>
 
+#ifdef HAVE_SYS_RESOURCE_H
+# include <sys/resource.h>
+#endif
+
+#ifdef HAVE_SYS_TIME_H
+# include <sys/time.h>
+#endif
+
 #ifdef _PGPPATH
 
 
@@ -51,9 +59,29 @@ void pgp_void_passphrase (void)
   PgpExptime = 0;
 }
 
+# if defined(HAVE_SETRLIMIT) && (!defined(DEBUG))
+
+static void disable_coredumps (void)
+{
+  struct rlimit rl = {0, 0};
+  static short done = 0;
+
+  if (!done)
+  {
+    setrlimit (RLIMIT_CORE, &rl);
+    done = 1;
+  }
+}
+
+# endif /* HAVE_SETRLIMIT */
+
 int pgp_valid_passphrase (void)
 {
   time_t now = time (NULL);
+
+# if defined(HAVE_SETRLIMIT) && (!defined(DEBUG))
+  disable_coredumps ();
+# endif
 
   if (now < PgpExptime) return 1; /* just use the cached copy. */
   pgp_void_passphrase ();
