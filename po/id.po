@@ -450,7 +450,7 @@ msgstr "Sedang menyalin ke %s..."
 #: commands.c:823
 #, c-format
 msgid "Convert to %s upon sending?"
-msgstr ""
+msgstr "Ubah ke %s saat mengirim?"
 
 #: commands.c:831
 #, c-format
@@ -458,17 +458,17 @@ msgid "Content-Type changed to %s."
 msgstr "Content-Type diubah ke %s."
 
 #: commands.c:833
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; %s."
-msgstr "Character set diubah ke %s."
+msgstr "Character set diubah ke %s; %s."
 
 #: commands.c:835
 msgid "not converting"
-msgstr ""
+msgstr "tidak melakukan konversi"
 
 #: commands.c:835
 msgid "converting"
-msgstr ""
+msgstr "melakukan konversi"
 
 #: compose.c:40
 msgid "There are no attachments."
@@ -1112,7 +1112,7 @@ msgstr "Bantuan utk %s"
 
 #: hook.c:243
 msgid "unhook: Can't do unhook * from within a hook."
-msgstr ""
+msgstr "unhook: Tidak dapat melakukan unhook * dari hook."
 
 #: hook.c:255
 #, c-format
@@ -1122,7 +1122,7 @@ msgstr "unhook: jenis tidak dikenali: %s"
 #: hook.c:261
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s."
-msgstr ""
+msgstr "unhook: Tidak dapat menghapus %s dari %s."
 
 #: imap/auth_anon.c:39
 msgid "Authenticating (anonymous)..."
@@ -2203,20 +2203,18 @@ msgstr ""
 "Untuk melaporkan bug, mohon gunakan program flea(1).\n"
 
 #: main.c:45
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2001 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2000 Michael R. Elkins dan kawan-kawan.\n"
+"Copyright (C) 1996-2001 Michael R. Elkins dan kawan-kawan.\n"
 "Mutt TIDAK menyertakan jaminan dalam bentuk apapun; baca 'mutt -vv'.\n"
 "Mutt adalah software bebas, anda diperbolehkan utk menyebarluaskannya\n"
 "dengan beberapa persyaratan; baca 'mutt -vv' utk jelasnya.\n"
 
 #: main.c:51
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
@@ -2243,13 +2241,13 @@ msgid ""
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 msgstr ""
-"Hak Cipta (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
-"Hak Cipta (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
-"Hak Cipta (C) 1997-2000 Thomas Roessler <roessler@guug.de>\n"
-"Hak Cipta (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Hak Cipta (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
-"Hak Cipta (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-"Copyright (C) 2000      Edmund Grimley Evans <edmundo@rano.org>\n"
+"Hak Cipta (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Hak Cipta (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
+"Hak Cipta (C) 1997-2001 Thomas Roessler <roessler@guug.de>\n"
+"Hak Cipta (C) 1998-2001 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Hak Cipta (C) 1999-2001 Brendan Cully <brendan@kublai.com>\n"
+"Hak Cipta (C) 1999-2001 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 2000-2001 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "Dan banyak lagi yang tidak dapat disebutkan di sini satu per satu telah\n"
 "menyumbangkan banyak kode, perbaikan dan saran.\n"
@@ -3112,9 +3110,8 @@ msgid "Fetching PGP key..."
 msgstr "Mengambil PGP key..."
 
 #: pgpkey.c:486
-#, fuzzy
 msgid "All matching keys are marked expired/revoked."
-msgstr "Kunci ini tidak dapat digunakan: kadaluwarsa/disabled/dicabut."
+msgstr "Semua kunci yang cocok telah ditandai kadaluwarsa/dicabut."
 
 #. __STRCAT_CHECKED__
 #: pgpkey.c:512
@@ -3158,9 +3155,8 @@ msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Kunci ini tidak dapat digunakan: kadaluwarsa/disabled/dicabut."
 
 #: pgpkey.c:608
-#, fuzzy
 msgid "This ID is expired/disabled/revoked"
-msgstr "Kunci ini tidak dapat digunakan: kadaluwarsa/disabled/dicabut."
+msgstr "ID ini telah kadaluwarsa/disabled/dicabut."
 
 #: pgpkey.c:612
 msgid "This ID's trust level is undefined."
@@ -3175,9 +3171,9 @@ msgid "This ID is only marginally trusted."
 msgstr "ID ini tidak dipercaya sepenuhnya."
 
 #: pgpkey.c:622
-#, fuzzy, c-format
+#, c-format
 msgid "%s Do you really want to use the key?"
-msgstr "%s Anda yakin mau menggunakannya?"
+msgstr "%s Anda yakin mau menggunakan kunci tsb?"
 
 #: pgpkey.c:720
 msgid "Please enter the key ID: "
