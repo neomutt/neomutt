@@ -286,10 +286,43 @@ sub list_certs () {
       print "$fields[1]: Issued for: $fields[0] \"$fields[2]\" $keyflags{$fields[4]}\n";
     }
 
-    my $format = -B "$certificates_path/$fields[1]" ? 'DER' : 'PEM'; 
-    my $cmd = "openssl x509 -subject -issuer -dates -noout -in $certificates_path/$fields[1] -inform $format";
-    (my $subject_in, my $issuer_in, my $date1_in, my $date2_in) = `$cmd`;
-    $? and die "'$cmd' returned $?";
+    my $certfile = "$certificates_path/$fields[1]";
+    my $cert;
+    {
+        open F, $certfile or
+            die "Couldn't open $certfile: $!";
+        local $/;
+        $cert = <F>;
+    }
+
+    my $subject_in;
+    my $issuer_in;
+    my $date1_in;
+    my $date2_in;
+    
+    while (1) {
+        open(TMP_FILE, ">cert_tmp.list")
+            or die "Couldn't open cert_tmp.list: $!";
+        print TMP_FILE $cert;
+        close TMP_FILE;        
+
+        my $format = -B $certfile ? 'DER' : 'PEM'; 
+        my $cmd = "openssl x509 -subject -issuer -dates -noout -in cert_tmp.list -inform $format";
+        ($subject_in, $issuer_in, $date1_in, $date2_in) = `$cmd`;
+        $? and die "'$cmd' returned $?";
+
+        last if $subject_in =~ /email\=/i;
+        last if $subject_in =~ /cn\=recipients/i;
+
+        my $index = index $cert, '-----END CERTIFICATE-----';
+
+        $index > 0 
+            or die "Certificate $certfile cannot be parsed";
+
+        $index += length '-----END CERTIFICATE-----';
+
+        $cert = substr $cert, $index;
+    }
 
     my @subject = split(/\//, $subject_in);
     while(@subject) {
@@ -320,8 +353,8 @@ sub list_certs () {
     -e "$private_keys_path/$fields[1]" and
       print "$tab - Matching private key installed -\n";
 
-    $format = -B "$certificates_path/$fields[1]" ? 'DER' : 'PEM'; 
-    $cmd = "openssl x509 -purpose -noout -in $certificates_path/$fields[1] -inform $format";
+    my $format = -B "$certificates_path/$fields[1]" ? 'DER' : 'PEM'; 
+    my $cmd = "openssl x509 -purpose -noout -in cert_tmp.list -inform $format";
     my $purpose_in = `$cmd`;
     $? and die "'$cmd' returned $?";
 
@@ -337,6 +370,8 @@ sub list_certs () {
     print "\n";
   }
   
+  unlink 'cert_tmp.list';
+
   close(INDEX);
 }
 
