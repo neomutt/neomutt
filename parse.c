@@ -280,8 +280,15 @@ void mutt_parse_content_type (char *s, BODY *ct)
     /* Some pre-RFC1521 gateways still use the "name=filename" convention,
      * but if a filename has already been set in the content-disposition,
      * let that take precedence, and don't set it here */
-    if ((pc = mutt_get_parameter("name", ct->parameter)) != 0 && !ct->filename)
+    if ((pc = mutt_get_parameter( "name", ct->parameter)) != 0 && !ct->filename)
       ct->filename = safe_strdup(pc);
+    
+#ifdef SUN_ATTACHMENT
+    /* this is deep and utter perversion */
+    if ((pc = mutt_get_parameter ("conversions", ct->parameter)) != 0)
+      ct->encoding = mutt_check_encoding (pc);
+#endif
+    
   }
   
   /* Now get the subtype */
