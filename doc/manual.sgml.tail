@@ -63,7 +63,7 @@ delete-thread             ^D   delete all messages in thread
 display-address            @   display full address of sender
 display-toggle-weed        h   display message and toggle header weeding
 display-message          RET   display a message
-edit-message               e   edit the current message
+edit                       e   edit the current message
 edit-type                 ^E   edit the current message's Content-Type
 exit                       x   exit without saving changes
 extract-keys              ^K   extract PGP public keys
@@ -249,7 +249,7 @@ edit-fcc                   f   enter a file to save a copy of this message in
 edit-from              ESC f   edit the from: field
 edit-file               ^X e   edit the file to be attached
 edit-headers               E   edit the message with headers
-edit-message               e   edit the message
+edit                       e   edit the message
 edit-mime                  m   edit attachment using mailcap entry
 edit-reply-to              r   edit the Reply-To field
 edit-subject               s   edit the subject of this message

@@ -358,7 +358,7 @@ id="source" name="source"> the file.
 Toggles the weeding of message header fields specified by <ref id="ignore"
 name="ignore"> commands.
 
-<p><bf/edit-message/<label id="edit-message"> (default: e)<newline>
+<p><bf/edit/<label id="edit"> (default: e)<newline>
 
 This command (available in the ``index'' and ``pager'') allows you to
 edit the raw current message as it's present in the mail folder.
