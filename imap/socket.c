@@ -125,11 +125,6 @@ CONNECTION *mutt_socket_select_connection (char *host, int port, int flags)
   conn->next = Connections;
   Connections = conn;
 
-  conn->read = raw_socket_read;
-  conn->write = raw_socket_write;
-  conn->open = raw_socket_open;
-  conn->close = raw_socket_close;
-  
 #ifdef USE_SSL
   if (flags == M_NEW_SSL_SOCKET) 
   {
@@ -138,7 +133,14 @@ CONNECTION *mutt_socket_select_connection (char *host, int port, int flags)
       conn->open = ssl_socket_open;
       conn->close = ssl_socket_close;
   }
+  else
 #endif
+  {
+    conn->read = raw_socket_read;
+    conn->write = raw_socket_write;
+    conn->open = raw_socket_open;
+    conn->close = raw_socket_close;
+  }
 
   return conn;
 }
