@@ -1,22 +1,22 @@
 # Hellenic support for mutt by
 #
 # Copyright (C) 1999-2001 Fanis Dokianakis <madf@hellug.gr>
+# Corrections from
 # Nikos Mayrogiannopoulos <nmav@hellug.gr>
 # Simos Xenitellis <S.Xenitellis@rhbnc.ac.uk>
-# Corrections from kromJx <kromJx@crosswinds.net>
+# kromJx <kromJx@crosswinds.net>
 #
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt-1.3.19i\n"
+"Project-Id-Version: Mutt-1.3.27i\n"
 "POT-Creation-Date: 2002-01-22 13:12+0100\n"
-"PO-Revision-Date: 2001-06-08 08:08GMT+2\n"
-"Last-Translator: Dokianakis Theofanis <madf@hellug.gr>\n"
+"PO-Revision-Date: 2002-01-24 00:03GMT+2\n"
+"Last-Translator: Dokianakis Fanis <madf@hellug.gr>\n"
 "Language-Team: Greek <EL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-7\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.8\n"
 
 #
 #: account.c:144
@@ -253,7 +253,7 @@ msgstr "Διαγραφή του γραμματοκιβωτίου \"%s\";"
 #
 #: browser.c:897
 msgid "Mailbox deleted."
-msgstr "Το γραμματοκιβώτιου διαγράφηκε."
+msgstr "Το γραμματοκιβώτιο διαγράφηκε."
 
 #
 #: browser.c:903
@@ -445,7 +445,7 @@ msgstr "Διαβίβαση μηνύματος στον %s"
 #: commands.c:242
 #, c-format
 msgid "Bounce messages to %s"
-msgstr "Διαβίβαση μηνημάτων στον %s"
+msgstr "Διαβίβαση μηνυμάτων στον %s"
 
 #
 #: commands.c:256
@@ -528,39 +528,39 @@ msgstr "Εντολή φλοιού: "
 
 #
 #: commands.c:647
-#, fuzzy, c-format
+#, c-format
 msgid "Decode-save%s to mailbox"
-msgstr "%s%s στο γραμματοκιβώτιο"
+msgstr "Αποκωδικοποίηση-αποθήκευση%s στο γραμματοκιβώτιο"
 
 #
 #: commands.c:648
-#, fuzzy, c-format
+#, c-format
 msgid "Decode-copy%s to mailbox"
-msgstr "%s%s στο γραμματοκιβώτιο"
+msgstr "Αποκωδικοποίηση-αντιγραφή%s στο γραμματοκιβώτιο"
 
 #
 #: commands.c:649
-#, fuzzy, c-format
+#, c-format
 msgid "Decrypt-save%s to mailbox"
-msgstr "%s%s στο γραμματοκιβώτιο"
+msgstr "Αποκρυπτογράφηση-αποθήκευση%s στο γραμματοκιβώτιο"
 
 #
 #: commands.c:650
-#, fuzzy, c-format
+#, c-format
 msgid "Decrypt-copy%s to mailbox"
-msgstr "%s%s στο γραμματοκιβώτιο"
+msgstr "Αποκρυπτογράφηση-αντιγραφή%s στο γραμματοκιβώτιο"
 
 #
 #: commands.c:651
-#, fuzzy, c-format
+#, c-format
 msgid "Save%s to mailbox"
-msgstr "%s%s στο γραμματοκιβώτιο"
+msgstr "Αποθήκευση%s στο γραμματοκιβώτιο"
 
 #
 #: commands.c:651
-#, fuzzy, c-format
+#, c-format
 msgid "Copy%s to mailbox"
-msgstr "%s%s στο γραμματοκιβώτιο"
+msgstr "Αντιγραφή%s στο γραμματοκιβώτιο"
 
 #
 #: commands.c:652
@@ -754,9 +754,9 @@ msgstr "Μετονομασία σε: "
 
 #
 #: compose.c:987 editmsg.c:96 sendlib.c:902
-#, fuzzy, c-format
+#, c-format
 msgid "Can't stat %s: %s"
-msgstr "Αδυναμία στην πρόσβαση: %s"
+msgstr "Αδυναμία λήψης της κατάστασης του %s: %s"
 
 #
 #: compose.c:1013
@@ -788,12 +788,12 @@ msgstr "Αποτυχία κατά την δημιουργία προσάρτησης"
 #
 #: compose.c:1115
 msgid "Postpone this message?"
-msgstr "Να αναβληθεί η ταχυδρόμηση αυτού του μήνυματος;"
+msgstr "Να αναβληθεί η ταχυδρόμηση αυτού του μηνύματος;"
 
 #
 #: compose.c:1172
 msgid "Write message to mailbox"
-msgstr "Εγγραφή τους μήνυματος στο γραμματοκιβώτιο"
+msgstr "Εγγραφή τους μηνύματος στο γραμματοκιβώτιο"
 
 #
 #: compose.c:1175
@@ -1015,7 +1015,7 @@ msgstr "Είστε στο τελευταίο μήνυμα."
 #
 #: curs_main.c:1132 curs_main.c:1176
 msgid "No undeleted messages."
-msgstr "Δεν υπάρχουν απεκαταστημένα μηνύματα."
+msgstr "Δεν υπάρχουν αποκαταστημένα μηνύματα."
 
 #
 #: curs_main.c:1169 curs_main.c:1193
@@ -1049,9 +1049,8 @@ msgstr "σε αυτή την περιορισμένη όψη"
 
 #
 #: curs_main.c:1331 pager.c:2296
-#, fuzzy
 msgid "Can't change 'important' flag on POP server."
-msgstr "Αδυναμία επεξεργασίας μηνύματος στο διακομιστή POP."
+msgstr "Αδυναμία αλλάγής της σημαίας 'important' στο διακομιστή POP."
 
 #
 #: curs_main.c:1446
@@ -1296,27 +1295,24 @@ msgstr "[-- όνομα: %s --]\n"
 
 #
 #: handler.c:1680 handler.c:1696
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
-msgstr "[-- Αυτή η %s/%s προσάρτηση "
+msgstr "[-- Αυτή η %s/%s προσάρτηση δεν περιλαμβάνετε, --]\n"
 
 #
 #: handler.c:1682
-#, fuzzy
 msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
 msgstr ""
-"[-- Αυτή η %s/%s προσάρτηση δεν περιλαμβάνεται, --]\n"
-"[-- και η ενδεδειγμένη εξωτερική πηγή έχει λήξει. --]\n"
+"[-- και η ενδεδειγμένη εξωτερική πηγή έχει --]\n"
+"[-- λήξει. --]\n"
 
 #
 #: handler.c:1700
-#, fuzzy, c-format
+#, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
-msgstr ""
-"Αυτή η %s/%s προσάρτηση δεν περιλαμβάνεται, --]\n"
-"[-- και το ενδεδειγμένο access-type %s δεν υποστηρίζεται --]\n"
+msgstr "[-- και το ενδεδειγμένο access-type %s δεν υποστηρίζεται --]\n"
 
 #
 # handler.c:1378
@@ -1441,7 +1437,7 @@ msgstr "Αυθεντικοποίηση GSSAPI απέτυχε."
 
 #: imap/auth_login.c:34
 msgid "LOGIN disabled on this server."
-msgstr "Το LOGIN απενεργοποιήθηκε σε αυτόν τον διακομιστή."
+msgstr "Το LOGIN απενεργοποιήθηκε σε αυτό τον διακομιστή."
 
 #
 #: imap/auth_login.c:43 pop_auth.c:226
@@ -1464,7 +1460,7 @@ msgstr "Αυθεντικοποίηση SASL απέτυχε."
 #: imap/browse.c:64 imap/imap.c:516
 #, c-format
 msgid "%s is an invalid IMAP path"
-msgstr ""
+msgstr "%s είναι μη έγκυρη διαδρομή IMAP"
 
 #
 #: imap/browse.c:81
@@ -1477,9 +1473,8 @@ msgstr "Λήψη λίστας φακέλων..."
 
 #
 #: imap/browse.c:219
-#, fuzzy
 msgid "No such folder"
-msgstr "%s: δεν υπάρχει τέτοιο χρώμα"
+msgstr "Δεν υπάρχει τέτοιος φάκελος"
 
 #
 #: imap/browse.c:277
@@ -1537,9 +1532,8 @@ msgstr "Επιλογή %s..."
 
 #
 #: imap/imap.c:669
-#, fuzzy
 msgid "Error opening mailbox"
-msgstr "Σφάλμα κατά την εγγραφή στο γραμματοκιβώτιο"
+msgstr "Σφάλμα κατά  το άνοιγμα του γραμματοκιβωτίου"
 
 #
 #. STATUS not supported
@@ -1567,9 +1561,8 @@ msgstr "Σημείωση %d διαγραφθέντων μηνυμάτων..."
 
 #
 #: imap/imap.c:939
-#, fuzzy
 msgid "Expunge failed"
-msgstr "CLOSE απέτυχε"
+msgstr "Διαγραφή απέτυχε"
 
 #
 #: imap/imap.c:954
@@ -1584,7 +1577,7 @@ msgstr "Διαγραφή μηνυμάτων από τον εξυπηρετητή..."
 
 #: imap/imap.c:1043
 msgid "imap_sync_mailbox: EXPUNGE failed"
-msgstr ""
+msgstr "imap_sync_mailbox: EXPUNGE απέτυχε"
 
 #
 #: imap/imap.c:1077
@@ -1593,9 +1586,8 @@ msgstr "CLOSE απέτυχε"
 
 #
 #: imap/imap.c:1325
-#, fuzzy
 msgid "Bad mailbox name"
-msgstr "Δημιουργία γραμματοκιβωτίου: "
+msgstr "Κακό όνομα γραμματοκιβωτίου"
 
 #
 #: imap/imap.c:1337
@@ -1617,9 +1609,9 @@ msgstr "Αδυναμία λήψης επικεφαλίδων από αυτή την έκδοση του εξυπηρετητή IMAP."
 
 #
 #: imap/message.c:84
-#, fuzzy, c-format
+#, c-format
 msgid "Could not create temporary file %s"
-msgstr "Αδυναμία δημιουργίας προσωρινού αρχείου!"
+msgstr "Αδυναμία δημιουργίας προσωρινού αρχείου %s"
 
 #
 #: imap/message.c:97 pop.c:209
@@ -1832,15 +1824,14 @@ msgstr "macro: πάρα πολλές παράμετροι"
 
 #
 #: keymap.c:852
-#, fuzzy
 msgid "exec: no arguments"
-msgstr "exec: πολύ λίγα ορίσματα"
+msgstr "exec: καθόλου ορίσματα"
 
 #
 #: keymap.c:872
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no such function"
-msgstr "%s: δεν έχει καθοριστεί τέτοια λειτουργία"
+msgstr "%s: δεν υπάρχει τέτοια λειτουργία"
 
 #
 #: keymap_alldefs.h:5
@@ -3023,9 +3014,8 @@ msgstr "Εγγραφή μηνυμάτων... %d (%d%%)"
 #. * change/deleted message
 #.
 #: mbox.c:931
-#, fuzzy
 msgid "Committing changes..."
-msgstr "Σύνταξη μοντέλου αναζήτησης..."
+msgstr "Εφαρμογή των αλλάγων..."
 
 #
 #: mbox.c:962
@@ -3242,17 +3232,17 @@ msgstr "Το SSL απενεργοποιήθηκε λόγω λήψης εντροπίας"
 
 #: mutt_ssl.c:315
 msgid "I/O error"
-msgstr ""
+msgstr "I/O σφάλμα"
 
 #: mutt_ssl.c:318
 msgid "unspecified protocol error"
-msgstr ""
+msgstr "μη καθορισμένο σφάλμα πρωτοκόλλου"
 
 #
 #: mutt_ssl.c:324
-#, fuzzy, c-format
+#, c-format
 msgid "SSL failed: %s"
-msgstr "CLOSE απέτυχε"
+msgstr "SSL απέτυχε: %s"
 
 #
 #: mutt_ssl.c:333
@@ -3703,11 +3693,8 @@ msgstr ""
 #
 # pgp.c:459
 #: pgp.c:456
-#, fuzzy
 msgid "[-- END PGP MESSAGE --]\n"
-msgstr ""
-"\n"
-"[-- ΤΕΛΟΣ ΜΗΝΥΜΑΤΟΣ PGP  --]\n"
+msgstr "[-- ΤΕΛΟΣ ΜΗΝΥΜΑΤΟΣ PGP --]\n"
 
 #
 # pgp.c:461
@@ -3718,11 +3705,8 @@ msgstr "[-- ΤΕΛΟΣ ΟΜΑΔΑΣ ΔΗΜΟΣΙΩΝ ΚΛΕΙΔΙΩΝ PGP --]\n"
 #
 # pgp.c:463
 #: pgp.c:460
-#, fuzzy
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
-msgstr ""
-"\n"
-"[-- ΤΕΛΟΣ ΥΠΟΓΕΓΡΑΜΜΕΝΟΥ PGP ΜΗΝΥΜΑΤΟΣ --]\n"
+msgstr "[-- ΤΕΛΟΣ ΥΠΟΓΕΓΡΑΜΜΕΝΟΥ PGP ΜΗΝΥΜΑΤΟΣ --]\n"
 
 #
 #: pgp.c:475
@@ -3783,11 +3767,8 @@ msgstr ""
 #
 # pgp.c:682
 #: pgp.c:861
-#, fuzzy
 msgid "[-- End of signed data --]\n"
-msgstr ""
-"\n"
-"[-- Τέλος δεδομένων υπογεγραμμένων --]\n"
+msgstr "[-- Τέλος δεδομένων υπογεγραμμένων --]\n"
 
 #
 # pgp.c:801
@@ -3833,11 +3814,8 @@ msgstr ""
 #
 # pgp.c:988
 #: pgp.c:1160
-#, fuzzy
 msgid "[-- End of PGP/MIME encrypted data --]\n"
-msgstr ""
-"\n"
-"[-- Τέλος δεδομένων κρυπτογραφημένων μέσω PGP/MIME --]\n"
+msgstr "[-- Τέλος δεδομένων κρυπτογραφημένων μέσω PGP/MIME --]\n"
 
 #
 # pgp.c:1070
@@ -3926,26 +3904,23 @@ msgstr ""
 "Αυτό το κλειδί δεν μπορεί να χρησιμοποιηθεί ληγμένο/αχρηστευμένο/άκυρο."
 
 #: pgpkey.c:608
-#, fuzzy
 msgid "ID is expired/disabled/revoked."
-msgstr "Αυτό το ID είναι ληγμένο/αχρηστευμένο/άκυρο."
+msgstr "Το ID είναι ληγμένο/αχρηστευμένο/άκυρο."
 
 #: pgpkey.c:612
 msgid "ID has undefined validity."
-msgstr ""
+msgstr "Το ID έχει μη ορισμένη εγκυρότητα."
 
 #
 #: pgpkey.c:615
-#, fuzzy
 msgid "ID is not valid."
-msgstr "Αυτό το ID δεν τυγχάνει εμπιστοσύνη."
+msgstr "Το ID δεν είναι έγκυρο."
 
 #
 # pgpkey.c:259
 #: pgpkey.c:618
-#, fuzzy
 msgid "ID is only marginally valid."
-msgstr "Αυτό το ID τυγχάνει ελάχιστη εμπιστοσύνη."
+msgstr "Το ID είναι μόνο μερικώς έγκυρο."
 
 #
 # pgpkey.c:262
@@ -3996,7 +3971,7 @@ msgstr "Η εντολή UIDL δεν υποστηρίζετε από το διακομιστή."
 #: pop.c:246 pop.c:562
 #, c-format
 msgid "%s is an invalid POP path"
-msgstr ""
+msgstr "%s είναι μη έγκυρη POP διαδρομή"
 
 #
 #: pop.c:277
@@ -4527,9 +4502,9 @@ msgstr "Το %s δεν υπάρχει πια!"
 
 #
 #: sendlib.c:908
-#, fuzzy, c-format
+#, c-format
 msgid "%s isn't a regular file."
-msgstr "Το %s δεν είναι γραμματοκιβώτιο."
+msgstr "Το %s δεν είναι κανονικό αρχείο."
 
 #
 #: sendlib.c:1077
@@ -4584,63 +4559,10 @@ msgstr "(κανένα γραμματοκιβώτιο)"
 
 #
 #: thread.c:1029
-#, fuzzy
 msgid "Parent message is not visible in this limited view."
-msgstr "Το τρέχων μήνυμα δεν είναι ορατό στην περιορισμένη όψη"
+msgstr "Το τρέχων μήνυμα δεν είναι ορατό σε αυτή τη περιορισμένη όψη"
 
 #
 #: thread.c:1035
 msgid "Parent message is not available."
 msgstr "Το τρέχων μήνυμα δεν είναι διαθέσιμο."
-
-#
-# pgpkey.c:257
-#, fuzzy
-#~ msgid "This ID's validity level is undefined."
-#~ msgstr "Το επίπεδο εμπιστευτικότητας του ID αυτού είναι άγνωστο."
-
-#
-#~ msgid "Decode-save"
-#~ msgstr "Αποκωδικοποίηση-αποθήκευση"
-
-#
-#~ msgid "Decode-copy"
-#~ msgstr "Αποκωδικοποίηση-αντιγραφή"
-
-#
-#~ msgid "Decrypt-save"
-#~ msgstr "Αποκρυπτογράφηση-αποθήκευση"
-
-#
-#~ msgid "Decrypt-copy"
-#~ msgstr "Αποκρυπτογράφηση-αντιγραφή"
-
-#
-#~ msgid "Copy"
-#~ msgstr "Αντιγρ"
-
-#~ msgid "%s [%s]\n"
-#~ msgstr "%s [%s]\n"
-
-#
-# pgp.c:347
-#~ msgid ""
-#~ "\n"
-#~ "[-- End of PGP output --]\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "[-- Τέλος της εξόδου PGP --]\n"
-#~ "\n"
-
-#
-#, fuzzy
-#~ msgid "Can't stat %s."
-#~ msgstr "Αδυναμία στην πρόσβαση: %s"
-
-#
-#~ msgid "%s: no such command"
-#~ msgstr "%s: δεν υπάρχει τέτοια εντολή"
-
-#~ msgid "Authentication method is unknown."
-#~ msgstr "Άγνωστη μέθοδος αυθεντικοποίησης."

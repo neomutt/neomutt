@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt 1.3.25\n"
+"Project-Id-Version: mutt 1.3.27\n"
 "POT-Creation-Date: 2002-01-22 13:12+0100\n"
-"PO-Revision-Date: 2002-01-02 11:10+0200\n"
+"PO-Revision-Date: 2002-01-23 12:56+0200\n"
 "Last-Translator: Toomas Soome <tsoome@ut.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2261,8 +2261,8 @@ msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please use the flea(1) utility.\n"
 msgstr ""
-"Arendajatega kontakteerumiseks saatke palun kiri aadressil <mutt-dev@mutt."
-"org>.\n"
+"Arendajatega kontakteerumiseks saatke palun kiri aadressil "
+"<mutt-dev@mutt.org>.\n"
 "Veast teatamiseks kasutage palun käsku flea(1).\n"
 
 #: main.c:44
@@ -2329,10 +2329,10 @@ msgstr ""
 
 #: main.c:88
 msgid ""
-"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
-"<file> ]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
-"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
+"]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
+"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2359,8 +2359,8 @@ msgid ""
 msgstr ""
 "kasutage: mutt [ -nRyzZ ] [ -e <käsk> ] [ -F <fail> ] [ -m <tüüp> ]\n"
 "               [ -f <fail> ]\n"
-"          mutt [ -nx ] [ -e <käsk> ] [ -a <fail> ] [ -F <fail> ] [ -H "
-"<fail> ]\n"
+"          mutt [ -nx ] [ -e <käsk> ] [ -a <fail> ] [ -F <fail> ] [ -H <fail> "
+"]\n"
 "               [ -i <fail> ] [ -s <teema> ] [ -b <aadr> ] [ -c <aadr> ]\n"
 "               <aadr> [ ... ]\n"
 "          mutt [ -n ] [ -e <käsk> ] [ -F <fail> ] -p\n"
@@ -3218,23 +3218,20 @@ msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Seda võtit ei saa kasutada: aegunud/blokeeritud/tühistatud."
 
 #: pgpkey.c:608
-#, fuzzy
 msgid "ID is expired/disabled/revoked."
-msgstr "See ID on aegunud/blokeeritud/tühistatud"
+msgstr "ID on aegunud/blokeeritud/tühistatud."
 
 #: pgpkey.c:612
 msgid "ID has undefined validity."
-msgstr ""
+msgstr "ID kehtivuse väärtus ei ole defineeritud."
 
 #: pgpkey.c:615
-#, fuzzy
 msgid "ID is not valid."
-msgstr "See kasutaja ID ei ole kehtiv."
+msgstr "ID ei ole kehtiv."
 
 #: pgpkey.c:618
-#, fuzzy
 msgid "ID is only marginally valid."
-msgstr "Seda kasutaja ID ei usaldata eriti."
+msgstr "ID on ainult osaliselt kehtiv."
 
 #: pgpkey.c:622
 #, c-format
@@ -3764,6 +3761,3 @@ msgstr "Vanem teade ei ole selles piiratud vaates nähtav."
 #: thread.c:1035
 msgid "Parent message is not available."
 msgstr "Vanem teade ei ole kättesaadav."
-
-#~ msgid "This ID's validity level is undefined."
-#~ msgstr "Selle kasutaja ID kehtivust ei ole määratud."

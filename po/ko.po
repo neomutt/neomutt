@@ -6,9 +6,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.25i\n"
+"Project-Id-Version: 1.3.27i\n"
 "POT-Creation-Date: 2002-01-22 13:12+0100\n"
-"PO-Revision-Date: 2002-01-15 21:57+300\n"
+"PO-Revision-Date: 2002-01-23 17:24+300\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Im Eunjea <eunjea@kldp.org>\n"
 "MIME-Version: 1.0\n"
@@ -736,7 +736,7 @@ msgstr "외부에서 메일함이 변경됨. 플래그가 틀릴 수 있음"
 
 #: curs_main.c:488
 msgid "New mail in this mailbox."
-msgstr "현재 메일함에 새 편지 도착."
+msgstr "현재 메일함에 새 메일 도착."
 
 #: curs_main.c:492
 msgid "Mailbox was externally modified."
@@ -1560,7 +1560,7 @@ msgstr "디렉토리 바꾸기"
 
 #: keymap_alldefs.h:18
 msgid "check mailboxes for new mail"
-msgstr "메일함에 새 편지 확인"
+msgstr "메일함의 새 메일 확인"
 
 #: keymap_alldefs.h:19
 msgid "attach a file(s) to this message"
@@ -1904,11 +1904,11 @@ msgstr "패턴과 일치하는 메일 삭제"
 
 #: keymap_alldefs.h:105
 msgid "force retrieval of mail from IMAP server"
-msgstr "IMAP 서버에서 편지 가져오기"
+msgstr "IMAP 서버에서 메일 가져오기"
 
 #: keymap_alldefs.h:106
 msgid "retrieve mail from POP server"
-msgstr "POP 서버에서 편지 가져오기"
+msgstr "POP 서버에서 메일 가져오기"
 
 #: keymap_alldefs.h:107
 msgid "move to the first message"
@@ -2425,7 +2425,7 @@ msgstr "%s: 파일을 첨부할 수 없음.\n"
 
 #: main.c:791
 msgid "No mailbox with new mail."
-msgstr "새로운 편지가 도착한 메일함 없음."
+msgstr "새 메일이 도착한 메일함 없음."
 
 #: main.c:800
 msgid "No incoming mailboxes defined."
@@ -3213,7 +3213,6 @@ msgid "This key can't be used: expired/disabled/revoked."
 msgstr "이 키는 사용할 수 없습니다: 만기/사용중지/취소됨."
 
 #: pgpkey.c:608
-#, fuzzy
 msgid "ID is expired/disabled/revoked."
 msgstr "이 키는 만기/사용중지/취소됨."
 
@@ -3222,12 +3221,10 @@ msgid "ID has undefined validity."
 msgstr "ID의 인증자가 정의되지 않음."
 
 #: pgpkey.c:615
-#, fuzzy
 msgid "ID is not valid."
 msgstr "이 ID는 확실하지 않음."
 
 #: pgpkey.c:618
-#, fuzzy
 msgid "ID is only marginally valid."
 msgstr "이 ID는 신용도가 낮음"
 
@@ -3289,7 +3286,7 @@ msgstr "POP 서버가 지정되지 않음."
 
 #: pop.c:609
 msgid "No new mail in POP mailbox."
-msgstr "POP 메일함에 새 편지가 없음."
+msgstr "POP 메일함에 새 메일이 없음."
 
 #: pop.c:616
 msgid "Delete messages from server?"
