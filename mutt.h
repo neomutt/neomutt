@@ -261,35 +261,34 @@ enum
 /* quad-option vars */
 enum
 {
-
-  OPT_VERIFYSIG,      /* verify PGP signatures */
-  OPT_PGPTRADITIONAL, /* create old-style PGP messages */
-
-#ifdef USE_SSL
-  OPT_SSLSTARTTLS,
-#endif
-
-  OPT_PRINT,
-  OPT_INCLUDE,
+  OPT_ABORT,
+  OPT_BOUNCE,
+  OPT_COPY,
   OPT_DELETE,
+  OPT_FORWEDIT,
+  OPT_INCLUDE,
   OPT_MFUPTO,
   OPT_MIMEFWD,
+  OPT_MIMEFWDREST,
   OPT_MOVE,
-  OPT_COPY,
+  OPT_PGPTRADITIONAL, /* create old-style PGP messages */
 #ifdef USE_POP
   OPT_POPDELETE,
   OPT_POPRECONNECT,
 #endif
   OPT_POSTPONE,
+  OPT_PRINT,
   OPT_QUIT,
   OPT_REPLYTO,
-  OPT_ABORT,
   OPT_RECALL,
+#ifdef USE_SSL
+  OPT_SSLSTARTTLS,
+#endif
   OPT_SUBJECT,
-  OPT_MIMEFWDREST,
-  OPT_FORWEDIT,
-  OPT_MAX,
-  OPT_BOUNCE
+  OPT_VERIFYSIG,      /* verify PGP signatures */
+    
+  /* THIS MUST BE THE LAST VALUE. */
+  OPT_MAX
 };
 
 /* flags to ci_send_message() */

@@ -766,59 +766,51 @@ void mutt_expand_file_fmt (char *dest, size_t destlen, const char *fmt, const ch
 
 void mutt_expand_fmt (char *dest, size_t destlen, const char *fmt, const char *src)
 {
-  const char *p = fmt;
-  const char *last = p;
-  size_t len;
+  const char *p;
+  char *d;
   size_t slen;
   int found = 0;
 
   slen = mutt_strlen (src);
+  destlen--;
   
-  while ((p = strchr (p, '%')) != NULL)
+  for (p = fmt, d = dest; destlen && *p; p++)
   {
-    if (p[1] == 's')
+    if (*p == '%') 
     {
-      found++;
-
-      len = (size_t) (p - last);
-      if (len)
+      switch (p[1])
       {
-	if (len > destlen - 1)
-	  len = destlen - 1;
-
-	memcpy (dest, last, len);
-	dest += len;
-	destlen -= len;
-
-	if (destlen <= 0)
-	{
-	  *dest = 0;
-	  break; /* no more space */
-	}
+	case '%':
+	  *d++ = *p++;
+	  destlen--;
+	  break;
+	case 's':
+	  found = 1;
+	  strfcpy (d, src, destlen + 1);
+	  d       += destlen > slen ? slen : destlen;
+	  destlen -= destlen > slen ? slen : destlen;
+	  p++;
+	  break;
+	default:
+	  *d++ = *p; 
+	  destlen--;
+	  break;
       }
-
-      strfcpy (dest, src, destlen);
-      if (slen > destlen)
-      {
-	/* no more room */
-	break;
-      }
-      dest += slen;
-      destlen -= slen;
-
-      p += 2;
-      last = p;
     }
-    else if (p[1] == '%')
-      p++;
-
-    p++;
+    else
+    {
+      *d++ = *p;
+      destlen--;
+    }
   }
-
-  if (found)
-    strfcpy (dest, last, destlen);
-  else
-    snprintf (dest, destlen, "%s %s", fmt, src);
+  
+  *d = '\0';
+  
+  if (!found && destlen > 0)
+  {
+    strncat (dest, " ", destlen);
+    strncat (dest, src, destlen-1);
+  }
   
 }
 
