@@ -310,7 +310,9 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
   IMAP_DATA* idata;
   ACCOUNT* creds;
 
-  conn = mutt_conn_find (NULL, account);
+  if (!(conn = mutt_conn_find (NULL, account)))
+    return NULL;
+
   /* if opening a new UNSELECTED connection, preserve existing creds */
   creds = &(conn->account);
 
@@ -318,10 +320,10 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
   if (flags & M_IMAP_CONN_NOSELECT)
     while (conn->data && ((IMAP_DATA*) conn->data)->state == IMAP_SELECTED)
     {
-      conn = mutt_conn_find (conn, account);
+      if (!(conn = mutt_conn_find (conn, account)))
+	return NULL;
       memcpy (&(conn->account), creds, sizeof (ACCOUNT));
     }
-  
   
   idata = (IMAP_DATA*) conn->data;
 
@@ -1272,7 +1274,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
 
   /* reformat path for IMAP list, and append wildcard */
   /* don't use INBOX in place of "" */
-  if (mx.mbox[0])
+  if (mx.mbox && mx.mbox[0])
     imap_fix_path (idata, mx.mbox, list, sizeof(list));
   else
     list[0] = '\0';
@@ -1284,7 +1286,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
   imap_cmd_start (idata, buf);
 
   /* and see what the results are */
-  strfcpy (completion, mx.mbox, sizeof(completion));
+  strfcpy (completion, NONULL(mx.mbox), sizeof(completion));
   do
   {
     if (imap_parse_list_response(idata, &list_word, &noselect, &noinferiors,

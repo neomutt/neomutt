@@ -1,25 +1,13 @@
 #ifndef _URL_H
 # define _URL_H
 
-# include "config.h"
-
 typedef enum url_scheme
 {
   U_FILE,
-# ifdef USE_POP
   U_POP,
-# endif
-# ifdef USE_IMAP
-  U_IMAP,
-# endif
-# ifdef USE_SSL
-#  ifdef USE_IMAP
-  U_IMAPS,
-#  endif
-#  ifdef USE_POP
   U_POPS,
-#  endif
-# endif
+  U_IMAP,
+  U_IMAPS,
   U_MAILTO,
   U_UNKNOWN
 }

@@ -191,11 +191,19 @@ CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account)
   conn->next = Connections;
   Connections = conn;
 
-#ifdef USE_SSL
   if (account->flags & M_ACCT_SSL) 
+  {
+#ifdef USE_SSL
     ssl_socket_setup (conn);
-  else
+#else
+    mutt_error _("SSL is unavailable.");
+    sleep (2);
+    FREE (&conn);
+
+    return NULL;
 #endif
+  }
+  else
   {
     conn->read = raw_socket_read;
     conn->write = raw_socket_write;

@@ -22,6 +22,7 @@
 
 #include "mutt.h"
 #include "mx.h"	/* for M_IMAP */
+#include "url.h"
 #include "imap_private.h"
 #include "imap_ssl.h"
 
@@ -132,62 +133,90 @@ char *imap_next_word (char *s)
 int imap_parse_path (const char* path, IMAP_MBOX* mx)
 {
   char tmp[128];
+  url_scheme_t scheme;
+  ciss_url_t url;
   char *c;
   int n;
-  
-  if (sscanf (path, "{%128[^}]}", tmp) != 1) 
-    return -1;
 
-  mx->account.type = M_ACCT_TYPE_IMAP;
-
-  c = strchr (path, '}');
-  if (!c)
-    return -1;
-  else
-    /* walk past closing '}' */
-    mx->mbox = safe_strdup (c+1);
-  
   /* Defaults */
   mx->account.flags = 0;
   mx->account.port = IMAP_PORT;
-
-  if ((c = strrchr (tmp, '@')))
-  {
-    *c = '\0';
-    strfcpy (mx->account.user, tmp, sizeof (mx->account.user));
-    strfcpy (tmp, c+1, sizeof (tmp));
-    mx->account.flags |= M_ACCT_USER;
-  }
-  
-  if ((n = sscanf (tmp, "%128[^:/]%128s", mx->account.host, tmp)) < 1)
-  {
-    dprint (1, (debugfile, "imap_parse_path: NULL host in %s\n", path));
-    FREE (&mx->mbox);
-    return -1;
-  }
-  
-  if (n > 1) {
-    if (sscanf (tmp, ":%hd%128s", &(mx->account.port), tmp) >= 1)
-      mx->account.flags |= M_ACCT_PORT;
-    if (sscanf (tmp, "/%s", tmp) == 1)
-    {
-#ifdef USE_SSL
-      if (!strncmp (tmp, "ssl", 3))
-	imap_set_ssl (&(mx->account));
-      else
-#endif
-      {
-	dprint (1, (debugfile, "imap_parse_path: Unknown connection type in %s\n", path));
-	FREE (&mx->mbox);
-	return -1;
-      }
-    }
-  }
+  mx->account.type = M_ACCT_TYPE_IMAP;
 
 #ifdef USE_SSL
   if (option (OPTIMAPFORCESSL))
-    imap_set_ssl (&(mx->account));
+    mx->account.flags |= M_ACCT_SSL;
 #endif
+
+  scheme = url_check_scheme (NONULL (path));
+  if (scheme == U_IMAP || scheme == U_IMAPS)
+  {
+    if (url_parse_ciss (&url, path) < 0)
+      return -1;
+
+    n = mutt_account_fromurl (&mx->account, &url);
+    FREE (&url.user);
+    FREE (&url.pass);
+    FREE (&url.host);
+
+    if (n < 0)
+    {
+      FREE (&url.path);
+      return -1;
+    }
+      
+    mx->mbox = url.path;
+
+    if (scheme == U_IMAPS)
+      mx->account.flags |= M_ACCT_SSL;
+  }
+  /* old PINE-compatibility code */
+  else
+  {
+    if (sscanf (path, "{%128[^}]}", tmp) != 1) 
+      return -1;
+
+    c = strchr (path, '}');
+    if (!c)
+      return -1;
+    else
+      /* walk past closing '}' */
+      mx->mbox = safe_strdup (c+1);
+  
+    if ((c = strrchr (tmp, '@')))
+    {
+      *c = '\0';
+      strfcpy (mx->account.user, tmp, sizeof (mx->account.user));
+      strfcpy (tmp, c+1, sizeof (tmp));
+      mx->account.flags |= M_ACCT_USER;
+    }
+  
+    if ((n = sscanf (tmp, "%128[^:/]%128s", mx->account.host, tmp)) < 1)
+    {
+      dprint (1, (debugfile, "imap_parse_path: NULL host in %s\n", path));
+      FREE (&mx->mbox);
+      return -1;
+    }
+  
+    if (n > 1) {
+      if (sscanf (tmp, ":%hd%128s", &(mx->account.port), tmp) >= 1)
+	mx->account.flags |= M_ACCT_PORT;
+      if (sscanf (tmp, "/%s", tmp) == 1)
+      {
+	if (!strncmp (tmp, "ssl", 3))
+	  mx->account.flags |= M_ACCT_SSL;
+	else
+	{
+	  dprint (1, (debugfile, "imap_parse_path: Unknown connection type in %s\n", path));
+	  FREE (&mx->mbox);
+	  return -1;
+	}
+      }
+    }
+  }
+  
+  if ((mx->account.flags & M_ACCT_SSL) && !(mx->account.flags & M_ACCT_PORT))
+    mx->account.port = IMAP_SSL_PORT;
 
   return 0;
 }

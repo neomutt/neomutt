@@ -25,6 +25,5 @@ extern char *SslCertFile;
 extern char *SslEntropyFile;
 
 extern int ssl_socket_setup (CONNECTION *conn);
-extern void imap_set_ssl (ACCOUNT* account);
 
 #endif /* _MUTT_SSL_H_ */

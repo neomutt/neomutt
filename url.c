@@ -31,20 +31,10 @@
 static struct mapping_t UrlMap[] =
 {
   { "file", 	U_FILE },
-#ifdef USE_IMAP
   { "imap", 	U_IMAP },
-#endif
-#ifdef USE_POP
-  { "pop",  	U_POP  },
-#endif
-#ifdef USE_SSL
-# ifdef USE_IMAP
   { "imaps", 	U_IMAPS },
-# endif
-# ifdef USE_POP
+  { "pop",  	U_POP  },
   { "pops", 	U_POPS  },
-# endif
-#endif
   { "mailto",	U_MAILTO },
   { NULL,	U_UNKNOWN}
 };
@@ -53,6 +43,10 @@ static struct mapping_t UrlMap[] =
 static void url_pct_decode (char *s)
 {
   char *d;
+
+  if (!s)
+    return;
+  
   for (d = s; *s; s++)
   {
     if (*s == '%' && s[1] && s[2] &&
@@ -106,12 +100,17 @@ static char *ciss_parse_userhost (ciss_url_t *ciss, char *src)
   char *t;
   char *p;
   char *path;
-  
+
+  ciss->user = NULL;
+  ciss->pass = NULL;
+  ciss->host = NULL;
+  ciss->port = 0;
+
   if (strncmp (src, "//", 2))
     return src;
   
   src += 2;
-  
+
   if ((path = strchr (src, '/')))
     *path++ = '\0';
   
@@ -122,8 +121,10 @@ static char *ciss_parse_userhost (ciss_url_t *ciss, char *src)
     {
       *p = '\0';
       ciss->pass = safe_strdup (p + 1);
+      url_pct_decode (ciss->pass);
     }
     ciss->user = safe_strdup (src);
+    url_pct_decode (ciss->user);
     t++;
   }
   else
@@ -138,12 +139,13 @@ static char *ciss_parse_userhost (ciss_url_t *ciss, char *src)
     ciss->port = 0;
   
   ciss->host = safe_strdup (t);
+  url_pct_decode (ciss->host);
   return path;
 }
 
 static void ciss_parse_path (ciss_url_t *ciss, char *src)
 {
-  ciss->path = src;
+  ciss->path = safe_strdup (src);
   url_pct_decode (ciss->path);
 }
 

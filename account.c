@@ -18,8 +18,9 @@
 
 /* remote host account manipulation (POP/IMAP) */
 
-#include "account.h"
 #include "mutt.h"
+#include "account.h"
+#include "url.h"
 
 /* mutt_account_match: compare account info (host/port/user) */
 int mutt_account_match (const ACCOUNT* a1, const ACCOUNT* a2)
@@ -51,6 +52,34 @@ int mutt_account_match (const ACCOUNT* a1, const ACCOUNT* a2)
     return (!strcmp (a2->user, user));
 
   return 1;
+}
+
+/* mutt_account_fromurl: fill account with information from url. */
+int mutt_account_fromurl (ACCOUNT* account, ciss_url_t* url)
+{
+  /* must be present */
+  if (url->host)
+    strfcpy (account->host, url->host, sizeof (account->host));
+  else
+    return -1;
+
+  if (url->user)
+  {
+    strfcpy (account->user, url->user, sizeof (account->user));
+    account->flags |= M_ACCT_USER;
+  }
+  if (url->pass)
+  {
+    strfcpy (account->pass, url->pass, sizeof (account->pass));
+    account->flags |= M_ACCT_PASS;
+  }
+  if (url->port)
+  {
+    account->port = url->port;
+    account->flags |= M_ACCT_PORT;
+  }
+
+  return 0;
 }
 
 /* mutt_account_getuser: retrieve username into ACCOUNT, if neccessary */

@@ -21,6 +21,8 @@
 #ifndef _MUTT_ACCOUNT_H_
 #define _MUTT_ACCOUNT_H_ 1
 
+#include "url.h"
+
 /* account types */
 enum
 {
@@ -46,6 +48,7 @@ typedef struct
 } ACCOUNT;
 
 int mutt_account_match (const ACCOUNT* a1, const ACCOUNT* m2);
+int mutt_account_fromurl (ACCOUNT* account, ciss_url_t* url);
 int mutt_account_getuser (ACCOUNT* account);
 int mutt_account_getpass (ACCOUNT* account);
 

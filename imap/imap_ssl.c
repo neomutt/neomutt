@@ -144,13 +144,6 @@ static int add_entropy (const char *file)
   return n;
 }
 
-void imap_set_ssl (ACCOUNT* account)
-{
-  if (! (account->flags & M_ACCT_PORT))
-    account->port = IMAP_SSL_PORT;
-  account->flags |= M_ACCT_SSL;
-}
-
 static int ssl_socket_open_err (CONNECTION *conn)
 {
   mutt_error (_("SSL disabled due the lack of entropy"));

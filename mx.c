@@ -24,7 +24,7 @@
 #include "mailbox.h"
 #include "copy.h"
 #include "keymap.h"
-
+#include "url.h"
 
 #ifdef HAVE_PGP
 #include "pgp.h"
@@ -313,7 +313,19 @@ void mx_unlink_empty (const char *path)
 
 int mx_is_imap(const char *p)
 {
-  return p && (*p == '{');
+  url_scheme_t scheme;
+
+  if (!p)
+    return 0;
+
+  if (*p == '{')
+    return 1;
+
+  scheme = url_check_scheme (p);
+  if (scheme == U_IMAP || scheme == U_IMAPS)
+    return 1;
+
+  return 0;
 }
 
 #endif

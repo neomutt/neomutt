@@ -144,6 +144,7 @@ folder_format_str (char *dest, size_t destlen, char op, const char *src,
   FOLDER *folder = (FOLDER *) data;
   struct passwd *pw;
   struct group *gr;
+  int optional = (flags & M_FORMAT_OPTIONAL);
 
   switch (op)
   {
@@ -257,8 +258,13 @@ folder_format_str (char *dest, size_t destlen, char op, const char *src,
 #ifdef USE_IMAP
       if (mx_is_imap (folder->ff->desc))
       {
-	snprintf (tmp, sizeof (tmp), "%%%sd", fmt);
-	snprintf (dest, destlen, tmp, folder->ff->new);
+	if (!optional)
+	{
+	  snprintf (tmp, sizeof (tmp), "%%%sd", fmt);
+	  snprintf (dest, destlen, tmp, folder->ff->new);
+	}
+	else if (!folder->ff->new)
+	  optional = 0;
 	break;
       }
 #endif
@@ -310,6 +316,12 @@ folder_format_str (char *dest, size_t destlen, char op, const char *src,
       snprintf (dest, destlen, tmp, op);
       break;
   }
+
+  if (optional)
+    mutt_FormatString (dest, destlen, ifstring, folder_format_str, data, 0);
+  else if (flags & M_FORMAT_OPTIONAL)
+    mutt_FormatString (dest, destlen, elsestring, folder_format_str, data, 0);
+
   return (src);
 }
 
