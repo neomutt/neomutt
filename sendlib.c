@@ -674,7 +674,7 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
   CONTENT_STATE *states;
   size_t *score;
 
-  cd1 = iconv_open ("UTF-8", fromcode);
+  cd1 = mutt_iconv_open ("UTF-8", fromcode);
   if (cd1 == (iconv_t)(-1))
     return -1;
 
@@ -688,7 +688,7 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
   memset (infos, 0, ncodes * sizeof (CONTENT));
   for (i = 0; i < ncodes; i++)
     if (strcasecmp (tocodes[i], "UTF-8"))
-      cd[i] = iconv_open (tocodes[i], "UTF-8");
+      cd[i] = mutt_iconv_open (tocodes[i], "UTF-8");
     else
       /* Special case for conversion to UTF-8 */
       cd[i] = (iconv_t)(-1), score[i] = (size_t)(-1);
