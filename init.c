@@ -1152,6 +1152,10 @@ finish:
   return (r);
 }
 
+char CycleStart[STRING] = { 0 };
+char CycleLast[STRING] = { 0 };
+int CycleNum = 1;
+
 /* helper function for completion.  Changes the dest buffer if
    necessary/possible to aid completion.
 	dest == completion result gets here.
@@ -1159,58 +1163,51 @@ finish:
 	try == user entered data for completion.
 	len == length of dest buffer.
 */
-static void candidate (char *dest, char *try, char *src, int len)
+static int candidate (char *dest, char *try, char *src, int len, int *cycle)
 {
-  int l;
-
   if (strstr (src, try) == src)
   {
-    if (dest[0] == 0)
-    {
-      strncpy (dest, src, len);
-      strncat (dest, " ", len);
-    }
-    else
-    {
-      for (l = 0; src[l] && src[l] == dest[l]; l++);
-	dest[l] = 0;
-    }
+    strncpy (dest, src, len);
+    (*cycle)--;
+    if (*cycle == 0)
+      return 1;
   }
+  return 0;
 }
 
 int mutt_command_complete (char *buffer, size_t len, int pos)
 {
-  char cmd[STRING];
   char completed[STRING] = { 0 };
   char *pt;
-  int num;
+  int num, cycle = CycleNum;
   
   if (buffer[0] == 0)
     return 0;
-  SKIPWS (buffer);
-  strncpy (cmd, buffer, pos);
-  pt = cmd;
-  pt[pos] = 0;
-  while (!isspace ((unsigned char) *pt))
-    pt++;
-  *pt = 0;
-
+  if (strncmp (buffer, CycleLast, len))
+  {
+    CycleStart[0] = 0;
+    cycle = CycleNum = 1;
+  }
   pt = buffer + pos;
   while ((pt > buffer) && !isspace ((unsigned char) *pt))
     pt--;
   if (pt == buffer) /* complete cmd */
   {
+    if (CycleStart[0] == 0)
+      strncpy (CycleStart, pt, sizeof (CycleStart));
     for (num = 0; Commands[num].name; num++)
-      candidate (completed, cmd, Commands[num].name, sizeof (completed));
-
+    {
+      if (candidate (completed, CycleStart, Commands[num].name, sizeof (completed), &cycle))
+	break;
+    }
     if (completed[0] == 0)
       return 0;
     strncpy (buffer, completed, len);
   }
-  else if (!strcmp (cmd, "set")
-	   || !strcmp (cmd, "unset")
-	   || !strcmp (cmd, "reset")
-	   || !strcmp (cmd, "toggle"))
+  else if (!strncmp (buffer, "set", 3)
+	   || !strncmp (buffer, "unset", 5)
+	   || !strncmp (buffer, "reset", 5)
+	   || !strncmp (buffer, "toggle", 6))
   { 		/* complete variables */
     char *prefixes[] = { "no", "inv", "?", "&", 0 };
     int  prefix_index;
@@ -1219,14 +1216,19 @@ int mutt_command_complete (char *buffer, size_t len, int pos)
 
     /* remember if the command is set to decide whether we want to attempt the
      * prefixes */
-    int  cmd_is_set = !strcmp (cmd, "set"); 
+    int  cmd_is_set = !strncmp (buffer, "set", 3); 
     
     pt++;
     if (*pt == 0)
       return 0;
-    strncpy (cmd, pt, sizeof (cmd));
+    if (CycleStart[0] == 0)
+      strncpy (CycleStart, pt, sizeof (CycleStart));
+    
     for (num = 0; MuttVars[num].option; num++)
-      candidate (completed, cmd, MuttVars[num].option, sizeof (completed));
+    {
+      if (candidate (completed, CycleStart, MuttVars[num].option, sizeof (completed), &cycle))
+	break;
+    }
   
     if ( cmd_is_set ) {
       /* loop through all the possible prefixes (no, inv, ...) */
@@ -1236,14 +1238,15 @@ int mutt_command_complete (char *buffer, size_t len, int pos)
         strncpy( tmpbuffer, prefixes[prefix_index], sizeof(tmpbuffer) );
   
         /* if the current option is prepended with the prefix */
-        if ( !strncasecmp(cmd, tmpbuffer, prefix_len )) {
+        if ( !strncmp(pt, tmpbuffer, prefix_len )) {
           for (num = 0; MuttVars[num].option; num++) {
             strncpy( &tmpbuffer[prefix_len], 
                      MuttVars[num].option, 
                      sizeof(tmpbuffer) - prefix_len );
-            candidate (completed, cmd, tmpbuffer, sizeof (completed));
-          }
-        }
+	    if (candidate (completed, CycleStart, tmpbuffer, sizeof (completed), &cycle))
+	      break;
+	  }
+	}
       }
     }
 
@@ -1253,23 +1256,21 @@ int mutt_command_complete (char *buffer, size_t len, int pos)
   }
   else
     return 0;
+  strncpy (CycleLast, buffer, sizeof (CycleLast));
+  if (cycle)
+    CycleNum = 1;
+  else
+    CycleNum++;
   return 1;
 }
 
 int mutt_string_var_complete (char *buffer, size_t len, int pos)
 {
-  char cmd[STRING], *pt;
+  char var[STRING], *pt;
   int i;
   
   if (buffer[0] == 0)
     return 0;
-  SKIPWS (buffer);
-  strncpy (cmd, buffer, pos);
-  pt = cmd;
-  pt[pos] = 0;
-  while (!isspace ((unsigned char) *pt))
-    pt++;
-  *pt = 0;
 
   pt = buffer + pos;
   while ((pt > buffer) && !isspace ((unsigned char) *pt))
@@ -1278,18 +1279,42 @@ int mutt_string_var_complete (char *buffer, size_t len, int pos)
   if (*pt == '=') /* abort if no var before the '=' */
     return 0;
 
-  if (strcmp (cmd, "set") == 0)
+  if (strncmp (buffer, "set", 3) == 0)
   {
+    strncpy (var, pt, sizeof (var));
+    var[strlen (var) - 1] = 0;
     for (i = 0; MuttVars[i].option; i++)
-      if (DTYPE(MuttVars[i].type) == DT_STR && 
-	  /* ignore the trailing '=' when comparing */
-	  strncmp (MuttVars[i].option, pt, strlen (pt) - 1) == 0)
+    {
+      /* ignore the trailing '=' when comparing */
+      if (strcmp (MuttVars[i].option, var) == 0)
       {
-	char tmp [LONG_STRING];
-	strcpy (tmp, pt);
-	snprintf (pt, len, "%s\"%s\"",tmp, NONULL (*((char **) MuttVars[i].data)));
+	size_t dlen = buffer + len - pt;
+	
+	if ((DTYPE(MuttVars[i].type) == DT_STR) || 
+	    (DTYPE(MuttVars[i].type) == DT_PATH) ||
+	    (DTYPE(MuttVars[i].type) == DT_RX))
+	{
+	  strncat (pt, "\"", dlen);
+	  strncat (pt, NONULL (*((char **) MuttVars[i].data)), dlen);
+	  strncat (pt, "\"", dlen);
+	}
+	else if (DTYPE (MuttVars[i].type) == DT_QUAD)
+	{
+	  char *vals[] = { "no", "yes", "ask-no", "ask-yes" };
+
+	  strncat (pt, vals[quadoption (MuttVars[i].data)], dlen);
+	}
+	else if (DTYPE (MuttVars[i].type) == DT_NUM)
+	{
+	  char number[SHORT_STRING];
+	  short *ptr = (short *) MuttVars[i].data;
+	  
+	  snprintf (number, sizeof (number), "%d", *ptr);
+	  strncat (pt, number, dlen);
+	}
 	return 1;
       }
+    }
   }
   return 0;
 }
