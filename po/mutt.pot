@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-15 03:32+0200\n"
+"POT-Creation-Date: 1998-10-15 18:17+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -228,7 +228,7 @@ msgstr ""
 msgid "%s: no such attribute"
 msgstr ""
 
-#: color.c:663 hook.c:62 hook.c:70 keymap.c:650
+#: color.c:663 hook.c:62 hook.c:70 keymap.c:663
 msgid "too few arguments"
 msgstr ""
 
@@ -1074,54 +1074,54 @@ msgstr ""
 msgid "unable to determine username"
 msgstr ""
 
-#: keymap.c:414
+#: keymap.c:416
 msgid "Macro loop detected."
 msgstr ""
 
-#: keymap.c:600
+#: keymap.c:602 keymap.c:610
+msgid "Key is not bound."
+msgstr ""
+
+#: keymap.c:614
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr ""
 
-#: keymap.c:602
-msgid "Key is not bound.  See the manual."
-msgstr ""
-
-#: keymap.c:612
+#: keymap.c:625
 msgid "push: too many arguments"
 msgstr ""
 
-#: keymap.c:633
+#: keymap.c:646
 #, c-format
 msgid "%s: no such menu"
 msgstr ""
 
-#: keymap.c:642
+#: keymap.c:655
 msgid "null key sequence"
 msgstr ""
 
-#: keymap.c:720
+#: keymap.c:733
 msgid "bind: too many arguments"
 msgstr ""
 
-#: keymap.c:735
+#: keymap.c:748
 #, c-format
 msgid "%s: no such function in map"
 msgstr ""
 
-#: keymap.c:758
+#: keymap.c:771
 msgid "macro: empty key sequence"
 msgstr ""
 
-#: keymap.c:769
+#: keymap.c:782
 msgid "macro: too many arguments"
 msgstr ""
 
-#: keymap.c:799
+#: keymap.c:812
 msgid "exec: too few arguments"
 msgstr ""
 
-#: keymap.c:819
+#: keymap.c:832
 #, c-format
 msgid "%s: no such command"
 msgstr ""
