@@ -84,9 +84,10 @@ int rfc1524_expand_command (BODY *a, char *filename, char *type,
       else if (command[x] == 's' && filename != NULL)
       {
 	char *fn = mutt_quote_filename(filename);
-
-	while (*fn && y < sizeof (buf))
-	  buf[y++] = *fn++;
+	int i;
+	
+	for(i = 0; fn[i] && y < sizeof(buf); i++)
+	  buf[y++] = fn[i];
 	
 	FREE(&fn);
 	needspipe = FALSE;
