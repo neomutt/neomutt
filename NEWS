@@ -150,3 +150,10 @@ Other changes
 
 - mailto URL support:  You can pass a mailto URL to mutt on the
   command line.
+
+- If $duplicate_threads is set, mutt's new threading code will
+  thread messages with the same message-id together.  Duplication
+  will be indicated with an equals sign in the thread diagram.
+
+  You can also limit your view to the duplicates (or exclude
+  duplicates from view) by using the "~=" pattern.
