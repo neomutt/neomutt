@@ -230,6 +230,7 @@ int pop_connect (POP_DATA *pop_data)
 int pop_open_connection (POP_DATA *pop_data)
 {
   int ret;
+  unsigned int n, size;
   char buf[LONG_STRING];
 
   ret = pop_connect (pop_data);
@@ -268,7 +269,8 @@ int pop_open_connection (POP_DATA *pop_data)
     return ret;
   }
 
-  sscanf (buf, "+OK %d %d", &ret, &pop_data->size);
+  sscanf (buf, "+OK %u %u", &n, &size);
+  pop_data->size = size;
   return 0;
 
 err_conn:
@@ -418,10 +420,11 @@ int pop_fetch_data (POP_DATA *pop_data, char *query, char *msg,
 /* find message with this UIDL and set refno */
 static int check_uidl (char *line, void *data)
 {
-  int i, index;
+  int i;
+  unsigned int index;
   CONTEXT *ctx = (CONTEXT *)data;
 
-  sscanf (line, "%d %s", &index, line);
+  sscanf (line, "%u %s", &index, line);
   for (i = 0; i < ctx->msgcount; i++)
   {
     if (!mutt_strcmp (ctx->hdrs[i]->data, line))
