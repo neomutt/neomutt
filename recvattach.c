@@ -910,26 +910,19 @@ void mutt_view_attachments (HEADER *hdr)
         menu->redraw = REDRAW_FULL;
         if (op != OP_ATTACH_COLLAPSE)
           break;
+        if (!idx[menu->current]->content->collapsed)
+	  break;
         /* else fall through - hack! */
       case OP_ATTACH_COLLAPSE:
+        if (!idx[menu->current]->content->parts)
+        {
+	  mutt_error _("There are no subparts to show!");
+	  break;
+	}
         if (!idx[menu->current]->content->collapsed)
-        {
-	  if (!idx[menu->current]->content->parts)
-	  {
-	    mutt_error _("There are no subparts to hide!");
-	    break;
-	  }
 	  attach_collapse (idx[menu->current]->content, 1, 0, 1);
-	}
         else
-        {
-	  if (!idx[menu->current]->content->parts)
-	  {
-	    mutt_error _("There are no subparts to show!");
-	    break;
-	  }
 	  attach_collapse (idx[menu->current]->content, 0, 1, 1);
-	}
         mutt_update_attach_index (cur, &idx, &idxlen, &idxmax, menu);
         break;
       
