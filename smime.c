@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2001 Oliver Ehli <elmy@acm.org>
+ * Copyright (C) 2002 Mike Schiraldi <raldi@research.netsol.com>
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -379,7 +380,11 @@ char* smime_ask_for_key (char *prompt, char *mailbox, short public)
     public ? NONULL(SmimeCertificates) : NONULL(SmimeKeys));
   
   index = fopen(index_file, "r");
-  if (index == NULL) return NULL;
+  if (index == NULL) 
+  {
+    mutt_perror (index_file);      
+    return NULL;
+  }
   /* Count Lines */
   cert_num = 0;
   while (!feof(index)) {
@@ -393,12 +398,16 @@ char* smime_ask_for_key (char *prompt, char *mailbox, short public)
     if (mutt_get_field(prompt,
       qry, sizeof(qry), 0))
       return NULL;
-    snprintf(title, sizeof(title), "S/MIME certificates matching \"%s\".",
+    snprintf(title, sizeof(title), _("S/MIME certificates matching \"%s\"."),
       qry);
 
     
     index = fopen(index_file, "r");
-    if (!index) return NULL; /* should never happen */
+    if (index == NULL) 
+    {
+      mutt_perror (index_file);      
+      return NULL;
+    }
     /* Read Entries */
     cur = 0;
     Table = safe_malloc(sizeof (smime_id) * cert_num);
@@ -670,7 +679,7 @@ void _smime_getkeys (char *mailbox)
 
   if (!k)
   {
-    snprintf(buf, sizeof(buf), "Enter keyID for \'%s\': ",
+    snprintf(buf, sizeof(buf), _("Enter keyID for \'%s\': "),
 	     mailbox);
     k = smime_ask_for_key(buf, mailbox, 0);
   }
@@ -699,8 +708,8 @@ void _smime_getkeys (char *mailbox)
     {
       endwin ();
       mutt_clear_error ();
-      snprintf (buf, sizeof (buf), "This message seems to require key"
-		" \'%s\'. (Any key to continue)", k);
+      snprintf (buf, sizeof (buf), _("This message seems to require key"
+                                     " \'%s\'. (Any key to continue)"), k);
       mutt_any_key_to_continue (buf);
       endwin ();
       smime_void_passphrase ();
@@ -872,7 +881,7 @@ static int smime_check_cert_email (char *certificate, char *mailbox)
     fclose (fpout);
     fclose (fperr);
     mutt_endwin(NULL);
-    printf ("Alert: No mailbox specified in certificate.\n");
+    mutt_error (_("Alert: No mailbox specified in certificate.\n"));
     return 1;
   }
   *(email+mutt_strlen(email)-1) = '\0';
@@ -881,8 +890,8 @@ static int smime_check_cert_email (char *certificate, char *mailbox)
   if(mutt_strncasecmp (email, mailbox, mutt_strlen (mailbox)))
   {
     mutt_endwin(NULL);
-    printf ("Alert: Certificate belongs to \"%s\".\n"
-	    "       But sender was \"%s\".\n", email, mailbox);
+    mutt_error (_("Alert: Certificate belongs to \"%s\".\n"
+                  "       But sender was \"%s\".\n"), email, mailbox);
     ret = 1;
   }
 
@@ -1188,7 +1197,7 @@ static void smime_add_certificate (char *certificate, char *mailbox, short publi
   }
     
   /* append to index. */
-  snprintf (tmpfname, sizeof (tmpfname), _("%s/.index"),
+  snprintf (tmpfname, sizeof (tmpfname), "%s/.index",
 	    (public ? NONULL(SmimeCertificates) : NONULL(SmimeKeys)));
   
   if (!stat (tmpfname, &info))
@@ -1203,7 +1212,7 @@ static void smime_add_certificate (char *certificate, char *mailbox, short publi
        ? = unknown issuer, - = unassigned label,
        u = undefined trust settings.
     */
-    snprintf (buf, sizeof (buf), _("%s %s.%d - ? u\n"), mailbox, hashval, i);
+    snprintf (buf, sizeof (buf), "%s %s.%d - ? u\n", mailbox, hashval, i);
     fputs (buf, fpout);
     fclose (fpout);
     
@@ -1296,10 +1305,10 @@ int smime_verify_sender(HEADER *h)
       safe_free((void **)&certfile);
     }
   else 
-	mutt_any_key_to_continue("no certfile");
+	mutt_any_key_to_continue(_("no certfile"));
   }
   else 
-	mutt_any_key_to_continue("no mbox");
+	mutt_any_key_to_continue(_("no mbox"));
 
   mutt_unlink(tempfname);
   return retval;
@@ -1442,7 +1451,7 @@ BODY *smime_build_smime_entity (BODY *a, char *certlist)
   if (empty)
   {
     /* fatal error while trying to encrypt message */
-    if (!err) mutt_any_key_to_continue _("No outbut from OpenSSL..");
+    if (!err) mutt_any_key_to_continue _("No output from OpenSSL..");
     mutt_unlink (tempfile);
     return (NULL);
   }
@@ -1851,7 +1860,7 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
   {
     if (type & ENCRYPT)
       state_attach_puts (_("\n[-- The following data is S/MIME"
-		    " encrypted --]\n"), s);
+                           " encrypted --]\n"), s);
     else
       state_attach_puts (_("\n[-- The following data is S/MIME signed --]\n"), s);
   }  
