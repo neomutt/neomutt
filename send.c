@@ -337,7 +337,8 @@ static int include_forward (CONTEXT *ctx, HEADER *cur, FILE *out)
   if (option (OPTFORWDECODE))
   {
     cmflags |= M_CM_DECODE;
-    chflags |= CH_WEED;
+    if (option (OPTFORWWEEDHEADER))
+      chflags |= CH_WEED;
   }
   if (option (OPTFORWQUOTE))
     cmflags |= M_CM_PREFIX;

@@ -2838,6 +2838,14 @@ When <em/set/ forwarded messages included in the main body of the message
 (when <ref id="mime_forward" name="mime&lowbar;forward"> is <em/unset/) will be
 quoted using <ref id="indent_string" name="indent&lowbar;string">.
 
+<sect2>forward&lowbar;weed<label id="forward_weed">
+<p>
+Type: boolean<newline>
+Default: set
+
+When <em/set/, message headers will be weeded when forwarding a
+decoded version of the message.
+
 <sect2>hdrs<label id="hdrs">
 <p>
 Type: boolean<newline>

@@ -111,6 +111,8 @@ struct option_t MuttVars[] = {
   { "force_name",	DT_BOOL, R_NONE, OPTFORCENAME, 0 },
   { "forward_decode",	DT_BOOL, R_NONE, OPTFORWDECODE, 1 },
   { "forw_decode",	DT_SYN,  R_NONE, UL "forward_decode", 0 },
+  { "forward_weed",	DT_BOOL, R_NONE, OPTFORWWEEDHEADER, 1 },
+  { "forw_weed",	DT_SYN,  R_NONE, UL "forward_weed", 0 }, 
   { "forward_format",	DT_STR,	 R_NONE, UL &ForwFmt, UL "[%a: %s]" },
   { "forw_format",	DT_SYN,  R_NONE, UL "forward_format", 0 },
   { "forward_quote",	DT_BOOL, R_NONE, OPTFORWQUOTE, 0 },
