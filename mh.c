@@ -1196,7 +1196,7 @@ int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
   return 0;
 }
 
-static char *maildir_canon_filename(char *dest, char *src, size_t l)
+static char *maildir_canon_filename (char *dest, const char *src, size_t l)
 {
   char *t, *u;
   
@@ -1442,4 +1442,68 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
   maildir_move_to_context(ctx, &md);
 
   return (modified || occult) ? M_REOPENED : have_new ? M_NEW_MAIL : 0;
+}
+
+
+
+
+/*
+ * These functions try to find a message in a maildir folder when it
+ * has moved under our feet.  Note that this code is rather expensive, but
+ * then again, it's called rarely.
+ */
+
+FILE *_maildir_open_find_message (const char *folder, const char *unique,
+				  const char *subfolder)
+{
+  char dir[_POSIX_PATH_MAX];
+  char tunique[_POSIX_PATH_MAX];
+  char fname[_POSIX_PATH_MAX];
+
+  DIR  *dp;
+  struct dirent *de;
+
+  FILE *fp = NULL;
+  int oe = ENOENT;
+
+  snprintf (dir, sizeof (dir), "%s/%s", folder, subfolder);
+  
+  if ((dp = opendir (dir)) == NULL)
+  {
+    errno = ENOENT;
+    return NULL;
+  }
+  
+  while ((de = readdir (dp)))
+  {
+    maildir_canon_filename (tunique, de->d_name, sizeof (tunique));
+    
+    if (!mutt_strcmp (tunique, unique))
+    {
+      snprintf (fname, sizeof (fname), "%s/%s/%s", folder, subfolder, de->d_name);
+      fp = fopen (fname, "r");	/* __FOPEN_CHECKED__ */
+      oe = errno;
+      break;
+    }
+  }
+  
+  closedir (dp);
+
+  errno = oe;
+  return fp;
+}
+
+FILE *maildir_open_find_message (const char *folder, const char *msg)
+{
+  char unique[_POSIX_PATH_MAX];
+  FILE *fp;
+
+  maildir_canon_filename (unique, msg, sizeof (unique));
+  
+  if ((fp = _maildir_open_find_message (folder, unique, "new")) || errno != ENOENT)
+    return fp;
+  if ((fp = _maildir_open_find_message (folder, unique, "cur")) || errno != ENOENT)
+    return fp;
+  
+  return NULL;  
 }

@@ -1386,7 +1386,12 @@ MESSAGE *mx_open_message (CONTEXT *ctx, int msgno)
       char path[_POSIX_PATH_MAX];
       
       snprintf (path, sizeof (path), "%s/%s", ctx->path, cur->path);
-      if ((msg->fp = fopen (path, "r")) == NULL)
+      
+      if ((msg->fp = fopen (path, "r")) == NULL && errno == ENOENT &&
+	  ctx->magic == M_MAILDIR)
+	msg->fp = maildir_open_find_message (ctx->path, cur->path);
+      
+      if (msg->fp == NULL)
       {
 	mutt_perror (path);
 	dprint (1, (debugfile, "mx_open_message: fopen: %s: %s (errno %d).\n",
