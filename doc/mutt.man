@@ -23,18 +23,26 @@
 mutt \- The Mutt Mail User Agent
 .SH SYNOPSIS
 .PP
+.B mutt
+[ -nRyzZ ] 
+[ -e \fIcmd\fP ] [ -F \fIfile\fP ] [ -m \fItype\fP ] [ -f \fIfile\fP ]
+.PP
 .B mutt 
-[-hnpRvxyzZ]
-[-a \fIfile\fP]
-[-b \fIaddress\fP]
-[-c \fIaddress\fP]
-[-e \fIcommand\fP]
-[-f \fImailbox\fP]
-[-F \fImuttrc\fP]
-[-H \fIdraftfile\fP]
-[-i \fIinclude\fP]
-[-m \fItype\fP]
-[-s \fIsubject\fP]
+[ -nx ] 
+[ -e \fIcmd\fP ] 
+[ -a \fIfile\fP ]
+[ -F \fIfile\fP ]
+[ -H \fIfile\fP ]
+[ -i \fIfile\fP ]
+[ -s \fIsubj\fP ]
+[ -b \fIaddr\fP ]
+[ -c \fIaddr\fP ] \fIaddr\fP [ ... ]
+.PP
+.B mutt
+[ -n ] [ -e \fIcmd\fP ] [ -F \fIfile\fP ] -p
+.PP
+.B mutt 
+-v[v]
 .SH DESCRIPTION
 .PP
 Mutt is a small but very powerful text based program for reading electronic
