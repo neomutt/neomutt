@@ -174,7 +174,7 @@ PreferredMIMENames[] =
   { "latin9",		"iso-8859-15"	}, /* this is not a bug */
 
   /* Suggested by Ionel Mugurel Ciobica <tgakic@sg10.chem.tue.nl> */
-  { "latin0"            "iso-8859-15"   }, /* this is not a bug */
+  { "latin0",           "iso-8859-15"   }, /* this is not a bug */
   
   { "iso_8859-16",      "iso-8859-16"   },
   { "latin10",          "iso-8859-16"   }, /* this is not a bug */
