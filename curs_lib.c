@@ -127,9 +127,12 @@ void mutt_edit_file (const char *editor, const char *data)
 int mutt_yesorno (const char *msg, int def)
 {
   int ch;
-
+  const char *yes = _("yes");
+  const char *no = _("no");
+  
   CLEARLINE(LINES-1);
-  printw("%s: [%c] ", msg, def ? 'y' : 'n');
+  printw("%s ([%c]/%c): ", msg, def ? *yes : *no,
+	 def ? *no : *yes);
   FOREVER
   {
     mutt_refresh ();
@@ -137,12 +140,12 @@ int mutt_yesorno (const char *msg, int def)
     if (ch == ERR) return(-1);
     if (CI_is_return (ch))
       break;
-    else if (ch == 'y')
+    else if (tolower(ch) == tolower(*yes))
     {
       def = 1;
       break;
     }
-    else if (ch == 'n')
+    else if (tolower(ch) == tolower(*no))
     {
       def = 0;
       break;
@@ -152,7 +155,7 @@ int mutt_yesorno (const char *msg, int def)
       BEEP();
     }
   }
-  addstr (def ? "Yes" : "No");
+  addstr (def ? yes : no);
   mutt_refresh ();
   return (def);
 }

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-01 12:10+0200\n"
+"POT-Creation-Date: 1998-10-01 16:56+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -489,20 +489,28 @@ msgstr ""
 msgid "Deleting non-multipart messages not yet supported"
 msgstr ""
 
+#: curs_lib.c:130
+msgid "yes"
+msgstr ""
+
+#: curs_lib.c:131
+msgid "no"
+msgstr ""
+
 #. restore blocking operation
-#: curs_lib.c:167
+#: curs_lib.c:170
 msgid "Exit Mutt?"
 msgstr ""
 
-#: curs_lib.c:242
+#: curs_lib.c:245
 msgid "unknown error"
 msgstr ""
 
-#: curs_lib.c:262
+#: curs_lib.c:265
 msgid "Press any key to continue..."
 msgstr ""
 
-#: curs_lib.c:300
+#: curs_lib.c:303
 msgid " ('?' for list): "
 msgstr ""
 
