@@ -1,3 +1,9 @@
+2003-01-09 17:27:25  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* pgppubring.c: Don't make a "hard" transition to the new GnuPG
+	syntax in pgpring.  This change undoes one of David Shaw's
+	changes which were just committed.
+
 2003-01-09 17:24:41  David Shaw  <dshaw@jabberwocky.com>  (roessler)
 
 	* gnupgparse.c, pgppubring.c: The latest GnuPG has new abilities
@@ -10,8 +16,6 @@
 	long time).
 
 	Here is a patch so mutt will accept either the old or new syntax.
-
-2003-01-09 17:23:23  David Shaw  <dshaw@jabberwocky.com>  (roessler)
 
 	* curs_lib.c: A recent change causes all mutt_yesorno prompts
 	to come out as [yes]/yes or [no]/no.  Here's a fix.
