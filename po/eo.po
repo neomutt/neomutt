@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1\n"
 "POT-Creation-Date: 2000-03-01 01:21+0100\n"
-"PO-Revision-Date: 2000-02-23 09:33+00:00\n"
+"PO-Revision-Date: 2000-03-01 17:10+00:00\n"
 "Last-Translator: Edmund GRIMLEY EVANS <edmundo@rano.org>\n"
 "Language-Team: eo <eo@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -236,9 +236,9 @@ msgid "Can't open %s: %s."
 msgstr "Ne povas malfermi %s: %s."
 
 #: charset.c:1148
-#, fuzzy, c-format
+#, c-format
 msgid "Error while recoding %s. Leave it unchanged."
-msgstr "Eraro dum rekodado de %s. Vidu %s por savi la datenojn."
+msgstr "Eraro dum rekodado de %s. Lasas øin senþanøe."
 
 #: charset.c:1154
 #, c-format
@@ -1138,7 +1138,7 @@ msgstr "CRAM-þlosilo por %s@%s: "
 
 #: imap/auth.c:328
 msgid "CRAM-MD5 authentication failed."
-msgstr "CRAM-MD4-rajtiøo malsukcesis."
+msgstr "CRAM-MD5-rajtiøo malsukcesis."
 
 #: imap/auth.c:343
 msgid "Skipping CRAM-MD5 authentication."
@@ -1160,9 +1160,8 @@ msgstr "Saluto malsukcesis."
 
 #. now begin login
 #: imap/auth_gss.c:74
-#, fuzzy
 msgid "Authenticating (GSSAPI)..."
-msgstr "Rajtiøas (CRAM-MD5) ..."
+msgstr "Rajtiøas (GSSAPI) ..."
 
 #: imap/browse.c:93
 msgid "Getting namespaces..."
@@ -2416,9 +2415,8 @@ msgid "No mailbox with new mail."
 msgstr "Mankas poþtfako kun nova poþto."
 
 #: main.c:660
-#, fuzzy
 msgid "No incoming mailboxes defined."
-msgstr "rondiri tra enir-poþtfakoj"
+msgstr "Neniu enir-poþtfako estas difinita."
 
 #: main.c:689
 msgid "Mailbox is empty."
