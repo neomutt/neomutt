@@ -849,7 +849,7 @@ static const char *get_text_charset (BODY *b, CONTENT *info)
       && info->hibin)
     return ("unknown-8bit");
 
-  if (info->hibin)
+  if (info->hibin || !strcasecmp (chsname, "utf-7"))
     return (chsname);
 
   return ("us-ascii");
