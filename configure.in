@@ -176,11 +176,11 @@ main ()
                         CPPFLAGS="$CPPFLAGS -I${mutt_cv_curses}/include"
                 fi])
 
-	for cf_ncurses in ncurses ncursesw unknown
+	cf_ncurses="ncurses"
+	for lib in ncurses ncursesw
 	do
-		AC_CHECK_LIB($cf_ncurses,waddnwstr,[break])
+		AC_CHECK_LIB($lib, waddnwstr, [cf_ncurses="$lib"; break])
 	done
-	if test "$cf_ncurses" = unknown; then cf_ncurses=ncurses; fi
         AC_CHECK_LIB($cf_ncurses, initscr,
                 [MUTTLIBS="$MUTTLIBS -l$cf_ncurses"
                 if test x$mutt_cv_curses = x/usr -a -d /usr/include/ncurses; then
@@ -404,115 +404,6 @@ fi
 
 AC_SUBST(DOTLOCK_TARGET)
 
-AC_ARG_WITH(iconv, [  --with-iconv=DIR           Where libiconv is installed ],
-       [mutt_cv_iconv=$withval
-       if test "$mutt_cv_iconv" != yes -a \
-                "$mutt_cv_iconv" != no -a \
-                "$mutt_cv_iconv" != /usr; then
-               CPPFLAGS="-I${mutt_cv_iconv}/include $CPPFLAGS"
-               LDFLAGS="-L${mutt_cv_iconv}/lib $LDFLAGS"
-       fi])
-
-LIBICONV=
-
-if test "$mutt_cv_iconv" != no; then
-
-AC_CACHE_CHECK(for iconv, mutt_cv_func_iconv,
-    [ mutt_cv_func_iconv=no
-      mutt_cv_lib_iconv=no
-      AC_TRY_LINK([#include <stdlib.h>
-#include <iconv.h>],
-        [iconv_t cd = iconv_open("",""); iconv(cd,NULL,NULL,NULL,NULL); iconv_close(cd);],
-        mutt_cv_func_iconv=yes)
-      if test "$mutt_cv_func_iconv" = no; then
-        mutt_save_LIBS="$LIBS"
-        LIBS="$LIBS -liconv"
-        AC_TRY_LINK([#include <stdlib.h>
-#include <iconv.h>],
-          [iconv_t cd = iconv_open("",""); iconv(cd,NULL,NULL,NULL,NULL); iconv_close(cd);],
-          mutt_cv_lib_iconv=yes
-          mutt_cv_func_iconv=yes)
-        LIBS="$mutt_save_LIBS"
-      fi
-    ])
-if test "$mutt_cv_func_iconv" = no; then
-  AC_MSG_ERROR(Unable to find iconv library)
-fi
-if test "$mutt_cv_lib_iconv" = yes; then
-  LIBICONV="-liconv"
-fi
-AC_DEFINE(HAVE_ICONV)
-
-AC_SUBST(LIBICONV)
-
-dnl (1) Some implementations of iconv won't convert from UTF-8 to UTF-8.
-dnl (2) In glibc-2.1.2 and earlier there is a bug that messes up ob and
-dnl     obl when args 2 and 3 are 0 (fixed in glibc-2.1.3).
-AC_CACHE_CHECK([whether this iconv is good enough], mutt_cv_iconv_good,
-        mutt_save_LIBS="$LIBS"
-        LIBS="$LIBS $LIBICONV"
-        AC_TRY_RUN([
-#include <iconv.h>
-int main()
-{
-  iconv_t cd;
-changequote(, )dnl
-  char buf[4];
-changequote([, ])dnl
-  char *ob;
-  size_t obl;
-  ob = buf, obl = sizeof(buf);
-  return ((cd = iconv_open("UTF-8", "UTF-8")) != (iconv_t)(-1) &&
-          (iconv(cd, 0, 0, &ob, &obl) ||
-           !(ob == buf && obl == sizeof(buf)) ||
-           iconv_close(cd)));
-}
-                ],
-                mutt_cv_iconv_good=yes,
-                mutt_cv_iconv_good=no,
-                mutt_cv_iconv_good=yes)
-        LIBS="$mutt_save_LIBS")
-if test "$mutt_cv_iconv_good" = no; then
-  AC_MSG_ERROR(Try using libiconv instead)
-fi
-
-dnl This is to detect implementations such as the one in glibc-2.1,
-dnl which always convert exactly but return the number of characters
-dnl converted instead of the number converted inexactly.
-AC_CACHE_CHECK([whether iconv is non-transcribing], mutt_cv_iconv_nontrans,
-        mutt_save_LIBS="$LIBS"
-        LIBS="$LIBS $LIBICONV"
-        AC_TRY_RUN([
-#include <iconv.h>
-#include <string.h>
-int main()
-{
-  iconv_t cd;
-  const char *ib;
-  char *ob;
-  size_t ibl, obl;
-  const char *s = "\304\211";
-changequote(, )dnl
-  char t[3];
-changequote([, ])dnl
-  ib = s, ibl = 2, ob = t, obl = 3;
-  return ((cd = iconv_open("UTF-8", "UTF-8")) == (iconv_t)(-1) ||
-          iconv(cd, &ib, &ibl, &ob, &obl));
-}
-                ],
-                mutt_cv_iconv_nontrans=no,
-                mutt_cv_iconv_nontrans=yes,
-                mutt_cv_iconv_nontrans=no)
-        LIBS="$mutt_save_LIBS")
-if test "$mutt_cv_iconv_nontrans" = yes; then
-  AC_DEFINE(ICONV_NONTRANS, 1)
-else
-  AC_DEFINE(ICONV_NONTRANS, 0)
-fi
-
-else # "$mutt_cv_iconv" != no
-  AC_DEFINE(ICONV_NONTRANS, 0)
-fi
 
 AC_MSG_CHECKING(where to put the documentation)
 AC_ARG_WITH(docdir, [  --with-docdir=PATH         Specify where to put the documentation],
@@ -768,7 +659,79 @@ AC_SUBST(MUTT_LIB_OBJECTS)
 AC_SUBST(LIBIMAP)
 AC_SUBST(LIBIMAPDEPS)
 
+dnl -- iconv/gettext --
+
 MUTT_AM_GNU_GETTEXT
+if test "$am_cv_func_iconv" != "yes"
+then
+  AC_MSG_ERROR([Unable to find an iconv function. See INSTALL for help])
+fi
+
+dnl (1) Some implementations of iconv won't convert from UTF-8 to UTF-8.
+dnl (2) In glibc-2.1.2 and earlier there is a bug that messes up ob and
+dnl     obl when args 2 and 3 are 0 (fixed in glibc-2.1.3).
+AC_CACHE_CHECK([whether this iconv is good enough], mutt_cv_iconv_good,
+        mutt_save_LIBS="$LIBS"
+        LIBS="$LIBS $LIBICONV"
+        AC_TRY_RUN([
+#include <iconv.h>
+int main()
+{
+  iconv_t cd;
+changequote(, )dnl
+  char buf[4];
+changequote([, ])dnl
+  char *ob;
+  size_t obl;
+  ob = buf, obl = sizeof(buf);
+  return ((cd = iconv_open("UTF-8", "UTF-8")) != (iconv_t)(-1) &&
+          (iconv(cd, 0, 0, &ob, &obl) ||
+           !(ob == buf && obl == sizeof(buf)) ||
+           iconv_close(cd)));
+}
+                ],
+                mutt_cv_iconv_good=yes,
+                mutt_cv_iconv_good=no,
+                mutt_cv_iconv_good=yes)
+        LIBS="$mutt_save_LIBS")
+if test "$mutt_cv_iconv_good" = no; then
+  AC_MSG_ERROR(Try using libiconv instead)
+fi
+
+dnl This is to detect implementations such as the one in glibc-2.1,
+dnl which always convert exactly but return the number of characters
+dnl converted instead of the number converted inexactly.
+AC_CACHE_CHECK([whether iconv is non-transcribing], mutt_cv_iconv_nontrans,
+        mutt_save_LIBS="$LIBS"
+        LIBS="$LIBS $LIBICONV"
+        AC_TRY_RUN([
+#include <iconv.h>
+#include <string.h>
+int main()
+{
+  iconv_t cd;
+  const char *ib;
+  char *ob;
+  size_t ibl, obl;
+  const char *s = "\304\211";
+changequote(, )dnl
+  char t[3];
+changequote([, ])dnl
+  ib = s, ibl = 2, ob = t, obl = 3;
+  return ((cd = iconv_open("UTF-8", "UTF-8")) == (iconv_t)(-1) ||
+          iconv(cd, &ib, &ibl, &ob, &obl));
+}
+                ],
+                mutt_cv_iconv_nontrans=no,
+                mutt_cv_iconv_nontrans=yes,
+                mutt_cv_iconv_nontrans=no)
+        LIBS="$mutt_save_LIBS")
+if test "$mutt_cv_iconv_nontrans" = yes; then
+  AC_DEFINE(ICONV_NONTRANS, 1)
+else
+  AC_DEFINE(ICONV_NONTRANS, 0)
+fi
+
 CPPFLAGS="$CPPFLAGS -I\$(top_srcdir)/intl"
 
 if test "$BUILD_INCLUDED_LIBINTL" = "yes"; then
@@ -776,6 +739,8 @@ if test "$BUILD_INCLUDED_LIBINTL" = "yes"; then
 else
   AC_CHECK_FUNCS(bind_textdomain_codeset)
 fi
+
+dnl -- locales --
 
 MUTTLOCALEDIR='$datadir/locale'
 AC_SUBST(MUTTLOCALEDIR)
