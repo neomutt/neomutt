@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.24\n"
+"Project-Id-Version: 1.3.26\n"
 "POT-Creation-Date: 2002-01-18 12:44+0100\n"
-"PO-Revision-Date: 2001-12-02 15:17+0100\n"
+"PO-Revision-Date: 2002-01-19 17:52+0100\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -3230,21 +3230,18 @@ msgstr ""
 "Dieser Schlüssel ist nicht verwendbar: veraltet/deaktiviert/zurückgezogen."
 
 #: pgpkey.c:608
-#, fuzzy
 msgid "ID is expired/disabled/revoked."
-msgstr "Dieser ID ist veraltet/deaktiviert/zurückgezogen"
+msgstr "Diese ID ist veraltet/deaktiviert/zurückgezogen."
 
 #: pgpkey.c:612
 msgid "ID has undefined validity."
-msgstr ""
+msgstr "Die Gültigkeit dieser ID ist undefiniert."
 
 #: pgpkey.c:615
-#, fuzzy
 msgid "ID is not valid."
 msgstr "Diese ID ist ungültig."
 
 #: pgpkey.c:618
-#, fuzzy
 msgid "ID is only marginally valid."
 msgstr "Diese Gültigkeit dieser ID ist begrenzt."
 
