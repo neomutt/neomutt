@@ -1,3 +1,10 @@
+2005-01-27 18:45:37  Florian Weimer   <fw@deneb.enyo.de>  (roessler)
+
+	* mh.c, configure.in: Read files in maildir folders in inode
+	order; this seems to reduce seek overhead on Linux.  Enabled by
+	default; to disable, run configure with --disable-inodesort.
+	(By way of Mario d'Itri.)
+
 2005-01-27 18:28:42  Marco d'Itri  <md@Linux.IT>  (roessler)
 
 	* pgp.c: Improved good signature check.
