@@ -360,7 +360,7 @@ you misspelled the passphrase.
 <p><bf/list-reply/<label id="list-reply"> (default: L)<newline>
 
 Reply to the current or tagged message(s) by extracting any addresses which
-match the addresses given by the <ref id="lists" name="subscribe"> command.
+match the addresses given by the <ref id="lists" name="lists"> command.
 Using this when replying to messages posted to mailing lists help avoid
 duplicate copies being sent to the author of the message you are replying
 to.
@@ -1979,8 +1979,8 @@ If a message contains URLs (<em/unified ressource locator/ = address in the
 WWW space like <em>http://www.mutt.org/</em>), it is efficient to get
 a menu with all the URLs and start a WWW browser on one of them.  This
 functionality is provided by the external urlview program which can be
-retrieved at <htmlurl url="ftp://ftp.cs.hmc.edu/pub/me/"
-name="ftp://ftp.cs.hmc.edu/pub/me/"> and the configuration commands:
+retrieved at <htmlurl url="ftp://ftp.guug.de/pub/mutt/contrib/"
+name="ftp://ftp.guug.de/pub/mutt/contrib/"> and the configuration commands:
 <tscreen><verb>
 macro index \cb |urlview\n
 macro pager \cb |urlview\n
@@ -3299,6 +3299,19 @@ Default: &dquot;&dquot;
 Your login name on the IMAP server.
 <p>
 This variable defaults to your user name on the local machine.
+
+
+<sect2>imap&lowbar;cramkey<label id="imap_cramkey">
+<p>
+Type: string<newline>
+Default: &dquot;&dquot;
+
+<p>
+Sets your CRAM secret, for use with the CRAM-MD5 IMAP authentication
+method (this is the IMAP equivelent of APOP). This method will be
+attempted automatically if the server supports it, in preference to the
+less secure login technique. If you use CRAM-MD5, you do not need to set
+<em>imap&lowbar;pass</em>.
 
 
 <sect2>imap&lowbar;pass<label id="imap_pass">

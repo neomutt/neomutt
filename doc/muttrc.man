@@ -1238,6 +1238,20 @@ This variable defaults to your user name on the local machine.
 
 
 .TP
+.B imap_cramkey
+.nf
+Type: string
+Default: \(lq\(rq
+.fi
+.IP
+Sets your CRAM secret, for use with the CRAM-MD5 IMAP authentication
+method (this is the IMAP equivelent of APOP). This method will be
+attempted automatically if the server supports it, in preference to the
+less secure login technique. If you use CRAM-MD5, you do not need to set
+\fIimap_pass\fP.
+
+
+.TP
 .B imap_pass
 .nf
 Type: string

@@ -45,33 +45,23 @@ DISTFILES = Makefile.in dotlock.man  	\
 	muttrc.man			\
 	manual.sgml.head		\
 	manual.sgml.tail		\
-	manual.sgml
+	manual.sgml			\
+	manual.html
 
 srcdir_DOCFILES = PGP-Notes.txt applying-patches.txt	\
-	devel-notes.txt	\
-	manual.txt
+	devel-notes.txt
+
 
 topsrcdir_DOCFILES = COPYRIGHT GPL INSTALL ChangeLog	\
 	README NEWS TODO README.SECURITY
 
-DOCFILES = manual.txt
-
-
 all: try-html try-txt
 
-complete: all html
-
-# We don't ship the html stuff, but we build and install it
-# if sgml2html is available.  Instead of nifty autoconf magic,
-# we just do this in the makefile. ;)
-
 try-html:
-	-$(MAKE) html
+	test -f manual.html || $(MAKE) manual.html || cp $(srcdir)/manual*.html ./
 
 try-txt:
-	-$(MAKE) manual.txt
-
-html: manual.html
+	test -f manual.txt || $(MAKE) manual.txt || cp $(srcdir)/manual.txt ./
 
 install: all
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man1
@@ -80,17 +70,17 @@ install: all
 	$(INSTALL) -m 644 dotlock.man $(DESTDIR)$(mandir)/man1/mutt_dotlock.1
 	$(INSTALL) -m 644 muttrc.man $(DESTDIR)$(mandir)/man5/muttrc.5
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(docdir)
-	for f in $(DOCFILES) ; do $(INSTALL) -m 644 $$f $(DESTDIR)$(docdir) ; done
-	for f in $(srcdir_DOCFILES) ; do $(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir) ; done
-	for f in $(topsrcdir_DOCFILES) ; do $(INSTALL) -m 644 $(top_srcdir)/$$f $(DESTDIR)$(docdir) ; done
-	if [ -f manual.html ] ; then \
-		$(MAKE) install-html ; \
-	fi
-		
-install-html: html
+	for f in $(srcdir_DOCFILES) ; do \
+		$(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir) ; \
+	done
+	for f in $(topsrcdir_DOCFILES) ; do \
+		$(INSTALL) -m 644 $(top_srcdir)/$$f $(DESTDIR)$(docdir) ; \
+	done
+	$(INSTALL) -m 644 manual.txt $(DESTDIR)$(docdir)
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(docdir)/html
-	for f in manual*.html ; do $(INSTALL) -m 644 $$f $(DESTDIR)$(docdir)/html ; done
-
+	for file in manual*.html ; do	\
+		$(INSTALL) -m 644 $$file $(DESTDIR)$(docdir)/html/	;\
+	done
 
 uninstall:
 	-rm -f $(DESTDIR)$(mandir)/man1/mutt.1
@@ -125,6 +115,10 @@ dist distdir: Makefile $(DISTFILES)
 		ln $(srcdir)/$$file $(distdir) 2> /dev/null 	\
 			|| cp -p $(srcdir)/$$file $(distdir); 	\
 	done
+	for file in $(srcdir)/manual-*.html ; do		\
+		ln $$file $(distdir) 2> /dev/null 		\
+		|| cp -p $$file $(distdir) ;			\
+	done
 
 ../makedoc: $(top_srcdir)/makedoc.c
 	(cd .. && make makedoc)
@@ -132,7 +126,7 @@ dist distdir: Makefile $(DISTFILES)
 # hack around autoconf mixing up patterns.
 at=@
 
-update-doc:  ../makedoc stamp-doc-sgml stamp-doc-man
+update-doc:  ../makedoc stamp-doc-sgml stamp-doc-man manual.txt manual.html
 
 stamp-doc-man: ../makedoc $(top_srcdir)/init.h muttrc.man.head muttrc.man.tail
 	$(MAKEDOC_CPP) $(top_srcdir)/init.h | ../makedoc -m | 	    \
