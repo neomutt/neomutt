@@ -233,6 +233,7 @@ to.  They can be customized with the
 T       message is to you, but also to or cc'ed to others
 C       message is cc'ed to you
 F       message is from you
+L       message is sent to a subscribed mailing list
 </verb></tscreen>
 
 <sect2>The Pager
