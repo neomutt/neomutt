@@ -275,7 +275,7 @@ static int mutt_query_save_attachment (FILE *fp, BODY *body, HEADER *hdr)
   else
     buf[0] = 0;
   
-  if (mutt_get_field ("Save to file: ", buf, sizeof (buf), M_FILE | M_CLEAR) != 0 
+  if (mutt_get_field ("Save to file: ", buf, sizeof (buf), M_FILE | M_CLEAR) != 0
       || !buf[0])
     return -1;
 
@@ -460,7 +460,7 @@ void mutt_pipe_attachment_list (FILE *fp, int tag, BODY *top, int filter)
   memset (&state, 0, sizeof (STATE));
 
   if (mutt_get_field ((filter ? "Filter through: " : "Pipe to: "),
-				  buf, sizeof (buf), 0) != 0 || !buf[0])
+				  buf, sizeof (buf), M_CMD) != 0 || !buf[0])
     return;
 
   mutt_expand_path (buf, sizeof (buf));

@@ -71,6 +71,7 @@
 #define  M_PASS    (1<<4) /* password mode (no echo) */
 #define  M_CLEAR   (1<<5) /* clear input if printable character is pressed */
 #define  M_COMMAND (1<<6) /* do command completion */
+#define  M_PATTERN (1<<7) /* pattern mode - only used for history classes */
 
 /* flags for mutt_get_token() */
 #define M_TOKEN_EQUAL		1	/* treat '=' as a special */

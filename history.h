@@ -25,6 +25,7 @@ enum history_class
   HC_ALIAS,
   HC_COMMAND,
   HC_FILE,
+  HC_PATTERN,
   HC_OTHER,
   HC_LAST
 };

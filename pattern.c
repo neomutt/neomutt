@@ -881,7 +881,7 @@ int mutt_pattern_func (int op, char *prompt)
   BUFFER err;
   int i;
 
-  if (mutt_get_field (prompt, buf, sizeof (buf), 0) != 0 || !buf[0])
+  if (mutt_get_field (prompt, buf, sizeof (buf), M_PATTERN) != 0 || !buf[0])
     return (-1);
 
   mutt_message ("Compiling search pattern...");
@@ -994,7 +994,7 @@ int mutt_search_command (int cur, int op)
   {
     strfcpy (buf, LastSearch, sizeof (buf));
     if (mutt_get_field ((op == OP_SEARCH) ? "Search for: " : "Reverse search for: ",
-		      buf, sizeof (buf), M_CLEAR) != 0 || !buf[0])
+		      buf, sizeof (buf), M_CLEAR | M_PATTERN) != 0 || !buf[0])
       return (-1);
 
     if (op == OP_SEARCH)

@@ -212,6 +212,7 @@ int mutt_check_mime_type (const char *);
 int mutt_check_month (const char *);
 int mutt_check_overwrite (const char *, const char *, char *, size_t, int);
 int mutt_command_complete (char *, size_t, int);
+int mutt_string_var_complete (char *, size_t, int);
 int mutt_complete (char *);
 int mutt_compose_attachment (BODY *a);
 int mutt_copy_bytes (FILE *, FILE *, size_t);

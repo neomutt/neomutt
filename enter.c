@@ -65,14 +65,16 @@ int mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
   char tempbuf[_POSIX_PATH_MAX] = "";
   history_class_t hclass;
   
-  if(flags & (M_FILE | M_EFILE))
+  if (flags & (M_FILE | M_EFILE))
     hclass = HC_FILE;
-  else if(flags & M_CMD)
+  else if (flags & M_CMD)
     hclass = HC_CMD;
-  else if(flags & M_ALIAS)
+  else if (flags & M_ALIAS)
     hclass = HC_ALIAS;
-  else if(flags & M_COMMAND)
+  else if (flags & M_COMMAND)
     hclass = HC_COMMAND;
+  else if (flags & M_PATTERN)
+    hclass = HC_PATTERN;
   else 
     hclass = HC_OTHER;
 
@@ -347,7 +349,13 @@ int mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 	  else if (flags & M_COMMAND)
 	  {
 	    buf[curpos] = 0;
-	    if (mutt_command_complete ((char *) buf, buflen, curpos))
+	    if (buf[lastchar - 1] == '=' && 
+		mutt_string_var_complete ((char *) buf, buflen, curpos))
+	    {
+	      redraw = M_REDRAW_INIT;
+	      continue;
+	    }
+	    else if (mutt_command_complete ((char *) buf, buflen, curpos))
 	    {
 	      redraw = M_REDRAW_INIT;
 	      continue;

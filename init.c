@@ -1187,6 +1187,7 @@ int mutt_command_complete (char *buffer, size_t len, int pos)
   
   if (buffer[0] == 0)
     return 0;
+  SKIPWS (buffer);
   strncpy (cmd, buffer, pos);
   pt = cmd;
   pt[pos] = 0;
@@ -1206,10 +1207,10 @@ int mutt_command_complete (char *buffer, size_t len, int pos)
       return 0;
     strncpy (buffer, completed, len);
   }
-  else if (!strcasecmp (cmd, "set")
-	   || !strcasecmp (cmd, "unset")
-	   || !strcasecmp (cmd, "reset")
-	   || !strcasecmp (cmd, "toggle"))
+  else if (!strcmp (cmd, "set")
+	   || !strcmp (cmd, "unset")
+	   || !strcmp (cmd, "reset")
+	   || !strcmp (cmd, "toggle"))
   { 		/* complete variables */
     char *prefixes[] = { "no", "inv", "?", "&", 0 };
     int  prefix_index;
@@ -1218,7 +1219,7 @@ int mutt_command_complete (char *buffer, size_t len, int pos)
 
     /* remember if the command is set to decide whether we want to attempt the
      * prefixes */
-    int  cmd_is_set = !strcasecmp (cmd, "set"); 
+    int  cmd_is_set = !strcmp (cmd, "set"); 
     
     pt++;
     if (*pt == 0)
@@ -1253,6 +1254,44 @@ int mutt_command_complete (char *buffer, size_t len, int pos)
   else
     return 0;
   return 1;
+}
+
+int mutt_string_var_complete (char *buffer, size_t len, int pos)
+{
+  char cmd[STRING], *pt;
+  int i;
+  
+  if (buffer[0] == 0)
+    return 0;
+  SKIPWS (buffer);
+  strncpy (cmd, buffer, pos);
+  pt = cmd;
+  pt[pos] = 0;
+  while (!isspace ((unsigned char) *pt))
+    pt++;
+  *pt = 0;
+
+  pt = buffer + pos;
+  while ((pt > buffer) && !isspace ((unsigned char) *pt))
+    pt--;
+  pt++; /* move past the space */
+  if (*pt == '=') /* abort if no var before the '=' */
+    return 0;
+
+  if (strcmp (cmd, "set") == 0)
+  {
+    for (i = 0; MuttVars[i].option; i++)
+      if (DTYPE(MuttVars[i].type) == DT_STR && 
+	  /* ignore the trailing '=' when comparing */
+	  strncmp (MuttVars[i].option, pt, strlen (pt) - 1) == 0)
+      {
+	strncat (pt, "\"", buffer + len - pt);
+	strncat (pt, NONULL (*((char **) MuttVars[i].data)), buffer + len - pt);
+	strncat (pt, "\"", buffer + len - pt);
+	return 1;
+      }
+  }
+  return 0;
 }
 
 char *mutt_getnamebyvalue (int val, const struct mapping_t *map)

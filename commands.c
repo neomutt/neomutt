@@ -293,7 +293,7 @@ int mutt_pipe_message (HEADER *h)
   pid_t thepid;
 
   buffer[0] = 0;
-  if (mutt_get_field ("Pipe to command: ", buffer, sizeof (buffer), 0) != 0 ||
+  if (mutt_get_field ("Pipe to command: ", buffer, sizeof (buffer), M_CMD) != 0 ||
       !buffer[0])
     return 0;
   mutt_expand_path (buffer, sizeof (buffer));
