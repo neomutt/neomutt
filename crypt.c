@@ -210,6 +210,8 @@ int mutt_protect (HEADER *msg, HEADER *cur, char *keylist)
 
   if ((WithCrypto & APPLICATION_SMIME))
     tmp_smime_pbody = msg->content;
+  if ((WithCrypto & APPLICATION_PGP))
+    tmp_pgp_pbody   = msg->content;
 
   if (msg->security & SIGN)
   {
@@ -267,7 +269,7 @@ int mutt_protect (HEADER *msg, HEADER *cur, char *keylist)
     if ((WithCrypto & APPLICATION_PGP)
         && (msg->security & APPLICATION_PGP))
     {
-      if (!(pbody = crypt_pgp_encrypt_message (msg->content, keylist,
+      if (!(pbody = crypt_pgp_encrypt_message (tmp_pgp_pbody, keylist,
                                                flags & SIGN)))
       {
 
@@ -275,9 +277,9 @@ int mutt_protect (HEADER *msg, HEADER *cur, char *keylist)
 	if (flags != msg->security)
 	{
 	  /* remove the outer multipart layer */
-	  msg->content = mutt_remove_multipart (msg->content);
+	  tmp_pgp_pbody = mutt_remove_multipart (tmp_pgp_pbody);
 	  /* get rid of the signature */
-	  mutt_free_body (&msg->content->next);
+	  mutt_free_body (&tmp_pgp_pbody->next);
 	}
 
 	return (-1);
@@ -288,8 +290,8 @@ int mutt_protect (HEADER *msg, HEADER *cur, char *keylist)
        */
       if (flags != msg->security)
       {
-	mutt_remove_multipart (msg->content);
-	mutt_free_body (&msg->content->next);
+	tmp_pgp_pbody = mutt_remove_multipart (tmp_pgp_pbody);
+	mutt_free_body (&tmp_pgp_pbody->next);
       }
     }
   }
