@@ -1,3 +1,7 @@
+2004-02-11 08:20:25  Mads Martin Joergensen  <mmj@suse.de>  (roessler)
+
+	* init.c: Fix some warnings.
+
 2004-02-08 11:41:31  Edmund GRIMLEY EVANS  <edmundo@rano.org>  (roessler)
 
 	* charset.c: Fix a CP1255/8-related problem that's caused by a
