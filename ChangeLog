@@ -1,3 +1,7 @@
+2003-04-07 20:08:10  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* commands.c: Fix #1528.
+
 2003-04-07 07:57:49  René Clerc  <rene@clerc.nl>  (roessler)
 
 	* po/nl.po: update
