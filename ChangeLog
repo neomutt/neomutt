@@ -1,3 +1,8 @@
+2003-12-17 08:46:50  Michael Elkins  <me@sigpipe.org>  (roessler)
+
+	* rfc1524.c: Fix possible core dump in mailcap nametemplate
+	handling.
+
 2003-12-10 00:48:57  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* thread.c: Avoid NULL pointer deference in threading code.
