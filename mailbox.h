@@ -43,6 +43,11 @@ typedef struct
   char *path;	/* path to temp file */
   short magic;	/* type of mailbox this message belongs to */
   short write;	/* nonzero if message is open for writing */
+  struct {
+    unsigned read : 1;
+    unsigned flagged : 1;
+    unsigned replied : 1;
+  } flags;
 } MESSAGE;
 
 CONTEXT *mx_open_mailbox (const char *, int, CONTEXT *);

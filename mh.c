@@ -41,14 +41,375 @@
 #include <errno.h>
 #include <string.h>
 
-
-
 struct maildir
 {
   HEADER *h;
   char *canon_fname;
   struct maildir *next;
 };
+
+struct mh_sequences
+{
+  int max;
+  short *flags;
+};
+
+/* mh_sequences support */
+
+#define MH_SEQ_UNSEEN  (1 << 0)
+#define MH_SEQ_REPLIED (1 << 1)
+#define MH_SEQ_FLAGGED (1 << 2)
+
+static void mhs_alloc (struct mh_sequences *mhs, int i)
+{
+  int j;
+  int newmax;
+  
+  if (i > mhs->max)
+  {
+    newmax = i + 128;
+    safe_realloc ((void **) &mhs->flags, sizeof (mhs->flags[0]) * (newmax + 1));
+    for (j = mhs->max + 1; j <= newmax; j++)
+      mhs->flags[j] = 0;
+    
+    mhs->max = newmax;
+  }
+}
+
+static void mhs_free_sequences (struct mh_sequences *mhs)
+{
+  safe_free ((void **) &mhs->flags);
+}
+
+static short mhs_check (struct mh_sequences *mhs, int i)
+{
+  if (i > mhs->max)
+    return 0;
+  else
+    return mhs->flags[i];
+}
+
+static short mhs_set (struct mh_sequences *mhs, int i, short f)
+{
+  mhs_alloc (mhs, i);
+  mhs->flags[i] |= f;
+  return mhs->flags[i];
+}
+
+static short mhs_unset (struct mh_sequences *mhs, int i, short f)
+{
+  mhs_alloc (mhs, i);
+  mhs->flags[i] &= ~f;
+  return mhs->flags[i];
+}
+
+static void mh_read_token (char *t, int *first, int *last)
+{
+  char *p;
+  if ((p = strchr (t, '-')))
+  {
+    *p++ = '\0';
+    *first = atoi (t);
+    *last  = atoi (p);
+  }
+  else
+    *first = *last = atoi (t);
+}
+
+static void mh_read_sequences (struct mh_sequences *mhs, char *path)
+{
+  FILE *fp;
+  int line = 1;
+  char *buff = NULL;
+  char *t;
+  size_t sz = 0;
+  
+  short f;
+  int first, last;
+
+  char pathname[_POSIX_PATH_MAX];
+  snprintf (pathname, sizeof (pathname),  "%s/.mh_sequences", path);
+
+  if (!(fp = fopen (pathname, "r")))
+    return;
+
+  while ((buff = mutt_read_line (buff, &sz, fp, &line)))
+  {
+    if (!(t = strtok (buff, " \t:")))
+      continue;
+    
+    if (!strcmp (t, "unseen"))
+      f = MH_SEQ_UNSEEN;
+    else if (!strcmp (t, "flagged"))
+      f = MH_SEQ_FLAGGED;
+    else if (!strcmp (t, "replied"))
+      f = MH_SEQ_REPLIED;
+    else	/* unknown sequence */
+      continue;
+    
+    while ((t = strtok (NULL, " \t:")))
+    {
+      mh_read_token (t, &first, &last);
+      for (; first <= last; first++)
+	mhs_set (mhs, first, f);
+    }
+  }
+
+  safe_free ((void **) &buff);
+  safe_fclose (&fp);
+}
+
+static int mh_mkstemp (CONTEXT *dest, FILE **fp, char **tgt)
+{
+  int fd;
+  char path[_POSIX_PATH_MAX];
+
+  FOREVER 
+  {
+    snprintf (path, _POSIX_PATH_MAX, "%s/.mutt-%s-%d-%d",
+	      dest->path, NONULL (Hostname), (int) getpid (), Counter++);
+    if ((fd = open (path, O_WRONLY | O_EXCL | O_CREAT, 0600)) == -1)
+    {
+      if (errno != EEXIST)
+      {
+	mutt_perror (path);
+	return -1;
+      }
+    }
+    else
+    {
+      *tgt = safe_strdup (path);
+      break;
+    }
+  }
+
+  if ((*fp = fdopen (fd, "w")) == NULL)
+  {
+    FREE (tgt);
+    close (fd);
+    unlink (path);
+    return (-1);
+  }
+  
+  return 0;
+}
+
+static void mhs_write_one_sequence (FILE *fp, struct mh_sequences *mhs,
+				    short f, const char *tag)
+{
+  int i;
+  int first, last;
+  fprintf (fp, "%s:", tag);
+  
+  first = -1;
+  last  = -1;
+  
+  for (i = 0; i <= mhs->max; i++)
+  {
+    if ((mhs_check (mhs, i) & f))
+    {
+      if (first < 0)
+	first = i;
+      else
+	last = i;
+    }
+    else if (first >= 0)
+    {
+      if (last < 0)
+	fprintf (fp, " %d", first);
+      else
+	fprintf (fp, " %d-%d", first, last);
+      
+      first = -1;
+      last = -1;
+    }
+  }
+  
+  if (first >= 0)
+  {
+    if (last < 0)
+      fprintf (fp, " %d", first);
+    else
+      fprintf (fp, " %d-%d", first, last);
+  }
+  
+  fputc ('\n', fp);
+}
+
+void mh_update_sequences (CONTEXT *ctx)
+{
+  FILE *ofp, *nfp;
+  
+  char sequences[_POSIX_PATH_MAX];
+  char *tmpfname;
+  char *buff = NULL;
+  char *p;
+  size_t s;
+  int l = 0;
+  int i;
+
+  int unseen = 0; 
+  int flagged = 0;
+  int replied = 0;
+  
+  struct mh_sequences mhs;
+  memset (&mhs, 0, sizeof (mhs));
+  
+  if (mh_mkstemp (ctx, &nfp, &tmpfname) != 0)
+  {
+    /* error message? */
+    return;
+  }
+
+  snprintf (sequences, sizeof (sequences), "%s/.mh_sequences", ctx->path);
+
+  
+  /* first, copy unknown sequences */
+  if ((ofp = fopen (sequences, "r")))
+  {
+    while ((buff = mutt_read_line (buff, &s, ofp, &l)))
+    {
+      if (!strncmp (buff, "unseen:", 7))
+	continue;
+      if (!strncmp (buff, "flagged:", 8))
+	continue;
+      if (!strncmp (buff, "replied:", 8))
+	continue;
+	
+      fprintf (nfp, "%s\n", buff);
+    }
+  }
+  safe_fclose (&ofp);
+  
+  /* now, update our unseen, flagged, and replied sequences */
+  for (l = 0; l < ctx->msgcount; l++)
+  {
+    if ((p = strrchr (ctx->hdrs[l]->path, '/')))
+      p++;
+    else
+      p = ctx->hdrs[l]->path;
+
+    i = atoi (p);
+    
+    if (!ctx->hdrs[l]->read)
+    {
+      mhs_set (&mhs, i, MH_SEQ_UNSEEN);
+      unseen++;
+    }
+    if (ctx->hdrs[l]->flagged)
+    {
+      mhs_set (&mhs, i, MH_SEQ_FLAGGED);
+      flagged++;
+    }
+    if (ctx->hdrs[l]->replied)
+    {
+      mhs_set (&mhs, i, MH_SEQ_REPLIED);
+      replied++;
+    }
+  }
+
+  /* write out the new sequences */
+  if (unseen)  mhs_write_one_sequence (nfp, &mhs, MH_SEQ_UNSEEN, "unseen");
+  if (flagged) mhs_write_one_sequence (nfp, &mhs, MH_SEQ_FLAGGED, "flagged");
+  if (replied) mhs_write_one_sequence (nfp, &mhs, MH_SEQ_REPLIED, "replied");
+
+  mhs_free_sequences (&mhs);
+
+  
+  /* try to commit the changes - no guarantee here */
+  safe_fclose (&nfp);
+  
+  unlink (sequences);
+  if (safe_rename (tmpfname, sequences) != 0)
+  {
+    /* report an error? */
+    unlink (tmpfname);
+  }
+  
+  safe_free ((void **) &tmpfname);
+}
+
+static void mh_sequences_add_one (CONTEXT *ctx, int n, short unseen, short flagged, short replied)
+{
+  short unseen_done = 0;
+  short flagged_done = 0;
+  short replied_done = 0;
+  
+  FILE *ofp = NULL, *nfp = NULL;
+ 
+  char *tmpfname;
+  char sequences[_POSIX_PATH_MAX];
+  
+  char *buff = NULL;
+  int line;
+  size_t sz;
+  
+  if (mh_mkstemp (ctx, &nfp, &tmpfname) == -1)
+    return;
+  
+  snprintf (sequences, sizeof (sequences), "%s/.mh_sequences", ctx->path);
+  if ((ofp = fopen (sequences, "r")))
+  {
+    while ((buff = mutt_read_line (buff, &sz, ofp, &line)))
+    {
+      if (unseen && !strncmp (buff, "unseen:", 7))
+      {
+	fprintf (nfp, "%s %d\n", buff, n);
+	unseen_done = 1;
+      }
+      else if (flagged && !strncmp (buff, "flagged:", 8))
+      {
+	fprintf (nfp, "%s %d\n", buff, n);
+	flagged_done = 1;
+      }
+      else if (replied && !strncmp (buff, "replied:", 8))
+      {
+	fprintf (nfp, "%s %d\n", buff, n);
+	flagged_done = 1;
+      }
+      else
+	fprintf (nfp, "%s\n", buff);
+    }
+  }
+  safe_fclose (&ofp);
+  safe_free ((void **) &buff);
+  
+  if (!unseen_done  && unseen)   fprintf (nfp, "unseen: %d\n",  n);
+  if (!flagged_done && flagged)  fprintf (nfp, "flagged: %d\n", n);
+  if (!replied_done && replied)  fprintf (nfp, "replied: %d\n", n);
+  
+  safe_fclose (&nfp);
+  
+  unlink (sequences);
+  if (safe_rename (tmpfname, sequences) != 0)
+    unlink (tmpfname);
+  
+  safe_free ((void **) &tmpfname);
+}
+
+static void mh_update_maildir (struct maildir *md, struct mh_sequences *mhs)
+{
+  int i;
+  short f;
+  char *p;
+  
+  for (; md; md = md->next)
+  {
+    if ((p = strrchr (md->h->path, '/')))
+      p++;
+    else
+      p = md->h->path;
+
+    i = atoi (p);
+    f = mhs_check (mhs, i);
+    
+    md->h->read    = (f & MH_SEQ_UNSEEN)  ? 0 : 1;
+    md->h->flagged = (f & MH_SEQ_FLAGGED) ? 1 : 0;
+    md->h->replied = (f & MH_SEQ_REPLIED) ? 1 : 0;
+  }
+}
+
+/* maildir support */
 
 static void maildir_free_entry(struct maildir **md)
 {
@@ -129,7 +490,13 @@ static void maildir_update_mtime(CONTEXT *ctx)
     snprintf(buf, sizeof(buf), "%s/%s", ctx->path, "new");
   }
   else
+  {
+    snprintf (buf, sizeof (buf), "%s/.mh_sequences", ctx->path);
+    if (stat (buf, &st) == 0)
+      ctx->mtime_cur = st.st_mtime;
+    
     strfcpy(buf, ctx->path, sizeof(buf));
+  }
   
   if(stat(buf, &st) == 0)
     ctx->mtime = st.st_mtime;
@@ -311,6 +678,7 @@ static void maildir_move_to_context(CONTEXT *ctx, struct maildir **md)
 int mh_read_dir (CONTEXT *ctx, const char *subdir)
 {
   struct maildir *md;
+  struct mh_sequences mhs;
   struct maildir **last;
   int count;
   
@@ -318,10 +686,16 @@ int mh_read_dir (CONTEXT *ctx, const char *subdir)
   last = &md;
   count = 0;
 
+  memset (&mhs, 0, sizeof (mhs));
+  
   maildir_update_mtime(ctx);
 
   if(maildir_parse_dir(ctx, &last, subdir, &count) == -1)
     return -1;
+
+  mh_read_sequences (&mhs, ctx->path);
+  mh_update_maildir (md, &mhs);
+  mhs_free_sequences (&mhs);
   
   maildir_move_to_context(ctx, &md);
   return 0;
@@ -345,37 +719,7 @@ int maildir_read_dir (CONTEXT * ctx)
 
 int mh_open_new_message (MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
 {
-  int fd;
-  char path[_POSIX_PATH_MAX];
-
-  FOREVER 
-  {
-    snprintf (path, _POSIX_PATH_MAX, "%s/.mutt-%s-%d-%d",
-	      dest->path, NONULL (Hostname), (int) getpid (), Counter++);
-    if ((fd = open (path, O_WRONLY | O_EXCL | O_CREAT, 0600)) == -1)
-    {
-      if (errno != EEXIST)
-      {
-	mutt_perror (path);
-	return -1;
-      }
-    }
-    else
-    {
-      msg->path = safe_strdup (path);
-      break;
-    }
-  }
-
-  if ((msg->fp = fdopen (fd, "w")) == NULL)
-  {
-    FREE (&msg->path);
-    close (fd);
-    unlink (path);
-    return (-1);
-  }
-
-  return 0;
+  return mh_mkstemp (dest, &msg->fp, &msg->path);
 }
 
 static void maildir_flags (char *dest, size_t destlen, HEADER *hdr)
@@ -586,7 +930,7 @@ int mh_commit_message (CONTEXT *ctx, MESSAGE *msg, HEADER *hdr)
       if (hdr)
 	mutt_str_replace (&hdr->path, tmp);
       FREE (&msg->path);
-      return 0;
+      break;
     }
     else if (errno != EEXIST)
     {
@@ -594,6 +938,9 @@ int mh_commit_message (CONTEXT *ctx, MESSAGE *msg, HEADER *hdr)
       return -1;
     }
   }
+
+  mh_sequences_add_one (ctx, hi, !msg->flags.read, msg->flags.flagged, msg->flags.replied);
+  return 0;
 }
 
 /* Sync a message in an MH folder.
@@ -602,7 +949,7 @@ int mh_commit_message (CONTEXT *ctx, MESSAGE *msg, HEADER *hdr)
  * folders.
  */
 
-static int mh_sync_message (CONTEXT *ctx, int msgno)
+static int mh_rewrite_message (CONTEXT *ctx, int msgno)
 {
   HEADER *h = ctx->hdrs[msgno];
   MESSAGE *dest;
@@ -675,6 +1022,17 @@ static int mh_sync_message (CONTEXT *ctx, int msgno)
   return rc;
 }
 
+static int mh_sync_message (CONTEXT *ctx, int msgno)
+{
+  HEADER *h = ctx->hdrs[msgno];
+
+  if (h->attach_del)
+    if (mh_rewrite_message (ctx, msgno) != 0)
+      return -1;
+  
+  return 0;
+}
+
 static int maildir_sync_message (CONTEXT *ctx, int msgno)
 {
   HEADER *h = ctx->hdrs[msgno];
@@ -682,7 +1040,7 @@ static int maildir_sync_message (CONTEXT *ctx, int msgno)
   if (h->attach_del)
   {
     /* when doing attachment deletion, fall back to the MH case. */
-    if (mh_sync_message (ctx, msgno) != 0)
+    if (mh_rewrite_message (ctx, msgno) != 0)
       return (-1);
   }
   else
@@ -774,6 +1132,8 @@ int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
     }
   }
 
+  mh_update_sequences (ctx);
+  
   /* XXX race condition? */
 
   maildir_update_mtime(ctx);
@@ -836,6 +1196,11 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
     strfcpy(buf, ctx->path, sizeof(buf));
     if(stat(buf, &st) == -1)
       return -1;
+    
+    snprintf (buf, sizeof (buf), "%s/.mh_sequences", ctx->path);
+    if (stat (buf, &st_cur) == -1)
+      modified = 1;
+    
   }
   else if(ctx->magic == M_MAILDIR)
   {
@@ -844,7 +1209,7 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
       return -1;
     
     snprintf(buf, sizeof(buf), "%s/cur", ctx->path);
-    if(stat(buf, &st_cur) == -1)
+    if(stat(buf, &st_cur) == -1)			/* XXX - name is bad. */
       modified = 1;
 
   }
@@ -852,7 +1217,7 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
   if(!modified && ctx->magic == M_MAILDIR && st_cur.st_mtime > ctx->mtime_cur)
     modified = 1;
   
-  if(!modified && ctx->magic == M_MH && st.st_mtime > ctx->mtime)
+  if(!modified && ctx->magic == M_MH && (st.st_mtime > ctx->mtime || st_cur.st_mtime > ctx->mtime_cur))
     modified = 1;
   
   if(modified || (ctx->magic == M_MAILDIR && st.st_mtime > ctx->mtime))
@@ -861,8 +1226,7 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
   if(!modified && !have_new)
     return 0;
 
-  if(ctx->magic == M_MAILDIR)
-    ctx->mtime_cur = st_cur.st_mtime;
+  ctx->mtime_cur = st_cur.st_mtime;
   ctx->mtime = st.st_mtime;
 
 #if 0
@@ -888,7 +1252,14 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
       maildir_parse_dir(ctx, &last, "cur", NULL);
   }
   else if(ctx->magic == M_MH)
-    maildir_parse_dir(ctx, &last, NULL, NULL);
+  {
+    struct mh_sequences mhs;
+    memset (&mhs, 0, sizeof (mhs));
+    maildir_parse_dir (ctx, &last, NULL, NULL);
+    mh_read_sequences (&mhs, ctx->path);
+    mh_update_maildir (md, &mhs);
+    mhs_free_sequences (&mhs);
+  }
 
   /* check for modifications and adjust flags */
 
