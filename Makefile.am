@@ -49,7 +49,7 @@ DEFS=-DSHAREDIR=\"$(sharedir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 	-DBINDIR=\"$(bindir)\" -DHAVE_CONFIG_H=1
 
 # top_srcdir is for building outside of the source tree
-INCLUDES=-I$(top_srcdir) -I. $(IMAP_INCLUDES) -I$(includedir)
+INCLUDES=-I$(top_srcdir) -I. $(IMAP_INCLUDES) -Iintl -I$(includedir)
 
 non_us_sources = pgp.c pgpinvoke.c pgpkey.c pgplib.c sha1dgst.c \
 	gnupgparse.c sha.h sha_locl.h \
@@ -183,7 +183,6 @@ Muttrc: stamp-doc-rc
 stamp-doc-rc: $(srcdir)/init.h makedoc Muttrc.head
 	-rm -f Muttrc stamp-doc-rc
 	$(CPP) $(INCLUDES) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C \
-		$(srcdir)/init.h | ./makedoc -c | cat $(srcdir)/Muttrc.head - \
-		> Muttrc
+		$(srcdir)/init.h | ./makedoc -c | cat Muttrc.head - > Muttrc
 	touch stamp-doc-rc
 
