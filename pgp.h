@@ -44,7 +44,7 @@ typedef struct pgp_keyinfo
   struct pgp_uid *address;
   int flags;
   short keylen;
-  unsigned long gen_time;
+  time_t gen_time;
   const char *algorithm;
   struct pgp_keyinfo *parent;
   struct pgp_keyinfo *next;

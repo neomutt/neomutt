@@ -3405,6 +3405,29 @@ Default: set
 
 If set, the PGP <em/+encrypttoself/ flag is used when encrypting messages.
 
+<sect2>pgp&lowbar;entry&lowbar;format<label id="pgp_entry_format">
+<p>
+Type: format string<newline>
+Default: &dquot;&percnt;4n &percnt;t&percnt;f &percnt;4l/0x&percnt;k &percnt;-4a &percnt;2c &percnt;u&dquot;
+
+This variable allows you to customize the PGP key selection menu to
+your personal taste. This string is similar to <ref id="index_format"
+name="&dollar;index&lowbar;format">, but has its own set of
+printf()-like sequences:
+
+<tscreen><verb>
+%n      number
+%k      key id
+%u      user id
+%a      algorithm
+%l      key length
+%f      flags
+%c      capabilities
+%t      trust/validity of the key-uid association
+%[<s>]  date of the key where <s> is an strftime(3) expression
+</verb></tscreen>
+
+
 <sect2>pgp&lowbar;gpg<label id="pgp_gpg">
 <p>
 Type: string<newline>

@@ -97,12 +97,13 @@ static pgp_key_t *pgp_principal_key (pgp_key_t *key)
  * 
  * %n	number
  * %k	key id		%K 	key id of the principal key
- * %u	uiser id
+ * %u	user id
  * %a	algorithm	%A      algorithm of the princ. key
  * %l	length		%L	length of the princ. key
  * %f	flags		%F 	flags of the princ. key
  * %c	capabilities	%C	capabilities of the princ. key
  * %t	trust/validity of the key-uid association
+ * %[...] date of key using strftime(3)
  */
 
 typedef struct pgp_entry
@@ -144,6 +145,66 @@ static const char *pgp_entry_fmt (char *dest,
   
   switch (tolower (op))
   {
+    case '[':
+
+      {
+	const char *cp;
+	char buf2[SHORT_STRING], *p;
+	int do_locales;
+	struct tm *tm;
+	size_t len;
+
+	p = dest;
+
+	cp = src;
+	if (*cp == '!')
+	{
+	  do_locales = 0;
+	  cp++;
+	}
+	else
+	  do_locales = 1;
+
+	len = destlen - 1;
+	while (len > 0 && *cp != ']')
+	{
+	  if (*cp == '%')
+	  {
+	    cp++;
+	    if (len >= 2)
+	    {
+	      *p++ = '%';
+	      *p++ = *cp;
+	      len -= 2;
+	    }
+	    else
+	      break; /* not enough space */
+	    cp++;
+	  }
+	  else
+	  {
+	    *p++ = *cp++;
+	    len--;
+	  }
+	}
+	*p = 0;
+
+	if (do_locales && Locale)
+	  setlocale (LC_TIME, Locale);
+
+	tm = localtime (&key->gen_time);
+
+	strftime (buf2, sizeof (buf2), dest, tm);
+
+	if (do_locales)
+	  setlocale (LC_TIME, "C");
+
+	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+	snprintf (dest, destlen, fmt, buf2);
+	if (len > 0)
+	  src = cp + 1;
+      }
+      break;
     case 'n':
       if (!optional)
       {

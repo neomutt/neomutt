@@ -142,7 +142,23 @@ static pgp_key_t *parse_pub_line (char *buf, int *is_subkey, pgp_key_t *k)
 
       }
       case 6:			/* timestamp (1998-02-28) */
+      {
+	char tstr[11];
+	struct tm time;
+	if (!p)
+	  break;
+	time.tm_sec = 0;
+	time.tm_min = 0;
+	time.tm_hour = 12;
+	strncpy (tstr, p, 11);
+	tstr[4] = '\0';
+	time.tm_year = atoi (tstr)-1900;
+	tstr[7] = '\0';
+	time.tm_mon = (atoi (tstr+5))-1;
+	time.tm_mday = atoi (tstr+8);
+	k->gen_time = mutt_mktime (&time, 0);
         break;
+      }
       case 7:			/* valid for n days */
         break;
       case 8:			/* Local id         */

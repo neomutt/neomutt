@@ -506,7 +506,7 @@ static pgp_key_t *pgp_parse_pgp2_key (unsigned char *buff, size_t l)
   unsigned char alg;
   size_t expl;
   unsigned long id;
-  unsigned long gen_time = 0;
+  time_t gen_time = 0;
   unsigned short exp_days = 0;
   size_t j;
   int i, k;
@@ -519,6 +519,8 @@ static pgp_key_t *pgp_parse_pgp2_key (unsigned char *buff, size_t l)
 
   for (i = 0, j = 2; i < 4; i++)
     gen_time = (gen_time << 8) + buff[j++];
+
+  p->gen_time = gen_time;
 
   for (i = 0; i < 2; i++)
     exp_days = (exp_days << 8) + buff[j++];
@@ -610,7 +612,7 @@ static pgp_key_t *pgp_parse_pgp3_key (unsigned char *buff, size_t l)
   unsigned char alg;
   unsigned char digest[SHA_DIGEST_LENGTH];
   unsigned char scratch[LONG_STRING];
-  unsigned long gen_time = 0;
+  time_t gen_time = 0;
   unsigned long id;
   int i, k;
   short len;
@@ -680,7 +682,7 @@ static pgp_key_t *pgp_parse_keyinfo (unsigned char *buff, size_t l)
 static int pgp_parse_pgp2_sig (unsigned char *buff, size_t l, pgp_key_t * p)
 {
   unsigned char sigtype;
-  long sig_gen_time;
+  time_t sig_gen_time;
   unsigned long signerid;
   size_t j;
   int i;
@@ -712,7 +714,7 @@ static int pgp_parse_pgp3_sig (unsigned char *buff, size_t l, pgp_key_t * p)
   unsigned char pkalg;
   unsigned char hashalg;
   unsigned char skt;
-  long sig_gen_time = -1;
+  time_t sig_gen_time = -1;
   long validity = -1;
   long key_validity = -1;
   long signerid = 0;
