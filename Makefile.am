@@ -28,7 +28,7 @@ CLEANFILES = mutt_dotlock.c
 
 LDADD = @LIBOBJS@ @INTLLIBS@
 
-SUBDIRS = doc intl po
+SUBDIRS = doc intl po rx
 
 OPS=$(srcdir)/OPS $(srcdir)/OPS.PGP
 

@@ -11,6 +11,13 @@ OBJS=	hashrexp.o rx.o rxanal.o rxbasic.o rxbitset.o rxcset.o \
 
 
 
+all: all-no
+
+all-yes: librx.a
+
+all-no: 
+install:
+
 librx.a: $(OBJS)
 	ar rc librx.a $(OBJS)
 	-ranlib librx.a

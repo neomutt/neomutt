@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(mutt.h)
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(mutt, 0.94.9)
+AM_INIT_AUTOMAKE(mutt, 0.94.9p1)
 
 ALL_LINGUAS="de"
 
@@ -227,6 +227,8 @@ AC_ARG_WITH(rx, [  --with-rx[=DIR]            Use GNU rx ],
 	fi],
 	[AC_CHECK_FUNCS(regcomp, mutt_cv_regex=no)])
 
+RX_TARGET=no
+
 if test $mutt_cv_regex = yes; then
 	if test -d ../rx-1.5; then
 		LIBS="$LIBS ../rx-1.5/rx/librx.a"
@@ -234,9 +236,12 @@ if test $mutt_cv_regex = yes; then
 	else
 		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS rx/librx.a"
 		CPPFLAGS="-I\$(srcdir)/rx $CPPFLAGS"
+		RX_TARGET=yes
 	fi
 	AC_DEFINE(USE_GNU_RX)
 fi
+
+AC_SUBST(RX_TARGET)
 
 AC_ARG_WITH(homespool, [  --with-homespool[=FILE]    file in user's directory where new mail is spooled], with_homespool=${withval})
 if test x$with_homespool != x; then
