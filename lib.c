@@ -261,8 +261,8 @@ int safe_symlink(const char *oldpath, const char *newpath)
 	(strlen (abs_oldpath) + 1 + strlen (oldpath) + 1 > sizeof abs_oldpath))
     return -1;
   
-    strcat (abs_oldpath, "/");
-    strcat (abs_oldpath, oldpath);
+    strcat (abs_oldpath, "/");		/* __STRCAT_CHECKED__ */
+    strcat (abs_oldpath, oldpath);	/* __STRCAT_CHECKED__ */
     if (symlink (abs_oldpath, newpath) == -1)
       return -1;
   }

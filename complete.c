@@ -83,9 +83,12 @@ int mutt_complete (char *s, size_t slen)
       strfcpy (exp_dirpart, NONULL (Maildir), sizeof (exp_dirpart));
     if ((p = strrchr (s, '/')))
     {
+      char buf[_POSIX_PATH_MAX];
       *p++ = 0;
-      sprintf (exp_dirpart + mutt_strlen (exp_dirpart), "/%s", s+1);
-      sprintf (dirpart + mutt_strlen (dirpart), "%s/", s+1);
+      snprintf (buf, sizeof (buf), "%s/%s", exp_dirpart, s+1);
+      strfcpy (exp_dirpart, buf, sizeof (exp_dirpart));
+      snprintf (buf, sizeof (buf), "%s/%s", dirpart, s+1);
+      strfcpy (dirpart, buf, sizeof (dirpart));
       strfcpy (filepart, p, sizeof (filepart));
     }
     else

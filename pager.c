@@ -1454,14 +1454,14 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
   if (IsHeader (extra))
   {
     mutt_compile_help (buffer, sizeof (buffer), MENU_PAGER, PagerHelpExtra);
-    strcat (helpstr, "  ");
-    strcat (helpstr, buffer);
+    strcat (helpstr, "  ");	/* __STRCAT_CHECKED__ */	/* we don't seem to have any user-supplied data here */
+    strcat (helpstr, buffer);	/* __STRCAT_CHECKED__ */
   }
   if (!InHelp)
   {
     mutt_make_help (buffer, sizeof (buffer), _("Help"), MENU_PAGER, OP_HELP);
-    strcat (helpstr, "  ");
-    strcat (helpstr, buffer);
+    strcat (helpstr, "  ");	/* __STRCAT_CHECKED__ */	/* we don't seem to have any user-supplied data here */
+    strcat (helpstr, buffer);	/* __STRCAT_CHECKED__ */
   }
 
   while (ch != -1)

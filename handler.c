@@ -588,7 +588,7 @@ static void enriched_flush (struct enriched_state *stte, int wrap)
       stte->line_max = stte->line_used;
       safe_realloc ((void **) &stte->line, stte->line_max + 1);
     }
-    strcat (stte->line, stte->buffer);
+    strcat (stte->line, stte->buffer);	/* __STRCAT_CHECKED__ */
     stte->line_len += stte->word_len;
     stte->word_len = 0;
     stte->buff_used = 0;

@@ -1758,7 +1758,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
     if (*DOMAIN != '@')
   {
     Fqdn = safe_malloc (mutt_strlen (DOMAIN) + mutt_strlen (Hostname) + 2);
-    sprintf (Fqdn, "%s.%s", NONULL(Hostname), DOMAIN);
+    sprintf (Fqdn, "%s.%s", NONULL(Hostname), DOMAIN);	/* __SPRINTF_CHECKED__ */
   }
   else
     Fqdn = safe_strdup(NONULL(Hostname));

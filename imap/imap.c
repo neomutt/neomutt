@@ -43,7 +43,7 @@ static char* imap_get_flags (LIST** hflags, char* s);
 static int imap_check_acl (IMAP_DATA *idata);
 static int imap_check_capabilities (IMAP_DATA* idata);
 static void imap_set_flag (IMAP_DATA* idata, int aclbit, int flag,
-  const char* str, char* flags);
+			   const char* str, char* flags, size_t flsize);
 
 int imap_create_mailbox (IMAP_DATA* idata, char* mailbox)
 {
@@ -722,11 +722,11 @@ int imap_close_connection (CONTEXT *ctx)
 /* imap_set_flag: append str to flags if we currently have permission
  *   according to aclbit */
 static void imap_set_flag (IMAP_DATA* idata, int aclbit, int flag,
-  const char *str, char *flags)
+  const char *str, char *flags, size_t flsize)
 {
   if (mutt_bit_isset (idata->rights, aclbit))
     if (flag)
-      strcat (flags, str);
+      strncat (flags, str, flsize);
 }
 
 /* imap_make_msg_set: make an IMAP4rev1 UID message set out of a set of
@@ -896,17 +896,17 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
       flags[0] = '\0';
       
       imap_set_flag (idata, IMAP_ACL_SEEN, ctx->hdrs[n]->read, "\\Seen ",
-        flags);
+        flags, sizeof (flags));
       imap_set_flag (idata, IMAP_ACL_WRITE, ctx->hdrs[n]->flagged,
-        "\\Flagged ", flags);
+        "\\Flagged ", flags, sizeof (flags));
       imap_set_flag (idata, IMAP_ACL_WRITE, ctx->hdrs[n]->replied,
-        "\\Answered ", flags);
+        "\\Answered ", flags, sizeof (flags));
       imap_set_flag (idata, IMAP_ACL_DELETE, ctx->hdrs[n]->deleted,
-        "\\Deleted ", flags);
+        "\\Deleted ", flags, sizeof (flags));
 
       /* now make sure we don't lose custom tags */
       if (mutt_bit_isset (idata->rights, IMAP_ACL_WRITE))
-        imap_add_keywords (flags, ctx->hdrs[n], idata->flags);
+        imap_add_keywords (flags, ctx->hdrs[n], idata->flags, sizeof (flags));
       
       mutt_remove_trailing_ws (flags);
       
@@ -914,10 +914,10 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
        * explicitly revoke all system flags (if we have permission) */
       if (!*flags)
       {
-        imap_set_flag (idata, IMAP_ACL_SEEN, 1, "\\Seen ", flags);
-        imap_set_flag (idata, IMAP_ACL_WRITE, 1, "\\Flagged ", flags);
-        imap_set_flag (idata, IMAP_ACL_WRITE, 1, "\\Answered ", flags);
-        imap_set_flag (idata, IMAP_ACL_DELETE, 1, "\\Deleted ", flags);
+        imap_set_flag (idata, IMAP_ACL_SEEN, 1, "\\Seen ", flags, sizeof (flags));
+        imap_set_flag (idata, IMAP_ACL_WRITE, 1, "\\Flagged ", flags, sizeof (flags));
+        imap_set_flag (idata, IMAP_ACL_WRITE, 1, "\\Answered ", flags, sizeof (flags));
+        imap_set_flag (idata, IMAP_ACL_DELETE, 1, "\\Deleted ", flags, sizeof (flags));
 
         mutt_remove_trailing_ws (flags);
 

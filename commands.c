@@ -238,12 +238,12 @@ void ci_bounce_message (HEADER *h, int *redraw)
    * This is the printing width of "...? ([y=yes]/n=no): ?" plus 2
    * for good measure. This is not ideal. FIXME.
    */
-  snprintf (prompt, sizeof (prompt),
+  snprintf (prompt, sizeof (prompt) - 4,
            (h ? _("Bounce message to %s") : _("Bounce messages to %s")), buf);
-  mutt_format_string (prompt, sizeof (prompt),
+  mutt_format_string (prompt, sizeof (prompt) - 4,
 		      0, COLS-extra_space, 0, 0,
 		      prompt, sizeof (prompt), 0);
-  strcat (prompt, "...?");
+  strcat (prompt, "...?");	/* __STRCAT_CHECKED__ */
   if (mutt_yesorno (prompt, 1) != 1)
   {
     rfc822_free_address (&adr);

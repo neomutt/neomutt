@@ -326,7 +326,7 @@ pid_t mutt_create_filter_fd (const char *, FILE **, FILE **, FILE **, int, int, 
 ADDRESS *alias_reverse_lookup (ADDRESS *);
 
 /* base64.c */
-void mutt_to_base64 (unsigned char*, const unsigned char*, int);
+void mutt_to_base64 (unsigned char*, const unsigned char*, size_t, size_t);
 int mutt_from_base64 (char*, const char*);
 
 /* utf8.c */

@@ -193,7 +193,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
       {
 	safe_realloc ((void **) &headers[x],
 		      mutt_strlen (headers[x]) + mutt_strlen (buf) + sizeof (char));
-	strcat (headers[x], buf);
+	strcat (headers[x], buf);	/* __STRCAT_CHECKED__ */
       }
     }
   } /* while (ftell (in) < off_end) */

@@ -342,7 +342,7 @@ int rfc2231_encode_string (char **pd)
   if (encode)
   {
     e = safe_malloc (dlen + 2*ext + strlen (charset) + 3);
-    sprintf (e, "%s''", charset);
+    sprintf (e, "%s''", charset);	/* __SPRINTF_CHECKED__ */
     t = e + strlen (e);
     for (s = d, slen = dlen; slen; s++, slen--)
       if (*s < 0x20 || *s >= 0x7f ||

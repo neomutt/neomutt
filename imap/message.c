@@ -623,7 +623,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
 
 /* imap_add_keywords: concatenate custom IMAP tags to list, if they
  *   appear in the folder flags list. Why wouldn't they? */
-void imap_add_keywords (char* s, HEADER* h, LIST* mailbox_flags)
+void imap_add_keywords (char* s, HEADER* h, LIST* mailbox_flags, size_t slen)
 {
   LIST *keywords;
 
@@ -636,8 +636,8 @@ void imap_add_keywords (char* s, HEADER* h, LIST* mailbox_flags)
   {
     if (msg_has_flag (mailbox_flags, keywords->data))
     {
-      strcat (s, keywords->data);
-      strcat (s, " ");
+      strncat (s, keywords->data, slen);
+      strncat (s, " ", slen);
     }
     keywords = keywords->next;
   }

@@ -1652,9 +1652,9 @@ static void encode_headers (LIST *h)
       rfc2047_encode_string (&tmp);
       safe_realloc ((void **) &h->data, 
 		    strlen (h->data) + 2 + strlen (tmp) + 1);
-      strcat (h->data, ": ");
-      strcat (h->data, tmp);
-      free (tmp);
+      strcat (h->data, ": ");	/* __STRCAT_CHECKED__ */
+      strcat (h->data, tmp);	/* __STRCAT_CHECKED__ */
+      safe_free ((void **) &tmp);
     }
   }
 }

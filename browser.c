@@ -176,7 +176,7 @@ folder_format_str (char *dest, size_t destlen, char op, const char *src,
       strfcpy (fn, folder->ff->name, sizeof(fn));
       if (folder->ff->st != NULL)
       {
-	strcat (fn, S_ISLNK (folder->ff->st->st_mode) ? "@" : 
+	strcat (fn, S_ISLNK (folder->ff->st->st_mode) ? "@" :		/* __STRCAT_CHECKED__ */
 		(S_ISDIR (folder->ff->st->st_mode) ? "/" : 
 		 ((folder->ff->st->st_mode & S_IXUSR) != 0 ? "*" : "")));
       }
@@ -566,7 +566,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
       else
       {
 	getcwd (LastDir, sizeof (LastDir));
-	strcat (LastDir, "/");
+	strcat (LastDir, "/");	/* __STRCAT_CHECKED__ */
 	strncat (LastDir, f, i);
       }
     }
@@ -682,7 +682,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    if (mutt_strcmp (state.entry[menu->current].name, "..") == 0)
 	    {
 	      if (mutt_strcmp ("..", LastDir + mutt_strlen (LastDir) - 2) == 0)
-		strcat (LastDir, "/..");
+		strcat (LastDir, "/..");	/* __STRCAT_CHECKED__ */
 	      else
 	      {
 		char *p = strrchr (LastDir + 1, '/');
@@ -694,13 +694,13 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 		  if (LastDir[0] == '/')
 		    LastDir[1] = 0;
 		  else
-		    strcat (LastDir, "/..");
+		    strcat (LastDir, "/..");	/* __STRCAT_CHECKED__ */
 		}
 	      }
 	    }
 	    else if (buffy)
 	    {
-	      sprintf (LastDir, "%s", state.entry[menu->current].name);
+	      strfcpy (LastDir, state.entry[menu->current].name, sizeof (LastDir));
 	      mutt_expand_path (LastDir, sizeof (LastDir));
 	    }
 #ifdef USE_IMAP
@@ -726,8 +726,11 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    }
 #endif
 	    else
-	      sprintf (LastDir + mutt_strlen (LastDir), "/%s",
-		       state.entry[menu->current].name);
+	    {
+	      char tmp[_POSIX_PATH_MAX];
+	      snprintf (tmp, sizeof (tmp), "%s/%s", LastDir, state.entry[menu->current].name);
+	      strfcpy (LastDir, tmp, sizeof (LastDir));
+	    }
 
 	    destroy_state (&state);
 	    if (killPrefix)

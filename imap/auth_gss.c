@@ -134,9 +134,9 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
 
     /* send token */
     mutt_to_base64 ((unsigned char*) buf1, send_token.value,
-      send_token.length);
+      send_token.length, sizeof (buf1) - 2);
     gss_release_buffer (&min_stat, &send_token);
-    strcat (buf1, "\r\n");
+    strncat (buf1, "\r\n", sizeof (buf1));
     mutt_socket_write (idata->conn, buf1);
 
     if (maj_stat == GSS_S_CONTINUE_NEEDED)
@@ -222,7 +222,8 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
     goto bail;
   }
 
-  mutt_to_base64 ((unsigned char*) buf1, send_token.value, send_token.length);
+  mutt_to_base64 ((unsigned char*) buf1, send_token.value, send_token.length,
+		  sizeof (buf1) - 2);
   dprint (2, (debugfile, "Requesting authorisation as %s\n",
     idata->conn->account.user));
   strncat (buf1, "\r\n", sizeof (buf1));

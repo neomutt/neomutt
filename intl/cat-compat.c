@@ -115,8 +115,8 @@ textdomain (domainname)
   if (new_catalog == (nl_catd) -1)
     {
       /* NLSPATH search didn't work, try absolute path */
-      sprintf (new_name, "%s/%s/LC_MESSAGES/%s.cat", LOCALEDIR, lang,
-	       PACKAGE);	/* __SPRINTF_CHECKED__ - sort of... */
+      sprintf (new_name, "%s/%s/LC_MESSAGES/%s.cat", LOCALEDIR, lang, 	/* __SPRINTF_CHECKED__ - sort of... */
+	       PACKAGE);
       new_catalog = catopen (new_name, 0);
 
       if (new_catalog == (nl_catd) -1)

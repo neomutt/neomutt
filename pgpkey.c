@@ -440,14 +440,14 @@ static pgp_key_t *pgp_select_key (pgp_key_t *keys,
 
   helpstr[0] = 0;
   mutt_make_help (buf, sizeof (buf), _("Exit  "), MENU_PGP, OP_EXIT);
-  strcat (helpstr, buf);
+  strcat (helpstr, buf);	/* __STRCAT_CHECKED__ */
   mutt_make_help (buf, sizeof (buf), _("Select  "), MENU_PGP,
 		  OP_GENERIC_SELECT_ENTRY);
-  strcat (helpstr, buf);
+  strcat (helpstr, buf);	/* __STRCAT_CHECKED__ */
   mutt_make_help (buf, sizeof (buf), _("Check key  "), MENU_PGP, OP_VERIFY_KEY);
-  strcat (helpstr, buf);
+  strcat (helpstr, buf);	/* __STRCAT_CHECKED__ */
   mutt_make_help (buf, sizeof (buf), _("Help"), MENU_PGP, OP_HELP);
-  strcat (helpstr, buf);
+  strcat (helpstr, buf);	/* __STRCAT_CHECKED__ */
 
   menu = mutt_new_menu ();
   menu->max = keymax;

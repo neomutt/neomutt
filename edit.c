@@ -152,7 +152,7 @@ be_include_messages (char *msg, char **buf, int *bufmax, int *buflen,
       if (Attribution)
       {
 	mutt_make_string (tmp, sizeof (tmp) - 1, Attribution, Context, Context->hdrs[n]);
-	strcat (tmp, "\n");
+	strcat (tmp, "\n");	/* __STRCAT_CHECKED__ */
       }
 
       if (*bufmax == *buflen)

@@ -498,7 +498,7 @@ void rfc822_qualify (ADDRESS *addr, const char *host)
     if (!addr->group && addr->mailbox && strchr (addr->mailbox, '@') == NULL)
     {
       p = safe_malloc (mutt_strlen (addr->mailbox) + mutt_strlen (host) + 2);
-      sprintf (p, "%s@%s", addr->mailbox, host);
+      sprintf (p, "%s@%s", addr->mailbox, host);	/* __SPRINTF_CHECKED__ */
       safe_free ((void **) &addr->mailbox);
       addr->mailbox = p;
     }

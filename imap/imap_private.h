@@ -195,7 +195,7 @@ int imap_code (const char* s);
 int imap_exec (IMAP_DATA* idata, const char* cmd, int flags);
 
 /* message.c */
-void imap_add_keywords (char* s, HEADER* keywords, LIST* mailbox_flags);
+void imap_add_keywords (char* s, HEADER* keywords, LIST* mailbox_flags, size_t slen);
 void imap_free_header_data (void** data);
 int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend);
 

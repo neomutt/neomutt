@@ -411,7 +411,7 @@ int _mutt_enter_fname (const char *prompt, char *buf, size_t blen, int *redraw, 
   {
     char *pc = safe_malloc (mutt_strlen (prompt) + 3);
 
-    sprintf (pc, "%s: ", prompt);
+    sprintf (pc, "%s: ", prompt);	/* __SPRINTF_CHECKED__ */
     mutt_ungetch (ch.op ? 0 : ch.ch, ch.op ? ch.op : 0);
     if (_mutt_get_field (pc, buf, blen, (buffy ? M_EFILE : M_FILE) | M_CLEAR, multiple, files, numfiles)
 	!= 0)

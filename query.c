@@ -434,7 +434,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 	  }
 	  else if (curpos + 2 < buflen)
 	  {
-	    strcat (buf, ", ");
+	    strcat (buf, ", ");	/* __STRCAT_CHECKED__ */
 	    rfc822_write_address ((char *) buf + curpos + 1, buflen - curpos - 1,
 				  result_to_addr(QueryTable[i].data));
 	    curpos = mutt_strlen (buf);

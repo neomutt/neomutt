@@ -762,7 +762,7 @@ int main (void)
       sprintf (buf2, fp_fmt[x], fp_nums[y]);
       if (strcmp (buf1, buf2))
       {
-	printf("snprintf doesn't match Format: %s\n\tsnprintf = %s\n\tsprintf  = %s\n", 
+	printf("snprintf doesn't match Format: %s\n\tsnprintf = %s\n\tsprintf  = %s\n",	/* __SPRINTF_CHECKED__ */
 	    fp_fmt[x], buf1, buf2);
 	fail++;
       }
@@ -776,7 +776,7 @@ int main (void)
       sprintf (buf2, int_fmt[x], int_nums[y]);
       if (strcmp (buf1, buf2))
       {
-	printf("snprintf doesn't match Format: %s\n\tsnprintf = %s\n\tsprintf  = %s\n", 
+	printf("snprintf doesn't match Format: %s\n\tsnprintf = %s\n\tsprintf  = %s\n",	/* __SPRINTF_CHECKED__ */
 	    int_fmt[x], buf1, buf2);
 	fail++;
       }
