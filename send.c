@@ -724,7 +724,7 @@ void mutt_set_followup_to (ENVELOPE *e)
      it hasn't already been set */
   if (option (OPTFOLLOWUPTO) && !e->mail_followup_to)
   {
-    if (mutt_is_list_recipient (e->to) || mutt_is_list_recipient (e->cc))
+    if (mutt_is_list_recipient (0, e->to, e->cc))
     {
       /* i am a list recipient, so set the Mail-Followup-To: field so that
        * i don't end up getting multiple copies of responses to my mail

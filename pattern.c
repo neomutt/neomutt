@@ -28,6 +28,7 @@ static const char rcsid[]="$Id$";
 #include <ctype.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <stdarg.h>
 
 
 
@@ -726,17 +727,29 @@ perform_or (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx, HEADER
   return 0;
 }
 
-static int match_adrlist (regex_t *rx, int match_personal, ADDRESS *a, short alladdr)
+static int match_adrlist (regex_t *rx, int match_personal, int alladdr,
+			  int n, ...)
 {
-  if (a==NULL)
-    return 0;
-  for (; a; a = a->next)
+  va_list ap;
+  ADDRESS *a;
+
+  va_start (ap, n);
+  for ( ; n ; n --)
   {
-    if (alladdr^((a->mailbox && regexec (rx, a->mailbox, 0, NULL, 0) == 0) ||
-	(match_personal && a->personal && regexec (rx, a->personal, 0, NULL, 0) == 0)))
-      return alladdr^1;
+    for (a = va_arg (ap, ADDRESS *) ; a ; a = a->next)
+    {
+      if (alladdr^
+	  ((a->mailbox && regexec (rx, a->mailbox, 0, NULL, 0) == 0) ||
+	   (match_personal && a->personal &&
+	    regexec (rx, a->personal, 0, NULL, 0) == 0)))
+      {
+	va_end (ap);
+	return (! alladdr); /* Found match, or non-match if alladdr */
+      }
+    }
   }
-  return alladdr^0;
+  va_end (ap);
+  return alladdr; /* No matches, or all matches if alladdr */
 }
 
 static int match_reference (regex_t *rx, LIST *refs)
@@ -747,12 +760,26 @@ static int match_reference (regex_t *rx, LIST *refs)
   return 0;
 }
 
-static int match_user (ADDRESS *p)
+int mutt_is_list_recipient (int alladdr, ADDRESS *a1, ADDRESS *a2)
 {
-  for (; p; p = p->next)
-    if (mutt_addr_is_user (p))
-      return 1;
-  return 0;
+  for (; a1 ; a1 = a1->next)
+    if (alladdr ^ mutt_is_mail_list (a1))
+      return (! alladdr);
+  for (; a2 ; a2 = a2->next)
+    if (alladdr ^ mutt_is_mail_list (a2))
+      return (! alladdr);
+  return alladdr;
+}
+
+static int match_user (int alladdr, ADDRESS *a1, ADDRESS *a2)
+{
+  for (; a1 ; a1 = a1->next)
+    if (alladdr ^ mutt_addr_is_user (a1))
+      return (! alladdr);
+  for (; a2 ; a2 = a2->next)
+    if (alladdr ^ mutt_addr_is_user (a2))
+      return (! alladdr);
+  return alladdr;
 }
 
 /* flags
@@ -802,13 +829,17 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
     case M_WHOLE_MSG:
       return (pat->not ^ msg_search (ctx, pat->rx, buf, sizeof (buf), pat->op, h->msgno));
     case M_SENDER:
-      return (pat->not ^ match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS, h->env->sender,pat->alladdr));
+      return (pat->not ^ match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS,
+					pat->alladdr, 1, h->env->sender));
     case M_FROM:
-      return (pat->not ^ match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS, h->env->from,pat->alladdr));
+      return (pat->not ^ match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS,
+					pat->alladdr, 1, h->env->from));
     case M_TO:
-      return (pat->not ^ match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS, h->env->to,pat->alladdr));
+      return (pat->not ^ match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS,
+					pat->alladdr, 1, h->env->to));
     case M_CC:
-      return (pat->not ^ match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS, h->env->cc,pat->alladdr));
+      return (pat->not ^ match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS,
+					pat->alladdr, 1, h->env->cc));
     case M_SUBJECT:
       return (pat->not ^ (h->env->subject && regexec (pat->rx, h->env->subject, 0, NULL, 0) == 0));
     case M_ID:
@@ -821,27 +852,18 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
     case M_REFERENCE:
       return (pat->not ^ match_reference (pat->rx, h->env->references));
     case M_ADDRESS:
-      return (pat->not ^ (match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS, h->env->from,pat->alladdr) ||
-			  match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS, h->env->sender,pat->alladdr) ||
-			  match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS, h->env->to,pat->alladdr) ||
-			  match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS, h->env->cc,pat->alladdr)));
-      break;
+      return (pat->not ^ match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS,
+					pat->alladdr, 4, h->env->from,
+					h->env->sender, h->env->to, h->env->cc));
     case M_RECIPIENT:
-      return (pat->not ^ (match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS, h->env->to,pat->alladdr) ||
-			  match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS, h->env->cc,pat->alladdr)));
+      return (pat->not ^ match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS,
+					pat->alladdr, 2, h->env->to, h->env->cc));
     case M_LIST:
-      return (pat->not ^ (mutt_is_list_recipient (h->env->to) ||
-			  mutt_is_list_recipient (h->env->cc)));
+      return (pat->not ^ mutt_is_list_recipient (pat->alladdr, h->env->to, h->env->cc));
     case M_PERSONAL_RECIP:
-      if (pat->alladdr)
-      {
-	int i = mutt_user_is_recipient (h);
-	return (pat->not ^ ((i == 1) || (i == 3 && h->env->cc && !h->env->cc->next)));
-      }
-      else
-	return (pat->not ^ (match_user (h->env->to) || match_user (h->env->cc)));
+      return (pat->not ^ match_user (pat->alladdr, h->env->to, h->env->cc));
     case M_PERSONAL_FROM:
-      return (pat->not ^ (match_user (h->env->from)));
+      return (pat->not ^ match_user (pat->alladdr, h->env->from, NULL));
 #ifdef _PGPPATH
    case M_PGP_SIGN:
      return (pat->not ^ (h->pgp & PGPSIGN));

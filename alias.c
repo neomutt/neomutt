@@ -410,12 +410,3 @@ int mutt_addr_is_user (ADDRESS *addr)
   
   return 0;
 }
-
-/* returns 1 if the list of address contains a known mailing list */
-int mutt_is_list_recipient (ADDRESS *a)
-{
-  for (; a; a = a->next)
-    if (mutt_is_mail_list (a))
-      return 1;
-  return 0;
-}
