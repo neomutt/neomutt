@@ -1,3 +1,7 @@
+2004-01-04 09:45:05  Brendan Cully  <brendan@kublai.com>  (roessler)
+
+	* imap/imap.c: Fix #1703.
+
 2004-01-04 09:42:35  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* smime.c: Fix a NULL pointer deference noted by Will Fiveash
