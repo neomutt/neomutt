@@ -2837,6 +2837,9 @@ Next, mutt will check if any of the types have a defined
 that, Mutt will look for any text type.  As a last attempt, mutt will
 look for any type it knows how to handle.
 
+To remove a MIME type from the <tt/alternative_order/ list, use the
+<tt/unalternative_order/ command.
+
 <sect1>MIME Lookup<label id="mime_lookup">
 <p>
 Mutt's mime&lowbar;lookup list specifies a list of mime-types that should not
@@ -2916,6 +2919,8 @@ The following are the commands understood by mutt.
 <tt><ref id="alias" name="unalias"></tt> &lsqb; * | <em/key/ ... &rsqb;
 <item>
 <tt><ref id="alternative_order" name="alternative&lowbar;order"></tt> <em/mimetype/ &lsqb; <em/mimetype/ ... &rsqb;
+<item>
+<tt><ref id="alternative_order" name="unalternative&lowbar;order"></tt> <em/mimetype/ &lsqb; <em/mimetype/ ... &rsqb;
 <item>
 <tt><ref id="auto_view" name="auto&lowbar;view"></tt> <em/mimetype/ &lsqb; <em/mimetype/ ... &rsqb;
 <item>
