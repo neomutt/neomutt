@@ -1788,7 +1788,10 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	break;
 
       case OP_PAGER_TOP:
-	topline = 0;
+        if (topline)
+	  topline = 0;
+      	else
+	  mutt_error _("Top of message is shown.");
 	break;
 
       case OP_HALF_UP:
