@@ -399,7 +399,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   
   mutt_message _("Sending APPEND command ...");
 
-  imap_quote_string (mbox, sizeof (mbox), mailbox);
+  imap_munge_mbox_name (mbox, sizeof (mbox), mailbox);
   imap_make_sequence (seq, sizeof (seq));
   snprintf (buf, sizeof (buf), "%s APPEND %s {%d}\r\n", seq, mbox, len);
 
@@ -492,6 +492,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   char buf[HUGE_STRING];
   char cmd[LONG_STRING];
   char mbox[LONG_STRING];
+  char mmbox[LONG_STRING];
   int rc;
   int n;
   IMAP_MBOX mx;
@@ -531,7 +532,8 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
 
   /* let's get it on */
   strncpy (mbox, cmd, sizeof (mbox));
-  snprintf (cmd, sizeof (cmd), "COPY %s \"%s\"", buf, mbox);
+  imap_munge_mbox_name (mmbox, sizeof (mmbox), cmd);
+  snprintf (cmd, sizeof (cmd), "COPY %s %s", buf, mmbox);
   rc = imap_exec (buf, sizeof (buf), CTX_DATA, cmd, IMAP_CMD_FAIL_OK);
   if (rc == -2)
   {

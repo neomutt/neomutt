@@ -309,6 +309,38 @@ void imap_unquote_string (char *s)
   *d = '\0';
 }
 
+/*
+ * Quoting and UTF-7 conversion
+ */
+
+void imap_munge_mbox_name (char *dest, size_t dlen, const char *src)
+{
+  char *buf;
+
+  buf = safe_strdup (src);
+  mutt_utf7_encode (&buf);
+
+  imap_quote_string (dest, dlen, buf);
+
+  free (buf);
+}
+
+void imap_unmunge_mbox_name (char *s)
+{
+  char *buf;
+
+  imap_unquote_string(s);
+
+  buf = safe_strdup (s);
+  if (buf)
+  {
+    mutt_utf7_decode (&buf);
+    strncpy (s, buf, strlen (s));
+  }
+  
+  free (buf);
+}
+
 /* imap_wordcasecmp: find word a in word list b */
 int imap_wordcasecmp(const char *a, const char *b)
 {

@@ -46,7 +46,7 @@ int imap_create_mailbox (CONTEXT* ctx, char* mailbox)
 {
   char buf[LONG_STRING], mbox[LONG_STRING];
 
-  imap_quote_string (mbox, sizeof (mbox), mailbox);
+  imap_munge_mbox_name (mbox, sizeof (mbox), mailbox);
   snprintf (buf, sizeof (buf), "CREATE %s", mbox);
       
   if (imap_exec (buf, sizeof (buf), CTX_DATA, buf, 0) != 0)
@@ -206,7 +206,7 @@ int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint)
   ctx->subj_hash = hash_create (1031);
 
   mutt_message (_("Reopening mailbox... %s"), CTX_DATA->selected_mailbox);
-  imap_quote_string (buf, sizeof (buf), CTX_DATA->selected_mailbox);
+  imap_munge_mbox_name (buf, sizeof (buf), CTX_DATA->selected_mailbox);
   imap_make_sequence (seq, sizeof (seq));
   snprintf (bufout, sizeof (bufout), "%s STATUS %s (MESSAGES)\r\n", seq, buf);
   mutt_socket_write (CTX_DATA->conn, bufout);
@@ -389,7 +389,7 @@ static int imap_check_acl (IMAP_DATA *idata)
   char buf[LONG_STRING];
   char mbox[LONG_STRING];
 
-  imap_quote_string (mbox, sizeof(mbox), idata->selected_mailbox);
+  imap_munge_mbox_name (mbox, sizeof(mbox), idata->selected_mailbox);
   snprintf (buf, sizeof (buf), "MYRIGHTS %s", mbox);
   if (imap_exec (buf, sizeof (buf), idata, buf, 0) != 0)
   {
@@ -579,7 +579,7 @@ int imap_open_mailbox (CONTEXT *ctx)
   memset (idata->rights, 0, (RIGHTSMAX+7)/8);
 
   mutt_message (_("Selecting %s..."), idata->selected_mailbox);
-  imap_quote_string (buf, sizeof(buf), idata->selected_mailbox);
+  imap_munge_mbox_name (buf, sizeof(buf), idata->selected_mailbox);
   imap_make_sequence (seq, sizeof (seq));
   snprintf (bufout, sizeof (bufout), "%s %s %s\r\n", seq,
     ctx->readonly ? "EXAMINE" : "SELECT", buf);
@@ -778,7 +778,7 @@ int imap_open_mailbox_append (CONTEXT *ctx)
 
   imap_fix_path (idata, mx.mbox, mailbox, sizeof (mailbox));
 
-  imap_quote_string (mbox, sizeof (mbox), mailbox);
+  imap_munge_mbox_name (mbox, sizeof (mbox), mailbox);
 				
   if (mutt_bit_isset(idata->capabilities,IMAP4REV1))
   {
@@ -1223,7 +1223,7 @@ int imap_mailbox_check (char *path, int new)
       strcpy (mx.mbox, buf);
 
   imap_make_sequence (seq, sizeof (seq));		
-  imap_quote_string (mbox, sizeof(mbox), buf);
+  imap_munge_mbox_name (mbox, sizeof(mbox), buf);
   strfcpy (mbox_unquoted, buf, sizeof (mbox_unquoted));
 
   /* The draft IMAP implementor's guide warns againts using the STATUS
@@ -1398,7 +1398,7 @@ int imap_subscribe (char *path, int subscribe)
     mutt_message (_("Subscribing to %s..."), buf);
   else
     mutt_message (_("Unsubscribing to %s..."), buf);
-  imap_quote_string (mbox, sizeof(mbox), buf);
+  imap_munge_mbox_name (mbox, sizeof(mbox), buf);
 
   snprintf (buf, sizeof (buf), "%s %s", subscribe ? "SUBSCRIBE" :
     "UNSUBSCRIBE", mbox);
@@ -1468,7 +1468,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
     if (list_word)
     {
       /* store unquoted */
-      imap_unquote_string (list_word);
+      imap_unmunge_mbox_name (list_word);
 
       /* if the folder isn't selectable, append delimiter to force browse
        * to enter it on second tab. */

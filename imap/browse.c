@@ -123,6 +123,10 @@ int imap_init_browse (char *path, struct browser_state *state)
   if (mx.mbox && mx.mbox[0] != '\0')
   {
     imap_fix_path (idata, mx.mbox, mbox, sizeof (mbox));
+    imap_munge_mbox_name (buf, sizeof (buf), mbox);
+    imap_unquote_string(buf); /* As kludgy as it gets */
+    mbox[sizeof (mbox) - 1] = '\0';
+    strncpy (mbox, buf, sizeof (mbox) - 1);
     n = mutt_strlen (mbox);
 
     dprint (3, (debugfile, "imap_init_browse: mbox: %s\n", mbox));
@@ -143,7 +147,7 @@ int imap_init_browse (char *path, struct browser_state *state)
 
         if (cur_folder)
         {
-          imap_unquote_string (cur_folder);
+          imap_unmunge_mbox_name (cur_folder);
 
           if (!noinferiors && cur_folder[0] &&
             (n = strlen (mbox)) < LONG_STRING-1)
@@ -295,7 +299,6 @@ static int add_list_result (CONNECTION *conn, const char *seq, const char *cmd,
 
     if (name)
     {
-      imap_unquote_string (name);
       /* Let a parent folder never be selectable for navigation */
       if (isparent)
         noselect = 1;
@@ -321,7 +324,7 @@ static void imap_add_folder (char delim, char *folder, int noselect,
   if (imap_parse_path (state->folder, &mx))
     return;
 
-  imap_unquote_string (folder);
+  imap_unmunge_mbox_name (folder);
 
   if (state->entrylen + 1 == state->entrymax)
   {
