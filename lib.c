@@ -885,9 +885,11 @@ void mutt_FormatString (char *dest,		/* output buffer */
 {
   char prefix[SHORT_STRING], buf[LONG_STRING], *cp, *wptr = dest, ch;
   char ifstring[SHORT_STRING], elsestring[SHORT_STRING];
-  size_t wlen = 0, count, len;
+  size_t wlen, count, len;
 
   destlen--; /* save room for the terminal \0 */
+  wlen = (flags & M_FORMAT_ARROWCURSOR && option (OPTARROWCURSOR)) ? 3 : 0;
+    
   while (*src && wlen < destlen)
   {
     if (*src == '%')

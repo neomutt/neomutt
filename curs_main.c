@@ -74,7 +74,7 @@ extern const char *ReleaseDate;
 
 void index_make_entry (char *s, size_t l, MUTTMENU *menu, int num)
 {
-  format_flag flag = M_FORMAT_MAKEPRINT;
+  format_flag flag = M_FORMAT_MAKEPRINT | M_FORMAT_ARROWCURSOR;
   int reverse = Sort & SORT_REVERSE, edgemsgno;
   HEADER *tmp, *h = Context->hdrs[Context->v2r[num]];
 

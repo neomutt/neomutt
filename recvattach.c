@@ -170,7 +170,7 @@ const char *mutt_attach_fmt (char *dest,
       {
 	char s[SHORT_STRING];
 	_mutt_make_string (s, sizeof (s), MsgFmt, NULL, aptr->content->hdr,
-	    M_FORMAT_FORCESUBJ | M_FORMAT_MAKEPRINT);
+	    M_FORMAT_FORCESUBJ | M_FORMAT_MAKEPRINT | M_FORMAT_ARROWCURSOR);
 	if (*s)
 	{
 	  snprintf (dest, destlen, fmt, s);
@@ -243,7 +243,7 @@ const char *mutt_attach_fmt (char *dest,
 
 void attach_entry (char *b, size_t blen, MUTTMENU *menu, int num)
 {
-  mutt_FormatString (b, blen, NONULL (AttachFormat), mutt_attach_fmt, (unsigned long) (((ATTACHPTR **)menu->data)[num]), 0);
+  mutt_FormatString (b, blen, NONULL (AttachFormat), mutt_attach_fmt, (unsigned long) (((ATTACHPTR **)menu->data)[num]), M_FORMAT_ARROWCURSOR);
 }
 
 int mutt_tag_attach (MUTTMENU *menu, int n)

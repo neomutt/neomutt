@@ -80,7 +80,7 @@ int alias_search (MUTTMENU *m, regex_t *re, int n)
 
 void alias_entry (char *s, size_t slen, MUTTMENU *m, int num)
 {
-  mutt_FormatString (s, slen, NONULL (AliasFmt), alias_format_str, (unsigned long) ((ALIAS **) m->data)[num], 0);
+  mutt_FormatString (s, slen, NONULL (AliasFmt), alias_format_str, (unsigned long) ((ALIAS **) m->data)[num], M_FORMAT_ARROWCURSOR);
 }
 
 int alias_tag (MUTTMENU *menu, int n)
