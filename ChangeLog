@@ -1,3 +1,7 @@
+2004-02-05 14:17:25  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* menu.c: Back out the patch for #1697.
+
 2004-02-02 18:17:46  Roland Rosenfeld  <roland@spinnaker.de>  (roessler)
 
 	* po/de.po: update
