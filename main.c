@@ -512,7 +512,7 @@ int main (int argc, char **argv)
     mutt_error = mutt_curses_error;
   }
 
-  /* Create the ~/Mail directory if it doesn't exist. */
+  /* Create the Maildir directory if it doesn't exist. */
   if (!option (OPTNOCURSES) && Maildir)
   {
     struct stat sb;
@@ -521,6 +521,10 @@ int main (int argc, char **argv)
 
     strfcpy (fpath, Maildir, sizeof (fpath));
     mutt_expand_path (fpath, sizeof (fpath));
+#ifdef USE_IMAP
+    /* we're not connected yet - skip mail folder creation */
+    if (!mx_is_imap (fpath))
+#endif
     if (stat (fpath, &sb) == -1 && errno == ENOENT)
     {
       snprintf (msg, sizeof (msg), _("%s does not exist. Create it?"), Maildir);
