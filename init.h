@@ -2712,6 +2712,15 @@ struct option_t MuttVars[] = {
   ** generated unless the user explicitly sets one using the ``$my_hdr''
   ** command.
   */
+#ifdef HAVE_LIBIDN
+  { "use_idn",		DT_BOOL, R_BOTH, OPTUSEIDN, 1},
+  /*
+  ** .pp
+  ** When \fIset\fP, Mutt will show you international domain names decoded.
+  ** Note: You can use IDNs for addresses even if this is \fIunset\fP.
+  ** This variable only affects decoding.
+  */
+#endif /* HAVE_LIBIDN */
 #ifdef HAVE_GETADDRINFO
   { "use_ipv6",		DT_BOOL, R_NONE, OPTUSEIPV6, 1},
   /*

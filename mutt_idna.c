@@ -46,6 +46,9 @@ int mutt_idna_to_local (const char *in, char **out, int flags)
 {
   *out = NULL;
 
+  if (!option (OPTUSEIDN))
+    goto notrans;
+
   if (!in)
     goto notrans;
   
@@ -57,7 +60,8 @@ int mutt_idna_to_local (const char *in, char **out, int flags)
 
   /* 
    * make sure that we can convert back and come out with the same
-   * domain name. */
+   * domain name. 
+   */
   
   if ((flags & MI_MAY_BE_IRREVERSIBLE) == 0)
   {
