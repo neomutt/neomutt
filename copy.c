@@ -36,8 +36,7 @@ static const char rcsid[]="$Id$";
 
 extern char MimeSpecials[];
 
-static int copy_delete_attach (HEADER *h, BODY *b, FILE *fpin, FILE *fpout,
-			       int update);
+static int copy_delete_attach (BODY *b, FILE *fpin, FILE *fpout);
 
 /* Ok, the only reason for not merging this with mutt_copy_header()
  * below is to avoid creating a HEADER structure in message_handler().
@@ -91,7 +90,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
 	    (mutt_strncasecmp ("Status:", buf, 7) == 0 ||
 	     mutt_strncasecmp ("X-Status:", buf, 9) == 0))
 	  continue;
-	if ((flags & (CH_UPDATE_LEN | CH_XMIT)) &&
+	if ((flags & (CH_UPDATE_LEN | CH_XMIT | CH_NOLEN)) &&
 	    (mutt_strncasecmp ("Content-Length:", buf, 15) == 0 ||
 	     mutt_strncasecmp ("Lines:", buf, 6) == 0))
 	  continue;
@@ -155,7 +154,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
 	  (mutt_strncasecmp ("Status:", buf, 7) == 0 ||
 	   mutt_strncasecmp ("X-Status:", buf, 9) == 0))
 	continue;
-      if ((flags & (CH_UPDATE_LEN | CH_XMIT)) &&
+      if ((flags & (CH_UPDATE_LEN | CH_XMIT | CH_NOLEN)) &&
 	  (mutt_strncasecmp ("Content-Length:", buf, 15) == 0 ||
 	   mutt_strncasecmp ("Lines:", buf, 6) == 0))
 	continue;
@@ -262,6 +261,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
  	CH_DECODE	RFC2047 header decoding
  	CH_FROM		retain the "From " message separator
  	CH_MIME		ignore MIME fields
+	CH_NOLEN	don't write Content-Length: and Lines:
  	CH_NONEWLINE	don't output a newline after the header
  	CH_NOSTATUS	ignore the Status: and X-Status:
  	CH_PREFIX	quote header with $indent_str
@@ -341,7 +341,8 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
     }
   }
 
-  if (flags & CH_UPDATE_LEN)
+  if (flags & CH_UPDATE_LEN &&
+      (flags & CH_NOLEN) == 0)
   {
     fprintf (out, "Content-Length: %ld\n", h->content->length);
     if (h->lines != 0 || h->content->length == 0)
@@ -390,14 +391,78 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
     if (flags & M_CM_PREFIX)
       chflags |= CH_PREFIX;
 
-   /* eventually update Content-Length/Lines: count in HEADER,
-    * for now we punt (don't copy them in mutt_copy_header() */
-     if (hdr->attach_del)
-     {
-       dprint (1, (debugfile, "changing flags\n"));
-       chflags |= CH_XMIT;
-       chflags &= ~CH_UPDATE_LEN;
-     }
+    else if (hdr->attach_del && (chflags & CH_UPDATE_LEN))
+    {
+      /* We shall delete attachments and update the length count.
+       * We have to copy/delete the body to a temporary file so we
+       * can count the new length before copying the headers */
+      FILE *fpbody;
+      char tempfile[_POSIX_PATH_MAX];
+      int new_lines;
+      long new_length;
+      long new_offset;
+      int ch;
+
+      /* Make and open a temporary file */
+      mutt_mktemp (tempfile);
+      if ((fpbody = safe_fopen (tempfile, "w+")) == NULL)
+      {
+	mutt_perror (_("Failed to open temporary file"));
+	return -1;
+      }
+
+      /* Copy the body to the temporary file */
+      fseek (fpin, body->offset, SEEK_SET);
+      if (copy_delete_attach (body, fpin, fpbody) ||
+	  fflush (fpbody))
+	goto write_fail;
+
+      /* Get the length and count the lines in the temporary file */
+      new_length = ftell (fpbody);
+      rewind (fpbody);
+      new_lines = 0;
+      while ((ch = getc (fpbody)) != EOF)
+	if (ch == '\n')
+	  new_lines ++;
+
+      /* Now copy the headers to fpout */
+      if (mutt_copy_header (fpin, hdr, fpout,
+			    chflags | CH_NOLEN | CH_NONEWLINE, NULL))
+	goto write_fail;
+      fprintf (fpout,
+	       "Content-Length: %ld\n"
+	       "Lines: %d\n"
+	       "\n", new_length, new_lines);
+      if (ferror (fpbody))
+	goto write_fail;
+      new_offset = ftell (fpout);
+
+      /* Copy the body from the temporary file to fpout */
+      rewind (fpbody);
+      if (mutt_copy_bytes (fpbody, fpout, new_length))
+	goto write_fail;
+
+      /* Update original message if we are sync'ing a mailfolder */ 
+      if (flags & M_CM_UPDATE)
+      {
+	hdr->attach_del = 0;
+	hdr->lines = new_lines;
+	body->offset = new_offset;
+	body->length = new_length;
+	mutt_free_body (&body->parts);
+      }
+
+      /* Clean up and return */
+      (void) fclose (fpbody);
+      mutt_unlink (tempfile);
+      return 0;
+
+      write_fail:
+      mutt_perror (_("Failed to write temporary file"));
+      (void) fclose (fpbody);
+      mutt_unlink (tempfile);
+      return -1;
+    }
 
     if (mutt_copy_header (fpin, hdr, fpout, chflags,
 			  (chflags & CH_PREFIX) ? prefix : NULL) == -1)
@@ -466,19 +531,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
       } 
     }
     else
-    {
-      if (hdr->attach_del)
-      {
-	if (copy_delete_attach (hdr, hdr->content, fpin, fpout,
-				flags & M_CM_UPDATE) == -1)
-	  return -1;
-      }
-      else 
-      {
-	if (mutt_copy_bytes (fpin, fpout, body->length) == -1)
-	  return -1;
-      }
-    }
+      return mutt_copy_bytes (fpin, fpout, body->length);
   }
   return 0;
 }
@@ -539,138 +592,81 @@ mutt_append_message (CONTEXT *dest, CONTEXT *src, HEADER *hdr, int cmflags,
   return r;
 }
 
-static BODY *new_deleted_body ()
+/*
+ * This function copies a message body, while deleting _in_the_copy_
+ * any attachments which are marked for deletion.
+ * Nothing is changed in the original message -- this is left to the caller.
+ *
+ * The function will return 0 on success and -1 on failure.
+ */
+static int copy_delete_attach (BODY *b, FILE *fpin, FILE *fpout)
 {
-  BODY *b = safe_calloc (1, sizeof (BODY));
-  PARAMETER *p = mutt_new_parameter();
+  BODY *part;
   char date[SHORT_STRING];
 
   mutt_make_date (date, sizeof (date));
-  date[mutt_strlen (date) - 1] = 0; /* cut off ending newline character */
-
-  p->attribute = safe_strdup ("access-type");
-  p->value = safe_strdup ("x-mutt-deleted");
-  p->next = mutt_new_parameter();
-  p->next->attribute = safe_strdup ("expiration");
-  p->next->value = safe_strdup (date + 6); /* cut off the leading "Date: " */
-
-  b->type = TYPEMESSAGE;
-  b->subtype = safe_strdup ("external-body");
-  b->parameter = p;
-  b->encoding = ENC7BIT;
-
-  return b;
-}
-
-/*
- * copy_delete_attach()
- *
- * This function copies a message into an mbox folder and deletes 
- * any attachments which are marked for deletion
- *
- * A side effect of this is that any message copied using this function
- * will not have content-length: and lines: headers, but these will be updated 
- * on the next sync of this mailbox
- *
- * The arguments are:
- * HEADER *h:   For the first call: The header of the message to copy,
- *              for recursive calls: NULL
- * BODY *b:     The message to copy
- * FILE *fpin:  Where to copy from
- * FILE *fpout: Where to copy to
- * int update:  Non-zero to update the original message's structure in memory
- *
- * The function will return:
- *              -1 on failure, +1 if any attachments were deleted, and else 0
- */
-static int copy_delete_attach (HEADER *h, BODY *b, FILE *fpin, FILE *fpout,
-			       int update)
-{
-  long saved_fpout_offset = ftell (fpout);
-  BODY *part;
-  BODY *previous = NULL;
-  int did_deletion = 0;
-
-  dprint (1, (debugfile, "orig length: %ld  orig offset: %ld\n",
-	      b->length, b->offset));
+  date[5] = date[mutt_strlen (date) - 1] = '\"';
 
   for (part = b->parts ; part ; part = part->next)
   {
-    if (part->deleted)
+    if (part->deleted || part->parts)
     {
-      BODY *deleted = new_deleted_body ();
-
-      /* Copy message from current position to deleted attachment headers */
-      mutt_copy_bytes (fpin, fpout, part->hdr_offset - ftell (fpin));
-
-      if (mutt_write_mime_header (deleted, fpout) == -1)
-	return -1;
-      if (putc ('\n', fpout) == EOF)
+      /* Copy till start of this part */
+      if (mutt_copy_bytes (fpin, fpout, part->hdr_offset - ftell (fpin)))
 	return -1;
 
-      if (mutt_copy_hdr (fpin, fpout, ftell (fpin), part->offset,
-			 0, NULL) == -1)
-	return -1;
-
-      /* Skip the deleted body */
-      fseek (fpin, part->offset + part->length, SEEK_SET);
-      did_deletion = 1;
-
-      if (update)
+      if (part->deleted)
       {
-	part->deleted = 0;
-	if (previous)
-	  previous->next = deleted;
-	else
-	  b->parts = deleted;
-	deleted->next = part->next;
-	deleted->parts = part;
-	part->next = NULL;
+	fprintf (fpout,
+		 "Content-Type: message/external-body; access-type=x-mutt-deleted;\n"
+		 "\texpiration=%s; length=%ld\n"
+		 "\n", date + 5, part->length);
+	if (ferror (fpout))
+	  return -1;
+
+	/* Copy the original mime headers */
+	if (mutt_copy_bytes (fpin, fpout, part->offset - ftell (fpin)))
+	  return -1;
+
+	/* Skip the deleted body */
+	fseek (fpin, part->offset + part->length, SEEK_SET);
+      }
+      else if (part->hdr && part->parts->deleted)
+      {
+	/* Here we have a message which only part is deleted. */
+	/* First copy it's mime headers */
+	if (mutt_copy_bytes (fpin, fpout, part->offset - ftell (fpin)))
+	  return -1;
+
+	/* Then change the only parts Content-Type. */
+	if (mutt_copy_header (fpin, part->hdr, fpout,
+			      CH_MIME | CH_NOLEN | CH_NONEWLINE, NULL))
+	  return -1;
+	fprintf (fpout,
+		 "Mime-Version: 1.0\n"
+		 "Content-Type: message/external-body; access-type=x-mutt-deleted;\n"
+		 "\texpiration=%s; length=%ld\n"
+		 "\n", date + 5, part->parts->length);
+
+	/* And output the mime headers of the deleted part */
+	mutt_write_mime_header (part->parts, fpout);
+	if (putc ('\n', fpout) == EOF)
+	  return -1;
+
+	/* Skip the deleted body */
+	fseek (fpin, part->offset + part->length, SEEK_SET);
       }
       else
-	mutt_free_body (&deleted);
-    }
-    else if (part->parts)
-    {
-      int rc;
-
-      /* Copy message from current position to attachment headers */
-      mutt_copy_bytes (fpin, fpout, part->hdr_offset - ftell (fpin));
-
-      rc = copy_delete_attach (NULL, part, fpin, fpout, update);
-
-      if (rc == -1)
-	return -1;
-      else if (rc == 1)
       {
-	did_deletion = 1;
-	if (part->hdr && update)
-	  part->hdr->lines = 0;
+	if (copy_delete_attach (part, fpin, fpout))
+	  return -1;
       }
     }
-    previous = part;
   }
 
-  /* Copy til end of message */
-  mutt_copy_bytes (fpin, fpout, b->length - (ftell (fpin) - b->offset));
+  /* Copy the last parts */
+  if (mutt_copy_bytes (fpin, fpout, b->offset + b->length - ftell (fpin)))
+    return -1;
 
-  /*
-   * Update the content-length and offset.  This offset will be wrong for
-   * mbox/mh type folders, but will be corrected in mbox_sync_mailbox()
-   */
-  if (update && did_deletion)
-  {
-    if (h)
-    {
-      h->attach_del = 0;
-      h->lines = 0;
-    }
-    b->offset = saved_fpout_offset;
-    b->length = ftell (fpout) - saved_fpout_offset;
-
-    dprint (1, (debugfile, "new length: %ld  new offset: %ld\n",
-		b->length, b->offset));
-  }
-
-  return did_deletion;
+  return 0;
 }
