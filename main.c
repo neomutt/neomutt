@@ -93,6 +93,7 @@ static void mutt_usage (void)
        mutt -v[v]\n\
 \n\
 options:\n\
+  -A <alias>\texpand the given alias\n\
   -a <file>\tattach a file to the message\n\
   -b <address>\tspecify a blind carbon-copy (BCC) address\n\
   -c <address>\tspecify a carbon-copy (CC) address\n\
