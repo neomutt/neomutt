@@ -1,3 +1,7 @@
+2005-02-19 16:00:24  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* sendlib.c: Fix Debian 295528.
+
 2005-02-17 03:33:00  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* OPS, browser.c, doc/manual.sgml.head, functions.h,
