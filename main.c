@@ -48,6 +48,7 @@ under certain conditions; type `mutt -vv' for details.\n");
 
 const char Copyright[] = N_("\
 Copyright (C) 1996-9 Michael R. Elkins <me@cs.hmc.edu>\n\
+Copyright (C) 1996-9 Brandon Long <blong@fiction.net>\n\
 Copyright (C) 1997-9 Thomas Roessler <roessler@guug.de>\n\
 Copyright (C) 1998-9 Werner Koch <wk@isil.d.shuttle.de>\n\
 \n\
@@ -130,7 +131,7 @@ static void show_version (void)
   struct utsname uts;
 
   printf ("Mutt %s (%s)\n", MUTT_VERSION, ReleaseDate);
-  puts (_(Notice));
+  puts (Notice);
 
   uname (&uts);
 

@@ -183,7 +183,6 @@ short pgp_cansign (unsigned char type)
   {
   case 1:
   case 3:
-  case 16:
   case 17:
   case 20:
     return 1;
@@ -406,6 +405,23 @@ void pgp_free_uid (pgp_uid_t ** upp)
   }
 
   *upp = NULL;
+}
+
+pgp_uid_t *pgp_copy_uids (pgp_uid_t *up, pgp_key_t *parent)
+{
+  pgp_uid_t *l = NULL;
+  pgp_uid_t **lp = &l;
+
+  for (; up; up = up->next)
+  {
+    *lp = safe_calloc (1, sizeof (pgp_uid_t));
+    (*lp)->trust  = up->trust;
+    (*lp)->addr   = safe_strdup (up->addr);
+    (*lp)->parent = parent;
+    lp = &(*lp)->next;
+  }
+
+  return l;
 }
 
 static void _pgp_free_key (pgp_key_t ** kpp)
@@ -895,7 +911,11 @@ static pgp_key_t *pgp_parse_keyblock (FILE * fp)
 	{
 	  p->flags |= KEYFLAG_SUBKEY;
 	  if (p != root)
-	    p->parent = root;
+	  {
+	    p->parent  = root;
+	    p->address = pgp_copy_uids (root->address, p);
+	    while (*addr) addr = &(*addr)->next;
+	  }
 	}
 	break;
       }
@@ -906,7 +926,7 @@ static pgp_key_t *pgp_parse_keyblock (FILE * fp)
 	pgp_parse_sig (buff, l, p);
 	break;
       }
-      
+
       case PT_TRUST:
       {
 	dprint (5, (debugfile, "PT_TRUST: "));
@@ -943,7 +963,7 @@ static pgp_key_t *pgp_parse_keyblock (FILE * fp)
 	dprint (5, (debugfile, "\"%s\"\n", chr));
 
 	mutt_decode_utf8_string (chr, chs);
-	*addr = uid = safe_calloc (sizeof (pgp_uid_t), 1); /* XXX */
+	*addr = uid = safe_calloc (1, sizeof (pgp_uid_t)); /* XXX */
 	uid->addr = chr;
 	uid->parent = p;
 	uid->trust = 0;

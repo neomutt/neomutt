@@ -30,6 +30,7 @@ struct folder_file
 #ifdef USE_IMAP
   short notfolder;
 #endif
+  unsigned tagged : 1;
 };
 
 struct browser_state

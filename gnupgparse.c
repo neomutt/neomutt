@@ -225,8 +225,7 @@ pgp_key_t *gpg_get_candidates (struct pgp_vinfo * pgp, pgp_ring_t keyring,
   k = NULL;
   while (fgets (buf, sizeof (buf) - 1, fp))
   {
-    kk = parse_pub_line (buf, &is_sub, k);
-    if (!kk)
+    if (!(kk = parse_pub_line (buf, &is_sub, k)))
       continue;
 
     /* Only append kk to the list if it's new. */
@@ -235,16 +234,22 @@ pgp_key_t *gpg_get_candidates (struct pgp_vinfo * pgp, pgp_ring_t keyring,
       if (k)
 	kend = &k->next;
       *kend = k = kk;
-      
+
       if (is_sub)
       {
-	k->flags |= KEYFLAG_SUBKEY;
-	k->parent = mainkey;
+	pgp_uid_t **l;
+
+	k->flags  |= KEYFLAG_SUBKEY;
+	k->parent  = mainkey;
+	for (l = &k->address; *l; l = &(*l)->next)
+	  ;
+	*l = pgp_copy_uids (mainkey->address, k);
       }
       else
 	mainkey = k;
     }
   }
+
   if (ferror (fp))
     mutt_perror ("fgets");
 

@@ -23,15 +23,15 @@
 #define PGPSIGN    2
 #define PGPKEY     4
 
-#define KEYFLAG_CANSIGN (1 << 0)
-#define KEYFLAG_CANENCRYPT (1 << 1)
-#define KEYFLAG_EXPIRED (1 << 8)
-#define KEYFLAG_REVOKED (1 << 9)
-#define KEYFLAG_DISABLED (1 << 10)
-#define KEYFLAG_SUBKEY (1 << 11)
-#define KEYFLAG_CRITICAL (1 << 12)
-#define KEYFLAG_PREFER_ENCRYPTION (1 << 13)
-#define KEYFLAG_PREFER_SIGNING (1 << 14)
+#define KEYFLAG_CANSIGN 		(1 <<  0)
+#define KEYFLAG_CANENCRYPT 		(1 <<  1)
+#define KEYFLAG_EXPIRED 		(1 <<  8)
+#define KEYFLAG_REVOKED 		(1 <<  9)
+#define KEYFLAG_DISABLED 		(1 << 10)
+#define KEYFLAG_SUBKEY 			(1 << 11)
+#define KEYFLAG_CRITICAL 		(1 << 12)
+#define KEYFLAG_PREFER_ENCRYPTION 	(1 << 13)
+#define KEYFLAG_PREFER_SIGNING 		(1 << 14)
 
 #define KEYFLAG_CANTUSE (KEYFLAG_DISABLED|KEYFLAG_REVOKED|KEYFLAG_EXPIRED)
 #define KEYFLAG_RESTRICTIONS (KEYFLAG_CANTUSE|KEYFLAG_CRITICAL)
@@ -42,7 +42,7 @@ typedef struct pgp_keyinfo
 {
   char *keyid;
   struct pgp_uid *address;
-  short flags;
+  int flags;
   short keylen;
   unsigned long gen_time;
   const char *algorithm;
@@ -196,6 +196,8 @@ pgp_key_t *pgp_get_candidates (struct pgp_vinfo *, pgp_ring_t, LIST *);
 pgp_key_t *pgp_getkeybyaddr (struct pgp_vinfo *pgp, ADDRESS *, short, pgp_ring_t);
 pgp_key_t *pgp_getkeybystr (struct pgp_vinfo *pgp, char *, short, pgp_ring_t);
 pgp_key_t *pgp_remove_key (pgp_key_t **, pgp_key_t *);
+
+pgp_uid_t *pgp_copy_uids (pgp_uid_t *, pgp_key_t *);
 
 short pgp_canencrypt (unsigned char);
 short pgp_cansign (unsigned char);
