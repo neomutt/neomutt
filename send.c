@@ -874,6 +874,8 @@ ci_send_message (int flags,		/* send mode */
   FILE *tempfp = NULL;
   BODY *pbody;
   int i, killfrom = 0;
+  struct stat st;
+
 #ifdef _PGPPATH
   BODY *save_content = NULL;
   char *pgpkeylist = NULL;
@@ -1158,6 +1160,7 @@ ci_send_message (int flags,		/* send mode */
   {
 main_loop:
 
+    mutt_pretty_mailbox (fcc);
     i = mutt_compose_menu (msg, fcc, sizeof (fcc), cur);
     if (i == -1)
     {
@@ -1203,6 +1206,19 @@ main_loop:
     goto main_loop;
   }
 
+  /* Do FCC checking before any real processing happens, so we 
+   * don't have to do too much clean-up work.
+   */
+  
+  mutt_expand_path (fcc, sizeof (fcc));
+  if (*fcc && mutt_strcmp ("/dev/null", fcc) != 0 &&
+      !option (OPTNOCURSES) && !(flags & SENDMAILX) &&
+      !mutt_save_confirm (fcc, &st))
+  {
+    mutt_clear_error ();
+    goto main_loop;
+  }
+
   if (msg->content->next)
     msg->content = mutt_make_multipart (msg->content);
 
@@ -1238,12 +1254,17 @@ main_loop:
   }
 #endif /* _PGPPATH */
 
+  /* the following check may _badly_ interact with the PGP code above. */
+  
+#if 0
   if (flags & SENDEDITMSG)
   {
    int really_send = mutt_yesorno (_("Message edited. Really send?"), 1);
    if (really_send != M_YES)
      goto main_loop;
   }
+#endif
+
 
   if (!option (OPTNOCURSES) && !(flags & SENDMAILX))
     mutt_message _("Sending message...");
@@ -1252,24 +1273,14 @@ main_loop:
   encode_descriptions (msg->content);
 
   /* save a copy of the message, if necessary. */
-  mutt_expand_path (fcc, sizeof (fcc));
+
   if (*fcc && mutt_strcmp ("/dev/null", fcc) != 0)
   {
-    struct stat st;
     BODY *tmpbody = msg->content;
 #ifdef _PGPPATH
     BODY *save_sig = NULL;
     BODY *save_parts = NULL;
 #endif /* _PGPPATH */
-
-    /* honor $confirmcreate and $confirmappend  in interactive mode */
-    if (!option (OPTNOCURSES) && !(flags & SENDMAILX) && 
-	!mutt_save_confirm (fcc, &st))
-    {
-      mutt_pretty_mailbox (fcc);
-      mutt_clear_error();
-      goto main_loop;
-    }
 
     /* check to see if the user wants copies of all attachments */
     if (!option (OPTFCCATTACH) && msg->content->type == TYPEMULTIPART)
