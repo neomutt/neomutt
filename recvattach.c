@@ -164,7 +164,6 @@ const char *mutt_attach_fmt (char *dest,
   char fmt[16];
   char tmp[SHORT_STRING];
   ATTACHPTR *aptr = (ATTACHPTR *) data;
-  char charset[SHORT_STRING];
   int optional = (flags & M_FORMAT_OPTIONAL);
   size_t l;
   
