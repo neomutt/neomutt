@@ -680,6 +680,17 @@ bail:
   return rv;
 }
 
+static FILE *
+mutt_save_attachment_open (char *path, int flags)
+{
+  if (flags == M_SAVE_APPEND)
+    return fopen (path, "a");
+  if (flags == M_SAVE_OVERWRITE)
+    return fopen (path, "w");		/* __FOPEN_CHECKED__ */
+  
+  return safe_fopen (path, "w");
+}
+
 /* returns 0 on success, -1 on error */
 int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
 {
@@ -737,13 +748,7 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
       STATE s;
       
       memset (&s, 0, sizeof (s));
-      if (flags == M_SAVE_APPEND)
-	s.fpout = fopen (path, "a");
-      else if (flags == M_SAVE_OVERWRITE)
-	s.fpout = fopen (path, "w");		/* __FOPEN_CHECKED__ */
-      else
-	s.fpout = safe_fopen (path, "w");
-      if (s.fpout == NULL)
+      if ((s.fpout = mutt_save_attachment_open (path, flags)) == NULL)
       {
 	mutt_perror ("fopen");
 	return (-1);
@@ -769,23 +774,23 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
       mutt_perror ("fopen");
       return (-1);
     }
-
-    if ((nfp = safe_fopen (path, "w")) == NULL)
+    
+    if ((nfp = mutt_save_attachment_open (path, flags)) == NULL)
     {
       mutt_perror ("fopen");
-      fclose (ofp);
+      safe_fclose (&ofp);
       return (-1);
     }
 
     if (mutt_copy_stream (ofp, nfp) == -1)
     {
       mutt_error _("Write fault!");
-      fclose (ofp);
-      fclose (nfp);
+      safe_fclose (&ofp);
+      safe_fclose (&nfp);
       return (-1);
     }
-    fclose (ofp);
-    fclose (nfp);
+    safe_fclose (&ofp);
+    safe_fclose (&nfp);
   }
 
   return 0;
