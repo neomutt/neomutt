@@ -760,7 +760,7 @@ static int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint)
       }
       if (!found)
       {
-	for (j = 0; j < i; j++)
+	for (j = 0; j < i && j < old_msgcount; j++)
 	{
 	  if (old_hdrs[j] == NULL)
 	    continue;
