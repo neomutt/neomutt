@@ -1,6 +1,6 @@
 # Catalan messages for mutt.
 # Copyright (C) 2001 Free Software Foundation, Inc.
-# Ivan Vilata i Balaguer <ivan@selidor.net>, 2001, 2002, 2003.
+# Ivan Vilata i Balaguer <ivan@selidor.net>, 2001, 2002, 2003, 2004.
 #
 # ivb (2001/12/08)
 # ivb  Ací cal ajustar-se a voltes a ~80 columnes.  Les traduccions que
@@ -10,7 +10,7 @@
 # IDN = Internationalized Domain Name
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt 1.5.4i\n"
+"Project-Id-Version: mutt 1.5.6\n"
 "POT-Creation-Date: 2004-02-01 19:24+0100\n"
 "PO-Revision-Date: 2003-04-01 21:40+0200\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
@@ -247,17 +247,17 @@ msgstr "Màscara de fitxers: "
 
 #: browser.c:1047
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
-msgstr "Ordena inversament per (d)ata, (a)lfabet, (t)amany, o (n)o ordenar? "
+msgstr "Ordena inversament per (d)ata, (a)lfabet, (m)ida, o (n)o ordenar? "
 
 #: browser.c:1048
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
-msgstr "Ordena per (d)ata, (a)lfabet, (t)amany, o (n)o ordenar? "
+msgstr "Ordena per (d)ata, (a)lfabet, (m)ida, o (n)o ordenar? "
 
-# ivb (2001/11/18)
-# ivb  (d)ata, (a)lfabet, (t)amany, (n)o
+# ivb (2004/03/20)
+# ivb  (d)ata, (a)lfabet, (m)ida, (n)o
 #: browser.c:1049
 msgid "dazn"
-msgstr "datn"
+msgstr "damn"
 
 #: browser.c:1115
 msgid "New file name: "
@@ -365,7 +365,7 @@ msgstr "El propietari del certificat S/MIME no concorda amb el o la remitent."
 
 #: commands.c:187 commands.c:198
 msgid "Warning: Part of this message has not been signed."
-msgstr ""
+msgstr "Avís: Part d'aquest missatge no ha estat signat."
 
 #: commands.c:189
 msgid "S/MIME signature could NOT be verified."
@@ -469,20 +469,18 @@ msgstr "No s'han pogut imprimir els missatges."
 #: commands.c:504
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
-msgstr ""
-"Ordre inv (d)ata/(o)rig/(r)ebut/(t)ema/de(s)t/(f)il/(c)ap/taman(y)/(p)unt?: "
+msgstr "Ordre inv. (d)ata/(o)rig/(r)ebut/(t)ema/de(s)t/(f)il/(c)ap/(m)ida/(p)unts?: "
 
 #: commands.c:505
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
-msgstr ""
-"Ordre (d)ata/(o)rig/(r)ebut/(t)ema/de(s)t/(f)il/(c)ap/taman(y)/(p)unt?: "
+msgstr "Ordre (d)ata/(o)rig/(r)ebut/(t)ema/de(s)t/(f)il/(c)ap/(m)ida/(p)unts?: "
 
-# ivb (2001/11/18)
-# ivb  (d)ata/(o)rig/(r)ebut/(t)ema/de(s)t/(f)il/(c)ap/taman(y)/(p)unt
+# ivb (2004/03/20)
+# ivb  (d)ata/(o)rig/(r)ebut/(t)ema/de(s)t/(f)il/(c)ap/(m)ida/(p)unt
 #: commands.c:506
 msgid "dfrsotuzc"
-msgstr "dortsfcyp"
+msgstr "dortsfcmp"
 
 #: commands.c:559
 msgid "Shell command: "
@@ -971,9 +969,8 @@ msgid "No tagged messages."
 msgstr "No hi ha cap missatge marcat."
 
 #: curs_main.c:653 menu.c:896
-#, fuzzy
 msgid "Nothing to do."
-msgstr "S'està connectant amb «%s»..."
+msgstr "No hi ha res a fer."
 
 #: curs_main.c:739
 msgid "Jump to message: "
@@ -1131,20 +1128,20 @@ msgid ""
 ".\t\ton a line by itself ends input\n"
 msgstr ""
 "~~\t\tinsereix una línia que comença amb un sol ~\n"
-"~b usuaris\tafig els usuaris al camp Bcc:\n"
-"~c usuaris\tafig els usuaris al camp Cc:\n"
-"~f missatges\tinclou els missatges\n"
-"~F missatges\tel mateix que ~f, però incloent també les capçaleres\n"
+"~b USUARIS\tafig els USUARIS al camp Bcc:\n"
+"~c USUARIS\tafig els USUARIS al camp Cc:\n"
+"~f MISSATGES\tinclou els MISSATGES\n"
+"~F MISSATGES\tel mateix que ~f, però incloent també les capçaleres\n"
 "~h\t\tedita la capçalera del missatge\n"
-"~m missatges\tinclou i cita els missatges\n"
-"~M missatges\tel mateix que ~m, però incloent també les capçaleres\n"
+"~m MISSATGES\tinclou i cita els MISSATGES\n"
+"~M MISSATGES\tel mateix que ~m, però incloent també les capçaleres\n"
 "~p\t\timprimeix el missatge\n"
 "~q\t\tescriu el fitxer i abandona l'editor\n"
-"~r fitxer\tllig un fitxer en l'editor\n"
-"~t usuaris\tafig els usuaris al camp To:\n"
+"~r FITXER\tllig un FITXER en l'editor\n"
+"~t USUARIS\tafig els USUARIS al camp To:\n"
 "~u\t\tretorna a la línia anterior\n"
 "~v\t\tedita el missatge amb l'editor $visual\n"
-"~w fitxer\tescriu el missatge en el fitxer\n"
+"~w FITXER\tescriu el missatge en el FITXER\n"
 "~x\t\tavorta els canvis i abandona l'editor\n"
 "~?\t\tmostra aquest missatge\n"
 ".\t\ta soles en una línia termina l'entrada\n"
@@ -1187,7 +1184,7 @@ msgstr "L'IDN de «%s» no és vàlid: «%s»\n"
 #: edit.c:458
 #, c-format
 msgid "%s: unknown editor command (~? for help)\n"
-msgstr "%s: L'ordre de l'editor no és coneguda (~? per ajuda).\n"
+msgstr "%s: L'ordre de l'editor no és coneguda («~?» per ajuda).\n"
 
 #: editmsg.c:74
 #, c-format
@@ -1252,7 +1249,7 @@ msgstr "[-- Fitxer adjunt #%d"
 #: handler.c:1467
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- Tipus: %s/%s, Codificació: %s, Tamany: %s --]\n"
+msgstr "[-- Tipus: %s/%s, Codificació: %s, Mida: %s --]\n"
 
 #: handler.c:1527
 #, c-format
@@ -1297,7 +1294,7 @@ msgstr ""
 #: handler.c:1662
 #, c-format
 msgid "(size %s bytes) "
-msgstr "(amb tamany %s octets) "
+msgstr "(amb mida %s octets) "
 
 #: handler.c:1664
 msgid "has been deleted --]\n"
@@ -1455,9 +1452,9 @@ msgid "Login failed."
 msgstr "L'entrada ha fallat."
 
 #: imap/auth_sasl.c:112
-#, fuzzy, c-format
+#, c-format
 msgid "Authenticating (%s)..."
-msgstr "S'està autenticant (APOP)..."
+msgstr "S'està autenticant (%s)..."
 
 #: imap/auth_sasl.c:199 pop_auth.c:172
 msgid "SASL authentication failed."
@@ -1515,7 +1512,7 @@ msgstr "Aquest servidor IMAP és antic. Mutt no pot funcionar amb ell."
 #: imap/imap.c:398
 #, c-format
 msgid "Unexpected response received from server: %s"
-msgstr ""
+msgstr "S'ha rebut una resposta inesperada del servidor: %s"
 
 #: imap/imap.c:418 pop_lib.c:280
 msgid "Secure connection with TLS?"
@@ -1692,7 +1689,7 @@ msgid "%s: invalid value"
 msgstr "%s: El valor no és vàlid."
 
 #: init.c:1312
-#, fuzzy, c-format
+#, c-format
 msgid "%s: Unknown type."
 msgstr "%s: El tipus no és conegut."
 
@@ -1701,18 +1698,16 @@ msgstr "%s: El tipus no és conegut."
 msgid "%s: unknown type"
 msgstr "%s: El tipus no és conegut."
 
-# ivb (2001/11/19)
-# ivb  Cuidadín: en «compose» la cadena és el nom de fitxer i en
-# ivb  «editmsg» i «sendlib» és la cadena d'error.
+# Indica error.  ivb
 #: init.c:1375
-#, fuzzy, c-format
+#, c-format
 msgid "%s: stat: %s"
-msgstr "Ha fallat stat() sobre «%s»: %s"
+msgstr "%s: ha fallat stat(): %s"
 
 #: init.c:1380
-#, fuzzy, c-format
+#, c-format
 msgid "%s: not a regular file"
-msgstr "«%s» no és un fitxer ordinari."
+msgstr "%s: No és un fitxer ordinari."
 
 #: init.c:1395
 #, c-format
@@ -2118,11 +2113,11 @@ msgstr "es desplaça cap amunt en la llista d'historial"
 
 #: keymap_alldefs.h:77
 msgid "delete chars from cursor to end of line"
-msgstr "esborra els caràcters des del cursor fins el final de la línia"
+msgstr "esborra els caràcters des del cursor fins al final de la línia"
 
 #: keymap_alldefs.h:78
 msgid "delete chars from the cursor to the end of the word"
-msgstr "esborra els caràcters des del cursor fins el final de la paraula"
+msgstr "esborra els caràcters des del cursor fins al final de la paraula"
 
 #: keymap_alldefs.h:79
 msgid "delete all chars on the line"
@@ -2362,7 +2357,7 @@ msgstr "oculta o mostra el text citat"
 
 #: keymap_alldefs.h:138
 msgid "skip beyond quoted text"
-msgstr "avança fins el final del text citat"
+msgstr "avança fins al final del text citat"
 
 #: keymap_alldefs.h:139
 msgid "jump to the top of the message"
@@ -2467,9 +2462,8 @@ msgid "apply next function to tagged messages"
 msgstr "aplica la funció següent als missatges marcats"
 
 #: keymap_alldefs.h:164
-#, fuzzy
 msgid "apply next function ONLY to tagged messages"
-msgstr "aplica la funció següent als missatges marcats"
+msgstr "aplica la funció següent NOMÉS als missatges marcats"
 
 #: keymap_alldefs.h:165
 msgid "tag the current subthread"
@@ -2615,7 +2609,7 @@ msgstr "mostra les opcions d'S/MIME"
 
 #: lib.c:60
 msgid "Integer overflow -- can't allocate memory!"
-msgstr ""
+msgstr "Desbordament enter -- no s'ha pogut reservar memòria."
 
 #: lib.c:67 lib.c:82 lib.c:114
 msgid "Out of memory!"
@@ -2626,9 +2620,9 @@ msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please use the flea(1) utility.\n"
 msgstr ""
-"Per contactar amb els desenvolupadors, per favor envieu un correu\n"
-"a <mutt-dev@mutt.org>.  Per informar d'un error, per favor useu\n"
-"la utilitat flea(1).\n"
+"Per contactar amb els desenvolupadors, per favor envieu un correu a\n"
+"<mutt-dev@mutt.org>.  Per informar d'un error, per favor useu la utilitat\n"
+"flea(1).\n"
 
 #: main.c:50
 msgid ""
@@ -2637,10 +2631,10 @@ msgid ""
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2002 Michael R. Elkins i d'altres.\n"
-"Mutt s'ofereix SENSE CAP GARANTIA; useu «mutt -vv» per obtenir-ne més\n"
-"detalls.  Mutt és programari lliure i podeu, si voleu, redistribuir-lo\n"
-"sota certes condicions; useu «mutt -vv» per obtenir-ne més detalls.\n"
+"Copyright © 1996-2002 Michael R. Elkins i d'altres.\n"
+"Mutt s'ofereix SENSE CAP GARANTIA; useu «mutt -vv» per obtenir-ne més detalls.\n"
+"Mutt és programari lliure i podeu, si voleu, redistribuir-lo sota certes\n"
+"condicions; useu «mutt -vv» per obtenir-ne més detalls.\n"
 
 #: main.c:56
 msgid ""
@@ -2669,26 +2663,26 @@ msgid ""
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 msgstr ""
-"Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>\n"
-"Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2002 Thomas Roessler <roessler@does-not-exist.org>\n"
-"Copyright (C) 1998-2002 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2002 Brendan Cully <brendan@kublai.com>\n"
-"Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-"Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
+"Copyright © 1996-2002 Michael R. Elkins <me@mutt.org>\n"
+"Copyright © 1996-2002 Brandon Long <blong@fiction.net>\n"
+"Copyright © 1997-2002 Thomas Roessler <roessler@does-not-exist.org>\n"
+"Copyright © 1998-2002 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright © 1999-2002 Brendan Cully <brendan@kublai.com>\n"
+"Copyright © 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright © 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
-"Moltes altres persones que no s'hi mencionen han contribuït amb gran\n"
-"quantitat de codi, solucions i suggeriments.\n"
+"Moltes altres persones que no s'hi mencionen han contribuït amb gran quantitat\n"
+"de codi, solucions i suggeriments.\n"
 "\n"
-"    Aquest és programari lliure; podeu redistribuir-lo i/o modificar-lo\n"
-"    sota els termes de la Llicència Pública General GNU tal i com ha estat\n"
+"    Aquest és programari lliure; podeu redistribuir-lo i/o modificar-lo sota\n"
+"    els termes de la Llicència Pública General GNU tal i com ha estat\n"
 "    publicada per la Free Software Foundation; bé sota la versió 2 de la\n"
 "    Llicència o bé (si ho preferiu) sota qualsevol versió posterior.\n"
 "\n"
-"    Aquest programa es distribueix amb l'expectativa de que serà útil,\n"
-"    però SENSE CAP GARANTIA; ni tan sols la garantia implícita de\n"
-"    COMERCIABILITAT o ADEQUACIÓ PER UN PROPÒSIT PARTICULAR.  Vegeu la\n"
-"    Llicència Pública General GNU per obtenir-ne més detalls.\n"
+"    Aquest programa es distribueix amb l'expectativa de que serà útil, però\n"
+"    SENSE CAP GARANTIA; ni tan sols la garantia implícita de COMERCIABILITAT\n"
+"    o ADEQUACIÓ PER UN PROPÒSIT PARTICULAR.  Vegeu la Llicència Pública\n"
+"    General GNU per obtenir-ne més detalls.\n"
 "\n"
 "    Hauríeu d'haver rebut una còpia de la Llicència Pública General GNU\n"
 "    juntament amb aquest programa; en cas contrari, escriviu a la Free\n"
@@ -2731,36 +2725,33 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"Forma d'ús: mutt [-nRyzZ] [-e <ord>] [-F <fitx>] [-m <tipus>] [-f <fitx>]\n"
-"            mutt [-nR] [-e <ord>] [-F <fitx>] -Q <var> [-Q <var>] [...]\n"
-"            mutt [-nR] [-e <ord>] [-F <fitx>] -A <àlies> [-A <àlies>] [...]\n"
-"            mutt [-nx] [-e <ord>] [-a <fitx>] [-F <fitx>] [-H <fitx>]\n"
-"                 [-i <fitx>] [-s <assmpt>] [-b <adr>] [-c <adr>] <adr> "
-"[...]\n"
-"            mutt [-n] [-e <ord>] [-F <fitx>] -p\n"
+"Forma d'ús: mutt [-nRyzZ] [-e ORDRE] [-F FITXER] [-m TIPUS] [-f FITXER]\n"
+"            mutt [-nR] [-e ORDRE] [-F FITXER] -Q VAR [-Q VAR] [...]\n"
+"            mutt [-nR] [-e ORDRE] [-F FITXER] -A ÀLIES [-A ÀLIES] [...]\n"
+"            mutt [-nx] [-e ORDRE] [-a FITXER] [-F FITXER] [-H FITXER]\n"
+"                 [-i FITXER] [-s ASSUMPTE] [-b ADREÇA] [-c ADREÇA] ADREÇA...\n"
+"            mutt [-n] [-e ORDRE] [-F FITXER] -p\n"
 "            mutt -v[v]\n"
 "\n"
 "Opcions:\n"
-"  -A <alias>           Expandeix l'àlies indicat.\n"
-"  -a <fitxer>          Adjunta un fitxer al missatge.\n"
-"  -b <adreça>          Indica una adreça per la còpia cega (BCC).\n"
-"  -c <adreça>          Indica una adreça per la còpia (CC).\n"
-"  -e <ordre>           Indica una ordre a executar abans de la "
-"inicialització.\n"
-"  -f <fitxer>          Indica quina bústia llegir.\n"
-"  -F <fitxer>          Indica un fitxer «muttrc» alternatiu.\n"
-"  -H <fitxer>          Indica un fitxer esborrany d'on llegir la capçalera.\n"
-"  -i <fitxer>          Indica un fitxer que Mutt inclourà en la resposta.\n"
-"  -m <tipus>           Indica un tipus de bústia per defecte.\n"
+"  -A ÀLIES             Expandeix l'ÀLIES indicat.\n"
+"  -a FITXER            Adjunta un FITXER al missatge.\n"
+"  -b ADREÇA            Indica una ADREÇA per la còpia cega (BCC).\n"
+"  -c ADREÇA            Indica una ADREÇA per la còpia (CC).\n"
+"  -e ORDRE             Indica una ORDRE a executar abans de la inicialització.\n"
+"  -f FITXER            Indica quina bústia llegir.\n"
+"  -F FITXER            Indica un FITXER «muttrc» alternatiu.\n"
+"  -H FITXER            Indica un FITXER esborrany d'on llegir la capçalera.\n"
+"  -i FITXER            Indica un FITXER que Mutt inclourà en la resposta.\n"
+"  -m TIPUS             Indica un TIPUS de bústia per defecte.\n"
 "  -n                   Fa que Mutt no llija el fitxer «Muttrc» del sistema.\n"
 "  -p                   Recupera un missatge posposat.\n"
-"  -Q <variable>        Consulta el valor d'una variable de configuració.\n"
+"  -Q VARIABLE          Consulta el valor d'una VARIABLE de configuració.\n"
 "  -R                   Obri la bústia en mode de només lectura.\n"
-"  -s <assumpte>        Indica l'assumpte (entre cometes si porta espais).\n"
+"  -s ASSUMPTE          Indica l'ASSUMPTE (entre cometes si porta espais).\n"
 "  -v                   Mostra la versió i les definicions de compil·lació.\n"
 "  -x                   Simula el mode d'enviament de «mailx».\n"
-"  -y                   Selecciona una bústia de la vostra llista "
-"«mailboxes».\n"
+"  -y                   Selecciona una bústia de la vostra llista «mailboxes».\n"
 "  -z                   Ix immediatament si no hi ha missatges en la bústia.\n"
 "  -Z                   Obri la primera bústia amb missatges nous, i ix\n"
 "                       immediatament si no n'hi ha cap.\n"
@@ -2968,13 +2959,13 @@ msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): No s'ha pogut canviar la data del fitxer."
 
 #: muttlib.c:835
-#, fuzzy
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
-msgstr "El fitxer és un directori; voleu desar-hi a sota?"
+msgstr "El fitxer és un directori; voleu desar-hi a sota? [(s)í, (n)o, (t)ots]"
 
+# (s)í, (n)o, (t)ots  ivb
 #: muttlib.c:835
 msgid "yna"
-msgstr ""
+msgstr "snt"
 
 #: muttlib.c:851
 msgid "File is a directory, save under it?"
@@ -3136,7 +3127,7 @@ msgstr "   des de %s"
 #: mutt_ssl.c:604
 #, c-format
 msgid "     to %s"
-msgstr "     fins %s"
+msgstr "     fins a %s"
 
 #: mutt_ssl.c:610
 #, c-format
@@ -3298,7 +3289,7 @@ msgstr "No s'ha pogut escriure el missatge."
 
 #: mx.c:1535
 msgid "Integer overflow -- can't allocate memory."
-msgstr ""
+msgstr "Desbordament enter -- no s'ha pogut reservar memòria."
 
 #: pager.c:53
 msgid "Not available in this menu."
