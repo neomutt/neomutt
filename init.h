@@ -884,12 +884,6 @@ struct option_t MuttVars[] = {
   ** Controls whether or not a copy of the message(s) you are replying to
   ** is included in your reply.
   */
-  { "include_onlyfirst",	DT_BOOL, R_NONE, OPTINCLUDEONLYFIRST, 0},
-  /*
-  ** .pp
-  ** Controls whether or not Mutt includes only the first attachment
-  ** of the message you are replying.
-  */
   { "indent_string",	DT_STR,	 R_NONE, UL &Prefix, UL "> " },
   /*
   ** .pp

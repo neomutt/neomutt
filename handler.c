@@ -1485,9 +1485,6 @@ void multipart_handler (BODY *a, STATE *s)
     }
     mutt_body_handler (p, s);
     state_putc ('\n', s);
-    if ((s->flags & M_REPLYING)
-	&& (option (OPTINCLUDEONLYFIRST)) && (s->flags & M_FIRSTDONE))
-      break;
   }
 
   if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE ||
@@ -1921,7 +1918,6 @@ void mutt_body_handler (BODY *b, STATE *s)
 	s->fpin = fp;
       }
     }
-    s->flags |= M_FIRSTDONE;
   }
   else if (s->flags & M_DISPLAY)
   {
@@ -1939,5 +1935,5 @@ void mutt_body_handler (BODY *b, STATE *s)
   }
   
   bail:
-  s->flags = oflags | (s->flags & M_FIRSTDONE);
+  s->flags = oflags;
 }

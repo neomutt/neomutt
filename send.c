@@ -403,7 +403,7 @@ void mutt_make_post_indent (CONTEXT *ctx, HEADER *cur, FILE *out)
 
 static int include_reply (CONTEXT *ctx, HEADER *cur, FILE *out)
 {
-  int cmflags = M_CM_PREFIX | M_CM_DECODE | M_CM_CHARCONV | M_CM_REPLYING;
+  int cmflags = M_CM_PREFIX | M_CM_DECODE | M_CM_CHARCONV;
   int chflags = CH_DECODE;
 
   if (WithCrypto && (cur->security & ENCRYPT))
