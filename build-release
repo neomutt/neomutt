@@ -86,6 +86,7 @@ read dummy
 
 for f in $DISTFILES ; do
 	scp1 $f $f.asc sigtrap.guug.de:/home/ftp/pub/mutt/${devel}
+	scp1 $f $f.asc trithemius.gnupg.org:/home/ftp/pub/mutt/${devel}
 done
 
 $HOME/bin/upload-cvs

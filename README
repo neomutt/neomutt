@@ -2,7 +2,7 @@ README for mutt-1.1
 ===================
 
 If you got the mutt source code from the public CVS repository (CVS
-root: :pserver:anonymous@ftp.guug.de:/home/roessler/cvs, password
+root: :pserver:anonymous@cvs.mutt.org:/home/roessler/cvs, password
 anonymous), please read doc/devel-notes.txt to make sure that you
 have a complete development environment.
 
