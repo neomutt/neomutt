@@ -290,11 +290,8 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
 	/* ignore language specification a la RFC 2231 */        
         if ((t = strchr (pp, '*')))
 	  *t = '\0';
-	if (mutt_strcasecmp (pp, Charset) != 0)
-        {
-	  filter = 1;
-	  charset = pp;
-	}
+        charset = pp;
+        filter = 1;
 	break;
       case 3:
 	if (toupper (*pp) == 'Q')
@@ -373,14 +370,10 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
       CHARSET *chs = mutt_get_charset(Charset);
       mutt_decode_utf8_string(d, chs);
     }
-    else if (mutt_display_string(d, mutt_get_translation(charset, Charset)) == -1)
-    {
-      for(pd = d; *pd; pd++)
-      {
-        if (!IsPrint (*pd))
-	  *pd = '?';
-      }
-    }
+    else
+      mutt_display_string(d, mutt_get_translation(charset, Charset));
+
+    mutt_display_sanitize (d);
   }
   safe_free ((void **) &p);
   return (0);

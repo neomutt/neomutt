@@ -1025,3 +1025,13 @@ int state_printf(STATE *s, const char *fmt, ...)
   
   return rv;
 }
+
+void mutt_display_sanitize (char *s)
+{
+  for (; *s; s++)
+  {
+    if (!IsPrint (*s))
+      *s = '?';
+  }
+}
+      

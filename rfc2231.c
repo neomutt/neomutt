@@ -224,6 +224,8 @@ static void rfc2231_decode_one (char *dest, char *src, char *chs)
       mutt_decode_utf8_string (dest, mutt_get_charset (Charset));
     else
       mutt_display_string (dest, mutt_get_translation (chs, Charset));
+    
+    mutt_display_sanitize (dest);
   }
 }
 
