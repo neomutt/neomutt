@@ -6,9 +6,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt-1.1.11i\n"
+"Project-Id-Version: Mutt-1.3.3i\n"
 "POT-Creation-Date: 2000-06-09 13:39+0200\n"
-"PO-Revision-Date: 2000-04-01 12:00+0200\n"
+"PO-Revision-Date: 2000-06-10 12:00+0200\n"
 "Last-Translator: Φάνης Δοκιανάκης <madf@hellug.gr>\n"
 "Language-Team: Greek <el@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -383,9 +383,8 @@ msgid "PGP signature successfully verified."
 msgstr "Η υπογραφή PGP επιβεβαιόθηκε επιτυχώς."
 
 #: commands.c:149
-#, fuzzy
 msgid "PGP signature could NOT be verified."
-msgstr "Η υπογραφή PGP επιβεβαιόθηκε επιτυχώς."
+msgstr "Η υπογραφή PGP ΔΕΝ επιβεβαιόθηκε."
 
 #
 #: commands.c:172
@@ -1239,9 +1238,9 @@ msgstr "[-- στις %s --]\n"
 
 #
 #: handler.c:1253
-#, fuzzy, c-format
+#, c-format
 msgid "[-- name: %s --]\n"
-msgstr "[-- στις %s --]\n"
+msgstr "[-- όνομα: %s --]\n"
 
 #
 #: handler.c:1264
@@ -1530,18 +1529,16 @@ msgstr "[αδυναμία υπολογισμού]"
 
 #
 #: imap/imap_ssl.c:292
-#, fuzzy
 msgid "[invalid date]"
-msgstr "%s: μη έγκυρη τιμή"
+msgstr "[μη έγκυρη ημερομηνία]"
 
 #: imap/imap_ssl.c:361
 msgid "Server certificate is not yet valid"
-msgstr ""
+msgstr "Η πιστοποίηση του διακομιστή δεν είναι ακόμα έγκυρη"
 
 #: imap/imap_ssl.c:368
-#, fuzzy
 msgid "Server certificate has expired"
-msgstr "Αυτό το πιστοποιητικό εκδόθηκε από το:"
+msgstr "Το πιστοποιητικό του διακομιστή έληξε"
 
 #: imap/imap_ssl.c:441
 msgid "This certificate belongs to:"
@@ -1552,19 +1549,18 @@ msgid "This certificate was issued by:"
 msgstr "Αυτό το πιστοποιητικό εκδόθηκε από το:"
 
 #: imap/imap_ssl.c:461
-#, fuzzy
 msgid "This certificate is valid"
-msgstr "Αυτό το πιστοποιητικό εκδόθηκε από το:"
+msgstr "Αυτό το πιστοποιητικό είναι έγκυρο"
 
 #: imap/imap_ssl.c:462
 #, c-format
 msgid "   from %s"
-msgstr ""
+msgstr "   από  %s"
 
 #: imap/imap_ssl.c:464
 #, c-format
 msgid "     to %s"
-msgstr ""
+msgstr "    προς %s"
 
 #: imap/imap_ssl.c:470
 #, c-format
@@ -2136,9 +2132,8 @@ msgstr "μετακίνηση του δρομέα ένα χαρακτήρα προς τα αριστερά"
 
 #
 #: keymap_alldefs.h:64
-#, fuzzy
 msgid "move the cursor to the beginning of the word"
-msgstr "μετάβαση στην αρχή της γραμμής"
+msgstr "μετακίνηση του δρομέα στην αρχή της λέξης"
 
 #
 #: keymap_alldefs.h:65
@@ -2177,9 +2172,8 @@ msgstr "μετακίνηση του δρομέα ένα χαρακτήρα προς τα δεξιά"
 
 #
 #: keymap_alldefs.h:72
-#, fuzzy
 msgid "move the cursor to the end of the word"
-msgstr "μετακίνηση του δρομέα ένα χαρακτήρα προς τα δεξιά"
+msgstr "μετακίνηση του δρομέα στο τέλος της λέξης"
 
 #
 #: keymap_alldefs.h:73 keymap_alldefs.h:74
@@ -2189,23 +2183,22 @@ msgstr "μετακίνηση μέσα στην λίστα ιστορίας"
 #
 #: keymap_alldefs.h:75
 msgid "delete chars from cursor to end of line"
-msgstr "διαγράφη τους χαρακτήρες από το κέρσορα εώς το τέλος της γραμμής"
+msgstr "διαγραφή των χαρακτήρων από το κέρσορα εώς το τέλος της γραμμής"
 
 #
 #: keymap_alldefs.h:76
-#, fuzzy
 msgid "delete chars from the cursor to the end of the word"
-msgstr "διαγράφη τους χαρακτήρες από το κέρσορα εώς το τέλος της γραμμής"
+msgstr "διαγραφή των χαρακτήρων από το κέρσορα εώς το τέλος της λέξης"
 
 #
 #: keymap_alldefs.h:77
 msgid "delete all chars on the line"
-msgstr "διαγράφη όλους τους χαρακτήρες στη γραμμή"
+msgstr "διαγραφή όλων των χαρακτήρων στη γραμμή"
 
 #
 #: keymap_alldefs.h:78
 msgid "delete the word in front of the cursor"
-msgstr "διαγράφη την λέξη μπροστά στον κέρσορα"
+msgstr "διαγραφή της λέξης μπροστά από στον κέρσορα"
 
 #
 #: keymap_alldefs.h:79
@@ -2214,7 +2207,7 @@ msgstr "παράθεση του επόμενου πλήκτρου"
 
 #: keymap_alldefs.h:80
 msgid "transpose character under cursor with previous"
-msgstr ""
+msgstr "μετατόπιση του χαρακτήρα κάτω από τον δρομέα με τον προηγούμενο"
 
 #
 #: keymap_alldefs.h:81
@@ -2873,7 +2866,6 @@ msgstr ""
 
 #
 #: main.c:103
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
 "]\n"
@@ -2903,10 +2895,10 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"χρήση: mutt [ -nRzZ ] [ -e <εντολή> ] [ -F <αρχείο> ] [ -m <τύπος> ] [ -f "
+"χρήση: mutt [ -nRyzZ ] [ -e <εντολή> ] [ -F <αρχείο> ] [ -m <τύπος> ] [ -f "
 "<αρχείο>]\n"
 "       mutt [ -nx ] [ -e <εντολή> ] [ -a <αρχείο> ] [ -F <αρχείο> ] [ -H "
-"<αρχείο> ] [ -i <αρχείο> ] [ -s <subj> ] [ -b <διεύθ> ] [ -c <διεύθ> ] "
+"<αρχείο> ] [ -i <αρχείο> ] [ -s <θέμα> ] [ -b <διεύθ> ] [ -c <διεύθ> ] "
 "<διεύθ> [ ... ]\n"
 "       mutt [ -n ] [ -e <εντολή> ] [ -F <αρχείο> ] -p\n"
 "       mutt -v[v]\n"
@@ -3484,9 +3476,9 @@ msgstr "Η φράση κλειδί PGP έχει ξεχαστεί."
 #
 # pgp.c:207
 #: pgp.c:142
-#, fuzzy, c-format
+#, c-format
 msgid "[-- PGP output follows (current time: %c) --]\n"
-msgstr "[-- Ακολουθεί έξοδος του PGP (τρέχουσα ώρα: "
+msgstr "[-- Ακολουθεί έξοδος του PGP (τρέχουσα ώρα: %c) --]\n"
 
 #
 #: pgp.c:246
@@ -3856,9 +3848,8 @@ msgstr "Δεν υπάρχει αλληλογραφία στο POP γραμματοκιβώτιο."
 
 #
 #: pop.c:209
-#, fuzzy
 msgid "Delete messages from server?"
-msgstr "Διαγραφή μηνυμάτων από τον εξυπηρετητή..."
+msgstr "Διαγραφή μηνυμάτων από τον εξυπηρετητή?"
 
 #
 #: pop.c:212
@@ -4375,16 +4366,3 @@ msgstr "Το τρέχων μήνυμα δεν είναι ορατό στην περιορισμένη όψη"
 #: thread.c:717
 msgid "Parent message is not available."
 msgstr "Το τρέχων μήνυμα δεν είναι διαθέσιμο."
-
-#
-#~ msgid "Compose"
-#~ msgstr "Σύνθεση"
-
-#~ msgid "We can't currently handle utf-8 at this point."
-#~ msgstr "Αδυναμία χειρισμού του utf-8 αυτή τη στιγμή."
-
-#~ msgid "UTF-8 encoding attachments has not yet been implemented."
-#~ msgstr "Προσαρτήσεις κωδικοποίησης UTF-8 δεν έχουν εφαρμοστεί ακόμη."
-
-#~ msgid "We currently can't encode to utf-8."
-#~ msgstr "Αδυναμία κωδικοποίησης utf-8 αυτή τη στιγμή."

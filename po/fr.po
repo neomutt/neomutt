@@ -5,9 +5,9 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.3\n"
+"Project-Id-Version: Mutt 1.3.3\n"
 "POT-Creation-Date: 2000-06-09 13:39+0200\n"
-"PO-Revision-Date: 2000-05-20 17:36+0200\n"
+"PO-Revision-Date: 2000-06-13 17:36+0200\n"
 "Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
@@ -328,9 +328,8 @@ msgid "PGP signature successfully verified."
 msgstr "Signature PGP vérifiée avec succès."
 
 #: commands.c:149
-#, fuzzy
 msgid "PGP signature could NOT be verified."
-msgstr "Signature PGP vérifiée avec succès."
+msgstr "La signature PGP n'a PAS pu être vérifiée."
 
 #: commands.c:172
 msgid "Command: "
@@ -1330,18 +1329,16 @@ msgstr "[impossible de calculer]"
 
 # , c-format
 #: imap/imap_ssl.c:292
-#, fuzzy
 msgid "[invalid date]"
-msgstr "%s : valeur invalide"
+msgstr "[date invalide]"
 
 #: imap/imap_ssl.c:361
 msgid "Server certificate is not yet valid"
-msgstr ""
+msgstr "Le certificat du serveur n'est pas encore valide"
 
 #: imap/imap_ssl.c:368
-#, fuzzy
 msgid "Server certificate has expired"
-msgstr "Ce certificat a été émis par :"
+msgstr "Le certificat du serveur a expiré"
 
 #: imap/imap_ssl.c:441
 msgid "This certificate belongs to:"
@@ -1352,19 +1349,18 @@ msgid "This certificate was issued by:"
 msgstr "Ce certificat a été émis par :"
 
 #: imap/imap_ssl.c:461
-#, fuzzy
 msgid "This certificate is valid"
-msgstr "Ce certificat a été émis par :"
+msgstr "Ce certificat est valide"
 
 #: imap/imap_ssl.c:462
 #, c-format
 msgid "   from %s"
-msgstr ""
+msgstr "     de %s"
 
 #: imap/imap_ssl.c:464
 #, c-format
 msgid "     to %s"
-msgstr ""
+msgstr "      à %s"
 
 #: imap/imap_ssl.c:470
 #, c-format
@@ -3005,9 +3001,9 @@ msgid "PGP passphrase forgotten."
 msgstr "Phrase de passe PGP oubliée."
 
 #: pgp.c:142
-#, fuzzy, c-format
+#, c-format
 msgid "[-- PGP output follows (current time: %c) --]\n"
-msgstr "[-- La sortie PGP suit (heure courante : "
+msgstr "[-- La sortie PGP suit (heure courante : %c) --]\n"
 
 #: pgp.c:246
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
