@@ -984,6 +984,9 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
       
       case OP_MAIN_SYNC_FOLDER:
 
+	if (Context && !Context->msgcount)
+	  break;
+
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
