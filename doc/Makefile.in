@@ -80,10 +80,10 @@ install: all
 	for f in $(topsrcdir_DOCFILES) ; do \
 		$(INSTALL) -m 644 $(top_srcdir)/$$f $(DESTDIR)$(docdir) ; \
 	done
-	$(INSTALL) -m 644 manual.txt $(DESTDIR)$(docdir)
+	$(INSTALL) -m 644 manual.txt $(DESTDIR)$(docdir) || true
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(docdir)/html
 	for file in manual*.html ; do	\
-		$(INSTALL) -m 644 $$file $(DESTDIR)$(docdir)/html/	;\
+		$(INSTALL) -m 644 $$file $(DESTDIR)$(docdir)/html/ || true ;\
 	done
 
 uninstall:
@@ -93,10 +93,10 @@ uninstall:
 	-rm -rf $(DESTDIR)$(docdir)
 
 manual.txt: manual.sgml
-	sgml2txt -c latin manual
+	sgml2txt -c latin manual  || true
 
 manual.html: manual.sgml
-	sgml2html manual
+	sgml2html manual  || true
 
 clean: 
 	rm -f *~ *.html *.orig *.rej  stamp-doc-sgml stamp-doc-man
