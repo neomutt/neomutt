@@ -1,3 +1,14 @@
+2002-12-17 09:50:26  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* OPS, curs_main.c, functions.h: Experimental: Introduce
+	{next,previous}-new-then-unread.  These functions behave
+	like {next,previous}-new as long as new messages are
+	visible. When no new messages are visibuel any more, there's
+	a fall-back to {next,prev}-unread.
+
+	Memo to self: Impose a weekly quota on the use of goto
+	statements.
+
 2002-12-16 20:28:46  Edmund GRIMLEY EVANS  <edmundo@rano.org>
 
 	* handler.c, rfc2047.c, url.c: Fix #1424.
