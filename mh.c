@@ -620,7 +620,8 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
   if(ctx->magic == M_MAILDIR)
     ctx->mtime_cur = st_cur.st_mtime;
   ctx->mtime = st.st_mtime;
-  
+
+#if 0
   if(Sort != SORT_ORDER)
   {
     short old_sort;
@@ -630,7 +631,8 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
     mutt_sort_headers(ctx, 1);
     Sort = old_sort;
   }
-    
+#endif
+
   md = NULL;
   last = &md;
   
