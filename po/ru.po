@@ -463,7 +463,7 @@ msgstr "Копируется в %s..."
 #: commands.c:836
 #, c-format
 msgid "Convert to %s upon sending?"
-msgstr ""
+msgstr "Перекодировать в %s при отправке?"
 
 #: commands.c:844
 #, c-format
@@ -1141,7 +1141,7 @@ msgstr "Справка для %s"
 
 #: hook.c:243
 msgid "unhook: Can't do unhook * from within a hook."
-msgstr ""
+msgstr "unhook: Невозможно выполнить unhook * из команды hook."
 
 #: hook.c:255
 #, c-format
@@ -1151,7 +1151,7 @@ msgstr "unhook: неизвестный тип события: %s"
 #: hook.c:261
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s."
-msgstr ""
+msgstr "unhook: Невозможно удалить %s из команды %s."
 
 #: imap/auth.c:104
 #, fuzzy
@@ -2261,24 +2261,20 @@ msgstr ""
 "Чтобы сообщить об ошибке, используйте программу flea(1).\n"
 
 #: main.c:45
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2001 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2000 Michael R. Elkins и другие.\n"
-"Mutt распространяется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ; для получения более "
-"подробной\n"
-"информации введите `mutt -vv'. Mutt является свободным программным "
-"обеспечением.\n"
-"Вы можете распространять его при соблюдении определенных условий; для "
-"получения\n"
+"Copyright (C) 1996-2001 Michael R. Elkins и другие.\n"
+"Mutt распространяется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ; для получения более\n"
+"подробной информации введите `mutt -vv'.\n"
+"Mutt является свободным программным обеспечением.  Вы можете\n"
+"распространять его при соблюдении определенных условий; для получения\n"
 "более подробной информации введите `mutt -vv'.\n"
 
 #: main.c:51
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
@@ -2305,35 +2301,30 @@ msgid ""
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 msgstr ""
-"Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
-"Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
-"Copyroght (C) 1997-2000 Thomas Roessler <roessler@guug.de>\n"
-"Copyright (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
-"Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-"Copyright (C) 2000      Edmund Grimley Evans <edmundo@rano.org>\n"
+"Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Copyright (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
+"Copyright (C) 1997-2001 Thomas Roessler <roessler@guug.de>\n"
+"Copyright (C) 1998-2001 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2001 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 2000-2001 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "Многие части кода, исправления и предложения были сделаны неупомянутыми\n"
 "здесь людьми.\n"
 "\n"
-"   Эта программа -- свободное программное обеспечение. Вы можете "
-"распространять\n"
-"   и/или изменять ее при соблюдений условий GNU General Piblic License,\n"
-"   опубликованной Free Software Foundation, версии 2 или (на ваше "
-"усмотрение)\n"
-"   любой более поздней версии.\n"
+"   Эта программа -- свободное программное обеспечение.  Вы можете\n"
+"   распространять и/или изменять ее при соблюдений условий GNU General\n"
+"   Piblic License, опубликованной Free Software Foundation, версии 2 или\n"
+"   (на ваше усмотрение) любой более поздней версии.\n"
 "\n"
-"   Эта программа распространяется с надеждой, что она окажется полезной, но\n"
-"   БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ. Особо отметим, что отсутствует ГАРАНТИЯ "
-"ПРИГОДНОСТИ\n"
-"   ДЛЯ ВЫПОЛНЕНИЯ ОПРЕДЕЛЕННЫХ ЗАДАЧ. Более подробную информацию вы можете "
-"найти\n"
-"   в GNU General Public License.\n"
+"   Эта программа распространяется с надеждой, что она окажется полезной,\n"
+"   но БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ. Особо отметим, что отсутствует ГАРАНТИЯ\n"
+"   ПРИГОДНОСТИ ДЛЯ ВЫПОЛНЕНИЯ ОПРЕДЕЛЕННЫХ ЗАДАЧ. Более подробную\n"
+"   информацию вы можете найти в GNU General Public License.\n"
 "\n"
-"   Вы должны были получить копию GNU General Public License вместе с этой\n"
-"   программой. Если вы ее не получили, обратитесь во Free Software "
-"Foundation, Inc.,\n"
-"   59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
+"   Вы должны были получить копию GNU General Public License вместе с\n"
+"   этой программой. Если вы ее не получили, обратитесь во Free Software\n"
+"   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111, USA.\n"
 
 #: main.c:88
 msgid ""
@@ -3189,9 +3180,8 @@ msgid "Fetching PGP key..."
 msgstr "Получение PGP-ключа..."
 
 #: pgpkey.c:486
-#, fuzzy
 msgid "All matching keys are marked expired/revoked."
-msgstr "Этот ключ не может быть использован: просрочен, запрещен либо отменен."
+msgstr "Все подходящие ключи помечены как просроченные или отозванные."
 
 #. __STRCAT_CHECKED__
 #: pgpkey.c:512
@@ -3228,12 +3218,12 @@ msgstr "Идентификатор ключа: 0x%s"
 
 #: pgpkey.c:596
 msgid "This key can't be used: expired/disabled/revoked."
-msgstr "Этот ключ не может быть использован: просрочен, запрещен либо отменен."
+msgstr "Этот ключ не может быть использован: просрочен, запрещен или отозван."
 
+# FIXME: awn: бредовая фраза получилась...
 #: pgpkey.c:608
-#, fuzzy
 msgid "This ID is expired/disabled/revoked"
-msgstr "Этот ключ не может быть использован: просрочен, запрещен либо отменен."
+msgstr "Этот ID просрочен, запрещен или отозван."
 
 #: pgpkey.c:612
 msgid "This ID's trust level is undefined."
@@ -3241,16 +3231,16 @@ msgstr "Степень доверия для этого ID не определена."
 
 #: pgpkey.c:615
 msgid "This ID is not trusted."
-msgstr "Степень доверия для этого ID \"отсутствие доверия\""
+msgstr "Степень доверия для этого ID -- \"отсутствие доверия\"."
 
 #: pgpkey.c:618
 msgid "This ID is only marginally trusted."
-msgstr "Степень доверия для этого ID \"частичный доверенный\""
+msgstr "Степень доверия для этого ID -- \"частично доверенный\"."
 
 #: pgpkey.c:622
-#, fuzzy, c-format
+#, c-format
 msgid "%s Do you really want to use the key?"
-msgstr "%s Вы на самом деле хотите его использовать?"
+msgstr "%s Использовать этот ключ?"
 
 #: pgpkey.c:720
 msgid "Please enter the key ID: "
