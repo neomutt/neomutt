@@ -384,7 +384,7 @@ int rfc1524_mailcap_lookup (BODY *a, char *type, rfc1524_entry *entry, int opt)
    * and overriden by the MAILCAPS environment variable, and, just to be nice, 
    * we'll make it specifiable in .muttrc
    */
-  if (!*curr)
+  if (!curr || !*curr)
   {
     mutt_error _("No mailcap path specified");
     return 0;
