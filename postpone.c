@@ -422,6 +422,7 @@ int mutt_edit_message (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr)
       safe_free ((void *) &b->filename);
       b->filename = safe_strdup (file);
       b->unlink = 1;
+      mutt_stamp_attachment (b);
       mutt_free_body (&b->parts);
       b = b->next;
     }
@@ -437,6 +438,14 @@ int mutt_edit_message (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr)
       return (-1);
     }
     newhdr->content = mutt_make_file_attach (file);
+    
+    FREE (&newhddr->content->subtype);
+    FREE (&newhdr->content->xtype);
+    
+    newhdr->content->type = hdr->content->type;
+    newhdr->content->xtype = safe_strdup (hdr->content->xtype);
+    newhdr->content->subtype = safe_strdup (hdr->content->subtype);
+    
     newhdr->content->use_disp = 0;	/* no content-disposition */
     newhdr->content->unlink = 1;	/* delete when we are done */
   }
