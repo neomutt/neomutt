@@ -21,6 +21,8 @@
 #include "mapping.h"
 #include "sort.h"
 
+#include "mutt_idna.h"
+
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -222,13 +224,17 @@ new_aliases:
   {
     if (AliasTable[i]->tagged)
     {
+      mutt_addrlist_to_local (AliasTable[i]->addr);
       rfc822_write_address (buf, buflen, AliasTable[i]->addr, 0);
       t = -1;
     }
   }
 
   if(t != -1)
+  {
+      mutt_addrlist_to_local (AliasTable[t]->addr);
     rfc822_write_address (buf, buflen, AliasTable[t]->addr, 0);
+  }
 
   mutt_menuDestroy (&menu);
   FREE (&AliasTable);

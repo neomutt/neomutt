@@ -265,11 +265,15 @@ retry_name:
   new->self = new;
   new->name = safe_strdup (buf);
 
+  mutt_addrlist_to_local (adr);
+  
   if (adr)
     strfcpy (buf, adr->mailbox, sizeof (buf));
   else
     buf[0] = 0;
 
+  mutt_addrlist_to_idna (adr, NULL);
+  
   do
   {
     if (mutt_get_field (_("Address: "), buf, sizeof (buf), 0) != 0 || !buf[0])

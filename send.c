@@ -1432,7 +1432,10 @@ main_loop:
   {
     mutt_error (_("Bad IDN in \"%s\": '%s'"), tag, err);
     FREE (&err);
-    goto main_loop;
+    if (!(flags & SENDBATCH))
+      goto main_loop;
+    else 
+      goto cleanup;
   }
   
   if (!msg->env->subject && ! (flags & SENDBATCH) &&
