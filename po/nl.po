@@ -1,10 +1,10 @@
 # $Id$
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.6\n"
+"Project-Id-Version: Mutt 1.5.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-03-13 17:38+0100\n"
-"PO-Revision-Date: 2005-01-28 15:08+0100\n"
+"PO-Revision-Date: 2005-03-20 15:17+0100\n"
 "Last-Translator: René Clerc <rene@clerc.nl>\n"
 "Language-Team: René Clerc <rene@clerc.nl>\n"
 "MIME-Version: 1.0\n"
@@ -203,9 +203,8 @@ msgid "Create is only supported for IMAP mailboxes"
 msgstr "Alleen IMAP folders kunnen aangemaakt worden"
 
 #: browser.c:880
-#, fuzzy
 msgid "Rename is only supported for IMAP mailboxes"
-msgstr "Alleen IMAP folders kunnen aangemaakt worden"
+msgstr "Alleen IMAP folders kunnen hernoemd worden"
 
 #: browser.c:901
 msgid "Delete is only supported for IMAP mailboxes"
@@ -1195,7 +1194,7 @@ msgstr "[-- Foutenuitvoer van %s --]\n"
 
 #: handler.c:1643
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr "[-- Fout: message/external-body heeft geen access-type paramter --]\n"
+msgstr "[-- Fout: message/external-body heeft geen access-type parameter --]\n"
 
 #: handler.c:1662
 #, c-format
@@ -1398,19 +1397,18 @@ msgid "Mailbox created."
 msgstr "Mailfolder is aangemaakt."
 
 #: imap/browse.c:325
-#, fuzzy, c-format
+#, c-format
 msgid "Rename mailbox %s to: "
-msgstr "Mailfolder aanmaken: "
+msgstr "Mailfolder %s hernoemen naar: "
 
 #: imap/browse.c:338
-#, fuzzy, c-format
+#, c-format
 msgid "Rename failed: %s"
-msgstr "SSL mislukt: %s"
+msgstr "Hernoemen mislukt: %s"
 
 #: imap/browse.c:343
-#, fuzzy
 msgid "Mailbox renamed."
-msgstr "Mailfolder is aangemaakt."
+msgstr "Mailfolder is hernoemd."
 
 #: imap/command.c:294
 msgid "Mailbox closed"
@@ -2321,9 +2319,8 @@ msgid "{internal}"
 msgstr "(intern)"
 
 #: keymap_alldefs.h:151
-#, fuzzy
 msgid "rename the current mailbox (IMAP only)"
-msgstr "verwijder de huidige mailfolder (alleen met IMAP)"
+msgstr "hernoem de huidige mailfolder (alleen met IMAP)"
 
 #: keymap_alldefs.h:152
 msgid "reply to a message"
@@ -2599,7 +2596,6 @@ msgstr ""
 "USA.\n"
 
 #: main.c:99
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -2653,18 +2649,18 @@ msgstr ""
 "  -e <opdracht>\tspecificeer een uit te voeren opdracht na initialisatie\n"
 "  -f <file>\tspecificeer de te lezen mailfolder\n"
 "  -F <file>\tspecificeer een alternatieve muttrc\n"
-"  -H <file>\tspecificeer een een bestand om de headers uit te lezen\n"
+"  -H <file>\tspecificeer een bestand om de headers uit te lezen\n"
 "  -i <file>\tspecificeer een bestand dat Mutt moet bijsluiten in het "
-"antwoord\n"
+"bericht\n"
 "  -m <type>\tspecificeer een standaard mailfolder type\n"
-"  -n\t\tzorgt dat Mutt niet de systeem Muttrc inleest\n"
+"  -n\t\tzorgt dat Mutt de systeem Muttrc niet inleest\n"
 "  -p\t\troept een uitgesteld bericht op\n"
 "  -Q <variabele>\tvraagt de waarde van een configuratievariabele op\n"
 "  -R\t\topent de mailfolder met alleen-lezen rechten\n"
 "  -s <ond>\tspecificeer een onderwerp (tussen aanhalingstekens i.g.v. "
 "spaties)\n"
 "  -v\t\ttoont het versienummer en opties tijdens het compileren\n"
-"  -x\t\tsimuleert de mailx verstuurmodus\n"
+"  -x\t\tsimuleert de mailx verzendmodus\n"
 "  -y\t\tselecteert een mailfolder gespecificeerd in de `mailboxes' lijst\n"
 "  -z\t\tbeëindigt meteen als er geen berichten in de mailfolder staan\n"
 "  -Z\t\topent de eerste mailfolder met nieuwe berichten, eindigt indien "
