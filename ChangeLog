@@ -1,3 +1,7 @@
+2003-04-11 15:15:04  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* send.c: Backing out the previous change. It was nonsense.
+
 2003-04-11 11:56:58  Lars Hecking  <lhecking@nmrc.ucc.ie>  (roessler)
 
 	* config.guess, config.sub, depcomp, install-sh, missing,
