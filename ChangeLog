@@ -1,3 +1,71 @@
+Mon Mar 13 18:37:17 2000  Thomas Roessler  <roessler@guug.de>
+
+	* build-release: change code for going on-line.
+
+	* po/uk.po, po/zh_TW.Big5.po, po/sk.po, po/sv.po, po/pl.po,
+	po/pt_BR.po, po/ru.po, po/ko.po, po/nl.po, po/gl.po,
+	po/id.po, po/it.po, po/eo.po, po/es.po, po/fr.po, po/el.po,
+	po/de.po, po/cs.po, po/da.po: make update-po.
+
+	* po/sv.po, po/fr.po: updates.
+
+Fri Mar 10 11:38:32 2000  Thomas Roessler  <roessler@guug.de>
+
+	* handler.c:
+	Fix the handling of raw carriage return characters in the base64
+	handler.
+
+Thu Mar  9 11:58:11 2000  Thomas Roessler  <roessler@guug.de>
+
+	* pgpinvoke.c: Bail on empty PGP formats.
+
+	* po/ko.po: update.
+
+Wed Mar  8 18:08:03 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/message.c: Another fix from Brendan Cully.
+
+	* po/pl.po: update.
+
+	* sendlib.c, parse.c:
+	Fix more RFC2047 encoding bugs.  Once again from Gero Treuner
+	<gero@faveve.uni-stuttgart.de>.
+
+Tue Mar  7 19:53:19 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/da.po, configure.in:
+	Adding a Danish translation.  Thanks to Morten Bo Johansen
+	<mojo@image.dk> and the members of the sslug-locale mailing list,
+	see http://www.sslug.dk/emailarkiv/locale/.
+
+	* color.c:
+	The uncolor/unmono commands weren't parsed correctly when not
+	applicable.  This fixes bug#65.
+
+	* makedoc.c: Make gcc happy.
+
+	* TODO: Remove an old item from this list.  From Brendan Cully.
+
+	* sendlib.c, TODO, protos.h, send.c:
+	Correct header encodings when postponing messages.
+
+	* po/de.po: update
+
+	* po/pt_BR.po, po/el.po: updates.
+
+	* curs_main.c: Fix NULL pointer deferences.
+
+Sat Mar  4 12:57:53 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/zh_TW.Big5.po, po/uk.po, po/sk.po, po/sv.po,
+	po/pt_BR.po, po/ru.po, po/pl.po, po/nl.po, po/ko.po,
+	po/it.po, po/id.po, po/gl.po, po/fr.po, po/eo.po, po/es.po,
+	po/el.po, po/de.po, po/cs.po, reldate.h, build-release,
+	VERSION, ChangeLog: automatic post-release commit for
+	mutt-1.1.8
+
+	* protos.h, send.c, alias.c, headers.c: Unify alias expansion.
+
 Sat Mar  4 08:40:53 2000  Thomas Roessler  <roessler@guug.de>
 
 	* protos.h, send.c, alias.c, headers.c: Unify alias expansion.
