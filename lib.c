@@ -630,6 +630,6 @@ char *mutt_concat_path (char *d, const char *dir, const char *fname, size_t l)
   if (!*fname || (*dir && dir[strlen(dir)-1] == '/'))
     fmt = "%s%s";
   
-  snprintf (d, sizeof (d), fmt, dir, fname);
+  snprintf (d, l, fmt, dir, fname);
   return d;
 }
