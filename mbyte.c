@@ -93,7 +93,7 @@ void mutt_set_charset (char *charset)
 static size_t wcrtomb_iconv (char *s, wchar_t wc, iconv_t cd)
 {
   char buf[MB_LEN_MAX];
-  const char *ib;
+  ICONV_CONST char *ib;
   char *ob;
   size_t ibl, obl, r;
 
@@ -144,7 +144,7 @@ size_t mbrtowc_iconv (wchar_t *pwc, const char *s, size_t n,
 		      mbstate_t *ps, iconv_t cd)
 {
   static mbstate_t mbstate;
-  const char *ib, *ibmax;
+  ICONV_CONST char *ib, *ibmax;
   char *ob, *t;
   size_t ibl, obl, k, r;
   char bufi[8], bufo[6];

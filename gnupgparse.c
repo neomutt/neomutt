@@ -90,7 +90,7 @@ static void fix_uid (char *uid)
   {
     int n = s - uid + 1; /* chars available in original buffer */
     char *buf;
-    const char *ib;
+    ICONV_CONST char *ib;
     char *ob;
     size_t ibl, obl;
 

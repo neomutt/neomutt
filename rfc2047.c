@@ -46,10 +46,10 @@
 
 extern char RFC822Specials[];
 
-typedef size_t (*encoder_t) (char *, const char *, size_t,
+typedef size_t (*encoder_t) (char *, ICONV_CONST char *, size_t,
 			     const char *);
 
-static size_t convert_string (const char *f, size_t flen,
+static size_t convert_string (ICONV_CONST char *f, size_t flen,
 			      const char *from, const char *to,
 			      char **t, size_t *tlen)
 {
@@ -149,7 +149,7 @@ char *mutt_choose_charset (const char *fromcode, const char *charsets,
   return tocode;
 }
 
-static size_t b_encoder (char *s, const char *d, size_t dlen,
+static size_t b_encoder (char *s, ICONV_CONST char *d, size_t dlen,
 			 const char *tocode)
 {
   char *s0 = s;
@@ -190,7 +190,7 @@ static size_t b_encoder (char *s, const char *d, size_t dlen,
   return s - s0;
 }
 
-static size_t q_encoder (char *s, const char *d, size_t dlen,
+static size_t q_encoder (char *s, ICONV_CONST char *d, size_t dlen,
 			 const char *tocode)
 {
   char hex[] = "0123456789ABCDEF";
@@ -226,13 +226,13 @@ static size_t q_encoder (char *s, const char *d, size_t dlen,
  * tocode, unless fromcode is 0, in which case the data is assumed to
  * be already in tocode, which should be 8-bit and stateless.
  */
-static size_t try_block (const char *d, size_t dlen,
+static size_t try_block (ICONV_CONST char *d, size_t dlen,
 			 const char *fromcode, const char *tocode,
 			 encoder_t *encoder, size_t *wlen)
 {
   char buf1[ENCWORD_LEN_MAX - ENCWORD_LEN_MIN + 1];
   iconv_t cd;
-  const char *ib;
+  ICONV_CONST char *ib;
   char *ob, *p;
   size_t ibl, obl;
   int count, len, len_b, len_q;
@@ -304,7 +304,7 @@ static size_t encode_block (char *s, char *d, size_t dlen,
 {
   char buf1[ENCWORD_LEN_MAX - ENCWORD_LEN_MIN + 1];
   iconv_t cd;
-  const char *ib;
+  ICONV_CONST char *ib;
   char *ob;
   size_t ibl, obl, n1, n2;
 
@@ -362,7 +362,7 @@ static size_t choose_block (char *d, size_t dlen, int col,
  * The input data is assumed to be a single line starting at column col;
  * if col is non-zero, the preceding character was a space.
  */
-static int rfc2047_encode (const char *d, size_t dlen, int col,
+static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
 			   const char *fromcode, const char *charsets,
 			   char **e, size_t *elen, char *specials)
 {
