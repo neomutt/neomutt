@@ -1306,18 +1306,6 @@ struct option_t MuttVars[] = {
   { "forw_decrypt",	DT_SYN,  R_NONE, UL "forward_decrypt", 0 },
   /*
   */
-  { "pgp_search_text",	DT_BOOL, R_NONE, OPTPGPSEARCHTEXT, 0 },
-  /*
-  ** .pp
-  ** Controls whether Mutt will search text/plain messages for old style
-  ** PGP message which are not properly labled using MIME header fields.
-  ** If the first non-blank line in a message contains "-----BEGIN PGP"
-  ** it will be assumed that it is an aplication/pgp content-type.
-  ** NOTE: this option should only be used as a last resort when procmail
-  ** is not available on your system. See doc/PGP-notes.txt for the
-  ** recommended way to handle old-style messages.  Using this option may
-  ** lead to longer time required to parse your mailbox.
-  */
 #endif /* _PGPPATH */
   
 #ifdef USE_SSL
