@@ -1,3 +1,7 @@
+2004-11-02 13:30:58  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* copy.h: Fix flag confusion.  Noted by Vincent Lefevre.
+
 2004-10-30 21:59:00  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* browser.c, buffy.c, check_sec.sh, commands.c, edit.c,
