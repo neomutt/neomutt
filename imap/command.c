@@ -150,7 +150,7 @@ int imap_exec (char* buf, size_t buflen, IMAP_DATA* idata, const char* cmd,
     pc = buf + SEQLEN;
     SKIPWS (pc);
     pc = imap_next_word (pc);
-    mutt_error (pc);
+    mutt_error ("%s", pc);
     sleep (1);
 
     return -1;
@@ -258,7 +258,7 @@ int imap_handle_untagged (IMAP_DATA *idata, char *s)
     /* server shut down our connection */
     s += 3;
     SKIPWS (s);
-    mutt_error (s);
+    mutt_error ("%s", s);
     idata->status = IMAP_BYE;
     if (idata->state == IMAP_SELECTED)
       mx_fastclose_mailbox (idata->selected_ctx);
@@ -270,7 +270,7 @@ int imap_handle_untagged (IMAP_DATA *idata, char *s)
   else if (option (OPTIMAPSERVERNOISE) && (mutt_strncasecmp ("NO", s, 2) == 0))
   {
     /* Display the warning message from the server */
-    mutt_error (s+3);
+    mutt_error ("%s", s+3);
     sleep (1);
   }
   else

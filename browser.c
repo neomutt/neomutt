@@ -791,7 +791,7 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 
       case OP_BROWSER_TELL:
         if(state.entrylen)
-	  mutt_message(state.entry[menu->current].name);
+	  mutt_message("%s", state.entry[menu->current].name);
         break;
 
 #ifdef USE_IMAP

@@ -92,9 +92,8 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
   h0 = h;
   for (msgno = msgbegin; msgno <= msgend ; msgno++)
   {
-    snprintf (buf, sizeof (buf), _("Fetching message headers... [%d/%d]"), 
-      msgno + 1, msgend + 1);
-    mutt_message (buf);
+    mutt_message (_("Fetching message headers... [%d/%d]"), 
+		  msgno + 1, msgend + 1);
 
     if (msgno + 1 > fetchlast)
     {
@@ -525,7 +524,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
     pc = buf + SEQLEN;
     SKIPWS (pc);
     pc = imap_next_word (pc);
-    mutt_error (pc);
+    mutt_error ("%s", pc);
     sleep (1);
     fclose (fp);
     return (-1);
@@ -568,7 +567,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
     pc = buf + SEQLEN;
     SKIPWS (pc);
     pc = imap_next_word (pc);
-    mutt_error (pc);
+    mutt_error ("%s", pc);
     sleep (1);
     return (-1);
   }

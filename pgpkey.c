@@ -514,7 +514,7 @@ static pgp_key_t *pgp_select_key (pgp_key_t *keys,
 
     case OP_VIEW_ID:
 
-      mutt_message (KeyTable[menu->current]->addr);
+      mutt_message ("%s", KeyTable[menu->current]->addr);
       break;
 
     case OP_GENERIC_SELECT_ENTRY:

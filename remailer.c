@@ -595,11 +595,8 @@ void mix_make_chain (LIST **chainp, int *redraw)
 	if (chain->cl && chain->ch[chain->cl - 1] && 
 	    (type2_list[chain->ch[chain->cl-1]]->caps & MIX_CAP_MIDDLEMAN))
 	{
-	  char buff[SHORT_STRING];
-	  
-	  snprintf (buff, sizeof (buff), _("Error: %s can't be used as the final remailer of a chain."),
+	  mutt_error ( _("Error: %s can't be used as the final remailer of a chain."),
 		    type2_list[chain->ch[chain->cl - 1]]->shortname);
-	  mutt_error (buff);
 	}
 	else
 	{
@@ -628,12 +625,8 @@ void mix_make_chain (LIST **chainp, int *redraw)
 	  c_redraw = 1;
 	}
 	else
- 	{
-	  char buff[SHORT_STRING];
-	  snprintf (buff, sizeof (buff), _("Mixmaster chains are limited to %d elements."),
+	  mutt_error ( _("Mixmaster chains are limited to %d elements."),
 		    MAXMIXES);
-	  mutt_error (buff);
-	}
 	
 	break;
       }

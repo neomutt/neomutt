@@ -160,10 +160,9 @@ void imap_logout_all (void)
   {
     if (conn->up)
     {
-      snprintf (buf, sizeof (buf), _("Closing connection to %s..."),
-        conn->mx.host);
-      mutt_message (buf);
-
+      mutt_message (_("Closing connection to %s..."),
+		    conn->mx.host);
+      
       imap_make_sequence (seq, sizeof (seq));
       snprintf (buf, sizeof (buf), "%s LOGOUT\r\n", seq);
 

@@ -247,7 +247,7 @@ int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint)
     char *s;
     s = imap_next_word (buf); /* skip seq */
     s = imap_next_word (s); /* Skip response */
-    mutt_error (s);
+    mutt_error ("%s", s);
     sleep (1);
     return -1;
   }
@@ -674,7 +674,7 @@ int imap_open_mailbox (CONTEXT *ctx)
     char *s;
     s = imap_next_word (buf); /* skip seq */
     s = imap_next_word (s); /* Skip response */
-    mutt_error (s);
+    mutt_error ("%s", s);
     idata->state = IMAP_AUTHENTICATED;
     sleep (1);
     return -1;
@@ -978,9 +978,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int *index_hint)
     /* if we have a message set, then let's delete */
     if (deleted)
     {
-      snprintf (tmp, sizeof (tmp), _("Marking %d messages deleted..."),
-        deleted);
-      mutt_message (tmp);
+      mutt_message (_("Marking %d messages deleted..."), deleted);
       snprintf (tmp, sizeof (tmp), "STORE %s +FLAGS.SILENT (\\Deleted)", buf);
       if (imap_exec (buf, sizeof (buf), CTX_DATA, tmp, 0) != 0)
         /* continue, let regular store try before giving up */
@@ -998,9 +996,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int *index_hint)
   {
     if (ctx->hdrs[n]->changed)
     {
-      snprintf (buf, sizeof (buf), _("Saving message status flags... [%d/%d]"),
-		n+1, ctx->msgcount);
-      mutt_message (buf);
+      mutt_message (_("Saving message status flags... [%d/%d]"), n+1, ctx->msgcount);
       
       flags[0] = '\0';
       
