@@ -137,7 +137,7 @@ static const char *pgp_entry_fmt (char *dest,
   key   = uid->parent;
   pkey  = pgp_principal_key (key);
 
-  if (isupper (op))
+  if (isupper ((unsigned char) op))
     key = pkey;
 
   kflags = key->flags | (pkey->flags & KEYFLAG_RESTRICTIONS)

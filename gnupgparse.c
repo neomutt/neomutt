@@ -77,7 +77,7 @@ static void fix_uid (char *uid)
 
   for (s = d = uid; *s;)
   {
-    if (*s == '\\' && *(s+1) == 'x' && isxdigit (*(s+2)) && isxdigit (*(s+3)))
+    if (*s == '\\' && *(s+1) == 'x' && isxdigit ((unsigned char) *(s+2)) && isxdigit ((unsigned char) *(s+3)))
     {
       *d++ = hexval (*(s+2)) << 4 | hexval (*(s+3));
       s += 4;
