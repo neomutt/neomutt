@@ -428,7 +428,7 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 
   if ((p = strpbrk (s->dptr, " \t")) == NULL)
   {
-    strfcpy (err->data, "alias: no address", err->dsize);
+    strfcpy (err->data, _("alias: no address"), err->dsize);
     return (-1);
   }
 
@@ -522,7 +522,7 @@ static int parse_my_hdr (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err
   mutt_extract_token (buf, s, M_TOKEN_SPACE | M_TOKEN_QUOTE);
   if ((p = strpbrk (buf->data, ": \t")) == NULL || *p != ':')
   {
-    strfcpy (err->data, "invalid header field", err->dsize);
+    strfcpy (err->data, _("invalid header field"), err->dsize);
     return (-1);
   }
   keylen = p - buf->data + 1;
@@ -530,7 +530,7 @@ static int parse_my_hdr (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err
   SKIPWS (p);
   if (!*p)
   {
-    snprintf (err->data, err->dsize, "ignoring empty header field: %s", buf->data);
+    snprintf (err->data, err->dsize, _("ignoring empty header field: %s"), buf->data);
     return (-1);
   }
 
@@ -582,7 +582,7 @@ parse_sort (short *val, const char *s, const struct mapping_t *map, BUFFER *err)
 
   if ((i = mutt_getvaluebyname (s, map)) == -1)
   {
-    snprintf (err->data, err->dsize, "%s: unknown sorting method", s);
+    snprintf (err->data, err->dsize, _("%s: unknown sorting method"), s);
     return (-1);
   }
 
@@ -655,7 +655,7 @@ static void mutt_restore_default (struct option_t *p)
 	  }
 	  if (REGCOMP (pp->rx, s, flags) != 0)
 	  {
-	    fprintf (stderr, "mutt_restore_default: error in regexp: %s\n",
+	    fprintf (stderr, _("mutt_restore_default: error in regexp: %s\n"),
 		     pp->pattern);
 	    FREE (&pp->pattern);
 	    regfree (pp->rx);
@@ -715,7 +715,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     if ((idx = mutt_option_index (tmp->data)) == -1 &&
 	!(reset && !strcmp ("all", tmp->data)))
     {
-      snprintf (err->data, err->dsize, "%s: unknown variable", tmp->data);
+      snprintf (err->data, err->dsize, _("%s: unknown variable"), tmp->data);
       return (-1);
     }
     SKIPWS (s->dptr);
@@ -724,13 +724,13 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     {
       if (query || unset || inv)
       {
-	snprintf (err->data, err->dsize, "prefix is illegal with reset");
+	snprintf (err->data, err->dsize, _("prefix is illegal with reset"));
 	return (-1);
       }
 
       if (s && *s->dptr == '=')
       {
-	snprintf (err->data, err->dsize, "value is illegal with reset");
+	snprintf (err->data, err->dsize, _("value is illegal with reset"));
 	return (-1);
       }
      
@@ -747,14 +747,14 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     { 
       if (s && *s->dptr == '=')
       {
-	snprintf (err->data, err->dsize, "%s is a boolean var!", tmp->data);
+	snprintf (err->data, err->dsize, _("%s is a boolean var!"), tmp->data);
 	return (-1);
       }
 
       if (query)
       {
-	snprintf (err->data, err->dsize, "%s is %sset", tmp->data,
-		  option (MuttVars[idx].data) ? "" : "un");
+	snprintf (err->data, err->dsize, option (MuttVars[idx].data)
+			? _("%s is set") : _("%s is unset"), tmp->data);
 	return 0;
       }
 
@@ -925,7 +925,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       mutt_extract_token (tmp, s, 0);
       if (mx_set_magic (tmp->data))
       {
-	snprintf (err->data, err->dsize, "%s: invalid mailbox type", tmp->data);
+	snprintf (err->data, err->dsize, _("%s: invalid mailbox type"), tmp->data);
 	r = -1;
 	break;
       }
@@ -984,7 +984,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	  set_quadoption (MuttVars[idx].data, M_ASKNO);
 	else
 	{
-	  snprintf (err->data, err->dsize, "%s: invalid value.", tmp->data);
+	  snprintf (err->data, err->dsize, _("%s: invalid value"), tmp->data);
 	  r = -1;
 	  break;
 	}
@@ -1034,7 +1034,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     }
     else
     {
-      snprintf (err->data, err->dsize, "%s: unknown type", MuttVars[idx].option);
+      snprintf (err->data, err->dsize, _("%s: unknown type"), MuttVars[idx].option);
       r = -1;
       break;
     }
@@ -1083,7 +1083,7 @@ static int source_rc (const char *rcfile, BUFFER *err)
   {
     if (mutt_parse_rc_line (linebuf, &token, err) == -1)
     {
-      mutt_error ("Error in %s, line %d: %s", rcfile, line, err->data);
+      mutt_error (_("Error in %s, line %d: %s"), rcfile, line, err->data);
       rc = -1;
     }
   }
@@ -1093,7 +1093,8 @@ static int source_rc (const char *rcfile, BUFFER *err)
   if (pid != -1)
     mutt_wait_filter (pid);
   if (rc)
-    snprintf (err->data, err->dsize, "source: errors in %s", rcfile);
+    /* the muttrc source keyword */
+    snprintf (err->data, err->dsize, _("source: errors in %s"), rcfile);
   return (rc);
 }
 
@@ -1103,12 +1104,12 @@ static int parse_source (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err
 
   if (mutt_extract_token (tmp, s, 0) != 0)
   {
-    snprintf (err->data, err->dsize, "source: error at %s", s->dptr);
+    snprintf (err->data, err->dsize, _("source: error at %s"), s->dptr);
     return (-1);
   }
   if (MoreArgs (s))
   {
-    strfcpy (err->data, "source: too many arguments", err->dsize);
+    strfcpy (err->data, _("source: too many arguments"), err->dsize);
     return (-1);
   }
   strfcpy (path, tmp->data, sizeof (path));
@@ -1159,7 +1160,7 @@ int mutt_parse_rc_line (/* const */ char *line, BUFFER *token, BUFFER *err)
     }
     if (!Commands[i].name)
     {
-      snprintf (err->data, err->dsize, "%s: unknown command", NONULL (token->data));
+      snprintf (err->data, err->dsize, _("%s: unknown command"), NONULL (token->data));
       goto finish;
     }
   }
@@ -1400,7 +1401,7 @@ static void start_debug (void)
   {
     t = time (0);
     fprintf (debugfile, "Mutt %s started at %s.\nDebugging at level %d.\n\n",
-	     VERSION, asctime (localtime (&t)), debuglevel);
+	     MUTT_VERSION, asctime (localtime (&t)), debuglevel);
   }
 }
 #endif
@@ -1418,7 +1419,7 @@ static int mutt_execute_commands (LIST *p)
   {
     if (mutt_parse_rc_line (p->data, &token, &err) != 0)
     {
-      fprintf (stderr, "Error in command line: %s\n", err.data);
+      fprintf (stderr, _("Error in command line: %s\n"), err.data);
       FREE (&token.data);
       return (-1);
     }
@@ -1461,7 +1462,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
     if (!Homedir)
     {
       mutt_endwin (NULL);
-      fputs ("unable to determine home directory", stderr);
+      fputs (_("unable to determine home directory"), stderr);
       exit (1);
     }
     if ((p = getenv ("USER")))
@@ -1469,7 +1470,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
     else
     {
       mutt_endwin (NULL);
-      fputs ("unable to determine user", stderr);
+      fputs (_("unable to determine username"), stderr);
       exit (1);
     }
     Shell = safe_strdup ((p = getenv ("SHELL")) ? p : "/bin/sh");
@@ -1611,10 +1612,10 @@ void mutt_init (int skip_sys_rc, LIST *commands)
 
   if (!Muttrc)
   {
-    snprintf (buffer, sizeof (buffer), "%s/.mutt/muttrc-%s", NONULL(Homedir), VERSION);
+    snprintf (buffer, sizeof (buffer), "%s/.mutt/muttrc-%s", NONULL(Homedir), MUTT_VERSION);
     if (access(buffer, F_OK) == -1)
     {
-      snprintf (buffer, sizeof (buffer), "%s/.muttrc-%s", NONULL(Homedir), VERSION);
+      snprintf (buffer, sizeof (buffer), "%s/.muttrc-%s", NONULL(Homedir), MUTT_VERSION);
       if (access (buffer, F_OK) == -1)
       {
 	snprintf (buffer, sizeof (buffer), "%s/.mutt/muttrc", NONULL(Homedir));
@@ -1639,7 +1640,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
      requested not to via "-n".  */
   if (!skip_sys_rc)
   {
-    snprintf (buffer, sizeof (buffer), "%s/Muttrc-%s", SHAREDIR, VERSION);
+    snprintf (buffer, sizeof (buffer), "%s/Muttrc-%s", SHAREDIR, MUTT_VERSION);
     if (access (buffer, F_OK) == -1)
       snprintf (buffer, sizeof (buffer), "%s/Muttrc", SHAREDIR);
     if (access (buffer, F_OK) != -1)

@@ -178,7 +178,7 @@ static int maildir_parse_entry(CONTEXT *ctx, struct maildir ***last,
     {
       (*count)++;  
       if (!ctx->quiet && ReadInc && ((*count % ReadInc) == 0 || *count == 1))
-	mutt_message ("Reading %s... %d", ctx->path, *count);
+	mutt_message (_("Reading %s... %d"), ctx->path, *count);
     }
 
     if (subdir)

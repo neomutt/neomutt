@@ -8,7 +8,7 @@ for mode in help defs; do
 		help)
 			echo "#ifdef HELP_C"
 			echo "const char *HelpStrings[] = {"
-			expr='s;^[^ ]* *\(.*\);	\1,;'
+			expr='s;^[^ ]* *\(.*\);	N_(\1),;'
 			;;
 		*)
 			echo "enum {"

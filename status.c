@@ -98,7 +98,7 @@ status_format_str (char *buf, size_t buflen, char op, const char *src,
 	mutt_pretty_mailbox (tmp);
       }
       else
-	strfcpy (tmp, "(no mailbox)", sizeof (tmp));
+	strfcpy (tmp, _("(no mailbox)"), sizeof (tmp));
       snprintf (buf, buflen, fmt, tmp);
       break;
 
@@ -253,7 +253,7 @@ status_format_str (char *buf, size_t buflen, char op, const char *src,
 
     case 'v':
       snprintf (fmt, sizeof (fmt), "Mutt %%s");
-      snprintf (buf, buflen, fmt, VERSION);
+      snprintf (buf, buflen, fmt, MUTT_VERSION);
       break;
 
     case 'V':

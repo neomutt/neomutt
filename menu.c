@@ -294,7 +294,7 @@ void menu_jump (MUTTMENU *menu)
   {
     mutt_ungetch (LastKey);
     buf[0] = 0;
-    if (mutt_get_field ("Jump to: ", buf, sizeof (buf), 0) == 0 && buf[0])
+    if (mutt_get_field (_("Jump to: "), buf, sizeof (buf), 0) == 0 && buf[0])
     {
       n = atoi (buf) - 1;
       if (n >= 0 && n < menu->max)
@@ -303,11 +303,11 @@ void menu_jump (MUTTMENU *menu)
 	menu->redraw = REDRAW_MOTION;
       }
       else
-	mutt_error ("Invalid index number.");
+	mutt_error _("Invalid index number.");
     }
   }
   else
-    mutt_error ("No entries.");
+    mutt_error _("No entries.");
 }
 
 void menu_next_line (MUTTMENU *menu)
@@ -322,10 +322,10 @@ void menu_next_line (MUTTMENU *menu)
       menu->redraw = REDRAW_INDEX;
     }
     else
-      mutt_error ("You cannot scroll down farther.");
+      mutt_error _("You cannot scroll down farther.");
   }
   else
-    mutt_error ("No entries.");
+    mutt_error _("No entries.");
 }
 
 void menu_prev_line (MUTTMENU *menu)
@@ -338,7 +338,7 @@ void menu_prev_line (MUTTMENU *menu)
     menu->redraw = REDRAW_INDEX;
   }
   else
-    mutt_error ("You cannot scroll up farther.");
+    mutt_error _("You cannot scroll up farther.");
 }
 
 void menu_next_page (MUTTMENU *menu)
@@ -358,10 +358,10 @@ void menu_next_page (MUTTMENU *menu)
       menu->redraw = REDRAW_MOTION;
     }
     else
-      mutt_error ("You are on the last page.");
+      mutt_error _("You are on the last page.");
   }
   else
-    mutt_error ("No entries.");
+    mutt_error _("No entries.");
 }
 
 void menu_prev_page (MUTTMENU *menu)
@@ -380,7 +380,7 @@ void menu_prev_page (MUTTMENU *menu)
     menu->redraw = REDRAW_MOTION;
   }
   else
-    mutt_error ("You are on the first page.");
+    mutt_error _("You are on the first page.");
 }
 
 void menu_top_page (MUTTMENU *menu)
@@ -402,7 +402,7 @@ void menu_bottom_page (MUTTMENU *menu)
     menu->redraw = REDRAW_MOTION;
   }
   else
-    mutt_error ("No entries.");
+    mutt_error _("No entries.");
 }
 
 void menu_middle_page (MUTTMENU *menu)
@@ -418,7 +418,7 @@ void menu_middle_page (MUTTMENU *menu)
     menu->redraw = REDRAW_MOTION;
   }
   else
-    mutt_error ("No entries.");
+    mutt_error _("No entries.");
 }
 
 void menu_first_entry (MUTTMENU *menu)
@@ -429,7 +429,7 @@ void menu_first_entry (MUTTMENU *menu)
     menu->redraw = REDRAW_MOTION;
   }
   else
-    mutt_error ("No entries.");
+    mutt_error _("No entries.");
 }
 
 void menu_last_entry (MUTTMENU *menu)
@@ -440,7 +440,7 @@ void menu_last_entry (MUTTMENU *menu)
     menu->redraw = REDRAW_MOTION;
   }
   else
-    mutt_error ("No entries.");
+    mutt_error _("No entries.");
 }
 
 void menu_half_up (MUTTMENU *menu)
@@ -459,7 +459,7 @@ void menu_half_up (MUTTMENU *menu)
     menu->redraw = REDRAW_MOTION;
   }
   else
-    mutt_error ("First entry is shown.");
+    mutt_error _("First entry is shown.");
 }
 
 void menu_half_down (MUTTMENU *menu)
@@ -479,10 +479,10 @@ void menu_half_down (MUTTMENU *menu)
       menu->redraw = REDRAW_INDEX;
     }
     else
-      mutt_error ("Last entry is shown.");
+      mutt_error _("Last entry is shown.");
   }
   else
-    mutt_error ("No entries.");
+    mutt_error _("No entries.");
 }
 
 void menu_current_top (MUTTMENU *menu)
@@ -493,7 +493,7 @@ void menu_current_top (MUTTMENU *menu)
     menu->redraw = REDRAW_INDEX;
   }
   else
-    mutt_error ("No entries.");
+    mutt_error _("No entries.");
 }
 
 void menu_current_middle (MUTTMENU *menu)
@@ -506,7 +506,7 @@ void menu_current_middle (MUTTMENU *menu)
     menu->redraw = REDRAW_INDEX;
   }
   else
-    mutt_error ("No entries.");
+    mutt_error _("No entries.");
 }
 
 void menu_current_bottom (MUTTMENU *menu)
@@ -519,7 +519,7 @@ void menu_current_bottom (MUTTMENU *menu)
     menu->redraw = REDRAW_INDEX;
   }
   else
-    mutt_error ("No entries.");
+    mutt_error _("No entries.");
 }
 
 void menu_next_entry (MUTTMENU *menu)
@@ -530,7 +530,7 @@ void menu_next_entry (MUTTMENU *menu)
     menu->redraw = REDRAW_MOTION;
   }
   else
-    mutt_error ("You are on the last entry.");
+    mutt_error _("You are on the last entry.");
 }
 
 void menu_prev_entry (MUTTMENU *menu)
@@ -541,7 +541,7 @@ void menu_prev_entry (MUTTMENU *menu)
     menu->redraw = REDRAW_MOTION;
   }
   else
-    mutt_error ("You are on the first entry.");
+    mutt_error _("You are on the first entry.");
 }
 
 static int default_color (int i)
@@ -581,8 +581,8 @@ static int menu_search (MUTTMENU *menu, int op)
   if (op != OP_SEARCH_NEXT && op != OP_SEARCH_OPPOSITE)
   {
     strfcpy (buf, menu->searchBuf ? menu->searchBuf : "", sizeof (buf));
-    if (mutt_get_field ((op == OP_SEARCH) ? "Search for: " : 
-                                            "Reverse search for: ",
+    if (mutt_get_field ((op == OP_SEARCH) ? _("Search for: ") : 
+                                            _("Reverse search for: "),
 			 buf, sizeof (buf), M_CLEAR) != 0 || !buf[0])
       return (-1);
     safe_free ((void **) &menu->searchBuf);
@@ -593,7 +593,7 @@ static int menu_search (MUTTMENU *menu, int op)
   {
     if (!menu->searchBuf)
     {
-      mutt_error ("No search pattern.");
+      mutt_error _("No search pattern.");
       return (-1);
     }
   }
@@ -623,7 +623,7 @@ static int menu_search (MUTTMENU *menu, int op)
   }
 
   regfree (&re);
-  mutt_error ("Not found.");
+  mutt_error _("Not found.");
   return (-1);
 }
 
@@ -761,7 +761,7 @@ int mutt_menuLoop (MUTTMENU *menu)
 	    menu->current = menu->oldcurrent;
 	}
 	else
-	  mutt_error ("Search is not implemented for this menu.");
+	  mutt_error _("Search is not implemented for this menu.");
 	break;
 
       case OP_JUMP:
@@ -796,10 +796,10 @@ int mutt_menuLoop (MUTTMENU *menu)
 	      menu->redraw = REDRAW_CURRENT;
 	  }
 	  else
-	    mutt_error ("No entries.");
+	    mutt_error _("No entries.");
 	}
 	else
-	  mutt_error ("Tagging is not supported.");
+	  mutt_error _("Tagging is not supported.");
 	break;
 
       case OP_SHELL_ESCAPE:

@@ -53,24 +53,25 @@ enum packet_tags {
   PT_COMMENT		/* Comment Packet */
 };
 
+/* FIXME I can't find where those strings are displayed! */
 const char *pgp_packet_name[] = {
-  "reserved",
-  "Encrypted Session Key",
-  "Signature Packet",
-  "Conventionally Encrypted Session Key Packet",
-  "One-Pass Signature Packet",
-  "Secret Key Packet",
-  "Public Key Packet",
-  "Secret Subkey Packet",
-  "Compressed Data Packet",
-  "Symmetrically Encrypted Data Packet",
-  "Marker Packet",
-  "Literal Data Packet",
-  "Trust Packet",
-  "Name Packet",
-  "Subkey Packet",
-  "Reserved",
-  "Comment Packet"
+  N_("reserved"),
+  N_("Encrypted Session Key"),
+  N_("Signature Packet"),
+  N_("Conventionally Encrypted Session Key Packet"),
+  N_("One-Pass Signature Packet"),
+  N_("Secret Key Packet"),
+  N_("Public Key Packet"),
+  N_("Secret Subkey Packet"),
+  N_("Compressed Data Packet"),
+  N_("Symmetrically Encrypted Data Packet"),
+  N_("Marker Packet"),
+  N_("Literal Data Packet"),
+  N_("Trust Packet"),
+  N_("Name Packet"),
+  N_("Subkey Packet"),
+  N_("Reserved"),
+  N_("Comment Packet")
 };
 
 const char *pgp_pkalgbytype(unsigned char type)

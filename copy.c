@@ -566,7 +566,7 @@ static int copy_delete_attach(HEADER *h, HEADER *p, BODY *m, FILE *fpin,
   {
     if (m == NULL)
     {
-      mutt_error ("Confused when attempting to delete attachment, h & m can't be NULL");
+      mutt_error _("Confused when attempting to delete attachment, h & m can't be NULL");
       return -1;
     }
     b = m;
@@ -581,7 +581,7 @@ static int copy_delete_attach(HEADER *h, HEADER *p, BODY *m, FILE *fpin,
   /* Find first deleted attachment */
   if (b->parts == NULL)
   {
-    mutt_error ("Deleting non-multipart messages not yet supported");
+    mutt_error _("Deleting non-multipart messages not yet supported");
     return -1;
   }
   b = b->parts;

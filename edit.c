@@ -33,7 +33,7 @@
  * SLcurses_waddnstr() can't take a "const char *", so this is only
  * declared "static" (sigh)
  */
-static char EditorHelp[] = "\
+static char EditorHelp[] = N_("\
 ~~		insert a line begining with a single ~\n\
 ~b users	add users to the Bcc: field\n\
 ~c users	add users to the Cc: field\n\
@@ -51,7 +51,7 @@ static char EditorHelp[] = "\
 ~w file		write message to file\n\
 ~x		abort changes and quit editor\n\
 ~?		this message\n\
-.		on a line by itself ends input\n";
+.		on a line by itself ends input\n");
 
 static char **
 be_snarf_data (FILE *f, char **buf, int *bufmax, int *buflen, int offset,
@@ -175,7 +175,7 @@ be_include_messages (char *msg, char **buf, int *bufmax, int *buflen,
       buf[(*buflen)++] = safe_strdup ("\n");
     }
     else
-      printw ("%d: invalid message number.\n", n);
+      printw (_("%d: invalid message number.\n"), n);
     msg = NULL;
   }
   return (buf);
@@ -309,7 +309,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 
   be_edit_header (msg->env, 0);
 
-  addstr ("(End message with a . on a line by itself)\n");
+  addstr _("(End message with a . on a line by itself)\n");
 
   buf = be_snarf_file (path, buf, &bufmax, &buflen, 0);
 
@@ -336,7 +336,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
       switch (tmp[1])
       {
 	case '?':
-	  addstr (EditorHelp);
+	  addstr _(EditorHelp);
 	  break;
 	case 'b':
 	  msg->env->bcc = mutt_parse_adrlist (msg->env->bcc, p);
@@ -367,15 +367,15 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 				       (isupper ((unsigned char) tmp[1])));
 	  }
 	  else
-	    addstr ("No mailbox.\n");
+	    addstr _("No mailbox.\n");
 	  break;
 	case 'p':
 	  addstr ("-----\n");
-	  addstr ("Message contains:\n");
+	  addstr _("Message contains:\n");
 	  be_print_header (msg->env);
 	  for (i = 0; i < buflen; i++)
 	    addstr (buf[i]);
-	  addstr ("(continue)\n");
+	  addstr _("(continue)\n");
 	  break;
 	case 'q':
 	  done = 1;
@@ -388,7 +388,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 	    buf = be_snarf_file (tmp, buf, &bufmax, &buflen, 1);
           }
 	  else
-	    addstr ("missing filename.\n");
+	    addstr _("missing filename.\n");
 	  break;
 	case 's':
 	  safe_free ((void **) &msg->env->subject);
@@ -409,7 +409,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 	    continue;
 	  }
 	  else
-	    addstr ("No lines in message.\n");
+	    addstr _("No lines in message.\n");
 	  break;
 
 	case 'e':
@@ -427,7 +427,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 
 	    buf = be_snarf_file (path, buf, &bufmax, &buflen, 0);
 
-	    addstr ("(continue)\n");
+	    addstr _("(continue)\n");
 	  }
 	  break;
 	case 'w':
@@ -438,7 +438,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 	  done = 1;
 	  break;
 	default:
-	  printw ("%s: unknown editor command (~? for help)\n", tmp);
+	  printw (_("%s: unknown editor command (~? for help)\n"), tmp);
 	  break;
       }
     }

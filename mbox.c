@@ -183,7 +183,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
     else
     {
       dprint (1, (debugfile, "mmdf_parse_mailbox: corrupt mailbox!\n"));
-      mutt_error ("Mailbox is corrupt!");
+      mutt_error _("Mailbox is corrupt!");
       return (-1);
     }
   }
@@ -258,7 +258,7 @@ int mbox_parse_mailbox (CONTEXT *ctx)
       count++;
 
       if (!ctx->quiet && ReadInc && ((count % ReadInc == 0) || count == 1))
-	mutt_message ("Reading %s... %d (%d%%)", ctx->path, count,
+	mutt_message (_("Reading %s... %d (%d%%)"), ctx->path, count,
 		      ftell (ctx->fp) / (ctx->size / 100 + 1));
 
       if (ctx->msgcount == ctx->hdrmax)
@@ -623,7 +623,7 @@ int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
   mbox_unlock_mailbox (ctx);
   mx_fastclose_mailbox (ctx);
   mutt_unblock_signals ();
-  mutt_error ("Mailbox was corrupted!");
+  mutt_error _("Mailbox was corrupted!");
   return (-1);
 }
 
@@ -660,7 +660,7 @@ int mbox_sync_mailbox (CONTEXT *ctx)
   if ((ctx->fp = freopen (ctx->path, "r+", ctx->fp)) == NULL)
   {
     mx_fastclose_mailbox (ctx);
-    mutt_error ("Fatal error!  Could not reopen mailbox.");
+    mutt_error _("Fatal error!  Could not reopen mailbox!");
     return (-1);
   }
 
@@ -669,7 +669,7 @@ int mbox_sync_mailbox (CONTEXT *ctx)
   if (mbox_lock_mailbox (ctx, 1, 1) == -1)
   {
     mutt_unblock_signals ();
-    mutt_error ("Unable to lock mailbox!");
+    mutt_error _("Unable to lock mailbox!");
     goto bail;
   }
 
@@ -692,7 +692,7 @@ int mbox_sync_mailbox (CONTEXT *ctx)
   if ((i = open (tempfile, O_WRONLY | O_EXCL | O_CREAT, 0600)) == -1 ||
       (fp = fdopen (i, "w")) == NULL)
   {
-    mutt_error ("Could not create temporary file!");
+    mutt_error _("Could not create temporary file!");
     goto bail;
   }
 
@@ -708,7 +708,7 @@ int mbox_sync_mailbox (CONTEXT *ctx)
      * messages were found to be changed or deleted.  This should
      * never happen, is we presume it is a bug in mutt.
      */
-    mutt_error ("sync: mbox modified, but no modified messages! (report this bug)");
+    mutt_error _("sync: mbox modified, but no modified messages! (report this bug)");
     sleep(5); /* the mutt_error /will/ get cleared! */
     dprint(1, (debugfile, "mbox_sync_mailbox(): no modified messages.\n"));
     goto bail;
@@ -732,7 +732,7 @@ int mbox_sync_mailbox (CONTEXT *ctx)
     {
       j++;
       if (!ctx->quiet && WriteInc && ((i % WriteInc) == 0 || j == 1))
-	mutt_message ("Writing messages... %d (%d%%)", i,
+	mutt_message (_("Writing messages... %d (%d%%)"), i,
 		      ftell (ctx->fp) / (ctx->size / 100 + 1));
 
       if (ctx->magic == M_MMDF)
@@ -834,7 +834,7 @@ int mbox_sync_mailbox (CONTEXT *ctx)
     mutt_unblock_signals ();
     mx_fastclose_mailbox (ctx);
     mutt_pretty_mailbox (savefile);
-    mutt_error ("Write failed!  Saved partial mailbox to %s", savefile);
+    mutt_error (_("Write failed!  Saved partial mailbox to %s"), savefile);
     return (-1);
   }
 
@@ -849,7 +849,7 @@ int mbox_sync_mailbox (CONTEXT *ctx)
     unlink (tempfile);
     mutt_unblock_signals ();
     mx_fastclose_mailbox (ctx);
-    mutt_error ("Fatal error!  Could not reopen mailbox!");
+    mutt_error _("Fatal error!  Could not reopen mailbox!");
     Sort = save_sort;
     return (-1);
   }
@@ -882,7 +882,7 @@ bail:  /* Come here in case of disaster */
 
   if ((ctx->fp = freopen (ctx->path, "r", ctx->fp)) == NULL)
   {
-    mutt_error ("Could not reopen mailbox!");
+    mutt_error _("Could not reopen mailbox!");
     mx_fastclose_mailbox (ctx);
     return (-1);
   }
@@ -922,7 +922,7 @@ int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
   /* silent operations */
   ctx->quiet = 1;
   
-  mutt_message ("Reopening mailbox...");
+  mutt_message _("Reopening mailbox...");
   
   /* our heuristics require the old mailbox to be unsorted */
   if (Sort != SORT_ORDER)

@@ -32,7 +32,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-#define CHECK_COUNT if (idxlen == 0) { mutt_error ("There are no attachments."); break; }
+#define CHECK_COUNT if (idxlen == 0) { mutt_error _("There are no attachments."); break; }
 
 
 
@@ -94,7 +94,7 @@ static int pgp_send_menu (int bits)
 
   struct pgp_vinfo *pgp = pgp_get_vinfo(PGP_SIGN);
   
-  mvaddstr (LINES-1, 0, "(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget it? ");
+  mvaddstr (LINES-1, 0, _("(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget it? "));
   clrtoeol ();
   do
   {
@@ -109,12 +109,12 @@ static int pgp_send_menu (int bits)
       {
 	if(!(secring = pgp->read_secring(pgp)))
 	{
-	  mutt_error("Can't open your secret key ring!");
+	  mutt_error _("Can't open your secret key ring!");
 	  bits &= ~PGPSIGN;
 	}
 	else 
 	{
-	  if ((p = pgp_ask_for_key (pgp, secring, "Sign as: ", 
+	  if ((p = pgp_ask_for_key (pgp, secring, _("Sign as: "), 
 				    NULL, KEYFLAG_CANSIGN, &micalg)))
 	  {
 	    snprintf (input_signas, sizeof (input_signas), "0x%s", p);
@@ -133,24 +133,24 @@ static int pgp_send_menu (int bits)
       else
       {
 	bits &= ~PGPSIGN;
-	mutt_error("An unkown PGP version was defined for signing.");
+	mutt_error _("An unkown PGP version was defined for signing.");
       }
     }
     else if (c == 'm')
     {
       if(!(bits & PGPSIGN))
-	mutt_error("This doesn't make sense if you don't want to sign the message.");
+	mutt_error _("This doesn't make sense if you don't want to sign the message.");
       else
       {
 	/* Copy the existing MIC algorithm into place */
 	strfcpy(input_micalg, NONULL(PgpSignMicalg), sizeof(input_micalg));
 
-	if(mutt_get_field("MIC algorithm: ", input_micalg, sizeof(input_micalg), 0) == 0)
+	if(mutt_get_field (_("MIC algorithm: "), input_micalg, sizeof(input_micalg), 0) == 0)
 	{
 	  if(strcasecmp(input_micalg, "pgp-md5") && strcasecmp(input_micalg, "pgp-sha1")
 	     && strcasecmp(input_micalg, "pgp-rmd160"))
 	  {
-	    mutt_error("Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160");
+	    mutt_error _("Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160");
 	  }
 	  else 
 	  {
@@ -194,7 +194,7 @@ check_attachments(ATTACHPTR **idx, short idxlen)
     if(stat(idx[i]->content->filename, &st) != 0)
     {
       mutt_pretty_mailbox(pretty);
-      mutt_error("%s [#%d] no longer exists!",
+      mutt_error(_("%s [#%d] no longer exists!"),
 		 pretty, i+1);
       return -1;
     }
@@ -202,7 +202,7 @@ check_attachments(ATTACHPTR **idx, short idxlen)
     if(idx[i]->content->stamp < st.st_mtime)
     {
       mutt_pretty_mailbox(pretty);
-      snprintf(msg, sizeof(msg), "%s [#%d] modified. Update encoding?",
+      snprintf(msg, sizeof(msg), _("%s [#%d] modified. Update encoding?"),
 	       pretty, i+1);
       
       if((r = mutt_yesorno(msg, M_YES)) == M_YES)
@@ -264,24 +264,24 @@ static void draw_envelope (HEADER *msg, char *fcc)
 #ifdef _PGPPATH
   mvaddstr (HDR_PGP, 0,     "     PGP: ");
   if ((msg->pgp & (PGPENCRYPT | PGPSIGN)) == (PGPENCRYPT | PGPSIGN))
-    addstr ("Sign, Encrypt");
+    addstr _("Sign, Encrypt");
   else if (msg->pgp & PGPENCRYPT)
-    addstr ("Encrypt");
+    addstr _("Encrypt");
   else if (msg->pgp & PGPSIGN)
-    addstr ("Sign");
+    addstr _("Sign");
   else
-    addstr ("Clear");
+    addstr _("Clear");
   clrtoeol ();
 
   if (msg->pgp & PGPSIGN)
   {
-    mvaddstr (HDR_PGPSIGINFO, 0, " sign as: ");
+    mvaddstr (HDR_PGPSIGINFO, 0, _(" sign as: "));
     if (PgpSignAs)
       printw ("%s", PgpSignAs);
     else
-      printw ("%s", "<default>");
+      printw ("%s", _("<default>"));
     clrtoeol ();
-    mvaddstr (HDR_PGPSIGINFO, 40, "MIC algorithm: ");
+    mvaddstr (HDR_PGPSIGINFO, 40, _("MIC algorithm: "));
     printw ("%s", NONULL(PgpSignMicalg));
     clrtoeol ();
   }
@@ -370,7 +370,7 @@ static int delete_attachment (MUTTMENU *menu, short *idxlen, int x)
 
   if (x == 0 && menu->max == 1)
   {
-    mutt_error ("You may not delete the only attachment.");
+    mutt_error _("You may not delete the only attachment.");
     idx[x]->content->tagged = 0;
     return (-1);
   }
@@ -444,7 +444,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
   menu->max = idxlen;
   menu->make_entry = snd_entry;
   menu->tag = mutt_tag_attach;
-  menu->title = "Compose";
+  menu->title = _("Compose");
   menu->data = idx;
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_COMPOSE, ComposeHelp);
   
@@ -600,12 +600,12 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
 	  if (op == OP_COMPOSE_ATTACH_FILE)
 	  {
-	    prompt = "Attach file";
+	    prompt = _("Attach file");
 	    flag = 0;
 	  }
 	  else
 	  {
-	    prompt = "Open mailbox to attach message from";
+	    prompt = _("Open mailbox to attach message from");
 	    if (Context)
 	    {
 	      strfcpy (fname, NONULL (Context->path), sizeof (fname));
@@ -644,14 +644,14 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  {
 	    mx_close_mailbox (ctx);
 	    safe_free ((void **) &ctx);
-	    mutt_error ("No messages in that folder.");
+	    mutt_error _("No messages in that folder.");
 	    break;
 	  }
 	  
 	  this = Context; /* remember current folder */
 	  Context = ctx;
 	  set_option(OPTATTACHMSG);
-	  mutt_message ("Tag the messages you want to attach!");
+	  mutt_message _("Tag the messages you want to attach!");
 	  close = mutt_index_menu ();
 	  unset_option(OPTATTACHMSG);
 
@@ -686,7 +686,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    update_idx (menu, idx, idxlen++);
 	  else
 	  {
-	    mutt_error ("Unable to attach!");
+	    mutt_error _("Unable to attach!");
 	    safe_free ((void **) &idx[idxlen]);
 	  }
 	  menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
@@ -706,7 +706,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 		update_idx (menu, idx, idxlen++);
 	      else
 	      {
-		mutt_error ("Unable to attach!");
+		mutt_error _("Unable to attach!");
 		safe_free ((void **) &idx[idxlen]);
 	      }
 	    }
@@ -750,6 +750,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 		 idx[menu->current]->content->description ?
 		 idx[menu->current]->content->description : "",
 		 sizeof (buf));
+	/* header names should not be translated */
 	if (mutt_get_field ("Description: ", buf, sizeof (buf), 0) == 0)
 	{
 	  safe_free ((void **) &idx[menu->current]->content->description);
@@ -813,7 +814,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    menu->redraw = REDRAW_CURRENT;
 	  }
 	  else
-	    mutt_error ("Invalid encoding.");
+	    mutt_error _("Invalid encoding.");
 	}
 	break;
 
@@ -827,8 +828,8 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
       
 	if (!fccSet && *fcc)
 	{
-	  if ((i = query_quadoption (OPT_COPY, "Save a copy of this message?"))
-									  == -1)
+	  if ((i = query_quadoption (OPT_COPY,
+				_("Save a copy of this message?"))) == -1)
 	    break;
 	  else if (i == M_NO)
 	    *fcc = 0;
@@ -873,12 +874,12 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	CHECK_COUNT;
 	strfcpy (fname, idx[menu->current]->content->filename, sizeof (fname));
 	mutt_pretty_mailbox (fname);
-	if (mutt_get_field ("Rename to: ", fname, sizeof (fname), M_FILE) == 0
-								  && fname[0])
+	if (mutt_get_field (_("Rename to: "), fname, sizeof (fname), M_FILE)
+							== 0 && fname[0])
 	{
 	  if(stat(idx[menu->current]->content->filename, &st) == -1)
 	  {
-	    mutt_error("Can't stat: %s", fname);
+	    mutt_error (_("Can't stat: %s"), fname);
 	    break;
 	  }
 
@@ -905,8 +906,8 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
 	  CLEARLINE (LINES-1);
 	  fname[0] = 0;
-	  if (mutt_get_field ("New file: ", fname, sizeof (fname), M_FILE) != 0
-	      || !fname[0])
+	  if (mutt_get_field (_("New file: "), fname, sizeof (fname), M_FILE)
+	      != 0 || !fname[0])
 	    continue;
 	  mutt_expand_path (fname, sizeof (fname));
 
@@ -918,13 +919,13 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
 	  if (!(p = strchr (type, '/')))
 	  {
-	    mutt_error ("Content-Type is of the form base/sub");
+	    mutt_error _("Content-Type is of the form base/sub");
 	    continue;
 	  }
 	  *p++ = 0;
 	  if ((itype = mutt_check_mime_type (type)) == TYPEOTHER)
 	  {
-	    mutt_error ("Unknown Content-Type %s", type);
+	    mutt_error (_("Unknown Content-Type %s"), type);
 	    continue;
 	  }
 	  if (idxlen == idxmax)
@@ -937,7 +938,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  /* Touch the file */
 	  if (!(fp = safe_fopen (fname, "w")))
 	  {
-	    mutt_error ("Can't create file %s", fname);
+	    mutt_error (_("Can't create file %s"), fname);
 	    safe_free ((void **) &idx[idxlen]);
 	    continue;
 	  }
@@ -945,7 +946,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
 	  if ((idx[idxlen]->content = mutt_make_file_attach (fname)) == NULL)
 	  {
-	    mutt_error ("What we have here is a failure to make an attachment");
+	    mutt_error _("What we have here is a failure to make an attachment");
 	    continue;
 	  }
 	  
@@ -1017,7 +1018,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
 
       case OP_EXIT:
-	if ((i = query_quadoption (OPT_POSTPONE, "Postpone this message?")) == M_NO)
+	if ((i = query_quadoption (OPT_POSTPONE, _("Postpone this message?"))) == M_NO)
 	{
 	  while (idxlen-- > 0)
 	  {
@@ -1064,11 +1065,11 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
        fname[0] = '\0';
        if (idxlen)
          msg->content = idx[0]->content;
-       if (mutt_enter_fname ("Write message to mailbox", fname, sizeof (fname),
+       if (mutt_enter_fname (_("Write message to mailbox"), fname, sizeof (fname),
                              &menu->redraw, 1) != -1 && fname[0])
        {
 	 int oldhdrdate;
-         mutt_message ("Writing message to %s ...", fname);
+         mutt_message (_("Writing message to %s ..."), fname);
          mutt_expand_path (fname, sizeof (fname));
 
          if (msg->content->next)
@@ -1079,7 +1080,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
          if (mutt_write_fcc (NONULL (fname), msg, NULL, 1) < 0)
            msg->content = mutt_remove_multipart (msg->content);
          else
-           mutt_message ("Message written.");
+           mutt_message _("Message written.");
 	 if(!oldhdrdate) unset_option(OPTUSEHEADERDATE);
        }
        break;

@@ -226,9 +226,9 @@ static int edit_envelope (ENVELOPE *en)
   }
   
   if (mutt_get_field ("Subject: ", buf, sizeof (buf), 0) != 0 ||
-      (!buf[0] && query_quadoption (OPT_SUBJECT, "No subject, abort?") != 0))
+      (!buf[0] && query_quadoption (OPT_SUBJECT, _("No subject, abort?")) != 0))
   {
-    mutt_message ("No subject, aborting.");
+    mutt_message _("No subject, aborting.");
     return (-1);
   }
   safe_free ((void **) &en->subject);
@@ -426,7 +426,7 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int group)
        * to send a message to only the sender of the message.  This
        * provides a way to do that.
        */
-      snprintf (prompt, sizeof (prompt), "Reply to %s?", env->reply_to->mailbox);
+      snprintf (prompt, sizeof (prompt), _("Reply to %s?"), env->reply_to->mailbox);
       if ((i = query_quadoption (OPT_REPLYTO, prompt)) == M_YES)
 	rfc822_append (to, env->reply_to);
       else if (i == M_NO)
@@ -507,7 +507,7 @@ envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
       /* This could happen if the user tagged some messages and then did
        * a limit such that none of the tagged message are visible.
        */
-      mutt_error ("No tagged messages are visible!");
+      mutt_error _("No tagged messages are visible!");
       return (-1);
     }
   }
@@ -532,7 +532,7 @@ envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
 
     if ((flags & SENDLISTREPLY) && !env->to)
     {
-      mutt_error ("No mailing lists found!");
+      mutt_error _("No mailing lists found!");
       return (-1);
     }
 
@@ -619,7 +619,7 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
 
   if (flags & SENDREPLY)
   {
-    if ((i = query_quadoption (OPT_INCLUDE, "Include message in reply?")) == -1)
+    if ((i = query_quadoption (OPT_INCLUDE, _("Include message in reply?"))) == -1)
       return (-1);
 
     if (i == M_YES)
@@ -633,7 +633,7 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
 	  {
 	    if (include_reply (ctx, h, tempfp) == -1)
 	    {
-	      mutt_error ("Could not include all requested messages!");
+	      mutt_error _("Could not include all requested messages!");
 	      return (-1);
 	    }
 	    fputc ('\n', tempfp);
@@ -646,7 +646,7 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
   }
   else if (flags & SENDFORWARD)
   {
-    if (query_quadoption (OPT_MIMEFWD, "Forward MIME encapsulated?"))
+    if (query_quadoption (OPT_MIMEFWD, _("Forward MIME encapsulated?")))
     {
       BODY *last = msg->content;
 
@@ -857,7 +857,7 @@ ci_send_message (int flags,		/* send mode */
     /* If the user is composing a new message, check to see if there
      * are any postponed messages first.
      */
-    if ((i = query_quadoption (OPT_RECALL, "Recall postponed message?")) == -1)
+    if ((i = query_quadoption (OPT_RECALL, _("Recall postponed message?"))) == -1)
       goto cleanup;
 
     if(i == M_YES)
@@ -1087,9 +1087,9 @@ ci_send_message (int flags,		/* send mode */
       {
 	/* if the file was not modified, bail out now */
 	if (mtime == st.st_mtime &&
-	    query_quadoption (OPT_ABORT, "Abort unmodified message?") == M_YES)
+	    query_quadoption (OPT_ABORT, _("Abort unmodified message?")) == M_YES)
 	{
-	  mutt_message ("Aborted unmodified message.");
+	  mutt_message _("Aborted unmodified message.");
 	  goto cleanup;
 	}
       }
@@ -1127,7 +1127,7 @@ main_loop:
     if (i == -1)
     {
       /* abort */
-      mutt_message ("Mail not sent.");
+      mutt_message _("Mail not sent.");
       goto cleanup;
     }
     else if (i == 1)
@@ -1140,7 +1140,7 @@ main_loop:
 	msg->content = mutt_remove_multipart (msg->content);
 	goto main_loop;
       }
-      mutt_message ("Message postponed.");
+      mutt_message _("Message postponed.");
       goto cleanup;
     }
   }
@@ -1149,22 +1149,22 @@ main_loop:
   {
     if (! (flags & SENDBATCH))
     {
-      mutt_error ("No recipients are specified!");
+      mutt_error _("No recipients are specified!");
       goto main_loop;
     }
     else
     {
-      puts ("No recipients were specified.");
+      puts _("No recipients were specified.");
       goto cleanup;
     }
   }
 
   if (!msg->env->subject && ! (flags & SENDBATCH) &&
-      (i = query_quadoption (OPT_SUBJECT, "No subject, abort sending?")) != M_NO)
+      (i = query_quadoption (OPT_SUBJECT, _("No subject, abort sending?"))) != M_NO)
   {
     /* if the abort is automatic, print an error message */
     if (quadoption (OPT_SUBJECT) == M_YES)
-      mutt_error ("No subject specified.");
+      mutt_error _("No subject specified.");
     goto main_loop;
   }
 
@@ -1203,13 +1203,13 @@ main_loop:
 
   if (flags & SENDEDITMSG)
   {
-   int really_send = mutt_yesorno ("Message edited. Really send?", 1);
+   int really_send = mutt_yesorno (_("Message edited. Really send?"), 1);
    if (really_send != M_YES)
      goto main_loop;
   }
 
   if (!option (OPTNOCURSES) && !(flags & SENDMAILX))
-    mutt_message ("Sending message...");
+    mutt_message _("Sending message...");
 
   mutt_prepare_envelope (msg->env);
   encode_descriptions (msg->content);
@@ -1309,7 +1309,7 @@ full_fcc:
   }
 
   if (!option (OPTNOCURSES) && ! (flags & SENDMAILX))
-    mutt_message ("Mail sent.");
+    mutt_message _("Mail sent.");
 
   if (flags & SENDREPLY)
   {

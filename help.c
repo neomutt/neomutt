@@ -182,7 +182,7 @@ static void dump_menu (FILE *f, int menu)
       {
 	b = help_lookupFunction (map->op, menu);
 	fprintf (f, "%-22s %s\n", b ? b->name : "UNKNOWN",
-	      b ? HelpStrings[b->op] : "ERROR: please report this bug");
+	      b ? _(HelpStrings[b->op]) : _("ERROR: please report this bug"));
       }
     }
   }
@@ -207,7 +207,7 @@ static void dump_unbound (FILE *f,
   {
     if (! is_bound (map, funcs[i].op) &&
 	(!aux || ! is_bound (aux, funcs[i].op)))
-      fprintf (f, "%-35s%s\n", funcs[i].name, HelpStrings[funcs[i].op]);
+      fprintf (f, "%-35s%s\n", funcs[i].name, _(HelpStrings[funcs[i].op]));
   }
 }
 
@@ -229,16 +229,16 @@ void mutt_help (int menu)
   funcs = km_get_table (menu);
   desc = mutt_getnamebyvalue (menu, Menus);
   if (!desc)
-    desc = "<UNKNOWN>";
+    desc = _("<UNKNOWN>");
   
   dump_menu (f, menu);
   if (menu != MENU_EDITOR && menu != MENU_PAGER)
   {
-    fputs ("\nGeneric bindings:\n\n", f);
+    fputs (_("\nGeneric bindings:\n\n"), f);
     dump_menu (f, MENU_GENERIC);
   }
 
-  fputs ("\nUnbound functions:\n\n", f);
+  fputs (_("\nUnbound functions:\n\n"), f);
   if (funcs)
     dump_unbound (f, funcs, Keymaps[menu], NULL);
   if (menu != MENU_PAGER)
@@ -246,6 +246,6 @@ void mutt_help (int menu)
 
   fclose (f);
 
-  snprintf (buf, sizeof (buf), "Help for %s", desc);
+  snprintf (buf, sizeof (buf), _("Help for %s"), desc);
   mutt_do_pager (buf, t, 0, NULL);
 }

@@ -50,20 +50,20 @@
 #define CHECK_MSGCOUNT if (!Context) \
 	{ \
 	  	mutt_flushinp (); \
-		mutt_error ("No mailbox is open."); \
+		mutt_error _("No mailbox is open."); \
 		break; \
 	} \
 	else if (!Context->msgcount) \
 	{ \
 	  	mutt_flushinp (); \
-		mutt_error ("There are no messages."); \
+		mutt_error _("There are no messages."); \
 		break; \
 	}
 
 #define CHECK_READONLY if (Context->readonly) \
 			{ \
 			  	mutt_flushinp (); \
-				mutt_error ("Mailbox is read-only."); \
+				mutt_error _("Mailbox is read-only."); \
 				break; \
 			}
 
@@ -205,19 +205,19 @@ static int mx_toggle_write (CONTEXT *ctx)
 
   if (ctx->readonly)
   {
-    mutt_error ("Cannot toggle write on a readonly mailbox!");
+    mutt_error _("Cannot toggle write on a readonly mailbox!");
     return -1;
   }
 
   if (ctx->dontwrite)
   {
     ctx->dontwrite = 0;
-    mutt_message ("Changes to folder will be written on folder exit.");
+    mutt_message _("Changes to folder will be written on folder exit.");
   }
   else
   {
     ctx->dontwrite = 1;
-    mutt_message ("Changes to folder will not be written.");
+    mutt_message _("Changes to folder will not be written.");
   }
 
   return 0;
@@ -395,10 +395,10 @@ int mutt_index_menu (void)
 
 	/* notify the user of new mail */
 	if (check == M_REOPENED)
-	  mutt_error ("Mailbox was externally modified.  Flags may be wrong.");
+	  mutt_error _("Mailbox was externally modified.  Flags may be wrong.");
 	else
 	{
-	  mutt_message ("New mail in this mailbox.");
+	  mutt_message _("New mail in this mailbox.");
 	  if (option (OPTBEEPNEW))
 	    beep ();
 	}
@@ -507,13 +507,13 @@ int mutt_index_menu (void)
       {
 	if (!Context)
 	{
-	  mutt_error ("No mailbox is open.");
+	  mutt_error _("No mailbox is open.");
 	  continue;
 	}
 
 	if (!Context->tagged)
 	{
-	  mutt_error ("No tagged messages.");
+	  mutt_error _("No tagged messages.");
 	  continue;
 	}
 	tag = 1;
@@ -593,13 +593,13 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
 	mutt_ungetch (LastKey);
 	buf[0] = 0;
-	if (mutt_get_field ("Jump to message: ", buf, sizeof (buf), 0) != 0 ||
-	    !buf[0])
+	if (mutt_get_field (_("Jump to message: "), buf, sizeof (buf), 0) != 0
+	    || !buf[0])
 	  break;
 
 	if (! isdigit ((unsigned char) buf[0]))
 	{
-	  mutt_error ("Argument must be a message number.");
+	  mutt_error _("Argument must be a message number.");
 	  break;
 	}
 
@@ -632,10 +632,10 @@ int mutt_index_menu (void)
 	    menu->redraw = REDRAW_MOTION;
 	  }
 	  else
-	    mutt_error ("That message is not visible.");
+	    mutt_error _("That message is not visible.");
 	}
 	else
-	  mutt_error ("Invalid message number.");
+	  mutt_error _("Invalid message number.");
 
 	break;
 
@@ -648,7 +648,7 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
 	CHECK_READONLY;
 	CHECK_ATTACH;
-	mutt_pattern_func (M_DELETE, "Delete messages matching: ");
+	mutt_pattern_func (M_DELETE, _("Delete messages matching: "));
 	menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 	break;
 
@@ -670,11 +670,12 @@ int mutt_index_menu (void)
       case OP_MAIN_SHOW_LIMIT:
         CHECK_MSGCOUNT;
 	if (!Context->pattern)
-	   mutt_message ("No limit pattern is in effect.");
+	   mutt_message _("No limit pattern is in effect.");
 	else
 	{
 	   char buf[STRING];
-	   snprintf (buf, sizeof(buf), "Limit: %s",Context->pattern);
+	   /* i18n: ask for a limit to apply */
+	   snprintf (buf, sizeof(buf), _("Limit: %s"),Context->pattern);
            mutt_message ("%s", buf);
 	}
         break;
@@ -683,7 +684,7 @@ int mutt_index_menu (void)
 
 	CHECK_MSGCOUNT;
 	menu->oldcurrent = Context->vcount ? CURHDR->index : -1;
-	if (mutt_pattern_func (M_LIMIT, "Limit to messages matching: ") == 0)
+	if (mutt_pattern_func (M_LIMIT, _("Limit to messages matching: ")) == 0)
 	{
 	  if (menu->oldcurrent >= 0)
 	  {
@@ -713,7 +714,7 @@ int mutt_index_menu (void)
 	 break;
 	}
 
-	if (query_quadoption (OPT_QUIT, "Quit Mutt?") == M_YES)
+	if (query_quadoption (OPT_QUIT, _("Quit Mutt?")) == M_YES)
 	{ 
 	  if (!Context || mx_close_mailbox (Context) == 0)
 	    done = 1;
@@ -824,7 +825,7 @@ int mutt_index_menu (void)
       case OP_MAIN_TAG_PATTERN:
 
 	CHECK_MSGCOUNT;
-	mutt_pattern_func (M_TAG, "Tag messages matching: ");
+	mutt_pattern_func (M_TAG, _("Tag messages matching: "));
 	menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 	break;
 
@@ -832,14 +833,14 @@ int mutt_index_menu (void)
 
 	CHECK_MSGCOUNT;
 	CHECK_READONLY;
-	if (mutt_pattern_func (M_UNDELETE, "Undelete messages matching: ") == 0)
+	if (mutt_pattern_func (M_UNDELETE, _("Undelete messages matching: ")) == 0)
 	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 	break;
 
       case OP_MAIN_UNTAG_PATTERN:
 
 	CHECK_MSGCOUNT;
-	if (mutt_pattern_func (M_UNTAG, "Untag messages matching: ") == 0)
+	if (mutt_pattern_func (M_UNTAG, _("Untag messages matching: ")) == 0)
 	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 	break;
 
@@ -857,9 +858,9 @@ int mutt_index_menu (void)
       case OP_MAIN_CHANGE_FOLDER_READONLY:
 
         if (op == OP_MAIN_CHANGE_FOLDER)
-          cp = "Open mailbox";
+          cp = _("Open mailbox");
         else
-          cp = "Open mailbox in read-only mode";
+          cp = _("Open mailbox in read-only mode");
 
 	buf[0] = '\0';
 	mutt_buffy (buf);
@@ -875,7 +876,7 @@ int mutt_index_menu (void)
 	mutt_expand_path (buf, sizeof (buf));
 	if (mx_get_magic (buf) <= 0)
 	{
-	  mutt_error ("%s is not a mailbox.", buf);
+	  mutt_error (_("%s is not a mailbox."), buf);
 	  break;
 	}
 
@@ -971,7 +972,7 @@ int mutt_index_menu (void)
 
 	if ((menu->menu == MENU_MAIN)
 	    && (query_quadoption (OPT_QUIT, 
-				  "Exit Mutt without saving?") == M_YES))
+				  _("Exit Mutt without saving?")) == M_YES))
 	  done = 1;
 	break;
 
@@ -981,14 +982,14 @@ int mutt_index_menu (void)
 	if (menu->current >= Context->vcount - 1)
 	{
 	  if (menu->menu == MENU_MAIN)
-	    mutt_error ("You are on the last message.");
+	    mutt_error _("You are on the last message.");
 	  break;
 	}
 	if ((menu->current = ci_next_undeleted (menu->current)) == -1)
 	{
 	  menu->current = menu->oldcurrent;
 	  if (menu->menu == MENU_MAIN)
-	    mutt_error ("No undeleted messages.");
+	    mutt_error _("No undeleted messages.");
 	}
 	else if (menu->menu == MENU_PAGER)
 	{
@@ -1005,7 +1006,7 @@ int mutt_index_menu (void)
 	if (menu->current >= Context->vcount - 1)
 	{
 	  if (menu->menu == MENU_MAIN)
-	    mutt_error ("You are on the last message.");
+	    mutt_error _("You are on the last message.");
 	  break;
 	}
 	menu->current++;
@@ -1023,14 +1024,14 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
 	if (menu->current < 1)
 	{
-	  mutt_error ("You are on the first message.");
+	  mutt_error _("You are on the first message.");
 	  break;
 	}
 	if ((menu->current = ci_previous_undeleted (menu->current)) == -1)
 	{
 	  menu->current = menu->oldcurrent;
 	  if (menu->menu == MENU_MAIN)
-	    mutt_error ("No undeleted messages.");
+	    mutt_error _("No undeleted messages.");
 	}
 	else if (menu->menu == MENU_PAGER)
 	{
@@ -1046,7 +1047,7 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
 	if (menu->current < 1)
 	{
-	  if (menu->menu == MENU_MAIN) mutt_error ("You are on the first message.");
+	  if (menu->menu == MENU_MAIN) mutt_error _("You are on the first message.");
 	  break;
 	}
 	menu->current--;
@@ -1119,7 +1120,7 @@ int mutt_index_menu (void)
 	    i++;
 	    if (i > Context->vcount - 1)
 	    {
-	      mutt_message ("Search wrapped to top.");
+	      mutt_message _("Search wrapped to top.");
 	      i = 0;
 	    }
 	  }
@@ -1128,7 +1129,7 @@ int mutt_index_menu (void)
 	    i--;
 	    if (i < 0)
 	    {
-	      mutt_message ("Search wrapped to bottom.");
+	      mutt_message _("Search wrapped to bottom.");
 	      i = Context->vcount - 1;
 	    }
 	  }
@@ -1154,8 +1155,8 @@ int mutt_index_menu (void)
 	if (menu->current == -1)
 	{
 	  menu->current = menu->oldcurrent;
-	  mutt_error ("%s%s.", (op == OP_MAIN_NEXT_NEW || op == OP_MAIN_PREV_NEW) ? "No new messages" : "No unread messages",
-		      Context->pattern ? " in this limited view" : "");
+	  mutt_error ("%s%s.", (op == OP_MAIN_NEXT_NEW || op == OP_MAIN_PREV_NEW) ? _("No new messages") : _("No unread messages"),
+		      Context->pattern ? _(" in this limited view") : "");
 	}
 	else if (menu->menu == MENU_PAGER)
 	{
@@ -1265,9 +1266,9 @@ int mutt_index_menu (void)
 	{
 	  menu->current = menu->oldcurrent;
 	  if (op == OP_MAIN_NEXT_THREAD || op == OP_MAIN_NEXT_SUBTHREAD)
-	    mutt_error ("No more threads.");
+	    mutt_error _("No more threads.");
 	  else
-	    mutt_error ("You are on the first thread.");
+	    mutt_error _("You are on the first thread.");
 	}
 	else if (menu->menu == MENU_PAGER)
 	{
@@ -1320,7 +1321,7 @@ int mutt_index_menu (void)
 	}
 	else
 	{
-	  mutt_error ("Thread contains unread messages.");
+	  mutt_error _("Thread contains unread messages.");
 	  break;
 	}
 
@@ -1333,7 +1334,7 @@ int mutt_index_menu (void)
 
         if ((Sort & SORT_MASK) != SORT_THREADS)
         {
-	  mutt_error ("Threading is not enabled.");
+	  mutt_error _("Threading is not enabled.");
 	  break;
 	}
 

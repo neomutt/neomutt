@@ -110,7 +110,7 @@ retry_lock:
   {
     char msg[LONG_STRING];
 
-    snprintf(msg, sizeof(msg), "Lock count exceeded, remove lock for %s?",
+    snprintf(msg, sizeof(msg), _("Lock count exceeded, remove lock for %s?"),
 	     path);
     if(retry && mutt_yesorno(msg, 1) == 1)
     {
@@ -174,13 +174,13 @@ int mx_lock_file (const char *path, int fd, int excl, int dot, int timeout)
     if (prev_sb.st_size == sb.st_size && ++count >= (timeout?MAXLOCKATTEMPT:0))
     {
       if (timeout)
-	mutt_error ("Timeout exceeded while attempting fcntl lock!");
+	mutt_error _("Timeout exceeded while attempting fcntl lock!");
       return (-1);
     }
 
     prev_sb = sb;
 
-    mutt_message ("Waiting for fcntl lock... %d", ++attempt);
+    mutt_message (_("Waiting for fcntl lock... %d"), ++attempt);
     sleep (1);
   }
 #endif /* USE_FCNTL */
@@ -208,14 +208,14 @@ int mx_lock_file (const char *path, int fd, int excl, int dot, int timeout)
     if (prev_sb.st_size == sb.st_size && ++count >= (timeout?MAXLOCKATTEMPT:0))
     {
       if (timeout)
-	mutt_error ("Timeout exceeded while attempting flock lock!");
+	mutt_error _("Timeout exceeded while attempting flock lock!");
       r = -1;
       break;
     }
 
     prev_sb = sb;
 
-    mutt_message ("Waiting for flock attempt... %d", ++attempt);
+    mutt_message (_("Waiting for flock attempt... %d"), ++attempt);
     sleep (1);
   }
 #endif /* USE_FLOCK */
@@ -417,7 +417,7 @@ static int mx_open_mailbox_append (CONTEXT *ctx)
     switch (ctx->magic)
     {
       case 0:
-	mutt_error ("%s is not a mailbox.", ctx->path);
+	mutt_error (_("%s is not a mailbox."), ctx->path);
 	/* fall through */
       case -1:
 	return (-1);
@@ -558,7 +558,7 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
   ctx->magic = mx_get_magic (path);
   
   if(ctx->magic == 0)
-    mutt_error ("%s is not a mailbox.", path);
+    mutt_error (_("%s is not a mailbox."), path);
 
   if(ctx->magic == -1)
     mutt_perror(path);
@@ -583,7 +583,7 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
   ctx->subj_hash = hash_create (257);
 
   if (!ctx->quiet)
-    mutt_message ("Reading %s...", ctx->path);
+    mutt_message (_("Reading %s..."), ctx->path);
 
   switch (ctx->magic)
   {
@@ -670,7 +670,7 @@ static int sync_mailbox (CONTEXT *ctx)
   int rc = -1;
 
   if (!ctx->quiet)
-    mutt_message ("Writing %s...", ctx->path);
+    mutt_message (_("Writing %s..."), ctx->path);
   switch (ctx->magic)
   {
     case M_MBOX:
@@ -750,7 +750,7 @@ int mx_close_mailbox (CONTEXT *ctx)
 
     if (isSpool)
     {
-      snprintf (buf, sizeof (buf), "Move read messages to %s?", mbox);
+      snprintf (buf, sizeof (buf), _("Move read messages to %s?"), mbox);
       if ((move_messages = query_quadoption (OPT_MOVE, buf)) == -1)
 	return (-1);
     }
@@ -758,8 +758,9 @@ int mx_close_mailbox (CONTEXT *ctx)
 
   if (ctx->deleted)
   {
-    snprintf (buf, sizeof (buf), "Purge %d deleted message%s?",
-	      ctx->deleted, ctx->deleted == 1 ? "" : "s");
+    snprintf (buf, sizeof (buf), ctx->deleted == 1
+	     ? _("Purge %d deleted message?") : _("Purge %d deleted messages?"),
+	      ctx->deleted);
     if ((purge = query_quadoption (OPT_DELETE, buf)) < 0)
       return (-1);
   }
@@ -778,7 +779,7 @@ int mx_close_mailbox (CONTEXT *ctx)
     if (mx_open_mailbox (mbox, M_APPEND, &f) == NULL)
       return (-1);
 
-    mutt_message ("Moving read messages to %s...", mbox);
+    mutt_message (_("Moving read messages to %s..."), mbox);
 
     for (i = 0; i < ctx->msgcount; i++)
     {
@@ -794,7 +795,7 @@ int mx_close_mailbox (CONTEXT *ctx)
   }
   else if (!ctx->changed && ctx->deleted == 0)
   {
-    mutt_message ("Mailbox is unchanged.");
+    mutt_message _("Mailbox is unchanged.");
     mx_fastclose_mailbox (ctx);
     return 0;
   }
@@ -813,10 +814,10 @@ int mx_close_mailbox (CONTEXT *ctx)
   }
 
   if (move_messages)
-    mutt_message ("%d kept, %d moved, %d deleted.",
+    mutt_message (_("%d kept, %d moved, %d deleted."),
 		  ctx->msgcount - ctx->deleted, read_msgs, ctx->deleted);
   else
-    mutt_message ("%d kept, %d deleted.",
+    mutt_message (_("%d kept, %d deleted."),
 		  ctx->msgcount - ctx->deleted, ctx->deleted);
 
   if (ctx->msgcount == ctx->deleted &&
@@ -911,22 +912,22 @@ int mx_sync_mailbox (CONTEXT *ctx)
     char buf[STRING], tmp[STRING];
     if (km_expand_key (buf, sizeof(buf),
                        km_find_func (MENU_MAIN, OP_TOGGLE_WRITE)))
-      snprintf (tmp, sizeof(tmp), " Press '%s' to toggle write", buf);
+      snprintf (tmp, sizeof(tmp), _(" Press '%s' to toggle write"), buf);
     else
-      strfcpy (tmp, "Use 'toggle-write' to re-enable write!", sizeof(tmp));
+      strfcpy (tmp, _("Use 'toggle-write' to re-enable write!"), sizeof(tmp));
 
-    mutt_error ("Mailbox is marked unwritable. %s", tmp);
+    mutt_error (_("Mailbox is marked unwritable. %s"), tmp);
     return -1;
   }
   else if (ctx->readonly)
   {
-    mutt_error ("Mailbox is read-only.");
+    mutt_error _("Mailbox is read-only.");
     return -1;
   }
 
   if (!ctx->changed && !ctx->deleted)
   {
-    mutt_message ("Mailbox is unchanged.");
+    mutt_message _("Mailbox is unchanged.");
     return (0);
   }
 
@@ -934,8 +935,9 @@ int mx_sync_mailbox (CONTEXT *ctx)
   {
     char buf[SHORT_STRING];
 
-    snprintf (buf, sizeof (buf), "Purge %d deleted message%s?",
-	      ctx->deleted, ctx->deleted == 1 ? "" : "s");
+    snprintf (buf, sizeof (buf), ctx->deleted == 1
+	     ? _("Purge %d deleted message?") : _("Purge %d deleted messages?"),
+	      ctx->deleted);
     if ((rc = query_quadoption (OPT_DELETE, buf)) < 0)
       return (-1);
     else if (rc == M_NO)
@@ -950,7 +952,7 @@ int mx_sync_mailbox (CONTEXT *ctx)
 
   if ((rc = sync_mailbox (ctx)) == 0)
   {
-    mutt_message ("%d kept, %d deleted.", ctx->msgcount - ctx->deleted,
+    mutt_message (_("%d kept, %d deleted."), ctx->msgcount - ctx->deleted,
 		  ctx->deleted);
     sleep (1); /* allow the user time to read the message */
 

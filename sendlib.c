@@ -405,7 +405,7 @@ int mutt_write_mime_body (BODY *a, FILE *f)
     if (!(p = mutt_get_parameter ("boundary", a->parameter)))
     {
       dprint (1, (debugfile, "mutt_write_mime_body(): no boundary parameter found!\n"));
-      mutt_error ("No boundary parameter found! [report this error]");
+      mutt_error _("No boundary parameter found! [report this error]");
       return (-1);
     }
     strfcpy (boundary, p, sizeof (boundary));
@@ -439,7 +439,7 @@ int mutt_write_mime_body (BODY *a, FILE *f)
   if ((fpin = fopen (a->filename, "r")) == NULL)
   {
     dprint(1,(debugfile, "write_mime_body: %s no longer exists!\n",a->filename));
-    mutt_error ("%s no longer exists!", a->filename);
+    mutt_error (_("%s no longer exists!"), a->filename);
     return -1;
   }
 
@@ -689,7 +689,7 @@ void mutt_message_to_7bit (BODY *a, FILE *fp)
     fpin = fp;
   else if (!a->filename || !(fpin = fopen (a->filename, "r")))
   {
-    mutt_error ("Could not open %s", a->filename ? a->filename : "(null)");
+    mutt_error (_("Could not open %s"), a->filename ? a->filename : "(null)");
     return;
   } 
   else
@@ -1270,7 +1270,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach, int mode)
   if (mode == 0)
   {
     /* Add a vanity header */
-    fprintf (fp, "X-Mailer: Mutt %s\n", VERSION);
+    fprintf (fp, "X-Mailer: Mutt %s\n", MUTT_VERSION);
   }
 #endif
 
@@ -1616,13 +1616,13 @@ mutt_invoke_sendmail (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc, /* recips */
   {
     const char *e = strsysexit(i);
 
-    fprintf (stderr, "Error sending message, child exited %d (%s).\n", i, NONULL (e));
+    fprintf (stderr, _("Error sending message, child exited %d (%s).\n"), i, NONULL (e));
     if (childout)
-      fprintf (stderr, "Saved output of child process to %s.\n", childout);
+      fprintf (stderr, _("Saved output of child process to %s.\n"), childout);
     if (!option (OPTNOCURSES))
     {
       mutt_any_key_to_continue (NULL);
-      mutt_error ("Error sending message.");
+      mutt_error _("Error sending message.");
     }
   }
   FREE (&childout);

@@ -1,168 +1,523 @@
-#
-# Copyright (C) 1996,1997 Michael R. Elkins <me@cs.hmc.edu>
-#
-#     This program is free software; you can redistribute it and/or modify
-#     it under the terms of the GNU General Public License as published by
-#     the Free Software Foundation; either version 2 of the License, or
-#     (at your option) any later version.
-#
-#     This program is distributed in the hope that it will be useful,
-#     but WITHOUT ANY WARRANTY; without even the implied warranty of
-#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#     GNU General Public License for more details.
-#
-#     You should have received a copy of the GNU General Public License
-#     along with this program; if not, write to the Free Software
-#     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-#
+# Makefile.in generated automatically by automake 1.3 from Makefile.am
 
-SHELL=/bin/sh
-VERSION=@VERSION@
+# Copyright (C) 1994, 1995, 1996, 1997, 1998 Free Software Foundation, Inc.
+# This Makefile.in is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
 
-prefix=@prefix@
-exec_prefix=@exec_prefix@
-bindir=@bindir@
-libdir=@libdir@
-mandir=@mandir@
-sharedir=@sharedir@
-srcdir=@srcdir@
-docdir=@docdir@
-VPATH=@srcdir@
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+
+SHELL = /bin/sh
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
+
+DISTDIR =
+
+pkgdatadir = $(datadir)/@PACKAGE@
+pkglibdir = $(libdir)/@PACKAGE@
+pkgincludedir = $(includedir)/@PACKAGE@
+
+top_builddir = .
+
+ACLOCAL = @ACLOCAL@
+AUTOCONF = @AUTOCONF@
+AUTOMAKE = @AUTOMAKE@
+AUTOHEADER = @AUTOHEADER@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+transform = @program_transform_name@
+
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
+host_alias = @host_alias@
+host_triplet = @host@
+CATALOGS = @CATALOGS@
+CATOBJEXT = @CATOBJEXT@
+CC = @CC@
+DATADIRNAME = @DATADIRNAME@
+DOTLOCK_GROUP = @DOTLOCK_GROUP@
+DOTLOCK_PERMISSION = @DOTLOCK_PERMISSION@
+DOTLOCK_TARGET = @DOTLOCK_TARGET@
+GENCAT = @GENCAT@
+GMOFILES = @GMOFILES@
+GMSGFMT = @GMSGFMT@
+GPG = @GPG@
+GT_NO = @GT_NO@
+GT_YES = @GT_YES@
+INCLUDE_LOCALE_H = @INCLUDE_LOCALE_H@
+INSTOBJEXT = @INSTOBJEXT@
+INTLDEPS = @INTLDEPS@
+INTLLIBS = @INTLLIBS@
+INTLOBJS = @INTLOBJS@
+ISPELL = @ISPELL@
+MAKEINFO = @MAKEINFO@
+MKINSTALLDIRS = @MKINSTALLDIRS@
+MSGFMT = @MSGFMT@
+MUTTLOCALEDIR = @MUTTLOCALEDIR@
+MUTT_LIB_OBJECTS = @MUTT_LIB_OBJECTS@
+PACKAGE = @PACKAGE@
+PGP = @PGP@
+PGPK = @PGPK@
+POFILES = @POFILES@
+POSUB = @POSUB@
+RANLIB = @RANLIB@
+SENDMAIL = @SENDMAIL@
+SNPRINTFOBJS = @SNPRINTFOBJS@
+SUBVERSION = @SUBVERSION@
+USE_INCLUDED_LIBINTL = @USE_INCLUDED_LIBINTL@
+USE_NLS = @USE_NLS@
+VERSION = @VERSION@
+docdir = @docdir@
+l = @l@
+libdir = @libdir@
+sharedir = @sharedir@
+
+EXTRA_PROGRAMS = mutt_dotlock
+
+bin_PROGRAMS = mutt @DOTLOCK_TARGET@
+mutt_SOURCES =	addrbook.c alias.c attach.c browser.c buffy.c color.c \
+	commands.c complete.c compose.c copy.c curs_lib.c curs_main.c date.c \
+	edit.c enter.c flags.c init.c filter.c from.c getdomain.c \
+	handler.c hash.c hdrline.c headers.c help.c hook.c keymap.c \
+	main.c mbox.c menu.c mh.c mx.c pager.c parse.c pattern.c \
+	postpone.c query.c recvattach.c rfc822.c \
+	rfc1524.c rfc2047.c score.c send.c sendlib.c signal.c sort.c \
+	status.c system.c thread.c charset.c history.c lib.c
+
+mutt_LDADD = @MUTT_LIB_OBJECTS@
+mutt_DEPENDENCIES = @MUTT_LIB_OBJECTS@
+
+EXTRA_mutt_SOURCES = pgp.c pgpinvoke.c pgpkey.c pgppubring.c sha1dgst.c \
+	gnupgparse.c resize.c snprintf.c dotlock.c pop.c imap.c socket.c
+
+BUILT_SOURCES = mutt_dotlock.c
+
+LDADD = @LIBOBJS@ @INTLLIBS@
+
+SUBDIRS = doc intl po
+
+OPS=$(srcdir)/OPS $(srcdir)/OPS.PGP
+ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
+mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+CONFIG_HEADER = config.h
+CONFIG_CLEAN_FILES =  Muttrc
+PROGRAMS =  $(bin_PROGRAMS)
+
+
+DEFS = @DEFS@ -I. -I$(srcdir) -I.
+CPPFLAGS = @CPPFLAGS@
+LDFLAGS = @LDFLAGS@
+LIBS = @LIBS@
+mutt_dotlock_SOURCES = mutt_dotlock.c
+mutt_dotlock_OBJECTS =  mutt_dotlock.o
+mutt_dotlock_LDADD = $(LDADD)
+mutt_dotlock_DEPENDENCIES =  @LIBOBJS@
+mutt_dotlock_LDFLAGS = 
+mutt_OBJECTS =  addrbook.o alias.o attach.o browser.o buffy.o color.o \
+commands.o complete.o compose.o copy.o curs_lib.o curs_main.o date.o \
+edit.o enter.o flags.o init.o filter.o from.o getdomain.o handler.o \
+hash.o hdrline.o headers.o help.o hook.o keymap.o main.o mbox.o menu.o \
+mh.o mx.o pager.o parse.o pattern.o postpone.o query.o recvattach.o \
+rfc822.o rfc1524.o rfc2047.o score.o send.o sendlib.o signal.o sort.o \
+status.o system.o thread.o charset.o history.o lib.o
+mutt_LDFLAGS = 
+CFLAGS = @CFLAGS@
+COMPILE = $(CC) $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CFLAGS)
+LINK = $(CC) $(CFLAGS) $(LDFLAGS) -o $@
+DIST_COMMON =  README ABOUT-NLS ChangeLog INSTALL Makefile.am \
+Makefile.in Muttrc.in NEWS TODO acconfig.h aclocal.m4 config.guess \
+config.h.in config.sub configure configure.in install-sh missing \
+mkinstalldirs stamp-h.in strcasecmp.c
+
+
+DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+
+TAR = tar
+GZIP = --best
+DEP_FILES =  .deps/addrbook.P .deps/alias.P .deps/attach.P \
+.deps/browser.P .deps/buffy.P .deps/charset.P .deps/color.P \
+.deps/commands.P .deps/complete.P .deps/compose.P .deps/copy.P \
+.deps/curs_lib.P .deps/curs_main.P .deps/date.P .deps/dotlock.P \
+.deps/edit.P .deps/enter.P .deps/filter.P .deps/flags.P .deps/from.P \
+.deps/getdomain.P .deps/gnupgparse.P .deps/handler.P .deps/hash.P \
+.deps/hdrline.P .deps/headers.P .deps/help.P .deps/history.P \
+.deps/hook.P .deps/imap.P .deps/init.P .deps/keymap.P .deps/lib.P \
+.deps/main.P .deps/mbox.P .deps/menu.P .deps/mh.P .deps/mutt_dotlock \
+.deps/mutt_dotlock.P .deps/mx.P .deps/pager.P .deps/parse.P \
+.deps/pattern.P .deps/pgp.P .deps/pgpinvoke.P .deps/pgpkey.P \
+.deps/pgppubring.P .deps/pop.P .deps/postpone.P .deps/query.P \
+.deps/recvattach.P .deps/resize.P .deps/rfc1524.P .deps/rfc2047.P \
+.deps/rfc822.P .deps/score.P .deps/send.P .deps/sendlib.P \
+.deps/sha1dgst.P .deps/signal.P .deps/snprintf.P .deps/socket.P \
+.deps/sort.P .deps/status.P .deps/strcasecmp.P .deps/system.P \
+.deps/thread.P
+SOURCES = mutt_dotlock.c $(mutt_SOURCES) $(EXTRA_mutt_SOURCES)
+OBJECTS = mutt_dotlock.o $(mutt_OBJECTS)
+
+all: all-recursive-am all-am
+
+.SUFFIXES:
+.SUFFIXES: .S .c .o .s
+$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4)
+	cd $(top_srcdir) && $(AUTOMAKE) --foreign Makefile
+
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
+	cd $(top_builddir) \
+	  && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+$(ACLOCAL_M4):  configure.in 
+	cd $(srcdir) && $(ACLOCAL)
+
+config.status: $(srcdir)/configure
+	$(SHELL) ./config.status --recheck
+$(srcdir)/configure: $(srcdir)/configure.in $(ACLOCAL_M4) $(CONFIGURE_DEPENDENCIES)
+	cd $(srcdir) && $(AUTOCONF)
+
+config.h: stamp-h
+	@:
+stamp-h: $(srcdir)/config.h.in $(top_builddir)/config.status
+	cd $(top_builddir) \
+	  && CONFIG_FILES= CONFIG_HEADERS=config.h \
+	     $(SHELL) ./config.status
+	@echo timestamp > stamp-h
+$(srcdir)/config.h.in: $(srcdir)/stamp-h.in
+$(srcdir)/stamp-h.in: $(top_srcdir)/configure.in $(ACLOCAL_M4) acconfig.h
+	cd $(top_srcdir) && $(AUTOHEADER)
+	@echo timestamp > $(srcdir)/stamp-h.in
+
+mostlyclean-hdr:
+
+clean-hdr:
+
+distclean-hdr:
+	-rm -f config.h
+
+maintainer-clean-hdr:
+Muttrc: $(top_builddir)/config.status Muttrc.in
+	cd $(top_builddir) && CONFIG_FILES=$@ CONFIG_HEADERS= ./config.status
+
+mostlyclean-binPROGRAMS:
+
+clean-binPROGRAMS:
+	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
+
+distclean-binPROGRAMS:
+
+maintainer-clean-binPROGRAMS:
+
+install-binPROGRAMS: $(bin_PROGRAMS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(bindir)
+	@list='$(bin_PROGRAMS)'; for p in $$list; do \
+	  if test -f $$p; then \
+	    echo "  $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/`echo $$p|sed '$(transform)'`"; \
+	     $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/`echo $$p|sed '$(transform)'`; \
+	  else :; fi; \
+	done
+
+uninstall-binPROGRAMS:
+	@$(NORMAL_UNINSTALL)
+	list='$(bin_PROGRAMS)'; for p in $$list; do \
+	  rm -f $(DESTDIR)$(bindir)/`echo $$p|sed '$(transform)'`; \
+	done
+
+.s.o:
+	$(COMPILE) -c $<
+
+.S.o:
+	$(COMPILE) -c $<
+
+mostlyclean-compile:
+	-rm -f *.o core *.core
+
+clean-compile:
+
+distclean-compile:
+	-rm -f *.tab.c
+
+maintainer-clean-compile:
+
+mutt_dotlock: $(mutt_dotlock_OBJECTS) $(mutt_dotlock_DEPENDENCIES)
+	@rm -f mutt_dotlock
+	$(LINK) $(mutt_dotlock_LDFLAGS) $(mutt_dotlock_OBJECTS) $(mutt_dotlock_LDADD) $(LIBS)
+
+mutt: $(mutt_OBJECTS) $(mutt_DEPENDENCIES)
+	@rm -f mutt
+	$(LINK) $(mutt_LDFLAGS) $(mutt_OBJECTS) $(mutt_LDADD) $(LIBS)
+
+# This directory's subdirectories are mostly independent; you can cd
+# into them and run `make' without going through this Makefile.
+# To change the values of `make' variables: instead of editing Makefiles,
+# (1) if the variable is set in `config.status', edit `config.status'
+#     (which will cause the Makefiles to be regenerated when you run `make');
+# (2) otherwise, pass the desired values on the `make' command line.
+
 @SET_MAKE@
 
-INSTALL=@INSTALL@
-CC=@CC@
-XCPPFLAGS=-I. @CPPFLAGS@ -DSHAREDIR=\"$(sharedir)\" -DDOTLOCK=\"$(bindir)/mutt.dotlock\"
-CFLAGS=@CFLAGS@  $(XCPPFLAGS)
-LDFLAGS=@LDFLAGS@
-LIBS=@LIBS@
-OPS=@OPS@
-OBJS=	addrbook.o alias.o attach.o browser.o buffy.o color.o \
-        commands.o complete.o compose.o copy.o curs_lib.o curs_main.o date.o \
-	edit.o enter.o flags.o init.o filter.o from.o getdomain.o \
-	handler.o hash.o hdrline.o headers.o help.o	\
-	history.o hook.o keymap.o lib.o \
-	main.o mbox.o menu.o mh.o mx.o pager.o parse.o pattern.o \
-	postpone.o query.o recvattach.o rfc822.o \
-	rfc1524.o rfc2047.o score.o send.o sendlib.o signal.o sort.o \
-	status.o system.o thread.o charset.o @LIBOBJS@
+all-recursive install-data-recursive install-exec-recursive \
+installdirs-recursive install-recursive uninstall-recursive  \
+check-recursive installcheck-recursive info-recursive dvi-recursive:
+	@set fnord $(MAKEFLAGS); amf=$$2; \
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  target=`echo $@ | sed s/-recursive//`; \
+	  echo "Making $$target in $$subdir"; \
+	  (cd $$subdir && $(MAKE) $$target) \
+	   || case "$$amf" in *=*) exit 1;; *k*) fail=yes;; *) exit 1;; esac; \
+	done && test -z "$$fail"
 
-CLEANFILES=dotlock mutt *.o core
-VERYCLEANFILES=$(CLEANFILES) Makefile config.cache config.log \
-	config.status config.h Muttrc
-DISTCLEANFILES=$(VERYCLEANFILES) tags keymap_defs.h *.rej *.orig *~ Makefile.bak
+mostlyclean-recursive clean-recursive distclean-recursive \
+maintainer-clean-recursive:
+	@set fnord $(MAKEFLAGS); amf=$$2; \
+	rev=''; list='$(SUBDIRS)'; for subdir in $$list; do \
+	  rev="$$subdir $$rev"; \
+	done; \
+	for subdir in $$rev; do \
+	  target=`echo $@ | sed s/-recursive//`; \
+	  echo "Making $$target in $$subdir"; \
+	  (cd $$subdir && $(MAKE) $$target) \
+	   || case "$$amf" in *=*) exit 1;; *k*) fail=yes;; *) exit 1;; esac; \
+	done && test -z "$$fail"
+tags-recursive:
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  (cd $$subdir && $(MAKE) tags); \
+	done
 
-# kill these files when making new export distributions
-NONEXPORT=pgp.c pgp.h pgpinvoke.c pgpkey.c pgppubring.c sha.h sha1dgst.c \
-	gnupgparse.c sha_locl.h OPS.PGP doc/pgp-Notes.txt doc/language.txt \
-	doc/language50.txt
+tags: TAGS
 
-all: mutt @DOTLOCK_TARGET@ charsets/charsets.list
+ID: $(HEADERS) $(SOURCES) $(LISP)
+	here=`pwd` && cd $(srcdir) \
+	  && mkid -f$$here/ID $(SOURCES) $(HEADERS) $(LISP)
 
-mutt: keymap_defs.h $(OBJS) $(REGEX)
-	$(CC) -o mutt $(OBJS) $(REGEX) $(LDFLAGS) $(LIBS)
+TAGS: tags-recursive $(HEADERS) $(SOURCES) config.h.in $(TAGS_DEPENDENCIES) $(LISP)
+	tags=; \
+	here=`pwd`; \
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  test -f $$subdir/TAGS && tags="$$tags -i $$here/$$subdir/TAGS"; \
+	done; \
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	test -z "$(ETAGS_ARGS)config.h.in$$unique$(LISP)$$tags" \
+	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags config.h.in $$unique $(LISP) -o $$here/TAGS)
 
-dotlock: dotlock.o @SNPRINTFOBJS@
-	$(CC) -o dotlock dotlock.o @SNPRINTFOBJS@
+mostlyclean-tags:
 
-charsets/charsets.list:
-	( cd $(srcdir)/charsets &&  $(MAKE) charsets.list)
+clean-tags:
 
-keymap_defs.h: Makefile $(OPS)
-	rm -f keymap_defs.h
+distclean-tags:
+	-rm -f TAGS ID
+
+maintainer-clean-tags:
+
+distdir = $(PACKAGE)-$(VERSION)
+top_distdir = $(distdir)
+
+# This target untars the dist file and tries a VPATH configuration.  Then
+# it guarantees that the distribution is self-contained by making another
+# tarfile.
+distcheck: dist
+	-rm -rf $(distdir)
+	GZIP=$(GZIP) $(TAR) zxf $(distdir).tar.gz
+	mkdir $(distdir)/=build
+	mkdir $(distdir)/=inst
+	dc_install_base=`cd $(distdir)/=inst && pwd`; \
+	cd $(distdir)/=build \
+	  && ../configure --with-included-gettext --srcdir=.. --prefix=$$dc_install_base \
+	  && $(MAKE) \
+	  && $(MAKE) dvi \
+	  && $(MAKE) check \
+	  && $(MAKE) install \
+	  && $(MAKE) installcheck \
+	  && $(MAKE) dist
+	-rm -rf $(distdir)
+	@echo "========================"; \
+	echo "$(distdir).tar.gz is ready for distribution"; \
+	echo "========================"
+dist: distdir
+	-chmod -R a+r $(distdir)
+	GZIP=$(GZIP) $(TAR) chozf $(distdir).tar.gz $(distdir)
+	-rm -rf $(distdir)
+dist-all: distdir
+	-chmod -R a+r $(distdir)
+	GZIP=$(GZIP) $(TAR) chozf $(distdir).tar.gz $(distdir)
+	-rm -rf $(distdir)
+distdir: $(DISTFILES)
+	-rm -rf $(distdir)
+	mkdir $(distdir)
+	-chmod 777 $(distdir)
+	here=`cd $(top_builddir) && pwd`; \
+	top_distdir=`cd $(distdir) && pwd`; \
+	distdir=`cd $(distdir) && pwd`; \
+	cd $(top_srcdir) \
+	  && $(AUTOMAKE) --include-deps --build-dir=$$here --srcdir-name=$(top_srcdir) --output-dir=$$top_distdir --foreign Makefile
+	@for file in $(DISTFILES); do \
+	  d=$(srcdir); \
+	  test -f $(distdir)/$$file \
+	  || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
+	  || cp -p $$d/$$file $(distdir)/$$file; \
+	done
+	for subdir in $(SUBDIRS); do \
+	  test -d $(distdir)/$$subdir \
+	  || mkdir $(distdir)/$$subdir \
+	  || exit 1; \
+	  chmod 777 $(distdir)/$$subdir; \
+	  (cd $$subdir && $(MAKE) top_distdir=../$(distdir) distdir=../$(distdir)/$$subdir distdir) \
+	    || exit 1; \
+	done
+
+DEPS_MAGIC := $(shell mkdir .deps > /dev/null 2>&1 || :)
+
+-include $(DEP_FILES)
+
+mostlyclean-depend:
+
+clean-depend:
+
+distclean-depend:
+
+maintainer-clean-depend:
+	-rm -rf .deps
+
+%.o: %.c
+	@echo '$(COMPILE) -c $<'; \
+	$(COMPILE) -Wp,-MD,.deps/$(*F).P -c $<
+
+%.lo: %.c
+	@echo '$(LTCOMPILE) -c $<'; \
+	$(LTCOMPILE) -Wp,-MD,.deps/$(*F).p -c $<
+	@-sed -e 's/^\([^:]*\)\.o:/\1.lo \1.o:/' \
+	  < .deps/$(*F).p > .deps/$(*F).P
+	@-rm -f .deps/$(*F).p
+info: info-recursive
+dvi: dvi-recursive
+check: all-am
+	$(MAKE) check-recursive
+installcheck: installcheck-recursive
+all-recursive-am: config.h
+	$(MAKE) all-recursive
+
+all-am: Makefile $(PROGRAMS) config.h
+
+install-exec-am: install-binPROGRAMS
+
+uninstall-am: uninstall-binPROGRAMS
+
+install-exec: install-exec-recursive install-exec-am
+	@$(NORMAL_INSTALL)
+
+install-data: install-data-recursive
+	@$(NORMAL_INSTALL)
+
+install: install-recursive install-exec-am
+	@:
+
+uninstall: uninstall-recursive uninstall-am
+
+install-strip:
+	$(MAKE) INSTALL_PROGRAM='$(INSTALL_PROGRAM) -s' INSTALL_SCRIPT='$(INSTALL_PROGRAM)' install
+installdirs: installdirs-recursive
+	$(mkinstalldirs)  $(DATADIR)$(bindir)
+
+
+mostlyclean-generic:
+	-test -z "$(MOSTLYCLEANFILES)" || rm -f $(MOSTLYCLEANFILES)
+
+clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
+
+distclean-generic:
+	-rm -f Makefile $(DISTCLEANFILES)
+	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
+	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
+
+maintainer-clean-generic:
+	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
+mostlyclean-am:  mostlyclean-hdr mostlyclean-binPROGRAMS \
+		mostlyclean-compile mostlyclean-tags mostlyclean-depend \
+		mostlyclean-generic
+
+clean-am:  clean-hdr clean-binPROGRAMS clean-compile clean-tags \
+		clean-depend clean-generic mostlyclean-am
+
+distclean-am:  distclean-hdr distclean-binPROGRAMS distclean-compile \
+		distclean-tags distclean-depend distclean-generic \
+		clean-am
+
+maintainer-clean-am:  maintainer-clean-hdr maintainer-clean-binPROGRAMS \
+		maintainer-clean-compile maintainer-clean-tags \
+		maintainer-clean-depend maintainer-clean-generic \
+		distclean-am
+
+mostlyclean:  mostlyclean-recursive mostlyclean-am
+
+clean:  clean-recursive clean-am
+
+distclean:  distclean-recursive distclean-am
+	-rm -f config.status
+
+maintainer-clean:  maintainer-clean-recursive maintainer-clean-am
+	@echo "This command is intended for maintainers to use;"
+	@echo "it deletes files that may require special tools to rebuild."
+	-rm -f config.status
+
+.PHONY: mostlyclean-hdr distclean-hdr clean-hdr maintainer-clean-hdr \
+mostlyclean-binPROGRAMS distclean-binPROGRAMS clean-binPROGRAMS \
+maintainer-clean-binPROGRAMS uninstall-binPROGRAMS install-binPROGRAMS \
+mostlyclean-compile distclean-compile clean-compile \
+maintainer-clean-compile install-data-recursive \
+uninstall-data-recursive install-exec-recursive \
+uninstall-exec-recursive installdirs-recursive uninstalldirs-recursive \
+all-recursive check-recursive installcheck-recursive info-recursive \
+dvi-recursive mostlyclean-recursive distclean-recursive clean-recursive \
+maintainer-clean-recursive tags tags-recursive mostlyclean-tags \
+distclean-tags clean-tags maintainer-clean-tags distdir \
+mostlyclean-depend distclean-depend clean-depend \
+maintainer-clean-depend info dvi installcheck all-recursive-am all-am \
+install-exec-am uninstall-am install-exec install-data install \
+uninstall all installdirs mostlyclean-generic distclean-generic \
+clean-generic maintainer-clean-generic clean mostlyclean distclean \
+maintainer-clean
+
+
+mutt_dotlock.c: dotlock.c
+	cp dotlock.c mutt_dotlock.c
+
+keymap_defs.h: $(OPS)
 	$(srcdir)/gen_defs $(OPS) > keymap_defs.h
 
-install: mutt install.doc @DOTLOCK_INSTALL_TARGET@
-	$(srcdir)/mkinstalldirs $(bindir)
-	-mv -f $(bindir)/mutt $(bindir)/mutt.old
-	$(INSTALL) -m 755 mutt $(bindir)
-	-if [ ! -f $(sharedir)/Muttrc ]; then \
-		$(srcdir)/mkinstalldirs $(sharedir); \
-		$(INSTALL) -m 644 $(srcdir)/Muttrc $(sharedir); \
-	fi
-	-if [ ! -f $(sharedir)/mime.types ]; then \
-		$(INSTALL) -m 644 $(srcdir)/mime.types $(sharedir); \
-	fi
-	( cd $(srcdir)/charsets && make install )
-
-install.dotlock: dotlock
-	$(srcdir)/mkinstalldirs $(bindir)
-	-mv -f $(bindir)/mutt.dotlock $(bindir)/mutt.dotlock.old
-	$(INSTALL) @DOTLOCK_GROUP@ -m @DOTLOCK_PERMISSION@ dotlock $(bindir)/mutt.dotlock
-
-install.doc: 
-	( cd $(srcdir)/doc &&  $(MAKE) install )
-
-uninstall: uninstall.doc
-	rm -f $(bindir)/mutt $(sharedir)/Muttrc $(bindir)/mutt.dotlock
-
-uninstall.doc:
-	( cd $(srcdir)/doc/ && $(MAKE) uninstall )
-
-$(srcdir)/configure: $(srcdir)/configure.in
-	autoconf
-
-Makefile: $(srcdir)/Makefile.in
-	./config.status
-
-config.h.in: $(srcdir)/acconfig.h
-	autoheader
-
-config.h: $(srcdir)/config.h.in
-	./config.status
-
-tags:
-	(cd $(srcdir) && ctags *.[ch])
-
-dep: Makefile
-	mv Makefile Makefile.bak
-	awk -f $(srcdir)/depend.awk < Makefile.bak > Makefile
-	echo '# DO NOT REMOVE THIS LINE' >> Makefile
-	$(CC) -MM $(XCPPFLAGS) $(srcdir)/*.c >> Makefile
-
-clean-real:
-	(cd $(srcdir) && rm -f $(CLEANFILES))
-	(cd $(srcdir)/doc && $(MAKE) $@)
-
-clean:
-	rm -f $(CLEANFILES)
-	(cd $(srcdir)/charsets && $(MAKE) $@)
-
-veryclean:
-	rm -f $(VERYCLEANFILES)
-	(cd $(srcdir)/charsets && $(MAKE) $@)
-
-distclean:
-	(cd $(srcdir) && rm -f $(DISTCLEANFILES))
-	(cd $(srcdir)/doc && $(MAKE) $@)
-	(cd $(srcdir)/charsets && $(MAKE) $@)
-
 reldate:
-	rm -f $(srcdir)/reldate.h
 	echo 'const char *ReleaseDate = "'`date +%Y-%m-%d`'";' > $(srcdir)/reldate.h
 
-changelog:
-	( rcs2log | cat - ChangeLog >> ChangeLog.$$$$ ;\
-	mv ChangeLog.$$$$ ChangeLog )
-
-# make export version
-usdist: distclean reldate
-	rm -rf /tmp/mutt-$(VERSION)
-	(cd .. && cp -r mutt-$(VERSION) /tmp)
-	for i in `grep _PGPPATH $(srcdir)/*.[ch] | sed 's/^\([^:]*\).*/\1/' | grep -v '/main\.c' | grep -v '/pgp'` ; do \
-		target=`basename $$i` ; \
-		$(srcdir)/reap.pl _PGPPATH < $(srcdir)/$$target > /tmp/mutt-$(VERSION)/$$target; \
-	done
-	for i in $(NONEXPORT); do \
-		rm -f /tmp/mutt-$(VERSION)/$$i; \
-	done
-	(cd /tmp && tar cvf mutt-$(VERSION).tar mutt-$(VERSION) && gzip mutt-$(VERSION).tar)
-	rm -rf /tmp/mutt-$(VERSION)
-
-# make international distribution
-dist: distclean reldate
-	(cd $(srcdir)/.. && tar cfz mutt-$(VERSION)i.tar.gz mutt-$(VERSION)i)
-
-rx/librx.a:
-	(cd rx && $(MAKE) CC="$(CC)" CFLAGS="$(CFLAGS)")
-
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:

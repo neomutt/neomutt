@@ -35,12 +35,12 @@ RETSIGTYPE mutt_exit_handler (int sig)
   curs_set (1);
   endwin (); /* just to be safe */
 #if SYS_SIGLIST_DECLARED
-  printf("Caught %s...  Exiting.\n", sys_siglist[sig]);
+  printf(_("Caught %s...  Exiting.\n"), sys_siglist[sig]);
 #else
 #if (__sun__ && __svr4__)
-  printf("Caught %s...  Exiting.\n", _sys_siglist[sig]);
+  printf(_("Caught %s...  Exiting.\n"), _sys_siglist[sig]);
 #else
-  printf("Caught signal %d...  Exiting.\n", sig);
+  printf(_("Caught signal %d...  Exiting.\n"), sig);
 #endif
 #endif
   exit (0);

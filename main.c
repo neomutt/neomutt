@@ -86,8 +86,8 @@ void mutt_exit (int code)
 
 static void mutt_usage (void)
 {
-  printf ("Mutt %s (%s)\n", VERSION, ReleaseDate);
-  puts (
+  printf ("Mutt %s (%s)\n", MUTT_VERSION, ReleaseDate);
+  puts _(
 "usage: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> ]\n\
        mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n\
        mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n\
@@ -121,7 +121,7 @@ static void show_version (void)
 {
   struct utsname uts;
 
-  printf ("Mutt %s (%s)\n", VERSION, ReleaseDate);
+  printf ("Mutt %s (%s)\n", MUTT_VERSION, ReleaseDate);
   puts (Notice);
 
   uname (&uts);
@@ -221,7 +221,7 @@ static void show_version (void)
 	"+HAVE_PGP2  "
 #endif
 #ifdef HAVE_GPG
-	"+HAVE_GPG   "
+	"+HAVE_GPG  "
 #endif
 #endif
 
@@ -239,7 +239,13 @@ static void show_version (void)
 #else
 	"-"
 #endif
-	"EXACT_ADDRESS"
+	"EXACT_ADDRESS  "
+#ifdef ENABLE_NLS
+	"+"
+#else
+	"-"
+#endif
+	"ENABLE_NLS"
 	);
 
   printf ("SENDMAIL=\"%s\"\n", SENDMAIL);
@@ -287,7 +293,7 @@ static void start_curses (void)
 #endif
   if (initscr () == NULL)
   {
-    puts ("Error initializing terminal.");
+    puts _("Error initializing terminal.");
     exit (1);
   }
 #ifdef USE_SLANG_CURSES
@@ -338,6 +344,12 @@ int main (int argc, char **argv)
     exit(1);
   }
 
+#ifdef ENABLE_NLS
+  /* FIXME what about init.c:1439 ? */
+  setlocale (LC_ALL, "");
+  bindtextdomain (PACKAGE, MUTTLOCALEDIR);
+  textdomain (PACKAGE);
+#endif
 
   mutt_error = mutt_nocurses_error;
   SRAND (time (NULL));
@@ -377,9 +389,9 @@ int main (int argc, char **argv)
       case 'd':
 #ifdef DEBUG
 	debuglevel = atoi (optarg);
-	printf ("Debugging at level %d.\n", debuglevel);
+	printf (_("Debugging at level %d.\n"), debuglevel);
 #else
-	printf ("DEBUG was not defined during compilation.  Ignored.\n");
+	printf _("DEBUG was not defined during compilation.  Ignored.\n");
 #endif
 	break;
 
@@ -448,7 +460,7 @@ int main (int argc, char **argv)
       show_version ();
       break;
     default:
-      printf ("Mutt %s (%s)\n", VERSION, ReleaseDate);
+      printf ("Mutt %s (%s)\n", MUTT_VERSION, ReleaseDate);
       puts (Copyright);
       puts (ReachingUs);
       exit (0);
@@ -514,7 +526,7 @@ int main (int argc, char **argv)
       {
 	if (!option (OPTNOCURSES))
 	  mutt_endwin (NULL);
-	fputs ("No recipients specified.\n", stderr);
+	fputs (_("No recipients specified.\n"), stderr);
 	exit (1);
       }
 
@@ -587,7 +599,7 @@ int main (int argc, char **argv)
 	{
 	  if (!option (OPTNOCURSES))
 	    mutt_endwin (NULL);
-	  fprintf (stderr, "%s: unable to attach file.\n", t->data);
+	  fprintf (stderr, _("%s: unable to attach file.\n"), t->data);
 	  mutt_free_list (&attach);
 	  exit (1);
 	}
@@ -607,7 +619,7 @@ int main (int argc, char **argv)
     {
       if (!mutt_buffy_check (0))
       {
-	mutt_endwin ("No mailbox with new mail.");
+	mutt_endwin _("No mailbox with new mail.");
 	exit (1);
       }
       folder[0] = 0;
@@ -641,7 +653,7 @@ int main (int argc, char **argv)
 
       if (st.st_size == 0)
       {
-	mutt_endwin ("Mailbox is empty.");
+	mutt_endwin _("Mailbox is empty.");
 	exit (1);
       }
     }

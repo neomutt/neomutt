@@ -170,14 +170,14 @@ static KEYINFO *pgp_select_key (struct pgp_vinfo *pgp,
   qsort (KeyTable, i, sizeof (pgp_key_t), pgp_compare);
 
   helpstr[0] = 0;
-  mutt_make_help (buf, sizeof (buf), "Exit  ", MENU_PGP, OP_EXIT);
+  mutt_make_help (buf, sizeof (buf), _("Exit  "), MENU_PGP, OP_EXIT);
   strcat (helpstr, buf);
-  mutt_make_help (buf, sizeof (buf), "Select  ", MENU_PGP, 
+  mutt_make_help (buf, sizeof (buf), _("Select  "), MENU_PGP, 
 		  OP_GENERIC_SELECT_ENTRY);
   strcat (helpstr, buf);
-  mutt_make_help (buf, sizeof (buf), "Check key  ", MENU_PGP, OP_VERIFY_KEY);
+  mutt_make_help (buf, sizeof (buf), _("Check key  "), MENU_PGP, OP_VERIFY_KEY);
   strcat (helpstr, buf);
-  mutt_make_help (buf, sizeof (buf), "Help", MENU_PGP, OP_HELP);
+  mutt_make_help (buf, sizeof (buf), _("Help"), MENU_PGP, OP_HELP);
   strcat (helpstr, buf);
 
   menu = mutt_new_menu ();
@@ -188,7 +188,7 @@ static KEYINFO *pgp_select_key (struct pgp_vinfo *pgp,
   menu->help = helpstr;
   menu->data = KeyTable;
 
-  strfcpy (buf, "PGP keys matching ", sizeof (buf));
+  strfcpy (buf, _("PGP keys matching "), sizeof (buf));
   if (p)
     strfcpy (buf, p->mailbox, sizeof (buf) - strlen (buf));
   else
@@ -207,23 +207,23 @@ static KEYINFO *pgp_select_key (struct pgp_vinfo *pgp,
         mutt_mktemp (tempfile);
 	if ((devnull = fopen ("/dev/null", "w")) == NULL)
 	{
-	  mutt_perror ("Can't open /dev/null");
+	  mutt_perror _("Can't open /dev/null");
 	  break;
 	}
 	if ((fp = safe_fopen (tempfile, "w")) == NULL)
 	{
 	  fclose (devnull);
-	  mutt_perror ("Can't create temporary file");
+	  mutt_perror _("Can't create temporary file");
 	  break;
         }
 
-	mutt_message ("Invoking PGP...");
+	mutt_message _("Invoking PGP...");
 	
         if((thepid = pgp->invoke_verify_key(pgp, NULL, NULL, NULL, -1,
 					   fileno(fp), fileno(devnull), 
 					   pgp_keyid(KeyTable[menu->current].k))) == -1)
         {
-	  mutt_perror ("Can't create filter");
+	  mutt_perror _("Can't create filter");
 	  unlink (tempfile);
 	  fclose (fp);
 	  fclose (devnull);
@@ -233,7 +233,7 @@ static KEYINFO *pgp_select_key (struct pgp_vinfo *pgp,
 	fclose (fp);
 	fclose (devnull);
 	mutt_clear_error ();
-        snprintf(cmd, sizeof(cmd), "Key ID: 0x%s", pgp_keyid(KeyTable[menu->current].k));
+        snprintf(cmd, sizeof(cmd), _("Key ID: 0x%s"), pgp_keyid(KeyTable[menu->current].k));
 	mutt_do_pager (cmd, tempfile, 0, NULL);
 	menu->redraw = REDRAW_FULL;
 	
@@ -254,12 +254,13 @@ static KEYINFO *pgp_select_key (struct pgp_vinfo *pgp,
 
 	  switch (KeyTable[menu->current].a->trust & 0x03)
 	  {
-	  case 0: s = "This ID's trust level is undefined."; break;
-	  case 1: s = "This ID is not trusted."; break;
-	  case 2: s = "This ID is only marginally trusted."; break;
+	  case 0: s = N_("This ID's trust level is undefined."); break;
+	  case 1: s = N_("This ID is not trusted."); break;
+	  case 2: s = N_("This ID is only marginally trusted."); break;
 	  }
 
-	  snprintf (buff, sizeof(buff), "%s Do you really want to use it?", s);
+	  snprintf (buff, sizeof(buff), _("%s Do you really want to use it?"),
+		    _(s));
 
 	  if (mutt_yesorno (buff, 0) != 1)
 	  {
@@ -365,7 +366,7 @@ BODY *pgp_make_key_attachment (char * tempf)
   unset_option (OPTPGPCHECKTRUST);
   
   db = pgp->read_pubring(pgp);
-  id = pgp_ask_for_key (pgp, db, "Please enter the key ID: ", NULL, 0, NULL);
+  id = pgp_ask_for_key (pgp, db, _("Please enter the key ID: "), NULL, 0, NULL);
   pgp_close_keydb(&db);
   
   if(!id)
@@ -377,13 +378,13 @@ BODY *pgp_make_key_attachment (char * tempf)
   }
 
   if ((tempfp = safe_fopen (tempf, tempf == tempfb ? "w" : "a")) == NULL) {
-    mutt_perror ("Can't create temporary file");
+    mutt_perror _("Can't create temporary file");
     safe_free ((void **)&id);
     return NULL;
   }
 
   if ((devnull = fopen ("/dev/null", "w")) == NULL) {
-    mutt_perror ("Can't open /dev/null");
+    mutt_perror _("Can't open /dev/null");
     safe_free ((void **)&id);
     fclose (tempfp);
     if (tempf == tempfb) unlink (tempf);
@@ -394,7 +395,7 @@ BODY *pgp_make_key_attachment (char * tempf)
 				   NULL, NULL, NULL, -1, 
 				   fileno(tempfp), fileno(devnull), id)) == -1)
   {
-    mutt_perror ("Can't create filter");
+    mutt_perror _("Can't create filter");
     unlink (tempf);
     fclose (tempfp);
     fclose (devnull);
@@ -412,7 +413,7 @@ BODY *pgp_make_key_attachment (char * tempf)
   att->unlink = 1;
   att->type = TYPEAPPLICATION;
   att->subtype = safe_strdup ("pgp-keys"); 
-  snprintf (buff, sizeof (buff), "PGP Key 0x%s.", id);
+  snprintf (buff, sizeof (buff), _("PGP Key 0x%s."), id);
   att->description = safe_strdup (buff);
   mutt_update_encoding (att);
   

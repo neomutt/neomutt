@@ -164,7 +164,7 @@ void mutt_query_exit (void)
   curs_set (1);
   if (Timeout)
     timeout (-1); /* restore blocking operation */
-  if (mutt_yesorno ("Exit Mutt?", 1) == 1)
+  if (mutt_yesorno (_("Exit Mutt?"), 1) == 1)
   {
     endwin ();
     exit (0);
@@ -239,7 +239,7 @@ void mutt_perror (const char *s)
 
   dprint (1, (debugfile, "%s: %s (errno = %d)\n", s, 
       p ? p : "unknown error", errno));
-  mutt_error ("%s: %s (errno = %d)", s, p ? p : "unknown error", errno);
+  mutt_error ("%s: %s (errno = %d)", s, p ? p : _("unknown error"), errno);
 }
 
 int mutt_any_key_to_continue (const char *s)
@@ -259,7 +259,7 @@ int mutt_any_key_to_continue (const char *s)
   if (s)
     fputs (s, stdout);
   else
-    fputs ("Press any key to continue...", stdout);
+    fputs (_("Press any key to continue..."), stdout);
   fflush (stdout);
   ch = fgetc (stdin);
   fflush (stdin);
@@ -297,7 +297,7 @@ int mutt_enter_fname (const char *prompt, char *buf, size_t blen, int *redraw, i
   int i;
 
   mvaddstr (LINES-1, 0, (char *) prompt);
-  addstr (" ('?' for list): ");
+  addstr _(" ('?' for list): ");
   if (buf[0])
     addstr (buf);
   clrtoeol ();

@@ -118,7 +118,8 @@ int mutt_display_message (HEADER *cur)
     if (is_mmnoask (buf))
       rc = M_YES;
     else
-      rc = query_quadoption (OPT_USEMAILCAP, "Display message using mailcap?");
+      rc = query_quadoption (OPT_USEMAILCAP, 
+			_("Display message using mailcap?"));
     if (rc < 0)
       return 0;
     else if (rc == M_YES)
@@ -149,15 +150,15 @@ int mutt_display_message (HEADER *cur)
 	return 0;
 
       cmflags |= M_CM_VERIFY;
-      mutt_message ("Invoking PGP...");
+      mutt_message _("Invoking PGP...");
     }
     else if (cur->pgp & PGPSIGN)
     {
       /* find out whether or not the verify signature */
-      if (query_quadoption (OPT_VERIFYSIG, "Verify PGP signature?") == M_YES)
+      if (query_quadoption (OPT_VERIFYSIG, _("Verify PGP signature?")) == M_YES)
       {
 	cmflags |= M_CM_VERIFY;
-	mutt_message ("Invoking PGP...");
+	mutt_message _("Invoking PGP...");
       }
     }
   }
@@ -172,7 +173,7 @@ int mutt_display_message (HEADER *cur)
   mutt_mktemp (tempfile);
   if ((fpout = safe_fopen (tempfile, "w")) == NULL)
   {
-    mutt_error ("Could not create temporary file!");
+    mutt_error _("Could not create temporary file!");
     return (0);
   }
 
@@ -220,7 +221,7 @@ int mutt_display_message (HEADER *cur)
     mutt_set_flag (Context, cur, M_READ, 1);
     if (option (OPTPROMPTAFTER))
     {
-      mutt_ungetch (mutt_any_key_to_continue ("Command: "));
+      mutt_ungetch (mutt_any_key_to_continue _("Command: "));
       rc = km_dokey (MENU_PAGER);
     }
     else
@@ -237,6 +238,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
   ADDRESS *adr = NULL;
   int rc;
 
+  /* FIXME i18n */
   snprintf (prompt, sizeof(prompt), "Bounce %smessage%s to: ",
 	    h ? "" : "tagged ", h ? "" : "s");
   rc = mutt_get_field (prompt, buf, sizeof (buf), M_ALIAS);
@@ -252,7 +254,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
 
   if (!(adr = rfc822_parse_adrlist (adr, buf)))
   {
-    mutt_error ("Error parsing address!");
+    mutt_error _("Error parsing address!");
     return;
   }
 
@@ -262,7 +264,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
   rfc822_write_address (buf, sizeof (buf), adr);
 
   snprintf (prompt, (COLS > sizeof(prompt) ? sizeof(prompt) : COLS) - 13, 
-            "Bounce message%s to %s", (h ? "" : "s"), buf);
+           (h ? _("Bounce message to %s") : _("Bounce messages to %s")), buf);
   strcat(prompt, "...?");
   if (mutt_yesorno (prompt, 1) != 1)
   {
@@ -273,7 +275,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
 
   mutt_bounce_message (h, adr);
   rfc822_free_address (&adr);
-  mutt_message ("Message%s bounced.", h ? "" : "s");
+  mutt_message (h ? _("Message bounced.") : _("Messages bounced."));
 }
 
 void mutt_pipe_message_to_state (HEADER *h, STATE *s)
@@ -293,8 +295,8 @@ int mutt_pipe_message (HEADER *h)
   pid_t thepid;
 
   buffer[0] = 0;
-  if (mutt_get_field ("Pipe to command: ", buffer, sizeof (buffer), M_CMD) != 0 ||
-      !buffer[0])
+  if (mutt_get_field (_("Pipe to command: "), buffer, sizeof (buffer), M_CMD)
+      != 0 || !buffer[0])
     return 0;
   mutt_expand_path (buffer, sizeof (buffer));
 
@@ -397,8 +399,9 @@ int mutt_select_sort (int reverse)
   while (!Sort)
   {
     mvprintw (LINES - 1, 0,
-"%sSort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: ",
-	      reverse ? "Rev-" : "");
+    reverse ?
+_("Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: ") :
+_("Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "));
     ch = mutt_getch ();
     if (ch == ERR || CI_is_return (ch))
     {
@@ -453,7 +456,7 @@ void mutt_shell_escape (void)
   char buf[LONG_STRING];
 
   buf[0] = 0;
-  if (mutt_get_field ("Shell command: ", buf, sizeof (buf), M_CMD) == 0)
+  if (mutt_get_field (_("Shell command: "), buf, sizeof (buf), M_CMD) == 0)
   {
     if (!buf[0] && Shell)
       strfcpy (buf, Shell, sizeof (buf));
@@ -569,10 +572,10 @@ int mutt_save_message (HEADER *h, int delete, int decode, int decrypt, int *redr
 
   *redraw = 0;
 
-  snprintf (prompt, sizeof (prompt), "%s%s to mailbox",
-	    decode ? (delete ? "Decode-save" : "Decode-copy") :
-	    (decrypt ? (delete ? "Decrypt-save" : "Decrypt-copy"):
-	     (delete ? "Save" : "Copy")), h ? "" : " tagged");
+  snprintf (prompt, sizeof (prompt), _("%s%s to mailbox"),
+	    decode ? (delete ? _("Decode-save") : _("Decode-copy")) :
+	    (decrypt ? (delete ? _("Decrypt-save") : _("Decrypt-copy")):
+	     (delete ? _("Save") : _("Copy"))), h ? "" : _(" tagged"));
   
   if (h)
   {
@@ -641,7 +644,7 @@ int mutt_save_message (HEADER *h, int delete, int decode, int decrypt, int *redr
     return -1;
 #endif
   
-  mutt_message ("Copying to %s...", buf);
+  mutt_message (_("Copying to %s..."), buf);
   
   if (mx_open_mailbox (buf, M_APPEND, &ctx) != NULL)
   {
@@ -713,7 +716,8 @@ void mutt_print_message (HEADER *h)
   FILE *fp;
 
   if (query_quadoption (OPT_PRINT,
-			h ? "Print message?" : "Print tagged messages?") != M_YES)
+			h ? _("Print message?") : _("Print tagged messages?"))
+		  	!= M_YES)
     return;
   endwin ();
   if ((thepid = mutt_create_filter (NONULL(PrintCmd), &fp, NULL, NULL)) == -1)
@@ -739,10 +743,10 @@ void mutt_print_message (HEADER *h)
   fclose (fp);
   if (mutt_wait_filter (thepid) || option (OPTWAITKEY))
     mutt_any_key_to_continue (NULL);
-  mutt_message ("Message%s printed", (count > 1) ? "s" : "");
+  mutt_message ((count > 1) ? _("Message printed") : _("Messages printed"));
 }
 
 void mutt_version (void)
 {
-  mutt_message ("Mutt %s (%s)", VERSION, ReleaseDate);
+  mutt_message ("Mutt %s (%s)", MUTT_VERSION, ReleaseDate);
 }

@@ -127,7 +127,7 @@ int pgp_valid_passphrase (void)
   if (now < PgpExptime) return 1; /* just use the cached copy. */
   pgp_void_passphrase ();
 
-  if (mutt_get_password ("Enter PGP passphrase:", PgpPass, sizeof (PgpPass)) == 0)
+  if (mutt_get_password (_("Enter PGP passphrase:"), PgpPass, sizeof (PgpPass)) == 0)
   {
     PgpExptime = time (NULL) + PgpTimeout;
     return (1);
@@ -143,7 +143,7 @@ int pgp_valid_passphrase (void)
 void mutt_forget_passphrase (void)
 {
   pgp_void_passphrase ();
-  mutt_message ("PGP passphrase forgotten.");
+  mutt_message _("PGP passphrase forgotten.");
 }
 
 
@@ -171,7 +171,7 @@ struct pgp_vinfo *pgp_get_vinfo(enum pgp_ops op)
       return &pgp_vinfo[i];
   }
 
-  snprintf(msg, sizeof(msg), "Unknown PGP version \"%s\".",
+  snprintf(msg, sizeof(msg), _("Unknown PGP version \"%s\"."),
 	   version);
   mutt_error(msg);
 
@@ -204,7 +204,7 @@ static void pgp_current_time (STATE *s)
   time_t t;
   char p[STRING];
 
-  state_puts ("[-- PGP output follows (current time: ", s);
+  state_puts (_("[-- PGP output follows (current time: "), s);
 
   t = time (NULL);
   strfcpy (p, asctime (localtime (&t)), sizeof (p));
@@ -317,7 +317,7 @@ void application_pgp_handler (BODY *m, STATE *s)
 	{
 	  fclose (pgpout); pgpout = NULL;
 	  mutt_unlink(tmpfname);
-	  state_puts ("[-- Error: unable to create PGP subprocess --]\n", s);
+	  state_puts (_("[-- Error: unable to create PGP subprocess! --]\n"), s);
 	  state_puts (buf, s);
 	  continue;
 	}
@@ -344,7 +344,7 @@ void application_pgp_handler (BODY *m, STATE *s)
 	fclose (pgperr);
 	
 	if (s->flags & M_DISPLAY)
-	  state_puts ("\n[-- End of PGP output --]\n\n", s);
+	  state_puts (_("\n[-- End of PGP output --]\n\n"), s);
       }
     
       if(s->flags & M_DISPLAY)
@@ -473,7 +473,7 @@ void application_pgp_handler (BODY *m, STATE *s)
 
   if (needpass == -1)
   {
-    state_puts ("[-- Error!  Could not find beginning of PGP message! --]\n\n", s);
+    state_puts (_("[-- Error: could not find beginning of PGP message! --]\n\n"), s);
     return;
   }
 
@@ -666,25 +666,25 @@ void pgp_signed_handler (BODY *a, STATE *s)
 	mutt_wait_filter (thepid);
       }
       
-      state_puts ("[-- End of PGP output --]\n\n", s);
+      state_puts (_("[-- End of PGP output --]\n\n"), s);
       
       mutt_unlink (tempfile);
       mutt_unlink (sigfile);
       mutt_unlink (pgperrfile);
       
       /* Now display the signed body */
-      state_puts ("[-- The following data is PGP/MIME signed --]\n\n", s);
+      state_puts (_("[-- The following data is PGP/MIME signed --]\n\n"), s);
     }
 
     mutt_body_handler (a, s);
 
     if (s->flags & M_DISPLAY)
-      state_puts ("\n[-- End of PGP/MIME signed data --]\n", s);
+      state_puts (_("\n[-- End of PGP/MIME signed data --]\n"), s);
   }
   else
   {
     dprint (1,(debugfile, "pgp_signed_handler: invalid format!\n"));
-    state_puts ("[-- Error!  This message does not comply with the PGP/MIME specification! --]\n\n", s);
+    state_puts (_("[-- Error: this message does not comply with the PGP/MIME specification! --]\n\n"), s);
     mutt_decode_attachment (a, s); /* just treat the data as text/plain... */
   }
 }
@@ -798,7 +798,7 @@ void pgp_extract_keys_from_attachment_list (FILE *fp, int tag, BODY *top)
   
   if(!fp)
   {
-    mutt_error("Internal error. Inform <roessler@guug.de>.");
+    mutt_error _("Internal error. Inform <roessler@guug.de>.");
     return;
   }
 
@@ -862,7 +862,7 @@ BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout)
     fclose (pgperr);
     unlink (pgptmpfile);
     if (s->flags & M_DISPLAY)
-      state_puts ("[-- Error: could not create a PGP subprocess! --]\n\n", s);
+      state_puts (_("[-- Error: could not create a PGP subprocess! --]\n\n"), s);
     return (NULL);
   }
 
@@ -891,7 +891,7 @@ BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout)
     fflush (pgperr);
     rewind (pgperr);
     mutt_copy_stream (pgperr, s->fpout);
-    state_puts ("[-- End of PGP output --]\n\n", s);
+    state_puts (_("[-- End of PGP output --]\n\n"), s);
   }
   fclose (pgperr);
 
@@ -964,7 +964,7 @@ void pgp_encrypted_handler (BODY *a, STATE *s)
       strcasecmp ("octet-stream", a->next->subtype) != 0)
   {
     if (s->flags & M_DISPLAY)
-      state_puts ("[-- Error: malformed PGP/MIME message --]\n\n", s);
+      state_puts (_("[-- Error: malformed PGP/MIME message! --]\n\n"), s);
     return;
   }
 
@@ -977,7 +977,7 @@ void pgp_encrypted_handler (BODY *a, STATE *s)
   if ((fpout = safe_fopen (tempfile, "w+")) == NULL)
   {
     if (s->flags & M_DISPLAY)
-      state_puts ("[-- Error: could not create temporary file --]\n", s);
+      state_puts (_("[-- Error: could not create temporary file! --]\n"), s);
     return;
   }
 
@@ -986,7 +986,7 @@ void pgp_encrypted_handler (BODY *a, STATE *s)
   if ((tattach = pgp_decrypt_part (a, s, fpout)) != NULL)
   {
     if (s->flags & M_DISPLAY)
-      state_puts ("[-- The following data is PGP/MIME encrypted --]\n\n", s);
+      state_puts (_("[-- The following data is PGP/MIME encrypted --]\n\n"), s);
 
     fpin = s->fpin;
     s->fpin = fpout;
@@ -994,7 +994,7 @@ void pgp_encrypted_handler (BODY *a, STATE *s)
     s->fpin = fpin;
 
     if (s->flags & M_DISPLAY)
-      state_puts ("\n[-- End of PGP/MIME encrypted data --]\n", s);
+      state_puts (_("\n[-- End of PGP/MIME encrypted data --]\n"), s);
 
     mutt_free_body (&tattach);
   }
@@ -1077,7 +1077,7 @@ static BODY *pgp_sign_message (BODY *a)
   if((thepid = pgp->invoke_sign(pgp, &pgpin, &pgpout, &pgperr,
 			       -1, -1, -1, signedfile)) == -1)
   {
-    mutt_perror("Can't open PGP subprocess!");
+    mutt_perror _("Can't open PGP subprocess!");
     fclose(fp);
     unlink(sigfile);
     unlink(signedfile);
@@ -1211,13 +1211,13 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
     k_info = NULL;
     if ((keyID = mutt_pgp_hook (p)) != NULL)
     {
-      snprintf (buf, sizeof (buf), "Use keyID = \"%s\" for %s?", keyID, p->mailbox);
+      snprintf (buf, sizeof (buf), _("Use keyID = \"%s\" for %s?"), keyID, p->mailbox);
       if (mutt_yesorno (buf, M_YES) == M_YES)
 	k_info = ki_getkeybystr (pgp, keyID, db, KEYFLAG_CANENCRYPT);
     }
     if (k_info == NULL && (k_info = ki_getkeybyaddr (pgp, p, db, KEYFLAG_CANENCRYPT)) == NULL)
     {
-      snprintf (buf, sizeof (buf), "Enter keyID for %s: ", p->mailbox);
+      snprintf (buf, sizeof (buf), _("Enter keyID for %s: "), p->mailbox);
       
       if ((key = pgp_ask_for_key (pgp, db, buf, p->mailbox,
 				  KEYFLAG_CANENCRYPT, NULL)) == NULL)

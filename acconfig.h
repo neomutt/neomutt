@@ -1,3 +1,17 @@
+/* Is this the international version? */
+#undef SUBVERSION
+
+/* The "real" version string */
+#undef VERSION
+
+/* The package name */
+#undef PACKAGE
+
+/* Where to put l10n data */
+#undef MUTTLOCALEDIR
+
+/* Where to put other shared data */
+#undef SHAREDIR
 
 /* Enable debugging info */
 #define DEBUG
@@ -111,3 +125,17 @@
 
 /* Does your system have the fchdir() call? */
 #undef HAVE_FCHDIR
+
+/* Define if your locale.h file contains LC_MESSAGES.  */
+#undef HAVE_LC_MESSAGES
+
+/* Define to 1 if NLS is requested.  */
+#undef ENABLE_NLS
+
+/* Define as 1 if you have catgets and don't want to use GNU gettext.  */
+#undef HAVE_CATGETS
+
+/* Define as 1 if you have gettext and don't want to use GNU gettext.  */
+#undef HAVE_GETTEXT
+
+#undef HAVE_STPCPY

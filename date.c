@@ -45,7 +45,7 @@ static time_t mutt_compute_tz (time_t g, struct tm *utc)
       break;
 
     default:
-      mutt_error ("Please report this program error in the function mutt_mktime.");
+      mutt_error _("Please report this program error in the function mutt_mktime.");
   }
 
   return t;

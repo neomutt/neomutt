@@ -354,7 +354,7 @@ int mutt_buffy_notify (void)
       {
 	strfcpy (path, tmp->path, sizeof (path));
 	mutt_pretty_mailbox (path);
-	mutt_message ("New mail in %s.", path);
+	mutt_message (_("New mail in %s."), path);
 	tmp->notified = 1;
 	BuffyNotify--;
 	return (1);

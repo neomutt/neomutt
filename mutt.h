@@ -32,6 +32,25 @@
 #include "rfc822.h"
 #include "hash.h"
 
+#ifdef ENABLE_NLS
+# include <libintl.h>
+# define _(a) gettext (a)
+# ifdef gettext_noop
+#  define N_(a) gettext_noop (a)
+# else
+#  define N_(a) (a)
+# endif
+#else
+# define _(a) (a)
+# define N_(a) (a)
+#endif
+
+#ifdef SUBVERSION
+# define MUTT_VERSION (VERSION SUBVERSION)
+#else  
+# define MUTT_VERSION (VERSION)
+#endif
+
 /* nifty trick I stole from ELM 2.5alpha. */
 #ifdef MAIN_C
 #define WHERE 

@@ -58,7 +58,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 
   if (!MoreArgs (s))
   {
-    strfcpy (err->data, "too few arguments", err->dsize);
+    strfcpy (err->data, _("too few arguments"), err->dsize);
     goto error;
   }
 
@@ -66,13 +66,13 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 
   if (!command.data)
   {
-    strfcpy (err->data, "too few arguments", err->dsize);
+    strfcpy (err->data, _("too few arguments"), err->dsize);
     goto error;
   }
 
   if (MoreArgs (s))
   {
-    strfcpy (err->data, "too many arguments", err->dsize);
+    strfcpy (err->data, _("too many arguments"), err->dsize);
     goto error;
   }
 

@@ -108,7 +108,7 @@ static HEADER *select_msg (void)
   menu->make_entry = post_entry;
   menu->menu = MENU_POST;
   menu->max = PostContext->msgcount;
-  menu->title = "Postponed Messages";
+  menu->title = _("Postponed Messages");
   menu->data = PostContext;
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_POST, PostponeHelp);
 
@@ -179,7 +179,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur)
   if ((PostContext = mx_open_mailbox (Postponed, M_NOSORT, NULL)) == NULL)
   {
     PostCount = 0;
-    mutt_error ("No postponed messages.");
+    mutt_error _("No postponed messages.");
     return (-1);
   }
   
@@ -188,7 +188,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur)
     PostCount = 0;
     mx_close_mailbox (PostContext);
     safe_free ((void **) &PostContext);
-    mutt_error ("No postponed messages.");
+    mutt_error _("No postponed messages.");
     return (-1);
   }
 
@@ -316,7 +316,7 @@ int mutt_parse_pgp_hdr (char *p, int set_signas)
 
           if (*p!='>')
           {
-            mutt_error ("Illegal PGP header");
+            mutt_error _("Illegal PGP header");
             return 0;
           }
         }
@@ -336,7 +336,7 @@ int mutt_parse_pgp_hdr (char *p, int set_signas)
 	  
 	  if(*p != '>')
 	  {
-	    mutt_error("Illegal PGP header");
+	    mutt_error _("Illegal PGP header");
 	    return 0;
 	  }
 	}
@@ -345,7 +345,7 @@ int mutt_parse_pgp_hdr (char *p, int set_signas)
 	break;
 	  
       default:
-        mutt_error ("Illegal PGP header");
+        mutt_error _("Illegal PGP header");
         return 0;
     }
      

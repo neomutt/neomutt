@@ -128,7 +128,7 @@ void mutt_alias_menu (char *buf, size_t buflen, ALIAS *aliases)
 
   if (!aliases)
   {
-    mutt_error ("You have no aliases!");
+    mutt_error _("You have no aliases!");
     return;
   }
 
@@ -140,7 +140,7 @@ void mutt_alias_menu (char *buf, size_t buflen, ALIAS *aliases)
   menu->search = alias_search;
   menu->tag = alias_tag;
   menu->menu = MENU_ALIAS;
-  menu->title = "Aliases";
+  menu->title = _("Aliases");
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_ALIAS, AliasHelp);
 
   /* count the number of aliases */

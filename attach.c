@@ -108,7 +108,7 @@ int mutt_compose_attachment (BODY *a)
 				  a->filename, newfile));
 	if (safe_symlink (a->filename, newfile) == -1)
 	{
-	  if (!mutt_yesorno ("Can't match nametemplate, continue?", 1))
+	  if (!mutt_yesorno (_("Can't match nametemplate, continue?"), 1))
 	    goto bailout;
 	}
 	unlink_newfile = 1;
@@ -120,7 +120,7 @@ int mutt_compose_attachment (BODY *a)
 				      command, sizeof (command)))
       {
 	/* For now, editing requires a file, no piping */
-	mutt_error ("Mailcap compose entry requires %%s");
+	mutt_error _("Mailcap compose entry requires %%s");
       }
       else
       {
@@ -134,7 +134,7 @@ int mutt_compose_attachment (BODY *a)
 
 	  if ((fp = safe_fopen (a->filename, "r")) == NULL)
 	  {
-	    mutt_perror ("Failure to open file to parse headers.");
+	    mutt_perror _("Failure to open file to parse headers.");
 	    goto bailout;
 	  }
 
@@ -165,7 +165,7 @@ int mutt_compose_attachment (BODY *a)
 	    mutt_mktemp (tempfile);
 	    if ((tfp = safe_fopen (tempfile, "w")) == NULL)
 	    {
-	      mutt_perror ("Failure to open file to strip headers.");
+	      mutt_perror _("Failure to open file to strip headers.");
 	      goto bailout;
 	    }
 	    mutt_copy_stream (fp, tfp);
@@ -183,7 +183,8 @@ int mutt_compose_attachment (BODY *a)
   else
   {
     rfc1524_free_entry (&entry);
-    mutt_message ("No mailcap compose entry for %s, creating empty file.",type);
+    mutt_message (_("No mailcap compose entry for %s, creating empty file."),
+		   type);
     return 1;
   }
 
@@ -230,7 +231,7 @@ int mutt_edit_attachment (BODY *a)
 				  a->filename, newfile));
 	if (safe_symlink (a->filename, newfile) == -1)
 	{
-	  if (!mutt_yesorno ("Can't match nametemplate, continue?", 1))
+	  if (!mutt_yesorno (_("Can't match nametemplate, continue?"), 1))
 	    goto bailout;
 	}
 	unlink_newfile = 1;
@@ -242,7 +243,7 @@ int mutt_edit_attachment (BODY *a)
 				      command, sizeof (command)))
       {
 	/* For now, editing requires a file, no piping */
-	mutt_error ("Mailcap Edit entry requires %%s");
+	mutt_error _("Mailcap Edit entry requires %%s");
       }
       else
       {
@@ -260,7 +261,7 @@ int mutt_edit_attachment (BODY *a)
   else
   {
     rfc1524_free_entry (&entry);
-    mutt_error ("No mailcap edit entry for %s",type);
+    mutt_error (_("No mailcap edit entry for %s"),type);
     return 0;
   }
 
@@ -328,7 +329,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag)
       {
 	/* fallback to view as text */
 	rfc1524_free_entry (&entry);
-	mutt_error ("No matching mailcap entry found.  Viewing as text.");
+	mutt_error _("No matching mailcap entry found.  Viewing as text.");
 	flag = M_AS_TEXT;
 	use_mailcap = 0;
       }
@@ -341,7 +342,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag)
   {
     if (!entry->command)
     {
-      mutt_error ("MIME type not defined.  Cannot view attachment.");
+      mutt_error _("MIME type not defined.  Cannot view attachment.");
       goto return_error;
     }
     strfcpy (command, entry->command, sizeof (command));
@@ -362,7 +363,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag)
 	/* send case: the file is already there */
 	if (safe_symlink (a->filename, tempfile) == -1)
 	{
-	  if (mutt_yesorno ("Can't match nametemplate, continue?", 1) == M_YES)
+	  if (mutt_yesorno (_("Can't match nametemplate, continue?"), 1) == M_YES)
 	    strfcpy (tempfile, a->filename, sizeof (tempfile));
 	  else
 	    goto return_error;
@@ -432,7 +433,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag)
 	  fclose (pagerfp);
 	if (tempfp)
 	  fclose (tempfp);
-	mutt_error ("Cannot create filter");
+	mutt_error _("Cannot create filter");
 	goto return_error;
       }
 
@@ -638,7 +639,7 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
 	chflags = CH_FROM;
       chflags |= (ctx.magic == M_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
       if ((r = _mutt_copy_message (msg->fp, fp, hn, hn->content, 0, chflags)) == 0)
-	mutt_message("Attachment saved.");
+	mutt_message _("Attachment saved.");
 	
       mx_close_message (&msg);
       mx_close_mailbox(&ctx);
@@ -691,7 +692,7 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
 
     if (mutt_copy_stream (ofp, nfp) == -1)
     {
-      mutt_error ("Write fault!");
+      mutt_error _("Write fault!");
       fclose (ofp);
       fclose (nfp);
       return (-1);
@@ -809,7 +810,7 @@ int mutt_print_attachment (FILE *fp, BODY *a)
       {
 	if (safe_symlink(a->filename, newfile) == -1)
 	{
-	  if (mutt_yesorno ("Can't match nametemplate, continue?", 1) != M_YES)
+	  if (mutt_yesorno (_("Can't match nametemplate, continue?"), 1) != M_YES)
 	  {
 	    rfc1524_free_entry (&entry);
 	    return 0;
@@ -893,7 +894,7 @@ int mutt_print_attachment (FILE *fp, BODY *a)
   }
   else
   {
-    mutt_error ("I don't know how to print that!");
+    mutt_error _("I don't know how to print that!");
     return 0;
   }
 }

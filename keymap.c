@@ -309,7 +309,7 @@ int km_dokey (int menu)
       if (n++ == 10)
       {
 	mutt_flushinp ();
-	mutt_error ("Macro loop detected.");
+	mutt_error _("Macro loop detected.");
 	return (-1);
       }
 
@@ -504,9 +504,9 @@ void km_error_key (int menu)
   char buf[SHORT_STRING];
 
   if (km_expand_key (buf, sizeof (buf), km_find_func (menu, OP_HELP)))
-    mutt_error ("Key is not bound.  Press '%s' for help.", buf);
+    mutt_error (_("Key is not bound.  Press '%s' for help."), buf);
   else
-    mutt_error ("Key is not bound.  See the manual.");
+    mutt_error _("Key is not bound.  See the manual.");
 }
 
 int mutt_parse_push (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
@@ -516,7 +516,7 @@ int mutt_parse_push (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   mutt_extract_token (buf, s, M_TOKEN_CONDENSE);
   if (MoreArgs (s))
   {
-    strfcpy (err->data, "push: too many arguments", err->dsize);
+    strfcpy (err->data, _("push: too many arguments"), err->dsize);
     r = -1;
   }
   else
@@ -537,7 +537,7 @@ char *parse_keymap (int *menu, BUFFER *s, BUFFER *err)
   {
     if ((*menu = mutt_check_menu (buf.data)) == -1)
     {
-      snprintf (err->data, err->dsize, "%s: no such menu", buf.data);
+      snprintf (err->data, err->dsize, _("%s: no such menu"), buf.data);
     }
     else
     {
@@ -546,7 +546,7 @@ char *parse_keymap (int *menu, BUFFER *s, BUFFER *err)
 
       if (!*buf.data)
       {
-	strfcpy (err->data, "null key sequence", err->dsize);
+	strfcpy (err->data, _("null key sequence"), err->dsize);
       }
       else if (MoreArgs (s))
 	return (buf.data);
@@ -554,7 +554,7 @@ char *parse_keymap (int *menu, BUFFER *s, BUFFER *err)
   }
   else
   {
-    strfcpy (err->data, "too few arguments", err->dsize);
+    strfcpy (err->data, _("too few arguments"), err->dsize);
   }
   FREE (&buf.data);
   return (NULL);
@@ -624,7 +624,7 @@ int mutt_parse_bind (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   mutt_extract_token (buf, s, 0);
   if (MoreArgs (s))
   {
-    strfcpy (err->data, "bind: too many arguments", err->dsize);
+    strfcpy (err->data, _("bind: too many arguments"), err->dsize);
     r = -1;
   }
   else if (strcasecmp ("noop", buf->data) == 0)
@@ -639,7 +639,7 @@ int mutt_parse_bind (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
       bindings = km_get_table (menu);
       if (bindings && try_bind (key, menu, buf->data, bindings) != 0)
       {
-	snprintf (err->data, err->dsize, "%s: no such function in map", buf->data);
+	snprintf (err->data, err->dsize, _("%s: no such function in map"), buf->data);
 	r = -1;
       }
     }
@@ -662,7 +662,7 @@ int mutt_parse_macro (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   /* make sure the macro sequence is not an empty string */
   if (!*buf->data)
   {
-    strfcpy (err->data, "macro: empty key sequence", err->dsize);
+    strfcpy (err->data, _("macro: empty key sequence"), err->dsize);
   }
   else
   {
@@ -673,7 +673,7 @@ int mutt_parse_macro (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 
       if (MoreArgs (s))
       {
-	strfcpy (err->data, "macro: too many arguments", err->dsize);
+	strfcpy (err->data, _("macro: too many arguments"), err->dsize);
       }
       else
       {

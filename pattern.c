@@ -227,7 +227,7 @@ int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
   if (mutt_extract_token (&buf, s, M_TOKEN_PATTERN | M_TOKEN_COMMENT) != 0 ||
       !buf.data)
   {
-    snprintf (err->data, err->dsize, "Error in expression: %s", s->dptr);
+    snprintf (err->data, err->dsize, _("Error in expression: %s"), s->dptr);
     return (-1);
   }
   pat->rx = safe_malloc (sizeof (regex_t));
@@ -323,7 +323,7 @@ static const char *getDate (const char *s, struct tm *t, BUFFER *err)
   t->tm_mday = strtol (s, &p, 0);
   if (t->tm_mday < 1 || t->tm_mday > 31)
   {
-    snprintf (err->data, err->dsize, "Invalid day of month: %s", s);
+    snprintf (err->data, err->dsize, _("Invalid day of month: %s"), s);
     return NULL;
   }
   if (*p != '/')
@@ -337,7 +337,7 @@ static const char *getDate (const char *s, struct tm *t, BUFFER *err)
   t->tm_mon = strtol (p, &p, 0) - 1;
   if (t->tm_mon < 0 || t->tm_mon > 11)
   {
-    snprintf (err->data, err->dsize, "Invalid month: %s", p);
+    snprintf (err->data, err->dsize, _("Invalid month: %s"), p);
     return NULL;
   }
   if (*p != '/')
@@ -391,7 +391,7 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
   if (mutt_extract_token (&buffer, s, M_TOKEN_COMMENT | M_TOKEN_PATTERN) != 0
       || !buffer.data)
   {
-    strfcpy (err->data, "error in expression", err->dsize);
+    strfcpy (err->data, _("error in expression"), err->dsize);
     return (-1);
   }
 
@@ -571,7 +571,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	{
 	  if (!curlist)
 	  {
-	    snprintf (err->data, err->dsize, "error in pattern at: %s", ps.dptr);
+	    snprintf (err->data, err->dsize, _("error in pattern at: %s"), ps.dptr);
 	    return NULL;
 	  }
 	  if (curlist->next)
@@ -616,13 +616,13 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	ps.dptr++; /* move past the ~ */
 	if ((entry = lookup_tag (*ps.dptr)) == NULL)
 	{
-	  snprintf (err->data, err->dsize, "%c: invalid command", *ps.dptr);
+	  snprintf (err->data, err->dsize, _("%c: invalid command"), *ps.dptr);
 	  mutt_pattern_free (&curlist);
 	  return NULL;
 	}
 	if (entry->class && (flags & entry->class) == 0)
 	{
-	  snprintf (err->data, err->dsize, "%c: not supported in this mode", *ps.dptr);
+	  snprintf (err->data, err->dsize, _("%c: not supported in this mode"), *ps.dptr);
 	  mutt_pattern_free (&curlist);
 	  return NULL;
 	}
@@ -635,7 +635,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	{
 	  if (!*ps.dptr)
 	  {
-	    snprintf (err->data, err->dsize, "missing parameter");
+	    snprintf (err->data, err->dsize, _("missing parameter"));
 	    mutt_pattern_free (&curlist);
 	    return NULL;
 	  }
@@ -651,7 +651,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	p = find_matching_paren (ps.dptr + 1);
 	if (*p != ')')
 	{
-	  snprintf (err->data, err->dsize, "mismatched parenthesis: %s", ps.dptr);
+	  snprintf (err->data, err->dsize, _("mismatched parenthesis: %s"), ps.dptr);
 	  mutt_pattern_free (&curlist);
 	  return NULL;
 	}
@@ -674,14 +674,14 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	ps.dptr = p + 1; /* restore location */
 	break;
       default:
-	snprintf (err->data, err->dsize, "error in pattern at: %s", ps.dptr);
+	snprintf (err->data, err->dsize, _("error in pattern at: %s"), ps.dptr);
 	mutt_pattern_free (&curlist);
 	return NULL;
     }
   }
   if (!curlist)
   {
-    strfcpy (err->data, "empty pattern", err->dsize);
+    strfcpy (err->data, _("empty pattern"), err->dsize);
     return NULL;
   }
   if (curlist->next)
@@ -832,7 +832,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
      break;
 #endif
   }
-  mutt_error ("error: unknown op %d (report this error).", pat->op);
+  mutt_error (_("error: unknown op %d (report this error)."), pat->op);
   return (-1);
 }
 
@@ -896,7 +896,7 @@ int mutt_pattern_func (int op, char *prompt)
   if (mutt_get_field (prompt, buf, sizeof (buf), M_PATTERN) != 0 || !buf[0])
     return (-1);
 
-  mutt_message ("Compiling search pattern...");
+  mutt_message _("Compiling search pattern...");
   
   simple = safe_strdup (buf);
   mutt_check_simple (buf, sizeof (buf), NONULL (SimpleSearch));
@@ -910,7 +910,7 @@ int mutt_pattern_func (int op, char *prompt)
     return (-1);
   }
 
-  mutt_message ("Executing command on matching messages...");
+  mutt_message _("Executing command on matching messages...");
 
   if (op == M_LIMIT)
   {
@@ -967,7 +967,7 @@ int mutt_pattern_func (int op, char *prompt)
       mutt_pattern_free (&Context->limit_pattern);
     if (!Context->vcount)
     {
-      mutt_error ("No messages matched criteria.");
+      mutt_error _("No messages matched criteria.");
       /* restore full display */
       for (i = 0; i < Context->msgcount; i++)
       {
@@ -1005,8 +1005,9 @@ int mutt_search_command (int cur, int op)
   if (op != OP_SEARCH_NEXT && op != OP_SEARCH_OPPOSITE)
   {
     strfcpy (buf, LastSearch, sizeof (buf));
-    if (mutt_get_field ((op == OP_SEARCH) ? "Search for: " : "Reverse search for: ",
-		      buf, sizeof (buf), M_CLEAR | M_PATTERN) != 0 || !buf[0])
+    if (mutt_get_field ((op == OP_SEARCH) ? _("Search for: ") :
+		      "Reverse search for: ", buf, sizeof (buf),
+		      M_CLEAR | M_PATTERN) != 0 || !buf[0])
       return (-1);
 
     if (op == OP_SEARCH)
@@ -1023,7 +1024,7 @@ int mutt_search_command (int cur, int op)
     {
       set_option (OPTSEARCHINVALID);
       strfcpy (LastSearch, buf, sizeof (LastSearch));
-      mutt_message ("Compiling search pattern...");
+      mutt_message _("Compiling search pattern...");
       mutt_pattern_free (&SearchPattern);
       err.data = error;
       err.dsize = sizeof (error);
@@ -1037,7 +1038,7 @@ int mutt_search_command (int cur, int op)
   }
   else if (!SearchPattern)
   {
-    mutt_error ("No search pattern.");
+    mutt_error _("No search pattern.");
     return (-1);
   }
 
@@ -1058,10 +1059,10 @@ int mutt_search_command (int cur, int op)
     {
       i = 0;
       if (option (OPTWRAPSEARCH))
-        mutt_message ("Search wrapped to top.");
+        mutt_message _("Search wrapped to top.");
       else 
       {
-        mutt_message ("Search hit bottom without finding match");
+        mutt_message _("Search hit bottom without finding match");
 	return (-1);
       }
     }
@@ -1069,10 +1070,10 @@ int mutt_search_command (int cur, int op)
     {
       i = Context->vcount - 1;
       if (option (OPTWRAPSEARCH))
-        mutt_message ("Search wrapped to bottom.");
+        mutt_message _("Search wrapped to bottom.");
       else 
       {
-        mutt_message ("Search hit top without finding match");
+        mutt_message _("Search hit top without finding match");
 	return (-1);
       }
     }
@@ -1094,7 +1095,7 @@ int mutt_search_command (int cur, int op)
 
     if (Signals & S_INTERRUPT)
     {
-      mutt_error ("Search interrupted.");
+      mutt_error _("Search interrupted.");
       Signals &= ~S_INTERRUPT;
       return (-1);
     }
@@ -1102,6 +1103,6 @@ int mutt_search_command (int cur, int op)
     i += incr;
   }
 
-  mutt_error ("Not found.");
+  mutt_error _("Not found.");
   return (-1);
 }

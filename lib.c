@@ -272,7 +272,7 @@ void *safe_calloc (size_t nmemb, size_t size)
     return NULL;
   if (!(p = calloc (nmemb, size)))
   {
-    mutt_error ("Out of memory");
+    mutt_error _("Out of memory!");
     sleep (1);
     mutt_exit (1);
   }
@@ -287,7 +287,7 @@ void *safe_malloc (unsigned int siz)
     return 0;
   if ((p = (void *) malloc (siz)) == 0)
   {
-    mutt_error ("Out of memory!");
+    mutt_error _("Out of memory!");
     sleep (1);
     mutt_exit (1);
   }
@@ -318,7 +318,7 @@ void safe_realloc (void **p, size_t siz)
 
   if (!r)
   {
-    mutt_error ("Out of memory!");
+    mutt_error _("Out of memory!");
     sleep (1);
     mutt_exit (1);
   }
@@ -750,12 +750,12 @@ int mutt_check_overwrite (const char *attname, const char *path,
     return -1;
   if (S_ISDIR (st.st_mode))
   {
-    if (mutt_yesorno ("File is a directory, save under it?", 1) != M_YES) 
+    if (mutt_yesorno (_("File is a directory, save under it?"), 1) != M_YES) 
       return (-1);
     if (!attname || !attname[0])
     {
       tmp[0] = 0;
-      if (mutt_get_field ("File under directory: ", tmp, sizeof (tmp),
+      if (mutt_get_field (_("File under directory: "), tmp, sizeof (tmp),
 				      M_FILE | M_CLEAR) != 0 || !tmp[0])
 	return (-1);
       snprintf (fname, flen, "%s/%s", path, tmp);
@@ -766,7 +766,7 @@ int mutt_check_overwrite (const char *attname, const char *path,
 
   if (flags != M_SAVE_APPEND &&
       access (fname, F_OK) == 0 && 
-      mutt_yesorno ("File exists, overwrite?", 0) != 1)
+      mutt_yesorno (_("File exists, overwrite?"), 0) != 1)
     return (-1);
   
   return 0;
@@ -1139,13 +1139,13 @@ int mutt_save_confirm (const char *s, struct stat *st)
   {
     if (magic == -1)
     {
-      mutt_error ("%s is not a mailbox!", s);
+      mutt_error (_("%s is not a mailbox!"), s);
       return 0;
     }
 
     if (option (OPTCONFIRMAPPEND))
     {
-      snprintf (tmp, sizeof (tmp), "Append messages to %s?", s);
+      snprintf (tmp, sizeof (tmp), _("Append messages to %s?"), s);
       if (mutt_yesorno (tmp, 1) < 1)
 	ret = 0;
     }
@@ -1161,7 +1161,7 @@ int mutt_save_confirm (const char *s, struct stat *st)
       {
 	if (option (OPTCONFIRMCREATE))
 	{
-	  snprintf (tmp, sizeof (tmp), "Create %s?", s);
+	  snprintf (tmp, sizeof (tmp), _("Create %s?"), s);
 	  if (mutt_yesorno (tmp, 1) < 1)
 	    ret = 0;
 	}

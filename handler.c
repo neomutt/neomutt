@@ -123,7 +123,7 @@ static int handler_state_fgetc(STATE *s)
   if((ch = fgetc(s->fpin)) == EOF)
   {
     dprint(1, (debugfile, "handler_state_fgetc: unexpected EOF.\n"));
-    state_puts ("[-- Error: unexpected end of file! --]\n", s);
+    state_puts (_("[-- Error: unexpected end of file! --]\n"), s);
   }
   return ch;
 }
@@ -875,7 +875,7 @@ void alternative_handler (BODY *a, STATE *s)
   else if (s->flags & M_DISPLAY)
   {
     /* didn't find anything that we could display! */
-    state_puts("[-- Error:  Could not display any parts of Multipart/Alternative! --]\n", s);
+    state_puts(_("[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"), s);
   }
 }
 
@@ -990,7 +990,7 @@ void multipart_handler (BODY *a, STATE *s)
   {
     if (s->flags & M_DISPLAY)
     {
-      snprintf (buffer, sizeof (buffer), "[-- Attachment #%d", count);
+      snprintf (buffer, sizeof (buffer), _("[-- Attachment #%d"), count);
       state_puts (buffer, s);
       if (p->description || p->filename || p->form_name)
       {
@@ -1003,7 +1003,7 @@ void multipart_handler (BODY *a, STATE *s)
       mutt_pretty_size (length, sizeof (length), p->length);
 
       snprintf (buffer, sizeof (buffer),
-		"[-- Type: %s/%s, Encoding: %s, Size: %s --]\n",
+		_("[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"),
 	       TYPE (p), p->subtype, ENCODING (p->encoding), length);
       state_puts (buffer, s);
       if (!option (OPTWEED))
@@ -1069,9 +1069,9 @@ void autoview_handler (BODY *a, STATE *s)
     {
       char mesg[STRING];
 
-      snprintf (mesg, sizeof (buffer), "[-- Autoview using %s --]\n", command);
+      snprintf (mesg, sizeof (buffer), _("[-- Autoview using %s --]\n"), command);
       state_puts (mesg, s);
-      mutt_message("Invoking autoview command: %s",command);
+      mutt_message(_("Invoking autoview command: %s"),command);
     }
 
     if (piped)
@@ -1108,7 +1108,7 @@ void autoview_handler (BODY *a, STATE *s)
 	{
 	  char mesg[STRING];
 
-	  snprintf (mesg, sizeof (buffer), "[-- Autoview stderr of %s --]\n", 
+	  snprintf (mesg, sizeof (buffer), _("[-- Autoview stderr of %s --]\n"), 
 	      command);
 	  state_puts (mesg, s);
 	}
@@ -1131,7 +1131,7 @@ void autoview_handler (BODY *a, STATE *s)
 	{
 	  char mesg[STRING];
 
-	  snprintf (mesg, sizeof (buffer), "[-- Autoview stderr of %s --]\n", 
+	  snprintf (mesg, sizeof (buffer), _("[-- Autoview stderr of %s --]\n"), 
 	      command);
 	  state_puts (mesg, s);
 	}
@@ -1232,7 +1232,7 @@ void mutt_body_handler (BODY *b, STATE *s)
       p = mutt_get_parameter ("protocol", b->parameter);
 
       if (!p)
-        mutt_error ("Error: Multipart/Signed has no protocol.");
+        mutt_error _("Error: multipart/signed has no protocol.");
       else if (strcasecmp ("application/pgp-signature", p) == 0)
       {
 	if (s->flags & M_VERIFY)
@@ -1244,7 +1244,7 @@ void mutt_body_handler (BODY *b, STATE *s)
       p = mutt_get_parameter ("protocol", b->parameter);
 
       if (!p)
-        mutt_error ("Error: Multipart/Encrypted has no protocol parameter!");
+        mutt_error _("Error: multipart/encrypted has no protocol parameter!");
       else if (strcasecmp ("application/pgp-encrypted", p) == 0)
         handler = pgp_encrypted_handler;
     }
@@ -1286,7 +1286,7 @@ void mutt_body_handler (BODY *b, STATE *s)
 	mutt_mktemp (tempfile);
 	if ((s->fpout = safe_fopen (tempfile, "w")) == NULL)
 	{
-	  mutt_error ("Unable to open temporary file!");
+	  mutt_error _("Unable to open temporary file!");
 	  return;
 	}
 	/* decoding the attachment changes the size and offset, so save a copy
@@ -1345,14 +1345,14 @@ void mutt_body_handler (BODY *b, STATE *s)
   }
   else if (s->flags & M_DISPLAY)
   {
-    fprintf (s->fpout, "[-- %s/%s is unsupported ", TYPE (b), b->subtype);
+    fprintf (s->fpout, _("[-- %s/%s is unsupported "), TYPE (b), b->subtype);
     if (!option (OPTVIEWATTACH))
     {
       if (km_expand_key (type, sizeof(type),
 			km_find_func (MENU_PAGER, OP_VIEW_ATTACHMENTS)))
-	fprintf (s->fpout, "(use '%s' to view this part)", type);
+	fprintf (s->fpout, _("(use '%s' to view this part)"), type);
       else
-	fputs ("(need 'view-attachments' bound to key!)", s->fpout);
+	fputs (_("(need 'view-attachments' bound to key!)"), s->fpout);
     }
     fputs (" --]\n", s->fpout);
   }

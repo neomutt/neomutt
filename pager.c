@@ -69,7 +69,7 @@
 #define CHECK_READONLY	if (Context->readonly) \
 			{ \
 				mutt_flushinp (); \
-				mutt_error ("Mailbox is read-only.");	\
+				mutt_error _("Mailbox is read-only.");	\
 				break; \
 			}
 
@@ -1448,7 +1448,7 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
   }
   if (!InHelp)
   {
-    mutt_make_help (buffer, sizeof (buffer), "Help", MENU_PAGER, OP_HELP);
+    mutt_make_help (buffer, sizeof (buffer), _("Help"), MENU_PAGER, OP_HELP);
     strcat (helpstr, buffer);
   }
 
@@ -1674,7 +1674,7 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
 	else if (option (OPTPAGERSTOP))
 	{
 	  /* emulate "less -q" and don't go on to the next message. */
-	  mutt_error ("Bottom of message is shown.");
+	  mutt_error _("Bottom of message is shown.");
 	}
 	else
 	{
@@ -1690,7 +1690,7 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
 	  topline = upNLines (bodylen-PagerContext, lineInfo, topline, hideQuoted);
 	}
 	else
-	  mutt_error ("Top of message is shown.");
+	  mutt_error _("Top of message is shown.");
 	break;
 
       case OP_NEXT_LINE:
@@ -1705,14 +1705,14 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
 	  }
 	}
 	else
-	  mutt_error ("Bottom of message is shown.");
+	  mutt_error _("Bottom of message is shown.");
 	break;
 
       case OP_PREV_LINE:
 	if (topline)
 	  topline = upNLines (1, lineInfo, topline, hideQuoted);
 	else
-	  mutt_error ("Top of message is shown.");
+	  mutt_error _("Top of message is shown.");
 	break;
 
       case OP_PAGER_TOP:
@@ -1723,7 +1723,7 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
 	if (topline)
 	  topline = upNLines (bodylen/2, lineInfo, topline, hideQuoted);
 	else
-	  mutt_error ("Top of message is shown.");
+	  mutt_error _("Top of message is shown.");
 	break;
 
       case OP_HALF_DOWN:
@@ -1734,7 +1734,7 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
 	else if (option (OPTPAGERSTOP))
 	{
 	  /* emulate "less -q" and don't go on to the next message. */
-	  mutt_error ("Bottom of message is shown.");
+	  mutt_error _("Bottom of message is shown.");
 	}
 	else
 	{
@@ -1762,7 +1762,7 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
 	    if (i < lastLine)
 	      topline = i;
 	    else
-	      mutt_error ("Not found.");
+	      mutt_error _("Not found.");
 	  }
 	  else
 	  {
@@ -1778,7 +1778,7 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
 	    if (i >= 0)
 	      topline = i;
 	    else
-	      mutt_error ("Not found.");
+	      mutt_error _("Not found.");
 	  }
 
 	  if (lineInfo[topline].search_cnt > 0)
@@ -1796,9 +1796,9 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
 	else if (ch == OP_SEARCH_REVERSE)
 	  SearchBack = 1;
 
-	if (mutt_get_field ((SearchBack ? "Reverse search: " : "Search: "), 
-			  searchbuf, sizeof (searchbuf), M_CLEAR) != 0 || 
-			  !searchbuf[0])
+	if (mutt_get_field ((SearchBack ? _("Reverse search: ") :
+			  _("Search: ")), searchbuf, sizeof (searchbuf),
+			  M_CLEAR) != 0 || !searchbuf[0])
 	  break;
 
 	if (SearchCompiled)
@@ -1865,7 +1865,7 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
 	  if (lineInfo[topline].search_cnt == 0)
 	  {
 	    SearchFlag = 0;
-	    mutt_error ("Not found.");
+	    mutt_error _("Not found.");
 	  }
 	  else
 	    SearchFlag = M_SEARCH;
@@ -1891,7 +1891,7 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
 	  InHelp = 0;
 	}
 	else
-	  mutt_error ("Help is currently being shown.");
+	  mutt_error _("Help is currently being shown.");
 	break;
 
       case OP_PAGER_HIDE_QUOTED:
@@ -1920,7 +1920,7 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
 
 	  if (dretval < 0)
 	  {
-	    mutt_error ("No more quoted text.");
+	    mutt_error _("No more quoted text.");
 	    break;
 	  }
 
@@ -1933,7 +1933,7 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
 
 	  if (dretval < 0)
 	  {
-	    mutt_error ("No more unquoted text after quoted text.");
+	    mutt_error _("No more unquoted text after quoted text.");
 	    break;	  
 	  }
 	  topline = new_topline;
@@ -1953,7 +1953,7 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
 	  topline = upNLines (bodylen, lineInfo, lastLine, hideQuoted);
 	}
 	else
-	  mutt_error ("Bottom of message is shown.");
+	  mutt_error _("Bottom of message is shown.");
 	break;
 
       case OP_REDRAW:
