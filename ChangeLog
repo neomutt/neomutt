@@ -1,7 +1,14 @@
-Tue Oct 20 20:23:03 1998  Thomas Roessler  <roessler@guug.de>
+Tue Oct 20 22:02:58 1998  Thomas Roessler  <roessler@guug.de>
 
-	* doc/manual.sgml.in, keymap.c, functions.h, NEWS: Another
-	macro-function fix from Vikas.
+	* po/ru.po, po/it.po, po/de.po: Checkpoint commit.
+
+	* config.h.in, Makefile.am: Include VERSION with the distribution.
+
+	* configure.in, configure, VERSION, config.h.in:
+	Don't hard-wire the program's version in configure.in, but use the
+	VERSION file instead.  Stolen from gnupg.
+
+	* ChangeLog: Checkpoint commit.
 
 	* socket.c, mutt_socket.h: Fix the multiple connection code.
 	From Brandon Long.
