@@ -26,6 +26,10 @@
 
 #ifdef HAVE_SYS_IOCTL_H
 #include <sys/ioctl.h>
+#else
+# ifdef HAVE_IOCTL_H
+# include <ioctl.h>
+# endif
 #endif
 
 /* this routine should be called after receiving SIGWINCH */
