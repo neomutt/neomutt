@@ -87,7 +87,7 @@ static void mhs_free_sequences (struct mh_sequences *mhs)
 
 static short mhs_check (struct mh_sequences *mhs, int i)
 {
-  if (i > mhs->max)
+  if (!mhs->flags || i > mhs->max)
     return 0;
   else
     return mhs->flags[i];
