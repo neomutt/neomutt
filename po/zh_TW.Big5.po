@@ -899,7 +899,7 @@ msgstr ""
 "[-- 並且被指示的存取類型 %s 不被支援 --]\n"
 
 #: handler.c:1378
-msgid "Error: multipart/signed has no protocol."
+msgid "Error: multipart/signed has no protocol.\n"
 msgstr "錯誤: 多部分/已標記 不在協定中.\n"
 
 #: handler.c:1390

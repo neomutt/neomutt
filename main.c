@@ -279,7 +279,7 @@ static void show_version (void)
 # ifdef _PGPV3PATH
   printf ("_PGPV3PATH=\"%s\"\n", _PGPV3PATH);
 # endif
-# ifdef _PGPGPPATH
+# ifdef _PGPGPGPATH
   printf ("_PGPGPGPATH=\"%s\"\n", _PGPGPGPATH);
 # endif
 #endif
@@ -507,6 +507,26 @@ int main (int argc, char **argv)
     SETCOLOR (MT_COLOR_NORMAL);
     clear ();
     mutt_error = mutt_curses_error;
+  }
+
+  /* Create the ~/Mail directory if it doesn't exist. */
+  if (!option (OPTNOCURSES) && Maildir)
+  {
+    struct stat sb;
+    char fpath[_POSIX_PATH_MAX];
+    char msg[STRING];
+
+    strfcpy (fpath, Maildir, sizeof (fpath));
+    mutt_expand_path (fpath, sizeof (fpath));
+    if (stat (fpath, &sb) == -1 && errno == ENOENT)
+    {
+      snprintf (msg, sizeof (msg), _("%s does not exist. Create it?"), Maildir);
+      if (mutt_yesorno (msg, 1) == 1)
+      {
+	if (mkdir (fpath, 0700) == -1 && errno != EEXIST)
+	  mutt_error ( _("Can't create %s: %s."), Maildir, strerror (errno));
+      }
+    }
   }
 
   if (sendflags & SENDPOSTPONED)
