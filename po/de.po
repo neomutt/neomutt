@@ -26,21 +26,21 @@ msgstr "Hilfe"
 
 #: addrbook.c:132
 msgid "You have no aliases!"
-msgstr "Keine Einträge im Adressbuch!"
+msgstr "Keine Einträge im Adreßbuch!"
 
 #: addrbook.c:144
 msgid "Aliases"
-msgstr "Adressbuch"
+msgstr "Adreßbuch"
 
 #. add a new alias
 #: alias.c:193
 msgid "Alias as: "
-msgstr "Kurzname für Adressbuch: "
+msgstr "Kurzname für Adreßbuch: "
 
 #: alias.c:199
 msgid "You already have an alias defined with that name!"
 msgstr ""
-"Sie haben bereits einen Adressbucheintrag mit diesem Kurznamen definiert."
+"Sie haben bereits einen Adreßbucheintrag mit diesem Kurznamen definiert."
 
 #: alias.c:213
 msgid "Address: "
@@ -641,7 +641,7 @@ msgstr "Springe zu Nachricht: "
 
 #: curs_main.c:594
 msgid "Argument must be a message number."
-msgstr "Argument muss eine Nachrichtennummer sein."
+msgstr "Argument muß eine Nachrichtennummer sein."
 
 #: curs_main.c:627
 msgid "That message is not visible."
@@ -973,7 +973,7 @@ msgstr "IMAP-Nutzername: "
 #: imap.c:902
 #, c-format
 msgid "Password for %s@%s: "
-msgstr "Passwort für %s@%s: "
+msgstr "Paßwort für %s@%s: "
 
 #: imap.c:915
 msgid "Logging in..."
@@ -1328,7 +1328,7 @@ msgstr "Kopiere Nachricht in Datei/Mailbox"
 
 #: keymap_defs.h:41
 msgid "create an alias from a message sender"
-msgstr "Erzeuge Adressbucheintrag für Absender"
+msgstr "Erzeuge Adreßbucheintrag für Absender"
 
 #: keymap_defs.h:42
 msgid "move entry to bottom of screen"
@@ -2309,7 +2309,7 @@ msgstr "[-- PGP-Ausgabe folgt (aktuelle Zeit: "
 
 #: pgp.c:321
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
-msgstr "[-- Fehler: Kann keinen PGP-Prozess erzeugen! --]\n"
+msgstr "[-- Fehler: Kann keinen PGP-Prozeß erzeugen! --]\n"
 
 #: pgp.c:348
 msgid ""
@@ -2401,7 +2401,7 @@ msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
 msgstr ""
-"[-- Fehler: Konnte PGP-Subprozess nicht erzeugen! --]\n"
+"[-- Fehler: Konnte PGP-Subprozeß nicht erzeugen! --]\n"
 "\n"
 
 #: pgp.c:968
@@ -2434,7 +2434,7 @@ msgstr ""
 
 #: pgp.c:1081
 msgid "Can't open PGP subprocess!"
-msgstr "Kann PGP-Subprozess nicht erzeugen!"
+msgstr "Kann PGP-Subprozeß nicht erzeugen!"
 
 #: pgp.c:1215
 #, c-format
@@ -2575,7 +2575,7 @@ msgstr ""
 
 #: pop.c:67
 msgid "POP Password: "
-msgstr "POP-Passwort:"
+msgstr "POP-Paßwort:"
 
 #: pop.c:92
 msgid "POP host is not defined."
