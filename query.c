@@ -91,7 +91,9 @@ static QUERY *run_query (char *s, int quiet)
   }
   if (!quiet)
     mutt_message _("Waiting for response...");
-  fgets (msg, sizeof (msg) - 1, fp);
+  fgets (msg, sizeof (msg), fp);
+  if ((p = strrchr (msg, '\n')))
+    *p = '\0';
   while ((buf = mutt_read_line (buf, &buflen, fp, &dummy)) != NULL)
   {
     if ((p = strtok(buf, "\t\n")))
