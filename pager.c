@@ -646,7 +646,12 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 	  return tmp;
 	}
 	else
+	{
+	  if (index != -1)
+	    shift_class_colors (*QuoteList, tmp, index, q_level);
+
 	  return class;
+	}
       }
       else
       {
