@@ -719,9 +719,11 @@ In addition, <em/key/ may consist of:
 
 <tscreen><verb>
 \t              tab
+<Tab>		tab
 \r              carriage return
 \n              newline
 \e              escape
+<esc>		escape
 <up>            up arrow
 <down>          down arrow
 <left>          left arrow
@@ -734,8 +736,9 @@ In addition, <em/key/ may consist of:
 <enter>         Enter
 <home>          Home
 <end>           End
-f1              function key 1
-f10             function key 10
+<Space>		Space bar
+<f1>            function key 1
+<f10>           function key 10
 </verb></tscreen>
 
 <em/key/ does not need to be enclosed in quotes unless it contains a
