@@ -476,6 +476,18 @@ AC_ARG_WITH(gss, [  --with-gss[=DIR]        Compile in GSSAPI authentication for
 	fi
 ])
 
+AC_ARG_ENABLE(ssl, [  --enable-ssl               Enable SSL support],
+[	if test "$need_imap" != "yes"; then
+	   AC_MSG_ERROR([Sorry, SSL support only for IMAP])
+	fi
+
+	AC_CHECK_LIB(crypto, X509_new,, AC_MSG_ERROR([Unable to find SSL library]))
+	AC_CHECK_LIB(ssl, SSL_new,, AC_MSG_ERROR([Unable to find SSL library]), -lcrypto)
+	AC_DEFINE(USE_SSL)
+	need_ssl=yes
+])
+AM_CONDITIONAL(USE_SSL, test x$need_ssl = xyes)
+
 AC_ARG_ENABLE(debug, [  --enable-debug		Enable debugging support],
 	[ AC_DEFINE(DEBUG) ])
 

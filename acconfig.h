@@ -51,6 +51,9 @@
 /* Do you want support for IMAP GSSAPI authentication? (--with-gss) */
 #undef USE_GSS
 
+/* Do you want support for SSL? (--enable-ssl) */
+#undef USE_SSL
+
 /*
  * Is mail spooled to the user's home directory?  If defined, MAILPATH should
  * be set to the filename of the spool mailbox relative the the home

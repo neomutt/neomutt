@@ -32,7 +32,14 @@ typedef struct _connection
   int available;
   void *data;
   struct _connection *next;
+
+  void *sockdata;
+  int (*read) (struct _connection *conn);
+  int (*write) (struct _connection *conn, const char *buf);
+  int (*open) (struct _connection *conn);
+  int (*close) (struct _connection *conn);
 } CONNECTION;
+
 
 int mutt_socket_readchar (CONNECTION *conn, char *c);
 int mutt_socket_read_line (char *buf, size_t buflen, CONNECTION *conn);
@@ -40,6 +47,11 @@ int mutt_socket_read_line_d (char *buf, size_t buflen, CONNECTION *conn);
 int mutt_socket_write (CONNECTION *conn, const char *buf);
 CONNECTION *mutt_socket_select_connection (char *host, int port, int flags);
 int mutt_socket_open_connection (CONNECTION *conn);
+int mutt_socket_close_connection (CONNECTION *conn);
 
+int raw_socket_read (CONNECTION *conn);
+int raw_socket_write (CONNECTION *conn, const char *buf);
+int raw_socket_open (CONNECTION *conn);
+int raw_socket_close (CONNECTION *conn);
 
 #endif /* _IMAP_SOCKET_H_ */

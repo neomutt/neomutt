@@ -25,6 +25,7 @@
 
 /* -- symbols -- */
 #define IMAP_PORT 143
+#define IMAP_SSL_PORT 993
 
 /* number of entries in the hash table */
 #define IMAP_CACHE_LEN 10

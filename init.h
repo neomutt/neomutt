@@ -1278,6 +1278,18 @@ struct option_t MuttVars[] = {
   */
 #endif /* _PGPPATH */
   
+#ifdef USE_SSL
+  { "certificate_file",	DT_PATH, R_NONE, UL &SslCertFile, 0 },
+  /*
+  ** .pp
+  ** This variable specifies the file where the certificates you trust
+  ** are saved. When an unknown certificate is encountered, you are asked
+  ** if you accept it or not. If you accept it, the certificate can also 
+  ** be saved in this file and further connections are automatically 
+  ** accepted.
+  */
+#endif
+
   { "pipe_split",	DT_BOOL, R_NONE, OPTPIPESPLIT, 0 },
   /*
   ** .pp

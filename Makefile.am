@@ -51,7 +51,8 @@ non_us_sources = pgp.c pgpinvoke.c pgpkey.c pgplib.c sha1dgst.c \
 	gnupgparse.c sha.h sha_locl.h \
 	doc/language.txt doc/language50.txt OPS.PGP doc/PGP-Notes.txt \
 	OPS.MIX remailer.c remailer.h pgpewrap	\
-	contrib/pgp2.rc contrib/pgp5.rc contrib/gpg.rc
+	contrib/pgp2.rc contrib/pgp5.rc contrib/gpg.rc \
+	imap/imap_ssl.c imap/imap_ssl.h README.SSL
 
 EXTRA_mutt_SOURCES = pgp.c pgpinvoke.c pgpkey.c pgplib.c sha1dgst.c \
 	gnupgparse.c resize.c dotlock.c pop.c remailer.c remailer.h browser.h
@@ -65,7 +66,7 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO configure acconfig.h attach.h \
 	sort.h mime.types VERSION prepare _regex.h OPS.MIX	\
 	README.SECURITY remailer.c remailer.h browser.h \
 	lib.h extlib.c pgpewrap pgplib.h Muttrc.head Muttrc \
-	makedoc.c stamp-doc-rc
+	makedoc.c stamp-doc-rc README.SSL
 
 
 mutt_dotlock_SOURCES = mutt_dotlock.c
@@ -142,7 +143,7 @@ us-distdir: distdir dist-hook
 
 us-dist: us-distdir
 	for file in $(distdir)-us/*.c $(distdir)-us/*.h ; do \
-		$(srcdir)/reap.pl _PGPPATH < $$file | $(srcdir)/reap.pl MIXMASTER > $$file.n && rm $$file && mv $$file.n $$file ; \
+		$(srcdir)/reap.pl _PGPPATH < $$file | $(srcdir)/reap.pl MIXMASTER | $(srcdir)/reap.pl USE_SSL > $$file.n && rm $$file && mv $$file.n $$file ; \
 	done
 	for file in $(non_us_sources) ; do \
 		echo "/* This file is only available in the international mutt version */" \

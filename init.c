@@ -29,6 +29,12 @@
 #endif
 
 
+#ifdef USE_SSL
+#include "imap_socket.h"
+#include "imap_ssl.h"
+#endif
+
+
 
 #include "mx.h"
 #include "init.h"

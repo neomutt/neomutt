@@ -19,6 +19,9 @@
 #include "mutt.h"
 #include "globals.h"
 #include "imap_socket.h"
+#ifdef USE_SSL
+#include "imap_ssl.h"
+#endif
 
 #include <unistd.h>
 #include <netinet/in.h>
@@ -32,12 +35,32 @@
 
 static CONNECTION *Connections = NULL;
 
+
+/* Wrappers */
+int mutt_socket_open_connection (CONNECTION *conn) 
+{
+  return conn->open (conn);
+}
+
+int mutt_socket_close_connection (CONNECTION *conn)
+{
+  return conn->close (conn);
+}
+
+int mutt_socket_write (CONNECTION *conn, const char *buf)
+{
+  dprint (1,(debugfile,"> %s", buf));
+  return conn->write (conn, buf);
+}
+
+
+
 /* simple read buffering to speed things up. */
 int mutt_socket_readchar (CONNECTION *conn, char *c)
 {
   if (conn->bufpos >= conn->available)
   {
-    conn->available = read (conn->fd, conn->inbuf, LONG_STRING);
+    conn->available = conn->read (conn);
     conn->bufpos = 0;
     if (conn->available <= 0)
       return conn->available; /* returns 0 for EOF or -1 for other error */
@@ -74,17 +97,15 @@ int mutt_socket_read_line_d (char *buf, size_t buflen, CONNECTION *conn)
   return r;
 }
 
-int mutt_socket_write (CONNECTION *conn, const char *buf)
-{
-  dprint (1,(debugfile,"> %s", buf));
-  return (write (conn->fd, buf, mutt_strlen (buf)));
-}
-
 CONNECTION *mutt_socket_select_connection (char *host, int port, int flags)
 {
   CONNECTION *conn;
 
+#ifdef USE_SSL
+  if (flags != M_NEW_SOCKET && flags != M_NEW_SSL_SOCKET)
+#else
   if (flags != M_NEW_SOCKET)
+#endif
   {
     conn = Connections;
     while (conn)
@@ -103,6 +124,21 @@ CONNECTION *mutt_socket_select_connection (char *host, int port, int flags)
   conn->port = port;
   conn->next = Connections;
   Connections = conn;
+
+  conn->read = raw_socket_read;
+  conn->write = raw_socket_write;
+  conn->open = raw_socket_open;
+  conn->close = raw_socket_close;
+  
+#ifdef USE_SSL
+  if (flags == M_NEW_SSL_SOCKET) 
+  {
+      conn->read = ssl_socket_read;
+      conn->write = ssl_socket_write;
+      conn->open = ssl_socket_open;
+      conn->close = ssl_socket_close;
+  }
+#endif
 
   return conn;
 }
@@ -131,7 +167,22 @@ static int try_socket_and_connect (CONNECTION *conn, struct sockaddr_in sin,
   return 0;
 }
 
-int mutt_socket_open_connection (CONNECTION *conn)
+int raw_socket_close (CONNECTION *conn)
+{
+  return close (conn->fd);
+}
+
+int raw_socket_read (CONNECTION *conn)
+{
+  return read (conn->fd, conn->inbuf, LONG_STRING);
+}
+
+int raw_socket_write (CONNECTION *conn, const char *buf)
+{
+  return write (conn->fd, buf, mutt_strlen (buf));
+}
+
+int raw_socket_open (CONNECTION *conn)
 {
   struct sockaddr_in sin;
   struct hostent *he;

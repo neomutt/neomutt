@@ -52,6 +52,7 @@ Copyright (C) 1996-9 Brandon Long <blong@fiction.net>\n\
 Copyright (C) 1997-9 Thomas Roessler <roessler@guug.de>\n\
 Copyright (C) 1998-9 Werner Koch <wk@isil.d.shuttle.de>\n\
 Copyright (C) 1999   Brendan Cully <brendan@kublai.com>\n\
+Copyright (C) 1999   Tommi Komulainen <Tommi.Komulainen@iki.fi>\n\
 \n\
 Lots of others not mentioned here contributed lots of code,\n\
 fixes, and suggestions.\n\
@@ -201,6 +202,12 @@ static void show_version (void)
 	"+USE_GSS  "
 #else
 	"-USE_GSS  "
+#endif
+
+#ifdef USE_SSL
+	"+USE_SSL  "
+#else
+	"-USE_SSL  "
 #endif
 
 #ifdef USE_POP

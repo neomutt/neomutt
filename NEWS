@@ -1,3 +1,9 @@
+Major changes since 1.1
+-----------------------
+
+- Tommi Komulainen <Tommi.Komulainen@iki.fi> contributed SSL support
+  for mutt's IMAP client code.
+
 Major changes since 0.96.3
 --------------------------
 

@@ -121,20 +121,22 @@ char *imap_next_word (char *s)
 /* imap_parse_path: given an IMAP mailbox name, return host, port
  *   and a path IMAP servers will recognise. */
 int imap_parse_path (char* path, char* host, size_t hlen, int* port, 
-  char** mbox)
+  int *socktype, char** mbox)
 {
   int n;
   char *pc;
   char *pt;
 
   /* set default port */
-  *port = IMAP_PORT;
+  *port = 0;
+  if (socktype)
+    *socktype = M_NEW_SOCKET;
   pc = path;
   if (*pc != '{')
     return -1;
   pc++;
   n = 0;
-  while (*pc && *pc != '}' && *pc != ':' && (n < hlen-1))
+  while (*pc && *pc != '}' && *pc != ':' && *pc != '/' && (n < hlen-1))
     host[n++] = *pc++;
   host[n] = 0;
   /* catch NULL hosts */
@@ -147,11 +149,13 @@ int imap_parse_path (char* path, char* host, size_t hlen, int* port,
     return -1;
   if (*pc == ':')
   {
+    char c;
     pc++;
     pt = pc;
-    while (*pc && *pc != '}') pc++;
+    while (*pc && *pc != '}' && *pc != '/') pc++;
     if (!*pc)
       return -1;
+    c = *pc;
     *pc = '\0';
     *port = atoi (pt);
     if (!port)
@@ -159,10 +163,33 @@ int imap_parse_path (char* path, char* host, size_t hlen, int* port,
       dprint (1, (debugfile, "imap_parse_path: bad port in %s\n", path));
       return -1;
     }
+    *pc = c;
+  }
+  if (*pc == '/') 
+  {
+    pc++;
+    pt = pc;
+    while (*pc && *pc != '}') pc++;
+    if (!*pc)
+      return (-1);
+    *pc = '\0';
+#ifdef USE_SSL
+    if (!strcmp (pt, "ssl"))
+    {
+      if (socktype)
+	*socktype = M_NEW_SSL_SOCKET;
+      if (!*port)
+	*port = IMAP_SSL_PORT;
+    } else
+#endif
+      return (-1);
     *pc = '}';
   }
   pc++;
-
+  
+  if (!*port)
+    *port = IMAP_PORT;
+  
   *mbox = pc;
   return 0;
 }

@@ -60,7 +60,7 @@ int imap_init_browse (char *path, struct browser_state *state)
   int noselect;
   int noinferiors;
 
-  if (imap_parse_path (path, host, sizeof (host), &port, &ipath))
+  if (imap_parse_path (path, host, sizeof (host), &port, NULL, &ipath))
   {
     mutt_error ("%s is an invalid IMAP path", path);
     return -1;
@@ -255,7 +255,7 @@ static int add_list_result (CONNECTION *conn, const char *seq, const char *cmd,
   int noselect;
   int noinferiors;
 
-  if (imap_parse_path (state->folder, host, sizeof (host), &port, &curfolder))
+  if (imap_parse_path (state->folder, host, sizeof (host), &port, NULL, &curfolder))
   {
     dprint (2, (debugfile,
       "add_list_result: current folder %s makes no sense\n", state->folder));
@@ -299,7 +299,7 @@ static void imap_add_folder (char delim, char *folder, int noselect,
   char *curfolder;
   int flen = strlen (folder);
 
-  if (imap_parse_path (state->folder, host, sizeof (host), &port, &curfolder))
+  if (imap_parse_path (state->folder, host, sizeof (host), &port, NULL, &curfolder))
     return;
 
   imap_unquote_string (folder);

@@ -1951,6 +1951,13 @@ server, you should use <tt>{imapserver}path/to/folder</tt> where
 You can select an alternative port by specifying it with the server, ie:
 <tt/{imapserver:port}inbox/.
 
+If Mutt was compiled with SSL support (by running the <em/configure/
+script with the <em/--enable-ssl/ flag), connections to IMAP servers
+can be encrypted. This naturally requires that the server supports
+SSL encrypted connections. To access a folder with IMAP/SSL, you should
+use <tt>{imapserver[:port]/ssl}path/to/folder</tt> as your 
+folder path.
+
 Note that not all servers use / as the hierarchy separator.  Mutt should
 correctly notice which separator is being used by the server and convert
 paths accordingly.

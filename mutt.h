@@ -208,6 +208,9 @@ enum
 
   /* options for socket code */
   M_NEW_SOCKET,
+#ifdef USE_SSL
+  M_NEW_SSL_SOCKET,
+#endif
 
   /* Options for mutt_save_attachment */
   M_SAVE_APPEND,

@@ -1,0 +1,34 @@
+IMAP/SSL in mutt 
+================
+
+To have SSL support in mutt, you need to install OpenSSL 
+(http://www.openssl.org) library before compiling. Versions 0.9.3
+and 0.9.4 have been tested.
+
+
+IMAP/SSL folders can be accessed just like normal IMAP folders, but you
+will also have to add '/ssl' before the closing curly brace. 
+
+For example:
+	mailboxes {localhost/ssl}inbox
+	mailboxes {localhost:994/ssl}inbox
+
+
+Each time a server is contacted, its certificate is checked against
+known valid certificates. When an unknown certificate is encountered,
+you are asked to verify it. If you reject the certificate, the
+connection will be terminated immediately. If you accept the
+certificate, the connection will be established. If you accept the
+certificate, you can also save it so that further connections to the
+server are automatically accepted. Certificates will be saved in the
+file specified by $certificate_file variable. It is empty as default,
+so if you don't want to verify certificates each time you connect to a
+server, you have set this variable to some reasonable value.
+
+For example:
+	set certificate_file=~/.mutt/certificates
+
+
+-- 
+Tommi Komulainen
+Tommi.Komulainen@iki.fi

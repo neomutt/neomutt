@@ -404,7 +404,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   size_t len;
   int c, last;
 
-  if (imap_parse_path (ctx->path, host, sizeof (host), &port, &pc))
+  if (imap_parse_path (ctx->path, host, sizeof (host), &port, NULL, &pc))
     return (-1);
 
   imap_fix_path (CTX_DATA, pc, mailbox, sizeof (mailbox));
@@ -526,7 +526,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   int rc;
   int n;
 
-  if (imap_parse_path (dest, host, sizeof (host), &port, &pc))
+  if (imap_parse_path (dest, host, sizeof (host), &port, NULL, &pc))
   {
     dprint (1, (debugfile, "imap_copy_message: bad destination %s\n", dest));
     return -1;
