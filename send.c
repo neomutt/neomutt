@@ -850,15 +850,28 @@ ci_send_message (int flags,		/* send mode */
   /* save current value of "pgp_sign_as" */
   char *signas = NULL;
   char *signmic = NULL;
+#endif
 
-  if (flags == SENDPOSTPONED)
+  if (!flags && quadoption (OPT_RECALL) != M_NO && mutt_num_postponed ())
+  {
+    /* If the user is composing a new message, check to see if there
+     * are any postponed messages first.
+     */
+    if ((i = query_quadoption (OPT_RECALL, "Recall postponed message?")) == -1)
+      goto cleanup;
+
+    if(i == M_YES)
+      flags |= SENDPOSTPONED;
+  }
+  
+  
+#ifdef _PGPPATH
+  if (flags & SENDPOSTPONED)
   {
     signas = safe_strdup(PgpSignAs);
     signmic = safe_strdup(PgpSignMicalg);
   }
 #endif /* _PGPPATH */
-   
-
 
   if (msg)
   {
@@ -879,20 +892,6 @@ ci_send_message (int flags,		/* send mode */
     {
       if ((flags = mutt_get_postponed (ctx, msg, &cur)) < 0)
 	goto cleanup;
-    }
-    else if (!flags && quadoption (OPT_RECALL) != M_NO && mutt_num_postponed ())
-    {
-      /* If the user is composing a new message, check to see if there
-       * are any postponed messages first.
-       */
-      if ((i = query_quadoption (OPT_RECALL, "Recall postponed message?")) == -1)
-	goto cleanup;
-
-      if (i == M_YES)
-      {
-	if ((flags = mutt_get_postponed (ctx, msg, &cur)) < 0)
-	  flags = 0;
-      }
     }
 
     if (flags & (SENDPOSTPONED | SENDEDITMSG))
@@ -1329,13 +1328,20 @@ cleanup:
 
 
 #ifdef _PGPPATH
-  if (flags == SENDPOSTPONED)
+  if (flags & SENDPOSTPONED)
   {
-    safe_free((void **) &PgpSignAs);
-    safe_free((void **) &PgpSignMicalg);
-
-    PgpSignAs = signas;
-    PgpSignMicalg = signmic;
+    
+    if(signas)
+    {
+      safe_free((void **) &PgpSignAs);
+      PgpSignAs = signas;
+    }
+    
+    if(signmic)
+    {
+      safe_free((void **) &PgpSignMicalg);
+      PgpSignMicalg = signmic;
+    }
   }
 #endif /* _PGPPATH */
    
