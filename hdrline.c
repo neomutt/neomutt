@@ -531,11 +531,12 @@ hdr_format_str (char *dest,
       {
 	if (flags & M_FORMAT_FORCESUBJ)
 	{
-	  snprintf (buf2, sizeof (buf2), "%s%s", hdr->tree, NONULL (hdr->env->subject));
-	  mutt_format_s (dest, destlen, prefix, buf2);
+	  mutt_format_s (dest, destlen, "", NONULL (hdr->env->subject));
+	  snprintf (buf2, sizeof (buf2), "%s%s", hdr->tree, dest);
+	  mutt_format_s_tree (dest, destlen, prefix, buf2);
 	}
 	else
-	  mutt_format_s (dest, destlen, prefix, hdr->tree);
+	  mutt_format_s_tree (dest, destlen, prefix, hdr->tree);
       }
       else
 	mutt_format_s (dest, destlen, prefix, NONULL (hdr->env->subject));

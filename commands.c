@@ -241,7 +241,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
            (h ? _("Bounce message to %s") : _("Bounce messages to %s")), buf);
   mutt_format_string (prompt, sizeof (prompt),
 		      0, COLS-extra_space, 0, 0,
-		      prompt, sizeof (prompt));
+		      prompt, sizeof (prompt), 0);
   strcat (prompt, "...?");
   if (mutt_yesorno (prompt, 1) != 1)
   {

@@ -136,7 +136,7 @@ void menu_pad_string (char *s, size_t l)
     l = COLS - shift;
 
   /* Let's just pad the string anyway ... */
-  mutt_format_string (s, INT_MAX, l, l, 0, ' ', s, n);
+  mutt_format_string (s, INT_MAX, l, l, 0, ' ', s, n, 1);
   return;
 
 #if !defined (HAVE_BKGDSET) && !defined (USE_SLANG_CURSES)

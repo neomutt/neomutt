@@ -250,7 +250,7 @@ void mutt_curses_error (const char *fmt, ...)
   
   dprint (1, (debugfile, "%s\n", Errorbuf));
   mutt_format_string (Errorbuf, sizeof (Errorbuf),
-		      0, COLS-2, 0, 0, Errorbuf, sizeof (Errorbuf));
+		      0, COLS-2, 0, 0, Errorbuf, sizeof (Errorbuf), 0);
 
   if (!option (OPTKEEPQUIET))
   {
@@ -274,7 +274,7 @@ void mutt_message (const char *fmt, ...)
   va_end (ap);
 
   mutt_format_string (Errorbuf, sizeof (Errorbuf),
-		      0, COLS-2, 0, 0, Errorbuf, sizeof (Errorbuf));
+		      0, COLS-2, 0, 0, Errorbuf, sizeof (Errorbuf), 0);
 
   if (!option (OPTKEEPQUIET))
   {
@@ -524,7 +524,8 @@ int mutt_addwch (wchar_t wc)
 void mutt_format_string (char *dest, size_t destlen,
 			 int min_width, int max_width,
 			 int right_justify, char pad_char,
-			 const char *s, size_t n)
+			 const char *s, size_t n,
+			 int arboreal)
 {
   char *p;
   wchar_t wc;
@@ -544,7 +545,7 @@ void mutt_format_string (char *dest, size_t destlen,
       k = (k == (size_t)(-1)) ? 1 : n;
       wc = replacement_char ();
     }
-    if (wc < M_TREE_MAX)
+    if (arboreal && wc < M_TREE_MAX)
       w = 1; /* hack */
     else
     {
@@ -590,10 +591,11 @@ void mutt_format_string (char *dest, size_t destlen,
  * the number of character cells when printed.
  */
 
-void mutt_format_s (char *dest,
-		    size_t destlen,
-		    const char *prefix,
-		    const char *s)
+static void mutt_format_s_x (char *dest,
+			     size_t destlen,
+			     const char *prefix,
+			     const char *s,
+			     int arboreal)
 {
   int right_justify = 1;
   char *p;
@@ -612,12 +614,28 @@ void mutt_format_s (char *dest,
   }
 
   mutt_format_string (dest, destlen, min_width, max_width,
-		      right_justify, ' ', s, mutt_strlen (s));
+		      right_justify, ' ', s, mutt_strlen (s), arboreal);
+}
+
+void mutt_format_s (char *dest,
+		    size_t destlen,
+		    const char *prefix,
+		    const char *s)
+{
+  mutt_format_s_x (dest, destlen, prefix, s, 0);
+}
+
+void mutt_format_s_tree (char *dest,
+			 size_t destlen,
+			 const char *prefix,
+			 const char *s)
+{
+  mutt_format_s_x (dest, destlen, prefix, s, 1);
 }
 
 /*
  * mutt_paddstr (n, s) is almost equivalent to
- * mutt_format_string (bigbuf, big, n, n, 0, ' ', s, big), addstr (bigbuf)
+ * mutt_format_string (bigbuf, big, n, n, 0, ' ', s, big, 0), addstr (bigbuf)
  */
 
 void mutt_paddstr (int n, const char *s)
