@@ -1,3 +1,11 @@
+2003-01-05 22:00:00  Armin Wolfermann  <aw@osn.de>  (roessler)
+
+	* recvcmd.c, send.c, alias.c, attach.c, commands.c, curs_lib.c,
+	main.c, muttlib.c, mx.c, pgpkey.c: Fix a number of invocations
+	of mutt_yesorno(): Always explicitly use the M_YES and M_NO
+	constants.  Fixes a couple of cases in which C-g would be
+	mis-interpreted.
+
 2003-01-03 18:07:36  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* pgp.c: Detect in-line key material when checking for traditional
