@@ -147,6 +147,9 @@ install-data-local: Muttrc
 # Don't make this one ChangeLog - it's intended to be
 # used manually.
 
+pclean:
+       cat /dev/null > PATCHES
+
 changelog:
 	rcs2log | cat - ChangeLog > ChangeLog.$$$$ && mv ChangeLog.$$$$ ChangeLog
 	$(VISUAL) ChangeLog
