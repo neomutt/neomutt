@@ -1538,8 +1538,11 @@ full_fcc:
     if (save_sig)
     {
       /* cleanup the second signature structures */
-      mutt_free_body (&save_content->parts->next);
-      save_content->parts = NULL;
+      if (save_content->parts)
+      {
+	mutt_free_body (&save_content->parts->next);
+	save_content->parts = NULL;
+      }
       mutt_free_body (&save_content);
 
       /* restore old signature and attachments */
