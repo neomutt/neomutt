@@ -1112,24 +1112,23 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
     {
       if (buf[ch+2] == c)
       {
-	special = A_BOLD;
-	last_special = 1;
+	special = (c == '_' && last_special == A_UNDERLINE)
+	  ? A_UNDERLINE : A_BOLD;
 	ch += 2;
       }
       else if (buf[ch] == '_' || buf[ch+2] == '_')
       {
 	special = A_UNDERLINE;
-	last_special = 1;
 	ch += 2;
 	c = (buf[ch] == '_') ? buf[ch-2] : buf[ch];
       }
       else
       {
 	special = 0; /* overstrike: nothing to do! */
-	last_special = 0;
 	ch += 2;
 	c = buf[ch];
       }
+      last_special = special;
     }
 
     /* Handle ANSI sequences */
