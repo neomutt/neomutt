@@ -150,8 +150,7 @@ static int get_field_text (char *field, char **entry,
     {
       field++;
       field = mutt_skip_whitespace (field);
-      safe_free ((void **) entry);
-      *entry = safe_strdup (field);
+      mutt_str_replace (entry, field);
     }
     return 1;
   }

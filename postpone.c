@@ -482,17 +482,11 @@ int mutt_parse_pgp_hdr (char *p, int set_signas)
   }
  
   if (set_signas || *pgp_sign_as)
-  {
-    safe_free((void **) &PgpSignAs);
-    PgpSignAs = safe_strdup(pgp_sign_as);
-  }
+    mutt_str_replace (&PgpSignAs, pgp_sign_as);
 
   /* the micalg field must not be empty */
   if (set_signas && *pgp_sign_micalg)
-  {
-    safe_free((void **) &PgpSignMicalg);
-    PgpSignMicalg = safe_strdup(pgp_sign_micalg);
-  }
+    mutt_str_replace (&PgpSignMicalg, pgp_sign_micalg);
 
   return pgp;
 }
@@ -624,8 +618,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
       return -1;
     }
     
-    safe_free ((void *) &b->filename);
-    b->filename = safe_strdup (file);
+    mutt_str_replace (&b->filename, file);
     b->unlink = 1;
 
     if (mutt_is_text_type (b->type, b->subtype))

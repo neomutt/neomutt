@@ -143,6 +143,13 @@ char *safe_strdup (const char *s)
   return (p);
 }
 
+void mutt_str_replace (char **p, const char *s)
+{
+  if (*p)
+    free (*p);
+  *p = safe_strdup (s);
+}
+
 /* convert all characters in the string to lowercase */
 char *mutt_strlower (char *s)
 {

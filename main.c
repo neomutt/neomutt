@@ -396,8 +396,7 @@ int main (int argc, char **argv)
 	break;
 
       case 'F':
-	FREE (&Muttrc);
-	Muttrc = safe_strdup (optarg);
+	mutt_str_replace (&Muttrc, optarg);
 	break;
 
       case 'f':

@@ -234,8 +234,7 @@ static int edit_envelope (ENVELOPE *en)
     mutt_message _("No subject, aborting.");
     return (-1);
   }
-  safe_free ((void **) &en->subject);
-  en->subject = safe_strdup (buf);
+  mutt_str_replace (&en->subject, buf);
 
   return 0;
 }
@@ -914,8 +913,7 @@ static void encode_descriptions (BODY *b)
     if (t->description)
     {
       rfc2047_encode_string (tmp, sizeof (tmp), (unsigned char *) t->description);
-      safe_free ((void **) &t->description);
-      t->description = safe_strdup (tmp);
+      mutt_str_replace (&t->description, tmp);
     }
     if (t->parts)
       encode_descriptions (t->parts);

@@ -259,15 +259,13 @@ void rfc2047_encode_adrlist (ADDRESS *addr)
     if (ptr->personal)
     {
       rfc2047_encode_string (buffer, sizeof (buffer), (const unsigned char *)ptr->personal);
-      safe_free ((void **) &ptr->personal);
-      ptr->personal = safe_strdup (buffer);
+      mutt_str_replace (&ptr->personal, buffer);
     }
 #ifdef EXACT_ADDRESS
     if (ptr->val)
     {
       rfc2047_encode_string (buffer, sizeof (buffer), (const unsigned char *)ptr->val);
-      safe_free ((void **) &ptr->val);
-      ptr->val = safe_strdup (buffer);
+      mutt_str_replace (&ptr->val, buffer);
     }
 #endif
     ptr = ptr->next;

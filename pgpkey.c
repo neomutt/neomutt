@@ -618,10 +618,7 @@ pgp_key_t *pgp_ask_for_key (char *tag, char *whatfor,
     if (whatfor)
     {
       if (l)
-      {
-	safe_free ((void **) &l->dflt);
-	l->dflt = safe_strdup (resp);
-      }
+	mutt_str_replace (&l->dflt, resp);
       else
       {
 	l = safe_malloc (sizeof (struct pgp_cache));

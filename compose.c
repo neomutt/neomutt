@@ -152,8 +152,8 @@ static int pgp_send_menu (int bits, int *redraw)
     if ((p = pgp_ask_for_key (_("Sign as: "), NULL, KEYFLAG_CANSIGN, PGP_PUBRING)))
     {
       snprintf (input_signas, sizeof (input_signas), "0x%s", pgp_keyid (p));
-      safe_free((void **) &PgpSignAs); 	    PgpSignAs = safe_strdup (input_signas);
-      safe_free((void **) &PgpSignMicalg);  PgpSignMicalg = safe_strdup (pgp_pkalg_to_mic (p->algorithm));
+      mutt_str_replace (&PgpSignAs, input_signas);
+      mutt_str_replace (&PgpSignMicalg, pgp_pkalg_to_mic (p->algorithm));
       pgp_free_key (&p);
       
       bits |= PGPSIGN;
@@ -188,10 +188,7 @@ static int pgp_send_menu (int bits, int *redraw)
 	  mutt_error _("Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160");
 	}
 	else 
-	{
-	  safe_free ((void **) &PgpSignMicalg);
-	  PgpSignMicalg = safe_strdup (input_micalg);
-	}
+	  mutt_str_replace (&PgpSignMicalg, input_micalg);
       }
     }
     break;
@@ -487,8 +484,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  buf[0] = 0;
 	if (mutt_get_field ("Subject: ", buf, sizeof (buf), 0) == 0)
 	{
-	  safe_free ((void **) &msg->env->subject);
-	  msg->env->subject = safe_strdup (buf);
+	  mutt_str_replace (&msg->env->subject, buf);
 	  move (HDR_SUBJECT, HDR_XOFFSET);
 	  clrtoeol ();
 	  if (msg->env->subject)
@@ -825,8 +821,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	/* header names should not be translated */
 	if (mutt_get_field ("Description: ", buf, sizeof (buf), 0) == 0)
 	{
-	  safe_free ((void **) &idx[menu->current]->content->description);
-	  idx[menu->current]->content->description = safe_strdup (buf);
+	  mutt_str_replace (&idx[menu->current]->content->description, buf);
 	  menu->redraw = REDRAW_CURRENT;
 	}
 	break;
@@ -964,8 +959,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  if(mutt_rename_file (idx[menu->current]->content->filename, fname))
 	    break;
 	  
-	  safe_free ((void **) &idx[menu->current]->content->filename);
-	  idx[menu->current]->content->filename = safe_strdup (fname);
+	  mutt_str_replace (&idx[menu->current]->content->filename, fname);
 	  menu->redraw = REDRAW_CURRENT;
 
 	  if(idx[menu->current]->content->stamp >= st.st_mtime)
@@ -1036,8 +1030,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  menu->max = idxlen;
 
 	  idx[menu->current]->content->type = itype;
-	  safe_free ((void **) &idx[menu->current]->content->subtype);
-	  idx[menu->current]->content->subtype = safe_strdup (p);
+	  mutt_str_replace (&idx[menu->current]->content->subtype, p);
 	  idx[menu->current]->content->unlink = 1;
 	  menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 

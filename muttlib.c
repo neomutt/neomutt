@@ -403,8 +403,7 @@ void mutt_set_parameter (const char *attribute, const char *value, PARAMETER **p
   {
     if (mutt_strcasecmp (attribute, q->attribute) == 0)
     {
-      safe_free((void **) &q->value);
-      q->value = safe_strdup(value);
+      mutt_str_replace (&q->value, value);
       return;
     }
   }

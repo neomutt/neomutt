@@ -500,10 +500,7 @@ int maildir_commit_message (CONTEXT *ctx, MESSAGE *msg, HEADER *hdr)
     if (safe_rename (msg->path, full) == 0)
     {
       if (hdr) 
-      {
-	FREE (&hdr->path);
-	hdr->path = safe_strdup (path);
-      }
+	mutt_str_replace (&hdr->path, path);
       FREE (&msg->path);
       return 0;
     }
@@ -575,10 +572,7 @@ int mh_commit_message (CONTEXT *ctx, MESSAGE *msg, HEADER *hdr)
     if (safe_rename (msg->path, path) == 0)
     {
       if (hdr)
-      {
-	FREE (&hdr->path);
-	hdr->path = safe_strdup (tmp);
-      }
+	mutt_str_replace (&hdr->path, tmp);
       FREE (&msg->path);
       return 0;
     }
@@ -648,10 +642,7 @@ static int mh_sync_message (CONTEXT *ctx, int msgno)
     {
       snprintf (newpath, _POSIX_PATH_MAX, "%s/%s", ctx->path, h->path);
       if ((rc = safe_rename (newpath, oldpath)) == 0)
-      {
-	FREE (&h->path);
-	h->path = safe_strdup (partpath);
-      }
+	mutt_str_replace (&h->path, partpath);
     }
   }
   else mx_close_message (&dest);
@@ -719,8 +710,7 @@ static int maildir_sync_message (CONTEXT *ctx, int msgno)
       mutt_perror ("rename");
       return (-1);
     }
-    safe_free ((void **) &h->path);
-    h->path = safe_strdup (partpath);
+    mutt_str_replace (&h->path, partpath);
   }
   return (0);
 }
@@ -928,10 +918,7 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
 		 ctx->hdrs[i]->read    ? "R" : ""));
 
       if(mutt_strcmp(ctx->hdrs[i]->path, p->h->path))
-      {
-	safe_free((void **) &ctx->hdrs[i]->path);
-	ctx->hdrs[i]->path = safe_strdup(p->h->path);
-      }
+	mutt_str_replace (&ctx->hdrs[i]->path, p->h->path);
 
       if(modified)
       {

@@ -253,10 +253,7 @@ static void be_edit_header (ENVELOPE *e, int force)
     addstr ("Subject: ");
     strfcpy (tmp, e->subject ? e->subject: "", sizeof (tmp));
     if (mutt_enter_string ((unsigned char *) tmp, sizeof (tmp), LINES-1, 9, 0) == 0)
-    {
-      safe_free ((void **) &e->subject);
-      e->subject = safe_strdup (tmp);
-    }
+      mutt_str_replace (&e->subject, tmp);
     addch ('\n');
   }
 
@@ -391,8 +388,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 	    addstr (_("missing filename.\n"));
 	  break;
 	case 's':
-	  safe_free ((void **) &msg->env->subject);
-	  msg->env->subject = safe_strdup (p);
+	  mutt_str_replace (&msg->env->subject, p);
 	  break;
 	case 't':
 	  msg->env->to = rfc822_parse_adrlist (msg->env->to, p);

@@ -1381,8 +1381,7 @@ static void encode_headers (LIST *h)
       snprintf (tmp, sizeof (tmp), "%s: ", h->data);
       len = mutt_strlen (tmp);
       rfc2047_encode_string (tmp + len, sizeof (tmp) - len, (unsigned char *) p);
-      safe_free ((void **) &h->data);
-      h->data = safe_strdup (tmp);
+      mutt_str_replace (&h->data, tmp);
     }
   }
 }
@@ -1811,8 +1810,7 @@ void mutt_prepare_envelope (ENVELOPE *env)
   {
     rfc2047_encode_string (buffer, sizeof (buffer) - 1,
 			   (unsigned char *) env->subject);
-    safe_free ((void **) &env->subject);
-    env->subject = safe_strdup (buffer);
+    mutt_str_replace (&env->subject, buffer);
   }
   encode_headers (env->userhdrs);
 

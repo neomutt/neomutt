@@ -88,10 +88,7 @@ void mutt_update_tree (ATTACHPTR **idx, short idxlen)
     if (idx[x]->tree)
     {
       if (mutt_strcmp (idx[x]->tree, buf) != 0)
-      {
-	safe_free ((void **) &idx[x]->tree);
-	idx[x]->tree = safe_strdup (buf);
-      }
+	mutt_str_replace (&idx[x]->tree, buf);
     }
     else
       idx[x]->tree = safe_strdup (buf);

@@ -932,10 +932,9 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 	  }
 	  else
 	  {
-	    safe_free ((void **) &Mask.pattern);
+	    mutt_str_replace (&Mask.pattern, buf);
 	    regfree (Mask.rx);
 	    safe_free ((void **) &Mask.rx);
-	    Mask.pattern = safe_strdup (buf);
 	    Mask.rx = rx;
 	    Mask.not = not;
 

@@ -918,12 +918,8 @@ int mutt_index_menu (void)
 
         if (Context)
         {
-	  FREE (&LastFolder);
-	  LastFolder = safe_strdup (Context->path);
-	}
+	  mutt_str_replace (&LastFolder, Context->path);
 
-	if (Context)
-	{
 	  if (mx_close_mailbox (Context) != 0)
 	  {
 	    menu->redraw = REDRAW_INDEX | REDRAW_STATUS;

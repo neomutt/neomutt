@@ -653,20 +653,16 @@ static void mutt_restore_default (struct option_t *p)
   {
     case DT_STR:
       if (p->init)
-      {
-	FREE (p->data);
-	*((char **) p->data) = safe_strdup ((char *) p->init);
-      }
+	mutt_str_replace ((char **) p->data, (char *) p->init); 
       break;
     case DT_PATH:
       if (p->init)
       {
 	char path[_POSIX_PATH_MAX];
 
-	FREE (p->data);
 	strfcpy (path, (char *) p->init, sizeof (path));
 	mutt_expand_path (path, sizeof (path));
-	*((char **) p->data) = safe_strdup (path);
+	mutt_str_replace ((char **) p->data, path);
       }
       break;
     case DT_ADDR:

@@ -65,8 +65,7 @@ int mutt_get_tmp_attachment (BODY *a)
   if((fpin = fopen(a->filename, "r")) && (fpout = safe_fopen(tempfile, "w")))
   {
     mutt_copy_stream (fpin, fpout);
-    FREE(&a->filename);
-    a->filename = safe_strdup(tempfile);
+    mutt_str_replace (&a->filename, tempfile);
     a->unlink = 1;
 
     if(a->stamp >= st.st_mtime)

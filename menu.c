@@ -658,8 +658,7 @@ static int menu_search (MUTTMENU *menu, int op)
                                             _("Reverse search for: "),
 			 buf, sizeof (buf), M_CLEAR) != 0 || !buf[0])
       return (-1);
-    safe_free ((void **) &menu->searchBuf);
-    menu->searchBuf = safe_strdup (buf);
+    mutt_str_replace (&menu->searchBuf, buf);
     menu->searchDir = (op == OP_SEARCH) ? M_SEARCH_DOWN : M_SEARCH_UP;
   }
   else 

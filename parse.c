@@ -348,8 +348,7 @@ static void parse_content_disposition (char *s, BODY *ct)
        * have allocated space if a "name=filename" parameter was
        * specified.
        */
-      safe_free ((void **) &ct->filename);
-      ct->filename = safe_strdup (s); 
+      mutt_str_replace (&ct->filename, s);
     }
     if ((s = mutt_get_parameter ("name", parms)) != 0)
       ct->form_name = safe_strdup (s);
@@ -406,8 +405,7 @@ BODY *mutt_read_mime_header (FILE *fp, int digest)
 	parse_content_disposition (c, p);
       else if (!mutt_strcasecmp ("description", line + 8))
       {
-	safe_free ((void **) &p->description);
-	p->description = safe_strdup (c);
+	mutt_str_replace (&p->description, c);
 	rfc2047_decode (p->description, p->description, mutt_strlen (p->description) + 1);
       }
     }
@@ -455,8 +453,7 @@ void mutt_parse_part (FILE *fp, BODY *b)
   if (!b->parts)
   {
     b->type = TYPETEXT;
-    safe_free ((void **) &b->subtype);
-    b->subtype = safe_strdup ("plain");
+    mutt_str_replace (&b->subtype, "plain");
   }
 }
 
@@ -988,8 +985,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
 	  {
 	    if (hdr)
 	    {
-	      safe_free ((void **) &hdr->content->description);
-	      hdr->content->description = safe_strdup (p);
+	      mutt_str_replace (&hdr->content->description, p);
 	      rfc2047_decode (hdr->content->description,
 			      hdr->content->description,
 			      mutt_strlen (hdr->content->description) + 1);
@@ -1008,8 +1004,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
       case 'd':
 	if (!mutt_strcasecmp ("ate", line + 1))
 	{
-	  safe_free((void **)&e->date);
-	  e->date = safe_strdup(p);
+	  mutt_str_replace (&e->date, p);
 	  if (hdr)
 	    hdr->date_sent = mutt_parse_date (p, hdr);
 	  matched = 1;
