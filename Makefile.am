@@ -16,14 +16,14 @@ endif
 SUBDIRS = m4 po intl doc contrib $(CHARMAP_SUBDIR) $(IMAP_SUBDIR)
 
 if NEEDS_PGPEWRAP
-bin_SCRIPTS = pgpewrap
+bin_SCRIPTS = pgpewrap muttbug
 else
-bin_SCRIPTS =
+bin_SCRIPTS = muttbug
 endif
 
 BUILT_SOURCES = keymap_defs.h
 
-bin_PROGRAMS = mutt muttbug @DOTLOCK_TARGET@ @PGPAUX_TARGET@
+bin_PROGRAMS = mutt @DOTLOCK_TARGET@ @PGPAUX_TARGET@
 mutt_SOURCES = $(BUILT_SOURCES) \
 	addrbook.c alias.c attach.c base64.c browser.c buffy.c color.c \
 	commands.c complete.c compose.c copy.c curs_lib.c curs_main.c date.c \
@@ -35,8 +35,6 @@ mutt_SOURCES = $(BUILT_SOURCES) \
 	score.c send.c sendlib.c signal.c sort.c \
 	status.c system.c thread.c charset.c history.c lib.c \
 	muttlib.c editmsg.c
-
-muttbug_SOURCES = muttbug.sh.in
 
 mutt_LDADD = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAP) $(MUTTLIBS) \
 	$(INTLLIBS) 
