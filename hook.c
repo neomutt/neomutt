@@ -115,7 +115,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 	ptr->rx.not == not &&
 	!mutt_strcmp (pattern.data, ptr->rx.pattern))
     {
-      if (data & (M_FOLDERHOOK | M_SENDHOOK | M_DISPLAYHOOK))
+      if (data & (M_FOLDERHOOK | M_SENDHOOK | M_MESSAGEHOOK))
       {
 	/* these hooks allow multiple commands with the same
 	 * pattern, so if we've already seen this pattern/command pair, just
@@ -144,10 +144,10 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
       break;
   }
 
-  if (data & (M_SENDHOOK | M_SAVEHOOK | M_FCCHOOK | M_DISPLAYHOOK))
+  if (data & (M_SENDHOOK | M_SAVEHOOK | M_FCCHOOK | M_MESSAGEHOOK))
   {
     if ((pat = mutt_pattern_comp (pattern.data,
-	   (data & (M_SENDHOOK | M_FCCHOOK | M_DISPLAYHOOK)) ? 0 : M_FULL_MSG,
+	   (data & (M_SENDHOOK | M_FCCHOOK | M_MESSAGEHOOK)) ? 0 : M_FULL_MSG,
 				  err)) == NULL)
       goto error;
   }

@@ -341,7 +341,7 @@ struct option_t MuttVars[] = {
   { "default_hook",	DT_STR,	 R_NONE, UL &DefaultHook, UL "~f %s !~P | (~P ~C %s)" },
   /*
   ** .pp
-  ** This variable controls how send-hooks, display-hooks, save-hooks,
+  ** This variable controls how send-hooks, message-hooks, save-hooks,
   ** and fcc-hooks will
   ** be interpreted if they are specified with only a simple regexp,
   ** instead of a matching pattern.  The hooks are expanded when they are
@@ -2231,7 +2231,6 @@ struct command_t Commands[] = {
   { "color",		mutt_parse_color,	0 },
   { "uncolor",		mutt_parse_uncolor,	0 },
 #endif
-  { "display-hook",	mutt_parse_hook,	M_DISPLAYHOOK },
   { "exec",		mutt_parse_exec,	0 },
   { "fcc-hook",		mutt_parse_hook,	M_FCCHOOK },
   { "fcc-save-hook",	mutt_parse_hook,	M_FCCHOOK | M_SAVEHOOK },
@@ -2241,6 +2240,7 @@ struct command_t Commands[] = {
   { "lists",		parse_list,		UL &MailLists },
   { "macro",		mutt_parse_macro,	0 },
   { "mailboxes",	mutt_parse_mailboxes,	0 },
+  { "message-hook",	mutt_parse_hook,	M_MESSAGEHOOK },
   { "mbox-hook",	mutt_parse_hook,	M_MBOXHOOK },
   { "mono",		mutt_parse_mono,	0 },
   { "my_hdr",		parse_my_hdr,		0 },

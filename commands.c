@@ -113,7 +113,7 @@ int mutt_display_message (HEADER *cur)
     return (0);
   }
 
-  mutt_message_hook (cur, M_DISPLAYHOOK);
+  mutt_message_hook (cur, M_MESSAGEHOOK);
 
   if (DisplayFilter && *DisplayFilter) 
   {

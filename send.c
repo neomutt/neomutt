@@ -337,6 +337,7 @@ static int include_forward (CONTEXT *ctx, HEADER *cur, FILE *out)
 {
   int chflags = CH_DECODE, cmflags = 0;
   
+  mutt_message_hook (cur, M_MESSAGEHOOK);
 
 #ifdef HAVE_PGP
   if ((cur->pgp & PGPENCRYPT) && option (OPTFORWDECODE))
@@ -403,6 +404,8 @@ static int include_reply (CONTEXT *ctx, HEADER *cur, FILE *out)
   }
 #endif /* HAVE_PGP */
 
+  mutt_message_hook (cur, M_MESSAGEHOOK);
+  
   mutt_make_attribution (ctx, cur, out);
   
   if (!option (OPTHEADER))

@@ -1290,12 +1290,12 @@ my_hdr commands which modify recipient headers, or the message's
 subject, don't have any effect on the current message when executed
 from a send-hook.
 
-<sect1>Change settings before wieving a message<label id="display-hook">
+<sect1>Change settings before formatting a message<label id="message-hook">
 <p>
 Usage: <tt/display-hook/ &lsqb;!&rsqb;<em/pattern/ <em/command/
 
 This command can be used to execute arbitrary configuration commands
-before viewing a message based upon information about the message.
+before viewing or formatting a message based upon information about the message.
 <em/command/ is executed if the <em/pattern/ matches the message to be
 displayed. When multiple matches occur, commands are executed in the order
 they are specified in the muttrc.
