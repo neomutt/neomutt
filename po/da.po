@@ -5,11 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt-1.3.19\n"
+"Project-Id-Version: Mutt-1.3.21\n"
 "POT-Creation-Date: 2001-08-21 23:53+0200\n"
-"PO-Revision-Date: 2001-06-10 22:19+02:00\n"
-"Last-Translator: Byrial Jensen <byrial@image.dk>, Morten Bo Johansen "
-"<mojo@image.dk> \n"
+"PO-Revision-Date: 2001-08-24 21:35+0200\n"
+"Last-Translator: Byrial Jensen <byrial@image.dk>, Morten Bo Johansen <mojo@image.dk> \n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
@@ -302,7 +301,7 @@ msgstr "standard-farver er ikke understøttet."
 #. find out whether or not the verify signature
 #: commands.c:93
 msgid "Verify PGP signature?"
-msgstr "Efterprøv PGP-underskrift?"
+msgstr "Kontrollér PGP-underskrift?"
 
 #: commands.c:105 pgp.c:1693 pgpkey.c:559 postpone.c:517
 msgid "Invoking PGP..."
@@ -322,11 +321,11 @@ msgstr "Kunne ikke kopiere brevet."
 
 #: commands.c:168
 msgid "PGP signature successfully verified."
-msgstr "PGP-underskrift klarede efterprøvning"
+msgstr "PGP-underskrift er i orden."
 
 #: commands.c:169
 msgid "PGP signature could NOT be verified."
-msgstr "PGP-underskrift klarede IKKE efterprøvning"
+msgstr "PGP-underskrift er IKKE i orden."
 
 #: commands.c:192
 msgid "Command: "
@@ -1247,9 +1246,8 @@ msgid "Selecting %s..."
 msgstr "Vælger %s ..."
 
 #: imap/imap.c:656
-#, fuzzy
 msgid "Error opening mailbox"
-msgstr "Fejl ved skrivning til brevbakke!"
+msgstr "Fejl ved åbning af brevbakke"
 
 #. STATUS not supported
 #: imap/imap.c:709
@@ -1272,9 +1270,8 @@ msgid "Marking %d messages deleted..."
 msgstr "Markerer %d breve slettet"
 
 #: imap/imap.c:926
-#, fuzzy
 msgid "Expunge failed"
-msgstr "CLOSE slog fejl"
+msgstr "Sletning slog fejl"
 
 #: imap/imap.c:941
 #, c-format
@@ -1305,9 +1302,9 @@ msgid "Unable to fetch headers from this IMAP server version."
 msgstr "Kan ikke hente brevhoveder fra denne version IMAP-server."
 
 #: imap/message.c:83
-#, fuzzy, c-format
+#, c-format
 msgid "Could not create temporary file %s"
-msgstr "Kunne ikke oprette midlertidig fil!"
+msgstr "Kunne ikke oprette midlertidig fil %s"
 
 #: imap/message.c:96 pop.c:209
 #, c-format
@@ -1488,12 +1485,11 @@ msgid "macro: too many arguments"
 msgstr "macro: for mange parametre"
 
 #: keymap.c:850
-#, fuzzy
 msgid "exec: no arguments"
-msgstr "%s: for få parametre."
+msgstr "exec: ingen parametre."
 
 #: keymap.c:870
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no such function"
 msgstr "%s: ukendt funktion"
 
@@ -2195,7 +2191,7 @@ msgstr "send en offentlig PGP-nøgle"
 
 #: keymap_alldefs.h:180
 msgid "verify a PGP public key"
-msgstr "efterprøv en offentlig PGP-nøgle"
+msgstr "Kontrollér en offentlig PGP-nøgle"
 
 #: keymap_alldefs.h:181
 msgid "view the key's user id"
@@ -2465,9 +2461,8 @@ msgstr "Skriver breve ... %d (%d%%)"
 #. * change/deleted message
 #.
 #: mbox.c:925
-#, fuzzy
 msgid "Committing changes..."
-msgstr "Klargør søgemønster..."
+msgstr "Udfører ændringer..."
 
 #: mbox.c:956
 #, c-format
@@ -3083,7 +3078,7 @@ msgstr ""
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
 "\n"
-msgstr "[-- Advarsel: %s%s signaturer kan ikke godkendes. --]\n"
+msgstr "[-- Advarsel: %s/%s underskrifter kan ikke kontrolleres. --]\n"
 
 #. Now display the signed body
 #: pgp.c:833
@@ -3215,22 +3210,19 @@ msgstr "Denne nøgle kan ikke bruges: udløbet/sat ud af kraft/tilbagekaldt."
 
 #: pgpkey.c:608
 msgid "This ID is expired/disabled/revoked"
-msgstr "Denne ID er udløbet/sat ud af kraft/tilbagekaldt"
+msgstr "Denne id er udløbet/sat ud af kraft/tilbagekaldt"
 
 #: pgpkey.c:612
-#, fuzzy
 msgid "This ID's validity level is undefined."
-msgstr "Troværdigheds-niveauet for denne id er ikke bestemt."
+msgstr "Ægtheden af denne id er ikke bestemt."
 
 #: pgpkey.c:615
-#, fuzzy
 msgid "This ID is not valid."
-msgstr "Denne id er ikke troværdig."
+msgstr "Denne id er ikke bevist ægte."
 
 #: pgpkey.c:618
-#, fuzzy
 msgid "This ID is only marginally valid."
-msgstr "Denne id er kun marginalt troværdig."
+msgstr "Denne id er kun bevist marginalt ægte."
 
 #: pgpkey.c:622
 #, c-format
@@ -3747,9 +3739,3 @@ msgstr "Forrige brev i tråden er ikke synligt i afgrænset visning"
 #: thread.c:767
 msgid "Parent message is not available."
 msgstr "Forrige brev i tråden er ikke tilgængeligt."
-
-#~ msgid "%s: no such command"
-#~ msgstr "%s: ukendt kommando."
-
-#~ msgid "Authentication method is unknown."
-#~ msgstr "Ukendt godkendelsesmetode."
