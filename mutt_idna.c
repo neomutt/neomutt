@@ -225,14 +225,12 @@ void mutt_env_to_local (ENVELOPE *e)
   mutt_addrlist_to_local (e->mail_followup_to);
 }
 
-/* 
- * XXX -- this macro produces warnings, but yields the right kind
- * of code when preprocessed. How to fix this *without* typing the same
- * code all over the place?
+/* Note that `a' in the `env->a' expression is macro argument, not
+ * "real" name of an `env' compound member.  Real name will be substituted
+ * by preprocessor at the macro-expansion time.
  */
-
 #define H_TO_IDNA(a)	\
-  if (mutt_addrlist_to_idna (env->##a, err) && !e) \
+  if (mutt_addrlist_to_idna (env->a, err) && !e) \
   { \
      if (tag) *tag = #a; e = 1; err = NULL; \
   }
