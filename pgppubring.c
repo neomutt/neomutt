@@ -291,7 +291,7 @@ static pgp_key_t *pgp_parse_pgp3_key (unsigned char *buff, size_t l)
 
   if (alg >= 1 && alg <= 3)
     skip_bignum (buff, l, j, &j, 2);
-  else if (alg == 17 || alg == 16)
+  else if (alg == 17 || alg == 16 || alg == 20)
     skip_bignum (buff, l, j, &j, 1);
 
   pgp_make_pgp3_fingerprint (buff, j, digest);
