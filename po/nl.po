@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.5.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-28 11:04+0100\n"
-"PO-Revision-Date: 2004-08-17 18:00+0100\n"
+"POT-Creation-Date: 2005-01-28 15:06+0100\n"
+"PO-Revision-Date: 2005-01-28 15:08+0100\n"
 "Last-Translator: René Clerc <rene@clerc.nl>\n"
 "Language-Team: René Clerc <rene@clerc.nl>\n"
 "MIME-Version: 1.0\n"
@@ -682,7 +682,7 @@ msgstr "Kan bestand %s niet aanmaken"
 
 #: compose.c:1074
 msgid "What we have here is a failure to make an attachment"
-msgstr "Het lukt niet helemaal met dat toevoegen. Het blijft moeilijk.."
+msgstr "De bijlage kan niet worden aangemaakt"
 
 #: compose.c:1135
 msgid "Postpone this message?"
@@ -1496,14 +1496,14 @@ msgid "Could not create temporary file %s"
 msgstr "Tijdelijk bestand %s kon niet worden aangemaakt"
 
 #: imap/message.c:130
-#, fuzzy, c-format
+#, c-format
 msgid "Evaluating cache... [%d/%d]"
-msgstr "Headers worden gelezen... [%d/%d]"
+msgstr "Headercache wordt gelezen... [%d/%d]"
 
 #: imap/message.c:198 pop.c:206
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
-msgstr "Headers worden gelezen... [%d/%d]"
+msgstr "Headers worden opgehaald... [%d/%d]"
 
 #: imap/message.c:363 pop.c:340
 msgid "Fetching message..."
@@ -1511,7 +1511,7 @@ msgstr "Bericht wordt gelezen..."
 
 #: imap/message.c:406 pop.c:377
 msgid "The message index is incorrect. Try reopening the mailbox."
-msgstr "The berichten index is niet correct. Probeer mailfolder te heropenen."
+msgstr "De berichtenindex is niet correct. Probeer mailfolder te heropenen."
 
 #: imap/message.c:579
 msgid "Uploading message ..."
