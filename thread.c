@@ -1156,10 +1156,10 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
 /* if flag is 0, we want to know how many messages
  * are in the thread.  if flag is 1, we want to know
  * our position in the thread. */
-int mutt_messages_in_thread (HEADER *hdr, int flag)
+int mutt_messages_in_thread (CONTEXT *ctx, HEADER *hdr, int flag)
 {
   THREAD *threads[2];
-  int i;
+  int i, rc;
 
   if ((Sort & SORT_MASK) != SORT_THREADS)
     return (1);
@@ -1167,23 +1167,26 @@ int mutt_messages_in_thread (HEADER *hdr, int flag)
   threads[0] = hdr->thread;
   while (threads[0]->parent)
     threads[0] = threads[0]->parent;
-  while (threads[0]->prev)
-    threads[0] = threads[0]->prev;
 
-  if (flag)
-    threads[1] = hdr->thread;
-  else
-    threads[1] = threads[0]->next;
+  threads[1] = flag ? hdr->thread : threads[0]->next;
 
-  for (i = 0; i < flag ? 1 : 2; i++)
+  for (i = 0; i < ((flag || !threads[1]) ? 1 : 2); i++)
   {
     while (!threads[i]->message)
       threads[i] = threads[i]->child;
   } 
 
-  return (((Sort & SORT_REVERSE ? -1 : 1)
-	   * threads[1]->message->msgno - threads[0]->message->msgno) + (flag ? 1 : 0));
+  if (Sort & SORT_REVERSE)
+    rc = threads[0]->message->msgno - (threads[1] ? threads[1]->message->msgno : -1);
+  else
+    rc = (threads[1] ? threads[1]->message->msgno : ctx->msgcount) - threads[0]->message->msgno;
+  
+  if (flag)
+    rc += 1;
+  
+  return (rc);
 }
+
 
 HASH *mutt_make_id_hash (CONTEXT *ctx)
 {

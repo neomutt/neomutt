@@ -411,12 +411,12 @@ hdr_format_str (char *dest,
 
     case 'e':
       snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
-      snprintf (dest, destlen, fmt, mutt_messages_in_thread(hdr, 1));
+      snprintf (dest, destlen, fmt, mutt_messages_in_thread(ctx, hdr, 1));
       break;
 
     case 'E':
       snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
-      snprintf (dest, destlen, fmt, mutt_messages_in_thread(hdr, 0));
+      snprintf (dest, destlen, fmt, mutt_messages_in_thread(ctx, hdr, 0));
       break;
 
     case 'f':
