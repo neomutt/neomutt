@@ -431,12 +431,8 @@ static int load_charset (const char *filename, CHARSET ** csp, short multbyte)
 	  hash_delete (cs->symb_to_repr, cd->symbol, NULL, NULL);
 	  hash_insert (cs->symb_to_repr, cd->symbol, cd, 0);
 
-	  if (cs->description[cd->repr])
-	  {
-	    hash_delete (cs->symb_to_repr, cs->description[cd->repr]->symbol, cs->description[cd->repr], NULL);
-	    chardesc_free (&cs->description[cd->repr]);
-	  }
-	  else
+	  /* note: we intentionally leak some memory here. */
+	  if (!cs->description[cd->repr])
 	    cs->u_symb++;
 
 	  cs->description[cd->repr] = cd;
@@ -455,12 +451,15 @@ static int load_charset (const char *filename, CHARSET ** csp, short multbyte)
 	    cs->description[i] = NULL;
 	  cs->n_symb = new_size;
 	}
+
 	hash_delete (cs->symb_to_repr, cd->symbol, NULL, NULL);
 	hash_insert (cs->symb_to_repr, cd->symbol, cd, 0);
+
 	cs->description[cs->u_symb++] = cd;
 	cd = NULL;
       }
     }
+
     if (cd)
     {
       dprint (5, (debugfile, "load_charset: character description still present: <%s>->%x\n",
@@ -503,9 +502,9 @@ static CHARDESC *repr2descr (int repr, CHARSET * cs)
   key = safe_malloc (sizeof(CHARDESC));
   key->repr = repr;
   key->symbol = "<unknown>"; /* otherwise, the
-			     * debug code may 
-			     * segfault. ouch.
-			     */
+			      * debug code may 
+			      * segfault. ouch.
+			      */
 
   r = bsearch (&key, cs->description, cs->u_symb,
 	       sizeof (CHARDESC *), _cd_compar);
