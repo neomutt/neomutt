@@ -303,88 +303,152 @@ void mutt_expand_link (char *newpath, const char *path, const char *link)
 
 char *mutt_expand_path (char *s, size_t slen)
 {
+  return _mutt_expand_path (s, slen, 0);
+}
+
+char *_mutt_expand_path (char *s, size_t slen, int rx)
+{
   char p[_POSIX_PATH_MAX] = "";
-  char *q = NULL;
-  char *next;
+  char q[_POSIX_PATH_MAX] = "";
+  char tmp[_POSIX_PATH_MAX];
+  char *t;
 
-  if (*s == '~')
+  char *tail = ""; 
+
+  int recurse = 0;
+  
+  do 
   {
-    if (*(s + 1) == '/' || *(s + 1) == 0)
-      snprintf (p, sizeof (p), "%s%s", NONULL(Homedir), s + 1);
-    else
-    {
-      struct passwd *pw;
+    recurse = 0;
 
-      q = strchr (s + 1, '/');
-      if (q)
-	*q = 0;
-      if ((pw = getpwnam (s + 1)))
-	snprintf (p, sizeof (p), "%s/%s", pw->pw_dir, q ? q + 1 : "");
-      else
+    switch (*s)
+    {
+      case '~':
       {
-	/* user not found! */
-	if (q)
-	  *q = '/';
-	return (NULL);
+	if (*(s + 1) == '/' || *(s + 1) == 0)
+	{
+	  strfcpy (p, NONULL(Homedir), sizeof (p));
+	  tail = s + 1;
+	}
+	else
+	{
+	  struct passwd *pw;
+	  if ((t = strchr (s + 1, '/'))) 
+	    *t = 0;
+	  if ((pw = getpwnam (s + 1)))
+	  {
+	    strfcpy (p, pw->pw_dir, sizeof (p));
+	    if (t)
+	      tail = t + 1;
+	    else
+	      tail = "";
+	  }
+	  else
+	  {
+	    /* user not found! */
+	    if (t)
+	      *t = '/';
+	    *p = '\0';
+	    tail = s;
+	  }
+	}
+      }
+      break;
+      
+      case '=':
+      case '+':    
+      {
+#ifdef USE_IMAP
+	/* special case: folder = {host}: don't append slash */
+	if (mx_is_imap (NONULL (Maildir)) && Maildir[strlen (Maildir) - 1] == '}')
+	  strfcpy (p, NONULL (Maildir), sizeof (p));
+	else
+#endif
+	  snprintf (p, sizeof (p), "%s/", NONULL (Maildir));
+	
+	tail = s + 1;
+      }
+      break;
+      
+      /* elm compatibility, @ expands alias to user name */
+    
+      case '@':
+      {
+	HEADER *h;
+	ADDRESS *alias;
+	
+	if ((alias = mutt_lookup_alias (s + 1)))
+	{
+	  h = mutt_new_header();
+	  h->env = mutt_new_envelope();
+	  h->env->from = h->env->to = alias;
+	  mutt_default_save (p, sizeof (p), h);
+	  h->env->from = h->env->to = NULL;
+	  mutt_free_header (&h);
+	  /* Avoid infinite recursion if the resulting folder starts with '@' */
+	  if (*p != '@')
+	    recurse = 1;
+	  
+	  tail = "";
+	}
+      }
+      break;
+      
+      case '>':
+      {
+	strfcpy (p, Inbox, sizeof (p));
+	tail = s + 1;
+      }
+      break;
+      
+      case '<':
+      {
+	strfcpy (p, Outbox, sizeof (p));
+	tail = s + 1;
+      }
+      break;
+      
+      case '!':
+      {
+	if (*(s+1) == '!')
+	{
+	  strfcpy (p, LastFolder, sizeof (p));
+	  tail = s + 2;
+	}
+	else 
+	{
+	  strfcpy (p, Spoolfile, sizeof (p));
+	  tail = s + 1;
+	}
+      }
+      break;
+      
+      case '-':
+      {
+	strfcpy (p, LastFolder, sizeof (p));
+	tail = s + 1;
+      }
+      break;
+      
+      default:
+      {
+	*p = '\0';
+	tail = s;
       }
     }
-  }
-  else if (*s == '=' || *s == '+')
-  {
-#ifdef USE_IMAP
-  /* special case: folder = {host}: don't append slash */
-  if (mx_is_imap (NONULL (Maildir)) && Maildir[strlen (Maildir) - 1] == '}')
-    snprintf (p, sizeof (p), "%s%s", NONULL (Maildir), s + 1);
-  else
-#endif
-    snprintf (p, sizeof (p), "%s/%s", NONULL (Maildir), s + 1);
-  }
-  else if (*s == '@')
-  {
-    /* elm compatibility, @ expands alias to user name */
-    HEADER *h;
-    ADDRESS *alias;
 
-    alias = mutt_lookup_alias (s + 1);
-    if (alias != NULL)
+    if (rx && *p && !recurse)
     {
-      h = mutt_new_header();
-      h->env = mutt_new_envelope();
-      h->env->from = h->env->to = alias;
-      mutt_default_save (p, sizeof (p), h);
-      h->env->from = h->env->to = NULL;
-      mutt_free_header (&h);
-      /* Avoid infinite recursion if the resulting folder starts with '@' */
-      if (*p != '@')
-	mutt_expand_path (p, sizeof (p));
+      mutt_rx_sanitize_string (q, sizeof (q), p);
+      snprintf (tmp, sizeof (tmp), "%s%s", q, tail);
     }
-  }
-  else
-  {
-    next = s + 1;
-    if (*s == '>')
-      q = Inbox;
-    else if (*s == '<')
-      q = Outbox;
-    else if (!mutt_strcmp (s, "!!"))	/* elm compatibility */
-    {
-      q = LastFolder;
-      next = s + 2;
-    }
-    else if (*s == '!')
-      q = Spoolfile;
-    else if (*s == '-')
-      q = LastFolder;
     else
-      return s;
-
-    if (!q)
-      return s;
-    snprintf (p, sizeof (p), "%s%s", q, next);
+      snprintf (tmp, sizeof (tmp), "%s%s", p, tail);
+    
+    strfcpy (s, tmp, slen);
   }
+  while (recurse);
 
-  if (*p)
-    strfcpy (s, p, slen); /* replace the string with the expanded version. */
   return (s);
 }
 

@@ -401,6 +401,30 @@ void mutt_sanitize_filename (char *f, short slash)
   }
 }
 
+/* these characters must be escaped in regular expressions */
+
+static char rx_special_chars[] = "^.[$()|*+?{\\";
+
+int mutt_rx_sanitize_string (char *dest, size_t destlen, const char *src)
+{
+  while (*src && --destlen > 2)
+  {
+    if (strchr (rx_special_chars, *src))
+    {
+      *dest++ = '\\';
+      destlen--;
+    }
+    *dest++ = *src++;
+  }
+  
+  *dest = '\0';
+  
+  if (*src)
+    return -1;
+  else
+    return 0;
+}
+
 /* Read a line from ``fp'' into the dynamically allocated ``s'',
  * increasing ``s'' if necessary. The ending "\n" or "\r\n" is removed.
  * If a line ends with "\", this char and the linefeed is removed,

@@ -79,7 +79,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   if (data & (M_FOLDERHOOK | M_MBOXHOOK))
   {
     strfcpy (path, pattern.data, sizeof (path));
-    mutt_expand_path (path, sizeof (path));
+    _mutt_expand_path (path, sizeof (path), 1);
     FREE (&pattern.data);
     memset (&pattern, 0, sizeof (pattern));
     pattern.data = safe_strdup (path);
