@@ -1,4 +1,7 @@
-2002-12-17 10:37:24  Thomas Roessler  <roessler@does-not-exist.org>
+2002-12-17 10:39:11  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* build-release: Adopting the release-building script to the
+	new changelog process.
 
 	* po/ru.po, po/sk.po, po/sv.po, po/tr.po, po/uk.po, po/zh_CN.po,
 	po/zh_TW.po, po/hu.po, po/id.po, po/it.po, po/ja.po, po/ko.po,
@@ -6,8 +9,6 @@
 	po/fr.po, po/gl.po, VERSION, build-release, po/ca.po, po/cs.po,
 	po/da.po, po/de.po, po/el.po, po/eo.po, reldate.h: automatic
 	post-release commit for mutt-1.5.3
-
-2002-12-17 09:50:26  Thomas Roessler  <roessler@does-not-exist.org>
 
 	* OPS, curs_main.c, functions.h: Experimental: Introduce
 	{next,previous}-new-then-unread.  These functions behave
