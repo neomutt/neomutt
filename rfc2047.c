@@ -583,10 +583,10 @@ void rfc2047_encode_adrlist (ADDRESS *addr, const char *tag)
 
 static int rfc2047_decode_word (char *d, const char *s, size_t len)
 {
-  const char *pp = s, *pp1;
+  const char *pp, *pp1;
   char *pd, *d0;
   const char *t, *t1;
-  int enc = 0, count = 0, c1, c2, c3, c4;
+  int enc = 0, count = 0;
   char *charset = NULL;
 
   pd = d0 = safe_malloc (strlen (s));
@@ -620,57 +620,43 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
       case 4:
 	if (enc == ENCQUOTEDPRINTABLE)
 	{
-	  while (pp < pp1 && len > 0)
+	  for (; pp < pp1; pp++)
 	  {
 	    if (*pp == '_')
-	    {
 	      *pd++ = ' ';
-	      len--;
-	    }
-	    else if (*pp == '=')
+	    else if (*pp == '=' &&
+		     (!(pp[1] & ~127) && hexval(pp[1]) != -1) &&
+		     (!(pp[2] & ~127) && hexval(pp[2]) != -1))
 	    {
-	      if (pp[1] == 0 || pp[2] == 0)
-		break;	/* something wrong */
 	      *pd++ = (hexval(pp[1]) << 4) | hexval(pp[2]);
-	      len--;
 	      pp += 2;
 	    }
 	    else
-	    {
 	      *pd++ = *pp;
-	      len--;
-	    }
-	    pp++;
 	  }
 	  *pd = 0;
 	}
 	else if (enc == ENCBASE64)
 	{
-	  while (pp < pp1 && len > 0)
+	  int c, b = 0, k = 0;
+
+	  for (; pp < pp1; pp++)
 	  {
-	    if (pp[0] == '=' || pp[1] == 0 || pp[1] == '=')
-	      break;  /* something wrong */
-	    c1 = base64val(pp[0]);
-	    c2 = base64val(pp[1]);
-	    *pd++ = (c1 << 2) | ((c2 >> 4) & 0x3);
-	    if (--len == 0) break;
-	    
-	    if (pp[2] == 0 || pp[2] == '=') break;
-
-	    c3 = base64val(pp[2]);
-	    *pd++ = ((c2 & 0xf) << 4) | ((c3 >> 2) & 0xf);
-	    if (--len == 0)
+	    if (*pp == '=')
 	      break;
-
-	    if (pp[3] == 0 || pp[3] == '=')
-	      break;
-
-	    c4 = base64val(pp[3]);
-	    *pd++ = ((c3 & 0x3) << 6) | c4;
-	    if (--len == 0)
-	      break;
-
-	    pp += 4;
+	    if ((*pp & ~127) || (c = base64val(*pp)) == -1)
+	      continue;
+	    if (k + 6 >= 8)
+	    {
+	      k -= 2;
+	      *pd++ = b | (c >> k);
+	      b = c << (8 - k);
+	    }
+	    else
+	    {
+	      b |= c << (k + 2);
+	      k += 6;
+	    }
 	  }
 	  *pd = 0;
 	}

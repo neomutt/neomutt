@@ -296,8 +296,8 @@ void mutt_decode_base64 (STATE *s, long len, int istext, iconv_t cd)
     for (i = 0 ; i < 4 && len > 0 ; len--)
     {
       if ((ch = fgetc (s->fpin)) == EOF)
-	return;
-      if (!ISSPACE (ch))
+	break;
+      if (ch >= 0 && ch < 128 && (base64val(ch) != -1 || ch == '='))
 	buf[i++] = ch;
     }
     if (i != 4)
