@@ -75,6 +75,11 @@ RETSIGTYPE sighandler (int sig)
       if (!IsEndwin)
 	refresh ();
       mutt_curs_set (-1);
+#if defined (USE_SLANG_CURSES) || defined (HAVE_RESIZETERM)
+      /* We don't receive SIGWINCH when suspended; however, no harm is done by
+       * just assuming we received one, and triggering the 'resize' anyway. */
+      SigWinch = 1;
+#endif
       break;
 
 #if defined (USE_SLANG_CURSES) || defined (HAVE_RESIZETERM)
