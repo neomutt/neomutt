@@ -35,18 +35,6 @@ Problems are listed in approximate order of priority.
 
 
 
-- mailbox resync code for mh and maildir mailboxes.  This
-  will most probably help to fix the following problems:
-
-  In maildir folders, the cursor will jump to an
-  unpredictible message when new mail arrives.
-
-  When accessing maildir folders with two mutts in
-  parallel, messages which have been marked read (and thus
-  moved to the cur/ subdirectory) by one of the mutts
-  can't be read from the other one.
-
-
 
 - BODY struct should probably have a pointer to its
   corresponding HEADER struct.  this is needed for
