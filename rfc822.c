@@ -409,7 +409,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
       }
       else if (commentlen && last && !last->personal)
       {
-	terminate_buffer (phrase, phraselen);
+	terminate_buffer (comment, commentlen);
 	last->personal = safe_strdup (comment);
       }
 #ifdef EXACT_ADDRESS
