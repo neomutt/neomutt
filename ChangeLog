@@ -1,4 +1,13 @@
-2003-07-16 11:17:31  Brendan Cully  <brendan@kublai.com>  (roessler)
+2003-07-16 11:18:12  Brendan Cully  <brendan@kublai.com>  (roessler)
+
+	* account.c, account.h, imap/auth_sasl.c, imap/imap.c: I noticed
+	that my mutt hung when I tried SASL DIGEST-MD5 authentication
+	(I'm not sure when this started). I believe this patch should
+	solve that problem in a reliable way.
+
+	This patch also attempts to reuse connections even when
+	authentication fails, instead of just throwing away a perfectly
+	good socket.
 
 	* curs_lib.c, enter.c, keymap.c, keymap.h, mutt.h, mutt_curses.h,
 	mutt_ssl.c: This patch redoes yesterday's unbuffered input
