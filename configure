@@ -4371,6 +4371,10 @@ fi
 
 	   fi
 
+	   if test "$gt_cv_func_gettext_libintl" = "yes" ; then
+	     LIBS="-lintl $LIBS"
+	   fi
+
 	   if test "$gt_cv_func_gettext_libc" = "yes" \
 	      || test "$gt_cv_func_gettext_libintl" = "yes"; then
 	      cat >> confdefs.h <<\EOF
@@ -4380,7 +4384,7 @@ EOF
 	      # Extract the first word of "msgfmt", so it can be a program name with args.
 set dummy msgfmt; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:4384: checking for $ac_word" >&5
+echo "configure:4388: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_MSGFMT'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -4414,12 +4418,12 @@ fi
 		for ac_func in dcgettext
 do
 echo $ac_n "checking for $ac_func""... $ac_c" 1>&6
-echo "configure:4418: checking for $ac_func" >&5
+echo "configure:4422: checking for $ac_func" >&5
 if eval "test \"`echo '$''{'ac_cv_func_$ac_func'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 4423 "configure"
+#line 4427 "configure"
 #include "confdefs.h"
 /* System header to define __stub macros and hopefully few prototypes,
     which can conflict with char $ac_func(); below.  */
@@ -4442,7 +4446,7 @@ $ac_func();
 
 ; return 0; }
 EOF
-if { (eval echo configure:4446: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+if { (eval echo configure:4450: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
   rm -rf conftest*
   eval "ac_cv_func_$ac_func=yes"
 else
@@ -4469,7 +4473,7 @@ done
 		# Extract the first word of "gmsgfmt", so it can be a program name with args.
 set dummy gmsgfmt; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:4473: checking for $ac_word" >&5
+echo "configure:4477: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_GMSGFMT'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -4501,7 +4505,7 @@ fi
 		# Extract the first word of "xgettext", so it can be a program name with args.
 set dummy xgettext; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:4505: checking for $ac_word" >&5
+echo "configure:4509: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_XGETTEXT'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -4533,7 +4537,7 @@ else
 fi
 
 		cat > conftest.$ac_ext <<EOF
-#line 4537 "configure"
+#line 4541 "configure"
 #include "confdefs.h"
 
 int main() {
@@ -4541,7 +4545,7 @@ extern int _nl_msg_cat_cntr;
 			       return _nl_msg_cat_cntr
 ; return 0; }
 EOF
-if { (eval echo configure:4545: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+if { (eval echo configure:4549: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
   rm -rf conftest*
   CATOBJEXT=.gmo
 		   DATADIRNAME=share
@@ -4564,7 +4568,7 @@ fi
 
         if test "$CATOBJEXT" = "NONE"; then
 	  echo $ac_n "checking whether catgets can be used""... $ac_c" 1>&6
-echo "configure:4568: checking whether catgets can be used" >&5
+echo "configure:4572: checking whether catgets can be used" >&5
 	  # Check whether --with-catgets or --without-catgets was given.
 if test "${with_catgets+set}" = set; then
   withval="$with_catgets"
@@ -4577,7 +4581,7 @@ fi
 
 	  if test "$nls_cv_use_catgets" = "yes"; then
 	    	    echo $ac_n "checking for main in -li""... $ac_c" 1>&6
-echo "configure:4581: checking for main in -li" >&5
+echo "configure:4585: checking for main in -li" >&5
 ac_lib_var=`echo i'_'main | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -4585,14 +4589,14 @@ else
   ac_save_LIBS="$LIBS"
 LIBS="-li  $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 4589 "configure"
+#line 4593 "configure"
 #include "confdefs.h"
 
 int main() {
 main()
 ; return 0; }
 EOF
-if { (eval echo configure:4596: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+if { (eval echo configure:4600: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -4620,12 +4624,12 @@ else
 fi
 
 	    echo $ac_n "checking for catgets""... $ac_c" 1>&6
-echo "configure:4624: checking for catgets" >&5
+echo "configure:4628: checking for catgets" >&5
 if eval "test \"`echo '$''{'ac_cv_func_catgets'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 4629 "configure"
+#line 4633 "configure"
 #include "confdefs.h"
 /* System header to define __stub macros and hopefully few prototypes,
     which can conflict with char catgets(); below.  */
@@ -4648,7 +4652,7 @@ catgets();
 
 ; return 0; }
 EOF
-if { (eval echo configure:4652: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+if { (eval echo configure:4656: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
   rm -rf conftest*
   eval "ac_cv_func_catgets=yes"
 else
@@ -4670,7 +4674,7 @@ EOF
 	       # Extract the first word of "gencat", so it can be a program name with args.
 set dummy gencat; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:4674: checking for $ac_word" >&5
+echo "configure:4678: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_GENCAT'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -4702,7 +4706,7 @@ fi
 		 # Extract the first word of "gmsgfmt", so it can be a program name with args.
 set dummy gmsgfmt; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:4706: checking for $ac_word" >&5
+echo "configure:4710: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_GMSGFMT'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -4735,7 +4739,7 @@ fi
 		   # Extract the first word of "msgfmt", so it can be a program name with args.
 set dummy msgfmt; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:4739: checking for $ac_word" >&5
+echo "configure:4743: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_GMSGFMT'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -4770,7 +4774,7 @@ fi
 		 # Extract the first word of "xgettext", so it can be a program name with args.
 set dummy xgettext; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:4774: checking for $ac_word" >&5
+echo "configure:4778: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_XGETTEXT'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -4828,7 +4832,7 @@ fi
         # Extract the first word of "msgfmt", so it can be a program name with args.
 set dummy msgfmt; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:4832: checking for $ac_word" >&5
+echo "configure:4836: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_MSGFMT'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -4862,7 +4866,7 @@ fi
         # Extract the first word of "gmsgfmt", so it can be a program name with args.
 set dummy gmsgfmt; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:4866: checking for $ac_word" >&5
+echo "configure:4870: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_GMSGFMT'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -4894,7 +4898,7 @@ fi
         # Extract the first word of "xgettext", so it can be a program name with args.
 set dummy xgettext; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:4898: checking for $ac_word" >&5
+echo "configure:4902: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_XGETTEXT'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -4987,7 +4991,7 @@ fi
        LINGUAS=
      else
        echo $ac_n "checking for catalogs to be installed""... $ac_c" 1>&6
-echo "configure:4991: checking for catalogs to be installed" >&5
+echo "configure:4995: checking for catalogs to be installed" >&5
        NEW_LINGUAS=
        for lang in ${LINGUAS=$ALL_LINGUAS}; do
          case "$ALL_LINGUAS" in
@@ -5015,17 +5019,17 @@ echo "configure:4991: checking for catalogs to be installed" >&5
    if test "$CATOBJEXT" = ".cat"; then
      ac_safe=`echo "linux/version.h" | sed 'y%./+-%__p_%'`
 echo $ac_n "checking for linux/version.h""... $ac_c" 1>&6
-echo "configure:5019: checking for linux/version.h" >&5
+echo "configure:5023: checking for linux/version.h" >&5
 if eval "test \"`echo '$''{'ac_cv_header_$ac_safe'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 5024 "configure"
+#line 5028 "configure"
 #include "confdefs.h"
 #include <linux/version.h>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:5029: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:5033: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out`
 if test -z "$ac_err"; then
   rm -rf conftest*
