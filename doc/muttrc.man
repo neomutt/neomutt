@@ -1401,7 +1401,7 @@ See also: \(lqto_chars\(rq.
 .B ispell
 .nf
 Type: path
-Default: \(lqispell\(rq
+Default: \(lq/usr/bin/ispell\(rq
 .fi
 .IP
 How to invoke ispell (GNU's spell-checking software).

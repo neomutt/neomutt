@@ -995,11 +995,11 @@ macro pager   <f1> "!less /usr/local/doc/mutt/manual.txt\n" "Show Mutt documenta
 # See also: ``to_chars''.
 # 
 # 
-# set ispell="ispell"
+# set ispell="/usr/bin/ispell"
 #
 # Name: ispell
 # Type: path
-# Default: "ispell"
+# Default: "/usr/bin/ispell"
 # 
 # 
 # How to invoke ispell (GNU's spell-checking software).

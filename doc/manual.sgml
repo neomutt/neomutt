@@ -3449,7 +3449,7 @@ See also: ``to&lowbar;chars''.
 <sect2>ispell<label id="ispell">
 <p>
 Type: path<newline>
-Default: &dquot;ispell&dquot;
+Default: &dquot;/usr/bin/ispell&dquot;
 
 <p>
 How to invoke ispell (GNU's spell-checking software).
