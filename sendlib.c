@@ -446,6 +446,12 @@ int mutt_write_mime_header (BODY *a, FILE *f)
   return (ferror (f) ? -1 : 0);
 }
 
+#ifdef HAVE_PGP
+# define write_as_text_part(a) (mutt_is_text_part(a) || mutt_is_application_pgp(a))
+#else
+# define write_as_text_part(a) (mutt_is_text_part(a))
+#endif
+
 int mutt_write_mime_body (BODY *a, FILE *f)
 {
   char *p, boundary[SHORT_STRING];
@@ -506,11 +512,11 @@ int mutt_write_mime_body (BODY *a, FILE *f)
     fc = fgetconv_open (fpin, 0, 0, 0);
 
   if (a->encoding == ENCQUOTEDPRINTABLE)
-    encode_quoted (fc, f, mutt_is_text_part (a));
+    encode_quoted (fc, f, write_as_text_part (a));
   else if (a->encoding == ENCBASE64)
-    encode_base64 (fc, f, mutt_is_text_part (a));
+    encode_base64 (fc, f, write_as_text_part (a));
   else if (a->type == TYPETEXT && (!a->noconv))
-    encode_8bit (fc, f, mutt_is_text_part (a));
+    encode_8bit (fc, f, write_as_text_part (a));
   else
     mutt_copy_stream (fpin, f);
 
@@ -519,6 +525,8 @@ int mutt_write_mime_body (BODY *a, FILE *f)
 
   return (ferror (f) ? -1 : 0);
 }
+
+#undef write_as_text_part
 
 #define BOUNDARYLEN 16
 void mutt_generate_boundary (PARAMETER **parm)

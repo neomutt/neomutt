@@ -1285,6 +1285,11 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
     return NULL;
   }
 
+  /* The following code is really correct:  If noconv is set,
+   * a's charset parameter contains the on-disk character set, and
+   * we have to convert from that to utf-8.  If noconv is not set,
+   * we have to convert from $charset to utf-8.
+   */
   if (a->noconv)
     mutt_get_body_charset (from_charset, sizeof (from_charset), a);
   else
