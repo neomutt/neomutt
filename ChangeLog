@@ -1,3 +1,17 @@
+2003-09-03 17:22:09  Dan Born  <dan@danborn.net>  (roessler)
+
+	* postpone.c: I've attached a patch for bug number 1036, as
+	reported at http://bugs.guug.de/db/pa/lmutt.html ("segfault
+	when more than one msg is postponed").	This is a patch against
+	mutt 1.4.1.
+
+	As it was previously left, no one could reproduce it.  The problem
+	occurs because sorting is disabled when opening the postponed
+	folder, but the Sort global variable still tells mutt to use
+	whatever sorting algorithm the $sort config option indicates.
+	Eventually, the code would get to mutt_messages_in_thread and
+	try to dereference a NULL thread object, causing the segfault.
+
 2003-09-03 17:20:56  Pawel Dziekonski  <dzieko@pwr.wroc.pl>  (roessler)
 
 	* po/pl.po: update.
