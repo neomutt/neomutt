@@ -36,6 +36,8 @@ typedef struct hook
 
 static HOOK *Hooks = NULL;
 
+static int current_hook_type = 0;
+
 int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
   HOOK *ptr;
@@ -234,18 +236,33 @@ int mutt_parse_unhook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   {
     mutt_extract_token (buf, s, 0);
     if (mutt_strcmp ("*", buf->data) == 0)
+    {
+      if (current_hook_type)
+      {
+	snprintf (err->data, err->dsize,
+		  _("unhook: Can't do unhook * from within a hook."));
+	return -1;
+      }
       delete_hooks (0);
+    }
     else
     {
       int type = mutt_get_hook_type (buf->data);
-      if (type)
-	delete_hooks (type);
-      else
+
+      if (!type)
       {
 	snprintf (err->data, err->dsize,
 		 _("unhook: unknown hook type: %s"), buf->data);
 	return (-1);
       }
+      if (current_hook_type == type)
+      {
+	snprintf (err->data, err->dsize,
+		  _("unhook: Can't delete a %s from within a %s."),
+		  buf->data, buf->data);
+	return -1;
+      }
+      delete_hooks (type);
     }
   }
   return 0;
@@ -257,6 +274,8 @@ void mutt_folder_hook (char *path)
   BUFFER err, token;
   char buf[STRING];
 
+  current_hook_type = M_FOLDERHOOK;
+  
   err.data = buf;
   err.dsize = sizeof (buf);
   memset (&token, 0, sizeof (token));
@@ -274,12 +293,15 @@ void mutt_folder_hook (char *path)
 	  mutt_error ("%s", err.data);
 	  FREE (&token.data);
 	  sleep (1);	/* pause a moment to let the user see the error */
+	  current_hook_type = 0;
 	  return;
 	}
       }
     }
   }
   FREE (&token.data);
+  
+  current_hook_type = 0;
 }
 
 char *mutt_find_hook (int type, const char *pat)
@@ -301,6 +323,8 @@ void mutt_message_hook (CONTEXT *ctx, HEADER *hdr, int type)
   HOOK *hook;
   char buf[STRING];
 
+  current_hook_type = type;
+  
   err.data = buf;
   err.dsize = sizeof (buf);
   memset (&token, 0, sizeof (token));
@@ -316,10 +340,12 @@ void mutt_message_hook (CONTEXT *ctx, HEADER *hdr, int type)
 	  FREE (&token.data);
 	  mutt_error ("%s", err.data);
 	  sleep (1);
+	  current_hook_type = 0;
 	  return;
 	}
   }
   FREE (&token.data);
+  current_hook_type = 0;
 }
 
 static int
