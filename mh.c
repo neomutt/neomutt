@@ -477,6 +477,9 @@ int maildir_commit_message (CONTEXT *ctx, MESSAGE *msg, HEADER *hdr)
   char full[_POSIX_PATH_MAX];
   char *s;
 
+  if (safe_fclose (&msg->fp) != 0)
+    return -1;
+  
   /* extract the subdir */
   s = strrchr (msg->path, '/') + 1;
   strfcpy (subdir, s, 4);
@@ -529,6 +532,9 @@ int mh_commit_message (CONTEXT *ctx, MESSAGE *msg, HEADER *hdr)
   char path[_POSIX_PATH_MAX];
   char tmp[16];
 
+  if (safe_fclose (&msg->fp) != 0)
+    return -1;
+  
   if ((dirp = opendir (ctx->path)) == NULL)
   {
     mutt_perror (ctx->path);
@@ -596,6 +602,7 @@ static int mh_sync_message (CONTEXT *ctx, int msgno)
   MESSAGE *dest;
 
   int rc;
+  short restore = 1;
   char oldpath[_POSIX_PATH_MAX];
   char newpath[_POSIX_PATH_MAX];
   char partpath[_POSIX_PATH_MAX];
@@ -621,7 +628,10 @@ static int mh_sync_message (CONTEXT *ctx, int msgno)
     mx_close_message (&dest);
 
     if (rc == 0)
+    {
       unlink (oldpath);
+      restore = 0;
+    }
 
     /* 
      * Try to move the new message to the old place.
@@ -645,9 +655,10 @@ static int mh_sync_message (CONTEXT *ctx, int msgno)
 	mutt_str_replace (&h->path, partpath);
     }
   }
-  else mx_close_message (&dest);
+  else 
+    mx_close_message (&dest);
 
-  if (rc == -1)
+  if (rc == -1 && restore)
   {
     h->content->offset = old_body_offset;
     h->content->length = old_body_length;

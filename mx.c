@@ -1344,15 +1344,13 @@ int mx_commit_message (MESSAGE *msg, CONTEXT *ctx)
     
     case M_MAILDIR:
     {
-      if ((r = safe_fclose (&msg->fp)) == 0)
-	r = maildir_commit_message (ctx, msg, NULL);
+      r = maildir_commit_message (ctx, msg, NULL);
       break;
     }
     
     case M_MH:
     {
-      if ((r = safe_fclose (&msg->fp)) == 0)
-	r = mh_commit_message (ctx, msg, NULL);
+      r = mh_commit_message (ctx, msg, NULL);
       break;
     }
   }
