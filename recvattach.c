@@ -191,12 +191,11 @@ const char *mutt_attach_fmt (char *dest,
     case 'C':
       if (!optional)
       {
-	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	if (mutt_is_text_type (aptr->content->type, aptr->content->subtype) &&
 	    mutt_get_body_charset (charset, sizeof (charset), aptr->content))
-	  snprintf (dest, destlen, fmt, charset);
+	  mutt_format_s (dest, destlen, prefix, charset);
 	else
-	  snprintf (dest, destlen, fmt, "");
+	  mutt_format_s (dest, destlen, prefix, "");
       }
       else if (!mutt_is_text_type (aptr->content->type, aptr->content->subtype) ||
 	       !mutt_get_body_charset (charset, sizeof (charset), aptr->content))
@@ -216,10 +215,9 @@ const char *mutt_attach_fmt (char *dest,
     case 'd':
       if(!optional)
       {
-	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	if (aptr->content->description)
 	{
-	  snprintf (dest, destlen, fmt, aptr->content->description);
+	  mutt_format_s (dest, destlen, prefix, aptr->content->description);
 	  break;
 	}
 	if (mutt_is_message_type(aptr->content->type, aptr->content->subtype) &&
@@ -230,13 +228,13 @@ const char *mutt_attach_fmt (char *dest,
 			     M_FORMAT_FORCESUBJ | M_FORMAT_MAKEPRINT | M_FORMAT_ARROWCURSOR);
 	  if (*s)
 	  {
-	    snprintf (dest, destlen, fmt, s);
+	    mutt_format_s (dest, destlen, prefix, s);
 	    break;
 	  }
 	}
 	if (!aptr->content->filename)
 	{
-	  snprintf (dest, destlen, fmt, "<no description>");
+	  mutt_format_s (dest, destlen, prefix, "<no description>");
 	  break;
 	}
       }
@@ -248,17 +246,16 @@ const char *mutt_attach_fmt (char *dest,
     case 'f':
       if(!optional)
       {
-	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	if (aptr->content->filename && *aptr->content->filename == '/')
 	{
 	  char path[_POSIX_PATH_MAX];
 	  
 	  strfcpy (path, aptr->content->filename, sizeof (path));
 	  mutt_pretty_mailbox (path);
-	  snprintf (dest, destlen, fmt, path);
+	  mutt_format_s (dest, destlen, prefix, path);
 	}
 	else
-	  snprintf (dest, destlen, fmt, NONULL (aptr->content->filename));
+	  mutt_format_s (dest, destlen, prefix, NONULL (aptr->content->filename));
       }
       else if(!aptr->content->filename)
         optional = 0;
@@ -271,10 +268,8 @@ const char *mutt_attach_fmt (char *dest,
       break;
     case 'e':
       if(!optional)
-      {
-	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
-	snprintf (dest, destlen, fmt, ENCODING (aptr->content->encoding));
-      }
+	mutt_format_s (dest, destlen, prefix,
+		      ENCODING (aptr->content->encoding));
       break;
     case 'I':
       if (!optional)
@@ -285,17 +280,11 @@ const char *mutt_attach_fmt (char *dest,
       break;
     case 'm':
       if(!optional)
-      {
-	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
-	snprintf (dest, destlen, fmt, TYPE (aptr->content));
-      }
+	mutt_format_s (dest, destlen, prefix, TYPE (aptr->content));
       break;
     case 'M':
       if(!optional)
-      {
-	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
-	snprintf (dest, destlen, fmt, aptr->content->subtype);
-      } 
+	mutt_format_s (dest, destlen, prefix, aptr->content->subtype);
       else if(!aptr->content->subtype)
         optional = 0;
       break;
@@ -319,8 +308,7 @@ const char *mutt_attach_fmt (char *dest,
       if(!optional)
       {
 	mutt_pretty_size (tmp, sizeof(tmp), l);
-	snprintf (fmt, sizeof(fmt), "%%%ss", prefix);
-	snprintf (dest, destlen, fmt, tmp);
+	mutt_format_s (dest, destlen, prefix, tmp);
       }
       else if (l == 0)
         optional = 0;
@@ -334,10 +322,7 @@ const char *mutt_attach_fmt (char *dest,
       break;
     case 'T':
       if(!optional)
-      {
-	snprintf (fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf (dest, destlen, fmt, NONULL (aptr->tree));
-      } 
+	mutt_format_s (dest, destlen, prefix, NONULL (aptr->tree));
       else if (!aptr->tree)
         optional = 0;
       break;

@@ -541,6 +541,39 @@ void mutt_format_string (char *dest, size_t destlen,
 }
 
 /*
+ * This formats a string rather like
+ *   snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+ *   snprintf (dest, destlen, fmt, s);
+ * except that the numbers in the conversion specification refer to
+ * the number of character cells when printed.
+ */
+
+void mutt_format_s (char *dest,
+		    size_t destlen,
+		    const char *prefix,
+		    const char *s)
+{
+  int right_justify = 1;
+  char *p;
+  int min_width;
+  int max_width = INT_MAX;
+
+  if (*prefix == '-')
+    ++prefix, right_justify = 0;
+  min_width = strtol (prefix, &p, 10);
+  if (*p == '.')
+  {
+    prefix = p + 1;
+    max_width = strtol (prefix, &p, 10);
+    if (p <= prefix)
+      max_width = INT_MAX;
+  }
+
+  mutt_format_string (dest, destlen, min_width, max_width,
+		      right_justify, ' ', s, mutt_strlen (s));
+}
+
+/*
  * mutt_paddstr (n, s) is almost equivalent to
  * mutt_format_string (bigbuf, big, n, n, 0, ' ', s, big), addstr (bigbuf)
  */

@@ -159,14 +159,10 @@ folder_format_str (char *dest, size_t destlen, char op, const char *src,
 	tnow = time (NULL);
 	t_fmt = tnow - folder->ff->st->st_mtime < 31536000 ? "%b %d %H:%M" : "%b %d  %Y";
 	strftime (date, sizeof (date), t_fmt, localtime (&folder->ff->st->st_mtime));
-	snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
-	snprintf (dest, destlen, tmp, date);
+	mutt_format_s (dest, destlen, fmt, date);
       }
       else
-      {
-	snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
-	snprintf (dest, destlen, tmp, "");
-      }
+	mutt_format_s (dest, destlen, fmt, "");
       break;
       
     case 'f':
@@ -182,8 +178,7 @@ folder_format_str (char *dest, size_t destlen, char op, const char *src,
 		(S_ISDIR (folder->ff->st->st_mode) ? "/" : 
 		 ((folder->ff->st->st_mode & S_IXUSR) != 0 ? "*" : "")));
       }
-      snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
-      snprintf (dest, destlen, tmp, fn);
+      mutt_format_s (dest, destlen, fmt, fn);
       break;
       
     case 'F':
@@ -200,8 +195,7 @@ folder_format_str (char *dest, size_t destlen, char op, const char *src,
 	    (folder->ff->st->st_mode & S_IROTH) != 0 ? 'r' : '-',
 	    (folder->ff->st->st_mode & S_IWOTH) != 0 ? 'w' : '-',
 	    (folder->ff->st->st_mode & S_ISVTX) != 0 ? 't' : (folder->ff->st->st_mode & S_IXOTH) != 0 ? 'x': '-');
-	snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
-	snprintf (dest, destlen, tmp, permission);
+	mutt_format_s (dest, destlen, fmt, permission);
       }
 #ifdef USE_IMAP
       else if (folder->ff->imap)
@@ -209,25 +203,18 @@ folder_format_str (char *dest, size_t destlen, char op, const char *src,
 	/* mark folders with subfolders AND mail */
 	sprintf (permission, "IMAP %c",
           (folder->ff->inferiors && folder->ff->selectable) ? '+' : ' ');
-	snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
-	snprintf (dest, destlen, tmp, permission);
+	mutt_format_s (dest, destlen, fmt, permission);
       }                                        
 #endif
       else
-      {
-	snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
-	snprintf (dest, destlen, tmp, "");
-      }
+	mutt_format_s (dest, destlen, fmt, "");
       break;
       
     case 'g':
       if (folder->ff->st != NULL)
       {
 	if ((gr = getgrgid (folder->ff->st->st_gid)))
-	{
-	  snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
-	  snprintf (dest, destlen, tmp, gr->gr_name);
-	}
+	  mutt_format_s (dest, destlen, fmt, gr->gr_name);
 	else
 	{
 	  snprintf (tmp, sizeof (tmp), "%%%sld", fmt);
@@ -235,10 +222,7 @@ folder_format_str (char *dest, size_t destlen, char op, const char *src,
 	}
       }
       else
-      {
-	snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
-	snprintf (dest, destlen, tmp, "");
-      }
+	mutt_format_s (dest, destlen, fmt, "");
       break;
       
     case 'l':
@@ -248,10 +232,7 @@ folder_format_str (char *dest, size_t destlen, char op, const char *src,
 	snprintf (dest, destlen, tmp, folder->ff->st->st_nlink);
       }
       else
-      {
-	snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
-	snprintf (dest, destlen, tmp, "");
-      }
+	mutt_format_s (dest, destlen, fmt, "");
       break;
       
     case 'N':
@@ -279,10 +260,7 @@ folder_format_str (char *dest, size_t destlen, char op, const char *src,
 	snprintf (dest, destlen, tmp, (long) folder->ff->st->st_size);
       }
       else
-      {
-	snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
-	snprintf (dest, destlen, tmp, "");
-      }
+	mutt_format_s (dest, destlen, fmt, "");
       break;
       
     case 't':
@@ -294,10 +272,7 @@ folder_format_str (char *dest, size_t destlen, char op, const char *src,
       if (folder->ff->st != NULL)
       {
 	if ((pw = getpwuid (folder->ff->st->st_uid)))
-	{
-	  snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
-	  snprintf (dest, destlen, tmp, pw->pw_name);
-	}
+	  mutt_format_s (dest, destlen, fmt, pw->pw_name);
 	else
 	{
 	  snprintf (tmp, sizeof (tmp), "%%%sld", fmt);
@@ -305,10 +280,7 @@ folder_format_str (char *dest, size_t destlen, char op, const char *src,
 	}
       }
       else
-      {
-	snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
-	snprintf (dest, destlen, tmp, "");
-      }
+	mutt_format_s (dest, destlen, fmt, "");
       break;
       
     default:

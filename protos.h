@@ -159,6 +159,7 @@ void mutt_fetchPopMail (void);
 void mutt_fix_reply_recipients (ENVELOPE *env);
 void mutt_folder_hook (char *);
 void mutt_format_string (char *, size_t, int, int, int, char, const char *, size_t);
+void mutt_format_s (char *, size_t, const char *, const char *);
 void mutt_forward_intro (FILE *fp, HEADER *cur);
 void mutt_forward_trailer (FILE *fp);
 void mutt_free_alias (ALIAS **);
