@@ -243,7 +243,7 @@ int pop_open_mailbox (CONTEXT *ctx)
 
   if (pop_parse_path (ctx->path, &acct))
   {
-    mutt_error ("%s is an invalid POP path", ctx->path);
+    mutt_error (_("%s is an invalid POP path"), ctx->path);
     mutt_sleep (2);
     return -1;
   }
@@ -559,7 +559,7 @@ void pop_fetch_mail (void)
   FREE (&url);
   if (ret)
   {
-    mutt_error ("%s is an invalid POP path", PopHost);
+    mutt_error (_("%s is an invalid POP path"), PopHost);
     return;
   }
 

@@ -315,16 +315,16 @@ int ssl_negotiate (sslsockdata* ssldata)
     switch (SSL_get_error (ssldata->ssl, err))
     {
     case SSL_ERROR_SYSCALL:
-      errmsg = "I/O error";
+      errmsg = _("I/O error");
       break;
     case SSL_ERROR_SSL:
-      errmsg = "unspecified protocol error";
+      errmsg = _("unspecified protocol error");
       break;
     default:
-      errmsg = "unknown error";
+      errmsg = _("unknown error");
     }
     
-    mutt_error ("SSL failed: %s", errmsg);
+    mutt_error (_("SSL failed: %s"), errmsg);
     mutt_sleep (1);
 
     return -1;

@@ -501,7 +501,7 @@ int imap_open_mailbox (CONTEXT* ctx)
   
   if (imap_parse_path (ctx->path, &mx))
   {
-    mutt_error ("%s is an invalid IMAP path", ctx->path);
+    mutt_error (_("%s is an invalid IMAP path"), ctx->path);
     return -1;
   }
 
@@ -1028,7 +1028,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
     idata->reopen |= IMAP_EXPUNGE_EXPECTED;
     if (imap_exec (idata, "EXPUNGE", 0) != 0)
     {
-      imap_error ("imap_sync_mailbox: EXPUNGE failed", idata->cmd.buf);
+      imap_error (_("imap_sync_mailbox: EXPUNGE failed"), idata->cmd.buf);
       rc = -1;
       goto out;
     }
@@ -1310,7 +1310,7 @@ int imap_subscribe (char *path, int subscribe)
 
   if (!mx_is_imap (path) || imap_parse_path (path, &mx))
   {
-    mutt_error ("Bad mailbox name");
+    mutt_error (_("Bad mailbox name"));
     return -1;
   }
   

@@ -242,7 +242,7 @@ int imap_continue (const char* msg, const char* resp)
 /* imap_error: show an error and abort */
 void imap_error (const char *where, const char *msg)
 {
-  mutt_error (_("%s [%s]\n"), where, msg);
+  mutt_error ("%s [%s]\n", where, msg);
   mutt_sleep (2);
 }
 

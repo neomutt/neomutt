@@ -61,7 +61,7 @@ int imap_browse (char* path, struct browser_state* state)
 
   if (imap_parse_path (path, &mx))
   {
-    mutt_error ("%s is an invalid IMAP path", path);
+    mutt_error (_("%s is an invalid IMAP path"), path);
     return -1;
   }
 

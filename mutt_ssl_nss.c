@@ -55,7 +55,7 @@ mutt_nss_password_func (PK11SlotInfo * slot, PRBool retry, void *arg)
 static int
 mutt_nss_error (const char *call)
 {
-  mutt_error ("%s failed (error %d)", call, PR_GetError ());
+  mutt_error (_("%s failed (error %d)"), call, PR_GetError ());
   return -1;
 }
 

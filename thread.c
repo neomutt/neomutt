@@ -908,7 +908,7 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
 
   if ((Sort & SORT_MASK) != SORT_THREADS && !(flag & M_THREAD_GET_HIDDEN))
   {
-    mutt_error ("Threading is not enabled.");
+    mutt_error (_("Threading is not enabled."));
     return (cur->virtual);
   }
 
