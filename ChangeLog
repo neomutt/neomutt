@@ -1,3 +1,7 @@
+2002-12-21 20:30:36  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* curs_main.c: OK, Michael is right: Gotos suck. ;-)
+
 2002-12-21 13:25:11  Vsevolod Volkov  <vvv@mutt.org.ua>  (roessler)
 
 	* po/ru.po: update
