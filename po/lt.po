@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt 1.3.12i\n"
-"POT-Creation-Date: 2001-06-07 22:11+0200\n"
+"POT-Creation-Date: 2001-07-24 23:29+0200\n"
 "PO-Revision-Date: 2000-11-29 21:22+0200\n"
 "Last-Translator: Gediminas Paulauskas <menesis@delfi.lt>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -302,7 +302,7 @@ msgstr "áprastos spalvos nepalaikomos"
 msgid "Verify PGP signature?"
 msgstr "Tikrinti PGP paraðà?"
 
-#: commands.c:105 pgp.c:1678 pgpkey.c:559 postpone.c:517
+#: commands.c:105 pgp.c:1693 pgpkey.c:559 postpone.c:517
 msgid "Invoking PGP..."
 msgstr "Kvieèiu PGP..."
 
@@ -662,7 +662,7 @@ msgstr "ne"
 msgid "Exit Mutt?"
 msgstr "Iðeiti ið Mutt?"
 
-#: curs_lib.c:326 mutt_socket.c:474
+#: curs_lib.c:326 mutt_socket.c:482
 msgid "unknown error"
 msgstr "neþinoma klaida"
 
@@ -682,7 +682,7 @@ msgstr "Jokia dëþutë neatidaryta."
 msgid "There are no messages."
 msgstr "Ten nëra laiðkø."
 
-#: curs_main.c:61 mx.c:1122 pager.c:62 recvattach.c:47
+#: curs_main.c:61 mx.c:1125 pager.c:62 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "Dëþutë yra tik skaitoma."
 
@@ -863,7 +863,7 @@ msgstr "Skirstymas gijomis neleidþiamas."
 msgid "Thread contains unread messages."
 msgstr "Gijoje yra neskaitytø laiðkø."
 
-#: curs_main.c:1667
+#: curs_main.c:1668
 msgid "Can't edit message on POP server."
 msgstr "Negaliu taisyti laiðko POP serveryje."
 
@@ -1132,21 +1132,21 @@ msgstr ""
 msgid "Help for %s"
 msgstr "Pagalba apie %s"
 
-#: hook.c:243
+#: hook.c:240
 msgid "unhook: Can't do unhook * from within a hook."
 msgstr ""
 
-#: hook.c:255
+#: hook.c:252
 #, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook: neþinomas hook tipas: %s"
 
-#: hook.c:261
+#: hook.c:258
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s."
 msgstr ""
 
-#: imap/auth.c:104
+#: imap/auth.c:104 pop_auth.c:393
 #, fuzzy
 msgid "No authenticators available"
 msgstr "SASL autentikacija nepavyko."
@@ -1180,19 +1180,19 @@ msgstr "GSSAPI autentikacija nepavyko."
 msgid "LOGIN disabled on this server."
 msgstr "LOGIN iðjungtas ðiame serveryje."
 
-#: imap/auth_login.c:43 pop_auth.c:229
+#: imap/auth_login.c:43 pop_auth.c:223
 msgid "Logging in..."
 msgstr "Pasisveikinu..."
 
-#: imap/auth_login.c:63 pop_auth.c:272
+#: imap/auth_login.c:63 pop_auth.c:266
 msgid "Login failed."
 msgstr "Nepavyko pasisveikinti."
 
-#: imap/auth_sasl.c:96 pop_auth.c:76
+#: imap/auth_sasl.c:93 pop_auth.c:73
 msgid "Authenticating (SASL)..."
 msgstr "Autentikuojuosi (SASL)..."
 
-#: imap/auth_sasl.c:177 pop_auth.c:154
+#: imap/auth_sasl.c:174 pop_auth.c:151
 msgid "SASL authentication failed."
 msgstr "SASL autentikacija nepavyko."
 
@@ -1246,51 +1246,61 @@ msgstr ""
 msgid "Could not negotiate TLS connection"
 msgstr ""
 
-#: imap/imap.c:533
+#: imap/imap.c:534
 #, c-format
 msgid "Selecting %s..."
 msgstr "Parenku %s..."
 
+#: imap/imap.c:656
+#, fuzzy
+msgid "Error opening mailbox"
+msgstr "Klaida raðant á paðto dëþutæ!"
+
 #. STATUS not supported
-#: imap/imap.c:703
+#: imap/imap.c:709
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Nepavyko pridurti prie IMAP dëþuèiø ðiame serveryje"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:712 imap/message.c:584 muttlib.c:1169
+#: imap/imap.c:718 imap/message.c:593 muttlib.c:1169
 #, c-format
 msgid "Create %s?"
 msgstr "Sukurti %s?"
 
-#: imap/imap.c:748
+#: imap/imap.c:754
 msgid "Closing connection to IMAP server..."
 msgstr "Uþdarau jungtá su IMAP serveriu..."
 
-#: imap/imap.c:912 pop.c:458
+#: imap/imap.c:917 pop.c:458
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Paþymiu %d laiðkus iðtrintais..."
 
-#: imap/imap.c:931
+#: imap/imap.c:926
+#, fuzzy
+msgid "Expunge failed"
+msgstr "Nepavyko pasisveikinti."
+
+#: imap/imap.c:941
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Iðsaugau laiðko bûsenos flagus... [%d/%d]"
 
-#: imap/imap.c:1006
+#: imap/imap.c:1025
 msgid "Expunging messages from server..."
 msgstr "Iðtuðtinu laiðkus ið serverio..."
 
-#: imap/imap.c:1043
+#: imap/imap.c:1064
 #, fuzzy
 msgid "CLOSE failed"
 msgstr "Nepavyko pasisveikinti."
 
-#: imap/imap.c:1299
+#: imap/imap.c:1320
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Uþsakau %s..."
 
-#: imap/imap.c:1301
+#: imap/imap.c:1322
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Atsisakau %s..."
@@ -1300,138 +1310,143 @@ msgstr "Atsisakau %s..."
 msgid "Unable to fetch headers from this IMAP server version."
 msgstr "Negaliu paimti antraðèiø ið ðios IMAP serverio versijos."
 
-#: imap/message.c:92 pop.c:209
+#: imap/message.c:83
+#, fuzzy, c-format
+msgid "Could not create temporary file %s"
+msgstr "Negaliu sukurti laikinos bylos!"
+
+#: imap/message.c:96 pop.c:209
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Paimu laiðkø antraðtes... [%d/%d]"
 
-#: imap/message.c:239 pop.c:336
+#: imap/message.c:243 pop.c:336
 msgid "Fetching message..."
 msgstr "Paimu laiðkà..."
 
-#: imap/message.c:282 pop.c:373
+#: imap/message.c:286 pop.c:373
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Laiðkø indeksas yra neteisingas. Bandyk ið naujo atidaryti dëþutæ."
 
-#: imap/message.c:455
+#: imap/message.c:459
 msgid "Uploading message ..."
 msgstr "Nusiunèiu laiðkà..."
 
-#: imap/message.c:562
+#: imap/message.c:569
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Kopijuoju %d laiðkus á %s..."
 
-#: imap/message.c:566
+#: imap/message.c:573
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Kopijuoju laiðkà %d á %s..."
 
-#: imap/util.c:238
+#: imap/util.c:239
 msgid "Continue?"
 msgstr "Tæsti?"
 
-#: imap/util.c:244
+#: imap/util.c:245
 #, c-format
 msgid "%s [%s]\n"
 msgstr "%s [%s]\n"
 
-#: init.c:490
+#: init.c:460
 msgid "alias: no address"
 msgstr "alias: nëra adreso"
 
-#: init.c:584
+#: init.c:554
 msgid "invalid header field"
 msgstr "blogas antraðtës laukas"
 
-#: init.c:637
+#: init.c:607
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: neþinomas rikiavimo metodas"
 
-#: init.c:748
+#: init.c:718
 #, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s): klaida regexp'e: %s\n"
 
-#: init.c:809
+#: init.c:779
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: neþinomas kintamasis"
 
-#: init.c:818
+#: init.c:788
 msgid "prefix is illegal with reset"
 msgstr "negalima vartoti prieðdëlio su reset"
 
-#: init.c:824
+#: init.c:794
 msgid "value is illegal with reset"
 msgstr "reikðmë neleistina reset komandoje"
 
-#: init.c:863
+#: init.c:833
 #, c-format
 msgid "%s is set"
 msgstr "%s yra ájungtas"
 
-#: init.c:863
+#: init.c:833
 #, c-format
 msgid "%s is unset"
 msgstr "%s yra iðjungtas"
 
-#: init.c:1069
+#: init.c:1039
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: blogas paðto dëþutës tipas"
 
-#: init.c:1094 init.c:1139
+#: init.c:1064 init.c:1109
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: bloga reikðmë"
 
-#: init.c:1197
+#: init.c:1167
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: neþinomas tipas"
 
-#: init.c:1238
+#: init.c:1208
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Klaida %s, eilutë %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1254
+#: init.c:1224
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: klaidos %s"
 
-#: init.c:1255
+#: init.c:1225
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr "source: skaitymas nutrauktas, nes %s yra per daug klaidø."
 
-#: init.c:1269
+#: init.c:1239
 #, c-format
 msgid "source: error at %s"
 msgstr "source: klaida %s"
 
-#: init.c:1274
+#: init.c:1244
 msgid "source: too many arguments"
 msgstr "source: per daug argumentø"
 
-#: init.c:1325
+#: init.c:1295
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: neþinoma komanda"
 
-#: init.c:1681
+#: init.c:1651
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Klaida komandinëje eilutëje: %s\n"
 
-#: init.c:1724
+#: init.c:1694
 msgid "unable to determine home directory"
 msgstr "negaliu nustatyti namø katalogo"
 
-#: init.c:1732
+#: init.c:1702
 msgid "unable to determine username"
 msgstr "negaliu nustatyti vartotojo vardo"
 
@@ -1479,13 +1494,14 @@ msgid "macro: too many arguments"
 msgstr "macro: per daug argumentø"
 
 #: keymap.c:850
-msgid "exec: too few arguments"
+#, fuzzy
+msgid "exec: no arguments"
 msgstr "exec: per maþai argumentø"
 
 #: keymap.c:870
-#, c-format
-msgid "%s: no such command"
-msgstr "%s: nëra tokios komandos"
+#, fuzzy, c-format
+msgid "%s: no such function"
+msgstr "%s: èia nëra tokios funkcijos"
 
 #: keymap_alldefs.h:5
 msgid "null operation"
@@ -2436,7 +2452,7 @@ msgstr "Dëþutë yra sugadinta!"
 msgid "Mailbox was corrupted!"
 msgstr "Dëþutë buvo sugadinta!"
 
-#: mbox.c:696 mbox.c:971
+#: mbox.c:696 mbox.c:972
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Baisi klaida!  Negaliu vël atidaryti dëþutës!"
 
@@ -2456,16 +2472,24 @@ msgstr "sync: mbox pakeista, bet nëra pakeistø laiðkø! (praneðk ðià klaidà)"
 msgid "Writing messages... %d (%d%%)"
 msgstr "Raðau laiðkus... %d (%d%%)"
 
-#: mbox.c:955
+#. copy the temp mailbox back into place starting at the first
+#. * change/deleted message
+#.
+#: mbox.c:925
+#, fuzzy
+msgid "Committing changes..."
+msgstr "Kompiliuoju paieðkos pattern'à..."
+
+#: mbox.c:956
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Áraðyti nepavyko!  Dëþutë dalinai iðsaugota á %s"
 
-#: mbox.c:1021
+#: mbox.c:1022
 msgid "Could not reopen mailbox!"
 msgstr "Negaliu vël atidaryti dëþutës!"
 
-#: mbox.c:1059
+#: mbox.c:1060
 msgid "Reopening mailbox..."
 msgstr "Vël atidarau dëþutæ..."
 
@@ -2586,35 +2610,35 @@ msgstr "Pridurti laiðkus prie %s?"
 msgid "Connection to %s closed"
 msgstr "Jungiuosi prie %s..."
 
-#: mutt_socket.c:250
+#: mutt_socket.c:258
 msgid "SSL is unavailable."
 msgstr "SSL nepasiekiamas."
 
-#: mutt_socket.c:281
+#: mutt_socket.c:289
 msgid "Preconnect command failed."
 msgstr "Nepavyko komanda prieð jungimàsi"
 
-#: mutt_socket.c:352 mutt_socket.c:366
+#: mutt_socket.c:360 mutt_socket.c:374
 #, fuzzy, c-format
 msgid "Error talking to %s (%s)"
 msgstr "Klaida jungiantis prie IMAP serverio: %s"
 
-#: mutt_socket.c:400 mutt_socket.c:441
+#: mutt_socket.c:408 mutt_socket.c:449
 #, c-format
 msgid "Looking up %s..."
 msgstr "Ieðkau %s..."
 
-#: mutt_socket.c:405 mutt_socket.c:445
+#: mutt_socket.c:413 mutt_socket.c:453
 #, c-format
 msgid "Could not find the host \"%s\""
 msgstr "Negalëjau rasti hosto \"%s\""
 
-#: mutt_socket.c:409 mutt_socket.c:450
+#: mutt_socket.c:417 mutt_socket.c:458
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Jungiuosi prie %s..."
 
-#: mutt_socket.c:473
+#: mutt_socket.c:481
 #, c-format
 msgid "Could not connect to %s (%s)."
 msgstr "Negalëjau prisijungti prie %s (%s)."
@@ -2773,59 +2797,59 @@ msgstr "Raðau %s..."
 msgid "Could not synchronize mailbox %s!"
 msgstr "Nepavyko sinchronizuoti dëþutës %s!"
 
-#: mx.c:872
+#: mx.c:873
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Perkelti skaitytus laiðkus á %s?"
 
-#: mx.c:884 mx.c:1137
+#: mx.c:885 mx.c:1140
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Sunaikinti %d iðtrintà laiðkà?"
 
-#: mx.c:884 mx.c:1137
+#: mx.c:885 mx.c:1140
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Sunaikinti %d iðtrintus laiðkus?"
 
-#: mx.c:908
+#: mx.c:909
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Perkeliu skaitytus laiðkus á %s..."
 
-#: mx.c:966 mx.c:1128
+#: mx.c:969 mx.c:1131
 msgid "Mailbox is unchanged."
 msgstr "Dëþutë yra nepakeista."
 
-#: mx.c:1002
+#: mx.c:1005
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d palikti, %d perkelti, %d iðtrinti."
 
-#: mx.c:1005 mx.c:1175
+#: mx.c:1008 mx.c:1178
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d palikti, %d iðtrinti."
 
-#: mx.c:1113
+#: mx.c:1116
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr "Spausk '%s', kad perjungtum raðymà"
 
-#: mx.c:1115
+#: mx.c:1118
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Naudok 'toggle-write', kad vël galëtum raðyti!"
 
-#: mx.c:1117
+#: mx.c:1120
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Dëþutë yra padaryta neáraðoma. %s"
 
-#: mx.c:1172
+#: mx.c:1175
 msgid "Mailbox checkpointed."
 msgstr "Dëþutë sutikrinta."
 
-#: mx.c:1472
+#: mx.c:1475
 msgid "Can't write message"
 msgstr "Negaliu áraðyti laiðko"
 
@@ -2977,11 +3001,11 @@ msgstr "PGP slapta frazë pamirðta."
 msgid "[-- PGP output follows (current time: %c) --]\n"
 msgstr "[-- Toliau PGP iðvestis (esamas laikas: %c) --]\n"
 
-#: pgp.c:352
+#: pgp.c:360
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
 msgstr "[-- Klaida: negaliu sukurti PGP subproceso! --]\n"
 
-#: pgp.c:387
+#: pgp.c:395
 msgid ""
 "\n"
 "[-- End of PGP output --]\n"
@@ -2991,7 +3015,7 @@ msgstr ""
 "[-- PGP iðvesties pabaiga --]\n"
 "\n"
 
-#: pgp.c:393
+#: pgp.c:401
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -2999,11 +3023,11 @@ msgstr ""
 "[-- PGP LAIÐKO PRADÞIA --]\n"
 "\n"
 
-#: pgp.c:395
+#: pgp.c:403
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP VIEÐO RAKTO BLOKO PRADÞIA --]\n"
 
-#: pgp.c:397
+#: pgp.c:405
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -3011,7 +3035,7 @@ msgstr ""
 "[-- PGP PASIRAÐYTO LAIÐKO PRADÞIA --]\n"
 "\n"
 
-#: pgp.c:438
+#: pgp.c:446
 msgid ""
 "\n"
 "[-- END PGP MESSAGE --]\n"
@@ -3019,11 +3043,11 @@ msgstr ""
 "\n"
 "[-- PGP LAIÐKO PABAIGA --]\n"
 
-#: pgp.c:440
+#: pgp.c:448
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP VIEÐO RAKTO BLOKO PABAIGA --]\n"
 
-#: pgp.c:442
+#: pgp.c:450
 msgid ""
 "\n"
 "[-- END PGP SIGNED MESSAGE --]\n"
@@ -3031,7 +3055,7 @@ msgstr ""
 "\n"
 "[-- PGP PASIRAÐYTO LAIÐKO PABAIGA --]\n"
 
-#: pgp.c:457
+#: pgp.c:465
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -3039,7 +3063,7 @@ msgstr ""
 "[-- Klaida: neradau PGP laiðko pradþios! --]\n"
 "\n"
 
-#: pgp.c:728 pgp.c:1020
+#: pgp.c:739 pgp.c:1035
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -3047,7 +3071,7 @@ msgstr ""
 "[-- PGP iðvesties pabaiga --]\n"
 "\n"
 
-#: pgp.c:776
+#: pgp.c:789
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
 "\n"
@@ -3055,7 +3079,7 @@ msgstr ""
 "[-- Klaida: Neteisinga multipart/signed struktûra! --]\n"
 "\n"
 
-#: pgp.c:784
+#: pgp.c:797
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -3064,7 +3088,7 @@ msgstr ""
 "[-- Klaida: Neþinomas multipart/signed protokolas %s! --]\n"
 "\n"
 
-#: pgp.c:808
+#: pgp.c:821
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -3074,7 +3098,7 @@ msgstr ""
 "\n"
 
 #. Now display the signed body
-#: pgp.c:818
+#: pgp.c:833
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -3082,7 +3106,7 @@ msgstr ""
 "[-- Toliau einantys duomenys yra pasiraðyti --]\n"
 "\n"
 
-#: pgp.c:824
+#: pgp.c:839
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -3090,7 +3114,7 @@ msgstr ""
 "[-- Dëmesio: Negaliu rasti jokiø paraðø --]\n"
 "\n"
 
-#: pgp.c:830
+#: pgp.c:845
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -3098,11 +3122,11 @@ msgstr ""
 "\n"
 "[-- Pasiraðytø duomenø pabaiga --]\n"
 
-#: pgp.c:930
+#: pgp.c:945
 msgid "Internal error. Inform <roessler@guug.de>."
 msgstr "Vidinë klaida. Praneðk <roessler@guug.de>."
 
-#: pgp.c:990
+#: pgp.c:1005
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -3110,7 +3134,7 @@ msgstr ""
 "[-- Klaida: negalëjau sukurti PGP subproceso! --]\n"
 "\n"
 
-#: pgp.c:1086
+#: pgp.c:1101
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -3118,11 +3142,11 @@ msgstr ""
 "[-- Klaida: blogai suformuotas PGP/MIME laiðkas! --]\n"
 "\n"
 
-#: pgp.c:1099
+#: pgp.c:1114
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Klaida: negalëjau sukurti laikinos bylos! --]\n"
 
-#: pgp.c:1108
+#: pgp.c:1123
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -3130,7 +3154,7 @@ msgstr ""
 "[-- Toliau einantys duomenys yra uþðifruoti su PGP/MIME --]\n"
 "\n"
 
-#: pgp.c:1126
+#: pgp.c:1141
 msgid ""
 "\n"
 "[-- End of PGP/MIME encrypted data --]\n"
@@ -3138,25 +3162,25 @@ msgstr ""
 "\n"
 "[-- PGP/MIME uþðifruotø duomenø pabaiga --]\n"
 
-#: pgp.c:1206
+#: pgp.c:1221
 msgid "Can't open PGP subprocess!"
 msgstr "Negaliu atidaryti PGP vaikinio proceso!"
 
-#: pgp.c:1333
+#: pgp.c:1348
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Naudoti rakto ID = \"%s\", skirtà %s?"
 
-#: pgp.c:1360
+#: pgp.c:1375
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Ávesk rakto ID, skirtà %s: "
 
-#: pgp.c:1568
+#: pgp.c:1583
 msgid "Can't invoke PGP"
 msgstr "Negaliu kviesti PGP"
 
-#: pgp.c:1672
+#: pgp.c:1687
 msgid "Create an application/pgp message?"
 msgstr "Ar sukurti application/pgp laiðkà?"
 
@@ -3300,21 +3324,17 @@ msgstr "%s [%d ið %d laiðkø perskaityti]"
 msgid "Server closed connection!"
 msgstr "Serveris uþdarë jungtá!"
 
-#: pop_auth.c:190
+#: pop_auth.c:184
 msgid "Authenticating (APOP)..."
 msgstr "Autentikuojuosi (APOP)..."
 
-#: pop_auth.c:214
+#: pop_auth.c:208
 msgid "APOP authentication failed."
 msgstr "APOP autentikacija nepavyko."
 
-#: pop_auth.c:249
+#: pop_auth.c:243
 msgid "Command USER is not supported by server."
 msgstr "Serveris nepalaiko komandos USER."
-
-#: pop_auth.c:356
-msgid "Authentication method is unknown."
-msgstr "Autentikacijos metodas neþinomas."
 
 #: pop_lib.c:157
 msgid "Unable to leave messages on server."
@@ -3361,24 +3381,24 @@ msgstr "Padaryti aliasà"
 msgid "Search"
 msgstr "Ieðkoti"
 
-#: query.c:91
+#: query.c:93
 msgid "Waiting for response..."
 msgstr "Laukiu atsakymo..."
 
-#: query.c:210 query.c:235
+#: query.c:221 query.c:246
 msgid "Query command not defined."
 msgstr "Uþklausos komanda nenurodyta."
 
-#: query.c:262
+#: query.c:273
 msgid "Query"
 msgstr "Uþklausa"
 
 #. Prompt for Query
-#: query.c:275 query.c:303
+#: query.c:286 query.c:314
 msgid "Query: "
 msgstr "Uþklausa: "
 
-#: query.c:286 query.c:312
+#: query.c:297 query.c:323
 #, c-format
 msgid "Query '%s'"
 msgstr "Uþklausa '%s''"
@@ -3747,6 +3767,12 @@ msgstr "Tëvinis laiðkas nematomas ribotame vaizde"
 #: thread.c:742
 msgid "Parent message is not available."
 msgstr "Nëra prieinamo tëvinio laiðko."
+
+#~ msgid "%s: no such command"
+#~ msgstr "%s: nëra tokios komandos"
+
+#~ msgid "Authentication method is unknown."
+#~ msgstr "Autentikacijos metodas neþinomas."
 
 #~ msgid "MIC algorithm: "
 #~ msgstr "MIC algoritmas: "

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.2\n"
-"POT-Creation-Date: 2001-06-07 22:11+0200\n"
+"POT-Creation-Date: 2001-07-24 23:29+0200\n"
 "PO-Revision-Date: 2000-03-09 07:40+0900\n"
 "Last-Translator: Byeong-Chan Kim <redhands@linux.sarag.net>\n"
 "Language-Team: Korean <ko@li.org>\n"
@@ -301,7 +301,7 @@ msgstr "기본 색상들이 지원되지 않음"
 msgid "Verify PGP signature?"
 msgstr "PGP 서명을 확인할까요?"
 
-#: commands.c:105 pgp.c:1678 pgpkey.c:559 postpone.c:517
+#: commands.c:105 pgp.c:1693 pgpkey.c:559 postpone.c:517
 msgid "Invoking PGP..."
 msgstr "PGP를 구동합니다..."
 
@@ -666,7 +666,7 @@ msgstr "no"
 msgid "Exit Mutt?"
 msgstr "Mutt을 종료할까요?"
 
-#: curs_lib.c:326 mutt_socket.c:474
+#: curs_lib.c:326 mutt_socket.c:482
 msgid "unknown error"
 msgstr "알 수 없는 오류"
 
@@ -686,7 +686,7 @@ msgstr "열린 편지함이 없음."
 msgid "There are no messages."
 msgstr "메세지가 없습니다."
 
-#: curs_main.c:61 mx.c:1122 pager.c:62 recvattach.c:47
+#: curs_main.c:61 mx.c:1125 pager.c:62 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "읽기 전용 편지함."
 
@@ -869,7 +869,7 @@ msgstr "글타래를 사용하지 않음."
 msgid "Thread contains unread messages."
 msgstr "글타래에 읽지 않은 메세지 있음."
 
-#: curs_main.c:1667
+#: curs_main.c:1668
 #, fuzzy
 msgid "Can't edit message on POP server."
 msgstr "서버의 메세지 삭제 중..."
@@ -1138,21 +1138,21 @@ msgstr ""
 msgid "Help for %s"
 msgstr "%s 도움말"
 
-#: hook.c:243
+#: hook.c:240
 msgid "unhook: Can't do unhook * from within a hook."
 msgstr ""
 
-#: hook.c:255
+#: hook.c:252
 #, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook: 알 수 없음 hook 유형: %s"
 
-#: hook.c:261
+#: hook.c:258
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s."
 msgstr ""
 
-#: imap/auth.c:104
+#: imap/auth.c:104 pop_auth.c:393
 #, fuzzy
 msgid "No authenticators available"
 msgstr "GSSAPI 인증에 실패함."
@@ -1187,20 +1187,20 @@ msgstr "GSSAPI 인증에 실패함."
 msgid "LOGIN disabled on this server."
 msgstr ""
 
-#: imap/auth_login.c:43 pop_auth.c:229
+#: imap/auth_login.c:43 pop_auth.c:223
 msgid "Logging in..."
 msgstr "접속 중..."
 
-#: imap/auth_login.c:63 pop_auth.c:272
+#: imap/auth_login.c:63 pop_auth.c:266
 msgid "Login failed."
 msgstr "접속 실패."
 
-#: imap/auth_sasl.c:96 pop_auth.c:76
+#: imap/auth_sasl.c:93 pop_auth.c:73
 #, fuzzy
 msgid "Authenticating (SASL)..."
 msgstr "인증 중 (GSSAPI)..."
 
-#: imap/auth_sasl.c:177 pop_auth.c:154
+#: imap/auth_sasl.c:174 pop_auth.c:151
 #, fuzzy
 msgid "SASL authentication failed."
 msgstr "GSSAPI 인증에 실패함."
@@ -1257,51 +1257,61 @@ msgstr ""
 msgid "Could not negotiate TLS connection"
 msgstr ""
 
-#: imap/imap.c:533
+#: imap/imap.c:534
 #, c-format
 msgid "Selecting %s..."
 msgstr "%s 선택 중..."
 
+#: imap/imap.c:656
+#, fuzzy
+msgid "Error opening mailbox"
+msgstr "편지함에 쓰는 중 오류!"
+
 #. STATUS not supported
-#: imap/imap.c:703
+#: imap/imap.c:709
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "서버의 IMAP 편지함에 추가할 수 없음"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:712 imap/message.c:584 muttlib.c:1169
+#: imap/imap.c:718 imap/message.c:593 muttlib.c:1169
 #, c-format
 msgid "Create %s?"
 msgstr "%s를 만들까요?"
 
-#: imap/imap.c:748
+#: imap/imap.c:754
 msgid "Closing connection to IMAP server..."
 msgstr "IMAP 서버 접속 닫는 중..."
 
-#: imap/imap.c:912 pop.c:458
+#: imap/imap.c:917 pop.c:458
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "표시된 %d개의 메세지를 삭제함..."
 
-#: imap/imap.c:931
+#: imap/imap.c:926
+#, fuzzy
+msgid "Expunge failed"
+msgstr "접속 실패."
+
+#: imap/imap.c:941
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "메세지 상태 플래그 저장... [%d/%d]"
 
-#: imap/imap.c:1006
+#: imap/imap.c:1025
 msgid "Expunging messages from server..."
 msgstr "서버의 메세지 삭제 중..."
 
-#: imap/imap.c:1043
+#: imap/imap.c:1064
 #, fuzzy
 msgid "CLOSE failed"
 msgstr "접속 실패."
 
-#: imap/imap.c:1299
+#: imap/imap.c:1320
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "%s에 구독 중..."
 
-#: imap/imap.c:1301
+#: imap/imap.c:1322
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "%s에 구독 해제 중..."
@@ -1311,138 +1321,143 @@ msgstr "%s에 구독 해제 중..."
 msgid "Unable to fetch headers from this IMAP server version."
 msgstr "현재 버젼의 IAMP 서버에서 헤더를 가져올 수 없습니다."
 
-#: imap/message.c:92 pop.c:209
+#: imap/message.c:83
+#, fuzzy, c-format
+msgid "Could not create temporary file %s"
+msgstr "임시파일을 만들 수 없음!"
+
+#: imap/message.c:96 pop.c:209
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "메세지 헤더 가져오는 중... [%d/%d]"
 
-#: imap/message.c:239 pop.c:336
+#: imap/message.c:243 pop.c:336
 msgid "Fetching message..."
 msgstr "메세지 가져오는 중..."
 
-#: imap/message.c:282 pop.c:373
+#: imap/message.c:286 pop.c:373
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr ""
 
-#: imap/message.c:455
+#: imap/message.c:459
 msgid "Uploading message ..."
 msgstr "메세지 올리는 중..."
 
-#: imap/message.c:562
+#: imap/message.c:569
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "%d개의 메시지를 %s로 복사 중..."
 
-#: imap/message.c:566
+#: imap/message.c:573
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "메시지 %d를 %s로 복사 중..."
 
-#: imap/util.c:238
+#: imap/util.c:239
 msgid "Continue?"
 msgstr "계속할까요?"
 
-#: imap/util.c:244
+#: imap/util.c:245
 #, c-format
 msgid "%s [%s]\n"
 msgstr "%s [%s]\n"
 
-#: init.c:490
+#: init.c:460
 msgid "alias: no address"
 msgstr "별칭: 주소 없음"
 
-#: init.c:584
+#: init.c:554
 msgid "invalid header field"
 msgstr "잘못된 헤더 기록란"
 
-#: init.c:637
+#: init.c:607
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: 알 수 없는 정렬 방법"
 
-#: init.c:748
+#: init.c:718
 #, fuzzy, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default: 정규표현식 오류: %s\n"
 
-#: init.c:809
+#: init.c:779
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: 알 수 없는 변수."
 
-#: init.c:818
+#: init.c:788
 msgid "prefix is illegal with reset"
 msgstr "잘못된 prefix, 초기화"
 
-#: init.c:824
+#: init.c:794
 msgid "value is illegal with reset"
 msgstr "잘못된 값, 초기화"
 
-#: init.c:863
+#: init.c:833
 #, c-format
 msgid "%s is set"
 msgstr "%s 설정"
 
-#: init.c:863
+#: init.c:833
 #, c-format
 msgid "%s is unset"
 msgstr "%s 설정 해제"
 
-#: init.c:1069
+#: init.c:1039
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: 잘못된 형식의 편지함"
 
-#: init.c:1094 init.c:1139
+#: init.c:1064 init.c:1109
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: 잘못된 값"
 
-#: init.c:1197
+#: init.c:1167
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: 알 수 없는 형식"
 
-#: init.c:1238
+#: init.c:1208
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "%s의 %d번 줄에 오류: %s"
 
 #. the muttrc source keyword
-#: init.c:1254
+#: init.c:1224
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: %s에 오류"
 
-#: init.c:1255
+#: init.c:1225
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr ""
 
-#: init.c:1269
+#: init.c:1239
 #, c-format
 msgid "source: error at %s"
 msgstr "source: %s에 오류"
 
-#: init.c:1274
+#: init.c:1244
 msgid "source: too many arguments"
 msgstr "source: 인수가 너무 많음"
 
-#: init.c:1325
+#: init.c:1295
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: 알 수 없는 명령어"
 
-#: init.c:1681
+#: init.c:1651
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "명령어 오류: %s\n"
 
-#: init.c:1724
+#: init.c:1694
 msgid "unable to determine home directory"
 msgstr "홈 디렉토리를 찾을 수가 없습니다"
 
-#: init.c:1732
+#: init.c:1702
 msgid "unable to determine username"
 msgstr "알 수 없는 사용자 이름입니다"
 
@@ -1490,13 +1505,14 @@ msgid "macro: too many arguments"
 msgstr "macro: 인수가 너무 많음"
 
 #: keymap.c:850
-msgid "exec: too few arguments"
+#, fuzzy
+msgid "exec: no arguments"
 msgstr "exec: 인수가 부족함"
 
 #: keymap.c:870
-#, c-format
-msgid "%s: no such command"
-msgstr "%s 명령어 없음"
+#, fuzzy, c-format
+msgid "%s: no such function"
+msgstr "%s: 맵에 그런 기능 없음"
 
 #: keymap_alldefs.h:5
 msgid "null operation"
@@ -2456,7 +2472,7 @@ msgstr "편지함이 손상됨!"
 msgid "Mailbox was corrupted!"
 msgstr "편지함이 손상되었음!"
 
-#: mbox.c:696 mbox.c:971
+#: mbox.c:696 mbox.c:972
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "치명적 오류! 편지함을 다시 열 수 없음!"
 
@@ -2476,16 +2492,24 @@ msgstr "sync: mbox가 수정되었으나, 수정된 메세지는 없음! (버그 보고 바람)"
 msgid "Writing messages... %d (%d%%)"
 msgstr "메세지 쓰는 중... %d (%d%%)"
 
-#: mbox.c:955
+#. copy the temp mailbox back into place starting at the first
+#. * change/deleted message
+#.
+#: mbox.c:925
+#, fuzzy
+msgid "Committing changes..."
+msgstr "검색 패턴 편집 중..."
+
+#: mbox.c:956
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "쓰기 실패! 편지함 일부가 %s에 저장되었음"
 
-#: mbox.c:1021
+#: mbox.c:1022
 msgid "Could not reopen mailbox!"
 msgstr "편지함을 다시 열 수 없음!"
 
-#: mbox.c:1059
+#: mbox.c:1060
 msgid "Reopening mailbox..."
 msgstr "편지함을 다시 엽니다..."
 
@@ -2607,36 +2631,36 @@ msgstr "%s에 메세지를 첨가할까요?"
 msgid "Connection to %s closed"
 msgstr "%s로 연결 중..."
 
-#: mutt_socket.c:250
+#: mutt_socket.c:258
 msgid "SSL is unavailable."
 msgstr ""
 
-#: mutt_socket.c:281
+#: mutt_socket.c:289
 #, fuzzy
 msgid "Preconnect command failed."
 msgstr "preconnect 명령 실패"
 
-#: mutt_socket.c:352 mutt_socket.c:366
+#: mutt_socket.c:360 mutt_socket.c:374
 #, fuzzy, c-format
 msgid "Error talking to %s (%s)"
 msgstr "%s에 연결 중"
 
-#: mutt_socket.c:400 mutt_socket.c:441
+#: mutt_socket.c:408 mutt_socket.c:449
 #, fuzzy, c-format
 msgid "Looking up %s..."
 msgstr "%s로 복사..."
 
-#: mutt_socket.c:405 mutt_socket.c:445
+#: mutt_socket.c:413 mutt_socket.c:453
 #, fuzzy, c-format
 msgid "Could not find the host \"%s\""
 msgstr "%s 호스트의 주소를 찾을 수가 없음."
 
-#: mutt_socket.c:409 mutt_socket.c:450
+#: mutt_socket.c:417 mutt_socket.c:458
 #, c-format
 msgid "Connecting to %s..."
 msgstr "%s로 연결 중..."
 
-#: mutt_socket.c:473
+#: mutt_socket.c:481
 #, fuzzy, c-format
 msgid "Could not connect to %s (%s)."
 msgstr "%s를 열 수 없음"
@@ -2798,60 +2822,60 @@ msgstr "%s 쓰는 중..."
 msgid "Could not synchronize mailbox %s!"
 msgstr "%s 편지함을 동기화 시킬 수 없음!"
 
-#: mx.c:872
+#: mx.c:873
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "읽은 메세지를 %s로 옮길까요?"
 
-#: mx.c:884 mx.c:1137
+#: mx.c:885 mx.c:1140
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "삭제된 메세지(%d)를 없앨까요?"
 
-#: mx.c:884 mx.c:1137
+#: mx.c:885 mx.c:1140
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "삭제된 메세지(%d)들을 없앨까요?"
 
-#: mx.c:908
+#: mx.c:909
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "읽은 메세지를 %s로 옮기는 중..."
 
-#: mx.c:966 mx.c:1128
+#: mx.c:969 mx.c:1131
 msgid "Mailbox is unchanged."
 msgstr "편지함이 변경되지 않음."
 
-#: mx.c:1002
+#: mx.c:1005
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d개 보관, %d개 이동, %d개 삭제"
 
-#: mx.c:1005 mx.c:1175
+#: mx.c:1008 mx.c:1178
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d개 보관, %d개 삭제"
 
-#: mx.c:1113
+#: mx.c:1116
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " 쓰기 상태 바꾸기; `%s'를 누르세요"
 
-#: mx.c:1115
+#: mx.c:1118
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "'toggle-write'를 사용해 쓰기를 허가합니다!"
 
-#: mx.c:1117
+#: mx.c:1120
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "편지함이 쓰기 불가능으로 표기되었음. %s"
 
-#: mx.c:1172
+#: mx.c:1175
 #, fuzzy
 msgid "Mailbox checkpointed."
 msgstr "매일함 삭제됨."
 
-#: mx.c:1472
+#: mx.c:1475
 msgid "Can't write message"
 msgstr "메시지를 쓰지 못함"
 
@@ -3003,11 +3027,11 @@ msgstr "PGP 암호 문구 잊음."
 msgid "[-- PGP output follows (current time: %c) --]\n"
 msgstr "[-- PGP 출력 (현재 시간: "
 
-#: pgp.c:352
+#: pgp.c:360
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
 msgstr "[-- 오류: PGP 하부 프로세스를 생성할 수 없음! --]\n"
 
-#: pgp.c:387
+#: pgp.c:395
 msgid ""
 "\n"
 "[-- End of PGP output --]\n"
@@ -3017,7 +3041,7 @@ msgstr ""
 "[-- PGP 출력 끝 --]\n"
 "\n"
 
-#: pgp.c:393
+#: pgp.c:401
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -3025,11 +3049,11 @@ msgstr ""
 "[-- PGP 메세지 시작 --]\n"
 "\n"
 
-#: pgp.c:395
+#: pgp.c:403
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP 공개 열쇠 부분 시작 --]\n"
 
-#: pgp.c:397
+#: pgp.c:405
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -3037,7 +3061,7 @@ msgstr ""
 "[-- PGP 서명 메세지 시작 --]\n"
 "\n"
 
-#: pgp.c:438
+#: pgp.c:446
 msgid ""
 "\n"
 "[-- END PGP MESSAGE --]\n"
@@ -3045,11 +3069,11 @@ msgstr ""
 "\n"
 "[-- PGP 메세지 끝 --]\n"
 
-#: pgp.c:440
+#: pgp.c:448
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP 공개 열쇠 부분 끝--]\n"
 
-#: pgp.c:442
+#: pgp.c:450
 msgid ""
 "\n"
 "[-- END PGP SIGNED MESSAGE --]\n"
@@ -3057,7 +3081,7 @@ msgstr ""
 "\n"
 "[-- PGP 서명 메세지 끝 --]\n"
 
-#: pgp.c:457
+#: pgp.c:465
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -3065,7 +3089,7 @@ msgstr ""
 "[-- 오류: PGP 메세지 시작을 찾을 수 없음! --]\n"
 "\n"
 
-#: pgp.c:728 pgp.c:1020
+#: pgp.c:739 pgp.c:1035
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -3073,7 +3097,7 @@ msgstr ""
 "[-- PGP 출력 끝 --]\n"
 "\n"
 
-#: pgp.c:776
+#: pgp.c:789
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
 "\n"
@@ -3081,7 +3105,7 @@ msgstr ""
 "[-- 오류: 일치하지 않는 multipart/signed 구조체! --]\n"
 "\n"
 
-#: pgp.c:784
+#: pgp.c:797
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -3090,7 +3114,7 @@ msgstr ""
 "[-- 오류: 알 수 없는 multipart/signed 프로토콜 %s! --]\n"
 "\n"
 
-#: pgp.c:808
+#: pgp.c:821
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -3100,7 +3124,7 @@ msgstr ""
 "\n"
 
 #. Now display the signed body
-#: pgp.c:818
+#: pgp.c:833
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -3108,7 +3132,7 @@ msgstr ""
 "[-- 아래의 자료는 서명 되었음 --]\n"
 "\n"
 
-#: pgp.c:824
+#: pgp.c:839
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -3116,7 +3140,7 @@ msgstr ""
 "[-- 경고: 어떠한 서명도 찾을 수 없음. --]\n"
 "\n"
 
-#: pgp.c:830
+#: pgp.c:845
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -3124,11 +3148,11 @@ msgstr ""
 "\n"
 "[-- 서명 자료 끝 --]\n"
 
-#: pgp.c:930
+#: pgp.c:945
 msgid "Internal error. Inform <roessler@guug.de>."
 msgstr "내부 오류. <roessler@guug.de>에게 알려주십시요."
 
-#: pgp.c:990
+#: pgp.c:1005
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -3136,7 +3160,7 @@ msgstr ""
 "[-- Error: PGP 하부 프로세스를 생성할 수 없음! --]\n"
 "\n"
 
-#: pgp.c:1086
+#: pgp.c:1101
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -3144,11 +3168,11 @@ msgstr ""
 "[-- 오류: 잘못 만들어진 PGP/MIME 형식의 메세지! --]\n"
 "\n"
 
-#: pgp.c:1099
+#: pgp.c:1114
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- 오류: 임시 파일을 만들 수가 없음! --]\n"
 
-#: pgp.c:1108
+#: pgp.c:1123
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -3156,7 +3180,7 @@ msgstr ""
 "[-- 아래의 자료는 PGP/MIME 암호화 되었음 --]\n"
 "\n"
 
-#: pgp.c:1126
+#: pgp.c:1141
 msgid ""
 "\n"
 "[-- End of PGP/MIME encrypted data --]\n"
@@ -3164,25 +3188,25 @@ msgstr ""
 "\n"
 "[-- PGP/MIME 암호화 자료 끝 --]\n"
 
-#: pgp.c:1206
+#: pgp.c:1221
 msgid "Can't open PGP subprocess!"
 msgstr "PGP 하부 프로세스를 열 수 없음!"
 
-#: pgp.c:1333
+#: pgp.c:1348
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "keyID = \"%s\"를 %s에 사용할까요?"
 
-#: pgp.c:1360
+#: pgp.c:1375
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "%s의 keyID 입력: "
 
-#: pgp.c:1568
+#: pgp.c:1583
 msgid "Can't invoke PGP"
 msgstr "PGP를 실행하지 못함"
 
-#: pgp.c:1672
+#: pgp.c:1687
 msgid "Create an application/pgp message?"
 msgstr "application/pgp 메세지를 만들까요?"
 
@@ -3333,25 +3357,20 @@ msgstr "%s [%2$d개 중 %1$d개의 메세지 읽음]"
 msgid "Server closed connection!"
 msgstr "서버와 연결이 끊어짐!"
 
-#: pop_auth.c:190
+#: pop_auth.c:184
 #, fuzzy
 msgid "Authenticating (APOP)..."
 msgstr "인증 중 (GSSAPI)..."
 
-#: pop_auth.c:214
+#: pop_auth.c:208
 #, fuzzy
 msgid "APOP authentication failed."
 msgstr "GSSAPI 인증에 실패함."
 
-#: pop_auth.c:249
+#: pop_auth.c:243
 #, fuzzy
 msgid "Command USER is not supported by server."
 msgstr "태그를 붙이는 것을 지원치 않음."
-
-#: pop_auth.c:356
-#, fuzzy
-msgid "Authentication method is unknown."
-msgstr "GSSAPI 인증에 실패함."
 
 #: pop_lib.c:157
 #, fuzzy
@@ -3402,24 +3421,24 @@ msgstr "별칭 만들기"
 msgid "Search"
 msgstr "찾기"
 
-#: query.c:91
+#: query.c:93
 msgid "Waiting for response..."
 msgstr "응답 기다리는 중..."
 
-#: query.c:210 query.c:235
+#: query.c:221 query.c:246
 msgid "Query command not defined."
 msgstr "질의 명령이 정의되지 않음."
 
-#: query.c:262
+#: query.c:273
 msgid "Query"
 msgstr "질문"
 
 #. Prompt for Query
-#: query.c:275 query.c:303
+#: query.c:286 query.c:314
 msgid "Query: "
 msgstr "질문: "
 
-#: query.c:286 query.c:312
+#: query.c:297 query.c:323
 #, c-format
 msgid "Query '%s'"
 msgstr "'%s'에 대한 질문"
@@ -3787,6 +3806,13 @@ msgstr "부모 메세지는 볼 수 없는 상태임."
 #: thread.c:742
 msgid "Parent message is not available."
 msgstr "부모 메세지가 존재하지 않음."
+
+#~ msgid "%s: no such command"
+#~ msgstr "%s 명령어 없음"
+
+#, fuzzy
+#~ msgid "Authentication method is unknown."
+#~ msgstr "GSSAPI 인증에 실패함."
 
 #~ msgid "MIC algorithm: "
 #~ msgstr "MIC 알고리즘: "
