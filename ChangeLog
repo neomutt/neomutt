@@ -1,3 +1,8 @@
+2004-08-16 21:34:22  Moritz Schulte   <moritz@g10code.com>  (roessler)
+
+	* compose.c: Only print "Encrypt with" field in case the used
+	S/MIME modules supports this feature.
+
 2004-08-16 21:33:35  Pawel Dziekonski  <dzieko@pwr.wroc.pl>  (roessler)
 
 	* po/pl.po: update
