@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -152,6 +152,8 @@ int mutt_yesorno (const char *msg, int def)
   event_t ch;
   char *yes = _("yes");
   char *no = _("no");
+  char *answer_string;
+  size_t answer_string_len;
 
 #ifdef HAVE_LANGINFO_YESEXPR
   char *expr;
@@ -170,7 +172,19 @@ int mutt_yesorno (const char *msg, int def)
 #endif
 
   CLEARLINE(LINES-1);
-  printw ("%s ([%s]/%s): ", msg, def ? yes : no, def ? no : yes);
+
+  /*
+   * In order to prevent the default answer to the question to wrapped
+   * around the screen in the even the question is wider than the screen,
+   * ensure there is enough room for the answer and truncate the question
+   * to fit.
+   */
+  answer_string = malloc (COLS + 1);
+  snprintf (answer_string, COLS + 1, " ([%s]/%s): ", def ? yes : no, def ? no : yes);
+  answer_string_len = strlen (answer_string);
+  printw ("%.*s%s", COLS - answer_string_len, msg, answer_string);
+  FREE (&answer_string);
+
   FOREVER
   {
     mutt_refresh ();
