@@ -199,6 +199,7 @@ PreferredMIMENames[] =
   /* seems to be common on some systems */
 
   { "sjis",		"Shift_JIS"	},
+  { "euc-jp-ms",	"eucJP-ms"	},
 
 
   /*
