@@ -378,23 +378,24 @@ bail:
 
 
 /*
- * Convert a string in place
+ * Convert a string
  * Used in rfc2047.c and rfc2231.c
  */
 
-int mutt_convert_string (char *s, size_t len, const char *from, const char *to)
+int mutt_convert_string (char **ps, const char *from, const char *to)
 {
   iconv_t cd;
   const char *repls[] = { "\357\277\275", "?", 0 };
+  char *s = *ps;
 
   if (!s || !*s)
     return 0;
 
   if (to && from && (cd = mutt_iconv_open (to, from)) != (iconv_t)-1) 
   {
-    int n;
+    int len;
     const char *ib;
-    char *c, *ob;
+    char *buf, *ob;
     size_t ibl, obl;
     const char **inrepls = 0;
     char *outrepl = 0;
@@ -406,14 +407,16 @@ int mutt_convert_string (char *s, size_t len, const char *from, const char *to)
     else
       outrepl = "?";
       
-    n = strlen (s);
-    c = safe_malloc (n);
-    memcpy (c, s, n);
-    ib = c, ibl = n, ob = s, obl = len ? len-1 : n;
+    len = strlen (s);
+    ib = s, ibl = len + 1;
+    obl = MB_LEN_MAX * ibl;
+    ob = buf = safe_malloc (obl + 1);
     mutt_iconv (cd, &ib, &ibl, &ob, &obl, inrepls, outrepl);
-    free (c);
     iconv_close (cd);
+    free (s);
     *ob = '\0';
+    *ps = safe_strdup (buf);
+    free (buf);
     return 0;
   }
   else

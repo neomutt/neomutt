@@ -467,7 +467,7 @@ int mutt_multi_choice (char *prompt, char *letters)
 
 int mutt_addwch (wchar_t wc)
 {
-  char buf[6]; /* FIXME */
+  char buf[MB_LEN_MAX];
   int n;
 
   n = wctomb (buf, wc);

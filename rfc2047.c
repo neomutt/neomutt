@@ -186,13 +186,8 @@ void rfc2047_encode_string (char *d, size_t dlen, const unsigned char *s)
   const unsigned char *p = s;
   encode_t *encoder;
   char send_charset[SHORT_STRING];
-  unsigned char scratch[LONG_STRING]; 
-  
-  /* attention: this function will fail for
-   * strings longer then LONG_STRING.  But lots
-   * of code in mutt will anyway...
-   */
-  
+  char *scratch;
+
   mutt_get_send_charset(send_charset, sizeof(send_charset), NULL, 0);
   
   /* First check to see if there are any 8-bit characters */
@@ -242,11 +237,12 @@ void rfc2047_encode_string (char *d, size_t dlen, const unsigned char *s)
     s += 5;
   }
 
-  strfcpy((char *)scratch, (const char *) s, sizeof(scratch));
+  scratch = safe_strdup ((const char *) s);
   if (*send_charset && mutt_strcasecmp("us-ascii", send_charset))
-    mutt_convert_string ((char *)scratch, LONG_STRING, Charset, send_charset);
+    mutt_convert_string (&scratch, Charset, send_charset);
   
-  (*encoder) (d, dlen, scratch, send_charset);
+  (*encoder) (d, dlen, (unsigned char *) scratch, send_charset);
+  safe_free ((void **) &scratch);
 }
 
 void rfc2047_encode_adrlist (ADDRESS *addr)
@@ -274,25 +270,27 @@ void rfc2047_encode_adrlist (ADDRESS *addr)
 
 static int rfc2047_decode_word (char *d, const char *s, size_t len)
 {
-  char *p = safe_strdup (s);
-  char *pp = p;
-  char *pd = d;
-  char *t;
-  int enc = 0, filter = 0, count = 0, c1, c2, c3, c4;
+  const char *pp = s, *pp1;
+  char *pd, *d0;
+  char *t, *t1;
+  int enc = 0, count = 0, c1, c2, c3, c4;
   char *charset = NULL;
-  size_t olen = len;
 
-  while ((pp = strtok (pp, "?")) != NULL)
+  pd = d0 = safe_malloc (strlen (s));
+
+  for (pp = s; (pp1 = strchr (pp, '?')); pp = pp1 + 1)
   {
     count++;
     switch (count)
     {
       case 2:
 	/* ignore language specification a la RFC 2231 */        
-        if ((t = strchr (pp, '*')))
-	  *t = '\0';
-        charset = pp;
-        filter = 1;
+	t = pp1;
+        if ((t1 = memchr (pp, '*', t - pp)))
+	  t = t1;
+	charset = safe_malloc (t - pp + 1);
+	memcpy (charset, pp, t - pp);
+	charset[t-pp] = '\0';
 	break;
       case 3:
 	if (toupper (*pp) == 'Q')
@@ -300,12 +298,16 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
 	else if (toupper (*pp) == 'B')
 	  enc = ENCBASE64;
 	else
+	{
+	  safe_free ((void **) &charset);
+	  safe_free ((void **) &d0);
 	  return (-1);
+	}
 	break;
       case 4:
 	if (enc == ENCQUOTEDPRINTABLE)
 	{
-	  while (*pp && len > 0)
+	  while (pp < pp1 && len > 0)
 	  {
 	    if (*pp == '_')
 	    {
@@ -331,7 +333,7 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
 	}
 	else if (enc == ENCBASE64)
 	{
-	  while (*pp && len > 0)
+	  while (pp < pp1 && len > 0)
 	  {
 	    if (pp[0] == '=' || pp[1] == 0 || pp[1] == '=')
 	      break;  /* something wrong */
@@ -361,12 +363,13 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
 	}
 	break;
     }
-    pp = 0;
   }
   
-  if (filter)
-    mutt_convert_string (d, olen, charset, Charset);
-  safe_free ((void **) &p);
+  if (charset)
+    mutt_convert_string (&d0, charset, Charset);
+  strfcpy (d, d0, len);
+  safe_free ((void **) &charset);
+  safe_free ((void **) &d0);
   return (0);
 }
 

@@ -51,7 +51,7 @@ struct rfc2231_parameter
 
 static char *rfc2231_get_charset (char *, char *, size_t);
 static struct rfc2231_parameter *rfc2231_new_parameter (void);
-static void rfc2231_decode_one (char *, char *, char *);
+static void rfc2231_decode_one (char *, char *);
 static void rfc2231_free_parameter (struct rfc2231_parameter **);
 static void rfc2231_join_continuations (PARAMETER **, struct rfc2231_parameter *);
 static void rfc2231_list_insert (struct rfc2231_parameter **, struct rfc2231_parameter *);
@@ -123,8 +123,9 @@ void rfc2231_decode_parameters (PARAMETER **headp)
       *s = '\0';
       
       s = rfc2231_get_charset (p->value, charset, sizeof (charset));
-      rfc2231_decode_one (p->value, s, charset);
-      
+      rfc2231_decode_one (p->value, s);
+      mutt_convert_string (&p->value, charset, Charset);
+
       *last = p;
       last = &p->next;
       p->next = NULL;
@@ -201,7 +202,7 @@ static char *rfc2231_get_charset (char *value, char *charset, size_t chslen)
     return t + 1;
 }
 
-static void rfc2231_decode_one (char *dest, char *src, char *chs)
+static void rfc2231_decode_one (char *dest, char *src)
 {
   char *d;
 
@@ -217,9 +218,6 @@ static void rfc2231_decode_one (char *dest, char *src, char *chs)
   }
   
   *d = '\0';
-  
-  if (chs && strcmp (chs, "us-ascii") && strcmp (chs, Charset))
-    mutt_convert_string (dest, 0, chs, Charset);
 }
 
 /* insert parameter into an ordered list.
@@ -278,7 +276,7 @@ static void rfc2231_join_continuations (PARAMETER **head,
     do 
     {
       if (encoded && par->encoded)
-	rfc2231_decode_one (par->value, valp, charset);
+	rfc2231_decode_one (par->value, valp);
       
       vl = strlen (par->value);
       
@@ -294,6 +292,8 @@ static void rfc2231_join_continuations (PARAMETER **head,
     
     if (value)
     {
+      if (encoded)
+	mutt_convert_string (&value, charset, Charset);
       *head = mutt_new_parameter ();
       (*head)->attribute = safe_strdup (attribute);
       (*head)->value = value;
@@ -304,10 +304,12 @@ static void rfc2231_join_continuations (PARAMETER **head,
 
 int rfc2231_encode (char *dest, size_t l, unsigned char *src)
 {
-  char buff[LONG_STRING];
+  char *buff;
   unsigned char *s;
   char *t;
   int encode = 0;
+
+  buff = safe_malloc (3 * strlen ((char *) src) + 1);
 
   for (s = src; *s && !encode; s++)
   {
@@ -332,12 +334,13 @@ int rfc2231_encode (char *dest, size_t l, unsigned char *src)
     *t = '\0';
     
     if (Charset && SendCharset && mutt_strcasecmp (Charset, SendCharset))
-      mutt_convert_string (buff, LONG_STRING, Charset, SendCharset);
+      mutt_convert_string (&buff, Charset, SendCharset);
 
     snprintf (dest, l, "%s''%s", SendCharset ? SendCharset :
 	      (Charset ? Charset : "unknown-8bit"), buff);
   }
 
+  safe_free ((void **) &buff);
   return encode;
 }
 

@@ -55,7 +55,7 @@ int mutt_decoder_push_one (DECODER *, char);
 
 int mutt_recode_file (const char *, const char *, const char *);
 
-int mutt_convert_string (char *, size_t, const char *, const char *);
+int mutt_convert_string (char **, const char *, const char *);
 
 size_t mutt_iconv (iconv_t, const char **, size_t *, char **, size_t *, const char **, const char *);
 
