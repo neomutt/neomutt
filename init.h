@@ -1575,7 +1575,7 @@ struct option_t MuttVars[] = {
   ** .dt %f .dd Expands to the name of a file containing a message.
   ** .dt %s .dd Expands to the name of a file containing the signature part
   ** .          of a multipart/signed attachment when verifying it.
-  ** .dt %k .dd The key-pair specified with $$smime_sign_as.
+  ** .dt %k .dd The key-pair specified with $$smime_default_key
   ** .dt %c .dd One or more certificate IDs.
   ** .dt %a .dd The algorithm used for encryption.
   ** .dt %C .dd CA location:  Depending on whether $$smime_ca_location
