@@ -207,12 +207,37 @@ static void qp_decode_line (char *dest, char *src, size_t *l)
   *l = d - dest;
 }
 
+/* 
+ * Decode an attachment encoded with quoted-printable.
+ * 
+ * Why doesn't this overflow any buffers?  First, it's guaranteed
+ * that the length of a line grows when you _en_-code it to
+ * quoted-printable.  That means that we always can store the
+ * result in a buffer of at most the _same_ size.
+ * 
+ * Now, we don't special-case if the line we read with fgets()
+ * isn't terminated.  We don't care about this, since STRING > 78,
+ * so corrupted input will just be corrupted a bit more.  That
+ * implies that STRING+1 bytes are always sufficient to store the
+ * result of qp_decode_line.
+ * 
+ * Finally, at soft line breaks, some part of a multibyte character
+ * may have been left over by convert_to_state().  This shouldn't
+ * be more than 6 characters, so STRING + 7 should be sufficient
+ * memory to store the decoded data.
+ * 
+ * Just to make sure that I didn't make some off-by-one error
+ * above, we just use STRING*2 for the target buffer's size.
+ * 
+ */
+
 void mutt_decode_quoted (STATE *s, BODY *b, int istext, iconv_t cd)
 {
   long len = b->length;
   char line[STRING];
-  char decline[STRING+3];
+  char decline[2*STRING];
   size_t l = 0;
+  size_t l2;
 
   state_set_prefix(s);
 
@@ -221,10 +246,23 @@ void mutt_decode_quoted (STATE *s, BODY *b, int istext, iconv_t cd)
     if (fgets (line, sizeof (line), s->fpin) == NULL)
       break;
 
-    len -= strlen (line);
+    len -= (l2 = strlen (line));
+
+    /* 
+     * Skip over pending input data until end of line - at this
+     * point, the only thing we may see is trailing whitespace,
+     * i.e. garbage.
+     */
+
+    if (l2 && line[l2 - 1] != '\n')
+      while (len > 0 && fgetc (s->fpin) != '\n')
+	len--;
+
+    /* 
+     * decode and do character set conversion
+     */
     
-    qp_decode_line (decline, line, &l);
-    
+    qp_decode_line (decline + l, line, &l);
     convert_to_state (cd, decline, &l, s);
   }
 
