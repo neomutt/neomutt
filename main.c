@@ -208,10 +208,10 @@ static void show_version (void)
 	"-HAVE_REGCOMP  "
 #endif
 
-#ifdef USE_GNU_RX
-	"+USE_GNU_RX  "
+#ifdef USE_GNU_REGEX
+	"+USE_GNU_REGEX  "
 #else
-	"-USE_GNU_RX  "
+	"-USE_GNU_REGEX  "
 #endif
 
 #ifdef HAVE_COLOR

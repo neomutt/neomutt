@@ -1133,25 +1133,13 @@ BODY *mutt_remove_multipart (BODY *b)
 char *mutt_make_date (char *s, size_t len)
 {
   time_t t = time (NULL);
-  struct tm *l = gmtime(&t);
-  int yday = l->tm_yday;
-  int tz = l->tm_hour * 60 + l->tm_min;
-
-  l = localtime(&t);
-  tz = l->tm_hour * 60 + l->tm_min - tz;
-  yday = l->tm_yday - yday;
-
-  if (yday != 0)
-  {
-    if (yday > 1 || yday < -1)
-      yday /= - abs (yday);
-
-    tz += yday * 24 * 60; /* GMT is next or previous day! */
-  }
+  struct tm *l = localtime (&t);
+  time_t tz = mutt_local_tz (t);
 
   snprintf (s, len,  "Date: %s, %d %s %d %02d:%02d:%02d %+03d%02d\n",
-	   Weekdays[l->tm_wday], l->tm_mday, Months[l->tm_mon], l->tm_year+1900,
-	   l->tm_hour, l->tm_min, l->tm_sec, tz/60, abs(tz) % 60);
+	    Weekdays[l->tm_wday], l->tm_mday, Months[l->tm_mon],
+	    l->tm_year + 1900, l->tm_hour, l->tm_min, l->tm_sec,
+	    tz / 3600, abs (tz) % 3600);
   return (s);
 }
 

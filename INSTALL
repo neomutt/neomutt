@@ -84,16 +84,17 @@ to ``configure'' to help it out, or change the default behavior:
 --disable-nls
 	This switch disables mutt's native language support.
 
---with-included-gettext Mutt will be built using the GNU gettext
-	library included in the intl/ sub-directory.  You may need
-	to use this switch if your machine has something which looks
-	like gettext to the configure script, but isn't able to cope
-	with mutt's catalog files.
+--with-included-gettext 
+	Mutt will be built using the GNU gettext library included in
+	the intl/ sub-directory.  You may need to use this switch if
+	your machine has something which looks like gettext to the
+	configure script, but isn't able to cope with mutt's catalog
+	files.
 
---with-rx
-	use GNU rx instead of local regexp routines.  Many systems don't
-	have the POSIX compliant regcomp/regexec/regfree routines, so this
-	provides a way to support them.
+--with-regex
+	use GNU regex instead of local regexp routines.  Many systems
+	don't have the POSIX compliant regcomp/regexec/regfree
+	routines, so this provides a way to support them.
 
 --enable-flock
 	use flock() to lock files.  
@@ -167,7 +168,7 @@ Solaris 2.4
 
 	The system regcomp() and regexec() routines are very badly
 	broken.  This should be automatically detected by the
-	configure script.  If not, use the --with-rx switch when
+	configure script.  If not, use the --with-regex switch when
 	configuring mutt.
 
 	We are also hearing reports that Solaris 2.4's NLS libraries
@@ -181,9 +182,9 @@ Solaris 2.4
 
 Solaris 2.6
 
-	There are reports that mutt behaves strangely when linked
-	with the system regexp library.  Please use the --with-rx
-	switch when configuring on this platform.
+	There are reports that mutt behaves strangely when linked with
+	the system regexp library.  Please use the --with-regex switch
+	when configuring on this platform.
 
  	For the real fix, applying Sun patches # 105490-05 (linker
 	patch) and # 105210-17 (libc and malloc patch) from
@@ -205,11 +206,7 @@ Sparc Linux
 
 Digital Unix (OSF/1)
 
-	Don't try "--with-rx", because you won't be able to match
-	anything (using system's regex functions seems to work fine
-	though).
-
-	Also, the system curses library is said to be badly broken.  Use
-	GNU ncurses or SLang instead.
+	The system curses library is said to be badly broken.  Use GNU
+	ncurses or SLang instead.
 
 $Id$

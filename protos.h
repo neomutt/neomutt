@@ -94,7 +94,7 @@ HEADER *mutt_dup_header (HEADER *);
 
 ATTACHPTR **mutt_gen_attach_list (BODY *, int, ATTACHPTR **, short *, short *, int, int);
 
-time_t mutt_local_tz (void);
+time_t mutt_local_tz (time_t);
 time_t mutt_mktime (struct tm *, int);
 time_t is_from (const char *, char *, size_t);
 time_t mutt_parse_date (const char *, HEADER *);

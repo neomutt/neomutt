@@ -107,7 +107,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
 
   /* precompute the local timezone to speed up calculation of the
      received time */
-  tz = mutt_local_tz ();
+  tz = mutt_local_tz (0);
 
   buf[sizeof (buf) - 1] = 0;
   
@@ -145,7 +145,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
 	}
       } 
       else
-	hdr->received = t + tz;
+	hdr->received = t - tz;
 
       hdr->env = mutt_read_rfc822_header (ctx->fp, hdr, 0);
 
@@ -249,7 +249,7 @@ int mbox_parse_mailbox (CONTEXT *ctx)
 
   /* precompute the local timezone to speed up calculation of the
      date received */
-  tz = mutt_local_tz ();
+  tz = mutt_local_tz (0);
 
   loc = ftell (ctx->fp);
   while (fgets (buf, sizeof (buf), ctx->fp) != NULL)
@@ -281,7 +281,7 @@ int mbox_parse_mailbox (CONTEXT *ctx)
 	mx_alloc_memory (ctx);
       
       curhdr = ctx->hdrs[ctx->msgcount] = mutt_new_header ();
-      curhdr->received = t + tz;
+      curhdr->received = t - tz;
       curhdr->offset = loc;
       curhdr->index = ctx->msgcount;
 	

@@ -24,10 +24,10 @@
 #ifndef MUTT_REGEX_H
 #define MUTT_REGEX_H
 
-#ifdef HAVE_REGCOMP
-#include <regex.h>
+#ifdef USE_GNU_REGEX
+#include "_regex.h"
 #else
-#include "rxposix.h"
+#include <regex.h>
 #endif
 
 /* this is a non-standard option supported by Solaris 2.5.x which allows

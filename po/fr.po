@@ -7,9 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 0.94.14i\n"
 "POT-Creation-Date: 1999-01-04 13:55+0100\n"
-"PO-Revision-Date: 1998-12-11 09:06+0100\n"
-"Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre "
-"<Vincent.Lefevre@ens-lyon.fr>\n"
+"PO-Revision-Date: 1999-01-05 20:46+0100\n"
+"Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre <Vincent.Lefevre@ens-lyon.fr>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
@@ -1195,13 +1194,13 @@ msgstr "Erreur dans %s, ligne %d : %s"
 #: init.c:1102
 #, c-format
 msgid "source: errors in %s"
-msgstr "source : erreurs à %s"
+msgstr "source : erreurs dans %s"
 
 # , c-format
 #: init.c:1112
 #, c-format
 msgid "source: error at %s"
-msgstr "source : erreur à %s"
+msgstr "source : erreur dans %s"
 
 #: init.c:1117
 msgid "source: too many arguments"
@@ -2117,7 +2116,7 @@ msgstr ""
 msgid ""
 "\n"
 "Compile options:"
-msgstr ""
+msgstr "\nOptions de compilation :"
 
 #: main.c:306
 msgid "Error initializing terminal."
@@ -2313,7 +2312,7 @@ msgstr "Écriture de %s..."
 #: mx.c:704
 #, fuzzy, c-format
 msgid "Could not synchronize mailbox %s!"
-msgstr "La boîte aux lettres n'a pas pu être réouverte !"
+msgstr "La boîte aux lettres %s n'a pas pu être réouverte !"
 
 # , c-format
 #: mx.c:767
@@ -2577,9 +2576,7 @@ msgstr "[-- FIN DE BLOC DE CLÉ PUBLIQUE PGP --]\n"
 msgid ""
 "\n"
 "[-- END PGP SIGNED MESSAGE --]\n"
-msgstr ""
-"[-- DÉBUT DE MESSAGE SIGNÉ PGP --]\n"
-"\n"
+msgstr "\n[-- FIN DE MESSAGE SIGNÉ PGP --]\n"
 
 #: pgp.c:477
 msgid ""
@@ -3080,7 +3077,7 @@ msgstr "Message non modifié. Abandon."
 #. abort
 #: send.c:1140
 msgid "Mail not sent."
-msgstr "Courrier non envoyé."
+msgstr "Message non envoyé."
 
 #: send.c:1153
 msgid "Message postponed."
@@ -3113,11 +3110,11 @@ msgstr "Envoi du message..."
 #: send.c:1324
 #, fuzzy
 msgid "Could not send the message."
-msgstr "envoyer le message"
+msgstr "Impossible d'envoyer le message."
 
 #: send.c:1330
 msgid "Mail sent."
-msgstr "Courrier envoyé."
+msgstr "Message envoyé."
 
 #: sendlib.c:475
 msgid "No boundary parameter found! [report this error]"
