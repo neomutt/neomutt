@@ -139,7 +139,7 @@ void mutt_edit_file (const char *editor, const char *data)
 {
   char cmd[LONG_STRING];
   
-  endwin ();
+  mutt_endwin (NULL);
   mutt_expand_file_fmt (cmd, sizeof (cmd), editor, data);
   if (mutt_system (cmd) == -1)
     mutt_error (_("Error running \"%s\"!"), cmd);
@@ -367,7 +367,7 @@ int mutt_do_pager (const char *banner,
   {
     char cmd[STRING];
     
-    endwin ();
+    mutt_endwin (NULL);
     mutt_expand_file_fmt (cmd, sizeof(cmd), Pager, tempfile);
     if (mutt_system (cmd) == -1)
     {

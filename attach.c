@@ -126,7 +126,7 @@ int mutt_compose_attachment (BODY *a)
       {
 	int r;
 
-	endwin ();
+	mutt_endwin (NULL);
 	if ((r = mutt_system (command)) == -1)
 	  mutt_error (_("Error running \"%s\"!"), command);
 	
@@ -251,7 +251,7 @@ int mutt_edit_attachment (BODY *a)
       }
       else
       {
-	endwin ();
+	mutt_endwin (NULL);
 	if (mutt_system (command) == -1)
 	  mutt_error (_("Error running \"%s\"!"), command);
       }
@@ -471,7 +471,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
     int tempfd = -1, pagerfd = -1;
     
     if (!use_pager)
-      endwin ();
+      mutt_endwin (NULL);
 
     if (use_pager || use_pipe)
     {
@@ -608,7 +608,7 @@ int mutt_pipe_attachment (FILE *fp, BODY *b, const char *path, char *outfile)
       return 0;
     }
 
-  endwin ();
+  mutt_endwin (NULL);
 
   if (fp)
   {
@@ -905,7 +905,7 @@ int mutt_print_attachment (FILE *fp, BODY *a)
     strfcpy (command, entry->printcommand, sizeof (command));
     piped = rfc1524_expand_command (a, newfile, type, command, sizeof (command));
 
-    endwin ();
+    mutt_endwin (NULL);
 
     /* interactive program */
     if (piped)
@@ -955,7 +955,7 @@ int mutt_print_attachment (FILE *fp, BODY *a)
     {
       if ((ifp = fopen (newfile, "r")) != NULL)
       {
-	endwin ();
+	mutt_endwin (NULL);
 	thepid = mutt_create_filter (NONULL(PrintCmd), &fpout, NULL, NULL);
 	mutt_copy_stream (ifp, fpout);
 	fclose (ifp);

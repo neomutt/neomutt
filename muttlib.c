@@ -1084,7 +1084,7 @@ FILE *mutt_open_read (const char *path, pid_t *thepid)
     char *s = safe_strdup (path);
 
     s[len - 1] = 0;
-    endwin ();
+    mutt_endwin (NULL);
     *thepid = mutt_create_filter (s, NULL, &f, NULL);
     safe_free ((void **) &s);
   }

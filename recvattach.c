@@ -577,7 +577,7 @@ void mutt_pipe_attachment_list (FILE *fp, int tag, BODY *top, int filter)
 
   if (!filter && !option (OPTATTACHSPLIT))
   {
-    endwin ();
+    mutt_endwin (NULL);
     thepid = mutt_create_filter (buf, &state.fpout, NULL, NULL);
     pipe_attachment_list (buf, fp, tag, top, filter, &state);
     fclose (state.fpout);
@@ -676,7 +676,7 @@ void mutt_print_attachment_list (FILE *fp, int tag, BODY *top)
   {
     if (!can_print (top, tag))
       return;
-    endwin ();
+    mutt_endwin (NULL);
     memset (&state, 0, sizeof (STATE));
     thepid = mutt_create_filter (NONULL (PrintCmd), &state.fpout, NULL, NULL);
     print_attachment_list (fp, tag, top, &state);

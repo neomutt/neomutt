@@ -758,7 +758,7 @@ int mix_send_message (LIST *chain, const char *tempfile)
   }
   
   if (!option (OPTNOCURSES))
-    endwin ();
+    mutt_endwin (NULL);
   
   if ((i = mutt_system (cmd)))
   {

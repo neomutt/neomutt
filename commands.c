@@ -118,7 +118,7 @@ int mutt_display_message (HEADER *cur)
   {
     fpfilterout = fpout;
     fpout = NULL;
-    /* endwin (); */
+    /* mutt_endwin (NULL); */
     filterpid = mutt_create_filter_fd (DisplayFilter, &fpout, NULL, NULL,
 				       -1, fileno(fpfilterout), -1);
     if (filterpid < 0)
@@ -179,7 +179,7 @@ int mutt_display_message (HEADER *cur)
   {
     int r;
 
-    endwin ();
+    mutt_endwin (NULL);
     snprintf (buf, sizeof (buf), "%s %s", NONULL(Pager), tempfile);
     if ((r = mutt_system (buf)) == -1)
       mutt_error (_("Error running \"%s\"!"), buf);
@@ -308,7 +308,7 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
   pid_t thepid;
   FILE *fpout;
   
-  endwin ();
+  mutt_endwin (NULL);
   if (h)
   {
 
@@ -321,7 +321,7 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
       if(h->pgp & PGPENCRYPT && !pgp_valid_passphrase())
 	return 1;
     }
-    endwin ();
+    mutt_endwin (NULL);
 #endif
 
     thepid = mutt_create_filter (cmd, &fpout, NULL, NULL);
@@ -357,7 +357,7 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
         if (Context->hdrs[Context->v2r[i]]->tagged)
         {
 	  mutt_message_hook (Context, Context->hdrs[Context->v2r[i]], M_MESSAGEHOOK);
-	  endwin ();
+	  mutt_endwin (NULL);
 	  thepid = mutt_create_filter (cmd, &fpout, NULL, NULL);
           pipe_msg (Context->hdrs[Context->v2r[i]], fpout, decode);
           /* add the message separator */
@@ -370,7 +370,7 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
     }
     else
     {
-      endwin ();
+      mutt_endwin (NULL);
       thepid = mutt_create_filter (cmd, &fpout, NULL, NULL);
       for (i = 0; i < Context->vcount; i++)
       {
@@ -501,7 +501,7 @@ void mutt_shell_escape (void)
     if(buf[0])
     {
       CLEARLINE (LINES-1);
-      endwin ();
+      mutt_endwin (NULL);
       fflush (stdout);
       if (mutt_system (buf) != 0 || option (OPTWAITKEY))
 	mutt_any_key_to_continue (NULL);

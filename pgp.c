@@ -773,7 +773,7 @@ void pgp_extract_keys_from_messages (HEADER *h)
   }
       
   fclose (fpout);
-  endwin ();
+  mutt_endwin (NULL);
   pgp_invoke_import (tempfname);
   mutt_any_key_to_continue (NULL);
 
@@ -820,7 +820,7 @@ void pgp_extract_keys_from_attachment_list (FILE *fp, int tag, BODY *top)
     return;
   }
 
-  endwin();
+  mutt_endwin (NULL);
   set_option(OPTDONTHANDLEPGPKEYS);
   
   for(; top; top = top->next)
@@ -1566,7 +1566,7 @@ int pgp_protect (HEADER *msg, char *pgpkeylist)
   mutt_message _("Invoking PGP...");
 
   if (!isendwin ())
-    endwin ();
+    mutt_endwin (NULL);
 
   if (traditional)
   {
