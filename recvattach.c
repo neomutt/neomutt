@@ -878,8 +878,8 @@ void mutt_view_attachments (HEADER *hdr)
 #ifdef HAVE_SMIME
     if (hdr->security & APPLICATION_SMIME)
     {
-      if (hdr->env->to)
-	  smime_getkeys (hdr->env->to->mailbox);
+      if (hdr->env)
+	  smime_getkeys (hdr->env);
 
       if (mutt_is_application_smime(hdr->content))
 	secured = ! smime_decrypt_mime (msg->fp, &fp, hdr->content, &cur);

@@ -663,7 +663,7 @@ char *smime_get_field_from_db (char *mailbox, char *query, short public, short m
 */
 
 static int SmimeFirstTime = 1;  /* sucks... */
-void smime_getkeys (char *mailbox)
+void _smime_getkeys (char *mailbox)
 {
   char *k = smime_get_field_from_db (mailbox, NULL, 0, 0);	/* XXX - or sohuld we ask? */
   char buf[STRING];
@@ -723,7 +723,29 @@ void smime_getkeys (char *mailbox)
 	    NONULL (SmimeCertificates), SmimeSignAs);
 }
 
+void smime_getkeys (ENVELOPE *env)
+{
+  ADDRESS *t;
+  int found = 0;
 
+  for (t = env->to; !found && t; t = t->next)
+    if (mutt_addr_is_user (t))
+    {
+      found = 1;
+      smime_getkeys (t->mailbox);
+	  }
+  for (t = env->cc; !found && t; t = t->next)
+    if (mutt_addr_is_user (t))
+    {
+      found = 1;
+      smime_getkeys (t->mailbox);
+    }
+  if (!found && (t = mutt_default_from()))
+  {
+    _smime_getkeys (t->mailbox);
+    rfc822_free_address (&t);
+  }
+}
 
 /* This routine attempts to find the keyids of the recipients of a message.
  * It returns NULL if any of the keys can not be found.
