@@ -9,8 +9,7 @@ then
 else
 	echo
 	echo "Some part of the preparation process failed."
-	echo "Please refer to doc/building-from-cvs.txt for"
-	echo "details."
+	echo "Please refer to doc/devel-notes.txt for details."
 	echo
 	exit 1
 fi
