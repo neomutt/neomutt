@@ -1370,26 +1370,6 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
   if (!(flags & M_SHOW))
     return 0;
 
-  if (flags & M_SHOWCOLOR)
-  {
-    m = ((*lineInfo)[n].continuation) ? ((*lineInfo)[n].syntax)[0].first : n;
-    if ((*lineInfo)[m].type == MT_COLOR_HEADER)
-      def_color = ((*lineInfo)[m].syntax)[0].color;
-    else
-      def_color = (*lineInfo)[m].type;
-
-    attrset (def_color);
-#ifdef HAVE_BKGDSET
-    bkgdset (def_color | ' ');
-#endif
-    clrtoeol ();
-    SETCOLOR (MT_COLOR_NORMAL);
-    BKGDSET (MT_COLOR_NORMAL);
-    
-  }
-  else
-    clrtoeol ();
-
   /* display the line */
   format_line (lineInfo, n, buf, flags, &a, cnt, &ch, &vch, &col, &special);
 
@@ -1406,6 +1386,25 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
   if (special || (col != COLS && (flags & (M_SHOWCOLOR | M_SEARCH))))
     resolve_color (*lineInfo, n, vch, flags, 0, &a);
           
+  /*
+   * Fill the blank space at the end of the line with the prevailing color.
+   * ncurses does an implicit clrtoeol() when you do addch('\n') so we have
+   * to make sure to reset the color *after* that
+   */
+  if (flags & M_SHOWCOLOR)
+  {
+    m = ((*lineInfo)[n].continuation) ? ((*lineInfo)[n].syntax)[0].first : n;
+    if ((*lineInfo)[m].type == MT_COLOR_HEADER)
+      def_color = ((*lineInfo)[m].syntax)[0].color;
+    else
+      def_color = ColorDefs[ (*lineInfo)[m].type ];
+
+    attrset (def_color);
+#ifdef HAVE_BKGDSET
+    bkgdset (def_color | ' ');
+#endif
+  }
+
   /* ncurses always wraps lines when you get to the right side of the
    * screen, but S-Lang seems to only wrap if the next character is *not*
    * a newline (grr!).
@@ -1414,6 +1413,17 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
     if (col < COLS)
 #endif
       addch ('\n');
+
+  /*
+   * reset the color back to normal.  This *must* come after the
+   * addch('\n'), otherwise the color for this line will not be
+   * filled to the right margin.
+   */
+  if (flags & M_SHOWCOLOR)
+  {
+    SETCOLOR(MT_COLOR_NORMAL);
+    BKGDSET(MT_COLOR_NORMAL);
+  }
 
   /* build a return code */
   if (!(flags & M_SHOW))
