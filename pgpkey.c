@@ -307,6 +307,8 @@ static pgp_key_t *pgp_select_key (struct pgp_vinfo *pgp,
   mutt_menuDestroy (&menu);
   safe_free ((void **) &KeyTable);
 
+  set_option (OPTNEEDREDRAW);
+  
   return (kp);
 }
 
