@@ -347,6 +347,7 @@ enum
   OPTWRAP,
   OPTWRAPSEARCH,
   OPTWRITEBCC,		/* write out a bcc header? */
+  OPTXMAILER,
 
   /* PGP options */
   

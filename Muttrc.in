@@ -84,15 +84,17 @@ macro pager   <f1> "!less @docdir@/manual.txt\n" "Show Mutt documentation"
 # unset hidden_host
 # set history=10
 # set hostname=""
+# unset ignore_list_rely_to
+# set implicit_autoview=no
 # set in_reply_to="%i; from %n on %{!%a, %b %d, %Y at %I:%M:%S%p %Z}"
 # set include=ask-yes
 # set indent_string="> "
 # set index_format="%4C %Z %{%b %d} %-15.15L (%4l) %s"
-# unset ignore_list_rely_to
 # set ispell="@ISPELL@"
 # set locale="C"
 # set mail_check=5
 # set mailcap_path=""
+# set mailcap_sanitize # Change only if you know what you are doing!
 # set mark_old
 # set markers
 # set mask="!^\\.[^.]"
@@ -165,7 +167,6 @@ macro pager   <f1> "!less @docdir@/manual.txt\n" "Show Mutt documentation"
 # unset use_8bitmime
 # set use_domain
 # set use_from
-# set use_mailcap
 # set visual=""
 # set wait_key
 # set wrap_search

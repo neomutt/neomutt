@@ -17,9 +17,6 @@
 /* Does your version of PGP support the PGPPASSFD environment variable? */
 #define HAVE_PGPPASSFD
 
-/* Disable the X-Mailer header? */
-#undef NO_XMAILER
-
 /* What is your domain name? */
 #undef DOMAIN
 

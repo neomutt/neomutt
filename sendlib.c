@@ -1336,13 +1336,11 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
     mutt_write_mime_header (attach, fp);
   }
 
-#ifndef NO_XMAILER
-  if (mode == 0 && !privacy)
+  if (mode == 0 && !privacy && option (OPTXMAILER))
   {
     /* Add a vanity header */
     fprintf (fp, "X-Mailer: Mutt %s\n", MUTT_VERSION);
   }
-#endif
 
   /* Add any user defined headers */
   for (; tmp; tmp = tmp->next)

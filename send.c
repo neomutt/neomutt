@@ -1206,6 +1206,8 @@ main_loop:
     if (pgp_get_keys (msg, &pgpkeylist) == -1)
       goto main_loop;
 
+    mutt_message _("Invoking PGP...");
+    
     /* save the decrypted attachments */
     save_content = msg->content;
 

@@ -887,6 +887,13 @@ fill_buffer (FILE *f, long *last_pos, long offset, unsigned char *buf,
   return b_read;
 }
 
+static int is_ansi (unsigned char *buf)
+{
+  while (buf && (isdigit(*buf) || *buf == ';'))
+    buf++;
+  return (*buf == 'm');
+}
+
 static int grok_ansi(unsigned char *buf, int pos, ansi_attr *a)
 {
   int x = pos;
@@ -1121,7 +1128,7 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
       c = buf[cnt];
     }
 
-    if (*buf_ptr == '\033' && *(buf_ptr + 1) && *(buf_ptr + 1) == '[')
+    if (*buf_ptr == '\033' && *(buf_ptr + 1) && *(buf_ptr + 1) == '[' && is_ansi (buf_ptr+2))
     {
       cnt = grok_ansi(buf, cnt+3, NULL);
       cnt++;
@@ -1252,7 +1259,7 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
     }
 
     /* Handle ANSI sequences */
-    if (c == '\033' && buf[ch+1] == '[')
+    if (c == '\033' && buf[ch+1] == '[' && is_ansi (buf+ch+2))
     {
       ch = grok_ansi(buf, ch+2, &a);
       c = buf[ch];

@@ -1,38 +1,48 @@
 /* Extended regular expression matching and search library,
-   version 0.12.
-   (Implements POSIX draft P1003.2/D11.2, except for some of the
-   internationalization features.)
-
-   Copyright (C) 1993, 1994, 1995, 1996, 1997 Free Software Foundation, Inc.
-
-   This file is part of the GNU C Library.  Its master source is NOT part of
-   the C library, however.  The master source lives in /gd/gnu/lib.
-
-   The GNU C Library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Library General Public License as
-   published by the Free Software Foundation; either version 2 of the
-   License, or (at your option) any later version.
-
-   The GNU C Library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Library General Public License for more details.
-
-   You should have received a copy of the GNU Library General Public
-   License along with the GNU C Library; see the file COPYING.LIB.  If not,
-   write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-   Boston, MA 02111-1307, USA.  */
+ * version 0.12.
+ * (Implements POSIX draft P1003.2/D11.2, except for some of the
+ * internationalization features.)
+ * 
+ * Copyright (C) 1993, 1994, 1995, 1996, 1997 Free Software Foundation, Inc.
+ * 
+ * This file is part of the GNU C Library.  Its master source is NOT part of
+ * the C library, however.  The master source lives in /gd/gnu/lib.
+ * 
+ * The GNU C Library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ * 
+ * The GNU C Library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Library General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Library General Public
+ * License along with the GNU C Library; see the file COPYING.LIB.  If not,
+ * write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.  
+ */
 
 /*
  * Modifications:
  * 
  * Use _regex.h instead of regex.h.  tlr, 1999-01-06
- * 
+ * Make REGEX_MALLOC depend on HAVE_ALLOCA &c.
+ * 				     tlr, 1999-02-14
  */
+
+/* The following doesn't mix too well with autoconfiguring
+ * the use of alloca.  So let's disable it for AIX.
+ */
+
+#if 0
 
 /* AIX requires this to be the first thing in the file. */
 #if defined (_AIX) && !defined (REGEX_MALLOC)
   #pragma alloca
+#endif
+
 #endif
 
 #undef	_GNU_SOURCE
@@ -40,6 +50,14 @@
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
+#endif
+
+#if (defined(HAVE_ALLOCA_H) && !defined(_AIX))
+# include <alloca.h>
+#endif
+
+#if (!defined(HAVE_ALLOCA) || defined(_AIX))
+# define REGEX_MALLOC
 #endif
 
 #if defined(STDC_HEADERS) && !defined(emacs)

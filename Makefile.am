@@ -29,7 +29,7 @@ non_us_sources = pgp.c pgpinvoke.c pgpkey.c pgppubring.c sha1dgst.c \
 
 EXTRA_mutt_SOURCES = pgp.c pgpinvoke.c pgpkey.c pgppubring.c sha1dgst.c \
 	gnupgparse.c resize.c dotlock.c pop.c imap.c socket.c
-	remailer.c remailer.h
+	remailer.c remailer.h browser.h
 
 EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO configure acconfig.h attach.h \
 	buffy.h charset.h config.h copy.h dotlock.h functions.h gen_defs \
@@ -38,7 +38,7 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO configure acconfig.h attach.h \
 	mutt_regex.h mutt_socket.h mx.h pager.h parse.h pgp.h protos.h  \
 	reldate.h rfc1524.h rfc2047.h rfc822.h sha.h sha_locl.h	\
 	sort.h mime.types VERSION prepare _regex.h OPS.MIX	\
-	README.SECURITY
+	README.SECURITY remailer.c remailer.h browser.h Muttrc.in
 
 BUILT_SOURCES = mutt_dotlock.c keymap_defs.h
 
