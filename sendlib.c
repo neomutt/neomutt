@@ -1211,7 +1211,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach, int mode)
 
   if (mode == 0)
     fputs (mutt_make_date (buffer, sizeof(buffer)), fp);
-  else if (mode == 2)
+  else if (mode == -2)
   {
     if(env->date)
       fprintf(fp, "Date: %s\n", env->date);
