@@ -166,11 +166,11 @@ static int pgp_send_menu (HEADER *msg, int *redraw)
 			     _("esabf")))
   {
   case 1: /* (e)ncrypt */
-    msg->security |= PGPENCRYPT;
+    msg->security |= ENCRYPT;
     break;
 
   case 2: /* (s)ign */
-    msg->security |= PGPSIGN;
+    msg->security |= SIGN;
     break;
 
   case 3: /* sign (a)s */
@@ -184,26 +184,31 @@ static int pgp_send_menu (HEADER *msg, int *redraw)
       mutt_str_replace (&PgpSignAs, input_signas);
       crypt_pgp_free_key (&p);
       
-      msg->security |= PGPSIGN;
+      msg->security |= SIGN;
 	
       crypt_pgp_void_passphrase ();  /* probably need a different passphrase */
     }
     else
     {
-      msg->security &= ~PGPSIGN;
+      msg->security &= ~SIGN;
     }
 
     *redraw = REDRAW_FULL;
     break;
 
   case 4: /* (b)oth */
-    msg->security = PGPENCRYPT | PGPSIGN;
+    msg->security = ENCRYPT | SIGN;
     break;
 
   case 5: /* (f)orget it */
     msg->security = 0;
     break;
   }
+
+  if (msg->security && msg->security != APPLICATION_PGP)
+    msg->security |= APPLICATION_PGP;
+  else
+    msg->security = 0;
 
   if(*redraw)
       redraw_crypt_lines (msg);
@@ -223,11 +228,11 @@ static int smime_send_menu (HEADER *msg, int *redraw)
 			     _("eswabf")))
   {
   case 1: /* (e)ncrypt */
-    msg->security |= SMIMEENCRYPT;
+    msg->security |= ENCRYPT;
     break;
 
   case 3: /* encrypt (w)ith */
-    msg->security |= SMIMEENCRYPT;
+    msg->security |= ENCRYPT;
     switch (mutt_multi_choice (_("1: DES, 2: Triple-DES, 3: RC2-40,"
 				 " 4: RC2-64, 5: RC2-128, or (f)orget it? "),
 			       _("12345f"))) {
@@ -256,7 +261,7 @@ static int smime_send_menu (HEADER *msg, int *redraw)
     if(!SmimeDefaultKey)
 	mutt_message("Can\'t sign: No key specified. use sign(as).");
     else
-	msg->security |= SMIMESIGN;
+	msg->security |= SIGN;
     break;
 
   case 4: /* sign (a)s */
@@ -265,25 +270,30 @@ static int smime_send_menu (HEADER *msg, int *redraw)
       p[mutt_strlen (p)-1] = '\0';
       mutt_str_replace (&SmimeDefaultKey, p);
 	
-      msg->security |= SMIMESIGN;
+      msg->security |= SIGN;
 
       /* probably need a different passphrase */
       crypt_smime_void_passphrase ();
     }
     else
-      msg->security &= ~SMIMESIGN;
+      msg->security &= ~SIGN;
 
     *redraw = REDRAW_FULL;
     break;
 
   case 5: /* (b)oth */
-    msg->security = SMIMEENCRYPT | SMIMESIGN;
+    msg->security = ENCRYPT | SIGN;
     break;
 
   case 6: /* (f)orget it */
     msg->security = 0;
     break;
   }
+
+  if (msg->security && msg->security != APPLICATION_SMIME)
+    msg->security |= APPLICATION_SMIME;
+  else
+    msg->security = 0;
 
   if(*redraw)
       redraw_crypt_lines (msg);
