@@ -360,7 +360,7 @@ types[] =
   { "DT_STR",	"string"	},
   { "DT_PATH",	"path"		},
   { "DT_QUAD",	"quadoption"	},
-  { "DT_SORT",	"sort oder"	},
+  { "DT_SORT",	"sort order"	},
   { "DT_RX",	"regular expression" },
   { "DT_MAGIC",	"folder magic" },
   { "DT_SYN",	NULL },
