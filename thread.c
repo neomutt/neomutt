@@ -644,8 +644,10 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 
     if (!cur->thread)
     {
-      thread = new = (cur->env->message_id
-		      ? hash_find (ctx->thread_hash, cur->env->message_id) : NULL);
+      thread = (((!init || option (OPTDUPTHREADS)) && cur->env->message_id)
+		? hash_find (ctx->thread_hash, cur->env->message_id) : NULL);
+      
+      new = (option (OPTDUPTHREADS) ? thread : NULL);
 
       if (thread && !thread->message)
       {
@@ -654,7 +656,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 	cur->thread = thread;
 	thread->check_subject = 1;
 
-	/* mark descendants as needing subeject_changed checked */
+	/* mark descendants as needing subject_changed checked */
 	for (tmp = (thread->child ? thread->child : thread); tmp != thread; )
 	{
 	  while (!tmp->message)

@@ -426,6 +426,14 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Example: set dsn_return=hdrs
   */
+  { "duplicate_threads",	DT_BOOL, R_NONE, OPTDUPTHREADS, 1 },
+  /*
+  ** .pp
+  ** This variable controls whether mutt, when sorting by threads, threads
+  ** messages with the same message-id together.  If it is set, it will indicate
+  ** that it thinks they are duplicates of each other with an equals sign
+  ** in the thread diagram.
+  */
   { "edit_headers",	DT_BOOL, R_NONE, OPTEDITHDRS, 0 },
   /*
   ** .pp
