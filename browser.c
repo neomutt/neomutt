@@ -527,7 +527,7 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
     {
       init_state (&state, NULL);
       state.imap_browse = 1;
-      imap_init_browse (f, &state);
+      imap_browse (f, &state);
       strfcpy (LastDir, state.folder, sizeof (LastDir));
     }
     else
@@ -575,7 +575,7 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
     {
       init_state (&state, NULL);
       state.imap_browse = 1;
-      imap_init_browse (LastDir, &state);
+      imap_browse (LastDir, &state);
     }
 #endif
   }
@@ -715,7 +715,7 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 	    {
 	      init_state (&state, NULL);
 	      state.imap_browse = 1;
-	      imap_init_browse (LastDir, &state);
+	      imap_browse (LastDir, &state);
 	      menu->data = state.entry;
 	    }
 	    else
@@ -879,7 +879,7 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 	    destroy_state (&state);
 	    init_state (&state, NULL);
 	    state.imap_browse = 1;
-	    imap_init_browse (LastDir, &state);
+	    imap_browse (LastDir, &state);
 	    menu->data = state.entry;
 	    menu->current = 0; 
 	    menu->top = 0; 
@@ -958,7 +958,7 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 	    {
 	      init_state (&state, NULL);
 	      state.imap_browse = 1;
-	      imap_init_browse (LastDir, &state);
+	      imap_browse (LastDir, &state);
 	      menu->data = state.entry;
 	      init_menu (&state, menu, title, sizeof (title), buffy);
 	    }
@@ -1043,7 +1043,7 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 	{
 	  init_state (&state, NULL);
 	  state.imap_browse = 1;
-	  imap_init_browse (LastDir, &state);
+	  imap_browse (LastDir, &state);
 	  menu->data = state.entry;
 	}
 #endif

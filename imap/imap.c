@@ -37,7 +37,7 @@
 #include <sys/stat.h>
 
 /* imap forward declarations */
-static int imap_get_delim (IMAP_DATA *idata, CONNECTION *conn);
+static int imap_get_delim (IMAP_DATA *idata);
 static char* imap_get_flags (LIST** hflags, char* s);
 static int imap_check_acl (IMAP_DATA *idata);
 static int imap_check_capabilities (IMAP_DATA *idata);
@@ -68,6 +68,33 @@ int imap_delete_mailbox (CONTEXT* ctx, char* mailbox)
     return -1;
 
   return 0;
+}
+
+/* imap_logout_all: close all open connections. Quick and dirty until we can
+ *   make sure we've got all the context we need. */
+void imap_logout_all (void) 
+{
+  CONNECTION* conn;
+  CONNECTION* tmp;
+
+  conn = mutt_socket_head ();
+
+  while (conn)
+  {
+    tmp = conn;
+
+    if (conn->account.type == M_ACCT_TYPE_IMAP && conn->up)
+    {
+      mutt_message (_("Closing connection to %s..."), conn->account.host);
+      imap_logout ((IMAP_DATA*) conn->data);
+      mutt_clear_error ();
+      mutt_socket_close (conn);
+
+      mutt_socket_free (tmp);
+    }
+
+    conn = conn->next;
+  }
 }
 
 /* imap_parse_date: date is of the form: DD-MMM-YYYY HH:MM:SS +ZZzz */
@@ -121,7 +148,7 @@ time_t imap_parse_date (char *s)
 /* imap_read_literal: read bytes bytes from server into file. Not explicitly
  *   buffered, relies on FILE buffering. NOTE: strips \r from \r\n.
  *   Apparently even literals use \r\n-terminated strings ?! */
-int imap_read_literal (FILE* fp, CONNECTION* conn, long bytes)
+int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes)
 {
   long pos;
   char c;
@@ -132,7 +159,7 @@ int imap_read_literal (FILE* fp, CONNECTION* conn, long bytes)
  
   for (pos = 0; pos < bytes; pos++)
   {
-    if (mutt_socket_readchar (conn, &c) != 1)
+    if (mutt_socket_readchar (idata->conn, &c) != 1)
     {
       dprint (1, (debugfile, "imap_read_literal: error during read, %ld bytes read\n", pos));
       return -1;
@@ -356,7 +383,7 @@ int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint)
   return 0;
 }
 
-static int imap_get_delim (IMAP_DATA *idata, CONNECTION *conn)
+static int imap_get_delim (IMAP_DATA *idata)
 {
   char buf[LONG_STRING];
   char *s;
@@ -369,10 +396,8 @@ static int imap_get_delim (IMAP_DATA *idata, CONNECTION *conn)
 
   do 
   {
-    if (mutt_socket_readln (buf, sizeof (buf), conn) < 0)
-    {
-      return (-1);
-    }
+    if (mutt_socket_readln (buf, sizeof (buf), idata->conn) < 0)
+      return -1;
 
     if (buf[0] == '*') 
     {
@@ -388,13 +413,13 @@ static int imap_get_delim (IMAP_DATA *idata, CONNECTION *conn)
       }
       else
       {
-	if (conn->data && 
-	    imap_handle_untagged (idata, buf) != 0)
-	  return (-1);
+	if (imap_handle_untagged (idata, buf) != 0)
+	  return -1;
       }
     }
   }
   while ((mutt_strncmp (buf, idata->seq, SEQLEN) != 0));
+
   return 0;
 }
 
@@ -433,18 +458,18 @@ static int imap_check_capabilities (IMAP_DATA *idata)
   return 0;
 }
 
-int imap_open_connection (IMAP_DATA *idata, CONNECTION *conn)
+int imap_open_connection (IMAP_DATA* idata)
 {
   char buf[LONG_STRING];
 
-  if (mutt_socket_open (conn) < 0)
+  if (mutt_socket_open (idata->conn) < 0)
     return -1;
 
   idata->state = IMAP_CONNECTED;
 
-  if (mutt_socket_readln (buf, sizeof (buf), conn) < 0)
+  if (mutt_socket_readln (buf, sizeof (buf), idata->conn) < 0)
   {
-    mutt_socket_close (conn);
+    mutt_socket_close (idata->conn);
     idata->state = IMAP_DISCONNECTED;
 
     return -1;
@@ -453,9 +478,9 @@ int imap_open_connection (IMAP_DATA *idata, CONNECTION *conn)
   if (mutt_strncmp ("* OK", buf, 4) == 0)
   {
     if (imap_check_capabilities(idata) != 0 
-	|| imap_authenticate (idata, conn) != 0)
+	|| imap_authenticate (idata) != 0)
     {
-      mutt_socket_close (conn);
+      mutt_socket_close (idata->conn);
       idata->state = IMAP_DISCONNECTED;
       return -1;
     }
@@ -464,7 +489,7 @@ int imap_open_connection (IMAP_DATA *idata, CONNECTION *conn)
   {
     if (imap_check_capabilities(idata) != 0)
     {
-      mutt_socket_close (conn);
+      mutt_socket_close (idata->conn);
       idata->state = IMAP_DISCONNECTED;
       return -1;
     }
@@ -472,14 +497,14 @@ int imap_open_connection (IMAP_DATA *idata, CONNECTION *conn)
   else
   {
     imap_error ("imap_open_connection()", buf);
-    mutt_socket_close (conn);
+    mutt_socket_close (idata->conn);
     idata->state = IMAP_DISCONNECTED;
     return -1;
   }
 
   idata->state = IMAP_AUTHENTICATED;
 
-  imap_get_delim (idata, conn);
+  imap_get_delim (idata);
   return 0;
 }
 
@@ -540,7 +565,7 @@ static char* imap_get_flags (LIST** hflags, char* s)
   return s;
 }
 
-int imap_open_mailbox (CONTEXT *ctx)
+int imap_open_mailbox (CONTEXT* ctx)
 {
   CONNECTION *conn;
   IMAP_DATA *idata;
@@ -556,8 +581,8 @@ int imap_open_mailbox (CONTEXT *ctx)
     return -1;
   }
 
-  conn = mutt_socket_find (&mx, 0);
-  idata = CONN_DATA;
+  conn = mutt_socket_find (&(mx.account), 0);
+  idata = (IMAP_DATA*) conn->data;
 
   if (!idata || (idata->state != IMAP_AUTHENTICATED))
   {
@@ -567,11 +592,11 @@ int imap_open_mailbox (CONTEXT *ctx)
       /* We need to create a new connection, the current one isn't useful */
       idata = safe_calloc (1, sizeof (IMAP_DATA));
 
-      conn = mutt_socket_find (&mx, 1);
+      conn = mutt_socket_find (&(mx.account), 1);
       conn->data = idata;
       idata->conn = conn;
     }
-    if (imap_open_connection (idata, conn))
+    if (imap_open_connection (idata))
       return -1;
   }
   ctx->data = (void *) idata;
@@ -727,9 +752,10 @@ int imap_open_mailbox (CONTEXT *ctx)
 int imap_select_mailbox (CONTEXT* ctx, const char* path)
 {
   IMAP_DATA* idata;
-  CONNECTION* conn;
   char curpath[LONG_STRING];
   IMAP_MBOX mx;
+
+  idata = CTX_DATA;
 
   strfcpy (curpath, path, sizeof (curpath));
   /* check that the target folder makes sense */
@@ -737,8 +763,7 @@ int imap_select_mailbox (CONTEXT* ctx, const char* path)
     return -1;
 
   /* and that it's on the same server as the current folder */
-  conn = mutt_socket_find (&mx, 0);
-  if (!CTX_DATA || !CONN_DATA || (CTX_DATA->conn != CONN_DATA->conn))
+  if (!mutt_account_match (&(mx.account), &(idata->conn->account)))
   {
     dprint(2, (debugfile,
       "imap_select_mailbox: source server is not target server\n"));
@@ -767,12 +792,12 @@ int imap_open_mailbox_append (CONTEXT *ctx)
   IMAP_MBOX mx;
 
   if (imap_parse_path (ctx->path, &mx))
-    return (-1);
+    return -1;
 
   ctx->magic = M_IMAP;
 
-  conn = mutt_socket_find (&mx, 0);
-  idata = CONN_DATA;
+  conn = mutt_socket_find (&(mx.account), 0);
+  idata = (IMAP_DATA*) conn->data;
 
   if (!idata || (idata->state == IMAP_DISCONNECTED))
   {
@@ -783,8 +808,8 @@ int imap_open_mailbox_append (CONTEXT *ctx)
       conn->data = idata;
       idata->conn = conn;
     }
-    if (imap_open_connection (idata, conn))
-      return (-1);
+    if (imap_open_connection (idata))
+      return -1;
   }
   ctx->data = (void *) idata;
 
@@ -1194,7 +1219,7 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint)
 /* returns count of recent messages if new = 1, else count of total messages.
  * (useful for at least postponed function)
  * Question of taste: use RECENT or UNSEEN for new? */
-int imap_mailbox_check (char *path, int new)
+int imap_mailbox_check (char* path, int new)
 {
   CONNECTION *conn;
   IMAP_DATA *idata;
@@ -1208,8 +1233,8 @@ int imap_mailbox_check (char *path, int new)
   if (imap_parse_path (path, &mx))
     return -1;
 
-  conn = mutt_socket_find (&mx, 0);
-  idata = CONN_DATA;
+  conn = mutt_socket_find (&(mx.account), 0);
+  idata = (IMAP_DATA*) conn->data;
 
   if (!idata || (idata->state == IMAP_DISCONNECTED))
   {
@@ -1224,7 +1249,7 @@ int imap_mailbox_check (char *path, int new)
       conn->data = idata;
       idata->conn = conn;
     }
-    if (imap_open_connection (idata, conn))
+    if (imap_open_connection (idata))
       return -1;
   }
 
@@ -1301,16 +1326,15 @@ int imap_mailbox_check (char *path, int new)
   return msgcount;
 }
 
-int imap_parse_list_response(CONNECTION *conn, char *buf, int buflen,
+int imap_parse_list_response(IMAP_DATA* idata, char *buf, int buflen,
   char **name, int *noselect, int *noinferiors, char *delim)
 {
-  IMAP_DATA *idata = CONN_DATA;
   char *s;
   long bytes;
 
   *name = NULL;
 
-  if (mutt_socket_readln (buf, buflen, conn) < 0)
+  if (mutt_socket_readln (buf, buflen, idata->conn) < 0)
     return -1;
 
   if (buf[0] == '*')
@@ -1358,7 +1382,7 @@ int imap_parse_list_response(CONNECTION *conn, char *buf, int buflen,
 	
 	if (imap_get_literal_count(buf, &bytes) < 0)
 	  return -1;
-	len = mutt_socket_readln (buf, buflen, conn);
+	len = mutt_socket_readln (buf, buflen, idata->conn);
 	if (len < 0)
 	  return -1;
 	*name = buf;
@@ -1385,10 +1409,10 @@ int imap_subscribe (char *path, int subscribe)
   IMAP_MBOX mx;
 
   if (imap_parse_path (path, &mx))
-    return (-1);
+    return -1;
 
-  conn = mutt_socket_find (&mx, 0);
-  idata = CONN_DATA;
+  conn = mutt_socket_find (&(mx.account), 0);
+  idata = (IMAP_DATA*) conn->data;
 
   if (!idata || (idata->state == IMAP_DISCONNECTED))
   {
@@ -1399,7 +1423,7 @@ int imap_subscribe (char *path, int subscribe)
       conn->data = idata;
       idata->conn = conn;
     }
-    if (imap_open_connection (idata, conn))
+    if (imap_open_connection (idata))
       return -1;
   }
 
@@ -1442,8 +1466,8 @@ int imap_complete(char* dest, size_t dlen, char* path) {
     return -1;
   }
 
-  conn = mutt_socket_find (&mx, 0);
-  idata = CONN_DATA;
+  conn = mutt_socket_find (&(mx.account), 0);
+  idata = (IMAP_DATA*) conn->data;
 
   /* don't open a new socket just for completion */
   if (!idata)
@@ -1470,7 +1494,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
   strfcpy (completion, mx.mbox, sizeof(completion));
   do
   {
-    if (imap_parse_list_response(conn, buf, sizeof(buf), &list_word,
+    if (imap_parse_list_response(idata, buf, sizeof(buf), &list_word,
         &noselect, &noinferiors, &delim))
       break;
 

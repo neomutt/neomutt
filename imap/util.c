@@ -34,26 +34,6 @@
 
 #include <errno.h>
 
-/* imap_account_match: compare account info (host/port/user) */
-int imap_account_match (const IMAP_MBOX* m1, const IMAP_MBOX* m2)
-{
-  const char* user = ImapUser ? ImapUser : NONULL (Username);
-
-  if (mutt_strcasecmp (m1->host, m2->host))
-    return 0;
-  if (m1->port != m2->port)
-    return 0;
-  
-  if (m1->flags & m2->flags & M_IMAP_USER)
-    return (!strcmp (m1->user, m2->user));
-  if (m1->flags & M_IMAP_USER)
-    return (!strcmp (m1->user, user));
-  if (m2->flags & M_IMAP_USER)
-    return (!strcmp (m2->user, user));
-
-  return 1;
-}
-
 /* imap_continue: display a message and ask the user if she wants to
  *   go on. */
 int imap_continue (const char* msg, const char* resp)
@@ -148,17 +128,17 @@ char *imap_next_word (char *s)
 
 /* imap_parse_path: given an IMAP mailbox name, return host, port
  *   and a path IMAP servers will recognise. */
-int imap_parse_path (const char *path, IMAP_MBOX *mx)
+int imap_parse_path (const char* path, IMAP_MBOX* mx)
 {
   char tmp[128];
   char *c;
   int n;
   
-  mx->type[0] = '\0';
   if (sscanf (path, "{%128[^}]}", tmp) != 1) 
-  {
     return -1;
-  }
+
+  mx->account.type = M_ACCT_TYPE_IMAP;
+
   c = strchr (path, '}');
   if (!c)
     return -1;
@@ -167,44 +147,43 @@ int imap_parse_path (const char *path, IMAP_MBOX *mx)
     mx->mbox = safe_strdup (c+1);
   
   /* Defaults */
-  mx->flags = 0;
-  mx->port = IMAP_PORT;
-  mx->socktype = M_NEW_SOCKET;
+  mx->account.flags = 0;
+  mx->account.port = IMAP_PORT;
 
   if ((c = strrchr (tmp, '@')))
   {
     *c = '\0';
-    strfcpy (mx->user, tmp, sizeof (mx->user));
+    strfcpy (mx->account.user, tmp, sizeof (mx->account.user));
     strfcpy (tmp, c+1, sizeof (tmp));
-    mx->flags |= M_IMAP_USER;
+    mx->account.flags |= M_ACCT_USER;
   }
   
-  if ((n = sscanf (tmp, "%128[^:/]%128s", mx->host, tmp)) < 1)
+  if ((n = sscanf (tmp, "%128[^:/]%128s", mx->account.host, tmp)) < 1)
   {
     dprint (1, (debugfile, "imap_parse_path: NULL host in %s\n", path));
     return -1;
   }
   
   if (n > 1) {
-    if (sscanf (tmp, ":%d%128s", &mx->port, tmp) >= 1)
-      mx->flags |= M_IMAP_PORT;
-    if (sscanf (tmp, "/%s", mx->type) == 1)
+    if (sscanf (tmp, ":%hd%128s", &(mx->account.port), tmp) >= 1)
+      mx->account.flags |= M_ACCT_PORT;
+    if (sscanf (tmp, "/%s", tmp) == 1)
     {
 #ifdef USE_SSL
-      if (!strcmp (mx->type, "ssl"))
-	imap_set_ssl (mx);
+      if (!strncmp (tmp, "ssl", 3))
+	imap_set_ssl (&(mx->account));
       else
 #endif
       {
 	dprint (1, (debugfile, "imap_parse_path: Unknown connection type in %s\n", path));
-	return (-1);
+	return -1;
       }
     }
   }
 
 #ifdef USE_SSL
   if (option (OPTIMAPFORCESSL))
-    imap_set_ssl (mx);
+    imap_set_ssl (&(mx->account));
 #endif
 
   return 0;
@@ -220,24 +199,20 @@ void imap_qualify_path (char *dest, size_t len, const IMAP_MBOX *mx,
   char tmp[128];
   
   strcpy (dest, "{");
-  if ((mx->flags & M_IMAP_USER) && (!ImapUser || strcmp (mx->user, ImapUser)))
+  if ((mx->account.flags & M_ACCT_USER) && (!ImapUser || strcmp (mx->account.user, ImapUser)))
   {
-    snprintf (tmp, sizeof (tmp), "%s@", mx->user);
+    snprintf (tmp, sizeof (tmp), "%s@", mx->account.user);
     strncat (dest, tmp, len);
   }
-  strncat (dest, mx->host, len);
-  if (mx->flags & M_IMAP_PORT)
+  strncat (dest, mx->account.host, len);
+  if (mx->account.flags & M_ACCT_PORT)
   {
-    snprintf (tmp, sizeof (tmp), ":%d", mx->port);
+    snprintf (tmp, sizeof (tmp), ":%d", mx->account.port);
     strncat (dest, tmp, len);
   }
-#ifdef USE_SSL
-  if (mx->flags & M_IMAP_TYPE)
-  {
-    snprintf (tmp, sizeof (tmp), "/%s", mx->type);
-    strncat (dest, tmp, len);
-  }
-#endif
+  if (mx->account.flags & M_ACCT_SSL)
+    strncat (dest, "/ssl", len);
+
   snprintf (tmp, sizeof (tmp), "}%s%s", NONULL (path), NONULL (name));
   strncat (dest, tmp, len);
 }

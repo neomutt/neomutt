@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>
+ * Copyright (C) 2000 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -16,15 +16,37 @@
  *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
  */ 
 
-#ifndef _MUTT_SSL_H_
-#define _MUTT_SSL_H_ 1
+/* remote host account manipulation (POP/IMAP) */
 
-#include "mutt_socket.h"
+#ifndef _MUTT_ACCOUNT_H_
+#define _MUTT_ACCOUNT_H_ 1
 
-extern char *SslCertFile;
-extern char *SslEntropyFile;
+/* account types */
+enum
+{
+  M_ACCT_TYPE_NONE = 0,
+  M_ACCT_TYPE_IMAP,
+  M_ACCT_TYPE_POP
+};
 
-extern int ssl_socket_setup (CONNECTION *conn);
-extern void imap_set_ssl (ACCOUNT* account);
+/* account flags */
+#define M_ACCT_PORT (1<<0)
+#define M_ACCT_USER (1<<1)
+#define M_ACCT_SSL  (1<<2)
+#define M_ACCT_CRAM (1<<3)
+#define M_ACCT_PASS (1<<4)
 
-#endif /* _MUTT_SSL_H_ */
+typedef struct
+{
+  char user[64];
+  char pass[32];
+  char host[128];
+  unsigned short port;
+  unsigned char type;
+  unsigned char flags;
+} ACCOUNT;
+
+/* imap_account_match: compare account info (host/port/user) */
+int mutt_account_match (const ACCOUNT* a1, const ACCOUNT* m2);
+
+#endif /* _MUTT_ACCOUNT_H_ */

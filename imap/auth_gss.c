@@ -57,7 +57,7 @@ int imap_auth_gss (IMAP_DATA* idata, const char* user)
   dprint (2, (debugfile, "Attempting GSS login...\n"));
 
   /* get an IMAP service ticket for the server */
-  snprintf (buf1, sizeof (buf1), "imap@%s", idata->conn->mx.host);
+  snprintf (buf1, sizeof (buf1), "imap@%s", idata->conn->account.host);
   request_buf.value = buf1;
   request_buf.length = strlen (buf1) + 1;
   maj_stat = gss_import_name (&min_stat, &request_buf, gss_nt_service_name,

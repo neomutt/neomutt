@@ -54,7 +54,6 @@ WHERE char *ImapCRAMKey INITVAL (NULL);
 WHERE char *ImapPass INITVAL (NULL);
 WHERE short ImapCheckTimeout;
 WHERE char *ImapHomeNamespace INITVAL (NULL);
-WHERE char *ImapPreconnect INITVAL (NULL);
 #endif
 WHERE char *InReplyTo;
 WHERE char *Inbox;
@@ -63,6 +62,10 @@ WHERE char *Locale;
 WHERE char *MailcapPath;
 WHERE char *Maildir;
 WHERE char *MsgFmt;
+
+#ifdef USE_SOCKET
+WHERE char *Preconnect INITVAL (NULL);
+#endif /* USE_SOCKET */
 
 #ifdef MIXMASTER
 WHERE char *Mixmaster;

@@ -31,7 +31,7 @@
 #include "mutt.h"
 #include "imap.h"
 #include "imap_private.h"
-#include "imap_socket.h"
+#include "mutt_socket.h"
 #include "mutt_menu.h"
 #include "mutt_curses.h"
 #include "imap_ssl.h"
@@ -144,12 +144,11 @@ static int add_entropy (const char *file)
   return n;
 }
 
-void imap_set_ssl (IMAP_MBOX *mx)
+void imap_set_ssl (ACCOUNT* account)
 {
-  if (! (mx->flags & M_IMAP_PORT))
-    mx->port = IMAP_SSL_PORT;
-  mx->socktype = M_NEW_SSL_SOCKET;
-  mx->flags |= M_IMAP_TYPE;
+  if (! (account->flags & M_ACCT_PORT))
+    account->port = IMAP_SSL_PORT;
+  account->flags |= M_ACCT_SSL;
 }
 
 static int ssl_socket_open_err (CONNECTION *conn)

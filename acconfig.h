@@ -36,6 +36,10 @@
  */
 #undef NFS_ATTRIBUTE_HACK
 
+/* Include code for socket support. Set automatically if you enable pop or
+ * IMAP */
+#undef USE_SOCKET
+
 /* Do you want support for the POP3 protocol? (--enable-pop) */
 #undef USE_POP
 

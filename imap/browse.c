@@ -26,7 +26,7 @@
 #include "imap_private.h"
 
 /* -- forward declarations -- */
-static int browse_add_list_result (CONNECTION* conn, const char* cmd,
+static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
   struct browser_state* state, short isparent);
 static void imap_add_folder (char delim, char *folder, int noselect,
   int noinferiors, struct browser_state *state, short isparent);
@@ -36,7 +36,7 @@ static int browse_get_namespace (IMAP_DATA *idata, char *nsbuf, int nsblen,
 static int browse_verify_namespace (IMAP_DATA* idata,
   IMAP_NAMESPACE_INFO* nsi, int nns);
 
-int imap_init_browse (char *path, struct browser_state *state)
+int imap_browse (char* path, struct browser_state* state)
 {
   CONNECTION *conn;
   IMAP_DATA *idata;
@@ -65,8 +65,8 @@ int imap_init_browse (char *path, struct browser_state *state)
 
   strfcpy (list_cmd, option (OPTIMAPLSUB) ? "LSUB" : "LIST", sizeof (list_cmd));
 
-  conn = mutt_socket_find (&mx, 0);
-  idata = CONN_DATA;
+  conn = mutt_socket_find (&(mx.account), 0);
+  idata = (IMAP_DATA*) conn->data;
 
   if (!idata || (idata->state == IMAP_DISCONNECTED))
   {
@@ -77,7 +77,7 @@ int imap_init_browse (char *path, struct browser_state *state)
       conn->data = idata;
       idata->conn = conn;
     }
-    if (imap_open_connection (idata, conn))
+    if (imap_open_connection (idata))
       return -1;
   }
 
@@ -138,7 +138,7 @@ int imap_init_browse (char *path, struct browser_state *state)
       imap_cmd_start (idata, buf);
       do 
       {
-        if (imap_parse_list_response(conn, buf, sizeof(buf), &cur_folder,
+        if (imap_parse_list_response(idata, buf, sizeof(buf), &cur_folder,
     	    &noselect, &noinferiors, &(idata->delim)) != 0)
           return -1;
 
@@ -229,14 +229,14 @@ int imap_init_browse (char *path, struct browser_state *state)
      * namespace is not "", so we have to list it explicitly. We ask the 
      * server to see if it has descendants. */
     dprint (4, (debugfile, "imap_init_browse: adding INBOX\n"));
-    if (browse_add_list_result (conn, "LIST \"\" \"INBOX\"", state, 0))
+    if (browse_add_list_result (idata, "LIST \"\" \"INBOX\"", state, 0))
       return -1;
   }
 
   nsup = state->entrylen;
 
   snprintf (buf, sizeof (buf), "%s \"\" \"%s%%\"", list_cmd, mbox);
-  if (browse_add_list_result (conn, buf, state, 0))
+  if (browse_add_list_result (idata, buf, state, 0))
     return -1;
 
   qsort(&(state->entry[nsup]),state->entrylen-nsup,sizeof(state->entry[0]),
@@ -256,10 +256,9 @@ int imap_init_browse (char *path, struct browser_state *state)
   return 0;
 }
 
-static int browse_add_list_result (CONNECTION* conn, const char* cmd,
+static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
   struct browser_state* state, short isparent)
 {
-  IMAP_DATA* idata = CONN_DATA;
   char buf[LONG_STRING];
   char *name;
   int noselect;
@@ -277,7 +276,7 @@ static int browse_add_list_result (CONNECTION* conn, const char* cmd,
 
   do 
   {
-    if (imap_parse_list_response(conn, buf, sizeof(buf), &name,
+    if (imap_parse_list_response(idata, buf, sizeof(buf), &name,
         &noselect, &noinferiors, &(idata->delim)) != 0)
       return -1;
 
@@ -494,7 +493,7 @@ static int browse_verify_namespace (IMAP_DATA* idata,
     nsi->home_namespace = 0;
     do 
     {
-      if (imap_parse_list_response(idata->conn, buf, sizeof(buf), &name,
+      if (imap_parse_list_response(idata, buf, sizeof(buf), &name,
           &(nsi->noselect), &(nsi->noinferiors), &delim) != 0)
 	return -1;
       nsi->listable |= (name != NULL);

@@ -261,7 +261,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	      imap_error ("imap_fetch_message()", buf);
 	      goto bail;
 	    }
-	    if (imap_read_literal (msg->fp, CTX_DATA->conn, bytes) < 0)
+	    if (imap_read_literal (msg->fp, CTX_DATA, bytes) < 0)
 	      goto bail;
 	    /* pick up trailing line */
 	    if (mutt_socket_readln (buf, sizeof (buf), CTX_DATA->conn) < 0)
@@ -499,7 +499,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   }
 
   /* check that the save-to folder is in the same account */
-  if (!imap_account_match (&(CTX_DATA->conn->mx), &mx))
+  if (!mutt_account_match (&(CTX_DATA->conn->account), &(mx.account)))
   {
     dprint (3, (debugfile, "imap_copy_message: %s not same server as %s\n",
       dest, ctx->path));
@@ -647,7 +647,7 @@ static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf, FILE* fp)
   
   if (imap_get_literal_count (buf, &bytes) < 0)
     return rc;
-  imap_read_literal (fp, CTX_DATA->conn, bytes);
+  imap_read_literal (fp, CTX_DATA, bytes);
 
   /* we may have other fields of the FETCH _after_ the literal
    * (eg Domino puts FLAGS here). Nothing wrong with that, either.

@@ -19,21 +19,16 @@
 #ifndef _IMAP_H
 #define _IMAP_H 1
 
+#include "account.h"
 #include "browser.h"
 #include "mailbox.h"
 
+/* -- data structures -- */
 typedef struct
 {
-  char user[64];
-  char pass[32];
-  char host[128];
-  int port;
-  char type[16];
-  int socktype;
-  char *mbox;
-  int flags;
+  ACCOUNT account;
+  char* mbox;
 } IMAP_MBOX;
-
 
 /* imap.c */
 int imap_check_mailbox (CONTEXT *ctx, int *index_hint);
@@ -54,7 +49,7 @@ void imap_allow_reopen (CONTEXT *ctx);
 void imap_disallow_reopen (CONTEXT *ctx);
 
 /* browse.c */
-int imap_init_browse (char *path, struct browser_state *state);
+int imap_browse (char* path, struct browser_state* state);
 
 /* message.c */
 int imap_append_message (CONTEXT* ctx, MESSAGE* msg);
@@ -65,8 +60,8 @@ int imap_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno);
 void imap_logout_all (void);
 
 /* util.c */
-int imap_parse_path (const char* path, IMAP_MBOX *mx);
-void imap_qualify_path (char* dest, size_t len, const IMAP_MBOX *mx,
+int imap_parse_path (const char* path, IMAP_MBOX* mx);
+void imap_qualify_path (char* dest, size_t len, const IMAP_MBOX* mx,
   const char* path, const char* name);
 
 int imap_wait_keepalive (pid_t pid);

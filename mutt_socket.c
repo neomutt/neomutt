@@ -20,9 +20,7 @@
 
 #include "mutt.h"
 #include "globals.h"
-#include "imap.h"
-#include "imap_socket.h"
-#include "imap_private.h"
+#include "mutt_socket.h"
 #ifdef USE_SSL
 #include "imap_ssl.h"
 #endif
@@ -113,7 +111,41 @@ int mutt_socket_readln_d (char* buf, size_t buflen, CONNECTION* conn, int dbg)
   return i+1;
 }
 
-CONNECTION* mutt_socket_find (const IMAP_MBOX* mx, int newconn)
+CONNECTION* mutt_socket_head (void)
+{
+  return Connections;
+}
+
+/* mutt_socket_free: remove connection from connection list and free it */
+void mutt_socket_free (CONNECTION* conn)
+{
+  CONNECTION* iter;
+  CONNECTION* tmp;
+
+  iter = Connections;
+
+  /* head is special case, doesn't need prev updated */
+  if (iter == conn)
+  {
+    Connections = iter->next;
+    FREE (&iter);
+    return;
+  }
+
+  while (iter->next)
+  {
+    if (iter->next == conn)
+    {
+      tmp = iter->next;
+      iter->next = tmp->next;
+      FREE (&tmp);
+      return;
+    }
+    iter = iter->next;
+  }
+}
+
+CONNECTION* mutt_socket_find (const ACCOUNT* account, int newconn)
 {
   CONNECTION* conn;
 
@@ -122,24 +154,21 @@ CONNECTION* mutt_socket_find (const IMAP_MBOX* mx, int newconn)
     conn = Connections;
     while (conn)
     {
-      if (imap_account_match (mx, &conn->mx))
+      if (mutt_account_match (account, &(conn->account)))
 	return conn;
       conn = conn->next;
     }
   }
 
   conn = socket_new_conn ();
-  memcpy (&conn->mx, mx, sizeof (conn->mx));
-  conn->mx.mbox = 0;
+  memcpy (&conn->account, account, sizeof (ACCOUNT));
 
   conn->next = Connections;
   Connections = conn;
 
 #ifdef USE_SSL
-  if (mx->socktype == M_NEW_SSL_SOCKET) 
-  {
+  if (account->flags & M_ACCT_SSL) 
     ssl_socket_setup (conn);
-  }
   else
 #endif
   {
@@ -150,36 +179,6 @@ CONNECTION* mutt_socket_find (const IMAP_MBOX* mx, int newconn)
   }
 
   return conn;
-}
-
-/* imap_logout_all: close all open connections. Quick and dirty until we can
- *   make sure we've got all the context we need. */
-void imap_logout_all (void) 
-{
-  CONNECTION* conn;
-  
-  conn = Connections;
-
-  while (conn)
-  {
-    if (conn->up)
-    {
-      mutt_message (_("Closing connection to %s..."),
-		    conn->mx.host);
-      
-      imap_logout (CONN_DATA);
-      
-      mutt_clear_error ();
-
-      mutt_socket_close (conn);
-    }
-    
-    Connections = conn->next;
-
-    free (conn);
-
-    conn = Connections;
-  }
 }
 
 /* socket_connect: attempt to bind a socket and connect to it */
@@ -237,29 +236,29 @@ int raw_socket_write (CONNECTION *conn, const char *buf)
   return write (conn->fd, buf, mutt_strlen (buf));
 }
 
-int raw_socket_open (CONNECTION *conn)
+int raw_socket_open (CONNECTION* conn)
 {
   struct sockaddr_in sin;
   struct hostent *he;
   int    verbose;
-  int  do_preconnect = mutt_strlen (ImapPreconnect) > 0;
+  int  do_preconnect = mutt_strlen (Preconnect) > 0;
   /* This might be a config variable */
   int first_try_without_preconnect = TRUE; 
 
-  mutt_message (_("Looking up %s..."), conn->mx.host);
+  mutt_message (_("Looking up %s..."), conn->account.host);
   
   memset (&sin, 0, sizeof (sin));
-  sin.sin_port = htons (conn->mx.port);
+  sin.sin_port = htons (conn->account.port);
   sin.sin_family = AF_INET;
-  if ((he = gethostbyname (conn->mx.host)) == NULL)
+  if ((he = gethostbyname (conn->account.host)) == NULL)
   {
-    mutt_error (_("Could not find the host \"%s\""), conn->mx.host);
+    mutt_error (_("Could not find the host \"%s\""), conn->account.host);
 	
     return -1;
   }
   memcpy (&sin.sin_addr, he->h_addr_list[0], he->h_length);
 
-  mutt_message (_("Connecting to %s..."), conn->mx.host); 
+  mutt_message (_("Connecting to %s..."), conn->account.host); 
 
   if (do_preconnect && first_try_without_preconnect)
   {
@@ -272,14 +271,14 @@ int raw_socket_open (CONNECTION *conn)
   {
     int ret;
 
-    dprint (1, (debugfile, "Preconnect to server %s:\n", conn->mx.host));
-    dprint (1, (debugfile, "\t%s\n", ImapPreconnect));
+    dprint (1, (debugfile, "Preconnect to server %s:\n", conn->account.host));
+    dprint (1, (debugfile, "\t%s\n", Preconnect));
     /* Execute preconnect command */
-    ret = mutt_system (ImapPreconnect) < 0;
+    ret = mutt_system (Preconnect) < 0;
     dprint (1, (debugfile, "\t%s: %d\n", "Exit status", ret));
     if (ret < 0)
     {
-      mutt_perror (_("IMAP Preconnect command failed"));
+      mutt_perror (_("Preconnect command failed."));
       sleep (1);
 
       return ret;

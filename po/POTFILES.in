@@ -23,7 +23,6 @@ imap/command.c
 imap/imap.c
 imap/imap_ssl.c
 imap/message.c
-imap/socket.c
 imap/util.c
 init.c
 keymap.c
@@ -35,6 +34,7 @@ mbox.c
 menu.c
 mh.c
 muttlib.c
+mutt_socket.c
 mx.c
 pager.c
 pager.h

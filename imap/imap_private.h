@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 #define _IMAP_PRIVATE_H 1
 
 #include "imap.h"
-#include "imap_socket.h"
+#include "mutt_socket.h"
 
 /* -- symbols -- */
 #define IMAP_PORT 143
@@ -36,12 +36,6 @@
 #define IMAP_CACHE_LEN 10
 
 #define SEQLEN 5
-
-#define M_IMAP_USER (1<<0)
-#define M_IMAP_PORT (1<<1)
-#define M_IMAP_TYPE (1<<2)
-#define M_IMAP_PASS (1<<3)
-#define M_IMAP_CRAM (1<<4)
 
 #define IMAP_REOPEN_ALLOW    (1<<0)
 #define IMAP_REOPEN_PENDING  (1<<1)
@@ -166,22 +160,21 @@ typedef struct
 
 /* -- macros -- */
 #define CTX_DATA ((IMAP_DATA *) ctx->data)
-#define CONN_DATA ((IMAP_DATA *) conn->data)
 
 /* -- private IMAP functions -- */
 /* imap.c */
 int imap_make_msg_set (char* buf, size_t buflen, CONTEXT* ctx, int flag,
   int changed);
-int imap_open_connection (IMAP_DATA* idata, CONNECTION* conn);
+int imap_open_connection (IMAP_DATA* idata);
 time_t imap_parse_date (char* s);
-int imap_parse_list_response(CONNECTION* conn, char* buf, int buflen,
+int imap_parse_list_response(IMAP_DATA* idata, char* buf, int buflen,
   char** name, int* noselect, int* noinferiors, char* delim);
-int imap_read_literal (FILE* fp, CONNECTION* conn, long bytes);
+int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes);
 int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint);
-void imap_logout (IMAP_DATA* conn);
+void imap_logout (IMAP_DATA* idata);
 
 /* auth.c */
-int imap_authenticate (IMAP_DATA *idata, CONNECTION *conn);
+int imap_authenticate (IMAP_DATA* idata);
 
 /* command.c */
 void imap_cmd_start (IMAP_DATA* idata, const char* cmd);
@@ -197,7 +190,6 @@ void imap_free_header_data (void** data);
 int imap_read_headers (CONTEXT* ctx, int msgbegin, int msgend);
 
 /* util.c */
-int imap_account_match (const IMAP_MBOX* m1, const IMAP_MBOX* m2);
 int imap_continue (const char* msg, const char* resp);
 void imap_error (const char* where, const char* msg);
 char* imap_fix_path (IMAP_DATA* idata, char* mailbox, char* path, 

@@ -17,12 +17,19 @@
  *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
  */ 
 
-#ifndef _IMAP_SOCKET_H_
-#define _IMAP_SOCKET_H_ 1
+#ifndef _MUTT_SOCKET_H_
+#define _MUTT_SOCKET_H_ 1
+
+#include "account.h"
+
+/* logging levels */
+#define M_SOCK_LOG_CMD  2
+#define M_SOCK_LOG_HDR  3
+#define M_SOCK_LOG_FULL 4
 
 typedef struct _connection
 {
-  IMAP_MBOX mx;
+  ACCOUNT account;
   char inbuf[LONG_STRING];
   int bufpos;
 
@@ -46,16 +53,19 @@ typedef struct _connection
 int mutt_socket_open (CONNECTION* conn);
 int mutt_socket_close (CONNECTION* conn);
 int mutt_socket_readchar (CONNECTION *conn, char *c);
-#define mutt_socket_readln(A,B,C) mutt_socket_readln_d(A,B,C,IMAP_LOG_CMD)
+#define mutt_socket_readln(A,B,C) mutt_socket_readln_d(A,B,C,M_SOCK_LOG_CMD)
 int mutt_socket_readln_d (char *buf, size_t buflen, CONNECTION *conn, int dbg);
-#define mutt_socket_write(A,B) mutt_socket_write_d(A,B,IMAP_LOG_CMD);
+#define mutt_socket_write(A,B) mutt_socket_write_d(A,B,M_SOCK_LOG_CMD);
 int mutt_socket_write_d (CONNECTION *conn, const char *buf, int dbg);
 
-CONNECTION* mutt_socket_find (const IMAP_MBOX* mx, int newconn);
+/* stupid hack for imap_logout_all */
+CONNECTION* mutt_socket_head (void);
+void mutt_socket_free (CONNECTION* conn);
+CONNECTION* mutt_socket_find (const ACCOUNT* mx, int newconn);
 
 int raw_socket_read (CONNECTION *conn);
 int raw_socket_write (CONNECTION *conn, const char *buf);
 int raw_socket_open (CONNECTION *conn);
 int raw_socket_close (CONNECTION *conn);
 
-#endif /* _IMAP_SOCKET_H_ */
+#endif /* _MUTT_SOCKET_H_ */
