@@ -98,8 +98,11 @@ manual.txt: manual.sgml
 manual.html: manual.sgml
 	sgml2html manual  || true
 
+manual.ps: manual.sgml
+	sgml2latex --output=ps manual || true
+
 clean: 
-	rm -f *~ *.html *.orig *.rej  stamp-doc-sgml stamp-doc-man
+	rm -f *~ *.html *.orig *.rej  stamp-doc-sgml stamp-doc-man *.ps
 
 clean-real:
 	rm -f manual.txt

@@ -9,6 +9,8 @@
 ``All mail clients suck.  This one just sucks less.'' -me, circa 1995
 </abstract>
 
+<toc>
+
 <sect>Introduction
 <p>
 <bf/Mutt/ is a small but very powerful text-based MIME mail client.  Mutt is
@@ -477,7 +479,7 @@ not permitted when you are in that folder. The %r in <ref
 id="status_format" name="&dollar;status&lowbar;format"> will change to
 a 'A' to indicate that you are in attach-message mode.
 
-<sect2>Editing the message header<label id="edit_headers">
+<sect2>Editing the message header
 <p>
 When editing the header of your outgoing message, there are a couple of
 special features available.
@@ -1278,7 +1280,7 @@ This command adds the named string to the keyboard buffer.  You may
 use it to automatically run a sequence of commands at startup, or when
 entering certain folders.
 
-<sect1>Message Scoring<label id="score">
+<sect1>Message Scoring
 <p>
 Usage: <tt/score/ <em/pattern/ <em/value/<newline>
 Usage: <tt/unscore/ <em/pattern/ &lsqb; <em/pattern/ ... &rsqb;

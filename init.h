@@ -693,8 +693,8 @@ struct option_t MuttVars[] = {
   ** imap_preconnect="ssh -f -q -L 1234:mailhost.net:143 mailhost.net
   **                   sleep 20 < /dev/null > /dev/null"
   ** .pp
-  ** Mailbox 'foo' on mailhost.net can now be reached as
-  ** '{localhost:1234}foo'.
+  ** Mailbox 'foo' on mailhost.net can now be reached
+  ** as '{localhost:1234}foo'.
   ** .pp
   ** NOTE: For this example to work, you must be able to log in to the
   ** remote machine without having to enter a password.
