@@ -210,14 +210,15 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   short fetched = 0;
 
   idata = (IMAP_DATA*) ctx->data;
+  h = ctx->hdrs[msgno];
 
   /* see if we already have the message in our cache */
-  cacheno = HEADER_DATA(ctx->hdrs[msgno])->uid % IMAP_CACHE_LEN;
+  cacheno = HEADER_DATA(h)->uid % IMAP_CACHE_LEN;
   cache = &idata->cache[cacheno];
 
   if (cache->path)
   {
-    if (cache->uid == HEADER_DATA(ctx->hdrs[msgno])->uid)
+    if (cache->uid == HEADER_DATA(h)->uid)
     {
       /* yes, so just return a pointer to the message */
       if (!(msg->fp = fopen (cache->path, "r")))
@@ -237,7 +238,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 
   mutt_message _("Fetching message...");
 
-  cache->uid = HEADER_DATA(ctx->hdrs[msgno])->uid;
+  cache->uid = HEADER_DATA(h)->uid;
   mutt_mktemp (path);
   cache->path = safe_strdup (path);
   if (!(msg->fp = safe_fopen (path, "w+")))
@@ -246,8 +247,12 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
     return -1;
   }
 
-  snprintf (buf, sizeof (buf), "UID FETCH %d %s",
-	    HEADER_DATA(ctx->hdrs[msgno])->uid,
+  /* mark this header as currently inactive so the command handler won't
+   * also try to update it. HACK until all this code can be moved into the
+   * command handler */
+  h->active = 0;
+  
+  snprintf (buf, sizeof (buf), "UID FETCH %d %s", HEADER_DATA(h)->uid,
 	    (mutt_bit_isset (idata->capabilities, IMAP4REV1) ?
 	     (option (OPTIMAPPEEK) ? "BODY.PEEK[]" : "BODY[]") :
 	     "RFC822"));
@@ -273,7 +278,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	{
 	  pc = imap_next_word (pc);
 	  uid = atoi (pc);
-	  if (uid != HEADER_DATA(ctx->hdrs[msgno])->uid)
+	  if (uid != HEADER_DATA(h)->uid)
 	    mutt_error (_("The message index is incorrect. Try reopening the mailbox."));
 	}
 	else if ((ascii_strncasecmp ("RFC822", pc, 6) == 0) ||
@@ -298,16 +303,18 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	 * change (eg from \Unseen to \Seen).
 	 * Uncommitted changes in mutt take precedence. If we decide to
 	 * incrementally update flags later, this won't stop us syncing */
-	else if ((ascii_strncasecmp ("FLAGS", pc, 5) == 0) &&
-		 !ctx->hdrs[msgno]->changed)
+	else if ((ascii_strncasecmp ("FLAGS", pc, 5) == 0) && !h->changed)
 	{
-	  if ((pc = imap_set_flags (idata, ctx->hdrs[msgno], pc)) == NULL)
+	  if ((pc = imap_set_flags (idata, h, pc)) == NULL)
 	    goto bail;
 	}
       }
     }
   }
   while (rc == IMAP_CMD_CONTINUE);
+
+  /* see comment before command start. */
+  h->active = 1;
 
   if (rc != IMAP_CMD_OK)
     goto bail;
@@ -318,7 +325,6 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   /* Update the header information.  Previously, we only downloaded a
    * portion of the headers, those required for the main display.
    */
-  h = ctx->hdrs[msgno];
   rewind (msg->fp);
   /* It may be that the Status header indicates a message is read, but the
    * IMAP server doesn't know the message has been \Seen. So we capture
