@@ -1165,6 +1165,28 @@ unignore organization organisation x-mailer: x-newsreader: x-mailing-list:
 unignore posted-to:
 </verb></tscreen>
 
+<sect1>Alternative addresses<label id="alternates">
+<p>
+Usage: <tt/&lsqb;un&rsqb;alternates/ <em/regexp/ &lsqb; <em/regexp/ ... &rsqb;<newline>
+
+With various functions, mutt will treat messages differently,
+depending on whether you sent them or whether you received them from
+someone else.  For instance, when replying to a message that you
+sent to a different party, mutt will automatically suggest to send
+the response to the original message's recipients -- responding to
+yourself won't make much sense in many cases.  (See <ref
+id="reply_to" name="&dollar;reply_to">.)
+
+Many users receive e-mail under a number of different addresses. To
+fully use mutt's features here, the program must be able to
+recognize what e-mail addresses you receive mail under. That's the
+purpose of the <tt/alternates/ command: It takes a list of regular
+expressions, each of which can identify an address under which you
+receive e-mail.
+
+To remove a regular expression from this list, use the
+<tt/unalternates/ command.
+
 <sect1>Mailing lists<label id="lists">
 <p>
 Usage: <tt/&lsqb;un&rsqb;lists/ <em/regexp/ &lsqb; <em/regexp/ ... &rsqb;<newline>
