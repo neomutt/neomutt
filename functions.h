@@ -357,6 +357,7 @@ struct binding_t OpEditor[] = {
   { "forward-char",	OP_EDITOR_FORWARD_CHAR,		"\006" },
   { "backspace",	OP_EDITOR_BACKSPACE,		"\010" },
   { "kill-eol",		OP_EDITOR_KILL_EOL,		"\013" },
+  { "kill-eow",		OP_EDITOR_KILL_EOW,		"\033d" },
   { "kill-line",	OP_EDITOR_KILL_LINE,		"\025" },
   { "quote-char",	OP_EDITOR_QUOTE_CHAR,		"\026" },
   { "kill-word",	OP_EDITOR_KILL_WORD,		"\027" },

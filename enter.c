@@ -324,6 +324,19 @@ int _mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 	    }
 	  }
 	  break;
+
+	case OP_EDITOR_KILL_EOW:
+	  /* delete to end of word */
+	  for (j = curpos; j < lastchar && ISSPACE (buf[j]); j++)
+	    ;
+	  for (          ; j < lastchar && !ISSPACE (buf[j]); j++)
+	    ;
+	  for (ch = curpos; j < lastchar; j++, ch++)
+	    buf[ch] = buf[j];
+	  lastchar = ch;
+	  redraw = M_REDRAW_EOL;
+	  break;
+
 	case OP_EDITOR_BUFFY_CYCLE:
 	  if (flags & M_EFILE)
 	  {
@@ -502,6 +515,8 @@ int _mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 	    buf[curpos] = buf[curpos-1];
 	    buf[curpos-1] = j;
 	  }
+	  if (curpos < lastchar)
+	    curpos++;
 	  redraw = M_REDRAW_LINE;
 	  break;
 
