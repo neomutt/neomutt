@@ -1137,7 +1137,7 @@ int mutt_index_menu (void)
 	    }
 	  }
 
-	  if (CUR->collapsed)
+	  if (CUR->collapsed && (Sort & SORT_MASK) == SORT_THREADS)
 	  {
 	    if ((op == OP_MAIN_NEXT_UNREAD || op == OP_MAIN_PREV_UNREAD) &&
 		UNREAD (CUR))
