@@ -715,7 +715,13 @@ bail:
   if (outfile && *outfile)
     close (out);
 
-  if (rv == 0 || mutt_wait_filter (thepid) != 0 || option (OPTWAITKEY))
+  /*
+   * check for error exit from child process
+   */
+  if (mutt_wait_filter (thepid) != 0)
+    rv = 0;
+
+  if (rv == 0 || option (OPTWAITKEY))
     mutt_any_key_to_continue (NULL);
   return rv;
 }
