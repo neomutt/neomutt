@@ -65,6 +65,9 @@ int mutt_getch (void)
   if (Signals & S_INTERRUPT)
     mutt_query_exit ();
 
+  if(ch == -1)
+    return ch;
+  
   if ((ch & 0x80) && option (OPTMETAKEY))
   {
     /* send ALT-x as ESC-x */
