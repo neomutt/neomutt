@@ -1346,7 +1346,7 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
   }
   
   unlink (pgperrfile);
-  
+
   if ((thepid = pgp_invoke_traditional (&pgpin, NULL, NULL, 
 					-1, fileno (pgpout), fileno (pgperr),
 					pgpinfile, keylist, flags)) == -1)

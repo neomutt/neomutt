@@ -1039,6 +1039,7 @@ ci_send_message (int flags,		/* send mode */
   BODY *pbody;
   int i, killfrom = 0;
   int fcc_error = 0;
+  int free_clear_content = 0;
 
 #if defined(HAVE_PGP) || defined(HAVE_SMIME)
   BODY *save_content = NULL;
@@ -1491,6 +1492,12 @@ main_loop:
    * - something else.  In this case, it's the same as clear_content.
    */
 
+  /* This is ugly -- lack of "reporting back" from mutt_protect(). */
+  
+  if (clear_content && (msg->content != clear_content)
+      && (msg->content->parts != clear_content))
+    free_clear_content = 1;
+  
 #endif /* HAVE_PGP */
 
   if (!option (OPTNOCURSES) && !(flags & SENDMAILX))
@@ -1651,11 +1658,10 @@ full_fcc:
 
 #if defined(HAVE_PGP) || defined(HAVE_SMIME)
   if (msg->security & ENCRYPT)
-  {
-    /* cleanup structures from the first encryption */
-    mutt_free_body (&clear_content);
     FREE (&pgpkeylist);
-  }
+  
+  if (free_clear_content)
+    mutt_free_body (&clear_content);
 #endif
 
   if (flags & SENDREPLY)

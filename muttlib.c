@@ -182,7 +182,13 @@ void mutt_free_body (BODY **p)
     if (b->parameter)
       mutt_free_parameter (&b->parameter);
     if (b->unlink && b->filename)
+    {
+      dprint (1, (debugfile, "mutt_free_body: Unlinking %s.\n", b->filename));
       unlink (b->filename);
+    }
+    else if (b->filename) 
+      dprint (1, (debugfile, "mutt_free_body: Not unlinking %s.\n", b->filename));
+
     FREE (&b->filename);
     FREE (&b->content);
     FREE (&b->xtype);
@@ -672,9 +678,10 @@ void mutt_free_envelope (ENVELOPE **p)
   FREE (p);
 }
 
-void mutt_mktemp (char *s)
+void _mutt_mktemp (char *s, const char *src, int line)
 {
   snprintf (s, _POSIX_PATH_MAX, "%s/mutt-%s-%d-%d", NONULL (Tempdir), NONULL(Hostname), (int) getpid (), Counter++);
+  dprint (1, (debugfile, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, s));
   unlink (s);
 }
 
