@@ -204,6 +204,8 @@ struct option_t MuttVars[] = {
   ** following printf-style sequences are understood:
   ** .pp
   ** .dl
+  ** .dt %C  .dd charset
+  ** .dt %c  .dd reqiures charset conversion (n or c)
   ** .dt %D  .dd deleted flag
   ** .dt %d  .dd description
   ** .dt %e  .dd MIME content-transfer-encoding
@@ -214,6 +216,7 @@ struct option_t MuttVars[] = {
   ** .dt %n  .dd attachment number
   ** .dt %s  .dd size
   ** .dt %t  .dd tagged flag
+  ** .dt %T  .dd graphic tree characters
   ** .dt %u  .dd unlink (=to delete) flag
   ** .dt %>X .dd right justify the rest of the string and pad with character "X"
   ** .dt %|X .dd pad to the end of the line with character "X"

@@ -173,6 +173,7 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
  * %f = filename
  * %I = content-disposition, either I (inline) or A (attachment)
  * %t = tagged flag
+ * %T = tree chars
  * %m = major MIME type
  * %M = MIME subtype
  * %n = attachment number
