@@ -1218,7 +1218,7 @@ main_loop:
 
   /* save a copy of the message, if necessary. */
   mutt_expand_path (fcc, sizeof (fcc));
-  if (strcmp ("/dev/null", fcc) != 0)
+  if (*fcc && strcmp ("/dev/null", fcc) != 0)
   {
     BODY *tmpbody = msg->content;
 #ifdef _PGPPATH
