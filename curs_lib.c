@@ -120,13 +120,11 @@ int _mutt_get_field (/* const */ char *field, char *buf, size_t buflen, int comp
 int mutt_get_password (char *msg, char *buf, size_t buflen)
 {
   int rc;
-  ENTER_STATE *es = mutt_new_enter_state();
   
   CLEARLINE (LINES-1);
   addstr (msg);
   rc = mutt_enter_string (buf, buflen, LINES - 1, mutt_strlen (msg), M_PASS);
   CLEARLINE (LINES-1);
-  mutt_free_enter_state (&es);
   return (rc);
 }
 
