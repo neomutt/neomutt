@@ -314,8 +314,12 @@ iconv_t mutt_iconv_open (const char *tocode, const char *fromcode, int flags)
   iconv_t cd;
   
   mutt_canonical_charset (tocode1, sizeof (tocode1), tocode);
+
+#ifdef M_ICONV_HOOK_TO
+  /* Not used. */
   if ((flags & M_ICONV_HOOK_TO) && (tmp = mutt_charset_hook (tocode1)))
     mutt_canonical_charset (tocode1, sizeof (tocode1), tmp);
+#endif
 
   mutt_canonical_charset (fromcode1, sizeof (fromcode1), fromcode);
   if ((flags & M_ICONV_HOOK_FROM) && (tmp = mutt_charset_hook (fromcode1)))

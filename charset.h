@@ -36,6 +36,8 @@ void fgetconv_close (FGETCONV **);
 void mutt_set_langinfo_charset (void);
 
 #define M_ICONV_HOOK_FROM 1
+#if 0
 #define M_ICONV_HOOK_TO   2
+#endif
 
 #endif /* _CHARSET_H */

@@ -507,7 +507,7 @@ int mutt_write_mime_body (BODY *a, FILE *f)
   if (a->type == TYPETEXT && (!a->noconv))
     fc = fgetconv_open (fpin, Charset, 
 			mutt_get_body_charset (send_charset, sizeof (send_charset), a),
-			M_ICONV_HOOK_TO);
+			0);
   else
     fc = fgetconv_open (fpin, 0, 0, 0);
 
@@ -694,7 +694,7 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
   CONTENT_STATE *states;
   size_t *score;
 
-  cd1 = mutt_iconv_open ("UTF-8", fromcode, M_ICONV_HOOK_FROM);
+  cd1 = mutt_iconv_open ("UTF-8", fromcode, 0);
   if (cd1 == (iconv_t)(-1))
     return -1;
 
