@@ -789,10 +789,13 @@ void maildir_delayed_parsing (CONTEXT * ctx, struct maildir *md)
 {
   struct maildir *p;
   char fn[_POSIX_PATH_MAX];
+  int count;
 
-  for (p = md; p; p = p->next)
+  for (p = md, count = 0; p; p = p->next, count++)
     if (p && p->h && !p->header_parsed)
     {
+      if (!ctx->quiet && ReadInc && ((count % ReadInc) == 0 || count == 1))
+	mutt_message (_("Reading %s... %d"), ctx->path, count);
       snprintf (fn, sizeof (fn), "%s/%s", ctx->path, p->h->path);
       if (maildir_parse_message (ctx->magic, fn, p->h->old, p->h))
 	p->header_parsed = 1;
