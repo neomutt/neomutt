@@ -1,3 +1,7 @@
+2003-03-05 21:14:46  Andrew W. Nosenko  <awn@bcs.zp.ua>  (roessler)
+
+	* mutt_idna.c: Fix tlr's pre-processor screw-up.
+
 2003-03-04 09:51:07  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* mutt_idna.c, mutt_socket.c: Unset UseSTD3ASCIIRules, and set
