@@ -1,11 +1,23 @@
 IMAP/SSL in mutt 
 ================
 
-To have SSL support in mutt, you need to install OpenSSL 
-(http://www.openssl.org) library before compiling. Versions 0.9.3
-and 0.9.4 have been tested.
+Compilation
+-----------
+If you want to have SSL support in mutt, you need to install OpenSSL
+(http://www.openssl.org) libraries and headers before compiling.
+OpenSSL versions 0.9.3 and 0.9.4 have been tested.
+
+For SSL support to be enabled, you need to run the ``configure''
+script with ``--enable-imap --with-ssl[=PFX]'' parameters.  If the
+OpenSSL headers and libraries are not in the default system search
+paths (usually /usr/include and /usr/lib) you can use the optional PFX
+argument to define the root directory of your installation.  The
+libraries are then expected to be found in PFX/lib and headers in
+PFX/include/openssl.
 
 
+Usage
+-----
 IMAP/SSL folders can be accessed just like normal IMAP folders, but you
 will also have to add '/ssl' before the closing curly brace. 
 
@@ -29,6 +41,8 @@ For example:
 	set certificate_file=~/.mutt/certificates
 
 
+Troubleshooting
+---------------
 If after doing the above, you are unable to successfully connect, it
 is likely that your IMAP server does not support one of the SSL protocols.
 There exist three different protocols, TLSv1, SSLv2, and SSLv3.  To check

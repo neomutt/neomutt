@@ -82,6 +82,15 @@ to ``configure'' to help it out, or change the default behavior:
 --enable-imap
 	enable IMAP support
 
+--with-ssl[=PFX]
+	enable SSL support with IMAP. SSL support requires you to have
+	OpenSSL headers and libraries properly installed before
+	compiling.  If the OpenSSL headers and libraries are not in the
+	default system pats you can use the optional PFX argument to
+	define the root directory of your installation.  The libraries
+	are then expected to be found in PFX/lib and headers in
+	PFX/include/openssl.
+
 --disable-nls
 	This switch disables mutt's native language support.
 
