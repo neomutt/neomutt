@@ -243,8 +243,10 @@ static int socket_connect (int fd, struct sockaddr* sa)
 
   if (sa->sa_family == AF_INET)
     sa_size = sizeof (struct sockaddr_in);
+#ifdef HAVE_GETADDRINFO
   else if (sa->sa_family == AF_INET6)
     sa_size = sizeof (struct sockaddr_in6);
+#endif
   else
   {
     dprint (1, (debugfile, "Unknown address family!\n"));
