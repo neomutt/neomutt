@@ -509,7 +509,7 @@ add_pattern (COLOR_LINE **top, const char *s, int sensitive,
     {
       int i;
 
-      strfcpy(buf, tmp->pattern, sizeof(buf));
+      strfcpy(buf, NONULL(tmp->pattern), sizeof(buf));
       mutt_check_simple (buf, sizeof (buf), NONULL(SimpleSearch));
       if((tmp->color_pattern = mutt_pattern_comp (buf, M_FULL_MSG, err)) == NULL)
       {
