@@ -210,8 +210,21 @@ mutt_smtp_send (const ADDRESS* from, const ADDRESS* to, const ADDRESS* cc,
 {
   CONNECTION *conn;
   ACCOUNT account;
-  int ret = -1;
+  const char* envfrom;
   char buf[1024];
+  int ret = -1;
+
+  /* it might be better to synthesize an envelope from from user and host
+   * but this condition is most likely arrived at accidentally */
+  if (EnvFrom)
+    envfrom = EnvFrom->mailbox;
+  else if (from)
+    envfrom = from->mailbox;
+  else
+  {
+    mutt_error (_("No from address given"));
+    return -1;
+  }
 
   if (smtp_fill_account (&account) < 0)
     return ret;
