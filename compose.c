@@ -824,7 +824,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
       
 #ifdef MIXMASTER
-        if (mix_check_message (msg) != 0)
+        if (msg->chain && mix_check_message (msg) != 0)
 	  break;
 #endif
       
