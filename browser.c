@@ -465,7 +465,6 @@ void mutt_select_file (char *f, size_t flen, int buffy)
   MUTTMENU *menu;
   struct stat st;
   int i, killPrefix = 0;
-  int savedmenu = CurrentMenu;
 
   memset (&state, 0, sizeof (struct browser_state));
 
@@ -516,7 +515,7 @@ void mutt_select_file (char *f, size_t flen, int buffy)
     return;
 
   menu = mutt_new_menu ();
-  menu->menu = CurrentMenu = MENU_FOLDER;
+  menu->menu = MENU_FOLDER;
   menu->make_entry = folder_entry;
   menu->search = select_file_search;
   menu->title = title;
@@ -625,7 +624,6 @@ void mutt_select_file (char *f, size_t flen, int buffy)
 
 	destroy_state (&state);
 	mutt_menuDestroy (&menu);
-	CurrentMenu = savedmenu;
 	return;
 
       case OP_BROWSER_TELL:
@@ -664,7 +662,6 @@ void mutt_select_file (char *f, size_t flen, int buffy)
 		mutt_error _("Error scanning directory.");
 		destroy_state (&state);
 		mutt_menuDestroy (&menu);
-		CurrentMenu = savedmenu;
 		return;
 	      }
 	    }
@@ -721,7 +718,6 @@ void mutt_select_file (char *f, size_t flen, int buffy)
 	    {
 	      mutt_error _("Error scanning directory.");
 	      mutt_menuDestroy (&menu);
-	      CurrentMenu = savedmenu;
 	      return;
 	    }
 	    killPrefix = 0;
@@ -818,7 +814,6 @@ void mutt_select_file (char *f, size_t flen, int buffy)
 	  strfcpy (f, buf, flen);
 	  destroy_state (&state);
 	  mutt_menuDestroy (&menu);
-	  CurrentMenu = savedmenu;
 	  return;
 	}
 	MAYBE_REDRAW (menu->redraw);

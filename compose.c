@@ -438,12 +438,11 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
   /* Sort, SortAux could be changed in mutt_index_menu() */
   int oldSort = Sort, oldSortAux = SortAux;
   struct stat st;
-  int savedmenu = CurrentMenu;
 
   idx = mutt_gen_attach_list (msg->content, idx, &idxlen, &idxmax, 0, 1);
 
   menu = mutt_new_menu ();
-  menu->menu = CurrentMenu = MENU_COMPOSE;
+  menu->menu = MENU_COMPOSE;
   menu->offset = HDR_ATTACH;
   menu->max = idxlen;
   menu->make_entry = snd_entry;
@@ -1109,7 +1108,6 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
   }
 
   mutt_menuDestroy (&menu);
-  CurrentMenu = savedmenu;
 
   if (idxlen)
   {

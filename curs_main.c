@@ -255,10 +255,9 @@ int mutt_index_menu (void)
   int do_buffy_notify = 1;
   int close = 0; /* did we OP_QUIT or OP_EXIT out of this menu? */
   int attach_msg = option(OPTATTACHMSG);
-  int savedmenu = CurrentMenu;
 
   menu = mutt_new_menu ();
-  menu->menu = CurrentMenu = MENU_MAIN;
+  menu->menu = MENU_MAIN;
   menu->offset = 1;
   menu->pagelen = LINES - 3;
   menu->make_entry = index_make_entry;
@@ -507,7 +506,7 @@ int mutt_index_menu (void)
 	mutt_flushinp ();
 	mutt_resize_screen ();
 	menu->redraw = REDRAW_FULL;
-	menu->menu = CurrentMenu = MENU_MAIN;
+	menu->menu = MENU_MAIN;
 	Signals &= ~S_SIGWINCH;
 	menu->top = 0; /* so we scroll the right amount */
 	continue;
@@ -972,7 +971,7 @@ int mutt_index_menu (void)
 	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 	}
 
-	menu->menu = CurrentMenu = MENU_PAGER;
+	menu->menu = MENU_PAGER;
 	menu->oldcurrent = menu->current;
 	continue;
 
@@ -1722,7 +1721,7 @@ int mutt_index_menu (void)
 
     if (menu->menu == MENU_PAGER)
     {
-      menu->menu = CurrentMenu = MENU_MAIN;
+      menu->menu = MENU_MAIN;
       menu->redraw = REDRAW_FULL;
       set_option (OPTWEED); /* turn header weeding back on. */
     }
@@ -1731,7 +1730,6 @@ int mutt_index_menu (void)
   }
 
   mutt_menuDestroy (&menu);
-  CurrentMenu = savedmenu;
   return (close);
 }
 
