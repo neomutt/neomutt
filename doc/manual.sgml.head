@@ -2041,11 +2041,9 @@ server. This is mostly the same as the local file browser, with the
 following differences:
 <itemize>
 <item>In lieu of file permissions, mutt displays the string "IMAP",
-  possibly followed by the symbol "S", indicating that the entry is
-  selectable (contains messages), and/or the symbol "+", indicating
-  that the entry may contain subfolders. If your server is like the
-  UW-IMAP server, you won't see both symbols, but if you are using a
-  Cyrus-like server folders will often contain both messages and
+  possibly followed by the symbol the symbol "+", indicating
+  that the entry contains both messages and subfolders. On
+  Cyrus-like servers folders will often contain both messages and
   subfolders. 
 <item>For the case where an entry can contain both messages and
   subfolders, the selection key (bound to <tt>enter</tt> by default)

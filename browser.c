@@ -209,9 +209,9 @@ folder_format_str (char *dest, size_t destlen, char op, const char *src,
 #ifdef USE_IMAP
 	if (folder->ff->imap)
 	{
-	  sprintf (permission, "IMAP %c%c",
-		   folder->ff->inferiors ? '+' : ' ',
-		   folder->ff->selectable ? 'S' : ' ');
+	  /* mark folders with subfolders AND mail */
+	  sprintf (permission, "IMAP %c",
+            (folder->ff->inferiors && folder->ff->selectable) ? '+' : ' ');
           snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
           snprintf (dest, destlen, tmp, permission);
 	}                                        
@@ -688,8 +688,12 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
               strfcpy (LastDir, state.entry[menu->current].name,
                 sizeof (LastDir));
 	      /* tack on delimiter here */
-	      if ((state.entry[menu->current].delim != '\0') &&
-		  (n = strlen (LastDir)+1) < sizeof (LastDir))
+	      n = strlen (LastDir)+1;
+	      
+	      /* special case "" needs no delimiter */
+	      if ((strlen (strchr (LastDir, '}')) > 0) &&
+		  (state.entry[menu->current].delim != '\0') &&
+		  (n < sizeof (LastDir)))
 	      {
 		LastDir[n] = '\0';
 		LastDir[n-1] = state.entry[menu->current].delim;
