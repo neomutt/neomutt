@@ -252,7 +252,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** When this variable is set, mutt will beep whenever it prints a message
   ** notifying you of new mail.  This is independent of the setting of the
-  ** ``$beep'' variable.
+  ** ``$$beep'' variable.
   */
   { "bounce_delivered", DT_BOOL, R_NONE, OPTBOUNCEDELIVERED, 1 },
   /*
@@ -306,8 +306,8 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** This variable controls whether or not copies of your outgoing messages
-  ** will be saved for later references.  Also see ``$record'',
-  ** ``$save_name'', ``$force_name'' and ``$fcc-hook''.
+  ** will be saved for later references.  Also see ``$$record'',
+  ** ``$$save_name'', ``$$force_name'' and ``$fcc-hook''.
   */
   { "date_format",	DT_STR,	 R_BOTH, UL &DateFmt, UL "!%a, %b %d, %Y at %I:%M:%S%p %Z" },
   /*
@@ -319,7 +319,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Unless the first character in the string is a bang (``!''), the month
   ** and week day names are expanded according to the locale specified in
-  ** the variable ``$locale''. If the first character in the string is a
+  ** the variable ``$$locale''. If the first character in the string is a
   ** bang, the bang is discarded, and the month and week day names in the
   ** rest of the string are expanded in the \fIC\fP locale (that is in US
   ** English).
@@ -334,7 +334,7 @@ struct option_t MuttVars[] = {
   ** variable at the time the hook is declared.  The default value matches
   ** if the message is either from a user matching the regular expression
   ** given, or if it is from you (if the from address matches
-  ** ``$alternates'') and is to or cc'ed to a user matching the given
+  ** ``$$alternates'') and is to or cc'ed to a user matching the given
   ** regular expression.
   */
   { "delete",		DT_QUAD, R_NONE, OPT_DELETE, M_ASKYES },
@@ -488,13 +488,18 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Controls whether or not the \fIMail-Followup-To\fP header field is
   ** generated when sending mail.  When \fIset\fP, Mutt will generate this
-  ** field when you are replying to a subscribed mailing list.
+  ** field when you are replying to a known mailing list, specified with
+  ** the ``$subscribe'' or ``$lists'' commands.
   ** .pp
-  ** The purpose of this field is to prevent you from receiving duplicate
-  ** copies of replies to messages which you send by specifying that you
-  ** will receive a copy of the message if it is addressed to the mailing
-  ** list (and thus there is no need to also include your address in a
-  ** group reply).
+  ** This field has two purposes.  First, preventing you from receiving
+  ** duplicate copies of replies to messages which you send to mailing
+  ** lists.  Second, ensuring that you do get a reply separately for any
+  ** messages sent to known lists to which you are not subscribed.  The
+  ** header will contain only the list's address for subscribed lists,
+  ** and both the list address and your own email address for unsubscribed
+  ** lists.  Without this header, a group reply to your message sent to a
+  ** subscribed list will be sent to both the list and your address,
+  ** resulting in two copies of the same email for you.
   */
   { "force_name",	DT_BOOL, R_NONE, OPTFORCENAME, 0 },
   /*
@@ -510,8 +515,8 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Controls the decoding of complex MIME messages into text/plain when
   ** forwarding a message.  The message header is also RFC2047 decoded.
-  ** This variable is only used, if ``$mime_forward'' is \fIunset\fP,
-  ** otherwise ``$mime_forward_decode'' is used instead.
+  ** This variable is only used, if ``$$mime_forward'' is \fIunset\fP,
+  ** otherwise ``$$mime_forward_decode'' is used instead.
   */
   { "forw_decode",	DT_SYN,  R_NONE, UL "forward_decode", 0 },
   /*
@@ -529,8 +534,8 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** When \fIset\fP forwarded messages included in the main body of the
-  ** message (when ``$mime_forward'' is \fIunset\fP) will be quoted using
-  ** ``$indent_string''.
+  ** message (when ``$$mime_forward'' is \fIunset\fP) will be quoted using
+  ** ``$$indent_string''.
   */
   { "forw_quote",	DT_SYN,  R_NONE, UL "forward_quote", 0 },
   /*
@@ -540,7 +545,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** When set, this variable contains a default from address.  It
   ** can be overridden using my_hdr (including from send-hooks) and
-  ** ``$reverse_name''.
+  ** ``$$reverse_name''.
   */
   { "gecos_mask",	DT_RX,	 R_NONE, UL &GecosMask, UL "^[^,]*" },
   /*
@@ -573,7 +578,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** When set, this variable causes Mutt to include the header
   ** of the message you are replying to into the edit buffer.
-  ** The $$weed setting applies.
+  ** The ``$$weed'' setting applies.
   */  
   { "help",		DT_BOOL, R_BOTH, OPTHELP, 1 },
   /*
@@ -590,7 +595,7 @@ struct option_t MuttVars[] = {
   { "hidden_host",	DT_BOOL, R_NONE, OPTHIDDENHOST, 0 },
   /*
   ** .pp
-  ** When set, mutt will skip the host name part of ``$hostname'' variable
+  ** When set, mutt will skip the host name part of ``$$hostname'' variable
   ** when adding the domain part to addresses.  This variable does not
   ** affect the generation of Message-IDs, and it will not lead to the 
   ** cut-off of first-level domains.
@@ -736,7 +741,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This specifies the format of the \fIIn-Reply-To\fP header field
   ** added when replying to a message.  For a ful llisting of
-  ** defined escape sequences, ese the section on $$index_format.
+  ** defined escape sequences, see the section on $$index_format.
   ** .pp
   ** \fBNote:\fP Don't use any sequences in this format string which
   ** may include 8-bit characters.  Using such escape sequences may
@@ -788,7 +793,7 @@ struct option_t MuttVars[] = {
   ** %S      status of the message (N/D/d/!/r/\(as)
   ** %t      `to:' field (recipients)
   ** %T      the appropriate character from the 
-  ** .       $to_chars string
+  ** .       $$to_chars string
   ** %u      user (login) name of the author
   ** %v      first name of the author, or the 
   ** .       recipient if the message is from you
@@ -881,7 +886,7 @@ struct option_t MuttVars[] = {
   { "mbox",		DT_PATH, R_BOTH, UL &Inbox, UL "~/mbox" },
   /*
   ** .pp
-  ** This specifies the folder into which read mail in your ``$spoolfile''
+  ** This specifies the folder into which read mail in your ``$$spoolfile''
   ** folder will be appended.
   */
   { "mbox_type",	DT_MAGIC,R_NONE, UL &DefaultMagic, M_MBOX },
@@ -933,14 +938,14 @@ struct option_t MuttVars[] = {
   ** to switch between MIME and not MIME from mail to mail, set this
   ** variable to ask-no or ask-yes.
   ** .pp
-  ** Also see ``$forward_decode'' and ``$mime_forward_decode''.
+  ** Also see ``$$forward_decode'' and ``$$mime_forward_decode''.
   */
   { "mime_forward_decode", DT_BOOL, R_NONE, OPTMIMEFORWDECODE, 0 },
   /*
   ** .pp
   ** Controls the decoding of complex MIME messages into text/plain when
-  ** forwarding a message while ``$mime_forward'' is \fIset\fP. Otherwise
-  ** ``$forward_decode'' is used instead.
+  ** forwarding a message while ``$$mime_forward'' is \fIset\fP. Otherwise
+  ** ``$$forward_decode'' is used instead.
   */
   { "mime_fwd",		DT_SYN,  R_NONE, UL "mime_forward", 0 },
   /*
@@ -992,7 +997,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This is the string displayed in the ``$attachment'' menu for
   ** attachments of type message/rfc822.  For a full listing of defined
-  ** escape sequences see the section on ``$index_format''.
+  ** escape sequences see the section on ``$$index_format''.
   */
   { "msg_format",	DT_SYN,  R_NONE, UL "message_format", 0 },
   /*
@@ -1023,7 +1028,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This variable controls the format of the one-line message ``status''
   ** displayed before each message in either the internal or an external
-  ** pager.  The valid sequences are listed in the ``$index_format''
+  ** pager.  The valid sequences are listed in the ``$$index_format''
   ** section.
   */
   { "pager_index_lines",DT_NUM,	 R_PAGER, UL &PagerIndexLines, 0 },
@@ -1316,8 +1321,8 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Controls the handling of encrypted messages when forwarding a message.
   ** When set, the outer layer of encryption is stripped off.  This
-  ** variable is only used if ``$mime_forward'' is \fIset\fP and
-  ** ``$mime_forward_decode'' is \fIunset\fP.
+  ** variable is only used if ``$$mime_forward'' is \fIset\fP and
+  ** ``$$mime_forward_decode'' is \fIunset\fP.
   */
   { "forw_decrypt",	DT_SYN,  R_NONE, UL "forward_decrypt", 0 },
   /*
@@ -1460,7 +1465,7 @@ struct option_t MuttVars[] = {
   { "prompt_after",	DT_BOOL, R_NONE, OPTPROMPTAFTER, 1 },
   /*
   ** .pp
-  ** If you use an \fIexternal\fP ``$pager'', setting this variable will
+  ** If you use an \fIexternal\fP ``$$pager'', setting this variable will
   ** cause Mutt to prompt you for a command when the pager exits rather
   ** than returning to the index menu.  If unset, Mutt will return to the
   ** index menu when the external pager exits.
@@ -1538,7 +1543,7 @@ struct option_t MuttVars[] = {
   ** your messages, but another way to do this is using the ``$my_hdr''
   ** command to create a \fIBcc:\fP field with your email address in it.)
   ** .pp
-  ** The value of \fI$record\fP is overridden by the ``$$force_name'' and
+  ** The value of \fI$$record\fP is overridden by the ``$$force_name'' and
   ** ``$$save_name'' variables, and the ``$fcc-hook'' command.
   */
   { "reply_regexp",	DT_RX,	 R_INDEX|R_RESORT, UL &ReplyRegexp, UL "^(re([\\[0-9\\]+])*|aw):[ \t]*" },
@@ -1592,7 +1597,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** It would be displayed in the index menu as ``Joe User'' instead of
   ** ``abd30425@somewhere.net.''  This is useful when the person's e-mail
-  ** address is not human friendly (like Compu$erve addresses).
+  ** address is not human friendly (like CompuServe addresses).
   */
   { "reverse_name",	DT_BOOL, R_BOTH, OPTREVNAME, 0 },
   /*
@@ -1634,14 +1639,14 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** If set, mutt will take the sender's full address when choosing a
-  ** default folder for saving a mail. If ``$save_name'' or ``$force_name''
+  ** default folder for saving a mail. If ``$$save_name'' or ``$$force_name''
   ** is set too, the selection of the fcc folder will be changed as well.
   */
   { "save_empty",	DT_BOOL, R_NONE, OPTSAVEEMPTY, 1 },
   /*
   ** .pp
   ** When unset, mailboxes which contain no saved messages will be removed
-  ** when closed (the exception is ``$spoolfile'' which is never removed).
+  ** when closed (the exception is ``$$spoolfile'' which is never removed).
   ** If set, mailboxes are never removed.
   ** .pp
   ** \fBNote:\fP This only applies to mbox and MMDF folders, Mutt does not
@@ -1653,10 +1658,10 @@ struct option_t MuttVars[] = {
   ** This variable controls how copies of outgoing messages are saved.
   ** When set, a check is made to see if a mailbox specified by the
   ** recipient address exists (this is done by searching for a mailbox in
-  ** the ``$folder'' directory with the \fIusername\fP part of the
+  ** the ``$$folder'' directory with the \fIusername\fP part of the
   ** recipient address).  If the mailbox exists, the outgoing message will
   ** be saved to that mailbox, otherwise the message is saved to the
-  ** ``$record'' mailbox.
+  ** ``$$record'' mailbox.
   ** .pp
   ** Also see the ``$$force_name'' variable.
   */
@@ -1665,7 +1670,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** When this variable is \fIunset\fP, scoring is turned off.  This can
   ** be useful to selectively disable scoring for certain folders when the
-  ** $score_threshold_delete variable and friends are used.
+  ** ``$$score_threshold_delete'' variable and friends are used.
   **
   */
   { "score_threshold_delete", DT_NUM, R_NONE, UL &ScoreThresholdDelete, -1 },
@@ -1694,7 +1699,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** The character set that mutt will use for outgoing messages.
-  ** If this variable is not set, mutt will fall back to $$charset.
+  ** If this variable is not set, mutt will fall back to ``$$charset''.
   */
   { "sendmail",		DT_PATH, R_NONE, UL &Sendmail, UL SENDMAIL " -oem -oi" },
   /*
@@ -1706,7 +1711,7 @@ struct option_t MuttVars[] = {
   { "sendmail_wait",	DT_NUM,  R_NONE, UL &SendmailWait, 0 },
   /*
   ** .pp
-  ** Specifies the number of seconds to wait for the ``$sendmail'' process
+  ** Specifies the number of seconds to wait for the ``$$sendmail'' process
   ** to finish before giving up and putting delivery in the background.
   ** .pp
   ** Mutt interprets the value of this variable as follows:
@@ -1732,7 +1737,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** If set, a line containing ``-- '' will be inserted before your
-  ** ``$signature''.  It is \fBstrongly\fP recommended that you not unset
+  ** ``$$signature''.  It is \fBstrongly\fP recommended that you not unset
   ** this variable unless your ``signature'' contains just your name.  The
   ** reason for this is because many software packages use ``-- \n'' to
   ** detect your signature.  For example, Mutt has the ability to highlight
@@ -1771,7 +1776,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** The \fIpager\fP uses this variable to catch some common false
-  ** positives of ``$quote_regexp'', most notably smileys in the beginning
+  ** positives of ``$$quote_regexp'', most notably smileys in the beginning
   ** of a line
   */
   { "sort",		DT_SORT, R_INDEX|R_RESORT, UL &Sort, SORT_DATE },
@@ -1812,7 +1817,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** When sorting by threads, this variable controls how threads are sorted
   ** in relation to other threads, and how the branches of the thread trees
-  ** are sorted.  This can be set to any value that ``$sort'' can, except
+  ** are sorted.  This can be set to any value that ``$$sort'' can, except
   ** threads (in that case, mutt will just use date-sent).  You can also
   ** specify the last- prefix in addition to the reverse- prefix, but last-
   ** must come after reverse-.  The last- prefix causes messages to be
@@ -1842,13 +1847,13 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** This variable is only useful when sorting by threads with
-  ** ``$strict_threads'' unset.  In that case, it changes the heuristic
+  ** ``$$strict_threads'' unset.  In that case, it changes the heuristic
   ** mutt uses to thread messages by subject.  With sort_re set, mutt will
   ** only attach a message as the child of another message by subject if
   ** the subject of the child message starts with a substring matching the
-  ** setting of ``$reply_regexp''.  With sort_re unset, mutt will attach
+  ** setting of ``$$reply_regexp''.  With sort_re unset, mutt will attach
   ** the message whether or not this is the case, as long as the
-  ** non-``$reply_regexp'' parts of both messages are identical.
+  ** non-``$$reply_regexp'' parts of both messages are identical.
   */
   { "spoolfile",	DT_PATH, R_NONE, UL &Spoolfile, 0 },
   /*
@@ -1862,7 +1867,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Controls the characters used by the "%r" indicator in
-  ** ``$status_format''. The first character is used when the mailbox is
+  ** ``$$status_format''. The first character is used when the mailbox is
   ** unchanged. The second is used when the mailbox has been changed, and
   ** it needs to be resynchronized. The third is used if the mailbox is in
   ** read-only mode, or if the mailbox will not be written when exiting
@@ -1896,9 +1901,9 @@ struct option_t MuttVars[] = {
   ** %p      number of postponed messages *
   ** %P      percentage of the way through the index
   ** %r      modified/read-only/won't-write/attach-message 
-  ** .       indicator, according to $status_chars
-  ** %s      current sorting mode ($sort)
-  ** %S      current aux sorting method ($sort_aux)
+  ** .       indicator, according to $$status_chars
+  ** %s      current sorting mode ($$sort)
+  ** %S      current aux sorting method ($$sort_aux)
   ** %t      number of tagged messages *
   ** %u      number of unread messages *
   ** %v      Mutt version string

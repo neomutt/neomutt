@@ -365,8 +365,8 @@ you misspelled the passphrase.
 <p><bf/list-reply/<label id="list-reply"> (default: L)<newline>
 
 Reply to the current or tagged message(s) by extracting any addresses which
-match the addresses given by the <ref id="lists" name="lists"> command, but
-also honor any <tt/Mail-Followup-To/ header(s) if the
+match the addresses given by the <ref id="lists" name="lists or subscribe">
+commands, but also honor any <tt/Mail-Followup-To/ header(s) if the
 <ref id="honor_followup_to" name="&dollar;honor&lowbar;followup&lowbar;to">
 configuration variable is set.  Using this when replying to messages posted
 to mailing lists helps avoid duplicate copies being sent to the author of
@@ -1083,10 +1083,10 @@ id="list-reply" name="list-reply"> function will work for all known lists.
 Additionally, when you send a message to a subscribed list, mutt will
 add a Mail-Followup-To header to tell other users' mail user agents
 not to send copies of replies to your personal address.   Note that
-the mail-followup-to header is a non-standard extension which is not
+the Mail-Followup-To header is a non-standard extension which is not
 supported by all mail user agents.  Adding it is not bullet-proof against
 receiving personal CCs of list messages.  Also note that the generation
-of the mail-followup-to header is controlled by the <ref id="followup_to"
+of the Mail-Followup-To header is controlled by the <ref id="followup_to"
 name="followup_to"> configuration variable.
 
 More precisely, Mutt maintains lists of known and subscribed mailing
@@ -1099,7 +1099,7 @@ example, if you've subscribed to the Mutt mailing list, you will receive mail
 addresssed to <em/mutt-users@mutt.org/.  So, to tell Mutt that this is a
 mailing list, you could add ``lists mutt-users'' to your
 initialization file.  To tell mutt that you are subscribed to it,
-add ``subscribe mutt-users'' to your initialization file.
+add ``subscribe mutt-users'' to your initialization file instead.
 If you also happen to get mail from someone whose address is
 <em/mutt-users@example.com/, you could use ``lists mutt-users@mutt.org'' 
 or ``subscribe mutt-users@mutt.org'' to
@@ -1396,7 +1396,7 @@ considered to be an executable program from which to read input (eg.
 
 <sect1>Removing hooks<label id="unhook">
 <p>
-Usage: <tt/unhook/ [ * | <em/hook-type/ ]
+Usage: <tt/unhook/ &lsqb; * | <em/hook-type/ &rsqb;
 
 This command permits you to flush hooks you have previously defined.
 You can either remove all hooks by giving the ``*'' character as an
@@ -1879,8 +1879,8 @@ amounts of mail easier.  The first thing you must do is to let Mutt
 know what addresses you consider to be mailing lists (technically
 this does not have to be a mailing list, but that is what it is most
 often used for), and what lists you are subscribed to.  This is
-accomplished through the use of the <ref id="lists" name="lists">
-and <ref id="lists" name="subscribe"> commands in your muttrc.
+accomplished through the use of the <ref id="lists"
+name="lists and subscribe"> commands in your muttrc.
 
 Now that Mutt knows what your mailing lists are, it can do several
 things, the first of which is the ability to show the name of a list
@@ -2682,6 +2682,12 @@ The following are the commands understood by mutt.
 <tt><ref id="set" name="unset"></tt> <em/variable/ &lsqb;<em/variable/ ... &rsqb;
 <item>
 <tt><ref id="source" name="source"></tt> <em/filename/
+<item>
+<tt><ref id="lists" name="subscribe"></tt> <em/address/ &lsqb; <em/address/ ... &rsqb; 
+<item>
+<tt><ref id="lists" name="unsubscribe"></tt> <em/address/ &lsqb; <em/address/ ... &rsqb; 
+<item>
+<tt><ref id="unhook" name="unhook"></tt> <em/hook-type/
 </itemize>
 
 <sect1>Configuration variables<label id="variables">
