@@ -1,6 +1,17 @@
 Major changes since 1.2
 -----------------------
 
+- With PGP/MIME, mutt can now automatically figure out the "micalg"
+  parameter.  The $pgp_sign_micalg variable has gone.
+
+- You can (un)collapse subtrees of the attachment tree now.  This
+  function is bound to 'v' by default.  
+
+  Normally, when you enter the tree, it'll be entirely uncollapsed.
+  However, as a special exception, if $digest_collapse is set (the
+  new default), any messages in a multipart/digest will be collapsed
+  automatically.
+
 - There is a $print_split option.  Use it if your $print_cmd is
   "enscript -Email", or something similar.
 
