@@ -28,31 +28,14 @@
 #include <string.h>
 #include <locale.h>
 
-static int _mutt_is_mail_list (ADDRESS *addr, LIST *p)
-{
-  char *s;
-  if (addr->mailbox)
-  {
-    for (;p; p = p->next)
-    {
-      if (mutt_strncasecmp (addr->mailbox, p->data, mutt_strlen (p->data)) == 0)
-	return 1;
-      else if (*p->data == '@' && (s = strchr (addr->mailbox, '@')))
-	if (mutt_strncasecmp (s, p->data, mutt_strlen (p->data)) == 0)
-	  return 1;
-    }
-  }
-  return 0;
-}
-
 int mutt_is_mail_list (ADDRESS *addr)
 {
-  return _mutt_is_mail_list (addr, MailLists);
+  return mutt_match_rx_list (addr->mailbox, MailLists);
 }
 
 int mutt_is_subscribed_list (ADDRESS *addr)
 {
-  return _mutt_is_mail_list (addr, SubscribedLists);
+  return mutt_match_rx_list (addr->mailbox, SubscribedLists);
 }
 
 /* Search for a mailing list in the list of addresses pointed to by adr.

@@ -157,13 +157,6 @@ struct option_t MuttVars[] = {
   ** message could include a line like "[-- PGP output follows ..." and
   ** give it the same color as your attachment color.
   */
-  { "alternates",	DT_RX,	 R_BOTH, UL &Alternates, 0 },
-  /*
-  ** .pp
-  ** A regexp that allows you to specify \fIalternate\fP addresses where
-  ** you receive mail.  This affects Mutt's idea about messages from you
-  ** and addressed to you.
-  */
   { "arrow_cursor",	DT_BOOL, R_BOTH, OPTARROWCURSOR, 0 },
   /*
   ** .pp
@@ -402,7 +395,7 @@ struct option_t MuttVars[] = {
   ** variable at the time the hook is declared.  The default value matches
   ** if the message is either from a user matching the regular expression
   ** given, or if it is from you (if the from address matches
-  ** ``$$alternates'') and is to or cc'ed to a user matching the given
+  ** ``alternates'') and is to or cc'ed to a user matching the given
   ** regular expression.
   */
   { "delete",		DT_QUAD, R_NONE, OPT_DELETE, M_ASKYES },
@@ -1034,8 +1027,8 @@ struct option_t MuttVars[] = {
   { "metoo",		DT_BOOL, R_NONE, OPTMETOO, 0 },
   /*
   ** .pp
-  ** If unset, Mutt will remove your address (see the ``$$alternates''
-  ** variable) from the list of recipients when replying to a message.
+  ** If unset, Mutt will remove your address (see the ``alternates''
+  ** command) from the list of recipients when replying to a message.
   */
   { "menu_scroll",	DT_BOOL, R_NONE, OPTMENUSCROLL, 0 },
   /*
@@ -2734,7 +2727,10 @@ const struct mapping_t SortKeyMethods[] = {
 /* functions used to parse commands in a rc file */
 
 static int parse_list (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+static int parse_rx_list (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unlist (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+static int parse_rx_unlist (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+
 static int parse_unlists (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_alias (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unalias (BUFFER *, BUFFER *, unsigned long, BUFFER *);
@@ -2754,6 +2750,8 @@ struct command_t
 };
 
 struct command_t Commands[] = {
+  { "alternates",	parse_rx_list,		UL &Alternates },
+  { "unalternates",	parse_rx_unlist,	UL &Alternates },
 #ifdef USE_SOCKET
   { "account-hook",     mutt_parse_hook,        M_ACCOUNTHOOK },
 #endif
@@ -2775,7 +2773,7 @@ struct command_t Commands[] = {
   { "iconv-hook",	mutt_parse_hook,	M_ICONVHOOK }, 
 #endif
   { "ignore",		parse_ignore,		0 },
-  { "lists",		parse_list,		UL &MailLists },
+  { "lists",		parse_rx_list,		UL &MailLists },
   { "macro",		mutt_parse_macro,	0 },
   { "mailboxes",	mutt_parse_mailboxes,	M_MAILBOXES },
   { "unmailboxes",	mutt_parse_mailboxes,	M_UNMAILBOXES },
@@ -2808,6 +2806,6 @@ struct command_t Commands[] = {
   { "unmy_hdr",		parse_unmy_hdr,		0 },
   { "unscore",		mutt_parse_unscore,	0 },
   { "unset",		parse_set,		M_SET_UNSET },
-  { "unsubscribe",	parse_unlist,		UL &SubscribedLists },
+  { "unsubscribe",	parse_rx_unlist,	UL &SubscribedLists },
   { NULL }
 };

@@ -75,6 +75,8 @@
 #define INITVAL(x) 
 #endif
 
+#include "mutt_regex.h"
+
 /* flags for mutt_copy_header() */
 #define CH_UPDATE	1      /* update the status and x-status fields? */
 #define CH_WEED		(1<<1) /* weed the headers? */
@@ -504,8 +506,16 @@ typedef struct list_t
   struct list_t *next;
 } LIST;
 
+typedef struct rx_list_t
+{
+  REGEXP *rx;
+  struct rx_list_t *next;
+} RX_LIST;
+
 #define mutt_new_list() safe_calloc (1, sizeof (LIST))
+#define mutt_new_rx_list() safe_calloc (1, sizeof (RX_LIST))
 void mutt_free_list (LIST **);
+void mutt_free_rx_list (RX_LIST **);
 int mutt_matches_ignore (const char *, LIST *);
 
 /* add an element to a list */
@@ -720,7 +730,6 @@ typedef struct thread
   HEADER *sort_key;
 } THREAD;
 
-#include "mutt_regex.h"
 
 /* flag to mutt_pattern_comp() */
 #define M_FULL_MSG	1	/* enable body and header matching */

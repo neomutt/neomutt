@@ -1167,8 +1167,8 @@ unignore posted-to:
 
 <sect1>Mailing lists<label id="lists">
 <p>
-Usage: <tt/&lsqb;un&rsqb;lists/ <em/address/ &lsqb; <em/address/ ... &rsqb;<newline>
-Usage: <tt/&lsqb;un&rsqb;subscribe/ <em/address/ &lsqb; <em/address/ ... &rsqb;
+Usage: <tt/&lsqb;un&rsqb;lists/ <em/regexp/ &lsqb; <em/regexp/ ... &rsqb;<newline>
+Usage: <tt/&lsqb;un&rsqb;subscribe/ <em/regexp/ &lsqb; <em/regexp/ ... &rsqb;
 
 Mutt has a few nice features for <ref id="using_lists" name="handling
 mailing lists">.  In order to take advantage of them, you must
@@ -1184,10 +1184,16 @@ receiving personal CCs of list messages.  Also note that the generation
 of the Mail-Followup-To header is controlled by the <ref id="followup_to"
 name="&dollar;followup_to"> configuration variable.
 
-More precisely, Mutt maintains lists of known and subscribed mailing
-lists.  Every subscribed mailing list is known.  To mark
-a mailing list as known, use the ``lists'' command.  To mark it as
-subscribed, use ``subscribe''.
+More precisely, Mutt maintains lists of patterns for the addresses
+of known and subscribed mailing lists.  Every subscribed mailing
+list is known. To mark a mailing list as known, use the ``lists''
+command.  To mark it as subscribed, use ``subscribe''.
+
+You can use regular expressions with both commands.  To mark all
+messages sent to a specific bug report's address on mutt's bug
+tracking system as list mail, for instance, you could say
+``subscribe [0-9]*@bugs.guug.de''.  Often, it's sufficient to just
+give a portion of the list's e-mail address.
 
 Specify as much of the address as you need to to remove ambiguity.  For
 example, if you've subscribed to the Mutt mailing list, you will receive mail
@@ -1206,7 +1212,6 @@ tokens.
 
 To remove a mailing list from the list of subscribed mailing lists,
 but keep it on the list of known mailing lists, use ``unsubscribe''.
-
 
 <sect1>Using Multiple spool mailboxes<label id="mbox-hook">
 <p>
@@ -1741,8 +1746,8 @@ messages:
 ~n [MIN]-[MAX]  messages with a score in the range MIN to MAX *)
 ~N              new messages
 ~O              old messages
-~p              message is addressed to you (consults $alternates)
-~P              message is from you (consults $alternates)
+~p              message is addressed to you (consults alternates)
+~P              message is from you (consults alternates)
 ~Q              messages which have been replied to
 ~R              read messages
 ~r [MIN]-[MAX]  messages with ``date-received'' in a Date range

@@ -529,25 +529,49 @@ int mutt_addr_is_user (ADDRESS *addr)
 {
   /* NULL address is assumed to be the user. */
   if (!addr)
+  {
+    dprint (5, (debugfile, "mail_addr_is_user: yes, NULL address\n"));
     return 1;
+  }
   if (!addr->mailbox)
+  {
+    dprint (5, (debugfile, "mail_addr_is_user: no, no mailbox\n"));
     return 0;
+  }
 
   if (ascii_strcasecmp (addr->mailbox, Username) == 0)
+  {
+    dprint (5, (debugfile, "mail_addr_is_user: yes, %s = %s\n", addr->mailbox, Username));
     return 1;
+  }
   if (string_is_address(addr->mailbox, Username, Hostname))
+  {
+    dprint (5, (debugfile, "mail_addr_is_user: yes, %s = %s @ %s \n", addr->mailbox, Username, Hostname));
     return 1;
+  }
   if (string_is_address(addr->mailbox, Username, mutt_fqdn(0)))
+  {
+    dprint (5, (debugfile, "mail_addr_is_user: yes, %s = %s @ %s \n", addr->mailbox, Username, mutt_fqdn (0)));
     return 1;
+  }
   if (string_is_address(addr->mailbox, Username, mutt_fqdn(1)))
+  {
+    dprint (5, (debugfile, "mail_addr_is_user: yes, %s = %s @ %s \n", addr->mailbox, Username, mutt_fqdn (1)));
     return 1;
+  }
 
   if (From && !ascii_strcasecmp (From->mailbox, addr->mailbox))
+  {
+    dprint (5, (debugfile, "mail_addr_is_user: yes, %s = %s\n", addr->mailbox, From->mailbox));
     return 1;
+  }
 
-  if (Alternates.pattern &&
-      regexec (Alternates.rx, addr->mailbox, 0, NULL, 0) == 0)
+  if (mutt_match_rx_list (addr->mailbox, Alternates))
+  {
+    dprint (5, (debugfile, "mail_addr_is_user: yes, %s matched by alternates.\n", addr->mailbox));
     return 1;
+  }
   
+  dprint (5, (debugfile, "mail_addr_is_user: no, all failed.\n"));
   return 0;
 }

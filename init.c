@@ -320,6 +320,52 @@ static void add_to_list (LIST **list, const char *str)
   }
 }
 
+static int add_to_rx_list (RX_LIST **list, const char *s, int flags, BUFFER *err)
+{
+  RX_LIST *t, *last = NULL;
+  REGEXP *rx;
+
+  if (!s || !*s)
+    return 0;
+
+  if (!(rx = mutt_compile_regexp (s, flags)))
+  {
+    snprintf (err->data, err->dsize, "Bad regexp: %s\n", s);
+    return -1;
+  }
+
+  /* check to make sure the item is not already on this list */
+  for (last = *list; last; last = last->next)
+  {
+    if (ascii_strcasecmp (rx->pattern, last->rx->pattern) == 0)
+    {
+      /* already on the list, so just ignore it */
+      last = NULL;
+      break;
+    }
+    if (!last->next)
+      break;
+  }
+
+  if (!*list || last)
+  {
+    t = mutt_new_rx_list();
+    t->rx = rx;
+    if (last)
+    {
+      last->next = t;
+      last = last->next;
+    }
+    else
+      *list = last = t;
+  }
+  else /* duplicate */
+    mutt_free_regexp (&rx);
+
+  return 0;
+}
+
+
 static void remove_from_list (LIST **l, const char *str)
 {
   LIST *p, *last = NULL;
@@ -335,6 +381,36 @@ static void remove_from_list (LIST **l, const char *str)
       if (ascii_strcasecmp (str, p->data) == 0)
       {
 	FREE (&p->data);
+	if (last)
+	  last->next = p->next;
+	else
+	  (*l) = p->next;
+	FREE (&p);
+      }
+      else
+      {
+	last = p;
+	p = p->next;
+      }
+    }
+  }
+}
+
+static void remove_from_rx_list (RX_LIST **l, const char *str)
+{
+  RX_LIST *p, *last = NULL;
+
+  if (mutt_strcmp ("*", str) == 0)
+    mutt_free_rx_list (l);    /* ``unCMD *'' means delete all current entries */
+  else
+  {
+    p = *l;
+    last = NULL;
+    while (p)
+    {
+      if (ascii_strcasecmp (str, p->rx->pattern) == 0)
+      {
+	mutt_free_regexp (&p->rx);
 	if (last)
 	  last->next = p->next;
 	else
@@ -392,6 +468,42 @@ static int parse_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   return 0;
 }
 
+static int _parse_rx_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err, int flags)
+{
+  do 
+  {
+    mutt_extract_token (buf, s, 0);
+    if (add_to_rx_list ((RX_LIST **) data, buf->data, flags, err) != 0)
+      return -1;
+	
+  }
+  while (MoreArgs (s));
+  
+  return 0;
+}
+
+static int parse_rx_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  return _parse_rx_list (buf, s, data, err, REG_ICASE);
+}
+
+static int parse_rx_unlist (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  do
+  {
+    mutt_extract_token (buf, s, 0);
+    if (mutt_strcmp (buf->data, "*") == 0)
+    {
+      mutt_free_rx_list ((RX_LIST **) data);
+      break;
+    }
+    remove_from_rx_list ((RX_LIST **) data, buf->data);
+  }
+  while (MoreArgs (s));
+  
+  return 0;
+}
+
 static int parse_unlist (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
   do
@@ -418,8 +530,8 @@ static int parse_unlists (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *er
   do
   {
     mutt_extract_token (buf, s, 0);
-    remove_from_list (&MailLists, buf->data);
-    remove_from_list (&SubscribedLists, buf->data);
+    remove_from_rx_list (&MailLists, buf->data);
+    remove_from_rx_list (&SubscribedLists, buf->data);
   }
   while (MoreArgs (s));
 
@@ -431,8 +543,10 @@ static int parse_subscribe (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *
   do
   {
     mutt_extract_token (buf, s, 0);
-    add_to_list (&MailLists, buf->data);
-    add_to_list (&SubscribedLists, buf->data);
+    if (add_to_rx_list (&MailLists, buf->data, REG_ICASE, err) != 0)
+      return -1;
+    if (add_to_rx_list (&SubscribedLists, buf->data, REG_ICASE, err) != 0)
+      return -1;
   }
   while (MoreArgs (s));
 

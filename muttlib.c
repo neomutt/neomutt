@@ -1346,3 +1346,51 @@ const char *mutt_make_version (void)
   return vstring;
 }
 
+REGEXP *mutt_compile_regexp (const char *s, int flags)
+{
+  REGEXP *pp = safe_calloc (sizeof (REGEXP), 1);
+  pp->pattern = safe_strdup (s);
+  pp->rx = safe_calloc (sizeof (regex_t), 1);
+  if (REGCOMP (pp->rx, NONULL(s), flags) != 0)
+    mutt_free_regexp (&pp);
+
+  return pp;
+}
+
+void mutt_free_regexp (REGEXP **pp)
+{
+  FREE (&(*pp)->pattern);
+  regfree ((*pp)->rx);
+  FREE (&(*pp)->rx);
+  FREE (pp);
+}
+
+void mutt_free_rx_list (RX_LIST **list)
+{
+  RX_LIST *p;
+  
+  if (!list) return;
+  while (*list)
+  {
+    p = *list;
+    *list = (*list)->next;
+    mutt_free_regexp (&p->rx);
+    FREE (&p);
+  }
+}
+
+int mutt_match_rx_list (const char *s, RX_LIST *l)
+{
+  if (!s)  return 0;
+  
+  for (; l; l = l->next)
+  {
+    if (regexec (l->rx->rx, s, (size_t) 0, (regmatch_t *) 0, (int) 0) == 0)
+    {
+      dprint (5, (debugfile, "mutt_match_rx_list: %s matches %s\n", s, l->rx->pattern));
+      return 1;
+    }
+  }
+
+  return 0;
+}

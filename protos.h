@@ -136,6 +136,8 @@ const char *mutt_make_version (void);
 
 const char *mutt_fqdn(short);
 
+REGEXP *mutt_compile_regexp (const char *, int);
+
 void mutt_account_hook (const char* url);
 void mutt_add_to_reference_headers (ENVELOPE *env, ENVELOPE *curenv, LIST ***pp, LIST ***qq);
 void mutt_adv_mktemp (char *, size_t);
@@ -181,6 +183,7 @@ void mutt_free_enter_state (ENTER_STATE **);
 void mutt_free_envelope (ENVELOPE **);
 void mutt_free_header (HEADER **);
 void mutt_free_parameter (PARAMETER **);
+void mutt_free_regexp (REGEXP **);
 void mutt_generate_header (char *, size_t, HEADER *, int);
 void mutt_help (int);
 void mutt_draw_tree (CONTEXT *);
@@ -287,6 +290,7 @@ int mutt_is_subscribed_list (ADDRESS *);
 int mutt_is_text_part (BODY *);
 int mutt_is_valid_mailbox (const char *);
 int mutt_lookup_mime_type (BODY *, const char *);
+int mutt_match_rx_list (const char *, RX_LIST *);
 int mutt_messages_in_thread (CONTEXT *, HEADER *, int);
 int mutt_multi_choice (char *prompt, char *letters);
 int mutt_needs_mailcap (BODY *);

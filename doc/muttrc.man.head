@@ -76,6 +76,17 @@ like sh and bash: Prepend the name of the environment by a dollar
 all aliases when \(lq\fB*\fP\(rq is used as an argument.
 .PP
 .nf
+\fBalternates\fP \fIregexp\fP [ \fB,\fP \fIregexp\fP [ ... ]]
+\fBunalternates\fP [\fB * \fP | \fIregexp\fP [ \fB,\fP \fIregexp\fP [ ... ]] ]
+.fi
+.IP
+\fBalternates\fP is used to inform mutt about alternate addresses
+where you receive mail; you can use regular expressions to specify
+alternate addresses.  This affects mutt's idea about messages
+from you, and messages addressed to you.  \fBunalternates\fP removes
+a regular expression from the list of known alternates.
+.PP
+.nf
 \fBalternative_order\fP \fItype\fP[\fB/\fP\fIsubtype\fP] [ ... ]
 \fBunalternative_order\fP [\fB * \fP | \fItype\fP/\fIsubtype\fP] [...]
 .fi
@@ -213,18 +224,15 @@ The \fBunignore\fP command permits you to define exceptions from
 the above mentioned list of ignored headers.
 .PP
 .nf
-\fBlists\fP \fIaddress\fP [ \fIaddress\fP ... ]
-\fBunlists\fP \fIaddress\fP [ \fIaddress\fP ... ]
-\fBsubscribe\fP \fIaddress\fP [ \fIaddress\fP ... ]
-\fBunsubscribe\fP \fIaddress\fP [ \fIaddress\fP ... ]
+\fBlists\fP \fIregexp\fP [ \fIregexp\fP ... ]
+\fBunlists\fP \fIregexp\fP [ \fIregexp\fP ... ]
+\fBsubscribe\fP \fIregexp\fP [ \fIregexp\fP ... ]
+\fBunsubscribe\fP \fIregexp\fP [ \fIregexp\fP ... ]
 .fi
 .IP
-Mutt maintains two lists of mailing list addresses, a list of
+Mutt maintains two lists of mailing list address patterns, a list of
 subscribed mailing lists, and a list of known mailing lists.  All
-subscribed mailing lists are known.  A mail address matches a
-mailing list if it begins with the given address.  For example, the
-lists pattern \(lqmutt-\(rq will match mutt-dev@mutt.org and
-mutt-users@mutt.org.
+subscribed mailing lists are known.  Patterns use regular expressions.
 .IP
 The \fBlists\fP command adds a mailing list address to the list of
 known mailing lists.  The \fBunlists\fP command removes a mailing
