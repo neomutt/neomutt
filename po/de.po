@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.5.3\n"
+"Project-Id-Version: 1.5.4\n"
 "POT-Creation-Date: 2003-03-19 23:37+0100\n"
-"PO-Revision-Date: 2002-12-17 16:30+0100\n"
+"PO-Revision-Date: 2003-03-20 19:13+0100\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -72,7 +72,7 @@ msgstr "Adresse: "
 #: alias.c:289 send.c:201
 #, c-format
 msgid "Error: '%s' is a bad IDN."
-msgstr ""
+msgstr "Fehler: '%s' ist eine fehlerhafte IDN."
 
 #: alias.c:301
 msgid "Personal name: "
@@ -369,7 +369,7 @@ msgstr "Unverständliche Adresse!"
 #: commands.c:260 recvcmd.c:162
 #, c-format
 msgid "Bad IDN: '%s'"
-msgstr ""
+msgstr "Ungültige IDN: '%s'"
 
 #: commands.c:271 recvcmd.c:176
 #, c-format
@@ -382,14 +382,12 @@ msgid "Bounce messages to %s"
 msgstr "Nachrichten an %s weiterleiten"
 
 #: commands.c:287 recvcmd.c:192
-#, fuzzy
 msgid "Message not bounced."
-msgstr "Nachricht weitergeleitet."
+msgstr "Nachricht nicht weitergeleitet."
 
 #: commands.c:287 recvcmd.c:192
-#, fuzzy
 msgid "Messages not bounced."
-msgstr "Nachrichten weitergeleitet."
+msgstr "Nachrichten nicht weitergeleitet."
 
 #: commands.c:297 recvcmd.c:211
 msgid "Message bounced."
@@ -617,7 +615,7 @@ msgstr "-- Anhänge"
 #: compose.c:422
 #, c-format
 msgid "Warning: '%s' is a bad IDN."
-msgstr ""
+msgstr "Warnung: '%s' ist eine ungültige IDN."
 
 #: compose.c:445
 msgid "You may not delete the only attachment."
@@ -626,7 +624,7 @@ msgstr "Der einzige Nachrichtenteil kann nicht gelöscht werden."
 #: compose.c:711 send.c:1433
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
-msgstr ""
+msgstr "Ungültige IDN in \"%s\": '%s'"
 
 #: compose.c:799
 msgid "Attaching selected files..."
@@ -752,9 +750,8 @@ msgid "Enter SMIME passphrase:"
 msgstr "S/MIME-Mantra eingeben:"
 
 #: crypt.c:192
-#, fuzzy
 msgid "Create a traditional (inline) PGP message?"
-msgstr "Erzeuge application/pgp Nachricht (statt RFC 2015)?"
+msgstr "Erzeuge eine veraltete (inline) PGP Nachricht?"
 
 #: crypt.c:200 pgpkey.c:559 postpone.c:538
 msgid "Invoking PGP..."
@@ -1119,7 +1116,7 @@ msgstr "Keine Zeilen in der Nachricht.\n"
 #: edit.c:440
 #, c-format
 msgid "Bad IDN in %s: '%s'\n"
-msgstr ""
+msgstr "Ungültige IDN in %s: '%s'\n"
 
 #: edit.c:458
 #, c-format
@@ -1552,7 +1549,7 @@ msgstr "alias: Keine Adresse"
 #: init.c:536
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr ""
+msgstr "Warnung: Ungültige IDN '%s' in Alias '%s'.\n"
 
 #: init.c:599
 msgid "invalid header field"
@@ -1702,14 +1699,13 @@ msgid "%s: no such function"
 msgstr "%s: Funktion unbekannt"
 
 #: keymap.c:909
-#, fuzzy
 msgid "Enter keys (^G to abort): "
-msgstr "KeyID für %s: "
+msgstr "Schlüssel eingeben (^G zum Abbrechen): "
 
 #: keymap.c:914
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr ""
+msgstr "Char = %s, Oktal = %o, Dezimal = %d"
 
 #: keymap_alldefs.h:5
 msgid "null operation"
@@ -2874,7 +2870,7 @@ msgstr "Fehler bei Verbindung mit %s (%s)"
 #: mutt_socket.c:418 mutt_socket.c:475
 #, c-format
 msgid "Bad IDN \"%s\"."
-msgstr ""
+msgstr "Ungültige IDN \"%s\"."
 
 #: mutt_socket.c:425 mutt_socket.c:482
 #, c-format
@@ -3369,9 +3365,8 @@ msgid "Fetching PGP key..."
 msgstr "Hole PGP Schlüssel..."
 
 #: pgpkey.c:486
-#, fuzzy
 msgid "All matching keys are expired, revoked, or disabled."
-msgstr "Alles passenden Schlüssel sind als veraltet/zurückgezogen markiert."
+msgstr "Alles passenden Schlüssel sind veraltet, zurückgezogen oder deaktiviert."
 
 #. __STRCAT_CHECKED__
 #: pgpkey.c:512 smime.c:412
@@ -3667,14 +3662,12 @@ msgid "You may only bounce message/rfc822 parts."
 msgstr "Sie können nur message/rfc822-Anhänge erneut versenden."
 
 #: recvcmd.c:213
-#, fuzzy
 msgid "Error bouncing message!"
-msgstr "Fehler beim Versand der Nachricht."
+msgstr "Fehler beim Weiterleiten der Nachricht!"
 
 #: recvcmd.c:213
-#, fuzzy
 msgid "Error bouncing messages!"
-msgstr "Fehler beim Versand der Nachricht."
+msgstr "Fehler beim Weiterleiten der Nachrichten!"
 
 #: recvcmd.c:413
 #, c-format
@@ -3941,7 +3934,7 @@ msgstr "Ausgabe des Auslieferungs-Prozesses"
 #: sendlib.c:2264
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
-msgstr ""
+msgstr "Ungültige IDN %s bei der Vorbereitung von Resent-From."
 
 #: signal.c:39
 #, c-format
