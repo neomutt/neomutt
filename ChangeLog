@@ -1,3 +1,20 @@
+2003-03-18 14:51:52  Andrew W. Nosenko  <awn@bcs.zp.ua>  (roessler)
+
+	* buffy.c (test_last_status_new): Fix memory leak.  Envelope
+	structure allocated by mutt_read_rfc822_header() was never
+	deallocated.
+
+	* parse.c (mutt_read_rfc822_header): Comment added about
+	needing deallocate envelope structure returned by
+	mutt_read_rfc822_header().
+
+	* mutt_idna.c: (mutt_addr_for_display): Fix memory leak.  `user'
+	and `domain' buffers was never deallocated.
+
+	(mbox_to_udomain): Fix memory leak.  `scratch' buffer was not
+	deallocated when `mbx' doesn't contain '@'. Also rewritten for
+	allocating memory only when needed and only how many as needed.
+
 2003-03-12 13:00:03  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* copy.c, sendlib.c: We need to re-format address headers instead
