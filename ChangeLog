@@ -1,4 +1,68 @@
 2005-02-12 19:52:28  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+                                 
+	* charset.c, mbyte.c: Recognize euc-jp-ms.  MORIYAMA Masayuki by
+	way of TAKAHASHI Tamotsu.
+                                 
+2005-02-12 19:38:14  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
+                                 
+	* init.h, main.c: Trivial documentation fixes (TAKAHASHI Tamotsu,
+	Brendan Cully, Paul Walker, Derek Martin).
+                                 
+	* editmsg.c: Partially fix debian bug #275060 (editing a message
+	in a mbox loses its flags).
+                                 
+        * TODO: We have $include_onlyfirst.
+                                 
+2005-02-12 19:28:26  TAKIZAWA Takashi  <taki@luna.email.ne.jp>  (roessler)
+                                 
+	* muttlib.c, pager.c: column-length and byte-length are different
+                                 
+2005-02-12 19:19:25  Derek Martin  <invalid@pizzashack.org>  (roessler)
+                                 
+	* mutt.h, commands.c, curs_main.c, init.h: pgp-auto-decode: When
+	$pgp_auto_decode is set, then mutt will check for traditional pgp
+	on certain operations.  This is similar (but NOT identical) to the
+	behavior known from PGP/MIME messages.
+                                 
+2005-02-12 19:12:40  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
+                                 
+	* alias.c, globals.h, hdrline.c, init.c, init.h: unalternates now
+	also adds to a list of exceptions; same behavior for unlists, and
+	unsubscribe.  With some changes from tlr.
+                                 
+2005-02-12 19:52:28  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+                                 
+	* charset.c, mbyte.c: Recognize euc-jp-ms.  MORIYAMA Masayuki by
+	way of TAKAHASHI Tamotsu.
+                                 
+2005-02-12 19:38:14  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
+                                 
+	* init.h, main.c: Trivial documentation fixes (TAKAHASHI Tamotsu, Brendan Cully, Paul
+        Walker, Derek Martin).
+                                 
+	* editmsg.c: Partially fix debian bug #275060 (editing a message
+	in a mbox loses its flags).
+                                 
+        * TODO: We have $include_onlyfirst.
+                                 
+2005-02-12 19:28:26  TAKIZAWA Takashi  <taki@luna.email.ne.jp>  (roessler)
+                                 
+	* muttlib.c, pager.c: column-length and byte-length are different
+                                 
+2005-02-12 19:19:25  Derek Martin  <invalid@pizzashack.org>  (roessler)
+                                 
+	* mutt.h, commands.c, curs_main.c, init.h: pgp-auto-decode: When
+	$pgp_auto_decode is set, then mutt will check for traditional pgp
+	on certain operations.  This is similar (but NOT identical) to the
+	behavior known from PGP/MIME messages.
+                                 
+2005-02-12 19:12:40  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
+                                 
+	* alias.c, globals.h, hdrline.c, init.c, init.h: unalternates now
+	also adds to a list of exceptions; same behavior 
+	for unlists, and unsubscribe.  With some changes from tlr.
+                                 
+2005-02-12 19:52:28  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* charset.c, mbyte.c: Recognize euc-jp-ms.  MORIYAMA Masayuki
 	by way of TAKAHASHI Tamotsu.
