@@ -1023,11 +1023,16 @@ void mutt_FormatString (char *dest,		/* output buffer */
       else
       {
 	short tolower =  0;
+	short nodots  = 0;
 	
-	if (ch == '_')
+	while (ch == '_' || ch == ':') 
 	{
+	  if (ch == '_')
+	    tolower = 1;
+	  else if (ch == ':') 
+	    nodots = 1;
+	  
 	  ch = *src++;
-	  tolower = 1;
 	}
 	
 	/* use callback function to handle this case */
@@ -1035,6 +1040,13 @@ void mutt_FormatString (char *dest,		/* output buffer */
 
 	if (tolower)
 	  mutt_strlower (buf);
+	if (nodots) 
+	{
+	  char *p = buf;
+	  for (; *p; p++)
+	    if (*p == '.')
+		*p = '_';
+	}
 	
 	if ((len = mutt_strlen (buf)) + wlen > destlen)
 	  len = (destlen - wlen > 0) ? (destlen - wlen) : 0;

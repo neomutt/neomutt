@@ -2469,6 +2469,10 @@ struct option_t MuttVars[] = {
   ** (_) sign.  For example, if you want to display the local hostname in
   ** lowercase, you would use:
   ** %_h
+  ** .pp
+  ** If you prefix the sequence character with a colon (:) character, mutt
+  ** will replace any dots in the expansion by underscores. This might be helpful 
+  ** with IMAP folders that don't like dots in folder names.
   */
   { "status_on_top",	DT_BOOL, R_BOTH, OPTSTATUSONTOP, 0 },
   /*
