@@ -1,3 +1,7 @@
+2005-02-08 17:23:50  TAKAHASHI Tamotsu  <tamo@momonga-linux.org>  (roessler)
+
+	* init.h, mutt.h, mutt_idna.c: Make IDN decoding optional.
+
 2005-02-05 14:11:36  Thomas Roessler   <roessler@does-not-exist.org>  (roessler)
 
 	* crypthash.h, imap/util.c, lib.h, mbyte.h, mutt_idna.h,
