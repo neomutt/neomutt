@@ -19,7 +19,6 @@
 .\"
 .TH flea 1 "July 2000" Unix "User Manuals"
 .SH NAME
-.PP
 flea \- Report a bug (or rather a flea) in mutt.
 .SH SYNOPSIS
 .PP

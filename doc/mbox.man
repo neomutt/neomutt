@@ -9,7 +9,6 @@
 .\"
 .TH mbox 5 "August 2000" Unix "User Manuals"
 .SH NAME
-.PP
 mbox \- Format for mail message storage.
 .SH DESCRIPTION
 .PP
