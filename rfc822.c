@@ -331,6 +331,7 @@ add_addrspec (ADDRESS **top, ADDRESS **last, const char *phrase,
 
 ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
 {
+  int ws_pending;
   const char *begin, *ps;
   char comment[STRING], phrase[STRING];
   size_t phraselen = 0, commentlen = 0;
@@ -342,6 +343,8 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
   while (last && last->next)
     last = last->next;
 
+  ws_pending = isspace (*s);
+  
   SKIPWS (s);
   begin = s;
   while (*s)
@@ -465,7 +468,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
     }
     else
     {
-      if (phraselen && phraselen < sizeof (phrase) - 1 && *s != '.')
+      if (phraselen && phraselen < sizeof (phrase) - 1 && ws_pending)
 	phrase[phraselen++] = ' ';
       if ((ps = next_token (s, phrase, &phraselen, sizeof (phrase) - 1)) == NULL)
       {
@@ -474,6 +477,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
       }
       s = ps;
     }
+    ws_pending = isspace (*s);
     SKIPWS (s);
   }
   
