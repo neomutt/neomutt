@@ -25,7 +25,7 @@ name="http://www.mutt.org/">
 <sect1>Mailing Lists
 <p>
 To subscribe to one of the following mailing lists, send a message with the
-word <em/subscribe/ in the subject to
+word <em/subscribe/ in the body to
 <tt/list-name/<em/-request/<tt/@mutt.org/.
 
 <itemize>
