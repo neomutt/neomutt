@@ -421,7 +421,7 @@ void mutt_parse_part (FILE *fp, BODY *b)
       if (b->subtype)
       {
 	fseek (fp, b->offset, SEEK_SET);
-	if (mutt_is_message_type(b))
+	if (mutt_is_message_type(b->type, b->subtype))
 	  b->parts = mutt_parse_messageRFC822 (fp, b);
 	else if (mutt_strcasecmp (b->subtype, "external-body") == 0)
 	  b->parts = mutt_read_mime_header (fp, 0);
