@@ -955,8 +955,11 @@ static void convert_to_7bit (BODY *a)
     if (a->type == TYPEMULTIPART)
     {
       if (a->encoding != ENC7BIT)
+      {
         a->encoding = ENC7BIT;
-      if (option (OPTPGPSTRICTENC))
+	convert_to_7bit(a->parts);
+      }
+      else if (option (OPTPGPSTRICTENC))
 	convert_to_7bit (a->parts);
     } 
     else if (a->type == TYPEMESSAGE
