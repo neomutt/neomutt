@@ -321,7 +321,8 @@ int mutt_index_menu (void)
       }
       else if (check == M_NEW_MAIL || check == M_REOPENED)
       {
-	int *save_new;
+	/* store pointers to the newly added messages */
+	HEADER  **save_new = NULL;
 
 	/* take note of the current message */
 	if (oldcount)
@@ -358,9 +359,9 @@ int mutt_index_menu (void)
 	/* save the list of new messages */
 	if (oldcount && check != M_REOPENED)
 	{
-	  save_new = (int *) safe_malloc (sizeof (int) * (Context->msgcount - oldcount));
+	  save_new = (void **) safe_malloc (sizeof (HEADER *) * (Context->msgcount - oldcount));
 	  for (j = oldcount; j < Context->msgcount; j++)
-	    save_new[j-oldcount] = Context->hdrs[j]->index;
+	    save_new[j-oldcount] = Context->hdrs[j];
         }
 
 	/* if the mailbox was reopened, need to rethread from scratch */
@@ -394,7 +395,7 @@ int mutt_index_menu (void)
 	      for (k = 0; k < Context->msgcount; k++)
 	      {
 		HEADER *h = Context->hdrs[k];
-		if (h->index == save_new[j] && (!Context->pattern || h->limited))
+		if (h == save_new[j] && (!Context->pattern || h->limited))
 		  mutt_uncollapse_thread (Context, h);
 	      }
 	    }
