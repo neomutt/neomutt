@@ -1194,7 +1194,7 @@ ci_send_message (int flags,		/* send mode */
     if ((flags & SENDREPLY) && cur)
     {
       /* change setting based upon message we are replying to */
-      mutt_message_hook (NULL, cur, M_REPLYHOOK);
+      mutt_message_hook (ctx, cur, M_REPLYHOOK);
 
       /*
        * set the replied flag for the message we are generating so that the
