@@ -1,6 +1,6 @@
 # $Id$
 
-text/html; netscape -remote 'openURL(%s)'
+text/html; netscape -remote openURL\(%s\)
 image/gif; xv %s
 image/jpg; xv %s
 application/pgp-keys; pgp -f < %s ; copiousoutput
