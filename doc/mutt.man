@@ -19,7 +19,6 @@
 .\"
 .TH mutt 1 "January 2002" Unix "User Manuals"
 .SH NAME
-.PP
 mutt \- The Mutt Mail User Agent
 .SH SYNOPSIS
 .PP

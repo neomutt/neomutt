@@ -20,7 +20,6 @@
 .\"
 .TH dotlock 1 "AUGUST 1999" Unix "User Manuals"
 .SH NAME
-.PP
 mutt_dotlock \- Lock mail spool files.
 .SH SYNOPSIS
 .PP

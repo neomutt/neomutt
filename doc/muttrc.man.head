@@ -20,7 +20,6 @@
 .\"
 .TH muttrc 5 "September 2002" Unix "User Manuals"
 .SH NAME
-.PP
 muttrc \- Configuration file for the Mutt Mail User Agent
 .SH DESCRIPTION
 .PP
