@@ -1486,6 +1486,11 @@ int pgp_send_menu (HEADER *msg, int *redraw)
   
   if (!(WithCrypto & APPLICATION_PGP))
     return msg->security;
+
+  /* If autoinline and no crypto options set, then set inline. */
+  if (option (OPTPGPAUTOINLINE) && 
+      !((msg->security & APPLICATION_PGP) && (msg->security & (SIGN|ENCRYPT))))
+    msg->security |= INLINE;
   
   snprintf (prompt, sizeof (prompt), 
 	    _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s, or (c)lear? "),

@@ -2170,6 +2170,7 @@ void mutt_prepare_envelope (ENVELOPE *env, int final)
   /* Take care of 8-bit => 7-bit conversion. */
   rfc2047_encode_adrlist (env->to, "To");
   rfc2047_encode_adrlist (env->cc, "Cc");
+  rfc2047_encode_adrlist (env->bcc, "Bcc");
   rfc2047_encode_adrlist (env->from, "From");
   rfc2047_encode_adrlist (env->mail_followup_to, "Mail-Followup-To");
   rfc2047_encode_adrlist (env->reply_to, "Reply-To");
@@ -2193,6 +2194,7 @@ void mutt_unprepare_envelope (ENVELOPE *env)
   /* back conversions */
   rfc2047_decode_adrlist (env->to);
   rfc2047_decode_adrlist (env->cc);
+  rfc2047_decode_adrlist (env->bcc);
   rfc2047_decode_adrlist (env->from);
   rfc2047_decode_adrlist (env->reply_to);
   rfc2047_decode (&env->subject);
