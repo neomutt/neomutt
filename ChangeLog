@@ -1,3 +1,7 @@
+2005-02-09 09:05:38  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* pattern.c: Don't crash in mutt_pattern_exec when h->env is NULL.
+
 2005-02-08 17:23:50  TAKAHASHI Tamotsu  <tamo@momonga-linux.org>  (roessler)
 
 	* init.h, mutt.h, mutt_idna.c: Make IDN decoding optional.
