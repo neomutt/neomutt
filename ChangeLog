@@ -1,4 +1,7 @@
-2002-12-18 07:44:12  Thomas Roessler  <roessler@does-not-exist.org>
+2002-12-18 07:55:52  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* crypt.c, crypt.h, mutt_crypt.h, pgp.c, pgp.h, smime.c,
+	smime.h: Rename crypt.h to mutt_crypt.h.
 
 	* Makefile.am: cvs update ChangeLog before trying to update
 	it locally.
