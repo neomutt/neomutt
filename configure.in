@@ -15,7 +15,7 @@ esac
 
 AM_INIT_AUTOMAKE(mutt, $mutt_cv_version)
 
-ALL_LINGUAS="de ru it es uk fr pl"
+ALL_LINGUAS="de ru it es uk fr pl nl"
 
 AC_CANONICAL_HOST
 
