@@ -1,3 +1,36 @@
+Thu Mar 30 15:16:22 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/uk.po, po/zh_TW.Big5.po, po/sv.po, po/sk.po,
+	po/pt_BR.po, po/ru.po, po/nl.po, po/pl.po, po/ko.po,
+	po/id.po, po/it.po, po/gl.po, po/fr.po, po/es.po, po/eo.po,
+	po/el.po, po/de.po, po/da.po, po/Makefile.in.in,
+	po/POTFILES.in, po/cs.po: make update-po, and undo most
+	parts of Lars' and Tommi's patch - it broke things here.
+
+	* imap/imap_ssl.c: Typo, noticed by Vsevolod Volkov <vvv@lucky.net>.
+
+	* po/de.po: update.
+
+	* po/eo.po: fix.
+
+	* contrib/Makefile.in: Distribute pgp6.rc. Ups.
+
+	* po/uk.po: Updated Ukrainian translation.
+
+	* curs_main.c: Cursor cosmetics.  From Byrial.
+
+	* contrib/Makefile.in:
+	Installation process patch from Bill Nottingham <notting@redhat.com>.
+
+	* build-release: Explicitly use scp1.
+
+Wed Mar 29 20:16:36 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/zh_TW.Big5.po, po/sv.po, po/uk.po, po/sk.po, po/pt_BR.po, po/ru.po, po/pl.po, po/ko.po, po/nl.po, po/id.po, po/it.po, po/gl.po, po/fr.po, po/eo.po, po/es.po, po/el.po, po/de.po, po/da.po, po/cs.po, VERSION, reldate.h, ChangeLog:
+	automatic post-release commit for mutt-1.1.10
+
+	* imap/message.c: Fix access to read-only folders via IMAP.
+
 Wed Mar 29 20:03:32 2000  Thomas Roessler  <roessler@guug.de>
 
 	* imap/message.c: Fix access to read-only folders via IMAP.

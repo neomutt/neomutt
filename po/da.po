@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt-1.1.9 \n"
-"POT-Creation-Date: 2000-03-30 17:13+0200\n"
+"POT-Creation-Date: 2000-03-30 17:28+0200\n"
 "PO-Revision-Date: 2000-03-19 22:56+01:00\n"
 "Last-Translator: Morten Bo Johansen <mojo@image.dk>\n"
 "Language-Team: Danish <da@li.org>\n"
