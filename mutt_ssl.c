@@ -76,6 +76,7 @@ static int ssl_socket_read (CONNECTION* conn, char* buf, size_t len);
 static int ssl_socket_write (CONNECTION* conn, const char* buf, size_t len);
 static int ssl_socket_open (CONNECTION * conn);
 static int ssl_socket_close (CONNECTION * conn);
+static int tls_close (CONNECTION* conn);
 int ssl_negotiate (sslsockdata*);
 
 /* mutt_ssl_starttls: Negotiate TLS over an already opened connection.
@@ -115,7 +116,7 @@ int mutt_ssl_starttls (CONNECTION* conn)
   conn->sockdata = ssldata;
   conn->read = ssl_socket_read;
   conn->write = ssl_socket_write;
-  conn->close = ssl_socket_close;
+  conn->close = tls_close;
 
   conn->ssf = SSL_CIPHER_get_bits (SSL_get_current_cipher (ssldata->ssl),
     &maxbits);
@@ -248,13 +249,13 @@ static int ssl_socket_read (CONNECTION* conn, char* buf, size_t len)
   return SSL_read (data->ssl, buf, len);
 }
 
-int ssl_socket_write (CONNECTION* conn, const char* buf, size_t len)
+static int ssl_socket_write (CONNECTION* conn, const char* buf, size_t len)
 {
   sslsockdata *data = conn->sockdata;
   return SSL_write (data->ssl, buf, len);
 }
 
-int ssl_socket_open (CONNECTION * conn)
+static int ssl_socket_open (CONNECTION * conn)
 {
   sslsockdata *data;
   int maxbits;
@@ -347,7 +348,7 @@ int ssl_negotiate (sslsockdata* ssldata)
   return 0;
 }
 
-int ssl_socket_close (CONNECTION * conn)
+static int ssl_socket_close (CONNECTION * conn)
 {
   sslsockdata *data = conn->sockdata;
   if (data)
@@ -361,6 +362,18 @@ int ssl_socket_close (CONNECTION * conn)
   }
 
   return raw_socket_close (conn);
+}
+
+static int tls_close (CONNECTION* conn)
+{
+  int rc;
+
+  rc = ssl_socket_close (conn);
+  conn->read = raw_socket_read;
+  conn->write = raw_socket_write;
+  conn->close = raw_socket_close;
+
+  return rc;
 }
 
 static char *x509_get_part (char *line, const char *ndx)
