@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt-0.94.17\n"
-"POT-Creation-Date: 1998-12-11 19:27+0100\n"
+"POT-Creation-Date: 1998-12-11 21:48+0100\n"
 "PO-Revision-Date: 1998-11-19 15:54+01:00\n"
 "Last-Translator: Marco d'Itri <md@linux.it>\n"
 "Language-Team: none\n"
@@ -2003,29 +2003,29 @@ msgstr ""
 msgid "Error initializing terminal."
 msgstr "Errore nell'inizializzazione del terminale."
 
-#: main.c:402
+#: main.c:404
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Debugging al livello %d.\n"
 
-#: main.c:404
+#: main.c:406
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG non è stato definito durante la compilazione.  Ignorato.\n"
 
-#: main.c:542
+#: main.c:544
 msgid "No recipients specified.\n"
 msgstr "Nessun destinatario specificato.\n"
 
-#: main.c:615
+#: main.c:617
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: impossibile allegare il file.\n"
 
-#: main.c:635
+#: main.c:637
 msgid "No mailbox with new mail."
 msgstr "Nessuna mailbox con nuova posta."
 
-#: main.c:669
+#: main.c:671
 msgid "Mailbox is empty."
 msgstr "La mailbox è vuota."
 
@@ -2143,7 +2143,7 @@ msgstr "In questo menù la ricerca non è stata implementata."
 msgid "Tagging is not supported."
 msgstr "Non è possibile segnare un messaggio."
 
-#: mh.c:194
+#: mh.c:182
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Leggo %s... %d"

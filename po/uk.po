@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 1998-12-11 19:27+0100\n"
+"POT-Creation-Date: 1998-12-11 21:48+0100\n"
 "PO-Revision-Date: 1998-10-25 15:44+0200\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "Language-Team: Ukrainian <uk@ua.net>\n"
@@ -1984,29 +1984,29 @@ msgstr ""
 msgid "Error initializing terminal."
 msgstr "Помилка ╕н╕ц╕ал╕зац╖╖ терм╕налу."
 
-#: main.c:402
+#: main.c:404
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr ""
 
-#: main.c:404
+#: main.c:406
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG не вказано п╕д час комп╕ляц╖╖. ╤гнору╓ться.\n"
 
-#: main.c:542
+#: main.c:544
 msgid "No recipients specified.\n"
 msgstr "Отримувач╕в не вказано.\n"
 
-#: main.c:615
+#: main.c:617
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: неможливо при╓днати файл.\n"
 
-#: main.c:635
+#: main.c:637
 msgid "No mailbox with new mail."
 msgstr "Нема╓ поштово╖ скриньки з новою поштою."
 
-#: main.c:669
+#: main.c:671
 msgid "Mailbox is empty."
 msgstr "Поштова скринька порожня."
 
@@ -2125,7 +2125,7 @@ msgstr "Пошук в цьому меню не орган╕зовано."
 msgid "Tagging is not supported."
 msgstr "Вид╕лення не п╕дтриму╓ться."
 
-#: mh.c:194
+#: mh.c:182
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Читання %s... %d"

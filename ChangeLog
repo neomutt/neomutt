@@ -1,4 +1,11 @@
-Fri Dec 11 20:32:25 1998  Thomas Roessler  <roessler@guug.de>
+Sat Dec 12 06:58:18 1998  Thomas Roessler  <roessler@guug.de>
+
+	* hash.c: Use a better hash function.  Contributed by Stefan
+	Langerman <lfalse@paul.rutgers.edu> to mutt-users.
+
+Fri Dec 11 20:48:14 1998  Thomas Roessler  <roessler@guug.de>
+
+	* reldate.h, VERSION, ChangeLog: 0.94.999 pre-release commit.
 
 	* Makefile.am: The distdir target creates hard links for the
 	source files.  This has the consequence that the us-dist

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 0.94.14i\n"
-"POT-Creation-Date: 1998-12-11 19:27+0100\n"
+"POT-Creation-Date: 1998-12-11 21:48+0100\n"
 "PO-Revision-Date: 1998-12-11 09:06+0100\n"
 "Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre "
 "<Vincent.Lefevre@ens-lyon.fr>\n"
@@ -2118,30 +2118,30 @@ msgid "Error initializing terminal."
 msgstr "Erreur d'initialisation du terminal."
 
 # , c-format
-#: main.c:402
+#: main.c:404
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Débuggage au niveau %d.\n"
 
-#: main.c:404
+#: main.c:406
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG n'a pas été défini à la compilation. Ignoré.\n"
 
-#: main.c:542
+#: main.c:544
 msgid "No recipients specified.\n"
 msgstr "Pas de destinataire spécifié.\n"
 
 # , c-format
-#: main.c:615
+#: main.c:617
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s : impossible d'attacher le fichier.\n"
 
-#: main.c:635
+#: main.c:637
 msgid "No mailbox with new mail."
 msgstr "Pas de boîte aux lettres avec des nouveaux messages."
 
-#: main.c:669
+#: main.c:671
 msgid "Mailbox is empty."
 msgstr "La boîte aux lettres est vide."
 
@@ -2261,7 +2261,7 @@ msgid "Tagging is not supported."
 msgstr "Le marquage n'est pas supporté."
 
 # , c-format
-#: mh.c:194
+#: mh.c:182
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Lecture de %s... %d"

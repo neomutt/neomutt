@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt\n"
-"POT-Creation-Date: 1998-12-11 19:27+0100\n"
+"POT-Creation-Date: 1998-12-11 21:48+0100\n"
 "PO-Revision-Date: 1998-10-29 19:25+0100\n"
 "Last-Translator: Boris Wesslowski <Boris@Wesslowski.com>\n"
 
@@ -1953,29 +1953,29 @@ msgstr ""
 msgid "Error initializing terminal."
 msgstr "Error al inicializar la terminal"
 
-#: main.c:402
+#: main.c:404
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr ""
 
-#: main.c:404
+#: main.c:406
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG no fue definido al compilar.  Ignorado.\n"
 
-#: main.c:542
+#: main.c:544
 msgid "No recipients specified.\n"
 msgstr "No hay destinatario.\n"
 
-#: main.c:615
+#: main.c:617
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: imposible adjuntar archivo.\n"
 
-#: main.c:635
+#: main.c:637
 msgid "No mailbox with new mail."
 msgstr "Ningún buzón con correo nuevo."
 
-#: main.c:669
+#: main.c:671
 msgid "Mailbox is empty."
 msgstr "Buzón esta vacío."
 
@@ -2095,7 +2095,7 @@ msgstr "No puede buscar en este menú."
 msgid "Tagging is not supported."
 msgstr "Marcar no es soportado."
 
-#: mh.c:194
+#: mh.c:182
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Leyendo %s... %d"

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 1998-12-11 19:27+0100\n"
+"POT-Creation-Date: 1998-12-11 21:48+0100\n"
 "PO-Revision-Date: 1998-10-15 07:51+0300\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "Language-Team: Mutt-dev <mutt-dev@mutt.org>\n"
@@ -1987,29 +1987,29 @@ msgstr ""
 msgid "Error initializing terminal."
 msgstr "Ошибка инициализации терминала."
 
-#: main.c:402
+#: main.c:404
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Отладка с уровнем %d.\n"
 
-#: main.c:404
+#: main.c:406
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG не определён при компиляции, игнорируется.\n"
 
-#: main.c:542
+#: main.c:544
 msgid "No recipients specified.\n"
 msgstr "Не указано получателей.\n"
 
-#: main.c:615
+#: main.c:617
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: файл нельзя присоединить.\n"
 
-#: main.c:635
+#: main.c:637
 msgid "No mailbox with new mail."
 msgstr "Нет почтовых ящиков с новой почтой."
 
-#: main.c:669
+#: main.c:671
 msgid "Mailbox is empty."
 msgstr "Почтовый ящик совершенно пуст."
 
@@ -2128,7 +2128,7 @@ msgstr "Поиск в этом меню не поддерживается."
 msgid "Tagging is not supported."
 msgstr "Отметка не поддерживается."
 
-#: mh.c:194
+#: mh.c:182
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Чтение %s... %d"
