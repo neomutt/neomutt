@@ -30,7 +30,7 @@
 #endif
 
 #ifdef USE_IMAP
-#include "imap.h"
+#include "imap_private.h"
 #endif
 
 #include "mutt_crypt.h"
@@ -77,6 +77,17 @@ static const char *No_visible = N_("No visible messages.");
 				mutt_error _(Mailbox_is_read_only); \
 				break; \
 			}
+
+#ifdef USE_IMAP 
+/* the error message returned here could be better. */
+#define CHECK_IMAP_ACL(aclbit) if (Context->magic == M_IMAP) \
+		if (mutt_bit_isset (((IMAP_DATA *)Context->data)->capabilities, ACL) \
+		&& !mutt_bit_isset(((IMAP_DATA *)Context->data)->rights,aclbit)){ \
+			mutt_flushinp(); \
+			mutt_error ("Operation not permitted by the IMAP ACL for this mailbox"); \
+			break; \
+		}
+#endif
 
 #define CHECK_ATTACH if(option(OPTATTACHMSG)) \
 		     {\
@@ -744,6 +755,11 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
+
+#ifdef USE_IMAP
+CHECK_IMAP_ACL(IMAP_ACL_DELETE);
+#endif
+
 	CHECK_ATTACH;
 	mutt_pattern_func (M_DELETE, _("Delete messages matching: "));
 	menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
@@ -901,6 +917,11 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
+
+#ifdef USE_IMAP
+CHECK_IMAP_ACL(IMAP_ACL_DELETE);
+#endif
+
 	if (mutt_pattern_func (M_UNDELETE, _("Undelete messages matching: ")) == 0)
 	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 	break;
@@ -1342,6 +1363,10 @@ int mutt_index_menu (void)
 	}
 #endif
 
+#ifdef USE_IMAP
+CHECK_IMAP_ACL(IMAP_ACL_WRITE);
+#endif
+
         if (tag)
         {
 	  for (j = 0; j < Context->vcount; j++)
@@ -1377,6 +1402,11 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
+
+#ifdef USE_IMAP
+CHECK_IMAP_ACL(IMAP_ACL_SEEN);
+#endif
+
 	if (tag)
 	{
 	  for (j = 0; j < Context->vcount; j++)
@@ -1489,6 +1519,11 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
+	
+/* #ifdef USE_IMAP
+CHECK_IMAP_ACL(IMAP_ACL_WRITE);
+#endif */
+
 	if (mutt_change_flag (tag ? NULL : CURHDR, (op == OP_MAIN_SET_FLAG)) == 0)
 	{
 	  menu->redraw = REDRAW_STATUS;
@@ -1627,6 +1662,11 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
+	
+#ifdef USE_IMAP
+CHECK_IMAP_ACL(IMAP_ACL_DELETE);
+#endif
+
 	if (tag)
 	{
 	  mutt_tag_set_flag (M_DELETE, 1);
@@ -1666,6 +1706,10 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
+
+#ifdef USE_IMAP
+CHECK_IMAP_ACL(IMAP_ACL_DELETE);
+#endif
 
 	rc = mutt_thread_set_flag (CURHDR, M_DELETE, 1,
 				   op == OP_DELETE_THREAD ? 0 : 1);
@@ -1714,6 +1758,10 @@ int mutt_index_menu (void)
 	  mutt_error _("Can't edit message on POP server.");
 	  break;
 	}
+#endif
+
+#ifdef USE_IMAP
+CHECK_IMAP_ACL(IMAP_ACL_INSERT);
 #endif
 
         mutt_edit_message (Context, tag ? NULL : CURHDR);
@@ -1814,6 +1862,10 @@ int mutt_index_menu (void)
         CHECK_VISIBLE;
 	CHECK_READONLY;
 
+#ifdef USE_IMAP
+CHECK_IMAP_ACL(IMAP_ACL_SEEN);
+#endif
+
 	rc = mutt_thread_set_flag (CURHDR, M_READ, 1,
 				   op == OP_MAIN_READ_THREAD ? 0 : 1);
 
@@ -1896,6 +1948,11 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
+
+#ifdef USE_IMAP
+CHECK_IMAP_ACL(IMAP_ACL_DELETE);
+#endif
+	
 	if (tag)
 	{
 	  mutt_tag_set_flag (M_DELETE, 0);
@@ -1921,6 +1978,10 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
+
+#ifdef USE_IMAP
+CHECK_IMAP_ACL(IMAP_ACL_DELETE);
+#endif
 
 	rc = mutt_thread_set_flag (CURHDR, M_DELETE, 0,
 				   op == OP_UNDELETE_THREAD ? 0 : 1);

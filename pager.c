@@ -30,7 +30,7 @@
 #include "mx.h"
 
 #ifdef USE_IMAP
-#include "imap.h"
+#include "imap_private.h"
 #endif
 
 #include "mutt_crypt.h"
@@ -74,6 +74,17 @@ static const char *Function_not_permitted_in_attach_message_mode = N_("Function 
 			mutt_error _(Function_not_permitted_in_attach_message_mode); \
 			break; \
 		     }
+
+#ifdef USE_IMAP 
+/* the error message returned here could be better. */
+#define CHECK_IMAP_ACL(aclbit) if (Context->magic == M_IMAP) \
+		if (mutt_bit_isset (((IMAP_DATA *)Context->data)->capabilities, ACL) \
+		&& !mutt_bit_isset(((IMAP_DATA *)Context->data)->rights,aclbit)){ \
+			mutt_flushinp(); \
+			mutt_error ("Operation not permitted by the IMAP ACL for this mailbox"); \
+			break; \
+		}
+#endif
 
 struct q_class_t
 {
@@ -2175,6 +2186,11 @@ search_next:
       case OP_DELETE:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
+
+#ifdef USE_IMAP
+CHECK_IMAP_ACL(IMAP_ACL_DELETE);
+#endif
+
 	mutt_set_flag (Context, extra->hdr, M_DELETE, 1);
         if (option (OPTDELETEUNTAG))
 	  mutt_set_flag (Context, extra->hdr, M_TAG, 0);
@@ -2190,6 +2206,10 @@ search_next:
       case OP_DELETE_SUBTHREAD:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
+
+#ifdef USE_IMAP
+CHECK_IMAP_ACL(IMAP_ACL_DELETE);
+#endif
 
 	r = mutt_thread_set_flag (extra->hdr, M_DELETE, 1,
 				  ch == OP_DELETE_THREAD ? 0 : 1);
@@ -2317,6 +2337,10 @@ search_next:
 	  mutt_error _("Can't change 'important' flag on POP server.");
 	  break;
 	}
+#endif
+
+#ifdef USE_IMAP
+CHECK_IMAP_ACL(IMAP_ACL_WRITE);
 #endif
 
 	mutt_set_flag (Context, extra->hdr, M_FLAG, !extra->hdr->flagged);
@@ -2468,6 +2492,11 @@ search_next:
       case OP_TOGGLE_NEW:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
+
+#ifdef USE_IMAP
+CHECK_IMAP_ACL(IMAP_ACL_SEEN);
+#endif
+
 	if (extra->hdr->read || extra->hdr->old)
 	  mutt_set_flag (Context, extra->hdr, M_NEW, 1);
 	else if (!first)
@@ -2485,6 +2514,11 @@ search_next:
       case OP_UNDELETE:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
+
+#ifdef USE_IMAP
+CHECK_IMAP_ACL(IMAP_ACL_DELETE);
+#endif
+
 	mutt_set_flag (Context, extra->hdr, M_DELETE, 0);
 	redraw = REDRAW_STATUS | REDRAW_INDEX;
 	if (option (OPTRESOLVE))
@@ -2498,6 +2532,10 @@ search_next:
       case OP_UNDELETE_SUBTHREAD:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
+
+#ifdef USE_IMAP
+CHECK_IMAP_ACL(IMAP_ACL_DELETE);
+#endif
 
 	r = mutt_thread_set_flag (extra->hdr, M_DELETE, 0,
 				  ch == OP_UNDELETE_THREAD ? 0 : 1);

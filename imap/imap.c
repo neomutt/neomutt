@@ -611,7 +611,8 @@ int imap_open_mailbox (CONTEXT* ctx)
     goto fail;
 
   /* check for READ-ONLY notification */
-  if (!ascii_strncasecmp (imap_get_qualifier (idata->cmd.buf), "[READ-ONLY]", 11))
+  if (!ascii_strncasecmp (imap_get_qualifier (idata->cmd.buf), "[READ-ONLY]", 11)  \
+  && !mutt_bit_isset (idata->capabilities, ACL))
   {
     dprint (2, (debugfile, "Mailbox is read-only.\n"));
     ctx->readonly = 1;
@@ -644,6 +645,11 @@ int imap_open_mailbox (CONTEXT* ctx)
   {
     if (imap_check_acl (idata))
       goto fail;
+    if (!(mutt_bit_isset(idata->rights, IMAP_ACL_DELETE) ||
+          mutt_bit_isset(idata->rights, IMAP_ACL_SEEN) ||
+          mutt_bit_isset(idata->rights, IMAP_ACL_WRITE) ||
+          mutt_bit_isset(idata->rights, IMAP_ACL_INSERT)))
+       ctx->readonly = 1;
   }
   /* assume we have all rights if ACL is unavailable */
   else
