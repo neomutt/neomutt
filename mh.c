@@ -240,6 +240,8 @@ static void mhs_write_one_sequence (FILE *fp, struct mh_sequences *mhs,
   fputc ('\n', fp);
 }
 
+/* XXX - we don't currently remove deleted messages from sequences we don't know.  Should we? */
+
 void mh_update_sequences (CONTEXT *ctx)
 {
   FILE *ofp, *nfp;
@@ -288,6 +290,9 @@ void mh_update_sequences (CONTEXT *ctx)
   /* now, update our unseen, flagged, and replied sequences */
   for (l = 0; l < ctx->msgcount; l++)
   {
+    if (ctx->hdrs[l]->deleted)
+      continue;
+    
     if ((p = strrchr (ctx->hdrs[l]->path, '/')))
       p++;
     else
