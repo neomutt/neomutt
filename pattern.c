@@ -866,7 +866,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
     case M_PERSONAL_FROM:
       return (pat->not ^ match_user (pat->alladdr, h->env->from, NULL));
     case M_COLLAPSED:
-      return (pat->not ^ h->collapsed);
+      return (pat->not ^ (h->collapsed && h->num_hidden > 1));
 #ifdef _PGPPATH
    case M_PGP_SIGN:
      return (pat->not ^ (h->pgp & PGPSIGN));
