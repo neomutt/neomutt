@@ -2100,9 +2100,9 @@ int imap_buffy_check (char *path)
    * command on a mailbox that you have selected 
    */
 
-  if (mutt_strcmp(mbox, idata->selected_mailbox) == 0
-      || (mutt_strcasecmp(mbox, "INBOX") == 0
-	  && mutt_strcasecmp(mbox, idata->selected_mailbox) == 0))
+  if (mutt_strcmp (mbox_unquoted, idata->selected_mailbox) == 0
+      || (mutt_strcasecmp (mbox_unquoted, "INBOX") == 0
+	  && mutt_strcasecmp (mbox_unquoted, idata->selected_mailbox) == 0))
   {
     snprintf (buf, sizeof (buf), "%s NOOP\r\n", seq);
   }
@@ -2268,10 +2268,12 @@ static int imap_parse_list_response(CONNECTION *conn, char *buf, int buflen,
       s = imap_next_word (s); /* delim */
       /* Reset the delimiter, this can change */
       if (strncmp (s, "NIL", 3))
+      {
 	if (s && s[0] == '\"' && s[1] && s[2] == '\"')
 	  *delim = s[1];
 	else if (s && s[0] == '\"' && s[1] && s[1] == '\\' && s[2] && s[3] == '\"')
 	  *delim = s[2];
+      }
       s = imap_next_word (s); /* name */
       if (s && *s == '{')	/* Literal */
       { 
@@ -2387,10 +2389,12 @@ static int get_namespace (IMAP_DATA *idata, char *nsbuf, int nsblen,
 	      /* delim? */
 	      s = imap_next_word (s);
 	      if (*s && *s == '\"')
+              {
 		if (s[1] && s[2] == '\"')
 		  delim = s[1];
 		else if (s[1] && s[1] == '\\' && s[2] && s[3] == '\"')
 		  delim = s[2];
+              }
 	      /* Save result (if space) */
 	      if ((nsbused < nsblen) && (*nns < nsilen))
 	      {
@@ -2521,24 +2525,20 @@ int imap_init_browse (char *path, struct browser_state *state)
   }
   if (ipath && ipath[0] != '\0')
   {
-    imap_fix_path (idata, ipath, mbox, sizeof (mbox) - 1);
+    imap_fix_path (idata, ipath, mbox, sizeof (mbox));
     n = mutt_strlen (mbox);
-    if (mbox[n-1] != idata->delim)
-    {
-      mbox[n] = idata->delim;		
-      n++;
-      mbox[n] = 0;		
-    }
+
     /* Find superiors to list */
-    for (n = n-2; n >= 0 && mbox[n] != idata->delim ; n--);
+    for (n--; n >= 0 && mbox[n] != idata->delim ; n--);
     if (n > 0)			/* "aaaa/bbbb/" -> add "aaaa" */
     {
       mbox[n] = '\0';
       /* List it to see if it can be selected */
+      dprint (2, (debugfile, "imap_init_browse: listing %s\n", mbox));
       imap_make_sequence (seq, sizeof (seq));
       snprintf (buf, sizeof (buf), "%s %s \"\" \"%s%%\"\r\n", seq, 
 	  option (OPTIMAPLSUB) ? "LSUB" : "LIST", mbox);
-      if (add_list_result(conn, seq, buf, host, port, state) != 0)
+      if (add_list_result (conn, seq, buf, host, port, state) != 0)
 	return (-1);
       mbox[n] = idata->delim;
     } 
@@ -2629,4 +2629,114 @@ int imap_subscribe (char *path, int subscribe)
     return (-1);
   }
   return 0;
+}
+
+/* imap_complete: given a partial IMAP folder path, return a string which
+ *   adds as much to the path as is unique */
+int imap_complete(char* dest, char* path) {
+  CONNECTION* conn;
+  IMAP_DATA* idata;
+  char host[SHORT_STRING];
+  int port;
+  char list[LONG_STRING];
+  char buf[LONG_STRING];
+  char seq[16];
+  char* mbox = NULL;
+  char* list_word = NULL;
+  int noselect, noinferiors;
+  char delim;
+  char completion[LONG_STRING];
+  int clen, matchlen = 0;
+  int completions = 0;
+  int pos = 0;
+
+  /* verify passed in path is an IMAP path */
+  if (imap_parse_path (path, host, sizeof(host), &port, &mbox))
+  {
+    dprint(2, (debugfile, "imap_complete: bad path %s\n", path));
+    return -1;
+  }
+
+  conn = mutt_socket_select_connection (host, port, 0);
+  idata = CONN_DATA;
+
+  /* don't open a new socket just for completion */
+  if (!idata)
+  {
+    dprint (2, (debugfile,
+      "imap_complete: refusing to open new connection for %s", path));
+    return -1;
+  }
+
+  /* reformat path for IMAP list, and append wildcard */
+  /* don't use INBOX in place of "" */
+  if (mbox[0])
+    imap_fix_path (idata, mbox, list, sizeof(list));
+  else
+    list[0] = '\0';
+
+  /* fire off command */
+  imap_make_sequence (seq, sizeof(seq));
+  snprintf (buf, sizeof(buf), "%s %s \"\" \"%s%%\"\r\n", seq, 
+    option (OPTIMAPLSUB) ? "LSUB" : "LIST", list);
+  mutt_socket_write (conn, buf);
+
+  /* and see what the results are */
+  strfcpy (completion, mbox, sizeof(completion));
+  do
+  {
+    if (imap_parse_list_response(conn, buf, sizeof(buf), &list_word,
+        &noselect, &noinferiors, &delim))
+      break;
+
+    if (list_word)
+    {
+      /* if the folder isn't selectable, append delimiter to force browse
+       * to enter it on second tab. */
+      if (noselect)
+      {
+        clen = strlen(list_word);
+        list_word[clen++] = delim;
+        list_word[clen] = '\0';
+      }
+      /* copy in first word */
+      if (!completions)
+      {
+        strfcpy (completion, list_word, sizeof(completion));
+        matchlen = strlen (completion);
+        completions++;
+        continue;
+      }
+
+      pos = 0;
+      clen = strlen(completion);
+      while (pos < sizeof (completion) && list_word[pos] && (pos > clen ||
+          completion[pos] == list_word[pos]))
+      {
+        completion[pos] = list_word[pos];
+        pos++;
+      }
+
+      /* match least characters possible */
+      matchlen = (matchlen+1 < pos) ? matchlen+1 : pos;
+      completion[matchlen] = '\0';
+      completions++;
+    }
+  }
+  while (mutt_strncmp(seq, buf, strlen(seq)));
+
+  if (completions)
+  {
+    /* reformat output */
+    if (port != IMAP_PORT)
+      sprintf (dest, "{%s:%d}%s", host, port, completion);
+    else
+      sprintf (dest, "{%s}%s", host, completion);
+    
+    mutt_pretty_mailbox (dest);
+
+    return 0;
+  }
+
+  return -1;
 }

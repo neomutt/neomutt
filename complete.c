@@ -17,6 +17,10 @@
  */ 
 
 #include "mutt.h"
+#ifdef USE_IMAP
+#include "mailbox.h"
+#include "imap.h"
+#endif
 
 #include <dirent.h>
 #include <string.h>
@@ -38,6 +42,30 @@ int mutt_complete (char *s)
   size_t len;
   char dirpart[_POSIX_PATH_MAX], exp_dirpart[_POSIX_PATH_MAX];
   char filepart[_POSIX_PATH_MAX];
+#ifdef USE_IMAP
+  char imap_path[LONG_STRING];
+
+  dprint (2, (debugfile, "mutt_complete: completing %s\n", s));
+
+  /* we can use '/' as a delimiter, imap_complete rewrites it */
+  if (*s == '=' || *s == '+')
+  {
+    if (s[1])
+      snprintf (imap_path, sizeof(imap_path), "%s/%s", NONULL(Maildir),
+                s+1);
+    else
+      strfcpy (imap_path, NONULL(Maildir), sizeof(imap_path));
+  }
+  else
+  {
+    strfcpy (imap_path, s, sizeof(imap_path));
+  }
+
+  if (mx_is_imap (imap_path))
+  {
+    return imap_complete (s, imap_path);
+  }
+#endif
   
   if (*s == '=' || *s == '+')
   {
@@ -85,23 +113,12 @@ int mutt_complete (char *s)
       /* no directory name, so assume current directory. */
       dirpart[0] = 0;
       strfcpy (filepart, s, sizeof (filepart));
-#ifdef USE_IMAP
-      if (s[0] != '{')
-#endif
-	dirp = opendir (".");
+      dirp = opendir (".");
     }
   }
 
   if (dirp == NULL)
   {
-#ifdef USE_IMAP
-    /* If we are trying to complete an IMAP folder, it will start with {
-     * in which case, we just return 0 at this point.  Eventually, we
-     * might complete the actually folder name from the server
-     */
-    if ((s[0] == '{') || (exp_dirpart[0] == '{'))
-      return 0;
-#endif
     dprint (1, (debugfile, "mutt_complete(): %s: %s (errno %d).\n", exp_dirpart, strerror (errno), errno));
     return (-1);
   }

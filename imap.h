@@ -31,5 +31,6 @@ void imap_fastclose_mailbox (CONTEXT *ctx);
 int imap_buffy_check (char *path);
 int imap_subscribe (char *path, int subscribe);
 int imap_init_browse (char *path, struct browser_state *state);
+int imap_complete(char* dest, char* path);
 
 #endif
