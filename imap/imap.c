@@ -650,7 +650,7 @@ int imap_open_mailbox (CONTEXT* ctx)
   ctx->hdrs = safe_malloc (count * sizeof (HEADER *));
   ctx->v2r = safe_malloc (count * sizeof (int));
   ctx->msgcount = 0;
-  if (imap_read_headers (idata, 0, count - 1) < 0)
+  if (count && (imap_read_headers (idata, 0, count-1) < 0))
   {
     mutt_error _("Error opening mailbox");
     mutt_sleep (1);

@@ -142,6 +142,7 @@ typedef enum
 #ifdef HAVE_PGP
 #define M_PGPHOOK	(1<<8)
 #endif
+#define M_ACCOUNTHOOK	(1<<9)
 
 /* tree characters for linearize_tree and print_enriched_string */
 #define M_TREE_LLCORNER		1

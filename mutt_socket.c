@@ -223,6 +223,14 @@ void mutt_socket_free (CONNECTION* conn)
 CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account)
 {
   CONNECTION* conn;
+  ciss_url_t url;
+  char hook[LONG_STRING];
+
+  /* account isn't actually modified, since url isn't either */
+  mutt_account_tourl ((ACCOUNT*) account, &url);
+  url.path = NULL;
+  url_ciss_tostring (&url, hook, sizeof (hook));
+  mutt_account_hook (hook);
 
   conn = start ? start->next : Connections;
   while (conn)

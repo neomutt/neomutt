@@ -2365,6 +2365,9 @@ struct command_t
 };
 
 struct command_t Commands[] = {
+#ifdef USE_SOCKET
+  { "account-hook",     mutt_parse_hook,        M_ACCOUNTHOOK },
+#endif
   { "alias",		parse_alias,		0 },
   { "auto_view",	parse_list,		UL &AutoViewList },
   { "alternative_order",	parse_list,	UL &AlternativeOrderList},
