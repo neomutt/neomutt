@@ -100,6 +100,11 @@ dist-hook:
 
 us-distdir: distdir dist-hook
 	mv $(distdir) $(distdir)-us
+	find $(distdir)-us -type f -print | while read f ; do 		\
+		cp $$f `dirname $$f`/_`basename $$f`.$$$$ &&   		\
+		rm $$f && mv `dirname $$f`/_`basename $$f`.$$$$ $$f ;	\
+	done
+
 
 us-dist: us-distdir
 	for file in $(distdir)-us/*.c $(distdir)-us/*.h ; do \
