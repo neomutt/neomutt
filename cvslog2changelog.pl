@@ -2,7 +2,8 @@
 
 # use Data::Dumper;
 
-%Authors = (roessler => 'Thomas Roessler <roessler@does-not-exist.org>');
+%Authors = (roessler => 'Thomas Roessler <roessler@does-not-exist.org>',
+	    me => 'Michael Elkins <me@mutt.org>');
 
 @Changes = ();
 $change = {};
