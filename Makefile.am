@@ -150,7 +150,10 @@ install-data-local: Muttrc
 pclean:
 	cat /dev/null > PATCHES
 
-commit: pclean
+check-security:
+	./check_sec.sh
+
+commit: pclean check-security
 	cvs commit
 
 changelog:
@@ -180,4 +183,4 @@ stamp-doc-rc: $(srcdir)/init.h makedoc Muttrc.head
 jtags:	TAGS mkjtags
 	( ./mkjtags TAGS > tags.$$$$ && mv tags.$$$$ tags )
 
-.PHONY: jtags commit pclean
+.PHONY: jtags commit pclean check-security
