@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.0i\n"
-"POT-Creation-Date: 2001-05-01 23:31+0200\n"
+"POT-Creation-Date: 2001-05-02 10:30+0200\n"
 "PO-Revision-Date: 1999-10-27 14:05+0200\n"
 "Last-Translator: Roberto Suarez Soto <ask4it@bigfoot.com>\n"
 "Language-Team: Galician <gpul-traduccion@ceu.fi.udc.es>\n"

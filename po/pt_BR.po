@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.5i\n"
-"POT-Creation-Date: 2001-05-01 23:31+0200\n"
+"POT-Creation-Date: 2001-05-02 10:30+0200\n"
 "PO-Revision-Date: 2000-03-05 01:14-0300\n"
 "Last-Translator: Marcus Brito <marcus@visaotec.com.br>\n"
 "Language-Team: LIE-BR (http://lie-br.conectiva.com.br)\n"
