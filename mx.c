@@ -1503,16 +1503,6 @@ void mx_update_context (CONTEXT *ctx)
 {
   HEADER *h = ctx->hdrs[ctx->msgcount];
 
-#ifdef USE_IMAP
-#include "imap.h"
-#endif
-
-
-
-
-
-
-
 
 
 
