@@ -54,7 +54,7 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
   long bytes = 0;
   int msgno,fetchlast;
   IMAP_HEADER *h, *h0;
-  const char *want_headers = "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE IN-REPLY-TO REPLY-TO LINES";
+  const char *want_headers = "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE IN-REPLY-TO REPLY-TO LINES X-LABEL";
   int using_body_peek = 0;
   int c;
   
