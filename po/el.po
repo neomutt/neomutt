@@ -1,17 +1,18 @@
 # Hellenic support for mutt by
 #
-# Copyright (C) 1999-2001 Fanis Dokianakis <madf@hellug.gr>
+# Copyright (C) 1999-2002 Fanis Dokianakis <madf@hellug.gr>
 # Corrections from
 # Nikos Mayrogiannopoulos <nmav@hellug.gr>
 # Simos Xenitellis <S.Xenitellis@rhbnc.ac.uk>
 # kromJx <kromJx@crosswinds.net>
+# ta_panta_rei <ta_panta_rei@flashmail.com>
 #
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt-1.3.27i\n"
-"POT-Creation-Date: 2002-12-06 12:10+0100\n"
-"PO-Revision-Date: 2002-01-24 00:03GMT+2\n"
+"Project-Id-Version: Mutt-1.5.2i\n"
+"POT-Creation-Date: 2002-12-06 12:13+0100\n"
+"PO-Revision-Date: 2002-12-09 00:01GMT+2\n"
 "Last-Translator: Dokianakis Fanis <madf@hellug.gr>\n"
 "Language-Team: Greek <EL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -82,7 +83,7 @@ msgstr "Έχετε ήδη ένα ψευδώνυμο με αυτό το όνομα!"
 
 #: alias.c:252
 msgid "Warning: This alias name may not work.  Fix it?"
-msgstr ""
+msgstr "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: αυτό το ψευδόνυμο ίσως να μην δουλεύει. Διόρθωση;"
 
 #
 #: alias.c:273
@@ -314,9 +315,8 @@ msgstr "Σφάλμα κατά την εμφάνιση αρχείου"
 
 #
 #: buffy.c:440
-#, fuzzy
 msgid "New mail in "
-msgstr "Νέα αλληλογραφία στο %s."
+msgstr "Νέα αλληλογραφία στο "
 
 #
 #: color.c:322
@@ -400,9 +400,8 @@ msgstr "Κλήση του PGP..."
 #
 # commands.c:87 commands.c:95 pgp.c:1373 pgpkey.c:220
 #: commands.c:123
-#, fuzzy
 msgid "Invoking OpenSSL..."
-msgstr "Κλήση του pgp..."
+msgstr "Κλήση του OpenSSL..."
 
 #
 #: commands.c:132 mbox.c:740
@@ -420,18 +419,16 @@ msgid "Could not copy message"
 msgstr "Αδυναμία αντιγραφής του μηνύματος."
 
 #: commands.c:200
-#, fuzzy
 msgid "S/MIME signature successfully verified."
-msgstr "Η υπογραφή PGP επαληθεύτηκε επιτυχώς."
+msgstr "Η υπογραφή S/MIME επαληθεύτηκε επιτυχώς."
 
 #: commands.c:202
 msgid "S/MIME certificate owner does not match sender."
-msgstr ""
+msgstr "Ο ιδιοκτήτης του πιστοποιητικού S/MIME δεν ταιριάζει με τον αποστολέα."
 
 #: commands.c:205
-#, fuzzy
 msgid "S/MIME signature could NOT be verified."
-msgstr "Η υπογραφή PGP ΔΕΝ επαληθεύτηκε."
+msgstr "Η υπογραφή S/MIME ΔΕΝ επαληθεύτηκε."
 
 #: commands.c:212
 msgid "PGP signature successfully verified."
@@ -685,16 +682,14 @@ msgstr "<εξ'ορισμού>"
 #
 # compose.c:105
 #: compose.c:159
-#, fuzzy
 msgid "Encrypt with: "
-msgstr "Κρυπτογράφηση"
+msgstr "Κρυπτογράφηση με: "
 
 #
 # compose.c:132
 #: compose.c:175
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
-msgstr "(e)ncrypt, (s)ign, sign (a)s, (b)oth, ή (f)orget it? "
+msgstr "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, ή (f)orget it? "
 
 #
 # compose.c:133
@@ -711,26 +706,26 @@ msgstr "Υπογραφή ως: "
 #
 # compose.c:132
 #: compose.c:231
-#, fuzzy
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (f)orget it? "
-msgstr "(e)ncrypt, (s)ign, sign (a)s, (b)oth, ή (f)orget it? "
+msgstr ""
+"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, ή (f)orget it? "
 
 #
 # compose.c:133
 #: compose.c:232
-#, fuzzy
 msgid "ewsabf"
-msgstr "esabf"
+msgstr "ewsabf"
 
 #: compose.c:240
 msgid ""
 "1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, or (f)orget it? "
 msgstr ""
+"1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, ή (f)orget it? "
 
 #: compose.c:242
 msgid "12345f"
-msgstr ""
+msgstr "12345f"
 
 #
 #: compose.c:350
@@ -867,57 +862,54 @@ msgstr "Το μήνυμα γράφτηκε."
 
 #: compose.c:1319
 msgid "S/MIME already selected. Clear & continue ? "
-msgstr ""
+msgstr "Το S/MIME είχε ήδη επιλεγεί. Καθαρισμός ή συνέχεια ; "
 
 #: compose.c:1349
 msgid "PGP already selected. Clear & continue ? "
-msgstr ""
+msgstr "Το PGP είχε ήδη επιλεγεί. Καθαρισμός ή συνέχεια ; "
 
 #: crypt.c:70
 #, c-format
 msgid " (current time: %c)"
-msgstr ""
+msgstr "(τρέχουσα ώρα: %c)"
 
 #
 # pgp.c:207
 #: crypt.c:76
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s output follows%s --]\n"
-msgstr "[-- Ακολουθεί έξοδος του PGP (τρέχουσα ώρα: %c) --]\n"
+msgstr "[-- %s ακολουθεί έξοδος%s --]\n"
 
 #
 # pgp.c:146
 #: crypt.c:93
-#, fuzzy
 msgid "Passphrase(s) forgotten."
-msgstr "Η φράση κλειδί PGP έχει ξεχαστεί."
+msgstr "Η φράση(-εις)-κλειδί έχει ξεχαστεί."
 
 #
 # pgp.c:130
 #: crypt.c:132
 msgid "Enter PGP passphrase:"
-msgstr "Εισηγάγετε την φράση κλειδί PGP:"
+msgstr "Εισάγετε την φράση-κλειδί PGP:"
 
 #
 # pgp.c:130
 #: crypt.c:150
-#, fuzzy
 msgid "Enter SMIME passphrase:"
-msgstr "Εισηγάγετε την φράση κλειδί PGP:"
+msgstr "Εισάγετε την φράση-κλειδί SMIME:"
 
 #
 #: crypt.c:185
-#, fuzzy
 msgid "Create an inline PGP message?"
-msgstr "Δημιουργεί ένα application/pgp μήνυμα;"
+msgstr "Δημιουργία ενός εσωτερικού μηνύματος PGP;"
 
 #: crypt.c:512 crypt.c:554
 msgid "Trying to extract PGP keys...\n"
-msgstr ""
+msgstr "Προσπάθεια εξαγωγής κλειδιών PGP...\n"
 
 #: crypt.c:534 crypt.c:572
 msgid "Trying to extract S/MIME certificates...\n"
-msgstr ""
+msgstr "Προσπάθεια εξαγωγής πιστοποιητικών S/MIME...\n"
 
 #: crypt.c:696
 msgid ""
@@ -952,7 +944,6 @@ msgstr ""
 #. XXX - WHAT!?!?!?
 #. Now display the signed body
 #: crypt.c:770
-#, fuzzy
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -965,17 +956,18 @@ msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
 msgstr ""
-"[-- Προειδοποίση: Αδυναμία εύρεσης υπογραφών. --]\n"
+"[-- Προειδοποίηση: Αδυναμία εύρεσης υπογραφών. --]\n"
 "\n"
 
 #
 # pgp.c:682
 #: crypt.c:782
-#, fuzzy
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
-msgstr "[-- Τέλος δεδομένων υπογεγραμμένων --]\n"
+msgstr ""
+"\n"
+"[-- Τέλος υπογεγραμμένων δεδομένων --]\n"
 
 #
 #: curs_lib.c:155
@@ -1221,7 +1213,7 @@ msgstr "σε αυτή την περιορισμένη όψη"
 #
 #: curs_main.c:1347 pager.c:2334
 msgid "Can't change 'important' flag on POP server."
-msgstr "Αδυναμία αλλάγής της σημαίας 'important' στο διακομιστή POP."
+msgstr "Αδυναμία αλλαγής της σημαίας 'important' στο διακομιστή POP."
 
 #
 #: curs_main.c:1462
@@ -1275,14 +1267,14 @@ msgid ""
 "~?\t\tthis message\n"
 ".\t\ton a line by itself ends input\n"
 msgstr ""
-"~~\t\t εισήγαγετε μια γραμμή ξεκινώντας με ένα ~\n"
+"~~\t\t εισάγετε μια γραμμή ξεκινώντας με ένα ~\n"
 "~b χρήστες\tπροσθέστε χρήστες στο πεδίο Bcc: \n"
 "~c χρήστες\tπροσθέστε χρήστες στο πεδίο Cc: \n"
 "~f μηνύματα\tσυμπεριλάβετε τα μηνύματα\n"
-"~F μηνύματα\tτο ίδιο όπως το ~f, αλλά και με τις επικεφαλίδείτε\n"
+"~F μηνύματα\tτο ίδιο όπως το ~f, αλλά και με τις επικεφαλίδες\n"
 "~h\t\tεπεξεργαστείτε την επικεφαλίδα\n"
 "~m μηνύματα\tσυμπεριλάβετε και παραθέστε τα μηνύματα\n"
-"~M μηνύματα\tτο ίδιο με το ~m, αλλά και με τις επικεφαλίδείτε\n"
+"~M μηνύματα\tτο ίδιο με το ~m, αλλά και με τις επικεφαλίδες\n"
 "~p\t\tεκτυπώστε το μήνυμα\n"
 "~q\t\tεγγραφή του αρχείο και έξοδος από τον κειμενογράφο\n"
 "~r αρχείο\t\tδιαβάστε ένα αρχείο στον κειμενογράφο\n"
@@ -1350,9 +1342,9 @@ msgstr "αδυναμία εγγραφής προσωρινού φακέλου αλληλογραφίας: %s"
 
 #
 #: editmsg.c:101
-#, fuzzy, c-format
+#, c-format
 msgid "could not truncate temporary mail folder: %s"
-msgstr "αδυναμία εγγραφής προσωρινού φακέλου αλληλογραφίας: %s"
+msgstr "αδυναμία περικοπή προσωρινού φακέλου αλληλογραφίας: %s"
 
 #
 #: editmsg.c:116
@@ -1734,7 +1726,7 @@ msgstr "Κλείσιμο σύνδεσης στον εξυπηρετητή IMAP..."
 #: imap/imap.c:928 pop.c:469
 #, c-format
 msgid "Marking %d messages deleted..."
-msgstr "Σημείωση %d διαγραφθέντων μηνυμάτων..."
+msgstr "Σημείωση %d διαγραφέντων μηνυμάτων..."
 
 #
 #: imap/imap.c:937
@@ -2043,7 +2035,7 @@ msgstr "Αποστολή ξανά ενός μηνύματος σε ένα άλλο χρήστη"
 #
 #: keymap_alldefs.h:11
 msgid "select a new file in this directory"
-msgstr "επιλέξτε ένα νέο αρχείο σε αυτό το κατάλογο"
+msgstr "επιλέξτε ένα νέο αρχείο σε αυτό τον κατάλογο"
 
 #
 #: keymap_alldefs.h:12
@@ -2057,11 +2049,11 @@ msgstr "απεικόνιση του ονόματος του τρέχοντος επιλεγμένου αρχείου"
 
 #: keymap_alldefs.h:14
 msgid "subscribe to current mailbox (IMAP only)"
-msgstr "εγγραφή στο τρέχων γραμματοκιβώτιο (IMAP μόνο)"
+msgstr "εγγραφή στο τρέχον γραμματοκιβώτιο (IMAP μόνο)"
 
 #: keymap_alldefs.h:15
 msgid "unsubscribe to current mailbox (IMAP only)"
-msgstr "διαγραφή από το τρέχων γραμματοκιβώτιο (IMAP μόνο)"
+msgstr "διαγραφή από το τρέχον γραμματοκιβώτιο (IMAP μόνο)"
 
 #: keymap_alldefs.h:16
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
@@ -2069,9 +2061,8 @@ msgstr "αλλαγή όψης όλα/εγγεγραμμένα γραμματοκιβώτια  (IMAP μόνο)"
 
 #
 #: keymap_alldefs.h:17
-#, fuzzy
 msgid "list mailboxes with new mail"
-msgstr "Δεν υπάρχει νέα αλληλογραφία σε κανένα γραμματοκιβώτιο."
+msgstr "απεικόνιση γραμματοκιβωτίων με νέα αλληλογραφία"
 
 #
 #: keymap_alldefs.h:18
@@ -2156,7 +2147,7 @@ msgstr "επεξεργασία του θέματος αυτού του μηνύματος"
 #
 #: keymap_alldefs.h:34
 msgid "edit the TO list"
-msgstr "επεξεργασίατης λίστας TO"
+msgstr "επεξεργασία της λίστας TO"
 
 #: keymap_alldefs.h:35
 msgid "create a new mailbox (IMAP only)"
@@ -2258,11 +2249,11 @@ msgstr "δημιουργία αποκωδικοποιημένου (text/plain) αντιγράφου και διαγραφή"
 #
 #: keymap_alldefs.h:55
 msgid "delete the current entry"
-msgstr "διαγραφή τηςτρέχουσας καταχώρησης"
+msgstr "διαγραφή της τρέχουσας καταχώρησης"
 
 #: keymap_alldefs.h:56
 msgid "delete the current mailbox (IMAP only)"
-msgstr "εγγραφή στο τρέχων γραμματοκιβώτιο (IMAP μόνο)"
+msgstr "εγγραφή στο τρέχον γραμματοκιβώτιο (IMAP μόνο)"
 
 #
 #: keymap_alldefs.h:57
@@ -2297,7 +2288,7 @@ msgstr "επεξεργασία του <<ωμού>> μηνύματος"
 #
 #: keymap_alldefs.h:63
 msgid "delete the char in front of the cursor"
-msgstr "διαγραφή του χαρακτήρα μπροστά από το κέρσορα"
+msgstr "διαγραφή του χαρακτήρα μπροστά από τον κέρσορα"
 
 #
 #: keymap_alldefs.h:64
@@ -2351,24 +2342,23 @@ msgstr "μετακίνηση του δρομέα στο τέλος της λέξης"
 
 #
 #: keymap_alldefs.h:74
-#, fuzzy
 msgid "scroll down through the history list"
-msgstr "μετακίνηση μέσα στην λίστα ιστορίας"
+msgstr "μετακίνηση προς κάτω στην λίστα ιστορίας"
 
 #
 #: keymap_alldefs.h:75
 msgid "scroll up through the history list"
-msgstr "μετακίνηση μέσα στην λίστα ιστορίας"
+msgstr "μετακίνηση προς πάνω στην λίστα ιστορίας"
 
 #
 #: keymap_alldefs.h:76
 msgid "delete chars from cursor to end of line"
-msgstr "διαγραφή των χαρακτήρων από το κέρσορα ώς το τέλος της γραμμής"
+msgstr "διαγραφή των χαρακτήρων από τον κέρσορα ως το τέλος της γραμμής"
 
 #
 #: keymap_alldefs.h:77
 msgid "delete chars from the cursor to the end of the word"
-msgstr "διαγραφή των χαρακτήρων από το κέρσορα ώς το τέλος της λέξης"
+msgstr "διαγραφή των χαρακτήρων από τον κέρσορα ως το τέλος της λέξης"
 
 #
 #: keymap_alldefs.h:78
@@ -2530,7 +2520,7 @@ msgstr "μετακίνηση στο τελευταίο μήνυμα"
 #
 #: keymap_alldefs.h:110
 msgid "show only messages matching a pattern"
-msgstr "εμφανίση μόνο των μηνυμάτων που ταιριάζουν σε ένα μοντέλο/μορφή"
+msgstr "εμφάνιση μόνο των μηνυμάτων που ταιριάζουν σε ένα μοντέλο/μορφή"
 
 #
 #: keymap_alldefs.h:111
@@ -2560,7 +2550,7 @@ msgstr "μετάβαση στο επόμενο μη αναγνωσμένο μήνυμα"
 #
 #: keymap_alldefs.h:116
 msgid "jump to parent message in thread"
-msgstr "μετάβαση στο τρέχων μήνυμα της συζήτησης"
+msgstr "μετάβαση στο τρέχον μήνυμα της συζήτησης"
 
 #
 #: keymap_alldefs.h:117
@@ -2595,7 +2585,7 @@ msgstr "σημείωση της τρέχουσας συζήτησης ως αναγνωσμένη"
 #
 #: keymap_alldefs.h:123
 msgid "mark the current subthread as read"
-msgstr "σημείωση τηςτρέχουσας υποσυζήτησης ως αναγνωσμένη"
+msgstr "σημείωση της τρέχουσας υποσυζήτησης ως αναγνωσμένη"
 
 #
 #: keymap_alldefs.h:124
@@ -2707,7 +2697,7 @@ msgstr "αποθήκευση των αλλαγών στο γραμματοκιβώτιο και εγκατάλειψη"
 #
 #: keymap_alldefs.h:145
 msgid "recall a postponed message"
-msgstr "επανάκληση ενός αναβεβλημένου μηνύματος"
+msgstr "επανάκληση ενός αναβληθέντος μηνύματος"
 
 #
 #: keymap_alldefs.h:146
@@ -2826,7 +2816,7 @@ msgstr "αποκατάσταση όλων των μηνυμάτων στη συζήτηση"
 #
 #: keymap_alldefs.h:169
 msgid "undelete all messages in subthread"
-msgstr "αποκατάσταση όλων των μηνυμάτων στη δευτερέυουσα συζήτηση"
+msgstr "αποκατάσταση όλων των μηνυμάτων στη δευτερεύουσα συζήτηση"
 
 #
 #: keymap_alldefs.h:170
@@ -2920,7 +2910,7 @@ msgstr "Επιλογή του επόμενου στοιχείου της αλυσίδας"
 
 #: keymap_alldefs.h:188
 msgid "send the message through a mixmaster remailer chain"
-msgstr "αποστολή του μηνύματος μέσω μιας αλυσίδας απαναποστολέων Mixmaster"
+msgstr "αποστολή του μηνύματος μέσω μιας αλυσίδας επαναποστολέων Mixmaster"
 
 #
 #: keymap_alldefs.h:189
@@ -2935,23 +2925,20 @@ msgstr "δημιουργία αποκρυπτογραφημένου αντιγράφου"
 #
 # keymap_defs.h:161
 #: keymap_alldefs.h:191
-#, fuzzy
 msgid "wipe passphrase(s) from memory"
-msgstr "εξαφάνιση της φράσης κλειδί PGP από τη μνήμη"
+msgstr "εξαφάνιση της φράσης(-εων) κλειδί από τη μνήμη"
 
 #
 # keymap_defs.h:160
 #: keymap_alldefs.h:192
-#, fuzzy
 msgid "extract supported public keys"
-msgstr "εξαγωγή των δημόσιων κλειδιών PGP"
+msgstr "εξαγωγή των δημόσιων κλειδιών που υποστηρίζοντε"
 
 #
 # keymap_defs.h:159
 #: keymap_alldefs.h:193
-#, fuzzy
 msgid "show S/MIME options"
-msgstr "εμφάνιση των επιλογών PGP"
+msgstr "εμφάνιση των επιλογών S/MIME"
 
 #
 #: lib.c:59 lib.c:74 lib.c:105
@@ -2970,14 +2957,13 @@ msgstr ""
 
 #
 #: main.c:44
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2002 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2001 Michael R. Elkins και άλλοι.\n"
+"Copyright (C) 1996-2002 Michael R. Elkins και άλλοι.\n"
 "Το Mutt έρχεται ΑΠΟΚΛΕΙΣΤΙΚΑ ΧΩΡΙΣ ΕΓΓΥΗΣΗ; για λεπτομέρειες πατήστε `mutt -"
 "vv'.\n"
 "Το Mutt είναι ελεύθερο λογισμικό, και ευχαρίστως μπορείτε να το "
@@ -2986,7 +2972,6 @@ msgstr ""
 
 #
 #: main.c:50
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -3013,13 +2998,13 @@ msgid ""
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 msgstr ""
-"Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
-"Copyright (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2001 Thomas Roessler <roessler@guug.de>\n"
-"Copyright (C) 1998-2001 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>\n"
-"Copyright (C) 1999-2001 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-"Copyright (C) 2000-2001 Edmund Grimley Evans <edmundo@rano.org>\n"
+"Copyright (C) 1996-2002 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
+"Copyright (C) 1997-2002 Thomas Roessler <roessler@guug.de>\n"
+"Copyright (C) 1998-2002 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1999-2002 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "Πολλοί άλλοι που δεν αναφέρονται εδώ έχουν συνεισφέρει κώδικα,\n"
 "διορθώσεις, και προτάσεις.\n"
@@ -3043,7 +3028,6 @@ msgstr ""
 
 #
 #: main.c:88
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -3081,16 +3065,19 @@ msgid ""
 msgstr ""
 "χρήση: mutt [ -nRyzZ ] [ -e <εντολή> ] [ -F <αρχείο> ] [ -m <τύπος> ] [ -f "
 "<αρχείο>]\n"
+"       mutt [ -nR ] [ -e <εντολή> ] [ -F <αρχείο> ] -Q <ερώτηση>[ -Q "
+"<ερώτηση> ] [...]\n"
 "       mutt [ -nx ] [ -e <εντολή> ] [ -a <αρχείο> ] [ -F <αρχείο> ] [ -H "
-"<αρχείο> ] [ -i <αρχείο> ] [ -s <θέμα> ] [ -b <διεύθ> ] [ -c <διεύθ> ] "
-"<διεύθ> [ ... ]\n"
+"<αρχείο> ] [ -i <αρχείο> ] [ -s <θέμα> ] [ -b <διευθ> ] [ -c <διευθ> ] "
+"<διευθ> [ ... ]\n"
 "       mutt [ -n ] [ -e <εντολή> ] [ -F <αρχείο> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
 "επιλογές:\n"
+"  -A <alias>\tαπεικόνιση του συγκεκριμένου ψευδόνυμου\n"
 "  -a <αρχείο>\tπροσαρτήστε ένα αρχείο σε αυτό το μήνυμα\n"
-"  -b <διεύθ>\tκαθορίστε μια διεύθυνση τυφλού-πιστού-αντιγράφου (BCC)\n"
-"  -c <διεύθ>\tκαθορίστε μια διεύθυνση πιστού-αντιγράφου (CC)\n"
+"  -b <διευθ>\tκαθορίστε μια διεύθυνση τυφλού-πιστού-αντιγράφου (BCC)\n"
+"  -c <διευθ>\tκαθορίστε μια διεύθυνση πιστού-αντιγράφου (CC)\n"
 "  -e <εντολή>\tκαθορίστε μια εντολή για να εκτελεστεί μετά την εκκίνηση\n"
 "  -f <αρχείο>\tκαθορίστε ποιο γραμματοκιβώτιο να αναγνωστεί\n"
 "  -F <αρχείο>\tκαθορίστε ένα εναλλακτικό αρχείο muttrc\n"
@@ -3101,7 +3088,8 @@ msgstr ""
 "απάντηση\n"
 "  -m <τύπος>\tκαθορίστε ένα τύπο προκαθορισμένου γραμματοκιβωτίου\n"
 "  -n\t\tκάνετε το Mutt να μην διαβάσει το Muttrc του συστήματος\n"
-"  -p\t\tεπαναφέρετε ένα αναβεβλήμένο μήνυμα\n"
+"  -p\t\tεπαναφέρετε ένα αναβληθέν μήνυμα\n"
+"  -Q <μεταβλητή>\tερώτηση(εμφάνιση τιμής) μιας μεταβλητής των ρυθμίσεων\n"
 "  -R\t\tανοίξτε το γραμματοκιβώτιο σε κατάσταση μόνο-ανάγνωσης\n"
 "  -s <θέμα>\tκαθορίστε ένα θέμα (σε εισαγωγικά εάν έχει κενά)\n"
 "  -v\t\tδείξτε την έκδοση και τους ορισμούς κατά τη μεταγλώττιση\n"
@@ -3222,7 +3210,7 @@ msgstr "Εγγραφή μηνυμάτων... %d (%d%%)"
 #.
 #: mbox.c:931
 msgid "Committing changes..."
-msgstr "Εφαρμογή των αλλάγων..."
+msgstr "Εφαρμογή των αλλαγών..."
 
 #
 #: mbox.c:962
@@ -3344,7 +3332,7 @@ msgstr "Ανάγνωση %s... %d"
 
 #: mh.c:1019
 msgid "maildir_commit_message(): unable to set time on file"
-msgstr ""
+msgstr "maildir_commit_message(): αδυναμία ορισμού χρόνου στο αρχείο"
 
 #: muttlib.c:854
 msgid "File is a directory, save under it?"
@@ -3640,13 +3628,13 @@ msgstr "Δεν έγινε αλλαγή στο γραμματοκιβώτιο "
 #: mx.c:1013
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
-msgstr "%d κρατήθηκαν, %d μετακινήθηκαν, %d διαγράφθηκαν."
+msgstr "%d κρατήθηκαν, %d μετακινήθηκαν, %d διαγράφηκαν."
 
 #
 #: mx.c:1016 mx.c:1188
 #, c-format
 msgid "%d kept, %d deleted."
-msgstr "%d κρατήθηκαν, %d διαγράφθηκαν."
+msgstr "%d κρατήθηκαν, %d διαγράφηκαν."
 
 #
 #: mx.c:1126
@@ -3668,7 +3656,7 @@ msgstr "Το γραμματοκιβώτιο είναι σημειωμένο μη εγγράψιμο. %s"
 #
 #: mx.c:1185
 msgid "Mailbox checkpointed."
-msgstr "Το γραμματοκιβώτιου σημειώθηκε."
+msgstr "Το γραμματοκιβώτιο σημειώθηκε."
 
 #
 #: mx.c:1501
@@ -3845,7 +3833,7 @@ msgstr "Η αναζήτηση διακόπηκε."
 # pgp.c:146
 #: pgp.c:73
 msgid "PGP passphrase forgotten."
-msgstr "Η φράση κλειδί PGP έχει ξεχαστεί."
+msgstr "Η φράση-κλειδί PGP έχει ξεχαστεί."
 
 #
 #: pgp.c:304
@@ -3980,7 +3968,7 @@ msgstr "Να χρησιμοποιηθεί keyID = \"%s\" για το %s;"
 #: pgp.c:1105 smime.c:719 smime.c:846
 #, c-format
 msgid "Enter keyID for %s: "
-msgstr "Εισηγάγετε keyID για το %s: "
+msgstr "Εισάγετε keyID για το %s: "
 
 #: pgp.c:1354
 msgid "Can't invoke PGP"
@@ -4207,12 +4195,12 @@ msgstr "Απώλεια σύνδεσης. Επανασύνδεση στο διακομιστή POP;"
 #
 #: postpone.c:169
 msgid "Postponed Messages"
-msgstr "Ανεβεβλημένα Μηνύματα"
+msgstr "Αναβληθέντα Μηνύματα"
 
 #
 #: postpone.c:242 postpone.c:251
 msgid "No postponed messages."
-msgstr "Δεν υπάρχουν αναβεβλημένα μηνύματα."
+msgstr "Δεν υπάρχουν αναβληθέντα μηνύματα."
 
 #
 # postpone.c:338 postpone.c:358 postpone.c:367
@@ -4223,15 +4211,13 @@ msgstr "Ακατάλληλη επικεφαλίδα PGP"
 #
 # postpone.c:338 postpone.c:358 postpone.c:367
 #: postpone.c:485
-#, fuzzy
 msgid "Illegal S/MIME header"
-msgstr "Ακατάλληλη επικεφαλίδα PGP"
+msgstr "Ακατάλληλη επικεφαλίδα S/MIME"
 
 #
 #: postpone.c:565
-#, fuzzy
 msgid "Decryption failed."
-msgstr "Απέτυχε η είσοδος στο σύστημα."
+msgstr "Η αποκρυπτογράφηση απέτυχε."
 
 #
 #: query.c:45
@@ -4329,9 +4315,8 @@ msgstr "Εκτύπωση προσαρτήσεων;"
 
 #
 #: recvattach.c:907
-#, fuzzy
 msgid "Can't decrypt encrypted message!"
-msgstr "Αδυναμία εύρεσης σημειωμένων μηνυμάτων."
+msgstr "Αδυναμία αποκρυπτογράφησης του κρυπτογραφημένου μηνύματος!"
 
 #
 #: recvattach.c:921
@@ -4350,9 +4335,9 @@ msgstr "Αδυναμία διαγραφής προσάρτησης από τον εξυπηρετητή POP."
 
 #
 #: recvattach.c:1032
-#, fuzzy
 msgid "Deletion of attachments from encrypted messages is unsupported."
-msgstr "Η διαγραφή προσαρτήσεων από μηνύματα PGP δεν υποστηρίζεται."
+msgstr ""
+"Η διαγραφή προσαρτήσεων από κρυπτογραφημένα μηνύματα δεν υποστηρίζεται."
 
 #
 #: recvattach.c:1052 recvattach.c:1069
@@ -4368,13 +4353,13 @@ msgstr "Μπορείτε να διαβιβάσετε μόνο μήνυμα/μέρη rfc822"
 #: recvcmd.c:155
 #, c-format
 msgid "Bounce message to %s...?"
-msgstr "Διαβίβαση μυνήματος στο %s...;"
+msgstr "Διαβίβαση μηνύματος στο %s...;"
 
 #
 #: recvcmd.c:155
 #, c-format
 msgid "Bounce messages to %s...?"
-msgstr "Διαβίβαση μυνημάτων στο %s...;"
+msgstr "Διαβίβαση μηνυμάτων στο %s...;"
 
 #
 #: recvcmd.c:374
@@ -4445,7 +4430,7 @@ msgstr "Αδυναμία λήψης της type2.list του mixmaster!"
 #
 #: remailer.c:538
 msgid "Select a remailer chain."
-msgstr "Επιλογή μιας αλυσίδας απαναποστολέα."
+msgstr "Επιλογή μιας αλυσίδας επαναποστολέων."
 
 #: remailer.c:598
 #, c-format
@@ -4586,13 +4571,12 @@ msgstr "Ετοιμασία προωθημένου μηνύματος ..."
 #.
 #: send.c:1059
 msgid "Recall postponed message?"
-msgstr "Ανάκληση αναβεβλημένου μηνύματος;"
+msgstr "Ανάκληση αναβληθέντος μηνύματος;"
 
 #
 #: send.c:1338
-#, fuzzy
 msgid "Edit forwarded message?"
-msgstr "Ετοιμασία προωθημένου μηνύματος ..."
+msgstr "Επεξεργασία προωθημένου μηνύματος;"
 
 #
 #: send.c:1357
@@ -4709,175 +4693,162 @@ msgstr "Εντοπισμός σήματος %d...  Εγκατάλειψη.\n"
 
 #: smime.c:136
 msgid "S/MIME messages with no hints on content are unsupported."
-msgstr ""
+msgstr "Δεν υποστηρίζοντε μηνύματα S/MIME χωρίς πληροφορίες στην επικεφαλίδα."
 
 #: smime.c:365
 msgid "Trusted   "
-msgstr ""
+msgstr "Εμπιστευμένο   "
 
 #: smime.c:368
 msgid "Verified  "
-msgstr ""
+msgstr "Επιβεβαιωμένο  "
 
 #: smime.c:371
 msgid "Unverified"
-msgstr ""
+msgstr "Μη Επιβεβαιωμένο"
 
 #
 #: smime.c:374
-#, fuzzy
 msgid "Expired   "
-msgstr "Έξοδος "
+msgstr "Έληξε   "
 
 #: smime.c:377
 msgid "Revoked   "
-msgstr ""
+msgstr "Ανακλήθηκε   "
 
 #
 #: smime.c:380
-#, fuzzy
 msgid "Invalid   "
-msgstr "Μη έγκυρος μήνας: %s"
+msgstr "Μη έγκυρο   "
 
 #
 #: smime.c:383
-#, fuzzy
 msgid "Unknown   "
-msgstr "Άγνωστο"
+msgstr "Άγνωστο   "
 
 #
 # pgp.c:1200
 #: smime.c:412
-#, fuzzy
 msgid "Enter keyID: "
-msgstr "Εισηγάγετε keyID για το %s: "
+msgstr "Εισάγετε το keyID: "
 
 #
 #: smime.c:435
-#, fuzzy, c-format
+#, c-format
 msgid "S/MIME certificates matching \"%s\"."
-msgstr "Όμοια PGP κλειδιά \"%s\"."
+msgstr "Όμοια πιστοποιητικά S/MIME \"%s\"."
 
 #: smime.c:584 smime.c:653 smime.c:674
 #, c-format
 msgid "ID %s is unverified. Do you want to use it for %s ?"
-msgstr ""
+msgstr "Το ID %s δεν έχει επιβεβαιωθεί. Σίγουρα να γίνει χρήση του για %s ;"
 
 #
 # pgp.c:1194
 #: smime.c:588 smime.c:657
-#, fuzzy, c-format
+#, c-format
 msgid "Use (untrusted!) ID %s for %s ?"
-msgstr "Να χρησιμοποιηθεί keyID = \"%s\" για το %s;"
+msgstr "Χρήση του (μη εμπιστευμένου) ID %s για το %s "
 
 #
 # pgp.c:1194
 #: smime.c:591 smime.c:660
-#, fuzzy, c-format
+#, c-format
 msgid "Use ID %s for %s ?"
-msgstr "Να χρησιμοποιηθεί keyID = \"%s\" για το %s;"
+msgstr "Χρήση του ID = %s για το %s ;"
 
 #: smime.c:686
 #, c-format
 msgid "Warning: You have not yet decided to trust ID %s. (any key to continue)"
 msgstr ""
+"Προειδοποίηση: Δεν έχει οριστεί εμπιστοσύνη στο ID %s. (πλήκτρο. για "
+"συνέχεια)"
 
 #: smime.c:852
 #, c-format
 msgid "No (valid) certificate found for %s."
-msgstr ""
+msgstr "Δεν βρέθηκαν (έγκυρα) πιστοποιητικά για το %s."
 
 #
 #: smime.c:907 smime.c:935 smime.c:1000 smime.c:1044 smime.c:1109 smime.c:1184
-#, fuzzy
 msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "[-- Σφάλμα: αδυναμία στη δημιουργία υποδιεργασίας PGP! --]\n"
+msgstr "Σφάλμα: αδυναμία δημιουργίας υποδιεργασίας OpenSSL!"
 
 #
 #: smime.c:1262
-#, fuzzy
 msgid "no certfile"
-msgstr "Αδυναμία δημιουργίας φίλτρου"
+msgstr "κανένα αρχείο πιστοποιητικών"
 
 #
 #: smime.c:1265
-#, fuzzy
 msgid "no mbox"
-msgstr "(κανένα γραμματοκιβώτιο)"
+msgstr "κανένα γραμματοκιβώτιο"
 
 #. fatal error while trying to encrypt message
 #: smime.c:1408
 msgid "No output from OpenSSL.."
-msgstr ""
+msgstr "Καμμία έξοδος από OpenSSL.."
 
 #: smime.c:1446
-#, fuzzy
 msgid "Warning: Intermediate certificate not found."
-msgstr "Προειδοποίηση: Αδυναμία αποθήκευσης πιστοποιητικού"
+msgstr "Προειδοποίηση: Δεν βρέθηκε ενδιάμεσο πιστοποιητικό."
 
 #
 # pgp.c:1070
 #: smime.c:1491
-#, fuzzy
 msgid "Can't open OpenSSL subprocess!"
-msgstr "Αδυναμία ανοίγματος υποδιεργασίας PGP!"
+msgstr "Αδυναμία εκκίνησης υποδιεργασίας OpenSSL!"
 
 #: smime.c:1529
 msgid "No output from OpenSSL..."
-msgstr ""
+msgstr "Καμμία έξοδος από OpenSSL.."
 
 #
 # pgp.c:669 pgp.c:894
 #: smime.c:1694 smime.c:1816
-#, fuzzy
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
 msgstr ""
-"[-- Τέλος της εξόδου PGP --]\n"
+"[-- Τέλος της εξόδου OpenSSL --]\n"
 "\n"
 
 #
 #: smime.c:1777 smime.c:1787
-#, fuzzy
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- Σφάλμα: αδυναμία στη δημιουργία υποδιεργασίας PGP! --]\n"
+msgstr "[-- Σφάλμα: αδυναμία δημιουργίας υποδιεργασίας OpenSSL! --]\n"
 
 #
 # pgp.c:980
 #: smime.c:1820
-#, fuzzy
 msgid "[-- The following data is S/MIME encrypted --]\n"
-msgstr ""
-"[-- Τα επόμενα δεδομένα είναι κρυπτογραφημένα μέσω PGP/MIME --]\n"
-"\n"
+msgstr "[-- Τα επόμενα δεδομένα είναι κρυπτογραφημένα μέσω S/MIME --]\n"
 
 #
 # pgp.c:676
 #: smime.c:1823
-#, fuzzy
 msgid "[-- The following data is S/MIME signed --]\n"
-msgstr ""
-"[-- Τα επόμενα δεδομένα είναι υπογεγραμμένα --]\n"
-"\n"
+msgstr "[-- Τα επόμενα δεδομένα είναι υπογεγραμμένα με S/MIME --]\n"
 
 #
 # pgp.c:988
 #: smime.c:1887
-#, fuzzy
 msgid ""
 "\n"
 "[-- End of S/MIME encrypted data. --]\n"
-msgstr "[-- Τέλος δεδομένων κρυπτογραφημένων μέσω PGP/MIME --]\n"
+msgstr ""
+"\n"
+"[-- Τέλος δεδομένων κρυπτογραφημένων μέσω S/MIME --]\n"
 
 #
 # pgp.c:682
 #: smime.c:1889
-#, fuzzy
 msgid ""
 "\n"
 "[-- End of S/MIME signed data. --]\n"
-msgstr "[-- Τέλος δεδομένων υπογεγραμμένων --]\n"
+msgstr ""
+"\n"
+"[-- Τέλος δεδομένων υπογεγραμμένων με S/MIME --]\n"
 
 #
 #: sort.c:201
@@ -4898,13 +4869,9 @@ msgstr "(κανένα γραμματοκιβώτιο)"
 #
 #: thread.c:1079
 msgid "Parent message is not visible in this limited view."
-msgstr "Το τρέχων μήνυμα δεν είναι ορατό σε αυτή τη περιορισμένη όψη"
+msgstr "Το τρέχον μήνυμα δεν είναι ορατό σε αυτή τη περιορισμένη όψη"
 
 #
 #: thread.c:1085
 msgid "Parent message is not available."
-msgstr "Το τρέχων μήνυμα δεν είναι διαθέσιμο."
-
-#, fuzzy
-#~ msgid "Certificate *NOT* added."
-#~ msgstr "Το πιστοποιητικό αποθηκεύτηκε"
+msgstr "Το τρέχον μήνυμα δεν είναι διαθέσιμο."
