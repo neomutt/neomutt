@@ -1,3 +1,9 @@
+2005-01-09 15:35:51  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* doc/muttbug.man, muttbug.sh.in: Replace muttbug and its
+	documentation by a note that acknowledges the shut down of the
+	bug tracking system.
+
 2004-12-21 09:46:24  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* pgp.c: Fix Debian #275188.
