@@ -1206,29 +1206,29 @@ int mutt_save_confirm (const char *s, struct stat *st)
   return (ret);
 }
 
-void state_prefix_putc(char c, STATE *s)
+void state_prefix_putc (char c, STATE *s)
 {
   if (s->flags & M_PENDINGPREFIX)
   {
-    state_reset_prefix(s);
+    state_reset_prefix (s);
     if (s->prefix)
-      state_puts(s->prefix, s);
+      state_puts (s->prefix, s);
   }
 
-  state_putc(c, s);
+  state_putc (c, s);
 
-  if(c == '\n')
-    state_set_prefix(s);
+  if (c == '\n')
+    state_set_prefix (s);
 }
 
-int state_printf(STATE *s, const char *fmt, ...)
+int state_printf (STATE *s, const char *fmt, ...)
 {
   int rv;
   va_list ap;
 
   va_start (ap, fmt);
-  rv = vfprintf(s->fpout, fmt, ap);
-  va_end(ap);
+  rv = vfprintf (s->fpout, fmt, ap);
+  va_end (ap);
   
   return rv;
 }

@@ -80,7 +80,7 @@ static void state_prefix_put (const char *d, size_t dlen, STATE *s)
     fwrite (d, dlen, 1, s->fpout);
 }
 
-static void convert_to_state(iconv_t cd, char *bufi, size_t *l, STATE *s)
+void mutt_convert_to_state(iconv_t cd, char *bufi, size_t *l, STATE *s)
 {
   char bufo[BUFO_SIZE];
   ICONV_CONST char *ib;
@@ -144,11 +144,11 @@ void mutt_decode_xbit (STATE *s, long len, int istext, iconv_t cd)
 
       bufi[l++] = c;
       if (l == sizeof (bufi))
-	convert_to_state (cd, bufi, &l, s);
+	mutt_convert_to_state (cd, bufi, &l, s);
     }
 
-    convert_to_state (cd, bufi, &l, s);
-    convert_to_state (cd, 0, 0, s);
+    mutt_convert_to_state (cd, bufi, &l, s);
+    mutt_convert_to_state (cd, 0, 0, s);
 
     state_reset_prefix (s);
   }
@@ -226,7 +226,7 @@ static void qp_decode_line (char *dest, char *src, size_t *l,
  * result of qp_decode_line.
  * 
  * Finally, at soft line breaks, some part of a multibyte character
- * may have been left over by convert_to_state().  This shouldn't
+ * may have been left over by mutt_convert_to_state().  This shouldn't
  * be more than 6 characters, so STRING + 7 should be sufficient
  * memory to store the decoded data.
  * 
@@ -273,10 +273,10 @@ void mutt_decode_quoted (STATE *s, long len, int istext, iconv_t cd)
     
     qp_decode_line (decline + l, line, &l3, last);
     l += l3;
-    convert_to_state (cd, decline, &l, s);
+    mutt_convert_to_state (cd, decline, &l, s);
   }
 
-  convert_to_state (cd, 0, 0, s);
+  mutt_convert_to_state (cd, 0, 0, s);
   state_reset_prefix(s);
 }
 
@@ -351,13 +351,13 @@ void mutt_decode_base64 (STATE *s, long len, int istext, iconv_t cd)
       bufi[l++] = ch;
     
     if (l + 8 >= sizeof (bufi))
-      convert_to_state (cd, bufi, &l, s);
+      mutt_convert_to_state (cd, bufi, &l, s);
   }
 
   if (cr) bufi[l++] = '\r';
 
-  convert_to_state (cd, bufi, &l, s);
-  convert_to_state (cd, 0, 0, s);
+  mutt_convert_to_state (cd, bufi, &l, s);
+  mutt_convert_to_state (cd, 0, 0, s);
 
   state_reset_prefix(s);
 }
@@ -410,13 +410,13 @@ void mutt_decode_uuencoded (STATE *s, long len, int istext, iconv_t cd)
 	if (c == linelen)
 	  break;
       }
-      convert_to_state (cd, bufi, &k, s);
+      mutt_convert_to_state (cd, bufi, &k, s);
       pt++;
     }
   }
 
-  convert_to_state (cd, bufi, &k, s);
-  convert_to_state (cd, 0, 0, s);
+  mutt_convert_to_state (cd, bufi, &k, s);
+  mutt_convert_to_state (cd, 0, 0, s);
   
   state_reset_prefix(s);
 }
