@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.2\n"
-"POT-Creation-Date: 2000-08-30 12:10+0200\n"
+"POT-Creation-Date: 2000-09-21 11:36+0200\n"
 "PO-Revision-Date: 2000-03-09 07:40+0900\n"
 "Last-Translator: Byeong-Chan Kim <redhands@linux.sarag.net>\n"
 "Language-Team: Korean <ko@li.org>\n"
@@ -13,17 +13,17 @@ msgstr ""
 "Content-Type: text/plain; charset=EUC-KR\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: account.c:104
+#: account.c:144
 #, fuzzy, c-format
 msgid "Username at %s: "
 msgstr "이름 바꾸기: "
 
-#: account.c:132 pop.c:61
+#: account.c:172 pop.c:61
 #, c-format
 msgid "Password for %s@%s: "
 msgstr "%s@%s의 패스워드: "
 
-#: addrbook.c:31 browser.c:39 pager.c:1362 postpone.c:37 query.c:43
+#: addrbook.c:31 browser.c:40 pager.c:1365 postpone.c:37 query.c:43
 #: recvattach.c:57
 msgid "Exit"
 msgstr "종료"
@@ -32,8 +32,8 @@ msgstr "종료"
 msgid "Select"
 msgstr "선택"
 
-#: addrbook.c:33 browser.c:42 compose.c:92 curs_main.c:376 mutt_ssl.c:511
-#: pager.c:1459 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
+#: addrbook.c:33 browser.c:43 compose.c:92 curs_main.c:376 mutt_ssl.c:511
+#: pager.c:1462 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "도움말"
 
@@ -85,7 +85,7 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "Mailcap 작성 항목은 %%s가 필요함"
 
 #: attach.c:131 attach.c:256 commands.c:184 compose.c:1176 curs_lib.c:142
-#: curs_lib.c:365
+#: curs_lib.c:374
 #, c-format
 msgid "Error running \"%s\"!"
 msgstr "\"%s\" 실행 중 오류!"
@@ -137,97 +137,97 @@ msgstr "쓰기 실패!"
 msgid "I don't know how to print that!"
 msgstr "어떻게 출력할 지 알 수 없음!"
 
-#: browser.c:40
+#: browser.c:41
 msgid "Chdir"
 msgstr "디렉토리 이동"
 
-#: browser.c:41
+#: browser.c:42
 msgid "Mask"
 msgstr "매스크"
 
-#: browser.c:362 browser.c:922
+#: browser.c:374 browser.c:936
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s는 디렉토리가 아닙니다."
 
-#: browser.c:473
+#: browser.c:485
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "편지함 [%d]"
 
-#: browser.c:480
+#: browser.c:492
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "가입 [%s], 파일 매스크: %s"
 
-#: browser.c:484
+#: browser.c:496
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "디렉토리 [%s], 파일 매스크: %s"
 
-#: browser.c:495
+#: browser.c:507
 msgid "Can't attach a directory!"
 msgstr "디렉토리를 첨부할 수 없음!"
 
-#: browser.c:613 browser.c:989 browser.c:1082
+#: browser.c:625 browser.c:1003 browser.c:1096
 msgid "No files match the file mask"
 msgstr "파일 매스크와 일치하는 파일 없음."
 
-#: browser.c:814
+#: browser.c:828
 #, fuzzy
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "삭제는 IMAP 메일함에서만 지원됨"
 
-#: browser.c:834
+#: browser.c:848
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "삭제는 IMAP 메일함에서만 지원됨"
 
-#: browser.c:842
+#: browser.c:856
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "\"%s\" 매일함을 지울까요?"
 
-#: browser.c:856
+#: browser.c:870
 msgid "Mailbox deleted."
 msgstr "매일함 삭제됨."
 
-#: browser.c:862
+#: browser.c:876
 msgid "Mailbox not deleted."
 msgstr "보내지 삭제되지 않음."
 
-#: browser.c:881
+#: browser.c:895
 msgid "Chdir to: "
 msgstr "이동할 디렉토리: "
 
-#: browser.c:915 browser.c:982
+#: browser.c:929 browser.c:996
 msgid "Error scanning directory."
 msgstr "디렉토리 검사중 오류."
 
-#: browser.c:933
+#: browser.c:947
 msgid "File Mask: "
 msgstr "파일 매스크: "
 
-#: browser.c:1005
+#: browser.c:1019
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "역정렬 방법 날짜(d), 낱말(a), 크기(z) 또는 안함(n)?"
 
-#: browser.c:1006
+#: browser.c:1020
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "정렬 방법 날짜(d), 글자(a), 크기(z) 또는 안함(n)?"
 
-#: browser.c:1007
+#: browser.c:1021
 msgid "dazn"
 msgstr "dazn"
 
-#: browser.c:1069
+#: browser.c:1083
 msgid "New file name: "
 msgstr "새 파일 이름: "
 
-#: browser.c:1100
+#: browser.c:1114
 msgid "Can't view a directory"
 msgstr "디렉토리를 볼 수 없음"
 
-#: browser.c:1118
+#: browser.c:1132
 msgid "Error trying to view file"
 msgstr "파일 보기 시도 중 오류"
 
@@ -635,19 +635,19 @@ msgid "no"
 msgstr "no"
 
 #. restore blocking operation
-#: curs_lib.c:227
+#: curs_lib.c:236
 msgid "Exit Mutt?"
 msgstr "Mutt을 종료할까요?"
 
-#: curs_lib.c:317
+#: curs_lib.c:326
 msgid "unknown error"
 msgstr "알 수 없는 오류"
 
-#: curs_lib.c:337
+#: curs_lib.c:346
 msgid "Press any key to continue..."
 msgstr "아무키나 누르면 계속합니다..."
 
-#: curs_lib.c:381
+#: curs_lib.c:390
 msgid " ('?' for list): "
 msgstr " (목록을 보려면 '?'): "
 
@@ -683,7 +683,7 @@ msgstr "폴더에 변경 사항 기록 안됨."
 msgid "Quit"
 msgstr "종료"
 
-#: curs_main.c:370 pager.c:1369 postpone.c:38
+#: curs_main.c:370 pager.c:1372 postpone.c:38
 msgid "Del"
 msgstr "삭제"
 
@@ -697,7 +697,7 @@ msgstr "복구"
 msgid "Mail"
 msgstr "편지"
 
-#: curs_main.c:374 pager.c:1370
+#: curs_main.c:374 pager.c:1373
 msgid "Reply"
 msgstr "답장"
 
@@ -755,80 +755,80 @@ msgstr "제한과 일치하는 메시지를 보여줌:"
 msgid "Quit Mutt?"
 msgstr "Mutt을 종료할까요?"
 
-#: curs_main.c:899
+#: curs_main.c:894
 msgid "Tag messages matching: "
 msgstr "일치하는 메세지에 태그 붙임: "
 
-#: curs_main.c:907
+#: curs_main.c:902
 msgid "Undelete messages matching: "
 msgstr "일치하는 메세지 복구: "
 
-#: curs_main.c:914
+#: curs_main.c:909
 msgid "Untag messages matching: "
 msgstr "일치하는 메세지에 태그 없앰: "
 
-#: curs_main.c:932
+#: curs_main.c:927
 msgid "Open mailbox in read-only mode"
 msgstr "읽기 전용으로 편지함 열기"
 
-#: curs_main.c:934
+#: curs_main.c:929
 msgid "Open mailbox"
 msgstr "편지함 열기"
 
-#: curs_main.c:950 mx.c:466 mx.c:612
+#: curs_main.c:945 mx.c:466 mx.c:612
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s는 편지함이 아님."
 
-#: curs_main.c:1035
+#: curs_main.c:1030
 msgid "Exit Mutt without saving?"
 msgstr "저장하지 않고 Mutt을 끝낼까요?"
 
-#: curs_main.c:1071 curs_main.c:1095
+#: curs_main.c:1062 curs_main.c:1086
 msgid "You are on the last message."
 msgstr "마지막 메세지입니다."
 
-#: curs_main.c:1078 curs_main.c:1120
+#: curs_main.c:1069 curs_main.c:1111
 msgid "No undeleted messages."
 msgstr "복구된 메세지 없음."
 
-#: curs_main.c:1113 curs_main.c:1136
+#: curs_main.c:1104 curs_main.c:1127
 msgid "You are on the first message."
 msgstr "첫번째 메세지입니다."
 
-#: curs_main.c:1208 pattern.c:1126
+#: curs_main.c:1199 pattern.c:1126
 msgid "Search wrapped to top."
 msgstr "위로부터 다시 검색함."
 
-#: curs_main.c:1217 pattern.c:1137
+#: curs_main.c:1208 pattern.c:1137
 msgid "Search wrapped to bottom."
 msgstr "아래부터 다시 검색함."
 
-#: curs_main.c:1250
+#: curs_main.c:1241
 msgid "No new messages"
 msgstr "새로운 메세지 없음"
 
-#: curs_main.c:1250
+#: curs_main.c:1241
 msgid "No unread messages"
 msgstr "읽지 않은 메세지 없음"
 
-#: curs_main.c:1251
+#: curs_main.c:1242
 msgid " in this limited view"
 msgstr ""
 
-#: curs_main.c:1375
+#: curs_main.c:1366
 msgid "No more threads."
 msgstr "더 이상 글타래 없음."
 
-#: curs_main.c:1377
+#: curs_main.c:1368
 msgid "You are on the first thread."
 msgstr "처음 글타래입니다.."
 
-#: curs_main.c:1435 curs_main.c:1466 flags.c:228 thread.c:651 thread.c:702
+#: curs_main.c:1426 curs_main.c:1457 flags.c:228 thread.c:651 thread.c:702
 msgid "Threading is not enabled."
 msgstr "글타래를 사용하지 않음."
 
-#: curs_main.c:1453
+#: curs_main.c:1444
 msgid "Thread contains unread messages."
 msgstr "글타래에 읽지 않은 메세지 있음."
 
@@ -1184,40 +1184,40 @@ msgid "Selecting %s..."
 msgstr "%s 선택 중..."
 
 #. STATUS not supported
-#: imap/imap.c:667
+#: imap/imap.c:668
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "서버의 IMAP 편지함에 추가할 수 없음"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:676 imap/message.c:573 muttlib.c:1144
+#: imap/imap.c:677 imap/message.c:573 muttlib.c:1136
 #, c-format
 msgid "Create %s?"
 msgstr "%s를 만들까요?"
 
-#: imap/imap.c:712
+#: imap/imap.c:713
 msgid "Closing connection to IMAP server..."
 msgstr "IMAP 서버 접속 닫는 중..."
 
-#: imap/imap.c:875
+#: imap/imap.c:876
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "표시된 %d개의 메세지를 삭제함..."
 
-#: imap/imap.c:894
+#: imap/imap.c:895
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "메세지 상태 플래그 저장... [%d/%d]"
 
-#: imap/imap.c:951
+#: imap/imap.c:952
 msgid "Expunging messages from server..."
 msgstr "서버의 메세지 삭제 중..."
 
-#: imap/imap.c:1228
+#: imap/imap.c:1229
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "%s에 구독 중..."
 
-#: imap/imap.c:1230
+#: imap/imap.c:1231
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "%s에 구독 해제 중..."
@@ -1349,16 +1349,16 @@ msgstr "source: 인수가 너무 많음"
 msgid "%s: unknown command"
 msgstr "%s: 알 수 없는 명령어"
 
-#: init.c:1678
+#: init.c:1677
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "명령어 오류: %s\n"
 
-#: init.c:1721
+#: init.c:1720
 msgid "unable to determine home directory"
 msgstr "홈 디렉토리를 찾을 수가 없습니다"
 
-#: init.c:1729
+#: init.c:1728
 msgid "unable to determine username"
 msgstr "알 수 없는 사용자 이름입니다"
 
@@ -2451,7 +2451,7 @@ msgstr "거꾸로 찾아보기: "
 msgid "No search pattern."
 msgstr "패턴을 찾을 수 없음."
 
-#: menu.c:743 pager.c:1836 pager.c:1852 pager.c:1940 pattern.c:1170
+#: menu.c:743 pager.c:1839 pager.c:1855 pager.c:1943 pattern.c:1170
 msgid "Not found."
 msgstr "찾을 수 없음."
 
@@ -2476,28 +2476,28 @@ msgstr "태그를 붙이는 것을 지원치 않음."
 msgid "Reading %s... %d"
 msgstr "%s 읽는 중... %d"
 
-#: muttlib.c:815
+#: muttlib.c:807
 msgid "File is a directory, save under it?"
 msgstr "파일이 아니라 디렉토리입니다, 그 아래에 저장할까요?"
 
-#: muttlib.c:820
+#: muttlib.c:812
 msgid "File under directory: "
 msgstr "디렉터리하에 저장할 파일:"
 
-#: muttlib.c:832
+#: muttlib.c:824
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "파일이 존재함, 덮어쓰기(o), 첨가(a), 취소(c)?"
 
-#: muttlib.c:832
+#: muttlib.c:824
 msgid "oac"
 msgstr "oac"
 
-#: muttlib.c:1120
+#: muttlib.c:1112
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s는 편지함이 아님!"
 
-#: muttlib.c:1126
+#: muttlib.c:1118
 #, c-format
 msgid "Append messages to %s?"
 msgstr "%s에 메세지를 첨가할까요?"
@@ -2744,48 +2744,48 @@ msgstr "메시지를 쓰지 못함"
 msgid "Not available in this menu."
 msgstr "이 메뉴에선 유효하지 않음 않음."
 
-#: pager.c:1363
+#: pager.c:1366
 msgid "PrevPg"
 msgstr "이전장"
 
-#: pager.c:1364
+#: pager.c:1367
 msgid "NextPg"
 msgstr "다음장"
 
-#: pager.c:1368
+#: pager.c:1371
 msgid "View Attachm."
 msgstr "첨부물보기"
 
-#: pager.c:1371
+#: pager.c:1374
 msgid "Next"
 msgstr "다음"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1748 pager.c:1779 pager.c:1808 pager.c:2028
+#: pager.c:1751 pager.c:1782 pager.c:1811 pager.c:2031
 msgid "Bottom of message is shown."
 msgstr "메세지의 끝입니다."
 
-#: pager.c:1764 pager.c:1786 pager.c:1797
+#: pager.c:1767 pager.c:1789 pager.c:1800
 msgid "Top of message is shown."
 msgstr "메세지의 처음입니다."
 
-#: pager.c:1870
+#: pager.c:1873
 msgid "Reverse search: "
 msgstr "거꾸로 찾기: "
 
-#: pager.c:1871
+#: pager.c:1874
 msgid "Search: "
 msgstr "찾기: "
 
-#: pager.c:1966
+#: pager.c:1969
 msgid "Help is currently being shown."
 msgstr "현재 도움말을 보고 있습니다."
 
-#: pager.c:1995
+#: pager.c:1998
 msgid "No more quoted text."
 msgstr "더 이상의 인용문 없음."
 
-#: pager.c:2008
+#: pager.c:2011
 msgid "No more unquoted text after quoted text."
 msgstr "인용문 이후에 더 이상의 비 인용문 없음."
 
@@ -3544,17 +3544,17 @@ msgstr "한계 변수 없음! [오류 보고 바람]"
 msgid "%s no longer exists!"
 msgstr "%s가 더 이상 존재치 않음!"
 
-#: sendlib.c:1044
+#: sendlib.c:1048
 #, c-format
 msgid "Could not open %s"
 msgstr "%s를 열 수 없음"
 
-#: sendlib.c:1960
+#: sendlib.c:1964
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "메세지를 보내는 중 오류, 자식 종료 %d (%s)."
 
-#: sendlib.c:1966
+#: sendlib.c:1970
 msgid "Output of the delivery process"
 msgstr "배달 프로세스의 출력"
 

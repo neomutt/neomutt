@@ -1,3 +1,128 @@
+Thu Sep 21 07:56:40 2000  Thomas Roessler  <roessler@guug.de>
+
+	* rfc2047.c: Make some of the code more readable.  From EGE.
+
+Fri Sep 15 09:19:29 2000  Thomas Roessler  <roessler@guug.de>
+
+	* rfc2047.c, rfc2047.h, sendlib.c: Fix some RFC2047 encoding bugs.
+
+Wed Sep 13 21:01:31 2000  Thomas Roessler  <roessler@guug.de>
+
+	* rfc2047.c:
+	Undo part of the character set canonicalization.  EGE pointed out it
+	isn't needed.
+
+	* rfc2231.c: Replace "unknown" by "unknown-8bit".
+
+	* sendlib.c: s/iconv_open/mutt_iconv_open/.  Suggested by EGE.
+
+	* charset.c:
+	Add "646" as an alias for us-ascii.  SunOS 5.8 seems to need it.
+
+	* browser.c:
+	Let the browser handle non-existent directories more gracefully.
+	From Byrial Jensen.
+
+Tue Sep 12 23:18:47 2000  Thomas Roessler  <roessler@guug.de>
+
+	* configure.in: Remove some caching.  From EGE.
+
+Mon Sep 11 10:50:37 2000  Thomas Roessler  <roessler@guug.de>
+
+	* charset.c, copy.c, mbyte.c, rfc2047.c, sendlib.c:
+	Fix some more character set glitches.
+
+Sat Sep  9 07:30:29 2000  Thomas Roessler  <roessler@guug.de>
+
+	* charset.c:
+	sizeof (dest) == 4.  I should have written dlen instead.  Noted by
+	EGE.
+
+Fri Sep  8 21:52:04 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/imap.c:
+	Brendan's version of the last fix.  I put it in since he's most
+	likely the next one to look at or change this. ,-)
+
+	* imap/imap.c:
+	Fix a silly little IMAP bug.  From Daniel Jacobowitz <dan@debian.org>.
+
+	* charset.c, protos.h, rfc2231.c, sendlib.c:
+	Add a character set comparison function.
+
+Thu Sep  7 21:56:00 2000  Thomas Roessler  <roessler@guug.de>
+
+	* charset.c:
+	Add a table of official character set names.  Data taken from
+	www.iana.org.
+
+	* rfc2231.c:
+	Detect pure 7bit data and don't encode them.  This helps a bit in
+	situations where mutt believes it has some really strange us-ascii
+	alias as the character set.
+
+	* po/es.po, po/el.po: update
+
+	* curs_lib.c:
+	Make the use of nl_langinfo(YESEXPR/NOEXPR) more robust.  Problem
+	noted by Wolfgang Baumann <baumann@zib.de>.
+
+Wed Sep  6 08:47:13 2000  Thomas Roessler  <roessler@guug.de>
+
+	* snprintf.c: Fix the MAX fix.  from Byrial Jensen.
+
+Tue Sep  5 22:14:36 2000  Thomas Roessler  <roessler@guug.de>
+
+	* init.c, muttlib.c, pgppubring.c, protos.h, snprintf.c:
+	Clean up some warning messages.  From Bob Bell.
+
+	* hook.c: Fix a segmentation fault in hook parsing.  From Bob Bell.
+
+Mon Sep  4 10:49:48 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/browse.c, imap/imap.c, imap/imap.h, imap/imap_private.h, imap/util.c, account.c, account.h, browser.c, curs_main.c, url.c, url.h:
+	patch-bac.imapurl-4
+
+	* po/ru.po, po/da.po: update
+
+	* po/id.po: update.
+
+	* recvcmd.c: Fix a segmentation fault when replying to multiple
+	message/rfc822-type attachments.  Noted by David Champion.
+
+Fri Sep  1 08:58:39 2000  Thomas Roessler  <roessler@guug.de>
+
+	* init.c:
+	Don't mutt_pretty_mailbox when setting variables, since this may
+	badly interact with non-default settings.  Suggested by Byrial Jensen.
+
+Thu Aug 31 15:14:25 2000  Thomas Roessler  <roessler@guug.de>
+
+	* muttlib.c: patch-1.3.8.bj.pretty_mailbox.1
+
+	* doc/manual.sgml.head: patch-1.3.8.bj.manquote.1
+
+	* imap/command.c, imap/imap.c: patch-bac.command-3
+
+Wed Aug 30 21:34:42 2000  Thomas Roessler  <roessler@guug.de>
+
+	* pager.c: Fix display of backspace sequences.  From EGE.
+
+	* po/fr.po, po/de.po: update
+
+	* po/sk.po, po/sv.po, po/uk.po, po/zh_CN.GB2312.po, po/zh_TW.Big5.po, po/id.po, po/it.po, po/ko.po, po/nl.po, po/pl.po, po/pt_BR.po, po/ru.po, po/cs.po, po/da.po, po/de.po, po/el.po, po/eo.po, po/es.po, po/fr.po, po/gl.po, ChangeLog, VERSION:
+	automatic post-release commit for mutt-1.3.8
+
+	* VERSION: ups
+
+	* po/POTFILES.in, imap/Attic/imap_ssl.c, imap/Attic/imap_ssl.h, imap/Attic/md5c.c, imap/Attic/md5.h, imap/Makefile.am, imap/util.c, ChangeLog, configure.in, curs_main.c, init.c, Makefile.am, md5c.c, md5.h, mutt_socket.c, mutt_ssl.c, mutt_ssl.h, reldate.h, VERSION:
+	SSL unification patch from Vsevolod.
+
+	* imap/command.c, imap/imap.c, imap/message.c, imap/message.h:
+	patch-bac.expunge-2
+
+	* muttlib.c: Fix mutt_prety_mailbox.  From Vsevolod.
+
 Wed Aug 30 10:08:15 2000  Thomas Roessler  <roessler@guug.de>
 
 	* VERSION: ups
