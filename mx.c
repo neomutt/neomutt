@@ -706,8 +706,10 @@ static int sync_mailbox (CONTEXT *ctx)
 #endif /* USE_IMAP */
   }
 
+#if 0
   if (!ctx->quiet && rc == -1)
     mutt_error ( _("Could not synchronize mailbox %s!"), ctx->path);
+#endif
   
 #ifdef BUFFY_SIZE
   if (tmp && tmp->new == 0)
