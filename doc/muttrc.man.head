@@ -116,7 +116,7 @@ Before mutt displays (or formats for replying or forwarding) a
 message which matches the given \fIpattern\fP (or, when it is
 preceded by an exclamation mark, does not match the \fIpattern\fP),
 the given \fIcommand\fP is executed.  When multiple
-\fBdisplay-hook\fPs match, they are  executed  in  the order in
+\fBmessage-hook\fPs match, they are  executed  in  the order in
 which they occur in the configuration file.
 .TP
 \fBfolder-hook\fP [\fB!\fP]\fIregexp\fP \fIcommand\fP
