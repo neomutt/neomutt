@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000-2 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2000-3 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -109,7 +109,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
     return IMAP_AUTH_UNAVAIL;
   }
 
-  mutt_message _("Authenticating (SASL)...");
+  mutt_message (_("Authenticating (%s)..."), mech);
 
   snprintf (buf, sizeof (buf), "AUTHENTICATE %s", mech);
   imap_cmd_start (idata, buf);
@@ -153,7 +153,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
       client_start = 0;
 
     /* send out response, or line break if none needed */
-    if (pc)
+    if (olen)
     {
       if (sasl_encode64 (pc, olen, buf, sizeof (buf), &olen) != SASL_OK)
       {
@@ -168,7 +168,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
 #endif
     }
     
-    if (olen || rc == SASL_CONTINUE)
+    if (irc == IMAP_CMD_RESPOND)
     {
       strfcpy (buf + olen, "\r\n", sizeof (buf) - olen);
       mutt_socket_write (idata->conn, buf);

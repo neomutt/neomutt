@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2000-3 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -179,4 +179,9 @@ int mutt_account_getpass (ACCOUNT* account)
   account->flags |= M_ACCT_PASS;
 
   return 0;
+}
+
+void mutt_account_unsetpass (ACCOUNT* account)
+{
+  account->flags &= !M_ACCT_PASS;
 }

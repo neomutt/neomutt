@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2000-3 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -52,5 +52,6 @@ int mutt_account_fromurl (ACCOUNT* account, ciss_url_t* url);
 void mutt_account_tourl (ACCOUNT* account, ciss_url_t* url);
 int mutt_account_getuser (ACCOUNT* account);
 int mutt_account_getpass (ACCOUNT* account);
+void mutt_account_unsetpass (ACCOUNT* account);
 
 #endif /* _MUTT_ACCOUNT_H_ */

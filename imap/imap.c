@@ -340,30 +340,48 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
 
   /* don't open a new connection if one isn't wanted */
   if (flags & M_IMAP_CONN_NONEW)
-    if (!idata || idata->state == IMAP_DISCONNECTED)
-      goto err_conn;
+  {
+    if (!idata)
+    {
+      mutt_socket_free (conn);
+      return NULL;
+    }
+    if (idata->state < IMAP_AUTHENTICATED)
+      return NULL;
+  }
   
   if (!idata)
   {
     /* The current connection is a new connection */
     if (! (idata = imap_new_idata ()))
-      goto err_conn;
+    {
+      mutt_socket_free (conn);
+      return NULL;
+    }
 
     conn->data = idata;
     idata->conn = conn;
   }
+
   if (idata->state == IMAP_DISCONNECTED)
-    if (imap_open_connection (idata) != 0)
-      goto err_idata;
+    imap_open_connection (idata);
+  if (idata->state == IMAP_CONNECTED)
+  {
+    if (!imap_authenticate (idata))
+    {
+      idata->state = IMAP_AUTHENTICATED;
+      if (idata->conn->ssf)
+	dprint (2, (debugfile, "Communication encrypted at %d bits\n",
+		    idata->conn->ssf));
+      imap_get_delim (idata);
+    }
+    else
+      mutt_account_unsetpass (&idata->conn->account);
+    
+    FREE (&idata->capstr);
+  }
   
   return idata;
-
- err_idata:
-  imap_free_idata (&idata);
- err_conn:
-  mutt_socket_free (conn);
-
-  return NULL;
 }
 
 int imap_open_connection (IMAP_DATA* idata)
@@ -375,8 +393,14 @@ int imap_open_connection (IMAP_DATA* idata)
 
   idata->state = IMAP_CONNECTED;
 
-  if (imap_cmd_step (idata) != IMAP_CMD_CONTINUE)
-    goto bail;
+  if (imap_cmd_step (idata) != IMAP_CMD_CONTINUE) {
+    mutt_error (_("Unexpected response received from server: %s"), idata->cmd.buf);
+    mutt_sleep (1);
+
+    mutt_socket_close (idata->conn);
+    idata->state = IMAP_DISCONNECTED;
+    return -1;
+  }
 
   if (ascii_strncasecmp ("* OK", idata->cmd.buf, 4) == 0)
   {
@@ -413,16 +437,13 @@ int imap_open_connection (IMAP_DATA* idata)
       }
     }
 #endif    
-    if (imap_authenticate (idata))
-      goto bail;
-    if (idata->conn->ssf)
-      dprint (2, (debugfile, "Communication encrypted at %d bits\n",
-	idata->conn->ssf));
   }
   else if (ascii_strncasecmp ("* PREAUTH", idata->cmd.buf, 9) == 0)
   {
+    idata->state = IMAP_AUTHENTICATED;
     if (imap_check_capabilities (idata) != 0)
       goto bail;
+    FREE (&idata->capstr);
   } 
   else
   {
@@ -430,17 +451,12 @@ int imap_open_connection (IMAP_DATA* idata)
     goto bail;
   }
 
-  FREE (&idata->capstr);
-  idata->state = IMAP_AUTHENTICATED;
-
-  imap_get_delim (idata);
   return 0;
 
  err_close_conn:
   mutt_socket_close (idata->conn);
  bail:
   FREE (&idata->capstr);
-  idata->state = IMAP_DISCONNECTED;
   return -1;
 }
 
@@ -520,6 +536,9 @@ int imap_open_mailbox (CONTEXT* ctx)
   /* we require a connection which isn't currently in IMAP_SELECTED state */
   if (!(idata = imap_conn_find (&(mx.account), M_IMAP_CONN_NOSELECT)))
     goto fail_noidata;
+  if (idata->state < IMAP_AUTHENTICATED)
+    goto fail;
+
   conn = idata->conn;
 
   /* once again the context is new */
