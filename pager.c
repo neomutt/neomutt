@@ -27,6 +27,8 @@
 #include "attach.h"
 #include "mbyte.h"
 
+#include "mx.h"
+
 #ifdef USE_IMAP
 #include "imap.h"
 #endif
