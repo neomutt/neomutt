@@ -258,7 +258,14 @@ hdr_format_str (char *dest,
       if (!first_mailing_list (dest, destlen, hdr->env->to) &&
 	  !first_mailing_list (dest, destlen, hdr->env->cc))
 	dest[0] = 0;
-      break;
+      if (dest[0])
+      {
+	strfcpy (buf2, dest, sizeof(buf2));
+	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+	snprintf (dest, destlen, fmt, buf2);
+	break;
+      }
+      /* fall through if 'B' returns nothing */
 
     case 'b':
       if(ctx)
@@ -270,6 +277,9 @@ hdr_format_str (char *dest,
       }
       else 
 	strfcpy(dest, "(null)", destlen);
+      snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+      strfcpy (buf2, dest, sizeof(buf2));
+      snprintf (dest, destlen, fmt, buf2);
       break;
     
     case 'c':
