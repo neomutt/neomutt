@@ -268,11 +268,13 @@ static int maildir_parse_dir(CONTEXT *ctx, struct maildir ***last,
 
   while ((de = readdir (dirp)) != NULL)
   {
+    
     if ((ctx->magic == M_MH && !mh_valid_message(de->d_name)) || (ctx->magic == M_MAILDIR && *de->d_name == '.'))
       continue;
     
     /* FOO - really ignore the return value? */
-    
+
+    dprint(2, (debugfile, "%s:%d: parsing %s\n", __FILE__, __LINE__, de->d_name));
     maildir_parse_entry(ctx, last, subdir, de->d_name, count, is_old);
   }
 
@@ -286,8 +288,19 @@ static void maildir_add_to_context(CONTEXT *ctx, struct maildir *md)
 {
   while(md)
   {
+    
+    dprint(2, (debugfile, "%s:%d maildir_add_to_context(): Considering %s\n",
+	       __FILE__, __LINE__, md->canon_fname));
+    
     if(md->h)
     {
+
+      dprint(2, (debugfile, "%s:%d Adding header structure. Flags: %s%s%s%s%s\n", __FILE__, __LINE__,
+		 md->h->flagged ? "f" : "",
+		 md->h->deleted ? "D" : "",
+		 md->h->replied ? "r" : "",
+		 md->h->old     ? "O" : "",
+		 md->h->read    ? "R" : ""));
       if(ctx->msgcount == ctx->hdrmax)
 	mx_alloc_memory(ctx);
       
@@ -457,7 +470,7 @@ static int maildir_sync_message (CONTEXT *ctx, int msgno)
   char oldpath[_POSIX_PATH_MAX];
   char *p;
 
-  if ((p = strchr (h->path, '/')) == NULL)
+  if ((p = strrchr (h->path, '/')) == NULL)
   {
     dprint (1, (debugfile, "maildir_sync_message: %s: unable to find subdir!\n",
 		h->path));
@@ -590,13 +603,13 @@ static char *maildir_canon_filename(char *dest, char *src, size_t l)
 {
   char *t, *u;
   
-  if((t = strchr(src, '/')))
+  if((t = strrchr(src, '/')))
     src = t + 1;
 
   strfcpy(dest, src, l);
-  if((u = strchr(dest, ';')))
+  if((u = strrchr(dest, ':')))
     *u = '\0';
-  
+
   return dest;
 }
 
@@ -671,7 +684,7 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
   
   if(ctx->magic == M_MAILDIR)
   {
-    if(have_new)
+    if(have_new || modified)
       maildir_parse_dir(ctx, &last, "new", NULL);
     if(modified)
       maildir_parse_dir(ctx, &last, "cur", NULL);
@@ -707,27 +720,60 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
     else
       strfcpy(b1, ctx->hdrs[i]->path, sizeof(b1));
 
-    if((p = hash_find(fnames, b1)) && p->h && 
+    dprint(2, (debugfile, "%s:%d: mh_check_mailbox(): Looking for %s.\n", __FILE__, __LINE__, b1));
+    
+    if((p = hash_find(fnames, b1)) && p->h &&
        mbox_strict_cmp_headers(ctx->hdrs[i], p->h))
     {
       /* found the right message */
-      
+
+      dprint(2, (debugfile, "%s:%d: Found.  Flags before: %s%s%s%s%s\n", __FILE__, __LINE__,
+		 ctx->hdrs[i]->flagged ? "f" : "",
+		 ctx->hdrs[i]->deleted ? "D" : "",
+		 ctx->hdrs[i]->replied ? "r" : "",
+		 ctx->hdrs[i]->old     ? "O" : "",
+		 ctx->hdrs[i]->read    ? "R" : ""));
+
       if(modified)
       {
 	if(!ctx->hdrs[i]->changed)
 	{
-	  ctx->hdrs[i]->flagged = p->h->flagged;
-	  ctx->hdrs[i]->replied = p->h->replied;
-	  ctx->hdrs[i]->old     = p->h->old;
-	  ctx->hdrs[i]->read    = p->h->read;
+	  mutt_set_flag (ctx, ctx->hdrs[i], M_FLAG, p->h->flagged);
+	  mutt_set_flag (ctx, ctx->hdrs[i], M_REPLIED, p->h->replied);
+	  mutt_set_flag (ctx, ctx->hdrs[i], M_READ, p->h->read);
 	}
+
+	/* 
+	 * This flag relates to file positions for maildir folders,
+	 * so we _must_ use the modified folder's value here.
+	 * Otherwise, the mail folder will appear to be corrupted.
+	 */
+
+	mutt_set_flag(ctx, ctx->hdrs[i], M_OLD, p->h->old);
+
       }
-      
+
       ctx->hdrs[i]->active = 1;
+
+      dprint(2, (debugfile, "%s:%d:         Flags after: %s%s%s%s%s\n", __FILE__, __LINE__,
+		 ctx->hdrs[i]->flagged ? "f" : "",
+		 ctx->hdrs[i]->deleted ? "D" : "",
+		 ctx->hdrs[i]->replied ? "r" : "",
+		 ctx->hdrs[i]->old     ? "O" : "",
+		 ctx->hdrs[i]->read    ? "R" : ""));
+
       mutt_free_header(&p->h);
     }
     else
     {
+      
+      dprint(2, (debugfile, "%s:%d: Not found.  Flags were: %s%s%s%s%s\n", __FILE__, __LINE__,
+		 ctx->hdrs[i]->flagged ? "f" : "",
+		 ctx->hdrs[i]->deleted ? "D" : "",
+		 ctx->hdrs[i]->replied ? "r" : "",
+		 ctx->hdrs[i]->old     ? "O" : "",
+		 ctx->hdrs[i]->read    ? "R" : ""));
+      
       /* the message has disappeared by occult forces, correct
        * the index hint. 
        */

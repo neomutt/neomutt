@@ -838,7 +838,7 @@ int mx_close_mailbox (CONTEXT *ctx)
 
 /* update a Context structure's internal tables. */
 
-void mx_update_tables(CONTEXT *ctx, int do_delete)
+void mx_update_tables(CONTEXT *ctx, int committing)
 {
   int i, j;
   
@@ -854,8 +854,8 @@ void mx_update_tables(CONTEXT *ctx, int do_delete)
 #define this_body ctx->hdrs[j]->content
   for (i = 0, j = 0; i < ctx->msgcount; i++)
   {
-    if ((do_delete && !ctx->hdrs[i]->deleted) || 
-	(!do_delete && ctx->hdrs[i]->active))
+    if ((committing && !ctx->hdrs[i]->deleted) || 
+	(!committing && ctx->hdrs[i]->active))
     {
       if (i != j)
       {
@@ -870,7 +870,17 @@ void mx_update_tables(CONTEXT *ctx, int do_delete)
 	ctx->vsize += this_body->length + this_body->offset -
 	  this_body->hdr_offset;
       }
-      ctx->hdrs[j]->changed = 0;
+
+      if(committing)
+	ctx->hdrs[j]->changed = 0;
+      else
+      {
+	if (ctx->hdrs[j]->deleted)
+	  ctx->deleted++;
+	if (ctx->hdrs[j]->changed)
+	  ctx->changed++;
+      }
+
       if (ctx->hdrs[j]->tagged)
 	ctx->tagged++;
       if (ctx->hdrs[j]->flagged)
@@ -881,6 +891,7 @@ void mx_update_tables(CONTEXT *ctx, int do_delete)
 	if (!ctx->hdrs[j]->old)
 	  ctx->new++;
       } 
+
       j++;
     }
     else
