@@ -380,8 +380,8 @@ int km_dokey (int menu)
       struct binding_t *bindings;
 
       /* is this a valid op for this menu? */
-      bindings = km_get_table (menu);
-      if ((func = get_func (bindings, tmp.op)))
+      if ((bindings = km_get_table (menu)) &&
+	  (func = get_func (bindings, tmp.op)))
 	return tmp.op;
 
       if (menu == MENU_EDITOR && get_func (OpEditor, tmp.op))
