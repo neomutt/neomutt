@@ -584,10 +584,9 @@ static CONTENT *mutt_get_content_info (const char *fname, BODY *b)
       {
         if (linelen == 2 && ch != 'r') from = 0;
         else if (linelen == 3 && ch != 'o') from = 0;
-        else if (linelen == 4 && ch != 'm') from = 0;
-        else if (linelen == 5)
+        else if (linelen == 4)
 	{
-          if (ch == ' ') info->from = 1;
+          if (ch == 'm') info->from = 1;
           from = 0;
         }
       }
@@ -843,7 +842,7 @@ static void mutt_set_encoding (BODY *b, CONTENT *info)
 {
   if (b->type == TYPETEXT)
   {
-    if (info->lobin)
+    if (info->lobin || (info->from && option (OPTENCODEFROM)))
       b->encoding = ENCQUOTEDPRINTABLE;
     else if (info->hibin)
       b->encoding = option (OPTALLOW8BIT) ? ENC8BIT : ENCQUOTEDPRINTABLE;
@@ -862,7 +861,8 @@ static void mutt_set_encoding (BODY *b, CONTENT *info)
     else
       b->encoding = ENC7BIT;
   }
-  else if (info->lobin || info->hibin || info->binary || info->linemax > 990)
+  else if (info->lobin || info->hibin || info->binary || info->linemax > 990
+	   || (option (OPTENCODEFROM) && info->from))
   {
     /* Determine which encoding is smaller  */
     if (1.33 * (float)(info->lobin+info->hibin+info->ascii) < 3.0 * (float) (info->lobin + info->hibin) + (float)info->ascii)

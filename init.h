@@ -103,6 +103,7 @@ struct option_t MuttVars[] = {
   { "edit_headers",	DT_BOOL, R_NONE, OPTEDITHDRS, 0 },
   { "edit_hdrs",	DT_SYN,  R_NONE, UL "edit_headers", 0 },
   { "editor",		DT_PATH, R_NONE, UL &Editor, 0 },
+  { "encode_from",	DT_BOOL, R_NONE, OPTENCODEFROM, 0 },
   { "escape",		DT_STR,	 R_NONE, UL &EscChar, UL "~" },
   { "fast_reply",	DT_BOOL, R_NONE, OPTFASTREPLY, 0 },
   { "fcc_attach",	DT_BOOL, R_NONE, OPTFCCATTACH, 1 },
