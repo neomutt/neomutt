@@ -474,7 +474,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
       if (i == keymax)
       {
 	keymax += 5;
-	safe_realloc (&KeyTable, sizeof (pgp_key_t) * keymax);
+	safe_realloc (&KeyTable, sizeof (pgp_uid_t *) * keymax);
       }
       
       KeyTable[i++] = a;
@@ -504,7 +504,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
       f = pgp_compare_trust;
       break;
   }
-  qsort (KeyTable, i, sizeof (pgp_key_t), f);
+  qsort (KeyTable, i, sizeof (pgp_uid_t *), f);
 
   helpstr[0] = 0;
   mutt_make_help (buf, sizeof (buf), _("Exit  "), MENU_PGP, OP_EXIT);
