@@ -192,6 +192,9 @@
 /* Define if you have <langinfo.h> and nl_langinfo(CODESET). */
 #undef HAVE_LANGINFO_CODESET
 
+/* Define if you have iconv(). */
+#undef HAVE_ICONV
+
 /* Define as 1 if iconv() only converts exactly and we should treat
  * all return values other than (size_t)(-1) as equivalent. */
 #undef ICONV_NONTRANS

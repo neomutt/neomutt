@@ -396,15 +396,16 @@ sharedir=$mutt_cv_sharedir
 AC_SUBST(sharedir)
 
 AC_ARG_WITH(iconv, [  --with-iconv=DIR           Where libiconv is installed ],
-       [if test $withval != yes; then
-               mutt_cv_iconv=$withval
-       fi
-       if test x$mutt_cv_iconv != x/usr; then
+       [mutt_cv_iconv=$withval
+       if test "$mutt_cv_iconv" != yes -a \
+		"$mutt_cv_iconv" != no -a \
+		"$mutt_cv_iconv" != /usr; then
                CPPFLAGS="$CPPFLAGS -I${mutt_cv_iconv}/include"
                LDFLAGS="-L${mutt_cv_iconv}/lib $LDFLAGS"
        fi])
 
 LIBICONV=
+if test "$mutt_cv_iconv" != no; then
 AC_CACHE_CHECK(for iconv, mutt_cv_func_iconv,
     [ mutt_cv_func_iconv=no
       mutt_cv_lib_iconv=no
@@ -429,6 +430,8 @@ fi
 if test "$mutt_cv_lib_iconv" = yes; then
   LIBICONV="-liconv"
 fi
+AC_DEFINE(HAVE_ICONV)
+fi
 
 AC_SUBST(LIBICONV)
 
@@ -449,10 +452,10 @@ changequote([, ])dnl
   char *ob;
   size_t obl;
   ob = buf, obl = sizeof(buf);
-  return ((cd = iconv_open("UTF-8", "UTF-8")) == (iconv_t)(-1) ||
-	  iconv(cd, 0, 0, &ob, &obl) ||
-	  !(ob == buf && obl == sizeof(buf)) ||
-	  iconv_close(cd));
+  return ((cd = iconv_open("UTF-8", "UTF-8")) != (iconv_t)(-1) &&
+	  (iconv(cd, 0, 0, &ob, &obl) ||
+	   !(ob == buf && obl == sizeof(buf)) ||
+	   iconv_close(cd)));
 }
 		],
 		mutt_cv_iconv_good=yes,

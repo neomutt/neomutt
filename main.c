@@ -360,6 +360,12 @@ static void show_version (void)
 
 	"\n"
 
+#if HAVE_ICONV
+	"+HAVE_ICONV  "
+#else
+	"-HAVE_ICONV  "
+#endif
+
 #if ICONV_NONTRANS
 	"+ICONV_NONTRANS  "
 #else
