@@ -365,7 +365,7 @@ static void mh_sequences_add_one (CONTEXT *ctx, int n, short unseen, short flagg
       else if (replied && !strncmp (buff, "replied:", 8))
       {
 	fprintf (nfp, "%s %d\n", buff, n);
-	flagged_done = 1;
+	replied_done = 1;
       }
       else
 	fprintf (nfp, "%s\n", buff);
