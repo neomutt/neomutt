@@ -21,20 +21,15 @@ fi
 AC_MSG_RESULT($mutt_cv_prefix)
 
 AC_PROG_CC
+AC_ISC_POSIX
+AM_C_PROTOTYPES
+if test "x$U" != "x"; then
+  AC_MSG_ERROR(Compiler not ANSI compliant)
+fi
 AC_PROG_CPP
 AC_PROG_MAKE_SET
 AC_PROG_INSTALL
-AC_ISC_POSIX
 AC_PROG_RANLIB
-
-dnl The HP-UX 10.20 C compiler needs -Ae for grok ANSI. -Ae
-dnl automatically includes -D_HPUX_SOURCE.
-if test -z "$GCC"; then
-  AC_MSG_CHECKING([if compiler needs -Ae for ANSI source])
-  AC_TRY_COMPILE([int foo (void);], [int num],
-    [AC_MSG_RESULT(no)], [CFLAGS="$CFLAGS -Ae"
-    AC_MSG_RESULT(yes)])
-fi
 
 AC_C_INLINE
 AC_C_CONST
