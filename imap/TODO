@@ -1,0 +1,48 @@
+IMAP enhancements/fixes, by priority:
+
+* Smarter connection code. Mutt should handle dropped connections/routing
+  problems gracefully. It should be able to transparently reconnect. This
+  is facilitated by the next item.
+
+  PRIORITY: [***]
+
+* General connection code rewrite. All commands should be queued via
+  a single interface for communicating with the server. Nothing should
+  have to read or write directly to the socket.
+
+  PRIORITY: [***]
+
+* Optimise message updating. Two flags stores per message should be
+  unnecessary. It could be brought to one easily. Better would be to use
+  message ranges to store common flags en masse. This is facilitated by the
+  next item.
+
+  PRIORITY: [** ]
+
+* More complete mailbox caching. All the data for a message should be held
+  locally so that updates can be done without requerying the server.
+
+  PRIORITY: [** ]
+
+* Implement server message copy, instead of FETCH/APPEND.
+
+  PRIORITY: [** ]
+
+* Persistent caching of data. I think the nicest way to do this is to store
+  local copies like IMAP does, with an invisible control message at the top,
+  and extra invisible headers in the message (for UID/dirty bits). This does
+  some nice things:
+  o We can use the existing mbox driver.
+  o Mutt can read mail stored in IMAP spools transparently and
+    nondestructively.
+  o An IMAP server could function off of a local cache - maybe we can begin
+    to develop some sort of IMAP clustering system.
+  Disadvantage:
+  o IMAP can't discriminate between its own store and a fake Mutt cache. If
+    the server changes its file format, bad things might happen. Could be
+    worked around with a specific Mutt header in all messages, probably.
+
+  PRIORITY: [*  ]
+
+Brendan Cully <brendan@kublai.com>
+Updated: 19990826
