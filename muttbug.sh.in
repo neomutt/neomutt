@@ -125,17 +125,21 @@ EOF
 echo $n "Severity? [01234] $c"
 read severity
 case "$severity" in
-       0|[Ww]) severity=wishlist  ;;
-       2|[Ii]) severity=important ;;
-       3|[Gg]) severity=grave     ;;
-       4|[Cc]) severity=critical  ;;
-       *)   severity=normal    ;;
+0|[Ww]) severity=wishlist  ;;
+2|[Ii]) severity=important ;;
+3|[Gg]) severity=grave     ;;
+4|[Cc]) severity=critical  ;;
+     *) severity=normal    ;;
 esac
 
 if test -x $DEBUGGER ; then
 	test -f core && CORE=core
+	echo "If mutt has crashed, it may have saved some  program state in"
+	echo "a file named core.  We can include this information with the bug"
+	echo "report if you wish so."
 	echo "Do you want to include information gathered from a core file?"
-	echo -n "If yes, please enter the path - otherwise just say no: [$CORE] $c"
+	echo "If yes, please enter the path - otherwise just say no: [$CORE]"
+	echo $n "> $c"
 	read _CORE
 	test "$_CORE" && CORE="$_CORE"
 fi
@@ -265,8 +269,6 @@ if test "$global" = "yes" ; then
 	fi
 fi
 
-test "$EMAIL" && EMAIL="-f $EMAIL"
-
 exec > /dev/tty
 
 cp $TEMPLATE $SCRATCH/mutt-bug.txt
@@ -286,7 +288,7 @@ while : ; do
 	case $input in
 	e*)	;;
 	v*)	${PAGER-more} $SCRATCH/mutt-bug.txt ;;
-	s*|"")	$SENDMAIL $EMAIL -t < $SCRATCH/mutt-bug.txt ; exit ;;
+	s*|"")	$SENDMAIL -t < $SCRATCH/mutt-bug.txt ; exit ;;
 	q*)	exit
 	esac
 done
