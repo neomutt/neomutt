@@ -48,6 +48,7 @@
 
 #include "rfc822.h"
 #include "hash.h"
+#include "charset.h"
 
 #ifdef SUBVERSION
 # define MUTT_VERSION (VERSION SUBVERSION)

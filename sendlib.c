@@ -2304,8 +2304,6 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
       fputc ('S', msg->fp);
       if (PgpSignAs && *PgpSignAs)
         fprintf (msg->fp, "<%s>", PgpSignAs);
-      if (*PgpSignMicalg)
-	fprintf (msg->fp, "M<%s>", PgpSignMicalg);
     }
     fputc ('\n', msg->fp);
   }

@@ -52,44 +52,6 @@ const char *pgp_pkalgbytype (unsigned char type)
 }
 
 
-static struct
-{
-  char *pkalg;
-  char *micalg;
-}
-pktomic[] =
-{
-  {
-    "RSA", "pgp-md5"
-  }
-  ,
-  {
-    "ElG", "pgp-rmd160"
-  }
-  ,
-  {
-    "DSA", "pgp-sha1"
-  }
-  ,
-  {
-    NULL, "x-unknown"
-  }
-};
-
-
-const char *pgp_pkalg_to_mic (const char *alg)
-{
-  int i;
-
-  for (i = 0; pktomic[i].pkalg; i++)
-  {
-    if (!mutt_strcasecmp (pktomic[i].pkalg, alg))
-      break;
-  }
-
-  return pktomic[i].micalg;
-}
-
 
 /* unused */
 

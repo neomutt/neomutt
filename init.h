@@ -1176,20 +1176,6 @@ struct option_t MuttVars[] = {
   ** which of your private keys to use.  It is recommended that you use the
   ** keyid form to specify your key (e.g., ``0x00112233'').
   */
-  { "pgp_sign_micalg",	DT_STR,	 R_NONE, UL &PgpSignMicalg, UL "pgp-md5" },
-  /*
-  ** .pp
-  ** This variable contains the default message integrity check algorithm.
-  ** Valid values are ``pgp-md5'', ``pgp-sha1'', and ``pgp-rmd160''. If you
-  ** select a signing key using the sign as option on the compose menu,
-  ** mutt will automagically figure out the correct value to insert here,
-  ** but it does not know about the user's default key.
-  ** .pp
-  ** So if you are using an RSA key for signing, set this variable to
-  ** ``pgp-md5'', if you use a PGP 5 DSS key for signing, say ``pgp-sha1''
-  ** here. The value of this variable will show up in the micalg parameter
-  ** of MIME headers when creating RFC 2015 signatures.
-  */
   { "pgp_strict_enc",	DT_BOOL, R_NONE, OPTPGPSTRICTENC, 1 },
   /*
   ** .pp

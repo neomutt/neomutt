@@ -150,6 +150,7 @@ void mutt_check_rescore (CONTEXT *);
 void mutt_clear_error (void);
 void mutt_create_alias (ENVELOPE *, ADDRESS *);
 void mutt_decode_attachment (BODY *, STATE *);
+void mutt_decode_base64 (STATE *s, long len, int istext, iconv_t cd);
 void mutt_default_save (char *, size_t, HEADER *);
 void mutt_display_address (ENVELOPE *);
 void mutt_display_sanitize (char *);

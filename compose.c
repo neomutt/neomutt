@@ -121,21 +121,16 @@ static void redraw_pgp_lines (int pgp)
   move (HDR_PGPSIGINFO, 0);
   clrtoeol ();
   if (pgp & PGPSIGN)
-  {
     printw ("%s%s", _(" sign as: "), PgpSignAs ? PgpSignAs : _("<default>"));
-    mvprintw (HDR_PGPSIGINFO, 40, "%s%s", _("MIC algorithm: "),
-	      NONULL(PgpSignMicalg));
-  }
 }
 
 static int pgp_send_menu (int bits, int *redraw)
 {
   pgp_key_t *p;
   char input_signas[SHORT_STRING];
-  char input_micalg[SHORT_STRING];
 
-  switch (mutt_multi_choice (_("(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget it? "),
-			     _("esabmf")))
+  switch (mutt_multi_choice (_("(e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "),
+			     _("esabf")))
   {
   case 1: /* (e)ncrypt */
     bits |= PGPENCRYPT;
@@ -153,7 +148,6 @@ static int pgp_send_menu (int bits, int *redraw)
     {
       snprintf (input_signas, sizeof (input_signas), "0x%s", pgp_keyid (p));
       mutt_str_replace (&PgpSignAs, input_signas);
-      mutt_str_replace (&PgpSignMicalg, pgp_pkalg_to_mic (p->algorithm));
       pgp_free_key (&p);
       
       bits |= PGPSIGN;
@@ -172,28 +166,7 @@ static int pgp_send_menu (int bits, int *redraw)
     bits = PGPENCRYPT | PGPSIGN;
     break;
 
-  case 5: /* select (m)ic algorithm */
-    if (!(bits & PGPSIGN))
-      mutt_error _("This doesn't make sense if you don't want to sign the message.");
-    else
-    {
-      /* Copy the existing MIC algorithm into place */
-      strfcpy(input_micalg, NONULL (PgpSignMicalg), sizeof (input_micalg));
-
-      if (mutt_get_field (_("MIC algorithm: "), input_micalg, sizeof (input_micalg), 0) == 0)
-      {
-	if (mutt_strcasecmp (input_micalg, "pgp-md5") && mutt_strcasecmp (input_micalg, "pgp-sha1")
-	   && mutt_strcasecmp (input_micalg, "pgp-rmd160"))
-	{
-	  mutt_error _("Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160");
-	}
-	else 
-	  mutt_str_replace (&PgpSignMicalg, input_micalg);
-      }
-    }
-    break;
-
-  case 6: /* (f)orget it */
+  case 5: /* (f)orget it */
     bits = 0;
     break;
   }

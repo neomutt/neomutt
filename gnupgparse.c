@@ -252,6 +252,10 @@ static pgp_key_t *parse_pub_line (char *buf, int *is_subkey, pgp_key_t *k)
       {
 	if (!pend || !*p)
 	  break;			/* empty field or no trailing colon */
+
+	/* ignore user IDs on subkeys */
+	if (!is_uid && (*is_subkey && option (OPTPGPIGNORESUB)))
+	  break;
 	
 	dprint (2, (debugfile, "user ID: %s\n", p));
 	
@@ -318,7 +322,7 @@ pgp_key_t *pgp_get_candidates (pgp_ring_t keyring, LIST * hints)
       if (is_sub)
       {
 	pgp_uid_t **l;
-
+	
 	k->flags  |= KEYFLAG_SUBKEY;
 	k->parent  = mainkey;
 	for (l = &k->address; *l; l = &(*l)->next)

@@ -1152,7 +1152,7 @@ static BODY *pgp_sign_message (BODY *a)
 
   mutt_generate_boundary (&t->parameter);
   mutt_set_parameter ("protocol", "application/pgp-signature", &t->parameter);
-  mutt_set_parameter ("micalg", PgpSignMicalg, &t->parameter);
+  mutt_set_parameter ("micalg", pgp_micalg (sigfile), &t->parameter);
 
   t->parts = a;
   a = t;

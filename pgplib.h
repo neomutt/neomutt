@@ -81,7 +81,6 @@ typedef enum pgp_ring pgp_ring_t;
 
 /* prototypes */
 
-const char *pgp_pkalg_to_mic (const char *);
 const char *pgp_pkalgbytype (unsigned char);
 
 pgp_key_t *pgp_remove_key (pgp_key_t **, pgp_key_t *);

@@ -387,7 +387,6 @@ int mutt_parse_pgp_hdr (char *p, int set_signas)
 {
   int pgp = 0;
   char pgp_sign_as[LONG_STRING] = "\0", *q;
-  char pgp_sign_micalg[LONG_STRING] = "\0";
    
   SKIPWS (p);
   for (; *p; p++)
@@ -422,16 +421,17 @@ int mutt_parse_pgp_hdr (char *p, int set_signas)
         *q = '\0';
         break;
 
+      /* This used to be the micalg parameter.
+       * 
+       * It's no longer needed, so we just skip the parameter in order
+       * to be able to recall old messages.
+       */
       case 'm':
       case 'M':
-   	q = pgp_sign_micalg;
-	
         if(*(p+1) == '<')
-	{
-	  for(p += 2; *p && *p != '>' && q < pgp_sign_micalg + sizeof(pgp_sign_micalg) - 1;
-	      *q++ = *p++)
+        {
+	  for (p += 2; *p && *p != '>'; p++)
 	    ;
-	  
 	  if(*p != '>')
 	  {
 	    mutt_error _("Illegal PGP header");
@@ -439,7 +439,6 @@ int mutt_parse_pgp_hdr (char *p, int set_signas)
 	  }
 	}
 
-	*q = '\0';
 	break;
 	  
       default:
@@ -451,10 +450,6 @@ int mutt_parse_pgp_hdr (char *p, int set_signas)
  
   if (set_signas || *pgp_sign_as)
     mutt_str_replace (&PgpSignAs, pgp_sign_as);
-
-  /* the micalg field must not be empty */
-  if (set_signas && *pgp_sign_micalg)
-    mutt_str_replace (&PgpSignMicalg, pgp_sign_micalg);
 
   return pgp;
 }

@@ -24,7 +24,6 @@
 WHERE REGEXP PgpGoodSign;
 
 WHERE char *PgpSignAs;
-WHERE char *PgpSignMicalg;
 WHERE short PgpTimeout;
 WHERE char *PgpEntryFormat;
 
@@ -49,6 +48,7 @@ WHERE char *PgpGetkeysCommand;
 
 BODY *pgp_decrypt_part (BODY *, STATE *, FILE *);
 BODY *pgp_make_key_attachment (char *);
+const char *pgp_micalg (const char *fname);
 
 char *_pgp_keyid (pgp_key_t *);
 char *pgp_keyid (pgp_key_t *);

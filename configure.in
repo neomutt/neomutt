@@ -75,7 +75,7 @@ else
 		AC_DEFINE(HAVE_PGP)
 		PGPAUX_TARGET=pgpring
 		AM_CONDITIONAL(NEEDS_PGPEWRAP, true)
-		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pgp.o pgpinvoke.o pgpkey.o pgplib.o gnupgparse.o"
+		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pgp.o pgpinvoke.o pgpkey.o pgplib.o gnupgparse.o pgpmicalg.o pgppacket.o"
 		OPS="$OPS \$(srcdir)/OPS.PGP"
 	fi
 

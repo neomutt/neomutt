@@ -1025,7 +1025,6 @@ ci_send_message (int flags,		/* send mode */
   char *pgpkeylist = NULL;
   /* save current value of "pgp_sign_as" */
   char *signas = NULL;
-  char *signmic = NULL;
 #endif
 
   int rv = -1;
@@ -1046,10 +1045,7 @@ ci_send_message (int flags,		/* send mode */
   
 #ifdef HAVE_PGP
   if (flags & SENDPOSTPONED)
-  {
     signas = safe_strdup(PgpSignAs);
-    signmic = safe_strdup(PgpSignMicalg);
-  }
 #endif /* HAVE_PGP */
 
   if (msg)
@@ -1579,12 +1575,6 @@ cleanup:
     {
       safe_free((void **) &PgpSignAs);
       PgpSignAs = signas;
-    }
-    
-    if(signmic)
-    {
-      safe_free((void **) &PgpSignMicalg);
-      PgpSignMicalg = signmic;
     }
   }
 #endif /* HAVE_PGP */
