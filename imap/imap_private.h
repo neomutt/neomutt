@@ -49,9 +49,10 @@
 
 #define SEQLEN 5
 
-#define IMAP_REOPEN_ALLOW    (1<<0)
-#define IMAP_EXPUNGE_PENDING (1<<1)
-#define IMAP_NEWMAIL_PENDING (1<<2)
+#define IMAP_REOPEN_ALLOW     (1<<0)
+#define IMAP_EXPUNGE_PENDING  (1<<1)
+#define IMAP_NEWMAIL_PENDING  (1<<2)
+#define IMAP_EXPUNGE_EXPECTED (1<<3)
 
 /* imap_exec flags (see imap_exec) */
 #define IMAP_CMD_FAIL_OK (1<<0)

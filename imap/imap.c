@@ -1006,6 +1006,8 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
       mutt_bit_isset(idata->rights, IMAP_ACL_DELETE))
   {
     mutt_message _("Expunging messages from server...");
+    /* Set expunge bit so we don't get spurious reopened messages */
+    idata->reopen |= IMAP_EXPUNGE_EXPECTED;
     if (imap_exec (idata, "EXPUNGE", 0) != 0)
     {
       imap_error ("imap_sync_mailbox: EXPUNGE failed", idata->cmd.buf);
@@ -1096,9 +1098,12 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint)
     idata->check_status &= ~IMAP_NEWMAIL_PENDING;
     return M_NEW_MAIL;
   }
-  /* TODO: we should be able to detect external changes and return
-   *   M_REOPENED here. */
-  
+  if (idata->check_status & IMAP_EXPUNGE_PENDING)
+  {
+    idata->check_status &= ~IMAP_EXPUNGE_PENDING;
+    return M_REOPENED;
+  }
+
   return 0;
 }
 

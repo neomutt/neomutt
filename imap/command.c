@@ -263,7 +263,12 @@ static void cmd_finish (IMAP_DATA* idata)
     {
       dprint (2, (debugfile, "cmd_finish: Expunging mailbox\n"));
       imap_expunge_mailbox (idata);
-      idata->reopen &= ~(IMAP_EXPUNGE_PENDING|IMAP_NEWMAIL_PENDING);
+      /* Detect whether we've gotten unexpected EXPUNGE messages */
+      if (idata->reopen & IMAP_EXPUNGE_PENDING &&
+	  !(idata->reopen & IMAP_EXPUNGE_EXPECTED))
+	idata->check_status = IMAP_EXPUNGE_PENDING;
+      idata->reopen &= ~(IMAP_EXPUNGE_PENDING | IMAP_NEWMAIL_PENDING |
+			 IMAP_EXPUNGE_EXPECTED);
     }
   }
 
