@@ -135,10 +135,14 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
       qc = ch;
     else if (ch == '\\' && qc != '\'')
     {
+	if (!*tok->dptr)
+	    return -1; /* premature end of token */
       switch (ch = *tok->dptr++)
       {
 	case 'c':
 	case 'C':
+	    if (!*tok->dptr)
+		return -1; /* premature end of token */
 	  mutt_buffer_addch (dest, (toupper (*tok->dptr) - '@') & 0x7f);
 	  tok->dptr++;
 	  break;
@@ -172,6 +176,8 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
     }
     else if (ch == '^' && (flags & M_TOKEN_CONDENSE))
     {
+	if (!*tok->dptr)
+	    return -1; /* premature end of token */
       ch = *tok->dptr++;
       if (ch == '^')
 	mutt_buffer_addch (dest, ch);
