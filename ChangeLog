@@ -1,3 +1,97 @@
+Wed Dec  2 20:12:35 1998  Thomas Roessler  <roessler@guug.de>
+
+	* contrib/Pine.rc, contrib/Mush.rc: Bring the sample rc
+	files better in synch with the actual code.
+
+	* recvattach.c: Remove a warning which comes from code
+	actually belonging to the send_charset patch.
+
+	* rfc2047.c: Encode- and decode the "val" field when using
+	mutt with EXACT_ADDRESS enabled.
+
+	* charsets/Makefile.in, Makefile.am: Small fixes to the
+	build process. From Lars Hecking.
+
+	* compose.c: The attached patch fixes yet another redraw
+	related bug. When I call OP_SAVE from the Compose menu and
+	use the file-browser and 'q' out of the file-browser, the
+	screen still shows the browser, but the control is really in
+	the Compose menu. A Ctrl-L verifies this. Basically, a
+	screen redraw is missing. (From Vikas.)
+
+	* mutt_menu.h, menu.c, compose.c: From the Compose menu,
+	invoke attach-message. Tag a whole bunch of messages. Say,
+	for example, 100. When you exit the folder, the Compose
+	menu's status line has disappeared. (From Vikas.)
+
+	* browser.c: patch-0.94.17.vikas.browser_redraw.1
+
+Mon Nov 23 21:10:12 1998  Thomas Roessler  <roessler@guug.de>
+
+	* protos.h, lib.c:
+	Change safe_malloc's size parameter from (unsigned int) to size_t.
+
+	* send.c, protos.h, pattern.c, alias.c: From Byrial:
+
+	I don't think that the match-all pattern modifier works as can be
+	expected from a logical point of view.
+
+	The attached patch will make it work as I expect it to work:
+
+	  - It works on all patterns which explicit or implicit use address
+	    lists: ~c, ~C, ~e, ~f, ~l, ~L, ~p, ~P, and ~t. (It didn't work
+	    with ~l before).
+
+	  - It works such that a modified pattern always match, unless there
+	    is at least one address in at least one of the referenced lists
+	    that it doesn't match.
+
+	* doc/manual.sgml.in, send.c, mutt.h, mh.c, init.h, Muttrc.in:
+	Introduce a new option $reply_self.  From Vikas.
+
+Fri Nov 20 00:27:03 1998  Thomas Roessler  <roessler@guug.de>
+
+	* po/it.po: New it.po from Mario.
+
+	* doc/mutt.man.in: Fix a small typo.
+
+Thu Nov 19 23:57:03 1998  Thomas Roessler  <roessler@guug.de>
+
+	* contrib/Pine.rc: Fix some ancient syntax.
+
+	* po/uk.po, po/ru.po, po/it.po, po/es.po, po/de.po, send.c:
+	Hack around problems with multi-valued Reply-To headers.  From
+	Roland Rosenfeld.
+
+	* rfc2047.c:
+	Properly encode '_' characters in words which are qp-encoded.
+
+	* sendlib.c:
+	Use mutt_is_message_type() in the message transformation code.
+
+	* po/Makefile.in.in, doc/Makefile.in, charsets/Makefile.in, Makefile.am:
+	Fix all Makefiles.  make DESTDIR=/path/to/something install should
+	work now.
+
+Wed Nov 18 23:09:46 1998  Thomas Roessler  <roessler@guug.de>
+
+	* po/uk.po, po/ru.po, po/it.po, po/es.po, po/de.po, reldate.h, VERSION, ChangeLog:
+	Release-commit for 0.94.17.
+
+	* sendlib.c, protos.h, pgp.c, parse.c, lib.c, compose.c:
+	This patch simplifies the generation of content type parameters
+	significantly by introducing a funciton mutt_set_parameter().
+	Additionally, we re-use code from parse.c for parsing user-input
+	content type headers on the compose screen.
+
+	* compose.c: Remove some uuencode-related debris.
+
+	* recvattach.c:
+	Remove some code which crept in from the external character set patch.
+
+	* recvattach.c:
+	Make optional formats work while processing $attach_format.
+
 Wed Nov 18 22:57:03 1998  Thomas Roessler  <roessler@guug.de>
 
 	* sendlib.c, protos.h, pgp.c, parse.c, lib.c, compose.c:

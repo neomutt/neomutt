@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt-0.94.17\n"
-"POT-Creation-Date: 1998-11-19 00:08+0100\n"
+"POT-Creation-Date: 1998-12-04 00:20+0100\n"
 "PO-Revision-Date: 1998-11-19 15:54+01:00\n"
 "Last-Translator: Marco d'Itri <md@linux.it>\n"
 "Language-Team: none\n"
@@ -59,7 +59,7 @@ msgstr "Nome della persona: "
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] Va bene?"
 
-#: alias.c:255 recvattach.c:345 recvattach.c:400
+#: alias.c:255 recvattach.c:344 recvattach.c:399
 msgid "Save to file: "
 msgstr "Salva nel file: "
 
@@ -114,7 +114,7 @@ msgstr "Tipo MIME non definito.  Impossibile visualizzare l'allegato."
 msgid "Cannot create filter"
 msgstr "Impossibile creare il filtro"
 
-#: attach.c:638 recvattach.c:375
+#: attach.c:638 recvattach.c:374
 msgid "Attachment saved."
 msgstr "Allegato salvato."
 
@@ -134,59 +134,59 @@ msgstr "CambiaDir"
 msgid "Mask"
 msgstr "Maschera"
 
-#: browser.c:345 browser.c:670
+#: browser.c:345 browser.c:672
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s non è una directory."
 
-#: browser.c:448
+#: browser.c:450
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Mailbox [%d]"
 
-#: browser.c:453
+#: browser.c:455
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Directory [%s], Maschera dei file: %s"
 
-#: browser.c:537 browser.c:727 browser.c:810
+#: browser.c:539 browser.c:729 browser.c:812
 msgid "No files match the file mask"
 msgstr "Non ci sono file corrispondenti alla maschera"
 
-#: browser.c:644
+#: browser.c:646
 msgid "Chdir to: "
 msgstr "Cambia directory:"
 
-#: browser.c:663 browser.c:720
+#: browser.c:665 browser.c:722
 msgid "Error scanning directory."
 msgstr "Errore nella lettura della directory."
 
-#: browser.c:681
+#: browser.c:683
 msgid "File Mask: "
 msgstr "Maschera dei file: "
 
-#: browser.c:743
+#: browser.c:745
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr ""
 "Ordino al contrario per (d)ata, (a)lfabetico, dimensioni(z) o (n)ulla? "
 
-#: browser.c:744
+#: browser.c:746
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Ordino per (d)ata, (a)lfabetico, dimensioni(z) o (n)ulla? "
 
-#: browser.c:745
+#: browser.c:747
 msgid "dazn"
 msgstr "dazn"
 
-#: browser.c:797
+#: browser.c:799
 msgid "New file name: "
 msgstr "Nuovo nome del file: "
 
-#: browser.c:818
+#: browser.c:820
 msgid "Can't view a directory"
 msgstr "Impossibile vedere una directory"
 
-#: browser.c:836
+#: browser.c:838
 msgid "Error trying to view file"
 msgstr "C'è stato un errore nella visualizzazione del file"
 
@@ -270,11 +270,11 @@ msgstr "Impossibile creare il file temporaneo!"
 msgid "Command: "
 msgstr "Comando: "
 
-#: commands.c:243 recvattach.c:678
+#: commands.c:243 recvattach.c:677
 msgid "Bounce message to: "
 msgstr "Rimbalza il messaggio a: "
 
-#: commands.c:245 recvattach.c:680
+#: commands.c:245 recvattach.c:679
 msgid "Bounce tagged messages to: "
 msgstr "Rimbalza i messaggi a: "
 
@@ -387,7 +387,7 @@ msgstr "Spedisci"
 msgid "Abort"
 msgstr "Abbandona"
 
-#: compose.c:82 compose.c:538
+#: compose.c:82 compose.c:539
 msgid "Attach file"
 msgstr "Allega un file"
 
@@ -476,75 +476,75 @@ msgstr "Non puoi cancellare l'unico allegato."
 msgid "Compose"
 msgstr "Componi"
 
-#: compose.c:543
+#: compose.c:544
 msgid "Open mailbox to attach message from"
 msgstr "Apri la mailbox da cui allegare il messaggio"
 
-#: compose.c:582
+#: compose.c:583
 msgid "No messages in that folder."
 msgstr "In questo folder non ci sono messaggi."
 
-#: compose.c:589
+#: compose.c:590
 msgid "Tag the messages you want to attach!"
 msgstr "Segna i messaggi che vuoi allegare!"
 
-#: compose.c:624 compose.c:644
+#: compose.c:625 compose.c:645
 msgid "Unable to attach!"
 msgstr "Impossibile allegare!"
 
-#: compose.c:760
+#: compose.c:761
 msgid "Invalid encoding."
 msgstr "Codifica non valida."
 
-#: compose.c:775
+#: compose.c:776
 msgid "Save a copy of this message?"
 msgstr "Salvo una copia di questo messaggio?"
 
-#: compose.c:820
+#: compose.c:821
 msgid "Rename to: "
 msgstr "Rinomina in: "
 
-#: compose.c:825
+#: compose.c:826
 #, c-format
 msgid "Can't stat: %s"
 msgstr "Non riesco a fare stat: %s"
 
-#: compose.c:852
+#: compose.c:853
 msgid "New file: "
 msgstr "Nuovo file: "
 
-#: compose.c:865
+#: compose.c:866
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type non è nella forma base/sub"
 
-#: compose.c:871
+#: compose.c:872
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Content-Type %s sconosciuto"
 
-#: compose.c:884
+#: compose.c:885
 #, c-format
 msgid "Can't create file %s"
 msgstr "Impossibile creare il file %s"
 
-#: compose.c:892
+#: compose.c:893
 msgid "What we have here is a failure to make an attachment"
 msgstr "Quel che abbiamo qui è l'impossibilità di fare un allegato"
 
-#: compose.c:954
+#: compose.c:956
 msgid "Postpone this message?"
 msgstr "Rimando a dopo questo messaggio?"
 
-#: compose.c:1006
+#: compose.c:1008
 msgid "Write message to mailbox"
 msgstr "Salva il messaggio nella mailbox"
 
-#: compose.c:1010
+#: compose.c:1012
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Scrivo il messaggio in %s ..."
 
-#: compose.c:1021
+#: compose.c:1023
 msgid "Message written."
 msgstr "Messaggio scritto."
 
@@ -705,11 +705,11 @@ msgstr "Nessun messaggio da de-cancellare."
 msgid "You are on the first message."
 msgstr "Sei al primo messaggio."
 
-#: curs_main.c:1125 pattern.c:1081
+#: curs_main.c:1125 pattern.c:1103
 msgid "Search wrapped to top."
 msgstr "La ricerca è ritornata all'inizio."
 
-#: curs_main.c:1134 pattern.c:1092
+#: curs_main.c:1134 pattern.c:1114
 msgid "Search wrapped to bottom."
 msgstr "La ricerca è ritornata al fondo."
 
@@ -2073,76 +2073,76 @@ msgstr "Scrittura fallita!  Salvo la mailbox parziale in %s"
 msgid "Could not reopen mailbox!"
 msgstr "Impossibile riaprire la mailbox!"
 
-#: menu.c:298
+#: menu.c:309
 msgid "Jump to: "
 msgstr "Salta a: "
 
-#: menu.c:307
+#: menu.c:318
 msgid "Invalid index number."
 msgstr "Numero dell'indice non valido."
 
-#: menu.c:311 menu.c:329 menu.c:365 menu.c:406 menu.c:422 menu.c:433
-#: menu.c:444 menu.c:486 menu.c:497 menu.c:510 menu.c:523 menu.c:801
+#: menu.c:322 menu.c:340 menu.c:376 menu.c:417 menu.c:433 menu.c:444
+#: menu.c:455 menu.c:497 menu.c:508 menu.c:521 menu.c:534 menu.c:804
 msgid "No entries."
 msgstr "Nessuna voce."
 
-#: menu.c:326
+#: menu.c:337
 msgid "You cannot scroll down farther."
 msgstr "Non puoi spostarti più in basso."
 
-#: menu.c:342
+#: menu.c:353
 msgid "You cannot scroll up farther."
 msgstr "Non puoi spostarti più in alto."
 
-#: menu.c:362
+#: menu.c:373
 msgid "You are on the last page."
 msgstr "Sei all'ultima pagina."
 
-#: menu.c:384
+#: menu.c:395
 msgid "You are on the first page."
 msgstr "Sei alla prima pagina."
 
-#: menu.c:463
+#: menu.c:474
 msgid "First entry is shown."
 msgstr "La prima voce è questa."
 
-#: menu.c:483
+#: menu.c:494
 msgid "Last entry is shown."
 msgstr "L'ultima voce è questa."
 
-#: menu.c:534
+#: menu.c:545
 msgid "You are on the last entry."
 msgstr "Sei all'ultima voce."
 
-#: menu.c:545
+#: menu.c:556
 msgid "You are on the first entry."
 msgstr "Sei alla prima voce."
 
-#: menu.c:585 pattern.c:1027
+#: menu.c:596 pattern.c:1049
 msgid "Search for: "
 msgstr "Cerca: "
 
-#: menu.c:586
+#: menu.c:597
 msgid "Reverse search for: "
 msgstr "Cerca all'indietro: "
 
-#: menu.c:597 pattern.c:1060
+#: menu.c:608 pattern.c:1082
 msgid "No search pattern."
 msgstr "Nessun modello di ricerca."
 
-#: menu.c:627 pager.c:1829 pager.c:1845 pager.c:1932 pattern.c:1125
+#: menu.c:638 pager.c:1829 pager.c:1845 pager.c:1932 pattern.c:1147
 msgid "Not found."
 msgstr "Non trovato."
 
-#: menu.c:765
+#: menu.c:768
 msgid "Search is not implemented for this menu."
 msgstr "In questo menù la ricerca non è stata implementata."
 
-#: menu.c:804
+#: menu.c:807
 msgid "Tagging is not supported."
 msgstr "Non è possibile segnare un messaggio."
 
-#: mh.c:182
+#: mh.c:194
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Leggo %s... %d"
@@ -2281,79 +2281,79 @@ msgstr "Non c'è altro testo non citato dopo quello citato."
 msgid "multipart message has no boundary parameter!"
 msgstr "il messaggio multipart non ha il parametro boundary!"
 
-#: pattern.c:234
+#: pattern.c:235
 #, c-format
 msgid "Error in expression: %s"
 msgstr "Errore nell'espressione: %s"
 
-#: pattern.c:330
+#: pattern.c:331
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "Giorno del mese non valido: %s"
 
-#: pattern.c:344
+#: pattern.c:345
 #, c-format
 msgid "Invalid month: %s"
 msgstr "Mese non valido: %s"
 
-#: pattern.c:398
+#: pattern.c:399
 msgid "error in expression"
 msgstr "errore nell'espressione"
 
-#: pattern.c:583 pattern.c:691
+#: pattern.c:584 pattern.c:692
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "errore nel modello in: %s"
 
-#: pattern.c:631
+#: pattern.c:632
 #, c-format
 msgid "%c: invalid command"
 msgstr "%c: comando non valido"
 
-#: pattern.c:637
+#: pattern.c:638
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: non gestito in questa modalità"
 
-#: pattern.c:650
+#: pattern.c:651
 msgid "missing parameter"
 msgstr "parametro mancante"
 
-#: pattern.c:666
+#: pattern.c:667
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "parentesi fuori posto: %s"
 
-#: pattern.c:698
+#: pattern.c:699
 msgid "empty pattern"
 msgstr "modello vuoto"
 
-#: pattern.c:854
+#: pattern.c:876
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "errore: unknown op %d (segnala questo errore)."
 
-#: pattern.c:918 pattern.c:1046
+#: pattern.c:940 pattern.c:1068
 msgid "Compiling search pattern..."
 msgstr "Compilo il modello da cercare..."
 
-#: pattern.c:932
+#: pattern.c:954
 msgid "Executing command on matching messages..."
 msgstr "Eseguo il comando sui messaggi corrispondenti..."
 
-#: pattern.c:989
+#: pattern.c:1011
 msgid "No messages matched criteria."
 msgstr "Nessun messaggio corrisponde al criterio."
 
-#: pattern.c:1084
+#: pattern.c:1106
 msgid "Search hit bottom without finding match"
 msgstr "La ricerca è arrivata in fondo senza trovare una corrispondenza"
 
-#: pattern.c:1095
+#: pattern.c:1117
 msgid "Search hit top without finding match"
 msgstr "La ricerca è arrivata all'inizio senza trovare una corrispondenza"
 
-#: pattern.c:1117
+#: pattern.c:1139
 msgid "Search interrupted."
 msgstr "Ricerca interrotta."
 
@@ -2744,71 +2744,71 @@ msgstr "Pipe"
 msgid "Print"
 msgstr "Stampa"
 
-#: recvattach.c:372
+#: recvattach.c:371
 msgid "Saving..."
 msgstr "Salvo..."
 
-#: recvattach.c:433
+#: recvattach.c:432
 msgid "Attachment saved"
 msgstr "Allegato salvato"
 
-#: recvattach.c:445
+#: recvattach.c:444
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "ATTENZIONE!  Stai per sovrascrivere %s, continuo?"
 
-#: recvattach.c:463
+#: recvattach.c:462
 msgid "Attachment filtered."
 msgstr "Allegato filtrato."
 
-#: recvattach.c:529
+#: recvattach.c:528
 msgid "Filter through: "
 msgstr "Filtra attraverso: "
 
-#: recvattach.c:529
+#: recvattach.c:528
 msgid "Pipe to: "
 msgstr "Manda con una pipe a: "
 
-#: recvattach.c:564
+#: recvattach.c:563
 #, c-format
 msgid "I dont know how to print %s attachments!"
 msgstr "Non so come stampare %s allegati!"
 
-#: recvattach.c:627
+#: recvattach.c:626
 msgid "Print tagged attachment(s)?"
 msgstr "Stampo gli allegati segnati?"
 
-#: recvattach.c:627
+#: recvattach.c:626
 msgid "Print attachment?"
 msgstr "Stampo l'allegato?"
 
-#: recvattach.c:655
+#: recvattach.c:654
 msgid "You may only bounce message/rfc822 parts."
 msgstr "Puoi rimbalzare solo parti message/rfc822."
 
-#: recvattach.c:691
+#: recvattach.c:690
 #, c-format
 msgid "Bounce messages to %s...?"
 msgstr "Rimbalzo i messaggi a %s...?"
 
-#: recvattach.c:692
+#: recvattach.c:691
 #, c-format
 msgid "Bounce message to %s...?"
 msgstr "Rimbalzo il messaggio a %s...?"
 
-#: recvattach.c:917
+#: recvattach.c:916
 msgid "Attachments"
 msgstr "Allegati"
 
-#: recvattach.c:974
+#: recvattach.c:973
 msgid "Deletion of attachments from PGP messages is unsupported."
 msgstr "La cancellazione degli allegati da messaggi PGP non è gestita."
 
-#: recvattach.c:994 recvattach.c:1011
+#: recvattach.c:993 recvattach.c:1010
 msgid "Only deletion of multipart attachments is supported."
 msgstr "È gestita solo la cancellazione degli allegati multiparte."
 
-#: recvattach.c:1061
+#: recvattach.c:1060
 msgid "This operation is not currently supported for PGP messages."
 msgstr "Questa operazione attualmente non è gestita per i messaggi PGP."
 
@@ -2847,83 +2847,83 @@ msgstr "Nessun soggetto, abbandonato."
 #. * to send a message to only the sender of the message.  This
 #. * provides a way to do that.
 #.
-#: send.c:432
-#, c-format
-msgid "Reply to %s?"
+#: send.c:433
+#, fuzzy, c-format
+msgid "Reply to %s%s?"
 msgstr "Rispondo a %s?"
 
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
 #.
-#: send.c:514
+#: send.c:517
 msgid "No tagged messages are visible!"
 msgstr "Non è visibile alcun messaggio segnato!"
 
-#: send.c:539
+#: send.c:542
 msgid "No mailing lists found!"
 msgstr "Non è stata trovata alcuna mailing list!"
 
-#: send.c:626
+#: send.c:629
 msgid "Include message in reply?"
 msgstr "Includo il messaggio nella risposta?"
 
-#: send.c:640
+#: send.c:643
 msgid "Could not include all requested messages!"
 msgstr "Non ho potuto includere tutti i messaggi richiesti!"
 
-#: send.c:653
+#: send.c:656
 msgid "Forward MIME encapsulated?"
 msgstr "Faccio un forward incapsulato in MIME?"
 
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:864
+#: send.c:867
 msgid "Recall postponed message?"
 msgstr "Richiamo il messaggio rimandato?"
 
-#: send.c:1096
+#: send.c:1099
 msgid "Abort unmodified message?"
 msgstr "Abbandono il messaggio non modificato?"
 
-#: send.c:1098
+#: send.c:1101
 msgid "Aborted unmodified message."
 msgstr "Ho abbandonato il messaggio non modificato."
 
 #. abort
-#: send.c:1137
+#: send.c:1140
 msgid "Mail not sent."
 msgstr "Il messaggio non è stato mandato."
 
-#: send.c:1150
+#: send.c:1153
 msgid "Message postponed."
 msgstr "Il messaggio è stato rimandato."
 
-#: send.c:1159
+#: send.c:1162
 msgid "No recipients are specified!"
 msgstr "Non sono stati specificati destinatari!"
 
-#: send.c:1164
+#: send.c:1167
 msgid "No recipients were specified."
 msgstr "Non sono stati specificati destinatari."
 
-#: send.c:1170
+#: send.c:1173
 msgid "No subject, abort sending?"
 msgstr "Nessun soggetto, abbandono l'invio?"
 
-#: send.c:1174
+#: send.c:1177
 msgid "No subject specified."
 msgstr "Non è stato specificato un soggetto."
 
-#: send.c:1213
+#: send.c:1216
 msgid "Message edited. Really send?"
 msgstr "Messaggio modificato. Lo spedisco davvero?"
 
-#: send.c:1219
+#: send.c:1222
 msgid "Sending message..."
 msgstr "Spedisco il messaggio..."
 
-#: send.c:1319
+#: send.c:1322
 msgid "Mail sent."
 msgstr "Messaggio spedito."
 
