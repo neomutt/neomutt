@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -223,6 +223,7 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
       if ((pid = mutt_create_filter (cmd, NULL, &fp, NULL)) < 0)
       {
 	dprint (1, (debugfile, "mutt_get_token: unable to fork command: %s", cmd));
+	FREE (&cmd);
 	return (-1);
       }
       FREE (&cmd);
