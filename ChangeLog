@@ -1,3 +1,13 @@
+2003-08-11 14:06:08  Brendan Cully  <brendan@kublai.com>  (roessler)
+
+	* imap/imap.c: 1595: My guess is this bug is caused by
+	mlarson@verisign.com's patch to check for UNSEEN rather than
+	RECENT messages. This means that as long as there are messages
+	in a mailbox either new or old, mutt will think it has new mail.
+
+	The attached patch reverts that change. Let me know if it solves
+	the problem.
+
 2003-08-11 14:05:13  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* doc/muttrc.man.head: Fix a formatting bug.
