@@ -3,8 +3,8 @@
 #   Alexey Vyskubov (alexey@alv.stud.pu.ru)
 #   Andrew W. Nosenko (awn@bcs.zp.ua)
 #   Michael Sobolev (mss@transas.com)
+#   Vsevolod Volkov (vvv@mutt.kiev.ua)
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.2\n"
@@ -240,9 +240,7 @@ msgstr "Ошибка перекодирования %s. Файл не изменен."
 #: charset.c:427
 #, c-format
 msgid "Error while recoding %s. See %s for recovering your data."
-msgstr ""
-"Ошибка перекодирования %s. Файл %s может помочь вам при восстановлении "
-"данных."
+msgstr "Ошибка перекодирования %s. См. %s для восстановлении данных."
 
 #: color.c:322
 #, c-format
@@ -316,9 +314,8 @@ msgid "PGP signature successfully verified."
 msgstr "PGP-подпись проверена."
 
 #: commands.c:149
-#, fuzzy
 msgid "PGP signature could NOT be verified."
-msgstr "PGP-подпись проверена."
+msgstr "PGP-подпись НЕ может быть проверена."
 
 #: commands.c:172
 msgid "Command: "
@@ -362,15 +359,13 @@ msgstr "Передать программе: "
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
-"Обратный порядок: (d)время/(f)от "
-"кого/(r)получено/(s)тема/(o)кому/(t)дискуссия/(u)без/(z)размер/(c)контекст? "
+"Обр.пор.:(d)время/(f)от/(r)пол/(s)тема/(o)кому/(t)диск/(u)без/(z)разм/(c)конт?"
 
 #: commands.c:377
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
-"Порядок: (d)время/(f)от "
-"кого/(r)получено/(s)тема/(o)кому/(t)дискуссия/(u)без/(z)размер/(c)контекст? "
+"Порядок:(d)время/(f)от/(r)пол/(s)тема/(o)кому/(t)диск/(u)без/(z)разм/(c)конт?"
 
 #: commands.c:378
 msgid "dfrsotuzc"
@@ -547,7 +542,7 @@ msgstr "Не удалось вложить %s!"
 
 #: compose.c:756
 msgid "Open mailbox to attach message from"
-msgstr "Открыть почтовый ящик и вложить сообщение из него"
+msgstr "Открыть почтовый ящик для вложения из него"
 
 #: compose.c:791
 msgid "No messages in that folder."
@@ -1018,9 +1013,9 @@ msgid "[-- on %s --]\n"
 msgstr "[-- %s --]\n"
 
 #: handler.c:1253
-#, fuzzy, c-format
+#, c-format
 msgid "[-- name: %s --]\n"
-msgstr "[-- %s --]\n"
+msgstr "[-- имя: %s --]\n"
 
 #: handler.c:1264
 #, c-format
@@ -1107,9 +1102,9 @@ msgid "Help for %s"
 msgstr "Справка для %s"
 
 #: hook.c:245
-#, fuzzy, c-format
+#, c-format
 msgid "unhook: unknown hook type: %s"
-msgstr "unknown: неизвестный тип"
+msgstr "unhook: неизвестный тип: %s"
 
 #: imap/auth.c:104
 msgid "Authenticating (CRAM-MD5)..."
@@ -1243,15 +1238,15 @@ msgstr "Отключение от %s..."
 
 #: imap/imap_ssl.c:86
 msgid "Filling entropy pool"
-msgstr ""
+msgstr "Накопление энтропии"
 
 #: imap/imap_ssl.c:118
 msgid "Failed to find enough entropy on your system"
-msgstr ""
+msgstr "Не достаточно энтропии"
 
 #: imap/imap_ssl.c:133
 msgid "SSL disabled due the lack of entropy"
-msgstr ""
+msgstr "SSL запрещён из-за недостатка энтропии"
 
 #: imap/imap_ssl.c:213
 msgid "Unable to get certificate from peer"
@@ -1271,18 +1266,16 @@ msgid "[unable to calculate]"
 msgstr "[ошибка вычислений]"
 
 #: imap/imap_ssl.c:292
-#, fuzzy
 msgid "[invalid date]"
-msgstr "%s: недопустимое значение"
+msgstr [недопустимая дата]"
 
 #: imap/imap_ssl.c:361
 msgid "Server certificate is not yet valid"
-msgstr ""
+msgstr "Сертификат всё ещё недействителен"
 
 #: imap/imap_ssl.c:368
-#, fuzzy
 msgid "Server certificate has expired"
-msgstr "Данный сертификат был выдан:"
+msgstr "Сертификат устарел"
 
 #: imap/imap_ssl.c:441
 msgid "This certificate belongs to:"
@@ -1293,9 +1286,8 @@ msgid "This certificate was issued by:"
 msgstr "Данный сертификат был выдан:"
 
 #: imap/imap_ssl.c:461
-#, fuzzy
 msgid "This certificate is valid"
-msgstr "Данный сертификат был выдан:"
+msgstr "Данный сертификат действителен"
 
 #: imap/imap_ssl.c:462
 #, c-format
@@ -1322,7 +1314,7 @@ msgstr "(r)отвергнуть, (o)принять, (a)принять и сохранить"
 
 #: imap/imap_ssl.c:476
 msgid "roa"
-msgstr "roa"
+msgstr ""
 
 #: imap/imap_ssl.c:480
 msgid "(r)eject, accept (o)nce"
@@ -1330,7 +1322,7 @@ msgstr "(r)отвергнуть, (o)принять"
 
 #: imap/imap_ssl.c:481
 msgid "ro"
-msgstr "ro"
+msgstr ""
 
 #: imap/imap_ssl.c:485 pgpkey.c:442
 msgid "Exit  "
@@ -1384,7 +1376,7 @@ msgstr "Устанавливается соединение с %s..."
 
 #: imap/socket.c:235
 msgid "preconnect command failed"
-msgstr ""
+msgstr "предварительное соединение не установлено"
 
 #: imap/util.c:42
 msgid "Continue?"
@@ -1393,7 +1385,7 @@ msgstr "Продолжить?"
 #: imap/util.c:48
 #, c-format
 msgid "%s [%s]\n"
-msgstr "%s [%s]\n"
+msgstr ""
 
 #: init.c:488
 msgid "alias: no address"
@@ -1465,7 +1457,7 @@ msgstr "source: ошибки в %s"
 #: init.c:1253
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
-msgstr ""
+msgstr "source: чтение прервано из-за большого количества ошибок в %s"
 
 #: init.c:1267
 #, c-format
@@ -1681,13 +1673,12 @@ msgid "compose new attachment using mailcap entry"
 msgstr "создать новое вложение в соответствии с записью в mailcap"
 
 #: keymap_alldefs.h:38
-#, fuzzy
 msgid "toggle recoding of this attachment"
-msgstr "Перекодирование допустимо только для текстовых вложений."
+msgstr "включение/выключение перекодировки вложения"
 
 #: keymap_alldefs.h:39
 msgid "recode this attachment to/from the local charset"
-msgstr ""
+msgstr "перекодировать вложение в/из локальную кодировку"
 
 #: keymap_alldefs.h:40
 msgid "save this message to send later"
@@ -1703,7 +1694,7 @@ msgstr "отправить сообщение"
 
 #: keymap_alldefs.h:43
 msgid "toggle disposition between inline/attachment"
-msgstr ""
+msgstr "установить поле disposition в inline/attachment"
 
 #: keymap_alldefs.h:44
 msgid "toggle whether to delete file after sending it"
@@ -1786,9 +1777,8 @@ msgid "move the cursor one character to the left"
 msgstr "передвинуть курсор влево на один символ"
 
 #: keymap_alldefs.h:64
-#, fuzzy
 msgid "move the cursor to the beginning of the word"
-msgstr "перейти в начало строки"
+msgstr "перейти в начало слова"
 
 #: keymap_alldefs.h:65
 msgid "jump to the beginning of the line"
@@ -1819,9 +1809,8 @@ msgid "move the cursor one character to the right"
 msgstr "передвинуть курсор на один символ вправо"
 
 #: keymap_alldefs.h:72
-#, fuzzy
 msgid "move the cursor to the end of the word"
-msgstr "передвинуть курсор на один символ вправо"
+msgstr "передвинуть курсор на одно слово вправо"
 
 #: keymap_alldefs.h:73 keymap_alldefs.h:74
 msgid "scroll up through the history list"
@@ -1832,9 +1821,8 @@ msgid "delete chars from cursor to end of line"
 msgstr "удалить символы от курсора и до конца строки"
 
 #: keymap_alldefs.h:76
-#, fuzzy
 msgid "delete chars from the cursor to the end of the word"
-msgstr "удалить символы от курсора и до конца строки"
+msgstr "удалить символы от курсора и до конца слова"
 
 #: keymap_alldefs.h:77
 msgid "delete all chars on the line"
@@ -1850,7 +1838,7 @@ msgstr "ввести следующую нажатую клавишу \"как есть\""
 
 #: keymap_alldefs.h:80
 msgid "transpose character under cursor with previous"
-msgstr ""
+msgstr "поменять символ под курсором с предыдущим"
 
 #: keymap_alldefs.h:81
 msgid "enter a muttrc command"
@@ -2259,14 +2247,12 @@ msgid "Accept the chain constructed"
 msgstr "Использовать созданную цепочку"
 
 #: keymap_alldefs.h:182
-#, fuzzy
 msgid "Append a remailer to the chain"
-msgstr "Удалить remailer из цепочки"
+msgstr "Добавить remailer в цепочку"
 
 #: keymap_alldefs.h:183
-#, fuzzy
 msgid "Insert a remailer into the chain"
-msgstr "Удалить remailer из цепочки"
+msgstr "Вставить remailer в цепочку"
 
 #: keymap_alldefs.h:184
 msgid "Delete a remailer from the chain"
@@ -2282,7 +2268,7 @@ msgstr "Выбрать следующий элемент в цепочке"
 
 #: keymap_alldefs.h:187
 msgid "send the message through a mixmaster remailer chain"
-msgstr ""
+msgstr "послать сообщение через цепочку remailer'ов"
 
 #: lib.c:59 lib.c:74 lib.c:105
 msgid "Out of memory!"
@@ -2398,7 +2384,6 @@ msgstr ""
 "    вместе с этой программой; если нет, напишите разработчикам программы.\n"
 
 #: main.c:103
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
 "]\n"
@@ -2428,23 +2413,23 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"запуск: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
+"запуск: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
 "]\n"
-"        mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
-"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
-"        mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
-"        mutt -v[v]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
+"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
+"       mutt -v[v]\n"
 "\n"
 "параметры:\n"
-"  -a <file>\tattach a file to the message\n"
-"  -b <address>\tspecify a blind carbon-copy (BCC) address\n"
-"  -c <address>\tspecify a carbon-copy (CC) address\n"
+"  -a <file>\tвложить файл в сообщение\n"
+"  -b <address>\tуказать blind carbon-copy (BCC) адрес\n"
+"  -c <address>\tуказать carbon-copy (CC) адрес\n"
 "  -e <command>\tуказать команду, которая будет выполнена после "
 "инициализации\n"
 "  -f <file>\tуказать почтовый ящик для работы\n"
 "  -F <file>\tуказать альтернативный muttrc\n"
-"  -H <file>\tspecify a draft file to read header from\n"
-"  -i <file>\tspecify a file which Mutt should include in the reply\n"
+"  -H <file>\tуказать файл, содержащий шаблон заголовка\n"
+"  -i <file>\tуказать файл для вставки в ответ\n"
 "  -m <тип>\tуказать тип почтового ящика по умолчанию\n"
 "  -n\t\tзапретить чтение системного Muttrc\n"
 "  -p\t\tпродолжить отложенное сообщение\n"
@@ -2453,7 +2438,7 @@ msgstr ""
 "присутствуют пробелы)\n"
 "  -v\t\tвывести номер версии и параметры компиляции\n"
 "  -x\t\tэмулировать режим посылки команды mailx\n"
-"  -y\t\tselect a mailbox specified in your `mailboxes' list\n"
+"  -y\t\tвыбрать почтовый ящик из списка `mailboxes'\n"
 "  -z\t\tвыйти немедленно если в почтовом ящике отсутствует новая почта\n"
 "  -Z\t\tоткрыть первый почтовый ящик с новой почтой, выйти немедленно если "
 "таковая отсутствует\n"
@@ -2537,9 +2522,7 @@ msgstr "Не удалось заблокировать почтовый ящик!"
 #.
 #: mbox.c:752
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr ""
-"sync: почтовый ящик изменен, но измененные сообщения отсутствуют! (сообщите "
-"об этой ошибке)"
+msgstr "sync: почтовый ящик изменен, но измененные сообщения отсутствуют!"
 
 #: mbox.c:782
 msgid "Writing messages... %d (%d%%)"
@@ -2669,14 +2652,12 @@ msgstr "Добавить сообщения к %s?"
 #: mx.c:114
 #, c-format
 msgid "Lock count exceeded, remove lock for %s?"
-msgstr ""
-"Количество попыток заблокировать файл исчерпано, удалить файл блокировки для "
-"%s?"
+msgstr "Невозможно заблокировать файл, удалить файл блокировки для %s?"
 
 #: mx.c:126
 #, c-format
 msgid "Can't dotlock %s.\n"
-msgstr "Не удалось заблокировать файл %s при помощи программы dotlock.\n"
+msgstr "Не удалось заблокировать %s при помощи dotlock.\n"
 
 #: mx.c:184
 msgid "Timeout exceeded while attempting fcntl lock!"
@@ -2779,11 +2760,11 @@ msgstr "В этом меню недоступно."
 
 #: pager.c:1363
 msgid "PrevPg"
-msgstr "НазадСтр"
+msgstr "Назад"
 
 #: pager.c:1364
 msgid "NextPg"
-msgstr "ВпередСтр"
+msgstr "Вперед"
 
 #: pager.c:1368
 msgid "View Attachm."
@@ -2911,9 +2892,9 @@ msgid "PGP passphrase forgotten."
 msgstr "PGP фраза-пароль удалена из памяти."
 
 #: pgp.c:142
-#, fuzzy, c-format
+#, c-format
 msgid "[-- PGP output follows (current time: %c) --]\n"
-msgstr "[-- Результат работы программы PGP (текущее время: "
+msgstr "[-- Результат работы программы PGP (текущее время: %c) --]\n"
 
 #: pgp.c:246
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
@@ -3207,14 +3188,13 @@ msgid "No new mail in POP mailbox."
 msgstr "Нет новой почты в POP-ящике."
 
 #: pop.c:209
-#, fuzzy
 msgid "Delete messages from server?"
-msgstr "Удаление сообщений с сервера..."
+msgstr "Удалить сообщения с сервера?"
 
 #: pop.c:212
 #, c-format
 msgid "Reading new messages (%d bytes)..."
-msgstr "Читаются новые сообщений (байтов: %d)..."
+msgstr "Читаются новые сообщения (байтов: %d)..."
 
 #: pop.c:213
 #, c-format
@@ -3369,6 +3349,7 @@ msgstr "Переслать инкапсулированным в MIME?"
 #: recvcmd.c:412
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
 msgstr ""
+"Удалось раскодировать не все вложения. Переслать остальные в виде MIME?"
 
 #: recvcmd.c:545 recvcmd.c:797
 #, c-format
@@ -3386,8 +3367,7 @@ msgstr "Списков рассылки не найдено!"
 #: recvcmd.c:776
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr ""
-"Удалось раскодировать не все помеченные вложения. Инкапсулировать остальные "
-"в MIME?"
+"Удалось раскодировать не все вложения. Инкапсулировать остальные в MIME?"
 
 #: remailer.c:480
 msgid "Append"
@@ -3407,25 +3387,25 @@ msgstr "OK"
 
 #: remailer.c:512
 msgid "Can't get mixmaster's type2.list!"
-msgstr ""
+msgstr "Не возможно получить type2.list mixmaster'а!"
 
 #: remailer.c:538
 msgid "Select a remailer chain."
-msgstr ""
+msgstr "Выбрать цепочку remailer'ов"
 
 #: remailer.c:600
 #, c-format
 msgid "Error: %s can't be used as the final remailer of a chain."
-msgstr ""
+msgstr "Ошибка: %s не может быть использован как последний remailer"
 
 #: remailer.c:633
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."
-msgstr ""
+msgstr "Цепочки mixmaster'а имеют ограниченное количество элементов: %d"
 
 #: remailer.c:658
 msgid "The remailer chain is already empty."
-msgstr ""
+msgstr "Цепочка remailer'ов уже пустая."
 
 #: remailer.c:668
 msgid "You already have the first chain element selected."
@@ -3437,12 +3417,13 @@ msgstr "Вы уже пометили последний элемент цепочки."
 
 #: remailer.c:717
 msgid "Mixmaster doesn't accept Cc or Bcc headers."
-msgstr ""
+msgstr "Mixmaster не позволяет использовать заголовки Cc и Bcc."
 
 #: remailer.c:741
 msgid ""
 "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr ""
+"Установите значение переменной hostname для использования mixmaster'а!"
 
 #: remailer.c:770
 #, c-format
