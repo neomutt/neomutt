@@ -371,6 +371,10 @@ int mx_get_magic (const char *path)
     snprintf (tmp, sizeof (tmp), "%s/.xmhcache", path);
     if (access (tmp, F_OK) == 0)
       return (M_MH);
+    
+    snprintf (tmp, sizeof (tmp), "%s/.mew_cache", path);
+    if (access (tmp, F_OK) == 0)
+      return (M_MH);
   }
   else if (st.st_size == 0)
   {
