@@ -1,3 +1,7 @@
+2002-12-16 20:28:46  Edmund GRIMLEY EVANS  <edmundo@rano.org>
+
+	* handler.c, rfc2047.c, url.c: Fix #1424.
+
 2002-12-16 17:59:51  Thomas Roessler  <roessler@does-not-exist.org>
 
 	* pgp.c: Experimental short-cut code if the "image" of an address
