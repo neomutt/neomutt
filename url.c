@@ -67,7 +67,7 @@ url_scheme_t url_check_scheme (const char *s)
   char *t;
   int i;
   
-  if (!(t = strchr (s, ':')))
+  if (!s || !(t = strchr (s, ':')))
     return U_UNKNOWN;
   if ((t - s) + 1 >= sizeof (sbuf))
     return U_UNKNOWN;
