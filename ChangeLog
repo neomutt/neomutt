@@ -1,3 +1,8 @@
+2004-01-04 09:42:35  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* smime.c: Fix a NULL pointer deference noted by Will Fiveash
+	<william.fiveash@sun.com>.
+
 2003-12-30 13:04:20  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* commands.c, crypt.c, mutt.h, mutt_crypt.h, smime.c: Handle
