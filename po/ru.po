@@ -536,7 +536,7 @@ msgstr "Не удалось вложить %s!"
 
 #: compose.c:728
 msgid "Open mailbox to attach message from"
-msgstr "Открыть почтовый ящик для вложения из него"
+msgstr "Вложить сообщение из почтового ящика"
 
 #: compose.c:763
 msgid "No messages in that folder."
@@ -2612,7 +2612,7 @@ msgstr "Невозможно заблокировать файл, удалить файл блокировки для %s?"
 #: mx.c:126
 #, c-format
 msgid "Can't dotlock %s.\n"
-msgstr "Не удалось заблокировать %s при помощи dotlock.\n"
+msgstr "Программе dotlock не удалось заблокировать %s.\n"
 
 #: mx.c:184
 msgid "Timeout exceeded while attempting fcntl lock!"
