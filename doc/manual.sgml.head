@@ -1784,6 +1784,7 @@ messages:
 ~y EXPR         messages which contain EXPR in the `X-Label' field
 ~z [MIN]-[MAX]  messages with a size in the range MIN to MAX *)
 ~=		duplicated messages (see $duplicate_threads)
+~$		unreferenced messages (requires threaded view)
 </verb></tscreen>
 
 Where EXPR, USER, ID, and SUBJECT are 

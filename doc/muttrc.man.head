@@ -407,6 +407,7 @@ l l.
 ~x \fIEXPR\fP	messages which contain \fIEXPR\fP in the \(lqReferences\(rq field
 ~z \fIMIN\fP-\fIMAX\fP	messages with a size in the range \fIMIN\fP to \fIMAX\fP
 ~=	duplicated messages (see $duplicate_threads)
+~$	unreferenced message (requries threaded view)
 .TE
 .PP
 In the above, \fIEXPR\fP is a regular expression.
