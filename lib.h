@@ -118,6 +118,7 @@ char *mutt_substrdup (const char *, const char *);
 char *safe_strdup (const char *);
 
 const char *mutt_stristr (const char *, const char *);
+const char *mutt_basename (const char *);
 
 int mutt_copy_stream (FILE *, FILE *);
 int mutt_copy_bytes (FILE *, FILE *, size_t);

@@ -19,6 +19,8 @@
 #ifndef KEYMAP_H
 #define KEYMAP_H
 
+#include "mapping.h"
+
 /* maximal length of a key binding sequence used for buffer in km_bindkey */
 #define MAX_SEQ 8
 

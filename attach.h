@@ -24,7 +24,7 @@ int mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, HEADER *hdr,
 			      int recv);
 
 
-void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr);
+void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr, MUTTMENU *menu);
 void mutt_pipe_attachment_list (FILE *fp, int tag, BODY *top, int filter);
 void mutt_print_attachment_list (FILE *fp, int tag, BODY *top);
 

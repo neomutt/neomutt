@@ -814,10 +814,11 @@ void mutt_expand_fmt (char *dest, size_t destlen, const char *fmt, const char *s
   
 }
 
-/* return 0 on success, -1 on error */
+/* return 0 on success, -1 on abort, 1 on error */
 int mutt_check_overwrite (const char *attname, const char *path,
-				char *fname, size_t flen, int *append) 
+				char *fname, size_t flen, int *append, char **directory) 
 {
+  int rc = 0;
   char tmp[_POSIX_PATH_MAX];
   struct stat st;
 
@@ -828,18 +829,38 @@ int mutt_check_overwrite (const char *attname, const char *path,
     return -1;
   if (S_ISDIR (st.st_mode))
   {
-    if (mutt_yesorno (_("File is a directory, save under it?"), M_YES) != M_YES) 
-      return (-1);
+    if (directory)
+    {
+      switch (mutt_multi_choice
+	      (_("File is a directory, save under it? [(y)es, (n)o, (a)ll]"), _("yna")))
+      {
+	case 3:		/* all */
+	  mutt_str_replace (directory, fname);
+	  break;
+	case 1:		/* yes */
+	  FREE (directory);
+	  break;
+	case -1:	/* abort */
+	  FREE (directory); 
+	  return -1;
+	case  2:	/* no */
+	  FREE (directory);
+	  return 1;
+      }
+    }
+    else if ((rc = mutt_yesorno (_("File is a directory, save under it?"), M_YES)) != M_YES)
+      return (rc == M_NO) ? 1 : -1;
+
     if (!attname || !attname[0])
     {
       tmp[0] = 0;
       if (mutt_get_field (_("File under directory: "), tmp, sizeof (tmp),
 				      M_FILE | M_CLEAR) != 0 || !tmp[0])
 	return (-1);
-      snprintf (fname, flen, "%s/%s", path, tmp);
+      mutt_concat_path (fname, path, tmp, flen);
     }
     else
-      snprintf (fname, flen, "%s/%s", path, attname);
+      mutt_concat_path (fname, path, mutt_basename (attname), flen);
   }
   
   if (*append == 0 && access (fname, F_OK) == 0)
@@ -848,8 +869,9 @@ int mutt_check_overwrite (const char *attname, const char *path,
 	    (_("File exists, (o)verwrite, (a)ppend, or (c)ancel?"), _("oac")))
     {
       case -1: /* abort */
+        return -1;
       case 3:  /* cancel */
-	return -1;
+	return 1;
 
       case 2: /* append */
         *append = M_SAVE_APPEND;
@@ -1133,11 +1155,12 @@ FILE *mutt_open_read (const char *path, pid_t *thepid)
   return (f);
 }
 
-/* returns 1 if OK to proceed, 0 to abort */
+/* returns 0 if OK to proceed, -1 to abort, 1 to retry */
 int mutt_save_confirm (const char *s, struct stat *st)
 {
   char tmp[_POSIX_PATH_MAX];
-  int ret = 1;
+  int ret = 0;
+  int rc;
   int magic = 0;
 
   magic = mx_get_magic (s);
@@ -1146,7 +1169,7 @@ int mutt_save_confirm (const char *s, struct stat *st)
   if (magic == M_POP)
   {
     mutt_error _("Can't save message to POP mailbox.");
-    return 0;
+    return 1;
   }
 #endif
 
@@ -1155,14 +1178,16 @@ int mutt_save_confirm (const char *s, struct stat *st)
     if (magic == -1)
     {
       mutt_error (_("%s is not a mailbox!"), s);
-      return 0;
+      return 1;
     }
 
     if (option (OPTCONFIRMAPPEND))
     {
       snprintf (tmp, sizeof (tmp), _("Append messages to %s?"), s);
-      if (mutt_yesorno (tmp, M_YES) != M_YES)
-	ret = 0;
+      if ((rc = mutt_yesorno (tmp, M_YES)) == M_NO)
+	ret = 1;
+      else if (rc == -1)
+	ret = -1;
     }
   }
   else
@@ -1179,14 +1204,16 @@ int mutt_save_confirm (const char *s, struct stat *st)
 	if (option (OPTCONFIRMCREATE))
 	{
 	  snprintf (tmp, sizeof (tmp), _("Create %s?"), s);
-	  if (mutt_yesorno (tmp, M_YES) != M_YES)
-	    ret = 0;
+	  if ((rc = mutt_yesorno (tmp, M_YES)) == M_NO)
+	    ret = 1;
+	  else if (rc == -1)
+	    ret = -1;
 	}
       }
       else
       {
 	mutt_perror (s);
-	return 0;
+	return 1;
       }
     }
   }

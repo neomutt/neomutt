@@ -2438,7 +2438,7 @@ CHECK_IMAP_ACL(IMAP_ACL_WRITE);
       case OP_SAVE:
 	if (IsAttach (extra))
 	{
-	  mutt_save_attachment_list (extra->fp, 0, extra->bdy, extra->hdr);
+	  mutt_save_attachment_list (extra->fp, 0, extra->bdy, extra->hdr, NULL);
 	  break;
 	}
 	/* fall through */

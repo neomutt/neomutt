@@ -83,6 +83,7 @@ void menu_redraw_index (MUTTMENU *);
 void menu_redraw_status (MUTTMENU *);
 void menu_redraw_motion (MUTTMENU *);
 void menu_redraw_current (MUTTMENU *);
+int  menu_redraw (MUTTMENU *);
 void menu_first_entry (MUTTMENU *);
 void menu_last_entry (MUTTMENU *);
 void menu_top_page (MUTTMENU *);

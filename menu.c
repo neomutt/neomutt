@@ -800,6 +800,34 @@ static int menu_dialog_dokey (MUTTMENU *menu, int *ip)
   }
 }
 
+int menu_redraw (MUTTMENU *menu)
+{
+  /* See if all or part of the screen needs to be updated.  */
+  if (menu->redraw & REDRAW_FULL)
+  {
+    menu_redraw_full (menu);
+    /* allow the caller to do any local configuration */
+    return (OP_REDRAW);
+  }
+  
+  if (!menu->dialog)
+    menu_check_recenter (menu);
+  
+  if (menu->redraw & REDRAW_STATUS)
+    menu_redraw_status (menu);
+  if (menu->redraw & REDRAW_INDEX)
+    menu_redraw_index (menu);
+  else if (menu->redraw & (REDRAW_MOTION | REDRAW_MOTION_RESYNCH))
+    menu_redraw_motion (menu);
+  else if (menu->redraw == REDRAW_CURRENT)
+    menu_redraw_current (menu);
+  
+  if (menu->dialog)
+    menu_redraw_prompt (menu);
+  
+  return OP_NULL;
+}
+
 int mutt_menuLoop (MUTTMENU *menu)
 {
   int i = OP_NULL;
@@ -819,28 +847,8 @@ int mutt_menuLoop (MUTTMENU *menu)
     imap_keepalive ();
 #endif
 
-    /* See if all or part of the screen needs to be updated.  */
-    if (menu->redraw & REDRAW_FULL)
-    {
-      menu_redraw_full (menu);
-      /* allow the caller to do any local configuration */
-      return (OP_REDRAW);
-    }
-
-    if (!menu->dialog)
-      menu_check_recenter (menu);
-
-    if (menu->redraw & REDRAW_STATUS)
-      menu_redraw_status (menu);
-    if (menu->redraw & REDRAW_INDEX)
-      menu_redraw_index (menu);
-    else if (menu->redraw & (REDRAW_MOTION | REDRAW_MOTION_RESYNCH))
-      menu_redraw_motion (menu);
-    else if (menu->redraw == REDRAW_CURRENT)
-      menu_redraw_current (menu);
-
-    if (menu->dialog)
-      menu_redraw_prompt (menu);
+    if (menu_redraw (menu) == OP_REDRAW)
+      return OP_REDRAW;
     
     menu->oldcurrent = menu->current;
 

@@ -483,6 +483,7 @@ static void update_idx (MUTTMENU *menu, ATTACHPTR **idx, short idxlen)
   idx[idxlen]->level = (idxlen > 0) ? idx[idxlen-1]->level : 0;
   if (idxlen)
     idx[idxlen - 1]->content->next = idx[idxlen]->content;
+  idx[idxlen]->content->aptr = idx[idxlen];
   menu->current = idxlen++;
   mutt_update_tree (idx, idxlen);
   menu->max = idxlen;
@@ -760,14 +761,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	idx[idxlen] = (ATTACHPTR *) safe_calloc (1, sizeof (ATTACHPTR));
 	if ((idx[idxlen]->content = crypt_pgp_make_key_attachment(NULL)) != NULL)
 	{
-	  idx[idxlen]->level = (idxlen > 0) ? idx[idxlen-1]->level : 0;
-
-	  if(idxlen)
-	    idx[idxlen - 1]->content->next = idx[idxlen]->content;
-	  
-	  menu->current = idxlen++;
-	  mutt_update_tree (idx, idxlen);
-	  menu->max = idxlen;
+	  update_idx (menu, idx, idxlen++);
 	  menu->redraw |= REDRAW_INDEX;
 	}
 	else
@@ -1187,14 +1181,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    mutt_error _("What we have here is a failure to make an attachment");
 	    continue;
 	  }
-	  
-	  idx[idxlen]->level = (idxlen > 0) ? idx[idxlen-1]->level : 0;
-	  if (idxlen)
-	    idx[idxlen - 1]->content->next = idx[idxlen]->content;
-	  
-	  menu->current = idxlen++;
-	  mutt_update_tree (idx, idxlen);
-	  menu->max = idxlen;
+	  update_idx (menu, idx, idxlen++);
 
 	  idx[menu->current]->content->type = itype;
 	  mutt_str_replace (&idx[menu->current]->content->subtype, p);
@@ -1227,7 +1214,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
       case OP_SAVE:
 	CHECK_COUNT;
-	mutt_save_attachment_list (NULL, menu->tagprefix, menu->tagprefix ?  msg->content : idx[menu->current]->content, NULL);
+	mutt_save_attachment_list (NULL, menu->tagprefix, menu->tagprefix ?  msg->content : idx[menu->current]->content, NULL, menu);
 	MAYBE_REDRAW (menu->redraw);
 	break;
 
@@ -1392,7 +1379,10 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
   {
     msg->content = idx[0]->content;
     for (i = 0; i < idxlen; i++)
+    {
+      idx[i]->content->aptr = NULL;
       FREE (&idx[i]);
+    }
   }
   else
     msg->content = NULL;

@@ -129,6 +129,7 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
 
       new = idx[(*idxlen)++];
       new->content = m;
+      m->aptr = new;
       new->parent_type = parent_type;
       new->level = level;
 
@@ -363,14 +364,21 @@ int mutt_is_message_type (int type, const char *subtype)
   return (ascii_strcasecmp (subtype, "rfc822") == 0 || ascii_strcasecmp (subtype, "news") == 0);
 }
 
-static int mutt_query_save_attachment (FILE *fp, BODY *body, HEADER *hdr)
+static int mutt_query_save_attachment (FILE *fp, BODY *body, HEADER *hdr, char **directory)
 {
+  char *prompt;
   char buf[_POSIX_PATH_MAX], tfile[_POSIX_PATH_MAX];
   int is_message;
   int append = 0;
-
-  if (body->filename)
-    strfcpy (buf, body->filename, sizeof (buf));
+  int rc;
+  
+  if (body->filename) 
+  {
+    if (directory && *directory)
+      mutt_concat_path (buf, *directory, mutt_basename (body->filename), sizeof (buf));
+    else
+      strfcpy (buf, body->filename, sizeof (buf));
+  }
   else if(body->hdr &&
 	  body->encoding != ENCBASE64 &&
 	  body->encoding != ENCQUOTEDPRINTABLE &&
@@ -379,45 +387,68 @@ static int mutt_query_save_attachment (FILE *fp, BODY *body, HEADER *hdr)
   else
     buf[0] = 0;
 
-  if (mutt_get_field (_("Save to file: "), buf, sizeof (buf), M_FILE | M_CLEAR) != 0
-      || !buf[0])
-    return -1;
-
-  mutt_expand_path (buf, sizeof (buf));
-
-  is_message = (fp && 
-      body->hdr && 
-      body->encoding != ENCBASE64 && 
-      body->encoding != ENCQUOTEDPRINTABLE && 
-      mutt_is_message_type (body->type, body->subtype));
-  
-  if (is_message)
+  prompt = _("Save to file: ");
+  while (prompt)
   {
-    struct stat st;
+    if (mutt_get_field (prompt, buf, sizeof (buf), M_FILE | M_CLEAR) != 0
+	|| !buf[0])
+      return -1;
     
-    /* check to make sure that this file is really the one the user wants */
-    if (!mutt_save_confirm (buf, &st))
-      return -1;
-    strfcpy(tfile, buf, sizeof(tfile));
+    prompt = NULL;
+    mutt_expand_path (buf, sizeof (buf));
+    
+    is_message = (fp && 
+		  body->hdr && 
+		  body->encoding != ENCBASE64 && 
+		  body->encoding != ENCQUOTEDPRINTABLE && 
+		  mutt_is_message_type (body->type, body->subtype));
+    
+    if (is_message)
+    {
+      struct stat st;
+      
+      /* check to make sure that this file is really the one the user wants */
+      if ((rc = mutt_save_confirm (buf, &st)) == 1)
+      {
+	prompt = _("Save to file: ");
+	continue;
+      } 
+      else if (rc == -1)
+	return -1;
+      strfcpy(tfile, buf, sizeof(tfile));
+    }
+    else
+    {
+      if ((rc = mutt_check_overwrite (body->filename, buf, tfile, sizeof (tfile), &append, directory)) == -1)
+	return -1;
+      else if (rc == 1)
+      {
+	prompt = _("Save to file: ");
+	continue;
+      }
+    }
+    
+    mutt_message _("Saving...");
+    if (mutt_save_attachment (fp, body, tfile, append, (hdr || !is_message) ? hdr : body->hdr) == 0)
+    {
+      mutt_message _("Attachment saved.");
+      return 0;
+    }
+    else
+    {
+      prompt = _("Save to file: ");
+      continue;
+    }
   }
-  else
-    if (mutt_check_overwrite (body->filename, buf, tfile, sizeof (tfile), &append))
-      return -1;
-
-  mutt_message _("Saving...");
-  if (mutt_save_attachment (fp, body, tfile, append, (hdr || !is_message) ? hdr : body->hdr) == 0)
-  {
-    mutt_message _("Attachment saved.");
-    return 0;
-  }
-  else
-    return -1;
+  return 0;
 }
-
-void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr)
+    
+void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr, MUTTMENU *menu)
 {
   char buf[_POSIX_PATH_MAX], tfile[_POSIX_PATH_MAX];
+  char *directory = NULL;
   int rc = 1;
+  int last = menu ? menu->current : -1;
   FILE *fpout;
 
   buf[0] = 0;
@@ -438,7 +469,7 @@ void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr)
 	    return;
 	  mutt_expand_path (buf, sizeof (buf));
 	  if (mutt_check_overwrite (top->filename, buf, tfile,
-				    sizeof (tfile), &append))
+				    sizeof (tfile), &append, NULL))
 	    return;
 	  rc = mutt_save_attachment (fp, top, tfile, append, hdr);
 	  if (rc == 0 && AttachSep && (fpout = fopen (tfile,"a")) != NULL)
@@ -457,15 +488,37 @@ void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr)
 	  }
 	}
       }
-      else
-	mutt_query_save_attachment (fp, top, hdr);
+      else 
+      {
+	if (tag && menu && top->aptr)
+	{
+	  menu->oldcurrent = menu->current;
+	  menu->current = top->aptr->num;
+	  menu_check_recenter (menu);
+	  menu->redraw |= REDRAW_MOTION;
+
+	  menu_redraw (menu);
+	}
+	if (mutt_query_save_attachment (fp, top, hdr, &directory) == -1)
+	  break;
+      }
     }
     else if (top->parts)
-      mutt_save_attachment_list (fp, 1, top->parts, hdr);
+      mutt_save_attachment_list (fp, 1, top->parts, hdr, menu);
     if (!tag)
-      return;
+      break;
   }
 
+  FREE (&directory);
+
+  if (tag && menu)
+  {
+    menu->oldcurrent = menu->current;
+    menu->current = last;
+    menu_check_recenter (menu);
+    menu->redraw |= REDRAW_MOTION;
+  }
+  
   if (!option (OPTATTACHSPLIT) && (rc == 0))
     mutt_message _("Attachment saved.");
 }
@@ -977,9 +1030,9 @@ void mutt_view_attachments (HEADER *hdr)
 
       case OP_SAVE:
 	mutt_save_attachment_list (fp, menu->tagprefix, 
-		  menu->tagprefix ?  cur : idx[menu->current]->content, hdr);
+		  menu->tagprefix ?  cur : idx[menu->current]->content, hdr, menu);
 
-        if (option (OPTRESOLVE) && menu->current < menu->max - 1)
+        if (!menu->tagprefix && option (OPTRESOLVE) && menu->current < menu->max - 1)
 	  menu->current++;
       
         menu->redraw = REDRAW_MOTION_RESYNCH | REDRAW_FULL;
@@ -1120,6 +1173,8 @@ void mutt_view_attachments (HEADER *hdr)
 	    continue;
 	  if (idx[idxmax]->content && idx[idxmax]->content->deleted)
 	    hdr->attach_del = 1;
+	  if (idx[idxmax]->content)
+	    idx[idxmax]->content->aptr = NULL;
 	  FREE (&idx[idxmax]->tree);
 	  FREE (&idx[idxmax]);
 	}

@@ -761,7 +761,7 @@ int mutt_save_message (HEADER *h, int delete,
   mutt_expand_path (buf, sizeof (buf));
 
   /* check to make sure that this file is really the one the user wants */
-  if (!mutt_save_confirm (buf, &st))
+  if (mutt_save_confirm (buf, &st) != 0)
     return -1;
 
   if (WithCrypto && need_passphrase && (decode || decrypt)
