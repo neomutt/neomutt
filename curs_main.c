@@ -1567,6 +1567,7 @@ int mutt_index_menu (void)
 
 	mutt_create_alias (Context && Context->vcount ? CURHDR->env : NULL, NULL);
 	MAYBE_REDRAW (menu->redraw);
+        menu->redraw |= REDRAW_CURRENT;
 	break;
 
       case OP_QUERY:
