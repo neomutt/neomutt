@@ -805,7 +805,10 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
     {
       snprintf (buf, sizeof (buf), _("Move read messages to %s?"), mbox);
       if ((move_messages = query_quadoption (OPT_MOVE, buf)) == -1)
+      {
+	ctx->closing = 0;
 	return (-1);
+      }
     }
   }
 
@@ -815,7 +818,10 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
 	     ? _("Purge %d deleted message?") : _("Purge %d deleted messages?"),
 	      ctx->deleted);
     if ((purge = query_quadoption (OPT_DELETE, buf)) < 0)
+    {
+      ctx->closing = 0;
       return (-1);
+    }
   }
 
 #ifdef USE_IMAP
@@ -854,12 +860,18 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
     if (i == 0) /* success */
       mutt_clear_error ();
     else if (i == -1) /* horrible error, bail */
+    {
+      ctx->closing=0;
       return -1;
+    }
     else /* use regular append-copy mode */
 #endif
     {
       if (mx_open_mailbox (mbox, M_APPEND, &f) == NULL)
+      {
+	ctx->closing = 0;
 	return -1;
+      }
 
       for (i = 0; i < ctx->msgcount; i++)
       {
@@ -873,6 +885,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
 	  else
 	  {
 	    mx_close_mailbox (&f, NULL);
+	    ctx->closing = 0;
 	    return -1;
 	  }
 	}
@@ -894,7 +907,10 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
   if (ctx->magic == M_IMAP)
   {
     if ((check = imap_sync_mailbox (ctx, purge, index_hint)) != 0)
+    {
+      ctx->closing = 0;
       return check;
+    }
   }
   else
 #endif
@@ -909,7 +925,10 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
     if (ctx->changed || ctx->deleted)
     {
       if ((check = sync_mailbox (ctx, index_hint)) != 0)
+      {
+	ctx->closing = 0;
 	return check;
+      }
     }
   }
 
