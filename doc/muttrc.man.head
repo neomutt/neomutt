@@ -238,7 +238,7 @@ When mutt changes to a mail folder which matches \fIpattern\fP,
 \fImailbox\fP will be used as the \(lqmbox\(rq folder, i.e., read
 messages will be moved to that folder when the mail folder is left.
 .IP
-The first matchig \fBmbox-hook\fP applies.
+The first matching \fBmbox-hook\fP applies.
 .PP
 .nf
 \fBmailboxes\fP \fIfilename\fP [ \fIfilename\fP ... ]
