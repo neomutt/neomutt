@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -1605,6 +1605,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
   char buffer[LONG_STRING];
   char *p;
   LIST *tmp = env->userhdrs;
+  int has_agent = 0; /* user defined user-agent header field exists */
   
   if (mode == 0 && !privacy)
     fputs (mutt_make_date (buffer, sizeof(buffer)), fp);
@@ -1690,12 +1691,6 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
     fputc ('\n', fp);
   }
   
-  if (mode == 0 && !privacy && option (OPTXMAILER))
-  {
-    /* Add a vanity header */
-    fprintf (fp, "User-Agent: Mutt/%s\n", MUTT_VERSION);
-  }
-
   /* Add any user defined headers */
   for (; tmp; tmp = tmp->next)
   {
@@ -1704,9 +1699,23 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
       p++; SKIPWS (p);
       if (!*p) 	continue;  /* don't emit empty fields. */
 
+      /* check to see if the user has overridden the user-agent field */
+      if (!ascii_strncasecmp ("user-agent", tmp->data, 10))
+      {
+	has_agent = 1;
+	if (privacy)
+	  continue;
+      }
+
       fputs (tmp->data, fp);
       fputc ('\n', fp);
     }
+  }
+
+  if (mode == 0 && !privacy && option (OPTXMAILER) && !has_agent)
+  {
+    /* Add a vanity header */
+    fprintf (fp, "User-Agent: Mutt/%s\n", MUTT_VERSION);
   }
 
   return (ferror (fp) == 0 ? 0 : -1);

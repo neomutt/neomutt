@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2000 Thomas Roessler <roessler@guug.de>
  * 
  *     This program is free software; you can redistribute it and/or modify
@@ -542,24 +542,6 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   newhdr->env = mutt_read_rfc822_header (fp, newhdr, 1, weed);
   newhdr->content->length = hdr->content->length;
   mutt_parse_part (fp, newhdr->content);
-
-  /* weed user-agent, x-mailer - we don't want them here */
-  p = newhdr->env->userhdrs; 
-  q = &newhdr->env->userhdrs;
-
-  while (p)
-  {
-    if (!ascii_strncasecmp (p->data, "x-mailer:", 9) || !ascii_strncasecmp (p->data, "user-agent:", 11))
-    {
-      *q = p->next;
-      p->next = NULL;
-      mutt_free_list (&p);
-    }
-    else
-      q = &p->next;
-
-    p = *q;
-  }
 
   safe_free ((void **) &newhdr->env->message_id);
   safe_free ((void **) &newhdr->env->mail_followup_to); /* really? */
