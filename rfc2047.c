@@ -427,8 +427,10 @@ void rfc2047_decode (char **pd)
     d += n;
   }
   *d = 0;
-  *pd = strdup (d0);
-  safe_free ((void **) &d0);
+
+  safe_free ((void **) pd);
+  pd = d0;
+  mutt_str_adjust (&pd);
 }
 
 void rfc2047_decode_adrlist (ADDRESS *a)
