@@ -5,9 +5,9 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 0.94.14i\n"
+"Project-Id-Version: Mutt 0.96.4i\n"
 "POT-Creation-Date: 1999-06-03 23:26+0200\n"
-"PO-Revision-Date: 1999-02-15 21:37+0100\n"
+"PO-Revision-Date: 1999-08-19 21:40+0200\n"
 "Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre "
 "<Vincent.Lefevre@ens-lyon.fr>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
@@ -537,12 +537,12 @@ msgstr "Composer"
 
 #: compose.c:612
 msgid "Attaching selected files..."
-msgstr ""
+msgstr "J'attache les fichiers sélectionnés..."
 
 #: compose.c:623
 #, fuzzy, c-format
 msgid "Unable to attach %s!"
-msgstr "Impossible d'attacher !"
+msgstr "Impossible d'attacher %s !"
 
 #: compose.c:641
 msgid "Open mailbox to attach message from"
@@ -2898,7 +2898,7 @@ msgstr "Appel de PGP..."
 #: pgpkey.c:708
 #, fuzzy, c-format
 msgid "PGP Key %s."
-msgstr "Clé PGP 0x%s."
+msgstr "Clé PGP %s."
 
 #: pgpkey.c:752 pgpkey.c:868
 #, c-format
