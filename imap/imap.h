@@ -51,6 +51,5 @@ int imap_parse_path (char* path, char* host, size_t hlen, int* port,
   int *socktype, char** mbox);
 void imap_qualify_path (char* dest, size_t len, const char* host, int port,
   const char* path, const char* name);
-void imap_keepalive (void);
 
 #endif

@@ -380,10 +380,6 @@ enum
   OPTSORTSUBTHREADS,	/* (pseudo) used when $sort_aux changes */
   OPTNEEDRESCORE,	/* (pseudo) set when the `score' command is used */
   OPTATTACHMSG,		/* (pseudo) used by attach-message */
-  OPTKEEPQUIET,		/* (pseudo) shut up the message and refresh
-			 * 	    functions while we are executing an
-			 * 	    external program.
-			 */
   
 #ifdef _PGPPATH
   OPTPGPCHECKTRUST,	/* (pseudo) used by pgp_select_key () */

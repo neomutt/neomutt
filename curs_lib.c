@@ -40,16 +40,9 @@ static event_t *KeyEvent;
 
 void mutt_refresh (void)
 {
-  /* don't refresh when we are waiting for a child. */
-  if (option (OPTKEEPQUIET))
-    return;
-
   /* don't refresh in the middle of macros unless necessary */
-  if (UngetCount && !option (OPTFORCEREFRESH))
-    return;
-
-  /* else */
-  refresh ();
+  if (!UngetCount || option (OPTFORCEREFRESH))
+    refresh ();
 }
 
 event_t mutt_getch (void)
@@ -212,15 +205,12 @@ void mutt_curses_error (const char *fmt, ...)
   Errorbuf[ (COLS < sizeof (Errorbuf) ? COLS : sizeof (Errorbuf)) - 2 ] = 0;
   clean_error_buf();
 
-  if (!option (OPTKEEPQUIET))
-  {
-    BEEP ();
-    SETCOLOR (MT_COLOR_ERROR);
-    mvaddstr (LINES-1, 0, Errorbuf);
-    clrtoeol ();
-    SETCOLOR (MT_COLOR_NORMAL);
-    mutt_refresh ();
-  }
+  BEEP ();
+  SETCOLOR (MT_COLOR_ERROR);
+  mvaddstr (LINES-1, 0, Errorbuf);
+  clrtoeol ();
+  SETCOLOR (MT_COLOR_NORMAL);
+  mutt_refresh ();
 
   set_option (OPTMSGERR);
 }
@@ -236,23 +226,17 @@ void mutt_message (const char *fmt, ...)
   Errorbuf[ (COLS < sizeof (Errorbuf) ? COLS : sizeof (Errorbuf)) - 2 ] = 0;
   clean_error_buf();
 
-  if (!option (OPTKEEPQUIET))
-  {
-    SETCOLOR (MT_COLOR_MESSAGE);
-    mvaddstr (LINES - 1, 0, Errorbuf);
-    clrtoeol ();
-    SETCOLOR (MT_COLOR_NORMAL);
-    mutt_refresh ();
-  }
+  SETCOLOR (MT_COLOR_MESSAGE);
+  mvaddstr (LINES - 1, 0, Errorbuf);
+  clrtoeol ();
+  SETCOLOR (MT_COLOR_NORMAL);
+  mutt_refresh ();
 
   unset_option (OPTMSGERR);
 }
 
 void mutt_show_error (void)
 {
-  if (option (OPTKEEPQUIET))
-    return;
-  
   SETCOLOR (option (OPTMSGERR) ? MT_COLOR_ERROR : MT_COLOR_MESSAGE);
   CLEARLINE (LINES-1);
   addstr (Errorbuf);
@@ -267,7 +251,7 @@ void mutt_endwin (const char *msg)
     CLEARLINE (LINES - 1);
     move (LINES - 1, 0);
 #else
-    move (LINES - 1, COLS - 1);
+      move (LINES - 1, COLS - 1);
     CLEARLINE (LINES - 1);
 #endif
     
