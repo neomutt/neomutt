@@ -205,6 +205,7 @@ static void makedoc (FILE *in, FILE *out)
     }
   }
   flush_doc (docstat, out);
+  fputs ("\n", out);
 }
 
 /* skip whitespace */

@@ -1402,7 +1402,7 @@ struct option_t MuttVars[] = {
   ** If this variable is set, mutt will try to use the "LAST" POP command
   ** for retrieving only unread messages from the POP server.
   */
-  { "pop_user",		DT_STR,	 R_NONE, UL &PopUser, UL "" },
+  { "pop_user",		DT_STR,	 R_NONE, UL &PopUser, 0 },
   /*
   ** .pp
   ** Your login name on the POP3 server.

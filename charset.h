@@ -19,10 +19,6 @@
 #ifndef _CHARSET_H
 #define _CHARSET_H
 
-#define CHARSET_MAGIC "Mutt Character Set Definition 1.1\n"
-
-#ifndef _GEN_CHARSETS
-
 typedef int CHARSET_MAP[256];
 
 typedef struct descr
@@ -94,7 +90,5 @@ int mutt_is_utf8(const char *);
 int mutt_recode_file (const char *, const char *, const char *);
 unsigned char mutt_display_char(unsigned char, CHARSET_MAP *);
 void mutt_decode_utf8_string(char *, CHARSET *);
-
-#endif
 
 #endif /* _CHARSET_H */

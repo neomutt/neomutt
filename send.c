@@ -1048,19 +1048,6 @@ ci_send_message (int flags,		/* send mode */
   {
     msg = mutt_new_header ();
 
-#if 0
-    
-    /* this is no longer used. */
-    
-    if (flags == SENDRESEND)
-    {
-      if (mutt_prepare_template (fp, ctx, msg, cur, 1) < 0)
-	goto cleanup;
-    }
-    else
-
-#endif
-
     if (flags == SENDPOSTPONED)
     {
       if ((flags = mutt_get_postponed (ctx, msg, &cur, fcc, sizeof (fcc))) < 0)
