@@ -256,6 +256,7 @@ IMAP_DATA* imap_new_idata (void) {
     return NULL;
 
   idata->conn = NULL;
+  idata->capstr = NULL;
   idata->state = IMAP_DISCONNECTED;
   idata->seqno = 0;
 
@@ -271,6 +272,8 @@ void imap_free_idata (IMAP_DATA** idata) {
   if (!idata)
     return;
 
+  FREE (&(*idata)->capstr);
+  mutt_free_list (&(*idata)->flags);
   FREE (&((*idata)->cmd.buf));
   FREE (idata);
 }

@@ -404,6 +404,7 @@ static void cmd_parse_capabilities (IMAP_DATA* idata, char* s)
   dprint (2, (debugfile, "Handling CAPABILITY\n"));
 
   s = imap_next_word (s);
+  FREE(&idata->capstr);
   idata->capstr = safe_strdup (s);
 
   memset (idata->capabilities, 0, sizeof (idata->capabilities));
