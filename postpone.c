@@ -547,6 +547,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 
 #ifdef HAVE_PGP
   /* decrypt pgp/mime encoded messages */
+  /* XXX - what happens with S/MIME encrypted messages?!?!?  - tlr, 020909*/
   if ((hdr->security & APPLICATION_PGP) && 
       mutt_is_multipart_encrypted (newhdr->content))
   {
@@ -581,7 +582,18 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   if (mutt_is_multipart_signed (newhdr->content))
   {
     newhdr->security |= SIGN;
-
+#ifdef HAVE_PGP
+    if (ascii_strcasecmp (mutt_get_parameter ("protocol", newhdr->content->parameter),
+			  "application/pgp-signature") == 0)
+      newhdr->security |= APPLICATION_PGP;
+#endif
+#if defined (HAVE_PGP) && defined (HAVE_SMIME)
+    else
+#endif
+#ifdef HAVE_SMIME
+      newhdr->security |= APPLICATION_SMIME;
+#endif
+    
     /* destroy the signature */
     mutt_free_body (&newhdr->content->parts->next);
     newhdr->content = mutt_remove_multipart (newhdr->content);
