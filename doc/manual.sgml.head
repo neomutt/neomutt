@@ -1333,15 +1333,25 @@ Usage: <tt/fcc-save-hook/ &lsqb;!&rsqb;<em/pattern/ <em/mailbox/
 This command is a shortcut, equivalent to doing both a <ref id="fcc-hook" name="fcc-hook">
 and a <ref id="save-hook" name="save-hook"> with its arguments.
 
-<sect1>Change settings based upon message recipients<label id="send-hook">
+<sect1>Change settings based upon message recipients<label id="send-hook"><label id="reply-hook">
 <p>
+Usage: <tt/reply-hook/ &lsqb;!&rsqb;<em/pattern/ <em/command/
 Usage: <tt/send-hook/ &lsqb;!&rsqb;<em/pattern/ <em/command/
 
-This command can be used to execute arbitrary configuration commands based
+These commands can be used to execute arbitrary configuration commands based
 upon recipients of the message.  <em/pattern/ is a regular expression
 matching the desired address.  <em/command/ is executed when <em/regexp/
-matches recipients of the message.  When multiple matches occur, commands are
-executed in the order they are specified in the muttrc.
+matches recipients of the message.
+
+<tt/reply-hook/ is matched against the message you are <em/replying/
+<bf/to/, instead of the message you are <em/sending/.  <tt/send-hook/ is
+matched against all messages, both <em/new/ and <em/replies/.  <bf/Note:/
+<tt/reply-hook/s are matched <bf/before/ the <tt/send-hook/, <bf/regardless/
+of the order specified in the users's configuration file.
+
+For each type of <tt/send-hook/ or <tt/reply-hook/, When multiple matches
+occur, commands are executed in the order they are specified in the muttrc
+(for that type of hook).
 
 See <ref id="pattern_hook" name="Message Matching in Hooks"> for information on the exact format of <em/pattern/.
 
