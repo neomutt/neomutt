@@ -48,7 +48,7 @@ int imap_authenticate (IMAP_DATA* idata)
 {
   imap_auth_t* authenticator;
   char* methods;
-  char* comma;
+  char* comma;	/* should be colon  ;-) */
   char* method;
   int r = -1;
 
@@ -60,7 +60,7 @@ int imap_authenticate (IMAP_DATA* idata)
 
     while (method)
     {
-      comma = strchr (method, ',');
+      comma = strchr (method, ':');
       if (comma)
 	*comma++ = '\0';
       dprint (2, (debugfile, "imap_authenticate: Trying method %s\n", method));
