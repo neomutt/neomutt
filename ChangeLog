@@ -1,3 +1,7 @@
+2003-09-03 17:12:52  Velko Hristov  <hristov@informatik.hu-berlin.de> (roessler)
+
+	* configure.in: Bulgarian translation.
+
 2003-09-03 17:10:37  Brendan Cully  <brendan@kublai.com>  (roessler)
 
 	* mutt_ssl.c: Fix a segmentation fault which occurs
