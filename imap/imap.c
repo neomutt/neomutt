@@ -70,12 +70,6 @@ int imap_delete_mailbox (CONTEXT* ctx, char* mailbox)
   return 0;
 }
 
-void imap_set_logout (CONTEXT *ctx)
-{
-  if (CTX_DATA)
-    CTX_DATA->status = IMAP_LOGOUT;
-}
-
 /* imap_parse_date: date is of the form: DD-MMM-YYYY HH:MM:SS +ZZzz */
 time_t imap_parse_date (char *s)
 {
@@ -846,7 +840,6 @@ int imap_close_connection (CONTEXT *ctx)
   }
   mutt_socket_close_connection (CTX_DATA->conn);
   CTX_DATA->state = IMAP_DISCONNECTED;
-  CTX_DATA->conn->uses = 0;
   CTX_DATA->conn->data = NULL;
   return 0;
 }
@@ -1294,9 +1287,6 @@ int imap_mailbox_check (char *path, int new)
   while ((mutt_strncmp (buf, seq, SEQLEN) != 0));
 
   imap_cmd_finish (seq, idata);
-
-  /* what does this do? */
-  conn->uses--;
 
   return msgcount;
 }

@@ -43,7 +43,6 @@ int imap_delete_mailbox (CONTEXT* idata, char* mailbox);
 int imap_open_mailbox (CONTEXT *ctx);
 int imap_open_mailbox_append (CONTEXT *ctx);
 int imap_select_mailbox (CONTEXT *ctx, const char* path);
-void imap_set_logout (CONTEXT *ctx);
 int imap_sync_mailbox (CONTEXT *ctx, int expunge, int *index_hint);
 void imap_fastclose_mailbox (CONTEXT *ctx);
 int imap_buffy_check (char *path);
@@ -61,6 +60,9 @@ int imap_init_browse (char *path, struct browser_state *state);
 int imap_append_message (CONTEXT* ctx, MESSAGE* msg);
 int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete);
 int imap_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno);
+
+/* socket.c */
+void imap_logout_all (void);
 
 /* util.c */
 int imap_parse_path (const char* path, IMAP_MBOX *mx);

@@ -773,11 +773,6 @@ int mutt_index_menu (void)
 	{
 	  int check;
 	  
-#ifdef USE_IMAP
-          /* logout gracefully from the IMAP server */
-          if (Context && Context->magic == M_IMAP)
-            imap_set_logout (Context);
-#endif
 	  oldcount = Context ? Context->msgcount : 0;
 
 	  if (!Context || (check = mx_close_mailbox (Context, &index_hint)) == 0)
@@ -790,6 +785,11 @@ int mutt_index_menu (void)
 	    menu->redraw = REDRAW_FULL; /* new mail arrived? */
 	    set_option (OPTSEARCHINVALID);
 	  }
+
+#ifdef USE_IMAP
+	  /* Close all remaining open connections (frees server resources) */
+	  imap_logout_all ();
+#endif
 	}
 	break;
 
@@ -1032,14 +1032,14 @@ int mutt_index_menu (void)
 	{
 	  if (Context)
 	  {
-#ifdef USE_IMAP
-            if (Context->magic == M_IMAP)
-              imap_set_logout (Context);
-#endif
 	    mx_fastclose_mailbox (Context);
 	    safe_free ((void **) &Context);
 	  }
 	  done = 1;
+#ifdef USE_IMAP
+	  /* Close all open IMAP connections */
+	  imap_logout_all ();
+#endif
 	}
 	break;
 

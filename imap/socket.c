@@ -129,7 +129,6 @@ CONNECTION *mutt_socket_select_connection (const IMAP_MBOX *mx, int newconn)
   conn = (CONNECTION *) safe_calloc (1, sizeof (CONNECTION));
   conn->bufpos = 0;
   conn->available = 0;
-  conn->uses = 0;
   memcpy (&conn->mx, mx, sizeof (conn->mx));
   conn->mx.mbox = 0;
   conn->preconnect = safe_strdup (ImapPreconnect); 
@@ -152,6 +151,54 @@ CONNECTION *mutt_socket_select_connection (const IMAP_MBOX *mx, int newconn)
 
   return conn;
 }
+
+/* imap_logout_all: close all open connections. Quick and dirty until we can
+ *   make sure we've got all the context we need. */
+void imap_logout_all (void) 
+{
+  CONNECTION* conn, *tmp;
+  char buf[LONG_STRING];
+  char seq[SEQLEN+1];
+  
+  conn = Connections;
+
+  while (conn)
+  {
+    /* what's up here? the last connection doesn't seem to be used */
+    if (conn->fd)
+    {
+      snprintf (buf, sizeof (buf), _("Closing connection to %s..."),
+        conn->mx.host);
+      mutt_message (buf);
+
+      imap_make_sequence (seq, sizeof (seq));
+      snprintf (buf, sizeof (buf), "%s LOGOUT\r\n", seq);
+
+      mutt_socket_write (conn, buf);
+
+      do
+      {
+	if (mutt_socket_read_line_d (buf, sizeof (buf), conn) < 0)
+	  break;
+      }
+      while (mutt_strncmp (buf, seq, SEQLEN) != 0);
+      mutt_clear_error ();
+    }
+    
+    tmp = conn;
+    conn = conn->next;
+
+    mutt_socket_close_connection (tmp);
+
+    if (tmp->data) {
+      dprint (2, (debugfile,
+        "imap_logout_all: Connection still has valid CONTEXT?!\n"));
+    }
+
+    free (tmp);
+  }
+}
+
 
 static int try_socket_and_connect (CONNECTION *conn, struct sockaddr_in sin,
 			    int verbose)

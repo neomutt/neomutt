@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -111,7 +111,7 @@ int imap_exec (char* buf, size_t buflen, IMAP_DATA* idata, const char* cmd,
 {
   char* out;
   int outlen;
-  char seq[8];
+  char seq[SEQLEN+1];
 
   /* create sequence for command */
   imap_make_sequence (seq, sizeof (seq));
@@ -154,7 +154,7 @@ int imap_exec (char* buf, size_t buflen, IMAP_DATA* idata, const char* cmd,
   return 0;
 }
 
-/* imap_handle_untagged: fallback parser for otherwise unhandled messages */
+/* imap_handle_untagged: fallback parser for otherwise unhandled messages. */
 int imap_handle_untagged (IMAP_DATA *idata, char *s)
 {
   char *pn;

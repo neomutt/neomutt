@@ -29,13 +29,6 @@ In no particular order:
   result of spurious mx_close_mailbox calls handling the untagged
   BYE response.
 
-* Mutt marks your connection for logout as soon as you say quit, even if
-  you bail out with ^G later.
-  --> This should be fixed by not using imap_set_logout. Instead there
-      should be a function which loops through all connections and logs
-      out of them one at a time. Multiple connections haven't gotten much
-      testing.
-
 * Mutt is uninterruptible during socket calls. We should handle SIGINT.
 
 * Server copy currently doesn't take into account uncommitted changes in

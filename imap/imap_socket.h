@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1998 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -24,7 +24,6 @@ typedef struct _connection
 {
   IMAP_MBOX mx;
   char *preconnect; /* Actually specific to server, not connection */
-  int uses;
   int fd;
   char inbuf[LONG_STRING];
   int bufpos;
