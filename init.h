@@ -174,7 +174,7 @@ struct option_t MuttVars[] = {
   { "msg_format",	DT_SYN,  R_NONE, UL "message_format", 0 },
   { "pager",		DT_PATH, R_NONE, UL &Pager, UL "builtin" },
   { "pager_context",	DT_NUM,	 R_NONE, UL &PagerContext, 0 },
-  { "pager_format",	DT_STR,	 R_PAGER, UL &PagerFmt, UL "-%S- %C/%m: %-20.20n   %s" },
+  { "pager_format",	DT_STR,	 R_PAGER, UL &PagerFmt, UL "-%Z- %C/%m: %-20.20n   %s" },
   { "pager_index_lines",DT_NUM,	 R_PAGER, UL &PagerIndexLines, 0 },
   { "pager_stop",	DT_BOOL, R_NONE, OPTPAGERSTOP, 0 },
 
@@ -289,6 +289,7 @@ struct option_t MuttVars[] = {
   { "user_agent",	DT_BOOL, R_NONE, OPTXMAILER, 1},
   { "visual",		DT_PATH, R_NONE, UL &Visual, 0 },
   { "wait_key",		DT_BOOL, R_NONE, OPTWAITKEY, 1 },
+  { "weed",		DT_BOOL, R_NONE, OPTWEED, 1 },
   { "wrap_search",	DT_BOOL, R_NONE, OPTWRAPSEARCH, 1 },
   { "write_inc",	DT_NUM,	 R_NONE, UL &WriteInc, 10 },
   { "write_bcc",	DT_BOOL, R_NONE, OPTWRITEBCC, 1},

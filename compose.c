@@ -161,7 +161,6 @@ static int pgp_send_menu (int bits, int *redraw)
     else
     {
       bits &= ~PGPSIGN;
-      mutt_error _("An unkown PGP version was defined for signing.");
     }
 
     *redraw = REDRAW_FULL;

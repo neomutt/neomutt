@@ -443,20 +443,24 @@ int pgp_query (BODY *m)
   /* Check for PGP/MIME messages. */
   if (m->type == TYPEMULTIPART)
   {
-    if(mutt_is_multipart_signed(m))
+    if (mutt_is_multipart_signed(m))
       t |= PGPSIGN;
     else if (mutt_is_multipart_encrypted(m))
       t |= PGPENCRYPT;
+
+    if ((mutt_is_multipart_signed (m) || mutt_is_multipart_encrypted (m)) 
+	&& m->goodsig)
+      t |= PGPGOODSIGN;
   }
 
-  if(m->type == TYPEMULTIPART || m->type == TYPEMESSAGE)
+  if (m->type == TYPEMULTIPART || m->type == TYPEMESSAGE)
   {
     BODY *p;
  
-    for(p = m->parts; p; p = p->next)
-      t |= pgp_query(p);
+    for (p = m->parts; p; p = p->next)
+      t |= pgp_query(p) & ~PGPGOODSIGN;
   }
-  
+
   return t;
 }
 
@@ -522,6 +526,7 @@ static int pgp_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
   char sigfile[_POSIX_PATH_MAX], pgperrfile[_POSIX_PATH_MAX];
   FILE *fp, *pgpout, *pgperr;
   pid_t thepid;
+  int rv = -1;
   
   snprintf (sigfile, sizeof (sigfile), "%s.asc", tempfile);
   
@@ -556,7 +561,7 @@ static int pgp_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
     mutt_copy_stream(pgperr, s->fpout);
     fclose(pgperr);
     
-    mutt_wait_filter (thepid);
+    rv = mutt_wait_filter (thepid);
   }
   
   state_puts (_("[-- End of PGP output --]\n\n"), s);
@@ -564,7 +569,7 @@ static int pgp_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
   mutt_unlink (sigfile);
   mutt_unlink (pgperrfile);
 
-  return 0;
+  return rv;
 }
 
 /*
@@ -577,9 +582,11 @@ void pgp_signed_handler (BODY *a, STATE *s)
   int protocol_major = TYPEOTHER;
   char *protocol_minor = NULL;
   
+  BODY *b = a;
   BODY **signatures = NULL;
   int sigcnt = 0;
   int i;
+  short goodsig = 1;
 
   protocol = mutt_get_parameter ("protocol", a->parameter);
   a = a->parts;
@@ -632,7 +639,10 @@ void pgp_signed_handler (BODY *a, STATE *s)
 	{
 	  if (signatures[i]->type == TYPEAPPLICATION 
 	      && !mutt_strcasecmp(signatures[i]->subtype, "pgp-signature"))
-	    pgp_verify_one (signatures[i], s, tempfile);
+	  {
+	    if (pgp_verify_one (signatures[i], s, tempfile) != 0)
+	      goodsig = 0;
+	  }
 	  else
 	    state_printf (s, _("[-- Warning: We can't verify %s/%s signatures. --]\n\n"),
 			  TYPE(signatures[i]), signatures[i]->subtype);
@@ -640,6 +650,8 @@ void pgp_signed_handler (BODY *a, STATE *s)
       }
       
       mutt_unlink (tempfile);
+
+      b->goodsig = goodsig;
       
       /* Now display the signed body */
       state_puts (_("[-- The following data is signed --]\n\n"), s);
@@ -937,6 +949,16 @@ void pgp_encrypted_handler (BODY *a, STATE *s)
     mutt_body_handler (tattach, s);
     s->fpin = fpin;
 
+    /* 
+     * if a multipart/signed is the _only_ sub-part of a
+     * multipart/encrypted, cache signature verification
+     * status.
+     *
+     */
+    
+    if (mutt_is_multipart_signed (tattach) && !tattach->next)
+      a->goodsig = tattach->goodsig;
+    
     if (s->flags & M_DISPLAY)
       state_puts (_("\n[-- End of PGP/MIME encrypted data --]\n"), s);
 

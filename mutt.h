@@ -508,12 +508,17 @@ typedef struct body
   unsigned int tagged : 1;
   unsigned int deleted : 1;	/* attachment marked for deletion */
   unsigned int noconv : 1;	/* don't do character set conversion */
+
+#ifdef _PGPPATH
+  unsigned int goodsig : 1;	/* good PGP signature */
+#endif
+
 } BODY;
 
 typedef struct header
 {
 #ifdef _PGPPATH
-  unsigned int pgp : 3;
+  unsigned int pgp : 4;
 #endif
 
   unsigned int mime : 1;    /* has a Mime-Version header? */

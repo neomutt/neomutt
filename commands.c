@@ -73,7 +73,6 @@ int mutt_display_message (HEADER *cur)
   mutt_parse_mime_message (Context, cur);
 
 
-
 #ifdef _PGPPATH
   /* see if PGP is needed for this message.  if so, we should exit curses */
   if (cur->pgp)
@@ -97,10 +96,6 @@ int mutt_display_message (HEADER *cur)
     }
   }
 #endif
-
-
-
-
 
 
 
@@ -135,10 +130,18 @@ int mutt_display_message (HEADER *cur)
     return (0);
   }
 
+#ifdef _PGPPATH
+  /* update PGP information for this message */
+  cur->pgp |= pgp_query (cur->content);
+#endif
+
   if (builtin)
   {
     pager_t info;
-    
+
+    if (cur->pgp & PGPGOODSIGN)
+      mutt_message _("PGP signature successfully verified.");
+
     /* Invoke the builtin pager */
     memset (&info, 0, sizeof (pager_t));
     info.hdr = cur;

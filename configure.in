@@ -72,7 +72,8 @@ else
 	fi
 
 	if test $PGP != no || test $PGPK != no || test $GPG != no ; then
-		PGPAUX_TARGET="pgpring pgpewrap"
+		PGPAUX_TARGET=pgpring
+		AM_CONDITIONAL(NEEDS_PGPEWRAP, true)
 		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pgp.o pgpinvoke.o pgpkey.o pgplib.o gnupgparse.o"
 		OPS="$OPS \$(srcdir)/OPS.PGP"
 	fi

@@ -6,6 +6,12 @@
 AUTOMAKE_OPTIONS = foreign
 EXTRA_PROGRAMS = mutt_dotlock pgpring
 
+if NEEDS_PGPEWRAP
+bin_SCRIPTS = pgpewrap
+else
+bin_SCRIPTS =
+endif
+
 bin_PROGRAMS = mutt @DOTLOCK_TARGET@ @PGPAUX_TARGET@
 mutt_SOURCES =	addrbook.c alias.c attach.c browser.c buffy.c color.c \
 	commands.c complete.c compose.c copy.c curs_lib.c curs_main.c date.c \

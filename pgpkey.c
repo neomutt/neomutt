@@ -703,6 +703,7 @@ BODY *pgp_make_key_attachment (char *tempf)
   att = mutt_new_body ();
   att->filename = safe_strdup (tempf);
   att->unlink = 1;
+  att->use_disp = 0;
   att->type = TYPEAPPLICATION;
   att->subtype = safe_strdup ("pgp-keys");
   snprintf (buff, sizeof (buff), _("PGP Key %s."), tmp);

@@ -601,10 +601,12 @@ hdr_format_str (char *dest,
       ch = ' ';
 
 #ifdef _PGPPATH
-      if (hdr->pgp & PGPENCRYPT)
+      if (hdr->pgp & PGPGOODSIGN)
+        ch = 'S';
+      else if (hdr->pgp & PGPENCRYPT)
       	ch = 'P';
       else if (hdr->pgp & PGPSIGN)
-        ch = 'S';
+        ch = 's';
       else if (hdr->pgp & PGPKEY)
         ch = 'K';
 #endif

@@ -19,9 +19,10 @@
 
 #ifdef _PGPPATH
 
-#define PGPENCRYPT 1
-#define PGPSIGN    2
-#define PGPKEY     4
+#define PGPENCRYPT  (1 << 0)
+#define PGPSIGN     (1 << 1)
+#define PGPKEY      (1 << 2)
+#define PGPGOODSIGN (1 << 3)
 
 #define KEYFLAG_CANSIGN 		(1 <<  0)
 #define KEYFLAG_CANENCRYPT 		(1 <<  1)

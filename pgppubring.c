@@ -42,7 +42,6 @@
 #include <string.h>
 #include <unistd.h>
 #include <time.h>
-
 #ifdef HAVE_GETOPT_H
 # include <getopt.h>
 #endif
@@ -84,7 +83,7 @@ int main (int argc, char * const argv[])
       
       case '2': case '5':
       {
-	version = 'c' - '0';
+	version = c - '0';
 	break;
       }
       

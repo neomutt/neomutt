@@ -121,13 +121,18 @@ const char *_mutt_fmt_pgp_command (char *dest,
 	optional = 0;
       break;
     }
+    default:
+    {
+      *dest = '\0';
+      break;
+    }
   }
-  
+
   if (optional)
-    mutt_FormatString (dest, destlen, ifstring, mutt_attach_fmt, data, 0);
+    mutt_FormatString (dest, destlen, ifstring, _mutt_fmt_pgp_command, data, 0);
   else if (flags & M_FORMAT_OPTIONAL)
-    mutt_FormatString (dest, destlen, elsestring, mutt_attach_fmt, data, 0);
-  
+    mutt_FormatString (dest, destlen, elsestring, _mutt_fmt_pgp_command, data, 0);
+
   return (src);
 }
 

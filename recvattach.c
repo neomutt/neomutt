@@ -867,9 +867,11 @@ cleanup:
 void
 mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, ATTACHPTR **idx)
 {
+#if 0
   int old_optweed = option (OPTWEED);
-
   set_option (OPTWEED);
+#endif
+  
   do
   {
     switch (op)
@@ -908,8 +910,10 @@ mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, ATTACHPTR **idx)
   }
   while (op != OP_NULL);
 
+#if 0
   if (option (OPTWEED) != old_optweed)
     toggle_option (OPTWEED);
+#endif
 }
 
 
