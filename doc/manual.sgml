@@ -346,7 +346,7 @@ configuration file.  A common use is to check the settings of variables, or
 in conjunction with <ref id="macro" name="macros"> to change settings on the
 fly.
 
-<p><bf/extract-keys/<label id="extract-keys"> (default: ESC k)<newline>
+<p><bf/extract-keys/<label id="extract-keys"> (default: ^K)<newline>
 
 This command extracts PGP public keys from the current or tagged
 message(s) and adds them to your <ref id="pgp_v2_pubring"
