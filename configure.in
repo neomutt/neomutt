@@ -4,7 +4,6 @@ AC_PREREQ(2.12)
 AC_INIT(mutt.h)
 AM_CONFIG_HEADER(config.h)
 
-srcdir=`(cd $srcdir && pwd)`
 mutt_cv_version=`cat $srcdir/VERSION`
 
 AM_INIT_AUTOMAKE(mutt, $mutt_cv_version)
