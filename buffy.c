@@ -432,6 +432,8 @@ int mutt_buffy_list (void)
   int pos;
   int first;
 
+  int have_unnotified = BuffyNotify;
+  
   pos = 0;
   first = 1;
   buffylist[0] = 0;
@@ -439,7 +441,7 @@ int mutt_buffy_list (void)
   for (tmp = Incoming; tmp; tmp = tmp->next)
   {
     /* Is there new mail in this mailbox? */
-    if (!tmp->new)
+    if (!tmp->new || (have_unnotified && tmp->notified))
       continue;
 
     strfcpy (path, tmp->path, sizeof (path));
@@ -450,11 +452,11 @@ int mutt_buffy_list (void)
     
     if (!first)
       pos += strlen (strncat(buffylist + pos, ", ", sizeof(buffylist)-1-pos));
-    
+
     /* Prepend an asterisk to mailboxes not already notified */
     if (!tmp->notified)
     {
-      pos += strlen (strncat(buffylist + pos, "*", sizeof(buffylist)-1-pos));
+      /* pos += strlen (strncat(buffylist + pos, "*", sizeof(buffylist)-1-pos)); */
       tmp->notified = 1;
       BuffyNotify--;
     }
