@@ -1,105 +1,34 @@
-Subject: Using PGP from within mutt
-From: Thomas Roessler <roessler@guug.de>
-Date: Thu,  8 Oct 1998 14:29:01 +0200
+$Id$
 
-While encryption, verification and signing of messages are
-done by an externally invoked PGP binary, the key
-selection process is handled by mutt itself.  The public
-key ring (2.6 or 5.0 format) is parsed; PGP's cached trust
-parameters are evaluated and used to select the proper
-numerical key IDs for a message's recipients. These key
-IDs are then passed to the external PGP binary on the
-command line.
-
-The current document contains a short description of the
-PGP related configuration options mutt permits you to set,
-and some frequently asked questions and tips with respect
-to using Mutt with PGP.
-
-PGP settings
-------------
-
-There are quite a few aspects of mutt's PGP usage you may
-want to customize.  First, you can use different versions
-of PGP for composing and decrypting/verifying messages,
-and for handling key ring stuff.  These versions are
-controlled by the following set of variables:
-
-  	pgp_default_version
-	pgp_send_version
-	pgp_receive_version
-	pgp_key_version
-
-Valid values for all of these variables include "pgp5" and
-"pgp2".
-
-The last three variables may be set to "default" (which is
-the default); in this case, the value of
-$pgp_default_version will be used.
+		     USING PGP FROM WITHIN MUTT
 
 
-$pgp_send_version controls the version of pgp used for
-composing new messages.  $pgp_receive_version is used for
-decrypting messages and verifying signatures.
-$pgp_key_version is the one which is used for key ring
-operations (importing keys from messages, exporting keys
-from your public key ring).
-
-Since the different PGP versions may use different key
-rings and need different language settings, the following
-variables can be used to configure these aspects:
-
-  - Language settings:
-	$pgp_v2_language, $pgp_v5_language
-
-  - Public key ring:
-  	$pgp_v2_pubring, $pgp_v5_pubring
-
-  - Secret key ring:
-        $pgp_v2_secring, $pgp_v5_secring
-
-  - PGP itself:
-  	$pgp_v2, $pgp_v5
-	
-    Note that PGP 5 comes in several binaries (pgps, pgpk,
-    pgpv, pgp).  Mutt assumes that these binaries reside
-    in the same directory; $pgp_v5 should point to the
-    "pgp" binary from PGP 5.
-
-For all of these variables, we use "reasonable" defaults
-which should work for most users.
-
-Support for the GNU Privacy Guard (GPG) is currently
-worked on.
+WARNING: The configuration interface has completely changed as of
+         0.96.3!
 
 
-The value of the variable $pgp_sign_micalg will show up in
-the "micalg" parameter of MIME headers when creating RFC
-2015 signatures.
 
-Valid values are "pgp-md5", "pgp-sha1", and "pgp-rmd160".
+			    USERS' GUIDE
 
-If you select a signing key using the "sign as" option on
-the compose menu, mutt will automagically figure out the
-correct value to put into this variable, but it does not
-know about the user's default key.
 
-So if you are (by default) using an RSA key for signing,
-set this variable to "pgp-md5", if you use a PGP 5 DSS key
-for signing, say "pgp-sha1".
+How do I use mutt with PGP, PGP5, or GnuPG?
+-------------------------------------------
+
+Go to the contrib subdirectory of the source tree.  You'll find
+three files there, pgp2.rc, pgp5.rc, and gpg.rc.  These files
+contain ready-to-use configurations for using mutt with pgp2, pgp5,
+and gpg.
+
+Include one of these files with your ~/.muttrc, and things should
+work out fine.
+
+You may wish to verify that all paths and  the language parameters
+given to the PGP binaries match your needs.
 
 
 
 Frequently Asked Questions and Tips
 -----------------------------------
-
-Q: "How do it get PGP 5 support working?"
-
-It should work out of the box - just put the following
-into your ~/.muttrc:
-
-	set pgp_default_version=pgp5
-
 
 Q: "People are sending PGP messages which mutt doesn't
     recognize.  What can I do?"
@@ -107,7 +36,7 @@ Q: "People are sending PGP messages which mutt doesn't
 Add the following lines to your ~/.procmailrc (you are
 using procmail, aren't you?):
 
-------------------------------
+		   ------------------------------
 
 ##
 ## PGP
@@ -133,7 +62,7 @@ using procmail, aren't you?):
 }
 
 
-------------------------------
+		   ------------------------------
 
 
 Q: "I don't like that PGP/MIME stuff, but want to use the
@@ -162,15 +91,8 @@ introduce a language called "mutt" which contains empty
 strings for the messages we don't want to see.  To use
 this, copy either language.txt or language50.txt
 (depending on what PGP version you are using) to your
-$PGPPATH and add the following line to your muttrc:
-
-	set pgp_v2_language="mutt"
-
-or
-	
-	set pgp_v5_language="mutt"
-
-respectively.
+$PGPPATH.  Make sure the PGP command formats pass "+language=pgp" to
+all the PGP binaries (but not to pgpring!).
 
 For PGP 2.6, a German version called "muttde" is available
 as well.
@@ -187,4 +109,113 @@ most systems, this will be the following instruction in
 your shell:
 
 	ulimit -c 0
-$Id$
+
+
+
+
+
+			     BACKGROUND
+
+
+Auxiliary Programs
+------------------
+
+Mutt needs two auxiliary programs for its PGP support: pgpewrap and
+pgpring.
+
+
+1. pgpring
+
+pgpring is a key ring dumper.  It extracts information from PGP's
+binary key ring and emits it in an (almost) readable output format
+understood by mutt's key selection routines.  This output format
+mimics the one used by the GNU Privacy Guard (GPG).
+
+You'll need this program with PGP 2 and PGP 5.
+
+
+2. pgpewrap
+
+This is a little shell script which does some command line munging:
+The first argument is a command to be executed.  When pgpewrap
+encounters a "--" (dash-dash) argument, it will interpret the next
+argument as a prefix which is put in front of all following
+arguments.
+
+Example:
+
+	pgpewrap pgpe file -- -r a b c
+
+will execute:
+
+	pgpe file -r a -r b -r c
+
+This script is needed with PGP 5 and with GPG, since their command
+line interfaces can't be properly served by mutt's format mechanism.
+
+
+
+The Configuration Interface
+---------------------------
+
+As usual within mutt, the configuration interface for the PGP
+commands relies on printf-like formats.  For all PGP commands, the
+following %-sequences are defined.
+
+  %p	The empty string when no passphrase is needed,
+  	the string "PGPPASSFD=0" if one is needed.
+
+	This is mostly used in conditional % sequences.
+
+  %f	Most PGP commands operate on a single file or a file
+  	containing a message.  %f expands to this file's name.
+
+  %s	When verifying signatures, there is another temporary file
+	containing the detached signature.  %s expands to this
+	file's name.
+
+  %a	In "signing" contexts, this expands to the value of the
+	configuration variable $pgp_sign_as.  You probably need to
+	use this within a conditional % sequence.
+
+  %r	In many contexts, mutt passes key IDs to pgp.  %r expands to
+	a list of key IDs.
+
+The following command formats are defined:
+
+  $pgp_decode_command	Decode application/pgp messages.  This
+  			command operates with and without pass phrases.
+			
+  $pgp_verify_command	Verify a PGP/MIME signature.
+
+  $pgp_decrypt_command	Decrypt a PGP/MIME encrypted MIME body.
+   			This command always gets a pass phrase.
+
+  $pgp_sign_command	Sign a PGP/MIME body.  This command always
+  			gets a pass phrase.
+
+
+  $pgp_encrypt_sign_command Encrypt and sign a MIME body.  This
+  			command always gets a pass phrase.
+			
+  $pgp_encrypt_only_command Encrypt a MIME body, but don't sign it.
+  
+  $pgp_import_command	Import PGP keys from a file.
+  
+  $pgp_export_command	Export PGP keys to a file.  The output must
+  			be ASCII armored.
+			
+  $pgp_verify_key_command Check a public key. This is used from the
+  			key selection menu.
+
+  $pgp_list_secring_command List the secret keys matching some hints
+  			given in %r.
+
+  $pgp_list_pubring_command List the public keys matching some hints
+  			given in %r.
+
+The passphrase is always passed on stdin; all commands must send
+their output to stdout and stderr.
+
+
+
