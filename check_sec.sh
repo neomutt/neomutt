@@ -6,6 +6,8 @@
 
 TMPFILE="`mktemp check_sec.tmp.XXXXXX`" || exit 1
 
+RV=0;
+
 do_check_files ()
 {
 	pattern="$1" ; shift
@@ -19,7 +21,7 @@ do_check_files ()
 		echo "$msg" ;
 		cat $TMPFILE;
 		rm -f $TMPFILE;
-		exit 1;
+		RV=1;
 	}
 }
 
@@ -38,4 +40,4 @@ do_check_files '\<(malloc|realloc|free|strdup)[ 	]*\(' __MEM_CHECKED__ "Alert: U
 	*.c imap/*.c
 
 rm -f $TMPFILE
-exit 0
+exit $RV
