@@ -424,9 +424,6 @@ int mutt_write_mime_header (BODY *a, FILE *f)
 
   fputc ('\n', f);
 
-  if (a->encoding != ENC7BIT)
-    fprintf(f, "Content-Transfer-Encoding: %s\n", ENCODING (a->encoding));
-
   if (a->description)
     fprintf(f, "Content-Description: %s\n", a->description);
 
@@ -452,6 +449,9 @@ int mutt_write_mime_header (BODY *a, FILE *f)
 
     fputc ('\n', f);
   }
+
+  if (a->encoding != ENC7BIT)
+    fprintf(f, "Content-Transfer-Encoding: %s\n", ENCODING (a->encoding));
 
   /* Do NOT add the terminator here!!! */
   return (ferror (f) ? -1 : 0);
