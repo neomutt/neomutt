@@ -1353,7 +1353,7 @@ ci_send_message (int flags,		/* send mode */
       if (stat (msg->content->filename, &st) == 0)
       {
 	/* if the file was not modified, bail out now */
-	if (mtime == st.st_mtime &&
+	if (mtime == st.st_mtime && !msg->content->next &&
 	    query_quadoption (OPT_ABORT, _("Abort unmodified message?")) == M_YES)
 	{
 	  mutt_message _("Aborted unmodified message.");
