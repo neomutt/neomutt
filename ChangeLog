@@ -1,3 +1,7 @@
+2003-11-09 21:41:28  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* mh.c: Fix #1692.
+
 2003-11-09 09:38:32  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* send.c: Commit the fix for #1509. This must have been lost
