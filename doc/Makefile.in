@@ -93,7 +93,11 @@ uninstall:
 	-rm -rf $(DESTDIR)$(docdir)
 
 manual.txt: manual.sgml
-	sgml2txt -c latin manual  || true
+	if sgml2txt -c latin manual ; then \
+		uniq < manual.txt | expand > _manual.txt ; \
+		rm manual.txt ; \
+		mv _manual.txt manual.txt ;\
+	fi
 
 manual.html: manual.sgml
 	sgml2html manual  || true
