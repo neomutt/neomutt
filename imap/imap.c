@@ -127,9 +127,10 @@ int imap_read_bytes (FILE *fp, CONNECTION *conn, long bytes)
 
   for (pos = 0; pos < bytes; )
   {
-    len = mutt_socket_read_line (buf, sizeof (buf), conn);
+    len = mutt_socket_readln_d (buf, sizeof (buf), conn, IMAP_LOG_HDR);
     if (len < 0)
-      return (-1);
+      return -1;
+
     pos += len;
     fputs (buf, fp);
     fputs ("\n", fp);
@@ -212,7 +213,7 @@ int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint)
 
   do
   {
-    if (mutt_socket_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
+    if (mutt_socket_readln (buf, sizeof (buf), CTX_DATA->conn) < 0)
       break;
 
     if (buf[0] == '*')
@@ -353,7 +354,7 @@ static int imap_get_delim (IMAP_DATA *idata, CONNECTION *conn)
 
   do 
   {
-    if (mutt_socket_read_line_d (buf, sizeof (buf), conn) < 0)
+    if (mutt_socket_readln (buf, sizeof (buf), conn) < 0)
     {
       return (-1);
     }
@@ -426,7 +427,7 @@ int imap_open_connection (IMAP_DATA *idata, CONNECTION *conn)
 
   idata->state = IMAP_CONNECTED;
 
-  if (mutt_socket_read_line_d (buf, sizeof (buf), conn) < 0)
+  if (mutt_socket_readln (buf, sizeof (buf), conn) < 0)
   {
     mutt_socket_close (conn);
     idata->state = IMAP_DISCONNECTED;
@@ -590,7 +591,7 @@ int imap_open_mailbox (CONTEXT *ctx)
   {
     char *pc;
     
-    if (mutt_socket_read_line_d (buf, sizeof (buf), conn) < 0)
+    if (mutt_socket_readln (buf, sizeof (buf), conn) < 0)
       break;
 
     if (buf[0] == '*')
@@ -791,30 +792,27 @@ int imap_open_mailbox_append (CONTEXT *ctx)
   }
   else
   {
-    /* STATUS not supported
-     * The thing to do seems to be:
-     *  - Open a *new* IMAP session, select, and then close it. Report the
-     * error if the mailbox did not exist. */
+    /* STATUS not supported */
     mutt_message _("Unable to append to IMAP mailboxes at this server");
+
     return -1;
   }
 
-  r = imap_exec (buf, sizeof (buf), idata, buf, IMAP_OK_FAIL);
+  r = imap_exec (buf, sizeof (buf), idata, buf, IMAP_CMD_FAIL_OK);
   if (r == -2)
   {
     /* command failed cause folder doesn't exist */
     snprintf (buf, sizeof (buf), _("Create %s?"), mailbox);
     if (option (OPTCONFIRMCREATE) && mutt_yesorno (buf, 1) < 1)
-      return (-1);
+      return -1;
 
     if (imap_create_mailbox (ctx, mailbox) < 0)
-      return (-1);
+      return -1;
   }
   else if (r == -1)
-  {
     /* Hmm, some other failure */
     return -1;
-  }
+
   return 0;
 }
 
@@ -833,7 +831,7 @@ int imap_close_connection (CONTEXT *ctx)
     mutt_socket_write (CTX_DATA->conn, buf);
     do
     {
-      if (mutt_socket_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
+      if (mutt_socket_readln (buf, sizeof (buf), CTX_DATA->conn) < 0)
 	break;
     }
     while (mutt_strncmp (seq, buf, SEQLEN) != 0);
@@ -1254,7 +1252,7 @@ int imap_mailbox_check (char *path, int new)
 
   do 
   {
-    if (mutt_socket_read_line_d (buf, sizeof (buf), conn) < 0)
+    if (mutt_socket_readln (buf, sizeof (buf), conn) < 0)
       return -1;
 
     if (buf[0] == '*') 
@@ -1300,10 +1298,9 @@ int imap_parse_list_response(CONNECTION *conn, char *buf, int buflen,
   long bytes;
 
   *name = NULL;
-  if (mutt_socket_read_line_d (buf, buflen, conn) < 0)
-  {
-    return (-1);
-  }
+
+  if (mutt_socket_readln (buf, buflen, conn) < 0)
+    return -1;
 
   if (buf[0] == '*')
   {
@@ -1349,10 +1346,10 @@ int imap_parse_list_response(CONNECTION *conn, char *buf, int buflen,
 	int len;
 	
 	if (imap_get_literal_count(buf, &bytes) < 0)
-	  return (-1);
-	len = mutt_socket_read_line (buf, buflen, conn);
+	  return -1;
+	len = mutt_socket_readln (buf, buflen, conn);
 	if (len < 0)
-	  return (-1);
+	  return -1;
 	*name = buf;
       }
       else
@@ -1361,10 +1358,11 @@ int imap_parse_list_response(CONNECTION *conn, char *buf, int buflen,
     else
     {
       if (imap_handle_untagged (idata, buf) != 0)
-	return (-1);
+	return -1;
     }
   }
-  return (0);
+
+  return 0;
 }
 
 int imap_subscribe (char *path, int subscribe)

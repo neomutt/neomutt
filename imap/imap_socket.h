@@ -23,12 +23,13 @@
 typedef struct _connection
 {
   IMAP_MBOX mx;
-  char *preconnect; /* Actually specific to server, not connection */
-  int fd;
   char inbuf[LONG_STRING];
   int bufpos;
+
+  int fd;
   int available;
   void *data;
+
   struct _connection *next;
 
   void *sockdata;
@@ -38,15 +39,17 @@ typedef struct _connection
   int (*close) (struct _connection *conn);
 
   /* status bits */
-  int up : 1;
+  
+  int up : 1; /* is the connection up? */
 } CONNECTION;
 
 int mutt_socket_open (CONNECTION* conn);
 int mutt_socket_close (CONNECTION* conn);
 int mutt_socket_readchar (CONNECTION *conn, char *c);
-int mutt_socket_read_line (char *buf, size_t buflen, CONNECTION *conn);
-int mutt_socket_read_line_d (char *buf, size_t buflen, CONNECTION *conn);
-int mutt_socket_write (CONNECTION *conn, const char *buf);
+#define mutt_socket_readln(A,B,C) mutt_socket_readln_d(A,B,C,IMAP_LOG_CMD)
+int mutt_socket_readln_d (char *buf, size_t buflen, CONNECTION *conn, int dbg);
+#define mutt_socket_write(A,B) mutt_socket_write_d(A,B,IMAP_LOG_CMD);
+int mutt_socket_write_d (CONNECTION *conn, const char *buf, int dbg);
 
 CONNECTION* mutt_socket_find (const IMAP_MBOX* mx, int newconn);
 

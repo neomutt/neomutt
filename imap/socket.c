@@ -62,9 +62,10 @@ int mutt_socket_close (CONNECTION* conn)
   return conn->close (conn);
 }
 
-int mutt_socket_write (CONNECTION *conn, const char *buf)
+int mutt_socket_write_d (CONNECTION *conn, const char *buf, int dbg)
 {
-  dprint (1,(debugfile,"> %s", buf));
+  dprint (dbg, (debugfile,"> %s", buf));
+
   return conn->write (conn, buf);
 }
 
@@ -83,7 +84,7 @@ int mutt_socket_readchar (CONNECTION *conn, char *c)
   return 1;
 }
 
-int mutt_socket_read_line (char *buf, size_t buflen, CONNECTION *conn)
+int mutt_socket_readln_d (char* buf, size_t buflen, CONNECTION* conn, int dbg)
 {
   char ch;
   int i;
@@ -100,14 +101,10 @@ int mutt_socket_read_line (char *buf, size_t buflen, CONNECTION *conn)
     buf[i-1] = '\0';
   else
     buf[i] = '\0';
-  return (i + 1);
-}
 
-int mutt_socket_read_line_d (char *buf, size_t buflen, CONNECTION *conn)
-{
-  int r = mutt_socket_read_line (buf, buflen, conn);
-  dprint (1,(debugfile,"< %s\n", buf));
-  return r;
+  dprint (dbg, (debugfile, "< %s\n", buf));
+  
+  return (i + 1);
 }
 
 CONNECTION* mutt_socket_find (const IMAP_MBOX* mx, int newconn)
@@ -174,7 +171,7 @@ void imap_logout_all (void)
 
       do
       {
-	if (mutt_socket_read_line_d (buf, sizeof (buf), conn) < 0)
+	if (mutt_socket_readln (buf, sizeof (buf), conn) < 0)
 	  break;
       }
       while (mutt_strncmp (buf, seq, SEQLEN) != 0);
@@ -229,7 +226,6 @@ static CONNECTION* socket_new_conn ()
   CONNECTION* conn;
 
   conn = (CONNECTION *) safe_calloc (1, sizeof (CONNECTION));
-  conn->preconnect = safe_strdup (ImapPreconnect);
   conn->fd = -1;
 
   return conn;
@@ -257,8 +253,7 @@ int raw_socket_open (CONNECTION *conn)
   struct sockaddr_in sin;
   struct hostent *he;
   int    verbose;
-  char *pc = conn->preconnect;
-  int  do_preconnect = (pc && strlen (pc) > 0);
+  int  do_preconnect = mutt_strlen (ImapPreconnect) > 0;
   /* This might be a config variable */
   int first_try_without_preconnect = TRUE; 
 
@@ -286,15 +281,16 @@ int raw_socket_open (CONNECTION *conn)
   {
     int ret;
 
-    dprint (1,(debugfile,"Preconnect to server %s:\n", conn->mx.host));
-    dprint (1,(debugfile,"\t%s\n", conn->preconnect));
+    dprint (1, (debugfile, "Preconnect to server %s:\n", conn->mx.host));
+    dprint (1, (debugfile, "\t%s\n", ImapPreconnect));
     /* Execute preconnect command */
-    ret = mutt_system (conn->preconnect) < 0;
-    dprint (1,(debugfile,"\t%s: %d\n", "Exit status", ret));
+    ret = mutt_system (ImapPreconnect) < 0;
+    dprint (1, (debugfile, "\t%s: %d\n", "Exit status", ret));
     if (ret < 0)
     {
-      mutt_perror(_("preconnect command failed"));
+      mutt_perror (_("IMAP Preconnect command failed"));
       sleep (1);
+
       return ret;
     }
   }

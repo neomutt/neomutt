@@ -394,7 +394,7 @@ static int get_namespace (IMAP_DATA *idata, char *nsbuf, int nsblen,
   mutt_socket_write (idata->conn, buf);
   do 
   {
-    if (mutt_socket_read_line_d (buf, sizeof (buf), idata->conn) < 0)
+    if (mutt_socket_readln (buf, sizeof (buf), idata->conn) < 0)
       return -1;
 
     if (buf[0] == '*') 

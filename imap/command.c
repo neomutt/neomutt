@@ -101,9 +101,11 @@ int imap_code (const char *s)
 }
 
 /* imap_exec: execute a command, and wait for the response from the server.
- * Also, handle untagged responses
- * If flags == IMAP_OK_FAIL, then the calling procedure can handle a response 
- * failing, this is used for checking for a mailbox on append and login
+ * Also, handle untagged responses.
+ * Flags:
+ *   IMAP_CMD_FAIL_OK: the calling procedure can handle failure. This is used
+ *     for checking for a mailbox on append and login
+ *   IMAP_CMD_PASS: command contains a password. Suppress logging.
  * Return 0 on success, -1 on Failure, -2 on OK Failure
  */
 int imap_exec (char* buf, size_t buflen, IMAP_DATA* idata, const char* cmd,
@@ -120,17 +122,18 @@ int imap_exec (char* buf, size_t buflen, IMAP_DATA* idata, const char* cmd,
   out = (char*) safe_malloc (outlen);
   snprintf (out, outlen, "%s %s\r\n", seq, cmd);
 
-  mutt_socket_write (idata->conn, out);
+  mutt_socket_write_d (idata->conn, out,
+    flags & IMAP_CMD_PASS ? IMAP_LOG_PASS : IMAP_LOG_CMD);
 
   safe_free ((void**) &out);
 
   do
   {
-    if (mutt_socket_read_line_d (buf, buflen, idata->conn) < 0)
-      return (-1);
+    if (mutt_socket_readln (buf, buflen, idata->conn) < 0)
+      return -1;
 
     if (buf[0] == '*' && imap_handle_untagged (idata, buf) != 0)
-      return (-1);
+      return -1;
   }
   while (mutt_strncmp (buf, seq, SEQLEN) != 0);
 
@@ -140,15 +143,17 @@ int imap_exec (char* buf, size_t buflen, IMAP_DATA* idata, const char* cmd,
   {
     char *pc;
 
-    if (flags == IMAP_OK_FAIL)
-      return (-2);
-    dprint (1, (debugfile, "imap_exec(): command failed: %s\n", buf));
+    if (flags & IMAP_CMD_FAIL_OK)
+      return -2;
+
+    dprint (1, (debugfile, "imap_exec: command failed: %s\n", buf));
     pc = buf + SEQLEN;
     SKIPWS (pc);
     pc = imap_next_word (pc);
     mutt_error (pc);
     sleep (1);
-    return (-1);
+
+    return -1;
   }
 
   return 0;

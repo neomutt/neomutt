@@ -27,6 +27,12 @@
 #define IMAP_PORT 143
 #define IMAP_SSL_PORT 993
 
+/* logging levels */
+#define IMAP_LOG_CMD  2
+#define IMAP_LOG_HDR  3
+#define IMAP_LOG_BODY 4
+#define IMAP_LOG_PASS 5
+
 /* number of entries in the hash table */
 #define IMAP_CACHE_LEN 10
 
@@ -42,13 +48,16 @@
 #define IMAP_REOPEN_PENDING  (1<<1)
 #define IMAP_NEWMAIL_PENDING (1<<2)
 
+/* imap_exec flags (see imap_exec) */
+#define IMAP_CMD_FAIL_OK (1<<0)
+#define IMAP_CMD_PASS    (1<<1)
+
 enum
 {
   IMAP_FATAL = 1,
   IMAP_NEW_MAIL,
   IMAP_EXPUNGE,
   IMAP_BYE,
-  IMAP_OK_FAIL,
   IMAP_REOPENED,
   IMAP_LOGOUT
 };

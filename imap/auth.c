@@ -98,7 +98,7 @@ static int imap_auth_cram_md5 (IMAP_DATA* idata, const char* user,
   char ibuf[LONG_STRING], obuf[LONG_STRING];
   unsigned char hmac_response[MD5_DIGEST_LEN];
   int len;
-  char seq[16];
+  char seq[SEQLEN+1];
 
   dprint (2, (debugfile, "Attempting CRAM-MD5 login...\n"));
   mutt_message _("Authenticating (CRAM-MD5)...");
@@ -112,7 +112,7 @@ static int imap_auth_cram_md5 (IMAP_DATA* idata, const char* user,
    * primary host name of the server. The syntax of the unencoded form must
    * correspond to that of an RFC 822 'msg-id' [RFC822] as described in [POP3].
    */
-  if (mutt_socket_read_line_d (ibuf, LONG_STRING, idata->conn) < 0)
+  if (mutt_socket_readln (ibuf, LONG_STRING, idata->conn) < 0)
   {
     dprint (1, (debugfile, "Error receiving server response.\n"));
 
@@ -162,7 +162,7 @@ static int imap_auth_cram_md5 (IMAP_DATA* idata, const char* user,
   strcpy (ibuf + strlen (ibuf), "\r\n");
   mutt_socket_write (idata->conn, ibuf);
 
-  if (mutt_socket_read_line_d (ibuf, LONG_STRING, idata->conn) < 0)
+  if (mutt_socket_readln (ibuf, LONG_STRING, idata->conn) < 0)
   {
     dprint (1, (debugfile, "Error receiving server response.\n"));
 
@@ -185,7 +185,7 @@ static int imap_auth_cram_md5 (IMAP_DATA* idata, const char* user,
 static int imap_auth_anon (IMAP_DATA* idata)
 {
   char ibuf[LONG_STRING], obuf[LONG_STRING];
-  char seq[16];
+  char seq[SEQLEN+1];
 
   dprint (2, (debugfile, "Attempting anonymous login...\n"));
   mutt_message _("Authenticating (anonymous)...");
@@ -193,7 +193,7 @@ static int imap_auth_anon (IMAP_DATA* idata)
   snprintf (obuf, LONG_STRING, "%s AUTHENTICATE ANONYMOUS\r\n", seq);
   mutt_socket_write (idata->conn, obuf);
 
-  if (mutt_socket_read_line_d (ibuf, LONG_STRING, idata->conn) < 0)
+  if (mutt_socket_readln (ibuf, LONG_STRING, idata->conn) < 0)
   {
     dprint (1, (debugfile, "Error receiving server response.\n"));
 
@@ -211,7 +211,7 @@ static int imap_auth_anon (IMAP_DATA* idata)
 
   mutt_socket_write (idata->conn, ibuf);
 
-  if (mutt_socket_read_line_d (ibuf, LONG_STRING, idata->conn) < 0)
+  if (mutt_socket_readln (ibuf, LONG_STRING, idata->conn) < 0)
   {
     dprint (1, (debugfile, "Error receiving server response.\n"));
 
@@ -352,12 +352,11 @@ int imap_authenticate (IMAP_DATA *idata, CONNECTION *conn)
       if (!ImapPass)
       {
 	pass[0]=0;
-	snprintf (buf, sizeof (buf), _("Password for %s@%s: "), user, conn->mx.host);
+	snprintf (buf, sizeof (buf), _("Password for %s@%s: "), user,
+          conn->mx.host);
 	if (mutt_get_field (buf, pass, sizeof (pass), M_PASS) != 0 ||
 	    !pass[0])
-	{
-	  return (-1);
-	}
+	  return -1;
       }
       else
 	strfcpy (pass, ImapPass, sizeof (pass));
@@ -369,8 +368,18 @@ int imap_authenticate (IMAP_DATA *idata, CONNECTION *conn)
     imap_quote_string (q_pass, sizeof (q_pass), pass);
 
     mutt_message _("Logging in...");
+
+#ifdef DEBUG
+    /* don't print the password unless we're at the ungodly debugging level
+     * of 5 or higher */
+
+    if (debuglevel < IMAP_LOG_PASS)
+      dprint (2, (debugfile, "Sending LOGIN command for %s...\n", user));
+#endif
+
     snprintf (buf, sizeof (buf), "LOGIN %s %s", q_user, q_pass);
-    r = imap_exec (buf, sizeof (buf), idata, buf, IMAP_OK_FAIL);
+    r = imap_exec (buf, sizeof (buf), idata, buf,
+      IMAP_CMD_FAIL_OK | IMAP_CMD_PASS);
     if (r == -1)
     {
       /* connection or protocol problem */

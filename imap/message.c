@@ -116,7 +116,7 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
 
     do
     {
-      if (mutt_socket_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
+      if (mutt_socket_readln (buf, sizeof (buf), CTX_DATA->conn) < 0)
       {
 	fclose (fp);
         return -1;
@@ -174,7 +174,7 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
 	     * (eg Domino puts FLAGS here). Nothing wrong with that, either.
 	     * This all has to go - we should accept literals and nonliterals
 	     * interchangeably at any time. */
-	    if (mutt_socket_read_line_d (buf, sizeof (buf), CTX_DATA->conn)
+	    if (mutt_socket_readln (buf, sizeof (buf), CTX_DATA->conn)
 		< 0)
 	    {
 	      fclose (fp);
@@ -324,7 +324,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   mutt_socket_write (CTX_DATA->conn, buf);
   do
   {
-    if (mutt_socket_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
+    if (mutt_socket_readln (buf, sizeof (buf), CTX_DATA->conn) < 0)
       goto bail;
 
     if (buf[0] == '*')
@@ -350,14 +350,16 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	    }
 	    for (pos = 0; pos < bytes; )
 	    {
-	      len = mutt_socket_read_line (buf, sizeof (buf), CTX_DATA->conn);
+	      len = mutt_socket_readln_d (buf, sizeof (buf), CTX_DATA->conn,
+                3);
 	      if (len < 0)
 		goto bail;
 	      pos += len;
 	      fputs (buf, msg->fp);
 	      fputs ("\n", msg->fp);
 	    }
-	    if (mutt_socket_read_line (buf, sizeof (buf), CTX_DATA->conn) < 0)
+	    if (mutt_socket_readln_d (buf, sizeof (buf), CTX_DATA->conn, 3)
+                < 0)
 	      goto bail;
 	    pc = buf;
 	  }
@@ -455,7 +457,8 @@ bail:
     unlink (cache->path);
     FREE (&cache->path);
   }
-  return (-1);
+
+  return -1;
 }
 
 int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
@@ -499,7 +502,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
 
   do 
   {
-    if (mutt_socket_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
+    if (mutt_socket_readln (buf, sizeof (buf), CTX_DATA->conn) < 0)
     {
       fclose (fp);
       return (-1);
@@ -549,7 +552,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
 
   do
   {
-    if (mutt_socket_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
+    if (mutt_socket_readln (buf, sizeof (buf), CTX_DATA->conn) < 0)
       return (-1);
 
     if (buf[0] == '*' && imap_handle_untagged (CTX_DATA, buf) != 0)
@@ -624,7 +627,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   /* let's get it on */
   strncpy (mbox, cmd, sizeof (mbox));
   snprintf (cmd, sizeof (cmd), "COPY %s \"%s\"", buf, mbox);
-  rc = imap_exec (buf, sizeof (buf), CTX_DATA, cmd, IMAP_OK_FAIL);
+  rc = imap_exec (buf, sizeof (buf), CTX_DATA, cmd, IMAP_CMD_FAIL_OK);
   if (rc == -2)
   {
     /* bail out if command failed for reasons other than nonexistent target */

@@ -86,7 +86,7 @@ int imap_auth_gss (IMAP_DATA* idata, const char* user)
   mutt_socket_write (idata->conn, buf1);
 
   /* expect a null continuation response ("+") */
-  if (mutt_socket_read_line_d (buf1, sizeof (buf1), idata->conn) < 0)
+  if (mutt_socket_readln (buf1, sizeof (buf1), idata->conn) < 0)
   {
     dprint (1, (debugfile, "Error receiving server response.\n"));
     gss_release_name (&min_stat, &target_name);
@@ -128,7 +128,7 @@ int imap_auth_gss (IMAP_DATA* idata, const char* user)
       gss_release_name (&min_stat, &target_name);
       /* end authentication attempt */
       mutt_socket_write (idata->conn, "*\r\n");
-      mutt_socket_read_line_d (buf1, sizeof (buf1), idata->conn);
+      mutt_socket_readln (buf1, sizeof (buf1), idata->conn);
 
       return -1;
     }
@@ -142,7 +142,7 @@ int imap_auth_gss (IMAP_DATA* idata, const char* user)
 
     if (maj_stat == GSS_S_CONTINUE_NEEDED)
     {
-      if (mutt_socket_read_line_d (buf1, sizeof (buf1), idata->conn) < 0)
+      if (mutt_socket_readln (buf1, sizeof (buf1), idata->conn) < 0)
       {
         dprint (1, (debugfile, "Error receiving server response.\n"));
         gss_release_name (&min_stat, &target_name);
@@ -160,7 +160,7 @@ int imap_auth_gss (IMAP_DATA* idata, const char* user)
   gss_release_name (&min_stat, &target_name);
 
   /* get security flags and buffer size */
-  if (mutt_socket_read_line_d (buf1, sizeof (buf1), idata->conn) < 0)
+  if (mutt_socket_readln (buf1, sizeof (buf1), idata->conn) < 0)
   {
     dprint (1, (debugfile, "Error receiving server response.\n"));
 
@@ -226,7 +226,7 @@ int imap_auth_gss (IMAP_DATA* idata, const char* user)
   mutt_socket_write (idata->conn, buf1);
 
   /* Joy of victory or agony of defeat? */
-  if (mutt_socket_read_line_d (buf1, GSS_BUFSIZE, idata->conn) < 0)
+  if (mutt_socket_readln (buf1, GSS_BUFSIZE, idata->conn) < 0)
   {
     dprint (1, (debugfile, "Error receiving server response.\n"));
 
