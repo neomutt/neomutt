@@ -148,30 +148,13 @@ static void menu_make_entry (char *s, int l, MUTTMENU *menu, int i)
     menu->make_entry (s, l, menu, i);
 }
 
-void menu_pad_string (char *s, size_t l)
+void menu_pad_string (char *s, size_t n)
 {
-  size_t n = mutt_strlen (s);
   int shift = option (OPTARROWCURSOR) ? 3 : 0;
-  
-  l--; /* save room for the terminal \0 */
-  if (l > COLS - shift)
-    l = COLS - shift;
+  int cols = COLS - shift;
 
-  /* Let's just pad the string anyway ... */
-  mutt_format_string (s, INT_MAX, l, l, 0, ' ', s, n, 1);
-  return;
-
-#if !defined (HAVE_BKGDSET) && !defined (USE_SLANG_CURSES)
-  /* we have to pad the string with blanks to the end of line */
-  if (n < l)
-  {
-    while (n < l)
-      s[n++] = ' ';
-    s[n] = 0;
-  }
-  else
-#endif
-    s[l] = 0;
+  mutt_format_string (s, n, cols, cols, 0, ' ', s, strlen (s), 1);
+  s[n - 1] = 0;
 }
 
 void menu_redraw_full (MUTTMENU *menu)
