@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.95.6i\n"
-"POT-Creation-Date: 2002-01-01 21:18+0100\n"
+"POT-Creation-Date: 2002-01-15 10:03+0100\n"
 "PO-Revision-Date: 1999-07-29 00:00+0100\n"
 "Last-Translator: Miroslav Vasko <vasko@ies.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -23,12 +23,12 @@ msgstr "Premenova» na: "
 msgid "Password for %s@%s: "
 msgstr "Heslo pre %s@%s: "
 
-#: addrbook.c:31 browser.c:40 pager.c:1430 postpone.c:37 query.c:43
+#: addrbook.c:31 browser.c:40 pager.c:1435 postpone.c:37 query.c:43
 #: recvattach.c:57
 msgid "Exit"
 msgstr "Koniec"
 
-#: addrbook.c:32 curs_main.c:398 pager.c:1437 postpone.c:38
+#: addrbook.c:32 curs_main.c:398 pager.c:1442 postpone.c:38
 msgid "Del"
 msgstr "Zma¾"
 
@@ -41,8 +41,8 @@ msgid "Select"
 msgstr "Oznaèi»"
 
 #. __STRCAT_CHECKED__
-#: addrbook.c:35 browser.c:43 compose.c:93 curs_main.c:404 mutt_ssl.c:628
-#: pager.c:1529 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
+#: addrbook.c:35 browser.c:43 compose.c:93 curs_main.c:404 mutt_ssl.c:625
+#: pager.c:1534 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Pomoc"
 
@@ -84,7 +84,7 @@ msgstr "Ulo¾i» do súboru: "
 msgid "Alias added."
 msgstr "Pridal som zástupcu."
 
-#: attach.c:111 attach.c:238 attach.c:431 attach.c:910
+#: attach.c:111 attach.c:238 attach.c:431 attach.c:915
 msgid "Can't match nametemplate, continue?"
 msgstr "Nena¹iel som ¹ablónu názvu, pokraèova»?"
 
@@ -136,20 +136,20 @@ msgstr "MIME typ nie je definovaný. Nemo¾no zobrazi» pripojené dáta."
 msgid "Cannot create filter"
 msgstr "Nemo¾no vytvori» filter."
 
-#: attach.c:629 attach.c:661 attach.c:943 attach.c:1001 handler.c:1544
+#: attach.c:629 attach.c:661 attach.c:948 attach.c:1006 handler.c:1544
 #: pgpkey.c:566 pgpkey.c:755
 msgid "Can't create filter"
 msgstr "Nemo¾no vytvori» filter"
 
-#: attach.c:725 recvattach.c:419 recvattach.c:479
+#: attach.c:736 recvattach.c:419 recvattach.c:479
 msgid "Attachment saved."
 msgstr "Pripojené dáta boli ulo¾ené."
 
-#: attach.c:782
+#: attach.c:787
 msgid "Write fault!"
 msgstr "Chyba zápisu!"
 
-#: attach.c:1024
+#: attach.c:1029
 msgid "I don't know how to print that!"
 msgstr "Neviem, ako vytlaèi» dáta!"
 
@@ -684,7 +684,7 @@ msgstr "nie"
 msgid "Exit Mutt?"
 msgstr "Opusti» Mutt?"
 
-#: curs_lib.c:326 mutt_socket.c:483 mutt_ssl.c:324
+#: curs_lib.c:326 mutt_socket.c:483 mutt_ssl.c:321
 msgid "unknown error"
 msgstr "neznáma chyba"
 
@@ -743,7 +743,7 @@ msgstr "Ulo¾i»"
 msgid "Mail"
 msgstr "Napí¹"
 
-#: curs_main.c:402 pager.c:1438
+#: curs_main.c:402 pager.c:1443
 msgid "Reply"
 msgstr "Odpovedz"
 
@@ -847,11 +847,11 @@ msgstr "®iadne odmazané správy."
 msgid "You are on the first message."
 msgstr "Ste na prvej správe."
 
-#: curs_main.c:1267 pattern.c:1287
+#: curs_main.c:1267 pattern.c:1290
 msgid "Search wrapped to top."
 msgstr "Vyhµadávanie pokraèuje z vrchu."
 
-#: curs_main.c:1276 pattern.c:1298
+#: curs_main.c:1276 pattern.c:1301
 msgid "Search wrapped to bottom."
 msgstr "Vyhµadávanie pokraèuje zo spodu."
 
@@ -867,7 +867,7 @@ msgstr "®iadne neèítané správy"
 msgid " in this limited view"
 msgstr " v tomto obmedzenom zobrazení"
 
-#: curs_main.c:1331 pager.c:2291
+#: curs_main.c:1331 pager.c:2296
 #, fuzzy
 msgid "Can't change 'important' flag on POP server."
 msgstr "Vymazávam správy zo serveru..."
@@ -2606,7 +2606,7 @@ msgstr "Ste na poslednej polo¾ke."
 msgid "You are on the first entry."
 msgstr "Ste na prvej polo¾ke."
 
-#: menu.c:724 pattern.c:1233
+#: menu.c:724 pattern.c:1236
 msgid "Search for: "
 msgstr "Hµada»: "
 
@@ -2614,11 +2614,11 @@ msgstr "Hµada»: "
 msgid "Reverse search for: "
 msgstr "Hµada» spätne: "
 
-#: menu.c:735 pattern.c:1266
+#: menu.c:735 pattern.c:1269
 msgid "No search pattern."
 msgstr "®iadny vzor pre hµadanie."
 
-#: menu.c:765 pager.c:1908 pager.c:1924 pager.c:2012 pattern.c:1331
+#: menu.c:765 pager.c:1913 pager.c:1929 pager.c:2017 pattern.c:1334
 msgid "Not found."
 msgstr "Nenájdené."
 
@@ -2713,127 +2713,127 @@ msgstr "Spájam sa s %s..."
 msgid "Could not connect to %s (%s)."
 msgstr "Nemo¾no otvori» %s"
 
-#: mutt_ssl.c:173
+#: mutt_ssl.c:170
 msgid "Failed to find enough entropy on your system"
 msgstr ""
 
-#: mutt_ssl.c:197
+#: mutt_ssl.c:194
 #, c-format
 msgid "Filling entropy pool: %s...\n"
 msgstr ""
 
-#: mutt_ssl.c:205
+#: mutt_ssl.c:202
 #, c-format
 msgid "%s has insecure permissions!"
 msgstr ""
 
-#: mutt_ssl.c:224
+#: mutt_ssl.c:221
 msgid "SSL disabled due the lack of entropy"
 msgstr ""
 
-#: mutt_ssl.c:318
+#: mutt_ssl.c:315
 msgid "I/O error"
 msgstr ""
 
-#: mutt_ssl.c:321
+#: mutt_ssl.c:318
 msgid "unspecified protocol error"
 msgstr ""
 
-#: mutt_ssl.c:327
+#: mutt_ssl.c:324
 #, fuzzy, c-format
 msgid "SSL failed: %s"
 msgstr "Prihlasovanie zlyhalo."
 
-#: mutt_ssl.c:336
+#: mutt_ssl.c:333
 #, fuzzy
 msgid "Unable to get certificate from peer"
 msgstr "nemo¾no urèi» domáci adresár"
 
-#: mutt_ssl.c:344
+#: mutt_ssl.c:341
 #, fuzzy, c-format
 msgid "SSL connection using %s (%s)"
 msgstr "Pripájam sa na %s"
 
-#: mutt_ssl.c:384
+#: mutt_ssl.c:381
 #, fuzzy
 msgid "Unknown"
 msgstr "neznáma chyba"
 
-#: mutt_ssl.c:409
+#: mutt_ssl.c:406
 #, fuzzy
 msgid "[unable to calculate]"
 msgstr "%s: súbor nemo¾no pripoji»"
 
-#: mutt_ssl.c:427
+#: mutt_ssl.c:424
 #, fuzzy
 msgid "[invalid date]"
 msgstr "%s: neplatná hodnota"
 
-#: mutt_ssl.c:502
+#: mutt_ssl.c:499
 msgid "Server certificate is not yet valid"
 msgstr ""
 
-#: mutt_ssl.c:509
+#: mutt_ssl.c:506
 msgid "Server certificate has expired"
 msgstr ""
 
-#: mutt_ssl.c:582
+#: mutt_ssl.c:579
 msgid "This certificate belongs to:"
 msgstr ""
 
-#: mutt_ssl.c:592
+#: mutt_ssl.c:589
 msgid "This certificate was issued by:"
 msgstr ""
 
-#: mutt_ssl.c:602
+#: mutt_ssl.c:599
 msgid "This certificate is valid"
 msgstr ""
 
-#: mutt_ssl.c:603
+#: mutt_ssl.c:600
 #, c-format
 msgid "   from %s"
 msgstr ""
 
-#: mutt_ssl.c:605
+#: mutt_ssl.c:602
 #, c-format
 msgid "     to %s"
 msgstr ""
 
-#: mutt_ssl.c:611
+#: mutt_ssl.c:608
 #, c-format
 msgid "Fingerprint: %s"
 msgstr ""
 
-#: mutt_ssl.c:613
+#: mutt_ssl.c:610
 msgid "SSL Certificate check"
 msgstr ""
 
-#: mutt_ssl.c:616
+#: mutt_ssl.c:613
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr ""
 
-#: mutt_ssl.c:617
+#: mutt_ssl.c:614
 #, fuzzy
 msgid "roa"
 msgstr "oac"
 
-#: mutt_ssl.c:621
+#: mutt_ssl.c:618
 msgid "(r)eject, accept (o)nce"
 msgstr ""
 
-#: mutt_ssl.c:622
+#: mutt_ssl.c:619
 msgid "ro"
 msgstr ""
 
-#: mutt_ssl.c:626 pgpkey.c:510
+#: mutt_ssl.c:623 pgpkey.c:510
 msgid "Exit  "
 msgstr "Koniec  "
 
-#: mutt_ssl.c:652
+#: mutt_ssl.c:649
 msgid "Warning: Couldn't save certificate"
 msgstr ""
 
-#: mutt_ssl.c:657
+#: mutt_ssl.c:654
 msgid "Certificate saved"
 msgstr ""
 
@@ -2938,7 +2938,7 @@ msgstr "Schránka je oznaèená len na èítanie. %s"
 msgid "Mailbox checkpointed."
 msgstr "Bola zistená sluèka v makre."
 
-#: mx.c:1490
+#: mx.c:1496
 #, fuzzy
 msgid "Can't write message"
 msgstr "upravi» správu"
@@ -2948,48 +2948,48 @@ msgstr "upravi» správu"
 msgid "Not available in this menu."
 msgstr "V tejto schránke je nová po¹ta."
 
-#: pager.c:1431
+#: pager.c:1436
 msgid "PrevPg"
 msgstr "PredSt"
 
-#: pager.c:1432
+#: pager.c:1437
 msgid "NextPg"
 msgstr "Ïaµ¹St"
 
-#: pager.c:1436
+#: pager.c:1441
 msgid "View Attachm."
 msgstr "Pozri prílohu"
 
-#: pager.c:1439
+#: pager.c:1444
 msgid "Next"
 msgstr "Ïaµ¹í"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1817 pager.c:1848 pager.c:1880 pager.c:2100
+#: pager.c:1822 pager.c:1853 pager.c:1885 pager.c:2105
 msgid "Bottom of message is shown."
 msgstr "Spodok správy je zobrazený."
 
-#: pager.c:1833 pager.c:1855 pager.c:1862 pager.c:1869
+#: pager.c:1838 pager.c:1860 pager.c:1867 pager.c:1874
 msgid "Top of message is shown."
 msgstr "Vrch správy je zobrazený."
 
-#: pager.c:1942
+#: pager.c:1947
 msgid "Reverse search: "
 msgstr "Spätné hµadanie: "
 
-#: pager.c:1943
+#: pager.c:1948
 msgid "Search: "
 msgstr "Hµada»: "
 
-#: pager.c:2038
+#: pager.c:2043
 msgid "Help is currently being shown."
 msgstr "Pomoc sa akurát zobrazuje."
 
-#: pager.c:2067
+#: pager.c:2072
 msgid "No more quoted text."
 msgstr "Nie je ïaµ¹í citovaný text."
 
-#: pager.c:2080
+#: pager.c:2085
 msgid "No more unquoted text after quoted text."
 msgstr "®iadny ïaµ¹í necitovaný text za citátom."
 
@@ -2997,85 +2997,85 @@ msgstr "®iadny ïaµ¹í necitovaný text za citátom."
 msgid "multipart message has no boundary parameter!"
 msgstr "viaczlo¾ková správa nemá parameter ohranièenia (boundary)!"
 
-#: pattern.c:251
+#: pattern.c:252
 #, c-format
 msgid "Error in expression: %s"
 msgstr "Chyba vo výraze: %s"
 
-#: pattern.c:361
+#: pattern.c:362
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "Neplatný deò v mesiaci: %s"
 
-#: pattern.c:375
+#: pattern.c:376
 #, c-format
 msgid "Invalid month: %s"
 msgstr "Neplatný mesiac: %s"
 
 #. getDate has its own error message, don't overwrite it here
-#: pattern.c:527
+#: pattern.c:528
 #, fuzzy, c-format
 msgid "Invalid relative date: %s"
 msgstr "Neplatný mesiac: %s"
 
-#: pattern.c:541
+#: pattern.c:542
 msgid "error in expression"
 msgstr "chyba vo výraze"
 
-#: pattern.c:747 pattern.c:855
+#: pattern.c:748 pattern.c:856
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "chyba vo vzore na: %s"
 
-#: pattern.c:795
+#: pattern.c:796
 #, c-format
 msgid "%c: invalid command"
 msgstr "%c: neplatný príkaz"
 
-#: pattern.c:801
+#: pattern.c:802
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: nepodporovaný v tomto móde"
 
-#: pattern.c:814
+#: pattern.c:815
 msgid "missing parameter"
 msgstr "chýbajúci parameter"
 
-#: pattern.c:830
+#: pattern.c:831
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "nespárované zátvorky: %s"
 
-#: pattern.c:862
+#: pattern.c:863
 msgid "empty pattern"
 msgstr "prázdny vzor"
 
-#: pattern.c:1054
+#: pattern.c:1057
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "chyba: neznámy operand %d (oznámte túto chybu)."
 
-#: pattern.c:1123 pattern.c:1252
+#: pattern.c:1126 pattern.c:1255
 msgid "Compiling search pattern..."
 msgstr "Kompilujem vyhµadávací vzor..."
 
-#: pattern.c:1137
+#: pattern.c:1140
 msgid "Executing command on matching messages..."
 msgstr "Vykonávam príkaz na nájdených správach..."
 
-#: pattern.c:1200
+#: pattern.c:1203
 msgid "No messages matched criteria."
 msgstr "®iadne správy nesplnili kritérium."
 
-#: pattern.c:1290
+#: pattern.c:1293
 msgid "Search hit bottom without finding match"
 msgstr "Hµadanie narazilo na spodok bez nájdenia zhody"
 
-#: pattern.c:1301
+#: pattern.c:1304
 msgid "Search hit top without finding match"
 msgstr "Hµadanie narazilo na vrchol bez nájdenia zhody"
 
-#: pattern.c:1323
+#: pattern.c:1326
 msgid "Search interrupted."
 msgstr "Hµadanie bolo preru¹ené."
 
@@ -3303,22 +3303,21 @@ msgid "This key can't be used: expired/disabled/revoked."
 msgstr ""
 
 #: pgpkey.c:608
-msgid "This ID is expired/disabled/revoked"
+msgid "ID is expired/disabled/revoked."
 msgstr ""
 
 #: pgpkey.c:612
-#, fuzzy
-msgid "This ID's validity level is undefined."
-msgstr "Táto úroveò dôvery identifikaèného kµúèa je nedefinovaná."
+msgid "ID has undefined validity."
+msgstr ""
 
 #: pgpkey.c:615
 #, fuzzy
-msgid "This ID is not valid."
+msgid "ID is not valid."
 msgstr "Toto ID nie je dôveryhodné."
 
 #: pgpkey.c:618
 #, fuzzy
-msgid "This ID is only marginally valid."
+msgid "ID is only marginally valid."
 msgstr "Toto ID je dôveryhodné iba nepatrne."
 
 #: pgpkey.c:622
@@ -3872,6 +3871,10 @@ msgstr "Táto správa nie je viditeµná."
 #, fuzzy
 msgid "Parent message is not available."
 msgstr "Táto správa nie je viditeµná."
+
+#, fuzzy
+#~ msgid "This ID's validity level is undefined."
+#~ msgstr "Táto úroveò dôvery identifikaèného kµúèa je nedefinovaná."
 
 #~ msgid "Decode-save"
 #~ msgstr "Dekóduj-ulo¾"

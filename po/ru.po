@@ -11,7 +11,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt-1.3.24i\n"
-"POT-Creation-Date: 2002-01-01 21:18+0100\n"
+"POT-Creation-Date: 2002-01-15 10:03+0100\n"
 "PO-Revision-Date: 2001-12-03 12:18+0200\n"
 "Last-Translator: mutt-ru@woe.spb.ru\n"
 "Language-Team: RUSSIAN <mutt-ru@woe.spb.ru>\n"
@@ -29,12 +29,12 @@ msgstr "Имя пользователя для %s: "
 msgid "Password for %s@%s: "
 msgstr "Пароль для %s@%s: "
 
-#: addrbook.c:31 browser.c:40 pager.c:1430 postpone.c:37 query.c:43
+#: addrbook.c:31 browser.c:40 pager.c:1435 postpone.c:37 query.c:43
 #: recvattach.c:57
 msgid "Exit"
 msgstr "Выход"
 
-#: addrbook.c:32 curs_main.c:398 pager.c:1437 postpone.c:38
+#: addrbook.c:32 curs_main.c:398 pager.c:1442 postpone.c:38
 msgid "Del"
 msgstr "Удалить"
 
@@ -47,8 +47,8 @@ msgid "Select"
 msgstr "Выбрать"
 
 #. __STRCAT_CHECKED__
-#: addrbook.c:35 browser.c:43 compose.c:93 curs_main.c:404 mutt_ssl.c:628
-#: pager.c:1529 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
+#: addrbook.c:35 browser.c:43 compose.c:93 curs_main.c:404 mutt_ssl.c:625
+#: pager.c:1534 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Помощь"
 
@@ -90,7 +90,7 @@ msgstr "Сохранить в файл: "
 msgid "Alias added."
 msgstr "Псевдоним создан."
 
-#: attach.c:111 attach.c:238 attach.c:431 attach.c:910
+#: attach.c:111 attach.c:238 attach.c:431 attach.c:915
 msgid "Can't match nametemplate, continue?"
 msgstr "Не удалось разобрать имя. Продолжить?"
 
@@ -143,20 +143,20 @@ msgstr "MIME-тип не определен.  Невозможно просмотреть вложение."
 msgid "Cannot create filter"
 msgstr "Не удалось создать фильтр"
 
-#: attach.c:629 attach.c:661 attach.c:943 attach.c:1001 handler.c:1544
+#: attach.c:629 attach.c:661 attach.c:948 attach.c:1006 handler.c:1544
 #: pgpkey.c:566 pgpkey.c:755
 msgid "Can't create filter"
 msgstr "Не удалось создать фильтр"
 
-#: attach.c:725 recvattach.c:419 recvattach.c:479
+#: attach.c:736 recvattach.c:419 recvattach.c:479
 msgid "Attachment saved."
 msgstr "Вложение сохранено."
 
-#: attach.c:782
+#: attach.c:787
 msgid "Write fault!"
 msgstr "Ошибка записи!"
 
-#: attach.c:1024
+#: attach.c:1029
 msgid "I don't know how to print that!"
 msgstr "Неизвестно, как это печатать!"
 
@@ -675,7 +675,7 @@ msgstr "нет"
 msgid "Exit Mutt?"
 msgstr "Завершить работу с Mutt?"
 
-#: curs_lib.c:326 mutt_socket.c:483 mutt_ssl.c:324
+#: curs_lib.c:326 mutt_socket.c:483 mutt_ssl.c:321
 msgid "unknown error"
 msgstr "неизвестная ошибка"
 
@@ -731,7 +731,7 @@ msgstr "Сохр."
 msgid "Mail"
 msgstr "Создать"
 
-#: curs_main.c:402 pager.c:1438
+#: curs_main.c:402 pager.c:1443
 msgid "Reply"
 msgstr "Отв."
 
@@ -835,11 +835,11 @@ msgstr "Нет восстановленных сообщений."
 msgid "You are on the first message."
 msgstr "Это первое сообщение."
 
-#: curs_main.c:1267 pattern.c:1287
+#: curs_main.c:1267 pattern.c:1290
 msgid "Search wrapped to top."
 msgstr "Достигнут конец; продолжаем поиск с начала."
 
-#: curs_main.c:1276 pattern.c:1298
+#: curs_main.c:1276 pattern.c:1301
 msgid "Search wrapped to bottom."
 msgstr "Достигнуто начало; продолжаем поиск с конца."
 
@@ -855,7 +855,7 @@ msgstr "Нет непрочитанных сообщений"
 msgid " in this limited view"
 msgstr " при просмотре с ограничением"
 
-#: curs_main.c:1331 pager.c:2291
+#: curs_main.c:1331 pager.c:2296
 msgid "Can't change 'important' flag on POP server."
 msgstr "Изменение флага 'важное' не поддерживается POP-сервером."
 
@@ -2566,7 +2566,7 @@ msgstr "Вы уже на последней записи."
 msgid "You are on the first entry."
 msgstr "Вы уже на первой записи."
 
-#: menu.c:724 pattern.c:1233
+#: menu.c:724 pattern.c:1236
 msgid "Search for: "
 msgstr "Поиск: "
 
@@ -2574,11 +2574,11 @@ msgstr "Поиск: "
 msgid "Reverse search for: "
 msgstr "Обратный поиск: "
 
-#: menu.c:735 pattern.c:1266
+#: menu.c:735 pattern.c:1269
 msgid "No search pattern."
 msgstr "Нет образца поиска."
 
-#: menu.c:765 pager.c:1908 pager.c:1924 pager.c:2012 pattern.c:1331
+#: menu.c:765 pager.c:1913 pager.c:1929 pager.c:2017 pattern.c:1334
 msgid "Not found."
 msgstr "Не найдено."
 
@@ -2671,122 +2671,122 @@ msgstr "Устанавливается соединение с %s..."
 msgid "Could not connect to %s (%s)."
 msgstr "Не удалось установить соединение с %s (%s)."
 
-#: mutt_ssl.c:173
+#: mutt_ssl.c:170
 msgid "Failed to find enough entropy on your system"
 msgstr "Недостаточно энтропии"
 
-#: mutt_ssl.c:197
+#: mutt_ssl.c:194
 #, c-format
 msgid "Filling entropy pool: %s...\n"
 msgstr "Накопление энтропии: %s...\n"
 
-#: mutt_ssl.c:205
+#: mutt_ssl.c:202
 #, c-format
 msgid "%s has insecure permissions!"
 msgstr "%s имеет небезопасный режим доступа!"
 
-#: mutt_ssl.c:224
+#: mutt_ssl.c:221
 msgid "SSL disabled due the lack of entropy"
 msgstr "Использование SSL-протокола невозможно из-за недостатка энтропии"
 
-#: mutt_ssl.c:318
+#: mutt_ssl.c:315
 msgid "I/O error"
 msgstr "ошибка ввода/вывода"
 
-#: mutt_ssl.c:321
+#: mutt_ssl.c:318
 msgid "unspecified protocol error"
 msgstr "ошибка протокола"
 
-#: mutt_ssl.c:327
+#: mutt_ssl.c:324
 #, c-format
 msgid "SSL failed: %s"
 msgstr "Не удалось установить SSL-соединение: %s"
 
-#: mutt_ssl.c:336
+#: mutt_ssl.c:333
 msgid "Unable to get certificate from peer"
 msgstr "Не удалось получить сертификат сервера"
 
-#: mutt_ssl.c:344
+#: mutt_ssl.c:341
 #, c-format
 msgid "SSL connection using %s (%s)"
 msgstr "SSL-соединение установлено; алгоритм шифрования %s (%s)"
 
-#: mutt_ssl.c:384
+#: mutt_ssl.c:381
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: mutt_ssl.c:409
+#: mutt_ssl.c:406
 msgid "[unable to calculate]"
 msgstr "[ошибка вычислений]"
 
-#: mutt_ssl.c:427
+#: mutt_ssl.c:424
 msgid "[invalid date]"
 msgstr "[недопустимая дата]"
 
-#: mutt_ssl.c:502
+#: mutt_ssl.c:499
 msgid "Server certificate is not yet valid"
 msgstr "Сертификат все еще недействителен"
 
-#: mutt_ssl.c:509
+#: mutt_ssl.c:506
 msgid "Server certificate has expired"
 msgstr "Срок действия сертификата истек"
 
-#: mutt_ssl.c:582
+#: mutt_ssl.c:579
 msgid "This certificate belongs to:"
 msgstr "Данный сертификат принадлежит:"
 
-#: mutt_ssl.c:592
+#: mutt_ssl.c:589
 msgid "This certificate was issued by:"
 msgstr "Данный сертификат был выдан:"
 
-#: mutt_ssl.c:602
+#: mutt_ssl.c:599
 msgid "This certificate is valid"
 msgstr "Данный сертификат действителен"
 
-#: mutt_ssl.c:603
+#: mutt_ssl.c:600
 #, c-format
 msgid "   from %s"
 msgstr "   с %s"
 
-#: mutt_ssl.c:605
+#: mutt_ssl.c:602
 #, c-format
 msgid "     to %s"
 msgstr "     по %s"
 
-#: mutt_ssl.c:611
+#: mutt_ssl.c:608
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "Отпечаток пальца: %s"
 
-#: mutt_ssl.c:613
+#: mutt_ssl.c:610
 msgid "SSL Certificate check"
 msgstr "Проверка SSL-сертификата"
 
-#: mutt_ssl.c:616
+#: mutt_ssl.c:613
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)отвергнуть, (o)принять, (a)принять и сохранить"
 
-#: mutt_ssl.c:617
+#: mutt_ssl.c:614
 msgid "roa"
 msgstr "roa"
 
-#: mutt_ssl.c:621
+#: mutt_ssl.c:618
 msgid "(r)eject, accept (o)nce"
 msgstr "(r)отвергнуть, (o)принять"
 
-#: mutt_ssl.c:622
+#: mutt_ssl.c:619
 msgid "ro"
 msgstr "ro"
 
-#: mutt_ssl.c:626 pgpkey.c:510
+#: mutt_ssl.c:623 pgpkey.c:510
 msgid "Exit  "
 msgstr "Выход "
 
-#: mutt_ssl.c:652
+#: mutt_ssl.c:649
 msgid "Warning: Couldn't save certificate"
 msgstr "Предупреждение: не удалось сохранить сертификат"
 
-#: mutt_ssl.c:657
+#: mutt_ssl.c:654
 msgid "Certificate saved"
 msgstr "Сертификат сохранен"
 
@@ -2890,7 +2890,7 @@ msgstr "Почтовый ящик стал доступен только для чтения. %s"
 msgid "Mailbox checkpointed."
 msgstr "Почтовый ящик обновлен."
 
-#: mx.c:1490
+#: mx.c:1496
 msgid "Can't write message"
 msgstr "Ошибка записи сообщения"
 
@@ -2898,48 +2898,48 @@ msgstr "Ошибка записи сообщения"
 msgid "Not available in this menu."
 msgstr "В этом меню недоступно."
 
-#: pager.c:1431
+#: pager.c:1436
 msgid "PrevPg"
 msgstr "Назад"
 
-#: pager.c:1432
+#: pager.c:1437
 msgid "NextPg"
 msgstr "Вперед"
 
-#: pager.c:1436
+#: pager.c:1441
 msgid "View Attachm."
 msgstr "Вложения"
 
-#: pager.c:1439
+#: pager.c:1444
 msgid "Next"
 msgstr "Следующий"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1817 pager.c:1848 pager.c:1880 pager.c:2100
+#: pager.c:1822 pager.c:1853 pager.c:1885 pager.c:2105
 msgid "Bottom of message is shown."
 msgstr "Последняя строка сообщения уже на экране."
 
-#: pager.c:1833 pager.c:1855 pager.c:1862 pager.c:1869
+#: pager.c:1838 pager.c:1860 pager.c:1867 pager.c:1874
 msgid "Top of message is shown."
 msgstr "Первая строка сообщения уже на экране."
 
-#: pager.c:1942
+#: pager.c:1947
 msgid "Reverse search: "
 msgstr "Обратный поиск: "
 
-#: pager.c:1943
+#: pager.c:1948
 msgid "Search: "
 msgstr "Поиск: "
 
-#: pager.c:2038
+#: pager.c:2043
 msgid "Help is currently being shown."
 msgstr "Подсказка уже перед вами."
 
-#: pager.c:2067
+#: pager.c:2072
 msgid "No more quoted text."
 msgstr "Нет больше цитируемого текста."
 
-#: pager.c:2080
+#: pager.c:2085
 msgid "No more unquoted text after quoted text."
 msgstr "За цитируемым текстом больше нет основного текста."
 
@@ -2947,85 +2947,85 @@ msgstr "За цитируемым текстом больше нет основного текста."
 msgid "multipart message has no boundary parameter!"
 msgstr "Составное сообщение требует наличия параметра boundary!"
 
-#: pattern.c:251
+#: pattern.c:252
 #, c-format
 msgid "Error in expression: %s"
 msgstr "Ошибка в выражении: %s"
 
-#: pattern.c:361
+#: pattern.c:362
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "Неверный день месяца: %s"
 
-#: pattern.c:375
+#: pattern.c:376
 #, c-format
 msgid "Invalid month: %s"
 msgstr "Неверное название месяца: %s"
 
 #. getDate has its own error message, don't overwrite it here
-#: pattern.c:527
+#: pattern.c:528
 #, c-format
 msgid "Invalid relative date: %s"
 msgstr "Неверно указана относительная дата: %s"
 
-#: pattern.c:541
+#: pattern.c:542
 msgid "error in expression"
 msgstr "ошибка в выражении"
 
-#: pattern.c:747 pattern.c:855
+#: pattern.c:748 pattern.c:856
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "ошибка в образце: %s"
 
-#: pattern.c:795
+#: pattern.c:796
 #, c-format
 msgid "%c: invalid command"
 msgstr "%c: недопустимая команда"
 
-#: pattern.c:801
+#: pattern.c:802
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: в этом режиме не поддерживается"
 
-#: pattern.c:814
+#: pattern.c:815
 msgid "missing parameter"
 msgstr "пропущен параметр"
 
-#: pattern.c:830
+#: pattern.c:831
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "пропущена скобка: %s"
 
-#: pattern.c:862
+#: pattern.c:863
 msgid "empty pattern"
 msgstr "пустой образец"
 
-#: pattern.c:1054
+#: pattern.c:1057
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "ошибка: неизвестная операция %d (сообщите об этой ошибке)."
 
-#: pattern.c:1123 pattern.c:1252
+#: pattern.c:1126 pattern.c:1255
 msgid "Compiling search pattern..."
 msgstr "Образец поиска компилируется..."
 
-#: pattern.c:1137
+#: pattern.c:1140
 msgid "Executing command on matching messages..."
 msgstr "Исполняется команда для подходящих сообщений..."
 
-#: pattern.c:1200
+#: pattern.c:1203
 msgid "No messages matched criteria."
 msgstr "Ни одно сообщение не подходит под критерий."
 
-#: pattern.c:1290
+#: pattern.c:1293
 msgid "Search hit bottom without finding match"
 msgstr "Поиск дошел до конца, не найдя ничего подходящего"
 
-#: pattern.c:1301
+#: pattern.c:1304
 msgid "Search hit top without finding match"
 msgstr "Поиск дошел до начала, не найдя ничего подходящего"
 
-#: pattern.c:1323
+#: pattern.c:1326
 msgid "Search interrupted."
 msgstr "Поиск прерван."
 
@@ -3246,19 +3246,22 @@ msgstr "Этот ключ не может быть использован: просрочен, запрещен или отозван."
 
 # FIXME: awn: бредовая фраза получилась...
 #: pgpkey.c:608
-msgid "This ID is expired/disabled/revoked"
+#, fuzzy
+msgid "ID is expired/disabled/revoked."
 msgstr "Этот ID просрочен, запрещен или отозван."
 
 #: pgpkey.c:612
-msgid "This ID's validity level is undefined."
-msgstr "Степень доверия для этого ID не определена."
+msgid "ID has undefined validity."
+msgstr ""
 
 #: pgpkey.c:615
-msgid "This ID is not valid."
+#, fuzzy
+msgid "ID is not valid."
 msgstr "Этот ID недействителен."
 
 #: pgpkey.c:618
-msgid "This ID is only marginally valid."
+#, fuzzy
+msgid "ID is only marginally valid."
 msgstr "Этот ID действителен только частично."
 
 #: pgpkey.c:622
@@ -3788,3 +3791,6 @@ msgstr "Родительское сообщение не видимо при просмотре с ограничением."
 #: thread.c:1008
 msgid "Parent message is not available."
 msgstr "Родительское сообщение недоступно."
+
+#~ msgid "This ID's validity level is undefined."
+#~ msgstr "Степень доверия для этого ID не определена."

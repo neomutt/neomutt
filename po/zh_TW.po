@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3.22.1\n"
-"POT-Creation-Date: 2002-01-01 21:18+0100\n"
+"POT-Creation-Date: 2002-01-15 10:03+0100\n"
 "PO-Revision-Date: 2001-09-06 18:25+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -23,12 +23,12 @@ msgstr "用戶名在 %s："
 msgid "Password for %s@%s: "
 msgstr "%s@%s 的密碼："
 
-#: addrbook.c:31 browser.c:40 pager.c:1430 postpone.c:37 query.c:43
+#: addrbook.c:31 browser.c:40 pager.c:1435 postpone.c:37 query.c:43
 #: recvattach.c:57
 msgid "Exit"
 msgstr "離開"
 
-#: addrbook.c:32 curs_main.c:398 pager.c:1437 postpone.c:38
+#: addrbook.c:32 curs_main.c:398 pager.c:1442 postpone.c:38
 msgid "Del"
 msgstr "刪除"
 
@@ -41,8 +41,8 @@ msgid "Select"
 msgstr "選擇"
 
 #. __STRCAT_CHECKED__
-#: addrbook.c:35 browser.c:43 compose.c:93 curs_main.c:404 mutt_ssl.c:628
-#: pager.c:1529 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
+#: addrbook.c:35 browser.c:43 compose.c:93 curs_main.c:404 mutt_ssl.c:625
+#: pager.c:1534 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "求助"
 
@@ -84,7 +84,7 @@ msgstr "存到檔案："
 msgid "Alias added."
 msgstr "別名已經增加。"
 
-#: attach.c:111 attach.c:238 attach.c:431 attach.c:910
+#: attach.c:111 attach.c:238 attach.c:431 attach.c:915
 msgid "Can't match nametemplate, continue?"
 msgstr "無法配合二個同樣名稱，繼續？"
 
@@ -136,20 +136,20 @@ msgstr "MIME 形式未被定義. 無法顯示附件內容。"
 msgid "Cannot create filter"
 msgstr "無法建立過濾器"
 
-#: attach.c:629 attach.c:661 attach.c:943 attach.c:1001 handler.c:1544
+#: attach.c:629 attach.c:661 attach.c:948 attach.c:1006 handler.c:1544
 #: pgpkey.c:566 pgpkey.c:755
 msgid "Can't create filter"
 msgstr "無法建立過濾"
 
-#: attach.c:725 recvattach.c:419 recvattach.c:479
+#: attach.c:736 recvattach.c:419 recvattach.c:479
 msgid "Attachment saved."
 msgstr "附件已被儲存。"
 
-#: attach.c:782
+#: attach.c:787
 msgid "Write fault!"
 msgstr "寫入失敗！"
 
-#: attach.c:1024
+#: attach.c:1029
 msgid "I don't know how to print that!"
 msgstr "我不知道要如何列印它！"
 
@@ -670,7 +670,7 @@ msgstr ""
 msgid "Exit Mutt?"
 msgstr "離開 Mutt？"
 
-#: curs_lib.c:326 mutt_socket.c:483 mutt_ssl.c:324
+#: curs_lib.c:326 mutt_socket.c:483 mutt_ssl.c:321
 msgid "unknown error"
 msgstr "不明的錯誤"
 
@@ -726,7 +726,7 @@ msgstr "儲存"
 msgid "Mail"
 msgstr "信件"
 
-#: curs_main.c:402 pager.c:1438
+#: curs_main.c:402 pager.c:1443
 msgid "Reply"
 msgstr "回覆"
 
@@ -829,11 +829,11 @@ msgstr "沒有要反刪除的信件。"
 msgid "You are on the first message."
 msgstr "您已經在第一封信了。"
 
-#: curs_main.c:1267 pattern.c:1287
+#: curs_main.c:1267 pattern.c:1290
 msgid "Search wrapped to top."
 msgstr "搜尋至開頭。"
 
-#: curs_main.c:1276 pattern.c:1298
+#: curs_main.c:1276 pattern.c:1301
 msgid "Search wrapped to bottom."
 msgstr "搜尋至結尾。"
 
@@ -849,7 +849,7 @@ msgstr "沒有尚未讀取的信件"
 msgid " in this limited view"
 msgstr " 在這限定的瀏覽中"
 
-#: curs_main.c:1331 pager.c:2291
+#: curs_main.c:1331 pager.c:2296
 #, fuzzy
 msgid "Can't change 'important' flag on POP server."
 msgstr "無法編輯 POP 伺服器上的信件。"
@@ -2547,7 +2547,7 @@ msgstr "您現在在最後一項。"
 msgid "You are on the first entry."
 msgstr "您現在在第一項。"
 
-#: menu.c:724 pattern.c:1233
+#: menu.c:724 pattern.c:1236
 msgid "Search for: "
 msgstr "搜尋："
 
@@ -2555,11 +2555,11 @@ msgstr "搜尋："
 msgid "Reverse search for: "
 msgstr "返向搜尋："
 
-#: menu.c:735 pattern.c:1266
+#: menu.c:735 pattern.c:1269
 msgid "No search pattern."
 msgstr "沒有搜尋格式。"
 
-#: menu.c:765 pager.c:1908 pager.c:1924 pager.c:2012 pattern.c:1331
+#: menu.c:765 pager.c:1913 pager.c:1929 pager.c:2017 pattern.c:1334
 msgid "Not found."
 msgstr "沒有找到。"
 
@@ -2653,122 +2653,122 @@ msgid "Could not connect to %s (%s)."
 msgstr "無法連線到 %s (%s)。"
 
 # Well, I don't know how to translate the word "entropy"
-#: mutt_ssl.c:173
+#: mutt_ssl.c:170
 msgid "Failed to find enough entropy on your system"
 msgstr ""
 
-#: mutt_ssl.c:197
+#: mutt_ssl.c:194
 #, c-format
 msgid "Filling entropy pool: %s...\n"
 msgstr ""
 
-#: mutt_ssl.c:205
+#: mutt_ssl.c:202
 #, c-format
 msgid "%s has insecure permissions!"
 msgstr "%s 的權限不安全！"
 
-#: mutt_ssl.c:224
+#: mutt_ssl.c:221
 msgid "SSL disabled due the lack of entropy"
 msgstr ""
 
-#: mutt_ssl.c:318
+#: mutt_ssl.c:315
 msgid "I/O error"
 msgstr ""
 
-#: mutt_ssl.c:321
+#: mutt_ssl.c:318
 msgid "unspecified protocol error"
 msgstr ""
 
-#: mutt_ssl.c:327
+#: mutt_ssl.c:324
 #, fuzzy, c-format
 msgid "SSL failed: %s"
 msgstr "登入失敗： %s"
 
-#: mutt_ssl.c:336
+#: mutt_ssl.c:333
 msgid "Unable to get certificate from peer"
 msgstr "無法從對方拿取驗証"
 
-#: mutt_ssl.c:344
+#: mutt_ssl.c:341
 #, c-format
 msgid "SSL connection using %s (%s)"
 msgstr "利用 %s (%s) 來進行 SSL"
 
-#: mutt_ssl.c:384
+#: mutt_ssl.c:381
 msgid "Unknown"
 msgstr "不清楚"
 
-#: mutt_ssl.c:409
+#: mutt_ssl.c:406
 msgid "[unable to calculate]"
 msgstr "【無法計算】"
 
-#: mutt_ssl.c:427
+#: mutt_ssl.c:424
 msgid "[invalid date]"
 msgstr "【無效的日期】"
 
-#: mutt_ssl.c:502
+#: mutt_ssl.c:499
 msgid "Server certificate is not yet valid"
 msgstr "伺服器的驗証還未有效"
 
-#: mutt_ssl.c:509
+#: mutt_ssl.c:506
 msgid "Server certificate has expired"
 msgstr "伺服器的驗証已過期"
 
-#: mutt_ssl.c:582
+#: mutt_ssl.c:579
 msgid "This certificate belongs to:"
 msgstr "這個驗証屬於："
 
-#: mutt_ssl.c:592
+#: mutt_ssl.c:589
 msgid "This certificate was issued by:"
 msgstr "這個驗証的派發者："
 
-#: mutt_ssl.c:602
+#: mutt_ssl.c:599
 msgid "This certificate is valid"
 msgstr "這個驗証有效"
 
-#: mutt_ssl.c:603
+#: mutt_ssl.c:600
 #, c-format
 msgid "   from %s"
 msgstr "   由 %s"
 
-#: mutt_ssl.c:605
+#: mutt_ssl.c:602
 #, c-format
 msgid "     to %s"
 msgstr "     至 %s"
 
-#: mutt_ssl.c:611
+#: mutt_ssl.c:608
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "指模：%s"
 
-#: mutt_ssl.c:613
+#: mutt_ssl.c:610
 msgid "SSL Certificate check"
 msgstr "SSL 驗証測試"
 
-#: mutt_ssl.c:616
+#: mutt_ssl.c:613
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(1)不接受，(2)只是這次接受，(3)永遠接受"
 
-#: mutt_ssl.c:617
+#: mutt_ssl.c:614
 msgid "roa"
 msgstr "123"
 
-#: mutt_ssl.c:621
+#: mutt_ssl.c:618
 msgid "(r)eject, accept (o)nce"
 msgstr "(1)不接受，(2)只是這次接受"
 
-#: mutt_ssl.c:622
+#: mutt_ssl.c:619
 msgid "ro"
 msgstr "12"
 
-#: mutt_ssl.c:626 pgpkey.c:510
+#: mutt_ssl.c:623 pgpkey.c:510
 msgid "Exit  "
 msgstr "離開  "
 
-#: mutt_ssl.c:652
+#: mutt_ssl.c:649
 msgid "Warning: Couldn't save certificate"
 msgstr "警告：未能儲存驗証"
 
-#: mutt_ssl.c:657
+#: mutt_ssl.c:654
 msgid "Certificate saved"
 msgstr "驗証已儲存"
 
@@ -2873,7 +2873,7 @@ msgstr "信箱被標記成為無法寫入的. %s"
 msgid "Mailbox checkpointed."
 msgstr ""
 
-#: mx.c:1490
+#: mx.c:1496
 msgid "Can't write message"
 msgstr "無法寫信件"
 
@@ -2881,48 +2881,48 @@ msgstr "無法寫信件"
 msgid "Not available in this menu."
 msgstr "在這個菜單中沒有這個功能。"
 
-#: pager.c:1431
+#: pager.c:1436
 msgid "PrevPg"
 msgstr "上一頁"
 
-#: pager.c:1432
+#: pager.c:1437
 msgid "NextPg"
 msgstr "下一頁"
 
-#: pager.c:1436
+#: pager.c:1441
 msgid "View Attachm."
 msgstr "顯示附件。"
 
-#: pager.c:1439
+#: pager.c:1444
 msgid "Next"
 msgstr "下一個"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1817 pager.c:1848 pager.c:1880 pager.c:2100
+#: pager.c:1822 pager.c:1853 pager.c:1885 pager.c:2105
 msgid "Bottom of message is shown."
 msgstr "現正顯示最下面的信件。"
 
-#: pager.c:1833 pager.c:1855 pager.c:1862 pager.c:1869
+#: pager.c:1838 pager.c:1860 pager.c:1867 pager.c:1874
 msgid "Top of message is shown."
 msgstr "現正顯示最上面的信件。"
 
-#: pager.c:1942
+#: pager.c:1947
 msgid "Reverse search: "
 msgstr "反向搜尋："
 
-#: pager.c:1943
+#: pager.c:1948
 msgid "Search: "
 msgstr "搜尋："
 
-#: pager.c:2038
+#: pager.c:2043
 msgid "Help is currently being shown."
 msgstr "現正顯示說明文件。"
 
-#: pager.c:2067
+#: pager.c:2072
 msgid "No more quoted text."
 msgstr "不能有再多的引言。"
 
-#: pager.c:2080
+#: pager.c:2085
 msgid "No more unquoted text after quoted text."
 msgstr "在引言後有過多的非引言文字。"
 
@@ -2930,85 +2930,85 @@ msgstr "在引言後有過多的非引言文字。"
 msgid "multipart message has no boundary parameter!"
 msgstr "多部份郵件沒有分隔的參數!"
 
-#: pattern.c:251
+#: pattern.c:252
 #, c-format
 msgid "Error in expression: %s"
 msgstr "表達式有錯誤：%s"
 
-#: pattern.c:361
+#: pattern.c:362
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "無效的日子：%s"
 
-#: pattern.c:375
+#: pattern.c:376
 #, c-format
 msgid "Invalid month: %s"
 msgstr "無效的月份：%s"
 
 #. getDate has its own error message, don't overwrite it here
-#: pattern.c:527
+#: pattern.c:528
 #, c-format
 msgid "Invalid relative date: %s"
 msgstr "無效的相對日期：%s"
 
-#: pattern.c:541
+#: pattern.c:542
 msgid "error in expression"
 msgstr "表達式有錯誤"
 
-#: pattern.c:747 pattern.c:855
+#: pattern.c:748 pattern.c:856
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "在樣式上有錯誤：%s"
 
-#: pattern.c:795
+#: pattern.c:796
 #, c-format
 msgid "%c: invalid command"
 msgstr "%c：無效的指令"
 
-#: pattern.c:801
+#: pattern.c:802
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c：在這個模式不支援"
 
-#: pattern.c:814
+#: pattern.c:815
 msgid "missing parameter"
 msgstr "錯失參數"
 
-#: pattern.c:830
+#: pattern.c:831
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "不對稱的括弧：%s"
 
-#: pattern.c:862
+#: pattern.c:863
 msgid "empty pattern"
 msgstr "空的格式"
 
-#: pattern.c:1054
+#: pattern.c:1057
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "錯誤：不明的 op %d (請回報這個錯誤)。"
 
-#: pattern.c:1123 pattern.c:1252
+#: pattern.c:1126 pattern.c:1255
 msgid "Compiling search pattern..."
 msgstr "編譯搜尋樣式中…"
 
-#: pattern.c:1137
+#: pattern.c:1140
 msgid "Executing command on matching messages..."
 msgstr "正在對符合的郵件執行命令…"
 
-#: pattern.c:1200
+#: pattern.c:1203
 msgid "No messages matched criteria."
 msgstr "沒有郵件符合要求。"
 
-#: pattern.c:1290
+#: pattern.c:1293
 msgid "Search hit bottom without finding match"
 msgstr "已搜尋至結尾，並沒有發現任何符合"
 
-#: pattern.c:1301
+#: pattern.c:1304
 msgid "Search hit top without finding match"
 msgstr "已搜尋至開頭，並沒有發現任何符合"
 
-#: pattern.c:1323
+#: pattern.c:1326
 msgid "Search interrupted."
 msgstr "搜尋已被中斷。"
 
@@ -3240,19 +3240,22 @@ msgid "This key can't be used: expired/disabled/revoked."
 msgstr "這個鑰匙不能使用：過期/停用/已取消。"
 
 #: pgpkey.c:608
-msgid "This ID is expired/disabled/revoked"
+#, fuzzy
+msgid "ID is expired/disabled/revoked."
 msgstr "這個 ID 已過期/停用/取消。"
 
 #: pgpkey.c:612
-msgid "This ID's validity level is undefined."
-msgstr "這個 ID 的可接受程度不明。"
+msgid "ID has undefined validity."
+msgstr ""
 
 #: pgpkey.c:615
-msgid "This ID is not valid."
+#, fuzzy
+msgid "ID is not valid."
 msgstr "這個 ID 不可接受。"
 
 #: pgpkey.c:618
-msgid "This ID is only marginally valid."
+#, fuzzy
+msgid "ID is only marginally valid."
 msgstr "此 ID 只是勉強可接受。"
 
 #: pgpkey.c:622
@@ -3781,6 +3784,9 @@ msgstr "在限制閱覽模式下無法顯示主信件。"
 #: thread.c:1008
 msgid "Parent message is not available."
 msgstr "主信件不存在。"
+
+#~ msgid "This ID's validity level is undefined."
+#~ msgstr "這個 ID 的可接受程度不明。"
 
 #~ msgid "Decode-save"
 #~ msgstr "解碼並儲存"

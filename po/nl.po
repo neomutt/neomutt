@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2002-01-01 21:18+0100\n"
+"POT-Creation-Date: 2002-01-15 10:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Johan van Selst <johans@stack.nl>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,12 +20,12 @@ msgstr "Hernoemen naar: "
 msgid "Password for %s@%s: "
 msgstr "Wachtwoord voor %s@%s: "
 
-#: addrbook.c:31 browser.c:40 pager.c:1430 postpone.c:37 query.c:43
+#: addrbook.c:31 browser.c:40 pager.c:1435 postpone.c:37 query.c:43
 #: recvattach.c:57
 msgid "Exit"
 msgstr "Afsluiten"
 
-#: addrbook.c:32 curs_main.c:398 pager.c:1437 postpone.c:38
+#: addrbook.c:32 curs_main.c:398 pager.c:1442 postpone.c:38
 msgid "Del"
 msgstr "Wis"
 
@@ -38,8 +38,8 @@ msgid "Select"
 msgstr "Selecteren"
 
 #. __STRCAT_CHECKED__
-#: addrbook.c:35 browser.c:43 compose.c:93 curs_main.c:404 mutt_ssl.c:628
-#: pager.c:1529 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
+#: addrbook.c:35 browser.c:43 compose.c:93 curs_main.c:404 mutt_ssl.c:625
+#: pager.c:1534 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Hulp"
 
@@ -81,7 +81,7 @@ msgstr "Opslaan als: "
 msgid "Alias added."
 msgstr "Adres toegevoegd."
 
-#: attach.c:111 attach.c:238 attach.c:431 attach.c:910
+#: attach.c:111 attach.c:238 attach.c:431 attach.c:915
 msgid "Can't match nametemplate, continue?"
 msgstr "Naamsjabloon kan niet worden ingevuld, doorgaan?"
 
@@ -133,20 +133,20 @@ msgstr "MIME type is niet gedefinieerd. Kan bijlage niet weergeven."
 msgid "Cannot create filter"
 msgstr "Filter kan niet worden aangemaakt."
 
-#: attach.c:629 attach.c:661 attach.c:943 attach.c:1001 handler.c:1544
+#: attach.c:629 attach.c:661 attach.c:948 attach.c:1006 handler.c:1544
 #: pgpkey.c:566 pgpkey.c:755
 msgid "Can't create filter"
 msgstr "Kan filter niet aanmaken"
 
-#: attach.c:725 recvattach.c:419 recvattach.c:479
+#: attach.c:736 recvattach.c:419 recvattach.c:479
 msgid "Attachment saved."
 msgstr "Bijlage opgeslagen."
 
-#: attach.c:782
+#: attach.c:787
 msgid "Write fault!"
 msgstr "Fout bij schrijven!"
 
-#: attach.c:1024
+#: attach.c:1029
 msgid "I don't know how to print that!"
 msgstr "Ik weet niet hoe dit afgedrukt moet worden!"
 
@@ -673,7 +673,7 @@ msgstr "nee"
 msgid "Exit Mutt?"
 msgstr "Mutt afsluiten?"
 
-#: curs_lib.c:326 mutt_socket.c:483 mutt_ssl.c:324
+#: curs_lib.c:326 mutt_socket.c:483 mutt_ssl.c:321
 msgid "unknown error"
 msgstr "onbekende vaud."
 
@@ -731,7 +731,7 @@ msgstr "Opslaan"
 msgid "Mail"
 msgstr "Sturen"
 
-#: curs_main.c:402 pager.c:1438
+#: curs_main.c:402 pager.c:1443
 msgid "Reply"
 msgstr "Antw."
 
@@ -835,11 +835,11 @@ msgstr "Alle berichten zijn gewist."
 msgid "You are on the first message."
 msgstr "U bent bij het eerste bericht."
 
-#: curs_main.c:1267 pattern.c:1287
+#: curs_main.c:1267 pattern.c:1290
 msgid "Search wrapped to top."
 msgstr "Zoekopdracht bovenaan begonnen."
 
-#: curs_main.c:1276 pattern.c:1298
+#: curs_main.c:1276 pattern.c:1301
 msgid "Search wrapped to bottom."
 msgstr "Zoekopdracht onderaan begonnen."
 
@@ -855,7 +855,7 @@ msgstr "Geen ongelezen berichten"
 msgid " in this limited view"
 msgstr " in deze beperkte weergave."
 
-#: curs_main.c:1331 pager.c:2291
+#: curs_main.c:1331 pager.c:2296
 #, fuzzy
 msgid "Can't change 'important' flag on POP server."
 msgstr "Berichten op de server worden gewist..."
@@ -2521,7 +2521,7 @@ msgstr "U bent op het laatste item."
 msgid "You are on the first entry."
 msgstr "U bent op het eerste item."
 
-#: menu.c:724 pattern.c:1233
+#: menu.c:724 pattern.c:1236
 msgid "Search for: "
 msgstr "Zoek naar: "
 
@@ -2529,11 +2529,11 @@ msgstr "Zoek naar: "
 msgid "Reverse search for: "
 msgstr "Zoek achteruit naar: "
 
-#: menu.c:735 pattern.c:1266
+#: menu.c:735 pattern.c:1269
 msgid "No search pattern."
 msgstr "Geen zoekpatroon."
 
-#: menu.c:765 pager.c:1908 pager.c:1924 pager.c:2012 pattern.c:1331
+#: menu.c:765 pager.c:1913 pager.c:1929 pager.c:2017 pattern.c:1334
 msgid "Not found."
 msgstr "Niet gevonden."
 
@@ -2628,125 +2628,125 @@ msgstr "Bezig met verbinden met %s..."
 msgid "Could not connect to %s (%s)."
 msgstr "Kan %s niet openen."
 
-#: mutt_ssl.c:173
+#: mutt_ssl.c:170
 msgid "Failed to find enough entropy on your system"
 msgstr ""
 
-#: mutt_ssl.c:197
+#: mutt_ssl.c:194
 #, c-format
 msgid "Filling entropy pool: %s...\n"
 msgstr ""
 
-#: mutt_ssl.c:205
+#: mutt_ssl.c:202
 #, c-format
 msgid "%s has insecure permissions!"
 msgstr ""
 
-#: mutt_ssl.c:224
+#: mutt_ssl.c:221
 msgid "SSL disabled due the lack of entropy"
 msgstr ""
 
-#: mutt_ssl.c:318
+#: mutt_ssl.c:315
 msgid "I/O error"
 msgstr ""
 
-#: mutt_ssl.c:321
+#: mutt_ssl.c:318
 msgid "unspecified protocol error"
 msgstr ""
 
-#: mutt_ssl.c:327
+#: mutt_ssl.c:324
 #, fuzzy, c-format
 msgid "SSL failed: %s"
 msgstr "Aanmelden mislukt..."
 
-#: mutt_ssl.c:336
+#: mutt_ssl.c:333
 msgid "Unable to get certificate from peer"
 msgstr "Kan server certificaat niet verkrijgen"
 
-#: mutt_ssl.c:344
+#: mutt_ssl.c:341
 #, fuzzy, c-format
 msgid "SSL connection using %s (%s)"
 msgstr "SSL verbinding via %s"
 
-#: mutt_ssl.c:384
+#: mutt_ssl.c:381
 msgid "Unknown"
 msgstr "Onbekende vaud"
 
-#: mutt_ssl.c:409
+#: mutt_ssl.c:406
 msgid "[unable to calculate]"
 msgstr "[kan niet berekend worden]"
 
-#: mutt_ssl.c:427
+#: mutt_ssl.c:424
 #, fuzzy
 msgid "[invalid date]"
 msgstr "%s: ongeldige waarde"
 
-#: mutt_ssl.c:502
+#: mutt_ssl.c:499
 msgid "Server certificate is not yet valid"
 msgstr ""
 
-#: mutt_ssl.c:509
+#: mutt_ssl.c:506
 #, fuzzy
 msgid "Server certificate has expired"
 msgstr "Dit certificaat is uitgegeven door:"
 
-#: mutt_ssl.c:582
+#: mutt_ssl.c:579
 msgid "This certificate belongs to:"
 msgstr "Dit certificaat behoort aan:"
 
-#: mutt_ssl.c:592
+#: mutt_ssl.c:589
 msgid "This certificate was issued by:"
 msgstr "Dit certificaat is uitgegeven door:"
 
-#: mutt_ssl.c:602
+#: mutt_ssl.c:599
 #, fuzzy
 msgid "This certificate is valid"
 msgstr "Dit certificaat is uitgegeven door:"
 
-#: mutt_ssl.c:603
+#: mutt_ssl.c:600
 #, c-format
 msgid "   from %s"
 msgstr ""
 
-#: mutt_ssl.c:605
+#: mutt_ssl.c:602
 #, c-format
 msgid "     to %s"
 msgstr ""
 
-#: mutt_ssl.c:611
+#: mutt_ssl.c:608
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "Handtekening: %s"
 
-#: mutt_ssl.c:613
+#: mutt_ssl.c:610
 msgid "SSL Certificate check"
 msgstr "SSL certificaat controle"
 
-#: mutt_ssl.c:616
+#: mutt_ssl.c:613
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(w)eigeren, (e)enmalig toelaten, (a)ltijd toelaten"
 
-#: mutt_ssl.c:617
+#: mutt_ssl.c:614
 msgid "roa"
 msgstr "wea"
 
-#: mutt_ssl.c:621
+#: mutt_ssl.c:618
 msgid "(r)eject, accept (o)nce"
 msgstr "(w)eigeren, (e)enmalig toelaten"
 
-#: mutt_ssl.c:622
+#: mutt_ssl.c:619
 msgid "ro"
 msgstr "we"
 
-#: mutt_ssl.c:626 pgpkey.c:510
+#: mutt_ssl.c:623 pgpkey.c:510
 msgid "Exit  "
 msgstr "Einde "
 
-#: mutt_ssl.c:652
+#: mutt_ssl.c:649
 msgid "Warning: Couldn't save certificate"
 msgstr "Waarschuwing: certificaat kan niet bewaard worden"
 
-#: mutt_ssl.c:657
+#: mutt_ssl.c:654
 msgid "Certificate saved"
 msgstr "Certificaat wordt bewaard"
 
@@ -2851,7 +2851,7 @@ msgstr "De mailfolder is als schrijfbeveiligd gemarkeerd. %s"
 msgid "Mailbox checkpointed."
 msgstr "Mailfolder is verwijderd."
 
-#: mx.c:1490
+#: mx.c:1496
 msgid "Can't write message"
 msgstr "Kan bericht niet wegschrijven"
 
@@ -2859,48 +2859,48 @@ msgstr "Kan bericht niet wegschrijven"
 msgid "Not available in this menu."
 msgstr "Optie niet beschikbaar in dit menu."
 
-#: pager.c:1431
+#: pager.c:1436
 msgid "PrevPg"
 msgstr "Vorig.P"
 
-#: pager.c:1432
+#: pager.c:1437
 msgid "NextPg"
 msgstr "Volg.P"
 
-#: pager.c:1436
+#: pager.c:1441
 msgid "View Attachm."
 msgstr "Bijlagen tonen"
 
-#: pager.c:1439
+#: pager.c:1444
 msgid "Next"
 msgstr "Volgend ber."
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1817 pager.c:1848 pager.c:1880 pager.c:2100
+#: pager.c:1822 pager.c:1853 pager.c:1885 pager.c:2105
 msgid "Bottom of message is shown."
 msgstr "Einde van bericht is weergegeven."
 
-#: pager.c:1833 pager.c:1855 pager.c:1862 pager.c:1869
+#: pager.c:1838 pager.c:1860 pager.c:1867 pager.c:1874
 msgid "Top of message is shown."
 msgstr "Begin van bericht is weergegeven."
 
-#: pager.c:1942
+#: pager.c:1947
 msgid "Reverse search: "
 msgstr "Achteruit zoeken: "
 
-#: pager.c:1943
+#: pager.c:1948
 msgid "Search: "
 msgstr "Zoeken: "
 
-#: pager.c:2038
+#: pager.c:2043
 msgid "Help is currently being shown."
 msgstr "Hulp wordt al weergegeven."
 
-#: pager.c:2067
+#: pager.c:2072
 msgid "No more quoted text."
 msgstr "Geen verdere geciteerde text."
 
-#: pager.c:2080
+#: pager.c:2085
 msgid "No more unquoted text after quoted text."
 msgstr "Geen verdere eigen text na geciteerde text."
 
@@ -2908,85 +2908,85 @@ msgstr "Geen verdere eigen text na geciteerde text."
 msgid "multipart message has no boundary parameter!"
 msgstr "Multi-part bericht heeft geen \"boundary\" parameter."
 
-#: pattern.c:251
+#: pattern.c:252
 #, c-format
 msgid "Error in expression: %s"
 msgstr "Fout in expressie: %s"
 
-#: pattern.c:361
+#: pattern.c:362
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "Ongeldige dag van de maand: %s"
 
-#: pattern.c:375
+#: pattern.c:376
 #, c-format
 msgid "Invalid month: %s"
 msgstr "Ongeldige maand: %s"
 
 #. getDate has its own error message, don't overwrite it here
-#: pattern.c:527
+#: pattern.c:528
 #, fuzzy, c-format
 msgid "Invalid relative date: %s"
 msgstr "Ongeldige maand: %s"
 
-#: pattern.c:541
+#: pattern.c:542
 msgid "error in expression"
 msgstr "Fout in expressie"
 
-#: pattern.c:747 pattern.c:855
+#: pattern.c:748 pattern.c:856
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "Fout in expressie bij: %s"
 
-#: pattern.c:795
+#: pattern.c:796
 #, c-format
 msgid "%c: invalid command"
 msgstr "%c: Ongeldig commando"
 
-#: pattern.c:801
+#: pattern.c:802
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: Niet ondersteund in deze modus"
 
-#: pattern.c:814
+#: pattern.c:815
 msgid "missing parameter"
 msgstr "Te weinig parameters"
 
-#: pattern.c:830
+#: pattern.c:831
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "Haakjes kloppen niet: %s"
 
-#: pattern.c:862
+#: pattern.c:863
 msgid "empty pattern"
 msgstr "Leeg patroon"
 
-#: pattern.c:1054
+#: pattern.c:1057
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "fout: onbekende operatie %d (interne fout)."
 
-#: pattern.c:1123 pattern.c:1252
+#: pattern.c:1126 pattern.c:1255
 msgid "Compiling search pattern..."
 msgstr "Bezig met het compileren van patroon..."
 
-#: pattern.c:1137
+#: pattern.c:1140
 msgid "Executing command on matching messages..."
 msgstr "Commando wordt uitgevoerd..."
 
-#: pattern.c:1200
+#: pattern.c:1203
 msgid "No messages matched criteria."
 msgstr "Geen berichten voldeden aan de criteria."
 
-#: pattern.c:1290
+#: pattern.c:1293
 msgid "Search hit bottom without finding match"
 msgstr "Zoeken heeft einde bereikt zonder iets te vinden"
 
-#: pattern.c:1301
+#: pattern.c:1304
 msgid "Search hit top without finding match"
 msgstr "Zoeken heeft begin bereikt zonder iets te vinden"
 
-#: pattern.c:1323
+#: pattern.c:1326
 msgid "Search interrupted."
 msgstr "Zoeken onderbroken."
 
@@ -3220,22 +3220,21 @@ msgstr "Deze sleutel is onbruikbaar: verlopen/ingetrokken."
 
 #: pgpkey.c:608
 #, fuzzy
-msgid "This ID is expired/disabled/revoked"
+msgid "ID is expired/disabled/revoked."
 msgstr "Deze sleutel is onbruikbaar: verlopen/ingetrokken."
 
 #: pgpkey.c:612
-#, fuzzy
-msgid "This ID's validity level is undefined."
-msgstr "Het vertrouwensniveau van dit ID is niet gedefinieerd."
+msgid "ID has undefined validity."
+msgstr ""
 
 #: pgpkey.c:615
 #, fuzzy
-msgid "This ID is not valid."
+msgid "ID is not valid."
 msgstr "Dit ID is niet vertrouwd."
 
 #: pgpkey.c:618
 #, fuzzy
-msgid "This ID is only marginally valid."
+msgid "ID is only marginally valid."
 msgstr "Dit ID is slechts marginaal vertrouwd."
 
 #: pgpkey.c:622
@@ -3782,6 +3781,10 @@ msgstr "Vorig bericht wordt niet getoond"
 #: thread.c:1008
 msgid "Parent message is not available."
 msgstr "Vorig bericht is niet beschikbaar."
+
+#, fuzzy
+#~ msgid "This ID's validity level is undefined."
+#~ msgstr "Het vertrouwensniveau van dit ID is niet gedefinieerd."
 
 #~ msgid "Decode-save"
 #~ msgstr "Gedecodeerd opslaan"

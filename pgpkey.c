@@ -605,17 +605,17 @@ static pgp_key_t *pgp_select_key (pgp_key_t *keys,
 	char buff[LONG_STRING];
 	
 	if (KeyTable[menu->current]->flags & KEYFLAG_CANTUSE)
-	  s = N_("This ID is expired/disabled/revoked");
+	  s = N_("ID is expired/disabled/revoked.");
 	else switch (KeyTable[menu->current]->trust & 0x03)
 	{
 	  case 0:
-	    s = N_("This ID's validity level is undefined.");
+	    s = N_("ID has undefined validity.");
 	    break;
 	  case 1:
-	    s = N_("This ID is not valid.");
+	    s = N_("ID is not valid.");
 	    break;
 	  case 2:
-	    s = N_("This ID is only marginally valid.");
+	    s = N_("ID is only marginally valid.");
 	    break;
 	}
 
