@@ -230,7 +230,7 @@ void mutt_sort_headers (CONTEXT *ctx, int init)
 	   (AuxSort = mutt_get_sort_func (SortAux)) == NULL)
   {
     mutt_error _("Could not find sorting function! [report this bug]");
-    sleep (1);
+    mutt_sleep (1);
     return;
   }
   else 

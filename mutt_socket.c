@@ -200,7 +200,7 @@ CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account)
     mutt_nss_socket_setup (conn);
 #else
     mutt_error _("SSL is unavailable.");
-    sleep (2);
+    mutt_sleep (2);
     FREE (&conn);
 
     return NULL;
@@ -234,10 +234,10 @@ static int socket_connect (int fd, struct sockaddr* sa)
     dprint (1, (debugfile, "Preconnect result: %d\n", rc));
     if (rc)
     {
-	save_errno = errno;
-	mutt_perror (_("Preconnect command failed."));
-	sleep (1);
-
+      save_errno = errno;
+      mutt_perror (_("Preconnect command failed."));
+      mutt_sleep (1);
+      
       return save_errno;
     }
   }

@@ -320,6 +320,7 @@ int mutt_write_mime_header (BODY *, FILE *);
 int mutt_write_rfc822_header (FILE *, ENVELOPE *, BODY *, int, int);
 int mutt_yesorno (const char *, int);
 void mutt_set_header_color(CONTEXT *, HEADER *);
+void mutt_sleep (short);
 int mutt_save_confirm (const char  *, struct stat *);
 
 int mh_valid_message (const char *);

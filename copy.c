@@ -479,7 +479,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
 	{
 	  mutt_error ("The length calculation was wrong by %ld bytes", fail);
 	  new_length += fail;
-	  sleep (5);
+	  mutt_sleep (1);
 	}
       }
 #endif

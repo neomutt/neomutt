@@ -162,7 +162,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
 
  bail:
   mutt_error _("SASL authentication failed.");
-  sleep(2);
+  mutt_sleep(2);
   sasl_dispose (&saslconn);
 
   return IMAP_AUTH_FAILURE;

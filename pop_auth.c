@@ -152,7 +152,7 @@ bail:
   }
 
   mutt_error _("SASL authentication failed.");
-  sleep (2);
+  mutt_sleep (2);
 
   if (rc == SASL_OK)
     return POP_A_FAILURE;
@@ -212,7 +212,7 @@ static pop_auth_res_t pop_auth_apop (POP_DATA *pop_data)
   }
 
   mutt_error _("APOP authentication failed.");
-  sleep (2);
+  mutt_sleep (2);
 
   return POP_A_SKIP;
 }
@@ -270,7 +270,7 @@ static pop_auth_res_t pop_auth_user (POP_DATA *pop_data)
   }
 
   mutt_error ("%s %s", _("Login failed."), pop_data->err_msg);
-  sleep (2);
+  mutt_sleep (2);
 
   return POP_A_FAILURE;
 }

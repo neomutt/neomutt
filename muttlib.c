@@ -1216,3 +1216,10 @@ void mutt_display_sanitize (char *s)
   }
 }
       
+void mutt_sleep (short s)
+{
+  if (SleepTime > s)
+    sleep (SleepTime);
+  else if (s)
+    sleep (s);
+}

@@ -732,7 +732,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
       unlink (tempfile);
     }
     mutt_error _("Could not create temporary file!");
-    sleep (5);
+    mutt_sleep (5);
     goto bail;
   }
 
@@ -749,7 +749,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
      * never happen, is we presume it is a bug in mutt.
      */
     mutt_error _("sync: mbox modified, but no modified messages! (report this bug)");
-    sleep(5); /* the mutt_error /will/ get cleared! */
+    mutt_sleep(5); /* the mutt_error /will/ get cleared! */
     dprint(1, (debugfile, "mbox_sync_mailbox(): no modified messages.\n"));
     unlink (tempfile);
     goto bail;
@@ -797,7 +797,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
 	if (fputs (MMDF_SEP, fp) == EOF)
 	{
 	  mutt_perror (tempfile);
-	  sleep (5);
+	  mutt_sleep (5);
 	  unlink (tempfile);
 	  goto bail;
 	}
@@ -808,7 +808,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
 	if (fputs (KENDRA_SEP, fp) == EOF)
 	{
 	  mutt_perror (tempfile);
-	  sleep (5);
+	  mutt_sleep (5);
 	  unlink (tempfile);
 	  goto bail;
 	}
@@ -823,7 +823,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
       if (mutt_copy_message (fp, ctx, ctx->hdrs[i], M_CM_UPDATE, CH_FROM | CH_UPDATE | CH_UPDATE_LEN) == -1)
       {
 	mutt_perror (tempfile);
-	sleep (5);
+	mutt_sleep (5);
 	unlink (tempfile);
 	goto bail;
       }
@@ -843,7 +843,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
 	  if(fputs(MMDF_SEP, fp) == EOF) 
 	  {
 	    mutt_perror (tempfile);
-	    sleep (5);
+	    mutt_sleep (5);
 	    unlink (tempfile);
 	    goto bail; 
 	  }
@@ -852,7 +852,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
 	  if(fputs(KENDRA_SEP, fp) == EOF)
 	  {
 	    mutt_perror (tempfile);
-	    sleep (5);
+	    mutt_sleep (5);
 	    unlink (tempfile);
 	    goto bail;
 	  }
@@ -861,7 +861,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
 	  if(fputs("\n", fp) == EOF) 
 	  {
 	    mutt_perror (tempfile);
-	    sleep (5);
+	    mutt_sleep (5);
 	    unlink (tempfile);
 	    goto bail;
 	  }
@@ -875,7 +875,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
     dprint(1, (debugfile, "mbox_sync_mailbox: fclose() returned non-zero.\n"));
     unlink (tempfile);
     mutt_perror (tempfile);
-    sleep (5);
+    mutt_sleep (5);
     goto bail;
   }
   fp = NULL;
@@ -884,7 +884,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   if (stat (ctx->path, &statbuf) == -1)
   {
     mutt_perror (ctx->path);
-    sleep (5);
+    mutt_sleep (5);
     unlink (tempfile);
     goto bail;
   }
@@ -895,7 +895,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
     mx_fastclose_mailbox (ctx);
     dprint (1, (debugfile, "mbox_sync_mailbox: unable to reopen temp copy of mailbox!\n"));
     mutt_perror (tempfile);
-    sleep (5);
+    mutt_sleep (5);
     return (-1);
   }
 
@@ -953,7 +953,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
     mx_fastclose_mailbox (ctx);
     mutt_pretty_mailbox (savefile);
     mutt_error (_("Write failed!  Saved partial mailbox to %s"), savefile);
-    sleep (5);
+    mutt_sleep (5);
     return (-1);
   }
 

@@ -983,8 +983,8 @@ int mutt_index_menu (void)
 	  safe_free ((void **) &Context);
 	}
 
-	sleep (1); /* give a second to read the mailbox status */
-
+        mutt_sleep (0);
+      
 	mutt_folder_hook (buf);
 
 	if ((Context = mx_open_mailbox (buf, 

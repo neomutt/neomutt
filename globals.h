@@ -137,6 +137,7 @@ WHERE short PagerContext;
 WHERE short PagerIndexLines;
 WHERE short ReadInc;
 WHERE short SendmailWait;
+WHERE short SleepTime INITVAL (1);
 WHERE short Timeout;
 WHERE short WriteInc;
 WHERE short ScoreThresholdDelete;

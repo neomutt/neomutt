@@ -260,6 +260,6 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
 
  bail:
   mutt_error _("GSSAPI authentication failed.");
-  sleep (2);
+  mutt_sleep (2);
   return IMAP_AUTH_FAILURE;
 }

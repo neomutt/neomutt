@@ -1880,6 +1880,14 @@ struct option_t MuttVars[] = {
   ** positives of ``$$quote_regexp'', most notably smileys in the beginning
   ** of a line
   */
+  { "sleep_time",	DT_NUM, R_NONE, UL &SleepTime, 1 },
+  /*
+  ** .pp
+  ** Specifies time, in seconds, to pause while displaying certain informational
+  ** messages, while moving from folder to folder and after expunging
+  ** messages from the current folder.  The default is to pause one second, so 
+  ** a value of zero for this option suppresses the pause.
+  */
   { "sort",		DT_SORT, R_INDEX|R_RESORT, UL &Sort, SORT_DATE },
   /*
   ** .pp

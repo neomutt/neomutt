@@ -1175,8 +1175,8 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
     mutt_message (_("%d kept, %d deleted."), msgcount - deleted,
       deleted);
 
-    sleep (1); /* allow the user time to read the message */
-
+    mutt_sleep (0);
+    
     if (ctx->msgcount == ctx->deleted &&
 	(ctx->magic == M_MBOX || ctx->magic == M_MMDF) &&
 	!mutt_is_spool(ctx->path) && !option (OPTSAVEEMPTY))

@@ -170,7 +170,7 @@ int ssl_init (void)
     if (! HAVE_ENTROPY())
     {
       mutt_error (_("Failed to find enough entropy on your system"));
-      sleep (2);
+      mutt_sleep (2);
       return -1;
     }
   }
@@ -202,7 +202,7 @@ static int add_entropy (const char *file)
       ((st.st_mode & (S_IWOTH | S_IROTH)) != 0))
   {
     mutt_error (_("%s has insecure permissions!"), file);
-    sleep (2);
+    mutt_sleep (2);
     return -1;
   }
 
@@ -221,7 +221,7 @@ static int add_entropy (const char *file)
 static int ssl_socket_open_err (CONNECTION *conn)
 {
   mutt_error (_("SSL disabled due the lack of entropy"));
-  sleep (2);
+  mutt_sleep (2);
   return -1;
 }
 
@@ -324,7 +324,7 @@ int ssl_negotiate (sslsockdata* ssldata)
     }
     
     mutt_error ("SSL failed: %s", errmsg);
-    sleep (1);
+    mutt_sleep (1);
 
     return -1;
   }
@@ -333,7 +333,7 @@ int ssl_negotiate (sslsockdata* ssldata)
   if (!ssldata->cert)
   {
     mutt_error (_("Unable to get certificate from peer"));
-    sleep (1);
+    mutt_sleep (1);
     return -1;
   }
 
@@ -342,7 +342,7 @@ int ssl_negotiate (sslsockdata* ssldata)
 
   mutt_message (_("SSL connection using %s (%s)"), 
     SSL_get_cipher_version (ssldata->ssl), SSL_get_cipher_name (ssldata->ssl));
-  sleep (1);
+  mutt_sleep (0);
 
   return 0;
 }
@@ -489,14 +489,14 @@ static int check_certificate_by_digest (X509 *peercert)
   {
     dprint (2, (debugfile, "Server certificate is not yet valid\n"));
     mutt_error (_("Server certificate is not yet valid"));
-    sleep (2);
+    mutt_sleep (2);
     return 0;
   }
   if (X509_cmp_current_time (X509_get_notAfter (peercert)) <= 0)
   {
     dprint (2, (debugfile, "Server certificate has expired"));
     mutt_error (_("Server certificate has expired"));
-    sleep (2);
+    mutt_sleep (2);
     return 0;
   }
 
@@ -637,10 +637,15 @@ static int ssl_check_certificate (sslsockdata * data)
 	  fclose (fp);
 	}
 	if (!done)
+        {
 	  mutt_error (_("Warning: Couldn't save certificate"));
+	  mutt_sleep (2);
+	}
 	else
+        {
 	  mutt_message (_("Certificate saved"));
-	sleep (1);
+	  mutt_sleep (0);
+	}
         /* fall through */
       case OP_MAX + 2:		/* accept once */
         done = 2;

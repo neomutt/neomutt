@@ -216,7 +216,7 @@ int imap_exec (IMAP_DATA* idata, const char* cmd, int flags)
     pc = idata->cmd.buf;
     pc = imap_next_word (pc);
     mutt_error ("%s", pc);
-    sleep (2);
+    mutt_sleep (2);
 
     return -1;
   }
@@ -368,7 +368,7 @@ static int cmd_handle_untagged (IMAP_DATA* idata)
 
     /* Display the warning message from the server */
     mutt_error ("%s", s+3);
-    sleep (2);
+    mutt_sleep (2);
   }
 
   return 0;

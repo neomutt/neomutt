@@ -270,7 +270,7 @@ int imap_mailbox_create (const char* folder)
     goto fail;
 
   mutt_message _("Mailbox created.");
-  sleep (1);
+  mutt_sleep (0);
 
   FREE (&mx.mbox);
   return 0;

@@ -240,7 +240,7 @@ int pop_open_mailbox (CONTEXT *ctx)
   if (pop_parse_path (ctx->path, &acct))
   {
     mutt_error ("%s is an invalid POP path", ctx->path);
-    sleep (2);
+    mutt_sleep (2);
     return -1;
   }
 
@@ -276,7 +276,7 @@ int pop_open_mailbox (CONTEXT *ctx)
 
     if (ret < -1)
     {
-      sleep (2);
+      mutt_sleep (2);
       return -1;
     }
   }
@@ -351,7 +351,7 @@ int pop_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno)
 	return 0;
 
       mutt_perror (cache->path);
-      sleep (2);
+      mutt_sleep (2);
       return -1;
     }
     else
@@ -371,7 +371,7 @@ int pop_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno)
     if (h->refno < 0)
     {
       mutt_error _("The message index is incorrect. Try reopening the mailbox.");
-      sleep (2);
+      mutt_sleep (2);
       return -1;
     }
 
@@ -382,7 +382,7 @@ int pop_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno)
     if (!msg->fp)
     {
       mutt_perror (path);
-      sleep (2);
+      mutt_sleep (2);
       return -1;
     }
 
@@ -398,14 +398,14 @@ int pop_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno)
     if (ret == -2)
     {
       mutt_error ("%s", pop_data->err_msg);
-      sleep (2);
+      mutt_sleep (2);
       return -1;
     }
 
     if (ret == -3)
     {
       mutt_error _("Can't write message to temporary file!");
-      sleep (2);
+      mutt_sleep (2);
       return -1;
     }
   }
@@ -483,7 +483,7 @@ int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
     if (ret == -2)
     {
       mutt_error ("%s", pop_data->err_msg);
-      sleep (2);
+      mutt_sleep (2);
       return -1;
     }
   }

@@ -340,7 +340,7 @@ void menu_redraw_prompt (MUTTMENU *menu)
   {
     if (option (OPTMSGERR)) 
     {
-      sleep (1);
+      mutt_sleep (1);
       unset_option (OPTMSGERR);
     }
 

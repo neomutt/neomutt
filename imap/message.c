@@ -72,7 +72,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   else
   {	/* Unable to fetch headers for lower versions */
     mutt_error _("Unable to fetch headers from this IMAP server version.");
-    sleep (2);	/* pause a moment to let the user see the error */
+    mutt_sleep (2);	/* pause a moment to let the user see the error */
     return -1;
   }
 
@@ -476,7 +476,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
     SKIPWS (pc);
     pc = imap_next_word (pc);
     mutt_error ("%s", pc);
-    sleep (1);
+    mutt_sleep (1);
     fclose (fp);
     goto fail;
   }
@@ -514,7 +514,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
     SKIPWS (pc);
     pc = imap_next_word (pc);
     mutt_error ("%s", pc);
-    sleep (1);
+    mutt_sleep (1);
     goto fail;
   }
 

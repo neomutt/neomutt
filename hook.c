@@ -292,7 +292,7 @@ void mutt_folder_hook (char *path)
 	{
 	  mutt_error ("%s", err.data);
 	  FREE (&token.data);
-	  sleep (1);	/* pause a moment to let the user see the error */
+	  mutt_sleep (1);	/* pause a moment to let the user see the error */
 	  current_hook_type = 0;
 	  return;
 	}
@@ -339,7 +339,7 @@ void mutt_message_hook (CONTEXT *ctx, HEADER *hdr, int type)
 	{
 	  FREE (&token.data);
 	  mutt_error ("%s", err.data);
-	  sleep (1);
+	  mutt_sleep (1);
 	  current_hook_type = 0;
 	  return;
 	}

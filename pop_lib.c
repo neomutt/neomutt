@@ -235,7 +235,7 @@ int pop_open_connection (POP_DATA *pop_data)
   ret = pop_connect (pop_data);
   if (ret < 0)
   {
-    sleep (2);
+    mutt_sleep (2);
     return ret;
   }
 
@@ -244,7 +244,7 @@ int pop_open_connection (POP_DATA *pop_data)
     goto err_conn;
   if (ret == -2)
   {
-    sleep (2);
+    mutt_sleep (2);
     return -2;
   }
 
@@ -262,7 +262,7 @@ int pop_open_connection (POP_DATA *pop_data)
   if (ret == -2)
   {
     mutt_error ("%s", pop_data->err_msg);
-    sleep (2);
+    mutt_sleep (2);
     return ret;
   }
 
@@ -272,7 +272,7 @@ int pop_open_connection (POP_DATA *pop_data)
 err_conn:
   pop_data->status = POP_DISCONNECTED;
   mutt_error _("Server closed connection!");
-  sleep (2);
+  mutt_sleep (2);
   return -1;
 }
 
@@ -462,7 +462,7 @@ int pop_reconnect (CONTEXT *ctx)
       if (ret == -2)
       {
         mutt_error ("%s", pop_data->err_msg);
-        sleep (2);
+        mutt_sleep (2);
       }
     }
     if (ret == 0)

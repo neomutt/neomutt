@@ -292,7 +292,7 @@ static int imap_check_capabilities (IMAP_DATA* idata)
       ||mutt_bit_isset(idata->capabilities,IMAP4REV1)))
   {
     mutt_error _("This IMAP server is ancient. Mutt does not work with it.");
-    sleep (5);	/* pause a moment to let the user see the error */
+    mutt_sleep (5);	/* pause a moment to let the user see the error */
 
     return -1;
   }
@@ -361,7 +361,7 @@ int imap_open_connection (IMAP_DATA* idata)
   if (mutt_socket_open (idata->conn) < 0)
   {
     mutt_error (_("Connection to %s failed."), idata->conn->account.host);
-    sleep (1);
+    mutt_sleep (1);
     return -1;
   }
 
@@ -390,7 +390,7 @@ int imap_open_connection (IMAP_DATA* idata)
 	  if (mutt_ssl_starttls (idata->conn))
 	  {
 	    mutt_error ("Could not negotiate TLS connection");
-	    sleep (1);
+	    mutt_sleep (1);
 	    goto bail;
 	  }
 	  else
@@ -593,7 +593,7 @@ int imap_open_mailbox (CONTEXT* ctx)
     s = imap_next_word (idata->cmd.buf); /* skip seq */
     s = imap_next_word (s); /* Skip response */
     mutt_error ("%s", s);
-    sleep (2);
+    mutt_sleep (2);
     goto fail;
   }
 
