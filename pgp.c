@@ -146,7 +146,7 @@ static void pgp_current_time (STATE *s)
 }
 
 
-/* copy PGP output messages and look for signs of a good signature */
+/* Copy PGP output messages and look for signs of a good signature */
 
 static int pgp_copy_checksig (FILE *fpin, FILE *fpout)
 {
@@ -177,13 +177,81 @@ static int pgp_copy_checksig (FILE *fpin, FILE *fpout)
   return rv;
 }
 
+/* 
+ * Copy a clearsigned message, and strip the signature and PGP's
+ * dash-escaping.
+ */
+
+static long pgp_copy_clearsigned (STATE *s, long bytes)
+{
+  long last_pos, offset;
+  char buf[HUGE_STRING];
+  short complete, armor_header, have_sig;
+
+  last_pos = ftell (s->fpin);
+  
+  for (complete = 1, armor_header = 1, have_sig = 0;
+       bytes > 0 && fgets (buf, sizeof (buf), s->fpin) != NULL;  
+       complete = strchr (buf, '\n') != NULL)
+  {
+    offset   = ftell (s->fpin);
+    bytes   -= (offset - last_pos);
+    last_pos = offset;
+    
+    if (!complete)
+    {
+      if (!armor_header)
+	state_puts (buf, s);
+      continue;
+    }
+
+    if (mutt_strcmp (buf, "-----BEGIN PGP SIGNATURE-----\n") == 0)
+    {
+      have_sig = 1;
+      break;
+    }
+    
+    if (armor_header)
+    {
+      if (buf[0] == '\n') 
+	armor_header = 0;
+      continue;
+    }
+    
+    if (s->prefix) 
+      state_puts (s->prefix, s);
+    
+    if (buf[0] == '-' && buf[1] == ' ')
+      state_puts (buf + 2, s);
+    else
+      state_puts (buf, s);
+  }
+  
+  if (!have_sig)
+    return bytes;
+    
+  for (complete = 1;
+       bytes > 0 && fgets (buf, sizeof (buf), s->fpin) != NULL;
+       complete = strchr (buf, '\n') != NULL)
+  {
+    offset   = ftell (s->fpin);
+    bytes   -= (offset - last_pos);
+    last_pos = offset;
+    
+    if (mutt_strcmp (buf, "-----END PGP SIGNATURE-----\n") == 0)
+      break;
+  }
+  
+  return bytes;
+}
+
 
 /* Support for the Application/PGP Content Type. */
 
 void pgp_application_pgp_handler (BODY *m, STATE *s)
 {
   int needpass = -1, pgp_keyblock = 0;
-  int clearsign = 0, rv;
+  int clearsign = 0, rv, rc;
   long start_pos = 0;
   long bytes, last_pos, offset;
   char buf[HUGE_STRING];
@@ -203,6 +271,7 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
   {
     if (fgets (buf, sizeof (buf) - 1, s->fpin) == NULL)
       break;
+    
     offset = ftell (s->fpin);
     bytes -= (offset - last_pos); /* don't rely on mutt_strlen(buf) */
     last_pos = offset;
@@ -248,10 +317,10 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 	}
 	
 	mutt_mktemp (tmpfname);
-	if ((tmpfp = safe_fopen(tmpfname, "w+")) == NULL)
+	if ((tmpfp = safe_fopen (tmpfname, "w+")) == NULL)
 	{
-	  mutt_perror(tmpfname);
-	  fclose(pgpout); pgpout = NULL;
+	  mutt_perror (tmpfname);
+	  safe_fclose (&pgpout); 
 	  return;
 	}
 	
@@ -270,7 +339,7 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 	    break;
 	}
 
-	fclose(tmpfp);
+	safe_fclose (&tmpfp);
 	
 	if ((thepid = pgp_invoke_decode (&pgpin, NULL,
 					  &pgperr, -1,
@@ -300,14 +369,20 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 	
 	rv = mutt_wait_filter (thepid);
 
-	mutt_unlink(tmpfname);
+	mutt_unlink (tmpfname);
 	
 	if (s->flags & M_DISPLAY)
-	  if (pgp_copy_checksig (pgperr, s->fpout) != 0 || rv != 0)
+	{
+	  rc = pgp_copy_checksig (pgperr, s->fpout);
+	  
+	  if (rc == 0)
+	    have_any_sigs = 1;
+	  if (rc || rv)
 	    maybe_goodsig = 0;
-	
+	}
+
 	safe_fclose (&pgperr);
-	
+
 	if (s->flags & M_DISPLAY)
 	  state_puts (_("\n[-- End of PGP output --]\n\n"), s);
       }
@@ -351,72 +426,12 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
       
       if(clearsign)
       {
-
-	/* rationale: We want PGP's error messages, but in the times
-	 * of PGP 5.0 we can't rely on PGP to do the dash
-	 * escape decoding - so we have to do this
-	 * ourselves.
-	 */
-	
-	int armor_header = 1;
-	int complete = 1;
-	
 	fseek(s->fpin, start_pos, SEEK_SET);
-	bytes += (last_pos - start_pos);
-	last_pos = start_pos;
-	offset = start_pos;
-	while(bytes > 0 && fgets(buf, sizeof(buf) - 1, s->fpin) != NULL)
-	{
-	  offset = ftell(s->fpin);
-	  bytes -= (offset - last_pos);
-	  last_pos = offset;
-
-	  if(complete)
-	  {
-	    if (!mutt_strcmp(buf, "-----BEGIN PGP SIGNATURE-----\n"))
-	      break;
-	    
-	    if(armor_header)
-	    {
-	      if(*buf == '\n')
-		armor_header = 0;
-	    }
-	    else
-	    {
-	      if(s->prefix)
-		state_puts(s->prefix, s);
-	      
-	      if(buf[0] == '-' && buf [1] == ' ')
-		state_puts(buf + 2, s);
-	      else
-		state_puts(buf, s);
-	    }
-	  } 
-	  else 
-	  {
-	    if(!armor_header)
-	      state_puts(buf, s);
-	  }
-	  
-	  complete = strchr(buf, '\n') != NULL;
-	}
-	
-	if (complete && !mutt_strcmp(buf, "-----BEGIN PGP SIGNATURE-----\n"))
-	{
-	  while(bytes > 0 && fgets(buf, sizeof(buf) - 1, s->fpin) != NULL)
-	  {
-	    offset = ftell(s->fpin);
-	    bytes -= (offset - last_pos);
-	    last_pos = offset;
-	    
-	    if(complete && !mutt_strcmp(buf, "-----END PGP SIGNATURE-----\n"))
-	      break;
-	    
-	    complete = strchr(buf, '\n') != NULL;
-	  }
-	}
+	bytes   += (last_pos - start_pos);
+	bytes    = pgp_copy_clearsigned (s, bytes);
+	last_pos = ftell (s->fpin);
       }
-      
+
       if (s->flags & M_DISPLAY)
       {
 	if (needpass)
@@ -577,8 +592,8 @@ int pgp_query (BODY *m)
 
   t |= mutt_is_application_pgp (m);
 
-  if ((t & PGPSIGN) && m->goodsig)
-    t |= PGPGOODSIGN;
+  if ((t & (PGPSIGN|PGPENCRYPT)) && m->goodsig)
+    t |= PGPGOODSIGN|PGPSIGN;
   else if (m->type == TYPEMULTIPART)
   {
     if (mutt_is_multipart_signed(m))
