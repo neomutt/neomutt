@@ -1,6 +1,9 @@
 Major changes since 1.2
 -----------------------
 
+- There is a $print_split option.  Use it if your $print_cmd is
+  "enscript -Email", or something similar.
+
 - The $send_charset variable now contains a colon-separated list of
   possible send character sets, by default it's
   us-ascii:iso-8859-1:utf-8.  Mutt selects the first character set
