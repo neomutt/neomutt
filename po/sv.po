@@ -1,9 +1,9 @@
 # $Id$
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.1.7\n"
+"Project-Id-Version: Mutt 1.1.9\n"
 "POT-Creation-Date: 2000-03-13 19:41+0100\n"
-"PO-Revision-Date: 2000-03-11 14:46+01:00\n"
+"PO-Revision-Date: 2000-03-14 14:46+01:00\n"
 "Last-Translator: Jörgen Tegnér <teg@post.netlink.se>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -195,12 +195,11 @@ msgstr "Filmask: "
 
 #: browser.c:995
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
-msgstr ""
-"Omvänd sortering efter (d)atum, (a)lpha), (s)torlek eller i(n)te alls? "
+msgstr "Sortera omvänt efter (d)atum, (a)lpha, (s)torlek eller i(n)te alls? "
 
 #: browser.c:996
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
-msgstr "Sortering efter (d)atum, (a)lpha), (s)torlek eller i(n)te alls? "
+msgstr "Sortera efter (d)atum, (a)lpha, (s)torlek eller i(n)te alls? "
 
 #: browser.c:997
 msgid "dazn"
@@ -2315,7 +2314,7 @@ msgstr ""
 "    användbart, men UTAN NÅGON SOM HELST GARANTI, även utan underförstådd \n"
 "    garanti om SÄLJBARHET eller LÄMPLIGHET FÖR NÅGOT SPECIELLT ÄNDAMÅL.\n"
 "\n"
-"    Du skall ha fått en kopia av de fullståndiga villkoren för distribution\n"
+"    Du skall ha fått en kopia av de fullständiga villkoren för distribution\n"
 "    tillsammans med programmet; om inte, skriv till programmets utvecklare.\n"
 
 #: main.c:103
