@@ -1411,8 +1411,6 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   ctx->hdrs[msgno]->pgp = pgp_query (ctx->hdrs[msgno]->content);
   if (!ctx->hdrs[msgno]->pgp)
 #endif /* _PGPPATH */
-    if (mutt_needs_mailcap (ctx->hdrs[msgno]->content))
-      ctx->hdrs[msgno]->mailcap = 1;
 
   mutt_clear_error();
   rewind (msg->fp);
