@@ -206,7 +206,7 @@ void mutt_fetchPopMail (void)
   }
 
   if (msgs - last)
-    delanswer = query_quadoption(OPTPOPDELETE, _("Delete messages from server?"));
+    delanswer = query_quadoption(OPT_POPDELETE, _("Delete messages from server?"));
 
   snprintf (msgbuf, sizeof (msgbuf),
 	    msgs > 1 ? _("Reading new messages (%d bytes)...") :
