@@ -1144,10 +1144,9 @@ int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
     Sort = old_sort;
   }
 
-  /* save the old headers */
-  old_msgcount = ctx->msgcount;
-  old_hdrs = ctx->hdrs;
-
+  old_hdrs = NULL;
+  old_msgcount = 0;
+  
   /* simulate a close */
   hash_destroy (&ctx->id_hash, NULL);
   hash_destroy (&ctx->subj_hash, NULL);
@@ -1156,10 +1155,15 @@ int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
   {
     for (i = 0; i < ctx->msgcount; i++)
       mutt_free_header (&(ctx->hdrs[i])); /* nothing to do! */
-      safe_free ((void **) &ctx->hdrs);
+    safe_free ((void **) &ctx->hdrs);
   }
   else
+  {
+      /* save the old headers */
+    old_msgcount = ctx->msgcount;
+    old_hdrs = ctx->hdrs;
     ctx->hdrs = NULL;
+  }
 
   ctx->hdrmax = 0;	/* force allocation of new headers */
   ctx->msgcount = 0;

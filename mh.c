@@ -34,6 +34,42 @@
 #include <errno.h>
 #include <string.h>
 
+static void maildir_parse_flags(HEADER *h)
+{
+  char *p;
+
+  h->flagged = 0;
+  h->read = 0;
+  h->replied = 0;
+  
+  if ((p = strchr (h->path, ':')) != NULL && strncmp (p + 1, "2,", 2) == 0)
+  {
+    p += 3;
+    while (*p)
+    {
+      switch (*p)
+      {
+	case 'F':
+	
+	h->flagged = 1;
+	break;
+	
+	case 'S': /* seen */
+	
+	h->read = 1;
+	break;
+	
+	case 'R': /* replied */
+	
+	h->replied = 1;
+	break;
+      }
+      p++;
+    }
+  }
+}
+
+
 void mh_parse_message (CONTEXT *ctx,
 		       const char *subdir,
 		       const char *fname,
@@ -41,7 +77,6 @@ void mh_parse_message (CONTEXT *ctx,
 		       int isOld)
 {
   char path[_POSIX_PATH_MAX];
-  char *p;
   FILE *f;
   HEADER *h;
   struct stat st;
@@ -95,34 +130,8 @@ void mh_parse_message (CONTEXT *ctx,
        */
 
       h->old = isOld;
-
-      if ((p = strchr (h->path, ':')) != NULL && strncmp (p + 1, "2,", 2) == 0)
-      {
-	p += 3;
-	while (*p)
-	{
-	  switch (*p)
-	  {
-	    case 'F':
-
-	      h->flagged = 1;
-	      break;
-
-	    case 'S': /* seen */
-
-	      h->read = 1;
-	      break;
-
-	    case 'R': /* replied */
-
-	      h->replied = 1;
-	      break;
-	  }
-	  p++;
-	}
-      }
+      maildir_parse_flags(h);
     }
-
     /* set flags and update context info */
     mx_update_context (ctx);
   }
