@@ -1237,6 +1237,60 @@ void autoview_handler (BODY *a, STATE *s)
   rfc1524_free_entry (&entry);
 }
 
+static void external_body_handler (BODY *b, STATE *s)
+{
+  const char *access_type;
+  const char *expiration;
+  time_t expire;
+
+  access_type = mutt_get_parameter ("access-type", b->parameter);
+  if (!access_type)
+  {
+    if (s->flags & M_DISPLAY)
+      state_puts (_("[-- Error: message/external-body has no access-type parameter --]\n"), s);
+    return;
+  }
+
+  expiration = mutt_get_parameter ("expiration", b->parameter);
+  if (expiration) 
+  {
+    /* mutt_parse_date() will alter its argument, so we need a copy */
+    char *e = safe_strdup (expiration);
+
+    expire = mutt_parse_date (e, NULL);
+    free (e);
+  }
+  else
+    expire = -1;
+
+  if (!strcasecmp (access_type, "x-mutt-deleted"))
+  {
+    if (s->flags & M_DISPLAY)
+    {
+      fprintf (s->fpout, _("[-- This %s/%s attachment is deleted --]\n"),
+	       TYPE(b->parts), b->parts->subtype);
+      if (expire != -1)
+	fprintf (s->fpout, _("[-- on %s --]\n"), expiration);
+      mutt_copy_hdr (s->fpin, s->fpout, ftell (s->fpin), b->parts->offset,
+		     (option (OPTWEED) ? (CH_WEED | CH_REORDER) : 0) |
+		     CH_DECODE , NULL);
+    }
+  }
+  else
+  {
+    if (s->flags & M_DISPLAY)
+    {
+      fprintf (s->fpout,
+	       _("[-- This %s/%s attachment is not included --]\n"
+		 "[-- and the indicated access-type %s is unsupported --]\n"),
+	       TYPE(b->parts), b->parts->subtype, access_type);
+      mutt_copy_hdr (s->fpin, s->fpout, ftell (s->fpin), b->parts->offset,
+		     (option (OPTWEED) ? (CH_WEED | CH_REORDER) : 0) |
+		     CH_DECODE , NULL);
+    }
+  }
+}
+
 void mutt_decode_attachment (BODY *b, STATE *s)
 {
   fseek (s->fpin, b->offset, 0);
@@ -1299,6 +1353,8 @@ void mutt_body_handler (BODY *b, STATE *s)
       handler = message_handler;
     else if (!strcasecmp ("delivery-status", b->subtype))
       plaintext = 1;
+    else if (!strcasecmp ("external-body", b->subtype))
+      handler = external_body_handler;
   }
   else if (b->type == TYPEMULTIPART)
   {

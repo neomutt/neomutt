@@ -543,12 +543,14 @@ BODY *mutt_parse_multipart (FILE *fp, const char *boundary, long end_off, int di
 	break;
 
       case TYPEMESSAGE:
-	if (last->subtype &&
-	    (strcasecmp (last->subtype, "rfc822") == 0 ||
-	     strcasecmp (last->subtype, "news") == 0))
+	if (last->subtype)
 	{
-	  fseek (fp, last->offset, 0);
-	  last->parts = mutt_parse_messageRFC822 (fp, last);
+	  fseek (fp, last->offset, SEEK_SET);
+	  if (strcasecmp (last->subtype, "rfc822") == 0 ||
+	      strcasecmp (last->subtype, "news") == 0)
+	    last->parts = mutt_parse_messageRFC822 (fp, last);
+	  else if (strcasecmp (last->subtype, "external-body") == 0)
+	    last->parts = mutt_read_mime_header (fp, 0);
 	}
 	break;
     }
