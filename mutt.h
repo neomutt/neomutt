@@ -36,19 +36,6 @@
 #include "rfc822.h"
 #include "hash.h"
 
-#ifdef ENABLE_NLS
-# include <libintl.h>
-# define _(a) (gettext (a))
-# ifdef gettext_noop
-#  define N_(a) gettext_noop (a)
-# else
-#  define N_(a) (a)
-# endif
-#else
-# define _(a) (a)
-# define N_(a) a
-#endif
-
 #ifdef SUBVERSION
 # define MUTT_VERSION (VERSION SUBVERSION)
 #else  
@@ -63,14 +50,6 @@
 #define WHERE extern
 #define INITVAL(x) 
 #endif
-
-#define TRUE 1
-#define FALSE 0
-
-#define HUGE_STRING	5120
-#define LONG_STRING     1024
-#define STRING          256
-#define SHORT_STRING    128
 
 /* flags for mutt_copy_header() */
 #define CH_UPDATE	1      /* update the status and x-status fields? */
@@ -702,4 +681,5 @@ void state_prefix_putc(char, STATE *);
 int  state_printf(STATE *, const char *, ...);
 
 #include "protos.h"
+#include "lib.h"
 #include "globals.h"

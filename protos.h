@@ -16,7 +16,6 @@
  *     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */ 
 
-#define FOREVER while (1)
 
 #ifdef DEBUG
 #define dprint(N,X) if(debuglevel>=N) fprintf X
@@ -24,7 +23,6 @@
 #define dprint(N,X) 
 #endif
 
-#define NONULL(x) x?x:""
 
 #define MoreArgs(p) (*p->dptr && *p->dptr != ';' && *p->dptr != '#')
 
@@ -53,7 +51,6 @@ int _mutt_aside_thread (HEADER *, short, short);
 #define mutt_thread_next_unread(x,y) _mutt_traverse_thread(x,y,M_THREAD_NEXT_UNREAD)
 int _mutt_traverse_thread (CONTEXT *ctx, HEADER *hdr, int flag);
 
-#define ISSPACE(c) isspace((unsigned char)c)
 
 #define mutt_new_parameter() safe_calloc (1, sizeof (PARAMETER))
 #define mutt_new_header() safe_calloc (1, sizeof (HEADER))
@@ -108,7 +105,6 @@ const char *mutt_attach_fmt (
 	const char *elsestring,
 	unsigned long data,
 	format_flag flags);
-const char *mutt_stristr (const char *, const char *);
 
 
 char *mutt_charset_hook (const char *);
@@ -122,11 +118,6 @@ char *mutt_get_send_charset (char *, size_t, BODY *, short);
 char *mutt_pgp_hook (ADDRESS *);
 #endif /* _PGPPATH */
 char *mutt_make_date (char *, size_t);
-char *mutt_read_line (char *, size_t *, FILE *, int *);
-char *mutt_strlower (char *);
-char *mutt_skip_whitespace (char *);
-char *mutt_substrcpy (char *, const char *, const char *, size_t);
-char *mutt_substrdup (const char *, const char *);
 
 const char *mutt_fqdn(short);
 
@@ -146,7 +137,6 @@ void mutt_edit_file (const char *, const char *);
 void mutt_edit_headers (const char *, const char *, HEADER *, char *, size_t);
 void mutt_curses_error (const char *, ...);
 void mutt_enter_command (void);
-void mutt_exit (int);
 void mutt_expand_file_fmt (char *, size_t, const char *, const char *);
 void mutt_expand_fmt (char *, size_t, const char *, const char *);
 void mutt_expand_link (char *, const char *, const char *);
@@ -165,7 +155,6 @@ void mutt_make_help (char *, size_t, char *, int, int);
 void mutt_message (const char *, ...);
 void mutt_message_to_7bit (BODY *, FILE *);
 void mutt_mktemp (char *);
-void mutt_nocurses_error (const char *, ...);
 void mutt_normalize_time (struct tm *);
 void mutt_parse_mime_message (CONTEXT *ctx, HEADER *);
 void mutt_parse_part (FILE *, BODY *);
@@ -175,11 +164,9 @@ void mutt_prepare_envelope (ENVELOPE *);
 void mutt_pretty_mailbox (char *);
 void mutt_pretty_size (char *, size_t, long);
 void mutt_print_message (HEADER *);
-void mutt_remove_trailing_ws (char *);
 void mutt_query_exit (void);
 void mutt_query_menu (char *, size_t);
 void mutt_safe_path (char *s, size_t l, ADDRESS *a);
-void mutt_sanitize_filename (char *, short);
 void mutt_save_path (char *s, size_t l, ADDRESS *a);
 void mutt_score_message (HEADER *);
 void mutt_select_fcc (char *, size_t, HEADER *);
@@ -197,7 +184,6 @@ void mutt_tabs_to_spaces (char *);
 void mutt_tag_set_flag (int, int);
 void mutt_unblock_signals (void);
 void mutt_unblock_signals_system (int);
-void mutt_unlink (const char *);
 void mutt_update_encoding (BODY *a);
 void mutt_update_tree (ATTACHPTR **, short);
 void mutt_version (void);
@@ -223,8 +209,6 @@ int mutt_command_complete (char *, size_t, int, int);
 int mutt_var_value_complete (char *, size_t, int);
 int mutt_complete (char *);
 int mutt_compose_attachment (BODY *a);
-int mutt_copy_bytes (FILE *, FILE *, size_t);
-int mutt_copy_stream (FILE *, FILE *);
 int mutt_decode_save_attachment (FILE *, BODY *, char *, int, int);
 int mutt_display_message (HEADER *h);
 int mutt_edit_attachment(BODY *);
@@ -267,16 +251,10 @@ int mutt_pipe_attachment (FILE *, BODY *, const char *, char *);
 int mutt_pipe_message (HEADER *);
 int mutt_print_attachment (FILE *, BODY *);
 int mutt_query_complete (char *, size_t);
-size_t mutt_quote_filename(char *, size_t, const char *);
 int mutt_save_attachment (FILE *, BODY *, char *, int, HEADER *);
 int mutt_save_message (HEADER *, int, int, int, int *);
 int mutt_search_command (int, int);
 int mutt_compose_menu (HEADER *, char *, size_t, HEADER *);
-int mutt_strcmp (const char *, const char *);
-int mutt_strcasecmp (const char *, const char *);
-int mutt_strncmp (const char *, const char *, size_t);
-int mutt_strncasecmp (const char *, const char *, size_t);
-size_t mutt_strlen (const char *);
 int mutt_thread_set_flag (HEADER *, int, int, int);
 int mutt_user_is_recipient (HEADER *);
 int mutt_view_attachment (FILE*, BODY *, int);
@@ -295,25 +273,9 @@ int mh_valid_message (const char *);
 pid_t mutt_create_filter (const char *, FILE **, FILE **, FILE **);
 pid_t mutt_create_filter_fd (const char *, FILE **, FILE **, FILE **, int, int, int);
 
-#define FREE(x) safe_free((void **)x)
-
-char *safe_strdup (const char *);
-void *safe_calloc (size_t, size_t);
-void *safe_malloc (size_t);
-void safe_realloc (void **, size_t);
-void safe_free (void **);
-
-int safe_open (const char *, int);
-int safe_symlink (const char *, const char *);
-FILE *safe_fopen (const char *, const char *);
-
 ADDRESS *alias_reverse_lookup (ADDRESS *);
 
-#define strfcpy(A,B,C) strncpy(A,B,C), *(A+(C)-1)=0
 
-/* this macro must check for *c == 0 since isspace(0) has unreliable behavior
-   on some systems */
-#define SKIPWS(c) while (*(c) && isspace ((unsigned char) *(c))) c++;
 
 #ifdef LOCALES_HACK
 #define IsPrint(c) (isprint((unsigned char)(c)) || \

@@ -1075,16 +1075,6 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
   return (r);
 }
 
-void mutt_nocurses_error (const char *fmt, ...)
-{
-  va_list ap;
-
-  va_start (ap, fmt);
-  vfprintf (stderr, fmt, ap);
-  va_end (ap);
-  fputc ('\n', stderr);
-}
-
 /* reads the specified initialization file.  returns -1 if errors were found
    so that we can pause to let the user know...  */
 static int source_rc (const char *rcfile, BUFFER *err)
