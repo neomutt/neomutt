@@ -19,155 +19,30 @@
 
 #ifdef _PGPPATH
 
-#define PGPENCRYPT 1
-#define PGPSIGN    2
-#define PGPKEY     4
-
-#define KEYFLAG_CANSIGN 		(1 <<  0)
-#define KEYFLAG_CANENCRYPT 		(1 <<  1)
-#define KEYFLAG_EXPIRED 		(1 <<  8)
-#define KEYFLAG_REVOKED 		(1 <<  9)
-#define KEYFLAG_DISABLED 		(1 << 10)
-#define KEYFLAG_SUBKEY 			(1 << 11)
-#define KEYFLAG_CRITICAL 		(1 << 12)
-#define KEYFLAG_PREFER_ENCRYPTION 	(1 << 13)
-#define KEYFLAG_PREFER_SIGNING 		(1 << 14)
-
-#define KEYFLAG_CANTUSE (KEYFLAG_DISABLED|KEYFLAG_REVOKED|KEYFLAG_EXPIRED)
-#define KEYFLAG_RESTRICTIONS (KEYFLAG_CANTUSE|KEYFLAG_CRITICAL)
-
-#define KEYFLAG_ABILITIES (KEYFLAG_CANSIGN|KEYFLAG_CANENCRYPT|KEYFLAG_PREFER_ENCRYPTION|KEYFLAG_PREFER_SIGNING)
-
-typedef struct pgp_keyinfo
-{
-  char *keyid;
-  struct pgp_uid *address;
-  int flags;
-  short keylen;
-  time_t gen_time;
-  const char *algorithm;
-  struct pgp_keyinfo *parent;
-  struct pgp_keyinfo *next;
-}
-pgp_key_t;
-
-typedef struct pgp_uid
-{
-  char *addr;
-  short trust;
-  struct pgp_keyinfo *parent;
-  struct pgp_uid *next;
-}
-pgp_uid_t;
-
-enum pgp_version
-{
-  PGP_V2,
-  PGP_V3,
-  PGP_GPG,
-  PGP_UNKNOWN
-};
-
-enum pgp_ring
-{
-  PGP_PUBRING,
-  PGP_SECRING
-};
-
-typedef enum pgp_ring pgp_ring_t;
-
-enum pgp_ops
-{
-  PGP_DECODE,			/* application/pgp */
-  PGP_VERIFY,			/* PGP/MIME, signed */
-  PGP_DECRYPT,			/* PGP/MIME, encrypted */
-  PGP_SIGN,			/* sign data */
-  PGP_ENCRYPT,			/* encrypt data */
-  PGP_IMPORT,			/* extract keys from messages */
-  PGP_VERIFY_KEY,		/* verify key when selecting */
-  PGP_EXPORT,			/* extract keys from key ring */
-  PGP_LAST_OP
-};
-
-struct pgp_vinfo
-{
-
-  /* data */
-
-  enum pgp_version v;
-  char *name;
-  char **binary;
-  char **pubring;
-  char **secring;
-  char **language;
-
-  /* functions */
-
-  pgp_key_t *(*get_candidates) (struct pgp_vinfo *, pgp_ring_t, LIST *);
-  
-  pid_t (*invoke_decode) (struct pgp_vinfo *, FILE **, FILE **, FILE **,
-			  int, int, int,
-			  const char *, int);
-  
-  pid_t (*invoke_verify) (struct pgp_vinfo *, FILE **, FILE **, FILE **,
-			  int, int, int,
-			  const char *, const char *);
-  
-  pid_t (*invoke_decrypt) (struct pgp_vinfo *, FILE **, FILE **, FILE **,
-			   int, int, int,
-			   const char *);
-  
-  pid_t (*invoke_sign) (struct pgp_vinfo *, FILE **, FILE **, FILE **,
-			int, int, int,
-			const char *);
-  
-  pid_t (*invoke_encrypt) (struct pgp_vinfo *, FILE **, FILE **, FILE **,
-			   int, int, int,
-			   const char *, const char *, int);
-  
-  void (*invoke_import) (struct pgp_vinfo *, const char *);
-  
-  pid_t (*invoke_export) (struct pgp_vinfo *, FILE **, FILE **, FILE **,
-			  int, int, int,
-			  const char *);
-  
-  pid_t (*invoke_verify_key) (struct pgp_vinfo *, FILE **, FILE **, FILE **,
-			      int, int, int,
-			      const char *);
-  
-};
-
-
-WHERE char *PgpV2;
-WHERE char *PgpV2Language;
-WHERE char *PgpV2Pubring;
-WHERE char *PgpV2Secring;
-
-WHERE char *PgpV3;
-WHERE char *PgpV3Language;
-WHERE char *PgpV3Pubring;
-WHERE char *PgpV3Secring;
-
-WHERE char *PgpGpg;
-#if 0
-WHERE char *PgpGpgLanguage;
-WHERE char *PgpGpgPubring;
-WHERE char *PgpGpgSecring;
-#else
-WHERE char *PgpGpgDummy;
-#endif
-
-WHERE char *PgpSendVersion;
-WHERE char *PgpReceiveVersion;
-WHERE char *PgpKeyVersion;
-WHERE char *PgpDefaultVersion;
+#include "pgplib.h"
 
 WHERE char *PgpSignAs;
 WHERE char *PgpSignMicalg;
-
 WHERE short PgpTimeout;
-
 WHERE char *PgpEntryFormat;
+
+
+/* The command formats */
+
+WHERE char *PgpDecodeCommand;
+WHERE char *PgpVerifyCommand;
+WHERE char *PgpDecryptCommand;
+WHERE char *PgpSignCommand;
+WHERE char *PgpEncryptSignCommand;
+WHERE char *PgpEncryptOnlyCommand;
+WHERE char *PgpImportCommand;
+WHERE char *PgpExportCommand;
+WHERE char *PgpVerifyKeyCommand;
+WHERE char *PgpListSecringCommand;
+WHERE char *PgpListPubringCommand;
+
+
+/* prototypes */
 
 BODY *pgp_decrypt_part (BODY *, STATE *, FILE *);
 BODY *pgp_make_key_attachment (char *);
@@ -175,8 +50,6 @@ BODY *pgp_make_key_attachment (char *);
 char *_pgp_keyid (pgp_key_t *);
 char *pgp_keyid (pgp_key_t *);
 
-const char *pgp_pkalg_to_mic (const char *);
-const char *pgp_pkalgbytype (unsigned char);
 
 int mutt_check_pgp (HEADER * h);
 int mutt_is_application_pgp (BODY *);
@@ -187,203 +60,52 @@ int pgp_decrypt_mime (FILE *, FILE **, BODY *, BODY **);
 int pgp_get_keys (HEADER *, char **);
 int pgp_protect (HEADER *, char *);
 int pgp_query (BODY *);
-int pgp_string_matches_hint (const char *s, LIST * hints);
+/* int pgp_string_matches_hint (const char *s, LIST * hints); */
 int pgp_valid_passphrase (void);
 
-pgp_key_t *gpg_get_candidates (struct pgp_vinfo *, pgp_ring_t, LIST *);
-pgp_key_t *pgp_ask_for_key (struct pgp_vinfo *, char *, char *, short, pgp_ring_t);
-pgp_key_t *pgp_get_candidates (struct pgp_vinfo *, pgp_ring_t, LIST *);
-pgp_key_t *pgp_getkeybyaddr (struct pgp_vinfo *pgp, ADDRESS *, short, pgp_ring_t);
-pgp_key_t *pgp_getkeybystr (struct pgp_vinfo *pgp, char *, short, pgp_ring_t);
-pgp_key_t *pgp_remove_key (pgp_key_t **, pgp_key_t *);
-
-pgp_uid_t *pgp_copy_uids (pgp_uid_t *, pgp_key_t *);
-
-short pgp_canencrypt (unsigned char);
-short pgp_cansign (unsigned char);
-short pgp_get_abilities (unsigned char);
-
-struct pgp_vinfo *pgp_get_vinfo (enum pgp_ops);
+/* pgp_key_t *gpg_get_candidates (struct pgp_vinfo *, pgp_ring_t, LIST *); */
+pgp_key_t *pgp_ask_for_key (char *, char *, short, pgp_ring_t);
+pgp_key_t *pgp_get_candidates (pgp_ring_t, LIST *);
+pgp_key_t *pgp_getkeybyaddr (ADDRESS *, short, pgp_ring_t);
+pgp_key_t *pgp_getkeybystr (char *, short, pgp_ring_t);
 
 void mutt_forget_passphrase (void);
 void pgp_application_pgp_handler (BODY *, STATE *);
 void pgp_encrypted_handler (BODY *, STATE *);
 void pgp_extract_keys_from_attachment_list (FILE * fp, int tag, BODY * top);
 void pgp_extract_keys_from_messages (HEADER * hdr);
-void pgp_free_key (pgp_key_t **kpp);
 void pgp_signed_handler (BODY *, STATE *);
 void pgp_void_passphrase (void);
 
-#define pgp_secring(a) pgp_getring(a, 0)
-#define pgp_pubring(a) pgp_getring(a, 1)
-
-/* PGP V2 prototypes */
 
 
-pid_t pgp_v2_invoke_decode (struct pgp_vinfo *,
-			    FILE **, FILE **, FILE **,
-			    int, int, int,
-			    const char *, int);
+/* The PGP invocation interface - not really beautiful. */
 
-pid_t pgp_v2_invoke_verify (struct pgp_vinfo *,
-			    FILE **, FILE **, FILE **,
-			    int, int, int,
-			    const char *, const char *);
+pid_t pgp_invoke_decode (FILE **pgpin, FILE **pgpout, FILE **pgperr,
+			 int pgpinfd, int pgpoutfd, int pgperrfd, 
+			 const char *fname, short need_passphrase);
+pid_t pgp_invoke_verify (FILE **pgpin, FILE **pgpout, FILE **pgperr,
+			 int pgpinfd, int pgpoutfd, int pgperrfd, 
+			 const char *fname, const char *sig_fname);
+pid_t pgp_invoke_decrypt (FILE **pgpin, FILE **pgpout, FILE **pgperr,
+			  int pgpinfd, int pgpoutfd, int pgperrfd, 
+			  const char *fname);
+pid_t pgp_invoke_sign (FILE **pgpin, FILE **pgpout, FILE **pgperr,
+		       int pgpinfd, int pgpoutfd, int pgperrfd, 
+		       const char *fname);
+pid_t pgp_invoke_encrypt (FILE **pgpin, FILE **pgpout, FILE **pgperr,
+			  int pgpinfd, int pgpoutfd, int pgperrfd,
+			  const char *fname, const char *uids, int sign);
+void pgp_invoke_import (const char *fname);
+pid_t pgp_invoke_export (FILE **pgpin, FILE **pgpout, FILE **pgperr,
+			 int pgpinfd, int pgpoutfd, int pgperrfd, 
+			 const char *uids);
+pid_t pgp_invoke_verify_key (FILE **pgpin, FILE **pgpout, FILE **pgperr,
+			     int pgpinfd, int pgpoutfd, int pgperrfd, 
+			     const char *uids);
+pid_t pgp_invoke_list_keys (FILE **pgpin, FILE **pgpout, FILE **pgperr,
+			    int pgpinfd, int pgpoutfd, int pgperrfd, 
+			    pgp_ring_t keyring, LIST *hints);
 
-
-pid_t pgp_v2_invoke_decrypt (struct pgp_vinfo *,
-			     FILE **, FILE **, FILE **,
-			     int, int, int,
-			     const char *);
-
-pid_t pgp_v2_invoke_sign (struct pgp_vinfo *,
-			  FILE **, FILE **, FILE **,
-			  int, int, int,
-			  const char *);
-
-pid_t pgp_v2_invoke_encrypt (struct pgp_vinfo *,
-			     FILE **, FILE **, FILE **,
-			     int, int, int,
-			     const char *, const char *, int);
-
-void pgp_v2_invoke_import (struct pgp_vinfo *, const char *);
-
-pid_t pgp_v2_invoke_export (struct pgp_vinfo *,
-			    FILE **, FILE **, FILE **,
-			    int, int, int,
-			    const char *);
-
-pid_t pgp_v2_invoke_verify_key (struct pgp_vinfo *,
-				FILE **, FILE **, FILE **,
-				int, int, int,
-				const char *);
-
-/* PGP V3 prototypes */
-
-pid_t pgp_v3_invoke_decode (struct pgp_vinfo *,
-			    FILE **, FILE **, FILE **,
-			    int, int, int,
-			    const char *, int);
-
-pid_t pgp_v3_invoke_verify (struct pgp_vinfo *,
-			    FILE **, FILE **, FILE **,
-			    int, int, int,
-			    const char *, const char *);
-
-
-pid_t pgp_v3_invoke_decrypt (struct pgp_vinfo *,
-			     FILE **, FILE **, FILE **,
-			     int, int, int,
-			     const char *);
-
-pid_t pgp_v3_invoke_sign (struct pgp_vinfo *,
-			  FILE **, FILE **, FILE **,
-			  int, int, int,
-			  const char *);
-
-pid_t pgp_v3_invoke_encrypt (struct pgp_vinfo *,
-			     FILE **, FILE **, FILE **,
-			     int, int, int,
-			     const char *, const char *, int);
-
-void pgp_v3_invoke_import (struct pgp_vinfo *, const char *);
-
-pid_t pgp_v3_invoke_export (struct pgp_vinfo *,
-			    FILE **, FILE **, FILE **,
-			    int, int, int,
-			    const char *);
-
-pid_t pgp_v3_invoke_verify_key (struct pgp_vinfo *,
-				FILE **, FILE **, FILE **,
-				int, int, int,
-				const char *);
-
-/* GNU Privacy Guard Prototypes */
-
-pid_t pgp_gpg_invoke_decode (struct pgp_vinfo *,
-			     FILE **, FILE **, FILE **,
-			     int, int, int,
-			     const char *, int);
-
-pid_t pgp_gpg_invoke_verify (struct pgp_vinfo *,
-			     FILE **, FILE **, FILE **,
-			     int, int, int,
-			     const char *, const char *);
-
-
-pid_t pgp_gpg_invoke_decrypt (struct pgp_vinfo *,
-			      FILE **, FILE **, FILE **,
-			      int, int, int,
-			      const char *);
-
-pid_t pgp_gpg_invoke_sign (struct pgp_vinfo *,
-			   FILE **, FILE **, FILE **,
-			   int, int, int,
-			   const char *);
-
-pid_t pgp_gpg_invoke_encrypt (struct pgp_vinfo *,
-			      FILE **, FILE **, FILE **,
-			      int, int, int,
-			      const char *, const char *, int);
-
-void pgp_gpg_invoke_import (struct pgp_vinfo *, const char *);
-
-pid_t pgp_gpg_invoke_export (struct pgp_vinfo *,
-			     FILE **, FILE **, FILE **,
-			     int, int, int,
-			     const char *);
-
-pid_t pgp_gpg_invoke_verify_key (struct pgp_vinfo *,
-				 FILE **, FILE **, FILE **,
-				 int, int, int,
-				 const char *);
-
-
-
-
-#if 0
-
-/* use these as templates for your own prototypes */
-
-
-pid_t pgp_VERSION_invoke_decode (struct pgp_vinfo *,
-				 FILE **, FILE **, FILE **,
-				 int, int, int,
-				 const char *, int);
-
-pid_t pgp_VERSION_invoke_verify (struct pgp_vinfo *,
-				 FILE **, FILE **, FILE **,
-				 int, int, int,
-				 const char *, const char *);
-
-
-pid_t pgp_VERSION_invoke_decrypt (struct pgp_vinfo *,
-				  FILE **, FILE **, FILE **,
-				  int, int, int,
-				  const char *);
-
-pid_t pgp_VERSION_invoke_sign (struct pgp_vinfo *,
-			       FILE **, FILE **, FILE **,
-			       int, int, int,
-			       const char *);
-
-pid_t pgp_VERSION_invoke_encrypt (struct pgp_vinfo *,
-				  FILE **, FILE **, FILE **,
-				  int, int, int,
-				  const char *, const char *, int);
-
-void pgp_VERSION_invoke_import (struct pgp_vinfo *, const char *);
-
-pid_t pgp_VERSION_invoke_export (struct pgp_vinfo *,
-				 FILE **, FILE **, FILE **,
-				 int, int, int,
-				 const char *);
-
-pid_t pgp_VERSION_invoke_verify_key (struct pgp_vinfo *,
-				     FILE **, FILE **, FILE **,
-				     int, int, int,
-				     const char *);
-
-#endif
 
 #endif /* _PGPPATH */

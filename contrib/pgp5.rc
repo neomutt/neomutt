@@ -1,0 +1,41 @@
+# -*-muttrc-*-
+#
+# PGP command formats for PGP 5.
+#
+# $Id$
+#
+
+# decode application/pgp
+set pgp_decode_command="%?p?PGPPASSFD=0; export PGPPASSFD;? cat %?p?-? %f | pgpv +language=mutt +verbose=0 +batchmode -f --OutputInformationFD=0"
+
+# verify a pgp/mime signature
+set pgp_verify_command="pgpv +language=mutt +verbose=0 +batchmode --OutputInformationFD=1 %f %s"
+
+# decrypt a pgp/mime attachment
+set pgp_decrypt_command="PGPPASSFD=0; export PGPPASSFD; cat - %f | pgpv +language=mutt +verbose=0 +batchmode --OutputInformationFD=2 -f"
+
+# create a pgp/mime signed attachment
+set pgp_sign_command="PGPPASSFD=0; export PGPPASSFD; cat - %f | pgps +language=mutt +verbose=0 +batchmode -abft %?a? -u %a?"
+
+# create a pgp/mime encrypted attachment
+set pgp_encrypt_only_command="PGPPASSFD=0; export PGPPASSFD; cat - %f | pgpewrap pgpe +language=mutt +verbose=0 +batchmode +nobatchinvalidkeys=off -aft -- -r %r"
+
+# create a pgp/mime encrypted and signed attachment
+set pgp_encrypt_sign_command="PGPPASSFD=0; export PGPPASSFD; cat - %f | pgpewrap pgpe +language=mutt +verbose=0 +batchmode +nobatchinvalidkeys=off -afts %?a? -u %a? -- -r %r"
+
+# import a key into the public key ring
+set pgp_import_command="pgpk -a +language=mutt --OutputInformationFD=1 %f"
+
+# export a key from the public key ring
+set pgp_export_command="pgpk -xa +language=mutt --OutputInformationFD=1 %r"
+
+# verify a key
+set pgp_verify_key_command="pgpk -c +batchmode +language=mutt --OutputInformationFD=1 %r"
+
+# read in the public key ring
+set pgp_list_pubring_command="pgpring -k $PGPPATH/pubring.pkr %r"
+
+# read in the secret key ring
+set pgp_list_secring_command="pgpring -k $PGPPATH/secring.skr %r"
+
+

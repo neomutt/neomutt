@@ -381,15 +381,14 @@ static int pgp_compare_trust (const void *a, const void *b)
 				       : _pgp_compare_trust (a, b));
 }
 
-static pgp_key_t *pgp_select_key (struct pgp_vinfo *pgp,
-				  pgp_key_t *keys,
+static pgp_key_t *pgp_select_key (pgp_key_t *keys,
 				  ADDRESS * p, const char *s)
 {
   int keymax;
   pgp_uid_t **KeyTable;
   MUTTMENU *menu;
   int i, done = 0;
-  char helpstr[SHORT_STRING], buf[LONG_STRING];
+  char helpstr[SHORT_STRING], buf[LONG_STRING], tmpbuf[STRING];
   char cmd[LONG_STRING], tempfile[_POSIX_PATH_MAX];
   FILE *fp, *devnull;
   pid_t thepid;
@@ -490,9 +489,10 @@ static pgp_key_t *pgp_select_key (struct pgp_vinfo *pgp,
 
       mutt_message _("Invoking PGP...");
 
-      if ((thepid = pgp->invoke_verify_key (pgp, NULL, NULL, NULL, -1,
-		    fileno (fp), fileno (devnull),
-		    pgp_keyid (pgp_principal_key (KeyTable[menu->current]->parent)))) == -1)
+      snprintf (tmpbuf, sizeof (tmpbuf), "0x%s", pgp_keyid (pgp_principal_key (KeyTable[menu->current]->parent)));
+
+      if ((thepid = pgp_invoke_verify_key (NULL, NULL, NULL, -1,
+		    fileno (fp), fileno (devnull), tmpbuf)) == -1)
       {
 	mutt_perror _("Can't create filter");
 	unlink (tempfile);
@@ -588,7 +588,7 @@ static pgp_key_t *pgp_select_key (struct pgp_vinfo *pgp,
   return (kp);
 }
 
-pgp_key_t *pgp_ask_for_key (struct pgp_vinfo *pgp, char *tag, char *whatfor,
+pgp_key_t *pgp_ask_for_key (char *tag, char *whatfor,
 			    short abilities, pgp_ring_t keyring)
 {
   pgp_key_t *key;
@@ -631,7 +631,7 @@ pgp_key_t *pgp_ask_for_key (struct pgp_vinfo *pgp, char *tag, char *whatfor,
       }
     }
 
-    if ((key = pgp_getkeybystr (pgp, resp, abilities, keyring)))
+    if ((key = pgp_getkeybystr (resp, abilities, keyring)))
       return key;
 
     BEEP ();
@@ -645,25 +645,19 @@ BODY *pgp_make_key_attachment (char *tempf)
 {
   BODY *att;
   char buff[LONG_STRING];
-  char tempfb[_POSIX_PATH_MAX];
-  char *id;
+  char tempfb[_POSIX_PATH_MAX], tmp[STRING];
   FILE *tempfp;
   FILE *devnull;
   struct stat sb;
   pid_t thepid;
   pgp_key_t *key;
-  struct pgp_vinfo *pgp = pgp_get_vinfo (PGP_EXPORT);
-
-  if (!pgp)
-    return NULL;
-
   unset_option (OPTPGPCHECKTRUST);
 
-  key = pgp_ask_for_key (pgp, _("Please enter the key ID: "), NULL, 0, PGP_PUBRING);
+  key = pgp_ask_for_key (_("Please enter the key ID: "), NULL, 0, PGP_PUBRING);
 
   if (!key)    return NULL;
 
-  id = safe_strdup (pgp_keyid (pgp_principal_key(key)));
+  snprintf (tmp, sizeof (tmp), "0x%s", pgp_keyid (pgp_principal_key (key)));
   pgp_free_key (&key);
   
   if (!tempf)
@@ -675,14 +669,12 @@ BODY *pgp_make_key_attachment (char *tempf)
   if ((tempfp = safe_fopen (tempf, tempf == tempfb ? "w" : "a")) == NULL)
   {
     mutt_perror _("Can't create temporary file");
-    safe_free ((void **) &id);
     return NULL;
   }
 
   if ((devnull = fopen ("/dev/null", "w")) == NULL)
   {
     mutt_perror _("Can't open /dev/null");
-    safe_free ((void **) &id);
     fclose (tempfp);
     if (tempf == tempfb)
       unlink (tempf);
@@ -690,16 +682,16 @@ BODY *pgp_make_key_attachment (char *tempf)
   }
 
   mutt_message _("Invoking pgp...");
+
   
   if ((thepid = 
-       pgp->invoke_export (pgp, NULL, NULL, NULL, -1,
-			   fileno (tempfp), fileno (devnull), id)) == -1)
+       pgp_invoke_export (NULL, NULL, NULL, -1,
+			   fileno (tempfp), fileno (devnull), tmp)) == -1)
   {
     mutt_perror _("Can't create filter");
     unlink (tempf);
     fclose (tempfp);
     fclose (devnull);
-    safe_free ((void **) &id);
     return NULL;
   }
 
@@ -713,14 +705,13 @@ BODY *pgp_make_key_attachment (char *tempf)
   att->unlink = 1;
   att->type = TYPEAPPLICATION;
   att->subtype = safe_strdup ("pgp-keys");
-  snprintf (buff, sizeof (buff), _("PGP Key 0x%s."), id);
+  snprintf (buff, sizeof (buff), _("PGP Key %s."), tmp);
   att->description = safe_strdup (buff);
   mutt_update_encoding (att);
 
   stat (tempf, &sb);
   att->length = sb.st_size;
 
-  safe_free ((void **) &id);
   return att;
 }
 
@@ -741,8 +732,7 @@ static LIST *pgp_add_string_to_hints (LIST *hints, const char *str)
 }
 
 
-pgp_key_t *pgp_getkeybyaddr (struct pgp_vinfo * pgp,
-			  ADDRESS * a, short abilities, pgp_ring_t keyring)
+pgp_key_t *pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring)
 {
   ADDRESS *r, *p;
   LIST *hints = NULL;
@@ -760,7 +750,7 @@ pgp_key_t *pgp_getkeybyaddr (struct pgp_vinfo * pgp,
     hints = pgp_add_string_to_hints (hints, a->personal);
 
   mutt_message (_("Looking for keys matching \"%s\"..."), a->mailbox);
-  keys = pgp->get_candidates (pgp, keyring, hints);
+  keys = pgp_get_candidates (keyring, hints);
 
   mutt_free_list (&hints);
   
@@ -850,7 +840,7 @@ pgp_key_t *pgp_getkeybyaddr (struct pgp_vinfo * pgp,
     if (matches->next || weak)
     {
       /* query for which key the user wants */
-      k = pgp_select_key (pgp, matches, a, NULL);
+      k = pgp_select_key (matches, a, NULL);
       if (k) 
 	pgp_remove_key (&matches, k);
 
@@ -865,8 +855,7 @@ pgp_key_t *pgp_getkeybyaddr (struct pgp_vinfo * pgp,
   return NULL;
 }
 
-pgp_key_t *pgp_getkeybystr (struct pgp_vinfo * pgp,
-			 char *p, short abilities, pgp_ring_t keyring)
+pgp_key_t *pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
 {
   LIST *hints = NULL;
   pgp_key_t *keys;
@@ -879,7 +868,7 @@ pgp_key_t *pgp_getkeybystr (struct pgp_vinfo * pgp,
   mutt_message (_("Looking for keys matching \"%s\"..."), p);
   
   hints = pgp_add_string_to_hints (hints, p);
-  keys = pgp->get_candidates (pgp, keyring, hints);
+  keys = pgp_get_candidates (keyring, hints);
   mutt_free_list (&hints);
 
   if (!keys)
@@ -936,7 +925,7 @@ pgp_key_t *pgp_getkeybystr (struct pgp_vinfo * pgp,
 
   if (matches)
   {
-    k = pgp_select_key (pgp, matches, NULL, p);
+    k = pgp_select_key (matches, NULL, p);
     if (k) 
       pgp_remove_key (&matches, k);
     

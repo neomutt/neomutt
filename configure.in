@@ -72,10 +72,11 @@ else
 	fi
 
 	if test $PGP != no || test $PGPK != no || test $GPG != no ; then
-		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pgp.o pgpinvoke.o pgpkey.o pgppubring.o sha1dgst.o gnupgparse.o"
+		PGPAUX_TARGET="pgpring pgpewrap"
+		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pgp.o pgpinvoke.o pgpkey.o pgplib.o gnupgparse.o"
 		OPS="$OPS \$(srcdir)/OPS.PGP"
 	fi
-	
+
 	AC_ARG_WITH(mixmaster, [  --with-mixmaster[=PATH]	include Mixmaster support],
 		[if test -x "$withval" ; then
 			MIXMASTER="$withval"
@@ -89,6 +90,8 @@ else
 		
 fi
 AC_SUBST(OPS)
+
+AC_SUBST(PGPAUX_TARGET)
 
 AC_DEFINE_UNQUOTED(SUBVERSION, "$SUBVERSION")
 AC_SUBST(SUBVERSION)

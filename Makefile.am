@@ -4,9 +4,9 @@
 ## Use aclocal -I m4; automake --foreign
 
 AUTOMAKE_OPTIONS = foreign
-EXTRA_PROGRAMS = mutt_dotlock
+EXTRA_PROGRAMS = mutt_dotlock pgpring
 
-bin_PROGRAMS = mutt @DOTLOCK_TARGET@
+bin_PROGRAMS = mutt @DOTLOCK_TARGET@ @PGPAUX_TARGET@
 mutt_SOURCES =	addrbook.c alias.c attach.c browser.c buffy.c color.c \
 	commands.c complete.c compose.c copy.c curs_lib.c curs_main.c date.c \
 	edit.c enter.c flags.c init.c filter.c from.c getdomain.c \
@@ -23,12 +23,12 @@ DEFS=-DSHAREDIR=\"$(sharedir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 	-DBINDIR=\"$(bindir)\" -DHAVE_CONFIG_H=1
 INCLUDES=-I. -I$(includedir)
 
-non_us_sources = pgp.c pgpinvoke.c pgpkey.c pgppubring.c sha1dgst.c \
+non_us_sources = pgp.c pgpinvoke.c pgpkey.c pgplib.c sha1dgst.c \
 	gnupgparse.c sha.h sha_locl.h \
 	doc/language.txt doc/language50.txt OPS.PGP doc/PGP-Notes \
-	OPS.MIX remailer.c remailer.h
+	OPS.MIX remailer.c remailer.h pgpewrap
 
-EXTRA_mutt_SOURCES = pgp.c pgpinvoke.c pgpkey.c pgppubring.c sha1dgst.c \
+EXTRA_mutt_SOURCES = pgp.c pgpinvoke.c pgpkey.c pgplib.c sha1dgst.c \
 	gnupgparse.c resize.c dotlock.c pop.c imap.c socket.c
 	remailer.c remailer.h browser.h
 
@@ -40,13 +40,17 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO configure acconfig.h attach.h \
 	reldate.h rfc1524.h rfc2047.h rfc822.h sha.h sha_locl.h	\
 	sort.h mime.types VERSION prepare _regex.h OPS.MIX	\
 	README.SECURITY remailer.c remailer.h browser.h Muttrc.in \
-	lib.h extlib.c
+	lib.h extlib.c pgpewrap
 
 BUILT_SOURCES = mutt_dotlock.c keymap_defs.h
 
 mutt_dotlock_SOURCES = mutt_dotlock.c
 mutt_dotlock_LDADD = @LIBOBJS@
 mutt_dotlock_DEPENDENCIES = @LIBOBJS@
+
+pgpring_SOURCES = pgppubring.c pgplib.c lib.c extlib.c sha1dgst.c
+pgpring_LDADD = @LIBOBJS@
+pgpring_DEPENDENCIES = @LIBOBJS@
 
 mutt_dotlock.c: dotlock.c
 	cp $(srcdir)/dotlock.c mutt_dotlock.c

@@ -132,8 +132,6 @@ static int pgp_send_menu (int bits, int *redraw)
   char input_signas[SHORT_STRING];
   char input_micalg[SHORT_STRING];
 
-  struct pgp_vinfo *pgp = pgp_get_vinfo(PGP_SIGN);
-
   switch (mutt_multi_choice (_("(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget it? "),
 			     _("esabmf")))
   {
@@ -149,7 +147,7 @@ static int pgp_send_menu (int bits, int *redraw)
 
     unset_option(OPTPGPCHECKTRUST);
 
-    if (pgp && (p = pgp_ask_for_key (pgp, _("Sign as: "), NULL, KEYFLAG_CANSIGN, PGP_PUBRING)))
+    if ((p = pgp_ask_for_key (_("Sign as: "), NULL, KEYFLAG_CANSIGN, PGP_PUBRING)))
     {
       snprintf (input_signas, sizeof (input_signas), "0x%s", pgp_keyid (p));
       safe_free((void **) &PgpSignAs); 	    PgpSignAs = safe_strdup (input_signas);

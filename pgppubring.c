@@ -19,6 +19,23 @@
  *     02139, USA.
  */
 
+/*
+ * This is a "simple" PGP key ring dumper.
+ * 
+ * The output format is supposed to be compatible to the one GnuPG
+ * emits and Mutt expects.
+ * 
+ * Note that the code of this program could be considerably less
+ * complex, but most of it was taken from mutt's second generation
+ * key ring parser.
+ * 
+ * You can actually use this to put together some fairly general
+ * PGP key management applications.
+ *
+ */
+
+
+#include "config.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,15 +43,53 @@
 #include <unistd.h>
 #include <time.h>
 
+#ifdef HAVE_GETOPT_H
+# include <getopt.h>
+#endif
+
 #include "sha.h"
-#include "mutt.h"
-#include "pgp.h"
-#include "charset.h"
+#include "lib.h"
+#include "pgplib.h"
 
 #define CHUNKSIZE 1024
 
 static unsigned char *pbuf = NULL;
 static size_t plen = 0;
+
+static void pgpring_find_candidates (char *ringfile, const char *hints[], int nhints);
+static void pgpring_dump_keyblock (pgp_key_t *p);
+
+int main (int argc, char * const argv[])
+{
+  int c;
+  
+  char kring[_POSIX_PATH_MAX];
+  char *pgppath;
+
+  if ((pgppath = getenv ("PGPPATH")))
+    snprintf (kring, sizeof (kring), "%s/%s", pgppath, "pubring.pgp");
+  else
+    *kring = '\0';
+  
+  while ((c = getopt (argc, argv, "k:")) != EOF)
+  {
+    if (c == 'k')
+      strfcpy (kring, optarg, sizeof (kring));
+    else
+    {
+      fprintf (stderr, "usage: %s [-k key ring] [hints]\n",
+	       argv[0]);
+      exit (1);
+    }
+  }
+  
+  pgpring_find_candidates (kring, argv + optind, argc - optind);
+    
+  return 0;
+}
+	       
+
+
 
 enum packet_tags
 {
@@ -57,151 +112,34 @@ enum packet_tags
   PT_COMMENT			/* Comment Packet */
 };
 
-/* FIXME I can't find where those strings are displayed! */
-const char *pgp_packet_name[] =
-{
-  N_("reserved"),
-  N_("Encrypted Session Key"),
-  N_("Signature Packet"),
-  N_("Conventionally Encrypted Session Key Packet"),
-  N_("One-Pass Signature Packet"),
-  N_("Secret Key Packet"),
-  N_("Public Key Packet"),
-  N_("Secret Subkey Packet"),
-  N_("Compressed Data Packet"),
-  N_("Symmetrically Encrypted Data Packet"),
-  N_("Marker Packet"),
-  N_("Literal Data Packet"),
-  N_("Trust Packet"),
-  N_("Name Packet"),
-  N_("Subkey Packet"),
-  N_("Reserved"),
-  N_("Comment Packet")
-};
-
-const char *pgp_pkalgbytype (unsigned char type)
-{
-  switch (type)
-  {
-  case 1:
-    return "RSA";
-  case 2:
-    return "RSA";
-  case 3:
-    return "RSA";
-  case 16:
-    return "ElG";
-  case 17:
-    return "DSA";
-  case 20:
-    return "ElG";
-  default:
-    return "unk";
-  }
-}
-
-
-static struct
-{
-  char *pkalg;
-  char *micalg;
-}
-pktomic[] =
-{
-  {
-    "RSA", "pgp-md5"
-  }
-  ,
-  {
-    "ElG", "pgp-rmd160"
-  }
-  ,
-  {
-    "DSA", "pgp-sha1"
-  }
-  ,
-  {
-    NULL, "x-unknown"
-  }
-};
-
-
-const char *pgp_pkalg_to_mic (const char *alg)
-{
-  int i;
-
-  for (i = 0; pktomic[i].pkalg; i++)
-  {
-    if (!mutt_strcasecmp (pktomic[i].pkalg, alg))
-      break;
-  }
-
-  return pktomic[i].micalg;
-}
-
-
-/* unused */
-
-#if 0
-
-static const char *hashalgbytype (unsigned char type)
-{
-  switch (type)
-  {
-  case 1:
-    return "MD5";
-  case 2:
-    return "SHA1";
-  case 3:
-    return "RIPE-MD/160";
-  case 4:
-    return "HAVAL";
-  default:
-    return "unknown";
-  }
-}
-
-#endif
-
-short pgp_canencrypt (unsigned char type)
-{
-  switch (type)
-  {
-  case 1:
-  case 2:
-  case 16:
-  case 20:
-    return 1;
-  default:
-    return 0;
-  }
-}
-
-short pgp_cansign (unsigned char type)
-{
-  switch (type)
-  {
-  case 1:
-  case 3:
-  case 17:
-  case 20:
-    return 1;
-  default:
-    return 0;
-  }
-}
-
-/* return values: 
-
- * 1 = sign only
- * 2 = encrypt only
- * 3 = both
+/* 
+ * These aren't displayed at all currently, but they may come quite
+ * handy for debugging strings.
+ * 
+ * No need to translate them.
+ *
  */
 
-short pgp_get_abilities (unsigned char type)
+const char *pgp_packet_name[] =
 {
-  return (pgp_canencrypt (type) << 1) | pgp_cansign (type);
-}
+  "reserved",
+  "Encrypted Session Key",
+  "Signature Packet",
+  "Conventionally Encrypted Session Key Packet",
+  "One-Pass Signature Packet",
+  "Secret Key Packet",
+  "Public Key Packet",
+  "Secret Subkey Packet",
+  "Compressed Data Packet",
+  "Symmetrically Encrypted Data Packet",
+  "Marker Packet",
+  "Literal Data Packet",
+  "Trust Packet",
+  "Name Packet",
+  "Subkey Packet",
+  "Reserved",
+  "Comment Packet"
+};
 
 static int read_material (size_t material, size_t * used, FILE * fp)
 {
@@ -214,7 +152,7 @@ static int read_material (size_t material, size_t * used, FILE * fp)
 
     if (!(p = realloc (pbuf, nplen)))
     {
-      mutt_perror ("realloc");
+      perror ("realloc");
       return -1;
     }
     plen = nplen;
@@ -223,7 +161,7 @@ static int read_material (size_t material, size_t * used, FILE * fp)
 
   if (fread (pbuf + *used, 1, material, fp) < material)
   {
-    mutt_perror ("fread");
+    perror ("fread");
     return -1;
   }
 
@@ -250,7 +188,7 @@ static unsigned char *pgp_read_packet (FILE * fp, size_t * len)
   if (fread (&ctb, 1, 1, fp) < 1)
   {
     if (!feof (fp))
-      mutt_perror ("fread");
+      perror ("fread");
     goto bail;
   }
 
@@ -269,7 +207,7 @@ static unsigned char *pgp_read_packet (FILE * fp, size_t * len)
     {
       if (fread (&b, 1, 1, fp) < 1)
       {
-	mutt_perror ("fread");
+	perror ("fread");
 	goto bail;
       }
 
@@ -284,7 +222,7 @@ static unsigned char *pgp_read_packet (FILE * fp, size_t * len)
 	material = (b - 192) * 256;
 	if (fread (&b, 1, 1, fp) < 1)
 	{
-	  mutt_perror ("fread");
+	  perror ("fread");
 	  goto bail;
 	}
 	material += b + 192;
@@ -303,7 +241,7 @@ static unsigned char *pgp_read_packet (FILE * fp, size_t * len)
 	unsigned char buf[4];
 	if (fread (buf, 4, 1, fp) < 1)
 	{
-	  mutt_perror ("fread");
+	  perror ("fread");
 	  goto bail;
 	}
 	/*assert( sizeof(material) >= 4 ); */
@@ -334,7 +272,7 @@ static unsigned char *pgp_read_packet (FILE * fp, size_t * len)
       {
 	if (fread (&b, 1, 1, fp) < 1)
 	{
-	  mutt_perror ("fread");
+	  perror ("fread");
 	  goto bail;
 	}
 
@@ -358,7 +296,7 @@ static unsigned char *pgp_read_packet (FILE * fp, size_t * len)
 	{
 	  if (fread (&b, 1, 1, fp) < 1)
 	  {
-	    mutt_perror ("fread");
+	    perror ("fread");
 	    goto bail;
 	  }
 
@@ -386,120 +324,6 @@ bail:
   return NULL;
 }
 
-static pgp_key_t *pgp_new_keyinfo (void)
-{
-  return safe_calloc (sizeof (pgp_key_t), 1);
-}
-
-void pgp_free_uid (pgp_uid_t ** upp)
-{
-  pgp_uid_t *up, *q;
-
-  if (!upp || !*upp)
-    return;
-  for (up = *upp; up; up = q)
-  {
-    q = up->next;
-    safe_free ((void **) &up->addr);
-    safe_free ((void **) &up);
-  }
-
-  *upp = NULL;
-}
-
-pgp_uid_t *pgp_copy_uids (pgp_uid_t *up, pgp_key_t *parent)
-{
-  pgp_uid_t *l = NULL;
-  pgp_uid_t **lp = &l;
-
-  for (; up; up = up->next)
-  {
-    *lp = safe_calloc (1, sizeof (pgp_uid_t));
-    (*lp)->trust  = up->trust;
-    (*lp)->addr   = safe_strdup (up->addr);
-    (*lp)->parent = parent;
-    lp = &(*lp)->next;
-  }
-
-  return l;
-}
-
-static void _pgp_free_key (pgp_key_t ** kpp)
-{
-  pgp_key_t *kp;
-
-  if (!kpp || !*kpp)
-    return;
-
-  kp = *kpp;
-
-  pgp_free_uid (&kp->address);
-  safe_free ((void **) &kp->keyid);
-  safe_free ((void **) kpp);
-}
-
-pgp_key_t *pgp_remove_key (pgp_key_t ** klist, pgp_key_t * key)
-{
-  pgp_key_t **last;
-  pgp_key_t *p, *q, *r;
-
-  if (!klist || !*klist || !key)
-    return NULL;
-
-  if (key->parent && key->parent != key)
-    key = key->parent;
-
-  last = klist;
-  for (p = *klist; p && p != key; p = p->next)
-    last = &p->next;
-
-  if (!p)
-    return NULL;
-
-  for (q = p->next, r = p; q && q->parent == p; q = q->next)
-    r = q;
-
-  if (r)
-    r->next = NULL;
-
-  *last = q;
-  return q;
-}
-
-void pgp_free_key (pgp_key_t ** kpp)
-{
-  pgp_key_t *p, *q, *r;
-
-  if (!kpp || !*kpp)
-    return;
-
-  if ((*kpp)->parent && (*kpp)->parent != *kpp)
-    *kpp = (*kpp)->parent;
-  
-  /* Order is important here:
-   *
-   * - First free all children.
-   * - If we are an orphan (i.e., our parent was not in the key list),
-   *   free our parent.
-   * - free ourselves.
-   */
-
-  for (p = *kpp; p; p = q)
-  {
-    for (q = p->next; q && q->parent == p; q = r)
-    {
-      r = q->next;
-      _pgp_free_key (&q);
-    }
-    if (p->parent)
-      _pgp_free_key (&p->parent);
-
-    _pgp_free_key (&p);
-  }
-
-  *kpp = NULL;
-}
-
 static pgp_key_t *pgp_parse_pgp2_key (unsigned char *buff, size_t l)
 {
   pgp_key_t *p;
@@ -515,7 +339,7 @@ static pgp_key_t *pgp_parse_pgp2_key (unsigned char *buff, size_t l)
   if (l < 12)
     return NULL;
 
-  p = pgp_new_keyinfo ();
+  p = pgp_new_keyinfo();
 
   for (i = 0, j = 2; i < 4; i++)
     gen_time = (gen_time << 8) + buff[j++];
@@ -530,6 +354,7 @@ static pgp_key_t *pgp_parse_pgp2_key (unsigned char *buff, size_t l)
 
   alg = buff[j++];
 
+  p->numalg = alg;
   p->algorithm = pgp_pkalgbytype (alg);
   p->flags |= pgp_get_abilities (alg);
 
@@ -628,6 +453,7 @@ static pgp_key_t *pgp_parse_pgp3_key (unsigned char *buff, size_t l)
 
   alg = buff[j++];
 
+  p->numalg = alg;
   p->algorithm = pgp_pkalgbytype (alg);
   p->flags |= pgp_get_abilities (alg);
 
@@ -664,8 +490,6 @@ static pgp_key_t *pgp_parse_keyinfo (unsigned char *buff, size_t l)
 {
   if (!buff || l < 2)
     return NULL;
-
-  dprint (5, (debugfile, " version: %d ", buff[1]));
 
   switch (buff[1])
   {
@@ -876,8 +700,6 @@ static pgp_key_t *pgp_parse_keyblock (FILE * fp)
   pgp_uid_t *uid = NULL;
   pgp_uid_t **addr = NULL;
   
-  CHARSET *chs = mutt_get_charset (Charset);
-
   fgetpos (fp, &pos);
   
   while (!err && (buff = pgp_read_packet (fp, &l)) != NULL)
@@ -919,33 +741,32 @@ static pgp_key_t *pgp_parse_keyblock (FILE * fp)
 	    while (*addr) addr = &(*addr)->next;
 	  }
 	}
+	
+	if (pt == PT_SECKEY || pt == PT_SUBSECKEY)
+	  p->flags |= KEYFLAG_SECRET;
+
 	break;
       }
 
       case PT_SIG:
       {
-	dprint (5, (debugfile, "PT_SIG\n"));
 	pgp_parse_sig (buff, l, p);
 	break;
       }
 
       case PT_TRUST:
       {
-	dprint (5, (debugfile, "PT_TRUST: "));
 	if (p && (last_pt == PT_SECKEY || last_pt == PT_PUBKEY ||
 		  last_pt == PT_SUBKEY || last_pt == PT_SUBSECKEY))
 	{
 	  if (buff[1] & 0x20)
 	  {
-	    dprint (5, (debugfile, " disabling %s\n", p->keyid));
 	    p->flags |= KEYFLAG_DISABLED;
 	  }
 	}
 	else if (last_pt == PT_NAME && uid)
 	{
 	  uid->trust = buff[1];
-	  dprint (5, (debugfile, " setting trust for \"%s\" to %d.\n",
-		      uid->addr, uid->trust));
 	}
 	break;
       }
@@ -953,7 +774,6 @@ static pgp_key_t *pgp_parse_keyblock (FILE * fp)
       {
 	char *chr;
 
-	dprint (5, (debugfile, "PT_NAME: "));
 
 	if (!addr)
 	  break;
@@ -962,9 +782,7 @@ static pgp_key_t *pgp_parse_keyblock (FILE * fp)
 	memcpy (chr, buff + 1, l - 1);
 	chr[l - 1] = '\0';
 
-	dprint (5, (debugfile, "\"%s\"\n", chr));
 
-	mutt_decode_utf8_string (chr, chs);
 	*addr = uid = safe_calloc (1, sizeof (pgp_uid_t)); /* XXX */
 	uid->addr = chr;
 	uid->parent = p;
@@ -993,28 +811,29 @@ static pgp_key_t *pgp_parse_keyblock (FILE * fp)
   return root;  
 }
 
-int pgp_string_matches_hint (const char *s, LIST * hints)
+static int pgpring_string_matches_hint (const char *s, const char *hints[], int nhints)
 {
-  if (!hints)
+  int i;
+
+  if (!hints || !nhints)
     return 1;
 
-  for (; hints; hints = hints->next)
+  for (i = 0; i < nhints; i++)
   {
-    if (mutt_stristr (s, (char *) hints->data) != NULL)
+    if (mutt_stristr (s, hints[i]) != NULL)
       return 1;
   }
 
   return 0;
 }
 
-/* Go through the key ring file and look for keys with
+/* 
+ * Go through the key ring file and look for keys with
  * matching IDs.
  */
 
-pgp_key_t *pgp_get_candidates (struct pgp_vinfo * pgp, pgp_ring_t keyring,
-			       LIST * hints)
+static void pgpring_find_candidates (char *ringfile, const char *hints[], int nhints)
 {
-  char *ringfile;
   FILE *rfp;
   fpos_t pos, keypos;
 
@@ -1022,28 +841,12 @@ pgp_key_t *pgp_get_candidates (struct pgp_vinfo * pgp, pgp_ring_t keyring,
   unsigned char pt = 0;
   size_t l = 0;
 
-  CHARSET *chs = mutt_get_charset (Charset);
-
-  pgp_key_t *keys = NULL;
-  pgp_key_t **last = &keys;
   short err = 0;
-
-  switch (keyring)
-  {
-    case PGP_PUBRING:
-      ringfile = *pgp->pubring;
-      break;
-    case PGP_SECRING:
-      ringfile = *pgp->secring;
-      break;
-    default:
-      return NULL;
-  }
-
+  
   if ((rfp = fopen (ringfile, "r")) == NULL)
   {
-    mutt_perror ("fopen");
-    return NULL;
+    perror ("fopen");
+    return;
   }
 
   fgetpos (rfp, &pos);
@@ -1066,9 +869,10 @@ pgp_key_t *pgp_get_candidates (struct pgp_vinfo * pgp, pgp_ring_t keyring,
 
       memcpy (tmp, buff + 1, l - 1);
       tmp[l - 1] = '\0';
-      mutt_decode_utf8_string (tmp, chs);
 
-      if (pgp_string_matches_hint (tmp, hints))
+      /* mutt_decode_utf8_string (tmp, chs); */
+
+      if (pgpring_string_matches_hint (tmp, hints, nhints))
       {
 	pgp_key_t *p;
 
@@ -1076,11 +880,11 @@ pgp_key_t *pgp_get_candidates (struct pgp_vinfo * pgp, pgp_ring_t keyring,
 
 	/* Not bailing out here would lead us into an endless loop. */
 
-	if ((*last = pgp_parse_keyblock (rfp)) == NULL)
+	if ((p = pgp_parse_keyblock (rfp)) == NULL)
 	  err = 1;
-
-	for (p = *last; p; p = p->next)
-	  last = &p->next;
+	
+	pgpring_dump_keyblock (p);
+	pgp_free_key (&p);
       }
 
       safe_free ((void **) &tmp);
@@ -1091,5 +895,86 @@ pgp_key_t *pgp_get_candidates (struct pgp_vinfo * pgp, pgp_ring_t keyring,
 
   fclose (rfp);
 
-  return keys;
 }
+
+static void print_userid (const char *id)
+{
+  for (; id && *id; id++)
+  {
+    if (*id >= ' ' && *id <= 'z' && *id != ':')
+      putchar (*id);
+    else
+      printf ("\\x%02x", *id);
+  }
+}
+
+static char gnupg_trustletter (int t)
+{
+  switch (t)
+  {
+    case 1: return 'n';
+    case 2: return 'm';
+    case 3: return 'f';
+  }
+  return 'q';
+}
+
+static void pgpring_dump_keyblock (pgp_key_t *p)
+{
+  pgp_uid_t *uid;
+  short first;
+  struct tm *tp;
+  time_t t;
+  
+  for (; p; p = p->next)
+  {
+    first = 1;
+
+    if (p->flags & KEYFLAG_SECRET)
+    {
+      if (p->flags & KEYFLAG_SUBKEY)
+	printf ("ssb:");
+      else
+	printf ("sec:");
+    }
+    else 
+    {
+      if (p->flags & KEYFLAG_SUBKEY)
+	printf ("sub:");
+      else
+	printf ("pub:");
+    }
+    
+    if (p->flags & KEYFLAG_REVOKED)
+      putchar ('r');
+    if (p->flags & KEYFLAG_EXPIRED)
+      putchar ('e');
+    
+    for (uid = p->address; uid; uid = uid->next, first = 0)
+    {
+      if (!first)
+      {
+	printf ("uid:%c::::::::", gnupg_trustletter (uid->trust));
+	print_userid (uid->addr);
+	printf (":\n");
+      }
+      else
+      {
+	if (p->flags & KEYFLAG_SECRET)
+	  putchar ('u');
+	else
+	  putchar (gnupg_trustletter (uid->trust));
+
+	t = p->gen_time;
+	tp = gmtime (&t);
+
+	printf (":%d:%d:%s:%04d-%02d-%02d::::", p->keylen, p->numalg, p->keyid,
+		1900 + tp->tm_year, tp->tm_mon + 1, tp->tm_mday);
+	
+	print_userid (uid->addr);
+	printf (":\n");
+      }
+    }
+  }
+}
+	

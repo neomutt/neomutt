@@ -1,20 +1,27 @@
 /*
  * Copyright (C) 1997-1999 Thomas Roessler <roessler@guug.de>
  * 
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ *     This program is free software; you can redistribute it
+ *     and/or modify it under the terms of the GNU General Public
+ *     License as published by the Free Software Foundation; either
+ *     version 2 of the License, or (at your option) any later
+ *     version.
  * 
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ *     This program is distributed in the hope that it will be
+ *     useful, but WITHOUT ANY WARRANTY; without even the implied
+ *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ *     PURPOSE.  See the GNU General Public License for more
+ *     details.
  * 
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *     You should have received a copy of the GNU General Public
+ *     License along with this program; if not, write to the Free
+ *     Software Foundation, Inc., 675 Mass Ave, Cambridge, MA
+ *     02139, USA.
  */ 
+
+/* This file contains the new pgp invocation code.  Note that this
+ * is almost entirely format based.
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,570 +32,249 @@
 #include "mutt.h"
 #include "pgp.h"
 
-/*******************************************************************
- * 
- * PGP V2 Invocation stuff
- * 
- *******************************************************************/
 
-pid_t pgp_v2_invoke_decode(struct pgp_vinfo *pgp,
-			   FILE **pgpin, FILE **pgpout, FILE **pgperr,
-			   int pgpinfd, int pgpoutfd, int pgperrfd,
-			   const char *fname, int need_passphrase)
+/*
+ * The actual command line formatter.
+ */
+
+struct pgp_command_context {
+  short need_passphrase;	/* %p */
+  const char *fname;		/* %f */
+  const char *sig_fname;	/* %s */
+  const char *signas;		/* %a */
+  const char *ids;		/* %r */
+};
+
+
+const char *_mutt_fmt_pgp_command (char *dest,
+				   size_t destlen,
+				   char op,
+				   const char *src,
+				   const char *prefix,
+				   const char *ifstring,
+				   const char *elsestring,
+				   unsigned long data,
+				   format_flag flags)
 {
-  char _fname[_POSIX_PATH_MAX + SHORT_STRING];
-  char cmd[HUGE_STRING];
-  char pubring[_POSIX_PATH_MAX + SHORT_STRING];
-  char secring[_POSIX_PATH_MAX + SHORT_STRING];
-
-  mutt_quote_filename (_fname, sizeof (_fname), fname);
-  mutt_quote_filename (pubring, sizeof (pubring), *pgp->pubring);
-  mutt_quote_filename (secring, sizeof (secring), *pgp->secring); 
-
-  snprintf(cmd, sizeof(cmd), "%scat %s%s | "
-	   "%s +language=%s +pubring=%s +secring=%s +verbose=0 +batchmode -f",
-	   need_passphrase ? "PGPPASSFD=0; export PGPPASSFD; " : "",
-	   need_passphrase ? "- " : "",
-	   _fname,
-	   NONULL(*pgp->binary), NONULL (*pgp->language), NONULL (pubring), NONULL (secring));
-
-  return mutt_create_filter_fd(cmd, pgpin, pgpout, pgperr,
-			       pgpinfd, pgpoutfd, pgperrfd);
-}
-
-pid_t pgp_v2_invoke_verify(struct pgp_vinfo *pgp,
-			   FILE **pgpin, FILE **pgpout, FILE **pgperr,
-			   int pgpinfd, int pgpoutfd, int pgperrfd,
-			   const char *signedstuff, const char *sigfile)
-{
-  char _sig[_POSIX_PATH_MAX + SHORT_STRING];
-  char _signed[_POSIX_PATH_MAX + SHORT_STRING];
-  char cmd[HUGE_STRING];
-  char pubring[_POSIX_PATH_MAX + SHORT_STRING];
-  char secring[_POSIX_PATH_MAX + SHORT_STRING];
-
-  mutt_quote_filename (_sig, sizeof (_sig), sigfile);
-  mutt_quote_filename (_signed, sizeof (_signed), signedstuff);
-  mutt_quote_filename (pubring, sizeof (pubring), *pgp->pubring);
-  mutt_quote_filename (secring, sizeof (secring), *pgp->secring); 
-
-  snprintf(cmd, sizeof(cmd), 
-	   "%s +language=%s +pubring=%s +secring=%s +batchmode +verbose=0 %s %s",
-	   NONULL(*pgp->binary), NONULL (*pgp->language), NONULL (pubring), 
-	   NONULL (secring), _sig, _signed);
-
-  return mutt_create_filter_fd(cmd, pgpin, pgpout, pgperr,
-			       pgpinfd, pgpoutfd, pgperrfd);
-}
-
-pid_t pgp_v2_invoke_decrypt(struct pgp_vinfo *pgp,
-			    FILE **pgpin, FILE **pgpout, FILE **pgperr,
-			    int pgpinfd, int pgpoutfd, int pgperrfd,
-			    const char *fname)
-{
-  char _fname[_POSIX_PATH_MAX + SHORT_STRING];
-  char cmd[HUGE_STRING];
-  char pubring[_POSIX_PATH_MAX + SHORT_STRING];
-  char secring[_POSIX_PATH_MAX + SHORT_STRING];
-
-  mutt_quote_filename (_fname, sizeof (_fname), fname);
-  mutt_quote_filename (pubring, sizeof (pubring), *pgp->pubring);
-  mutt_quote_filename (secring, sizeof (secring), *pgp->secring); 
-
-  snprintf(cmd, sizeof(cmd),
-	   "PGPPASSFD=0; export PGPPASSFD; cat - %s | %s +language=%s +pubring=%s +secring=%s "
-	   "+verbose=0 +batchmode -f",
-	   _fname, NONULL(*pgp->binary), NONULL (*pgp->language), NONULL (pubring), NONULL (secring));
-  return mutt_create_filter_fd(cmd, pgpin, pgpout, pgperr,
-			    pgpinfd, pgpoutfd, pgperrfd);
-}
-
-pid_t pgp_v2_invoke_sign(struct pgp_vinfo *pgp,
-			 FILE **pgpin, FILE **pgpout, FILE **pgperr,
-			 int pgpinfd, int pgpoutfd, int pgperrfd, 
-			 const char *fname)
-{
-  char _fname[_POSIX_PATH_MAX + SHORT_STRING];
-  char cmd[HUGE_STRING];
-  char pubring[_POSIX_PATH_MAX + SHORT_STRING];
-  char secring[_POSIX_PATH_MAX + SHORT_STRING];
-
-  mutt_quote_filename (_fname, sizeof (_fname), fname);
-  mutt_quote_filename (pubring, sizeof (pubring), *pgp->pubring);
-  mutt_quote_filename (secring, sizeof (secring), *pgp->secring); 
-
-  snprintf(cmd, sizeof(cmd),
-	   "PGPPASSFD=0; export PGPPASSFD; cat - %s | %s "
-	   "+language=%s +pubring=%s +secring=%s +verbose=0 +batchmode -abfst %s %s",
-	   _fname, NONULL(*pgp->binary), NONULL (*pgp->language), NONULL (pubring), NONULL (secring), 
-	   PgpSignAs ? "-u" : "",
-	   PgpSignAs ? PgpSignAs : "");
-
-  return mutt_create_filter_fd(cmd, pgpin, pgpout, pgperr,
-			       pgpinfd, pgpoutfd, pgperrfd);
-}
-
-pid_t pgp_v2_invoke_encrypt(struct pgp_vinfo *pgp,
-			    FILE **pgpin, FILE **pgpout, FILE **pgperr,
-			    int pgpinfd, int pgpoutfd, int pgperrfd,
-			    const char *fname, const char *uids, int sign)
-{
-  char _fname[_POSIX_PATH_MAX + SHORT_STRING];
-  char cmd[HUGE_STRING];
-  char pubring[_POSIX_PATH_MAX + SHORT_STRING];
-  char secring[_POSIX_PATH_MAX + SHORT_STRING];
-
-  mutt_quote_filename (_fname, sizeof (_fname), fname);
-  mutt_quote_filename (pubring, sizeof (pubring), *pgp->pubring);
-  mutt_quote_filename (secring, sizeof (secring), *pgp->secring); 
-
-  snprintf(cmd, sizeof(cmd),
-	   "%scat %s%s | %s +language=%s +pubring=%s +secring=%s +verbose=0 %s +batchmode -aeft%s %s%s %s",
-	   sign ? "PGPPASSFD=0; export PGPPASSFD; " : "",
-	   sign ? "- " : "",
-	   _fname,
-	   NONULL(*pgp->binary), NONULL (*pgp->language), NONULL (pubring), NONULL (secring), 
-	   option(OPTPGPENCRYPTSELF) ? "+encrypttoself" : "",
-	   sign ? "s" : "",
-	   sign && PgpSignAs ? "-u " : "",
-	   sign && PgpSignAs ? PgpSignAs : "",
-	   uids);
-  return mutt_create_filter_fd(cmd, pgpin, pgpout, pgperr, 
-			       pgpinfd, pgpoutfd, pgperrfd);
-}
-
-void pgp_v2_invoke_import(struct pgp_vinfo *pgp, const char *fname)
-{
-  char _fname[_POSIX_PATH_MAX + SHORT_STRING];
-  char cmd[HUGE_STRING];
-  char pubring[_POSIX_PATH_MAX + SHORT_STRING];
-  char secring[_POSIX_PATH_MAX + SHORT_STRING];
-
-  mutt_quote_filename (_fname, sizeof (_fname), fname);
-  mutt_quote_filename (pubring, sizeof (pubring), *pgp->pubring);
-  mutt_quote_filename (secring, sizeof (secring), *pgp->secring); 
-
-  snprintf(cmd, sizeof(cmd), "%s +language=%s +pubring=%s +secring=%s -ka %s",
-	   NONULL(*pgp->binary), NONULL (*pgp->language), NONULL (pubring), 
-	   NONULL (secring), _fname);
-  mutt_system(cmd);
-}
-
-pid_t pgp_v2_invoke_export(struct pgp_vinfo *pgp,
-			   FILE **pgpin, FILE **pgpout, FILE **pgperr,
-			   int pgpinfd, int pgpoutfd, int pgperrfd, const char *id)
-{
-  char cmd[HUGE_STRING];
-  char pubring[_POSIX_PATH_MAX + SHORT_STRING];
-  char secring[_POSIX_PATH_MAX + SHORT_STRING];
-
-  mutt_quote_filename (pubring, sizeof (pubring), *pgp->pubring);
-  mutt_quote_filename (secring, sizeof (secring), *pgp->secring); 
-
-  snprintf(cmd, sizeof(cmd), "%s -kxaf +language=%s +pubring=%s +secring=%s 0x%8s",
-	   NONULL(*pgp->binary), NONULL (*pgp->language), NONULL (pubring), NONULL (secring), id);
-  return mutt_create_filter_fd(cmd, pgpin, pgpout, pgperr,
-			       pgpinfd, pgpoutfd, pgperrfd);
-}
-
-pid_t pgp_v2_invoke_verify_key(struct pgp_vinfo *pgp,
-			       FILE **pgpin, FILE **pgpout, FILE **pgperr,
-			       int pgpinfd, int pgpoutfd, int pgperrfd, const char *id)
-{
-  char cmd[HUGE_STRING];
-  char pubring[_POSIX_PATH_MAX + SHORT_STRING];
-  char secring[_POSIX_PATH_MAX + SHORT_STRING];
-
-  mutt_quote_filename (pubring, sizeof (pubring), *pgp->pubring);
-  mutt_quote_filename (secring, sizeof (secring), *pgp->secring); 
-
-  snprintf(cmd, sizeof(cmd), "%s +language=%s +pubring=%s +secring=%s +batchmode -kcc 0x%8s",
-	   NONULL(*pgp->binary), NONULL (*pgp->language), NONULL (pubring), NONULL (secring), id);
-  return mutt_create_filter_fd(cmd, pgpin, pgpout, pgperr,
-			       pgpinfd, pgpoutfd, pgperrfd);
-}
-
-/*******************************************************************
- * 
- * PGP V3 Invocation stuff
- * 
- *******************************************************************/
-
-pid_t pgp_v3_invoke_decode(struct pgp_vinfo *pgp,
-			   FILE **pgpin, FILE **pgpout, FILE **pgperr,
-			   int pgpinfd, int pgpoutfd, int pgperrfd,
-			   const char *fname, int need_passphrase)
-{
-  char _fname[_POSIX_PATH_MAX + SHORT_STRING];
-  char cmd[HUGE_STRING];
-  char pubring[_POSIX_PATH_MAX + SHORT_STRING];
-  char secring[_POSIX_PATH_MAX + SHORT_STRING];
-
-  mutt_quote_filename (_fname, sizeof (_fname), fname);
-  mutt_quote_filename (pubring, sizeof (pubring), *pgp->pubring);
-  mutt_quote_filename (secring, sizeof (secring), *pgp->secring); 
-
-  snprintf(cmd, sizeof(cmd), "%scat %s%s | "
-	   "%sv +language=%s +pubring=%s +secring=%s +verbose=0 +batchmode -f "
-	   "--OutputInformationFD=2",
-	   need_passphrase ? "PGPPASSFD=0; export PGPPASSFD; " : "",
-	   need_passphrase ? "- " : "",
-	   _fname,
-	   NONULL(*pgp->binary), NONULL (*pgp->language), NONULL (pubring), NONULL (secring));
-  return mutt_create_filter_fd(cmd, pgpin, pgpout, pgperr,
-			       pgpinfd, pgpoutfd, pgperrfd);
-}
-
-pid_t pgp_v3_invoke_verify(struct pgp_vinfo *pgp,
-			   FILE **pgpin, FILE **pgpout, FILE **pgperr,
-			   int pgpinfd, int pgpoutfd, int pgperrfd,
-			   const char *signedstuff, const char *sigfile)
-{
-  char _sig[_POSIX_PATH_MAX + SHORT_STRING];
-  char _sign[_POSIX_PATH_MAX + SHORT_STRING];
-  char cmd[HUGE_STRING];
-  char pubring[_POSIX_PATH_MAX + SHORT_STRING];
-  char secring[_POSIX_PATH_MAX + SHORT_STRING];
-
-  mutt_quote_filename (_sig, sizeof (_sig), sigfile);
-  mutt_quote_filename (_sign, sizeof (_sign), signedstuff);
-  mutt_quote_filename (pubring, sizeof (pubring), *pgp->pubring);
-  mutt_quote_filename (secring, sizeof (secring), *pgp->secring); 
-
-  snprintf(cmd, sizeof(cmd),
-	   "%sv +language=%s +pubring=%s +secring=%s --OutputInformationFD=1 +batchmode +verbose=0 %s %s",
-	   NONULL(*pgp->binary), NONULL (*pgp->language), NONULL (pubring), NONULL (secring), 
-	   _sig, _sign);
-
-  return mutt_create_filter_fd(cmd, pgpin, pgpout, pgperr,
-			       pgpinfd, pgpoutfd, pgperrfd);
-}
-
-pid_t pgp_v3_invoke_encrypt(struct pgp_vinfo *pgp,
-			    FILE **pgpin, FILE **pgpout, FILE **pgperr,
-			    int pgpinfd, int pgpoutfd, int pgperrfd,
-			    const char *fname, const char *uids, int sign)
-{
-  char *cp;
-  char *keylist;
-  char _fname[_POSIX_PATH_MAX + SHORT_STRING];
-  char cmd[HUGE_STRING];
-  char pubring[_POSIX_PATH_MAX + SHORT_STRING];
-  char secring[_POSIX_PATH_MAX + SHORT_STRING];
-  char tmpcmd[HUGE_STRING];
-
-  mutt_quote_filename (_fname, sizeof (_fname), fname);
-  mutt_quote_filename (pubring, sizeof (pubring), *pgp->pubring);
-  mutt_quote_filename (secring, sizeof (secring), *pgp->secring); 
-
-  snprintf(cmd, sizeof(cmd),
-	   "%scat %s%s | %se +language=%s +pubring=%s +secring=%s +verbose=0 %s +batchmode +nobatchinvalidkeys=off -aft%s %s%s",
-	   sign ? "PGPPASSFD=0; export PGPPASSFD; " : "",
-	   sign ? "- " : "",
-	   _fname,
-	   NONULL(*pgp->binary), NONULL (*pgp->language), NONULL (pubring), NONULL (secring), 
-	   option(OPTPGPENCRYPTSELF) ? "+encrypttoself" : "",
-	   sign ? "s" : "",
-	   sign && PgpSignAs ? "-u " : "",
-	   sign && PgpSignAs ? PgpSignAs : "");
-
-  keylist = safe_strdup(uids);
-
-  for(cp = strtok(keylist, " "); cp ; cp = strtok(NULL, " "))
+  char fmt[16];
+  struct pgp_command_context *cctx = (struct pgp_command_context *) data;
+  int optional = (flags & M_FORMAT_OPTIONAL);
+  
+  switch (op)
   {
-    snprintf(tmpcmd, sizeof(tmpcmd), "%s -r %s", 
-	     cmd, cp);
-    strcpy(cmd, tmpcmd);
+    case 'r':
+    {
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+	snprintf (dest, destlen, fmt, NONULL (cctx->ids));
+      }
+      else if (!cctx->ids)
+	optional = 0;
+      break;
+    }
+    
+    case 'a':
+    {
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+	snprintf (dest, destlen, fmt, NONULL (cctx->signas));
+      }
+      else if (!cctx->signas)
+	optional = 0;
+      break;
+    }
+    
+    case 's':
+    {
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+	snprintf (dest, destlen, fmt, NONULL (cctx->sig_fname));
+      }
+      else if (!cctx->sig_fname)
+	optional = 0;
+      break;
+    }
+    
+    case 'f':
+    {
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+	snprintf (dest, destlen, fmt, NONULL (cctx->fname));
+      }
+      else if (!cctx->fname)
+	optional = 0;
+      break;
+    }
+    
+    case 'p':
+    {
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+	snprintf (dest, destlen, fmt, cctx->need_passphrase ? "PGPPASSFD=0" : "");
+      }
+      else if (!cctx->need_passphrase)
+	optional = 0;
+      break;
+    }
   }
-  safe_free((void **) &keylist);
-
-  return mutt_create_filter_fd(cmd, pgpin, pgpout, pgperr, 
-			       pgpinfd, pgpoutfd, pgperrfd);
+  
+  if (optional)
+    mutt_FormatString (dest, destlen, ifstring, mutt_attach_fmt, data, 0);
+  else if (flags & M_FORMAT_OPTIONAL)
+    mutt_FormatString (dest, destlen, elsestring, mutt_attach_fmt, data, 0);
+  
+  return (src);
 }
 
-pid_t pgp_v3_invoke_decrypt(struct pgp_vinfo *pgp,
-			    FILE **pgpin, FILE **pgpout, FILE **pgperr,
-			    int pgpinfd, int pgpoutfd, int pgperrfd,
-			    const char *fname)
+void mutt_pgp_command (char *d, size_t dlen, struct pgp_command_context *cctx, const char *fmt)
 {
-  char _fname[_POSIX_PATH_MAX + SHORT_STRING];
+  mutt_FormatString (d, dlen, NONULL (fmt), _mutt_fmt_pgp_command, (unsigned long) cctx, 0);
+  dprint (2, (debugfile, "mutt_pgp_command: %s\n", d));
+}
+
+/*
+ * Glue.
+ */
+
+
+static pid_t pgp_invoke (FILE **pgpin, FILE **pgpout, FILE **pgperr,
+			 int pgpinfd, int pgpoutfd, int pgperrfd,
+			 short need_passphrase,
+			 const char *fname,
+			 const char *sig_fname,
+			 const char *signas,
+			 const char *ids,
+			 const char *format)
+{
+  struct pgp_command_context cctx;
   char cmd[HUGE_STRING];
-  char pubring[_POSIX_PATH_MAX + SHORT_STRING];
-  char secring[_POSIX_PATH_MAX + SHORT_STRING];
-
-  mutt_quote_filename (_fname, sizeof (_fname), fname);
-  mutt_quote_filename (pubring, sizeof (pubring), *pgp->pubring);
-  mutt_quote_filename (secring, sizeof (secring), *pgp->secring); 
-
-  snprintf(cmd, sizeof(cmd),
-	   "PGPPASSFD=0; export PGPPASSFD; cat - %s | %sv +language=%s +pubring=%s +secring=%s "
-	   "+verbose=0 +batchmode -f --OutputInformationFD=2",
-	   _fname, NONULL(*pgp->binary), NONULL (*pgp->language), NONULL (pubring), NONULL (secring));
-
-  return mutt_create_filter_fd(cmd, pgpin, pgpout, pgperr,
+  
+  memset (&cctx, 0, sizeof (cctx));
+  
+  cctx.need_passphrase = need_passphrase;
+  cctx.fname	       = fname;
+  cctx.sig_fname       = sig_fname;
+  cctx.signas	       = signas;
+  cctx.ids	       = ids;
+  
+  mutt_pgp_command (cmd, sizeof (cmd), &cctx, format);
+  
+  return mutt_create_filter_fd (cmd, pgpin, pgpout, pgperr,
 			       pgpinfd, pgpoutfd, pgperrfd);
 }
 
-pid_t pgp_v3_invoke_sign(struct pgp_vinfo *pgp,
-			 FILE **pgpin, FILE **pgpout, FILE **pgperr,
+
+/*
+ * The exported interface.
+ * 
+ * This is historic and may be removed at some point.
+ *
+ */
+
+
+pid_t pgp_invoke_decode (FILE **pgpin, FILE **pgpout, FILE **pgperr,
 			 int pgpinfd, int pgpoutfd, int pgperrfd, 
-			 const char *fname)
+			 const char *fname, short need_passphrase)
 {
-  char _fname[_POSIX_PATH_MAX + SHORT_STRING];
-  char cmd[HUGE_STRING];
-  char pubring[_POSIX_PATH_MAX + SHORT_STRING];
-  char secring[_POSIX_PATH_MAX + SHORT_STRING];
-
-  mutt_quote_filename (_fname, sizeof (_fname), fname);
-  mutt_quote_filename (pubring, sizeof (pubring), *pgp->pubring);
-  mutt_quote_filename (secring, sizeof (secring), *pgp->secring); 
-
-  snprintf(cmd, sizeof(cmd),
-	   "PGPPASSFD=0; export PGPPASSFD; cat - %s | %ss "
-	   "+language=%s +pubring=%s +secring=%s +verbose=0 -abft %s %s",
-	   _fname, NONULL(*pgp->binary), NONULL (*pgp->language), NONULL (pubring), NONULL (secring),
-	   PgpSignAs ? "-u" : "",
-	   PgpSignAs ? PgpSignAs : "");
-  return mutt_create_filter_fd(cmd, pgpin, pgpout, pgperr,
-			       pgpinfd, pgpoutfd, pgperrfd);
-}
-void pgp_v3_invoke_import(struct pgp_vinfo *pgp, const char *fname)
-{
-  char _fname[_POSIX_PATH_MAX + SHORT_STRING];
-  char cmd[HUGE_STRING];
-  char pubring[_POSIX_PATH_MAX + SHORT_STRING];
-  char secring[_POSIX_PATH_MAX + SHORT_STRING];
-
-  mutt_quote_filename (_fname, sizeof (_fname), fname);
-  mutt_quote_filename (pubring, sizeof (pubring), *pgp->pubring);
-  mutt_quote_filename (secring, sizeof (secring), *pgp->secring); 
-
-  snprintf(cmd, sizeof(cmd), "%sk +language=%s +pubring=%s +secring=%s -a --OutputInformationFD=1 %s",
-	   NONULL(*pgp->binary), NONULL (*pgp->language), NONULL (pubring), NONULL (secring), _fname);
-  mutt_system(cmd);
+  return pgp_invoke (pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
+		     need_passphrase, fname, NULL, NULL, NULL, 
+		     PgpDecodeCommand);
 }
 
-pid_t pgp_v3_invoke_export(struct pgp_vinfo *pgp,
-			   FILE **pgpin, FILE **pgpout, FILE **pgperr,
-			   int pgpinfd, int pgpoutfd, int pgperrfd, const char *id)
+pid_t pgp_invoke_verify (FILE **pgpin, FILE **pgpout, FILE **pgperr,
+			 int pgpinfd, int pgpoutfd, int pgperrfd, 
+			 const char *fname, const char *sig_fname)
 {
-  char cmd[HUGE_STRING];
-  char pubring[_POSIX_PATH_MAX + SHORT_STRING];
-  char secring[_POSIX_PATH_MAX + SHORT_STRING];
-
-  mutt_quote_filename (pubring, sizeof (pubring), *pgp->pubring);
-  mutt_quote_filename (secring, sizeof (secring), *pgp->secring); 
-
-  snprintf(cmd, sizeof(cmd), "%sk -xa +language=%s +pubring=%s +secring=%s --OutputInformationFD=1 0x%8s",
-	   NONULL(*pgp->binary), NONULL (*pgp->language), NONULL (pubring), NONULL (secring), id);
-
-  return mutt_create_filter_fd(cmd, pgpin, pgpout, pgperr,
-			       pgpinfd, pgpoutfd, pgperrfd);
+  return pgp_invoke (pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
+		     0, fname, sig_fname, NULL, NULL, PgpVerifyCommand);
 }
 
-pid_t pgp_v3_invoke_verify_key(struct pgp_vinfo *pgp,
-			       FILE **pgpin, FILE **pgpout, FILE **pgperr,
-			       int pgpinfd, int pgpoutfd, int pgperrfd, const char *id)
+pid_t pgp_invoke_decrypt (FILE **pgpin, FILE **pgpout, FILE **pgperr,
+			  int pgpinfd, int pgpoutfd, int pgperrfd, 
+			  const char *fname)
 {
-  char cmd[HUGE_STRING];
-  char pubring[_POSIX_PATH_MAX + SHORT_STRING];
-  char secring[_POSIX_PATH_MAX + SHORT_STRING];
-
-  mutt_quote_filename (pubring, sizeof (pubring), *pgp->pubring);
-  mutt_quote_filename (secring, sizeof (secring), *pgp->secring); 
-
-  snprintf(cmd, sizeof(cmd), "%sk +language=%s +pubring=%s +secring=%s +batchmode -c --OutputInformationFD=1 0x%8s",
-	   NONULL(*pgp->binary), NONULL (*pgp->language), NONULL (pubring), NONULL (secring), id);
-
-  return mutt_create_filter_fd(cmd, pgpin, pgpout, pgperr,
-			       pgpinfd, pgpoutfd, pgperrfd);
+  return pgp_invoke (pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
+		     1, fname, NULL, NULL, NULL, PgpDecryptCommand);
 }
 
-/*******************************************************************
- * 
- * GNU Privacy Guard invocation stuff
- * 
- * Credits go to Werner Koch for sending me the code on which this 
- * is based.
- * 
- *******************************************************************/
-
-pid_t pgp_gpg_invoke_decode(struct pgp_vinfo *pgp,
-			    FILE **pgpin, FILE **pgpout, FILE **pgperr,
-			    int pgpinfd, int pgpoutfd, int pgperrfd,
-			    const char *fname, int need_passphrase)
+pid_t pgp_invoke_sign (FILE **pgpin, FILE **pgpout, FILE **pgperr,
+		       int pgpinfd, int pgpoutfd, int pgperrfd, 
+		       const char *fname)
 {
-  char cmd[HUGE_STRING];
-  char _fname[_POSIX_PATH_MAX + SHORT_STRING];
-
-  mutt_quote_filename (_fname, sizeof (_fname), fname);
-
-  snprintf(cmd, sizeof(cmd),
-	   "%s%s --no-verbose --batch  -o - %s",
-	   NONULL(*pgp->binary), need_passphrase? " --passphrase-fd 0":"",
-	   _fname);
-
-  return mutt_create_filter_fd(cmd, pgpin, pgpout, pgperr,
-			       pgpinfd, pgpoutfd, pgperrfd);
+  return pgp_invoke (pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
+		     1, fname, NULL, PgpSignAs, NULL, PgpSignCommand);
 }
 
-pid_t pgp_gpg_invoke_verify(struct pgp_vinfo *pgp,
-			    FILE **pgpin, FILE **pgpout, FILE **pgperr,
-			    int pgpinfd, int pgpoutfd, int pgperrfd,
-			    const char *signedstuff, const char *sigfile)
-{  
-  char _sig[_POSIX_PATH_MAX + SHORT_STRING];
-  char _sign[_POSIX_PATH_MAX + SHORT_STRING];
-  char cmd[HUGE_STRING];
 
-  mutt_quote_filename (_sig, sizeof (_sig), sigfile);
-  mutt_quote_filename (_sign, sizeof (_sign), signedstuff);
-
-  snprintf(cmd, sizeof(cmd),
-	   "%s --no-verbose --batch  -o - "
-	   "--verify %s %s",
-	   NONULL(*pgp->binary), _sig, _sign);
-
-  return mutt_create_filter_fd(cmd, pgpin, pgpout, pgperr,
-			       pgpinfd, pgpoutfd, pgperrfd);
-}
-
-pid_t pgp_gpg_invoke_decrypt(struct pgp_vinfo *pgp,
-			    FILE **pgpin, FILE **pgpout, FILE **pgperr,
-			    int pgpinfd, int pgpoutfd, int pgperrfd,
-			    const char *fname)
+pid_t pgp_invoke_encrypt (FILE **pgpin, FILE **pgpout, FILE **pgperr,
+			  int pgpinfd, int pgpoutfd, int pgperrfd,
+			  const char *fname, const char *uids, int sign)
 {
-  char _fname[_POSIX_PATH_MAX + SHORT_STRING];
-  char cmd[HUGE_STRING];
-
-  mutt_quote_filename (_fname, sizeof (_fname), fname);
-
-  snprintf(cmd, sizeof(cmd),
-	   "%s --passphrase-fd 0 --no-verbose --batch  -o - "
-	   "--decrypt %s",
-	   NONULL(*pgp->binary), _fname);
-
-  return mutt_create_filter_fd(cmd, pgpin, pgpout, pgperr,
-			       pgpinfd, pgpoutfd, pgperrfd);
-}
-
-static char *gpg_digalg(void)
-{
-  static char digalg[STRING];
-  if(PgpSignMicalg && !mutt_strncasecmp(PgpSignMicalg, "pgp-", 4))
-    strfcpy(digalg, PgpSignMicalg + 4, sizeof(digalg));
+  if (sign)
+    return pgp_invoke (pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
+		       1, fname, NULL, PgpSignAs, uids, 
+		       PgpEncryptSignCommand);
   else
-  {
-   /* We use md5 here as the default value as it's the good
-    * old default value for PGP and will be used in the
-    * message's headers.
-    */
-
-    strcpy(digalg, "md5");
-  }
-  return digalg;
+    return pgp_invoke (pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
+		       0, fname, NULL, NULL, uids, 
+		       PgpEncryptOnlyCommand);
 }
 
-pid_t pgp_gpg_invoke_sign(struct pgp_vinfo *pgp,
-			 FILE **pgpin, FILE **pgpout, FILE **pgperr,
+void pgp_invoke_import (const char *fname)
+{
+  char _fname[_POSIX_PATH_MAX + SHORT_STRING];
+  char cmd[HUGE_STRING];
+  struct pgp_command_context cctx;
+  
+  memset (&cctx, 0, sizeof (cctx));
+  
+  mutt_quote_filename (_fname, sizeof (_fname), fname);
+  cctx.fname = _fname;
+  
+  mutt_pgp_command (cmd, sizeof (cmd), &cctx, PgpImportCommand);
+  mutt_system (cmd);
+}
+
+pid_t pgp_invoke_export (FILE **pgpin, FILE **pgpout, FILE **pgperr,
 			 int pgpinfd, int pgpoutfd, int pgperrfd, 
-			 const char *fname)
+			 const char *uids)
 {
-  char cmd[HUGE_STRING];
-
-  char _fname[_POSIX_PATH_MAX + SHORT_STRING];
-
-  mutt_quote_filename (_fname, sizeof (_fname), fname);
-
-  snprintf(cmd, sizeof(cmd),
-	   "%s --no-verbose --batch  -o - "
-	   "--passphrase-fd 0 --digest-algo %s "
-	   "--detach-sign --textmode --armor %s%s %s",
-	   NONULL(*pgp->binary),
-	   gpg_digalg(),
-	   PgpSignAs? "-u " : "",
-	   PgpSignAs? PgpSignAs : "", _fname);
-
-  return mutt_create_filter_fd(cmd, pgpin, pgpout, pgperr,
-			       pgpinfd, pgpoutfd, pgperrfd);
+  return pgp_invoke (pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
+		     0, NULL, NULL, NULL, uids,
+		     PgpExportCommand);
 }
 
-pid_t pgp_gpg_invoke_encrypt(struct pgp_vinfo *pgp,
-			    FILE **pgpin, FILE **pgpout, FILE **pgperr,
-			    int pgpinfd, int pgpoutfd, int pgperrfd,
-			    const char *fname, const char *uids, int sign)
+pid_t pgp_invoke_verify_key (FILE **pgpin, FILE **pgpout, FILE **pgperr,
+			     int pgpinfd, int pgpoutfd, int pgperrfd, 
+			     const char *uids)
 {
-  char cmd[HUGE_STRING];
-  char tmpcmd[HUGE_STRING];
-  char *cp;
-  char *keylist;
-  char _fname[_POSIX_PATH_MAX + SHORT_STRING];
+  return pgp_invoke (pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
+		     0, NULL, NULL, NULL, uids,
+		     PgpVerifyKeyCommand);
+}
 
-  mutt_quote_filename (_fname, sizeof (_fname), fname);
+pid_t pgp_invoke_list_keys (FILE **pgpin, FILE **pgpout, FILE **pgperr,
+			    int pgpinfd, int pgpoutfd, int pgperrfd, 
+			    pgp_ring_t keyring, LIST *hints)
+{
+  char uids[HUGE_STRING];
+  char tmpuids[HUGE_STRING];
 
-  snprintf(cmd, sizeof(cmd),
-	   "%s%s --no-verbose -v --batch  -o - "
-	   "--digest-algo %s "
-	   "--encrypt%s --textmode --armor --always-trust %s%s",
-	   NONULL(*pgp->binary),
-	   sign? " --passphrase-fd 0":"",
-	   gpg_digalg(),
-	   sign? " --sign":"",
-	   PgpSignAs? "-u " : "",
-	   PgpSignAs? PgpSignAs : "" );
-
-  keylist = safe_strdup(uids);
-  for(cp = strtok(keylist, " "); cp ; cp = strtok(NULL, " "))
+  *uids = '\0';
+  
+  for (; hints; hints = hints->next)
   {
-    snprintf(tmpcmd, sizeof(tmpcmd), "%s -r %s",
-	     cmd, cp);
-    strcpy(cmd, tmpcmd);
+    snprintf (tmpuids, sizeof (tmpuids), "%s %s", uids, (char *) hints->data);
+    strcpy (uids, tmpuids);
   }
-  safe_free((void **) &keylist);
 
-  snprintf(tmpcmd, sizeof(tmpcmd), "%s %s", cmd, _fname);
-  strcpy(cmd, tmpcmd);
-
-  return mutt_create_filter_fd(cmd, pgpin, pgpout, pgperr, 
-			       pgpinfd, pgpoutfd, pgperrfd);
-}
-
-void pgp_gpg_invoke_import(struct pgp_vinfo *pgp, const char *fname)
-{
-  char cmd[HUGE_STRING];
-  char _fname[_POSIX_PATH_MAX + SHORT_STRING];
-
-  mutt_quote_filename (_fname, sizeof (_fname), fname);
-
-  snprintf(cmd, sizeof(cmd), "%sm --no-verbose --import -v %s",
-	   NONULL(*pgp->binary), _fname);
-
-  mutt_system(cmd);
-}
-
-pid_t pgp_gpg_invoke_export(struct pgp_vinfo *pgp,
-			   FILE **pgpin, FILE **pgpout, FILE **pgperr,
-			   int pgpinfd, int pgpoutfd, int pgperrfd, const char *id)
-{
-  char cmd[HUGE_STRING];
-
-  snprintf(cmd, sizeof(cmd), "%sm --no-verbose --export --armor 0x%8s",
-	   NONULL(*pgp->binary), id);
-
-  return mutt_create_filter_fd(cmd, pgpin, pgpout, pgperr,
-			       pgpinfd, pgpoutfd, pgperrfd);
-}
-
-pid_t pgp_gpg_invoke_verify_key(struct pgp_vinfo *pgp,
-			       FILE **pgpin, FILE **pgpout, FILE **pgperr,
-			       int pgpinfd, int pgpoutfd, int pgperrfd, const char *id)
-{
-  char cmd[HUGE_STRING];
-
-  snprintf(cmd, sizeof(cmd),
-	   "%sm --no-verbose --batch --fingerprint --check-sigs %s%s",
-	   NONULL(*pgp->binary), (mutt_strlen(id)==8 || mutt_strlen(id)==16)? "0x":"", id );
-
-  return mutt_create_filter_fd(cmd, pgpin, pgpout, pgperr,
-			       pgpinfd, pgpoutfd, pgperrfd);
+  return pgp_invoke (pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
+		     0, NULL, NULL, NULL, uids,
+		     keyring == PGP_SECRING ? PgpListSecringCommand :
+		     PgpListPubringCommand);
 }

@@ -186,7 +186,11 @@ struct option_t MuttVars[] = {
 
   { "pgp_autosign",	DT_BOOL, R_NONE, OPTPGPAUTOSIGN, 0 },
   { "pgp_autoencrypt",	DT_BOOL, R_NONE, OPTPGPAUTOENCRYPT, 0 },
+
+# if 0
   { "pgp_encryptself",	DT_BOOL, R_NONE, OPTPGPENCRYPTSELF, 1 },
+# endif
+
   { "pgp_entry_format", DT_STR,  R_NONE, UL &PgpEntryFormat, UL "%4n %t%f %4l/0x%k %-4a %2c %u" },
   { "pgp_long_ids",	DT_BOOL, R_NONE, OPTPGPLONGIDS, 0 },
   { "pgp_replyencrypt",	DT_BOOL, R_NONE, OPTPGPREPLYENCRYPT, 0 },
@@ -199,35 +203,23 @@ struct option_t MuttVars[] = {
   { "pgp_strict_enc",	DT_BOOL, R_NONE, OPTPGPSTRICTENC, 1 },
   { "pgp_timeout",	DT_NUM,	 R_NONE, UL &PgpTimeout, 300 },
   { "pgp_verify_sig",	DT_QUAD, R_NONE, OPT_VERIFYSIG, M_YES },
-
-  { "pgp_v2",		DT_PATH, R_NONE, UL &PgpV2, 0 },
-  { "pgp_v2_language",	DT_STR,	 R_NONE, UL &PgpV2Language, UL "en" },
-  { "pgp_v2_pubring",	DT_PATH, R_NONE, UL &PgpV2Pubring, 0 },
-  { "pgp_v2_secring",	DT_PATH, R_NONE, UL &PgpV2Secring, 0 },  
-
-  { "pgp_v5",		DT_PATH, R_NONE, UL &PgpV3, 0 },
-  { "pgp_v5_language",	DT_STR,	 R_NONE, UL &PgpV3Language, 0 },
-  { "pgp_v5_pubring",	DT_PATH, R_NONE, UL &PgpV3Pubring, 0 },
-  { "pgp_v5_secring",	DT_PATH, R_NONE, UL &PgpV3Secring, 0 },
-
-  { "pgp_gpg",		DT_PATH, R_NONE, UL &PgpGpg, 0 },
-  
-# ifdef HAVE_PGP2
-  { "pgp_default_version",	DT_STR, R_NONE, UL &PgpDefaultVersion, UL "pgp2" },
-# else
-#  ifdef HAVE_PGP5
-  { "pgp_default_version",	DT_STR, R_NONE, UL &PgpDefaultVersion, UL "pgp5" },
-#  else
-#   ifdef HAVE_GPG
-  { "pgp_default_version",	DT_STR,	R_NONE, UL &PgpDefaultVersion, UL "gpg" },
-#   endif
-#  endif
-# endif
-  { "pgp_receive_version", 	DT_STR,	R_NONE, UL &PgpReceiveVersion, UL "default" },
-  { "pgp_send_version",		DT_STR,	R_NONE, UL &PgpSendVersion, UL "default" },
   { "pgp_sort_keys",	DT_SORT|DT_SORT_KEYS, R_NONE, UL &PgpSortKeys, SORT_ADDRESS },
-  { "pgp_key_version",		DT_STR, R_NONE, UL &PgpKeyVersion, UL "default" },
 
+  /* XXX Default values! */
+  
+  { "pgp_decode_command", 	DT_STR, R_NONE, UL &PgpDecodeCommand, 0},
+  { "pgp_verify_command", 	DT_STR, R_NONE, UL &PgpVerifyCommand, 0},
+  { "pgp_decrypt_command", 	DT_STR, R_NONE, UL &PgpDecryptCommand, 0},
+  { "pgp_sign_command",		DT_STR, R_NONE, UL &PgpSignCommand, 0},
+  { "pgp_encrypt_sign_command",	DT_STR, R_NONE, UL &PgpEncryptSignCommand, 0},
+  { "pgp_encrypt_only_command", DT_STR, R_NONE, UL &PgpEncryptOnlyCommand, 0},
+  { "pgp_import_command",	DT_STR, R_NONE, UL &PgpImportCommand, 0},
+  { "pgp_export_command", 	DT_STR, R_NONE, UL &PgpExportCommand, 0},
+  { "pgp_verify_key_command",	DT_STR, R_NONE, UL &PgpVerifyKeyCommand, 0},
+  { "pgp_list_secring_command",	DT_STR, R_NONE, UL &PgpListSecringCommand, 0},
+  { "pgp_list_pubring_command", DT_STR, R_NONE, UL &PgpListPubringCommand, 0},
+
+    
   { "forward_decrypt",	DT_BOOL, R_NONE, OPTFORWDECRYPT, 1 },
   { "forw_decrypt",	DT_SYN,  R_NONE, UL "forward_decrypt", 0 },
 #endif /* _PGPPATH */

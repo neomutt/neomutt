@@ -1,0 +1,20 @@
+#!/bin/sh --
+
+cmd=$1
+pfx=""
+
+die() {
+	echo "Command line usage: $0 [flags] -- prefix [recipients]" >& 2
+	exit 1
+}
+
+while shift && test -n "$1" ; do
+	if test "$1" = "--" ; then
+		shift || die
+		pfx="$1"
+		shift || die
+	fi
+	cmd="$cmd $pfx $1"
+done
+
+exec $cmd
