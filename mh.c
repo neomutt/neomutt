@@ -868,12 +868,10 @@ int maildir_commit_message (CONTEXT *ctx, MESSAGE *msg, HEADER *hdr)
 /* 
  * commit a message to an MH folder.
  * 
- * Essentially the same as the maildir case, but we don't have
- * to care about flags.
- *
  */
 
-int mh_commit_message (CONTEXT *ctx, MESSAGE *msg, HEADER *hdr)
+
+static int _mh_commit_message (CONTEXT *ctx, MESSAGE *msg, HEADER *hdr, short updseq)
 {
   DIR *dirp;
   struct dirent *de;
@@ -938,10 +936,16 @@ int mh_commit_message (CONTEXT *ctx, MESSAGE *msg, HEADER *hdr)
       return -1;
     }
   }
-
-  mh_sequences_add_one (ctx, hi, !msg->flags.read, msg->flags.flagged, msg->flags.replied);
+  if (updseq)
+    mh_sequences_add_one (ctx, hi, !msg->flags.read, msg->flags.flagged, msg->flags.replied);
   return 0;
 }
+
+int mh_commit_message (CONTEXT *ctx, MESSAGE *msg, HEADER *hdr)
+{
+  return _mh_commit_message (ctx, msg, hdr, 1);
+}
+
 
 /* Sync a message in an MH folder.
  * 
@@ -976,7 +980,7 @@ static int mh_rewrite_message (CONTEXT *ctx, int msgno)
     if (ctx->magic == M_MAILDIR)
       rc = maildir_commit_message (ctx, dest, h);
     else
-      rc = mh_commit_message (ctx, dest, h);
+      rc = _mh_commit_message (ctx, dest, h, 0);
     
     mx_close_message (&dest);
 
