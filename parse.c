@@ -898,8 +898,8 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
     }
   }
 
-  loc = ftell (f);
-  while (*(line = read_rfc822_line (f, line, &linelen)) != 0)
+  while ((loc = ftell (f)),
+	  *(line = read_rfc822_line (f, line, &linelen)) != 0)
   {
     matched = 0;
 
@@ -910,16 +910,12 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
 
       /* some bogus MTAs will quote the original "From " line */
       if (mutt_strncmp (">From ", line, 6) == 0)
-      {
-	loc = ftell (f);
 	continue; /* just ignore */
-      }
       else if ((t = is_from (line, return_path, sizeof (return_path))))
       {
 	/* MH somtimes has the From_ line in the middle of the header! */
 	if (hdr && !hdr->received)
 	  hdr->received = t - mutt_local_tz (t);
-	loc = ftell (f);
 	continue;
       }
 
@@ -1210,8 +1206,6 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
       rfc2047_decode (line, line, linelen);
       last->data = safe_strdup (line);
     }
-
-    loc = ftell (f);
   }
 
   FREE (&line);
