@@ -1,3 +1,7 @@
+2005-02-28 18:33:45  Mads Martin Joergensen  <mmj@suse.de>  (roessler)
+
+	* curs_main.c: Fix a crash.
+
 2005-02-28 15:15:23  Christoph Berg  <cb@df7cb.de>  (roessler)
 
 	* init.h, menu.c, mutt.h: I've updated the menu_context patch to
