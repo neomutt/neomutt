@@ -1,3 +1,11 @@
+2004-07-14 05:19:15  Elmar Hoffmann  <mutt-dev-ml@elho.net>  (roessler)
+
+	* init.h, mutt.h, thread.c: By default Mutt hides the subject
+	of messages in the thread tree that have the same subject as
+	their parent or closest previously displayed sibling. This patch
+	makes this optional, introducing the hide_thread_subject boolean
+	setting which defaults to the old behaviour.
+
 2004-07-14 05:07:18  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* mh.c: Some eye-candy during the delayed parsing of maildir
