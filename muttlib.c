@@ -372,6 +372,8 @@ char *mutt_expand_path (char *s, size_t slen)
       q = Spoolfile;
     else if (*s == '-')
       q = LastFolder;
+    else if (!mutt_strcmp (s, "!!"))	/* elm compatibility */
+      q = LastFolder;
     else
       return s;
 
