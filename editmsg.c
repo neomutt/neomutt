@@ -88,6 +88,21 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
   if (stat (tmp, &sb) == 0)
     mtime = sb.st_mtime;
 
+  /*
+   * 2002-09-05 me@sigpipe.org
+   * The file the user is going to edit is not a real mbox, so we need to
+   * truncate the last newline in the temp file, which is logically part of
+   * the message separator, and not the body of the message.  If we fail to
+   * remove it, the message will grow by one line each time the user edits
+   * the message.
+   */
+  if (sb.st_size != 0 && truncate (tmp, sb.st_size - 1) == -1)
+  {
+    mutt_error (_("could not truncate temporary mail folder: %s"),
+		strerror (errno));
+    goto bail;
+  }
+
   mutt_edit_file (NONULL(Editor), tmp);
 
   if ((rc = stat (tmp, &sb)) == -1)
