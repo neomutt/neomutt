@@ -1,3 +1,12 @@
+2005-01-27 20:17:46  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
+
+	* curs_main.c: this patch doesn't raise an error if you try
+	to sync an empty mailbox which makes it possible to use such a
+	macro as this on an empty mailbox:
+
+	macro index y "<sync-mailbox><change-folder>?"	macro pager y
+	"<sync-mailbox><change-folder>?"
+
 2005-01-27 19:34:50  David Shaw  <dshaw@jabberwocky.com>  (roessler)
 
 	* pgp.c: Detect end of PGP armor header when a line is
