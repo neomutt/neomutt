@@ -146,6 +146,8 @@ static char *ciss_parse_userhost (ciss_url_t *ciss, char *src)
   return path;
 }
 
+/* url_parse_ciss: Fill in ciss_url_t. char* elements are pointers into src,
+ *   which is modified by this call (duplicate it first if you need to). */
 int url_parse_ciss (ciss_url_t *ciss, char *src)
 {
   char *tmp;

@@ -332,23 +332,28 @@ int imap_open_connection (IMAP_DATA* idata)
     if (imap_check_capabilities (idata))
       goto bail;
 #if defined(USE_SSL) && !defined(USE_NSS)
-    /* Attempt STARTTLS if available. TODO: make STARTTLS configurable. */
+    /* Attempt STARTTLS if available and desired. */
     if (mutt_bit_isset (idata->capabilities, STARTTLS))
     {
-      if ((rc = imap_exec (idata, "STARTTLS", IMAP_CMD_FAIL_OK)) == -1)
+      if ((rc = query_quadoption (OPT_SSLSTARTTLS,
+        _("Secure connection with TLS?"))) == -1)
 	goto bail;
-      if (rc != -2)
-      {
-	if (mutt_ssl_starttls (idata->conn))
-        {
-	  dprint (1, (debugfile, "imap_open_connection: STARTTLS failed\n"));
+      if (rc == M_YES) {
+	if ((rc = imap_exec (idata, "STARTTLS", IMAP_CMD_FAIL_OK)) == -1)
 	  goto bail;
-	}
-	else
+	if (rc != -2)
 	{
-	  /* RFC 2595 demands we recheck CAPABILITY after TLS is negotiated. */
-	  if (imap_exec (idata, "CAPABILITY", 0))
+	  if (mutt_ssl_starttls (idata->conn))
+	  {
+	    dprint (1, (debugfile, "imap_open_connection: STARTTLS failed\n"));
 	    goto bail;
+	  }
+	  else
+	  {
+	    /* RFC 2595 demands we recheck CAPABILITY after TLS completes. */
+	    if (imap_exec (idata, "CAPABILITY", 0))
+	      goto bail;
+	  }
 	}
       }
     }

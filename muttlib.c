@@ -660,9 +660,20 @@ void mutt_pretty_mailbox (char *s)
 {
   char *p = s, *q = s;
   size_t len;
+  url_scheme_t scheme;
+
+  scheme = url_check_scheme (s);
+
+#ifdef USE_IMAP
+  if (scheme == U_IMAP || scheme == U_IMAPS)
+  {
+    imap_pretty_mailbox (s);
+    return;
+  }
+#endif
 
   /* if s is an url, only collapse path component */
-  if (url_check_scheme (s) != U_UNKNOWN)
+  if (scheme != U_UNKNOWN)
   {
     p = strchr(s, ':')+1;
     if (!strncmp (p, "//", 2))

@@ -252,6 +252,10 @@ enum
   OPT_PGPTRADITIONAL, /* create old-style PGP messages */
 #endif
 
+#ifdef USE_SSL
+  OPT_SSLSTARTTLS,
+#endif
+
   OPT_PRINT,
   OPT_INCLUDE,
   OPT_DELETE,

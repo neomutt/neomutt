@@ -670,6 +670,13 @@ struct option_t MuttVars[] = {
   ** list.
   */
 #ifdef USE_IMAP
+  { "imap_delim_chars",		DT_STR, R_NONE, UL &ImapDelimChars, UL "/." },
+  /*
+  ** .pp
+  ** This contains the list of characters which you would like to treat
+  ** as folder separators for displaying IMAP paths. In particular it
+  ** helps in using the '=' shortcut for your \fIfolder\fP variable.
+  */
 # ifdef USE_SSL
   { "imap_force_ssl",		DT_BOOL, R_NONE, OPTIMAPFORCESSL, 0 },
   /*
@@ -678,19 +685,19 @@ struct option_t MuttVars[] = {
   ** connecting to IMAP servers.
   */
 # endif
+  { "imap_home_namespace",	DT_STR, R_NONE, UL &ImapHomeNamespace, UL 0},
+  /*
+  ** .pp
+  ** You normally want to see your personal folders alongside
+  ** your INBOX in the IMAP browser. If you see something else, you may set
+  ** this variable to the IMAP path to your folders.
+  */
   { "imap_list_subscribed",	DT_BOOL, R_NONE, OPTIMAPLSUB, 0 },
   /*
   ** .pp
   ** This variable configures whether IMAP folder browsing will look for
   ** only subscribed folders or all folders.  This can be toggled in the
   ** IMAP browser with the \fItoggle-subscribed\fP command.
-  */
-  { "imap_user",	DT_STR,  R_NONE, UL &ImapUser, UL 0 },
-  /*
-  ** .pp
-  ** Your login name on the IMAP server.
-  ** .pp
-  ** This variable defaults to your user name on the local machine.
   */
   { "imap_pass", 	DT_STR,  R_NONE, UL &ImapPass, UL 0 },
   /*
@@ -727,12 +734,12 @@ struct option_t MuttVars[] = {
   ** server which are out of the users' hands, you may wish to suppress
   ** them at some point.
   */
-  { "imap_home_namespace",	DT_STR, R_NONE, UL &ImapHomeNamespace, UL 0},
+  { "imap_user",	DT_STR,  R_NONE, UL &ImapUser, UL 0 },
   /*
   ** .pp
-  ** You normally want to see your personal folders alongside
-  ** your INBOX in the IMAP browser. If you see something else, you may set
-  ** this variable to the IMAP path to your folders.
+  ** Your login name on the IMAP server.
+  ** .pp
+  ** This variable defaults to your user name on the local machine.
   */
 #endif
   { "implicit_autoview", DT_BOOL,R_NONE, OPTIMPLICITAUTOVIEW, 0},
@@ -1343,6 +1350,15 @@ struct option_t MuttVars[] = {
 #endif /* HAVE_PGP */
   
 #if defined(USE_SSL)||defined(USE_NSS)
+# ifndef USE_NSS  
+  { "ssl_starttls", DT_QUAD, R_NONE, OPT_SSLSTARTTLS, M_YES },
+  /*
+  ** .pp
+  ** If set (the default), mutt will attempt to use STARTTLS on servers
+  ** advertising the capability. When unset, mutt will not attempt to
+  ** use STARTTLS regardless of the server's capabilities.
+  */
+# endif  
   { "certificate_file",	DT_PATH, R_NONE, UL &SslCertFile, 0 },
   /*
   ** .pp

@@ -50,9 +50,10 @@ WHERE char *HdrFmt;
 WHERE char *Homedir;
 WHERE char *Hostname;
 #ifdef USE_IMAP
-WHERE char *ImapUser INITVAL (NULL);
-WHERE char *ImapPass INITVAL (NULL);
+WHERE char *ImapDelimChars INITVAL (NULL);
 WHERE char *ImapHomeNamespace INITVAL (NULL);
+WHERE char *ImapPass INITVAL (NULL);
+WHERE char *ImapUser INITVAL (NULL);
 #endif
 WHERE char *InReplyTo;
 WHERE char *Inbox;

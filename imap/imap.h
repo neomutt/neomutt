@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 2000-1 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -60,6 +61,7 @@ void imap_logout_all (void);
 
 /* util.c */
 int imap_parse_path (const char* path, IMAP_MBOX* mx);
+void imap_pretty_mailbox (char* path);
 
 int imap_wait_keepalive (pid_t pid);
 void imap_keepalive (void);

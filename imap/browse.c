@@ -209,6 +209,8 @@ int imap_browse (char* path, struct browser_state* state)
   if (browse_add_list_result (idata, buf, state, 0))
     goto fail;
 
+  mutt_clear_error ();
+
   qsort(&(state->entry[nsup]),state->entrylen-nsup,sizeof(state->entry[0]),
 	(int (*)(const void*,const void*)) compare_names);
   if (home_namespace)

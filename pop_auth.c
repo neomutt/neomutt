@@ -48,10 +48,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data)
   if (!pop_data->auth_list)
     return POP_A_UNAVAIL;
 
-  if (mutt_sasl_start () != SASL_OK ||
-      sasl_client_new ("pop-3", pop_data->conn->account.host,
-      mutt_sasl_get_callbacks (&pop_data->conn->account),
-      SASL_SECURITY_LAYER, &saslconn) != SASL_OK)
+  if (mutt_sasl_client_new (pop_data->conn, &saslconn) < 0)
   {
     dprint (1, (debugfile, "pop_auth_sasl: Error allocating SASL connection.\n"));
     return POP_A_FAILURE;

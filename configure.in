@@ -561,7 +561,7 @@ then
 	AC_MSG_CHECKING([for socklen_t])
 	AC_EGREP_HEADER(socklen_t, sys/socket.h, AC_MSG_RESULT([yes]),
 		AC_MSG_RESULT([no])
-		AC_DEFINE(socklen_t, int*))
+		AC_DEFINE(socklen_t, int))
 	AC_CHECK_FUNC(gethostent, , AC_CHECK_LIB(nsl, gethostent))
 	AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(socket, setsockopt))
 	AC_CHECK_FUNCS(getaddrinfo)

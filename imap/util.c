@@ -35,6 +35,153 @@
 
 #include <errno.h>
 
+/* -- public functions -- */
+
+/* imap_parse_path: given an IMAP mailbox name, return host, port
+ *   and a path IMAP servers will recognise.
+ * mx.mbox is malloc'd, caller must free it */
+int imap_parse_path (const char* path, IMAP_MBOX* mx)
+{
+  char tmp[128];
+  ciss_url_t url;
+  char *c;
+  int n;
+
+  /* Defaults */
+  mx->account.flags = 0;
+  mx->account.port = IMAP_PORT;
+  mx->account.type = M_ACCT_TYPE_IMAP;
+
+  c = safe_strdup (path);
+  url_parse_ciss (&url, c);
+  if (url.scheme == U_IMAP || url.scheme == U_IMAPS)
+  {
+    if (mutt_account_fromurl (&mx->account, &url) < 0)
+    {
+      FREE (&c);
+      return -1;
+    }
+
+    mx->mbox = safe_strdup (url.path);
+
+    if (url.scheme == U_IMAPS)
+      mx->account.flags |= M_ACCT_SSL;
+
+    FREE (&c);
+  }
+  /* old PINE-compatibility code */
+  else
+  {
+    FREE (&c);
+    if (sscanf (path, "{%128[^}]}", tmp) != 1) 
+      return -1;
+
+    c = strchr (path, '}');
+    if (!c)
+      return -1;
+    else
+      /* walk past closing '}' */
+      mx->mbox = safe_strdup (c+1);
+  
+    if ((c = strrchr (tmp, '@')))
+    {
+      *c = '\0';
+      strfcpy (mx->account.user, tmp, sizeof (mx->account.user));
+      strfcpy (tmp, c+1, sizeof (tmp));
+      mx->account.flags |= M_ACCT_USER;
+    }
+  
+    if ((n = sscanf (tmp, "%128[^:/]%128s", mx->account.host, tmp)) < 1)
+    {
+      dprint (1, (debugfile, "imap_parse_path: NULL host in %s\n", path));
+      FREE (&mx->mbox);
+      return -1;
+    }
+  
+    if (n > 1) {
+      if (sscanf (tmp, ":%hd%128s", &(mx->account.port), tmp) >= 1)
+	mx->account.flags |= M_ACCT_PORT;
+      if (sscanf (tmp, "/%s", tmp) == 1)
+      {
+	if (!strncmp (tmp, "ssl", 3))
+	  mx->account.flags |= M_ACCT_SSL;
+	else
+	{
+	  dprint (1, (debugfile, "imap_parse_path: Unknown connection type in %s\n", path));
+	  FREE (&mx->mbox);
+	  return -1;
+	}
+      }
+    }
+  }
+  
+#ifdef USE_SSL
+  if (option (OPTIMAPFORCESSL))
+    mx->account.flags |= M_ACCT_SSL;
+#endif
+
+  if ((mx->account.flags & M_ACCT_SSL) && !(mx->account.flags & M_ACCT_PORT))
+    mx->account.port = IMAP_SSL_PORT;
+
+  return 0;
+}
+
+/* imap_pretty_mailbox: called by mutt_pretty_mailbox to make IMAP paths
+ *   look nice. */
+void imap_pretty_mailbox (char* path)
+{
+  IMAP_MBOX home, target;
+  ciss_url_t url;
+  char* delim;
+  int tlen;
+  int hlen = 0;
+  char home_match = 0;
+
+  if (imap_parse_path (path, &target) < 0)
+    return;
+
+  tlen = mutt_strlen (target.mbox);
+  /* check whether we can do '=' substitution */
+  if (! imap_parse_path (Maildir, &home))
+  {
+    hlen = mutt_strlen (home.mbox);
+    if (tlen && mutt_account_match (&home.account, &target.account) &&
+	!mutt_strncmp (home.mbox, target.mbox, hlen))
+    {
+      if (! hlen)
+	home_match = 1;
+      else
+	for (delim = ImapDelimChars; *delim != '\0'; delim++)
+	  if (target.mbox[hlen] == *delim)
+	    home_match = 1;
+    }
+    FREE (&home.mbox);
+  }
+
+  /* do the '=' substitution */
+  if (home_match) {
+    *path++ = '=';
+    /* copy remaining path, skipping delimiter */
+    if (! hlen)
+      hlen = -1;
+    memcpy (path, target.mbox + hlen + 1, tlen - hlen - 1);
+    path[tlen - hlen - 1] = '\0';
+  }
+  else
+  {
+    mutt_account_tourl (&target.account, &url);
+    url.path = target.mbox;
+    /* FIXME: That hard-coded constant is bogus. But we need the actual
+     *   size of the buffer from mutt_pretty_mailbox. And these pretty
+     *   operations usually shrink the result. Still... */
+    url_ciss_tostring (&url, path, 1024);
+  }
+
+  FREE (&target.mbox);
+}
+
+/* -- library functions -- */
+
 /* imap_continue: display a message and ask the user if she wants to
  *   go on. */
 int imap_continue (const char* msg, const char* resp)
@@ -202,95 +349,6 @@ time_t imap_parse_date (char *s)
     tz = -tz;
 
   return (mutt_mktime (&t, 0) + tz);
-}
-
-/* imap_parse_path: given an IMAP mailbox name, return host, port
- *   and a path IMAP servers will recognise.
- * mx.mbox is malloc'd, caller must free it */
-int imap_parse_path (const char* path, IMAP_MBOX* mx)
-{
-  char tmp[128];
-  ciss_url_t url;
-  char *c;
-  int n;
-
-  /* Defaults */
-  mx->account.flags = 0;
-  mx->account.port = IMAP_PORT;
-  mx->account.type = M_ACCT_TYPE_IMAP;
-
-  c = safe_strdup (path);
-  url_parse_ciss (&url, c);
-  if (url.scheme == U_IMAP || url.scheme == U_IMAPS)
-  {
-    if (mutt_account_fromurl (&mx->account, &url) < 0)
-    {
-      FREE (&c);
-      return -1;
-    }
-
-    mx->mbox = safe_strdup (url.path);
-
-    if (url.scheme == U_IMAPS)
-      mx->account.flags |= M_ACCT_SSL;
-
-    FREE (&c);
-  }
-  /* old PINE-compatibility code */
-  else
-  {
-    FREE (&c);
-    if (sscanf (path, "{%128[^}]}", tmp) != 1) 
-      return -1;
-
-    c = strchr (path, '}');
-    if (!c)
-      return -1;
-    else
-      /* walk past closing '}' */
-      mx->mbox = safe_strdup (c+1);
-  
-    if ((c = strrchr (tmp, '@')))
-    {
-      *c = '\0';
-      strfcpy (mx->account.user, tmp, sizeof (mx->account.user));
-      strfcpy (tmp, c+1, sizeof (tmp));
-      mx->account.flags |= M_ACCT_USER;
-    }
-  
-    if ((n = sscanf (tmp, "%128[^:/]%128s", mx->account.host, tmp)) < 1)
-    {
-      dprint (1, (debugfile, "imap_parse_path: NULL host in %s\n", path));
-      FREE (&mx->mbox);
-      return -1;
-    }
-  
-    if (n > 1) {
-      if (sscanf (tmp, ":%hd%128s", &(mx->account.port), tmp) >= 1)
-	mx->account.flags |= M_ACCT_PORT;
-      if (sscanf (tmp, "/%s", tmp) == 1)
-      {
-	if (!strncmp (tmp, "ssl", 3))
-	  mx->account.flags |= M_ACCT_SSL;
-	else
-	{
-	  dprint (1, (debugfile, "imap_parse_path: Unknown connection type in %s\n", path));
-	  FREE (&mx->mbox);
-	  return -1;
-	}
-      }
-    }
-  }
-  
-#ifdef USE_SSL
-  if (option (OPTIMAPFORCESSL))
-    mx->account.flags |= M_ACCT_SSL;
-#endif
-
-  if ((mx->account.flags & M_ACCT_SSL) && !(mx->account.flags & M_ACCT_PORT))
-    mx->account.port = IMAP_SSL_PORT;
-
-  return 0;
 }
 
 /* imap_qualify_path: make an absolute IMAP folder target, given IMAP_MBOX
