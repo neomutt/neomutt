@@ -17,7 +17,7 @@
 .\"     along with this program; if not, write to the Free Software
 .\"     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 .\"
-.TH mutt 1 "JULY 1998" Unix "User Manuals"
+.TH mutt 1 "AUGUST 1999" Unix "User Manuals"
 .SH NAME
 .PP
 mutt \- The Mutt Mail User Agent
@@ -109,19 +109,19 @@ Editor to invoke when the ~v command is given in the builtin editor.
 .PP
 .IP "~/.muttrc"
 User configuration file.
-.IP "@sysconfdir@/Muttrc"
+.IP "/etc/Muttrc"
 System-wide configuration file.
 .IP "/tmp/muttXXXXXX"
 Temporary files created by Mutt.
 .IP "~/.mailcap"
 User definition for handling non-text MIME types.
-.IP "@sysconfdir@/mailcap"
+.IP "/etc/mailcap"
 System definition for handing non-text MIME types.
 .IP "~/.mime.types"
 User's personal mapping between MIME types and file extensions.
-.IP "@sysconfdir@/mime.types"
+.IP "/etc/mime.types"
 System mapping between MIME types and file extensions.
-.IP "@bindir@/mutt_dotlock"
+.IP "/usr/local/bin/mutt_dotlock"
 The privileged dotlocking program.
 .SH BUGS
 .PP
@@ -136,8 +136,17 @@ suspend/resume does not work under Ultrix.
 .PP
 The help line for the index menu is not updated if you change the bindings
 for one of the functions listed while Mutt is running.
+.SH Y2K COMPLIANCE
+.PP
+The date handling routines used by mutt are able to cope with the
+new century.  Note that the only place where mutt parses two-digit
+year specifications is in date patterns.  At that place, there is no
+problem with Y2K as well, but two-digit year specifications will
+produce unexpected results in 2070, unless someone is going to adapt
+things until then.
 .SH SEE ALSO
 .PP
+.BR muttrc (5),
 .BR curses (3),
 .BR dotlock (1),
 .BR ncurses (3),
@@ -147,5 +156,6 @@ for one of the functions listed while Mutt is running.
 .PP
 Mutt Home Page: http://www.mutt.org/
 .SH AUTHOR
-Michael Elkins, and others.  Use <mutt-dev@mutt.org> for contacting
+.PP
+Michael Elkins, and others.  Use <mutt-dev@mutt.org> to contact
 the developers.

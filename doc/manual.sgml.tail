@@ -1,0 +1,359 @@
+<sect1>Functions<label id="functions">
+<p>
+The following is the list of available functions listed by the mapping
+in which they are available.  The default key setting is given, and an
+explanation of what the function does.  The key bindings of these
+functions can be changed with the <ref name="bind" id="bind">
+command.
+
+<sect2>generic
+<p>
+
+The <em/generic/ menu is not a real menu, but specifies common functions
+(such as movement) available in all menus except for <em/pager/ and
+<em/editor/.  Changing settings for this menu will affect the default
+bindings for all menus (except as noted).
+
+<verb>
+bottom-page                L   move to the bottom of the page
+current-bottom     not bound   move current entry to bottom of page
+current-middle     not bound   move current entry to middle of page
+current-top        not bound   move current entry to top of page
+enter-command              :   enter a muttrc command
+exit                       q   exit this menu
+first-entry                =   move to the first entry
+half-down                  ]   scroll down 1/2 page
+half-up                    [   scroll up 1/2 page
+help                       ?   this screen
+jump                  number   jump to an index number
+last-entry                 *   move to the last entry
+middle-page                M   move to the middle of the page
+next-entry                 j   move to the next entry
+next-line                  >   scroll down one line
+next-page                  z   move to the next page
+previous-entry             k   move to the previous entry
+previous-line              <   scroll up one line
+previous-page              Z   move to the previous page
+refresh                   ^L   clear and redraw the screen
+search                     /   search for a regular expression
+search-next                n   search for next match
+search-opposite    not bound   search for next match in opposite direction
+search-reverse         ESC /   search backwards for a regular expression
+select-entry             RET   select the current entry
+shell-escape               !   run a program in a subshell
+tag-entry                  t   toggle the tag on the current entry
+tag-prefix                 ;   apply next command to tagged entries
+top-page                   H   move to the top of the page
+</verb>
+<sect2>index
+<p>
+<verb>
+bounce-message             b   remail a message to another user
+change-folder              c   open a different folder
+change-folder-readonly ESC c   open a different folder in read only mode
+clear-flag                 W   clear a status flag from a message
+copy-message               C   copy a message to a file/mailbox
+create-alias               a   create an alias from a message sender
+decode-copy            ESC C   decode a message and copy it to a file/mailbox
+decode-save            ESC s   decode a message and save it to a file/mailbox
+delete-message             d   delete the current entry
+delete-pattern             D   delete messages matching a pattern
+delete-subthread       ESC d   delete all messages in subthread
+delete-thread             ^D   delete all messages in thread
+display-address            @   display full address of sender
+display-headers            h   display message with full headers
+display-message          RET   display a message
+edit                       e   edit the current message
+exit                       x   exit without saving changes
+extract-keys              ^K   extract PGP public keys
+fetch-mail                 G   retrieve mail from POP server
+flag-message               F   toggle a message's 'important' flag
+forget-passphrase         ^F   wipe PGP passphrase from memory
+forward-message            f   forward a message with comments
+group-reply                g   reply to all recipients
+limit                      l   show only messages matching a pattern
+list-reply                 L   reply to specified mailing list
+mail                       m   compose a new mail message
+mail-key               ESC k   mail a PGP public key
+next-new                 TAB   jump to the next new message
+next-subthread         ESC n   jump to the next subthread
+next-thread               ^N   jump to the next thread
+next-undeleted             j   move to the next undeleted message
+next-unread        not bound   jump to the next unread message
+pipe-message               |   pipe message/attachment to a shell command
+previous-new         ESC TAB   jump to the previous new message
+previous-page              Z   move to the previous page
+previous-subthread     ESC p   jump to previous subthread
+previous-thread           ^P   jump to previous thread
+previous-undeleted         k   move to the last undelete message
+previous-unread    not bound   jump to the previous unread message
+print-message              p   print the current entry
+query                      Q   query external program for addresses
+quit                       q   save changes to mailbox and quit
+read-subthread         ESC r   mark the current subthread as read
+read-thread               ^R   mark the current thread as read
+recall-message             R   recall a postponed message
+reply                      r   reply to a message
+save-message               s   save message/attachment to a file
+set-flag                   w   set a status flag on a message
+show-version               V   show the Mutt version number and date
+show-limit             ESC l   show currently active limit pattern, if any
+sort-mailbox               o   sort messages
+sort-reverse               O   sort messages in reverse order
+sync-mailbox               $   save changes to mailbox
+tag-pattern                T   tag messages matching a pattern
+tag-thread             ESC t   tag/untag all messages in the current thread
+toggle-new                 N   toggle a message's 'new' flag
+toggle-write               %   toggle whether the mailbox will be rewritten
+undelete-message           u   undelete the current entry
+undelete-pattern           U   undelete messages matching a pattern
+undelete-subthread     ESC u   undelete all messages in subthread
+undelete-thread           ^U   undelete all messages in thread
+untag-pattern             ^T   untag messages matching a pattern
+view-attachments           v   show MIME attachments
+</verb>
+<sect2>pager
+<p>
+<verb>
+bottom                     $   jump to the bottom of the message
+bounce-message             b   remail a message to another user
+change-folder              c   open a different folder
+change-folder-readonly ESC c   open a different folder in read only mode
+copy-message               C   copy a message to a file/mailbox
+create-alias               a   create an alias from a message sender
+decode-copy            ESC C   decode a message and copy it to a file/mailbox
+decode-save            ESC s   decode a message and save it to a file/mailbox
+delete-message             d   delete the current entry
+delete-subthread       ESC d   delete all messages in subthread
+delete-thread             ^D   delete all messages in thread
+display-address            @   display full address of sender
+display-headers            h   display message with full headers
+edit                       e   edit the current message
+enter-command              :   enter a muttrc command
+exit                       i   return to the main-menu
+extract-keys              ^K   extract PGP public keys
+flag-message               F   toggle a message's 'important' flag
+forget-passphrase         ^F   wipe PGP passphrase from memory
+forward-message            f   forward a message with comments
+group-reply                g   reply to all recipients
+half-up            not bound   move up one-half page
+half-down          not bound   move down one-half page
+help                       ?   this screen
+list-reply                 L   reply to specified mailing list
+mail                       m   compose a new mail message
+mail-key               ESC k   mail a PGP public key
+mark-as-new                N   toggle a message's 'new' flag
+next-line                RET   scroll down one line
+next-entry                 J   move to the next entry
+next-new                 TAB   jump to the next new message
+next-page                      move to the next page
+next-subthread         ESC n   jump to the next subthread
+next-thread               ^N   jump to the next thread
+next-undeleted             j   move to the next undeleted message
+next-unread        not bound   jump to the next unread message
+pipe-message               |   pipe message/attachment to a shell command
+previous-line      BackSpace   scroll up one line
+previous-entry             K   move to the previous entry
+previous-new       not bound   jump to the previous new message
+previous-page              -   move to the previous page
+previous-subthread     ESC p   jump to previous subthread
+previous-thread           ^P   jump to previous thread
+previous-undeleted         k   move to the last undelete message
+previous-unread    not bound   jump to the previous unread message
+print-message              p   print the current entry
+quit                       Q   save changes to mailbox and quit
+read-subthread         ESC r   mark the current subthread as read
+read-thread               ^R   mark the current thread as read
+recall-message             R   recall a postponed message
+redraw-screen             ^L   clear and redraw the screen
+reply                      r   reply to a message
+save-message               s   save message/attachment to a file
+search                     /   search for a regular expression
+search-next                n   search for next match
+search-opposite    not bound   search for next match in opposite direction
+search-reverse         ESC /   search backwards for a regular expression
+search-toggle              \   toggle search pattern coloring
+shell-escape               !   invoke a command in a subshell
+show-version               V   show the Mutt version number and date
+skip-quoted                S   skip beyond quoted text
+tag-message                t   tag a message
+toggle-quoted              T   toggle display of quoted text
+top                        ^   jump to the top of the message
+undelete-message           u   undelete the current entry
+undelete-subthread     ESC u   undelete all messages in subthread
+undelete-thread           ^U   undelete all messages in thread
+view-attachments           v   show MIME attachments
+</verb>
+<sect2>alias
+<p>
+<verb>
+search                     /   search for a regular expression
+search-next                n   search for next match
+search-reverse         ESC /   search backwards for a regular expression
+</verb>
+<sect2>query
+<p>
+<verb>
+create-alias               a   create an alias from a message sender
+mail                       m   compose a new mail message
+query                      Q   query external program for addresses
+query-append               A   append new query results to current results
+search                     /   search for a regular expression
+search-next                n   search for next match
+search-opposite    not bound   search for next match in opposite direction
+search-reverse         ESC /   search backwards for a regular expression
+</verb>
+<sect2>attach
+<p>
+<verb>
+bounce-message             b   remail a message to another user
+decode-copy            ESC C   decode a message and copy it to a file/mailbox
+decode-save            ESC s   decode a message and save it to a file/mailbox
+delete-entry               d   delete the current entry
+display-headers            h   display message with full headers
+extract-keys              ^K   extract PGP public keys
+forward-message            f   forward a message with comments
+group-reply                g   reply to all recipients
+list-reply                 L   reply to specified mailing list
+pipe-entry                 |   pipe message/attachment to a shell command
+print-entry                p   print the current entry
+reply                      r   reply to a message
+save-entry                 s   save message/attachment to a file
+undelete-entry             u   undelete the current entry
+view-attach              RET   view attachment using mailcap entry if necessary
+view-mailcap               m   force viewing of attachment using mailcap
+view-text                  T   view attachment as text
+</verb>
+<sect2>compose
+<p>
+<verb>
+attach-file                a   attach a file(s) to this message
+attach-message             A   attach message(s) to this message
+attach-key             ESC k   attach a PGP public key
+copy-file                  C   save message/attachment to a file
+detach-file                D   delete the current entry
+display-headers            h   display message with full headers
+edit-bcc                   b   edit the BCC list
+edit-cc                    c   edit the CC list
+edit-description           d   edit attachment description
+edit-encoding             ^E   edit attachment trasfer-encoding
+edit-fcc                   f   enter a file to save a copy of this message in
+edit-from              ESC f   edit the from: field
+edit-file               ^X e   edit the file to be attached
+edit-headers               E   edit the message with headers
+edit-message               e   edit the message
+edit-mime                  m   edit attachment using mailcap entry
+edit-reply-to              r   edit the Reply-To field
+edit-subject               s   edit the subject of this message
+edit-to                    t   edit the TO list
+edit-type                 ^T   edit attachment type
+filter-entry               F   filter attachment through a shell command
+forget-passphrase         ^F   wipe PGP passphrase from memory
+ispell                     i   run ispell on the message
+new-mime                   n   compose new attachment using mailcap entry
+pgp-menu                   p   show PGP options
+pipe-entry                 |   pipe message/attachment to a shell command
+postpone-message           P   save this message to send later
+print-entry                l   print the current entry
+rename-file                R   rename/move an attached file
+send-message               y   send the message
+toggle-unlink              u   toggle whether to delete file after sending it
+view-attach              RET   view attachment using mailcap entry if necessary
+write-fcc		   w   write the message to a folder
+</verb>
+<sect2>postpone
+<p>
+<verb>
+delete-entry               d   delete the current entry
+undelete-entry             u   undelete the current entry
+</verb>
+<sect2>browser
+<p>
+<verb>
+change-dir                 c   change directories
+check-new                TAB   check mailboxes for new mail
+enter-mask                 m   enter a file mask
+search                     /   search for a regular expression
+search-next                n   search for next match
+search-reverse         ESC /   search backwards for a regular expression
+select-new                 N   select a new file in this directory
+sort                       o   sort messages
+sort-reverse               O   sort messages in reverse order
+toggle-mailboxes         TAB   toggle whether to browse mailboxes or all files
+view-file              SPACE   view file
+subscribe                  s   subscribe to current mailbox (IMAP Only)
+unsubscribe                u   unsubscribe to current mailbox (IMAP Only)
+toggle-subscribed          T   toggle view all/subscribed mailboxes (IMAP Only)
+</verb>
+<sect2>pgp
+<p>
+<verb>
+view-name                  %   view the key's user id
+verify-key                 c   verify a PGP public key
+</verb>
+<sect2>editor
+<p>
+<verb>
+backspace          BackSpace   delete the char in front of the cursor
+backward-char             ^B   move the cursor one character to the left
+bol                       ^A   jump to the beginning of the line
+buffy-cycle            Space   cycle among incoming mailboxes
+complete                 TAB   complete filename or alias
+complete-query            ^T   complete address with query
+delete-char               ^D   delete the char under the cursor
+eol                       ^E   jump to the end of the line
+forward-char              ^F   move the cursor one character to the right
+history-down       not bound   scroll up through the history list
+history-up         not bound   scroll up through the history list
+kill-eol                  ^K   delete chars from cursor to end of line
+kill-line                 ^U   delete all chars on the line
+kill-word                 ^W   delete the word in front of the cursor
+quote-char                ^V   quote the next typed key
+</verb>
+
+<sect>Miscellany
+<p>
+
+<sect1>Acknowledgements
+<p>
+Kari Hurtta
+<htmlurl url="mailto:kari.hurtta@fmi.fi" name="&lt;kari.hurtta@fmi.fi&gt;">
+co-developed the original MIME parsing code back in the ELM-ME days.
+
+The following people have been very helpful to the development of Mutt:
+
+Vikas Agnihotri <htmlurl url="mailto:vikasa@writeme.com" name="&lt;vikasa@writeme.com&gt;">,<newline>
+Francois Berjon <htmlurl url="mailto:Francois.Berjon@aar.alcatel-alsthom.fr" name="&lt;Francois.Berjon@aar.alcatel-alsthom.fr&gt;">,<newline>
+Aric Blumer <htmlurl url="mailto:aric@fore.com" name="&lt;aric@fore.com&gt;">,<newline>
+John Capo <htmlurl url="mailto:jc@irbs.com" name="&lt;jc@irbs.com&gt;">,<newline>
+Liviu Daia <htmlurl url="mailto:daia@stoilow.imar.ro" name="&lt;daia@stoilow.imar.ro&gt;">,<newline>
+David DeSimone <htmlurl url="mailto:fox@convex.hp.com" name="&lt;fox@convex.hp.com&gt;">,<newline>
+Nickolay N. Dudorov <htmlurl url="mailto:nnd@wint.itfs.nsk.su" name="&lt;nnd@wint.itfs.nsk.su&gt;">,<newline>
+Michael Finken <htmlurl url="mailto:finken@conware.de" name="&lt;finken@conware.de&gt;">,<newline>
+Sven Guckes <htmlurl url="mailto:guckes@math.fu-berlin.de" name="&lt;guckes@math.fu-berlin.de&gt;">,<newline>
+Mark Holloman <htmlurl url="mailto:holloman@nando.net" name="&lt;holloman@nando.net&gt;">,<newline>
+Andreas Holzmann <htmlurl url="mailto:holzmann@fmi.uni-passau.de" name="&lt;holzmann@fmi.uni-passau.de&gt;">,<newline>
+Byrial Jensen <htmlurl url="mailto:byrial@image.dk" name="&lt;byrial@image.dk&gt;">,<newline>
+David Jeske <htmlurl url="mailto:jeske@igcom.net" name="&lt;jeske@igcom.net&gt;">,<newline>
+Christophe Kalt <htmlurl url="mailto:kalt@hugo.int-evry.fr" name="&lt;kalt@hugo.int-evry.fr&gt;">,<newline>
+Felix von Leitner (a.k.a ``Fefe'') <htmlurl url="mailto:leitner@math.fu-berlin.de" name="&lt;leitner@math.fu-berlin.de&gt;">,<newline>
+Brandon Long <htmlurl url="mailto:blong@fiction.net" name="&lt;blong@fiction.net&gt;">,<newline>
+Jimmy Mäkelä <htmlurl url="mailto:jmy@flashback.net" name="&lt;jmy@flashback.net&gt;">,<newline>
+Lars Marowsky-Bree <htmlurl url="mailto:lmb@pointer.in-minden.de" name="&lt;lmb@pointer.in-minden.de&gt;">,<newline>
+Thomas ``Mike'' Michlmayr <htmlurl url="mailto:mike@cosy.sbg.ac.at" name="&lt;mike@cosy.sbg.ac.at&gt;">,<newline>
+David O'Brien <htmlurl url="mailto:obrien@Nuxi.cs.ucdavis.edu" name="&lt;obrien@Nuxi.cs.ucdavis.edu&gt;">,<newline>
+Clint Olsen <htmlurl url="mailto:olsenc@ichips.intel.com" name="&lt;olsenc@ichips.intel.com&gt;">,<newline>
+Park Myeong Seok <htmlurl url="mailto:pms@romance.kaist.ac.kr" name="&lt;pms@romance.kaist.ac.kr&gt;">,<newline>
+Thomas Parmelan <htmlurl url="mailto:tom@ankh.fr.eu.org" name="&lt;tom@ankh.fr.eu.org&gt;">,<newline>
+Ollivier Robert <htmlurl url="mailto:roberto@keltia.freenix.fr" name="&lt;roberto@keltia.freenix.fr&gt;">,<newline>
+Roland Rosenfeld <htmlurl url="roland@spinnaker.rhein.de" name="&lt;roland@spinnaker.rhein.de&gt;">,<newline>
+Allain Thivillon <htmlurl url="mailto:Allain.Thivillon@alma.fr" name="&lt;Allain.Thivillon@alma.fr&gt;">,<newline>
+Gero Treuner <htmlurl url="mailto:gero@faveve.uni-stuttgart.de" name="&lt;gero@faveve.uni-stuttgart.de&gt;">,<newline>
+Ken Weinert <htmlurl url="mailto:kenw@ihs.com" name="&lt;kenw@ihs.com&gt;">
+
+<sect1>About this document
+<p>
+This document was written in SGML, and then rendered using the
+<htmlurl url="http://pobox.com/~cg/sgmltools/" name="sgml-tools"> package.
+
+</article>

@@ -505,9 +505,8 @@ MUTTLOCALEDIR=$mutt_cv_prefix/$DATADIRNAME/locale
 AC_SUBST(MUTTLOCALEDIR)
 AC_DEFINE_UNQUOTED(MUTTLOCALEDIR, "$MUTTLOCALEDIR")
 
-output="Makefile intl/Makefile m4/Makefile po/Makefile.in Muttrc	\
-	doc/Makefile doc/manual.sgml doc/dotlock.man doc/mutt.man 	\
-	contrib/Makefile"
+output="Makefile intl/Makefile m4/Makefile po/Makefile.in 	\
+	doc/Makefile contrib/Makefile"
 
 if test -d $srcdir/charmaps ; then
 	output="$output charmaps/Makefile"

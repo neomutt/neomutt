@@ -1,0 +1,34 @@
+#
+# System configuration file for Mutt
+#
+
+# default list of header fields to weed when displaying
+#
+ignore "from " received content- mime-version status x-status message-id
+ignore sender references return-path lines
+
+# imitate the old search-body function
+macro index \eb '/~b ' 'search in message bodies'
+
+# simluate the old url menu
+macro index \cb |urlview\n 'call urlview to extract URLs out of a message'
+macro pager \cb |urlview\n 'call urlview to extract URLs out of a message'
+
+# Show documentation when pressing F1
+macro generic <f1> "!less /usr/local/doc/mutt/manual.txt\n" "Show Mutt documentation"
+macro index   <f1> "!less /usr/local/doc/mutt/manual.txt\n" "Show Mutt documentation"
+macro pager   <f1> "!less /usr/local/doc/mutt/manual.txt\n" "Show Mutt documentation"
+
+# If Mutt is unable to determine your site's domain name correctly, you can
+# set the default here.
+#
+# set hostname=cs.hmc.edu
+
+# If your sendmail supports the -B8BITMIME flag, enable the following
+#
+# set use_8bitmime
+
+##
+## More settings
+##
+

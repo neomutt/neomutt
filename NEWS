@@ -1,6 +1,22 @@
 Major changes since 0.96.3
 --------------------------
 
+- The master source of the configuration option reference has been
+  moved from the SGML document into special comments in init.h.
+  "makedoc" is used to extract this information into a new,
+  documented global Muttrc, into the SGML manual, and into a new
+  manual page describing muttrc, muttrc (5).
+
+  This way, _all_ options will automatically get minimal
+  documentation, with correct default values. :-)
+
+  For details, see doc/devel-notes.txt.
+
+- While the manual was under inspection, hopefully most of the
+  recent changes to mutt were documented.  Also, documentation on
+  some not-so-recent things such as mixmaster and PGP support was
+  added or improved.
+
 - The $in_reply_to configuration variable is gone.  The In-Reply-To
   header currently only contains the message-id of the message to
   which the reply refers.  This is to make sure that this header is
@@ -23,35 +39,14 @@ Major changes since 0.96.3
   to use IMAP folders for postponed messages, improved IMAP folder
   browsing, tab completion for IMAP folders, etc.
 
-- A new variable $from is added.
+- A new variable $from is added.  See the manual for details.
 
-  * $from is used as the default from address, if defined.
-    Otherwise, the local user nanme and (if the user wishes so) the
-    local domain are used.
-  * This address can be overridden by $reverse_name, if set.
-  * Now, send-hooks are evaluated.
-  * Afterwards, user headers are evaluated.  In this step, the from
-    header can be overridden using my_hdr From:.
-  * When there is no real name, $realname is used for it.  Note
-    that, when the default from header is used and $from defines a
-    real name, it takes precedence over $realname.
+- There is a new model for mailing list handling.  See the manual
+  for details.
 
-- There is a new model for mailing list handling: We distinguish
-  between subscribed and unsubscribed lists.  With the configuration
-  command "lists", you add a list to the list of known mailing
-  lists.  With "subscribe", you add a list to the lists of known
-  _and_ subscribed lists.  With "unsubscribe", you remove a list
-  from the list of subscribed lists.  With "unlists", you remove a
-  list from the lists of subscribed and known mailing lists.
-
-  The list of known mailing lists is used for the list-reply command
-  and the $ignore_list_reply_to configuration optio.  The list of
-  subscribed mailig lists is used for header display, and the
-  construction of Mail-Followup-To headers.
-
-- The various weeding options are gone.  You have a global option
-  $weed now which can be influenced using confugration commands, or
-  using the display-headers or display-message functions.  This
+- The various weeding options are gone.  You have one global option,
+  $weed, now which can be influenced using configuration commands,
+  or using the display-headers or display-message functions.  This
   option is applied when forwarding, replying, or printing messages.
   Essentially, this means that you have some "WYSIWIG-like"
   behaviour with respect to message header weeding.

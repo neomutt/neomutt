@@ -26,12 +26,18 @@ LDFLAGS=@LDFLAGS@
 subdir = doc
 
 
-DISTFILES = Makefile.in dotlock.man.in  \
-	manual.sgml.in mutt.man.in	\
+DISTFILES = Makefile.in dotlock.man  	\
+	mutt.man			\
 	PGP-Notes.txt			\
 	applying-patches.txt		\
 	devel-notes.txt			\
-	manual.txt
+	manual.txt			\
+	muttrc.man.head			\
+	muttrc.man.tail			\
+	muttrc.man			\
+	manual.sgml.head		\
+	manual.sgml.tail		\
+	manual.sgml
 
 srcdir_DOCFILES = PGP-Notes.txt applying-patches.txt	\
 	devel-notes.txt	\
@@ -43,7 +49,7 @@ topsrcdir_DOCFILES = COPYRIGHT GPL INSTALL ChangeLog	\
 DOCFILES = manual.txt
 
 
-all: mutt.man dotlock.man try-html try-txt
+all: try-html try-txt
 
 complete: all html
 
@@ -59,10 +65,12 @@ try-txt:
 
 html: manual.html
 
-install: dotlock.man mutt.man all
+install: all
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man1
+	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man5
 	$(INSTALL) -m 644 mutt.man $(DESTDIR)$(mandir)/man1/mutt.1
 	$(INSTALL) -m 644 dotlock.man $(DESTDIR)$(mandir)/man1/mutt_dotlock.1
+	$(INSTALL) -m 644 muttrc.man $(DESTDIR)$(mandir)/man5/muttrc.5
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(docdir)
 	for f in $(DOCFILES) ; do $(INSTALL) -m 644 $$f $(DESTDIR)$(docdir) ; done
 	for f in $(srcdir_DOCFILES) ; do $(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir) ; done
@@ -78,6 +86,8 @@ install-html: html
 
 uninstall:
 	-rm -f $(DESTDIR)$(mandir)/man1/mutt.1
+	-rm -f $(DESTDIR)$(mandir)/man1/mutt_dotlock.1
+	-rm -f $(DESTDIR)$(mandir)/man5/muttrc.5
 	-rm -rf $(DESTDIR)$(docdir)
 
 manual.txt: manual.sgml
@@ -87,7 +97,7 @@ manual.html: manual.sgml
 	sgml2html manual
 
 clean: 
-	rm -f *~ *.html *.orig *.rej *.man manual.sgml
+	rm -f *~ *.html *.orig *.rej  stamp-doc-sgml stamp-doc-man
 
 clean-real:
 	rm -f manual.txt
@@ -101,21 +111,32 @@ Makefile: Makefile.in ../config.status
 	cd .. \
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
-mutt.man: mutt.man.in ../config.status
-	cd .. \
-	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
-
-dotlock.man: dotlock.man.in ../config.status
-	cd .. \
-	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
-
-manual.sgml: manual.sgml.in ../config.status
-	cd .. \
-	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
-
 distdir = ../$(PACKAGE)-$(VERSION)/$(subdir)
 dist distdir: Makefile $(DISTFILES)
 	for file in $(DISTFILES) ; do				\
 		ln $(srcdir)/$$file $(distdir) 2> /dev/null 	\
 			|| cp -p $(srcdir)/$$file $(distdir); 	\
 	done
+
+../makedoc: $(top_srcdir)/makedoc.c
+	(cd .. && make makedoc)
+
+# hack around autoconf mixing up patterns.
+at=@
+
+update-doc:  ../makedoc stamp-doc-sgml stamp-doc-man
+
+stamp-doc-man: ../makedoc $(top_srcdir)/init.h muttrc.man.head muttrc.man.tail
+	cpp -D_MAKEDOC -C -I.. -I $(top_srcdir) -include ../config.h	\
+		$(top_srcdir)/init.h | ../makedoc -m | 			\
+		cat $(srcdir)/muttrc.man.head - $(srcdir)/muttrc.man.tail\
+		> muttrc.man
+	touch stamp-doc-man
+
+stamp-doc-sgml: ../makedoc $(top_srcdir)/init.h manual.sgml.head manual.sgml.tail
+	( sed -e "s/$(at)VERSION$(at)/`cat $(top_srcdir)/VERSION`/" manual.sgml.head ;\
+	  cpp -D_MAKEDOC -C -I.. -I $(top_srcdir) -include ../config.h	\
+		$(top_srcdir)/init.h | ../makedoc -s ) |			\
+		cat - $(srcdir)/manual.sgml.tail > manual.sgml
+	touch stamp-doc-sgml
+

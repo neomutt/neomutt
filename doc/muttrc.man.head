@@ -1,0 +1,379 @@
+'\" t
+.\" -*-nroff-*-
+.\"
+.\"     Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>
+.\"	Copyright (C) 1999 Thomas Roessler <roessler@guug.de>
+.\" 
+.\"     This program is free software; you can redistribute it and/or modify
+.\"     it under the terms of the GNU General Public License as published by
+.\"     the Free Software Foundation; either version 2 of the License, or
+.\"     (at your option) any later version.
+.\" 
+.\"     This program is distributed in the hope that it will be useful,
+.\"     but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\"     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\"     GNU General Public License for more details.
+.\" 
+.\"     You should have received a copy of the GNU General Public License
+.\"     along with this program; if not, write to the Free Software
+.\"     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+.\"
+.TH muttrc 5 "August 1999" Unix "User Manuals"
+.SH NAME
+.PP
+muttrc \- Configuration file for the Mutt Mail User Agent
+.SH DESCRIPTION
+.PP
+A mutt configuration file consists of a series of \(lqcommands\(rq.
+Each line of the file may contain one or more commands.  When
+multiple commands are used, they must be separated by a semicolon
+(\(lq\fB;\fP\(rq).
+.PP
+The hash mark, or pound sign (\(lq\fB#\fP\(rq), is used as a
+\(lqcomment\(rq character. You can use it to annotate your
+initialization file. All text after the comment character to the end
+of the line is ignored.
+.PP
+Single quotes (\(lq\fB'\fP\(rq) and double quotes (\(lq\fB"\fP\(rq)
+can be used to quote strings which contain spaces or other special
+characters.  The difference between the two types of quotes is
+similar to that of many popular shell programs, namely that a single
+quote is used to specify a literal string (one that is not
+interpreted for shell variables or quoting with a backslash [see
+next paragraph]), while double quotes indicate a string for which
+should be evaluated.  For example, backtics are evaluated inside of
+double quotes, but not for single quotes.
+.PP
+\fB\(rs\fP quotes the next character, just as in shells such as bash and zsh.
+For example, if want to put quotes (\(lq\fB"\fP\(rq) inside of a
+string, you can use \(lq\fB\(rs\fP\(rq to force the next character
+to be a literal instead of interpreted character.
+.PP
+\(lq\fB\(rs\(rs\fP\(rq means to insert a literal \(lq\fB\(rs\fP\(rq into the
+line.  \(lq\fB\(rsn\fP\(rq and \(lq\fB\(rsr\fP\(rq have their usual
+C meanings of linefeed and carriage-return, respectively.
+.PP
+A \(lq\fB\(rs\fP\(rq at the end of a line can be used to split commands over
+multiple lines, provided that the split points don't appear in the
+middle of command names.
+.PP
+It is also possible to substitute the output of a Unix command in an
+initialization file.  This is accomplished by enclosing the command
+in backquotes (\fB`\fP\fIcommand\fP\fB`\fP).
+.PP
+UNIX environments can be accessed like the way it is done in shells
+like sh and bash: Prepend the name of the environment by a dollar
+(\(lq\fB\(Do\fP\(rq) sign.
+.PP
+.SH COMMANDS
+.TP
+\fBalias\fP \fIkey\fP \fIaddress\fP [ , \fIaddress\fP, ...]
+Defines an alias \fIkey\fP for the given addresses.
+.TP
+\fBunalias\fP \fIkey\fP
+Removes alias \fIkey\fP.
+.TP
+.TP
+\fBbind\fP \fImap\fP \fIkey\fP \fIfunction\fP
+This command binds the given \fIkey\fP for the given \fImap\fP to
+the given \fIfunction\fP.
+.IP
+Valid maps are:
+.BR generic ", " alias ", " attach ", " 
+.BR browser ", " editor ", "
+.BR index ", " compose ", " 
+.BR pager ", " pgp ", " postpone ", "
+.BR mix .
+.IP
+For more information on keys and functions, please consult the Mutt
+Manual.
+.TP
+\fBcharset-hook\fP \fIalias\fP \fIcharset\fP
+This command defines an alias for a character set.  This is useful
+to properly display messages which are tagged with a character set
+name not known to mutt.
+.TP
+\fBfolder-hook\fP [\fB!\fP]\fIregexp\fP \fIcommand\fP
+When mutt enters a folder which matches \fIregexp\fP (or, when
+\fIregexp\fP is preceded by an exclamation mark, does not match
+\fIregexp\fP), the given \fIcommand\fP is executed.
+.IP
+When several \fBfolder-hook\fPs match a given mail folder, they are
+executed in the order given in the configuration file.
+.TP
+\fBmacro\fP \fImap\fP \fIkey\fP \fIsequence\fP [ \fIdescription\fP ]
+This command binds the given \fIsequence\fP of keys to the given
+\fIkey\fP in the given \fImap\fP.  For valid maps, see \fBbind\fP.
+.PP
+.nf
+\fBcolor\fP \fIobject\fP \fIforeground\fP \fIbackground\fP [ \fI regexp\fP ]
+\fBcolor\fP index \fIforeground\fP \fIbackground\fP [ \fI pattern\fP ]
+\fBuncolor\fP index \fIpattern\fP [ \fIpattern\fP ... ]
+.fi
+.IP
+If your terminal supports color, these commands can be used to
+assign \fIforeground\fP/\fIbackgound\fP combinations to certain
+objects.  Valid objects are:
+.BR attachment ", " body ", " bold ", " header ", "
+.BR hdrdefault ", " index ", " indicator ", " markers ", "
+.BR message ", " normal ", " quoted ", " quoted\fIN\fP ", "
+.BR search ", " signature ", " status ", " tilde ", " tree ", "
+.BR underline .
+The
+.BR body " and " header
+objects allow you to restrict the colorization to a regular
+expression.  The \fBindex\fP object permits you to select colored
+messages by pattern.
+.IP
+Valid colors include:
+.BR white ", " black ", " green ", " magenta ", " blue ", "
+.BR cyan ", " yellow ", " red ", " default ", " color\fIN\fP .
+.PP
+.nf
+\fBmono\fP \fIobject\fP \fIattribute\fP [ \fIregexp\fP ]
+\fBmono\fP index \fIattribute\fP [ \fIpattern\fP ]
+.fi
+.IP
+For terminals which don't support color, you can still assign
+attributes to objects.  Valid attributes include:
+.BR none ", " bold ", " underline ", " 
+.BR reverse ", and " standout .
+.TP
+[\fBun\fP]\fBignore\fP \fIpattern\fP [ \fIpattern\fP ... ]
+The \fBignore\fP command permits you to specify header fields which
+you usually don't wish to see.  Any header field whose tag
+\fIbegins\fP with an \(lqignored\(rq pattern will be ignored.
+.IP
+The \fBungignore\fP command permits you to define exceptions from
+the above mentioned list of ignored headers.
+.PP
+.nf
+\fBlists\fP \fIaddress\fP [ \fIaddress\fP ... ]
+\fBunlists\fP \fIaddress\fP [ \fIaddress\fP ... ]
+\fBsubscribe\fP \fIaddress\fP [ \fIaddress\fP ... ]
+\fBunsubscribe\fP \fIaddress\fP [ \fIaddress\fP ... ]
+.fi
+.IP
+Mutt maintains two lists of mailing list addresses, a list of
+subscribed mailing lists, and a list of known mailing lists.  All
+subscribed mailing lists are known.  A mail address matches a
+mailing list if it begins with the given address.  For example, the
+lists pattern \(lqmutt-\(rq will match mutt-dev@mutt.org and
+mutt-users@mutt.org.
+.IP
+The \fBlists\fP command adds a mailing list address to the list of
+known mailing lists.  The \fBunlists\fP command removes a mailig
+list from the lists of known and subscribed mailing lists.  The
+\fBsubscribe\fP command adds a mailing list to the lists of known
+and subscribed mailing lists.  The \fBunsubscribe\fP command removes
+it from the list of subscribed mailing lists.
+.TP
+\fBmbox-hook\fP [\fB!\fP]\fIpattern\fP \fImailbox\fP
+When mutt changes to a mail folder which matches \fIpattern\fP,
+\fImailbox\fP will be used as the \(lqmbox\(rq folder, i.e., read
+messages will be moved to that folder when the mail folder is left.
+.IP
+The first matchig \fBmbox-hook\fP applies.
+.TP
+\fBmailboxes\fP \fIfilename\fP [ \fIfilename\fP ... ]
+This command specifies folders which can receive mail and which will
+be checked for new messages.  When changing folders, pressing space
+will cycle through folders with new mail. 
+.PP
+.nf
+\fBmy_hdr\fP \fIstring\fP
+\fBunmy_hdr\fP \fIfield\fP
+.fi
+.IP
+Using \fBmy_hdr\fP, you can define headers which will be added to
+the messages you compose.  \fBunmy_hdr\fP will remove the given
+user-defined headers.
+.TP
+\fBhdr_order\fP \fIheader1\fP \fIheader2\fP [ ... ]
+With this command, you can specify an order in which mutt will
+attempt to present headers to you when viewing messages.
+.TP
+\fBsave-hook\fP [\fB!\fP]\fIpattern\fP \fIfilename\fP
+When a message matches \fIpattern\fP, the default file name when
+saving it will be the given \fIfilename\fP.
+.TP
+\fBfcc-hook\fP [\fB!\fP]\fIpattern\fP \fIfilename\fP
+When an outgoing message matches \fIpattern\fP, the default file
+name for storing a copy (fcc) will be the given \fIfilename\fP.
+.TP
+\fBfcc-save-hook\fP [\fB!\fP]\fIpattern\fP \fIfilename\fP
+This command is an abbreviation for identical \fBfcc-hook\fP and
+\fBsave-hook\fP commands.
+.TP
+\fBsend-hook\fP [\fB!\fP]\fIpattern\fP \fIcommand\fP
+When composing a message matching \fIpattern\fP, \fIcommand\fP is
+executed.  When multiple \fBsend-hook\fPs match, they are executed
+in the order in which they occur in the configuration file.
+.TP
+\fBpgp-hook\fP \fIpattern\fP \fIkey-id\fP
+The pgp-hook command provides a method by which you can
+specify the ID of the public key to be used when encrypting messages
+to a certain recipient.
+.TP
+\fBpush\fP \fIstring\fP
+This command adds the named \fIstring\fP to the keyboard buffer.
+.PP
+.nf
+\fBset\fP [\fBno\fP|\fBinv\fP]\fIvariable\fP[=\fIvalue\fP] [ ... ]
+\fBtoggle\fP \fIvariable\fP [ ... ]
+\fBunset\fP \fIvariable\fP [ ... ]
+\fBreset\fP \fIvariable\fP [ ... ]
+.fi
+.IP
+These commands are used to set and manipulate configuration
+varibles.
+.IP
+Mutt knows four basic types of variables: boolean, number, string
+and quadoption.  Boolean variables can be \fBset\fP (true),
+\fBunset\fP (false), or \fBtoggle\fPd. Number variables can be assigned
+a positive integer value.
+.IP
+String variables consist of any number of printable characters.
+Strings must be enclosed in quotes if they contain spaces or tabs.
+You may also use the \(lqC\(rq escape sequences \fB\\n\fP and
+\fB\\t\fP for newline and tab, respectively.
+.IP
+Quadoption variables are used to control whether or not to be
+prompted for certain actions, or to specify a default action.  A
+value of \fByes\fP will cause the action to be carried out automatically
+as if you had answered yes to the question.  Similarly, a value of
+\fBno\fP will cause the the action to be carried out as if you had
+answered \(lqno.\(rq A value of \fBask-yes\fP will cause a prompt
+with a default answer of \(lqyes\(rq and \fBask-no\fP will provide a
+default answer of \(lqno.\(rq
+.IP
+The \fBreset\fP command resets all given variables to the compile
+time defaults.  If you reset the special variabe \fBall\fP, all
+variables will reset to their system defaults.
+.TP
+\fBsource\fP \fIfilename\fP
+The given file will be evaluated as a configuration file.
+.SH PATTERNS
+.PP
+In various places with mutt, including some of the abovementioned
+\fBhook\fP commands, you can specify patterns to match messages.
+.SS Constructing Patterns
+.PP
+A simple pattern consists of an operator of the form
+\(lq\fB~\fP\fIcharacter\fP\(rq, possibly followed by a parameter
+against which mutt is supposed to match the obeject specified by
+this operator.  (For a list of operators, see below.)
+.PP
+With some of these operators, the object to be matched consists of
+several e-mail addresses.  In these cases, the object is matched if
+at least one of these e-mail addresses matches. You can prepend a
+hat (\(lq\fB^\fP\(rq) character to such a pattern to indicate that
+\fIall\fP addresses must match in order to match the object.
+.PP
+You can construct complex patterns by combining simple patterns with
+logical operators.  Logical AND is specified by simply concatenating
+two simple patterns, for instance \(lq~C mutt-dev ~s bug\(rq.
+Logical OR is specified by inserting a vertical bar (\(lq\fB|\fP\(rq)
+between two patterns, for instance \(lq~C mutt-dev | ~s bug\(rq.
+Additionally, you can negate a pattern by prepending a bang
+(\(lq\fB!\fP\(rq) character.  For logical grouping, use braces
+(\(lq()\(rq). Example: \(lq!(~t mutt|~c mutt) ~f elkins\(rq.
+.SS Simple Patterns
+.PP
+Mutt understands the following simple patterns:
+.PP
+.TS
+l l.
+~A	all messages
+~b \fIEXPR\fP	messages which contain \fIEXPR\fP in the message body
+~B \fIEXPR\fP	messages which contain \fIEXPR\fP in the whole message
+~c \fIEXPR\fP	messages carbon-copied to \fIEXPR\fP
+~C \fIEXPR\fP	message is either to: or cc: \fIEXPR\fP
+~D	deleted messages
+~d \fIMIN\fP-\fIMAX\fP	messages with \(lqdate-sent\(rq in a Date range
+~E	expired messages
+~e \fIEXPR\fP	message which contains \fIEXPR\fP in the \(lqSender\(rq field
+~F	flagged messages
+~f \fIEXPR\fP	messages originating from \fIEXPR\fP
+~g	PGP signed messages
+~G	PGP encrypted messages
+~h \fIEXPR\fP	messages which contain \fIEXPR\fP in the message header
+~k	message contains PGP key material
+~i \fIEXPR\fP	message which match \fIEXPR\fP in the \(lqMessage-ID\(rq field
+~L \fIEXPR\fP	message is either originated or received by \fIEXPR\fP
+~l	message is addressed to a known mailing list
+~m \fIMIN\fP-\fIMAX\fP	message in the range \fIMIN\fP to \fIMAX\fP
+~n \fIMIN\fP-\fIMAX\fP	messages with a score in the range \fIMIN\fP to \fIMAX\fP
+~N	new messages
+~O	old messages
+~p	message is addressed to you (consults $alternates)
+~P	message is from you (consults $alternates)
+~Q	messages which have been replied to
+~R	read messages
+~r \fIMIN\fP-\fIMAX\fP	messages with \(lqdate-received\(rq in a Date range
+~S	superseded messages
+~s \fIEXPR\fP	messages having \fIEXPR\fP in the \(lqSubject\(rq field.
+~T	tagged messages
+~t \fIEXPR\fP	messages addressed to \fIEXPR\fP
+~U	unread messages
+~v	message is part of a collapsed thread.
+~x \fIEXPR\fP	messages which contain \fIEXPR\fP in the \(lqReferences\(rq field
+~z \fIMIN\fP-\fIMAX\fP	messages with a size in the range \fIMIN\fP to \fIMAX\fP
+.TE
+.PP
+In the above, \fIEXPR\fP is a regular expression.
+.PP
+With the \fB~m\fP, \fB~n\fP, and \fB~z\fP operators, you can also
+specify ranges in the forms \fB<\fP\fIMAX\fP, \fB>\fP\fIMIN\fP,
+\fIMIN\fP\fB-\fP, and \fB-\fP\fIMAX\fP.
+.SS Matching dates
+.PP
+The \fB~d\fP and \fB~r\fP operators are used to match date ranges,
+which are interpreted to be given in your local time zone.
+.PP
+A date is of the form
+\fIDD\fP[\fB/\fP\fIMM\fP[\fB/\fP[\fIcc\fP]\fIYY\fP]], that is, a
+two-digit date, optionally followed by a two-digit month, optionally
+followed by a year specifications.  Omitted fields default to the
+current month and year.
+.PP
+Mutt understands either two or four digit year specifications.  When
+given a two-digit year, mutt will interpret values less than 70 as
+lying in the 21st century (i.e., \(lq38\(rq means 2038 and not 1938,
+and \(lq00\(rq is interpreted as 2000), and values
+greater than or equal to 70 as lying in the 20th century.
+.PP
+Note that this behaviour \fIis\fP Y2K compliant, but that mutt
+\fIdoes\fP have a Y2.07K problem.
+.PP
+If a date range consists of a single date, the operator in question
+will match that precise date.  If the date range consists of a dash
+(\(lq\fB-\fP\(rq), followed by a date, this range will match any
+date before and up to the date given.  Similarly, a date followed by
+a dash matches the date given and any later point of time.  Two
+dates, separated by a dash, match any date which lies in the given
+range of time.
+.PP
+You can also specify offsets relative to the current date.  An
+offset is specified as one of the characters
+.BR < ,
+.BR > ,
+.BR = ,
+followed by a positive number, followed by one of the unit
+characters
+.BR y ,
+.BR m ,
+.BR w ", or"
+.BR d ,
+specifying a unit of years, months, weeks, or days.  An offset which
+begins with the character
+.B >
+matches dates which are older than the specified amount of time, an
+offset which begins with the character
+.B < 
+matches dates which are more recent than the specified amount of time,
+and an offset which begins with the character
+.B =
+matches points of time which are precisely the given amount of time
+ago.
+.SH CONFIGURATION VARIABLES
