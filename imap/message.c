@@ -269,8 +269,13 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   }
 
   imap_make_sequence (seq, sizeof (seq));
+#if 0
   snprintf (buf, sizeof (buf), "%s FETCH %d RFC822\r\n", seq,
 	    ctx->hdrs[msgno]->index + 1);
+#else
+  snprintf (buf, sizeof (buf), "%s UID FETCH %d RFC822\r\n", seq,
+	    HEADER_DATA(ctx->hdrs[msgno])->uid);
+#endif
   mutt_socket_write (CTX_DATA->conn, buf);
   do
   {

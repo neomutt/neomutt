@@ -1,9 +1,12 @@
 In no particular order:
 
-* Mutt doesn't detect when a mailbox has only been opened read-only
-  (because, say, another process has it open), so it lets you store
-  changes that it can't commit.
-  --> just pick up the [READ-ONLY] in the tagged response, set mutt's flag
+* Mutt doesn't display untagged [ALERT] responses to the user. Pointed out
+  by Larry P Schrof <schrof@cig.mot.com>
+  19991220
+
+* Mutt displays 'mailbox externally modified' messages constantly if the
+  server provides spurious untagged EXISTS responses. Mutt should handle
+  those gracefully, I guess.
 
 * ~h searches download the entire folder, setting everything to \Seen in
   the process.
@@ -21,10 +24,14 @@ In no particular order:
   may see occasional segfaults. Solving this cleanly requires some major
   architectural updates. Until that happens, I recommend you keep
   backup copies of messages you're composing from within your editor.
+  Tommi Komulainen's keepalive patch for edit sessions may work for you,
+  though. Committed to CVS late November 1999, I think.
 
 * Sometimes hdr->env seems to be NULL, according to other users' core
   files. I haven't been able to reproduce this, and am not sure how
-  to track it down. But it's very naughty indeed.
+  to track it down. But it's very naughty indeed. It appears to be the
+  result of spurious mx_close_mailbox calls handling the untagged
+  BYE response.
 
 * Mutt marks your connection for logout as soon as you say quit, even if
   you bail out with ^G later.
@@ -51,4 +58,4 @@ In no particular order:
 * The mutt_pretty routines don't work well when the delimiter isn't '/'.
 
 Brendan Cully <brendan@kublai.com>
-Updated 19991110
+Updated 20000125

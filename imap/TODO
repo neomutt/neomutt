@@ -63,6 +63,7 @@ IMAP enhancements, by priority:
 
 * Commands for creating/deleting folders on the server, since users may not
   otherwise be able to do this on IMAP servers.
+  Delete done, still must implement create.
 
   PRIORITY: [** ]
 
@@ -71,5 +72,12 @@ IMAP enhancements, by priority:
 
   PRIORITY: [** ]
 
+* Create a logout command, so users can reconnect with different account
+  information without quitting mutt. Note: Tommi Komulainen's
+  multiple-account code makes this unnecessary - just use an account of
+  the form {username@host}
+
+  PRIORITY: [*  ]
+
 Brendan Cully <brendan@kublai.com>
-Updated: 19991119
+Updated: 19991227

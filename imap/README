@@ -20,10 +20,11 @@ New features vs. the stable distribution:
 * Server-side copy
 * Fast sync
 * Secure login (GSSAPI and CRAM-MD5)
-* More and better segfaults
 * Attach messages from IMAP folders
-* Use an IMAP path as your Maildir (set folder='')
+* Use an IMAP path as your Maildir (set folder={...})
 * Preserve message keywords
 * Preserve deleted messages if you don't choose to expunge them
 * Delete mailboxes (from the browser)
 * Multiple IMAP usernames
+* Read-only folder support (toggling read-only is buggy, though)
+* More and better segfaults

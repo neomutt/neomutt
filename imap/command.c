@@ -235,6 +235,12 @@ int imap_handle_untagged (IMAP_DATA *idata, char *s)
       mx_fastclose_mailbox (idata->selected_ctx);
     return (-1);
   }
+  else if (mutt_strncasecmp ("NO", s, 2) == 0)
+  {
+    /* Display the warning message from the server */
+    mutt_error (s+3);
+    sleep (1);
+  }
   else
   {
     dprint (1, (debugfile, "imap_handle_untagged(): unhandled request: %s\n",

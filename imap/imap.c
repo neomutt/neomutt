@@ -65,10 +65,7 @@ int imap_delete_mailbox (CONTEXT* ctx, char* mailbox)
   snprintf (buf, sizeof (buf), "DELETE %s", mbox);
 
   if (imap_exec (buf, sizeof (buf), CTX_DATA, buf, 0) != 0)
-  {
-    imap_error ("imap_delete_mailbox", buf);
     return -1;
-  }
 
   return 0;
 }
@@ -216,7 +213,8 @@ int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint)
   mutt_message (_("Reopening mailbox... %s"), CTX_DATA->selected_mailbox);
   imap_quote_string (buf, sizeof (buf), CTX_DATA->selected_mailbox);
   imap_make_sequence (seq, sizeof (seq));
-  snprintf (bufout, sizeof (bufout), "%s SELECT %s\r\n", seq, buf);
+  snprintf (bufout, sizeof (bufout), "%s %s %s\r\n", seq,
+    ctx->readonly ? "EXAMINE" : "SELECT", buf);
   mutt_socket_write (CTX_DATA->conn, bufout);
 
   do
@@ -245,6 +243,12 @@ int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint)
     }
   }
   while (mutt_strncmp (seq, buf, mutt_strlen (seq)) != 0);
+  /* check for READ-ONLY notification */
+  if (!strncmp (imap_get_qualifier (buf), "[READ-ONLY]", 11))
+  {
+    dprint (2, (debugfile, "Mailbox is read-only.\n"));
+    ctx->readonly = 1;
+  }
 
   if (!imap_code (buf))
   {
@@ -428,9 +432,7 @@ int imap_open_connection (IMAP_DATA *idata, CONNECTION *conn)
   char buf[LONG_STRING];
 
   if (mutt_socket_open_connection (conn) < 0)
-  {
-    return (-1);
-  }
+    return -1;
 
   idata->state = IMAP_CONNECTED;
 
@@ -438,7 +440,7 @@ int imap_open_connection (IMAP_DATA *idata, CONNECTION *conn)
   {
     mutt_socket_close_connection (conn);
     idata->state = IMAP_DISCONNECTED;
-    return (-1);
+    return -1;
   }
 
   if (mutt_strncmp ("* OK", buf, 4) == 0)
@@ -448,7 +450,7 @@ int imap_open_connection (IMAP_DATA *idata, CONNECTION *conn)
     {
       mutt_socket_close_connection (conn);
       idata->state = IMAP_DISCONNECTED;
-      return (-1);
+      return -1;
     }
   }
   else if (mutt_strncmp ("* PREAUTH", buf, 9) == 0)
@@ -457,7 +459,7 @@ int imap_open_connection (IMAP_DATA *idata, CONNECTION *conn)
     {
       mutt_socket_close_connection (conn);
       idata->state = IMAP_DISCONNECTED;
-      return (-1);
+      return -1;
     }
   } 
   else
@@ -465,7 +467,7 @@ int imap_open_connection (IMAP_DATA *idata, CONNECTION *conn)
     imap_error ("imap_open_connection()", buf);
     mutt_socket_close_connection (conn);
     idata->state = IMAP_DISCONNECTED;
-    return (-1);
+    return -1;
   }
 
   idata->state = IMAP_AUTHENTICATED;
@@ -587,7 +589,8 @@ int imap_open_mailbox (CONTEXT *ctx)
   mutt_message (_("Selecting %s..."), idata->selected_mailbox);
   imap_quote_string (buf, sizeof(buf), idata->selected_mailbox);
   imap_make_sequence (seq, sizeof (seq));
-  snprintf (bufout, sizeof (bufout), "%s SELECT %s\r\n", seq, buf);
+  snprintf (bufout, sizeof (bufout), "%s %s %s\r\n", seq,
+    ctx->readonly ? "EXAMINE" : "SELECT", buf);
   mutt_socket_write (conn, bufout);
 
   idata->state = IMAP_SELECTED;
@@ -644,6 +647,12 @@ int imap_open_mailbox (CONTEXT *ctx)
     }
   }
   while (mutt_strncmp (seq, buf, mutt_strlen (seq)) != 0);
+  /* check for READ-ONLY notification */
+  if (!strncmp (imap_get_qualifier (buf), "[READ-ONLY]", 11))
+  {
+    dprint (2, (debugfile, "Mailbox is read-only.\n"));
+    ctx->readonly = 1;
+  }
 
   /* dump the mailbox flags we've found */
   if (debuglevel > 2)
