@@ -372,7 +372,7 @@ else
                                 mutt_cv_mailpath=/usr/mail
                         fi])
                 ])
-        if test $mutt_cv_mailpath = no; then
+        if test "$mutt_cv_mailpath" = no; then
                 AC_MSG_ERROR("Could not determine where new mail is stored.")
         fi
         AC_DEFINE_UNQUOTED(MAILPATH,"$mutt_cv_mailpath",[ Where new mail is spooled. ])
