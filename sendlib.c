@@ -898,7 +898,7 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
 
   if (stat (fname, &sb) == -1)
   {
-    mutt_error (_("Can't stat %s."), fname);
+    mutt_error (_("Can't stat %s: %s"), fname, strerror (errno));
     return NULL;
   }
   

@@ -93,7 +93,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
 
   if ((rc = stat (tmp, &sb)) == -1)
   {
-    mutt_error (_("Can't stat: %s"), strerror (errno));
+    mutt_error (_("Can't stat %s: %s"), tmp, strerror (errno));
     goto bail;
   }
   

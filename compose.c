@@ -981,9 +981,9 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	if (mutt_get_field (_("Rename to: "), fname, sizeof (fname), M_FILE)
 							== 0 && fname[0])
 	{
-	  if(stat(idx[menu->current]->content->filename, &st) == -1)
+	  if (stat(idx[menu->current]->content->filename, &st) == -1)
 	  {
-	    mutt_error (_("Can't stat: %s"), fname);
+	    mutt_error (_("Can't stat %s: %s"), fname, strerror (errno));
 	    break;
 	  }
 
