@@ -58,15 +58,15 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf);
 
 static ADDRESS *result_to_addr (QUERY *r)
 {
-  static ADDRESS tmp;
+  static ADDRESS *tmp;
   
-  tmp = *r->addr;
+  tmp = rfc822_cpy_adr (r->addr);
   
-  if(!tmp.next && !tmp.personal)
-    tmp.personal = r->name;
+  if(!tmp->next && !tmp->personal)
+    tmp->personal = safe_strdup (r->name);
   
-  mutt_addrlist_to_idna (&tmp, NULL);
-  return &tmp;
+  mutt_addrlist_to_idna (tmp, NULL);
+  return tmp;
 }
 
 static QUERY *run_query (char *s, int quiet)
@@ -242,6 +242,7 @@ int mutt_query_complete (char *buf, size_t buflen)
       mutt_addrlist_to_local (tmpa);
       buf[0] = '\0';
       rfc822_write_address (buf, buflen, tmpa, 0);
+      rfc822_free_address (&tmpa);
       mutt_clear_error ();
       return (0);
     }
@@ -410,13 +411,19 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 
 	    for (i = 0; i < menu->max; i++)
 	      if (QueryTable[i].tagged)
-		rfc822_append (&naddr, result_to_addr(QueryTable[i].data));
+	      {
+		ADDRESS *a = result_to_addr(QueryTable[i].data);
+		rfc822_append (&naddr, a);
+		rfc822_free_address (&a);
+	      }
 
 	    mutt_create_alias (NULL, naddr);
 	  }
 	  else
 	  {
-	    mutt_create_alias (NULL, result_to_addr(QueryTable[menu->current].data));
+	    ADDRESS *a = result_to_addr(QueryTable[menu->current].data);
+	    mutt_create_alias (NULL, a);
+	    rfc822_free_address (&a);
 	  }
 	  break;
 
@@ -433,14 +440,17 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 	  msg->env = mutt_new_envelope ();
 	  if (!menu->tagprefix)
 	  {
-	    msg->env->to = 
-	      rfc822_cpy_adr (result_to_addr(QueryTable[menu->current].data));
+	    msg->env->to = result_to_addr(QueryTable[menu->current].data);
 	  }
 	  else
 	  {
 	    for (i = 0; i < menu->max; i++)
 	      if (QueryTable[i].tagged)
-		rfc822_append (&msg->env->to, result_to_addr(QueryTable[i].data));
+	      {
+		ADDRESS *a = result_to_addr(QueryTable[i].data);
+		rfc822_append (&msg->env->to, a);
+		rfc822_free_address (&a);
+	      }
 	  }
 	  ci_send_message (0, msg, NULL, Context, NULL);
 	  menu->redraw = REDRAW_FULL;
@@ -472,6 +482,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 	    tagged = 1;
 	    rfc822_write_address (buf, buflen, tmpa, 0);
 	    curpos = mutt_strlen (buf);
+	    rfc822_free_address (&tmpa);
 	  }
 	  else if (curpos + 2 < buflen)
 	  {
@@ -481,6 +492,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 	    rfc822_write_address ((char *) buf + curpos + 1, buflen - curpos - 1,
 				  tmpa, 0);
 	    curpos = mutt_strlen (buf);
+	    rfc822_free_address (&tmpa);
 	  }
 	}
       }
@@ -490,6 +502,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 	ADDRESS *tmpa = result_to_addr (QueryTable[menu->current].data);
 	mutt_addrlist_to_local (tmpa);
 	rfc822_write_address (buf, buflen, tmpa, 0);
+	rfc822_free_address (&tmpa);
       }
       
     }
