@@ -649,6 +649,9 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    break;
 
 	  mutt_expand_path (fname, sizeof (fname));
+#ifdef USE_IMAP
+          if (!mx_is_imap (fname))
+#endif
 	  /* check to make sure the file exists and is readable */
 	  if (access (fname, R_OK) == -1)
 	  {
