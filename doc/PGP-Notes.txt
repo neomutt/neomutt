@@ -170,7 +170,13 @@ this, copy either language.txt or language50.txt
 (depending on what PGP version you are using) to your
 $PGPPATH and add the following line to your muttrc:
 
-	set pgp_language="mutt"
+	set pgp_v2_language="mutt"
+
+or
+	
+	set pgp_v5_language="mutt"
+
+respectively.
 
 For PGP 2.6, a German version called "muttde" is available
 as well.
