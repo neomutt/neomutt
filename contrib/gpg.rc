@@ -18,10 +18,10 @@ set pgp_decrypt_command="gpg --passphrase-fd 0 --no-verbose --batch -o - --decry
 set pgp_sign_command="gpg --no-verbose --batch -o - --passphrase-fd 0 --detach-sign --textmode --armor %?a?-u %a? %f"
 
 # create a pgp/mime encrypted attachment
-set pgp_encrypt_only_command="pgpewrap gpg --no-verbose -v --batch -o - --encrypt --textmode --armor --always-trust -- -r %r
+set pgp_encrypt_only_command="pgpewrap gpg --no-verbose -v --batch -o - --encrypt --textmode --armor --always-trust -- -r %r -- %f"
 
 # create a pgp/mime encrypted and signed attachment
-set pgp_encrypt_sign_command="pgpewrap gpg --passphrase-fd 0 --no-verbose -v --batch -o - --encrypt --sign %?a?-u %a? --textmode --armor --always-trust -- -r %r
+set pgp_encrypt_sign_command="pgpewrap gpg --passphrase-fd 0 --no-verbose -v --batch -o - --encrypt --sign %?a?-u %a? --textmode --armor --always-trust -- -r %r -- %f"
 
 # import a key into the public key ring
 set pgp_import_command="gpgm --no-verbose --import -v %f"
@@ -30,7 +30,7 @@ set pgp_import_command="gpgm --no-verbose --import -v %f"
 set pgp_export_command="gpgm --no-verbose --export --armor %r"
 
 # verify a key
-set pgp_verify_key_command="gpgm --no-verbose --batch --fingerprint --check-sigs 
+set pgp_verify_key_command="gpgm --no-verbose --batch --fingerprint --check-sigs"
 
 # read in the public key ring
 set pgp_list_pubring_command="gpgm --no-verbose --batch --with-colons --list-keys %r" 
