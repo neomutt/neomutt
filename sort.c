@@ -175,8 +175,8 @@ sort_t *mutt_get_sort_func (int method)
 void mutt_sort_headers (CONTEXT *ctx, int init)
 {
   int i;
+  HEADER *h;
   sort_t *sortfunc;
-  int collapse = (option (OPTSORTCOLLAPSE)) ? 0 : 1;
   
   unset_option (OPTNEEDRESORT);
 
@@ -237,21 +237,29 @@ void mutt_sort_headers (CONTEXT *ctx, int init)
 
   /* adjust the virtual message numbers */
   ctx->vcount = 0;
-  if (collapse)
-    ctx->collapsed = 0;
   for (i = 0; i < ctx->msgcount; i++)
   {
     HEADER *cur = ctx->hdrs[i];
-    if (cur->virtual != -1 || (collapse && cur->collapsed && (!ctx->pattern || cur->limited)))
+    if (cur->virtual != -1 || (cur->collapsed && (!ctx->pattern || cur->limited)))
     {
       cur->virtual = ctx->vcount;
       ctx->v2r[ctx->vcount] = i;
       ctx->vcount++;
     }
     cur->msgno = i;
-    cur->num_hidden = mutt_get_hidden (ctx, cur);
-    if (collapse)
-      cur->collapsed = 0;
+  }
+
+  /* re-collapse threads marked as collapsed */
+  if ((Sort & SORT_MASK) == SORT_THREADS)
+  {
+    h = ctx->tree;
+    while (h)
+    {
+      if (h->collapsed)
+	mutt_collapse_thread (ctx, h);
+      h = h->next;
+    }
+    mutt_set_virtual (ctx);
   }
 
   if (!ctx->quiet)

@@ -365,9 +365,7 @@ int mutt_index_menu (void)
         }
 
 	/* if the mailbox was reopened, need to rethread from scratch */
-	set_option (OPTSORTCOLLAPSE);
 	mutt_sort_headers (Context, (check == M_REOPENED));
-	unset_option (OPTSORTCOLLAPSE);
 
 	/* uncollapse threads with new mail */
 	if ((Sort & SORT_MASK) == SORT_THREADS)

@@ -377,7 +377,6 @@ enum
   OPTFORCEREDRAWPAGER,	/* (pseudo) used to force a redraw in the pager */
   OPTSORTSUBTHREADS,	/* (pseudo) used when $sort_aux changes */
   OPTNEEDRESCORE,	/* (pseudo) set when the `score' command is used */
-  OPTSORTCOLLAPSE,	/* (pseudo) used by mutt_sort_headers() */
   OPTUSEHEADERDATE,	/* (pseudo) used by edit-message */
   OPTATTACHMSG,		/* (pseudo) used by attach-message */
   

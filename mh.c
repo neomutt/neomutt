@@ -537,9 +537,7 @@ int mh_sync_mailbox (CONTEXT * ctx)
 #if 0
   if(i == M_REOPENED || i == M_NEW_MAIL)
   {
-    set_option(OPTSORTCOLLAPSE);
     mutt_sort_headers(ctx, (i == M_REOPENED));
-    unset_option(OPTSORTCOLLAPSE);
   }
 #endif
 
