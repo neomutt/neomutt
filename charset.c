@@ -411,12 +411,16 @@ int mutt_convert_string (char **ps, const char *from, const char *to)
     ib = s, ibl = len + 1;
     obl = MB_LEN_MAX * ibl;
     ob = buf = safe_malloc (obl + 1);
+    
     mutt_iconv (cd, &ib, &ibl, &ob, &obl, inrepls, outrepl);
     iconv_close (cd);
-    free (s);
+
     *ob = '\0';
-    *ps = safe_strdup (buf);
-    free (buf);
+
+    safe_free ((void **) ps);
+    *ps = buf;
+    
+    safe_realloc ((void **) ps, strlen (*ps) + 1);	/* avoid copying */
     return 0;
   }
   else

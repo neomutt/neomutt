@@ -2,6 +2,9 @@
 #include <string.h>
 
 #include "mutt.h"
+
+#include "hash.h"
+
 #include "iconv.h"
 #include "lib.h"
 #include "charset.h"
@@ -12,148 +15,123 @@
  * the conversion.
  */
 
-struct gt_hash_elem
-{
-  const char *key;
-  char *data;
-  struct gt_hash_elem *next;
-};
+/*
+ * Note: the routines in this file can be invoked before debugfile
+ * has been opened.  When using dprint here, please check if
+ * debugfile != NULL before.
+ */
 
-#define gt_hash_size 127
+static HASH *Messages = NULL;
+static char *PoHeader = NULL;
+static char *PoCharset = NULL;
+static char *MessageCharset = NULL;
+
+struct msg
+{
+  char *key;
+  char *data;
+};
 
 static char *get_charset (const char *header)
 {
   /* FIXME: the comparison should at least be case-insensitive */
   const char f[] = "\nContent-Type: text/plain; charset=";
-  char *charset, *i, *j;
+  char *s, *t;
 
-  charset = 0;
-  i = strstr (header, f);
-  if (i)
+  if (!header) return NULL;
+  
+  if ((s = strstr (header, f)))
   {
-    i += sizeof (f)-1;
-    for (j = i; *j >= 32; j++)
+    s += sizeof (f)-1;
+    for (t = s; *t >= 32; t++)
       ;
-    charset = safe_malloc (j-i+1);
-    memcpy (charset, i, j-i);
-    charset[j-i] = '\0';
+    return mutt_substrdup (s, t);
   }
-  return charset;
+  
+  /* else */
+  
+  return NULL;
 }
 
+static void destroy_one_message (void *vp)
+{
+  struct msg *mp = (struct msg *) vp;
+  
+  safe_free ((void **) &mp->key);
+  safe_free ((void **) &mp->data);
+}
+
+static void destroy_messages (void)
+{
+  if (Messages)
+    hash_destroy (&Messages, destroy_one_message);
+}
+
+static void set_po_charset (void)
+{
+  char *t;
+  char *empty = "";
+
+  t = gettext (empty);
+
+  if (mutt_strcmp (t, PoHeader))
+  {
+    mutt_str_replace (&PoHeader, t);
+    safe_free ((void **) &PoCharset);
+    PoCharset = get_charset (PoHeader);
+    
+    destroy_messages ();
+  }
+}
+
+static void set_message_charset (void)
+{
+  if (mutt_strcmp (MessageCharset, Charset))
+  {
+    mutt_str_replace (&MessageCharset, Charset);
+    destroy_messages ();
+  }
+}
+
+    
 char *mutt_gettext (const char *message)
 {
-  static struct gt_hash_elem **messages = 0;
-  static char *po_header = 0;
-  static char *po_charset = 0;
-  static char *message_charset = 0;
-  static char *outrepl = "?";
-  static iconv_t cd = (iconv_t)-1;
-  int change_cd = 0;
-  char *t, *orig;
-  char *header_msgid = "";
+  char *orig;
+  struct msg *mp;
+  
+  set_po_charset ();
+  set_message_charset ();
 
-  /* gettext ("") doesn't work due to __builtin_constant_p optimisation */
-  if ((t = gettext (header_msgid)) != po_header)
-  {
-    po_header = t;
-    t = get_charset (po_header);
-    if (t != po_charset &&
-	(!t || !po_charset || strcmp (t, po_charset)))
-    {
-      safe_free ((void **) &po_charset);
-      po_charset = t;
-      change_cd = 1;
-    }
-    else
-      safe_free ((void **) &t);
-  }
-
-  if (message_charset != Charset &&
-      (!message_charset || !Charset || strcmp (message_charset, Charset)))
-  {
-    mutt_str_replace (&message_charset, Charset);
-    outrepl = mutt_is_utf8 (message_charset) ? "\357\277\275" : "?";
-    change_cd = 1;
-  }
-
-  if (change_cd)
-  {
-    if (cd != (iconv_t)-1)
-      iconv_close (cd);
-    if (message_charset)
-      cd = iconv_open (message_charset, po_charset ? po_charset : "UTF-8");
-    else
-      cd = (iconv_t)-1;
-
-    if (messages)
-    {
-      int i;
-      struct gt_hash_elem *p, *pn;
-
-      for (i = 0; i < gt_hash_size; i++)
-	for (p = messages[i]; p; p = pn)
-	{
-	  pn = p->next;
-	  safe_free ((void **) &p);
-	}
-
-      safe_free ((void **) &messages);
-    }
-  }
+  if (!Messages && MessageCharset)
+    Messages = hash_create (127);
 
   orig = gettext (message);
 
-  if (cd == (iconv_t)-1)
+  if (debugfile)
+    dprint (2, (debugfile, "mutt_gettext (`%s'): original gettext returned `%s'\n",
+		message, orig));
+
+  if (!Messages)
     return orig;
-  else
+  
+  if ((mp = hash_find (Messages, orig)))
   {
-    struct gt_hash_elem *p;
-    int hash;
-    char *s, *t;
-    int n, nn;
-    const char *ib;
-    char *ob;
-    size_t ibl, obl;
-
-    if (!messages)
-    {
-      messages = safe_malloc (gt_hash_size * sizeof (*messages));
-      memset (messages, 0, gt_hash_size * sizeof (*messages));
-    }
-    hash = (long int)orig % gt_hash_size; /* not very clever */
-    for (p = messages[hash]; p && p->key != orig; p = p->next)
-      ;
-    if (p)
-      return p->data;
-
-    n = strlen (orig);
-    nn = n + 1;
-    t = safe_malloc (nn);
-
-    ib = orig, ibl = n;
-    ob = t, obl = n;
-    for (;;)
-    {
-      mutt_iconv (cd, &ib, &ibl, &ob, &obl, 0, outrepl);
-      if (!ibl || obl > 256)
-	break;
-      s = t;
-      safe_realloc ((void **)&t, nn += n);
-      ob += t - s;
-      obl += n;
-    }
-    *ob = '\0';
-    n = strlen (t);
-    s = safe_malloc (n+1);
-    memcpy (s, t, n+1);
-    safe_free ((void **) &t);
-
-    p = safe_malloc (sizeof (struct gt_hash_elem));
-    p->key = orig;
-    p->data = s;
-    p->next = messages[hash];
-    messages[hash] = p;
-    return s;
+    if (debugfile)
+      dprint (2, (debugfile, "mutt_gettext: cache hit - key = `%s', data = `%s'\n", orig, mp->data));
+    return mp->data;
   }
+
+  /* the message could not be found in the hash */
+  mp = safe_malloc (sizeof (struct msg));
+  mp->key = safe_strdup (orig);
+  mp->data = safe_strdup (orig);
+  mutt_convert_string (&mp->data, PoCharset ? PoCharset : "utf-8", MessageCharset);
+
+  if (debugfile)
+    dprint (2, (debugfile, "mutt_gettext: conversion done - src = `%s', res = `%s'\n", 
+		mp->key, mp->data));
+  
+  hash_insert (Messages, mp->key, mp, 0);
+  
+  return mp->data;
 }
