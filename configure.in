@@ -183,15 +183,7 @@ main ()
 		fi
 		AC_CHECK_HEADERS(ncurses.h)],
 
-		[MUTTLIBS="$MUTTLIBS -lcurses"
-		if test -f /usr/ccs/lib/libcurses.a; then
-				LDFLAGS="$LDFLAGS -L/usr/ccs/lib"
-		else
-			if test -f /usr/5lib/libcurses.a; then
-				LDFLAGS="$LDFLAGS -L/usr/5lib"
-				CPPFLAGS="$CPPFLAGS -I/usr/5include"
-			fi
-		fi])
+		[MUTTLIBS="$MUTTLIBS -lcurses"])
 
 	old_LIBS="$LIBS"
 	LIBS="$LIBS $MUTTLIBS"
