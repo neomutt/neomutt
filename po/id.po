@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.6i\n"
+"Project-Id-Version: 1.3.8i\n"
 "POT-Creation-Date: 2000-08-30 12:10+0200\n"
-"PO-Revision-Date: 2000-07-28 23:44-0500\n"
+"PO-Revision-Date: 2000-09-01 12:22-0500\n"
 "Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
 "Language-Team: Indonesia <i18n@linux.or.id>\n"
 "MIME-Version: 1.0\n"
@@ -14,9 +14,8 @@ msgstr ""
 "Content-Transfer-Encoding: 7bit\n"
 
 #: account.c:104
-#, fuzzy, c-format
 msgid "Username at %s: "
-msgstr "Ganti nama ke: "
+msgstr "Nama user di %s: "
 
 #: account.c:132 pop.c:61
 #, c-format
@@ -175,9 +174,8 @@ msgid "No files match the file mask"
 msgstr "Tidak ada file yang sesuai dengan mask"
 
 #: browser.c:814
-#, fuzzy
 msgid "Create is only supported for IMAP mailboxes"
-msgstr "Penghapusan hanya didukung untuk kotak surat jenis IMAP."
+msgstr "Pembuatan hanya didukung untuk kotak surat jenis IMAP."
 
 #: browser.c:834
 msgid "Delete is only supported for IMAP mailboxes"
@@ -1107,9 +1105,8 @@ msgid "Authenticating (anonymous)..."
 msgstr "Mengauthentikasi (anonim)..."
 
 #: imap/auth_anon.c:69
-#, fuzzy
 msgid "Anonymous authentication failed."
-msgstr "Authentikasi anonim tidak didukung."
+msgstr "Authentikasi anonim gagal."
 
 #: imap/auth_cram.c:44
 msgid "Authenticating (CRAM-MD5)..."
@@ -1130,7 +1127,7 @@ msgstr "Authentikasi GSSAPI gagal."
 
 #: imap/auth_login.c:34
 msgid "LOGIN disabled on this server."
-msgstr ""
+msgstr "LOGIN tidak diaktifkan di server ini."
 
 #: imap/auth_login.c:43 pop.c:72
 msgid "Logging in..."
@@ -1141,14 +1138,12 @@ msgid "Login failed."
 msgstr "Login gagal."
 
 #: imap/auth_sasl.c:91
-#, fuzzy
 msgid "Authenticating (SASL)..."
-msgstr "Mengauthentikasi (GSSAPI)..."
+msgstr "Mengauthentikasi (SASL)..."
 
 #: imap/auth_sasl.c:163
-#, fuzzy
 msgid "SASL authentication failed."
-msgstr "Authentikasi GSSAPI gagal."
+msgstr "Authentikasi SASL gagal."
 
 #: imap/browse.c:80
 msgid "Getting namespaces..."
@@ -1159,14 +1154,12 @@ msgid "Getting folder list..."
 msgstr "Mengambil daftar kotak surat..."
 
 #: imap/browse.c:265
-#, fuzzy
 msgid "Create mailbox: "
-msgstr "Buka kotak surat"
+msgstr "Membuat kotak surat: "
 
 #: imap/browse.c:271
-#, fuzzy
 msgid "Mailbox created."
-msgstr "Kotak surat telah dihapus."
+msgstr "Kotak surat telah dibuat."
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
@@ -2515,7 +2508,7 @@ msgstr "Tambahkan surat-surat ke %s?"
 
 #: mutt_socket.c:199
 msgid "SSL is unavailable."
-msgstr ""
+msgstr "SSL tidak tersedia."
 
 #: mutt_socket.c:281
 #, c-format
