@@ -584,15 +584,15 @@ msgstr "Za¹ifruj"
 
 #: compose.c:165
 #, fuzzy
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (i)nline, or (f)orget it? "
 msgstr ""
-"(e)-¹ifr, (s)-podp, podp (a)ko, o(b)e, oznaè alg. mi(c), alebo (f)-zabudnú» "
+"(e)-¹ifr, (s)-podp, podp (a)ko, o(b)e, (i)nline, alebo (f)-zabudnú» "
 "na to? "
 
 #: compose.c:166
 #, fuzzy
-msgid "esabf"
-msgstr "esabmf"
+msgid "esabif"
+msgstr "esabif"
 
 #. sign (a)s
 #: compose.c:179 compose.c:269
@@ -604,13 +604,12 @@ msgstr "Podpí¹ ako: "
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (f)orget it? "
 msgstr ""
-"(e)-¹ifr, (s)-podp, podp (a)ko, o(b)e, oznaè alg. mi(c), alebo (f)-zabudnú» "
-"na to? "
+"(e)-¹ifr, (s)-podp, (w)-¹ifr s, podp (a)ko, o(b)e, alebo (f)-zabudnú» na to? "
 
 #: compose.c:228
 #, fuzzy
 msgid "eswabf"
-msgstr "esabmf"
+msgstr "eswabf"
 
 #: compose.c:236
 msgid ""

@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
  * 
@@ -277,7 +278,7 @@ enum
   OPT_MIMEFWD,
   OPT_MIMEFWDREST,
   OPT_MOVE,
-  OPT_PGPTRADITIONAL, /* create old-style PGP messages */
+  OPT_PGPMIMEASK,     /* ask to revert to PGP/MIME when inline fails */
 #ifdef USE_POP
   OPT_POPDELETE,
   OPT_POPRECONNECT,
@@ -444,7 +445,6 @@ enum
   OPTPGPIGNORESUB,
   OPTPGPCHECKEXIT,
   OPTPGPLONGIDS,
-  OPTPGPAUTOTRAD,
 #if 0
   OPTPGPENCRYPTSELF,
 #endif
@@ -452,6 +452,8 @@ enum
   OPTPGPSTRICTENC,
   OPTFORWDECRYPT,
   OPTPGPSHOWUNUSABLE,
+  OPTPGPAUTOINLINE,
+  OPTPGPREPLYINLINE,
 
   /* pseudo options */
 
@@ -641,7 +643,7 @@ typedef struct body
 
 typedef struct header
 {
-  unsigned int security : 10;  /* bit 0-6: flags, bit 7,8: application.
+  unsigned int security : 11;  /* bit 0-6: flags, bit 7,8: application.
 				 see: crypt.h pgplib.h, smime.h */
 
   unsigned int mime : 1;    		/* has a Mime-Version header? */

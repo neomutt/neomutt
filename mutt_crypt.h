@@ -36,17 +36,19 @@
 #define BADSIGN    (1 << 3)
 #define PARTSIGN   (1 << 4)
 #define SIGNOPAQUE (1 << 5)
-/* (1 << 6) is used by PGPKEY below. */
+#define KEYBLOCK   (1 << 6) /* KEY too generic? */
+#define INLINE     (1 << 7)
 
-#define APPLICATION_PGP    (1 << 7) 
-#define APPLICATION_SMIME  (1 << 8)
+#define APPLICATION_PGP    (1 << 8) 
+#define APPLICATION_SMIME  (1 << 9)
 
-#define PGP_TRADITIONAL_CHECKED (1 << 9)
+#define PGP_TRADITIONAL_CHECKED (1 << 10)
 
 #define PGPENCRYPT  (APPLICATION_PGP | ENCRYPT)
 #define PGPSIGN     (APPLICATION_PGP | SIGN)
 #define PGPGOODSIGN (APPLICATION_PGP | GOODSIGN)
-#define PGPKEY      (APPLICATION_PGP | (1 << 6)) 
+#define PGPKEY      (APPLICATION_PGP | KEYBLOCK) 
+#define PGPINLINE   (APPLICATION_PGP | INLINE)
 
 #define SMIMEENCRYPT  (APPLICATION_SMIME | ENCRYPT)
 #define SMIMESIGN     (APPLICATION_SMIME | SIGN)
@@ -105,7 +107,7 @@ typedef struct pgp_keyinfo *pgp_key_t;
 
 /* Some prototypes -- old crypt.h. */
 
-int mutt_protect (HEADER *, HEADER *, char *);
+int mutt_protect (HEADER *, char *);
 
 int mutt_is_multipart_encrypted (BODY *);
 

@@ -1378,6 +1378,48 @@ struct option_t MuttVars[] = {
   ** removed, while the inner multipart/signed part is retained.
   ** (PGP only)
   */
+  { "pgp_create_traditional",	DT_SYN, R_NONE, UL "pgp_autoinline", 0 },
+  { "pgp_autoinline",		DT_BOOL, R_NONE, OPTPGPAUTOINLINE, 0 },
+  /*
+  ** .pp
+  ** This option controls whether Mutt generates old-style inline
+  ** (traditional) PGP encrypted or signed messages under certain
+  ** circumstances.  This can be overridden by use of the \fIpgp-menu\fP,
+  ** when inline is not required.
+  ** .pp
+  ** Note that Mutt might automatically use PGP/MIME for messages
+  ** which consist of more than a single MIME part.  Mutt can be
+  ** configured to ask before sending PGP/MIME messages when inline
+  ** (traditional) would not work.
+  ** See also: ``$$pgp_mime_ask''.
+  ** .pp
+  ** Also note that using the old-style PGP message format is \fBstrongly\fP
+  ** \fBdeprecated\fP.
+  ** (PGP only)
+  */
+  { "pgp_auto_traditional",	DT_SYN, R_NONE, UL "pgp_replyinline", 0 },
+  { "pgp_replyinline",		DT_BOOL, R_NONE, OPTPGPREPLYINLINE, 0 },
+  /*
+  ** .pp
+  ** Setting this variable will cause Mutt to always attempt to
+  ** create an inline (traditional) message when replying to a
+  ** message which is PGP encrypted/signed inline.  This can be
+  ** overridden by use of the \fIpgp-menu\fP, when inline is not
+  ** required.  This option does not automatically detect if the
+  ** (replied-to) message is inline; instead it relies on Mutt
+  ** internals for previously checked/flagged messages.
+  ** .pp
+  ** Note that Mutt might automatically use PGP/MIME for messages
+  ** which consist of more than a single MIME part.  Mutt can be
+  ** configured to ask before sending PGP/MIME messages when inline
+  ** (traditional) would not work.
+  ** See also: ``$$pgp_mime_ask''.
+  ** .pp
+  ** Also note that using the old-style PGP message format is \fBstrongly\fP
+  ** \fBdeprecated\fP.
+  ** (PGP only)
+  ** 
+  */
   { "pgp_show_unusable", DT_BOOL, R_NONE, OPTPGPSHOWUNUSABLE, 1 },
   /*
   ** .pp
@@ -1427,35 +1469,15 @@ struct option_t MuttVars[] = {
   ** `reverse-'.
   ** (PGP only)
   */
-  { "pgp_create_traditional", DT_QUAD, R_NONE, OPT_PGPTRADITIONAL, M_NO },
+  { "pgp_mime_ask", DT_QUAD, R_NONE, OPT_PGPMIMEASK, M_NO },
   /*
   ** .pp
-  ** This option controls whether Mutt generates old-style inline PGP
-  ** encrypted or signed messages.
-  ** .pp
-  ** Note that PGP/MIME will be used automatically for messages which have
-  ** a character set different from us-ascii, or which consist of more than
-  ** a single MIME part.
+  ** This option controls whether Mutt will prompt you for
+  ** automatically sending a (signed/encrypted) message using
+  ** PGP/MIME when inline (traditional) fails (for any reason).
   ** .pp
   ** Also note that using the old-style PGP message format is \fBstrongly\fP
   ** \fBdeprecated\fP.
-  ** (PGP only)
-  */
-  { "pgp_auto_traditional", DT_BOOL, R_NONE, OPTPGPAUTOTRAD, 0 },
-  /*
-  ** .pp
-  ** This option causes Mutt to generate an old-style inline PGP
-  ** encrypted or signed message when replying to an old-style
-  ** message, and a PGP/MIME message when replying to a PGP/MIME
-  ** message.  Note that this option is only meaningful when using
-  ** ``$$crypt_replyencrypt'', ``$$crypt_replysign'', or
-  ** ``$$crypt_replysignencrypted''.
-  ** .pp
-  ** Also note that PGP/MIME will be used automatically for messages
-  ** which have a character set different from us-ascii, or which
-  ** consist of more than a single MIME part.
-  ** .pp
-  ** This option overrides ``$$pgp_create_traditional''
   ** (PGP only)
   */
 

@@ -583,14 +583,14 @@ msgstr "加密"
 
 #: compose.c:165
 #, fuzzy
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (i)nline, or (f)orget it? "
 msgstr ""
-"(e)加密, (s)签名, (a)用别的身份签, (b)两者皆要, 选择 (m)ic 演算法 或 (f)放"
+"(e)加密, (s)签名, (a)用别的身份签, (b)两者皆要, (i)nline, 或 (f)放"
 "弃？"
 
 #: compose.c:166
-msgid "esabf"
-msgstr ""
+msgid "esabif"
+msgstr "esabif"
 
 #. sign (a)s
 #: compose.c:179 compose.c:269

@@ -484,6 +484,11 @@ int mutt_parse_crypt_hdr (char *p, int set_signas)
 	*q = '\0';
 	break;
 
+      case 'i':
+      case 'I':
+	pgp |= INLINE;
+	break;
+
       default:
         mutt_error _("Illegal PGP header");
         return 0;

@@ -159,12 +159,11 @@ int crypt_valid_passphrase(int flags)
 
 
 
-int mutt_protect (HEADER *msg, HEADER *cur, char *keylist)
+int mutt_protect (HEADER *msg, char *keylist)
 {
   BODY *pbody = NULL, *tmp_pbody = NULL;
   BODY *tmp_smime_pbody = NULL;
   BODY *tmp_pgp_pbody = NULL;
-  int traditional = 0;
   int flags = (WithCrypto & APPLICATION_PGP)? msg->security: 0;
   int i;
 
@@ -174,36 +173,22 @@ int mutt_protect (HEADER *msg, HEADER *cur, char *keylist)
   if ((msg->security & SIGN) && !crypt_valid_passphrase (msg->security))
     return (-1);
 
-  if ((WithCrypto & APPLICATION_PGP) && (msg->security & APPLICATION_PGP))
+  if ((WithCrypto & APPLICATION_PGP) && ((msg->security & PGPINLINE) == PGPINLINE))
   {
-    if ((msg->content->type == TYPETEXT) &&
-	!ascii_strcasecmp (msg->content->subtype, "plain"))
+    /* they really want to send it inline... go for it */
+    if (!isendwin ()) mutt_endwin _("Invoking PGP...");
+    pbody = crypt_pgp_traditional_encryptsign (msg->content, flags, keylist);
+    if (pbody)
     {
-      if (cur && cur->security && option (OPTPGPAUTOTRAD)
-	  && (option (OPTCRYPTREPLYENCRYPT)
-	      || option (OPTCRYPTREPLYSIGN)
-	      || option (OPTCRYPTREPLYSIGNENCRYPTED)))
-	{
-	  if(mutt_is_application_pgp(cur->content))
-	    traditional = 1;
-	}
-      else
-	{
-	  if ((i = query_quadoption (OPT_PGPTRADITIONAL, _("Create a traditional (inline) PGP message?"))) == -1)
-	    return -1;
-	  else if (i == M_YES)
-	    traditional = 1;
-	}
-    }
-    if (traditional)
-    {
-      if (!isendwin ()) mutt_endwin _("Invoking PGP...");
-      if (!(pbody = crypt_pgp_traditional_encryptsign (msg->content, flags, keylist)))
-	return -1;
-
       msg->content = pbody;
       return 0;
     }
+
+    /* otherwise inline won't work...ask for revert */
+    if ((i = query_quadoption (OPT_PGPMIMEASK, _("Message can't be sent inline.  Revert to using PGP/MIME?"))) != M_YES)
+      return -1;
+
+    /* go ahead with PGP/MIME */
   }
 
   if (!isendwin ()) mutt_endwin (NULL);
@@ -391,6 +376,9 @@ int mutt_is_application_pgp (BODY *m)
     else if (p && !ascii_strncasecmp ("pgp-keys", p, 7))
       t |= PGPKEY;
   }
+  if (t)
+    t |= PGPINLINE;
+
   return t;
 }
 

@@ -564,12 +564,12 @@ msgid "Encrypt with: "
 msgstr "Zaszyfruj u¿ywaj±c: "
 
 #: compose.c:165
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
-msgstr "PGP: (z)aszyfruj, podpi(s)z, podpisz j(a)ko, o(b)a, b(e)z PGP? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (i)nline, or (f)orget it? "
+msgstr "PGP: (z)aszyfruj, podpi(s)z, podpisz j(a)ko, o(b)a, (i)nline, b(e)z PGP? "
 
 #: compose.c:166
-msgid "esabf"
-msgstr "zsabe"
+msgid "esabif"
+msgstr "zsabie"
 
 #. sign (a)s
 #: compose.c:179 compose.c:269

@@ -131,6 +131,15 @@ static void redraw_crypt_lines (HEADER *msg)
     addstr (_("Sign"));
   else
     addstr (_("Clear"));
+
+  if ((WithCrypto & APPLICATION_PGP))
+    if ((msg->security & (ENCRYPT | SIGN)))
+    {
+      if ((msg->security & INLINE))
+	addstr (_(" (inline)"));
+      else
+	addstr (_(" (PGP/MIME)"));
+    }
   clrtoeol ();
 
   move (HDR_CRYPTINFO, 0);
@@ -162,15 +171,15 @@ static int pgp_send_menu (HEADER *msg, int *redraw)
   if (!(WithCrypto & APPLICATION_PGP))
     return msg->security;
 
-  switch (mutt_multi_choice (_("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "),
-			     _("esabf")))
+  switch (mutt_multi_choice (_("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (i)nline, or (f)orget it? "),
+			     _("esabif")))
   {
   case 1: /* (e)ncrypt */
-    msg->security |= ENCRYPT;
+    msg->security ^= ENCRYPT;
     break;
 
   case 2: /* (s)ign */
-    msg->security |= SIGN;
+    msg->security ^= SIGN;
     break;
 
   case 3: /* sign (a)s */
@@ -197,18 +206,31 @@ static int pgp_send_menu (HEADER *msg, int *redraw)
     break;
 
   case 4: /* (b)oth */
-    msg->security = ENCRYPT | SIGN;
+    if ((msg->security & (ENCRYPT | SIGN)) == (ENCRYPT | SIGN))
+      msg->security = 0;
+    else
+      msg->security |= (ENCRYPT | SIGN);
     break;
 
-  case 5: /* (f)orget it */
+  case 5: /* (i)nline */
+    if ((msg->security & (ENCRYPT | SIGN)))
+      msg->security ^= INLINE;
+    else
+      msg->security &= ~INLINE;
+    break;
+
+  case 6: /* (f)orget it */
     msg->security = 0;
     break;
   }
 
-  if (msg->security && msg->security != APPLICATION_PGP)
-    msg->security |= APPLICATION_PGP;
-  else
-    msg->security = 0;
+  if (msg->security)
+  {
+    if (! (msg->security & (ENCRYPT | SIGN)))
+      msg->security = 0;
+    else
+      msg->security |= APPLICATION_PGP;
+  }
 
   if(*redraw)
       redraw_crypt_lines (msg);

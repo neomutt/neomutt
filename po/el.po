@@ -698,14 +698,14 @@ msgstr "Κρυπτογράφηση με: "
 #
 # compose.c:132
 #: compose.c:165
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
-msgstr "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, ή (f)orget it? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (i)nline, or (f)orget it? "
+msgstr "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (i)κείμενο, ή (f)orget it? "
 
 #
 # compose.c:133
 #: compose.c:166
-msgid "esabf"
-msgstr "esabf"
+msgid "esabif"
+msgstr "esabif"
 
 #
 #. sign (a)s

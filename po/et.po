@@ -569,12 +569,12 @@ msgid "Encrypt with: "
 msgstr "Krüpti kasutades: "
 
 #: compose.c:165
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
-msgstr "PGP (k)rüpti, (a)llkiri, allk. ku(i), (m)õlemad või (u)nusta? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (i)nline, or (f)orget it? "
+msgstr "PGP (k)rüpti, (a)llkiri, allk. ku(i), (m)õlemad, k(e)hasse, või (u)nusta? "
 
 #: compose.c:166
-msgid "esabf"
-msgstr "kaimu"
+msgid "esabif"
+msgstr "kaimeu"
 
 #. sign (a)s
 #: compose.c:179 compose.c:269

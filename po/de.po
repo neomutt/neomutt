@@ -567,12 +567,12 @@ msgid "Encrypt with: "
 msgstr "Verschlüsseln mit: "
 
 #: compose.c:165
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
-msgstr "PGP (v)erschl., (s)ign., sign. (a)ls, (b)eides, (k)ein PGP? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (i)nline, or (f)orget it? "
+msgstr "PGP (v)erschl., (s)ign., sign. (a)ls, (b)eides, (i)nline, (k)ein PGP? "
 
 #: compose.c:166
-msgid "esabf"
-msgstr "vsabk"
+msgid "esabif"
+msgstr "vsabik"
 
 #. sign (a)s
 #: compose.c:179 compose.c:269

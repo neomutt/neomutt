@@ -576,15 +576,15 @@ msgstr "Uþðifruoti"
 
 #: compose.c:165
 #, fuzzy
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (i)nline, or (f)orget it? "
 msgstr ""
-"(u)þðifruot, pa(s)iraðyt, pasiraðyt k(a)ip, a(b)u, rinktis (m)ic algoritmà, "
+"(u)þðifruot, pa(s)iraðyt, pasiraðyt k(a)ip, a(b)u, (l)aiðke, "
 "ar (p)amirðti?"
 
 #: compose.c:166
 #, fuzzy
-msgid "esabf"
-msgstr "usabmp"
+msgid "esabif"
+msgstr "usablp"
 
 #. sign (a)s
 #: compose.c:179 compose.c:269
@@ -596,13 +596,12 @@ msgstr "Pasiraðyti kaip: "
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (f)orget it? "
 msgstr ""
-"(u)þðifruot, pa(s)iraðyt, pasiraðyt k(a)ip, a(b)u, rinktis (m)ic algoritmà, "
-"ar (p)amirðti?"
+"(u)þðifruot, pa(s)iraðyt, uþðifruo(t) su, pasiraðyt k(a)ip, a(b)u, ar (p)amirðti?"
 
 #: compose.c:228
 #, fuzzy
 msgid "eswabf"
-msgstr "usabmp"
+msgstr "ustabp"
 
 #: compose.c:236
 msgid ""

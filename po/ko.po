@@ -568,12 +568,12 @@ msgid "Encrypt with: "
 msgstr "암호화 방식: "
 
 #: compose.c:165
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
-msgstr "PGP 암호화(e), 서명(s), 사용 서명(a), 둘 다(b), 취소(f)? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (i)nline, or (f)orget it? "
+msgstr "PGP 암호화(e), 서명(s), 사용 서명(a), 둘 다(b), (i)nline, 취소(f)? "
 
 #: compose.c:166
-msgid "esabf"
-msgstr "esabf"
+msgid "esabif"
+msgstr "esabif"
 
 #. sign (a)s
 #: compose.c:179 compose.c:269

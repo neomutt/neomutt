@@ -575,12 +575,12 @@ msgid "Encrypt with: "
 msgstr "Зашифровать: "
 
 #: compose.c:165
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
-msgstr "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, (f)отказаться? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (i)nline, or (f)orget it? "
+msgstr "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, (i)nline, (f)отказаться? "
 
 #: compose.c:166
-msgid "esabf"
-msgstr "esabf"
+msgid "esabif"
+msgstr "esabif"
 
 #. sign (a)s
 #: compose.c:179 compose.c:269

@@ -2405,6 +2405,8 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
       if (PgpSignAs && *PgpSignAs)
         fprintf (msg->fp, "<%s>", PgpSignAs);
     }
+    if (hdr->security & INLINE)
+      fputc ('I', msg->fp);
     fputc ('\n', msg->fp);
   }
 
@@ -2423,6 +2425,8 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
 	if (SmimeDefaultKey && *SmimeDefaultKey)
 	    fprintf (msg->fp, "<%s>", SmimeDefaultKey);
     }
+    if (hdr->security & INLINE)
+      fputc ('I', msg->fp);
     fputc ('\n', msg->fp);
   }
 

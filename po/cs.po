@@ -681,13 +681,13 @@ msgstr "Za¹ifrovat pomocí:"
 
 #
 #: compose.c:165
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
-msgstr "PGP - (¹)ifrovat, (p)odepsat, podepsat (j)ako, (o)bojí, èi (n)ic?"
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (i)nline, or (f)orget it? "
+msgstr "PGP - (¹)ifrovat, (p)odepsat, podepsat (j)ako, (o)bojí, pøí(m)ý, èi (n)ic?"
 
 #
 #: compose.c:166
-msgid "esabf"
-msgstr "¹pjon"
+msgid "esabif"
+msgstr "¹pjomn"
 
 #
 #. sign (a)s

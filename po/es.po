@@ -574,13 +574,14 @@ msgstr "Cifrar"
 
 #: compose.c:165
 #, fuzzy
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
-msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s o ca(n)celar? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (i)nline, or (f)orget it? "
+msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s, inc(l)uido, o ca(n)celar? "
+
 
 #: compose.c:166
 #, fuzzy
-msgid "esabf"
-msgstr "dicon"
+msgid "esabif"
+msgstr "dicoln"
 
 #. sign (a)s
 #: compose.c:179 compose.c:269

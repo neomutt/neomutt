@@ -567,12 +567,12 @@ msgid "Encrypt with: "
 msgstr "  暗号化方式: "
 
 #: compose.c:165
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
-msgstr "PGP (e)暗号化,(s)署名,(a)..として署名,(b)両者,(f)解除?"
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (i)nline, or (f)orget it? "
+msgstr "PGP (e)暗号化,(s)署名,(a)..として署名,(b)両者,(i)nline,(f)解除?"
 
 #: compose.c:166
-msgid "esabf"
-msgstr "esabf"
+msgid "esabif"
+msgstr "esabif"
 
 #. sign (a)s
 #: compose.c:179 compose.c:269
