@@ -563,19 +563,17 @@ static int copy_delete_attach(HEADER *h, HEADER *p, BODY *m, FILE *fpin,
   int x;
 
   new_offset = ftell (fpout);
-  if (h == NULL)
-  {
-    if (m == NULL)
-    {
-      mutt_error _("Confused when attempting to delete attachment, h & m can't be NULL");
-      return -1;
-    }
+
+  if(m)
     b = m;
-  }
+  else if (h)
+    b = h->content;
   else
   {
-    b = h->content;
+    mutt_error _("Confused when attempting to delete attachment, h & m can't be NULL");
+    return -1;
   }
+
   orig_length = b->length;
   orig_offset = b->offset;
   dprint (1, (debugfile, "orig length: %ld  orig offset: %ld\n", orig_length, orig_offset));
@@ -608,7 +606,7 @@ static int copy_delete_attach(HEADER *h, HEADER *p, BODY *m, FILE *fpin,
 	if (x > 0)
 	  new_length += x;
 
-	if (copy_delete_attach(b->hdr, h, b, fpin, fpout, flags) == -1)
+	if (copy_delete_attach(b->hdr, p?p:h, b, fpin, fpout, flags) == -1)
 	  return -1;
 	new_length += b->parts->length;
       }
