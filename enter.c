@@ -150,7 +150,6 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
   int redraw;
   int pass = (flags & M_PASS);
   int first = 1;
-  int tabs = 0; /* number of *consecutive* TABs */
   int ch, w, r;
   size_t i;
   wchar_t *tempbuf = 0;
@@ -222,7 +221,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
     {
       first = 0;
       if (ch != OP_EDITOR_COMPLETE)
-	tabs = 0;
+	state->tabs = 0;
       redraw = M_REDRAW_LINE;
       switch (ch)
       {
@@ -410,7 +409,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	  /* fall through to completion routine (M_FILE) */
 
 	case OP_EDITOR_COMPLETE:
-	  tabs++;
+	  state->tabs++;
 	  if (flags & M_CMD)
 	  {
 	    for (i = state->curpos; i && state->wbuf[i-1] != ' '; i--)
@@ -459,8 +458,8 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	    i = strlen (buf);
 	    if (i && buf[i - 1] == '=' &&
 		mutt_var_value_complete (buf, buflen, i))
-	      tabs = 0;
-	    else if (!mutt_command_complete (buf, buflen, i, tabs))
+	      state->tabs = 0;
+	    else if (!mutt_command_complete (buf, buflen, i, state->tabs))
 	      BEEP ();
 	    replace_part (state, 0, buf);
 	  }
@@ -506,22 +505,18 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	  if (flags & M_ALIAS)
 	  {
 	    /* invoke the query-menu to get more addresses */
-	    if (state->curpos)
+	    if ((i = state->curpos))
 	    {
-	      for (i = state->curpos; i && state->wbuf[i - 1] != ','; i--)
+	      for (; i && state->wbuf[i - 1] != ','; i--)
 		;
 	      for (; i < state->curpos && state->wbuf[i] == ' '; i++)
 		;
-	      my_wcstombs (buf, buflen, state->wbuf + i, state->curpos - i);
-	      mutt_query_complete (buf, buflen);
-	      replace_part (state, i, buf);
 	    }
-	    else
-	    {
-	      my_wcstombs (buf, buflen, state->wbuf, state->curpos);
-	      mutt_query_menu (buf, buflen);
-	      replace_part (state, 0, buf);
-	    }
+
+	    my_wcstombs (buf, buflen, state->wbuf + i, state->curpos - i);
+	    mutt_query_complete (buf, buflen);
+	    replace_part (state, i, buf);
+
 	    rv = 1; 
 	    goto bye;
 	  }
@@ -567,7 +562,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
       
 self_insert:
 
-      tabs = 0;
+      state->tabs = 0;
       /* use the raw keypress */
       ch = LastKey;
 

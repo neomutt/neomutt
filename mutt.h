@@ -732,6 +732,7 @@ typedef struct
   size_t lastchar;
   size_t curpos;
   size_t begin;
+  int	 tabs;
 } ENTER_STATE;
 
 /* flags for the STATE struct */
