@@ -116,6 +116,22 @@ short pgp_get_abilities (unsigned char type)
   return (pgp_canencrypt (type) << 1) | pgp_cansign (type);
 }
 
+void pgp_free_sig (pgp_sig_t **sigp)
+{
+  pgp_sig_t *sp, *q;
+  
+  if (!sigp || !*sigp)
+    return;
+  
+  for (sp = *sigp; sp; sp = q)
+  {
+    q = sp->next;
+    safe_free ((void **) &sp);
+  }
+  
+  *sigp = NULL;
+}
+
 void pgp_free_uid (pgp_uid_t ** upp)
 {
   pgp_uid_t *up, *q;
@@ -125,6 +141,7 @@ void pgp_free_uid (pgp_uid_t ** upp)
   for (up = *upp; up; up = q)
   {
     q = up->next;
+    pgp_free_sig (&up->sigs);
     safe_free ((void **) &up->addr);
     safe_free ((void **) &up);
   }

@@ -54,6 +54,15 @@ typedef struct pgp_keyinfo
 }
 pgp_key_t;
 
+typedef struct pgp_signature
+{
+  struct pgp_signature *next;
+  unsigned char sigtype;
+  unsigned long sid1;
+  unsigned long sid2;
+}
+pgp_sig_t;
+
 typedef struct pgp_uid
 {
   char *addr;
@@ -61,6 +70,7 @@ typedef struct pgp_uid
   int flags;
   struct pgp_keyinfo *parent;
   struct pgp_uid *next;
+  struct pgp_signature *sigs;
 }
 pgp_uid_t;
 
