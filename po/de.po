@@ -1,9 +1,9 @@
 # $Id$
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.1.10\n"
+"Project-Id-Version: 1.3.1\n"
 "POT-Creation-Date: 2000-05-20 10:07+0200\n"
-"PO-Revision-Date: 2000-03-30 12:33+02:00\n"
+"PO-Revision-Date: 2000-05-22 10:51+02:00\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -1009,9 +1009,9 @@ msgid "[-- on %s --]\n"
 msgstr "[-- am %s --]\n"
 
 #: handler.c:1253
-#, fuzzy, c-format
+#, c-format
 msgid "[-- name: %s --]\n"
-msgstr "[-- am %s --]\n"
+msgstr "[-- Name: %s --]\n"
 
 #: handler.c:1264
 #, c-format
@@ -1742,9 +1742,8 @@ msgid "move the cursor one character to the left"
 msgstr "Bewege Cursor ein Zeichen nach links"
 
 #: keymap_alldefs.h:64
-#, fuzzy
 msgid "move the cursor to the beginning of the word"
-msgstr "Springe zum Zeilenanfang"
+msgstr "Springe zum Anfang des Wortes"
 
 #: keymap_alldefs.h:65
 msgid "jump to the beginning of the line"
@@ -1775,9 +1774,8 @@ msgid "move the cursor one character to the right"
 msgstr "Bewege den Cursor ein Zeichen nach rechts"
 
 #: keymap_alldefs.h:72
-#, fuzzy
 msgid "move the cursor to the end of the word"
-msgstr "Bewege den Cursor ein Zeichen nach rechts"
+msgstr "Springe zum Ende des Wortes"
 
 #: keymap_alldefs.h:73 keymap_alldefs.h:74
 msgid "scroll up through the history list"
@@ -1788,9 +1786,8 @@ msgid "delete chars from cursor to end of line"
 msgstr "Lösche bis Ende der Zeile"
 
 #: keymap_alldefs.h:76
-#, fuzzy
 msgid "delete chars from the cursor to the end of the word"
-msgstr "Lösche bis Ende der Zeile"
+msgstr "Lösche vom Cursor bis zum Ende des Wortes"
 
 #: keymap_alldefs.h:77
 msgid "delete all chars on the line"
@@ -1806,7 +1803,7 @@ msgstr "Übernehme nächste Taste unverändert"
 
 #: keymap_alldefs.h:80
 msgid "transpose character under cursor with previous"
-msgstr ""
+msgstr "Ersetze Zeichen unter dem Cursor mit vorhergehendem"
 
 #: keymap_alldefs.h:81
 msgid "enter a muttrc command"
@@ -2348,7 +2345,6 @@ msgstr ""
 "    nicht, schreiben Sie an die Entwickler des Programms.\n"
 
 #: main.c:103
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
 "]\n"
@@ -2378,10 +2374,8 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"usage: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
-"]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
-"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> ]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -3152,9 +3146,8 @@ msgid "No new mail in POP mailbox."
 msgstr "Keine neuen Nachrichten auf dem POP-Server."
 
 #: pop.c:209
-#, fuzzy
 msgid "Delete messages from server?"
-msgstr "Lösche Nachrichten auf dem Server..."
+msgstr "Lösche Nachrichten auf dem Server?"
 
 #: pop.c:212
 #, c-format
