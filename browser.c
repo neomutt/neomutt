@@ -907,9 +907,9 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	if (!state.imap_browse)
 #endif
 	{
-	  /* add '/' at the end of the directory name */
+	  /* add '/' at the end of the directory name if not already there */
 	  int len=mutt_strlen(LastDir);
-	  if (sizeof (buf) > len)
+	  if (LastDir[len-1] != '/' && sizeof (buf) > len)
 	    buf[len]='/';
 	}
 
