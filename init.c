@@ -32,8 +32,7 @@
 
 
 #ifdef USE_SSL
-#include "imap.h"
-#include "imap_ssl.h"
+#include "mutt_ssl.h"
 #endif
 
 

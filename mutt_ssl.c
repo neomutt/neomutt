@@ -29,12 +29,10 @@
 #include <string.h>
 
 #include "mutt.h"
-#include "imap.h"
-#include "imap_private.h"
 #include "mutt_socket.h"
 #include "mutt_menu.h"
 #include "mutt_curses.h"
-#include "imap_ssl.h"
+#include "mutt_ssl.h"
 
 #if OPENSSL_VERSION_NUMBER >= 0x00904000L
 #define READ_X509_KEY(fp, key)	PEM_read_X509(fp, key, NULL, NULL)

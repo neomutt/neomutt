@@ -24,7 +24,7 @@
 #include "mx.h"	/* for M_IMAP */
 #include "url.h"
 #include "imap_private.h"
-#include "imap_ssl.h"
+#include "mutt_ssl.h"
 
 #include <stdlib.h>
 #include <ctype.h>

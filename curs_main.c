@@ -23,9 +23,9 @@
 #include "mapping.h"
 #include "sort.h"
 #include "buffy.h"
+#include "mx.h"
 
 #ifdef USE_IMAP
-#include "mx.h"
 #include "imap.h"
 #endif
 

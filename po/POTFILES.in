@@ -26,7 +26,6 @@ imap/auth_sasl.c
 imap/browse.c
 imap/command.c
 imap/imap.c
-imap/imap_ssl.c
 imap/message.c
 imap/util.c
 init.c
@@ -39,6 +38,7 @@ menu.c
 mh.c
 muttlib.c
 mutt_socket.c
+mutt_ssl.c
 mx.c
 pager.c
 parse.c

@@ -1,3 +1,203 @@
+Wed Aug 30 08:43:12 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/command.c, imap/imap.c, imap/message.c, imap/message.h:
+	patch-bac.expunge-2
+
+	* muttlib.c: Fix mutt_prety_mailbox.  From Vsevolod.
+
+Tue Aug 29 11:36:25 2000  Thomas Roessler  <roessler@guug.de>
+
+	* curs_lib.c:
+	The next version of Byrial Jensen's yesorno patch, this time without
+	a memory leak.
+
+	* acconfig.h, configure.in, curs_lib.c, main.c:
+	Use locale for yes/no expressions.
+
+Mon Aug 28 13:14:55 2000  Thomas Roessler  <roessler@guug.de>
+
+	* rfc2231.c: Little fix from EGE.
+
+	* po/ru.po: Update from Vsevolod.
+
+	* complete.c: From: EGE
+
+	Fix a buffer overrun in complete.c.
+
+	* imap/auth_sasl.c, imap/command.c, imap/imap_private.h, muttlib.c:
+	From: Brendan Cully <brendan@kublai.com>
+
+	The attached small patch adjusts mutt_pretty_mailbox to handle
+	URLs.
+
+	* browser.c, curs_lib.c, hdrline.c, protos.h, recvattach.c:
+	From: Edmund GRIMLEY EVANS <edmundo@rano.org>
+
+	This patch moves hdr_format_s from hdrline.c to curs_lib.c and renames
+	it to mutt_format_s. The function is then used in various places in
+	browser.c and recvattach.c where previously there was "%%%ss".
+
+	* rfc2047.c, rfc2047.h, rfc2231.c, rfc2231.h, sendlib.c:
+	Do character set selection for RFC2231 encodings.  From EGE, but
+	with choose_charset renamed to mutt_choose_charset.
+
+	* mbyte.c, protos.h, utf8.c, wcwidth.c: From: edmundo@rano.org (EGE)
+
+	This is the patch TAKIZAWA Takashi and I came up with in the end.
+
+	When the Charset is euc-jp or shift_jis, iconv is used for mbrtowc
+	and wcrtomb. The worst part is mbrtowc_iconv(), where I attempted to
+	make mbrtowc both restartable (it can process part of multibyte
+	character) and fast in the case where there is nothing left over
+	from a previous character. Also I try to make no assumptions about
+	how those character sets work, which is easy, because I know very
+	little about them ...
+
+	People who don't use one of those two stateless Japanese display
+	charsets shouldn't be affected. People whose systems provide the
+	wchar_t functions should be even less affected, because they don't
+	even get this code in their binary.
+
+Fri Aug 25 06:28:24 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/imap.c, imap/imap_ssl.c, imap/imap_ssl.h, imap/util.c, account.c, account.h, browser.c, mutt_socket.c, mx.c, url.c, url.h:
+	patch-bac.imapurl-2, with small modifications.
+
+Tue Aug 22 22:23:10 2000  Thomas Roessler  <roessler@guug.de>
+
+	* muttlib.c: Fix #251, from Brendan.
+
+	* main.c, Makefile.am, parse.c, protos.h, url.c, url.h:
+	Add an URL parser, and support for mailto URLs.
+
+	* doc/manual.sgml.head: Minor fixes from Will Fiveash.
+
+	* po/ru.po: update
+
+	* hdrline.c: Fix %B in index_format.
+
+Mon Aug 21 19:25:26 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/browse.c, imap/imap.c, muttlib.c, mutt_socket.c:
+	patch-bac.parsepath-2
+
+	* doc/manual.sgml.head, doc/manual.sgml.tail:
+	Documentation patch from Lars Hecking.
+
+	* imap/imap.h, imap/imap_private.h, imap/message.c, imap/util.c, imap/browse.c, imap/command.c, imap/imap.c, doc/manual.sgml.head, browser.c, browser.h, buffy.c, functions.h, globals.h, init.h, OPS:
+	patch-bac.createplus-1
+
+	* imap/auth_anon.c, imap/auth_cram.c, imap/auth_gss.c, imap/auth_login.c, imap/auth_sasl.c, imap/browse.c, imap/command.c, imap/imap.c, imap/imap_private.h, imap/message.c:
+	patch-bac.command-2
+
+Thu Aug 17 06:06:02 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/zh_CN.GB2312.po, configure.in: Adding zh_CN.GB2312 translation.
+
+	* imap/Makefile.am, doc/Makefile.in, mutt_socket.c, mx.c:
+	Random cleanup from Brendan Cully.
+
+	* hdrline.c: Fix justification of number formats.  (EGE)
+
+Tue Aug 15 17:21:19 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/ru.po: update
+
+	* mbyte.c, pager.c, protos.h: Another charset fix from EGE.
+
+Thu Aug 10 15:48:13 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/Makefile.am: Fix from Brendan Cully.
+
+	* doc/mutt.man, doc/muttrc.man.tail: More minor fixes.
+
+	* doc/mutt.man: Document $MAILDIR.
+
+	* init.c:
+	Tell mutt about the MAILDIR environment variable DJB talks about in
+	maildir (5).
+
+	* doc/muttbug.man: Fix a typo.
+
+	* doc/mbox.man: fix some typos.
+
+Wed Aug  9 21:14:35 2000  Thomas Roessler  <roessler@guug.de>
+
+	* doc/Makefile.in, doc/mbox.man: Install mbox (5), and fix a typo.
+
+	* doc/mbox.man:
+	Document the mbox format in a manual page.  There may be some need
+	for this.
+
+	* configure.in, init.c, main.c, Makefile.am:
+	Minor portability and compilation fixes.
+
+Tue Aug  8 18:17:54 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/POTFILES.in: Some files were missing.  From Vsevolod Volkov.
+
+	* imap/command.c, imap/imap.c, imap/imap_private.h, imap/Makefile.am, imap/message.c, init.c, mutt_socket.c, mx.c:
+	* handles expunged messages better. Previously mutt's state was only
+	  updated when syncing the mailbox. This was the reason for Bob Bell's
+	  segfault when manipulating mailboxes with multiple simultaneous
+	  clients.
+	* makes a small adjustment for Sam's weird Courier server, which
+	  returns an OK FETCH completed response even when FETCH fails. I
+	  should probably report that behaviour to him as a bug, though.
+	* renames IMAP_REOPEN_PENDING to IMAP_EXPUNGE_PENDING
+	* gets rid of the _("Closing mailbox...") message, which was obscuring
+	  the status updates.
+	* clears some spurious mutt_clear_error calls in imap_cmd_finish.
+	* makes socket reads and writes check that they have an open
+	  connection. Shouldn't be necessary (and such calls are logged), but
+	  can happen currently.
+	* Some SASL vs regular authenticator tweaks in the imap Makefile.
+
+	(From Brendan Cully.)
+
+Mon Aug  7 08:31:36 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/Makefile.in.in, imap/Makefile.am, configure.in, Makefile.am, mapping.h, sort.h:
+	Cross compilation patches from Rüdiger Kuhlmann
+	<ruediger.kuhlmann@stud.uni-karlsruhe.de>.
+
+Sun Aug  6 14:35:15 2000  Thomas Roessler  <roessler@guug.de>
+
+	* curs_lib.c:
+	Return an exit value of 1 if mutt is left via ctrl-c.  From Andre
+	Albsmeier <andre.albsmeier@mchp.siemens.de>.
+
+Sat Aug  5 17:50:03 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/imap.c, imap/imap_private.h, imap/message.c, imap/auth_anon.c, imap/auth_cram.c, imap/auth_gss.c, imap/auth_login.c, imap/auth_sasl.c, imap/browse.c, imap/command.c, imap/Makefile.am, mutt_socket.c:
+	Unified IMAP command code.
+
+	* doc/manual.sgml.head:
+	Fix keyboard binding documentation.  From Thomas Schultz
+	<tststs@gmx.de>.
+
+Fri Aug  4 21:47:11 2000  Thomas Roessler  <roessler@guug.de>
+
+	* sendlib.c: Fix a character set encoding bug. From EGE.
+
+	* imap/auth_sasl.c, imap/imap_ssl.c, doc/manual.sgml.head, account.c, mutt_sasl.c, mutt_sasl.h, mutt_socket.c, mutt_socket.h:
+	SASL patch from Brendan Cully.
+
+Thu Aug  3 22:08:13 2000  Thomas Roessler  <roessler@guug.de>
+
+	* charset.c: fix a segmentation fault.
+
+	* po/eo.po, po/sv.po: update.
+
+	* po/ru.po, po/sk.po, po/sv.po, po/uk.po, po/zh_TW.Big5.po, po/ko.po, po/nl.po, po/pl.po, po/pt_BR.po, po/fr.po, po/gl.po, po/id.po, po/it.po, imap/Makefile.am, po/cs.po, po/da.po, po/de.po, po/el.po, po/eo.po, po/es.po, reldate.h, VERSION, ChangeLog:
+	automatic post-release commit for mutt-1.3.7
+
+	* sendlib.c:
+	Use a correct Envelope from when bouncing with $envelope_from enabled.
+
+	* imap/auth_sasl.c, imap/BUGS, imap/imap.c, imap/imap_ssl.c, mutt_sasl.c:
+	More IMAP fixes from Brendan.
+
 Thu Aug  3 08:24:55 2000  Thomas Roessler  <roessler@guug.de>
 
 	* sendlib.c:

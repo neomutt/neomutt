@@ -22,7 +22,7 @@
 #include "globals.h"
 #include "mutt_socket.h"
 #ifdef USE_SSL
-# include "imap_ssl.h"
+# include "mutt_ssl.h"
 #endif
 
 #include <unistd.h>

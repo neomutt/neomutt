@@ -542,9 +542,10 @@ AC_ARG_ENABLE(pop,  [  --enable-pop               Enable POP3 support],
 		AC_DEFINE(USE_POP)
 		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pop.o"
 		need_socket="yes"
+		need_md5="yes"
 	fi
 ])
-  
+
 AC_ARG_ENABLE(imap, [  --enable-imap              Enable IMAP support],
 [	if test x$enableval = xyes ; then
 		AC_DEFINE(USE_IMAP)
@@ -552,6 +553,7 @@ AC_ARG_ENABLE(imap, [  --enable-imap              Enable IMAP support],
 		LIBIMAPDEPS="\$(top_srcdir)/imap/imap.h imap/libimap.a"
 		need_imap="yes"
 		need_socket="yes"
+		need_md5="yes"
 	fi
 ])
 AM_CONDITIONAL(BUILD_IMAP, test x$need_imap = xyes)
@@ -631,11 +633,11 @@ AC_ARG_WITH(gss,    [    --with-gss[=DIR]         Compile in GSSAPI authenticati
 ])
 AM_CONDITIONAL(USE_GSS, test x$need_gss = xyes)
 
-AC_ARG_WITH(ssl, [    --with-ssl[=PFX]         Compile in SSL socket support for IMAP],
+AC_ARG_WITH(ssl, [    --with-ssl[=PFX]         Compile in SSL socket support for POP/IMAP],
 [	if test "$with_ssl" != "no"
 	then
-	  if test "$need_imap" != "yes"; then
-	   AC_MSG_ERROR([SSL support is only for IMAP, but IMAP is not enabled])
+	  if test "$need_socket" != "yes"; then
+	   AC_MSG_ERROR([SSL support is only useful with POP or IMAP support])
 	  fi
 
 	  if test "$with_ssl" != "yes"
@@ -653,6 +655,7 @@ AC_ARG_WITH(ssl, [    --with-ssl[=PFX]         Compile in SSL socket support for
 	  AC_DEFINE(USE_SSL)
 	  LIBS="$saved_LIBS"
 	  MUTTLIBS="$MUTTLIBS -lssl -lcrypto"
+	  MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl.o"
 	  need_ssl=yes
 
           dnl Some systems avoid certain patent-encumbered SSL routines
@@ -690,9 +693,15 @@ AC_ARG_WITH(sasl, [  --with-sasl[=DIR]          Use Cyrus SASL library for POP/I
 	  LIBS="$saved_LIBS"
 	  AC_DEFINE(USE_SASL)
 	  need_sasl=yes
+	  need_md5=no
 	fi
 	])
 AM_CONDITIONAL(USE_SASL, test x$need_sasl = xyes)
+
+if test "$need_md5" = "yes"
+then
+	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS md5c.o"
+fi
 
 dnl -- end socket --
 
