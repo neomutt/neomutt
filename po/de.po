@@ -2230,7 +2230,7 @@ msgstr ""
 "Mutt übernimmt KEINERLEI GEWÄHRLEISTUNG. Starten Sie `mutt -vv', um\n"
 "weitere Details darüber zu erfahren. Mutt ist freie Software. \n"
 "Sie können es unter bestimmten Bedingungen weitergeben; starten Sie\n"
-"`mutt -vv' für weitere Details."
+"`mutt -vv' für weitere Details.\n"
 
 #: main.c:50
 msgid ""
