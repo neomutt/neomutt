@@ -332,19 +332,19 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
             if ((pc = msg_parse_flags (newh, pc)) == NULL)
               return -1;
 
-            /* update context sums */
-            ctx->new += ((newh->read | newh->old) ? 0 : 1) -
-              ((h->read | h->old) ? 0 : 1);
-            ctx->unread += h->read - newh->read;
-            ctx->deleted += h->deleted = newh->deleted;
-            ctx->flagged += h->flagged - newh->flagged;
+	    /* this is less efficient than the code which used to be here,
+	     * but (1) this is only invoked when fetching messages, and (2)
+	     * this way, we can make sure that side effects of flag changes
+	     * are taken account of the proper way.
+	     */
 
-            /* now commit the new flags */
-            ctx->hdrs[msgno]->read = newh->read;
-            ctx->hdrs[msgno]->old = newh->old;
-            ctx->hdrs[msgno]->deleted = newh->deleted;
-            ctx->hdrs[msgno]->flagged = newh->flagged;
-            ctx->hdrs[msgno]->replied = newh->replied;
+	    mutt_set_flag (ctx, h, M_NEW, 
+		    !(newh->read || newh->old || h->read || h->old));
+	    mutt_set_flag (ctx, h, M_OLD, newh->old);
+	    mutt_set_flag (ctx, h, M_READ, h->read || newh->read);
+	    mutt_set_flag (ctx, h, M_DELETE, h->deleted || newh->deleted);
+	    mutt_set_flag (ctx, h, M_FLAG, h->flagged || newh->flagged);
+	    mutt_set_flag (ctx, h, M_REPLIED, h->replied || newh->replied);
 
             mutt_free_list (&(HEADER_DATA(h)->keywords));
             HEADER_DATA(h)->keywords = newh->data->keywords;
