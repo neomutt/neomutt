@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1\n"
 "POT-Creation-Date: 2000-01-30 14:25+0100\n"
-"PO-Revision-Date: 2000-01-21 16:40+00:00\n"
+"PO-Revision-Date: 2000-01-31 19:42+00:00\n"
 "Last-Translator: Edmund GRIMLEY EVANS <edmundo@rano.org>\n"
 "Language-Team: eo <eo@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -169,7 +169,6 @@ msgid "Creating mailboxes is not yet supported."
 msgstr "Kreado de poþtfakoj ankoraý ne funkcias."
 
 #: browser.c:810
-#, fuzzy
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Forviþado funkcias nur æe IMAP-poþtfakoj"
 
@@ -921,39 +920,37 @@ msgid "%s: unknown editor command (~? for help)\n"
 msgstr "%s: nekonata redaktokomando (~? por helpo)\n"
 
 #: editmsg.c:74
-#, fuzzy, c-format
+#, c-format
 msgid "could not create temporary folder: %s"
-msgstr "Ne povis krei dumtempan dosieron!"
+msgstr "Ne povis krei dumtempan poþtfakon: %s"
 
 #: editmsg.c:84
-#, fuzzy, c-format
+#, c-format
 msgid "could not write temporary mail folder: %s"
-msgstr "Ne povis krei dumtempan dosieron!"
+msgstr "Ne povis skribi al dumtempa poþtfako: %s"
 
 #: editmsg.c:101
-#, fuzzy
 msgid "Message file is empty!"
-msgstr "Poþtfako estas malplena."
+msgstr "Mesaøodosiero estas malplena!"
 
 #: editmsg.c:108
-#, fuzzy
 msgid "Message not modified!"
-msgstr "Mesaøo presita"
+msgstr "Mesaøo ne modifita!"
 
 #: editmsg.c:116
-#, fuzzy, c-format
+#, c-format
 msgid "Can't open message file: %s"
-msgstr "Ne povas krei dosieron %s"
+msgstr "Ne povas malfermi mesaøodosieron: %s"
 
 #: editmsg.c:123 editmsg.c:151
-#, fuzzy, c-format
+#, c-format
 msgid "Can't append to folder: %s"
-msgstr "Ne povas krei dosieron %s"
+msgstr "Ne povas aldoni al poþtfako: %s"
 
 #: editmsg.c:182
-#, fuzzy, c-format
+#, c-format
 msgid "Error. Preserving temporary file: %s"
-msgstr "Ne povas krei dumtempan dosieron"
+msgstr "Eraro. Konservas dumtempan dosieron: %s"
 
 #: flags.c:266
 msgid "Set flag"
@@ -1165,7 +1162,7 @@ msgstr "Kontaktis servilon; prenas liston de poþtfakoj ..."
 #.
 #: imap/command.c:165
 msgid "Fatal error.  Message count is out of sync!"
-msgstr ""
+msgstr "Fatala eraro. Mesaøonombro ne kongruas!"
 
 #: imap/imap.c:213
 #, c-format
@@ -1228,57 +1225,54 @@ msgid "Unsubscribing to %s..."
 msgstr "Malabonas %s ..."
 
 #: imap/imap_ssl.c:107
-#, fuzzy
 msgid "Unable to get certificate from peer"
-msgstr "ne povas eltrovi la hejmdosierujon"
+msgstr "Ne povas akiri SSL-atestilon"
 
 #: imap/imap_ssl.c:118
-#, fuzzy, c-format
+#, c-format
 msgid "SSL connection using %s"
-msgstr "Konektiøas al %s"
+msgstr "SSL-konekto per %s"
 
 #: imap/imap_ssl.c:143
-#, fuzzy
 msgid "Unknown"
-msgstr "nekonata eraro"
+msgstr "Nekonata"
 
 #: imap/imap_ssl.c:168
-#, fuzzy
 msgid "[unable to calculate]"
-msgstr "%s: ne povas aldoni dosieron"
+msgstr "[ne povas kalkuli]"
 
 #: imap/imap_ssl.c:219
 msgid "This certificate belongs to:"
-msgstr ""
+msgstr "Æi tiu atestilo apartenas al:"
 
 #: imap/imap_ssl.c:228
 msgid "This certificate was issued by:"
-msgstr ""
+msgstr "Æi tiu atestilo estis eldonita de:"
 
 #: imap/imap_ssl.c:239
 #, c-format
 msgid "Fingerprint: %s"
-msgstr ""
+msgstr "Fingrospuro: %s"
 
 #: imap/imap_ssl.c:241
 msgid "SSL Certificate check"
-msgstr ""
+msgstr "Kontrolo de SSL-atestilo"
 
 #: imap/imap_ssl.c:244
 msgid "(r)eject, accept (o)nce, (a)ccept always"
-msgstr ""
+msgstr "(m)alakcepti, akcepti (u)nufoje, (a)kcepti æiam"
 
 #: imap/imap_ssl.c:245
 msgid "roa"
-msgstr ""
+msgstr "mua"
 
 #: imap/imap_ssl.c:249
 msgid "(r)eject, accept (o)nce"
-msgstr ""
+msgstr "(m)alakcepti, akcepti (u)nufoje"
 
 #: imap/imap_ssl.c:250
 msgid "ro"
-msgstr ""
+msgstr "mu"
 
 #: imap/imap_ssl.c:254 pgpkey.c:442
 msgid "Exit  "
@@ -1286,45 +1280,43 @@ msgstr "Eliri  "
 
 #: imap/imap_ssl.c:280
 msgid "Warning: Couldn't save certificate"
-msgstr ""
+msgstr "Averto: Ne povis skribi atestilon"
 
 #: imap/imap_ssl.c:282
 msgid "Certificate saved"
-msgstr ""
+msgstr "Atestilo skribita"
 
 #. Unable to fetch headers for lower versions
 #: imap/message.c:75
 msgid "Unable to fetch headers from this IMAP server version."
-msgstr ""
+msgstr "Ne povas preni æapojn de æi tiu versio de IMAP-servilo."
 
 #: imap/message.c:92
-#, fuzzy, c-format
+#, c-format
 msgid "Fetching message headers... [%d/%d]"
-msgstr "Skribas mesaøoflagojn ... [%d/%d]"
+msgstr "Prenas mesaøoæapojn ... [%d/%d]"
 
 #: imap/message.c:260
-#, fuzzy
 msgid "Fetching message..."
-msgstr "Sendas mesaøon ..."
+msgstr "Prenas mesaøon ..."
 
 #: imap/message.c:431
 msgid "Sending APPEND command ..."
-msgstr ""
+msgstr "Sendas la komandon APPEND ..."
 
 #: imap/message.c:470
-#, fuzzy
 msgid "Uploading message ..."
-msgstr "Sendas mesaøon ..."
+msgstr "Alþutas mesaøon ..."
 
 #: imap/message.c:556
-#, fuzzy, c-format
+#, c-format
 msgid "Copying %d messages to %s..."
-msgstr "Movas legitajn mesaøojn al %s ..."
+msgstr "Kopias %d mesaøojn al %s ..."
 
 #: imap/message.c:560
-#, fuzzy, c-format
+#, c-format
 msgid "Copying message %d to %s..."
-msgstr "Skribas mesaøon al %s ..."
+msgstr "Kopias mesaøon %d al %s ..."
 
 #: imap/socket.c:218
 #, c-format
@@ -1336,14 +1328,13 @@ msgid "preconnect command failed"
 msgstr "antaýkonekta komando malsukcesis"
 
 #: imap/util.c:40
-#, fuzzy
 msgid "Continue?"
-msgstr "(daýrigi)\n"
+msgstr "Æu daýrigi?"
 
 #: imap/util.c:46
 #, c-format
 msgid "%s [%s]\n"
-msgstr ""
+msgstr "%s [%s]\n"
 
 #: init.c:487
 msgid "alias: no address"
@@ -1529,17 +1520,14 @@ msgid "display the currently selected file's name"
 msgstr "montri la nomon de la elektita dosiero"
 
 #: keymap_defs.h:13
-#, fuzzy
 msgid "subscribe to current mailbox (IMAP only)"
 msgstr "aboni æi tiun poþtfakon (nur IMAP)"
 
 #: keymap_defs.h:14
-#, fuzzy
 msgid "unsubscribe to current mailbox (IMAP only)"
 msgstr "malaboni æi tiun poþtfakon (nur IMAP)"
 
 #: keymap_defs.h:15
-#, fuzzy
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "elekti, æu vidi æiujn, aý nur abonitajn poþtfakojn (nur IMAP)"
 
@@ -1616,9 +1604,8 @@ msgid "edit the TO list"
 msgstr "redakti la liston de ricevontoj"
 
 #: keymap_defs.h:34
-#, fuzzy
 msgid "edit attachment content type"
-msgstr "redakti enhavospecon de parto"
+msgstr "redakti MIME-enhavospecon de parto"
 
 #: keymap_defs.h:35
 msgid "get a temporary copy of an attachment"
@@ -1654,7 +1641,7 @@ msgstr "sendi la mesaøon"
 
 #: keymap_defs.h:43
 msgid "toggle disposition between inline/attachment"
-msgstr ""
+msgstr "þalti dispozicion inter \"inline\" kaj \"attachment\""
 
 #: keymap_defs.h:44
 msgid "toggle whether to delete file after sending it"
@@ -2190,32 +2177,31 @@ msgstr "fari malæifritan kopion"
 
 #: keymap_defs.h:178
 msgid "Accept the chain constructed"
-msgstr ""
+msgstr "Akcepti la konstruitan æenon"
 
 #: keymap_defs.h:179
 msgid "Append a remailer to the chain"
-msgstr ""
+msgstr "Aldoni plusendilon al la æeno"
 
 #: keymap_defs.h:180
 msgid "Insert a remailer into the chain"
-msgstr ""
+msgstr "Enþovi plusendilon en la æenon"
 
 #: keymap_defs.h:181
-#, fuzzy
 msgid "Delete a remailer from the chain"
-msgstr "forviþi æiujn signojn en la linio"
+msgstr "Forviþi plusendilon el la æeno"
 
 #: keymap_defs.h:182
 msgid "Select the previous element of the chain"
-msgstr ""
+msgstr "Elekti la antaýan elementon de la æeno"
 
 #: keymap_defs.h:183
 msgid "Select the next element of the chain"
-msgstr ""
+msgstr "Elekti la sekvan elementon de la æeno"
 
 #: keymap_defs.h:184
 msgid "send the message through a mixmaster remailer chain"
-msgstr ""
+msgstr "Sendi la mesaøon tra mixmaster-plusendiloæeno"
 
 #: lib.c:59 lib.c:74 lib.c:105
 msgid "Out of memory!"
@@ -2226,7 +2212,6 @@ msgid "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 msgstr "Por kontakti la kreantojn bonvolu skribi al <mutt-dev@mutt.org>.\n"
 
 #: main.c:43
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2000 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
@@ -2239,7 +2224,6 @@ msgstr ""
 "sub difinitaj kondiæoj; tajpu 'mutt -v' por detaloj.\n"
 
 #: main.c:49
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
@@ -2290,7 +2274,6 @@ msgstr ""
 "    Inc., 675 Mass Ave, Cambridge, MA 02139, Usono.\n"
 
 #: main.c:76
-#, fuzzy
 msgid ""
 "\n"
 "SHA1 implementation Copyright (C) 1995-1997 Eric A. Young "
@@ -2440,7 +2423,7 @@ msgstr "Poþtfako fuþiøis!"
 
 #: mbox.c:692 mbox.c:935
 msgid "Fatal error!  Could not reopen mailbox!"
-msgstr "Grava eraro! Ne povis remalfermi poþtfakon!"
+msgstr "Fatala eraro! Ne povis remalfermi poþtfakon!"
 
 #: mbox.c:701
 msgid "Unable to lock mailbox!"
@@ -2556,29 +2539,29 @@ msgstr "Legas %s ... %d"
 
 #: muttlib.c:658
 msgid "File is a directory, save under it?"
-msgstr ""
+msgstr "Tio estas dosierujo; æu skribi dosieron en øi?"
 
 #: muttlib.c:663
 msgid "File under directory: "
-msgstr ""
+msgstr "Dosiero en dosierujo: "
 
 #: muttlib.c:675
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
-msgstr ""
+msgstr "Dosiero ekzistas; æu (s)urskribi, (a)ldoni, aý (n)uligi?"
 
 #: muttlib.c:675
 msgid "oac"
-msgstr ""
+msgstr "san"
 
 #: muttlib.c:961
-#, fuzzy, c-format
+#, c-format
 msgid "%s is not a mailbox!"
-msgstr "%s ne estas poþtfako."
+msgstr "%s ne estas poþtfako!"
 
 #: muttlib.c:967
-#, fuzzy, c-format
+#, c-format
 msgid "Append messages to %s?"
-msgstr "Æu movi legitajn mesaøojn al %s?"
+msgstr "Æu aldoni mesaøojn al %s?"
 
 #: mx.c:114
 #, c-format
@@ -2891,7 +2874,6 @@ msgstr ""
 "\n"
 
 #: pgp.c:640
-#, fuzzy
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
 "\n"
@@ -3017,9 +2999,9 @@ msgid "Check key  "
 msgstr "Kontroli þlosilon  "
 
 #: pgpkey.c:460
-#, fuzzy, c-format
+#, c-format
 msgid "PGP keys matching <%s>."
-msgstr "PGP-þlosiloj, kiuj kongruas kun \"%s\"."
+msgstr "PGP-þlosiloj, kiuj kongruas kun <%s>."
 
 #: pgpkey.c:462
 #, c-format
@@ -3113,14 +3095,14 @@ msgid "No new mail in POP mailbox."
 msgstr "Mankas novaj mesaøoj en POP-poþtfako."
 
 #: pop.c:209
-#, fuzzy, c-format
+#, c-format
 msgid "Reading new messages (%d bytes)..."
-msgstr "Elþutas novajn mesaøojn (%d bitokojn) ..."
+msgstr "Legas novajn mesaøojn (%d bitokojn) ..."
 
 #: pop.c:210
-#, fuzzy, c-format
+#, c-format
 msgid "Reading new message (%d bytes)..."
-msgstr "Elþutas novan mesaøon (%d bitokojn) ..."
+msgstr "Legas novan mesaøon (%d bitokojn) ..."
 
 #: pop.c:245
 msgid "Error reading message!"
@@ -3136,7 +3118,7 @@ msgid "%s [%d of %d messages read]"
 msgstr "%s [%d el %d mesaøoj legitaj]"
 
 #: pop.c:310
-#, fuzzy, c-format
+#, c-format
 msgid "%s [%d message read]"
 msgstr "%s [%d mesaøo legita]"
 
@@ -3246,22 +3228,22 @@ msgstr "Mutt kapablas forviþi nur multipart-partojn."
 
 #: recvcmd.c:43
 msgid "You may only bounce message/rfc822 parts."
-msgstr ""
+msgstr "Vi povas redirekti nur message/rfc822-partojn."
 
 #: recvcmd.c:155
-#, fuzzy, c-format
+#, c-format
 msgid "Bounce message to %s...?"
-msgstr "Redirekti mesaøon al %s"
+msgstr "Æu redirekti mesaøon al %s ...?"
 
 #: recvcmd.c:155
-#, fuzzy, c-format
+#, c-format
 msgid "Bounce messages to %s...?"
-msgstr "Redirekti mesaøojn al %s"
+msgstr "Æu redirekti mesaøojn al %s ...?"
 
 #: recvcmd.c:372
-#, fuzzy, c-format
+#, c-format
 msgid "Can't open temporary file %s."
-msgstr "Ne povas krei dumtempan dosieron"
+msgstr "Ne povas malfermi dumtempan dosieron %s."
 
 #: recvcmd.c:398 recvcmd.c:537 send.c:722
 msgid "Forward MIME encapsulated?"
@@ -3269,17 +3251,16 @@ msgstr "Æu plusendi MIME-pakita?"
 
 #: recvcmd.c:412
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
-msgstr ""
+msgstr "Ne povas malkodi æiujn markitajn partojn. Æu MIME-plusendi la aliajn?"
 
 #: recvcmd.c:545 recvcmd.c:797
-#, fuzzy, c-format
+#, c-format
 msgid "Can't create %s."
-msgstr "Ne povas krei %s: %s."
+msgstr "Ne povas krei %s."
 
 #: recvcmd.c:676
-#, fuzzy
 msgid "Can't find any tagged messages."
-msgstr "apliki la sekvan komandon al æiuj markitaj mesaøoj"
+msgstr "Ne povas trovi markitajn mesaøojn."
 
 #: recvcmd.c:697 send.c:647
 msgid "No mailing lists found!"
@@ -3287,76 +3268,71 @@ msgstr "Neniu dissendolisto trovita!"
 
 #: recvcmd.c:776
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
-msgstr ""
+msgstr "Ne povas malkodi æiujn markitajn partojn. Æu MIME-paki la aliajn?"
 
 #: remailer.c:480
-#, fuzzy
 msgid "Append"
-msgstr "Sendi"
+msgstr "Aldoni"
 
 #: remailer.c:481
 msgid "Insert"
-msgstr ""
+msgstr "Enþovi"
 
 #: remailer.c:482
-#, fuzzy
 msgid "Delete"
-msgstr "Elekto"
+msgstr "Forviþi"
 
 #: remailer.c:484
 msgid "OK"
-msgstr ""
+msgstr "Bone"
 
 #: remailer.c:512
 msgid "Can't get mixmaster's type2.list!"
-msgstr ""
+msgstr "Ne povas preni type2.list de mixmaster!"
 
 #: remailer.c:538
-#, fuzzy
 msgid "Select a remailer chain."
-msgstr "forviþi æiujn signojn en la linio"
+msgstr "Elekti plusendiloæenon."
 
 #: remailer.c:592
 #, c-format
 msgid "Error: %s can't be used as the final remailer of a chain."
-msgstr ""
+msgstr "Eraro: %s ne estas uzebla kiel la fina plusendilo de æeno."
 
 #: remailer.c:625
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."
-msgstr ""
+msgstr "Mixmaster-æenoj estas limigitaj al %d elementoj."
 
 #: remailer.c:650
 msgid "The remailer chain is already empty."
-msgstr ""
+msgstr "La plusendiloæeno estas jam malplena."
 
 #: remailer.c:660
-#, fuzzy
 msgid "You already have the first chain element selected."
-msgstr "Vi estas æe la unua mesaøo."
+msgstr "Vi jam elektis la unuan elementon de la æeno."
 
 #: remailer.c:670
 msgid "You already have the last chain element selected."
-msgstr ""
+msgstr "Vi jam elektis la lastan elementon de la æeno."
 
 #: remailer.c:709
 msgid "Mixmaster doesn't accept Cc or Bcc headers."
-msgstr ""
+msgstr "Mixmaster ne akceptas la kampon Cc aý Bcc en la æapo."
 
 #: remailer.c:733
 msgid ""
 "Please set the hostname variable to a proper value when using mixmaster!"
-msgstr ""
+msgstr "Bonvolu doni øustan valoron al \"hostname\", kiam vi uzas mixmaster!"
 
 #: remailer.c:762
-#, fuzzy, c-format
+#, c-format
 msgid "Error sending message, child exited %d.\n"
-msgstr "Eraro dum sendado de mesaøo; ido finis per %d (%s)."
+msgstr "Eraro dum sendado de mesaøo; ido finis per %d.\n"
 
 #: remailer.c:766
-#, fuzzy
 msgid "Error sending message."
-msgstr "Eraro dum legado de mesaøo!"
+msgstr "Eraro dum sendado de mesaøo."
 
 #: rfc1524.c:159
 #, c-format
@@ -3539,15 +3515,3 @@ msgstr "Patra mesaøo ne estas videbla en limigita rigardo"
 #: thread.c:727
 msgid "Parent message is not available."
 msgstr "Patra mesaøo ne estas havebla."
-
-#, fuzzy
-#~ msgid "Recoding only affetcs text attachments."
-#~ msgstr "Rekodado efikas nur al tekstaj partoj."
-
-#, fuzzy
-#~ msgid "display message with full headers"
-#~ msgstr "redakti la mesaøon kun æapo"
-
-#, fuzzy
-#~ msgid "PGP keys matching "
-#~ msgstr "PGP-þlosiloj, kiuj kongruas kun <%s>."
