@@ -82,8 +82,12 @@ used by mutt to determine which part of a
 \fBmultipart/alternative\fP body to display.
 A subtype of \(lq\fB*\fP\(rq matches any subtype, as does an empty
 subtype.
-.TP
+.PP
+.nf
 \fBauto_view\fP \fItype\fP[\fB/\fP\fIsubtype\fP] [ ... ]
+\fBunauto_view\fP \fItype\fP[fB/\fP\fIsubtype\fP] [ ... ]
+.fi
+.IP
 This commands permits you to specify that mutt should automatically
 convert the given MIME types to text/plain when displaying messages.
 For this to work, there must be a 

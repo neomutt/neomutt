@@ -2792,6 +2792,10 @@ application/x-tar-gz; gunzip -c %s | tar -tf - ; copiousoutput
 application/postscript; ps2ascii %s; copiousoutput
 </verb></tscreen>
 
+``unauto_view'' can be used to remove previous entries from the autoview list.
+This can be used with message-hook to autoview messages based on size, etc.
+``unauto_view *'' will remove all previous entries.
+
 <sect1>MIME Multipart/Alternative<label id="alternative_order">
 <p>
 Mutt has some heuristics for determining which attachment of a
@@ -2888,6 +2892,8 @@ The following are the commands understood by mutt.
 <tt><ref id="alternative_order" name="alternative&lowbar;order"></tt> <em/mimetype/ &lsqb; <em/mimetype/ ... &rsqb;
 <item>
 <tt><ref id="auto_view" name="auto&lowbar;view"></tt> <em/mimetype/ &lsqb; <em/mimetype/ ... &rsqb;
+<item>
+<tt><ref id="auto_view" name="unauto&lowbar;view"></tt> <em/mimetype/ &lsqb; <em/mimetype/ ... &rsqb;
 <item>
 <tt><ref id="bind" name="bind"></tt> <em/map/ <em/key/ <em/function/
 <item>

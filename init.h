@@ -2657,6 +2657,7 @@ struct command_t Commands[] = {
   { "subscribe",	parse_subscribe,	0 },
   { "toggle",		parse_set,		M_SET_INV },
   { "unalias",		parse_unalias,		0 },
+  { "unauto_view",	parse_unlist,		UL &AutoViewList },
   { "unhdr_order",	parse_unlist,		UL &HeaderOrderList },
   { "unhook",		mutt_parse_unhook,	0 },
   { "unignore",		parse_unignore,		0 },
