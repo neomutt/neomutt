@@ -83,7 +83,6 @@ int mutt_display_message (HEADER *cur)
 	return 0;
 
       cmflags |= M_CM_VERIFY;
-      mutt_message _("Invoking PGP...");
     }
     else if (cur->pgp & PGPSIGN)
     {
@@ -91,13 +90,19 @@ int mutt_display_message (HEADER *cur)
       if (query_quadoption (OPT_VERIFYSIG, _("Verify PGP signature?")) == M_YES)
       {
 	cmflags |= M_CM_VERIFY;
-	mutt_message _("Invoking PGP...");
       }
     }
   }
+  
+  if (cmflags & M_CM_VERIFY)
+  {
+    if (cur->env->from)
+      pgp_invoke_getkeys (cur->env->from);
+
+    mutt_message _("Invoking PGP...");
+  }
+
 #endif
-
-
 
   mutt_mktemp (tempfile);
   if ((fpout = safe_fopen (tempfile, "w")) == NULL)

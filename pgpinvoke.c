@@ -23,15 +23,20 @@
  * is almost entirely format based.
  */
 
+#include <sys/types.h>
+#include <sys/stat.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include <time.h>
 
 #include "mutt.h"
+#include "mutt_curses.h"
 #include "pgp.h"
-
+#include "rfc822.h"
 
 /*
  * The actual command line formatter.
@@ -243,6 +248,43 @@ void pgp_invoke_import (const char *fname)
   
   mutt_pgp_command (cmd, sizeof (cmd), &cctx, PgpImportCommand);
   mutt_system (cmd);
+}
+
+void pgp_invoke_getkeys (ADDRESS *addr)
+{
+  char buff[LONG_STRING];
+  char tmp[LONG_STRING];
+  char cmd[HUGE_STRING];
+  int devnull;
+
+  char *personal;
+  
+  struct pgp_command_context cctx;
+
+  if (!PgpGetkeysCommand) return;
+  
+  memset (&cctx, 0, sizeof (cctx));
+
+  personal = addr->personal;
+  addr->personal = NULL;
+  
+  *tmp = '\0';
+  rfc822_write_address_single (tmp, sizeof (tmp), addr);
+  mutt_quote_filename (buff, sizeof (buff), tmp);
+
+  addr->personal = personal;
+  
+  cctx.ids = buff;
+  
+  mutt_pgp_command (cmd, sizeof (cmd), &cctx, PgpGetkeysCommand);
+
+  devnull = open ("/dev/null", O_RDWR);
+
+  if (!isendwin ()) mutt_message  _("Fetching PGP key...");
+
+  mutt_system (cmd);
+
+  if (!isendwin ()) mutt_clear_error ();
 }
 
 pid_t pgp_invoke_export (FILE **pgpin, FILE **pgpout, FILE **pgperr,

@@ -40,7 +40,7 @@ WHERE char *PgpExportCommand;
 WHERE char *PgpVerifyKeyCommand;
 WHERE char *PgpListSecringCommand;
 WHERE char *PgpListPubringCommand;
-
+WHERE char *PgpGetkeysCommand;
 
 /* prototypes */
 
@@ -96,7 +96,6 @@ pid_t pgp_invoke_sign (FILE **pgpin, FILE **pgpout, FILE **pgperr,
 pid_t pgp_invoke_encrypt (FILE **pgpin, FILE **pgpout, FILE **pgperr,
 			  int pgpinfd, int pgpoutfd, int pgperrfd,
 			  const char *fname, const char *uids, int sign);
-void pgp_invoke_import (const char *fname);
 pid_t pgp_invoke_export (FILE **pgpin, FILE **pgpout, FILE **pgperr,
 			 int pgpinfd, int pgpoutfd, int pgperrfd, 
 			 const char *uids);
@@ -107,5 +106,8 @@ pid_t pgp_invoke_list_keys (FILE **pgpin, FILE **pgpout, FILE **pgperr,
 			    int pgpinfd, int pgpoutfd, int pgperrfd, 
 			    pgp_ring_t keyring, LIST *hints);
 
+
+void pgp_invoke_import (const char *fname);
+void pgp_invoke_getkeys (ADDRESS *);
 
 #endif /* _PGPPATH */

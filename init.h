@@ -207,6 +207,7 @@ struct option_t MuttVars[] = {
   /* XXX Default values! */
   
   { "pgp_decode_command", 	DT_STR, R_NONE, UL &PgpDecodeCommand, 0},
+  { "pgp_getkeys_command",	DT_STR, R_NONE, UL &PgpGetkeysCommand, 0},
   { "pgp_verify_command", 	DT_STR, R_NONE, UL &PgpVerifyCommand, 0},
   { "pgp_decrypt_command", 	DT_STR, R_NONE, UL &PgpDecryptCommand, 0},
   { "pgp_sign_command",		DT_STR, R_NONE, UL &PgpSignCommand, 0},

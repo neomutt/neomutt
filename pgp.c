@@ -1133,6 +1133,8 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
   int i;
   pgp_key_t *k_info, *key;
 
+  const char *fqdn = mutt_fqdn (1);
+  
   for (i = 0; i < 3; i++) 
   {
     switch (i)
@@ -1148,8 +1150,9 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
       last = &((*last)->next);
   }
 
+  rfc822_qualify (tmp, fqdn);
   tmp = mutt_remove_duplicates (tmp);
-
+  
   for (p = tmp; p ; p = p->next)
   {
     char buf[LONG_STRING];
@@ -1159,9 +1162,15 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
     {
       snprintf (buf, sizeof (buf), _("Use keyID = \"%s\" for %s?"), keyID, p->mailbox);
       if (mutt_yesorno (buf, M_YES) == M_YES)
+      {
+	pgp_invoke_getkeys (p);
 	k_info = pgp_getkeybystr (keyID, KEYFLAG_CANENCRYPT, PGP_PUBRING);
+      }
     }
 
+    if (k_info == NULL)
+      pgp_invoke_getkeys (p);
+    
     if (k_info == NULL && (k_info = pgp_getkeybyaddr (p, KEYFLAG_CANENCRYPT, PGP_PUBRING)) == NULL)
     {
       snprintf (buf, sizeof (buf), _("Enter keyID for %s: "), p->mailbox);
