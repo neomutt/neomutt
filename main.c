@@ -270,16 +270,22 @@ static void show_version (void)
 	"ENABLE_NLS"
 	);
 
-  printf ("SENDMAIL=\"%s\"\n", SENDMAIL);
-  printf ("MAILPATH=\"%s\"\n", MAILPATH);
-  printf ("SHAREDIR=\"%s\"\n", SHAREDIR);
-  printf ("SYSCONFDIR=\"%s\"\n", SYSCONFDIR);
+#ifdef CHARMAPS_DIR
+  printf ("+BUILD_ICONV CHARMAPS_DIR=\"%s\"\n", CHARMAPS_DIR);
+#else
+  puts ("-BUILD_ICONV -CHARMAPS_DIR");
+#endif
 
 #ifdef ISPELL
   printf ("ISPELL=\"%s\"\n", ISPELL);
 #else
   puts ("-ISPELL");
 #endif
+
+  printf ("SENDMAIL=\"%s\"\n", SENDMAIL);
+  printf ("MAILPATH=\"%s\"\n", MAILPATH);
+  printf ("SHAREDIR=\"%s\"\n", SHAREDIR);
+  printf ("SYSCONFDIR=\"%s\"\n", SYSCONFDIR);
 
   puts(_(ReachingUs));
 
