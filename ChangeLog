@@ -1,4 +1,9 @@
-2004-11-08 07:30:29  Ralf Wildenhues  <wildenhues@ins.uni-bonn.de>  (roessler)
+2004-11-08 08:43:17  Ralf Wildenhues  <wildenhues@ins.uni-bonn.de>  (roessler)
+
+	* imap/imap_private.h: Having a signed one-bit bitfield is quite
+	odd -- its value is either 0 or -1.  Although the current code
+	is not broken because it doesn't test equality to 1, IMHO it's
+	better not to use that.
 
 	* imap/message.c: There's a size_t in imap_append_message not
 	printed out portably.
