@@ -155,6 +155,9 @@ void mutt_free_header (HEADER **h)
   mutt_free_body (&(*h)->content);
   safe_free ((void **) &(*h)->tree);
   safe_free ((void **) &(*h)->path);
+#ifdef MIXMASTER
+  mutt_free_list (&(*h)->chain);
+#endif
   safe_free ((void **) h);
 }
 

@@ -277,7 +277,7 @@ int mutt_which_case (const char *);
 int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int, char *);
 int mutt_write_mime_body (BODY *, FILE *);
 int mutt_write_mime_header (BODY *, FILE *);
-int mutt_write_rfc822_header (FILE *, ENVELOPE *, BODY *, int);
+int mutt_write_rfc822_header (FILE *, ENVELOPE *, BODY *, int, int);
 int mutt_yesorno (const char *, int);
 void mutt_set_header_color(CONTEXT *, HEADER *);
 int mutt_save_confirm (const char  *, struct stat *);
@@ -432,3 +432,16 @@ int ioctl (int, int, ...);
 /* unsorted */
 void ci_bounce_message (HEADER *, int *);
 void ci_send_message (int, HEADER *, char *, CONTEXT *, HEADER *);
+
+
+
+#ifdef MIXMASTER
+/* mixmaster support - must go here so we get the
+ * type definitions in the right order.
+ */
+
+
+int mix_send_message (LIST *, const char *);
+int mix_check_message (HEADER *msg);
+void mix_make_chain (LIST **, int *);
+#endif

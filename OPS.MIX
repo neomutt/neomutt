@@ -1,0 +1,7 @@
+OP_MIX_USE "Accept the chain constructed"
+OP_MIX_APPEND "Append a remailer to the chain"
+OP_MIX_INSERT "Insert a remailer into the chain"
+OP_MIX_DELETE "Delete a remailer from the chain"
+OP_MIX_CHAIN_PREV "Select the previous element of the chain"
+OP_MIX_CHAIN_NEXT "Select the next element of the chain"
+OP_COMPOSE_MIX "send the message through a mixmaster remailer chain"

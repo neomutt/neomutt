@@ -48,6 +48,10 @@
 # define N_(a) a
 #endif
 
+#ifdef MIXMASTER
+# include "remailer.h"
+#endif
+
 #ifdef SUBVERSION
 # define MUTT_VERSION (VERSION SUBVERSION)
 #else  
@@ -575,6 +579,10 @@ typedef struct header
   struct header *last_sort; /* last message in subthread, for secondary SORT_LAST */
   char *tree;            /* character string to print thread tree */
 
+#ifdef MIXMASTER
+  LIST *chain;
+#endif
+  
 } HEADER;
 
 #include "mutt_regex.h"

@@ -24,10 +24,12 @@ INCLUDES=-I. -I$(includedir)
 
 non_us_sources = pgp.c pgpinvoke.c pgpkey.c pgppubring.c sha1dgst.c \
 	gnupgparse.c sha.h sha_locl.h \
-	doc/language.txt doc/language50.txt OPS.PGP doc/PGP-Notes
+	doc/language.txt doc/language50.txt OPS.PGP doc/PGP-Notes \
+	OPS.MIX remailer.c remailer.h
 
 EXTRA_mutt_SOURCES = pgp.c pgpinvoke.c pgpkey.c pgppubring.c sha1dgst.c \
 	gnupgparse.c resize.c dotlock.c pop.c imap.c socket.c
+	remailer.c remailer.h
 
 EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO configure acconfig.h attach.h \
 	buffy.h charset.h config.h copy.h dotlock.h functions.h gen_defs \
@@ -35,7 +37,7 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO configure acconfig.h attach.h \
 	mailbox.h mapping.h mime.h mutt.h mutt_curses.h mutt_menu.h  \
 	mutt_regex.h mutt_socket.h mx.h pager.h parse.h pgp.h protos.h  \
 	reldate.h rfc1524.h rfc2047.h rfc822.h sha.h sha_locl.h	\
-	sort.h mime.types VERSION prepare _regex.h
+	sort.h mime.types VERSION prepare _regex.h OPS.MIX
 
 BUILT_SOURCES = mutt_dotlock.c keymap_defs.h
 
@@ -54,7 +56,7 @@ LDADD = @LIBOBJS@ @INTLLIBS@
 
 SUBDIRS = doc intl m4 po contrib
 
-OPS=$(srcdir)/OPS $(srcdir)/OPS.PGP
+OPS=@OPS@
 
 keymap_defs.h: $(OPS) $(srcdir)/gen_defs
 	$(srcdir)/gen_defs $(OPS) > keymap_defs.h
@@ -108,7 +110,7 @@ us-distdir: distdir dist-hook
 
 us-dist: us-distdir
 	for file in $(distdir)-us/*.c $(distdir)-us/*.h ; do \
-		$(srcdir)/reap.pl _PGPPATH < $$file > $$file.n && rm $$file && mv $$file.n $$file ; \
+		$(srcdir)/reap.pl _PGPPATH < $$file | $(srcdir)/reap.pl MIXMASTER > $$file.n && rm $$file && mv $$file.n $$file ; \
 	done
 	for file in $(non_us_sources) ; do \
 		echo "/* This file is only available in the international mutt version */" \

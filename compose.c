@@ -26,6 +26,10 @@
 #include "mailbox.h"
 #include "sort.h"
 
+#ifdef MIXMASTER
+#include "remailer.h"
+#endif
+
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
@@ -46,12 +50,14 @@ enum
   HDR_REPLYTO,
   HDR_FCC,
 
+#ifdef MIXMASTER
+  HDR_MIX,
+#endif
 
 #ifdef _PGPPATH
   HDR_PGP,
   HDR_PGPSIGINFO,
 #endif
-  
   
 
   HDR_ATTACH  = (HDR_FCC + 5) /* where to start printing the attachments */
@@ -214,7 +220,35 @@ static int pgp_send_menu (int bits, int *redraw)
 }
 #endif /* _PGPPATH */
 
+#ifdef MIXMASTER
 
+static void redraw_mix_line (LIST *chain)
+{
+  int c;
+
+  mvaddstr (HDR_MIX, 0,     "     Mix: ");
+
+  if (!chain)
+  {
+    addstr ("no");
+    clrtoeol ();
+    return;
+  }
+  
+  for (c = 12; chain; chain = chain->next)
+  {
+    if (c + mutt_strlen ((char *) chain->data) + 2 >= COLS)
+      break;
+
+    
+    addstr (NONULL((char *) chain->data));
+    if (chain->next)
+      addstr (", ");
+
+    c += mutt_strlen ((char *) chain->data) + 2;
+  }
+}
+#endif
 
 static int
 check_attachments(ATTACHPTR **idx, short idxlen)
@@ -276,9 +310,17 @@ static void draw_envelope (HEADER *msg, char *fcc)
   redraw_pgp_lines (msg->pgp);
 #endif /* _PGPPATH */
 
+#ifdef MIXMASTER
+  redraw_mix_line (msg->chain);
+#endif
 
+  SETCOLOR (MT_COLOR_STATUS);
+  mvaddstr (HDR_ATTACH - 1, 0, _("-- Attachments"));
+  BKGDSET (MT_COLOR_STATUS);
+  clrtoeol ();
 
-  mvaddstr (HDR_ATTACH - 1, 0, _("===== Attachments ====="));
+  BKGDSET (MT_COLOR_NORMAL);
+  SETCOLOR (MT_COLOR_NORMAL);
 }
 
 static int edit_address_list (int line, ADDRESS **addr)
@@ -779,6 +821,12 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  menu->redraw = REDRAW_FULL;
 	  break;
 	}
+
+      
+#ifdef MIXMASTER
+        if (mix_check_message (msg) != 0)
+	  break;
+#endif
       
 	if (!fccSet && *fcc)
 	{
@@ -987,7 +1035,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	/* fall through to postpone! */
 
       case OP_COMPOSE_POSTPONE_MESSAGE:
-      
+
         if(check_attachments(idx, idxlen) != 0)
         {
 	  menu->redraw = REDRAW_FULL;
@@ -1050,7 +1098,12 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
 #endif /* _PGPPATH */
 
-
+#ifdef MIXMASTER
+      case OP_COMPOSE_MIX:
+      
+      	mix_make_chain (&msg->chain, &menu->redraw);
+        break;
+#endif
 
     }
   }

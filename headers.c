@@ -18,49 +18,9 @@
 
 #include "mutt.h"
 
-
-
 #ifdef _PGPPATH
 #include "pgp.h"
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #include <sys/stat.h>
 #include <string.h>
@@ -90,7 +50,7 @@ void mutt_edit_headers (const char *editor,
     return;
   }
 
-  mutt_write_rfc822_header (ofp, msg->env, NULL, 1);
+  mutt_write_rfc822_header (ofp, msg->env, NULL, 1, 0);
   fputc ('\n', ofp);	/* tie off the header. */
 
   /* now copy the body of the message. */

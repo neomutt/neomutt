@@ -273,7 +273,10 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
 
 
 #ifdef _PGPPATH
-    else if (mutt_strncmp ("Pgp:", tmp->data, 4) == 0)
+    else if (mutt_strncmp ("Pgp:", tmp->data, 4) == 0 /* this is generated
+						       * by old mutt versions
+						       */
+	     || mutt_strncmp ("X-Mutt-PGP:", tmp->data, 11) == 0)
     {
       hdr->pgp = mutt_parse_pgp_hdr (tmp->data+4, 1);
        
@@ -289,7 +292,29 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
     }
 #endif /* _PGPPATH */
 
-
+#ifdef MIXMASTER
+    else if (mutt_strncmp ("X-Mutt-Mix:", tmp->data, 11) == 0)
+    {
+      char *t;
+      mutt_free_list (&hdr->chain);
+      
+      t = strtok (tmp->data + 11, " \t\n");
+      while (t)
+      {
+	hdr->chain = mutt_add_list (hdr->chain, t);
+	t = strtok (NULL, " \t\n");
+      }
+      
+      next = tmp->next;
+      if (last) 
+	last->next = tmp->next;
+      else
+	hdr->env->userhdrs = tmp->next;
+      tmp->next = NULL;
+      mutt_free_list (&tmp);
+      tmp = next;
+    }
+#endif
 
     else
     {

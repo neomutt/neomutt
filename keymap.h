@@ -58,16 +58,19 @@ enum
   MENU_MAIN,
   MENU_PAGER,
   MENU_POST,
+  MENU_QUERY,
 
+  
 #ifdef _PGPPATH
   MENU_PGP,
 #endif
 
+#ifdef MIXMASTER
+  MENU_MIX,
+#endif
 
 
 
-
-  MENU_QUERY,
   MENU_MAX
 };
 
@@ -101,6 +104,10 @@ extern struct binding_t OpQuery[];
 #ifdef _PGPPATH
 extern struct binding_t OpPgp[];
 #endif /* _PGPPATH */
+
+#ifdef MIXMASTER
+extern struct binding_t OpMix[];
+#endif
 
 #include "keymap_defs.h"
 

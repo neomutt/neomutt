@@ -137,3 +137,6 @@
 
 /* Use the included regex.c? */
 #undef USE_GNU_REGEX
+
+/* Where's mixmaster located? */
+#undef MIXMASTER

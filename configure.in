@@ -80,6 +80,18 @@ else
 		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pgp.o pgpinvoke.o pgpkey.o pgppubring.o sha1dgst.o gnupgparse.o"
 		OPS="$OPS \$(srcdir)/OPS.PGP"
 	fi
+	
+	AC_ARG_WITH(mixmaster, [  --with-mixmaster[=PATH]	include Mixmaster support],
+		[if test -x "$withval" ; then
+			MIXMASTER="$withval"
+		 else
+		 	MIXMASTER="mixmaster"
+		 fi
+		 OPS="$OPS \$(srcdir)/OPS.MIX"
+		 MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS remailer.o"
+		 AC_DEFINE_UNQUOTED(MIXMASTER, "$MIXMASTER")
+                ])
+		
 fi
 AC_SUBST(OPS)
 

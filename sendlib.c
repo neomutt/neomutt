@@ -1224,14 +1224,18 @@ static void write_references (LIST *r, FILE *f)
  * mode == 1  => "lite" mode (used for edit_hdrs)
  * mode == 0  => normal mode.  write full header + MIME headers
  * mode == -1 => write just the envelope info (used for postponing messages)
+ * 
+ * privacy != 0 => will omit any headers which may identify the user.
+ * 
  */
 
-int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach, int mode)
+int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach, 
+			      int mode, int privacy)
 {
   char buffer[LONG_STRING];
   LIST *tmp = env->userhdrs;
 
-  if (option(OPTUSEHEADERDATE))
+  if (option(OPTUSEHEADERDATE) && !privacy)
   {
     if(env->date)
       fprintf(fp, "Date: %s\n", env->date);
@@ -1246,7 +1250,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach, int mode)
   /* OPTUSEFROM is not consulted here so that we can still write a From:
    * field if the user sets it with the `my_hdr' command
    */
-  if (env->from)
+  if (env->from && !privacy)
   {
     buffer[0] = 0;
     rfc822_write_address (buffer, sizeof (buffer), env->from);
@@ -1286,7 +1290,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach, int mode)
     fputs ("Subject: \n", fp);
 
   /* save message id if the user has set it */
-  if (env->message_id)
+  if (env->message_id && !privacy)
     fprintf (fp, "Message-ID: %s\n", env->message_id);
 
   if (env->reply_to)
@@ -1318,7 +1322,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach, int mode)
   }
 
 #ifndef NO_XMAILER
-  if (mode == 0)
+  if (mode == 0 && !privacy)
   {
     /* Add a vanity header */
     fprintf (fp, "X-Mailer: Mutt %s\n", MUTT_VERSION);
@@ -1899,7 +1903,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
   /* post == 1 => postpone message. Set mode = -1 in mutt_write_rfc822_header()
    * post == 0 => Normal mode. Set mode = 0 in mutt_write_rfc822_header() 
    * */
-  mutt_write_rfc822_header (msg->fp, hdr->env, hdr->content, post ? -post : 0);
+  mutt_write_rfc822_header (msg->fp, hdr->env, hdr->content, post ? -post : 0, 0);
 
   /* (postponment) if this was a reply of some sort, <msgid> contians the
    * Message-ID: of message replied to.  Save it using a special X-Mutt-
@@ -1923,7 +1927,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
   /* (postponment) if the mail is to be signed or encrypted, save this info */
   if (post && (hdr->pgp & (PGPENCRYPT | PGPSIGN)))
   {
-    fputs ("Pgp: ", msg->fp);
+    fputs ("X-Mutt-PGP: ", msg->fp);
     if (hdr->pgp & PGPENCRYPT) 
       fputc ('E', msg->fp);
     if (hdr->pgp & PGPSIGN)
@@ -1938,7 +1942,22 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
   }
 #endif /* _PGPPATH */
 
+#ifdef MIXMASTER
+  /* (postponement) if the mail is to be sent through a mixmaster 
+   * chain, save that information
+   */
+  
+  if (post && hdr->chain && hdr->chain)
+  {
+    LIST *p;
 
+    fputs ("X-Mutt-Mix:", msg->fp);
+    for (p = hdr->chain; p; p = p->next)
+      fprintf (msg->fp, " %s", (char *) p->data);
+    
+    fputc ('\n', msg->fp);
+  }
+#endif    
 
   if (tempfp)
   {

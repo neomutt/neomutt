@@ -150,6 +150,13 @@ struct option_t MuttVars[] = {
   { "mime_forward",	DT_QUAD, R_NONE, OPT_MIMEFWD, M_NO },
   { "mime_forward_decode", DT_BOOL, R_NONE, OPTMIMEFORWDECODE, 0 },
   { "mime_fwd",		DT_SYN,  R_NONE, UL "mime_forward", 0 },
+
+
+#ifdef MIXMASTER
+  { "mixmaster",	DT_PATH, R_NONE, UL &Mixmaster, UL MIXMASTER },
+#endif
+
+
   { "move",		DT_QUAD, R_NONE, OPT_MOVE, M_ASKNO },
   { "message_format",	DT_STR,	 R_NONE, UL &MsgFmt, UL "%s" },
   { "msg_format",	DT_SYN,  R_NONE, UL "message_format", 0 },
