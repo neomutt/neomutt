@@ -817,11 +817,11 @@ void text_enriched_handler (BODY *a, STATE *s)
   FREE (&(stte.param));
 }                                                                              
 
-#define TXTPLAIN    1
-#define TXTENRICHED 2
-#define TXTHTML     3
+#define TXTHTML     1
+#define TXTPLAIN    2
+#define TXTENRICHED 3
 
-void alternative_handler (BODY *a, STATE *s)
+static void alternative_handler (BODY *a, STATE *s)
 {
   BODY *choice = NULL;
   BODY *b;
@@ -833,28 +833,33 @@ void alternative_handler (BODY *a, STATE *s)
   t = AlternativeOrderList;
   while (t && !choice)
   {
+    char *c;
+    int btlen;  /* length of basetype */
+    int wild;	/* do we have a wildcard to match all subtypes? */
+
+    c = strchr (t->data, '/');
+    if (c)
+    {
+      wild = (c[1] == '*' && c[2] == 0);
+      btlen = c - t->data;
+    }
+    else
+    {
+      wild = 1;
+      btlen = strlen (t->data);
+    }
+
     if (a && a->parts) 
       b = a->parts;
     else
       b = a;
-    while (b && !choice)
+    while (b)
     {
-      int i;
-
-      /* catch base only matches */
-      i = strlen (t->data) - 1;
-      if (!strchr(t->data, '/') || 
-	  (i > 0 && t->data[i-1] == '/' && t->data[i] == '*'))
+      const char *bt = TYPE(b);
+      if (!strncasecmp (bt, t->data, btlen) && bt[btlen] == 0)
       {
-	if (!strcasecmp(t->data, TYPE(b)))
-	{
-	  choice = b;
-	}
-      }
-      else
-      {
-	snprintf (buf, sizeof (buf), "%s/%s", TYPE (b), b->subtype);
-	if (!strcasecmp(t->data, buf))
+	/* the basetype matches */
+	if (wild || !strcasecmp (t->data + btlen + 1, b->subtype))
 	{
 	  choice = b;
 	}
@@ -863,25 +868,29 @@ void alternative_handler (BODY *a, STATE *s)
     }
     t = t->next;
   }
-  /* Next, look for an autoviewable type */
-  if (a && a->parts) 
-    b = a->parts;
-  else
-    b = a;
-  while (b && !choice)
-  {
-    snprintf (buf, sizeof (buf), "%s/%s", TYPE (b), b->subtype);
-    if (mutt_is_autoview (buf))
-    {
-      rfc1524_entry *entry = rfc1524_new_entry ();
 
-      if (rfc1524_mailcap_lookup (b, buf, entry, M_AUTOVIEW))
+  /* Next, look for an autoviewable type */
+  if (!choice)
+  {
+    if (a && a->parts) 
+      b = a->parts;
+    else
+      b = a;
+    while (b)
+    {
+      snprintf (buf, sizeof (buf), "%s/%s", TYPE (b), b->subtype);
+      if (mutt_is_autoview (buf))
       {
-	choice = b;
+	rfc1524_entry *entry = rfc1524_new_entry ();
+
+	if (rfc1524_mailcap_lookup (b, buf, entry, M_AUTOVIEW))
+	{
+	  choice = b;
+	}
+	rfc1524_free_entry (&entry);
       }
-      rfc1524_free_entry (&entry);
+      b = b->next;
     }
-    b = b->next;
   }
 
   /* Then, look for a text entry */
@@ -895,31 +904,26 @@ void alternative_handler (BODY *a, STATE *s)
     {
       if (b->type == TYPETEXT)
       {
-	if (strcasecmp ("plain", b->subtype) == 0)
+	if (! strcasecmp ("plain", b->subtype) && type <= TXTPLAIN)
 	{
 	  choice = b;
 	  type = TXTPLAIN;
 	}
-	else if (strcasecmp ("enriched", b->subtype) == 0)
+	else if (! strcasecmp ("enriched", b->subtype) && type <= TXTENRICHED)
 	{
-	  if (type == 0 || type > TXTENRICHED)
-	  {
-	    choice = b;
-	    type = TXTENRICHED;
-	  }
+	  choice = b;
+	  type = TXTENRICHED;
 	}
-	else if (strcasecmp ("html", b->subtype) == 0)
+	else if (! strcasecmp ("html", b->subtype) && type <= TXTHTML)
 	{
-	  if (type == 0)
-	  {
-	    choice = b;
-	    type = TXTHTML;
-	  }
+	  choice = b;
+	  type = TXTHTML;
 	}
       }
       b = b->next;
     }
   }
+
   /* Finally, look for other possibilities */
   if (!choice)
   {
@@ -927,13 +931,14 @@ void alternative_handler (BODY *a, STATE *s)
       b = a->parts;
     else
       b = a;
-    while (b && !choice)
+    while (b)
     {
       if (mutt_can_decode (b))
 	choice = b;
       b = b->next;
     }
   }
+
   if (choice)
   {
     if (s->flags & M_DISPLAY && !option (OPTWEED))
