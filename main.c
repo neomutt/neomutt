@@ -673,15 +673,11 @@ int main (int argc, char **argv)
 
     mutt_folder_hook (folder);
 
-    if ((Context = mx_open_mailbox (folder, ((flags & M_RO) || option (OPTREADONLY)) ? M_READONLY : 0, NULL)) != NULL)
-    {
-      mutt_index_menu ();
-      if (Context)
-	safe_free ((void **)&Context);
-      mutt_endwin (NULL);
-    }
-    else
-      mutt_endwin (Errorbuf);
+    Context = mx_open_mailbox (folder, ((flags & M_RO) || option (OPTREADONLY)) ? M_READONLY : 0, NULL);
+    mutt_index_menu ();
+    if (Context)
+      safe_free ((void **)&Context);
+    mutt_endwin (NULL);
   }
 
   exit (0);
