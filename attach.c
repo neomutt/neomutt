@@ -112,7 +112,7 @@ int mutt_compose_attachment (BODY *a)
 				  a->filename, newfile));
 	if (safe_symlink (a->filename, newfile) == -1)
 	{
-	  if (!mutt_yesorno (_("Can't match nametemplate, continue?"), 1))
+	  if (mutt_yesorno (_("Can't match nametemplate, continue?"), M_YES) != M_YES)
 	    goto bailout;
 	}
 	unlink_newfile = 1;
@@ -239,7 +239,7 @@ int mutt_edit_attachment (BODY *a)
 				  a->filename, newfile));
 	if (safe_symlink (a->filename, newfile) == -1)
 	{
-	  if (!mutt_yesorno (_("Can't match nametemplate, continue?"), 1))
+	  if (mutt_yesorno (_("Can't match nametemplate, continue?"), M_YES) != M_YES)
 	    goto bailout;
 	}
 	unlink_newfile = 1;
@@ -468,7 +468,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
 	/* send case: the file is already there */
 	if (safe_symlink (a->filename, tempfile) == -1)
 	{
-	  if (mutt_yesorno (_("Can't match nametemplate, continue?"), 1) == M_YES)
+	  if (mutt_yesorno (_("Can't match nametemplate, continue?"), M_YES) == M_YES)
 	    strfcpy (tempfile, a->filename, sizeof (tempfile));
 	  else
 	    goto return_error;
@@ -958,7 +958,7 @@ int mutt_print_attachment (FILE *fp, BODY *a)
       {
 	if (safe_symlink(a->filename, newfile) == -1)
 	{
-	  if (mutt_yesorno (_("Can't match nametemplate, continue?"), 1) != M_YES)
+	  if (mutt_yesorno (_("Can't match nametemplate, continue?"), M_YES) != M_YES)
 	  {
 	    rfc1524_free_entry (&entry);
 	    return 0;

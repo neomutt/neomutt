@@ -154,7 +154,7 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
   snprintf (prompt, sizeof (prompt), 
 	    cur ? _("Bounce message to %s...?") :  _("Bounce messages to %s...?"), buf);
 
-  if (mutt_yesorno (prompt, 1) != 1)
+  if (mutt_yesorno (prompt, M_YES) != M_YES)
     goto bail;
 
   if (cur)

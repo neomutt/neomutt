@@ -236,7 +236,7 @@ static int edit_envelope (ENVELOPE *en)
   }
   
   if (mutt_get_field ("Subject: ", buf, sizeof (buf), 0) != 0 ||
-      (!buf[0] && query_quadoption (OPT_SUBJECT, _("No subject, abort?")) != 0))
+      (!buf[0] && query_quadoption (OPT_SUBJECT, _("No subject, abort?")) != M_NO))
   {
     mutt_message _("No subject, aborting.");
     return (-1);

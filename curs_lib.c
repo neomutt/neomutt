@@ -182,7 +182,7 @@ int mutt_yesorno (const char *msg, int def)
    * to fit.
    */
   answer_string = safe_malloc (COLS + 1);
-  snprintf (answer_string, COLS + 1, " ([%s]/%s): ", def ? yes : no, def ? no : yes);
+  snprintf (answer_string, COLS + 1, " ([%s]/%s): ", def == M_YES ? yes : no, def == M_NO ? no : yes);
   answer_string_len = strlen (answer_string);
   printw ("%.*s%s", COLS - answer_string_len, msg, answer_string);
   FREE (&answer_string);
@@ -208,7 +208,7 @@ int mutt_yesorno (const char *msg, int def)
 #endif
 	(tolower (ch.ch) == 'y'))
     {
-      def = 1;
+      def = M_YES;
       break;
     }
     else if (
@@ -218,7 +218,7 @@ int mutt_yesorno (const char *msg, int def)
 #endif
 	     (tolower (ch.ch) == 'n'))
     {
-      def = 0;
+      def = M_NO;
       break;
     }
     else
@@ -234,9 +234,9 @@ int mutt_yesorno (const char *msg, int def)
     regfree (& reno);
 #endif
 
-  if (def >= 0)
+  if (def != -1)
   {
-    addstr ((char *) (def ? yes : no));
+    addstr ((char *) (def == M_YES ? yes : no));
     mutt_refresh ();
   }
   return (def);
@@ -249,7 +249,7 @@ void mutt_query_exit (void)
   curs_set (1);
   if (Timeout)
     timeout (-1); /* restore blocking operation */
-  if (mutt_yesorno (_("Exit Mutt?"), 1) == 1)
+  if (mutt_yesorno (_("Exit Mutt?"), M_YES) == M_YES)
   {
     endwin ();
     exit (1);

@@ -288,7 +288,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
 		      0, COLS-extra_space, 0, 0,
 		      prompt, sizeof (prompt), 0);
   strcat (prompt, "...?");	/* __STRCAT_CHECKED__ */
-  if (mutt_yesorno (prompt, 1) != 1)
+  if (mutt_yesorno (prompt, M_YES) != M_YES)
   {
     rfc822_free_address (&adr);
     CLEARLINE (LINES-1);

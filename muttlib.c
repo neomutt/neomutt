@@ -859,7 +859,7 @@ int mutt_check_overwrite (const char *attname, const char *path,
     return -1;
   if (S_ISDIR (st.st_mode))
   {
-    if (mutt_yesorno (_("File is a directory, save under it?"), 1) != M_YES) 
+    if (mutt_yesorno (_("File is a directory, save under it?"), M_YES) != M_YES) 
       return (-1);
     if (!attname || !attname[0])
     {
@@ -1180,7 +1180,7 @@ int mutt_save_confirm (const char *s, struct stat *st)
     if (option (OPTCONFIRMAPPEND))
     {
       snprintf (tmp, sizeof (tmp), _("Append messages to %s?"), s);
-      if (mutt_yesorno (tmp, 1) < 1)
+      if (mutt_yesorno (tmp, M_YES) != M_YES)
 	ret = 0;
     }
   }
@@ -1198,7 +1198,7 @@ int mutt_save_confirm (const char *s, struct stat *st)
 	if (option (OPTCONFIRMCREATE))
 	{
 	  snprintf (tmp, sizeof (tmp), _("Create %s?"), s);
-	  if (mutt_yesorno (tmp, 1) < 1)
+	  if (mutt_yesorno (tmp, M_YES) != M_YES)
 	    ret = 0;
 	}
       }

@@ -249,9 +249,9 @@ retry_name:
   
   if (mutt_check_alias_name (buf, fixed))
   {
-    switch (mutt_yesorno (_("Warning: This alias name may not work.  Fix it?"), 1))
+    switch (mutt_yesorno (_("Warning: This alias name may not work.  Fix it?"), M_YES))
     {
-      case 1:  
+      case M_YES:
       	strfcpy (buf, fixed, sizeof (buf));
 	goto retry_name;
       case -1: 
@@ -296,7 +296,7 @@ retry_name:
   buf[0] = 0;
   rfc822_write_address (buf, sizeof (buf), new->addr);
   snprintf (prompt, sizeof (prompt), _("[%s = %s] Accept?"), new->name, buf);
-  if (mutt_yesorno (prompt, 1) != 1)
+  if (mutt_yesorno (prompt, M_YES) != M_YES)
   {
     mutt_free_alias (&new);
     return;
