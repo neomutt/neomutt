@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-05 20:37+0200\n"
+"POT-Creation-Date: 1998-10-06 08:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,7 +66,7 @@ msgstr ""
 msgid "Alias added."
 msgstr ""
 
-#: attach.c:111 attach.c:234 attach.c:366 attach.c:813
+#: attach.c:111 attach.c:234 attach.c:366 attach.c:807
 msgid "Can't match nametemplate, continue?"
 msgstr ""
 
@@ -106,19 +106,19 @@ msgstr ""
 msgid "MIME type not defined.  Cannot view attachment."
 msgstr ""
 
-#: attach.c:436
+#: attach.c:435
 msgid "Cannot create filter"
 msgstr ""
 
-#: attach.c:642 recvattach.c:312
+#: attach.c:636 recvattach.c:312
 msgid "Attachment saved."
 msgstr ""
 
-#: attach.c:695
+#: attach.c:689
 msgid "Write fault!"
 msgstr ""
 
-#: attach.c:897
+#: attach.c:891
 msgid "I don't know how to print that!"
 msgstr ""
 
@@ -228,11 +228,11 @@ msgstr ""
 msgid "%s: no such attribute"
 msgstr ""
 
-#: color.c:662 hook.c:61 hook.c:69 keymap.c:651
+#: color.c:662 hook.c:61 hook.c:69 keymap.c:655
 msgid "too few arguments"
 msgstr ""
 
-#: color.c:671 hook.c:75 keymap.c:808
+#: color.c:671 hook.c:75
 msgid "too many arguments"
 msgstr ""
 
@@ -592,126 +592,126 @@ msgstr ""
 msgid "New mail in this mailbox."
 msgstr ""
 
-#: curs_main.c:513
+#: curs_main.c:525
 msgid "No mailbox is open."
 msgstr ""
 
-#: curs_main.c:519
+#: curs_main.c:531
 msgid "No tagged messages."
 msgstr ""
 
-#: curs_main.c:599
+#: curs_main.c:611
 msgid "Jump to message: "
 msgstr ""
 
-#: curs_main.c:605
+#: curs_main.c:617
 msgid "Argument must be a message number."
 msgstr ""
 
-#: curs_main.c:638
+#: curs_main.c:650
 msgid "That message is not visible."
 msgstr ""
 
-#: curs_main.c:641
+#: curs_main.c:653
 msgid "Invalid message number."
 msgstr ""
 
-#: curs_main.c:654
+#: curs_main.c:666
 msgid "Delete messages matching: "
 msgstr ""
 
-#: curs_main.c:676
+#: curs_main.c:688
 msgid "No limit pattern is in effect."
 msgstr ""
 
 #. i18n: ask for a limit to apply
-#: curs_main.c:681
+#: curs_main.c:693
 #, c-format
 msgid "Limit: %s"
 msgstr ""
 
-#: curs_main.c:690
+#: curs_main.c:702
 msgid "Limit to messages matching: "
 msgstr ""
 
-#: curs_main.c:720
+#: curs_main.c:732
 msgid "Quit Mutt?"
 msgstr ""
 
-#: curs_main.c:831
+#: curs_main.c:843
 msgid "Tag messages matching: "
 msgstr ""
 
-#: curs_main.c:839
+#: curs_main.c:851
 msgid "Undelete messages matching: "
 msgstr ""
 
-#: curs_main.c:846
+#: curs_main.c:858
 msgid "Untag messages matching: "
 msgstr ""
 
-#: curs_main.c:864
+#: curs_main.c:876
 msgid "Open mailbox"
 msgstr ""
 
-#: curs_main.c:866
+#: curs_main.c:878
 msgid "Open mailbox in read-only mode"
 msgstr ""
 
-#: curs_main.c:882 mx.c:420 mx.c:561
+#: curs_main.c:894 mx.c:420 mx.c:561
 #, c-format
 msgid "%s is not a mailbox."
 msgstr ""
 
-#: curs_main.c:978
+#: curs_main.c:990
 msgid "Exit Mutt without saving?"
 msgstr ""
 
-#: curs_main.c:988 curs_main.c:1012
+#: curs_main.c:1000 curs_main.c:1024
 msgid "You are on the last message."
 msgstr ""
 
-#: curs_main.c:995 curs_main.c:1037
+#: curs_main.c:1007 curs_main.c:1049
 msgid "No undeleted messages."
 msgstr ""
 
-#: curs_main.c:1030 curs_main.c:1053
+#: curs_main.c:1042 curs_main.c:1065
 msgid "You are on the first message."
 msgstr ""
 
-#: curs_main.c:1126 pattern.c:1074
+#: curs_main.c:1138 pattern.c:1074
 msgid "Search wrapped to top."
 msgstr ""
 
-#: curs_main.c:1135 pattern.c:1085
+#: curs_main.c:1147 pattern.c:1085
 msgid "Search wrapped to bottom."
 msgstr ""
 
-#: curs_main.c:1161
+#: curs_main.c:1173
 msgid "No new messages"
 msgstr ""
 
-#: curs_main.c:1161
+#: curs_main.c:1173
 msgid "No unread messages"
 msgstr ""
 
-#: curs_main.c:1162
+#: curs_main.c:1174
 msgid " in this limited view"
 msgstr ""
 
-#: curs_main.c:1272
+#: curs_main.c:1284
 msgid "No more threads."
 msgstr ""
 
-#: curs_main.c:1274
+#: curs_main.c:1286
 msgid "You are on the first thread."
 msgstr ""
 
-#: curs_main.c:1327
+#: curs_main.c:1339
 msgid "Thread contains unread messages."
 msgstr ""
 
-#: curs_main.c:1340 flags.c:217 thread.c:628
+#: curs_main.c:1352 flags.c:217 thread.c:628
 msgid "Threading is not enabled."
 msgstr ""
 
@@ -816,34 +816,34 @@ msgstr ""
 msgid "Invoking autoview command: %s"
 msgstr ""
 
-#: handler.c:1115 handler.c:1138
+#: handler.c:1118 handler.c:1141
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr ""
 
-#: handler.c:1239
+#: handler.c:1246
 msgid "Error: multipart/signed has no protocol."
 msgstr ""
 
-#: handler.c:1251
+#: handler.c:1258
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr ""
 
-#: handler.c:1293
+#: handler.c:1300
 msgid "Unable to open temporary file!"
 msgstr ""
 
-#: handler.c:1352
+#: handler.c:1359
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr ""
 
-#: handler.c:1357
+#: handler.c:1364
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr ""
 
-#: handler.c:1359
+#: handler.c:1366
 msgid "(need 'view-attachments' bound to key!)"
 msgstr ""
 
@@ -1062,54 +1062,54 @@ msgstr ""
 msgid "unable to determine username"
 msgstr ""
 
-#: keymap.c:406
+#: keymap.c:410
 msgid "Macro loop detected."
 msgstr ""
 
-#: keymap.c:601
+#: keymap.c:605
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr ""
 
-#: keymap.c:603
+#: keymap.c:607
 msgid "Key is not bound.  See the manual."
 msgstr ""
 
-#: keymap.c:613
+#: keymap.c:617
 msgid "push: too many arguments"
 msgstr ""
 
-#: keymap.c:634
+#: keymap.c:638
 #, c-format
 msgid "%s: no such menu"
 msgstr ""
 
-#: keymap.c:643
+#: keymap.c:647
 msgid "null key sequence"
 msgstr ""
 
-#: keymap.c:721
+#: keymap.c:725
 msgid "bind: too many arguments"
 msgstr ""
 
-#: keymap.c:736
+#: keymap.c:740
 #, c-format
 msgid "%s: no such function in map"
 msgstr ""
 
-#: keymap.c:759
+#: keymap.c:763
 msgid "macro: empty key sequence"
 msgstr ""
 
-#: keymap.c:770
+#: keymap.c:774
 msgid "macro: too many arguments"
 msgstr ""
 
-#: keymap.c:799
+#: keymap.c:804
 msgid "exec: too few arguments"
 msgstr ""
 
-#: keymap.c:822
+#: keymap.c:823
 #, c-format
 msgid "%s: no such command"
 msgstr ""

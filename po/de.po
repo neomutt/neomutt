@@ -833,7 +833,7 @@ msgstr "[-- Automatische Anzeige mittels %s --]\n"
 #: handler.c:1078
 #, c-format
 msgid "Invoking autoview command: %s"
-msgstr "In Kommando einspeisen: "
+msgstr "Rufe Kommando auf: %s"
 
 #: handler.c:1115 handler.c:1138
 #, c-format
