@@ -305,6 +305,7 @@ iconv_t mutt_iconv_open (const char *tocode, const char *fromcode, int flags)
 {
   char tocode1[SHORT_STRING];
   char fromcode1[SHORT_STRING];
+  char *tocode2, *fromcode2;
   char *tmp;
 
   iconv_t cd;
@@ -319,8 +320,10 @@ iconv_t mutt_iconv_open (const char *tocode, const char *fromcode, int flags)
 
   if ((cd = iconv_open (tocode1, fromcode1)) != (iconv_t) -1)
     return cd;
-  /* else */
-  return iconv_open (mutt_iconv_hook (tocode1), mutt_iconv_hook (fromcode1));
+  if ((tocode2 = mutt_iconv_hook (tocode1)) && (fromcode2 = mutt_iconv_hook (fromcode1)))
+    return iconv_open (tocode2, fromcode2);
+  
+  return (iconv_t) -1;
 }
 
 
