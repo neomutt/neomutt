@@ -1275,7 +1275,7 @@ struct option_t MuttVars[] = {
   { "crypt_verify_sig",	DT_QUAD, R_NONE, OPT_VERIFYSIG, M_YES },
   /*
   ** .pp
-  ** If ``yes'', always attempt to verify PGP/MIME or S/MIME signatures.
+  ** If ``yes'', always attempt to verify PGP or S/MIME signatures.
   ** If ``ask'', ask whether or not to verify the signature. 
   ** If ``no'', never attempt to verify cryptographic signatures.
   */
