@@ -1,4 +1,7 @@
-2002-12-19 07:48:39  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+2002-12-19 11:43:56  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* pgpkey.c: Don't bother the user with weak keys when there's
+	a strong one.  Experimental, based on discussions on mutt-dev.
 
 	* cvslog2changelog.pl: Identify both the author of a change and
 	the one who committed it to the CVS in the changelog.
