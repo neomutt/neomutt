@@ -342,6 +342,7 @@ int main (int argc, char **argv)
   int flags = 0;
   int version = 0;
   int i;
+  int explicit_folder = 0;
   extern char *optarg;
   extern int optind;
 
@@ -382,6 +383,7 @@ int main (int argc, char **argv)
 
       case 'f':
 	strfcpy (folder, optarg, sizeof (folder));
+        explicit_folder = 1;
 	break;
 
       case 'b':
@@ -673,11 +675,16 @@ int main (int argc, char **argv)
 
     mutt_folder_hook (folder);
 
-    Context = mx_open_mailbox (folder, ((flags & M_RO) || option (OPTREADONLY)) ? M_READONLY : 0, NULL);
-    mutt_index_menu ();
-    if (Context)
-      safe_free ((void **)&Context);
-    mutt_endwin (NULL);
+    if((Context = mx_open_mailbox (folder, ((flags & M_RO) || option (OPTREADONLY)) ? M_READONLY : 0, NULL))
+       || !explicit_folder)
+    {
+      mutt_index_menu ();
+      if (Context)
+	safe_free ((void **)&Context);
+      mutt_endwin (NULL);
+    }
+    else
+      mutt_endwin (Errorbuf);
   }
 
   exit (0);
