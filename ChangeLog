@@ -1,3 +1,7 @@
+2004-07-20 09:00:50  Pawel Dziekonski  <dzieko@pwr.wroc.pl>  (roessler)
+
+	* po/pl.po: update
+
 2004-07-20 08:17:21  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* imap/message.c, mutt.h, parse.c, send.c, url.c: Use List-Post
