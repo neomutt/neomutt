@@ -622,7 +622,9 @@ int imap_open_mailbox (CONTEXT* ctx)
   return 0;
 
  fail:
-  idata->state = IMAP_AUTHENTICATED;
+  if(idata)
+    idata->state = IMAP_AUTHENTICATED;
+
   FREE (&mx.mbox);
   return -1;
 }
