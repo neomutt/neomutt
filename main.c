@@ -838,19 +838,15 @@ int main (int argc, char **argv)
 
     if (flags & M_IGNORE)
     {
-      struct stat st;
-
       /* check to see if there are any messages in the folder */
-      if (stat (folder, &st) != 0)
+      switch (mx_check_empty (folder))
       {
-	mutt_endwin (strerror (errno));
-	exit (1);
-      }
-
-      if (st.st_size == 0)
-      {
-	mutt_endwin _("Mailbox is empty.");
-	exit (1);
+	case -1:
+	  mutt_endwin (strerror (errno));
+	  exit (1);
+	case 1:
+	  mutt_endwin _("Mailbox is empty.");
+	  exit (1);
       }
     }
 

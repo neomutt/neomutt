@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -1227,3 +1227,18 @@ int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
   return ((ctx->changed || msg_mod) ? M_REOPENED : M_NEW_MAIL);
 }
 
+/*
+ * Returns:
+ * 1 if the mailbox is not empty
+ * 0 if the mailbox is empty
+ * -1 on error
+ */
+int mbox_check_empty (const char *path)
+{
+  struct stat st;
+
+  if (stat (path, &st) == -1)
+    return -1;
+
+  return ((st.st_size == 0));
+}

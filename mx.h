@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 1999-2000 Thomas Roessler <roessler@guug.de>
+ * Copyright (C) 1999-2002 Thomas Roessler <roessler@guug.de>
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -57,14 +57,17 @@ int mbox_lock_mailbox (CONTEXT *, int, int);
 int mbox_parse_mailbox (CONTEXT *);
 int mmdf_parse_mailbox (CONTEXT *);
 void mbox_unlock_mailbox (CONTEXT *);
+int mbox_check_empty (const char *);
 
 int mh_read_dir (CONTEXT *, const char *);
 int mh_sync_mailbox (CONTEXT *, int *);
 int mh_check_mailbox (CONTEXT *, int *);
 int mh_buffy (const char *);
+int mh_check_empty (const char *);
 
 int maildir_read_dir (CONTEXT *);
 int maildir_check_mailbox (CONTEXT *, int *);
+int maindir_check_empty (const char *);
 
 int maildir_commit_message (CONTEXT *, MESSAGE *, HEADER *);
 int mh_commit_message (CONTEXT *, MESSAGE *, HEADER *);

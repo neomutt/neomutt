@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2000 Thomas Roessler <roessler@guug.de>
  * 
  *     This program is free software; you can redistribute it and/or modify
@@ -1629,4 +1629,29 @@ void mx_update_context (CONTEXT *ctx, int new_messages)
 	ctx->new++;
     }
   }
+}
+
+/*
+ * Return:
+ * 1 if the specified mailbox contains 0 messages.
+ * 0 if the mailbox contains messages
+ * -1 on error
+ */
+int mx_check_empty (const char *path)
+{
+  switch (mx_get_magic (path))
+  {
+    case M_MBOX:
+    case M_MMDF:
+    case M_KENDRA:
+      return mbox_check_empty (path);
+    case M_MH:
+      return mh_check_empty (path);
+    case M_MAILDIR:
+      return maildir_check_empty (path);
+    default:
+      errno = EINVAL;
+      return -1;
+  }
+  /* not reached */
 }

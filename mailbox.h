@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -75,5 +75,6 @@ int mx_is_pop (const char *);
 #endif
 
 int mx_access (const char*, int);
+int mx_check_empty (const char *);
 
 #endif
