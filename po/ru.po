@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 1998-10-21 10:45+0200\n"
+"POT-Creation-Date: 1998-10-21 17:29+0200\n"
 "PO-Revision-Date: 1998-10-15 07:51+0300\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "Language-Team: Mutt-dev <mutt-dev@mutt.org>\n"
@@ -143,7 +143,7 @@ msgstr "Почтовые ящики [%d]"
 msgid "Directory [%s], File mask: %s"
 msgstr "Каталог [%s], шаблон файлов: %s"
 
-#: browser.c:537 browser.c:727 browser.c:826
+#: browser.c:537 browser.c:727 browser.c:808
 msgid "No files match the file mask"
 msgstr "Нет файлов, соответствующих шаблону"
 
@@ -159,24 +159,28 @@ msgstr "Ошибка просмотра каталога."
 msgid "File Mask: "
 msgstr "Шаблон файлов: "
 
-#: browser.c:746
+#: browser.c:743
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr ""
 "Обратная сортировка по дате(d), алфавиту(a), размеру(z) или без неё(n)? "
 
-#: browser.c:748
+#: browser.c:744
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Сортировка по дате(d), алфавиту(a), размеру(z) или без неё(n)? "
 
-#: browser.c:813
+#: browser.c:745
+msgid "dazn"
+msgstr ""
+
+#: browser.c:795
 msgid "New file name: "
 msgstr "Новое имя файла: "
 
-#: browser.c:834
+#: browser.c:816
 msgid "Can't view a directory"
 msgstr "Нельзя просмотреть каталог"
 
-#: browser.c:852
+#: browser.c:834
 msgid "Error trying to view file"
 msgstr "Ошибка попытки просмотра файла"
 
@@ -296,71 +300,75 @@ msgstr "Сообщения переправлены."
 msgid "Pipe to command: "
 msgstr "Отправить к конвейер: "
 
-#: commands.c:406
+#: commands.c:401
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 
-#: commands.c:407
+#: commands.c:402
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 
-#: commands.c:462
+#: commands.c:403
+msgid "dfrsotuzc"
+msgstr ""
+
+#: commands.c:456
 msgid "Shell command: "
 msgstr "Команда shell: "
 
-#: commands.c:578
+#: commands.c:572
 #, c-format
 msgid "%s%s to mailbox"
 msgstr "%s%s в почтовый ящик"
 
-#: commands.c:579
+#: commands.c:573
 msgid "Decode-save"
 msgstr "Раскод. и удал."
 
-#: commands.c:579
+#: commands.c:573
 msgid "Decode-copy"
 msgstr "Раскодировать"
 
-#: commands.c:580
+#: commands.c:574
 msgid "Decrypt-save"
 msgstr "Расшифр. и удал."
 
-#: commands.c:580
+#: commands.c:574
 msgid "Decrypt-copy"
 msgstr "Расшифровать"
 
-#: commands.c:581 curs_main.c:231 recvattach.c:49
+#: commands.c:575 curs_main.c:231 recvattach.c:49
 msgid "Save"
 msgstr "Сохр."
 
-#: commands.c:581
+#: commands.c:575
 msgid "Copy"
 msgstr "Копиров."
 
-#: commands.c:581
+#: commands.c:575
 msgid " tagged"
 msgstr " отмеченное"
 
-#: commands.c:650
+#: commands.c:644
 #, c-format
 msgid "Copying to %s..."
 msgstr "Копируется в %s..."
 
-#: commands.c:722
+#: commands.c:716
 msgid "Print message?"
 msgstr "Печатать сообщение?"
 
-#: commands.c:722
+#: commands.c:716
 msgid "Print tagged messages?"
 msgstr "Печатать отмеченные сообщения?"
 
-#: commands.c:749
+#: commands.c:743
 msgid "Message printed"
 msgstr "Сообщение напечатано"
 
-#: commands.c:749
+#: commands.c:743
 msgid "Messages printed"
 msgstr "Сообщения напечатаны"
 
@@ -372,7 +380,7 @@ msgstr "Отправить"
 msgid "Abort"
 msgstr "Отмена"
 
-#: compose.c:69 compose.c:607
+#: compose.c:69 compose.c:598
 msgid "Attach file"
 msgstr "Присоедин."
 
@@ -380,151 +388,155 @@ msgstr "Присоедин."
 msgid "Descrip"
 msgstr "Описание"
 
-#: compose.c:98
+#: compose.c:97
 msgid ""
 "(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget "
 "it? "
 msgstr ""
 
-#: compose.c:116
+#: compose.c:98
+msgid "esabmf"
+msgstr ""
+
+#: compose.c:115
 msgid "Can't open your secret key ring!"
 msgstr "Ваш секретный ключ не открывается!"
 
-#: compose.c:121
+#: compose.c:120
 msgid "Sign as: "
 msgstr "Подписать как: "
 
-#: compose.c:140
+#: compose.c:139
 msgid "An unkown PGP version was defined for signing."
 msgstr "Неизвестная версия PGP для подписи."
 
-#: compose.c:146
+#: compose.c:149
 msgid "This doesn't make sense if you don't want to sign the message."
 msgstr "Это бессмысленно, если Вы не хотите подписывать сообщение."
 
-#: compose.c:152 compose.c:288
+#: compose.c:155 compose.c:279
 msgid "MIC algorithm: "
 msgstr "Алгоритм MIC: "
 
-#: compose.c:157
+#: compose.c:160
 msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
 msgstr "Неизвестный алгоритм MIC, допустимы: pgp-md5, pgp-sha1, pgp-rmd160"
 
-#: compose.c:201
+#: compose.c:192
 #, c-format
 msgid "%s [#%d] no longer exists!"
 msgstr "%s [#%d] больше не существует!"
 
-#: compose.c:209
+#: compose.c:200
 #, c-format
 msgid "%s [#%d] modified. Update encoding?"
 msgstr "%s [#%d] изменен. Обновить кодировку?"
 
-#: compose.c:271
+#: compose.c:262
 msgid "Sign, Encrypt"
 msgstr "Подпись, шифрование"
 
-#: compose.c:273
+#: compose.c:264
 msgid "Encrypt"
 msgstr "Шифрование"
 
-#: compose.c:275
+#: compose.c:266
 msgid "Sign"
 msgstr "Подпись"
 
-#: compose.c:277
+#: compose.c:268
 msgid "Clear"
 msgstr "Ничего"
 
-#: compose.c:282
+#: compose.c:273
 msgid " sign as: "
 msgstr " подписать как: "
 
-#: compose.c:286
+#: compose.c:277
 msgid "<default>"
 msgstr "<по умолчанию>"
 
-#: compose.c:377
+#: compose.c:368
 msgid "You may not delete the only attachment."
 msgstr "Сообщение не может содержать ни одной части."
 
-#: compose.c:451
+#: compose.c:442
 msgid "Compose"
 msgstr "Компоновка"
 
-#: compose.c:612
+#: compose.c:603
 msgid "Open mailbox to attach message from"
 msgstr "Почтовый ящик для присоединения сообщения"
 
-#: compose.c:651
+#: compose.c:642
 msgid "No messages in that folder."
 msgstr "Папка не содержит ни одного сообщения."
 
-#: compose.c:658
+#: compose.c:649
 msgid "Tag the messages you want to attach!"
 msgstr "Отметьте сообщения для присоединения!"
 
-#: compose.c:693 compose.c:713
+#: compose.c:684 compose.c:704
 msgid "Unable to attach!"
 msgstr "Нельзя присоединить!"
 
-#: compose.c:820 compose.c:834
+#: compose.c:811 compose.c:825
 msgid "Invalid encoding."
 msgstr "Непонятная кодировка."
 
-#: compose.c:825
+#: compose.c:816
 msgid "This encoding is deprecated.  Really use it?"
 msgstr "Эта кодировка устарела. Использовать её?"
 
-#: compose.c:849
+#: compose.c:840
 msgid "Save a copy of this message?"
 msgstr "Сохранить копию этого сообщения?"
 
-#: compose.c:894
+#: compose.c:885
 msgid "Rename to: "
 msgstr "Переименовать в: "
 
-#: compose.c:899
+#: compose.c:890
 #, c-format
 msgid "Can't stat: %s"
 msgstr "Нет статистики: %s"
 
-#: compose.c:926
+#: compose.c:917
 msgid "New file: "
 msgstr "Новый файл: "
 
-#: compose.c:939
+#: compose.c:930
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type по форме: base/sub"
 
-#: compose.c:945
+#: compose.c:936
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Неизвестный Content-Type %s"
 
-#: compose.c:958
+#: compose.c:949
 #, c-format
 msgid "Can't create file %s"
 msgstr "Не удаётся создать файл %s"
 
-#: compose.c:966
+#: compose.c:957
 msgid "What we have here is a failure to make an attachment"
 msgstr "Здесь происходит сбой попытки присоединения"
 
-#: compose.c:1038
+#: compose.c:1029
 msgid "Postpone this message?"
 msgstr "Отложить это сообщение?"
 
-#: compose.c:1085
+#: compose.c:1076
 msgid "Write message to mailbox"
 msgstr "Записать сообщение в почтовый ящик"
 
-#: compose.c:1089
+#: compose.c:1080
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Запись сообщения в %s ..."
 
-#: compose.c:1100
+#: compose.c:1091
 msgid "Message written."
 msgstr "Сообщение записано."
 

@@ -396,57 +396,51 @@ int mutt_pipe_message (HEADER *h)
 int mutt_select_sort (int reverse)
 {
   int method = Sort; /* save the current method in case of abort */
-  event_t ch;
 
-  Sort = 0;
-  while (!Sort)
+  switch (mutt_multi_choice (reverse ?
+			     _("Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: ") :
+			     _("Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "),
+			     _("dfrsotuzc")))
   {
-    mvprintw (LINES - 1, 0,
-    reverse ?
-_("Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: ") :
-_("Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "));
-    ch = mutt_getch ();
-    if (ch.ch == -1 || CI_is_return (ch.ch))
-    {
-      Sort = method;
-      CLEARLINE (LINES-1);
-      return (-1);
-    }
-    switch (ch.ch)
-    {
-      case 'c':
-	Sort = SORT_SCORE;
-	break;
-      case 'd':
-	Sort = SORT_DATE;
-	break;
-      case 'f':
-	Sort = SORT_FROM;
-	break;
-      case 'o':
-	Sort = SORT_TO;
-	break;
-      case 'r':
-	Sort = SORT_RECEIVED;
-	break;
-      case 's':
-	Sort = SORT_SUBJECT;
-	break;
-      case 't':
-	Sort = SORT_THREADS;
-	break;
-      case 'u':
-	Sort = SORT_ORDER;
-	break;
-      case 'z':
-	Sort = SORT_SIZE;
-	break;
-      default:
-	BEEP ();
-	break;
-    }
+  case -1: /* abort - don't resort */
+    return -1;
+
+  case 1: /* (d)ate */
+    Sort = SORT_DATE;
+    break;
+
+  case 2: /* (f)rm */
+    Sort = SORT_FROM;
+    break;
+  
+  case 3: /* (r)ecv */
+    Sort = SORT_RECEIVED;
+    break;
+  
+  case 4: /* (s)ubj */
+    Sort = SORT_SUBJECT;
+    break;
+  
+  case 5: /* t(o) */
+    Sort = SORT_TO;
+    break;
+  
+  case 6: /* (t)hread */
+    Sort = SORT_THREADS;
+    break;
+  
+  case 7: /* (u)nsort */
+    Sort = SORT_ORDER;
+    break;
+  
+  case 8: /* si(z)e */
+    Sort = SORT_SIZE;
+    break;
+  
+  case 9: /* s(c)ore */ 
+    Sort = SORT_SCORE;
+    break;
   }
-  CLEARLINE (LINES-1);
   if (reverse)
     Sort |= SORT_REVERSE;
 

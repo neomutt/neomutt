@@ -735,60 +735,42 @@ void mutt_select_file (char *f, size_t flen, int buffy)
       case OP_SORT:
       case OP_SORT_REVERSE:
 
-	{
-	  int reverse = 0, done = 0;
-	  event_t ch;
-
-	  move (LINES - 1, 0);
-	  if (i == OP_SORT_REVERSE)
+        {
+	  int resort = 1;
+	  int reverse = (i == OP_SORT_REVERSE);
+	  
+	  switch (mutt_multi_choice ((reverse) ?
+	      _("Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? ") :
+	      _("Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "),
+	      _("dazn")))
 	  {
-	    reverse = SORT_REVERSE;
-	    addstr (_("Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "));
-	  } else {
-	    addstr (_("Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "));
-	  }
-	  clrtoeol ();
-
-	  FOREVER
-	  {
-	    ch = mutt_getch();
-	    if (ch.ch == 'a' || ch.ch == 'd' || ch.ch == 'z' || ch.ch == 'n')
+	    case -1: /* abort */
+	      resort = 0;
 	      break;
 
-	    if (ch.ch == -1 || CI_is_return (ch.ch))
-	    {
-	      done = 1;
-	      CLEARLINE (LINES - 1);
-	      break;
-	    }
-	    else
-	      BEEP ();
-	  }
-
-	  /* nothing to be done */
-	  if (done)
-	    break;
-
-	  switch (ch.ch)
-	  {
-	    case 'a': 
-	      BrowserSort = reverse | SORT_SUBJECT;
-	      break;
-	    case 'd':
+            case 1: /* (d)ate */
 	      BrowserSort = reverse | SORT_DATE;
 	      break;
-	    case 'z': 
+
+            case 2: /* (a)lpha */
+	      BrowserSort = reverse | SORT_SUBJECT;
+	      break;
+
+            case 3: /* si(z)e */
 	      BrowserSort = reverse | SORT_SIZE;
 	      break;
-	    case 'n': 
+
+            case 4: /* do(n)'t sort */
 	      BrowserSort = SORT_ORDER;
 	      break;
 	  }
-	  browser_sort (&state);
-	  menu->redraw = REDRAW_FULL;
+	  if (resort)
+	  {
+	    browser_sort (&state);
+	    menu->redraw = REDRAW_FULL;
+	  }
+	  break;
 	}
-
-	break;
 
       case OP_TOGGLE_MAILBOXES:
 	buffy = 1 - buffy;

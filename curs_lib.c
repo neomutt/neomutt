@@ -378,3 +378,31 @@ void mutt_curs_set (int cursor)
   curs_set (cursor);
 }
 #endif
+
+int mutt_multi_choice (char *prompt, char *letters)
+{
+  event_t ch;
+  int choice = 0;
+  char *p;
+
+  mvaddstr (LINES - 1, 0, prompt);
+  clrtoeol ();
+  while (!choice)
+  {
+    mutt_refresh ();
+    ch  = mutt_getch ();
+    if (ch.ch == -1)
+      choice = -1;
+    else
+    {
+      p = strchr (letters, ch.ch);
+      if (p)
+	choice = p - letters + 1;
+      else
+	BEEP ();
+    }
+  }
+  CLEARLINE (LINES - 1);
+  mutt_refresh ();
+  return choice;
+}

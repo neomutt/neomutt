@@ -86,7 +86,6 @@ void snd_entry (char *b, size_t blen, MUTTMENU *menu, int num)
 
 static int pgp_send_menu (int bits)
 {
-  event_t ch;
   char *p;
   char *micalg = NULL;
   char input_signas[SHORT_STRING];
@@ -94,93 +93,85 @@ static int pgp_send_menu (int bits)
   KEYINFO *secring;
 
   struct pgp_vinfo *pgp = pgp_get_vinfo(PGP_SIGN);
-  
-  mvaddstr (LINES-1, 0, _("(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget it? "));
-  clrtoeol ();
-  do
-  {
-    mutt_refresh ();
-    
-    ch  = mutt_getch();
-    if (ch.ch == EOF)
-      break;
 
-    if (ch.ch == 'a')
+  switch (mutt_multi_choice (_("(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget it? "),
+			     _("esabmf")))
+  {
+  case 1: /* (e)ncrypt */
+    bits |= PGPENCRYPT;
+    break;
+
+  case 2: /* (s)ign */
+    bits |= PGPSIGN;
+    break;
+
+  case 3: /* sign (a)s */
+    unset_option(OPTPGPCHECKTRUST);
+
+    if(pgp)
     {
-      unset_option(OPTPGPCHECKTRUST);
-      
-      if(pgp)
+      if(!(secring = pgp->read_secring(pgp)))
       {
-	if(!(secring = pgp->read_secring(pgp)))
+	mutt_error _("Can't open your secret key ring!");
+	bits &= ~PGPSIGN;
+      }
+      else 
+      {
+	if ((p = pgp_ask_for_key (pgp, secring, _("Sign as: "), 
+				  NULL, KEYFLAG_CANSIGN, &micalg)))
 	{
-	  mutt_error _("Can't open your secret key ring!");
-	  bits &= ~PGPSIGN;
+	  snprintf (input_signas, sizeof (input_signas), "0x%s", p);
+	  safe_free((void **) &PgpSignAs);
+	  PgpSignAs = safe_strdup(input_signas);
+	  safe_free((void **) &PgpSignMicalg);
+	  PgpSignMicalg = micalg;	/* micalg is malloc()ed by pgp_ask_for_key */
+	  pgp_void_passphrase ();	/* probably need a different passphrase */
+	  safe_free ((void **) &p);
+	  bits |= PGPSIGN;
+	}
+
+	pgp_close_keydb(&secring);
+      }
+    }
+    else
+    {
+      bits &= ~PGPSIGN;
+      mutt_error _("An unkown PGP version was defined for signing.");
+    }
+    break;
+
+  case 4: /* (b)oth */
+    bits = PGPENCRYPT | PGPSIGN;
+    break;
+
+  case 5: /* select (m)ic algorithm */
+    if(!(bits & PGPSIGN))
+      mutt_error _("This doesn't make sense if you don't want to sign the message.");
+    else
+    {
+      /* Copy the existing MIC algorithm into place */
+      strfcpy(input_micalg, NONULL(PgpSignMicalg), sizeof(input_micalg));
+
+      if(mutt_get_field (_("MIC algorithm: "), input_micalg, sizeof(input_micalg), 0) == 0)
+      {
+	if(strcasecmp(input_micalg, "pgp-md5") && strcasecmp(input_micalg, "pgp-sha1")
+	   && strcasecmp(input_micalg, "pgp-rmd160"))
+	{
+	  mutt_error _("Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160");
 	}
 	else 
 	{
-	  if ((p = pgp_ask_for_key (pgp, secring, _("Sign as: "), 
-				    NULL, KEYFLAG_CANSIGN, &micalg)))
-	  {
-	    snprintf (input_signas, sizeof (input_signas), "0x%s", p);
-	    safe_free((void **) &PgpSignAs);
-	    PgpSignAs = safe_strdup(input_signas);
-	    safe_free((void **) &PgpSignMicalg);
-	    PgpSignMicalg = micalg;	/* micalg is malloc()ed by pgp_ask_for_key */
-	    pgp_void_passphrase (); 	/* probably need a different passphrase */
-	    safe_free ((void **) &p);
-	    bits |= PGPSIGN;
-	  }
-	  
-	  pgp_close_keydb(&secring);
+	  safe_free((void **) &PgpSignMicalg);
+	  PgpSignMicalg = safe_strdup(input_micalg);
 	}
       }
-      else
-      {
-	bits &= ~PGPSIGN;
-	mutt_error _("An unkown PGP version was defined for signing.");
-      }
     }
-    else if (ch.ch == 'm')
-    {
-      if(!(bits & PGPSIGN))
-	mutt_error _("This doesn't make sense if you don't want to sign the message.");
-      else
-      {
-	/* Copy the existing MIC algorithm into place */
-	strfcpy(input_micalg, NONULL(PgpSignMicalg), sizeof(input_micalg));
+    break;
 
-	if(mutt_get_field (_("MIC algorithm: "), input_micalg, sizeof(input_micalg), 0) == 0)
-	{
-	  if(strcasecmp(input_micalg, "pgp-md5") && strcasecmp(input_micalg, "pgp-sha1")
-	     && strcasecmp(input_micalg, "pgp-rmd160"))
-	  {
-	    mutt_error _("Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160");
-	  }
-	  else 
-	  {
-	    safe_free((void **) &PgpSignMicalg);
-	    PgpSignMicalg = safe_strdup(input_micalg);
-	  }
-	}
-      }
-    }
-    else if (ch.ch == 'e')
-      bits |= PGPENCRYPT;
-    else if (ch.ch == 's')
-      bits |= PGPSIGN;
-    else if (ch.ch == 'b')
-      bits = PGPENCRYPT | PGPSIGN;
-    else if (ch.ch == 'f')
-      bits = 0;
-    else
-    {
-      BEEP ();
-      ch.ch = 0;
-    }
+  case 6: /* (f)orget it */
+    bits = 0;
+    break;
   }
-  while (ch.ch == 0);
-  CLEARLINE (LINES-1);
-  mutt_refresh ();
   return (bits);
 }
 #endif /* _PGPPATH */

@@ -236,6 +236,7 @@ int mutt_is_message_type(int, const char *);
 int mutt_is_list_recipient (ADDRESS *a);
 int mutt_is_text_type (int, char *);
 int mutt_is_valid_mailbox (const char *);
+int mutt_multi_choice (char *prompt, char *letters);
 int mutt_needs_mailcap (BODY *);
 int mutt_num_postponed (void);
 int mutt_parse_bind (BUFFER *, BUFFER *, unsigned long, BUFFER *);

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt-0.93i\n"
-"POT-Creation-Date: 1998-10-21 10:45+0200\n"
+"POT-Creation-Date: 1998-10-21 17:29+0200\n"
 "PO-Revision-Date: 1998-10-14 15:23+02:00\n"
 "Last-Translator: Marco d'Itri <md@linux.it>\n"
 "Language-Team: none\n"
@@ -149,7 +149,7 @@ msgstr "Mailbox [%d]"
 msgid "Directory [%s], File mask: %s"
 msgstr "Directory [%s], Maschera dei file: %s"
 
-#: browser.c:537 browser.c:727 browser.c:826
+#: browser.c:537 browser.c:727 browser.c:808
 msgid "No files match the file mask"
 msgstr "Non ci sono file corrispondenti alla maschera"
 
@@ -165,24 +165,28 @@ msgstr "Errore nella lettura della directory."
 msgid "File Mask: "
 msgstr "Maschera dei file: "
 
-#: browser.c:746
+#: browser.c:743
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr ""
 "Ordino al contrario per (d)ata, (a)lfabetico, dimensioni(z) o (n)ulla? "
 
-#: browser.c:748
+#: browser.c:744
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Ordino per (d)ata, (a)lfabetico, dimensioni(z) o (n)ulla? "
 
-#: browser.c:813
+#: browser.c:745
+msgid "dazn"
+msgstr ""
+
+#: browser.c:795
 msgid "New file name: "
 msgstr "Nuovo nome del file: "
 
-#: browser.c:834
+#: browser.c:816
 msgid "Can't view a directory"
 msgstr "Impossibile vedere una directory"
 
-#: browser.c:852
+#: browser.c:834
 msgid "Error trying to view file"
 msgstr "C'è stato un errore cercando di visualizzare il file"
 
@@ -300,74 +304,78 @@ msgstr "Messaggi rimbalzati."
 msgid "Pipe to command: "
 msgstr "Apri un pipe con il comando: "
 
-#: commands.c:406
+#: commands.c:401
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 "OrdContr (d)ata/(f)rom/(r)icev/(s)ogg/t(o)/(t)hread/n(u)lla/si(z)e/s(c)ore?: "
 
-#: commands.c:407
+#: commands.c:402
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 "Ordina per "
 "(d)ata/(f)rom/(r)icev/(s)ogg/t(o)/(t)hread/n(u)lla/si(z)e/s(c)ore?: "
 
-#: commands.c:462
+#: commands.c:403
+msgid "dfrsotuzc"
+msgstr ""
+
+#: commands.c:456
 msgid "Shell command: "
 msgstr "Comando della shell: "
 
-#: commands.c:578
+#: commands.c:572
 #, c-format
 msgid "%s%s to mailbox"
 msgstr "%s%s nella mailbox"
 
-#: commands.c:579
+#: commands.c:573
 msgid "Decode-save"
 msgstr "Decodifica e salva"
 
-#: commands.c:579
+#: commands.c:573
 msgid "Decode-copy"
 msgstr "Decodifica e copia"
 
-#: commands.c:580
+#: commands.c:574
 msgid "Decrypt-save"
 msgstr "Decodifica e salva"
 
-#: commands.c:580
+#: commands.c:574
 msgid "Decrypt-copy"
 msgstr "Decodifica e copia"
 
-#: commands.c:581 curs_main.c:231 recvattach.c:49
+#: commands.c:575 curs_main.c:231 recvattach.c:49
 msgid "Save"
 msgstr "Salva"
 
-#: commands.c:581
+#: commands.c:575
 msgid "Copy"
 msgstr "Copia"
 
-#: commands.c:581
+#: commands.c:575
 msgid " tagged"
 msgstr " i messaggi segnati"
 
-#: commands.c:650
+#: commands.c:644
 #, c-format
 msgid "Copying to %s..."
 msgstr "Copio in %s..."
 
-#: commands.c:722
+#: commands.c:716
 msgid "Print message?"
 msgstr "Stampo il messaggio?"
 
-#: commands.c:722
+#: commands.c:716
 msgid "Print tagged messages?"
 msgstr "Stampo i messaggi segnati?"
 
-#: commands.c:749
+#: commands.c:743
 msgid "Message printed"
 msgstr "Messaggio stampato"
 
-#: commands.c:749
+#: commands.c:743
 msgid "Messages printed"
 msgstr "Messaggi stampati"
 
@@ -379,7 +387,7 @@ msgstr "Spedisci"
 msgid "Abort"
 msgstr "Abbandona"
 
-#: compose.c:69 compose.c:607
+#: compose.c:69 compose.c:598
 msgid "Attach file"
 msgstr "Allega un file"
 
@@ -387,152 +395,156 @@ msgstr "Allega un file"
 msgid "Descrip"
 msgstr "Descr"
 
-#: compose.c:98
+#: compose.c:97
 msgid ""
 "(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget "
 "it? "
 msgstr ""
 "critt.(e), firma(s), firma come(a), entram(b)i, seleziona (m)ic, annulla(f) "
 
-#: compose.c:116
+#: compose.c:98
+msgid "esabmf"
+msgstr ""
+
+#: compose.c:115
 msgid "Can't open your secret key ring!"
 msgstr "Impossibile aprire il tuo portachiavi segreto!"
 
-#: compose.c:121
+#: compose.c:120
 msgid "Sign as: "
 msgstr "Firma come: "
 
-#: compose.c:140
+#: compose.c:139
 msgid "An unkown PGP version was defined for signing."
 msgstr "È stata definita per firmare una versione di PGP sconosciuta."
 
-#: compose.c:146
+#: compose.c:149
 msgid "This doesn't make sense if you don't want to sign the message."
 msgstr "Questo non ha senso se non vuoi firmare il messaggio."
 
-#: compose.c:152 compose.c:288
+#: compose.c:155 compose.c:279
 msgid "MIC algorithm: "
 msgstr "Algoritmo MIC: "
 
-#: compose.c:157
+#: compose.c:160
 msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
 msgstr "Algoritmo MIC sconosciuto, sono validi: pgp-md5, pgp-sha1, pgp-rmd160"
 
-#: compose.c:201
+#: compose.c:192
 #, c-format
 msgid "%s [#%d] no longer exists!"
 msgstr "%s [#%d] non esiste più!"
 
-#: compose.c:209
+#: compose.c:200
 #, c-format
 msgid "%s [#%d] modified. Update encoding?"
 msgstr "%s [#%d] è stato modificato. Aggiorno la codifica?"
 
-#: compose.c:271
+#: compose.c:262
 msgid "Sign, Encrypt"
 msgstr "Firma, Crittografa"
 
-#: compose.c:273
+#: compose.c:264
 msgid "Encrypt"
 msgstr "Crittografa"
 
-#: compose.c:275
+#: compose.c:266
 msgid "Sign"
 msgstr "Firma"
 
-#: compose.c:277
+#: compose.c:268
 msgid "Clear"
 msgstr "Normale"
 
-#: compose.c:282
+#: compose.c:273
 msgid " sign as: "
 msgstr " firma come: "
 
-#: compose.c:286
+#: compose.c:277
 msgid "<default>"
 msgstr "<predefinito>"
 
-#: compose.c:377
+#: compose.c:368
 msgid "You may not delete the only attachment."
 msgstr "Non puoi cancellare l'unico allegato."
 
-#: compose.c:451
+#: compose.c:442
 msgid "Compose"
 msgstr "Componi"
 
-#: compose.c:612
+#: compose.c:603
 msgid "Open mailbox to attach message from"
 msgstr "Apri la mailbox da cui allegare il messaggio"
 
-#: compose.c:651
+#: compose.c:642
 msgid "No messages in that folder."
 msgstr "In questo folder non ci sono messaggi."
 
-#: compose.c:658
+#: compose.c:649
 msgid "Tag the messages you want to attach!"
 msgstr "Segna i messaggi che vuoi allegare!"
 
-#: compose.c:693 compose.c:713
+#: compose.c:684 compose.c:704
 msgid "Unable to attach!"
 msgstr "Impossibile allegare!"
 
-#: compose.c:820 compose.c:834
+#: compose.c:811 compose.c:825
 msgid "Invalid encoding."
 msgstr "Codifica non valida."
 
-#: compose.c:825
+#: compose.c:816
 msgid "This encoding is deprecated.  Really use it?"
 msgstr ""
 
-#: compose.c:849
+#: compose.c:840
 msgid "Save a copy of this message?"
 msgstr "Salvo una copia di questo messaggio?"
 
-#: compose.c:894
+#: compose.c:885
 msgid "Rename to: "
 msgstr "Rinomina in: "
 
-#: compose.c:899
+#: compose.c:890
 #, c-format
 msgid "Can't stat: %s"
 msgstr "Non riesco a fare stat: %s"
 
-#: compose.c:926
+#: compose.c:917
 msgid "New file: "
 msgstr "Nuovo file: "
 
-#: compose.c:939
+#: compose.c:930
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type non è nella forma base/sub"
 
-#: compose.c:945
+#: compose.c:936
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Content-Type %s sconosciuto"
 
-#: compose.c:958
+#: compose.c:949
 #, c-format
 msgid "Can't create file %s"
 msgstr "Impossibile creare il file %s"
 
-#: compose.c:966
+#: compose.c:957
 msgid "What we have here is a failure to make an attachment"
 msgstr "Quel che abbiamo qui è l'impossibilità di fare un allegato"
 
-#: compose.c:1038
+#: compose.c:1029
 msgid "Postpone this message?"
 msgstr "Rimando a dopo questo messaggio?"
 
-#: compose.c:1085
+#: compose.c:1076
 msgid "Write message to mailbox"
 msgstr "Salva il messaggio nella mailbox"
 
-#: compose.c:1089
+#: compose.c:1080
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Scrivo il messaggio in %s ..."
 
-#: compose.c:1100
+#: compose.c:1091
 msgid "Message written."
 msgstr "Messaggio scritto."
 
