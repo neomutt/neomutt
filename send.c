@@ -1261,10 +1261,12 @@ ci_send_message (int flags,		/* send mode */
       {
 #ifdef HAVE_SMIME
         if (option (OPTSMIMEISDEFAULT))
-          msg->security ^= APPLICATION_SMIME;
+          msg->security &= ~APPLICATION_SMIME;
 #endif
         msg->security |= APPLICATION_PGP;
       }
+      if (~cur->security && !option (OPTSMIMEISDEFAULT))
+	msg->security |= APPLICATION_PGP;
 #endif /* HAVE_PGP */
     }
     else if (msg->security)
@@ -1275,7 +1277,7 @@ ci_send_message (int flags,		/* send mode */
       if (option (OPTSMIMEISDEFAULT))
       {
         msg->security |= APPLICATION_SMIME;
-        msg->security ^= APPLICATION_PGP;
+        msg->security &= ~APPLICATION_PGP;
       }
 #endif
 #endif /* HAVE_PGP */
