@@ -1,3 +1,7 @@
+2004-01-12 22:56:58  Christoph Ludwig  <cludwig@cdc.informatik.tu-darmstadt.de>  (roessler)
+
+	* smime_keys.pl: Avoid a Perl warning.
+
 2004-01-12 20:24:09  Matt Kraai  <kraai@ftbfs.org>  (roessler)
 
 	* doc/manual.sgml.head: A newline was missing from the
