@@ -25,7 +25,7 @@ do_check_files ()
 
 do_check ()
 {
-	do_check_files "$1" "$2" "$3" *.c */*.c
+	do_check_files "$1" "$2" "$3" `find . -path ./intl -prune -o -name '*.c' -print`
 }
 
 do_check '\<fopen.*'\"'.*w' __FOPEN_CHECKED__ "Alert: Unchecked fopen calls."
