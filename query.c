@@ -295,9 +295,6 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 
   if (results)
   {
-    /* tell whoever called me to redraw the screen when I return */
-    set_option (OPTNEEDREDRAW);
-
     snprintf (title, sizeof (title), _("Query '%s'"), buf);
 
     /* count the number of results */
@@ -480,6 +477,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
       {
 	rfc822_write_address (buf, buflen, result_to_addr(QueryTable[menu->current].data));
       }
+      
     }
 
     queryp = results;
@@ -493,6 +491,9 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
       queryp = results;
     }
     safe_free ((void **) &QueryTable);
+    
+    /* tell whoever called me to redraw the screen when I return */
+    set_option (OPTNEEDREDRAW);
   }
 
   mutt_menuDestroy (&menu);
