@@ -208,7 +208,8 @@ static void pgp_copy_clearsigned (FILE *fpin, STATE *s, char *charset)
     
     if (armor_header)
     {
-      if (buf[0] == '\n') 
+      char *p = mutt_skip_whitespace (buf);
+      if (*p == '\n') 
 	armor_header = 0;
       continue;
     }
