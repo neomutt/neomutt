@@ -469,7 +469,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	    my_wcstombs (buf, buflen, state->wbuf, state->curpos);
 
 	    /* see if the path has changed from the last time */
-	    if (!tempbuf || (templen == state->lastchar &&
+	    if ((!tempbuf && !state->lastchar) || (tempbuf && templen == state->lastchar &&
 		!memcmp (tempbuf, state->wbuf, state->lastchar * sizeof (wchar_t))))
 	    {
 	      _mutt_select_file (buf, buflen, 0, multiple, files, numfiles);
