@@ -19,7 +19,7 @@ typedef struct ciss_url
   char *user;
   char *pass;
   char *host;
-  short port;
+  unsigned short port;
   char *path;
 } 
 ciss_url_t;
