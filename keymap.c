@@ -357,7 +357,7 @@ static int retry_generic (int menu, keycode_t *keys, int keyslen, int lastkey)
  *	OP_NULL		no function bound to key sequence
  *	-1		error occured while reading input
  */
-int _km_dokey (int menu, int flags)
+int km_dokey (int menu)
 {
   event_t tmp;
   struct keymap_t *map = Keymaps[menu];
@@ -374,7 +374,7 @@ int _km_dokey (int menu, int flags)
     if (menu != MENU_EDITOR)
       timeout ((Timeout > 0 ? Timeout : 60) * 1000);
 
-    tmp = _mutt_getch(flags);
+    tmp = mutt_getch();
 
     if (menu != MENU_EDITOR)
       timeout (-1); /* restore blocking operation */

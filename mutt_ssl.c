@@ -629,6 +629,7 @@ static int ssl_check_certificate (sslsockdata * data)
   menu->help = helpstr;
 
   done = 0;
+  set_option(OPTUNBUFFEREDINPUT);
   while (!done)
   {
     switch (mutt_menuLoop (menu))
@@ -662,6 +663,7 @@ static int ssl_check_certificate (sslsockdata * data)
         break;
     }
   }
+  unset_option(OPTUNBUFFEREDINPUT);
   mutt_menuDestroy (&menu);
   return (done == 2);
 }

@@ -87,8 +87,7 @@ void mutt_curs_set (int);
 #define CI_is_return(c) ((c) == '\r' || (c) == '\n')
 #endif
 
-#define mutt_getch() _mutt_getch(0)
-event_t _mutt_getch (int);
+event_t mutt_getch (void);
 
 void mutt_endwin (const char *);
 void mutt_flushinp (void);

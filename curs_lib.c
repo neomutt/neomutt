@@ -57,12 +57,12 @@ void mutt_refresh (void)
   refresh ();
 }
 
-event_t _mutt_getch (int flags)
+event_t mutt_getch (void)
 {
   int ch;
   event_t err = {-1, OP_NULL }, ret;
 
-  if (!(flags & M_KM_UNBUFFERED) && UngetCount)
+  if (!option(OPTUNBUFFEREDINPUT) && UngetCount)
     return (KeyEvent[--UngetCount]);
 
   SigInt = 0;
@@ -125,7 +125,9 @@ int mutt_get_password (char *msg, char *buf, size_t buflen)
   
   CLEARLINE (LINES-1);
   addstr (msg);
+  set_option (OPTUNBUFFEREDINPUT);
   rc = mutt_enter_string (buf, buflen, LINES - 1, mutt_strlen (msg), M_PASS);
+  unset_option (OPTUNBUFFEREDINPUT);
   CLEARLINE (LINES-1);
   return (rc);
 }

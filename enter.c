@@ -256,7 +256,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
     }
     mutt_refresh ();
 
-    if ((ch = _km_dokey (MENU_EDITOR, pass ? M_KM_UNBUFFERED : 0)) == -1)
+    if ((ch = km_dokey (MENU_EDITOR)) == -1)
     {
       rv = -1; 
       goto bye;

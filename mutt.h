@@ -478,6 +478,7 @@ enum
   OPTREDRAWTREE,	/* (pseudo) redraw the thread tree */
   OPTPGPCHECKTRUST,	/* (pseudo) used by pgp_select_key () */
   OPTDONTHANDLEPGPKEYS,	/* (pseudo) used to extract PGP keys */
+  OPTUNBUFFEREDINPUT,   /* (pseudo) don't use key buffer */
 
   OPTMAX
 };
