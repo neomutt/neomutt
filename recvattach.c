@@ -682,9 +682,28 @@ void mutt_print_attachment_list (FILE *fp, int tag, BODY *top)
     print_attachment_list (fp, tag, top, &state);
 }
 
+ATTACHPTR **mutt_update_attach_index (BODY *cur, ATTACHPTR **idx,
+				      short *idxlen, short *idxmax,
+				      MUTTMENU *menu)
+{
+  *idxlen = 0;
+  idx = mutt_gen_attach_list (cur, -1, idx, idxlen, idxmax, 0, 0);
+  
+  menu->max  = *idxlen;
+  menu->data = idx;
+
+  if (menu->current >= menu->max)
+    menu->current = menu->max - 1;
+  menu_check_recenter (menu);
+  menu->redraw |= REDRAW_INDEX;
+  
+  return idx;
+}
+
+
 void
-mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, HEADER *hdr, 
-			  ATTACHPTR **idx, short idxlen)
+mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, HEADER *hdr,
+			  BODY *cur, ATTACHPTR **idx, short *idxlen, short *idxmax)
 {
 #if 0
   int old_optweed = option (OPTWEED);
@@ -701,7 +720,7 @@ mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, HEADER *hdr,
 
       case OP_VIEW_ATTACH:
 	op = mutt_view_attachment (fp, idx[menu->current]->content, M_REGULAR,
-				   hdr, idx, idxlen);
+				   hdr, idx, *idxlen);
 	break;
 
       case OP_NEXT_ENTRY:
@@ -727,8 +746,10 @@ mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, HEADER *hdr,
       case OP_EDIT_TYPE:
 	/* when we edit the content-type, we should redisplay the attachment
 	   immediately */
-	mutt_edit_content_type (hdr, idx[menu->current]->content);
-	op = OP_VIEW_ATTACH;
+	mutt_edit_content_type (hdr, idx[menu->current]->content, fp);
+        if (idxmax) 
+	  mutt_update_attach_index (cur, idx, idxlen, idxmax, menu);
+        op = OP_VIEW_ATTACH;
 	break;
       default:
 	op = OP_NULL;
@@ -751,6 +772,8 @@ static const char *Function_not_permitted = N_("Function not permitted in attach
 			mutt_error _(Function_not_permitted); \
 			break; \
 		     }
+
+
 
 void mutt_view_attachments (HEADER *hdr)
 {
@@ -807,16 +830,15 @@ void mutt_view_attachments (HEADER *hdr)
     cur = hdr->content;
   }
 
-  idx = mutt_gen_attach_list (cur, -1, idx, &idxlen, &idxmax, 0, 0);
-
   menu = mutt_new_menu ();
-  menu->max = idxlen;
-  menu->make_entry = attach_entry;
-  menu->tag = mutt_tag_attach;
   menu->menu = MENU_ATTACH;
   menu->title = _("Attachments");
-  menu->data = idx;
+  menu->make_entry = attach_entry;
+  menu->tag = mutt_tag_attach;
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_ATTACH, AttachHelp);
+
+
+  idx  = mutt_update_attach_index (cur, idx, &idxlen, &idxmax, menu);
 
   FOREVER
   {
@@ -824,7 +846,7 @@ void mutt_view_attachments (HEADER *hdr)
     {
       case OP_DISPLAY_HEADERS:
       case OP_VIEW_ATTACH:
-	mutt_attach_display_loop (menu, op, fp, hdr, idx, idxlen);
+	mutt_attach_display_loop (menu, op, fp, hdr, cur, idx, &idxlen, &idxmax);
 	menu->redraw = REDRAW_FULL;
 	break;
 
@@ -998,8 +1020,8 @@ void mutt_view_attachments (HEADER *hdr)
 	break;
 
       case OP_EDIT_TYPE:
-	mutt_edit_content_type (hdr, idx[menu->current]->content);
-	menu->redraw = REDRAW_CURRENT;
+	mutt_edit_content_type (hdr, idx[menu->current]->content, fp);
+        mutt_update_attach_index (cur, idx, &idxlen, &idxmax, menu);
 	break;
 
       case OP_EXIT:

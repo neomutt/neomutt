@@ -906,7 +906,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
       case OP_EDIT_TYPE:
 	CHECK_COUNT;
         {
-	  mutt_edit_content_type (NULL, idx[menu->current]->content);
+	  mutt_edit_content_type (NULL, idx[menu->current]->content, NULL);
 
 	  /* this may have been a change to text/something */
 	  mutt_update_encoding (idx[menu->current]->content);
@@ -1112,7 +1112,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
       case OP_VIEW_ATTACH:
       case OP_DISPLAY_HEADERS:
 	CHECK_COUNT;
-	mutt_attach_display_loop (menu, op, NULL, NULL, idx, idxlen);
+	mutt_attach_display_loop (menu, op, NULL, NULL, NULL, idx, &idxlen, NULL);
 	menu->redraw = REDRAW_FULL;
 	break;
 

@@ -1054,7 +1054,7 @@ int mutt_index_menu (void)
 
 	CHECK_MSGCOUNT;
 	CHECK_ATTACH;
-	mutt_edit_content_type (CURHDR, CURHDR->content);
+	mutt_edit_content_type (CURHDR, CURHDR->content, NULL);
 	/* if we were in the pager, redisplay the message */
 	if (menu->menu == MENU_PAGER)
 	{

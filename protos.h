@@ -151,7 +151,7 @@ void mutt_decode_attachment (BODY *, STATE *);
 void mutt_default_save (char *, size_t, HEADER *);
 void mutt_display_address (ENVELOPE *);
 void mutt_display_sanitize (char *);
-void mutt_edit_content_type (HEADER *, BODY *);
+void mutt_edit_content_type (HEADER *, BODY *, FILE *);
 void mutt_edit_file (const char *, const char *);
 void mutt_edit_headers (const char *, const char *, HEADER *, char *, size_t);
 void mutt_curses_error (const char *, ...);

@@ -770,7 +770,7 @@ void mutt_version (void)
   mutt_message ("Mutt %s (%s)", MUTT_VERSION, ReleaseDate);
 }
 
-void mutt_edit_content_type (HEADER *h, BODY *b)
+void mutt_edit_content_type (HEADER *h, BODY *b, FILE *fp)
 {
   char buf[LONG_STRING];
   char obuf[LONG_STRING];
@@ -834,6 +834,9 @@ void mutt_edit_content_type (HEADER *h, BODY *b)
     mutt_free_header (&b->hdr);
   }
 
+  if (fp && (is_multipart (b) || mutt_is_message_type (b->type, b->subtype)))
+    mutt_parse_part (fp, b);
+  
 #ifdef HAVE_PGP
   if (h)
   {
