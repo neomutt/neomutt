@@ -1,3 +1,8 @@
+2005-01-27 18:21:51  Marco d'Itri  <md@Linux.IT>  (roessler)
+
+	* contrib/gpg.rc: A gpg command line contains both --verbose
+	and --no-verbose, remove the first.
+
 2005-01-26 14:33:08  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* status.c: And, thinking about it further, this should just be
