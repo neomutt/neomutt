@@ -349,11 +349,7 @@ fly.
 <p><bf/extract-keys/<label id="extract-keys"> (default: ^K)<newline>
 
 This command extracts PGP public keys from the current or tagged
-message(s) and adds them to your <ref id="pgp_v2_pubring"
-name="&dollar;pgp&lowbar;v2&lowbar;pubring"> or <ref
-id="pgp_v5_pubring" name="&dollar;pgp&lowbar;v5&lowbar;pubring">
-depending on <ref id="pgp_key_version"
-name="&dollar;pgp&lowbar;key&lowbar;version">.
+message(s) and adds them to your PGP public key ring.
 
 <p><bf/forget-passphrase/<label id="forget-passphrase"> (default:
 ^F)<newline> 
@@ -3396,21 +3392,6 @@ Setting this variable will cause Mutt to always attempt to PGP/MIME sign
 outgoing messages.  This can be overridden by use of the <em/pgp-menu/,
 when signing is not required or encryption is requested as well.
 
-<sect2>pgp&lowbar;default&lowbar;version<label id="pgp_default_version">
-<p>
-Type: string<newline>
-Default: pgp2 (or pgp5, if PGP 2.* is not installed, or gpg, if none
-of them is installed)
-
-Set this to pgp2 (PGP 2.*), pgp5 (PGP 5.*), or gpg (GNU privacy guard),
-depending on the version that you primarily use. This variable is
-not directly used, but it is the default for the variables <ref
-id="pgp_receive_version"
-name="&dollar;pgp&lowbar;receive&lowbar;version">, <ref
-id="pgp_send_version" name="&dollar;pgp&lowbar;send&lowbar;version">,
-and <ref id="pgp_key_version"
-name="&dollar;pgp&lowbar;key&lowbar;version">.
-
 <sect2>pgp&lowbar;encryptself<label id="pgp_encryptself">
 <p>
 Type: boolean<newline>
@@ -3441,27 +3422,6 @@ printf()-like sequences:
 </verb></tscreen>
 
 
-<sect2>pgp&lowbar;gpg<label id="pgp_gpg">
-<p>
-Type: string<newline>
-Default: system dependent
-
-This variable allows you to override the compile time definition of
-where the gpg (GNU Privacy Guard) binary resides on your system.
-
-<sect2>pgp&lowbar;key&lowbar;version<label id="pgp_key_version">
-<p>
-Type: string<newline>
-Default: ``default''
-
-This variable determines which PGP version is used for key ring
-operations like extracting keys from messages and extracting keys from
-your keyring. If you set this to default, the default defined in <ref
-id="pgp_default_version"
-name="&dollar;pgp&lowbar;default&lowbar;version"> is used. Set this to
-pgp2 (PGP 2.*), pgp5 (PGP 5.*), or gpg (GNU privacy guard) if you want
-to use a different PGP version for key operations.
-
 <sect2>pgp&lowbar;long&lowbar;ids<label id="pgp_long_ids">
 <p>
 Type: boolean<newline>
@@ -3469,18 +3429,6 @@ Default: unset
 
 If set, use 64 bit PGP key IDs. Unset uses the normal 32 bit Key IDs.
 
-
-<sect2>pgp&lowbar;receive&lowbar;version<label id="pgp_receive_version">
-<p>
-Type: string<newline>
-Default: ``default''
-
-This variable determines which PGP version is used for decrypting
-messages and verifying signatures. If you set this to default, the
-default defined in <ref id="pgp_default_version"
-name="&dollar;pgp&lowbar;default&lowbar;version"> will be used. Set
-this to pgp2 (PGP 2.*), pgp5 (PGP 5.*), or gpg (GNU privacy guard) if
-you want to use a different PGP version for receiving operations.
 
 <sect2>pgp&lowbar;replyencrypt<label id="pgp_replyencrypt">
 <p>
@@ -3511,18 +3459,6 @@ it allows you to sign all messages which are automatically encrypted.
 This works around the problem noted in <ref
 id="pgp_replysign" name="&dollar;pgp&lowbar;replysign">, that mutt is
 not able to find out whether an encrypted message is also signed.
-
-<sect2>pgp&lowbar;send&lowbar;version<label id="pgp_send_version">
-<p>
-Type: string<newline>
-Default: ``default''
-
-This variable determines which PGP version is used for composing new
-messages like encrypting and signing. If you set this to default, the
-default defined in <ref id="pgp_default_version"
-name="&dollar;pgp&lowbar;default&lowbar;version"> will be used. Set
-this to pgp2 (PGP 2.*), pgp5 (PGP 5.*), or gpg (GNU privacy guard) if
-you want to use a different PGP version for sending operations.
 
 <sect2>pgp&lowbar;show&lowbar;unusable<label id="pgp_show_unusable">
 <p>
@@ -3576,73 +3512,6 @@ Default: 300
 
 The number of seconds after which a cached passphrase will expire if not
 used.
-
-<sect2>pgp&lowbar;v2<label id="pgp_v2">
-<p>
-Type: string<newline>
-Default: system dependent
-
-This variable allows you to override the compile time definition of
-where the PGP 2.* binary resides on your system.
-
-<sect2>pgp&lowbar;v2&lowbar;language<label id="pgp_v2_language">
-<p>
-Type: string<newline>
-Default: en
-
-Sets the language, which PGP 2.* should use. If you use language.txt
-from the mutt doc directory, you can try the languages
-&dquot;mutt&dquot; (English) or &dquot;muttde&dquot; (German) to
-reduce the noise produced by pgp.
-
-<sect2>pgp&lowbar;v2&lowbar;pubring<label id="pgp_v2_pubring">
-<p>
-Type: string<newline>
-Default: &dollar;PGPPATH/pubring.pgp or &tilde;/.pgp/pubring.pgp if
-&dollar;PGPPATH isn't set.
-
-Points to the PGP 2.* public keyring.
-
-<sect2>pgp&lowbar;v2&lowbar;secring<label id="pgp_v2_secring">
-<p>
-Type: string<newline>
-Default: &dollar;PGPPATH/secring.pgp or &tilde;/.pgp/secring.pgp if
-&dollar;PGPPATH isn't set.
-
-Points to the PGP 2.* secret keyring.
-
-<sect2>pgp&lowbar;v5<label id="pgp_v5">
-<p>
-Type: string<newline>
-Default: system dependent
-
-This variable allows you to override the compile time definition of
-where the PGP 5.* binary resides on your system.
-
-<sect2>pgp&lowbar;v5&lowbar;language<label id="pgp_v5_language">
-<p>
-Type: string<newline>
-Default: en
-
-Sets the language, which PGP 5.* should use. If you use language50.txt
-from the mutt doc directory, you can try the languages
-&dquot;mutt&dquot; (English) to reduce the noise produced by pgp.
-
-<sect2>pgp&lowbar;v5&lowbar;pubring<label id="pgp_v5_pubring">
-<p>
-Type: string<newline>
-Default: &dollar;PGPPATH/pubring.pkr or &tilde;/.pgp/pubring.pkr if
-&dollar;PGPPATH isn't set.
-
-Points to the PGP 5.* public keyring.
-
-<sect2>pgp&lowbar;v5&lowbar;secring<label id="pgp_v5_secring">
-<p>
-Type: string<newline>
-Default: &dollar;PGPPATH/secring.skr or &tilde;/.pgp/secring.skr if
-&dollar;PGPPATH isn't set.
-
-Points to the PGP 5.* secret keyring.
 
 <sect2>pipe&lowbar;decode<label id="pipe_decode">
 <p>
