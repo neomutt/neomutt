@@ -168,6 +168,11 @@ folder_format_str (char *dest, size_t destlen, char op, const char *src,
       break;
       
     case 'f':
+#ifdef USE_IMAP
+      if (mx_is_imap (folder->ff->name))
+        strfcpy (fn, folder->ff->desc, sizeof (fn));
+      else
+#endif
       strfcpy (fn, folder->ff->name, sizeof(fn));
       if (folder->ff->st != NULL)
       {
@@ -199,10 +204,10 @@ folder_format_str (char *dest, size_t destlen, char op, const char *src,
       else
       {
 #ifdef USE_IMAP
-	if (strchr(folder->ff->name, '{'))
+	if (mx_is_imap (folder->ff->name))
 	{
-	  snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
-	  snprintf (dest, destlen, tmp, "IMAP");
+          snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
+          snprintf (dest, destlen, tmp, "IMAP");
 	}                                        
 #endif
       }

@@ -321,8 +321,7 @@ static void imap_add_folder (char delim, char *folder, int noselect,
     imap_qualify_path (tmp, sizeof (tmp), host, port, folder, NULL);
     (state->entry)[state->entrylen].name = safe_strdup (tmp);
 
-    snprintf (tmp, sizeof (tmp), "IMAP %-25s %-25s", host, relpath);
-    (state->entry)[state->entrylen].desc = safe_strdup (tmp);
+    (state->entry)[state->entrylen].desc = safe_strdup (relpath);
 
     (state->entry)[state->entrylen].notfolder = 0;
     (state->entrylen)++;
@@ -340,8 +339,7 @@ static void imap_add_folder (char delim, char *folder, int noselect,
 
     if (strlen (relpath) < sizeof (relpath) - 2)
       strcat (relpath, trailing_delim);
-    snprintf (tmp, sizeof (tmp), "IMAP %-25s %-25s", host, relpath);
-    (state->entry)[state->entrylen].desc = safe_strdup (tmp);
+    (state->entry)[state->entrylen].desc = safe_strdup (relpath);
 
     (state->entry)[state->entrylen].notfolder = 1;
     (state->entrylen)++;

@@ -23,10 +23,10 @@
 #include "imap_socket.h"
 
 /* -- symbols -- */
+#define IMAP_PORT 143
+
 /* number of entries in the hash table */
 #define IMAP_CACHE_LEN 10
-
-#define IMAP_PORT 143
 
 #define SEQLEN 5
 
@@ -82,9 +82,9 @@ enum
   ACL,				/* RFC 2086: IMAP4 ACL extension */
   NAMESPACE,                   	/* RFC 2342: IMAP4 Namespace */
   ACRAM_MD5,			/* RFC 2195: CRAM-MD5 authentication */
-  /* From here down, we don't care */
   AKERBEROS_V4,			/* AUTH=KERBEROS_V4 */
-  AGSSAPI,			/* AUTH=GSSAPI */
+  AGSSAPI,			/* RFC 1731: GSSAPI authentication */
+  /* From here down, we don't care */
   ALOGIN,			/* AUTH=LOGIN */
   AUTH_LOGIN,			/* AUTH-LOGIN */
   APLAIN,			/* AUTH=PLAIN */
@@ -173,8 +173,6 @@ char *imap_next_word (char *s);
 int imap_open_connection (IMAP_DATA *idata, CONNECTION *conn);
 int imap_parse_list_response(CONNECTION *conn, char *buf, int buflen,
   char **name, int *noselect, int *noinferiors, char *delim);
-int imap_parse_path (char *path, char *host, size_t hlen, int *port,
-  char **mbox);
 void imap_quote_string (char *dest, size_t slen, const char *src);
 void imap_unquote_string (char *s);
 

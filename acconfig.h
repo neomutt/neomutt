@@ -48,6 +48,9 @@
 /* Do you want support for the IMAP protocol? (--enable-imap) */
 #undef USE_IMAP
 
+/* Do you want support for IMAP GSSAPI authentication? (--with-gss) */
+#undef USE_GSS
+
 /*
  * Is mail spooled to the user's home directory?  If defined, MAILPATH should
  * be set to the filename of the spool mailbox relative the the home

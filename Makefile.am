@@ -37,8 +37,8 @@ mutt_SOURCES = $(BUILT_SOURCES) \
 	status.c system.c thread.c charset.c history.c lib.c \
 	muttlib.c
 
-mutt_LDADD = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAP) $(INTLLIBS) 
-mutt_DEPENDENCIES = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(INTLDEPS)
+mutt_LDADD = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAP) $(GSSLIBS) $(INTLLIBS) 
+mutt_DEPENDENCIES = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAPDEPS) $(INTLDEPS)
 
 DEFS=-DSHAREDIR=\"$(sharedir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 	-DBINDIR=\"$(bindir)\" -DHAVE_CONFIG_H=1

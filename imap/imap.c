@@ -33,12 +33,9 @@
 
 #include <unistd.h>
 #include <ctype.h>
-#include <netinet/in.h>
-#include <netdb.h>
 #include <string.h>
 #include <stdlib.h>
 #include <sys/types.h>
-#include <sys/socket.h>
 #include <sys/stat.h>
 
 
@@ -66,8 +63,6 @@ static int imap_get_delim (IMAP_DATA *idata, CONNECTION *conn);
 static int imap_check_acl (IMAP_DATA *idata);
 static int imap_check_capabilities (IMAP_DATA *idata);
 static int imap_create_mailbox (IMAP_DATA *idata, char *mailbox);
-
-/* everything above should be moved into a separate imap header file */
 
 void imap_make_sequence (char *buf, size_t buflen)
 {
@@ -1016,6 +1011,8 @@ static int imap_get_delim (IMAP_DATA *idata, CONNECTION *conn)
   return 0;
 }
 
+/* imap_parse_path: given an IMAP mailbox name, return host, port
+ *   and a path IMAP servers will recognise. */
 int imap_parse_path (char *path, char *host, size_t hlen, int *port, 
   char **mbox)
 {
@@ -2232,6 +2229,9 @@ int imap_complete(char* dest, size_t dlen, char* path) {
 
     if (list_word)
     {
+      /* store unquoted */
+      imap_unquote_string (list_word);
+
       /* if the folder isn't selectable, append delimiter to force browse
        * to enter it on second tab. */
       if (noselect)
