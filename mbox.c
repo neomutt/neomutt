@@ -155,7 +155,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
       {
 	tmploc = loc + hdr->content->length;
 
-	if (tmploc < ctx->size)
+	if (0 < tmploc && tmploc < ctx->size)
 	{
 	  if (fseek (ctx->fp, tmploc, SEEK_SET) != 0 ||
 	      fgets (buf, sizeof (buf) - 1, ctx->fp) == NULL ||
@@ -298,7 +298,7 @@ int mbox_parse_mailbox (CONTEXT *ctx)
 	loc = ftell (ctx->fp);
 	tmploc = loc + curhdr->content->length + 1;
 
-	if (tmploc < ctx->size)
+	if (0 < tmploc && tmploc < ctx->size)
 	{
 	  /*
 	   * check to see if the content-length looks valid.  we expect to

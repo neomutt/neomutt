@@ -975,7 +975,10 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
 	  else if (mutt_strcasecmp (line+8, "length") == 0)
 	  {
 	    if (hdr)
-	      hdr->content->length = atoi (p);
+	    {
+	      if ((hdr->content->length = atoi (p)) < 0)
+		hdr->content->length = -1;
+	    }
 	    matched = 1;
 	  }
 	  else if (mutt_strcasecmp (line+8, "description") == 0)
