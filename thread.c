@@ -164,7 +164,8 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
 	myarrow[0] = nextdisp ? M_TREE_LTEE : corner;
       else
 	myarrow[0] = tree->parent->message ? M_TREE_HIDDEN : M_TREE_MISSING;
-      myarrow[1] = (tree->fake_thread) ? M_TREE_STAR : M_TREE_HLINE;
+      myarrow[1] = (tree->fake_thread ?  M_TREE_STAR
+		    : (tree->duplicate_thread ? M_TREE_EQUALS : M_TREE_HLINE));
       if (visible)
       {
 	myarrow[2] = M_TREE_RARROW;
@@ -234,61 +235,10 @@ void mutt_linearize_tree (CONTEXT *ctx, int linearize)
   safe_free ((void **) &arrow);
 }
 
-/* inserts `msg' into the list `tree' using an insertion sort.  this function
- * assumes that `tree' is the first element in the list, and not some
- * element in the middle of the list.
- */
-
-static void insert_message (THREAD **tree, THREAD *msg)
-{
-#if 0 /* XXX */
-  THREAD *tmp;
-#endif
-
-  /* NOTE: we do NOT clear the `msg->child' link here because when we do
-   * the pseudo-threading, we want to preserve any sub-threads.  So we clear
-   * the `msg->child' in the main routine where we know it is safe to do.
-   */
-
-  /* if there are no elements in the list, just add it and return */
-  if (!*tree)
-  {
-    msg->prev = msg->next = NULL;
-    *tree = msg;
-    return;
-  }
-
-  /* check to see if this message belongs at the beginning of the list */
-#if 0 /* XXX */
-  if (!sortFunc || sortFunc ((void *) &msg, (void *) tree) < 0)
-  {
-#endif
-    (*tree)->prev = msg;
-    msg->next = *tree;
-    msg->prev = NULL;
-    *tree = msg;
-    return;
-#if 0 /* XXX */
-  }
-  
-  /* search for the correct spot in the list to insert */
-  for (tmp = *tree; tmp->next; tmp = tmp->next)
-    if (sortFunc ((void *) &msg, (void *) &tmp->next) < 0)
-    {
-      msg->prev = tmp;
-      msg->next = tmp->next;
-      tmp->next->prev = msg;
-      tmp->next = msg;
-      return;
-    }
-
-  /* did not insert yet, so add this message to the end of the list */
-  tmp->next = msg;
-  msg->prev = tmp;
-  msg->next = NULL;
-#endif
-}
-
+/* since we may be trying to attach as a pseudo-thread a THREAD that
+ * has no message, we have to make a list of all the subjects of its
+ * most immediate existing descendants.  we also note the earliest
+ * date on any of the parents and put it in *dateptr. */
 static LIST *make_subject_list (THREAD *cur, time_t *dateptr)
 {
   THREAD *start = cur;
@@ -366,14 +316,15 @@ static THREAD *find_subject (CONTEXT *ctx, THREAD *cur)
 
   while (subjects)
   {
-    hash = hash_string ((unsigned char *) subjects->data, ctx->subj_hash->nelem);
+    hash = hash_string ((unsigned char *) subjects->data,
+			ctx->subj_hash->nelem);
     for (ptr = ctx->subj_hash->table[hash]; ptr; ptr = ptr->next)
     {
       tmp = ((HEADER *) ptr->data)->thread;
-      if (tmp != cur &&			/* don't match the same message */
-	  !tmp->fake_thread &&		/* don't match pseudo threads */
-	  tmp->message->subject_changed &&	/* only match interesting replies */
-	  !is_descendant (tmp, cur) &&	/* don't match in the same thread */
+      if (tmp != cur &&			   /* don't match the same message */
+	  !tmp->fake_thread &&		   /* don't match pseudo threads */
+	  tmp->message->subject_changed && /* only match interesting replies */
+	  !is_descendant (tmp, cur) &&	   /* don't match in the same thread */
 	  (date >= (option (OPTTHREADRECEIVED) ?
 		    tmp->message->received :
 		    tmp->message->date_sent)) &&
@@ -393,23 +344,42 @@ static THREAD *find_subject (CONTEXT *ctx, THREAD *cur)
   return (last);
 }
 
-static void unlink_message (THREAD **top, THREAD *cur)
+/* remove cur and its descendants from their current location.
+ * also make sure ancestors of cur no longer are sorted by the
+ * fact that cur is their descendant. */
+static void unlink_message (THREAD **old, THREAD *cur)
 {
-  if (cur->prev)
-  {
-    cur->prev->next = cur->next;
+  THREAD *tmp;
 
-    if (cur->next)
-      cur->next->prev = cur->prev;
-  }
+  if (cur->prev)
+    cur->prev->next = cur->next;
   else
+    *old = cur->next;
+
+  if (cur->next)
+    cur->next->prev = cur->prev;
+
+  if (cur->sort_key)
   {
-    if (cur->next)
-      cur->next->prev = NULL;
-    *top = cur->next;
+    for (tmp = cur->parent; tmp && tmp->sort_key == cur->sort_key;
+	 tmp = tmp->parent)
+      tmp->sort_key = NULL;
   }
 }
 
+/* add cur as a prior sibling of *new, with parent newparent */
+static void insert_message (THREAD **new, THREAD *newparent, THREAD *cur)
+{
+  if (*new)
+    (*new)->prev = cur;
+
+  cur->parent = newparent;
+  cur->next = *new;
+  cur->prev = NULL;
+  *new = cur;
+}
+
+/* thread by subject things that didn't get threaded by message-id */
 static void pseudo_threads (CONTEXT *ctx)
 {
   THREAD *tree = ctx->tree, *top = tree;
@@ -424,39 +394,34 @@ static void pseudo_threads (CONTEXT *ctx)
     tree = tree->next;
     if ((parent = find_subject (ctx, cur)) != NULL)
     {
-      /* detach this message from its current location */
-      unlink_message (&top, cur);
-
       cur->fake_thread = 1;
-      cur->parent = parent;
-      insert_message (&parent->child, cur);
-      
+      unlink_message (&top, cur);
+      insert_message (&parent->child, parent, cur);
+      parent->sort_children = 1;
       tmp = cur;
-
       FOREVER
       {
 	while (!tmp->message)
 	  tmp = tmp->child;
 
+	/* if the message we're attaching has pseudo-children, they
+	 * need to be attached to its parent, so move them up a level.
+	 * but only do this if they have the same real subject as the
+	 * parent, since otherwise they rightly belong to the message
+	 * we're attaching. */
 	if (tmp == cur
 	    || !mutt_strcmp (tmp->message->env->real_subj,
 			     parent->message->env->real_subj))
 	{
 	  tmp->message->subject_changed = 0;
 
-	  /* if the message we're attaching has pseudo-children, they
-	   * need to be attached to its parent, so move them up a level.  */
 	  for (curchild = tmp->child; curchild; )
 	  {
 	    nextchild = curchild->next;
 	    if (curchild->fake_thread)
 	    {
-	      /* detach this message from its current location */
 	      unlink_message (&tmp->child, curchild);
-	      curchild->parent = parent;
-	      /* we care in this case that insert_message inserts the
-	       * message at the beginning of the list! */
-	      insert_message (&parent->child, curchild);
+	      insert_message (&parent->child, parent, curchild);
 	    }
 	    curchild = nextchild;
 	  }
@@ -483,6 +448,7 @@ void mutt_clear_threads (CONTEXT *ctx)
   for (i = 0; i < ctx->msgcount; i++)
   {
     ctx->hdrs[i]->thread = NULL;
+    ctx->hdrs[i]->threaded = 0;
   }
   ctx->tree = NULL;
 
@@ -508,96 +474,128 @@ int compare_threads (const void *a, const void *b)
   }
 }
 
-THREAD *mutt_sort_subthreads (THREAD *thread)
+THREAD *mutt_sort_subthreads (THREAD *thread, int init)
 {
-  THREAD **array, *sort_key;
-  int i, array_size;
+  THREAD **array, *sort_key, *top;
+  HEADER *oldsort_key;
+  int i, array_size, sort_top = 0;
   
-  Sort ^= SORT_REVERSE;
-  if (!thread || !compare_threads (NULL, NULL))
-    return thread;
-
   /* we put things into the array backwards to save some cycles,
    * but we want to have to move less stuff around if we're 
    * resorting, so we sort backwards and then put them back
    * in reverse order so they're forwards
    */
+  Sort ^= SORT_REVERSE;
+  if (!compare_threads (NULL, NULL))
+    return (thread);
+
+  top = thread;
 
   array = safe_malloc ((array_size = 256) * sizeof (THREAD *));
   while (1)
   {
-    while (thread->child)
+    if (init || !thread->sort_key)
     {
-      thread->sort_key = thread->message;
-      thread = thread->child;
-    }
-
-    while (thread->next && !thread->child)
-    {
-      thread->sort_key = thread->message;
-      thread = thread->next;
+      if (thread->parent)
+        thread->parent->sort_children = 1;
+      else
+	sort_top = 1;
     }
 
     if (thread->child)
+    {
+      thread = thread->child;
       continue;
+    }
+    else
+    {
+      /* if it has no children, it must be real. sort it on its own merits */
+      thread->sort_key = thread->message;
 
-    thread->sort_key = thread->message;
+      if (thread->next)
+      {
+	thread = thread->next;
+	continue;
+      }
+    }
 
     while (!thread->next)
     {
-      if (thread->prev)
+      /* if it has siblings and needs to be sorted, sort it... */
+      if (thread->prev && (thread->parent ? thread->parent->sort_children : sort_top))
       {
+	/* put them into the array */
 	for (i = 0; thread; i++, thread = thread->prev)
 	{
 	  if (i >= array_size)
-	    safe_realloc ((void **) &array, (array_size *= 2) * sizeof (THREAD *));
+	    safe_realloc ((void **) &array,
+			  (array_size *= 2) * sizeof (THREAD *));
 
 	  array[i] = thread;
 	}
 
 	qsort ((void *) array, i, sizeof (THREAD *), *compare_threads);
 
-	array[0]->next = NULL;
-
-	thread = array[i - 1];
-	thread->prev = NULL;
+	/* attach them back together.  make thread the last sibling. */
+	thread = array[0];
+	thread->next = NULL;
+	array[i - 1]->prev = NULL;
 
 	if (thread->parent)
-	{
-	  thread->parent->child = thread;
-	  sort_key = array[(!(Sort & SORT_LAST) ^ !(Sort & SORT_REVERSE)) ? i - 1 : 0];
-	}
-	
+	  thread->parent->child = array[i - 1];
+	else
+	  top = array[i - 1];
+
 	while (--i)
 	{
 	  array[i - 1]->prev = array[i];
 	  array[i]->next = array[i - 1];
 	}
       }
-      else
-	sort_key = thread;
-
 
       if (thread->parent)
       {
-	if (Sort & SORT_LAST)
+	if (!thread->parent->sort_key || thread->parent->sort_children)
 	{
-	  if (!thread->parent->sort_key
-	      || ((((Sort & SORT_REVERSE) ? 1 : -1)
-		   * compare_threads ((void *) &thread->parent,
-				      (void *) &sort_key))
-		  > 0))
-	    thread->parent->sort_key = sort_key->sort_key;
+	  /* make sort_key the first or last sibling, as appropriate */
+	  sort_key = (!(Sort & SORT_LAST) ^ !(Sort & SORT_REVERSE)) ? thread->parent->child : thread;
+	  thread->parent->sort_children = 0;
 	}
-	else if (!thread->parent->sort_key)
-	  thread->parent->sort_key = sort_key->sort_key;
+	else
+	  sort_key = NULL;
 
 	thread = thread->parent;
+
+	if (sort_key)
+	{
+	  oldsort_key = thread->sort_key;
+	  if (Sort & SORT_LAST)
+	  {
+	    if (!thread->sort_key
+		|| ((((Sort & SORT_REVERSE) ? 1 : -1)
+		     * compare_threads ((void *) &thread,
+					(void *) &sort_key))
+		    > 0))
+	      thread->sort_key = sort_key->sort_key;
+	  }
+	  else if (!thread->sort_key || !thread->message)
+	    thread->sort_key = sort_key->sort_key;
+
+	  /* if its sort_key has changed, we need to resort it and siblings */
+	  if (oldsort_key != thread->sort_key)
+	  {
+	    if (thread->parent)
+	      thread->parent->sort_children = 1;
+	    else
+	      sort_top = 1;
+	  }
+	}
       }
       else
       {
 	Sort ^= SORT_REVERSE;
-	return (thread);
+	safe_free ((void **) &array);
+	return (top);
       }
     }
 
@@ -609,8 +607,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 {
   HEADER *cur;
   int i, oldsort, using_refs = 0;
-  HASH *id_hash;
-  THREAD *thread, *new, *tmp;
+  THREAD *thread, *new, *tmp, top;
   LIST *ref = NULL;
   
   /* set Sort to the secondary method to support the set sort_aux=reverse-*
@@ -620,20 +617,120 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
   oldsort = Sort;
   Sort = SortAux;
   
-  id_hash = hash_create (ctx->msgcount * 2);
-  ctx->tree = safe_calloc (1, sizeof (THREAD));
-  for (i = 0; i < ctx->msgcount; i++)
+  if (!ctx->thread_hash)
+    init = 1;
+
+  if (init)
   {
-    cur = ctx->hdrs[i];
-    thread = safe_calloc (1, sizeof (THREAD));
-    thread->message = cur;
-    cur->thread = thread;
-    hash_insert (id_hash, cur->env->message_id ? cur->env->message_id : "", thread, 1);
+    mutt_clear_threads (ctx);
+    ctx->thread_hash = hash_create (ctx->msgcount * 2);
   }
 
+  /* we want a quick way to see if things are actually attached to the top of the
+   * thread tree or if they're just dangling, so we attach everything to a top
+   * node temporarily */
+  top.parent = top.next = top.prev = NULL;
+  top.child = ctx->tree;
+  for (thread = ctx->tree; thread; thread = thread->next)
+    thread->parent = &top;
+
+  /* put each new message together with the matching messageless THREAD if it
+   * exists.  otherwise, if there is a THREAD that already has a message, thread
+   * new message as an identical child.  if we didn't attach the message to a
+   * THREAD, make a new one for it. */
   for (i = 0; i < ctx->msgcount; i++)
   {
     cur = ctx->hdrs[i];
+
+    if (!cur->thread)
+    {
+      thread = new = (cur->env->message_id
+		      ? hash_find (ctx->thread_hash, cur->env->message_id) : NULL);
+
+      if (thread && !thread->message)
+      {
+	/* this is a message which was missing before */
+	thread->message = cur;
+	cur->thread = thread;
+	thread->check_subject = 1;
+
+	/* mark descendants as needing subeject_changed checked */
+	for (tmp = (thread->child ? thread->child : thread); tmp != thread; )
+	{
+	  while (!tmp->message)
+	    tmp = tmp->child;
+	  tmp->check_subject = 1;
+	  while (!tmp->next && tmp != thread)
+	    tmp = tmp->parent;
+	  if (tmp != thread)
+	    tmp = tmp->next;
+	}
+
+	if (thread->parent)
+	{
+	  /* remove threading info above it based on its children, which we'll
+	   * recalculate based on its headers.  make sure not to leave
+	   * dangling missing messages.  note that we haven't kept track
+	   * of what info came from its children and what from its siblings'
+	   * children, so we just remove the stuff that's definitely from it */
+	  do
+	  {
+	    tmp = thread->parent;
+	    unlink_message (&tmp->child, thread);
+	    thread->parent = NULL;
+	    thread->sort_key = NULL;
+	    thread = tmp;
+	  } while (thread != &top && !thread->child && !thread->message);
+	}
+      }
+      else
+      {
+	thread = safe_calloc (1, sizeof (THREAD));
+	thread->message = cur;
+	thread->check_subject = 1;
+	cur->thread = thread;
+	hash_insert (ctx->thread_hash,
+		     cur->env->message_id ? cur->env->message_id : "",
+		     thread, 1);
+      }
+
+      if (new && new->message)
+      {
+	if (new->duplicate_thread)
+	  new = new->parent;
+
+	insert_message (&new->child, new, thread);
+	thread->duplicate_thread = 1;
+	thread->message->threaded = 1;
+      }
+    }
+    else
+    {
+      /* unlink pseudo-threads because they might be children of newly
+       * arrived messages */
+      thread = cur->thread;
+      for (new = thread->child; new; )
+      {
+	tmp = new->next;
+	if (new->fake_thread)
+	{
+	  unlink_message (&thread->child, new);
+	  insert_message (&top.child, &top, new);
+	  new->fake_thread = 0;
+	}
+	new = tmp;
+      }
+    }
+  }
+
+  /* thread by references */
+  for (i = 0; i < ctx->msgcount; i++)
+  {
+    cur = ctx->hdrs[i];
+    if (cur->threaded)
+      continue;
+    cur->threaded = 1;
+
     thread = cur->thread;
     using_refs = 0;
 
@@ -643,9 +740,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
       {
 	/* look at the beginning of in-reply-to: */
 	if ((ref = cur->env->in_reply_to) != NULL)
-	{
 	  using_refs = 1;
-	}
 	else
 	{
 	  ref = cur->env->references;
@@ -658,7 +753,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 	 * data that we have.  otherwise, use the first reference
 	 * if it's different than the first in-reply-to, otherwise use
 	 * the second reference (since at least eudora puts the most
-	 * recent reference in in-reply-to and the rest in references
+	 * recent reference in in-reply-to and the rest in references)
 	 */
 	if (!cur->env->references)
 	  ref = ref->next;
@@ -673,68 +768,52 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 	}
       }
       else
-	ref = ref->next;
+	ref = ref->next; /* go on with references */
       
       if (!ref)
 	break;
 
-      if ((new = hash_find (id_hash, ref->data)) == NULL)
+      if ((new = hash_find (ctx->thread_hash, ref->data)) == NULL)
       {
 	new = safe_calloc (1, sizeof (THREAD));
-	hash_insert (id_hash, ref->data, new, 1);
+	hash_insert (ctx->thread_hash, ref->data, new, 1);
       }
-      else if (is_descendant (new, thread)) /* no loops! */
-	break;
-
-      /* make new the parent of thread */
-      if (thread->parent)
+      else
       {
-	/* this can only happen if thread is attached directly to ctx->tree.
-	 * detach it.
-	 */
-	if (thread->prev)
-	  thread->prev->next = thread->next;
-	if (thread->next)
-	  thread->next->prev = thread->prev;
-	if (thread->parent->child == thread)
-	  thread->parent->child = thread->next;
+	if (new->duplicate_thread)
+	  new = new->parent;
+	if (is_descendant (new, thread)) /* no loops! */
+	  break;
       }
 
-      thread->parent = new;
-      thread->prev = NULL;
-      if ((thread->next = new->child) != NULL)
-	thread->next->prev = thread;
-      new->child = thread;
-
+      if (thread->parent)
+	unlink_message (&top.child, thread);
+      insert_message (&new->child, new, thread);
       thread = new;
-
-      if (thread->message || (thread->parent && thread->parent != ctx->tree))
+      if (thread->message || (thread->parent && thread->parent != &top))
 	break;
     }
 
     if (!thread->parent)
-    {
-      if ((thread->next = ctx->tree->child) != NULL)
-      {
-	thread->next->prev = thread;
-      }
-      ctx->tree->child = thread;
-      thread->parent = ctx->tree;
-    }
+      insert_message (&top.child, &top, thread);
   }
 
-  for (thread = ctx->tree->child; thread; thread = thread->next)
+  /* detach everything from the temporary top node */
+  for (thread = top.child; thread; thread = thread->next)
   {
     thread->parent = NULL;
   }
-  
-  tmp = ctx->tree;
-  ctx->tree = ctx->tree->child;
-  safe_free ((void **) &tmp);
+  ctx->tree = top.child;
 
   for (i = 0; i < ctx->msgcount; i++)
   {
     cur = ctx->hdrs[i];
+    if (cur->thread->check_subject)
+      cur->thread->check_subject = 0;
+    else if (!init)
+      continue;
+
+    /* figure out which messages have subjects different than their parents' */
     tmp = cur->thread->parent;
     while (tmp && !tmp->message)
     {
@@ -744,23 +823,23 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
     if (!tmp)
       cur->subject_changed = 1;
     else if (cur->env->real_subj && tmp->message->env->real_subj)
-      cur->subject_changed = mutt_strcmp (cur->env->real_subj, tmp->message->env->real_subj) ? 1 : 0;
+      cur->subject_changed = mutt_strcmp (cur->env->real_subj,
+					  tmp->message->env->real_subj) ? 1 : 0;
     else
-      cur->subject_changed = (cur->env->real_subj || tmp->message->env->real_subj) ? 1 : 0;
+      cur->subject_changed = (cur->env->real_subj
+			      || tmp->message->env->real_subj) ? 1 : 0;
   }
 
   if (!option (OPTSTRICTTHREADS))
     pseudo_threads (ctx);
 
-  ctx->tree = mutt_sort_subthreads (ctx->tree);
+  ctx->tree = mutt_sort_subthreads (ctx->tree, init);
 
   /* restore the oldsort order. */
   Sort = oldsort;
 
   /* Put the list into an array. */
   mutt_linearize_tree (ctx, 1);
-
-  ctx->thread_hash = id_hash;
 }
 
 static HEADER *find_virtual (THREAD *cur)
@@ -863,12 +942,18 @@ int mutt_parent_message (CONTEXT *ctx, HEADER *hdr)
     return (hdr->virtual);
   }
 
-  thread = hdr->thread;
-  while ((thread = thread->parent))
+  for (thread = hdr->thread->parent; thread; thread = thread->parent)
   {
-    hdr = thread->message;
-    if (hdr && VISIBLE (hdr, ctx))
-      return (hdr->virtual);
+    if ((hdr = thread->message) != NULL)
+    {
+      if (VISIBLE (hdr, ctx))
+	return (hdr->virtual);
+      else
+      {
+	mutt_error _("Parent message is not visible in this limited view.");
+	return (-1);
+      }
+    }
   }
   
   mutt_error _("Parent message is not available.");

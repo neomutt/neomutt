@@ -200,10 +200,6 @@ void mutt_sort_headers (CONTEXT *ctx, int init)
   if (!ctx->quiet)
     mutt_message _("Sorting mailbox...");
 
-  /* threads may be bogus, so clear the links */
-  /* XXX do this always, for the moment */
-  mutt_clear_threads (ctx);
-
   if (option (OPTNEEDRESCORE) && option (OPTSCORE))
   {
     for (i = 0; i < ctx->msgcount; i++)
@@ -215,18 +211,17 @@ void mutt_sort_headers (CONTEXT *ctx, int init)
   if ((Sort & SORT_MASK) == SORT_THREADS)
   {
     AuxSort = NULL;
-#if 0 /*XXX*/
     /* if $sort_aux changed after the mailbox is sorted, then all the
        subthreads need to be resorted */
     if (option (OPTSORTSUBTHREADS))
     {
       i = Sort;
       Sort = SortAux;
-      ctx->tree = mutt_sort_subthreads (ctx->tree);
+      if (ctx->tree)
+	ctx->tree = mutt_sort_subthreads (ctx->tree, 1);
       Sort = i;
       unset_option (OPTSORTSUBTHREADS);
     }
-#endif
     mutt_sort_threads (ctx, init);
   }
   else if ((sortfunc = mutt_get_sort_func (Sort)) == NULL ||

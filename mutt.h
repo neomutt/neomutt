@@ -155,7 +155,8 @@ typedef enum
 #define M_TREE_STAR		8
 #define M_TREE_HIDDEN		9
 #define M_TREE_MISSING		10
-#define M_TREE_MAX		11
+#define M_TREE_EQUALS		11
+#define M_TREE_MAX		12
 
 #define M_THREAD_COLLAPSE	(1<<0)
 #define M_THREAD_UNCOLLAPSE	(1<<1)
@@ -619,6 +620,7 @@ typedef struct header
   unsigned int superseded : 1; /* got superseded? */
   unsigned int replied : 1;
   unsigned int subject_changed : 1; /* used for threading */
+  unsigned int threaded : 1;	    /* used for threading */
   unsigned int display_subject : 1; /* used for threading */
   unsigned int recip_valid : 1;  /* is_recipient is valid */
   unsigned int active : 1;	    /* message is not to be removed */
@@ -672,6 +674,9 @@ typedef struct header
 typedef struct thread
 {
   unsigned int fake_thread : 1;
+  unsigned int duplicate_thread : 1;
+  unsigned int sort_children : 1;
+  unsigned int check_subject : 1;
   struct thread *parent;
   struct thread *child;
   struct thread *next;

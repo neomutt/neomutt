@@ -103,6 +103,9 @@ static void print_enriched_string (int attr, unsigned char *s, int do_color)
 	  case M_TREE_MISSING:
 	    addch ('?');
 	    break;
+	  case M_TREE_EQUALS:
+	    addch ('=');
+	    break;
 	}
 	s++, n--;
       }
