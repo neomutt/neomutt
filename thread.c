@@ -41,6 +41,10 @@ static int need_display_subject (CONTEXT *ctx, HEADER *hdr)
 {
   THREAD *tmp, *tree = hdr->thread;
 
+  /* if the user disabled subject hiding, display it */
+  if (!option (OPTHIDETHREADSUBJECT))
+    return (1);
+
   /* if our subject is different from our parent's, display it */
   if (hdr->subject_changed)
     return (1);

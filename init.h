@@ -722,6 +722,13 @@ struct option_t MuttVars[] = {
   ** When set, mutt will not show the presence of missing messages in the
   ** thread tree.
   */
+  { "hide_thread_subject", DT_BOOL, R_TREE|R_INDEX, OPTHIDETHREADSUBJECT, 1 },
+  /*
+  ** .pp
+  ** When set, mutt will not show the subject of messages in the thread
+  ** tree that have the same subject as their parent or closest previously
+  ** displayed sibling.
+  */
   { "hide_top_limited",	DT_BOOL, R_TREE|R_INDEX, OPTHIDETOPLIMITED, 0 },
   /*
   ** .pp
