@@ -470,7 +470,7 @@ BODY *mutt_read_mime_header (FILE *fp, int digest)
       else if (!ascii_strcasecmp ("encoding-info", line + 6))
         p->encoding = mutt_check_encoding (c);
       else if (!ascii_strcasecmp ("content-lines", line + 6))
-        mutt_set_parameter ("content-lines", safe_strdup (c), &(p->parameter));
+        mutt_set_parameter ("content-lines", c, &(p->parameter));
       else if (!ascii_strcasecmp ("data-description", line + 6))
       {
 	mutt_str_replace (&p->description, c);
