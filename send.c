@@ -168,7 +168,7 @@ static ADDRESS *find_mailing_lists (ADDRESS *t, ADDRESS *c)
   {
     for (; t; t = t->next)
     {
-      if (mutt_is_mail_list (t))
+      if (mutt_is_mail_list (t) && !t->group)
       {
 	if (top)
 	{
