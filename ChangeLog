@@ -1,3 +1,13 @@
+2005-02-17 03:33:00  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* OPS, browser.c, doc/manual.sgml.head, functions.h,
+	imap/browse.c, imap/imap.c, imap/imap.h, imap/imap_private.h: New
+	function: rename-mailbox (bound to 'r' by default).
+
+	The lack of a rename-mailbox command for IMAP finally got too annoying.
+	It's a bit of a cut-and-paste job, but I've put my dreams of cleaning
+	up the IMAP codebase on hold. Gotta grow up some time.
+
 2005-02-16 09:34:06  ta_panta_rei  <7vvtch802@sneakemail.com>  (roessler)
 
 	* po/el.po: update
