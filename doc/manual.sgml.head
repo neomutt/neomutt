@@ -851,11 +851,11 @@ In addition, <em/key/ may consist of:
 
 <tscreen><verb>
 \t              tab
-<Tab>		tab
+<tab>           tab
 \r              carriage return
 \n              newline
 \e              escape
-<esc>		escape
+<esc>           escape
 <up>            up arrow
 <down>          down arrow
 <left>          left arrow
@@ -866,9 +866,10 @@ In addition, <em/key/ may consist of:
 <delete>        Delete
 <insert>        Insert
 <enter>         Enter
+<return>        Return
 <home>          Home
 <end>           End
-<Space>		Space bar
+<space>         Space bar
 <f1>            function key 1
 <f10>           function key 10
 </verb></tscreen>
