@@ -1837,9 +1837,10 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
       m->goodsig = 1;
     FREE (&line);
   }
-  else {
+  else 
+  {
     m->goodsig = p->goodsig;
-    m->badsig = p->badsig;
+    m->badsig  = p->badsig;
   }
   fclose (smimeerr);
 

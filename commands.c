@@ -183,15 +183,22 @@ int mutt_display_message (HEADER *cur)
 	else
 	  mutt_error ( _("S/MIME certificate owner does not match sender."));
       }
+      else if (cur->security & PARTSIGN)
+	mutt_message (_("Warning: Part of this message has not been signed."));
       else if (cur->security & SIGN || cur->security & BADSIGN)
 	mutt_error ( _("S/MIME signature could NOT be verified."));
     }
 
     if (WithCrypto 
         && (cur->security & APPLICATION_PGP) && (cmflags & M_CM_VERIFY))
-      mutt_message ((cur->security & GOODSIGN) ?
-		    _("PGP signature successfully verified.") :
-		    _("PGP signature could NOT be verified."));
+    {
+      if (cur->security & GOODSIGN)
+	mutt_message (_("PGP signature successfully verified."));
+      else if (cur->security & PARTSIGN)
+	mutt_message (_("Warning: Part of this message has not been signed."));
+      else
+	mutt_message (_("PGP signature could NOT be verified."));
+    }
 
     /* Invoke the builtin pager */
     memset (&info, 0, sizeof (pager_t));

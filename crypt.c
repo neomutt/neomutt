@@ -466,6 +466,9 @@ int crypt_query (BODY *m)
 
   if (!WithCrypto)
     return 0;
+  
+  if (!m)
+    return 0;
 
   if (m->type == TYPEAPPLICATION)
   {
@@ -491,15 +494,27 @@ int crypt_query (BODY *m)
     t |= mutt_is_multipart_encrypted(m);
     t |= mutt_is_multipart_signed (m);
 
-    if (t && m->goodsig) t |= GOODSIGN;
+    if (t && m->goodsig) 
+      t |= GOODSIGN;
   }
 
   if (m->type == TYPEMULTIPART || m->type == TYPEMESSAGE)
   {
     BODY *p;
+    int u, v, w;
+    
+    u = m->parts ? 0xffffffff : 0;	/* Bits set in all parts */
+    w = 0;				/* Bits set in any part  */
  
     for (p = m->parts; p; p = p->next)
-      t |= crypt_query (p) & ~GOODSIGN;
+    {
+      v  = crypt_query (p);
+      u &= v; w |= v;
+    }
+    t |= u | (w & ~GOODSIGN);
+    
+    if ((w & GOODSIGN) && !(u & GOODSIGN))
+      t |= PARTSIGN;
   }
 
   return t;
@@ -889,7 +904,7 @@ void mutt_signed_handler (BODY *a, STATE *s)
       mutt_unlink (tempfile);
 
       b->goodsig = goodsig;
-      b->badsig = goodsig;		/* XXX - WHAT!?!?!? */
+      b->badsig  = !goodsig;
       
       /* Now display the signed body */
       state_attach_puts (_("[-- The following data is signed --]\n\n"), s);

@@ -24,7 +24,7 @@
 #ifndef MUTT_CRYPT_H
 #define MUTT_CRYPT_H
 
-#include "mutt.h"        /* Need this to declarer BODY, ADDTESS. STATE etc. */
+#include "mutt.h"        /* Need this to declare BODY, ADDRESS. STATE etc. */
 /* FIXME: They should be pointer to anonymous structures for better
    information hiding. */
 
@@ -33,16 +33,18 @@
 #define ENCRYPT    (1 << 0)
 #define SIGN       (1 << 1)
 #define GOODSIGN   (1 << 2)
-#define BADSIGN    (1 << 3) /* FIXME: value also used below for PGPKEY */
-#define SIGNOPAQUE (1 << 4)
+#define BADSIGN    (1 << 3)
+#define PARTSIGN   (1 << 4)
+#define SIGNOPAQUE (1 << 5)
+/* (1 << 6) is used by PGPKEY below. */
 
-#define APPLICATION_PGP    (1 << 5) 
-#define APPLICATION_SMIME  (1 << 6)
+#define APPLICATION_PGP    (1 << 7) 
+#define APPLICATION_SMIME  (1 << 8)
 
 #define PGPENCRYPT  (APPLICATION_PGP | ENCRYPT)
 #define PGPSIGN     (APPLICATION_PGP | SIGN)
 #define PGPGOODSIGN (APPLICATION_PGP | GOODSIGN)
-#define PGPKEY      (APPLICATION_PGP | (1 << 3)) 
+#define PGPKEY      (APPLICATION_PGP | (1 << 6)) 
 
 #define SMIMEENCRYPT  (APPLICATION_SMIME | ENCRYPT)
 #define SMIMESIGN     (APPLICATION_SMIME | SIGN)

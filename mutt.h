@@ -622,7 +622,7 @@ typedef struct body
 				 */
 
   unsigned int goodsig : 1;	/* good cryptographic signature */
-  unsigned int badsig : 1;	/* bad cryptographic signature (needed to check encrypted s/mime-signatures */
+  unsigned int badsig : 1;	/* bad cryptographic signature (needed to check encrypted s/mime-signatures) */
 
   unsigned int collapsed : 1;	/* used by recvattach */
 
@@ -630,7 +630,7 @@ typedef struct body
 
 typedef struct header
 {
-  unsigned int security : 7;  /* bit 0-4: flags, bit 5,6: application.
+  unsigned int security : 9;  /* bit 0-6: flags, bit 7,8: application.
 				 see: crypt.h pgplib.h, smime.h */
 
   unsigned int mime : 1;    		/* has a Mime-Version header? */
