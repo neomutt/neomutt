@@ -188,17 +188,18 @@ main ()
                 if test x$mutt_cv_curses = x/usr -a -d /usr/include/ncurses; then
                         CPPFLAGS="$CPPFLAGS -I/usr/include/ncurses"
                 fi
+		
                 if test "$cf_ncurses" = ncursesw; then
-			AC_CHECK_HEADERS(ncursesw/ncurses.h)
+			AC_CHECK_HEADERS(ncursesw/ncurses.h,[cf_cv_ncurses_header="ncursesw/ncurses.h"])
 		else
-			AC_CHECK_HEADERS(ncurses.h)
+			AC_CHECK_HEADERS(ncurses.h,[cf_cv_ncurses_header="ncurses.h"])
 		fi],
 
                 [CF_CURSES_LIBS])
 
         old_LIBS="$LIBS"
         LIBS="$LIBS $MUTTLIBS"
-        CF_CHECK_FUNCDECLS([#include <curses.h>], start_color typeahead bkgdset curs_set meta use_default_colors resizeterm)
+        CF_CHECK_FUNCDECLS([#include <${cf_cv_ncurses_header-curses.h}>], start_color typeahead bkgdset curs_set meta use_default_colors resizeterm)
         if test "$ac_cv_func_decl_start_color" = yes; then
                 AC_DEFINE(HAVE_COLOR,1,[ Define if your curses library supports color. ])
         fi
