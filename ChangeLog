@@ -1,3 +1,11 @@
+2003-04-15 09:52:06  Dale Woolridge  <dale-flea-mutt-bug@woolridge.org>  (roessler)
+
+	* compose.c: The "sign (a)s" code strips the pgp application
+	bit causing drawing issues in redraw_crypt_lines().  Other bits
+	(well bit = encrypt) are ignored as a result.  I've only tested
+	with pgp, but the same problem exists in the smime code too.
+	This inline patch (against cvs head revision) fixes the problem.
+
 2003-04-14 09:09:53  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* init.h, mutt.h, send.c: Fix the PGP / S/MIME selection mess
