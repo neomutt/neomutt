@@ -191,8 +191,7 @@ static int ssl_check_certificate (sslsockdata * data)
   char *line = NULL, *c;
 
   /* automatic check from user's database */
-  fp = fopen (SslCertFile, "rt");
-  if (fp)
+  if ((fp = fopen (SslCertFile, "rt")))
   {
     EVP_PKEY *peer = X509_get_pubkey (data->cert);
     X509 *savedkey = NULL;
@@ -269,8 +268,7 @@ static int ssl_check_certificate (sslsockdata * data)
         break;
       case OP_MAX + 3:		/* accept always */
         done = 0;
-	fp = fopen (SslCertFile, "w+t");
-	if (fp)
+        if ((fp = fopen (SslCertFile, "w+t")))
 	{
 	  if (PEM_write_X509 (fp, data->cert))
 	    done = 1;

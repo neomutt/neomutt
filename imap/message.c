@@ -85,6 +85,8 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
   if (!(fp = safe_fopen (tempfile, "w+")))
     return -1;
 
+  unlink (tempfile);
+
   h = msg_new_header ();
   h0 = h;
   for (msgno = msgbegin; msgno <= msgend ; msgno++)
@@ -114,7 +116,10 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
     do
     {
       if (mutt_socket_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
+      {
+	fclose (fp);
         return -1;
+      }
 
       if (buf[0] == '*')
       {
@@ -128,6 +133,7 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
           if (!(pc = strchr (pc, '(')))
           {
             imap_error ("imap_read_headers()", buf);
+	    fclose (fp);
             return (-1);
           }
           pc++;
@@ -141,6 +147,7 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
 	    if (!hdr)
             {
               imap_error ("imap_read_headers()", buf);
+	      fclose (fp);
               return -1;
             }
             strncpy(fpc,pc,hdr-pc);
@@ -151,6 +158,7 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
 	    if (imap_get_literal_count(buf, &bytes) < 0)
             {
               imap_error ("imap_read_headers()", buf);
+	      fclose (fp);
               return -1;
             }
             imap_read_bytes (fp, CTX_DATA->conn, bytes);
@@ -186,7 +194,7 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
     h = h->next;
   }
 
-  rewind(fp);
+  rewind (fp);
   h = h0;
 
   /*
@@ -200,7 +208,7 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
     ctx->hdrs[ctx->msgcount]->index = ctx->msgcount;
 
     ctx->hdrs[msgno]->env = mutt_read_rfc822_header (fp, ctx->hdrs[msgno], 0, 0);
-    ploc=ftell(fp);
+    ploc = ftell (fp);
     ctx->hdrs[msgno]->read = h->read;
     ctx->hdrs[msgno]->old = h->old;
     ctx->hdrs[msgno]->deleted = h->deleted;
@@ -218,9 +226,8 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
     /* hdata is freed later */
     safe_free ((void **) &h0);
   }
+  
   fclose(fp);
-  unlink(tempfile);
-
   return (msgend);
 }
 
@@ -280,9 +287,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   do
   {
     if (mutt_socket_read_line_d (buf, sizeof (buf), CTX_DATA->conn) < 0)
-    {
-      return (-1);
-    }
+      goto bail;
 
     if (buf[0] == '*')
     {
@@ -303,21 +308,19 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	    if (imap_get_literal_count(pc, &bytes) < 0)
 	    {
 	      imap_error ("imap_fetch_message()", buf);
-	      return (-1);
+	      goto bail;
 	    }
 	    for (pos = 0; pos < bytes; )
 	    {
 	      len = mutt_socket_read_line (buf, sizeof (buf), CTX_DATA->conn);
 	      if (len < 0)
-		return (-1);
+		goto bail;
 	      pos += len;
 	      fputs (buf, msg->fp);
 	      fputs ("\n", msg->fp);
 	    }
 	    if (mutt_socket_read_line (buf, sizeof (buf), CTX_DATA->conn) < 0)
-	    {
-	      return (-1);
-	    }
+	      goto bail;
 	    pc = buf;
 	  }
           /* UW-IMAP will provide a FLAGS update here if the FETCH causes a
@@ -334,8 +337,8 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 
             dprint (2, (debugfile, "imap_fetch_message: parsing FLAGS\n"));
             if ((pc = msg_parse_flags (newh, pc)) == NULL)
-              return -1;
-
+	      goto bail;
+	      
 	    /* this is less efficient than the code which used to be here,
 	     * but (1) this is only invoked when fetching messages, and (2)
 	     * this way, we can make sure that side effects of flag changes
@@ -361,14 +364,15 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	}
       }
       else if (imap_handle_untagged (CTX_DATA, buf) != 0)
-	return -1;
+	goto bail;
     }
   }
   while (mutt_strncmp (buf, seq, SEQLEN) != 0);
 
   if (!imap_code (buf))
-    return -1;
-
+    goto bail;
+    
+  
   /* Update the header information.  Previously, we only downloaded a
    * portion of the headers, those required for the main display.
    */
@@ -395,6 +399,15 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   rewind (msg->fp);
 
   return 0;
+
+bail:
+  safe_fclose (&msg->fp);
+  if (cache->path)
+  {
+    unlink (cache->path);
+    FREE (&cache->path);
+  }
+  return (-1);
 }
 
 int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
@@ -419,14 +432,14 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
     return (-1);
   }
 
-  for(last = EOF, len = 0; (c = fgetc(fp)) != EOF; last = c)
+  for (last = EOF, len = 0; (c = fgetc(fp)) != EOF; last = c)
   {
     if(c == '\n' && last != '\r')
       len++;
 
     len++;
   }
-  rewind(fp);
+  rewind (fp);
   
   mutt_message _("Sending APPEND command ...");
 
@@ -469,18 +482,18 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
 
   mutt_message _("Uploading message ...");
 
-  for(last = EOF, len = 0; (c = fgetc(fp)) != EOF; last = c)
+  for (last = EOF, len = 0; (c = fgetc(fp)) != EOF; last = c)
   {
-    if(c == '\n' && last != '\r')
+    if (c == '\n' && last != '\r')
       buf[len++] = '\r';
 
     buf[len++] = c;
 
-    if(len > sizeof(buf) - 3)
+    if (len > sizeof(buf) - 3)
       flush_buffer(buf, &len, CTX_DATA->conn);
   }
   
-  if(len)
+  if (len)
     flush_buffer(buf, &len, CTX_DATA->conn);
 
     
