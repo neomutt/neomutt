@@ -55,7 +55,7 @@ static size_t convert_string (const char *f, size_t flen,
 			      char **t, size_t *tlen)
 {
   iconv_t cd;
-  char *buf, *ob, *x;
+  char *buf, *ob;
   size_t obl, n;
   int e;
 
@@ -68,16 +68,19 @@ static size_t convert_string (const char *f, size_t flen,
   if (n == (size_t)(-1) || iconv (cd, 0, 0, &ob, &obl) == (size_t)(-1))
   {
     e = errno;
-    free (buf);
+    safe_free ((void **) &buf);
     iconv_close (cd);
     errno = e;
     return (size_t)(-1);
   }
   *ob = '\0';
-  x = realloc (buf, ob - buf + 1);
-  *t = x ? x : buf;
+  
   *tlen = ob - buf;
+
+  safe_realloc ((void **) &buf, ob - buf + 1);
+  *t = buf;
   iconv_close (cd);
+
   return n;
 }
 
@@ -104,26 +107,33 @@ char *mutt_choose_charset (const char *fromcode, const char *charsets,
       continue;
 
     t = safe_malloc (n + 1);
-    memcpy (t, p, n), t[n] = '\0';
+    memcpy (t, p, n);
+    t[n] = '\0';
+
     n = convert_string (u, ulen, fromcode, t, &s, &slen);
     if (n == (size_t)(-1))
       continue;
+
     if (!tocode || n < bestn)
     {
       bestn = n;
-      free (tocode), tocode = t;
+      safe_free ((void **) &tocode);
+      tocode = t;
       if (d)
-	free (e), e = s;
+      {
+	safe_free ((void **) &e);
+	e = s;
+      }
       else
-	free (s);
+	safe_free ((void **) &s);
       elen = slen;
       if (!bestn)
 	break;
     }
     else
     {
-      free (t);
-      free (s);
+      safe_free ((void **) &t);
+      safe_free ((void **) &s);
     }
   }
   if (tocode)
@@ -509,16 +519,19 @@ static int rfc2047_encode (const char *d, size_t dlen, int col,
 
   /* Add last encoded word and us-ascii suffix to buffer. */
   buflen = bufpos + wlen + (u + ulen - t1);
-  safe_realloc ((void **) &buf, buflen);
+  safe_realloc ((void **) &buf, buflen + 1);
   r = encode_block (buf + bufpos, t, t1 - t, icode, tocode, encoder);
   assert (r == wlen);
   bufpos += wlen;
   memcpy (buf + bufpos, t1, u + ulen - t1);
 
-  free (tocode1);
-  free (u);
+  safe_free ((void **) &tocode1);
+  safe_free ((void **) &u);
+
+  buf[buflen] = '\0';
+  
   *e = buf;
-  *elen = buflen;
+  *elen = buflen + 1;
   return ret;
 }
 
@@ -539,9 +552,7 @@ void _rfc2047_encode_string (char **pd, int encode_specials, int col)
 		  Charset, charsets, &e, &elen,
 		  encode_specials ? RFC822Specials : NULL);
 
-  safe_realloc ((void **) &e, elen + 1);
-  e[elen] = '\0';
-  free (*pd);
+  safe_free ((void **) pd);
   *pd = e;
 }
 

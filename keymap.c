@@ -812,7 +812,7 @@ int mutt_parse_macro (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   {
     if (MoreArgs (s))
     {
-      seq = strdup (buf->data);
+      seq = safe_strdup (buf->data);
       mutt_extract_token (buf, s, M_TOKEN_CONDENSE);
 
       if (MoreArgs (s))

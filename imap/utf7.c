@@ -123,14 +123,14 @@ static char *utf7_to_utf8 (const char *u7, size_t u7len, char **u8,
   *p++ = '\0';
   if (u8len)
     *u8len = p - buf;
-  p = realloc (buf, p - buf);
-  p = p ? p : buf;
+
+  safe_realloc ((void **) &buf, p - buf);
   if (u8)
-    *u8 = p;
-  return p;
+    *u8 = buf;
+  return buf;
 
  bail:
-  free (buf);
+  safe_free ((void **) &buf);
   return 0;
 }
 
@@ -220,7 +220,7 @@ static char *utf8_to_utf7 (const char *u8, size_t u8len, char **u7,
 
   if (u8len)
   {
-    free (buf);
+    safe_free ((void **) &buf);
     return 0;
   }
 
@@ -234,14 +234,12 @@ static char *utf8_to_utf7 (const char *u8, size_t u8len, char **u7,
   *p++ = '\0';
   if (u7len)
     *u7len = p - buf;
-  p = realloc (buf, p - buf);
-  p = p ? p : buf;
-  if (u7)
-    *u7 = p;
-  return p;
+  safe_realloc ((void **) &buf, p - buf);
+  if (u7)  *u7 = buf;
+  return buf;
 
  bail:
-  free (buf);
+  safe_free ((void **) &buf);
   return 0;
 }
 
@@ -263,7 +261,7 @@ void imap_utf7_decode (char **s)
     char *t = utf7_to_utf8 (*s, strlen (*s), 0, 0);
     if (t && !mutt_convert_string (&t, "UTF-8", Charset))
     {
-      free (*s);
+      safe_free ((void **) s);
       *s = t;
     }
   }

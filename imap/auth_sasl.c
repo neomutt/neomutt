@@ -37,7 +37,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
   int rc, irc;
   char buf[LONG_STRING];
   const char* mech;
-  char* pc;
+  char* pc = NULL;
   unsigned int len, olen;
   unsigned char client_start;
 
@@ -163,7 +163,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata)
 
       /* sasl_client_st(art|ep) allocate pc with malloc, expect me to 
        * free it */
-      free (pc);
+      safe_free (&pc);
     }
     
     if (olen || rc == SASL_CONTINUE)

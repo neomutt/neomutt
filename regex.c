@@ -109,8 +109,8 @@
 #if defined (STDC_HEADERS) || defined (_LIBC)
 #include <stdlib.h>
 #else
-char *malloc ();
-char *realloc ();
+char *malloc ();	/* __MEM_CHECKED__ */
+char *realloc ();	/* __MEM_CHECKED__ */
 #endif
 
 /* When used in Emacs's lib-src, we need to get bzero and bcopy somehow.
@@ -1804,7 +1804,7 @@ static boolean group_in_compile_stack _RE_ARGS ((compile_stack_type
 
 /* Return, freeing storage we allocated.  */
 #define FREE_STACK_RETURN(value)		\
-  return (free (compile_stack.stack), value)
+  return (free (compile_stack.stack), value)		/* __MEM_CHECKED__ */
 
 static reg_errcode_t
 regex_compile (pattern, size, syntax, bufp)
@@ -2845,7 +2845,7 @@ regex_compile (pattern, size, syntax, bufp)
   if (syntax & RE_NO_POSIX_BACKTRACKING)
     BUF_PUSH (succeed);
 
-  free (compile_stack.stack);
+  free (compile_stack.stack);	/* __MEM_CHECKED__ */
 
   /* We have succeeded; set the length of the buffer.  */
   bufp->used = b - bufp->buffer;
@@ -2885,11 +2885,11 @@ regex_compile (pattern, size, syntax, bufp)
 #else /* not emacs */
 	if (! fail_stack.stack)
 	  fail_stack.stack
-	    = (fail_stack_elt_t *) malloc (fail_stack.size
+	    = (fail_stack_elt_t *) malloc (fail_stack.size	/* __MEM_CHECKED__ */
 					   * sizeof (fail_stack_elt_t));
 	else
 	  fail_stack.stack
-	    = (fail_stack_elt_t *) realloc (fail_stack.stack,
+	    = (fail_stack_elt_t *) realloc (fail_stack.stack,	/* __MEM_CHECKED__ */
 					    (fail_stack.size
 					     * sizeof (fail_stack_elt_t)));
 #endif /* not emacs */
@@ -5469,12 +5469,12 @@ re_comp (s)
 
   if (!re_comp_buf.buffer)
     {
-      re_comp_buf.buffer = (unsigned char *) malloc (200);
+      re_comp_buf.buffer = (unsigned char *) malloc (200);	/* __MEM_CHECKED__ */
       if (re_comp_buf.buffer == NULL)
         return gettext (re_error_msgid[(int) REG_ESPACE]);
       re_comp_buf.allocated = 200;
 
-      re_comp_buf.fastmap = (char *) malloc (1 << BYTEWIDTH);
+      re_comp_buf.fastmap = (char *) malloc (1 << BYTEWIDTH);	/* __MEM_CHECKED__ */
       if (re_comp_buf.fastmap == NULL)
 	return gettext (re_error_msgid[(int) REG_ESPACE]);
     }
@@ -5574,7 +5574,7 @@ regcomp (preg, pattern, cflags)
       unsigned i;
 
       preg->translate
-	= (RE_TRANSLATE_TYPE) malloc (CHAR_SET_SIZE
+	= (RE_TRANSLATE_TYPE) malloc (CHAR_SET_SIZE	/* __MEM_CHECKED__ */
 				      * sizeof (*(RE_TRANSLATE_TYPE)0));
       if (preg->translate == NULL)
         return (int) REG_ESPACE;
@@ -5678,8 +5678,8 @@ regexec (preg, string, nmatch, pmatch, eflags)
         }
 
       /* If we needed the temporary register info, free the space now.  */
-      free (regs.start);
-      free (regs.end);
+      free (regs.start);	/* __MEM_CHECKED__ */
+      free (regs.end);		/* __MEM_CHECKED__ */
     }
 
   /* We want zero return to mean success, unlike `re_search'.  */
@@ -5735,19 +5735,19 @@ regfree (preg)
     regex_t *preg;
 {
   if (preg->buffer != NULL)
-    free (preg->buffer);
+    free (preg->buffer);	/* __MEM_CHECKED__ */
   preg->buffer = NULL;
 
   preg->allocated = 0;
   preg->used = 0;
 
   if (preg->fastmap != NULL)
-    free (preg->fastmap);
+    free (preg->fastmap);	/* __MEM_CHECKED__ */
   preg->fastmap = NULL;
   preg->fastmap_accurate = 0;
 
   if (preg->translate != NULL)
-    free (preg->translate);
+    free (preg->translate);	/* __MEM_CHECKED__ */
   preg->translate = NULL;
 }
 

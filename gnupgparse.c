@@ -108,7 +108,7 @@ static void fix_uid (char *uid)
       else if (ob-buf == n && (buf[n] = 0, strlen (buf) < n))
 	memcpy (uid, buf, n);
     }
-    free (buf);
+    safe_free ((void **) &buf);
     iconv_close (cd);
   }
 }
@@ -291,9 +291,8 @@ pgp_key_t *pgp_get_candidates (pgp_ring_t keyring, LIST * hints)
   if ((devnull = open ("/dev/null", O_RDWR)) == -1)
     return NULL;
 
-  free (_chs);
-  _chs = safe_strdup (Charset);
-
+  mutt_str_replace (&_chs, Charset);
+  
   thepid = pgp_invoke_list_keys (NULL, &fp, NULL, -1, -1, devnull,
 				 keyring, hints);
   if (thepid == -1)

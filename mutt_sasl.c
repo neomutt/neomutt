@@ -236,7 +236,7 @@ static int mutt_sasl_cb_pass (sasl_conn_t* conn, void* context, int id,
 
   len = strlen (account->pass);
 
-  *psecret = (sasl_secret_t*) malloc (sizeof (sasl_secret_t) + len);
+  *psecret = (sasl_secret_t*) safe_malloc (sizeof (sasl_secret_t) + len);
   (*psecret)->len = len;
   strcpy ((*psecret)->data, account->pass);	/* __STRCPY_CHECKED__ */
 

@@ -506,7 +506,7 @@ int mutt_write_mime_body (BODY *a, FILE *f)
   else
     mutt_copy_stream (fpin, f);
 
-  fgetconv_close (fc);
+  fgetconv_close (&fc);
   fclose (fpin);
 
   return (ferror (f) ? -1 : 0);
@@ -810,16 +810,14 @@ static size_t convert_file_from_to (FILE *file,
   char *fcode;
   char **tcode;
   const char *c, *c1;
-  size_t n, ret;
+  size_t ret;
   int ncodes, i, cn;
 
   /* Count the tocodes */
   ncodes = 0;
   for (c = tocodes; c; c = c1 ? c1 + 1 : 0)
   {
-    c1 = strchr (c, ':');
-    n = c1 ? c1 - c : strlen (c);
-    if (!n)
+    if ((c1 = strchr (c, ':')) == c)
       continue;
     ++ncodes;
   }
@@ -828,12 +826,9 @@ static size_t convert_file_from_to (FILE *file,
   tcode = safe_malloc (ncodes * sizeof (char *));
   for (c = tocodes, i = 0; c; c = c1 ? c1 + 1 : 0, i++)
   {
-    c1 = strchr (c, ':');
-    n = c1 ? c1 - c : strlen (c);
-    if (!n)
+    if ((c1 = strchr (c, ':')) == c)
       continue;
-    tcode[i] = malloc (n+1);
-    memcpy (tcode[i], c, n), tcode[i][n] = '\0';
+    tcode[i] = mutt_substrdup (c, c1);
   }
 
   ret = (size_t)(-1);
@@ -842,12 +837,10 @@ static size_t convert_file_from_to (FILE *file,
     /* Try each fromcode in turn */
     for (c = fromcodes; c; c = c1 ? c1 + 1 : 0)
     {
-      c1 = strchr (c, ':');
-      n = c1 ? c1 - c : strlen (c);
-      if (!n)
+      if ((c1 = strchr (c, ':')) == c)
 	continue;
-      fcode = malloc (n+1);
-      memcpy (fcode, c, n), fcode[n] = '\0';
+      fcode = mutt_substrdup (c, c1);
+      
       ret = convert_file_to (file, fcode, ncodes, (const char **)tcode,
 			     &cn, info);
       if (ret != (size_t)(-1))
@@ -857,7 +850,7 @@ static size_t convert_file_from_to (FILE *file,
 	tcode[cn] = 0;
 	break;
       }
-      free (fcode);
+      safe_free ((void **) &fcode);
     }
   }
   else
@@ -874,8 +867,10 @@ static size_t convert_file_from_to (FILE *file,
 
   /* Free memory */
   for (i = 0; i < ncodes; i++)
-    free (tcode[i]);
+    safe_free ((void **) &tcode[i]);
 
+  safe_free ((void **) tcode);
+  
   return ret;
 }
 

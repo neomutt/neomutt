@@ -327,7 +327,8 @@ int rfc2231_encode_string (char **pd)
 				  *pd, strlen (*pd), &d, &dlen)))
   {
     charset = safe_strdup (Charset ? Charset : "unknown-8bit");
-    d = *pd, dlen = strlen (d);
+    d = *pd;
+    dlen = strlen (d);
   }
 
   if (!mutt_is_us_ascii (charset))
@@ -356,14 +357,18 @@ int rfc2231_encode_string (char **pd)
     *t = '\0';
 
     if (d != *pd)
-      free (d);
-    free (*pd);
+      safe_free ((void **) &d);
+    safe_free ((void **) pd);
     *pd = e;
   }
   else if (d != *pd)
   {
-    free (*pd);
+    safe_free ((void **) pd);
     *pd = d;
   }
+  
+  safe_free ((void **) &charset);
+  
   return encode;
 }
+

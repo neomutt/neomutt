@@ -363,13 +363,7 @@ static void parse_content_disposition (char *s, BODY *ct)
     s++;
     SKIPWS (s);
     if ((s = mutt_get_parameter ("filename", (parms = parse_parameters (s)))) != 0)
-    {
-      /* free() here because the content-type parsing routine might
-       * have allocated space if a "name=filename" parameter was
-       * specified.
-       */
       mutt_str_replace (&ct->filename, s);
-    }
     if ((s = mutt_get_parameter ("name", parms)) != 0)
       ct->form_name = safe_strdup (s);
     mutt_free_parameter (&parms);
@@ -1016,7 +1010,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     {
       if (hdr && in_reply_to)
       {
-	*in_reply_to = strdup (p);
+	mutt_str_replace (in_reply_to, p);
 	if (do_2047)
 	  rfc2047_decode (in_reply_to);
       }

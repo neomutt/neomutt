@@ -764,7 +764,7 @@ ADDRESS *rfc822_append (ADDRESS **a, ADDRESS *b)
 #ifdef TESTING
 int safe_free (void **p)
 {
-  free(*p);
+  free(*p);		/* __MEM_CHECKED__ */
   *p = 0;
 }
 

@@ -166,7 +166,7 @@ static void replace_part (ENTER_STATE *state, size_t from, char *buf)
   memcpy (state->wbuf + state->curpos, savebuf, savelen * sizeof (wchar_t));
   state->lastchar = state->curpos + savelen;
 
-  free (savebuf);
+  safe_free ((void **) &savebuf);
 }
 
 /*

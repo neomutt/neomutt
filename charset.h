@@ -30,7 +30,7 @@ typedef void * FGETCONV;
 
 FGETCONV *fgetconv_open (FILE *, const char *, const char *);
 int fgetconv (FGETCONV *);
-void fgetconv_close (FGETCONV *);
+void fgetconv_close (FGETCONV **);
 
 void mutt_set_langinfo_charset (void);
 

@@ -1273,8 +1273,8 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
   return (keylist);
 }
 
-/* Warning: "a" is no longer free()d in this routine, you need
- * to free() it later.  This is necessary for $fcc_attach. */
+/* Warning: "a" is no longer freed in this routine, you need
+ * to free it later.  This is necessary for $fcc_attach. */
 
 static BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
 {

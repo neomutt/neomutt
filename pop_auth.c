@@ -41,7 +41,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data)
   char buf[LONG_STRING];
   char inbuf[LONG_STRING];
   const char* mech;
-  char* pc;
+  char* pc = NULL;
   unsigned int len, olen;
   unsigned char client_start;
 
@@ -130,7 +130,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data)
 
       /* sasl_client_st(art|ep) allocate pc with malloc, expect me to 
        * free it */
-      free (pc);
+      safe_free ((void) &pc);
     }
   }
 

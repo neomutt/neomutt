@@ -69,7 +69,7 @@ void *safe_malloc (size_t siz)
 
   if (siz == 0)
     return 0;
-  if ((p = (void *) malloc (siz)) == 0)
+  if ((p = (void *) malloc (siz)) == 0)	/* __MEM_CHECKED__ */
   {
     mutt_error _("Out of memory!");
     sleep (1);
@@ -86,18 +86,18 @@ void safe_realloc (void **p, size_t siz)
   {
     if (*p)
     {
-      free (*p);
+      free (*p);			/* __MEM_CHECKED__ */
       *p = NULL;
     }
     return;
   }
 
   if (*p)
-    r = (void *) realloc (*p, siz);
+    r = (void *) realloc (*p, siz);	/* __MEM_CHECKED__ */
   else
   {
-    /* realloc(NULL, nbytes) doesn't seem to work under SunOS 4.1.x */
-    r = (void *) malloc (siz);
+    /* realloc(NULL, nbytes) doesn't seem to work under SunOS 4.1.x  --- __MEM_CHECKED__ */
+    r = (void *) malloc (siz);		/* __MEM_CHECKED__ */
   }
 
   if (!r)
@@ -114,7 +114,7 @@ void safe_free (void **p)
 {
   if (*p)
   {
-    free (*p);
+    free (*p);				/* __MEM_CHECKED__ */
     *p = 0;
   }
 }
@@ -498,7 +498,11 @@ char *mutt_substrdup (const char *begin, const char *end)
   size_t len;
   char *p;
 
-  len = end - begin;
+  if (end)
+    len = end - begin;
+  else
+    len = strlen (begin);
+
   p = safe_malloc (len + 1);
   memcpy (p, begin, len);
   p[len] = 0;
