@@ -45,12 +45,6 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data)
   unsigned int len, olen;
   unsigned char client_start;
 
-  if (!pop_data->auth_list)
-    return POP_A_UNAVAIL;
-
-  if (mutt_sasl_start () != SASL_OK)
-    return POP_A_FAILURE;
-
   if (mutt_sasl_client_new (pop_data->conn, &saslconn) < 0)
   {
     dprint (1, (debugfile, "pop_auth_sasl: Error allocating SASL connection.\n"));

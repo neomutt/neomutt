@@ -34,6 +34,8 @@
 
 static sasl_callback_t mutt_sasl_callbacks[5];
 
+static int mutt_sasl_start (void);
+
 /* callbacks */
 static int mutt_sasl_cb_log (void* context, int priority, const char* message);
 static int mutt_sasl_cb_authname (void* context, int id, const char** result,
@@ -57,29 +59,30 @@ int mutt_sasl_start (void)
   sasl_callback_t* callback, callbacks[2];
   int rc;
 
-  if (!sasl_init) {
-    /* set up default logging callback */
-    callback = callbacks;
+  if (sasl_init)
+    return SASL_OK;
 
-    callback->id = SASL_CB_LOG;
-    callback->proc = mutt_sasl_cb_log;
-    callback->context = NULL;
-    callback++;
+  /* set up default logging callback */
+  callback = callbacks;
 
-    callback->id = SASL_CB_LIST_END;
-    callback->proc = NULL;
-    callback->context = NULL;
+  callback->id = SASL_CB_LOG;
+  callback->proc = mutt_sasl_cb_log;
+  callback->context = NULL;
+  callback++;
 
-    rc = sasl_client_init (callbacks);
+  callback->id = SASL_CB_LIST_END;
+  callback->proc = NULL;
+  callback->context = NULL;
 
-    if (rc != SASL_OK)
-    {
-      dprint (1, (debugfile, "mutt_sasl_start: libsasl initialisation failed.\n"));
-      return SASL_FAIL;
-    }
+  rc = sasl_client_init (callbacks);
 
-    sasl_init = 1;
+  if (rc != SASL_OK)
+  {
+    dprint (1, (debugfile, "mutt_sasl_start: libsasl initialisation failed.\n"));
+    return SASL_FAIL;
   }
+
+  sasl_init = 1;
 
   return SASL_OK;
 }
@@ -93,6 +96,9 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
   sasl_external_properties_t extprops;
   const char* service;
   int rc;
+
+  if (mutt_sasl_start () != SASL_OK)
+    return -1;
 
   switch (conn->account.type)
   {

@@ -38,9 +38,6 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
   unsigned int len, olen;
   unsigned char client_start;
 
-  if (mutt_sasl_start () != SASL_OK)
-    return IMAP_AUTH_FAILURE;
-
   if (mutt_sasl_client_new (idata->conn, &saslconn) < 0)
   {
     dprint (1, (debugfile,

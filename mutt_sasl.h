@@ -25,7 +25,6 @@
 
 #include "mutt_socket.h"
 
-int mutt_sasl_start (void);
 int mutt_sasl_client_new (CONNECTION*, sasl_conn_t**);
 sasl_callback_t* mutt_sasl_get_callbacks (ACCOUNT*);
 int mutt_sasl_interact (sasl_interact_t*);
