@@ -1,3 +1,7 @@
+2004-04-12 19:47:59  Alain Bench  <veronatif@free.fr>  (roessler)
+
+	* doc/mbox.man, doc/muttbug.man: Fix #1831, Debian#237827.
+
 2004-04-12 19:42:10  Joël Riou  <joel.riou@normalesup.org>  (roessler)
 
 	* globals.h, init.c, init.h: Introduce config_charset.
