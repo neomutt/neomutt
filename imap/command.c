@@ -468,6 +468,7 @@ static void cmd_parse_fetch (IMAP_DATA* idata, char* s)
 
   msgno = atoi (s);
   
+       if (msgno < idata->ctx->msgcount)
   /* see cmd_parse_expunge */
   for (cur = 0; cur < idata->ctx->msgcount; cur++)
   {
