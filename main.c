@@ -52,6 +52,9 @@ Copyright (C) 1997-8 Thomas Roessler <roessler@guug.de>\n\
 Copyright (C) 1998   Werner Koch <wk@isil.d.shuttle.de>\n\
 Copyright (C) 1998   Ruslan Ermilov <ru@ucb.crimea.ua>\n\
 \n\
+Lots of others not mentioned here contributed lots of code,\n\
+fixes, and suggestions.\n\
+\n\
     This program is free software; you can redistribute it and/or modify\n\
     it under the terms of the GNU General Public License as published by\n\
     the Free Software Foundation; either version 2 of the License, or\n\
