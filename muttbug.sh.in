@@ -220,7 +220,7 @@ else
 	echo "-- System Information"
 	echo "System Version: `uname -a`"
 	test -z "$RPMPACKAGER" || echo "RPM Packager: $RPMPACKAGER";
-	test -f /etc/redhat_release && echo "RedHat Release: `cat /etc/redhat_release`"
+	test -f /etc/redhat-release && echo "RedHat Release: `cat /etc/redhat-release`"
 	test -f /etc/SuSE-release && echo "SuSE Release: `head-1 /etc/SuSE-release`"
 	# Please provide more of these if you have any.
 fi
