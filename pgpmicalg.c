@@ -45,6 +45,9 @@ HashAlgorithms[] =
   { 5,  	"pgp-md2"		},
   { 6,  	"pgp-tiger192"		},
   { 7,		"pgp-haval-5-160" 	},
+  { 8,		"pgp-sha256"		},
+  { 9,		"pgp-sha384"		},
+  { 10,		"pgp-sha512"		},
   { -1, 	NULL }
 };
 
