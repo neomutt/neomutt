@@ -27,8 +27,8 @@
 
 
 #ifdef _PGPPATH
-#define M_CM_DECODE_PGP	(1<<5)	/* used for decoding PGP messages */
-#define M_CM_VERIFY	(1<<6)	/* do signature verification */
+#define M_CM_DECODE_PGP	(1<<7)	/* used for decoding PGP messages */
+#define M_CM_VERIFY	(1<<8)	/* do signature verification */
 #endif
 
 
