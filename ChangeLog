@@ -1,3 +1,8 @@
+2003-12-17 17:42:02  Scott Koranda  <skoranda@gravity.phys.uwm.edu>  (roessler)
+
+	* crypt.c: pkcs7-signature wasn't recognized properly in one
+	more place.
+
 2003-12-17 08:46:50  Michael Elkins  <me@sigpipe.org>  (roessler)
 
 	* rfc1524.c: Fix possible core dump in mailcap nametemplate
