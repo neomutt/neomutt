@@ -102,6 +102,8 @@ int smime_valid_passphrase (void)
     /* Use cached copy.  */
     return 1;
 
+  smime_void_passphrase();
+  
   if (mutt_get_password (_("Enter SMIME passphrase:"), SmimePass, sizeof (SmimePass)) == 0)
     {
       SmimeExptime = time (NULL) + SmimeTimeout;
