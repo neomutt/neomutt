@@ -171,7 +171,15 @@ PreferredMIMENames[] =
   { "l8",		"iso-8859-14"	},
 
   { "iso_8859-15",	"iso-8859-15"	},
-
+  { "latin9",		"iso-8859-15"	}, /* this is not a bug */
+  
+  { "ýso-8859-9",	"iso-8859-9"	}, /* work around a problem:
+					    * In iso-8859-9, the lower-
+					    * case version of I is ý,
+					    * not i.
+					    */
+  
+  
   /*
    * If you happen to encounter system-specific brain-damage with
    * respect to character set naming, please add it here, and
