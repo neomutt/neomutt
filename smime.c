@@ -704,7 +704,7 @@ void _smime_getkeys (char *mailbox)
 
   if (!k)
   {
-    snprintf(buf, sizeof(buf), _("Enter keyID for \'%s\': "),
+    snprintf(buf, sizeof(buf), _("Enter keyID for %s: "),
 	     mailbox);
     k = smime_ask_for_key(buf, mailbox, 0);
   }
@@ -734,7 +734,7 @@ void _smime_getkeys (char *mailbox)
       endwin ();
       mutt_clear_error ();
       snprintf (buf, sizeof (buf), _("This message seems to require key"
-                                     " \'%s\'. (Any key to continue)"), k);
+                                     " %s. (Any key to continue)"), k);
       mutt_any_key_to_continue (buf);
       endwin ();
       smime_void_passphrase ();
@@ -826,7 +826,7 @@ char *smime_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
     if ((keyID = smime_get_field_from_db (q->mailbox, NULL, 1, 1)) == NULL)
     {
       snprintf(buf, sizeof(buf),
-	       _("Enter keyID for \'%s\': "),
+	       _("Enter keyID for %s: "),
 	       q->mailbox);
       keyID = smime_ask_for_key(buf, q->mailbox, 1);
     }
