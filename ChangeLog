@@ -1,3 +1,7 @@
+2004-07-22 01:10:55  Brendan Cully  <brendan@kublai.com>  (roessler)
+
+	* imap/message.c: Quick fix for IMAP breakage.
+
 2004-07-21 22:15:40  Nathan Dushman  <nhd+mutt@andrew.cmu.edu>  (roessler)
 
 	* imap/command.c: This is a one-line patch that increases the
