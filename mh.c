@@ -606,6 +606,8 @@ static int mh_sync_message (CONTEXT *ctx, int msgno)
   char newpath[_POSIX_PATH_MAX];
   char partpath[_POSIX_PATH_MAX];
 
+  FILE *f;
+  
   if ((dest = mx_open_new_message (ctx, h, 0)) == NULL)
     return -1;
 
@@ -651,10 +653,16 @@ static int mh_sync_message (CONTEXT *ctx, int msgno)
 
   /* 
    * The message structure and offsets may have changed, so free it
-   * here.  The message will be reparsed later. 
+   * here.
    */
 
-  mutt_free_body (&h->content->parts);
+  mutt_free_body (&h->content);
+  if ((f = fopen (oldpath, "r")))
+  {
+    mutt_free_envelope (&h->env);
+    h->env = mutt_read_rfc822_header (f, h, 0);
+    fclose (f);
+  }
 
   return rc;
 }
