@@ -1777,14 +1777,15 @@ in the main index.
 <sect1>Using Tags
 <p>
 
-Sometimes it is desirable to perform an operation on a group of messages all
-at once rather than one at a time.  An example might be to save messages to
-a mailing list to a separate folder, or to delete all messages with a given
-subject.  To tag all messages matching a pattern, use the tag-pattern
-function, which is bound to ``control-T'' by default.  Or you can select
-individual messages by hand using the ``tag-message'' function, which is
-bound to ``t'' by default.  See <ref id="patterns" name="patterns"> for
-Mutt's pattern matching syntax.
+Sometimes it is desirable to perform an operation on a group of
+messages all at once rather than one at a time.  An example might be
+to save messages to a mailing list to a separate folder, or to
+delete all messages with a given subject.  To tag all messages
+matching a pattern, use the tag-pattern function, which is bound to
+``shift-T'' by default.  Or you can select individual messages by
+hand using the ``tag-message'' function, which is bound to ``t'' by
+default.  See <ref id="patterns" name="patterns"> for Mutt's pattern
+matching syntax.
 
 Once you have tagged the desired messages, you can use the
 ``tag-prefix'' operator, which is the ``;'' (semicolon) key by default.
