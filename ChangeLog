@@ -1,3 +1,9 @@
+2005-02-05 14:11:36  Thomas Roessler   <roessler@does-not-exist.org>  (roessler)
+
+	* crypthash.h, imap/util.c, lib.h, mbyte.h, mutt_idna.h,
+	patchlist.sh, remailer.h, rfc822.h: Remove a number of unnecessary
+	config.h includes, and add some missing ones.  May fix some bugs.
+
 2005-02-04 16:54:13  Brendan Cully  <brendan@kublai.com>  (brendan)
                                  
 	* Makefile.am: Add smime_keys to EXTRA_SCRIPTS (for make dist).
