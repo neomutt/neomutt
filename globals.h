@@ -111,6 +111,10 @@ WHERE LIST *UnIgnore INITVAL(0);
 WHERE LIST *MailLists INITVAL(0);
 WHERE LIST *SubscribedLists INITVAL(0);
 
+#ifdef USE_IMAP
+WHERE time_t ImapLastCheck INITVAL(0);
+#endif
+
 /* bit vector for boolean variables */
 #ifdef MAIN_C
 unsigned char Options[(OPTMAX + 7)/8];

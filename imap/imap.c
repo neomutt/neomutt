@@ -1008,7 +1008,6 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint)
 {
   /* overload keyboard timeout to avoid many mailbox checks in a row.
    * Most users don't like having to wait exactly when they press a key. */
-  static time_t LastCheck = 0;
 
   IMAP_DATA* idata;
   time_t now;
@@ -1016,8 +1015,8 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint)
   idata = (IMAP_DATA*) ctx->data;
 
   now = time(NULL);
-  if (now > LastCheck + Timeout) {
-    LastCheck = now;
+  if (now > ImapLastCheck + Timeout) {
+    ImapLastCheck = now;
 
     if (imap_exec (idata, "NOOP", 0) != 0)
     {

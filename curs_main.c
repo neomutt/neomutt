@@ -876,6 +876,12 @@ int mutt_index_menu (void)
 	 * The following operations can be performed inside of the pager.
 	 */
 
+#ifdef USE_IMAP
+      case OP_MAIN_IMAP_FETCH:
+      	ImapLastCheck = 0;
+        break;
+#endif
+      
       case OP_MAIN_SYNC_FOLDER:
 
 	CHECK_MSGCOUNT;

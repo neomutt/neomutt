@@ -85,6 +85,9 @@ struct binding_t OpMain[] = {
 #ifdef USE_POP
   { "fetch-mail",		OP_MAIN_FETCH_MAIL,		"G" },
 #endif
+#ifdef USE_IMAP
+  { "imap-fetch-mail",		OP_MAIN_IMAP_FETCH,		NULL },
+#endif
   { "display-toggle-weed",		OP_DISPLAY_HEADERS,		"h" },
   { "next-undeleted",		OP_MAIN_NEXT_UNDELETED,		"j" },
   { "previous-undeleted",	OP_MAIN_PREV_UNDELETED,		"k" },
@@ -160,6 +163,9 @@ struct binding_t OpPager[] = {
   { "forward-message",	OP_FORWARD_MESSAGE,		"f" },
   { "flag-message",	OP_FLAG_MESSAGE,		"F" },
   { "group-reply",	OP_GROUP_REPLY,			"g" },
+#ifdef USE_IMAP
+  { "imap-fetch-mail",  OP_MAIN_IMAP_FETCH,		NULL },
+#endif
   { "display-toggle-weed",	OP_DISPLAY_HEADERS,		"h" },
   { "next-undeleted",	OP_MAIN_NEXT_UNDELETED,		"j" },
   { "next-entry",	OP_NEXT_ENTRY,			"J" },
