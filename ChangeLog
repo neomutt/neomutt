@@ -1,3 +1,15 @@
+2004-07-14 04:16:58  ttakah@lapis.plala.or.jp  (roessler)
+
+	* commands.c, copy.c, copy.h, doc/manual.sgml.head,
+	doc/muttrc.man.head, globals.h, handler.c, hdrline.c, init.c,
+	init.h, mutt.h, muttlib.c, parse.c, pattern.c, protos.h, send.c,
+	sort.c, sort.h: Introduce $include_onlyfirst.
+
+2004-07-12 13:35:27  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* pager.c: The limitations for OP_MAIL and OP_RECALL should
+	be identical.
+
 2004-07-12 13:22:24  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* init.c, sendlib.c: Add some debugging code, and rewrite the
