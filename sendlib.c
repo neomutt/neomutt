@@ -486,7 +486,7 @@ int mutt_write_mime_body (BODY *a, FILE *f)
   }
 
   if (a->type == TYPETEXT && (!a->noconv))
-    fc = fgetconv_open (fpin, Charset, mutt_get_send_charset (send_charset, sizeof (send_charset), a, 1));
+    fc = fgetconv_open (fpin, Charset, mutt_get_body_charset (send_charset, sizeof (send_charset), a));
   else
     fc = fgetconv_open (fpin, 0, 0);
 
@@ -520,7 +520,6 @@ void mutt_generate_boundary (PARAMETER **parm)
   mutt_set_parameter ("boundary", rs, parm);
 }
 
-
 typedef struct
 {
   int from;
@@ -532,7 +531,7 @@ typedef struct
 CONTENT_STATE;
 
 
-static void update_content_info(CONTENT *info, CONTENT_STATE *s, char *d, size_t dlen)
+static void update_content_info (CONTENT *info, CONTENT_STATE *s, char *d, size_t dlen)
 {
   int from = s->from;
   int whitespace = s->whitespace;
@@ -840,7 +839,8 @@ static size_t convert_file_from_to (FILE *file,
   return ret;
 }
 
-/* Analyze the contents of a file to determine which MIME encoding to use.
+/* 
+ * Analyze the contents of a file to determine which MIME encoding to use.
  * Also set the body charset, sometimes, or not.
  */
 CONTENT *mutt_get_content_info (const char *fname, BODY *b)
@@ -873,8 +873,8 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
     {
       if (!chs)
 	mutt_set_parameter ("charset", tocode, &b->parameter);
-      safe_free (&fromcode);
-      safe_free (&tocode);
+      safe_free ((void **) &fromcode);
+      safe_free ((void **) &tocode);
       safe_fclose (&fp);
       return info;
     }
@@ -888,8 +888,7 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
   safe_fclose (&fp);
   
   if (b != NULL && b->type == TYPETEXT && (!b->noconv))
-    mutt_set_parameter ("charset",
-			info->hibin ? "unknown-8bit" : "us-ascii",
+    mutt_set_parameter ("charset", info->hibin ? "unknown-8bit" : "us-ascii",
 			&b->parameter);
 
   return info;
@@ -1103,37 +1102,13 @@ static void transform_to_7bit (BODY *a, FILE *fpin)
       }
       a->length = sb.st_size;
 
-      mutt_update_encoding (a);
+      mutt_update_encoding (a, NULL);
       if (a->encoding == ENC8BIT)
 	a->encoding = ENCQUOTEDPRINTABLE;
       else if(a->encoding == ENCBINARY)
 	a->encoding = ENCBASE64;
     }
   }
-}
-
-static const char *get_text_charset (char *d, size_t dlen, BODY *b, CONTENT *info)
-{
-  char send_charset[SHORT_STRING];
-  char *chsname;
-  char *p;
-  
-  chsname = mutt_get_send_charset (send_charset, sizeof (send_charset), b, 1);
-  
-  /* if charset is unknown assume low bytes are ascii compatible */
-
-  if ((chsname == NULL || mutt_strcasecmp (chsname, "us-ascii") == 0)
-      && info->hibin)
-    p = "unknown-8bit";
-  else if (info->hibin || !strcasecmp (chsname, "utf-7"))
-    p = chsname;
-  else if (info->lobin && !strncasecmp (chsname, "iso-2022-jp", 11))
-    p = chsname;
-  else
-    p = "us-ascii";
-  
-  strfcpy (d, p, dlen);
-  return d;
 }
 
 /* determine which Content-Transfer-Encoding to use */
@@ -1143,7 +1118,7 @@ static void mutt_set_encoding (BODY *b, CONTENT *info)
 
   if (b->type == TYPETEXT)
   {
-    char *chsname = mutt_get_send_charset (send_charset, sizeof (send_charset), b, 1);
+    char *chsname = mutt_get_body_charset (send_charset, sizeof (send_charset), b);
     if ((info->lobin && strncasecmp (chsname, "iso-2022-jp", 11)) || info->linemax > 990 || (info->from && option (OPTENCODEFROM)))
       b->encoding = ENCQUOTEDPRINTABLE;
     else if (info->hibin)
@@ -1182,9 +1157,9 @@ void mutt_stamp_attachment(BODY *a)
   a->stamp = time(NULL);
 }
 
-/* Get the character set which is to be used for sending */
+/* Get a body's character set */
 
-char *mutt_get_send_charset (char *d, size_t dlen, BODY *b, short f)
+char *mutt_get_body_charset (char *d, size_t dlen, BODY *b)
 {
   char *p = NULL;
 
@@ -1194,54 +1169,28 @@ char *mutt_get_send_charset (char *d, size_t dlen, BODY *b, short f)
   if (b) 
     p = mutt_get_parameter ("charset", b->parameter);
 
-  /* override the special "us-ascii" and "unknown-8bit" character sets */
-  if (!p || (f && (!mutt_strcasecmp (p, "us-ascii") || !mutt_strcasecmp (p, "unknown-8bit"))))
-  {
-    if (SendCharset && *SendCharset)
-    {
-      p = strrchr (SendCharset, ':');
-      p = p ? p + 1 : SendCharset;
-    }
-    else if (Charset)
-      p = Charset;
-  }
-
   if (p)
-  {
     strfcpy (d, NONULL(p), dlen);
-    return d;
-  }
+  else
+    strfcpy (d, "us-ascii", dlen);
 
-  /* something is seriously wrong. */
-  return NULL;
-}
-
-/* set a body structure's character set */
-
-void mutt_set_body_charset(BODY *b, const char *chs)
-{
-  char send_charset[SHORT_STRING];
-  
-  if(b->type != TYPETEXT)
-    return;
-
-  if(!chs && !(chs = mutt_get_send_charset(send_charset, sizeof(send_charset), NULL, 1)))
-    return;
-
-  mutt_set_parameter ("charset", chs, &b->parameter);
+  return d;
 }
 
 
 /* Assumes called from send mode where BODY->filename points to actual file */
-void mutt_update_encoding (BODY *a)
+void mutt_update_encoding (BODY *a, CONTENT *info)
 {
-  CONTENT *info;
+  char chsbuff[STRING];
 
-  /* Previous value is usually wrong, apparently. */
-  if (!a->force_charset)
-    mutt_set_parameter ("charset", 0, &a->parameter);
+  /* override noconv when it's us-ascii */
+  if (!mutt_strcasecmp (mutt_get_body_charset (chsbuff, sizeof (chsbuff), a), "us-ascii"))
+    a->noconv = 0;
 
-  if ((info = mutt_get_content_info (a->filename, a)) == NULL)
+  if (!a->force_charset && !a->noconv)
+    mutt_set_parameter ("charset", NULL, &a->parameter);
+
+  if (!info && (info = mutt_get_content_info (a->filename, a)) == NULL)
     return;
 
   mutt_set_encoding (a, info);
@@ -1326,7 +1275,7 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
 #ifdef HAVE_PGP
   body->hdr->pgp = pgp;
 #endif /* HAVE_PGP */
-  mutt_update_encoding (body);
+  mutt_update_encoding (body, NULL);
   body->parts = body->hdr->content;
 
   fclose(fp);
@@ -1339,7 +1288,6 @@ BODY *mutt_make_file_attach (const char *path)
   BODY *att;
   CONTENT *info;
   char buf[SHORT_STRING];
-  char chsbuf[SHORT_STRING];
   int n;
 
   att = mutt_new_body ();
@@ -1376,16 +1324,7 @@ BODY *mutt_make_file_attach (const char *path)
     }
   } 
 
-  /* XXX - just call mutt_update_encoding? -tlr */
-
-  mutt_set_encoding (att, info);
-  mutt_stamp_attachment(att);
-
-  if (att->type == TYPETEXT)
-    mutt_set_body_charset(att, get_text_charset(chsbuf, sizeof (chsbuf), att, info));
-
-  att->content = info;
-
+  mutt_update_encoding (att, info);
   return (att);
 }
 

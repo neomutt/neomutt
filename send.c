@@ -1252,7 +1252,7 @@ ci_send_message (int flags,		/* send mode */
       utime (msg->content->filename, &utim);
     }
 
-    mutt_update_encoding (msg->content);
+    mutt_update_encoding (msg->content, NULL);
 
     /* If the this isn't a text message, look for a mailcap edit command */
     if(! (flags & SENDKEY))
@@ -1305,7 +1305,7 @@ ci_send_message (int flags,		/* send mode */
   }
 
   
-  mutt_update_encoding (msg->content);
+  mutt_update_encoding (msg->content, NULL);
 
   if (! (flags & (SENDMAILX | SENDBATCH)))
   {

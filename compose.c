@@ -262,7 +262,7 @@ check_attachments(ATTACHPTR **idx, short idxlen)
 	       pretty, i+1);
       
       if((r = mutt_yesorno(msg, M_YES)) == M_YES)
-	mutt_update_encoding(idx[i]->content);
+	mutt_update_encoding(idx[i]->content, NULL);
       else if(r == -1)
 	return -1;
     }
@@ -598,7 +598,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	if (Editor && (mutt_strcmp ("builtin", Editor) != 0) && !option (OPTEDITHDRS))
 	{
 	  mutt_edit_file (Editor, msg->content->filename);
-	  mutt_update_encoding (msg->content);
+	  mutt_update_encoding (msg->content, NULL);
 	  menu->redraw = REDRAW_CURRENT | REDRAW_STATUS;
 	  break;
 	}
@@ -618,7 +618,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	     code below to regenerate the index array */
 	  mutt_builtin_editor (msg->content->filename, msg, cur);
 	}
-	mutt_update_encoding (msg->content);
+	mutt_update_encoding (msg->content, NULL);
 
 	/* attachments may have been added */
 	if (idxlen && idx[idxlen - 1]->content->next)
@@ -877,19 +877,19 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
       case OP_COMPOSE_UPDATE_ENCODING:
         CHECK_COUNT;
-        if(menu->tagprefix)
+        if (menu->tagprefix)
         {
 	  BODY *top;
-	  for(top = msg->content; top; top = top->next)
+	  for (top = msg->content; top; top = top->next)
 	  {
-	    if(top->tagged)
-	      mutt_update_encoding(top);
+	    if (top->tagged)
+	      mutt_update_encoding (top, NULL);
 	  }
 	  menu->redraw = REDRAW_FULL;
 	}
         else
         {
-          mutt_update_encoding(idx[menu->current]->content);
+          mutt_update_encoding(idx[menu->current]->content, NULL);
 	  menu->redraw = REDRAW_CURRENT | REDRAW_STATUS;
 	}
         break;
@@ -906,7 +906,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  mutt_edit_content_type (NULL, idx[menu->current]->content);
 
 	  /* this may have been a change to text/something */
-	  mutt_update_encoding (idx[menu->current]->content);
+	  mutt_update_encoding (idx[menu->current]->content, NULL);
 
 	  menu->redraw = REDRAW_CURRENT;
 	}
@@ -961,7 +961,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	CHECK_COUNT;
 	mutt_edit_file ((!Editor || mutt_strcmp ("builtin", Editor) == 0) ? NONULL(Visual) : NONULL(Editor),
 			idx[menu->current]->content->filename);
-	mutt_update_encoding (idx[menu->current]->content);
+	mutt_update_encoding (idx[menu->current]->content, NULL);
 	menu->redraw = REDRAW_CURRENT | REDRAW_STATUS;
 	break;
 
@@ -1091,7 +1091,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
 	  if (mutt_compose_attachment (idx[menu->current]->content))
 	  {
-	    mutt_update_encoding (idx[menu->current]->content);
+	    mutt_update_encoding (idx[menu->current]->content, NULL);
 	    menu->redraw = REDRAW_FULL;
 	  }
 	}
@@ -1101,7 +1101,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	CHECK_COUNT;
 	if (mutt_edit_attachment (idx[menu->current]->content))
 	{
-	  mutt_update_encoding (idx[menu->current]->content);
+	  mutt_update_encoding (idx[menu->current]->content, NULL);
 	  menu->redraw = REDRAW_FULL;
 	}
 	break;
@@ -1176,7 +1176,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  mutt_error (_("Error running \"%s\"!"), buf);
 	else
         {
-	  mutt_update_encoding (msg->content);
+	  mutt_update_encoding (msg->content, NULL);
 	  menu->redraw |= REDRAW_STATUS;
 	}
 	break;

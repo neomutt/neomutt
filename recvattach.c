@@ -193,13 +193,13 @@ const char *mutt_attach_fmt (char *dest,
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	if (mutt_is_text_type (aptr->content->type, aptr->content->subtype) &&
-	    mutt_get_send_charset (charset, sizeof (charset), aptr->content, 0))
+	    mutt_get_body_charset (charset, sizeof (charset), aptr->content))
 	  snprintf (dest, destlen, fmt, charset);
 	else
 	  snprintf (dest, destlen, fmt, "");
       }
       else if (!mutt_is_text_type (aptr->content->type, aptr->content->subtype) ||
-	       !mutt_get_send_charset (charset, sizeof (charset), aptr->content, 0))
+	       !mutt_get_body_charset (charset, sizeof (charset), aptr->content))
         optional = 0;
       break;
     case 'c':
@@ -513,7 +513,7 @@ mutt_query_pipe_attachment (char *command, FILE *fp, BODY *body, int filter)
     {
       mutt_unlink (body->filename);
       mutt_rename_file (tfile, body->filename);
-      mutt_update_encoding (body);
+      mutt_update_encoding (body, NULL);
       mutt_message _("Attachment filtered.");
     }
   }

@@ -62,7 +62,6 @@ typedef const char * format_t (char *, size_t, char, const char *, const char *,
 
 void mutt_FormatString (char *, size_t, const char *, format_t *, unsigned long, format_flag);
 void mutt_parse_content_type (char *, BODY *);
-void mutt_update_encoding (BODY *a);
 void mutt_generate_boundary (PARAMETER **);
 void mutt_set_parameter (const char *, const char *, PARAMETER **);
 
@@ -121,9 +120,9 @@ char *_mutt_expand_path (char *, size_t, int);
 char *mutt_find_hook (int, const char *);
 char *mutt_gecos_name (char *, size_t, struct passwd *);
 char *mutt_gen_msgid (void);
+char *mutt_get_body_charset (char *, size_t, BODY *);
 char *mutt_get_name (ADDRESS *);
 char *mutt_get_parameter (const char *, PARAMETER *);
-char *mutt_get_send_charset (char *, size_t, BODY *, short);
 #ifdef HAVE_PGP
 char *mutt_pgp_hook (ADDRESS *);
 #endif /* HAVE_PGP */
@@ -201,7 +200,6 @@ void mutt_message_hook (CONTEXT *, HEADER *, int);
 void _mutt_set_flag (CONTEXT *, HEADER *, int, int, int);
 #define mutt_set_flag(a,b,c,d) _mutt_set_flag(a,b,c,d,1)
 void mutt_set_followup_to (ENVELOPE *);
-void mutt_set_body_charset (BODY *, const char *);
 void mutt_shell_escape (void);
 void mutt_show_error (void);
 void mutt_signal_init (void);
@@ -210,7 +208,7 @@ void mutt_tabs_to_spaces (char *);
 void mutt_tag_set_flag (int, int);
 void mutt_unblock_signals (void);
 void mutt_unblock_signals_system (int);
-void mutt_update_encoding (BODY *a);
+void mutt_update_encoding (BODY *a, CONTENT *info);
 void mutt_update_tree (ATTACHPTR **, short);
 void mutt_version (void);
 void mutt_view_attachments (HEADER *);
