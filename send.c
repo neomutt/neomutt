@@ -946,7 +946,7 @@ static int send_message (HEADER *msg)
 }
 
 /* rfc2047 encode the content-descriptions */
-static void encode_descriptions (BODY *b)
+static void encode_descriptions (BODY *b, short recurse)
 {
   BODY *t;
   char tmp[LONG_STRING];
@@ -958,8 +958,27 @@ static void encode_descriptions (BODY *b)
       rfc2047_encode_string (tmp, sizeof (tmp), (unsigned char *) t->description);
       mutt_str_replace (&t->description, tmp);
     }
+    if (recurse && t->parts)
+      encode_descriptions (t->parts, recurse);
+  }
+}
+
+/* rfc2047 decode them in case of an error */
+static void decode_descriptions (BODY *b)
+{
+  BODY *t;
+  char tmp[LONG_STRING];
+  
+  for (t = b; t; t = t->next)
+  {
+    if (t->description)
+    {
+      /* this should really have the same interface as rfc2047_encode_string. */
+      rfc2047_decode (tmp, t->description, sizeof (tmp));
+      mutt_str_replace (&t->description, tmp);
+    }
     if (t->parts)
-      encode_descriptions (t->parts);
+      decode_descriptions (t->parts);
   }
 }
 
@@ -1342,11 +1361,14 @@ main_loop:
   if (msg->content->next)
     msg->content = mutt_make_multipart (msg->content);
 
-  /* Ok, we need to do it this way instead of handling all fcc stuff in
+  /* 
+   * Ok, we need to do it this way instead of handling all fcc stuff in
    * one place in order to avoid going to main_loop with encoded "env"
    * in case of error.  Ugh.
    */
 
+  encode_descriptions (msg->content, 1);
+  
 #ifdef HAVE_PGP
   if (msg->pgp)
   {
@@ -1360,9 +1382,11 @@ main_loop:
       
       if (pgpkeylist)
 	FREE (&pgpkeylist);
-
+      
+      decode_descriptions (msg->content);
       goto main_loop;
     }
+    encode_descriptions (msg->content, 0);
   }
 
   /* 
@@ -1380,7 +1404,6 @@ main_loop:
     mutt_message _("Sending message...");
 
   mutt_prepare_envelope (msg->env);
-  encode_descriptions (msg->content);
 
   /* save a copy of the message, if necessary. */
 
