@@ -105,21 +105,22 @@ Which should be the severity for this bug report?
        0) Feature request, or maybe a bug which is very difficult to
        fix due to major design considerations.
 
-       1) The package fails to perform correctly on some conditions, or
-       in some systems, or fails to comply current policy documents. Most
-       bugs are in this category.
+       1) The package fails to perform correctly on some conditions,
+       or in some systems, or fails to comply current policy
+       documents. Most bugs are in this category.
 
-       2) This bug makes the package unsuitable for a stable Debian release.
-       The package should be removed from a stable distribution if this
-       bug is not fixed.
+       2) This bug makes this version of the package unsuitable for
+       a stable release.
 
-       3) Dangerous bug. Makes the package in question unusable by anyone or
-       mostly so, or causes data loss, or introduces a security hole allowing
-       access to the accounts of users who use the package.
+       3) Dangerous bug. Makes the package in question unusable by
+       anyone or mostly so, or causes data loss, or introduces a
+       security hole allowing access to the accounts of users who
+       use the package.
 
-       4) Critical bug. Makes unrelated software on the system (or the whole
-       system) break, or causes serious data loss, or introduces a security
-       hole on systems where you install the package.
+       4) Critical bug. Makes unrelated software on the system (or
+       the whole system) break, or causes serious data loss, or
+       introduces a security hole on systems where you install the
+       package.
 
 EOF
 echo $n "Severity? [01234] $c"
