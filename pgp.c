@@ -362,7 +362,13 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 	  if (s->flags & M_DISPLAY)
 	  {
 	    if (rc == 0) have_any_sigs = 1;
-	    if (rc || rv) maybe_goodsig = 0;
+/*
+ * Sig is bad if
+ * gpg_good_sign-pattern did not match || pgp_decode_command returned not 0
+ * Sig _is_ correct if
+ *  gpg_good_sign="" && pgp_decode_command returned 0
+ */
+	    if (rc == -1 || rv) maybe_goodsig = 0;
 
 	    state_putc ('\n', s);
 	    state_attach_puts (_("[-- End of PGP output --]\n\n"), s);
