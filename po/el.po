@@ -3,13 +3,14 @@
 # Copyright (C) 1999-2000 Fanis Dokianakis <madf@hellug.gr>
 # Nikos Mayrogiannopoulos <nmav@hellug.gr>
 # Simos Xenitellis <S.Xenitellis@rhbnc.ac.uk>
+# Corrections from kromJx <kromJx@crosswinds.net>
 #
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt-1.3.12i\n"
+"Project-Id-Version: Mutt-1.3.15i\n"
 "POT-Creation-Date: 2001-02-12 18:52+0100\n"
-"PO-Revision-Date: 2000-11-27 18:00+0200\n"
+"PO-Revision-Date: 2001-02-14 12:00+0200\n"
 "Last-Translator: Φάνης Δοκιανάκης <madf@hellug.gr>\n"
 "Language-Team: Greek <el@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -147,7 +148,7 @@ msgstr "Δεν βρέθηκε όμοια καταχώρηση Mailcap. Αναγιγνώσκεται ως κείμενο."
 #
 #: attach.c:410
 msgid "MIME type not defined.  Cannot view attachment."
-msgstr "Ο τύπος MIME δεν έχει οριστεί. Αδυναμία εμφανισης προσαρτήσεως."
+msgstr "Ο τύπος MIME δεν έχει οριστεί. Αδυναμία εμφάνισης προσαρτήσεως."
 
 #
 #: attach.c:500
@@ -167,7 +168,7 @@ msgstr "Σφάλμα εγγραφής!"
 #
 #: attach.c:973
 msgid "I don't know how to print that!"
-msgstr "Δε γνωρίζω πως να το τυπώσω αυτό!"
+msgstr "Δεν γνωρίζω πώς να το τυπώσω αυτό!"
 
 #
 #: browser.c:41
@@ -211,7 +212,7 @@ msgstr "Αδυναμία προσάρτησης ενός κατάλογου"
 #
 #: browser.c:643 browser.c:1024 browser.c:1117
 msgid "No files match the file mask"
-msgstr "Κανένα αρχείο δε ταιριάζει με τη μάσκα αρχείου"
+msgstr "Κανένα αρχείο δεν ταιριάζει με τη μάσκα αρχείου"
 
 #
 # recvattach.c:1065
@@ -233,12 +234,12 @@ msgstr "Διαγραφή του γραμματοκιβωτίου \"%s\";"
 #
 #: browser.c:891
 msgid "Mailbox deleted."
-msgstr "Το γραμματοκιβώτιου διαγράφτηκε."
+msgstr "Το γραμματοκιβώτιου διαγράφηκε."
 
 #
 #: browser.c:897
 msgid "Mailbox not deleted."
-msgstr "Το γραμματοκιβώτιου δεν διαγράφτηκε."
+msgstr "Το γραμματοκιβώτιο δεν διαγράφηκε."
 
 #
 #: browser.c:916
@@ -364,7 +365,7 @@ msgstr "δεν υποστηρίζονται τα εξ'ορισμού χρώματα"
 #. find out whether or not the verify signature
 #: commands.c:93
 msgid "Verify PGP signature?"
-msgstr "Επιβεβαίωση της PGP ψηφιακής υπογραφής?"
+msgstr "Επιβεβαίωση της PGP ψηφιακής υπογραφής;"
 
 #
 # commands.c:87 commands.c:95 pgp.c:1373 pgpkey.c:220
@@ -375,7 +376,7 @@ msgstr "Κλήση του PGP..."
 #
 #: commands.c:113 mbox.c:734
 msgid "Could not create temporary file!"
-msgstr "Αδυναμία κατά τη δημιουργία προσωρινού αρχείου!"
+msgstr "Αδυναμία δημιουργίας προσωρινού αρχείου!"
 
 #
 #: commands.c:126
@@ -389,11 +390,11 @@ msgstr "Αδυναμία αντιγραφής του μηνύματος."
 
 #: commands.c:168
 msgid "PGP signature successfully verified."
-msgstr "Η υπογραφή PGP επιβεβαιόθηκε επιτυχώς."
+msgstr "Η υπογραφή PGP επαληθεύθηκε επιτυχώς."
 
 #: commands.c:169
 msgid "PGP signature could NOT be verified."
-msgstr "Η υπογραφή PGP ΔΕΝ επιβεβαιόθηκε."
+msgstr "Η υπογραφή PGP ΔΕΝ επαληθεύθηκε."
 
 #
 #: commands.c:192
@@ -403,29 +404,29 @@ msgstr "Εντολή: "
 #
 #: commands.c:210 recvcmd.c:140
 msgid "Bounce message to: "
-msgstr "Διαβίβαση μηνύματος στο: "
+msgstr "Διαβίβαση μηνύματος στον: "
 
 #
 #: commands.c:212 recvcmd.c:142
 msgid "Bounce tagged messages to: "
-msgstr "Διαβίβαση σημειωμένων μηνυμάτων στο: "
+msgstr "Διαβίβαση σημειωμένων μηνυμάτων στον: "
 
 #
 #: commands.c:227
 msgid "Error parsing address!"
-msgstr "Σφάλμα κατά την ανάλυση της διεύθηνσης!"
+msgstr "Σφάλμα κατά την ανάλυση της διεύθυνσης!"
 
 #
 #: commands.c:242
 #, c-format
 msgid "Bounce message to %s"
-msgstr "Διαβίβαση μηνύματος στο %s"
+msgstr "Διαβίβαση μηνύματος στον %s"
 
 #
 #: commands.c:242
 #, c-format
 msgid "Bounce messages to %s"
-msgstr "Διαβίβαση μηνημάτων στο %s"
+msgstr "Διαβίβαση μηνημάτων στον %s"
 
 #
 #: commands.c:256
@@ -621,17 +622,14 @@ msgstr "<εξ'ορισμού>"
 #
 # compose.c:132
 #: compose.c:132
-#, fuzzy
 msgid "(e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
-msgstr ""
-"(e)ncrypt, (s)ign, sign (a)s, (b)oth, διαλέξτε αλγόρ. (m)ic , ή (f)orget it? "
+msgstr "(e)ncrypt, (s)ign, sign (a)s, (b)oth, ή (f)orget it? "
 
 #
 # compose.c:133
 #: compose.c:133
-#, fuzzy
 msgid "esabf"
-msgstr "esabmf"
+msgstr "esabf"
 
 #
 #: compose.c:147
@@ -648,7 +646,7 @@ msgstr "Το %s [#%d] δεν υπάρχει πια!"
 #: compose.c:234
 #, c-format
 msgid "%s [#%d] modified. Update encoding?"
-msgstr "Το %s [#%d] αλιώθηκε. Να ενημερώσω την κωδικοποίηση;"
+msgstr "Το %s [#%d] μεταβλήθηκε. Να ενημερώσω την κωδικοποίηση;"
 
 #
 #: compose.c:280
@@ -658,7 +656,7 @@ msgstr "-- Προσαρτήσεις"
 #
 #: compose.c:324
 msgid "You may not delete the only attachment."
-msgstr "Δεν μπορείτε να διαγράψετε τη μια μονάχα προσάρτηση."
+msgstr "Δεν μπορείτε να διαγράψετε τη μοναδική προσάρτηση."
 
 #: compose.c:673
 msgid "Attaching selected files..."
@@ -692,7 +690,7 @@ msgstr "Δεν μπορώ να προσαρτήσω!"
 
 #: compose.c:828
 msgid "Recoding only affects text attachments."
-msgstr "Η επανακωδικοποίηση επιρρεάζει μόνο της προσαρτήσεις κειμένου."
+msgstr "Η επανακωδικοποίηση επηρρεάζει μόνο της προσαρτήσεις κειμένου."
 
 #: compose.c:833
 msgid "The current attachment won't be converted."
@@ -721,7 +719,7 @@ msgstr "Μετονομασία σε: "
 #: compose.c:986 editmsg.c:96
 #, c-format
 msgid "Can't stat: %s"
-msgstr "Αδυναμία στη προσβαση: %s"
+msgstr "Αδυναμία στην προσβαση: %s"
 
 #
 #: compose.c:1012
@@ -795,7 +793,7 @@ msgstr "άγνωστο σφάλμα"
 #
 #: curs_lib.c:346
 msgid "Press any key to continue..."
-msgstr "Πατήστε ένα πλήκτρο για να συνεχείσετε..."
+msgstr "Πατήστε ένα πλήκτρο για να συνεχίσετε..."
 
 #
 #: curs_lib.c:390
@@ -815,12 +813,12 @@ msgstr "Δεν υπάρχουν μηνύματα."
 #
 #: curs_main.c:61 mx.c:1109 pager.c:62 recvattach.c:47
 msgid "Mailbox is read-only."
-msgstr "Το γραμματοκιβώτιο είναι για μόνο-ανάγνωση."
+msgstr "Το γραμματοκιβώτιο είναι μόνο για ανάγνωση."
 
 #
 #: curs_main.c:62 pager.c:63 recvattach.c:813
 msgid "Function not permitted in attach-message mode."
-msgstr "Αυτή η λειτουργίά απαγορεύετε στην κατάσταση προσάρτηση-μηνύματος."
+msgstr "Η λειτουργία απαγορεύεται στην κατάσταση προσάρτηση-μηνύματος."
 
 #
 #: curs_main.c:229
@@ -872,7 +870,7 @@ msgstr "Ομάδα"
 #: curs_main.c:461
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr ""
-"Το γραμματοκιβώτιο τροποποιήθηκε εξωτερικά. Η σημαίες μπορεί να είναι λάθος"
+"Το γραμματοκιβώτιο τροποποιήθηκε εξωτερικά. Οι σημαίες μπορεί να είναι λάθος"
 
 #
 #: curs_main.c:464
@@ -939,12 +937,12 @@ msgstr "Σημείωστε τα παρόμοια μηνύματα με: "
 #
 #: curs_main.c:864
 msgid "Undelete messages matching: "
-msgstr "Επανέφερετε τα παρόμοια μηνύματα με: "
+msgstr "Επαναφέρετε τα παρόμοια μηνύματα με: "
 
 #
 #: curs_main.c:871
 msgid "Untag messages matching: "
-msgstr "Ξεσημειώστετε τα παρόμοια μηνύματα με: "
+msgstr "Ξεσημειώστε τα παρόμοια μηνύματα με: "
 
 #
 #: curs_main.c:945
@@ -1061,17 +1059,17 @@ msgstr ""
 "~~\t\t εισήγαγετε μια γραμμή ξεκινώντας με ένα ~\n"
 "~b χρήστες\tπροσθέστε χρήστες στο πεδίο Bcc: \n"
 "~c χρήστες\tπροσθέστε χρήστες στο πεδίο Cc: \n"
-"~f μηνύματα\tπεριελαβετε τα μηνύματα\n"
+"~f μηνύματα\tσυμπεριλάβετε τα μηνύματα\n"
 "~F μηνύματα\tτο ίδιο όπως το ~f, αλλά και με τις επικεφαλίδείτε\n"
-"~h\t\tεπεξεργαστήτε την επικεφαλίδα\n"
-"~m μηνύματα\tσυμπεριελάβετε και παράθεσε τα μηνύματα\n"
+"~h\t\tεπεξεργαστείτε την επικεφαλίδα\n"
+"~m μηνύματα\tσυμπεριλάβετε και παράθεστε τα μηνύματα\n"
 "~M μηνύματα\tτο ίδιο με το ~m, αλλά και με τις επικεφαλίδείτε\n"
 "~p\t\tεκτυπώστε το μήνυμα\n"
 "~q\t\tεγγραφή του αρχείο και έξοδος από τον κειμενογράφο\n"
 "~r αρχείο\t\tδιαβάστε ένα αρχείο στον κειμενογράφο\n"
 "~t χρήστες\tπροσθέστε χρήστες στο πεδίο To: \n"
-"~u\t\tανακαλέστε την προηγούμενη γραμμη\n"
-"~v\t\tεπεξεργαστήτε το μήνυμα με το $visual editor\n"
+"~u\t\tανακαλέστε την προηγούμενη γραμμή\n"
+"~v\t\tεπεξεργαστείτε το μήνυμα με το $visual editor\n"
 "~w αρχείο\t\tγράψτε το μήνυμα στο αρχείο\n"
 "~x\t\tακυρώστε τις αλλαγές και βγείτε από τον κειμενογράφο\n"
 "~?\t\tαυτό το μήνυμα\n"
@@ -1294,13 +1292,13 @@ msgstr "(χρησιμοποιήστε το '%s' για να δείτε αυτό το μέρος)"
 #
 #: handler.c:1581
 msgid "(need 'view-attachments' bound to key!)"
-msgstr "(απαιτήτε το 'view-attachments' να είναι συνδεδεμένο με πλήκτρο!"
+msgstr "(απαιτείται το 'view-attachments' να είναι συνδεδεμένο με πλήκτρο!"
 
 #
 #: headers.c:171
 #, c-format
 msgid "%s: unable to attach file"
-msgstr "%s: αδυναμία στη προσάρτηση του αρχείου"
+msgstr "%s: αδυναμία στην προσάρτηση του αρχείου"
 
 #
 #: help.c:278
@@ -1434,9 +1432,9 @@ msgstr ""
 
 #
 #: imap/imap.c:315
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s failed."
-msgstr "Σύνδεση στο %s..."
+msgstr "Η σύνδεση στο %s απέτυχε."
 
 #
 #: imap/imap.c:453
@@ -1448,7 +1446,7 @@ msgstr "Επιλογή %s..."
 #. STATUS not supported
 #: imap/imap.c:623
 msgid "Unable to append to IMAP mailboxes at this server"
-msgstr "Αδυναμία στη πρόσθηκη στα γραμμ/τια IMAP σε αυτόν τον εξυπηρετητή"
+msgstr "Αδυναμία στην πρόσθηκη στα γραμμ/τια IMAP σε αυτόν τον εξυπηρετητή"
 
 #
 #. command failed cause folder doesn't exist
@@ -1739,9 +1737,8 @@ msgstr "παρουσίαση της προσαρτήσης ως κείμενο"
 
 #
 #: keymap_alldefs.h:8
-#, fuzzy
 msgid "Toggle display of subparts"
-msgstr "επιλογή της εμφάνισης του quoted κειμένου"
+msgstr "Αλλαγή της εμφάνισης των επιμέρους τμημάτων"
 
 #
 #: keymap_alldefs.h:9
@@ -2210,9 +2207,8 @@ msgstr "διαγραφή των μηνυματων που ταιριάζουν σε ένα μοντέλο/μορφή"
 
 #
 #: keymap_alldefs.h:105
-#, fuzzy
 msgid "force retrieval of mail from IMAP server"
-msgstr "παραλαβή αλληλογραφίας από το εξυπηρετητή POP"
+msgstr "εξαναγκασμένη παραλαβή αλληλογραφίας από το εξυπηρετητή IMAP"
 
 #
 #: keymap_alldefs.h:106
@@ -2267,12 +2263,12 @@ msgstr "μετάβαση στο τρέχων μήνυμα της συζήτησης"
 #
 #: keymap_alldefs.h:116
 msgid "jump to previous thread"
-msgstr "μετάβαση στη προηγούμενη συζήτηση"
+msgstr "μετάβαση στην προηγούμενη συζήτηση"
 
 #
 #: keymap_alldefs.h:117
 msgid "jump to previous subthread"
-msgstr "μετάβαση στη προηγούμενη δευτερεύουσα συζήτηση"
+msgstr "μετάβαση στην προηγούμενη δευτερεύουσα συζήτηση"
 
 #
 #: keymap_alldefs.h:118
@@ -3102,9 +3098,9 @@ msgstr "Αδυναμια στη λήψη πιστοποιητικού από το ταίρι"
 
 #
 #: mutt_ssl.c:257
-#, fuzzy, c-format
+#, c-format
 msgid "SSL connection using %s (%s)"
-msgstr "Σύνδεση SSL χρησιμοποιόντας το %s"
+msgstr "Σύνδεση SSL χρησιμοποιόντας το %s (%s)"
 
 #
 #: mutt_ssl.c:287
@@ -3402,9 +3398,9 @@ msgstr "Μη έγκυρος μήνας: %s"
 #
 #. getDate has its own error message, don't overwrite it here
 #: pattern.c:527
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid relative date: %s"
-msgstr "Μη έγκυρος μήνας: %s"
+msgstr "Μη έγκυρη σχετική ημερομηνία: %s"
 
 #
 #: pattern.c:541
@@ -3707,7 +3703,7 @@ msgstr "Αδυναμία ανοίγματος υποδιεργασίας PGP!"
 #: pgp.c:1219
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
-msgstr "Να χρησιμοποιηθεί keyID = \"%s\" για το %s?"
+msgstr "Να χρησιμοποιηθεί keyID = \"%s\" για το %s;"
 
 #
 # pgp.c:1200
@@ -3723,7 +3719,7 @@ msgstr "Αδυναμία κλήσης του PGP"
 #
 #: pgp.c:1560
 msgid "Create an application/pgp message?"
-msgstr "Δημιουργεί ένα application/pgp μήνυμα?"
+msgstr "Δημιουργεί ένα application/pgp μήνυμα;"
 
 #
 #: pgpinvoke.c:301
@@ -3874,7 +3870,7 @@ msgstr "Δεν υπάρχει αλληλογραφία στο POP γραμματοκιβώτιο."
 #
 #: pop.c:599
 msgid "Delete messages from server?"
-msgstr "Διαγραφή μηνυμάτων από τον εξυπηρετητή?"
+msgstr "Διαγραφή μηνυμάτων από τον εξυπηρετητή;"
 
 #
 #: pop.c:601
@@ -3939,7 +3935,7 @@ msgstr "Επιβεβαίωση των ευρετηρίων μηνυμάτων..."
 #
 #: pop_lib.c:477
 msgid "Connection lost. Reconnect to POP server?"
-msgstr "Απώλεια σύνδεσης. Επανασύνδεση στο διακομιστή POP?"
+msgstr "Απώλεια σύνδεσης. Επανασύνδεση στο διακομιστή POP;"
 
 #
 #: postpone.c:165
@@ -4058,9 +4054,8 @@ msgstr "Προσαρτήσεις"
 
 #
 #: recvattach.c:919
-#, fuzzy
 msgid "There are no subparts to show!"
-msgstr "Δεν υπάρχουν προσαρτήσεις."
+msgstr "Δεν υπάρχουν επιμέρους τμήματα για να εμφανιστούν."
 
 #
 #: recvattach.c:967
@@ -4086,13 +4081,13 @@ msgstr "Μπορείτε να διαβιβάσετε μόνο μήνυμα/μέρη rfc822"
 #: recvcmd.c:155
 #, c-format
 msgid "Bounce message to %s...?"
-msgstr "Διαβίβαση μυνήματος στο %s...?"
+msgstr "Διαβίβαση μυνήματος στο %s...;"
 
 #
 #: recvcmd.c:155
 #, c-format
 msgid "Bounce messages to %s...?"
-msgstr "Διαβίβαση μυνημάτων στο %s...?"
+msgstr "Διαβίβαση μυνημάτων στο %s...;"
 
 #
 #: recvcmd.c:372
@@ -4102,9 +4097,8 @@ msgstr "Αδυναμία πρόσβασης στο προσωρινό αρχείο %s."
 
 #
 #: recvcmd.c:398
-#, fuzzy
 msgid "Forward as attachments?"
-msgstr "εμφάνιση των προσαρτήσεων MIME"
+msgstr "Προώθηση σαν προσαρτήσεις;"
 
 #: recvcmd.c:412
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
@@ -4192,7 +4186,7 @@ msgstr "Έχετε ήδη επιλέξει το τελευταίο στοιχείο της αλυσίδας."
 
 #: remailer.c:710
 msgid "Mixmaster doesn't accept Cc or Bcc headers."
-msgstr "Ο Mixmaster δεν δέχετε Cc ή Bcc επικεφαλίδες."
+msgstr "Ο Mixmaster δεν δέχεται Cc ή Bcc επικεφαλίδες."
 
 #: remailer.c:734
 msgid ""
@@ -4253,7 +4247,7 @@ msgstr "Δεν υπάρχει θέμα, εγκατάλειψη."
 #: send.c:434
 #, c-format
 msgid "Follow-up to %s%s?"
-msgstr "Συνέχεια στο %s%s?"
+msgstr "Συνέχεια στο %s%s;"
 
 #
 #. There are quite a few mailing lists which set the Reply-To:
@@ -4264,7 +4258,7 @@ msgstr "Συνέχεια στο %s%s?"
 #: send.c:487
 #, c-format
 msgid "Reply to %s%s?"
-msgstr "Απάντηση στο %s%s?"
+msgstr "Απάντηση στο %s%s;"
 
 #
 #. This could happen if the user tagged some messages and then did
@@ -4291,9 +4285,8 @@ msgstr "Αδυναμία συμπερίληψης όλων των μηνυμάτων που ζητήθηκαν!"
 
 #
 #: send.c:739
-#, fuzzy
 msgid "Forward as attachment?"
-msgstr "Εκτύπωση προσαρτήσεων;"
+msgstr "Προώθηση σαν προσάρτηση;"
 
 #
 #: send.c:743
@@ -4441,18 +4434,3 @@ msgstr "Το τρέχων μήνυμα δεν είναι ορατό στην περιορισμένη όψη"
 msgid "Parent message is not available."
 msgstr "Το τρέχων μήνυμα δεν είναι διαθέσιμο."
 
-#
-# compose.c:117 compose.c:191
-#~ msgid "MIC algorithm: "
-#~ msgstr "Αλγόριθμος MIC: "
-
-#
-# compose.c:185
-#~ msgid "This doesn't make sense if you don't want to sign the message."
-#~ msgstr "Αυτό δεν έχει νόημα αν δεν θέλετε να υπογράψετε το μήνυμα."
-
-#
-# compose.c:196
-#~ msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
-#~ msgstr ""
-#~ "Άγνωστος αλγόριθμος MIC, έγκυροι είναι: pgp-md5, pgp-sha1, pgp-rmd160"
