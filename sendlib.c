@@ -1274,6 +1274,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
 			      int mode, int privacy)
 {
   char buffer[LONG_STRING];
+  char *p;
   LIST *tmp = env->userhdrs;
   
   if (mode == 0 && !privacy)
@@ -1362,8 +1363,14 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
   /* Add any user defined headers */
   for (; tmp; tmp = tmp->next)
   {
-    fputs (tmp->data, fp);
-    fputc ('\n', fp);
+    if ((p = strchr (tmp->data, ':')))
+    {
+      p++; SKIPWS (p);
+      if (!*p) 	continue;  /* don't emit empty fields. */
+
+      fputs (tmp->data, fp);
+      fputc ('\n', fp);
+    }
   }
 
   return (ferror (fp) == 0 ? 0 : -1);
