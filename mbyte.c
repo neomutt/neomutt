@@ -70,10 +70,13 @@ size_t mbrtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *ps)
 
 int iswprint (wint_t wc)
 {
-  return ((0x20 <= wc && wc < 0x7f) || 0xa0 <= wc);
+  if (Charset_is_utf8)
+    return ((0x20 <= wc && wc < 0x7f) || 0xa0 <= wc);
+  else
+    return (0 <= wc && wc < 256) ? IsPrint(wc) : 0;
 }
 
-#endif /* HAVE_MBYTE */
+#endif /* !HAVE_WC_FUNCS */
 
 #if !defined(HAVE_MBYTE) || !defined(HAVE_ICONV)
 

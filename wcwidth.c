@@ -6,6 +6,10 @@
  * Markus Kuhn -- 2000-02-08 -- public domain
  */
 
+/* Adapted for Mutt by Edmund Grimley Evans.
+ * wcwidth() now refers to Charset_is_utf8.
+ */
+
 #include "mutt.h"
 #include "mbyte.h"
 
@@ -78,9 +82,18 @@ int wcwidth(wchar_t ucs)
   int max = sizeof(combining) / sizeof(struct interval) - 1;
   int mid;
 
-  /* test for 8-bit control characters */
   if (ucs == 0)
     return 0;
+
+  /* non-UCS case */
+  if (!Charset_is_utf8) {
+    if (0 <= ucs && ucs < 256)
+      return IsPrint(wc) ? 1 : -1;
+    else
+      return -1;
+  }
+
+  /* test for 8-bit control characters */
   if (ucs < 32 || (ucs >= 0x7f && ucs < 0xa0))
     return -1;
 
