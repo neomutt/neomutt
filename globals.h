@@ -52,6 +52,7 @@ WHERE char *ImapCRAMKey INITVAL (NULL);
 WHERE char *ImapPass INITVAL (NULL);
 WHERE short ImapCheckTimeout;
 WHERE char *ImapHomeNamespace INITVAL (NULL);
+WHERE char *ImapPreconnect INITVAL (NULL);
 #endif
 WHERE char *InReplyTo;
 WHERE char *Inbox;

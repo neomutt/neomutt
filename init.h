@@ -667,6 +667,23 @@ struct option_t MuttVars[] = {
   ** your INBOX in the IMAP browser. If you see something else, you may set
   ** this variable to the IMAP path to your folders.
   */
+  { "imap_preconnect",	DT_STR, R_NONE, UL &ImapPreconnect, UL 0},
+  /*
+  ** .pp
+  ** If set, a shell command to be executed if mutt fails to establish
+  ** a connection to the server. This is useful for setting up secure
+  ** connections, e.g. with ssh(1). If the command returns a  nonzero
+  ** status, mutt gives up opening the server. Example:
+  ** .pp
+  ** imap_preconnect="ssh -f -q -L 1234:mailhost.net:143 mailhost.net
+  **                   sleep 20 < /dev/null > /dev/null"
+  ** .pp
+  ** Mailbox 'foo' on mailhost.net can now be reached as
+  ** '{localhost:1234}foo'.
+  ** .pp
+  ** NOTE: For this example to work, you must be able to log in to the
+  ** remote machine without having to enter a password.
+  */
 #endif
   { "implicit_autoview", DT_BOOL,R_NONE, OPTIMPLICITAUTOVIEW, 0},
   /*

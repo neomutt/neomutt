@@ -23,6 +23,7 @@
 typedef struct _connection
 {
   char *server;
+  char *preconnect; /* Actually specific to server, not connection */
   int port;
   int uses;
   int fd;

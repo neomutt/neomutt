@@ -99,6 +99,7 @@ CONNECTION *mutt_socket_select_connection (char *host, int port, int flags)
   conn->available = 0;
   conn->uses = 0;
   conn->server = safe_strdup (host);
+  conn->preconnect = safe_strdup (ImapPreconnect); 
   conn->port = port;
   conn->next = Connections;
   Connections = conn;
@@ -106,10 +107,39 @@ CONNECTION *mutt_socket_select_connection (char *host, int port, int flags)
   return conn;
 }
 
+static int try_socket_and_connect (CONNECTION *conn, struct sockaddr_in sin,
+			    int verbose)
+{
+  if ((conn->fd = socket (AF_INET, SOCK_STREAM, IPPROTO_IP)) < 0)
+  {
+    if (verbose) 
+      mutt_perror ("socket");
+    return (-1);
+  }
+
+  if (connect (conn->fd, (struct sockaddr *) &sin, sizeof (sin)) < 0)
+  {
+    close (conn->fd);
+    if (verbose) 
+    {
+      mutt_perror ("connect");
+      sleep (1);
+    }
+    return (-1);
+  }
+
+  return 0;
+}
+
 int mutt_socket_open_connection (CONNECTION *conn)
 {
   struct sockaddr_in sin;
   struct hostent *he;
+  int    verbose;
+  char *pc = conn->preconnect;
+  int  do_preconnect = (pc && strlen (pc) > 0);
+  /* This might be a config variable */
+  int first_try_without_preconnect = TRUE; 
 
   memset (&sin, 0, sizeof (sin));
   sin.sin_port = htons (conn->port);
@@ -121,19 +151,32 @@ int mutt_socket_open_connection (CONNECTION *conn)
   }
   memcpy (&sin.sin_addr, he->h_addr_list[0], he->h_length);
 
-  if ((conn->fd = socket (AF_INET, SOCK_STREAM, IPPROTO_IP)) < 0)
-  {
-    mutt_perror ("socket");
-    return (-1);
-  }
-
   mutt_message (_("Connecting to %s..."), conn->server); 
 
-  if (connect (conn->fd, (struct sockaddr *) &sin, sizeof (sin)) < 0)
+  if (do_preconnect && first_try_without_preconnect)
   {
-    mutt_perror ("connect");
-    close (conn->fd);
+    verbose = FALSE;
+    if (try_socket_and_connect (conn, sin, verbose) == 0)
+      return 0;
   }
+  
+  if (do_preconnect)
+  {
+    int ret;
 
-  return 0;
+    dprint (1,(debugfile,"Preconnect to server %s:\n", conn->server));
+    dprint (1,(debugfile,"\t%s\n", conn->preconnect));
+    /* Execute preconnect command */
+    ret = mutt_system (conn->preconnect) < 0;
+    dprint (1,(debugfile,"\t%s: %d\n", "Exit status", ret));
+    if (ret < 0)
+    {
+      mutt_perror(_("preconnect command failed"));
+      sleep (1);
+      return ret;
+    }
+  }
+  
+  verbose = TRUE;
+  return try_socket_and_connect (conn, sin, verbose);
 }
