@@ -399,6 +399,10 @@ _mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err,
 #endif
      )
   {
+    do
+      mutt_extract_token (buf, s, 0);
+    while (MoreArgs (s));
+
     return 0;
   }
      
