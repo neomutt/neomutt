@@ -170,11 +170,11 @@ static void query_entry (char *s, size_t slen, MUTTMENU *m, int num)
 	    num+1,
 	    FirstColumn+2,
 	    FirstColumn+2,
-	    table[num].data->name,
+	    NONULL (table[num].data->name),
 	    SecondColumn+2,
 	    SecondColumn+2,
 	    buf,
-	    table[num].data->other);
+	    NONULL (table[num].data->other));
 }
 
 static int query_tag (MUTTMENU *menu, int n)
