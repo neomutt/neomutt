@@ -343,6 +343,11 @@ struct option_t MuttVars[] = {
   ** many seconds if the connection is not able to be established.  A negative
   ** value causes Mutt to wait indefinitely for the connection to succeed.
   */
+  { "content_type",	DT_STR, R_NONE, UL &ContentType, UL "text/plain" },
+  /*
+  ** .pp
+  ** Sets the default Content-Type for the body of newly composed messages.
+  */
   { "copy",		DT_QUAD, R_NONE, OPT_COPY, M_YES },
   /*
   ** .pp

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -37,6 +37,7 @@ WHERE char *Attribution;
 WHERE char *AttachFormat;
 WHERE char *Charset;
 WHERE char *ComposeFormat;
+WHERE char *ContentType;
 WHERE char *DefaultHook;
 WHERE char *DateFmt;
 WHERE char *DisplayFilter;

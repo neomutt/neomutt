@@ -1102,12 +1102,11 @@ ci_send_message (int flags,		/* send mode */
     pbody->next = msg->content; /* don't kill command-line attachments */
     msg->content = pbody;
     
-    msg->content->type = TYPETEXT;
-    msg->content->subtype = safe_strdup ("plain");
+    mutt_parse_content_type (ContentType, msg->content);
     msg->content->unlink = 1;
     msg->content->use_disp = 0;
     msg->content->disposition = DISPINLINE;
-    if (option (OPTTEXTFLOWED))
+    if (option (OPTTEXTFLOWED) && msg->content->type == TYPETEXT && !ascii_strcasecmp (msg->content->subtype, "plain"))
       mutt_set_parameter ("format", "flowed", &msg->content->parameter);
     
     if (!tempfile)
