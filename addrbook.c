@@ -51,8 +51,7 @@ alias_format_str (char *dest, size_t destlen, char op, const char *src,
       snprintf (dest, destlen, tmp, alias->del ? "D" : " ");
       break;
     case 'a':
-      snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
-      snprintf (dest, destlen, tmp, alias->name);
+      mutt_format_s (dest, destlen, fmt, alias->name);
       break;
     case 'r':
       adr[0] = 0;

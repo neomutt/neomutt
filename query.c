@@ -119,7 +119,7 @@ static QUERY *run_query (char *s, int quiet)
       p = strtok(NULL, "\t\n");
       if (p)
       {
-	l = mutt_strlen (p);
+	l = mutt_strwidth (p);
 	if (l > FirstColumn)
 	  FirstColumn = l;
 	cur->name = safe_strdup (p);
@@ -180,7 +180,7 @@ static int query_search (MUTTMENU *m, regex_t *re, int n)
 static void query_entry (char *s, size_t slen, MUTTMENU *m, int num)
 {
   ENTRY *table = (ENTRY *) m->data;
-  char buf[SHORT_STRING] = "";
+  char buf2[SHORT_STRING], buf[SHORT_STRING] = "";
 
   /* need a query format ... hard coded constants are not good */
   while (FirstColumn + SecondColumn > 70)
@@ -195,12 +195,15 @@ static void query_entry (char *s, size_t slen, MUTTMENU *m, int num)
 
   rfc822_write_address (buf, sizeof (buf), table[num].data->addr);
 
-  snprintf (s, slen, " %c %3d %-*.*s %-*.*s %s", 
+  mutt_format_string (buf2, sizeof (buf2),
+		      FirstColumn + 2, FirstColumn + 2,
+		      0, ' ', table[num].data->name,
+		      mutt_strlen (table[num].data->name), 0);
+
+  snprintf (s, slen, " %c %3d %s %-*.*s %s", 
 	    table[num].tagged ? '*':' ',
 	    num+1,
-	    FirstColumn+2,
-	    FirstColumn+2,
-	    NONULL (table[num].data->name),
+	    buf2,
 	    SecondColumn+2,
 	    SecondColumn+2,
 	    buf,
