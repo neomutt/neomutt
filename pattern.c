@@ -934,7 +934,8 @@ int mutt_pattern_func (int op, char *prompt)
   BUFFER err;
   int i;
 
-  if (mutt_get_field (prompt, buf, sizeof (buf), M_PATTERN) != 0 || !buf[0])
+  strfcpy (buf, NONULL (Context->pattern), sizeof (buf));
+  if (mutt_get_field (prompt, buf, sizeof (buf), M_PATTERN | M_CLEAR) != 0 || !buf[0])
     return (-1);
 
   mutt_message _("Compiling search pattern...");
@@ -953,49 +954,59 @@ int mutt_pattern_func (int op, char *prompt)
 
   mutt_message _("Executing command on matching messages...");
 
-  if (op == M_LIMIT)
-  {
-    for (i = 0; i < Context->msgcount; i++)
-    {
-      Context->hdrs[i]->virtual = -1;
-      Context->hdrs[i]->limited = 0;
-      Context->hdrs[i]->collapsed = 0;
-      Context->hdrs[i]->num_hidden = 0;
-    }
-    Context->vcount = 0;
-    Context->vsize = 0;
-    Context->collapsed = 0;
-  }
-
 #define THIS_BODY Context->hdrs[i]->content
 
-  for (i = 0; i < Context->msgcount; i++)
-    if (mutt_pattern_exec (pat, M_MATCH_FULL_ADDRESS, Context, Context->hdrs[i]))
+  if (op == M_LIMIT)
+  {
+    Context->vcount    = 0;
+    Context->vsize     = 0;
+    Context->collapsed = 0;
+
+    for (i = 0; i < Context->msgcount; i++)
     {
-      switch (op)
+      if (mutt_pattern_exec (pat, M_MATCH_FULL_ADDRESS, Context, Context->hdrs[i]))
       {
-	case M_DELETE:
-	  mutt_set_flag (Context, Context->hdrs[i], M_DELETE, 1);
-	  break;
-	case M_UNDELETE:
-	  mutt_set_flag (Context, Context->hdrs[i], M_DELETE, 0);
-	  break;
-	case M_TAG:
-	  mutt_set_flag (Context, Context->hdrs[i], M_TAG, 1);
-	  break;
-	case M_UNTAG:
-	  mutt_set_flag (Context, Context->hdrs[i], M_TAG, 0);
-	  break;
-	case M_LIMIT:
-	  Context->hdrs[i]->virtual = Context->vcount;
-	  Context->hdrs[i]->limited = 1;
-	  Context->v2r[Context->vcount] = i;
-	  Context->vcount++;
-	  Context->vsize+=THIS_BODY->length + THIS_BODY->offset -
-	                  THIS_BODY->hdr_offset;
-	  break;
+	Context->hdrs[i]->virtual = Context->vcount;
+	Context->hdrs[i]->limited = 1;
+	Context->v2r[Context->vcount] = i;
+	Context->vcount++;
+	Context->vsize+=THIS_BODY->length + THIS_BODY->offset -
+	  THIS_BODY->hdr_offset;
+      }
+      else
+      {
+	Context->hdrs[i]->virtual = -1;
+	Context->hdrs[i]->limited = 0;
+	Context->hdrs[i]->collapsed = 0;
+	Context->hdrs[i]->num_hidden = 0;
       }
     }
+  }
+  else
+  {
+    for (i = 0; i < Context->vcount; i++)
+    {
+      if (mutt_pattern_exec (pat, M_MATCH_FULL_ADDRESS, Context, Context->hdrs[Context->v2r[i]]))
+      {
+	switch (op)
+	{
+	  case M_DELETE:
+	  mutt_set_flag (Context, Context->hdrs[Context->v2r[i]], M_DELETE, 1);
+	  break;
+	  case M_UNDELETE:
+	  mutt_set_flag (Context, Context->hdrs[Context->v2r[i]], M_DELETE, 0);
+	  break;
+	  case M_TAG:
+	  mutt_set_flag (Context, Context->hdrs[Context->v2r[i]], M_TAG, 1);
+	  break;
+	  case M_UNTAG:
+	  mutt_set_flag (Context, Context->hdrs[Context->v2r[i]], M_TAG, 0);
+	  break;
+	}
+      }
+    }
+  }
+
 #undef THIS_BODY
 
   mutt_clear_error ();
