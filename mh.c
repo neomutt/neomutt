@@ -696,7 +696,7 @@ int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
        * the index hint. 
        */
       
-      if(index_hint && (i <= *index_hint))
+      if(modified && index_hint && (i <= *index_hint))
 	idx--;
     }
   }
