@@ -1253,6 +1253,7 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
   char pgperrfile[_POSIX_PATH_MAX];
   char pgpinfile[_POSIX_PATH_MAX];
 
+  char from_charset[STRING];
   const char *send_charset;
   
   FILE *pgpout = NULL, *pgperr = NULL, *pgpin = NULL;
@@ -1284,7 +1285,12 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
     return NULL;
   }
 
-  if (!mutt_is_us_ascii (Charset))
+  if (a->noconv)
+    mutt_get_body_charset (from_charset, sizeof (from_charset), a);
+  else
+    strfcpy (from_charset, NONULL(Charset), sizeof (from_charset));
+  
+  if (!mutt_is_us_ascii (from_charset))
   {
     int c;
     FGETCONV *fc;
