@@ -956,7 +956,7 @@ sub newfile ($;$$) {
 	if (! $tmpdir and $option eq "temp") {
 		$tmpdir = mutt_Q 'tmpdir';
 		$tmpdir = newfile("$tmpdir/smime");
-		mkdir $tmpdir;
+		mkdir $tmpdir, 0700 || die "Can't create $tmpdir: $!\n";
 	}
 	$filename = "$tmpdir/$filename" if ($option eq "temp");
 	my $newfilename = $filename;
