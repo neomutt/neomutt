@@ -446,11 +446,8 @@ static int pgp_check_traditional_one_body (FILE *fp, BODY *b, int tagged_only)
 
   /* fix the content type */
   
-  b->type = TYPEAPPLICATION;
-  mutt_str_replace (&b->subtype, "pgp");
-  
-  mutt_set_parameter ("format", "text", &b->parameter);
-  mutt_set_parameter ("x-action", enc ? "encrypt" : "sign", &b->parameter);
+  mutt_set_parameter ("format", "fixed", &b->parameter);
+  mutt_set_parameter ("x-action", enc ? "pgp-encrypted" : "pgp-signed", &b->parameter);
   
   return 1;
 }
