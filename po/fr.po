@@ -5,9 +5,9 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.0\n"
-"POT-Creation-Date: 2002-02-07 10:16+0100\n"
-"PO-Revision-Date: 2002-01-31 15:15+0100\n"
+"Project-Id-Version: Mutt 1.5.0-current-20020328\n"
+"POT-Creation-Date: 2002-03-28 14:08+0100\n"
+"PO-Revision-Date: 2002-03-28 14:13+0100\n"
 "Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
@@ -46,7 +46,7 @@ msgstr "Sélectionner"
 #. __STRCAT_CHECKED__
 #: addrbook.c:35 browser.c:43 compose.c:92 curs_main.c:408 mutt_ssl.c:627
 #: pager.c:1538 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:65
-#: smime.c:471
+#: smime.c:480
 msgid "Help"
 msgstr "Aide"
 
@@ -258,7 +258,7 @@ msgid "Error trying to view file"
 msgstr "Erreur en essayant de visualiser le fichier"
 
 # , c-format
-#: buffy.c:410
+#: buffy.c:413
 #, c-format
 msgid "New mail in %s."
 msgstr "Nouveau(x) message(s) dans %s."
@@ -328,7 +328,7 @@ msgstr "La couleur default n'est pas disponible"
 msgid "Verify PGP signature?"
 msgstr "Vérifier la signature PGP ?"
 
-#: commands.c:117 pgpkey.c:559 postpone.c:576
+#: commands.c:117 crypt.c:192 pgpkey.c:559 postpone.c:576
 msgid "Invoking PGP..."
 msgstr "Appel de PGP..."
 
@@ -682,7 +682,7 @@ msgid "Rename to: "
 msgstr "Renommer en : "
 
 # , c-format
-#: compose.c:1111 editmsg.c:96 sendlib.c:907
+#: compose.c:1111 editmsg.c:96 sendlib.c:915
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "Impossible d'obtenir le statut de %s : %s"
@@ -737,6 +737,92 @@ msgstr "S/MIME déjà sélectionné. Effacer & continuer ? "
 msgid "PGP already selected. Clear & continue ? "
 msgstr "PGP déjà sélectionné. Effacer & continuer ? "
 
+#: crypt.c:70
+#, c-format
+msgid " (current time: %c)"
+msgstr " (heure courante : %c)"
+
+#: crypt.c:76
+#, c-format
+msgid "[-- %s output follows%s --]\n"
+msgstr "[-- La sortie %s suit%s --]\n"
+
+#: crypt.c:93
+msgid "Passphrase(s) forgotten."
+msgstr "Phrase(s) de passe oubliée(s)."
+
+#: crypt.c:132
+msgid "Enter PGP passphrase:"
+msgstr "Entrez la phrase de passe PGP :"
+
+#: crypt.c:150
+msgid "Enter SMIME passphrase:"
+msgstr "Entrez la phrase de passe SMIME :"
+
+#: crypt.c:185
+msgid "Create an inline PGP message?"
+msgstr "Créer un message PGP en ligne ?"
+
+#: crypt.c:512 crypt.c:554
+msgid "Trying to extract PGP keys...\n"
+msgstr "Tentative d'extraction de clés PGP...\n"
+
+#: crypt.c:534 crypt.c:572
+msgid "Trying to extract S/MIME certificates...\n"
+msgstr "Tentative d'extraction de certificats S/MIME...\n"
+
+#: crypt.c:696
+msgid ""
+"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"\n"
+msgstr ""
+"[-- Erreur : Structure multipart/signed incohérente ! --]\n"
+"\n"
+
+#: crypt.c:722
+#, c-format
+msgid ""
+"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"\n"
+msgstr ""
+"[-- Erreur : Protocole multipart/signed %s inconnu ! --]\n"
+"\n"
+
+#: crypt.c:759
+#, c-format
+msgid ""
+"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"\n"
+msgstr ""
+"[-- Attention : les signatures %s/%s ne peuvent pas être vérifiées. --]\n"
+"\n"
+
+#. XXX - WHAT!?!?!?
+#. Now display the signed body
+#: crypt.c:770
+msgid ""
+"[-- The following data is signed --]\n"
+"\n"
+msgstr ""
+"[-- Les données suivantes sont signées --]\n"
+"\n"
+
+#: crypt.c:776
+msgid ""
+"[-- Warning: Can't find any signatures. --]\n"
+"\n"
+msgstr ""
+"[-- Attention : Impossible de trouver des signatures. --]\n"
+"\n"
+
+#: crypt.c:782
+msgid ""
+"\n"
+"[-- End of signed data --]\n"
+msgstr ""
+"\n"
+"[-- Fin des données signées --]\n"
+
 #: curs_lib.c:153
 msgid "yes"
 msgstr "oui"
@@ -762,7 +848,7 @@ msgstr "Appuyez sur une touche pour continuer..."
 msgid " ('?' for list): "
 msgstr " ('?' pour avoir la liste) : "
 
-#: curs_main.c:63 curs_main.c:602
+#: curs_main.c:63 curs_main.c:609
 msgid "No mailbox is open."
 msgstr "Aucune boîte aux lettres n'est ouverte."
 
@@ -816,146 +902,146 @@ msgstr "Répondre"
 msgid "Group"
 msgstr "Groupe"
 
-#: curs_main.c:489
+#: curs_main.c:496
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr ""
 "Boîte aux lettres modifiée extérieurement. Les indicateurs peuvent être faux."
 
-#: curs_main.c:492
+#: curs_main.c:499
 msgid "New mail in this mailbox."
 msgstr "Nouveau(x) message(s) dans cette boîte aux lettres."
 
-#: curs_main.c:496
+#: curs_main.c:503
 msgid "Mailbox was externally modified."
 msgstr "La boîte aux lettres a été modifiée extérieurement."
 
-#: curs_main.c:608
+#: curs_main.c:615
 msgid "No tagged messages."
 msgstr "Pas de messages marqués."
 
-#: curs_main.c:696
+#: curs_main.c:703
 msgid "Jump to message: "
 msgstr "Aller au message : "
 
-#: curs_main.c:702
+#: curs_main.c:709
 msgid "Argument must be a message number."
 msgstr "L'argument doit être un numéro de message."
 
-#: curs_main.c:735
+#: curs_main.c:742
 msgid "That message is not visible."
 msgstr "Ce message n'est pas visible."
 
-#: curs_main.c:738
+#: curs_main.c:745
 msgid "Invalid message number."
 msgstr "Numéro de message invalide."
 
-#: curs_main.c:752
+#: curs_main.c:759
 msgid "Delete messages matching: "
 msgstr "Effacer les messages correspondant à : "
 
-#: curs_main.c:774
+#: curs_main.c:781
 msgid "No limit pattern is in effect."
 msgstr "Aucun motif de limite n'est en vigueur."
 
 # , c-format
 #. i18n: ask for a limit to apply
-#: curs_main.c:779
+#: curs_main.c:786
 #, c-format
 msgid "Limit: %s"
 msgstr "Limite : %s"
 
-#: curs_main.c:789
+#: curs_main.c:796
 msgid "Limit to messages matching: "
 msgstr "Limiter aux messages correspondant à : "
 
-#: curs_main.c:820
+#: curs_main.c:827
 msgid "Quit Mutt?"
 msgstr "Quitter Mutt ?"
 
-#: curs_main.c:899
+#: curs_main.c:906
 msgid "Tag messages matching: "
 msgstr "Marquer les messages correspondant à : "
 
-#: curs_main.c:908
+#: curs_main.c:915
 msgid "Undelete messages matching: "
 msgstr "Récupérer les messages correspondant à : "
 
-#: curs_main.c:916
+#: curs_main.c:923
 msgid "Untag messages matching: "
 msgstr "Démarquer les messages correspondant à : "
 
-#: curs_main.c:991
+#: curs_main.c:998
 msgid "Open mailbox in read-only mode"
 msgstr "Ouvre la boîte aux lettres en lecture seule"
 
-#: curs_main.c:993
+#: curs_main.c:1000
 msgid "Open mailbox"
 msgstr "Ouvre la boîte aux lettres"
 
 # , c-format
-#: curs_main.c:1009 mx.c:512 mx.c:658
+#: curs_main.c:1016 mx.c:512 mx.c:658
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s n'est pas une boîte aux lettres."
 
-#: curs_main.c:1095
+#: curs_main.c:1102
 msgid "Exit Mutt without saving?"
 msgstr "Quitter Mutt sans sauvegarder ?"
 
-#: curs_main.c:1129 curs_main.c:1154
+#: curs_main.c:1136 curs_main.c:1161
 msgid "You are on the last message."
 msgstr "Vous êtes sur le dernier message."
 
-#: curs_main.c:1136 curs_main.c:1180
+#: curs_main.c:1143 curs_main.c:1187
 msgid "No undeleted messages."
 msgstr "Pas de message non effacé."
 
-#: curs_main.c:1173 curs_main.c:1197
+#: curs_main.c:1180 curs_main.c:1204
 msgid "You are on the first message."
 msgstr "Vous êtes sur le premier message."
 
-#: curs_main.c:1271 pattern.c:1301
+#: curs_main.c:1278 pattern.c:1301
 msgid "Search wrapped to top."
 msgstr "La recherche est repartie du début."
 
-#: curs_main.c:1280 pattern.c:1312
+#: curs_main.c:1287 pattern.c:1312
 msgid "Search wrapped to bottom."
 msgstr "La recherche est repartie de la fin."
 
-#: curs_main.c:1313
+#: curs_main.c:1320
 msgid "No new messages"
 msgstr "Pas de nouveaux messages"
 
-#: curs_main.c:1313
+#: curs_main.c:1320
 msgid "No unread messages"
 msgstr "Pas de messages non lus"
 
-#: curs_main.c:1314
+#: curs_main.c:1321
 msgid " in this limited view"
 msgstr " dans cette vue limitée"
 
-#: curs_main.c:1335 pager.c:2300
+#: curs_main.c:1342 pager.c:2300
 msgid "Can't change 'important' flag on POP server."
 msgstr "Impossible de changer l'indicateur 'important' sur le serveur POP."
 
-#: curs_main.c:1450
+#: curs_main.c:1457
 msgid "No more threads."
 msgstr "Pas d'autres discussions."
 
-#: curs_main.c:1452
+#: curs_main.c:1459
 msgid "You are on the first thread."
 msgstr "Vous êtes sur la première discussion."
 
-#: curs_main.c:1513 curs_main.c:1545 flags.c:237 thread.c:962 thread.c:1017
-#: thread.c:1072
+#: curs_main.c:1520 curs_main.c:1552 flags.c:237 thread.c:1012 thread.c:1067
+#: thread.c:1122
 msgid "Threading is not enabled."
 msgstr "L'affichage des discussions n'est pas activé."
 
-#: curs_main.c:1531
+#: curs_main.c:1538
 msgid "Thread contains unread messages."
 msgstr "Cette discussion contient des messages non-lus."
 
-#: curs_main.c:1709
+#: curs_main.c:1716
 msgid "Can't edit message on POP server."
 msgstr "Impossible d'éditer le message sur le serveur POP."
 
@@ -1177,31 +1263,31 @@ msgstr "[-- et la source externe indiquée a expiré. --]\n"
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr "[-- et l'access-type %s indiqué n'est pas supporté --]\n"
 
-#: handler.c:1829
+#: handler.c:1834
 msgid "Error: multipart/signed has no protocol."
 msgstr "Erreur : multipart/signed n'a pas de protocole."
 
-#: handler.c:1839
+#: handler.c:1844
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Erreur : multipart/encrypted n'a pas de paramètre de protocole !"
 
-#: handler.c:1893
+#: handler.c:1898
 msgid "Unable to open temporary file!"
 msgstr "Impossible d'ouvrir le fichier temporaire !"
 
 # , c-format
-#: handler.c:1953
+#: handler.c:1958
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s n'est pas disponible "
 
 # , c-format
-#: handler.c:1958
+#: handler.c:1963
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(utilisez '%s' pour voir cette partie)"
 
-#: handler.c:1960
+#: handler.c:1965
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(la fonction 'view-attachments' doit être affectée à une touche !)"
 
@@ -1384,7 +1470,7 @@ msgstr "Impossible d'ajouter aux boîtes aux lettres IMAP sur ce serveur"
 
 # , c-format
 #. command failed cause folder doesn't exist
-#: imap/imap.c:731 imap/message.c:600 muttlib.c:1183
+#: imap/imap.c:731 imap/message.c:599 muttlib.c:1192
 #, c-format
 msgid "Create %s?"
 msgstr "Créer %s ?"
@@ -1455,27 +1541,27 @@ msgstr "Impossible de créer le fichier temporaire %s"
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Récupération des en-têtes des messages... [%d/%d]"
 
-#: imap/message.c:250 pop.c:347
+#: imap/message.c:249 pop.c:347
 msgid "Fetching message..."
 msgstr "Récupération du message..."
 
-#: imap/message.c:293 pop.c:384
+#: imap/message.c:292 pop.c:384
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr ""
 "L'index du message est incorrect. Essayez de rouvrir la boîte aux lettres."
 
-#: imap/message.c:466
+#: imap/message.c:465
 msgid "Uploading message ..."
 msgstr "Chargement du message ..."
 
 # , c-format
-#: imap/message.c:576
+#: imap/message.c:575
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Copie de %d messages dans %s..."
 
 # , c-format
-#: imap/message.c:580
+#: imap/message.c:579
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Copie du message %d dans %s..."
@@ -1505,94 +1591,94 @@ msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s) : erreur dans l'expression rationnelle : %s\n"
 
 # , c-format
-#: init.c:825
+#: init.c:827
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s : variable inconnue"
 
-#: init.c:834
+#: init.c:836
 msgid "prefix is illegal with reset"
 msgstr "ce préfixe est illégal avec reset"
 
-#: init.c:840
+#: init.c:842
 msgid "value is illegal with reset"
 msgstr "cette valeur est illégale avec reset"
 
 # , c-format
-#: init.c:879
+#: init.c:881
 #, c-format
 msgid "%s is set"
 msgstr "%s est positionné"
 
 # , c-format
-#: init.c:879
+#: init.c:881
 #, c-format
 msgid "%s is unset"
 msgstr "%s n'est pas positionné"
 
 # , c-format
-#: init.c:1085
+#: init.c:1087
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s : type de boîte aux lettres invalide"
 
 # , c-format
-#: init.c:1110 init.c:1155
+#: init.c:1112 init.c:1157
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s : valeur invalide"
 
 # , c-format
-#: init.c:1213
+#: init.c:1218
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s : type inconnu"
 
 # , c-format
-#: init.c:1256
+#: init.c:1263
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Erreur dans %s, ligne %d : %s"
 
 # , c-format
 #. the muttrc source keyword
-#: init.c:1272
+#: init.c:1279
 #, c-format
 msgid "source: errors in %s"
 msgstr "source : erreurs dans %s"
 
-#: init.c:1273
+#: init.c:1280
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr "source : lecture interrompue car trop d'erreurs dans %s"
 
 # , c-format
-#: init.c:1287
+#: init.c:1294
 #, c-format
 msgid "source: error at %s"
 msgstr "source : erreur dans %s"
 
-#: init.c:1292
+#: init.c:1299
 msgid "source: too many arguments"
 msgstr "source : trop d'arguments"
 
 # , c-format
-#: init.c:1343
+#: init.c:1350
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s : commande inconnue"
 
 # , c-format
-#: init.c:1731
+#: init.c:1738
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Erreur dans la ligne de commande : %s\n"
 
-#: init.c:1780
+#: init.c:1787
 msgid "unable to determine home directory"
 msgstr "impossible de déterminer le répertoire personnel"
 
-#: init.c:1788
+#: init.c:1795
 msgid "unable to determine username"
 msgstr "impossible de déterminer le nom d'utilisateur"
 
@@ -2392,19 +2478,16 @@ msgid "make decrypted copy"
 msgstr "faire une copie déchiffrée"
 
 #: keymap_alldefs.h:190
-#, fuzzy
 msgid "wipe passphrase(s) from memory"
-msgstr "effacer la phrase de passe PGP de la mémoire"
+msgstr "effacer la (les) phrase(s) de passe de la mémoire"
 
 #: keymap_alldefs.h:191
-#, fuzzy
 msgid "extract supported public keys"
-msgstr "extraire les clés publiques PGP"
+msgstr "extraire les clés publiques supportées"
 
 #: keymap_alldefs.h:192
-#, fuzzy
 msgid "show S/MIME options"
-msgstr "afficher les options PGP"
+msgstr "afficher les options S/MIME"
 
 #: lib.c:59 lib.c:74 lib.c:105
 msgid "Out of memory!"
@@ -2547,7 +2630,7 @@ msgstr ""
 "  -Z\t\touvre le premier dossier ayant un nouveau message, quitte sinon\n"
 "  -h\t\tce message d'aide"
 
-#: main.c:144
+#: main.c:149
 msgid ""
 "\n"
 "Compile options:"
@@ -2657,80 +2740,80 @@ msgstr "La boîte aux lettres n'a pas pu être réouverte !"
 msgid "Reopening mailbox..."
 msgstr "Réouverture de la boîte aux lettres..."
 
-#: menu.c:422
+#: menu.c:405
 msgid "Jump to: "
 msgstr "Aller à : "
 
-#: menu.c:431
+#: menu.c:414
 msgid "Invalid index number."
 msgstr "Numéro d'index invalide."
 
-#: menu.c:435 menu.c:453 menu.c:489 menu.c:530 menu.c:546 menu.c:557
-#: menu.c:568 menu.c:610 menu.c:621 menu.c:634 menu.c:647 menu.c:1022
+#: menu.c:418 menu.c:436 menu.c:472 menu.c:513 menu.c:529 menu.c:540
+#: menu.c:551 menu.c:593 menu.c:604 menu.c:617 menu.c:630 menu.c:1005
 msgid "No entries."
 msgstr "Pas d'entrées."
 
-#: menu.c:450
+#: menu.c:433
 msgid "You cannot scroll down farther."
 msgstr "Défilement vers le bas impossible."
 
-#: menu.c:466
+#: menu.c:449
 msgid "You cannot scroll up farther."
 msgstr "Défilement vers le haut impossible."
 
-#: menu.c:486
+#: menu.c:469
 msgid "You are on the last page."
 msgstr "Vous êtes sur la dernière page."
 
-#: menu.c:508
+#: menu.c:491
 msgid "You are on the first page."
 msgstr "Vous êtes sur la première page."
 
-#: menu.c:587
+#: menu.c:570
 msgid "First entry is shown."
 msgstr "La première entrée est affichée."
 
-#: menu.c:607
+#: menu.c:590
 msgid "Last entry is shown."
 msgstr "La dernière entrée est affichée."
 
-#: menu.c:658
+#: menu.c:641
 msgid "You are on the last entry."
 msgstr "Vous êtes sur la dernière entrée."
 
-#: menu.c:669
+#: menu.c:652
 msgid "You are on the first entry."
 msgstr "Vous êtes sur la première entrée."
 
-#: menu.c:729 pattern.c:1247
+#: menu.c:712 pattern.c:1247
 msgid "Search for: "
 msgstr "Rechercher : "
 
-#: menu.c:730
+#: menu.c:713
 msgid "Reverse search for: "
 msgstr "Rechercher en arrière : "
 
-#: menu.c:740 pattern.c:1280
+#: menu.c:723 pattern.c:1280
 msgid "No search pattern."
 msgstr "Pas de motif de recherche."
 
-#: menu.c:770 pager.c:1917 pager.c:1933 pager.c:2021 pattern.c:1345
+#: menu.c:753 pager.c:1917 pager.c:1933 pager.c:2021 pattern.c:1345
 msgid "Not found."
 msgstr "Non trouvé."
 
-#: menu.c:886
+#: menu.c:869
 msgid "No tagged entries."
 msgstr "Pas d'entrées marquées."
 
-#: menu.c:979
+#: menu.c:962
 msgid "Search is not implemented for this menu."
 msgstr "La recherche n'est pas implémentée pour ce menu."
 
-#: menu.c:984
+#: menu.c:967
 msgid "Jumping is not implemented for dialogs."
 msgstr "Le saut n'est pas implémenté pour les dialogues."
 
-#: menu.c:1025
+#: menu.c:1008
 msgid "Tagging is not supported."
 msgstr "Le marquage n'est pas supporté."
 
@@ -2740,34 +2823,34 @@ msgstr "Le marquage n'est pas supporté."
 msgid "Reading %s... %d"
 msgstr "Lecture de %s... %d"
 
-#: muttlib.c:846
+#: muttlib.c:854
 msgid "File is a directory, save under it?"
 msgstr "Le fichier est un répertoire, sauver dans celui-ci ?"
 
-#: muttlib.c:851
+#: muttlib.c:859
 msgid "File under directory: "
 msgstr "Fichier dans le répertoire : "
 
-#: muttlib.c:863
+#: muttlib.c:871
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Le fichier existe, écras(e)r, (c)oncaténer ou (a)nnuler ?"
 
-#: muttlib.c:863
+#: muttlib.c:871
 msgid "oac"
 msgstr "eca"
 
-#: muttlib.c:1150
+#: muttlib.c:1159
 msgid "Can't save message to POP mailbox."
 msgstr "Impossible de sauver le message dans la boîte aux lettres POP."
 
 # , c-format
-#: muttlib.c:1159
+#: muttlib.c:1168
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s n'est pas une boîte aux lettres !"
 
 # , c-format
-#: muttlib.c:1165
+#: muttlib.c:1174
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Ajouter les messages à %s ?"
@@ -2926,7 +3009,7 @@ msgstr "(r)ejeter, accepter (u)ne fois"
 msgid "ro"
 msgstr "ru"
 
-#: mutt_ssl.c:625 pgpkey.c:510 smime.c:466
+#: mutt_ssl.c:625 pgpkey.c:510 smime.c:475
 msgid "Exit  "
 msgstr "Quitter  "
 
@@ -3205,11 +3288,11 @@ msgstr "Recherche interrompue."
 msgid "PGP passphrase forgotten."
 msgstr "Phrase de passe PGP oubliée."
 
-#: pgp.c:316
-msgid "[-- Error: unable to create PGP subprocess! --]\n"
-msgstr "[-- Erreur : impossible de créer le sous-processus PGP ! --]\n"
+#: pgp.c:304
+msgid "[-- Error: unable to create PGP subprocess! --]}n"
+msgstr "[-- Erreur : impossible de créer le sous-processus PGP ! --]}n"
 
-#: pgp.c:352 pgp.c:599 pgp.c:797
+#: pgp.c:331 pgp.c:595 pgp.c:793
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -3217,7 +3300,7 @@ msgstr ""
 "[-- Fin de sortie PGP --]\n"
 "\n"
 
-#: pgp.c:360
+#: pgp.c:346
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -3225,11 +3308,11 @@ msgstr ""
 "[-- DÉBUT DE MESSAGE PGP --]\n"
 "\n"
 
-#: pgp.c:362
+#: pgp.c:348
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- DÉBUT DE BLOC DE CLÉ PUBLIQUE PGP --]\n"
 
-#: pgp.c:364
+#: pgp.c:350
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -3237,19 +3320,19 @@ msgstr ""
 "[-- DÉBUT DE MESSAGE SIGNÉ PGP --]\n"
 "\n"
 
-#: pgp.c:406
+#: pgp.c:378
 msgid "[-- END PGP MESSAGE --]\n"
 msgstr "[-- FIN DE MESSAGE PGP --]\n"
 
-#: pgp.c:408
+#: pgp.c:380
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- FIN DE BLOC DE CLÉ PUBLIQUE PGP --]\n"
 
-#: pgp.c:410
+#: pgp.c:382
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr "[-- FIN DE MESSAGE SIGNÉ PGP --]\n"
 
-#: pgp.c:425
+#: pgp.c:409
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -3257,11 +3340,11 @@ msgstr ""
 "[-- Erreur : impossible de trouver le début du message PGP ! --]\n"
 "\n"
 
-#: pgp.c:707
+#: pgp.c:703
 msgid "Internal error. Inform <roessler@guug.de>."
 msgstr "Erreur interne. Veuillez avertir <roessler@guug.de>."
 
-#: pgp.c:767
+#: pgp.c:763
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -3269,7 +3352,7 @@ msgstr ""
 "[-- Erreur : impossible de créer un sous-processus PGP ! --]\n"
 "\n"
 
-#: pgp.c:863
+#: pgp.c:859
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -3277,11 +3360,11 @@ msgstr ""
 "[-- Erreur : message PGP/MIME mal formé ! --]\n"
 "\n"
 
-#: pgp.c:876
+#: pgp.c:872
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Erreur : impossible de créer le fichier temporaire ! --]\n"
 
-#: pgp.c:885
+#: pgp.c:881
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -3289,27 +3372,27 @@ msgstr ""
 "[-- Les données suivantes sont chiffrées avec PGP/MIME --]\n"
 "\n"
 
-#: pgp.c:905
+#: pgp.c:901
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- Fin des données chiffrées avec PGP/MIME --]\n"
 
-#: pgp.c:955
+#: pgp.c:951
 msgid "Can't open PGP subprocess!"
 msgstr "Impossible d'ouvrir le sous-processus PGP !"
 
 # , c-format
-#: pgp.c:1082
+#: pgp.c:1078
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Utiliser keyID = \"%s\" pour %s ?"
 
 # , c-format
-#: pgp.c:1109 smime.c:711 smime.c:833
+#: pgp.c:1105 smime.c:719 smime.c:846
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Entrez keyID pour %s : "
 
-#: pgp.c:1317
+#: pgp.c:1354
 msgid "Can't invoke PGP"
 msgstr "Impossible d'invoquer PGP"
 
@@ -3322,7 +3405,7 @@ msgid "All matching keys are marked expired/revoked."
 msgstr "Toutes les clés correspondantes sont marquées expirées/annulées."
 
 #. __STRCAT_CHECKED__
-#: pgpkey.c:512 smime.c:468
+#: pgpkey.c:512 smime.c:477
 msgid "Select  "
 msgstr "Sélectionner  "
 
@@ -3656,7 +3739,7 @@ msgstr "Impossible de créer %s."
 msgid "Can't find any tagged messages."
 msgstr "Aucun message marqué n'a pu être trouvé."
 
-#: recvcmd.c:706 send.c:699
+#: recvcmd.c:706 send.c:701
 msgid "No mailing lists found!"
 msgstr "Pas de liste de diffusion trouvée !"
 
@@ -3784,115 +3867,115 @@ msgstr "Répondre à %s%s ?"
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
 #.
-#: send.c:674
+#: send.c:676
 msgid "No tagged messages are visible!"
 msgstr "Pas de messages marqués visibles !"
 
-#: send.c:726
+#: send.c:727
 msgid "Include message in reply?"
 msgstr "Inclure le message dans la réponse ?"
 
-#: send.c:731
+#: send.c:732
 msgid "Including quoted message..."
 msgstr "Inclusion du message cité..."
 
-#: send.c:741
+#: send.c:742
 msgid "Could not include all requested messages!"
 msgstr "Tous les messages demandés n'ont pas pu être inclus !"
 
-#: send.c:755
+#: send.c:756
 msgid "Forward as attachment?"
 msgstr "Faire suivre sous forme d'attachement ?"
 
-#: send.c:759
+#: send.c:760
 msgid "Preparing forwarded message..."
 msgstr "Préparation du message à faire suivre..."
 
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:1057
+#: send.c:1058
 msgid "Recall postponed message?"
 msgstr "Rappeler un message ajourné ?"
 
-#: send.c:1292
+#: send.c:1306
 msgid "Abort unmodified message?"
 msgstr "Message non modifié. Abandonner ?"
 
-#: send.c:1294
+#: send.c:1308
 msgid "Aborted unmodified message."
 msgstr "Message non modifié. Abandon."
 
 #. abort
-#: send.c:1335
+#: send.c:1349
 msgid "Mail not sent."
 msgstr "Message non envoyé."
 
-#: send.c:1361
+#: send.c:1375
 msgid "Message postponed."
 msgstr "Message ajourné."
 
-#: send.c:1370
+#: send.c:1384
 msgid "No recipients are specified!"
 msgstr "Aucun destinataire spécifié !"
 
-#: send.c:1375
+#: send.c:1389
 msgid "No recipients were specified."
 msgstr "Aucun destinataire spécifié."
 
-#: send.c:1381
+#: send.c:1395
 msgid "No subject, abort sending?"
 msgstr "Pas d'objet, abandonner l'envoi ?"
 
-#: send.c:1385
+#: send.c:1399
 msgid "No subject specified."
 msgstr "Pas d'objet spécifié."
 
-#: send.c:1432
+#: send.c:1446
 msgid "Sending message..."
 msgstr "Envoi du message..."
 
-#: send.c:1569
+#: send.c:1583
 msgid "Could not send the message."
 msgstr "Impossible d'envoyer le message."
 
-#: send.c:1574
+#: send.c:1588
 msgid "Mail sent."
 msgstr "Message envoyé."
 
-#: send.c:1574
+#: send.c:1588
 msgid "Sending in background."
 msgstr "Envoi en tâche de fond."
 
-#: sendlib.c:463
+#: sendlib.c:469
 msgid "No boundary parameter found! [report this error]"
 msgstr "Pas de paramètre boundary trouvé !  [signalez cette erreur]"
 
 # , c-format
-#: sendlib.c:497
+#: sendlib.c:503
 #, c-format
 msgid "%s no longer exists!"
 msgstr "%s n'existe plus !"
 
 # , c-format
-#: sendlib.c:913
+#: sendlib.c:921
 #, c-format
 msgid "%s isn't a regular file."
 msgstr "%s n'est pas un fichier ordinaire."
 
 # , c-format
-#: sendlib.c:1082
+#: sendlib.c:1090
 #, c-format
 msgid "Could not open %s"
 msgstr "Impossible d'ouvrir %s"
 
 # , c-format
-#: sendlib.c:2052
+#: sendlib.c:2060
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Erreur en envoyant le message, fils terminé avec le code %d (%s)."
 
-#: sendlib.c:2058
+#: sendlib.c:2066
 msgid "Output of the delivery process"
 msgstr "Sortie du processus de livraison"
 
@@ -3914,211 +3997,148 @@ msgstr "Erreur %s... On quitte.\n"
 msgid "Caught signal %d...  Exiting.\n"
 msgstr "Signal %d... On quitte.\n"
 
-#: smime.c:127
+#: smime.c:136
 msgid "S/MIME messages with no hints on content are unsupported."
 msgstr ""
-
-#: smime.c:356
-msgid "Trusted   "
-msgstr ""
-
-#: smime.c:359
-msgid "Verified  "
-msgstr ""
-
-#: smime.c:362
-msgid "Unverified"
-msgstr ""
+"Les messages S/MIME sans indication sur le contenu ne sont pas supportés."
 
 #: smime.c:365
-#, fuzzy
-msgid "Expired   "
-msgstr "Quitter  "
+msgid "Trusted   "
+msgstr "De confiance"
 
 #: smime.c:368
-msgid "Revoked   "
-msgstr ""
+msgid "Verified  "
+msgstr "Vérifié     "
 
-# , c-format
 #: smime.c:371
-#, fuzzy
-msgid "Invalid   "
-msgstr "Mois invalide : %s"
+msgid "Unverified"
+msgstr "Non vérifié "
 
 #: smime.c:374
-#, fuzzy
-msgid "Unknown   "
-msgstr "Inconnu"
+msgid "Expired   "
+msgstr "Expiré      "
+
+#: smime.c:377
+msgid "Revoked   "
+msgstr "Révoqué     "
 
 # , c-format
-#: smime.c:403
-#, fuzzy
+#: smime.c:380
+msgid "Invalid   "
+msgstr "Invalide    "
+
+#: smime.c:383
+msgid "Unknown   "
+msgstr "Inconnu     "
+
+# , c-format
+#: smime.c:412
 msgid "Enter keyID: "
-msgstr "Entrez keyID pour %s : "
+msgstr "Entrez keyID : "
 
-#: smime.c:426
-#, fuzzy, c-format
-msgid "S/MIME certificates matching \"%s\"."
-msgstr "Le propriétaire du certificat S/MIME ne correspond pas à l'expéditeur."
-
-#. index-file format:
-#. mailbox certfile label issuer_certfile trust_flags\n
-#.
-#. \n is also copied here, serving as delimitation.
-#.
-#. certfile is a hash value generated by openssl.
-#. Note that this was done according to the OpenSSL
-#. specs on their CA-directory.
-#.
-#.
-#: smime.c:543
+#: smime.c:435
 #, c-format
-msgid "%s/.index"
-msgstr ""
+msgid "S/MIME certificates matching \"%s\"."
+msgstr "Certificats S/MIME correspondant à \"%s\"."
 
-#: smime.c:575 smime.c:643 smime.c:664
+#: smime.c:584 smime.c:653 smime.c:674
 #, c-format
 msgid "ID %s is unverified. Do you want to use it for %s ?"
-msgstr ""
+msgstr "L'ID %s n'est pas vérifié. Voulez-vous l'utiliser pour %s ?"
 
 # , c-format
-#: smime.c:579 smime.c:647
-#, fuzzy, c-format
+#: smime.c:588 smime.c:657
+#, c-format
 msgid "Use (untrusted!) ID %s for %s ?"
-msgstr "Utiliser keyID = \"%s\" pour %s ?"
+msgstr "Utiliser l'ID %s (pas de confiance !) pour %s ?"
 
 # , c-format
-#: smime.c:582 smime.c:650
-#, fuzzy, c-format
+#: smime.c:591 smime.c:660
+#, c-format
 msgid "Use ID %s for %s ?"
-msgstr "Utiliser keyID = \"%s\" pour %s ?"
+msgstr "Utiliser l'ID %s pour %s ?"
 
-#: smime.c:676
+#: smime.c:686
 #, c-format
 msgid "Warning: You have not yet decided to trust ID %s. (any key to continue)"
 msgstr ""
+"Att.: vous n'avez pas encore décidé de faire confiance à l'ID %s. (touche)"
 
-#: smime.c:740
-#, c-format
-msgid "This message seems to require key %s. (Any key to continue)"
-msgstr ""
-
-#: smime.c:839
+#: smime.c:852
 #, c-format
 msgid "No (valid) certificate found for %s."
-msgstr ""
+msgstr "Pas de certificat (valide) trouvé pour %s."
 
-#: smime.c:894 smime.c:991 smime.c:1035 smime.c:1100 smime.c:1164 smime.c:1191
-#: smime.c:1260
-#, fuzzy
+#: smime.c:907 smime.c:935 smime.c:1000 smime.c:1044 smime.c:1109 smime.c:1184
 msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "[-- Erreur : impossible de créer le sous-processus PGP ! --]\n"
+msgstr "Erreur : impossible de créer le sous-processus OpenSSL !"
 
-#: smime.c:922
-msgid "Alert: No mailbox specified in certificate.\n"
-msgstr ""
-
-#: smime.c:928
-#, c-format
-msgid "Alert: Certificate does *NOT* belong to \"%s\".\n"
-msgstr ""
-
-#: smime.c:1287
-#, c-format
-msgid "%s/%s.%d"
-msgstr ""
-
-#: smime.c:1342
-#, c-format
-msgid "Certificate \"%s\" exists for \"%s\"."
-msgstr ""
-
-#: smime.c:1366
-#, c-format
-msgid "Successfully added certificate \"%s\" for \"%s\". "
-msgstr ""
-
-#: smime.c:1388 smime.c:1413
-#, fuzzy
-msgid "Certificate *NOT* added."
-msgstr "Certificat sauvé"
-
-#: smime.c:1467
-#, fuzzy
+#: smime.c:1262
 msgid "no certfile"
-msgstr "Impossible de créer le filtre"
+msgstr "pas de certfile"
 
-#: smime.c:1470
-#, fuzzy
+#: smime.c:1265
 msgid "no mbox"
-msgstr "(pas de boîte aux lettres)"
+msgstr "pas de BAL"
 
 #. fatal error while trying to encrypt message
-#: smime.c:1613
+#: smime.c:1408
 msgid "No output from OpenSSL.."
-msgstr ""
+msgstr "Pas de sortie pour OpenSSL.."
 
-#: smime.c:1651
-#, fuzzy
+#: smime.c:1446
 msgid "Warning: Intermediate certificate not found."
-msgstr "Attention : le certificat n'a pas pu être sauvé"
+msgstr "Attention : le certificat intermédiaire n'a pas été trouvé."
 
-#: smime.c:1696
-#, fuzzy
+#: smime.c:1491
 msgid "Can't open OpenSSL subprocess!"
-msgstr "Impossible d'ouvrir le sous-processus PGP !"
+msgstr "Impossible d'ouvrir le sous-processus OpenSSL !"
 
-#: smime.c:1734
+#: smime.c:1529
 msgid "No output from OpenSSL..."
-msgstr ""
+msgstr "Pas de sortie pour OpenSSL..."
 
-#: smime.c:1899 smime.c:2021
-#, fuzzy
+#: smime.c:1694 smime.c:1816
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
 msgstr ""
-"[-- Fin de sortie PGP --]\n"
+"[-- Fin de sortie OpenSSL --]\n"
 "\n"
 
-#: smime.c:1982 smime.c:1992
-#, fuzzy
+#: smime.c:1777 smime.c:1787
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- Erreur : impossible de créer le sous-processus PGP ! --]\n"
+msgstr "[-- Erreur : impossible de créer le sous-processus OpenSSL ! --]\n"
 
-#: smime.c:2025
-#, fuzzy
+#: smime.c:1820
 msgid "[-- The following data is S/MIME encrypted --]\n"
-msgstr ""
-"[-- Les données suivantes sont chiffrées avec PGP/MIME --]\n"
-"\n"
+msgstr "[-- Les données suivantes sont chiffrées avec S/MIME --]\n"
 
-#: smime.c:2028
-#, fuzzy
+#: smime.c:1823
 msgid "[-- The following data is S/MIME signed --]\n"
-msgstr ""
-"[-- Les données suivantes sont signées --]\n"
-"\n"
+msgstr "[-- Les données suivantes sont signées avec S/MIME --]\n"
 
-#: smime.c:2089
-#, fuzzy
+#: smime.c:1884
 msgid ""
 "\n"
 "[-- End of S/MIME encrypted data. --]\n"
-msgstr "[-- Fin des données chiffrées avec PGP/MIME --]\n"
+msgstr ""
+"\n"
+"[-- Fin des données chiffrées avec S/MIME. --]\n"
 
-#: smime.c:2091
-#, fuzzy
+#: smime.c:1886
 msgid ""
 "\n"
 "[-- End of S/MIME signed data. --]\n"
-msgstr "[-- Fin des données signées --]\n"
+msgstr ""
+"\n"
+"[-- Fin des données signées avec S/MIME. --]\n"
 
-#: sort.c:202
+#: sort.c:201
 msgid "Sorting mailbox..."
 msgstr "Tri de la boîte aux lettres..."
 
-#: sort.c:239
+#: sort.c:238
 msgid "Could not find sorting function! [report this bug]"
 msgstr "Fonction de tri non trouvée ! [signalez ce bug]"
 
@@ -4126,50 +4146,37 @@ msgstr "Fonction de tri non trouvée ! [signalez ce bug]"
 msgid "(no mailbox)"
 msgstr "(pas de boîte aux lettres)"
 
-#: thread.c:1029
+#: thread.c:1079
 msgid "Parent message is not visible in this limited view."
 msgstr "Le message père n'est pas visible dans cette vue limitée."
 
-#: thread.c:1035
+#: thread.c:1085
 msgid "Parent message is not available."
 msgstr "Le message père n'est pas disponible."
 
-#~ msgid "Enter PGP passphrase:"
-#~ msgstr "Entrez la phrase de passe PGP :"
+#~ msgid "%s/.index"
+#~ msgstr "%s/.index"
 
-#~ msgid "[-- PGP output follows (current time: %c) --]\n"
-#~ msgstr "[-- La sortie PGP suit (heure courante : %c) --]\n"
+#~ msgid "This message seems to require key %s. (Any key to continue)"
+#~ msgstr "Ce message semble nécessiter la clé %s. (Touche pour continuer)"
 
-#~ msgid ""
-#~ "[-- Error: Inconsistent multipart/signed structure! --]\n"
-#~ "\n"
-#~ msgstr ""
-#~ "[-- Erreur : Structure multipart/signed incohérente ! --]\n"
-#~ "\n"
+#~ msgid "Alert: No mailbox specified in certificate.\n"
+#~ msgstr "Alerte : pas de boîte aux lettres spécifiée dans le certificat.\n"
 
-#~ msgid ""
-#~ "[-- Error: Unknown multipart/signed protocol %s! --]\n"
-#~ "\n"
-#~ msgstr ""
-#~ "[-- Erreur : Protocole multipart/signed %s inconnu ! --]\n"
-#~ "\n"
+#~ msgid "Alert: Certificate does *NOT* belong to \"%s\".\n"
+#~ msgstr "Alerte : le certificat n'appartient *PAS* à \"%s\".\n"
 
-#~ msgid ""
-#~ "[-- Warning: We can't verify %s/%s signatures. --]\n"
-#~ "\n"
-#~ msgstr ""
-#~ "[-- Attention : %s/%s signatures ne peuvent pas être vérifiées. --]\n"
-#~ "\n"
+#~ msgid "%s/%s.%d"
+#~ msgstr "%s/%s.%d"
 
-#~ msgid ""
-#~ "[-- Warning: Can't find any signatures. --]\n"
-#~ "\n"
-#~ msgstr ""
-#~ "[-- Attention : Impossible de trouver des signatures. --]\n"
-#~ "\n"
+#~ msgid "Certificate \"%s\" exists for \"%s\"."
+#~ msgstr "Le certificat \"%s\" existe pour \"%s\"."
 
-#~ msgid "Create an application/pgp message?"
-#~ msgstr "Créer un message application/pgp ?"
+#~ msgid "Successfully added certificate \"%s\" for \"%s\". "
+#~ msgstr "Certificat \"%s\" ajouté avec succès pour \"%s\". "
+
+#~ msgid "Certificate *NOT* added."
+#~ msgstr "Certificat *NON* ajouté."
 
 #~ msgid "This ID's validity level is undefined."
 #~ msgstr "Le niveau de validité de cet ID est indéfini."
