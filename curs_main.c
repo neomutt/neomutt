@@ -972,8 +972,11 @@ int mutt_index_menu (void)
 	    && (query_quadoption (OPT_QUIT, 
 				  _("Exit Mutt without saving?")) == M_YES))
 	{
-	  mx_fastclose_mailbox (Context);
-	  safe_free ((void **) &Context);
+	  if (Context)
+	  {
+	    mx_fastclose_mailbox (Context);
+	    safe_free ((void **) &Context);
+	  }
 	  done = 1;
 	}
 	break;

@@ -642,6 +642,9 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
 void mx_fastclose_mailbox (CONTEXT *ctx)
 {
   int i;
+
+  if(!ctx) 
+    return;
   
 #ifdef USE_IMAP
   if (ctx->magic == M_IMAP)
@@ -711,6 +714,8 @@ int mx_close_mailbox (CONTEXT *ctx)
   CONTEXT f;
   char mbox[_POSIX_PATH_MAX];
   char buf[SHORT_STRING];
+
+  if (!ctx) return 0;
 
   ctx->closing = 1;
 
