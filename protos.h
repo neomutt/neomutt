@@ -63,7 +63,9 @@ typedef const char * format_t (char *, size_t, char, const char *, const char *,
 void mutt_FormatString (char *, size_t, const char *, format_t *, unsigned long, format_flag);
 void mutt_parse_content_type (char *, BODY *);
 void mutt_generate_boundary (PARAMETER **);
+void mutt_delete_parameter (const char *attribute, PARAMETER **p);
 void mutt_set_parameter (const char *, const char *, PARAMETER **);
+
 
 FILE *mutt_open_read (const char *, pid_t *);
 
@@ -207,7 +209,7 @@ void mutt_tabs_to_spaces (char *);
 void mutt_tag_set_flag (int, int);
 void mutt_unblock_signals (void);
 void mutt_unblock_signals_system (int);
-void mutt_update_encoding (BODY *a, CONTENT *info);
+void mutt_update_encoding (BODY *a);
 void mutt_update_tree (ATTACHPTR **, short);
 void mutt_version (void);
 void mutt_view_attachments (HEADER *);

@@ -513,7 +513,7 @@ mutt_query_pipe_attachment (char *command, FILE *fp, BODY *body, int filter)
     {
       mutt_unlink (body->filename);
       mutt_rename_file (tfile, body->filename);
-      mutt_update_encoding (body, NULL);
+      mutt_update_encoding (body);
       mutt_message _("Attachment filtered.");
     }
   }

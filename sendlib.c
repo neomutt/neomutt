@@ -864,7 +864,7 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
   info = safe_calloc (1, sizeof (CONTENT));
   memset (&state, 0, sizeof (state));
   
-  if (b != NULL && b->type == TYPETEXT && (!b->noconv))
+  if (b != NULL && b->type == TYPETEXT && (!b->noconv && !b->force_charset))
   {
     char *chs = mutt_get_parameter ("charset", b->parameter);
     if (Charset && (chs || SendCharset) &&
@@ -887,7 +887,7 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
 
   safe_fclose (&fp);
   
-  if (b != NULL && b->type == TYPETEXT && (!b->noconv))
+  if (b != NULL && b->type == TYPETEXT && (!b->noconv && !b->force_charset))
     mutt_set_parameter ("charset", info->hibin ? "unknown-8bit" : "us-ascii",
 			&b->parameter);
 
@@ -1102,7 +1102,7 @@ static void transform_to_7bit (BODY *a, FILE *fpin)
       }
       a->length = sb.st_size;
 
-      mutt_update_encoding (a, NULL);
+      mutt_update_encoding (a);
       if (a->encoding == ENC8BIT)
 	a->encoding = ENCQUOTEDPRINTABLE;
       else if(a->encoding == ENCBINARY)
@@ -1179,8 +1179,9 @@ char *mutt_get_body_charset (char *d, size_t dlen, BODY *b)
 
 
 /* Assumes called from send mode where BODY->filename points to actual file */
-void mutt_update_encoding (BODY *a, CONTENT *info)
+void mutt_update_encoding (BODY *a)
 {
+  CONTENT *info;
   char chsbuff[STRING];
 
   /* override noconv when it's us-ascii */
@@ -1188,9 +1189,9 @@ void mutt_update_encoding (BODY *a, CONTENT *info)
     a->noconv = 0;
 
   if (!a->force_charset && !a->noconv)
-    mutt_set_parameter ("charset", NULL, &a->parameter);
+    mutt_delete_parameter ("charset", &a->parameter);
 
-  if (!info && (info = mutt_get_content_info (a->filename, a)) == NULL)
+  if ((info = mutt_get_content_info (a->filename, a)) == NULL)
     return;
 
   mutt_set_encoding (a, info);
@@ -1275,7 +1276,7 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
 #ifdef HAVE_PGP
   body->hdr->pgp = pgp;
 #endif /* HAVE_PGP */
-  mutt_update_encoding (body, NULL);
+  mutt_update_encoding (body);
   body->parts = body->hdr->content;
 
   fclose(fp);
@@ -1324,7 +1325,7 @@ BODY *mutt_make_file_attach (const char *path)
     }
   } 
 
-  mutt_update_encoding (att, info);
+  mutt_update_encoding (att);
   return (att);
 }
 
@@ -2164,6 +2165,22 @@ ADDRESS *mutt_remove_duplicates (ADDRESS *addr)
   return (top);
 }
 
+static void set_noconv_flags (BODY *b, short flag)
+{
+  for(; b; b = b->next)
+  {
+    if (b->type == TYPEMESSAGE || b->type == TYPEMULTIPART)
+      set_noconv_flags (b->parts, flag);
+    else if (b->type == TYPETEXT && b->noconv)
+    {
+      if (flag)
+	mutt_set_parameter ("x-mutt-noconv", "yes", &b->parameter);
+      else
+	mutt_delete_parameter ("x-mutt-noconv", &b->parameter);
+    }
+  }
+}
+
 int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, char *fcc)
 {
   CONTEXT f;
@@ -2172,6 +2189,9 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
   FILE *tempfp = NULL;
   int r;
 
+  if (post)
+    set_noconv_flags (hdr->content, 1);
+  
   if (mx_open_mailbox (path, M_APPEND | M_QUIET, &f) == NULL)
   {
     dprint (1, (debugfile, "mutt_write_fcc(): unable to open mailbox %s in append-mode, aborting.\n",
@@ -2316,5 +2336,8 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
   mx_close_message (&msg);
   mx_close_mailbox (&f, NULL);
 
+  if (post)
+    set_noconv_flags (hdr->content, 0);
+  
   return r;
 }

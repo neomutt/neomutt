@@ -706,7 +706,7 @@ BODY *pgp_make_key_attachment (char *tempf)
   att->subtype = safe_strdup ("pgp-keys");
   snprintf (buff, sizeof (buff), _("PGP Key %s."), tmp);
   att->description = safe_strdup (buff);
-  mutt_update_encoding (att, NULL);
+  mutt_update_encoding (att);
 
   stat (tempf, &sb);
   att->length = sb.st_size;

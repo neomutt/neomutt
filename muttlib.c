@@ -506,6 +506,13 @@ char *mutt_get_parameter (const char *s, PARAMETER *p)
 void mutt_set_parameter (const char *attribute, const char *value, PARAMETER **p)
 {
   PARAMETER *q;
+
+  if (!value)
+  {
+    mutt_delete_parameter (attribute, p);
+    return;
+  }
+  
   for(q = *p; q; q = q->next)
   {
     if (mutt_strcasecmp (attribute, q->attribute) == 0)
@@ -522,8 +529,21 @@ void mutt_set_parameter (const char *attribute, const char *value, PARAMETER **p
   *p = q;
 }
 
-
-
+void mutt_delete_parameter (const char *attribute, PARAMETER **p)
+{
+  PARAMETER *q;
+  
+  for (q = *p; q; p = &q->next, q = q->next)
+  {
+    if (mutt_strcasecmp (attribute, q->attribute) == 0)
+    {
+      *p = q->next;
+      q->next = NULL;
+      mutt_free_parameter (&q);
+      return;
+    }
+  }
+}
 
 /* returns 1 if Mutt can't display this type of data, 0 otherwise */
 int mutt_needs_mailcap (BODY *m)

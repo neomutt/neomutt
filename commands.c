@@ -846,7 +846,7 @@ void mutt_edit_content_type (HEADER *h, BODY *b)
     mutt_message (_("Character set changed to %s."), 
 		  mutt_get_parameter ("charset", b->parameter));
 
-  b->force_charset |= charset_changed;
+  b->force_charset |= charset_changed ? 1 : 0;
   
   if (!is_multipart (b) && b->parts)
     mutt_free_body (&b->parts);

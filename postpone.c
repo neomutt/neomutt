@@ -596,7 +596,6 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
     newhdr->content = mutt_remove_multipart (newhdr->content);
 
   s.fpin = bfp;
-  s.flags = M_CHARCONV;
   
   /* create temporary files for all attachments */
   for (b = newhdr->content; b; b = b->next)
@@ -616,22 +615,33 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
       /* avoid Content-Disposition: header with temporary filename */
       b->use_disp = 0;
 
+    if (b->type == TYPETEXT && 
+	!mutt_strcasecmp ("yes", mutt_get_parameter ("x-mutt-noconv", b->parameter)))
+    {
+      s.flags &= ~M_CHARCONV;
+      b->noconv = 1;
+    }
+    else
+    {
+      s.flags |= M_CHARCONV;
+      b->noconv = 0;
+    }
+
+    mutt_delete_parameter ("x-mutt-noconv", &b->parameter);
+
     mutt_adv_mktemp (file, sizeof(file));
-    
     if ((s.fpout = safe_fopen (file, "w")) == NULL)
       goto bail;
 
-    mutt_decode_attachment (b, &s);
     
+    mutt_decode_attachment (b, &s);
+
     if (safe_fclose (&s.fpout) != 0)
       goto bail;
 
     mutt_str_replace (&b->filename, file);
     b->unlink = 1;
 
-    if (b->type == TYPETEXT)
-      b->noconv = 0;
-    
     mutt_stamp_attachment (b);
 
     mutt_free_body (&b->parts);
