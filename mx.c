@@ -274,23 +274,6 @@ int mx_unlock_file (const char *path, int fd, int dot)
   return 0;
 }
 
-/* open a file and lock it */
-FILE *mx_open_file_lock (const char *path, const char *mode)
-{
-  FILE *f;
-
-  if ((f = safe_fopen (path, mode)) != NULL)
-  {
-    if (mx_lock_file (path, fileno (f), *mode != 'r', 1, 1) != 0)
-    {
-      fclose (f);
-      f = NULL;
-    }
-  }
-
-  return (f);
-}
-
 void mx_unlink_empty (const char *path)
 {
   int fd;
@@ -405,7 +388,7 @@ int mx_get_magic (const char *path)
       magic = M_MBOX;
     else if (mutt_strcmp (MMDF_SEP, tmp) == 0)
       magic = M_MMDF;
-    fclose (f);
+    safe_fclose (&f);
 #ifndef BUFFY_SIZE
     /* need to restore the times here, the file was not really accessed,
      * only the type was accessed.  This is important, because detection
@@ -552,7 +535,7 @@ static int mx_open_mailbox_append (CONTEXT *ctx)
 	else
 	{
 	  mutt_error (_("Couldn't lock %s\n"), ctx->path);
-	  fclose (ctx->fp);
+	  safe_fclose (&ctx->fp);
 	}
 	return (-1);
       }
@@ -715,8 +698,7 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
   safe_free ((void **) &ctx->pattern);
   if (ctx->limit_pattern) 
     mutt_pattern_free (&ctx->limit_pattern);
-  if (ctx->fp)
-    fclose (ctx->fp);
+  safe_fclose (ctx->fp);
   memset (ctx, 0, sizeof (CONTEXT));
 }
 

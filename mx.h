@@ -75,8 +75,6 @@ void mx_alloc_memory (CONTEXT *);
 void mx_update_context (CONTEXT *);
 void mx_update_tables (CONTEXT *, int);
 
-FILE *mx_open_file_lock (const char *, const char *);
-
 
 int mx_lock_file (const char *, int, int, int, int);
 int mx_unlock_file (const char *path, int fd, int dot);
