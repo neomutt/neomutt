@@ -4,6 +4,8 @@ AUTOMAKE_OPTIONS = foreign
 
 EXTRA_DIST = BUGS TODO
 
+AM_CPPFLAGS = -I../intl
+
 noinst_LIBRARIES = libimap.a
 noinst_HEADERS = imap_private.h imap_socket.h md5.h message.h
 

@@ -45,6 +45,17 @@
 # include <getopt.h>
 #endif
 
+#ifndef HAVE_STRERROR
+#ifndef STDC_HEADERS
+extern int sys_nerr;
+extern char *sys_errlist[];
+#endif
+
+#define strerror(x) ((x) > 0 && (x) < sys_nerr) ? sys_errlist[(x)] : 0
+#endif /* !HAVE_STRERROR */
+
+extern int optind;
+
 #define BUFFSIZE 2048
 
 enum output_formats_t
