@@ -1106,6 +1106,10 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	init_menu (&state, menu, title, sizeof (title), buffy);
 	break;
 
+      case OP_BUFFY_LIST:
+	mutt_buffy_list ();
+	break;
+
       case OP_BROWSER_NEW_FILE:
 
 	snprintf (buf, sizeof (buf), "%s/", LastDir);

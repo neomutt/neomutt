@@ -2504,6 +2504,10 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	mutt_version ();
 	break;
 
+      case OP_BUFFY_LIST:
+	mutt_buffy_list ();
+	break;
+
       case OP_VIEW_ATTACHMENTS:
         if (flags & M_PAGER_ATTACHMENT)
         {

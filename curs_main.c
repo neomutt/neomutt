@@ -1969,6 +1969,10 @@ int mutt_index_menu (void)
 	mutt_version ();
 	break;
 
+      case OP_BUFFY_LIST:
+	mutt_buffy_list ();
+	break;
+
       case OP_VIEW_ATTACHMENTS:
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;

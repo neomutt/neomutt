@@ -125,6 +125,7 @@ struct binding_t OpMain[] = {
   { "set-flag",			OP_MAIN_SET_FLAG,		"w" },
   { "clear-flag",		OP_MAIN_CLEAR_FLAG,		"W" },
   { "display-message",		OP_DISPLAY_MESSAGE,		M_ENTER_S },
+  { "buffy-list",		OP_BUFFY_LIST,			"." },
   { "sync-mailbox",		OP_MAIN_SYNC_FOLDER,		"$" },
   { "display-address",		OP_DISPLAY_ADDRESS,		"@" },
   { "pipe-message",		OP_PIPE,			"|" },
@@ -212,6 +213,7 @@ struct binding_t OpPager[] = {
   { "sync-mailbox",	OP_MAIN_SYNC_FOLDER,            "$" },
   { "shell-escape",	OP_SHELL_ESCAPE,		"!" },
   { "enter-command",	OP_ENTER_COMMAND,		":" },
+  { "buffy-list",	OP_BUFFY_LIST,			"." },
   { "search",		OP_SEARCH,			"/" },
   { "search-reverse",	OP_SEARCH_REVERSE,		"\033/" },
   { "search-opposite",	OP_SEARCH_OPPOSITE,		NULL },
@@ -359,6 +361,7 @@ struct binding_t OpBrowser[] = {
   { "check-new",	OP_CHECK_NEW,		NULL },
   { "toggle-mailboxes", OP_TOGGLE_MAILBOXES, 	"\t" },
   { "view-file",	OP_BROWSER_VIEW_FILE,	" " },
+  { "buffy-list",	OP_BUFFY_LIST,		"." },
 #ifdef USE_IMAP
   { "create-mailbox",   OP_CREATE_MAILBOX,      "C" },
   { "delete-mailbox",   OP_DELETE_MAILBOX,      "d" },

@@ -21,6 +21,8 @@
 #include "mailbox.h"
 #include "mx.h"
 
+#include "mutt_curses.h"
+
 #ifdef USE_IMAP
 #include "imap.h"
 #endif
@@ -422,29 +424,64 @@ int mutt_buffy_check (int force)
   return (BuffyCount);
 }
 
-int mutt_buffy_notify (void)
+int mutt_buffy_list (void)
 {
   BUFFY *tmp;
   char path[_POSIX_PATH_MAX];
+  char buffylist[160];
+  int pos;
+  int first;
 
+  pos = 0;
+  first = 1;
+  buffylist[0] = 0;
+  pos += strlen (strncat (buffylist, _("New mail in "), sizeof (buffylist) - 1 - pos));
+  for (tmp = Incoming; tmp; tmp = tmp->next)
+  {
+    /* Is there new mail in this mailbox? */
+    if (!tmp->new)
+      continue;
+
+    strfcpy (path, tmp->path, sizeof (path));
+    mutt_pretty_mailbox (path);
+    
+    if (!first && pos + strlen (path) >= COLS - 7)
+      break;
+    
+    if (!first)
+      pos += strlen (strncat(buffylist + pos, ", ", sizeof(buffylist)-1-pos));
+    
+    /* Prepend an asterisk to mailboxes not already notified */
+    if (!tmp->notified)
+    {
+      pos += strlen (strncat(buffylist + pos, "*", sizeof(buffylist)-1-pos));
+      tmp->notified = 1;
+      BuffyNotify--;
+    }
+    pos += strlen (strncat(buffylist + pos, path, sizeof(buffylist)-1-pos));
+    first = 0;
+  }
+  if (!first && tmp)
+  {
+    strncat (buffylist + pos, ", ...", sizeof (buffylist) - 1 - pos);
+  }
+  if (!first)
+  {
+    mutt_message ("%s", buffylist);
+    return (1);
+  }
+  /* there were no mailboxes needing to be notified, so clean up since 
+   * BuffyNotify has somehow gotten out of sync
+   */
+  BuffyNotify = 0;
+  return (0);
+}
+
+int mutt_buffy_notify (void)
+{
   if (mutt_buffy_check (0) && BuffyNotify)
   {
-    for (tmp = Incoming; tmp; tmp = tmp->next)
-    {
-      if (tmp->new && !tmp->notified)
-      {
-	strfcpy (path, tmp->path, sizeof (path));
-	mutt_pretty_mailbox (path);
-	mutt_message (_("New mail in %s."), path);
-	tmp->notified = 1;
-	BuffyNotify--;
-	return (1);
-      }
-    }
-    /* there were no mailboxes needing to be notified, so clean up since 
-     * BuffyNotify has somehow gottten out of sync
-     */
-    BuffyNotify = 0;
+    return (mutt_buffy_list ());
   }
   return (0);
 }
