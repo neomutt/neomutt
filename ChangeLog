@@ -1,3 +1,8 @@
+2002-12-22 11:20:00  Vincent Lefevre  <vincent@vinc17.org>  (roessler)
+
+	* po/fr.po: Another fr.po update for the CVS (taking into account
+	the change in pgpkey.c:486)...
+
 2002-12-22 11:17:24  Martin Michlmayr  <tbm@cyrius.com>  (roessler)
 
 	* hdrline.c, init.h: Add %A to the format strings, which expands
