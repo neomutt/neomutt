@@ -434,7 +434,6 @@ int mutt_send_menu (HEADER *msg,   /* structure for new message */
   CONTEXT *ctx = NULL, *this = NULL;
   /* Sort, SortAux could be changed in mutt_index_menu() */
   int oldSort = Sort, oldSortAux = SortAux;
-  HEADER **hdrs = NULL;
   struct stat st;
 
   idx = mutt_gen_attach_list (msg->content, idx, &idxlen, &idxmax, 0, 1);
@@ -649,21 +648,9 @@ int mutt_send_menu (HEADER *msg,   /* structure for new message */
 	    break;
 	  }
 	  
-	  {
-	    int i, j;
-	    this = Context; /* remember current folder */
-	    
-	    Context = ctx;
-	    close = mutt_index_menu (1);
-	    /* allocate memory to store pointers to tagged headers */
-	    hdrs = safe_calloc (Context->tagged, sizeof (HEADER *));
-	    for (i=0, j=0; i < Context->vcount; i++)
-	    {
-	      HEADER *cur = Context->hdrs[Context->v2r[i]];
-	      /* store the headers of the tagged messages */
-	      if (cur->tagged) hdrs[j++] = cur;
-	   }
-	  }
+	  this = Context; /* remember current folder */
+	  Context = ctx;
+	  close = mutt_index_menu (1);
 	}
         {
 	  int numtag = 0;
@@ -671,60 +658,59 @@ int mutt_send_menu (HEADER *msg,   /* structure for new message */
 	  if (op == OP_COMPOSE_ATTACH_MESSAGE)
 	    numtag = Context->tagged;
 	  if (idxlen + numtag >= idxmax)
-	{
+	  {
 	    safe_realloc ((void **) &idx, sizeof (ATTACHPTR *) * (idxmax += 5 + numtag));
-	  menu->data = idx;
-	}
+	    menu->data = idx;
+	  }
 	}
 
 	if (op == OP_COMPOSE_ATTACH_FILE)
 	{
-         idx[idxlen] = (ATTACHPTR *) safe_calloc (1, sizeof (ATTACHPTR));
-         idx[idxlen]->content = mutt_make_file_attach (fname);
-         if (idx[idxlen]->content != NULL)
-          update_idx (menu, idx, idxlen);
-         else
-         {
-          mutt_error ("Unable to attach!");
-          safe_free ((void **) &idx[idxlen]);
-         }
-	 menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
-	 idxlen++;
-         break;
+	  idx[idxlen] = (ATTACHPTR *) safe_calloc (1, sizeof (ATTACHPTR));
+	  idx[idxlen]->content = mutt_make_file_attach (fname);
+	  if (idx[idxlen]->content != NULL)
+	    update_idx (menu, idx, idxlen++);
+	  else
+	  {
+	    mutt_error ("Unable to attach!");
+	    safe_free ((void **) &idx[idxlen]);
+	  }
+	  menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
+	  break;
         }
 	else
 	{
-	 int i = 0;
-	 /* Did we tag any messages? */
-	 while (Context->tagged--)
-	 {
-	   idx[idxlen] = (ATTACHPTR *) safe_calloc (1, sizeof (ATTACHPTR));
-	   idx[idxlen]->content = mutt_make_message_attach (Context, hdrs[i], 1);
-	   i++;
-	   if (idx[idxlen]->content != NULL)
-	     update_idx (menu, idx, idxlen);
-	   else
-	   {
-	     mutt_error ("Unable to attach!");
-	     safe_free ((void **) &idx[idxlen]);
-	   }
-	   idxlen++;
-	 }
-	 menu->redraw |= REDRAW_FULL;
-
-         if (close == OP_QUIT) 
-	   mx_close_mailbox (Context);
-	 else
-	   mx_fastclose_mailbox (Context);
-	 safe_free ((void **) &Context);
-	 FREE (&hdrs);
-	 
-	 /* go back to the folder we started from */
-	 Context = this;
-	 /* Restore old $sort and $sort_aux */
-	 Sort = oldSort;
-	 SortAux = oldSortAux;
+	  HEADER *h;
+	  for (i = 0; i < Context->vcount; i++)
+	  {
+	    h = Context->hdrs[Context->v2r[i]];
+	    if (h->tagged)
+	    {
+	      idx[idxlen] = (ATTACHPTR *) safe_calloc (1, sizeof (ATTACHPTR));
+	      idx[idxlen]->content = mutt_make_message_attach (Context, h, 1);
+	      if (idx[idxlen]->content != NULL)
+		update_idx (menu, idx, idxlen++);
+	      else
+	      {
+		mutt_error ("Unable to attach!");
+		safe_free ((void **) &idx[idxlen]);
+	      }
+	    }
+	  }
+	  menu->redraw |= REDRAW_FULL;
 	}
+
+	if (close == OP_QUIT) 
+	  mx_close_mailbox (Context);
+	else
+	  mx_fastclose_mailbox (Context);
+	safe_free ((void **) &Context);
+	
+	/* go back to the folder we started from */
+	Context = this;
+	/* Restore old $sort and $sort_aux */
+	Sort = oldSort;
+	SortAux = oldSortAux;
 	break;
 
       case OP_DELETE:
