@@ -169,6 +169,7 @@ if test -f /etc/debian_version ; then
 		DPKG=yes
 	else
 		DPKG=no
+		unset DEBIANVERSION
 	fi
 	echo "$DPKG"
 	echo $n "File this bug with Debian? [Y|n] $c"
