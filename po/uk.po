@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 1998-11-17 12:54+0100\n"
+"POT-Creation-Date: 1998-11-19 00:08+0100\n"
 "PO-Revision-Date: 1998-10-25 15:44+0200\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "Language-Team: Ukrainian <uk@ua.net>\n"
@@ -58,7 +58,7 @@ msgstr "Повне ╕м'я: "
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] В╕рно?"
 
-#: alias.c:255 recvattach.c:285 recvattach.c:340
+#: alias.c:255 recvattach.c:345 recvattach.c:400
 msgid "Save to file: "
 msgstr "Внести до файлу: "
 
@@ -110,7 +110,7 @@ msgstr "Тип MIME не визначено. Неможливо побачити додаток."
 msgid "Cannot create filter"
 msgstr "Неможливо створити ф╕льтр"
 
-#: attach.c:638 recvattach.c:315
+#: attach.c:638 recvattach.c:375
 msgid "Attachment saved."
 msgstr "Додаток записано."
 
@@ -265,11 +265,11 @@ msgstr "Не вийшло створити тимчасовий файл!"
 msgid "Command: "
 msgstr "Команда: "
 
-#: commands.c:243 recvattach.c:618
+#: commands.c:243 recvattach.c:678
 msgid "Bounce message to: "
 msgstr "Над╕слати коп╕ю листа: "
 
-#: commands.c:245 recvattach.c:620
+#: commands.c:245 recvattach.c:680
 msgid "Bounce tagged messages to: "
 msgstr "Над╕слати коп╕╖ вид╕лених лист╕в: "
 
@@ -486,63 +486,59 @@ msgstr "Вид╕л╕ть пов╕домлення, що дода╓те!"
 msgid "Unable to attach!"
 msgstr "Неможливо додати!"
 
-#: compose.c:751 compose.c:765
+#: compose.c:760
 msgid "Invalid encoding."
 msgstr "Нев╕рне кодування."
 
-#: compose.c:756
-msgid "This encoding is deprecated.  Really use it?"
-msgstr "Це кодування застар╕ле. Д╕йсно використовувати?"
-
-#: compose.c:780
+#: compose.c:775
 msgid "Save a copy of this message?"
 msgstr "Зберегти коп╕ю цього пов╕домлення?"
 
-#: compose.c:825
+#: compose.c:820
 msgid "Rename to: "
 msgstr "Перейменувати у: "
 
-#: compose.c:830
+#: compose.c:825
 #, c-format
 msgid "Can't stat: %s"
 msgstr ""
 
-#: compose.c:857
+#: compose.c:852
 msgid "New file: "
 msgstr "Новий файл: "
 
-#: compose.c:870
+#: compose.c:865
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type по форм╕ base/sub"
 
-#: compose.c:876
+#: compose.c:871
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Нев╕домий Content-Type %s"
 
-#: compose.c:889
+#: compose.c:884
 #, c-format
 msgid "Can't create file %s"
 msgstr "Неможливо створити файл %s"
 
-#: compose.c:897
+#: compose.c:892
 msgid "What we have here is a failure to make an attachment"
 msgstr "Ми ма╓мо зараз в╕дмову зробити додаток"
 
-#: compose.c:959
+#: compose.c:954
 msgid "Postpone this message?"
 msgstr "Залишити лист до подальшого редагування та в╕дправки?"
 
-#: compose.c:1011
+#: compose.c:1006
 msgid "Write message to mailbox"
 msgstr "Записати лист до поштово╖ скриньки"
 
-#: compose.c:1015
+#: compose.c:1010
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Запис листа до %s..."
 
-#: compose.c:1026
+#: compose.c:1021
 msgid "Message written."
 msgstr "Лист записано."
 
@@ -1012,7 +1008,7 @@ msgstr "Ре╓страц╕я..."
 msgid "Selecting %s..."
 msgstr "Виб╕р %s..."
 
-#: imap.c:1084 lib.c:1154
+#: imap.c:1084 lib.c:1177
 #, c-format
 msgid "Create %s?"
 msgstr "Створити %s?"
@@ -1851,24 +1847,24 @@ msgstr "зробити розшифровану коп╕ю"
 msgid "Out of memory!"
 msgstr "Не вистача╓ пам'ят╕!"
 
-#: lib.c:741
+#: lib.c:764
 msgid "File is a directory, save under it?"
 msgstr "Файл ╓ каталогом, зберегти у ньому?"
 
-#: lib.c:746
+#: lib.c:769
 msgid "File under directory: "
 msgstr "Файл у каталоз╕: "
 
-#: lib.c:757
+#: lib.c:780
 msgid "File exists, overwrite?"
 msgstr "Файл ╕сну╓, знищити й записати цей?"
 
-#: lib.c:1130
+#: lib.c:1153
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s не ╓ поштовою скринькою!"
 
-#: lib.c:1136
+#: lib.c:1159
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Додати листи до %s?"
@@ -2482,16 +2478,16 @@ msgstr ""
 "\n"
 "[-- К╕нець даних, зашифрованих  PGP/MIME --]\n"
 
-#: pgp.c:1072
+#: pgp.c:1071
 msgid "Can't open PGP subprocess!"
 msgstr "Неможливо в╕дкрити п╕дпроцесс PGP!"
 
-#: pgp.c:1206
+#: pgp.c:1195
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Використовувати keyID = \"%s\" для %s?"
 
-#: pgp.c:1212
+#: pgp.c:1201
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Введ╕ть keyID для %s: "
@@ -2730,71 +2726,71 @@ msgstr "Конв."
 msgid "Print"
 msgstr "Друк"
 
-#: recvattach.c:312
+#: recvattach.c:372
 msgid "Saving..."
 msgstr "Збереження..."
 
-#: recvattach.c:373
+#: recvattach.c:433
 msgid "Attachment saved"
 msgstr "Додаток збережено"
 
-#: recvattach.c:385
+#: recvattach.c:445
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "ОБЕРЕЖНО! Ви знищите ╕снуючий %s при запису. Ви певн╕?"
 
-#: recvattach.c:403
+#: recvattach.c:463
 msgid "Attachment filtered."
 msgstr "Додаток отф╕льтровано."
 
-#: recvattach.c:469
+#: recvattach.c:529
 msgid "Filter through: "
 msgstr "Ф╕льтрувати через: "
 
-#: recvattach.c:469
+#: recvattach.c:529
 msgid "Pipe to: "
 msgstr "Конве╓р: "
 
-#: recvattach.c:504
+#: recvattach.c:564
 #, c-format
 msgid "I dont know how to print %s attachments!"
 msgstr "Я не знаю, як друкувати додатки типу %s!"
 
-#: recvattach.c:567
+#: recvattach.c:627
 msgid "Print tagged attachment(s)?"
 msgstr "Друкувати вид╕лен╕ додатки?"
 
-#: recvattach.c:567
+#: recvattach.c:627
 msgid "Print attachment?"
 msgstr "Друкувати додаток?"
 
-#: recvattach.c:595
+#: recvattach.c:655
 msgid "You may only bounce message/rfc822 parts."
 msgstr "Ви можете надсилати т╕льки коп╖╖ частин message/rfc822."
 
-#: recvattach.c:631
+#: recvattach.c:691
 #, c-format
 msgid "Bounce messages to %s...?"
 msgstr "Над╕слати коп╖╖ пов╕домлень %s...?"
 
-#: recvattach.c:632
+#: recvattach.c:692
 #, c-format
 msgid "Bounce message to %s...?"
 msgstr "Над╕слати коп╖ю пов╕домлення %s...?"
 
-#: recvattach.c:857
+#: recvattach.c:917
 msgid "Attachments"
 msgstr "Додатки"
 
-#: recvattach.c:914
+#: recvattach.c:974
 msgid "Deletion of attachments from PGP messages is unsupported."
 msgstr "Видалення додатк╕в з лист╕в з PGP не п╕дтриму╓ться."
 
-#: recvattach.c:934 recvattach.c:951
+#: recvattach.c:994 recvattach.c:1011
 msgid "Only deletion of multipart attachments is supported."
 msgstr "П╕дтриму╓ться т╕льки видалення в багаточастинних листах."
 
-#: recvattach.c:1001
+#: recvattach.c:1061
 msgid "This operation is not currently supported for PGP messages."
 msgstr "Ця операц╕я не п╕дтриму╓ться для лист╕в з PGP."
 
@@ -2922,22 +2918,22 @@ msgstr ""
 msgid "%s no longer exists!"
 msgstr "%s б╕льше не ╕сну╓!"
 
-#: sendlib.c:775
+#: sendlib.c:777
 #, c-format
 msgid "Could not open %s"
 msgstr "Не вийшло в╕дкрити %s"
 
-#: sendlib.c:1703
+#: sendlib.c:1690
 #, c-format
 msgid "Error sending message, child exited %d (%s).\n"
 msgstr "Помилка в╕дправки, код повернення %d (%s).\n"
 
-#: sendlib.c:1705
+#: sendlib.c:1692
 #, c-format
 msgid "Saved output of child process to %s.\n"
 msgstr "Вивод породженого процесу збережено в %s.\n"
 
-#: sendlib.c:1709
+#: sendlib.c:1696
 msgid "Error sending message."
 msgstr "Помилка при в╕дправц╕."
 
@@ -2962,6 +2958,9 @@ msgstr ""
 #: status.c:102
 msgid "(no mailbox)"
 msgstr "(скриньки нема╓)"
+
+#~ msgid "This encoding is deprecated.  Really use it?"
+#~ msgstr "Це кодування застар╕ле. Д╕йсно використовувати?"
 
 #~ msgid "Deleting non-multipart messages not yet supported"
 #~ msgstr "Видалення листа, що ма╓ одну частину, не п╕дтриму╓ться"

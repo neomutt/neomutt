@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt-0.93i\n"
-"POT-Creation-Date: 1998-11-17 12:54+0100\n"
+"POT-Creation-Date: 1998-11-19 00:08+0100\n"
 "PO-Revision-Date: 1998-11-11 15:50+01:00\n"
 "Last-Translator: Marco d'Itri <md@linux.it>\n"
 "Language-Team: none\n"
@@ -59,7 +59,7 @@ msgstr "Nome della persona: "
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] Va bene?"
 
-#: alias.c:255 recvattach.c:285 recvattach.c:340
+#: alias.c:255 recvattach.c:345 recvattach.c:400
 msgid "Save to file: "
 msgstr "Salva nel file: "
 
@@ -114,7 +114,7 @@ msgstr "Tipo MIME non definito.  Impossibile visualizzare l'allegato."
 msgid "Cannot create filter"
 msgstr "Impossibile creare il filtro"
 
-#: attach.c:638 recvattach.c:315
+#: attach.c:638 recvattach.c:375
 msgid "Attachment saved."
 msgstr "Allegato salvato."
 
@@ -270,11 +270,11 @@ msgstr "Impossibile creare il file temporaneo!"
 msgid "Command: "
 msgstr "Comando: "
 
-#: commands.c:243 recvattach.c:618
+#: commands.c:243 recvattach.c:678
 msgid "Bounce message to: "
 msgstr "Rimbalza il messaggio a: "
 
-#: commands.c:245 recvattach.c:620
+#: commands.c:245 recvattach.c:680
 msgid "Bounce tagged messages to: "
 msgstr "Rimbalza i messaggi a: "
 
@@ -492,63 +492,59 @@ msgstr "Segna i messaggi che vuoi allegare!"
 msgid "Unable to attach!"
 msgstr "Impossibile allegare!"
 
-#: compose.c:751 compose.c:765
+#: compose.c:760
 msgid "Invalid encoding."
 msgstr "Codifica non valida."
 
-#: compose.c:756
-msgid "This encoding is deprecated.  Really use it?"
-msgstr "Questa codifica è sconsigliata.  Vuoi usarla davvero?"
-
-#: compose.c:780
+#: compose.c:775
 msgid "Save a copy of this message?"
 msgstr "Salvo una copia di questo messaggio?"
 
-#: compose.c:825
+#: compose.c:820
 msgid "Rename to: "
 msgstr "Rinomina in: "
 
-#: compose.c:830
+#: compose.c:825
 #, c-format
 msgid "Can't stat: %s"
 msgstr "Non riesco a fare stat: %s"
 
-#: compose.c:857
+#: compose.c:852
 msgid "New file: "
 msgstr "Nuovo file: "
 
-#: compose.c:870
+#: compose.c:865
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type non è nella forma base/sub"
 
-#: compose.c:876
+#: compose.c:871
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Content-Type %s sconosciuto"
 
-#: compose.c:889
+#: compose.c:884
 #, c-format
 msgid "Can't create file %s"
 msgstr "Impossibile creare il file %s"
 
-#: compose.c:897
+#: compose.c:892
 msgid "What we have here is a failure to make an attachment"
 msgstr "Quel che abbiamo qui è l'impossibilità di fare un allegato"
 
-#: compose.c:959
+#: compose.c:954
 msgid "Postpone this message?"
 msgstr "Rimando a dopo questo messaggio?"
 
-#: compose.c:1011
+#: compose.c:1006
 msgid "Write message to mailbox"
 msgstr "Salva il messaggio nella mailbox"
 
-#: compose.c:1015
+#: compose.c:1010
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Scrivo il messaggio in %s ..."
 
-#: compose.c:1026
+#: compose.c:1021
 msgid "Message written."
 msgstr "Messaggio scritto."
 
@@ -1028,7 +1024,7 @@ msgstr "Login fallito."
 msgid "Selecting %s..."
 msgstr "Seleziono %s..."
 
-#: imap.c:1084 lib.c:1154
+#: imap.c:1084 lib.c:1177
 #, c-format
 msgid "Create %s?"
 msgstr "Creo %s?"
@@ -1867,24 +1863,24 @@ msgstr "fai una copia decodificata"
 msgid "Out of memory!"
 msgstr "Memoria esaurita!"
 
-#: lib.c:741
+#: lib.c:764
 msgid "File is a directory, save under it?"
 msgstr "Il file è una directory, salvo lì dentro?"
 
-#: lib.c:746
+#: lib.c:769
 msgid "File under directory: "
 msgstr "File nella directory: "
 
-#: lib.c:757
+#: lib.c:780
 msgid "File exists, overwrite?"
 msgstr "Il file esiste, lo sovrascrivo?"
 
-#: lib.c:1130
+#: lib.c:1153
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s non è una mailbox!"
 
-#: lib.c:1136
+#: lib.c:1159
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Accodo i messaggi a %s?"
@@ -2500,16 +2496,16 @@ msgstr ""
 "\n"
 "[-- Fine dei dati crittografati con PGP/MIME  --]\n"
 
-#: pgp.c:1072
+#: pgp.c:1071
 msgid "Can't open PGP subprocess!"
 msgstr "Impossibile aprire il sottoprocesso PGP!"
 
-#: pgp.c:1206
+#: pgp.c:1195
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Uso il keyID \"%s\" per %s?"
 
-#: pgp.c:1212
+#: pgp.c:1201
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Inserisci il keyID per %s: "
@@ -2748,71 +2744,71 @@ msgstr "Pipe"
 msgid "Print"
 msgstr "Stampa"
 
-#: recvattach.c:312
+#: recvattach.c:372
 msgid "Saving..."
 msgstr "Salvo..."
 
-#: recvattach.c:373
+#: recvattach.c:433
 msgid "Attachment saved"
 msgstr "Allegato salvato"
 
-#: recvattach.c:385
+#: recvattach.c:445
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "ATTENZIONE!  Stai per sovrascrivere %s, continuo?"
 
-#: recvattach.c:403
+#: recvattach.c:463
 msgid "Attachment filtered."
 msgstr "Allegato filtrato."
 
-#: recvattach.c:469
+#: recvattach.c:529
 msgid "Filter through: "
 msgstr "Filtra attraverso: "
 
-#: recvattach.c:469
+#: recvattach.c:529
 msgid "Pipe to: "
 msgstr "Manda con una pipe a: "
 
-#: recvattach.c:504
+#: recvattach.c:564
 #, c-format
 msgid "I dont know how to print %s attachments!"
 msgstr "Non so come stampare %s allegati!"
 
-#: recvattach.c:567
+#: recvattach.c:627
 msgid "Print tagged attachment(s)?"
 msgstr "Stampo gli allegati segnati?"
 
-#: recvattach.c:567
+#: recvattach.c:627
 msgid "Print attachment?"
 msgstr "Stampo l'allegato?"
 
-#: recvattach.c:595
+#: recvattach.c:655
 msgid "You may only bounce message/rfc822 parts."
 msgstr "Puoi rimbalzare solo parti message/rfc822."
 
-#: recvattach.c:631
+#: recvattach.c:691
 #, c-format
 msgid "Bounce messages to %s...?"
 msgstr "Rimbalzo i messaggi a %s...?"
 
-#: recvattach.c:632
+#: recvattach.c:692
 #, c-format
 msgid "Bounce message to %s...?"
 msgstr "Rimbalzo il messaggio a %s...?"
 
-#: recvattach.c:857
+#: recvattach.c:917
 msgid "Attachments"
 msgstr "Allegati"
 
-#: recvattach.c:914
+#: recvattach.c:974
 msgid "Deletion of attachments from PGP messages is unsupported."
 msgstr "La cancellazione degli allegati da messaggi PGP non è gestita."
 
-#: recvattach.c:934 recvattach.c:951
+#: recvattach.c:994 recvattach.c:1011
 msgid "Only deletion of multipart attachments is supported."
 msgstr "È gestita solo la cancellazione degli allegati multiparte."
 
-#: recvattach.c:1001
+#: recvattach.c:1061
 msgid "This operation is not currently supported for PGP messages."
 msgstr "Questa operazione attualmente non è gestita per i messaggi PGP."
 
@@ -2940,23 +2936,23 @@ msgstr "No boundary parameter found! [segnala questo errore]"
 msgid "%s no longer exists!"
 msgstr "%s non esiste più!"
 
-#: sendlib.c:775
+#: sendlib.c:777
 #, c-format
 msgid "Could not open %s"
 msgstr "Impossibile aprire %s"
 
-#: sendlib.c:1703
+#: sendlib.c:1690
 #, c-format
 msgid "Error sending message, child exited %d (%s).\n"
 msgstr ""
 "Errore nella spedizione del messaggio, il figlio è uscito con %d (%s).\n"
 
-#: sendlib.c:1705
+#: sendlib.c:1692
 #, c-format
 msgid "Saved output of child process to %s.\n"
 msgstr "Output del processo figlio salvato in %s.\n"
 
-#: sendlib.c:1709
+#: sendlib.c:1696
 msgid "Error sending message."
 msgstr "Errore nella spedizione del messaggio."
 
@@ -2981,3 +2977,6 @@ msgstr "Could not find sorting function! [segnala questo bug]"
 #: status.c:102
 msgid "(no mailbox)"
 msgstr "(nessuna mailbox)"
+
+#~ msgid "This encoding is deprecated.  Really use it?"
+#~ msgstr "Questa codifica è sconsigliata.  Vuoi usarla davvero?"

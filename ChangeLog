@@ -1,3 +1,150 @@
+Wed Nov 18 22:57:03 1998  Thomas Roessler  <roessler@guug.de>
+
+	* sendlib.c, protos.h, pgp.c, parse.c, lib.c, compose.c:
+	This patch simplifies the generation of content type parameters
+	significantly by introducing a funciton mutt_set_parameter().
+	Additionally, we re-use code from parse.c for parsing user-input
+	content type headers on the compose screen.
+
+	* compose.c: Remove some uuencode-related debris.
+
+	* recvattach.c:
+	Remove some code which crept in from the external character set patch.
+
+	* recvattach.c:
+	Make optional formats work while processing $attach_format.
+
+	* mh.c: Remove bogus re-sorting code from the maildir check routine.
+
+	* mutt.h:
+	Include <unistd.h>, so SEEK_SET is defined on some systems which
+	don't do so in <stdlib.h>.
+
+Tue Nov 17 13:23:26 1998  Thomas Roessler  <roessler@guug.de>
+
+	* po/uk.po, po/ru.po, po/it.po, po/es.po:
+	Checkpoint commit, containing quite a few fuzzy translations.
+
+	* po/de.po: Update some messages.
+
+	* m4/Makefile.am.in, m4/README, m4/gettext.m4, m4/lcmessage.m4, m4/progtest.m4, prepare, configure.in, Makefile.am:
+	Configuration fixes from Lars Hecking, with some more fixes and
+	modifications from myself.  With some luck, you don't need a gettext
+	installation any more.
+
+	* sendlib.c:
+	Fix the base64 encoder.  The current code would produce slightly
+	unpredictible output which leads to bad signatures.
+
+	* postpone.c, pgp.c, parse.c, pager.c:
+	Fix a search coloring related bug.
+
+Mon Nov 16 11:44:42 1998  Thomas Roessler  <roessler@guug.de>
+
+	* protos.h: Drop ci_attach - it doesn't exist.  Noted by Byrial Jensen.
+
+Sun Nov 15 09:53:23 1998  Thomas Roessler  <roessler@guug.de>
+
+	* parse.c: Stupid typo.
+
+	* protos.h, parse.c, attach.c: My version of Byrial's parse_part patch.
+
+	* recvattach.c, protos.h, mutt.h, copy.c, compose.c:
+	I can elaborate a little more on the last paragraph. It is deletion
+	of the top level part direct under a message/rfc822 part which
+	gives problems because the headers of the message/rfc822 part have
+	to be changed in this case. It is hard to tell exactly how many
+	bytes and lines will be removed and added in this case.
+
+	If we can refrain from deletion of such parts and thus only allow
+	deletion of parts direct under a multipart part, then it is
+	relative easy always to make correct Content-Length: and Lines:
+	headers in the copy. (The correctness of the Lines count is
+	dependent of the correctness of the initial value, though).
+
+	(From: Byrial Jensen)
+
+	* doc/manual.sgml.in:
+	Correcting Vikas' E-Mail address in the credits section.
+
+Sat Nov 14 08:24:56 1998  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.in: Update Byrial's e-mail address.
+
+	* copy.c:
+	Simplify the new attachment deletion code not to require an extra
+	temporary file.  (From: Byrial Jensen <byrial@image.dk>)
+
+	* help.c, handler.c: Type cast nit from Gero Treuner.
+
+Fri Nov 13 18:31:06 1998  Thomas Roessler  <roessler@guug.de>
+
+	* imap.c:
+	Currently, Mutt won't use a default folder if just the IMAP server is
+	specified.  In fact, if the folder isn't specified, it will core-dump.
+
+	The attached patch will use INBOX as the IMAP folder name if none is
+	specified, eliminating the core-dump.
+
+	(From: Aaron Schrab <aaron+mutt@schrab.com>)
+
+Thu Nov 12 21:52:01 1998  Thomas Roessler  <roessler@guug.de>
+
+	* mutt.h, copy.c: Byrial's latest attachment deletion patch.
+
+	* mutt.h, lib.c, handler.c: Introduce a state_printf() function.
+
+Wed Nov 11 21:18:08 1998  Thomas Roessler  <roessler@guug.de>
+
+	* po/it.po: New it.po from Marco.
+
+	* snprintf.c: Don't use the mutt_str* functions in this module.
+
+	* strcasecmp.c:
+	the s/str.*cmp/mutt_str.*cmp/ replacement should not have taken
+	place here.
+
+Tue Nov 10 22:21:51 1998  Thomas Roessler  <roessler@guug.de>
+
+	* dotlock.c: Don't use mutt_strsomething in the dotlocking code.
+
+	* send.c: Fix the $metoo option's behaviour.
+
+	* thread.c, strcasecmp.c, status.c, sort.c, socket.c,
+	snprintf.c, sendlib.c, send.c, score.c, rfc822.c, rfc2047.c,
+	rfc1524.c, recvattach.c, query.c, protos.h, postpone.c,
+	pop.c, pgppubring.c, pgpkey.c, pgpinvoke.c, pgp.c,
+	pattern.c, parse.c, pager.c, mx.c, mh.c, menu.c, mbox.c,
+	main.c, lib.c, keymap.c, init.c, imap.c, hook.c, history.c,
+	help.c, headers.c, hdrline.c, hash.c, handler.c,
+	gnupgparse.c, getdomain.c, from.c, enter.c, edit.c,
+	dotlock.c, curs_lib.c, copy.c, compose.c, complete.c,
+	commands.c, color.c, charset.c, buffy.c, browser.c,
+	attach.c, alias.c, addrbook.c: Introduce or rewrite
+	mutt_{str*cmp,strlen} and use them all over the place.  If
+	there are still segmentation faults due to missing NONULLs
+	over, they are gone now.
+
+	* main.c: Add a "pseudo-credit" to the extended copyright notice.
+
+	* po/uk.po, po/ru.po, po/it.po, po/es.po, po/de.po, reldate.h, VERSION, ChangeLog:
+	Releasing 0.94.16.
+
+	* sendlib.c, mx.h, mx.c, mbox.c, init.c, copy.c, commands.c, buffy.c, attach.c:
+	Experimental support for the so-called "kendra" mail folder format.
+	This seems to be used on OS/2 and is, actually, a slibhtly modified
+	version of the MMDF format.
+
+	* parse.c:
+	Do some sanity checking when reading attachment.  This fix should
+	catch bad attachments.
+
+	* edit.c:
+	Fix a possible buffer overflow.  (This seems to be the one noticed
+	by Pavel Gulchouck <gul@lucky.net>.)
+
+	* compose.c: Wrong fix from Vikas.  Undo it.  (Noted by Byrial.)
+
 Tue Nov 10 21:02:27 1998  Thomas Roessler  <roessler@guug.de>
 
 	* sendlib.c, mx.h, mx.c, mbox.c, init.c, copy.c, commands.c, buffy.c, attach.c:
