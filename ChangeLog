@@ -1,3 +1,7 @@
+2004-08-11 12:29:56  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de> (roessler)
+
+	* menu.c: Fix a memory leak in mutt_menuDestroy.
+
 2004-08-08 16:20:37  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
 
 	* muttlib.c, protos.h: Fix a memory leak.
