@@ -789,11 +789,6 @@ int mutt_index_menu (void)
 	    menu->redraw = REDRAW_FULL; /* new mail arrived? */
 	    set_option (OPTSEARCHINVALID);
 	  }
-
-#ifdef USE_IMAP
-	  /* Close all remaining open connections (frees server resources) */
-	  imap_logout_all ();
-#endif
 	}
 	break;
 
@@ -1040,10 +1035,6 @@ int mutt_index_menu (void)
 	    safe_free ((void **) &Context);
 	  }
 	  done = 1;
-#ifdef USE_IMAP
-	  /* Close all open IMAP connections */
-	  imap_logout_all ();
-#endif
 	}
 	break;
 
@@ -1857,6 +1848,11 @@ int mutt_index_menu (void)
 
     if (done) break;
   }
+
+#ifdef USE_IMAP
+  /* Close all open IMAP connections */
+  imap_logout_all ();
+#endif
 
   mutt_menuDestroy (&menu);
   return (close);

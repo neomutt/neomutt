@@ -133,7 +133,6 @@ char *imap_next_word (char *s)
 int imap_parse_path (const char* path, IMAP_MBOX* mx)
 {
   char tmp[128];
-  url_scheme_t scheme;
   ciss_url_t url;
   char *c;
   int n;
@@ -143,36 +142,27 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
   mx->account.port = IMAP_PORT;
   mx->account.type = M_ACCT_TYPE_IMAP;
 
-#ifdef USE_SSL
-  if (option (OPTIMAPFORCESSL))
-    mx->account.flags |= M_ACCT_SSL;
-#endif
-
-  scheme = url_check_scheme (NONULL (path));
-  if (scheme == U_IMAP || scheme == U_IMAPS)
+  c = safe_strdup (path);
+  url_parse_ciss (&url, c);
+  if (url.scheme == U_IMAP || url.scheme == U_IMAPS)
   {
-    if (url_parse_ciss (&url, path) < 0)
-      return -1;
-
-    n = mutt_account_fromurl (&mx->account, &url);
-    FREE (&url.user);
-    FREE (&url.pass);
-    FREE (&url.host);
-
-    if (n < 0)
+    if (mutt_account_fromurl (&mx->account, &url) < 0)
     {
-      FREE (&url.path);
+      FREE (&c);
       return -1;
     }
-      
-    mx->mbox = url.path;
 
-    if (scheme == U_IMAPS)
+    mx->mbox = safe_strdup (url.path);
+
+    if (url.scheme == U_IMAPS)
       mx->account.flags |= M_ACCT_SSL;
+
+    FREE (&c);
   }
   /* old PINE-compatibility code */
   else
   {
+    FREE (&c);
     if (sscanf (path, "{%128[^}]}", tmp) != 1) 
       return -1;
 
@@ -215,38 +205,27 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
     }
   }
   
+#ifdef USE_SSL
+  if (option (OPTIMAPFORCESSL))
+    mx->account.flags |= M_ACCT_SSL;
+#endif
+
   if ((mx->account.flags & M_ACCT_SSL) && !(mx->account.flags & M_ACCT_PORT))
     mx->account.port = IMAP_SSL_PORT;
 
   return 0;
 }
 
-
-/* imap_qualify_path: make an absolute IMAP folder target, given host, port
- *   and relative path. Use this and maybe it will be easy to convert to
- *   IMAP URLs */
-void imap_qualify_path (char *dest, size_t len, const IMAP_MBOX *mx,
-  const char* path, const char* name)
+/* imap_qualify_path: make an absolute IMAP folder target, given IMAP_MBOX
+ *   and relative path. */
+void imap_qualify_path (char *dest, size_t len, IMAP_MBOX *mx, char* path)
 {
-  char tmp[128];
-  
-  strcpy (dest, "{");
-  if ((mx->account.flags & M_ACCT_USER) && (!ImapUser || strcmp (mx->account.user, ImapUser)))
-  {
-    snprintf (tmp, sizeof (tmp), "%s@", mx->account.user);
-    strncat (dest, tmp, len);
-  }
-  strncat (dest, mx->account.host, len);
-  if (mx->account.flags & M_ACCT_PORT)
-  {
-    snprintf (tmp, sizeof (tmp), ":%d", mx->account.port);
-    strncat (dest, tmp, len);
-  }
-  if (mx->account.flags & M_ACCT_SSL)
-    strncat (dest, "/ssl", len);
+  ciss_url_t url;
 
-  snprintf (tmp, sizeof (tmp), "}%s%s", NONULL (path), NONULL (name));
-  strncat (dest, tmp, len);
+  mutt_account_tourl (&mx->account, &url);
+  url.path = path;
+
+  url_ciss_tostring (&url, dest, len);
 }
 
 

@@ -133,7 +133,7 @@ int imap_browse (char* path, struct browser_state* state)
       /* don't show parents in the home namespace */
       if (!home_namespace)
 	showparents = 1;
-      imap_qualify_path (buf, sizeof (buf), &mx, mbox, NULL);
+      imap_qualify_path (buf, sizeof (buf), &mx, mbox);
       state->folder = safe_strdup (buf);
       n--;
     }
@@ -165,7 +165,7 @@ int imap_browse (char* path, struct browser_state* state)
         mbox[n++] = ctmp;
         ctmp = mbox[n];
         mbox[n] = '\0';
-        imap_qualify_path (buf, sizeof (buf), &mx, mbox, NULL);
+        imap_qualify_path (buf, sizeof (buf), &mx, mbox);
         state->folder = safe_strdup (buf);
       }
       mbox[n] = ctmp;
@@ -180,7 +180,7 @@ int imap_browse (char* path, struct browser_state* state)
         imap_add_folder (idata->delim, relpath, 1, 0, state, 1); 
       if (!state->folder)
       {
-        imap_qualify_path (buf, sizeof (buf), &mx, relpath, NULL);
+        imap_qualify_path (buf, sizeof (buf), &mx, relpath);
         state->folder = safe_strdup (buf);
       }
     }
@@ -189,7 +189,7 @@ int imap_browse (char* path, struct browser_state* state)
   /* no namespace, no folder: set folder to host only */
   if (!state->folder)
   {
-    imap_qualify_path (buf, sizeof (buf), &mx, NULL, NULL);
+    imap_qualify_path (buf, sizeof (buf), &mx, NULL);
     state->folder = safe_strdup (buf);
   }
 
@@ -362,7 +362,7 @@ static void imap_add_folder (char delim, char *folder, int noselect,
     return;
   }
 
-  imap_qualify_path (tmp, sizeof (tmp), &mx, folder, NULL);
+  imap_qualify_path (tmp, sizeof (tmp), &mx, folder);
   (state->entry)[state->entrylen].name = safe_strdup (tmp);
 
   /* mark desc with delim in browser if it can have subfolders */

@@ -677,6 +677,7 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 	    else if (state.imap_browse)
 	    {
 	      int n;
+	      ciss_url_t url;
 	      
               strfcpy (LastDir, state.entry[menu->current].name,
                 sizeof (LastDir));
@@ -684,7 +685,8 @@ void _mutt_select_file (char *f, size_t flen, int buffy,
 	      n = strlen (LastDir)+1;
 	      
 	      /* special case "" needs no delimiter */
-	      if ((strlen (strchr (LastDir, '}')) > 0) &&
+	      url_parse_ciss (&url, state.entry[menu->current].name);
+	      if (url.path &&
 		  (state.entry[menu->current].delim != '\0') &&
 		  (n < sizeof (LastDir)))
 	      {

@@ -60,8 +60,6 @@ void imap_logout_all (void);
 
 /* util.c */
 int imap_parse_path (const char* path, IMAP_MBOX* mx);
-void imap_qualify_path (char* dest, size_t len, const IMAP_MBOX* mx,
-  const char* path, const char* name);
 
 int imap_wait_keepalive (pid_t pid);
 void imap_keepalive (void);

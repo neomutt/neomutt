@@ -207,6 +207,7 @@ char* imap_fix_path (IMAP_DATA* idata, char* mailbox, char* path,
 int imap_get_literal_count (const char* buf, long* bytes);
 char* imap_get_qualifier (char* buf);
 char* imap_next_word (char* s);
+void imap_qualify_path (char *dest, size_t len, IMAP_MBOX *mx, char* path);
 void imap_quote_string (char* dest, size_t slen, const char* src);
 void imap_unquote_string (char* s);
 void imap_munge_mbox_name (char *dest, size_t dlen, const char *src);

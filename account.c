@@ -82,6 +82,46 @@ int mutt_account_fromurl (ACCOUNT* account, ciss_url_t* url)
   return 0;
 }
 
+/* mutt_account_tourl: fill URL with info from account. The URL information
+ *   is a set of pointers into account - don't free or edit account until
+ *   you've finished with url (make a copy of account if you need it for
+ *   a while). */
+void mutt_account_tourl (ACCOUNT* account, ciss_url_t* url)
+{
+  url->scheme = U_UNKNOWN;
+  url->user = NULL;
+  url->pass = NULL;
+  url->port = 0;
+
+#ifdef USE_IMAP
+  if (account->type == M_ACCT_TYPE_IMAP)
+  {
+    if (account->flags & M_ACCT_SSL)
+      url->scheme = U_IMAPS;
+    else
+      url->scheme = U_IMAP;
+  }
+#endif
+
+#ifdef USE_POP
+  if (account->type == M_ACCT_TYPE_POP)
+  {
+    if (account->flags & M_ACCT_SSL)
+      url->scheme = U_POPS;
+    else
+      url->scheme = U_POP;
+  }
+#endif
+
+  url->host = account->host;
+  if (account->flags & M_ACCT_PORT)
+    url->port = account->port;
+  if (account->flags & M_ACCT_USER)
+    url->user = account->user;
+  if (account->flags & M_ACCT_PASS)
+    url->pass = account->pass;
+}
+
 /* mutt_account_getuser: retrieve username into ACCOUNT, if neccessary */
 int mutt_account_getuser (ACCOUNT* account)
 {

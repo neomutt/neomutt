@@ -484,7 +484,7 @@ int imap_open_mailbox (CONTEXT* ctx)
   imap_fix_path (idata, mx.mbox, buf, sizeof (buf));
   FREE(&(idata->mailbox));
   idata->mailbox = safe_strdup (buf);
-  imap_qualify_path (buf, sizeof (buf), &mx, idata->mailbox, NULL);
+  imap_qualify_path (buf, sizeof (buf), &mx, idata->mailbox);
 
   FREE (&(ctx->path));
   ctx->path = safe_strdup (buf);
@@ -1330,7 +1330,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
   if (completions)
   {
     /* reformat output */
-    imap_qualify_path (dest, dlen, &mx, completion, NULL);
+    imap_qualify_path (dest, dlen, &mx, completion);
     mutt_pretty_mailbox (dest);
 
     FREE (&mx.mbox);

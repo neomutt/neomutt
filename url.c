@@ -95,6 +95,9 @@ int url_parse_file (char *d, const char *src, size_t dl)
   return 0;
 }
 
+/* ciss_parse_userhost: fill in components of ciss with info from src. Note
+ *   these are pointers into src, which is altered with '\0's. Port of 0
+ *   means no port given. */
 static char *ciss_parse_userhost (ciss_url_t *ciss, char *src)
 {
   char *t;
@@ -120,10 +123,10 @@ static char *ciss_parse_userhost (ciss_url_t *ciss, char *src)
     if ((p = strchr (src, ':')))
     {
       *p = '\0';
-      ciss->pass = safe_strdup (p + 1);
+      ciss->pass = p + 1;
       url_pct_decode (ciss->pass);
     }
-    ciss->user = safe_strdup (src);
+    ciss->user = src;
     url_pct_decode (ciss->user);
     t++;
   }
@@ -138,30 +141,51 @@ static char *ciss_parse_userhost (ciss_url_t *ciss, char *src)
   else
     ciss->port = 0;
   
-  ciss->host = safe_strdup (t);
+  ciss->host = t;
   url_pct_decode (ciss->host);
   return path;
 }
 
-static void ciss_parse_path (ciss_url_t *ciss, char *src)
+int url_parse_ciss (ciss_url_t *ciss, char *src)
 {
-  ciss->path = safe_strdup (src);
+  char *tmp;
+
+  if ((ciss->scheme = url_check_scheme (src)) == U_UNKNOWN)
+    return -1;
+
+  tmp = strchr (src, ':') + 1;
+
+  ciss->path = ciss_parse_userhost (ciss, tmp);
   url_pct_decode (ciss->path);
+  
+  return 0;
 }
 
-int url_parse_ciss (ciss_url_t *ciss, const char *src)
+/* url_ciss_tostring: output the URL string for a given CISS object. */
+int url_ciss_tostring (ciss_url_t* ciss, char* dest, size_t len)
 {
-  char *t, *tmp;
-  
-  if (!(t = strchr (src, ':')))
+  if (ciss->scheme == U_UNKNOWN)
     return -1;
-  
-  tmp = safe_strdup (t + 1);
 
-  t = ciss_parse_userhost (ciss, tmp);
-  ciss_parse_path (ciss, t);
-  
-  safe_free ((void **) &tmp);
+  snprintf (dest, len, "%s:", mutt_getnamebyvalue (ciss->scheme, UrlMap));
+
+  if (ciss->host)
+  {
+    strncat (dest, "//", len - strlen (dest));
+    if (ciss->user)
+      snprintf (dest + strlen (dest), len - strlen (dest), "%s@",
+	ciss->user);
+    /* password deliberately omitted. */
+
+    if (ciss->port)
+      snprintf (dest + strlen (dest), len - strlen (dest), "%s:%hu/",
+		ciss->host, ciss->port);
+    else
+      snprintf (dest + strlen (dest), len - strlen (dest), "%s/", ciss->host);
+  }
+
+  if (ciss->path)
+    strncat (dest, ciss->path, len - strlen (dest));
 
   return 0;
 }
