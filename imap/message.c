@@ -760,19 +760,20 @@ static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf, FILE* fp)
   if (msg_parse_fetch (h, buf) != -2)
     return rc;
   
-  if (imap_get_literal_count (buf, &bytes) < 0)
-    return rc;
-  imap_read_literal (fp, idata, bytes);
+  if (imap_get_literal_count (buf, &bytes) == 0)
+  {
+    imap_read_literal (fp, idata, bytes);
 
-  /* we may have other fields of the FETCH _after_ the literal
-   * (eg Domino puts FLAGS here). Nothing wrong with that, either.
-   * This all has to go - we should accept literals and nonliterals
-   * interchangeably at any time. */
-  if (imap_cmd_step (idata) != IMAP_CMD_CONTINUE)
-    return -2;
+    /* we may have other fields of the FETCH _after_ the literal
+     * (eg Domino puts FLAGS here). Nothing wrong with that, either.
+     * This all has to go - we should accept literals and nonliterals
+     * interchangeably at any time. */
+    if (imap_cmd_step (idata) != IMAP_CMD_CONTINUE)
+      return rc;
   
-  if (msg_parse_fetch (h, idata->cmd.buf) == -1)
-    return rc;
+    if (msg_parse_fetch (h, idata->cmd.buf) == -1)
+      return rc;
+  }
 
   rc = 0; /* success */
   
