@@ -1,4 +1,10 @@
-2004-08-16 21:36:06  Brendan Cully  <brendan@kublai.com>  (roessler)
+2004-08-16 21:36:38  Brendan Cully  <brendan@kublai.com>  (roessler)
+
+	* imap/imap.c: If STARTTLS fails to complete the SSL handshake,
+	the error is not propagated and mutt will attempt to log in
+	anyway, probably causing an infinite block on read. The attached
+	patch closes the socket in this case, and propagates the error
+	properly.
 
 	* imap/auth_sasl.c: The attached patch causes mutt to attempt
 	the next method in imap_authenticators if the previous method
