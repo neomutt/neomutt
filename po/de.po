@@ -1,9 +1,9 @@
 # $Id$
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.1.8\n"
+"Project-Id-Version: 1.1.10\n"
 "POT-Creation-Date: 2000-03-29 22:11+0200\n"
-"PO-Revision-Date: 2000-03-05 20:29+01:00\n"
+"PO-Revision-Date: 2000-03-30 12:33+02:00\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -1242,15 +1242,15 @@ msgstr "Beende Abonement von %s..."
 
 #: imap/imap_ssl.c:85
 msgid "Filling entropy pool"
-msgstr ""
+msgstr "Sammle Entropie für Zufallsgenerator"
 
 #: imap/imap_ssl.c:117
 msgid "Failed to find enough entropy on your system"
-msgstr ""
+msgstr "Nicht genügend Entropie auf diesem System gefunden"
 
 #: imap/imap_ssl.c:124
 msgid "SSL disabled due the lack of entropy"
-msgstr ""
+msgstr "SSL deaktiviert, weil nicht genügend Entropie zur Verfügung steht"
 
 #: imap/imap_ssl.c:204
 msgid "Unable to get certificate from peer"
