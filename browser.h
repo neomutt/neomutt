@@ -48,9 +48,9 @@ struct browser_state
 #ifdef USE_IMAP
   short imap_browse;
   char *folder;
-  int noselect : 1;
-  int marked : 1;
-  int unmarked : 1;
+  unsigned noselect : 1;
+  unsigned marked : 1;
+  unsigned unmarked : 1;
 #endif
 };
 
