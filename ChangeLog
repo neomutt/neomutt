@@ -1,3 +1,8 @@
+2002/12/09 17:52:50  Anders Helmersson <anders.helmersson@telia.com>
+
+	* addrbook.c, curs_lib.c, protos.h, query.c: Fix #1390.
+	Based on a patch submitted earlier by Edmund Grimley Evans.
+
 2002/12/09 17:44:54  Thomas Roessler <roessler@does-not-exist.org>
 
 	* PATCHES: Ups.
