@@ -18,6 +18,7 @@
 
 #include "mutt.h"
 #include "mutt_curses.h"
+#include "rfc2047.h"
 #include "keymap.h"
 #include "mime.h"
 #include "mailbox.h"
@@ -32,11 +33,6 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <dirent.h>
-
-extern char RFC822Specials[];
-
-
-
 
 #ifdef _PGPPATH
 #include "pgp.h"
@@ -713,7 +709,7 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
   return (0);
 }
 
-static void mutt_set_followup_to (ENVELOPE *e)
+void mutt_set_followup_to (ENVELOPE *e)
 {
   ADDRESS *t = NULL;
 
@@ -798,6 +794,58 @@ static ADDRESS *mutt_default_from (void)
   return (adr);
 }
 
+static int send_message (HEADER *msg)
+{  
+  char tempfile[_POSIX_PATH_MAX];
+  FILE *tempfp;
+  int i;
+
+  /* Write out the message in MIME form. */
+  mutt_mktemp (tempfile);
+  if ((tempfp = safe_fopen (tempfile, "w")) == NULL)
+    return (-1);
+
+  mutt_write_rfc822_header (tempfp, msg->env, msg->content, 0);
+  fputc ('\n', tempfp); /* tie off the header. */
+
+  if ((mutt_write_mime_body (msg->content, tempfp) == -1))
+  {
+    fclose(tempfp);
+    unlink (tempfile);
+    return (-1);
+  }
+  
+  if (fclose (tempfp) != 0)
+  {
+    mutt_perror (tempfile);
+    unlink (tempfile);
+    return (-1);
+  }
+
+  i = mutt_invoke_sendmail (msg->env->to, msg->env->cc, msg->env->bcc,
+		       tempfile, (msg->content->encoding == ENC8BIT));
+  return (i ? -1 : 0);
+}
+
+/* rfc2047 encode the content-descriptions */
+static void encode_descriptions (BODY *b)
+{
+  BODY *t;
+  char tmp[LONG_STRING];
+
+  for (t = b; t; t = t->next)
+  {
+    if (t->description)
+    {
+      rfc2047_encode_string (tmp, sizeof (tmp), (unsigned char *) t->description);
+      safe_free ((void **) &t->description);
+      t->description = safe_strdup (tmp);
+    }
+    if (t->parts)
+      encode_descriptions (t->parts);
+  }
+}
+
 void
 ci_send_message (int flags,		/* send mode */
 		 HEADER *msg,		/* template to use for new message */
@@ -810,13 +858,13 @@ ci_send_message (int flags,		/* send mode */
   FILE *tempfp = NULL;
   BODY *pbody;
   int i, killfrom = 0;
-
-
-
 #ifdef _PGPPATH
+  BODY *save_content = NULL;
+  char *pgpkeylist = NULL;
   /* save current value of "pgp_sign_as" */
   char *signas = NULL;
   char *signmic = NULL;
+
   if (flags == SENDPOSTPONED)
   {
     signas = safe_strdup(PgpSignAs);
@@ -1132,12 +1180,13 @@ main_loop:
   if (msg->content->next)
     msg->content = mutt_make_multipart (msg->content);
 
-
-
 #ifdef _PGPPATH
   if (msg->pgp)
   {
-    if (pgp_protect (msg) != 0)
+    /* save the decrypted attachments */
+    save_content = msg->content;
+
+    if (pgp_protect (msg, &pgpkeylist) == -1)
     {
       if (msg->content->parts)
       {
@@ -1152,32 +1201,86 @@ main_loop:
   }
 #endif /* _PGPPATH */
 
-
-
-  mutt_expand_path (fcc, sizeof (fcc));
-
   if (!option (OPTNOCURSES) && ! (flags & SENDMAILX))
     mutt_message ("Sending message...");
 
-  if (msg->env->bcc && ! (msg->env->to || msg->env->cc))
+  mutt_prepare_envelope (msg->env);
+  encode_descriptions (msg->content);
+
+  /* save a copy of the message, if necessary. */
+  mutt_expand_path (fcc, sizeof (fcc));
+  if (strcmp ("/dev/null", fcc) != 0)
   {
-    /* some MTA's will put an Apparently-To: header field showing the Bcc:
-     * recipients if there is no To: or Cc: field, so attempt to suppress
-     * it by using an empty To: field.
-     */
-    msg->env->to = rfc822_new_address ();
-    msg->env->to->mailbox = safe_strdup ("undisclosed-recipients:;");
-    msg->env->to->group = 1;
-    msg->env->to->next = rfc822_new_address ();
- 
-    buffer[0] = 0;
-    rfc822_cat (buffer, sizeof (buffer), msg->env->to->mailbox, RFC822Specials);
-    msg->env->to->mailbox = safe_strdup (buffer);
+    BODY *tmpbody = msg->content;
+#ifdef _PGPPATH
+    BODY *save_sig = NULL;
+    BODY *save_parts = NULL;
+#endif /* _PGPPATH */
+
+    /* check to see if the user wants copies of all attachments */
+    if (!option (OPTFCCATTACH) && msg->content->type == TYPEMULTIPART)
+    {
+#ifdef _PGPPATH
+      if (strcmp (msg->content->subtype, "encrypted") == 0 ||
+	  strcmp (msg->content->subtype, "signed") == 0)
+      {
+	if (save_content->type == TYPEMULTIPART)
+	{
+	  if (!isendwin())
+	    endwin ();
+	  if (msg->pgp & PGPENCRYPT)
+	  {
+	    /* encrypt the main part again */
+  	    msg->content = pgp_encrypt_message (save_content->parts, 
+		pgpkeylist, msg->pgp & PGPSIGN);
+	    /* not released in pgp_encrypt_message() */
+	    mutt_free_body (&save_content->parts);
+	    encode_descriptions (msg->content);
+	    save_content->parts = msg->content;
+	  }
+	  else
+	  {
+	    /* save initial signature and attachments */
+	    save_sig = msg->content->parts->next;
+	    save_parts = msg->content->parts->parts->next;
+	    /* sign the main part without attachments */
+	    msg->content = pgp_sign_message (save_content->parts);
+	    save_content = msg->content;
+	  }
+	}
+      }
+      else
+#endif /* _PGPPATH */
+	msg->content = msg->content->parts;
+    }
+
+    if (msg->content)
+      mutt_write_fcc (fcc, msg, NULL, 0);
+    msg->content = tmpbody;
+#ifdef _PGPPATH
+    if (save_sig)
+    {
+      /* cleanup the second signature structures */
+      mutt_free_body (&save_content->parts->next);
+      save_content->parts = NULL;
+      mutt_free_body (&save_content);
+      /* restore old signature and attachments */
+      msg->content->parts->next = save_sig;
+      msg->content->parts->parts->next = save_parts;
+    }
+#endif /* _PGPPATH */
   }
 
-  mutt_set_followup_to (msg->env);
+#ifdef _PGPPATH
+  if (msg->pgp & PGPENCRYPT)
+  {
+    /* cleanup structures from the first encryption */
+    mutt_free_body (&save_content);
+    FREE (&pgpkeylist);
+  }
+#endif /* _PGPPATH */
 
-  if (mutt_send_message (msg, fcc) == -1)
+  if (send_message (msg) == -1)
   {
     msg->content = remove_multipart (msg->content);
     goto main_loop;
@@ -1233,9 +1336,8 @@ cleanup:
   }
 #endif /* _PGPPATH */
    
-
-
   if (tempfp)
     fclose (tempfp);
   mutt_free_header (&msg);
+
 }

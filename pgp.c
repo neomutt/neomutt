@@ -1181,6 +1181,8 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
   return (keylist);
 }
 
+/* Warning: "a" is no longer free()d in this routine, you need
+ * to free() it later.  This is necessary for $fcc_attach. */
 BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
 {
   char buf[LONG_STRING];
@@ -1305,14 +1307,11 @@ BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
   t->parts->next->use_disp = 0;
   t->parts->next->unlink = 1; /* delete after sending the message */
 
-  mutt_free_body (&a); /* no longer needed! */
-
   return (t);
 }
 
-int pgp_protect (HEADER *msg)
+int pgp_protect (HEADER *msg, char **pgpkeylist)
 {
-  char *pgpkeylist = NULL;
   BODY *pbody = NULL;
 
   /* Do a quick check to make sure that we can find all of the encryption
@@ -1323,7 +1322,7 @@ int pgp_protect (HEADER *msg)
 
   if (msg->pgp & PGPENCRYPT)
   {
-    if ((pgpkeylist = pgp_findKeys (msg->env->to, msg->env->cc, msg->env->bcc)) == NULL)
+    if ((*pgpkeylist = pgp_findKeys (msg->env->to, msg->env->cc, msg->env->bcc)) == NULL)
       return (-1);
   }
 
@@ -1333,10 +1332,12 @@ int pgp_protect (HEADER *msg)
   endwin ();
   if (msg->pgp & PGPENCRYPT)
   {
-    pbody = pgp_encrypt_message (msg->content, pgpkeylist, msg->pgp & PGPSIGN);
-    safe_free ((void **) &pgpkeylist);
+    pbody = pgp_encrypt_message (msg->content, *pgpkeylist, msg->pgp & PGPSIGN);
     if (!pbody)
+    {
+      FREE (pgpkeylist);
       return (-1);
+    }
   }
   else if (msg->pgp & PGPSIGN)
   {

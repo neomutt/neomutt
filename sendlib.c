@@ -38,6 +38,8 @@
 #include <sysexits.h>
 #endif
 
+extern char RFC822Specials[];
+
 static struct sysexits
 {
   int v;
@@ -1277,25 +1279,6 @@ static void encode_headers (LIST *h)
   }
 }
 
-/* rfc2047 encode the content-descriptions */
-static void encode_descriptions (BODY *b)
-{
-  BODY *t;
-  char tmp[LONG_STRING];
-
-  for (t = b; t; t = t->next)
-  {
-    if (t->description)
-    {
-      rfc2047_encode_string (tmp, sizeof (tmp), (unsigned char *) t->description);
-      safe_free ((void **) &t->description);
-      t->description = safe_strdup (tmp);
-    }
-    if (t->parts)
-      encode_descriptions (t->parts);
-  }
-}
-
 const char *mutt_fqdn(short may_hide_host)
 {
   char *p = NULL, *q;
@@ -1547,8 +1530,8 @@ strsysexit(int e)
 }
 
 
-static int
-invoke_sendmail (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc, /* recips */
+int
+mutt_invoke_sendmail (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc, /* recips */
 		 const char *msg, /* file containing message */
 		 int eightbit) /* message contains 8bit chars */
 {
@@ -1677,74 +1660,46 @@ char *mutt_quote_string (const char *s)
   return (r);
 }
 
-int mutt_send_message (HEADER *msg, const char *fcc)
+void mutt_prepare_envelope (ENVELOPE *env)
 {
-  char tempfile[_POSIX_PATH_MAX], buffer[STRING];
-  FILE *tempfp;
-  int i;
+  char buffer[LONG_STRING];
+
+  if (env->bcc && !(env->to || env->cc))
+  {
+    /* some MTA's will put an Apparently-To: header field showing the Bcc:
+     * recipients if there is no To: or Cc: field, so attempt to suppress
+     * it by using an empty To: field.
+     */
+    env->to = rfc822_new_address ();
+    env->to->mailbox = safe_strdup ("undisclosed-recipients:;");
+    env->to->group = 1;
+    env->to->next = rfc822_new_address ();
+ 
+    buffer[0] = 0;
+    rfc822_cat (buffer, sizeof (buffer), env->to->mailbox, RFC822Specials);
+    env->to->mailbox = safe_strdup (buffer);
+  }
+
+  mutt_set_followup_to (env);
 
   /* Take care of 8-bit => 7-bit conversion. */
-  rfc2047_encode_adrlist (msg->env->to);
-  rfc2047_encode_adrlist (msg->env->cc);
-  rfc2047_encode_adrlist (msg->env->from);
-  rfc2047_encode_adrlist (msg->env->mail_followup_to);
-  if (msg->env->subject)
+  rfc2047_encode_adrlist (env->to);
+  rfc2047_encode_adrlist (env->cc);
+  rfc2047_encode_adrlist (env->from);
+  rfc2047_encode_adrlist (env->mail_followup_to);
+  if (env->subject)
   {
     rfc2047_encode_string (buffer, sizeof (buffer) - 1,
-			   (unsigned char *) msg->env->subject);
-    safe_free ((void **) &msg->env->subject);
-    msg->env->subject = safe_strdup (buffer);
+			   (unsigned char *) env->subject);
+    safe_free ((void **) &env->subject);
+    env->subject = safe_strdup (buffer);
   }
-  encode_headers (msg->env->userhdrs);
-  encode_descriptions (msg->content);
+  encode_headers (env->userhdrs);
 
-  if (!msg->env->message_id)
-    msg->env->message_id = mutt_gen_msgid ();
-
-  /* Write out the message in MIME form. */
-  mutt_mktemp (tempfile);
-  if ((tempfp = safe_fopen (tempfile, "w")) == NULL)
-    return (-1);
-
-  mutt_write_rfc822_header (tempfp, msg->env, msg->content, 0);
-  fputc ('\n', tempfp); /* tie off the header. */
-
-  if ((mutt_write_mime_body (msg->content, tempfp) == -1))
-  {
-    fclose(tempfp);
-    unlink (tempfile);
-    return (-1);
-  }
-  
-  if (fclose (tempfp) != 0)
-  {
-    mutt_perror (tempfile);
-    unlink (tempfile);
-    return (-1);
-  }
-
-  /* save a copy of the message, if necessary. */
-  if (*fcc && strcmp ("/dev/null", fcc) != 0)
-  {
-    BODY *tmpbody = msg->content;
-
-    /* check to see if the user wants copies of all attachments */
-    if (msg->content->type == TYPEMULTIPART &&
-	strcmp (msg->content->subtype, "encrypted") &&
-	strcmp (msg->content->subtype, "signed") &&
-	!option (OPTFCCATTACH))
-      msg->content = msg->content->parts;
-
-    mutt_write_fcc (fcc, msg, NULL, 0);
-    msg->content = tmpbody;
-  }
-
-  i = invoke_sendmail (msg->env->to, msg->env->cc, msg->env->bcc,
-		       tempfile,
-		       (msg->content->encoding == ENC8BIT));
-  return (i ? -1 : 0);
+  if (!env->message_id)
+    env->message_id = mutt_gen_msgid ();
 }
-
+  
 void mutt_bounce_message (HEADER *h, ADDRESS *to)
 {
   int i;
@@ -1779,7 +1734,7 @@ void mutt_bounce_message (HEADER *h, ADDRESS *to)
       mutt_copy_bytes (msg->fp, f, h->content->length);
       fclose (f);
 
-      invoke_sendmail (to, NULL, NULL, tempfile, h->content->encoding == ENC8BIT);
+      mutt_invoke_sendmail (to, NULL, NULL, tempfile, h->content->encoding == ENC8BIT);
     }
     mx_close_message (&msg);
   }
