@@ -29,11 +29,14 @@
 #include "mutt.h"
 #include "rfc1524.h"
 
-#include <ctype.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/wait.h>
 #include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+#include <sys/stat.h>
+#include <sys/wait.h>
+#include <errno.h>
+#include <unistd.h>
 
 /* The command semantics include the following:
  * %s is the filename that contains the mail body data
@@ -429,6 +432,7 @@ void mutt_adv_mktemp (char *s, size_t l)
   char tmp[_POSIX_PATH_MAX];
   char *period;
   size_t sl;
+  struct stat sb;
   
   strfcpy (buf, NONULL (Tempdir), sizeof (buf));
   mutt_expand_path (buf, sizeof (buf));
@@ -441,7 +445,7 @@ void mutt_adv_mktemp (char *s, size_t l)
   {
     strfcpy (tmp, s, sizeof (tmp));
     snprintf (s, l, "%s/%s", buf, tmp);
-    if (access (s, F_OK) != 0)
+    if (lstat (s, &sb) == -1 && errno == ENOENT)
       return;
     if ((period = strrchr (tmp, '.')) != NULL)
       *period = 0;
@@ -594,6 +598,11 @@ int rfc1524_expand_filename (char *nametemplate,
  * This function returns 0 on successful move, 1 on old file doesn't exist,
  * 2 on new file already exists, and 3 on other failure.
  */
+
+/* note on access(2) use: No dangling symlink problems here due to
+ * safe_fopen().
+ */
+
 int mutt_rename_file (char *oldfile, char *newfile)
 {
   FILE *ofp, *nfp;

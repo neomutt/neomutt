@@ -807,8 +807,10 @@ int mutt_check_overwrite (const char *attname, const char *path,
 
       case 2: /* append */
         *append = M_SAVE_APPEND;
+        break;
       case 1: /* overwrite */
-	;
+        *append = M_SAVE_OVERWRITE;
+        break;
     }
   }
   return 0;

@@ -229,7 +229,8 @@ enum
   M_NEW_SOCKET,
 
   /* Options for mutt_save_attachment */
-  M_SAVE_APPEND
+  M_SAVE_APPEND,
+  M_SAVE_OVERWRITE
 };
 
 /* possible arguments to set_quadoption() */
