@@ -801,18 +801,12 @@ int imap_open_mailbox_append (CONTEXT *ctx)
   if (r == -2)
   {
     /* command failed cause folder doesn't exist */
-    if (option (OPTCONFIRMCREATE))
-    {
-      snprintf (buf, sizeof (buf), _("Create %s?"), mailbox);
-      if (mutt_yesorno (buf, 1) < 1)
-      {
-	return (-1);
-      }
-      if (imap_create_mailbox (ctx, mailbox) < 0)
-      {
-	return (-1);
-      }
-    }
+    snprintf (buf, sizeof (buf), _("Create %s?"), mailbox);
+    if (option (OPTCONFIRMCREATE) && mutt_yesorno (buf, 1) < 1)
+      return (-1);
+
+    if (imap_create_mailbox (ctx, mailbox) < 0)
+      return (-1);
   }
   else if (r == -1)
   {

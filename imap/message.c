@@ -569,17 +569,15 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
       return -1;
     }
     dprint (2, (debugfile, "imap_copy_messages: server suggests TRYCREATE\n"));
-    if (option (OPTCONFIRMCREATE))
+    snprintf (buf, sizeof (buf), _("Create %s?"), mbox);
+    if (option (OPTCONFIRMCREATE) && mutt_yesorno (buf, 1) < 1)
     {
-      snprintf (buf, sizeof (buf), _("Create %s?"), mbox);
-      if (mutt_yesorno (buf, 1) < 1)
-      {
-        mutt_clear_error ();
-	return -1;
-      }
-      if (imap_create_mailbox (ctx, mbox) < 0)
-	return -1;
+      mutt_clear_error ();
+      return -1;
     }
+    if (imap_create_mailbox (ctx, mbox) < 0)
+      return -1;
+
     /* try again */
     rc = imap_exec (buf, sizeof (buf), CTX_DATA, cmd, 0);
   }
