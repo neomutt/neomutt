@@ -1,3 +1,9 @@
+2004-07-14 05:39:23  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* compose.c: Don't invoke "builtin" as an external editor.  Note:
+	It's not clear to me that this is really the right approach.
+	Revisit Editor/Visual some time.
+
 2004-07-14 05:19:15  Elmar Hoffmann  <mutt-dev-ml@elho.net>  (roessler)
 
 	* init.h, mutt.h, thread.c: By default Mutt hides the subject
