@@ -292,7 +292,7 @@ pid_t mutt_create_filter_fd (const char *, FILE **, FILE **, FILE **, int, int, 
 
 char *safe_strdup (const char *);
 void *safe_calloc (size_t, size_t);
-void *safe_malloc (unsigned int);
+void *safe_malloc (size_t);
 void safe_realloc (void **, size_t);
 void safe_free (void **);
 

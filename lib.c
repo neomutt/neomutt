@@ -281,7 +281,7 @@ void *safe_calloc (size_t nmemb, size_t size)
   return p;
 }
 
-void *safe_malloc (unsigned int siz)
+void *safe_malloc (size_t siz)
 {
   void *p;
 
