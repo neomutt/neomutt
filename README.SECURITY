@@ -1,0 +1,65 @@
+$Id$
+
+Recently, there have been reports on security problems induced by
+the interpretation of shell meta-characters embedded in MIME
+parameters.  These reports were referring to Pine, but the problem
+also applied when using mutt.
+
+More precisely, a mailcap entry like this one would lead to
+problems:
+
+> text/test-mailcap-bug; cat %s; copiousoutput; \
+>	test=test "`echo %{charset} | tr '[A-Z]' '[a-z]'`" != iso-8859-1
+
+When expanded with a charset parameter of ``touch${IFS}ME``, a file
+named "ME" would be created in the current directory.
+
+While we don't completely agree that this is an actual MUA problem
+(see below), we have implemented a couple of fixes for this:
+
+- Backticks are handled specially when preparing % expandos for
+  mailcap entries.  This fix will keep the current problem from
+  occuring, but we are sure there are other possible mailcap entries
+  where this doesn't help.
+
+- We have added a configuration variable named $mailcap_sanitize,
+  which is set by default.  If set, mutt will restrict possible
+  characters in mailcap % expandos to a well-defined set of safe
+  characters.  This is the safe setting, but we are not sure it
+  doesn't break some more advanced MIME stuff.
+
+>>>  DON'T UNSET THIS OPTION UNLESS YOU KNOW WHAT YOU ARE DOING.
+
+
+Anyway, this problem is not necessarily a problem which should be
+solved inside the MUA, as it's difficult (maybe impossible) to solve
+there.  Additionally, there is more than one program which parses
+mailcap.  So writing secure mailcap statements is generally a good
+idea.  We encourage you to do this.
+
+The most basic rule is this one:
+
+>>>	     KEEP THE %-EXPANDOS AWAY FROM SHELL QUOTING.
+
+Don't quote them with single or double quotes.  Mutt does this for
+you, the right way, as should any other program which interprets
+mailcap.  Don't put them into backtick expansions - as you have seen
+above, this is a recipe for desaster.  Be highly careful with eval
+statements, and avoid them if possible at all.
+
+If you have to use the %-expandos' values in context where you need
+quoting or backtick expansions, put that value into a shell variable
+and reference the shell variable where necessary (possibly with the
+proper quoting put around it, like in "$charset").
+
+For example, a safe version of the mailcap statement above could
+look like this:
+
+> text/test-mailcap-bug; cat %s; copiousoutput; test=charset=%{charset} \
+>         && test "`echo $charset | tr '[A-Z]' '[a-z]'`" != iso-8859-1
+
+The "charset=%{charset}" assignment is risk-free since mutt performs
+the necessary quoting steps here.  Using it inside the backtick
+expansion is safe, too, since the variable's value is not itself
+subject to any further expansion (but note that it _is_ subject to
+word splitting). 
