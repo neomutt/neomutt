@@ -1,3 +1,7 @@
+2003-05-13 13:06:16  Dale Woolridge  <dale-list-mutt-dev-2@woolridge.org>  (roessler)
+
+	* crypt.c: Fix gpg-agent use.
+
 2003-05-13 12:53:20  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* doc/manual.sgml.head: Remove useless examples about treating
