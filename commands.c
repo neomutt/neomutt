@@ -941,6 +941,8 @@ static int _mutt_check_traditional_pgp (HEADER *h, int *redraw)
   MESSAGE *msg;
   int rv = 0;
   
+  h->security |= PGP_TRADITIONAL_CHECKED;
+  
   mutt_parse_mime_message (Context, h);
   if ((msg = mx_open_message (Context, h->msgno)) == NULL)
     return 0;
@@ -959,12 +961,12 @@ int mutt_check_traditional_pgp (HEADER *h, int *redraw)
 {
   int i;
   int rv = 0;
-  if (h)
+  if (h && !(h->security & PGP_TRADITIONAL_CHECKED))
     rv = _mutt_check_traditional_pgp (h, redraw);
   else
   {
     for (i = 0; i < Context->vcount; i++)
-      if (Context->hdrs[Context->v2r[i]]->tagged)
+      if (Context->hdrs[Context->v2r[i]]->tagged && !(h->security & PGP_TRADITIONAL_CHECKED))
 	rv = _mutt_check_traditional_pgp (Context->hdrs[Context->v2r[i]], redraw)
 	  || rv;
   }

@@ -1876,7 +1876,9 @@ CHECK_IMAP_ACL(IMAP_ACL_INSERT);
           break;
         CHECK_MSGCOUNT; 
         CHECK_VISIBLE;
-        mutt_check_traditional_pgp (tag ? NULL : CURHDR, &menu->redraw);
+        if (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)) 
+	  mutt_check_traditional_pgp (tag ? NULL : CURHDR, &menu->redraw);
+      
         if (menu->menu == MENU_PAGER)
         {
 	  op = OP_DISPLAY_MESSAGE;

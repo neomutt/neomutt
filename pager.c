@@ -2173,6 +2173,17 @@ search_next:
 	  mutt_resend_message (NULL, extra->ctx, extra->hdr);
         redraw = REDRAW_FULL;
         break;
+
+      case OP_CHECK_TRADITIONAL:
+        CHECK_MODE (IsHeader (extra));
+        if (!(WithCrypto & APPLICATION_PGP))
+	  break;
+        if (!(extra->hdr->security & PGP_TRADITIONAL_CHECKED)) 
+        {
+	  ch = -1;
+	  rc = OP_CHECK_TRADITIONAL;
+	}
+        break;
       
       case OP_CREATE_ALIAS:
 	CHECK_MODE(IsHeader (extra) || IsMsgAttach (extra));

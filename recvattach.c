@@ -816,7 +816,7 @@ mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, HEADER *hdr,
 	break;
       /* functions which are passed through from the pager */
       case OP_CHECK_TRADITIONAL:
-        if (!(WithCrypto & APPLICATION_PGP))
+        if (!(WithCrypto & APPLICATION_PGP) || (hdr && hdr->security & PGP_TRADITIONAL_CHECKED))
         {
           op = OP_NULL;
           break;

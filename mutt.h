@@ -641,7 +641,7 @@ typedef struct body
 
 typedef struct header
 {
-  unsigned int security : 9;  /* bit 0-6: flags, bit 7,8: application.
+  unsigned int security : 10;  /* bit 0-6: flags, bit 7,8: application.
 				 see: crypt.h pgplib.h, smime.h */
 
   unsigned int mime : 1;    		/* has a Mime-Version header? */
