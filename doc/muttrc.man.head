@@ -106,6 +106,8 @@ matches any subtype, as does an empty subtype.
 .nf
 \fBmime_lookup\fP \fItype\fP[\fB/\fP\fIsubtype\fP] [ ... ]
 \fBunmime_lookup\fP \fItype\fP[\fB/\fP\fIsubtype\fP] [ ... ]
+.fi
+.IP
 This command permits you to define a list of "data" MIME content
 types for which mutt will try to determine the actual file type from
 the file name, and not use a 
