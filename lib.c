@@ -1218,3 +1218,10 @@ char *mutt_quote_filename(const char *f)
   
   return d;
 }
+
+void state_prefix_putc(char c, STATE *s)
+{
+  state_putc(c, s);
+  if(c == '\n' && s->prefix)
+    state_puts(s->prefix, s);
+}

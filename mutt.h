@@ -635,5 +635,7 @@ typedef struct
 #define state_puts(x,y) fputs(x,(y)->fpout)
 #define state_putc(x,y) fputc(x,(y)->fpout)
 
+void state_prefix_putc(char, STATE *);
+
 #include "protos.h"
 #include "globals.h"

@@ -324,16 +324,20 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
     }
     pp = 0;
   }
+  
   if (filter)
   {
-    if (mutt_display_string(d, mutt_get_translation(charset, Charset)) == -1)
+    if(mutt_is_utf8(charset))
     {
-      pd = d;
-      while (*pd)
+      CHARSET *chs = mutt_get_charset(Charset);
+      mutt_decode_utf8_string(d, chs);
+    }
+    else if (mutt_display_string(d, mutt_get_translation(charset, Charset)) == -1)
+    {
+      for(pd = d; *pd; pd++)
       {
         if (!IsPrint (*pd))
 	  *pd = '?';
-        pd++;
       }
     }
   }

@@ -28,12 +28,20 @@ typedef int CHARSET_MAP[256];
 typedef struct 
 {
   CHARSET_MAP *map;
-} CHARSET;
-  
-CHARSET     *mutt_get_charset(const char *);
+} 
+CHARSET;
+
+CHARSET *mutt_get_charset(const char *);
 CHARSET_MAP *mutt_get_translation(const char *, const char *);
+
 unsigned char mutt_display_char(unsigned char, CHARSET_MAP *);
+
 int mutt_display_string(char *, CHARSET_MAP *);
+int mutt_is_utf8(const char *);
+
+void mutt_decode_utf8_string(char *, CHARSET *);
+
+void state_fput_utf8(STATE *, char, CHARSET *);
 
 #endif
 

@@ -31,8 +31,8 @@ static CHARSET *mutt_new_charset(void)
 {
   CHARSET *chs;
   
-  chs       = safe_malloc(sizeof(CHARSET));
-  chs->map  = NULL;
+  chs          = safe_malloc(sizeof(CHARSET));
+  chs->map     = NULL;
   
   return chs;
 }
@@ -220,8 +220,8 @@ CHARSET_MAP *mutt_get_translation(const char *_from, const char *_to)
     if(!from_cs->map || !to_cs->map)
       return NULL;
     
-    map = build_translation(from_cs->map, to_cs->map);
-    hash_insert(Translations, safe_strdup(key), map, 1);
+    if((map = build_translation(from_cs->map, to_cs->map)))
+       hash_insert(Translations, safe_strdup(key), map, 1);
   }
   return map;
 }
@@ -241,6 +241,169 @@ int mutt_display_string(char *str, CHARSET_MAP *map)
 
   while ((*str = mutt_display_char((unsigned char)*str, map)))
     str++;
-
+  
   return 0;
 }
+
+/*************************************************************/
+/* UTF-8 support                                             */
+
+int mutt_is_utf8(const char *s)
+{
+  char buffer[SHORT_STRING];
+
+  if(!s) 
+    return 0;
+
+  canonical_charset(buffer, sizeof(buffer), s);
+  return !strcmp(buffer, "utf-8");
+}
+  
+/* macros for the various bit maps we need */
+
+#define IOOOOOOO 0x80
+#define IIOOOOOO 0xc0
+#define IIIOOOOO 0xe0
+#define IIIIOOOO 0xf0
+#define IIIIIOOO 0xf8
+#define IIIIIIOO 0xfc
+#define IIIIIIIO 0xfe
+#define IIIIIIII 0xff
+
+static struct unicode_mask
+{
+  int mask;
+  int value;
+  short len;
+}
+unicode_masks[] = 
+{
+  { IOOOOOOO,	    0,   1 },
+  { IIIOOOOO, IIOOOOOO,  2 },
+  { IIIIOOOO, IIIOOOOO,  3 },
+  { IIIIIOOO, IIIIOOOO,  4 },
+  { IIIIIIOO, IIIIIOOO,  5 },
+  { IIIIIIIO, IIIIIIOO,  6 },
+  {        0,	     0,  0 }
+};
+
+
+static char *utf_to_unicode(int *out, char *in)
+{
+  struct unicode_mask *um = NULL;
+  short i;
+  
+  for(i = 0; unicode_masks[i].mask; i++)
+  {
+    if((*in & unicode_masks[i].mask) == unicode_masks[i].value)
+    {
+      um = &unicode_masks[i];
+      break;
+    }
+  }
+  
+  if(!um)
+  {
+    *out = (int) '?';
+    return in + 1;
+  }
+
+  for(i = 1; i < um->len; i++)
+  {
+    if((in[i] & IIOOOOOO) != IOOOOOOO)
+    {
+      *out = (int) '?';
+      return in + i;
+    }
+  }
+  
+  *out = ((int)in[0]) & ~um->mask & 0xff;
+  for(i = 1; i < um->len; i++)
+    *out = (*out << 6) | (((int)in[i]) & ~IIOOOOOO & 0xff);
+
+  if(!*out) 
+    *out = '?';
+  
+  return in + um->len;
+}
+
+void mutt_decode_utf8_string(char *str, CHARSET *chs)
+{
+  char *s, *t;
+  int ch, i;
+  CHARSET_MAP *map = NULL;
+  
+  if(chs)
+    map = chs->map;
+  
+  for( s = t = str; *t; s++)
+  {
+    t = utf_to_unicode(&ch, t);
+
+    if(!map)
+    {
+      *s = (char) ch;
+    }
+    else
+    {
+      for(i = 0, *s = '\0'; i < 256; i++)
+      {
+	if((*map)[i] == ch)
+	{
+	  *s = i;
+	  break;
+	}
+      }
+    }
+      
+    if(!*s) *s = '?';
+  }
+  
+  *s = '\0';
+}
+
+static char *sfu_buffer = NULL;
+static size_t sfu_blen = 0;
+static size_t sfu_bp = 0;
+
+static void _state_utf8_flush(STATE *s, CHARSET *chs)
+{
+  char *t;
+  if(!sfu_buffer || !sfu_bp)
+    return;
+  
+  sfu_buffer[sfu_bp] = '\0';
+  
+  mutt_decode_utf8_string(sfu_buffer, chs);
+  for(t = sfu_buffer; *t; t++)
+  {
+    /* this is text mode, so throw out raw CRs. */
+    if(*t == '\r')
+      t++;
+    
+    state_prefix_putc(*t, s);
+  }
+  sfu_bp = 0;
+}
+    
+void state_fput_utf8(STATE *st, char u, CHARSET *chs)
+{
+  if((u & 0x80) == 0 || (sfu_bp && (u & IIOOOOOO) != IOOOOOOO))
+    _state_utf8_flush(st, chs);
+     
+  if((u & 0x80) == 0)
+  {
+    if(u && u != '\r')
+      state_prefix_putc(u, st);
+  }
+  else
+  {
+    if(sfu_bp + 1 >= sfu_blen)
+    {
+      sfu_blen = (sfu_blen + 80) * 2;
+      safe_realloc((void **) &sfu_buffer, sfu_blen);
+    }
+    sfu_buffer[sfu_bp++] = u;
+  }
+}
+
