@@ -1,3 +1,8 @@
+2005-02-13 00:25:37  Brendan Cully  <brendan@kublai.com>  (brendan)
+                                 
+	* configure.in, m4/gettext.m4, m4/iconv.m4: Use AC_HELP_STRING to
+	pretty print configure --help screen, with mixed results.
+                                 
 2005-02-12 21:04:22  Brendan Cully  <brendan@kublai.com>  (brendan)
                                  
 	* Makefile.am, imap/Makefile.am: Require at least automake 1.6
