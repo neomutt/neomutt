@@ -1,3 +1,7 @@
+2005-01-27 18:46:52  Bill Nottingham  <notting@redhat.com>  (roessler)
+
+	* color.c, main.c: Support for the "default" color in Slang.
+
 2005-01-27 18:45:37  Florian Weimer   <fw@deneb.enyo.de>  (roessler)
 
 	* mh.c, configure.in: Read files in maildir folders in inode
