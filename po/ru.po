@@ -10,9 +10,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt-1.5.0i\n"
+"Project-Id-Version: mutt-1.5.1i\n"
 "POT-Creation-Date: 2002-05-02 01:23+0200\n"
-"PO-Revision-Date: 2002-02-26 12:38+0200\n"
+"PO-Revision-Date: 2002-05-13 16:59+0300\n"
 "Last-Translator: mutt-ru@woe.spb.ru\n"
 "Language-Team: RUSSIAN <mutt-ru@woe.spb.ru>\n"
 "MIME-Version: 1.0\n"
@@ -177,7 +177,7 @@ msgstr "%s не является каталогом."
 #: browser.c:495
 #, c-format
 msgid "Mailboxes [%d]"
-msgstr "Почтовых ящиков [%d]"
+msgstr "Почтовые ящики [%d]"
 
 #: browser.c:502
 #, c-format
@@ -715,52 +715,53 @@ msgstr "PGP уже используется. Очистить и продолжить? "
 #: crypt.c:70
 #, c-format
 msgid " (current time: %c)"
-msgstr ""
+msgstr " (текущее время: %c)"
 
 #: crypt.c:76
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s output follows%s --]\n"
-msgstr "[-- %s --]\n"
+msgstr "[-- Результат работы программы %s%s --]\n"
 
 #: crypt.c:93
-#, fuzzy
 msgid "Passphrase(s) forgotten."
-msgstr "PGP фраза-пароль удалена из памяти."
+msgstr "Фразы-пароли удалены из памяти."
 
 #: crypt.c:132
-#, fuzzy
 msgid "Enter PGP passphrase:"
-msgstr "PGP фраза-пароль удалена из памяти."
+msgstr "Введите PGP фразу-пароль:"
 
 #: crypt.c:150
 msgid "Enter SMIME passphrase:"
-msgstr ""
+msgstr "Введите S/MIME фразу-пароль:"
 
 #: crypt.c:185
-#, fuzzy
 msgid "Create an inline PGP message?"
-msgstr "создать псевдоним для отправителя сообщения"
+msgstr "Создать PGP-сообщение в текстовом формате?"
 
 #: crypt.c:512 crypt.c:554
 msgid "Trying to extract PGP keys...\n"
-msgstr ""
+msgstr "Попытка извлечь PGP ключи...\n"
 
 #: crypt.c:534 crypt.c:572
 msgid "Trying to extract S/MIME certificates...\n"
-msgstr ""
+msgstr "Попытка извлечь S/MIME сертификаты...\n"
 
 #: crypt.c:696
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
 "\n"
 msgstr ""
+"[-- Ошибка: нарушена структура multipart/signed-сообщения! --]\n"
+"\n"
 
 #: crypt.c:722
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
 "\n"
-msgstr "Ошибка: тип multipart/signed требует наличия параметра protocol."
+msgstr ""
+"[-- Ошибка: неизвестный multipart/signed протокол %s! --]\n"
+"\n"
 
 #: crypt.c:759
 #, c-format
@@ -768,30 +769,34 @@ msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
 "\n"
 msgstr ""
+"[-- Предупреждение: не удалось проверить %s/%s подписи. --]\n"
+"\n"
 
 #. XXX - WHAT!?!?!?
 #. Now display the signed body
 #: crypt.c:770
-#, fuzzy
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
-msgstr "[-- Начало данных, подписанных в формате S/MIME --]\n"
+msgstr ""
+"[-- Начало подписанных данных --]\n"
+"\n"
 
 #: crypt.c:776
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
 msgstr ""
+"[-- Предупреждение: не найдено ни одной подписи. --]\n"
+"\n"
 
 #: crypt.c:782
-#, fuzzy
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
 msgstr ""
 "\n"
-"[-- Конец данных, подписанных в формате S/MIME --]\n"
+"[-- Конец подписанных данных --]\n"
 
 #: curs_lib.c:153
 msgid "yes"
@@ -864,11 +869,11 @@ msgstr "Создать"
 
 #: curs_main.c:406 pager.c:1447
 msgid "Reply"
-msgstr "Отв."
+msgstr "Ответить"
 
 #: curs_main.c:407
 msgid "Group"
-msgstr "Отв. всем"
+msgstr "Всем"
 
 #: curs_main.c:496
 msgid "Mailbox was externally modified.  Flags may be wrong."
@@ -1933,9 +1938,8 @@ msgid "move the cursor to the end of the word"
 msgstr "передвинуть курсор в конец слова"
 
 #: keymap_alldefs.h:73
-#, fuzzy
 msgid "scroll down through the history list"
-msgstr "прокрутить вверх список истории"
+msgstr "прокрутить вниз список истории"
 
 #: keymap_alldefs.h:74
 msgid "scroll up through the history list"
@@ -3554,9 +3558,8 @@ msgid "Print attachment?"
 msgstr "Напечатать вложение?"
 
 #: recvattach.c:906
-#, fuzzy
 msgid "Can't decrypt encrypted message!"
-msgstr "Помеченные сообщения отсутствуют."
+msgstr "Не удалось расшифровать зашифрованное сообщение!"
 
 #: recvattach.c:920
 msgid "Attachments"
@@ -4013,27 +4016,3 @@ msgstr "Родительское сообщение не видимо при просмотре с ограничением."
 #: thread.c:1085
 msgid "Parent message is not available."
 msgstr "Родительское сообщение недоступно."
-
-#~ msgid "%s/.index"
-#~ msgstr "%s/.index"
-
-#~ msgid "This message seems to require key %s. (Any key to continue)"
-#~ msgstr "Это сообщение, возможно, требует ключ %s. (Продолжить)"
-
-#~ msgid "Alert: No mailbox specified in certificate.\n"
-#~ msgstr "Внимание: почтовый ящик не указан в сертификате.\n"
-
-#~ msgid "Alert: Certificate does *NOT* belong to \"%s\".\n"
-#~ msgstr "Внимание: сертификат *НЕ* принадлежит \"%s\".\n"
-
-#~ msgid "%s/%s.%d"
-#~ msgstr "%s/%s.%d"
-
-#~ msgid "Certificate \"%s\" exists for \"%s\"."
-#~ msgstr "Сертификат \"%s\" существует для \"%s\"."
-
-#~ msgid "Successfully added certificate \"%s\" for \"%s\". "
-#~ msgstr "Успешно добавлен сертификат \"%s\" для \"%s\". "
-
-#~ msgid "Certificate *NOT* added."
-#~ msgstr "Сертификат *НЕ* был добавлен."

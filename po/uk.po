@@ -1921,13 +1921,12 @@ msgid "move the cursor to the end of the word"
 msgstr "пересунути курсор до к╕нця слова"
 
 #: keymap_alldefs.h:73
-#, fuzzy
 msgid "scroll down through the history list"
-msgstr "прогорнути ╕стор╕ю вводу"
+msgstr "прогорнути ╕стор╕ю вводу донизу"
 
 #: keymap_alldefs.h:74
 msgid "scroll up through the history list"
-msgstr "прогорнути ╕стор╕ю вводу"
+msgstr "прогорнути ╕стор╕ю вводу нагору"
 
 #: keymap_alldefs.h:75
 msgid "delete chars from cursor to end of line"
