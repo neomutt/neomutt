@@ -1,3 +1,7 @@
+2005-01-27 18:58:14  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* Makefile.am: Include mutt_ssl_gnutls.c with the distribution.
+
 2005-01-27 18:54:24  Marco d'Itri  <md@Linux.IT>  (roessler)
 
 	* globals.h, imap/imap.c, imap/util.c, init.c, init.h, main.c,
