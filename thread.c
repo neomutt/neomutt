@@ -756,7 +756,7 @@ int mutt_parent_message (CONTEXT *ctx, HEADER *hdr)
   {
     while ((hdr = hdr->parent))
     {
-      if (!ctx->pattern || hdr->limited)
+      if (hdr->virtual >= 0 && hdr->collapsed && (!ctx->pattern || hdr->limited))
 	return (hdr->virtual);
     }
     mutt_error _("Parent message is not visible in limited view");
