@@ -141,6 +141,11 @@ static void show_version (void)
   printf (" [using slang %d]", SLANG_VERSION);
 #endif
 
+#ifdef _LIBICONV_VERSION
+  printf (" [using libiconv %d.%d]", _LIBICONV_VERSION >> 8,
+	  _LIBICONV_VERSION & 0xff);
+#endif
+  
   puts (_("\nCompile options:"));
 
 #ifdef DOMAIN
