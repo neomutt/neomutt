@@ -105,36 +105,6 @@ int mutt_option_index (char *s)
   return (-1);
 }
 
-static void add_char (BUFFER *buf, char ch)
-{
-  size_t offset;
-
-  if (buf->dptr >= buf->data + buf->dsize)
-  {
-    offset = buf->dptr - buf->data;
-    buf->dsize += 4;
-    safe_realloc ((void **) &buf->data, buf->dsize);
-    buf->dptr = buf->data + offset;
-  }
-  *buf->dptr++ = ch;
-}
-
-static void add_str (BUFFER *buf, const char *s)
-{
-  size_t slen = mutt_strlen (s);
-  size_t offset;
-
-  if (buf->dptr + slen > buf->data + buf->dsize)
-  {
-    offset = buf->dptr - buf->data;
-    buf->dsize += slen;
-    safe_realloc ((void **) &buf->data, buf->dsize);
-    buf->dptr = buf->data + offset;
-  }
-  memcpy (buf->dptr, s, slen);
-  buf->dptr += slen;
-}
-
 int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
 {
   char		ch;
@@ -169,23 +139,23 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
       {
 	case 'c':
 	case 'C':
-	  add_char (dest, (toupper (*tok->dptr) - '@') & 0x7f);
+	  mutt_buffer_addch (dest, (toupper (*tok->dptr) - '@') & 0x7f);
 	  tok->dptr++;
 	  break;
 	case 'r':
-	  add_char (dest, '\r');
+	  mutt_buffer_addch (dest, '\r');
 	  break;
 	case 'n':
-	  add_char (dest, '\n');
+	  mutt_buffer_addch (dest, '\n');
 	  break;
 	case 't':
-	  add_char (dest, '\t');
+	  mutt_buffer_addch (dest, '\t');
 	  break;
 	case 'f':
-	  add_char (dest, '\f');
+	  mutt_buffer_addch (dest, '\f');
 	  break;
 	case 'e':
-	  add_char (dest, '\033');
+	  mutt_buffer_addch (dest, '\033');
 	  break;
 	default:
 	  if (isdigit ((unsigned char) ch) &&
@@ -193,26 +163,26 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
 	      isdigit ((unsigned char) *(tok->dptr + 1)))
 	  {
 
-	    add_char (dest, (ch << 6) + (*tok->dptr << 3) + *(tok->dptr + 1) - 3504);
+	    mutt_buffer_addch (dest, (ch << 6) + (*tok->dptr << 3) + *(tok->dptr + 1) - 3504);
 	    tok->dptr += 2;
 	  }
 	  else
-	    add_char (dest, ch);
+	    mutt_buffer_addch (dest, ch);
       }
     }
     else if (ch == '^' && (flags & M_TOKEN_CONDENSE))
     {
       ch = *tok->dptr++;
       if (ch == '^')
-	add_char (dest, ch);
+	mutt_buffer_addch (dest, ch);
       else if (ch == '[')
-	add_char (dest, '\033');
+	mutt_buffer_addch (dest, '\033');
       else if (isalpha ((unsigned char) ch))
-	add_char (dest, toupper (ch) - '@');
+	mutt_buffer_addch (dest, toupper (ch) - '@');
       else
       {
-	add_char (dest, '^');
-	add_char (dest, ch);
+	mutt_buffer_addch (dest, '^');
+	mutt_buffer_addch (dest, ch);
       }
     }
     else if (ch == '`' && (!qc || qc == '"'))
@@ -293,13 +263,13 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
 	tok->dptr = pc;
       }
       if ((env = getenv (var)))
-	add_str (dest, env);
+	mutt_buffer_addstr (dest, env);
       FREE (&var);
     }
     else
-      add_char (dest, ch);
+      mutt_buffer_addch (dest, ch);
   }
-  add_char (dest, 0); /* terminate the string */
+  mutt_buffer_addch (dest, 0); /* terminate the string */
   SKIPWS (tok->dptr);
   return 0;
 }

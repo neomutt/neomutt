@@ -1227,14 +1227,22 @@ void mutt_sleep (short s)
     sleep (s);
 }
 
+void mutt_buffer_addstr (BUFFER* buf, const char* s)
+{
+  mutt_buffer_add (buf, s, mutt_strlen (s));
+}
+
+void mutt_buffer_addch (BUFFER* buf, char c)
+{
+  mutt_buffer_add (buf, &c, 1);
+}
+
 /* dynamically grows a BUFFER to accomodate s, in increments of 128 bytes.
  * Always one byte bigger than necessary for the null terminator, and
  * the buffer is always null-terminated */
-void mutt_buffer_addstr (BUFFER* buf, const char* s)
+void mutt_buffer_add (BUFFER* buf, const char* s, size_t len)
 {
-  size_t len, offset;
-
-  len = mutt_strlen (s);
+  size_t offset;
 
   if (buf->dptr + len + 1 > buf->data + buf->dsize)
   {
