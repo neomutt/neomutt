@@ -1085,11 +1085,23 @@ void mutt_FormatString (char *dest,		/* output buffer */
       }
       else
       {
+	short tolower =  0;
+	
+	if (ch == '_')
+	{
+	  ch = *src++;
+	  tolower = 1;
+	}
+	
 	/* use callback function to handle this case */
 	src = callback (buf, sizeof (buf), ch, src, prefix, ifstring, elsestring, data, flags);
 
+	if (tolower)
+	  mutt_strlower (buf);
+	
 	if ((len = mutt_strlen (buf)) + wlen > destlen)
 	  len = (destlen - wlen > 0) ? (destlen - wlen) : 0;
+
 	memcpy (wptr, buf, len);
 	wptr += len;
 	wlen += len;
