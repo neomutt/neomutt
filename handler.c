@@ -882,7 +882,17 @@ void text_enriched_handler (BODY *a, STATE *s)
   FREE (&(stte.param));
 }                                                                              
 
-#define FLOWED_MAX 77
+/*
+ * An implementation of RFC 2646.
+ * 
+ */
+
+/* 
+ * Personally, I'd prefer something around 70 here.  However,
+ * we don't want to unnecessarily distort the design of entirely
+ * valid messages which actually use the 79 columns.
+ */
+#define FLOWED_MAX 79
 
 static void flowed_quote (STATE *s, int level)
 {
@@ -924,7 +934,11 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
 {
   char line[LONG_STRING];
   char indent[LONG_STRING];
+
   int  quoted = -1;
+  int  last_quoted;
+  int  full = 1;
+  int  last_full;
   int  col = 0;
 
   int  add = 0;
@@ -933,10 +947,8 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
   int  l;
   
   int  flowed_max;
-  
-  int bytes = a->length;
-
-  int actually_wrap = 0;
+  int  bytes = a->length;
+  int  actually_wrap = 0;
   
   char *cont = NULL;
   char *tail = NULL;
@@ -949,29 +961,83 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
     add = 1;
   
   if ((flowed_max = FLOWED_MAX) > COLS)
-    flowed_max = COLS - 2;
+    flowed_max = COLS - 1;
   
   while (bytes > 0 && fgets (line, sizeof (line), s->fpin))
   {
     bytes        -= strlen (line);
     tail          = NULL;
-    actually_wrap = 0;  /* (really?) */
+
+    last_full     = full;
+    
+    /* 
+     * If the last line wasn't fully read, this is the
+     * tail of some line. 
+     */
+    actually_wrap = !last_full; 
     
     if ((t = strrchr (line, '\r')) || (t = strrchr (line, '\n')))
-      *t = '\0';
+    {
+      *t   = '\0';
+      full = 1;
+    }
+    else if ((t = strrchr (line, ' ')) || (t = strrchr (line, '\t')))
+    {
+      /* 
+       * Bad: We have a line of more than LONG_STRING characters.
+       * (Which SHOULD NOT happen, since lines SHOULD be <= 79
+       * characters long.)
+       * 
+       * Try to simulate a soft line break at a word boundary.
+       * Handle the rest of the line next time.
+       * 
+       * Give up when we have a single word which is longer than
+       * LONG_STRING characters.  It will just be split into parts,
+       * with a hard line break in between. 
+       */
+
+      full = 0;
+      l    = strlen (t + 1);
+      t[0] = ' ';
+      t[1] = '\0';
+
+      if (l)
+	fseek (s->fpin, -l, SEEK_CUR);
+    }
+    else
+      full = 0;
+
+    last_quoted = quoted;
+
+    if (last_full)
+    {
+      /* we are in the beginning of a new line */
+      for (quoted = 0; line[quoted] == '>'; quoted++)
+	;
+      
+      cont = line + quoted;
+      if (*cont == ' ')
+	cont++;
+
+      /* If there is an indentation, record it. */
+      cont = flowed_skip_indent (indent, cont);
+    }
+    else
+    {
+      /* 
+       * This is just the tail of some over-long line. Keep
+       * indentation and quote levels.
+       */
+      cont = line;
+    }
+
+    /* If we have a change in quoting depth, wrap. */
+    if (col && last_quoted != quoted && last_quoted >= 0)
+    {
+      state_putc ('\n', s);
+      col = 0;
+    }
     
-    for (quoted = 0; line[quoted] == '>'; quoted++)
-      ;
-
-    dprint (2, (debugfile, "line: `%s', quoted = %d\n", line, quoted));
-    
-    cont = line + quoted;
-    if (*cont == ' ')
-      cont++;
-
-    /* If there is an indentation, record it. */
-    cont = flowed_skip_indent (indent, cont);
-
     do 
     {
       if (tail)
@@ -1009,14 +1075,15 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
 	}
       }
 
-      /* We might be desperate.  Just wrap. */
+      /* We might be desperate.  Get me a new line, and retry. */
       if (!tail && (quoted + add + col + mutt_strlen (cont) > flowed_max) && col)
       {
 	state_putc ('\n', s);
 	col = 0;
 	goto retry_wrap;
       }
-      
+
+      /* Detect soft line breaks. */
       if (!soft && ascii_strcmp (cont, "-- "))
       {
 	lc = strrchr (cont, ' ');
@@ -1024,6 +1091,10 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
 	  soft = 1;
       }
 
+      /* 
+       * If we are in the beginning of an output line, 
+       * do quoting and stuffing. 
+       */
       if (!col)
       {
 	flowed_quote (s, quoted);
@@ -1035,17 +1106,23 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
 	else 
 	  flowed_stuff (s, cont, quoted + add);
       }
-      
+
+      /* output the text */
       state_puts (cont, s);
       col += strlen (cont);
       
+      /* possibly indicate a soft line break */
       if (soft == 2)
       {
 	state_putc (' ', s);
 	col++;
       }
       
-      if (!soft || !actually_wrap)
+      /* 
+       * Wrap if this display line corresponds to a 
+       * text line. Don't wrap if we changed the line.
+       */
+      if (!soft || (!actually_wrap && full))
       {
 	state_putc ('\n', s);
 	col = 0;
@@ -1058,6 +1135,11 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
     state_putc ('\n', s);
   
 }
+
+
+
+
+
 
 #define TXTHTML     1
 #define TXTPLAIN    2
