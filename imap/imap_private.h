@@ -178,7 +178,7 @@ typedef struct
   unsigned char rights[(RIGHTSMAX + 7)/8];
   unsigned int newMailCount;
   IMAP_CACHE cache[IMAP_CACHE_LEN];
-  int noclose : 1;
+  unsigned int noclose : 1;
   
   /* all folder flags - system flags AND keywords */
   LIST *flags;
