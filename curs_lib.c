@@ -65,7 +65,7 @@ event_t mutt_getch (void)
   if (Signals & S_INTERRUPT)
     mutt_query_exit ();
 
-  if(ch == -1)
+  if(ch == ERR)
     return err;
   
   if ((ch & 0x80) && option (OPTMETAKEY))
