@@ -206,7 +206,7 @@ lists pattern \(lqmutt-\(rq will match mutt-dev@mutt.org and
 mutt-users@mutt.org.
 .IP
 The \fBlists\fP command adds a mailing list address to the list of
-known mailing lists.  The \fBunlists\fP command removes a mailig
+known mailing lists.  The \fBunlists\fP command removes a mailing
 list from the lists of known and subscribed mailing lists.  The
 \fBsubscribe\fP command adds a mailing list to the lists of known
 and subscribed mailing lists.  The \fBunsubscribe\fP command removes
