@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.16\n"
-"POT-Creation-Date: 2001-05-02 10:30+0200\n"
-"PO-Revision-Date: 2001-03-02 14:17+0900\n"
+"Project-Id-Version: 1.3.19\n"
+"POT-Creation-Date: 2001-05-01 23:31+0200\n"
+"PO-Revision-Date: 2001-05-07 14:17+0900\n"
 "Last-Translator: oota toshiya <oota@ppd.fc.nec.co.jp>\n"
 "Language-Team: mutt-j <mutt-j@ns.ribbon.or.jp>\n"
 "MIME-Version: 1.0\n"
@@ -75,7 +75,7 @@ msgstr "保存するファイル: "
 
 #: alias.c:307
 msgid "Alias added."
-msgstr "別名を追加"
+msgstr "別名を追加した"
 
 #: attach.c:111 attach.c:238 attach.c:431 attach.c:890
 msgid "Can't match nametemplate, continue?"
@@ -364,11 +364,11 @@ msgstr "印刷コマンドが未定義"
 
 #: commands.c:422
 msgid "Print message?"
-msgstr "メッセージの印刷?"
+msgstr "メッセージを印刷?"
 
 #: commands.c:422
 msgid "Print tagged messages?"
-msgstr "タグ付きメッセージの印刷?"
+msgstr "タグ付きメッセージを印刷?"
 
 #: commands.c:430
 msgid "Message printed"
@@ -447,7 +447,7 @@ msgstr "%s にコピー中..."
 #: commands.c:823
 #, c-format
 msgid "Convert to %s upon sending?"
-msgstr ""
+msgstr "送信時に %s に変換?"
 
 #: commands.c:831
 #, c-format
@@ -461,11 +461,11 @@ msgstr "Character set を %s に変更"
 
 #: commands.c:835
 msgid "not converting"
-msgstr ""
+msgstr "変換せず"
 
 #: commands.c:835
 msgid "converting"
-msgstr ""
+msgstr "変換中"
 
 #: compose.c:40
 msgid "There are no attachments."
@@ -619,7 +619,7 @@ msgstr "添付する時にエラーが発生した"
 
 #: compose.c:1114
 msgid "Postpone this message?"
-msgstr "このメッセージを書きかけで保留しますか?"
+msgstr "このメッセージを書きかけで保留するか?"
 
 #: compose.c:1171
 msgid "Write message to mailbox"
@@ -792,7 +792,7 @@ msgstr "保存しないでMuttを抜けますか?"
 
 #: curs_main.c:1080 curs_main.c:1104
 msgid "You are on the last message."
-msgstr "すでに最後のメッセージです"
+msgstr "すでに最後のメッセージ"
 
 #: curs_main.c:1087 curs_main.c:1129
 msgid "No undeleted messages."
@@ -800,7 +800,7 @@ msgstr "削除マークの無いメッセージは無い"
 
 #: curs_main.c:1122 curs_main.c:1145
 msgid "You are on the first message."
-msgstr "すでに最初のメッセージです"
+msgstr "すでに最初のメッセージ"
 
 #: curs_main.c:1217 pattern.c:1287
 msgid "Search wrapped to top."
@@ -1116,7 +1116,7 @@ msgstr "フックできない: %s は不明なフックタイプ"
 #: hook.c:261
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s."
-msgstr ""
+msgstr "unhock: %s 内の %s を削除できず."
 
 #: imap/auth_anon.c:39
 msgid "Authenticating (anonymous)..."
@@ -1177,7 +1177,7 @@ msgstr "メールボックスを作成: "
 
 #: imap/browse.c:272
 msgid "Mailbox created."
-msgstr "メールボックス削除"
+msgstr "メールボックス作成完了"
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
@@ -2413,11 +2413,11 @@ msgstr "これ以上スクロールアップできない。"
 
 #: menu.c:459
 msgid "You are on the last page."
-msgstr "すでに最後のページです。"
+msgstr "すでに最後のページ。"
 
 #: menu.c:481
 msgid "You are on the first page."
-msgstr "すでに最初のページです。"
+msgstr "すでに最初のページ。"
 
 #: menu.c:560
 msgid "First entry is shown."
@@ -2429,11 +2429,11 @@ msgstr "最後のエントリは表示されています。"
 
 #: menu.c:631
 msgid "You are on the last entry."
-msgstr "すでに最後のエントリです。"
+msgstr "すでに最後のエントリ。"
 
 #: menu.c:642
 msgid "You are on the first entry."
-msgstr "すでに最初のエントリです。"
+msgstr "すでに最初のエントリ。"
 
 #: menu.c:702 pattern.c:1233
 msgid "Search for: "
