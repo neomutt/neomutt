@@ -373,9 +373,12 @@ int mutt_write_mime_header (BODY *a, FILE *f)
   {
     len = 25 + strlen (a->subtype); /* approximate len. of content-type */
 
-    p = a->parameter;
-    while (p)
+    for(p = a->parameter; p; p = p->next)
     {
+      
+      if(!p->value)
+	continue;
+      
       fputc (';', f);
 
       buffer[0] = 0;
@@ -396,7 +399,6 @@ int mutt_write_mime_header (BODY *a, FILE *f)
 
       fprintf (f, "%s=%s", p->attribute, buffer);
 
-      p = p->next;
     }
   }
 
