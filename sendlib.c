@@ -1195,8 +1195,11 @@ static void mutt_set_encoding (BODY *b, CONTENT *info)
     else
       b->encoding = ENC7BIT;
   }
-  else if (info->lobin || info->hibin || info->binary || info->linemax > 990
+  else
+#if 0
+    if (info->lobin || info->hibin || info->binary || info->linemax > 990
 	   || info->cr || (/* option (OPTENCODEFROM) && */ info->from))
+#endif
   {
     /* Determine which encoding is smaller  */
     if (1.33 * (float)(info->lobin+info->hibin+info->ascii) < 
@@ -1205,8 +1208,10 @@ static void mutt_set_encoding (BODY *b, CONTENT *info)
     else
       b->encoding = ENCQUOTEDPRINTABLE;
   }
+#if 0
   else
     b->encoding = ENC7BIT;
+#endif
 }
 
 void mutt_stamp_attachment(BODY *a)
