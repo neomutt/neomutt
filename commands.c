@@ -25,6 +25,9 @@
 #include "copy.h"
 #include "mx.h"
 #include "pager.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #ifdef USE_IMAP
 #include "imap.h"
@@ -61,7 +64,10 @@ int mutt_display_message (HEADER *cur)
   char tempfile[_POSIX_PATH_MAX], buf[LONG_STRING];
   int rc = 0, builtin = 0;
   int cmflags = M_CM_DECODE | M_CM_DISPLAY | M_CM_CHARCONV;
-  FILE *fpout;
+  FILE *fpout = NULL;
+  FILE *fpfilterout = NULL;
+  pid_t filterpid;
+  int res;
 
   snprintf (buf, sizeof (buf), "%s/%s", TYPE (cur->content),
 	    cur->content->subtype);
@@ -107,7 +113,23 @@ int mutt_display_message (HEADER *cur)
     return (0);
   }
 
-   mutt_message_hook (cur, M_DISPLAYHOOK);
+  mutt_message_hook (cur, M_DISPLAYHOOK);
+
+  if (DisplayFilter && *DisplayFilter) 
+  {
+    fpfilterout = fpout;
+    fpout = NULL;
+    endwin ();
+    filterpid = mutt_create_filter_fd (DisplayFilter, &fpout, NULL, NULL,
+				       -1, fileno(fpfilterout), -1);
+    if (filterpid < 0)
+    {
+      mutt_error (_("Cannot create display filter"));
+      fclose (fpfilterout);
+      unlink (tempfile);
+      return 0;
+    }
+  }
 
   if (!Pager || mutt_strcmp (Pager, "builtin") == 0)
     builtin = 1;
@@ -118,20 +140,19 @@ int mutt_display_message (HEADER *cur)
     fputs ("\n\n", fpout);
   }
 
-  if (mutt_copy_message (fpout, Context, cur, cmflags,
-			 (option (OPTWEED) ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_FROM) == -1)
+  res = mutt_copy_message (fpout, Context, cur, cmflags,
+       	(option (OPTWEED) ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_FROM);
+  if ((fclose (fpout) != 0 && errno != EPIPE) || res == -1)
   {
-    fclose (fpout);
-    unlink (tempfile);
+    mutt_error (_("Could not copy message"));
+    if (fpfilterout != NULL)
+      mutt_wait_filter (filterpid);
+    mutt_unlink (tempfile);
     return 0;
   }
 
-  if (fclose (fpout) != 0 && errno != EPIPE)
-  {
-    mutt_perror ("fclose");
-    mutt_unlink (tempfile);
-    return (0);
-  }
+  if (fpfilterout != NULL && mutt_wait_filter (filterpid) != 0)
+    mutt_any_key_to_continue (NULL);
 
 #ifdef HAVE_PGP
   /* update PGP information for this message */

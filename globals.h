@@ -37,6 +37,7 @@ WHERE char *Charset;
 WHERE char *ComposeFormat;
 WHERE char *DefaultHook;
 WHERE char *DateFmt;
+WHERE char *DisplayFilter;
 WHERE char *DsnNotify;
 WHERE char *DsnReturn;
 WHERE char *Editor;
