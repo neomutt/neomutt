@@ -359,12 +359,6 @@ static void show_version (void)
 	      
 	);
 
-#ifdef CHARMAPS_DIR
-  printf ("+BUILD_ICONV CHARMAPS_DIR=\"%s\"\n", CHARMAPS_DIR);
-#else
-  puts ("-BUILD_ICONV -CHARMAPS_DIR");
-#endif
-
 #ifdef ISPELL
   printf ("ISPELL=\"%s\"\n", ISPELL);
 #else

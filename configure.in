@@ -396,12 +396,7 @@ sharedir=$mutt_cv_sharedir
 AC_SUBST(sharedir)
 
 LIBICONV=
-LIBICONVDEPS=
-need_iconv=no
-AC_ARG_WITH(included-iconv,
-  [  --with-included-iconv      Use the iconv implementation included here],
-  need_iconv=yes,
-  AC_CACHE_CHECK(for iconv, mutt_cv_func_iconv,
+AC_CACHE_CHECK(for iconv, mutt_cv_func_iconv,
     [ mutt_cv_func_iconv=no
       mutt_cv_lib_iconv=no
       AC_TRY_LINK([#include <stdlib.h>
@@ -419,54 +414,80 @@ AC_ARG_WITH(included-iconv,
 	LIBS="$mutt_save_LIBS"
       fi
     ])
-  if test "$mutt_cv_func_iconv" = no; then
-    need_iconv=yes
-  fi
-  if test "$mutt_cv_lib_iconv" = yes; then
-    LIBICONV="-liconv"
-  fi
-)
-
-if test "$need_iconv" = yes ; then
-  LIBICONV="-Liconv -liconv"
-  LIBICONVDEPS="\$(top_srcdir)/iconv/iconv.h iconv/libiconv.a"
+if test "$mutt_cv_func_iconv" = no; then
+  AC_MSG_ERROR(Unable to find iconv library)
+fi
+if test "$mutt_cv_lib_iconv" = yes; then
+  LIBICONV="-liconv"
 fi
 
-AM_CONDITIONAL(BUILD_ICONV, test "$need_iconv" = yes)
 AC_SUBST(LIBICONV)
-AC_SUBST(LIBICONVDEPS)
 
-if test "$need_iconv" = yes ; then
-
-mutt_cv_charmaps=/usr/share/i18n/charmaps
-AC_ARG_WITH(charmaps, [  --with-charmaps=PATH	     Where to find character set definitions],
-	[if test x$withval != x -a $withval != yes ; then
-		mutt_cv_charmaps=$withval
-	fi])
-
-AC_MSG_CHECKING(whether character set definitions are desired and usable)
-if test ! -f $mutt_cv_charmaps/ISO_10646 ; then
-	AC_MSG_RESULT(no)
-	mutt_cv_charmaps=$mutt_cv_sharedir/charmaps
-	echo "Mutt will expect character map definitions under $mutt_cv_charmaps." >&AC_FD_MSG
-	if test \( -d $srcdir/charmaps \) -a \( -d $srcdir/charmaps/maps \) ; then
-		echo "We will install the included character set definitions." >&AC_FD_MSG
-		mutt_cv_add_subdirs="charmaps"
-	else
-		mutt_cv_add_subdirs=""
-		echo "If you want character set support, read INSTALL". >& AC_FD_MSG
-        fi
-	need_charmaps=yes
-else
-	AC_MSG_RESULT(yes)
+AC_CACHE_CHECK([whether iconv is seriously broken], mutt_cv_iconv_broken,
+	mutt_save_LIBS="$LIBS"
+	LIBS="$LIBS $LIBICONV"
+	AC_TRY_RUN([
+#include <iconv.h>
+#include <string.h>
+int main()
+{
+  iconv_t cd;
+  const char *ib;
+  char *ob;
+  size_t ibl, obl;
+  const char *s = "\304\211";
+changequote(, )dnl
+  char t[3];
+changequote([, ])dnl
+  ib = s, ibl = 2, ob = t, obl = 3; /* glibc-2.1 needs space for '\0'? */
+  return ((cd = iconv_open("UTF-8", "UTF-8")) == (iconv_t)(-1) ||
+	  iconv(cd, &ib, &ibl, &ob, &obl) == (size_t)(-1) ||
+	  iconv_close(cd) ||
+	  !(ib == s + 2 && ibl == 0 && ob == t + 2 && obl == 1) ||
+	  memcmp(s, t, 2));
+}
+		],
+		mutt_cv_iconv_broken=no,
+		mutt_cv_iconv_broken=yes,
+		mutt_cv_iconv_broken=no)
+	LIBS="$mutt_save_LIBS")
+if test "$mutt_cv_iconv_broken" = yes; then
+  AC_MSG_ERROR(Try using libiconv instead)
 fi
 
-AC_DEFINE_UNQUOTED(CHARMAPS_DIR, "$mutt_cv_charmaps")
-charmaps=$mutt_cv_charmaps
-AC_SUBST(charmaps)
-AM_CONDITIONAL(BUILD_CHARMAPS, test x$need_charmaps = xyes)
-
-fi # /* need_iconv */
+dnl This is to detect implementations such as the one in glibc-2.1,
+dnl which always convert exactly but return the number of characters
+dnl converted instead of the number converted inexactly.
+AC_CACHE_CHECK([whether iconv is non-transcribing], mutt_cv_iconv_nontrans,
+	mutt_save_LIBS="$LIBS"
+	LIBS="$LIBS $LIBICONV"
+	AC_TRY_RUN([
+#include <iconv.h>
+#include <string.h>
+int main()
+{
+  iconv_t cd;
+  const char *ib;
+  char *ob;
+  size_t ibl, obl;
+  const char *s = "\304\211";
+changequote(, )dnl
+  char t[3];
+changequote([, ])dnl
+  ib = s, ibl = 2, ob = t, obl = 3;
+  return ((cd = iconv_open("UTF-8", "UTF-8")) == (iconv_t)(-1) ||
+	  iconv(cd, &ib, &ibl, &ob, &obl));
+}
+		],
+		mutt_cv_iconv_nontrans=no,
+		mutt_cv_iconv_nontrans=yes,
+		mutt_cv_iconv_nontrans=no)
+	LIBS="$mutt_save_LIBS")
+if test "$mutt_cv_iconv_nontrans" = yes; then
+  AC_DEFINE(ICONV_NONTRANS, 1)
+else
+  AC_DEFINE(ICONV_NONTRANS, 0)
+fi
 
 AC_ARG_WITH(docdir, [  --with-docdir=PATH         Specify where to put the documentation],
 	[mutt_cv_docdir=$withval],
@@ -787,5 +808,5 @@ fi
 AC_OUTPUT(Makefile intl/Makefile m4/Makefile dnl
 	po/Makefile.in doc/Makefile contrib/Makefile dnl
 	muttbug.sh dnl
-	charmaps/Makefile imap/Makefile iconv/Makefile dnl
+	imap/Makefile dnl
 	Muttrc.head)

@@ -81,7 +81,7 @@ int iswprint (wint_t wc)
 
 #endif /* !HAVE_WC_FUNCS */
 
-#if !defined(HAVE_MBYTE) || !defined(HAVE_ICONV)
+#ifndef HAVE_MBYTE
 
 size_t utf8rtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *_ps)
 {
@@ -170,7 +170,7 @@ size_t utf8rtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *_ps)
   return (size_t)-2;
 }
 
-#endif /* !defined(HAVE_MBYTE) || !defined(HAVE_ICONV) */
+#endif /* !HAVE_MBYTE */
 
 wchar_t replacement_char ()
 {

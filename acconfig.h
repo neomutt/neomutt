@@ -138,9 +138,6 @@
 /* Where's mixmaster located? */
 #undef MIXMASTER
 
-/* Where are the character set definitions located? */
-#undef CHARMAPS_DIR
-
 /* Define to `int' if <signal.h> doesn't define.  */
 #undef sig_atomic_t
 
@@ -194,5 +191,9 @@
 
 /* Define if you have <langinfo.h> and nl_langinfo(CODESET). */
 #undef HAVE_LANGINFO_CODESET
+
+/* Define as 1 if iconv() only converts exactly and we should treat
+ * all return values other than (size_t)(-1) as equivalent. */
+#undef ICONV_NONTRANS
 
   
