@@ -457,7 +457,7 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   }
   s->dptr = p;
 
-  mutt_extract_token (buf, s, M_TOKEN_QUOTE | M_TOKEN_SPACE);
+  mutt_extract_token (buf, s, M_TOKEN_QUOTE | M_TOKEN_SPACE | M_TOKEN_SEMICOLON);
   tmp->addr = mutt_parse_adrlist (tmp->addr, buf->data);
   if (last)
     last->next = tmp;
