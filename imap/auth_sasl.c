@@ -37,7 +37,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
   sasl_conn_t* saslconn;
   sasl_interact_t* interaction = NULL;
   int rc, irc;
-  char buf[LONG_STRING];
+  char buf[HUGE_STRING];
   const char* mech;
 #ifdef USE_SASL2
   const char *pc = NULL;
