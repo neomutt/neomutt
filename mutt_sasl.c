@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000-3 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2000-5 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -429,17 +429,17 @@ void mutt_sasl_setup_conn (CONNECTION* conn, sasl_conn_t* saslconn)
 
   /* preserve old functions */
   sasldata->sockdata = conn->sockdata;
-  sasldata->open = conn->open;
-  sasldata->close = conn->close;
-  sasldata->read = conn->read;
-  sasldata->write = conn->write;
+  sasldata->msasl_open = conn->conn_open;
+  sasldata->msasl_close = conn->conn_close;
+  sasldata->msasl_read = conn->conn_read;
+  sasldata->msasl_write = conn->conn_write;
 
   /* and set up new functions */
   conn->sockdata = sasldata;
-  conn->open = mutt_sasl_conn_open;
-  conn->close = mutt_sasl_conn_close;
-  conn->read = mutt_sasl_conn_read;
-  conn->write = mutt_sasl_conn_write;
+  conn->conn_open = mutt_sasl_conn_open;
+  conn->conn_close = mutt_sasl_conn_close;
+  conn->conn_read = mutt_sasl_conn_read;
+  conn->conn_write = mutt_sasl_conn_write;
 }
 
 /* mutt_sasl_cb_log: callback to log SASL messages */
@@ -515,7 +515,7 @@ static int mutt_sasl_conn_open (CONNECTION* conn)
 
   sasldata = (SASL_DATA*) conn->sockdata;
   conn->sockdata = sasldata->sockdata;
-  rc = (sasldata->open) (conn);
+  rc = (sasldata->msasl_open) (conn);
   conn->sockdata = sasldata;
 
   return rc;
@@ -532,10 +532,10 @@ static int mutt_sasl_conn_close (CONNECTION* conn)
 
   /* restore connection's underlying methods */
   conn->sockdata = sasldata->sockdata;
-  conn->open = sasldata->open;
-  conn->close = sasldata->close;
-  conn->read = sasldata->read;
-  conn->write = sasldata->write;
+  conn->conn_open = sasldata->msasl_open;
+  conn->conn_close = sasldata->msasl_close;
+  conn->conn_read = sasldata->msasl_read;
+  conn->conn_write = sasldata->msasl_write;
 
   /* release sasl resources */
   sasl_dispose (&sasldata->saslconn);
@@ -545,7 +545,7 @@ static int mutt_sasl_conn_close (CONNECTION* conn)
   FREE (&sasldata);
 
   /* call underlying close */
-  rc = (conn->close) (conn);
+  rc = (conn->conn_close) (conn);
 
   return rc;
 }
@@ -585,7 +585,7 @@ static int mutt_sasl_conn_read (CONNECTION* conn, char* buf, size_t len)
     do
     {
       /* call the underlying read function to fill the buffer */
-      rc = (sasldata->read) (conn, buf, len);
+      rc = (sasldata->msasl_read) (conn, buf, len);
       if (rc <= 0)
 	goto out;
 
@@ -609,7 +609,7 @@ static int mutt_sasl_conn_read (CONNECTION* conn, char* buf, size_t len)
     rc = olen;
   }
   else
-    rc = (sasldata->read) (conn, buf, len);
+    rc = (sasldata->msasl_read) (conn, buf, len);
 
   out:
     conn->sockdata = sasldata;
@@ -649,7 +649,7 @@ static int mutt_sasl_conn_write (CONNECTION* conn, const char* buf,
 	goto fail;
       }
 
-      rc = (sasldata->write) (conn, pbuf, plen);
+      rc = (sasldata->msasl_write) (conn, pbuf, plen);
 #ifndef USE_SASL2
       FREE (&pbuf);
 #endif
@@ -663,7 +663,7 @@ static int mutt_sasl_conn_write (CONNECTION* conn, const char* buf,
   }
   else
   /* just write using the underlying socket function */
-    rc = (sasldata->write) (conn, buf, len);
+    rc = (sasldata->msasl_write) (conn, buf, len);
   
   conn->sockdata = sasldata;
 

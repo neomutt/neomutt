@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1998 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2005 Brendan Cully <brendan@kublai.com>
  * Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>
  * 
  *     This program is free software; you can redistribute it and/or modify
@@ -56,7 +56,7 @@ int mutt_socket_open (CONNECTION* conn)
   if (socket_preconnect ())
     return -1;
 
-  return conn->open (conn);
+  return conn->conn_open (conn);
 }
 
 int mutt_socket_close (CONNECTION* conn)
@@ -66,7 +66,7 @@ int mutt_socket_close (CONNECTION* conn)
   if (conn->fd < 0)
     dprint (1, (debugfile, "mutt_socket_close: Attempt to close closed connection.\n"));
   else
-    rc = conn->close (conn);
+    rc = conn->conn_close (conn);
 
   conn->fd = -1;
   conn->ssf = 0;
@@ -84,7 +84,7 @@ int mutt_socket_read (CONNECTION* conn, char* buf, size_t len)
     return -1;
   }
 
-  rc = conn->read (conn, buf, len);
+  rc = conn->conn_read (conn, buf, len);
   /* EOF */
   if (rc == 0)
   {
@@ -111,7 +111,7 @@ int mutt_socket_write_d (CONNECTION *conn, const char *buf, int dbg)
   }
 
   len = mutt_strlen (buf);
-  if ((rc = conn->write (conn, buf, len)) < 0)
+  if ((rc = conn->conn_write (conn, buf, len)) < 0)
   {
     dprint (1, (debugfile,
       "mutt_socket_write: error writing, closing socket\n"));
@@ -135,7 +135,7 @@ int mutt_socket_readchar (CONNECTION *conn, char *c)
   if (conn->bufpos >= conn->available)
   {
     if (conn->fd >= 0)
-      conn->available = conn->read (conn, conn->inbuf, sizeof (conn->inbuf));
+      conn->available = conn->conn_read (conn, conn->inbuf, sizeof (conn->inbuf));
     else
     {
       dprint (1, (debugfile, "mutt_socket_readchar: attempt to read from closed connection.\n"));
@@ -277,10 +277,10 @@ CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account)
   }
   else
   {
-    conn->read = raw_socket_read;
-    conn->write = raw_socket_write;
-    conn->open = raw_socket_open;
-    conn->close = raw_socket_close;
+    conn->conn_read = raw_socket_read;
+    conn->conn_write = raw_socket_write;
+    conn->conn_open = raw_socket_open;
+    conn->conn_close = raw_socket_close;
   }
 
   return conn;

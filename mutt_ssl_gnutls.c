@@ -77,10 +77,10 @@ int mutt_gnutls_socket_setup (CONNECTION* conn)
   if (tls_init() < 0)
     return -1;
 
-  conn->open	= tls_socket_open;
-  conn->read	= tls_socket_read;
-  conn->write	= tls_socket_write;
-  conn->close	= tls_socket_close;
+  conn->conn_open	= tls_socket_open;
+  conn->conn_read	= tls_socket_read;
+  conn->conn_write	= tls_socket_write;
+  conn->conn_close	= tls_socket_close;
 
   return 0;
 }
@@ -151,9 +151,9 @@ int mutt_gnutls_starttls (CONNECTION* conn)
   if (tls_negotiate (conn) < 0)
     return -1;
 
-  conn->read	= tls_socket_read;
-  conn->write	= tls_socket_write;
-  conn->close	= tls_starttls_close;
+  conn->conn_read	= tls_socket_read;
+  conn->conn_write	= tls_socket_write;
+  conn->conn_close	= tls_starttls_close;
 
   return 0;
 }
@@ -298,9 +298,9 @@ static int tls_starttls_close (CONNECTION* conn)
   int rc;
 
   rc = tls_socket_close (conn);
-  conn->read = raw_socket_read;
-  conn->write = raw_socket_write;
-  conn->close = raw_socket_close;
+  conn->conn_read = raw_socket_read;
+  conn->conn_write = raw_socket_write;
+  conn->conn_close = raw_socket_close;
 
   return rc;
 }

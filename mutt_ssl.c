@@ -116,9 +116,9 @@ int mutt_ssl_starttls (CONNECTION* conn)
 
   /* hmm. watch out if we're starting TLS over any method other than raw. */
   conn->sockdata = ssldata;
-  conn->read = ssl_socket_read;
-  conn->write = ssl_socket_write;
-  conn->close = tls_close;
+  conn->conn_read = ssl_socket_read;
+  conn->conn_write = ssl_socket_write;
+  conn->conn_close = tls_close;
 
   conn->ssf = SSL_CIPHER_get_bits (SSL_get_current_cipher (ssldata->ssl),
     &maxbits);
@@ -233,14 +233,14 @@ int ssl_socket_setup (CONNECTION * conn)
 {
   if (ssl_init() < 0)
   {
-    conn->open = ssl_socket_open_err;
+    conn->conn_open = ssl_socket_open_err;
     return -1;
   }
 
-  conn->open	= ssl_socket_open;
-  conn->read	= ssl_socket_read;
-  conn->write	= ssl_socket_write;
-  conn->close	= ssl_socket_close;
+  conn->conn_open	= ssl_socket_open;
+  conn->conn_read	= ssl_socket_read;
+  conn->conn_write	= ssl_socket_write;
+  conn->conn_close	= ssl_socket_close;
 
   return 0;
 }
@@ -373,9 +373,9 @@ static int tls_close (CONNECTION* conn)
   int rc;
 
   rc = ssl_socket_close (conn);
-  conn->read = raw_socket_read;
-  conn->write = raw_socket_write;
-  conn->close = raw_socket_close;
+  conn->conn_read = raw_socket_read;
+  conn->conn_write = raw_socket_write;
+  conn->conn_close = raw_socket_close;
 
   return rc;
 }

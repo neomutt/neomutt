@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000-1 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2000-5 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -51,10 +51,10 @@ typedef struct
 
   /* underlying socket data */
   void* sockdata;
-  int (*open) (CONNECTION* conn);
-  int (*close) (CONNECTION* conn);
-  int (*read) (CONNECTION* conn, char* buf, size_t len);
-  int (*write) (CONNECTION* conn, const char* buf, size_t count);
+  int (*msasl_open) (CONNECTION* conn);
+  int (*msasl_close) (CONNECTION* conn);
+  int (*msasl_read) (CONNECTION* conn, char* buf, size_t len);
+  int (*msasl_write) (CONNECTION* conn, const char* buf, size_t count);
 }
 SASL_DATA;
 

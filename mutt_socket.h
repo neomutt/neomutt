@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1998 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2005 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -44,10 +44,10 @@ typedef struct _connection
   struct _connection *next;
 
   void *sockdata;
-  int (*read) (struct _connection* conn, char* buf, size_t len);
-  int (*write) (struct _connection *conn, const char *buf, size_t count);
-  int (*open) (struct _connection *conn);
-  int (*close) (struct _connection *conn);
+  int (*conn_read) (struct _connection* conn, char* buf, size_t len);
+  int (*conn_write) (struct _connection *conn, const char *buf, size_t count);
+  int (*conn_open) (struct _connection *conn);
+  int (*conn_close) (struct _connection *conn);
 } CONNECTION;
 
 int mutt_socket_open (CONNECTION* conn);

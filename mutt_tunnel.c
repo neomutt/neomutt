@@ -49,10 +49,10 @@ static int tunnel_socket_write (CONNECTION* conn, const char* buf, size_t len);
 /* -- public functions -- */
 int mutt_tunnel_socket_setup (CONNECTION *conn)
 {
-  conn->open = tunnel_socket_open;
-  conn->close = tunnel_socket_close;
-  conn->read = tunnel_socket_read;
-  conn->write = tunnel_socket_write;
+  conn->conn_open = tunnel_socket_open;
+  conn->conn_close = tunnel_socket_close;
+  conn->conn_read = tunnel_socket_read;
+  conn->conn_write = tunnel_socket_write;
 
   return 0;
 }
