@@ -73,7 +73,8 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO \
 	_regex.h OPS.MIX README.SECURITY remailer.c remailer.h browser.h \
 	mbyte.h	lib.h extlib.c pgpewrap.c smime_keys.pl pgplib.h Muttrc.head Muttrc \
 	makedoc.c stamp-doc-rc README.SSL crypt.h smime.h\
-	muttbug pgppacket.h depcomp ascii.h BEWARE PATCHES patchlist.sh
+	muttbug pgppacket.h depcomp ascii.h BEWARE PATCHES patchlist.sh	\
+	ChangeLog.old mkchangelog.sh cvslog2changelog.pl
 
 mutt_dotlock_SOURCES = mutt_dotlock.c
 mutt_dotlock_LDADD = @LIBOBJS@
@@ -157,7 +158,7 @@ commit: pclean check-security
 	cvs commit
 
 changelog:
-	rcs2log | cat - ChangeLog > ChangeLog.$$$$ && mv ChangeLog.$$$$ ChangeLog
+	sh ./mkchangelog.sh | cat  - ChangeLog > ChangeLog.$$$$ && mv ChangeLog.$$$$ ChangeLog
 	$(VISUAL) ChangeLog
 
 # kluge around automake problems.
