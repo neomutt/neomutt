@@ -93,20 +93,20 @@ static pgp_key_t *parse_pub_line (char *buf, int *is_subkey, pgp_key_t *k)
 	break;
       }
       case 2:			/* trust info */
-      /*
-       * XXX - is this the owner-trust field?
-       *
-       * Actually, we'd need the trust gpg has into the 
-       * association between a user ID and a key.
-       * 
-       * - tlr
-       */
       {
 	switch (*p)
 	{				/* look only at the first letter */
 	  case 'e':
 	    k->flags |= KEYFLAG_EXPIRED;
 	    break;
+	  case 'r':
+	    k->flags |= KEYFLAG_REVOKED;
+	    break;
+	  
+	  /* produce "undefined trust" as long as gnupg doesn't
+	   * have a proper trust model.
+	   */
+#if 0
 	  case 'n':
 	    trust = 1;
 	    break;
@@ -119,9 +119,7 @@ static pgp_key_t *parse_pub_line (char *buf, int *is_subkey, pgp_key_t *k)
 	  case 'u':
 	    trust = 3;
 	    break;
-	  case 'r':
-	    k->flags |= KEYFLAG_REVOKED;
-	    break;
+#endif	  
 	}
 	break;
       }

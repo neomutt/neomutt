@@ -3371,6 +3371,7 @@ Default: unset
 
 If set, use 64 bit PGP key IDs. Unset uses the normal 32 bit Key IDs.
 
+
 <sect2>pgp&lowbar;receive&lowbar;version<label id="pgp_receive_version">
 <p>
 Type: string<newline>
@@ -3411,6 +3412,15 @@ default defined in <ref id="pgp_default_version"
 name="&dollar;pgp&lowbar;default&lowbar;version"> will be used. Set
 this to pgp2 (PGP 2.*), pgp5 (PGP 5.*), or gpg (GNU privacy guard) if
 you want to use a different PGP version for sending operations.
+
+<sect2>pgp&lowbar;show&lowbar;unusable<label id="pgp_show_unusable">
+<p>
+Type: boolean<newline>
+Default: set
+
+If set, mutt will display non-usable keys on the PGP key selection
+menu.  This includes keys which have been revoked, have expired, or
+have been marked as ``disabled'' by the user.
 
 <sect2>pgp&lowbar;sign&lowbar;as<label id="pgp_sign_as">
 <p>

@@ -146,6 +146,9 @@ static pgp_key_t *pgp_select_key (struct pgp_vinfo *pgp,
 
   for (i = 0, kp = keys; kp; kp = kp->next)
   {
+    if (!option (OPTPGPSHOWUNUSABLE) && (kp->flags & KEYFLAG_CANTUSE))
+      continue;
+    
     for (a = kp->address; a; i++, a = a->next)
       ;
   }
@@ -158,6 +161,9 @@ static pgp_key_t *pgp_select_key (struct pgp_vinfo *pgp,
 
   for (i = 0, kp = keys; kp; kp = kp->next)
   {
+    if (!option (OPTPGPSHOWUNUSABLE) && (kp->flags & KEYFLAG_CANTUSE))
+      continue;
+	
     for (a = kp->address; a; i++, a = a->next)
       KeyTable[i] = a;
   }
