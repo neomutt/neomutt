@@ -66,7 +66,7 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO configure acconfig.h attach.h \
 	sort.h mime.types VERSION prepare _regex.h OPS.MIX	\
 	README.SECURITY remailer.c remailer.h browser.h \
 	lib.h extlib.c pgpewrap pgplib.h Muttrc.head Muttrc \
-	makedoc.c stamp-doc-rc README.SSL
+	makedoc.c stamp-doc-rc README.SSL README.UPGRADE
 
 
 mutt_dotlock_SOURCES = mutt_dotlock.c

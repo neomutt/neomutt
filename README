@@ -1,5 +1,5 @@
-README for mutt-0.95
-====================
+README for mutt-1.1
+===================
 
 If you got the mutt source code from the public CVS repository (CVS
 root: :pserver:anonymous@ftp.guug.de:/home/roessler/cvs, password
@@ -12,6 +12,9 @@ The user manual is in doc/manual.txt.  A list of major changes since
 the last public version can be found under NEWS.
 
 PGP users should read doc/PGP-Notes.txt.
+
+Those who upgrade from a version of mutt prior to 1.1 should read
+the README.UPGRADE file.
 
 Before you start hacking on mutt, read doc/devel-notes.txt.  Before
 applying patches to mutt, read doc/applying-patches.txt.  Please,
