@@ -1008,9 +1008,9 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
       return (pat->not ^ match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS,
 					pat->alladdr, 1, h->env->cc));
     case M_SUBJECT:
-      return (pat->not ^ (h->env->subject && regexec (pat->rx, h->env->subject, 0, NULL, 0) == 0));
+      return (pat->not ^ (h->env && h->env->subject && regexec (pat->rx, h->env->subject, 0, NULL, 0) == 0));
     case M_ID:
-      return (pat->not ^ (h->env->message_id && regexec (pat->rx, h->env->message_id, 0, NULL, 0) == 0));
+      return (pat->not ^ (h->env && h->env->message_id && regexec (pat->rx, h->env->message_id, 0, NULL, 0) == 0));
     case M_SCORE:
       return (pat->not ^ (h->score >= pat->min && (pat->max == M_MAXRANGE ||
 						   h->score <= pat->max)));
@@ -1019,18 +1019,18 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
     case M_REFERENCE:
       return (pat->not ^ match_reference (pat->rx, h->env->references));
     case M_ADDRESS:
-      return (pat->not ^ match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS,
+      return (pat->not ^ (h->env && match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS,
 					pat->alladdr, 4, h->env->from,
-					h->env->sender, h->env->to, h->env->cc));
+					h->env->sender, h->env->to, h->env->cc)));
     case M_RECIPIENT:
-           return (pat->not ^ match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS,
-					pat->alladdr, 2, h->env->to, h->env->cc));
+           return (pat->not ^ (h->env && match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS,
+					pat->alladdr, 2, h->env->to, h->env->cc)));
     case M_LIST:
-      return (pat->not ^ mutt_is_list_recipient (pat->alladdr, h->env->to, h->env->cc));
+      return (pat->not ^ (h->env && mutt_is_list_recipient (pat->alladdr, h->env->to, h->env->cc)));
     case M_PERSONAL_RECIP:
-      return (pat->not ^ match_user (pat->alladdr, h->env->to, h->env->cc));
+      return (pat->not ^ (h->env && match_user (pat->alladdr, h->env->to, h->env->cc)));
     case M_PERSONAL_FROM:
-      return (pat->not ^ match_user (pat->alladdr, h->env->from, NULL));
+      return (pat->not ^ (h->env && match_user (pat->alladdr, h->env->from, NULL)));
     case M_COLLAPSED:
       return (pat->not ^ (h->collapsed && h->num_hidden > 1));
    case M_CRYPT_SIGN:
