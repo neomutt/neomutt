@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000 Vsevolod Volkov <vvv@mutt.org.ua>
+ * Copyright (C) 2000-2001 Vsevolod Volkov <vvv@mutt.org.ua>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -236,6 +236,7 @@ int pop_open_mailbox (CONTEXT *ctx)
 {
   int ret;
   char buf[LONG_STRING];
+  CONNECTION *conn;
   ACCOUNT acct;
   POP_DATA *pop_data;
   ciss_url_t url;
@@ -250,18 +251,21 @@ int pop_open_mailbox (CONTEXT *ctx)
   mutt_account_tourl (&acct, &url);
   url.path = NULL;
   url_ciss_tostring (&url, buf, sizeof (buf), 0);
+  conn = mutt_conn_find (NULL, &acct);
+  if (!conn)
+    return -1;
 
   FREE (&ctx->path);
   ctx->path = safe_strdup (buf);
 
   pop_data = safe_calloc (1, sizeof (POP_DATA));
-  pop_data->conn = mutt_conn_find (NULL, &acct);
+  pop_data->conn = conn;
   ctx->data = pop_data;
 
   if (pop_open_connection (pop_data) < 0)
     return -1;
 
-  pop_data->conn->data = pop_data;
+  conn->data = pop_data;
 
   FOREVER
   {
@@ -531,6 +535,7 @@ void pop_fetch_mail (void)
   char msgbuf[SHORT_STRING];
   char *url, *p;
   int i, delanswer, last = 0, msgs, bytes, rset = 0, ret;
+  CONNECTION *conn;
   CONTEXT ctx;
   MESSAGE *msg = NULL;
   ACCOUNT acct;
@@ -550,19 +555,28 @@ void pop_fetch_mail (void)
   }
   strcpy (p, PopHost);		/* __STRCPY_CHECKED__ */
 
-  if (pop_parse_path (url, &acct))
+  ret = pop_parse_path (url, &acct);
+  FREE (&url);
+  if (ret)
   {
     mutt_error ("%s is an invalid POP path", PopHost);
     return;
   }
 
-  pop_data = safe_calloc (1, sizeof (POP_DATA));
-  pop_data->conn = mutt_conn_find (NULL, &acct);
-
-  if (pop_open_connection (pop_data) < 0)
+  conn = mutt_conn_find (NULL, &acct);
+  if (!conn)
     return;
 
-  pop_data->conn->data = pop_data;
+  pop_data = safe_calloc (1, sizeof (POP_DATA));
+  pop_data->conn = conn;
+
+  if (pop_open_connection (pop_data) < 0)
+  {
+    FREE (&pop_data);
+    return;
+  }
+
+  conn->data = pop_data;
 
   mutt_message _("Checking for new messages...");
 
@@ -665,12 +679,12 @@ finish:
   strfcpy (buffer, "QUIT\r\n", sizeof (buffer));
   if (pop_query (pop_data, buffer, sizeof (buffer)) == -1)
     goto fail;
-  mutt_socket_close (pop_data->conn);
+  mutt_socket_close (conn);
   FREE (&pop_data);
   return;
 
 fail:
   mutt_error _("Server closed connection!");
-  mutt_socket_close (pop_data->conn);
+  mutt_socket_close (conn);
   FREE (&pop_data);
 }

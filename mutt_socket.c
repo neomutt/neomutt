@@ -258,7 +258,7 @@ CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account)
 #else
     mutt_error _("SSL is unavailable.");
     mutt_sleep (2);
-    FREE (&conn);
+    mutt_socket_free (conn);
 
     return NULL;
 #endif
