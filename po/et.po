@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt 1.5.1\n"
-"POT-Creation-Date: 2002-12-09 14:26+0100\n"
-"PO-Revision-Date: 2002-05-13 19:00+0300\n"
+"Project-Id-Version: mutt 1.5.2\n"
+"POT-Creation-Date: 2002-12-06 12:10+0100\n"
+"PO-Revision-Date: 2002-12-09 17:19+02:00\n"
 "Last-Translator: Toomas Soome <tsoome@muhv.pri.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -66,7 +66,7 @@ msgstr "Teil on juba selle nimeline hüüdnimi!"
 
 #: alias.c:252
 msgid "Warning: This alias name may not work.  Fix it?"
-msgstr ""
+msgstr "Hoiatus: See hüüdnimi ei pruugi toimida. Parandan?"
 
 #: alias.c:273
 msgid "Address: "
@@ -253,9 +253,8 @@ msgid "Error trying to view file"
 msgstr "Viga faili vaatamisel"
 
 #: buffy.c:440
-#, fuzzy
 msgid "New mail in "
-msgstr "Uus kiri failis %s."
+msgstr "Uus kiri kaustas "
 
 #: color.c:322
 #, c-format
@@ -575,16 +574,13 @@ msgid ""
 msgstr "S/MIME (k)rüpti, (a)llkiri, allk. ku(i), (m)õlemad või (u)nusta? "
 
 #: compose.c:232
-#, fuzzy
-msgid "eswabf"
+msgid "ewsabf"
 msgstr "kaimu"
 
 #: compose.c:240
-#, fuzzy
 msgid ""
 "1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, or (f)orget it? "
-msgstr ""
-"1: DES, 2: Tripple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128 või (u)nusta? "
+msgstr "1: DES, 2: 3DES, 3: RC2-40, 4: RC2-64, 5: RC2-128 või (u)nusta? "
 
 #: compose.c:242
 msgid "12345f"
@@ -1101,9 +1097,9 @@ msgid "could not write temporary mail folder: %s"
 msgstr "ei õnnestu kirjutada ajutisse kausta: %s"
 
 #: editmsg.c:101
-#, fuzzy, c-format
+#, c-format
 msgid "could not truncate temporary mail folder: %s"
-msgstr "ei õnnestu kirjutada ajutisse kausta: %s"
+msgstr "ajutist kausta ei õnnestu lühendada: %s"
 
 #: editmsg.c:116
 msgid "Message file is empty!"
@@ -1413,7 +1409,7 @@ msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Sellel serveril ei saa IMAP postkastidele lisada"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:729 imap/message.c:600 muttlib.c:1193
+#: imap/imap.c:729 imap/message.c:600 muttlib.c:1192
 #, c-format
 msgid "Create %s?"
 msgstr "Loon %s?"
@@ -1703,9 +1699,8 @@ msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "lülita kõikide/tellitud kaustade vaatamine (ainult IMAP)"
 
 #: keymap_alldefs.h:17
-#, fuzzy
 msgid "list mailboxes with new mail"
-msgstr "Uute teadetega postkaste ei ole."
+msgstr "näita uute teadetega postkaste"
 
 #: keymap_alldefs.h:18
 msgid "change directories"
@@ -2425,20 +2420,18 @@ msgstr ""
 "Veast teatamiseks kasutage palun käsku flea(1).\n"
 
 #: main.c:44
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2002 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Autoriõigus (C) 1996-2001 Michael R. Elkins ja teised.\n"
+"Autoriõigus (C) 1996-2002 Michael R. Elkins ja teised.\n"
 "Mutt ei paku MITTE MINGISUGUSEID GARANTIISID; detailid käsuga `mutt -vv'.\n"
 "Mutt on vaba tarkvara ja te võite seda teatud tingimustel levitada;\n"
 "detailsemat infot saate käsuga `mutt -vv'.\n"
 
 #: main.c:50
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -2465,12 +2458,13 @@ msgid ""
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 msgstr ""
-"Autoriõigus (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
-"Autoriõigus (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
-"Autoriõigus (C) 1997-2001 Thomas Roessler <roessler@guug.de>\n"
-"Autoriõigus (C) 1998-2001 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Autoriõigus (C) 1999-2001 Brendan Cully <brendan@kublai.com>\n"
-"Autoriõigus (C) 1999-2001 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Autoriõigus (C) 1996-2002 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Autoriõigus (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
+"Autoriõigus (C) 1997-2002 Thomas Roessler <roessler@guug.de>\n"
+"Autoriõigus (C) 1998-2002 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Autoriõigus (C) 1999-2002 Brendan Cully <brendan@kublai.com>\n"
+"Autoriõigus (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Autoriõigus (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "Paljud siin mainimata inimesed on saatnud koodi, parandusi ja soovitusi.\n"
 "\n"
@@ -2489,7 +2483,6 @@ msgstr ""
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 
 #: main.c:88
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -2529,14 +2522,16 @@ msgstr ""
 "               [ -f <fail> ]\n"
 "          mutt [ -nR ] [ -e <käsk> ] [ -F <fail> ] -Q <päring>\n"
 "               [ -Q <päring> ] [...]\n"
-"          mutt [ -nx ] [ -e <käsk> ] [ -a <fail> ] [ -F <fail> ] [ -H "
-"<fail> ]\n"
+"          mutt [ -nR ] [ -e <käsk> ] [ -F <fail> ] -A <hüüdnimi>\n"
+"               [ -A <hüüdnimi> ] [...]\n"
+"          mutt [ -nx ] [ -e <käsk> ] [ -a <fail> ] [ -F <fail> ] [ -H <fail> ]\n"
 "               [ -i <fail> ] [ -s <teema> ] [ -b <aadr> ] [ -c <aadr> ]\n"
 "               <aadr> [ ... ]\n"
 "          mutt [ -n ] [ -e <käsk> ] [ -F <fail> ] -p\n"
 "          mutt -v[v]\n"
 "\n"
 "võtmed:\n"
+"  -A <hüüdnimi>\tavalda antud hüüdnimi\n"
 "  -a <fail>\tlisa teatele fail\n"
 "  -b <aadress>\tmäära pimekoopia (BCC) aadress\n"
 "  -c <aadress>\tmäära koopia (CC) aadress\n"
@@ -2742,41 +2737,41 @@ msgstr "hüppamine ei ole dialoogidele realiseeritud."
 msgid "Tagging is not supported."
 msgstr "Märkimist ei toetata."
 
-#: mh.c:656
+#: mh.c:643
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Loen %s... %d"
 
-#: mh.c:1042
+#: mh.c:1019
 msgid "maildir_commit_message(): unable to set time on file"
-msgstr ""
+msgstr "maildir_commit_message(): ei õnnestu seada faili aegu"
 
-#: muttlib.c:855
+#: muttlib.c:854
 msgid "File is a directory, save under it?"
 msgstr "Fail on kataloog, salvestan sinna?"
 
-#: muttlib.c:860
+#: muttlib.c:859
 msgid "File under directory: "
 msgstr "Fail kataloogis: "
 
-#: muttlib.c:872
+#: muttlib.c:871
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Fail on olemas, (k)irjutan üle, (l)isan või ka(t)kestan?"
 
-#: muttlib.c:872
+#: muttlib.c:871
 msgid "oac"
 msgstr "klt"
 
-#: muttlib.c:1160
+#: muttlib.c:1159
 msgid "Can't save message to POP mailbox."
 msgstr "Teadet ei saa POP postkasti salvestada."
 
-#: muttlib.c:1169
+#: muttlib.c:1168
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s ei ole postkast!"
 
-#: muttlib.c:1175
+#: muttlib.c:1174
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Lisan teated kausta %s?"
@@ -3480,9 +3475,8 @@ msgid "Illegal S/MIME header"
 msgstr "Vigane S/MIME päis"
 
 #: postpone.c:565
-#, fuzzy
 msgid "Decryption failed."
-msgstr "Meldimine ebaõnnestus."
+msgstr "Dekrüptimine ebaõnnestus."
 
 #: query.c:45
 msgid "New Query"
@@ -3779,9 +3773,8 @@ msgid "Recall postponed message?"
 msgstr "Laen postitusootel teate?"
 
 #: send.c:1338
-#, fuzzy
 msgid "Edit forwarded message?"
-msgstr "Valmistan edastatavat teadet..."
+msgstr "Toimetan edastatavat teadet?"
 
 #: send.c:1357
 msgid "Abort unmodified message?"
@@ -4026,6 +4019,3 @@ msgstr "Vanem teade ei ole selles piiratud vaates nähtav."
 #: thread.c:1085
 msgid "Parent message is not available."
 msgstr "Vanem teade ei ole kättesaadav."
-
-#~ msgid "ewsabf"
-#~ msgstr "kaimu"
