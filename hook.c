@@ -115,11 +115,11 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 	ptr->rx.not == not &&
 	!mutt_strcmp (pattern.data, ptr->rx.pattern))
     {
-      if (data & (M_FOLDERHOOK | M_SENDHOOK))
+      if (data & (M_FOLDERHOOK | M_SENDHOOK | M_DISPLAYHOOK))
       {
-	/* folder-hook and send-hook allow multiple commands with the same
-	   pattern, so if we've already seen this pattern/command pair, just
-	   ignore it instead of creating a duplicate */
+	/* these hooks allow multiple commands with the same
+	 * pattern, so if we've already seen this pattern/command pair, just
+	 * ignore it instead of creating a duplicate */
 	if (!mutt_strcmp (ptr->command, command.data))
 	{
 	  FREE (&command.data);
@@ -130,10 +130,10 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
       else
       {
 	/* other hooks only allow one command per pattern, so update the
-	   entry with the new command.  this currently does not change the
-	   order of execution of the hooks, which i think is desirable since
-	   a common action to perform is to change the default (.) entry
-	   based upon some other information. */
+	 * entry with the new command.  this currently does not change the
+	 * order of execution of the hooks, which i think is desirable since
+	 * a common action to perform is to change the default (.) entry
+	 * based upon some other information. */
 	FREE (&ptr->command);
 	ptr->command = command.data;
 	FREE (&pattern.data);
@@ -144,7 +144,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
       break;
   }
 
-  if (data & (M_SENDHOOK | M_SAVEHOOK | M_FCCHOOK))
+  if (data & (M_SENDHOOK | M_SAVEHOOK | M_FCCHOOK | M_DISPLAYHOOK))
   {
     if ((pat = mutt_pattern_comp (pattern.data, (data & (M_SENDHOOK | M_FCCHOOK)) ? 0 : M_FULL_MSG, err)) == NULL)
       goto error;
@@ -292,7 +292,7 @@ char *mutt_find_hook (int type, const char *pat)
   return (NULL);
 }
 
-void mutt_send_hook (HEADER *hdr)
+void mutt_message_hook (HEADER *hdr, int type)
 {
   BUFFER err, token;
   HOOK *hook;
@@ -306,7 +306,7 @@ void mutt_send_hook (HEADER *hdr)
     if(!hook->command)
       continue;
 
-    if (hook->type & M_SENDHOOK)
+    if (hook->type & type)
       if ((mutt_pattern_exec (hook->pattern, 0, NULL, hdr) > 0) ^ hook->rx.not)
 	if (mutt_parse_rc_line (hook->command, &token, &err) != 0)
 	{

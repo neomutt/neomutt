@@ -1148,7 +1148,7 @@ ci_send_message (int flags,		/* send mode */
 
     /* change settings based upon recipients */
     
-    mutt_send_hook (msg);
+    mutt_message_hook (msg, M_SENDHOOK);
 
     if (killfrom)
     {

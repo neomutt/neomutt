@@ -42,14 +42,6 @@
 
 
 
-
-
-
-
-
-
-
-
 #include <errno.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -114,6 +106,8 @@ int mutt_display_message (HEADER *cur)
     mutt_error _("Could not create temporary file!");
     return (0);
   }
+
+   mutt_message_hook (cur, M_DISPLAYHOOK);
 
   if (!Pager || mutt_strcmp (Pager, "builtin") == 0)
     builtin = 1;
