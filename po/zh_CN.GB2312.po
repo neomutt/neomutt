@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.2\n"
-"POT-Creation-Date: 2001-03-28 15:10+0200\n"
+"POT-Creation-Date: 2001-05-01 23:31+0200\n"
 "PO-Revision-Date: 1999-12-20 20:41+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -34,7 +34,7 @@ msgstr "选择"
 
 #. __STRCAT_CHECKED__
 #: addrbook.c:33 browser.c:43 compose.c:92 curs_main.c:380 mutt_ssl.c:617
-#: pager.c:1460 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
+#: pager.c:1460 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "帮助"
 
@@ -279,11 +279,11 @@ msgstr "单色：太少参数"
 msgid "%s: no such attribute"
 msgstr "%s：没有这个属性"
 
-#: color.c:690 hook.c:62 hook.c:70 keymap.c:697
+#: color.c:690 hook.c:64 hook.c:72 keymap.c:697
 msgid "too few arguments"
 msgstr "太少参数"
 
-#: color.c:699 hook.c:76
+#: color.c:699 hook.c:78
 msgid "too many arguments"
 msgstr "太多参数"
 
@@ -296,7 +296,7 @@ msgstr "不支持预设的色彩"
 msgid "Verify PGP signature?"
 msgstr "检查 PGP 签名?"
 
-#: commands.c:105 pgp.c:1657 pgpkey.c:491 postpone.c:517
+#: commands.c:105 pgp.c:1678 pgpkey.c:559 postpone.c:517
 msgid "Invoking PGP..."
 msgstr "启动 PGP…"
 
@@ -452,15 +452,28 @@ msgstr " 已标记"
 msgid "Copying to %s..."
 msgstr "拷贝到 %s…"
 
-#: commands.c:822
+#: commands.c:823
+#, c-format
+msgid "Convert to %s upon sending?"
+msgstr ""
+
+#: commands.c:831
 #, fuzzy, c-format
 msgid "Content-Type changed to %s."
 msgstr "正连接到 %s…"
 
-#: commands.c:824
+#: commands.c:833
 #, fuzzy, c-format
-msgid "Character set changed to %s."
+msgid "Character set changed to %s; %s."
 msgstr "不明的字符集 %s。"
+
+#: commands.c:835
+msgid "not converting"
+msgstr ""
+
+#: commands.c:835
+msgid "converting"
+msgstr ""
 
 #: compose.c:40
 msgid "There are no attachments."
@@ -647,7 +660,7 @@ msgstr ""
 msgid "Exit Mutt?"
 msgstr "离开 Mutt？"
 
-#: curs_lib.c:326 mutt_socket.c:404
+#: curs_lib.c:326 mutt_socket.c:406
 msgid "unknown error"
 msgstr "不明的错误"
 
@@ -802,11 +815,11 @@ msgstr "没有要反删除的信件。"
 msgid "You are on the first message."
 msgstr "您已经在第一封信了。"
 
-#: curs_main.c:1217 pattern.c:1283
+#: curs_main.c:1217 pattern.c:1287
 msgid "Search wrapped to top."
 msgstr "搜寻至开头。"
 
-#: curs_main.c:1226 pattern.c:1294
+#: curs_main.c:1226 pattern.c:1298
 msgid "Search wrapped to bottom."
 msgstr "搜寻至结尾。"
 
@@ -830,7 +843,7 @@ msgstr "没有更多的序列"
 msgid "You are on the first thread."
 msgstr "您已经在第一个序列上。"
 
-#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:653 thread.c:704
+#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:676 thread.c:727
 msgid "Threading is not enabled."
 msgstr "序列功能尚未启动。"
 
@@ -1106,10 +1119,19 @@ msgstr ""
 msgid "Help for %s"
 msgstr "%s 的求助"
 
-#: hook.c:246
+#: hook.c:243
+msgid "unhook: Can't do unhook * from within a hook."
+msgstr ""
+
+#: hook.c:255
 #, fuzzy, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "%s：不明的种类"
+
+#: hook.c:261
+#, c-format
+msgid "unhook: Can't delete a %s from within a %s."
+msgstr ""
 
 #: imap/auth_anon.c:39
 msgid "Authenticating (anonymous)..."
@@ -2218,7 +2240,7 @@ msgstr "要与研发人员连络，请寄信给 <mutt-dev@mutt.org>。\n"
 #: main.c:45
 #, fuzzy
 msgid ""
-"Copyright (C) 1996-2000 Michael R. Elkins and others.\n"
+"Copyright (C) 1996-2001 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
@@ -2231,13 +2253,13 @@ msgstr ""
 #: main.c:51
 #, fuzzy
 msgid ""
-"Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
-"Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2000 Thomas Roessler <roessler@guug.de>\n"
-"Copyright (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
-"Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-"Copyright (C) 2000      Edmund Grimley Evans <edmundo@rano.org>\n"
+"Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Copyright (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
+"Copyright (C) 1997-2001 Thomas Roessler <roessler@guug.de>\n"
+"Copyright (C) 1998-2001 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2001 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 2000-2001 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "Lots of others not mentioned here contributed lots of code,\n"
 "fixes, and suggestions.\n"
@@ -2479,7 +2501,7 @@ msgstr "您现在在最后一项。"
 msgid "You are on the first entry."
 msgstr "您现在在第一项。"
 
-#: menu.c:702 pattern.c:1229
+#: menu.c:702 pattern.c:1233
 msgid "Search for: "
 msgstr "搜寻："
 
@@ -2487,11 +2509,11 @@ msgstr "搜寻："
 msgid "Reverse search for: "
 msgstr "返向搜寻："
 
-#: menu.c:713 pattern.c:1262
+#: menu.c:713 pattern.c:1266
 msgid "No search pattern."
 msgstr "没有搜寻格式。"
 
-#: menu.c:743 pager.c:1840 pager.c:1856 pager.c:1944 pattern.c:1327
+#: menu.c:743 pager.c:1840 pager.c:1856 pager.c:1944 pattern.c:1331
 msgid "Not found."
 msgstr "没有找到。"
 
@@ -2547,31 +2569,31 @@ msgstr "%s 不是信箱！"
 msgid "Append messages to %s?"
 msgstr "附加信件到 %s ?"
 
-#: mutt_socket.c:201
+#: mutt_socket.c:202
 msgid "SSL is unavailable."
 msgstr ""
 
-#: mutt_socket.c:237
+#: mutt_socket.c:238
 #, fuzzy
 msgid "Preconnect command failed."
 msgstr "预先连接指令失败"
 
-#: mutt_socket.c:331 mutt_socket.c:371
+#: mutt_socket.c:332 mutt_socket.c:373
 #, fuzzy, c-format
 msgid "Looking up %s..."
 msgstr "拷贝到 %s…"
 
-#: mutt_socket.c:336 mutt_socket.c:375
+#: mutt_socket.c:337 mutt_socket.c:377
 #, fuzzy, c-format
 msgid "Could not find the host \"%s\""
 msgstr "找不到主机 %s 的位址。"
 
-#: mutt_socket.c:340 mutt_socket.c:380
+#: mutt_socket.c:341 mutt_socket.c:382
 #, c-format
 msgid "Connecting to %s..."
 msgstr "正连接到 %s…"
 
-#: mutt_socket.c:403
+#: mutt_socket.c:405
 #, fuzzy, c-format
 msgid "Could not connect to %s (%s)."
 msgstr "无法打开 %s"
@@ -2674,7 +2696,7 @@ msgstr ""
 msgid "ro"
 msgstr ""
 
-#: mutt_ssl.c:615 pgpkey.c:442
+#: mutt_ssl.c:615 pgpkey.c:510
 msgid "Exit  "
 msgstr "离开  "
 
@@ -2903,27 +2925,27 @@ msgstr "空的格式"
 msgid "error: unknown op %d (report this error)."
 msgstr "错误：不明的 op %d (请回报这个错误)。"
 
-#: pattern.c:1119 pattern.c:1248
+#: pattern.c:1123 pattern.c:1252
 msgid "Compiling search pattern..."
 msgstr "编译搜寻样式中…"
 
-#: pattern.c:1133
+#: pattern.c:1137
 msgid "Executing command on matching messages..."
 msgstr "正在对符合的邮件执行命令…"
 
-#: pattern.c:1196
+#: pattern.c:1200
 msgid "No messages matched criteria."
 msgstr "没有邮件符合要求。"
 
-#: pattern.c:1286
+#: pattern.c:1290
 msgid "Search hit bottom without finding match"
 msgstr "已搜寻至结尾，并没有发现任何符合"
 
-#: pattern.c:1297
+#: pattern.c:1301
 msgid "Search hit top without finding match"
 msgstr "已搜寻至开头，并没有发现任何符合"
 
-#: pattern.c:1319
+#: pattern.c:1323
 msgid "Search interrupted."
 msgstr "搜寻已被中断。"
 
@@ -2940,11 +2962,11 @@ msgstr "已忘记 PGP 通行密码。"
 msgid "[-- PGP output follows (current time: %c) --]\n"
 msgstr "[-- 以下为 PGP 输出的资料（现在时间： "
 
-#: pgp.c:283
+#: pgp.c:352
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
 msgstr "[-- 错误：无法建立 PGP 子程序！ --]\n"
 
-#: pgp.c:312
+#: pgp.c:387
 msgid ""
 "\n"
 "[-- End of PGP output --]\n"
@@ -2954,7 +2976,7 @@ msgstr ""
 "[-- PGP 输出的资料结束 --]\n"
 "\n"
 
-#: pgp.c:318
+#: pgp.c:393
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -2962,11 +2984,11 @@ msgstr ""
 "[-- PGP 信件开始 --]\n"
 "\n"
 
-#: pgp.c:320
+#: pgp.c:395
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP 公共钥匙区段开始 --]\n"
 
-#: pgp.c:322
+#: pgp.c:397
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -2974,7 +2996,7 @@ msgstr ""
 "[-- PGP 签名的信件开始 --]\n"
 "\n"
 
-#: pgp.c:423
+#: pgp.c:438
 msgid ""
 "\n"
 "[-- END PGP MESSAGE --]\n"
@@ -2982,11 +3004,11 @@ msgstr ""
 "\n"
 "[-- PGP 信件结束 --]\n"
 
-#: pgp.c:425
+#: pgp.c:440
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP 公共钥匙区段结束 --]\n"
 
-#: pgp.c:427
+#: pgp.c:442
 msgid ""
 "\n"
 "[-- END PGP SIGNED MESSAGE --]\n"
@@ -2994,7 +3016,7 @@ msgstr ""
 "\n"
 "[-- PGP 签名的信件结束 --]\n"
 
-#: pgp.c:442
+#: pgp.c:457
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -3002,7 +3024,7 @@ msgstr ""
 "[-- 错误：找不到 PGP 信件的开头！ --]\n"
 "\n"
 
-#: pgp.c:710 pgp.c:1001
+#: pgp.c:728 pgp.c:1020
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -3010,7 +3032,7 @@ msgstr ""
 "[-- PGP 输出部份结束 --]\n"
 "\n"
 
-#: pgp.c:758
+#: pgp.c:776
 #, fuzzy
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
@@ -3019,7 +3041,7 @@ msgstr ""
 "[-- 错误：不一致的 multipart/signed 结构！ --]\n"
 "\n"
 
-#: pgp.c:766
+#: pgp.c:784
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -3028,7 +3050,7 @@ msgstr ""
 "[-- 错误：不明的 multipart/signed 协定 %s！ --]\n"
 "\n"
 
-#: pgp.c:790
+#: pgp.c:808
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -3038,7 +3060,7 @@ msgstr ""
 "\n"
 
 #. Now display the signed body
-#: pgp.c:800
+#: pgp.c:818
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -3046,7 +3068,7 @@ msgstr ""
 "[-- 以下的资料已被签署 --]\n"
 "\n"
 
-#: pgp.c:806
+#: pgp.c:824
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -3054,7 +3076,7 @@ msgstr ""
 "[-- 警告：找不到任何的签名。 --]\n"
 "\n"
 
-#: pgp.c:812
+#: pgp.c:830
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -3062,11 +3084,11 @@ msgstr ""
 "\n"
 "[-- 签署的资料结束 --]\n"
 
-#: pgp.c:912
+#: pgp.c:930
 msgid "Internal error. Inform <roessler@guug.de>."
 msgstr "内部错误。联络 <rosessler@guug.de>。"
 
-#: pgp.c:972
+#: pgp.c:990
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -3074,7 +3096,7 @@ msgstr ""
 "[-- 错误：无法建立 PGP 子程序！ --]\n"
 "\n"
 
-#: pgp.c:1065
+#: pgp.c:1086
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -3082,11 +3104,11 @@ msgstr ""
 "[-- 错误：不正确的 PGP/MIME 信件！ --]\n"
 "\n"
 
-#: pgp.c:1078
+#: pgp.c:1099
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- 错误：无法建立暂存档！ --]\n"
 
-#: pgp.c:1087
+#: pgp.c:1108
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -3094,7 +3116,7 @@ msgstr ""
 "[-- 下面是 PGP/MIME 加密资料 --]\n"
 "\n"
 
-#: pgp.c:1105
+#: pgp.c:1126
 msgid ""
 "\n"
 "[-- End of PGP/MIME encrypted data --]\n"
@@ -3102,25 +3124,25 @@ msgstr ""
 "\n"
 "[-- PGP/MIME 加密资料结束 --]\n"
 
-#: pgp.c:1185
+#: pgp.c:1206
 msgid "Can't open PGP subprocess!"
 msgstr "无法打开 PGP 子程序！"
 
-#: pgp.c:1312
+#: pgp.c:1333
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "要为 %2$s 使用钥匙 ID = \"%1$s\"？"
 
-#: pgp.c:1339
+#: pgp.c:1360
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "请输入 %s 的钥匙 ID："
 
-#: pgp.c:1547
+#: pgp.c:1568
 msgid "Can't invoke PGP"
 msgstr "不能执行 PGP"
 
-#: pgp.c:1651
+#: pgp.c:1672
 msgid "Create an application/pgp message?"
 msgstr "建立一封 application/pgp 的信件？"
 
@@ -3128,78 +3150,88 @@ msgstr "建立一封 application/pgp 的信件？"
 msgid "Fetching PGP key..."
 msgstr "拿取 PGP 钥匙中…"
 
+#: pgpkey.c:486
+#, fuzzy
+msgid "All matching keys are marked expired/revoked."
+msgstr "这个钥匙不能使用：过期/无效/已取消。"
+
 #. __STRCAT_CHECKED__
-#: pgpkey.c:444
+#: pgpkey.c:512
 msgid "Select  "
 msgstr "选择    "
 
 #. __STRCAT_CHECKED__
-#: pgpkey.c:447
+#: pgpkey.c:515
 msgid "Check key  "
 msgstr "检查钥匙   "
 
-#: pgpkey.c:460
+#: pgpkey.c:528
 #, fuzzy, c-format
 msgid "PGP keys matching <%s>."
 msgstr "PGP 钥匙符合 \"%s\"。"
 
-#: pgpkey.c:462
+#: pgpkey.c:530
 #, c-format
 msgid "PGP keys matching \"%s\"."
 msgstr "PGP 钥匙符合 \"%s\"。"
 
-#: pgpkey.c:481 pgpkey.c:675
+#: pgpkey.c:549 pgpkey.c:741
 msgid "Can't open /dev/null"
 msgstr "无法打开 /dev/null"
 
-#: pgpkey.c:487 pgpkey.c:669
+#: pgpkey.c:555 pgpkey.c:735
 msgid "Can't create temporary file"
 msgstr "无法建立暂存档"
 
-#: pgpkey.c:498 pgpkey.c:689
+#: pgpkey.c:566 pgpkey.c:755
 msgid "Can't create filter"
 msgstr "无法建立过滤"
 
-#: pgpkey.c:508
+#: pgpkey.c:576
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "钥匙 ID：0x%s"
 
-#: pgpkey.c:534
+#: pgpkey.c:596
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "这个钥匙不能使用：过期/无效/已取消。"
 
-#: pgpkey.c:548
+#: pgpkey.c:608
+#, fuzzy
+msgid "This ID is expired/disabled/revoked"
+msgstr "这个钥匙不能使用：过期/无效/已取消。"
+
+#: pgpkey.c:612
 msgid "This ID's trust level is undefined."
 msgstr "这个 ID 的信任阶层没有定义。"
 
-#: pgpkey.c:551
+#: pgpkey.c:615
 msgid "This ID is not trusted."
 msgstr "这个 ID 不被信任。"
 
-#: pgpkey.c:554
+#: pgpkey.c:618
 msgid "This ID is only marginally trusted."
 msgstr "此 ID 只是勉强被信任。"
 
-#: pgpkey.c:558
-#, c-format
-msgid "%s Do you really want to use it?"
+#: pgpkey.c:622
+#, fuzzy, c-format
+msgid "%s Do you really want to use the key?"
 msgstr "%s 您真的要使用它？"
 
-#: pgpkey.c:654
+#: pgpkey.c:720
 msgid "Please enter the key ID: "
 msgstr "请输入这把钥匙的 ID："
 
-#: pgpkey.c:682
+#: pgpkey.c:748
 msgid "Invoking pgp..."
 msgstr "启动 pgp…"
 
-#: pgpkey.c:707
+#: pgpkey.c:773
 #, c-format
 msgid "PGP Key %s."
 msgstr "PGP 钥匙 %s。"
 
-#: pgpkey.c:754 pgpkey.c:870
+#: pgpkey.c:835 pgpkey.c:953
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "正寻找匹配 \"%s\" 的钥匙…"
@@ -3462,7 +3494,7 @@ msgstr "无法建立 %s: %s."
 msgid "Can't find any tagged messages."
 msgstr "应用下一个功能到已标记的讯息"
 
-#: recvcmd.c:699 send.c:666
+#: recvcmd.c:699 send.c:685
 msgid "No mailing lists found!"
 msgstr "没有找到邮寄论坛！"
 
@@ -3586,7 +3618,7 @@ msgstr "要回覆给 %s%s?"
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
 #.
-#: send.c:641
+#: send.c:660
 msgid "No tagged messages are visible!"
 msgstr "没有被标记了的信件在显示！"
 
@@ -3614,56 +3646,56 @@ msgstr "准备转寄信件…"
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:1040
+#: send.c:1080
 msgid "Recall postponed message?"
 msgstr "要叫出被延迟的信件?"
 
-#: send.c:1270
+#: send.c:1308
 msgid "Abort unmodified message?"
 msgstr "是否要中断未修改过的信件?"
 
-#: send.c:1272
+#: send.c:1310
 msgid "Aborted unmodified message."
 msgstr "中断没有修改过的信件"
 
 #. abort
-#: send.c:1313
+#: send.c:1351
 msgid "Mail not sent."
 msgstr "信件没有寄出。"
 
-#: send.c:1339
+#: send.c:1377
 msgid "Message postponed."
 msgstr "信件被延迟寄出。"
 
-#: send.c:1348
+#: send.c:1386
 msgid "No recipients are specified!"
 msgstr "没有指定接受者！"
 
-#: send.c:1353
+#: send.c:1391
 msgid "No recipients were specified."
 msgstr "没有指定接受者。"
 
-#: send.c:1359
+#: send.c:1397
 msgid "No subject, abort sending?"
 msgstr "没有信件标题，要中断寄信的工作?"
 
-#: send.c:1363
+#: send.c:1401
 msgid "No subject specified."
 msgstr "没有指定标题。"
 
-#: send.c:1410
+#: send.c:1448
 msgid "Sending message..."
 msgstr "寄出信件中…"
 
-#: send.c:1537
+#: send.c:1575
 msgid "Could not send the message."
 msgstr "无法寄出信件。"
 
-#: send.c:1542
+#: send.c:1580
 msgid "Mail sent."
 msgstr "信件已经寄出。"
 
-#: send.c:1542
+#: send.c:1580
 msgid "Sending in background."
 msgstr "正在后台传送。"
 
@@ -3681,12 +3713,12 @@ msgstr "%s 已经不存在！"
 msgid "Could not open %s"
 msgstr "无法打开 %s"
 
-#: sendlib.c:1981
+#: sendlib.c:1994
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "寄送讯息出现错误，子程序已结束 %d (%s)。"
 
-#: sendlib.c:1987
+#: sendlib.c:2000
 msgid "Output of the delivery process"
 msgstr "Delivery process 的输出"
 
@@ -3717,12 +3749,12 @@ msgstr "找不到排序的函数！[请回报这个问题]"
 msgid "(no mailbox)"
 msgstr "（没有信箱）"
 
-#: thread.c:714
+#: thread.c:737
 #, fuzzy
 msgid "Parent message is not visible in limited view"
 msgstr "在限制阅览模式下无法显示主信件。"
 
-#: thread.c:719
+#: thread.c:742
 msgid "Parent message is not available."
 msgstr "主信件不存在。"
 

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt 1.3.17i\n"
-"POT-Creation-Date: 2001-03-28 15:10+0200\n"
+"POT-Creation-Date: 2001-05-01 23:31+0200\n"
 "PO-Revision-Date: 2001-04-05 16:28+0200\n"
 "Last-Translator: Fatih Demir <kabalak@gmx.net>\n"
 "Language-Team: GNOME Turk <gnome-turk@gnome.org>\n"
@@ -33,7 +33,7 @@ msgstr "Seç"
 
 #. __STRCAT_CHECKED__
 #: addrbook.c:33 browser.c:43 compose.c:92 curs_main.c:380 mutt_ssl.c:617
-#: pager.c:1460 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
+#: pager.c:1460 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Yardým"
 
@@ -277,11 +277,11 @@ msgstr "siyah-beyaz : eksik argüman"
 msgid "%s: no such attribute"
 msgstr "böyle bir ayar yok : %s"
 
-#: color.c:690 hook.c:62 hook.c:70 keymap.c:697
+#: color.c:690 hook.c:64 hook.c:72 keymap.c:697
 msgid "too few arguments"
 msgstr "çok az seçenek"
 
-#: color.c:699 hook.c:76
+#: color.c:699 hook.c:78
 msgid "too many arguments"
 msgstr "çok fazla seçenek"
 
@@ -294,7 +294,7 @@ msgstr "varsayýlan renkler desteklenmiyor"
 msgid "Verify PGP signature?"
 msgstr "PGP imzasý doðrulansýn mý?"
 
-#: commands.c:105 pgp.c:1657 pgpkey.c:491 postpone.c:517
+#: commands.c:105 pgp.c:1678 pgpkey.c:559 postpone.c:517
 msgid "Invoking PGP..."
 msgstr "PGP'yi çaðýrýlýyor..."
 
@@ -389,28 +389,16 @@ msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 "Ters sýralama tipi: "
-""
-""
-""
-""
-""
-"(t)arih/(g)önderen/(a)lan/(k)onu/gönder(i)len/k(o)num/dü(z)enmemiþ/(b)oyut/(p)uan: "
-""
+"(t)arih/(g)önderen/(a)lan/(k)onu/gönder(i)len/k(o)num/dü(z)enmemiþ/(b)oyut/(p"
+")uan: "
 
 #: commands.c:443
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 "Sýralama tipi: "
-""
-""
-""
-""
-""
-""
-""
-""
-"(t)arih/(g)önderen/(a)lan/(k)onu/gönder(i)len/k(o)num/dü(z)enlenmemiþ/(b)oyut/(p)uan?"
+"(t)arih/(g)önderen/(a)lan/(k)onu/gönder(i)len/k(o)num/dü(z)enlenmemiþ/(b)oyut"
+"/(p)uan?"
 
 #: commands.c:444
 msgid "dfrsotuzc"
@@ -458,15 +446,28 @@ msgstr " iþaretli "
 msgid "Copying to %s..."
 msgstr "%s'e kopyalanýyor..."
 
-#: commands.c:822
+#: commands.c:823
+#, c-format
+msgid "Convert to %s upon sending?"
+msgstr ""
+
+#: commands.c:831
 #, c-format
 msgid "Content-Type changed to %s."
 msgstr "Içerik tipi %s iye deðiþtirildi."
 
-#: commands.c:824
-#, c-format
-msgid "Character set changed to %s."
+#: commands.c:833
+#, fuzzy, c-format
+msgid "Character set changed to %s; %s."
 msgstr "Karakter kümesi deðiþtirildi: %s"
+
+#: commands.c:835
+msgid "not converting"
+msgstr ""
+
+#: commands.c:835
+msgid "converting"
+msgstr ""
 
 #: compose.c:40
 msgid "There are no attachments."
@@ -515,8 +516,8 @@ msgstr "<varsayýlan>"
 #: compose.c:132
 msgid "(e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
 msgstr ""
-"þ(i)frele, i(m)zala, (f)arklý imzala, i(k)isi de, mi(c) algoritmini seç yoksa "
-"i(p)talmý? "
+"þ(i)frele, i(m)zala, (f)arklý imzala, i(k)isi de, mi(c) algoritmini seç "
+"yoksa i(p)talmý? "
 
 #: compose.c:133
 msgid "esabf"
@@ -650,7 +651,7 @@ msgstr "hayýr"
 msgid "Exit Mutt?"
 msgstr "Mutt'tan çýkýlsýn mý?"
 
-#: curs_lib.c:326 mutt_socket.c:404
+#: curs_lib.c:326 mutt_socket.c:406
 msgid "unknown error"
 msgstr "bilinmeyen hata"
 
@@ -805,11 +806,11 @@ msgstr "Kurtarýlan ileti yok."
 msgid "You are on the first message."
 msgstr "Ilk iletidesiniz."
 
-#: curs_main.c:1217 pattern.c:1283
+#: curs_main.c:1217 pattern.c:1287
 msgid "Search wrapped to top."
 msgstr "Arama baþa döndü."
 
-#: curs_main.c:1226 pattern.c:1294
+#: curs_main.c:1226 pattern.c:1298
 msgid "Search wrapped to bottom."
 msgstr "Arama sona ulaþtý."
 
@@ -833,7 +834,7 @@ msgstr "Daha fazla konum yok."
 msgid "You are on the first thread."
 msgstr "Ilk konumdasýnýz."
 
-#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:653 thread.c:704
+#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:676 thread.c:727
 msgid "Threading is not enabled."
 msgstr "Konumlaþtýrma kapalýdýr."
 
@@ -845,9 +846,10 @@ msgstr "Konum okunmamýþ ileti içeriyor."
 msgid "Can't edit message on POP server."
 msgstr "Ileti POP sunucusunda deðiþtirilenemedi."
 
-#. 
+#.
 #. * SLcurses_waddnstr() can't take a "const char *", so this is only
 #. * declared "static" (sigh)
+#.
 #: edit.c:36
 msgid ""
 "~~\t\tinsert a line begining with a single ~\n"
@@ -1101,9 +1103,18 @@ msgstr ""
 msgid "Help for %s"
 msgstr "%s yardýmý"
 
-#: hook.c:246
+#: hook.c:243
+msgid "unhook: Can't do unhook * from within a hook."
+msgstr ""
+
+#: hook.c:255
 #, c-format
 msgid "unhook: unknown hook type: %s"
+msgstr ""
+
+#: hook.c:261
+#, c-format
+msgid "unhook: Can't delete a %s from within a %s."
 msgstr ""
 
 #: imap/auth_anon.c:39
@@ -1169,6 +1180,7 @@ msgstr "Eposta kutusu yaratýldý."
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
+#.
 #: imap/command.c:316
 msgid "Fatal error.  Message count is out of sync!"
 msgstr "Aðýr hata. Ileti sayýlarý karýþtý!"
@@ -2180,12 +2192,14 @@ msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please use the flea(1) utility.\n"
 msgstr ""
-"Yazarlara ulaþmak içim lütfen <mutt-dev@mutt.org> listesine eposta gönderin.\n"
+"Yazarlara ulaþmak içim lütfen <mutt-dev@mutt.org> listesine eposta "
+"gönderin.\n"
 "Bir hata raporunu göndermek için lütfen flea(1) uygulamasýný kullanýn.\n"
 
 #: main.c:45
+#, fuzzy
 msgid ""
-"Copyright (C) 1996-2000 Michael R. Elkins and others.\n"
+"Copyright (C) 1996-2001 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
@@ -2197,13 +2211,13 @@ msgstr ""
 
 #: main.c:51
 msgid ""
-"Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
-"Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2000 Thomas Roessler <roessler@guug.de>\n"
-"Copyright (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
-"Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-"Copyright (C) 2000      Edmund Grimley Evans <edmundo@rano.org>\n"
+"Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Copyright (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
+"Copyright (C) 1997-2001 Thomas Roessler <roessler@guug.de>\n"
+"Copyright (C) 1998-2001 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2001 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 2000-2001 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "Lots of others not mentioned here contributed lots of code,\n"
 "fixes, and suggestions.\n"
@@ -2226,8 +2240,9 @@ msgstr ""
 #: main.c:88
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
-"]\n       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
-"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
+"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -2355,6 +2370,7 @@ msgstr "Eposta kutusunu kilitleyemedim!"
 #. this means ctx->changed or ctx->deleted was set, but no
 #. * messages were found to be changed or deleted.  This should
 #. * never happen, is we presume it is a bug in mutt.
+#.
 #: mbox.c:751
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr ""
@@ -2421,7 +2437,7 @@ msgstr "Son birimdesiniz."
 msgid "You are on the first entry."
 msgstr "Ilk birimdesiniz."
 
-#: menu.c:702 pattern.c:1229
+#: menu.c:702 pattern.c:1233
 msgid "Search for: "
 msgstr "Ara: "
 
@@ -2429,11 +2445,11 @@ msgstr "Ara: "
 msgid "Reverse search for: "
 msgstr "Ters ara: "
 
-#: menu.c:713 pattern.c:1262
+#: menu.c:713 pattern.c:1266
 msgid "No search pattern."
 msgstr "Arama tabiri yok."
 
-#: menu.c:743 pager.c:1840 pager.c:1856 pager.c:1944 pattern.c:1327
+#: menu.c:743 pager.c:1840 pager.c:1856 pager.c:1944 pattern.c:1331
 msgid "Not found."
 msgstr "Bulunmadý."
 
@@ -2488,30 +2504,30 @@ msgstr "%s bir eposta kutusu deðil!"
 msgid "Append messages to %s?"
 msgstr "Iletiler %s'e eklensin mi?"
 
-#: mutt_socket.c:201
+#: mutt_socket.c:202
 msgid "SSL is unavailable."
 msgstr "SSL eriþilir deðil."
 
-#: mutt_socket.c:237
+#: mutt_socket.c:238
 msgid "Preconnect command failed."
 msgstr "Önceden baðlanma komutasý baþærýsýz oldu."
 
-#: mutt_socket.c:331 mutt_socket.c:371
+#: mutt_socket.c:332 mutt_socket.c:373
 #, c-format
 msgid "Looking up %s..."
 msgstr "%s aranýyor..."
 
-#: mutt_socket.c:336 mutt_socket.c:375
+#: mutt_socket.c:337 mutt_socket.c:377
 #, c-format
 msgid "Could not find the host \"%s\""
 msgstr "Sunucu \"%s\" bulunamýyor."
 
-#: mutt_socket.c:340 mutt_socket.c:380
+#: mutt_socket.c:341 mutt_socket.c:382
 #, c-format
 msgid "Connecting to %s..."
 msgstr "%s'e baðlanýlýyor..."
 
-#: mutt_socket.c:403
+#: mutt_socket.c:405
 #, c-format
 msgid "Could not connect to %s (%s)."
 msgstr "%s (%s)'e baðlanýlýnamadý."
@@ -2610,7 +2626,7 @@ msgstr "(r)ed'et, (s)adece bu defalýðýna kabul et"
 msgid "ro"
 msgstr "rs"
 
-#: mutt_ssl.c:615 pgpkey.c:442
+#: mutt_ssl.c:615 pgpkey.c:510
 msgid "Exit  "
 msgstr "Çýk  "
 
@@ -2837,27 +2853,27 @@ msgstr "boþ tabir"
 msgid "error: unknown op %d (report this error)."
 msgstr ""
 
-#: pattern.c:1119 pattern.c:1248
+#: pattern.c:1123 pattern.c:1252
 msgid "Compiling search pattern..."
 msgstr "Arama tabiri denetleniyor..."
 
-#: pattern.c:1133
+#: pattern.c:1137
 msgid "Executing command on matching messages..."
 msgstr ""
 
-#: pattern.c:1196
+#: pattern.c:1200
 msgid "No messages matched criteria."
 msgstr "Tabire uygun ileti yok."
 
-#: pattern.c:1286
+#: pattern.c:1290
 msgid "Search hit bottom without finding match"
 msgstr ""
 
-#: pattern.c:1297
+#: pattern.c:1301
 msgid "Search hit top without finding match"
 msgstr ""
 
-#: pattern.c:1319
+#: pattern.c:1323
 msgid "Search interrupted."
 msgstr "Arama iptal edildi."
 
@@ -2874,11 +2890,11 @@ msgstr "PGP parolasý unutuldu."
 msgid "[-- PGP output follows (current time: %c) --]\n"
 msgstr "[-- PGP geri verisi (geçerli zaman: %c) --]\n"
 
-#: pgp.c:283
+#: pgp.c:352
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
 msgstr "[-- Hata: PGP altiþlemi yaratýlamadý! --]\n"
 
-#: pgp.c:312
+#: pgp.c:387
 msgid ""
 "\n"
 "[-- End of PGP output --]\n"
@@ -2888,7 +2904,7 @@ msgstr ""
 "[-- PGP geri veri sonu --]\n"
 "\n"
 
-#: pgp.c:318
+#: pgp.c:393
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -2896,11 +2912,11 @@ msgstr ""
 "[-- PGP ILETISI BAÞI --]\n"
 "\n"
 
-#: pgp.c:320
+#: pgp.c:395
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP RESMI ANAHTAR BÖLÜMÜ BAÞI --]\n"
 
-#: pgp.c:322
+#: pgp.c:397
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -2908,7 +2924,7 @@ msgstr ""
 "[-- PGP IMZALANMIÞ ILETI BAÞI --]\n"
 "\n"
 
-#: pgp.c:423
+#: pgp.c:438
 msgid ""
 "\n"
 "[-- END PGP MESSAGE --]\n"
@@ -2916,11 +2932,11 @@ msgstr ""
 "\n"
 "[-- PGP ILETI SONU --]\n"
 
-#: pgp.c:425
+#: pgp.c:440
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP RESMI ANAHTAR BÖLÜMÜ SONU --]\n"
 
-#: pgp.c:427
+#: pgp.c:442
 msgid ""
 "\n"
 "[-- END PGP SIGNED MESSAGE --]\n"
@@ -2928,7 +2944,7 @@ msgstr ""
 "\n"
 "[-- PGP IMZALANMIÞ ILETI SONU --]\n"
 
-#: pgp.c:442
+#: pgp.c:457
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -2936,7 +2952,7 @@ msgstr ""
 "[-- Hata: PGP iletisinin baþýný bulamadým! --]\n"
 "\n"
 
-#: pgp.c:710 pgp.c:1001
+#: pgp.c:728 pgp.c:1020
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -2944,7 +2960,7 @@ msgstr ""
 "[-- PGP geri verisi sonu --]\n"
 "\n"
 
-#: pgp.c:758
+#: pgp.c:776
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
 "\n"
@@ -2952,7 +2968,7 @@ msgstr ""
 "[-- Hata: Hatalý multipart/signed þekili! --]\n"
 "\n"
 
-#: pgp.c:766
+#: pgp.c:784
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -2961,7 +2977,7 @@ msgstr ""
 "[-- Hata: Bilinmeyen multipart/signed protokolu %s! --]\n"
 "\n"
 
-#: pgp.c:790
+#: pgp.c:808
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -2971,7 +2987,7 @@ msgstr ""
 "\n"
 
 #. Now display the signed body
-#: pgp.c:800
+#: pgp.c:818
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -2979,7 +2995,7 @@ msgstr ""
 "[-- Bu bilgi imzalanmýþtýr --]\n"
 "\n"
 
-#: pgp.c:806
+#: pgp.c:824
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -2987,7 +3003,7 @@ msgstr ""
 "[-- Ikaz: Hiç bir imza bulunmamýþtýr. --]\n"
 "\n"
 
-#: pgp.c:812
+#: pgp.c:830
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -2995,11 +3011,11 @@ msgstr ""
 "\n"
 "[-- Imzalanmýþ bilginin sonu --]\n"
 
-#: pgp.c:912
+#: pgp.c:930
 msgid "Internal error. Inform <roessler@guug.de>."
 msgstr "Iç hata. Thomas R. <roessler@guug.de>'ye haber ver."
 
-#: pgp.c:972
+#: pgp.c:990
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -3007,7 +3023,7 @@ msgstr ""
 "[-- Hata: PGP altiþlemini yaratamadým! --]\n"
 "\n"
 
-#: pgp.c:1065
+#: pgp.c:1086
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -3015,11 +3031,11 @@ msgstr ""
 "[-- Hata: Hatalý PGP/MIME iletisi! --]\n"
 "\n"
 
-#: pgp.c:1078
+#: pgp.c:1099
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Hata: geçici dosya yaratýlamýyor! --]\n"
 
-#: pgp.c:1087
+#: pgp.c:1108
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -3027,7 +3043,7 @@ msgstr ""
 "[-- Bu bilgi PGP/MIME ile þifrelenmiþtir --]\n"
 "\n"
 
-#: pgp.c:1105
+#: pgp.c:1126
 msgid ""
 "\n"
 "[-- End of PGP/MIME encrypted data --]\n"
@@ -3035,25 +3051,25 @@ msgstr ""
 "\n"
 "[-- PGP/MIME ile þifrelenmiþ bilgi sonu --]\n"
 
-#: pgp.c:1185
+#: pgp.c:1206
 msgid "Can't open PGP subprocess!"
 msgstr "PGP altiþlemi açýlamýyor!"
 
-#: pgp.c:1312
+#: pgp.c:1333
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "%s için anahtar numara = \"%s\" kullanýlsýn mý?"
 
-#: pgp.c:1339
+#: pgp.c:1360
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "%s için anahtar numarasýný belirleyin: "
 
-#: pgp.c:1547
+#: pgp.c:1568
 msgid "Can't invoke PGP"
 msgstr "PGP çalýþtýrýlamýyor"
 
-#: pgp.c:1651
+#: pgp.c:1672
 msgid "Create an application/pgp message?"
 msgstr "application/pgp iletisi yaratýlsýn mý?"
 
@@ -3061,78 +3077,88 @@ msgstr "application/pgp iletisi yaratýlsýn mý?"
 msgid "Fetching PGP key..."
 msgstr "PGP anahtarý alýnýyor..."
 
+#: pgpkey.c:486
+#, fuzzy
+msgid "All matching keys are marked expired/revoked."
+msgstr "Bu anahtar kullanýlamaz: süresi bitti/kapalý/geriye alýndý."
+
 #. __STRCAT_CHECKED__
-#: pgpkey.c:444
+#: pgpkey.c:512
 msgid "Select  "
 msgstr "Seç  "
 
 #. __STRCAT_CHECKED__
-#: pgpkey.c:447
+#: pgpkey.c:515
 msgid "Check key  "
 msgstr "Anahtarý kontrol et  "
 
-#: pgpkey.c:460
+#: pgpkey.c:528
 #, c-format
 msgid "PGP keys matching <%s>."
 msgstr "<%s>'e uyan PGP anahtarlarý."
 
-#: pgpkey.c:462
+#: pgpkey.c:530
 #, c-format
 msgid "PGP keys matching \"%s\"."
 msgstr "\"%s\"'e uyan PGP anahtarlarý."
 
-#: pgpkey.c:481 pgpkey.c:675
+#: pgpkey.c:549 pgpkey.c:741
 msgid "Can't open /dev/null"
 msgstr "/dev/null'ý açamadým"
 
-#: pgpkey.c:487 pgpkey.c:669
+#: pgpkey.c:555 pgpkey.c:735
 msgid "Can't create temporary file"
 msgstr "Geçici dosyayý yaratamadým"
 
-#: pgpkey.c:498 pgpkey.c:689
+#: pgpkey.c:566 pgpkey.c:755
 msgid "Can't create filter"
 msgstr "Filtrayý yaratamadým"
 
-#: pgpkey.c:508
+#: pgpkey.c:576
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "Anahtar numara: 0x%s"
 
-#: pgpkey.c:534
+#: pgpkey.c:596
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Bu anahtar kullanýlamaz: süresi bitti/kapalý/geriye alýndý."
 
-#: pgpkey.c:548
+#: pgpkey.c:608
+#, fuzzy
+msgid "This ID is expired/disabled/revoked"
+msgstr "Bu anahtar kullanýlamaz: süresi bitti/kapalý/geriye alýndý."
+
+#: pgpkey.c:612
 msgid "This ID's trust level is undefined."
 msgstr "Bu anahtar numarasýna olan güven belirlenmemiþ."
 
-#: pgpkey.c:551
+#: pgpkey.c:615
 msgid "This ID is not trusted."
 msgstr "Bu anahtar numarasýna güvenilmiyor."
 
-#: pgpkey.c:554
+#: pgpkey.c:618
 msgid "This ID is only marginally trusted."
 msgstr "Bu anahtar numarasýna çok az güveniliyor."
 
-#: pgpkey.c:558
+#: pgpkey.c:622
 #, c-format
-msgid "%s Do you really want to use it?"
+msgid "%s Do you really want to use the key?"
 msgstr ""
 
-#: pgpkey.c:654
+#: pgpkey.c:720
 msgid "Please enter the key ID: "
 msgstr "Anahtar numarasýný belirle: "
 
-#: pgpkey.c:682
+#: pgpkey.c:748
 msgid "Invoking pgp..."
 msgstr "Pgp çalýþtýrýlýyor...."
 
-#: pgpkey.c:707
+#: pgpkey.c:773
 #, c-format
 msgid "PGP Key %s."
 msgstr "PGP anahtarý %s."
 
-#: pgpkey.c:754 pgpkey.c:870
+#: pgpkey.c:835 pgpkey.c:953
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "\"%s\" tabirine uyan anahtarlar aranýyor..."
@@ -3377,7 +3403,7 @@ msgstr "%s yaratýlamadý."
 msgid "Can't find any tagged messages."
 msgstr "Iþaretli hýc bir ileti yok."
 
-#: recvcmd.c:699 send.c:666
+#: recvcmd.c:699 send.c:685
 msgid "No mailing lists found!"
 msgstr "Eposta listesi bulunamadý!"
 
@@ -3490,6 +3516,7 @@ msgstr "%s%s iye cevap gönderilsin mi?"
 #. * header field to the list address, which makes it quite impossible
 #. * to send a message to only the sender of the message.  This
 #. * provides a way to do that.
+#.
 #: send.c:489
 #, c-format
 msgid "Reply to %s%s?"
@@ -3497,7 +3524,8 @@ msgstr "%s%s iye cevap verilsin mi?"
 
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
-#: send.c:641
+#.
+#: send.c:660
 msgid "No tagged messages are visible!"
 msgstr "Hiç bir iþaretlenmiþ ileti gözükmüyor ki!"
 
@@ -3523,56 +3551,57 @@ msgstr "Iletilmiþ ileti hazýrlanýyor..."
 
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
-#: send.c:1040
+#.
+#: send.c:1080
 msgid "Recall postponed message?"
 msgstr "Kaydedilmiþ ileti açýlsýn mý?"
 
-#: send.c:1270
+#: send.c:1308
 msgid "Abort unmodified message?"
 msgstr "Deðiþtirilmemiþ ileti iptal edilsin mi?"
 
-#: send.c:1272
+#: send.c:1310
 msgid "Aborted unmodified message."
 msgstr "Deðiþtirilmemiþ ileti iptal edildi."
 
 #. abort
-#: send.c:1313
+#: send.c:1351
 msgid "Mail not sent."
 msgstr "eposta gönderilmedi."
 
-#: send.c:1339
+#: send.c:1377
 msgid "Message postponed."
 msgstr "Ileti kaydedildi."
 
-#: send.c:1348
+#: send.c:1386
 msgid "No recipients are specified!"
 msgstr "Alýcý belirlenmemiþ!"
 
-#: send.c:1353
+#: send.c:1391
 msgid "No recipients were specified."
 msgstr "Alýcýlar belirlenmemiþ."
 
-#: send.c:1359
+#: send.c:1397
 msgid "No subject, abort sending?"
 msgstr "Konu yok, gönderme iptal edilsin mi?"
 
-#: send.c:1363
+#: send.c:1401
 msgid "No subject specified."
 msgstr "Konu belirlenmemiþ."
 
-#: send.c:1410
+#: send.c:1448
 msgid "Sending message..."
 msgstr "Ileti gönderiliyor..."
 
-#: send.c:1537
+#: send.c:1575
 msgid "Could not send the message."
 msgstr "Ileti gönderilemedi."
 
-#: send.c:1542
+#: send.c:1580
 msgid "Mail sent."
 msgstr "eposta gönderildi."
 
-#: send.c:1542
+#: send.c:1580
 msgid "Sending in background."
 msgstr "Ardalanda gönderiliyor."
 
@@ -3590,12 +3619,12 @@ msgstr "%s daha yok!"
 msgid "Could not open %s"
 msgstr "%s açýlanamadý"
 
-#: sendlib.c:1981
+#: sendlib.c:1994
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Ileti gönderilirken hata oldu, altiþlem %d ile iptal bitirildi (%s)."
 
-#: sendlib.c:1987
+#: sendlib.c:2000
 msgid "Output of the delivery process"
 msgstr "Gönderme iþleminin geri verisi"
 
@@ -3626,11 +3655,11 @@ msgstr "Sýralama iþlevi bulunamadý! [hata raporu yaz]"
 msgid "(no mailbox)"
 msgstr "(eposta kutusu yok)"
 
-#: thread.c:714
+#: thread.c:737
 msgid "Parent message is not visible in limited view"
 msgstr "Sýnýrlandýrýlmýþ bakýþta ana ileti görünemez."
 
-#: thread.c:719
+#: thread.c:742
 msgid "Parent message is not available."
 msgstr "Kök iletisi yok."
 

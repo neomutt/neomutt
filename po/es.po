@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt\n"
-"POT-Creation-Date: 2001-03-28 15:10+0200\n"
+"POT-Creation-Date: 2001-05-01 23:31+0200\n"
 "PO-Revision-Date: 2000-09-07 19:18+02:00\n"
 "Last-Translator: Boris Wesslowski <Boris@Wesslowski.com>\n"
 "Language-Team: -\n"
@@ -30,7 +30,7 @@ msgstr "Seleccionar"
 
 #. __STRCAT_CHECKED__
 #: addrbook.c:33 browser.c:43 compose.c:92 curs_main.c:380 mutt_ssl.c:617
-#: pager.c:1460 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
+#: pager.c:1460 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Ayuda"
 
@@ -277,11 +277,11 @@ msgstr "mono: faltan parámetros"
 msgid "%s: no such attribute"
 msgstr "%s: atributo desconocido"
 
-#: color.c:690 hook.c:62 hook.c:70 keymap.c:697
+#: color.c:690 hook.c:64 hook.c:72 keymap.c:697
 msgid "too few arguments"
 msgstr "Faltan parámetros"
 
-#: color.c:699 hook.c:76
+#: color.c:699 hook.c:78
 msgid "too many arguments"
 msgstr "Demasiados parámetros"
 
@@ -294,7 +294,7 @@ msgstr "No hay soporte para colores estándar"
 msgid "Verify PGP signature?"
 msgstr "¿Verificar firma PGP?"
 
-#: commands.c:105 pgp.c:1657 pgpkey.c:491 postpone.c:517
+#: commands.c:105 pgp.c:1678 pgpkey.c:559 postpone.c:517
 msgid "Invoking PGP..."
 msgstr "Invocando PGP..."
 
@@ -445,15 +445,28 @@ msgstr " marcado"
 msgid "Copying to %s..."
 msgstr "Copiando a %s..."
 
-#: commands.c:822
+#: commands.c:823
+#, c-format
+msgid "Convert to %s upon sending?"
+msgstr ""
+
+#: commands.c:831
 #, c-format
 msgid "Content-Type changed to %s."
 msgstr "Content-Type cambiado a %s."
 
-#: commands.c:824
-#, c-format
-msgid "Character set changed to %s."
+#: commands.c:833
+#, fuzzy, c-format
+msgid "Character set changed to %s; %s."
 msgstr "El mapa de caracteres cambiado a %s."
+
+#: commands.c:835
+msgid "not converting"
+msgstr ""
+
+#: commands.c:835
+msgid "converting"
+msgstr ""
 
 #: compose.c:40
 msgid "There are no attachments."
@@ -638,7 +651,7 @@ msgstr "no"
 msgid "Exit Mutt?"
 msgstr "¿Salir de Mutt?"
 
-#: curs_lib.c:326 mutt_socket.c:404
+#: curs_lib.c:326 mutt_socket.c:406
 msgid "unknown error"
 msgstr "error desconocido"
 
@@ -793,11 +806,11 @@ msgstr "No hay mensajes sin suprimir."
 msgid "You are on the first message."
 msgstr "Está en el primer mensaje."
 
-#: curs_main.c:1217 pattern.c:1283
+#: curs_main.c:1217 pattern.c:1287
 msgid "Search wrapped to top."
 msgstr "La búsqueda volvió a empezar desde arriba."
 
-#: curs_main.c:1226 pattern.c:1294
+#: curs_main.c:1226 pattern.c:1298
 msgid "Search wrapped to bottom."
 msgstr "La búsqueda volvió a empezar desde abajo."
 
@@ -821,7 +834,7 @@ msgstr "No hay mas hilos."
 msgid "You are on the first thread."
 msgstr "Ya está en el primer hilo."
 
-#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:653 thread.c:704
+#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:676 thread.c:727
 msgid "Threading is not enabled."
 msgstr "La muestra por hilos no está activada."
 
@@ -1096,10 +1109,19 @@ msgstr ""
 msgid "Help for %s"
 msgstr "Ayuda para %s"
 
-#: hook.c:246
+#: hook.c:243
+msgid "unhook: Can't do unhook * from within a hook."
+msgstr ""
+
+#: hook.c:255
 #, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook: tipo de gancho desconocido: %s"
+
+#: hook.c:261
+#, c-format
+msgid "unhook: Can't delete a %s from within a %s."
+msgstr ""
 
 #: imap/auth_anon.c:39
 msgid "Authenticating (anonymous)..."
@@ -2185,8 +2207,9 @@ msgstr ""
 "Para reportar un fallo use la utilería flea(1) por favor.\n"
 
 #: main.c:45
+#, fuzzy
 msgid ""
-"Copyright (C) 1996-2000 Michael R. Elkins and others.\n"
+"Copyright (C) 1996-2001 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
@@ -2197,14 +2220,15 @@ msgstr ""
 "bajo ciertas condiciones; teclee `mutt -vv' para más detalles.\n"
 
 #: main.c:51
+#, fuzzy
 msgid ""
-"Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
-"Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2000 Thomas Roessler <roessler@guug.de>\n"
-"Copyright (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
-"Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-"Copyright (C) 2000      Edmund Grimley Evans <edmundo@rano.org>\n"
+"Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Copyright (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
+"Copyright (C) 1997-2001 Thomas Roessler <roessler@guug.de>\n"
+"Copyright (C) 1998-2001 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2001 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 2000-2001 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "Lots of others not mentioned here contributed lots of code,\n"
 "fixes, and suggestions.\n"
@@ -2449,7 +2473,7 @@ msgstr "Está en la última entrada."
 msgid "You are on the first entry."
 msgstr "Está en la primera entrada."
 
-#: menu.c:702 pattern.c:1229
+#: menu.c:702 pattern.c:1233
 msgid "Search for: "
 msgstr "Buscar por: "
 
@@ -2457,11 +2481,11 @@ msgstr "Buscar por: "
 msgid "Reverse search for: "
 msgstr "Buscar en sentido opuesto: "
 
-#: menu.c:713 pattern.c:1262
+#: menu.c:713 pattern.c:1266
 msgid "No search pattern."
 msgstr "Nada que buscar."
 
-#: menu.c:743 pager.c:1840 pager.c:1856 pager.c:1944 pattern.c:1327
+#: menu.c:743 pager.c:1840 pager.c:1856 pager.c:1944 pattern.c:1331
 msgid "Not found."
 msgstr "No fue encontrado."
 
@@ -2517,30 +2541,30 @@ msgstr "¡%s no es un buzón!"
 msgid "Append messages to %s?"
 msgstr "¿Agregar mensajes a %s?"
 
-#: mutt_socket.c:201
+#: mutt_socket.c:202
 msgid "SSL is unavailable."
 msgstr "SSL no está disponible."
 
-#: mutt_socket.c:237
+#: mutt_socket.c:238
 msgid "Preconnect command failed."
 msgstr "La órden anterior a la conexión falló."
 
-#: mutt_socket.c:331 mutt_socket.c:371
+#: mutt_socket.c:332 mutt_socket.c:373
 #, c-format
 msgid "Looking up %s..."
 msgstr "Buscando %s..."
 
-#: mutt_socket.c:336 mutt_socket.c:375
+#: mutt_socket.c:337 mutt_socket.c:377
 #, c-format
 msgid "Could not find the host \"%s\""
 msgstr "No se encontró la dirección del servidor %s"
 
-#: mutt_socket.c:340 mutt_socket.c:380
+#: mutt_socket.c:341 mutt_socket.c:382
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Conectando a %s..."
 
-#: mutt_socket.c:403
+#: mutt_socket.c:405
 #, fuzzy, c-format
 msgid "Could not connect to %s (%s)."
 msgstr "No se pudo abrir %s"
@@ -2639,7 +2663,7 @@ msgstr "(r)echazar, aceptar (u)na vez"
 msgid "ro"
 msgstr "ru"
 
-#: mutt_ssl.c:615 pgpkey.c:442
+#: mutt_ssl.c:615 pgpkey.c:510
 msgid "Exit  "
 msgstr "Salir  "
 
@@ -2867,27 +2891,27 @@ msgstr "patrón vacío"
 msgid "error: unknown op %d (report this error)."
 msgstr "error: op %d desconocida (reporte este error)."
 
-#: pattern.c:1119 pattern.c:1248
+#: pattern.c:1123 pattern.c:1252
 msgid "Compiling search pattern..."
 msgstr "Compilando patrón de búsqueda..."
 
-#: pattern.c:1133
+#: pattern.c:1137
 msgid "Executing command on matching messages..."
 msgstr "Ejecutando comando en mensajes que coinciden..."
 
-#: pattern.c:1196
+#: pattern.c:1200
 msgid "No messages matched criteria."
 msgstr "Ningún mensaje responde al criterio dado."
 
-#: pattern.c:1286
+#: pattern.c:1290
 msgid "Search hit bottom without finding match"
 msgstr "La búsqueda llegó al final sin encontrar nada."
 
-#: pattern.c:1297
+#: pattern.c:1301
 msgid "Search hit top without finding match"
 msgstr "La búsqueda llegó al principio sin encontrar nada."
 
-#: pattern.c:1319
+#: pattern.c:1323
 msgid "Search interrupted."
 msgstr "Búsqueda interrumpida."
 
@@ -2904,11 +2928,11 @@ msgstr "Contraseña PGP olvidada."
 msgid "[-- PGP output follows (current time: %c) --]\n"
 msgstr "[-- Salida de PGP a continuación (tiempo actual: %c) --]\n"
 
-#: pgp.c:283
+#: pgp.c:352
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
 msgstr "[-- ¡Error: imposible crear subproceso PGP! --]\n"
 
-#: pgp.c:312
+#: pgp.c:387
 msgid ""
 "\n"
 "[-- End of PGP output --]\n"
@@ -2918,7 +2942,7 @@ msgstr ""
 "[-- Fin de salida PGP --]\n"
 "\n"
 
-#: pgp.c:318
+#: pgp.c:393
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -2926,11 +2950,11 @@ msgstr ""
 "[-- PRINCIPIO DEL MENSAJE PGP --]\n"
 "\n"
 
-#: pgp.c:320
+#: pgp.c:395
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PRINCIPIO DEL BLOQUE DE CLAVES PÚBLICAS PGP --]\n"
 
-#: pgp.c:322
+#: pgp.c:397
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -2938,7 +2962,7 @@ msgstr ""
 "[-- PRINCIPIO DEL MENSAJE FIRMADO CON PGP --]\n"
 "\n"
 
-#: pgp.c:423
+#: pgp.c:438
 msgid ""
 "\n"
 "[-- END PGP MESSAGE --]\n"
@@ -2947,11 +2971,11 @@ msgstr ""
 "[-- FIN DEL MENSAJE PGP --]\n"
 "\n"
 
-#: pgp.c:425
+#: pgp.c:440
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- FIN DEL BLOQUE DE CLAVES PÚBLICAS PGP --]\n"
 
-#: pgp.c:427
+#: pgp.c:442
 msgid ""
 "\n"
 "[-- END PGP SIGNED MESSAGE --]\n"
@@ -2960,7 +2984,7 @@ msgstr ""
 "[-- FIN DEL MENSAJE FIRMADO CON PGP --]\n"
 "\n"
 
-#: pgp.c:442
+#: pgp.c:457
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -2968,7 +2992,7 @@ msgstr ""
 "[-- ¡Error: no se encontró el principio del mensaje PGP! --]\n"
 "\n"
 
-#: pgp.c:710 pgp.c:1001
+#: pgp.c:728 pgp.c:1020
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -2976,7 +3000,7 @@ msgstr ""
 "[-- Fin de salida PGP --]\n"
 "\n"
 
-#: pgp.c:758
+#: pgp.c:776
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
 "\n"
@@ -2984,7 +3008,7 @@ msgstr ""
 "[-- Error: ¡Estructura multipart/signed inconsistente! --]\n"
 "\n"
 
-#: pgp.c:766
+#: pgp.c:784
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -2993,7 +3017,7 @@ msgstr ""
 "[-- Error: ¡Protocolo multipart/signed %s desconocido! --]\n"
 "\n"
 
-#: pgp.c:790
+#: pgp.c:808
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -3003,7 +3027,7 @@ msgstr ""
 "\n"
 
 #. Now display the signed body
-#: pgp.c:800
+#: pgp.c:818
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -3011,7 +3035,7 @@ msgstr ""
 "[-- Los siguientes datos están firmados --]\n"
 "\n"
 
-#: pgp.c:806
+#: pgp.c:824
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -3019,7 +3043,7 @@ msgstr ""
 "[-- Advertencia: No se pudieron encontrar firmas. --]\n"
 "\n"
 
-#: pgp.c:812
+#: pgp.c:830
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -3027,11 +3051,11 @@ msgstr ""
 "\n"
 "[-- Fin de datos firmados --]\n"
 
-#: pgp.c:912
+#: pgp.c:930
 msgid "Internal error. Inform <roessler@guug.de>."
 msgstr "Error interno. Informe a <roessler@guug.de>."
 
-#: pgp.c:972
+#: pgp.c:990
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -3039,7 +3063,7 @@ msgstr ""
 "[-- ¡Error: imposible crear subproceso PGP! --]\n"
 "\n"
 
-#: pgp.c:1065
+#: pgp.c:1086
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -3047,11 +3071,11 @@ msgstr ""
 "[-- ¡Error: mensaje PGP/MIME mal formado! --]\n"
 "\n"
 
-#: pgp.c:1078
+#: pgp.c:1099
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- ¡Error: no se pudo cear archivo temporal! --]\n"
 
-#: pgp.c:1087
+#: pgp.c:1108
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -3059,7 +3083,7 @@ msgstr ""
 "[-- Lo siguiente está cifrado con PGP/MIME --]\n"
 "\n"
 
-#: pgp.c:1105
+#: pgp.c:1126
 msgid ""
 "\n"
 "[-- End of PGP/MIME encrypted data --]\n"
@@ -3067,25 +3091,25 @@ msgstr ""
 "\n"
 "[-- Fin de datos cifrados con PGP/MIME --]\n"
 
-#: pgp.c:1185
+#: pgp.c:1206
 msgid "Can't open PGP subprocess!"
 msgstr "¡No se pudo abrir subproceso PGP!"
 
-#: pgp.c:1312
+#: pgp.c:1333
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "¿Usar keyID = \"%s\" para %s?"
 
-#: pgp.c:1339
+#: pgp.c:1360
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Entre keyID para %s: "
 
-#: pgp.c:1547
+#: pgp.c:1568
 msgid "Can't invoke PGP"
 msgstr "No se pudo invocar PGP"
 
-#: pgp.c:1651
+#: pgp.c:1672
 msgid "Create an application/pgp message?"
 msgstr "¿Crear un mensaje de tipo application/pgp?"
 
@@ -3093,78 +3117,88 @@ msgstr "¿Crear un mensaje de tipo application/pgp?"
 msgid "Fetching PGP key..."
 msgstr "Recogiendo clave PGP..."
 
+#: pgpkey.c:486
+#, fuzzy
+msgid "All matching keys are marked expired/revoked."
+msgstr "Esta clave no se puede usar: expirada/desactivada/revocada."
+
 #. __STRCAT_CHECKED__
-#: pgpkey.c:444
+#: pgpkey.c:512
 msgid "Select  "
 msgstr "Seleccionar  "
 
 #. __STRCAT_CHECKED__
-#: pgpkey.c:447
+#: pgpkey.c:515
 msgid "Check key  "
 msgstr "Verificar clave  "
 
-#: pgpkey.c:460
+#: pgpkey.c:528
 #, c-format
 msgid "PGP keys matching <%s>."
 msgstr "Claves PGP que coinciden con <%s>."
 
-#: pgpkey.c:462
+#: pgpkey.c:530
 #, c-format
 msgid "PGP keys matching \"%s\"."
 msgstr "Claves PGP que coinciden con \"%s\"."
 
-#: pgpkey.c:481 pgpkey.c:675
+#: pgpkey.c:549 pgpkey.c:741
 msgid "Can't open /dev/null"
 msgstr "No se pudo abrir /dev/null"
 
-#: pgpkey.c:487 pgpkey.c:669
+#: pgpkey.c:555 pgpkey.c:735
 msgid "Can't create temporary file"
 msgstr "No se pudo crear archivo temporal"
 
-#: pgpkey.c:498 pgpkey.c:689
+#: pgpkey.c:566 pgpkey.c:755
 msgid "Can't create filter"
 msgstr "No se pudo crear filtro"
 
-#: pgpkey.c:508
+#: pgpkey.c:576
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "Key ID: 0x%s"
 
-#: pgpkey.c:534
+#: pgpkey.c:596
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Esta clave no se puede usar: expirada/desactivada/revocada."
 
-#: pgpkey.c:548
+#: pgpkey.c:608
+#, fuzzy
+msgid "This ID is expired/disabled/revoked"
+msgstr "Esta clave no se puede usar: expirada/desactivada/revocada."
+
+#: pgpkey.c:612
 msgid "This ID's trust level is undefined."
 msgstr "El nivel de confianza de esta ID no está definido."
 
-#: pgpkey.c:551
+#: pgpkey.c:615
 msgid "This ID is not trusted."
 msgstr "Esta ID no es de confianza."
 
-#: pgpkey.c:554
+#: pgpkey.c:618
 msgid "This ID is only marginally trusted."
 msgstr "Esta ID es marginalmente de confianza."
 
-#: pgpkey.c:558
-#, c-format
-msgid "%s Do you really want to use it?"
+#: pgpkey.c:622
+#, fuzzy, c-format
+msgid "%s Do you really want to use the key?"
 msgstr "%s ¿Realmente quiere utilizarla?"
 
-#: pgpkey.c:654
+#: pgpkey.c:720
 msgid "Please enter the key ID: "
 msgstr "Por favor entre la identificación de la clave: "
 
-#: pgpkey.c:682
+#: pgpkey.c:748
 msgid "Invoking pgp..."
 msgstr "Invocando pgp..."
 
-#: pgpkey.c:707
+#: pgpkey.c:773
 #, c-format
 msgid "PGP Key %s."
 msgstr "Clave PGP %s."
 
-#: pgpkey.c:754 pgpkey.c:870
+#: pgpkey.c:835 pgpkey.c:953
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Buscando claves que conincidan con \"%s\"..."
@@ -3426,7 +3460,7 @@ msgstr "No se pudo crear %s."
 msgid "Can't find any tagged messages."
 msgstr "No fue encontrado ningún mensaje marcado."
 
-#: recvcmd.c:699 send.c:666
+#: recvcmd.c:699 send.c:685
 msgid "No mailing lists found!"
 msgstr "¡Ninguna lista de correo encontrada!"
 
@@ -3549,7 +3583,7 @@ msgstr "¿Responder a %s%s?"
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
 #.
-#: send.c:641
+#: send.c:660
 msgid "No tagged messages are visible!"
 msgstr "¡No hay mensajes marcados visibles!"
 
@@ -3577,56 +3611,56 @@ msgstr "Preparando mensaje reenviado..."
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:1040
+#: send.c:1080
 msgid "Recall postponed message?"
 msgstr "¿Continuar mensaje pospuesto?"
 
-#: send.c:1270
+#: send.c:1308
 msgid "Abort unmodified message?"
 msgstr "¿Cancelar mensaje sin cambios?"
 
-#: send.c:1272
+#: send.c:1310
 msgid "Aborted unmodified message."
 msgstr "Mensaje sin cambios cancelado."
 
 #. abort
-#: send.c:1313
+#: send.c:1351
 msgid "Mail not sent."
 msgstr "Mensaje no enviado."
 
-#: send.c:1339
+#: send.c:1377
 msgid "Message postponed."
 msgstr "Mensaje pospuesto."
 
-#: send.c:1348
+#: send.c:1386
 msgid "No recipients are specified!"
 msgstr "¡No especificó destinatarios!"
 
-#: send.c:1353
+#: send.c:1391
 msgid "No recipients were specified."
 msgstr "No especificó destinatarios."
 
-#: send.c:1359
+#: send.c:1397
 msgid "No subject, abort sending?"
 msgstr "Falta el asunto, ¿cancelar envío?"
 
-#: send.c:1363
+#: send.c:1401
 msgid "No subject specified."
 msgstr "Asunto no fue especificado."
 
-#: send.c:1410
+#: send.c:1448
 msgid "Sending message..."
 msgstr "Enviando mensaje..."
 
-#: send.c:1537
+#: send.c:1575
 msgid "Could not send the message."
 msgstr "No se pudo enviar el mensaje."
 
-#: send.c:1542
+#: send.c:1580
 msgid "Mail sent."
 msgstr "Mensaje enviado."
 
-#: send.c:1542
+#: send.c:1580
 msgid "Sending in background."
 msgstr "Enviando en un proceso en segundo plano."
 
@@ -3644,12 +3678,12 @@ msgstr "¡%s ya no existe!"
 msgid "Could not open %s"
 msgstr "No se pudo abrir %s"
 
-#: sendlib.c:1981
+#: sendlib.c:1994
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Error al enviar mensaje, proceso hijo terminó %d (%s)."
 
-#: sendlib.c:1987
+#: sendlib.c:2000
 msgid "Output of the delivery process"
 msgstr "Salida del proceso de repartición de correo"
 
@@ -3680,11 +3714,11 @@ msgstr "¡No se pudo encontrar la función para ordenar! [reporte este fallo]"
 msgid "(no mailbox)"
 msgstr "(ningún buzón)"
 
-#: thread.c:714
+#: thread.c:737
 msgid "Parent message is not visible in limited view"
 msgstr "El mensaje anterior no es visible en vista limitada"
 
-#: thread.c:719
+#: thread.c:742
 msgid "Parent message is not available."
 msgstr "El mensaje anterior no está disponible."
 

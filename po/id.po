@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.3.16i\n"
-"POT-Creation-Date: 2001-03-28 15:10+0200\n"
+"POT-Creation-Date: 2001-05-01 23:31+0200\n"
 "PO-Revision-Date: 2001-02-27 19:30-0600\n"
 "Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
 "Language-Team: Indonesia <i18n@linux.or.id>\n"
@@ -34,7 +34,7 @@ msgstr "Pilih"
 
 #. __STRCAT_CHECKED__
 #: addrbook.c:33 browser.c:43 compose.c:92 curs_main.c:380 mutt_ssl.c:617
-#: pager.c:1460 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
+#: pager.c:1460 pgpkey.c:517 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Bantuan"
 
@@ -280,11 +280,11 @@ msgstr "mono: parameternya kurang"
 msgid "%s: no such attribute"
 msgstr "%s: tidak ada atribut begitu"
 
-#: color.c:690 hook.c:62 hook.c:70 keymap.c:697
+#: color.c:690 hook.c:64 hook.c:72 keymap.c:697
 msgid "too few arguments"
 msgstr "parameternya kurang"
 
-#: color.c:699 hook.c:76
+#: color.c:699 hook.c:78
 msgid "too many arguments"
 msgstr "parameternya terlalu banyak"
 
@@ -297,7 +297,7 @@ msgstr "warna default tidak didukung"
 msgid "Verify PGP signature?"
 msgstr "Periksa tandatangan PGP?"
 
-#: commands.c:105 pgp.c:1657 pgpkey.c:491 postpone.c:517
+#: commands.c:105 pgp.c:1678 pgpkey.c:559 postpone.c:517
 msgid "Invoking PGP..."
 msgstr "Menjalankan PGP..."
 
@@ -447,15 +447,28 @@ msgstr " telah ditandai"
 msgid "Copying to %s..."
 msgstr "Sedang menyalin ke %s..."
 
-#: commands.c:822
+#: commands.c:823
+#, c-format
+msgid "Convert to %s upon sending?"
+msgstr ""
+
+#: commands.c:831
 #, c-format
 msgid "Content-Type changed to %s."
 msgstr "Content-Type diubah ke %s."
 
-#: commands.c:824
-#, c-format
-msgid "Character set changed to %s."
+#: commands.c:833
+#, fuzzy, c-format
+msgid "Character set changed to %s; %s."
 msgstr "Character set diubah ke %s."
+
+#: commands.c:835
+msgid "not converting"
+msgstr ""
+
+#: commands.c:835
+msgid "converting"
+msgstr ""
 
 #: compose.c:40
 msgid "There are no attachments."
@@ -637,7 +650,7 @@ msgstr "nggak"
 msgid "Exit Mutt?"
 msgstr "Keluar dari Mutt?"
 
-#: curs_lib.c:326 mutt_socket.c:404
+#: curs_lib.c:326 mutt_socket.c:406
 msgid "unknown error"
 msgstr "eh..eh.. napa nih?"
 
@@ -794,11 +807,11 @@ msgstr "Tidak ada surat yang tidak jadi dihapus."
 msgid "You are on the first message."
 msgstr "Anda sudah di surat yang pertama."
 
-#: curs_main.c:1217 pattern.c:1283
+#: curs_main.c:1217 pattern.c:1287
 msgid "Search wrapped to top."
 msgstr "Pencarian kembali ke atas."
 
-#: curs_main.c:1226 pattern.c:1294
+#: curs_main.c:1226 pattern.c:1298
 msgid "Search wrapped to bottom."
 msgstr "Pencarian kembali ke bawah."
 
@@ -822,7 +835,7 @@ msgstr "Tidak ada thread lagi."
 msgid "You are on the first thread."
 msgstr "Anda di thread yang pertama."
 
-#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:653 thread.c:704
+#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:676 thread.c:727
 msgid "Threading is not enabled."
 msgstr "Tidak disetting untuk melakukan threading."
 
@@ -1097,10 +1110,19 @@ msgstr ""
 msgid "Help for %s"
 msgstr "Bantuan utk %s"
 
-#: hook.c:246
+#: hook.c:243
+msgid "unhook: Can't do unhook * from within a hook."
+msgstr ""
+
+#: hook.c:255
 #, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook: jenis tidak dikenali: %s"
+
+#: hook.c:261
+#, c-format
+msgid "unhook: Can't delete a %s from within a %s."
+msgstr ""
 
 #: imap/auth_anon.c:39
 msgid "Authenticating (anonymous)..."
@@ -2181,8 +2203,9 @@ msgstr ""
 "Untuk melaporkan bug, mohon gunakan program flea(1).\n"
 
 #: main.c:45
+#, fuzzy
 msgid ""
-"Copyright (C) 1996-2000 Michael R. Elkins and others.\n"
+"Copyright (C) 1996-2001 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
@@ -2193,14 +2216,15 @@ msgstr ""
 "dengan beberapa persyaratan; baca 'mutt -vv' utk jelasnya.\n"
 
 #: main.c:51
+#, fuzzy
 msgid ""
-"Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
-"Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2000 Thomas Roessler <roessler@guug.de>\n"
-"Copyright (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
-"Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-"Copyright (C) 2000      Edmund Grimley Evans <edmundo@rano.org>\n"
+"Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Copyright (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
+"Copyright (C) 1997-2001 Thomas Roessler <roessler@guug.de>\n"
+"Copyright (C) 1998-2001 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2001 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 2000-2001 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "Lots of others not mentioned here contributed lots of code,\n"
 "fixes, and suggestions.\n"
@@ -2447,7 +2471,7 @@ msgstr "Anda di entry terakhir."
 msgid "You are on the first entry."
 msgstr "Anda di entry pertama."
 
-#: menu.c:702 pattern.c:1229
+#: menu.c:702 pattern.c:1233
 msgid "Search for: "
 msgstr "Cari: "
 
@@ -2455,11 +2479,11 @@ msgstr "Cari: "
 msgid "Reverse search for: "
 msgstr "Cari mundur: "
 
-#: menu.c:713 pattern.c:1262
+#: menu.c:713 pattern.c:1266
 msgid "No search pattern."
 msgstr "Tidak ada kriteria pencarian."
 
-#: menu.c:743 pager.c:1840 pager.c:1856 pager.c:1944 pattern.c:1327
+#: menu.c:743 pager.c:1840 pager.c:1856 pager.c:1944 pattern.c:1331
 msgid "Not found."
 msgstr "Tidak ketemu."
 
@@ -2514,30 +2538,30 @@ msgstr "%s bukan kotak surat!"
 msgid "Append messages to %s?"
 msgstr "Tambahkan surat-surat ke %s?"
 
-#: mutt_socket.c:201
+#: mutt_socket.c:202
 msgid "SSL is unavailable."
 msgstr "SSL tidak tersedia."
 
-#: mutt_socket.c:237
+#: mutt_socket.c:238
 msgid "Preconnect command failed."
 msgstr "Perintah pra-koneksi gagal."
 
-#: mutt_socket.c:331 mutt_socket.c:371
+#: mutt_socket.c:332 mutt_socket.c:373
 #, c-format
 msgid "Looking up %s..."
 msgstr "Mencari %s..."
 
-#: mutt_socket.c:336 mutt_socket.c:375
+#: mutt_socket.c:337 mutt_socket.c:377
 #, c-format
 msgid "Could not find the host \"%s\""
 msgstr "Tidak dapat menemukan host \"%s\""
 
-#: mutt_socket.c:340 mutt_socket.c:380
+#: mutt_socket.c:341 mutt_socket.c:382
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Menghubungi %s..."
 
-#: mutt_socket.c:403
+#: mutt_socket.c:405
 #, c-format
 msgid "Could not connect to %s (%s)."
 msgstr "Tidak bisa berhubungan ke %s (%s)"
@@ -2636,7 +2660,7 @@ msgstr "(t)olak, terima (s)ekali"
 msgid "ro"
 msgstr "ts"
 
-#: mutt_ssl.c:615 pgpkey.c:442
+#: mutt_ssl.c:615 pgpkey.c:510
 msgid "Exit  "
 msgstr "Keluar  "
 
@@ -2863,27 +2887,27 @@ msgstr "kriteria kosong"
 msgid "error: unknown op %d (report this error)."
 msgstr "error: %d tidak dikenali (laporkan error ini)."
 
-#: pattern.c:1119 pattern.c:1248
+#: pattern.c:1123 pattern.c:1252
 msgid "Compiling search pattern..."
 msgstr "Menyusun kriteria pencarian..."
 
-#: pattern.c:1133
+#: pattern.c:1137
 msgid "Executing command on matching messages..."
 msgstr "Menjalankan perintah terhadap surat-surat yang cocok..."
 
-#: pattern.c:1196
+#: pattern.c:1200
 msgid "No messages matched criteria."
 msgstr "Tidak ada surat yang memenuhi kriteria."
 
-#: pattern.c:1286
+#: pattern.c:1290
 msgid "Search hit bottom without finding match"
 msgstr "Sudah dicari sampe bawah, tapi tidak ketemu"
 
-#: pattern.c:1297
+#: pattern.c:1301
 msgid "Search hit top without finding match"
 msgstr "Sudah dicari sampe atas, tapi tidak ketemu"
 
-#: pattern.c:1319
+#: pattern.c:1323
 msgid "Search interrupted."
 msgstr "Pencarian dibatalkan."
 
@@ -2900,11 +2924,11 @@ msgstr "Passphrase PGP sudah dilupakan."
 msgid "[-- PGP output follows (current time: %c) --]\n"
 msgstr "[-- Keluaran dari PGP (waktu skrg: %c) --]\n"
 
-#: pgp.c:283
+#: pgp.c:352
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
 msgstr "[-- Error: tidak bisa membuat subproses utk PGP! --]\n"
 
-#: pgp.c:312
+#: pgp.c:387
 msgid ""
 "\n"
 "[-- End of PGP output --]\n"
@@ -2914,7 +2938,7 @@ msgstr ""
 "[-- Akhir keluaran PGP --]\n"
 "\n"
 
-#: pgp.c:318
+#: pgp.c:393
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -2922,11 +2946,11 @@ msgstr ""
 "[-- AWAL SURAT PGP --]\n"
 "\n"
 
-#: pgp.c:320
+#: pgp.c:395
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- AWAL PGP PUBLIC KEY BLOCK --]\n"
 
-#: pgp.c:322
+#: pgp.c:397
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -2934,7 +2958,7 @@ msgstr ""
 "[-- AWAL SURAT DG TANDATANGAN PGP --]\n"
 "\n"
 
-#: pgp.c:423
+#: pgp.c:438
 msgid ""
 "\n"
 "[-- END PGP MESSAGE --]\n"
@@ -2942,11 +2966,11 @@ msgstr ""
 "\n"
 "[-- AKHIR SURAT PGP --]\n"
 
-#: pgp.c:425
+#: pgp.c:440
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- AKHIR PGP PUBLIC KEY BLOCK --]\n"
 
-#: pgp.c:427
+#: pgp.c:442
 msgid ""
 "\n"
 "[-- END PGP SIGNED MESSAGE --]\n"
@@ -2954,7 +2978,7 @@ msgstr ""
 "\n"
 "[-- AKHIR SURAT DG TANDATANGAN PGP --]\n"
 
-#: pgp.c:442
+#: pgp.c:457
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -2962,7 +2986,7 @@ msgstr ""
 "[-- Error: tidak tahu dimana surat PGP dimulai! --]\n"
 "\n"
 
-#: pgp.c:710 pgp.c:1001
+#: pgp.c:728 pgp.c:1020
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -2970,7 +2994,7 @@ msgstr ""
 "[-- Akhir keluaran PGP --]\n"
 "\n"
 
-#: pgp.c:758
+#: pgp.c:776
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
 "\n"
@@ -2978,7 +3002,7 @@ msgstr ""
 "[-- Error: Struktur multipart/signed tidak konsisten! --]\n"
 "\n"
 
-#: pgp.c:766
+#: pgp.c:784
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -2987,7 +3011,7 @@ msgstr ""
 "[-- Error: Protokol multipart/signed %s tidak dikenal! --]\n"
 "\n"
 
-#: pgp.c:790
+#: pgp.c:808
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -2997,7 +3021,7 @@ msgstr ""
 "\n"
 
 #. Now display the signed body
-#: pgp.c:800
+#: pgp.c:818
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -3005,7 +3029,7 @@ msgstr ""
 "[-- Data berikut ini ditandatangani --]\n"
 "\n"
 
-#: pgp.c:806
+#: pgp.c:824
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -3013,7 +3037,7 @@ msgstr ""
 "[-- Warning: Tidak dapat menemukan tandatangan. --]\n"
 "\n"
 
-#: pgp.c:812
+#: pgp.c:830
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -3021,11 +3045,11 @@ msgstr ""
 "\n"
 "[-- Akhir data yang ditandatangani --]\n"
 
-#: pgp.c:912
+#: pgp.c:930
 msgid "Internal error. Inform <roessler@guug.de>."
 msgstr "Internal error. Hubungi <roessler@guug.de>."
 
-#: pgp.c:972
+#: pgp.c:990
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -3033,7 +3057,7 @@ msgstr ""
 "[-- Error: tidak bisa membuat subproses PGP! --]\n"
 "\n"
 
-#: pgp.c:1065
+#: pgp.c:1086
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -3041,11 +3065,11 @@ msgstr ""
 "[-- Error: surat PGP/MIME tidak dalam format yg betul! --]\n"
 "\n"
 
-#: pgp.c:1078
+#: pgp.c:1099
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Error: tidak bisa membuat file sementara! --]\n"
 
-#: pgp.c:1087
+#: pgp.c:1108
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -3053,7 +3077,7 @@ msgstr ""
 "[-- Data berikut di-encrypt dgn PGP/MIME --]\n"
 "\n"
 
-#: pgp.c:1105
+#: pgp.c:1126
 msgid ""
 "\n"
 "[-- End of PGP/MIME encrypted data --]\n"
@@ -3061,25 +3085,25 @@ msgstr ""
 "\n"
 "[-- Akhir data yang diacak dg PGP/MIME --]\n"
 
-#: pgp.c:1185
+#: pgp.c:1206
 msgid "Can't open PGP subprocess!"
 msgstr "Tidak bisa membuka subproses PGP!"
 
-#: pgp.c:1312
+#: pgp.c:1333
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Gunakan keyID = '%s' untuk %s?"
 
-#: pgp.c:1339
+#: pgp.c:1360
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Masukkan keyID untuk %s: "
 
-#: pgp.c:1547
+#: pgp.c:1568
 msgid "Can't invoke PGP"
 msgstr "Tidak dapat menjalankan PGP"
 
-#: pgp.c:1651
+#: pgp.c:1672
 msgid "Create an application/pgp message?"
 msgstr "Buat surat application/pgp?"
 
@@ -3087,78 +3111,88 @@ msgstr "Buat surat application/pgp?"
 msgid "Fetching PGP key..."
 msgstr "Mengambil PGP key..."
 
+#: pgpkey.c:486
+#, fuzzy
+msgid "All matching keys are marked expired/revoked."
+msgstr "Kunci ini tidak dapat digunakan: kadaluwarsa/disabled/dicabut."
+
 #. __STRCAT_CHECKED__
-#: pgpkey.c:444
+#: pgpkey.c:512
 msgid "Select  "
 msgstr "Pilih  "
 
 #. __STRCAT_CHECKED__
-#: pgpkey.c:447
+#: pgpkey.c:515
 msgid "Check key  "
 msgstr "Cek key  "
 
-#: pgpkey.c:460
+#: pgpkey.c:528
 #, c-format
 msgid "PGP keys matching <%s>."
 msgstr "PGP keys yg cocok dg <%s>."
 
-#: pgpkey.c:462
+#: pgpkey.c:530
 #, c-format
 msgid "PGP keys matching \"%s\"."
 msgstr "PGP keys yg cocok dg \"%s\"."
 
-#: pgpkey.c:481 pgpkey.c:675
+#: pgpkey.c:549 pgpkey.c:741
 msgid "Can't open /dev/null"
 msgstr "Tidak bisa membuka /dev/null"
 
-#: pgpkey.c:487 pgpkey.c:669
+#: pgpkey.c:555 pgpkey.c:735
 msgid "Can't create temporary file"
 msgstr "Tidak bisa membuat file sementara"
 
-#: pgpkey.c:498 pgpkey.c:689
+#: pgpkey.c:566 pgpkey.c:755
 msgid "Can't create filter"
 msgstr "Tidak bisa membuat filter"
 
-#: pgpkey.c:508
+#: pgpkey.c:576
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "Identifikasi kunci: 0x%s"
 
-#: pgpkey.c:534
+#: pgpkey.c:596
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Kunci ini tidak dapat digunakan: kadaluwarsa/disabled/dicabut."
 
-#: pgpkey.c:548
+#: pgpkey.c:608
+#, fuzzy
+msgid "This ID is expired/disabled/revoked"
+msgstr "Kunci ini tidak dapat digunakan: kadaluwarsa/disabled/dicabut."
+
+#: pgpkey.c:612
 msgid "This ID's trust level is undefined."
 msgstr "Tingkat kepercayaan dari ID ini tidak diketahui."
 
-#: pgpkey.c:551
+#: pgpkey.c:615
 msgid "This ID is not trusted."
 msgstr "ID ini tidak dipercaya."
 
-#: pgpkey.c:554
+#: pgpkey.c:618
 msgid "This ID is only marginally trusted."
 msgstr "ID ini tidak dipercaya sepenuhnya."
 
-#: pgpkey.c:558
-#, c-format
-msgid "%s Do you really want to use it?"
+#: pgpkey.c:622
+#, fuzzy, c-format
+msgid "%s Do you really want to use the key?"
 msgstr "%s Anda yakin mau menggunakannya?"
 
-#: pgpkey.c:654
+#: pgpkey.c:720
 msgid "Please enter the key ID: "
 msgstr "Masukkan key ID: "
 
-#: pgpkey.c:682
+#: pgpkey.c:748
 msgid "Invoking pgp..."
 msgstr "Menjalankan PGP..."
 
-#: pgpkey.c:707
+#: pgpkey.c:773
 #, c-format
 msgid "PGP Key %s."
 msgstr "Kunci PGP %s."
 
-#: pgpkey.c:754 pgpkey.c:870
+#: pgpkey.c:835 pgpkey.c:953
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Mencari kunci yg cocok dengan \"%s\"..."
@@ -3404,7 +3438,7 @@ msgstr "Tidak bisa membuat %s."
 msgid "Can't find any tagged messages."
 msgstr "Tidak dapat menemukan surat yang ditandai."
 
-#: recvcmd.c:699 send.c:666
+#: recvcmd.c:699 send.c:685
 msgid "No mailing lists found!"
 msgstr "Tidak ada mailing list yang ditemukan!"
 
@@ -3526,7 +3560,7 @@ msgstr "Balas ke %s%s?"
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
 #.
-#: send.c:641
+#: send.c:660
 msgid "No tagged messages are visible!"
 msgstr "Tidak ada surat yang ditandai yang kelihatan!"
 
@@ -3553,56 +3587,56 @@ msgstr "Mempersiapkan pesan yg diforward..."
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:1040
+#: send.c:1080
 msgid "Recall postponed message?"
 msgstr "Lanjutkan surat yang ditunda sebelumnya?"
 
-#: send.c:1270
+#: send.c:1308
 msgid "Abort unmodified message?"
 msgstr "Batalkan surat yang tidak diubah?"
 
-#: send.c:1272
+#: send.c:1310
 msgid "Aborted unmodified message."
 msgstr "Surat yang tidak diubah dibatalkan."
 
 #. abort
-#: send.c:1313
+#: send.c:1351
 msgid "Mail not sent."
 msgstr "Surat tidak dikirim."
 
-#: send.c:1339
+#: send.c:1377
 msgid "Message postponed."
 msgstr "Surat ditunda."
 
-#: send.c:1348
+#: send.c:1386
 msgid "No recipients are specified!"
 msgstr "Tidak ada penerima yang disebutkan!"
 
-#: send.c:1353
+#: send.c:1391
 msgid "No recipients were specified."
 msgstr "Tidak ada penerima yang disebutkan."
 
-#: send.c:1359
+#: send.c:1397
 msgid "No subject, abort sending?"
 msgstr "Tidak ada subjek, batalkan pengiriman?"
 
-#: send.c:1363
+#: send.c:1401
 msgid "No subject specified."
 msgstr "Tidak ada subjek."
 
-#: send.c:1410
+#: send.c:1448
 msgid "Sending message..."
 msgstr "Mengirim surat..."
 
-#: send.c:1537
+#: send.c:1575
 msgid "Could not send the message."
 msgstr "Tidak bisa mengirim surat."
 
-#: send.c:1542
+#: send.c:1580
 msgid "Mail sent."
 msgstr "Surat telah dikirim."
 
-#: send.c:1542
+#: send.c:1580
 msgid "Sending in background."
 msgstr "Mengirim di latar belakang."
 
@@ -3620,12 +3654,12 @@ msgstr "%s tidak ada lagi!"
 msgid "Could not open %s"
 msgstr "Tidak bisa membuka %s"
 
-#: sendlib.c:1981
+#: sendlib.c:1994
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Error mengirimkan surat, proses keluar dengan kode %d (%s)."
 
-#: sendlib.c:1987
+#: sendlib.c:2000
 msgid "Output of the delivery process"
 msgstr "Keluaran dari proses pengiriman"
 
@@ -3656,11 +3690,11 @@ msgstr "Tidak bisa menemukan fungsi pengurutan! [laporkan bug ini]"
 msgid "(no mailbox)"
 msgstr "(tidak ada kotak surat)"
 
-#: thread.c:714
+#: thread.c:737
 msgid "Parent message is not visible in limited view"
 msgstr "Surat induk tidak bisa dilihat di tampilan terbatas."
 
-#: thread.c:719
+#: thread.c:742
 msgid "Parent message is not available."
 msgstr "Surat induk tidak ada."
 
