@@ -729,11 +729,11 @@ static LIST *pgp_add_string_to_hints (LIST *hints, const char *str)
   char *scratch = safe_strdup (str);
   char *t;
   
-  t = strtok (scratch, " \n");
+  t = strtok (scratch, " ,.:\"()<>\n");
   while (t)
   {
     hints = mutt_add_list (hints, t);
-    t = strtok (NULL, " \n");
+    t = strtok (NULL, " ,.:\"()<>\n");
   }
 
   safe_free ((void **) &scratch);
