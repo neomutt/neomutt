@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt\n"
 "POT-Creation-Date: 2000-03-30 17:28+0200\n"
-"PO-Revision-Date: 2000-03-14 12:09+01:00\n"
+"PO-Revision-Date: 2000-04-01 14:19+02:00\n"
 "Last-Translator: Boris Wesslowski <Boris@Wesslowski.com>\n"
 "Language-Team: -\n"
 "MIME-Version: 1.0\n"
@@ -38,7 +38,7 @@ msgstr "Nombre corto: "
 
 #: alias.c:252
 msgid "You already have an alias defined with that name!"
-msgstr "Este nombre ya esta definido en la libreta."
+msgstr "¡Este nombre ya está definido en la libreta!"
 
 #: alias.c:266
 msgid "Address: "
@@ -196,12 +196,11 @@ msgstr "Patrón de archivos: "
 
 #: browser.c:995
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
-msgstr ""
-"¿Orden inverso por (f)echa, (t)amaño, (a)lfabéticamente o (s)in orden? "
+msgstr "¿Órden inverso por (f)echa, (t)amaño, (a)lfabéticamente o (s)in órden? "
 
 #: browser.c:996
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
-msgstr "¿Ordenar por (f)echa, (t)amaño, (a)lfabéticamente o (s)in orden? "
+msgstr "¿Ordenar por (f)echa, (t)amaño, (a)lfabéticamente o (s)in órden? "
 
 #: browser.c:997
 msgid "dazn"
@@ -226,7 +225,7 @@ msgstr "Correo nuevo en %s."
 
 #: charset.c:1065
 msgid "We can't currently handle utf-8 at this point."
-msgstr "utf-8 no esta soportado al momento."
+msgstr "utf-8 no es soportado al momento."
 
 #: charset.c:1071 charset.c:1078
 #, c-format
@@ -355,18 +354,16 @@ msgstr "Redirigir el mensaje al comando:"
 #: commands.c:372
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
-msgstr ""
-"Orden-rev (f)echa/(d)e/(r)ecep/(a)snto/(p)ara/(h)ilo/(n)ada/(t)amño/p(u)nt: "
+msgstr "Órden-rev fech(a)/d(e)/(r)ece/a(s)nto/(p)ara/(h)ilo/(n)ada/ta(m)añ/punta(j): "
 
 #: commands.c:373
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
-msgstr ""
-"Orden (f)echa/(d)e/(r)ecep/(a)sunto/(p)ara/(h)ilo/(n)ada/(t)amaño/p(u)ntaje: "
+msgstr "Órden fech(a)/d(e)/(r)ecep/a(s)unto/(p)ara/(h)ilo/(n)ada/ta(m)año/punta(j)e: "
 
 #: commands.c:374
 msgid "dfrsotuzc"
-msgstr "fdraphntu"
+msgstr "aersphnmj"
 
 #: commands.c:427
 msgid "Shell command: "
@@ -478,12 +475,11 @@ msgstr "Algoritmo MIC: "
 msgid ""
 "(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget "
 "it? "
-msgstr ""
-"(c)odificar, (f)irmar c(o)mo, (a)mbos, escoger algorithmo (m)ic, ca(n)celar "
+msgstr "co(d)ificar, f(i)rmar (c)omo, amb(o)s, escoger algorithmo (m)ic, ca(n)celar "
 
 #: compose.c:138
 msgid "esabmf"
-msgstr "cfoamn"
+msgstr "dicomn"
 
 #: compose.c:152
 msgid "Sign as: "
@@ -666,7 +662,7 @@ msgstr " ('?' para lista): "
 
 #: curs_main.c:55 curs_main.c:565
 msgid "No mailbox is open."
-msgstr "Ningún buzón esta abierto."
+msgstr "Ningún buzón está abierto."
 
 #: curs_main.c:56
 msgid "There are no messages."
@@ -841,7 +837,7 @@ msgstr "El hilo contiene mensajes sin leer."
 
 #: curs_main.c:1456 flags.c:228 thread.c:657 thread.c:708
 msgid "Threading is not enabled."
-msgstr "La muestra por hilos no esta activada."
+msgstr "La muestra por hilos no está activada."
 
 #.
 #. * SLcurses_waddnstr() can't take a "const char *", so this is only
@@ -1174,7 +1170,7 @@ msgstr "Consiguiendo lista de carpetas..."
 #.
 #: imap/command.c:184
 msgid "Fatal error.  Message count is out of sync!"
-msgstr "¡Error fatal!  La cuenta de mensajes no esta sincronizada."
+msgstr "¡Error fatal!  La cuenta de mensajes no está sincronizada."
 
 #: imap/imap.c:213
 #, c-format
@@ -1238,15 +1234,15 @@ msgstr "Desuscribiendo de %s..."
 
 #: imap/imap_ssl.c:85
 msgid "Filling entropy pool"
-msgstr ""
+msgstr "Llenando repositorio de entropía"
 
 #: imap/imap_ssl.c:117
 msgid "Failed to find enough entropy on your system"
-msgstr ""
+msgstr "No se pudo encontrar suficiente entropía en su sistema"
 
 #: imap/imap_ssl.c:124
 msgid "SSL disabled due the lack of entropy"
-msgstr ""
+msgstr "SSL fue desactivado por la falta de entropía"
 
 #: imap/imap_ssl.c:204
 msgid "Unable to get certificate from peer"
@@ -1372,7 +1368,7 @@ msgstr "encabezado erróneo"
 #: init.c:634
 #, c-format
 msgid "%s: unknown sorting method"
-msgstr "%s: orden desconocido"
+msgstr "%s: órden desconocido"
 
 #: init.c:710
 #, c-format
@@ -1395,12 +1391,12 @@ msgstr "valor es ilegal con reset"
 #: init.c:824
 #, c-format
 msgid "%s is set"
-msgstr "%s esta activada"
+msgstr "%s está activada"
 
 #: init.c:824
 #, c-format
 msgid "%s is unset"
-msgstr "%s no esta activada"
+msgstr "%s no está activada"
 
 #: init.c:1028
 #, c-format
@@ -1431,7 +1427,7 @@ msgstr "source: errores en %s"
 #: init.c:1211
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
-msgstr ""
+msgstr "source: lectura fue cancelada por demasiados errores en %s"
 
 #: init.c:1225
 #, c-format
@@ -1574,7 +1570,7 @@ msgstr "adjuntar mensaje(s) a este mensaje"
 
 #: keymap_alldefs.h:20
 msgid "change an attachment's character set"
-msgstr "cambiar el mapa de cracteres de un archivo adjunto"
+msgstr "cambiar el mapa de caracteres de un archivo adjunto"
 
 #: keymap_alldefs.h:21
 msgid "edit the BCC list"
@@ -2018,7 +2014,7 @@ msgstr "subir un renglón"
 
 #: keymap_alldefs.h:132
 msgid "move to the previous page"
-msgstr "ir a la ágina anterior"
+msgstr "ir a la página anterior"
 
 #: keymap_alldefs.h:133
 msgid "print the current entry"
@@ -2030,7 +2026,7 @@ msgstr "Obtener direcciones de un programa externo"
 
 #: keymap_alldefs.h:135
 msgid "append new query results to current results"
-msgstr "agregar resultados de la búsqueda nuevos a anteriores"
+msgstr "agregar nuevos resultados de la búsqueda a anteriores"
 
 #: keymap_alldefs.h:136
 msgid "save changes to mailbox and quit"
@@ -2090,7 +2086,7 @@ msgstr "ordenar mensajes"
 
 #: keymap_alldefs.h:150
 msgid "sort messages in reverse order"
-msgstr "ordenar mensajes en orden inverso"
+msgstr "ordenar mensajes en órden inverso"
 
 #: keymap_alldefs.h:151
 msgid "tag the current entry"
@@ -2315,11 +2311,10 @@ msgid ""
 "    along with this program; if not, write to the program's developers.\n"
 msgstr ""
 "\n"
-"Implementación SHA1 Copyright (C) 1995-1997 Eric A. Young "
-"<eay@cryptsoft.com>\n"
+"Implementación SHA1 Copyright (C) 1995-1997 Eric A. Young <eay@cryptsoft.com>\n"
 "\n"
 "    Redistribución y uso en forma de código fuente y binario con o sin\n"
-"    modificación estan permitidos bajo ciertas condiciones.\n"
+"    modificación están permitidos bajo ciertas condiciones.\n"
 "\n"
 "    The SHA1 implementation comes AS IS, and ANY EXPRESS OR IMPLIED\n"
 "    WARRANTIES, including, but not limited to, the implied warranties of\n"
@@ -2436,7 +2431,7 @@ msgstr "Ningún buzón de entrada fue definido."
 
 #: main.c:689
 msgid "Mailbox is empty."
-msgstr "El buzón esta vacío."
+msgstr "El buzón está vacío."
 
 #: mbox.c:126 mbox.c:284
 msgid "Reading %s... %d (%d%%)"
@@ -2464,8 +2459,7 @@ msgstr "¡Imposible bloquear buzón!"
 #.
 #: mbox.c:747
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr ""
-"sync: ¡buzón modificado, pero sin mensajes modificados! (reporte este error)"
+msgstr "sync: buzón modificado, ¡pero sin mensajes modificados! (reporte este fallo)"
 
 #: mbox.c:776
 msgid "Writing messages... %d (%d%%)"
@@ -2515,11 +2509,11 @@ msgstr "Está en la primera página."
 
 #: menu.c:519
 msgid "First entry is shown."
-msgstr "La primera entrada esta siendo mostrada."
+msgstr "La primera entrada está siendo mostrada."
 
 #: menu.c:539
 msgid "Last entry is shown."
-msgstr "La última entrada esta siendo mostrada."
+msgstr "La última entrada está siendo mostrada."
 
 #: menu.c:590
 msgid "You are on the last entry."
@@ -2686,7 +2680,7 @@ msgstr "¡Use 'toggle-write' para activar escritura!"
 #: mx.c:1031
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
-msgstr "Buzón esta marcado inescribible. %s"
+msgstr "Buzón está marcado inescribible. %s"
 
 #: mx.c:1081
 #, c-format
@@ -2720,11 +2714,11 @@ msgstr "Sig."
 #. emulate "less -q" and don't go on to the next message.
 #: pager.c:1769 pager.c:1800 pager.c:1829 pager.c:2049
 msgid "Bottom of message is shown."
-msgstr "El final del mensaje esta siendo mostrado."
+msgstr "El final del mensaje está siendo mostrado."
 
 #: pager.c:1785 pager.c:1807 pager.c:1818
 msgid "Top of message is shown."
-msgstr "El principio del mensaje esta siendo mostrado."
+msgstr "El principio del mensaje está siendo mostrado."
 
 #: pager.c:1891
 msgid "Reverse search: "
@@ -2736,7 +2730,7 @@ msgstr "Buscar: "
 
 #: pager.c:1987
 msgid "Help is currently being shown."
-msgstr "La ayuda esta siendo mostrada."
+msgstr "La ayuda está siendo mostrada."
 
 #: pager.c:2016
 msgid "No more quoted text."
@@ -2990,9 +2984,7 @@ msgstr "[-- ¡Error: no se pudo cear archivo temporal! --]\n"
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
-msgstr ""
-"[-- Lo siguiente esta cifrado con PGP/MIME --]\n"
-"\n"
+msgstr "[-- Lo siguiente está cifrado con PGP/MIME --]\n\n"
 
 #: pgp.c:988
 msgid ""
@@ -3225,7 +3217,7 @@ msgstr "Archivo adjunto guardado"
 #: recvattach.c:499
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
-msgstr "¡Atención!  Esta a punto de sobreescribir %s, ¿continuar?"
+msgstr "¡Atención!  Está a punto de sobreescribir %s, ¿continuar?"
 
 #: recvattach.c:517
 msgid "Attachment filtered."
@@ -3471,11 +3463,11 @@ msgstr "Mensaje pospuesto."
 
 #: send.c:1334
 msgid "No recipients are specified!"
-msgstr "¡No hay destinatario!"
+msgstr "¡No especificó destinatarios!"
 
 #: send.c:1339
 msgid "No recipients were specified."
-msgstr "¡No hay destinatario!"
+msgstr "No especificó destinatarios."
 
 #: send.c:1345
 msgid "No subject, abort sending?"
@@ -3545,7 +3537,7 @@ msgstr "Ordenando buzón..."
 
 #: sort.c:232
 msgid "Could not find sorting function! [report this bug]"
-msgstr "¡No se pudo encontrar la función para ordenar! [reporte este error]"
+msgstr "¡No se pudo encontrar la función para ordenar! [reporte este fallo]"
 
 #: status.c:102
 msgid "(no mailbox)"

@@ -6,9 +6,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt-1.1.5i\n"
+"Project-Id-Version: Mutt-1.1.11i\n"
 "POT-Creation-Date: 2000-03-30 17:28+0200\n"
-"PO-Revision-Date: 2000-03-05 12:00+0200\n"
+"PO-Revision-Date: 2000-04-01 12:00+0200\n"
 "Last-Translator: Φάνης Δοκιανάκης <madf@hellug.gr>\n"
 "Language-Team: Greek <el@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1503,15 +1503,15 @@ msgstr "Διαγραφή στο %s..."
 
 #: imap/imap_ssl.c:85
 msgid "Filling entropy pool"
-msgstr ""
+msgstr "Αποθήκευση εντροπίας"
 
 #: imap/imap_ssl.c:117
 msgid "Failed to find enough entropy on your system"
-msgstr ""
+msgstr "Αποτυχία στην εύρεση αρκετής εντροπίας στο σύστημα σας"
 
 #: imap/imap_ssl.c:124
 msgid "SSL disabled due the lack of entropy"
-msgstr ""
+msgstr "Το SSL απενεργοποιήθηκε λόγω λήψης εντροπίας"
 
 #
 #: imap/imap_ssl.c:204
@@ -1723,7 +1723,7 @@ msgstr "source: λάθη στο %s"
 #: init.c:1211
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
-msgstr ""
+msgstr "πηγή: απόρριψη ανάγνωσης λόγω πολλών σφαλμάτων στο %s"
 
 #
 #: init.c:1225

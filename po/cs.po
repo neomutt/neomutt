@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.1.9i\n"
-"POT-Creation-Date: 2000-03-30 17:28+0200\n"
-"PO-Revision-Date: 2000-03-14 20:29+0100\n"
+"Project-Id-Version: 1.1.11i\n"
+"POT-Creation-Date: 2000-04-03 22:09+0200\n"
+"PO-Revision-Date: 2000-04-03 22:20+0200\n"
 "Last-Translator: Jiøí Pavlovský <pavlovsk@ff.cuni.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1479,15 +1479,15 @@ msgstr "Odhla¹uji %s..."
 
 #: imap/imap_ssl.c:85
 msgid "Filling entropy pool"
-msgstr ""
+msgstr "Pøipravuji zdroj náhodných dat"
 
 #: imap/imap_ssl.c:117
 msgid "Failed to find enough entropy on your system"
-msgstr ""
+msgstr "Nemohu získat dostatek náhodných dat"
 
 #: imap/imap_ssl.c:124
 msgid "SSL disabled due the lack of entropy"
-msgstr ""
+msgstr "SSL vypnuto kvùli nedostatku náhodných dat"
 
 #
 #: imap/imap_ssl.c:204
@@ -1682,53 +1682,53 @@ msgid "%s: unknown type"
 msgstr "neznámý typ %s"
 
 #
-#: init.c:1194
+#: init.c:1196
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Chyba v %s na øádku %d: %s"
 
 #
 #. the muttrc source keyword
-#: init.c:1210
+#: init.c:1212
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: chyby v %s"
 
-#: init.c:1211
+#: init.c:1213
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
-msgstr ""
+msgstr "source: ètení pøeru¹eno kvùli velikému mno¾ství chyb v %s"
 
 #
-#: init.c:1225
+#: init.c:1227
 #, c-format
 msgid "source: error at %s"
 msgstr "source: chyba na %s"
 
 #
-#: init.c:1230
+#: init.c:1232
 msgid "source: too many arguments"
 msgstr "source: pøíli¹ mnoho argumentù"
 
 #
-#: init.c:1281
+#: init.c:1283
 #, c-format
 msgid "%s: unknown command"
 msgstr "Pøíkaz %s není znám."
 
 #
-#: init.c:1638
+#: init.c:1640
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Chyba %s na pøíkazovém øádku\n"
 
 #
-#: init.c:1681
+#: init.c:1683
 msgid "unable to determine home directory"
 msgstr "domovský adresáø nelze urèit"
 
 #
-#: init.c:1689
+#: init.c:1691
 msgid "unable to determine username"
 msgstr "u¾ivatelské jméno nelze urèit"
 
@@ -4239,11 +4239,3 @@ msgstr "Rodièovská zpráva není v omezeném zobrazení viditelná.."
 #: thread.c:723
 msgid "Parent message is not available."
 msgstr "Rodièovská zpráva není dostupná."
-
-#
-#~ msgid "ignoring empty header field: %s"
-#~ msgstr "ignoruji prázdnou hlavièku: %s"
-
-#
-#~ msgid "return to the main-menu"
-#~ msgstr "návrat do hlavního menu"

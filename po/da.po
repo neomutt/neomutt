@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt-1.1.9 \n"
+"Project-Id-Version: Mutt-1.1.11 \n"
 "POT-Creation-Date: 2000-03-30 17:28+0200\n"
-"PO-Revision-Date: 2000-03-19 22:56+01:00\n"
-"Last-Translator: Morten Bo Johansen <mojo@image.dk>\n"
+"PO-Revision-Date: 2000-04-02 23:01+02:00\n"
+"Last-Translator: Byrial Jensen <byrial@image.dk>\n"
 "Language-Team: Danish <da@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
@@ -359,17 +359,17 @@ msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 "Omvendt-sort "
-"(d)ato/(a)fs/(i)ndg/(e)mne/(m)odt/(t)råd/(u)sort/(s)tr/s(c)ore?: "
+"(d)ato/(f)ra/(a)nk./(e)mne/t(i)l/(t)råd/(u)sort/(s)tr./s(c)ore?: "
 
 #: commands.c:373
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
-"Sortér (d)ato/(a)fs/(i)ndg/(e)mne/(m)odt/(t)råd/(u)sort/(s)tr/s(c)ore?: "
+"Sortér (d)ato/(f)ra/(a)nk./(e)mne/t(i)l/(t)råd/(u)sort/(s)tr./s(c)ore?: "
 
 #: commands.c:374
 msgid "dfrsotuzc"
-msgstr "daiemtusc"
+msgstr "dfaeitusc"
 
 #: commands.c:427
 msgid "Shell command: "
@@ -1239,15 +1239,15 @@ msgstr "Afmelder abonnement på %s..."
 
 #: imap/imap_ssl.c:85
 msgid "Filling entropy pool"
-msgstr ""
+msgstr "Fylder entropipuljen"
 
 #: imap/imap_ssl.c:117
 msgid "Failed to find enough entropy on your system"
-msgstr ""
+msgstr "Kunne ikke finde nok entropi på dit system"
 
 #: imap/imap_ssl.c:124
 msgid "SSL disabled due the lack of entropy"
-msgstr ""
+msgstr "SSL sat ud af funktion pga. mangel på entropi"
 
 #: imap/imap_ssl.c:204
 msgid "Unable to get certificate from peer"
@@ -1431,7 +1431,7 @@ msgstr "source: Fejl i %s"
 #: init.c:1211
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
-msgstr ""
+msgstr "source: læsning afbrudt pga. for mange fejl i %s"
 
 #: init.c:1225
 #, c-format
@@ -1894,7 +1894,7 @@ msgstr "gå til det sidste brev"
 
 #: keymap_alldefs.h:101
 msgid "show only messages matching a pattern"
-msgstr "vis kun breve der matcher et mønster"
+msgstr "vis kun breve, der matcher et mønster"
 
 #: keymap_alldefs.h:102
 msgid "jump to the next new message"
@@ -2054,7 +2054,7 @@ msgstr "svar på et brev"
 
 #: keymap_alldefs.h:141
 msgid "use the current message as a template for a new one"
-msgstr "anvend det aktuelle brev som skabelon for et nyt"
+msgstr "brug det aktuelle brev som forlæg for et nyt"
 
 #: keymap_alldefs.h:142
 msgid "save message/attachment to a file"
@@ -2360,11 +2360,11 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"usage: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
+"usage: mutt [ -nRzZ ] [ -e <kmd> ] [ -F <fil> ] [ -m <type> ] [ -f <fil> "
 "]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
-"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
-"       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
+"       mutt [ -nx ] [ -e <kmd> ] [ -a <fil> ] [ -F <fil> ] [ -H <fil> ] [ "
+"-i <fil> ] [ -s <emne> ] [ -b <adr> ] [ -c <adr> ] <adr> [ ... ]\n"
+"       mutt [ -n ] [ -e <kmd> ] [ -F <fil> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
 "tilvalg:\n"
@@ -2378,9 +2378,9 @@ msgstr ""
 "  -i <fil>\tanfør en fil som Mutt skal medtage i svaret\n"
 "  -m <type>\tanfør standardtype af brevbakke\n"
 "  -n\t\tgør at Mutt ikke læser systemets Muttrc\n"
-"  -p\t\tgenindlæs et tilbageholdt brev  -R\t\tåbn en brevbakke i "
-"skrivebeskyttet tilstand\n"
-"  -s <subj>\tanfør et emne (sættes i citationstegn, hvis der er blanktegn)\n"
+"  -p\t\tgenindlæs et tilbageholdt brev\n"
+"  -R\t\tåbn en brevbakke i skrivebeskyttet tilstand\n"
+"  -s <emne>\tanfør et emne (sættes i citationstegn, hvis der er blanktegn)\n"
 "  -v\t\tvis version og oversættelsesparametre\n"
 "  -x\t\tefterlign mailx' afsendelsesmåde\n"
 "  -y\t\tvælg en indbakke\n"
@@ -2704,11 +2704,11 @@ msgstr "Funktion er ikke tilgængelig i denne menu."
 
 #: pager.c:1386
 msgid "PrevPg"
-msgstr "Forr.S."
+msgstr "Side op"
 
 #: pager.c:1387
 msgid "NextPg"
-msgstr "NæsteS."
+msgstr "Side ned"
 
 #: pager.c:1391
 msgid "View Attachm."
