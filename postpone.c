@@ -556,12 +556,13 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
       goto err;
 
     mutt_message _("Invoking PGP...");
-    if (pgp_decrypt_mime (fp, &bfp, newhdr->content, &b) == -1)
+    if (pgp_decrypt_mime (fp, &bfp, newhdr->content, &b) == -1 || b == NULL)
     {
  err:
       mx_close_message (&msg);
       mutt_free_envelope (&newhdr->env);
       mutt_free_body (&newhdr->content);
+      mutt_error _("Decryption failed.");
       return -1;
     }
 
