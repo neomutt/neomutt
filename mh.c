@@ -402,6 +402,16 @@ static int mh_sync_message (CONTEXT *ctx, int msgno)
       }
       else
       {
+	/* mutt_copy_message() will have changed
+	 * some of the internal state of the message,
+	 * but we can't commit it here.
+	 * 
+	 * Reparse later.
+	 *
+	 */
+
+	mutt_free_body (&h->content->parts);
+
 	fclose (f);
 	return (-1);
       }
