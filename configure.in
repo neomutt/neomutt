@@ -72,8 +72,7 @@ else
 
         if test x$HAVE_PGP != xno ; then
                 AC_DEFINE(HAVE_PGP)
-                PGPAUX_TARGET=pgpring
-                AM_CONDITIONAL(NEEDS_PGPEWRAP, true)
+                PGPAUX_TARGET="pgpring pgpewrap"
                 MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pgp.o pgpinvoke.o pgpkey.o pgplib.o gnupgparse.o pgpmicalg.o pgppacket.o"
                 OPS="$OPS \$(srcdir)/OPS.PGP"
         fi

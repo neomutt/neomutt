@@ -11,11 +11,7 @@ endif
 
 SUBDIRS = m4 po intl doc contrib $(IMAP_SUBDIR)
 
-if NEEDS_PGPEWRAP
-bin_SCRIPTS = pgpewrap muttbug flea
-else
 bin_SCRIPTS = muttbug flea
-endif
 
 BUILT_SOURCES = keymap_defs.h
 
@@ -63,7 +59,7 @@ CPPFLAGS=@CPPFLAGS@ -I$(includedir)
 non_us_sources = pgp.c pgpinvoke.c pgpkey.c pgplib.c sha1.c \
 	pgpmicalg.c gnupgparse.c sha1.h \
 	doc/language.txt doc/language50.txt OPS.PGP doc/PGP-Notes.txt \
-	OPS.MIX remailer.c remailer.h pgpewrap	\
+	OPS.MIX remailer.c remailer.h pgpewrap.c	\
 	contrib/pgp2.rc contrib/pgp5.rc contrib/gpg.rc \
 	mutt_ssl.c mutt_ssl.h README.SSL mutt_ssl_nss.c \
 	pgppacket.c pgppacket.h
@@ -81,7 +77,7 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO configure acconfig.h account.h \
 	mx.h pager.h pgp.h pop.h protos.h reldate.h rfc1524.h rfc2047.h \
 	rfc2231.h rfc822.h sha1.h sort.h mime.types VERSION prepare \
 	_regex.h OPS.MIX README.SECURITY remailer.c remailer.h browser.h \
-	mbyte.h	lib.h extlib.c pgpewrap pgplib.h Muttrc.head Muttrc \
+	mbyte.h	lib.h extlib.c pgpewrap.c pgplib.h Muttrc.head Muttrc \
 	makedoc.c stamp-doc-rc README.SSL \
 	muttbug pgppacket.h depcomp ascii.h BEWARE
 
