@@ -481,7 +481,7 @@ char* smime_ask_for_key (char *prompt, char *mailbox, short public)
 
 
 
-char *smime_get_field_from_db (char *mailbox, char *query, short public)
+char *smime_get_field_from_db (char *mailbox, char *query, short public, short may_ask)
 {
   int addr_len, query_len, found = 0, ask = 0, choice = 0;
   char cert_path[_POSIX_PATH_MAX];
@@ -543,7 +543,9 @@ char *smime_get_field_from_db (char *mailbox, char *query, short public)
 	  else
 	    snprintf (prompt, sizeof (prompt), _("Use ID %s for %s ?"),
 		      fields[1], mailbox);
-	  if ((choice = mutt_yesorno (prompt, M_NO)) == -1)
+	  if (may_ask == 0)
+	    choice = M_YES;
+	  if (may_ask && (choice = mutt_yesorno (prompt, M_NO)) == -1)
 	  {
 	    found = 0;
 	    ask = 0;
@@ -616,7 +618,7 @@ char *smime_get_field_from_db (char *mailbox, char *query, short public)
 	key = NULL;
       }
     }
-    else if (key_trust_level)
+    else if (key_trust_level && may_ask)
     {
       if (key_trust_level == 'u' )
       {
@@ -633,10 +635,9 @@ char *smime_get_field_from_db (char *mailbox, char *query, short public)
       }
       else if (key_trust_level == 'v' )
       {
-	snprintf (prompt, sizeof (prompt),
-		  _("Warning: You have not yet decided to trust ID %s. (any key to continue)"), key);
-
- 	mutt_error (prompt);
+	mutt_error (_("Warning: You have not yet decided to trust ID %s. (any key to continue)"), key);
+	
+	/* XXX - bad */
   	mutt_any_key_to_continue ("");
 /*  	mutt_any_key_to_continue (prompt); */
       }
@@ -664,7 +665,7 @@ char *smime_get_field_from_db (char *mailbox, char *query, short public)
 static int SmimeFirstTime = 1;  /* sucks... */
 void smime_getkeys (char *mailbox)
 {
-  char *k = smime_get_field_from_db (mailbox, NULL, 0);
+  char *k = smime_get_field_from_db (mailbox, NULL, 0, 0);	/* XXX - or sohuld we ask? */
   char buf[STRING];
 
   if (!k)
@@ -766,7 +767,7 @@ char *smime_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
 
     q = p;
 
-    if ((keyID = smime_get_field_from_db (q->mailbox, NULL, 1)) == NULL)
+    if ((keyID = smime_get_field_from_db (q->mailbox, NULL, 1, 1)) == NULL)
     {
       snprintf(buf, sizeof(buf),
 	       _("Enter keyID for \'%s\':"),
@@ -775,9 +776,7 @@ char *smime_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
     }
     if(!keyID)
     {
-      snprintf (buf, sizeof (buf), _("No (valid) certificate found for %s."),
-		q->mailbox);
-      mutt_message (buf);
+      mutt_message (_("No (valid) certificate found for %s."), q->mailbox);
       safe_free ((void **)&keylist);
       rfc822_free_address (&tmp);
       rfc822_free_address (&addr);
@@ -886,7 +885,7 @@ static void smime_add_certificate (char *certificate, char *mailbox, short publi
 
   if (smime_check_cert_email (certificate, mailbox))
   {
-    printf ("Certificate *NOT* added.\n");
+    mutt_message _("Certificate *NOT* added.");
     return;
   }
 
@@ -913,6 +912,8 @@ static void smime_add_certificate (char *certificate, char *mailbox, short publi
      'unique id' and also its filename.
   */
 
+  mutt_endwin (NULL);
+  
   if ((thepid =  smime_invoke (NULL, NULL, NULL,
 			       -1, fileno (fpout), fileno (fperr),
 			       certificate, NULL, NULL, NULL, NULL, NULL,
@@ -925,7 +926,7 @@ static void smime_add_certificate (char *certificate, char *mailbox, short publi
   }
 
   mutt_wait_filter (thepid);
-
+  
   fflush (fpout);
   rewind (fpout);
   rewind (fperr);
@@ -982,7 +983,7 @@ static void smime_add_certificate (char *certificate, char *mailbox, short publi
     
   */
   
-  tmpKey = smime_get_field_from_db (mailbox, NULL, public);
+  tmpKey = smime_get_field_from_db (mailbox, NULL, public, 0);
 
   /* check if hash values are identical => same certificate ? */
   /* perhaps we should ask for permission to overwrite ? */
@@ -992,8 +993,7 @@ static void smime_add_certificate (char *certificate, char *mailbox, short publi
 
   if (tmpKey && !mutt_strncmp (tmpKey, hashval, mutt_strlen (hashval)))
   {
-    mutt_endwin(NULL);
-    printf ("Certificate \"%s\" exists for \"%s\".\n", hashval, mailbox);
+    mutt_message (_("Certificate \"%s\" exists for \"%s\"."), hashval, mailbox);
     mutt_unlink (dest);
     return;
   }
@@ -1016,12 +1016,9 @@ static void smime_add_certificate (char *certificate, char *mailbox, short publi
     */
     snprintf (buf, sizeof (buf), _("%s %s.%d - ? u\n"), mailbox, hashval, i);
     fputs (buf, fpout);
-	
-    snprintf (buf, sizeof (buf), "Successfully added certificate"
-	      " \"%s\" for \"%s\". ", hashval, mailbox);
-    mutt_message (buf);
-
     fclose (fpout);
+    
+    mutt_message (_("Successfully added certificate \"%s\" for \"%s\". "), hashval, mailbox);
   }
 
   return;
@@ -1452,7 +1449,7 @@ BODY *smime_sign_message (BODY *a )
   int err = 0;
   int empty = 0;
   pid_t thepid;
-  char *intermediates = smime_get_field_from_db(NULL, SmimeSignAs, 1);
+  char *intermediates = smime_get_field_from_db(NULL, SmimeSignAs, 1, 1);
 
   if (!intermediates)
   {

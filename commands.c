@@ -182,13 +182,12 @@ int mutt_display_message (HEADER *cur)
   {
     pager_t info;
 #ifdef HAVE_SMIME
-    char *smime_signer;
 
     if (cur->security & APPLICATION_SMIME && (cmflags & M_CM_VERIFY))
     {
       if (cur->security & GOODSIGN)
       {
-	if (!(smime_signer = smime_verify_sender(cur)))
+	if (!smime_verify_sender(cur))
 	  mutt_message ( _("S/MIME signature successfully verified."));
 	else
 	  mutt_error ( _("S/MIME certificate owner does not match sender."));

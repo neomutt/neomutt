@@ -74,7 +74,7 @@ int smime_verify_sender(HEADER *);
 
 
 
-char *smime_get_field_from_db (char *, char *, short);
+char *smime_get_field_from_db (char *, char *, short, short);
 
 char* smime_ask_for_key (char *, char *, short);
 

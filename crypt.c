@@ -562,7 +562,8 @@ void crypt_extract_keys_from_messages (HEADER * h)
   }
       
   fclose (fpout);
-  mutt_any_key_to_continue (NULL);
+  if (isendwin())
+    mutt_any_key_to_continue (NULL);
 
   mutt_unlink (tempfname);
 
