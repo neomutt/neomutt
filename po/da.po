@@ -1,13 +1,13 @@
 # This Danish translation of Mutt was made by people on the 
-# sslug-locale mailing-list in the month of March 2000. The 
-# maling-list is archived at http://www.sslug.dk/emailarkiv/locale/
+# sslug-locale mailing list in the month of March 2000. The 
+# mailing list is archived at http://www.sslug.dk/emailarkiv/locale/
 # 
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt-1.3.5i \n"
+"Project-Id-Version: Mutt-1.3.8i \n"
 "POT-Creation-Date: 2000-08-30 12:10+0200\n"
-"PO-Revision-Date: 2000-07-09 10:49+02:00\n"
+"PO-Revision-Date: 2000-08-31 20:34+02:00\n"
 "Last-Translator: Byrial Jensen <byrial@image.dk>, Morten Bo Johansen "
 "<mojo@image.dk> \n"
 "Language-Team: Danish <da@li.org>\n"
@@ -16,9 +16,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: account.c:104
-#, fuzzy, c-format
+#, c-format
 msgid "Username at %s: "
-msgstr "Omdøb til: "
+msgstr "Brugernavn på %s: "
 
 #: account.c:132 pop.c:61
 #, c-format
@@ -176,9 +176,8 @@ msgid "No files match the file mask"
 msgstr "Ingen filer passer til filmasken."
 
 #: browser.c:814
-#, fuzzy
 msgid "Create is only supported for IMAP mailboxes"
-msgstr "Sletning er kun understøttet for IMAP-brevbakker"
+msgstr "Oprettelse er kun understøttet for IMAP-brevbakker"
 
 #: browser.c:834
 msgid "Delete is only supported for IMAP mailboxes"
@@ -1102,9 +1101,8 @@ msgid "Authenticating (anonymous)..."
 msgstr "Godkender (anonym)..."
 
 #: imap/auth_anon.c:69
-#, fuzzy
 msgid "Anonymous authentication failed."
-msgstr "Anonym godkendelse ikke understøttet."
+msgstr "Anonym godkendelse slog fejl."
 
 #: imap/auth_cram.c:44
 msgid "Authenticating (CRAM-MD5)..."
@@ -1125,7 +1123,7 @@ msgstr "GSSAPI-godkendelse slog fejl."
 
 #: imap/auth_login.c:34
 msgid "LOGIN disabled on this server."
-msgstr ""
+msgstr "Der er spærret for indlogning på denne tjener."
 
 #: imap/auth_login.c:43 pop.c:72
 msgid "Logging in..."
@@ -1136,14 +1134,12 @@ msgid "Login failed."
 msgstr "Login slog fejl."
 
 #: imap/auth_sasl.c:91
-#, fuzzy
 msgid "Authenticating (SASL)..."
-msgstr "Godkender (GSSAPI)..."
+msgstr "Godkender (SASL)..."
 
 #: imap/auth_sasl.c:163
-#, fuzzy
 msgid "SASL authentication failed."
-msgstr "GSSAPI-godkendelse slog fejl."
+msgstr "SASL-godkendelse slog fejl."
 
 #: imap/browse.c:80
 msgid "Getting namespaces..."
@@ -1154,14 +1150,12 @@ msgid "Getting folder list..."
 msgstr "Henter liste over brevbakker"
 
 #: imap/browse.c:265
-#, fuzzy
 msgid "Create mailbox: "
-msgstr "Åbn brevbakke"
+msgstr "Opret brevbakke: "
 
 #: imap/browse.c:271
-#, fuzzy
 msgid "Mailbox created."
-msgstr "Brevbakke slettet."
+msgstr "Brevbakke oprettet."
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
@@ -1239,7 +1233,7 @@ msgstr "Henter brev ..."
 
 #: imap/message.c:273
 msgid "The message index is incorrect. Try reopening the mailbox."
-msgstr ""
+msgstr "Brevindekset er forkert. Prøv at genåbne brevbakken."
 
 #: imap/message.c:463
 msgid "Uploading message ..."
@@ -1485,11 +1479,11 @@ msgstr "ret i Cc-listen"
 
 #: keymap_alldefs.h:22
 msgid "edit attachment description"
-msgstr "ret delens beskrivelse"
+msgstr "ret brevdelens beskrivelse"
 
 #: keymap_alldefs.h:23
 msgid "edit attachment transfer-encoding"
-msgstr "ret delens indkodning"
+msgstr "ret brevdelens indkodning"
 
 #: keymap_alldefs.h:24
 msgid "enter a file to save a copy of this message in"
@@ -1565,7 +1559,7 @@ msgstr "send brevet"
 
 #: keymap_alldefs.h:42
 msgid "toggle disposition between inline/attachment"
-msgstr "skift status mellem intregeret og bilagt"
+msgstr "skift status mellem integreret og bilagt"
 
 #: keymap_alldefs.h:43
 msgid "toggle whether to delete file after sending it"
@@ -2140,14 +2134,12 @@ msgid "Out of memory!"
 msgstr "Ikke mere hukommelse!"
 
 #: main.c:41
-#, fuzzy
 msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please use the flea(1) utility.\n"
 msgstr ""
-"For at kontakte Mutts udviklere, send venligst et brev til\n"
-"<mutt-dev@mutt.org>.\n"
-"Brug venligst muttbug-værktøjet, hvis du vil rapportere en bug.\n"
+"For at kontakte Mutts udviklere, skriv venligst til <mutt-dev@mutt.org>.\n"
+"Brug venligst flea(1)-værktøjet, hvis du vil rapportere en bug.\n"
 
 #: main.c:45
 msgid ""
@@ -2162,7 +2154,6 @@ msgstr ""
 "under visse betingelser; tast `mutt -vv` for detaljer.\n"
 
 #: main.c:51
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
@@ -2211,8 +2202,8 @@ msgstr ""
 "    FORMÅL. Se GNU General Public License for yderligere detaljer\n"
 "\n"
 "    Du skulle have modtaget en kopi af GNU General Public License\n"
-"    sammen med dette program; skriv til Free Software Foundation, Inc.,\n"
-"    675 Mass Ave, Cambridge, MA 02139, USA, hvis det ikke er tilfældet.\n"
+"    sammen med dette program; hvis ikke, så skriv til The Free Software\n"
+"    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 
 #: main.c:79
 msgid ""
@@ -2510,12 +2501,12 @@ msgstr "Tilføj breve til %s?"
 
 #: mutt_socket.c:199
 msgid "SSL is unavailable."
-msgstr ""
+msgstr "SSL er ikke tilgængelig."
 
 #: mutt_socket.c:281
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "Kopierer til %s..."
+msgstr "Opsøger %s..."
 
 #: mutt_socket.c:288
 #, c-format
@@ -2528,23 +2519,22 @@ msgid "Connecting to %s..."
 msgstr "Forbinder til %s..."
 
 #: mutt_socket.c:314
-#, fuzzy
 msgid "Preconnect command failed."
-msgstr "IMAP \"preconnect\"-kommando slog fejl"
+msgstr "\"preconnect\"-kommando slog fejl"
 
 #: mutt_ssl.c:105
 msgid "Failed to find enough entropy on your system"
 msgstr "Kunne ikke finde nok entropi på dit system"
 
 #: mutt_ssl.c:120
-#, fuzzy, c-format
+#, c-format
 msgid "Filling entropy pool: %s...\n"
-msgstr "Fylder entropipuljen"
+msgstr "Fylder entropipuljen: %s...\n"
 
 #: mutt_ssl.c:128
 #, c-format
 msgid "%s has insecure permissions!"
-msgstr ""
+msgstr "%s har usikre tilladelser!"
 
 #: mutt_ssl.c:147
 msgid "SSL disabled due the lack of entropy"
@@ -2735,9 +2725,8 @@ msgid "Mailbox is marked unwritable. %s"
 msgstr "Brevbakken er skrivebeskyttet. %s"
 
 #: mx.c:1118
-#, fuzzy
 msgid "Mailbox checkpointed."
-msgstr "Brevbakke slettet."
+msgstr "Brevbakke opdateret."
 
 #: mx.c:1404
 msgid "Can't write message"
@@ -2850,7 +2839,7 @@ msgstr "fejl: ukendt op %d (rapportér denne fejl)."
 
 #: pattern.c:962 pattern.c:1091
 msgid "Compiling search pattern..."
-msgstr "Klargører søgemønster..."
+msgstr "Klargør søgemønster..."
 
 #: pattern.c:976
 msgid "Executing command on matching messages..."
@@ -3142,23 +3131,21 @@ msgid "Looking for keys matching \"%s\"..."
 msgstr "Leder efter nøgler, der matcher \"%s\"..."
 
 #: pop.c:46
-#, fuzzy
 msgid "POP Username: "
-msgstr "IMAP-brugernavn: "
+msgstr "POP-brugernavn: "
 
 #: pop.c:109
-#, fuzzy, c-format
+#, c-format
 msgid "Login failed: %s"
-msgstr "Login slog fejl."
+msgstr "Login slog fejl: %s"
 
 #: pop.c:132
 msgid "POP host is not defined."
 msgstr "Ingen POP-tjener er defineret."
 
 #: pop.c:165
-#, fuzzy
 msgid "Checking for new messages..."
-msgstr "Forbereder brev til videresendelse ..."
+msgstr "Kigger efter nye breve..."
 
 #: pop.c:184
 msgid "No new mail in POP mailbox."
@@ -3589,42 +3576,3 @@ msgstr "Forrige brev i tråden er ikke synligt i afgrænset visning"
 #: thread.c:717
 msgid "Parent message is not available."
 msgstr "Forrige brev i tråden er ikke tilgængeligt."
-
-#~ msgid "Creating mailboxes is not yet supported."
-#~ msgstr "Oprettelse af brevbakker er endnu ikke understøttet."
-
-#~ msgid "Reopening mailbox... %s"
-#~ msgstr "Genåbner brevbakke ... %s"
-
-#~ msgid "Closing mailbox..."
-#~ msgstr "Lukker brevbakke ..."
-
-#~ msgid "IMAP Username: "
-#~ msgstr "IMAP-brugernavn: "
-
-#~ msgid "CRAM key for %s@%s: "
-#~ msgstr "CRAM-nøgle for %s@%s:"
-
-#~ msgid "Skipping CRAM-MD5 authentication."
-#~ msgstr "Springer over CRAM-MD5-godkendelse."
-
-#~ msgid "[-- Error: unexpected end of file! --]\n"
-#~ msgstr "[-- Fejl: uventet afslutning på fil! --]\n"
-
-#~ msgid "Sending APPEND command ..."
-#~ msgstr "Sender APPEND-kommando ..."
-
-#~ msgid "%d kept."
-#~ msgstr "beholdt %d"
-
-#~ msgid "POP Password: "
-#~ msgstr "POP-adgangskode:"
-
-#~ msgid "No POP username is defined."
-#~ msgstr "Intet POP-brugernavn er defineret."
-
-#~ msgid "Could not find address for host %s."
-#~ msgstr "Kunne ikke finde adresse for vært %s."
-
-#~ msgid "Connecting to %s"
-#~ msgstr "Forbinder til %s"

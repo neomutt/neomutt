@@ -3,29 +3,29 @@
 #   Alexey Vyskubov (alexey@pepper.spb.ru)
 #   Andrew W. Nosenko (awn@bcs.zp.ua)
 #   Michael Sobolev (mss@transas.com)
-#   Vsevolod Volkov (vvv@mutt.kiev.ua)
+#   Vsevolod Volkov (vvv@mutt.org.ua)
 #
 # To contact translators, please use mutt-ru mailing list:
 #   http://woe.spb.ru/mailman/listinfo/mutt-ru
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt-1.3.7i\n"
+"Project-Id-Version: mutt-1.3.8i\n"
 "POT-Creation-Date: 2000-08-30 12:10+0200\n"
-"PO-Revision-Date: 2000-08-15 18:41+0200\n"
+"PO-Revision-Date: 2000-08-30 19:06+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=koi8-r\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: account.c:104
-#, fuzzy, c-format
+#, c-format
 msgid "Username at %s: "
-msgstr "Переименовать в: "
+msgstr "Имя пользователя для %s: "
 
 #: account.c:132 pop.c:61
 #, c-format
 msgid "Password for %s@%s: "
-msgstr ""
+msgstr "Пароль для %s@%s: "
 
 #: addrbook.c:31 browser.c:39 pager.c:1362 postpone.c:37 query.c:43
 #: recvattach.c:57
@@ -179,13 +179,12 @@ msgid "No files match the file mask"
 msgstr "Нет файлов, удовлетворяющих данной маске"
 
 #: browser.c:814
-#, fuzzy
 msgid "Create is only supported for IMAP mailboxes"
-msgstr "Удаление поддерживается только для почтовых ящиков на IMAP-серверах."
+msgstr "Создание поддерживается только для почтовых ящиков на IMAP-серверах"
 
 #: browser.c:834
 msgid "Delete is only supported for IMAP mailboxes"
-msgstr "Удаление поддерживается только для почтовых ящиков на IMAP-серверах."
+msgstr "Удаление поддерживается только для почтовых ящиков на IMAP-серверах"
 
 #: browser.c:842
 #, c-format
@@ -1158,14 +1157,12 @@ msgid "Getting folder list..."
 msgstr "Получение списка почтовых ящиков..."
 
 #: imap/browse.c:265
-#, fuzzy
 msgid "Create mailbox: "
-msgstr "Открыть почтовый ящик"
+msgstr "Создать почтовый ящик: "
 
 #: imap/browse.c:271
-#, fuzzy
 msgid "Mailbox created."
-msgstr "Почтовый ящик удален."
+msgstr "Почтовый ящик создан."
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
@@ -2530,7 +2527,7 @@ msgstr "Добавить сообщения к %s?"
 
 #: mutt_socket.c:199
 msgid "SSL is unavailable."
-msgstr ""
+msgstr "SSL-протокол недоступен."
 
 #: mutt_socket.c:281
 #, c-format
