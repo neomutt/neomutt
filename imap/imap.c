@@ -389,7 +389,8 @@ int imap_open_connection (IMAP_DATA* idata)
 	{
 	  if (mutt_ssl_starttls (idata->conn))
 	  {
-	    dprint (1, (debugfile, "imap_open_connection: STARTTLS failed\n"));
+	    mutt_error ("Could not negotiate TLS connection");
+	    sleep (1);
 	    goto bail;
 	  }
 	  else
@@ -1052,7 +1053,8 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint)
   idata = (IMAP_DATA*) ctx->data;
 
   now = time(NULL);
-  if (now > ImapLastCheck + Timeout) {
+  if (now > ImapLastCheck + Timeout)
+  {
     ImapLastCheck = now;
 
     if (imap_exec (idata, "NOOP", 0) != 0)

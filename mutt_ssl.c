@@ -300,14 +300,32 @@ int ssl_socket_open (CONNECTION * conn)
  *   SSL over the wire, including certificate checks. */
 int ssl_negotiate (sslsockdata* ssldata)
 {
-  if (SSL_connect (ssldata->ssl) != 1)
+  int err;
+  const char* errmsg;
+
+#if OPENSSL_VERSION_NUMBER >= 0x0090600
+  /* This only exists in 0.9.6 and above. Without it we may get interrupted
+   *   reads or writes. Bummer. */
+  SSL_set_mode (ssldata->ssl, SSL_MODE_AUTO_RETRY);
+#endif
+
+  if ((err = SSL_connect (ssldata->ssl)) != 1)
   {
-    unsigned long e;
-    while ((e = ERR_get_error()) != 0)
+    switch (SSL_get_error (ssldata->ssl, err))
     {
-      mutt_error ("SSL failed: %s", ERR_reason_error_string(e));
-      sleep (1);
+    case SSL_ERROR_SYSCALL:
+      errmsg = "I/O error";
+      break;
+    case SSL_ERROR_SSL:
+      errmsg = "unspecified protocol error";
+      break;
+    default:
+      errmsg = "unknown error";
     }
+    
+    mutt_error ("SSL failed: %s", errmsg);
+    sleep (1);
+
     return -1;
   }
 
