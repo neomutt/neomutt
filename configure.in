@@ -180,7 +180,7 @@ main ()
 	do
 		AC_CHECK_LIB($cf_ncurses,waddnwstr,[break])
 	done
-	if test "$cf_ncurses" = unknow; then cf_curses=ncurses; fi
+	if test "$cf_ncurses" = unknown; then cf_ncurses=ncurses; fi
         AC_CHECK_LIB($cf_ncurses, initscr,
                 [MUTTLIBS="$MUTTLIBS -l$cf_ncurses"
                 if test x$mutt_cv_curses = x/usr -a -d /usr/include/ncurses; then
