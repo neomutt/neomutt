@@ -638,7 +638,6 @@ AC_ARG_WITH(sasl, [  --with-sasl[=PFX]          Use Cyrus SASL library for POP/I
           AC_DEFINE(USE_SASL,1,
                   [ Define if want to use the Cyrus SASL library for POP/IMAP authentication. ])
           need_sasl=yes
-          need_md5=no
         fi
         ])
 AM_CONDITIONAL(USE_SASL, test x$need_sasl = xyes)
@@ -671,7 +670,6 @@ AC_ARG_WITH(sasl2, [  --with-sasl2[=PFX]         Use Cyrus SASL library version 
           AC_DEFINE(USE_SASL2,1,
                   [ Define if want to use version 2 of the Cyrus SASL library. ])
           need_sasl=yes
-          need_md5=no
         fi
         ])
 AM_CONDITIONAL(USE_SASL, test x$need_sasl = xyes)
