@@ -1,3 +1,137 @@
+Sun Sep 13 15:27:03 1998  Thomas Roessler  <roessler@guug.de>
+
+	* sendlib.c, rfc2047.c, recvattach.c, hash.h,
+	gen-charset.c, handler.c, configure.in, configure,
+	commands.c, charset.h, charset.c, Makefile.in:
+	This patch adds on-demand loading of character set
+	tables, changes the default location of $SHAREDIR,
+	and fixes some compilation problems occuring on
+	machines without PGP installed.
+
+Sat Sep 12 19:58:56 1998  Thomas Roessler  <roessler@guug.de>
+
+	* sendlib.c: Fixing a silly typo in the edit-message code.
+
+	* rfc2047.c, charset.c, charset.h, handler.c, Makefile.in:
+	[patch-0.93.2i.ru.mmultiple_charsets.gz] This patch adds
+	support for international character sets.  Currently, mutt
+	knows about the following character sets and is able to
+	convert between them:
+
+	iso-8859-1, ..., iso-8859-9, koi8-r, windows-1251, x-cp866.
+
+	(From: Ruslan Ermilov <ru@ucb.crimea.ua>)
+
+	* recvattach.c, protos.h, pattern.c, mutt.h,
+	init.c, history.h, enter.c, commands.c: When
+	entering a 'set' command on the command-line,
+	pressing TAB after string_var= will insert the
+	current value of that variable. Note that this
+	works only for variables of type 'string'.
+
+	Also fixes the following buglets in command-completion:
+
+	 1. doesnt work if you started the command-line with
+	 whitespace
+
+	 2. Seems to think that 'Set', 'ReSeT', etc are valid
+	 commands (since it checks for 'strcasecmp' instead of
+	 'strcmp' when completing the variable names Also fixes
+	 the following buglets in command-completion:
+
+	(From: Vikas Agnihotri <VikasA@att.com>)
+
+	* enter.c: Use the proper history class when
+	entering mutt commands.
+
+	* imap.c: [patch-0.94.5i.jmy.imap_quote.1]
+
+	* sendlib.c, send.c, protos.h, postpone.c,
+	parse.c, mutt.h, lib.c, functions.h, curs_main.c,
+	compose.c, OPS: Adding the edit-message feature.
+
+	* hdrline.c: [patch-0.94.5.vikas.collapse_format.2] - introduce %M for
+	the number of messages which is hidden in a thread.
+
+Tue Sep  8 19:32:57 1998  Thomas Roessler  <roessler@guug.de>
+
+	* TODO: Bogus bug.  Actually, by setting use_mailcap=no, it _is_
+	possible to view the header of a single-part message with
+	a non-autoview body type.
+
+	* recvattach.c: This patch makes the view attachment menu show all
+	message/rfc822 parts as a new level, not only the
+	multipart messages. This makes it possible to display a
+	message/rfc822 part which includes only a image/jpeg part
+	or something else which cant be viewed in the pager.
+	(From: Jimmy Mäkelä <jmy@flashback.net>)
+
+	* recvattach.c, pgp.c, copy.c:
+	Change the interface of pgp_decrypt_mime() to enable this
+	function to do some sanity checks.
+
+Mon Sep  7 20:47:25 1998  Thomas Roessler  <roessler@guug.de>
+
+	* recvattach.c:
+	Don't descend into multipart/encrypted on the recvattach
+	menu.
+
+	* sendlib.c, recvattach.c, pgp.h, pgp.c, lib.c, handler.c, commands.c:
+	[patch-0.94.5i.tlr.pgp_fixes.1] This patch fixes various
+	pgp-related issues.  In particular, mutt won't segfault
+	when trying to decrypt-save messages from the index, and
+	the presence of a PGP-encrypted body part on the
+	attachment menu will no longer confuse the MIME parser.
+
+	* curs_lib.c: Clear the "Exit Mutt" prompt.
+
+	* doc/manual.txt, doc/manual.sgml: SGML typo.
+
+	* rfc822.c: Some testing.
+
+	* enter.c: Yet another fix to the alias and query completion stuff:
+	Skip leading white space when constructing the addresses.
+
+	* enter.c: Don't use <space> as an address delimiter when using
+	query-complete and alias-complete.
+
+	* rfc1524.c: Quote MIME parameters when doing %{MIME-parameter}
+	substitution.
+
+	* sendlib.c, recvattach.c, protos.h, pgp.h, pgp.c, pager.c, mutt.h, init.h, handler.c, functions.h, curs_main.c, copy.h, copy.c, commands.c, OPS.PGP:
+	Introducing decrypt-save, decrypt-copy, and
+	$forw{ard,}-decrypt.  Based on work by Emil Laurentiu.
+
+	* mbox.c: [patch-0.94.4i.matthewf.writingmessages-fix.1] Fix the
+	display when synchronizing mbox mail folders.
+
+	* query.c, protos.h, pattern.c, lib.c, curs_lib.c: Fix simple patterns.
+
+	* protos.h, mx.c, browser.c: Put the S_ISLNK definition into protos.h.
+
+	* pgp.c: Fixing convert_to_7bit().  From Liviu Daia.
+
+Sun Sep  6 11:35:34 1998  Thomas Roessler  <roessler@guug.de>
+
+	* lib.c: Fixing the quoting of shell specials in mutt_expand_fmt().
+
+	* query.c: Change snprintf to mutt_expand_fmt when expanding the
+	query command.
+
+	* protos.h, lib.c, attach.c, TODO:
+	[patch-0.94.5i.tlr.safe_symlink.1] Introduce
+	safe_symlink() for /tmp-safe symlinking in the
+	nametemplate code.
+
+	* reldate.h, configure.in, configure, TODO, ChangeLog:
+	Preparing 0.94.5i.
+
+Fri Sep  4 15:53:27 1998  Thomas Roessler  <roessler@guug.de>
+
+	* sendlib.c: Catch MIME parameters with p->value == NULL.
+
+	* sendlib.c: Fixing a memory leak in mutt_prepare_envelope().
+
 Fri Sep  4 15:53:27 1998  Thomas Roessler  <roessler@guug.de>
 
 	* sendlib.c: Catch MIME parameters with p->value
