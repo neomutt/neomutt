@@ -849,7 +849,7 @@ static void mutt_set_encoding (BODY *b, CONTENT *info)
     else
       b->encoding = ENC7BIT;
   }
-  else if (b->type == TYPEMESSAGE)
+  else if (b->type == TYPEMESSAGE || b->type == TYPEMULTIPART)
   {
     if (info->lobin || info->hibin)
     {
