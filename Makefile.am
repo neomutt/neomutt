@@ -40,6 +40,8 @@ mutt_SOURCES = $(BUILT_SOURCES) \
 mutt_LDADD = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAP) $(GSSLIBS) $(INTLLIBS) 
 mutt_DEPENDENCIES = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAPDEPS) $(INTLDEPS)
 
+CPP=@CPP@
+
 DEFS=-DSHAREDIR=\"$(sharedir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 	-DBINDIR=\"$(bindir)\" -DHAVE_CONFIG_H=1
 INCLUDES=-I. -I$(includedir)
@@ -62,7 +64,7 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO configure acconfig.h attach.h \
 	sort.h mime.types VERSION prepare _regex.h OPS.MIX	\
 	README.SECURITY remailer.c remailer.h browser.h \
 	lib.h extlib.c pgpewrap pgplib.h Muttrc.head Muttrc \
-	makedoc.c
+	makedoc.c stamp-doc-rc
 
 
 mutt_dotlock_SOURCES = mutt_dotlock.c
@@ -198,7 +200,7 @@ update-doc: stamp-doc-rc
 Muttrc: stamp-doc-rc
 
 stamp-doc-rc: $(srcdir)/init.h makedoc Muttrc.head
-	cpp $(INCLUDES) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C \
+	$(CPP) $(INCLUDES) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C \
 		-include config.h $(srcdir)/init.h | ./makedoc -c | cat Muttrc.head - \
 		> Muttrc
 	touch stamp-doc-rc
