@@ -1,9 +1,16 @@
+2004-07-12 13:22:24  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* init.c, sendlib.c: Add some debugging code, and rewrite the
+	previously-ununderstandable mutt_remove_duplicates.  (All this
+	done on the search for a problem that ultimately turned out to
+	be a configuration issue. Still, the changed code could come in
+	handy some day.)
+
 2004-07-11 16:25:00  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
 
 	* pager.c: Fix #1882.
 
-2004-06-27 13:54:51  Thomas Roessler  <roessler@does-not-exist.org>
-(roessler)
+2004-06-27 13:54:51  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* postpone.c: Experimental code for #1910.
 
