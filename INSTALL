@@ -167,6 +167,12 @@ Linux
 	"--enable-locales-fix".  If you're using a non-iso-8859 font, you
 	lose.  This is not an issue on glibc (libc 6) based systems.
 
+Sparc Linux
+
+	Redhat 4.2 Sparc users reported problems with some system
+	include files when building mutt.  Configuring mutt with the
+	--disable-warnings switch is said to help against this problem.
+
 
 Digital Unix (OSF/1)
 
