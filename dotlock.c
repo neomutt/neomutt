@@ -91,7 +91,7 @@ extern int snprintf (char *, size_t, const char *, ...);
 #endif /* DL_STANDALONE */
 
 static int DotlockFlags;
-static int   Retry = MAXLOCKATTEMPT;
+static int Retry = MAXLOCKATTEMPT;
 
 #ifdef DL_STANDALONE
 static char *Hostname;
@@ -129,7 +129,7 @@ static int dotlock_lock (const char *);
 
 #ifdef DL_STANDALONE
 
-#define check_flags (a) if (a & DL_FL_ACTIONS) usage (argv[0])
+#define check_flags(a) if (a & DL_FL_ACTIONS) usage (argv[0])
 
 int main (int argc, char **argv)
 {
@@ -153,7 +153,6 @@ int main (int argc, char **argv)
 
 
   /* parse the command line options. */
-  
   DotlockFlags = 0;
   
   while ((i = getopt (argc, argv, "dtfupr:")) != EOF)
@@ -176,9 +175,9 @@ int main (int argc, char **argv)
 
   if (optind == argc || Retry < 0)
     usage (argv[0]);
-  
+
   return dotlock_dispatch (argv[optind]);
-  }
+}
 
 
 /* 
@@ -227,7 +226,7 @@ int dotlock_invoke (const char *path, int flags, int retry)
   
   if ((currdir = open (".", O_RDONLY)) == -1)
     return DL_EX_ERROR;
-  
+
   if (!(DotlockFlags & DL_FL_RETRY) || retry)
     Retry = MAXLOCKATTEMPT;
   else
@@ -242,10 +241,9 @@ int dotlock_invoke (const char *path, int flags, int retry)
   
   return r;
 }
-    
+
 #endif  /* DL_STANDALONE */
-  
-  
+
 
 static int dotlock_dispatch (const char *f)
 {
@@ -740,7 +738,7 @@ dotlock_unlink (const char *realpath)
     unlink (realpath);
   
   bail:
-  
+
   if (fd != -1) close (fd);
   dotlock_unlock (realpath);
 
