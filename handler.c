@@ -1002,7 +1002,10 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
       t[1] = '\0';
 
       if (l)
+      {
 	fseek (s->fpin, -l, SEEK_CUR);
+	bytes += l;
+      }
     }
     else
       full = 0;
