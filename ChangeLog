@@ -1,3 +1,7 @@
+2005-02-12 19:29:52  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
+
+	* TODO: We have $include_onlyfirst.
+
 2005-02-12 19:28:26  TAKIZAWA Takashi  <taki@luna.email.ne.jp>  (roessler)
 
 	* muttlib.c, pager.c: column-length and byte-length are different
