@@ -2239,6 +2239,7 @@ static void _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *
     fseek (fp, h->offset, 0);
     fprintf (f, "Resent-From: %s", resent_from);
     fprintf (f, "\nResent-%s", mutt_make_date (date, sizeof(date)));
+    fprintf (f, "Resent-Message-ID: %s\n", mutt_gen_msgid());
     fputs ("Resent-To: ", f);
     mutt_write_address_list (to, f, 11);
     mutt_copy_header (fp, h, f, ch_flags, NULL);
