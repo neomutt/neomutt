@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1\n"
-"POT-Creation-Date: 2001-01-27 14:49+0100\n"
+"POT-Creation-Date: 2001-01-31 09:00+0100\n"
 "PO-Revision-Date: 2000-09-26 19:15+01:00\n"
 "Last-Translator: Edmund GRIMLEY EVANS <edmundo@rano.org>\n"
 "Language-Team: eo <eo@li.org>\n"
@@ -838,7 +838,7 @@ msgstr "Ne restas fadenoj."
 msgid "You are on the first thread."
 msgstr "Vi estas æe la unua fadeno."
 
-#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:651 thread.c:702
+#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:653 thread.c:704
 msgid "Threading is not enabled."
 msgstr "Fadenoj ne estas þaltitaj."
 
@@ -3665,11 +3665,11 @@ msgstr "Ne povis trovi ordigfunkcion! (Raportu æi tiun cimon.)"
 msgid "(no mailbox)"
 msgstr "(mankas poþtfako)"
 
-#: thread.c:712
+#: thread.c:714
 msgid "Parent message is not visible in limited view"
 msgstr "Patra mesaøo ne estas videbla en limigita rigardo"
 
-#: thread.c:717
+#: thread.c:719
 msgid "Parent message is not available."
 msgstr "Patra mesaøo ne estas havebla."
 

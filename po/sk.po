@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.95.6i\n"
-"POT-Creation-Date: 2001-01-27 14:49+0100\n"
+"POT-Creation-Date: 2001-01-31 09:00+0100\n"
 "PO-Revision-Date: 1999-07-29 00:00+0100\n"
 "Last-Translator: Miroslav Vasko <vasko@ies.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -847,7 +847,7 @@ msgstr "®iadne ïaµ¹ie vlákna."
 msgid "You are on the first thread."
 msgstr "Ste na prvom vlákne."
 
-#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:651 thread.c:702
+#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:653 thread.c:704
 msgid "Threading is not enabled."
 msgstr "Vláknenie nie je povolené."
 
@@ -3716,12 +3716,12 @@ msgstr "Nemo¾no nájs» triediacu funkciu! [oznámte túto chybu]"
 msgid "(no mailbox)"
 msgstr "(¾iadna schránka)"
 
-#: thread.c:712
+#: thread.c:714
 #, fuzzy
 msgid "Parent message is not visible in limited view"
 msgstr "Táto správa nie je viditeµná."
 
-#: thread.c:717
+#: thread.c:719
 #, fuzzy
 msgid "Parent message is not available."
 msgstr "Táto správa nie je viditeµná."

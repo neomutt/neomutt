@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3.10\n"
-"POT-Creation-Date: 2001-01-27 14:49+0100\n"
+"POT-Creation-Date: 2001-01-31 09:00+0100\n"
 "PO-Revision-Date: 2000-10-15 08:22+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -839,7 +839,7 @@ msgstr "沒有更多的序列"
 msgid "You are on the first thread."
 msgstr "您已經在第一個序列上。"
 
-#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:651 thread.c:702
+#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:653 thread.c:704
 msgid "Threading is not enabled."
 msgstr "序列功\能尚未啟動。"
 
@@ -3652,11 +3652,11 @@ msgstr "找不到排序的函數！[請回報這個問題]"
 msgid "(no mailbox)"
 msgstr "（沒有信箱）"
 
-#: thread.c:712
+#: thread.c:714
 msgid "Parent message is not visible in limited view"
 msgstr "在限制閱\覽模式下無法顯示主信件。"
 
-#: thread.c:717
+#: thread.c:719
 msgid "Parent message is not available."
 msgstr "主信件不存在。"
 

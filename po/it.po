@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt-1.1.9\n"
-"POT-Creation-Date: 2001-01-27 14:49+0100\n"
+"POT-Creation-Date: 2001-01-31 09:00+0100\n"
 "PO-Revision-Date: 2000-04-24 20:39+02:00\n"
 "Last-Translator: Marco d'Itri <md@linux.it>\n"
 "Language-Team: none\n"
@@ -846,7 +846,7 @@ msgstr "Non ci sono altri thread."
 msgid "You are on the first thread."
 msgstr "Sei al primo thread."
 
-#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:651 thread.c:702
+#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:653 thread.c:704
 msgid "Threading is not enabled."
 msgstr "Il threading non è attivo."
 
@@ -3662,11 +3662,11 @@ msgstr "Could not find sorting function! [segnala questo bug]"
 msgid "(no mailbox)"
 msgstr "(nessuna mailbox)"
 
-#: thread.c:712
+#: thread.c:714
 msgid "Parent message is not visible in limited view"
 msgstr "Il messaggio padre non è visibile nella visualizzazione limitata"
 
-#: thread.c:717
+#: thread.c:719
 msgid "Parent message is not available."
 msgstr "Il messaggio padre non è disponibile"
 

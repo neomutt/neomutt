@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.3.14\n"
-"POT-Creation-Date: 2001-01-27 14:49+0100\n"
+"POT-Creation-Date: 2001-01-31 09:00+0100\n"
 "PO-Revision-Date: 2001-01-28 10:45+01:00\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
@@ -833,7 +833,7 @@ msgstr "Keine weiteren Diskussionsfäden."
 msgid "You are on the first thread."
 msgstr "Sie haben bereits den ersten Diskussionsfaden ausgewählt."
 
-#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:651 thread.c:702
+#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:653 thread.c:704
 msgid "Threading is not enabled."
 msgstr "Darstellung von Diskussionsfäden ist nicht eingeschaltet."
 
@@ -3656,11 +3656,11 @@ msgstr "Sortierfunktion nicht gefunden! (bitte Bug melden)"
 msgid "(no mailbox)"
 msgstr "(keine Mailbox)"
 
-#: thread.c:712
+#: thread.c:714
 msgid "Parent message is not visible in limited view"
 msgstr "Bezugsnachricht ist in der begenzten Sicht nicht verfügbar."
 
-#: thread.c:717
+#: thread.c:719
 msgid "Parent message is not available."
 msgstr "Bezugsnachricht ist nicht verfügbar."
 

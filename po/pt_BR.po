@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.5i\n"
-"POT-Creation-Date: 2001-01-27 14:49+0100\n"
+"POT-Creation-Date: 2001-01-31 09:00+0100\n"
 "PO-Revision-Date: 2000-03-05 01:14-0300\n"
 "Last-Translator: Marcus Brito <marcus@visaotec.com.br>\n"
 "Language-Team: LIE-BR (http://lie-br.conectiva.com.br)\n"
@@ -836,7 +836,7 @@ msgstr "Nenhuma discussão restante."
 msgid "You are on the first thread."
 msgstr "Você está na primeira discussão."
 
-#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:651 thread.c:702
+#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:653 thread.c:704
 msgid "Threading is not enabled."
 msgstr "Separar discussões não está ativado."
 
@@ -3699,11 +3699,11 @@ msgstr ""
 msgid "(no mailbox)"
 msgstr "(nenhuma caixa de mensagens)"
 
-#: thread.c:712
+#: thread.c:714
 msgid "Parent message is not visible in limited view"
 msgstr "A mensagem pai não está visível nesta visão limitada"
 
-#: thread.c:717
+#: thread.c:719
 msgid "Parent message is not available."
 msgstr "A mensagem pai não está disponível."
 

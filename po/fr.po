@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3.14\n"
-"POT-Creation-Date: 2001-01-27 14:49+0100\n"
+"POT-Creation-Date: 2001-01-31 09:00+0100\n"
 "PO-Revision-Date: 2001-01-28 00:51+0100\n"
 "Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre "
 "<vincent@vinc17.org>\n"
@@ -867,7 +867,7 @@ msgstr "Pas d'autres discussions."
 msgid "You are on the first thread."
 msgstr "Vous êtes sur la première discussion."
 
-#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:651 thread.c:702
+#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:653 thread.c:704
 msgid "Threading is not enabled."
 msgstr "L'affichage des discussions n'est pas activé."
 
@@ -3802,11 +3802,11 @@ msgstr "Fonction de tri non trouvée ! [signalez ce bug]"
 msgid "(no mailbox)"
 msgstr "(pas de boîte aux lettres)"
 
-#: thread.c:712
+#: thread.c:714
 msgid "Parent message is not visible in limited view"
 msgstr "Le message père n'est pas visible en vue limitée"
 
-#: thread.c:717
+#: thread.c:719
 msgid "Parent message is not available."
 msgstr "Le message père n'est pas disponible."
 

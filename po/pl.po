@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt-1.3.12i\n"
-"POT-Creation-Date: 2001-01-27 14:49+0100\n"
+"POT-Creation-Date: 2001-01-31 09:00+0100\n"
 "PO-Revision-Date: 2000-12-29\n"
 "Last-Translator: Pawe³ Dziekoñski <p.dziekonski@mml.ch.pwr.wroc.pl>\n"
 "Language-Team: POLISH <pl@li.org>\n"
@@ -835,7 +835,7 @@ msgstr "Nie ma wiêcej w±tków."
 msgid "You are on the first thread."
 msgstr "To pierwszy w±tek."
 
-#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:651 thread.c:702
+#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:653 thread.c:704
 msgid "Threading is not enabled."
 msgstr "W±tkowanie nie zosta³o w³±czone."
 
@@ -3658,12 +3658,12 @@ msgstr "Nie znaleziono funkcji sortowania! (zg³o¶ ten b³±d)"
 msgid "(no mailbox)"
 msgstr "(brak foldera poczty)"
 
-#: thread.c:712
+#: thread.c:714
 msgid "Parent message is not visible in limited view"
 msgstr ""
 "Pierwszy list tego w±tku nie jest widoczny w trybie ograniczonego "
 "przegl±dania"
 
-#: thread.c:717
+#: thread.c:719
 msgid "Parent message is not available."
 msgstr "Pierwszy list tego w±tku nie jest dostêpny."

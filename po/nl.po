@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2001-01-27 14:49+0100\n"
+"POT-Creation-Date: 2001-01-31 09:00+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Johan van Selst <johans@stack.nl>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -835,7 +835,7 @@ msgstr "Geen verdere threads."
 msgid "You are on the first thread."
 msgstr "U bent al bij de eerste thread."
 
-#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:651 thread.c:702
+#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:653 thread.c:704
 msgid "Threading is not enabled."
 msgstr "Het weergeven van threads is niet ingeschakeld."
 
@@ -3624,11 +3624,11 @@ msgstr "Kan 'sorting function' niet vinden! [Meldt deze bug!]"
 msgid "(no mailbox)"
 msgstr "(geen mailfolder)"
 
-#: thread.c:712
+#: thread.c:714
 msgid "Parent message is not visible in limited view"
 msgstr "Vorig bericht wordt niet getoond"
 
-#: thread.c:717
+#: thread.c:719
 msgid "Parent message is not available."
 msgstr "Vorig bericht is niet beschikbaar."
 

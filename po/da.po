@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt-1.3.12i \n"
-"POT-Creation-Date: 2001-01-27 14:49+0100\n"
+"POT-Creation-Date: 2001-01-31 09:00+0100\n"
 "PO-Revision-Date: 2000-11-27 23:48+01:00\n"
 "Last-Translator: Byrial Jensen <byrial@image.dk>, Morten Bo Johansen "
 "<mojo@image.dk> \n"
@@ -834,7 +834,7 @@ msgstr "Ikke flere tråde."
 msgid "You are on the first thread."
 msgstr "Du er ved den første tråd."
 
-#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:651 thread.c:702
+#: curs_main.c:1444 curs_main.c:1475 flags.c:250 thread.c:653 thread.c:704
 msgid "Threading is not enabled."
 msgstr "Trådning er ikke i brug."
 
@@ -3641,10 +3641,10 @@ msgstr "Kunne ikke finde sorteringsfunktion! [rapportér denne fejl]"
 msgid "(no mailbox)"
 msgstr "(ingen brevbakke)"
 
-#: thread.c:712
+#: thread.c:714
 msgid "Parent message is not visible in limited view"
 msgstr "Forrige brev i tråden er ikke synligt i afgrænset visning"
 
-#: thread.c:717
+#: thread.c:719
 msgid "Parent message is not available."
 msgstr "Forrige brev i tråden er ikke tilgængeligt."
