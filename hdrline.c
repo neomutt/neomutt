@@ -168,6 +168,7 @@ static int user_in_addr (ADDRESS *a)
  * 2: user is in the TO list
  * 3: user is in the CC list
  * 4: user is originator
+ * 5: sent to a subscribed mailinglist
  */
 int mutt_user_is_recipient (HEADER *h)
 {
@@ -188,6 +189,10 @@ int mutt_user_is_recipient (HEADER *h)
     }
     else if (user_in_addr (env->cc))
       h->recipient = 3;
+    else if (check_for_mailing_list (env->to, NULL, NULL, 0))
+      h->recipient = 5;
+    else if (check_for_mailing_list (env->cc, NULL, NULL, 0))
+      h->recipient = 5;
     else
       h->recipient = 0;
   }

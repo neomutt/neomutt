@@ -2032,7 +2032,7 @@ struct option_t MuttVars[] = {
   ** This variable allows you to specify where Mutt will place its
   ** temporary files needed for displaying and composing messages.
   */
-  { "to_chars",		DT_STR,	 R_BOTH, UL &Tochars, UL " +TCF" },
+  { "to_chars",		DT_STR,	 R_BOTH, UL &Tochars, UL " +TCFL" },
   /*
   ** .pp
   ** Controls the character used to indicate mail addressed to you.  The
@@ -2043,7 +2043,8 @@ struct option_t MuttVars[] = {
   ** the message (default: T).  The fourth character is used when your
   ** address is specified in the CC header field, but you are not the only
   ** recipient.  The fifth character is used to indicate mail that was sent
-  ** by \fIyou\fP.
+  ** by \fIyou\fP.  The sixth character is used to indicate when a mail
+  ** was sent to a mailing-list you subscribe to (default: L).
   */
   { "use_8bitmime",	DT_BOOL, R_NONE, OPTUSE8BITMIME, 0 },
   /*
