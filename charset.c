@@ -220,11 +220,11 @@ void mutt_canonical_charset (char *dest, size_t dlen, const char *name)
   for (i = 0; PreferredMIMENames[i].key; i++)
     if (!strcasecmp (scratch, PreferredMIMENames[i].key))
     {
-      strfcpy (dest, PreferredMIMENames[i].pref, sizeof (dest));
+      strfcpy (dest, PreferredMIMENames[i].pref, dlen);
       return;
     }
 
-  strfcpy (dest, scratch, sizeof (dest));
+  strfcpy (dest, scratch, dlen);
 
   /* for cosmetics' sake, transform to lowercase. */
   for (p = dest; *p; p++)
