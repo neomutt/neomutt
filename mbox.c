@@ -131,7 +131,14 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
       t = is_from (buf, return_path, sizeof (return_path));
 
       if (!t)
-	fseek (ctx->fp, loc, 0);
+      {
+	if (fseek (ctx->fp, loc, SEEK_SET) != 0)
+	{
+	  dprint (1, (debugfile, "mmdf_parse_mailbox: fseek() failed\n"));
+	  mutt_error _("Mailbox is corrupt!");
+	  return (-1);
+	}
+      } 
       else
 	hdr->received = t + tz;
 
@@ -145,11 +152,12 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
 
 	if (tmploc < ctx->size)
 	{
-	  fseek (ctx->fp, tmploc, 0);
-	  if (fgets (buf, sizeof (buf) - 1, ctx->fp) == NULL ||
+	  if (fseek (ctx->fp, tmploc, SEEK_SET) != 0 ||
+	      fgets (buf, sizeof (buf) - 1, ctx->fp) == NULL ||
 	      strcmp (MMDF_SEP, buf) != 0)
 	  {
-	    fseek (ctx->fp, loc, 0);
+	    if (fseek (ctx->fp, loc, SEEK_SET) != 0)
+	      dprint (1, (debugfile, "mmdf_parse_mailbox: fseek() failed\n"));
 	    hdr->content->length = -1;
 	  }
 	}
@@ -289,13 +297,16 @@ int mbox_parse_mailbox (CONTEXT *ctx)
 	   * check to see if the content-length looks valid.  we expect to
 	   * to see a valid message separator at this point in the stream
 	   */
-	  fseek (ctx->fp, tmploc, 0);
-	  if (fgets (buf, sizeof (buf), ctx->fp) == NULL ||
+	  if (fseek (ctx->fp, tmploc, SEEK_SET) != 0 ||
+	      fgets (buf, sizeof (buf), ctx->fp) == NULL ||
 	      strncmp ("From ", buf, 5) != 0)
 	  {
 	    dprint (1, (debugfile, "mbox_parse_mailbox: bad content-length in message %d (cl=%ld)\n", curhdr->index, curhdr->content->length));
 	    dprint (1, (debugfile, "\tLINE: %s", buf));
-	    fseek (ctx->fp, loc, 0); /* nope, return the previous position */
+	    if (fseek (ctx->fp, loc, SEEK_SET) != 0) /* nope, return the previous position */
+	    {
+	      dprint (1, (debugfile, "mbox_parse_mailbox: fseek() failed\n"));
+	    }
 	    curhdr->content->length = -1;
 	  }
 	}
@@ -317,7 +328,8 @@ int mbox_parse_mailbox (CONTEXT *ctx)
 	    int cl = curhdr->content->length;
 
 	    /* count the number of lines in this message */
-	    fseek (ctx->fp, loc, 0);
+	    if (fseek (ctx->fp, loc, SEEK_SET) != 0)
+	      dprint (1, (debugfile, "mbox_parse_mailbox: fseek() failed\n"));
 	    while (cl-- > 0)
 	    {
 	      if (fgetc (ctx->fp) == '\n')
@@ -326,7 +338,8 @@ int mbox_parse_mailbox (CONTEXT *ctx)
 	  }
 
 	  /* return to the offset of the next message separator */
-	  fseek (ctx->fp, tmploc, 0);
+	  if (fseek (ctx->fp, tmploc, SEEK_SET) != 0)
+	    dprint (1, (debugfile, "mbox_parse_mailbox: fseek() failed\n"));
 	}
       }
 
@@ -568,13 +581,15 @@ int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
        * see the message separator at *exactly* what used to be the end of the
        * folder.
        */
-      fseek (ctx->fp, ctx->size, 0);
+      if (fseek (ctx->fp, ctx->size, SEEK_SET) != 0)
+	dprint (1, (debugfile, "mbox_check_mailbox: fseek() failed\n"));
       if (fgets (buffer, sizeof (buffer), ctx->fp) != NULL)
       {
 	if ((ctx->magic == M_MBOX && strncmp ("From ", buffer, 5) == 0) ||
 	    (ctx->magic == M_MMDF && strcmp (MMDF_SEP, buffer) == 0))
 	{
-	  fseek (ctx->fp, ctx->size, 0);
+	  if (fseek (ctx->fp, ctx->size, SEEK_SET) != 0)
+	    dprint (1, (debugfile, "mbox_check_mailbox: fseek() failed\n"));
 	  if (ctx->magic == M_MBOX)
 	    mbox_parse_mailbox (ctx);
 	  else
@@ -643,7 +658,7 @@ int mbox_sync_mailbox (CONTEXT *ctx)
   struct stat statbuf;
   struct utimbuf utimebuf;
   struct m_update_t *newOffset = NULL;
-  FILE *fp;
+  FILE *fp = NULL;
 
   /* sort message by their position in the mailbox on disk */
   if (Sort != SORT_ORDER)
@@ -693,6 +708,8 @@ int mbox_sync_mailbox (CONTEXT *ctx)
   if ((i = open (tempfile, O_WRONLY | O_EXCL | O_CREAT, 0600)) == -1 ||
       (fp = fdopen (i, "w")) == NULL)
   {
+    if (-1 != i)
+      close (i);
     mutt_error _("Could not create temporary file!");
     goto bail;
   }
@@ -767,10 +784,12 @@ int mbox_sync_mailbox (CONTEXT *ctx)
 
   if (fclose (fp) != 0)
   {
-    dprint(1, (debugfile, "mutt_sync_mailbox(): fclose() returned non-zero.\n"));
+    fp = NULL;
+    dprint(1, (debugfile, "mbox_sync_mailbox: fclose() returned non-zero.\n"));
     unlink (tempfile);
     goto bail;
   }
+  fp = NULL;
 
   /* Save the state of this folder. */
   if (stat (ctx->path, &statbuf) == -1)
@@ -788,29 +807,33 @@ int mbox_sync_mailbox (CONTEXT *ctx)
     return (-1);
   }
 
-  fseek (ctx->fp, offset, 0);  /* seek the append location */
-  
-  /* do a sanity check to make sure the mailbox looks ok */
-  if (fgets (buf, sizeof (buf), ctx->fp) == NULL ||
+  if (fseek (ctx->fp, offset, SEEK_SET) != 0 ||  /* seek the append location */
+      /* do a sanity check to make sure the mailbox looks ok */
+      fgets (buf, sizeof (buf), ctx->fp) == NULL ||
       (ctx->magic == M_MBOX && strncmp ("From ", buf, 5) != 0) ||
       (ctx->magic == M_MMDF && strcmp (MMDF_SEP, buf) != 0))
   {
-    dprint (1, (debugfile, "mbox_sync_mailbox(): message not in expected position."));
+    dprint (1, (debugfile, "mbox_sync_mailbox: message not in expected position."));
     dprint (1, (debugfile, "\tLINE: %s\n", buf));
     i = -1;
   }
   else
   {
-    fseek (ctx->fp, offset, 0); /* return to proper offset */
-
-    /* copy the temp mailbox back into place starting at the first
-     * change/deleted message
-     */
-    i = mutt_copy_stream (fp, ctx->fp);
-
-    if (ferror (ctx->fp))
+    if (fseek (ctx->fp, offset, SEEK_SET) != 0) /* return to proper offset */
+    {
       i = -1;
+      dprint (1, (debugfile, "mbox_sync_mailbox: fseek() failed\n"));
+    }
+    else
+    {
+      /* copy the temp mailbox back into place starting at the first
+       * change/deleted message
+       */
+      i = mutt_copy_stream (fp, ctx->fp);
 
+      if (ferror (ctx->fp))
+        i = -1;
+    }
     if (i == 0)
     {
       ctx->size = ftell (ctx->fp); /* update the size of the mailbox */
@@ -819,6 +842,7 @@ int mbox_sync_mailbox (CONTEXT *ctx)
   }
 
   fclose (fp);
+  fp = NULL;
   mbox_unlock_mailbox (ctx);
 
   if (fclose (ctx->fp) != 0 || i == -1)
@@ -874,6 +898,10 @@ int mbox_sync_mailbox (CONTEXT *ctx)
   return (0); /* signal success */
 
 bail:  /* Come here in case of disaster */
+
+  /* Disadvantage of using "goto" */
+  if (fp)
+    fclose (fp);
 
   /* this is ok to call even if we haven't locked anything */
   mbox_unlock_mailbox (ctx);
@@ -972,15 +1000,18 @@ int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
   switch (ctx->magic)
   {
     case M_MBOX:
-      fseek (ctx->fp, 0, 0);
-      cmp_headers = mbox_strict_cmp_headers;
-      rc = mbox_parse_mailbox (ctx);
-      break;
-
     case M_MMDF:
-      fseek (ctx->fp, 0, 0);
-      cmp_headers = mbox_strict_cmp_headers;
-      rc = mmdf_parse_mailbox (ctx);
+      if (fseek (ctx->fp, 0, SEEK_SET) != 0)
+      {
+        dprint (1, (debugfile, "mutt_reopen_mailbox: fseek() failed\n"));
+        rc = -1;
+      } 
+      else 
+      {
+        cmp_headers = mbox_strict_cmp_headers;
+        rc = ((ctx->magic == M_MBOX) ? mbox_parse_mailbox
+				     : mmdf_parse_mailbox) (ctx);
+      }
       break;
 
     default:
