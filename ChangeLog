@@ -1,4 +1,7 @@
-2005-01-27 18:22:59  Marco d'Itri  <md@Linux.IT>  (roessler)
+2005-01-27 18:24:10  Marco d'Itri  <md@Linux.IT>  (roessler)
+
+	* contrib/gpg.rc, pgp.c: Evaluate gpg's machine-parseable status
+	messages.
 
 	* smime_keys.pl: Add some sanity checks to smime_keys.pl.
 
