@@ -2042,7 +2042,7 @@ server. This is mostly the same as the local file browser, with the
 following differences:
 <itemize>
 <item>In lieu of file permissions, mutt displays the string "IMAP",
-  possibly followed by the symbol the symbol "+", indicating
+  possibly followed by the symbol "+", indicating
   that the entry contains both messages and subfolders. On
   Cyrus-like servers folders will often contain both messages and
   subfolders. 
