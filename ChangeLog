@@ -1,4 +1,7 @@
-2003-02-25 21:45:16  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+2003-02-25 22:00:38  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* commands.c, recvcmd.c: Fix some (too lazy and tired to do all)
+	of the inconsistencies between message and attachment bouncing.
 
 	* crypt.c: I should test-compile things before committing.
 	Stupid typo.
