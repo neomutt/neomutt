@@ -1548,10 +1548,13 @@ void mutt_init (int skip_sys_rc, LIST *commands)
     Fqdn = safe_strdup ("@");
   else
 #endif /* DOMAIN */
+    if (*DOMAIN != '@')
   {
     Fqdn = safe_malloc (strlen (DOMAIN) + strlen (NONULL(Hostname)) + 2);
     sprintf (Fqdn, "%s.%s", NONULL(Hostname), DOMAIN);
   }
+  else
+    Fqdn = safe_strdup(NONULL(Hostname));
 
   if ((p = getenv ("MAIL")))
     Spoolfile = safe_strdup (p);
