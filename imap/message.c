@@ -553,23 +553,41 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
 
   if (imap_parse_path (dest, &mx))
   {
-    dprint (1, (debugfile, "imap_copy_message: bad destination %s\n", dest));
+    dprint (1, (debugfile, "imap_copy_messages: bad destination %s\n", dest));
     return -1;
   }
 
   /* check that the save-to folder is in the same account */
   if (!mutt_account_match (&(CTX_DATA->conn->account), &(mx.account)))
   {
-    dprint (3, (debugfile, "imap_copy_message: %s not same server as %s\n",
+    dprint (3, (debugfile, "imap_copy_messages: %s not same server as %s\n",
       dest, ctx->path));
     return 1;
   }
 
+  if (h && h->attach_del)
+  {
+    dprint (3, (debugfile, "imap_copy_messages: Message contains attachments to be deleted\n"));
+    return 1;
+  }
+  
   imap_fix_path (idata, mx.mbox, cmd, sizeof (cmd));
 
   /* Null HEADER* means copy tagged messages */
   if (!h)
   {
+    /* if any messages have attachments to delete, fall through to FETCH
+     * and APPEND. TODO: Copy what we can with COPY, fall through for the
+     * remainder. */
+    for (n = 0; n < ctx->msgcount; n++)
+    {
+      if (ctx->hdrs[n]->tagged && ctx->hdrs[n]->attach_del)
+      {
+	dprint (3, (debugfile, "imap_copy_messages: Message contains attachments to be deleted\n"));
+	return 1;
+      }
+    }
+    
     rc = imap_make_msg_set (idata, buf, sizeof (buf), M_TAG, 0);
     if (!rc)
     {

@@ -295,8 +295,8 @@ int mutt_parse_mono (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 int mutt_parse_unmono (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 int mutt_parse_push (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 int mutt_parse_rc_line (/* const */ char *, BUFFER *, BUFFER *);
-int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short user_hdrs, short weed,
-			    short do_2047, LIST **lastp);
+int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p,
+  short user_hdrs, short weed, short do_2047, LIST **lastp);
 int mutt_parse_score (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 int mutt_parse_unscore (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 int mutt_parse_unhook (BUFFER *, BUFFER *, unsigned long, BUFFER *);
@@ -305,6 +305,7 @@ int mutt_pipe_attachment (FILE *, BODY *, const char *, char *);
 int mutt_print_attachment (FILE *, BODY *);
 int mutt_query_complete (char *, size_t);
 int mutt_save_attachment (FILE *, BODY *, char *, int, HEADER *);
+void _mutt_save_message (HEADER *, CONTEXT *, int, int, int);
 int mutt_save_message (HEADER *, int, int, int, int *);
 int mutt_search_command (int, int);
 int mutt_compose_menu (HEADER *, char *, size_t, HEADER *);

@@ -591,7 +591,7 @@ static void set_copy_flags (HEADER *hdr, int decode, int decrypt, int *cmflags, 
   }
 }
 
-static void _mutt_save_message (HEADER *h, CONTEXT *ctx, int delete, int decode, int decrypt)
+void _mutt_save_message (HEADER *h, CONTEXT *ctx, int delete, int decode, int decrypt)
 {
   int cmflags, chflags;
   

@@ -872,6 +872,7 @@ int imap_make_msg_set (IMAP_DATA* idata, char* buf, size_t buflen, int flag,
 int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
 {
   IMAP_DATA* idata;
+  CONTEXT* appendctx = NULL;
   char buf[HUGE_STRING];
   char flags[LONG_STRING];
   char tmp[LONG_STRING];
@@ -929,8 +930,17 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
   {
     if (ctx->hdrs[n]->changed)
     {
-      mutt_message (_("Saving message status flags... [%d/%d]"), n+1, ctx->msgcount);
-      
+      mutt_message (_("Saving message status flags... [%d/%d]"), n+1,
+        ctx->msgcount);
+
+      /* if attachments have been deleted we delete the message and reupload
+       * it. This works better if we're expunging, of course. */
+      if (ctx->hdrs[n]->attach_del)
+      {
+	dprint (3, (debugfile, "imap_sync_mailbox: Attachments to be deleted, falling back to _mutt_save_message\n"));
+	appendctx = mx_open_mailbox (ctx->path, M_APPEND | M_QUIET, NULL);
+	_mutt_save_message (ctx->hdrs[n], appendctx, 1, 0, 0);
+      }
       flags[0] = '\0';
       
       imap_set_flag (idata, IMAP_ACL_SEEN, ctx->hdrs[n]->read, "\\Seen ",
@@ -974,7 +984,10 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
         err_continue = imap_continue ("imap_sync_mailbox: STORE failed",
           idata->cmd.buf);
         if (err_continue != M_YES)
-          return -1;
+	{
+	  rc = -1;
+	  goto out;
+	}
       }
 
       ctx->hdrs[n]->changed = 0;
@@ -990,11 +1003,19 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
     if (imap_exec (idata, "EXPUNGE", 0) != 0)
     {
       imap_error ("imap_sync_mailbox: EXPUNGE failed", idata->cmd.buf);
-      return -1;
+      rc = -1;
+      goto out;
     }
   }
 
-  return 0;
+  rc = 0;
+ out:
+  if (appendctx)
+  {
+    mx_fastclose_mailbox (appendctx);
+    FREE (&appendctx);
+  }
+  return rc;
 }
 
 /* imap_close_mailbox: issue close command if neccessary, reset IMAP_DATA */
