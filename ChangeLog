@@ -1,3 +1,8 @@
+2003-02-25 21:45:16  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* crypt.c: I should test-compile things before committing.
+	Stupid typo.
+
 2003-02-25 21:41:32  Michael Elkins  <me@sigpipe.org>  (roessler)
 
 	* query.c: Use mutt_strwidth for query response formatting.
