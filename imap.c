@@ -704,11 +704,10 @@ static int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint)
 	if (old_hdrs[j]->changed)
 	{
 	  /* Only update the flags if the old header was changed;
-	   *            * otherwise, the header may have been modified
-	   *            externally,
-	   *                       * and we don't want to lose _those_
-	   *                       changes
-	   *                                  */
+	   * otherwise, the header may have been modified
+	   * externally, and we don't want to lose _those_ changes 
+	   */
+	  
 	  mutt_set_flag (ctx, ctx->hdrs[i], M_FLAG, old_hdrs[j]->flagged);
 	  mutt_set_flag (ctx, ctx->hdrs[i], M_REPLIED, old_hdrs[j]->replied);
 	  mutt_set_flag (ctx, ctx->hdrs[i], M_OLD, old_hdrs[j]->old);
