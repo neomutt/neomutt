@@ -1,4 +1,7 @@
-2005-01-27 18:46:52  Bill Nottingham  <notting@redhat.com>  (roessler)
+2005-01-27 18:47:57  Bill Nottingham  <notting@redhat.com>  (roessler)
+
+	* contrib/sample.muttrc: Changes the sample.muttrc highlight to
+	catch https URLs as well.
 
 	* color.c, main.c: Support for the "default" color in Slang.
 
@@ -7,7 +10,7 @@
 	* mh.c, configure.in: Read files in maildir folders in inode
 	order; this seems to reduce seek overhead on Linux.  Enabled by
 	default; to disable, run configure with --disable-inodesort.
-	(By way of Mario d'Itri.)
+	(By way of Marco d'Itri.)
 
 2005-01-27 18:28:42  Marco d'Itri  <md@Linux.IT>  (roessler)
 
