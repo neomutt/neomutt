@@ -342,13 +342,14 @@ int imap_wait_keepalive (pid_t pid)
   alarm (ImapCheckTimeout > 0 ? ImapCheckTimeout : 60);
   while (waitpid (pid, &rc, 0) < 0 && errno == EINTR)
   {
+    alarm (0); /* cancel a possibly pending alarm */
     if (!option (OPTMSGERR))
       mutt_buffy_check (0);
 
     alarm (ImapCheckTimeout > 0 ? ImapCheckTimeout : 60);
   }
 
-  alarm (0);	/* cancel an possibly pending alarm */
+  alarm (0);	/* cancel a possibly pending alarm */
   
   sigaction (SIGALRM, &oldalrm, NULL);
   sigprocmask (SIG_BLOCK, &oldblocked, NULL);
