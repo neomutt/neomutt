@@ -73,7 +73,7 @@ static void hmac_md5 (const char* password, char* challenge,
     secret_len = MD5_DIGEST_LEN;
   }
   else
-    strfcpy (secret, password, sizeof (secret));
+    strfcpy ((char *) secret, password, sizeof (secret));
 
   memset (ipad, 0, sizeof (ipad));
   memset (opad, 0, sizeof (opad));
