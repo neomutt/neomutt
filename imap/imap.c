@@ -650,6 +650,7 @@ int imap_open_mailbox (CONTEXT *ctx)
     ctx->readonly = 1;
   }
 
+#ifdef DEBUG
   /* dump the mailbox flags we've found */
   if (debuglevel > 2)
   {
@@ -670,6 +671,7 @@ int imap_open_mailbox (CONTEXT *ctx)
       dprint (3, (debugfile, "\n"));
     }
   }
+#endif
 
   if (!imap_code (buf))
   {
