@@ -38,6 +38,9 @@
 #include "pgp.h"
 #endif
 
+#ifdef MIXMASTER
+#include "remailer.h"
+#endif
 
 
 static void append_signature (FILE *f)

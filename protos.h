@@ -434,14 +434,3 @@ void ci_bounce_message (HEADER *, int *);
 void ci_send_message (int, HEADER *, char *, CONTEXT *, HEADER *);
 
 
-
-#ifdef MIXMASTER
-/* mixmaster support - must go here so we get the
- * type definitions in the right order.
- */
-
-
-int mix_send_message (LIST *, const char *);
-int mix_check_message (HEADER *msg);
-void mix_make_chain (LIST **, int *);
-#endif

@@ -48,10 +48,6 @@
 # define N_(a) a
 #endif
 
-#ifdef MIXMASTER
-# include "remailer.h"
-#endif
-
 #ifdef SUBVERSION
 # define MUTT_VERSION (VERSION SUBVERSION)
 #else  
