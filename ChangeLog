@@ -1,3 +1,13 @@
+2004-04-12 21:19:31  Dale Woolridge  <dale-list-mutt-dev-2@woolridge.org>  (roessler)
+
+	* po/uk.po, po/zh_CN.po, po/zh_TW.po, po/pt_BR.po, po/ru.po,
+	po/sk.po, po/sv.po, po/tr.po, po/gl.po, po/hu.po, po/id.po,
+	po/it.po, po/ja.po, po/ko.po, po/lt.po, po/nl.po, po/pl.po,
+	po/cs.po, po/da.po, po/de.po, po/el.po, po/eo.po, po/es.po,
+	po/et.po, po/fr.po, compose.c, crypt.c, init.h, mutt.h,
+	mutt_crypt.h, po/ca.po, postpone.c, send.c, sendlib.c: See:
+	http://does-not-exist.org/mail-archives/mutt-dev/msg00843.html
+
 2004-04-12 20:37:19  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* copy.c: Fix #1804.  (From vincent@vinc17.org)
