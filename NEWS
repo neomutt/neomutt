@@ -37,18 +37,137 @@ Major changes since 0.93
   correctly handle lines beginning with smileys such as ":-)" -
   these lines were detected as quoted text by the old code.
 
+- You can now edit messages in your mail folders. 
+
+  The function edit-message (default 'e') will make a copy of the
+  current message and you can edit the message. After editing is
+  complete, you are taken to the Compose menu. You can further
+  modify the message here or re-send it. Note that the message is
+  re-sent to the original recipients (similar to `bounce-message')
+  unless you have changed the recipients in the Compose menu (or the
+  editor).
+
+  You can also write the edited message back to any mail folder
+  using the write-fcc function (default w). Remember that you are
+  working with a copy and the original message is not affected.
+
+- new command 'unhdr_order' 
+
+  `unhdr_order *' will clear all previous headers from the order
+  list, thus removing the header order effects set by the
+  system-wide startup file (via `hdr_order')
+
+- You can now attach message(s) to an outgoing message. Use the
+  attach-message function (default 'A') from the Compose menu;
+  specify the folder to open and tag the messages you want to
+  attach.
+
+- You can now collapse a thread.
+
+  collapse-thread (default ESC v) toggles the collapsed state of the
+  current thread.
+
+  collapse-all (default ESC V) toggles the collapsed state of all
+  threads in the folder.
+
+  When a collapsed thread received new messages, it is automatically
+  uncollapsed. Also, when you display the first message in the
+  collapsed thread, it is automatically uncollapsed.
+
+  The variables $collapse_unread and $uncollapse_jump can be used to
+  fine-tune this feature.
+
+  Note: Collapsing a thread displays only the first message in the
+  thread and hides the others. This is useful when threads contain
+  so many messages that you can only see a handful of threads on the
+  screen. See %M in ``$index_format''.  For example, you could use
+  "%?M?(#%03M)&(%4l)?" in ``$index_format'' to optionally display
+  the number of hidden messages if the thread is collapsed.
+
 - The syntax for function keys in key bindings and macro definitions
   has changed:  Instead of "fN", you have to use "<fN>" now.  This
   is more consistant with the syntax for the other special keys like
   "<up>", "<down>", and so on.
 
-- We have a new feature named edit-message.  This enables you to
-  edit a message from one of your mail folders and re-send or
-  re-file it afterwards.
+- You can now use function names in macros. The syntax is <function-name>
 
-- Thread collapsing is there: To control it, we have the two
-  functions collapse-all and collapse-thread, and the configuration
-  variables $collapse_unread and $collapse_jump.
+  Example:
+  
+  macro index z "v<down><down><first-entry><down><save-entry>"
+  push "<first-entry><display-message>"
+  
+  Note that the function has to be a valid function for the menu when
+  the macro is _executed_. If not, the literal string of characters is
+  used as usual. Also, if you enter a string <...> which is NOT a Mutt
+  function like <vikas>, the literal string of characters is used as
+  usual.
+
+  Keep in mind that macros are evaluated at runtime, and so the
+  current menu could change _during_ the execution of a macro. Be sure
+  to use functions that make sense for the menu at that point in the
+  macro's execution.
+
+- new command 'exec'.
+
+  You can now use the 'exec' command to execute any internal function
+  in Mutt. You can also execute functions in this fashion even if they
+  are not bound to any key.
+
+  Also, the 'exec' command has command completion so that
+
+  :exec <TAB><TAB>                                                              
+ 
+  will cycle thru all the commands for that menu.
+
+  If you type something that is not found in the current menu, the
+  generic menu is used for completion.
+
+  The 'exec' command accepts multiple arguments each with its own
+  command-completion.
+  
+  For example:
+  :exec first-entry display-message ....
+  
+  Similar to macros, keep in mind that the sequence of functions are
+  evaluated at runtime, and so the current menu could change _during_
+  the execution of a sequence of functions. Be sure to use functions
+  that make sense for the menu _at that point_ in the execution.
+
+- improved command and variable completion.
+
+  Pressing <TAB>, on the command-line now cycles through all possible
+  matches of the command (or variable) based on what you have typed so
+  far.  When all matches have been cycled through, your original input
+  (that started the completion) is restored. Pressing <TAB> again
+  repeats the cycle.
+
+  Note that variable completion is done only when appropriate (for the
+  following commands: set, reset, unset, toggle). Also, when entering
+  a 'set' command, the possible prefixes to the variable name (no,
+  inv, ?, &) are honored. This makes it possible to do something like
+  
+  :set inv<TAB><TAB> 
+
+  to cycle through the possible matches.
+
+  When you press <TAB> without entering any text,  Mutt cycles through
+  all possible matches (commands or variables, as appropriate)
+
+- you can now use special keys in a key _sequence_. Special keys are
+  <Home>, <End>, <PageUp>, etc.
+
+  Example:
+
+  macro attach s "<Home>~/<End>" "Pre-pend ~/ when saving attachments"
+
+- You can now specify optional description for your macros.
+
+  Usage: macro menu key sequence [ description ]
+
+  The specified description is listed on the help screen.
+
+  Example:
+  macro index "^\cb" "|urlview\n" "call urlview to extract URLs"
 
 - We have a new set of functions decrypt-{save,copy}. They strip off
   the initial layer of PGP/MIME encryption.  For "classical"
@@ -56,17 +175,29 @@ Major changes since 0.93
   functions, for unencrypted messages they fall back to the normal
   save functions.
 
+- new variable $forward_decrypt. See the manual for details.
+
 - The build-time "hidden host" option has gone.  Use the
   $hidden_host configuration variable instead.
 
 - Unknown major MIME types are recognized properly.
+
+- new variables $attach_split (boolean, default set) and $attach_sep
+  (string, default "\n")
+
+  If $attach_split is unset, when operating (saving, printing, piping,
+  etc) on a list of tagged attachments, Mutt will concatenate the
+  attachments and will operate on them as a single attachment. The
+  `$attach_sep' separator is added after each attachment. When set
+  (default), Mutt will operate on the attachments one by one.
 
 - An option $write_bcc controls whether or not the Bcc header is
   written out to the mail transport agent or not.  Exim users may
   wish to use this.
 
 - The compose menu tries to detect and smoothly handle changes to
-  attached files.
+  attached files.  Additionally, you can use the update-encoding
+  function to update an attachment's encoding.
 
 - On the compose menu, you can generate a "private" copy of an
   attached file using the get-attachment function.
@@ -87,5 +218,12 @@ Major changes since 0.93
   ${prefix}/etc.  (The install target of the top-level Makefile will
   take care of your old site-global configuration file and
   automagically move it to the new place.)
+
+- new variable $mh_purge (boolean, default unset)
+
+  When unset, mutt will mimic mh's behaviour and rename deleted
+  messages to ,<old file name> in mh folders instead of really
+  deleting them.  If the variable is set, the message files will
+  simply be deleted.
 
 $Id$
