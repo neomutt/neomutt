@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.5.2\n"
+"Project-Id-Version: 1.5.3\n"
 "POT-Creation-Date: 2002-12-17 11:35+0100\n"
-"PO-Revision-Date: 2002-12-08 14:50+0100\n"
+"PO-Revision-Date: 2002-12-17 16:30+0100\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -575,9 +575,8 @@ msgstr ""
 "S/MIME (v)erschl., (s)ign., verschl. (m)it, sign. (a)ls, (b)eides, (k)eins? "
 
 #: compose.c:232
-#, fuzzy
 msgid "eswabf"
-msgstr "vsabk"
+msgstr "vsmabk"
 
 #: compose.c:240
 msgid ""
@@ -2089,9 +2088,8 @@ msgid "jump to the next new message"
 msgstr "Springe zur nächsten neuen Nachricht"
 
 #: keymap_alldefs.h:112
-#, fuzzy
 msgid "jump to the next new or unread message"
-msgstr "Springe zur nächsten ungelesenen Nachricht"
+msgstr "Springe zur nächsten neuen oder ungelesenen Nachricht"
 
 #: keymap_alldefs.h:113
 msgid "jump to the next subthread"
@@ -2130,9 +2128,8 @@ msgid "jump to the previous new message"
 msgstr "Springe zur vorigen neuen Nachricht"
 
 #: keymap_alldefs.h:122
-#, fuzzy
 msgid "jump to the previous new or unread message"
-msgstr "Springe zur vorigen ungelesenen Nachricht"
+msgstr "Springe zur vorigen neuen oder ungelesenen Nachricht"
 
 #: keymap_alldefs.h:123
 msgid "jump to the previous unread message"
@@ -2344,7 +2341,7 @@ msgstr "Zeige MIME-Anhänge"
 
 #: keymap_alldefs.h:175
 msgid "display the keycode for a key press"
-msgstr ""
+msgstr "Zeige Tastatur-Code einer Taste"
 
 #: keymap_alldefs.h:176
 msgid "show currently active limit pattern"
@@ -2457,7 +2454,6 @@ msgstr ""
 "`mutt -vv' für weitere Details.\n"
 
 #: main.c:50
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -2486,7 +2482,7 @@ msgid ""
 msgstr ""
 "Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2002 Thomas Roessler <roessler@guug.de>\n"
+"Copyright (C) 1997-2002 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Copyright (C) 1998-2002 Werner Koch <wk@isil.d.shuttle.de>\n"
 "Copyright (C) 1999-2002 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
@@ -2509,8 +2505,7 @@ msgstr ""
 "\n"
 "    Sie sollten eine Kopie der GNU General Public License zusammen mit\n"
 "    diesem Programm erhalten haben; falls nicht, schreiben sie an Free\n"
-"    Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  "
-"02111, USA.\n"
+"    Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 
 #: main.c:88
 msgid ""
@@ -3258,9 +3253,8 @@ msgstr ""
 "\n"
 
 #: pgp.c:703
-#, fuzzy
 msgid "Internal error. Inform <roessler@does-not-exist.org>."
-msgstr "Interner Fehler. Bitte <roessler@guug.de> informieren."
+msgstr "Interner Fehler. Bitte <roessler@does-not-exist.org> informieren."
 
 #: pgp.c:763
 msgid ""
