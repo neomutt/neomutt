@@ -556,9 +556,9 @@ int mutt_is_application_pgp (BODY *m)
     if (((p = mutt_get_parameter ("x-mutt-action", m->parameter))
 	 || (p = mutt_get_parameter ("x-action", m->parameter)) 
 	 || (p = mutt_get_parameter ("action", m->parameter)))
-	 && !ascii_strcasecmp ("pgp-sign", p))
+	 && !ascii_strncasecmp ("pgp-sign", p, 8))
       t |= PGPSIGN;
-    else if (p && !ascii_strcasecmp ("pgp-encrypt", p))
+    else if (p && !ascii_strncasecmp ("pgp-encrypt", p, 11))
       t |= PGPENCRYPT;
   }
   return t;
@@ -1416,7 +1416,7 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
   b->type = TYPETEXT;
   b->subtype = safe_strdup ("plain");
   
-  mutt_set_parameter ("x-action", flags & ENCRYPT ? "pgp-encrypt" : "pgp-sign",
+  mutt_set_parameter ("x-action", flags & ENCRYPT ? "pgp-encrypted" : "pgp-signed",
 		      &b->parameter);
   mutt_set_parameter ("charset", send_charset, &b->parameter);
   
