@@ -1167,7 +1167,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** If you have more than one key pair, this option allows you to specify
   ** which of your private keys to use.  It is recommended that you use the
-  ** keyid form to specify your key (e.g., ``0xABCDEFGH'').
+  ** keyid form to specify your key (e.g., ``0x00112233'').
   */
   { "pgp_sign_micalg",	DT_STR,	 R_NONE, UL &PgpSignMicalg, UL "pgp-md5" },
   /*
