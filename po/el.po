@@ -7,9 +7,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt-1.3.11i\n"
+"Project-Id-Version: Mutt-1.3.12i\n"
 "POT-Creation-Date: 2000-11-27 12:33+0100\n"
-"PO-Revision-Date: 2000-11-02 12:00+0200\n"
+"PO-Revision-Date: 2000-11-27 18:00+0200\n"
 "Last-Translator: Φάνης Δοκιανάκης <madf@hellug.gr>\n"
 "Language-Team: Greek <el@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -443,9 +443,8 @@ msgstr "Διοχέτευση στην εντολή: "
 
 #
 #: commands.c:417
-#, fuzzy
 msgid "No printing command has been defined."
-msgstr "Δεν έχει οριστεί γραμματοκιβώτιο εισερχομένων."
+msgstr "Δεν έχει οριστεί εντολή εκτυπώσεως."
 
 #
 #: commands.c:422
@@ -469,15 +468,13 @@ msgstr "Τα μηνύματα εκτυπώθηκαν"
 
 #
 #: commands.c:432
-#, fuzzy
 msgid "Message could not be printed"
-msgstr "Το μήνυμα εκτυπώθηκε"
+msgstr "Αδυναμία εκτύπωσης μηνύματος"
 
 #
 #: commands.c:433
-#, fuzzy
 msgid "Messages could not be printed"
-msgstr "Τα μηνύματα εκτυπώθηκαν"
+msgstr "Αδυναμία εκτύπωσης μηνυμάτων"
 
 #
 #: commands.c:442
@@ -1571,9 +1568,9 @@ msgstr "%s: άγνωστη μέθοδος ταξινόμησης"
 
 #
 #: init.c:744
-#, fuzzy, c-format
+#, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
-msgstr "mutt_restore_default: λάθος στο regexp: %s\n"
+msgstr "mutt_restore_default(%s): λάθος στο regexp: %s\n"
 
 #
 #: init.c:805

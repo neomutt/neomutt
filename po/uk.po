@@ -1,12 +1,12 @@
 # Ukrainian translation for Mutt.
 # Copyright (C) 1998 Free Software Foundation, Inc.
-# Andrej N. Gritsenko <andrej@lucky.net>, 1998.
+# Andrej N. Gritsenko <andrej@lucky.net>, 1998-2000.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.0\n"
+"Project-Id-Version: 1.3.12\n"
 "POT-Creation-Date: 2000-11-27 12:33+0100\n"
-"PO-Revision-Date: 2000-03-17 12:12+0200\n"
+"PO-Revision-Date: 2000-11-18 16:04+0200\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "Language-Team: Ukrainian <uk@ua>\n"
 "MIME-Version: 1.0\n"
@@ -14,9 +14,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: account.c:144
-#, fuzzy, c-format
+#, c-format
 msgid "Username at %s: "
-msgstr "Перейменувати у: "
+msgstr "Користувач у %s: "
 
 #: account.c:172
 #, c-format
@@ -174,13 +174,12 @@ msgid "No files match the file mask"
 msgstr "Нема╓ файл╕в, що в╕дпов╕дають масц╕"
 
 #: browser.c:835
-#, fuzzy
 msgid "Create is only supported for IMAP mailboxes"
-msgstr "Видалення п╕дтриму╓ться лише для скриньок IMAP."
+msgstr "Створення п╕дтриму╓ться лише для скриньок IMAP"
 
 #: browser.c:855
 msgid "Delete is only supported for IMAP mailboxes"
-msgstr "Видалення п╕дтриму╓ться лише для скриньок IMAP."
+msgstr "Видалення п╕дтриму╓ться лише для скриньок IMAP"
 
 #: browser.c:863
 #, c-format
@@ -304,23 +303,20 @@ msgid "Could not create temporary file!"
 msgstr "Не вийшло створити тимчасовий файл!"
 
 #: commands.c:126
-#, fuzzy
 msgid "Cannot create display filter"
-msgstr "Неможливо створити ф╕льтр"
+msgstr "Неможливо створити ф╕льтр в╕дображення"
 
 #: commands.c:146
-#, fuzzy
 msgid "Could not copy message"
-msgstr "Не вийшло в╕дправити лист."
+msgstr "Не вийшло скоп╕ювати пов╕домлення"
 
 #: commands.c:168
 msgid "PGP signature successfully verified."
 msgstr "П╕дпис PGP перев╕рено."
 
 #: commands.c:169
-#, fuzzy
 msgid "PGP signature could NOT be verified."
-msgstr "П╕дпис PGP перев╕рено."
+msgstr "П╕дпис PGP перев╕рити неможливо."
 
 #: commands.c:192
 msgid "Command: "
@@ -361,9 +357,8 @@ msgid "Pipe to command: "
 msgstr "Передати до програми: "
 
 #: commands.c:417
-#, fuzzy
 msgid "No printing command has been defined."
-msgstr "Вх╕дних поштових скриньок не вказано."
+msgstr "Команду для друку не визначено."
 
 #: commands.c:422
 msgid "Print message?"
@@ -382,14 +377,12 @@ msgid "Messages printed"
 msgstr "Пов╕домлення надруковано"
 
 #: commands.c:432
-#, fuzzy
 msgid "Message could not be printed"
-msgstr "Пов╕домлення надруковано"
+msgstr "Пов╕домлення не може бути надруковано"
 
 #: commands.c:433
-#, fuzzy
 msgid "Messages could not be printed"
-msgstr "Пов╕домлення надруковано"
+msgstr "Пов╕домлення не можуть бути надрукован╕"
 
 #: commands.c:442
 msgid ""
@@ -448,14 +441,14 @@ msgid "Copying to %s..."
 msgstr "Коп╕ювання до %s..."
 
 #: commands.c:822
-#, fuzzy, c-format
+#, c-format
 msgid "Content-Type changed to %s."
-msgstr "З'╓днання з %s..."
+msgstr "Тип додатку зм╕нено на %s."
 
 #: commands.c:824
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s."
-msgstr "Нев╕доме кодування: %s."
+msgstr "Кодування зм╕нено на %s."
 
 #: compose.c:40
 msgid "There are no attachments."
@@ -499,7 +492,7 @@ msgstr " п╕дпис як:"
 
 #: compose.c:125
 msgid "<default>"
-msgstr ""
+msgstr "<за змовчанням>"
 
 #: compose.c:126 compose.c:183
 msgid "MIC algorithm: "
@@ -845,9 +838,8 @@ msgid "Thread contains unread messages."
 msgstr "Бес╕да ма╓ нечитан╕ листи."
 
 #: curs_main.c:1622
-#, fuzzy
 msgid "Can't edit message on POP server."
-msgstr "Видалення пов╕домлень з серверу..."
+msgstr "Неможливо редагувати пов╕домлення на POP сервер╕."
 
 #.
 #. * SLcurses_waddnstr() can't take a "const char *", so this is only
@@ -1023,9 +1015,9 @@ msgid "[-- on %s --]\n"
 msgstr "[-- %s --]\n"
 
 #: handler.c:1329
-#, fuzzy, c-format
+#, c-format
 msgid "[-- name: %s --]\n"
-msgstr "[-- %s --]\n"
+msgstr "[-- ╕м'я: %s --]\n"
 
 #: handler.c:1340
 #, c-format
@@ -1120,9 +1112,8 @@ msgid "Authenticating (anonymous)..."
 msgstr "Аутентиф╕кац╕я (anonymous)..."
 
 #: imap/auth_anon.c:69
-#, fuzzy
 msgid "Anonymous authentication failed."
-msgstr "Анон╕мна аутентиф-кац╕я не п╕дтриму╓ться."
+msgstr "Помилка анон╕мно╖ аутентиф╕кац╕╖."
 
 #: imap/auth_cram.c:44
 msgid "Authenticating (CRAM-MD5)..."
@@ -1143,7 +1134,7 @@ msgstr "Помилка аутентиф╕кац╕╖ GSSAPI."
 
 #: imap/auth_login.c:34
 msgid "LOGIN disabled on this server."
-msgstr ""
+msgstr "LOGIN недоступен на цьому сервер╕."
 
 #: imap/auth_login.c:43 pop_auth.c:232
 msgid "Logging in..."
@@ -1154,14 +1145,12 @@ msgid "Login failed."
 msgstr "Помилка ре╓страц╕╖."
 
 #: imap/auth_sasl.c:91 pop_auth.c:79
-#, fuzzy
 msgid "Authenticating (SASL)..."
-msgstr "Аутентиф╕кац╕я (GSSAPI)..."
+msgstr "Аутентиф╕кац╕я (SASL)..."
 
 #: imap/auth_sasl.c:163 pop_auth.c:157
-#, fuzzy
 msgid "SASL authentication failed."
-msgstr "Помилка аутентиф╕кац╕╖ GSSAPI."
+msgstr "Помилка аутентиф╕кац╕╖ SASL."
 
 #: imap/browse.c:80
 msgid "Getting namespaces..."
@@ -1172,14 +1161,12 @@ msgid "Getting folder list..."
 msgstr "Отримання перел╕ку скриньок..."
 
 #: imap/browse.c:265
-#, fuzzy
 msgid "Create mailbox: "
-msgstr "В╕дкрити скриньку"
+msgstr "Створити скриньку: "
 
 #: imap/browse.c:271
-#, fuzzy
 msgid "Mailbox created."
-msgstr "Поштову скриньку видалено."
+msgstr "Поштову скриньку створено."
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
@@ -1189,9 +1176,9 @@ msgid "Fatal error.  Message count is out of sync!"
 msgstr "Фатальна помилка. Л╕чильник лист╕в неможливо с╕нхрон╕зувати!"
 
 #: imap/imap.c:89
-#, fuzzy, c-format
+#, c-format
 msgid "Closing connection to %s..."
-msgstr "Закриття з'╓днання з сервером IMAP..."
+msgstr "Закриття з'╓днання з %s..."
 
 #: imap/imap.c:296
 msgid "This IMAP server is ancient. Mutt does not work with it."
@@ -1257,7 +1244,7 @@ msgstr "Отримання листа..."
 
 #: imap/message.c:273 pop.c:373
 msgid "The message index is incorrect. Try reopening the mailbox."
-msgstr ""
+msgstr "Некоректний номер пов╕домлення. Спробуйте в╕дкрити скриньку ще раз."
 
 #: imap/message.c:463
 msgid "Uploading message ..."
@@ -1296,9 +1283,9 @@ msgid "%s: unknown sorting method"
 msgstr "%s: нев╕домий метод сортування"
 
 #: init.c:744
-#, fuzzy, c-format
+#, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
-msgstr "mutt_restore_default: помилка виразу: %s\n"
+msgstr "mutt_restore_default(%s): помилка виразу: %s\n"
 
 #: init.c:805
 #, c-format
@@ -1352,7 +1339,7 @@ msgstr "source: помилки в %s"
 #: init.c:1251
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
-msgstr ""
+msgstr "source: читання завершено, дуже багато помилок у %s"
 
 #: init.c:1265
 #, c-format
@@ -1583,7 +1570,7 @@ msgstr "в╕д╕слати лист"
 
 #: keymap_alldefs.h:42
 msgid "toggle disposition between inline/attachment"
-msgstr ""
+msgstr "зм╕нити inline на attachment або навпаки"
 
 #: keymap_alldefs.h:43
 msgid "toggle whether to delete file after sending it"
@@ -1666,9 +1653,8 @@ msgid "move the cursor one character to the left"
 msgstr "пересунути курсор на один символ вл╕во"
 
 #: keymap_alldefs.h:63
-#, fuzzy
 msgid "move the cursor to the beginning of the word"
-msgstr "перейти до початку рядку"
+msgstr "пересунути курсор до початку слова"
 
 #: keymap_alldefs.h:64
 msgid "jump to the beginning of the line"
@@ -1699,9 +1685,8 @@ msgid "move the cursor one character to the right"
 msgstr "пересунути курсор на один символ вправо"
 
 #: keymap_alldefs.h:71
-#, fuzzy
 msgid "move the cursor to the end of the word"
-msgstr "пересунути курсор на один символ вправо"
+msgstr "пересунути курсор до к╕нця слова"
 
 #: keymap_alldefs.h:72 keymap_alldefs.h:73
 msgid "scroll up through the history list"
@@ -1712,9 +1697,8 @@ msgid "delete chars from cursor to end of line"
 msgstr "видалити в╕д курсору до к╕нця рядку"
 
 #: keymap_alldefs.h:75
-#, fuzzy
 msgid "delete chars from the cursor to the end of the word"
-msgstr "видалити в╕д курсору до к╕нця рядку"
+msgstr "видалити в╕д курсору до к╕нця слова"
 
 #: keymap_alldefs.h:76
 msgid "delete all chars on the line"
@@ -1730,20 +1714,19 @@ msgstr "сприйняти наступний символ, як ╓"
 
 #: keymap_alldefs.h:79
 msgid "transpose character under cursor with previous"
-msgstr ""
+msgstr "пересунути поточний символ до попереднього"
 
 #: keymap_alldefs.h:80
 msgid "capitalize the word"
-msgstr ""
+msgstr "написати слово з велико╖ л╕тери"
 
 #: keymap_alldefs.h:81
-#, fuzzy
 msgid "convert the word to lower case"
-msgstr "перейти до к╕нця стор╕нки"
+msgstr "перетворити л╕тери слова до строкових"
 
 #: keymap_alldefs.h:82
 msgid "convert the word to upper case"
-msgstr ""
+msgstr "перетворити л╕тери слова до заголовних"
 
 #: keymap_alldefs.h:83
 msgid "enter a muttrc command"
@@ -2143,27 +2126,27 @@ msgstr "зробити розшифровану коп╕ю"
 
 #: keymap_alldefs.h:182
 msgid "Accept the chain constructed"
-msgstr ""
+msgstr "Прийняти скоструйований ланцюжок"
 
 #: keymap_alldefs.h:183
 msgid "Append a remailer to the chain"
-msgstr ""
+msgstr "Додати remailer до ланцюжку"
 
 #: keymap_alldefs.h:184
 msgid "Insert a remailer into the chain"
-msgstr ""
+msgstr "Вставити remailer в ланцюжок"
 
 #: keymap_alldefs.h:185
 msgid "Delete a remailer from the chain"
-msgstr ""
+msgstr "Видалити remailer з ланцюжку"
 
 #: keymap_alldefs.h:186
 msgid "Select the previous element of the chain"
-msgstr ""
+msgstr "Вибрати попередн╕й елемент ланцюжку"
 
 #: keymap_alldefs.h:187
 msgid "Select the next element of the chain"
-msgstr ""
+msgstr "Вибрати наступний елемент ланцюжку"
 
 #: keymap_alldefs.h:188
 msgid "send the message through a mixmaster remailer chain"
@@ -2174,13 +2157,12 @@ msgid "Out of memory!"
 msgstr "Не вистача╓ пам'ят╕!"
 
 #: main.c:41
-#, fuzzy
 msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please use the flea(1) utility.\n"
 msgstr ""
 "Для зв'язку з розробниками, шл╕ть лист до <mutt-dev@mutt.org>.\n"
-"Для пов╕домлдення про ваду (недол╕к), використовуйте програму muttbug.\n"
+"Для пов╕домлення про ваду, використовуйте програму flea(1).\n"
 
 #: main.c:45
 msgid ""
@@ -2219,7 +2201,6 @@ msgid ""
 msgstr ""
 
 #: main.c:88
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
 "]\n"
@@ -2249,7 +2230,7 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"використання: mutt [ -nRzZ ] [ -e <кмд> ] [ -F <файл> ] [ -m <тип> ] [ -f "
+"використання: mutt [ -nRyzZ ] [ -e <кмд> ] [ -F <файл> ] [ -m <тип> ] [ -f "
 "<файл> ]\n"
 "       mutt [ -nx ] [ -e <кмд> ] [ -a <файл> ] [ -F <файл> ] [ -H <файл> ] [ "
 "-i <файл> ] [ -s <тема> ] [ -b <адр> ] [ -c <адр> ] <адр> [ ... ]\n"
@@ -2473,9 +2454,8 @@ msgid "oac"
 msgstr ""
 
 #: muttlib.c:1111
-#, fuzzy
 msgid "Can't save message to POP mailbox."
-msgstr "Записати лист до поштово╖ скриньки"
+msgstr "Неможливо записати лист до скриньки POP."
 
 #: muttlib.c:1120
 #, c-format
@@ -2489,21 +2469,21 @@ msgstr "Додати листи до %s?"
 
 #: mutt_socket.c:201
 msgid "SSL is unavailable."
-msgstr ""
+msgstr "SSL недосяжне."
 
 #: mutt_socket.c:237
 msgid "Preconnect command failed."
-msgstr ""
+msgstr "Попередн╓ з'╓днання не вдалося."
 
 #: mutt_socket.c:326 mutt_socket.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "Коп╕ювання до %s..."
+msgstr "Пошук %s..."
 
 #: mutt_socket.c:331 mutt_socket.c:370
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "Не вийшло знайти адресу для %s."
+msgstr "Не вийшло знайти адресу \"%s\"."
 
 #: mutt_socket.c:335 mutt_socket.c:375
 #, c-format
@@ -2511,27 +2491,27 @@ msgid "Connecting to %s..."
 msgstr "З'╓днання з %s..."
 
 #: mutt_socket.c:398
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "Не вийшло в╕дкрити %s"
+msgstr "Не вийшло з'╓днатися з %s (%s)."
 
 #: mutt_ssl.c:105
 msgid "Failed to find enough entropy on your system"
-msgstr ""
+msgstr "Не вдалося знайти достятньо ентроп╕╖ на ваш╕й систем╕"
 
 #: mutt_ssl.c:120
 #, c-format
 msgid "Filling entropy pool: %s...\n"
-msgstr ""
+msgstr "Заповнення пулу ентроп╕╖: %s...\n"
 
 #: mutt_ssl.c:128
 #, c-format
 msgid "%s has insecure permissions!"
-msgstr ""
+msgstr "%s ма╓ несекретн╕ права доступу!"
 
 #: mutt_ssl.c:147
 msgid "SSL disabled due the lack of entropy"
-msgstr ""
+msgstr "SSL недосяжне завдяки втрат╕ ентроп╕╖"
 
 #: mutt_ssl.c:227
 msgid "Unable to get certificate from peer"
@@ -2551,18 +2531,16 @@ msgid "[unable to calculate]"
 msgstr "[неможливо обчислити]"
 
 #: mutt_ssl.c:310
-#, fuzzy
 msgid "[invalid date]"
-msgstr "%s: нев╕рне значення"
+msgstr "[помилкова дата]"
 
 #: mutt_ssl.c:385
 msgid "Server certificate is not yet valid"
-msgstr ""
+msgstr "Сертиф╕кат серверу ще не д╕йсний"
 
 #: mutt_ssl.c:392
-#, fuzzy
 msgid "Server certificate has expired"
-msgstr "Цей сертиф╕кат видано:"
+msgstr "Сертиф╕кат серверу видалено за давн╕стю"
 
 #: mutt_ssl.c:465
 msgid "This certificate belongs to:"
@@ -2573,19 +2551,18 @@ msgid "This certificate was issued by:"
 msgstr "Цей сертиф╕кат видано:"
 
 #: mutt_ssl.c:485
-#, fuzzy
 msgid "This certificate is valid"
-msgstr "Цей сертиф╕кат видано:"
+msgstr "Цей сертиф╕кат д╕йсний"
 
 #: mutt_ssl.c:486
 #, c-format
 msgid "   from %s"
-msgstr ""
+msgstr "   в╕д %s"
 
 #: mutt_ssl.c:488
 #, c-format
 msgid "     to %s"
-msgstr ""
+msgstr "     до %s"
 
 #: mutt_ssl.c:494
 #, c-format
@@ -2721,9 +2698,8 @@ msgid "Mailbox is marked unwritable. %s"
 msgstr "Скриньку пом╕чено незм╕нюваною. %s"
 
 #: mx.c:1159
-#, fuzzy
 msgid "Mailbox checkpointed."
-msgstr "Поштову скриньку видалено."
+msgstr "Поштову скриньку перев╕рено."
 
 #: mx.c:1459
 msgid "Can't write message"
@@ -2867,9 +2843,9 @@ msgid "PGP passphrase forgotten."
 msgstr "Кодову фразу PGP забуто."
 
 #: pgp.c:142
-#, fuzzy, c-format
+#, c-format
 msgid "[-- PGP output follows (current time: %c) --]\n"
-msgstr "[-- текст на виход╕ PGP (час: "
+msgstr "[-- текст на виход╕ PGP (час: %c) --]\n"
 
 #: pgp.c:246
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
@@ -3134,34 +3110,28 @@ msgid "Looking for keys matching \"%s\"..."
 msgstr "Пошук ключ╕в, що в╕дпов╕дають \"%s\"..."
 
 #: pop.c:89 pop_lib.c:158
-#, fuzzy
 msgid "Command TOP is not supported by server."
-msgstr "Вид╕лення не п╕дтриму╓ться."
+msgstr "Команда TOP не п╕дтриму╓ться сервером."
 
 #: pop.c:116
-#, fuzzy
 msgid "Can't write header to temporary file!"
-msgstr "Неможливо створити тимчасовий файл"
+msgstr "Неможливо записати заголовок до тимчасового файлу!"
 
 #: pop.c:197 pop_lib.c:160
-#, fuzzy
 msgid "Command UIDL is not supported by server."
-msgstr "Вид╕лення не п╕дтриму╓ться."
+msgstr "Команда UIDL не п╕дтриму╓ться сервером."
 
 #: pop.c:270
-#, fuzzy
 msgid "Fetching list of messages..."
-msgstr "Отримання листа..."
+msgstr "Отримання перел╕ку пов╕домлень..."
 
 #: pop.c:407
-#, fuzzy
 msgid "Can't write message to temporary file!"
-msgstr "Неможливо створити тимчасовий файл"
+msgstr "Неможливо записати пов╕домлення до тимчасового файлу!"
 
 #: pop.c:510 pop.c:564
-#, fuzzy
 msgid "Checking for new messages..."
-msgstr "П╕дготування листа для пересилання..."
+msgstr "Перев╕рка наявност╕ нових пов╕домлень..."
 
 #: pop.c:538
 msgid "POP host is not defined."
@@ -3172,9 +3142,8 @@ msgid "No new mail in POP mailbox."
 msgstr "В поштов╕й скриньц╕ POP нема╓ нових лист╕в."
 
 #: pop.c:599
-#, fuzzy
 msgid "Delete messages from server?"
-msgstr "Видалення пов╕домлень з серверу..."
+msgstr "Видалити пов╕домлення з серверу?"
 
 #: pop.c:601
 #, c-format
@@ -3195,49 +3164,41 @@ msgid "Server closed connection!"
 msgstr "Сервер закрив з'╓днання!"
 
 #: pop_auth.c:193
-#, fuzzy
 msgid "Authenticating (APOP)..."
-msgstr "Аутентиф╕кац╕я (GSSAPI)..."
+msgstr "Аутентиф╕кац╕я (APOP)..."
 
 #: pop_auth.c:217
-#, fuzzy
 msgid "APOP authentication failed."
-msgstr "Помилка аутентиф╕кац╕╖ GSSAPI."
+msgstr "Помилка аутентиф╕кац╕╖ APOP."
 
 #: pop_auth.c:252
-#, fuzzy
 msgid "Command USER is not supported by server."
-msgstr "Вид╕лення не п╕дтриму╓ться."
+msgstr "Команда USER не п╕дтриму╓ться сервером."
 
 #: pop_auth.c:359
-#, fuzzy
 msgid "Authentication method is unknown."
-msgstr "Помилка аутентиф╕кац╕╖ GSSAPI."
+msgstr "Нев╕домий метод аутентиф╕кац╕╖."
 
 #: pop_lib.c:156
-#, fuzzy
 msgid "Unable to leave messages on server."
-msgstr "Видалення пов╕домлень з серверу..."
+msgstr "Неможливо залишити пов╕домлення на сервер╕."
 
 #: pop_lib.c:203
-#, fuzzy, c-format
+#, c-format
 msgid "Error connecting to server: %s"
-msgstr "З'╓днання з %s"
+msgstr "Помилка з'╓днання з сервером: %s"
 
 #: pop_lib.c:286
-#, fuzzy
 msgid "Closing connection to POP server..."
-msgstr "Закриття з'╓днання з сервером IMAP..."
+msgstr "Закриття з'╓днання з сервером POP..."
 
 #: pop_lib.c:445
-#, fuzzy
 msgid "Verifying message indexes..."
-msgstr "Запис листа до %s..."
+msgstr "Перев╕рка ╕ндекс╕в пов╕домлень..."
 
 #: pop_lib.c:469
-#, fuzzy
 msgid "Connection lost. Reconnect to POP server?"
-msgstr "Закриття з'╓днання з сервером IMAP..."
+msgstr "З'╓днання загублено. В╕дновити зв'язок з сервером POP?"
 
 #: postpone.c:165
 msgid "Postponed Messages"
@@ -3332,9 +3293,8 @@ msgid "Attachments"
 msgstr "Додатки"
 
 #: recvattach.c:882
-#, fuzzy
 msgid "Can't delete attachment from POP server."
-msgstr "отримати пошту з сервера POP"
+msgstr "Неможливо видалити додаток з сервера POP."
 
 #: recvattach.c:893
 msgid "Deletion of attachments from PGP messages is unsupported."
@@ -3406,42 +3366,43 @@ msgstr ""
 
 #: remailer.c:512
 msgid "Can't get mixmaster's type2.list!"
-msgstr ""
+msgstr "Неможливо отримати type2.list mixmaster'а!"
 
 #: remailer.c:538
 msgid "Select a remailer chain."
-msgstr ""
+msgstr "Вебер╕ть ланцюжок remailer."
 
 #: remailer.c:598
 #, c-format
 msgid "Error: %s can't be used as the final remailer of a chain."
-msgstr ""
+msgstr "Помилка: %s неможливо використати як останн╕й remailer ланцюжку."
 
 #: remailer.c:628
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."
-msgstr ""
+msgstr "Ланцюжок не може бути б╕льшим за %d елемент╕в."
 
 #: remailer.c:651
 msgid "The remailer chain is already empty."
-msgstr ""
+msgstr "Ланцюжок remailer'а вже порожн╕й."
 
 #: remailer.c:661
 msgid "You already have the first chain element selected."
-msgstr ""
+msgstr "Перший елемент ланцюжку вже вибрано."
 
 #: remailer.c:671
 msgid "You already have the last chain element selected."
-msgstr ""
+msgstr "Останн╕й елемент ланцюжку вже вибрано."
 
 #: remailer.c:710
 msgid "Mixmaster doesn't accept Cc or Bcc headers."
-msgstr ""
+msgstr "Mixmaster не прийма╓ заголовки Cc та Bcc."
 
 #: remailer.c:734
 msgid ""
 "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr ""
+"Треба встановити в╕дпов╕дне значення hostname для використання mixmaster!"
 
 #: remailer.c:765
 #, c-format
@@ -3633,14 +3594,6 @@ msgstr "\"Батьк╕вський\" лист не можна побачити при цьому обмеженн╕"
 #: thread.c:717
 msgid "Parent message is not available."
 msgstr "\"Батьк╕вський\" лист не можна побачити."
-
-#, fuzzy
-#~ msgid "POP Username: "
-#~ msgstr "╤м'я користувача IMAP: "
-
-#, fuzzy
-#~ msgid "Login failed: %s"
-#~ msgstr "Помилка ре╓страц╕╖."
 
 #~ msgid "Reading new message (%d bytes)..."
 #~ msgstr "Читання нового пов╕домлення (%d байт)..."
