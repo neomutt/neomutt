@@ -630,7 +630,7 @@ void mutt_expand_fmt (char *dest, size_t destlen, const char *fmt, const char *s
 	}
       }
 
-      strfcpy (dest, src, destlen);
+      strfcpy (dest, _src, destlen);
       if (slen > destlen)
       {
 	/* no more room */
