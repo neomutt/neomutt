@@ -1205,7 +1205,6 @@ static void write_references (LIST *r, FILE *f)
  * mode == 1  => "lite" mode (used for edit_hdrs)
  * mode == 0  => normal mode.  write full header + MIME headers
  * mode == -1 => write just the envelope info (used for postponing messages)
- * mode == -2 => just like -1, but write the Date: from the message (used for edit-message support)
  */
 
 int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach, int mode)
@@ -1213,15 +1212,16 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach, int mode)
   char buffer[LONG_STRING];
   LIST *tmp = env->userhdrs;
 
-  if (mode == 0)
-    fputs (mutt_make_date (buffer, sizeof(buffer)), fp);
-  else if (mode == -2)
+  if (option(OPTUSEHEADERDATE))
   {
     if(env->date)
       fprintf(fp, "Date: %s\n", env->date);
     else
       fputs (mutt_make_date(buffer, sizeof(buffer)), fp);
   }
+  else if (mode == 0)
+    fputs (mutt_make_date (buffer, sizeof(buffer)), fp);
+
 
 
   /* OPTUSEFROM is not consulted here so that we can still write a From:
@@ -1876,8 +1876,6 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post)
   }
 
   /* post == 1 => postpone message. Set mode = -1 in mutt_write_rfc822_header()
-   * post == 2 => Editing this message.
-   *              Set mode = -2 in mutt_write_rfc822_header()
    * post == 0 => Normal mode. Set mode = 0 in mutt_write_rfc822_header() 
    * */
   mutt_write_rfc822_header (msg->fp, hdr->env, hdr->content, post ? -post : 0);

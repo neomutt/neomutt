@@ -1063,16 +1063,20 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
        if (mutt_enter_fname ("Write message to mailbox", fname, sizeof (fname),
                              &menu->redraw, 1) != -1 && fname[0])
        {
+	 int oldhdrdate;
          mutt_message ("Writing message to %s ...", fname);
          mutt_expand_path (fname, sizeof (fname));
 
          if (msg->content->next)
            msg->content = mutt_make_multipart (msg->content);
 
-         if (mutt_write_fcc (NONULL (fname), msg, NULL, 2) < 0)
+	 oldhdrdate = option(OPTUSEHEADERDATE);
+	 set_option(OPTUSEHEADERDATE);
+         if (mutt_write_fcc (NONULL (fname), msg, NULL, 1) < 0)
            msg->content = mutt_remove_multipart (msg->content);
          else
            mutt_message ("Message written.");
+	 if(!oldhdrdate) unset_option(OPTUSEHEADERDATE);
        }
        break;
 

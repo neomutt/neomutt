@@ -331,12 +331,12 @@ enum
   OPTSORTSUBTHREADS,	/* (pseudo) used when $sort_aux changes */
   OPTNEEDRESCORE,	/* (pseudo) set when the `score' command is used */
   OPTSORTCOLLAPSE,	/* (pseudo) used by mutt_sort_headers() */
-
+  OPTUSEHEADERDATE,	/* (pseudo) used by edit-message */
+  
 #ifdef _PGPPATH
   OPTPGPCHECKTRUST,	/* (pseudo) used by pgp_select_key () */
   OPTDONTHANDLEPGPKEYS,	/* (pseudo) used to extract PGP keys */
 #endif
-
 
 
 

@@ -1485,8 +1485,10 @@ int mutt_index_menu (int attach_msg /* invoked while attaching a message */)
 
 	CHECK_MSGCOUNT;
 	CHECK_READONLY;
-
+        
+        set_option(OPTUSEHEADERDATE);
 	ci_send_message (SENDEDITMSG, NULL, NULL, Context, CURHDR);
+        unset_option(OPTUSEHEADERDATE);
 	menu->redraw = REDRAW_FULL;
 	break;
 
