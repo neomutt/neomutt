@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-21 17:29+0200\n"
+"POT-Creation-Date: 1998-10-27 16:32+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,7 @@ msgstr "Verlassen"
 msgid "Select"
 msgstr "Auswählen"
 
-#: addrbook.c:34 browser.c:57 compose.c:71 curs_main.c:235 pager.c:1455
+#: addrbook.c:34 browser.c:57 compose.c:84 curs_main.c:235 pager.c:1455
 #: pgpkey.c:181 postpone.c:36 query.c:49 recvattach.c:52
 msgid "Help"
 msgstr "Hilfe"
@@ -304,13 +304,17 @@ msgstr "In Kommando einspeisen: "
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
-"Umg. sortieren (D)atum/(S)ender/E(m)pf.dat./(B)etr./(E)mpf./Disk.-(f)aden/(u)nsort./(G)röße/Be(w)ertg?: "
+"Umg. sortieren "
+"(D)atum/(S)ender/E(m)pf.dat./(B)etr./(E)mpf./Disk.-(f)aden/(u)nsort./(G)röße/"
+"Be(w)ertg?: "
 
 #: commands.c:402
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
-"Sortieren (D)atum/(S)ender/E(m)pf.dat./(B)etr./(E)mpf./Diskussions(f)aden/(u)nsort./(G)röße/Be(w)ertg?: "
+"Sortieren "
+"(D)atum/(S)ender/E(m)pf.dat./(B)etr./(E)mpf./Diskussions(f)aden/(u)nsort./(G)"
+"röße/Be(w)ertg?: "
 
 #: commands.c:403
 msgid "dfrsotuzc"
@@ -374,172 +378,178 @@ msgstr "Nachricht gedruckt"
 msgid "Messages printed"
 msgstr "Nachrichten gedruckt"
 
-#: compose.c:64
+#: compose.c:77
 msgid "Send"
 msgstr "Verschicken"
 
-#: compose.c:65
+#: compose.c:78
 msgid "Abort"
 msgstr "Verwerfen"
 
-#: compose.c:69 compose.c:598
+#: compose.c:82 compose.c:538
 msgid "Attach file"
 msgstr "Datei anhängen"
 
-#: compose.c:70
+#: compose.c:83
 msgid "Descrip"
 msgstr "Beschr."
 
-#: compose.c:97
-msgid ""
-"(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget "
-"it? "
-msgstr "(v)erschl., (s)ign., sign. (a)ls, (b)eides, (m)ic auswählen, (k)ein PGP"
+#: compose.c:104
+msgid "Sign, Encrypt"
+msgstr "Signieren, Verschlüsseln"
 
-#: compose.c:98
-msgid "esabmf"
-msgstr "vsabmk"
+#: compose.c:106
+msgid "Encrypt"
+msgstr "Verschlüsseln"
 
-#: compose.c:115
-msgid "Can't open your secret key ring!"
-msgstr "Kann geheimen Schlüsselbund nicht öffnen!"
+#: compose.c:108
+msgid "Sign"
+msgstr "Signieren"
 
-#: compose.c:120
-msgid "Sign as: "
-msgstr "Signiere als: "
+#: compose.c:110
+msgid "Clear"
+msgstr "Klartext"
 
-#: compose.c:139
-msgid "An unkown PGP version was defined for signing."
-msgstr "Eine unbekannte PGP-Version wurde zum Signieren eingetragen."
+#: compose.c:117
+msgid " sign as: "
+msgstr " signiere als: "
 
-#: compose.c:149
-msgid "This doesn't make sense if you don't want to sign the message."
-msgstr "Dies macht keinen Sinn, wenn Sie die Nachricht nicht signieren wollen."
+#: compose.c:117
+msgid "<default>"
+msgstr "<Voreinstellung>"
 
-#: compose.c:155 compose.c:279
+#: compose.c:118 compose.c:192
 msgid "MIC algorithm: "
 msgstr "MIC-Algorithmus: "
 
-#: compose.c:160
+#: compose.c:133
+msgid ""
+"(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget "
+"it? "
+msgstr ""
+"(v)erschl., (s)ign., sign. (a)ls, (b)eides, (m)ic auswählen, (k)ein PGP"
+
+#: compose.c:134
+msgid "esabmf"
+msgstr "vsabmk"
+
+#: compose.c:151
+msgid "Can't open your secret key ring!"
+msgstr "Kann geheimen Schlüsselbund nicht öffnen!"
+
+#: compose.c:156
+msgid "Sign as: "
+msgstr "Signiere als: "
+
+#: compose.c:176
+msgid "An unkown PGP version was defined for signing."
+msgstr "Eine unbekannte PGP-Version wurde zum Signieren eingetragen."
+
+#: compose.c:186
+msgid "This doesn't make sense if you don't want to sign the message."
+msgstr "Dies macht keinen Sinn, wenn Sie die Nachricht nicht signieren wollen."
+
+#: compose.c:197
 msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
 msgstr ""
 "Unbekannter MIC-Algorithmus.  Gültig sind: pgp-md5, pgp-sha1, pgp-rmd160"
 
-#: compose.c:192
+#: compose.c:233
 #, c-format
 msgid "%s [#%d] no longer exists!"
 msgstr "%s [#%d] existiert nicht mehr!"
 
-#: compose.c:200
+#: compose.c:241
 #, c-format
 msgid "%s [#%d] modified. Update encoding?"
 msgstr "%s [#%d] wurde modifiziert.  Codierung neu bestimmen?"
 
-#: compose.c:262
-msgid "Sign, Encrypt"
-msgstr "Signieren, Verschlüsseln"
+#: compose.c:282
+#, fuzzy
+msgid "===== Attachments ====="
+msgstr "Anhänge"
 
-#: compose.c:264
-msgid "Encrypt"
-msgstr "Verschlüsseln"
-
-#: compose.c:266
-msgid "Sign"
-msgstr "Signieren"
-
-#: compose.c:268
-msgid "Clear"
-msgstr "Klartext"
-
-#: compose.c:273
-msgid " sign as: "
-msgstr " signiere als: "
-
-#: compose.c:277
-msgid "<default>"
-msgstr "<Voreinstellung>"
-
-#: compose.c:368
+#: compose.c:320
 msgid "You may not delete the only attachment."
 msgstr "Der einzige Nachrichtenteil kann nicht gelöscht werden."
 
-#: compose.c:442
+#: compose.c:394
 msgid "Compose"
 msgstr "Nachricht erstellen"
 
-#: compose.c:603
+#: compose.c:543
 msgid "Open mailbox to attach message from"
 msgstr "Öffne Quell-Mailbox für Nachrichtenanhang."
 
-#: compose.c:642
+#: compose.c:582
 msgid "No messages in that folder."
 msgstr "Keine Nachrichten in diesem Ordner"
 
-#: compose.c:649
+#: compose.c:589
 msgid "Tag the messages you want to attach!"
 msgstr "Bitte markieren Sie die Nachrichten, die Sie anhängen wollen!"
 
-#: compose.c:684 compose.c:704
+#: compose.c:624 compose.c:644
 msgid "Unable to attach!"
 msgstr "Kann nicht anhängen!"
 
-#: compose.c:811 compose.c:825
+#: compose.c:751 compose.c:765
 msgid "Invalid encoding."
 msgstr "Ungültige Codierung."
 
-#: compose.c:816
+#: compose.c:756
 msgid "This encoding is deprecated.  Really use it?"
 msgstr "Diese Codierung sollte nicht genutzt werden.  Trotzdem setzen?"
 
-#: compose.c:840
+#: compose.c:780
 msgid "Save a copy of this message?"
 msgstr "Soll eine Kopie dieser Nachricht gespeichert werden?"
 
-#: compose.c:885
+#: compose.c:825
 msgid "Rename to: "
 msgstr "Umbenennen in: "
 
-#: compose.c:890
+#: compose.c:830
 #, c-format
 msgid "Can't stat: %s"
 msgstr "Kann Datei nicht prüfen: %s"
 
-#: compose.c:917
+#: compose.c:857
 msgid "New file: "
 msgstr "Neue Datei: "
 
-#: compose.c:930
+#: compose.c:870
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type ist von der Form Basis/Untertyp"
 
-#: compose.c:936
+#: compose.c:876
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Unbekannter Content-Type %s"
 
-#: compose.c:949
+#: compose.c:889
 #, c-format
 msgid "Can't create file %s"
 msgstr "Kann Datei %s nicht anlegen"
 
-#: compose.c:957
+#: compose.c:897
 msgid "What we have here is a failure to make an attachment"
 msgstr "Anhang kann nicht erzeugt werden"
 
-#: compose.c:1029
+#: compose.c:959
 msgid "Postpone this message?"
 msgstr "Nachricht zurückstellen?"
 
-#: compose.c:1076
+#: compose.c:1011
 msgid "Write message to mailbox"
 msgstr "Schreibe Nachricht in Mailbox"
 
-#: compose.c:1080
+#: compose.c:1015
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Schreibe Nachricht nach %s ..."
 
-#: compose.c:1091
+#: compose.c:1026
 msgid "Message written."
 msgstr "Nachricht geschrieben."
 
@@ -707,11 +717,11 @@ msgstr "Alle Nachrichten gelöscht."
 msgid "You are on the first message."
 msgstr "Sie sind bereits auf der ersten Nachricht."
 
-#: curs_main.c:1133 pattern.c:1075
+#: curs_main.c:1133 pattern.c:1081
 msgid "Search wrapped to top."
 msgstr "Suche von vorne begonnen."
 
-#: curs_main.c:1142 pattern.c:1086
+#: curs_main.c:1142 pattern.c:1092
 msgid "Search wrapped to bottom."
 msgstr "Suche von hinten begonnen."
 
@@ -739,7 +749,7 @@ msgstr "Sie haben bereits den ersten Diskussionsfaden ausgewählt."
 msgid "Thread contains unread messages."
 msgstr "Diskussionsfaden enthält ungelesene Nachrichten."
 
-#: curs_main.c:1347 flags.c:218 thread.c:629
+#: curs_main.c:1347 flags.c:220 thread.c:629
 msgid "Threading is not enabled."
 msgstr "Darstellung von Diskussionsfäden ist nicht eingeschaltet."
 
@@ -826,11 +836,11 @@ msgstr "Keine Zeilen in der Nachricht.\n"
 msgid "%s: unknown editor command (~? for help)\n"
 msgstr "%s: Unbekanntes Editor-Kommando (~? für Hilfestellung)\n"
 
-#: flags.c:256
+#: flags.c:258
 msgid "Set flag"
 msgstr "Setze Indikator"
 
-#: flags.c:256
+#: flags.c:258
 msgid "Clear flag"
 msgstr "Entferne Indikator"
 
@@ -954,61 +964,61 @@ msgstr "Hole Nachrichten-Header... [%d/%d]"
 msgid "Reopening mailbox..."
 msgstr "Öffne Mailbox erneut..."
 
-#: imap.c:858
+#: imap.c:859
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Verbinde zu %s..."
 
-#: imap.c:877
+#: imap.c:878
 msgid "IMAP Username: "
 msgstr "IMAP-Nutzername: "
 
-#: imap.c:890
+#: imap.c:891
 #, c-format
 msgid "Password for %s@%s: "
 msgstr "Paßwort für %s@%s: "
 
-#: imap.c:903
+#: imap.c:904
 msgid "Logging in..."
 msgstr "Logge ein..."
 
-#: imap.c:958
+#: imap.c:959
 #, c-format
 msgid "Selecting %s..."
 msgstr "Wähle %s aus..."
 
-#: imap.c:1054 lib.c:1166
+#: imap.c:1055 lib.c:1168
 #, c-format
 msgid "Create %s?"
 msgstr "%s erstellen?"
 
-#: imap.c:1098
+#: imap.c:1099
 msgid "Fetching message..."
 msgstr "Hole Nachricht..."
 
-#: imap.c:1206
+#: imap.c:1207
 msgid "Sending APPEND command ..."
 msgstr "Sende APPEND-Kommando..."
 
-#: imap.c:1245
+#: imap.c:1246
 msgid "Uploading message ..."
 msgstr "Lade Nachrichten auf den Server..."
 
-#: imap.c:1300
+#: imap.c:1301
 msgid "Closing connection to IMAP server..."
 msgstr "Schließe Verbindung zu IMAP-Server..."
 
-#: imap.c:1330
+#: imap.c:1331
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Speichere Nachrichten-Status-Indikatoren... [%d/%d]"
 
-#: imap.c:1356
+#: imap.c:1357
 msgid "Expunging messages from server..."
 msgstr "Lösche Nachrichten auf dem Server..."
 
 #. tell the server to commit changes
-#: imap.c:1407
+#: imap.c:1408
 msgid "Closing mailbox..."
 msgstr "Schließe Mailbox..."
 
@@ -2034,7 +2044,7 @@ msgstr "Sie sind auf dem letzten Eintrag."
 msgid "You are on the first entry."
 msgstr "Sie sind auf dem ersten Eintrag"
 
-#: menu.c:585 pattern.c:1021
+#: menu.c:585 pattern.c:1027
 msgid "Search for: "
 msgstr "Suche nach: "
 
@@ -2042,11 +2052,11 @@ msgstr "Suche nach: "
 msgid "Reverse search for: "
 msgstr "Suche rückwärts nach: "
 
-#: menu.c:597 pattern.c:1054
+#: menu.c:597 pattern.c:1060
 msgid "No search pattern."
 msgstr "Kein Suchmuster."
 
-#: menu.c:627 pager.c:1770 pager.c:1786 pager.c:1873 pattern.c:1119
+#: menu.c:627 pager.c:1770 pager.c:1786 pager.c:1873 pattern.c:1125
 msgid "Not found."
 msgstr "Nicht gefunden."
 
@@ -2096,55 +2106,55 @@ msgstr "Lese %s..."
 msgid "Writing %s..."
 msgstr "Schreibe %s..."
 
-#: mx.c:754
+#: mx.c:756
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Verschiebe gelesene Nachrichten nach %s?"
 
-#: mx.c:763 mx.c:940
+#: mx.c:765 mx.c:942
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Entferne %d als gelöscht markierte Nachrichten?"
 
-#: mx.c:763 mx.c:940
+#: mx.c:765 mx.c:942
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Entferne %d als gelöscht markierte Nachrichten?"
 
-#: mx.c:783
+#: mx.c:785
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Verschiebe gelesene Nachrichten nach %s..."
 
-#: mx.c:799 mx.c:931
+#: mx.c:801 mx.c:933
 msgid "Mailbox is unchanged."
 msgstr "Mailbox unverändert."
 
-#: mx.c:818
+#: mx.c:820
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d behalten, %d verschoben, %d gelöscht."
 
-#: mx.c:821 mx.c:956
+#: mx.c:823 mx.c:958
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d behalten, %d gelöscht."
 
-#: mx.c:916
+#: mx.c:918
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Drücken Sie '%s', um Schreib-Modus ein-/auszuschalten"
 
-#: mx.c:918
+#: mx.c:920
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Benutzen Sie 'toggle-write', um Schreib-Modus zu reaktivieren"
 
-#: mx.c:920
+#: mx.c:922
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Mailbox ist als unschreibbar markiert. %s"
 
-#: mx.c:925
+#: mx.c:927
 msgid "Mailbox is read-only."
 msgstr "Mailbox kann nicht geschrieben werden."
 
@@ -2244,32 +2254,32 @@ msgstr "Unpasende Klammern: %s"
 msgid "empty pattern"
 msgstr "Leeres Muster"
 
-#: pattern.c:848
+#: pattern.c:854
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr ""
 
-#: pattern.c:912 pattern.c:1040
+#: pattern.c:918 pattern.c:1046
 msgid "Compiling search pattern..."
 msgstr "Compiliere Suchmuster..."
 
-#: pattern.c:926
+#: pattern.c:932
 msgid "Executing command on matching messages..."
 msgstr "Führe Kommando aus..."
 
-#: pattern.c:983
+#: pattern.c:989
 msgid "No messages matched criteria."
 msgstr "Keine Nachrichten haben Kriterium erfüllt."
 
-#: pattern.c:1078
+#: pattern.c:1084
 msgid "Search hit bottom without finding match"
 msgstr "Suche hat Ende erreicht, ohne Treffer zu erzielen."
 
-#: pattern.c:1089
+#: pattern.c:1095
 msgid "Search hit top without finding match"
 msgstr "Suche hat Anfang erreicht, ohne Treffer zu erzielen."
 
-#: pattern.c:1111
+#: pattern.c:1117
 msgid "Search interrupted."
 msgstr "Suche unterbrochen."
 
@@ -2303,6 +2313,36 @@ msgstr ""
 "\n"
 "[-- Ende der PGP-Ausgabe --]\n"
 "\n"
+
+#: pgp.c:354
+msgid ""
+"[-- BEGIN PGP MESSAGE --]\n"
+"\n"
+msgstr ""
+
+#: pgp.c:356
+msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
+msgstr ""
+
+#: pgp.c:358
+msgid ""
+"[-- BEGIN PGP SIGNED MESSAGE --]\n"
+"\n"
+msgstr ""
+
+#: pgp.c:460
+#, fuzzy
+msgid ""
+"\n"
+"[-- END PGP MESSAGE --]\n"
+msgstr ""
+"\n"
+"[-- Ende der PGP-Ausgabe --]\n"
+"\n"
+
+#: pgp.c:462
+msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
+msgstr ""
 
 #: pgp.c:477
 msgid ""
@@ -2578,11 +2618,11 @@ msgstr "%s [%d Nachrichten gelesen]"
 msgid "Postponed Messages"
 msgstr "Zurückgestelle Nachrichten"
 
-#: postpone.c:183 postpone.c:192
+#: postpone.c:185 postpone.c:194
 msgid "No postponed messages."
 msgstr "Keine zurückgestellten Nachrichten."
 
-#: postpone.c:320 postpone.c:340 postpone.c:349
+#: postpone.c:339 postpone.c:359 postpone.c:368
 msgid "Illegal PGP header"
 msgstr "Unzulässiger PGP-Header"
 
@@ -2766,48 +2806,48 @@ msgstr "Mit MIME-Kapseulng wetierleiten?"
 msgid "Recall postponed message?"
 msgstr "Zurückgestellte Nachricht weiterbearbeiten?"
 
-#: send.c:1088
+#: send.c:1090
 msgid "Abort unmodified message?"
 msgstr "Unveränderte Nachricht verwerfen?"
 
-#: send.c:1090
+#: send.c:1092
 msgid "Aborted unmodified message."
 msgstr "Unveränderte Nachricht verworfen."
 
 #. abort
-#: send.c:1128
+#: send.c:1131
 msgid "Mail not sent."
 msgstr "Nachricht nicht verschickt."
 
-#: send.c:1141
+#: send.c:1144
 msgid "Message postponed."
 msgstr "Nachricht zurückgestellt."
 
-#: send.c:1150
+#: send.c:1153
 msgid "No recipients are specified!"
 msgstr "Es wurden keine Empfänger angegeben!"
 
-#: send.c:1155
+#: send.c:1158
 msgid "No recipients were specified."
 msgstr "Es wurden keine Empfänger angegeben!"
 
-#: send.c:1161
+#: send.c:1164
 msgid "No subject, abort sending?"
 msgstr "Kein Betreff, Versand abbrechen?"
 
-#: send.c:1165
+#: send.c:1168
 msgid "No subject specified."
 msgstr "Kein Betreff."
 
-#: send.c:1204
+#: send.c:1207
 msgid "Message edited. Really send?"
 msgstr "Nachricht verändert.  Wirklich abschicken?"
 
-#: send.c:1210
+#: send.c:1213
 msgid "Sending message..."
 msgstr "Verschicke Nachricht..."
 
-#: send.c:1310
+#: send.c:1313
 msgid "Mail sent."
 msgstr "Nachricht verschickt."
 

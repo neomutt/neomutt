@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 1998-10-21 17:29+0200\n"
+"POT-Creation-Date: 1998-10-27 16:32+0100\n"
 "PO-Revision-Date: 1998-10-15 07:51+0300\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "Language-Team: Mutt-dev <mutt-dev@mutt.org>\n"
@@ -21,7 +21,7 @@ msgstr "Выход"
 msgid "Select"
 msgstr "Выбор"
 
-#: addrbook.c:34 browser.c:57 compose.c:71 curs_main.c:235 pager.c:1455
+#: addrbook.c:34 browser.c:57 compose.c:84 curs_main.c:235 pager.c:1455
 #: pgpkey.c:181 postpone.c:36 query.c:49 recvattach.c:52
 msgid "Help"
 msgstr "Подсказка"
@@ -372,171 +372,176 @@ msgstr "Сообщение напечатано"
 msgid "Messages printed"
 msgstr "Сообщения напечатаны"
 
-#: compose.c:64
+#: compose.c:77
 msgid "Send"
 msgstr "Отправить"
 
-#: compose.c:65
+#: compose.c:78
 msgid "Abort"
 msgstr "Отмена"
 
-#: compose.c:69 compose.c:598
+#: compose.c:82 compose.c:538
 msgid "Attach file"
 msgstr "Присоедин."
 
-#: compose.c:70
+#: compose.c:83
 msgid "Descrip"
 msgstr "Описание"
 
-#: compose.c:97
+#: compose.c:104
+msgid "Sign, Encrypt"
+msgstr "Подпись, шифрование"
+
+#: compose.c:106
+msgid "Encrypt"
+msgstr "Шифрование"
+
+#: compose.c:108
+msgid "Sign"
+msgstr "Подпись"
+
+#: compose.c:110
+msgid "Clear"
+msgstr "Ничего"
+
+#: compose.c:117
+msgid " sign as: "
+msgstr " подписать как: "
+
+#: compose.c:117
+msgid "<default>"
+msgstr "<по умолчанию>"
+
+#: compose.c:118 compose.c:192
+msgid "MIC algorithm: "
+msgstr "Алгоритм MIC: "
+
+#: compose.c:133
 msgid ""
 "(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget "
 "it? "
 msgstr ""
 
-#: compose.c:98
+#: compose.c:134
 msgid "esabmf"
 msgstr ""
 
-#: compose.c:115
+#: compose.c:151
 msgid "Can't open your secret key ring!"
 msgstr "Ваш секретный ключ не открывается!"
 
-#: compose.c:120
+#: compose.c:156
 msgid "Sign as: "
 msgstr "Подписать как: "
 
-#: compose.c:139
+#: compose.c:176
 msgid "An unkown PGP version was defined for signing."
 msgstr "Неизвестная версия PGP для подписи."
 
-#: compose.c:149
+#: compose.c:186
 msgid "This doesn't make sense if you don't want to sign the message."
 msgstr "Это бессмысленно, если Вы не хотите подписывать сообщение."
 
-#: compose.c:155 compose.c:279
-msgid "MIC algorithm: "
-msgstr "Алгоритм MIC: "
-
-#: compose.c:160
+#: compose.c:197
 msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
 msgstr "Неизвестный алгоритм MIC, допустимы: pgp-md5, pgp-sha1, pgp-rmd160"
 
-#: compose.c:192
+#: compose.c:233
 #, c-format
 msgid "%s [#%d] no longer exists!"
 msgstr "%s [#%d] больше не существует!"
 
-#: compose.c:200
+#: compose.c:241
 #, c-format
 msgid "%s [#%d] modified. Update encoding?"
 msgstr "%s [#%d] изменен. Обновить кодировку?"
 
-#: compose.c:262
-msgid "Sign, Encrypt"
-msgstr "Подпись, шифрование"
+#: compose.c:282
+#, fuzzy
+msgid "===== Attachments ====="
+msgstr "Присоединения"
 
-#: compose.c:264
-msgid "Encrypt"
-msgstr "Шифрование"
-
-#: compose.c:266
-msgid "Sign"
-msgstr "Подпись"
-
-#: compose.c:268
-msgid "Clear"
-msgstr "Ничего"
-
-#: compose.c:273
-msgid " sign as: "
-msgstr " подписать как: "
-
-#: compose.c:277
-msgid "<default>"
-msgstr "<по умолчанию>"
-
-#: compose.c:368
+#: compose.c:320
 msgid "You may not delete the only attachment."
 msgstr "Сообщение не может содержать ни одной части."
 
-#: compose.c:442
+#: compose.c:394
 msgid "Compose"
 msgstr "Компоновка"
 
-#: compose.c:603
+#: compose.c:543
 msgid "Open mailbox to attach message from"
 msgstr "Почтовый ящик для присоединения сообщения"
 
-#: compose.c:642
+#: compose.c:582
 msgid "No messages in that folder."
 msgstr "Папка не содержит ни одного сообщения."
 
-#: compose.c:649
+#: compose.c:589
 msgid "Tag the messages you want to attach!"
 msgstr "Отметьте сообщения для присоединения!"
 
-#: compose.c:684 compose.c:704
+#: compose.c:624 compose.c:644
 msgid "Unable to attach!"
 msgstr "Нельзя присоединить!"
 
-#: compose.c:811 compose.c:825
+#: compose.c:751 compose.c:765
 msgid "Invalid encoding."
 msgstr "Непонятная кодировка."
 
-#: compose.c:816
+#: compose.c:756
 msgid "This encoding is deprecated.  Really use it?"
 msgstr "Эта кодировка устарела. Использовать её?"
 
-#: compose.c:840
+#: compose.c:780
 msgid "Save a copy of this message?"
 msgstr "Сохранить копию этого сообщения?"
 
-#: compose.c:885
+#: compose.c:825
 msgid "Rename to: "
 msgstr "Переименовать в: "
 
-#: compose.c:890
+#: compose.c:830
 #, c-format
 msgid "Can't stat: %s"
 msgstr "Нет статистики: %s"
 
-#: compose.c:917
+#: compose.c:857
 msgid "New file: "
 msgstr "Новый файл: "
 
-#: compose.c:930
+#: compose.c:870
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type по форме: base/sub"
 
-#: compose.c:936
+#: compose.c:876
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Неизвестный Content-Type %s"
 
-#: compose.c:949
+#: compose.c:889
 #, c-format
 msgid "Can't create file %s"
 msgstr "Не удаётся создать файл %s"
 
-#: compose.c:957
+#: compose.c:897
 msgid "What we have here is a failure to make an attachment"
 msgstr "Здесь происходит сбой попытки присоединения"
 
-#: compose.c:1029
+#: compose.c:959
 msgid "Postpone this message?"
 msgstr "Отложить это сообщение?"
 
-#: compose.c:1076
+#: compose.c:1011
 msgid "Write message to mailbox"
 msgstr "Записать сообщение в почтовый ящик"
 
-#: compose.c:1080
+#: compose.c:1015
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Запись сообщения в %s ..."
 
-#: compose.c:1091
+#: compose.c:1026
 msgid "Message written."
 msgstr "Сообщение записано."
 
@@ -704,11 +709,11 @@ msgstr "Нет неудалённых сообщений."
 msgid "You are on the first message."
 msgstr "Это первое сообщение."
 
-#: curs_main.c:1133 pattern.c:1075
+#: curs_main.c:1133 pattern.c:1081
 msgid "Search wrapped to top."
 msgstr "Поиск перенесён в начало."
 
-#: curs_main.c:1142 pattern.c:1086
+#: curs_main.c:1142 pattern.c:1092
 msgid "Search wrapped to bottom."
 msgstr "Поиск перенесён в конец."
 
@@ -736,7 +741,7 @@ msgstr "Это первая нитка."
 msgid "Thread contains unread messages."
 msgstr "Нитка содержит непрочитанные сообщения."
 
-#: curs_main.c:1347 flags.c:218 thread.c:629
+#: curs_main.c:1347 flags.c:220 thread.c:629
 msgid "Threading is not enabled."
 msgstr "Сшивание недоступно."
 
@@ -822,11 +827,11 @@ msgstr "Пустое сообщение.\n"
 msgid "%s: unknown editor command (~? for help)\n"
 msgstr "%s: неизвестная команда редактора ('?' - подсказка)\n"
 
-#: flags.c:256
+#: flags.c:258
 msgid "Set flag"
 msgstr "Установить флаг"
 
-#: flags.c:256
+#: flags.c:258
 msgid "Clear flag"
 msgstr "Сбросить флаг"
 
@@ -950,61 +955,61 @@ msgstr "Получение заголовков сообщений... [%d/%d]"
 msgid "Reopening mailbox..."
 msgstr "Повторное открытие почтового ящика..."
 
-#: imap.c:858
+#: imap.c:859
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Соединение с %s..."
 
-#: imap.c:877
+#: imap.c:878
 msgid "IMAP Username: "
 msgstr "Пользователь IMAP: "
 
-#: imap.c:890
+#: imap.c:891
 #, c-format
 msgid "Password for %s@%s: "
 msgstr "Пароль %s@%s: "
 
-#: imap.c:903
+#: imap.c:904
 msgid "Logging in..."
 msgstr "Регистрация..."
 
-#: imap.c:958
+#: imap.c:959
 #, c-format
 msgid "Selecting %s..."
 msgstr "Выбор %s..."
 
-#: imap.c:1054 lib.c:1166
+#: imap.c:1055 lib.c:1168
 #, c-format
 msgid "Create %s?"
 msgstr "Создать %s?"
 
-#: imap.c:1098
+#: imap.c:1099
 msgid "Fetching message..."
 msgstr "Получение сообщения..."
 
-#: imap.c:1206
+#: imap.c:1207
 msgid "Sending APPEND command ..."
 msgstr "Посылка команды APPEND ..."
 
-#: imap.c:1245
+#: imap.c:1246
 msgid "Uploading message ..."
 msgstr "Отправка сообщения ..."
 
-#: imap.c:1300
+#: imap.c:1301
 msgid "Closing connection to IMAP server..."
 msgstr "Закрытие соединения с IMAP сервером..."
 
-#: imap.c:1330
+#: imap.c:1331
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Сохранение статуса сообщения... [%d/%d]"
 
-#: imap.c:1356
+#: imap.c:1357
 msgid "Expunging messages from server..."
 msgstr ""
 
 #. tell the server to commit changes
-#: imap.c:1407
+#: imap.c:1408
 msgid "Closing mailbox..."
 msgstr "Закрытие почтового ящика..."
 
@@ -2055,7 +2060,7 @@ msgstr "Это последняя позиция."
 msgid "You are on the first entry."
 msgstr "Это первая позиция."
 
-#: menu.c:585 pattern.c:1021
+#: menu.c:585 pattern.c:1027
 msgid "Search for: "
 msgstr "Искать: "
 
@@ -2063,11 +2068,11 @@ msgstr "Искать: "
 msgid "Reverse search for: "
 msgstr "Искать назад: "
 
-#: menu.c:597 pattern.c:1054
+#: menu.c:597 pattern.c:1060
 msgid "No search pattern."
 msgstr "Искомое не найдено."
 
-#: menu.c:627 pager.c:1770 pager.c:1786 pager.c:1873 pattern.c:1119
+#: menu.c:627 pager.c:1770 pager.c:1786 pager.c:1873 pattern.c:1125
 msgid "Not found."
 msgstr "Не найдено."
 
@@ -2117,55 +2122,55 @@ msgstr "Чтение %s..."
 msgid "Writing %s..."
 msgstr "Запись %s..."
 
-#: mx.c:754
+#: mx.c:756
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Перенести прочитанные сообщения в %s?"
 
-#: mx.c:763 mx.c:940
+#: mx.c:765 mx.c:942
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Уничтожить %d удалённое сообщение?"
 
-#: mx.c:763 mx.c:940
+#: mx.c:765 mx.c:942
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Уничтожить %d удалённых сообшений?"
 
-#: mx.c:783
+#: mx.c:785
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Перенос прочитанных сообщений в %s..."
 
-#: mx.c:799 mx.c:931
+#: mx.c:801 mx.c:933
 msgid "Mailbox is unchanged."
 msgstr "Почтовый ящик не изменялся."
 
-#: mx.c:818
+#: mx.c:820
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d оставлено, %d перемещено, %d удалено."
 
-#: mx.c:821 mx.c:956
+#: mx.c:823 mx.c:958
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d оставлено, %d удалено."
 
-#: mx.c:916
+#: mx.c:918
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Нажмите '%s' для изменения записи"
 
-#: mx.c:918
+#: mx.c:920
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Используйте 'toggle-write' для разрешения записи!"
 
-#: mx.c:920
+#: mx.c:922
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Почтовый ящик маркирован незаписываемым. %s"
 
-#: mx.c:925
+#: mx.c:927
 msgid "Mailbox is read-only."
 msgstr "Этот почтовый ящик можно только читать."
 
@@ -2265,32 +2270,32 @@ msgstr "отсутствующие скобки: %s"
 msgid "empty pattern"
 msgstr ""
 
-#: pattern.c:848
+#: pattern.c:854
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr ""
 
-#: pattern.c:912 pattern.c:1040
+#: pattern.c:918 pattern.c:1046
 msgid "Compiling search pattern..."
 msgstr "Компиляция искомой фразы..."
 
-#: pattern.c:926
+#: pattern.c:932
 msgid "Executing command on matching messages..."
 msgstr "Исполнение команды к соответствующим сообщениям..."
 
-#: pattern.c:983
+#: pattern.c:989
 msgid "No messages matched criteria."
 msgstr "Нет критерия соответствия сообщений."
 
-#: pattern.c:1078
+#: pattern.c:1084
 msgid "Search hit bottom without finding match"
 msgstr "Поиск дошёл до конца, соответствий не найдено"
 
-#: pattern.c:1089
+#: pattern.c:1095
 msgid "Search hit top without finding match"
 msgstr "Поиск дошёл до начала, соответствий не найдено"
 
-#: pattern.c:1111
+#: pattern.c:1117
 msgid "Search interrupted."
 msgstr "Поиск прерван."
 
@@ -2324,6 +2329,36 @@ msgstr ""
 "\n"
 "[-- Конец выдачи PGP  --]\n"
 "\n"
+
+#: pgp.c:354
+msgid ""
+"[-- BEGIN PGP MESSAGE --]\n"
+"\n"
+msgstr ""
+
+#: pgp.c:356
+msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
+msgstr ""
+
+#: pgp.c:358
+msgid ""
+"[-- BEGIN PGP SIGNED MESSAGE --]\n"
+"\n"
+msgstr ""
+
+#: pgp.c:460
+#, fuzzy
+msgid ""
+"\n"
+"[-- END PGP MESSAGE --]\n"
+msgstr ""
+"\n"
+"[-- Конец выдачи PGP  --]\n"
+"\n"
+
+#: pgp.c:462
+msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
+msgstr ""
 
 #: pgp.c:477
 msgid ""
@@ -2600,11 +2635,11 @@ msgstr "%s [%d сообщений прочитано]"
 msgid "Postponed Messages"
 msgstr "Отложенные сообщения"
 
-#: postpone.c:183 postpone.c:192
+#: postpone.c:185 postpone.c:194
 msgid "No postponed messages."
 msgstr "Нет отложенных сообщений."
 
-#: postpone.c:320 postpone.c:340 postpone.c:349
+#: postpone.c:339 postpone.c:359 postpone.c:368
 msgid "Illegal PGP header"
 msgstr "Недопустимый заголовок PGP"
 
@@ -2788,48 +2823,48 @@ msgstr "Переслать инкапсулированным в MIME?"
 msgid "Recall postponed message?"
 msgstr "Вызвать отложенное сообщение?"
 
-#: send.c:1088
+#: send.c:1090
 msgid "Abort unmodified message?"
 msgstr "Отменить не изменённое сообщение?"
 
-#: send.c:1090
+#: send.c:1092
 msgid "Aborted unmodified message."
 msgstr "Сообщение не изменено, отменяется."
 
 #. abort
-#: send.c:1128
+#: send.c:1131
 msgid "Mail not sent."
 msgstr "Письмо не отправлено."
 
-#: send.c:1141
+#: send.c:1144
 msgid "Message postponed."
 msgstr "Сообщение отложено."
 
-#: send.c:1150
+#: send.c:1153
 msgid "No recipients are specified!"
 msgstr "Получатели не указаны!"
 
-#: send.c:1155
+#: send.c:1158
 msgid "No recipients were specified."
 msgstr "Получатели не были указаны."
 
-#: send.c:1161
+#: send.c:1164
 msgid "No subject, abort sending?"
 msgstr "Без темы, отменить отправку?"
 
-#: send.c:1165
+#: send.c:1168
 msgid "No subject specified."
 msgstr "Тема не указана."
 
-#: send.c:1204
+#: send.c:1207
 msgid "Message edited. Really send?"
 msgstr "Сообщение изменено. Действительно отправлять?"
 
-#: send.c:1210
+#: send.c:1213
 msgid "Sending message..."
 msgstr "Отправка сообщения..."
 
-#: send.c:1310
+#: send.c:1313
 msgid "Mail sent."
 msgstr "Письмо отправлено."
 
