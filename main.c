@@ -224,6 +224,7 @@ static void show_version (void)
 
 
 #ifdef _PGPPATH
+	"\n"
 #ifdef HAVE_PGP5
 	"+HAVE_PGP5  "
 #endif
@@ -233,6 +234,7 @@ static void show_version (void)
 #ifdef HAVE_GPG
 	"+HAVE_GPG  "
 #endif
+	"\n"
 #endif
 
 
