@@ -826,9 +826,21 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     {
       if (query || *s->dptr != '=')
       {
+	char _tmp[STRING];
+	char *val = NULL;
+	
+	if (DTYPE (MuttVars[idx].type) == DT_ADDR)
+	{
+	  _tmp[0] = '\0';
+	  rfc822_write_address (_tmp, sizeof (_tmp), *((ADDRESS **) MuttVars[idx].data));
+	  val = _tmp;
+	}
+	else
+	  val = *((char **) MuttVars[idx].data);
+	
 	/* user requested the value of this variable */
 	snprintf (err->data, err->dsize, "%s=\"%s\"", MuttVars[idx].option,
-		  NONULL (*((char **) MuttVars[idx].data)));
+		  NONULL (val));
 	break;
       }
 
@@ -1448,25 +1460,29 @@ int mutt_var_value_complete (char *buffer, size_t len, int pos)
       return 0; /* no such variable. */
     else
     {
-      char tmp [LONG_STRING];
+      char tmp [LONG_STRING], tmp2[LONG_STRING];
+      char *s, *d;
       size_t dlen = buffer + len - pt - spaces;
       char *vals[] = { "no", "yes", "ask-no", "ask-yes" };
-      strfcpy (tmp, pt, sizeof(tmp));
-      
+
+      tmp[0] = '\0';
+
       if ((DTYPE(MuttVars[idx].type) == DT_STR) || 
 	  (DTYPE(MuttVars[idx].type) == DT_PATH) ||
 	  (DTYPE(MuttVars[idx].type) == DT_RX))
-	snprintf(pt, dlen, "%s\"%s\"", tmp, 
-		  NONULL (*((char **) MuttVars[idx].data)));
+      {
+	strfcpy (tmp, NONULL (*((char **) MuttVars[idx].data)), sizeof (tmp));
+	if (DTYPE (MuttVars[idx].type) == DT_PATH)
+	  mutt_pretty_mailbox (tmp);
+      }
       else if (DTYPE (MuttVars[idx].type) == DT_ADDR)
       {
-	*pt = '\0';
-	rfc822_write_address (pt, dlen, *((ADDRESS **) MuttVars[idx].data));
+	rfc822_write_address (tmp, sizeof (tmp), *((ADDRESS **) MuttVars[idx].data));
       }
       else if (DTYPE (MuttVars[idx].type) == DT_QUAD)
-	snprintf(pt, dlen, "%s%s", tmp,  vals[quadoption (MuttVars[idx].data)]);
+	strfcpy (tmp, vals[quadoption (MuttVars[idx].data)], sizeof (tmp));
       else if (DTYPE (MuttVars[idx].type) == DT_NUM)
-	snprintf (pt, dlen, "%s%d", tmp, (*((short *) MuttVars[idx].data)));
+	snprintf (tmp, sizeof (tmp), "%d", (*((short *) MuttVars[idx].data)));
       else if (DTYPE (MuttVars[idx].type) == DT_SORT)
       {
 	const struct mapping_t *map;
@@ -1490,16 +1506,27 @@ int mutt_var_value_complete (char *buffer, size_t len, int pos)
 	    break;
 	}
 	p = mutt_getnamebyvalue (*((short *) MuttVars[idx].data) & SORT_MASK, map);
-	snprintf (pt, dlen, "%s\"%s%s%s\"", tmp,
+	snprintf (tmp, sizeof (tmp), "%s%s%s",
 		  (*((short *) MuttVars[idx].data) & SORT_REVERSE) ? "reverse-" : "",
 		  (*((short *) MuttVars[idx].data) & SORT_LAST) ? "last-" : "",
 		  p);
       }
       else if (DTYPE (MuttVars[idx].type) == DT_BOOL)
-	snprintf (pt, dlen, "%s%s", tmp, 
-		  option (MuttVars[idx].data) ? "yes" : "no");
+	strfcpy (tmp, option (MuttVars[idx].data) ? "yes" : "no", sizeof (tmp));
       else
 	return 0;
+      
+      for (s = tmp, d = tmp2; *s && (d - tmp2) < sizeof (tmp2) - 2;)
+      {
+	if (*s == '\\' || *s == '"')
+	  *d++ = '\\';
+	*d++ = *s++;
+      }
+      *d = '\0';
+      
+      strfcpy (tmp, pt, sizeof (tmp));
+      snprintf (pt, dlen, "%s\"%s\"", tmp, tmp2);
+	  
       return 1;
     }
   }
