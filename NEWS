@@ -1,436 +1,149 @@
-Major changes since 1.2
------------------------
+		   Visible changes since Mutt 1.2
+		   ==============================
 
-- With PGP/MIME, mutt can now automatically figure out the "micalg"
-  parameter.  The $pgp_sign_micalg variable has gone.
-
-- You can (un)collapse subtrees of the attachment tree now.  This
-  function is bound to 'v' by default.  
 
-  Normally, when you enter the tree, it'll be entirely uncollapsed.
-  However, as a special exception, if $digest_collapse is set (the
-  new default), any messages in a multipart/digest will be collapsed
-  automatically.
-
-- There is a $print_split option.  Use it if your $print_cmd is
-  "enscript -Email", or something similar.
+Folder formats and folder access
+--------------------------------
 
-- The $send_charset variable now contains a colon-separated list of
-  possible send character sets, by default it's
-  us-ascii:iso-8859-1:utf-8.  Mutt selects the first character set
-  which can be used to encode the message you are going to send
-  without loss.
-
-- Mutt now tries to automagically determine the $charset variable's
-  value from the locale you are using.  It may, however, fail, so
-  please check this value by typing ":set ?charset" into mutt, and
-  possibly adding an appropriate entry to your .muttrc file.
-
-- The $to_chars variable has grown.  In particular, you will notice
-  that mailing list messages are now marked with an "L" character.
-  If you don't like this behaviour, just add this line to your
-  .muttrc:
-  
-  set   to_chars=" +TCF "	# Don't tag list mail in the index
-  
-  This restores the original behaviour.
+- Better mh support: Mutt now supports .mh_sequences files.
+  Currently, the "unseen", "flagged", and "replied" sequences are
+  used to store mutt flags. As a side effect, messages in MH folders
+  are no longer rewritten upon status changes.
 
-  IMAP changes
-  ------------
-
-- $imap_preconnect has been renamed to $preconnect, since the POP
-  driver now uses this feature too.
-
-- $imap_checkinterval has been retired. You use $mail_check to control
-  how often your mailboxes are polled. Note that the default setting of
-  $mail_check (5 seconds) makes mutt sluggish if you have more than a
-  couple of IMAP mailboxes defined. Also note that mutt polls the current
-  IMAP mailbox for new mail no more often than $timeout seconds, and its
-  default may also surprise you.
-
-  IMAP features added
-  -------------------
-
-- Mutt now has SASL authentication and encryption support.
-
-- A new variable $imap_authenticators has been added, which gives you
-  control of which methods mutt will attempt to use to authenticate
-  with your IMAP server.
-
-- Mutt also support IPv6.
-
-- Mutt now supports TLS. If your server does too, it will be negotiated
-  for you depending on the $ssl_starttls variable.
-
-- Mutt also supports a "tunnel driver", which means you can use an SSH
-  pipe to connect to an IMAP server. See the documentation for $tunnel.
-
-- A boatload of performance enhancements and bug fixes.
-
-Major changes since 1.1
------------------------
-
-- There is a new variable $fcc_clear.  When set, FCCs are not
-  affected by PGP encryption or signatures.
-
-- Tommi Komulainen <Tommi.Komulainen@iki.fi> has contributed SSL
-  support for mutt's IMAP client code.
-
-- The message-related commands on the attachment menu have been
-  rewritten.  Changes include dropping the forward_attachment
-  option, applying the mime_forward quad-option to the attachment
-  menu, and adding a mime_forward_rest quad-option.  Additionally,
-  the message-related commands are now supposed to work on subparts
-  of PGP/MIME messages, and from the pager when invoked from the
-  attachment menu on a message/rfc822 body part.
-
-  Note that the resend-message function now works from the
-  attachment menu.  You can use this to comfortably resend a message
-  which was included with a bounce message as a message/rfc822 body
-  part.
-
-Major changes since 1.0
------------------------
-
-- The semantics of the "lists" command has changed.  Basically, it
-  only affects the list-reply function now.  To get the same mailing
-  list behaviour as with 1.0, use "subscribe" instead.
-
-- The old edit-message command has been split into two commands,
-  edit-message and resend-message.
-
-  With edit-message (bound to e by default), mutt makes a copy of
-  the raw message, and gives you the possibility to manipulate it
-  with your favorite editor. This is ideal for fixing messed-up MIME
-  headers and the like.
-
-  After you have left the editor, the edited version of the message
-  is copied back to the current folder, and the original message is
-  marked for deletion.
-
-  With resend-message (bound to ESC e by default), mutt takes the
-  current message as a template for a new message.  This function is
-  best described as "recall from arbitrary folders".  Note that the
-  amount of headers included here depends on the value of the weed
-  option.
-
-- There is a new option $delete_untag.  Former mutt versions used to
-  untag messages when you save them, but leave them tagged when you
-  mark them for deletion.  $delete_untag controls _both_ cases,
-  leading to more uniform behaviour.
-
-- The $weed option applies to the decode-save and decode-copy
-  functions.  Think of these functions as something along the lines
-  of "print to file".
-
-- The master source of the configuration option reference has been
-  moved from the SGML document into special comments in init.h.
-  "makedoc" is used to extract this information into a new,
-  documented global Muttrc, into the SGML manual, and into a new
-  manual page describing muttrc, muttrc (5).
-
-  This way, _all_ options will automatically get minimal
-  documentation, with correct default values. :-)
-
-  For details, see doc/devel-notes.txt.
-
-- While the manual was under inspection, hopefully most of the
-  recent changes to mutt were documented.  Also, documentation on
-  some not-so-recent things such as mixmaster and PGP support was
-  added or improved.
-
-- The $in_reply_to configuration variable is gone.  The In-Reply-To
-  header currently only contains the message-id of the message to
-  which the reply refers.  This is to make sure that this header is
-  correctly formatted.
-
-- There is a new variable named $pgp_getkeys_command.  It's invoked
-  before mutt invokes PGP in a way which may require public keys.
-  The %r format string expands to an e-mail address corresponding to
-  that key.  The command given in $pgp_getkeys_command could, for
-  instance, query a key server and add public keys to your key ring.
-
-  See also http://home.pages.de/~roessler/pkspxy-0.1.tar.gz for a
-  possible application of this with the traditional PGP versions.
-
-- RFC 2231 is (at least partially) implemented.  Additionally, there
-  is an option named $rfc2047_parameters.  When it's set, mutt will
-  decode RFC2047-encoded MIME parameters.
-
-- Various IMAP-related fixes and patches.  This includes the ability
-  to use IMAP folders for postponed messages, improved IMAP folder
-  browsing, tab completion for IMAP folders, etc.
-
-- A new variable $from is added.  See the manual for details.
-
-- The various weeding options are gone.  You have one global option,
-  $weed, now which can be influenced using configuration commands,
-  or using the display-toggle-weed function (this used to be
-  display-headers!).  This option is applied when forwarding,
-  replying, or printing messages. Essentially, this means that you
-  have some "WYSIWIG-like" behaviour with respect to message header
-  weeding.
-
-- The PGP configuration interface was completely redone.  Please
-  read doc/PGP-Notes.txt before installing this version on any
-  production system.
-
-Major changes since 0.95
-------------------------
-
-- Mutt was affected by the so-called "pine remote exploit".  We have
-  implemented a work-around we believe to be safe.  See
-  README.SECURITY and the mailcap_sanitize option for details, and
-  check your mailcap files for insecure entries.
-
-- The use_mailcap option has gone.  Instead, we now have
-  implicit_autoview.  See the manual for details.
-
-- We have more translations than ever before.  Supported languages
-  now include cs, de, es, fr, id, it, ko, nl, pl, ru, sk, uk.  And
-  en, as usual.
-
-- Mutt now uses version 0.12 of the "regex" library instead of rx.
-  This library is believed to be far more stable than rx.  See
-  INSTALL for details.
-
-- The annoying "maildir erratic behaviour" bug could finally be
-  tracked down and fixed as of 0.95.6.
-
-- There were some major improvements with the IMAP code.  It should
-  work rather correctly against most common IMAP servers now.
-
-Major changes since 0.93
-------------------------
-
-- i18n support of various kinds: Mutt now comes with character set
-  definitions, so it is able to convert character sets you encounter
-  in e-mail messagese to your local display's character set as
-  defined by the $charset configuration variable.  This includes a
-  poorly-tested UTF-8 decoder.
-
-  Additionally, mutt includes GNU gettext support, so you can make
-  it speak your own language.  To use this, just set the environment
-  variable "LANG" appropriately.
-
-  (For a list of currently supported languages, have a look at the
-  po files in the po subdirectory.)
-
-- There is support for the POP3 "last" command for just fetching the
-  latest unread messages from your POP server.  To enable use of
-  this feature, set the $pop_last configuration option.
-
-- The IMAP code's handling of server-side EXPUNGE messages was
-  fixed, so mutt should now be able to cope with concurrent access
-  to IMAP folders.  This is, e.g., supported by the CMU and MS
-  Exchange IMAP servers.
-
-- mh_sequences support was _dropped_.  The reason is, on the one
-  hand, a major re-write of the mh and maildir folder
-  resynchronization code, and the fact that there is no locking
-  protocol defined for this file.  If you want to use
-  one-file-per-message folders, you should better rely on maildir.
-
-- The new patterns ~g and ~G in the pattern language match PGP
-  signed and encrypted messages, respectively.
-
-- The $smileys configuration variable defines exceptions from the
-  quote-detecting regular expressions.  This can be used to
-  correctly handle lines beginning with smileys such as ":-)" -
-  these lines were detected as quoted text by the old code.
-
-- You can now edit messages in your mail folders. 
-
-  The function 'edit' (default 'e') will make a copy of the
-  current message and you can edit the message. After editing is
-  complete, you are taken to the Compose menu. You can further
-  modify the message here or re-send it. Note that the message is
-  re-sent to the original recipients (similar to `bounce-message')
-  unless you have changed the recipients in the Compose menu (or the
-  editor).
-
-  You can also write the edited message back to any mail folder
-  using the write-fcc function (default w). Remember that you are
-  working with a copy and the original message is not affected.
-
-- new command 'unhdr_order' 
-
-  `unhdr_order *' will clear all previous headers from the order
-  list, thus removing the header order effects set by the
-  system-wide startup file (via `hdr_order')
-
-- You can now attach message(s) to an outgoing message. Use the
-  attach-message function (default 'A') from the Compose menu;
-  specify the folder to open and tag the messages you want to
-  attach.
-
-- You can now collapse a thread.
-
-  collapse-thread (default ESC v) toggles the collapsed state of the
-  current thread.
+- The "trashed" flag is supported for maildir folders.  See
+  $maildir_trash.
 
-  collapse-all (default ESC V) toggles the collapsed state of all
-  threads in the folder.
+- POP folder support.  You can now access a POP mailbox just like an
+  IMAP folder (with obvious restrictions due to the protocol).
 
-  When a collapsed thread received new messages, it is automatically
-  uncollapsed. Also, when you display the first message in the
-  collapsed thread, it is automatically uncollapsed.
-
-  The variables $collapse_unread and $uncollapse_jump can be used to
-  fine-tune this feature.
+- URL syntax for remote folders.  You can pass things like
+  pop://account@host and imap://account@host/folder as arguments for
+  the -f command line flag.
 
-  Note: Collapsing a thread displays only the first message in the
-  thread and hides the others. This is useful when threads contain
-  so many messages that you can only see a handful of threads on the
-  screen. See %M in ``$index_format''.  For example, you could use
-  "%?M?(#%03M)&(%4l)?" in ``$index_format'' to optionally display
-  the number of hidden messages if the thread is collapsed.
+- STARTTLS support.  If $ssl_starttls is set (the default), mutt
+  will attempt to use STARTTLS on servers advertising that
+  capability.
 
-- The syntax for function keys in key bindings and macro definitions
-  has changed:  Instead of "fN", you have to use "<fN>" now.  This
-  is more consistant with the syntax for the other special keys like
-  "<up>", "<down>", and so on.
+- $preconnect.  If set, a shell command to be executed if mutt fails
+  to establish a connection to the server.  This is useful for
+  setting up secure connections; see the muttrc(5) for details.
 
-- You can now use function names in macros. The syntax is <function-name>
+- $tunnel.  Use a pipe to a command instead of a raw socket.  See
+  muttrc(5) for details.  (Basically, it's another way for setting
+  up secure connections.)
 
-  Example:
-  
-  macro index z "v<down><down><first-entry><down><save-entry>"
-  push "<first-entry><display-message>"
-  
-  Note that the function has to be a valid function for the menu when
-  the macro is _executed_. If not, the literal string of characters is
-  used as usual. Also, if you enter a string <...> which is NOT a Mutt
-  function like <vikas>, the literal string of characters is used as
-  usual.
+- More new IMAP/POP-related variables (see muttrc(5) for details):
+  $connect_timeout, $imap_authenticators, $imap_delim_chars,
+  $imap_peek, $pop_authenticators, $pop_auth_try_all,
+  $pop_checkinterval, $pop_delete, $pop_reconnect, $use_ipv6.
 
-  Keep in mind that macros are evaluated at runtime, and so the
-  current menu could change _during_ the execution of a macro. Be sure
-  to use functions that make sense for the menu at that point in the
-  macro's execution.
+- The following IMAP/POP-related variables are gone:
+  $imap_checkinterval, $imap_cramkey, $pop_port.
 
-- new command 'exec'.
+- There's a new imap-fetch-mail function, which forces a check for
+  new messages on an IMAP server.
 
-  You can now use the 'exec' command to execute any internal function
-  in Mutt. You can also execute functions in this fashion even if they
-  are not bound to any key.
+- The new-mailbox function was renamed to create-mailbox, and is
+  bound to C instead of n by default.
 
-  Also, the 'exec' command has command completion so that
+Character set support
+---------------------
 
-  :exec <TAB><TAB>
+- Mutt now uses the iconv interface for character set conversions.
+  This means that you need either a very modern libc, or Bruno
+  Haible's libiconv, which is available from
+  <http://clisp.cons.org/~haible/packages-libiconv.html>.
 
-  will cycle thru all the commands for that menu.
+- With sufficiently recent versions of ncurses and slang, mutt works
+  properly in utf-8 locales.
 
-  If you type something that is not found in the current menu, the
-  generic menu is used for completion.
+- On sufficiently modern systems, the $charset variable's value is
+  automatically derived from the locale you use.  (Note, however,
+  that manually setting it to a value which is compatible with your
+  locale doesn't do any harm.)
 
-  The 'exec' command accepts multiple arguments each with its own
-  command-completion.
-  
-  For example:
-  :exec first-entry display-message ....
-  
-  Similar to macros, keep in mind that the sequence of functions are
-  evaluated at runtime, and so the current menu could change _during_
-  the execution of a sequence of functions. Be sure to use functions
-  that make sense for the menu _at that point_ in the execution.
+- $send_charset is a colon-separated list of character sets now,
+  defaulting to us-ascii:iso-8859-1:utf-8.
 
-- improved command and variable completion.
+- charset-hook defines aliases for character sets encountered in
+  messages (say, someone tags his messages with latin15 when he
+  means iso-8859-15), iconv-hook defines local names for character
+  sets (for systems which don't know about MIME names; see
+  contrib/iconv for sample configuration snippets).
 
-  Pressing <TAB>, on the command-line now cycles through all possible
-  matches of the command (or variable) based on what you have typed so
-  far.  When all matches have been cycled through, your original input
-  (that started the completion) is restored. Pressing <TAB> again
-  repeats the cycle.
+- The change-charset function is gone.  Use edit-type (C-e on the
+  compose menu) instead.
 
-  Note that variable completion is done only when appropriate (for the
-  following commands: set, reset, unset, toggle). Also, when entering
-  a 'set' command, the possible prefixes to the variable name (no,
-  inv, ?, &) are honored. This makes it possible to do something like
-  
-  :set inv<TAB><TAB> 
+- The recode-attachment function is gone.
 
-  to cycle through the possible matches.
+Other changes
+-------------
 
-  When you press <TAB> without entering any text,  Mutt cycles through
-  all possible matches (commands or variables, as appropriate)
+- There's a new variable $compose_format for the compose screen's
+  status line.  You can now include the message's approximate
+  on-the-wire size.
 
-- you can now use special keys in a key _sequence_. Special keys are
-  <Home>, <End>, <PageUp>, etc.
+- The attachment menu knows about collapsing now: Using
+  collapse-parts (bound to "v" by default), you can collapse and
+  uncollapse parts of the attachment tree.  This function is also
+  available from the pager when invoked from the attachment tree.
 
-  Example:
+  Normally, the recvattach menu will start uncollapsed.  However,
+  with the new $digest_collapse option (which is set by default),
+  the individual messages contained in digests will be displayed
+  collapsed.  (That is, there's one line per message.)
 
-  macro attach s "<Home>~/<End>" "Pre-pend ~/ when saving attachments"
+- Using $display_filter, you can specify a command which filters
+  messages before they are displayed.
 
-- You can now specify an optional description for your macros.
+- Using message-hook, you can execute mutt configuration commands
+  before a message is displayed (or formatted before replying).
 
-  Usage: macro menu key sequence [ description ]
+- If you don't want that mutt moves flagged messages to your mbox,
+  set $keep_flagged.
 
-  The specified description is listed on the help screen.
+- Setting the $pgp_ignore_subkeys variable will cause mutt to ignore
+  OpenPGP.  This option is set by default, and it's suggested that
+  you leave it.
 
-  Example:
-  macro index "^\cb" "|urlview\n" "call urlview to extract URLs"
+- $pgp_sign_micalg has gone.  Mutt now automatically determines what
+  MIC algorithm was used for a particular signature.
 
-- We have a new set of functions decrypt-{save,copy}. They strip off
-  the initial layer of PGP/MIME encryption.  For "classical"
-  application/pgp messages, they are equivalent to the decode
-  functions, for unencrypted messages they fall back to the normal
-  save functions.
+- If $pgp_good_sign is set, then a PGP signature is only considered
+  verified if the output from $pgp_verify_command matches this
+  regular expression.  It's suggested that you set this variable to
+  the typical text message output by PGP (or GPG, or whatever)
+  produces when it encounters a good signature.  
 
-- new variable $forward_decrypt. See the manual for details.
+- There's a new function, check-traditional-pgp, which is bound to
+  esc-P by default.  It'll check whether a text parts of a message
+  contain PGP encrypted or signed material, and possibly adjust
+  content types.
 
-- The build-time "hidden host" option has gone.  Use the
-  $hidden_host configuration variable instead.
+- $print_split.  If this option is set, $print_command run
+  separately for each message you print.  Useful with enscript(1)'s
+  mail printing mode.
 
-- Unknown major MIME types are recognized properly.
+- $sig_on_top.  Include the signature before any quoted or forwarded
+  text.  WARNING: use of this option may provoke flames.
 
-- new variables $attach_split (boolean, default set) and $attach_sep
-  (string, default "\n")
+- $text_flowed.  When set, mutt will generate text/plain attachments
+  with the format=flowed parameter.  In order to properly produce
+  such messages, you'll need an appropriate editor mode.  Note that
+  the $indent_string option is ignored with flowed text.
 
-  If $attach_split is unset, when operating (saving, printing, piping,
-  etc) on a list of tagged attachments, Mutt will concatenate the
-  attachments and will operate on them as a single attachment. The
-  `$attach_sep' separator is added after each attachment. When set
-  (default), Mutt will operate on the attachments one by one.
+- $to_chars has grown:  Mailing list messages are now tagged with an
+  L in the index. If you want the old behaviour back, add this to
+  your .muttrc: set to_chars=" +TCF "
 
-- An option $write_bcc controls whether or not the Bcc header is
-  written out to the mail transport agent or not.  Exim users may
-  wish to use this.
+- New emacs-like functions in the line editor: backward-word (M-b),
+  capitalize-word (M-c), downcase-word (M-l), upcase-word (M-u),
+  forward-word (M-f), kill-eow (M-d), tranpose-chars (unbound).
 
-- The compose menu tries to detect and smoothly handle changes to
-  attached files.  Additionally, you can use the update-encoding
-  function to update an attachment's encoding.
+  transpose-chars is unbound by default because external query
+  occupies C-t.  Suggested alternative binding:
 
-- On the compose menu, you can generate a "private" copy of an
-  attached file using the get-attachment function.
+	bind	editor	"\e\t"		complete-query
+	bind	editor	"\Ct"		transpose-chars
 
-- sendmail's exit values are properly interpreted, so you will no
-  longer get a "no such file or directory" error when sending mail
-  to a non-existing local user.
 
-- The variable $attach_format controls the look of the compose and
-  attach menus.
-
-- The file browser permits you to view files before selecting them.
-
-- Bug fixes of all kinds.  Look at the ChangeLog file for details.
-
-- The configuration files now go to a directory determined by the
-  --sysconfdir parameter to the configure script.  The default is
-  ${prefix}/etc.  (The install target of the top-level Makefile will
-  take care of your old site-global configuration file and
-  automagically move it to the new place.)
-
-- new variable $mh_purge (boolean, default unset)
-
-  When unset, mutt will mimic mh's behaviour and rename deleted
-  messages to ,<old file name> in mh folders instead of really
-  deleting them.  If the variable is set, the message files will
-  simply be deleted.
-
-- new variable $forward_weed (boolean, default set)
-
-  When set, this decode-forwarding a message will weed the message's
-  header.  (That's the current behaviour.)
-
-$Id$

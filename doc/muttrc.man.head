@@ -106,6 +106,10 @@ Valid maps are:
 For more information on keys and functions, please consult the Mutt
 Manual.
 .TP
+\fBaccount-hook\fP [\fB!\fP]\fIregexp\fP \fIcommand\fP
+This hook is executed whenever you access a remote mailbox. Useful
+to adjust configuration settings to different IMAP or POP servers.
+.TP
 \fBcharset-hook\fP \fIalias\fP \fIcharset\fP
 This command defines an alias for a character set.  This is useful
 to properly display messages which are tagged with a character set
