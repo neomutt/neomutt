@@ -1,7 +1,6 @@
 UPGRADING FROM MUTT 1.0
 -----------------------
 
-
 Please read the present document carefully when upgrading Mutt from
 version 1.0 to the current version.  It lists a couple of
 configuration changes you may wish to make in order to continue
@@ -37,5 +36,27 @@ it.
 
 Note that "subscribe" implies "lists", and "unlists" implies
 "unsubscribe" - every subscribed list is known.
+
+
+3. Other changes you should know about
+
+- Header weeding: Header weeding is now controlled by a single $weed
+  variable.  You can set this variable using the usual "set"
+  command.  But, in practice, you'll most probably just use the
+  function "display-toggle-weed".  It's a replacement for
+  "display-headers", and is bound to "h" by default.
+
+  Note that this affects forwarding, replying (when $header is set),
+  decode-saving, and printing.
+
+- Message editing.  Mutt 1.0 used to have a somewhat strange
+  edit-message function.  This function has been split into
+  edit-message and resend-message.  edit-message gives you the
+  opportunity to edit a copy of the raw message.  When you are done,
+  mutt will copy the changed message to the current folder, and mark
+  the old version of the message for deletion.  resend-message can
+  best be thought of as "recall from current folder".  However, this
+  function also works from the receive-attachment menu, on
+  message/rfc822 body parts.
 
 $Id$
