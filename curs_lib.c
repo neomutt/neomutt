@@ -113,7 +113,7 @@ void mutt_clear_error (void)
 void mutt_edit_file (const char *editor, const char *data)
 {
   char cmd[LONG_STRING];
-
+  
   endwin ();
   mutt_expand_fmt (cmd, sizeof (cmd), editor, data);
   mutt_system (cmd);
@@ -271,7 +271,7 @@ int mutt_do_pager (const char *banner,
 		   pager_t *info)
 {
   int rc;
-
+  
   if (!Pager || strcmp (Pager, "builtin") == 0)
     rc = mutt_pager (banner, tempfile, do_color, info, "");
   else
@@ -279,7 +279,7 @@ int mutt_do_pager (const char *banner,
     char cmd[STRING];
     
     endwin ();
-    snprintf (cmd, sizeof (cmd), "%s %s", NONULL(Pager), tempfile);
+    mutt_expand_fmt (cmd, sizeof(cmd), Pager, tempfile);
     mutt_system (cmd);
     mutt_unlink (tempfile);
     rc = 0;

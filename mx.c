@@ -73,9 +73,12 @@ static int invoke_dotlock(const char *path, int flags, int retry)
 {
   char cmd[LONG_STRING + _POSIX_PATH_MAX];
   char r[SHORT_STRING];
+  char *f;
   
   if(flags & DL_FL_RETRY)
     snprintf(r, sizeof(r), "-r %d ", retry ? MAXLOCKATTEMPT : 0);
+  
+  f = mutt_quote_filename(path);
   
   snprintf(cmd, sizeof(cmd),
 	   "%s %s%s%s%s%s%s",
@@ -85,7 +88,9 @@ static int invoke_dotlock(const char *path, int flags, int retry)
 	   flags & DL_FL_USEPRIV ? "-p " : "",
 	   flags & DL_FL_FORCE ? "-f " : "",
 	   flags & DL_FL_RETRY ? r : "",
-	   path);
+	   f);
+  
+  FREE(&f);
 
   return mutt_system(cmd);
 }

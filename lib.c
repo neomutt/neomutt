@@ -595,9 +595,18 @@ void mutt_expand_fmt (char *dest, size_t destlen, const char *fmt, const char *s
   const char *p = fmt;
   const char *last = p;
   size_t len;
-  size_t slen = strlen (src);
+  char *_src;
+  size_t slen;
   int found = 0;
 
+  /* some rationale should be given here: mutt's quoting
+   * rules are similar enough to the shell's rules so we
+   * can use mutt_quote_filename() even for patterns.
+   */
+
+  _src = mutt_quote_filename(src);
+  slen = strlen (_src);
+  
   while ((p = strchr (p, '%')) != NULL)
   {
     if (p[1] == 's')
@@ -642,7 +651,9 @@ void mutt_expand_fmt (char *dest, size_t destlen, const char *fmt, const char *s
   if (found)
     strfcpy (dest, last, destlen);
   else
-    snprintf (dest, destlen, "%s '%s'", fmt, src);
+    snprintf (dest, destlen, "%s %s", fmt, _src);
+  
+  FREE(&_src);
 }
 
 int safe_open (const char *path, int flags)
@@ -1128,4 +1139,45 @@ int mutt_save_confirm (const char *s, struct stat *st)
 
   CLEARLINE (LINES-1);
   return (ret);
+}
+
+/* prepare a file name to survive the shell's quoting rules.
+ * From the Unix programming FAQ by way of Liviu.
+ */
+
+char *mutt_quote_filename(const char *f)
+{
+  char *d;
+  size_t i,l;
+
+  if(!f) return NULL;
+  
+  for(i = 0, l = 3; f[i]; i++, l++)
+  {
+    if(f[i] == '\'')
+      l += 3;
+  }
+  
+  d = safe_malloc(l);
+  
+  l = 0;
+  d[l++] = '\'';
+  
+  for(i = 0; f[i]; i++)
+  {
+    if(f[i] == '\'')
+    {
+      d[l++] = '\'';
+      d[l++] = '\\';
+      d[l++] = '\'';
+      d[l++] = '\'';
+    }
+    else
+      d[l++] = f[i];
+  }
+  
+  d[l++] = '\'';
+  d[l]   = '\0';
+  
+  return d;
 }
