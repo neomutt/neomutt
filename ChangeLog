@@ -1,3 +1,8 @@
+2003-01-30 23:54:30  David Shaw  <dshaw@jabberwocky.com>  (roessler)
+
+	* crypt.c, init.h, mutt.h, mutt_crypt.h, send.c: Introduce
+	$pgp_auto_traditional.
+
 2003-01-30 23:48:36  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* flags.c: The IMAP ACL patch broke things.
