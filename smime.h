@@ -21,7 +21,7 @@
 
 #include "crypt.h"
 
-WHERE char *SmimeSignAs;
+WHERE char *SmimeDefaultKey;
 WHERE char *SmimeCryptAlg;
 WHERE short SmimeTimeout;
 WHERE char *SmimeCertificates;

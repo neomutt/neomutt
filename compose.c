@@ -153,7 +153,7 @@ static void redraw_crypt_lines (HEADER *msg)
 #endif
 #ifdef HAVE_SMIME
   if (msg->security & APPLICATION_SMIME  && msg->security & SIGN) {
-      printw ("%s%s", _(" sign as: "), SmimeSignAs ? SmimeSignAs : _("<default>"));
+      printw ("%s%s", _(" sign as: "), SmimeDefaultKey ? SmimeDefaultKey : _("<default>"));
   }
   if (msg->security & APPLICATION_SMIME  && (msg->security & ENCRYPT)) {
       mvprintw (HDR_CRYPTINFO, 40, "%s%s", _("Encrypt with: "),
@@ -262,7 +262,7 @@ static int smime_send_menu (HEADER *msg, int *redraw)
 
   case 3: /* (s)ign */
       
-    if(!SmimeSignAs)
+    if(!SmimeDefaultKey)
 	mutt_message("Can\'t sign: No key specified. use sign(as).");
     else
 	msg->security |= SMIMESIGN;
@@ -272,7 +272,7 @@ static int smime_send_menu (HEADER *msg, int *redraw)
 
     if ((p = smime_ask_for_key (_("Sign as: "), NULL, 0))) {
       p[mutt_strlen (p)-1] = '\0';
-      mutt_str_replace (&SmimeSignAs, p);
+      mutt_str_replace (&SmimeDefaultKey, p);
 	
       msg->security |= SMIMESIGN;
 

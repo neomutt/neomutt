@@ -23,7 +23,11 @@ set crypt_verify_sig = yes
 
 # The (default) keyfile for signing/decrypting.  Uncomment the following
 # line and replace the keyid with your own.
-#set smime_sign_as="12345678.0"
+set smime_default_key="12345678.0"
+
+# Uncommen to make mutt ask what key to use when trying to decrypt a message.
+# It will use the default key above (if that was set) else.
+# unset smime_decrypt_use_default_key
 
 # Path to a file or directory with trusted certificates
 set smime_ca_location="~/.smime/ca-bundle.crt"

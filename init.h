@@ -1284,6 +1284,13 @@ struct option_t MuttVars[] = {
   ** This flag controls wether you want to be asked to enter a label for a certificate
   ** about to be added to the database or not. It is set by default.
   */
+  { "smime_decrypt_use_default_key",	DT_BOOL, R_NONE, OPTSDEFAULTDECRYPTKEY, 1 },
+  /*
+  ** .pp
+  ** If set (default) this tells mutt to use the default key for decryption. Otherwise,
+  ** if manage multiple certificate-key-pairs, mutt will try to use the mailbox-address
+  ** to determine the key to use. It will ask you to supply a key, if it can't find one.
+  */
 #endif
 #ifdef HAVE_PGP
   { "pgp_entry_format", DT_STR,  R_NONE, UL &PgpEntryFormat, UL "%4n %t%f %4l/0x%k %-4a %2c %u" },
@@ -1624,7 +1631,8 @@ struct option_t MuttVars[] = {
   ** X509 certificates, and for verification purposes (to check, wether the
   ** certifacate was issued for the sender's mailbox).
   */
-  { "smime_sign_as",		DT_STR,	 R_NONE, UL &SmimeSignAs, 0 },
+  { "smime_sign_as",			DT_SYN,  R_NONE, UL "smime_default_key", 0 },
+  { "smime_default_key",		DT_STR,	 R_NONE, UL &SmimeDefaultKey, 0 },
   /*
   ** .pp
   ** This is the default key-pair to use vor signing. This must be set to the

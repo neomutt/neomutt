@@ -608,6 +608,7 @@ char *smime_get_field_from_db (char *mailbox, char *query, short public, short m
 	  key = safe_calloc(1, mutt_strlen(fields[1])+2);
 	  if (public) key_trust_level = *fields[4];
 	  snprintf(key, mutt_strlen(fields[1])+1, "%s", fields[1]);
+
 	}
 	found = 1;
       }
@@ -694,13 +695,15 @@ char *smime_get_field_from_db (char *mailbox, char *query, short public, short m
 
 /* 
    This sets the '*ToUse' variables for an upcoming decryption, where
-   the reuquired key is different from SmimeSignAs.
+   the reuquired key is different from SmimeDefaultKey.
 */
 
 void _smime_getkeys (char *mailbox)
 {
-  char *k = smime_get_field_from_db (mailbox, NULL, 0, 1);
+  char *k = NULL;
   char buf[STRING];
+
+  k = smime_get_field_from_db (mailbox, NULL, 0, 1);
 
   if (!k)
   {
@@ -728,7 +731,7 @@ void _smime_getkeys (char *mailbox)
     snprintf (SmimeCertToUse, sizeof (SmimeCertToUse), "%s/%s",
 	      NONULL(SmimeCertificates), k);
 
-    if (mutt_strcasecmp (k, SmimeSignAs))
+    if (mutt_strcasecmp (k, SmimeDefaultKey))
       smime_void_passphrase ();
 
     safe_free ((void **) &k);
@@ -737,7 +740,7 @@ void _smime_getkeys (char *mailbox)
 
   if (*SmimeKeyToUse)
   {
-    if (!mutt_strcasecmp (SmimeSignAs, 
+    if (!mutt_strcasecmp (SmimeDefaultKey, 
                           SmimeKeyToUse + mutt_strlen (SmimeKeys)+1))
       return;
 
@@ -745,16 +748,27 @@ void _smime_getkeys (char *mailbox)
   }
 
   snprintf (SmimeKeyToUse, sizeof (SmimeKeyToUse), "%s/%s", 
-	    NONULL (SmimeKeys), SmimeSignAs);
+	    NONULL (SmimeKeys), SmimeDefaultKey);
   
   snprintf (SmimeCertToUse, sizeof (SmimeCertToUse), "%s/%s",
-	    NONULL (SmimeCertificates), SmimeSignAs);
+	    NONULL (SmimeCertificates), SmimeDefaultKey);
 }
 
 void smime_getkeys (ENVELOPE *env)
 {
   ADDRESS *t;
   int found = 0;
+
+  if (option (OPTSDEFAULTDECRYPTKEY) && SmimeDefaultKey && *SmimeDefaultKey)
+  {
+    snprintf (SmimeKeyToUse, sizeof (SmimeKeyToUse), "%s/%s", 
+	      NONULL (SmimeKeys), SmimeDefaultKey);
+    
+    snprintf (SmimeCertToUse, sizeof (SmimeCertToUse), "%s/%s",
+	      NONULL(SmimeCertificates), SmimeDefaultKey);
+
+    return;
+  }
 
   for (t = env->to; !found && t; t = t->next)
     if (mutt_addr_is_user (t))
@@ -1416,12 +1430,12 @@ BODY *smime_sign_message (BODY *a )
   int err = 0;
   int empty = 0;
   pid_t thepid;
-  char *intermediates = smime_get_field_from_db(NULL, SmimeSignAs, 1, 1);
+  char *intermediates = smime_get_field_from_db(NULL, SmimeDefaultKey, 1, 1);
 
   if (!intermediates)
   {
     mutt_message(_("Warning: Intermediate certificate not found."));
-    intermediates = SmimeSignAs; /* so openssl won't complain in any case */
+    intermediates = SmimeDefaultKey; /* so openssl won't complain in any case */
   }
   else
       intermediates[mutt_strlen (intermediates)-1] = '\0';
@@ -1452,10 +1466,10 @@ BODY *smime_sign_message (BODY *a )
   
 
   snprintf (SmimeKeyToUse, sizeof (SmimeKeyToUse), "%s/%s", 
-	   NONULL(SmimeKeys), SmimeSignAs);
+	   NONULL(SmimeKeys), SmimeDefaultKey);
 
   snprintf (SmimeCertToUse, sizeof (SmimeCertToUse), "%s/%s",
-	   NONULL(SmimeCertificates), SmimeSignAs);
+	   NONULL(SmimeCertificates), SmimeDefaultKey);
   
   snprintf (SmimeIntermediateToUse, sizeof (SmimeIntermediateToUse), "%s/%s",
 	   NONULL(SmimeCertificates), intermediates);

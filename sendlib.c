@@ -2406,8 +2406,8 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
     }
     if (hdr->security & SIGN) {
 	fputc ('S', msg->fp);
-	if (SmimeSignAs && *SmimeSignAs)
-	    fprintf (msg->fp, "<%s>", SmimeSignAs);
+	if (SmimeDefaultKey && *SmimeDefaultKey)
+	    fprintf (msg->fp, "<%s>", SmimeDefaultKey);
     }
     fputc ('\n', msg->fp);
   }
