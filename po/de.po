@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-01 21:57+0200\n"
+"POT-Creation-Date: 1998-10-02 16:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -830,7 +830,7 @@ msgstr "[-- Typ: %s/%s, Codierung: %s, Größe: %s --]\n"
 #: handler.c:1076
 #, c-format
 msgid "[-- Autoview using %s --]\n"
-msgstr "[- Automatische Anzeige mittels %s --]\n"
+msgstr "[-- Automatische Anzeige mittels %s --]\n"
 
 #: handler.c:1078
 #, c-format
