@@ -21,7 +21,7 @@ while (<>) {
     } 
     elsif ($_ =~ /^(=======|------)/) {
 	if ($change->{revision}) {
-	    push @Changes, $change;
+	    push @Changes, $change unless $change->{logmsg} =~ /^#/;
 	    $change = {};
 	    $change->{workfile} = $workfile;
 	    $change->{logmsg}   = '';

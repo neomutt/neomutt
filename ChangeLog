@@ -1,3 +1,13 @@
+2002/12/07 14:15:01  Thomas Roessler <roessler@does-not-exist.org>
+
+	* doc/Makefile.in, ChangeLog, ChangeLog.old, Makefile.am,
+	cvslog2changelog.pl, mkchangelog.sh: Change the style of
+	ChangeLog: Now, the actual patch submitter's name is
+	extracted from the commit message and used for the change
+	log.  For the moment, the date format doesn't match the one
+	in the old changelog.  If you want to fix this, submit a
+	patch to cvslog2changelog.pl. ;-)
+
 2002/12/07 08:55:59  Vincent Lefevre <vincent@vinc17.org>
 
 	* po/fr.po: update

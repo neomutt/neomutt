@@ -154,8 +154,13 @@ pclean:
 check-security:
 	./check_sec.sh
 
-commit: pclean check-security
+commit-real:
 	cvs commit
+
+commit-changelog:
+	cvs commit -m "# changelog commit"
+
+commit: pclean check-security commit-real changelog commit-changelog
 
 changelog:
 	sh ./mkchangelog.sh | cat  - ChangeLog > ChangeLog.$$$$ && mv ChangeLog.$$$$ ChangeLog
@@ -184,4 +189,4 @@ stamp-doc-rc: $(srcdir)/init.h makedoc Muttrc.head
 jtags:	TAGS mkjtags
 	( ./mkjtags TAGS > tags.$$$$ && mv tags.$$$$ tags )
 
-.PHONY: jtags commit pclean check-security
+.PHONY: jtags commit pclean check-security commit-real commit-changelog
