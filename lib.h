@@ -121,6 +121,8 @@ void *safe_malloc (size_t);
 void mutt_nocurses_error (const char *, ...);
 void mutt_remove_trailing_ws (char *);
 void mutt_sanitize_filename (char *, short);
+void mutt_str_replace (char **p, const char *s);
+void mutt_str_adjust (char **p);
 void mutt_unlink (const char *);
 void safe_free (void **);
 void safe_realloc (void **, size_t);

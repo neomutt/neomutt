@@ -420,7 +420,7 @@ int mutt_convert_string (char **ps, const char *from, const char *to)
     safe_free ((void **) ps);
     *ps = buf;
     
-    safe_realloc ((void **) ps, strlen (*ps) + 1);	/* avoid copying */
+    mutt_str_adjust (ps);
     return 0;
   }
   else
