@@ -1,3 +1,68 @@
+Tue Oct 13 22:53:36 1998  Thomas Roessler  <roessler@guug.de>
+
+	* po/ru.po, po/mutt.pot, po/de.po, po/cat-id-tbl.c,
+	reldate.h, recvattach.c, configure.in, configure,
+	config.h.in, commands.c, README, NEWS, Makefile.in,
+	Makefile.am, INSTALL: random pre-release clean-up.
+
+	* po/ru.po, po/mutt.pot, po/de.po, po/cat-id-tbl.c,
+	po/POTFILES.in, reap.pl, gen_defs, configure.in, configure,
+	config.h.in, NEWS, Makefile.in, Makefile.am: Introducing a
+	us-dist target to create a USG-friendly version of mutt.
+	Additionally, the NEWS file is prepared for 0.95.
+
+	* doc/devel-notes.txt: Add a short note on compiler warnings.
+
+	* po/ru.po, po/de.po, po/POTFILES.in, po/Makefile.in.in,
+	charsets/gen_charsets, charsets/Makefile.in, missing,
+	mime.types: More $Id$ strings.
+
+	* Add RCS $Id$ strings to (hopefully) all source files.
+
+	* enter.c: Type Ctrl-V Ctrl-G in any input field.
+
+	* curs_main.c:
+	Bumping some dprint statements' debug levels.  From Vikas.
+
+	* po/ru.po, po/mutt.pot, po/de.po:
+	Including the new ru.po file from "Andrej N. Gritsenko"
+	<andrej@lucky.net>; check-point commit.
+
+Mon Oct 12 19:53:49 1998  Thomas Roessler  <roessler@guug.de>
+
+	* recvattach.c, query.c, postpone.c, pgpkey.c, curs_main.c,
+	compose.c, browser.c, addrbook.c: The attached patch removes
+	some redundant code related to the macro function stuff.
+	Since each menu calls km_dokey() to get the 'op' number to
+	execute, the 'menu' argument to km_dokey() _is_ the
+	CurrentMenu. Hence, there is no need to explicitly
+	save/restore the CurrentMenu all over the code. The only
+	places it is being captured now is just before
+	mutt_enter_comamnd() is called. This is to help the 'exec'
+	command completion code so that it knows which menu to try
+	and complete the function name from. (From: Vikas Agnihotri
+	<VikasA@att.com>)
+
+	* doc/manual.sgml.in, doc/Attic/manual.sgml,
+	doc/Makefile.in, sendlib.c, main.c, init.c, configure.in,
+	configure, config.h.in, acconfig.h, Makefile.in,
+	Makefile.am: Mutt now correctly uses the sysconfdir as
+	determined by configure.
+
+	* po/ru.po, po/mutt.pot, po/de.po: Checkpoint commit.
+
+	* po/ru.po, po/mutt.pot, po/de.po, reldate.h, configure.in,
+	configure, ChangeLog: Check-point commit before 0.94.11 is
+	released.
+
+Sun Oct 11 22:11:00 1998  Thomas Roessler  <roessler@guug.de>
+
+	* doc/Makefile.in, contrib/Makefile.in:
+	Makefile clean-up as suggested by Marco d'Itri.
+
+	* doc/dotlock.man.in, doc/Makefile.in:
+	Install dotlock's manual page under the correct name.
+
 Sun Oct 11 22:11:00 1998  Thomas Roessler  <roessler@guug.de>
 
 	* doc/Makefile.in, contrib/Makefile.in:
@@ -16,9 +81,9 @@ Thu Oct  8 13:22:16 1998  Thomas Roessler  <roessler@guug.de>
 	Fix the uninstall target; add some magic to build and install the
 	HTML version of the manual if we can.
 
-	* doc/applying-patches.txt, doc/devel-notes.txt, doc/PGP-Notes.txt, doc/Makefile.in:
-	Some more documentation; install the html version of the manual if
-	it's there.
+	* doc/applying-patches.txt, doc/devel-notes.txt,
+	doc/PGP-Notes.txt, doc/Makefile.in: Some more documentation;
+	install the html version of the manual if it's there.
 
 	* doc/manual.sgml:
 	The manual was wrong on the default binding for extract-keys.
