@@ -1,3 +1,10 @@
+2004-01-04 09:49:23  Vsevolod Volkov  <vvv@mutt.org.ua>  (roessler)
+
+	* pop.h, pop_lib.c: Attached patch provides support of STLS
+	(STARTTLS) command in POP3 protocol.
+
+	* po/ru.po: update
+
 2004-01-04 09:45:05  Brendan Cully  <brendan@kublai.com>  (roessler)
 
 	* imap/imap.c: Fix #1703.
