@@ -201,7 +201,7 @@ if rpm -q mutt > /dev/null 2> /dev/null ; then
 	RPMPACKAGER="`rpm -q -i mutt | sed -n -e 's/^Packager *: *//p'`"
 fi
 
-MUTTVERSION="`mutt -v | head -1 | awk '{print $2}'`"
+MUTTVERSION="`mutt -v | awk '{print $2; exit; }'`"
 test "$DPKG" = "yes" && SUBMIT="$SUBMIT, $DEBIAN_SUBMIT"
 
 exec > ${TEMPLATE}
@@ -233,7 +233,7 @@ else
 	echo "System Version: `uname -a`"
 	test -z "$RPMPACKAGER" || echo "RPM Packager: $RPMPACKAGER";
 	test -f /etc/redhat-release && echo "RedHat Release: `cat /etc/redhat-release`"
-	test -f /etc/SuSE-release && echo "SuSE Release: `head -1 /etc/SuSE-release`"
+	test -f /etc/SuSE-release && echo "SuSE Release: `sed 1q /etc/SuSE-release`"
 	# Please provide more of these if you have any.
 fi
 
