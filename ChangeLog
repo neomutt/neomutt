@@ -1,3 +1,18 @@
+2005-01-28 13:00:36  Adeodato Simó  <asp16@alu.ua.es>  (roessler)
+
+	* mutt_ssl_gnutls.c: The attached mini-patch from David Mosberger
+	<davidm@napali.hpl.hp.com> seems to fix a segfault in the ia64
+	architecture. Via Debian Bug#285001.
+
+2005-01-28 10:01:30  roessler  (roessler)
+
+	* po/tr.po, po/uk.po, po/zh_CN.po, po/zh_TW.po, po/lt.po,
+	po/nl.po, po/pl.po, po/pt_BR.po, po/ru.po, po/sk.po, po/sv.po,
+	po/el.po, po/eo.po, po/es.po, po/et.po, po/fr.po, po/gl.po,
+	po/hu.po, po/id.po, po/it.po, po/ja.po, po/ko.po, VERSION,
+	po/bg.po, po/ca.po, po/cs.po, po/da.po, po/de.po, reldate.h:
+	automatic post-release commit for mutt-1.5.7
+
 2005-01-27 20:52:13  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* main.c: Add USE_INODESORT to main.c's option dump.
