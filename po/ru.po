@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 1998-10-14 00:51+0200\n"
+"POT-Creation-Date: 1998-10-14 00:57+0200\n"
 "PO-Revision-Date: 1998-10-12 21:14+0300\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "Language-Team: Mutt-dev <mutt-dev@mutt.org>\n"
