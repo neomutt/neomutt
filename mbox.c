@@ -775,6 +775,17 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
 
   for (i = first, j = 0; i < ctx->msgcount; i++)
   {
+    /*
+     * back up some information which is needed to restore offsets when
+     * something fails.
+     */
+    
+    oldOffset[i-first].valid  = 1;
+    oldOffset[i-first].hdr    = ctx->hdrs[i]->offset;
+    oldOffset[i-first].body   = ctx->hdrs[i]->content->offset;
+    oldOffset[i-first].lines  = ctx->hdrs[i]->lines;
+    oldOffset[i-first].length = ctx->hdrs[i]->content->length;
+    
     if (! ctx->hdrs[i]->deleted)
     {
       j++;
@@ -804,17 +815,6 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
 	}
       }
 
-      /*
-       * back up some information which is needed to restore offsets when
-       * something fails.
-       */
-
-      oldOffset[i-first].valid  = 1;
-      oldOffset[i-first].hdr    = ctx->hdrs[i]->offset;
-      oldOffset[i-first].body   = ctx->hdrs[i]->content->offset;
-      oldOffset[i-first].lines  = ctx->hdrs[i]->lines;
-      oldOffset[i-first].length = ctx->hdrs[i]->content->length;
-      
       /* save the new offset for this message.  we add `offset' because the
        * temporary file only contains saved message which are located after
        * `offset' in the real mailbox
