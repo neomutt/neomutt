@@ -939,19 +939,22 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
  * exists.
  */
 
-static int lookup_mime_type (char *d, char *x, const char *s)
+static int lookup_mime_type (BODY *att, const char *path)
 {
   FILE *f;
-  char *p, *ct,
-  buf[LONG_STRING];
+  char *p, *q, *ct;
+  char buf[LONG_STRING];
+  char subtype[STRING], xtype[STRING];
   int count;
-  int szf, sze, cur_n, cur_sze;
+  int szf, sze, cur_sze;
+  int type;
 
-  *d = 0;
-  *x = 0;
-  cur_n = TYPEOTHER;
-  cur_sze = 0;
-  szf = mutt_strlen (s);
+  *subtype = '\0';
+  *xtype   = '\0';
+  type     = TYPEOTHER;
+  cur_sze  = 0;
+
+  szf      = mutt_strlen (path);
 
   for (count = 0 ; count < 3 ; count++)
   {
@@ -971,7 +974,8 @@ static int lookup_mime_type (char *d, char *x, const char *s)
 	strfcpy (buf, SHAREDIR"/mime.types", sizeof (buf));
 	break;
       default:
-	return (cur_n);
+        dprint (1, (debugfile, "lookup_mime_type: Internal error, count = %d.\n", count));
+        goto bye;	/* shouldn't happen */
     }
 
     if ((f = fopen (buf, "r")) != NULL)
@@ -997,11 +1001,9 @@ static int lookup_mime_type (char *d, char *x, const char *s)
 	{
 	  sze = mutt_strlen (p);
 	  if ((sze > cur_sze) && (szf >= sze) &&
-	      mutt_strcasecmp (s + szf - sze, p) == 0 &&
-	      (szf == sze || s[szf - sze - 1] == '.'))
+	      mutt_strcasecmp (path + szf - sze, p) == 0 &&
+	      (szf == sze || path[szf - sze - 1] == '.'))
 	  {
-	    char *dc;
-
 	    /* get the content-type */
 
 	    if ((p = strchr (ct, '/')) == NULL)
@@ -1011,17 +1013,14 @@ static int lookup_mime_type (char *d, char *x, const char *s)
 	    }
 	    *p++ = 0;
 
-	    dc = d;
-	    while (*p && !ISSPACE (*p))
-	      *dc++ = *p++;
-	    *dc = 0;
+	    for (q = p; *q && !ISSPACE (*q); q++)
+	      ;
+	    
+	    mutt_substrcpy (subtype, p, q, sizeof (subtype));
 
-	    if ((cur_n = mutt_check_mime_type (ct)) == TYPEOTHER)
-	    {
-	      for (dc = x, p = ct; *p && *p != '/' && !ISSPACE (*p); p++)
-		*dc++ = *p;
-	      *dc = 0;
-	    }
+	    if ((type = mutt_check_mime_type (ct)) == TYPEOTHER)
+	      strfcpy (xtype, ct, sizeof (xtype));
+
 	    cur_sze = sze;
 	  }
 	  p = NULL;
@@ -1030,7 +1029,17 @@ static int lookup_mime_type (char *d, char *x, const char *s)
       fclose (f);
     }
   }
-  return (cur_n);
+  
+ bye:
+
+  if (type != TYPEOTHER || *xtype != '\0')
+  {
+    att->type = type;
+    mutt_str_replace (&att->subtype, subtype);
+    mutt_str_replace (&att->xtype, xtype);
+  }
+  
+  return (type);
 }
 
 void mutt_message_to_7bit (BODY *a, FILE *fp)
@@ -1332,9 +1341,6 @@ BODY *mutt_make_file_attach (const char *path)
 {
   BODY *att;
   CONTENT *info;
-  char buf[SHORT_STRING];
-  char xbuf[SHORT_STRING];
-  int n;
 
   att = mutt_new_body ();
   att->filename = safe_strdup (path);
@@ -1343,13 +1349,22 @@ BODY *mutt_make_file_attach (const char *path)
    * suffix.
    */
 
-  if ((n = lookup_mime_type (buf, xbuf, path)) != TYPEOTHER || *xbuf != '\0')
+#if 0
+  
+  if ((n = lookup_mime_type (buf, sizeof (buf), xbuf, sizeof (xbuf), path)) != TYPEOTHER 
+      || *xbuf != '\0')
   {
     att->type = n;
     att->subtype = safe_strdup (buf);
     att->xtype = safe_strdup (xbuf);
   }
 
+#else
+  
+  lookup_mime_type (att, path);
+
+#endif
+  
   if ((info = mutt_get_content_info (path, att)) == NULL)
     return NULL;
 
