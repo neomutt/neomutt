@@ -1,5 +1,6 @@
+/* $Id$ */
 /*
- * Copyright (C) 1998 Brandon Long <blong@fiction.net>
+ * Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -16,28 +17,32 @@
  *     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */ 
 
-#ifndef _MUTT_SOCKET_H_
-#define _MUTT_SOCKET_H_ 1
+#ifndef _BROWSER_H
+#define _BROWSER_H 1
 
-typedef struct _connection
+struct folder_file
 {
-  char *server;
-  int port;
-  int uses;
-  int fd;
-  char inbuf[LONG_STRING];
-  int bufpos;
-  int available;
-  void *data;
-  struct _connection *next;
-} CONNECTION;
+  mode_t mode;
+  time_t mtime;
+  off_t size;
+  char *name;
+  char *desc;
+#ifdef USE_IMAP
+  short notfolder;
+#endif
+};
 
-int mutt_socket_readchar (CONNECTION *conn, char *c);
-int mutt_socket_read_line (char *buf, size_t buflen, CONNECTION *conn);
-int mutt_socket_read_line_d (char *buf, size_t buflen, CONNECTION *conn);
-int mutt_socket_write (CONNECTION *conn, const char *buf);
-CONNECTION *mutt_socket_select_connection (char *host, int port, int flags);
-int mutt_socket_open_connection (CONNECTION *conn);
+struct browser_state
+{
+  struct folder_file *entry;
+  short entrylen; /* number of real entries */
+  short entrymax;  /* max entry */
+#ifdef USE_IMAP
+  short imap_browse;
+  int noselect : 1;
+  int marked : 1;
+  int unmarked : 1;
+#endif
+};
 
-
-#endif /* _MUTT_SOCKET_H_ */
+#endif /* _BROWSER_H */

@@ -32,7 +32,7 @@
 int mutt_complete (char *s)
 {
   char *p;
-  DIR *dirp;
+  DIR *dirp = NULL;
   struct dirent *de;
   int i ,init=0;
   size_t len;
@@ -85,12 +85,23 @@ int mutt_complete (char *s)
       /* no directory name, so assume current directory. */
       dirpart[0] = 0;
       strfcpy (filepart, s, sizeof (filepart));
-      dirp = opendir (".");
+#ifdef USE_IMAP
+      if (s[0] != '{')
+#endif
+	dirp = opendir (".");
     }
   }
 
   if (dirp == NULL)
   {
+#ifdef USE_IMAP
+    /* If we are trying to complete an IMAP folder, it will start with {
+     * in which case, we just return 0 at this point.  Eventually, we
+     * might complete the actually folder name from the server
+     */
+    if ((s[0] == '{') || (exp_dirpart[0] == '{'))
+      return 0;
+#endif
     dprint (1, (debugfile, "mutt_complete(): %s: %s (errno %d).\n", exp_dirpart, strerror (errno), errno));
     return (-1);
   }

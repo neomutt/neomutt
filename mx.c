@@ -786,6 +786,10 @@ int mx_close_mailbox (CONTEXT *ctx)
       return (-1);
   }
 
+#ifdef USE_IMAP
+  /* IMAP doesn't support an OLD flag */
+  if (ctx->magic != M_IMAP)
+#endif
   if (option (OPTMARKOLD))
   {
     for (i = 0; i < ctx->msgcount; i++)

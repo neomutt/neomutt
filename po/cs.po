@@ -164,11 +164,11 @@ msgstr "Souborová maska: "
 
 #: browser.c:745
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
-msgstr "Obrácené øazení dle (d)ata, písmen(a), ro(z)mìru nebo (n)eøadit?"
+msgstr "Obrácené øazení dle (d)ata, (p)ísmena, (v)elikosti èi (n)eøadit?"
 
 #: browser.c:746
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
-msgstr "Øadit dle (d)ata, (p)ísmena, (v)elikosti nebo (n)eøadit?"
+msgstr "Øadit dle (d)ata, (p)ísmena, (v)elikosti èi (n)eøadit?"
 
 #: browser.c:747
 msgid "dazn"
@@ -306,13 +306,13 @@ msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
 "Øadit opaènì "
-"(d)at/(o)d/pøí(j)/(v)ìc/(p)ro/v(l)ákno/(n)eseø/veli(k)/s(k)óre?: "
+"(d)at/(o)d/pøí(j)/(v)ìc/(p)ro/v(l)ákno/(n)eseø/veli(k)/(s)kóre?: "
 
 #: commands.c:402
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 msgstr ""
-"Øadit (d)at/(o)d/pøí(j)/(v)ìc/(p)ro/v(l)ákno/(n)eseø/veli(k)/s(k)óre?: "
+"Øadit (d)at/(o)d/pøí(j)/(v)ìc/(p)ro/v(l)ákno/(n)eseø/veli(k)/(s)kóre?: "
 
 #: commands.c:403
 msgid "dfrsotuzc"
@@ -353,7 +353,7 @@ msgstr "Kopírovat"
 
 #: commands.c:575
 msgid " tagged"
-msgstr " oznaèeno"
+msgstr " oznaèené"
 
 #: commands.c:644
 #, c-format
@@ -386,7 +386,7 @@ msgstr "Zru¹it"
 
 #: compose.c:82 compose.c:539
 msgid "Attach file"
-msgstr "Pøipojit soubor"
+msgstr "Pøilo¾it soubor"
 
 #: compose.c:83
 msgid "Descrip"
@@ -848,7 +848,7 @@ msgstr "[-- Pøíloha #%d"
 #: handler.c:1082
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- Typ: %s%s, Kódování: %s, Velikost: %s --]\n"
+msgstr "[-- Typ: %s/%s, Kódování: %s, Velikost: %s --]\n"
 
 #: handler.c:1141
 #, c-format
@@ -1891,7 +1891,7 @@ msgid "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 msgstr ""
 "Vývojáøe programu mù¾ete kontaktovat na adrese <mutt-dev@mutt.org> "
 "(anglicky).\n"
-"Pøipomínky k pøekladu zasílejte na adresu <cs@li.org> (èwsky).\n"
+"Pøipomínky k pøekladu zasílejte na adresu <cs@li.org> (èesky).\n"
 
 #: main.c:43
 msgid ""
@@ -1973,6 +1973,19 @@ msgid ""
 "    You should have received a copy of the full distribution terms\n"
 "    along with this program; if not, write to the program's developers.\n"
 msgstr ""
+"\n"
+"Implementace SHA1 Copyright (C) 1995-7 Eric A. Young <eay@cryptsoft.com>\n"
+"\n"
+"    ©íøení a u¾ívání ve zdrojové èi binární formì (a» ji¾ s úpravami èi bez\n"
+"    nich) je pøi dodr¾ení jistých podmínek povoleno.\n"
+"\n"
+"    Na implementaci SHA1 NENÍ poskytována JAKÁKOLI ZÁRUKA; neposkytují se\n"
+"    ani odvozené záruky PRODEJNOSTI anebo VHODNOSTI PRO NÌJAKÝ KONKRÉTNÍ\n"
+"    ÚÈEL.\n"
+"\n"
+"    Kopie podmínek ¹íøení mìla být dodána spolu s tímto programem; pokud se\n"
+"    tak nestalo, napi¹te o ni vývojáøùm programu.\n"
+
 
 #: main.c:100
 msgid ""
@@ -2760,7 +2773,7 @@ msgstr "Chyba pøi zápisu do schránky!"
 #: pop.c:306
 #, c-format
 msgid "%s [%d messages read]"
-msgstr "%s [poèet pøeètených zpráv - %d]"
+msgstr "%s [poèet pøeètených zpráv: %d]"
 
 #: postpone.c:112
 msgid "Postponed Messages"
@@ -2856,7 +2869,7 @@ msgstr "Vytisknout pøílohu?"
 
 #: recvattach.c:654
 msgid "You may only bounce message/rfc822 parts."
-msgstr "Pøeposlat lze pouze zprávu nebo její èásti vyhovující rfc 822."
+msgstr "Pøeposlat lze pouze èásti typu 'message/rfc822'."
 
 #: recvattach.c:690
 #, c-format

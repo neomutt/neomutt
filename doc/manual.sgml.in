@@ -1811,7 +1811,7 @@ url="http://www.ccil.org/~esr/fetchmail" name="fetchmail">
 
 If Mutt was compiled with IMAP support (by running the <em/configure/
 script with the <em/--enable-imap/ flag), it has the ability to work
-with folders located on a remote imap server.
+with folders located on a remote IMAP server.
 
 You can access the remote inbox by selecting the folder
 <tt/{imapserver}inbox/, where <tt/imapserver/ is the name of the IMAP
@@ -1821,8 +1821,30 @@ server, you should use <tt>{imapserver}path/to/folder</tt> where
 <tt>path/to/folder</tt> is the path of the folder you want to access
 relative to your home directory.
 
-<bf/Note:/ The IMAP support is in a very early state and quite
-unstable at the moment. If you need a more stable way to access your
+You can select an alternative port by specifying it with the server, ie:
+<tt/{imapserver:port}inbox/.
+
+Note that not all servers use / as the hierarchy separator.  Mutt should
+correctly notice which separator is being used by the server and convert
+paths accordingly.
+
+When browsing folders on an IMAP server, you can toggle whether to look
+at only the folders you are subscribed to, or all folders with the
+<em/toggle-subscribed/ command.  See also the 
+<ref id="imap&lowbar;list&lowbar;subscribed" name="&dollar;imap&lowbar;list&lowbar;subscribed"> variable.
+
+Mutt was designed to work with IMAP4rev1 servers, and has been tested
+with both the UWash IMAP server v11.241 and the Cyrus IMAP server v1.5.14.
+Note that if you are using mbox as the mail store on the UWash server,
+the server will disconnect a client if another client selects the same
+folder.
+
+Mutt currently does not support completion of IMAP folder names.  Hit
+the <em/complete/ key again to go to the IMAP browser.
+
+<bf/Note:/ The IMAP support has had very limited testing due to a lack
+of developers using it.  It should work with the reference servers
+mentioned above, but if you need a more stable way to access your
 IMAP folder, consider using a specialized program, such as <htmlurl
 url="http://www.ccil.org/~esr/fetchmail" name="fetchmail">.
 
@@ -2953,6 +2975,15 @@ Default: 0
 This variable configures how often (in seconds) IMAP should look for
 new mail.
 
+<sect2>imap&lowbar;list&lowbar;subscribed<label id="imap_list_subscribed">
+<p>
+Type: boolean<newline>
+Default: unset
+
+This variable configures whether IMAP folder browsing will look for only
+subscribed folders or all folders.  This can be toggled in the IMAP
+browser with the <em/toggle-subscribed/ command.
+
 <sect2>imap&lowbar;pass<label id="imap_pass">
 <p>
 Type: string<newline>
@@ -2963,6 +2994,16 @@ for your password when you invoke the fetch-mail function. <bf/Warning/:
 you should only use this option when you are on a fairly secure machine,
 because the superuser can read your muttrc even if you are the only one who
 can read the file.
+
+<sect2>imap&lowbar;passive<label id="imap_passive">
+<p>
+Type: boolean<newline>
+Default: set
+
+When set, mutt will not open new IMAP connections to check for new mail.
+Mutt will only check for new mail over existing IMAP connections.  This
+is useful if you don't want to be prompted to user/password pairs on
+mutt invocation, or if opening the connection is slow.
 
 <sect2>imap&lowbar;user<label id="imap_user">
 <p>
@@ -4604,6 +4645,11 @@ search-reverse         ESC /   search backwards for a regular expression
 select-new                 N   select a new file in this directory
 sort                       o   sort messages
 sort-reverse               O   sort messages in reverse order
+toggle-mailboxes         TAB   toggle whether to browse mailboxes or all files
+view-file              SPACE   view file
+subscribe                  s   subscribe to current mailbox (IMAP Only)
+unsubscribe                u   unsubscribe to current mailbox (IMAP Only)
+toggle-subscribed          T   toggle view all/subscribed mailboxes (IMAP Only)
 </verb>
 <sect2>pgp
 <p>

@@ -102,8 +102,15 @@ void menu_redraw_full (MUTTMENU *menu)
 {
   SETCOLOR (MT_COLOR_NORMAL);
   /* clear() doesn't optimize screen redraws */
+#if 0
   move (0, 0);
   clrtobot ();
+#else
+  /* my ncurses library seems to run into
+   * endless loops in clrtobot...
+   */
+  clear();
+#endif
 
   if (option (OPTHELP))
   {

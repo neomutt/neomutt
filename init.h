@@ -123,9 +123,11 @@ struct option_t MuttVars[] = {
   { "history",		DT_NUM,	 R_NONE, UL &HistSize, 10 },
   { "hostname",		DT_STR,	 R_NONE, UL &Fqdn, 0 },
 #ifdef USE_IMAP
+  { "imap_checkinterval", 	DT_NUM,	 R_NONE, UL &ImapCheckTime, 0 },
+  { "imap_list_subscribed",	DT_BOOL, R_NONE, OPTIMAPLSUB, 0 },
   { "imap_user",	DT_STR,  R_NONE, UL &ImapUser, UL 0 },
   { "imap_pass", 	DT_STR,  R_NONE, UL &ImapPass, UL 0 },
-  { "imap_checkinterval", 	DT_NUM,	 R_NONE, UL &ImapCheckTime, 0 },
+  { "imap_passive",		DT_BOOL, R_NONE, OPTIMAPPASSIVE, 1 },
 #endif
   { "implicit_autoview", DT_BOOL,R_NONE, OPTIMPLICITAUTOVIEW, 0},
   { "in_reply_to",	DT_STR,	 R_NONE, UL &InReplyTo, UL "%i; from %n on %{!%a, %b %d, %Y at %I:%M:%S%p %Z}" },

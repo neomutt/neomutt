@@ -26,6 +26,7 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <string.h>
 
 /* support for multiple socket connections */
 
@@ -105,3 +106,34 @@ CONNECTION *mutt_socket_select_connection (char *host, int port, int flags)
   return conn;
 }
 
+int mutt_socket_open_connection (CONNECTION *conn)
+{
+  struct sockaddr_in sin;
+  struct hostent *he;
+
+  memset (&sin, 0, sizeof (sin));
+  sin.sin_port = htons (conn->port);
+  sin.sin_family = AF_INET;
+  if ((he = gethostbyname (conn->server)) == NULL)
+  {
+    mutt_perror (conn->server);
+    return (-1);
+  }
+  memcpy (&sin.sin_addr, he->h_addr_list[0], he->h_length);
+
+  if ((conn->fd = socket (AF_INET, SOCK_STREAM, IPPROTO_IP)) < 0)
+  {
+    mutt_perror ("socket");
+    return (-1);
+  }
+
+  mutt_message (_("Connecting to %s..."), conn->server); 
+
+  if (connect (conn->fd, (struct sockaddr *) &sin, sizeof (sin)) < 0)
+  {
+    mutt_perror ("connect");
+    close (conn->fd);
+  }
+
+  return 0;
+}
