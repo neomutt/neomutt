@@ -1,0 +1,3630 @@
+# Lithuanian translation of Mutt
+# Copyright (C) 2000 Free Software Foundation, Inc.
+# Tadas <btadas@is.lt>, 2000
+# Marius Gedminas <mgedmin@puni.osf.lt>
+# Gediminas Paulauskas <menesis@delfi.lt>, 2000.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mutt 1.3.12i\n"
+"POT-Creation-Date: 2000-11-29 21:23+0200\n"
+"PO-Revision-Date: 2000-11-29 21:22+0200\n"
+"Last-Translator: Gediminas Paulauskas <menesis@delfi.lt>\n"
+"Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-13\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: account.c:144
+#, c-format
+msgid "Username at %s: "
+msgstr "%s vartotojo vardas: "
+
+#: account.c:172
+#, c-format
+msgid "Password for %s@%s: "
+msgstr "%s@%s slaptaþodis: "
+
+#: addrbook.c:31 browser.c:40 pager.c:1365 postpone.c:37 query.c:43
+#: recvattach.c:57
+msgid "Exit"
+msgstr "Iðeit"
+
+#: addrbook.c:32
+msgid "Select"
+msgstr "Pasirinkti"
+
+#: addrbook.c:33 browser.c:43 compose.c:92 curs_main.c:380 mutt_ssl.c:511
+#: pager.c:1462 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
+msgid "Help"
+msgstr "Pagalba"
+
+#: addrbook.c:120
+msgid "You have no aliases!"
+msgstr "Tu neturi aliasø!"
+
+#: addrbook.c:131
+msgid "Aliases"
+msgstr "Aliasai"
+
+#. add a new alias
+#: alias.c:234
+msgid "Alias as: "
+msgstr "Aliase kaip:"
+
+#: alias.c:240
+msgid "You already have an alias defined with that name!"
+msgstr "Tu jau apibrëþei aliasà tokiu vardu!"
+
+#: alias.c:254
+msgid "Address: "
+msgstr "Adresas:"
+
+#: alias.c:270
+msgid "Personal name: "
+msgstr "Asmens vardas:"
+
+#: alias.c:279
+#, c-format
+msgid "[%s = %s] Accept?"
+msgstr "[%s = %s] Tinka?"
+
+#: alias.c:296 recvattach.c:381 recvattach.c:435
+msgid "Save to file: "
+msgstr "Iðsaugoti á bylà:"
+
+#: alias.c:307
+msgid "Alias added."
+msgstr "Aliasas ádëtas."
+
+#: attach.c:111 attach.c:238 attach.c:431 attach.c:889
+msgid "Can't match nametemplate, continue?"
+msgstr "Negaliu rasti tinkanèio vardo, tæsti?"
+
+#. For now, editing requires a file, no piping
+#: attach.c:123
+msgid "Mailcap compose entry requires %%s"
+msgstr "Mailcap kûrimo áraðui reikia %%s"
+
+#: attach.c:131 attach.c:256 commands.c:185 compose.c:1179 curs_lib.c:141
+#: curs_lib.c:370
+#, c-format
+msgid "Error running \"%s\"!"
+msgstr "Klaida vykdant \"%s\"!"
+
+#: attach.c:141
+msgid "Failure to open file to parse headers."
+msgstr "Nepavyko atidaryti bylos antraðtëms nuskaityti."
+
+#: attach.c:172
+msgid "Failure to open file to strip headers."
+msgstr "Nepavyko atidaryti bylos antraðtëms iðmesti."
+
+#: attach.c:190
+#, c-format
+msgid "No mailcap compose entry for %s, creating empty file."
+msgstr "Nëra mailcap kûrimo áraðo %s, sukuriu tuðèià bylà."
+
+#. For now, editing requires a file, no piping
+#: attach.c:250
+msgid "Mailcap Edit entry requires %%s"
+msgstr "Mailcap Taisymo áraðui reikia %%s"
+
+#: attach.c:269
+#, c-format
+msgid "No mailcap edit entry for %s"
+msgstr "Nëra mailcap taisymo áraðo tipui %s"
+
+#: attach.c:397
+msgid "No matching mailcap entry found.  Viewing as text."
+msgstr "Neradau tinkamo mailcap áraðo.  Rodau kaip tekstà."
+
+#: attach.c:410
+msgid "MIME type not defined.  Cannot view attachment."
+msgstr "MIME tipas neapibrëþtas.  Negaliu parodyti priedo."
+
+#: attach.c:500
+msgid "Cannot create filter"
+msgstr "Negaliu sukurti filtro"
+
+#: attach.c:707 recvattach.c:409 recvattach.c:469
+msgid "Attachment saved."
+msgstr "Priedas iðsaugotas."
+
+#: attach.c:764
+msgid "Write fault!"
+msgstr "Raðymo nesëkmë!"
+
+#: attach.c:973
+msgid "I don't know how to print that!"
+msgstr "Að neþinau, kaip tai atspausdinti!"
+
+#: browser.c:41
+msgid "Chdir"
+msgstr "Pereiti"
+
+#: browser.c:42
+msgid "Mask"
+msgstr "Kaukë"
+
+#: browser.c:374 browser.c:943
+#, c-format
+msgid "%s is not a directory."
+msgstr "%s nëra katalogas."
+
+#: browser.c:492
+#, c-format
+msgid "Mailboxes [%d]"
+msgstr "Paðto dëþutës [%d]"
+
+#: browser.c:499
+#, c-format
+msgid "Subscribed [%s], File mask: %s"
+msgstr "Uþsakytos [%s], Bylø kaukë: %s"
+
+#: browser.c:503
+#, c-format
+msgid "Directory [%s], File mask: %s"
+msgstr "Katalogas [%s], Bylø kaukë: %s"
+
+#: browser.c:514
+msgid "Can't attach a directory!"
+msgstr "Negaliu prisegti katalogo!"
+
+#: browser.c:632 browser.c:1010 browser.c:1103
+msgid "No files match the file mask"
+msgstr "Në viena byla netinka bylø kaukei"
+
+#: browser.c:835
+msgid "Create is only supported for IMAP mailboxes"
+msgstr "Kol kas sukurti gali tik IMAP paðto dëþutes"
+
+#: browser.c:855
+msgid "Delete is only supported for IMAP mailboxes"
+msgstr "Kol kas iðtrinti gali tik IMAP paðto dëþutes"
+
+#: browser.c:863
+#, c-format
+msgid "Really delete mailbox \"%s\"?"
+msgstr "Tikrai iðtrinti paðto dëþutæ \"%s\"?"
+
+#: browser.c:877
+msgid "Mailbox deleted."
+msgstr "Paðto dëþutë iðtrinta."
+
+#: browser.c:883
+msgid "Mailbox not deleted."
+msgstr "Paðto dëþutë neiðtrinta."
+
+#: browser.c:902
+msgid "Chdir to: "
+msgstr "Pereiti á katalogà: "
+
+#: browser.c:936 browser.c:1003
+msgid "Error scanning directory."
+msgstr "Klaida skaitant katalogà."
+
+#: browser.c:954
+msgid "File Mask: "
+msgstr "Bylø kaukë:"
+
+#: browser.c:1026
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
+msgstr "Atvirkðèiai rikiuoti pagal (d)atà, (v)ardà, d(y)dá ar (n)erikiuoti?"
+
+#: browser.c:1027
+msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
+msgstr "Rikiuoti pagal (d)atà, (v)ardà, d(y)dá ar (n)erikiuoti? "
+
+#: browser.c:1028
+msgid "dazn"
+msgstr "dvyn"
+
+#: browser.c:1090
+msgid "New file name: "
+msgstr "Naujos bylos vardas: "
+
+#: browser.c:1121
+msgid "Can't view a directory"
+msgstr "Negaliu þiûrëti katalogo"
+
+#: browser.c:1139
+msgid "Error trying to view file"
+msgstr "Klaida bandant þiûrëti bylà"
+
+#: buffy.c:407
+#, c-format
+msgid "New mail in %s."
+msgstr "Naujas paðtas dëþutëje %s."
+
+#: color.c:322
+#, c-format
+msgid "%s: color not supported by term"
+msgstr "%s: spalva nepalaikoma terminalo"
+
+#: color.c:328
+#, c-format
+msgid "%s: no such color"
+msgstr "%s: nëra tokios spalvos"
+
+#: color.c:374 color.c:569 color.c:580
+#, c-format
+msgid "%s: no such object"
+msgstr "%s: nëra tokio objekto"
+
+#: color.c:381
+#, c-format
+msgid "%s: command valid only for index object"
+msgstr "%s: komanda teisinga tik indekso objektams"
+
+#: color.c:389
+#, c-format
+msgid "%s: too few arguments"
+msgstr "%s: per maþai argumentø"
+
+#: color.c:557
+msgid "Missing arguments."
+msgstr "Trûksta argumentø."
+
+#: color.c:596 color.c:607
+msgid "color: too few arguments"
+msgstr "color: per maþai argumentø"
+
+#: color.c:630
+msgid "mono: too few arguments"
+msgstr "mono: per maþai argumentø"
+
+#: color.c:650
+#, c-format
+msgid "%s: no such attribute"
+msgstr "%s: tokio atributo nëra"
+
+#: color.c:690 hook.c:61 hook.c:69 keymap.c:697
+msgid "too few arguments"
+msgstr "per maþai argumentø"
+
+#: color.c:699 hook.c:75
+msgid "too many arguments"
+msgstr "per daug argumentø"
+
+#: color.c:715
+msgid "default colors not supported"
+msgstr "áprastos spalvos nepalaikomos"
+
+#. find out whether or not the verify signature
+#: commands.c:93
+msgid "Verify PGP signature?"
+msgstr "Tikrinti PGP paraðà?"
+
+#: commands.c:105 pgp.c:1566 pgpkey.c:491 postpone.c:522
+msgid "Invoking PGP..."
+msgstr "Kvieèiu PGP..."
+
+#: commands.c:113 mbox.c:734
+msgid "Could not create temporary file!"
+msgstr "Negaliu sukurti laikinos bylos!"
+
+#: commands.c:126
+msgid "Cannot create display filter"
+msgstr "Negaliu sukurti ekrano filtro"
+
+#: commands.c:146
+msgid "Could not copy message"
+msgstr "Negalëjau kopijuoti laiðko"
+
+#: commands.c:168
+msgid "PGP signature successfully verified."
+msgstr "PGP paraðas patikrintas sëkmingai."
+
+#: commands.c:169
+msgid "PGP signature could NOT be verified."
+msgstr "PGP paraðas NEGALI bûti patikrintas."
+
+#: commands.c:192
+msgid "Command: "
+msgstr "Komanda: "
+
+#: commands.c:210 recvcmd.c:140
+msgid "Bounce message to: "
+msgstr "Nukreipti laiðkà kam: "
+
+#: commands.c:212 recvcmd.c:142
+msgid "Bounce tagged messages to: "
+msgstr "Nukreipti paþymëtus laiðkus kam: "
+
+#: commands.c:227
+msgid "Error parsing address!"
+msgstr "Klaida nagrinëjant adresà!"
+
+#: commands.c:242
+#, c-format
+msgid "Bounce message to %s"
+msgstr "Nukreipti laiðkà á %s"
+
+#: commands.c:242
+#, c-format
+msgid "Bounce messages to %s"
+msgstr "Nukreipti laiðkus á %s"
+
+#: commands.c:256
+msgid "Message bounced."
+msgstr "Laiðkas nukreiptas."
+
+#: commands.c:256
+msgid "Messages bounced."
+msgstr "Laiðkai nukreipti."
+
+#: commands.c:401
+msgid "Pipe to command: "
+msgstr "Filtruoti per komandà: "
+
+#: commands.c:417
+msgid "No printing command has been defined."
+msgstr "Spausdinimo komanda nebuvo apibrëþta."
+
+#: commands.c:422
+msgid "Print message?"
+msgstr "Spausdinti laiðkà?"
+
+#: commands.c:422
+msgid "Print tagged messages?"
+msgstr "Spausdinti paþymëtus laiðkus?"
+
+#: commands.c:430
+msgid "Message printed"
+msgstr "Laiðkas atspausdintas"
+
+#: commands.c:430
+msgid "Messages printed"
+msgstr "Laiðkai atspausdinti"
+
+#: commands.c:432
+msgid "Message could not be printed"
+msgstr "Laiðkas negalëjo bûti atspausdintas"
+
+#: commands.c:433
+msgid "Messages could not be printed"
+msgstr "Laiðkai negalëjo bûti atspausdinti"
+
+#: commands.c:442
+msgid ""
+"Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
+msgstr ""
+"Atv-Rik (d)ata/n(u)o/g(a)uta/(t)ema/(k)am/(g)ija/(n)erik/d(y)dis/(v)ertë?: "
+
+#: commands.c:443
+msgid ""
+"Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
+msgstr ""
+"Rik (d)ata/n(u)o/g(a)uta/(t)ema/(k)am/(g)ija/(n)erik/d(y)dis/(v)ertë?: "
+
+#: commands.c:444
+msgid "dfrsotuzc"
+msgstr "duatkgnyv"
+
+#: commands.c:497
+msgid "Shell command: "
+msgstr "Shell komanda: "
+
+#: commands.c:631
+#, c-format
+msgid "%s%s to mailbox"
+msgstr "%s%s á dëþutæ"
+
+#: commands.c:632
+msgid "Decode-save"
+msgstr "Dekoduoti-iðsaugoti"
+
+#: commands.c:632
+msgid "Decode-copy"
+msgstr "Dekoduoti-kopijuoti"
+
+#: commands.c:633
+msgid "Decrypt-save"
+msgstr "Iððifruoti-iðsaugoti"
+
+#: commands.c:633
+msgid "Decrypt-copy"
+msgstr "Iððifruoti-kopijuoti"
+
+#: commands.c:634 curs_main.c:376 recvattach.c:58
+msgid "Save"
+msgstr "Saugoti"
+
+#: commands.c:634
+msgid "Copy"
+msgstr "Kopijuoti"
+
+#: commands.c:634
+msgid " tagged"
+msgstr " paþymëtus"
+
+#: commands.c:702
+#, c-format
+msgid "Copying to %s..."
+msgstr "Kopijuoju á %s..."
+
+#: commands.c:822
+#, c-format
+msgid "Content-Type changed to %s."
+msgstr "Content-Type pakeistas á %s."
+
+#: commands.c:824
+#, c-format
+msgid "Character set changed to %s."
+msgstr "Character set pakeistas á %s."
+
+#: compose.c:40
+msgid "There are no attachments."
+msgstr "Nëra jokiø priedø."
+
+#: compose.c:85
+msgid "Send"
+msgstr "Siøsti"
+
+#: compose.c:86 remailer.c:483
+msgid "Abort"
+msgstr "Nutraukti"
+
+#: compose.c:90 compose.c:683
+msgid "Attach file"
+msgstr "Prisegti bylà"
+
+#: compose.c:91
+msgid "Descrip"
+msgstr "Aprað"
+
+#: compose.c:112
+msgid "Sign, Encrypt"
+msgstr "Pasiraðyti, Uþðifruoti"
+
+#: compose.c:114
+msgid "Encrypt"
+msgstr "Uþðifruoti"
+
+#: compose.c:116
+msgid "Sign"
+msgstr "Pasiraðyti"
+
+#: compose.c:118
+msgid "Clear"
+msgstr "Iðvalyti"
+
+#: compose.c:125
+msgid " sign as: "
+msgstr " pasiraðyti kaip: "
+
+#: compose.c:125
+msgid "<default>"
+msgstr "<áprastas>"
+
+#: compose.c:126 compose.c:183
+msgid "MIC algorithm: "
+msgstr "MIC algoritmas: "
+
+#: compose.c:137
+msgid ""
+"(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget "
+"it? "
+msgstr ""
+"(u)þðifruot, pa(s)iraðyt, pasiraðyt k(a)ip, a(b)u, rinktis (m)ic algoritmà, "
+"ar (p)amirðti?"
+
+#: compose.c:138
+msgid "esabmf"
+msgstr "usabmp"
+
+#: compose.c:152
+msgid "Sign as: "
+msgstr "Pasiraðyti kaip: "
+
+#: compose.c:177
+msgid "This doesn't make sense if you don't want to sign the message."
+msgstr "Tai neturi jokios prasmës, jei tu nenori pasiraðyti laiðko."
+
+#: compose.c:188
+msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
+msgstr "Neþinomas MIC algoritmas, galimi yra: pgp-md5, pgp-sha1, pgp-rmd160"
+
+#: compose.c:253
+#, c-format
+msgid "%s [#%d] no longer exists!"
+msgstr "%s [#%d] nebeegzistuoja!"
+
+#: compose.c:261
+#, c-format
+msgid "%s [#%d] modified. Update encoding?"
+msgstr "%s [#%d] pasikeitë. Atnaujinti koduotæ?"
+
+#: compose.c:307
+msgid "-- Attachments"
+msgstr "-- Priedai"
+
+#: compose.c:351
+msgid "You may not delete the only attachment."
+msgstr "Tu negali iðtrinti vienintelio priedo."
+
+#: compose.c:699
+msgid "Attaching selected files..."
+msgstr "Prisegu parinktas bylas..."
+
+#: compose.c:710
+#, c-format
+msgid "Unable to attach %s!"
+msgstr "Negaliu prisegti %s!"
+
+#: compose.c:728
+msgid "Open mailbox to attach message from"
+msgstr "Atidaryti dëþutæ, ið kurios prisegti laiðkà"
+
+#: compose.c:766
+msgid "No messages in that folder."
+msgstr "Nëra laiðkø tame aplanke."
+
+#: compose.c:775
+msgid "Tag the messages you want to attach!"
+msgstr "Paþymëk laiðkus, kuriuos nori prisegti!"
+
+#: compose.c:807
+msgid "Unable to attach!"
+msgstr "Negaliu prisegti!"
+
+#: compose.c:854
+msgid "Recoding only affects text attachments."
+msgstr "Perkodavimas keièia tik tekstinius priedus."
+
+#: compose.c:859
+msgid "The current attachment won't be converted."
+msgstr "Esamas priedas nebus konvertuotas."
+
+#: compose.c:861
+msgid "The current attachment will be converted."
+msgstr "Esamas priedas bus konvertuotas."
+
+#: compose.c:932
+msgid "Invalid encoding."
+msgstr "Bloga koduotë."
+
+#: compose.c:953
+msgid "Save a copy of this message?"
+msgstr "Iðsaugoti ðio laiðko kopijà?"
+
+#: compose.c:1007
+msgid "Rename to: "
+msgstr "Pervadinti á:"
+
+#: compose.c:1012 editmsg.c:96
+#, c-format
+msgid "Can't stat: %s"
+msgstr "Negalëjau stat'inti: %s"
+
+#: compose.c:1038
+msgid "New file: "
+msgstr "Nauja byla:"
+
+#: compose.c:1051
+msgid "Content-Type is of the form base/sub"
+msgstr "Content-Type pavidalas yra rûðis/porûðis"
+
+#: compose.c:1057
+#, c-format
+msgid "Unknown Content-Type %s"
+msgstr "Neþinomas Content-Type %s"
+
+#: compose.c:1070
+#, c-format
+msgid "Can't create file %s"
+msgstr "Negaliu sukurti bylos %s"
+
+#: compose.c:1078
+msgid "What we have here is a failure to make an attachment"
+msgstr "Èia turëtø bûti priedas, taèiau jo nepavyko padaryti"
+
+#: compose.c:1140
+msgid "Postpone this message?"
+msgstr "Atidëti ðá laiðkà?"
+
+#: compose.c:1197
+msgid "Write message to mailbox"
+msgstr "Áraðyti laiðkà á dëþutæ"
+
+#: compose.c:1200
+#, c-format
+msgid "Writing message to %s ..."
+msgstr "Raðau laiðkà á %s ..."
+
+#: compose.c:1209
+msgid "Message written."
+msgstr "Laiðkas áraðytas."
+
+#: curs_lib.c:149
+msgid "yes"
+msgstr "taip"
+
+#: curs_lib.c:150
+msgid "no"
+msgstr "ne"
+
+#. restore blocking operation
+#: curs_lib.c:232
+msgid "Exit Mutt?"
+msgstr "Iðeiti ið Mutt?"
+
+#: curs_lib.c:322 mutt_socket.c:399
+msgid "unknown error"
+msgstr "neþinoma klaida"
+
+#: curs_lib.c:342
+msgid "Press any key to continue..."
+msgstr "Spausk bet koká klaviðà..."
+
+#: curs_lib.c:386
+msgid " ('?' for list): "
+msgstr "('?' parodo sàraðà): "
+
+#: curs_main.c:59 curs_main.c:572
+msgid "No mailbox is open."
+msgstr "Jokia dëþutë neatidaryta."
+
+#: curs_main.c:60
+msgid "There are no messages."
+msgstr "Ten nëra laiðkø."
+
+#: curs_main.c:61 mx.c:1109 pager.c:62 recvattach.c:47
+msgid "Mailbox is read-only."
+msgstr "Dëþutë yra tik skaitoma."
+
+#: curs_main.c:62 pager.c:63 recvattach.c:767
+msgid "Function not permitted in attach-message mode."
+msgstr "Funkcija neleistina laiðko prisegimo reþime."
+
+#: curs_main.c:229
+msgid "Cannot toggle write on a readonly mailbox!"
+msgstr "Negaliu perjungti tik skaitomos dëþutës raðomumo!"
+
+#: curs_main.c:236
+msgid "Changes to folder will be written on folder exit."
+msgstr "Aplanko pakeitimai bus áraðyti iðeinant ið aplanko."
+
+#: curs_main.c:241
+msgid "Changes to folder will not be written."
+msgstr "Aplanko pakeitimai nebus áraðyti."
+
+#: curs_main.c:373
+msgid "Quit"
+msgstr "Iðeit"
+
+#: curs_main.c:374 pager.c:1372 postpone.c:38
+msgid "Del"
+msgstr "Trint"
+
+#: curs_main.c:375 postpone.c:39
+msgid "Undel"
+msgstr "Gràþint"
+
+#: curs_main.c:377 query.c:44
+msgid "Mail"
+msgstr "Raðyt"
+
+#: curs_main.c:378 pager.c:1373
+msgid "Reply"
+msgstr "Atsakyt"
+
+#: curs_main.c:379
+msgid "Group"
+msgstr "Grupei"
+
+#: curs_main.c:461
+msgid "Mailbox was externally modified.  Flags may be wrong."
+msgstr "Dëþutë buvo iðoriðkai pakeista.  Flagai gali bûti neteisingi."
+
+#: curs_main.c:464
+msgid "New mail in this mailbox."
+msgstr "Naujas paðtas ðioje dëþutëje."
+
+#: curs_main.c:578
+msgid "No tagged messages."
+msgstr "Nëra paþymëtø laiðkø."
+
+#: curs_main.c:658
+msgid "Jump to message: "
+msgstr "Ðokti á laiðkà: "
+
+#: curs_main.c:664
+msgid "Argument must be a message number."
+msgstr "Argumentas turi bûti laiðko numeris."
+
+#: curs_main.c:697
+msgid "That message is not visible."
+msgstr "Tas laiðkas yra nematomas."
+
+#: curs_main.c:700
+msgid "Invalid message number."
+msgstr "Blogas laiðko numeris."
+
+#: curs_main.c:713
+msgid "Delete messages matching: "
+msgstr "Iðtrinti laiðkus, tenkinanèius: "
+
+#: curs_main.c:735
+msgid "No limit pattern is in effect."
+msgstr "Joks ribojimo pattern'as nëra naudojamas."
+
+#. i18n: ask for a limit to apply
+#: curs_main.c:740
+#, c-format
+msgid "Limit: %s"
+msgstr "Riba: %s"
+
+#: curs_main.c:750
+msgid "Limit to messages matching: "
+msgstr "Riboti iki laiðkø, tenkinanèiø: "
+
+#: curs_main.c:780
+msgid "Quit Mutt?"
+msgstr "Iðeiti ið Mutt?"
+
+#: curs_main.c:856
+msgid "Tag messages matching: "
+msgstr "Paþymëti laiðkus, tenkinanèius: "
+
+#: curs_main.c:864
+msgid "Undelete messages matching: "
+msgstr "Sugràþinti laiðkus, tenkinanèius: "
+
+#: curs_main.c:871
+msgid "Untag messages matching: "
+msgstr "Atþymëti laiðkus, tenkinanèius: "
+
+#: curs_main.c:939
+msgid "Open mailbox in read-only mode"
+msgstr "Atidaryti dëþutæ tik skaitymo reþimu."
+
+#: curs_main.c:941
+msgid "Open mailbox"
+msgstr "Atidaryti dëþutæ"
+
+#: curs_main.c:957 mx.c:491 mx.c:637
+#, c-format
+msgid "%s is not a mailbox."
+msgstr "%s nëra paðto dëþutë."
+
+#: curs_main.c:1042
+msgid "Exit Mutt without saving?"
+msgstr "Iðeiti ið Mutt neiðsaugojus pakeitimø?"
+
+#: curs_main.c:1074 curs_main.c:1098
+msgid "You are on the last message."
+msgstr "Tu esi ties paskutiniu laiðku."
+
+#: curs_main.c:1081 curs_main.c:1123
+msgid "No undeleted messages."
+msgstr "Nëra iðtrintø laiðkø."
+
+#: curs_main.c:1116 curs_main.c:1139
+msgid "You are on the first message."
+msgstr "Tu esi ties pirmu laiðku."
+
+#: curs_main.c:1211 pattern.c:1126
+msgid "Search wrapped to top."
+msgstr "Paieðka perðoko á virðø."
+
+#: curs_main.c:1220 pattern.c:1137
+msgid "Search wrapped to bottom."
+msgstr "Paieðka perðoko á apaèià."
+
+#: curs_main.c:1253
+msgid "No new messages"
+msgstr "Nëra naujø laiðkø"
+
+#: curs_main.c:1253
+msgid "No unread messages"
+msgstr "Nëra neskaitytø laiðkø"
+
+#: curs_main.c:1254
+msgid " in this limited view"
+msgstr " ðiame apribotame vaizde"
+
+#: curs_main.c:1378
+msgid "No more threads."
+msgstr "Daugiau gijø nëra."
+
+#: curs_main.c:1380
+msgid "You are on the first thread."
+msgstr "Tu esi ties pirma gija."
+
+#: curs_main.c:1438 curs_main.c:1469 flags.c:228 thread.c:651 thread.c:702
+msgid "Threading is not enabled."
+msgstr "Skirstymas gijomis neleidþiamas."
+
+#: curs_main.c:1456
+msgid "Thread contains unread messages."
+msgstr "Gijoje yra neskaitytø laiðkø."
+
+#: curs_main.c:1622
+msgid "Can't edit message on POP server."
+msgstr "Negaliu taisyti laiðko POP serveryje."
+
+#.
+#. * SLcurses_waddnstr() can't take a "const char *", so this is only
+#. * declared "static" (sigh)
+#.
+#: edit.c:36
+msgid ""
+"~~\t\tinsert a line begining with a single ~\n"
+"~b users\tadd users to the Bcc: field\n"
+"~c users\tadd users to the Cc: field\n"
+"~f messages\tinclude messages\n"
+"~F messages\tsame as ~f, except also include headers\n"
+"~h\t\tedit the message header\n"
+"~m messages\tinclude and quote messages\n"
+"~M messages\tsame as ~m, except include headers\n"
+"~p\t\tprint the message\n"
+"~q\t\twrite file and quit editor\n"
+"~r file\t\tread a file into the editor\n"
+"~t users\tadd users to the To: field\n"
+"~u\t\trecall the previous line\n"
+"~v\t\tedit message with the $visual editor\n"
+"~w file\t\twrite message to file\n"
+"~x\t\tabort changes and quit editor\n"
+"~?\t\tthis message\n"
+".\t\ton a line by itself ends input\n"
+msgstr ""
+"~~\t\táterpti eilutæ, prasidedanèià vienu ~\n"
+"~b vartotojai\tpridëti vartotojus prie Bcc: lauko\n"
+"~c vartotojai\tpridëti vartotojus prie Cc: lauko\n"
+"~f laiðkai\tátraukti laiðkus\n"
+"~F laiðkai\ttas pats kas ~f, be to, átraukti antraðtes\n"
+"~h\t\ttaisyti laiðko antraðtæ\n"
+"~m laiðkai\tátraukti ir cituoti laiðkus\n"
+"~M laiðkai\ttas pats kas ~m, be to, átraukti antraðtes\n"
+"~p\t\tspausdinti laiðkà\n"
+"~q\t\táraðyti bylà ir iðeiti ið redaktoriaus\n"
+"~r byla\tperskaityti bylà á redaktoriø\n"
+"~t vartotojai\tpridëti vartotojus prie To: lauko\n"
+"~u\t\tatkurti praeità eilutæ\n"
+"~v\t\ttaisyti laiðkà su $visual redaktoriumi\n"
+"~w byla\táraðyti laiðkà á bylà\n"
+"~x\t\tatsisakyti pakeitimø ir iðeiti ið redaktoriaus\n"
+"~?\t\tði þinutë\n"
+".\t\tvienas eilutëje baigia ávedimà\n"
+
+#: edit.c:178
+#, c-format
+msgid "%d: invalid message number.\n"
+msgstr "%d: blogas laiðko numeris.\n"
+
+#: edit.c:309
+msgid "(End message with a . on a line by itself)\n"
+msgstr "(Uþbaik laiðkà vieninteliu taðku eilutëje)\n"
+
+#: edit.c:367
+msgid "No mailbox.\n"
+msgstr "Nëra dëþutës.\n"
+
+#: edit.c:371
+msgid "Message contains:\n"
+msgstr "Laiðke yra:\n"
+
+#: edit.c:375 edit.c:426
+msgid "(continue)\n"
+msgstr "(tæsti)\n"
+
+#: edit.c:388
+msgid "missing filename.\n"
+msgstr "trûksta bylos vardo.\n"
+
+#: edit.c:408
+msgid "No lines in message.\n"
+msgstr "Laiðke nëra eiluèiø.\n"
+
+#: edit.c:437
+#, c-format
+msgid "%s: unknown editor command (~? for help)\n"
+msgstr "%s: neþinoma redaktoriaus komanda (~? suteiks pagalbà)\n"
+
+#: editmsg.c:74
+#, c-format
+msgid "could not create temporary folder: %s"
+msgstr "negalëjau sukurti laikino aplanko: %s"
+
+#: editmsg.c:84
+#, c-format
+msgid "could not write temporary mail folder: %s"
+msgstr "negalëjau áraðyti laikino paðto aplanko: %s"
+
+#: editmsg.c:102
+msgid "Message file is empty!"
+msgstr "Laiðkø byla yra tuðèia!"
+
+#: editmsg.c:109
+msgid "Message not modified!"
+msgstr "Laiðkas nepakeistas!"
+
+#: editmsg.c:117
+#, c-format
+msgid "Can't open message file: %s"
+msgstr "Negaliu atidaryti laiðko bylos: %s"
+
+#: editmsg.c:124 editmsg.c:152
+#, c-format
+msgid "Can't append to folder: %s"
+msgstr "Negaliu pridurti laiðko prie aplanko: %s"
+
+#: editmsg.c:183
+#, c-format
+msgid "Error. Preserving temporary file: %s"
+msgstr "Klaida. Iðsaugau laikinà bylà: %s"
+
+#: flags.c:266
+msgid "Set flag"
+msgstr "Uþdëti flagà"
+
+#: flags.c:266
+msgid "Clear flag"
+msgstr "Iðvalyti flagà"
+
+#. didn't find anything that we could display!
+#: handler.c:1023
+msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
+msgstr ""
+"[-- Klaida:  Nepavyko parodyti në vienos Multipart/Alternative dalies! --]\n"
+
+#: handler.c:1140
+#, c-format
+msgid "[-- Attachment #%d"
+msgstr "[-- Priedas #%d"
+
+#: handler.c:1151
+#, c-format
+msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
+msgstr "[-- Tipas: %s/%s, Koduotë: %s, Dydis: %s --]\n"
+
+#: handler.c:1210
+#, c-format
+msgid "[-- Autoview using %s --]\n"
+msgstr "[-- Automatinë perþiûra su %s --]\n"
+
+#: handler.c:1211
+#, c-format
+msgid "Invoking autoview command: %s"
+msgstr "Kvieèiu autom. perþiûros komandà: %s"
+
+#: handler.c:1248 handler.c:1266
+#, c-format
+msgid "[-- Autoview stderr of %s --]\n"
+msgstr "[-- Automatinës perþiûros %s klaidos --]\n"
+
+#: handler.c:1298
+msgid "[-- Error: message/external-body has no access-type parameter --]\n"
+msgstr ""
+"[-- Klaida: message/external-body dalis neturi access-type parametro --]\n"
+
+#: handler.c:1315
+#, c-format
+msgid "[-- This %s/%s attachment "
+msgstr "[-- Ðis %s/%s priedas "
+
+#: handler.c:1322
+#, c-format
+msgid "(size %s bytes) "
+msgstr "(dydis %s baitø)"
+
+#: handler.c:1324
+msgid "has been deleted --]\n"
+msgstr "buvo iðtrintas --]\n"
+
+#: handler.c:1327
+#, c-format
+msgid "[-- on %s --]\n"
+msgstr "[-- %s --]\n"
+
+#: handler.c:1329
+#, c-format
+msgid "[-- name: %s --]\n"
+msgstr "[-- vardas: %s --]\n"
+
+#: handler.c:1340
+#, c-format
+msgid ""
+"[-- This %s/%s attachment is not included, --]\n"
+"[-- and the indicated external source has --]\n"
+"[-- expired. --]\n"
+msgstr ""
+"[-- Ðis %s/%s priedas neátrauktas, --]\n"
+"[-- o nurodytas iðorinis ðaltinis iðseko. --]\n"
+
+#: handler.c:1354
+#, c-format
+msgid ""
+"[-- This %s/%s attachment is not included, --]\n"
+"[-- and the indicated access-type %s is unsupported --]\n"
+msgstr ""
+"[-- Ðis %s/%s priedas neátrauktas, --]\n"
+"[-- o nurodytas pasiekimo tipas %s yra nepalaikomas. --]\n"
+
+#: handler.c:1464
+msgid "Error: multipart/signed has no protocol."
+msgstr "Klaida: multipart/signed neturi protokolo."
+
+#: handler.c:1477
+msgid "Error: multipart/encrypted has no protocol parameter!"
+msgstr "Klaida: multipart/encrypted neturi protocol parametro!"
+
+#: handler.c:1519
+msgid "Unable to open temporary file!"
+msgstr "Negaliu atidaryti laikinos bylos!"
+
+#: handler.c:1578
+#, c-format
+msgid "[-- %s/%s is unsupported "
+msgstr "[-- %s/%s yra nepalaikomas "
+
+#: handler.c:1583
+#, c-format
+msgid "(use '%s' to view this part)"
+msgstr "(naudok '%s' ðiai daliai perþiûrëti)"
+
+#: handler.c:1585
+msgid "(need 'view-attachments' bound to key!)"
+msgstr "('view-attachments' turi bûti susietas su klaviðu!)"
+
+#: headers.c:171
+#, c-format
+msgid "%s: unable to attach file"
+msgstr "%s: negalëjau prisegti bylos"
+
+#: help.c:278
+msgid "ERROR: please report this bug"
+msgstr "KLAIDA: praðau praneðti ðià klaidà"
+
+#: help.c:320
+msgid "<UNKNOWN>"
+msgstr "<NEÞINOMAS>"
+
+#: help.c:332
+msgid ""
+"\n"
+"Generic bindings:\n"
+"\n"
+msgstr ""
+"\n"
+"Bendri susiejimai:\n"
+
+#: help.c:336
+msgid ""
+"\n"
+"Unbound functions:\n"
+"\n"
+msgstr ""
+"\n"
+"Nesusietos funkcijos:\n"
+
+#: help.c:344
+#, c-format
+msgid "Help for %s"
+msgstr "Pagalba apie %s"
+
+#: hook.c:245
+#, c-format
+msgid "unhook: unknown hook type: %s"
+msgstr "unhook: neþinomas hook tipas: %s"
+
+#: imap/auth_anon.c:39
+msgid "Authenticating (anonymous)..."
+msgstr "Autentikuojuosi (anoniminë)..."
+
+#: imap/auth_anon.c:69
+msgid "Anonymous authentication failed."
+msgstr "Anoniminë autentikacija nepavyko."
+
+#: imap/auth_cram.c:44
+msgid "Authenticating (CRAM-MD5)..."
+msgstr "Autentikuojuosi (CRAM-MD5)..."
+
+#: imap/auth_cram.c:119
+msgid "CRAM-MD5 authentication failed."
+msgstr "CRAM-MD5 autentikacija nepavyko."
+
+#. now begin login
+#: imap/auth_gss.c:87
+msgid "Authenticating (GSSAPI)..."
+msgstr "Autentikuojuosi (GSSAPI)..."
+
+#: imap/auth_gss.c:261
+msgid "GSSAPI authentication failed."
+msgstr "GSSAPI autentikacija nepavyko."
+
+#: imap/auth_login.c:34
+msgid "LOGIN disabled on this server."
+msgstr "LOGIN iðjungtas ðiame serveryje."
+
+#: imap/auth_login.c:43 pop_auth.c:232
+msgid "Logging in..."
+msgstr "Pasisveikinu..."
+
+#: imap/auth_login.c:66 pop_auth.c:275
+msgid "Login failed."
+msgstr "Nepavyko pasisveikinti."
+
+#: imap/auth_sasl.c:91 pop_auth.c:79
+msgid "Authenticating (SASL)..."
+msgstr "Autentikuojuosi (SASL)..."
+
+#: imap/auth_sasl.c:163 pop_auth.c:157
+msgid "SASL authentication failed."
+msgstr "SASL autentikacija nepavyko."
+
+#: imap/browse.c:80
+msgid "Getting namespaces..."
+msgstr "Gaunu vardø erdves..."
+
+#: imap/browse.c:89
+msgid "Getting folder list..."
+msgstr "Gaunu aplankø sàraðà..."
+
+#: imap/browse.c:265
+msgid "Create mailbox: "
+msgstr "Sukurti dëþutæ: "
+
+#: imap/browse.c:271
+msgid "Mailbox created."
+msgstr "Dëþutë sukurta."
+
+#. something is wrong because the server reported fewer messages
+#. * than we previously saw
+#.
+#: imap/command.c:301
+msgid "Fatal error.  Message count is out of sync!"
+msgstr "Mirtina klaida.  Nesutampa laiðkø skaièius!"
+
+#: imap/imap.c:89
+#, c-format
+msgid "Closing connection to %s..."
+msgstr "Uþdarau jungtá su %s..."
+
+#: imap/imap.c:296
+msgid "This IMAP server is ancient. Mutt does not work with it."
+msgstr "Ðis IMAP serveris yra senoviðkas. Mutt su juo neveikia."
+
+#: imap/imap.c:498
+#, c-format
+msgid "Selecting %s..."
+msgstr "Parenku %s..."
+
+#. STATUS not supported
+#: imap/imap.c:668
+msgid "Unable to append to IMAP mailboxes at this server"
+msgstr "Nepavyko pridurti prie IMAP dëþuèiø ðiame serveryje"
+
+#. command failed cause folder doesn't exist
+#: imap/imap.c:677 imap/message.c:573 muttlib.c:1144
+#, c-format
+msgid "Create %s?"
+msgstr "Sukurti %s?"
+
+#: imap/imap.c:713
+msgid "Closing connection to IMAP server..."
+msgstr "Uþdarau jungtá su IMAP serveriu..."
+
+#: imap/imap.c:876 pop.c:458
+#, c-format
+msgid "Marking %d messages deleted..."
+msgstr "Paþymiu %d laiðkus iðtrintais..."
+
+#: imap/imap.c:895
+#, c-format
+msgid "Saving message status flags... [%d/%d]"
+msgstr "Iðsaugau laiðko bûsenos flagus... [%d/%d]"
+
+#: imap/imap.c:952
+msgid "Expunging messages from server..."
+msgstr "Iðtuðtinu laiðkus ið serverio..."
+
+#: imap/imap.c:1229
+#, c-format
+msgid "Subscribing to %s..."
+msgstr "Uþsakau %s..."
+
+#: imap/imap.c:1231
+#, c-format
+msgid "Unsubscribing to %s..."
+msgstr "Atsisakau %s..."
+
+#. Unable to fetch headers for lower versions
+#: imap/message.c:74
+msgid "Unable to fetch headers from this IMAP server version."
+msgstr "Negaliu paimti antraðèiø ið ðios IMAP serverio versijos."
+
+#: imap/message.c:92 pop.c:209
+#, c-format
+msgid "Fetching message headers... [%d/%d]"
+msgstr "Paimu laiðkø antraðtes... [%d/%d]"
+
+#: imap/message.c:237 pop.c:336
+msgid "Fetching message..."
+msgstr "Paimu laiðkà..."
+
+#: imap/message.c:273 pop.c:373
+msgid "The message index is incorrect. Try reopening the mailbox."
+msgstr "Laiðkø indeksas yra neteisingas. Bandyk ið naujo atidaryti dëþutæ."
+
+#: imap/message.c:463
+msgid "Uploading message ..."
+msgstr "Nusiunèiu laiðkà..."
+
+#: imap/message.c:551
+#, c-format
+msgid "Copying %d messages to %s..."
+msgstr "Kopijuoju %d laiðkus á %s..."
+
+#: imap/message.c:555
+#, c-format
+msgid "Copying message %d to %s..."
+msgstr "Kopijuoju laiðkà %d á %s..."
+
+#: imap/util.c:43
+msgid "Continue?"
+msgstr "Tæsti?"
+
+#: imap/util.c:49
+#, c-format
+msgid "%s [%s]\n"
+msgstr "%s [%s]\n"
+
+#: init.c:486
+msgid "alias: no address"
+msgstr "alias: nëra adreso"
+
+#: init.c:580
+msgid "invalid header field"
+msgstr "blogas antraðtës laukas"
+
+#: init.c:633
+#, c-format
+msgid "%s: unknown sorting method"
+msgstr "%s: neþinomas rikiavimo metodas"
+
+#: init.c:744
+#, c-format
+msgid "mutt_restore_default(%s): error in regexp: %s\n"
+msgstr "mutt_restore_default(%s): klaida regexp'e: %s\n"
+
+#: init.c:805
+#, c-format
+msgid "%s: unknown variable"
+msgstr "%s: neþinomas kintamasis"
+
+#: init.c:814
+msgid "prefix is illegal with reset"
+msgstr "negalima vartoti prieðdëlio su reset"
+
+#: init.c:820
+msgid "value is illegal with reset"
+msgstr "reikðmë neleistina reset komandoje"
+
+#: init.c:859
+#, c-format
+msgid "%s is set"
+msgstr "%s yra ájungtas"
+
+#: init.c:859
+#, c-format
+msgid "%s is unset"
+msgstr "%s yra iðjungtas"
+
+#: init.c:1065
+#, c-format
+msgid "%s: invalid mailbox type"
+msgstr "%s: blogas paðto dëþutës tipas"
+
+#: init.c:1090 init.c:1135
+#, c-format
+msgid "%s: invalid value"
+msgstr "%s: bloga reikðmë"
+
+#: init.c:1193
+#, c-format
+msgid "%s: unknown type"
+msgstr "%s: neþinomas tipas"
+
+#: init.c:1234
+#, c-format
+msgid "Error in %s, line %d: %s"
+msgstr "Klaida %s, eilutë %d: %s"
+
+#. the muttrc source keyword
+#: init.c:1250
+#, c-format
+msgid "source: errors in %s"
+msgstr "source: klaidos %s"
+
+#: init.c:1251
+#, c-format
+msgid "source: reading aborted due too many errors in %s"
+msgstr "source: skaitymas nutrauktas, nes %s yra per daug klaidø."
+
+#: init.c:1265
+#, c-format
+msgid "source: error at %s"
+msgstr "source: klaida %s"
+
+#: init.c:1270
+msgid "source: too many arguments"
+msgstr "source: per daug argumentø"
+
+#: init.c:1321
+#, c-format
+msgid "%s: unknown command"
+msgstr "%s: neþinoma komanda"
+
+#: init.c:1677
+#, c-format
+msgid "Error in command line: %s\n"
+msgstr "Klaida komandinëje eilutëje: %s\n"
+
+#: init.c:1720
+msgid "unable to determine home directory"
+msgstr "negaliu nustatyti namø katalogo"
+
+#: init.c:1728
+msgid "unable to determine username"
+msgstr "negaliu nustatyti vartotojo vardo"
+
+#: keymap.c:433
+msgid "Macro loop detected."
+msgstr "Rastas ciklas makrokomandoje."
+
+#: keymap.c:636 keymap.c:644
+msgid "Key is not bound."
+msgstr "Klaviðas nëra susietas."
+
+#: keymap.c:648
+#, c-format
+msgid "Key is not bound.  Press '%s' for help."
+msgstr "Klaviðas nëra susietas.  Spausk '%s' dël pagalbos."
+
+#: keymap.c:659
+msgid "push: too many arguments"
+msgstr "push: per daug argumentø"
+
+#: keymap.c:680
+#, c-format
+msgid "%s: no such menu"
+msgstr "%s: nëra tokio meniu"
+
+#: keymap.c:689
+msgid "null key sequence"
+msgstr "nulinë klaviðø seka"
+
+#: keymap.c:771
+msgid "bind: too many arguments"
+msgstr "bind: per daug argumentø"
+
+#: keymap.c:786
+#, c-format
+msgid "%s: no such function in map"
+msgstr "%s: èia nëra tokios funkcijos"
+
+#: keymap.c:809
+msgid "macro: empty key sequence"
+msgstr "macro: tuðèia klaviðø seka"
+
+#: keymap.c:820
+msgid "macro: too many arguments"
+msgstr "macro: per daug argumentø"
+
+#: keymap.c:850
+msgid "exec: too few arguments"
+msgstr "exec: per maþai argumentø"
+
+#: keymap.c:870
+#, c-format
+msgid "%s: no such command"
+msgstr "%s: nëra tokios komandos"
+
+#: keymap_alldefs.h:5
+msgid "null operation"
+msgstr "nulinë operacija"
+
+#: keymap_alldefs.h:6
+msgid "force viewing of attachment using mailcap"
+msgstr "priverstinai rodyti priedà naudojant mailcap áraðà"
+
+#: keymap_alldefs.h:7
+msgid "view attachment as text"
+msgstr "þiûrëti priedà kaip tekstà"
+
+#: keymap_alldefs.h:8
+msgid "move to the bottom of the page"
+msgstr "eiti á puslapio apaèià"
+
+#: keymap_alldefs.h:9
+msgid "remail a message to another user"
+msgstr "vël siøsti laiðkà kitam vartotojui"
+
+#: keymap_alldefs.h:10
+msgid "select a new file in this directory"
+msgstr "pasirink naujà bylà ðiame kataloge"
+
+#: keymap_alldefs.h:11
+msgid "view file"
+msgstr "þiûrëti bylà"
+
+#: keymap_alldefs.h:12
+msgid "display the currently selected file's name"
+msgstr "parodyti dabar paþymëtos bylos vardà"
+
+#: keymap_alldefs.h:13
+msgid "subscribe to current mailbox (IMAP only)"
+msgstr "uþsakyti esamà aplankà (tik IMAP)"
+
+#: keymap_alldefs.h:14
+msgid "unsubscribe to current mailbox (IMAP only)"
+msgstr "atsisakyti esamo aplanko (tik IMAP)"
+
+#: keymap_alldefs.h:15
+msgid "toggle view all/subscribed mailboxes (IMAP only)"
+msgstr "perjungti visø/uþsakytø dëþuèiø rodymà (tik IMAP)"
+
+#: keymap_alldefs.h:16
+msgid "change directories"
+msgstr "keisti katalogus"
+
+#: keymap_alldefs.h:17
+msgid "check mailboxes for new mail"
+msgstr "tikrinti, ar dëþutëse yra naujo paðto"
+
+#: keymap_alldefs.h:18
+msgid "attach a file(s) to this message"
+msgstr "prisegti bylà(as) prie ðio laiðko"
+
+#: keymap_alldefs.h:19
+msgid "attach message(s) to this message"
+msgstr "prisegti bylà(as) prie ðio laiðko"
+
+#: keymap_alldefs.h:20
+msgid "edit the BCC list"
+msgstr "taisyti BCC sàraðà"
+
+#: keymap_alldefs.h:21
+msgid "edit the CC list"
+msgstr "taisyti CC sàraðà"
+
+#: keymap_alldefs.h:22
+msgid "edit attachment description"
+msgstr "taisyti priedo apraðymà"
+
+#: keymap_alldefs.h:23
+msgid "edit attachment transfer-encoding"
+msgstr "taisyti priedo Transfer-Encoding"
+
+#: keymap_alldefs.h:24
+msgid "enter a file to save a copy of this message in"
+msgstr "ávesk bylà, á kurià iðsaugoti ðio laiðko kopijà"
+
+#: keymap_alldefs.h:25
+msgid "edit the file to be attached"
+msgstr "taisyti bylà, skirtà prisegimui"
+
+#: keymap_alldefs.h:26
+msgid "edit the from field"
+msgstr "taisyti From laukà"
+
+#: keymap_alldefs.h:27
+msgid "edit the message with headers"
+msgstr "taisyti laiðkà su antraðtëmis"
+
+#: keymap_alldefs.h:28
+msgid "edit the message"
+msgstr "taisyti laiðkà"
+
+#: keymap_alldefs.h:29
+msgid "edit attachment using mailcap entry"
+msgstr "taisyti priedà naudojant mailcap áraðà"
+
+#: keymap_alldefs.h:30
+msgid "edit the Reply-To field"
+msgstr "taisyti Reply-To laukà"
+
+#: keymap_alldefs.h:31
+msgid "edit the subject of this message"
+msgstr "taisyti ðio laiðko temà"
+
+#: keymap_alldefs.h:32
+msgid "edit the TO list"
+msgstr "taisyti To sàraðà"
+
+#: keymap_alldefs.h:33
+msgid "create a new mailbox (IMAP only)"
+msgstr "sukurti naujà dëþutæ (tik IMAP)"
+
+#: keymap_alldefs.h:34
+msgid "edit attachment content type"
+msgstr "keisti priedo Content-Type"
+
+#: keymap_alldefs.h:35
+msgid "get a temporary copy of an attachment"
+msgstr "gauti laikinà priedo kopijà"
+
+#: keymap_alldefs.h:36
+msgid "run ispell on the message"
+msgstr "paleisti ispell laiðkui"
+
+#: keymap_alldefs.h:37
+msgid "compose new attachment using mailcap entry"
+msgstr "sukurti naujà priedà naudojant mailcap áraðà"
+
+#: keymap_alldefs.h:38
+msgid "toggle recoding of this attachment"
+msgstr "perjungti ðio priedo perkodavimà"
+
+#: keymap_alldefs.h:39
+msgid "save this message to send later"
+msgstr "iðsaugoti ðá laiðkà vëlesniam siuntimui"
+
+#: keymap_alldefs.h:40
+msgid "rename/move an attached file"
+msgstr "pervadinti/perkelti prisegtà bylà"
+
+#: keymap_alldefs.h:41
+msgid "send the message"
+msgstr "siøsti laiðkà"
+
+#: keymap_alldefs.h:42
+msgid "toggle disposition between inline/attachment"
+msgstr "perjungti, ar siøsti laiðke, ar priede"
+
+#: keymap_alldefs.h:43
+msgid "toggle whether to delete file after sending it"
+msgstr "perjungti, ar iðtrinti bylà, jà iðsiuntus"
+
+#: keymap_alldefs.h:44
+msgid "update an attachment's encoding info"
+msgstr "atnaujinti priedo koduotës info."
+
+#: keymap_alldefs.h:45
+msgid "write the message to a folder"
+msgstr "áraðyti laiðkà á aplankà"
+
+#: keymap_alldefs.h:46
+msgid "copy a message to a file/mailbox"
+msgstr "kopijuoti laiðkà á bylà/dëþutæ"
+
+#: keymap_alldefs.h:47
+msgid "create an alias from a message sender"
+msgstr "sukurti aliasà laiðko siuntëjui"
+
+#: keymap_alldefs.h:48
+msgid "move entry to bottom of screen"
+msgstr "rodyti áraðà á ekrano apaèioje"
+
+#: keymap_alldefs.h:49
+msgid "move entry to middle of screen"
+msgstr "rodyti áraðà á ekrano viduryje"
+
+#: keymap_alldefs.h:50
+msgid "move entry to top of screen"
+msgstr "rodyti áraðà á ekrano virðuje"
+
+#: keymap_alldefs.h:51
+msgid "make decoded (text/plain) copy"
+msgstr "padaryti iðkoduotà (text/plain) kopijà"
+
+#: keymap_alldefs.h:52
+msgid "make decoded copy (text/plain) and delete"
+msgstr "padaryti iðkoduotà (text/plain) kopijà ir iðtrinti"
+
+#: keymap_alldefs.h:53
+msgid "delete the current entry"
+msgstr "iðtrinti esamà áraðà"
+
+#: keymap_alldefs.h:54
+msgid "delete the current mailbox (IMAP only)"
+msgstr "iðtrinti esamà dëþutæ (tik IMAP)"
+
+#: keymap_alldefs.h:55
+msgid "delete all messages in subthread"
+msgstr "iðtrinti visus laiðkus subgijoje"
+
+#: keymap_alldefs.h:56
+msgid "delete all messages in thread"
+msgstr "iðtrinti visus laiðkus gijoje"
+
+#: keymap_alldefs.h:57
+msgid "display full address of sender"
+msgstr "rodyti pilnà siuntëjo adresà"
+
+#: keymap_alldefs.h:58
+msgid "display message and toggle header weeding"
+msgstr "rodyti laiðkà ir perjungti antraðèiø rodymà"
+
+#: keymap_alldefs.h:59
+msgid "display a message"
+msgstr "rodyti laiðkà"
+
+#: keymap_alldefs.h:60
+msgid "edit the raw message"
+msgstr "taisyti grynà laiðkà"
+
+#: keymap_alldefs.h:61
+msgid "delete the char in front of the cursor"
+msgstr "iðtrinti simbolá prieð þymeklá"
+
+#: keymap_alldefs.h:62
+msgid "move the cursor one character to the left"
+msgstr "perkelti þymeklá vienu simboliu kairën"
+
+#: keymap_alldefs.h:63
+msgid "move the cursor to the beginning of the word"
+msgstr "perkelti þymeklá á þodþio pradþià"
+
+#: keymap_alldefs.h:64
+msgid "jump to the beginning of the line"
+msgstr "perðokti á eilutës pradþià"
+
+#: keymap_alldefs.h:65
+msgid "cycle among incoming mailboxes"
+msgstr "eiti ratu per gaunamo paðto dëþutes"
+
+#: keymap_alldefs.h:66
+msgid "complete filename or alias"
+msgstr "uþbaigti bylos vardà ar aliasà"
+
+#: keymap_alldefs.h:67
+msgid "complete address with query"
+msgstr "uþbaigti adresà su uþklausa"
+
+#: keymap_alldefs.h:68
+msgid "delete the char under the cursor"
+msgstr "iðtrinti simbolá po þymekliu"
+
+#: keymap_alldefs.h:69
+msgid "jump to the end of the line"
+msgstr "perðokti á eilutës galà"
+
+#: keymap_alldefs.h:70
+msgid "move the cursor one character to the right"
+msgstr "perkelti þymeklá vienu simboliu deðinën"
+
+#: keymap_alldefs.h:71
+msgid "move the cursor to the end of the word"
+msgstr "perkelti þymeklá á þodþio pabaigà"
+
+#: keymap_alldefs.h:72 keymap_alldefs.h:73
+msgid "scroll up through the history list"
+msgstr "slinktis aukðtyn istorijos sàraðe"
+
+#: keymap_alldefs.h:74
+msgid "delete chars from cursor to end of line"
+msgstr "iðtrinti simbolius nuo þymeklio iki eilutës galo"
+
+#: keymap_alldefs.h:75
+msgid "delete chars from the cursor to the end of the word"
+msgstr "iðtrinti simbolius nuo þymeklio iki þodþio galo"
+
+#: keymap_alldefs.h:76
+msgid "delete all chars on the line"
+msgstr "iðtrinti visus simbolius eilutëje"
+
+#: keymap_alldefs.h:77
+msgid "delete the word in front of the cursor"
+msgstr "iðtrinti þodá prieð þymeklá"
+
+#: keymap_alldefs.h:78
+msgid "quote the next typed key"
+msgstr "cituoti sekantá nuspaustà klaviðà"
+
+#: keymap_alldefs.h:79
+msgid "transpose character under cursor with previous"
+msgstr "sukeisti simbolá po þymekliu su praeitu"
+
+#: keymap_alldefs.h:80
+msgid "capitalize the word"
+msgstr "pradëti þodá didþiàja raide"
+
+#: keymap_alldefs.h:81
+msgid "convert the word to lower case"
+msgstr "perraðyti þodá maþosiomis raidëmis"
+
+#: keymap_alldefs.h:82
+msgid "convert the word to upper case"
+msgstr "perraðyti þodá didþiosiomis raidëmis"
+
+#: keymap_alldefs.h:83
+msgid "enter a muttrc command"
+msgstr "ávesti muttrc komandà"
+
+#: keymap_alldefs.h:84
+msgid "enter a file mask"
+msgstr "ávesti bylø kaukæ"
+
+#: keymap_alldefs.h:85
+msgid "exit this menu"
+msgstr "iðeiti ið ðio meniu"
+
+#: keymap_alldefs.h:86
+msgid "filter attachment through a shell command"
+msgstr "filtruoti priedà per shell komandà"
+
+#: keymap_alldefs.h:87
+msgid "move to the first entry"
+msgstr "eiti á pirmà uþraðà"
+
+#: keymap_alldefs.h:88
+msgid "toggle a message's 'important' flag"
+msgstr "perjungti laiðko 'svarbumo' flagà"
+
+#: keymap_alldefs.h:89
+msgid "forward a message with comments"
+msgstr "persiøsti laiðkà su komentarais"
+
+#: keymap_alldefs.h:90
+msgid "select the current entry"
+msgstr "paþymëti esamà áraðà"
+
+#: keymap_alldefs.h:91
+msgid "reply to all recipients"
+msgstr "atsakyti visiems gavëjams"
+
+#: keymap_alldefs.h:92
+msgid "scroll down 1/2 page"
+msgstr "slinktis þemyn per 1/2 puslapio"
+
+#: keymap_alldefs.h:93
+msgid "scroll up 1/2 page"
+msgstr "slinktis aukðtyn per 1/2 puslapio"
+
+#: keymap_alldefs.h:94
+msgid "this screen"
+msgstr "ðis ekranas"
+
+#: keymap_alldefs.h:95
+msgid "jump to an index number"
+msgstr "ðokti á indekso numerá"
+
+#: keymap_alldefs.h:96
+msgid "move to the last entry"
+msgstr "eiti á paskutiná áraðà"
+
+#: keymap_alldefs.h:97
+msgid "reply to specified mailing list"
+msgstr "atsakyti nurodytai konferencijai"
+
+#: keymap_alldefs.h:98
+msgid "execute a macro"
+msgstr "ávykdyti macro"
+
+#: keymap_alldefs.h:99
+msgid "compose a new mail message"
+msgstr "sukurti naujà laiðkà"
+
+#: keymap_alldefs.h:100
+msgid "open a different folder"
+msgstr "atidaryti kità aplankà"
+
+#: keymap_alldefs.h:101
+msgid "open a different folder in read only mode"
+msgstr "atidaryti kità aplankà tik skaitymo reþimu"
+
+#: keymap_alldefs.h:102
+msgid "clear a status flag from a message"
+msgstr "iðvalyti laiðko bûsenos flagà"
+
+#: keymap_alldefs.h:103
+msgid "delete messages matching a pattern"
+msgstr "iðtrinti laiðkus, tenkinanèius pattern'à"
+
+#: keymap_alldefs.h:104
+msgid "retrieve mail from POP server"
+msgstr "parsiøsti paðtà ið POP serverio"
+
+#: keymap_alldefs.h:105
+msgid "move to the first message"
+msgstr "eiti á pirmà laiðkà"
+
+#: keymap_alldefs.h:106
+msgid "move to the last message"
+msgstr "eiti á paskutiná laiðkà"
+
+#: keymap_alldefs.h:107
+msgid "show only messages matching a pattern"
+msgstr "rodyti tik laiðkus, tenkinanèius pattern'à"
+
+#: keymap_alldefs.h:108
+msgid "jump to the next new message"
+msgstr "ðokti á kità naujà laiðkà"
+
+#: keymap_alldefs.h:109
+msgid "jump to the next subthread"
+msgstr "ðokti á kità subgijà"
+
+#: keymap_alldefs.h:110
+msgid "jump to the next thread"
+msgstr "ðokti á kità gijà"
+
+#: keymap_alldefs.h:111
+msgid "move to the next undeleted message"
+msgstr "eiti á kità neiðtrintà laiðkà"
+
+#: keymap_alldefs.h:112
+msgid "jump to the next unread message"
+msgstr "ðokti á kità neskaitytà laiðkà"
+
+#: keymap_alldefs.h:113
+msgid "jump to parent message in thread"
+msgstr "ðokti á tëviná laiðkà gijoje"
+
+#: keymap_alldefs.h:114
+msgid "jump to previous thread"
+msgstr "ðokti á praeità gijà"
+
+#: keymap_alldefs.h:115
+msgid "jump to previous subthread"
+msgstr "ðokti á praeità subgijà"
+
+#: keymap_alldefs.h:116
+msgid "move to the previous undeleted message"
+msgstr "eiti á praeità neiðtrintà laiðkà"
+
+#: keymap_alldefs.h:117
+msgid "jump to the previous new message"
+msgstr "ðokti á praeità naujà laiðkà"
+
+#: keymap_alldefs.h:118
+msgid "jump to the previous unread message"
+msgstr "ðokti á praeità neskaitytà laiðkà"
+
+#: keymap_alldefs.h:119
+msgid "mark the current thread as read"
+msgstr "paþymëti esamà gijà skaityta"
+
+#: keymap_alldefs.h:120
+msgid "mark the current subthread as read"
+msgstr "paþymëti esamà subgijà skaityta"
+
+#: keymap_alldefs.h:121
+msgid "set a status flag on a message"
+msgstr "uþdëti bûsenos flagà laiðkui"
+
+#: keymap_alldefs.h:122
+msgid "save changes to mailbox"
+msgstr "iðsaugoti dëþutës pakeitimus"
+
+#: keymap_alldefs.h:123
+msgid "tag messages matching a pattern"
+msgstr "paþymëti laiðkus, tenkinanèius pattern'à"
+
+#: keymap_alldefs.h:124
+msgid "undelete messages matching a pattern"
+msgstr "sugràþinti laiðkus, tenkinanèius pattern'à"
+
+#: keymap_alldefs.h:125
+msgid "untag messages matching a pattern"
+msgstr "atþymëti laiðkus, tenkinanèius pattern'à"
+
+#: keymap_alldefs.h:126
+msgid "move to the middle of the page"
+msgstr "eiti á puslapio vidurá"
+
+#: keymap_alldefs.h:127
+msgid "move to the next entry"
+msgstr "eiti á kità áraðà"
+
+#: keymap_alldefs.h:128
+msgid "scroll down one line"
+msgstr "slinktis viena eilute þemyn"
+
+#: keymap_alldefs.h:129
+msgid "move to the next page"
+msgstr "eiti á kità puslapá"
+
+#: keymap_alldefs.h:130
+msgid "jump to the bottom of the message"
+msgstr "ðokti á laiðko apaèià"
+
+#: keymap_alldefs.h:131
+msgid "toggle display of quoted text"
+msgstr "perjungti cituojamo teksto rodymà"
+
+#: keymap_alldefs.h:132
+msgid "skip beyond quoted text"
+msgstr "praleisti cituojamà tekstà"
+
+#: keymap_alldefs.h:133
+msgid "jump to the top of the message"
+msgstr "ðokti á laiðko virðø"
+
+#: keymap_alldefs.h:134
+msgid "pipe message/attachment to a shell command"
+msgstr "filtruoti laiðkà/priedà per shell komandà"
+
+#: keymap_alldefs.h:135
+msgid "move to the previous entry"
+msgstr "eiti á praeità áraðà"
+
+#: keymap_alldefs.h:136
+msgid "scroll up one line"
+msgstr "slinktis viena eilute aukðtyn"
+
+#: keymap_alldefs.h:137
+msgid "move to the previous page"
+msgstr "eiti á praeità puslapá"
+
+#: keymap_alldefs.h:138
+msgid "print the current entry"
+msgstr "spausdinti esamà áraðà"
+
+#: keymap_alldefs.h:139
+msgid "query external program for addresses"
+msgstr "uþklausti iðorinæ programà adresams rasti"
+
+#: keymap_alldefs.h:140
+msgid "append new query results to current results"
+msgstr "pridurti naujos uþklausos rezultatus prie esamø"
+
+#: keymap_alldefs.h:141
+msgid "save changes to mailbox and quit"
+msgstr "iðsaugoti dëþutës pakeitimus ir iðeiti"
+
+#: keymap_alldefs.h:142
+msgid "recall a postponed message"
+msgstr "tæsti atidëtà laiðkà"
+
+#: keymap_alldefs.h:143
+msgid "clear and redraw the screen"
+msgstr "iðvalyti ir perpieðti ekranà"
+
+#: keymap_alldefs.h:144
+msgid "{internal}"
+msgstr "{vidinë}"
+
+#: keymap_alldefs.h:145
+msgid "reply to a message"
+msgstr "atsakyti á laiðkà"
+
+#: keymap_alldefs.h:146
+msgid "use the current message as a template for a new one"
+msgstr "naudoti esamà laiðkà kaip ðablonà naujam"
+
+#: keymap_alldefs.h:147
+msgid "save message/attachment to a file"
+msgstr "iðsaugoti laiðkà/priedà á bylà"
+
+#: keymap_alldefs.h:148
+msgid "search for a regular expression"
+msgstr "ieðkoti reguliarios iðraiðkos"
+
+#: keymap_alldefs.h:149
+msgid "search backwards for a regular expression"
+msgstr "ieðkoti reguliarios iðraiðkos atgal"
+
+#: keymap_alldefs.h:150
+msgid "search for next match"
+msgstr "ieðkoti kito tinkamo"
+
+#: keymap_alldefs.h:151
+msgid "search for next match in opposite direction"
+msgstr "ieðkoti kito tinkamo prieðinga kryptimi"
+
+#: keymap_alldefs.h:152
+msgid "toggle search pattern coloring"
+msgstr "perjungti paieðkos pattern'o spalvojimà"
+
+#: keymap_alldefs.h:153
+msgid "invoke a command in a subshell"
+msgstr "kviesti komandà subshell'e"
+
+#: keymap_alldefs.h:154
+msgid "sort messages"
+msgstr "rikiuoti laiðkus"
+
+#: keymap_alldefs.h:155
+msgid "sort messages in reverse order"
+msgstr "rikiuoti laiðkus atvirkðèia tvarka"
+
+#: keymap_alldefs.h:156
+msgid "tag the current entry"
+msgstr "paþymëti esamà áraðà"
+
+#: keymap_alldefs.h:157
+msgid "apply next function to tagged messages"
+msgstr "pritaikyti kità funkcijà paþymëtiems laiðkams"
+
+#: keymap_alldefs.h:158
+msgid "tag the current subthread"
+msgstr "paþymëti esamà subgijà"
+
+#: keymap_alldefs.h:159
+msgid "tag the current thread"
+msgstr "paþymëti esamà gijà"
+
+#: keymap_alldefs.h:160
+msgid "toggle a message's 'new' flag"
+msgstr "perjungti laiðko 'naujumo' flagà"
+
+#: keymap_alldefs.h:161
+msgid "toggle whether the mailbox will be rewritten"
+msgstr "perjungti, ar dëþutë bus perraðoma"
+
+#: keymap_alldefs.h:162
+msgid "toggle whether to browse mailboxes or all files"
+msgstr "perjungti, ar narðyti paðto dëþutes, ar visas bylas"
+
+#: keymap_alldefs.h:163
+msgid "move to the top of the page"
+msgstr "eiti á puslapio virðø"
+
+#: keymap_alldefs.h:164
+msgid "undelete the current entry"
+msgstr "sugràþinti esamà áraðà"
+
+#: keymap_alldefs.h:165
+msgid "undelete all messages in thread"
+msgstr "sugràþinti visus laiðkus gijoje"
+
+#: keymap_alldefs.h:166
+msgid "undelete all messages in subthread"
+msgstr "sugràþinti visus laiðkus subgijoje"
+
+#: keymap_alldefs.h:167
+msgid "show the Mutt version number and date"
+msgstr "parodyti Mutt versijos numerá ir datà"
+
+#: keymap_alldefs.h:168
+msgid "view attachment using mailcap entry if necessary"
+msgstr "rodyti priedà naudojant mailcap áraðà, jei reikia"
+
+#: keymap_alldefs.h:169
+msgid "show MIME attachments"
+msgstr "rodyti MIME priedus"
+
+#: keymap_alldefs.h:170
+msgid "show currently active limit pattern"
+msgstr "parodyti dabar aktyvø ribojimo pattern'à"
+
+#: keymap_alldefs.h:171
+msgid "collapse/uncollapse current thread"
+msgstr "sutraukti/iðskleisti esamà gijà"
+
+#: keymap_alldefs.h:172
+msgid "collapse/uncollapse all threads"
+msgstr "sutraukti/iðskleisti visas gijas"
+
+#: keymap_alldefs.h:173
+msgid "attach a PGP public key"
+msgstr "prisegti PGP vieðà raktà"
+
+#: keymap_alldefs.h:174
+msgid "show PGP options"
+msgstr "rodyti PGP parinktis"
+
+#: keymap_alldefs.h:175
+msgid "extract PGP public keys"
+msgstr "iðtraukti PGP vieðus raktus"
+
+#: keymap_alldefs.h:176
+msgid "wipe PGP passphrase from memory"
+msgstr "uþmirðti PGP slaptà frazæ"
+
+#: keymap_alldefs.h:177
+msgid "mail a PGP public key"
+msgstr "siøsti PGP vieðà raktà"
+
+#: keymap_alldefs.h:178
+msgid "verify a PGP public key"
+msgstr "patikrinti PGP vieðà raktà"
+
+#: keymap_alldefs.h:179
+msgid "view the key's user id"
+msgstr "þiûrëti rakto vartotojo id"
+
+#: keymap_alldefs.h:180
+msgid "make decrypted copy and delete"
+msgstr "padaryti iððifruotà kopijà ir iðtrinti"
+
+#: keymap_alldefs.h:181
+msgid "make decrypted copy"
+msgstr "padaryti iððifruotà kopijà"
+
+#: keymap_alldefs.h:182
+msgid "Accept the chain constructed"
+msgstr "Priimti sukonstruotà grandinæ"
+
+#: keymap_alldefs.h:183
+msgid "Append a remailer to the chain"
+msgstr "Pridëti persiuntëjà á grandinæ"
+
+#: keymap_alldefs.h:184
+msgid "Insert a remailer into the chain"
+msgstr "Áterpti persiuntëjà á grandinæ"
+
+#: keymap_alldefs.h:185
+msgid "Delete a remailer from the chain"
+msgstr "Paðalinti persiuntëjà ið grandinës"
+
+#: keymap_alldefs.h:186
+msgid "Select the previous element of the chain"
+msgstr "Pasirinkti ankstesná elementà grandinëje"
+
+#: keymap_alldefs.h:187
+msgid "Select the next element of the chain"
+msgstr "Pasirinkti tolesná elementà grandinëje"
+
+#: keymap_alldefs.h:188
+msgid "send the message through a mixmaster remailer chain"
+msgstr "pasiøsti praneðimà per mixmaster persiuntëjø grandinæ"
+
+#: lib.c:59 lib.c:74 lib.c:105
+msgid "Out of memory!"
+msgstr "Baigësi atmintis!"
+
+#: main.c:41
+msgid ""
+"To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
+"To report a bug, please use the flea(1) utility.\n"
+msgstr ""
+"Kad susisiektum su kûrëjais, raðyk laiðkus á <mutt-dev@mutt.org>.\n"
+"Kad praneðtum klaidà, naudok flea(1) áranká.\n"
+
+#: main.c:45
+msgid ""
+"Copyright (C) 1996-2000 Michael R. Elkins and others.\n"
+"Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
+"Mutt is free software, and you are welcome to redistribute it\n"
+"under certain conditions; type `mutt -vv' for details.\n"
+msgstr ""
+"Copyright (C) 1996-2000 Michael R. Elkins ir kiti.\n"
+"Mutt ateina ABSOLIUÈIAI BE JOKIOS GARANTIJOS; dël smulkmenø paleisk 'mutt "
+"-vv.'\n"
+"Mutt yra free software, ir tu gali laisvai jà platinti su tam\n"
+"tikromis sàlygomis; raðyk 'mutt -vv' dël smulkmenø.\n"
+
+#: main.c:51
+msgid ""
+"Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
+"Copyright (C) 1997-2000 Thomas Roessler <roessler@guug.de>\n"
+"Copyright (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 2000      Edmund Grimley Evans <edmundo@rano.org>\n"
+"\n"
+"Lots of others not mentioned here contributed lots of code,\n"
+"fixes, and suggestions.\n"
+"\n"
+"    This program is free software; you can redistribute it and/or modify\n"
+"    it under the terms of the GNU General Public License as published by\n"
+"    the Free Software Foundation; either version 2 of the License, or\n"
+"    (at your option) any later version.\n"
+"\n"
+"    This program is distributed in the hope that it will be useful,\n"
+"    but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"    GNU General Public License for more details.\n"
+"\n"
+"    You should have received a copy of the GNU General Public License\n"
+"    along with this program; if not, write to the Free Software\n"
+"    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
+msgstr ""
+"Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
+"Copyright (C) 1997-2000 Thomas Roessler <roessler@guug.de>\n"
+"Copyright (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 2000      Edmund Grimley Evans <edmundo@rano.org>\n"
+"\n"
+"Daugybë kitø, nepaminëtø èia, prisidëjo daugybe kodo, pataisymø ir "
+"pasiûlymø.\n"
+"\n"
+"    Ði programa yra free software; tu gali jà platinti ir/arba\n"
+"keisti \n"
+"    pagal GNU General Public License sàlygas, kurias paskelbë\n"
+"    Free Software Foundation; arba 2 Licenzijos versijà, arba\n"
+"    (pagal tavo pasirinkimà) bet kurià vëlesnæ versijà.\n"
+"\n"
+"    Ði programa yra platinama, tikintis, kad ji bus naudinga,\n"
+"    bet BE JOKIOS GARANTIJOS; netgi be numanomos garantijos\n"
+"    VERTINGUMUI arba TINKAMUMUI KOKIAM NORS TIKSLUI.\n"
+"  Þiûrëk á GNU General Public License dël detaliø.\n"
+"\n"
+"    Tu turëjai gauti GNU General Public License kopijà\n"
+"    kartu su ðia programa; jeigu ne, paraðyk á Free Software\n"
+"    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111, USA.\n"
+
+#: main.c:88
+msgid ""
+"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
+"]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
+"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
+"       mutt -v[v]\n"
+"\n"
+"options:\n"
+"  -a <file>\tattach a file to the message\n"
+"  -b <address>\tspecify a blind carbon-copy (BCC) address\n"
+"  -c <address>\tspecify a carbon-copy (CC) address\n"
+"  -e <command>\tspecify a command to be executed after initialization\n"
+"  -f <file>\tspecify which mailbox to read\n"
+"  -F <file>\tspecify an alternate muttrc file\n"
+"  -H <file>\tspecify a draft file to read header from\n"
+"  -i <file>\tspecify a file which Mutt should include in the reply\n"
+"  -m <type>\tspecify a default mailbox type\n"
+"  -n\t\tcauses Mutt not to read the system Muttrc\n"
+"  -p\t\trecall a postponed message\n"
+"  -R\t\topen mailbox in read-only mode\n"
+"  -s <subj>\tspecify a subject (must be in quotes if it has spaces)\n"
+"  -v\t\tshow version and compile-time definitions\n"
+"  -x\t\tsimulate the mailx send mode\n"
+"  -y\t\tselect a mailbox specified in your `mailboxes' list\n"
+"  -z\t\texit immediately if there are no messages in the mailbox\n"
+"  -Z\t\topen the first folder with new message, exit immediately if none\n"
+"  -h\t\tthis help message"
+msgstr ""
+"vartosena: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <byla> ] [ -m <tipas> ] [ -f "
+"<byla> ]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <byla> ] [ -F <byla> ] [ -H <byla> ] [ "
+"-i <byla> ] [ -s <tema> ] [ -b <adres> ] [ -c <adres> ] <adres> [ ... ]\n"
+"       mutt [ -n ] [ -e <cmd> ] [ -F <byla> ] -p\n"
+"       mutt -v[v]\n"
+"\n"
+"parinktys:\n"
+"  -a <byla>\tprisegti bylà prie laiðko\n"
+"  -b <adresas>\tnurodyti blind carbon-copy (BCC) adresà\n"
+"  -c <adresas>\tnurodyti carbon-copy (CC) adresà\n"
+"  -e <komanda>\tnurodyti komandà, kurià ávykdyti po inicializacijos\n"
+"  -f <byla>\tnurodyti, kurià dëþutæ perskaityti\n"
+"  -F <byla>\tnurodyti alternatyvià muttrc bylà\n"
+"  -H <byla>\tnurodyti juodraðèio bylà, ið kurios skaityti antraðtæ\n"
+"  -i <byla>\tnurodyti bylà, kurià Mutt turëtø átraukti á atsakymà\n"
+"  -m <tipas>\tnurodyti áprastà dëþutës tipà\n"
+"  -n\t\tpriverèia Mutt neskaityti sistemos Muttrc\n"
+"  -p\t\ttæsti atidëtà laiðkà\n"
+"  -R\t\tatidaryti dëþutæ tik skaitymo reþime\n"
+"  -s <tema>\tnurodyti temà (turi bûti kabutëse, jei yra tarpø)\n"
+"  -v\t\trodyti versijà ir kompiliavimo apibrëþimus\n"
+"  -x\t\tsimuliuoti mailx siuntimo bûdà\n"
+"  -y\t\tpasirinkti dëþutæ, nurodytà tavo 'mailboxes' sàraðe\n"
+"  -z\t\tiðkart iðeiti, jei dëþutëje nëra laiðkø\n"
+"  -Z\t\tatidaryti pirmà aplankà su naujais laiðkais, iðkart iðeiti, jei "
+"nëra\n"
+"  -h\t\tði pagalbos þinutë"
+
+#: main.c:140
+msgid ""
+"\n"
+"Compile options:"
+msgstr ""
+"\n"
+"Kompiliavimo parinktys:"
+
+#: main.c:413
+msgid "Error initializing terminal."
+msgstr "Klaida inicializuojant terminalà."
+
+#: main.c:513
+#, c-format
+msgid "Debugging at level %d.\n"
+msgstr "Derinimo lygis %d.\n"
+
+#: main.c:515
+msgid "DEBUG was not defined during compilation.  Ignored.\n"
+msgstr "DEBUG nebuvo apibrëþtas kompiliavimo metu.  Ignoruoju.\n"
+
+#: main.c:632
+#, c-format
+msgid "%s does not exist. Create it?"
+msgstr "%s neegzistuoja. Sukurti jà?"
+
+#: main.c:636
+#, c-format
+msgid "Can't create %s: %s."
+msgstr "Negaliu sukurti %s: %s."
+
+#: main.c:681
+msgid "No recipients specified.\n"
+msgstr "Nenurodyti jokie gavëjai.\n"
+
+#: main.c:767
+#, c-format
+msgid "%s: unable to attach file.\n"
+msgstr "%s: negaliu prisegti bylos.\n"
+
+#: main.c:787
+msgid "No mailbox with new mail."
+msgstr "Nëra dëþutës su nauju paðtu."
+
+#: main.c:796
+msgid "No incoming mailboxes defined."
+msgstr "Neapibrëþta në viena paðtà gaunanti dëþutë."
+
+#: main.c:827
+msgid "Mailbox is empty."
+msgstr "Dëþutë yra tuðèia."
+
+#: mbox.c:129 mbox.c:286
+msgid "Reading %s... %d (%d%%)"
+msgstr "Skaitau %s... %d (%d%%)"
+
+#: mbox.c:152 mbox.c:211
+msgid "Mailbox is corrupt!"
+msgstr "Dëþutë yra sugadinta!"
+
+#: mbox.c:659
+msgid "Mailbox was corrupted!"
+msgstr "Dëþutë buvo sugadinta!"
+
+#: mbox.c:696 mbox.c:971
+msgid "Fatal error!  Could not reopen mailbox!"
+msgstr "Baisi klaida!  Negaliu vël atidaryti dëþutës!"
+
+#: mbox.c:705
+msgid "Unable to lock mailbox!"
+msgstr "Negaliu uþrakinti dëþutës!"
+
+#. this means ctx->changed or ctx->deleted was set, but no
+#. * messages were found to be changed or deleted.  This should
+#. * never happen, is we presume it is a bug in mutt.
+#.
+#: mbox.c:751
+msgid "sync: mbox modified, but no modified messages! (report this bug)"
+msgstr "sync: mbox pakeista, bet nëra pakeistø laiðkø! (praneðk ðià klaidà)"
+
+#: mbox.c:792
+msgid "Writing messages... %d (%d%%)"
+msgstr "Raðau laiðkus... %d (%d%%)"
+
+#: mbox.c:955
+#, c-format
+msgid "Write failed!  Saved partial mailbox to %s"
+msgstr "Áraðyti nepavyko!  Dëþutë dalinai iðsaugota á %s"
+
+#: mbox.c:1021
+msgid "Could not reopen mailbox!"
+msgstr "Negaliu vël atidaryti dëþutës!"
+
+#: mbox.c:1059
+msgid "Reopening mailbox..."
+msgstr "Vël atidarau dëþutæ..."
+
+#: menu.c:395
+msgid "Jump to: "
+msgstr "Ðokti á: "
+
+#: menu.c:404
+msgid "Invalid index number."
+msgstr "Blogas indekso numeris."
+
+#: menu.c:408 menu.c:426 menu.c:462 menu.c:503 menu.c:519 menu.c:530
+#: menu.c:541 menu.c:583 menu.c:594 menu.c:607 menu.c:620 menu.c:982
+msgid "No entries."
+msgstr "Nëra áraðø."
+
+#: menu.c:423
+msgid "You cannot scroll down farther."
+msgstr "Tu negali slinkti þemyn daugiau."
+
+#: menu.c:439
+msgid "You cannot scroll up farther."
+msgstr "Tu negali slinkti aukðtyn daugiau."
+
+#: menu.c:459
+msgid "You are on the last page."
+msgstr "Tu esi paskutiniame puslapyje."
+
+#: menu.c:481
+msgid "You are on the first page."
+msgstr "Tu esi pirmame puslapyje."
+
+#: menu.c:560
+msgid "First entry is shown."
+msgstr "Rodomas pirmas áraðas."
+
+#: menu.c:580
+msgid "Last entry is shown."
+msgstr "Rodomas paskutinis áraðas."
+
+#: menu.c:631
+msgid "You are on the last entry."
+msgstr "Tu esi ties paskutiniu áraðu."
+
+#: menu.c:642
+msgid "You are on the first entry."
+msgstr "Tu esi ties pirmu áraðu."
+
+#: menu.c:702 pattern.c:1072
+msgid "Search for: "
+msgstr "Ieðkoti ko: "
+
+#: menu.c:703
+msgid "Reverse search for: "
+msgstr "Atgal ieðkoti ko: "
+
+#: menu.c:713 pattern.c:1105
+msgid "No search pattern."
+msgstr "Jokio paieðkos pattern'o."
+
+#: menu.c:743 pager.c:1839 pager.c:1855 pager.c:1943 pattern.c:1170
+msgid "Not found."
+msgstr "Nerasta."
+
+#: menu.c:852
+msgid "No tagged entries."
+msgstr "Nëra paþymëtø áraðø."
+
+#: menu.c:945
+msgid "Search is not implemented for this menu."
+msgstr "Paieðka ðiam meniu neágyvendinta."
+
+#: menu.c:950
+msgid "Jumping is not implemented for dialogs."
+msgstr "Ðokinëjimas dialoguose neágyvendintas."
+
+#: menu.c:985
+msgid "Tagging is not supported."
+msgstr "Þymëjimas nepalaikomas."
+
+#: mh.c:189
+#, c-format
+msgid "Reading %s... %d"
+msgstr "Skaitau %s... %d"
+
+#: muttlib.c:807
+msgid "File is a directory, save under it?"
+msgstr "Byla yra katalogas, saugoti joje?"
+
+#: muttlib.c:812
+msgid "File under directory: "
+msgstr "Byla kataloge: "
+
+#: muttlib.c:824
+msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
+msgstr "Byla egzistuoja, (u)þraðyti, (p)ridurti, arba (n)utraukti?"
+
+#: muttlib.c:824
+msgid "oac"
+msgstr "upn"
+
+#: muttlib.c:1111
+msgid "Can't save message to POP mailbox."
+msgstr "Negaliu iðsaugoti laiðko á POP dëþutæ."
+
+#: muttlib.c:1120
+#, c-format
+msgid "%s is not a mailbox!"
+msgstr "%s nëra paðto dëþutë!"
+
+#: muttlib.c:1126
+#, c-format
+msgid "Append messages to %s?"
+msgstr "Pridurti laiðkus prie %s?"
+
+#: mutt_socket.c:201
+msgid "SSL is unavailable."
+msgstr "SSL nepasiekiamas."
+
+#: mutt_socket.c:237
+msgid "Preconnect command failed."
+msgstr "Nepavyko komanda prieð jungimàsi"
+
+#: mutt_socket.c:326 mutt_socket.c:366
+#, c-format
+msgid "Looking up %s..."
+msgstr "Ieðkau %s..."
+
+#: mutt_socket.c:331 mutt_socket.c:370
+#, c-format
+msgid "Could not find the host \"%s\""
+msgstr "Negalëjau rasti hosto \"%s\""
+
+#: mutt_socket.c:335 mutt_socket.c:375
+#, c-format
+msgid "Connecting to %s..."
+msgstr "Jungiuosi prie %s..."
+
+#: mutt_socket.c:398
+#, c-format
+msgid "Could not connect to %s (%s)."
+msgstr "Negalëjau prisijungti prie %s (%s)."
+
+#: mutt_ssl.c:105
+msgid "Failed to find enough entropy on your system"
+msgstr "Nepavyko rasti pakankamai entropijos tavo sistemoje"
+
+#: mutt_ssl.c:120
+#, c-format
+msgid "Filling entropy pool: %s...\n"
+msgstr "Pildau entropijos tvenkiná: %s...\n"
+
+#: mutt_ssl.c:128
+#, c-format
+msgid "%s has insecure permissions!"
+msgstr "%s teisës nesaugios!"
+
+#: mutt_ssl.c:147
+msgid "SSL disabled due the lack of entropy"
+msgstr "SSL uþdraustas dël entropijos trûkumo"
+
+#: mutt_ssl.c:227
+msgid "Unable to get certificate from peer"
+msgstr "Nepavyko gauti sertifikato ið peer'o"
+
+#: mutt_ssl.c:238
+#, c-format
+msgid "SSL connection using %s"
+msgstr "SSL jungtis, naudojant %s"
+
+#: mutt_ssl.c:267
+msgid "Unknown"
+msgstr "Neþinoma"
+
+#: mutt_ssl.c:292
+msgid "[unable to calculate]"
+msgstr "[negaliu suskaièiuoti]"
+
+#: mutt_ssl.c:310
+msgid "[invalid date]"
+msgstr "[bloga data]"
+
+#: mutt_ssl.c:385
+msgid "Server certificate is not yet valid"
+msgstr "Serverio sertifikatas dar negalioja"
+
+#: mutt_ssl.c:392
+msgid "Server certificate has expired"
+msgstr "Serverio sertifikatas paseno"
+
+#: mutt_ssl.c:465
+msgid "This certificate belongs to:"
+msgstr "Ðis sertifikatas priklauso: "
+
+#: mutt_ssl.c:475
+msgid "This certificate was issued by:"
+msgstr "Ðis sertifikatas buvo iðduotas:"
+
+#: mutt_ssl.c:485
+msgid "This certificate is valid"
+msgstr "Ðis sertifikatas galioja"
+
+#: mutt_ssl.c:486
+#, c-format
+msgid "   from %s"
+msgstr "    nuo %s"
+
+#: mutt_ssl.c:488
+#, c-format
+msgid "     to %s"
+msgstr "    iki %s"
+
+#: mutt_ssl.c:494
+#, c-format
+msgid "Fingerprint: %s"
+msgstr "Pirðtø antspaudas: %s"
+
+#: mutt_ssl.c:496
+msgid "SSL Certificate check"
+msgstr "SSL sertifikato patikrinimas"
+
+#: mutt_ssl.c:499
+msgid "(r)eject, accept (o)nce, (a)ccept always"
+msgstr "(a)tmesti, (p)riimti ðákart, (v)isada priimti"
+
+#: mutt_ssl.c:500
+msgid "roa"
+msgstr "apv"
+
+#: mutt_ssl.c:504
+msgid "(r)eject, accept (o)nce"
+msgstr "(a)tmesti, (p)riimti ðákart"
+
+#: mutt_ssl.c:505
+msgid "ro"
+msgstr "ap"
+
+#: mutt_ssl.c:509 pgpkey.c:442
+msgid "Exit  "
+msgstr "Iðeiti  "
+
+#: mutt_ssl.c:534
+msgid "Warning: Couldn't save certificate"
+msgstr "Áspëju: Negalëjau iðsaugoti sertifikato"
+
+#: mutt_ssl.c:536
+msgid "Certificate saved"
+msgstr "Sertifikatas iðsaugotas"
+
+#: mx.c:118
+#, c-format
+msgid "Lock count exceeded, remove lock for %s?"
+msgstr "Uþraktø skaièius virðytas, paðalinti uþraktà nuo %s?"
+
+#: mx.c:130
+#, c-format
+msgid "Can't dotlock %s.\n"
+msgstr "Negaliu taðku uþrakinti %s.\n"
+
+#: mx.c:188
+msgid "Timeout exceeded while attempting fcntl lock!"
+msgstr "Virðytas leistinas laikas siekiant fcntl uþrakto!"
+
+#: mx.c:194
+#, c-format
+msgid "Waiting for fcntl lock... %d"
+msgstr "Laukiu fcntl uþrakto... %d"
+
+#: mx.c:222
+msgid "Timeout exceeded while attempting flock lock!"
+msgstr "Virðytas leistinas laikas siekiant flock uþrakto!"
+
+#: mx.c:229
+#, c-format
+msgid "Waiting for flock attempt... %d"
+msgstr "Laukiu fcntl uþrakto... %d"
+
+#: mx.c:574
+#, c-format
+msgid "Couldn't lock %s\n"
+msgstr "Nepavyko uþrakinti %s\n"
+
+#: mx.c:662
+#, c-format
+msgid "Reading %s..."
+msgstr "Skaitau %s..."
+
+#: mx.c:761
+#, c-format
+msgid "Writing %s..."
+msgstr "Raðau %s..."
+
+#: mx.c:794
+#, c-format
+msgid "Could not synchronize mailbox %s!"
+msgstr "Nepavyko sinchronizuoti dëþutës %s!"
+
+#: mx.c:859
+#, c-format
+msgid "Move read messages to %s?"
+msgstr "Perkelti skaitytus laiðkus á %s?"
+
+#: mx.c:871 mx.c:1124
+#, c-format
+msgid "Purge %d deleted message?"
+msgstr "Sunaikinti %d iðtrintà laiðkà?"
+
+#: mx.c:871 mx.c:1124
+#, c-format
+msgid "Purge %d deleted messages?"
+msgstr "Sunaikinti %d iðtrintus laiðkus?"
+
+#: mx.c:895
+#, c-format
+msgid "Moving read messages to %s..."
+msgstr "Perkeliu skaitytus laiðkus á %s..."
+
+#: mx.c:953 mx.c:1115
+msgid "Mailbox is unchanged."
+msgstr "Dëþutë yra nepakeista."
+
+#: mx.c:989
+#, c-format
+msgid "%d kept, %d moved, %d deleted."
+msgstr "%d palikti, %d perkelti, %d iðtrinti."
+
+#: mx.c:992 mx.c:1162
+#, c-format
+msgid "%d kept, %d deleted."
+msgstr "%d palikti, %d iðtrinti."
+
+#: mx.c:1100
+#, c-format
+msgid " Press '%s' to toggle write"
+msgstr "Spausk '%s', kad perjungtum raðymà"
+
+#: mx.c:1102
+msgid "Use 'toggle-write' to re-enable write!"
+msgstr "Naudok 'toggle-write', kad vël galëtum raðyti!"
+
+#: mx.c:1104
+#, c-format
+msgid "Mailbox is marked unwritable. %s"
+msgstr "Dëþutë yra padaryta neáraðoma. %s"
+
+#: mx.c:1159
+msgid "Mailbox checkpointed."
+msgstr "Dëþutë sutikrinta."
+
+#: mx.c:1459
+msgid "Can't write message"
+msgstr "Negaliu áraðyti laiðko"
+
+#: pager.c:61
+msgid "Not available in this menu."
+msgstr "Neprieinama ðiame meniu."
+
+#: pager.c:1366
+msgid "PrevPg"
+msgstr "PraPsl"
+
+#: pager.c:1367
+msgid "NextPg"
+msgstr "KitPsl"
+
+#: pager.c:1371
+msgid "View Attachm."
+msgstr "Priedai"
+
+#: pager.c:1374
+msgid "Next"
+msgstr "Kitas"
+
+#. emulate "less -q" and don't go on to the next message.
+#: pager.c:1751 pager.c:1782 pager.c:1811 pager.c:2031
+msgid "Bottom of message is shown."
+msgstr "Rodoma laiðko apaèia."
+
+#: pager.c:1767 pager.c:1789 pager.c:1800
+msgid "Top of message is shown."
+msgstr "Rodomas laiðko virðus."
+
+#: pager.c:1873
+msgid "Reverse search: "
+msgstr "Atvirkðèia paieðka: "
+
+#: pager.c:1874
+msgid "Search: "
+msgstr "Paieðka: "
+
+#: pager.c:1969
+msgid "Help is currently being shown."
+msgstr "Ðiuo metu rodoma pagalba."
+
+#: pager.c:1998
+msgid "No more quoted text."
+msgstr "Cituojamo teksto nebëra."
+
+#: pager.c:2011
+msgid "No more unquoted text after quoted text."
+msgstr "Nëra daugiau necituojamo teksto uþ cituojamo."
+
+#: parse.c:565
+msgid "multipart message has no boundary parameter!"
+msgstr "keliø daliø laiðkas neturi boundary parametro!"
+
+#: pattern.c:240
+#, c-format
+msgid "Error in expression: %s"
+msgstr "Klaida iðraiðkoje: %s"
+
+#: pattern.c:337
+#, c-format
+msgid "Invalid day of month: %s"
+msgstr "Bloga mënesio diena: %s"
+
+#: pattern.c:351
+#, c-format
+msgid "Invalid month: %s"
+msgstr "Blogas mënuo: %s"
+
+#: pattern.c:405
+msgid "error in expression"
+msgstr "klaida iðraiðkoje"
+
+#: pattern.c:590 pattern.c:698
+#, c-format
+msgid "error in pattern at: %s"
+msgstr "klaida pattern'e: %s"
+
+#: pattern.c:638
+#, c-format
+msgid "%c: invalid command"
+msgstr "%c: bloga komanda"
+
+#: pattern.c:644
+#, c-format
+msgid "%c: not supported in this mode"
+msgstr "%c: nepalaikomas ðiame reþime"
+
+#: pattern.c:657
+msgid "missing parameter"
+msgstr "trûksta parametro"
+
+#: pattern.c:673
+#, c-format
+msgid "mismatched parenthesis: %s"
+msgstr "trûkstami skliausteliai: %s"
+
+#: pattern.c:705
+msgid "empty pattern"
+msgstr "tuðèias pattern'as"
+
+#: pattern.c:897
+#, c-format
+msgid "error: unknown op %d (report this error)."
+msgstr "klaida: neþinoma operacija %d (praneðkite ðià klaidà)."
+
+#: pattern.c:962 pattern.c:1091
+msgid "Compiling search pattern..."
+msgstr "Kompiliuoju paieðkos pattern'à..."
+
+#: pattern.c:976
+msgid "Executing command on matching messages..."
+msgstr "Vykdau komandà tinkantiems laiðkams..."
+
+#: pattern.c:1039
+msgid "No messages matched criteria."
+msgstr "Jokie laiðkai netenkina kriterijaus."
+
+#: pattern.c:1129
+msgid "Search hit bottom without finding match"
+msgstr "Paieðka pasiekë apaèià nieko neradusi"
+
+#: pattern.c:1140
+msgid "Search hit top without finding match"
+msgstr "Paieðka pasiekë virðø nieko neradusi"
+
+#: pattern.c:1162
+msgid "Search interrupted."
+msgstr "Paieðka pertraukta."
+
+#: pgp.c:93
+msgid "Enter PGP passphrase:"
+msgstr "Ávesk slaptà PGP frazæ:"
+
+#: pgp.c:109
+msgid "PGP passphrase forgotten."
+msgstr "PGP slapta frazë pamirðta."
+
+#: pgp.c:142
+#, c-format
+msgid "[-- PGP output follows (current time: %c) --]\n"
+msgstr "[-- Toliau PGP iðvestis (esamas laikas: %c) --]\n"
+
+#: pgp.c:246
+msgid "[-- Error: unable to create PGP subprocess! --]\n"
+msgstr "[-- Klaida: negaliu sukurti PGP subproceso! --]\n"
+
+#: pgp.c:273
+msgid ""
+"\n"
+"[-- End of PGP output --]\n"
+"\n"
+msgstr ""
+"\n"
+"[-- PGP iðvesties pabaiga --]\n"
+"\n"
+
+#: pgp.c:279
+msgid ""
+"[-- BEGIN PGP MESSAGE --]\n"
+"\n"
+msgstr ""
+"[-- PGP LAIÐKO PRADÞIA --]\n"
+"\n"
+
+#: pgp.c:281
+msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
+msgstr "[-- PGP VIEÐO RAKTO BLOKO PRADÞIA --]\n"
+
+#: pgp.c:283
+msgid ""
+"[-- BEGIN PGP SIGNED MESSAGE --]\n"
+"\n"
+msgstr ""
+"[-- PGP PASIRAÐYTO LAIÐKO PRADÞIA --]\n"
+"\n"
+
+#: pgp.c:385
+msgid ""
+"\n"
+"[-- END PGP MESSAGE --]\n"
+msgstr ""
+"\n"
+"[-- PGP LAIÐKO PABAIGA --]\n"
+
+#: pgp.c:387
+msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
+msgstr "[-- PGP VIEÐO RAKTO BLOKO PABAIGA --]\n"
+
+#: pgp.c:389
+msgid ""
+"\n"
+"[-- END PGP SIGNED MESSAGE --]\n"
+msgstr ""
+"\n"
+"[-- PGP PASIRAÐYTO LAIÐKO PABAIGA --]\n"
+
+#: pgp.c:402
+msgid ""
+"[-- Error: could not find beginning of PGP message! --]\n"
+"\n"
+msgstr ""
+"[-- Klaida: neradau PGP laiðko pradþios! --]\n"
+"\n"
+
+#: pgp.c:617 pgp.c:908
+msgid ""
+"[-- End of PGP output --]\n"
+"\n"
+msgstr ""
+"[-- PGP iðvesties pabaiga --]\n"
+"\n"
+
+#: pgp.c:665
+msgid ""
+"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"\n"
+msgstr ""
+"[-- Klaida: Neteisinga multipart/signed struktûra! --]\n"
+"\n"
+
+#: pgp.c:673
+#, c-format
+msgid ""
+"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"\n"
+msgstr ""
+"[-- Klaida: Neþinomas multipart/signed protokolas %s! --]\n"
+"\n"
+
+#: pgp.c:697
+#, c-format
+msgid ""
+"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"\n"
+msgstr ""
+"[-- Dëmesio: Negaliu patikrinti %s/%s paraðo. --]\n"
+"\n"
+
+#. Now display the signed body
+#: pgp.c:707
+msgid ""
+"[-- The following data is signed --]\n"
+"\n"
+msgstr ""
+"[-- Toliau einantys duomenys yra pasiraðyti --]\n"
+"\n"
+
+#: pgp.c:713
+msgid ""
+"[-- Warning: Can't find any signatures. --]\n"
+"\n"
+msgstr ""
+"[-- Dëmesio: Negaliu rasti jokiø paraðø --]\n"
+"\n"
+
+#: pgp.c:719
+msgid ""
+"\n"
+"[-- End of signed data --]\n"
+msgstr ""
+"\n"
+"[-- Pasiraðytø duomenø pabaiga --]\n"
+
+#: pgp.c:819
+msgid "Internal error. Inform <roessler@guug.de>."
+msgstr "Vidinë klaida. Praneðk <roessler@guug.de>."
+
+#: pgp.c:879
+msgid ""
+"[-- Error: could not create a PGP subprocess! --]\n"
+"\n"
+msgstr ""
+"[-- Klaida: negalëjau sukurti PGP subproceso! --]\n"
+"\n"
+
+#: pgp.c:972
+msgid ""
+"[-- Error: malformed PGP/MIME message! --]\n"
+"\n"
+msgstr ""
+"[-- Klaida: blogai suformuotas PGP/MIME laiðkas! --]\n"
+"\n"
+
+#: pgp.c:985
+msgid "[-- Error: could not create temporary file! --]\n"
+msgstr "[-- Klaida: negalëjau sukurti laikinos bylos! --]\n"
+
+#: pgp.c:994
+msgid ""
+"[-- The following data is PGP/MIME encrypted --]\n"
+"\n"
+msgstr ""
+"[-- Toliau einantys duomenys yra uþðifruoti su PGP/MIME --]\n"
+"\n"
+
+#: pgp.c:1012
+msgid ""
+"\n"
+"[-- End of PGP/MIME encrypted data --]\n"
+msgstr ""
+"\n"
+"[-- PGP/MIME uþðifruotø duomenø pabaiga --]\n"
+
+#: pgp.c:1092
+msgid "Can't open PGP subprocess!"
+msgstr "Negaliu atidaryti PGP vaikinio proceso!"
+
+#: pgp.c:1219
+#, c-format
+msgid "Use keyID = \"%s\" for %s?"
+msgstr "Naudoti rakto ID = \"%s\", skirtà %s?"
+
+#: pgp.c:1246
+#, c-format
+msgid "Enter keyID for %s: "
+msgstr "Ávesk rakto ID, skirtà %s: "
+
+#: pgp.c:1456
+msgid "Can't invoke PGP"
+msgstr "Negaliu kviesti PGP"
+
+#: pgp.c:1560
+msgid "Create an application/pgp message?"
+msgstr "Ar sukurti application/pgp laiðkà?"
+
+#: pgpinvoke.c:301
+msgid "Fetching PGP key..."
+msgstr "Paimu PGP raktà..."
+
+#: pgpkey.c:444
+msgid "Select  "
+msgstr "Pasirink  "
+
+#: pgpkey.c:447
+msgid "Check key  "
+msgstr "Tikrinti raktà  "
+
+#: pgpkey.c:460
+#, c-format
+msgid "PGP keys matching <%s>."
+msgstr "PGP raktai, tenkinantys <%s>."
+
+#: pgpkey.c:462
+#, c-format
+msgid "PGP keys matching \"%s\"."
+msgstr "PGP raktai, tenkinantys \"%s\"."
+
+#: pgpkey.c:481 pgpkey.c:675
+msgid "Can't open /dev/null"
+msgstr "Negaliu atidaryti /dev/null"
+
+#: pgpkey.c:487 pgpkey.c:669
+msgid "Can't create temporary file"
+msgstr "Negaliu sukurti laikinos bylos"
+
+#: pgpkey.c:498 pgpkey.c:689
+msgid "Can't create filter"
+msgstr "Negaliu sukurti filtro"
+
+#: pgpkey.c:508
+#, c-format
+msgid "Key ID: 0x%s"
+msgstr "Rakto ID: ox%s"
+
+#: pgpkey.c:534
+msgid "This key can't be used: expired/disabled/revoked."
+msgstr "Ðis raktas negali bûti naudojamas: jis pasenæs/uþdraustas/atðauktas."
+
+#: pgpkey.c:548
+msgid "This ID's trust level is undefined."
+msgstr "Ðio ID pasitikëjimo lygis nenurodytas."
+
+#: pgpkey.c:551
+msgid "This ID is not trusted."
+msgstr "Ðis ID yra nepatikimas."
+
+#: pgpkey.c:554
+msgid "This ID is only marginally trusted."
+msgstr "Ðis ID yra tik vos vos patikimas."
+
+#: pgpkey.c:558
+#, c-format
+msgid "%s Do you really want to use it?"
+msgstr "%s Ar tikrai nori já naudoti?"
+
+#: pgpkey.c:654
+msgid "Please enter the key ID: "
+msgstr "Praðau, ávesk rakto ID:"
+
+#: pgpkey.c:682
+msgid "Invoking pgp..."
+msgstr "Kvieèiu pgp..."
+
+#: pgpkey.c:707
+#, c-format
+msgid "PGP Key %s."
+msgstr "PGP raktas %s."
+
+#: pgpkey.c:754 pgpkey.c:870
+#, c-format
+msgid "Looking for keys matching \"%s\"..."
+msgstr "Ieðkau raktø, tenkinanèiø \"%s\"..."
+
+#: pop.c:89 pop_lib.c:158
+msgid "Command TOP is not supported by server."
+msgstr "Serveris nepalaiko komandos TOP."
+
+#: pop.c:116
+msgid "Can't write header to temporary file!"
+msgstr "Negaliu áraðyti antraðtës á laikinà bylà!"
+
+#: pop.c:197 pop_lib.c:160
+msgid "Command UIDL is not supported by server."
+msgstr "Serveris nepalaiko komandos UIDL."
+
+#: pop.c:270
+msgid "Fetching list of messages..."
+msgstr "Paimu laiðkø sàraðà..."
+
+#: pop.c:407
+msgid "Can't write message to temporary file!"
+msgstr "Negaliu áraðyti laiðko á laikinà bylà!"
+
+#: pop.c:510 pop.c:564
+msgid "Checking for new messages..."
+msgstr "Tikrinu, ar yra naujø laiðkø..."
+
+#: pop.c:538
+msgid "POP host is not defined."
+msgstr "POP hostas nenurodytas."
+
+#: pop.c:592
+msgid "No new mail in POP mailbox."
+msgstr "Nëra naujø laiðkø POP dëþutëje."
+
+#: pop.c:599
+msgid "Delete messages from server?"
+msgstr "Iðtrinti laiðkus ið serverio?"
+
+#: pop.c:601
+#, c-format
+msgid "Reading new messages (%d bytes)..."
+msgstr "Skaitau naujus laiðkus (%d baitø)..."
+
+#: pop.c:643
+msgid "Error while writing mailbox!"
+msgstr "Klaida raðant á paðto dëþutæ!"
+
+#: pop.c:647
+#, c-format
+msgid "%s [%d of %d messages read]"
+msgstr "%s [%d ið %d laiðkø perskaityti]"
+
+#: pop.c:670 pop_lib.c:272
+msgid "Server closed connection!"
+msgstr "Serveris uþdarë jungtá!"
+
+#: pop_auth.c:193
+msgid "Authenticating (APOP)..."
+msgstr "Autentikuojuosi (APOP)..."
+
+#: pop_auth.c:217
+msgid "APOP authentication failed."
+msgstr "APOP autentikacija nepavyko."
+
+#: pop_auth.c:252
+msgid "Command USER is not supported by server."
+msgstr "Serveris nepalaiko komandos USER."
+
+#: pop_auth.c:359
+msgid "Authentication method is unknown."
+msgstr "Autentikacijos metodas neþinomas."
+
+#: pop_lib.c:156
+msgid "Unable to leave messages on server."
+msgstr "Negaliu palikti laiðkø serveryje."
+
+#: pop_lib.c:203
+#, c-format
+msgid "Error connecting to server: %s"
+msgstr "Klaida jungiantis prie IMAP serverio: %s"
+
+#: pop_lib.c:286
+msgid "Closing connection to POP server..."
+msgstr "Uþdarau jungtá su POP serveriu..."
+
+#: pop_lib.c:445
+msgid "Verifying message indexes..."
+msgstr "Tikrinu laiðkø indeksus..."
+
+#: pop_lib.c:469
+msgid "Connection lost. Reconnect to POP server?"
+msgstr "Jungtis prarasta. Vël prisijungti prie POP serverio?"
+
+#: postpone.c:165
+msgid "Postponed Messages"
+msgstr "Atidëti laiðkai"
+
+#: postpone.c:238 postpone.c:247
+msgid "No postponed messages."
+msgstr "Nëra atidëtø laiðkø."
+
+#: postpone.c:417 postpone.c:437 postpone.c:446
+msgid "Illegal PGP header"
+msgstr "Neleistina PGP antraðtë"
+
+#: query.c:45
+msgid "New Query"
+msgstr "Nauja uþklausa"
+
+#: query.c:46
+msgid "Make Alias"
+msgstr "Padaryti aliasà"
+
+#: query.c:47
+msgid "Search"
+msgstr "Ieðkoti"
+
+#: query.c:91
+msgid "Waiting for response..."
+msgstr "Laukiu atsakymo..."
+
+#: query.c:191 query.c:216
+msgid "Query command not defined."
+msgstr "Uþklausos komanda nenurodyta."
+
+#: query.c:243
+msgid "Query"
+msgstr "Uþklausa"
+
+#. Prompt for Query
+#: query.c:256 query.c:284
+msgid "Query: "
+msgstr "Uþklausa: "
+
+#: query.c:267 query.c:293
+#, c-format
+msgid "Query '%s'"
+msgstr "Uþklausa '%s''"
+
+#: recvattach.c:59
+msgid "Pipe"
+msgstr "Pipe"
+
+#: recvattach.c:60
+msgid "Print"
+msgstr "Spausdinti"
+
+#: recvattach.c:406
+msgid "Saving..."
+msgstr "Iðsaugau..."
+
+#: recvattach.c:481
+#, c-format
+msgid "WARNING!  You are about to overwrite %s, continue?"
+msgstr "DËMESIO!  Tu þadi uþraðyti ant seno %s, tæsti"
+
+#: recvattach.c:499
+msgid "Attachment filtered."
+msgstr "Priedas perfiltruotas."
+
+#: recvattach.c:566
+msgid "Filter through: "
+msgstr "Filtruoti per: "
+
+#: recvattach.c:566
+msgid "Pipe to: "
+msgstr "Pipe á: "
+
+#: recvattach.c:601
+#, c-format
+msgid "I dont know how to print %s attachments!"
+msgstr "Að neþinau kaip spausdinti %s priedus!"
+
+#: recvattach.c:666
+msgid "Print tagged attachment(s)?"
+msgstr "Spausdinti paþymëtus priedus?"
+
+#: recvattach.c:666
+msgid "Print attachment?"
+msgstr "Spausdinti priedà?"
+
+#: recvattach.c:835
+msgid "Attachments"
+msgstr "Priedai"
+
+#: recvattach.c:904
+msgid "Can't delete attachment from POP server."
+msgstr "Negaliu iðtrinti priedo ið POP serverio."
+
+#: recvattach.c:915
+msgid "Deletion of attachments from PGP messages is unsupported."
+msgstr "PGP laiðkø priedø iðtrynimas nepalaikomas."
+
+#: recvattach.c:935 recvattach.c:952
+msgid "Only deletion of multipart attachments is supported."
+msgstr "Palaikomas trynimas tik ið keleto daliø priedø."
+
+#: recvcmd.c:43
+msgid "You may only bounce message/rfc822 parts."
+msgstr "Tu gali nukreipti tik message/rfc822 priedus."
+
+#: recvcmd.c:155
+#, c-format
+msgid "Bounce message to %s...?"
+msgstr "Nukreipti laiðkà á %s...?"
+
+#: recvcmd.c:155
+#, c-format
+msgid "Bounce messages to %s...?"
+msgstr "Nukreipti laiðkus á %s...?"
+
+#: recvcmd.c:372
+#, c-format
+msgid "Can't open temporary file %s."
+msgstr "Negaliu atidaryti laikinos bylos %s."
+
+#: recvcmd.c:398 recvcmd.c:537 send.c:739
+msgid "Forward MIME encapsulated?"
+msgstr "Persiøsti MIME enkapsuliuotà?"
+
+#: recvcmd.c:412
+msgid "Can't decode all tagged attachments.  MIME-forward the others?"
+msgstr "Negaliu dekoduoti visø paþymëtø priedø.  Persiøsti kitus MIME formatu?"
+
+#: recvcmd.c:545 recvcmd.c:801
+#, c-format
+msgid "Can't create %s."
+msgstr "Negaliu sukurti %s."
+
+#: recvcmd.c:678
+msgid "Can't find any tagged messages."
+msgstr "Negaliu rasti në vieno paþymëto laiðko."
+
+#: recvcmd.c:699 send.c:664
+msgid "No mailing lists found!"
+msgstr "Nerasta jokia konferencija!"
+
+#: recvcmd.c:780
+msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
+msgstr ""
+"Negaliu dekoduoti visø paþymëtø priedø.  Enkapsuliuoti kitus MIME formatu?"
+
+#: remailer.c:480
+msgid "Append"
+msgstr "Pridurti"
+
+#: remailer.c:481
+msgid "Insert"
+msgstr "Áterpti"
+
+#: remailer.c:482
+msgid "Delete"
+msgstr "Trinti"
+
+#: remailer.c:484
+msgid "OK"
+msgstr "Gerai"
+
+#: remailer.c:512
+msgid "Can't get mixmaster's type2.list!"
+msgstr "Negaliu gauti mixmaster'io type2.list!"
+
+#: remailer.c:538
+msgid "Select a remailer chain."
+msgstr "Pasirink persiuntëjø grandinæ."
+
+#: remailer.c:598
+#, c-format
+msgid "Error: %s can't be used as the final remailer of a chain."
+msgstr ""
+"Klaida: %s negali bûti naudojamas kaip galutinis persiuntëjas grandinëje."
+
+#: remailer.c:628
+#, c-format
+msgid "Mixmaster chains are limited to %d elements."
+msgstr "Mixmaster'io grandinës turi bûti ne ilgesnës nei %d elementø."
+
+#: remailer.c:651
+msgid "The remailer chain is already empty."
+msgstr "Persiuntëjø grandinë jau tuðèia."
+
+#: remailer.c:661
+msgid "You already have the first chain element selected."
+msgstr "Tu jau pasirinkai pirmà grandinës elementà."
+
+#: remailer.c:671
+msgid "You already have the last chain element selected."
+msgstr "Tu jau pasirinkai paskutiná grandinës elementà."
+
+#: remailer.c:710
+msgid "Mixmaster doesn't accept Cc or Bcc headers."
+msgstr "Mixmaster'is nepriima Cc bei Bcc antraðèiø."
+
+#: remailer.c:734
+msgid ""
+"Please set the hostname variable to a proper value when using mixmaster!"
+msgstr "Teisingai nustatyk hostname kintamàjá, kai naudoji mixmaster'á!"
+
+#: remailer.c:765
+#, c-format
+msgid "Error sending message, child exited %d.\n"
+msgstr "Klaida siunèiant laiðkà, klaidos kodas %d.\n"
+
+#: remailer.c:769
+msgid "Error sending message."
+msgstr "Klaida siunèiant laiðkà."
+
+#: rfc1524.c:159
+#, c-format
+msgid "Improperly formated entry for type %s in \"%s\" line %d"
+msgstr "Blogai suformuotas tipo %s áraðas \"%s\" %d eilutëje"
+
+#: rfc1524.c:391
+msgid "No mailcap path specified"
+msgstr "Nenurodytas mailcap kelias!"
+
+#: rfc1524.c:417
+#, c-format
+msgid "mailcap entry for type %s not found"
+msgstr "mailcap áraðas tipui %s nerastas"
+
+#: score.c:71
+msgid "score: too few arguments"
+msgstr "score: per maþai argumentø"
+
+#: score.c:80
+msgid "score: too many arguments"
+msgstr "score: per daug argumentø"
+
+#: send.c:235
+msgid "No subject, abort?"
+msgstr "Nëra temos, nutraukti?"
+
+#: send.c:237
+msgid "No subject, aborting."
+msgstr "Nëra temos, nutraukiu."
+
+#: send.c:434
+#, c-format
+msgid "Follow-up to %s%s?"
+msgstr "Pratæsti-á %s%s?"
+
+#. There are quite a few mailing lists which set the Reply-To:
+#. * header field to the list address, which makes it quite impossible
+#. * to send a message to only the sender of the message.  This
+#. * provides a way to do that.
+#.
+#: send.c:487
+#, c-format
+msgid "Reply to %s%s?"
+msgstr "Atsakyti %s%s?"
+
+#. This could happen if the user tagged some messages and then did
+#. * a limit such that none of the tagged message are visible.
+#.
+#: send.c:639
+msgid "No tagged messages are visible!"
+msgstr "Në vienas paþymëtas laiðkas nëra matomas!"
+
+#: send.c:710
+msgid "Include message in reply?"
+msgstr "Átraukti laiðkà á atsakymà?"
+
+#: send.c:715
+msgid "Including quoted message..."
+msgstr "Átraukiu cituojamà laiðkà..."
+
+#: send.c:725
+msgid "Could not include all requested messages!"
+msgstr "Negalëjau átraukti visø praðytø laiðkø!"
+
+#: send.c:743
+msgid "Preparing forwarded message..."
+msgstr "Paruoðiu persiunèiamà laiðkà..."
+
+#. If the user is composing a new message, check to see if there
+#. * are any postponed messages first.
+#.
+#: send.c:1039
+msgid "Recall postponed message?"
+msgstr "Tæsti atidëtà laiðkà?"
+
+#: send.c:1287
+msgid "Abort unmodified message?"
+msgstr "Nutraukti nepakeistà laiðkà?"
+
+#: send.c:1289
+msgid "Aborted unmodified message."
+msgstr "Nutrauktas nepakeistas laiðkas."
+
+#. abort
+#: send.c:1330
+msgid "Mail not sent."
+msgstr "Laiðkas neiðsiøstas."
+
+#: send.c:1356
+msgid "Message postponed."
+msgstr "Laiðkas atidëtas."
+
+#: send.c:1365
+msgid "No recipients are specified!"
+msgstr "Nenurodyti jokie gavëjai!"
+
+#: send.c:1370
+msgid "No recipients were specified."
+msgstr "Nebuvo nurodyti jokie gavëjai."
+
+#: send.c:1376
+msgid "No subject, abort sending?"
+msgstr "Nëra temos, nutraukti siuntimà?"
+
+#: send.c:1380
+msgid "No subject specified."
+msgstr "Nenurodyta jokia tema."
+
+#: send.c:1427
+msgid "Sending message..."
+msgstr "Siunèiu laiðkà..."
+
+#: send.c:1554
+msgid "Could not send the message."
+msgstr "Negalëjau iðsiøsti laiðko."
+
+#: send.c:1559
+msgid "Mail sent."
+msgstr "Laiðkas iðsiøstas."
+
+#: send.c:1559
+msgid "Sending in background."
+msgstr "Siunèiu fone."
+
+#: sendlib.c:457
+msgid "No boundary parameter found! [report this error]"
+msgstr "Trûksta boundary parametro! [praneðk ðià klaidà]"
+
+#: sendlib.c:491
+#, c-format
+msgid "%s no longer exists!"
+msgstr "%s nebeegzistuoja!"
+
+#: sendlib.c:1054
+#, c-format
+msgid "Could not open %s"
+msgstr "Negalëjau atidaryti %s"
+
+#: sendlib.c:1972
+#, c-format
+msgid "Error sending message, child exited %d (%s)."
+msgstr "Klaida siunèiant laiðkà, klaidos kodas %d (%s)."
+
+#: sendlib.c:1978
+msgid "Output of the delivery process"
+msgstr "Pristatymo proceso iðvestis"
+
+#: signal.c:39
+#, c-format
+msgid "%s...  Exiting.\n"
+msgstr "%s...  Iðeinu.\n"
+
+#: signal.c:42
+#, c-format
+msgid "Caught %s...  Exiting.\n"
+msgstr "Sugavau %s...  Iðeinu.\n"
+
+#: signal.c:44
+#, c-format
+msgid "Caught signal %d...  Exiting.\n"
+msgstr "Sugavau signalà %d...  Iðeinu.\n"
+
+#: sort.c:200
+msgid "Sorting mailbox..."
+msgstr "Rikiuoju dëþutæ..."
+
+#: sort.c:232
+msgid "Could not find sorting function! [report this bug]"
+msgstr "Negalëjau rasti rikiavimo funkcijos! [praneðk ðià klaidà]"
+
+#: status.c:102
+msgid "(no mailbox)"
+msgstr "(nëra dëþutës)"
+
+#: thread.c:712
+msgid "Parent message is not visible in limited view"
+msgstr "Tëvinis laiðkas nematomas ribotame vaizde"
+
+#: thread.c:717
+msgid "Parent message is not available."
+msgstr "Nëra prieinamo tëvinio laiðko."
