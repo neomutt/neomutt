@@ -1152,13 +1152,10 @@ FILE *mutt_open_read (const char *path, pid_t *thepid)
   else
   {
     if (stat (path, &s) < 0)
-    {
-      mutt_error (_("%s: stat: %s"), path, strerror (errno));
       return (NULL);
-    }
-    if (!S_ISREG (s.st_mode))
+    if (S_ISDIR (s.st_mode))
     {
-      mutt_error (_("%s: not a regular file"), path);
+      errno = EINVAL;
       return (NULL);
     }
     f = fopen (path, "r");
