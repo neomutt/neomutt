@@ -45,10 +45,6 @@ static int tunnel_socket_write (CONNECTION* conn, const char* buf, size_t len);
 /* -- public functions -- */
 int mutt_tunnel_socket_setup (CONNECTION *conn)
 {
-  TUNNEL_DATA* tunnel = (TUNNEL_DATA*) safe_malloc (sizeof (TUNNEL_DATA));
-
-  conn->sockdata = tunnel;
-  
   conn->open = tunnel_socket_open;
   conn->close = tunnel_socket_close;
   conn->read = tunnel_socket_read;
@@ -59,10 +55,13 @@ int mutt_tunnel_socket_setup (CONNECTION *conn)
 
 static int tunnel_socket_open (CONNECTION *conn)
 {
-  TUNNEL_DATA* tunnel = (TUNNEL_DATA*) conn->sockdata;
+  TUNNEL_DATA* tunnel;
   int pid;
   int rc;
   int pin[2], pout[2];
+
+  tunnel = (TUNNEL_DATA*) safe_malloc (sizeof (TUNNEL_DATA));
+  conn->sockdata = tunnel;
 
   mutt_message (_("Connecting with \"%s\"..."), Tunnel);
 
