@@ -362,9 +362,8 @@ msgid "Pipe to command: "
 msgstr "Передать программе: "
 
 #: commands.c:417
-#, fuzzy
 msgid "No printing command has been defined."
-msgstr "Не определено ни одного почтового ящика со входящими письмами."
+msgstr "Команда для печати не определена."
 
 #: commands.c:422
 msgid "Print message?"
@@ -383,14 +382,12 @@ msgid "Messages printed"
 msgstr "Сообщения напечатаны"
 
 #: commands.c:432
-#, fuzzy
 msgid "Message could not be printed"
-msgstr "Сообщение напечатано"
+msgstr "Не удалось напечатать сообщение"
 
 #: commands.c:433
-#, fuzzy
 msgid "Messages could not be printed"
-msgstr "Сообщения напечатаны"
+msgstr "Не удалось напечатать сообщения"
 
 #: commands.c:442
 msgid ""
@@ -1303,9 +1300,9 @@ msgid "%s: unknown sorting method"
 msgstr "%s: неизвестный метод сортировки"
 
 #: init.c:744
-#, fuzzy, c-format
+#, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
-msgstr "mutt_restore_default: ошибка в регулярном выражении: %s\n"
+msgstr "mutt_restore_default(%s): ошибка в регулярном выражении: %s\n"
 
 #: init.c:805
 #, c-format
@@ -1740,7 +1737,7 @@ msgstr "поменять символ под курсором с предыдущим"
 
 #: keymap_alldefs.h:80
 msgid "capitalize the word"
-msgstr ""
+msgstr "перевести первую букву слова в верхний регистр, а остальные -- в нижний"
 
 #: keymap_alldefs.h:81
 msgid "convert the word to lower case"

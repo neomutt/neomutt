@@ -59,8 +59,9 @@ int pop_parse_path (const char* path, ACCOUNT* acct)
 /* Copy error message to err_msg buffer */
 void pop_error (POP_DATA *pop_data, char *msg)
 {
-  char *c, *c2;
+  char *t, *c, *c2;
 
+  t = strchr (pop_data->err_msg, '\0');
   c = msg;
 
   if (!mutt_strncmp (msg, "-ERR ", 5))
@@ -72,7 +73,7 @@ void pop_error (POP_DATA *pop_data, char *msg)
       c = c2;
   }
 
-  strfcpy (pop_data->err_msg, c, sizeof (pop_data->err_msg));
+  strfcpy (t, c, sizeof (pop_data->err_msg) - strlen (pop_data->err_msg));
   mutt_remove_trailing_ws (pop_data->err_msg);
 }
 
@@ -208,6 +209,7 @@ int pop_connect (POP_DATA *pop_data)
 
   if (mutt_strncmp (buf, "+OK", 3))
   {
+    *pop_data->err_msg = '\0';
     pop_error (pop_data, buf);
     mutt_error ("%s", pop_data->err_msg);
     return -2;
@@ -313,6 +315,7 @@ void pop_logout (CONTEXT *ctx)
 int pop_query_d (POP_DATA *pop_data, char *buf, size_t buflen, char *msg)
 {
   int dbg = M_SOCK_LOG_CMD;
+  char *c;
 
   if (pop_data->status != POP_CONNECTED)
     return -1;
@@ -327,6 +330,11 @@ int pop_query_d (POP_DATA *pop_data, char *buf, size_t buflen, char *msg)
 #endif
 
   mutt_socket_write_d (pop_data->conn, buf, dbg);
+
+  c = strpbrk (buf, " \r\n");
+  *c = '\0';
+  snprintf (pop_data->err_msg, sizeof (pop_data->err_msg), "%s: ", buf);
+
   if (mutt_socket_readln (buf, buflen, pop_data->conn) < 0)
   {
     pop_data->status = POP_DISCONNECTED;
