@@ -1,3 +1,8 @@
+2004-07-14 05:07:18  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* mh.c: Some eye-candy during the delayed parsing of maildir
+	folders.
+
 2004-07-14 04:50:19  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
 
 	* init.h, sort.h: Hack to fix $sort_browser documentation.
