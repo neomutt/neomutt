@@ -232,22 +232,27 @@ void ci_bounce_message (HEADER *h, int *redraw)
   mutt_message (h ? _("Message bounced.") : _("Messages bounced."));
 }
 
+static void pipe_print_set_flags (int decode, int *cmflags, int *chflags)
+{
+  if (decode)
+  {
+    *cmflags |= M_CM_DECODE | M_CM_CHARCONV;
+    *chflags |= CH_DECODE | CH_REORDER;
+    
+    if (option (OPTWEED))
+    {
+      *chflags |= CH_WEED;
+      *cmflags |= M_CM_WEED;
+    }
+  }
+}
+
 void mutt_pipe_message_to_state (HEADER *h, STATE *s)
 {
   int cmflags = 0;
   int chflags = CH_FROM;
   
-  if (option (OPTPIPEDECODE))
-  {
-    cmflags |= M_CM_DECODE | M_CM_CHARCONV;
-    chflags |= CH_DECODE | CH_REORDER;
-    
-    if (option (OPTWEED))
-    {
-      chflags |= CH_WEED;
-      cmflags |= M_CM_WEED;
-    }
-  }
+  pipe_print_set_flags (option (OPTPIPEDECODE), &cmflags, &chflags);
   
   if (option (OPTPIPEDECODE))
     mutt_parse_mime_message (Context, h);
@@ -686,19 +691,17 @@ int mutt_save_message (HEADER *h, int delete,
   return -1;
 }
 
+/* XXX - merge this with mutt_pipe_message_to_state? */
+
 static void print_msg (FILE *fp, CONTEXT *ctx, HEADER *h)
 {
-  int cmflags = M_CM_DECODE | M_CM_CHARCONV;
-  int chflags = CH_DECODE | CH_REORDER;
+  int cmflags = 0;
+  int chflags = CH_FROM;
 
-  if (option (OPTWEED))
-  {
-    cmflags |= M_CM_WEED;
-    chflags |= CH_WEED;
-  }
+  pipe_print_set_flags (option (OPTPRINTDECODE), &cmflags, &chflags);
 
 #ifdef HAVE_PGP
-  if (h->pgp & PGPENCRYPT)
+  if (option (OPTPRINTDECODE) && (h->pgp & PGPENCRYPT))
   {
     if (!pgp_valid_passphrase ())
       return;
@@ -706,7 +709,9 @@ static void print_msg (FILE *fp, CONTEXT *ctx, HEADER *h)
   }
 #endif
 
-  mutt_parse_mime_message (ctx, h);
+  if (option (OPTPRINTDECODE))
+    mutt_parse_mime_message (ctx, h);
+
   mutt_copy_message (fp, ctx, h, cmflags, chflags);
 }
 
