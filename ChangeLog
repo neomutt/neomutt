@@ -1,4 +1,7 @@
-2002-12-17 10:39:11  Thomas Roessler  <roessler@does-not-exist.org>
+2002-12-17 12:35:00  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* cvslog2changelog.pl: Adding Michael's address to the changelog
+	generator.
 
 	* build-release: Adopting the release-building script to the
 	new changelog process.
