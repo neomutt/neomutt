@@ -1,3 +1,8 @@
+2004-11-08 07:30:29  Ralf Wildenhues  <wildenhues@ins.uni-bonn.de>  (roessler)
+
+	* imap/message.c: There's a size_t in imap_append_message not
+	printed out portably.
+
 2004-11-02 13:30:58  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* copy.h: Fix flag confusion.  Noted by Vincent Lefevre.
