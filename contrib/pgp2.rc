@@ -18,10 +18,10 @@ set pgp_decrypt_command="PGPPASSFD=0; export PGPPASSFD; cat - %f | pgp +language
 set pgp_sign_command="PGPPASSFD=0; export PGPPASSFD; cat - %f | pgp +language=mutt +verbose=0 +batchmode -abfst %?a? -u %a?"
 
 # create a pgp/mime encrypted attachment
-set pgp_encrypt_only_command="PGPPASSFD=0; export PGPPASSFD; cat - %f | pgp +language=mutt +verbose=0 +batchmode +aeft %r"
+set pgp_encrypt_only_command="PGPPASSFD=0; export PGPPASSFD; cat - %f | pgp +language=mutt +verbose=0 +batchmode -aeft %r"
 
 # create a pgp/mime encrypted and signed attachment
-set pgp_encrypt_sign_command="PGPPASSFD=0; export PGPPASSFD; cat - %f | pgp +language=mutt +verbose=0 +batchmode +aefts %?a?-u %a? %r"
+set pgp_encrypt_sign_command="PGPPASSFD=0; export PGPPASSFD; cat - %f | pgp +language=mutt +verbose=0 +batchmode -aefts %?a?-u %a? %r"
 
 # import a key into the public key ring
 set pgp_import_command="pgp -ka %f +language=mutt"
