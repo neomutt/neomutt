@@ -1,3 +1,15 @@
+Wed Aug 30 10:08:15 2000  Thomas Roessler  <roessler@guug.de>
+
+	* VERSION: ups
+
+	* po/POTFILES.in, imap/Attic/imap_ssl.c, imap/Attic/imap_ssl.h, imap/Attic/md5c.c, imap/Attic/md5.h, imap/Makefile.am, imap/util.c, ChangeLog, configure.in, curs_main.c, init.c, Makefile.am, md5c.c, md5.h, mutt_socket.c, mutt_ssl.c, mutt_ssl.h, reldate.h, VERSION:
+	SSL unification patch from Vsevolod.
+
+	* imap/command.c, imap/imap.c, imap/message.c, imap/message.h:
+	patch-bac.expunge-2
+
+	* muttlib.c: Fix mutt_prety_mailbox.  From Vsevolod.
+
 Wed Aug 30 08:43:12 2000  Thomas Roessler  <roessler@guug.de>
 
 	* imap/command.c, imap/imap.c, imap/message.c, imap/message.h:
