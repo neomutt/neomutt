@@ -84,59 +84,54 @@ mutt_compile_help (char *buf, size_t buflen, int menu, struct mapping_t *items)
   return buf;
 }
 
-static int print_macro (FILE *f, int maxchar, const char **macro)
+static int print_macro (FILE *f, int maxwidth, const char **macro)
 {
-  int c = (unsigned char) **macro;
-  int n = maxchar;
+  int n = maxwidth;
+  wchar_t wc;
+  int k, w;
 
-  while (c)
+  for (;;)
   {
-    if (!IsPrint(c))
+    if ((k = mutt_mbtowc (&wc, *macro, -1)) <= 0)
+      break;
+    if ((w = mutt_wcwidth (wc)) >= 0)
     {
-      if (c >= ' ' && c != 127)
-	c = '?';
-      else if (n < 2)
-	c = 0;
-      else
+      if (w > n)
+	break;
+      n -= w;
       {
-	--n;
-	switch (c)
-	{
-	  case '\033':
-	    fputc ('\\', f);
-	    c = 'e';
-	    break;
-	  case '\n':
-	    fputc ('\\', f);
-	    c = 'n';
-	    break;
-	  case '\r':
-	    fputc ('\\', f);
-	    c = 'r';
-	    break;
-	  case '\t':
-	    fputc ('\\', f);
-	    c = 't';
-	    break;
-	  default:
-	    fputc ('^', f);
-	    c = (c + '@') & 127;
-	    break;
-	}
+	char tb[7];
+	int m = mutt_wctomb (tb, wc);
+	if (0 < m && m < 7)
+	  tb[m] = '\0', fprintf (f, "%s", tb);
       }
     }
-
-    if (c && n > 0)
+    else if (wc < 0x20 || wc == 0x7f)
     {
-      --n;
-      fputc(c, f);
-      c = (unsigned char) *++*macro;
+      if (2 > n)
+	break;
+      n -= 2;
+      if (wc == '\033')
+	fprintf (f, "\\e");
+      else if (wc == '\n')
+	fprintf (f, "\\n");
+      else if (wc == '\r')
+	fprintf (f, "\\r");
+      else if (wc == '\t')
+	fprintf (f, "\\t");
+      else
+	fprintf (f, "^%c", (char)((wc + '@') & 0x7f));
     }
     else
-      c = 0;
+    {
+      if (1 > n)
+	break;
+      n -= 1;
+      fprintf (f, "?");
+    }
+    *macro += k;
   }
-
-  return (maxchar - n);
+  return (maxwidth - n);
 }
 
 static int pad (FILE *f, int col, int i)
@@ -214,6 +209,7 @@ static void format_line (FILE *f, int ismacro,
       {
 	SKIPWS(t3);
 
+	/* FIXME: this is completely wrong */
 	if ((n = mutt_strlen (t3)) > COLS - col)
 	{
 	  n = COLS - col;

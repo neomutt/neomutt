@@ -244,7 +244,7 @@ void rfc2047_encode_string (char *d, size_t dlen, const unsigned char *s)
 
   strfcpy((char *)scratch, (const char *) s, sizeof(scratch));
   if (*send_charset && mutt_strcasecmp("us-ascii", send_charset))
-    mutt_display_string((char *)scratch, mutt_get_translation(Charset, send_charset));
+    mutt_convert_string ((char *)scratch, LONG_STRING, Charset, send_charset);
   
   (*encoder) (d, dlen, scratch, send_charset);
 }
@@ -280,6 +280,7 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
   char *t;
   int enc = 0, filter = 0, count = 0, c1, c2, c3, c4;
   char *charset = NULL;
+  size_t olen = len;
 
   while ((pp = strtok (pp, "?")) != NULL)
   {
@@ -364,17 +365,7 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
   }
   
   if (filter)
-  {
-    if(mutt_is_utf8(charset))
-    {
-      CHARSET *chs = mutt_get_charset(Charset);
-      mutt_decode_utf8_string(d, chs);
-    }
-    else
-      mutt_display_string(d, mutt_get_translation(charset, Charset));
-
-    mutt_display_sanitize (d);
-  }
+    mutt_convert_string (d, olen, charset, Charset);
   safe_free ((void **) &p);
   return (0);
 }
@@ -387,7 +378,8 @@ void rfc2047_decode (char *d, const char *s, size_t dlen)
   const char *p, *q;
   size_t n;
   int found_encoded = 0;
-
+  int in_place = (d == s);
+ 
   dlen--; /* save room for the terminal nul */
 
   while (*s && dlen > 0)
@@ -418,7 +410,7 @@ void rfc2047_decode (char *d, const char *s, size_t dlen)
       }
     }
 
-    rfc2047_decode_word (d, p, dlen);
+    rfc2047_decode_word (d, p, in_place ? q + 2 - p : dlen);
     found_encoded = 1;
     s = q + 2;
     n = mutt_strlen (d);

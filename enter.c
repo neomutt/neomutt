@@ -124,8 +124,11 @@ int _mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 	  j = begin;
       }
       move (y, x + j - begin);
-      for (; j < lastchar && j < begin + width; j++)
-	ADDCH (buf[j]);
+      {
+	int n = (lastchar < begin + width) ? lastchar : begin + width;
+	n = (n > j) ? n - j : 0;
+	addnstr ((char *)&buf[j], n);
+      }
       clrtoeol ();
       if (redraw != M_REDRAW_INIT)
 	move (y, x + curpos - begin);

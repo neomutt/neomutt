@@ -17,6 +17,8 @@
  */ 
 
 
+#include "mbyte.h"
+
 #ifdef DEBUG
 #define dprint(N,X) do { if(debuglevel>=N) fprintf X; } while (0)
 #else
@@ -132,6 +134,7 @@ void mutt_block_signals_system (void);
 void mutt_body_handler (BODY *, STATE *);
 void mutt_bounce_message (FILE *fp, HEADER *, ADDRESS *);
 void mutt_buffy (char *);
+void mutt_canonical_charset (char *, size_t, const char *);
 void mutt_check_rescore (CONTEXT *);
 void mutt_clear_error (void);
 void mutt_create_alias (ENVELOPE *, ADDRESS *);
@@ -151,6 +154,7 @@ void mutt_expand_link (char *, const char *, const char *);
 void mutt_fetchPopMail (void);
 void mutt_fix_reply_recipients (ENVELOPE *env);
 void mutt_folder_hook (char *);
+void mutt_format_string (char *, size_t, int, int, int, char, const char *, size_t);
 void mutt_forward_intro (FILE *fp, HEADER *cur);
 void mutt_forward_trailer (FILE *fp);
 void mutt_free_alias (ALIAS **);
@@ -171,6 +175,7 @@ void mutt_message (const char *, ...);
 void mutt_message_to_7bit (BODY *, FILE *);
 void mutt_mktemp (char *);
 void mutt_normalize_time (struct tm *);
+void mutt_paddstr (int, const char *);
 void mutt_parse_mime_message (CONTEXT *ctx, HEADER *);
 void mutt_parse_part (FILE *, BODY *);
 void mutt_pipe_message_to_state (HEADER *, STATE *);
@@ -209,6 +214,7 @@ void mutt_view_attachments (HEADER *);
 void mutt_set_virtual (CONTEXT *);
 
 int mutt_addr_is_user (ADDRESS *);
+int mutt_addwch (wchar_t);
 int mutt_alias_complete (char *, size_t);
 int mutt_alloc_color (int fg, int bg);
 int mutt_any_key_to_continue (const char *);
@@ -233,6 +239,7 @@ int mutt_display_message (HEADER *h);
 int mutt_edit_attachment(BODY *);
 int mutt_edit_message (CONTEXT *, HEADER *);
 int mutt_fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags);
+int mutt_is_utf8 (const char *);
 int mutt_parent_message (CONTEXT *, HEADER *);
 int mutt_prepare_template(FILE*, CONTEXT *, HEADER *, HEADER *, short);
 int mutt_resend_message (FILE *, CONTEXT *, HEADER *);
@@ -306,6 +313,10 @@ ADDRESS *alias_reverse_lookup (ADDRESS *);
 /* base64.c */
 void mutt_to_base64 (unsigned char*, const unsigned char*, int);
 int mutt_from_base64 (char*, const char*);
+
+/* utf8.c */
+int mutt_wctoutf8 (char *s, unsigned int c);
+int mutt_utf8towc (unsigned int *pwc, const char *s, size_t n);
 
 #ifdef LOCALES_HACK
 #define IsPrint(c) (isprint((unsigned char)(c)) || \

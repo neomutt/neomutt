@@ -22,6 +22,7 @@
 #include "mutt_regex.h"
 #include "history.h"
 #include "keymap.h"
+#include "mbyte.h"
 
 
 #ifdef HAVE_PGP
@@ -882,6 +883,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
         else if (DTYPE (MuttVars[idx].type) == DT_STR)
         {
 	  *((char **) MuttVars[idx].data) = safe_strdup (tmp->data);
+	  mutt_set_charset (Charset);
         }
         else
         {

@@ -906,6 +906,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
   }
   *wptr = 0;
 
+#if 0
   if (flags & M_FORMAT_MAKEPRINT)
   {
     /* Make sure that the string is printable by changing all non-printable
@@ -915,6 +916,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	  !((flags & M_FORMAT_TREE) && (*cp <= M_TREE_MAX)))
 	*cp = isspace ((unsigned char) *cp) ? ' ' : '.';
   }
+#endif
 }
 
 /* This function allows the user to specify a command to read stdout from in

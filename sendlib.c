@@ -126,16 +126,13 @@ static char MsgIdPfx = 'A';
 
 static void transform_to_7bit (BODY *a, FILE *fpin);
 
-static void encode_quoted (FILE * fin, FILE *fout, int istext, CHARSET_MAP *map)
+static void encode_quoted (FGETCONV * fc, FILE *fout, int istext)
 {
   int c, linelen = 0;
   char line[77], savechar;
 
-  while ((c = fgetc (fin)) != EOF)
+  while ((c = fgetconv (fc)) != EOF)
   {
-    if(istext && map)
-      c = mutt_display_char(c, map);
-
     /* Escape lines that begin with "the message separator". */
     if (linelen == 5 && !mutt_strncmp ("From ", line, 5))
     {
@@ -310,18 +307,15 @@ static void b64_putc(char c, FILE *fout)
 }
   
   
-static void encode_base64 (FILE * fin, FILE *fout, int istext, CHARSET_MAP *map)
+static void encode_base64 (FGETCONV * fc, FILE *fout, int istext)
 {
   int ch, ch1 = EOF;
   
   b64_num = b64_linelen = 0;
   
-  while((ch = fgetc(fin)) != EOF)
+  while ((ch = fgetconv (fc)) != EOF)
   {
-    if(istext && map)
-      ch = mutt_display_char(ch, map);
-
-    if(istext && ch == '\n' && ch1 != '\r')
+    if (istext && ch == '\n' && ch1 != '\r')
       b64_putc('\r', fout);
     b64_putc(ch, fout);
     ch1 = ch;
@@ -330,20 +324,12 @@ static void encode_base64 (FILE * fin, FILE *fout, int istext, CHARSET_MAP *map)
   fputc('\n', fout);
 }
 
-static void encode_8bit(FILE *fin, FILE *fout, int istext, CHARSET_MAP *map)
+static void encode_8bit (FGETCONV *fc, FILE *fout, int istext)
 {
   int ch;
-
-  if(!istext || !map)
-  {
-    mutt_copy_stream(fin, fout);
-    return;
-  }
   
-  while((ch = fgetc(fin)) != EOF)
-  {
-    fputc(mutt_display_char(ch, map), fout);
-  }
+  while ((ch = fgetconv (fc)) != EOF)
+    fputc (ch, fout);
 }
   
 
@@ -444,7 +430,7 @@ int mutt_write_mime_body (BODY *a, FILE *f)
   char send_charset[SHORT_STRING];
   FILE *fpin;
   BODY *t;
-  CHARSET_MAP *map = NULL;
+  FGETCONV *fc;
   
   if (a->type == TYPEMULTIPART)
   {
@@ -490,19 +476,21 @@ int mutt_write_mime_body (BODY *a, FILE *f)
     return -1;
   }
 
-  if (a->type == TYPETEXT)
-    map = mutt_get_translation (Charset, mutt_get_send_charset (send_charset, sizeof(send_charset), a, 1));
+  if (a->type == TYPETEXT && (!a->noconv))
+    fc = fgetconv_open (fpin, Charset, mutt_get_send_charset (send_charset, sizeof (send_charset), a, 1));
+  else
+    fc = fgetconv_open (fpin, 0, 0);
 
   if (a->encoding == ENCQUOTEDPRINTABLE)
-    encode_quoted (fpin, f, mutt_is_text_type (a->type, a->subtype), 
-		   a->type == TYPETEXT && (!a->noconv) ? map : NULL);
+    encode_quoted (fc, f, mutt_is_text_type (a->type, a->subtype));
   else if (a->encoding == ENCBASE64)
-    encode_base64 (fpin, f, mutt_is_text_type (a->type, a->subtype), 
-		   a->type == TYPETEXT && (!a->noconv) ? map : NULL);
+    encode_base64 (fc, f, mutt_is_text_type (a->type, a->subtype));
+  else if (a->type == TYPETEXT && (!a->noconv))
+    encode_8bit (fc, f, mutt_is_text_type (a->type, a->subtype));
   else
-    encode_8bit (fpin, f, mutt_is_text_type (a->type, a->subtype),
-		      a->type == TYPETEXT && (!a->noconv) ? map : NULL);
+    mutt_copy_stream (fpin, f);
 
+  fgetconv_close (fc);
   fclose (fpin);
 
   return (ferror (f) ? -1 : 0);

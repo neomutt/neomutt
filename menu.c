@@ -19,6 +19,7 @@
 #include "mutt.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "mbyte.h"
 
 #ifdef USE_IMAP
 #include "imap.h"
@@ -27,8 +28,13 @@
 #include <string.h>
 #include <stdlib.h>
 
+extern int Charset_is_utf8; /* FIXME: bad modularisation */
+
 static void print_enriched_string (int attr, unsigned char *s, int do_color)
 {
+  wchar_t wc;
+  int k;
+
   while (*s)
   {
     if (*s < M_TREE_MAX)
@@ -40,19 +46,44 @@ static void print_enriched_string (int attr, unsigned char *s, int do_color)
 	switch (*s)
 	{
 	  case M_TREE_LLCORNER:
-	    addch (option (OPTASCIICHARS) ? '`' : ACS_LLCORNER);
+	    if (option (OPTASCIICHARS))
+	      addch ('`');
+	    else if (Charset_is_utf8)
+	      addstr ("\342\224\224"); /* WACS_LLCORNER */
+	    else
+	      addch (ACS_LLCORNER);
 	    break;
 	  case M_TREE_ULCORNER:
-	    addch (option (OPTASCIICHARS) ? ',' : ACS_ULCORNER);
+	    if (option (OPTASCIICHARS))
+	      addch (',');
+	    else if (Charset_is_utf8)
+	      addstr ("\342\224\214"); /* WACS_ULCORNER */
+	    else
+	      addch (ACS_ULCORNER);
 	    break;
 	  case M_TREE_LTEE:
-	    addch (option (OPTASCIICHARS) ? '|' : ACS_LTEE);
+	    if (option (OPTASCIICHARS))
+	      addch ('|');
+	    else if (Charset_is_utf8)
+	      addstr ("\342\224\234"); /* WACS_LTEE */
+	    else
+	      addch (ACS_LTEE);
 	    break;
 	  case M_TREE_HLINE:
-	    addch (option (OPTASCIICHARS) ? '-' : ACS_HLINE);
+	    if (option (OPTASCIICHARS))
+	      addch ('-');
+	    else if (Charset_is_utf8)
+	      addstr ("\342\224\200"); /* WACS_HLINE */
+	    else
+	      addch (ACS_HLINE);
 	    break;
 	  case M_TREE_VLINE:
-	    addch (option (OPTASCIICHARS) ? '|' : ACS_VLINE);
+	    if (option (OPTASCIICHARS))
+	      addch ('|');
+	    else if (Charset_is_utf8)
+	      addstr ("\342\224\202"); /* WACS_VLINE */
+	    else
+	      addch (ACS_VLINE);
 	    break;
 	  case M_TREE_SPACE:
 	    addch (' ');
@@ -71,11 +102,13 @@ static void print_enriched_string (int attr, unsigned char *s, int do_color)
       }
       if (do_color) attrset(attr);
     }
-    else
+    else if ((k = mbtowc (&wc, (char *)s, -1)) > 0)
     {
-      addch (*s);
-      s++;
+      addnstr ((char *)s, k);
+      s += k;
     }
+    else
+      break;
   }
 }
 
@@ -100,6 +133,11 @@ void menu_pad_string (char *s, size_t l)
   l--; /* save room for the terminal \0 */
   if (l > COLS - shift)
     l = COLS - shift;
+
+  /* Let's just pad the string anyway ... */
+  mutt_format_string (s, INT_MAX, l, l, 0, ' ', s, INT_MAX);
+  return;
+
 #if !defined (HAVE_BKGDSET) && !defined (USE_SLANG_CURSES)
   /* we have to pad the string with blanks to the end of line */
   if (n < l)
@@ -123,7 +161,8 @@ void menu_redraw_full (MUTTMENU *menu)
   if (option (OPTHELP))
   {
     SETCOLOR (MT_COLOR_STATUS);
-    mvprintw (option (OPTSTATUSONTOP) ? LINES-2 : 0, 0, "%-*.*s", COLS, COLS, menu->help);
+    move (option (OPTSTATUSONTOP) ? LINES-2 : 0, 0);
+    mutt_paddstr (COLS, menu->help);
     SETCOLOR (MT_COLOR_NORMAL);
     menu->offset = 1;
     menu->pagelen = LINES - 3;
@@ -145,7 +184,8 @@ void menu_redraw_status (MUTTMENU *menu)
 
   snprintf (buf, sizeof (buf), M_MODEFMT, menu->title);
   SETCOLOR (MT_COLOR_STATUS);
-  mvprintw (option (OPTSTATUSONTOP) ? 0 : LINES - 2, 0, "%-*.*s", COLS, COLS, buf);
+  move (option (OPTSTATUSONTOP) ? 0 : LINES - 2, 0);
+  mutt_paddstr (COLS, buf);
   SETCOLOR (MT_COLOR_NORMAL);
   menu->redraw &= ~REDRAW_STATUS;
 }

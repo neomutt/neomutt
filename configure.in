@@ -382,6 +382,44 @@ AC_ARG_WITH(sharedir, [  --with-sharedir=PATH       Specify where to put arch in
 sharedir=$mutt_cv_sharedir
 AC_SUBST(sharedir)
 
+AC_ARG_WITH(iconv, [  --with-iconv               Use system's iconv], [
+  AC_CACHE_CHECK(for iconv, mutt_cv_func_iconv,
+    [ mutt_cv_func_iconv=no
+      mutt_cv_lib_iconv=no
+      AC_TRY_LINK([#include <stdlib.h>
+#include <iconv.h>],
+	[iconv_t cd = iconv_open("",""); iconv(cd,NULL,NULL,NULL,NULL); iconv_close(cd);],
+	mutt_cv_func_iconv=yes)
+      if test "$mutt_cv_func_iconv" = no; then
+	mutt_save_LIBS="$LIBS"
+	LIBS="$LIBS -liconv"
+	AC_TRY_LINK([#include <stdlib.h>
+#include <iconv.h>],
+	  [iconv_t cd = iconv_open("",""); iconv(cd,NULL,NULL,NULL,NULL); iconv_close(cd);],
+	  mutt_cv_lib_iconv=yes
+	  mutt_cv_func_iconv=yes)
+	LIBS="$mutt_save_LIBS"
+      fi
+    ])
+  if test "$mutt_cv_func_iconv" = no; then
+    AC_MSG_ERROR(No iconv)
+  fi
+  LIBICONV=
+  if test "$mutt_cv_lib_iconv" = yes; then
+    LIBICONV="-liconv"
+  fi
+  need_iconv=no
+],
+[ LIBICONV="-Liconv -liconv"
+  LIBICONVDEPS="\$(top_srcdir)/iconv/iconv.h iconv/libiconv.a"
+  need_iconv=yes
+])
+AM_CONDITIONAL(BUILD_ICONV, test "$need_iconv" = yes)
+AC_SUBST(LIBICONV)
+AC_SUBST(LIBICONVDEPS)
+
+if test "$need_iconv" = yes ; then
+
 mutt_cv_charmaps=/usr/share/i18n/charmaps
 AC_ARG_WITH(charmaps, [  --with-charmaps=PATH	     Where to find character set definitions],
 	[if test x$withval != x -a $withval != yes ; then
@@ -409,6 +447,8 @@ AC_DEFINE_UNQUOTED(CHARMAPS_DIR, "$mutt_cv_charmaps")
 charmaps=$mutt_cv_charmaps
 AC_SUBST(charmaps)
 AM_CONDITIONAL(BUILD_CHARMAPS, test x$need_charmaps = xyes)
+
+fi # /* need_iconv */
 
 AC_ARG_WITH(docdir, [  --with-docdir=PATH         Specify where to put the documentation],
 	[mutt_cv_docdir=$withval],
@@ -614,5 +654,5 @@ AC_DEFINE_UNQUOTED(MUTTLOCALEDIR, "$MUTTLOCALEDIR")
 AC_OUTPUT(Makefile intl/Makefile m4/Makefile dnl
 	po/Makefile.in doc/Makefile contrib/Makefile dnl
 	muttbug.sh dnl
-	charmaps/Makefile imap/Makefile dnl
+	charmaps/Makefile imap/Makefile iconv/Makefile dnl
 	Muttrc.head)

@@ -219,14 +219,7 @@ static void rfc2231_decode_one (char *dest, char *src, char *chs)
   *d = '\0';
   
   if (chs && strcmp (chs, "us-ascii") && strcmp (chs, Charset))
-  {
-    if (mutt_is_utf8 (chs))
-      mutt_decode_utf8_string (dest, mutt_get_charset (Charset));
-    else
-      mutt_display_string (dest, mutt_get_translation (chs, Charset));
-    
-    mutt_display_sanitize (dest);
-  }
+    mutt_convert_string (dest, 0, chs, Charset);
 }
 
 /* insert parameter into an ordered list.
@@ -339,7 +332,7 @@ int rfc2231_encode (char *dest, size_t l, unsigned char *src)
     *t = '\0';
     
     if (Charset && SendCharset && mutt_strcasecmp (Charset, SendCharset))
-      mutt_display_string (buff, mutt_get_translation (Charset, SendCharset));
+      mutt_convert_string (buff, LONG_STRING, Charset, SendCharset);
 
     snprintf (dest, l, "%s''%s", SendCharset ? SendCharset :
 	      (Charset ? Charset : "unknown-8bit"), buff);

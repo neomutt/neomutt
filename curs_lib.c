@@ -20,6 +20,7 @@
 #include "mutt_menu.h"
 #include "mutt_curses.h"
 #include "pager.h"
+#include "mbyte.h"
 
 #include <termios.h>
 #include <sys/types.h>
@@ -93,14 +94,15 @@ event_t mutt_getch (void)
 int _mutt_get_field (/* const */ char *field, char *buf, size_t buflen, int complete, int multiple, char ***files, int *numfiles)
 {
   int ret;
-  int len = mutt_strlen (field); /* in case field==buffer */
+  int x, y;
 
   do
   {
     CLEARLINE (LINES-1);
     addstr (field);
     mutt_refresh ();
-    ret = _mutt_enter_string ((unsigned char *) buf, buflen, LINES-1, len, complete, multiple, files, numfiles);
+    getyx (stdscr, y, x);
+    ret = _mutt_enter_string ((unsigned char *) buf, buflen, y, x, complete, multiple, files, numfiles);
   }
   while (ret == 1);
   CLEARLINE (LINES-1);
@@ -142,10 +144,23 @@ int mutt_yesorno (const char *msg, int def)
   event_t ch;
   unsigned char *yes = (unsigned char *) _("yes");
   unsigned char *no = (unsigned char *) _("no");
-  
+  char yes1 = 'y';
+  char no1 = 'n';
+
+  /*
+   * The keys are not localised, because none of the other
+   * keys in mutt are localised. Also, non-ASCII characters
+   * are unlikely to work at present ...
+   */
+
   CLEARLINE(LINES-1);
-  printw("%s ([%c]/%c): ", msg, def ? *yes : *no,
-	 def ? *no : *yes);
+  if (*yes == yes1 && *no == no1) /* English, or not localised */
+    printw ("%s ([%c]/%c): ", msg, def ? yes1 : no1,
+	    def ? no1 : yes1);
+  else
+    printw ("%s ([%c=%s]/%c=%s): ", msg,
+	    def ? yes1 : no1, def ? yes : no,
+	    def ? no1 : yes1, def ? no : yes);
   FOREVER
   {
     mutt_refresh ();
@@ -153,12 +168,12 @@ int mutt_yesorno (const char *msg, int def)
     if (ch.ch == -1) return(-1);
     if (CI_is_return (ch.ch))
       break;
-    else if (tolower(ch.ch) == tolower(*yes))
+    else if (tolower (ch.ch) == tolower (yes1))
     {
       def = 1;
       break;
     }
-    else if (tolower(ch.ch) == tolower(*no))
+    else if (tolower (ch.ch) == tolower (no1))
     {
       def = 0;
       break;
@@ -190,16 +205,6 @@ void mutt_query_exit (void)
   SigInt = 0;
 }
 
-static void clean_error_buf(void)
-{
-  char *s;
-  for(s = Errorbuf; *s; s++)
-  {
-    if(!IsPrint(*s))
-      *s = '.';
-  }
-}
-
 void mutt_curses_error (const char *fmt, ...)
 {
   va_list ap;
@@ -209,8 +214,8 @@ void mutt_curses_error (const char *fmt, ...)
   va_end (ap);
   
   dprint (1, (debugfile, "%s\n", Errorbuf));
-  Errorbuf[ (COLS < sizeof (Errorbuf) ? COLS : sizeof (Errorbuf)) - 2 ] = 0;
-  clean_error_buf();
+  mutt_format_string (Errorbuf, sizeof (Errorbuf),
+		      0, COLS-2, 0, 0, Errorbuf, sizeof (Errorbuf));
 
   if (!option (OPTKEEPQUIET))
   {
@@ -233,8 +238,8 @@ void mutt_message (const char *fmt, ...)
   vsnprintf (Errorbuf, sizeof (Errorbuf), fmt, ap);
   va_end (ap);
 
-  Errorbuf[ (COLS < sizeof (Errorbuf) ? COLS : sizeof (Errorbuf)) - 2 ] = 0;
-  clean_error_buf();
+  mutt_format_string (Errorbuf, sizeof (Errorbuf),
+		      0, COLS-2, 0, 0, Errorbuf, sizeof (Errorbuf));
 
   if (!option (OPTKEEPQUIET))
   {
@@ -454,4 +459,106 @@ int mutt_multi_choice (char *prompt, char *letters)
   CLEARLINE (LINES - 1);
   mutt_refresh ();
   return choice;
+}
+
+/*
+ * addwch would be provided by an up-to-date curses library
+ */
+
+int mutt_addwch (wchar_t wc)
+{
+  char buf[6]; /* FIXME */
+  int n;
+
+  n = mutt_wctomb (buf, wc);
+  if (n == -1)
+    return n;
+  else
+    return addnstr (buf, n);
+}
+
+/*
+ * This formats a string, a bit like
+ * snprintf (dest, destlen, "%-*.*s", min_width, max_width, s),
+ * except that the widths refer to the number of character cells
+ * when printed.
+ */
+
+void mutt_format_string (char *dest, size_t destlen,
+			 int min_width, int max_width,
+			 int right_justify, char pad_char,
+			 const char *s, size_t n)
+{
+  char *p;
+  wchar_t wc;
+  int w, k;
+
+  --destlen;
+  p = dest;
+  while ((k = mbtowc (&wc, s, n)))
+  {
+    if (k == -1 && n > 0)
+    {
+      k = 1;
+      wc = replacement_char ();
+    }
+    s += k, n -= k;
+    w = wc < M_TREE_MAX ? 1 : wcwidth (wc); /* hack */
+    if (w >= 0)
+    {
+      if (w > max_width || wctomb (0, wc) > destlen)
+	break;
+      min_width -= w;
+      max_width -= w;
+      p += (k = wctomb (p, wc));
+      destlen -= k;
+    }
+  }
+  k = (int)destlen < min_width ? destlen : min_width;
+  if (k <= 0)
+    *p = '\0';
+  else if (right_justify)
+  {
+    p[k] = '\0';
+    while (--p >= dest)
+      p[k] = *p;
+    while (--k >= 0)
+      dest[k] = pad_char;
+  }
+  else
+  {
+    while (--k >= 0)
+      *p++ = pad_char;
+    *p = '\0';
+  }
+}
+
+/*
+ * mutt_paddstr (n, s) is equivalent to
+ * mutt_format_string (bigbuf, big, n, n, 0, ' ', s, big), addstr (bigbuf)
+ */
+
+void mutt_paddstr (int n, const char *s)
+{
+  wchar_t wc;
+  int k, w;
+
+  while ((k = mbtowc (&wc, s, -1)))
+  {
+    if (k == -1)
+    {
+      ++s; /* skip ill-formed character */
+      continue;
+    }
+    if ((w = wcwidth (wc)) >= 0)
+    {
+      if (w > n)
+	break;
+      addnstr ((char *)s, k);
+      n -= w;
+    }
+    s += k;
+  }
+  while (n-- > 0)
+    addch (' ');
 }

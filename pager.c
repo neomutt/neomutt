@@ -25,6 +25,7 @@
 #include "sort.h"
 #include "pager.h"
 #include "attach.h"
+#include "mbyte.h"
 
 #ifdef USE_IMAP
 #include "imap.h"
@@ -969,6 +970,137 @@ static int grok_ansi(unsigned char *buf, int pos, ansi_attr *a)
   return pos;
 }
 
+static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
+			int flags, ansi_attr *pa, int cnt,
+			int *pspace, int *pvch, int *pcol, int *pspecial)
+{
+  int space = -1; /* index of the last space or TAB */
+  int col = option (OPTMARKERS) ? (*lineInfo)[n].continuation : 0;
+  int ch, vch, k, special = 0, t;
+  wchar_t wc;
+  mbstate_t mbstate = 0; /* FIXME: this should come from lineInfo */
+
+  for (ch = 0, vch = 0; ch < cnt; ch += k, vch += k)
+  {
+    /* Handle ANSI sequences */
+    while (cnt-ch >= 2 && buf[ch] == '\033' && buf[ch+1] == '[' &&
+	   is_ansi (buf+ch+2))
+      ch = grok_ansi (buf, ch+2, pa) + 1;
+
+    k = mbrtowc (&wc, (char *)buf+ch, cnt-ch, &mbstate);
+    if (k == -2)
+      break;
+    if (k == -1)
+    {
+      if (col + 4 > COLS)
+	break;
+      col += 4;
+      if (pa)
+	printw ("\\%03o", buf[ch]);
+      k = 1;
+      continue;
+    }
+    if (k == 0)
+      k = wctomb (0, wc);
+
+    /* Handle backspace */
+    special = 0;
+    if (iswprint (wc))
+    {
+      wchar_t wc1;
+      mbstate_t mbstate1;
+      int k1, k2;
+
+      while ((wc1 = 0, mbstate1 = mbstate,
+	      k1 = k + mbrtowc (&wc1, (char *)buf+ch+k, cnt-ch-k, &mbstate1),
+	      wc1 == '\b') &&
+	     (wc1 = 0,
+	      k2 = mbrtowc (&wc1, (char *)buf+ch+k1, cnt-ch-k1, &mbstate1),
+	      iswprint (wc1)))
+      {
+	if (wc == wc1)
+	{
+	  special = (wc == '_' && special == A_UNDERLINE)
+	    ? A_UNDERLINE : A_BOLD;
+	}
+	else if (wc == '_' || wc1 == '_')
+	{
+	  special = A_UNDERLINE;
+	  wc = (wc1 == '_') ? wc : wc1;
+	}
+	else
+	{
+	  special = 0; /* overstrike: nothing to do! */
+	  wc = wc1;
+	}
+	ch += k1;
+	k = k2;
+	mbstate = mbstate1;
+      }
+    }
+
+    if (pa &&
+	((flags & (M_SHOWCOLOR | M_SEARCH | M_PAGER_MARKER)) || special
+	 || pa->attr))
+      resolve_color (*lineInfo, n, vch, flags, special, pa);
+
+    if (iswprint (wc))
+    {
+      if (wc == ' ')
+	space = ch;
+      t = wcwidth (wc);
+      if (col + t > COLS)
+	break;
+      col += t;
+      if (pa)
+	mutt_addwch (wc);
+    }
+    else if (wc == '\n')
+      break;
+    else if (wc == '\t')
+    {
+      space = ch;
+      t = (col & ~7) + 8;
+      if (t > COLS)
+	break;
+      if (pa)
+	for (; col < t; col++)
+	  addch (' ');
+      else
+	col = t;
+    }
+    else if (wc < 0x20 || wc == 0x7f)
+    {
+      if (col + 2 > COLS)
+	break;
+      col += 2;
+      if (pa)
+	printw ("^%c", ('@' + wc) & 0x7f);
+    }
+    else if (wc < 0x100)
+    {
+      if (col + 4 > COLS)
+	break;
+      col += 4;
+      if (pa)
+	printw ("\\%03o", wc);
+    }
+    else
+    {
+      if (col + 1 > COLS)
+	break;
+      ++col;
+      if (pa)
+	addch (replacement_char ());
+    }
+  }
+  *pspace = space;
+  *pcol = col;
+  *pvch = vch;
+  *pspecial = special;
+  return ch;
+}
+
 /*
  * Args:
  *	flags	M_SHOWFLAT, show characters (used for displaying help)
@@ -992,10 +1124,10 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
 	      int *q_level, int *force_redraw, regex_t *SearchRE)
 {
   unsigned char buf[LONG_STRING], fmt[LONG_STRING];
-  unsigned char *buf_ptr = buf, c;
-  int ch, vch, t, col, cnt, b_read;
+  unsigned char *buf_ptr = buf;
+  int ch, vch, col, cnt, b_read;
   int buf_ready = 0, change_last = 0;
-  int special = 0, last_special = 0;
+  int special;
   int offset;
   int def_color;
   int m;
@@ -1121,73 +1253,13 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
   }
 
   /* now chose a good place to break the line */
-
-  ch = -1; /* index of the last space or TAB */
-  cnt = 0;
-  col = option (OPTMARKERS) ? (*lineInfo)[n].continuation : 0;
-  while (col < COLS && cnt < b_read)
-  {
-    c = *buf_ptr++;
-    if (c == '\n')
-      break;
-
-    while (*buf_ptr == '\010' && cnt + 2 < b_read)
-    {
-      cnt += 2;
-      buf_ptr += 2;
-      c = buf[cnt];
-    }
-
-    if (*buf_ptr == '\033' && *(buf_ptr + 1) && *(buf_ptr + 1) == '[' && is_ansi (buf_ptr+2))
-    {
-      cnt = grok_ansi(buf, cnt+3, NULL);
-      cnt++;
-      buf_ptr = buf + cnt;
-      continue;
-    }
-
-    if (c == '\t')
-    {
-      ch = cnt;
-      /* expand TABs */
-      if ((t = (col & ~7) + 8) < COLS)
-      {
-	col = t;
-	cnt++;
-      }
-      else
-	break;
-    }
-    else if (IsPrint (c))
-    {
-      if (c == ' ')
-	ch = cnt;
-      col++;
-      cnt++;
-    }
-    else if (iscntrl (c) && c < '@')
-    {
-      if (c == '\r' && *buf_ptr == '\n')
-	cnt++;
-      else if (col < COLS - 1)
-      {
-	col += 2;
-	cnt++;
-      }
-      else
-	break;
-    }
-    else
-    {
-      col++;
-      cnt++;
-    }
-  }
+  cnt = format_line (lineInfo, n, buf, flags, 0, b_read, &ch, &vch, &col, &special);
+  buf_ptr = buf + cnt;
 
   /* move the break point only if smart_wrap is set */
   if (option (OPTWRAP))
   {
-    if (col == COLS)
+    if (cnt < b_read)
     {
       if (ch != -1 && buf[cnt] != ' ' && buf[cnt] != '\t' && buf[cnt] != '\n' && buf[cnt] != '\r')
       {
@@ -1237,107 +1309,9 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
   }
   else
     clrtoeol ();
-  
+
   /* display the line */
-  col = option (OPTMARKERS) ? (*lineInfo)[n].continuation : 0;
-  for (ch = 0, vch = 0; ch < cnt; ch++, vch++)
-  {
-    special = 0;
-
-    c = buf[ch];
-    while (buf[ch+1] == '\010' && ch+2 < b_read)
-    {
-      if (buf[ch+2] == c)
-      {
-	special = (c == '_' && last_special == A_UNDERLINE)
-	  ? A_UNDERLINE : A_BOLD;
-	ch += 2;
-      }
-      else if (buf[ch] == '_' || buf[ch+2] == '_')
-      {
-	special = A_UNDERLINE;
-	ch += 2;
-	c = (buf[ch] == '_') ? buf[ch-2] : buf[ch];
-      }
-      else
-      {
-	special = 0; /* overstrike: nothing to do! */
-	ch += 2;
-	c = buf[ch];
-      }
-      last_special = special;
-    }
-
-    /* Handle ANSI sequences */
-    if (c == '\033' && buf[ch+1] == '[' && is_ansi (buf+ch+2))
-    {
-      ch = grok_ansi(buf, ch+2, &a);
-      c = buf[ch];
-      continue;
-    }
-
-    if (c == '\t')
-    {
-      if ((flags & (M_SHOWCOLOR | M_SEARCH | M_PAGER_MARKER)) || last_special
-	  || a.attr)
-      {
-	resolve_color (*lineInfo, n, vch, flags, special, &a);
-	if (!special)
-	  last_special = 0;
-      }
-
-      t = (col & ~7) + 8;
-      while (col < t)
-      {
-	addch (' ');
-	col++;
-      }
-    }
-    else if (IsPrint (c))
-    {
-      if ((flags & (M_SHOWCOLOR | M_SEARCH | M_PAGER_MARKER)) || special
-	  || last_special || a.attr)
-	resolve_color (*lineInfo, n, vch, flags, special, &a);
-      if (!special)
-	last_special = 0;
-
-      addch (c);
-      col++;
-    }
-    else if (iscntrl (c) && (c < '@' || c == 127))
-    {
-      if ((c != '\r' && c !='\n') || (buf[ch+1] != '\n' && buf[ch+1] != '\0'))
-      {
-	if ((flags & (M_SHOWCOLOR | M_SEARCH | M_PAGER_MARKER)) || last_special
-	    || a.attr)
-	{
-	  resolve_color (*lineInfo, n, vch, flags, special, &a);
-	  if (!special)
-	    last_special = 0;
-	}
-
-	addch ('^');
-	addch ((c + '@') & 127);
-	col += 2;
-      }
-    }
-    else
-    {
-      if ((flags & (M_SHOWCOLOR | M_SEARCH | M_PAGER_MARKER)) || last_special
-	  || a.attr)
-      {
-	resolve_color (*lineInfo, n, vch, flags, special, &a);
-	if (!special)
-	  last_special = 0;
-      }
-
-      if (ISSPACE (c))
-	addch (c);		/* unbreakable space */
-      else
-	addch ('?');
-      col++;
-    }
-  }
+  format_line (lineInfo, n, buf, flags, &a, cnt, &ch, &vch, &col, &special);
 
   /* avoid a bug in ncurses... */
 #ifndef USE_SLANG_CURSES
@@ -1349,7 +1323,7 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
 #endif
 
   /* end the last color pattern (needed by S-Lang) */
-  if (last_special || (col != COLS && (flags & (M_SHOWCOLOR | M_SEARCH))))
+  if (special || (col != COLS && (flags & (M_SHOWCOLOR | M_SEARCH))))
     resolve_color (*lineInfo, n, vch, flags, 0, &a);
           
   /* ncurses always wraps lines when you get to the right side of the
@@ -1530,7 +1504,8 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       if (option (OPTHELP))
       {
 	SETCOLOR (MT_COLOR_STATUS);
-	mvprintw (helpoffset, 0, "%-*.*s", COLS, COLS, helpstr);
+	move (helpoffset, 0);
+	mutt_paddstr (COLS, helpstr);
 	SETCOLOR (MT_COLOR_NORMAL);
       }
 
@@ -1654,8 +1629,9 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 			   COLS - 9 < sizeof (buffer) ? COLS - 9: sizeof (buffer),
 			   NONULL (PagerFmt), Context, extra->bdy->hdr, M_FORMAT_MAKEPRINT);
       }
-      printw ("%-*.*s -- (", COLS-10, COLS-10, 
-	      IsHeader (extra) || IsMsgAttach (extra) ? buffer : banner);
+      mutt_paddstr (COLS-10, IsHeader (extra) || IsMsgAttach (extra) ?
+		    buffer : banner);
+      addstr (" -- (");
       if (last_pos < sb.st_size - 1)
 	printw ("%d%%)", (int) (100 * last_offset / sb.st_size));
       else
@@ -1675,7 +1651,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
  
       move (indexoffset + (option (OPTSTATUSONTOP) ? 0 : (indexlen - 1)), 0);
       SETCOLOR (MT_COLOR_STATUS);
-      printw ("%-*.*s", COLS, COLS, buffer);
+      mutt_paddstr (COLS, buffer);
       SETCOLOR (MT_COLOR_NORMAL);
     }
 

@@ -44,6 +44,7 @@
 #include "mutt.h"
 #include "pgp.h"
 #include "charset.h"
+#include "iconv.h"
 
 /* for hexval */
 #include "mime.h"
@@ -67,12 +68,13 @@
 
 /* decode the backslash-escaped user ids. */
 
-static CHARSET *_chs;
+static char *_chs = 0;
 
 static void fix_uid (char *uid)
 {
   char *s, *d;
-  
+  iconv_t cd;
+
   for (s = d = uid; *s;)
   {
     if (*s == '\\' && *(s+1) == 'x' && isxdigit (*(s+2)) && isxdigit (*(s+3)))
@@ -84,8 +86,31 @@ static void fix_uid (char *uid)
       *d++ = *s++;
   }
   *d = '\0';
-  
-  mutt_decode_utf8_string (uid, _chs);
+
+  if (_chs && (cd = iconv_open (_chs, "utf-8")) != (iconv_t)-1) 
+  {
+    int n = s - uid + 1; /* chars available in original buffer */
+    char *buf;
+    const char *ib;
+    char *ob;
+    size_t ibl, obl;
+
+    buf = safe_malloc (n+1);
+    ib = uid, ibl = d - uid + 1, ob = buf, obl = n;
+    iconv (cd, &ib, &ibl, &ob, &obl);
+    if (!ibl)
+    {
+      if (ob-buf < n)
+      {
+	memcpy (uid, buf, ob-buf);
+	uid[ob-buf] = '\0';
+      }
+      else if (ob-buf == n && (buf[n] = 0, strlen (buf) < n))
+	memcpy (uid, buf, n);
+    }
+    free (buf);
+    iconv_close (cd);
+  }
 }
 
 static pgp_key_t *parse_pub_line (char *buf, int *is_subkey, pgp_key_t *k)
@@ -261,8 +286,9 @@ pgp_key_t *pgp_get_candidates (pgp_ring_t keyring, LIST * hints)
   if ((devnull = open ("/dev/null", O_RDWR)) == -1)
     return NULL;
 
-  _chs = mutt_get_charset (Charset);
-  
+  free (_chs);
+  _chs = safe_strdup (Charset);
+
   thepid = pgp_invoke_list_keys (NULL, &fp, NULL, -1, -1, devnull,
 				 keyring, hints);
   if (thepid == -1)

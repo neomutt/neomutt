@@ -19,35 +19,7 @@
 #ifndef _CHARSET_H
 #define _CHARSET_H
 
-typedef int CHARSET_MAP[256];
-
-typedef struct descr
-{
-  char *symbol;
-  int repr;
-}
-CHARDESC;
-
-typedef struct
-{
-  char *charset;
-  char escape_char;
-  char comment_char;
-  short multbyte;
-  LIST *aliases;
-}
-CHARMAP;
-
-typedef struct
-{
-  size_t n_symb;
-  size_t u_symb;
-
-  short multbyte;
-  HASH *symb_to_repr;
-  CHARDESC **description;
-}
-CHARSET;
+#include <iconv.h>
 
 #define DECODER_BUFFSIZE 4096
 
@@ -59,16 +31,14 @@ struct decoder_buff
 
 typedef struct decoder
 {
-  short src_is_utf8;
+  /*short src_is_utf8;*/
   short just_take_id;
   short forced;
-  
-  /* used for utf-8 decoding */
-  CHARSET *chs;
+  char *outrepl;
 
-  /* used for 8-bit to 8-bit recoding */
-  CHARSET_MAP *chm;
-  
+  /* conversion descriptor */
+  iconv_t cd;
+
   /* the buffers */
   struct decoder_buff in;
   struct decoder_buff out;
@@ -83,12 +53,16 @@ void mutt_decoder_pop_to_state (DECODER *, STATE *);
 void mutt_free_decoder (DECODER **);
 int mutt_decoder_push_one (DECODER *, char);
 
-CHARSET *mutt_get_charset(const char *);
-CHARSET_MAP *mutt_get_translation(const char *, const char *);
-int mutt_display_string(char *, CHARSET_MAP *);
-int mutt_is_utf8(const char *);
 int mutt_recode_file (const char *, const char *, const char *);
-unsigned char mutt_display_char(unsigned char, CHARSET_MAP *);
-void mutt_decode_utf8_string(char *, CHARSET *);
+
+int mutt_convert_string (char *, size_t, const char *, const char *);
+
+size_t mutt_iconv (iconv_t, const char **, size_t *, char **, size_t *, const char **, const char *);
+
+typedef void * FGETCONV;
+
+FGETCONV *fgetconv_open (FILE *, const char *, const char *);
+int fgetconv (FGETCONV *);
+void fgetconv_close (FGETCONV *);
 
 #endif /* _CHARSET_H */
