@@ -460,10 +460,9 @@ static int pgp_parse_pgp3_sig (unsigned char *buff, size_t l, pgp_key_t * p, pgp
 	{
 	  if (skl < 8)
 	    break;
-	  signerid1 = 0;
+	  signerid2 = signerid1 = 0;
 	  for (i = 0; i < 4; i++)
 	    signerid1 = (signerid1 << 8) + buff[j++];
-	  signerid2 = 0;
 	  for (i = 0; i < 4; i++)
 	    signerid2 = (signerid2 << 8) + buff[j++];
 	  
@@ -582,6 +581,7 @@ static pgp_key_t *pgp_parse_keyblock (FILE * fp)
 
 	last = &p->next;
 	addr = &p->address;
+	lsig = &p->sigs;
 	
 	if (pt == PT_SUBKEY || pt == PT_SUBSECKEY)
 	{
@@ -772,6 +772,21 @@ static void print_userid (const char *id)
   }
 }
 
+static void dump_signatures (pgp_sig_t *sig)
+{
+  for (; sig; sig = sig->next)
+  {
+    if (sig->sigtype == 0x10 || sig->sigtype == 0x11 ||
+	sig->sigtype == 0x12 || sig->sigtype == 0x13)
+      printf ("sig::::%08lX%08lX::::::%X:\n",
+	      sig->sid1, sig->sid2, sig->sigtype);
+    else if (sig->sigtype == 0x20)
+      printf ("rev::::%08lX%08lX::::::%X:\n",
+	      sig->sid1, sig->sid2, sig->sigtype);
+  }
+}
+
+
 static char gnupg_trustletter (int t)
 {
   switch (t)
@@ -844,17 +859,12 @@ static void pgpring_dump_keyblock (pgp_key_t *p)
       
       if (dump_signatures)
       {
-	for (sig = uid->sigs; sig; sig = sig->next)
-	{
-	  if (sig->sigtype == 0x10 || sig->sigtype == 0x11 ||
-	      sig->sigtype == 0x12 || sig->sigtype == 0x13)
-	    printf ("sig::::%08lX%08lX:::::::\n",
-		    sig->sid1, sig->sid2);
-	  else if (sig->sigtype == 0x20)
-	    printf ("rev::::%08lX%08lX:::::::\n",
-		    sig->sid1, sig->sid2);
-	    
-	}
+	if (first)
+	  dump_signatures (p->sigs);
+	
+	dump_signatures (uid->sigs);
+      }
+       
       }
     }
   }

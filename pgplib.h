@@ -40,6 +40,15 @@
 
 #define KEYFLAG_ABILITIES (KEYFLAG_CANSIGN|KEYFLAG_CANENCRYPT|KEYFLAG_PREFER_ENCRYPTION|KEYFLAG_PREFER_SIGNING)
 
+typedef struct pgp_signature
+{
+  struct pgp_signature *next;
+  unsigned char sigtype;
+  unsigned long sid1;
+  unsigned long sid2;
+}
+pgp_sig_t;
+
 typedef struct pgp_keyinfo
 {
   char *keyid;
@@ -50,18 +59,10 @@ typedef struct pgp_keyinfo
   int numalg;
   const char *algorithm;
   struct pgp_keyinfo *parent;
+  struct pgp_signature *sigs;
   struct pgp_keyinfo *next;
 }
 pgp_key_t;
-
-typedef struct pgp_signature
-{
-  struct pgp_signature *next;
-  unsigned char sigtype;
-  unsigned long sid1;
-  unsigned long sid2;
-}
-pgp_sig_t;
 
 typedef struct pgp_uid
 {
