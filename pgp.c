@@ -1447,20 +1447,43 @@ int pgp_get_keys (HEADER *msg, char **pgpkeylist)
 int pgp_protect (HEADER *msg, char *pgpkeylist)
 {
   BODY *pbody = NULL;
+  int flags = msg->pgp;
 
   if ((msg->pgp & PGPSIGN) && !pgp_valid_passphrase ())
     return (-1);
 
   if (!isendwin ())
     endwin ();
-  if (msg->pgp & PGPENCRYPT)
-    pbody = pgp_encrypt_message (msg->content, pgpkeylist, msg->pgp & PGPSIGN);
-  else if (msg->pgp & PGPSIGN)
-    pbody = pgp_sign_message (msg->content);
 
-  if (!pbody)
-    return (-1);
-  msg->content = pbody;
+  if ((flags & PGPSIGN) && (!(flags & PGPENCRYPT) || option (OPTPGPRETAINABLESIG)))
+  {
+    if (!(pbody = pgp_sign_message (msg->content)))
+      return -1;
+
+    msg->content = pbody;
+    flags &= ~PGPSIGN;
+  }
+
+  if (flags & PGPENCRYPT)
+  {
+    if (!(pbody = pgp_encrypt_message (msg->content, pgpkeylist, flags & PGPSIGN)))
+    {
+
+      /* did we perform a retainable signature? */
+      if (flags != msg->pgp)
+      {
+	/* remove the outer multipart layer */
+	msg->content = mutt_remove_multipart (msg->content);
+	/* get rid of the signature */
+	mutt_free_body (&msg->content->next);
+      }
+
+      return (-1);
+    }
+
+    msg->content = pbody;
+  }
+
   return (0);
 }
 
