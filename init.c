@@ -1285,9 +1285,9 @@ int mutt_string_var_complete (char *buffer, size_t len, int pos)
 	  /* ignore the trailing '=' when comparing */
 	  strncmp (MuttVars[i].option, pt, strlen (pt) - 1) == 0)
       {
-	strncat (pt, "\"", buffer + len - pt);
-	strncat (pt, NONULL (*((char **) MuttVars[i].data)), buffer + len - pt);
-	strncat (pt, "\"", buffer + len - pt);
+	char tmp [LONG_STRING];
+	strcpy (tmp, pt);
+	snprintf (pt, len, "%s\"%s\"",tmp, NONULL (*((char **) MuttVars[i].data)));
 	return 1;
       }
   }
