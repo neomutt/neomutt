@@ -1,3 +1,7 @@
+2003-07-04 17:15:34  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* imap/auth_sasl.c: Increase a buffer's size.
+
 2003-07-04 17:07:22  Nicolas Rachinsky  <nr@rachinsky.de>  (roessler)
 
 	* OPS, curs_lib.c, curs_main.c, functions.h, menu.c: Introduce
