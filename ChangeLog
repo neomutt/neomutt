@@ -1,3 +1,8 @@
+2003-06-04 14:01:39  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* muttlib.c: Don't colorize empty lines generated with
+	state_attach_puts();
+
 2003-05-29 17:49:00  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* po/id.po, po/eo.po: Updates from the respective authors.
