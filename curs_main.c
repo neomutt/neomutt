@@ -1722,7 +1722,9 @@ int mutt_index_menu (void)
     {
       menu->menu = MENU_MAIN;
       menu->redraw = REDRAW_FULL;
+#if 0
       set_option (OPTWEED); /* turn header weeding back on. */
+#endif
     }
 
     if (done) break;
