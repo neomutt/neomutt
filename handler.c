@@ -1377,7 +1377,8 @@ void mutt_body_handler (BODY *b, STATE *s)
 
       if (!p)
         mutt_error _("Error: multipart/signed has no protocol.");
-      else if (mutt_strcasecmp ("application/pgp-signature", p) == 0)
+      else if (mutt_strcasecmp ("application/pgp-signature", p) == 0 ||
+	       mutt_strcasecmp ("multipart/mixed", p) == 0)
       {
 	if (s->flags & M_VERIFY)
 	  handler = pgp_signed_handler;

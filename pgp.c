@@ -2,7 +2,7 @@ static const char rcsid[]="$Id$";
 /*
  * Copyright (C) 1996,1997 Michael R. Elkins <me@cs.hmc.edu>
  * Copyright (c) 1998 Thomas Roessler <roessler@guug.de>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
@@ -483,11 +483,12 @@ void application_pgp_handler (BODY *m, STATE *s)
 int mutt_is_multipart_signed(BODY *b)
 {
   char *p;
-  
+
   if(!b || b->type != TYPEMULTIPART ||
      !b->subtype || mutt_strcasecmp(b->subtype, "signed") ||
      !(p = mutt_get_parameter("protocol", b->parameter)) ||
-     mutt_strcasecmp(p, "application/pgp-signature"))
+     (mutt_strcasecmp(p, "application/pgp-signature")
+      && mutt_strcasecmp(p, "multipart/mixed")))
     return 0;
 
   return PGPSIGN;
@@ -565,129 +566,208 @@ int pgp_query (BODY *m)
   return t;
 }
 
+static void pgp_fetch_signatures (BODY ***signatures, BODY *a, int *n)
+{
+  for (; a; a = a->next)
+  {
+    if(a->type == TYPEMULTIPART)
+      pgp_fetch_signatures (signatures, a->parts, n);
+    else
+    {
+      if((*n % 5) == 0)
+	safe_realloc((void **) signatures, (*n + 6) * sizeof(BODY **));
+
+      (*signatures)[(*n)++] = a;
+    }
+  }
+}
+
+static int pgp_write_signed(BODY *a, STATE *s, const char *tempfile)
+{
+  FILE *fp;
+  int c;
+  short hadcr;
+  size_t bytes;
+
+  if(!(fp = safe_fopen (tempfile, "w")))
+  {
+    mutt_perror(tempfile);
+    return -1;
+  }
+      
+  fseek (s->fpin, a->hdr_offset, 0);
+  bytes = a->length + a->offset - a->hdr_offset;
+  hadcr = 0;
+  while (bytes > 0)
+  {
+    if((c = fgetc(s->fpin)) == EOF)
+      break;
+    
+    bytes--;
+    
+    if(c == '\r')
+      hadcr = 1;
+    else 
+    {
+      if(c == '\n' && !hadcr)
+	fputc('\r', fp);
+      
+      hadcr = 0;
+    }
+    
+    fputc(c, fp);
+    
+  }
+  fclose (fp);
+
+  return 0;
+}
+
+static int pgp_verify_one (BODY *sigbdy, STATE *s, const char *tempfile, struct pgp_vinfo *pgp)
+{
+  char sigfile[_POSIX_PATH_MAX], pgperrfile[_POSIX_PATH_MAX];
+  FILE *fp, *pgpout, *pgperr;
+  pid_t thepid;
+  
+  snprintf (sigfile, sizeof (sigfile), "%s.asc", tempfile);
+  
+  if(!(fp = safe_fopen (sigfile, "w")))
+  {
+    mutt_perror(sigfile);
+    return -1;
+  }
+	
+  fseek (s->fpin, sigbdy->offset, 0);
+  mutt_copy_bytes (s->fpin, fp, sigbdy->length);
+  fclose (fp);
+  
+  mutt_mktemp(pgperrfile);
+  if(!(pgperr = safe_fopen(pgperrfile, "w+")))
+  {
+    mutt_perror(pgperrfile);
+    unlink(sigfile);
+    return -1;
+  }
+  
+  pgp_current_time (s);
+  
+  if((thepid = pgp->invoke_verify (pgp,
+				   NULL, &pgpout, NULL, 
+				   -1, -1, fileno(pgperr),
+				   tempfile, sigfile)) != -1)
+  {
+    mutt_copy_stream(pgpout, s->fpout);
+    fclose (pgpout);
+    fflush(pgperr);
+    rewind(pgperr);
+    mutt_copy_stream(pgperr, s->fpout);
+    fclose(pgperr);
+    
+    mutt_wait_filter (thepid);
+  }
+  
+  state_puts (_("[-- End of PGP output --]\n\n"), s);
+  
+  mutt_unlink (sigfile);
+  mutt_unlink (pgperrfile);
+
+  return 0;
+}
+
 /*
  * This routine verifies a PGP/MIME signed body.
  */
 void pgp_signed_handler (BODY *a, STATE *s)
 {
-  FILE *fp, *pgpout, *pgperr;
-  char tempfile[_POSIX_PATH_MAX], sigfile[_POSIX_PATH_MAX],
-  	pgperrfile[_POSIX_PATH_MAX];
-  int bytes;
-  int hadcr;
-  int c;
-  pid_t thepid;
+  char tempfile[_POSIX_PATH_MAX];
+  char *protocol;
+  int protocol_major = TYPEOTHER;
+  char *protocol_minor = NULL;
+  
   struct pgp_vinfo *pgp = pgp_get_vinfo(PGP_VERIFY);
+
+  BODY **signatures = NULL;
+  int sigcnt = 0;
+  int i;
+
   
-  if(!pgp)
+  if (!pgp)
     return;
-  
+
+  protocol = mutt_get_parameter ("protocol", a->parameter);
   a = a->parts;
 
-  /* First do some error checking to make sure that this looks like a valid
-   * multipart/signed body.
-   */
-  if (a && a->next && a->next->type == TYPEAPPLICATION && a->next->subtype &&
-      mutt_strcasecmp (a->next->subtype, "pgp-signature") == 0)
+  /* extract the protocol information */
+  
+  if (protocol)
   {
-    if (s->flags & M_DISPLAY)
+    char major[STRING];
+    char *t;
+
+    if ((protocol_minor = strchr(protocol, '/'))) protocol_minor++;
+    
+    strfcpy(major, protocol, sizeof(major));
+    if((t = strchr(major, '/')))
+      *t = '\0';
+    
+    protocol_major = mutt_check_mime_type (major);
+  }
+
+  /* consistency check */
+
+  if (!(a && a->next && a->next->type == protocol_major && 
+      !mutt_strcasecmp(a->next->subtype, protocol_minor)))
+  {
+    state_puts(_("[-- Error: Inconsistant multipart/signed structure! --]\n\n"), s);
+    mutt_body_handler (a, s);
+    return;
+  }
+
+  if(!(protocol_major == TYPEAPPLICATION && !mutt_strcasecmp(protocol_minor, "pgp-signature"))
+     && !(protocol_major == TYPEMULTIPART && !mutt_strcasecmp(protocol_minor, "mixed")))
+  {
+    state_printf(s, _("[-- Error: Unknown multipart/signed protocol %s! --]\n\n"), protocol);
+    mutt_body_handler (a, s);
+    return;
+  }
+  
+  if (s->flags & M_DISPLAY)
+  {
+    
+    pgp_fetch_signatures(&signatures, a->next, &sigcnt);
+    
+    if (sigcnt)
     {
       mutt_mktemp (tempfile);
-
-      if(!(fp = safe_fopen (tempfile, "w")))
+      if (pgp_write_signed (a, s, tempfile) == 0)
       {
-	mutt_perror(tempfile);
-	return;
-      }
-
-      fseek (s->fpin, a->hdr_offset, 0);
-      bytes = a->length + a->offset - a->hdr_offset;
-      hadcr = 0;
-      while (bytes > 0)
-      {
-	if((c = fgetc(s->fpin)) == EOF)
-	  break;
-	
-	bytes--;
-
-	if(c == '\r')
-	  hadcr = 1;
-	else 
+	for (i = 0; i < sigcnt; i++)
 	{
-	  if(c == '\n' && !hadcr)
-	    fputc('\r', fp);
-	  
-	  hadcr = 0;
+	  if (signatures[i]->type == TYPEAPPLICATION 
+	      && !mutt_strcasecmp(signatures[i]->subtype, "pgp-signature"))
+	    pgp_verify_one (signatures[i], s, tempfile, pgp);
+	  else
+	    state_printf (s, _("[-- Warning: We can't verify %s/%s signatures. --]\n\n"),
+			  TYPE(signatures[i]), signatures[i]->subtype);
 	}
-
-	fputc(c, fp);
-
       }
-      fclose (fp);
-
-      /* Now grab the signature.  Since signature data is required to be 7bit,
-       * we don't have to worry about doing CTE decoding...
-       */
-      snprintf (sigfile, sizeof (sigfile), "%s.asc", tempfile);
-      if(!(fp = safe_fopen (sigfile, "w")))
-      {
-	mutt_perror(sigfile);
-	unlink(tempfile);
-	return;
-      }
-
-      fseek (s->fpin, a->next->offset, 0);
-      mutt_copy_bytes (s->fpin, fp, a->next->length);
-      fclose (fp);
-
-      mutt_mktemp(pgperrfile);
-      if(!(pgperr = safe_fopen(pgperrfile, "w+")))
-      {
-	mutt_perror(pgperrfile);
-	unlink(tempfile);
-	unlink(sigfile);
-	return;
-      }
-      
-      pgp_current_time (s);
-
-      if((thepid = pgp->invoke_verify (pgp,
-				       NULL, &pgpout, NULL, 
-				       -1, -1, fileno(pgperr),
-				       tempfile, sigfile)) != -1)
-      {
-	mutt_copy_stream(pgpout, s->fpout);
-	fclose (pgpout);
-	
-	fflush(pgperr);
-	rewind(pgperr);
-	mutt_copy_stream(pgperr, s->fpout);
-	fclose(pgperr);
-	
-	mutt_wait_filter (thepid);
-      }
-      
-      state_puts (_("[-- End of PGP output --]\n\n"), s);
       
       mutt_unlink (tempfile);
-      mutt_unlink (sigfile);
-      mutt_unlink (pgperrfile);
       
       /* Now display the signed body */
-      state_puts (_("[-- The following data is PGP/MIME signed --]\n\n"), s);
+      state_puts (_("[-- The following data is signed --]\n\n"), s);
+
+
+      safe_free((void **) &signatures);
     }
-
-    mutt_body_handler (a, s);
-
-    if (s->flags & M_DISPLAY)
-      state_puts (_("\n[-- End of PGP/MIME signed data --]\n"), s);
+    else
+      state_puts (_("[-- Warning: Can't find any signatures. --]\n\n"), s);
   }
-  else
-  {
-    dprint (1,(debugfile, "pgp_signed_handler: invalid format!\n"));
-    state_puts (_("[-- Error: this message does not comply with the PGP/MIME specification! --]\n\n"), s);
-    mutt_decode_attachment (a, s); /* just treat the data as text/plain... */
-  }
+  
+  mutt_body_handler (a, s);
+  
+  if (s->flags & M_DISPLAY && sigcnt)
+    state_puts (_("\n[-- End of signed data --]\n"), s);
 }
 
 /* Extract pgp public keys from messages or attachments */
@@ -1225,6 +1305,7 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
 
 /* Warning: "a" is no longer free()d in this routine, you need
  * to free() it later.  This is necessary for $fcc_attach. */
+
 static BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
 {
   char buf[LONG_STRING];
