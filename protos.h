@@ -432,4 +432,3 @@ int ioctl (int, int, ...);
 /* unsorted */
 void ci_bounce_message (HEADER *, int *);
 void ci_send_message (int, HEADER *, char *, CONTEXT *, HEADER *);
-void ci_attach (BODY *);
