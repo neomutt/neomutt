@@ -149,6 +149,20 @@ us-dist: us-distdir
 	GZIP=$(GZIP) $(TAR) chozf $(distdir)-us.tar.gz $(distdir)-us
 	-rm -rf $(distdir)-us
 
+actual-dist: dist us-dist
+	mv $(distdir).tar.gz $(distdir)i.tar.gz
+	mv $(distdir)-us.tar.gz $(distdir).tar.gz
+	pgp -sb $(distdir)i.tar.gz && chmod 644 $(distdir)i.tar.gz.asc
+	pgp -sb $(distdir).tar.gz && chmod 644 $(distdir).tar.gz.asc
+
+mutt-dist-prep: reldate update-doc changelog
+	awk -F . '{printf("%d.%d.%d\n", $$1, $$2, $$3 + 1);}' VERSION > _VERSION.$$$$  \
+		&& mv _VERSION.$$$$ VERSION
+
+mutt-dist: mutt-dist-prep
+	touch $(srcdir)/configure.in
+	$(MAKE) actual-dist
+
 update-doc: stamp-doc-rc
 	(cd doc && make update-doc)
 
