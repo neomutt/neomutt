@@ -6,9 +6,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt-1.3.17\n"
+"Project-Id-Version: mutt-1.3.23\n"
 "POT-Creation-Date: 2001-10-09 10:45+0200\n"
-"PO-Revision-Date: 2001-04-06 01:17+02:00\n"
+"PO-Revision-Date: 2001-10-15 23:54+0200\n"
 "Last-Translator: Marco d'Itri <md@linux.it>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
@@ -367,9 +367,8 @@ msgid "Messages bounced."
 msgstr "Messaggi rimbalzati."
 
 #: commands.c:334 commands.c:373 commands.c:390
-#, fuzzy
 msgid "Can't create filter process"
-msgstr "Impossibile creare il filtro"
+msgstr "Impossibile creare il processo filtro"
 
 #: commands.c:419
 msgid "Pipe to command: "
@@ -465,7 +464,7 @@ msgstr "Copio in %s..."
 #: commands.c:843
 #, c-format
 msgid "Convert to %s upon sending?"
-msgstr ""
+msgstr "Convertire in %s al momento dell'invio?"
 
 #: commands.c:851
 #, c-format
@@ -473,17 +472,17 @@ msgid "Content-Type changed to %s."
 msgstr "Il Content-Type è stato cambiato in %s."
 
 #: commands.c:853
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; %s."
-msgstr "Il set di caratteri è stato cambiato in %s."
+msgstr "Il set di caratteri è stato cambiato in %s; %s."
 
 #: commands.c:855
 msgid "not converting"
-msgstr ""
+msgstr "non convertito"
 
 #: commands.c:855
 msgid "converting"
-msgstr ""
+msgstr "convertito"
 
 #: compose.c:40
 msgid "There are no attachments."
@@ -694,9 +693,8 @@ msgid "Function not permitted in attach-message mode."
 msgstr "Funzione non permessa nella modalità attach-message."
 
 #: curs_main.c:63
-#, fuzzy
 msgid "No visible messages."
-msgstr "Non ci sono nuovi messaggi"
+msgstr "Non ci sono messaggi visibili"
 
 #: curs_main.c:238
 msgid "Cannot toggle write on a readonly mailbox!"
@@ -744,10 +742,8 @@ msgid "New mail in this mailbox."
 msgstr "C'è nuova posta in questa mailbox."
 
 #: curs_main.c:486
-#, fuzzy
 msgid "Mailbox was externally modified."
-msgstr ""
-"La mailbox è stata modificata dall'esterno.  I flag possono essere sbagliati."
+msgstr "La mailbox è stata modificata dall'esterno."
 
 #: curs_main.c:598
 msgid "No tagged messages."
@@ -1019,9 +1015,9 @@ msgid "Invoking autoview command: %s"
 msgstr "Richiamo il comando di autovisualizzazione: %s"
 
 #: handler.c:1520
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Can't run %s. --]\n"
-msgstr "[-- su %s --]\n"
+msgstr "[-- Impossibile eseguire %s. --]\n"
 
 #: handler.c:1535 handler.c:1553
 #, c-format
@@ -1142,7 +1138,7 @@ msgstr "Aiuto per %s"
 
 #: hook.c:240
 msgid "unhook: Can't do unhook * from within a hook."
-msgstr ""
+msgstr "unhook: impossibile usare unhook * dentro un hook."
 
 #: hook.c:252
 #, c-format
@@ -1152,12 +1148,11 @@ msgstr "unhook: tipo di hook sconosciuto: %s"
 #: hook.c:258
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s."
-msgstr ""
+msgstr "unhook: impossibile cancellare un %s dentro un %s."
 
 #: imap/auth.c:104 pop_auth.c:393
-#, fuzzy
 msgid "No authenticators available"
-msgstr "Autenticazione SASL fallita."
+msgstr "Non ci sono autenticatori disponibili."
 
 #: imap/auth_anon.c:39
 msgid "Authenticating (anonymous)..."
@@ -1217,18 +1212,16 @@ msgid "Create mailbox: "
 msgstr "Crea la mailbox:"
 
 #: imap/browse.c:276
-#, fuzzy
 msgid "Mailbox must have a name."
-msgstr "La mailbox non è stata modificata."
+msgstr "La mailbox deve avere un nome."
 
 #: imap/browse.c:284
 msgid "Mailbox created."
 msgstr "Mailbox creata."
 
 #: imap/command.c:289
-#, fuzzy
 msgid "Mailbox closed"
-msgstr "Mailbox cancellata."
+msgstr "Mailbox chiusa"
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
@@ -1252,7 +1245,7 @@ msgstr "Vuoi usare TLS per rendere sicura la connessione?"
 
 #: imap/imap.c:390
 msgid "Could not negotiate TLS connection"
-msgstr ""
+msgstr "Impossibile negoziare la connessione TLS"
 
 #: imap/imap.c:535
 #, c-format
@@ -1260,9 +1253,8 @@ msgid "Selecting %s..."
 msgstr "Seleziono %s..."
 
 #: imap/imap.c:657
-#, fuzzy
 msgid "Error opening mailbox"
-msgstr "Errore durante la scrittura della mailbox!"
+msgstr "Errore durante l'apertura della mailbox"
 
 #. STATUS not supported
 #: imap/imap.c:710
@@ -1285,9 +1277,8 @@ msgid "Marking %d messages deleted..."
 msgstr "Segno cancellati %d messaggi..."
 
 #: imap/imap.c:927
-#, fuzzy
 msgid "Expunge failed"
-msgstr "Login fallito."
+msgstr "Expunge fallito"
 
 #: imap/imap.c:942
 #, c-format
@@ -1299,9 +1290,8 @@ msgid "Expunging messages from server..."
 msgstr "Cancello i messaggi dal server..."
 
 #: imap/imap.c:1065
-#, fuzzy
 msgid "CLOSE failed"
-msgstr "Login fallito."
+msgstr "CLOSE fallito"
 
 #: imap/imap.c:1321
 #, c-format
@@ -1319,9 +1309,9 @@ msgid "Unable to fetch headers from this IMAP server version."
 msgstr "Impossibile scaricare gli header da questa versione del server IMAP."
 
 #: imap/message.c:83
-#, fuzzy, c-format
+#, c-format
 msgid "Could not create temporary file %s"
-msgstr "Impossibile creare il file temporaneo!"
+msgstr "Impossibile creare il file temporaneo %s"
 
 #: imap/message.c:96 pop.c:209
 #, c-format
@@ -1502,14 +1492,13 @@ msgid "macro: too many arguments"
 msgstr "macro: troppi argomenti"
 
 #: keymap.c:850
-#, fuzzy
 msgid "exec: no arguments"
-msgstr "exec: troppo pochi argomenti"
+msgstr "exec: non ci sono argomenti"
 
 #: keymap.c:870
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no such function"
-msgstr "%s: la funzione non è nella mappa"
+msgstr "%s: la funzione non esiste"
 
 #: keymap_alldefs.h:5
 msgid "null operation"
@@ -2269,20 +2258,18 @@ msgstr ""
 "Per segnalare un bug usa il programma flea(1).\n"
 
 #: main.c:45
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2001 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2000 Michael R. Elkins e altri.\n"
+"Copyright (C) 1996-2001 Michael R. Elkins e altri.\n"
 "Mutt non ha ALCUNA GARANZIA; usare `mutt -vv' per i dettagli.\n"
 "Mutt è software libero e sei invitato a ridistribuirlo\n"
 "sotto certe condizioni; scrivere `mutt -vv' per i dettagli.\n"
 
 #: main.c:51
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
@@ -2309,13 +2296,13 @@ msgid ""
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 msgstr ""
-"Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
-"Copyright (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2000 Thomas Roessler <roessler@guug.de>\n"
-"Copyright (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
-"Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-"Copyright (C) 2000      Edmund Grimley Evans <edmundo@rano.org>\n"
+"Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Copyright (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
+"Copyright (C) 1997-2001 Thomas Roessler <roessler@guug.de>\n"
+"Copyright (C) 1998-2001 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2001 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 2000-2001 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "Molti altri non menzionati qui hanno contribuito con codice, correzioni\n"
 "e suggerimenti.\n"
@@ -2481,9 +2468,8 @@ msgstr "Scrivo i messaggi... %d (%d%%)"
 #. * change/deleted message
 #.
 #: mbox.c:925
-#, fuzzy
 msgid "Committing changes..."
-msgstr "Compilo il modello da cercare..."
+msgstr "Applico i cambiamenti..."
 
 #: mbox.c:956
 #, c-format
@@ -2612,9 +2598,9 @@ msgid "Append messages to %s?"
 msgstr "Accodo i messaggi a %s?"
 
 #: mutt_socket.c:84 mutt_socket.c:140
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s closed"
-msgstr "Connessione a %s fallita."
+msgstr "Connessione a %s chiusa."
 
 #: mutt_socket.c:258
 msgid "SSL is unavailable."
@@ -2625,9 +2611,9 @@ msgid "Preconnect command failed."
 msgstr "Comando di preconnessione fallito."
 
 #: mutt_socket.c:360 mutt_socket.c:374
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Errore nella connessione al server: %s"
+msgstr "Errore parlando a %s (%s)"
 
 #: mutt_socket.c:408 mutt_socket.c:449
 #, c-format
@@ -3185,9 +3171,8 @@ msgid "Fetching PGP key..."
 msgstr "Prendo la chiave PGP..."
 
 #: pgpkey.c:486
-#, fuzzy
 msgid "All matching keys are marked expired/revoked."
-msgstr "Questa chiave non può essere usata: è scaduta/disabilitata/revocata."
+msgstr "Tutte le chiavi corrispondenti sono scadute o revocate."
 
 #. __STRCAT_CHECKED__
 #: pgpkey.c:512
@@ -3227,29 +3212,25 @@ msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Questa chiave non può essere usata: è scaduta/disabilitata/revocata."
 
 #: pgpkey.c:608
-#, fuzzy
 msgid "This ID is expired/disabled/revoked"
-msgstr "Questa chiave non può essere usata: è scaduta/disabilitata/revocata."
+msgstr "Questo ID è scaduto/disabilitato/revocato"
 
 #: pgpkey.c:612
-#, fuzzy
 msgid "This ID's validity level is undefined."
-msgstr "Il livello di fiducia di questo ID non è definito."
+msgstr "Il livello di validità di questo ID non è definito."
 
 #: pgpkey.c:615
-#, fuzzy
 msgid "This ID is not valid."
-msgstr "Questo ID non è affidabile."
+msgstr "Questo ID non è valido."
 
 #: pgpkey.c:618
-#, fuzzy
 msgid "This ID is only marginally valid."
-msgstr "Questo ID è solo marginalmente affidabile."
+msgstr "Questo ID è solo marginalmente valido."
 
 #: pgpkey.c:622
-#, fuzzy, c-format
+#, c-format
 msgid "%s Do you really want to use the key?"
-msgstr "%s Vuoi veramente usarlo?"
+msgstr "%s Vuoi veramente usare questa chiave?"
 
 #: pgpkey.c:720
 msgid "Please enter the key ID: "
@@ -3717,14 +3698,14 @@ msgid "%s no longer exists!"
 msgstr "%s non esiste più!"
 
 #: sendlib.c:901
-#, fuzzy, c-format
+#, c-format
 msgid "Can't stat %s."
-msgstr "Impossibile fare stat: %s"
+msgstr "Impossibile fare stat di %s."
 
 #: sendlib.c:907
-#, fuzzy, c-format
+#, c-format
 msgid "%s isn't a regular file."
-msgstr "%s non è una mailbox."
+msgstr "%s non è un file regolare."
 
 #: sendlib.c:1076
 #, c-format
@@ -3774,9 +3755,3 @@ msgstr "Il messaggio padre non è visibile nella visualizzazione limitata"
 #: thread.c:767
 msgid "Parent message is not available."
 msgstr "Il messaggio padre non è disponibile."
-
-#~ msgid "%s: no such command"
-#~ msgstr "%s: comando inesistente"
-
-#~ msgid "Authentication method is unknown."
-#~ msgstr "Metodo di autenticazione sconosciuto."
