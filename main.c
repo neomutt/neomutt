@@ -87,6 +87,7 @@ static void mutt_usage (void)
   puts _(
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> ]\n\
        mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] [...]\n\
+       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] [...]\n\
        mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n\
        mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n\
        mutt -v[v]\n\
@@ -468,6 +469,7 @@ int main (int argc, char **argv)
   LIST *attach = NULL;
   LIST *commands = NULL;
   LIST *queries = NULL;
+  LIST *alias_queries = NULL;
   int sendflags = 0;
   int flags = 0;
   int version = 0;
@@ -502,9 +504,12 @@ int main (int argc, char **argv)
   memset (Options, 0, sizeof (Options));
   memset (QuadOptions, 0, sizeof (QuadOptions));
   
-  while ((i = getopt (argc, argv, "a:b:F:f:c:d:e:H:s:i:hm:npQ:RvxyzZ")) != EOF)
+  while ((i = getopt (argc, argv, "A:a:b:F:f:c:d:e:H:s:i:hm:npQ:RvxyzZ")) != EOF)
     switch (i)
     {
+      case 'A':
+        alias_queries = mutt_add_list (alias_queries, optarg);
+        break;
       case 'a':
 	attach = mutt_add_list (attach, optarg);
 	break;
@@ -615,7 +620,7 @@ int main (int argc, char **argv)
   }
 
   /* Check for a batch send. */
-  if (!isatty (0) || queries)
+  if (!isatty (0) || queries || alias_queries)
   {
     set_option (OPTNOCURSES);
     sendflags = SENDBATCH;
@@ -632,6 +637,23 @@ int main (int argc, char **argv)
 
   if (queries)
     return mutt_query_variables (queries);
+
+  if (alias_queries)
+  {
+    int rv = 0;
+    ADDRESS *a;
+    for (; alias_queries; alias_queries = alias_queries->next)
+    {
+      if ((a = mutt_lookup_alias (alias_queries->data)))
+	mutt_write_address_list (a, stdout, 0);
+      else
+      {
+	rv = 1;
+	printf ("%s\n", alias_queries->data);
+      }
+    }
+    return rv;
+  }
   
   if (newMagic)
     mx_set_magic (newMagic);

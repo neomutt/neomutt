@@ -230,6 +230,7 @@ void mutt_update_encoding (BODY *a);
 void mutt_update_tree (ATTACHPTR **, short);
 void mutt_version (void);
 void mutt_view_attachments (HEADER *);
+void mutt_write_address_list (ADDRESS *adr, FILE *fp, int linelen);
 void mutt_set_virtual (CONTEXT *);
 
 int mutt_addr_is_user (ADDRESS *);

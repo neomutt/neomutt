@@ -2875,6 +2875,7 @@ mailbox.  However, it is possible to read other mailboxes and
 to send messages from the command line as well.
 
 <tscreen><verb>
+-A	expand an alias
 -a      attach a file to a message
 -b      specify a blind carbon-copy (BCC) address
 -c      specify a carbon-copy (Cc) address

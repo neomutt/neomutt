@@ -44,6 +44,9 @@ mutt \- The Mutt Mail User Agent
 .B mutt
 [-n] [-e \fIcmd\fP] [-F \fIfile\fP] -Q \fIquery\fP
 .PP
+.B mutt
+[-n] [-e \fIcmd\fP] [-F \fIfile\fP] -A \fIalias\fP
+.PP
 .B mutt 
 -v[v]
 .SH DESCRIPTION
@@ -53,6 +56,8 @@ mail under unix operating systems, including support color terminals, MIME,
 and a threaded sorting mode.
 .SH OPTIONS
 .PP
+.IP "-A \fIalias\fP"
+An expanded version of the given alias is passed to stdout.
 .IP "-a \fIfile\fP"
 Attach a file to your message using MIME.
 .IP "-b \fIaddress\fP"
