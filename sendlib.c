@@ -1024,7 +1024,8 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
 
   body->hdr = mutt_new_header();
   body->hdr->offset = 0;
-  body->hdr->env = mutt_read_rfc822_header(fp, body->hdr);
+  /* we don't need the user headers here */
+  body->hdr->env = mutt_read_rfc822_header(fp, body->hdr, 0);
 #ifdef _PGPPATH
   body->hdr->pgp = pgp;
 #endif /* _PGPPATH */

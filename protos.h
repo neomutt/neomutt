@@ -87,7 +87,7 @@ BODY *mutt_parse_multipart (FILE *, const char *, long, int);
 BODY *mutt_parse_messageRFC822 (FILE *, BODY *);
 BODY *mutt_read_mime_header (FILE *, int);
 
-ENVELOPE *mutt_read_rfc822_header (FILE *, HEADER *);
+ENVELOPE *mutt_read_rfc822_header (FILE *, HEADER *, short);
 HEADER *mutt_dup_header (HEADER *);
 
 ATTACHPTR **mutt_gen_attach_list (BODY *, ATTACHPTR **, short *, short *, int, int);

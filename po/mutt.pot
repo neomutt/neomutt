@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-15 00:54+0200\n"
+"POT-Creation-Date: 1998-10-15 03:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2760,17 +2760,17 @@ msgstr ""
 msgid "Could not open %s"
 msgstr ""
 
-#: sendlib.c:1694
+#: sendlib.c:1695
 #, c-format
 msgid "Error sending message, child exited %d (%s).\n"
 msgstr ""
 
-#: sendlib.c:1696
+#: sendlib.c:1697
 #, c-format
 msgid "Saved output of child process to %s.\n"
 msgstr ""
 
-#: sendlib.c:1700
+#: sendlib.c:1701
 msgid "Error sending message."
 msgstr ""
 

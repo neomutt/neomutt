@@ -97,7 +97,7 @@ int test_last_status_new (FILE * f)
     return (0);
 
   hdr = mutt_new_header ();
-  mutt_read_rfc822_header (f, hdr);
+  mutt_read_rfc822_header (f, hdr, 0);
   if (!(hdr->read || hdr->old))
     result = 1;
   mutt_free_header (&hdr);

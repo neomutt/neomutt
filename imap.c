@@ -531,7 +531,7 @@ static int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
     ctx->hdrs[ctx->msgcount] = mutt_new_header ();
     ctx->hdrs[ctx->msgcount]->index = ctx->msgcount;
 
-    ctx->hdrs[msgno]->env = mutt_read_rfc822_header (fp, ctx->hdrs[msgno]);
+    ctx->hdrs[msgno]->env = mutt_read_rfc822_header (fp, ctx->hdrs[msgno], 0);
     ploc=ftell(fp);
     ctx->hdrs[msgno]->read = h->read;
     ctx->hdrs[msgno]->old = h->old;

@@ -423,7 +423,7 @@ BODY *mutt_parse_messageRFC822 (FILE *fp, BODY *parent)
 
   parent->hdr = mutt_new_header ();
   parent->hdr->offset = ftell (fp);
-  parent->hdr->env = mutt_read_rfc822_header (fp, parent->hdr);
+  parent->hdr->env = mutt_read_rfc822_header (fp, parent->hdr, 0);
   msg = parent->hdr->content;
 
   /* ignore the length given in the content-length since it could be wrong
@@ -835,12 +835,13 @@ void mutt_parse_mime_message (CONTEXT *ctx, HEADER *cur)
  *
  * f		stream to read from
  *
- * hdr		header structure of current message (optional).  If hdr is
- *		NULL, then we are reading a postponed message, or called
- *		from mutt_edit_headers() so we should keep a list of the
- *		user-defined headers.
+ * hdr		header structure of current message (optional).
+ * 
+ * user_hdrs	If set, store user headers.  Used for edit-message and 
+ * 		postpone modes.
+ * 
  */
-ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr)
+ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs)
 {
   ENVELOPE *e = mutt_new_envelope();
   LIST *last = NULL;
@@ -1156,7 +1157,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr)
     }
 
      /* Keep track of the user-defined headers */
-    if (!matched)
+    if (!matched && user_hdrs)
     {
       if (last)
       {
