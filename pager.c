@@ -2400,7 +2400,7 @@ CHECK_IMAP_ACL(IMAP_ACL_WRITE);
 	break;
 
       case OP_RECALL_MESSAGE:
-	CHECK_MODE(IsHeader (extra));
+	CHECK_MODE(IsHeader (extra) && !IsAttach(extra));
         CHECK_ATTACH;
 	ci_send_message (SENDPOSTPONED, NULL, NULL, extra->ctx, extra->hdr);
 	redraw = REDRAW_FULL;
