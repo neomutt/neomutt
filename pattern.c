@@ -833,7 +833,13 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
       return (pat->not ^ (mutt_is_list_recipient (h->env->to) ||
 			  mutt_is_list_recipient (h->env->cc)));
     case M_PERSONAL_RECIP:
-      return (pat->not ^ (match_user (h->env->to) || match_user (h->env->cc)));
+      if (pat->alladdr)
+      {
+	int i = mutt_user_is_recipient (h);
+	return (pat->not ^ ((i == 1) || (i == 3 && h->env->cc && !h->env->cc->next)));
+      }
+      else
+	return (pat->not ^ (match_user (h->env->to) || match_user (h->env->cc)));
     case M_PERSONAL_FROM:
       return (pat->not ^ (match_user (h->env->from)));
 #ifdef _PGPPATH

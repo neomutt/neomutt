@@ -263,6 +263,7 @@ int mutt_search_command (int, int);
 int mutt_compose_menu (HEADER *, char *, size_t, HEADER *);
 int mutt_strcmp (const char *, const char *);
 int mutt_thread_set_flag (HEADER *, int, int, int);
+int mutt_user_is_recipient (HEADER *);
 int mutt_view_attachment (FILE*, BODY *, int);
 int mutt_wait_filter (pid_t);
 int mutt_which_case (const char *);

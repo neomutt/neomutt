@@ -161,24 +161,24 @@ static int user_in_addr (ADDRESS *a)
  * 3: user is in the CC list
  * 4: user is originator
  */
-static int user_is_recipient (HEADER *h)
+int mutt_user_is_recipient (HEADER *h)
 {
-  ENVELOPE *hdr = h->env;
+  ENVELOPE *env = h->env;
 
   if(!h->recip_valid)
   {
     h->recip_valid = 1;
     
-    if (mutt_addr_is_user (hdr->from))
+    if (mutt_addr_is_user (env->from))
       h->recipient = 4;
-    else if (user_in_addr (hdr->to))
+    else if (user_in_addr (env->to))
     {
-      if (hdr->to->next || hdr->cc)
+      if (env->to->next || env->cc)
 	h->recipient = 2; /* non-unique recipient */
       else
 	h->recipient = 1; /* unique recipient */
     }
-    else if (user_in_addr (hdr->cc))
+    else if (user_in_addr (env->cc))
       h->recipient = 3;
     else
       h->recipient = 0;
@@ -545,7 +545,7 @@ hdr_format_str (char *dest,
     case 'T':
       snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
       snprintf (dest, destlen, fmt,
-		(Tochars && ((i = user_is_recipient (hdr))) < strlen (Tochars)) ? Tochars[i] : ' ');
+		(Tochars && ((i = mutt_user_is_recipient (hdr))) < strlen (Tochars)) ? Tochars[i] : ' ');
       break;
 
     case 'u':
@@ -606,7 +606,7 @@ hdr_format_str (char *dest,
 		hdr->deleted ? 'D' : (hdr->attach_del ? 'd' : ch),
 		hdr->tagged ? '*' :
 		(hdr->flagged ? '!' :
-		 (Tochars && ((i = user_is_recipient (hdr)) < strlen (Tochars)) ? Tochars[i] : ' ')));
+		 (Tochars && ((i = mutt_user_is_recipient (hdr)) < strlen (Tochars)) ? Tochars[i] : ' ')));
       snprintf (dest, destlen, fmt, buf2);
       break;
 
