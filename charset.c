@@ -1055,6 +1055,7 @@ int mutt_recode_file (const char *fname, const char *src, const char *dest)
   char tmp[1024];
   int c;
   int rv = -1;
+  int source_file_is_unchanged = 1;
 
   size_t lf, lpu, lpo;
   char *t;
@@ -1093,17 +1094,28 @@ int mutt_recode_file (const char *fname, const char *src, const char *dest)
       {
 	mutt_decoder_pop (dec, tmp, sizeof (tmp), &lpo);
 	if (lpo)
-	  fwrite (tmp, lpo, 1, tmpfp);
+	{
+	  if (fwrite (tmp, lpo, 1, tmpfp) == EOF)
+	    goto bail;
+	}
       } 
       while (lpo);
     }
+  }
+  if (lf == EOF && !feof(fp))
+  {
+    goto bail;
   }
 
   mutt_decoder_push (dec, NULL, 0, NULL);
   do 
   {
     mutt_decoder_pop (dec, tmp, sizeof (tmp), &lpo);
-    if (lpo) fwrite (tmp, lpo, 1, tmpfp);
+    if (lpo)
+    {
+      if (fwrite (tmp, lpo, 1, tmpfp) == EOF)
+	goto bail;
+    }
   }
   while (lpo);
 
@@ -1112,10 +1124,12 @@ int mutt_recode_file (const char *fname, const char *src, const char *dest)
   fclose (fp); fp = NULL;
   rewind (tmpfp);
 
+
+  source_file_is_unchanged = 0;
+
   /* don't use safe_fopen here - we're just going
    * to overwrite the old file.
    */
-
   if ((fp = fopen (fname, "w")) == NULL)
     goto bail;
   
@@ -1128,8 +1142,20 @@ int mutt_recode_file (const char *fname, const char *src, const char *dest)
   
 bail:
   if (rv == -1)
-    mutt_error (_("Error while recoding %s. See %s for recovering your data."),
-		fname, tempfile);
+  {
+    if (source_file_is_unchanged)
+    {
+      mutt_error (_("Error while recoding %s. "
+		    "Leave it unchanged."),
+		  fname);
+    }
+    else
+    {
+      mutt_error (_("Error while recoding %s. "
+		    "See %s for recovering your data."),
+		  fname, tempfile);
+    }
+  }
 
   if (fp) fclose (fp);
   if (tmpfp) fclose (tmpfp);
