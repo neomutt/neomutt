@@ -783,6 +783,8 @@ struct option_t MuttVars[] = {
   ** %D      date and time of the message in the format
   ** .       specified by ``date_format'' converted to 
   ** .       the local time zone
+  ** %e      current message number in thread
+  ** %E      number of messages in current thread
   ** %f      entire From: line (address + real name)
   ** %F      author name, or recipient name if the 
   ** .       message is from you

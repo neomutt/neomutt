@@ -432,6 +432,16 @@ hdr_format_str (char *dest,
       }
       break;
 
+    case 'e':
+      snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
+      snprintf (dest, destlen, fmt, mutt_msgno_in_thread(hdr) + 1);
+      break;
+
+    case 'E':
+      snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
+      snprintf (dest, destlen, fmt, mutt_messages_in_thread(hdr));
+      break;
+
     case 'f':
       buf2[0] = 0;
       rfc822_write_address (buf2, sizeof (buf2), hdr->env->from);
