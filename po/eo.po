@@ -3,9 +3,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.1\n"
+"Project-Id-Version: Mutt 1.3.19\n"
 "POT-Creation-Date: 2001-06-07 22:11+0200\n"
-"PO-Revision-Date: 2001-03-04 13:05+00:00\n"
+"PO-Revision-Date: 2001-06-09 15:00+01:00\n"
 "Last-Translator: Edmund GRIMLEY EVANS <edmundo@rano.org>\n"
 "Language-Team: eo <eo@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -360,9 +360,8 @@ msgid "Messages bounced."
 msgstr "Mesaøoj redirektitaj."
 
 #: commands.c:329 commands.c:368 commands.c:385
-#, fuzzy
 msgid "Can't create filter process"
-msgstr "Ne povas krei filtrilon"
+msgstr "Ne povas krei filtrilprocezon"
 
 #: commands.c:414
 msgid "Pipe to command: "
@@ -459,7 +458,7 @@ msgstr "Kopias al %s ..."
 #: commands.c:836
 #, c-format
 msgid "Convert to %s upon sending?"
-msgstr ""
+msgstr "Æu konverti al %s æe sendado?"
 
 #: commands.c:844
 #, c-format
@@ -467,17 +466,17 @@ msgid "Content-Type changed to %s."
 msgstr "Content-Type þanøita al %s."
 
 #: commands.c:846
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; %s."
-msgstr "Signaro þanøita al %s."
+msgstr "Signaro þanøita al %s; %s."
 
 #: commands.c:848
 msgid "not converting"
-msgstr ""
+msgstr "ne konvertas"
 
 #: commands.c:848
 msgid "converting"
-msgstr ""
+msgstr "konvertas"
 
 #: compose.c:40
 msgid "There are no attachments."
@@ -688,9 +687,8 @@ msgid "Function not permitted in attach-message mode."
 msgstr "Funkcio nepermesata dum elektado de aldonoj."
 
 #: curs_main.c:63
-#, fuzzy
 msgid "No visible messages."
-msgstr "Mankas novaj mesaøoj"
+msgstr "Mankas videblaj mesaøoj"
 
 #: curs_main.c:238
 msgid "Cannot toggle write on a readonly mailbox!"
@@ -737,9 +735,8 @@ msgid "New mail in this mailbox."
 msgstr "Nova mesaøo en æi tiu poþtfako"
 
 #: curs_main.c:477
-#, fuzzy
 msgid "Mailbox was externally modified."
-msgstr "Poþtfako estis modifita de ekstere. Flagoj povas esti maløustaj."
+msgstr "Poþtfako estis modifita de ekstere."
 
 #: curs_main.c:589
 msgid "No tagged messages."
@@ -1009,9 +1006,9 @@ msgid "Invoking autoview command: %s"
 msgstr "Alvokas aýtomatan vidigon per: %s"
 
 #: handler.c:1520
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Can't run %s. --]\n"
-msgstr "[-- je %s --]\n"
+msgstr "[-- Ne povas ruli %s. --]\n"
 
 #: handler.c:1535 handler.c:1553
 #, c-format
@@ -1132,7 +1129,7 @@ msgstr "Helpo por %s"
 
 #: hook.c:243
 msgid "unhook: Can't do unhook * from within a hook."
-msgstr ""
+msgstr "unhook: Ne povas fari unhook * de en hoko."
 
 #: hook.c:255
 #, c-format
@@ -1142,12 +1139,11 @@ msgstr "unhook: nekonata speco de hook: %s"
 #: hook.c:261
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s."
-msgstr ""
+msgstr "unhook: Ne povas forviþi %s de en %s."
 
 #: imap/auth.c:104
-#, fuzzy
 msgid "No authenticators available"
-msgstr "SASL-rajtiøo malsukcesis."
+msgstr "Nenia rajtiøilo disponata"
 
 #: imap/auth_anon.c:39
 msgid "Authenticating (anonymous)..."
@@ -1207,18 +1203,16 @@ msgid "Create mailbox: "
 msgstr "Krei poþtfakon: "
 
 #: imap/browse.c:276
-#, fuzzy
 msgid "Mailbox must have a name."
-msgstr "Poþtfako estas neþanøita."
+msgstr "Poþtfako devas havi nomon."
 
 #: imap/browse.c:284
 msgid "Mailbox created."
 msgstr "Poþtfako kreita."
 
 #: imap/command.c:289
-#, fuzzy
 msgid "Mailbox closed"
-msgstr "Poþtfako forviþita."
+msgstr "Poþtfako fermita"
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
@@ -1242,7 +1236,7 @@ msgstr "Æu sekura konekto per TLS?"
 
 #: imap/imap.c:389
 msgid "Could not negotiate TLS connection"
-msgstr ""
+msgstr "Ne povis negoci TLS-konekton"
 
 #: imap/imap.c:533
 #, c-format
@@ -1279,9 +1273,8 @@ msgid "Expunging messages from server..."
 msgstr "Forviþas mesaøojn de la servilo ..."
 
 #: imap/imap.c:1043
-#, fuzzy
 msgid "CLOSE failed"
-msgstr "Saluto malsukcesis."
+msgstr "CLOSE malsukcesis"
 
 #: imap/imap.c:1299
 #, c-format
@@ -2242,20 +2235,18 @@ msgstr ""
 "Por raporti cimon, bonvolu uzi la programon flea(1).\n"
 
 #: main.c:45
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2001 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Kopirajto (C) 1996-2000 Michael R. Elkins kaj aliaj.\n"
+"Kopirajto (C) 1996-2001 Michael R. Elkins kaj aliaj.\n"
 "Mutt venas kun ABSOLUTE NENIA GARANTIO; por detaloj tajpu 'mutt -vv'.\n"
 "Mutt estas libera programo, kaj vi rajtas pludoni kopiojn\n"
 "sub difinitaj kondiæoj; tajpu 'mutt -v' por detaloj.\n"
 
 #: main.c:51
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
 "Copyright (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
@@ -2282,13 +2273,13 @@ msgid ""
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 msgstr ""
-"Kopirajto (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
-"Kopirajto (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
-"Kopirajto (C) 1997-2000 Thomas Roessler <roessler@guug.de>\n"
-"Kopirajto (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Kopirajto (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
-"Kopirajto (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-"Kopirajto (C) 2000      Edmund Grimley Evans <edmundo@rano.org>\n"
+"Kopirajto (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Kopirajto (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
+"Kopirajto (C) 1997-2001 Thomas Roessler <roessler@guug.de>\n"
+"Kopirajto (C) 1998-2001 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Kopirajto (C) 1999-2001 Brendan Cully <brendan@kublai.com>\n"
+"Kopirajto (C) 1999-2001 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Kopirajto (C) 2000-2001 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "Multaj aliaj homoj ne menciitaj æi tie kontribuis multe da\n"
 "programlinioj, riparoj, kaj sugestoj.\n"
@@ -2576,9 +2567,9 @@ msgid "Append messages to %s?"
 msgstr "Æu aldoni mesaøojn al %s?"
 
 #: mutt_socket.c:84 mutt_socket.c:140
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s closed"
-msgstr "Konektiøo al %s malsukcesis."
+msgstr "Konekto al %s fermita"
 
 #: mutt_socket.c:250
 msgid "SSL is unavailable."
@@ -2589,9 +2580,9 @@ msgid "Preconnect command failed."
 msgstr "Antaýkonekta komando malsukcesis."
 
 #: mutt_socket.c:352 mutt_socket.c:366
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Eraro dum konektiøo al servilo: %s"
+msgstr "Eraro dum komunikado kun %s (%s)"
 
 #: mutt_socket.c:400 mutt_socket.c:441
 #, c-format
@@ -3157,9 +3148,8 @@ msgid "Fetching PGP key..."
 msgstr "Prenas PGP-þlosilon ..."
 
 #: pgpkey.c:486
-#, fuzzy
 msgid "All matching keys are marked expired/revoked."
-msgstr "Æi tiu þlosilo ne estas uzebla: eksvalidiøinta/malþaltita/revokita."
+msgstr "Æiuj kongruaj þlosiloj estas markitaj kiel eksvalidiøintaj/revokitaj."
 
 #. __STRCAT_CHECKED__
 #: pgpkey.c:512
@@ -3199,9 +3189,8 @@ msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Æi tiu þlosilo ne estas uzebla: eksvalidiøinta/malþaltita/revokita."
 
 #: pgpkey.c:608
-#, fuzzy
 msgid "This ID is expired/disabled/revoked"
-msgstr "Æi tiu þlosilo ne estas uzebla: eksvalidiøinta/malþaltita/revokita."
+msgstr "Æi tiu identigilo estas eksvalidiøinta/malþaltita/revokita"
 
 #: pgpkey.c:612
 msgid "This ID's trust level is undefined."
@@ -3216,9 +3205,9 @@ msgid "This ID is only marginally trusted."
 msgstr "Æi tiu ID estas nur iomete fidinda."
 
 #: pgpkey.c:622
-#, fuzzy, c-format
+#, c-format
 msgid "%s Do you really want to use the key?"
-msgstr "%s Æu vi vere volas uzi øin?"
+msgstr "%s Æu vi vere volas uzi la þlosilon?"
 
 #: pgpkey.c:720
 msgid "Please enter the key ID: "
