@@ -1,4 +1,17 @@
-2003-07-14 12:17:43  Brendan Cully  <brendan@kublai.com>  (roessler)
+2003-07-14 12:19:07  Brendan Cully  <brendan@kublai.com>  (roessler)
+
+	* imap/command.c, imap/imap.c: 
+
+	On Sunday, 13 July 2003 at 18:09, Brendan Cully wrote:
+
+	> The attached patch should help when the connection to your
+	> postponed folder times out and you can't reconnect without
+	> restarting mutt. I'd like anyone who has that problem to
+	> try it and let me know how it works.
+
+	I dug a little deeper. The attached patch seems to work better. It
+	complains the first time you try to recall a message, but works
+	the second.
 
 	* account.c, curs_lib.c, enter.c, keymap.c, keymap.h, mutt.h,
 	mutt_curses.h: The attached patch prevents mutt from reading the
