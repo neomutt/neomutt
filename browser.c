@@ -443,6 +443,8 @@ static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
     menu->current = menu->max - 1;
   if (menu->current < 0)
     menu->current = 0;
+  if (menu->top > menu->current)
+    menu->top = 0;
 
   if (buffy)
     snprintf (title, titlelen, _("Mailboxes [%d]"), mutt_buffy_check (0));
