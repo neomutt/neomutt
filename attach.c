@@ -358,7 +358,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag)
     if (rfc1524_expand_filename (entry->nametemplate, fname,
 				 tempfile, sizeof (tempfile)))
     {
-      if (fp == NULL)
+      if (fp == NULL && strcmp(tempfile, a->filename))
       {
 	/* send case: the file is already there */
 	if (safe_symlink (a->filename, tempfile) == -1)
@@ -403,51 +403,41 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag)
   if (use_mailcap)
   {
     pid_t thepid = 0;
-    FILE *pagerfp = NULL;
-    FILE *tempfp = NULL;
-    FILE *filter_in;
-    FILE *filter_out;
-
+    int tempfd = -1, pagerfd = -1;
+    
     if (!use_pager)
       endwin ();
 
     if (use_pager || use_pipe)
     {
-      if (use_pager && ((pagerfp = safe_fopen (pagerfile, "w")) == NULL))
+      if (use_pager && ((pagerfd = safe_open (pagerfile, O_CREAT | O_EXCL | O_WRONLY)) == -1))
       {
-	mutt_perror ("fopen");
+	mutt_perror ("open");
 	goto return_error;
       }
-      if (use_pipe && ((tempfp = fopen (tempfile, "r")) == NULL))
+      if (use_pipe && ((tempfd = open (tempfile, 0)) == -1))
       {
-	if (pagerfp)
-	  fclose (pagerfp);
-	mutt_perror ("fopen");
+	if(pagerfd != -1)
+	  close(pagerfd);
+	mutt_perror ("open");
 	goto return_error;
       }
 
-      if ((thepid = mutt_create_filter (command, use_pipe ? &filter_in : NULL,
-					use_pager ? &filter_out : NULL, NULL)) == -1)
+      if ((thepid = mutt_create_filter_fd (command, NULL, NULL, NULL,
+					   use_pipe ? tempfd : -1, use_pager ? pagerfd : -1, -1)) == -1)
       {
-	if (pagerfp)
-	  fclose (pagerfp);
-	if (tempfp)
-	  fclose (tempfp);
+	if(pagerfd != -1)
+	  close(pagerfd);
+	
+	if(tempfd != -1)
+	  close(tempfd);
+
 	mutt_error _("Cannot create filter");
 	goto return_error;
       }
 
-      if (use_pipe)
-      {
-	mutt_copy_stream (tempfp, filter_in);
-	fclose (tempfp);
-	fclose (filter_in);
-      }
       if (use_pager)
       {
-	mutt_copy_stream (filter_out, pagerfp);
-	fclose (filter_out);
-	fclose (pagerfp);
 	if (a->description)
 	  snprintf (descrip, sizeof (descrip),
 		    "---Command: %-20.20s Description: %s",
@@ -460,6 +450,10 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag)
       if ((mutt_wait_filter (thepid) || (entry->needsterminal &&
 	  option (OPTWAITKEY))) && !use_pager)
 	mutt_any_key_to_continue (NULL);
+      
+      close(tempfd);
+      close(pagerfd);
+      
     }
     else
     {
