@@ -692,7 +692,7 @@ void mutt_menuDestroy (MUTTMENU **p)
     for (i=0; i < (*p)->max; i++)
       FREE (&(*p)->dialog[i]);
 
-    FREE ((*p)->dialog);
+    FREE (& (*p)->dialog);
   }
 
   FREE (p);
