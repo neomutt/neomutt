@@ -1,9 +1,9 @@
 # $Id$
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.1.2 (CVS 2000-02-03)\n"
-"POT-Creation-Date: 2000-02-08 10:59+0100\n"
-"PO-Revision-Date: 2000-02-03 12:00:00+0100\n"
+"Project-Id-Version: 1.1.3 (CVS 2000-02-11)\n"
+"POT-Creation-Date: 2000-02-12 13:37+0100\n"
+"PO-Revision-Date: 2000-02-12 13:53:00+0100\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -2227,9 +2227,10 @@ msgid ""
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
 "Copyright (C) 1996-2000 Michael R. Elkins und andere.\n"
-"Mutt übernimmt KEINERLEI GARANTIE; für Details starten Sie `mutt -vv'.\n"
-"Mutt ist freie Software und es ist zulässig, es unter bestimmten\n"
-"Bedingungen weiterzuverteilen; starten Sie `mutt -vv' für Details.\n"
+"Mutt übernimmt KEINERLEI GEWÄHRLEISTUNG. Starten Sie `mutt -vv', um\n"
+"weitere Details darüber zu erfahren. Mutt ist freie Software. \n"
+"Sie können es unter bestimmten Bedingungen weitergeben; starten Sie\n"
+"`mutt -vv' für weitere Details."
 
 #: main.c:50
 msgid ""
@@ -2267,17 +2268,17 @@ msgstr ""
 "Viele andere, die hier nicht erwähnt sind, haben viel Code, viele\n"
 "Bugfixes und viele Ideen beigesteuert.\n"
 "\n"
-"    Dieses Programm ist freie Software; Sie dürfen es weitergeben\n"
+"    Dieses Programm ist freie Software. Sie dürfen es weitergeben\n"
 "    und/oder es unter den Bedingungen der GNU General Public License,\n"
-"    die von der Free Software Foundation veröffentlicht wurde,\n"
-"    weitergeben. Entweder basierend auf Version 2 dieser Lizenz oder\n"
-"    (falls Sie wollen) nach einer späteren Version.\n"
+"    wie von der Free Software Foundation veröffentlicht, verändern;\n"
+"    entweder unter Version 2 dieser Lizenz oder, wenn Sie es wünschen,\n"
+"    jeder späteren Version.\n"
 "\n"
-"    Dieses Programm wurde in Hoffnung nützlich zu sein verbreitet,\n"
-"    jedoch OHNE JEGLICHE GARANTIE; auch ohne die Garantie der\n"
-"    MARKTGÄNGIGKEIT oder TAUGLICHKEIT FÜR EINEN SPEZIELLEN ZWECK.\n"
-"    Lesen Sie die GNU General Public License, um mehr Details zu\n"
-"    erfahren.\n"
+"    Die Veröffentlichung dieses Programms erfolgt in der Hoffnung, daß\n"
+"    es Ihnen von Nutzen sein wird, aber OHNE JEGLICHE GEWÄHRLEISTUNG,\n"
+"    sogar ohne die Garantie der MARKTREIFE oder EIGNUNG FÜR EINEN\n"
+"    BESTIMMTEN ZWECK. Lesen Sie die GNU General Public License, um\n"
+"    mehr Details zu erfahren.\n"
 "\n"
 "    Sie sollten eine Kopie der GNU General Public License zusammen mit\n"
 "    diesem Programm erhalten haben; falls nicht, schreiben sie an Free\n"
@@ -2300,17 +2301,15 @@ msgid ""
 "    along with this program; if not, write to the program's developers.\n"
 msgstr ""
 "\n"
-"SHA1 Implementation Copyright (C) 1995-1997 Eric A. Young "
-"<eay@cryptsoft.com>\n"
+"SHA1 Implementation Copyright (C) 1995-1997 Eric A. Young <eay@cryptsoft.com>\n"
 "\n"
-"    Weiterverbreitung und Nutzung als Source sowie in binärer Form,\n"
-"    mit oder ohne Veränderungen, ist unter bestimmten Bedingungen\n"
-"    erlaubt.\n"
+"    Die Weitergabe und Nutzung als Source sowie in binärer Form, mit\n"
+"    oder ohne Veränderungen, ist unter bestimmten Bedingungen erlaubt.\n"
 "\n"
 "    Die SHA1 Implementation ist WIE SIE IST. JEGLICHE AUSDRÜCKLICHE\n"
-"    oder IMPLIZITE GARANTIE, einschließlich (aber nicht\n"
-"    ausschließlich) die implizite Garantie der Marktgängigkeit und\n"
-"    Tauglichkeit für einen speziellen Zweck, SIND AUSGESCHLOSSEN.\n"
+"    oder IMPLIZITE GEWÄHRLEISTUNG, einschließlich (aber nicht\n"
+"    ausschließlich) die implizite Gewährleistung der Marktreife und\n"
+"    Eignung für einen bestimmten Zweck, SIND AUSGESCHLOSSEN.\n"
 "\n"
 "    Sie sollten eine Kopie mit den kompletten Bedingungen für die\n"
 "    Verbreitung zusammen mit diesem Programm erhalten haben; falls\n"
@@ -2382,43 +2381,43 @@ msgstr ""
 "\n"
 "Einstellungen bei der Compilierung:"
 
-#: main.c:323
+#: main.c:297
 msgid "Error initializing terminal."
 msgstr "Kann Terminal nicht initialisieren."
 
-#: main.c:422
+#: main.c:396
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Debugging auf Ebene %d.\n"
 
-#: main.c:424
+#: main.c:398
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG war beim Kompilieren nicht definiert.  Ignoriert.\n"
 
-#: main.c:543
+#: main.c:517
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s existiert nicht. Neu anlegen?"
 
-#: main.c:547
+#: main.c:521
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Kann %s nicht anlegen: %s."
 
-#: main.c:586
+#: main.c:560
 msgid "No recipients specified.\n"
 msgstr "Keine Empfänger angegeben.\n"
 
-#: main.c:659
+#: main.c:633
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: Kann Datei nicht anhängen.\n"
 
-#: main.c:679
+#: main.c:653
 msgid "No mailbox with new mail."
 msgstr "Keine Mailbox mit neuen Nachrichten."
 
-#: main.c:713
+#: main.c:687
 msgid "Mailbox is empty."
 msgstr "Mailbox ist leer."
 
