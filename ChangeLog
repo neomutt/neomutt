@@ -1,3 +1,124 @@
+Fri Jun  9 05:51:33 2000  Thomas Roessler  <roessler@guug.de>
+
+	* charset.c, init.c: Fix some typos in the nl_langinfo stuff.
+
+	* rfc2047.c: Latest patch from EGE.
+
+Thu Jun  8 21:44:14 2000  Thomas Roessler  <roessler@guug.de>
+
+	* copy.c, mbox.c:
+	This patch should fix the mailbox corruption various people observed.
+
+	* charset.c, charset.h, init.c:
+	Fix up the value returned by nl_langinfo(CODESET).
+
+	* mbox.c: Improve error reporting with mbox folders a bit.
+
+	* send.c: patch-1.2.bj.ed_mtime.1
+
+	* Makefile.am, acconfig.h, configure.in, main.c, mbyte.c:
+	Removing the built-in charset support.
+
+	* doc/muttrc.man.head: one-character typo.
+
+	* imap/imap_ssl.c:
+	Fix #157.  From Enrik Berkhan <Enrik.Berkhan@fun.de>.
+
+	* imap/imap_ssl.c:
+	[stable] Fix #157.  From Enrik Berkhan <Enrik.Berkhan@fun.de>.
+
+	* README.SSL, init.h, mutt.h, imap/imap_ssl.c:
+	[stable] patch-1.3.2.tl.sslcerts.1.
+
+	* charset.c:
+	Don't return data on the stack.  Noted by "Andrew W. Nosenko"
+	<awn@bcs.zp.ua>.
+
+	* po/sv.po: update.
+
+Sun Jun  4 18:18:56 2000  Thomas Roessler  <roessler@guug.de>
+
+	* doc/manual.sgml.head: Nits from Mikko Hänninen.
+
+Fri Jun  2 10:05:41 2000  Thomas Roessler  <roessler@guug.de>
+
+	* imap/imap.h, pgp.c: Fix #152.
+
+Tue May 30 12:52:41 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/pl.po: update
+
+Mon May 29 22:34:12 2000  Thomas Roessler  <roessler@guug.de>
+
+	* rfc2047.c, rfc2047.h, send.c, sendlib.c:
+	Edmund's latest RFC2047 encoding update.
+
+Sun May 28 20:32:05 2000  Thomas Roessler  <roessler@guug.de>
+
+	* commands.c:
+	Don't bother the user with messages about PGP signature verification
+	when there is no PGP stuff about the message.
+
+	* README.SSL, init.h, mutt.h:
+	SSL certificate verification fixes from Tommi Komulainen.
+
+	* imap/imap_ssl.c:
+	SSL certificate verification fix from Tommi Komulainen.
+
+	* imap/command.c:
+	[stable] Handle connection take-down by servers more graciously.
+	From Patrick Caulfield.
+
+	* doc/manual.sgml.head, contrib/pgp2.rc, contrib/pgp5.rc, commands.c, init.h, pgp.c, pgp.h:
+	Modified version of Byrial Jensen's signature verification patch.
+
+Thu May 25 12:21:29 2000  Thomas Roessler  <roessler@guug.de>
+
+	* pgp.c: Use strftime for time indications with PGP verification.
+
+	* curs_lib.c, mbyte.c: Somewhat different sigsegv fix suggested by EGE.
+
+	* mbyte.c: wctomb(0,wc) is needed to work for bounds checking.
+
+	* mutt.h: Include stdlib.h from mutt.h.
+
+	* makedoc.c, init.h: Minor fixes from Byrial.
+
+	* doc/manual.sgml.head: typo.
+
+	* doc/devel-notes.txt, init.h, makedoc.c:
+	Documentation beautification patch from Byrial Jensen.  Thanks!
+
+Wed May 24 19:20:07 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/ru.po: Fixes #143.
+
+	* po/ru.po: Some fixes - #143.
+
+	* charset.c, charset.h, compose.c, gnupgparse.c:
+	Make charset-hook work with an external iconv implementation.
+
+	* imap/command.c:
+	Handle disconnects more gracefully.  From Patrick Caulfield
+	<patrick@sco.com>.
+
+	* config.guess, config.sub:
+	[stable] Latest versions from ftp.gnu.org/pub/gnu/config
+
+	* config.guess, config.sub:
+	Latest versions from ftp.gnu.org/pub/gnu/config.
+
+Tue May 23 17:16:46 2000  Thomas Roessler  <roessler@guug.de>
+
+	* po/id.po, po/it.po, po/ko.po, po/nl.po, po/pl.po, po/pt_BR.po, po/ru.po, po/sk.po, po/sv.po, po/uk.po, po/zh_TW.Big5.po, ChangeLog, VERSION, po/cs.po, po/da.po, po/de.po, po/el.po, po/eo.po, po/es.po, po/fr.po, po/gl.po, reldate.h:
+	automatic post-release commit for mutt-1.3.2
+
+	* contrib/gpg.rc: Make this work on QNX.
+
+	* contrib/gpg.rc:
+	Change suggested by Sam Roberts <sroberts@uniserve.com> to make this
+	work on QNX.
+
 Tue May 23 08:15:02 2000  Thomas Roessler  <roessler@guug.de>
 
 	* contrib/gpg.rc: Make this work on QNX.
