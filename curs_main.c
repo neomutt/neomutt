@@ -1078,10 +1078,9 @@ int mutt_index_menu (void)
 			       (op == OP_SAVE) || (op == OP_DECODE_SAVE),
 			       (op == OP_DECODE_SAVE) || (op == OP_DECODE_COPY),
 #ifdef _PGPPATH
-			       (op == OP_DECRYPT_SAVE) || (op == OP_DECRYPT_COPY),
-#else
-			       0,
+			       (op == OP_DECRYPT_SAVE) || (op == OP_DECRYPT_COPY) ||
 #endif
+			       0,
 			       &menu->redraw) == 0 &&
 	    (op == OP_SAVE || op == OP_DECODE_SAVE
 #ifdef _PGPPATH

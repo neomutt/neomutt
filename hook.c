@@ -153,7 +153,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   else
   {
     rx = safe_malloc (sizeof (regex_t));
-#ifdef _PGPPATH
+#ifdef M_PGPHOOK
     if ((rc = REGCOMP (rx, pattern.data, ((data & M_PGPHOOK) ? REG_ICASE : 0))) != 0)
 #else
     if ((rc = REGCOMP (rx, pattern.data, 0)) != 0)
