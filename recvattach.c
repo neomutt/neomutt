@@ -886,6 +886,8 @@ void mutt_view_attachments (HEADER *hdr)
 
       if (mutt_is_application_smime(hdr->content))
 	secured = ! smime_decrypt_mime (msg->fp, &fp, hdr->content, &cur);
+      else
+	need_secured = 0;
     }
 #endif  
 #ifdef HAVE_PGP
