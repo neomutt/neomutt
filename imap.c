@@ -1409,7 +1409,6 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   /* This needs to be done in case this is a multipart message */
 #ifdef _PGPPATH
   ctx->hdrs[msgno]->pgp = pgp_query (ctx->hdrs[msgno]->content);
-  if (!ctx->hdrs[msgno]->pgp)
 #endif /* _PGPPATH */
 
   mutt_clear_error();
