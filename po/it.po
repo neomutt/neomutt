@@ -3143,11 +3143,11 @@ msgstr "[-- Errore: impossibile creare il file temporaneo! --]\n"
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
-msgstr "[-- I seguenti dati sono crittografati con PGP/MIME  --]\n"
+msgstr "[-- I seguenti dati sono cifrati con PGP/MIME  --]\n"
 
 #: pgp.c:1160
 msgid "[-- End of PGP/MIME encrypted data --]\n"
-msgstr "[-- Fine dei dati crittografati con PGP/MIME  --]\n"
+msgstr "[-- Fine dei dati cifrati con PGP/MIME  --]\n"
 
 #: pgp.c:1241
 msgid "Can't open PGP subprocess!"
