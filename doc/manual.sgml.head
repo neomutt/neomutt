@@ -2164,7 +2164,7 @@ text/plain; more %s
 Perhaps you would like to use lynx to interactively view a text/html 
 message:
 <tscreen><verb>
-text/html; lynx "%s"
+text/html; lynx %s
 </verb></tscreen>
 In this case, lynx does not support viewing a file from stdin, so you
 must use the &percnt;s syntax.
@@ -2177,16 +2177,47 @@ On the other hand, maybe you don't want to use lynx interactively, you
 just want to have it convert the text/html to text/plain, then you can
 use:
 <tscreen><verb>
-text/html; lynx -dump "%s" | more
+text/html; lynx -dump %s | more
 </verb></tscreen>
 
 Perhaps you wish to use lynx to view text/html files, and a pager on
 all other text formats, then you would use the following:
 <tscreen><verb>
-text/html; lynx "%s"
+text/html; lynx %s
 text/*; more
 </verb></tscreen>
 This is the simplest form of a mailcap file.
+
+<sect2>Secure use of mailcap
+<p>
+The interpretion of shell meta-characters embedded in MIME parameters
+can lead to security problems in general.  Mutt tries to quote parameters
+in expansion of %s syntaxes properly, and avoids risky characters by
+substituting them, see the <ref id="mailcap_sanitize"
+name="mailcap&lowbar;sanitize"> variable.
+
+Although mutt's procedures to invoke programs with mailcap seem to be
+safe, there are other applications parsing mailcap, maybe taking less care
+of it.  Therefore you should pay attention to the following rules:
+
+<em/Keep the %-expandos away from shell quoting./
+Don't quote them with single or double quotes.  Mutt does this for
+you, the right way, as should any other program which interprets
+mailcap.  Don't put them into backtick expansions.  Be highly careful
+with eval statements, and avoid them if possible at all.  Trying to fix
+broken behaviour with quotes introduces new leaks - there is no
+alternative to correct quoting in the first place.
+
+If you have to use the %-expandos' values in context where you need
+quoting or backtick expansions, put that value into a shell variable
+and reference the shell variable where necessary, as in the following
+example (using <tt/&dollar;charset/ inside the backtick expansion is safe,
+since it is not itself subject to any further expansion):
+
+<tscreen><verb>
+text/test-mailcap-bug; cat %s; copiousoutput; test=charset=%{charset} \
+        && test "`echo $charset | tr '[A-Z]' '[a-z]'`" != iso-8859-1
+</verb></tscreen>
 
 <sect2>Advanced mailcap Usage
 <p>
