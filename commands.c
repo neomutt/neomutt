@@ -256,7 +256,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
   mutt_message (h ? _("Message bounced.") : _("Messages bounced."));
 }
 
-static void pipe_set_flags (int decode, int *cmflags, int *chflags)
+static void pipe_set_flags (int decode, int print, int *cmflags, int *chflags)
 {
   if (decode)
   {
@@ -269,14 +269,18 @@ static void pipe_set_flags (int decode, int *cmflags, int *chflags)
       *cmflags |= M_CM_WEED;
     }
   }
+  
+  if (print)
+    *cmflags |= M_CM_PRINTING;
+  
 }
 
-void pipe_msg (HEADER *h, FILE *fp, int decode)
+void pipe_msg (HEADER *h, FILE *fp, int decode, int print)
 {
   int cmflags = 0;
   int chflags = CH_FROM;
   
-  pipe_set_flags (decode, &cmflags, &chflags);
+  pipe_set_flags (decode, print, &cmflags, &chflags);
 
 #ifdef HAVE_PGP
   
@@ -299,9 +303,10 @@ void pipe_msg (HEADER *h, FILE *fp, int decode)
 /* the following code is shared between printing and piping */
 
 static int _mutt_pipe_message (HEADER *h, char *cmd,
-			int decode,
-			int split,
-			char *sep)
+			       int decode,
+			       int print,
+			       int split,
+			       char *sep)
 {
   
   int i, rc = 0;
@@ -330,7 +335,7 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
       return 1;
     }
       
-    pipe_msg (h, fpout, decode);
+    pipe_msg (h, fpout, decode, print);
     safe_fclose (&fpout);
     rc = mutt_wait_filter (thepid);
   }
@@ -368,7 +373,7 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
 	    mutt_perror _("Can't create filter process");
 	    return 1;
 	  }
-          pipe_msg (Context->hdrs[Context->v2r[i]], fpout, decode);
+          pipe_msg (Context->hdrs[Context->v2r[i]], fpout, decode, print);
           /* add the message separator */
           if (sep)  fputs (sep, fpout);
 	  safe_fclose (&fpout);
@@ -390,7 +395,7 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
         if (Context->hdrs[Context->v2r[i]]->tagged)
         {
 	  mutt_message_hook (Context, Context->hdrs[Context->v2r[i]], M_MESSAGEHOOK);
-          pipe_msg (Context->hdrs[Context->v2r[i]], fpout, decode);
+          pipe_msg (Context->hdrs[Context->v2r[i]], fpout, decode, print);
           /* add the message separator */
           if (sep) fputs (sep, fpout);
         }
@@ -418,6 +423,7 @@ void mutt_pipe_message (HEADER *h)
   mutt_expand_path (buffer, sizeof (buffer));
   _mutt_pipe_message (h, buffer,
 		      option (OPTPIPEDECODE),
+		      0, 
 		      option (OPTPIPESPLIT),
 		      PipeSep);
 }
@@ -438,6 +444,7 @@ void mutt_print_message (HEADER *h)
 
   if (_mutt_pipe_message (h, PrintCmd,
 			  option (OPTPRINTDECODE),
+			  1,
 			  option (OPTPRINTSPLIT),
 			  "\f") == 0)
     mutt_message (h ? _("Message printed") : _("Messages printed"));

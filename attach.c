@@ -543,7 +543,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
       /* Use built-in handler */
       set_option (OPTVIEWATTACH); /* disable the "use 'v' to view this part"
 				   * message in case of error */
-      if (mutt_decode_save_attachment (fp, a, pagerfile, 1, 0))
+      if (mutt_decode_save_attachment (fp, a, pagerfile, M_DISPLAY, 0))
       {
 	unset_option (OPTVIEWATTACH);
 	goto return_error;
@@ -801,7 +801,7 @@ int mutt_decode_save_attachment (FILE *fp, BODY *m, char *path,
   HEADER *saved_hdr = NULL;
 
   memset (&s, 0, sizeof (s));
-  s.flags = (displaying ? M_DISPLAY : 0);
+  s.flags = displaying;
 
   if (flags == M_SAVE_APPEND)
     s.fpout = fopen (path, "a");
@@ -981,7 +981,7 @@ int mutt_print_attachment (FILE *fp, BODY *a)
     fpout = NULL;
     
     mutt_mktemp (newfile);
-    if (mutt_decode_save_attachment (fp, a, newfile, 0, 0) == 0)
+    if (mutt_decode_save_attachment (fp, a, newfile, M_PRINTING, 0) == 0)
     {
       
       dprint (2, (debugfile, "successfully decoded %s type attachment to %s\n",

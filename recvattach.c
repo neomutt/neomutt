@@ -645,7 +645,7 @@ static void print_attachment_list (FILE *fp, int tag, BODY *top, STATE *state)
 	  FILE *ifp;
 
 	  mutt_mktemp (newfile);
-	  if (mutt_decode_save_attachment (fp, top, newfile, 0, 0) == 0)
+	  if (mutt_decode_save_attachment (fp, top, newfile, M_PRINTING, 0) == 0)
 	  {
 	    if ((ifp = fopen (newfile, "r")) != NULL)
 	    {

@@ -24,11 +24,12 @@
 #define M_CM_UPDATE	(1<<4)  /* update structs on sync */
 #define M_CM_WEED	(1<<5)  /* weed message/rfc822 attachment headers */
 #define M_CM_CHARCONV	(1<<6)  /* perform character set conversions */
+#define M_CM_PRINTING	(1<<7)	/* printing the message - display light */
 
 
 #ifdef HAVE_PGP
-#define M_CM_DECODE_PGP	(1<<7)	/* used for decoding PGP messages */
-#define M_CM_VERIFY	(1<<8)	/* do signature verification */
+#define M_CM_DECODE_PGP	(1<<8)	/* used for decoding PGP messages */
+#define M_CM_VERIFY	(1<<9)	/* do signature verification */
 #endif
 
 
