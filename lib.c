@@ -152,8 +152,7 @@ void mutt_str_replace (char **p, const char *s)
 void mutt_str_adjust (char **p)
 {
   if (!p || !*p) return;
-  
-  safe_realloc (p, strlen (*p) + 1);
+  safe_realloc ((void **) p, strlen (*p) + 1);
 }
 
 /* convert all characters in the string to lowercase */
