@@ -87,7 +87,7 @@ void rfc2231_decode_parameters (PARAMETER **headp)
        * Internet Gateways.  So we actually decode it.
        */
 
-      if (option (OPTRFC2047PARAMS) && strstr (p->value, "=?"))
+      if (option (OPTRFC2047PARAMS) && p->value && strstr (p->value, "=?"))
 	rfc2047_decode (p->value, p->value, strlen (p->value) + 1);
 
       *last = p;
