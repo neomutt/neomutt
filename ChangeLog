@@ -1,3 +1,18 @@
+2003-03-03 14:01:06  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* Makefile.am, addrbook.c, alias.c, charset.h, commands.c,
+	compose.c, configure.in, copy.c, edit.c, hdrline.c, headers.c,
+	init.c, main.c, mutt_idna.c, mutt_idna.h, pgpinvoke.c,
+	protos.h, query.c, recvcmd.c, rfc822.c, rfc822.h, send.c,
+	sendlib.c: IDN support for e-mail messages.  Things should work
+	automagically once you have the GNU IDN library available from
+	ftp://alpha.gnu.org/pub/gnu/libidn/ installed.	For IDN's which
+	can't be losslessly recoded to your local character set, mutt
+	should automatically fall back to using the ASCII representation.
+	There's probably a considerable number of bugs in this, and the
+	code may, at this point, not even compile on machines without
+	libidn.  Will start working on that ASAP.
+
 2003-03-03 08:26:21  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* contrib/sample.muttrc, doc/manual.sgml.head, recvcmd.c,
