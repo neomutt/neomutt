@@ -653,7 +653,7 @@ static int mh_sync_message (CONTEXT *ctx, int msgno)
       }
     }
   }
-
+  else mx_close_message (&dest);
 
   if (rc == -1)
   {
