@@ -1,19 +1,23 @@
 How to add use mutt's S/MIME capabilities
 
+- Add the contents of contrib/smime.rc to your .muttrc. Don't worry about
+  changing the smime_sign_as line at this point -- you'll change it later.
+
 - Download and install OpenSSL.
 
 - Get yourself a certificate. (You can get one for free from www.thawte.com,
-or pay for one from VeriSign or one of its competitors) The way the process
-generally works, the certificate will be installed "into" your web browser.
-If you are asked what application you wish to use the certificate with,
-select Netscape. Strangely enough, "mutt" is usually not an option.
+  or pay for one from VeriSign or one of its competitors) The way the
+  process generally works, the certificate will be installed "into" your web
+  browser.  If you are asked what application you wish to use the
+  certificate with, select Netscape. Strangely enough, "mutt" is usually not
+  an option.
 
 - Assuming you are using Mozilla, follow the instructions at
-www.verisignlabs.com/Projects/smime_docs/linux.html to export the
-certificate into a file called cert.p12. If you don't use Mozilla, you're on
-your own.
+  www.verisignlabs.com/Projects/smime_docs/linux.html to export the
+  certificate into a file called cert.p12. If you don't use Mozilla, you're
+  on your own.
 
-- Run "smime_keys.pl add_p12 cert.p12"
+- Run "smime_keys add_p12 cert.p12"
 
     * When the script asks for the "Import password", enter the one you
       provided when you exported the certificate.
@@ -31,12 +35,14 @@ your own.
       The number (including the ".0" at the end) is your keyid. You will
       need this number in the next step.
 
-- Add the contents of contrib/smime.rc to your .muttrc. Edit the
-smime_sign_as line, replacing the keyid with your own.
+- Edit the smime_sign_as line in your muttrc, replacing the keyid with your
+  own.
 
 - You probably want to import the trusted roots in
-contrib/ca-bundle.crt. Use "smime_keys.pl add_root" to do so. That makes you
-trust anything that was ultimately signed by one of them.
+  contrib/ca-bundle.crt. This makes you trust anything that was ultimately
+  signed by one of them. You can use "smime_keys.pl add_root" to do so, or
+  just copy ca-bundle.crt into the place you point mutt's smime_ca_location
+  variable to.
 
 
 
