@@ -1,3 +1,7 @@
+2004-02-07 21:40:11  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
+
+	* po/ja.po: update
+
 2004-02-07 21:38:32  Juan Altmayer Pizzorno  <juan@altmayer.com>  (roessler)
 
 	* mbox.c: Hi, off_t is a 64-bit number (like on Mac OS X/darwin),
