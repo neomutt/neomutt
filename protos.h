@@ -221,7 +221,7 @@ int mutt_copy_stream (FILE *, FILE *);
 int mutt_decode_save_attachment (FILE *, BODY *, char *, int, int);
 int mutt_display_message (HEADER *h);
 int mutt_edit_attachment(BODY *);
-int mutt_edit_message(CONTEXT *, HEADER *, HEADER *);
+int mutt_prepare_edit_message(CONTEXT *, HEADER *, HEADER *);
 int mutt_enter_fname (const char *, char *, size_t, int *, int);
 int mutt_enter_string (unsigned char *, size_t, int, int, int);
 int mutt_get_field (char *, char *, size_t, int);

@@ -205,7 +205,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur)
     return (-1);
   }
 
-  if (mutt_edit_message (PostContext, hdr, h) < 0)
+  if (mutt_prepare_edit_message (PostContext, hdr, h) < 0)
   {
       mx_fastclose_mailbox (PostContext);
       safe_free ((void **) &PostContext);
@@ -371,7 +371,7 @@ int mutt_parse_pgp_hdr (char *p, int set_signas)
 
 
 
-int mutt_edit_message (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr)
+int mutt_prepare_edit_message (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr)
 {
   MESSAGE *msg = mx_open_message (ctx, hdr->msgno);
   char file[_POSIX_PATH_MAX];

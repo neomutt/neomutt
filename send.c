@@ -883,7 +883,7 @@ ci_send_message (int flags,		/* send mode */
 
     if (flags == SENDEDITMSG)
     {
-      if (mutt_edit_message(ctx, msg, cur) < 0)
+      if (mutt_prepare_edit_message(ctx, msg, cur) < 0)
 	goto cleanup;
     }
     else if (flags == SENDPOSTPONED)
@@ -940,13 +940,13 @@ ci_send_message (int flags,		/* send mode */
   if (cur && option (OPTREVNAME) && !(flags & (SENDPOSTPONED | SENDEDITMSG)))
   {
     /* we shouldn't have to worry about freeing `msg->env->from' before
-       setting it here since this code will only execute when doing some
-       sort of reply.  the pointer will only be set when using the -H command
-       line option */
+     * setting it here since this code will only execute when doing some
+     * sort of reply.  the pointer will only be set when using the -H command
+     * line option */
     msg->env->from = set_reverse_name (cur->env);
   }
 
-  if (!msg->env->from && option (OPTUSEFROM) && !(flags & SENDEDITMSG))
+  if (!msg->env->from && option (OPTUSEFROM) && !(flags & (SENDEDITMSG|SENDPOSTPONED)))
     msg->env->from = mutt_default_from ();
 
   if (flags & SENDBATCH) 
@@ -976,9 +976,10 @@ ci_send_message (int flags,		/* send mode */
     }
 
     /* the from address must be set here regardless of whether or not
-       $use_from is set so that the `~P' (from you) operator in send-hook
-       patterns will work.  if $use_from is unset, the from address is killed
-       after send-hooks are evaulated */
+     * $use_from is set so that the `~P' (from you) operator in send-hook
+     * patterns will work.  if $use_from is unset, the from address is killed
+     * after send-hooks are evaulated */
+
     if (!msg->env->from)
     {
       msg->env->from = mutt_default_from ();
@@ -986,6 +987,11 @@ ci_send_message (int flags,		/* send mode */
     }
 
     /* change settings based upon recipients */
+    
+    /* this needs to be executed even for postponed messages - the user may
+     * be chosing editor settings based upon a message's recipients.
+     */
+    
     mutt_send_hook (msg);
 
     if (killfrom)
@@ -994,7 +1000,12 @@ ci_send_message (int flags,		/* send mode */
       killfrom = 0;
     }
 
-    if (option (OPTHDRS))
+    /* don't handle user headers when editing or recalling
+     * postponed messages: _this_ part of the hooks should
+     * not be executed.
+     */
+
+    if (option (OPTHDRS) && !(flags &(SENDPOSTPONED|SENDEDITMSG)))
       process_user_header (msg->env);
 
 
@@ -1097,7 +1108,8 @@ ci_send_message (int flags,		/* send mode */
   }
 
   /* specify a default fcc.  if we are in batchmode, only save a copy of
-     the message if the value of $copy is yes or ask-yes */
+   * the message if the value of $copy is yes or ask-yes */
+
   if (!fcc[0] && (!(flags & SENDBATCH) || (quadoption (OPT_COPY) & 0x1)))
   {
     /* set the default FCC */
