@@ -102,6 +102,16 @@ LIST *mutt_make_references(ENVELOPE *e);
 ENVELOPE *mutt_read_rfc822_header (FILE *, HEADER *, short, short);
 HEADER *mutt_dup_header (HEADER *);
 
+#if USE_HCACHE
+void *mutt_hcache_open(const char *path, const char *folder);
+void mutt_hcache_close(void *db);
+HEADER *mutt_hcache_restore(const unsigned char *d, HEADER **oh);
+void *mutt_hcache_fetch(void *db, const char *filename, size_t (*keylen)(const char *fn));
+int mutt_hcache_store(void *db, const char *filename, HEADER *h, unsigned long long uid_validity, size_t (*keylen)(const char *fn));
+int mutt_hcache_delete(void *db, const char *filename, size_t (*keylen)(const char *fn));
+#endif /* USE_HCACHE */
+
+
 ATTACHPTR **mutt_gen_attach_list (BODY *, int, ATTACHPTR **, short *, short *, int, int);
 
 time_t mutt_decrease_mtime (const char *, struct stat *);

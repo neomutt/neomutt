@@ -179,6 +179,9 @@ typedef struct
   unsigned int newMailCount;
   IMAP_CACHE cache[IMAP_CACHE_LEN];
   unsigned int noclose : 1;
+#ifdef USE_HCACHE
+  unsigned long long uid_validity;
+#endif
   
   /* all folder flags - system flags AND keywords */
   LIST *flags;

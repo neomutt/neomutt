@@ -603,6 +603,16 @@ int imap_open_mailbox (CONTEXT* ctx)
       if ((pc = imap_get_flags (&(idata->flags), pc)) == NULL)
 	goto fail;
     }
+#ifdef USE_HCACHE
+    /* save UIDVALIDITY for the header cache */
+    else if (ascii_strncasecmp("OK [UIDVALIDITY", pc, 14) == 0)
+    {
+      dprint(2, (debugfile, "Getting mailbox UIDVALIDITY\n"));
+      pc += 3;
+      pc = imap_next_word(pc);
+      sscanf(pc, "%u", &(idata->uid_validity));
+    }
+#endif
     else
     {
       pc = imap_next_word (pc);

@@ -65,6 +65,10 @@ WHERE char *Ispell;
 WHERE char *Locale;
 WHERE char *MailcapPath;
 WHERE char *Maildir;
+#if USE_HCACHE
+WHERE char *HeaderCache;
+WHERE char *HeaderCachePageSize;
+#endif
 WHERE char *MhFlagged;
 WHERE char *MhReplied;
 WHERE char *MhUnseen;

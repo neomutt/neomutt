@@ -694,11 +694,6 @@ if test "x$with_idn" != "xno"; then
    AC_CHECK_FUNCS(idna_to_ascii_lz idna_to_ascii_from_locale)
 fi
 
-if test "$need_md5" = "yes"
-then
-        MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS md5c.o"
-fi
-
 dnl -- end socket --
 
 AC_ARG_ENABLE(debug, [  --enable-debug             Enable debugging support],
@@ -769,6 +764,96 @@ AC_ARG_ENABLE(exact-address, [  --enable-exact-address     Enable regeneration o
                    NOTE: this requires significant more memory when defined.])
 
         fi])
+
+dnl -- start cache --
+AC_ARG_ENABLE(hcache, [  --enable-hcache            Enable header caching],
+[if test x$enableval = xyes; then
+    AC_DEFINE(USE_HCACHE, 1, [Enable header caching])
+    MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache.o"
+
+    OLDCPPFLAGS="$CPPFLAGS"
+    OLDLIBS="$LIBS"
+
+    need_md5="yes"
+    ac_prefer_gdbm=yes
+    AC_ARG_WITH(gdbm, [  --without-gdbm             Get rid of gdbm even if it is available ],
+        ac_prefer_gdbm=$withval)
+    if test x$ac_prefer_gdbm != xno; then
+        CPPFLAGS="$OLDCPPFLAGS"
+        LIBS="$OLDLIBS -lgdbm";
+        AC_CACHE_CHECK(for gdbm_open, ac_cv_gdbmopen,[
+            ac_cv_gdbmopen=no
+            AC_TRY_LINK([#include <gdbm.h>],[gdbm_open(0,0,0,0,0);],[ac_cv_gdbmopen=yes])
+        ])
+    fi
+
+    ac_bdb_prefix=yes
+    AC_ARG_WITH(bdb, [  --with-bdb[=DIR]          Use BerkeleyDB4 if gdbm is not available ],
+        ac_bdb_prefix=$withval)
+    if test x$ac_bdb_prefix != xno -a x$ac_cv_gdbmopen != xyes; then
+        test x$ac_bdb_prefix = xyes && ac_bdb_prefix="$mutt_cv_prefix /opt/csw/bdb4 /opt /usr/local /usr"
+        for d in $ac_bdb_prefix; do
+            bdbpfx="$bdbpfx $d"
+            for v in BerkeleyDB.4.3 BerkeleyDB.4.2 BerkeleyDB.4.1; do
+                bdbpfx="$bdbpfx $d/$v"
+            done
+        done
+        BDB_VERSIONS="db-4 db4 db-4.3 db4.3 db43 db-4.2 db4.2 db42 db-4.1 db4.1 db41 db ''"
+        AC_MSG_CHECKING([for BerkeleyDB > 4.0])
+        for d in $bdbpfx; do
+            BDB_INCLUDE_DIR=""
+            BDB_LIB_DIR=""
+            for v in / $BDB_VERSIONS; do
+                if test -r "$d/include/$v/db.h"; then
+                    BDB_INCLUDE_DIR="$d/include/$v"
+                    if test -d "$d/lib/$v"; then
+                        BDB_LIB_DIR="$d/lib/$v"
+                        for l in `echo $BDB_VERSIONS`; do
+                            CPPFLAGS="-I$BDB_INCLUDE_DIR $OLDCPPFLAGS"
+                            LIBS="$OLDLIBS -L$BDB_LIB_DIR -l$l"
+                            AC_TRY_LINK([
+                                #include <stdlib.h>
+                                #include <db.h>
+                            ],[
+                                DB *db = NULL;
+                                db->open(db,NULL,NULL,NULL,0,0,0);
+                            ],[
+                                ac_cv_dbcreate=yes
+                                BDB_LIB="$l"
+                                break
+                            ])
+                        done
+                        test x$ac_dbcreate = xyes && break
+                    fi
+                fi
+            done
+            test x$BDB_LIB != x && break
+        done
+        if test x$ac_cv_dbcreate = xyes; then
+            AC_MSG_RESULT(yes)
+        else
+            AC_MSG_RESULT(no)
+        fi
+    fi
+
+    if test x$ac_cv_gdbmopen = xyes; then
+        CPPFLAGS="$OLDCPPFLAGS"
+        LIBS="$OLDLIBS -lgdbm";
+        AC_DEFINE(HAVE_GDBM, 1, [GDBM Support])
+    elif test x$ac_cv_dbcreate = xyes; then
+        CPPFLAGS="-I$BDB_INCLUDE_DIR $OLDCPPFLAGS"
+        LIBS="$OLDLIBS -L$BDB_LIB_DIR -l$BDB_LIB"
+        AC_DEFINE(HAVE_DB4, 1, [Sleepycat DB4 Support])
+    else
+        AC_MSG_ERROR(You need Sleepycat DB4 or GDBM for --enable-hcache)
+    fi
+fi])
+dnl -- end cache --
+
+if test "$need_md5" = "yes"
+then
+        MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS md5c.o"
+fi
 
 AC_SUBST(MUTTLIBS)
 AC_SUBST(MUTT_LIB_OBJECTS)
