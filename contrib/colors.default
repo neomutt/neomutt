@@ -1,0 +1,23 @@
+# -*-muttrc-*-
+
+# Colors for use with xterm and the like, white background.
+
+color hdrdefault blue white
+color quoted blue white
+color signature red white
+color attachment red white
+color message brightred white
+color error brightred white
+color indicator brightyellow red
+color status brightgreen blue
+color tree black white
+color normal black white
+color markers red white
+color search white black
+color tilde brightmagenta white
+color index blue white ~F
+color index red white "~N|~O"
+
+
+# color body brightblack white '\*+[^*]+\*+'
+# color body brightblack white '_+[^_]+_+'

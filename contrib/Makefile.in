@@ -21,7 +21,8 @@ VPATH = @srcdir@
 subdir = contrib
 
 SAMPLES = Mush.rc Pine.rc gpg.rc pgp2.rc pgp5.rc pgp6.rc Tin.rc \
-	sample.muttrc  sample.mailcap sample.muttrc-tlr smime.rc \
+	sample.muttrc  sample.mailcap sample.muttrc-tlr \
+	colors.default colors.linux smime.rc \
 	ca-bundle.crt smime_keys_test.pl
 
 DISTFILES = Makefile.in language.txt language50.txt  \
