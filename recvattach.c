@@ -768,7 +768,9 @@ mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, HEADER *hdr,
 	break;
       /* functions which are passed through from the pager */
       case OP_ATTACH_COLLAPSE:
+#ifdef HAVE_PGP
       case OP_CHECK_TRADITIONAL:
+#endif
         if (recv)
           return op;
       default:
