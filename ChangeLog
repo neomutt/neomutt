@@ -1,3 +1,7 @@
+2003-01-30 23:48:36  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* flags.c: The IMAP ACL patch broke things.
+
 2003-01-23 22:05:02  Nathan Dushman  <nhd+mutt@andrew.cmu.edu>  (roessler)
 
 	* pop_auth.c: SASL2 support for popo_auth.c.
