@@ -47,30 +47,35 @@
 #include <sys/stat.h>
 #include <errno.h>
 
+static const char No_mailbox_is_open[] = N_("No mailbox is open.");
+static const char There_are_no_messages[] = N_("There are no messages.");
+static const char Mailbox_is_read_only[] = N_("Mailbox is read-only.");
+static const char Function_not_permitted_in_attach_message_mode[] = N_("Function not permitted in attach-message mode.");
+
 #define CHECK_MSGCOUNT if (!Context) \
 	{ \
 	  	mutt_flushinp (); \
-		mutt_error _("No mailbox is open."); \
+		mutt_error _(No_mailbox_is_open); \
 		break; \
 	} \
 	else if (!Context->msgcount) \
 	{ \
 	  	mutt_flushinp (); \
-		mutt_error _("There are no messages."); \
+		mutt_error _(There_are_no_messages); \
 		break; \
 	}
 
 #define CHECK_READONLY if (Context->readonly) \
 			{ \
 			  	mutt_flushinp (); \
-				mutt_error _("Mailbox is read-only."); \
+				mutt_error _(Mailbox_is_read_only); \
 				break; \
 			}
 
 #define CHECK_ATTACH if(option(OPTATTACHMSG)) \
 		     {\
 			mutt_flushinp (); \
-			mutt_error ("Function not permitted in attach-message mode."); \
+			mutt_error _(Function_not_permitted_in_attach_message_mode); \
 			break; \
 		     }
 
