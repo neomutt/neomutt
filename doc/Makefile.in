@@ -57,7 +57,7 @@ srcdir_DOCFILES = PGP-Notes.txt applying-patches.txt	\
 
 
 topsrcdir_DOCFILES = COPYRIGHT GPL INSTALL ChangeLog	\
-	README NEWS TODO README.SECURITY README.SSL README.UPGRADE
+	README NEWS TODO README.SECURITY README.SSL 
 
 all: muttrc.man try-html try-txt
 
