@@ -174,8 +174,8 @@ static void format_line (FILE *f, int ismacro,
   }
   else
   {
-    col_a = 12 + (COLS > 83 ? (COLS - 80) >> 2 : 0);
-    col_b = 19 + (COLS > 43 ? (COLS - 16) >> 2 : 0);
+    col_a = COLS > 83 ? (COLS - 32) >> 2 : 12;
+    col_b = COLS > 49 ? (COLS - 10) >> 1 : 19;
     col = pad (f, mutt_strlen(t1), col_a);
   }
 
