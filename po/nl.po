@@ -1272,7 +1272,7 @@ msgstr "Doorgaan?"
 
 #: imap/util.c:47
 msgid "%s [%s]\n"
-msgid "%s [%s]\n"
+msgstr "%s [%s]\n"
 
 #: init.c:487
 msgid "alias: no address"
@@ -2411,7 +2411,7 @@ msgstr "Claim-timeout overschreden, oude claim voor %s verwijderen?"
 
 #: mx.c:126
 msgid "Can't dotlock %s.\n"
-msgstr "Kan %s niet claimen met \"dotlock\"."
+msgstr "Kan %s niet claimen met \"dotlock\".\n"
 
 #: mx.c:184
 msgid "Timeout exceeded while attempting fcntl lock!"
@@ -2431,7 +2431,7 @@ msgstr "Wacht op flock-poging... %d"
 
 #: mx.c:537
 msgid "Couldn't lock %s\n"
-msgstr "Kan %s niet claimen."
+msgstr "Kan %s niet claimen.\n"
 
 #: mx.c:625
 msgid "Reading %s..."
@@ -2677,8 +2677,8 @@ msgid ""
 "\n"
 "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr ""
-"[-- EINDE PGP ONDERTEKEND BERICHT --]\n"
 "\n"
+"[-- EINDE PGP ONDERTEKEND BERICHT --]\n"
 
 #: pgp.c:399
 msgid ""
@@ -3265,7 +3265,7 @@ msgstr "Kan %s niet openen."
 
 #: sendlib.c:1709
 msgid "Error sending message, child exited %d (%s)."
-msgstr "Fout %d opgetreden tijdens versturen van bericht: %s\n"
+msgstr "Fout %d opgetreden tijdens versturen van bericht: %s"
 
 #: sendlib.c:1715
 msgid "Output of the delivery process"
