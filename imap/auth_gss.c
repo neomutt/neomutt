@@ -18,12 +18,20 @@
 
 /* GSS login/authentication code */
 
+/* for HAVE_HEIMDAL */
+#include "config.h"
+
 #include "mutt.h"
 #include "imap_private.h"
 
 #include <netinet/in.h>
-#include <gssapi/gssapi.h>
-#include <gssapi/gssapi_generic.h>
+
+#ifdef HAVE_HEIMDAL
+#  include <gssapi.h>
+#else
+#  include <gssapi/gssapi.h>
+#  include <gssapi/gssapi_generic.h>
+#endif
 
 #define GSS_BUFSIZE 8192
 

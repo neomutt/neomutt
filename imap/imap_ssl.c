@@ -15,6 +15,10 @@
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
  */
+
+/* for SSL NO_* defines */
+#include "config.h"
+
 #include <openssl/ssl.h>
 #include <openssl/x509.h>
 #include <openssl/err.h>

@@ -473,16 +473,40 @@ AC_ARG_WITH(gss,    [    --with-gss[=DIR]         Compile in GSSAPI authenticati
 	    LDFLAGS="$LDFLAGS -L$with_gss/lib"
 	  fi
 
-	  saved_LIBS="$LIBS"
-	  AC_CHECK_LIB(krb5, krb5_change_cache,,
-	    AC_MSG_ERROR([could not find libkrb5 which is needed for GSS authentication]))
-	  AC_CHECK_LIB(gssapi_krb5, g_order_init,,
-	    AC_MSG_ERROR([could not find libgssapi_krb5 which is needed for GSS authentication]), -lkrb5)
-	  LIBS="$saved_LIBS"
-	  MUTTLIBS="$MUTTLIBS -lgssapi_krb5 -lkrb5 -lcrypto -lcom_err"
-	  AC_DEFINE(USE_GSS)
-          need_gss="yes"
-	fi
+  	  saved_LIBS="$LIBS"
+          gss_type="none"
+
+          dnl MIT kerberos V support
+          dnl Note: older krb5 distributions use -lcrypto instead of
+          dnl -lk5crypto, which collides with OpenSSL. I punt and ignore
+          dnl it here.
+          AC_CHECK_LIB(gssapi_krb5, gss_init_sec_context, [
+            gss_type="MIT",
+            MUTTLIBS="$MUTTLIBS -lgssapi_krb5 -lkrb5 -lk5crypto -lcom_err"
+            ],, -lkrb5 -lk5crypto -lcom_err)
+
+          dnl Heimdal kerberos V support
+          if test x$gss_type = xnone
+          then
+            AC_CHECK_LIB(gssapi, gss_init_sec_context, [
+              gss_type="Heimdal",
+              MUTTLIBS="$MUTTLIBS -lgssapi -lkrb5 -ldes -lasn1 -lroken"
+              MUTTLIBS="$MUTTLIBS -lcrypt -lcom_err"
+              AC_DEFINE(HAVE_HEIMDAL)
+              ],, -lgssapi -lkrb5 -ldes -lasn1 -lroken -lcrypt -lcom_err)
+          fi
+
+          if test x$gss_type = xnone
+          then
+            AC_CACHE_SAVE
+            AC_MSG_ERROR([GSSAPI support not found])
+          fi
+
+  	  LIBS="$saved_LIBS"
+  	  AC_DEFINE(USE_GSS)
+            need_gss="yes"
+  	fi
+
 ])
 AM_CONDITIONAL(USE_GSS, test x$need_gss = xyes)
 
@@ -509,6 +533,11 @@ AC_ARG_WITH(ssl, [    --with-ssl[=PFX]         Compile in SSL socket support for
 	  LIBS="$saved_LIBS"
 	  MUTTLIBS="$MUTTLIBS -lssl -lcrypto"
 	  need_ssl=yes
+
+          dnl Some systems avoid certain patent-encumbered SSL routines
+          AC_CHECK_HEADER(openssl/rc5.h,,AC_DEFINE(NO_RC5))
+          AC_CHECK_HEADER(openssl/idea.h,,AC_DEFINE(NO_IDEA))
+          AC_CHECK_HEADER(openssl/rsa.h,,AC_DEFINE(NO_RSA))
 	fi
 ])
 AM_CONDITIONAL(USE_SSL, test x$need_ssl = xyes)
