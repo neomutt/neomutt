@@ -1,3 +1,7 @@
+2005-03-23 10:51:11  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
+
+	* init.h, mh.c, mutt.h: Maildir header cache.
+
 2005-03-22 19:58:15  Horst Schirmeier  <horst@schirmeier.com>  (roessler)
 
 	* Makefile.am: Use install-exec-hook install of
