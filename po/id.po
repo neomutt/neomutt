@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.5i\n"
-"POT-Creation-Date: 2000-02-29 23:39+0100\n"
+"POT-Creation-Date: 2000-03-01 01:21+0100\n"
 "PO-Revision-Date: 2000-02-27 09:00-0600\n"
 "Last-Translator: Ronny Haryanto <ronny@haryan.to>\n"
 "Language-Team: Indonesia <i18n@linux.or.id>\n"
